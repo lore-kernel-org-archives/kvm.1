@@ -1,78 +1,74 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7833D6A
-	for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 06:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1009913AA5D;
+	Tue, 21 Jan 2025 06:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737439418; cv=none; b=WCY4L/kyc/l/yDUbBOKSUpdniEvqw4wKo+0Os/3DG0HNAW2NKjdRwX7hwi9H4x6ju/D5GLm1BLLus6VemfDI+XGXsq2qdR9rxbvR5SM/9VNTa2np4TJwRrq5ntbn6TBCbBQ/wPo7PxaEWIfOI2bPak0Ts5gZo0On8OFQy/hz7EY=
+	t=1737439544; cv=none; b=Z72j0BMETEb2QphrUCt9ZsjHo2VKfwLh3tAVCkjSUCZ4OWoZfGjBcyf6VyRR0JfGUcQZXhFu7P9sSqZy77OhSJst1lO7DFBJwweYztkWzHbjzwVSqIoGhulYtRsSeIdUF9K6rRXQ08bbBRvJqIZLNe+2mSbDZNj33it/CAceMxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737439418; c=relaxed/simple;
-	bh=/m5vQYZTdQ/WFQfN/eHdTFWqddZXNNA9CMeL15MdoGE=;
+	s=arc-20240116; t=1737439544; c=relaxed/simple;
+	bh=EICKAbt6ehTM275az3a+HO8w7Dd752OxSdIpuT+vXjw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iZxyZ1ykmu0hMZA/Xi2R8BBkTXgPc0VZJt+A6ioz4SCErhU+bzJPsMeyZ3fD6H5lPpMOVdxAve3/DBfyApkrITOCmNH+PUhLPI8wIYjZ5X7cuyXSiUMiRlV40ornNWp3xIgJE5yzvakVIYdmAOuhwsyPRUTYj0WqkSAMFJ7GfR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw; spf=pass smtp.mailfrom=csie.ntu.edu.tw; dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b=Wu7EJmvv; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csie.ntu.edu.tw
+	 Content-Type:Content-Disposition:In-Reply-To; b=pCNYS9GgBWrtYnXwEUKbwaiHipfHasy968MRf59EibH/fvdARY5lgqLRKcjTD/dpbpgFTLU2Z6pcrIxUNTLNfxhbn2C8SI1q1ZHXfF5XzrvnY8otFlwqLaXZuECW3X1iIi//2bzUnjvMzXPntXOUlzn5QMW0XjujIEva5D85G5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yt+d5F2W; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b="Wu7EJmvv"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2efd81c7ca4so6995691a91.2
-        for <kvm@vger.kernel.org>; Mon, 20 Jan 2025 22:03:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=csie.ntu.edu.tw; s=google; t=1737439414; x=1738044214; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wF4cOYbAGgO/RufcLN3HIyG7NCa0ScnR/GNeXKWmqEY=;
-        b=Wu7EJmvvXs6fxQNM2sEpLVpWtVahpbZNSNrgRwvdiTZun+44VKP92uIpEPskyW83KZ
-         YL2Aybk2Nq1poWBBH6eOJgMRUW0m+it7HlMA/1h4YmlcVZNB64l1QZ0+vbYjD67nm45x
-         RoPz0f3Ps9jrb1VywuE16cX/SGszukvYWP3Pipkmbd2a39yLJAlETQkSEW9xMg4DOhW0
-         GRpZcSeg6PO7jINtBJaFYlWwJdnuAiD6VfsuejW+KBQlKzDQCBgpWwk03e1g3d95gZkC
-         A5UkawBHgM9GmaZRfgRmDe31IKYjy+K0zD8Uk7NOjEpD1zBWAKN5D1Uq1wxVrUmshqhu
-         rSoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737439414; x=1738044214;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wF4cOYbAGgO/RufcLN3HIyG7NCa0ScnR/GNeXKWmqEY=;
-        b=TBy/fWP9nOPR2WxymezWlkj7vyLb4ICb6SWAy/z5jRtbLVMJLpfTXzd1u7vl0VnJVr
-         +UE1un7IG9Yp4veG7KMe55FDQ5eUICbchAny3IGgZLJUxKr1plA3rNJBNd8HQJxCAEcA
-         GILUVEQiYV4inCYLQEB7BFX8G7b06g9MkUedX6o9zSbAMW7lVNAOawPzfwx6pWQ0CPgI
-         kdjaOh7aWRXd1Hl9VCBjWggNa7bfL+N+RaGLg44sXIODZUlxihzM4jnP1qHXf/DLTtZE
-         PL19eIxOIc8jy7Pp92K7XyrEtw2G0NYUXv3PokqcrjIqpqHJ+J51rrolKWptqdknuwYc
-         D5Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUSGYLUV6lKR/zcvwPQEllefSPP/TjoHAsxU2Dr0G0JngpG/EufrPStn7uFbOT7CXSQnc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz49OPvM2CFyKpSjGhPhGBzNjuatTUz48WhqsIlU6sNFF+BuWI0
-	xKD0EE+Y9OqMMpkkFxVke1nNgp4YgexAeySQoJOP10EUbu5k32Oq/P1lXUYIRTiHBzvtlLr842S
-	ZmsSEkrFBUfnPTKXNSkxh/eXwqdPM5raOlWNVsFp6Rb0=
-X-Gm-Gg: ASbGncuL3xv6if7xXysFC4toCYfJfN9FlGgXU4ZcfJiBYB5yjIO/pSbLPS1dryrv4kX
-	anhm4rCiNphY7GOGmuVF9m/TS7sgjW41SB/sutbD5OntzgFzBt7swZoiLXS8Y1jyP3wH4IxK3UF
-	LRuPskTuqgf8yD7SeBgD+9zRWALBBF6Mdsf2kmGBSkO5PDOqgsUsLGv2FkPOCZ2mga3vzJZy3aV
-	jUpyHsKHrTIn0uBUVIq1xzpzcE1xwKmpMoKc0sj5whzloD8r3Q/dKx3pBgRmrdgz87accLFA9Rb
-	cN9DuJZG9CXECfmMQkSZ2atozUIErp1e
-X-Google-Smtp-Source: AGHT+IFYx8DTwR4EYN24qsSl35fQVXwjk20eSy/eyrx/w4w7hv/zybodC9ah8qtt+C9HHOtDYV5LZA==
-X-Received: by 2002:a05:6a00:3487:b0:725:456e:76e with SMTP id d2e1a72fcca58-72daf94f68dmr21324015b3a.6.1737439413834;
-        Mon, 20 Jan 2025 22:03:33 -0800 (PST)
-Received: from zenbook (118-163-61-247.hinet-ip.hinet.net. [118.163.61.247])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab9c8b3dsm8465180b3a.95.2025.01.20.22.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 22:03:33 -0800 (PST)
-Date: Tue, 21 Jan 2025 14:04:26 +0800
-From: Wei-Lin Chang <r09922117@csie.ntu.edu.tw>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
-	Chase Conklin <chase.conklin@arm.com>, Eric Auger <eauger@redhat.com>, r09922117@csie.ntu.edu.tw
-Subject: Re: [PATCH v2 09/12] KVM: arm64: nv: Propagate
- CNTHCTL_EL2.EL1NV{P,V}CT bits
-Message-ID: <2uvoet55pchhcwafgdkcjca5m4mrvtwpgbmg4gmltimv62oauo@p4cipsni3a2q>
-References: <20241217142321.763801-1-maz@kernel.org>
- <20241217142321.763801-10-maz@kernel.org>
- <qbmqsm3llnpy2t4ig3uyggkapwlbox2wnfu52gksbhcq4vfpqx@dz5bbn3asn5s>
- <86wmetv57c.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yt+d5F2W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737439544; x=1768975544;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EICKAbt6ehTM275az3a+HO8w7Dd752OxSdIpuT+vXjw=;
+  b=Yt+d5F2WlwRFkOk63jibIQKoE7SROOqtylx+M/tf4WibNSghpvBNy3Iw
+   X+AJUJYHTXo/X0Z1WJb8c/mDxVGD5tdcOWB3goJipY4R9One/Kr/BrIgI
+   ODmAS1rSs3op6Nfp3oiqOc5CiizUXDa1Zq6neszFPLo67HGY0nDXe33Gu
+   sHlCuOu4tdDIiWpFR6AeZoBsLGqp3SrNurlfZupOrPfp17Bfe6+tajBSL
+   M1650GgrSK+ILxedg73Roz9FTJr9cIPLxr6B3Hxn+FA/qX6HUQbPPIJhQ
+   6OrAZlYgH9wodpbIazXB+bpemRMZNnCM3uDnD2g35eQxr19t4o02V+mw3
+   Q==;
+X-CSE-ConnectionGUID: plIqbp8eQ+mF69SF27wjuQ==
+X-CSE-MsgGUID: bqsemsFSTcKrY22v5PdxOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37947878"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="37947878"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 22:05:42 -0800
+X-CSE-ConnectionGUID: tHJjq00eSoirj4Z7Z0C1/g==
+X-CSE-MsgGUID: KEwSyQz7S/mHimzNYrB6sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; 
+   d="scan'208";a="106509090"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa009.jf.intel.com with ESMTP; 20 Jan 2025 22:05:36 -0800
+Date: Tue, 25 Jun 2024 05:12:10 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
+ private device
+Message-ID: <ZnnhKtA2n4s1CLyf@yilunxu-OptiPlex-7050>
+References: <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
+ <20250113164935.GP5556@nvidia.com>
+ <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
+ <20250114133553.GB5556@nvidia.com>
+ <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
+ <20250115130102.GM5556@nvidia.com>
+ <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
+ <20250117132523.GA5556@nvidia.com>
+ <Znh+uTMe/wX2RIJm@yilunxu-OptiPlex-7050>
+ <20250120132525.GH5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,74 +77,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86wmetv57c.wl-maz@kernel.org>
-X-Gm-Spam: 0
-X-Gm-Phishy: 0
+In-Reply-To: <20250120132525.GH5556@nvidia.com>
 
-On Fri, Jan 17, 2025 at 03:19:03PM +0000, Marc Zyngier wrote:
-> On Mon, 06 Jan 2025 02:33:39 +0000,
-> Wei-Lin Chang <r09922117@csie.ntu.edu.tw> wrote:
+On Mon, Jan 20, 2025 at 09:25:25AM -0400, Jason Gunthorpe wrote:
+> On Mon, Jun 24, 2024 at 03:59:53AM +0800, Xu Yilun wrote:
+> > > But it also seems to me that VFIO should be able to support putting
+> > > the device into the RUN state
 > > 
-> > Hi Marc and other KVM ARM developers,
-> > 
-> > I have a question while learning about NV and reading the code:
-> > 
-> > On Tue, Dec 17, 2024 at 02:23:17PM +0000, Marc Zyngier wrote:
-> > > Allow a guest hypervisor to trap accesses to CNT{P,V}CT_EL02 by
-> > > propagating these trap bits to the host trap configuration.
-> > > 
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > ---
-> > >  arch/arm64/kvm/arch_timer.c | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> > > index 6f04f31c0a7f2..e5951e6eaf236 100644
-> > > --- a/arch/arm64/kvm/arch_timer.c
-> > > +++ b/arch/arm64/kvm/arch_timer.c
-> > > @@ -824,6 +824,10 @@ static void timer_set_traps(struct kvm_vcpu *vcpu, struct timer_map *map)
-> > >  	 * Apply the enable bits that the guest hypervisor has requested for
-> > >  	 * its own guest. We can only add traps that wouldn't have been set
-> > >  	 * above.
-> > > +	 * Implementation choices: we do not support NV when E2H=0 in the
-> > > +	 * guest, and we don't support configuration where E2H is writable
-> > > +	 * by the guest (either FEAT_VHE or FEAT_E2H0 is implemented, but
-> > > +	 * not both). This simplifies the handling of the EL1NV* bits.
-> > 
-> > Previously I was not aware that KVM ARM has these constraints on guest's
-> > view of NV and E2H, so I appreciate this comment very much. However,
-> > after digging through the code I could not find anywhere where these
-> > constraints are enforced, for example initially I thought I would find
-> > ID_AA64MMFR2_EL1_NV being zeroed in limit_nv_id_regs(), or HCR_NV added
-> > to the res0 mask of HCR_EL2, base on whether FEAT_VHE or FEAT_E2H0 is
-> > available to the guest. But seems like in these places the code applies
-> > constraints looking at the host's capabilities, not the guest's.
-> > Do you mind providing some pointers for me to investigate the code mode?
+> > Firstly I think VFIO should support putting device into *LOCKED* state.
+> > From LOCKED to RUN, there are many evidence fetching and attestation
+> > things that only guest cares. I don't think VFIO needs to opt-in.
 > 
-> Where have you looked?
-> 
-> These constraints are enforced in the kvm-arm64/nv-e2h-select
-> branch[1], which is pulled in the kvm-arm64/nv-next branch[2].
-> 
-> The NV support is split in discrete series in order to make things
-> easier to review, but you need to have seen them all to somehow
-> connect the dots.
+> VFIO is not just about running VMs. If someone wants to run DPDK on
+> VFIO they should be able to get the device into a RUN state and work
+> with secure memory without requiring a KVM. Yes there are many steps
+> to this, but we should imagine how it can work.
 
-Ah, that makes sense. I was only looking at kvmarm/next, and wasn't
-really sure what the other branches are up to.
-Thanks for telling me, looks like I got a lot more (complex) code to
-study. :)
+Interesting Question. I've never thought about native TIO before.
 
-Sincerely,
-Wei-Lin Chang
+And you are also thinking about VFIO usage in CoCo-VM. So I believe
+VFIO could be able to support putting the device into the RUN state,
+but no need a uAPI for that, this happens when VFIO works as a TEE
+attester.
+
+In different cases, VFIO plays different roles:
+
+1. TEE helper, but itself is out of TEE.
+2. TEE attester, it is within the TEE.
+3. TEE user, it is within the TEE.
+
+As a TEE helper, it works on a untrusted device and help put the device
+in LOCKED state, waiting for attestation. For VM use case, VM acts as the
+attester to do attestation and move device into trusted/RUN state (lets
+say 'accept'). The attestation and accept could be direct talks between
+attester and device (maybe via TSM sysfs node), because from
+LOCKED -> RUN VFIO doesn't change its way of handling device so seems
+no need to introduce extra uAPIs and complexity just for passing the
+talks. That's my expectation of VFIO's responsibility as a TEE
+helper - serve until LOCKED, no care about the rest, UNLOCK rollbacks
+everything.
+
+I imagine in bare metal, if DPDK works as an attester (within TEE) and
+VFIO still as a TEE helper (out of TEE), this model seems still work.
+
+
+
+When VFIO works as a TEE user in VM, it means an attester (e.g. PCI
+subsystem) has already moved the device to RUN state. So VFIO & DPDK
+are all TEE users, no need to manipulate TDISP state between them.
+AFAICS, this is the most preferred TIO usage in CoCo-VM.
+
+When VFIO works as a TEE attester in VM, it means the VM's PCI
+subsystem leaves the attestation work to device drivers. VFIO should do
+the attestation and accept before pass through to DPDK, again no need to
+manipulate TDISP state between them.
+
+I image the possibility TIO happens on bare metal, that a device is
+configured as waiting for attestation by whatever kernel module, then
+PCI subsystem or VFIO try to attest, accept and use it, just the same as
+in CoCo VM.
 
 > 
-> HTH,
+> > > without involving KVM or cVMs.
+> > 
+> > It may not be feasible for all vendors. 
 > 
-> 	M.
+> It must be. A CC guest with an in kernel driver can definately get the
+> PCI device into RUN, so VFIO running in the guest should be able as
+> well.
+
+You are talking about VFIO in CoCo-VM as an attester, then definiately
+yes.
+
 > 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h=kvm-arm64/nv-e2h-select
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h=kvm-arm64/nv-next
+> > I believe AMD would have one firmware call that requires cVM handle
+> > *AND* move device into LOCKED state. It really depends on firmware
+> > implementation.
 > 
-> -- 
-> Without deviation from the norm, progress is not possible.
+> IMHO, you would not use the secure firmware if you are not using VMs.
+> 
+> > Yes, the secure EPT is in the secure world and managed by TDX firmware.
+> > Now a SW Mirror Secure EPT is introduced in KVM and managed by KVM
+> > directly, and KVM will finally use firmware calls to propagate Mirror
+> > Secure EPT changes to secure EPT.
+> 
+> If the secure world managed it then the secure world can have rules
+> that work with the IOMMU as well..
+
+Yes.
+
+Thanks,
+Yilun
+
+> 
+> Jason
