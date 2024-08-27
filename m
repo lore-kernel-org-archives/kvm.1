@@ -1,335 +1,199 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020107.outbound.protection.outlook.com [52.101.56.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D51189917
-	for <kvm@vger.kernel.org>; Tue, 27 Aug 2024 22:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724798186; cv=none; b=rsBn4Zdii2dQsL4/27VPgaot1MUWCmbm+bJ8yIdM+EYpdBo9dEnoSXuE+a4F2Ui/72rkqHImpQK7jNBp5RdHo+xHE/7xlSPvOrQJ/yMVsKMs7S7LxYZ3J8seeXYBlrHyMonnoRC+3xON8w9OjiHFutjLT7taZsIiugLAlEef0O8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724798186; c=relaxed/simple;
-	bh=X9PYKJLgK0Anu/T+r7Cmv4P5xnYLXYtrA6NmjBpmoHY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nuoUrX6qFWLGfPVamPSBfQF+7fNwgpCUXeJFxfM3+Rci58cP6vWeAq97/qVindar2lP9HC25I9MZi98dtLUEhImYf0SIpIm8Dbq1Ikwa2Q4a/9WI4iAcyDmNKHB2TjYRvCmM1KsDIQecUQZR4/hYU9IdQnqWPUyWajcVQIYnWOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wwb5thae; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DBE1D0DE4;
+	Tue, 27 Aug 2024 22:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.107
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724798195; cv=fail; b=qNUJWn2IFwUnrdlqJ+qJGVEIDg1bnGXRFnQGLWNF5n8coehc6vxAjABQgGSF7T0XJucx2MP3hbXa9r3vHQPEfvjO2GoESCKwAUr+gWsNWp1LcB8/Fzv0ONMyemGhZiZzmiSjAPav2prudCZ+gJgVPDeTZwU6K7GdQFZ30Msna5k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724798195; c=relaxed/simple;
+	bh=p3liCs+ZHfgDJtlYVtoEjy8RlSdvENtrH8VcFtmv71k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 Content-Type:MIME-Version; b=AHEj0FDkJ8uyw7o+oB8neqn3qDYh9/QMoOyb8GY9XXbxYWiEuq44t/CXFRPPqTLNDho9aA+fcuxPiephCuVNySVaFNRaAvst+ZX1imFmzotE29RSkSYovrjU0eqmqLs7uMYGYhbwRwU2zVjhFK3UaCybWi/Jmqaur14g8V69a98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=NURUJXK+; arc=fail smtp.client-ip=52.101.56.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wwb5thae"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-427fc9834deso22675e9.0
-        for <kvm@vger.kernel.org>; Tue, 27 Aug 2024 15:36:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="NURUJXK+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=COLdFO7XBlrbD/IJMEmrXWwuTYw57NN4Bkyou7zxDbW7ngfti4n5a16tty+6pcNnk+xhmV8YejhVG/IIKTQEi8TDOcNzi1I0HksoWguJhEEjbgBzzm+RARiFIcjcGaUsS1tWwt7jsxFm2VOz8Xt/t3pcP5uuFfiVuOcT/lVoCeuwoSQkWhZkhIJ1dZcrvKOwcZoAg/UjD5XPO9Vpo9lf40vx26reV7AQtgYZwc2fub3vpAuRTKDxsUx4H2dZtCEJlUF+p5twwIxCkzND2lA159y6tvzcbHrJB411gH/QxHi/Uito4VxPEG0CovX//PLgcaHBsePTmCKn7mfhy8DLaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6DFA0U7YMiQAae8yKrTN7dbye6wr9o+m2DvUQTmLkNU=;
+ b=fqxWoD7tD3XRXwun0scpLYz79uju0BuIOdvgU98qzE1rhbx7Wtg4nAGrs9vjVz8Skz05sTV+ks/ZKzykTViXVthhjG81vBcRnwBJ7lBa6eFUG//p1qKkiAv4JhozDp3KSujm6nCDnueLyNIubfLPD+oLmvPFb2rnvCJOgZfhcN1c0sHzudcfrlsU+ErclPaICrfdjlZ3JCkmVqGn/CWWCBya54cgYUqWsdmraMaUYkDjH0zs/vKo8dCLv8TctoPak+MLqAtPGqhwCQp8q7BSpY3qr5JvO2dvKDE+NQ4BEQp6Tn+ExgBsVUfLvNhtWTVOxmJvVoBOBM46Dvuxofta/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724798182; x=1725402982; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s7Z8bHC9lXhnYf47HvMGTMfGY056hXU2IGQLlFcO8fg=;
-        b=Wwb5thae4pJdtwp2vOLn4nJduJuft/YyD53+z4YmrT6TjGuxaezsFF9A3ojIrOXJcA
-         kh+3I/UzsY/rtlAdHPoVxX7BqkTs9jAaRUQuDLEQbBpTDGm7lQhV/VR7248sVVQOe4JA
-         uu978BhZ9wzLKT98IYu7zzQv5jTsCMHH14HwFaikSRYcJzTYStOLcUtG5Ssf9VoT614T
-         SOaD1fAMw+PbY3Rb4Hwu1/CxC6SAEK48ckQLWYf4jyEj6Imr/QZTjfbnJt3lbmqHDg3m
-         rC52RpX0H0Ial24gWC3VxXIanLoAjL15+MnVJ/yR0bZkj/yILeLqBP2IfXcPIWkxBzbp
-         Qyow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724798182; x=1725402982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s7Z8bHC9lXhnYf47HvMGTMfGY056hXU2IGQLlFcO8fg=;
-        b=Ya2qKMZNv7K4u9FbtX6LCrHW2B/p9Q2GHU2oJJ9dKPuVMjFRRviOO4pj4WsdmYv33X
-         SZT2oi2YA9I2/qhlnQCQthCWsj2sg2CvMXTrRJW0vH8PgPZSKFcYZtbo8BqOb1mst3oa
-         zeEnFCTslqYPDVOE8cEeTSDtFvCeuxXlQqrXvc6Et+p/lBga/k311usUfPQ3okvN6eOI
-         sEKBtDcdCbAgrAH0xgQ7K7yMiphmPznjQMoXVtPLXn913Bbo27p6ZgYCgSY+WTHc68As
-         hKD6Njlq1snfP7l1+0Ki/RqBNF7T3eFjWeiXqIX16s1kEC4Nqyl+o56o9Zn2AWoGah7E
-         +Pjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWSzLpUEqHp68hvRpVDyHECl+ANMB/oB2QMkUiLUQHGBVW5ij0VXlkzAGnd8rXzP/0HEg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzN46zvTnWHWIWQg2Mx69J5KdnQXUsDqql2ierIQ2jZ8cH8YyI3
-	UI1x4e4s/UyMzKR0G3M/MH7XYWVueqe6JIbKs6wppGqRZuwEUMv3bJvIZc+mTdo3Wp0HLNLPzBS
-	x9AtUEmXMtT4SKwGB9I95OIbi7GTT7s+KHem5
-X-Google-Smtp-Source: AGHT+IERarZz0t8KpbIzW+ZARbyqwfuN177nAbHR5HvRaocRDTIom/7x2jD8I5SxtyZhmQnBn5njFCAOBfVRulF8IDU=
-X-Received: by 2002:a05:600c:1e20:b0:426:68ce:c97a with SMTP id
- 5b1f17b1804b1-42ba50d0ba9mr209745e9.7.1724798181619; Tue, 27 Aug 2024
- 15:36:21 -0700 (PDT)
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6DFA0U7YMiQAae8yKrTN7dbye6wr9o+m2DvUQTmLkNU=;
+ b=NURUJXK+5tU7GmudvN5Lw1/QoDom/Cw+FVXuCGPWXIPJKU/d1S41bmYT0eDfkTkMmQ7uCwQFVUf4nWa7tVCH2vEp7dBiw4l3Lg7QDAZusgzGHevif+U1cQlCYX8wgdhvdnDyh3PV4LwEWTyRN2pCmisaBz1r/0MbfsTbMs0LcUQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from LV2PR01MB7792.prod.exchangelabs.com (2603:10b6:408:14f::10) by
+ MW6PR01MB8415.prod.exchangelabs.com (2603:10b6:303:243::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7897.24; Tue, 27 Aug 2024 22:36:29 +0000
+Received: from LV2PR01MB7792.prod.exchangelabs.com
+ ([fe80::2349:ebe6:2948:adb9]) by LV2PR01MB7792.prod.exchangelabs.com
+ ([fe80::2349:ebe6:2948:adb9%6]) with mapi id 15.20.7897.021; Tue, 27 Aug 2024
+ 22:36:28 +0000
+From: D Scott Phillips <scott@os.amperecomputing.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, maz@kernel.org, arnd@linaro.org, Alex =?utf-8?Q?B?=
+ =?utf-8?Q?enn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH 1/3] ampere/arm64: Add a fixup handler for alignment
+ faults in aarch64 code
+In-Reply-To: <20240827130829.43632-2-alex.bennee@linaro.org>
+References: <20240827130829.43632-1-alex.bennee@linaro.org>
+ <20240827130829.43632-2-alex.bennee@linaro.org>
+Date: Tue, 27 Aug 2024 14:23:16 -0700
+Message-ID: <86frqpk6d7.fsf@scott-ph-mail.amperecomputing.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BY5PR16CA0012.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::25) To LV2PR01MB7792.prod.exchangelabs.com
+ (2603:10b6:408:14f::10)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240826204353.2228736-1-peterx@redhat.com>
-In-Reply-To: <20240826204353.2228736-1-peterx@redhat.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 27 Aug 2024 15:36:07 -0700
-Message-ID: <CACw3F50Zi7CQsSOcCutRUy1h5p=7UBw7ZRGm4WayvsnuuEnKow@mail.gmail.com>
-Subject: Re: [PATCH v2 00/19] mm: Support huge pfnmaps
-To: Peter Xu <peterx@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Gavin Shan <gshan@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Alistair Popple <apopple@nvidia.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Sean Christopherson <seanjc@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Jason Gunthorpe <jgg@nvidia.com>, Borislav Petkov <bp@alien8.de>, 
-	Zi Yan <ziy@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	David Hildenbrand <david@redhat.com>, Yan Zhao <yan.y.zhao@intel.com>, Will Deacon <will@kernel.org>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR01MB7792:EE_|MW6PR01MB8415:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44b88599-8f5e-4085-fc14-08dcc6e8b11b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3VpREZNWXlHQjBaTmxQdzN3aWhXd0ZQcGFMYVU3ZE52VzJWd0pQTFhiUU9H?=
+ =?utf-8?B?T1JUb3hFNEJVQmF3dnBRV1pNY0czclc2WHBkS2Z1Uy9sVW81Q05pZTNidFZV?=
+ =?utf-8?B?YXcxenc4aDZxVDRzdW91Wnk5eCsxa2dGSGRVY0J4TTYwemRDc1N6UXNVS2Nx?=
+ =?utf-8?B?U3VCZER1N0pGVmQzaFRhVHpwQW5MSURRYWxnWTlqYlJUaWZJY0t6MXFrMmVt?=
+ =?utf-8?B?VWUwQks0ajhuRnFPcmRrZWhtbGhaKzdZcDFBdDc5bnBQMEF1WEJnZXA0SEps?=
+ =?utf-8?B?a2FPMFhJZzR6bUtrbklCYTF5cW5EZUhvdFZjV3g5QWdiMDk4N2Y5S1FKMzhN?=
+ =?utf-8?B?d0V5enB5RDVOVXN0Y0U3ajRScnhSTExBMUVMQkFoVVpCbTFPclI5bUlNM0U3?=
+ =?utf-8?B?eU1ST1BYU3hCT25veGovU0g4bytxeDgwcHUrZWp5MGkwZEhHNmVUN1RYR0xM?=
+ =?utf-8?B?Q1dWR3R6cXg0QmdEVDBReUFwVmlLRUJOb0ZvSnNDUHVrVEZVdExITTlvN1ZK?=
+ =?utf-8?B?Q3pkR3gwUG5DQ3RLV0s2SXRkNVJnSWZzR2g0Ymd2WU9SRXMvakNnQ0xSM09q?=
+ =?utf-8?B?NGo3REEwNlcxSHBtanQxR0ZGaTM5UWVBRFBJODE1eEJhNHJkMHhUYWhiMU9W?=
+ =?utf-8?B?emZzK1BZZTM5dFllR1Uvcm9kdmRLckdtUDl0c3ZxQ2JOdnRVeSt6ajRvL2Vh?=
+ =?utf-8?B?MWc3Umh3VDhYdEQ4YTRWVVpYWG9XUVdPQ1BPYm8xQ2xUVi85dWJWcG9ZK3dz?=
+ =?utf-8?B?YzZjNEFTbzZHSlVucFFLNmhvTXF1bmRIUUYxZk93akxLZ3VIZlBncUl2ZndV?=
+ =?utf-8?B?V0ltMTF0T0V1OFdFQ3NWRFpWNmJhdkdEU1Zoa1E0TGlZRDVHWG5MWnRCci9G?=
+ =?utf-8?B?WHUxdHFFRVNwd0RicWtGZEpjbndYcEdiYWU3Wk4vUDF6OW9tSWtoejVjaFlD?=
+ =?utf-8?B?S2Vxd0lFMG1TeVo4MzVGdmhCamNVa0FFMVRuaUZvTi82T25sOWFoMXM4eHZ6?=
+ =?utf-8?B?NEg5YW9KNjBGSEpVcGhYLzVVaUo4ZHNxYkJXRStJQTJDby8rdFlYVGRvbE5v?=
+ =?utf-8?B?YVlud1h0dkwwYVFxd3EvelpQeENoQkxHMDJBVjN5SGw1RU4rdDJpSlJFYnJq?=
+ =?utf-8?B?M1Y4RnBnM0ZVU1FuUjdoZjNXWjFHNkVsNGRWRVNQajdTRCtjaW5tdFllS0dj?=
+ =?utf-8?B?d1h0Q0oxT01vRVg1RVoyZ3M2MHFDSEU1K1NyWEQwMHRjamlUdVppdEVMSWM0?=
+ =?utf-8?B?SEF1NTVqLzZRN1Z0RytCaGFsMVdvY0dzdlJwVzIxbCszY0FQQkFqMVhteWZU?=
+ =?utf-8?B?ZU5vOFRuc0FvSTFJT2ppUlpQZ2pKNWhhU2x2Y0FuRXNkNjI0RnZOdWRMb0xt?=
+ =?utf-8?B?NnYzTWxYM244UDVNeDlLRjZNUWMxZHZLd3FQMTgrSy9JUURTS2QzeXdLV3gw?=
+ =?utf-8?B?dlJISWZzenhEdTUyb2VoSlBjcHFMazNQbmFnb1JxV0J6UFB6c2t5TGx1UEp1?=
+ =?utf-8?B?bDhGeDJ2L1NIYzJaNytFMHRabSszbTRQZm9KVmZ5ZURZOW9aVlpGeldXMHNW?=
+ =?utf-8?B?K0tpR0hJc3M1RFhSVGVXcW9JckhwV2dCdVh4NngrOFEwNnI3TjFPUmRhOGtw?=
+ =?utf-8?B?cndycW01S3FRYU9zUGRIVytXVWI1QnpoZWMzUUxnenhsckgzN3VHbWlsQ20z?=
+ =?utf-8?B?bEhOUWN0UnlTcXp4ZU5rZzYwM0hOZ2lGMlBtQVUwemhBOEs1bmg5bGlYSWw1?=
+ =?utf-8?B?T0tiTlhRUmxzbEtvVWV2UHYrQUhKY21nWTJPVDM2K0JEaFl2MjlNOXdhMEEv?=
+ =?utf-8?Q?pccoamPbNTa891vhRsGMthRBIi7Wbd5ampM2w=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR01MB7792.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a1libW1MM05jL3VPQWJ1UFlUVGhDMWttUWtkKzdTUjQzMXB4V1VhZEdzRGc5?=
+ =?utf-8?B?dHY1bHVQWVFsSzdoTGFkL3dwRVpPUWNhWjlMNkRFNmNtQk9rV2cxcEZiQW5m?=
+ =?utf-8?B?Q2pUWXhkbVVjenVrdVVpaFhIM1dOSEkxRWg0ZmFGNExUZmVsWndFbll0Y25D?=
+ =?utf-8?B?M2ZnU2JkNHY2U3VrbzJsUGpVKzhvbGEwREl5Z3hxcVNWZVJCczJpUi9wTlE1?=
+ =?utf-8?B?T2l3UnR0TlFFdThuaVNCaXNMWGduMnFEWnN5ZHhITlg1NnBqeDI4UGZWZ1Fn?=
+ =?utf-8?B?L0ZUcjBLUStSbmRiWEhScHpEMGM4ZnVibFIxWW1jUFVqZDg4N2dQVWphd1JX?=
+ =?utf-8?B?enR2VEo5VXlKV1ZxUEZBMzB4YnZwS2hnZHAvRFNhNjl4dzJuRDNvOFBHVUdh?=
+ =?utf-8?B?V0lsRHJDdnhtNzdTR25IWDRKUG5FazJ3Z0JscU1ZUXhoblpkL2p1bHdlOGkr?=
+ =?utf-8?B?VWcxdmU1UFFNVmpUMDNiY0VVVzN5ZlkrWFI0M0tadWpIMWtrdjJObnpKZjNU?=
+ =?utf-8?B?S2xQd2ZkMGtzbjBNWmkydmlPUUJwWWFEVTdnTFpmNWFyUXA4UCtybzcvZmQv?=
+ =?utf-8?B?VHdJSVBGNHVia1YwZmdZeGR4aGFZK0QwdGhOcmNWem1reTlGQW5pR0p4Tmkr?=
+ =?utf-8?B?K1dpVFAwNXE2WHlrME80eXcwWlA1dU93Rkt3TWZMd3VzREt0RnlMRnZLcFpD?=
+ =?utf-8?B?dkdlMVlad09mTS9aM0FtQzBHdkhHM3J1UFFJaldOdVU4SkFDQm1nL0UwQ2Jt?=
+ =?utf-8?B?d2swZysvNFNGUjV6YnZJUzlXZy8rVXA0cXhhVlVVN3Z5ZEdHMnJ6ZUZtSjhP?=
+ =?utf-8?B?VzRxd0Rmci90Z3Z2ZCtHeWpzb0lXN0c5b1NnNXo4OGZQRGp1YzF2RHl5Sjll?=
+ =?utf-8?B?M0liK095eTV3K3JjYW9XVlJVcndPdFh1b0s2TENlQ3BiV3FsL0l3YS8xdU1Q?=
+ =?utf-8?B?bjh5bnFNT3FBS3JJQWU3VDZqTXU1dWwxN0FEREtBamRzVjB2cjVaYno1d0ZD?=
+ =?utf-8?B?OEVrMEVEMmJ4cFVMTFMzTGpQNjNsSGJBVGJYd2ZwaTNsSmFvZ2F0d2owM0pl?=
+ =?utf-8?B?RlB0aGs3Qys3bERIL3BLYXBnOG9ubFFLSGtIYTFLdUh4U0IzSjZnK1JyWGlI?=
+ =?utf-8?B?djhSVlp0SHp3OFZBdnlIdTZaN2xmTitYakVzTUlRNC9UclpYUExycWw1Q3ln?=
+ =?utf-8?B?R3g4aDFHVklxMUR2ZjQya2pEWlBjdXJROGJ6WWVtSjVNaHkzNFFIQ1VBdHNF?=
+ =?utf-8?B?OEhvUzJydno5K3AwRER5NzV0R01jSFNZaWV6cE1WbG9rbUtNUXFoMzBYSG1V?=
+ =?utf-8?B?d09Md3BtNHVoMUlYOHRIbjRvVEJycVRtZDhKS1BYelFRLzZOY0VhdkYxb1E4?=
+ =?utf-8?B?MHlYcWxNcDcwTzNGWlRRUXdZTk5JL040dFJTR3N3a3BRYVNwbVAwWUJ6N1JG?=
+ =?utf-8?B?WCt1M0lPQitMU08rYVNtd1NSR0hoZUE1VzNzUUpsTGNnWUEwVkNPdldvZnIv?=
+ =?utf-8?B?cVdQMnNMamdzd29OMWV0M3R1dmFiU0RqVnZUdFdqdklVNitWNk5zNUtjYlBX?=
+ =?utf-8?B?cEtpa3FyR0NGeWs1a3RTMlc3ZXBVNU4xVDRvaWVGR1JTNVdwOEgyREs2ZGdB?=
+ =?utf-8?B?ZzJuRFl3WlhIWXV0SCtEYWlHTHliaWlHVS9pRnVnZS9xQmJZUDlGTmhEb2Nw?=
+ =?utf-8?B?TkVwK1dSaW0rakRERUFJeklXZVRRMTZWaytHSHFWK0pNVXR6TXBzTlFEQ0l2?=
+ =?utf-8?B?cEV1QUVuR1RIY2ZkTEQwSlRySE1lOGg5b295V1cwYnRHa1EzRlBRMStsTHlY?=
+ =?utf-8?B?d1dOajY4a1RqcGJURVJSRU5MY1g4NS9KYjNEN21xTTM3SWZpVzlNbENpVjVS?=
+ =?utf-8?B?SzdGcjdmWjFGU0gxUVY3eU1vc2k0Y1ljNE53RXlBdXRhNVhLWE81aXNleW40?=
+ =?utf-8?B?d2tkUVY1eDFlZUlhRVZGZnR4aXd4RitiQkQrTTZ1d2lWQ0RKMkw4MjBKd2tx?=
+ =?utf-8?B?bXFvbjNmV3gwWGNOTmhObENBRkQ5YTFnNTk0Mlo1ODl3MThjK0hiM010bnc2?=
+ =?utf-8?B?dDI0MlJNeVRQZnV4TjZXaHQ2d1hKbUgzUk82NFhhSEtCSldpUEcveE8xdmRu?=
+ =?utf-8?B?VXowSFZKZkpYYXF1QXVOVHhUbWJSRXM5TWo5R0xWMVNSRXhDR1VWOFVhdlVM?=
+ =?utf-8?Q?xYRNXAr2fLb9hr0eAj98wxU=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44b88599-8f5e-4085-fc14-08dcc6e8b11b
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR01MB7792.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 22:36:28.7985
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4KkOK6ayMQ5jvDiYOSUuB6TJAumh5UA2hamQ08wmMc4G6cJGsqyTg3AkZxBXOUZvAu2rO34JLZWY9AvJb8rVRj0MTP/H2Escz0p/xUkeNaUx0ks3MaiA0wjDLmD7dbmS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR01MB8415
 
-On Mon, Aug 26, 2024 at 1:44=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> v2:
-> - Added tags
-> - Let folio_walk_start() scan special pmd/pud bits [DavidH]
-> - Switch copy_huge_pmd() COW+writable check into a VM_WARN_ON_ONCE()
-> - Update commit message to drop mentioning of gup-fast, in patch "mm: Mar=
-k
->   special bits for huge pfn mappings when inject" [JasonG]
-> - In gup-fast, reorder _special check v.s. _devmap check, so as to make
->   pmd/pud path look the same as pte path [DavidH, JasonG]
-> - Enrich comments for follow_pfnmap*() API, emphasize the risk when PFN i=
-s
->   used after the end() is invoked, s/-ve/negative/ [JasonG, Sean]
->
-> Overview
-> =3D=3D=3D=3D=3D=3D=3D=3D
->
-> This series is based on mm-unstable, commit b659edec079c of Aug 26th
-> latest, with patch "vma remove the unneeded avc bound with non-CoWed foli=
-o"
-> reverted, as reported broken [0].
->
-> This series implements huge pfnmaps support for mm in general.  Huge pfnm=
-ap
-> allows e.g. VM_PFNMAP vmas to map in either PMD or PUD levels, similar to
-> what we do with dax / thp / hugetlb so far to benefit from TLB hits.  Now
-> we extend that idea to PFN mappings, e.g. PCI MMIO bars where it can grow
-> as large as 8GB or even bigger.
->
-> Currently, only x86_64 (1G+2M) and arm64 (2M) are supported.  The last
-> patch (from Alex Williamson) will be the first user of huge pfnmap, so as
-> to enable vfio-pci driver to fault in huge pfn mappings.
->
-> Implementation
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> In reality, it's relatively simple to add such support comparing to many
-> other types of mappings, because of PFNMAP's specialties when there's no
-> vmemmap backing it, so that most of the kernel routines on huge mappings
-> should simply already fail for them, like GUPs or old-school follow_page(=
-)
-> (which is recently rewritten to be folio_walk* APIs by David).
->
-> One trick here is that we're still unmature on PUDs in generic paths here
-> and there, as DAX is so far the only user.  This patchset will add the 2n=
-d
-> user of it.  Hugetlb can be a 3rd user if the hugetlb unification work ca=
-n
-> go on smoothly, but to be discussed later.
->
-> The other trick is how to allow gup-fast working for such huge mappings
-> even if there's no direct sign of knowing whether it's a normal page or
-> MMIO mapping.  This series chose to keep the pte_special solution, so tha=
-t
-> it reuses similar idea on setting a special bit to pfnmap PMDs/PUDs so th=
-at
-> gup-fast will be able to identify them and fail properly.
->
-> Along the way, we'll also notice that the major pgtable pfn walker, aka,
-> follow_pte(), will need to retire soon due to the fact that it only works
-> with ptes.  A new set of simple API is introduced (follow_pfnmap* API) to
-> be able to do whatever follow_pte() can already do, plus that it can also
-> process huge pfnmaps now.  Half of this series is about that and converti=
-ng
-> all existing pfnmap walkers to use the new API properly.  Hopefully the n=
-ew
-> API also looks better to avoid exposing e.g. pgtable lock details into th=
-e
-> callers, so that it can be used in an even more straightforward way.
->
-> Here, three more options will be introduced and involved in huge pfnmap:
->
->   - ARCH_SUPPORTS_HUGE_PFNMAP
->
->     Arch developers will need to select this option when huge pfnmap is
->     supported in arch's Kconfig.  After this patchset applied, both x86_6=
-4
->     and arm64 will start to enable it by default.
->
->   - ARCH_SUPPORTS_PMD_PFNMAP / ARCH_SUPPORTS_PUD_PFNMAP
->
->     These options are for driver developers to identify whether current
->     arch / config supports huge pfnmaps, making decision on whether it ca=
-n
->     use the huge pfnmap APIs to inject them.  One can refer to the last
->     vfio-pci patch from Alex on the use of them properly in a device
->     driver.
->
-> So after the whole set applied, and if one would enable some dynamic debu=
-g
-> lines in vfio-pci core files, we should observe things like:
->
->   vfio-pci 0000:00:06.0: vfio_pci_mmap_huge_fault(,order =3D 9) BAR 0 pag=
-e offset 0x0: 0x100
->   vfio-pci 0000:00:06.0: vfio_pci_mmap_huge_fault(,order =3D 9) BAR 0 pag=
-e offset 0x200: 0x100
->   vfio-pci 0000:00:06.0: vfio_pci_mmap_huge_fault(,order =3D 9) BAR 0 pag=
-e offset 0x400: 0x100
->
-> In this specific case, it says that vfio-pci faults in PMDs properly for =
-a
-> few BAR0 offsets.
->
-> Patch Layout
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Patch 1:         Introduce the new options mentioned above for huge PFNMA=
-Ps
-> Patch 2:         A tiny cleanup
-> Patch 3-8:       Preparation patches for huge pfnmap (include introduce
->                  special bit for pmd/pud)
-> Patch 9-16:      Introduce follow_pfnmap*() API, use it everywhere, and
->                  then drop follow_pte() API
-> Patch 17:        Add huge pfnmap support for x86_64
-> Patch 18:        Add huge pfnmap support for arm64
-> Patch 19:        Add vfio-pci support for all kinds of huge pfnmaps (Alex=
-)
->
-> TODO
-> =3D=3D=3D=3D
->
-> More architectures / More page sizes
-> ------------------------------------
->
-> Currently only x86_64 (2M+1G) and arm64 (2M) are supported.  There seems =
-to
-> have plan to support arm64 1G later on top of this series [2].
->
-> Any arch will need to first support THP / THP_1G, then provide a special
-> bit in pmds/puds to support huge pfnmaps.
->
-> remap_pfn_range() support
-> -------------------------
->
-> Currently, remap_pfn_range() still only maps PTEs.  With the new option,
-> remap_pfn_range() can logically start to inject either PMDs or PUDs when
-> the alignment requirements match on the VAs.
->
-> When the support is there, it should be able to silently benefit all
-> drivers that is using remap_pfn_range() in its mmap() handler on better T=
-LB
-> hit rate and overall faster MMIO accesses similar to processor on hugepag=
-es.
->
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-Hi Peter,
+> From: D Scott Phillips <scott@os.amperecomputing.com>
+>
+> A later patch will hand out Device memory in some cases to code
+> which expects a Normal memory type, as an errata workaround.
+> Unaligned accesses to Device memory will fault though, so here we
+> add a fixup handler to emulate faulting accesses, at a performance
+> penalty.
+>
+> Many of the instructions in the Loads and Stores group are supported,
+> but these groups are not handled here:
+>
+>  * Advanced SIMD load/store multiple structures
+>  * Advanced SIMD load/store multiple structures (post-indexed)
+>  * Advanced SIMD load/store single structure
+>  * Advanced SIMD load/store single structure (post-indexed)
 
-I am curious if there is any work needed for unmap_mapping_range? If a
-driver hugely remap_pfn_range()ed at 1G granularity, can the driver
-unmap at PAGE_SIZE granularity? For example, when handling a PFN is
-poisoned in the 1G mapping, it would be great if the mapping can be
-splitted to 2M mappings + 4k mappings, so only the single poisoned PFN
-is lost. (Pretty much like the past proposal* to use HGM** to improve
-hugetlb's memory failure handling).
+Hi Alex, I'm keeping my version of these patches here:
 
-Probably these questions can be answered after reading your code,
-which I plan to do, but just want to ask in case you have an easy
-answer for me.
+https://github.com/AmpereComputing/linux-ampere-altra-erratum-pcie-65
 
-* https://patchwork.plctlab.org/project/linux-kernel/cover/20230428004139.2=
-899856-1-jiaqiyan@google.com/
-** https://lwn.net/Articles/912017
+It looks like the difference to the version you've harvested is that
+I've since added handling for these load/store types:
 
-> More driver support
-> -------------------
->
-> VFIO is so far the only consumer for the huge pfnmaps after this series
-> applied.  Besides above remap_pfn_range() generic optimization, device
-> driver can also try to optimize its mmap() on a better VA alignment for
-> either PMD/PUD sizes.  This may, iiuc, normally require userspace changes=
-,
-> as the driver doesn't normally decide the VA to map a bar.  But I don't
-> think I know all the drivers to know the full picture.
->
-> Tests Done
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> - Cross-build tests
->
-> - run_vmtests.sh
->
-> - Hacked e1000e QEMU with 128MB BAR 0, with some prefault test, mprotect(=
-)
->   and fork() tests on the bar mapped
->
-> - x86_64 + AMD GPU
->   - Needs Alex's modified QEMU to guarantee proper VA alignment to make
->     sure all pages to be mapped with PUDs
->   - Main BAR (8GB) start to use PUD mappings
->   - Sub BAR (??MBs?) start to use PMD mappings
->   - Performance wise, slight improvement comparing to the old PTE mapping=
-s
->
-> - aarch64 + NIC
->   - Detached NIC test to make sure driver loads fine with PMD mappings
->
-> Credits all go to Alex on help testing the GPU/NIC use cases above.
->
-> Comments welcomed, thanks.
->
-> [0] https://lore.kernel.org/r/73ad9540-3fb8-4154-9a4f-30a0a2b03d41@lucife=
-r.local
-> [1] https://lore.kernel.org/r/20240807194812.819412-1-peterx@redhat.com
-> [2] https://lore.kernel.org/r/498e0731-81a4-4f75-95b4-a8ad0bcc7665@huawei=
-.com
->
-> Alex Williamson (1):
->   vfio/pci: Implement huge_fault support
->
-> Peter Xu (18):
->   mm: Introduce ARCH_SUPPORTS_HUGE_PFNMAP and special bits to pmd/pud
->   mm: Drop is_huge_zero_pud()
->   mm: Mark special bits for huge pfn mappings when inject
->   mm: Allow THP orders for PFNMAPs
->   mm/gup: Detect huge pfnmap entries in gup-fast
->   mm/pagewalk: Check pfnmap for folio_walk_start()
->   mm/fork: Accept huge pfnmap entries
->   mm: Always define pxx_pgprot()
->   mm: New follow_pfnmap API
->   KVM: Use follow_pfnmap API
->   s390/pci_mmio: Use follow_pfnmap API
->   mm/x86/pat: Use the new follow_pfnmap API
->   vfio: Use the new follow_pfnmap API
->   acrn: Use the new follow_pfnmap API
->   mm/access_process_vm: Use the new follow_pfnmap API
->   mm: Remove follow_pte()
->   mm/x86: Support large pfn mappings
->   mm/arm64: Support large pfn mappings
->
->  arch/arm64/Kconfig                  |   1 +
->  arch/arm64/include/asm/pgtable.h    |  30 +++++
->  arch/powerpc/include/asm/pgtable.h  |   1 +
->  arch/s390/include/asm/pgtable.h     |   1 +
->  arch/s390/pci/pci_mmio.c            |  22 ++--
->  arch/sparc/include/asm/pgtable_64.h |   1 +
->  arch/x86/Kconfig                    |   1 +
->  arch/x86/include/asm/pgtable.h      |  80 +++++++-----
->  arch/x86/mm/pat/memtype.c           |  17 ++-
->  drivers/vfio/pci/vfio_pci_core.c    |  60 ++++++---
->  drivers/vfio/vfio_iommu_type1.c     |  16 +--
->  drivers/virt/acrn/mm.c              |  16 +--
->  include/linux/huge_mm.h             |  16 +--
->  include/linux/mm.h                  |  57 ++++++++-
->  include/linux/pgtable.h             |  12 ++
->  mm/Kconfig                          |  13 ++
->  mm/gup.c                            |   6 +
->  mm/huge_memory.c                    |  50 +++++---
->  mm/memory.c                         | 183 ++++++++++++++++++++--------
->  mm/pagewalk.c                       |   4 +-
->  virt/kvm/kvm_main.c                 |  19 ++-
->  21 files changed, 425 insertions(+), 181 deletions(-)
->
-> --
-> 2.45.0
->
->
+Advanced SIMD load/store multiple structure
+Advanced SIMD load/store multiple structure (post-indexed)
+Advanced SIMD load/store single structure
+Advanced SIMD load/store single structure (post-indexed)
+
+I've never sent these patches because in my opinion there's too much
+complexity to maintain upstream for this workaround, though now they're
+here so we can have that conversation.
+
+Finally, I think a better approach overall would have been to have
+device memory mapping in the stage 2 page table, then booting with pkvm
+would have this workaround for both the host and guests. I don't think
+that approach changes the fact that there's too much complexity here.
