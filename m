@@ -1,139 +1,172 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F5F156F41
-	for <kvm@vger.kernel.org>; Thu, 29 Aug 2024 20:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA1B1BA86D;
+	Thu, 29 Aug 2024 22:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724964345; cv=none; b=cjmNxibX6n4BFu0kXA4vPew/n9yoy8U9wzT5aXb3WYtDxu0N+SPXjP9Us/mjLN/ndgQHXViB1AB2hXC43Lqo0ADx6bA5QGp/yX80LH7RUkIRusNhbs3qb2WtfocL6sRccFy3nBLLvJbASp8imcMDu2Esz4nfGx5oQyEpDq00axA=
+	t=1724970277; cv=none; b=klcEv4iy9ueVdjt4fzwfaJFtAZYCbB2gqw6VrquC5f2PcO7CA9bjtGlwqnvk7sU6ekQjcC47g579qlRLgR+BIft38Yp4KiC0VSWfQTCjtXx7UFz+Zk7bZaAuGqs6slWmCWXgiwgDQ+nNAI1XUxANFvThIANTuHZDzHz0A2A8f+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724964345; c=relaxed/simple;
-	bh=4TZEqBx7eWCdocTsLXNrFut7vdn8ko9P9heYPOQxy4I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=W3QwtkbTdFaXCFyE25+aon5IAfqixo1RAan+O5l0wPIAOU86mtu7RiLqEz5sQqtV2SvNKd3pYnvC321YOpo7L7duBZ1n67H6L8BQznentLgRabgpvQVgLyBdGTS+kRH5SwhUG3jj/3XYG7nTmSdLG+x0HANRjmqzdA/hI+YQuww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wkTXxSPP; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1724970277; c=relaxed/simple;
+	bh=JFiV4jG07K1U1tQP1F+UO+KbTnuHVESnTnQYsb4NNmE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=HgPtiut10OzTwt9gq0FnXNWo0xn3Ikmf3OMEwlX5BW0zfx4ImfMHxUzS02DY//vrT+jPDPU37cQ82A0nca/XX8OEZlwHmEfvJ/YhXjTsQPRJGLc6ICFoifaT8nWBYMskMmfdqIprffX+GAfhu25UdP+Xhw5hn7UhCLyD7AluvSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fM2sBu6R; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wkTXxSPP"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6d34c57a88eso14875337b3.0
-        for <kvm@vger.kernel.org>; Thu, 29 Aug 2024 13:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724964343; x=1725569143; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rF0JnnhJ+6UUAp3OAAeI13+/dbW5hEBVYSBB7nknrZM=;
-        b=wkTXxSPPWuTdbJwzK+wH0pG6X9mTeI/WqPtDHCCXeI01rzQliZQBj3plWJFQBZwdBH
-         Y+BeE0WPlkCK1MsUXjV2bL0YWQjkqMrJi61MM2rPPE7FNrPjLhYlTGkfY0FrIDqnO4CN
-         ogbybt4LPnj25Q5jer/mXPk4fdVz2J5/oT0e0DtK2Oz+5OOMZp+JmdbQT8Zef8NctcZF
-         TqXbGdZExySf46TDGHkCvFiVFGH/EmsDY92qIspI49nDkqM4vbgM2jcpNab8g30pEfSH
-         wV6cbIvyXxuQAKAfUyEr7qMnANubqkXznw4Aoc5q1XY5nnzfJiYa/qRZhIe/ohnMy5WW
-         Lxmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724964343; x=1725569143;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rF0JnnhJ+6UUAp3OAAeI13+/dbW5hEBVYSBB7nknrZM=;
-        b=gvkoCxj2OFVA69F6Rdn5c0DNq7PxAFVs/qeJm8esddEJkk+ylKz7i6NW9lFR+B7L+n
-         KhOP7XEnrIaK8IOBO19fngwTkzGr6MMNvI87bL+ZRKKw/zt1oPRJ/upz4coAGZfEcCyK
-         aMvULEQR7Y7q3yJ+SUwR0ra62NhBdgjEZHIxpUUgs5TgQN8rvLOXaY1eUrMc69tSHYpS
-         AoNnSD/lq/yV/eG0vN6FWT16647+paSe/71txNVSxeKiZ+L/UMrG8MKMQPLVI/ojo4SV
-         PmxCbYrKOprJs6OvozDgqsQ918iqF3PgX/1OpcCsFxuUu/L4390Ha3DQb8rWPjZlkGNp
-         YeMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUt7/KwI773h3RYd/xU3b1+VzFjl43yvNk+UbXVNUh50mYQWMgpKYAB0+JKvRAZ95d8VSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRNLYPO1TtKXt80eYFrZCVa5X4YMVLu1ihSyKDOpEqrTolirgv
-	KlN9enmvHU6HdRdZimela2feN+dCT8mqUXQh2sA1I2zYv2WVLCWZu2oipwcbsk0HUo+ZztJ875U
-	C1w==
-X-Google-Smtp-Source: AGHT+IGVP3HvwnzOqRNa87UbyRnTdSkHHKG6AQXQsUhHE0H0PT9PCKyy3tNykxqKPYyhE/+825Ajpugsias=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:d10b:0:b0:6ad:feb0:d010 with SMTP id
- 00721157ae682-6d2e94d0921mr569377b3.6.1724964342802; Thu, 29 Aug 2024
- 13:45:42 -0700 (PDT)
-Date: Thu, 29 Aug 2024 13:45:41 -0700
-In-Reply-To: <CAL715W+NPP+mw=_C4b-4iUhML6yVZ=G3uMqXQgY+tjqRrNQusg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fM2sBu6R"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47THw8rh019432;
+	Thu, 29 Aug 2024 22:24:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nqQKk6MOQFV+1+R4/XWf2oHD5kh81okffsDtSVIGLYM=; b=fM2sBu6RSAMa+ucj
+	chXJ2MezexBJDEBCe/1qL3cvNUY38wxUpB840yteHKfkLEtg+rmzWTVHaTPZPZDs
+	9lFDjTsCSD2R9C4P0eLlBMp8QeB2Fk6GFvXj8b8F6RPJ/DTwgrERrbtJejUYUG46
+	B5rXXJlJmNctWJpmTZYM37VyeP5YEKq+G+Kv6rn8lC0X8fBBkUun/avqj308QRK0
+	WY9ALgZjDJGr96vtS26rOpacPGJ9OG5q31ntkRPb1d6cqZ6SendYtAMCWMMKvcny
+	XvcnI+HZWGzbxJFZZZ4QGInrsZzV193YMdFePOc0RKx9QhA2zNSecMavVvbTVGwz
+	XcJodA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419putpu29-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 22:24:13 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TMODPG023594
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 22:24:13 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 29 Aug 2024 15:24:12 -0700
+From: Elliot Berman <quic_eberman@quicinc.com>
+Date: Thu, 29 Aug 2024 15:24:12 -0700
+Subject: [PATCH RFC v2 4/5] mm: guest_memfd: Add ability for userspace to
+ mmap pages
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <Zs0FLglChWqsGa6w@google.com> <gsnth6b49srd.fsf@coltonlewis-kvm.c.googlers.com>
- <CAL715W+NPP+mw=_C4b-4iUhML6yVZ=G3uMqXQgY+tjqRrNQusg@mail.gmail.com>
-Message-ID: <ZtDd9YVc33b8Qt__@google.com>
-Subject: Re: [PATCH 3/6] KVM: x86: selftests: Set up AMD VM in pmu_counters_test
-From: Sean Christopherson <seanjc@google.com>
-To: Mingwei Zhang <mizhang@google.com>
-Cc: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org, ljr.kernel@gmail.com, 
-	jmattson@google.com, aaronlewis@google.com, pbonzini@redhat.com, 
-	shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240829-guest-memfd-lib-v2-4-b9afc1ff3656@quicinc.com>
+References: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
+In-Reply-To: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Sean Christopherson
+	<seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov
+	<bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Fuad Tabba
+	<tabba@google.com>, David Hildenbrand <david@redhat.com>,
+        Patrick Roy
+	<roypat@amazon.co.uk>, <qperret@google.com>,
+        Ackerley Tng
+	<ackerleytng@google.com>,
+        Mike Rapoport <rppt@kernel.org>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>,
+        Elliot Berman <quic_eberman@quicinc.com>
+X-Mailer: b4 0.14.1
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: YoBcGu8s-izQ3-pSoL8-J8hiQQsRjEyp
+X-Proofpoint-ORIG-GUID: YoBcGu8s-izQ3-pSoL8-J8hiQQsRjEyp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_06,2024-08-29_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 phishscore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=882 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408290158
 
-On Wed, Aug 28, 2024, Mingwei Zhang wrote:
-> > >> +static void test_core_counters(void)
-> > >> +{
-> > >> +    uint8_t nr_counters = nr_core_counters();
-> > >> +    bool core_ext = kvm_cpu_has(X86_FEATURE_PERF_CTR_EXT_CORE);
-> > >> +    bool perf_mon_v2 = kvm_cpu_has(X86_FEATURE_PERF_MON_V2);
-> > >> +    struct kvm_vcpu *vcpu;
-> > >> +    struct kvm_vm *vm;
-> >
-> > >> -    kvm_pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
-> > >> -    kvm_has_perf_caps = kvm_cpu_has(X86_FEATURE_PDCM);
-> > >> +    vm = vm_create_with_one_vcpu(&vcpu, guest_test_core_counters);
-> >
-> > >> -    test_intel_counters();
-> > >> +    /* This property may not be there in older underlying CPUs,
-> > >> +     * but it simplifies the test code for it to be set
-> > >> +     * unconditionally.
+"Inaccessible" and "accessible" state are properly tracked by the
+guest_memfd. Userspace can now safely access pages to preload binaries
+in a hypervisor/architecture-agnostic manner.
 
-But then the test isn't verifying that KVM is honoring the architecture.  I.e.
-backdooring information to the guest risks getting false passes because KVM
-incorrectly peeks at the same information, which shouldn't exist.
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+---
+ mm/guest_memfd.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-> > >> +     */
+diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
+index 62cb576248a9d..194b2c3ea1525 100644
+--- a/mm/guest_memfd.c
++++ b/mm/guest_memfd.c
+@@ -279,6 +279,51 @@ int guest_memfd_make_inaccessible(struct folio *folio)
+ }
+ EXPORT_SYMBOL_GPL(guest_memfd_make_inaccessible);
+ 
++static vm_fault_t gmem_fault(struct vm_fault *vmf)
++{
++	struct file *file = vmf->vma->vm_file;
++	struct guest_memfd_private *private;
++	struct folio *folio;
++
++	folio = guest_memfd_grab_folio(file, vmf->pgoff, GUEST_MEMFD_GRAB_ACCESSIBLE);
++	if (IS_ERR(folio))
++		return VM_FAULT_SIGBUS;
++
++	vmf->page = folio_page(folio, vmf->pgoff - folio_index(folio));
++
++	/**
++	 * Drop the safe and accessible references, the folio refcount will
++	 * be preserved and unmap_mapping_folio() will decrement the
++	 * refcount when converting to inaccessible.
++	 */
++	private = folio_get_private(folio);
++	atomic_dec(&private->accessible);
++	atomic_dec(&private->safe);
++
++	return VM_FAULT_LOCKED;
++}
++
++static const struct vm_operations_struct gmem_vm_ops = {
++	.fault = gmem_fault,
++};
++
++static int gmem_mmap(struct file *file, struct vm_area_struct *vma)
++{
++	const struct guest_memfd_operations *ops = file_inode(file)->i_private;
++
++	if (!ops->prepare_accessible)
++		return -EPERM;
++
++	/* No support for private mappings to avoid COW.  */
++	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
++	    (VM_SHARED | VM_MAYSHARE))
++		return -EINVAL;
++
++	file_accessed(file);
++	vma->vm_ops = &gmem_vm_ops;
++	return 0;
++}
++
+ static long gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
+ {
+ 	struct inode *inode = file_inode(file);
+@@ -390,6 +435,7 @@ static int gmem_release(struct inode *inode, struct file *file)
+ static const struct file_operations gmem_fops = {
+ 	.open = generic_file_open,
+ 	.llseek = generic_file_llseek,
++	.mmap = gmem_mmap,
+ 	.release = gmem_release,
+ 	.fallocate = gmem_fallocate,
+ 	.owner = THIS_MODULE,
 
-	/*
-	 * Multi-line function comments should start on the line after the
-	 * opening slash-asterisk, like so.
-	 */
+-- 
+2.34.1
 
-> > >> +    vcpu_set_cpuid_property(vcpu, X86_PROPERTY_NUM_PERF_CTR_CORE,
-> > >> nr_counters);
-> > >> +    if (core_ext)
-> > >> +            vcpu_set_cpuid_feature(vcpu, X86_FEATURE_PERF_CTR_EXT_CORE);
-> > >> +    if (perf_mon_v2)
-> > >> +            vcpu_set_cpuid_feature(vcpu, X86_FEATURE_PERF_MON_V2);
-> >
-> > > hmm, I think this might not be enough. So, when the baremetal machine
-> > > supports Perfmon v2, this code is just testing v2. But we should be able
-> > > to test anything below v2, ie., v1, v1 without core_ext. So, three
-> > > cases need to be tested here: v1 with 4 counters; v1 with core_ext (6
-> > > counters); v2.
-> >
-> > > If, the machine running this selftest does not support v2 but it does
-> > > support core extension, then we fall back to test v1 with 4 counters and
-> > > v1 with 6 counters.
-> >
-> > This should cover all cases the way I wrote it. I detect the number of
-> > counters in nr_core_counters(). That tells me if I am dealing with 4 or
-> > 6 and then I set the cpuid property based on that so I can read that
-> > number in later code instead of duplicating the logic.
-> 
-> right. in the current code, you set up the counters properly according
-> to the hw capability. But the test can do more on a hw with perfmon
-> v2, right? Because it can test multiple combinations of setup for a
-> VM: say v1 + 4 counters and v1 + 6 counters etc. I am just following
-> the style of this selftest on Intel side, in which they do a similar
-> kind of enumeration of PMU version + PDCM capabilities. In each
-> configuration, it will invoke a VM and do the test.
-
-Ya.  This is similar my comments on setting NUM_PER_CTR_CORE when the field
-shouldn't exist.  One of the main goals of this test is to verify the KVM honors
-the architecture based on userspace's defined virtual CPU model, i.e. guest
-CPUID.  That means testing all (or at least, within reason) possible combinations
-that can feasibly be supported by KVM given the underlying hardware.
-
-As written, this essentially just tests the maximal configuration that can be
-exposed to a guest, which isn't _that_ interesting because KVM tends to get plenty
-of coverage for such setups, e.g. by running "real" VMs.
