@@ -1,50 +1,48 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA1B1BA86D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD121BAEDE;
 	Thu, 29 Aug 2024 22:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724970277; cv=none; b=klcEv4iy9ueVdjt4fzwfaJFtAZYCbB2gqw6VrquC5f2PcO7CA9bjtGlwqnvk7sU6ekQjcC47g579qlRLgR+BIft38Yp4KiC0VSWfQTCjtXx7UFz+Zk7bZaAuGqs6slWmCWXgiwgDQ+nNAI1XUxANFvThIANTuHZDzHz0A2A8f+E=
+	t=1724970277; cv=none; b=MQG4gDxlsJHViQMWO2SjnkznIXUCo8BrAx7x4ytF86axJNvqTYvEAJpkOftpm/PDRal2nNl1NRpaT87iNCWzyitVeOKh0qE0m1e96qyaWMPYMWTCPhJbF/JcuUppJ9CkmILmWzqMAbRmrXdvUM5ybtQw+yuSQfpULO8LTZKM5QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724970277; c=relaxed/simple;
-	bh=JFiV4jG07K1U1tQP1F+UO+KbTnuHVESnTnQYsb4NNmE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=HgPtiut10OzTwt9gq0FnXNWo0xn3Ikmf3OMEwlX5BW0zfx4ImfMHxUzS02DY//vrT+jPDPU37cQ82A0nca/XX8OEZlwHmEfvJ/YhXjTsQPRJGLc6ICFoifaT8nWBYMskMmfdqIprffX+GAfhu25UdP+Xhw5hn7UhCLyD7AluvSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fM2sBu6R; arc=none smtp.client-ip=205.220.168.131
+	bh=Y/VGX0u7JSsRBTCC3cXYvYlXH0MeuOZ4hyXlo5DJ76s=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=W5OVXCUvdD6KTQNS69K7F78/theIm4QXlsdMDadwEpIP2W/GdIDVBxF3Ul2f0UQbj3Y0HSCTQZ/7/H0AwvTPuYswtG+tHzyWBdBl7BsX3SkXJkEc0tJOWrE1FzyvrHyD7dSsjEFBKI3AwONXaCJl2G3L5JlxAdnLE617zDzK0RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=C1AwnNLY; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fM2sBu6R"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47THw8rh019432;
-	Thu, 29 Aug 2024 22:24:14 GMT
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="C1AwnNLY"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47THchVs027493;
+	Thu, 29 Aug 2024 22:24:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nqQKk6MOQFV+1+R4/XWf2oHD5kh81okffsDtSVIGLYM=; b=fM2sBu6RSAMa+ucj
-	chXJ2MezexBJDEBCe/1qL3cvNUY38wxUpB840yteHKfkLEtg+rmzWTVHaTPZPZDs
-	9lFDjTsCSD2R9C4P0eLlBMp8QeB2Fk6GFvXj8b8F6RPJ/DTwgrERrbtJejUYUG46
-	B5rXXJlJmNctWJpmTZYM37VyeP5YEKq+G+Kv6rn8lC0X8fBBkUun/avqj308QRK0
-	WY9ALgZjDJGr96vtS26rOpacPGJ9OG5q31ntkRPb1d6cqZ6SendYtAMCWMMKvcny
-	XvcnI+HZWGzbxJFZZZ4QGInrsZzV193YMdFePOc0RKx9QhA2zNSecMavVvbTVGwz
-	XcJodA==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419putpu29-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7iq3GRLIa6xNJ+/ns9duml
+	S8c3TCTwTI8XA/iSqTdxI=; b=C1AwnNLYfH58zBji0xxrjpQbVJ3DjOL3CCE86W
+	QiR4/7I0yKP1GtADipPXrEhymUw+tzqmB4etl03sQwV6N4mj4iCFaEtkN0Cb9UKv
+	T+7pHMdV1QKm0tCIFW7TpaJna5+ZhWp2Oqk/sWXok09clMFnCtQrY+9pjV0LKAkT
+	8b9RY2s40QB1Qafa6PKjlGxERZ7Ow/Qh7/0NcBMplBiYVC9WZz/ls2mDL6d0sVnn
+	winJjfGnWUfDB96FArxNxi0XrJxe358GVrvFaeNoIaMacOFallIsq7vlV05gCmPF
+	vY6ypd4V7E0hZ19eP5tZxIOcLFdNvg1ecEkBD5VMI/q1Yyog==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419puvesnv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 22:24:13 +0000 (GMT)
+	Thu, 29 Aug 2024 22:24:12 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TMODPG023594
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TMOBHN014608
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 22:24:13 GMT
+	Thu, 29 Aug 2024 22:24:11 GMT
 Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 29 Aug 2024 15:24:12 -0700
+ 15.2.1544.9; Thu, 29 Aug 2024 15:24:10 -0700
 From: Elliot Berman <quic_eberman@quicinc.com>
-Date: Thu, 29 Aug 2024 15:24:12 -0700
-Subject: [PATCH RFC v2 4/5] mm: guest_memfd: Add ability for userspace to
- mmap pages
+Subject: [PATCH RFC v2 0/5] mm: Introduce guest_memfd library
+Date: Thu, 29 Aug 2024 15:24:08 -0700
+Message-ID: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,9 +51,10 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240829-guest-memfd-lib-v2-4-b9afc1ff3656@quicinc.com>
-References: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
-In-Reply-To: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAAj10GYC/2WNwQrCMBBEf6Xs2UiyJFY9FQQ/wKv0UJNNu2BbT
+ dqilP67IVePb4Z5s0KkwBThXKwQaOHI45AAdwXYrhlaEuwSA0rUskQU7UxxEj313oknP4Q2xqN
+ Wyjh9gLR6BfL8ycY73K4XqFPYcZzG8M0vi8pVFh6l+RMuSkhBpsFTo703rqzeM1se7N6OPdTbt
+ v0A3eI4lrUAAAA=
 To: Andrew Morton <akpm@linux-foundation.org>,
         Sean Christopherson
 	<seanjc@google.com>,
@@ -82,91 +81,88 @@ X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: YoBcGu8s-izQ3-pSoL8-J8hiQQsRjEyp
-X-Proofpoint-ORIG-GUID: YoBcGu8s-izQ3-pSoL8-J8hiQQsRjEyp
+X-Proofpoint-ORIG-GUID: _yYbQidiBAnKOeD_gPtq4BTytlypn2jq
+X-Proofpoint-GUID: _yYbQidiBAnKOeD_gPtq4BTytlypn2jq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-29_06,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 phishscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
- mlxlogscore=882 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=797 priorityscore=1501 bulkscore=0 impostorscore=0
+ adultscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2407110000 definitions=main-2408290158
 
-"Inaccessible" and "accessible" state are properly tracked by the
-guest_memfd. Userspace can now safely access pages to preload binaries
-in a hypervisor/architecture-agnostic manner.
+In preparation for adding more features to KVM's guest_memfd, refactor
+and introduce a library which abstracts some of the core-mm decisions
+about managing folios associated with the file. The goal of the refactor
+serves two purposes:
+
+1. Provide an easier way to reason about memory in guest_memfd. With KVM
+supporting multiple confidentiality models (TDX, SEV-SNP, pKVM, ARM
+CCA), and coming support for allowing kernel and userspace to access
+this memory, it seems necessary to create a stronger abstraction between
+core-mm concerns and hypervisor concerns.
+
+2. Provide a common implementation for other hypervisors (Gunyah) to use.
+
+To create a guest_memfd, the owner provides operations to attempt to
+unmap the folio and check whether a folio is accessible to the host. The
+owner can call guest_memfd_make_inaccessible() to ensure Linux doesn't
+have the folio mapped.
+
+The series first introduces a guest_memfd library based on the current
+KVM (next) implementation, then adds few features needed for Gunyah and
+arm64 pKVM. The Gunyah usage of the series will be posted separately
+shortly after sending this series. I'll work with Fuad on using the
+guest_memfd library for arm64 pKVM based on the feedback received.
+
+There are a few TODOs still pending. 
+- The KVM patch isn't tested. I don't have access a SEV-SNP setup to be
+  able to test.
+- I've not yet investigated deeply whether having the guest_memfd
+  library helps live migration. I'd appreciate any input on that part.
+- We should consider consolidating the adjust_direct_map() in
+  arch/x86/virt/svm/sev.c so guest_memfd can take care of it.
+- There's a race possibility where the folio ref count is incremented
+  and about to also increment the safe counter, but waiting for the
+  folio lock to be released. The owner of folio_lock will see mismatched
+  counter values and not be able to convert to (in)accessible, even
+  though it should be okay to do so.
+ 
+I'd appreciate any feedback, especially on the direction I'm taking for
+tracking the (in)accessible state.
 
 Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+
+Changes in v2:
+- Significantly reworked to introduce "accessible" and "safe" reference
+  counters
+- Link to v1:
+  https://lore.kernel.org/r/20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com
+
 ---
- mm/guest_memfd.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Elliot Berman (5):
+      mm: Introduce guest_memfd
+      mm: guest_memfd: Allow folios to be accessible to host
+      kvm: Convert to use guest_memfd library
+      mm: guest_memfd: Add ability for userspace to mmap pages
+      mm: guest_memfd: Add option to remove inaccessible memory from direct map
 
-diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
-index 62cb576248a9d..194b2c3ea1525 100644
---- a/mm/guest_memfd.c
-+++ b/mm/guest_memfd.c
-@@ -279,6 +279,51 @@ int guest_memfd_make_inaccessible(struct folio *folio)
- }
- EXPORT_SYMBOL_GPL(guest_memfd_make_inaccessible);
- 
-+static vm_fault_t gmem_fault(struct vm_fault *vmf)
-+{
-+	struct file *file = vmf->vma->vm_file;
-+	struct guest_memfd_private *private;
-+	struct folio *folio;
-+
-+	folio = guest_memfd_grab_folio(file, vmf->pgoff, GUEST_MEMFD_GRAB_ACCESSIBLE);
-+	if (IS_ERR(folio))
-+		return VM_FAULT_SIGBUS;
-+
-+	vmf->page = folio_page(folio, vmf->pgoff - folio_index(folio));
-+
-+	/**
-+	 * Drop the safe and accessible references, the folio refcount will
-+	 * be preserved and unmap_mapping_folio() will decrement the
-+	 * refcount when converting to inaccessible.
-+	 */
-+	private = folio_get_private(folio);
-+	atomic_dec(&private->accessible);
-+	atomic_dec(&private->safe);
-+
-+	return VM_FAULT_LOCKED;
-+}
-+
-+static const struct vm_operations_struct gmem_vm_ops = {
-+	.fault = gmem_fault,
-+};
-+
-+static int gmem_mmap(struct file *file, struct vm_area_struct *vma)
-+{
-+	const struct guest_memfd_operations *ops = file_inode(file)->i_private;
-+
-+	if (!ops->prepare_accessible)
-+		return -EPERM;
-+
-+	/* No support for private mappings to avoid COW.  */
-+	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
-+	    (VM_SHARED | VM_MAYSHARE))
-+		return -EINVAL;
-+
-+	file_accessed(file);
-+	vma->vm_ops = &gmem_vm_ops;
-+	return 0;
-+}
-+
- static long gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
- {
- 	struct inode *inode = file_inode(file);
-@@ -390,6 +435,7 @@ static int gmem_release(struct inode *inode, struct file *file)
- static const struct file_operations gmem_fops = {
- 	.open = generic_file_open,
- 	.llseek = generic_file_llseek,
-+	.mmap = gmem_mmap,
- 	.release = gmem_release,
- 	.fallocate = gmem_fallocate,
- 	.owner = THIS_MODULE,
+ arch/x86/kvm/svm/sev.c      |   3 +-
+ include/linux/guest_memfd.h |  49 ++++
+ mm/Kconfig                  |   3 +
+ mm/Makefile                 |   1 +
+ mm/guest_memfd.c            | 667 ++++++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/Kconfig            |   1 +
+ virt/kvm/guest_memfd.c      | 371 +++++-------------------
+ virt/kvm/kvm_main.c         |   2 -
+ virt/kvm/kvm_mm.h           |   6 -
+ 9 files changed, 797 insertions(+), 306 deletions(-)
+---
+base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
+change-id: 20240722-guest-memfd-lib-455f24115d46
 
+Best regards,
 -- 
-2.34.1
+Elliot Berman <quic_eberman@quicinc.com>
 
