@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F50822301;
-	Tue,  3 Sep 2024 15:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FC818B466;
+	Tue,  3 Sep 2024 15:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725377921; cv=none; b=BU5i5Qv1C69R8t/bIks1+fuL4Y+EEk/YBnoCsutICYdncJfLBgOtx99okWsULHqan4gfNQPorKnCePST4PQW0B411FT7ZGH2J28khjLNWf69yWxCaoFDDHZb79v9lVlZPfiLLyvgh558OBIoeO36PByKL9vXQJu7bAotamKeUJo=
+	t=1725377922; cv=none; b=YvLZxYW3m5rmGXHFWeXU3oR2WOyLIayh+JkXocOCLN2xwVTZOCt8lGTOnk769r8PHJKjNi74TjzZu1yScQ7WFgkUqEtNhbJ9hP8pLPrAeTRPNI3MnzNrrJVdu+7ZvmrLXPK+BUOxbHppPkJbEWJz+iIkf9Sc4GRFyGaOTagScyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725377921; c=relaxed/simple;
-	bh=g+kqzslT3yLhM8F9bZvGdGv/NXD+1ywfyxIl7FgOAnY=;
+	s=arc-20240116; t=1725377922; c=relaxed/simple;
+	bh=3hq9V1F6GHZbXXg8saZsb1o9QP9sp/62P1fdCT+OhbU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fus840/xwainTFyO/DKfuI3tTsL34anYIQ9D2EDHBOy5SmSYeZ4z+6FOEGZ2neg8gK4C2vJs266whuWNkiKJRiGz7wsnIfow75n2hju9Xb5K/0n9qeCdPQ4+11sv3i5xSVVS3G204Kilk87Ik+veU7/ae2YV8WIrtJk2MzJ0LSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzPudsav; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=nmXVJSCMit9UwEb2FpskkEAh41mJP1FDCgRRHv6cNFDfjtGWcrXgVm8CT8VHK6EsAgb5lo499GlLEzQSxKSCDeZbLod/7R+uocaWes5hNoTnUfOVaZk2CMotzR9RtlFF7tT3Ml7GoEqlcBZaUZ06sIi87Ke3TjqogoINybEs0/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxPfzbqH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzPudsav"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71872C4CEC8;
-	Tue,  3 Sep 2024 15:38:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxPfzbqH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E23CC4CED2;
+	Tue,  3 Sep 2024 15:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725377921;
-	bh=g+kqzslT3yLhM8F9bZvGdGv/NXD+1ywfyxIl7FgOAnY=;
+	s=k20201202; t=1725377922;
+	bh=3hq9V1F6GHZbXXg8saZsb1o9QP9sp/62P1fdCT+OhbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzPudsavkYkqGG6qSLuYcTpJ4iLRvdXAqiIUORQkLLdSVPUjqFyOyBLo+LIYSwxeU
-	 59Q4E1uuFl1hXuq7boa3PryjVQbKMQfGu3tsIqW0g6z8KfkAfyVTpVgZ4EPiASioEp
-	 mvKGyHduWnsKP7Zw3enrt/bzfl3rqyqXUuTy0OerIo5nvL+g9kWI4W5QaNEbt98uQS
-	 AbqAMU4lpZIIYJ6fAStIAbs00OBn8S4ch4yL91L81B2LEA+z+qaH+H55x4ZqtbiH2I
-	 ftgaFKthjfU0lQbjMFQFSd6arXy86WY93EIBmTrXcj7d2BLAfSirG431FAPUZ0jd3v
-	 wc6UjOUQ42LhQ==
+	b=JxPfzbqHES9DH1wZqMzPAEcH0u8OU9/Cdbdes01TEMCtSasBSCA46HDLydDaQpTN+
+	 dmrG4uw/s+dZLpmPzFq7GORZo50EWicxA7URRbDzab0yXPXdHPqccNSxKC9R5UrNLq
+	 LDoG8yzGplJWpYNocv0XXvb6n/w5vn+7OgLnBvYRaJUkH2hzw70l9rZJ+oKqlhh0qt
+	 08uqtxAerJq+fV9nblquvkAzjYEJOovskyZC8qbPcPTAsFAybZtYQUq8XYbHktDCtz
+	 HDhWyy82WOJEtTQOi/gWAgvFiCUGAO42ceyq5njiw2hVULZtqOWS8mJclSTn84SJbD
+	 mXxkLxWUVkCag==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1slVc7-009Hr9-NF;
-	Tue, 03 Sep 2024 16:38:39 +0100
+	id 1slVc8-009Hr9-Lh;
+	Tue, 03 Sep 2024 16:38:40 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: James Morse <james.morse@arm.com>,
 	Joey Gouly <joey.gouly@arm.com>,
 	Alexandru Elisei <alexandru.elisei@arm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 06/16] arm64: Remove VNCR definition for PIRE0_EL2
-Date: Tue,  3 Sep 2024 16:38:24 +0100
-Message-Id: <20240903153834.1909472-7-maz@kernel.org>
+Subject: [PATCH v2 10/16] KVM: arm64: Sanitise ID_AA64MMFR3_EL1
+Date: Tue,  3 Sep 2024 16:38:28 +0100
+Message-Id: <20240903153834.1909472-11-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240903153834.1909472-1-maz@kernel.org>
 References: <20240903153834.1909472-1-maz@kernel.org>
@@ -61,31 +61,39 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-As of the ARM ARM Known Issues document 102105_K.a_04_en, D22677
-fixes a problem with the PIRE0_EL2 register, resulting in its
-removal from the VNCR page (it had no purpose being there the
-first place).
+Add the missing sanitisation of ID_AA64MMFR3_EL1, making sure we
+solely expose S1PIE and TCRX (we currently don't support anything
+else).
 
-Follow the architecture update by removing this offset.
-
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/vncr_mapping.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/kvm/sys_regs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/vncr_mapping.h b/arch/arm64/include/asm/vncr_mapping.h
-index df2c47c55972..9e593bb60975 100644
---- a/arch/arm64/include/asm/vncr_mapping.h
-+++ b/arch/arm64/include/asm/vncr_mapping.h
-@@ -50,7 +50,6 @@
- #define VNCR_VBAR_EL1           0x250
- #define VNCR_TCR2_EL1		0x270
- #define VNCR_PIRE0_EL1		0x290
--#define VNCR_PIRE0_EL2		0x298
- #define VNCR_PIR_EL1		0x2A0
- #define VNCR_ICH_LR0_EL2        0x400
- #define VNCR_ICH_LR1_EL2        0x408
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index a6bc20c238bf..7f4f69351e89 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1608,6 +1608,9 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
+ 	case SYS_ID_AA64MMFR2_EL1:
+ 		val &= ~ID_AA64MMFR2_EL1_CCIDX_MASK;
+ 		break;
++	case SYS_ID_AA64MMFR3_EL1:
++		val &= ID_AA64MMFR3_EL1_TCRX | ID_AA64MMFR3_EL1_S1PIE;
++		break;
+ 	case SYS_ID_MMFR4_EL1:
+ 		val &= ~ARM64_FEATURE_MASK(ID_MMFR4_EL1_CCIDX);
+ 		break;
+@@ -2470,7 +2473,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 					ID_AA64MMFR2_EL1_IDS |
+ 					ID_AA64MMFR2_EL1_NV |
+ 					ID_AA64MMFR2_EL1_CCIDX)),
+-	ID_SANITISED(ID_AA64MMFR3_EL1),
++	ID_WRITABLE(ID_AA64MMFR3_EL1, (ID_AA64MMFR3_EL1_TCRX	|
++				       ID_AA64MMFR3_EL1_S1PIE)),
+ 	ID_SANITISED(ID_AA64MMFR4_EL1),
+ 	ID_UNALLOCATED(7,5),
+ 	ID_UNALLOCATED(7,6),
 -- 
 2.39.2
 
