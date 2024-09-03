@@ -1,84 +1,101 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7CE1D678C
-	for <kvm@vger.kernel.org>; Tue,  3 Sep 2024 07:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48451D54F2
+	for <kvm@vger.kernel.org>; Tue,  3 Sep 2024 07:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725347797; cv=none; b=kSQXPtLqIfGaiFInppFn22NMxvFJgtLJ3VT4oHLdgZXbbbfpfbjFCxxVcfyby1DCJzAsHUDMCufjSd0vlApZgnhmZ2e55HTBLsMhVi3nqN0Cw1ZhKFA69JvHWmvDxug812VduEYuwfY70ET5WTma92zK9QU3AtBAvzMkNyOltlE=
+	t=1725347995; cv=none; b=b5crsgb6v/in+2LFyvBvGdrrzKXdZUQkdfE0koFYiq+o/n1+zShu0wsX+Jhcwkurbfgv92e7xQ95SzEn1UAfJseoAPHZYcnTf/GULsabIXW8L4ymN5qGBKdf+J8wrwNeO8LhT/rOOqRscgdCxMwweNdnoDtv/OSvfWQw7hsLGOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725347797; c=relaxed/simple;
-	bh=ijR5+lWplUlUteqROhswPoMMYQTBwXTytdQTjz0XShU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KulP/qcXWYn1YnNi1GrdzeinGpUKAeMvqkEYcpA96vTPnnxr8EFbPDdDuCb+NC4TQwJXNLnFFDfic6sk0u9NcbQT4T6D0JvJyoSkVrwlHl6oJLjMflgQlBfAESnVqBC8JYEmEXSNWSsClPZ99yvtH7o9/jGDYamF0IE80yrsz4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=T38ABwOp; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1725347995; c=relaxed/simple;
+	bh=hX20aXfXmOXgjflS88ieE5vPYkjvB9CjCF7KxLiWXZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hQ9KK1VaOsob43zuuiyUpQzL774DMy5lkFzffoLfWSu9v+XpNfnE7qtfPdJdDho0GDyB34KiOyUsKlc3SRyyu3HhOFTLyRWcdHdRf06r1+8ZtDaENpUP/5lL+24MCIZvJ7Tm94lugWBvN8nV01bh01quKor1snQC4wSWAeId2jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=inAxloYD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="T38ABwOp"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0454E40E0285;
-	Tue,  3 Sep 2024 07:16:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id RWJzP4XrWi-b; Tue,  3 Sep 2024 07:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1725347785; bh=k8tI9GnMrvYUuEW0wAp1ZdXOXM6cOhEUswy+rgLcwHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T38ABwOpwXmpGIfEdRMZP1MopDR6bXuV9+d3X/AXTVlSBxnR/yXiBwUiYW+JoNhC2
-	 SuH1ki2sZpbFevt2kvXvg7PLe31ZLEoj9M16wvNzlVDVi0bUXPPEnAMTGt9loQaJ3C
-	 /Q6+Xre9Q8jstuEMWoeCFRs89yUPOJvn9PRCeq6nOJFqzvgywh4tuPktHht7Hx20Qr
-	 xgIz5MwLWbi1SJK4mJ3C7z8YJjQweLKRKWRD5vOfCtleKIHgjK2xwRs9zOm+S8d9D/
-	 8fbU0BT0nu+IAlnWFXcLJ+kjZNxRih/FFLL6uZ64RMO49e0LrbDVCJ1SNcmmNHujQn
-	 OcFkHBrKd3QXosjv4ikw9KWegyFi/HC0OvZqq/GFEZqBuCt4AysoiNslSQ7Tfantcy
-	 CylqeZL+dEXPpgYPtQeqwtt+aTclZQUNJKjbmMPbG2sBJgmulWtqLNlTowBGybPsxO
-	 Yx8q+o/3jeaDBALG3mM600O0TLcrS2ogEqb2J16Puo5rW6C1cMbgITi5pvQUkdEBd8
-	 kX/uvHno8dsOCc/ns9RFC6KrX+Z9JgyiAEZqYIlcGLgi4vFTLXR5oNVFfzerAo1npp
-	 Ta3JG2ipcRdsJ22hObyKOFcTvgk99CIG9yAYwxoPmn4Rt+a5kyjFFbPX17ybJWV1rD
-	 D5W7nfcZLQYcotGqmqXjU89Q=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9B87940E0198;
-	Tue,  3 Sep 2024 07:16:19 +0000 (UTC)
-Date: Tue, 3 Sep 2024 09:16:13 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Nikunj A. Dadhania" <nikunj@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-	thomas.lendacky@amd.com, santosh.shukla@amd.com
-Subject: Re: [RFC PATCH 1/5] x86/cpufeatures: Add SNP Secure TSC
-Message-ID: <20240903071613.GAZta3vWChVfE-S13E@fat_crate.local>
-References: <20240829053748.8283-1-nikunj@amd.com>
- <20240829053748.8283-2-nikunj@amd.com>
- <20240829132201.GBZtB1-ZHQ8wW9-5fi@fat_crate.local>
- <1bea8191-b0f2-9b22-7e7b-a24d640e47a2@amd.com>
- <20240902164251.GBZtXrC79ZX13-eGqx@fat_crate.local>
- <5239c9b8-a116-1f57-fd8f-8a50d0c2ba89@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="inAxloYD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725347992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YOrLfsvwEiISGQ8ZVlVc7TwmstdfG5ZkvLyeiD+k0Nw=;
+	b=inAxloYD69QopmOXlfY6AlVLmhAO8KKIOElBPuSgibocWg97qke+OEam5KLYk0vaZbPWgl
+	tPLkpa58mEnt3C5CuKYw+687uS/YQuOFGUi3x+EgWjMyvJEJ31bt59J41Lab0kQ2e82nto
+	/sb4nz26gXavlk4+lu0IDKAK6BPcUpI=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-386-t6qIYjTFPciP4WFORnrYhA-1; Tue, 03 Sep 2024 03:19:51 -0400
+X-MC-Unique: t6qIYjTFPciP4WFORnrYhA-1
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-71431f47164so5329463b3a.1
+        for <kvm@vger.kernel.org>; Tue, 03 Sep 2024 00:19:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725347990; x=1725952790;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YOrLfsvwEiISGQ8ZVlVc7TwmstdfG5ZkvLyeiD+k0Nw=;
+        b=Hj6sId4Ee8DZxTAdnz7/DCjJwvbcu0Kht69gNxLG2z4x7z6Uq3aU/R87yAY4KSHaRK
+         U/x328ObRc324n4mJwF6pZTEoJMxunwQ/wRrB6KmvoA/9D1Foy1fC6/w3dTb0goJpbZc
+         WwNdNGkPnS3z5Ei19oQimrfFE5GkK/PEHX59M/STUc8DTD7iurLlU/J9xaKkqKcCmmfb
+         1l7xMhAtATSvDRM659G/gJLg+tjBINmsHOIetsXp4WQBro5GMarHOpYL0CQmC2QO3vPO
+         ucnpYEHjcIVUkFPqM3WQioLWBDyB3vew6IoliLSvANQIcwPv89fcUuHt7yWUN9Q3gMYa
+         wq6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWqD6sc+hhXKwBpZ40qVTTCHpr/6Qe82SwPSfVx/dBeq31Xo4X3lyaGtkQGU69/8ueYuLQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxexw3qWwBaLlgH8eST1hA5G7Qpm7/dIR4cypFrECkv9CHR06+
+	mKHx3t1Y3WC/hke4lXOfT0oYIWPLI0odRwIu87vdyyAXZ2rCg2ov1mC1qyr3DWBG0D4ufsdJl+M
+	MIiYAdIlygdJq0NvZ5czy6RFG8pSUOISD86MAoo6PelNQkzOumg==
+X-Received: by 2002:a05:6a20:d528:b0:1cc:df9e:bc3a with SMTP id adf61e73a8af0-1cecdf31af7mr10436593637.31.1725347990260;
+        Tue, 03 Sep 2024 00:19:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCtdTBTFQyE7fvIl3BTOHoJBqKRt6B/bdPcHyK151s5Dto+GOmrjnCdQmjQ+SgSc4wKXHDQQ==
+X-Received: by 2002:a05:6a20:d528:b0:1cc:df9e:bc3a with SMTP id adf61e73a8af0-1cecdf31af7mr10436584637.31.1725347989886;
+        Tue, 03 Sep 2024 00:19:49 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.207.26])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-715e55b9cfbsm8083651b3a.93.2024.09.03.00.19.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 00:19:49 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>,
+	kvm@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] kvm/i386: fix a check that ensures we are running on host intel CPU
+Date: Tue,  3 Sep 2024 12:49:42 +0530
+Message-ID: <20240903071942.32058-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5239c9b8-a116-1f57-fd8f-8a50d0c2ba89@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 03, 2024 at 11:13:45AM +0530, Nikunj A. Dadhania wrote:
-> Ah ok, in tip/master
+is_host_cpu_intel() returns TRUE if the host cpu in Intel based. RAPL needs
+Intel host cpus. If the host CPU is not Intel baseed, we should report error.
+Fix the check accordingly.
 
-What else?
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ target/i386/kvm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-See, we document these things not to waste space on people's hdds:
-
-Documentation/process/maintainer-tip.rst
-
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 11c7619bfd..503e8d956e 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2898,7 +2898,7 @@ static int kvm_msr_energy_thread_init(KVMState *s, MachineState *ms)
+      * 1. Host cpu must be Intel cpu
+      * 2. RAPL must be enabled on the Host
+      */
+-    if (is_host_cpu_intel()) {
++    if (!is_host_cpu_intel()) {
+         error_report("The RAPL feature can only be enabled on hosts\
+                       with Intel CPU models");
+         ret = 1;
 -- 
-Regards/Gruss,
-    Boris.
+2.42.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
