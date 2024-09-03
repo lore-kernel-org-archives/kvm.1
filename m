@@ -1,167 +1,186 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19C920125C
-	for <kvm@vger.kernel.org>; Tue,  3 Sep 2024 08:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707AB20125C;
+	Tue,  3 Sep 2024 08:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725351052; cv=none; b=VUqjsOv8NKC6+78+zF2rSX5itDU/2nBk62xnqG9cCIL48nXTq6Ep3eokQ9G2BpJR7hkz0Faj9Cl8HNNwwkdgagk8IUvuYhFfHjN5/8blkTq7/ySeRR/ZbAaMrkePjh+2DiZjEmSOTJoiqoCfUTQy8BL9WdShfAN4iU1P2iZf9Cs=
+	t=1725351237; cv=none; b=kMsreHPBGuRkWQteoJGUZqTrFTHnnoNv4eDJusbSZQlvfrfdHuC0aR4x697CCG/fN6HwibI2onk4Cn9WzZn6z/+PZzcn7uP2zTUAhA4RxP4jul5KmTnLSNjtaSa7cLzg3cGoE19mdKwqvMh0IIp1ofC4m+V+FsEnSVeBvqO+BWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725351052; c=relaxed/simple;
-	bh=6mmc7di+pQIdeFxJ+VyEzy/XD6Ldgilncnnc07MXG7c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EsD1F5FSUe+EDt3EsghZbUVDJJXwWGR5Kiqit3lAgQ9MWUWXsN8Ypv1XjTRZtQYapDysT2hppEF8JARUQCxwOyMSduXlEOIDUub731P4ot7F0oMoKNWZXIU3XZCkNC5Yqomtp+DJpFVULGI4jTvdHgHIOqhjTdNiMjkx/+ffs94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1mW0ifZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1725351237; c=relaxed/simple;
+	bh=jfoD+aB4zanqaDijLR2Aek6vFEYVgBitxkyNvmY57ps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fLe6Gp4GpHRxJFYGr28e+jQNWMoVdS8B1DAdw86ob/b+9a8wf1XB4ylOUE90KKnN5iqGGIzxK/2eRshbscbYcyIabL8OYtLmARODTV76t332k77C8XFcwCr+LIm/wi33kS23gj3eQzG3/SgksU2CI2ocNeCFERInw3jcDPUonLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4Wk+xdO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1mW0ifZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725351049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6mmc7di+pQIdeFxJ+VyEzy/XD6Ldgilncnnc07MXG7c=;
-	b=L1mW0ifZmfrMa8n6D7eMnQrSn7CTGqEjiyzdhdTrm9YCnV4xe+a1witRws0ge65C52gPx0
-	QDCLTqpf21+K7kPB5DKXNe38BRBPt7FXBveuEvQNBvLgx3teAo8oApIyyEyEAb6fQsVBMX
-	I53kseAUFqCW24rqdJLTxbvQvGuqoDc=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-zhvqTg-9MaCphpDr7_XqAA-1; Tue, 03 Sep 2024 04:10:48 -0400
-X-MC-Unique: zhvqTg-9MaCphpDr7_XqAA-1
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-6d5fccc3548so26599447b3.1
-        for <kvm@vger.kernel.org>; Tue, 03 Sep 2024 01:10:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725351048; x=1725955848;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6mmc7di+pQIdeFxJ+VyEzy/XD6Ldgilncnnc07MXG7c=;
-        b=L26ylb154kj05m0IIyBjR323IAvY1daCtptStsJUAGxiVkeHuHGth108VOQEcMULX6
-         UndEvNFgidxmjgjfF0Ex8fKOcMqnxY5vISxxH1PYlfkdSa+nO7s5C4gY3GFn4HMS+ras
-         JOUpjdmHIA7PY/aF5kWTAxIitrFloOJsv2nIa3xjBNf2jeNI7s/IBIX0hqvl0xygIqNI
-         5M4hwXUOPuWdAkWZMbOeDAiVlHR3IKcco2DZrUKgE8DEF7ESscGf8snqpa/HLANoxj9d
-         PP7WdM2ArGwyoEDiF71WQp1Gsf40NwaikoVfiPrNTTl5wdRHdKmsDL0OtBTVWpzeMFEp
-         +P6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWIPQId8wAvu3GV+v+TQpHA/qurFlL3z/lo9QLoxTvaMiWO4606ynyjWLdq2p0TYAwSQvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUikIOEeSxSrypIcJq4b+/6QEhKtyAWuRcOQdkIf+FX38BsaDs
-	hRYDJKichjybW8ZCmGsf6ReaxRAZbkvCzqk/j1FAsoIUOG3pmcrJs0GcaEZaL6gAhRf2HDwD6XT
-	l6PPU2FTTDN/AfPb7+rMDX7s4c1wwQzbsDMqDX1YT4pK8O1lF7mci4/j3TcbnKmQBL67/z2oecQ
-	NJU8N/iVbo3IKvKYZ/d9c6UlRU
-X-Received: by 2002:a05:690c:6089:b0:65f:cdb7:46a7 with SMTP id 00721157ae682-6d3fb00cd8dmr106367567b3.22.1725351047951;
-        Tue, 03 Sep 2024 01:10:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8YUCke3AcOv2qy5ss1glBiO/5O8+6bG94dYgmaYGhOtdUneJ8MXedoPtfwNtK/AfOFzg2JTuMsyHPl+8F7HI=
-X-Received: by 2002:a05:690c:6089:b0:65f:cdb7:46a7 with SMTP id
- 00721157ae682-6d3fb00cd8dmr106367467b3.22.1725351047631; Tue, 03 Sep 2024
- 01:10:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4Wk+xdO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C9CC4CEC5;
+	Tue,  3 Sep 2024 08:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725351236;
+	bh=jfoD+aB4zanqaDijLR2Aek6vFEYVgBitxkyNvmY57ps=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e4Wk+xdORlAkSEIXDFWAsq4vMACrh4IXT2FEaGkPd66v6ShtvrS3HMJoFwINO7mqX
+	 d9cTkoNfNcGUk7e5X7LxBqCPWhNmTzNrI0if/rqcZCubNWkvwEtlJhm/AKoULdnEW1
+	 8hXtO1vSo3fMGV31APF0x8UO3p2R5z55zHBcJf/jPe1igBm+VKa9HOOOn+55nU95aL
+	 /EhPnOcZlVfGYTAbcp/4CqrMYIadP9U6RD1rvIc0YkSvLxc3rN11gfIEjSziHrFLF9
+	 PmPMP9jGOX1MNBE0hU/XUTsNZCE0IzGN06cpvqia+NCpZCvtq1yjKfGU2F2MNWSznc
+	 gsy7x+1Ul76Vw==
+Date: Tue, 3 Sep 2024 09:13:48 +0100
+From: Will Deacon <will@kernel.org>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	catalin.marinas@arm.com, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, pbonzini@redhat.com, wanpengli@tencent.com,
+	vkuznets@redhat.com, rafael@kernel.org, daniel.lezcano@linaro.org,
+	peterz@infradead.org, arnd@arndb.de, lenb@kernel.org,
+	mark.rutland@arm.com, harisokn@amazon.com, mtosatti@redhat.com,
+	sudeep.holla@arm.com, cl@gentwo.org, misono.tomohiro@fujitsu.com,
+	maobibo@loongson.cn, joao.m.martins@oracle.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v7 09/10] arm64: support cpuidle-haltpoll
+Message-ID: <20240903081348.GB12270@willie-the-truck>
+References: <20240830222844.1601170-1-ankur.a.arora@oracle.com>
+ <20240830222844.1601170-10-ankur.a.arora@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816090159.1967650-1-dtatulea@nvidia.com> <CAJaqyWfwkNUYcMWwG4LthhYEquUYDJPRvHeyh9C_R-ioeFYuXw@mail.gmail.com>
- <CAPpAL=xGQvpKwe8WcfHX8e59EdpZbOiohRS1qgeR4axFBDQ_+w@mail.gmail.com>
- <ea127c85-7080-4679-bff1-3a3a253f9046@nvidia.com> <CAPpAL=wDKacuWu-wgbwSN3MORSMapU8=RAdzp3ePgPo=6EMFbg@mail.gmail.com>
- <e08c5cc6-27e7-43b7-8337-095a42ed9698@nvidia.com>
-In-Reply-To: <e08c5cc6-27e7-43b7-8337-095a42ed9698@nvidia.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 3 Sep 2024 10:10:11 +0200
-Message-ID: <CAJaqyWd-gc+BDx+DWvBLOEYP+q_Rb+L5n4txf1fcvrcbcE=_Nw@mail.gmail.com>
-Subject: Re: [PATCH vhost v2 00/10] vdpa/mlx5: Parallelize device suspend/resume
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Michael Tsirkin <mst@redhat.com>, Si-Wei Liu <si-wei.liu@oracle.com>, 
-	virtualization@lists.linux-foundation.org, linux-kernel@vger.kernel.org, 
-	Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, kvm@vger.kernel.org, 
-	Parav Pandit <parav@nvidia.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240830222844.1601170-10-ankur.a.arora@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Sep 3, 2024 at 9:48=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com>=
- wrote:
->
->
->
-> On 03.09.24 09:40, Lei Yang wrote:
-> > On Mon, Sep 2, 2024 at 7:05=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.=
-com> wrote:
-> >>
-> >> Hi Lei,
-> >>
-> >> On 02.09.24 12:03, Lei Yang wrote:
-> >>> Hi Dragos
-> >>>
-> >>> QE tested this series with mellanox nic, it failed with [1] when
-> >>> booting guest, and host dmesg also will print messages [2]. This bug
-> >>> can be reproduced boot guest with vhost-vdpa device.
-> >>>
-> >>> [1] qemu) qemu-kvm: vhost VQ 1 ring restore failed: -1: Operation not
-> >>> permitted (1)
-> >>> qemu-kvm: vhost VQ 0 ring restore failed: -1: Operation not permitted=
- (1)
-> >>> qemu-kvm: unable to start vhost net: 5: falling back on userspace vir=
-tio
-> >>> qemu-kvm: vhost_set_features failed: Device or resource busy (16)
-> >>> qemu-kvm: unable to start vhost net: 16: falling back on userspace vi=
-rtio
-> >>>
-> >>> [2] Host dmesg:
-> >>> [ 1406.187977] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_compat_reset:3267:(pid 8506): performing device reset
-> >>> [ 1406.189221] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_compat_reset:3267:(pid 8506): performing device reset
-> >>> [ 1406.190354] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_show_mr_leaks:573:(pid 8506) warning: mkey still alive afte=
-r
-> >>> resource delete: mr: 000000000c5ccca2, mkey: 0x40000000, refcount: 2
-> >>> [ 1471.538487] mlx5_core 0000:0d:00.2: cb_timeout_handler:938:(pid
-> >>> 428): cmd[13]: MODIFY_GENERAL_OBJECT(0xa01) Async, timeout. Will caus=
-e
-> >>> a leak of a command resource
-> >>> [ 1471.539486] mlx5_core 0000:0d:00.2: cb_timeout_handler:938:(pid
-> >>> 428): cmd[12]: MODIFY_GENERAL_OBJECT(0xa01) Async, timeout. Will caus=
-e
-> >>> a leak of a command resource
-> >>> [ 1471.540351] mlx5_core 0000:0d:00.2: modify_virtqueues:1617:(pid
-> >>> 8511) error: modify vq 0 failed, state: 0 -> 0, err: 0
-> >>> [ 1471.541433] mlx5_core 0000:0d:00.2: modify_virtqueues:1617:(pid
-> >>> 8511) error: modify vq 1 failed, state: 0 -> 0, err: -110
-> >>> [ 1471.542388] mlx5_core 0000:0d:00.2: mlx5_vdpa_set_status:3203:(pid
-> >>> 8511) warning: failed to resume VQs
-> >>> [ 1471.549778] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_show_mr_leaks:573:(pid 8511) warning: mkey still alive afte=
-r
-> >>> resource delete: mr: 000000000c5ccca2, mkey: 0x40000000, refcount: 2
-> >>> [ 1512.929854] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_compat_reset:3267:(pid 8565): performing device reset
-> >>> [ 1513.100290] mlx5_core 0000:0d:00.2:
-> >>> mlx5_vdpa_show_mr_leaks:573:(pid 8565) warning: mkey still alive afte=
-r
-> >>> resource delete: mr: 000000000c5ccca2, mkey: 0x40000000, refcount: 2
-> >>>
-> >
-> > Hi Dragos
-> >
-> >> Can you provide more details about the qemu version and the vdpa devic=
-e
-> >> options used?
-> >>
-> >> Also, which FW version are you using? There is a relevant bug in FW
-> >> 22.41.1000 which was fixed in the latest FW (22.42.1000). Did you
-> >> encounter any FW syndromes in the host dmesg log?
-> >
-> > This problem has gone when I updated the firmware version to
-> > 22.42.1000, and I tested it with regression tests using mellanox nic,
-> > everything works well.
-> >
-> > Tested-by: Lei Yang <leiyang@redhat.com>
-> Good to hear. Thanks for the quick reaction.
->
+On Fri, Aug 30, 2024 at 03:28:43PM -0700, Ankur Arora wrote:
+> Add architectural support for cpuidle-haltpoll driver by defining
+> arch_haltpoll_*().
+> 
+> Also define ARCH_CPUIDLE_HALTPOLL to allow cpuidle-haltpoll to be
+> selected, and given that we have an optimized polling mechanism
+> in smp_cond_load*(), select ARCH_HAS_OPTIMIZED_POLL.
+> 
+> smp_cond_load*() are implemented via LDXR, WFE, with LDXR loading
+> a memory region in exclusive state and the WFE waiting for any
+> stores to it.
+> 
+> In the edge case -- no CPU stores to the waited region and there's no
+> interrupt -- the event-stream will provide the terminating condition
+> ensuring we don't wait forever, but because the event-stream runs at
+> a fixed frequency (configured at 10kHz) we might spend more time in
+> the polling stage than specified by cpuidle_poll_time().
+> 
+> This would only happen in the last iteration, since overshooting the
+> poll_limit means the governor moves out of the polling stage.
+> 
+> Tested-by: Haris Okanovic <harisokn@amazon.com>
+> Tested-by: Misono Tomohiro <misono.tomohiro@fujitsu.com>
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> ---
+>  arch/arm64/Kconfig                        | 10 ++++++++++
+>  arch/arm64/include/asm/cpuidle_haltpoll.h | 10 ++++++++++
+>  arch/arm64/kernel/Makefile                |  1 +
+>  arch/arm64/kernel/cpuidle_haltpoll.c      | 22 ++++++++++++++++++++++
+>  4 files changed, 43 insertions(+)
+>  create mode 100644 arch/arm64/include/asm/cpuidle_haltpoll.h
+>  create mode 100644 arch/arm64/kernel/cpuidle_haltpoll.c
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index a2f8ff354ca6..9bd93ce2f9d9 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -36,6 +36,7 @@ config ARM64
+>  	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>  	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+>  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+> +	select ARCH_HAS_OPTIMIZED_POLL
+>  	select ARCH_HAS_PTE_DEVMAP
+>  	select ARCH_HAS_PTE_SPECIAL
+>  	select ARCH_HAS_HW_PTE_YOUNG
+> @@ -2385,6 +2386,15 @@ config ARCH_HIBERNATION_HEADER
+>  config ARCH_SUSPEND_POSSIBLE
+>  	def_bool y
+>  
+> +config ARCH_CPUIDLE_HALTPOLL
+> +	bool "Enable selection of the cpuidle-haltpoll driver"
+> +	default n
 
-Is it possible to add a check so it doesn't use the async fashion in old FW=
-?
+nit: this 'default n' line is redundant.
 
+> +	help
+> +	  cpuidle-haltpoll allows for adaptive polling based on
+> +	  current load before entering the idle state.
+> +
+> +	  Some virtualized workloads benefit from using it.
+
+nit: This sentence is meaningless ^^.
+
+> +
+>  endmenu # "Power management options"
+>  
+>  menu "CPU Power Management"
+> diff --git a/arch/arm64/include/asm/cpuidle_haltpoll.h b/arch/arm64/include/asm/cpuidle_haltpoll.h
+> new file mode 100644
+> index 000000000000..ed615a99803b
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/cpuidle_haltpoll.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _ARCH_HALTPOLL_H
+> +#define _ARCH_HALTPOLL_H
+> +
+> +static inline void arch_haltpoll_enable(unsigned int cpu) { }
+> +static inline void arch_haltpoll_disable(unsigned int cpu) { }
+> +
+> +bool arch_haltpoll_want(bool force);
+> +#endif
+> diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
+> index 2b112f3b7510..bbfb57eda2f1 100644
+> --- a/arch/arm64/kernel/Makefile
+> +++ b/arch/arm64/kernel/Makefile
+> @@ -70,6 +70,7 @@ obj-$(CONFIG_ARM64_PTR_AUTH)		+= pointer_auth.o
+>  obj-$(CONFIG_ARM64_MTE)			+= mte.o
+>  obj-y					+= vdso-wrap.o
+>  obj-$(CONFIG_COMPAT_VDSO)		+= vdso32-wrap.o
+> +obj-$(CONFIG_ARCH_CPUIDLE_HALTPOLL)	+= cpuidle_haltpoll.o
+>  
+>  # Force dependency (vdso*-wrap.S includes vdso.so through incbin)
+>  $(obj)/vdso-wrap.o: $(obj)/vdso/vdso.so
+> diff --git a/arch/arm64/kernel/cpuidle_haltpoll.c b/arch/arm64/kernel/cpuidle_haltpoll.c
+> new file mode 100644
+> index 000000000000..63fc5ebca79b
+> --- /dev/null
+> +++ b/arch/arm64/kernel/cpuidle_haltpoll.c
+> @@ -0,0 +1,22 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/kernel.h>
+> +#include <clocksource/arm_arch_timer.h>
+> +#include <asm/cpuidle_haltpoll.h>
+> +
+> +bool arch_haltpoll_want(bool force)
+> +{
+> +	/*
+> +	 * Enabling haltpoll requires two things:
+> +	 *
+> +	 * - Event stream support to provide a terminating condition to the
+> +	 *   WFE in the poll loop.
+> +	 *
+> +	 * - KVM support for arch_haltpoll_enable(), arch_haltpoll_disable().
+> +	 *
+> +	 * Given that the second is missing, allow haltpoll to only be force
+> +	 * loaded.
+> +	 */
+> +	return (arch_timer_evtstrm_available() && false) || force;
+> +}
+> +EXPORT_SYMBOL_GPL(arch_haltpoll_want);
+
+This seems a bit over-the-top to justify a new C file. Just have a static
+inline in the header which returns 'force'. The '&& false' is misleading
+and unnecessary with the comment.
+
+Will
