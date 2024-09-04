@@ -1,48 +1,48 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050661D58B9
-	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 11:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB461DA109
+	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 11:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448740; cv=none; b=pOVptAVO/X6aVSI7PjdCEIjyoMcFM8So010S70jx6fkdQ+cBCuJpLrP0WTP8U1JJ+ospH1tm1C/PujSzxQucg+aABg+j8kf6d9MBAGVskyAZnSg4jdc7QrZhBHdr7igNHhP5E2A3Xrn7w4Lt3tPg/OlhgPSCfFgVJuTJ3vu4BTE=
+	t=1725448740; cv=none; b=j7L3XTPEXEKVVyGTz4nbLUHNsmCv+NkMoGRmhxaxLqGVF8HGnfBN9iVWcZ3wyzsAdL+3BdCL2TfD6rgi9TpZfY7T0Y83XGyhP+oddZak0z0HWidWVSDLEN4kuJU7ooGNSEeIUTnT9hgujkIRtlTz+6xYw3xO8vwoE2ZePQqvnuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725448740; c=relaxed/simple;
-	bh=jITSRX9rtQIt/ZZGxh64OcKt6uga5kZkolKxDNCPAS0=;
+	bh=0jy4JiylNSXTK/G/B7+8GtZKD1NoNvpHBfZHXNcO6SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WtssgA361R4wqzDqjCdlSEajEeFAJK6snC9Cn7eswnG3cA9l+yQDeiicfQpJP45of+Np4FGwdYsURJ/u8u2Uj5LLAdcv/HC33/FgHbnjw/Xzen9LRg79S489mX7Tve4Dgs2wgygSduRSfZ7pmTEaz9VKxJICfTN+FB4iaj3G+yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GpCZqiz7; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=dIVESQkKCAPirED2iblpPeCII28uM6bN6XWolwkK/6B2tX4FJ7EWXA3fz/UOTHSQq1XMzAKCNgavP+Zoc//KISNqIZy65nOhZkMPCQ+sRfBzFPUuX9Dw27uXNrrJ0XVzH5qYVcb1c1Mb+qF/l0lmHt1BIV16Bj/NJUw2Vsc3iPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FQhVVcUO; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GpCZqiz7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FQhVVcUO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725448735;
+	s=mimecast20190719; t=1725448737;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tvQ0bkuh975N3/39hMCT7dsPlX5V08GBG2VFlBYmSHw=;
-	b=GpCZqiz7Ae3QPE6x+RyaEQbgPYkLgsaVgsy+26UEeE+VvOv2Or0pWNB4fVNSsDlOdy8a/S
-	0kTjrnmqSjhDJAMookbIvW6k60pGHneRv7OaTPWsh6PFROGrl+XpJouIuNNqapuQ5uplsC
-	FyfSpQme6U9USRvucBaCrSPrTXK3llc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=nUroX0vXvKhL/8z7tcNdIRkDute+jOG+hDXiUvRu6WU=;
+	b=FQhVVcUOiiVt/Rog4+ELHA5LxBrwo0+/fguNY0/K6xt4KzBcQfKkNiFWpjG1W8PvDp2RwR
+	dHdZ3fATRaS498wgJDHINCTiYQGX8+aWS5cE8V1quprGVaJCUi+n7ljf9nnAz/wxLYgubj
+	2k6bQovTZd8npgKFTzajEooVBhmWwyE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-kfPfu0HXPWi1c5ZIfT_ZuQ-1; Wed,
- 04 Sep 2024 07:18:51 -0400
-X-MC-Unique: kfPfu0HXPWi1c5ZIfT_ZuQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-iYG9wXhTNGKOqN7f6QET-Q-1; Wed,
+ 04 Sep 2024 07:18:50 -0400
+X-MC-Unique: iYG9wXhTNGKOqN7f6QET-Q-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F2C31953963;
-	Wed,  4 Sep 2024 11:18:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B6E9919560AB;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF1DD1955F25;
 	Wed,  4 Sep 2024 11:18:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCA411956052;
+	Wed,  4 Sep 2024 11:18:43 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id C8E4721E682B; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
+	id A118621E688F; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com,
@@ -94,9 +94,9 @@ Cc: alex.williamson@redhat.com,
 	qemu-s390x@nongnu.org,
 	kvm@vger.kernel.org,
 	avihaih@nvidia.com
-Subject: [PATCH v2 13/19] qapi/crypto: Rename QCryptoIVGenAlgorithm to *Algo, and drop prefix
-Date: Wed,  4 Sep 2024 13:18:30 +0200
-Message-ID: <20240904111836.3273842-14-armbru@redhat.com>
+Subject: [PATCH v2 05/19] qapi/crypto: Drop temporary 'prefix'
+Date: Wed,  4 Sep 2024 13:18:22 +0200
+Message-ID: <20240904111836.3273842-6-armbru@redhat.com>
 In-Reply-To: <20240904111836.3273842-1-armbru@redhat.com>
 References: <20240904111836.3273842-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,447 +107,247 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-QAPI's 'prefix' feature can make the connection between enumeration
-type and its constants less than obvious.  It's best used with
-restraint.
+Recent commit "qapi: Smarter camel_to_upper() to reduce need for
+'prefix'" added two temporary 'prefix' to delay changing the generated
+code.
 
-QCryptoIVGenAlgorithm has a 'prefix' that overrides the generated
-enumeration constants' prefix to QCRYPTO_IVGEN_ALG.
-
-We could simply drop 'prefix', but then the prefix becomes
-QCRYPTO_IV_GEN_ALGORITHM, which is rather long.
-
-We could additionally rename the type to QCryptoIVGenAlg, but I think
-the abbreviation "alg" is less than clear.
-
-Rename the type to QCryptoIVGenAlgo instead.  The prefix becomes
-QCRYPTO_IV_GEN_ALGO.
+Revert them.  This improves QCryptoBlockFormat's generated enumeration
+constant prefix from Q_CRYPTO_BLOCK_FORMAT to QCRYPTO_BLOCK_FORMAT,
+and QCryptoBlockLUKSKeyslotState's from
+Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE to QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/crypto.json               |  9 ++++-----
- crypto/ivgenpriv.h             |  2 +-
- include/crypto/ivgen.h         | 14 +++++++-------
- crypto/block-luks.c            | 16 ++++++++--------
- crypto/block-qcow.c            |  2 +-
- crypto/ivgen.c                 | 10 +++++-----
+ qapi/crypto.json               |  2 --
+ block/crypto.c                 | 10 +++++-----
+ block/qcow.c                   |  2 +-
+ block/qcow2.c                  | 10 +++++-----
+ crypto/block-luks.c            |  4 ++--
+ crypto/block.c                 |  4 ++--
  tests/unit/test-crypto-block.c | 14 +++++++-------
- tests/unit/test-crypto-ivgen.c | 22 +++++++++++-----------
- 8 files changed, 44 insertions(+), 45 deletions(-)
+ 7 files changed, 22 insertions(+), 24 deletions(-)
 
 diff --git a/qapi/crypto.json b/qapi/crypto.json
-index 0591d62f67..3e6a7fb8e5 100644
+index a192641a03..fb00c706b2 100644
 --- a/qapi/crypto.json
 +++ b/qapi/crypto.json
-@@ -122,7 +122,7 @@
-   'data': ['ecb', 'cbc', 'xts', 'ctr']}
- 
- ##
--# @QCryptoIVGenAlgorithm:
-+# @QCryptoIVGenAlgo:
- #
- # The supported algorithms for generating initialization vectors for
- # full disk encryption.  The 'plain' generator should not be used for
-@@ -138,8 +138,7 @@
- #
+@@ -157,7 +157,6 @@
  # Since: 2.6
  ##
--{ 'enum': 'QCryptoIVGenAlgorithm',
--  'prefix': 'QCRYPTO_IVGEN_ALG',
-+{ 'enum': 'QCryptoIVGenAlgo',
-   'data': ['plain', 'plain64', 'essiv']}
+ { 'enum': 'QCryptoBlockFormat',
+-  'prefix': 'Q_CRYPTO_BLOCK_FORMAT', # TODO drop
+   'data': ['qcow', 'luks']}
  
  ##
-@@ -226,7 +225,7 @@
-   'base': 'QCryptoBlockOptionsLUKS',
-   'data': { '*cipher-alg': 'QCryptoCipherAlgo',
-             '*cipher-mode': 'QCryptoCipherMode',
--            '*ivgen-alg': 'QCryptoIVGenAlgorithm',
-+            '*ivgen-alg': 'QCryptoIVGenAlgo',
-             '*ivgen-hash-alg': 'QCryptoHashAlgo',
-             '*hash-alg': 'QCryptoHashAlgo',
-             '*iter-time': 'int' }}
-@@ -323,7 +322,7 @@
- { 'struct': 'QCryptoBlockInfoLUKS',
-   'data': {'cipher-alg': 'QCryptoCipherAlgo',
-            'cipher-mode': 'QCryptoCipherMode',
--           'ivgen-alg': 'QCryptoIVGenAlgorithm',
-+           'ivgen-alg': 'QCryptoIVGenAlgo',
-            '*ivgen-hash-alg': 'QCryptoHashAlgo',
-            'hash-alg': 'QCryptoHashAlgo',
-            'detached-header': 'bool',
-diff --git a/crypto/ivgenpriv.h b/crypto/ivgenpriv.h
-index ef24c76345..e3388d30be 100644
---- a/crypto/ivgenpriv.h
-+++ b/crypto/ivgenpriv.h
-@@ -40,7 +40,7 @@ struct QCryptoIVGen {
-     QCryptoIVGenDriver *driver;
-     void *private;
+@@ -360,7 +359,6 @@
+ # Since: 5.1
+ ##
+ { 'enum': 'QCryptoBlockLUKSKeyslotState',
+-  'prefix': 'Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE', # TODO drop
+   'data': [ 'active', 'inactive' ] }
  
--    QCryptoIVGenAlgorithm algorithm;
-+    QCryptoIVGenAlgo algorithm;
-     QCryptoCipherAlgo cipher;
-     QCryptoHashAlgo hash;
- };
-diff --git a/include/crypto/ivgen.h b/include/crypto/ivgen.h
-index b059e332cd..bfa5d28103 100644
---- a/include/crypto/ivgen.h
-+++ b/include/crypto/ivgen.h
-@@ -44,7 +44,7 @@
-  *
-  * g_assert((ndata % 512) == 0);
-  *
-- * QCryptoIVGen *ivgen = qcrypto_ivgen_new(QCRYPTO_IVGEN_ALG_ESSIV,
-+ * QCryptoIVGen *ivgen = qcrypto_ivgen_new(QCRYPTO_IV_GEN_ALGO_ESSIV,
-  *                                         QCRYPTO_CIPHER_ALGO_AES_128,
-  *                                         QCRYPTO_HASH_ALGO_SHA256,
-  *                                         key, nkey, errp);
-@@ -97,7 +97,7 @@
+ ##
+diff --git a/block/crypto.c b/block/crypto.c
+index 4eed3ffa6a..80b2dba17a 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -682,7 +682,7 @@ err:
+ static int block_crypto_probe_luks(const uint8_t *buf,
+                                    int buf_size,
+                                    const char *filename) {
+-    return block_crypto_probe_generic(Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    return block_crypto_probe_generic(QCRYPTO_BLOCK_FORMAT_LUKS,
+                                       buf, buf_size, filename);
+ }
  
- typedef struct QCryptoIVGen QCryptoIVGen;
- 
--/* See also QCryptoIVGenAlgorithm enum in qapi/crypto.json */
-+/* See also QCryptoIVGenAlgo enum in qapi/crypto.json */
- 
- 
- /**
-@@ -113,19 +113,19 @@ typedef struct QCryptoIVGen QCryptoIVGen;
-  * are required or not depends on the choice of @alg
-  * requested.
-  *
-- * - QCRYPTO_IVGEN_ALG_PLAIN
-+ * - QCRYPTO_IV_GEN_ALGO_PLAIN
-  *
-  * The IVs are generated by the 32-bit truncated sector
-  * number. This should never be used for block devices
-  * that are larger than 2^32 sectors in size.
-  * All the other parameters are unused.
-  *
-- * - QCRYPTO_IVGEN_ALG_PLAIN64
-+ * - QCRYPTO_IV_GEN_ALGO_PLAIN64
-  *
-  * The IVs are generated by the 64-bit sector number.
-  * All the other parameters are unused.
-  *
-- * - QCRYPTO_IVGEN_ALG_ESSIV:
-+ * - QCRYPTO_IV_GEN_ALGO_ESSIV:
-  *
-  * The IVs are generated by encrypting the 64-bit sector
-  * number with a hash of an encryption key. The @cipheralg,
-@@ -133,7 +133,7 @@ typedef struct QCryptoIVGen QCryptoIVGen;
-  *
-  * Returns: a new IV generator, or NULL on error
-  */
--QCryptoIVGen *qcrypto_ivgen_new(QCryptoIVGenAlgorithm alg,
-+QCryptoIVGen *qcrypto_ivgen_new(QCryptoIVGenAlgo alg,
-                                 QCryptoCipherAlgo cipheralg,
-                                 QCryptoHashAlgo hash,
-                                 const uint8_t *key, size_t nkey,
-@@ -167,7 +167,7 @@ int qcrypto_ivgen_calculate(QCryptoIVGen *ivgen,
-  *
-  * Returns: the IV generator algorithm
-  */
--QCryptoIVGenAlgorithm qcrypto_ivgen_get_algorithm(QCryptoIVGen *ivgen);
-+QCryptoIVGenAlgo qcrypto_ivgen_get_algorithm(QCryptoIVGen *ivgen);
- 
- 
- /**
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 8eadf124fc..0926ad28f0 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -129,7 +129,7 @@ struct QCryptoBlockLUKS {
-     QCryptoCipherMode cipher_mode;
- 
-     /* Initialization vector generation algorithm */
--    QCryptoIVGenAlgorithm ivgen_alg;
-+    QCryptoIVGenAlgo ivgen_alg;
- 
-     /* Hash algorithm used for IV generation*/
-     QCryptoHashAlgo ivgen_hash_alg;
-@@ -229,7 +229,7 @@ static int qcrypto_block_luks_name_lookup(const char *name,
- 
- #define qcrypto_block_luks_ivgen_name_lookup(name, errp)                \
-     qcrypto_block_luks_name_lookup(name,                                \
--                                   &QCryptoIVGenAlgorithm_lookup,       \
-+                                   &QCryptoIVGenAlgo_lookup,       \
-                                    "IV generator",                      \
-                                    errp)
- 
-@@ -660,7 +660,7 @@ qcrypto_block_luks_parse_header(QCryptoBlockLUKS *luks, Error **errp)
-         return -1;
+@@ -691,7 +691,7 @@ static int block_crypto_open_luks(BlockDriverState *bs,
+                                   int flags,
+                                   Error **errp)
+ {
+-    return block_crypto_open_generic(Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    return block_crypto_open_generic(QCRYPTO_BLOCK_FORMAT_LUKS,
+                                      &block_crypto_runtime_opts_luks,
+                                      bs, options, flags, errp);
+ }
+@@ -724,7 +724,7 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
      }
  
--    if (luks->ivgen_alg == QCRYPTO_IVGEN_ALG_ESSIV) {
-+    if (luks->ivgen_alg == QCRYPTO_IV_GEN_ALGO_ESSIV) {
-         if (!ivhash_name) {
-             error_setg(errp, "Missing IV generator hash specification");
-             return -1;
-@@ -1328,12 +1328,12 @@ qcrypto_block_luks_create(QCryptoBlock *block,
-         luks_opts.cipher_mode = QCRYPTO_CIPHER_MODE_XTS;
-     }
-     if (!luks_opts.has_ivgen_alg) {
--        luks_opts.ivgen_alg = QCRYPTO_IVGEN_ALG_PLAIN64;
-+        luks_opts.ivgen_alg = QCRYPTO_IV_GEN_ALGO_PLAIN64;
-     }
-     if (!luks_opts.has_hash_alg) {
-         luks_opts.hash_alg = QCRYPTO_HASH_ALGO_SHA256;
-     }
--    if (luks_opts.ivgen_alg == QCRYPTO_IVGEN_ALG_ESSIV) {
-+    if (luks_opts.ivgen_alg == QCRYPTO_IV_GEN_ALGO_ESSIV) {
-         if (!luks_opts.has_ivgen_hash_alg) {
-             luks_opts.ivgen_hash_alg = QCRYPTO_HASH_ALGO_SHA256;
-             luks_opts.has_ivgen_hash_alg = true;
-@@ -1384,7 +1384,7 @@ qcrypto_block_luks_create(QCryptoBlock *block,
-     }
+     create_opts = (QCryptoBlockCreateOptions) {
+-        .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++        .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+         .u.luks = *qapi_BlockdevCreateOptionsLUKS_base(luks_opts),
+     };
  
-     cipher_mode = QCryptoCipherMode_str(luks_opts.cipher_mode);
--    ivgen_alg = QCryptoIVGenAlgorithm_str(luks_opts.ivgen_alg);
-+    ivgen_alg = QCryptoIVGenAlgo_str(luks_opts.ivgen_alg);
-     if (luks_opts.has_ivgen_hash_alg) {
-         ivgen_hash_alg = QCryptoHashAlgo_str(luks_opts.ivgen_hash_alg);
-         cipher_mode_spec = g_strdup_printf("%s-%s:%s", cipher_mode, ivgen_alg,
-@@ -1411,7 +1411,7 @@ qcrypto_block_luks_create(QCryptoBlock *block,
-         goto error;
+@@ -889,7 +889,7 @@ block_crypto_get_specific_info_luks(BlockDriverState *bs, Error **errp)
+     if (!info) {
+         return NULL;
+     }
+-    assert(info->format == Q_CRYPTO_BLOCK_FORMAT_LUKS);
++    assert(info->format == QCRYPTO_BLOCK_FORMAT_LUKS);
+ 
+     spec_info = g_new(ImageInfoSpecific, 1);
+     spec_info->type = IMAGE_INFO_SPECIFIC_KIND_LUKS;
+@@ -1002,7 +1002,7 @@ coroutine_fn block_crypto_co_amend_luks(BlockDriverState *bs,
+     QCryptoBlockAmendOptions amend_opts;
+ 
+     amend_opts = (QCryptoBlockAmendOptions) {
+-        .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++        .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+         .u.luks = *qapi_BlockdevAmendOptionsLUKS_base(&opts->u.luks),
+     };
+     return block_crypto_amend_options_generic_luks(bs, &amend_opts,
+diff --git a/block/qcow.c b/block/qcow.c
+index c2f89db055..84d1cca296 100644
+--- a/block/qcow.c
++++ b/block/qcow.c
+@@ -831,7 +831,7 @@ qcow_co_create(BlockdevCreateOptions *opts, Error **errp)
      }
  
--    if (luks_opts.ivgen_alg == QCRYPTO_IVGEN_ALG_ESSIV) {
-+    if (luks_opts.ivgen_alg == QCRYPTO_IV_GEN_ALGO_ESSIV) {
-         luks->ivgen_cipher_alg =
-                 qcrypto_block_luks_essiv_cipher(luks_opts.cipher_alg,
-                                                 luks_opts.ivgen_hash_alg,
-@@ -1886,7 +1886,7 @@ static int qcrypto_block_luks_get_info(QCryptoBlock *block,
-     info->u.luks.cipher_alg = luks->cipher_alg;
-     info->u.luks.cipher_mode = luks->cipher_mode;
-     info->u.luks.ivgen_alg = luks->ivgen_alg;
--    if (info->u.luks.ivgen_alg == QCRYPTO_IVGEN_ALG_ESSIV) {
-+    if (info->u.luks.ivgen_alg == QCRYPTO_IV_GEN_ALGO_ESSIV) {
-         info->u.luks.has_ivgen_hash_alg = true;
-         info->u.luks.ivgen_hash_alg = luks->ivgen_hash_alg;
-     }
-diff --git a/crypto/block-qcow.c b/crypto/block-qcow.c
-index a0ba9c1f2e..054078b895 100644
---- a/crypto/block-qcow.c
-+++ b/crypto/block-qcow.c
-@@ -64,7 +64,7 @@ qcrypto_block_qcow_init(QCryptoBlock *block,
+     if (qcow_opts->encrypt &&
+-        qcow_opts->encrypt->format != Q_CRYPTO_BLOCK_FORMAT_QCOW)
++        qcow_opts->encrypt->format != QCRYPTO_BLOCK_FORMAT_QCOW)
+     {
+         error_setg(errp, "Unsupported encryption format");
+         return -EINVAL;
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 70b19730a3..dd359d241b 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -3214,10 +3214,10 @@ qcow2_set_up_encryption(BlockDriverState *bs,
+     int fmt, ret;
  
-     block->niv = qcrypto_cipher_get_iv_len(QCRYPTO_CIPHER_ALGO_AES_128,
-                                            QCRYPTO_CIPHER_MODE_CBC);
--    block->ivgen = qcrypto_ivgen_new(QCRYPTO_IVGEN_ALG_PLAIN64,
-+    block->ivgen = qcrypto_ivgen_new(QCRYPTO_IV_GEN_ALGO_PLAIN64,
-                                      0, 0, NULL, 0, errp);
-     if (!block->ivgen) {
-         ret = -ENOTSUP;
-diff --git a/crypto/ivgen.c b/crypto/ivgen.c
-index ec0cb1a25b..6b7d24d889 100644
---- a/crypto/ivgen.c
-+++ b/crypto/ivgen.c
-@@ -27,7 +27,7 @@
- #include "ivgen-essiv.h"
- 
- 
--QCryptoIVGen *qcrypto_ivgen_new(QCryptoIVGenAlgorithm alg,
-+QCryptoIVGen *qcrypto_ivgen_new(QCryptoIVGenAlgo alg,
-                                 QCryptoCipherAlgo cipheralg,
-                                 QCryptoHashAlgo hash,
-                                 const uint8_t *key, size_t nkey,
-@@ -40,13 +40,13 @@ QCryptoIVGen *qcrypto_ivgen_new(QCryptoIVGenAlgorithm alg,
-     ivgen->hash = hash;
- 
-     switch (alg) {
--    case QCRYPTO_IVGEN_ALG_PLAIN:
-+    case QCRYPTO_IV_GEN_ALGO_PLAIN:
-         ivgen->driver = &qcrypto_ivgen_plain;
+     switch (cryptoopts->format) {
+-    case Q_CRYPTO_BLOCK_FORMAT_LUKS:
++    case QCRYPTO_BLOCK_FORMAT_LUKS:
+         fmt = QCOW_CRYPT_LUKS;
          break;
--    case QCRYPTO_IVGEN_ALG_PLAIN64:
-+    case QCRYPTO_IV_GEN_ALGO_PLAIN64:
-         ivgen->driver = &qcrypto_ivgen_plain64;
-         break;
--    case QCRYPTO_IVGEN_ALG_ESSIV:
-+    case QCRYPTO_IV_GEN_ALGO_ESSIV:
-         ivgen->driver = &qcrypto_ivgen_essiv;
+-    case Q_CRYPTO_BLOCK_FORMAT_QCOW:
++    case QCRYPTO_BLOCK_FORMAT_QCOW:
+         fmt = QCOW_CRYPT_AES;
          break;
      default:
-@@ -73,7 +73,7 @@ int qcrypto_ivgen_calculate(QCryptoIVGen *ivgen,
- }
+@@ -5306,10 +5306,10 @@ qcow2_get_specific_info(BlockDriverState *bs, Error **errp)
+         ImageInfoSpecificQCow2Encryption *qencrypt =
+             g_new(ImageInfoSpecificQCow2Encryption, 1);
+         switch (encrypt_info->format) {
+-        case Q_CRYPTO_BLOCK_FORMAT_QCOW:
++        case QCRYPTO_BLOCK_FORMAT_QCOW:
+             qencrypt->format = BLOCKDEV_QCOW2_ENCRYPTION_FORMAT_AES;
+             break;
+-        case Q_CRYPTO_BLOCK_FORMAT_LUKS:
++        case QCRYPTO_BLOCK_FORMAT_LUKS:
+             qencrypt->format = BLOCKDEV_QCOW2_ENCRYPTION_FORMAT_LUKS;
+             qencrypt->u.luks = encrypt_info->u.luks;
+             break;
+@@ -5948,7 +5948,7 @@ static int coroutine_fn qcow2_co_amend(BlockDriverState *bs,
+             return -EOPNOTSUPP;
+         }
+ 
+-        if (qopts->encrypt->format != Q_CRYPTO_BLOCK_FORMAT_LUKS) {
++        if (qopts->encrypt->format != QCRYPTO_BLOCK_FORMAT_LUKS) {
+             error_setg(errp,
+                        "Amend can't be used to change the qcow2 encryption format");
+             return -EOPNOTSUPP;
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index 45347adeeb..7b9c7b292d 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -1861,11 +1861,11 @@ qcrypto_block_luks_amend_options(QCryptoBlock *block,
+     QCryptoBlockAmendOptionsLUKS *opts_luks = &options->u.luks;
+ 
+     switch (opts_luks->state) {
+-    case Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE_ACTIVE:
++    case QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE_ACTIVE:
+         return qcrypto_block_luks_amend_add_keyslot(block, readfunc,
+                                                     writefunc, opaque,
+                                                     opts_luks, force, errp);
+-    case Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE_INACTIVE:
++    case QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE_INACTIVE:
+         return qcrypto_block_luks_amend_erase_keyslots(block, readfunc,
+                                                        writefunc, opaque,
+                                                        opts_luks, force, errp);
+diff --git a/crypto/block.c b/crypto/block.c
+index 3bcc4270c3..899561a080 100644
+--- a/crypto/block.c
++++ b/crypto/block.c
+@@ -26,8 +26,8 @@
+ #include "block-luks.h"
+ 
+ static const QCryptoBlockDriver *qcrypto_block_drivers[] = {
+-    [Q_CRYPTO_BLOCK_FORMAT_QCOW] = &qcrypto_block_driver_qcow,
+-    [Q_CRYPTO_BLOCK_FORMAT_LUKS] = &qcrypto_block_driver_luks,
++    [QCRYPTO_BLOCK_FORMAT_QCOW] = &qcrypto_block_driver_qcow,
++    [QCRYPTO_BLOCK_FORMAT_LUKS] = &qcrypto_block_driver_luks,
+ };
  
  
--QCryptoIVGenAlgorithm qcrypto_ivgen_get_algorithm(QCryptoIVGen *ivgen)
-+QCryptoIVGenAlgo qcrypto_ivgen_get_algorithm(QCryptoIVGen *ivgen)
- {
-     return ivgen->algorithm;
- }
 diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
-index 1a0d329368..9217b9a2ef 100644
+index 42cfab6067..2a6c6e99e5 100644
 --- a/tests/unit/test-crypto-block.c
 +++ b/tests/unit/test-crypto-block.c
-@@ -81,7 +81,7 @@ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_plain64 = {
-         .has_cipher_mode = true,
-         .cipher_mode = QCRYPTO_CIPHER_MODE_CBC,
-         .has_ivgen_alg = true,
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
+@@ -39,14 +39,14 @@
+ #endif
+ 
+ static QCryptoBlockCreateOptions qcow_create_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_QCOW,
++    .format = QCRYPTO_BLOCK_FORMAT_QCOW,
+     .u.qcow = {
+         .key_secret = (char *)"sec0",
      },
  };
  
-@@ -95,7 +95,7 @@ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_essiv = {
-         .has_cipher_mode = true,
-         .cipher_mode = QCRYPTO_CIPHER_MODE_CBC,
-         .has_ivgen_alg = true,
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_ESSIV,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_ESSIV,
-         .has_ivgen_hash_alg = true,
-         .ivgen_hash_alg = QCRYPTO_HASH_ALGO_SHA256,
-         .has_hash_alg = true,
-@@ -116,7 +116,7 @@ static struct QCryptoBlockTestData {
-     QCryptoCipherMode cipher_mode;
-     QCryptoHashAlgo hash_alg;
- 
--    QCryptoIVGenAlgorithm ivgen_alg;
-+    QCryptoIVGenAlgo ivgen_alg;
-     QCryptoHashAlgo ivgen_hash;
- 
-     bool slow;
-@@ -131,7 +131,7 @@ static struct QCryptoBlockTestData {
-         .cipher_alg = QCRYPTO_CIPHER_ALGO_AES_128,
-         .cipher_mode = QCRYPTO_CIPHER_MODE_CBC,
- 
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
+ static QCryptoBlockOpenOptions qcow_open_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_QCOW,
++    .format = QCRYPTO_BLOCK_FORMAT_QCOW,
+     .u.qcow = {
+         .key_secret = (char *)"sec0",
      },
+@@ -55,7 +55,7 @@ static QCryptoBlockOpenOptions qcow_open_opts = {
+ 
  #ifdef TEST_LUKS
-     {
-@@ -145,7 +145,7 @@ static struct QCryptoBlockTestData {
-         .cipher_mode = QCRYPTO_CIPHER_MODE_XTS,
-         .hash_alg = QCRYPTO_HASH_ALGO_SHA256,
- 
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
- 
-         .slow = true,
+ static QCryptoBlockOpenOptions luks_open_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
      },
-@@ -160,7 +160,7 @@ static struct QCryptoBlockTestData {
-         .cipher_mode = QCRYPTO_CIPHER_MODE_CBC,
-         .hash_alg = QCRYPTO_HASH_ALGO_SHA256,
+@@ -64,7 +64,7 @@ static QCryptoBlockOpenOptions luks_open_opts = {
  
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
- 
-         .slow = true,
+ /* Creation with all default values */
+ static QCryptoBlockCreateOptions luks_create_opts_default = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
      },
-@@ -175,7 +175,7 @@ static struct QCryptoBlockTestData {
-         .cipher_mode = QCRYPTO_CIPHER_MODE_CBC,
-         .hash_alg = QCRYPTO_HASH_ALGO_SHA1,
+@@ -73,7 +73,7 @@ static QCryptoBlockCreateOptions luks_create_opts_default = {
  
--        .ivgen_alg = QCRYPTO_IVGEN_ALG_ESSIV,
-+        .ivgen_alg = QCRYPTO_IV_GEN_ALGO_ESSIV,
-         .ivgen_hash = QCRYPTO_HASH_ALGO_SHA256,
+ /* ...and with explicit values */
+ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_plain64 = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+         .has_cipher_alg = true,
+@@ -87,7 +87,7 @@ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_plain64 = {
  
-         .slow = true,
-diff --git a/tests/unit/test-crypto-ivgen.c b/tests/unit/test-crypto-ivgen.c
-index 6b4110775a..bc9ffe34e7 100644
---- a/tests/unit/test-crypto-ivgen.c
-+++ b/tests/unit/test-crypto-ivgen.c
-@@ -26,7 +26,7 @@
- struct QCryptoIVGenTestData {
-     const char *path;
-     uint64_t sector;
--    QCryptoIVGenAlgorithm ivalg;
-+    QCryptoIVGenAlgo ivalg;
-     QCryptoHashAlgo hashalg;
-     QCryptoCipherAlgo cipheralg;
-     const uint8_t *key;
-@@ -38,7 +38,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain/1",
-         .sector = 0x1,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN,
-         .iv = (const uint8_t *)"\x01\x00\x00\x00\x00\x00\x00\x00"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -47,7 +47,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain/1f2e3d4c",
-         .sector = 0x1f2e3d4cULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN,
-         .iv = (const uint8_t *)"\x4c\x3d\x2e\x1f\x00\x00\x00\x00"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -56,7 +56,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain/1f2e3d4c5b6a7988",
-         .sector = 0x1f2e3d4c5b6a7988ULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN,
-         .iv = (const uint8_t *)"\x88\x79\x6a\x5b\x00\x00\x00\x00"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -65,7 +65,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain64/1",
-         .sector = 0x1,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
-         .iv = (const uint8_t *)"\x01\x00\x00\x00\x00\x00\x00\x00"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -74,7 +74,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain64/1f2e3d4c",
-         .sector = 0x1f2e3d4cULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
-         .iv = (const uint8_t *)"\x4c\x3d\x2e\x1f\x00\x00\x00\x00"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -83,7 +83,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/plain64/1f2e3d4c5b6a7988",
-         .sector = 0x1f2e3d4c5b6a7988ULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_PLAIN64,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_PLAIN64,
-         .iv = (const uint8_t *)"\x88\x79\x6a\x5b\x4c\x3d\x2e\x1f"
-                                "\x00\x00\x00\x00\x00\x00\x00\x00",
-         .niv = 16,
-@@ -92,7 +92,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/essiv/1",
-         .sector = 0x1,
--        .ivalg = QCRYPTO_IVGEN_ALG_ESSIV,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_ESSIV,
-         .cipheralg = QCRYPTO_CIPHER_ALGO_AES_128,
-         .hashalg = QCRYPTO_HASH_ALGO_SHA256,
-         .key = (const uint8_t *)"\x00\x01\x02\x03\x04\x05\x06\x07"
-@@ -106,7 +106,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/essiv/1f2e3d4c",
-         .sector = 0x1f2e3d4cULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_ESSIV,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_ESSIV,
-         .cipheralg = QCRYPTO_CIPHER_ALGO_AES_128,
-         .hashalg = QCRYPTO_HASH_ALGO_SHA256,
-         .key = (const uint8_t *)"\x00\x01\x02\x03\x04\x05\x06\x07"
-@@ -120,7 +120,7 @@ struct QCryptoIVGenTestData {
-     {
-         "/crypto/ivgen/essiv/1f2e3d4c5b6a7988",
-         .sector = 0x1f2e3d4c5b6a7988ULL,
--        .ivalg = QCRYPTO_IVGEN_ALG_ESSIV,
-+        .ivalg = QCRYPTO_IV_GEN_ALGO_ESSIV,
-         .cipheralg = QCRYPTO_CIPHER_ALGO_AES_128,
-         .hashalg = QCRYPTO_HASH_ALGO_SHA256,
-         .key = (const uint8_t *)"\x00\x01\x02\x03\x04\x05\x06\x07"
-@@ -166,7 +166,7 @@ int main(int argc, char **argv)
-     size_t i;
-     g_test_init(&argc, &argv, NULL);
+ 
+ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_essiv = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+         .has_cipher_alg = true,
+@@ -572,7 +572,7 @@ int main(int argc, char **argv)
+     g_assert(qcrypto_init(NULL) == 0);
+ 
      for (i = 0; i < G_N_ELEMENTS(test_data); i++) {
--        if (test_data[i].ivalg == QCRYPTO_IVGEN_ALG_ESSIV &&
-+        if (test_data[i].ivalg == QCRYPTO_IV_GEN_ALGO_ESSIV &&
-             !qcrypto_hash_supports(test_data[i].hashalg)) {
+-        if (test_data[i].open_opts->format == Q_CRYPTO_BLOCK_FORMAT_LUKS &&
++        if (test_data[i].open_opts->format == QCRYPTO_BLOCK_FORMAT_LUKS &&
+             !qcrypto_hash_supports(test_data[i].hash_alg)) {
              continue;
          }
 -- 
