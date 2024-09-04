@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5C0139CFC;
-	Wed,  4 Sep 2024 03:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2753513AA4C;
+	Wed,  4 Sep 2024 03:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725419684; cv=none; b=sN5lkjCKT/EOa4wHmDOzKI3hZspXThPihW+ehDJritr0+hNlih7AHyYoD/4QnCVTpA72MmY4AxqM/7E9XexQNjhT3FbKK86TawAn8LAff+D2sbVfVQuaREbzYceC+ZQ3F+/SMn+LlkIbLXtsjWrzqKeVSCIt0CITYpVGRCnJ500=
+	t=1725419685; cv=none; b=L18ctWD8vEoIQ1uN5rxwbOGNGX7vyYGOBy2C/INveHakGwHsm5+XdO3Kkg2CmC1CWBA44wWsr30pM/ypebu0TWmbtwZ0n8yGUAyyKoFqL1n4RTVumXxRqmFlFMK/KsQ7cedvHzCjXtBtco1EdDnukP3NgLCHEKyG2xpql75SGas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725419684; c=relaxed/simple;
-	bh=P5V/xRC5gwlM8RuyOqE/ALPqpDAH8g0S2cKP5+h2srI=;
+	s=arc-20240116; t=1725419685; c=relaxed/simple;
+	bh=8+bE6q1YJllLLISK12nO0Yax9Yjf9NeRSGBD2+kh0Hk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QT2FwGCieRJfrmC2ePC3eIlzFYa4DIUvOssjS0dGG/ju+re2sMX9E8VSIxQix2CYeHWE8thPC5Pu9qgasujOCXvzBrBzBiN071g6dJNvP0fLrb39yREIQ2GZPDMPk8paffSk26yio9pyLDuojw6T2hThBURFZadbYZw3hbmZpyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ytze5hD2; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=GwcHU+8/SQ1EffUz3xfMMh8BrLQVZdCKxB6+NL41N3Eghk26mRp7sMOaACg2fKTw71WhCuihCmZHF4xqCizNiE8yfEskfQVenGYhu2DbZuQSnI9hxpeWQ7qajcl7KVsgaKNfSEVgJhaCOgpSTpscgm0ydI1D38yb2p93/7JqGT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E8VpK2Dy; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ytze5hD2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E8VpK2Dy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725419682; x=1756955682;
+  t=1725419683; x=1756955683;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=P5V/xRC5gwlM8RuyOqE/ALPqpDAH8g0S2cKP5+h2srI=;
-  b=Ytze5hD2eClOpgW4s2+SxPRmprQ4Wi+FKilipRhOfcJWh1/3MxXF/aJu
-   aX1/PzqUw+aepiWoxK4xOH4xu/ZxhuTvSgFZc/0ex20eZm96pO486homU
-   7Bd9i4ieY8SqHt1S1JTpANM05Q9eOt7VVyYVewH7wVRWpwWii55RYMNPF
-   Hw6zRcAOPWmRb3tj5HtROjCCebsKBgGu2VWwgwg2tsdWBp2TWJ1CzhPfT
-   phCwphNVBA+VMN92Dx1tLPRKPiUqoHV8DTApPJ7wFAe/7WYZ6j5BwnfS/
-   1B9nap8vx/wnhIYw67rPc+x4NOA/dzd86RTbH/osfNnyzLjclqH2L/cki
-   Q==;
-X-CSE-ConnectionGUID: T3g6alZdQ/mbP7igriSTGA==
-X-CSE-MsgGUID: JlcLZrAeTzK9uHHYuH7YDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564705"
+  bh=8+bE6q1YJllLLISK12nO0Yax9Yjf9NeRSGBD2+kh0Hk=;
+  b=E8VpK2Dy1WFd+T0VNGxU8S0tOXF3dDB/kfn+qqnnXfeZjFPR1RsYTF6V
+   EUDt5dsdaFaceu3/xGFxHt+RXD8GHty3E5CYRlsew71y3rJcOBYnDD9oJ
+   xRbEdwZ+eobg6H+05Ou183SFhQXgrKC/o7dvL9wbC04fjGtHqypS07urq
+   BZ5ulR61d4oOKRJxAq11C9WpQGuxLgzOYNM8EI+FCt4nDeXdbCsIxMSYx
+   bCJnwuymd5owz56IjBgt/LeAiKcMPgwDC2668cu2CiWcwQklLk5AiJkZe
+   /Brw8epMH9EqAcaplNj1RKyLPosoxnsq21AI4TFDL9hcUoFTc6jiqY3ek
+   A==;
+X-CSE-ConnectionGUID: KtmR1/rFRaSNQ98dSRkm7w==
+X-CSE-MsgGUID: 2ujPfcr7RqKEYhhl4DbQ+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564715"
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="23564705"
+   d="scan'208";a="23564715"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:10 -0700
-X-CSE-ConnectionGUID: 37obUln5S3GaxwtSWbZkhw==
-X-CSE-MsgGUID: waJ59fTCT9qWto0vgk/xig==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:11 -0700
+X-CSE-ConnectionGUID: FE1RKMh1T3a2utLTXqrMng==
+X-CSE-MsgGUID: UhPLdk+1QH6pWYMlmbFu2g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="65106341"
+   d="scan'208";a="65106356"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO rpedgeco-desk4..) ([10.124.221.153])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:09 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:10 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -54,9 +54,9 @@ Cc: kai.huang@intel.com,
 	nik.borisov@suse.com,
 	rick.p.edgecombe@intel.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 15/21] KVM: TDX: Implement hook to get max mapping level of private pages
-Date: Tue,  3 Sep 2024 20:07:45 -0700
-Message-Id: <20240904030751.117579-16-rick.p.edgecombe@intel.com>
+Subject: [PATCH 17/21] KVM: TDX: MTRR: implement get_mt_mask() for TDX
+Date: Tue,  3 Sep 2024 20:07:47 -0700
+Message-Id: <20240904030751.117579-18-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
 References: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
@@ -70,93 +70,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Implement hook private_max_mapping_level for TDX to let TDP MMU core get
-max mapping level of private pages.
+Although TDX supports only WB for private GPA, it's desirable to support
+MTRR for shared GPA.  Always honor guest PAT for shared EPT as what's done
+for normal VMs.
 
-The value is hard coded to 4K for no huge page support for now.
-
+Suggested-by: Kai Huang <kai.huang@intel.com>
 Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 TDX MMU part 2 v1:
- - Split from the big patch "KVM: TDX: TDP MMU TDX support".
- - Fix missing tdx_gmem_private_max_mapping_level() implementation for
-   !CONFIG_INTEL_TDX_HOST
+ - Align with latest vmx code in kvm/queue.
+ - Updated patch log.
+ - Dropped KVM_BUG_ON() in vt_get_mt_mask(). (Rick)
 
 v19:
- - Use gmem_max_level callback, delete tdp_max_page_level.
+ - typo in the commit message
+ - Deleted stale paragraph in the commit message
 ---
- arch/x86/kvm/vmx/main.c    | 10 ++++++++++
- arch/x86/kvm/vmx/tdx.c     |  5 +++++
+ arch/x86/kvm/vmx/main.c    | 10 +++++++++-
+ arch/x86/kvm/vmx/tdx.c     |  8 ++++++++
  arch/x86/kvm/vmx/x86_ops.h |  2 ++
- 3 files changed, 17 insertions(+)
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index bf6fd5cca1d6..5d43b44e2467 100644
+index 5d43b44e2467..8f5dbab9099f 100644
 --- a/arch/x86/kvm/vmx/main.c
 +++ b/arch/x86/kvm/vmx/main.c
-@@ -184,6 +184,14 @@ static int vt_vcpu_mem_enc_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
- 	return tdx_vcpu_ioctl(vcpu, argp);
+@@ -168,6 +168,14 @@ static void vt_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+ 	vmx_load_mmu_pgd(vcpu, root_hpa, pgd_level);
  }
  
-+static int vt_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn)
++static u8 vt_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
 +{
-+	if (is_td(kvm))
-+		return tdx_gmem_private_max_mapping_level(kvm, pfn);
++	if (is_td_vcpu(vcpu))
++		return tdx_get_mt_mask(vcpu, gfn, is_mmio);
 +
-+	return 0;
++	return vmx_get_mt_mask(vcpu, gfn, is_mmio);
 +}
 +
- #define VMX_REQUIRED_APICV_INHIBITS				\
- 	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
- 	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
-@@ -337,6 +345,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ static int vt_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
+ {
+ 	if (!is_td(kvm))
+@@ -292,7 +300,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
  
- 	.mem_enc_ioctl = vt_mem_enc_ioctl,
- 	.vcpu_mem_enc_ioctl = vt_vcpu_mem_enc_ioctl,
-+
-+	.private_max_mapping_level = vt_gmem_private_max_mapping_level
- };
+ 	.set_tss_addr = vmx_set_tss_addr,
+ 	.set_identity_map_addr = vmx_set_identity_map_addr,
+-	.get_mt_mask = vmx_get_mt_mask,
++	.get_mt_mask = vt_get_mt_mask,
  
- struct kvm_x86_init_ops vt_init_ops __initdata = {
+ 	.get_exit_info = vmx_get_exit_info,
+ 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b8cd5a629a80..59b627b45475 100644
+index 435112562954..50ce24905062 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1582,6 +1582,11 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
- 	return ret;
+@@ -374,6 +374,14 @@ int tdx_vm_init(struct kvm *kvm)
+ 	return 0;
  }
  
-+int tdx_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn)
++u8 tdx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
 +{
-+	return PG_LEVEL_4K;
++	if (is_mmio)
++		return MTRR_TYPE_UNCACHABLE << VMX_EPT_MT_EPTE_SHIFT;
++
++	return MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT;
 +}
 +
- #define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
- 
- static int __init setup_kvm_tdx_caps(void)
+ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
 diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index d1db807b793a..66829413797d 100644
+index 66829413797d..d8a00ab4651c 100644
 --- a/arch/x86/kvm/vmx/x86_ops.h
 +++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -142,6 +142,7 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+@@ -128,6 +128,7 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp);
+ int tdx_vcpu_create(struct kvm_vcpu *vcpu);
+ void tdx_vcpu_free(struct kvm_vcpu *vcpu);
+ void tdx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
++u8 tdx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
  
- void tdx_flush_tlb_current(struct kvm_vcpu *vcpu);
- void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
-+int tdx_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn);
- #else
- static inline int tdx_vm_init(struct kvm *kvm) { return -EOPNOTSUPP; }
- static inline void tdx_mmu_release_hkid(struct kvm *kvm) {}
-@@ -185,6 +186,7 @@ static inline int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp);
  
- static inline void tdx_flush_tlb_current(struct kvm_vcpu *vcpu) {}
- static inline void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level) {}
-+static inline int tdx_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn) { return 0; }
- #endif
+@@ -153,6 +154,7 @@ static inline int tdx_vm_ioctl(struct kvm *kvm, void __user *argp) { return -EOP
+ static inline int tdx_vcpu_create(struct kvm_vcpu *vcpu) { return -EOPNOTSUPP; }
+ static inline void tdx_vcpu_free(struct kvm_vcpu *vcpu) {}
+ static inline void tdx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event) {}
++static inline u8 tdx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio) { return 0; }
  
- #endif /* __KVM_X86_VMX_X86_OPS_H */
+ static inline int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp) { return -EOPNOTSUPP; }
+ 
 -- 
 2.34.1
 
