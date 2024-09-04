@@ -1,39 +1,75 @@
-Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A69A1D88AF
-	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 12:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E6F1D799E
+	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 12:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725451707; cv=none; b=C2nY1TPJh4tznYfPDjBX7cr2dHyTS/wccW038IRsZoAcgh6lcrCPkan74Vl4iNZsJJWMCr+gNgOmqkTn0KtZjXxTl5kWumd590P6tyw/dkJzqgWnbXlA12WH/XD1s0Ghvk69a+WwEsteXeAeKleOaAkKjG6q0WgSdida/qaUd/k=
+	t=1725452314; cv=none; b=UrLNwMqCbGzVscTrXTsdmY0GA2jx5r4GflOTGDlUgfMQcjRzwBLTyZvjy3CosH9iOIIexd8UWbfvLa+FOERorcIG+oNh0GXHPIrbCJkSJjFA8xAgLmnQKMpmQ9TbGAH9wohJ9bIYmkEif+ni/IzgJfPzbXmH9+lvxX7UopCmEOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725451707; c=relaxed/simple;
-	bh=bFG2FDa9tEWlymKNw56TmGGDzWaKEzCfiyg6afxU3TU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k7i2iU60Tx1DIwzpp2uTxUUw1uLmvHJWbnPdNs7BCRUjlOP4ZOf2Z3ibqedFvCXc8DBhi9Oz1CqM4QQhi6hldntX0JiLlTa1F31Bja1DfnvkHGDQzYyf5xzIYY07Pmqb1jU2TrQvzVKSwwkpQF6qIDf/v/M1Rwa67lPaq7dKO0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ceZh0HyZ; arc=none smtp.client-ip=91.218.175.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1725452314; c=relaxed/simple;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rjVVHYC9nF3G/Sddwv0v2NjeUtf0U59fYm6HUw07X5kc5ez9n2Oy8E282BGZpz4/eHoeak058pdMq9+mH72iJcvFrqiLMoHLfjllAT5dIPIMwWlcKJQcHMHIcrmF2xBY/W+8Zet/ARn0rXCOQJJXcXj8uj2+ASBLozu2fdeBCYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WXREKwDb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ceZh0HyZ"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725451702;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WXREKwDb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725452311;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1FN/cuPZhQTlSUDM6M7twoPiQBEwLUN1Od86oqRrQbw=;
-	b=ceZh0HyZdaLSBTeLH2LZamX988oPNas8BYGVFB7xo7qt0C9kZV5upBKyiGjhaSQ550oocV
-	XdSR3wGVry1ueVMA6g6zq6mjJ1pacv7dEGdgsyQiazda8Az+Wa57oOc1UyYnnNjIqITP3H
-	rvdGEymgNgJCF0R1MUSBcZaDCvVHjIg=
-From: Andrew Jones <andrew.jones@linux.dev>
-To: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org
-Cc: atishp@rivosinc.com,
-	cade.richard@berkeley.edu,
-	jamestiotio@gmail.com
-Subject: [kvm-unit-tests PATCH] riscv: Fix smp_boot_secondary
-Date: Wed,  4 Sep 2024 14:08:13 +0200
-Message-ID: <20240904120812.1798715-2-andrew.jones@linux.dev>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	b=WXREKwDb+1z2B8PQ8qaHrre6k2WPwCofVBPKBjPTk0iNjCMozPx6y1kV78MNSHKzZuprHo
+	N3cyiRmBML5CZ9whthAkDfPGNKpYzz+jFLRGcPanUO+MiVOi11q5e2tYIcyKfKAxnGYCzf
+	B/PHD2IwBKlPmsBCZK0c+X+Mp/y51tw=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84-Bina7-zEP6K1zImvx77ESg-1; Wed, 04 Sep 2024 08:18:30 -0400
+X-MC-Unique: Bina7-zEP6K1zImvx77ESg-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5c244732fe0so3899600a12.3
+        for <kvm@vger.kernel.org>; Wed, 04 Sep 2024 05:18:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725452308; x=1726057108;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+        b=nVy++tVFpyrsuY6uXbbrnKrRlZB+jBKGcU9M0yl7TsuaGfASKetkRIUpkVkqfsg8ur
+         ndTIzjlPU6W35pQpYk61GlDXjmNEYoPD6lQdetnrB9SYPDMvlMWgpkOfcjXaj+mrtn3y
+         YlspeJDgpX5Ez02wDdlZOo4jxT8vqUBEwLB1YmKrJuWV243o98uiKzv+WTWaW+rP0LXz
+         ijRajcnMGxzprswXWqApayYO3DeyoOYN/DJ4nnCNJxntMAVvZTFKy2gZJiP2eFiLCKfx
+         XY75XSaEW1ZP9fLmQ5xEdnv4O+aoNQQmDG9mGmFXxl9QkM13qJxIA4QE1EWlH9Jmn0Je
+         lTgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuDcG3220sWzp16tFRKOxg/kkVAbfiD6rD+bFSlKH2IHKQf9b5XCmc60IpJLTcQsDl7iY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsQQSq9PoxK2oWOp+VgeCWb/EjlxwZwLT0JDIFDXoiwi1UEuVa
+	0tY0qfXUADBDhIq+qOF7VQ5JQj2REPjgRT/rGq00jpGDnxs82yBMSaZE/3SK7a0hZ8sBIKLp7GE
+	qgJYX63dkNxPZhtGh4YpdIUZYcv66w9rh1HDSA+gKFtOhGC1nDA==
+X-Received: by 2002:a05:6402:5109:b0:5c2:6bcd:f6af with SMTP id 4fb4d7f45d1cf-5c2757cefccmr2755815a12.1.1725452307776;
+        Wed, 04 Sep 2024 05:18:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFxvZGZ+CXLF+BO8Fb3vGxvEvg/Sz+txqAK/+ZP+dLSRUU5wDK3OwAq0iF4xr71oELwsYlksA==
+X-Received: by 2002:a05:6402:5109:b0:5c2:6bcd:f6af with SMTP id 4fb4d7f45d1cf-5c2757cefccmr2755796a12.1.1725452307247;
+        Wed, 04 Sep 2024 05:18:27 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c226cd18a3sm7480202a12.66.2024.09.04.05.18.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 05:18:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>,
+	philmd@linaro.org,
+	kvm@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] kvm/i386: make kvm_filter_msr() and related definitions private to kvm module
+Date: Wed,  4 Sep 2024 14:18:23 +0200
+Message-ID: <20240904121823.279720-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240903140045.41167-1-anisinha@redhat.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,40 +77,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-The last few instructions of secondary_entry had the right concept,
-but were the totally wrong implementation. Without setting ra, then,
-when the boot function doesn't stay in an infinite loop, like
-do_idle() would, we'd go off into the weeds when trying to return
-from it. Make sure we set ra to come back to where we can then call
-do_idle() instead. The bug was found by inspection since nobody is
-calling smp_boot_secondary() with anything other than do_idle() at
-this time.
+Queued, thanks.
 
-Fixes: 9c92b28e6b7b ("riscv: Add SMP support")
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
----
- riscv/cstart.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/riscv/cstart.S b/riscv/cstart.S
-index a9ac72df4dd2..8f26999759da 100644
---- a/riscv/cstart.S
-+++ b/riscv/cstart.S
-@@ -130,9 +130,9 @@ secondary_entry:
- 	mv	a0, sp
- 	call	secondary_cinit
- 	addi	sp, sp, SECONDARY_DATA_SIZE
--	jr	a0
--	la	a0, do_idle
--	jr	a0
-+	jalr	ra, a0
-+	call	do_idle
-+	j	.	/* unreachable */
- 
- /*
-  * Save context to address in a0.
--- 
-2.46.0
+Paolo
 
