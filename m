@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D91874418;
-	Wed,  4 Sep 2024 03:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E25678C89;
+	Wed,  4 Sep 2024 03:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725419677; cv=none; b=BncibAK1vwzn991UfAFRb/xB78xG0gYcRdp/lT2HubA4SLZYZmF5mVsSduDBxVJw3IxEfZv3QA0oeYvGMqR7kF693iHoKeE2gmrFd3o/VxE8eZYHG7aeIxkfC282t4V906WKpTOJ8NwKi25KFJQ14CbBNl8t1cMludfG6Ear9Jk=
+	t=1725419678; cv=none; b=bX6uexTVMvzBSg7qqdZ9yLr1dk7Hf50YPsEjf4te+JTi42rqK2WPkP06W5jekUnnb8t8VVkeu47BiThvT3JXA/VqobaDtW7F+7p0URYXxzjYNMxRG03JgkWSn2/R73Gyf8Ly1TTipSiQV9E4UlhDPKLbUSLrJ/y9EVRbCkLnjUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725419677; c=relaxed/simple;
-	bh=m0aJmLVGUjr94xP1ERSToS276WOj1bIg2E0s9dvuB1U=;
+	s=arc-20240116; t=1725419678; c=relaxed/simple;
+	bh=wkKEjNDf9/+HaaMVib+qLpU8xC2xWIBhbLnIL7xU3wQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FGUEbswwsly00iMcLTHzzX+MKY6sdKzMwBrfHDwZDSOh/3hbTnvebv3Is3vjujDcEg1PRUkUAdLwc+5JHGTBGAJA8IMsczCWkGiWNYhSfIGE3D3I3VxdN9IBJu/QTp24AeFKkdEqyqPzoahluZqWrpW0YrRl87h9OfSZeJmejLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EA686JL/; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=NS1GRc8HJy6A4F13KAAqH/3wsus7cTub6+EByAouRoc0jNeop/fHOHvclFDC2PdiMrThrnFzc5eB1jenEdY3eO7B+t7ZGYtXxr7XdMuG0DZm6rZzvIni1GlnhzI4tRx1/ShJlRJGwa6i4ZatwYdEs47rTYtpjwRKsWRY3iCz0IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FuMhmiZO; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EA686JL/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FuMhmiZO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725419675; x=1756955675;
+  t=1725419676; x=1756955676;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=m0aJmLVGUjr94xP1ERSToS276WOj1bIg2E0s9dvuB1U=;
-  b=EA686JL/fEoN22Og7t1rGXbPlc6TQXDK9R/w6f65EV/rUZH5OXs9ocCp
-   6Hgw0JQAYUzhLIrxxIG8G2NhBUbmkvTb5JMQVluw3PzYE3x4x6R/Ce7/L
-   P7oM65pXt10nBaR9kxfKOB3o3+7Na5pHcOlKig6OIXZh/mWY3+r7yA05T
-   htDnk8JoUig6J2EYmrZJ6tt/YeKYRpsp6p0SlttnseW6YK8NK1pKPVEjl
-   /8D5zNf6PAlcIWf1bDog4W48CljcgUGvMd98chIH2fwt81w49Q3tiNyKB
-   ypx8nHwIfy0fDzjrWc0VzBk/VACPTr9FsuBa/BoDvjZCqDrQMZJAG3bCq
-   Q==;
-X-CSE-ConnectionGUID: 4WKa0l1bQCqj7gDhLSS+pg==
-X-CSE-MsgGUID: eFGCdBUGQnqr32N5NJFyrg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564665"
+  bh=wkKEjNDf9/+HaaMVib+qLpU8xC2xWIBhbLnIL7xU3wQ=;
+  b=FuMhmiZOV/85/nINHxEG9J8nEAlBdntjBgcW7ZPiNYgruc5wHnhmGH4M
+   4LtmAGHo2ZyrONsYcH4cLo8X9fWPM7btOA/XdduvHSXBx2o5EqOsnFFPa
+   ynhilOaVmFrLZAcOLNx+Xlfg53Gvpcdw20EG4l44N0dA/Ck3qL+DnWNME
+   FlJq/d2QBLyGRjLzEKN39k1eWyu2IY12WRdNQe4FZsYvYOZNSrZ8BBf8u
+   lFgnJqaZ0Js44dvpcnsThyRS4a3cm8inlCyRt/sfZ6RGSJH5kmJjBE1Nx
+   EhLIAFYWV/I+LQtmy27fKR39SssU2vEQtvqZN5SpwgZNlp9dCZgZBsyCV
+   A==;
+X-CSE-ConnectionGUID: 2jvrWJ6qTZCT4Wb/usF8tw==
+X-CSE-MsgGUID: 0SmFZtFvQYK/AaCy9LfWuA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564649"
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="23564665"
+   d="scan'208";a="23564649"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:08 -0700
-X-CSE-ConnectionGUID: 2x/iTZbURAehzn8Ov8nFrg==
-X-CSE-MsgGUID: K/RD8d26TzqXJwI0iKeSMw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:01 -0700
+X-CSE-ConnectionGUID: QeHFI92JTWqjtygkrbQ+Kg==
+X-CSE-MsgGUID: S1XkK/AATJ6p4U249fE61A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="65106270"
+   d="scan'208";a="65106251"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO rpedgeco-desk4..) ([10.124.221.153])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:02 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:01 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -54,9 +54,9 @@ Cc: kai.huang@intel.com,
 	nik.borisov@suse.com,
 	rick.p.edgecombe@intel.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 08/21] KVM: TDX: Set gfn_direct_bits to shared bit
-Date: Tue,  3 Sep 2024 20:07:38 -0700
-Message-Id: <20240904030751.117579-9-rick.p.edgecombe@intel.com>
+Subject: [PATCH 06/21] KVM: TDX: Add accessors VMX VMCS helpers
+Date: Tue,  3 Sep 2024 20:07:36 -0700
+Message-Id: <20240904030751.117579-7-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
 References: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
@@ -70,41 +70,123 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Make the direct root handle memslot GFNs at an alias with the TDX shared
-bit set.
-
-For TDX shared memory, the memslot GFNs need to be mapped at an alias with
-the shared bit set. These shared mappings will be be mapped on the KVM
-MMU's "direct" root. The direct root has it's mappings shifted by
-applying "gfn_direct_bits" as a mask. The concept of "GPAW" (guest
-physical address width) determines the location of the shared bit. So set
-gfn_direct_bits based on this, to map shared memory at the proper GPA.
+TDX defines SEAMCALL APIs to access TDX control structures corresponding to
+the VMX VMCS.  Introduce helper accessors to hide its SEAMCALL ABI details.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 TDX MMU part 2 v1:
- - Move setting of gfn_direct_bits to separate patch (Yan)
----
- arch/x86/kvm/vmx/tdx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ - Update for the wrapper functions for SEAMCALLs. (Sean)
+ - Eliminate kvm_mmu_free_private_spt() and open code it.
+ - Fix bisectability issues in headers (Kai)
+ - Updates from seamcall overhaul (Kai)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 8f43977ef4c6..25c24901061b 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -921,6 +921,11 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
- 	kvm_tdx->attributes = td_params->attributes;
- 	kvm_tdx->xfam = td_params->xfam;
+v19:
+ - deleted unnecessary stub functions,
+   tdvps_state_non_arch_check() and tdvps_management_check().
+---
+ arch/x86/kvm/vmx/tdx.h | 87 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index 7eeb54fbcae1..66540c57ed61 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -76,6 +76,93 @@ static __always_inline struct vcpu_tdx *to_tdx(struct kvm_vcpu *vcpu)
+  */
+ #include "tdx_ops.h"
  
-+	if (td_params->exec_controls & TDX_EXEC_CONTROL_MAX_GPAW)
-+		kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(51));
-+	else
-+		kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(47));
++static __always_inline void tdvps_vmcs_check(u32 field, u8 bits)
++{
++#define VMCS_ENC_ACCESS_TYPE_MASK	0x1UL
++#define VMCS_ENC_ACCESS_TYPE_FULL	0x0UL
++#define VMCS_ENC_ACCESS_TYPE_HIGH	0x1UL
++#define VMCS_ENC_ACCESS_TYPE(field)	((field) & VMCS_ENC_ACCESS_TYPE_MASK)
 +
- out:
- 	/* kfree() accepts NULL. */
- 	kfree(init_vm);
++	/* TDX is 64bit only.  HIGH field isn't supported. */
++	BUILD_BUG_ON_MSG(__builtin_constant_p(field) &&
++			 VMCS_ENC_ACCESS_TYPE(field) == VMCS_ENC_ACCESS_TYPE_HIGH,
++			 "Read/Write to TD VMCS *_HIGH fields not supported");
++
++	BUILD_BUG_ON(bits != 16 && bits != 32 && bits != 64);
++
++#define VMCS_ENC_WIDTH_MASK	GENMASK(14, 13)
++#define VMCS_ENC_WIDTH_16BIT	(0UL << 13)
++#define VMCS_ENC_WIDTH_64BIT	(1UL << 13)
++#define VMCS_ENC_WIDTH_32BIT	(2UL << 13)
++#define VMCS_ENC_WIDTH_NATURAL	(3UL << 13)
++#define VMCS_ENC_WIDTH(field)	((field) & VMCS_ENC_WIDTH_MASK)
++
++	/* TDX is 64bit only.  i.e. natural width = 64bit. */
++	BUILD_BUG_ON_MSG(bits != 64 && __builtin_constant_p(field) &&
++			 (VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_64BIT ||
++			  VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_NATURAL),
++			 "Invalid TD VMCS access for 64-bit field");
++	BUILD_BUG_ON_MSG(bits != 32 && __builtin_constant_p(field) &&
++			 VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_32BIT,
++			 "Invalid TD VMCS access for 32-bit field");
++	BUILD_BUG_ON_MSG(bits != 16 && __builtin_constant_p(field) &&
++			 VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_16BIT,
++			 "Invalid TD VMCS access for 16-bit field");
++}
++
++#define TDX_BUILD_TDVPS_ACCESSORS(bits, uclass, lclass)				\
++static __always_inline u##bits td_##lclass##_read##bits(struct vcpu_tdx *tdx,	\
++							u32 field)		\
++{										\
++	u64 err, data;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_rd(tdx, TDVPS_##uclass(field), &data);			\
++	if (KVM_BUG_ON(err, tdx->vcpu.kvm)) {					\
++		pr_err("TDH_VP_RD["#uclass".0x%x] failed: 0x%llx\n",		\
++		       field, err);						\
++		return 0;							\
++	}									\
++	return (u##bits)data;							\
++}										\
++static __always_inline void td_##lclass##_write##bits(struct vcpu_tdx *tdx,	\
++						      u32 field, u##bits val)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(tdx, TDVPS_##uclass(field), val,			\
++		      GENMASK_ULL(bits - 1, 0));				\
++	if (KVM_BUG_ON(err, tdx->vcpu.kvm))					\
++		pr_err("TDH_VP_WR["#uclass".0x%x] = 0x%llx failed: 0x%llx\n",	\
++		       field, (u64)val, err);					\
++}										\
++static __always_inline void td_##lclass##_setbit##bits(struct vcpu_tdx *tdx,	\
++						       u32 field, u64 bit)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(tdx, TDVPS_##uclass(field), bit, bit);			\
++	if (KVM_BUG_ON(err, tdx->vcpu.kvm))					\
++		pr_err("TDH_VP_WR["#uclass".0x%x] |= 0x%llx failed: 0x%llx\n",	\
++		       field, bit, err);					\
++}										\
++static __always_inline void td_##lclass##_clearbit##bits(struct vcpu_tdx *tdx,	\
++							 u32 field, u64 bit)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(tdx, TDVPS_##uclass(field), 0, bit);			\
++	if (KVM_BUG_ON(err, tdx->vcpu.kvm))					\
++		pr_err("TDH_VP_WR["#uclass".0x%x] &= ~0x%llx failed: 0x%llx\n",	\
++		       field, bit,  err);					\
++}
++
++TDX_BUILD_TDVPS_ACCESSORS(16, VMCS, vmcs);
++TDX_BUILD_TDVPS_ACCESSORS(32, VMCS, vmcs);
++TDX_BUILD_TDVPS_ACCESSORS(64, VMCS, vmcs);
+ #else
+ static inline void tdx_bringup(void) {}
+ static inline void tdx_cleanup(void) {}
 -- 
 2.34.1
 
