@@ -1,66 +1,66 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A9384A36
-	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 06:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745BB3D6B
+	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 06:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725430231; cv=none; b=heVaaYRB7anO077QEM1Tn0mteZY2uU64yWFyrb3h+GJ1QAL8XmUs82AXlUVa/uJ0iHZKwfsiH3HJEIUDe33RhkQQEgPFONp7YUpOpPeTHMVgKxJZKry1Cd0UBEEN7n1mJTSofFHJcH8BrWxWKYcHV5yx19c+70VXXXZAiDmCyoA=
+	t=1725430564; cv=none; b=LnkXLKmOgSdGs/8eNlWBfnl4WPJqtWOAhMdPcuXSPDo+fkBee7JkQsmKBK3LQMPYtQqqLWl1h5QdR6BNCmZre2cCXOlTR/eqw3JFZVzQktE/vSeAua7BaHWo9LHKOQ/DA/ZAOm+433r+W2MtNY4whA0lY/FcRs7Pb1yXp6YAIng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725430231; c=relaxed/simple;
-	bh=/qr1qZBgzj4Bl3UmsQg/YF4ckGvsFa5uUnsPbgL5cWE=;
+	s=arc-20240116; t=1725430564; c=relaxed/simple;
+	bh=bwl7J8Ei0oLXUFycI7mAAA8XLCISgfFwAHSrsJFGlrA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gkGtohOYEN+IdJMlLcUCz3uYAgM6KTiL1RDEJk0vfLJabva2FDXYzwzNShSWT/ZGUPx3ih+mXkagCFkBfU0Z+NA8FAdmwL6aJ6pgm1d60+sbh4WAczbt/Ciu3mQX03XlCJuqrkpvA3rJePgd13arEN8V4tNK0VOzWQ+AVVbC2XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Az0zsf+c; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=LzvINNEK6C7W8MEOqW7yIspscwh6WYYQT5RgPxYmRQyLGZexU2VhyrSAIVLazL5HKxFd1i4afNi6P5tK0ARr3wwPCzhvPHHGx49h6f67V9cqI6f44xKSH8GLB5nIBioHivYgi6gfzZo7G1FojEGh/NB/8VzqoqpuPWr17w4CF9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JOs91JMn; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Az0zsf+c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOs91JMn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725430228;
+	s=mimecast20190719; t=1725430561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
-	b=Az0zsf+cNf4tNkJWQnKP7uMM1XToP2o2q3oRmrZV5su4LjTCUfAchTSMSQ/usQZvplaahn
-	DO1rtfN105Qqd33S3pmenrRnNp7DbIZL1+3OjqQDds7OmmNislot8p1Y3c74KvE3UWfGDe
-	CZ71sugEhjGWx4G6IcxXgnxpzEpyHPU=
+	bh=pFi+GvA472wwOZH0lUKoPWTzWmpUD/+iLOVkN6gRHFI=;
+	b=JOs91JMnIfq1lzhmIDwCTX3wZqXPNmqFbSR/sBBa7vAv3wXzDMcdwGeCrmCxlNFm3oukDg
+	xwPRFCPFNJ9SVS64UNjLUbnk0HQISE2vbZiYTuTEc1d3pst836v8vc4n0AuUw11lYWkZAR
+	3lI90ncZKlQKv0i0AHGz5qxHFEhESHc=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-Mta0MHULPSGzGUI3S2XrdA-1; Wed, 04 Sep 2024 02:10:27 -0400
-X-MC-Unique: Mta0MHULPSGzGUI3S2XrdA-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a8696019319so460436166b.1
-        for <kvm@vger.kernel.org>; Tue, 03 Sep 2024 23:10:27 -0700 (PDT)
+ us-mta-251-dNg8sJYaMLCVPEJwkMUZ8g-1; Wed, 04 Sep 2024 02:12:29 -0400
+X-MC-Unique: dNg8sJYaMLCVPEJwkMUZ8g-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a7a83fad218so556376066b.3
+        for <kvm@vger.kernel.org>; Tue, 03 Sep 2024 23:12:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725430226; x=1726035026;
+        d=1e100.net; s=20230601; t=1725430348; x=1726035148;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
-        b=LLb/u25fgtGtGi2vSebQpdbL0+GjmnPsoMHWOHp+P3GyOdHJzcxj4jrl3CkT1ooiTx
-         NapJCvYt/yFnJMZ6W+aN0xsV6YVRzqVxt+ah8uycFIbZ/YyHBm5/iFC0gPiBrrfN86cQ
-         d2l7iH7EYQZ2IO6/iOi0LAQzzigxvxSAbyp3kgsAhi52RrECKJwcmwnZTx4/dzh6XPnI
-         YOpWz0EIvyAAjy0VAyZ2+Yh5iAc7/lDPVbInnwChRtFlyULxgRXcokeDFLMPTVTxq623
-         9p3/pEGwrrBMrxouzXkcgClEWrpAzdm0KMkApw2RmmCv0GJCV0cxSAAxG0E/KZeaku3s
-         /ZOA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0ZM57kogv6LA/CpgD1qCyB9fxV3Mb4O6s7lvN5hJO+5RTwz3AQ7dPJk0Zkz6efqikLvU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8ANaEUZqb9xhzSZ4ZXoMeE6Gg9WOLWAEV0ZeX7ly6Izxpq7C1
-	9JypVajATd2cKA/gFThnk+5PTBSTiSh1RfqnDGN8jftHq5lyYCpT7rPUwkUyo1rTeZT4dUimVne
-	33pWpxOMrYihFT3fXO3c1nmdQTUL5lLY54FYMamPu38PkXflThA==
-X-Received: by 2002:a17:907:7e98:b0:a7a:97ca:3059 with SMTP id a640c23a62f3a-a89b9568fb7mr914180566b.34.1725430225924;
-        Tue, 03 Sep 2024 23:10:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2R4cP9J+W47K4+S/93+/qMlByI9g4pLQSot/De5DcDW6cAfj6YNv4/0hVq6CwiaDFPMR8sw==
-X-Received: by 2002:a17:907:7e98:b0:a7a:97ca:3059 with SMTP id a640c23a62f3a-a89b9568fb7mr914178066b.34.1725430225410;
-        Tue, 03 Sep 2024 23:10:25 -0700 (PDT)
+        bh=pFi+GvA472wwOZH0lUKoPWTzWmpUD/+iLOVkN6gRHFI=;
+        b=QSMCEUrRJlTNI/QdvE4UlfGScD5ccYLYtxZmSDjXvC8sW0fGDsdmsp6SctwJZk8TTH
+         Ey2VcR97MI8IC7G4JrrB6yDi0xVSX6aHZiLMfZa/D5wcu6QOlyDrkYEMaEBmKJDXN3c3
+         srFURKRwkviZGNjlRuuKP8uEFsmaNtio9noqRN/+WvBTTkqS0ej3AqM8prSRQ+zy6a/b
+         qMzVX4DhtqFpQNRq7bM/tZVbsk9qDxa4V/YNDlRZnYbloB3/za9brhgfyPLZBOoww96Q
+         OGE8LkEEwJT3ijG6tqoaDmJnKvf7hDJp8goSWR83i2E4M0x5HGPhtd3gKDnBa6Jf63XR
+         5HEg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSy4N2SPl3QKIyH05++azO+kE1i8TayqPT37PDwYxTxOF/4YM9WmpNGCQfzqJTCutKXbI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyo6FXJOSOlsRjhOopbnG4Z+zdLSkXL9vSfmQnwSbSOymMunzL
+	RCVFg7xEzm4hExmzjqKswOMInDHp6p9nujiQZS8S0e4awGkxW+BIgFZRdvS6u82IKXsYUnuTRcw
+	a6DxRVOrpf0+hDdNQNTLbSAZfuiXbU5YsFf+0tXBPleMdu4759w==
+X-Received: by 2002:a17:907:968a:b0:a86:7b01:7dcc with SMTP id a640c23a62f3a-a89b94c72ddmr951639066b.18.1725430348604;
+        Tue, 03 Sep 2024 23:12:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDGkN9s2Jmw7XcWlEqSmMDSJiOFB+htHItlggYvkQ9RraTtZHA1IDxBlv8WOsHPBd0lfuW2g==
+X-Received: by 2002:a17:907:968a:b0:a86:7b01:7dcc with SMTP id a640c23a62f3a-a89b94c72ddmr951636566b.18.1725430348097;
+        Tue, 03 Sep 2024 23:12:28 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de. [109.43.176.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a898900e746sm768992066b.52.2024.09.03.23.10.23
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8988feb767sm773020966b.16.2024.09.03.23.12.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Sep 2024 23:10:24 -0700 (PDT)
-Message-ID: <f8c797ae-a8de-4e6f-a1b5-c0db79e15011@redhat.com>
-Date: Wed, 4 Sep 2024 08:10:23 +0200
+        Tue, 03 Sep 2024 23:12:27 -0700 (PDT)
+Message-ID: <7ef4ee12-ce0b-41e6-904a-ff43ee571be1@redhat.com>
+Date: Wed, 4 Sep 2024 08:12:25 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,8 +68,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 2/3] configure: Support cross compiling
- with clang
+Subject: Re: [kvm-unit-tests PATCH 1/3] riscv: Drop mstrict-align
 To: Andrew Jones <andrew.jones@linux.dev>, kvm@vger.kernel.org,
  kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
@@ -77,7 +76,7 @@ Cc: pbonzini@redhat.com, lvivier@redhat.com, frankja@linux.ibm.com,
  imbrenda@linux.ibm.com, nrb@linux.ibm.com, atishp@rivosinc.com,
  cade.richard@berkeley.edu, jamestiotio@gmail.com
 References: <20240903163046.869262-5-andrew.jones@linux.dev>
- <20240903163046.869262-7-andrew.jones@linux.dev>
+ <20240903163046.869262-6-andrew.jones@linux.dev>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -122,32 +121,33 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240903163046.869262-7-andrew.jones@linux.dev>
+In-Reply-To: <20240903163046.869262-6-andrew.jones@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 03/09/2024 18.30, Andrew Jones wrote:
-> When a user specifies the compiler with --cc assume it's already
-> fully named, even if the user also specifies a cross-prefix. This
-> allows clang to be selected for the compiler, which doesn't use
-> prefixes, but also still provide a cross prefix for binutils. If
-> a user needs a prefix on the compiler that they specify with --cc,
-> then they'll just have to specify it with the prefix prepended.
-> 
-> Also ensure user provided cflags are used when testing the compiler,
-> since the flags may drastically change behavior, such as the --target
-> flag for clang.
-> 
-> With these changes it's possible to cross compile for riscv with
-> clang after configuring with
-> 
->   ./configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' \
->               --cross-prefix=riscv64-linux-gnu-
+> The spec says unaligned accesses are supported, so this isn't required
+> and clang doesn't support it. A platform might have slow unaligned
+> accesses, but kvm-unit-tests isn't about speed anyway.
 > 
 > Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 > ---
->   configure | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
+>   riscv/Makefile | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/riscv/Makefile b/riscv/Makefile
+> index 179a373dbacf..2ee7c5bb5ad8 100644
+> --- a/riscv/Makefile
+> +++ b/riscv/Makefile
+> @@ -76,7 +76,7 @@ LDFLAGS += -melf32lriscv
+>   endif
+>   CFLAGS += -DCONFIG_RELOC
+>   CFLAGS += -mcmodel=medany
+> -CFLAGS += -mstrict-align
+> +#CFLAGS += -mstrict-align
+>   CFLAGS += -std=gnu99
+>   CFLAGS += -ffreestanding
+>   CFLAGS += -O2
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
