@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2147D6CDCC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C3973451;
 	Wed,  4 Sep 2024 03:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725419676; cv=none; b=BO3YIusfBXpR0CC6PRKjyw7pyvqpRudM6sZJeXB+yhOjjtIKYqwFwFMgH2/1B5rxXCDOkjppYt0j7Q0jfasQCcIhegq9CiAMQr0e3bCpCPRYhzuw7DtBzp61DPTe9uSyN7OV4SEMC0uvsqqtKYb2JzRY5Uq3VEHzJ2qZaK0bmVI=
+	t=1725419676; cv=none; b=tU/JWVFokS4eU3C3T6oDhq3CIDbC4B/3xBkFxUzCv7NdDj/PqSczVE45FFNILa3Lzw+yFxqwqinwDQhwI8+Iz/Rz7MGU8CuDmeSWKXphgsHHKY4jotY9UxTGqWxX0Rj9PaFY44iAzU3LUnJPD4/uXeFM4RE18sCchsL997xpr64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725419676; c=relaxed/simple;
-	bh=dJIz3M3DQymfcueoB4QfkdH4fJLqj05YhkoxZc/qRRw=;
+	bh=XkVvA1F9Zc4YZMj/WX+e9PpU3SrBeleKnicgyV8p5Ho=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O/EzowXS8+g3lORv9m9m/8TdXtTwc0BDSm5NduBT8fHpq/RYWOAs+xdWHSrAEd5HWelgX5XtVSNcv6FaXvgwm5yphjagbphxD81Jz/WTnZBEa7+qSlDPle6jgJkOU6MyBFUDzSzyz/R/lAv44kngXB0YPtQcj2CG3h3VGP9Jw6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dBtbhDRU; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=GJX0UHeUtiGJlURBOoNL1F2z4BWUB8FekUtXhOpUinDrBs1VLeDuPHvMyIIcQ6KPCTpeGCb+8i3UZs3QvC2OvasNSCepCp6mKc4POYinJ6lUOK+z9qPPEFZ3Z1dYUQanflF9lnlf2WXbIo8UOFBzQWCR+N0Wd9D8wWZ2ixhma/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kaDwkPcv; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dBtbhDRU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kaDwkPcv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725419674; x=1756955674;
+  t=1725419675; x=1756955675;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dJIz3M3DQymfcueoB4QfkdH4fJLqj05YhkoxZc/qRRw=;
-  b=dBtbhDRUR/32fxvoKNUUF2TDJYV5E+nLnmW/3SsItHQdwhSzqlGEhpbs
-   34lNGkqQcv450k/4fL2T/VVcjacOAazyfr/QXPSGLGkJ1i5/ZYgNsiGbu
-   kYXvqtZvC47Vvjml0GYIsD+dWJGEiWLCDgO1c6N6ylQDQYs7qfBTLr5OU
-   XFIQTwmAlrC0zEdVU4xJgbo7Y+YzSXXYd0+qes7uwMq8Eku4qWXVRjgmq
-   gqxcgKfHxNNOFOqo6nzwod7ZjBRFvphzyZJ1bU7Foo0PAlvEu3PoU2fRl
-   sFZTV+DaQg0/gdUrFCTtzlD9WFCoa3Md+KLOAsILh8b+NFhFMtttxR1oT
-   Q==;
-X-CSE-ConnectionGUID: wJ2ZBED9SAOcvJ9Z3qKE+Q==
-X-CSE-MsgGUID: Sn8lkDxtSki6rZduVkXE8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564637"
+  bh=XkVvA1F9Zc4YZMj/WX+e9PpU3SrBeleKnicgyV8p5Ho=;
+  b=kaDwkPcvONtbO/LkzhhTyLe966cqZgRyjASJpDsMocyOkQb9mXWscCI3
+   u7YXMepjBSSyAa2rga5Idx3mBF6lDnvgMGQrUhVHDRzLgBJvPnrGv8hbV
+   MERNOkUUxONzekNn4UovII7snhkzZKoSZsBA7fNCySXDcd1iU7qbpb//S
+   kvK1WlqCX410bEZYXKALDq19uqIo20iO6aKzQHt52b2bFi7e+r4tMcNTn
+   QVCAprFTd+lxJ3C+1xAYSS80M2XWqGunQR9ZG9Xx4Afy0Ra71OXF+vvv2
+   4bqJr5wHmEEk8jY49UhHnfqPxxhIrNK3bt9jd35UZJTjxwbe1PGkRL7qH
+   w==;
+X-CSE-ConnectionGUID: QESr2VnAQT2pZQqQ0fSjlQ==
+X-CSE-MsgGUID: 9oEqC8NnT46l2yzWFhLjSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23564656"
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="23564637"
+   d="scan'208";a="23564656"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:00 -0700
-X-CSE-ConnectionGUID: x5BXQv0NRdqDhTPGtlCUSQ==
-X-CSE-MsgGUID: WvSENB9dTYOaxEYMYBWDiw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:02 -0700
+X-CSE-ConnectionGUID: AZ5I2h3vTvO7+55aKkm1bw==
+X-CSE-MsgGUID: zWCtVkeqRr+hfWQlcxm+wg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,200,1719903600"; 
-   d="scan'208";a="65106237"
+   d="scan'208";a="65106257"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO rpedgeco-desk4..) ([10.124.221.153])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:07:59 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 20:08:01 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -53,11 +53,10 @@ Cc: kai.huang@intel.com,
 	yan.y.zhao@intel.com,
 	nik.borisov@suse.com,
 	rick.p.edgecombe@intel.com,
-	linux-kernel@vger.kernel.org,
-	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: [PATCH 04/21] KVM: VMX: Split out guts of EPT violation to common/exposed function
-Date: Tue,  3 Sep 2024 20:07:34 -0700
-Message-Id: <20240904030751.117579-5-rick.p.edgecombe@intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 07/21] KVM: TDX: Add load_mmu_pgd method for TDX
+Date: Tue,  3 Sep 2024 20:07:37 -0700
+Message-Id: <20240904030751.117579-8-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
 References: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
@@ -71,121 +70,121 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <sean.j.christopherson@intel.com>
 
-The difference of TDX EPT violation is how to retrieve information, GPA,
-and exit qualification.  To share the code to handle EPT violation, split
-out the guts of EPT violation handler so that VMX/TDX exit handler can call
-it after retrieving GPA and exit qualification.
+TDX uses two EPT pointers, one for the private half of the GPA space and
+one for the shared half. The private half uses the normal EPT_POINTER vmcs
+field, which is managed in a special way by the TDX module. For TDX, KVM is
+not allowed to operate on it directly. The shared half uses a new
+SHARED_EPT_POINTER field and will be managed by the conventional MMU
+management operations that operate directly on the EPT root. This means for
+TDX the .load_mmu_pgd() operation will need to know to use the
+SHARED_EPT_POINTER field instead of the normal one. Add a new wrapper in
+x86 ops for load_mmu_pgd() that either directs the write to the existing
+vmx implementation or a TDX one.
+
+tdx_load_mmu_pgd() is so much simpler than vmx_load_mmu_pgd() since for the
+TDX mode of operation, EPT will always be used and KVM does not need to be
+involved in virtualization of CR3 behavior. So tdx_load_mmu_pgd() can
+simply write to SHARED_EPT_POINTER.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
- arch/x86/kvm/vmx/common.h | 34 ++++++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.c    | 25 +++----------------------
- 2 files changed, 37 insertions(+), 22 deletions(-)
- create mode 100644 arch/x86/kvm/vmx/common.h
+TDX MMU part 2 v1:
+- update the commit msg with the version rephrased by Rick.
+  https://lore.kernel.org/all/78b1024ec3f5868e228baf797c6be98c5397bd49.camel@intel.com/
 
-diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-new file mode 100644
-index 000000000000..78ae39b6cdcd
---- /dev/null
-+++ b/arch/x86/kvm/vmx/common.h
-@@ -0,0 +1,34 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __KVM_X86_VMX_COMMON_H
-+#define __KVM_X86_VMX_COMMON_H
-+
-+#include <linux/kvm_host.h>
-+
-+#include "mmu.h"
-+
-+static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
-+					     unsigned long exit_qualification)
-+{
-+	u64 error_code;
-+
-+	/* Is it a read fault? */
-+	error_code = (exit_qualification & EPT_VIOLATION_ACC_READ)
-+		     ? PFERR_USER_MASK : 0;
-+	/* Is it a write fault? */
-+	error_code |= (exit_qualification & EPT_VIOLATION_ACC_WRITE)
-+		      ? PFERR_WRITE_MASK : 0;
-+	/* Is it a fetch fault? */
-+	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
-+		      ? PFERR_FETCH_MASK : 0;
-+	/* ept page table entry is present? */
-+	error_code |= (exit_qualification & EPT_VIOLATION_RWX_MASK)
-+		      ? PFERR_PRESENT_MASK : 0;
-+
-+	if (error_code & EPT_VIOLATION_GVA_IS_VALID)
-+		error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) ?
-+			      PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
-+
-+	return kvm_mmu_page_fault(vcpu, gpa, error_code, NULL, 0);
-+}
-+
-+#endif /* __KVM_X86_VMX_COMMON_H */
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 5e7b5732f35d..ade7666febe9 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -53,6 +53,7 @@
- #include <trace/events/ipi.h>
- 
- #include "capabilities.h"
-+#include "common.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "kvm_onhyperv.h"
-@@ -5771,11 +5772,8 @@ static int handle_task_switch(struct kvm_vcpu *vcpu)
- 
- static int handle_ept_violation(struct kvm_vcpu *vcpu)
- {
--	unsigned long exit_qualification;
-+	unsigned long exit_qualification = vmx_get_exit_qual(vcpu);
- 	gpa_t gpa;
--	u64 error_code;
--
--	exit_qualification = vmx_get_exit_qual(vcpu);
- 
- 	/*
- 	 * EPT violation happened while executing iret from NMI,
-@@ -5791,23 +5789,6 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
- 	gpa = vmcs_read64(GUEST_PHYSICAL_ADDRESS);
- 	trace_kvm_page_fault(vcpu, gpa, exit_qualification);
- 
--	/* Is it a read fault? */
--	error_code = (exit_qualification & EPT_VIOLATION_ACC_READ)
--		     ? PFERR_USER_MASK : 0;
--	/* Is it a write fault? */
--	error_code |= (exit_qualification & EPT_VIOLATION_ACC_WRITE)
--		      ? PFERR_WRITE_MASK : 0;
--	/* Is it a fetch fault? */
--	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
--		      ? PFERR_FETCH_MASK : 0;
--	/* ept page table entry is present? */
--	error_code |= (exit_qualification & EPT_VIOLATION_RWX_MASK)
--		      ? PFERR_PRESENT_MASK : 0;
--
--	if (error_code & EPT_VIOLATION_GVA_IS_VALID)
--		error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) ?
--			      PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
--
- 	/*
- 	 * Check that the GPA doesn't exceed physical memory limits, as that is
- 	 * a guest page fault.  We have to emulate the instruction here, because
-@@ -5819,7 +5800,7 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
- 	if (unlikely(allow_smaller_maxphyaddr && !kvm_vcpu_is_legal_gpa(vcpu, gpa)))
- 		return kvm_emulate_instruction(vcpu, 0);
- 
--	return kvm_mmu_page_fault(vcpu, gpa, error_code, NULL, 0);
-+	return __vmx_handle_ept_violation(vcpu, gpa, exit_qualification);
+v19:
+- Add WARN_ON_ONCE() to tdx_load_mmu_pgd() and drop unconditional mask
+---
+ arch/x86/include/asm/vmx.h |  1 +
+ arch/x86/kvm/vmx/main.c    | 13 ++++++++++++-
+ arch/x86/kvm/vmx/tdx.c     |  5 +++++
+ arch/x86/kvm/vmx/x86_ops.h |  4 ++++
+ 4 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index d77a31039f24..3e003183a4f7 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -237,6 +237,7 @@ enum vmcs_field {
+ 	TSC_MULTIPLIER_HIGH             = 0x00002033,
+ 	TERTIARY_VM_EXEC_CONTROL	= 0x00002034,
+ 	TERTIARY_VM_EXEC_CONTROL_HIGH	= 0x00002035,
++	SHARED_EPT_POINTER		= 0x0000203C,
+ 	PID_POINTER_TABLE		= 0x00002042,
+ 	PID_POINTER_TABLE_HIGH		= 0x00002043,
+ 	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index d63685ea95ce..c9dfa3aa866c 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -100,6 +100,17 @@ static void vt_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	vmx_vcpu_reset(vcpu, init_event);
  }
  
- static int handle_ept_misconfig(struct kvm_vcpu *vcpu)
++static void vt_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa,
++			int pgd_level)
++{
++	if (is_td_vcpu(vcpu)) {
++		tdx_load_mmu_pgd(vcpu, root_hpa, pgd_level);
++		return;
++	}
++
++	vmx_load_mmu_pgd(vcpu, root_hpa, pgd_level);
++}
++
+ static int vt_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
+ {
+ 	if (!is_td(kvm))
+@@ -229,7 +240,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.write_tsc_offset = vmx_write_tsc_offset,
+ 	.write_tsc_multiplier = vmx_write_tsc_multiplier,
+ 
+-	.load_mmu_pgd = vmx_load_mmu_pgd,
++	.load_mmu_pgd = vt_load_mmu_pgd,
+ 
+ 	.check_intercept = vmx_check_intercept,
+ 	.handle_exit_irqoff = vmx_handle_exit_irqoff,
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 2ef95c84ee5b..8f43977ef4c6 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -428,6 +428,11 @@ void tdx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	 */
+ }
+ 
++void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
++{
++	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
++}
++
+ static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
+ {
+ 	const struct tdx_sys_info_td_conf *td_conf = &tdx_sysinfo->td_conf;
+diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+index debc6877729a..dcf2b36efbb9 100644
+--- a/arch/x86/kvm/vmx/x86_ops.h
++++ b/arch/x86/kvm/vmx/x86_ops.h
+@@ -130,6 +130,8 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu);
+ void tdx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
+ 
+ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp);
++
++void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
+ #else
+ static inline int tdx_vm_init(struct kvm *kvm) { return -EOPNOTSUPP; }
+ static inline void tdx_mmu_release_hkid(struct kvm *kvm) {}
+@@ -142,6 +144,8 @@ static inline void tdx_vcpu_free(struct kvm_vcpu *vcpu) {}
+ static inline void tdx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event) {}
+ 
+ static inline int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp) { return -EOPNOTSUPP; }
++
++static inline void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level) {}
+ #endif
+ 
+ #endif /* __KVM_X86_VMX_X86_OPS_H */
 -- 
 2.34.1
 
