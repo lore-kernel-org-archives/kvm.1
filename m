@@ -1,48 +1,48 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4A71DA10D
-	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 11:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B2C1DA2F1
+	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 11:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448741; cv=none; b=Mj9FmRYeq+9GLnBdnXfaKO6+0fn6uG/+L4SvH70JZr0Di5aI8QsLR7B1+qXdjb7ZjKivBG1oe2s+/HQH8xDPeDUvT7idk3x9CC7o4DAJDjTdup5xUcf3JF5mXUZ5tw0EyDdVJX5BpP5KvX1IUxtG1TJCuLnJ27eLsVGrbPCsQWU=
+	t=1725448741; cv=none; b=KWyyCKityGhis2cAKUgOS3BQ8lZxD5e919n6PIU1Jeq2X4IdbltsK18dvAAN/7hVuRFwppyHhc4LMAE6XESP5Cca+M5/JO0SnTdiwY+N3+c9EaghO7dBmpYR/TyXINZ4YER4GUwMls9FpSwvVXtzpBYMqOow4oR5Zb5i41WN5PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725448741; c=relaxed/simple;
-	bh=GeIXOItTnRU6mjSzcDZrn5ve5B2kkMOZfL5J88jWn80=;
+	bh=cLe2CtGHMvHhEnBeaKWCKZnP+W3HBt0fDmmzhNodvBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ao7eA9zVvTiIv4dobpYIz615nusAGZN4yhbZ7NqhFks5oPvr/ujCMWZgm0ma7LmuEA/VFZ6jWErnhUllAzuddK03zhTeuPLoACeDgQA+HgHzjmv1a7RuFB3s5XkVf+4EmHWmxEljvdeeH8j/0B4kd7UbBpCUKev4/viRiU82M/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WLuO6AeR; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=dEX+9zSPJ4GeKo4zB73EFvAONcU/SZoNjEyphdrbqYnbOAvI3et0GLn+PizPyA+8QYhiTA/0yBp69gXyod87IL9CotWQxP9ATIzBz/ZvfJ+lKIEGHs8XCuLacgooxbE9zzvmQ+A9Cz8JO3spDN4bHJmRFMU9ZEqXDNZz0G5qrQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SGGtDQhf; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WLuO6AeR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SGGtDQhf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725448737;
+	s=mimecast20190719; t=1725448738;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MjUHoQUWEQZufLYm+5meP3FvBAhucIo90QTzT/mE2fg=;
-	b=WLuO6AeRAY5iZP4ys0L/7QkU2UYG+2fR9PZZgg0rmhvmR+NR8WrEH6MoENzlsXLGinwFNt
-	hfLDg3goYmPJRZkKh+e7UDTlMUD3rSwQK7Lj5FnN8Jdz3DkuIH+TzeqemsnaB1CnCjBUCi
-	bBmMNKNAicTPZWatXVUTgbAYKBRI9nQ=
+	bh=exP//E9i5wK2gHhGXlaYilKR5VvVnUFMPHblLY32rno=;
+	b=SGGtDQhfxxntbgN4X+4BqNacSsoNHOE62q1kw1gpBiUGGOfgmMJbiZsk0N2McTa9FACP+b
+	CfxT6sMjuQdKrCdXqYTnJ+KuZuyVbbZwK+k1WNEPqJH65FhGPVTTaSCOUSKRLppnT63Knk
+	e2jmFcbDY6jnqYCffBjh+isKB/w7UI4=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-OsK3oRsuOyiaiP7MSTnNqw-1; Wed,
- 04 Sep 2024 07:18:51 -0400
-X-MC-Unique: OsK3oRsuOyiaiP7MSTnNqw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-PrQIcrxeMyCg09Ng8bdaoQ-1; Wed,
+ 04 Sep 2024 07:18:49 -0400
+X-MC-Unique: PrQIcrxeMyCg09Ng8bdaoQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 660E019560A3;
-	Wed,  4 Sep 2024 11:18:47 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 066021955D59;
+	Wed,  4 Sep 2024 11:18:45 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A08D7300019A;
-	Wed,  4 Sep 2024 11:18:46 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1688730001AB;
+	Wed,  4 Sep 2024 11:18:44 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id CDA0121E681A; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
+	id B976521E6828; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com,
@@ -94,9 +94,9 @@ Cc: alex.williamson@redhat.com,
 	qemu-s390x@nongnu.org,
 	kvm@vger.kernel.org,
 	avihaih@nvidia.com
-Subject: [PATCH v2 14/19] qapi/crypto: Rename QCryptoAkCipherAlgorithm to *Algo, and drop prefix
-Date: Wed,  4 Sep 2024 13:18:31 +0200
-Message-ID: <20240904111836.3273842-15-armbru@redhat.com>
+Subject: [PATCH v2 10/19] qapi/crypto: Drop unwanted 'prefix'
+Date: Wed,  4 Sep 2024 13:18:27 +0200
+Message-ID: <20240904111836.3273842-11-armbru@redhat.com>
 In-Reply-To: <20240904111836.3273842-1-armbru@redhat.com>
 References: <20240904111836.3273842-1-armbru@redhat.com>
 Precedence: bulk
@@ -113,239 +113,325 @@ QAPI's 'prefix' feature can make the connection between enumeration
 type and its constants less than obvious.  It's best used with
 restraint.
 
-QCryptoAkCipherAlgorithm has a 'prefix' that overrides the generated
-enumeration constants' prefix to QCRYPTO_AKCIPHER_ALG.
+QCryptoAkCipherKeyType has a 'prefix' that overrides the generated
+enumeration constants' prefix to QCRYPTO_AKCIPHER_KEY_TYPE.
 
-We could simply drop 'prefix', but then the prefix becomes
-QCRYPTO_AK_CIPHER_ALGORITHM, which is rather long.
-
-We could additionally rename the type to QCryptoAkCipherAlg, but I
-think the abbreviation "alg" is less than clear.
-
-Rename the type to QCryptoAkCipherAlgo instead.  The prefix becomes
-QCRYPTO_AK_CIPHER_ALGO.
+Drop it.  The prefix becomes QCRYPTO_AK_CIPHER_KEY_TYPE.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/crypto.json                        |  7 +++----
- crypto/akcipherpriv.h                   |  2 +-
+ qapi/crypto.json                        |  1 -
  backends/cryptodev-builtin.c            |  4 ++--
- backends/cryptodev-lkcf.c               |  4 ++--
- crypto/akcipher.c                       |  2 +-
+ backends/cryptodev-lkcf.c               |  6 +++---
  tests/bench/benchmark-crypto-akcipher.c |  2 +-
- tests/unit/test-crypto-akcipher.c       | 10 +++++-----
- crypto/akcipher-gcrypt.c.inc            |  4 ++--
- crypto/akcipher-nettle.c.inc            |  4 ++--
- 9 files changed, 19 insertions(+), 20 deletions(-)
+ tests/unit/test-crypto-akcipher.c       | 28 ++++++++++++-------------
+ crypto/akcipher-gcrypt.c.inc            |  8 +++----
+ crypto/akcipher-nettle.c.inc            |  8 +++----
+ crypto/rsakey-builtin.c.inc             |  4 ++--
+ crypto/rsakey-nettle.c.inc              |  4 ++--
+ 9 files changed, 32 insertions(+), 33 deletions(-)
 
 diff --git a/qapi/crypto.json b/qapi/crypto.json
-index 3e6a7fb8e5..331d49ebb8 100644
+index fb00c706b2..b5c25e7cd9 100644
 --- a/qapi/crypto.json
 +++ b/qapi/crypto.json
-@@ -586,7 +586,7 @@
-             '*sanity-check': 'bool',
-             '*passwordid': 'str' } }
- ##
--# @QCryptoAkCipherAlgorithm:
-+# @QCryptoAkCipherAlgo:
- #
- # The supported algorithms for asymmetric encryption ciphers
- #
-@@ -594,8 +594,7 @@
- #
+@@ -609,7 +609,6 @@
  # Since: 7.1
  ##
--{ 'enum': 'QCryptoAkCipherAlgorithm',
--  'prefix': 'QCRYPTO_AKCIPHER_ALG',
-+{ 'enum': 'QCryptoAkCipherAlgo',
-   'data': ['rsa']}
+ { 'enum': 'QCryptoAkCipherKeyType',
+-  'prefix': 'QCRYPTO_AKCIPHER_KEY_TYPE',
+   'data': ['public', 'private']}
  
  ##
-@@ -649,6 +648,6 @@
- # Since: 7.1
- ##
- { 'union': 'QCryptoAkCipherOptions',
--  'base': { 'alg': 'QCryptoAkCipherAlgorithm' },
-+  'base': { 'alg': 'QCryptoAkCipherAlgo' },
-   'discriminator': 'alg',
-   'data': { 'rsa': 'QCryptoAkCipherOptionsRSA' }}
-diff --git a/crypto/akcipherpriv.h b/crypto/akcipherpriv.h
-index 739f639bcf..3b33e54f08 100644
---- a/crypto/akcipherpriv.h
-+++ b/crypto/akcipherpriv.h
-@@ -27,7 +27,7 @@
- typedef struct QCryptoAkCipherDriver QCryptoAkCipherDriver;
- 
- struct QCryptoAkCipher {
--    QCryptoAkCipherAlgorithm alg;
-+    QCryptoAkCipherAlgo alg;
-     QCryptoAkCipherKeyType type;
-     int max_plaintext_len;
-     int max_ciphertext_len;
 diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 2672755661..d8b64091b6 100644
+index 940104ee55..e95af9bb72 100644
 --- a/backends/cryptodev-builtin.c
 +++ b/backends/cryptodev-builtin.c
-@@ -64,7 +64,7 @@ static void cryptodev_builtin_init_akcipher(CryptoDevBackend *backend)
- {
-     QCryptoAkCipherOptions opts;
+@@ -334,11 +334,11 @@ static int cryptodev_builtin_create_akcipher_session(
  
--    opts.alg = QCRYPTO_AKCIPHER_ALG_RSA;
-+    opts.alg = QCRYPTO_AK_CIPHER_ALGO_RSA;
-     opts.u.rsa.padding_alg = QCRYPTO_RSA_PADDING_ALG_RAW;
-     if (qcrypto_akcipher_supports(&opts)) {
-         backend->conf.crypto_services |=
-@@ -318,7 +318,7 @@ static int cryptodev_builtin_create_akcipher_session(
+     switch (sess_info->keytype) {
+     case VIRTIO_CRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
+-        type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC;
++        type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC;
+         break;
  
-     switch (sess_info->algo) {
-     case VIRTIO_CRYPTO_AKCIPHER_RSA:
--        opts.alg = QCRYPTO_AKCIPHER_ALG_RSA;
-+        opts.alg = QCRYPTO_AK_CIPHER_ALGO_RSA;
-         if (cryptodev_builtin_set_rsa_options(sess_info->u.rsa.padding_algo,
-             sess_info->u.rsa.hash_algo, &opts.u.rsa, errp) != 0) {
-             return -1;
-diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
-index 6e6012e716..6fb6e03d98 100644
---- a/backends/cryptodev-lkcf.c
-+++ b/backends/cryptodev-lkcf.c
-@@ -133,7 +133,7 @@ static int cryptodev_lkcf_set_op_desc(QCryptoAkCipherOptions *opts,
-                                       Error **errp)
- {
-     QCryptoAkCipherOptionsRSA *rsa_opt;
--    if (opts->alg != QCRYPTO_AKCIPHER_ALG_RSA) {
-+    if (opts->alg != QCRYPTO_AK_CIPHER_ALGO_RSA) {
-         error_setg(errp, "Unsupported alg: %u", opts->alg);
-         return -1;
-     }
-@@ -518,7 +518,7 @@ static int cryptodev_lkcf_create_asym_session(
- 
-     switch (sess_info->algo) {
-     case VIRTIO_CRYPTO_AKCIPHER_RSA:
--        sess->akcipher_opts.alg = QCRYPTO_AKCIPHER_ALG_RSA;
-+        sess->akcipher_opts.alg = QCRYPTO_AK_CIPHER_ALGO_RSA;
-         if (cryptodev_lkcf_set_rsa_opt(
-             sess_info->u.rsa.padding_algo, sess_info->u.rsa.hash_algo,
-             &sess->akcipher_opts.u.rsa, &local_error) != 0) {
-diff --git a/crypto/akcipher.c b/crypto/akcipher.c
-index e4bbc6e5f1..0a0576b792 100644
---- a/crypto/akcipher.c
-+++ b/crypto/akcipher.c
-@@ -115,7 +115,7 @@ int qcrypto_akcipher_export_p8info(const QCryptoAkCipherOptions *opts,
-                                    Error **errp)
- {
-     switch (opts->alg) {
--    case QCRYPTO_AKCIPHER_ALG_RSA:
-+    case QCRYPTO_AK_CIPHER_ALGO_RSA:
-         qcrypto_akcipher_rsakey_export_p8info(key, keylen, dst, dst_len);
-         return 0;
- 
-diff --git a/tests/bench/benchmark-crypto-akcipher.c b/tests/bench/benchmark-crypto-akcipher.c
-index 0029972385..225e426bde 100644
---- a/tests/bench/benchmark-crypto-akcipher.c
-+++ b/tests/bench/benchmark-crypto-akcipher.c
-@@ -25,7 +25,7 @@ static QCryptoAkCipher *create_rsa_akcipher(const uint8_t *priv_key,
- {
-     QCryptoAkCipherOptions opt;
- 
--    opt.alg = QCRYPTO_AKCIPHER_ALG_RSA;
-+    opt.alg = QCRYPTO_AK_CIPHER_ALGO_RSA;
-     opt.u.rsa.padding_alg = padding;
-     opt.u.rsa.hash_alg = hash;
-     return qcrypto_akcipher_new(&opt, QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
-diff --git a/tests/unit/test-crypto-akcipher.c b/tests/unit/test-crypto-akcipher.c
-index 86501f19ab..7dd86125c2 100644
---- a/tests/unit/test-crypto-akcipher.c
-+++ b/tests/unit/test-crypto-akcipher.c
-@@ -785,7 +785,7 @@ static QCryptoAkCipherTestData akcipher_test_data[] = {
-     {
-         .path = "/crypto/akcipher/rsa1024-raw",
-         .opt = {
--            .alg = QCRYPTO_AKCIPHER_ALG_RSA,
-+            .alg = QCRYPTO_AK_CIPHER_ALGO_RSA,
-             .u.rsa = {
-                 .padding_alg = QCRYPTO_RSA_PADDING_ALG_RAW,
-             },
-@@ -805,7 +805,7 @@ static QCryptoAkCipherTestData akcipher_test_data[] = {
-     {
-         .path = "/crypto/akcipher/rsa1024-pkcs1",
-         .opt = {
--            .alg = QCRYPTO_AKCIPHER_ALG_RSA,
-+            .alg = QCRYPTO_AK_CIPHER_ALGO_RSA,
-             .u.rsa = {
-                 .padding_alg = QCRYPTO_RSA_PADDING_ALG_PKCS1,
-                 .hash_alg = QCRYPTO_HASH_ALGO_SHA1,
-@@ -830,7 +830,7 @@ static QCryptoAkCipherTestData akcipher_test_data[] = {
-     {
-         .path = "/crypto/akcipher/rsa2048-raw",
-         .opt = {
--            .alg = QCRYPTO_AKCIPHER_ALG_RSA,
-+            .alg = QCRYPTO_AK_CIPHER_ALGO_RSA,
-             .u.rsa = {
-                 .padding_alg = QCRYPTO_RSA_PADDING_ALG_RAW,
-             },
-@@ -850,7 +850,7 @@ static QCryptoAkCipherTestData akcipher_test_data[] = {
-     {
-         .path = "/crypto/akcipher/rsa2048-pkcs1",
-         .opt = {
--            .alg = QCRYPTO_AKCIPHER_ALG_RSA,
-+            .alg = QCRYPTO_AK_CIPHER_ALGO_RSA,
-             .u.rsa = {
-                 .padding_alg = QCRYPTO_RSA_PADDING_ALG_PKCS1,
-                 .hash_alg = QCRYPTO_HASH_ALGO_SHA1,
-@@ -944,7 +944,7 @@ static void test_rsakey(const void *opaque)
- {
-     const QCryptoRSAKeyTestData *data = (const QCryptoRSAKeyTestData *)opaque;
-     QCryptoAkCipherOptions opt = {
--        .alg = QCRYPTO_AKCIPHER_ALG_RSA,
-+        .alg = QCRYPTO_AK_CIPHER_ALGO_RSA,
-         .u.rsa = {
-             .padding_alg = QCRYPTO_RSA_PADDING_ALG_PKCS1,
-             .hash_alg = QCRYPTO_HASH_ALGO_SHA1,
-diff --git a/crypto/akcipher-gcrypt.c.inc b/crypto/akcipher-gcrypt.c.inc
-index 2c81de97de..8f1c2b8143 100644
---- a/crypto/akcipher-gcrypt.c.inc
-+++ b/crypto/akcipher-gcrypt.c.inc
-@@ -59,7 +59,7 @@ QCryptoAkCipher *qcrypto_akcipher_new(const QCryptoAkCipherOptions *opts,
-                                       Error **errp)
- {
-     switch (opts->alg) {
--    case QCRYPTO_AKCIPHER_ALG_RSA:
-+    case QCRYPTO_AK_CIPHER_ALGO_RSA:
-         return (QCryptoAkCipher *)qcrypto_gcrypt_rsa_new(
-             &opts->u.rsa, type, key, keylen, errp);
- 
-@@ -568,7 +568,7 @@ error:
- bool qcrypto_akcipher_supports(QCryptoAkCipherOptions *opts)
- {
-     switch (opts->alg) {
--    case QCRYPTO_AKCIPHER_ALG_RSA:
-+    case QCRYPTO_AK_CIPHER_ALGO_RSA:
-         switch (opts->u.rsa.padding_alg) {
-         case QCRYPTO_RSA_PADDING_ALG_RAW:
-             return true;
-diff --git a/crypto/akcipher-nettle.c.inc b/crypto/akcipher-nettle.c.inc
-index 37a579fbd9..21f27f8286 100644
---- a/crypto/akcipher-nettle.c.inc
-+++ b/crypto/akcipher-nettle.c.inc
-@@ -61,7 +61,7 @@ QCryptoAkCipher *qcrypto_akcipher_new(const QCryptoAkCipherOptions *opts,
-                                       Error **errp)
- {
-     switch (opts->alg) {
--    case QCRYPTO_AKCIPHER_ALG_RSA:
-+    case QCRYPTO_AK_CIPHER_ALGO_RSA:
-         return qcrypto_nettle_rsa_new(&opts->u.rsa, type, key, keylen, errp);
+     case VIRTIO_CRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
+-        type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE;
++        type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE;
+         break;
  
      default:
-@@ -425,7 +425,7 @@ error:
- bool qcrypto_akcipher_supports(QCryptoAkCipherOptions *opts)
+diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
+index 45aba1ff67..e1ee11a158 100644
+--- a/backends/cryptodev-lkcf.c
++++ b/backends/cryptodev-lkcf.c
+@@ -322,7 +322,7 @@ static void cryptodev_lkcf_execute_task(CryptoDevLKCFTask *task)
+      * 2. generally, public key related compution is fast, just compute it with
+      * thread-pool.
+      */
+-    if (session->keytype == QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE) {
++    if (session->keytype == QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE) {
+         if (qcrypto_akcipher_export_p8info(&session->akcipher_opts,
+                                            session->key, session->keylen,
+                                            &p8info, &p8info_len,
+@@ -534,11 +534,11 @@ static int cryptodev_lkcf_create_asym_session(
+ 
+     switch (sess_info->keytype) {
+     case VIRTIO_CRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
+-        sess->keytype = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC;
++        sess->keytype = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC;
+         break;
+ 
+     case VIRTIO_CRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
+-        sess->keytype = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE;
++        sess->keytype = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE;
+         break;
+ 
+     default:
+diff --git a/tests/bench/benchmark-crypto-akcipher.c b/tests/bench/benchmark-crypto-akcipher.c
+index 5e68cb0a1c..bbc29c9b12 100644
+--- a/tests/bench/benchmark-crypto-akcipher.c
++++ b/tests/bench/benchmark-crypto-akcipher.c
+@@ -28,7 +28,7 @@ static QCryptoAkCipher *create_rsa_akcipher(const uint8_t *priv_key,
+     opt.alg = QCRYPTO_AKCIPHER_ALG_RSA;
+     opt.u.rsa.padding_alg = padding;
+     opt.u.rsa.hash_alg = hash;
+-    return qcrypto_akcipher_new(&opt, QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++    return qcrypto_akcipher_new(&opt, QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+                                 priv_key, keylen, &error_abort);
+ }
+ 
+diff --git a/tests/unit/test-crypto-akcipher.c b/tests/unit/test-crypto-akcipher.c
+index 4f1f4214dd..59bc6f1e69 100644
+--- a/tests/unit/test-crypto-akcipher.c
++++ b/tests/unit/test-crypto-akcipher.c
+@@ -692,7 +692,7 @@ struct QCryptoAkCipherTestData {
+ static QCryptoRSAKeyTestData rsakey_test_data[] = {
+     {
+         .path = "/crypto/akcipher/rsakey-1024-public",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa1024_public_key,
+         .keylen = sizeof(rsa1024_public_key),
+         .is_valid_key = true,
+@@ -700,7 +700,7 @@ static QCryptoRSAKeyTestData rsakey_test_data[] = {
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-1024-private",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+         .key = rsa1024_private_key,
+         .keylen = sizeof(rsa1024_private_key),
+         .is_valid_key = true,
+@@ -708,7 +708,7 @@ static QCryptoRSAKeyTestData rsakey_test_data[] = {
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-2048-public",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa2048_public_key,
+         .keylen = sizeof(rsa2048_public_key),
+         .is_valid_key = true,
+@@ -716,7 +716,7 @@ static QCryptoRSAKeyTestData rsakey_test_data[] = {
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-2048-private",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+         .key = rsa2048_private_key,
+         .keylen = sizeof(rsa2048_private_key),
+         .is_valid_key = true,
+@@ -724,56 +724,56 @@ static QCryptoRSAKeyTestData rsakey_test_data[] = {
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-public-lack-elem",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa_public_key_lack_element,
+         .keylen = sizeof(rsa_public_key_lack_element),
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-private-lack-elem",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+         .key = rsa_private_key_lack_element,
+         .keylen = sizeof(rsa_private_key_lack_element),
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-public-empty-elem",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa_public_key_empty_element,
+         .keylen = sizeof(rsa_public_key_empty_element),
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-private-empty-elem",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+         .key = rsa_private_key_empty_element,
+         .keylen = sizeof(rsa_private_key_empty_element),
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-public-empty-key",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = NULL,
+         .keylen = 0,
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-private-empty-key",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+         .key = NULL,
+         .keylen = 0,
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-public-invalid-length-val",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa_public_key_invalid_length_val,
+         .keylen = sizeof(rsa_public_key_invalid_length_val),
+         .is_valid_key = false,
+     },
+     {
+         .path = "/crypto/akcipher/rsakey-public-extra-elem",
+-        .key_type = QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++        .key_type = QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+         .key = rsa_public_key_extra_elem,
+         .keylen = sizeof(rsa_public_key_extra_elem),
+         .is_valid_key = false,
+@@ -885,12 +885,12 @@ static void test_akcipher(const void *opaque)
+         return;
+     }
+     pub_key = qcrypto_akcipher_new(&data->opt,
+-                                   QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC,
++                                   QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC,
+                                    data->pub_key, data->pub_key_len,
+                                    &error_abort);
+     g_assert(pub_key != NULL);
+     priv_key = qcrypto_akcipher_new(&data->opt,
+-                                    QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE,
++                                    QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE,
+                                     data->priv_key, data->priv_key_len,
+                                     &error_abort);
+     g_assert(priv_key != NULL);
+diff --git a/crypto/akcipher-gcrypt.c.inc b/crypto/akcipher-gcrypt.c.inc
+index abb1fb272e..e942d43421 100644
+--- a/crypto/akcipher-gcrypt.c.inc
++++ b/crypto/akcipher-gcrypt.c.inc
+@@ -85,7 +85,7 @@ static int qcrypto_gcrypt_parse_rsa_private_key(
+     const uint8_t *key, size_t keylen, Error **errp)
  {
-     switch (opts->alg) {
--    case QCRYPTO_AKCIPHER_ALG_RSA:
-+    case QCRYPTO_AK_CIPHER_ALGO_RSA:
-         switch (opts->u.rsa.padding_alg) {
-         case QCRYPTO_RSA_PADDING_ALG_PKCS1:
-             switch (opts->u.rsa.hash_alg) {
+     g_autoptr(QCryptoAkCipherRSAKey) rsa_key = qcrypto_akcipher_rsakey_parse(
+-        QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE, key, keylen, errp);
++        QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE, key, keylen, errp);
+     gcry_mpi_t n = NULL, e = NULL, d = NULL, p = NULL, q = NULL, u = NULL;
+     bool compute_mul_inv = false;
+     int ret = -1;
+@@ -178,7 +178,7 @@ static int qcrypto_gcrypt_parse_rsa_public_key(QCryptoGcryptRSA *rsa,
+ {
+ 
+     g_autoptr(QCryptoAkCipherRSAKey) rsa_key = qcrypto_akcipher_rsakey_parse(
+-        QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC, key, keylen, errp);
++        QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC, key, keylen, errp);
+     gcry_mpi_t n = NULL, e = NULL;
+     int ret = -1;
+     gcry_error_t err;
+@@ -540,13 +540,13 @@ static QCryptoGcryptRSA *qcrypto_gcrypt_rsa_new(
+     rsa->akcipher.driver = &gcrypt_rsa;
+ 
+     switch (type) {
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE:
+         if (qcrypto_gcrypt_parse_rsa_private_key(rsa, key, keylen, errp) != 0) {
+             goto error;
+         }
+         break;
+ 
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC:
+         if (qcrypto_gcrypt_parse_rsa_public_key(rsa, key, keylen, errp) != 0) {
+             goto error;
+         }
+diff --git a/crypto/akcipher-nettle.c.inc b/crypto/akcipher-nettle.c.inc
+index 02699e6e6d..62ac8699c4 100644
+--- a/crypto/akcipher-nettle.c.inc
++++ b/crypto/akcipher-nettle.c.inc
+@@ -87,7 +87,7 @@ static int qcrypt_nettle_parse_rsa_private_key(QCryptoNettleRSA *rsa,
+                                                Error **errp)
+ {
+     g_autoptr(QCryptoAkCipherRSAKey) rsa_key = qcrypto_akcipher_rsakey_parse(
+-        QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE, key, keylen, errp);
++        QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE, key, keylen, errp);
+ 
+     if (!rsa_key) {
+         return -1;
+@@ -137,7 +137,7 @@ static int qcrypt_nettle_parse_rsa_public_key(QCryptoNettleRSA *rsa,
+                                               Error **errp)
+ {
+     g_autoptr(QCryptoAkCipherRSAKey) rsa_key = qcrypto_akcipher_rsakey_parse(
+-        QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC, key, keylen, errp);
++        QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC, key, keylen, errp);
+ 
+     if (!rsa_key) {
+         return -1;
+@@ -397,13 +397,13 @@ static QCryptoAkCipher *qcrypto_nettle_rsa_new(
+     rsa_private_key_init(&rsa->priv);
+ 
+     switch (type) {
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE:
+         if (qcrypt_nettle_parse_rsa_private_key(rsa, key, keylen, errp) != 0) {
+             goto error;
+         }
+         break;
+ 
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC:
+         if (qcrypt_nettle_parse_rsa_public_key(rsa, key, keylen, errp) != 0) {
+             goto error;
+         }
+diff --git a/crypto/rsakey-builtin.c.inc b/crypto/rsakey-builtin.c.inc
+index 46cc7afe87..6337b84c54 100644
+--- a/crypto/rsakey-builtin.c.inc
++++ b/crypto/rsakey-builtin.c.inc
+@@ -183,10 +183,10 @@ QCryptoAkCipherRSAKey *qcrypto_akcipher_rsakey_parse(
+     size_t keylen, Error **errp)
+ {
+     switch (type) {
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE:
+         return qcrypto_builtin_rsa_private_key_parse(key, keylen, errp);
+ 
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC:
+         return qcrypto_builtin_rsa_public_key_parse(key, keylen, errp);
+ 
+     default:
+diff --git a/crypto/rsakey-nettle.c.inc b/crypto/rsakey-nettle.c.inc
+index cc49872e78..b7f34b0234 100644
+--- a/crypto/rsakey-nettle.c.inc
++++ b/crypto/rsakey-nettle.c.inc
+@@ -145,10 +145,10 @@ QCryptoAkCipherRSAKey *qcrypto_akcipher_rsakey_parse(
+     size_t keylen, Error **errp)
+ {
+     switch (type) {
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PRIVATE:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE:
+         return qcrypto_nettle_rsa_private_key_parse(key, keylen, errp);
+ 
+-    case QCRYPTO_AKCIPHER_KEY_TYPE_PUBLIC:
++    case QCRYPTO_AK_CIPHER_KEY_TYPE_PUBLIC:
+         return qcrypto_nettle_rsa_public_key_parse(key, keylen, errp);
+ 
+     default:
 -- 
 2.46.0
 
