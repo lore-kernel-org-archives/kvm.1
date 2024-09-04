@@ -1,48 +1,48 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BFF1D47D7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39231D54EF
 	for <kvm@vger.kernel.org>; Wed,  4 Sep 2024 11:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448738; cv=none; b=NAxvNFD5KJPRnYrNPFwKu/9i/RPGmBmdp/kWsRGyfv692ICqnM4g6xJ9HncjEWW06ZNPf4IUTPBVl8bDiBQFDGYkCJKplbLi0OscKn8mLX+vgzPIbjByGhqQunpCZ96c8HyE0vGQN3zruPMT563go6CIGBDHe4JlLIrMPpajEzk=
+	t=1725448738; cv=none; b=F9t2gGSgErjGzvbs0HvvjUx3mbkv/BYojzZ60vpUXLZUclbRYdCNNEFRE1QlcZXxeqRJq4eoPlX3TtV+RFRPpGYSWgrinSlffc2OUxKACtG/9jYVl3vJnXyg5FiD+mK+4ASJk+raXXgFlmN9PsI32wo7SO0fjvRdXaZn9JgVEEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725448738; c=relaxed/simple;
-	bh=ZXlwL8AdFMTJEHIXH+UxXE1VuO9hXvJjRmPvcA9DGYM=;
+	bh=Ocukc/m3MDTmoBhu9vA1MEr/6Tst921KGZMpmuUlaAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=XISE050m1KVk1redfS7CBlD0fZr/rO1oz5VTias7FFkw2++uYGSfdvDtCzBZXDfzQMs61v9GCwvGw0fjEzcXdMGU32Zx9cggm6qvjPRGEb3zs8QpsFL0vwVVtvrSxPkpQzWRXZzu7NUPYxAsuCgFhFJ3cfqSlqPqPtxONVAFhB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NxwuP397; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=AIWMEv0tGjEMeg0qvJu4lvW9rXqq8TDdhrsc6JFVPYdu+Daimk5cPa/gwgOt4khCuG80NxXUSn92tlmKR/LssZGIhhKAVa7LK8nL2c/lqRZ4Rpn93Y4X0xHs+DOPN2ZWJ1rxYqBZYv/FylyJeMEHmPJR3DBJWfc2ozZuKAgu+cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ODHymXZs; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NxwuP397"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ODHymXZs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1725448735;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v5OxU5+fri0QNP4QtfQ3jXNPwWqLTQ/eTokftl8fAO4=;
-	b=NxwuP397fiKFB69M61FE4i9E1LLFGk6ySv791IES0dxZ5F2087UAprG+2ASqHF3QdPfu3f
-	7/LU+v5VggVKYG9RUkSAtB7DPOytz984VTs9hh1L9XssvRaAZ1kAlcOXiEjvUlM/xQ63aV
-	dDKboOwUvnv57y3Bw3rtgz5zTP6Ji+g=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=oh/NCqjRTQGWDv+iIQfkI/24tYYyPpV/TrHZbGUd03w=;
+	b=ODHymXZsVJ5mySFb4wFwxr2W9orPTE1JyZdbA8gI72haSw/XbNHAVTpcUHBcehBwraxQ1Q
+	HyHBEv53v2rBAkrWr1KO/0MrT15kmi3Avxv8rIJQ1vlJXTUNTz0w7CnTpI5oW2o69F/wiF
+	Cr+ctbJosJdW2eZwyZfHIMDbGnNNHkU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-pVd6KmuaMr2gAXdvQZzOMA-1; Wed,
- 04 Sep 2024 07:18:52 -0400
-X-MC-Unique: pVd6KmuaMr2gAXdvQZzOMA-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-vgWluKH0OjuyiNqi3QfSzw-1; Wed,
+ 04 Sep 2024 07:18:51 -0400
+X-MC-Unique: vgWluKH0OjuyiNqi3QfSzw-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89E3D1955DB2;
-	Wed,  4 Sep 2024 11:18:44 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98C6D1956057;
+	Wed,  4 Sep 2024 11:18:47 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA934300019A;
-	Wed,  4 Sep 2024 11:18:43 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F78D1956094;
+	Wed,  4 Sep 2024 11:18:47 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id A626921E6891; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
+	id DB87221E683A; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com,
@@ -94,9 +94,9 @@ Cc: alex.williamson@redhat.com,
 	qemu-s390x@nongnu.org,
 	kvm@vger.kernel.org,
 	avihaih@nvidia.com
-Subject: [PATCH v2 06/19] qapi/ebpf: Drop temporary 'prefix'
-Date: Wed,  4 Sep 2024 13:18:23 +0200
-Message-ID: <20240904111836.3273842-7-armbru@redhat.com>
+Subject: [PATCH v2 17/19] qapi/cryptodev: Drop unwanted 'prefix'
+Date: Wed,  4 Sep 2024 13:18:34 +0200
+Message-ID: <20240904111836.3273842-18-armbru@redhat.com>
 In-Reply-To: <20240904111836.3273842-1-armbru@redhat.com>
 References: <20240904111836.3273842-1-armbru@redhat.com>
 Precedence: bulk
@@ -105,45 +105,154 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Recent commit "qapi: Smarter camel_to_upper() to reduce need for
-'prefix'" added a temporary 'prefix' to delay changing the generated
-code.
+QAPI's 'prefix' feature can make the connection between enumeration
+type and its constants less than obvious.  It's best used with
+restraint.
 
-Revert it.  This improves EbpfProgramID's generated enumeration
-constant prefix from EBPF_PROGRAMID to EBPF_PROGRAM_ID.
+QCryptodevBackendServiceType has a 'prefix' that overrides the
+generated enumeration constants' prefix to QCRYPTODEV_BACKEND_SERVICE.
+
+Drop it.  The prefix becomes QCRYPTODEV_BACKEND_SERVICE_TYPE.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/ebpf.json  | 1 -
- ebpf/ebpf_rss.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ qapi/cryptodev.json             |  1 -
+ backends/cryptodev-builtin.c    |  8 ++++----
+ backends/cryptodev-lkcf.c       |  2 +-
+ backends/cryptodev-vhost-user.c |  6 +++---
+ backends/cryptodev.c            |  6 +++---
+ hw/virtio/virtio-crypto.c       | 10 +++++-----
+ 6 files changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-index 42df548777..db19ae850f 100644
---- a/qapi/ebpf.json
-+++ b/qapi/ebpf.json
-@@ -42,7 +42,6 @@
- # Since: 9.0
+diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
+index 60f8fe8e4a..65abc16842 100644
+--- a/qapi/cryptodev.json
++++ b/qapi/cryptodev.json
+@@ -31,7 +31,6 @@
+ # Since: 8.0
  ##
- { 'enum': 'EbpfProgramID',
--  'prefix': 'EBPF_PROGRAMID',   # TODO drop
-   'if': 'CONFIG_EBPF',
-   'data': [ { 'name': 'rss' } ] }
+ { 'enum': 'QCryptodevBackendServiceType',
+-  'prefix': 'QCRYPTODEV_BACKEND_SERVICE',
+   'data': ['cipher', 'hash', 'mac', 'aead', 'akcipher']}
  
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index 87f0714910..dcaa80f380 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -271,4 +271,4 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-     ctx->map_indirections_table = -1;
+ ##
+diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
+index 6f3990481b..170c93a6be 100644
+--- a/backends/cryptodev-builtin.c
++++ b/backends/cryptodev-builtin.c
+@@ -68,7 +68,7 @@ static void cryptodev_builtin_init_akcipher(CryptoDevBackend *backend)
+     opts.u.rsa.padding_alg = QCRYPTO_RSA_PADDING_ALGO_RAW;
+     if (qcrypto_akcipher_supports(&opts)) {
+         backend->conf.crypto_services |=
+-                     (1u << QCRYPTODEV_BACKEND_SERVICE_AKCIPHER);
++                     (1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_AKCIPHER);
+         backend->conf.akcipher_algo = 1u << VIRTIO_CRYPTO_AKCIPHER_RSA;
+     }
  }
+@@ -93,9 +93,9 @@ static void cryptodev_builtin_init(
+     backend->conf.peers.ccs[0] = cc;
  
--ebpf_binary_init(EBPF_PROGRAMID_RSS, rss_bpf__elf_bytes)
-+ebpf_binary_init(EBPF_PROGRAM_ID_RSS, rss_bpf__elf_bytes)
+     backend->conf.crypto_services =
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_CIPHER |
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_HASH |
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_MAC;
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_CIPHER |
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_HASH |
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_MAC;
+     backend->conf.cipher_algo_l = 1u << VIRTIO_CRYPTO_CIPHER_AES_CBC;
+     backend->conf.hash_algo = 1u << VIRTIO_CRYPTO_HASH_SHA1;
+     /*
+diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
+index fde32950f6..0dc4b067f5 100644
+--- a/backends/cryptodev-lkcf.c
++++ b/backends/cryptodev-lkcf.c
+@@ -230,7 +230,7 @@ static void cryptodev_lkcf_init(CryptoDevBackend *backend, Error **errp)
+     backend->conf.peers.ccs[0] = cc;
+ 
+     backend->conf.crypto_services =
+-        1u << QCRYPTODEV_BACKEND_SERVICE_AKCIPHER;
++        1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_AKCIPHER;
+     backend->conf.akcipher_algo = 1u << VIRTIO_CRYPTO_AKCIPHER_RSA;
+     lkcf->running = true;
+ 
+diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
+index c3283ba84a..e33fb78521 100644
+--- a/backends/cryptodev-vhost-user.c
++++ b/backends/cryptodev-vhost-user.c
+@@ -221,9 +221,9 @@ static void cryptodev_vhost_user_init(
+                      cryptodev_vhost_user_event, NULL, s, NULL, true);
+ 
+     backend->conf.crypto_services =
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_CIPHER |
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_HASH |
+-                         1u << QCRYPTODEV_BACKEND_SERVICE_MAC;
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_CIPHER |
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_HASH |
++                         1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_MAC;
+     backend->conf.cipher_algo_l = 1u << VIRTIO_CRYPTO_CIPHER_AES_CBC;
+     backend->conf.hash_algo = 1u << VIRTIO_CRYPTO_HASH_SHA1;
+ 
+diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+index fff89fd62a..76dfe65904 100644
+--- a/backends/cryptodev.c
++++ b/backends/cryptodev.c
+@@ -74,7 +74,7 @@ static int qmp_query_cryptodev_foreach(Object *obj, void *data)
+ 
+     backend = CRYPTODEV_BACKEND(obj);
+     services = backend->conf.crypto_services;
+-    for (i = 0; i < QCRYPTODEV_BACKEND_SERVICE__MAX; i++) {
++    for (i = 0; i < QCRYPTODEV_BACKEND_SERVICE_TYPE__MAX; i++) {
+         if (services & (1 << i)) {
+             QAPI_LIST_PREPEND(info->service, i);
+         }
+@@ -424,11 +424,11 @@ cryptodev_backend_complete(UserCreatable *uc, Error **errp)
+     }
+ 
+     services = backend->conf.crypto_services;
+-    if (services & (1 << QCRYPTODEV_BACKEND_SERVICE_CIPHER)) {
++    if (services & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_CIPHER)) {
+         backend->sym_stat = g_new0(CryptodevBackendSymStat, 1);
+     }
+ 
+-    if (services & (1 << QCRYPTODEV_BACKEND_SERVICE_AKCIPHER)) {
++    if (services & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_AKCIPHER)) {
+         backend->asym_stat = g_new0(CryptodevBackendAsymStat, 1);
+     }
+ }
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index 5034768bff..0ab8ae3282 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -1008,19 +1008,19 @@ static uint32_t virtio_crypto_init_services(uint32_t qservices)
+ {
+     uint32_t vservices = 0;
+ 
+-    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_CIPHER)) {
++    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_CIPHER)) {
+         vservices |= (1 << VIRTIO_CRYPTO_SERVICE_CIPHER);
+     }
+-    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_HASH)) {
++    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_HASH)) {
+         vservices |= (1 << VIRTIO_CRYPTO_SERVICE_HASH);
+     }
+-    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_MAC)) {
++    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_MAC)) {
+         vservices |= (1 << VIRTIO_CRYPTO_SERVICE_MAC);
+     }
+-    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_AEAD)) {
++    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_AEAD)) {
+         vservices |= (1 << VIRTIO_CRYPTO_SERVICE_AEAD);
+     }
+-    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_AKCIPHER)) {
++    if (qservices & (1 << QCRYPTODEV_BACKEND_SERVICE_TYPE_AKCIPHER)) {
+         vservices |= (1 << VIRTIO_CRYPTO_SERVICE_AKCIPHER);
+     }
+ 
 -- 
 2.46.0
 
