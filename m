@@ -1,44 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EE813D251
-	for <kvm@vger.kernel.org>; Fri,  6 Sep 2024 22:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A76F15B0F8
+	for <kvm@vger.kernel.org>; Fri,  6 Sep 2024 22:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725661118; cv=none; b=o1lPuCRZDx0DJ4dcBmRAgu2sFzrjjfLw9isTGB+CSO8oAVxMl+EUAmrifNBEyLmmP6an9kwHfgX4hJwXYac4OisQ+UPqg69AmtQqDL9jwYV8SLy3UqMcliwxHnMQTD8aCJynxC+zhsSIPbVYdGcm2K15yHjQeG7cjLN5VqqYTNM=
+	t=1725661121; cv=none; b=CSUnkt/CViG5pey5BmaJe08RrSgkkmRwUNmLRCMnME6nw/BgO+DduRKQm8TFtxqLFAYDeI1n1JAITU8tvKD7aBIKhyp1D7LRmt/nemREI1mghBOsKdNZW/uD7qN7gLw6ATXJZxqhJ9Wnd+NYSMJAh1TxMRG4n818AY+mhg0IuS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725661118; c=relaxed/simple;
-	bh=oDnyoADLZxxoDCVd/HnrxeAvpVLH1ZwcrkNTr9tiixs=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=alGLSFItQ9q8CIYggJ8yjzuVA5WfrLCzPYoeWOnVupC4QRe1zAckinnUBP4YzxZgiwgfi7XNsLAA9oT8rOimWHRwpzkZ/STFv0EySyHd7OzBZV57HwVjjBpXtri4RbpvdcSd1loKEYiUhlFKqzCNItQTXU7A+eaAd4SZOupA6+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ly0fUayQ; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1725661121; c=relaxed/simple;
+	bh=RS7D6mC4Da90DJpRr6QUg5QrkEyp0IY6qq6xuCpONVk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sVjWAOphkcBKZle1qOgh3lesob9oLhYsBK9ZiJH+iTOew8++Do2ZpFfRynP4+JqC+yena4FnArwAgAcaCbcXTsn5DNnuq1LjaUpfTDTJ8lmUkpcSSXDelrybEB2p0c1a/ku8hYU8L1Z6AQTrpUiBC9UOx8rlcrUA7sjkxokHpm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VuKtquP3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ly0fUayQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VuKtquP3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725661115;
+	s=mimecast20190719; t=1725661118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fPS3RfxI/ckV+ClTMJfETVTJewuiT7qYQwOs4/LgDPw=;
-	b=Ly0fUayQvyF4jxE7Ra9B1aPC7vUYbEv/3SRl1shrDC3gdJ/BzOxDniw/XAzaIgfmFMafwu
-	PLSayBcUOWupLeqSxYXlEc442Kbv8191BrGpJiiSg6LI387orjB/jpx+cYYRlZLoavdef6
-	jGI5AhiU/0cb0iaWROEWmXlYRzmlgUg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LI5BD+pBOFIg79aPAmGwcLGYrtd2fLuNLyhnq+3LnKk=;
+	b=VuKtquP3jKAzv1aXAikQ1y2llKNzr21BPhuWhBP5orCag6LzWXV14KL1uiuorSEwjwHCWv
+	r448YPR20Lmjd8yT7lc/CFT6OdxlzkIVZtrcHfSr4hGC9IvKFrry8g3UWMDhyPJi6nlc8N
+	7E1JWFmpQ8taCcNFDdgXcs84611fiVo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-HiVZOmlkMNKEVfOjyRGsUQ-1; Fri,
- 06 Sep 2024 18:18:32 -0400
-X-MC-Unique: HiVZOmlkMNKEVfOjyRGsUQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-1t18F8_JMZGW5uTg1IDnng-1; Fri,
+ 06 Sep 2024 18:18:35 -0400
+X-MC-Unique: 1t18F8_JMZGW5uTg1IDnng-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A28E619560B1;
-	Fri,  6 Sep 2024 22:18:27 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 50A5F1956077;
+	Fri,  6 Sep 2024 22:18:33 +0000 (UTC)
 Received: from starship.lan (unknown [10.22.65.51])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1944E19560AA;
-	Fri,  6 Sep 2024 22:18:24 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E2B019560AA;
+	Fri,  6 Sep 2024 22:18:30 +0000 (UTC)
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: kvm@vger.kernel.org
 Cc: Sean Christopherson <seanjc@google.com>,
@@ -52,69 +54,135 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Maxim Levitsky <mlevitsk@redhat.com>
-Subject: [PATCH v4 0/4] Relax canonical checks on some arch msrs
-Date: Fri,  6 Sep 2024 18:18:20 -0400
-Message-Id: <20240906221824.491834-1-mlevitsk@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v4 2/4] KVM: x86: implement emul_is_noncanonical_address using is_noncanonical_address
+Date: Fri,  6 Sep 2024 18:18:22 -0400
+Message-Id: <20240906221824.491834-3-mlevitsk@redhat.com>
+In-Reply-To: <20240906221824.491834-1-mlevitsk@redhat.com>
+References: <20240906221824.491834-1-mlevitsk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Recently we came up upon a failure where likely the guest writes=0D
-0xff4547ceb1600000 to MSR_KERNEL_GS_BASE and later on, qemu=0D
-sets this value via KVM_PUT_MSRS, and is rejected by the=0D
-kernel, likely due to not being canonical in 4 level paging.=0D
-=0D
-One of the way to trigger this is to make the guest enter SMM,=0D
-which causes paging to be disabled, which SMM bios re-enables=0D
-but not the whole 5 level. MSR_KERNEL_GS_BASE on the other=0D
-hand continues to contain old value.=0D
-=0D
-I did some reverse engineering and to my surprise I found out=0D
-that both Intel and AMD indeed ignore CR4.LA57 when doing=0D
-canonical checks on this and other msrs and/or other arch=0D
-registers (like GDT base) which contain linear addresses.=0D
-=0D
-V2: addressed a very good feedback from Chao Gao. Thanks!=0D
-=0D
-V3: also fix the nested VMX, and also fix the=0D
-MSR_IA32_SYSENTER_EIP / MSR_IA32_SYSENTER_ESP=0D
-=0D
-V4:=0D
-  - added PT and PEBS msrs=0D
-  - corrected emulation of SGDT/SIDT/STR/SLDT instructions=0D
-  - corrected canonical checks for TLB invalidation instructions=0D
-=0D
-Best regards,=0D
-	Maxim Levitsky=0D
-=0D
-Maxim Levitsky (4):=0D
-  KVM: x86: drop x86.h include from cpuid.h=0D
-  KVM: x86: implement emul_is_noncanonical_address using=0D
-    is_noncanonical_address=0D
-  KVM: x86: model canonical checks more precisely=0D
-  KVM: nVMX: fix canonical check of vmcs12 HOST_RIP=0D
-=0D
- arch/x86/kvm/cpuid.h         |  1 -=0D
- arch/x86/kvm/emulate.c       | 15 ++++++-----=0D
- arch/x86/kvm/kvm_emulate.h   |  5 ++++=0D
- arch/x86/kvm/mmu.h           |  1 +=0D
- arch/x86/kvm/mmu/mmu.c       |  2 +-=0D
- arch/x86/kvm/vmx/hyperv.c    |  1 +=0D
- arch/x86/kvm/vmx/nested.c    | 35 +++++++++++++++++---------=0D
- arch/x86/kvm/vmx/pmu_intel.c |  2 +-=0D
- arch/x86/kvm/vmx/sgx.c       |  5 ++--=0D
- arch/x86/kvm/vmx/vmx.c       |  4 +--=0D
- arch/x86/kvm/x86.c           | 13 +++++++---=0D
- arch/x86/kvm/x86.h           | 49 ++++++++++++++++++++++++++++++++++--=0D
- 12 files changed, 102 insertions(+), 31 deletions(-)=0D
-=0D
--- =0D
-2.26.3=0D
-=0D
+Implement the emul_is_noncanonical_address() using
+is_noncanonical_address().
+
+This will allow to extend the is_noncanonical_address() to support
+different flavors of canonical checks.
+
+Also add X86EMUL_F_MSR and X86EMUL_F_DT_LOAD emulation flags which will be
+used to indicate an emulation of a msr or a segment base load, which
+will affect the required canonical check.
+
+No functional change is intended.
+
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+---
+ arch/x86/kvm/emulate.c     | 15 +++++++++------
+ arch/x86/kvm/kvm_emulate.h |  5 +++++
+ arch/x86/kvm/x86.c         |  7 +++++++
+ 3 files changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index e72aed25d7212..8c8061884a019 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -651,9 +651,10 @@ static inline u8 ctxt_virt_addr_bits(struct x86_emulate_ctxt *ctxt)
+ }
+ 
+ static inline bool emul_is_noncanonical_address(u64 la,
+-						struct x86_emulate_ctxt *ctxt)
++						struct x86_emulate_ctxt *ctxt,
++						unsigned int flags)
+ {
+-	return !__is_canonical_address(la, ctxt_virt_addr_bits(ctxt));
++	return !ctxt->ops->is_canonical_addr(ctxt, la, 0);
+ }
+ 
+ /*
+@@ -1733,7 +1734,8 @@ static int __load_segment_descriptor(struct x86_emulate_ctxt *ctxt,
+ 		if (ret != X86EMUL_CONTINUE)
+ 			return ret;
+ 		if (emul_is_noncanonical_address(get_desc_base(&seg_desc) |
+-						 ((u64)base3 << 32), ctxt))
++						 ((u64)base3 << 32), ctxt,
++						 X86EMUL_F_DT_LOAD))
+ 			return emulate_gp(ctxt, err_code);
+ 	}
+ 
+@@ -2516,8 +2518,8 @@ static int em_sysexit(struct x86_emulate_ctxt *ctxt)
+ 		ss_sel = cs_sel + 8;
+ 		cs.d = 0;
+ 		cs.l = 1;
+-		if (emul_is_noncanonical_address(rcx, ctxt) ||
+-		    emul_is_noncanonical_address(rdx, ctxt))
++		if (emul_is_noncanonical_address(rcx, ctxt, 0) ||
++		    emul_is_noncanonical_address(rdx, ctxt, 0))
+ 			return emulate_gp(ctxt, 0);
+ 		break;
+ 	}
+@@ -3494,7 +3496,8 @@ static int em_lgdt_lidt(struct x86_emulate_ctxt *ctxt, bool lgdt)
+ 	if (rc != X86EMUL_CONTINUE)
+ 		return rc;
+ 	if (ctxt->mode == X86EMUL_MODE_PROT64 &&
+-	    emul_is_noncanonical_address(desc_ptr.address, ctxt))
++	    emul_is_noncanonical_address(desc_ptr.address, ctxt,
++					 X86EMUL_F_DT_LOAD))
+ 		return emulate_gp(ctxt, 0);
+ 	if (lgdt)
+ 		ctxt->ops->set_gdt(ctxt, &desc_ptr);
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 55a18e2f2dcd9..86bde1c9d9183 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -94,6 +94,8 @@ struct x86_instruction_info {
+ #define X86EMUL_F_FETCH			BIT(1)
+ #define X86EMUL_F_IMPLICIT		BIT(2)
+ #define X86EMUL_F_INVLPG		BIT(3)
++#define X86EMUL_F_MSR			BIT(4)
++#define X86EMUL_F_DT_LOAD		BIT(5)
+ 
+ struct x86_emulate_ops {
+ 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
+@@ -235,6 +237,9 @@ struct x86_emulate_ops {
+ 
+ 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
+ 				   unsigned int flags);
++
++	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt,
++				  gva_t addr, unsigned int flags);
+ };
+ 
+ /* Type, address-of, and value of an instruction's operand. */
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f72e5d89e942d..f496830445355 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8617,6 +8617,12 @@ static gva_t emulator_get_untagged_addr(struct x86_emulate_ctxt *ctxt,
+ 					       addr, flags);
+ }
+ 
++static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
++				       gva_t addr, unsigned int flags)
++{
++	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
++}
++
+ static const struct x86_emulate_ops emulate_ops = {
+ 	.vm_bugged           = emulator_vm_bugged,
+ 	.read_gpr            = emulator_read_gpr,
+@@ -8663,6 +8669,7 @@ static const struct x86_emulate_ops emulate_ops = {
+ 	.triple_fault        = emulator_triple_fault,
+ 	.set_xcr             = emulator_set_xcr,
+ 	.get_untagged_addr   = emulator_get_untagged_addr,
++	.is_canonical_addr   = emulator_is_canonical_addr,
+ };
+ 
+ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
+-- 
+2.26.3
 
