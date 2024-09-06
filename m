@@ -1,180 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FE18B04;
-	Fri,  6 Sep 2024 04:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC0783A18
+	for <kvm@vger.kernel.org>; Fri,  6 Sep 2024 04:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725597182; cv=none; b=qYoaGmkA0jXurW1DyN3TsNQjtdaBxJ1oEUyfLnclPASZKmbHx7GsmDNFGcs2sXpu7Oyy9WpALU/R+srwmHWPen0VnScKXTPR8p5OU++95JT7UA1qq2Kgm/OYTw/TQaE+6kaNL9hH8JCXnAQ3TLSJukGI7I3XetZtl5YXHW7pnvw=
+	t=1725597260; cv=none; b=SrLKtcsNaWjc3tCKx5smwhF9iVhafaCz4JP2j9d5BtQoXvnwZo/7XdtE6Uksc0OwwiyLlglpGsEHDdHBFTa5T9uw/EJRfKACfs5WlEWGV+/AN1q+YJSKPM81IQA4l8Q4i4ltYJ1QW1WQZnW2lUdLJ/DwXISdZR/pSaZ5SITUpuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725597182; c=relaxed/simple;
-	bh=Fj9dEc+tZpcXOsZKa06MZnv9QMwPhL5d/Rc7J136zYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIMrAH8Vhv0XLOMr0//76xu/p2zssC7jh0VFjJYRliy5XcGaVzOW7QmgN+Dg6tLHF+BAO3CFNxdocc9BLvJH2m0sxt5xEgtfoxLMtWE/yqHIe2BeZZyzNlrlPS3po9u4tTPtKm5F8Ud9vw9X6arvfbNNOlO2UqkUUlQCKvRnQ2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jf4iS0IX; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1725597260; c=relaxed/simple;
+	bh=RT1aI6hMXnwPobjxMnyWJW+WtLEHVfvy+uS/LP8jAcU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jwSfbUKWVpyltkfmntQop6HGx8BmsZRrKhrdqsMvRojV7ZKT7+VESYkOpvOiSJ2qu7Pww1b2IVhShzsQwcTjHDv3gL9SdK0+af+qeY6HjuT9jAKN+QrNtggKM8XpNVMmFF4PITCYJmOUej0ptZfdMKx5+0wbPWRL3O6e8deqn+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AFwiOMd2; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jf4iS0IX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725597181; x=1757133181;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Fj9dEc+tZpcXOsZKa06MZnv9QMwPhL5d/Rc7J136zYM=;
-  b=Jf4iS0IXxA7eDmfPwGzqV8CCwrK1sjN0kDqDPXlPjTVF/Fccjogwf/O8
-   puv1bZBrPb2QlLqgLSdsP8B7qOaDZtFFjfA+P5DUsISFgA8/AlDjSYQMN
-   a04AXPeN8VJGa0OU2jmBh+Kt6iP9kT7l1elONX9Ojk+yjX4d1Qu0alQu1
-   A8FOhIi9G9TOVru8fRHlaxPWipLwqI+3jbbsfZAY58dJZPYSaZGzv+PFY
-   gaHpGn3JA7tC0EmdILRQWMrfG/oVJsaZXIk0hZUvCAf7Sg5o79t+51srm
-   Do/n1DcCf92o1NRKCSdH7apD2Eq0x2gPm88rxL4RzCOMhrf8BP9470UsP
-   A==;
-X-CSE-ConnectionGUID: rl9KhhKGQzKjrv7HQflYkA==
-X-CSE-MsgGUID: pgM06nsvS8maNYugJgtAQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="35493848"
-X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
-   d="scan'208";a="35493848"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 21:33:00 -0700
-X-CSE-ConnectionGUID: mg1kXCLTTP6Brze7PsIp5w==
-X-CSE-MsgGUID: iJK6NP+HS8mohDc3yr1wjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
-   d="scan'208";a="66171134"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO tlindgre-MOBL1) ([10.245.246.242])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 21:32:56 -0700
-Date: Fri, 6 Sep 2024 07:32:48 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, seanjc@google.com,
-	pbonzini@redhat.com, kvm@vger.kernel.org, kai.huang@intel.com,
-	isaku.yamahata@gmail.com, xiaoyao.li@intel.com,
-	linux-kernel@vger.kernel.org,
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: Re: [PATCH 14/25] KVM: TDX: initialize VM with TDX specific
- parameters
-Message-ID: <ZtqF8O56_h0_g6oD@tlindgre-MOBL1>
-References: <20240812224820.34826-1-rick.p.edgecombe@intel.com>
- <20240812224820.34826-15-rick.p.edgecombe@intel.com>
- <ZtAU7FIV2Xkw+L3O@yzhao56-desk.sh.intel.com>
- <ZtWUATuc5wim02rN@tlindgre-MOBL1>
- <ZtlWzUO+VGzt7Z89@yzhao56-desk.sh.intel.com>
- <Ztl5muQNXr7eGLWU@tlindgre-MOBL1>
- <Ztp/lQ/SaCe+/4qb@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AFwiOMd2"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2d8b3af9e61so2042357a91.2
+        for <kvm@vger.kernel.org>; Thu, 05 Sep 2024 21:34:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725597257; x=1726202057; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y6f4XFGl9ES5RFIpxWgOae+ryWTVpyIEIUyDw0NY4Vg=;
+        b=AFwiOMd2mQ3+tCzVimogfIYIAqSGkYNOYeh2dmbGpKtNpQNKCN1oIEKCfC+lIkyxNk
+         3AgIzr3vpd5We+Zi+Pi0GBuNbDFFiZIYxU9DLOISB9dJIkfFkBbPWwimIzbWXyTSpgh1
+         UK3E684nu5LCzMi6TjtbK7Wq0MmNCZDoKLsXKB1qTkyJbS32/m+D/bXnHrljeCGxWksP
+         sY8HNIuVAryTIQQ1qfKKpWRiHk4G2Js6ZYNhqqFW6F2kc9K4eMltIXPgbr19gIYhBXci
+         nNISyckXiSF0z/C8GUtEPjcUfSUI/NANB4uBy4bdDJwg4pBoZpz2I7inY56YEM4MAC0m
+         NWOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725597257; x=1726202057;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y6f4XFGl9ES5RFIpxWgOae+ryWTVpyIEIUyDw0NY4Vg=;
+        b=NryjxoE94koLigHzm3jKV/5AKFTIKXv7oMifK44Ni2CaRejoUmWWLFEMhZNr/55V02
+         ROaF05UCz24HERMJS/vYr9b4ZoT2+ESlTOtySd4s6WK9sSKQbfuFsp2g8BNRJEyhoBpG
+         MbLuuOnTKowYmry7BMIn4hM1bFog6pu9OG/msun9PkdkAlJxtCUhmaAr05c4BwZ665hv
+         a6Y/tlzJ3Xatcf5Aumhn8f/k1QGaYxfNxSlaOwfXpM9iWCjbkAzqVSMM/SHbwuq3jb4V
+         N0hUTvnLW0MjBUY8GVMDdJanWfuprQEpHqdCJolY4ap0nkByYK62nbUCEZN9eZx2k70P
+         FOcQ==
+X-Gm-Message-State: AOJu0YwJHnMKT9MStNOLT6bUEp8LsKwsxYZQ2/gwnmZ9lcDI5cTtWwg8
+	Q8mWmQ7NVkmEfYtZAtxZwKuQNHnBPnKNNZfGeza2Mzyu8fiHhIXVQG1jcji08OtGOteiuGgVf0t
+	g8A==
+X-Google-Smtp-Source: AGHT+IGFOYWmrB5M6QLnKYNdASjWqveqc4FvIbep8yb+3D99F8n/A6lA+zOOTF0vtx08MfD8jk9Qimnri/Q=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:4c84:b0:2d8:b475:ec2b with SMTP id
+ 98e67ed59e1d1-2dad50ea941mr3373a91.5.1725597255343; Thu, 05 Sep 2024 21:34:15
+ -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu,  5 Sep 2024 21:34:06 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ztp/lQ/SaCe+/4qb@yzhao56-desk.sh.intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
+Message-ID: <20240906043413.1049633-1-seanjc@google.com>
+Subject: [PATCH v2 0/7] KVM: nVMX: Fix IPIv vs. nested posted interrupts
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Chao Gao <chao.gao@intel.com>, 
+	Zeng Guang <guang.zeng@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 06, 2024 at 12:05:41PM +0800, Yan Zhao wrote:
-> On Thu, Sep 05, 2024 at 12:27:54PM +0300, Tony Lindgren wrote:
-> > On Thu, Sep 05, 2024 at 02:59:25PM +0800, Yan Zhao wrote:
-> > > On Mon, Sep 02, 2024 at 01:31:29PM +0300, Tony Lindgren wrote:
-> > > > On Thu, Aug 29, 2024 at 02:27:56PM +0800, Yan Zhao wrote:
-> > > > > On Mon, Aug 12, 2024 at 03:48:09PM -0700, Rick Edgecombe wrote:
-> > > > > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > > > > 
-> > > > > ...
-> > > > > > +static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
-> > > > > > +{
-> > > > ...
-> > > > 
-> > > > > > +	kvm_tdx->tsc_offset = td_tdcs_exec_read64(kvm_tdx, TD_TDCS_EXEC_TSC_OFFSET);
-> > > > > > +	kvm_tdx->attributes = td_params->attributes;
-> > > > > > +	kvm_tdx->xfam = td_params->xfam;
-> > > > > > +
-> > > > > > +	if (td_params->exec_controls & TDX_EXEC_CONTROL_MAX_GPAW)
-> > > > > > +		kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(51));
-> > > > > > +	else
-> > > > > > +		kvm->arch.gfn_direct_bits = gpa_to_gfn(BIT_ULL(47));
-> > > > > > +
-> > > > > Could we introduce a initialized field in struct kvm_tdx and set it true
-> > > > > here? e.g
-> > > > > +       kvm_tdx->initialized = true;
-> > > > > 
-> > > > > Then reject vCPU creation in tdx_vcpu_create() before KVM_TDX_INIT_VM is
-> > > > > executed successfully? e.g.
-> > > > > 
-> > > > > @@ -584,6 +589,9 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
-> > > > >         struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
-> > > > >         struct vcpu_tdx *tdx = to_tdx(vcpu);
-> > > > > 
-> > > > > +       if (!kvm_tdx->initialized)
-> > > > > +               return -EIO;
-> > > > > +
-> > > > >         /* TDX only supports x2APIC, which requires an in-kernel local APIC. */
-> > > > >         if (!vcpu->arch.apic)
-> > > > >                 return -EINVAL;
-> > > > > 
-> > > > > Allowing vCPU creation only after TD is initialized can prevent unexpected
-> > > > > userspace access to uninitialized TD primitives.
-> > > > 
-> > > > Makes sense to check for initialized TD before allowing other calls. Maybe
-> > > > the check is needed in other places too in additoin to the tdx_vcpu_create().
-> > > Do you mean in places checking is_hkid_assigned()?
-> > 
-> > Sounds like the state needs to be checked in multiple places to handle
-> > out-of-order ioctls to that's not enough.
-> > 
-> > > > How about just a function to check for one or more of the already existing
-> > > > initialized struct kvm_tdx values?
-> > > Instead of checking multiple individual fields in kvm_tdx or vcpu_tdx, could we
-> > > introduce a single state field in the two strutures and utilize a state machine
-> > > for check (as Chao Gao pointed out at [1]) ?
-> > 
-> > OK
-> > 
-> > > e.g.
-> > > Now TD can have 5 states: (1)created, (2)initialized, (3)finalized,
-> > >                           (4)destroyed, (5)freed.
-> > > Each vCPU has 3 states: (1) created, (2) initialized, (3)freed
-> > > 
-> > > All the states are updated by a user operation (e.g. KVM_TDX_INIT_VM,
-> > > KVM_TDX_FINALIZE_VM, KVM_TDX_INIT_VCPU) or a x86 op (e.g. vm_init, vm_destroy,
-> > > vm_free, vcpu_create, vcpu_free).
-> > > 
-> > > 
-> > >      TD                                   vCPU
-> > > (1) created(set in op vm_init)
-> > > (2) initialized
-> > > (indicate tdr_pa != 0 && HKID assigned)
-> > > 
-> > >                                           (1) created (set in op vcpu_create)
-> > > 
-> > >                                           (2) initialized
-> > > 
-> > >                                     (can call INIT_MEM_REGION, GET_CPUID here)
-> > > 
-> > > 
-> > > (3) finalized
-> > > 
-> > >                                  (tdx_vcpu_run(), tdx_handle_exit() can be here)
-> > > 
-> > > 
-> > > (4) destroyed (indicate HKID released)
-> > > 
-> > >                                          (3) freed
-> > > 
-> > > (5) freed
-> > 
-> > So an enum for the TD state, and also for the vCPU state?
-> 
-> A state for TD, and a state for each vCPU.
-> Each vCPU needs to check TD state and vCPU state of itself for vCPU state
-> transition.
-> 
-> Does it make sense?
+Fix a bug where KVM injects L2's nested posted interrupt into L1 as a
+nested VM-Exit instead of triggering PI processing.  The actual bug is
+technically a generic nested posted interrupts problem, but due to the
+way that KVM handles interrupt delivery, the issue is mostly limited to
+to IPI virtualization being enabled.
 
-That sounds good to me :)
+Found by the nested posted interrupt KUT test on SPR.
 
-Regards,
+If it weren't for an annoying TOCTOU bug waiting to happen, the fix would
+be quite simple, e.g. it's really just:
 
-Tony
- 
-> > > [1] https://lore.kernel.org/kvm/ZfvI8t7SlfIsxbmT@chao-email/#t
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index f7dde74ff565..b07805daedf5 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4288,6 +4288,15 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+                        return -EBUSY;
+                if (!nested_exit_on_intr(vcpu))
+                        goto no_vmexit;
++
++               if (nested_cpu_has_posted_intr(get_vmcs12(vcpu)) &&
++                   kvm_apic_has_interrupt(vcpu) == vmx->nested.posted_intr_nv) {
++                       vmx->nested.pi_pending = true;
++                       kvm_apic_clear_irr(vcpu, vmx->nested.posted_intr_nv);
++                       goto no_vmexit;
++               }
++
+                nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT, 0, 0);
+                return 0;
+        }
+
+v2:
+ - Split kvm_get_apic_interrupt() into has+ack to avoid marking the IRQ as
+   in-service in vmcs02 instead of vmcs01. [Nathan]
+ - Gather reviews, but only for the patches that didn't meaningful change (all
+   two of them). [Chao]
+ - Drop Cc: stable@ from all patches.  For real world hypervisors, this is
+   unlikely to cause functional issues, only loss of IPI virtualization
+   performance due to the unnecessary VM-Exit.  Whereas evidenced by my screwup
+   in v1, this code is plenty subtle enough to introduce bugs.
+ - Drop the patch to store nested.posted_intr_nv as an int, as there is no need
+   to explicitly match -1 (as a signed int) in this approach.
+ - Add a patch to assert vcpu->mutex is held when getting vmcs12, as I was
+   "this" close to yanking out nested.posted_intr_nv, until I realized that
+   accessing a different vCPU's vmcs12 in the IPI path is unsafe.
+
+v1: https://lore.kernel.org/all/20240720000138.3027780-1-seanjc@google.com
+
+Sean Christopherson (7):
+  KVM: x86: Move "ack" phase of local APIC IRQ delivery to separate API
+  KVM: nVMX: Get to-be-acknowledge IRQ for nested VM-Exit at injection
+    site
+  KVM: nVMX: Suppress external interrupt VM-Exit injection if there's no
+    IRQ
+  KVM: nVMX: Detect nested posted interrupt NV at nested VM-Exit
+    injection
+  KVM: x86: Fold kvm_get_apic_interrupt() into kvm_cpu_get_interrupt()
+  KVM: nVMX: Explicitly invalidate posted_intr_nv if PI is disabled at
+    VM-Enter
+  KVM: nVMX: Assert that vcpu->mutex is held when accessing secondary
+    VMCSes
+
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/irq.c              | 10 ++++--
+ arch/x86/kvm/lapic.c            |  9 +++---
+ arch/x86/kvm/lapic.h            |  2 +-
+ arch/x86/kvm/vmx/nested.c       | 57 ++++++++++++++++++++++++++-------
+ arch/x86/kvm/vmx/nested.h       |  6 ++++
+ arch/x86/kvm/vmx/vmx.c          |  7 ++++
+ 7 files changed, 72 insertions(+), 20 deletions(-)
+
+
+base-commit: 332d2c1d713e232e163386c35a3ba0c1b90df83f
+-- 
+2.46.0.469.g59c65b2a67-goog
+
