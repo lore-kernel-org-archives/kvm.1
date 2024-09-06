@@ -1,128 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D08F18B04;
-	Fri,  6 Sep 2024 04:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9442069
+	for <kvm@vger.kernel.org>; Fri,  6 Sep 2024 04:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725597462; cv=none; b=UzhvP+I4i4tCTDOz2HfwuAGqQ0GWgXIgU7DsUojYXxd3s2geWThOJAxA9ZOkCGKZQmxrZJBJBVFETzRgLxSWTUXItG5jF8d1allKBu517jHhHQIvQaKk86jEvPFufzmiBGRlY4y73lGcdD8YrZnlycpOciaMzAtUP3BnxO2oAmY=
+	t=1725597770; cv=none; b=YJKF4fT1Qt1+WeOCy8FXMIiEa2dWQSn25SA+Z4miBJAD8uBkWHOwvd8RKPmOWk23o0SdeKFSnNrBQKeXAc2GD6Z+mncdGO8ezP6J6/djz7fyw9pzaZmOcs/FC3RkkgJL3/pM4DI3UPBho4V9V6LAkCckjH/4+1OYaMrvjQqGnWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725597462; c=relaxed/simple;
-	bh=/jvEvJRE/jLwZ1UTZPXHXIUGmiEbzhw4zt2ok3NX4b4=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AoWeRrcEV4Elv3Ca0VlCVt9WUd+b+TtMH8x+pThPmf9mf5+wyZQUio/V7VyhH6bgxQ4Dlg170V1L916qkMOuUBs8pcDGzwmWzjFwurwcjh1aEzY590TtgWT4i3S7qops+M2CtiTSNbCiUnc84aFfEG5efHwYKsqPh0bssjA9KwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dESkhuwq; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1725597770; c=relaxed/simple;
+	bh=2OvKYHSNj0qvxYMKdqnrShNTXfS3KzvEkkQhoFgllKc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uSqMDFpt5yf2azwkWDSsLQlOs4c9P7PvV8pxYoFDqpKJDKyKh5FScRtxCcI2WUiUNalHssnVCkYBjpB7OKGiCD7TShevGhIdPlkjhz5R+bMF2JvluJOgXT7MCyAMHY+I2GMZq+zJZndr79O/t/OilVnjZ3OAtsQdb2J6iRScaQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=smlI3izQ; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dESkhuwq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725597459; x=1757133459;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/jvEvJRE/jLwZ1UTZPXHXIUGmiEbzhw4zt2ok3NX4b4=;
-  b=dESkhuwqXi3tbZes6l2VNZModHB+SQj72SAuIOSYZWObCzviLHVhh6va
-   vSx4/47JH+F1t7V6BY0Fi65/fRevf1aeEW4sM0N+zdu/au48fOUmcimG0
-   FiWVthHE+ks0Yc+Xw486vWEZBY1irilYVFExRJngr4C0FV1xVxgDJdrwU
-   4bmfnO4ThRuYT+E1rYX2i6QRn6cGUB/r42Q0I9e7RCzd24OgnBx5TZi3W
-   XN3hRhAtVYUMkW4EUBZRQwkJaVWrOQHZ2+TQ966EjYIxXVIp16jFnieMs
-   11sy1Gzl/Z+RzTMUGfubXR6YtoVYe73Eq+jRLzyerc+D/STNuBwT8ldkb
-   Q==;
-X-CSE-ConnectionGUID: pNGKJ/8fTRaUz2QW8HZSpg==
-X-CSE-MsgGUID: PuvjHS+ZSsGYwt56GlJ6nA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="23851821"
-X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
-   d="scan'208";a="23851821"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 21:37:38 -0700
-X-CSE-ConnectionGUID: wAEC3Ex0TdSAeSMujkgODg==
-X-CSE-MsgGUID: ybrDQfa7QdaHju2NeDDhDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
-   d="scan'208";a="89097928"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Sep 2024 21:37:34 -0700
-Message-ID: <456e9b67-aa20-4259-b8e1-9f20d4fa03af@linux.intel.com>
-Date: Fri, 6 Sep 2024 12:33:36 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="smlI3izQ"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6b47ff8a5c4so59236877b3.2
+        for <kvm@vger.kernel.org>; Thu, 05 Sep 2024 21:42:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725597768; x=1726202568; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=woIWYgRFzqQLW6cLGelWzd0RVEm9LOVB8S701+UNVhY=;
+        b=smlI3izQVRqb6KtPVhIgVnpAu4mZd4iOZf+wVbb0ZdDEsTCe4+2sR04ssry7ZnXYuU
+         oZMjgZK5Mu++Zs8cT7NzyIGGcPwFkG5QbGuMjPfBhssQkr/qRFLF6sE5TNzQlbCEwDaq
+         +xxL6EOyEMjzwPHLB8pOQYMZYoTQcDhcLcHBa9347HiQjfv8n9GRZLeg6/da49S4f4rm
+         jnUdao8AATcjFP7AELR06cXZ3uBAbEe49OnTzZfYPtxOuo/0co7chBDtnWY/ufcYUhqz
+         aYisGU/ioET5kN4h61EUgPjwf6HyWbtTczOzGoF69qwi1Lva/k+OK1N7NzxBfaPrUqVq
+         hVPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725597768; x=1726202568;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=woIWYgRFzqQLW6cLGelWzd0RVEm9LOVB8S701+UNVhY=;
+        b=l/rQODG4fFsbGM09VyNdV3MrbS6QGKbjtlcUfGjKMpsBQcTW9fIAhUw2AFr2xWA9Jo
+         j9y+tZJ/kGkwT5ykWk5EeUXIgEgwtWjcLwjsLrKrc8z6/60daiEzLEJDGIThNymHRlHX
+         9JS/+/BYkpewCSr3XhM6gr/nJi2l27zpnq9kJBihoSkLOpu90PUXyBqpQjjtum4Tz9vr
+         4+J/V0YAYu/+WjqtQZunSmmLVh7oRVK5yWcq2LOKeCYsNM/WH1H9QOSqv9ZmRgupK1b3
+         gTcVqPn/6R7KTUxKS/o/Jjzm0eQpogfr76RtB2kHQ2e43MyBjmZVQlZn9/azafMadYEc
+         yuYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrmNrPzM2/TR3r80zsGI7J8qNFwDcJFmqeJyIqraikQ/0hUjIwsIsSrHomTNTDMg9W3to=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoxvrITwrNS6p2svyrQAmzikH9f4KERee3f9bXzqigRJgo+xXG
+	9ot1X2mkHwVS7B2IEe8XnD8l0LUSFDPG1YXOntUueOAHcUfM01USnuy3kkCsGTNGE4q4Xo1e5FQ
+	vJg==
+X-Google-Smtp-Source: AGHT+IFsb3zlxHrZ9Ohx8b9GVNXPeZzBIGQoJjUM/Jo6S9vA10nasAuXZUZAEtGNpzg9DBYDHf9YJPIna94=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:690c:25c1:b0:6ad:feb0:d01c with SMTP id
+ 00721157ae682-6db4515dc01mr849587b3.3.1725597767893; Thu, 05 Sep 2024
+ 21:42:47 -0700 (PDT)
+Date: Thu, 5 Sep 2024 21:42:46 -0700
+In-Reply-To: <CADrL8HW6fFuFTm1wuW9UC4kr+rmRK4MqrU=bQEWram4xo9JBOw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, "Tian, Kevin" <kevin.tian@intel.com>,
- "joro@8bytes.org" <joro@8bytes.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH v3 1/7] iommu: Introduce a replace API for device pasid
-To: Yi Liu <yi.l.liu@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Vasant Hegde <vasant.hegde@amd.com>
-References: <20240628090557.50898-1-yi.l.liu@intel.com>
- <20240628090557.50898-2-yi.l.liu@intel.com>
- <BN9PR11MB5276B4AF6321A083C3C2D2648CAC2@BN9PR11MB5276.namprd11.prod.outlook.com>
- <1a825f1b-be9d-4de1-948a-be0cce3175be@intel.com>
- <20240816130202.GB2032816@nvidia.com>
- <7b8f09b1-5e0a-48d8-8585-27e4a69ef75d@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <7b8f09b1-5e0a-48d8-8585-27e4a69ef75d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20240809194335.1726916-1-seanjc@google.com> <20240809194335.1726916-5-seanjc@google.com>
+ <CADrL8HW6fFuFTm1wuW9UC4kr+rmRK4MqrU=bQEWram4xo9JBOw@mail.gmail.com>
+Message-ID: <ZtqIRi0pZaI-fPiC@google.com>
+Subject: Re: [PATCH 04/22] KVM: selftests: Compute number of extra pages
+ needed in mmu_stress_test
+From: Sean Christopherson <seanjc@google.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/6/24 12:21 PM, Yi Liu wrote:
-> On 2024/8/16 21:02, Jason Gunthorpe wrote:
->> On Fri, Aug 16, 2024 at 05:43:18PM +0800, Yi Liu wrote:
->>> On 2024/7/18 16:27, Tian, Kevin wrote:
->>>>> From: Liu, Yi L <yi.l.liu@intel.com>
->>>>> Sent: Friday, June 28, 2024 5:06 PM
->>>>>
->>>>> @@ -3289,7 +3290,20 @@ static int __iommu_set_group_pasid(struct
->>>>> iommu_domain *domain,
->>>>>
->>>>>            if (device == last_gdev)
->>>>>                break;
->>>>> -        ops->remove_dev_pasid(device->dev, pasid, domain);
->>>>> +        /* If no old domain, undo the succeeded devices/pasid */
->>>>> +        if (!old) {
->>>>> +            ops->remove_dev_pasid(device->dev, pasid, domain);
->>>>> +            continue;
->>>>> +        }
->>>>> +
->>>>> +        /*
->>>>> +         * Rollback the succeeded devices/pasid to the old domain.
->>>>> +         * And it is a driver bug to fail attaching with a previously
->>>>> +         * good domain.
->>>>> +         */
->>>>> +        if (WARN_ON(old->ops->set_dev_pasid(old, device->dev,
->>>>> +                            pasid, domain)))
->>>>> +            ops->remove_dev_pasid(device->dev, pasid, domain);
->>>>
->>>> I wonder whether @remove_dev_pasid() can be replaced by having
->>>> blocking_domain support @set_dev_pasid?
->>>
->>> how about your thought, @Jason?
->>
->> I think we talked about doing that once before, I forget why it was
->> not done. Maybe there was an issue?
->>
->> But it seems worth trying.
-> 
-> Since remove_dev_pasid() does not return a result, so caller does not
-> need to check the result of it. If we want to replace it with the
-> blocked_domain->ops->set_dev_pasid(), shall we enforce that the
-> set_dev_pasid() op of blocked_domain to be always success. Is it?
+On Thu, Sep 05, 2024, James Houghton wrote:
+> On Fri, Aug 9, 2024 at 12:43=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > Create mmu_stress_tests's VM with the correct number of extra pages nee=
+ded
+> > to map all of memory in the guest.  The bug hasn't been noticed before =
+as
+> > the test currently runs only on x86, which maps guest memory with 1GiB
+> > pages, i.e. doesn't need much memory in the guest for page tables.
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  tools/testing/selftests/kvm/mmu_stress_test.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/tools/testing/selftests/kvm/mmu_stress_test.c b/tools/test=
+ing/selftests/kvm/mmu_stress_test.c
+> > index 847da23ec1b1..5467b12f5903 100644
+> > --- a/tools/testing/selftests/kvm/mmu_stress_test.c
+> > +++ b/tools/testing/selftests/kvm/mmu_stress_test.c
+> > @@ -209,7 +209,13 @@ int main(int argc, char *argv[])
+> >         vcpus =3D malloc(nr_vcpus * sizeof(*vcpus));
+> >         TEST_ASSERT(vcpus, "Failed to allocate vCPU array");
+> >
+> > -       vm =3D vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
+> > +       vm =3D __vm_create_with_vcpus(VM_SHAPE_DEFAULT, nr_vcpus,
+> > +#ifdef __x86_64__
+> > +                                   max_mem / SZ_1G,
+> > +#else
+> > +                                   max_mem / vm_guest_mode_params[VM_M=
+ODE_DEFAULT].page_size,
+> > +#endif
+> > +                                   guest_code, vcpus);
+>=20
+> Hmm... I'm trying to square this change with the logic in
+> vm_nr_pages_required().=20
 
-Yes. The semantics of blocking domain is that the iommu driver must
-ensure successful completion.
+vm_nr_pages_required() mostly operates on the number of pages that are need=
+ed to
+setup the VM, e.g. for vCPU stacks.  The one calculation that guesstimates =
+the
+number of bytes needed, ucall_nr_pages_required(), does the same thing this=
+ code
+does: divide the number of total bytes by bytes-per-page.
 
-Thanks,
-baolu
+> That logic seems to be doing what you want (though it always assumes smal=
+l
+> mappings IIUC).
+
+Ya, AFAIK, x86 is the only architecture that let's test map huge pages on t=
+he
+guest side.
+
+> So it seems like there's something else that's not being accounted for?
+
+I don't think so?  vm_nr_pages_required() uses @nr_pages to determine how m=
+any
+page table pages will be needed in the guest, and then adds that many non-h=
+uge
+pages worth of bytes to the size of memslot 0.
+
+> (Also without the extra pages, how does this test actually fail?)
+
+Guest memory allocation failure when trying to create the guest mappings.
