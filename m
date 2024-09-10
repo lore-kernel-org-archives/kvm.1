@@ -1,172 +1,178 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D9718C003;
-	Tue, 10 Sep 2024 11:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF8618DF9E;
+	Tue, 10 Sep 2024 11:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725969306; cv=none; b=qwwdeK4pQ4fq64l2Ryr9h686w3clpXs9RoC6F+a1XEPMGxKIr1Nha5DPV1N0YqRZfRiafKn1hqo8M/gy0m/ZTBG3aPbu0YEw/YOIgHFckhKZrTvBTqOqAz5VNmrAgxDLOOU4+/a8buyldWwgquCFY/IYAJKyyTrseYowQzQ3Vx4=
+	t=1725969537; cv=none; b=DRb9bjuc2aQsZpqKvtmU9LEkcxTZtT8M55z8cBhQI6Iy+KHt5prGfreZG+WOXc8KhwhoXaQGI0j5ubwGDj+dfHVAsmex34gCPEknP0R7JQ6LDvmBdW+FL0Rwb/2ErmbcqvedrhH2+FASWnIBfTXu5WKv4/UjHcaAWqloeo2grdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725969306; c=relaxed/simple;
-	bh=eah5Sen1l0Aw0ayjvsVeKGFBQX7863WPYIJIOytk2U4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BzDHkRul1KHLVDERhRRI5J66b8hywh1txTJHJTHKQiX5lIwTTjv9Aegk37QgHb5txmqnC8LbmI6VT1Kk9/RwkEjE+tdu0L+h+7CIOCMJBdo64uykcOwhnxm1g+pYhE44/WVTkAquVgXuArGhMothpjFWMOoqosSOcqU3PlALwEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZfaKzm8m; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZfaKzm8m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725969304; x=1757505304;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eah5Sen1l0Aw0ayjvsVeKGFBQX7863WPYIJIOytk2U4=;
-  b=ZfaKzm8mWeWxMKl2Xvp2C/LjSoiX82RG5NEJzuuz1y/bokZIkX2Uh4JI
-   ECZmlsmlXv0C0PiQRcGxRwEcPR4EKXbfjbJvdX+LNDUUwM8P47ry55Vci
-   I4B3jTEIECHjbP3PjRJMDTD+ChSWJ5JheKHmmtgavyb3Qo5IP2aD7Gt49
-   8jd8wVSn3WqClTFbxxyuNSlfoxlN+r7jopE0j2jJoaF5MoMxVO9ckjywi
-   aUZU9+WmK8AEe4/zbJ3byd8uJSw7FF/I+Duc3QMUdJgLhOGUg1gi1Pvsg
-   AqXHh4NGSuUvSnSSRHmd9Haoj5RD4+ZSKl583QMAISVWHOOTfBHyl+Qf4
-   Q==;
-X-CSE-ConnectionGUID: umelgkIqTLGV2UKQfXJ8PQ==
-X-CSE-MsgGUID: 3/1ZZbgOTBqYU+3yjkHwEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24525206"
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="24525206"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 04:55:04 -0700
-X-CSE-ConnectionGUID: a5ta+mteSUGBdy9s1uL/9w==
-X-CSE-MsgGUID: +Me8vOSjRhqQMxh0Ue2FBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="71990261"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.245.115.59])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 04:55:00 -0700
-Message-ID: <88eb6d03-2fb4-49cf-944a-6ec64bf83ac8@intel.com>
-Date: Tue, 10 Sep 2024 14:54:54 +0300
+	s=arc-20240116; t=1725969537; c=relaxed/simple;
+	bh=MVGA51egBnHRQ28a/BV+aqFmJLRJM1TC1uppm6jiYuI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PQ0xue2i22P6nvSTyh7YzPRrz1C5soiZq/NIuj0lC3i+WIFz82uv/+wHfEbFJHqemTuKlLl6tBxAsX0NOpkEITsKby8yTlixqPun55tiBoBweyZ8qaiUJCUws0XDlg7UZ5i4wjiR/Tknn0AViWKob9OcZ4fEDa+w+mfl7+iR15Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.185])
+	by gateway (Coremail) with SMTP id _____8Axbep2NOBm360DAA--.8734S3;
+	Tue, 10 Sep 2024 19:58:46 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+	by front2 (Coremail) with SMTP id qciowMCxSsZwNOBm+GEDAA--.16096S2;
+	Tue, 10 Sep 2024 19:58:42 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: linux-kernel@vger.kernel.org
+Cc: Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Xianglai li <lixianglai@loongson.cn>
+Subject: [PATCH V3 00/11] Added Interrupt controller emulation for loongarch kvm
+Date: Tue, 10 Sep 2024 19:40:54 +0800
+Message-Id: <20240910114105.4062286-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 20/21] KVM: TDX: Finalize VM initialization
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, seanjc@google.com,
- kvm@vger.kernel.org
-Cc: kai.huang@intel.com, dmatlack@google.com, isaku.yamahata@gmail.com,
- yan.y.zhao@intel.com, nik.borisov@suse.com, linux-kernel@vger.kernel.org
-References: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
- <20240904030751.117579-21-rick.p.edgecombe@intel.com>
- <acf52e41-e78c-479d-9736-419a86002982@redhat.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <acf52e41-e78c-479d-9736-419a86002982@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qciowMCxSsZwNOBm+GEDAA--.16096S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On 10/09/24 13:25, Paolo Bonzini wrote:
-> On 9/4/24 05:07, Rick Edgecombe wrote:
->> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>
->> Add a new VM-scoped KVM_MEMORY_ENCRYPT_OP IOCTL subcommand,
->> KVM_TDX_FINALIZE_VM, to perform TD Measurement Finalization.
->>
->> Documentation for the API is added in another patch:
->> "Documentation/virt/kvm: Document on Trust Domain Extensions(TDX)"
->>
->> For the purpose of attestation, a measurement must be made of the TDX VM
->> initial state. This is referred to as TD Measurement Finalization, and
->> uses SEAMCALL TDH.MR.FINALIZE, after which:
->> 1. The VMM adding TD private pages with arbitrary content is no longer
->>     allowed
->> 2. The TDX VM is runnable
->>
->> Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
->> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
->> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
->> ---
->> TDX MMU part 2 v1:
->>   - Added premapped check.
->>   - Update for the wrapper functions for SEAMCALLs. (Sean)
->>   - Add check if nr_premapped is zero.  If not, return error.
->>   - Use KVM_BUG_ON() in tdx_td_finalizer() for consistency.
->>   - Change tdx_td_finalizemr() to take struct kvm_tdx_cmd *cmd and return error
->>     (Adrian)
->>   - Handle TDX_OPERAND_BUSY case (Adrian)
->>   - Updates from seamcall overhaul (Kai)
->>   - Rename error->hw_error
->>
->> v18:
->>   - Remove the change of tools/arch/x86/include/uapi/asm/kvm.h.
->>
->> v15:
->>   - removed unconditional tdx_track() by tdx_flush_tlb_current() that
->>     does tdx_track().
->> ---
->>   arch/x86/include/uapi/asm/kvm.h |  1 +
->>   arch/x86/kvm/vmx/tdx.c          | 28 ++++++++++++++++++++++++++++
->>   2 files changed, 29 insertions(+)
->>
->> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
->> index 789d1d821b4f..0b4827e39458 100644
->> --- a/arch/x86/include/uapi/asm/kvm.h
->> +++ b/arch/x86/include/uapi/asm/kvm.h
->> @@ -932,6 +932,7 @@ enum kvm_tdx_cmd_id {
->>       KVM_TDX_INIT_VM,
->>       KVM_TDX_INIT_VCPU,
->>       KVM_TDX_INIT_MEM_REGION,
->> +    KVM_TDX_FINALIZE_VM,
->>       KVM_TDX_GET_CPUID,
->>         KVM_TDX_CMD_NR_MAX,
->> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> index 796d1a495a66..3083a66bb895 100644
->> --- a/arch/x86/kvm/vmx/tdx.c
->> +++ b/arch/x86/kvm/vmx/tdx.c
->> @@ -1257,6 +1257,31 @@ void tdx_flush_tlb_current(struct kvm_vcpu *vcpu)
->>       ept_sync_global();
->>   }
->>   +static int tdx_td_finalizemr(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
->> +{
->> +    struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
->> +
->> +    if (!is_hkid_assigned(kvm_tdx) || is_td_finalized(kvm_tdx))
->> +        return -EINVAL;
->> +    /*
->> +     * Pages are pending for KVM_TDX_INIT_MEM_REGION to issue
->> +     * TDH.MEM.PAGE.ADD().
->> +     */
->> +    if (atomic64_read(&kvm_tdx->nr_premapped))
->> +        return -EINVAL;
-> 
-> I suggest moving all of patch 16, plus the
-> 
-> +    WARN_ON_ONCE(!atomic64_read(&kvm_tdx->nr_premapped));
-> +    atomic64_dec(&kvm_tdx->nr_premapped);
-> 
-> lines of patch 19, into this patch.
-> 
->> +    cmd->hw_error = tdh_mr_finalize(kvm_tdx);
->> +    if ((cmd->hw_error & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_BUSY)
->> +        return -EAGAIN;
->> +    if (KVM_BUG_ON(cmd->hw_error, kvm)) {
->> +        pr_tdx_error(TDH_MR_FINALIZE, cmd->hw_error);
->> +        return -EIO;
->> +    }
->> +
->> +    kvm_tdx->finalized = true;
->> +    return 0;
-> 
-> This should also set pre_fault_allowed to true.
+Before this, the interrupt controller simulation has been completed
+in the user mode program. In order to reduce the loss caused by frequent
+switching of the virtual machine monitor from kernel mode to user mode
+when the guest accesses the interrupt controller, we add the interrupt
+controller simulation in kvm.
 
-Ideally, need to ensure it is not possible for another CPU
-to see kvm_tdx->finalized==false and pre_fault_allowed==true
+The following is a virtual machine simulation diagram of interrupted
+connections:
+  +-----+    +---------+     +-------+
+  | IPI |--> | CPUINTC | <-- | Timer |
+  +-----+    +---------+     +-------+
+                 ^
+                 |
+           +---------+
+           | EIOINTC |
+           +---------+
+            ^       ^
+            |       |
+     +---------+ +---------+
+     | PCH-PIC | | PCH-MSI |
+     +---------+ +---------+
+       ^      ^          ^
+       |      |          |
++--------+ +---------+ +---------+
+| UARTs  | | Devices | | Devices |
++--------+ +---------+ +---------+
 
-Perhaps also, to document the dependency, return an error if
-pre_fault_allowed is true in tdx_mem_page_record_premap_cnt().
+In this series of patches, we mainly realized the simulation of
+IPI EIOINTC PCH-PIC interrupt controller.
+
+The simulation of IPI EIOINTC PCH-PIC interrupt controller mainly
+completes the creation simulation of the interrupt controller,
+the register address space read and write simulation,
+and the interface with user mode to obtain and set the interrupt
+controller state for the preservation,
+recovery and migration of virtual machines.
+
+IPI simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/tree/main/docs/Loongson-3A5000-usermanual-EN/inter-processor-interrupts-and-communication
+
+EIOINTC simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/tree/main/docs/Loongson-3A5000-usermanual-EN/io-interrupts/extended-io-interrupts
+
+PCH-PIC simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/blob/main/docs/Loongson-7A1000-usermanual-EN/interrupt-controller.adoc
+
+For PCH-MSI, we used irqfd mechanism to send the interrupt signal
+generated by user state to kernel state and then to EIOINTC without
+maintaining PCH-MSI state in kernel state.
+
+You can easily get the code from the link below:
+the kernel:
+https://github.com/lixianglai/linux
+the branch is: interrupt
+
+the qemu:
+https://github.com/lixianglai/qemu
+the branch is: interrupt
+
+Please note that the code above is regularly updated based on community
+reviews.
+
+change log:
+V2->V3:
+1.Modify the macro definition name:
+KVM_DEV_TYPE_LA_* ->  KVM_DEV_TYPE_LOONGARCH_*
+2.Change the short name for "Extended I/O Interrupt Controller" from EXTIOI to EIOINTC
+Rename file extioi.c to eiointc.c
+Rename file extioi.h to eiointc.h
+
+V1->V2:
+1.Remove redundant blank lines according to community comments
+2.Remove simplified redundant code
+3.Adds 16 bits of read/write interface to the eiointc iocsr address space
+4.Optimize user - and kernel-mode data access interfaces: Access
+fixed length data each time to prevent memory overruns
+5.Added virtual eiointc, where interrupts can be routed to cpus other than cpu 4
+
+Cc: Bibo Mao <maobibo@loongson.cn> 
+Cc: Huacai Chen <chenhuacai@kernel.org> 
+Cc: kvm@vger.kernel.org 
+Cc: loongarch@lists.linux.dev 
+Cc: Paolo Bonzini <pbonzini@redhat.com> 
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn> 
+Cc: WANG Xuerui <kernel@xen0n.name> 
+Cc: Xianglai li <lixianglai@loongson.cn> 
+
+Xianglai Li (11):
+  LoongArch: KVM: Add iocsr and mmio bus simulation in kernel
+  LoongArch: KVM: Add IPI device support
+  LoongArch: KVM: Add IPI read and write function
+  LoongArch: KVM: Add IPI user mode read and write function
+  LoongArch: KVM: Add EIOINTC device support
+  LoongArch: KVM: Add EIOINTC read and write functions
+  LoongArch: KVM: Add EIOINTC user mode read and write functions
+  LoongArch: KVM: Add PCHPIC device support
+  LoongArch: KVM: Add PCHPIC read and write functions
+  LoongArch: KVM: Add PCHPIC user mode read and write functions
+  LoongArch: KVM: Add irqfd support
+
+ arch/loongarch/include/asm/kvm_eiointc.h |  122 +++
+ arch/loongarch/include/asm/kvm_host.h    |   32 +-
+ arch/loongarch/include/asm/kvm_ipi.h     |   52 ++
+ arch/loongarch/include/asm/kvm_pch_pic.h |   61 ++
+ arch/loongarch/include/uapi/asm/kvm.h    |   19 +
+ arch/loongarch/kvm/Kconfig               |    3 +
+ arch/loongarch/kvm/Makefile              |    4 +
+ arch/loongarch/kvm/exit.c                |   86 +-
+ arch/loongarch/kvm/intc/eiointc.c        | 1056 ++++++++++++++++++++++
+ arch/loongarch/kvm/intc/ipi.c            |  510 +++++++++++
+ arch/loongarch/kvm/intc/pch_pic.c        |  521 +++++++++++
+ arch/loongarch/kvm/irqfd.c               |   87 ++
+ arch/loongarch/kvm/main.c                |   18 +-
+ arch/loongarch/kvm/vcpu.c                |    3 +
+ arch/loongarch/kvm/vm.c                  |   53 +-
+ include/linux/kvm_host.h                 |    1 +
+ include/trace/events/kvm.h               |   35 +
+ include/uapi/linux/kvm.h                 |    8 +
+ 18 files changed, 2642 insertions(+), 29 deletions(-)
+ create mode 100644 arch/loongarch/include/asm/kvm_eiointc.h
+ create mode 100644 arch/loongarch/include/asm/kvm_ipi.h
+ create mode 100644 arch/loongarch/include/asm/kvm_pch_pic.h
+ create mode 100644 arch/loongarch/kvm/intc/eiointc.c
+ create mode 100644 arch/loongarch/kvm/intc/ipi.c
+ create mode 100644 arch/loongarch/kvm/intc/pch_pic.c
+ create mode 100644 arch/loongarch/kvm/irqfd.c
+
+
+base-commit: bc83b4d1f08695e85e85d36f7b803da58010161d
+-- 
+2.39.1
 
