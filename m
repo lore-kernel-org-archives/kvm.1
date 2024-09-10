@@ -1,482 +1,164 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7E2191496
-	for <kvm@vger.kernel.org>; Tue, 10 Sep 2024 12:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65561192B8F
+	for <kvm@vger.kernel.org>; Tue, 10 Sep 2024 12:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725971789; cv=none; b=ARjCQ4/Jj3521nd5nz1D/K0Qj3M4wCqkT/lPuevgbfLBKKCIDYyLFVmOHMWs1wIJ8RmDzW4jZ/v90YuX6yjvoUJLGxO/4kiJLkSOUbJ01PqO0VNnp/ayYg2y29UwVG356VB1/8ppd+Nyk8akSs+YONyTXpE0uF+ylpCVSFz0GTo=
+	t=1725972580; cv=none; b=r5n6voY9Er6Uk9IMa6hWhweyldQL7DIE6n4wVGqkBy8DMw75V3HGKYhUUbegigYDwXheOceUuASDtajG2ODNigA2ke+LQLU6Xjgf9gvzS6UIVZPr51HFrKIOkxOy0FBYbJBszcwCbBgUnp2HnMbVNnmRKLRUkWus6hhomZiizZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725971789; c=relaxed/simple;
-	bh=wx8pYCyMzI7tRxcwtKJMQZIms2/4FMcnTDwLpJwCIBk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lEfaOLrSErqVQea7rdwYAnLPIUN23MB7hlui5TZP6SBmEFqGQCn1DjpMYprm77x+wzFjUBfZRV1W8eBw/otbcVzKjZQY8qI486CH3WQAoAIiXM5chdK8TOH5gn5l4vuHTlYdd95GGnhsgOvj9RLQPu/VwheuU+L2LEpY/V/hJUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8CxB+lIPeBmerkDAA--.7696S3;
-	Tue, 10 Sep 2024 20:36:24 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front2 (Coremail) with SMTP id qciowMBx+cVCPeBmXGoDAA--.15753S6;
-	Tue, 10 Sep 2024 20:36:23 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Song Gao <gaosong@loongson.cn>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	kvm@vger.kernel.org,
-	Bibo Mao <maobibo@loongson.cn>
-Subject: [RFC PATCH V2 4/5] hw/loongarch: Add KVM pch pic device support
-Date: Tue, 10 Sep 2024 20:18:31 +0800
-Message-Id: <86f29d4f56b12f826e8a5817cdb1efbfb6007a08.1725969898.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1725969898.git.lixianglai@loongson.cn>
-References: <cover.1725969898.git.lixianglai@loongson.cn>
+	s=arc-20240116; t=1725972580; c=relaxed/simple;
+	bh=mgfcX2uQtqJW+4vxPdt0csDUudu1Fc2mT+vh+uOSnds=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RDy/Iu0CW5sA7UTm4DsDS6vfQ4tgbI2w6NFI2SjNffoPOtTcXBKige2iduVJAbRnzWVzNukh09AaVVrWnOr4C+aZCjy5397D3/nT3hbaPoM7fXfe+KBS0/1P0DYELL3+79cIICd01W9mC3+2ZKawjJ0httd0zjAJuDQXOzj14to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZUEi1fxA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZUEi1fxA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725972577;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6nd62AWkPIK5gIXPiUm1JLX0Wy6uPdrxO6zecHjvld0=;
+	b=ZUEi1fxAStn1fwPuDmBH6pWhIqphxwJZbSMylVl025zK5/UxkVAksNzElR/Ef7NX44ld3Q
+	JHYJN9hVaYIhwId5TJZXS9CH68yvmyvgzLO9UTS2Loqlzm65v13nmcenVmdUOOjtLaSFEm
+	neaCZYg/rvDpxtYVIHHW/zIHK7m5RPE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304-4_DPzqkzNPWj2HrJCVxOOw-1; Tue, 10 Sep 2024 08:49:36 -0400
+X-MC-Unique: 4_DPzqkzNPWj2HrJCVxOOw-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-374c79bf194so517441f8f.0
+        for <kvm@vger.kernel.org>; Tue, 10 Sep 2024 05:49:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725972575; x=1726577375;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6nd62AWkPIK5gIXPiUm1JLX0Wy6uPdrxO6zecHjvld0=;
+        b=c6iVjE0oojsDDhtCWt4kejA8fIyIx0DJdHXBxw88U0jBwMAo0ItohANOQeM9zA6C2b
+         laM+FmiNtpIWG2eJ6/oYtzMAiKBKgltw5cJeP5xsBqVyBSrP88psVLMv1cV8g5gGQKtl
+         YiBt51Yo9S6buG1w6bE+rCtk4IiedoH6j0kRegXOaDghkAwDSLR5dA/QUSgGDUvcsnBc
+         7oaiRY3ARCdW3RooM3S4Gq3J5kNHGKm5PhzKp05ED6HTjYu02IliVX2jnLYPGTZBeHni
+         mmLjoqQPJztd/IjYL/UPzILvyCMOQcWetX/4hL7TdaeLEfUUGpU13O2IOmXj+Llfko31
+         HuBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsoRXilcJ5KdP2ptRNNmoM4Gj68KgzMS7cNMNl9b5FtGvC3ADM46knWIvFLd8cuBJ050M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0M0GsjzBdBsp+xyRFgXJ1iAvqUbUy1styeSp9hWd7HzUfFh+m
+	GBADYby1tJPD4nR/MEYfQFDQlBFKEBOL8hjBtBp/pQJDKppWHW8ofgDXSqXmn7GUempq19onO9S
+	yRERVagAiJo16U1s+LnSdhm0M/xe/BoNJN0zfr38Xzq8FzqmVGQ==
+X-Received: by 2002:adf:f744:0:b0:366:eade:bfbb with SMTP id ffacd0b85a97d-37889682e0fmr9248508f8f.46.1725972575095;
+        Tue, 10 Sep 2024 05:49:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFn1VOKKhA4WLT+ujhN0UWmvu2oY3V+R+ECDiuNE+P04fsSNUprDeK4EvgDC0oQ+l+wSJkUiA==
+X-Received: by 2002:adf:f744:0:b0:366:eade:bfbb with SMTP id ffacd0b85a97d-37889682e0fmr9248486f8f.46.1725972574606;
+        Tue, 10 Sep 2024 05:49:34 -0700 (PDT)
+Received: from fedora (g2.ign.cz. [91.219.240.8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42caeb8afc9sm112219705e9.44.2024.09.10.05.49.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 05:49:34 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, Yan Zhao
+ <yan.y.zhao@intel.com>, Kevin Tian <kevin.tian@intel.com>,
+ kraxel@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+ virtualization@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] drm/bochs: use devm_ioremap_wc() to map framebuffer
+In-Reply-To: <20240909131643.28915-1-yan.y.zhao@intel.com>
+References: <20240909131643.28915-1-yan.y.zhao@intel.com>
+Date: Tue, 10 Sep 2024 14:49:33 +0200
+Message-ID: <87a5gf4qsi.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qciowMBx+cVCPeBmXGoDAA--.15753S6
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain
 
-Added pch_pic interrupt controller for kvm emulation.
-The main process is to send the command word for
-creating an pch_pic device to the kernel,
-Delivers the pch pic interrupt controller configuration
-register base address to the kernel.
-When the VM is saved, the ioctl obtains the pch_pic
-interrupt controller data in the kernel and saves it.
-When the VM is recovered, the saved data is sent to the kernel.
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>
-Cc: kvm@vger.kernel.org
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Xianglai Li <lixianglai@loongson.cn>
+> Opt for devm_ioremap_wc() over devm_ioremap() when mapping the framebuffer.
+>
+> Using devm_ioremap() results in the VA being mapped with PAT=UC-, which
+> considerably slows down drm_fb_memcpy(). In contrast, devm_ioremap_wc()
+> maps the VA with PAT set to WC, leading to better performance on platforms
+> where access to UC memory is much slower than WC memory.
+>
+> Here's the performance data measured in a guest on the physical machine
+> "Sapphire Rapids XCC".
+> With host KVM honors guest PAT memory types, the effective memory type
+> for this framebuffer range is
+> - WC when devm_ioremap_wc() is used
+> - UC- when devm_ioremap() is used.
+>
+> The data presented is an average from 10 execution runs.
+>
+> Cycles: Avg cycles of executed bochs_primary_plane_helper_atomic_update()
+>         from VM boot to GDM show up
+> Cnt:    Avg cnt of executed bochs_primary_plane_helper_atomic_update()
+>         from VM boot to GDM show up
+> T:      Avg time of each bochs_primary_plane_helper_atomic_update().
+>
+>  -------------------------------------------------
+> |            | devm_ioremap() | devm_ioremap_wc() |
+> |------------|----------------|-------------------|
+> |  Cycles    |    211.545M    |   0.157M          |
+> |------------|----------------|-------------------|
+> |  Cnt       |     142        |   1917            |
+> |------------|----------------|-------------------|
+> |  T         |    0.1748s     |   0.0004s         |
+>  -------------------------------------------------
+>
+> Note:
+> Following the rebase to [3], the previously reported GDM failure on the
+> VGA device [1] can no longer be reproduced, thanks to the memory management
+> improvements made in [2]. Despite this, I have proceeded to submit this
+> patch because of the noticeable performance improvements it provides.
+>
+> Reported-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
- hw/intc/Kconfig                 |   3 +
- hw/intc/loongarch_pch_pic.c     |  40 ++++---
- hw/intc/loongarch_pch_pic_kvm.c | 180 ++++++++++++++++++++++++++++++++
- hw/intc/meson.build             |   1 +
- hw/loongarch/Kconfig            |   1 +
- hw/loongarch/virt.c             |  67 ++++++------
- 6 files changed, 249 insertions(+), 43 deletions(-)
- create mode 100644 hw/intc/loongarch_pch_pic_kvm.c
+FWIW, this patch (alone) resolves the observed issue, thanks!
 
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index df9352d41d..1169926eec 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -105,6 +105,9 @@ config LOONGARCH_PCH_PIC
-     bool
-     select UNIMP
- 
-+config LOONGARCH_PCH_PIC_KVM
-+    bool
-+
- config LOONGARCH_PCH_MSI
-     select MSI_NONBROKEN
-     bool
-diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 2d5e65abff..13934be7d9 100644
---- a/hw/intc/loongarch_pch_pic.c
-+++ b/hw/intc/loongarch_pch_pic.c
-@@ -16,18 +16,27 @@
- #include "migration/vmstate.h"
- #include "trace.h"
- #include "qapi/error.h"
-+#include "sysemu/kvm.h"
- 
- static void pch_pic_update_irq(LoongArchPCHPIC *s, uint64_t mask, int level)
- {
-     uint64_t val;
-     int irq;
-+    int kvm_irq;
- 
-     if (level) {
-         val = mask & s->intirr & ~s->int_mask;
-         if (val) {
-             irq = ctz64(val);
-             s->intisr |= MAKE_64BIT_MASK(irq, 1);
--            qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 1);
-+            if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+                kvm_irq = (
-+                KVM_LOONGARCH_IRQ_TYPE_IOAPIC << KVM_LOONGARCH_IRQ_TYPE_SHIFT)
-+                | (0 <<  KVM_LOONGARCH_IRQ_VCPU_SHIFT) | s->htmsi_vector[irq];
-+                kvm_set_irq(kvm_state, kvm_irq, !!level);
-+            } else {
-+                qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 1);
-+            }
-         }
-     } else {
-         /*
-@@ -38,7 +47,14 @@ static void pch_pic_update_irq(LoongArchPCHPIC *s, uint64_t mask, int level)
-         if (val) {
-             irq = ctz64(val);
-             s->intisr &= ~MAKE_64BIT_MASK(irq, 1);
--            qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 0);
-+            if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+                kvm_irq = (
-+                KVM_LOONGARCH_IRQ_TYPE_IOAPIC << KVM_LOONGARCH_IRQ_TYPE_SHIFT)
-+                | (0 <<  KVM_LOONGARCH_IRQ_VCPU_SHIFT) | s->htmsi_vector[irq];
-+                kvm_set_irq(kvm_state, kvm_irq, !!level);
-+            } else {
-+                qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 0);
-+            }
-         }
-     }
- }
-@@ -265,18 +281,18 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
- {
-     LoongArchPCHPIC *s = LOONGARCH_PCH_PIC(opaque);
-     uint64_t val = 0;
--    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_START;
-     int64_t offset_tmp;
- 
-     switch (offset) {
--    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
--        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
-+    case PCH_PIC_HTMSI_VEC_START ... PCH_PIC_HTMSI_VEC_END:
-+        offset_tmp = offset - PCH_PIC_HTMSI_VEC_START;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             val = s->htmsi_vector[offset_tmp];
-         }
-         break;
--    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
--        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    case PCH_PIC_ROUTE_ENTRY_START ... PCH_PIC_ROUTE_ENTRY_END:
-+        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_START;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             val = s->route_entry[offset_tmp];
-         }
-@@ -294,19 +310,19 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
- {
-     LoongArchPCHPIC *s = LOONGARCH_PCH_PIC(opaque);
-     int32_t offset_tmp;
--    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_START;
- 
-     trace_loongarch_pch_pic_writeb(size, addr, data);
- 
-     switch (offset) {
--    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
--        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
-+    case PCH_PIC_HTMSI_VEC_START ... PCH_PIC_HTMSI_VEC_END:
-+        offset_tmp = offset - PCH_PIC_HTMSI_VEC_START;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
-         }
-         break;
--    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
--        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    case PCH_PIC_ROUTE_ENTRY_START ... PCH_PIC_ROUTE_ENTRY_END:
-+        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_START;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
-         }
-diff --git a/hw/intc/loongarch_pch_pic_kvm.c b/hw/intc/loongarch_pch_pic_kvm.c
-new file mode 100644
-index 0000000000..9b6a2f6784
---- /dev/null
-+++ b/hw/intc/loongarch_pch_pic_kvm.c
-@@ -0,0 +1,180 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * LoongArch kvm pch pic interrupt support
-+ *
-+ * Copyright (C) 2024 Loongson Technology Corporation Limited
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/qdev-properties.h"
-+#include "qemu/typedefs.h"
-+#include "hw/intc/loongarch_pch_pic.h"
-+#include "hw/sysbus.h"
-+#include "linux/kvm.h"
-+#include "migration/vmstate.h"
-+#include "qapi/error.h"
-+#include "sysemu/kvm.h"
-+#include "hw/loongarch/virt.h"
-+#include "hw/pci-host/ls7a.h"
-+#include "qemu/error-report.h"
-+
-+static void kvm_pch_pic_access_regs(int fd, uint64_t addr,
-+                                       void *val, bool is_write)
-+{
-+        kvm_device_access(fd, KVM_DEV_LOONGARCH_PCH_PIC_GRP_REGS,
-+                          addr, val, is_write, &error_abort);
-+}
-+
-+static void kvm_loongarch_pch_pic_save_load(void *opaque, bool is_write)
-+{
-+    KVMLoongArchPCHPIC *s = (KVMLoongArchPCHPIC *)opaque;
-+    KVMLoongArchPCHPICClass *class = KVM_LOONGARCH_PCH_PIC_GET_CLASS(s);
-+    int fd = class->dev_fd;
-+    int addr, offset;
-+
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_MASK_START,
-+                            (void *)&s->int_mask, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_HTMSI_EN_START,
-+                            (void *)&s->htmsi_en, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_EDGE_START,
-+                            (void *)&s->intedge, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_AUTO_CTRL0_START,
-+                            (void *)&s->auto_crtl0, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_AUTO_CTRL1_START,
-+                            (void *)&s->auto_crtl1, is_write);
-+
-+    for (addr = PCH_PIC_ROUTE_ENTRY_START;
-+         addr < PCH_PIC_ROUTE_ENTRY_END; addr++) {
-+        offset = addr - PCH_PIC_ROUTE_ENTRY_START;
-+        kvm_pch_pic_access_regs(fd, addr,
-+                                (void *)&s->route_entry[offset], is_write);
-+    }
-+
-+    for (addr = PCH_PIC_HTMSI_VEC_START; addr < PCH_PIC_HTMSI_VEC_END; addr++) {
-+        offset = addr - PCH_PIC_HTMSI_VEC_START;
-+        kvm_pch_pic_access_regs(fd, addr,
-+                                (void *)&s->htmsi_vector[offset], is_write);
-+    }
-+
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_INT_IRR_START,
-+                            (void *)&s->intirr, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_INT_ISR_START,
-+                            (void *)&s->intisr, is_write);
-+    kvm_pch_pic_access_regs(fd, PCH_PIC_POLARITY_START,
-+                            (void *)&s->int_polarity, is_write);
-+}
-+
-+static int kvm_loongarch_pch_pic_pre_save(void *opaque)
-+{
-+    kvm_loongarch_pch_pic_save_load(opaque, false);
-+    return 0;
-+}
-+
-+static int kvm_loongarch_pch_pic_post_load(void *opaque, int version_id)
-+{
-+    kvm_loongarch_pch_pic_save_load(opaque, true);
-+    return 0;
-+}
-+
-+static void kvm_pch_pic_handler(void *opaque, int irq, int level)
-+{
-+    int kvm_irq;
-+
-+    if (kvm_enabled()) {
-+        kvm_irq = \
-+            (KVM_LOONGARCH_IRQ_TYPE_IOAPIC << KVM_LOONGARCH_IRQ_TYPE_SHIFT)
-+            | (0 <<  KVM_LOONGARCH_IRQ_VCPU_SHIFT) | irq;
-+        kvm_set_irq(kvm_state, kvm_irq, !!level);
-+    }
-+}
-+
-+static void kvm_loongarch_pch_pic_realize(DeviceState *dev, Error **errp)
-+{
-+    KVMLoongArchPCHPICClass *pch_pic_class =
-+            KVM_LOONGARCH_PCH_PIC_GET_CLASS(dev);
-+    struct kvm_create_device cd = {0};
-+    uint64_t pch_pic_base = VIRT_PCH_REG_BASE;
-+    Error *err = NULL;
-+    int ret;
-+
-+    pch_pic_class->parent_realize(dev, &err);
-+    if (err) {
-+        error_propagate(errp, err);
-+        return;
-+    }
-+
-+    if (!pch_pic_class->is_created) {
-+        cd.type = KVM_DEV_TYPE_LOONGARCH_PCH_PIC;
-+        ret = kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd);
-+        if (ret < 0) {
-+            error_setg_errno(errp, errno,
-+                             "Creating the KVM pch pic device failed");
-+            return;
-+        }
-+        pch_pic_class->is_created = true;
-+        pch_pic_class->dev_fd = cd.fd;
-+        fprintf(stdout, "Create LoongArch pch pic irqchip in KVM done!\n");
-+
-+        ret = kvm_device_access(cd.fd, KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL,
-+                                KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT,
-+                                &pch_pic_base, true, NULL);
-+        if (ret < 0) {
-+            error_report(
-+                "KVM PCH_PIC: failed to set the base address of PCH PIC");
-+            exit(1);
-+        }
-+
-+        qdev_init_gpio_in(dev, kvm_pch_pic_handler, VIRT_PCH_PIC_IRQ_NUM);
-+    }
-+}
-+
-+static const VMStateDescription vmstate_kvm_loongarch_pch_pic = {
-+    .name = TYPE_LOONGARCH_PCH_PIC,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .pre_save = kvm_loongarch_pch_pic_pre_save,
-+    .post_load = kvm_loongarch_pch_pic_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(int_mask, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(htmsi_en, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(intedge, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(intclr, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(auto_crtl0, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(auto_crtl1, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT8_ARRAY(route_entry, KVMLoongArchPCHPIC, 64),
-+        VMSTATE_UINT8_ARRAY(htmsi_vector, KVMLoongArchPCHPIC, 64),
-+        VMSTATE_UINT64(last_intirr, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(intirr, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(intisr, KVMLoongArchPCHPIC),
-+        VMSTATE_UINT64(int_polarity, KVMLoongArchPCHPIC),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+
-+static void kvm_loongarch_pch_pic_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    KVMLoongArchPCHPICClass *pch_pic_class = KVM_LOONGARCH_PCH_PIC_CLASS(oc);
-+
-+    pch_pic_class->parent_realize = dc->realize;
-+    dc->realize = kvm_loongarch_pch_pic_realize;
-+    pch_pic_class->is_created = false;
-+    dc->vmsd = &vmstate_kvm_loongarch_pch_pic;
-+
-+}
-+
-+static const TypeInfo kvm_loongarch_pch_pic_info = {
-+    .name = TYPE_KVM_LOONGARCH_PCH_PIC,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(KVMLoongArchPCHPIC),
-+    .class_size = sizeof(KVMLoongArchPCHPICClass),
-+    .class_init = kvm_loongarch_pch_pic_class_init,
-+};
-+
-+static void kvm_loongarch_pch_pic_register_types(void)
-+{
-+    type_register_static(&kvm_loongarch_pch_pic_info);
-+}
-+
-+type_init(kvm_loongarch_pch_pic_register_types)
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 85174d1af1..c20c0a2c05 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -77,3 +77,4 @@ specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC', if_true: files('loongarch_pch_
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_msi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI', if_true: files('loongarch_extioi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI_KVM', if_true: files('loongarch_extioi_kvm.c'))
-+specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC_KVM', if_true: files('loongarch_pch_pic_kvm.c'))
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index 99a523171f..f909f799ad 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -17,6 +17,7 @@ config LOONGARCH_VIRT
-     select LOONGARCH_PCH_MSI
-     select LOONGARCH_EXTIOI
-     select LOONGARCH_IPI_KVM if KVM
-+    select LOONGARCH_PCH_PIC_KVM if KVM
-     select LOONGARCH_EXTIOI_KVM if KVM
-     select LS7A_RTC
-     select SMBIOS
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 8ca7c09016..db0c08899b 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -865,40 +865,45 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     /* Add Extend I/O Interrupt Controller node */
-     fdt_add_eiointc_node(lvms, &cpuintc_phandle, &eiointc_phandle);
- 
--    pch_pic = qdev_new(TYPE_LOONGARCH_PCH_PIC);
--    num = VIRT_PCH_PIC_IRQ_NUM;
--    qdev_prop_set_uint32(pch_pic, "pch_pic_irq_num", num);
--    d = SYS_BUS_DEVICE(pch_pic);
--    sysbus_realize_and_unref(d, &error_fatal);
--    memory_region_add_subregion(get_system_memory(), VIRT_IOAPIC_REG_BASE,
--                            sysbus_mmio_get_region(d, 0));
--    memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY_OFFSET,
-+    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+        pch_pic = qdev_new(TYPE_KVM_LOONGARCH_PCH_PIC);
-+        sysbus_realize_and_unref(SYS_BUS_DEVICE(pch_pic), &error_fatal);
-+    } else {
-+        pch_pic = qdev_new(TYPE_LOONGARCH_PCH_PIC);
-+        num = VIRT_PCH_PIC_IRQ_NUM;
-+        qdev_prop_set_uint32(pch_pic, "pch_pic_irq_num", num);
-+        d = SYS_BUS_DEVICE(pch_pic);
-+        sysbus_realize_and_unref(d, &error_fatal);
-+        memory_region_add_subregion(get_system_memory(), VIRT_IOAPIC_REG_BASE,
-+                                sysbus_mmio_get_region(d, 0));
-+        memory_region_add_subregion(get_system_memory(),
-+                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY_START,
-                             sysbus_mmio_get_region(d, 1));
--    memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS_LO,
--                            sysbus_mmio_get_region(d, 2));
--
--    /* Connect pch_pic irqs to extioi */
--    for (i = 0; i < num; i++) {
--        qdev_connect_gpio_out(DEVICE(d), i, qdev_get_gpio_in(extioi, i));
--    }
-+        memory_region_add_subregion(get_system_memory(),
-+                                VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS_LO,
-+                                sysbus_mmio_get_region(d, 2));
- 
--    /* Add PCH PIC node */
--    fdt_add_pch_pic_node(lvms, &eiointc_phandle, &pch_pic_phandle);
-+        /* Connect pch_pic irqs to extioi */
-+        for (i = 0; i < num; i++) {
-+            qdev_connect_gpio_out(DEVICE(d), i, qdev_get_gpio_in(extioi, i));
-+        }
- 
--    pch_msi = qdev_new(TYPE_LOONGARCH_PCH_MSI);
--    start   =  num;
--    num = EXTIOI_IRQS - start;
--    qdev_prop_set_uint32(pch_msi, "msi_irq_base", start);
--    qdev_prop_set_uint32(pch_msi, "msi_irq_num", num);
--    d = SYS_BUS_DEVICE(pch_msi);
--    sysbus_realize_and_unref(d, &error_fatal);
--    sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
--    for (i = 0; i < num; i++) {
--        /* Connect pch_msi irqs to extioi */
--        qdev_connect_gpio_out(DEVICE(d), i,
--                              qdev_get_gpio_in(extioi, i + start));
-+        /* Add PCH PIC node */
-+        fdt_add_pch_pic_node(lvms, &eiointc_phandle, &pch_pic_phandle);
-+
-+        pch_msi = qdev_new(TYPE_LOONGARCH_PCH_MSI);
-+        start   =  num;
-+        num = EXTIOI_IRQS - start;
-+        qdev_prop_set_uint32(pch_msi, "msi_irq_base", start);
-+        qdev_prop_set_uint32(pch_msi, "msi_irq_num", num);
-+        d = SYS_BUS_DEVICE(pch_msi);
-+        sysbus_realize_and_unref(d, &error_fatal);
-+        sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
-+        for (i = 0; i < num; i++) {
-+            /* Connect pch_msi irqs to extioi */
-+            qdev_connect_gpio_out(DEVICE(d), i,
-+                                  qdev_get_gpio_in(extioi, i + start));
-+        }
-     }
- 
-     /* Add PCH MSI node */
+Tested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+
+I, however, share Paolo's concern around existing VMs which KVM's change
+is effectively breaking.
+
+> Closes: https://lore.kernel.org/all/87jzfutmfc.fsf@redhat.com/#t
+> Cc: Sean Christopherson <seanjc@google.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> Link: https://lore.kernel.org/all/87jzfutmfc.fsf@redhat.com/#t [1]
+> Link: https://patchwork.freedesktop.org/series/138086 [2]
+> Link: https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/drm-misc-next [3]
+> ---
+> v2:
+> - Rebased to the latest drm-misc-next branch. [2]
+> - Updated patch log to match the base code.
+>
+> v1: https://lore.kernel.org/all/20240909051529.26776-1-yan.y.zhao@intel.com
+> ---
+>  drivers/gpu/drm/tiny/bochs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/tiny/bochs.c b/drivers/gpu/drm/tiny/bochs.c
+> index 69c5f65e9853..9055b1dd66df 100644
+> --- a/drivers/gpu/drm/tiny/bochs.c
+> +++ b/drivers/gpu/drm/tiny/bochs.c
+> @@ -268,7 +268,7 @@ static int bochs_hw_init(struct bochs_device *bochs)
+>  	if (!devm_request_mem_region(&pdev->dev, addr, size, "bochs-drm"))
+>  		DRM_WARN("Cannot request framebuffer, boot fb still active?\n");
+>  
+> -	bochs->fb_map = devm_ioremap(&pdev->dev, addr, size);
+> +	bochs->fb_map = devm_ioremap_wc(&pdev->dev, addr, size);
+>  	if (bochs->fb_map == NULL) {
+>  		DRM_ERROR("Cannot map framebuffer\n");
+>  		return -ENOMEM;
+
 -- 
-2.39.1
+Vitaly
 
