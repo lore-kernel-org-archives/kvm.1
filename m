@@ -1,286 +1,164 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0760199FBE;
-	Tue, 10 Sep 2024 12:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5588F18A6AA
+	for <kvm@vger.kernel.org>; Tue, 10 Sep 2024 12:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725969767; cv=none; b=QxCRudpC9R0u6+3HWBtqExXkL6pdp8xwqSIWBf77vuqGKFypy6HfkpfDb8gGIhGURAMaG97qHT9Fijs4JSoFeI9b56YTTBtL/pAm+Q4RukQsiqZLFcvhXaHNcmgI5TrhDMwMuWdzXr62NO50VLHnKmjZmFjnsZbhBcQ+ijq/b9A=
+	t=1725970579; cv=none; b=XZMYJi15Yt6tG1aOohQwA6sO4JC//bXpuwCoT/jL3la95ImSnjKw4hhxU57+H6L0QhdBmXY7yTksiFn4DF1qJpLNhTAMEiXwrWs2ez0ASEgYJ2xLaekkvbubMlIQn+QZ9Ff41l+UfynrgmZtxFGtktoZbxqsh1zIQYGU/lMBTe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725969767; c=relaxed/simple;
-	bh=0sGCuxGAGG2RC7q/gsCHk89YH++xo72bXbcBO10obUY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W//S4EDvfZje9I82wpz+MuFVgN+ZfWRs4XqVBE7jJZSED2geCiPjWBcC8ddJ8RTxsmkNijc0tbvVnEAl2Dtg9QDbr5/1unfan3b+LxmgLsvu64ceYqjtMpalQXtg5iqbbmpO7IfpKJVslyyqddxodwKfub2VxUch4HqSJeqBnVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8CxyuldNeBms68DAA--.8591S3;
-	Tue, 10 Sep 2024 20:02:37 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front2 (Coremail) with SMTP id qciowMDx_OVVNeBmE2MDAA--.16225S7;
-	Tue, 10 Sep 2024 20:02:35 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: linux-kernel@vger.kernel.org
-Cc: Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Xianglai li <lixianglai@loongson.cn>
-Subject: [PATCH V3 11/11] LoongArch: KVM: Add irqfd support
-Date: Tue, 10 Sep 2024 19:45:01 +0800
-Message-Id: <20240910114501.4062476-6-lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240910114501.4062476-1-lixianglai@loongson.cn>
-References: <20240910114501.4062476-1-lixianglai@loongson.cn>
+	s=arc-20240116; t=1725970579; c=relaxed/simple;
+	bh=UEfWeuvm0Ydu8ziZV3f9vRnj+VSGpjuHDKnB6BVHGBw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ak8xd0l+Uwvi2RITU1Bj1B/xP/F44oC5OW05jEcKPiGdwbQ60BlCjEvBn9JF9qcxj8NfckEpx6iwTg29fwYfrEVMFpFnK+WPyBEug3E/m+KRPJh7er5GdhPVYtxm715fJ/HCEc8sdtoFu1CeIBcmJfTwYc+fRTLMgJkMUQWD4EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fwmy469Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fwmy469Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725970577;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TqNTsGxo7KShGTs/iiAEuAgoPybBC8iCW7tKXvfqSTE=;
+	b=fwmy469Znubw9uqU/lVnt0prsnNShV5HAWs78pWERWYtfEEVxuafgoAgLZ1Y4rusQD5901
+	fYBJEya6EmzqjsZtBP5CZCZXJ3EWrp6ERrNbNYvMqavXYYr/+CfehbC88NNUN+Hkidpent
+	m7XB5ldAw4ekdpC/N1lyK2+2WXarPNo=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-egKrHm18Nv2zb0M-RLFluA-1; Tue, 10 Sep 2024 08:16:16 -0400
+X-MC-Unique: egKrHm18Nv2zb0M-RLFluA-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-458373c736fso15607621cf.0
+        for <kvm@vger.kernel.org>; Tue, 10 Sep 2024 05:16:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725970575; x=1726575375;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TqNTsGxo7KShGTs/iiAEuAgoPybBC8iCW7tKXvfqSTE=;
+        b=ihNOBQtdBoqGskD4rLyjQ4hQhacrdmkKNoIxmQBxwNBauENhfY/sa1OKJlCgrnywVz
+         CWFIGAWgyb6g8I7DBBqYfurfjNyPWV9/gBYYwcq46FjHKaV+dkrrUquh5NlFOK69Ko1c
+         17GQqHRxlH34EQ8foNQtN9R7VqqIq2ZAAxnEzefCyZ1OE0kLLgWpVs+x49i2VLN9yoeO
+         j4NCN/vz3adsAQwafUDE96Z2X6rR5hHG+ztbZKUF+GXuAI3epq9uV24YOZvdApqIIBDX
+         qiHPLFq/KPM4VB/Befm4eGg5ilg0I+oT4aAMIyPyGZgbGySIUzmfKCpSR5CuXVun15EX
+         dc5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWLRNok8A4ldhJiNC/379hn7atbz3lH8vEPyvQ6tkdTEZZ/d6NcsHOUPYwyBjIC4IMTyMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAtaPWP+By0hbsl5pY+zByigybF+TnEq/T9JgmBo02aaIZA2+g
+	E/Jnb6PUzUI7EeISdcnaAlqj0hnmZKuxrMXlta8IgCLM1Oma/ZcJYQoQ7FlAswWm327OF4Txpxh
+	DlQlLDXKeDsucWur5QTmIU9GHpUQ0iR/+izY7Evf4LvW8cpzxBw==
+X-Received: by 2002:ac8:5f47:0:b0:458:1578:56a6 with SMTP id d75a77b69052e-4581f480530mr147993521cf.24.1725970575407;
+        Tue, 10 Sep 2024 05:16:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFv3wgyd3Hg6lqpOUUjpJkTGHHsYgJs2xr7aDITSvRwlUJdHVQc4gd4/fSmPETPVJLM55vBA==
+X-Received: by 2002:ac8:5f47:0:b0:458:1578:56a6 with SMTP id d75a77b69052e-4581f480530mr147993141cf.24.1725970574851;
+        Tue, 10 Sep 2024 05:16:14 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822eb001bsm29057461cf.54.2024.09.10.05.16.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 05:16:14 -0700 (PDT)
+Date: Tue, 10 Sep 2024 08:16:10 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Gavin Shan <gshan@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alistair Popple <apopple@nvidia.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Sean Christopherson <seanjc@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jason Gunthorpe <jgg@nvidia.com>, Borislav Petkov <bp@alien8.de>,
+	Zi Yan <ziy@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>,
+	David Hildenbrand <david@redhat.com>, Will Deacon <will@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: Re: [PATCH v2 07/19] mm/fork: Accept huge pfnmap entries
+Message-ID: <ZuA4ivNcz0NwOAh5@x1n>
+References: <20240826204353.2228736-1-peterx@redhat.com>
+ <20240826204353.2228736-8-peterx@redhat.com>
+ <ZtVwLntpS0eJubFq@yzhao56-desk.sh.intel.com>
+ <Ztd-WkEoFJGZ34xj@x1n>
+ <20240909152546.4ef47308e560ce120156bc35@linux-foundation.org>
+ <Zt96CoGoMsq7icy7@x1n>
+ <20240909161539.aa685e3eb44cdc786b8c05d2@linux-foundation.org>
+ <Zt-N8MB93XSqFZO_@x1n>
+ <Zt+0UTTEkkRQQza0@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qciowMDx_OVVNeBmE2MDAA--.16225S7
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Zt+0UTTEkkRQQza0@yzhao56-desk.sh.intel.com>
 
-Enable the KVM_IRQ_ROUTING KVM_IRQCHIP KVM_MSI configuration item,
-increase the KVM_CAP_IRQCHIP capability, and implement the query
-interface of the kernel irqchip.
+On Tue, Sep 10, 2024 at 10:52:01AM +0800, Yan Zhao wrote:
+> Hi Peter,
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Bibo Mao <maobibo@loongson.cn> 
-Cc: Huacai Chen <chenhuacai@kernel.org> 
-Cc: kvm@vger.kernel.org 
-Cc: loongarch@lists.linux.dev 
-Cc: Paolo Bonzini <pbonzini@redhat.com> 
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn> 
-Cc: WANG Xuerui <kernel@xen0n.name> 
-Cc: Xianglai li <lixianglai@loongson.cn> 
+Hi, Yan,
 
- arch/loongarch/kvm/Kconfig        |  3 ++
- arch/loongarch/kvm/Makefile       |  1 +
- arch/loongarch/kvm/intc/pch_pic.c | 27 ++++++++++
- arch/loongarch/kvm/irqfd.c        | 87 +++++++++++++++++++++++++++++++
- arch/loongarch/kvm/vm.c           | 19 ++++++-
- 5 files changed, 136 insertions(+), 1 deletion(-)
- create mode 100644 arch/loongarch/kvm/irqfd.c
+> 
+> Not sure if I missed anything.
+> 
+> It looks that before this patch, pmd/pud are alawys write protected without
+> checking "is_cow_mapping(vma->vm_flags) && pud_write(pud)". pud_wrprotect()
+> clears dirty bit by moving the dirty value to the software bit.
+> 
+> And I have a question that why previously pmd/pud are always write protected.
 
-diff --git a/arch/loongarch/kvm/Kconfig b/arch/loongarch/kvm/Kconfig
-index 248744b4d086..2947f93efb34 100644
---- a/arch/loongarch/kvm/Kconfig
-+++ b/arch/loongarch/kvm/Kconfig
-@@ -30,6 +30,9 @@ config KVM
- 	select HAVE_KVM_READONLY_MEM
- 	select KVM_XFER_TO_GUEST_WORK
- 	select SCHED_INFO
-+	select HAVE_KVM_IRQ_ROUTING
-+	select HAVE_KVM_IRQCHIP
-+	select HAVE_KVM_MSI
- 	help
- 	  Support hosting virtualized guest machines using
- 	  hardware virtualization extensions. You will need
-diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
-index 97b2adf08206..3a01292f71cc 100644
---- a/arch/loongarch/kvm/Makefile
-+++ b/arch/loongarch/kvm/Makefile
-@@ -21,5 +21,6 @@ kvm-y += vm.o
- kvm-y += intc/ipi.o
- kvm-y += intc/eiointc.o
- kvm-y += intc/pch_pic.o
-+kvm-y += irqfd.o
- 
- CFLAGS_exit.o	+= $(call cc-option,-Wno-override-init,)
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-index 94e964a617e0..41469a426cca 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -447,6 +447,28 @@ static int kvm_pch_pic_set_attr(struct kvm_device *dev,
- 	return ret;
- }
- 
-+static int kvm_setup_default_irq_routing(struct kvm *kvm)
-+{
-+	struct kvm_irq_routing_entry *entries;
-+
-+	u32 nr = KVM_IRQCHIP_NUM_PINS;
-+	int i, ret;
-+
-+	entries = kcalloc(nr, sizeof(*entries), GFP_KERNEL);
-+	if (!entries)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < nr; i++) {
-+		entries[i].gsi = i;
-+		entries[i].type = KVM_IRQ_ROUTING_IRQCHIP;
-+		entries[i].u.irqchip.irqchip = 0;
-+		entries[i].u.irqchip.pin = i;
-+	}
-+	ret = kvm_set_irq_routing(kvm, entries, nr, 0);
-+	kfree(entries);
-+	return 0;
-+}
-+
- static void kvm_pch_pic_destroy(struct kvm_device *dev)
- {
- 	struct kvm *kvm;
-@@ -463,6 +485,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *dev)
- 
- static int kvm_pch_pic_create(struct kvm_device *dev, u32 type)
- {
-+	int ret;
- 	struct loongarch_pch_pic *s;
- 	struct kvm *kvm = dev->kvm;
- 
-@@ -470,6 +493,10 @@ static int kvm_pch_pic_create(struct kvm_device *dev, u32 type)
- 	if (kvm->arch.pch_pic)
- 		return -EINVAL;
- 
-+	ret = kvm_setup_default_irq_routing(kvm);
-+	if (ret)
-+		return -ENOMEM;
-+
- 	s = kzalloc(sizeof(struct loongarch_pch_pic), GFP_KERNEL);
- 	if (!s)
- 		return -ENOMEM;
-diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-new file mode 100644
-index 000000000000..bf67f329ebc9
---- /dev/null
-+++ b/arch/loongarch/kvm/irqfd.c
-@@ -0,0 +1,87 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2024 Loongson Technology Corporation Limited
-+ */
-+
-+#include <linux/kvm_host.h>
-+#include <trace/events/kvm.h>
-+#include <asm/kvm_pch_pic.h>
-+
-+static int kvm_set_ioapic_irq(struct kvm_kernel_irq_routing_entry *e,
-+					struct kvm *kvm, int irq_source_id,
-+					int level, bool line_status)
-+{
-+	/* ioapic pin (0 ~ 64) <---> gsi(0 ~ 64) */
-+	pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
-+
-+	return 0;
-+}
-+
-+/*
-+ * kvm_set_routing_entry: populate a kvm routing entry
-+ * from a user routing entry
-+ *
-+ * @kvm: the VM this entry is applied to
-+ * @e: kvm kernel routing entry handle
-+ * @ue: user api routing entry handle
-+ * return 0 on success, -EINVAL on errors.
-+ */
-+int kvm_set_routing_entry(struct kvm *kvm,
-+			struct kvm_kernel_irq_routing_entry *e,
-+			const struct kvm_irq_routing_entry *ue)
-+{
-+	int r = -EINVAL;
-+
-+	switch (ue->type) {
-+	case KVM_IRQ_ROUTING_IRQCHIP:
-+		e->set = kvm_set_ioapic_irq;
-+
-+		e->irqchip.irqchip = ue->u.irqchip.irqchip;
-+		e->irqchip.pin = ue->u.irqchip.pin;
-+
-+		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS)
-+			goto out;
-+		break;
-+	case KVM_IRQ_ROUTING_MSI:
-+		e->set = kvm_set_msi;
-+		e->msi.address_lo = ue->u.msi.address_lo;
-+		e->msi.address_hi = ue->u.msi.address_hi;
-+		e->msi.data = ue->u.msi.data;
-+		break;
-+	default:
-+		goto out;
-+	}
-+	r = 0;
-+out:
-+	return r;
-+}
-+
-+int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
-+		struct kvm *kvm, int irq_source_id,
-+		int level, bool line_status)
-+{
-+	if (e->type == KVM_IRQ_ROUTING_MSI) {
-+		pch_msi_set_irq(kvm, e->msi.data, 1);
-+		return 0;
-+	}
-+
-+	return -EWOULDBLOCK;
-+}
-+
-+/**
-+ * kvm_set_msi: inject the MSI corresponding to the
-+ * MSI routing entry
-+ *
-+ * This is the entry point for irqfd MSI injection
-+ * and userspace MSI injection.
-+ */
-+int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
-+		struct kvm *kvm, int irq_source_id,
-+		int level, bool line_status)
-+{
-+	if (!level)
-+		return -1;
-+
-+	pch_msi_set_irq(kvm, e->msi.data, level);
-+	return 0;
-+}
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index 5a60474bb933..2cb3288f4e85 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -71,6 +71,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	int r;
- 
- 	switch (ext) {
-+	case KVM_CAP_IRQCHIP:
- 	case KVM_CAP_ONE_REG:
- 	case KVM_CAP_ENABLE_CAP:
- 	case KVM_CAP_READONLY_MEM:
-@@ -103,7 +104,18 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 
- int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- {
--	return -ENOIOCTLCMD;
-+	int r;
-+
-+	switch (ioctl) {
-+	case KVM_CREATE_IRQCHIP: {
-+		r = 1;
-+		break;
-+	}
-+	default:
-+		r = -ENOIOCTLCMD;
-+	}
-+
-+	return r;
- }
- 
- int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *data,
-@@ -137,3 +149,8 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *data,
- 
- 	return ret;
- }
-+
-+bool kvm_arch_irqchip_in_kernel(struct kvm *kvm)
-+{
-+	return (bool)((!!kvm->arch.eiointc) && (!!kvm->arch.pch_pic));
-+}
+IIUC this is a separate question - the move of dirty bit in pud_wrprotect()
+is to avoid wrongly creating shadow stack mappings.  In our discussion I
+think that's an extra complexity and can be put aside; the dirty bit will
+get recovered in pud_clear_saveddirty() later, so it's not the same as
+pud_mkclean().
+
+AFAIU pmd/pud paths don't consider is_cow_mapping() because normally we
+will not duplicate pgtables in fork() for most of shared file mappings
+(!CoW).  Please refer to vma_needs_copy(), and the comment before returning
+false at last.  I think it's not strictly is_cow_mapping(), as we're
+checking anon_vma there, however it's mostly it, just to also cover
+MAP_PRIVATE on file mappings too when there's no CoW happened (as if CoW
+happened then anon_vma will appear already).
+
+There're some outliers, e.g. userfault protected, or pfnmaps/mixedmaps.
+Userfault & mixedmap are not involved in this series at all, so let's
+discuss pfnmaps.
+
+It means, fork() can still copy pgtable for pfnmap vmas, and it's relevant
+to this series, because before this series pfnmap only exists in pte level,
+hence IMO the is_cow_mapping() must exist for pte level as you described,
+because it needs to properly take care of those.  Note that in the pte
+processing it also checks pte_write() to make sure it's a COWed page, not a
+RO page cache / pfnmap / ..., for example.
+
+Meanwhile, since pfnmap won't appear in pmd/pud, I think it's fair that
+pmd/pud assumes when seeing a huge mapping it must be MAP_PRIVATE otherwise
+the whole copy_page_range() could be already skipped.  IOW I think they
+only need to process COWed pages here, and those pages require write bit
+removed in both parent and child when fork().
+
+After this series, pfnmaps can appear in the form of pmd/pud, then the
+previous assumption will stop holding true, as we'll still copy pfnmaps
+during fork() always. My guessing of the reason is because most of the
+drivers map pfnmap vmas only during mmap(), it means there can normally
+have no fault() handler at all for those pfns.
+
+In this case, we'll need to also identify whether the page is COWed, using
+the newly added "is_cow_mapping() && pxx_write()" in this series (added
+to pud path, while for pmd path I used a WARN_ON_ONCE instead).
+
+If we don't do that, it means e.g. for a VM_SHARED pfnmap vma, after fork()
+we'll wrongly observe write protected entries.  Here the change will make
+sure VM_SHARED can properly persist the write bits on pmds/puds.
+
+Hope that explains.
+
+Thanks,
+
 -- 
-2.39.1
+Peter Xu
 
