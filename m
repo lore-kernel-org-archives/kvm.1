@@ -1,138 +1,100 @@
-Received: from vps-vb.mhejs.net (vps-vb.mhejs.net [37.28.154.113])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A2E153820
-	for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 10:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.28.154.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE751185B68;
+	Wed, 11 Sep 2024 11:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726051831; cv=none; b=Vc4+XNyPPbtoBVg/GAj78sR4t2kxq3tJKDlXE7RY65azHWt5h20Bo/vlKRTgerjzU0HQVs3NqzjZXAbeFhVenzMpKcWLKDr0Y1Reh8ctkm+JtapW4f1tR+71wN+Sei8NCchsqlBFK1Pru4wJl2LJpOQqdB53Oo6sG887PWbfqXo=
+	t=1726052656; cv=none; b=oSD+/kf184cGq7PRRkbIujDS7hf9BWf2/xL2cATisDM8FqsdILu+h/6l8nR80/F7cTIMlIkc7j6/a5zcfzE5WxgDTpv28ZubhKuXCdLxhwIp1hVhAhKhkTbcP4PmDDiMpQdnRyqkXOtyOnX7nIEys5INYP+s+1l3RrQLNhZBFMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726051831; c=relaxed/simple;
-	bh=mCuugpz+EcAKUOdNxzxr0QEcNJUbBX868YPz0FF9q68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NaVIBPZFEaMMCjAWEhoFv1u10VTjQH/dfMX3PHKvpSjeT1faKOjEN1fwB9JybxjZLDgTeNAaBvUFxB8lHTpXCOc4hivhd2RNzSvbjyi6ZARHGBjxq5yuQlmPL9yGyK/gwKJUvLUD+yG1wviZBqH3CY256VJY5saLVfsW7Nebmn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=maciej.szmigiero.name; arc=none smtp.client-ip=37.28.154.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maciej.szmigiero.name
-Received: from MUA
-	by vps-vb.mhejs.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <mail@maciej.szmigiero.name>)
-	id 1soKPy-0002uV-KL; Wed, 11 Sep 2024 12:17:46 +0200
-Message-ID: <7ccdeb84-ddca-4d87-86b1-ab7db8ee41d2@maciej.szmigiero.name>
-Date: Wed, 11 Sep 2024 12:17:38 +0200
+	s=arc-20240116; t=1726052656; c=relaxed/simple;
+	bh=63tlxJTpPIMy+FO/Rgfx6YxVpQEL0qxeUzDpU3gziZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mcS6/TvFIY2IXdh7cyXqYO9gEVIE+b31L8wwzAwV9/0GrRrvgsFADZsrIIwmCKAz5JzCSxseBoN0ItpAo8powul5trtazyxyvPkFB0/bWYiHcPiwbjqXGEOSbuBEH+JhqOBSfm4PeKFklSA9NrnLD/bgh1uuz98BHunVW8R0rYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UdCFLliG; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UdCFLliG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726052655; x=1757588655;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=63tlxJTpPIMy+FO/Rgfx6YxVpQEL0qxeUzDpU3gziZ4=;
+  b=UdCFLliGgKGt+zcymapnZ6H5mM3dsks5Ku9PdlANw/ODLY9IPmX7Rind
+   fbVk6giIIje3ozmPMrQReDiyfJsKqpoIbZee/z/SgUGFaLIYxOZUU4fe7
+   ay45KGe6tA9nJVia8iubhVI9jk0xW2QhONFZVsGihuwBBfO5hndfAuME5
+   X2xr97yPmAi98zIi5Jeu6UpyIcJh1lFqDKjXTJjIilKG8+LSKzhqr9rzH
+   5bnTM8pPX8ZaivdviLX+UKShOF+sSoldw3yw0MisxLRb2CwQ+M6Rjq27P
+   ssiRyumLWMGsnqGPn5eshZdrvWQujn3WpadX+ixfXqkTXcepu3naub66T
+   w==;
+X-CSE-ConnectionGUID: /HpoKA3ERB6fzJhR34vMuQ==
+X-CSE-MsgGUID: fzQTNfvMTBK51GlL4PPflg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="36220602"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
+   d="scan'208";a="36220602"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 04:04:14 -0700
+X-CSE-ConnectionGUID: 2dGXu00sQ1OyAcfV/fFuEg==
+X-CSE-MsgGUID: s98ZHqlIR6qiK0n/PzwLFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
+   d="scan'208";a="98034498"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO tlindgre-MOBL1) ([10.245.246.117])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 04:04:11 -0700
+Date: Wed, 11 Sep 2024 14:04:05 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, seanjc@google.com,
+	kvm@vger.kernel.org, kai.huang@intel.com, isaku.yamahata@gmail.com,
+	xiaoyao.li@intel.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/25] KVM: TDX: Initialize KVM supported capabilities
+ when module setup
+Message-ID: <ZuFPBPLy9MqgTsR1@tlindgre-MOBL1>
+References: <20240812224820.34826-1-rick.p.edgecombe@intel.com>
+ <20240812224820.34826-11-rick.p.edgecombe@intel.com>
+ <b8ed694f-3ab1-453c-b14b-25113defbdb6@suse.com>
+ <Zs_-YqQ-9MUAEubx@tlindgre-MOBL1>
+ <b3a46758-b0ac-4136-934b-ec38fc845eeb@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/39] hw/hyperv: replace assert(false) with
- g_assert_not_reached()
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones" <rjones@redhat.com>,
- Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Corey Minyard <minyard@acm.org>, Eric Farman <farman@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Keith Busch <kbusch@kernel.org>,
- WANG Xuerui <git@xen0n.name>, Hyman Huang <yong.huang@smartx.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Michael Rolnik <mrolnik@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, Igor Mammedov
- <imammedo@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, Fam Zheng
- <fam@euphon.net>, qemu-s390x@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
- Klaus Jensen <its@irrelevant.dk>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Jason Wang <jasowang@redhat.com>
-References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
- <20240910221606.1817478-17-pierrick.bouvier@linaro.org>
-Content-Language: en-US, pl-PL
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <20240910221606.1817478-17-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b3a46758-b0ac-4136-934b-ec38fc845eeb@redhat.com>
 
-On 11.09.2024 00:15, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   hw/hyperv/hyperv_testdev.c |  6 +++---
->   hw/hyperv/vmbus.c          | 12 ++++++------
->   2 files changed, 9 insertions(+), 9 deletions(-)
+On Tue, Sep 10, 2024 at 07:15:12PM +0200, Paolo Bonzini wrote:
+> On 8/29/24 06:51, Tony Lindgren wrote:
+> > > nit: Since there are other similarly named functions that come later how
+> > > about rename this to init_kvm_tdx_caps, so that it's clear that the
+> > > functions that are executed ones are prefixed with "init_" and those that
+> > > will be executed on every TDV boot up can be named prefixed with "setup_"
+> > We can call setup_kvm_tdx_caps() from from tdx_get_kvm_supported_cpuid(),
+> > and drop the struct kvm_tdx_caps. So then the setup_kvm_tdx_caps() should
+> > be OK.
 > 
-> diff --git a/hw/hyperv/hyperv_testdev.c b/hw/hyperv/hyperv_testdev.c
-> index 9a56ddf83fe..ef50e490c4e 100644
+> I don't understand this suggestion since tdx_get_capabilities() also needs
+> kvm_tdx_caps.  I think the code is okay as it is with just the rename that
+> Nik suggested (there are already some setup_*() functions in KVM but for
+> example setup_vmcs_config() is called from hardware_setup()).
 
-Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Oh sorry for the confusion, looks like I pasted the function names wrong
+way around above and left out where setup_kvm_tdx_caps() can be called
+from.
 
-Thanks,
-Maciej
+I meant only tdx_get_capabilities() needs to call setup_kvm_tdx_caps().
+And setup_kvm_tdx_caps() calls tdx_get_kvm_supported_cpuid().
 
+The data in kvm_tdx_caps is only needed for tdx_get_capabilities(). It can
+be generated from the data already in td_conf.
+
+At least that's what it looks like to me, but maybe I'm missing something.
+
+Regards,
+
+Tony
