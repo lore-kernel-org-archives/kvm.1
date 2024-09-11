@@ -1,133 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C7E1A704B
-	for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 13:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9351A263E;
+	Wed, 11 Sep 2024 13:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726062055; cv=none; b=sKFYWXLTmoaVQ2zzoHaLvWreJ/LGCPeymOT4YaKfjgemvbEO9SqXEdmnKDkGq2gzFr3eMpu3lG/ZHGlQ3MgLxhdkwXtMF62giPP3z4TL4CHkHRnCjCLHeSemvv2ZoMFZVVyAGnLXd+0KLF7mV0+bFSLE/XyNxoS7OF37X/fDmCw=
+	t=1726062718; cv=none; b=KU13qe8bPuoHRIo/75cVIXG+BkfvEKkvuAtJVU8P6+GK/8LJCQPHER6e2u4lUiUxJ1nqAlbXVIb7ruIRfD8iftTxrbgez44/BedKLW6KB80hr9LlLQ7Y7PP7EeoXmpu+vehvhwL3dK+3+y3Tz2mrH2rTXN+YF13Z3QnKGbFAe4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726062055; c=relaxed/simple;
-	bh=yvPIK3dJ8RsWPzerUzVgZiq/JOY6U2/kNH5HEGIlabg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tHyutuMOeF+zwiVcszIAlNvs/q0RrGXNZZhom7vTDdQPMyjfIiXuSf/Yrr3mczolP6/6oo4Jql2HTR2l7gs12X1i1BXNbrJikJS1+7xaKdghLfPoXY0W+xFfCYh0EjiqvjNQ95Q3E+TucnpD+OUEtcHCk7T0znsmBKj/fQqsSQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PwgnRavr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726062718; c=relaxed/simple;
+	bh=RVi+1I6LHJFjDgWJwNVL5kApho4YyFCEEb67AVAUBRQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Mwk/26I13gitBrxB5uhYoB/TiLng2HEVEDb68JH06SnE96DkrXIhnucaKz6HRD6hC2FpO6YDyASpPJ4tV2nnIFNVgbzcsG5nQ0jhf6qdTvcNA5ngl9fmsHJlKi1jUnsEA6xaJnVPN0alf8AtZhUprG6NzmRDQB+IQUxZyOuZBzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEQF3FIN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PwgnRavr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726062053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A4cGYuzEcsU+H11W5DX5/hXv+/XV9V+6iflAKbWezCQ=;
-	b=PwgnRavrCSkBydV8h7ly1eFoCBI8fAJOXIzwXKyfLlUFPS+ztiv/hoMjmMye1/ZYu29UuF
-	xyY3eNxMoyAPDhltXDP8KJ56UNguaFu4TYk8TEb161NP19+Fd1ZKGLD+wIO3i2K/OxNPdR
-	TvLsEGA8lKpOXqdEdieB44E39LSFSaE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-WYKnV5kBN6yNOQclWCp1xw-1; Wed, 11 Sep 2024 09:40:52 -0400
-X-MC-Unique: WYKnV5kBN6yNOQclWCp1xw-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4582790fc3cso70234061cf.0
-        for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 06:40:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726062052; x=1726666852;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A4cGYuzEcsU+H11W5DX5/hXv+/XV9V+6iflAKbWezCQ=;
-        b=HlTR3OWqniwxXbj+/THc10cqW0r0XlvUMJV3Cote1JF0M67oobSbZFmFXPLsHwQef/
-         3Rk4UpsxUJUF8KdsNopFLxwedHlpL1+O75bYVz4RDtEIi0gIQt0oJ6hCp91u6JVBlJCm
-         5MPQg3TRPq1Zk+vpGzy/1tc+5GkV77yEsPERAv4FuIxcAP53hbh78A2zO6JDQzD3KxLj
-         pzCxaEYMn7Xo4o1C7BVvNjcLUGCmzcqdDlnhYeM5vFQFlpM6EckOJefr/L8syraYidax
-         hVARnb5iIA+B3sWuysDiY+b0oo9uyRY3umjlPcd0r5tt0NSWgYex41IX9gMWhGTrC1Br
-         2A9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUbAL8t2BiRB9XC081ioXlQf1QgkrAcOW7Q6gJb25aA+4xJM6k6xE6IMfKpwYqdsEmQZ6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRdjBzwlSe+MXqkA7d5JpUacUZ2mE1GYalCPVAsNBCr7dVpbSR
-	ylgwEb/JnXd2hmurBPq3l79f9sopBIwquitnByouIbm76dm3g05+5WjDFKuLMYkRUeo9SBysFJ2
-	gL5JIhKjpnvae1z9FZg5NxWP86c7TgeZVhVol6465kEyDkf8Smg==
-X-Received: by 2002:ac8:57c4:0:b0:458:59e3:2b52 with SMTP id d75a77b69052e-45859e332abmr16950081cf.55.1726062051415;
-        Wed, 11 Sep 2024 06:40:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9OJUDpC/dDLPTaAj7vE1LX91DjdMwKKxOTbejPT9DFiRR1lsGsySzd/YLuGZUG3kBLFK7Vw==
-X-Received: by 2002:ac8:57c4:0:b0:458:59e3:2b52 with SMTP id d75a77b69052e-45859e332abmr16948861cf.55.1726062049492;
-        Wed, 11 Sep 2024 06:40:49 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e60974sm41358491cf.8.2024.09.11.06.40.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2024 06:40:48 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:40:45 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
-	"Richard W.M. Jones" <rjones@redhat.com>,
-	Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
-	Corey Minyard <minyard@acm.org>, Eric Farman <farman@linux.ibm.com>,
-	Thomas Huth <thuth@redhat.com>, Keith Busch <kbusch@kernel.org>,
-	WANG Xuerui <git@xen0n.name>, Hyman Huang <yong.huang@smartx.com>,
-	Stefan Berger <stefanb@linux.vnet.ibm.com>,
-	Michael Rolnik <mrolnik@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
-	Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-	Jesper Devantier <foss@defmacro.it>,
-	Laurent Vivier <laurent@vivier.eu>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org,
-	Hanna Reitz <hreitz@redhat.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	qemu-block@nongnu.org,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	qemu-ppc@nongnu.org,
-	Daniel Henrique Barboza <danielhb413@gmail.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>, Helge Deller <deller@gmx.de>,
-	Dmitry Fleytman <dmitry.fleytman@gmail.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Yanan Wang <wangyanan55@huawei.com>, Bin Meng <bmeng.cn@gmail.com>,
-	Weiwei Li <liwei1518@gmail.com>, Klaus Jensen <its@irrelevant.dk>,
-	Jean-Christophe Dubois <jcd@tribudubois.net>,
-	Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH 21/39] migration: replace assert(false) with
- g_assert_not_reached()
-Message-ID: <ZuGd3bcawih4bN9Z@x1n>
-References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
- <20240910221606.1817478-22-pierrick.bouvier@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEQF3FIN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84357C4CEC7;
+	Wed, 11 Sep 2024 13:51:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726062718;
+	bh=RVi+1I6LHJFjDgWJwNVL5kApho4YyFCEEb67AVAUBRQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BEQF3FINAa+vMUiVHbAvcNSvaS/sT2VwdLEk7dBZmjcKR8tz5aJiWlhrl4TALyESY
+	 zZpCfLnISzweUUqVjhIYk8e4dqQJFehl+eh2u843q07DjD88Sn04vylRQldgozOX2V
+	 w6yMubigThey7LlmQUalvNhZt38p9PViaLeDQkDKZPuBMazsgXwh91JlCDXj6Jaw3T
+	 8UVofbH1Y5K4TU9q2sNjQgbDRhAjpFVZmeM6qhsxKBWOfSzdlxkb9h/Z6HKRjZ/gL/
+	 8WoZ7nwRFAewDXRzs3l5+vUfExM8Fxym4tv8Ymluo9TxhlwQd49qi7tOcxwIlsxcEM
+	 b13gAbdar/9xQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1soNlE-00C7tL-Dy;
+	Wed, 11 Sep 2024 14:51:56 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH v3 01/24] arm64: Drop SKL0/SKL1 from TCR2_EL2
+Date: Wed, 11 Sep 2024 14:51:28 +0100
+Message-Id: <20240911135151.401193-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240911135151.401193-1-maz@kernel.org>
+References: <20240911135151.401193-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240910221606.1817478-22-pierrick.bouvier@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, joey.gouly@arm.com, alexandru.elisei@arm.com, broonie@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Sep 10, 2024 at 03:15:48PM -0700, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Despite what the documentation says, TCR2_EL2.{SKL0,SKL1} do not exist,
+and the corresponding information is in the respective TTBRx_EL2. This
+is a leftover from a development version of the architecture.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+This change makes TCR2_EL2 similar to TCR2_EL1 in that respect.
 
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/tools/sysreg | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 7ceaa1e0b4bc2..27c71fe3952f1 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -2789,8 +2789,7 @@ Field	13	AMEC1
+ Field	12	AMEC0
+ Field	11	HAFT
+ Field	10	PTTWI
+-Field	9:8	SKL1
+-Field	7:6	SKL0
++Res0	9:6
+ Field	5	D128
+ Field	4	AIE
+ Field	3	POE
 -- 
-Peter Xu
+2.39.2
 
