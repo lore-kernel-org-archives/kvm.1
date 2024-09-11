@@ -1,76 +1,95 @@
-Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6A414A606
-	for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 09:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19A7187543
+	for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 10:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726048733; cv=none; b=ZGwvm/YcRqR+MLyUqBr6TJ844rzbc4LMDet4y0nokhh8vfnRtcCm9BT/JrcvG6+FG/L4meIBhfi4r2Bx+lCCpwFjMVPP9vdGNu7CcI3OgFArGeKDPIVEeKpguckgIeMbIE6H0smqCeONSL2s+vBJ8S2A6Q7zaaErFJcYpByxKQE=
+	t=1726051169; cv=none; b=PFrz/vqO2o97q3D01R+3UkVNUHc3eCubMbcLdJseA4PR/c2ddwmGssEEi4kzcWPzSoer4xlYT0nDHAF6/mDnxHHyVm5+R2UPQV5M3284HX51EFzeP6yV5w6jwaBWbTInT0gsLXVbzEY6gpsOXQUHqIB2XXHGdY2/tlE8zMhTtTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726048733; c=relaxed/simple;
-	bh=i7gw4Uat6UX+1sGVuAw4SIefJi8Y27trcHIE5Hh8t0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+G+UzYjxrL83RxtFLl8GD90RJ3nhFJOy/DrP4APeS2CAT2rBFmdQr2OvNfRt2ZMB157uLncXkOfZco6vU8fb+QC8KIppNKjedO/G6bWyUKsgYb47DbXt8k6h/lrH18X5oSHn8TODf6f5+cV3jzg/VeeXShTBS+6Gf/cFZn+amQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bq467N7x; arc=none smtp.client-ip=95.215.58.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1726051169; c=relaxed/simple;
+	bh=UJ8q0kTm4tCbpogVJ3elIuVisVpgJWMaWJ0s442CPXQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tkt4uU//sguAhfZHPzNaUfZOfsUn42gNQHUjX84W/mXlr3BMHnXh/6yIPOlE/7jaaAXqKvY6VPCieTbdhgh+Z1Buhbc3mkpXoLH8l89F5V4eVqv0KRTwnAauCSvFtyWqWrzqCGnj/h4vw6lVA0jerBE+iiQHQiqBe98Iv0RveJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EmZcWpyX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bq467N7x"
-Date: Wed, 11 Sep 2024 11:58:44 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1726048728;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EmZcWpyX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726051166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K01nEv3wlhzsqk8tmkQ/Xu39VTClHpx8JJ1tXw2uK8k=;
-	b=Bq467N7x00+zAhNfy5nY5sz5EkF11Q+yVh9sM+wu8pfPAvgccoYqubS66IiMzL3rph8cKV
-	gZl3K8ssjeBG+YAYXefVwhRWyPPqrzqyydmXswWS1+YWazPwhtH1+sfw2yRBVgC4LL/jqt
-	RZgwwWFCdv1Q2WG9H9M9HXGd3VTuH8E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: James Raphael Tiovalen <jamestiotio@gmail.com>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	atishp@rivosinc.com, cade.richard@berkeley.edu
-Subject: Re: [kvm-unit-tests PATCH 0/2] riscv: sbi: Clean up multiple report
- prefix popping
-Message-ID: <20240911-f1f2d6285391edffc5b63331@orel>
-References: <20240910150842.156949-1-jamestiotio@gmail.com>
+	bh=UJ8q0kTm4tCbpogVJ3elIuVisVpgJWMaWJ0s442CPXQ=;
+	b=EmZcWpyXHBd+0SYhYb1xx40nziVDewd8d7o5K4bGfP7Abu39kRndLsjgutbmLzSsr2KTRR
+	ibpKwg9GOMVKNNHbR3aaIP7XDU90wf6RI6vxXudOwgAPVJCovhlYxNcAe888LybleHQDk6
+	jgA7TzrEjbEb7aQguq2G6dKSggFzEao=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-1tXLuR1mMAOMu1ibeRgeCg-1; Wed, 11 Sep 2024 06:39:25 -0400
+X-MC-Unique: 1tXLuR1mMAOMu1ibeRgeCg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42cae209243so30107595e9.1
+        for <kvm@vger.kernel.org>; Wed, 11 Sep 2024 03:39:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726051164; x=1726655964;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UJ8q0kTm4tCbpogVJ3elIuVisVpgJWMaWJ0s442CPXQ=;
+        b=oLuhMBW//0XqSZLd2IJ1R4O8tYLeuOjK/LjXHie/AnBxC7FC+M23WshF4IpaspSs1n
+         6u0jPEFSuXAwTtz9k7c0J6inobCRvcmYQ88Yb74sbrbzzzYZBSC1QWUstV3TfdtRzhdH
+         zlhtBo9NI1e6e9GMvFIjNqOWNYI0R6hD6bXf/7m0mzSXjV3EUiagv7KbpluXJtMFuOcV
+         E1H8a0T2EMeAsGJOubRDpdEXM0lNT8E2FodTyhzLlHEYmtLoL6q9kGjdmHMltc78qscp
+         gBZg01aM8FFZbjZXIH+EAC1IqdAGd6OJgENHYKzPnL2VaHi3jseR5VtCc/6y7PkwPDt9
+         HrjQ==
+X-Gm-Message-State: AOJu0YyNZrsWNgUJUk2KqTlfexu9DCVVpNy7x2J4uAvPq36NTSFy0MXY
+	nQ4s4RlwX+W0wH2FQ6WYuO7RRQwikQUnMEbU7dQIY5WtAPOuktJsQqGh/ODMzi7iJ+CvRL0eUzB
+	76e041iGf5j9b04f9mLp4oxLwSS6rwheQCJpg2cFpZJIP8OPy3wsz8xNvwP4x8LLsbkn4RhEHki
+	MZ6VP2EMIrtdzusxzi/G/rWheO
+X-Received: by 2002:a5d:47ab:0:b0:374:c122:e8b8 with SMTP id ffacd0b85a97d-378949ef675mr9997546f8f.11.1726051164173;
+        Wed, 11 Sep 2024 03:39:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3Gb/2HI49PjllPj8NU1cxqsZ2QD298EaN2kurZK5VW5FJwIMKpjSqMMZjF+qdADR0VC1HUbkbMjjhTqnVqvI=
+X-Received: by 2002:a5d:47ab:0:b0:374:c122:e8b8 with SMTP id
+ ffacd0b85a97d-378949ef675mr9997525f8f.11.1726051163746; Wed, 11 Sep 2024
+ 03:39:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240910150842.156949-1-jamestiotio@gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20240904030751.117579-1-rick.p.edgecombe@intel.com>
+ <20240904030751.117579-17-rick.p.edgecombe@intel.com> <09df9848-b425-4f8b-8fb5-dcd6929478de@redhat.com>
+ <2f311f763092f6e462061f6cd55b8633379486bc.camel@intel.com>
+In-Reply-To: <2f311f763092f6e462061f6cd55b8633379486bc.camel@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 11 Sep 2024 12:39:11 +0200
+Message-ID: <CABgObfYiMWrq2GgxO4vvcPzhJFKFGsgR11V52nokdbcHCknzNw@mail.gmail.com>
+Subject: Re: [PATCH 16/21] KVM: TDX: Premap initial guest memory
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"dmatlack@google.com" <dmatlack@google.com>, "Huang, Kai" <kai.huang@intel.com>, 
+	"isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 11:08:40PM GMT, James Raphael Tiovalen wrote:
-> The first patch of this series adds a helper method to clear multiple
-> prefixes at once. The second patch then uses this new helper method to
-> tidy up the report prefix pops in the RISC-V SBI tests.
-> 
-> James Raphael Tiovalen (2):
->   lib/report: Add helper method to clear multiple prefixes
->   riscv: sbi: Tidy up report prefix pops
-> 
->  lib/libcflat.h |  1 +
->  lib/report.c   | 21 +++++++++++++++------
->  riscv/sbi.c    | 17 +++++------------
->  3 files changed, 21 insertions(+), 18 deletions(-)
-> 
-> --
-> 2.43.0
+On Wed, Sep 11, 2024 at 2:30=E2=80=AFAM Edgecombe, Rick P
+<rick.p.edgecombe@intel.com> wrote:
+> Arh, yes this has details that are not relevant to the patch.
 >
+> Squashing it seems fine, but I wasn't sure about whether we actually need=
+ed this
+> nr_premapped. It was one of the things we decided to punt a decision on i=
+n order
+> to continue our debates on the list. So we need to pick up the debate aga=
+in.
 
-Looks good to me. There are no longer any double pops in riscv. Out of
-curiosity, I checked the other architectures. arm and ppc both had one
-instance of double pop, x86 didn't have any, but s390x had several. We
-can leave the adoption of popn to the respective maintainer's preferences
-though.
+I think keeping nr_premapped is safer.
 
-Applied to riscv/sbi, https://gitlab.com/jones-drew/kvm-unit-tests/-/commits/riscv/sbi
+Paolo
 
-Thanks,
-drew
