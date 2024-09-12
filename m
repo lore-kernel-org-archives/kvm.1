@@ -1,156 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB0519F43E
-	for <kvm@vger.kernel.org>; Thu, 12 Sep 2024 14:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9AD1A4E7C;
+	Thu, 12 Sep 2024 14:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726150179; cv=none; b=QRPr/I3aE2gu2ImF5PPKp+YG0cGI/adOdcqRpPXmdliTzkmcy+Hm9EwCHwewe/j/n0gi8ivEL+lOLwFZksD6Zr6SVGAhbwgkXo2Z0KOYBKdnuNIQDpk3INiG6qNyDbsNu6i0EkN8O8Uq/uieWYZ7Reln7bMHTuioYmGbEACLca0=
+	t=1726151381; cv=none; b=r7aO+K3N0uqptZGb06E6+m+0fdpH7CAHzX3Asatgw/A19Q64Xwjupicbpc4Z4Q1bGE+cc2ISNj3xs79mp1PLySN3ocOJzHqjWZfU/gNPz7vh60jqAeVoWa1mRARHoy9eQ8IN2Ug59Fh2oMpts7ankMDFDMX9M7aA3UDj2sr/Ad4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726150179; c=relaxed/simple;
-	bh=LBWsfuA61ZgLh8l5H+nPmaCDGDpV3miRWF5Qsk8z0WM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ABNWPkFlHyMsfEaWN6BL5E0zFKk1PqQgXlcEcu5+yzb9DjVXY13iRJR2o9MIdCcmMLH4nVY7djnI8W4pO9Zs3cq7l5+q8dy9JB9lFXftXk0YRUEMI6ymtXrgKUgXosFplui71AQYZWMOrkBh1XVz3d7HFGGx4lheDD1HHpDE3jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B7m+Aq+V; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726151381; c=relaxed/simple;
+	bh=WqWblWK9j9pBmIDPL8+cidY79AOM7Ury3RJgfIB58HY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=N1FFszQ8WmvDaRQkgDC3eYG3Z/2EDVEdVNv3u2nzMfKPSBhZJa/sIeim3c5l/Imnw57E9XwQZymwO9VeGT1aD7GK8IjzaHaSbogKdYKuEYkd9LBbX7rI2AdPUEjprK35QDL+gCqUrO8xj8kp9ilCgCmiXdLINObBfYJOOf+aRKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NGriG+uP; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B7m+Aq+V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726150176;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B/noI6L46LpMySUAEmkZWrNHzOowp74DcO8neknTAA4=;
-	b=B7m+Aq+V5fcb4v3o2mScCGQ/4rtE8y51M9IIT0JDTIPpcXps+iGBP1Txg4dZbJebKzGKHO
-	UIihwHC4zGPw+1KVkqCSnULVfLO23H+JGlZ3ab/wygy4xsyxkQuQF/f+XRNI4vEhEmdMJw
-	J5WCMlF6Qc0Ir4VrLUrCUcq+v/JYZcw=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-m9ObX_jyP163LxKLEce0Fw-1; Thu, 12 Sep 2024 10:09:35 -0400
-X-MC-Unique: m9ObX_jyP163LxKLEce0Fw-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5365c0e2eafso842285e87.3
-        for <kvm@vger.kernel.org>; Thu, 12 Sep 2024 07:09:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726150173; x=1726754973;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B/noI6L46LpMySUAEmkZWrNHzOowp74DcO8neknTAA4=;
-        b=EeEl8w6s9Wurmwg+swTO7QkQ/FoctaIVVWs40mfLn+FPu/K6Y1lQg1inhe5iWYVIDg
-         4+lzgVmBt6Ls/+Pg/vPL7soD8FXnylLhqSSc8LJOthqEvucGfk+pb294+SkCITdZcPHY
-         IyFTAWGy9gtcqV0OpGcKzE+92O8XO9A7rrXhFSrJqaNpZWi7igGYhhouHEgDL6N7y5cc
-         /bmLc2fpMGJ98U04GAqSHkubhw82k8c5REmjMGFRkdUwleqR/O/RR8NEHNt30EoV1yYd
-         hB4efW+Ew89DgmsInEdKPCUtmcWkZ0RTVRrZeDVjHZTXRqwCtgQrER5S+3MTBxkpwqro
-         pn/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUcYq7W0w6lGx4ZmMlnwZaDRZVl3in0GP77CX6ItFJSf7LfteJL7QQ3Z1MHq56Iu20URuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykcw6Jsq/2TTLCg3FvBvdyomKKaSZ7slIuv6Abjk/HQBgbYEab
-	SHTEnqlsQDGDao5r6ujq8TY7l4QhOE+94IYmy2c9sEt4UyuNzGcsnTgkDhI8TkHoy818t1Lp6EK
-	2yWGVRa2fIMdmqtZcvj2rTLh6GYjJjRv6O5Yy1oZsTLRwFiEiXXkvIROOiqetNW+c34LAba2gJJ
-	bDsjUfM8EhPXRXR+edrUtp6yIg
-X-Received: by 2002:a05:6512:398c:b0:535:63a9:9d8c with SMTP id 2adb3069b0e04-53678fba292mr1725783e87.17.1726150173370;
-        Thu, 12 Sep 2024 07:09:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvoyuxSck7Et6Xyrx9KV/p41KKDpZ4FwZ6ViBs3qjK4/W94E9cZZm7edQZrVbkHf45A1ngSmJQ5PU6Hx52O4Y=
-X-Received: by 2002:a05:6512:398c:b0:535:63a9:9d8c with SMTP id
- 2adb3069b0e04-53678fba292mr1725750e87.17.1726150172863; Thu, 12 Sep 2024
- 07:09:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NGriG+uP"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48CBXhiN020293;
+	Thu, 12 Sep 2024 14:29:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	mime-version:content-transfer-encoding:content-type:date
+	:message-id:from:cc:to:subject:references:in-reply-to; s=pp1;
+	 bh=V8JhCKvZz3EJEDtODbSJXFM409kvD1wRr+l0IYPGJis=; b=NGriG+uPuMt/
+	EdX6uyBPOqL+0tSDe3n/KaYeZtChhDyC7PXPDHuVPrvg4Ac9Es7mHzTJGCgT38Yl
+	m3WDipIUgK/a7+1hOPYy9xy9vDntE4DpJsnqV9yTOejTn+OnjPaney6d4rIyDbZs
+	ztCi1Ny/1nVyn3mRdsBRnrJ4rAfeQwyl4WUtDNd3gUVDkkxv7xS8MlMS7++X9utn
+	rW3BzXHyLy/4szJXEZz4ydt4YGhfChgc0wkAQ18dkJzBOEwUCnx1rrfcc1376a5I
+	cAjIpHwl2U3aVebIWiWOZv+nYJD2PpVfP1nH0wUReDP+Ujg2fVuir8pA9gwiTqsn
+	p8ynGZSKPQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebam7jf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Sep 2024 14:29:35 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48CETZvr017287;
+	Thu, 12 Sep 2024 14:29:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebam7j7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Sep 2024 14:29:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48CCaxVq013471;
+	Thu, 12 Sep 2024 14:29:34 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cmg8qu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Sep 2024 14:29:34 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48CETUlY52232584
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Sep 2024 14:29:30 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8720F20043;
+	Thu, 12 Sep 2024 14:29:30 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5569020040;
+	Thu, 12 Sep 2024 14:29:30 +0000 (GMT)
+Received: from darkmoore (unknown [9.179.25.216])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Sep 2024 14:29:30 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240812224820.34826-1-rick.p.edgecombe@intel.com>
- <20240812224820.34826-26-rick.p.edgecombe@intel.com> <05cf3e20-6508-48c3-9e4c-9f2a2a719012@redhat.com>
- <cd236026-0bc9-424c-8d49-6bdc9daf5743@intel.com>
-In-Reply-To: <cd236026-0bc9-424c-8d49-6bdc9daf5743@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 12 Sep 2024 16:09:21 +0200
-Message-ID: <CABgObfbyd-a_bD-3fKmF3jVgrTiCDa3SHmrmugRji8BB-vs5GA@mail.gmail.com>
-Subject: Re: [PATCH 25/25] KVM: x86: Add CPUID bits missing from KVM_GET_SUPPORTED_CPUID
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, seanjc@google.com, kvm@vger.kernel.org, 
-	kai.huang@intel.com, isaku.yamahata@gmail.com, tony.lindgren@linux.intel.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Sep 2024 16:29:25 +0200
+Message-Id: <D44DL9UL4Q2T.3JHP2BM3APY6A@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>,
+        "Paolo Bonzini" <pbonzini@redhat.com>, "Shuah Khan" <shuah@kernel.org>,
+        "Christian Borntraeger"
+ <borntraeger@linux.ibm.com>,
+        "Janosch Frank" <frankja@linux.ibm.com>,
+        "David Hildenbrand" <david@redhat.com>,
+        "Nina Schoetterl-Glausch"
+ <nsg@linux.ibm.com>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Subject: Re: [PATCH v2 2/3] selftests: kvm: s390: Add uc_skey VM test case
+X-Mailer: aerc 0.18.2
+References: <20240902115002.199331-1-schlameuss@linux.ibm.com>
+ <20240902115002.199331-3-schlameuss@linux.ibm.com>
+ <20240912101523.5ee9ca54@p-imbrenda>
+In-Reply-To: <20240912101523.5ee9ca54@p-imbrenda>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5V3cu_pd0_FiapShwabz62x6YUSCC06o
+X-Proofpoint-GUID: axDXDaVUYWZMAW1fgR1Ls2ke40B6Udrq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-12_03,2024-09-12_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ mlxscore=0 mlxlogscore=627 impostorscore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409120102
 
-On Thu, Sep 12, 2024 at 9:48=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
-rote:
-> On 9/11/2024 1:52 AM, Paolo Bonzini wrote:
-> > On 8/13/24 00:48, Rick Edgecombe wrote:
-> >> For KVM_TDX_CAPABILITIES, there was also the problem of bits that are
-> >> actually supported by KVM, but missing from get_supported_cpuid() for =
-one
-> >> reason or another. These include X86_FEATURE_MWAIT, X86_FEATURE_HT and
-> >> X86_FEATURE_TSC_DEADLINE_TIMER. This is currently worked around in
-> >> QEMU by
-> >> adjusting which features are expected.
+On Thu Sep 12, 2024 at 10:15 AM CEST, Claudio Imbrenda wrote:
+> On Mon,  2 Sep 2024 13:50:01 +0200
+> Christoph Schlameuss <schlameuss@linux.ibm.com> wrote:
 >
-> I'm not sure what issue/problem can be worked around in QEMU.
-> QEMU doesn't expect these bit are reported by KVM as supported for TDX.
-> QEMU just accepts the result reported by KVM.
+> > Add a test case manipulating s390 storage keys from within the ucontrol
+> > VM.
+> >=20
+> > Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> > ---
+> >  .../selftests/kvm/s390x/ucontrol_test.c       | 89 ++++++++++++++++++-
+> >  1 file changed, 88 insertions(+), 1 deletion(-)
 
-QEMU already adds some extra bits, for example:
+[...]
 
-        ret |=3D CPUID_EXT_HYPERVISOR;
-        if (kvm_irqchip_in_kernel() &&
-                kvm_check_extension(s, KVM_CAP_TSC_DEADLINE_TIMER)) {
-            ret |=3D CPUID_EXT_TSC_DEADLINE_TIMER;
-        }
-
-> The problem is, TDX module and the hardware allow these bits be
-> configured for TD guest, but KVM doesn't allow. It leads to users cannot
-> create a TD with these bits on.
-
-KVM is not going to have any checks, it's only going to pass the
-CPUID to the TDX module and return an error if the check fails
-in the TDX module.
-
-KVM can have a TDX-specific version of KVM_GET_SUPPORTED_CPUID, so
-that we can keep a variant of the "get supported bits and pass them
-to KVM_SET_CPUID2" logic, but that's it.
-
-> > This is the kind of API that we need to present for TDX, even if the
-> > details on how to get the supported CPUID are different.  Not because
-> > it's a great API, but rather because it's a known API.
+> > +TEST_F(uc_kvm, uc_skey)
+> > +{
+> > +	u64 test_vaddr =3D VM_MEM_SIZE - (SZ_1M / 2);
+> > +	struct kvm_sync_regs *sync_regs =3D &self->run->s.regs;
+> > +	struct kvm_run *run =3D self->run;
+> > +	u8 skeyvalue =3D 0x34;
+> > +
+> > +	/* copy test_skey_asm to code_hva / code_gpa */
+> > +	TH_LOG("copy code %p to vm mapped memory %p / %p",
+> > +	       &test_skey_asm, (void *)self->code_hva, (void *)self->code_gpa=
+);
+> > +	memcpy((void *)self->code_hva, &test_skey_asm, PAGE_SIZE);
+> > +
+> > +	/* set register content for test_skey_asm to access not mapped memory=
+ */
+> > +	sync_regs->gprs[1] =3D skeyvalue;
+> > +	sync_regs->gprs[5] =3D self->base_gpa;
+> > +	sync_regs->gprs[6] =3D test_vaddr;
+> > +	run->kvm_dirty_regs |=3D KVM_SYNC_GPRS;
+> > +
+> > +	/* DAT disabled + 64 bit mode */
+> > +	run->psw_mask =3D 0x0000000180000000ULL;
+> > +	run->psw_addr =3D self->code_gpa;
+> > +
+> > +	ASSERT_EQ(0, uc_run_once(self));
+> > +	ASSERT_EQ(false, uc_handle_exit(self));
 >
-> However there are differences for TDX. For legacy VMs, the result of
-> KVM_GET_SUPPORTED_CPUID isn't used to filter the input of KVM_SET_CPUID2.
-> But for TDX, it needs to filter the input of KVM_TDX_VM_INIT.CPUID[]
-> because TDX module only allows the bits that are reported as
-> configurable to be set to 1.
-
-Yes, that's userspace's responsibility.
-
-> With current designed API, QEMU can only know which bits are
-> configurable before KVM_TDX_VM_INIT, i.e., which bits can be set to 1 or
-> 0 freely.
-
-The API needs userspace to have full knowledge of the
-requirements of the TDX module, if it wants to change the
-defaults provided by KVM.
-
-This is the same as for non-TDX VMs (including SNP).  The only
-difference is that TDX and SNP fails, while non-confidential VMs
-get slightly garbage CPUID.
-
-> For other bits not reported as configurable, QEMU can know the exact
-> value of them via KVM_TDX_GET_CPUID, after KVM_TDX_VM_INIT and before
-> TD's running. With it, QEMU can validate the return value is matched
-> with what QEMU wants to set that determined by users input. If not
-> matched, QEMU can provide some warnings like what for legacy VMs:
+> this should be true, since KSS will be triggered
 >
->    - TDX doesn't support requested feature: CPUID.01H.ECX.tsc-deadline
-> [bit 24]
->    - TDX forcibly sets features: CPUID.01H:ECX.hypervisor [bit 31]
->
-> If there are ioctls to report the fixed0 bits and fixed1 bits for TDX,
-> QEMU can validate the user's configuration earlier.
 
-Yes, that's fine.
+Good find.
+Yes, as this is the assertion does actually fail here.
+Will fix that in the next version.
 
-Paolo
+> > +	ASSERT_EQ(1, sync_regs->gprs[0]);
+> > +
+> > +	/* ISKE */
+> > +	ASSERT_EQ(0, uc_run_once(self));
+> > +	ASSERT_EQ(false, uc_handle_exit(self));
+> > +	ASSERT_EQ(2, sync_regs->gprs[0]);
+> > +	/* assert initial skey (ACC =3D 0, R & C =3D 1) */
+> > +	ASSERT_EQ(0x06, sync_regs->gprs[1]);
+> > +	uc_assert_diag44(self);
+
+[...]
 
