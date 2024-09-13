@@ -1,276 +1,748 @@
-Received: from mx0a-002c1b01.pphosted.com (mx0a-002c1b01.pphosted.com [148.163.151.68])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2045.outbound.protection.outlook.com [40.107.93.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C1A74418;
-	Fri, 13 Sep 2024 15:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.151.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D782EB02;
+	Fri, 13 Sep 2024 15:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726242712; cv=fail; b=E/Wtk+r/mMHKzSypfms8WsfkpgJ5TJhLRZWmmJQ9t7G3DLEWhiVm/EW17YAQ0RYB44N4zoViJrzUThOyo2CUFPIJyUrvkTDpzeGujfxkZLo4/kN1jKbZ5P0dlIPWaiKfQwg+4kL1qW8lHrHqAptPDXRPLYb+cDmozAW2RUyVfqg=
+	t=1726242744; cv=fail; b=g81Aur6dJ+/AXQdw8c7RGSZ/BipIPqrG3Kjlo3sMwx67kgKH9IHit59HN6yeq3DGXXH7PAW5OqiifSa+2jONHQ8bwneS+r445hf60oRLqJJ+fUE7ELy1K+JFx1Qcb/rRRDWV8O7yjE7FwpSQoAUBL4rbZqQl3A8ILT9Cj7hNWX0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726242712; c=relaxed/simple;
-	bh=lgT/3Vt47RVS7WgDEcRMfqoKCGIWxo6uh5gMszf/XBY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fAfxp3RJSg1aJMd8zGYGHAzA82lofLpn2Y0BqaqFwIEiiBxlJSlQKY0lg2eIht3ndgN7IRW5UW4pv3xcH+uNh3hXahS7HOxS1Rnjo8BSt0GkNQHyiJOsRUG4FsOilN9FsSak3RUpPm/E7W3ZR2WOT8oMfRJoIQVdDeqp1ymM2qM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=uwk+KaZs; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=J94tLqBX; arc=fail smtp.client-ip=148.163.151.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nutanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nutanix.com
+	s=arc-20240116; t=1726242744; c=relaxed/simple;
+	bh=C57RYundqNeRLKvuJTS62OJtiyBbQitfVPBxPuJi5tY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=JmZP7UOpX30aAVHk58o+1El5umxED9/Mp24TZrmuRIAlvSgqpis/pW6Hy6GS0B57MEBNSNLHmbo1XHezNhj2bcFONQ9Jr+6HLz9vPWqDKEGjG6OyEz+70cknAZgm5dPv047xAiCL+waai8FwEj4AJraWhzbP1ABrIyyvsj5KhYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TXZ7NoU2; arc=fail smtp.client-ip=40.107.93.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="uwk+KaZs";
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="J94tLqBX"
-Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
-	by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DBR8rX010145;
-	Fri, 13 Sep 2024 08:51:04 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
-	cc:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	proofpoint20171006; bh=lgT/3Vt47RVS7WgDEcRMfqoKCGIWxo6uh5gMszf/X
-	BY=; b=uwk+KaZsljIS0ix82AH2uwRU+Q/NiSWb6nEzRTYkHH11UNQMzSOu9k8AD
-	6Mtl6TiuogbEKG/C9EYUWSb8YaP6qOHolU+F7AJcr4/YBg84P61/6BPIclSVDnUm
-	rV41aa7+TS0bG78IS7eNp+bc76VyYRx6v+IlY5w43FKZdYnGU97A54f8+30t+M+f
-	7luqS2B89AVSsO48zxl4KErjTZBO544bZnPcuUoZJ3JdWJd1A2RNqBgRUoUaCY49
-	uQBb6Q7VySNRC2L6vbjbGfaONcluftn2hg1gT0rVRqj/U5gEbRgpR15D9axWfM4H
-	6DhTzn2iwtz1fKHTgnNSAtUJYYnrQ==
-Received: from cy4pr05cu001.outbound.protection.outlook.com (mail-westcentralusazlp17010007.outbound.protection.outlook.com [40.93.6.7])
-	by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 41gjr7ye1e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Sep 2024 08:51:03 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TXZ7NoU2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E3Bt6LK1UOrlHisoky4yxLetpXF+71soPoU6mxsyjrsJ5YkZq0jcMKiHkczGhUYiXicKbjd5Cn9MBHWg+6LFg548KPVOU8cxKlqqOTEozIv82ziHme34tI1WtK5GzmCF/vqoycQ+4984ja3XeFEZmudRtmd458jMlRSDzEhDm5zwHQR4bn/DmoQd7CqkRvUzwulhlT8RvjQmGK3sAp4Ni7C0rtvv1uXvoxBj49+gMy4M9yhlfARBm/aQ27GPIPq2GuVQUMqKbUfUZ9+qTYP4Gk9XQ/yQvgb9Arb8VGNajlYmDfDLqe87qzUHZOK83jf4y1XDAA+HybYaoMgVIWmfzA==
+ b=vcZMkywEW7/R3LupTEVejkb4Xk73FWcQtLHNaAhm5JJ1qjdj6m5+dVTnpnWUs/QXtsKQdXS8RH+9e5Vx1x2vj3bhhGVm892pFR0Y0zDzdKsV0C8d2cHHugwbnh2RmXR8teW5X46Nm1/Yo3Jd9sVnyQEDUR+6kOmgTtt92sIpIoczsVoFMNED3IlM++uwv1pQ81lrTy0/xX2cIex8s4y6OtMLGWSG1NlW4hbd0QQHED8XEFdAI0y9s2ZQ6iOpQXyhLwjvKJYxR7AW6AZ3TTxOVWfqYCU6C8/XTPtHUD8LmkOdta4lSCkuWtmOqID2pRObgUhhi8bEUAVQU+tKoX2z5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lgT/3Vt47RVS7WgDEcRMfqoKCGIWxo6uh5gMszf/XBY=;
- b=jJ3ZXulZK8xQra6ubxLhK2SDeL0FGbipoIcU7S+dmmfbR/7E1d2/JR5XzhugQVos54l9SgbagV0HRJPun6hRS2wO6Ty5yXcajFlkXiJrbTOt1Sh4148z2rcJ4uRy7l7PB871/Z/sHTqHnjC+V6CGCohKUAW+4VqbEDdjBSWkAOYRD1s4p1hZgzi6sl6vxDl5oYddmny0Ac+odE5kFL6NugezE4oglT4ELTEPn6p/lLOnEhI80cgGakG041O0jI46Eov3911wtKwpNGBYb+6gT4xiogluL5yP6TJE6fJ3sj3AlG5C7c3htvnEcOGlplDG9kqNmAI1sFtpux+gO87aWQ==
+ bh=aHJYN3kV6z3ilTOdn+TzE35uWiO3QHT3No6BI7hWhMY=;
+ b=RXY3DwkqJyPO6uRtRUkX/NWuoPUJR+wXsxKRazxK9oKav25X4kIXQfAfnsVpYFQ7TjLaDul2c3M79qmPUx7bBt6neueuZhrITHWfKZLI/y4DzWrnZC1oEqP/ysBiwb/dzSEymrDExrsceMQniF2793RrTdjlc1ZDn5yLiz6RokaXZV7JOIjwdBpZ7bw4EZjKLY7ggoPhpYwu3A4x7Ix0w2gzS78OJwjpXEbRGQPRh1fwkkHyUAdnbtLg//d6WCh4SqdcL/CDRPuYUlIyGiK+6V+uN3bMb/csM+Tj1a2aK+Wbf3WfsYQ1/+krSKda2cGtjP6KPDYpXJ5auF6nEOmc4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lgT/3Vt47RVS7WgDEcRMfqoKCGIWxo6uh5gMszf/XBY=;
- b=J94tLqBXCgaTQFGDtes9wpAvwpsH9raLD8nSIzZjzn+FPYix3SCB9D6Oko3yObxwZ19iJ6j4ktbDzU9o73+Qw82GOgP76WFSWouV6BiO84h9qZrXyM3EnrrhHR7nlxqjqfkDqV9NL3FjEDsAVUBJr3rT6xSAfCcRWTCTegmp3qVIT5QoFOqw2X8hRsc2sK2j6LB8Cp4xZk8yQzxpqdgSMDq5GieRvBtt/30CxPS47cLbCK3QefHcGD/8VjmyCL9c1XYSbVkNBIQhJfsApk8sEuXoGecCuvu9p52l9pnLSmMqXgcqaXLtjSSNn4SpUuc6pcCXgkXEhlGKtuglfmlRbA==
-Received: from LV8PR02MB10287.namprd02.prod.outlook.com
- (2603:10b6:408:1fa::10) by IA3PR02MB10519.namprd02.prod.outlook.com
- (2603:10b6:208:533::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.27; Fri, 13 Sep
- 2024 15:51:02 +0000
-Received: from LV8PR02MB10287.namprd02.prod.outlook.com
- ([fe80::b769:6234:fd94:5054]) by LV8PR02MB10287.namprd02.prod.outlook.com
- ([fe80::b769:6234:fd94:5054%5]) with mapi id 15.20.7918.020; Fri, 13 Sep 2024
- 15:51:02 +0000
-From: Jon Kohler <jon@nutanix.com>
-To: Chao Gao <chao.gao@intel.com>
-CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Thomas Gleixner
-	<tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra
-	<peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, X86 ML
-	<x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, LKML
-	<linux-kernel@vger.kernel.org>,
-        "kvm @ vger . kernel . org"
-	<kvm@vger.kernel.org>
-Subject: Re: [PATCH] x86/bhi: avoid hardware mitigation for
- 'spectre_bhi=vmexit'
-Thread-Topic: [PATCH] x86/bhi: avoid hardware mitigation for
- 'spectre_bhi=vmexit'
-Thread-Index: AQHbBRtn4jznGhv7KU+IMqTomlXzNrJUQp8AgAAIdoCAAAs8AIAA2x8AgACtw4A=
-Date: Fri, 13 Sep 2024 15:51:01 +0000
-Message-ID: <3244950F-0422-49AD-812D-DE536DAF5D7E@nutanix.com>
-References: <20240912141156.231429-1-jon@nutanix.com>
- <20240912151410.bazw4tdc7dugtl6c@desk>
- <070B4F7E-5103-4C1B-B901-01CE7191EB9A@nutanix.com>
- <20240912162440.be23sgv5v5ojtf3q@desk> <ZuPNmOLJPJsPlufA@intel.com>
-In-Reply-To: <ZuPNmOLJPJsPlufA@intel.com>
-Accept-Language: en-US
+ bh=aHJYN3kV6z3ilTOdn+TzE35uWiO3QHT3No6BI7hWhMY=;
+ b=TXZ7NoU2FJq0/x2hHZitxE18Ax4XRV/d0tmNbDgq676k872Ln7Dub3XJTczgtu1cu91WtdKNcM1+qcdCUELLOMlh90K3UVSafWmKTJl7S08sMUVHTVsAAf8rEFlfyHGnCddw/rnwuWU+Id8seB4tp4mtwVMwUP5G8tsuABnCijo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by LV2PR12MB5750.namprd12.prod.outlook.com (2603:10b6:408:17e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.20; Fri, 13 Sep
+ 2024 15:52:19 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.7962.018; Fri, 13 Sep 2024
+ 15:52:18 +0000
+Message-ID: <8824e7fd-4dcb-7d2c-0455-ae85d481331e@amd.com>
+Date: Fri, 13 Sep 2024 10:52:21 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v11 10/20] virt: sev-guest: Carve out SNP message context
+ structure
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Apple Mail (2.3774.300.61.1.2)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV8PR02MB10287:EE_|IA3PR02MB10519:EE_
-x-ms-office365-filtering-correlation-id: 1811c929-c44b-43e1-2dc6-08dcd40bde63
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ZFYxTkRLOGFYRVlSandJZUJCb3ladDRoSGhLTlFLR1BvcTN1a2tCSnFFcVkx?=
- =?utf-8?B?a2VOVHcxaGljdDBVcFAvdzM5cWxYaDlZRmxNQUpVMDJONzF6V3FsWHg2eXo4?=
- =?utf-8?B?S09vZk5IUGtyeGVmaldmc2dUSEtmUm9FUjdMZk1sWWgxUDlrV1BSRk9vU3RK?=
- =?utf-8?B?STAxZktaWDk2dmRsOXdQMUFwRmdmVXdBUjQ2U2Voc2lXejl5WEJKUXFhRmlP?=
- =?utf-8?B?Yks4T3hpdmlsSEkzSHZqQ1RNcDU1NDgvRm1LMzRFWkcrOEI3ZENuQ1NFODAz?=
- =?utf-8?B?VHlFY1hLWno2UXRCME9GUDNUdFRoN3NiVWt2MlAxRmJ5OE5wVThEMEMydE13?=
- =?utf-8?B?bFY0bTRNTFVCNHE4M1V6VWtDZzlmaGlOZzZPditWTVVXWDh4aFdNZ05DWjVT?=
- =?utf-8?B?UGV0YnNCQlpXWDhSekJ0LzBMQlhtclNTSXZCSTJFdVF1TGkzMzRvL2ZoSEtv?=
- =?utf-8?B?Um5YMmhabnM3dmhNNEhQUmxWNHVFMnNQbzA3WndWeGZyd2I4OEhEc044OWN0?=
- =?utf-8?B?L3FNdUdUS2Q3N3dtQXFsZEtCWndDdVRZdGpLeUlDaTlndWdrdmdUUDFtMlgw?=
- =?utf-8?B?VFJjaHFFSk1abHBXSGpJbGNYc3pnVE9ZdXIzUStGNTBSbUxOK01jdmwvb25p?=
- =?utf-8?B?RTZ0VjJsbHpIU3l0dTgvWTFvUzFMMnVYYnRrOGNDTzRoaGlVU2R5VEhNSHJ0?=
- =?utf-8?B?djN0NGpheXgwR056aUNiTzdmb1JJOUhBRTNXdjRUOGkxaUhqV0FuOGhrRkpG?=
- =?utf-8?B?VitVRmg5WEcrZ01XeFU3WGliRDZuZWwvaHZON3NVdmZvR0M4aldGeEhjazA4?=
- =?utf-8?B?b3pOVlB6RzEwOVRUdUwvbGJGNDcyZHJLYk9RU2lXeEtDcy96YzJFejRFNlZk?=
- =?utf-8?B?MDFTY0VKcm85eWEyMitHRlpJUW9rUnpDbGRxR29TbjJJbmhpZUdrVzZmeGpk?=
- =?utf-8?B?RVk5NWhjQ2VhVlZpTGI2cWdJZjltS3lZYVhxaFMwbkZhMG1HeldTb3hoRFBG?=
- =?utf-8?B?UXlKTFRSa24rM2NpVjcxbi9pdTZnd3dJWEtmTFJ4MFhQcWtWN3NiK2hFcUxH?=
- =?utf-8?B?QytZMUxGdmxaVXBmWG4wVVZjWmRBOVVlTm9sUlpoem9Tb2FDTFQ2d3h3MGp2?=
- =?utf-8?B?RTUxNE43ZW1FODRqUlVwZ245cVZKNmc2QldmZjRsVzhEMzdBa3dEQUFhV2xP?=
- =?utf-8?B?ZWdLT1FWeXVCT1VsbnYraTdBK3lvZUQzOHJaeit0dm52MldxVWoySGMzM2I0?=
- =?utf-8?B?bmk2Tmdtam4ybHlreVBkNmNWeCthQ20xOVlTcDVkQUNsODJVREhwOGFWSW01?=
- =?utf-8?B?aEpsWDhtZVlNL1ZzTzdEdDc5aitRaUxuYUNuSjZZUS9QcEUrWkVORStqZitq?=
- =?utf-8?B?MFJ5TU9tV2VDTC91cXNQam11VGVzQU83bWNmeFVSK0VHMTJrV2ltVjI0OW95?=
- =?utf-8?B?d1NoYTF0QW9PL2FiVzB2SnVaaTNrRGpDZGlpZzdJRHJKa2pWOVdGZDZtb2Fj?=
- =?utf-8?B?Wm5tWnJDcUZQK2RDTDBxNGxUTjhvWkFRa2FxU0tuL2s5aW9QcHJlbXg2OE1R?=
- =?utf-8?B?Ymwyd2RZR3czWE02bjYxOUJtNFpzNFBGNnd0ODBTRk9DaGhSNTh4TU9oTkJk?=
- =?utf-8?B?VmY5RnpRSld4K3YzN0RKUnFuRGo1cUhCdUdvelhlV05UVlVtVmhtMU9iTm50?=
- =?utf-8?B?TFhjREc1OU1jY0ViOFhnOFZONTdNMWVMMDgvazNWdGE5d2IrN1RkbWtBY2o0?=
- =?utf-8?B?dkVGOXZKWnpSNm9FVTg1bWdQZm03blg2djgyQUd5RUFKbjMxRkY5Q2ZoWDA0?=
- =?utf-8?B?ZHd2WHdLbG1Gb3d3RkpzYWRBMVlYMEVFMnZTQmVRVXhkOUt1WkJCZm9iQm1P?=
- =?utf-8?B?aCs2eHFJM1BTS2tvN1hicGVBeTd2MjkvS3JqU3FCaVd0YWc9PQ==?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR02MB10287.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?QXJ2TXJuWFhsOElzVjZHSUJYcU9tWTJya2xTajlSSk54eGlWQ3hET3M2c0VZ?=
- =?utf-8?B?ZnJlUVZMcFloUkVuUFR3TUVoMmJyN1Q5c3M5YTVyTHF2ck5ocThBbU5FS1NB?=
- =?utf-8?B?Ty9zZ3p4RzVYTTZPOTByRFBFQ0hGcXYrQlBOb1VmU2JNQzJkKzRXZWNzZDc2?=
- =?utf-8?B?d0UxT0F5YkEwZUpEbDBpbmtMMXdXYnFLTkIxVTY2K2VWRU43WlRSQ2VSNFRy?=
- =?utf-8?B?cGsrSm5QSjZWYUNDSThvRkhmaWZ6OGRValFpbVFLN2RnNGhRRlh0azY5UDZO?=
- =?utf-8?B?akIxbDBCUkdQeTY4RmZvaTd5THgrOUVYbmVmZTZJTkt3R3RzSjJGTHpiWEdw?=
- =?utf-8?B?YmxhZ1B3R3RmWHZ4eDE5NFFtWU1oOEExZUYyVmdzVUR4a1NscWZDUmJKOENZ?=
- =?utf-8?B?Rk9pbHVSckxNNzNPbklod2Nza1JHNjVmM0pydnl1aGtiQnlzWkRVMmg0ZGNu?=
- =?utf-8?B?ZzA5U1V6T1ppY3NjRHVWa0liU2xNdkhhck1WZkN5VmdRSlEzV0x6cFVPTUhF?=
- =?utf-8?B?Nnc1cmxXVlRiMGxXK29hU3VDREpZY1kwcFJUOTRJYnJ5aExJdDFvaWFKaThE?=
- =?utf-8?B?QzFaeGFwampWbWVXajN1M3RCMi9VWU0xV0RjcWlvVEZzN1R3Qy9jeXNSZFBy?=
- =?utf-8?B?RUdxdU5NMDYxT2NpUXV0K3MrVURFMzhEajBGcUZSMVliNHRzTWlqdzhpNGNx?=
- =?utf-8?B?UGRrQzhKZ0VtQTQ1b3pRVCsyWWx6ZVBzc1lycXBOeFNZMmJlblhOZmxTczV1?=
- =?utf-8?B?aHhtakZtQnpkWnNYZ3NpNUFET0NMa3hJY1NFUm9KRC8yODJhQUVZUHdPcU04?=
- =?utf-8?B?dDNpNFozWjRlNWNQSGREN0NBZ1hpZUpZWWxlT1RNZzB6OXhCZXVUZFdTQjJK?=
- =?utf-8?B?Tis3M1I1bFp4TnhPNk93ck94M2V3UThaeDRuVjN3Z3M2a2VMWkY1T0RTT0VG?=
- =?utf-8?B?M3hqUk5jYW5XWmRDaVFsemk5OEdaTFZTMWxEeitlb29FeHpCcFpxZ0JOWWxi?=
- =?utf-8?B?V1VucXovdHZsMU1meHQ1cThHcDZGRUEwZml6OHBiYm1MSmk2YWsyTEUvRVlK?=
- =?utf-8?B?dDB3bFdJQ25ZOWhiWDZxV2VkdWZKbHUxdlA5VFdtTnd6VHorR252WVN5VTZS?=
- =?utf-8?B?bE5ORHVNOVlieDJTbHhYRXpwdVFDaWlEMW85L0h2bEp3V1kwU01Xdlc0bDhF?=
- =?utf-8?B?WkxQdXVHd0VvTDRRM3RuQWt0U1hoQVpNeEJ6Z0x3T3d4b0w1TytzYWZNdDhq?=
- =?utf-8?B?RHdydFJLbHBhOGtHbFpKUk5iaktWdzJXdVlDeTFWSHNUS0hNZHZiY254cmFR?=
- =?utf-8?B?Tkw3TElUY0NNbDZpZW1vRHdmdXJKdVRzY3hYbFMxWUdXY1JtYjFvdDF5S3Qw?=
- =?utf-8?B?eFg4S0tGTEVwVWpRR2ZiKzhHZko5R3BuSXE2OHZuTWtZTjh2amFQRDhHcFNX?=
- =?utf-8?B?RzVFOURMV1lLSE8xNlIzR2Jhd0ZwWFdFUVRBYnJnejRCaEg2d0F1MHpBN1c1?=
- =?utf-8?B?dVRGMnQrdXNxWE5wUk1xWTJxY3E5OGIya0hubWdZbkhqS0J6RFRGdVJ1cFFI?=
- =?utf-8?B?dzYxU3NXbkpJNHEzT0FVb2NZbDlDdWdmZWlFUSsrWnlkeUVNc0tZR0JkY1hK?=
- =?utf-8?B?WTROb1dCcnVnc0pYWVlkVHR1RjVkYlNnR2hCNzJwVk1DOFhrcC8vVTlCUER0?=
- =?utf-8?B?alE4WjVyaHg0alJCOUNybVJlSGVTV1ZibXBXc2xMVHVCTWhiR2NZS3lzOXdB?=
- =?utf-8?B?cHF0VGsrZjRNWDJmQkNiU29ZRGJPRURJaS82dmF5cURnVXliWTUxc1h2V25r?=
- =?utf-8?B?TGkrTDErMDk3b3NMRU1mQzRxbXJEMXVEa1BlS2F4aHlzS1o3d0FoZ0YzYnND?=
- =?utf-8?B?TXJTOUFna3RJZUI3T3VDaFFLWUJabEJxYWlhQVdaWGlobEVCK3lkZENjaHQx?=
- =?utf-8?B?MG9aNnpNNEhudDY5Z21wbFo5aWtONzBDODFYd1lZZHFOSml2ZnJoK1pvMmhG?=
- =?utf-8?B?UVhZa1MrVEdVaCtDUUJxVnFJMEpYQVV0L3hSK09MWHR3NUt2T3UraGM0UkdR?=
- =?utf-8?B?V0FLbk5YeElEbERoN2doNyt0Wkx2ZWtqOWxGZU05Q0pMUnJSSTVlWTNFdHdX?=
- =?utf-8?B?aWh2MTVNNmlmRVc0YnhYNjYzSmQ1NUFnaXMxd05qQVZaYnNkQ1ZLMFFQWDgv?=
- =?utf-8?B?d3NnT0ZGUXprYnBVRXpvOXdXbXFxdyt6KzNvMC9sVEx0VlBsamk4Z3RrQUxh?=
- =?utf-8?B?Q2NDalFyYWROa2ttZWR1S0xiQzh3PT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8FF27E52F600BF48B80BFEF0DEC3560A@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+To: Nikunj A Dadhania <nikunj@amd.com>, linux-kernel@vger.kernel.org,
+ bp@alien8.de, x86@kernel.org, kvm@vger.kernel.org
+Cc: mingo@redhat.com, tglx@linutronix.de, dave.hansen@linux.intel.com,
+ pgonda@google.com, seanjc@google.com, pbonzini@redhat.com
+References: <20240731150811.156771-1-nikunj@amd.com>
+ <20240731150811.156771-11-nikunj@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20240731150811.156771-11-nikunj@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR13CA0002.namprd13.prod.outlook.com
+ (2603:10b6:806:130::7) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|LV2PR12MB5750:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2d73fb3-b98a-467c-c110-08dcd40c0bf7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZGxVWjUrOUMrd2dMZjl4Q0RtVExMTzA1QnZjY21hM0thUVAzNjJlWi83YURE?=
+ =?utf-8?B?K3RXd2lVejZmOVFFb2RHOTdzbWRwcTJaU0ZaSjFWb3V1amZ0ZXpKbnI4RUgw?=
+ =?utf-8?B?c0oweTkxckE4ZjdwRzVsaG9nb0NFbkdIRGNKNmI5WDNMSU5nRXEvV3hHUmpI?=
+ =?utf-8?B?NzVBcnFOemZZaDBVanNSNUcwSlJKN3hqOVl5eEJ1djVTN2lUWmVHQVJYdmhD?=
+ =?utf-8?B?VktacFZIdm9LT1dtWTAyUFM4ZlU2TzliSENzOUJoYWV2Y3R2SEdBSE1Ka29i?=
+ =?utf-8?B?T2tqdWgveUlvSzhneFArQ21lendHa25tWmt0Z2s4UUNNTENrYTcvQ2lHcFZy?=
+ =?utf-8?B?MW9lYVNCQWREL1FaR3Iwekw0UFcyMys0RlVZUDlxMFRFUjFyS2M0em0vOVdC?=
+ =?utf-8?B?YTZ3cXBaYm9lYWYvQWtsckFCalpJV0tzZUNkaTNCZlUwS1AvdkFDeEw4b2hr?=
+ =?utf-8?B?RHI0RW4xRWx2Yy8xTUZSMVBsTmhNSm1oZWtlbE9ncExpMk4zRW1tQWRUeW5u?=
+ =?utf-8?B?WDNrYWtpVXJrQ2UxeFN0anppa1J4V0ZJUnphbG1ncWxUeVBCdXF4a3lURXJw?=
+ =?utf-8?B?RVczajJzRURkRUw0V21tQ2FaWVZ0eWthL2FoRFlaV1ptbUtoMWh4SWtQTDlu?=
+ =?utf-8?B?b1ZiV3R3SjVENjBwc255aDB3a2p5UzVnZlUyT3ZvMTIybFY4U1hmZVN0WDA3?=
+ =?utf-8?B?YnU5WkJ1N3lKU0lWVW16b01JTjZFWG9lbTVnVFE3SUtsRzhObENLRUpDQTRO?=
+ =?utf-8?B?YmN0R1lTOXNmdVo2NWJoMTJBNUUrcnBuRld2d2NTSXJTT01iaEZMWHUxaDVT?=
+ =?utf-8?B?WjNEVGRTU2dIcUVxamYyU24xUHlTcWh6dmp1UVFWWjFoNVNjYU5LQkJobmdz?=
+ =?utf-8?B?eFNycjM1am1rRjlyZWc0VS96QXdDdkx4bk5wdGVSbHllcWt2aGlETTdpemh3?=
+ =?utf-8?B?TXNQaGcwUXdlUlhDWFE4ZGlpQTVuMjdUWis5K2pXSGsvcUFLeWFjS2RJaS9w?=
+ =?utf-8?B?VFF2U0cySUp2N0FWbTA1WCtXdWFWS2NzNzdTeCtnWWRLUDhSYmw2bTFzNzRB?=
+ =?utf-8?B?QzJUcnRXRFlLL2loM08va1VHV2NFNGMzTXlyWWxJcmxGUUlTeFdmMW5uRGF1?=
+ =?utf-8?B?UmFmdFVReG1jSDNacXFSbjJENExJT1ZxQ0pqOFh2NHlDbFo0TDduckVFeVhl?=
+ =?utf-8?B?aEJoSnpwSTJSM1gzUGg1aEhzVnFJWEdvQmNvZ29JMllPNnIrSHlLRVVrdURD?=
+ =?utf-8?B?a21OOU90UjJsUkd3NDZNd2lyMDdVZEI0bFIyNGluOWk2QmlHcUpBZmpwWEZK?=
+ =?utf-8?B?eGplZEMxK3ZOL3d1RzVXVk1LRE5JT1dQbTNYZVd3UXFMYTZrTi9mdHJad2o5?=
+ =?utf-8?B?VnczejFBakxXSlZLT2pWbk5STXRIYlE5WEZNeFdGSnpqUzN3V0FudVgrNlF1?=
+ =?utf-8?B?b2xuK0hUNjFtOWN1RmN1cWJiakRWVDVqMGZKWDhhbEZCclF1MFFWcGxvcHhw?=
+ =?utf-8?B?Ym5GaURwZ1k3a0E0TWFucHpSSmZxeDl1Um1pSFgrZm1OYWRHMWtlZ2NIZXQx?=
+ =?utf-8?B?MTZGMEJadFJnUTFzeTZKOFVTU0hvZncyYk8wMWE4OWQ0anNRVFo4RktCdHNV?=
+ =?utf-8?B?U0s0TXFPZDZDVUk1cloxNldJeDRkaWUyUmRsMWdwcndtc0taTjlTYUVBOXNY?=
+ =?utf-8?B?Vjcra2hJZ1RWMmswZ084QzJDR1QwejcyYlJLQlV0SGU1VGY3MFpnYWUyQjUr?=
+ =?utf-8?B?M0NIOGF3L1ZlYXZybm4vUlpEbDAxY202T3FiYnM2MmZxQktzVTBnaDNDM0Jt?=
+ =?utf-8?B?TEVLV09kMnNpSTVLblN5Zz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aDhBTjZiK2gxMVNDeEphQUtMTHc0YklGemgvVFBkTkZLdllpZjhBbjVKVVFD?=
+ =?utf-8?B?Z0xEUS9naDJ6Tm9wTkpYdjY5QlpBSjVGdWd3YzZheUtNYTFwcmV2UWR4dnRP?=
+ =?utf-8?B?TFFVRUlZenJvNEVtSTRZM0J5Z3ZNSXQxekczU3YxdlU2MDBtbkljbytXMks2?=
+ =?utf-8?B?Vi8wRkpPVGk1MmpIMzRDRWJEOUxTaHgyZ0h0VzNkSm1iNXVCYW5UZTY1aXNp?=
+ =?utf-8?B?bmtOTVExdUEra0xlZnE0T3NjTGozZTkzVTYxTmQrVTVqd1BnRmdOQ29iRzZK?=
+ =?utf-8?B?ODZMNmpFNzRIUm5ZeGVISml1TXQzUHVyVm1UOWJtVWo0cldDVHcyZ0FqT1JL?=
+ =?utf-8?B?RHdWRWhyRVRNV3VaZ1ZpdEgxV2NNYStTOHpjamJGOE1IcVlhcEpFeDh4NFlT?=
+ =?utf-8?B?ZGRPOWhFdU9NNFdnS0VpMnJKSUo2TnFFNmNEN0lXcVhiVWJvT3ZBYmlONmxZ?=
+ =?utf-8?B?L0M4V2NaRC9LZkxYNTlDQkZQRVRHTXo0bkFibGQvNnB1VHJtWnFna2V3NFpu?=
+ =?utf-8?B?K1VHTk9WZlRIaFFxTmFLV2xMVzdldUhIQXV0bjNQME55TVBhMnpHVk91Vld4?=
+ =?utf-8?B?NmNKVzRQUVlHVlpqNmNJN0RaUWNtYVVWeXYrWUpHZ1N1dXpOR1RQOEUxNkFh?=
+ =?utf-8?B?RDhTQ24yRjh0bkJseG4wdXd6TUp5T2taaG01dEpnSmhxZ2hSWjhrTEw2c1p5?=
+ =?utf-8?B?bThINUF5TWV5QStpZERWTkM3WXJiT0VTOTdCZjRrY1NIVEdCQkNrck5SQzg1?=
+ =?utf-8?B?dmlFR3RMVVgzYW5LOFI3NkQwanRVUFF4Sjl5c28wSEljQmREdmoxaGpEQXdj?=
+ =?utf-8?B?eFdDamNleW1sWVg3Y0NUdVRoMTdvZWl1OHl2ZWFTOXNSY1NJK2pvdk5uLy9H?=
+ =?utf-8?B?cENyeXpOVGJhUnFzNGY0bmIxaEI3bVZmYnpIamx3SkFxdEVvRDhuZU9nNHgw?=
+ =?utf-8?B?Z2pxUzF1RytrRkdmRzdZOW9CYk53c2tFRkQveDhiVVVYZFp4YzhRY3o4ZXhw?=
+ =?utf-8?B?MEMvTXp2QWtkQXZxUE0rTm1TWllRMTkxMTMrWGttM3FtNUxHNm9mZmJhM0VH?=
+ =?utf-8?B?V1YySll2SlE4K2lranFiUEpXRDBCcDBsSFZhdXZWQXdrVjQ0ZkJXT2Zidkcw?=
+ =?utf-8?B?b2JyaS9GT3ZrTlI3QlU3cWVIVVVEV0s4VEpXVUc5bEVmS28xd2t2WWw0aG5w?=
+ =?utf-8?B?bnc1clVUbWxsOUxtSUFieUp6OWZ0akFKNFA1aXMzODhZc2d0UDhJRXlWdU1N?=
+ =?utf-8?B?Zy8ySDYwckFMVkZaVEd3TUFNYTZTeDBha0NQd2lyQitBMmVId1RHV1BEeFMr?=
+ =?utf-8?B?Vk44azkrQVZwbW9WVXpFMGFHb043VHRncFVoMkpoT3RXWE5aRWlCTDh1RU1y?=
+ =?utf-8?B?UmdoSUtLSUZmYm9lT000eTV1VitPKzNIMjkrN2tQb3JMNXk5U2paOUwyejJR?=
+ =?utf-8?B?eVRzVkdxenBrZHpmSHNxNkY0bDZYckQxL2FGMVJQaFBuMVZkR3N5MktPajhq?=
+ =?utf-8?B?V3FPRXdVR201cThJVjJlUVd5Z3VlMWVMajF3MVh5MG5lSWxTdmY5UUhGeEJM?=
+ =?utf-8?B?WWRWdzlzZWliYTV5WjlOeWVwb1RLTHJxTjVaZWd6Z0pMM0VlR1ZMbUUrUjdL?=
+ =?utf-8?B?ZWNsUTdta0ZpME1HY3FFdmxoZG45NXJUMVBLQjYyaXU4dkwrYlNqTml6SEkr?=
+ =?utf-8?B?UXpsNkhFaUp0Vi9Hb3JHc3lFMUt0cjZ0UXY2Q3dDSHlVRUhnWmR3T3hBTnFq?=
+ =?utf-8?B?TENwWUZ4TUNpamdjQ0hwa2RieGMvb01nQ0hXdmdOclMxTHJYM2ZqV29FNlJX?=
+ =?utf-8?B?VFNuK0M5K1NuK3B0RXZpa2tUY3RsQVI4QTlQYUc3TWZFbEFIZVh1K292OE03?=
+ =?utf-8?B?bFVaWHdtRDh2MGk2QldCT29UaWU0WXg4Y1ppS3N6WGNzb09UWjNFSHZKOFRY?=
+ =?utf-8?B?bGlBdUtLaEt1MEEySksvRm9BcHdiajRpMitMKzNESFM5L2lzQlIxKzRJZnYz?=
+ =?utf-8?B?K0p2c2pSOHd0ZGcxZHlBcG5qcDFOaUdkanFaejFpV1l2eFBQbzhqeVVYaTVI?=
+ =?utf-8?B?dFBrdlgyTnpnVGNJeWJEMlRKMjBoS0ZZSjVOMkQ1ZmpHTmFWYUV4cm9JOUJX?=
+ =?utf-8?Q?gVdv9AoRjZvqKBx3bmfVFN8cb?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2d73fb3-b98a-467c-c110-08dcd40c0bf7
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR02MB10287.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1811c929-c44b-43e1-2dc6-08dcd40bde63
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Sep 2024 15:51:02.0036
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 15:52:18.7465
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BO5Iq9fkO3u27V9MvOOh2MU48V7kxMEJYJRRn0dpEcBA84Pc8KDqC5bKVlIMv7WvaekW90ukiI7eo6WzBBEH94EuT3AzzCout0i/L5Hv2QA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR02MB10519
-X-Authority-Analysis: v=2.4 cv=J9z47xnS c=1 sm=1 tr=0 ts=66e45f68 cx=c_pps a=6nUVeFXZkCqfDP2MWDHPNQ==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=0034W8JfsZAA:10 a=0kUYKlekyDsA:10 a=QyXUC8HyAAAA:8
- a=VwQbUJbxAAAA:8 a=6t8ktNIx8MKHhpzd5TYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: jjimaSn1QRiLpdiycJ3qxbbVtL-lPHti
-X-Proofpoint-GUID: jjimaSn1QRiLpdiycJ3qxbbVtL-lPHti
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Reason: safe
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DZWsjOfy9t0uJg6KSsugkU5l9VKWD/w0dnM5yCOqRbGRssBl9RJ13Pe9Xk/039dFyYo7Pillgp4n0zHbC4eiOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5750
 
-DQoNCj4gT24gU2VwIDEzLCAyMDI0LCBhdCAxOjI44oCvQU0sIENoYW8gR2FvIDxjaGFvLmdhb0Bp
-bnRlbC5jb20+IHdyb3RlOg0KPiANCj4gIS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS18DQo+ICBDQVVUSU9OOiBFeHRlcm5h
-bCBFbWFpbA0KPiANCj4gfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0hDQo+IA0KPiBPbiBUaHUsIFNlcCAxMiwgMjAyNCBh
-dCAwOToyNDo0MEFNIC0wNzAwLCBQYXdhbiBHdXB0YSB3cm90ZToNCj4+IE9uIFRodSwgU2VwIDEy
-LCAyMDI0IGF0IDAzOjQ0OjM4UE0gKzAwMDAsIEpvbiBLb2hsZXIgd3JvdGU6DQo+Pj4+IEl0IGlz
-IG9ubHkgd29ydGggaW1wbGVtZW50aW5nIHRoZSBsb25nIHNlcXVlbmNlIGluIFZNRVhJVF9PTkxZ
-IG1vZGUgaWYgaXQgaXMNCj4+Pj4gc2lnbmlmaWNhbnRseSBiZXR0ZXIgdGhhbiB0b2dnbGluZyB0
-aGUgTVNSLg0KPj4+IA0KPj4+IFRoYW5rcyBmb3IgdGhlIHBvaW50ZXIhIEkgaGFkbuKAmXQgc2Vl
-biB0aGF0IHNlY29uZCBzZXF1ZW5jZS4gSeKAmWxsIGRvIG1lYXN1cmVtZW50cyBvbg0KPj4+IHRo
-cmVlIGNhc2VzIGFuZCBjb21lIGJhY2sgd2l0aCBkYXRhIGZyb20gYW4gU1BSIHN5c3RlbS4NCj4+
-PiAxLiBhcy1pcyAod3Jtc3Igb24gZW50cnkgYW5kIGV4aXQpDQo+Pj4gMi4gU2hvcnQgc2VxdWVu
-Y2UgKGFzIGEgYmFzZWxpbmUpDQo+Pj4gMy4gTG9uZyBzZXF1ZW5jZQ0KPj4gDQoNClBhd2FuLA0K
-DQpUaGFua3MgZm9yIHRoZSBwb2ludGVyIHRvIHRoZSBsb25nIHNlcXVlbmNlLiBJJ3ZlIHRlc3Rl
-ZCBpdCBhbG9uZyB3aXRoIA0KTGlzdGluZyAzIChUU1ggQWJvcnQgc2VxdWVuY2UpIHVzaW5nIEtV
-VCB0c2NkZWFkbGluZV9pbW1lZCB0ZXN0LiBUU1ggDQphYm9ydCBzZXF1ZW5jZSBwZXJmb3JtcyBi
-ZXR0ZXIgdW5sZXNzIEJISSBtaXRpZ2F0aW9uIGlzIG9mZiBvciANCmhvc3QvZ3Vlc3Qgc3BlY19j
-dHJsIHZhbHVlcyBtYXRjaCwgYXZvaWRpbmcgV1JNU1IgdG9nZ2xpbmcuIEhhdmluZyB0aGUNCnZh
-bHVlcyBtYXRjaCB0aGUgRElTX1MgdmFsdWUgaXMgZWFzaWVyIHNhaWQgdGhhbiBkb25lIGFjcm9z
-cyBhIGZsZWV0DQp0aGF0IGlzIGFscmVhZHkgdXNpbmcgZUlCUlMgaGVhdmlseS4NCg0KVGVzdCBT
-eXN0ZW06DQotIEludGVsIFhlb24gR29sZCA2NDQyWSwgbWljcm9jb2RlIDB4MmIwMDA1YzANCi0g
-TGludXggNi42LjM0ICsgcGF0Y2hlcywgcWVtdSA4LjINCi0gS1ZNIFVuaXQgVGVzdHMgQCBsYXRl
-c3QgKDE3ZjZmMmZkKSB3aXRoIHRzY2RlYWRsaW5lX2ltbWVkICsgZWRpdHM6DQotIFRvZ2dsZSBz
-cGVjIGN0cmwgYmVmb3JlIHRlc3QgaW4gbWFpbigpDQotIFVzZSBjcHUgdHlwZSBTYXBwaGlyZVJh
-cGlkcy12Mg0KDQpUZXN0IHN0cmluZzoNClRFU1ROQU1FPXZtZXhpdF90c2NkZWFkbGluZV9pbW1l
-ZCBUSU1FT1VUPTkwcyBNQUNISU5FPSBBQ0NFTD0gdGFza3NldCAtYyAyNiAuL3g4Ni9ydW4geDg2
-L3ZtZXhpdC5mbGF0IFwNCi1zbXAgMSAtY3B1IFNhcHBoaXJlUmFwaWRzLXYyLCt4MmFwaWMsK3Rz
-Yy1kZWFkbGluZSAtYXBwZW5kIHRzY2RlYWRsaW5lX2ltbWVkIHxncmVwIHRzY2RlYWRsaW5lDQoN
-ClRlc3QgUmVzdWx0czoNCjEuIHNwZWN0cmVfYmhpPW9uLCBob3N0IHNwZWNfY3RybD0xMDI1LCBn
-dWVzdCBzcGVjX2N0cmw9MTogdHNjZGVhZGxpbmVfaW1tZWQgMzg3OCAoV1JNU1IgdG9nZ2xpbmcp
-DQoyLiBzcGVjdHJlX2JoaT1vbiwgaG9zdCBzcGVjX2N0cmw9MTAyNSwgZ3Vlc3Qgc3BlY19jdHJs
-PTEwMjU6IHRzY2RlYWRsaW5lX2ltbWVkIDMxNTMgKG5vIFdSTVNSIHRvZ2dsaW5nKQ0KMy4gc3Bl
-Y3RyZV9iaGk9dm1leGl0LCBCSEIgbG9uZyBzZXF1ZW5jZSwgaG9zdC9ndWVzdCBzcGVjX2N0cmw9
-MTogdHNjZGVhZGxpbmVfaW1tZWQgMzYyOSAoc3RpbGwgYmV0dGVyIHRoYW4gdGVzdCAxLCBwZW5h
-bHR5IG9ubHkgb24gZXhpdCkNCjQuIHNwZWN0cmVfYmhpPXZtZXhpdCwgVFNYIGFib3J0IHNlcXVl
-bmNlLCBob3N0L2d1ZXN0IHNwZWNfY3RybD0xOiB0c2NkZWFkbGluZV9pbW1lZCAzMjk0IChiZXN0
-IGdlbmVyYWwgcHVycG9zZSBwZXJmb3JtYW5jZSkNCjUuIHNwZWN0cmVfYmhpPXZtZXhpdCwgVFNY
-IGFib3J0IHNlcXVlbmNlLCBob3N0IHNwZWNfY3RybD0xLCBndWVzdCBzcGVjX2N0cmw9MTAyNTog
-dHNjZGVhZGxpbmVfaW1tZWQgNDAxMSAobmVlZHMgb3B0aW1pemF0aW9uKQ0KDQpJbiBzaG9ydCwg
-dGhlcmUgaXMgYSBzaWduaWZpY2FudCBzcGVlZHVwIHRvIGJlIGhhZCBoZXJlLg0KDQpBcyBmb3Ig
-dGVzdCA1LCBob25lc3QgdGhhdCBpcyBzb21ld2hhdCBpbnZhbGlkIGJlY2F1c2UgaXQgd291bGQg
-YmUNCmRlcGVuZGVudCBvbiB0aGUgVk1NIHVzZXIgc3BhY2Ugc2hvd2luZyBCSElfQ1RSTC4NCg0K
-UUVNVSBhcyBhbiBleGFtcGxlIGRvZXMgbm90IGRvIHRoYXQsIHNvIGV2ZW4gd2l0aCBsYXRlc3Qg
-cWVtdSBhbmQgbGF0ZXN0DQprZXJuZWwsIGd1ZXN0cyB3aWxsIHN0aWxsIHVzZSBCSEIgbG9vcCBl
-dmVuIG9uIFNQUisrIHRvZGF5LCBhbmQgdGhleQ0KY291bGQgdXNlIHRoZSBUU1ggbG9vcCB3aXRo
-IHRoaXMgcHJvcG9zZWQgY2hhbmdlIGlmIHRoZSBWTU0gZXhwb3NlcyBSVE0NCmZlYXR1cmUuDQoN
-CkknbSBoYXBweSB0byBwb3N0IGEgVjIgcGF0Y2ggd2l0aCBteSBUU1ggY2hhbmdlcywgb3IgdGFr
-ZSBhbnkgb3RoZXINCnN1Z2dlc3Rpb25zIGhlcmUuIA0KDQpUaGFua3MgYWxsLA0KSm9uDQoNCj4+
-IEkgd29uZGVyIGlmIHZpcnR1YWwgU1BFQ19DVFJMIGZlYXR1cmUgaW50cm9kdWNlZCBpbiBiZWxv
-dyBzZXJpZXMgY2FuDQo+PiBwcm92aWRlIHNwZWVkdXAsIGFzIGl0IGNhbiByZXBsYWNlIHRoZSBN
-U1IgdG9nZ2xpbmcgd2l0aCBmYXN0ZXIgVk1DUw0KPj4gb3BlcmF0aW9uczoNCj4gDQo+ICJ2aXJ0
-dWFsIFNQRUNfQ1RSTCIgd29uJ3QgcHJvdmlkZSBzcGVlZHVwLiB0aGUgd3Jtc3Igb24gZW50cnkv
-ZXhpdCBpcyBzdGlsbA0KPiBuZWVkIGlmIGd1ZXN0J3MgKGVmZmVjdGl2ZSkgdmFsdWUgYW5kIGhv
-c3QncyB2YWx1ZSBhcmUgZGlmZmVyZW50Lg0KPiANCj4gInZpcnR1YWwgU1BFQ19DVFJMIiBqdXN0
-IHByZXZlbnRzIGd1ZXN0cyBmcm9tIHRvZ2dsaW5nIHNvbWUgYml0cy4gSXQgZG9lc24ndA0KPiBz
-d2l0Y2ggdGhlIE1TUiBiZXR3ZWVuIGd1ZXN0IHZhbHVlIGFuZCBob3N0IHZhbHVlIG9uIGVudHJ5
-L2V4aXQuIHNvLCBLVk0gaGFzDQo+IHRvIGRvIHRoZSBzd2l0Y2hpbmcgd2l0aCB3cm1zci9yZG1z
-ciBpbnN0cnVjdGlvbnMuIEEgbmV3IGZlYXR1cmUsICJsb2FkDQo+IElBMzJfU1BFQ19DVFJMIiBW
-TVggY29udHJvbCAocmVmZXIgdG8gQ2hhcHRlciAxNSBpbiBJU0Ugc3BlY1sqXSksIGNhbiBoZWxw
-IGJ1dA0KPiBpdCBpc24ndCBzdXBwb3J0ZWQgb24gU1BSLg0KPiANCj4gWypdOiBodHRwczovL3Vy
-bGRlZmVuc2UucHJvb2Zwb2ludC5jb20vdjIvdXJsP3U9aHR0cHMtM0FfX2NkcmR2Mi5pbnRlbC5j
-b21fdjFfZGxfZ2V0Q29udGVudF82NzEzNjgmZD1Ed0lEYVEmYz1zODgzR3BVQ09DaEtPSGlvY1l0
-R2NnJnI9TkdQUkdHbzM3bVFpU1hnSEttNXJDUSZtPWM3U0ZqY3p5WGVPNU1jRTRmaXJVWmFpT1Z1
-TEJWd0xYQXpLVjlXUXFNcUtDQ0V3U3ZWazBWNGNrby1mYWxRWW8mcz0taHNrcmxoclI0aXVUMnN6
-MEtrR0puN2hDU0FHSXRldTNfVEdRelBnaDhJJmU9IA0KPiANCj4+IA0KPj4gaHR0cHM6Ly91cmxk
-ZWZlbnNlLnByb29mcG9pbnQuY29tL3YyL3VybD91PWh0dHBzLTNBX19sb3JlLmtlcm5lbC5vcmdf
-a3ZtXzIwMjQwNDEwMTQzNDQ2Ljc5NzI2Mi0yRDEtMkRjaGFvLmdhby00MGludGVsLmNvbV8mZD1E
-d0lEYVEmYz1zODgzR3BVQ09DaEtPSGlvY1l0R2NnJnI9TkdQUkdHbzM3bVFpU1hnSEttNXJDUSZt
-PWM3U0ZqY3p5WGVPNU1jRTRmaXJVWmFpT1Z1TEJWd0xYQXpLVjlXUXFNcUtDQ0V3U3ZWazBWNGNr
-by1mYWxRWW8mcz1yc2FFZEFOOUtFanRBTVNOLWtlNHg0Ujg3RmdmeHN2Q3Nkd2JDRms3Vk9FJmU9
-IA0KPj4gDQo+PiBBZGRpbmcgQ2hhbyBmb3IgdGhlaXIgb3Bpbmlvbi4NCg0K
+On 7/31/24 10:08, Nikunj A Dadhania wrote:
+> Currently, the sev-guest driver is the only user of SNP guest messaging.
+> snp_guest_dev structure holds all the allocated buffers, secrets page and
+
+The snp_guest_dev structure...
+
+> VMPCK details. In preparation of adding messaging allocation and
+
+s/of/for/
+
+> initialization APIs, decouple snp_guest_dev from messaging-related
+> information by carving out guest message context structure(snp_msg_desc).
+
+s/out guest/out the guest/
+
+> 
+> Incorporate this newly added context into snp_send_guest_request() and all
+> related functions, replacing the use of the snp_guest_dev.
+> 
+> No functional change.
+> 
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+> ---
+>  arch/x86/include/asm/sev.h              |  21 +++
+>  drivers/virt/coco/sev-guest/sev-guest.c | 183 ++++++++++++------------
+>  2 files changed, 111 insertions(+), 93 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 27fa1c9c3465..2e49c4a9e7fe 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -234,6 +234,27 @@ struct snp_secrets_page {
+>  	u8 rsvd4[3744];
+>  } __packed;
+>  
+> +struct snp_msg_desc {
+> +	/* request and response are in unencrypted memory */
+> +	struct snp_guest_msg *request, *response;
+> +
+> +	/*
+> +	 * Avoid information leakage by double-buffering shared messages
+> +	 * in fields that are in regular encrypted memory.
+> +	 */
+> +	struct snp_guest_msg secret_request, secret_response;
+> +
+> +	struct snp_secrets_page *secrets;
+> +	struct snp_req_data input;
+> +
+> +	void *certs_data;
+> +
+> +	struct aesgcm_ctx *ctx;
+> +
+> +	u32 *os_area_msg_seqno;
+> +	u8 *vmpck;
+> +};
+> +
+>  /*
+>   * The SVSM Calling Area (CA) related structures.
+>   */
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+> index 42f7126f1718..38ddabcd7ba3 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> @@ -40,26 +40,13 @@ struct snp_guest_dev {
+>  	struct device *dev;
+>  	struct miscdevice misc;
+>  
+> -	void *certs_data;
+> -	struct aesgcm_ctx *ctx;
+> -	/* request and response are in unencrypted memory */
+> -	struct snp_guest_msg *request, *response;
+> -
+> -	/*
+> -	 * Avoid information leakage by double-buffering shared messages
+> -	 * in fields that are in regular encrypted memory.
+> -	 */
+> -	struct snp_guest_msg secret_request, secret_response;
+> +	struct snp_msg_desc *msg_desc;
+>  
+> -	struct snp_secrets_page *secrets;
+> -	struct snp_req_data input;
+>  	union {
+>  		struct snp_report_req report;
+>  		struct snp_derived_key_req derived_key;
+>  		struct snp_ext_report_req ext_report;
+>  	} req;
+> -	u32 *os_area_msg_seqno;
+> -	u8 *vmpck;
+>  };
+>  
+>  /*
+> @@ -76,12 +63,12 @@ MODULE_PARM_DESC(vmpck_id, "The VMPCK ID to use when communicating with the PSP.
+>  /* Mutex to serialize the shared buffer access and command handling. */
+>  static DEFINE_MUTEX(snp_cmd_mutex);
+>  
+> -static bool is_vmpck_empty(struct snp_guest_dev *snp_dev)
+> +static bool is_vmpck_empty(struct snp_msg_desc *mdesc)
+>  {
+>  	char zero_key[VMPCK_KEY_LEN] = {0};
+>  
+> -	if (snp_dev->vmpck)
+> -		return !memcmp(snp_dev->vmpck, zero_key, VMPCK_KEY_LEN);
+> +	if (mdesc->vmpck)
+> +		return !memcmp(mdesc->vmpck, zero_key, VMPCK_KEY_LEN);
+>  
+>  	return true;
+>  }
+> @@ -103,30 +90,30 @@ static bool is_vmpck_empty(struct snp_guest_dev *snp_dev)
+>   * vulnerable. If the sequence number were incremented for a fresh IV the ASP
+>   * will reject the request.
+>   */
+> -static void snp_disable_vmpck(struct snp_guest_dev *snp_dev)
+> +static void snp_disable_vmpck(struct snp_msg_desc *mdesc)
+>  {
+> -	dev_alert(snp_dev->dev, "Disabling VMPCK%d communication key to prevent IV reuse.\n",
+> +	pr_alert("Disabling VMPCK%d communication key to prevent IV reuse.\n",
+>  		  vmpck_id);
+> -	memzero_explicit(snp_dev->vmpck, VMPCK_KEY_LEN);
+> -	snp_dev->vmpck = NULL;
+> +	memzero_explicit(mdesc->vmpck, VMPCK_KEY_LEN);
+> +	mdesc->vmpck = NULL;
+>  }
+>  
+> -static inline u64 __snp_get_msg_seqno(struct snp_guest_dev *snp_dev)
+> +static inline u64 __snp_get_msg_seqno(struct snp_msg_desc *mdesc)
+>  {
+>  	u64 count;
+>  
+>  	lockdep_assert_held(&snp_cmd_mutex);
+>  
+>  	/* Read the current message sequence counter from secrets pages */
+> -	count = *snp_dev->os_area_msg_seqno;
+> +	count = *mdesc->os_area_msg_seqno;
+>  
+>  	return count + 1;
+>  }
+>  
+>  /* Return a non-zero on success */
+> -static u64 snp_get_msg_seqno(struct snp_guest_dev *snp_dev)
+> +static u64 snp_get_msg_seqno(struct snp_msg_desc *mdesc)
+>  {
+> -	u64 count = __snp_get_msg_seqno(snp_dev);
+> +	u64 count = __snp_get_msg_seqno(mdesc);
+>  
+>  	/*
+>  	 * The message sequence counter for the SNP guest request is a  64-bit
+> @@ -137,20 +124,20 @@ static u64 snp_get_msg_seqno(struct snp_guest_dev *snp_dev)
+>  	 * invalid number and will fail the  message request.
+>  	 */
+>  	if (count >= UINT_MAX) {
+> -		dev_err(snp_dev->dev, "request message sequence counter overflow\n");
+> +		pr_err("request message sequence counter overflow\n");
+>  		return 0;
+>  	}
+>  
+>  	return count;
+>  }
+>  
+> -static void snp_inc_msg_seqno(struct snp_guest_dev *snp_dev)
+> +static void snp_inc_msg_seqno(struct snp_msg_desc *mdesc)
+>  {
+>  	/*
+>  	 * The counter is also incremented by the PSP, so increment it by 2
+>  	 * and save in secrets page.
+>  	 */
+> -	*snp_dev->os_area_msg_seqno += 2;
+> +	*mdesc->os_area_msg_seqno += 2;
+>  }
+>  
+>  static inline struct snp_guest_dev *to_snp_dev(struct file *file)
+> @@ -177,13 +164,13 @@ static struct aesgcm_ctx *snp_init_crypto(u8 *key, size_t keylen)
+>  	return ctx;
+>  }
+>  
+> -static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, struct snp_guest_req *req)
+> +static int verify_and_dec_payload(struct snp_msg_desc *mdesc, struct snp_guest_req *req)
+>  {
+> -	struct snp_guest_msg *resp_msg = &snp_dev->secret_response;
+> -	struct snp_guest_msg *req_msg = &snp_dev->secret_request;
+> +	struct snp_guest_msg *resp_msg = &mdesc->secret_response;
+> +	struct snp_guest_msg *req_msg = &mdesc->secret_request;
+>  	struct snp_guest_msg_hdr *req_msg_hdr = &req_msg->hdr;
+>  	struct snp_guest_msg_hdr *resp_msg_hdr = &resp_msg->hdr;
+> -	struct aesgcm_ctx *ctx = snp_dev->ctx;
+> +	struct aesgcm_ctx *ctx = mdesc->ctx;
+>  	u8 iv[GCM_AES_IV_SIZE] = {};
+>  
+>  	pr_debug("response [seqno %lld type %d version %d sz %d]\n",
+> @@ -191,7 +178,7 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, struct snp_gues
+>  		 resp_msg_hdr->msg_sz);
+>  
+>  	/* Copy response from shared memory to encrypted memory. */
+> -	memcpy(resp_msg, snp_dev->response, sizeof(*resp_msg));
+> +	memcpy(resp_msg, mdesc->response, sizeof(*resp_msg));
+>  
+>  	/* Verify that the sequence counter is incremented by 1 */
+>  	if (unlikely(resp_msg_hdr->msg_seqno != (req_msg_hdr->msg_seqno + 1)))
+> @@ -218,11 +205,11 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	return 0;
+>  }
+>  
+> -static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, struct snp_guest_req *req)
+> +static int enc_payload(struct snp_msg_desc *mdesc, u64 seqno, struct snp_guest_req *req)
+>  {
+> -	struct snp_guest_msg *msg = &snp_dev->secret_request;
+> +	struct snp_guest_msg *msg = &mdesc->secret_request;
+>  	struct snp_guest_msg_hdr *hdr = &msg->hdr;
+> -	struct aesgcm_ctx *ctx = snp_dev->ctx;
+> +	struct aesgcm_ctx *ctx = mdesc->ctx;
+>  	u8 iv[GCM_AES_IV_SIZE] = {};
+>  
+>  	memset(msg, 0, sizeof(*msg));
+> @@ -253,7 +240,7 @@ static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, struct snp_gues
+>  	return 0;
+>  }
+>  
+> -static int __handle_guest_request(struct snp_guest_dev *snp_dev, struct snp_guest_req *req,
+> +static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+>  				  struct snp_guest_request_ioctl *rio)
+>  {
+>  	unsigned long req_start = jiffies;
+> @@ -268,7 +255,7 @@ static int __handle_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	 * sequence number must be incremented or the VMPCK must be deleted to
+>  	 * prevent reuse of the IV.
+>  	 */
+> -	rc = snp_issue_guest_request(req, &snp_dev->input, rio);
+> +	rc = snp_issue_guest_request(req, &mdesc->input, rio);
+>  	switch (rc) {
+>  	case -ENOSPC:
+>  		/*
+> @@ -278,7 +265,7 @@ static int __handle_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  		 * order to increment the sequence number and thus avoid
+>  		 * IV reuse.
+>  		 */
+> -		override_npages = snp_dev->input.data_npages;
+> +		override_npages = mdesc->input.data_npages;
+>  		req->exit_code	= SVM_VMGEXIT_GUEST_REQUEST;
+>  
+>  		/*
+> @@ -318,7 +305,7 @@ static int __handle_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	 * structure and any failure will wipe the VMPCK, preventing further
+>  	 * use anyway.
+>  	 */
+> -	snp_inc_msg_seqno(snp_dev);
+> +	snp_inc_msg_seqno(mdesc);
+>  
+>  	if (override_err) {
+>  		rio->exitinfo2 = override_err;
+> @@ -334,12 +321,12 @@ static int __handle_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	}
+>  
+>  	if (override_npages)
+> -		snp_dev->input.data_npages = override_npages;
+> +		mdesc->input.data_npages = override_npages;
+>  
+>  	return rc;
+>  }
+>  
+> -static int snp_send_guest_request(struct snp_guest_dev *snp_dev, struct snp_guest_req *req,
+> +static int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+>  				  struct snp_guest_request_ioctl *rio)
+>  {
+>  	u64 seqno;
+> @@ -348,15 +335,15 @@ static int snp_send_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	guard(mutex)(&snp_cmd_mutex);
+>  
+>  	/* Get message sequence and verify that its a non-zero */
+> -	seqno = snp_get_msg_seqno(snp_dev);
+> +	seqno = snp_get_msg_seqno(mdesc);
+>  	if (!seqno)
+>  		return -EIO;
+>  
+>  	/* Clear shared memory's response for the host to populate. */
+> -	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
+> +	memset(mdesc->response, 0, sizeof(struct snp_guest_msg));
+>  
+> -	/* Encrypt the userspace provided payload in snp_dev->secret_request. */
+> -	rc = enc_payload(snp_dev, seqno, req);
+> +	/* Encrypt the userspace provided payload in mdesc->secret_request. */
+> +	rc = enc_payload(mdesc, seqno, req);
+>  	if (rc)
+>  		return rc;
+>  
+> @@ -364,34 +351,33 @@ static int snp_send_guest_request(struct snp_guest_dev *snp_dev, struct snp_gues
+>  	 * Write the fully encrypted request to the shared unencrypted
+>  	 * request page.
+>  	 */
+> -	memcpy(snp_dev->request, &snp_dev->secret_request,
+> -	       sizeof(snp_dev->secret_request));
+> +	memcpy(mdesc->request, &mdesc->secret_request,
+> +	       sizeof(mdesc->secret_request));
+>  
+> -	rc = __handle_guest_request(snp_dev, req, rio);
+> +	rc = __handle_guest_request(mdesc, req, rio);
+>  	if (rc) {
+>  		if (rc == -EIO &&
+>  		    rio->exitinfo2 == SNP_GUEST_VMM_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN))
+>  			return rc;
+>  
+> -		dev_alert(snp_dev->dev,
+> -			  "Detected error from ASP request. rc: %d, exitinfo2: 0x%llx\n",
+> -			  rc, rio->exitinfo2);
+> +		pr_alert("Detected error from ASP request. rc: %d, exitinfo2: 0x%llx\n",
+> +			 rc, rio->exitinfo2);
+>  
+> -		snp_disable_vmpck(snp_dev);
+> +		snp_disable_vmpck(mdesc);
+>  		return rc;
+>  	}
+>  
+> -	rc = verify_and_dec_payload(snp_dev, req);
+> +	rc = verify_and_dec_payload(mdesc, req);
+>  	if (rc) {
+> -		dev_alert(snp_dev->dev, "Detected unexpected decode failure from ASP. rc: %d\n", rc);
+> -		snp_disable_vmpck(snp_dev);
+> +		pr_alert("Detected unexpected decode failure from ASP. rc: %d\n", rc);
+> +		snp_disable_vmpck(mdesc);
+>  		return rc;
+>  	}
+>  
+>  	return 0;
+>  }
+>  
+> -static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code,
+> +static int handle_guest_request(struct snp_msg_desc *mdesc, u64 exit_code,
+>  				struct snp_guest_request_ioctl *rio, u8 type,
+>  				void *req_buf, size_t req_sz, void *resp_buf,
+>  				u32 resp_sz)
+> @@ -407,7 +393,7 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code,
+>  		.exit_code	= exit_code,
+>  	};
+>  
+> -	return snp_send_guest_request(snp_dev, &req, rio);
+> +	return snp_send_guest_request(mdesc, &req, rio);
+>  }
+>  
+>  struct snp_req_resp {
+> @@ -418,6 +404,7 @@ struct snp_req_resp {
+>  static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+>  {
+>  	struct snp_report_req *report_req = &snp_dev->req.report;
+> +	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+>  	struct snp_report_resp *report_resp;
+>  	int rc, resp_len;
+>  
+> @@ -432,12 +419,12 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+>  	 * response payload. Make sure that it has enough space to cover the
+>  	 * authtag.
+>  	 */
+> -	resp_len = sizeof(report_resp->data) + snp_dev->ctx->authsize;
+> +	resp_len = sizeof(report_resp->data) + mdesc->ctx->authsize;
+>  	report_resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
+>  	if (!report_resp)
+>  		return -ENOMEM;
+>  
+> -	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg, SNP_MSG_REPORT_REQ,
+> +	rc = handle_guest_request(mdesc, SVM_VMGEXIT_GUEST_REQUEST, arg, SNP_MSG_REPORT_REQ,
+>  				  report_req, sizeof(*report_req), report_resp->data, resp_len);
+>  	if (rc)
+>  		goto e_free;
+> @@ -454,6 +441,7 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+>  {
+>  	struct snp_derived_key_req *derived_key_req = &snp_dev->req.derived_key;
+>  	struct snp_derived_key_resp derived_key_resp = {0};
+> +	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+>  	int rc, resp_len;
+>  	/* Response data is 64 bytes and max authsize for GCM is 16 bytes. */
+>  	u8 buf[64 + 16];
+> @@ -466,7 +454,7 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+>  	 * response payload. Make sure that it has enough space to cover the
+>  	 * authtag.
+>  	 */
+> -	resp_len = sizeof(derived_key_resp.data) + snp_dev->ctx->authsize;
+> +	resp_len = sizeof(derived_key_resp.data) + mdesc->ctx->authsize;
+>  	if (sizeof(buf) < resp_len)
+>  		return -ENOMEM;
+>  
+> @@ -474,7 +462,7 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+>  			   sizeof(*derived_key_req)))
+>  		return -EFAULT;
+>  
+> -	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg, SNP_MSG_KEY_REQ,
+> +	rc = handle_guest_request(mdesc, SVM_VMGEXIT_GUEST_REQUEST, arg, SNP_MSG_KEY_REQ,
+>  				  derived_key_req, sizeof(*derived_key_req), buf, resp_len);
+>  	if (rc)
+>  		return rc;
+> @@ -495,6 +483,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+>  
+>  {
+>  	struct snp_ext_report_req *report_req = &snp_dev->req.ext_report;
+> +	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+>  	struct snp_report_resp *report_resp;
+>  	int ret, npages = 0, resp_len;
+>  	sockptr_t certs_address;
+> @@ -527,7 +516,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+>  	 * the host. If host does not supply any certs in it, then copy
+>  	 * zeros to indicate that certificate data was not provided.
+>  	 */
+> -	memset(snp_dev->certs_data, 0, report_req->certs_len);
+> +	memset(mdesc->certs_data, 0, report_req->certs_len);
+>  	npages = report_req->certs_len >> PAGE_SHIFT;
+>  cmd:
+>  	/*
+> @@ -535,19 +524,19 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+>  	 * response payload. Make sure that it has enough space to cover the
+>  	 * authtag.
+>  	 */
+> -	resp_len = sizeof(report_resp->data) + snp_dev->ctx->authsize;
+> +	resp_len = sizeof(report_resp->data) + mdesc->ctx->authsize;
+>  	report_resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
+>  	if (!report_resp)
+>  		return -ENOMEM;
+>  
+> -	snp_dev->input.data_npages = npages;
+> -	ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg, SNP_MSG_REPORT_REQ,
+> +	mdesc->input.data_npages = npages;
+> +	ret = handle_guest_request(mdesc, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg, SNP_MSG_REPORT_REQ,
+>  				   &report_req->data, sizeof(report_req->data),
+>  				   report_resp->data, resp_len);
+>  
+>  	/* If certs length is invalid then copy the returned length */
+>  	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
+> -		report_req->certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
+> +		report_req->certs_len = mdesc->input.data_npages << PAGE_SHIFT;
+>  
+>  		if (copy_to_sockptr(io->req_data, report_req, sizeof(*report_req)))
+>  			ret = -EFAULT;
+> @@ -556,7 +545,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+>  	if (ret)
+>  		goto e_free;
+>  
+> -	if (npages && copy_to_sockptr(certs_address, snp_dev->certs_data, report_req->certs_len)) {
+> +	if (npages && copy_to_sockptr(certs_address, mdesc->certs_data, report_req->certs_len)) {
+>  		ret = -EFAULT;
+>  		goto e_free;
+>  	}
+> @@ -572,6 +561,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+>  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  {
+>  	struct snp_guest_dev *snp_dev = to_snp_dev(file);
+> +	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+>  	void __user *argp = (void __user *)arg;
+>  	struct snp_guest_request_ioctl input;
+>  	struct snp_req_resp io;
+> @@ -587,7 +577,7 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
+>  		return -EINVAL;
+>  
+>  	/* Check if the VMPCK is not empty */
+> -	if (is_vmpck_empty(snp_dev)) {
+> +	if (is_vmpck_empty(mdesc)) {
+>  		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
+>  		return -ENOTTY;
+>  	}
+> @@ -862,7 +852,7 @@ static int sev_report_new(struct tsm_report *report, void *data)
+>  		return -ENOMEM;
+>  
+>  	/* Check if the VMPCK is not empty */
+> -	if (is_vmpck_empty(snp_dev)) {
+> +	if (is_vmpck_empty(snp_dev->msg_desc)) {
+>  		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
+>  		return -ENOTTY;
+>  	}
+> @@ -992,6 +982,7 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	struct snp_secrets_page *secrets;
+>  	struct device *dev = &pdev->dev;
+>  	struct snp_guest_dev *snp_dev;
+> +	struct snp_msg_desc *mdesc;
+>  	struct miscdevice *misc;
+>  	void __iomem *mapping;
+>  	int ret;
+> @@ -1014,46 +1005,50 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	if (!snp_dev)
+>  		goto e_unmap;
+>  
+> +	mdesc = devm_kzalloc(&pdev->dev, sizeof(struct snp_msg_desc), GFP_KERNEL);
+> +	if (!mdesc)
+> +		goto e_unmap;
+> +
+>  	/* Adjust the default VMPCK key based on the executing VMPL level */
+>  	if (vmpck_id == -1)
+>  		vmpck_id = snp_vmpl;
+>  
+>  	ret = -EINVAL;
+> -	snp_dev->vmpck = get_vmpck(vmpck_id, secrets, &snp_dev->os_area_msg_seqno);
+> -	if (!snp_dev->vmpck) {
+> +	mdesc->vmpck = get_vmpck(vmpck_id, secrets, &mdesc->os_area_msg_seqno);
+> +	if (!mdesc->vmpck) {
+>  		dev_err(dev, "Invalid VMPCK%d communication key\n", vmpck_id);
+>  		goto e_unmap;
+>  	}
+>  
+>  	/* Verify that VMPCK is not zero. */
+> -	if (is_vmpck_empty(snp_dev)) {
+> +	if (is_vmpck_empty(mdesc)) {
+>  		dev_err(dev, "Empty VMPCK%d communication key\n", vmpck_id);
+>  		goto e_unmap;
+>  	}
+>  
+>  	platform_set_drvdata(pdev, snp_dev);
+>  	snp_dev->dev = dev;
+> -	snp_dev->secrets = secrets;
+> +	mdesc->secrets = secrets;
+>  
+>  	/* Ensure SNP guest messages do not span more than a page */
+>  	BUILD_BUG_ON(sizeof(struct snp_guest_msg) > PAGE_SIZE);
+>  
+>  	/* Allocate the shared page used for the request and response message. */
+> -	snp_dev->request = alloc_shared_pages(dev, sizeof(struct snp_guest_msg));
+> -	if (!snp_dev->request)
+> +	mdesc->request = alloc_shared_pages(dev, sizeof(struct snp_guest_msg));
+> +	if (!mdesc->request)
+>  		goto e_unmap;
+>  
+> -	snp_dev->response = alloc_shared_pages(dev, sizeof(struct snp_guest_msg));
+> -	if (!snp_dev->response)
+> +	mdesc->response = alloc_shared_pages(dev, sizeof(struct snp_guest_msg));
+> +	if (!mdesc->response)
+>  		goto e_free_request;
+>  
+> -	snp_dev->certs_data = alloc_shared_pages(dev, SEV_FW_BLOB_MAX_SIZE);
+> -	if (!snp_dev->certs_data)
+> +	mdesc->certs_data = alloc_shared_pages(dev, SEV_FW_BLOB_MAX_SIZE);
+> +	if (!mdesc->certs_data)
+>  		goto e_free_response;
+>  
+>  	ret = -EIO;
+> -	snp_dev->ctx = snp_init_crypto(snp_dev->vmpck, VMPCK_KEY_LEN);
+> -	if (!snp_dev->ctx)
+> +	mdesc->ctx = snp_init_crypto(mdesc->vmpck, VMPCK_KEY_LEN);
+> +	if (!mdesc->ctx)
+>  		goto e_free_cert_data;
+>  
+>  	misc = &snp_dev->misc;
+> @@ -1062,9 +1057,9 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	misc->fops = &snp_guest_fops;
+>  
+>  	/* Initialize the input addresses for guest request */
+> -	snp_dev->input.req_gpa = __pa(snp_dev->request);
+> -	snp_dev->input.resp_gpa = __pa(snp_dev->response);
+> -	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+> +	mdesc->input.req_gpa = __pa(mdesc->request);
+> +	mdesc->input.resp_gpa = __pa(mdesc->response);
+> +	mdesc->input.data_gpa = __pa(mdesc->certs_data);
+>  
+>  	/* Set the privlevel_floor attribute based on the vmpck_id */
+>  	sev_tsm_ops.privlevel_floor = vmpck_id;
+> @@ -1081,17 +1076,18 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto e_free_ctx;
+>  
+> +	snp_dev->msg_desc = mdesc;
+>  	dev_info(dev, "Initialized SEV guest driver (using VMPCK%d communication key)\n", vmpck_id);
+>  	return 0;
+>  
+>  e_free_ctx:
+> -	kfree(snp_dev->ctx);
+> +	kfree(mdesc->ctx);
+>  e_free_cert_data:
+> -	free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
+> +	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
+>  e_free_response:
+> -	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
+> +	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+>  e_free_request:
+> -	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
+> +	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+>  e_unmap:
+>  	iounmap(mapping);
+>  	return ret;
+> @@ -1100,11 +1096,12 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  static void __exit sev_guest_remove(struct platform_device *pdev)
+>  {
+>  	struct snp_guest_dev *snp_dev = platform_get_drvdata(pdev);
+> +	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+>  
+> -	free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
+> -	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
+> -	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
+> -	kfree(snp_dev->ctx);
+> +	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
+> +	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+> +	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+> +	kfree(mdesc->ctx);
+>  	misc_deregister(&snp_dev->misc);
+>  }
+>  
