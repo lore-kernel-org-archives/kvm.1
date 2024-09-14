@@ -1,55 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69474C1B;
-	Sat, 14 Sep 2024 06:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4233E61FFC;
+	Sat, 14 Sep 2024 07:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726294434; cv=none; b=KSNtf3/zds/BRCDbndpyfP+fbqxsJQj4fbzwFJNmXnyIgU/APfP3AyJKb7aCaqgMoFi71SoW78GYUo/w5q8c8Ar2FfOejVoVlC0usGBqgFp9WEWzThHzIFHtcQzI4wRYbdIWyllZRYU8GWrmlbK20ISxUw2N1QKycg/CzCCjqDE=
+	t=1726297273; cv=none; b=EOLTm+Jc2VArN/euCP9jUk2ZR3A5imv71rBjvNFAHOaA0biZv34Fd1mUoWo1opCImJZLr6qGZdQLMAJsSJYQ44KHOc5bRJ9e2kQb8RkYUWA9iR+zL6D58S+Z8Tk4b0BGt9Rl63eZFRJOSulsjCMF8bgO+zcbh61aPhbt5gfZbnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726294434; c=relaxed/simple;
-	bh=j86Wt0drRUC8+O/GuJIO38u52d1Uwkl4NKopuoo6RP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izVtHV1oDmdOzJx3nf+PKq3KsudCvTKUsr2Ee1A2B8T5z8bpp9GwDt38UZ84xuVUGDDcL2Gkw34mTNJGJU4ffJxW9ZiCzT/zYEzRYIK+D4yI7mVdZ9TwWnsK9d8bxaEfRysC2ubKopL5GARB091ljQt9Es3zTNNE0vf4VU/9yo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBYz5o2x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726297273; c=relaxed/simple;
+	bh=cqIWvOOX+XrN3/tY6RHoaMPUp//S60KN/bWEkvG3V+A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NTCDRRhEaPML5Tlrc8rcyPmK4r0M+UPPlkQv/zd9N+IaKENIRmOKVL1LW9AE9Dojz3iBYfUaWR2pH/2paQVr7h/xwxDfb2p9A0mxzgSRzqOkIGzkVGeT2V0HcwC/xLDeX5bHzD+trz5F/O1CebzsHa0XmW7DNX7Wm8hlrJUwsWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I6kwCkdM; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBYz5o2x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30424C4CEDE;
-	Sat, 14 Sep 2024 06:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726294434;
-	bh=j86Wt0drRUC8+O/GuJIO38u52d1Uwkl4NKopuoo6RP0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBYz5o2xAzHSKbCptSEajGxYj72BMJuTTmQrGJxcGJGCiEwk9ERy/JpI3LDVRVcOn
-	 GjpC68Lg9tCOALjKczBh56apwSCIlm1pmYC3Ch+pT19wUCvqR1s2Ty4q/mRIDsDfNO
-	 AHlTHdmYK7tBMWqm95Q58HBkZQSVncQUTbVBrQLqJqNhfxrui13Jf7zLUZptut3mm5
-	 h6aiBfEYo8FFr7i6/akGfPexwV+QE4WWhsjmhMRtoaY2eafXnQvVPd0lNEQVDHJNAK
-	 XJgZ0Fovf8W5VUPZdQ+YJrpF58b9cHxO/Y65lyBb5kpV6sYKSiAJfVoeQZD9CrRmZK
-	 mhKE0H4RT4YvA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1spM2a-00000003V6F-1A4F;
-	Sat, 14 Sep 2024 08:13:52 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Dongjiu Geng <gengdongjiu1@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	kvm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I6kwCkdM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726297271; x=1757833271;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cqIWvOOX+XrN3/tY6RHoaMPUp//S60KN/bWEkvG3V+A=;
+  b=I6kwCkdMPZWaRg3bVxNk3IBT9u8GbMGyqW9q9/5OsTVOY2R2SUb1JycL
+   QctkurubiQSCNY7vvclwff2ddoNslRvbU7P93Ba5+CzWhCR4YnvC+VSHV
+   VNjGfuIk0kkIcf3Cek5xeQeJw+pionn5du69CwXP7ia02xlLSZEU8nsUC
+   1P6Jy+nQrc8jrg6clUtBPLlmPX7qKhi6lwh5bviF8rh21nHnU1ZotwimZ
+   iedy7jsjh2BKmYRGW7PCraA0ybWLVGy9bKuIVerTAwD35vl7Ny94y0M4e
+   44dhnBpKBo/MbybRxitafAcOBhLCMgDrVK2kB8rCc7pkwnS2usvJRiioX
+   A==;
+X-CSE-ConnectionGUID: TV9p/K/mTJGCq5WssTbUcw==
+X-CSE-MsgGUID: JGKdyDPcQqCcLb2Z0vbYHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="35778729"
+X-IronPort-AV: E=Sophos;i="6.10,228,1719903600"; 
+   d="scan'208";a="35778729"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2024 00:01:11 -0700
+X-CSE-ConnectionGUID: xcO3UL5RSuyB3PldMGxZgw==
+X-CSE-MsgGUID: g3/73qBDSmy7IV22QEOEoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,228,1719903600"; 
+   d="scan'208";a="67950635"
+Received: from emr.sh.intel.com ([10.112.229.56])
+  by fmviesa006.fm.intel.com with ESMTP; 14 Sep 2024 00:00:55 -0700
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v10 13/21] acpi/ghes: better name GHES memory error function
-Date: Sat, 14 Sep 2024 08:13:34 +0200
-Message-ID: <0f9cbeee62a22b94a6487cc444d87fabd45626f7.1726293808.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <cover.1726293808.git.mchehab+huawei@kernel.org>
-References: <cover.1726293808.git.mchehab+huawei@kernel.org>
+	Jim Mattson <jmattson@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Xiong Zhang <xiong.y.zhang@intel.com>,
+	Zhenyu Wang <zhenyuw@linux.intel.com>,
+	Like Xu <like.xu.linux@gmail.com>,
+	Jinrong Liang <cloudliang@tencent.com>,
+	Yongwei Ma <yongwei.ma@intel.com>,
+	Dapeng Mi <dapeng1.mi@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>
+Subject: [kvm-unit-tests patch v6 00/18] pmu test bugs fix and improvements
+Date: Sat, 14 Sep 2024 10:17:10 +0000
+Message-Id: <20240914101728.33148-1-dapeng1.mi@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,83 +67,55 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The current function used to generate GHES data is specific for
-memory errors. Give a better name for it, as we now have a generic
-function as well.
+Changes:
+v5 -> v6:
+  * limit maximum fixed counters number to 
+    MIN(pmu.nr_fixed_counters, ARRAY_SIZE(fixed_events)) to avoid
+    out-of-bound access for fixed_events[]. If supported fixed counters
+    number is larger than array size of fixed_events[], print message to
+    remind to update test case. (Jim)
+  * limit instructions & branches events precise validation for only
+    Intel processors. (Sandipan Das)
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/acpi/ghes-stub.c    | 2 +-
- hw/acpi/ghes.c         | 2 +-
- include/hw/acpi/ghes.h | 4 ++--
- target/arm/kvm.c       | 3 ++-
- 4 files changed, 6 insertions(+), 5 deletions(-)
+KUT/pmu test passes on Intel Sapphire Rapids platform.
 
-diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-index 58a04e935142..b0f053d5998f 100644
---- a/hw/acpi/ghes-stub.c
-+++ b/hw/acpi/ghes-stub.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/ghes.h"
- 
--int acpi_ghes_record_errors(int source_id, uint64_t physical_address)
-+int acpi_ghes_memory_errors(int source_id, uint64_t physical_address)
- {
-     return -1;
- }
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index dc15d6a693d6..a8feb39c9f30 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -501,7 +501,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     cpu_physical_memory_write(cper_addr, cper, len);
- }
- 
--int acpi_ghes_record_errors(int source_id, uint64_t physical_address)
-+int acpi_ghes_memory_errors(int source_id, uint64_t physical_address)
- {
-     /* Memory Error Section Type */
-     const uint8_t guid[] =
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 344919f1f75c..7a7961e6078a 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -82,7 +82,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
-                      const char *oem_id, const char *oem_table_id);
- void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
-                           GArray *hardware_errors);
--int acpi_ghes_record_errors(int source_id,
-+int acpi_ghes_memory_errors(int source_id,
-                             uint64_t error_physical_addr);
- void ghes_record_cper_errors(const void *cper, size_t len,
-                              uint16_t source_id, Error **errp);
-@@ -91,7 +91,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-  * acpi_ghes_present: Report whether ACPI GHES table is present
-  *
-  * Returns: true if the system has an ACPI GHES table and it is
-- * safe to call acpi_ghes_record_errors() to record a memory error.
-+ * safe to call acpi_ghes_memory_errors() to record a memory error.
-  */
- bool acpi_ghes_present(void);
- #endif
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 849e2e21b304..57192285fb96 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2373,7 +2373,8 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
-              */
-             if (code == BUS_MCEERR_AR) {
-                 kvm_cpu_synchronize_state(c);
--                if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
-+                if (!acpi_ghes_memory_errors(ARM_ACPI_HEST_SRC_ID_SYNC,
-+                                             paddr)) {
-                     kvm_inject_arm_sea(c);
-                 } else {
-                     error_report("failed to record the error");
+History:
+  v5: https://lore.kernel.org/all/20240703095712.64202-1-dapeng1.mi@linux.intel.com/
+  v4: https://lore.kernel.org/all/20240419035233.3837621-1-dapeng1.mi@linux.intel.com/
+  v3: https://lore.kernel.org/lkml/20240103031409.2504051-1-dapeng1.mi@linux.intel.com/ 
+  v2: https://lore.kernel.org/lkml/20231031092921.2885109-1-dapeng1.mi@linux.intel.com/
+  v1: https://lore.kernel.org/lkml/20231024075748.1675382-1-dapeng1.mi@linux.intel.com/
+
+Dapeng Mi (17):
+  x86: pmu: Remove blank line and redundant space
+  x86: pmu: Refine fixed_events[] names
+  x86: pmu: Fix the issue that pmu_counter_t.config crosses cache line
+  x86: pmu: Enlarge cnt[] length to 48 in check_counters_many()
+  x86: pmu: Print measured event count if test fails
+  x86: pmu: Fix potential out of bound access for fixed events
+  x86: pmu: Fix cycles event validation failure
+  x86: pmu: Use macro to replace hard-coded branches event index
+  x86: pmu: Use macro to replace hard-coded ref-cycles event index
+  x86: pmu: Use macro to replace hard-coded instructions event index
+  x86: pmu: Enable and disable PMCs in loop() asm blob
+  x86: pmu: Improve instruction and branches events verification
+  x86: pmu: Improve LLC misses event verification
+  x86: pmu: Adjust lower boundary of llc-misses event to 0 for legacy
+    CPUs
+  x86: pmu: Add IBPB indirect jump asm blob
+  x86: pmu: Adjust lower boundary of branch-misses event
+  x86: pmu: Optimize emulated instruction validation
+
+Xiong Zhang (1):
+  x86: pmu: Remove duplicate code in pmu_init()
+
+ lib/x86/pmu.c |   5 -
+ x86/pmu.c     | 427 ++++++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 346 insertions(+), 86 deletions(-)
+
+
+base-commit: 17f6f2fd17935eb5e564f621c71244b4a3ddeafb
 -- 
-2.46.0
+2.40.1
 
