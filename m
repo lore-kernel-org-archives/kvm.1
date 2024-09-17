@@ -1,247 +1,310 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2084.outbound.protection.outlook.com [40.107.236.84])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDBE4594D;
-	Tue, 17 Sep 2024 05:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726552336; cv=fail; b=pAUjsrdJttg7Y4tCbpUXHpFS96guLIgmPr2+E4jCKmRzndMmfPozuM5qi6GrDvk87G71XModX/g983IdrFsPWFVSmfnkMoSncN3/q0DPW7cbul+FbKPoHP4bKfswWcFqgl89n8PXMddQMaEQtamx1lDxRwdhg8mtMzojsw7j91c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726552336; c=relaxed/simple;
-	bh=JFTORQuUnDQOutI337fFVZHSHBag/Xk5GpZy6U0M530=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=h23UuceWeAJkQm67fecOJiENmkomtJ6thQhbsYsrJVNejzzZgcGqv7ADne8yjTE6VD7V62xYrWg/ZCbSjMqt40Sp1rPlUFOhUf90vYsA7r4/PvJsQHoax0lK7pUkiGapthNKXJymaoe/pCXMs/+FdRgR0EtqbtcM0/6l5V2BlZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EyI0EO2K; arc=fail smtp.client-ip=40.107.236.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D70F14A4D6;
+	Tue, 17 Sep 2024 06:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726555516; cv=none; b=jf9P1N7qp1Fgvo0ebfAozFc4JiErlHcKbTXzfStTWfGa7FmNLw77yd7FbWWLZnX8/i9q7UM8SUOXBDSnf28DoSIk7cbbhs+W8cNSxA3qxvWp/gMjc28fg0dVz4XJHrRR7B0ujlSX0u6daIJLtrY4qWuWlb7NHnZa+sCNBNa+/XI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726555516; c=relaxed/simple;
+	bh=G2y2Iz7QoYWocusenPpW9dVgmpuipFaPgMPaH+ftfDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XNEvejWNISr0X/+tYAEDWQj0vRdV+h96I26yGXAO6Y2hkCoT2MeQZNVBlWZznMK6esipTLQAVx1N4jRaSXuDpwt3c98q8QTeFRM94g3wDiWhzu3LYymp13PLJAEpy66QC/8by23oDAjlreEO/egQOPAyBFTqPotSU2B6Otcc/S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S3Wy6DOd; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EyI0EO2K"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FYhNcLTx9yljDwYF2HY/i/3xC9rLElQISB4l89iYHyww74CCHhJuGdAMmTy4tZXfREg4DS7eKq5SjPoNWozUghzn/hvI4JVKAXtGLFkv/+Il5mrrvEubF0zKH8I6QR5wFmQ/RKxP9bbZltyboqMh+YOb4O9fA+9Un5KO6jyPL/XBOMJzboT03DRctjsFF1dc/BtuChLJAoxCrQMGdKsyI643iHYH4sBpkQY3eOtJIgkzdzIFR0PXIimUQjgxkC16cxxu37Ow+QU9xktGZT5aUlShgbrERvsmP+XB/zkikaj2uU09KtTgdYkll7nzfEjtRvZQ0OC9VCpq44i73+s55A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GsT2/k4SzMLgBSr0A6qPvLuhN9Q5fapJ+bkb8JspqrY=;
- b=IHQ1oL922axGYclm42GPYg67axTRJ739wfnLp8tJ9UmrwDEP9N1kCBeOalZdJZYp+Uft/dKhcSH3WKALSolbcMPigBWkjY50CFgsFBVjw+iRftaoHDEyRqwghz+vvsGVyifY692t0tqHkAkG87mt8Z3gHsAK7Xx4+bo3TEwbQtvMz8U9b8m9RBdH0r80orG1zZ5XInLvYQRF/lHGg/La6hCVNxm4rQPbpR/yRc3tbAGdNNKAVjFqPl80pUaqV+Y62FgCxd5tCpdLUTq4M5pfb9gwzk/GEdwv3660db5mWy/sGkoawMNq2mjXWR7ythzB87FxLWTln9BJNu3vgr0fog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GsT2/k4SzMLgBSr0A6qPvLuhN9Q5fapJ+bkb8JspqrY=;
- b=EyI0EO2K8zCfSsIySi2sdD2zE/meenqpqhPtPkWheg1+wrEZhLAWhd1vSSVymC3xnC+gu+rt6Yv8UBy3aUjXiiVQLAcQOfionP16EIEPaADKVwGuRSto7NUX2DogEFBlhDux29tVAty6AsiLIkPrDW9MfU6Uhz5MoYu/jIX7/BM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5712.namprd12.prod.outlook.com (2603:10b6:510:1e3::13)
- by BL1PR12MB5993.namprd12.prod.outlook.com (2603:10b6:208:399::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Tue, 17 Sep
- 2024 05:52:12 +0000
-Received: from PH7PR12MB5712.namprd12.prod.outlook.com
- ([fe80::2efc:dc9f:3ba8:3291]) by PH7PR12MB5712.namprd12.prod.outlook.com
- ([fe80::2efc:dc9f:3ba8:3291%3]) with mapi id 15.20.7962.022; Tue, 17 Sep 2024
- 05:52:11 +0000
-Message-ID: <04a91009-c160-4920-a5d0-81a8e1e7cf97@amd.com>
-Date: Tue, 17 Sep 2024 11:22:03 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: Small question about reserved bits in
- MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
-To: dongli.zhang@oracle.com, Maxim Levitsky <mlevitsk@redhat.com>
-Cc: linux-perf-users@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org
-References: <5ddfb6576d751aa948069edc905626ca27e175ae.camel@redhat.com>
- <2e3f168c-3b0f-4f18-9db3-0cb2be69bb5c@oracle.com>
-Content-Language: en-US
-From: Sandipan Das <sandipan.das@amd.com>
-In-Reply-To: <2e3f168c-3b0f-4f18-9db3-0cb2be69bb5c@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0213.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:ea::7) To MN0PR12MB5713.namprd12.prod.outlook.com
- (2603:10b6:208:370::18)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S3Wy6DOd"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48GIUwGs030191;
+	Tue, 17 Sep 2024 06:45:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding; s=pp1; bh=F3Xgknc+0ib/c
+	ZcHC25GGs4lJUnzsehhe/IT8XNiSe8=; b=S3Wy6DOdKtDiTtvvhz2lE2X+Jv1Sp
+	cGQP8wHprpBe5uWNz6PEzs56PkawW94323mhRJVwMBlKTF/Ilz2lx+LysunEzAvY
+	ap8nSk0nTXfXjF9WEoXr+5EjA1U6tjhFCFbAVrVg9plrey5kjBm8yXlh117geups
+	UYJSx/+5GQk2XaqWnB4tNXxahaY7ROf/Q0M7wX0t5LjmZFVbLMZuL0raiDx96rq1
+	iXiV9e5kbIWx46jdb6kazS/LIIZPHKKba2ozBkl7NjhGm5I4VBVL+8Y1b0wXbJyy
+	GjpdmsWcUibxB537ZJgiRJVChxZ2nFIEp2xE4ZiDoTsaNqPmZ/PqAY31w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht8da48-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Sep 2024 06:45:08 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48H6j84U022395;
+	Tue, 17 Sep 2024 06:45:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht8da44-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Sep 2024 06:45:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48H3svZK001821;
+	Tue, 17 Sep 2024 06:45:07 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nqh3k5vs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Sep 2024 06:45:07 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48H6j4l452691230
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Sep 2024 06:45:04 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3420620043;
+	Tue, 17 Sep 2024 06:45:04 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 936C820040;
+	Tue, 17 Sep 2024 06:45:03 +0000 (GMT)
+Received: from darkmoore.ibmuc.com (unknown [9.179.17.198])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Sep 2024 06:45:03 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, schlameuss@linux.ibm.com
+Subject: [PATCH v4 1/4] selftests: kvm: s390: Add uc_map_unmap VM test case
+Date: Tue, 17 Sep 2024 08:44:53 +0200
+Message-ID: <20240917064456.210839-2-schlameuss@linux.ibm.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240917064456.210839-1-schlameuss@linux.ibm.com>
+References: <20240917064456.210839-1-schlameuss@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5712:EE_|BL1PR12MB5993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 336ddd0e-a48a-470b-c471-08dcd6dcdef3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U1A3NUoxMmtvZ0lsQWEyYk9EWGNRbkxXK1JrVGNxTytNaDFsSTRMejJyTFFm?=
- =?utf-8?B?aGJTdS9TTkxMdVNKQTNPNEhUUkRQTG9sUzd2THI3K1ozYi8yYk5IakdORHQ4?=
- =?utf-8?B?L0ZsMkpQbXlEOEFwRmM4OXdCeFdDOHBhYms3M0ZockdTVlhlQXRqTzZlbzgx?=
- =?utf-8?B?d1VzR1RZTFRvWXNwSFZiMUR6d0hIekpGRlJ5VENRYXBPb1JGMVhFRGJMWDY4?=
- =?utf-8?B?NkUweTZmanh2aWg4SWhEaFArbEtJVDRxbURTditIcE1TbGZzOFpFSnd0Skph?=
- =?utf-8?B?MzZwY2NyaEQ5U1QxU0N4azNJWG43Ui9YOHBWdTlkRFprM25rUU84Umx1WW9B?=
- =?utf-8?B?QkNBckZodnVpQjN4MW1vZTdPaEdPdy9sblI4cjdWMzAwcHhtNExtZzlKOUpZ?=
- =?utf-8?B?SmZTQmkyaTVVdnZzVG50UmpZV1hicUJ6bk9aaXFzd25kTFV6eVVpM2FBTmlm?=
- =?utf-8?B?MllFWkx1MVViOUM3N1k0Q3hKL2tkZHdqNVcrRkdLZ211YnYrc2NSeXNLb1ht?=
- =?utf-8?B?b3g2cEw5RmkzL2Fiajl5VXB6LzFISjdxbVIwUDlMaEowemJBc0NiZldSVm5m?=
- =?utf-8?B?M0tzaGNIT0lMR21XY2VlWjZuMlIyNU9mSGNRUjhPbThTbGJXQ2VWMFJ5Rm44?=
- =?utf-8?B?cU5yc1E3R1RxREpSSDRqVUJQV29DdXd2WEtYSDV3VEM3alRySVl4aDFOMWJX?=
- =?utf-8?B?UFFEUlludk9lOGtJZzBWeVVhYjF0MGlTaUlVU1hZT2V1RUlzYW5NaVJzellW?=
- =?utf-8?B?UVNLalFyV3lKSDlPL2VlV1p0bXJ2L1VkL25WK3FEbVlmeXFzcXdvamUrd043?=
- =?utf-8?B?WEU3bkF1UXhSZC9XRmxzaXhmNXkxcE5DRTh3MVluRW1PY2FqSmRwaFFMYXRN?=
- =?utf-8?B?UmtVWVVaY2VPYXdkdUNSc1lHY0djMUFTS0NuR3BXZjg2Q2dYVEZBR255YzdY?=
- =?utf-8?B?cUNmeDZhd3dGVm5aMHVhOUJtdUpPKzhxcEJmNVNxck5TYk15emNlVG9oMnFW?=
- =?utf-8?B?MEtNS2hVYzEyeWhIcFhrR29xR3U1cXBDa3dSS2FSbW0xbzE0MmQxZWJtWFVo?=
- =?utf-8?B?WVRxTU9ObERBNzk1TEZDL1JpSWZ6UWtnSHliTjhvZUYwZENJSVd6aUFxYm1x?=
- =?utf-8?B?VU00SnYrOUpmK2U5TW4xOEoyM2tHdzUxK1QrNStrZXZVa0dneEJJZXFDZHUr?=
- =?utf-8?B?bTlRczZ4L3FnQWEzZE4yemkrT21pSElyYjExZzJlSXVycUJVaHBuUkdQWEVW?=
- =?utf-8?B?N3owL0ZwcDA2aldReVlmdm52MGpiaFpQQUx3cGNlTUx5VkNvcTVPeG40d1VG?=
- =?utf-8?B?YkdURGFJNnRLVjVlamQzTHhxaC96Q0Qxd2JPS1BrTGNWWjc4UnZJMWN1Uyt1?=
- =?utf-8?B?anRhK0t6VU1tRFJ3dW1WSU8rUzRzMWlqeWZwaTdINjN0SGM0d21iQmw1NWJP?=
- =?utf-8?B?T3ljOUxpUTgwaEdaREZQbVd5RGNxUnZPbmpWcVEvWWRHcVBERFh3RTlWTzVJ?=
- =?utf-8?B?WmJrYXJab2NOeEl4bUVyTGhsTmZhd1F1NmJtWVFGRFVnQlB4Q0NQSURvQTNR?=
- =?utf-8?B?dnlVK1U3aHlsdU1yalBpZkQ3SUJ6TnQ1cnVUVlVBdWNpOXovcmpnSitvM09o?=
- =?utf-8?B?K0Jrc0M2eHl5MVY1ZnlFdEo1MnFTYVhoTDZpWVg1RzM4QnlXYmVkUDEzNmVR?=
- =?utf-8?B?YXZNSFZwaGQ5N1l6T3FTbVBPTWNOdHlETTBPMmthdkNsbU4zc2sxbmZIK0Ix?=
- =?utf-8?B?c1U3MzFwR0tqQnpJOHJHUDNLTW9wOHpDdGxWZ2p0ZzF4d3dxN0VSQ1dQenlI?=
- =?utf-8?Q?AaSV0/vSp7qcjNTNbqGdk1olqCQ10jjIQeRu8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5712.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzF4WHBzRlpXajd2VW9PcHJDdzZWOVh2T29RaEVCeGY3NXVZcG01dlQwRHJv?=
- =?utf-8?B?SXg1TFBlc0F6MWNXbjhJSkdRSUI4UC9RL054a1BmejVHSXpsQmVkUUVlUHFv?=
- =?utf-8?B?VE5xeUlJT0lXTE1FcDVIakFMRWpqakZpMjBLVndsV2lqNHVndktCMjNFNnFR?=
- =?utf-8?B?d2VzaVorc1kyNGI4Z1AzZW55eEg2eHRvRFhWdWpyWmllOVg2Q1lBcVpXMFNk?=
- =?utf-8?B?VUdGdWljZ2dBNGpPRWtjdnVma3hFN3pSc0pOL0xFOHlqK1RKOFdMbGZEcWx4?=
- =?utf-8?B?WWdtUmQ1K3k3dytjaEJteVpLSi9FT1pPZjVoVkNza1czUHgwUG9XaUwydGtw?=
- =?utf-8?B?ZExSK2NWTWJBOHU2bVk4dHZnZVBIV2NXM1lvUEdCSUt2NmhKMHREWklGS0E2?=
- =?utf-8?B?UXlHaFloUVdiSGQrdi9jSU56UDNBZGdzQW5aYnFGOTY4NkVMOXRLdkJNZGd1?=
- =?utf-8?B?QlpQTk9vaTVRVnFqbW5MNWhUczd0TEo0QjNGMFd1Q3pERHlSY3FNV1o5azhp?=
- =?utf-8?B?eFpVMUNydGZ5NzBjbWltd0Z3QjA1Ym4rbnZCR0FQakpEZWgyK29uSi8yVm9U?=
- =?utf-8?B?TmZ5VTRUQXZMK2N0MkNYNVpuQThHSlFzUE9lSzY5Z0d1bW5zVEVBQUVETzZo?=
- =?utf-8?B?L1FnSUkzUGlkVXJWcDhIRjVPeE1vRWxXakFlR0dCTmxVZ0RYZlBtWjducmNI?=
- =?utf-8?B?eEFGK05PWXVaczBrTTZrVUVSWHludE02VGdRWHV4Ykpnb295dnNpN2wwUDUw?=
- =?utf-8?B?MWRiQTJnQzBhckhoRmtNcS9XVWZIaHQ5L0YyVFhwNy9vYU9WbnJBR0VPMFV2?=
- =?utf-8?B?VE8ycC9sTG9MRmJzZGNnQ0RMNFpkN2E1VXR1VTYwR05YNmhmZWhvcE9jRFJY?=
- =?utf-8?B?Y1BSK3FQTDZlc052UmE4Y0NzdU5Sdlh6YVRsSWhnVlI1OTJoaE9Ea3hZZlFN?=
- =?utf-8?B?ejZMRXFYeEdIR2JvazYzVFJWclRqcUZGYTBkUlE5QWlHN2dicXRVQnFnKzZv?=
- =?utf-8?B?T3pmZmcxWkJ4Qjh6d3pTSjRpQTdsNlV5ODFvcGk0RzhZTWZNYitKRmw0K3Jx?=
- =?utf-8?B?MTNsNzM3TFJ2aHZuM3NVb251ZE8yS1N5Y1hZRjczdURvVUFPTmVzbi9TUk56?=
- =?utf-8?B?YjN3SEczcVFuMGR3aTE4WGN0OHJZOUo3Wkh3QTByZ0I2QkVNU0RRcGt1VExP?=
- =?utf-8?B?Q0x2WXpCRTdBL25jSlh1RkE4K2hPMWgrQWxVdDJ1NnhKS21mNU9aRE4ycjJO?=
- =?utf-8?B?M3FXelpPc0FVRmlEYjIwWWFHbDRFOGJwdHdGSk5tMHlpRmRBMWJOUkcvNmRT?=
- =?utf-8?B?VFd0TUtJTXd3VFlCUVVzZ0pvRFR5Wk5VWk1LR0pFRDlMaUt2WjhYVS91UDZs?=
- =?utf-8?B?RzVSd0UzMWs2ZnVLWVdPUEI1dW0xclJJaURUbUxnVHNJMlA2UUpnd2VEWEsy?=
- =?utf-8?B?Nk1GcDZtQTRLeERLcWVDWWptYzJkV0VUTVFxZWt4WXA0QkZnUWU3SDY5d3VD?=
- =?utf-8?B?K29JTFFRTG9WcnhKazdYQ1VFSmJaYnh2d2lpMTFMTFZ1a3lLZ0FTMFMyTVhx?=
- =?utf-8?B?czl1ZWFXc2NIWWxTMElaTVAwSGJ1c21hOGV4N3VVNU81b1duMTBPMElBZmZz?=
- =?utf-8?B?TFNNN2I5bVhUbWNzY2ZYWG9rcEw0UERjeXJicllnVVBmdFFSVnJwdlZUcGJO?=
- =?utf-8?B?KzFIdndoeHZwODFoUVZMVGR6T0xES3E0LzBvMUJFOTd0aS9YaElkWnFxcnp5?=
- =?utf-8?B?TU1RVEtIWGU1QXdtUDRScDNISUR0cDMwbVBybWxyRXhFcEZMeCtBeDdTeG53?=
- =?utf-8?B?Mys2K3crRFM2eXlCVTNDUHhsM1FNeDE0a3lPZFpvd1l3dFZnUkJPbVdrM3gx?=
- =?utf-8?B?aXowQ2JoNHdySGxUTGtRUXRuT0hrTi9sSmJwajBCR0IzcTJWUlcxZnRHQW0z?=
- =?utf-8?B?MCtzV294bzJNUjdiNjU4ZUlXNE1kRHl0cWY1My9VUCtzQThTK0hiS25jV0sw?=
- =?utf-8?B?ays2Z0FlT2hrTC96UlR1bXdkZk5sNHVGU3BvUXR6ZHI1OUZHbm9VQ2doQUxz?=
- =?utf-8?B?RXE0NitTVmxZZlRpdEpBVHo0aHF5M3FCSEFOdWhpajZGMWc2SzNaTlJXaUFT?=
- =?utf-8?Q?Qt2qbAnCcDX2VBJSDu3r4edMP?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 336ddd0e-a48a-470b-c471-08dcd6dcdef3
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5713.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2024 05:52:11.7747
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T9WhbXtI0yU8FHS3nD8/eexaPvMPn0cFbE9vSfjXI3LG0A9pFGO4Eobt52K7X9ucRvNmylh9ETYNmaIiHLB2WQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5993
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: S7d_8dbZmGzBcGJx95284_Rfx-5GOqeV
+X-Proofpoint-ORIG-GUID: OUFwiYOKcJ3AFBfQ3wFaTNQ1OC6PNgua
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-17_02,2024-09-16_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0
+ mlxlogscore=859 mlxscore=0 clxscore=1015 malwarescore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409170049
 
-On 9/17/2024 2:11 AM, dongli.zhang@oracle.com wrote:
-> 
-> On 9/16/24 11:54 AM, Maxim Levitsky wrote:
->> Hi!
->>
->> We recently saw a failure in one of the aws VM instances that causes the following error during the guest boot:
->>
->>  0.480051] unchecked MSR access error: WRMSR to 0xc0000302 (tried to write 0x040000000000001f) at rIP: 0xffffffff96c093e2 (amd_pmu_cpu_reset.constprop.0+0x42/0x80)
->>
->>
->> I investigated the issue and I see that the hypervisor does expose PerfmonV2, but not the LBRv2 support:
->>
->> #  cpuid -1 -l 0x80000022 
->> CPU:
->>    Extended Performance Monitoring and Debugging (0x80000022):
->>       AMD performance monitoring V2         = true
->>       AMD LBR V2                            = false
->>       AMD LBR stack & PMC freezing          = false
->>       number of core perf ctrs              = 0x5 (5)
->>       number of LBR stack entries           = 0x0 (0)
->>       number of avail Northbridge perf ctrs = 0x0 (0)
->>       number of available UMC PMCs          = 0x0 (0)
->>       active UMCs bitmask                   = 0x0
->>
+Add a test case verifying basic running and interaction of ucontrol VMs.
+Fill the segment and page tables for allocated memory and map memory on
+first access.
 
-That's expected. LBRv2 is currently not available to KVM guests. However, PerfMonV2 should be the
-only feature bit required to indicate the availability of MSRs 0xc0000300..0xc0000303
+* uc_map_unmap
+  Store and load data to mapped and unmapped memory and use pic segment
+  translation handling to map memory on access.
 
->> I also verified that I can write 0x1f to 0xc0000302 but not 0x040000000000001f:
->>
->> # wrmsr 0xc0000302 0x1f
->> # wrmsr 0xc0000302 0x040000000000001f
->> wrmsr: CPU 0 cannot set MSR 0xc0000302 to 0x040000000000001f
->> #
->>
->> The AMD's APM is not clear on what should happen if unsupported bits are attempted to be cleared
->> using this MSR.
->>
->> Also I noticed that amd_pmu_v2_handle_irq writes 0xffffffffffffffff to this msrs.
->> It has the following code:
->>
->>
->> 	WARN_ON(status > 0);
->>
->> 	/* Clear overflow and freeze bits */
->> 	amd_pmu_ack_global_status(~status);
->>
->>
->> This implies that it is OK to set all bits in this MSR.
->>
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+---
+ .../selftests/kvm/s390x/ucontrol_test.c       | 145 +++++++++++++++++-
+ 1 file changed, 144 insertions(+), 1 deletion(-)
 
-It is, but writes to the reserved bits are ignored.
+diff --git a/tools/testing/selftests/kvm/s390x/ucontrol_test.c b/tools/testing/selftests/kvm/s390x/ucontrol_test.c
+index 030c59010fe1..fc0d6f9e3a50 100644
+--- a/tools/testing/selftests/kvm/s390x/ucontrol_test.c
++++ b/tools/testing/selftests/kvm/s390x/ucontrol_test.c
+@@ -16,7 +16,11 @@
+ #include <linux/capability.h>
+ #include <linux/sizes.h>
+ 
++#define PGM_SEGMENT_TRANSLATION 0x10
++
+ #define VM_MEM_SIZE (4 * SZ_1M)
++#define VM_MEM_EXT_SIZE (2 * SZ_1M)
++#define VM_MEM_MAX_M ((VM_MEM_SIZE + VM_MEM_EXT_SIZE) / SZ_1M)
+ 
+ /* so directly declare capget to check caps without libcap */
+ int capget(cap_user_header_t header, cap_user_data_t data);
+@@ -58,6 +62,23 @@ asm("test_gprs_asm:\n"
+ 	"	j	0b\n"
+ );
+ 
++/* Test program manipulating memory */
++extern char test_mem_asm[];
++asm("test_mem_asm:\n"
++	"xgr	%r0, %r0\n"
++
++	"0:\n"
++	"	ahi	%r0,1\n"
++	"	st	%r1,0(%r5,%r6)\n"
++
++	"	xgr	%r1,%r1\n"
++	"	l	%r1,0(%r5,%r6)\n"
++	"	ahi	%r0,1\n"
++	"	diag	0,0,0x44\n"
++
++	"	j	0b\n"
++);
++
+ FIXTURE(uc_kvm)
+ {
+ 	struct kvm_s390_sie_block *sie_block;
+@@ -67,6 +88,7 @@ FIXTURE(uc_kvm)
+ 	uintptr_t base_hva;
+ 	uintptr_t code_hva;
+ 	int kvm_run_size;
++	vm_paddr_t pgd;
+ 	void *vm_mem;
+ 	int vcpu_fd;
+ 	int kvm_fd;
+@@ -116,7 +138,7 @@ FIXTURE_SETUP(uc_kvm)
+ 	self->base_gpa = 0;
+ 	self->code_gpa = self->base_gpa + (3 * SZ_1M);
+ 
+-	self->vm_mem = aligned_alloc(SZ_1M, VM_MEM_SIZE);
++	self->vm_mem = aligned_alloc(SZ_1M, VM_MEM_MAX_M * SZ_1M);
+ 	ASSERT_NE(NULL, self->vm_mem) TH_LOG("malloc failed %u", errno);
+ 	self->base_hva = (uintptr_t)self->vm_mem;
+ 	self->code_hva = self->base_hva - self->base_gpa + self->code_gpa;
+@@ -222,6 +244,60 @@ TEST(uc_cap_hpage)
+ 	close(kvm_fd);
+ }
+ 
++/* calculate host virtual addr from guest physical addr */
++static void *gpa2hva(FIXTURE_DATA(uc_kvm) *self, u64 gpa)
++{
++	return (void *)(self->base_hva - self->base_gpa + gpa);
++}
++
++/* map / make additional memory available */
++static int uc_map_ext(FIXTURE_DATA(uc_kvm) *self, u64 vcpu_addr, u64 length)
++{
++	struct kvm_s390_ucas_mapping map = {
++		.user_addr = (u64)gpa2hva(self, vcpu_addr),
++		.vcpu_addr = vcpu_addr,
++		.length = length,
++	};
++	pr_info("ucas map %p %p 0x%llx",
++		(void *)map.user_addr, (void *)map.vcpu_addr, map.length);
++	return ioctl(self->vcpu_fd, KVM_S390_UCAS_MAP, &map);
++}
++
++/* unmap previously mapped memory */
++static int uc_unmap_ext(FIXTURE_DATA(uc_kvm) *self, u64 vcpu_addr, u64 length)
++{
++	struct kvm_s390_ucas_mapping map = {
++		.user_addr = (u64)gpa2hva(self, vcpu_addr),
++		.vcpu_addr = vcpu_addr,
++		.length = length,
++	};
++	pr_info("ucas unmap %p %p 0x%llx",
++		(void *)map.user_addr, (void *)map.vcpu_addr, map.length);
++	return ioctl(self->vcpu_fd, KVM_S390_UCAS_UNMAP, &map);
++}
++
++/* handle ucontrol exit by mapping the accessed segment */
++static void uc_handle_exit_ucontrol(FIXTURE_DATA(uc_kvm) *self)
++{
++	struct kvm_run *run = self->run;
++	u64 seg_addr;
++	int rc;
++
++	TEST_ASSERT_EQ(KVM_EXIT_S390_UCONTROL, run->exit_reason);
++	switch (run->s390_ucontrol.pgm_code) {
++	case PGM_SEGMENT_TRANSLATION:
++		seg_addr = run->s390_ucontrol.trans_exc_code & ~(SZ_1M - 1);
++		pr_info("ucontrol pic segment translation 0x%llx, mapping segment 0x%lx\n",
++			run->s390_ucontrol.trans_exc_code, seg_addr);
++		/* map / make additional memory available */
++		rc = uc_map_ext(self, seg_addr, SZ_1M);
++		TEST_ASSERT_EQ(0, rc);
++		break;
++	default:
++		TEST_FAIL("UNEXPECTED PGM CODE %d", run->s390_ucontrol.pgm_code);
++	}
++}
++
+ /* verify SIEIC exit
+  * * reset stop requests
+  * * fail on codes not expected in the test cases
+@@ -256,6 +332,12 @@ static bool uc_handle_exit(FIXTURE_DATA(uc_kvm) * self)
+ 	struct kvm_run *run = self->run;
+ 
+ 	switch (run->exit_reason) {
++	case KVM_EXIT_S390_UCONTROL:
++		/** check program interruption code
++		 * handle page fault --> ucas map
++		 */
++		uc_handle_exit_ucontrol(self);
++		break;
+ 	case KVM_EXIT_S390_SIEIC:
+ 		return uc_handle_sieic(self);
+ 	default:
+@@ -287,6 +369,67 @@ static void uc_assert_diag44(FIXTURE_DATA(uc_kvm) * self)
+ 	TEST_ASSERT_EQ(0x440000, sie_block->ipb);
+ }
+ 
++TEST_F(uc_kvm, uc_map_unmap)
++{
++	struct kvm_sync_regs *sync_regs = &self->run->s.regs;
++	struct kvm_run *run = self->run;
++	const u64 disp = 1;
++	int rc;
++
++	/* copy test_mem_asm to code_hva / code_gpa */
++	TH_LOG("copy code %p to vm mapped memory %p / %p",
++	       &test_mem_asm, (void *)self->code_hva, (void *)self->code_gpa);
++	memcpy((void *)self->code_hva, &test_mem_asm, PAGE_SIZE);
++
++	/* DAT disabled + 64 bit mode */
++	run->psw_mask = 0x0000000180000000ULL;
++	run->psw_addr = self->code_gpa;
++
++	/* set register content for test_mem_asm to access not mapped memory*/
++	sync_regs->gprs[1] = 0x55;
++	sync_regs->gprs[5] = self->base_gpa;
++	sync_regs->gprs[6] = VM_MEM_SIZE + disp;
++	run->kvm_dirty_regs |= KVM_SYNC_GPRS;
++
++	/* run and expect to fail with ucontrol pic segment translation */
++	ASSERT_EQ(0, uc_run_once(self));
++	ASSERT_EQ(1, sync_regs->gprs[0]);
++	ASSERT_EQ(KVM_EXIT_S390_UCONTROL, run->exit_reason);
++
++	ASSERT_EQ(PGM_SEGMENT_TRANSLATION, run->s390_ucontrol.pgm_code);
++	ASSERT_EQ(self->base_gpa + VM_MEM_SIZE, run->s390_ucontrol.trans_exc_code);
++
++	/* fail to map memory with not segment aligned address */
++	rc = uc_map_ext(self, self->base_gpa + VM_MEM_SIZE + disp, VM_MEM_EXT_SIZE);
++	ASSERT_GT(0, rc)
++		TH_LOG("ucas map for non segment address should fail but didn't; "
++		       "result %d not expected, %s", rc, strerror(errno));
++
++	/* map / make additional memory available */
++	rc = uc_map_ext(self, self->base_gpa + VM_MEM_SIZE, VM_MEM_EXT_SIZE);
++	ASSERT_EQ(0, rc)
++		TH_LOG("ucas map result %d not expected, %s", rc, strerror(errno));
++	ASSERT_EQ(0, uc_run_once(self));
++	ASSERT_EQ(false, uc_handle_exit(self));
++	uc_assert_diag44(self);
++
++	/* assert registers and memory are in expected state */
++	ASSERT_EQ(2, sync_regs->gprs[0]);
++	ASSERT_EQ(0x55, sync_regs->gprs[1]);
++	ASSERT_EQ(0x55, *(u32 *)gpa2hva(self, self->base_gpa + VM_MEM_SIZE + disp));
++
++	/* unmap and run loop again */
++	rc = uc_unmap_ext(self, self->base_gpa + VM_MEM_SIZE, VM_MEM_EXT_SIZE);
++	ASSERT_EQ(0, rc)
++		TH_LOG("ucas unmap result %d not expected, %s", rc, strerror(errno));
++	ASSERT_EQ(0, uc_run_once(self));
++	ASSERT_EQ(3, sync_regs->gprs[0]);
++	ASSERT_EQ(KVM_EXIT_S390_UCONTROL, run->exit_reason);
++	ASSERT_EQ(PGM_SEGMENT_TRANSLATION, run->s390_ucontrol.pgm_code);
++	/* handle ucontrol exit and remap memory after previous map and unmap */
++	ASSERT_EQ(true, uc_handle_exit(self));
++}
++
+ TEST_F(uc_kvm, uc_gprs)
+ {
+ 	struct kvm_sync_regs *sync_regs = &self->run->s.regs;
+-- 
+2.46.0
 
-> 
-> To share my data point on QEMU+KVM: I am not able to reproduce with the most
-> recent QEMU (not AWS) + below patch.
-> 
-> [PATCH v2 2/4] i386/cpu: Add PerfMonV2 feature bit
-> https://lore.kernel.org/all/69905b486218f8287b9703d1a9001175d04c2f02.1723068946.git.babu.moger@amd.com/
-> 
-> Both my VM and KVM are 6.10.
-> 
-> vm# cpuid -1 -l 0x80000022
-> CPU:
->    Extended Performance Monitoring and Debugging (0x80000022):
->       AMD performance monitoring V2         = true
->       AMD LBR V2                            = false
->       AMD LBR stack & PMC freezing          = false
->       number of core perf ctrs              = 0x6 (6)
->       number of LBR stack entries           = 0x0 (0)
->       number of avail Northbridge perf ctrs = 0x0 (0)
->       number of available UMC PMCs          = 0x0 (0)
->       active UMCs bitmask                   = 0x0
-> 
-> 
-> Both writes are passed.
-> 
-> vm# wrmsr 0xc0000302 0x1f
-> vm# wrmsr 0xc0000302 0x040000000000001f
-> 
-> Here is bcc output. Both writes are good.
-> 
-> kvm# /usr/share/bcc/tools/trace -t -C 'kvm_pmu_set_msr "%x", retval'
-> ... ...
-> 4.748614 19  43545   43550   CPU 0/KVM       kvm_pmu_set_msr  0
-> 10.97396 19  43545   43550   CPU 0/KVM       kvm_pmu_set_msr  0
-> 
-
-Thanks for testing. I cannot replicate this either with an upstream kernel.
-
-- Sandipan
