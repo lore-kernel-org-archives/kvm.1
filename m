@@ -1,352 +1,135 @@
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ED01C986A
-	for <kvm@vger.kernel.org>; Wed, 18 Sep 2024 15:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D663ED299
+	for <kvm@vger.kernel.org>; Wed, 18 Sep 2024 15:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726673307; cv=none; b=Zd1TfEe4n0S25fAm7iLJEiJYu/n24FSz0bzyC+tqcjw6bc1PnU9PKMak41qefIDQbqgRC4hGdnQI7LTK6ayWLpUuBdU+XzuT1JaCDC7/cGvDX20GKpkCzaE3YDLOHcFJigthMcsZ9p6Uq6P+4sd27DgeoGgoU/k48QuemxiLI54=
+	t=1726673566; cv=none; b=gakoJN4McKAkGt17u40JSgS07x3+CAV33WEHHY7XKl11KKYFWxXbqsddFD78e2Y7SkTXKpScYswavyCKPY2V3O1xLYEK9JFbVOVkvte9LNOa31Gyh+GReBjFVjIEG5uEGStenCZqcMhII7z3ounn5tjmzsMecJ5kmZ4JUEQlW0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726673307; c=relaxed/simple;
-	bh=Dnu2rnTshkRWcEVY9gMfGWqdViekhOAZM7F8/BSlsLs=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pGwUCEEAT2NiOylbdaxDgaOjJgBoS4umDjG8fAYlKLEcVrTlSamCMNFom4B/OzNndGvemfChAGffL6xhNoOeAiXSktS5TN5qlwEj9ekd0yrt+APyB7NUvTnA2YqX1d7qcov8xcvTjMuei89+NvP7RjPF9dKoP9CGIop+lMpj8yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NHt6AG5D; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1726673566; c=relaxed/simple;
+	bh=1+x3ddyd1Ig4e2B+IIMCjxcdZbik6arsfDYYLqbozvw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NJAV46atUs034XSdUYcU0mOJbQq9wDFSuv6UP6rbAh8YHb9pSHfntvLopuk8rike7VytGBbQKiomoArp30bFQiu+pmGGSdOOSAYe7DjIkdtOPN0VFOqmOGH+bR+ZgdmgTFRhGCVp9BeWf++jnrtbf2Es6y8yJRVT2lmVMaI+75E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UmZHSiE1; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NHt6AG5D"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UmZHSiE1"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c3ca32974fso8739171a12.3
+        for <kvm@vger.kernel.org>; Wed, 18 Sep 2024 08:32:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1726673306; x=1758209306;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=m9B4SiInU9rOI1ITAfRDRhI4QCBJrIfBHpaGOqadohU=;
-  b=NHt6AG5DVBYS/VNHUUyoWJhQRzr4ZEXsEP9lW7IsiMtmZtGL0wT+z88e
-   zOuXRqBjfn0tWi/WQipoai5vUhXLLnvyeq2bQz9rp/nTcb6cZWgQC4Vee
-   4uMpEOmY/rdEC5Q7LzrCKs0VYwpSU2XNozrVJedCE4BjvHqNzF2oqLn98
-   E=;
-X-IronPort-AV: E=Sophos;i="6.10,239,1719878400"; 
-   d="scan'208";a="761234704"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2024 15:28:18 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.10.100:30946]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.17.12:2525] with esmtp (Farcaster)
- id 7ba2c8b8-2c15-4fc6-9db5-2b8ff092fee0; Wed, 18 Sep 2024 15:28:17 +0000 (UTC)
-X-Farcaster-Flow-ID: 7ba2c8b8-2c15-4fc6-9db5-2b8ff092fee0
-Received: from EX19D018EUA002.ant.amazon.com (10.252.50.146) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 18 Sep 2024 15:28:17 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D018EUA002.ant.amazon.com (10.252.50.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 18 Sep 2024 15:28:16 +0000
-Received: from email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Wed, 18 Sep 2024 15:28:16 +0000
-Received: from dev-dsk-lilitj-1a-5039c68b.eu-west-1.amazon.com (dev-dsk-lilitj-1a-5039c68b.eu-west-1.amazon.com [172.19.104.233])
-	by email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com (Postfix) with ESMTPS id 243CA4063B;
-	Wed, 18 Sep 2024 15:28:15 +0000 (UTC)
-From: Lilit Janpoladyan <lilitj@amazon.com>
-To: <kvm@vger.kernel.org>, <maz@kernel.org>, <oliver.upton@linux.dev>,
-	<james.morse@arm.com>, <suzuki.poulose@arm.com>, <yuzenghui@huawei.com>,
-	<nh-open-source@amazon.com>, <lilitj@amazon.com>
-Subject: [PATCH 3/8] KVM: arm64: use page tracking interface to enable dirty logging
-Date: Wed, 18 Sep 2024 15:28:02 +0000
-Message-ID: <20240918152807.25135-4-lilitj@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240918152807.25135-1-lilitj@amazon.com>
-References: <20240918152807.25135-1-lilitj@amazon.com>
+        d=linaro.org; s=google; t=1726673563; x=1727278363; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCpTEL/dYMB7Uol2NlYZ7DCyhiPYwgEy6rc2BA5KywU=;
+        b=UmZHSiE1Sc1/08SxqCRHjRj3wXg46gBAqjeOd1S2XumLZGgrhe48JvcPQsBtZgFiVy
+         9Yq/npVTI660uwVXAQL7rnVHlOXxtFtbLgiydVApq2x1Ed9su3Y55/UXaBvmXAKWeaBv
+         e3f9P4AcRaK7dhdYA+kLYgS1FUgeytFyZcMaNXAl8sn3H4InCKRMr63qiBuUYJaIkXuA
+         YjEpqMj2S04poebVhGCZhrDYHDK36jtP9zfl22uEbcc0Q4nw6L8+kzryrY9lZSSiQ6X6
+         dMUsvdcVHdQO/MPsDvTLR+45fGRU10fMjEIS5uj0ykWB2GM4BN8FkmYRVQK5wwXgvtv9
+         aTvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726673563; x=1727278363;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DCpTEL/dYMB7Uol2NlYZ7DCyhiPYwgEy6rc2BA5KywU=;
+        b=HTsmmNnOIavIf4OctH3wWDAI1umVlKHpOUMYx2m3ZYIosbgZYad/sccDdi8SDhoQvN
+         TgOiJhxQD1xGo1uxnom98BJvSSISBFt6kroMrfqmtihtZEHJcm5GaxemwM9WfCqO0tqJ
+         srqgFnYB80CodOWgoEgcUPnb1sFxuawoDO8vwODKAgMO9dZPN0U7aF2USWq4Av7Um8Z7
+         z627IsVIZEyab66BkZsTGEpOviaTRXuzkNMGLP72Q4kCn+/8gq66sJ3RtenAmuMvdOVu
+         E2CRMdWGh/MOjtuE5uB+EZ9GSul3HDmdMnstGSVv6pR6hX9S2WnVE2lqxbPHrTDZ78LB
+         kh0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVhoJZai3WQOxKNUEk3NfkgT8OQk0FOyZKEs2DCpAZ/ZaxZT6r4Saavyahl7nIMfTAawA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUbBdM6ixx0vnTKl7feTU0j6ygUfZ+fU+KD2ZmUvmJTbrrZ7wE
+	ex1uHjTRH+n/V6pjDWQSyOu+khFOoRbVHG0sFeu1zPFkeN+11HqfjaKWuy/3bwDirYlu08UXhQ8
+	H7wKxhRmpN9IYHGy+F9PpI6yWZnwuqfCrAZ9ruQ==
+X-Google-Smtp-Source: AGHT+IHUXyXfmA5Am44lE06hFsf1unXiUfxYsmWUCGV8LXPzN024Cxhz2eXy8PcJcIICTPqY5rE5RE0MwfG5g8Mtkro=
+X-Received: by 2002:a05:6402:280a:b0:5c2:8249:b2d3 with SMTP id
+ 4fb4d7f45d1cf-5c413e4c51fmr18852185a12.26.1726673562914; Wed, 18 Sep 2024
+ 08:32:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20240916181633.366449-1-heinrich.schuchardt@canonical.com>
+ <20240917-f45624310204491aede04703@orel> <15c359a4-b3c1-4cb0-be2e-d5ca5537bc5b@canonical.com>
+ <20240917-b13c51d41030029c70aab785@orel> <8b24728f-8b6e-4c79-91f6-7cbb79494550@canonical.com>
+ <20240918-039d1e3bebf2231bd452a5ad@orel> <CAFEAcA-Yg9=5naRVVCwma0Ug0vFZfikqc6_YiRQTrfBpoz9Bjw@mail.gmail.com>
+ <bab7a5ce-74b6-49ae-b610-9a0f624addc0@canonical.com> <CAFEAcA-L7sQfK6MNt1ZbZqUMk+TJor=uD3Jj-Pc6Vy9j9JHhYQ@mail.gmail.com>
+ <f1e41b95-c499-4e06-91cb-006dcd9d29e6@canonical.com>
+In-Reply-To: <f1e41b95-c499-4e06-91cb-006dcd9d29e6@canonical.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 18 Sep 2024 16:32:31 +0100
+Message-ID: <CAFEAcA_ePVwnpVVWJSx8=-8v2h_z2imfSdyAZd62RhXaZUTojA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] target/riscv: enable floating point unit
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, 
+	Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+	qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+	Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
 
-If page tracking device is available, use it to enable and disable
-hardware dirty tracking. Allocate a tracking context on the first dirty
-logging enablement (for the first memslot) and deallocate the context
-when dirty logging is off for the VMID.
+On Wed, 18 Sept 2024 at 14:49, Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
+>
+> On 18.09.24 15:12, Peter Maydell wrote:
+> > On Wed, 18 Sept 2024 at 14:06, Heinrich Schuchardt
+> > <heinrich.schuchardt@canonical.com> wrote:
+> >> Thanks Peter for looking into this.
+> >>
+> >> QEMU's cpu_synchronize_all_post_init() and
+> >> do_kvm_cpu_synchronize_post_reset() both end up in
+> >> kvm_arch_put_registers() and that is long after Linux
+> >> kvm_arch_vcpu_create() has been setting some FPU state. See the output
+> >> below.
+> >>
+> >> kvm_arch_put_registers() copies the CSRs by calling
+> >> kvm_riscv_put_regs_csr(). Here we can find:
+> >>
+> >>       KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
+> >>
+> >> This call enables or disables the FPU according to the value of
+> >> env->mstatus.
+> >>
+> >> So we need to set the desired state of the floating point unit in QEMU.
+> >> And this is what the current patch does both for TCG and KVM.
+> >
+> > If it does this for both TCG and KVM then I don't understand
+> > this bit from the commit message:
+> >
+> > # Without this patch EDK II with TLS enabled crashes when hitting the first
+> > # floating point instruction while running QEMU with --accel kvm and runs
+> > # fine with --accel tcg.
+> >
+> > Shouldn't this guest crash the same way with both KVM and TCG without
+> > this patch, because the FPU state is the same for both?
 
-Allocation and use of the context is not synchronized as they are done
-from the VM ioctls.
+> By default `qemu-system-riscv64 --accel tcg` runs OpenSBI as firmware
+> which enables the FPU.
+>
+> If you would choose a different SBI implementation which does not enable
+> the FPU you could experience the same crash.
 
-Signed-off-by: Lilit Janpoladyan <lilitj@amazon.com>
----
- arch/arm64/include/asm/kvm_host.h |  5 +++
- arch/arm64/kvm/arm.c              | 54 +++++++++++++++++++++++++++++++
- arch/mips/kvm/mips.c              | 10 ++++++
- arch/powerpc/kvm/book3s.c         | 10 ++++++
- arch/powerpc/kvm/booke.c          | 10 ++++++
- arch/s390/kvm/kvm-s390.c          | 10 ++++++
- arch/x86/kvm/x86.c                | 10 ++++++
- include/linux/kvm_host.h          |  2 ++
- virt/kvm/kvm_main.c               | 19 +++++++----
- 9 files changed, 123 insertions(+), 7 deletions(-)
+Ah, so KVM vs TCG is a red herring and it's actually "some guest
+firmware doesn't enable the FPU itself, and if you run that then it will
+fall over, whether you do it in KVM or TCG" ? That makes more sense.
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 5b5e3647fbda..db9bf42123e1 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -377,6 +377,11 @@ struct kvm_arch {
- 	 * the associated pKVM instance in the hypervisor.
- 	 */
- 	struct kvm_protected_vm pkvm;
-+
-+	/*
-+	 * Stores page tracking context if page tracking device is in use
-+	 */
-+	void *page_tracking_ctx;
- };
- 
- struct kvm_vcpu_fault_info {
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index aea56df8ac04..c8dcf719ee99 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -267,6 +267,9 @@ static void kvm_destroy_mpidr_data(struct kvm *kvm)
-  */
- void kvm_arch_destroy_vm(struct kvm *kvm)
- {
-+	if (kvm->arch.page_tracking_ctx)
-+		page_tracking_release(kvm->arch.page_tracking_ctx);
-+
- 	bitmap_free(kvm->arch.pmu_filter);
- 	free_cpumask_var(kvm->arch.supported_cpus);
- 
-@@ -1816,6 +1819,57 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 	return r;
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	void *ctx = NULL;
-+	struct pt_config config;
-+	int r;
-+
-+	if (!page_tracking_device_registered())
-+		return 0;
-+
-+	if (!kvm->arch.page_tracking_ctx) {
-+		config.vmid = (u32)kvm->arch.mmu.vmid.id.counter;
-+		config.mode = dirty_pages;
-+		ctx = page_tracking_allocate(config);
-+		if (!ctx)
-+			return -ENOENT;
-+
-+		kvm->arch.page_tracking_ctx = ctx;
-+	}
-+
-+	r = page_tracking_enable(kvm->arch.page_tracking_ctx, -1);
-+
-+	if (r) {
-+		if (ctx) {
-+			page_tracking_release(ctx);
-+			kvm->arch.page_tracking_ctx = NULL;
-+		}
-+	}
-+	return r;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	int r = 0;
-+
-+	if (!page_tracking_device_registered())
-+		return 0;
-+
-+	if (!kvm->arch.page_tracking_ctx)
-+		return -ENOENT;
-+
-+	r = page_tracking_disable(kvm->arch.page_tracking_ctx, -1);
-+
-+	if (r == -EBUSY) {
-+		r = 0;
-+	} else {
-+		page_tracking_release(kvm->arch.page_tracking_ctx);
-+		kvm->arch.page_tracking_ctx = NULL;
-+	}
-+	return r;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index b5de770b092e..edc6f473af4e 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -974,6 +974,16 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
- 	return r;
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index ff6c38373957..4c4a3ecc301c 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -844,6 +844,16 @@ int kvmppc_core_check_requests(struct kvm_vcpu *vcpu)
- 	return vcpu->kvm->arch.kvm_ops->check_requests(vcpu);
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index 6a5be025a8af..f263ebc8fa49 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -1814,6 +1814,16 @@ int kvm_arch_vcpu_ioctl_translate(struct kvm_vcpu *vcpu,
- 	return r;
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 0fd96860fc45..d6a8f7dbc644 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -667,6 +667,16 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	return r;
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 	int i;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c983c8e434b8..1be8bacfe2bd 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6488,6 +6488,16 @@ static int kvm_vm_ioctl_reinject(struct kvm *kvm,
- 	return 0;
- }
- 
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot)
-+{
-+	return 0;
-+}
-+
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 0d5125a3e31a..ae905f54ec47 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1475,6 +1475,8 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
- 					struct kvm_memory_slot *slot,
- 					gfn_t gfn_offset,
- 					unsigned long mask);
-+int kvm_arch_enable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot);
-+int kvm_arch_disable_dirty_logging(struct kvm *kvm, const struct kvm_memory_slot *memslot);
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot);
- 
- #ifndef CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cb2b78e92910..1fd5e234c188 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1689,11 +1689,12 @@ static int kvm_prepare_memory_region(struct kvm *kvm,
- 	return r;
- }
- 
--static void kvm_commit_memory_region(struct kvm *kvm,
--				     struct kvm_memory_slot *old,
--				     const struct kvm_memory_slot *new,
--				     enum kvm_mr_change change)
-+static int kvm_commit_memory_region(struct kvm *kvm,
-+				    struct kvm_memory_slot *old,
-+				    const struct kvm_memory_slot *new,
-+				    enum kvm_mr_change change)
- {
-+	int r;
- 	int old_flags = old ? old->flags : 0;
- 	int new_flags = new ? new->flags : 0;
- 	/*
-@@ -1709,6 +1710,10 @@ static void kvm_commit_memory_region(struct kvm *kvm,
- 		int change = (new_flags & KVM_MEM_LOG_DIRTY_PAGES) ? 1 : -1;
- 		atomic_set(&kvm->nr_memslots_dirty_logging,
- 			   atomic_read(&kvm->nr_memslots_dirty_logging) + change);
-+		if (change > 0)
-+			r = kvm_arch_enable_dirty_logging(kvm, new);
-+		else
-+			r = kvm_arch_disable_dirty_logging(kvm, new);
- 	}
- 
- 	kvm_arch_commit_memory_region(kvm, old, new, change);
-@@ -1740,6 +1745,8 @@ static void kvm_commit_memory_region(struct kvm *kvm,
- 	default:
- 		BUG();
- 	}
-+
-+	return r;
- }
- 
- /*
-@@ -1954,9 +1961,7 @@ static int kvm_set_memslot(struct kvm *kvm,
- 	 * will directly hit the final, active memslot.  Architectures are
- 	 * responsible for knowing that new->arch may be stale.
- 	 */
--	kvm_commit_memory_region(kvm, old, new, change);
--
--	return 0;
-+	return kvm_commit_memory_region(kvm, old, new, change);
- }
- 
- static bool kvm_check_memslot_overlap(struct kvm_memslots *slots, int id,
--- 
-2.40.1
+I don't have an opinion on whether you want to do that or not,
+not knowing what the riscv architecture mandates. (On Arm this
+would be fairly clearly "the guest software is broken and
+should be fixed", but that's because the Arm architecture
+says you can't assume the FPU is enabled from reset.)
 
+I do think the commit message could use clarification to
+explain this.
+
+thanks
+-- PMM
