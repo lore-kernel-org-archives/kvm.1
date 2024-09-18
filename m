@@ -1,129 +1,110 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6424409;
-	Wed, 18 Sep 2024 12:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A7B189F42
+	for <kvm@vger.kernel.org>; Wed, 18 Sep 2024 13:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726663926; cv=none; b=BVYzeCjD2IiXCDBKaZB6rfEehxGzDXtDziVbbBI7xhNY+mkhdsUet/Fxd2USFDl03jBYyAO+fGBKJDue1sbsMReJ6N5l3CITmPkovTPOm0iw2Encgxk7MgSeTHC0j6PebiYshfDTda+RhT4v76tQAAU1ge1RS/zX8I+YCh4IvjU=
+	t=1726665184; cv=none; b=r7riBH28NIOKgPbjtN3b7o8V2iMo+0iccH5W9Y21VZQMvKuORiiFrdnsKRzyTo90TSswEj8oZSG4BcZHzCsfOgeTDXqI8r8B90pZXUgBtZ6TpgNUgqpUBWN1FvFRf9tYryc4QzbOzhWZzJcNwecctBRGpysZPaliA+3OOUxnSFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726663926; c=relaxed/simple;
-	bh=5u1zOtKAM5FNnstlmq5xaC2tZPa+di5tlrGcuD7I04c=;
-	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=YQ9mkIZl9PeoE0P3InA0iaUhW79vcGq4/PPytEDEZefLCSjQYOL72Pe5CJF3yyl+QmmXsk2wZTZJXrh9KsNaaHKUpfS5u16KllK8+DSNbp8X4McdPXeuUDnXNu2xMqRsAJuetqUgsfgupKn/a0pLJMaqbAIvNSthBOZFdLFg82Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dr5kJXqf; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1726665184; c=relaxed/simple;
+	bh=t1BTgFJSuELqW46e+hZA6MBoAE+CKlGmnWti3rAyLDk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i5b+wY95bhR86FjWcY4keDNNDj4EMhf69jdOncuv6Gv4423Z71HMIogN3Yc5cz+yxCFHT3yUrK74UeP3emyeYamwird16uSbo5qVZT1yk0gvzXmN+lcMPf1iIDOLKDfYFhbXRUzzojyDfBMc2kMxMIIqxcFaav0ENf4Uh3guE5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lMrdCGKy; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dr5kJXqf"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a9b72749bcso487887185a.0;
-        Wed, 18 Sep 2024 05:52:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lMrdCGKy"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f75f116d11so60694251fa.1
+        for <kvm@vger.kernel.org>; Wed, 18 Sep 2024 06:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726663923; x=1727268723; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5OEoAasUTTYgmGLu2/+6ETqePrAGADXX0fzkTrJ1tjQ=;
-        b=dr5kJXqfHsxo+rBCmVtG8spdEK77NmnAyVzdShZO3cd80maWzZwmv8kgDkqFSSon6E
-         nqdc5HuVW98z3C3EaZwAOwpfUQprqy/Xu2PQwgonQrwsa0PjNRsYJOJ2Hr2YJvPaCYPU
-         3wfSKa0sGqShijc1ucCTyTKs8WbXKeSLP7o3aqDCMQdRA0wcQeeccQZAMXlJ5SZ01FMy
-         eKvxk8OTuXHCvUsAOB2ifkgsxw92QAJy2ezvhEC7IdNiqMnMusY+HxE2UrvFz28Z76JL
-         bCpyaeWNHhxhWFrluClxfcM4Ihv2/chNCAl2dgrTRYq1cX4eFnEVMxyeNNpODiqN1Uob
-         UIog==
+        d=linaro.org; s=google; t=1726665180; x=1727269980; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1UIao/Jz5H8HMYQFxpoEYcHdlz/BHFAG+1NToY/M7y4=;
+        b=lMrdCGKy0SRwCTaB5zekixs48dnTZwasXy36Cv4MRBwh1P/ekOaQXyU1MhHedUfYhu
+         JoB2K2G3hBkQjNyfFeiofaqF3XvVP9dlpq1lrhGY/ar9LnHXwo/P/5lQFPvr0YnJXxyp
+         V/GGh9sMRY6r7ZxB4EDib/h3bG4bGpGOsrMfzTznUJBFLGzHRniloGGbPncod1PCtTB0
+         9tVUP3cB48cH/oHq57s+n8nFJRQuCBms+gjWYvSK6C6UkEluiBY7PnUCukXSujsmU4Pc
+         2ptDVKG8D1IHwOa8vtG1mt8dQ5sNttkVMd56sxG1Qx1M9SbmlAGKDrseCI45tMcImdWx
+         x3XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726663923; x=1727268723;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5OEoAasUTTYgmGLu2/+6ETqePrAGADXX0fzkTrJ1tjQ=;
-        b=XoDPT4hLlOvJTwwwqJYWvX5Yv9/mV5GTLC0/WJqIcB98ItdooMFdscFgeAtNQ2OIOg
-         1ORM2Np2JGfqJKUc6cMMFECud2RscJ8Iv4h40BJ1enrmO/z3PX0HHBtp0Cye4DUKNSY9
-         Y0MTogeik8+u6S9mupOvd4vh1FW+UWS2HfdMccTa/wj8nzmcFxn9h/CRIZfdAbMGLYLY
-         Sw+/q67YBv0iJHudMH5vfyQBeVAqXl2gnbcZ+CS4yB74g5Q+2eWb1qvI97VRRCrQc+u5
-         1tgc1BPHMH9lQMKeAgbECt5+kVO7965es+LyVzhy7WRbS178OR7kIjCLsXTYO03ahTgV
-         vXTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqHk+86y0NakelonKOSPLXVXmmk1DKfFqXtoxuSCONqAHYTh9TAEGCPXP7+r/dSnYtOxE=@vger.kernel.org, AJvYcCVQw5lsuv97/HxA0cCx/QBBKA3+hgH8ZqxLRt/VISAsjzsZksdSvdELg3056utEu9gNk/w3SAIQ/yhS@vger.kernel.org, AJvYcCW5UvFbvN0YUvn9hVIRuMH9rYip1KSUzQbkEBs5X/AT26G8XFTZ0BmZraMYqhsUqU7ESRrFMjVi6/glHlZG@vger.kernel.org, AJvYcCWFbQAlg8ywRp9eQWSqDXpO5B2WgW4K6U6X3FC4cCgm8y7JD83YcqFGisoTvw6cqmj/upnkaOZ0@vger.kernel.org, AJvYcCXSvvc+EeoTTii5m1uf0oDJ2AI5oEpp9SSfvA8ppWFPjo6cDteLkOpDTkOMTd3tl04nZ3tOY9q8AZuGZhlCkUwA@vger.kernel.org
-X-Gm-Message-State: AOJu0YycerrrttLT1tWMXzkkRzXkCl8B83ZuvsmTn6MYlI45SOXjTmfA
-	c6T6UV50PaT31PPQ2aNx8h3hrRE+gCmwKXxD5pIoafmC/OvhKPur
-X-Google-Smtp-Source: AGHT+IF5yR4TSO8Lu46eN/XdtU9LOZKv1dJO+CJkJkzm4gfBDjBFjafucf890TMmBj2PAFVeO31T9A==
-X-Received: by 2002:a05:620a:4088:b0:7a9:a0a2:1455 with SMTP id af79cd13be357-7ab30d2528amr3669192085a.24.1726663923153;
-        Wed, 18 Sep 2024 05:52:03 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ab3e964080sm453959485a.4.2024.09.18.05.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 05:52:02 -0700 (PDT)
-Date: Wed, 18 Sep 2024 08:52:02 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- Shuah Khan <shuah@kernel.org>, 
- linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, 
- kvm@vger.kernel.org, 
- virtualization@lists.linux-foundation.org, 
- linux-kselftest@vger.kernel.org, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <66eaccf25bc47_29b986294eb@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20240915-rss-v3-4-c630015db082@daynix.com>
-References: <20240915-rss-v3-0-c630015db082@daynix.com>
- <20240915-rss-v3-4-c630015db082@daynix.com>
-Subject: Re: [PATCH RFC v3 4/9] tap: Pad virtio header with zero
+        d=1e100.net; s=20230601; t=1726665180; x=1727269980;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1UIao/Jz5H8HMYQFxpoEYcHdlz/BHFAG+1NToY/M7y4=;
+        b=mOFjLkvpoMhPotr08wsQh44+2ln6+6mQllNI6IDxnO5WtOI8x3ZFwAMU3DWmgU1m86
+         OarpMJqYzEf2NWpXXzv4FTvo+t9CTa02QbZrA81BCFGX4y/I9kExZ/r3zG1OpWXL1+pt
+         7D0n/t/tnOqAnuO5zca+fJmp2DKQlFCYJFS0bA8dQjDmPpDS5mUexS3nOzadM/eXtqu8
+         70TifDI1jVyJuTSUiwFy/pSd7Gfga2xbKIm/7OQTT8cG1RM4IilkD8ZE8fBowVTNGC65
+         f/OfExBVqAogW3m4/5fZp8EEhZCm4T1sJhH9MxFfeiR8yJnICsT+cliviQ2ek84+zmst
+         T2JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCz8v4/2wSmBdJXofAM8JaZzHcjjZ4F3io/LIQP7kVtKxk1MZoxEqlhsDgX5sLH6TIowM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk/WleCZkHbip3bRvgy6I4YCfmq7faRbOmR5il3emNxoaqoC4q
+	w5bEkiE7mN6IYKoQ6OpHmOAt+tPn1gPTIoNNZtVSPOPozLRoT9Fb59MJqJi5/uUv3xuTl/gnGLC
+	IKfKcfvDjKCo4eUStthkqPh4kDokHZ36LlxayFg==
+X-Google-Smtp-Source: AGHT+IF5izfJa+xhgK0mjYVqlKJIK89IcU1cb1NpZfcXm0pryp2o/BMT6N8z0wfXVAWqfUbW+2JjG7UdxmVTGR7xheE=
+X-Received: by 2002:a05:651c:509:b0:2f3:fd4a:eac6 with SMTP id
+ 38308e7fff4ca-2f7919fe8d6mr81760011fa.18.1726665180209; Wed, 18 Sep 2024
+ 06:13:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240916181633.366449-1-heinrich.schuchardt@canonical.com>
+ <20240917-f45624310204491aede04703@orel> <15c359a4-b3c1-4cb0-be2e-d5ca5537bc5b@canonical.com>
+ <20240917-b13c51d41030029c70aab785@orel> <8b24728f-8b6e-4c79-91f6-7cbb79494550@canonical.com>
+ <20240918-039d1e3bebf2231bd452a5ad@orel> <CAFEAcA-Yg9=5naRVVCwma0Ug0vFZfikqc6_YiRQTrfBpoz9Bjw@mail.gmail.com>
+ <bab7a5ce-74b6-49ae-b610-9a0f624addc0@canonical.com>
+In-Reply-To: <bab7a5ce-74b6-49ae-b610-9a0f624addc0@canonical.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 18 Sep 2024 14:12:48 +0100
+Message-ID: <CAFEAcA-L7sQfK6MNt1ZbZqUMk+TJor=uD3Jj-Pc6Vy9j9JHhYQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] target/riscv: enable floating point unit
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, 
+	Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+	qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+	Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Akihiko Odaki wrote:
-> tap used to simply advance iov_iter when it needs to pad virtio header.
-> This leaves the garbage in the buffer as is and prevents telling if the
-> header is padded or contains some real data.
-> 
-> In theory, a user of tap can fill the buffer with zero before calling
-> read() to avoid such a problem, but leaving the garbage in the buffer is
-> awkward anyway so fill the buffer in tap.
+On Wed, 18 Sept 2024 at 14:06, Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
+> Thanks Peter for looking into this.
+>
+> QEMU's cpu_synchronize_all_post_init() and
+> do_kvm_cpu_synchronize_post_reset() both end up in
+> kvm_arch_put_registers() and that is long after Linux
+> kvm_arch_vcpu_create() has been setting some FPU state. See the output
+> below.
+>
+> kvm_arch_put_registers() copies the CSRs by calling
+> kvm_riscv_put_regs_csr(). Here we can find:
+>
+>      KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
+>
+> This call enables or disables the FPU according to the value of
+> env->mstatus.
+>
+> So we need to set the desired state of the floating point unit in QEMU.
+> And this is what the current patch does both for TCG and KVM.
 
-This description does not describe the need for this operation.
+If it does this for both TCG and KVM then I don't understand
+this bit from the commit message:
 
-The new extension seemingly requires these bytes to be cleared?
-Please make that explicit.
- 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  drivers/net/tap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> index 77574f7a3bd4..ba044302ccc6 100644
-> --- a/drivers/net/tap.c
-> +++ b/drivers/net/tap.c
-> @@ -813,7 +813,7 @@ static ssize_t tap_put_user(struct tap_queue *q,
->  		    sizeof(vnet_hdr))
->  			return -EFAULT;
->  
-> -		iov_iter_advance(iter, vnet_hdr_len - sizeof(vnet_hdr));
-> +		iov_iter_zero(vnet_hdr_len - sizeof(vnet_hdr), iter);
->  	}
->  	total = vnet_hdr_len;
->  	total += skb->len;
-> 
-> -- 
-> 2.46.0
-> 
+# Without this patch EDK II with TLS enabled crashes when hitting the first
+# floating point instruction while running QEMU with --accel kvm and runs
+# fine with --accel tcg.
 
+Shouldn't this guest crash the same way with both KVM and TCG without
+this patch, because the FPU state is the same for both?
 
+-- PMM
