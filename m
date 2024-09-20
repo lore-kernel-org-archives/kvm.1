@@ -1,101 +1,125 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FC617B421
-	for <kvm@vger.kernel.org>; Fri, 20 Sep 2024 14:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E02117A583
+	for <kvm@vger.kernel.org>; Fri, 20 Sep 2024 15:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726841151; cv=none; b=NT3jR6Nelwb3G/YV6tpVbxGMqeGfmVgd6gGawSxUPRufeL1GL4kDE9pHE8MMaFwtt5aamA4Cd6u72a8s8VIsZsOyj2v+oOAK0e//ywUQNwMmXMfP7gmHel5SfDt6286SD1LqyQa3qiGx+pDtAw7DYvzKfhdJ2cE4xcPIKBudqPg=
+	t=1726847072; cv=none; b=E+VruZeNrbT0SPD9OF7YnUG4jRnMS3jJD1MaQnBAJvgGB44sdArV9bGrvjfQehUzbm36MxnSb9O61OpdDqjntgQnLlVsQNAjziq9RjuBLmzPiy1ugwCc5jpQe9rccEjOzcy6D6ESGKxeIH2cuChHQX4ZeT+4isHfucl3kGzB9Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726841151; c=relaxed/simple;
-	bh=Qsl/7lJWAHLtUaQwY6w41lw5dh24RUexk8CjIz3Y6yo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H4FHS7kmIAPFpPx3x4FWkqtudSBSbdzXmB9Cdi1daXaCuXy1mZjxV+ykTlA010IGTOcUde+TEqOrWZzHWmKgySyektrwgZuJ2dr/u8KSi3GnRGjtZzl2rSuEisY2VDPQbuR2disOiW0CgeMzRZIfaihSzvz+oM0bVVcvW6pvCyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=e31/INE+; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1726847072; c=relaxed/simple;
+	bh=L4F9t9eX2mGkrFvAoAO4WcKWW0cmDO9vUJ06dP3REH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pMmhKREP//2LVXpwwbMhyIazvlVsWZtV1aWeJuLvklJ4ucLNiwJHkMWNKR244Qmgy+OIXtwtf8yaNb5QHTBHUd+Ua9csAYTrOCW259yvB6TRjOAqRRSf1PfePlpR5mdEX1WvfjQoWQjDPdBbbym0aFwPCUSQmxrJMC/fZjJ5Rr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c6kgXt/a; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="e31/INE+"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48KANWRd015710;
-	Fri, 20 Sep 2024 07:05:37 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=0bxiR4fnNWh35DiS7jRskKB
-	HJnWWpsoExoc0Hi3+cdo=; b=e31/INE+wArRPMs0+0Qbv2VAHurcUUvTWn2BXce
-	1PIyhWK6q1yU3WCKR50MG7yQXbt5i7aILEbXXT2JahXi5UFEGzzSVo4UWVcP8TUo
-	20gyiTXBOIA5c4Sinsl+sJjVE6aSW6pvL2P29udnac+7x9pI1a45yHrnYe/Dqatc
-	oEJIa8jYcCgBLGKgjxI48lmrOsL8aVOx9JiUgHNo5uOpF0ghKWCWoEo3vGWdVf+v
-	OS0rMYEULX3fRImRBiQBVPnYR7YAKKUtAn3NZB9p571lxw6cx0/ElRG8QI9FKwDk
-	/U03VKgo9Pr4dzm4c5WGBc5E8pknF3WafWWfGxCDwoU7bFg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 41s78rgtgh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Sep 2024 07:05:37 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Fri, 20 Sep 2024 07:05:34 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Fri, 20 Sep 2024 07:05:34 -0700
-Received: from localhost.localdomain (unknown [10.28.36.175])
-	by maili.marvell.com (Postfix) with ESMTP id DBEE05B6923;
-	Fri, 20 Sep 2024 07:05:31 -0700 (PDT)
-From: Srujana Challa <schalla@marvell.com>
-To: <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>
-CC: <mst@redhat.com>, <jasowang@redhat.com>, <eperezma@redhat.com>,
-        <ndabilpuram@marvell.com>, <jerinj@marvell.com>
-Subject: [PATCH v2 0/2] vhost-vdpa: Add support for NO-IOMMU mode
-Date: Fri, 20 Sep 2024 19:35:28 +0530
-Message-ID: <20240920140530.775307-1-schalla@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c6kgXt/a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726847068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tuUFCphhzHU/5+RQPnqBt9ZmoF79wTTTNRlLo/sGdJo=;
+	b=c6kgXt/acPGlGfAC1oNRjDmfaJUagMQlm4ZQ+BIEOLJWMRIzxAxKNVznQL0wyUtqJq3BuS
+	g7x/62cPcsYjx4ENdlg8vx398E7YbCC1VnRRqXKX/Az8LXMaV9VZj56738JTc+BqRjg+mX
+	EQXv4++xWoJSWWSay9ba67ph/pwO7B8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-UyipB_pMMiqs5u6zSbBI3g-1; Fri,
+ 20 Sep 2024 11:44:26 -0400
+X-MC-Unique: UyipB_pMMiqs5u6zSbBI3g-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A44BD19137AA;
+	Fri, 20 Sep 2024 15:44:25 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.184])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 90AAA19560AF;
+	Fri, 20 Sep 2024 15:44:23 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Jan Richter <jarichte@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: selftests: x86: Avoid using SSE/AVX instructions
+Date: Fri, 20 Sep 2024 17:44:22 +0200
+Message-ID: <20240920154422.2890096-1-vkuznets@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: V94DQnsWVu1Q5dQcQH5YGxuXsSKLjJcT
-X-Proofpoint-GUID: V94DQnsWVu1Q5dQcQH5YGxuXsSKLjJcT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-This patchset introduces support for an UNSAFE, no-IOMMU mode in the
-vhost-vdpa driver. When enabled, this mode provides no device isolation,
-no DMA translation, no host kernel protection, and cannot be used for
-device assignment to virtual machines. It requires RAWIO permissions
-and will taint the kernel.
+Some distros switched gcc to '-march=x86-64-v3' by default and while it's
+hard to find a CPU which doesn't support it today, many KVM selftests fail
+with
 
-This mode requires enabling the "enable_vhost_vdpa_unsafe_noiommu_mode"
-option on the vhost-vdpa driver and also negotiate the feature flag
-VHOST_BACKEND_F_NOIOMMU. This mode would be useful to get
-better performance on specifice low end machines and can be leveraged
-by embedded platforms where applications run in controlled environment.
+  ==== Test Assertion Failure ====
+    lib/x86_64/processor.c:570: Unhandled exception in guest
+    pid=72747 tid=72747 errno=4 - Interrupted system call
+    Unhandled exception '0x6' at guest RIP '0x4104f7'
 
-First patch introduces a module parameter
-"enable_vhost_vdpa_unsafe_noiommu_mode", while the second patch
-introduces a feature flag VHOST_BACKEND_F_NOIOMMU to the vhost vdpa
-driver to support NO-IOMMU mode.
+The failure is easy to reproduce elsewhere with
 
-This feature flag indicates to userspace that the driver can safely
-operate in NO-IOMMU mode. If the flag is not present, userspace should
-assume NO-IOMMU mode is unsupported and must not proceed.
+   $ make clean && CFLAGS='-march=x86-64-v3' make -j && ./x86_64/kvm_pv_test
 
-v1->v2:
-- Introduced new feature flag to vhost backend features for negotiating
-  NO-IOMMU feature.
+The root cause of the problem seems to be that with '-march=x86-64-v3' GCC
+uses AVX* instructions (VMOVQ in the example above) and without prior
+XSETBV() in the guest this results in #UD. It is certainly possible to add
+it there, e.g. the following saves the day as well:
 
-Srujana Challa (2):
-  vhost-vdpa: introduce module parameter for no-IOMMU mode
-  vhost-vdpa: introduce NO-IOMMU backend feature bit
+diff --git a/tools/testing/selftests/kvm/x86_64/kvm_pv_test.c b/tools/testing/selftests/kvm/x86_64/kvm_pv_test.c
+index 78878b3a2725..704668adb3bd 100644
+--- a/tools/testing/selftests/kvm/x86_64/kvm_pv_test.c
++++ b/tools/testing/selftests/kvm/x86_64/kvm_pv_test.c
+@@ -82,8 +82,17 @@ static void test_hcall(struct hcall_data *hc)
 
- drivers/vhost/vdpa.c             | 39 +++++++++++++++++++++++++++++++-
- include/uapi/linux/vhost_types.h |  2 ++
- 2 files changed, 40 insertions(+), 1 deletion(-)
+ static void guest_main(void)
+ {
++	uint64_t cr4, xcr0;
+        int i;
 
++	cr4 = get_cr4();
++	cr4 |= X86_CR4_OSXSAVE;
++	set_cr4(cr4);
++
++	xcr0 = xgetbv(0);
++	xcr0 |= XFEATURE_MASK_SSE | XFEATURE_MASK_YMM;
++	xsetbv(0x0, xcr0);
++
+        for (i = 0; i < ARRAY_SIZE(msrs_to_test); i++) {
+                test_msr(&msrs_to_test[i]);
+        }
+
+but this needs to be made conditional depending on the compilation target
+and added to all selftests. Slap a band-aid on the problem by forcing
+'-march=x86-64-v2' in Makefile.
+
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+ tools/testing/selftests/kvm/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
+index 48d32c5aa3eb..3f1b24ed7245 100644
+--- a/tools/testing/selftests/kvm/Makefile
++++ b/tools/testing/selftests/kvm/Makefile
+@@ -238,6 +238,7 @@ CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
+ 	-fno-stack-protector -fno-PIE -I$(LINUX_TOOL_INCLUDE) \
+ 	-I$(LINUX_TOOL_ARCH_INCLUDE) -I$(LINUX_HDR_PATH) -Iinclude \
+ 	-I$(<D) -Iinclude/$(ARCH_DIR) -I ../rseq -I.. $(EXTRA_CFLAGS) \
++	-march=x86-64-v2 \
+ 	$(KHDR_INCLUDES)
+ ifeq ($(ARCH),s390)
+ 	CFLAGS += -march=z10
 -- 
-2.25.1
+2.46.0
 
