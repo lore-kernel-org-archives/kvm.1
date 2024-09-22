@@ -1,68 +1,68 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2051.outbound.protection.outlook.com [40.107.212.51])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16F5321D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189A5645
 	for <kvm@vger.kernel.org>; Sun, 22 Sep 2024 12:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.51
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727009438; cv=fail; b=NTuPmfcu7lYKaO/bvynayrpUCEn4oyxPqyduuGyjWJ3HB7XuAnPGnfSxFCHkJ0/qQ3IUruE0fak1bfheq/qu/zw8R/j7C5IBIOVRU+H5pnCAhhTCnhF0WuDtCqOCRRXdbUyqEj3bEKbvcDMHoG5QnskEVvZOUgIYtwjNYXzxfc4=
+	t=1727009438; cv=fail; b=LOqtke/OjQRYbbRfcp7VABBjrDJNB6Iq8kjBiUydPFLsV4+RTbmeFO5eh3jMgkEC/O5wx0TbATPy7VFvgRE0U1KRmMjOTpkpsthHXqxqRFr9fV8OxFA4Mit/3qBWVEk4fWPQSPwmf3fetutcpiawa5ufPcfysHWVXjvoH+O/mCQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727009438; c=relaxed/simple;
-	bh=zwOqDFNxAwmPTFe/jiPwyXD4ZPFK3OZYQtggKJAz0Uk=;
+	bh=N3PD2eEjIn2yzOXwiid2f/sbIF1lMCn0jPjQINEKnJc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G/15wBY0Nq/modNM0EwIi62uZtUJRYjt5C6U9+VnZa4TAVaxC5zH1BozS/woORP5ez3PR7T3/nGZ+hDIHNA6Eh4Cftd16pyxIeYNH0nZIRbkL6U8x/+YPpZklfeQnh1IvIcetgVE7RT9l8zARiQ6Ds5nyi+ziX/SYSseoin6B3M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B80vG2Rn; arc=fail smtp.client-ip=40.107.212.51
+	 MIME-Version:Content-Type; b=oHpzrYzCX817tf7G3F9PqZT2vsrazgu0n9v4YubzG+UydBybjnAs9FYT6OxLyMH0LKMBIKtqE6fjHyMyfmLvQvUSaeeCWxJD2woDukJ4hSBu497Z7Skgg79SRkhwXb5vc27jxGaMX68Lhl5sG5jjAW/vp9ufYnbcWvAwmGlCOEc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eSXsuVZf; arc=fail smtp.client-ip=40.107.237.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B80vG2Rn"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eSXsuVZf"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OJahA80M8O5Ht0RPvbY214DUowsPmko39BfxSbBwJDF584BPiKezryEUB45z8EC227gvoJkosayoily2SUacgOzj87dUD7aCeuH61PlTrtOtIrlv3du+MlQxwQ95SVQ6QqJmj/vq9GuOnixj0TzUbhX9/FsOG2uE1jPTEDsUuNnihQowac0n/ZKTXpczJoumINH+DB/FZaVGGmi7/R5fkf3axicBbBkjIkCzH+xJg7qYWdMPqKH80ZB/LbvbOHUStRF77CANzOzl2peZsDcjht5G4I9wYxSdmQyZjcU2nbeO9i8erpVsyjehzm2eWgffGiIOPUNOx80kcxcestlY3A==
+ b=iQSdVEJfIyH5CRh8bnXU5Rxit+yncuNaVO16UdybgYHfgJ/W1ffYi3G/bGSVuSpRL7eD0cMKuUAMr7Y2/Vuf0SB7Q/FY81gEIopTIvJuZXCzdE71c18V+MIXAhiFcY9/+OfxA7CkyzXr4Jq7YgOD/GC+9iaxP0nuKSFWv/ntqAUHnIKThIqRLBTNguAX7BZxf7Z7Wc5aKHKSwBCv+zQNGXxae5rYWcETbh71C3VKP33sv4M0RyNRow2kJZs8iu1reR2PE9jUUusKVSv4omQZk4Guwpj2VDBSzqQ54kG06LdvWuJg2CVB/mGY2sicLX8/zn33iE1kgc0K7O5uM4QyzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t5Se6NOULlWwT9b5/k8yOVdePxylOx55yZeC547knhY=;
- b=xozk9X0wiHBsAqriDYDxYLQbhDoqhYZr+S7j23S6W0r1epbgy2SuzNGBbfm2d2uddgzj9+zOLYELLExYYM2YBI3XmoKHacaCamLuuzgdMdrNm4WnZtrp0nMqA1f5b9gUMmMY/imdBPw3YF4KifgilOqPAN09XhpRm3dJdl/gL1/xaPz9AiRXxq8y5dwZ34M0e+6haNXjrqlTuAofH7qIfK3yP8GPp+TIovWCvLrNfmioZ6k4YeLIbsIaYRZx5roqvaS2t+NFvxPdiaM9V79nsCHGGSYk/Wvdkk8BUs7hI4dnGGdDt6VoqNlNFEv0y6kA++5RbZcNZ28gjj85DSvSiA==
+ bh=Nx273nmDeUobuIlmdXJNLUGMxhf++1hApE+yWwM2oPM=;
+ b=m1+39mqAWd37tnJRuKpfuMa4DRuthwHP918ABrZCq4rYStS8CZQ21Bozad5nUCvUgYEfyVJBb5aVEr9MrJXuYVPZrndm/N2zl5Q8eo17vGVugA60lvOkDVm+Q2QVMcH3vi97adaEQT/Cocgm52CHSU+8cZMxgRfWcPQ/Z8lhvsSnd4NwBO6DnchGBgGsw2B7ndH//leuydN8lEYwW7dpGTrpTxP6JahHj8kBskMn9UdZwW8BLrXwGV3pqnfnd+DEIMOE51MLm21fT9G/pioAoHkOyKd0ac6GyhDI7n5k0z1I0DmjBdJ05xrK6NBGG6kDjp5apAobgLof8Bs1fB3a+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t5Se6NOULlWwT9b5/k8yOVdePxylOx55yZeC547knhY=;
- b=B80vG2Rn4n5mkRtdrCV5g7X840e5mSo5LeoBtcr+MIldwldBAGiOoW2aHqEB+HuxOq64bd/zHR5u7d329ZBEHE5qGVbyzNRYXuLx9kuYrfydj2+mgiN2hHC3yc0f6pFGCI4dVxWK8Zo8tYLgveM6jsVMS7B36MiJTrM7wVuD74TvKjZ8mJdzpWYvjyiIjHqW2ddQxLFyZZCH0BfqDJoo+SUx86NXSGkA5TBZvwCi/KChM+hTcFY1TkruaX/V//2gPmCWfX6sjJJ/Wpzew0DDs+JmM2Or/5l8tT0qIppgFAugApoekUo4zyZFSslmIX131X26Mq+E8eIbATaTmF9i5Q==
-Received: from BYAPR02CA0039.namprd02.prod.outlook.com (2603:10b6:a03:54::16)
- by IA0PR12MB7508.namprd12.prod.outlook.com (2603:10b6:208:440::7) with
+ bh=Nx273nmDeUobuIlmdXJNLUGMxhf++1hApE+yWwM2oPM=;
+ b=eSXsuVZf8rnHCgb8AayNTh5B2ipvOq0yOY9vNUFZiI0cBfaS2P+rSP1raaT/yNIMoObE5uS0gFre+u5WKUj4MMne4zbQIjYN1pJ4839EumDQMa5kbuNJ2ls1lfwaXNNOuCA/tb7+1oKl/s74ZfhSYpyQNkLkx4DSgw1mH5O3/ubFmh9fwp784naU6PLL+7SoiXKdO8YpbR/AX/TgqPhXIq7EHp5zhjiwuG8eAC/Cck7XVtNA7wPSNgfMg/yf7d+pPGlK9vcw4B3WbqettEoPSqe1PlLbS5/lniCw/hW4mEzb0i8O+Y0mw2HDSlN/nCs89eD+Y0XQoBtJwgvPerkQlw==
+Received: from BN9PR03CA0283.namprd03.prod.outlook.com (2603:10b6:408:f5::18)
+ by SA1PR12MB6775.namprd12.prod.outlook.com (2603:10b6:806:25a::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.24; Sun, 22 Sep
- 2024 12:50:32 +0000
-Received: from CO1PEPF000075F4.namprd03.prod.outlook.com
- (2603:10b6:a03:54:cafe::d9) by BYAPR02CA0039.outlook.office365.com
- (2603:10b6:a03:54::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.30 via Frontend
- Transport; Sun, 22 Sep 2024 12:50:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ 2024 12:50:29 +0000
+Received: from BL6PEPF00020E66.namprd04.prod.outlook.com
+ (2603:10b6:408:f5:cafe::73) by BN9PR03CA0283.outlook.office365.com
+ (2603:10b6:408:f5::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.27 via Frontend
+ Transport; Sun, 22 Sep 2024 12:50:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CO1PEPF000075F4.mail.protection.outlook.com (10.167.249.43) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL6PEPF00020E66.mail.protection.outlook.com (10.167.249.27) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.13 via Frontend Transport; Sun, 22 Sep 2024 12:50:31 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7918.13 via Frontend Transport; Sun, 22 Sep 2024 12:50:29 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sun, 22 Sep
- 2024 05:50:22 -0700
+ 2024 05:50:20 -0700
 Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Sun, 22 Sep 2024 05:50:22 -0700
+ 15.2.1544.4; Sun, 22 Sep 2024 05:50:19 -0700
 Received: from inno-linux.nvidia.com (10.127.8.13) by mail.nvidia.com
  (10.126.190.182) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Sun, 22 Sep 2024 05:50:22 -0700
+ Transport; Sun, 22 Sep 2024 05:50:19 -0700
 From: Zhi Wang <zhiw@nvidia.com>
 To: <kvm@vger.kernel.org>, <nouveau@lists.freedesktop.org>
 CC: <alex.williamson@redhat.com>, <kevin.tian@intel.com>, <jgg@nvidia.com>,
@@ -70,9 +70,9 @@ CC: <alex.williamson@redhat.com>, <kevin.tian@intel.com>, <jgg@nvidia.com>,
 	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
 	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
 	<zhiw@nvidia.com>, <zhiwang@kernel.org>
-Subject: [RFC 05/29] nvkm/vgpu: populate GSP_VF_INFO when NVIDIA vGPU is enabled
-Date: Sun, 22 Sep 2024 05:49:27 -0700
-Message-ID: <20240922124951.1946072-6-zhiw@nvidia.com>
+Subject: [RFC 01/29] nvkm/vgpu: introduce NVIDIA vGPU support prelude
+Date: Sun, 22 Sep 2024 05:49:23 -0700
+Message-ID: <20240922124951.1946072-2-zhiw@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240922124951.1946072-1-zhiw@nvidia.com>
 References: <20240922124951.1946072-1-zhiw@nvidia.com>
@@ -87,158 +87,271 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075F4:EE_|IA0PR12MB7508:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ce16585-104c-4c6a-fed3-08dcdb052492
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E66:EE_|SA1PR12MB6775:EE_
+X-MS-Office365-Filtering-Correlation-Id: 108d6cd6-6a13-4f75-3757-08dcdb05234c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PUxBJFbJeOf9rK7theTz1g/fZmxWoAuYGMKHibxG1BH5C/jFl6EwTeHNQHgn?=
- =?us-ascii?Q?pq02KT3JlNoIgPdWpgxU6w7y5mZYYtFc1BnN2boP849e2jbhj8AuMOU2HUSQ?=
- =?us-ascii?Q?tUDlYj1I7J1sMB7rUT9dYs+W+MUkZMe7Qto/xZvdfKSm8wJU8cU40dApUpKZ?=
- =?us-ascii?Q?jD1yxBtCtse1oqnLaSc0uB6N0xD7fMDS3kGLaxddKdblpb1/pBn3f8Gi3dsU?=
- =?us-ascii?Q?m/6RPavkmN4cOqd5A88WLjEBMtww1+14og4lMshGkmQk36nomYVi0n6xnJcQ?=
- =?us-ascii?Q?oLbi+xnt6r6egosOWAQXkq53dcklOBRmJKVXYzzXTrGMipdHidNwKY0ZsL42?=
- =?us-ascii?Q?8neBu6/dUiE+onMl6UeRFo8rcRiijzMzEdpxLqkFBY3yAZVaN1StPVBF4ohK?=
- =?us-ascii?Q?OD7rapRcD4pscFuUqQqCUu8stflVr6VRst3ATHXscD1OwjOFlrIjxUexCWc7?=
- =?us-ascii?Q?rynionZXtZe8c5RTSTGYnjMbWhgnfLVenLyGLxhvoBnJI7PV6ZOMAsWFHB4p?=
- =?us-ascii?Q?PIo2ex5n51EPNHDVxG6P4q9wyUA9bikjkbLDS+WStoaCkiZQ2i5QF+M3UD1z?=
- =?us-ascii?Q?zHcSpr1d3Ek2akb7ifrnk9+bYOg8W0GufFRspdsTEpYGxvloaZ7BNp+WO9ic?=
- =?us-ascii?Q?+7LChy0S2VU7rK9PSmhDgGPeDVqVtEoVMqCuboNdcb1dTZGngfnWzmD4eprz?=
- =?us-ascii?Q?OdFPt2oBH71IrZNgpjKW3fzmGKohCwOeZMVG3j3m6LRFbLtdCjuyelMkOAZW?=
- =?us-ascii?Q?gM46CWnpFqakT3N1EqjfFnzJLuUpPMQdVhjzVkHyk+nCY8+FJ9oPXKL+jrE+?=
- =?us-ascii?Q?r+3ILaCl4M/oM+vhMDW4udu7YGRoHAb2Mbk8FKUzmwApMCxOurISj3ffel9m?=
- =?us-ascii?Q?pRO8+HqgeJJKFfznBK1QDxUbRWO7IZBa2kyfJlwruvZ1PQdI4A2+ebdQNUQx?=
- =?us-ascii?Q?Ddr1HVtsbMjEGcTwrrr0svMrniWfWZGWMehLi8Y6/QTVTNlO0K39D/Nmxk2t?=
- =?us-ascii?Q?0BiOB5d90pYeGqXmP28iZlwOAoYAo5rFNL0oFfXuMaoexFDNNq/xWE4ASSpd?=
- =?us-ascii?Q?iP4EHGRK9YNEp9gH5r6ypZFvAXeNxlClUSOvq7a0zaOSsoHVqYhF5WvbpAC3?=
- =?us-ascii?Q?+ZAA1RU46kwxkY/Fq3E4bVoJBD8V3XaNfboUoZ1jrQGCCArVOB8TjW7geMgD?=
- =?us-ascii?Q?Zk+7tHW7IJdeJRiPZNbIUUjxygz7SCa0GPtDFis8H+jdCr6AZGomVcy+JBBc?=
- =?us-ascii?Q?vx1TfxnA3fD24xTQ06XIGC9Ski8USBZXkLokhzBSgW1vaAti2f/hBZ/DMVvx?=
- =?us-ascii?Q?ofF42CyBKLQeHao/bXxr4Tu7opqgujx4uxLIwLw0TusmgMgiSwEIYS5V9XpR?=
- =?us-ascii?Q?e+Wrj6Q=3D?=
+	=?us-ascii?Q?snWZ8AbsFsdEGxqV6rkQSqySAyQ4q42yXs0zPj21flskujrIW0SyWJIjRhDA?=
+ =?us-ascii?Q?ygvn3xwtODLfk6WNhyrWG0EHr3NCOZTyWr5zpp++WixqlL1iwI1DYmZtA/X0?=
+ =?us-ascii?Q?a4faWxLeGH6s/pOCHbH30P4+RWyjP6qRm9NrH+rrvhZsLNHxEX5UsrVTYQIK?=
+ =?us-ascii?Q?oPavOnUTbCLwUSHqYUOHbJ5FWMavw0OWmHRVjSiVuoMhWAyoB6MpsKEHPXXZ?=
+ =?us-ascii?Q?Rt6qqK2Hic+C6IjuJ5UrVDCNy6kXyhYpd86gE4c/d5P+cEo3WSR0XzUKs+Ah?=
+ =?us-ascii?Q?P/pymQAtTR6SCgLuzkCkVnLLhIHHKLQVaQyF8KbUW0335ks0mSizNpR2Zk7e?=
+ =?us-ascii?Q?l7TUMUZHQKr7nvlyXws8Rssm/lSRNoRij0iA/zY67A3mQfJRcHU6SPnbxSI/?=
+ =?us-ascii?Q?xy8D4cIqsSACQjuxZ0K4aVHHYn4v2UljsFx1ZMUAVDGOoFjc8h3/zjKIolwA?=
+ =?us-ascii?Q?PVCj1qpV4gybJCozNLLitsz5o86/DEjJOYNpQvh63RdDXYS+wuBOhbPErILY?=
+ =?us-ascii?Q?FiBgunLVu0Y3JrGxG86ijy+/LO8HHljFOuBeDFivDIZF8+eVkPAK9rXfap16?=
+ =?us-ascii?Q?rf8c7PN9Bsifo+KZmQBQQLOk6ePIVkRCp7pwz0rt3J9CYBLegbdLgUnnma0u?=
+ =?us-ascii?Q?GKLjPPQuAhNt05EPdsoT/pDEuyPYxq+AFGx7VeSAlNTdofjM+cGySIvoqXXg?=
+ =?us-ascii?Q?BvgyBumJPRGrTsKqENZA8hyWUhJKgcXQSB9/0kFZSagwpdboBFwLHDgYE+s1?=
+ =?us-ascii?Q?XwMLluis3NwNoMndRuO9heomuFvHRGmKtPB+OtuNfxpY6OHlDioH3J6krJ5c?=
+ =?us-ascii?Q?9rtBDyD9Edt2/sbupLvjSEAvzr4a+bvNfT8CXs95eWuqpiyiXyQVCPqj3vxb?=
+ =?us-ascii?Q?pNbq3ZQgh0hYuvFbNmb3ttlPC/yl0OYCgjTZ56/hPuYSx1wEcTdAN3imqGgJ?=
+ =?us-ascii?Q?kyKhPjPYeTAQdA0UGPMaUc5ox1TFBYmGEqoNA2xo4XJGZmBRE1/F7m1EmK7v?=
+ =?us-ascii?Q?Gmsr5CKwyf8BOoVRqOLkMol0+++n4g4pN4/Vk1r408tyjD74I20fn4sRXi/8?=
+ =?us-ascii?Q?iYXreevpHfdFfEJn80xyLHHL+L5ahoENqOwwUfuzLPdmzl3XXEhcKKUlw+T/?=
+ =?us-ascii?Q?WkyKlolEGuwNH2V8lI+I5JjsXTUxzh4Liow8L0EtHEQ+yFf6s8IEsPswqxAG?=
+ =?us-ascii?Q?kK6iv8+1NsD75tPnPvjR8kEGmFrsLNofzyySBiUWT/Km0MdM3LsTmalCVyX0?=
+ =?us-ascii?Q?bKAwnZpy8yb7T2xcCDrAIM+EBGrmUa8PPCb4AA4bHi4Qj10bi/GTIbQnlRbC?=
+ =?us-ascii?Q?+7XBFsfL1Zfaep3I8ofRxB1s56OBrC0RFQaVzZN26CFIBBiJOaw14kkMtmLZ?=
+ =?us-ascii?Q?DtGTk/eTQnljf9NigG9AQV28i0pGSiTrDvw3ZugFa37xlTSyHORx4ioyTA/9?=
+ =?us-ascii?Q?3yLE8pXMzTUiK2Cpj/WoJweYOd0OEtEc?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2024 12:50:31.3762
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2024 12:50:29.1409
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ce16585-104c-4c6a-fed3-08dcdb052492
+X-MS-Exchange-CrossTenant-Network-Message-Id: 108d6cd6-6a13-4f75-3757-08dcdb05234c
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000075F4.namprd03.prod.outlook.com
+	BL6PEPF00020E66.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7508
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6775
 
-GSP firmware needs to know the VF BAR offsets to correctly calculate the
-VF events.
+NVIDIA GPU virtualization is a technology that allows multiple virtual
+machines (VMs) to share the power of a single GPU, enabling greater
+flexibility, efficiency, and cost-effectiveness in data centers and cloud
+environments.
 
-The VF BAR information is stored in GSP_VF_INFO, which needs to be
-initialized and uploaded together with the GSP_SYSTEM_INFO.
+The first step of supporting NVIDIA vGPU in nvkm is to introduce the
+necessary vGPU data structures and functions to hook into the
+(de)initialization path of nvkm.
 
-Populate GSP_VF_INFO when nvkm uploads the GSP_SYSTEM_INFO if NVIDIA
-vGPU is enabled.
+Introduce NVIDIA vGPU data structures and functions hooking into the
+the (de)initialization path of nvkm and support the following patches.
 
+Cc: Neo Jia <cjia@nvidia.com>
 Cc: Surath Mitra <smitra@nvidia.com>
 Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 ---
- .../nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h  |  2 +
- .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    |  3 ++
- .../gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c  | 50 +++++++++++++++++++
- 3 files changed, 55 insertions(+)
+ .../drm/nouveau/include/nvkm/core/device.h    |  3 +
+ .../nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h  | 17 +++++
+ drivers/gpu/drm/nouveau/nvkm/Kbuild           |  1 +
+ drivers/gpu/drm/nouveau/nvkm/device/pci.c     | 19 +++--
+ drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/Kbuild  |  2 +
+ .../gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c  | 76 +++++++++++++++++++
+ 6 files changed, 112 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/gpu/drm/nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h
+ create mode 100644 drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/Kbuild
+ create mode 100644 drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c
 
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/core/device.h b/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
+index fef8ca74968d..497c52f51593 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
+@@ -3,6 +3,7 @@
+ #define __NVKM_DEVICE_H__
+ #include <core/oclass.h>
+ #include <core/intr.h>
++#include <vgpu_mgr/vgpu_mgr.h>
+ enum nvkm_subdev_type;
+ 
+ #include <linux/auxiliary_bus.h>
+@@ -80,6 +81,8 @@ struct nvkm_device {
+ 		bool legacy_done;
+ 	} intr;
+ 
++	struct nvkm_vgpu_mgr vgpu_mgr;
++
+ 	struct auxiliary_device auxdev;
+ 	const struct nvif_driver_func *driver;
+ };
 diff --git a/drivers/gpu/drm/nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h b/drivers/gpu/drm/nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h
-index 9e10e18306b0..6bc10fa40cde 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h
+new file mode 100644
+index 000000000000..3163fff1085b
+--- /dev/null
 +++ b/drivers/gpu/drm/nouveau/include/nvkm/vgpu_mgr/vgpu_mgr.h
-@@ -21,5 +21,7 @@ bool nvkm_vgpu_mgr_is_supported(struct nvkm_device *device);
- bool nvkm_vgpu_mgr_is_enabled(struct nvkm_device *device);
- int nvkm_vgpu_mgr_init(struct nvkm_device *device);
- void nvkm_vgpu_mgr_fini(struct nvkm_device *device);
-+void nvkm_vgpu_mgr_populate_gsp_vf_info(struct nvkm_device *device,
-+					void *info);
- 
- #endif
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-index 14fc152d6859..49552d7df88f 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -1717,6 +1717,9 @@ r535_gsp_rpc_set_system_info(struct nvkm_gsp *gsp)
- 	info->pciConfigMirrorSize = 0x001000;
- 	r535_gsp_acpi_info(gsp, &info->acpiMethodData);
- 
-+	if (nvkm_vgpu_mgr_is_supported(device))
-+		nvkm_vgpu_mgr_populate_gsp_vf_info(device, info);
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: MIT */
++#ifndef __NVKM_VGPU_MGR_H__
++#define __NVKM_VGPU_MGR_H__
 +
- 	return nvkm_gsp_rpc_wr(gsp, info, false);
++#define NVIDIA_MAX_VGPUS 2
++
++struct nvkm_vgpu_mgr {
++	bool enabled;
++	struct nvkm_device *nvkm_dev;
++};
++
++bool nvkm_vgpu_mgr_is_supported(struct nvkm_device *device);
++bool nvkm_vgpu_mgr_is_enabled(struct nvkm_device *device);
++int nvkm_vgpu_mgr_init(struct nvkm_device *device);
++void nvkm_vgpu_mgr_fini(struct nvkm_device *device);
++
++#endif
+diff --git a/drivers/gpu/drm/nouveau/nvkm/Kbuild b/drivers/gpu/drm/nouveau/nvkm/Kbuild
+index 9e1a6ab937e1..d310467487c1 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/Kbuild
++++ b/drivers/gpu/drm/nouveau/nvkm/Kbuild
+@@ -8,3 +8,4 @@ include $(src)/nvkm/device/Kbuild
+ include $(src)/nvkm/falcon/Kbuild
+ include $(src)/nvkm/subdev/Kbuild
+ include $(src)/nvkm/engine/Kbuild
++include $(src)/nvkm/vgpu_mgr/Kbuild
+diff --git a/drivers/gpu/drm/nouveau/nvkm/device/pci.c b/drivers/gpu/drm/nouveau/nvkm/device/pci.c
+index b8d2125a9f59..1543902b20e9 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/device/pci.c
++++ b/drivers/gpu/drm/nouveau/nvkm/device/pci.c
+@@ -1688,6 +1688,9 @@ nvkm_device_pci_remove(struct pci_dev *dev)
+ {
+ 	struct nvkm_device *device = pci_get_drvdata(dev);
+ 
++	if (nvkm_vgpu_mgr_is_enabled(device))
++		nvkm_vgpu_mgr_fini(device);
++
+ 	if (device->runpm) {
+ 		pm_runtime_get_sync(device->dev);
+ 		pm_runtime_forbid(device->dev);
+@@ -1835,12 +1838,6 @@ nvkm_device_pci_probe(struct pci_dev *pci_dev, const struct pci_device_id *id)
+ 	}
+ 
+ 	quirk_broken_nv_runpm(pdev);
+-done:
+-	if (ret) {
+-		nvkm_device_del(&device);
+-		return ret;
+-	}
+-
+ 	pci_set_drvdata(pci_dev, &pdev->device);
+ 
+ 	if (nvkm_runpm) {
+@@ -1852,12 +1849,22 @@ nvkm_device_pci_probe(struct pci_dev *pci_dev, const struct pci_device_id *id)
+ 		}
+ 	}
+ 
++	if (nvkm_vgpu_mgr_is_supported(device)) {
++		ret = nvkm_vgpu_mgr_init(&pdev->device);
++		if (ret)
++			goto done;
++	}
++
+ 	if (device->runpm) {
+ 		pm_runtime_allow(device->dev);
+ 		pm_runtime_put(device->dev);
+ 	}
+ 
+ 	return 0;
++
++done:
++	nvkm_device_del(&device);
++	return ret;
  }
  
+ static struct pci_device_id
+diff --git a/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/Kbuild b/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/Kbuild
+new file mode 100644
+index 000000000000..244e967d4edc
+--- /dev/null
++++ b/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/Kbuild
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: MIT
++nvkm-y += nvkm/vgpu_mgr/vgpu_mgr.o
 diff --git a/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c b/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c
-index 0639596f8a96..d6ddb1f02275 100644
---- a/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c
+new file mode 100644
+index 000000000000..a506414e5ba2
+--- /dev/null
 +++ b/drivers/gpu/drm/nouveau/nvkm/vgpu_mgr/vgpu_mgr.c
-@@ -3,6 +3,10 @@
- #include <core/driver.h>
- #include <nvif/driverif.h>
- #include <core/pci.h>
+@@ -0,0 +1,76 @@
++/* SPDX-License-Identifier: MIT */
++#include <core/device.h>
++#include <core/pci.h>
++#include <vgpu_mgr/vgpu_mgr.h>
 +
-+#include <nvrm/nvtypes.h>
-+#include <nvrm/535.113.01/nvidia/inc/kernel/gpu/gsp/gsp_static_config.h>
++static bool support_vgpu_mgr = false;
++module_param_named(support_vgpu_mgr, support_vgpu_mgr, bool, 0400);
 +
- #include <vgpu_mgr/vgpu_mgr.h>
- 
- static bool support_vgpu_mgr = false;
-@@ -120,3 +124,49 @@ void nvkm_vgpu_mgr_fini(struct nvkm_device *device)
- 	detach_nvkm(vgpu_mgr);
- 	vgpu_mgr->enabled = false;
- }
++static inline struct pci_dev *nvkm_to_pdev(struct nvkm_device *device)
++{
++	struct nvkm_device_pci *pci = container_of(device, typeof(*pci),
++						   device);
++
++	return pci->pdev;
++}
 +
 +/**
-+ * nvkm_vgpu_mgr_populate_vf_info - populate GSP_VF_INFO when vGPU
-+ * is enabled
++ * nvkm_vgpu_mgr_is_supported - check if a platform support vGPU
 + * @device: the nvkm_device pointer
-+ * @info: GSP_VF_INFO data structure
++ *
++ * Returns: true on supported platform which is newer than ADA Lovelace
++ * with SRIOV support.
 + */
-+void nvkm_vgpu_mgr_populate_gsp_vf_info(struct nvkm_device *device,
-+					void *info)
++bool nvkm_vgpu_mgr_is_supported(struct nvkm_device *device)
 +{
 +	struct pci_dev *pdev = nvkm_to_pdev(device);
-+	GspSystemInfo *gsp_info = info;
-+	GSP_VF_INFO *vf_info = &gsp_info->gspVFInfo;
-+	u32 lo, hi;
-+	u16 v;
-+	int pos;
 +
-+	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (!support_vgpu_mgr)
++		return false;
 +
-+	pci_read_config_word(pdev, pos + PCI_SRIOV_TOTAL_VF, &v);
-+	vf_info->totalVFs = v;
++	return device->card_type == AD100 &&  pci_sriov_get_totalvfs(pdev);
++}
 +
-+	pci_read_config_word(pdev, pos + PCI_SRIOV_VF_OFFSET, &v);
-+	vf_info->firstVFOffset = v;
++/**
++ * nvkm_vgpu_mgr_is_enabled - check if vGPU support is enabled on a PF
++ * @device: the nvkm_device pointer
++ *
++ * Returns: true if vGPU enabled.
++ */
++bool nvkm_vgpu_mgr_is_enabled(struct nvkm_device *device)
++{
++	return device->vgpu_mgr.enabled;
++}
 +
-+	pci_read_config_dword(pdev, pos + PCI_SRIOV_BAR, &lo);
-+	vf_info->FirstVFBar0Address = lo & 0xFFFFFFF0;
++/**
++ * nvkm_vgpu_mgr_init - Initialize the vGPU manager support
++ * @device: the nvkm_device pointer
++ *
++ * Returns: 0 on success, -ENODEV on platforms that are not supported.
++ */
++int nvkm_vgpu_mgr_init(struct nvkm_device *device)
++{
++	struct nvkm_vgpu_mgr *vgpu_mgr = &device->vgpu_mgr;
 +
-+	pci_read_config_dword(pdev, pos + PCI_SRIOV_BAR + 4, &lo);
-+	pci_read_config_dword(pdev, pos + PCI_SRIOV_BAR + 8, &hi);
++	if (!nvkm_vgpu_mgr_is_supported(device))
++		return -ENODEV;
 +
-+	vf_info->FirstVFBar1Address = (((u64)hi) << 32) + (lo & 0xFFFFFFF0);
++	vgpu_mgr->nvkm_dev = device;
++	vgpu_mgr->enabled = true;
 +
-+	pci_read_config_dword(pdev, pos + PCI_SRIOV_BAR + 12, &lo);
-+	pci_read_config_dword(pdev, pos + PCI_SRIOV_BAR + 16, &hi);
++	pci_info(nvkm_to_pdev(device),
++		 "NVIDIA vGPU mananger support is enabled.\n");
 +
-+	vf_info->FirstVFBar2Address = (((u64)hi) << 32) + (lo & 0xFFFFFFF0);
++	return 0;
++}
 +
-+#define IS_BAR_64(i) (((i) & 0x00000006) == 0x00000004)
++/**
++ * nvkm_vgpu_mgr_fini - De-initialize the vGPU manager support
++ * @device: the nvkm_device pointer
++ */
++void nvkm_vgpu_mgr_fini(struct nvkm_device *device)
++{
++	struct nvkm_vgpu_mgr *vgpu_mgr = &device->vgpu_mgr;
 +
-+	v = nvkm_rd32(device, 0x88000 + 0xbf4);
-+	vf_info->b64bitBar1 = IS_BAR_64(v);
-+
-+	v = nvkm_rd32(device, 0x88000 + 0xbfc);
-+	vf_info->b64bitBar2 = IS_BAR_64(v);
++	vgpu_mgr->enabled = false;
 +}
 -- 
 2.34.1
