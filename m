@@ -1,54 +1,54 @@
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5B82AD25;
-	Mon, 23 Sep 2024 14:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9897019CCFA;
+	Mon, 23 Sep 2024 14:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727101106; cv=none; b=C1erhxA3Gf57xF8NhDpm3H5RDcyg1SUdxHFje9AH8PlQXsNEx4rZZhbz+juvZvlV8X+Hba+eEOK13A7hHtB+OcDzRU9ViDEpMZDVy9MmkbE/YElPWB/CbIGpA7rjpJrObH/vkfk6Zxm+HAVGwrsleptss4PeIXCY1hEbpGAOvMA=
+	t=1727101109; cv=none; b=mw4bF01t4s2DFxnjDG63T8cUQAhrVkHZo0mcYEwti03ZTVW2/k5d5rV9J73bVWjPNvQD+ablHF2yjb7mULBWpx6+U+re2/YWANM95SkvPuibjhIOZ0/DLc45N5pSLcDYG7sIHyLhgVE310fTKEmsw088q+XjYKvZN94nhjTJ2j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727101106; c=relaxed/simple;
-	bh=Q0+zGVorf/SYsEEVITpX9CbnXwZ3TbJnOh0nFiHhWbg=;
+	s=arc-20240116; t=1727101109; c=relaxed/simple;
+	bh=uvZHZhXORwWLt3EuUDk4U5ebdUUe0uJW4Sh7k48mXpY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BMAsH/vx862sysd6S0MIZXg/RDNAtvP4ETPIT3KZPmTYGYbEO4hcNQWAbV8u6Y8IBw2VxXDynzxEQgPv97eWzSKsgqfL/Or+RIXH+79RDk3n1oEou/FJr+gQK9aSm6upZVhxnMabkiKZdFfR1avDiXRc/5wdxlxqB4WT87AHeIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=SSEG0YbM; arc=none smtp.client-ip=52.119.213.152
+	 MIME-Version:Content-Type; b=Aw/Wydg0ATPobbr2jsA/feK8aC1Jn6nAoi3hWr0AXqZ5Rv6uxgnb6w90eR+HOvwToFnEWT0GnR47ThSdtxP55yzSgsonbLRdCDmAy4GeTBE6GRCQzk4fTN2J2eDspvZo2uZTSMya6q3GJmjalFEOI+BKwTo0NAnhBMUnrxJ3aOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=C7g+Nakc; arc=none smtp.client-ip=207.171.188.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="SSEG0YbM"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="C7g+Nakc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1727101105; x=1758637105;
+  t=1727101108; x=1758637108;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9TOd+JE+xnybFGFEgMSEmA3pS8vQOq0t0XBQSs/NfVc=;
-  b=SSEG0YbMTu56Nfb6aZgjRHGaZ/T2z2oZzOmmQ8ACIRvQ2pNYVEri45BK
-   9VA5yNjlxPkhc1Db+G5FxTeOYa65ofeV/1LoNHI2OUAamm3sHmFHWSWAB
-   WKOysJJOo9kBjcLrZ0SWV3BDZ264xcupkq6CX42gzaw63xqkxL0DdyEoY
-   g=;
+  bh=sXVT52UMCjmzy+YBBlIyrCdztT/CnyQJDSmFN7zEL+k=;
+  b=C7g+NakcdNzbkUJskw7tpp0E/OyJtVCx3qN27khE9j3r6gNrkZffQ9ax
+   nhCSpxhJdvVg3vYPxLArFu+FMhejXCdC3rCz4h+0XhW8PL47Tmc9BOQFO
+   2oZVG9r2xUL7mKMBxZZRcwYDS64PmYfHaMrLHq039kV5Aws339uXoHlcX
+   Q=;
 X-IronPort-AV: E=Sophos;i="6.10,251,1719878400"; 
-   d="scan'208";a="27657133"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 14:18:22 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.43.254:20965]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.16.194:2525] with esmtp (Farcaster)
- id ced0b64f-5efc-4ec1-8f59-47278231eddd; Mon, 23 Sep 2024 14:18:21 +0000 (UTC)
-X-Farcaster-Flow-ID: ced0b64f-5efc-4ec1-8f59-47278231eddd
-Received: from EX19D031EUC001.ant.amazon.com (10.252.61.162) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+   d="scan'208";a="762881537"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 14:18:20 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:15088]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.37.171:2525] with esmtp (Farcaster)
+ id 1b97b3a0-d6be-4ba2-83f8-c6f1c649c930; Mon, 23 Sep 2024 14:18:18 +0000 (UTC)
+X-Farcaster-Flow-ID: 1b97b3a0-d6be-4ba2-83f8-c6f1c649c930
+Received: from EX19D033EUC003.ant.amazon.com (10.252.61.134) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 23 Sep 2024 14:18:20 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19D031EUC001.ant.amazon.com (10.252.61.162) with Microsoft SMTP Server
+ Mon, 23 Sep 2024 14:18:18 +0000
+Received: from EX19MTAUEB002.ant.amazon.com (10.252.135.47) by
+ EX19D033EUC003.ant.amazon.com (10.252.61.134) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 23 Sep 2024 14:18:20 +0000
+ Mon, 23 Sep 2024 14:18:17 +0000
 Received: from email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com
- (10.43.8.6) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
+ (10.43.8.2) by mail-relay.amazon.com (10.252.135.97) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 23 Sep 2024 14:18:20 +0000
+ 15.2.1258.34 via Frontend Transport; Mon, 23 Sep 2024 14:18:17 +0000
 Received: from dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com (dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com [10.253.74.38])
-	by email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com (Postfix) with ESMTPS id 0D8D440596;
-	Mon, 23 Sep 2024 14:18:18 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com (Postfix) with ESMTPS id 4D6CA40599;
+	Mon, 23 Sep 2024 14:18:16 +0000 (UTC)
 From: Ivan Orlov <iorlov@amazon.com>
 To: <hpa@zytor.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
 	<mingo@redhat.com>, <pbonzini@redhat.com>, <seanjc@google.com>,
@@ -57,9 +57,9 @@ CC: Ivan Orlov <iorlov@amazon.com>, <jalliste@amazon.com>,
 	<nh-open-source@amazon.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<x86@kernel.org>
-Subject: [PATCH 4/4] selftests: KVM: Add new test for faulty mmio usage
-Date: Mon, 23 Sep 2024 14:18:10 +0000
-Message-ID: <20240923141810.76331-5-iorlov@amazon.com>
+Subject: [PATCH 2/4] KVM: x86: Inject UD when fetching from MMIO
+Date: Mon, 23 Sep 2024 14:18:08 +0000
+Message-ID: <20240923141810.76331-3-iorlov@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240923141810.76331-1-iorlov@amazon.com>
 References: <20240923141810.76331-1-iorlov@amazon.com>
@@ -72,245 +72,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Implement the test which covers "weird" mmio usage. The test has 4 test
-cases:
+Currently, we simply return a KVM internal error with suberror =
+KVM_INTERNAL_ERROR_EMULATION if the guest tries to fetch instruction
+from MMIO range as we simply can't decode it.
 
-1) Guest sets IDT/GDT base to point to an MMIO region. Triple fault and
-shutdown are expected there.
-2) Guest jumps to MMIO address. Fetches from MMIO are not permitted, so
-UD is expected there.
-3) Guest sets an IDT entry to point to MMIO range. MMIO here happens
-after event delivery, so UD is expected.
-4) Guest points the UD IDT entry to MMIO range and causes UD after that.
-We should not go into infinite loop here, as we are constantly putting
-exception info onto the stack and it will eventually overflow.
+I believe it is not the best thing to do, considering that
 
-These test cases depend on previous patches in this patch series.
+  1) we don't give enough information to VMM about the issue we faced
+  2) the issue is triggered by the guest itself, so it is not the KVM
+     "internal" error.
+
+Inject the #UD into the guest instead and resume it's execution without
+giving an error to VMM, as it would be if we can't find a valid
+instruction at MMIO address.
 
 Signed-off-by: Ivan Orlov <iorlov@amazon.com>
 ---
- tools/testing/selftests/kvm/Makefile          |   1 +
- .../selftests/kvm/x86_64/faulty_mmio.c        | 199 ++++++++++++++++++
- 2 files changed, 200 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86_64/faulty_mmio.c
+ arch/x86/kvm/emulate.c     | 3 +++
+ arch/x86/kvm/kvm_emulate.h | 1 +
+ arch/x86/kvm/x86.c         | 7 ++++++-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-index 0c4b254ab56b..d9928c54e851 100644
---- a/tools/testing/selftests/kvm/Makefile
-+++ b/tools/testing/selftests/kvm/Makefile
-@@ -129,6 +129,7 @@ TEST_GEN_PROGS_x86_64 += x86_64/amx_test
- TEST_GEN_PROGS_x86_64 += x86_64/max_vcpuid_cap_test
- TEST_GEN_PROGS_x86_64 += x86_64/triple_fault_event_test
- TEST_GEN_PROGS_x86_64 += x86_64/recalc_apic_map_test
-+TEST_GEN_PROGS_x86_64 += x86_64/faulty_mmio
- TEST_GEN_PROGS_x86_64 += access_tracking_perf_test
- TEST_GEN_PROGS_x86_64 += demand_paging_test
- TEST_GEN_PROGS_x86_64 += dirty_log_test
-diff --git a/tools/testing/selftests/kvm/x86_64/faulty_mmio.c b/tools/testing/selftests/kvm/x86_64/faulty_mmio.c
-new file mode 100644
-index 000000000000..b83c1d646696
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86_64/faulty_mmio.c
-@@ -0,0 +1,199 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * This test covers error processing when doing weird things with MMIO addresses,
-+ * i.e. jumping into MMIO range or specifying it as IDT / GDT descriptor base.
-+ */
-+#include <stdio.h>
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include <stdint.h>
-+
-+#define MMIO_ADDR 0xDEADBEE000UL
-+/* This address is not canonical, so any reference will result in #GP */
-+#define GP_ADDR 0xDEADBEEFDEADBEEFULL
-+
-+enum test_desc_type {
-+	TEST_DESC_IDT,
-+	TEST_DESC_GDT,
-+};
-+
-+static const struct desc_ptr faulty_desc = {
-+	.address = MMIO_ADDR,
-+	.size = 0xFFF,
-+};
-+
-+static void faulty_desc_guest_code(enum test_desc_type dtype)
-+{
-+	if (dtype == TEST_DESC_IDT)
-+		__asm__ __volatile__("lidt %0"::"m"(faulty_desc));
-+	else
-+		__asm__ __volatile__("lgdt %0"::"m"(faulty_desc));
-+
-+	/* Generate a #GP */
-+	*((uint8_t *)GP_ADDR) = 0x1;
-+
-+	/* We should never reach this point */
-+	GUEST_ASSERT(0);
-+}
-+
-+/*
-+ * This test tries to point the IDT / GDT descriptor to an MMIO range.
-+ * This action should cause a triple fault in guest, as it happens when
-+ * your descriptors are messed up on the actual hardware.
-+ */
-+static void test_faulty_desc(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	int i;
-+
-+	enum test_desc_type dtype_tests[] = { TEST_DESC_IDT, TEST_DESC_GDT };
-+
-+	for (i = 0; i < ARRAY_SIZE(dtype_tests); i++) {
-+		vm = vm_create_with_one_vcpu(&vcpu, faulty_desc_guest_code);
-+		vcpu_args_set(vcpu, 1, dtype_tests[i]);
-+		virt_map(vm, MMIO_ADDR, MMIO_ADDR, 1);
-+
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SHUTDOWN);
-+		kvm_vm_free(vm);
-+	}
-+}
-+
-+static void jump_to_mmio_guest_code(bool write_first)
-+{
-+	void (*f)(void) = (void *)(MMIO_ADDR);
-+
-+	if (write_first) {
-+		/*
-+		 * We get different vmexit codes when accessing the MMIO address for the second
-+		 * time with VMX. For the first time it is an EPT violation, for the second -
-+		 * EPT misconfig. We need to check that we get #UD in both cases.
-+		 */
-+		*((char *)MMIO_ADDR) = 0x1;
-+	}
-+
-+	f();
-+
-+	/* We should never reach this point */
-+	GUEST_ASSERT(0);
-+}
-+
-+static void guest_ud_handler(struct ex_regs *regs)
-+{
-+	GUEST_DONE();
-+}
-+
-+/*
-+ * This test tries to jump to an MMIO address. As fetching the instructions
-+ * from MMIO is not supported by KVM and doesn't make any practical sense,
-+ * KVM should handle it gracefully and inject #UD into guest.
-+ */
-+static void test_jump_to_mmio(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_run *run;
-+	struct ucall uc;
-+	int i;
-+
-+	bool test_cases_write_first[] = { false, true };
-+
-+	for (i = 0; i < ARRAY_SIZE(test_cases_write_first); i++) {
-+		vm = vm_create_with_one_vcpu(&vcpu, jump_to_mmio_guest_code);
-+		virt_map(vm, MMIO_ADDR, MMIO_ADDR, 1);
-+		vcpu_args_set(vcpu, 1, test_cases_write_first[i]);
-+		vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
-+
-+		run = vcpu->run;
-+
-+		vcpu_run(vcpu);
-+		if (test_cases_write_first[i] && run->exit_reason == KVM_EXIT_MMIO) {
-+			/* Process first MMIO access if required */
-+			vcpu_run(vcpu);
-+		}
-+
-+		/* If #UD was injected correctly, our #UD handler will issue UCALL_DONE */
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, UCALL_EXIT_REASON);
-+		TEST_ASSERT(get_ucall(vcpu, &uc) == UCALL_DONE,
-+			    "Guest should have gone into #UD handler when jumping to MMIO address, however it didn't happen");
-+		kvm_vm_free(vm);
-+	}
-+}
-+
-+static void faulty_idte_guest_code(void)
-+{
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index e72aed25d721..d610c47fa1f4 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -4742,10 +4742,13 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	ctxt->fetch.end = ctxt->fetch.data + insn_len;
+ 	ctxt->opcode_len = 1;
+ 	ctxt->intercept = x86_intercept_none;
++	ctxt->is_mmio_fetch = false;
+ 	if (insn_len > 0)
+ 		memcpy(ctxt->fetch.data, insn, insn_len);
+ 	else {
+ 		rc = __do_insn_fetch_bytes(ctxt, 1);
++		if (rc == X86EMUL_IO_NEEDED)
++			ctxt->is_mmio_fetch = true;
+ 		if (rc != X86EMUL_CONTINUE)
+ 			goto done;
+ 	}
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 55a18e2f2dcd..46c0d1111ec1 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -362,6 +362,7 @@ struct x86_emulate_ctxt {
+ 	u8 seg_override;
+ 	u64 d;
+ 	unsigned long _eip;
++	bool is_mmio_fetch;
+ 
+ 	/* Here begins the usercopy section. */
+ 	struct operand src;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index c983c8e434b8..4fb57280ec7b 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8857,7 +8857,12 @@ static int handle_emulation_failure(struct kvm_vcpu *vcpu, int emulation_type)
+ 
+ 	kvm_queue_exception(vcpu, UD_VECTOR);
+ 
+-	if (!is_guest_mode(vcpu) && kvm_x86_call(get_cpl)(vcpu) == 0) {
 +	/*
-+	 * We are triggering #GP here, and as it's IDT entry points to an MMIO range,
-+	 * we should get an #UD as instruction fetching from MMIO address is prohibited
++	 * Don't return an internal error if the emulation error is caused by a fetch from MMIO
++	 * address. Injecting a #UD should be enough.
 +	 */
-+	*((uint8_t *)GP_ADDR) = 0x1;
-+
-+	/* We should never reach this point */
-+	GUEST_ASSERT(0);
-+}
-+
-+/*
-+ * When IDT entry points to an MMIO address, it should be handled as a jump to MMIO address
-+ * and should cause #UD in the guest, as fetches from MMIO are not supported. It should not
-+ * cause a triple fault in such a case, so we don't expect KVM_EXIT_SHUTDOWN here.
-+ */
-+static void test_faulty_idte(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct ucall uc;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, faulty_idte_guest_code);
-+	virt_map(vm, MMIO_ADDR, MMIO_ADDR, 1);
-+
-+	/* GP vector points to MMIO range, jumping to it will trigger an #UD */
-+	vm_install_exception_handler(vm, GP_VECTOR, (void *)MMIO_ADDR);
-+	vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
-+
-+	vcpu_run(vcpu);
-+	/* If we reach #UD handler it will issue UCALL_DONE */
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, UCALL_EXIT_REASON);
-+	TEST_ASSERT(get_ucall(vcpu, &uc) == UCALL_DONE,
-+		    "Guest should have gone into #UD handler when jumping to MMIO address, however it didn't happen");
-+	kvm_vm_free(vm);
-+}
-+
-+static void faulty_ud_idte_guest_code(void)
-+{
-+	asm("ud2");
-+
-+	/* We should never reach this point */
-+	GUEST_ASSERT(0);
-+}
-+
-+/*
-+ * This test checks that we won't hang in the infinite loop if the #UD handler
-+ * also causes #UD (as it points to an MMIO address). In this situation, we will
-+ * run out of stack eventually, which will cause a triple fault
-+ */
-+static void test_faulty_ud_handler(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, faulty_ud_idte_guest_code);
-+	virt_map(vm, MMIO_ADDR, MMIO_ADDR, 1);
-+
-+	vm_install_exception_handler(vm, UD_VECTOR, (void *)MMIO_ADDR);
-+
-+	vcpu_run(vcpu);
-+	/* #UD caused when jumping to #UD handler should overflow stack causing a triple fault */
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SHUTDOWN);
-+	kvm_vm_free(vm);
-+}
-+
-+int main(void)
-+{
-+	test_faulty_desc();
-+	test_jump_to_mmio();
-+	test_faulty_idte();
-+	test_faulty_ud_handler();
-+
-+	return EXIT_SUCCESS;
-+}
++	if (!is_guest_mode(vcpu) && kvm_x86_call(get_cpl)(vcpu) == 0 &&
++	    !vcpu->arch.emulate_ctxt->is_mmio_fetch) {
+ 		prepare_emulation_ctxt_failure_exit(vcpu);
+ 		return 0;
+ 	}
 -- 
 2.43.0
 
