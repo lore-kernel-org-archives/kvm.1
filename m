@@ -1,150 +1,113 @@
-Received: from mx2.freebsd.org (mx2.freebsd.org [96.47.72.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D39F367;
-	Wed, 25 Sep 2024 16:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=96.47.72.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727281744; cv=pass; b=gacKsM9ZwkQHJ+oJrg2EwbUrQi0BBR0No0pGxl8i+H4OXmMo7Ly7znpP4K5/kh3YVbXjWbTJfXW9+Jy+KdHv2EnizfOoJUiUz3fmjky9H8swqFZgVI+peu2Y+7WI14Kngh1SMyrpuJR0n4XZkZ7U3NSvaBn0ylEHqXkc3KvkT/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727281744; c=relaxed/simple;
-	bh=Drg62vbidm313cp43ukPdG1u2UTDR9VUvpU0FvdN/7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gNV45QOUKP4X+A0bacn3GVv1E18rFM+ZtcrGbcGcV1F9GcN/4a3KyqCWZCCKFlfjizV4x4Bnno9a3+j0PjykqpzA/AsUIJFNQY5pKX8yc42Nyo+L8pbnMk0m8jZIFKVdunrE/Lx+q/18TED195zXcovM+zgaDKuagsKM9GrxMyY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freebsd.org; spf=pass smtp.mailfrom=freebsd.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=ChT2OcBH; arc=pass smtp.client-ip=96.47.72.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freebsd.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebsd.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7247A62;
+	Wed, 25 Sep 2024 16:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727282719; cv=none; b=Ax++ce/B/oySvRIQ5nNSLv1xLmd2gmeRbkO20AHZYA7/jjTlQI3BXMIL+eDgIyWm0jJGJDy6tDHBdjWtc7k2knWycQrNGHNcwlGIrGmI+U/di1fcl3nwbdo1SvEeN4dYZp4O0kdbABUvK8imneP4dXGqecuGPIuVIf9/PIe3HJs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727282719; c=relaxed/simple;
+	bh=qgOwvX93MJaNEr7OQzS/TNQMPiUPOBpt0ph4xzwCx1w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AziAgYNVvwboynEcgkaYY5LVkkFiI1lr6p5Is101RhyjKuqts3xxLYLa41S01kO6fJ8mdW0Xa0Ug7aF9dOnBIfnBuW81mtuCeJm3X9MMEK748Bm6A2R2Z+qA8AKIp3mKu6FzMX4dpftl5EnHXQVMo0cz3ITpUsjkoeuoXy+AMHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onMHF/g0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="ChT2OcBH"
-Received: from mx1.freebsd.org (mx1.freebsd.org [IPv6:2610:1c1:1:606c::19:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
-	 client-signature RSA-PSS (4096 bits))
-	(Client CN "mx1.freebsd.org", Issuer "R10" (verified OK))
-	by mx2.freebsd.org (Postfix) with ESMTPS id 4XDMcY25Z3z4Xjy;
-	Wed, 25 Sep 2024 16:29:01 +0000 (UTC)
-	(envelope-from ssouhlal@freebsd.org)
-Received: from freefall.freebsd.org (freefall.freebsd.org [96.47.72.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "freefall.freebsd.org", Issuer "R11" (verified OK))
-	by mx1.freebsd.org (Postfix) with ESMTPS id 4XDMcX6Tx4z4VZx;
-	Wed, 25 Sep 2024 16:29:00 +0000 (UTC)
-	(envelope-from ssouhlal@freebsd.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
-	t=1727281740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QvovojzBC4sqSXOUEmyBpaOxWWALChCLJNU1wSv3wE4=;
-	b=ChT2OcBH/OLGrN/hySzAcnNSTVjaimwU1m4zXRgiI0qtdqf8kEHYzI48mk1RtMNIuYDgh6
-	JPShnfRLy5hlFQpBMEc/WkTXUVUxRMTVrOpiNpXPG7R351/2k6BLFUtXE7ZihgikSXG88E
-	V00k3XqcrG04VG3itQ9/Z6rf2wwpFNB7637pro0f8MVsHwinqB01g4PnAe+1aRXyJIdRV9
-	2hC9iLr4Wc1SAIMP7TG9yhOfOTrWiZpRLPSz8evCm+VH+3hQABHjH9fBowWNRqTh0p4z6H
-	b9NpIYLM1kCCI29C9tGP0ckVW3mr5amsdospnFzjs+nQIrlHNYH60g2kfM+s3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
-	s=dkim; t=1727281740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QvovojzBC4sqSXOUEmyBpaOxWWALChCLJNU1wSv3wE4=;
-	b=A277neFBlBIU+Zx5S1UOAZQ6dNd4CfWQip/JYgc+zFnlAycfgg4gfW99F9jMxRmOgA8Mj6
-	uMEl8NDDDFEHhOVBEgk/n1bYnw3uWL9bKwjTJjdORR3kCTUO6LSf7U40iQ4QXOp82T/m0s
-	pkXRmBEkM1UBX3q8bjcwnzRO0jybjTogJfSl3RZPhYvwmO+l4uNHn1BRS4X9PXNOD2mP4s
-	13Rof+CyYN48WYARxMertpSMGFE1nd8OUgm4FSyMURfd1CY049RpFJj6kS2beGRi+nfgp1
-	bChMNo8bDc4iTYqH/MgKSvDAhxsRjx/SILpSYDb2GoF5LklLUcMFZbcVs7osRQ==
-ARC-Authentication-Results: i=1;
-	mx1.freebsd.org;
-	none
-ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1727281740; a=rsa-sha256; cv=none;
-	b=tm3HfbMSD0p9XYaPvvtMZcfZNm4wXISgH7zunh3h7CsBcLszX0fCwf/icqrmN2v4sBqQRq
-	QrOEjprdzzcaRiXPyJrbJhRhiy9vY1TT6abHxyqPdihX6vsDmCdKo6dKnYwo4c2xu69KvA
-	scmqX8zDE+uqDDgLim1usGkiwTOwnj5Z54PNtvT3hY7PpwWGF+uZK0sOvUbr+49fsQcljJ
-	r7YXwqMDT0m7pxCnCHjrOuWYyvOkGax9o0LLmdhj1SwMnb4HjHpvD0kKTswrO4aUtTZDHO
-	DyRjTYEgpT5fq/UHIY5nQl+RWUSOnLDgfyq7f9MJyz/U8YuIcidppJMSlEZ0mg==
-Received: by freefall.freebsd.org (Postfix, from userid 1026)
-	id C07D6EC81; Wed, 25 Sep 2024 16:29:00 +0000 (UTC)
-Date: Wed, 25 Sep 2024 16:29:00 +0000
-From: Suleiman Souhlal <ssouhlal@freebsd.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Suleiman Souhlal <suleiman@google.com>, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, joelaf@google.com,
-	vineethrp@google.com, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Srikar Dronamraju <srikar@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v2] sched: Don't try to catch up excess steal time.
-Message-ID: <ZvQ6TKth0uySk3eJ@freefall.freebsd.org>
-References: <20240911111522.1110074-1-suleiman@google.com>
- <f0535c47ea81a311efd5cade70543cdf7b25b15c.camel@infradead.org>
- <ZvQPTYo2oCN-4YTM@freefall.freebsd.org>
- <c393230b8c258ab182f85b74cbc9f866acc2a5a2.camel@infradead.org>
- <ZvQo9gJgTlZ3nB03@freefall.freebsd.org>
- <982d866bd387964b47148b0492fe9aada3b9ae32.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onMHF/g0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5925C4CECE;
+	Wed, 25 Sep 2024 16:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727282718;
+	bh=qgOwvX93MJaNEr7OQzS/TNQMPiUPOBpt0ph4xzwCx1w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=onMHF/g0D43HW6aMXQhcIu1A27RFbkhoDeVTu1IsE3Dr45prf9Gt/b9XTbLxkLRdc
+	 tp+sKb+2tVL2RKsH7zt7pedqKxbxASz7T6hHTvkigsDpqXaREORqbOHeHr1WNosC80
+	 8oqjuX47b/9IC6c9ciSn6WciiPIOmDd4sLFsDQ49EcS7F2y6hlJlFootPDIZyx6tV1
+	 nZWbOIv6XsJEj83cV3qJkPJFVqvvPhr7TNk6o6VoBEYUa0GNLZHRv55RTy27voXKfL
+	 S1kfkqExZO+yREPbbJkOthV308A1sBbwWyv5+7Rufb9Ltpojr4m1MeoarzGHGNAwS0
+	 hJW9ST3pclReg==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f75129b3a3so192291fa.2;
+        Wed, 25 Sep 2024 09:45:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUZrVQFyfp3OROznK55Rykut0Vq4VzJw2zcFPgidFv6NsTIp5igjymbOi7x1ALJHZNX8dOA5JfLR94CsQ==@vger.kernel.org, AJvYcCUz+23C1CHv7iFrXAI2PEAOlsl3nKy4zCkgdpCzjVR+PZG/lT5iVlyfrYYV9edM8i+u5iKA7NZGYK+3MmbD@vger.kernel.org, AJvYcCVDkfKF4Wf1/S72iFv6+6GmsbTOzeH0z7QS2u4HE/mUpjgxlqabatrtoHE5damQ3TxOLgU=@vger.kernel.org, AJvYcCVv+ineSpy35ISvR/o04URA/heKwgTJwY6lwUmkbod4vH2jws/WdAr65sQcYJlRJ12uqvuvjxdiHDpM@vger.kernel.org, AJvYcCWJTF2NgETPwYnZC1l04iimVEYaciRTWWIYCqoca1IKqvoQthkXc4epr2xaSNGnA3pGtjbGYhBfxPN5@vger.kernel.org, AJvYcCWy+l3uwmBwVhKoQ6/pF6D3xkpICniLemWxfUq5kfXXMwCDkVtPh5Lhh5ALyLRylrh2TQCx1ZjWSYGfSytIJzpOpw==@vger.kernel.org, AJvYcCX2J8m9RLcuSRmneFctGBeIMH74AifQm5JUDjOfc6yxZKtYnNuLp3FgjZK0yTB/JPnYnhbm6XjfzZj48YLW@vger.kernel.org, AJvYcCXEjsV+TRobG1afondrysMpUh2I+xFjlDATIRV3KSx8PO6QqDEHMgTdTCXFuUizAKxBmZWbK162qUz9p2vy@vger.kernel.org, AJvYcCXMOrBwLsF12s7wQCENUNmqXoDWgmdI17sBCmGlAqja+tWcQOVOBNzH9VglDke1UwZ7ifo5UVf/oA8=@vger.kernel.org, AJvYcCXgNLhP3y+nNGHVlPY1jLREbsxBYjNh9qop0QTGyGMESUJ8dlVFgH1pgDGtuFrK2DfuZYNhfWM/Q8HWL3eDwxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxONOvlF79P2t0wIUAmL20ZGykKkiWT5lNNd+sBvz9HZ7Inrfys
+	4TcpN3U4YNbgn8s2N1quoivpCJkA1bc6Ev5v0LTEwAS5YynzrkOT+4Va4bACVxalIE8l8Yug4qT
+	aAC7qlbvbMKu8ISAB34QPfGJ2e6A=
+X-Google-Smtp-Source: AGHT+IHztXYzAiMagygAhzDxKwnY8wOFDul9cLbEROanbEnmGDGU1AJFUfvHaHhmJ6jyIhgnmNtdOygZ3lKoSkpCLq0=
+X-Received: by 2002:a2e:702:0:b0:2ef:20ae:d113 with SMTP id
+ 38308e7fff4ca-2f91ca64507mr16954501fa.40.1727282716715; Wed, 25 Sep 2024
+ 09:45:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <982d866bd387964b47148b0492fe9aada3b9ae32.camel@infradead.org>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-44-ardb+git@google.com> <CAHk-=wiLYCoGSnqqPq+7fHWgmyf5DpO4SLDJ4kF=EGZVVZOX4A@mail.gmail.com>
+In-Reply-To: <CAHk-=wiLYCoGSnqqPq+7fHWgmyf5DpO4SLDJ4kF=EGZVVZOX4A@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 25 Sep 2024 18:45:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH1xqYwhG16XxoBpoedTkBvt72xBjO259174jHirdf47A@mail.gmail.com>
+Message-ID: <CAMj1kXH1xqYwhG16XxoBpoedTkBvt72xBjO259174jHirdf47A@mail.gmail.com>
+Subject: Re: [RFC PATCH 14/28] x86/rethook: Use RIP-relative reference for
+ return address
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 25, 2024 at 04:34:57PM +0100, David Woodhouse wrote:
-> On Wed, 2024-09-25 at 15:15 +0000, Suleiman Souhlal wrote:
-> > Yes, that's a good way to put it: The excess steal time isn't actually
-> > being stolen from anyone.
-> > And since it's not being stolen from anyone, isn't the right thing to do
-> > to drop it?
-> 
-> It's being stolen from the system, isn't it? Just not any specific
-> userspace process?
+On Wed, 25 Sept 2024 at 18:39, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Wed, 25 Sept 2024 at 08:16, Ard Biesheuvel <ardb+git@google.com> wrote:
+> >
+> > Instead of pushing an immediate absolute address, which is incompatible
+> > with PIE codegen or linking, use a LEA instruction to take the address
+> > into a register.
+>
+> I don't think you can do this - it corrupts %rdi.
+>
+> Yes, the code uses  %rdi later, but that's inside the SAVE_REGS_STRING
+> / RESTORE_REGS_STRING area.
+>
 
-I guess it depends what you mean by "stolen". I would argue that it's not
-stolen from anyone since the time isn't actually counted anywhere.
+Oops, I missed that.
 
-> 
-> If we have separate "end of outgoing task" and "start of incoming task"
-> timestamps, surely the time between those two must be accounted
-> *somewhere*?
+> And we do have special calling conventions that aren't the regular
+> ones, so %rdi might actually be used elsewhere. For example,
+> __get_user_X and __put_user_X all have magical calling conventions:
+> they don't actually use %rdi, but part of the calling convention is
+> that the unused registers aren't modified.
+>
+> Of course, I'm not actually sure you can probe those and trigger this
+> issue, but it all makes me think it's broken.
+>
+> And it's entirely possible that I'm wrong for some reason, but this
+> just _looks_ very very wrong to me.
+>
+> I think you can do this with a "pushq mem" instead, and put the
+> relocation into the memory location.
+>
 
-Not exactly. clock_task is essentially frozen until the next
-update_rq_clock(), at which point we'll look at how much sched_clock_cpu
-advanced and subtract how much steal time advanced. The two things
-are done in separate spots (update_rq_clock() and update_rq_clock_task()),
-indepedently (which is where the race is happening).
-As far as I can tell, the time between the two isn't really accounted
-anywhere.
+I'll change this into
 
-The "end of outgoing task" and "start of incoming task" timestamps should
-end up being the same.
+  pushq arch_rethook_trampoline@GOTPCREL(%rip)
 
-> 
-> > There might still be extra steal time that doesn't exceed the current
-> > 'delta' from the race between reading the two values, that would still
-> > be erroneously accounted to the outgoing task, which this patch doesn't
-> > address, but we know that any steal > delta is from this race and should
-> > be dropped.
-> 
-> Well that's what we want the atomic paired read for :)
-
-Right, but I don't think it's that simple. We aren't only reading memory
-but also a clock.
-It might be possible to address this with a mechanism like rseq, but that
-would be a much bigger patch set than the current one (and I don't think
-anyone has ever attempted to do rseq for VMs yet).
-
-(There is also another potential issue I spotted with steal time, that
-has to do with reading another VCPU's steal time while it's not running,
-but I'll start a separate discussion about that with a different patch set.)
-
-Thanks for the discussion.
--- Suleiman
+which I had originally. I was trying to avoid the load from memory,
+but that obviously only works if the register is not live.
