@@ -1,59 +1,59 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E2885628
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE312B176
 	for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 17:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727284311; cv=none; b=AWkKWY1XTg6XZwjWXsSc+8heX+mE89LivwL9j3X4g7l4FUf/FZ7NiGSzDvDtIGFIL+5XNvXDZwWiu3o+VrgYb/ooCDkxvwpvypNwdeMOcaxeP9H1Sjc6UpCPAPxAUUF+WBCbgQdUn3Tl7spoKlL7EWCIS7NzP6eAc+cehSGF7ic=
+	t=1727284311; cv=none; b=OGIuZUpugPbq9uElFkWwa3zbcYMbmPMGhV4tuX6QiKbdXJyVfKgx4iGl0hQU7L+8pLbcKLG5y/m5VzXdulo8qEonptuj59iJ13LlIQpt0p9o+b+mLQ4Z6b7KDRTtbmDtCksUQjg8ziVQgINM5UngKW25YRChCOMFUBh3ydgen4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727284311; c=relaxed/simple;
-	bh=lOeioTiHb1xpwW5Cln9C3vr+QU6UmszUoUpZcKnkq+k=;
+	bh=Z4cZsFtosR7h9PTMPmcmZ3THu8mm76XIlX05rHkyhaQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=abnFsgMZorJdBMZn5pDcrJZcAiNodkKlwyaL+1n1+Lmob+WvpoIn9XP02EXmDMLE4g+UInsL04OClpAl+qaiA6UXrnAX450mcXtqvtG4qCaFn3Ce2tYD7DuGKPL+ehj64HFxFFAJTopekkMIfRMhgI4vIGYJXQss3TkayER08RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CU+Ciedv; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version:Content-Type; b=DK1VeQHSolNTdzOvuU69StGG7iGXqh8STWbhCFf5P8W4xkP7g9kn9HABFPt/TlU8shdcxJuwfK5o/nyosm2CcN82+lkJOkmPBcCikfHYpcpPqWGzbsG2HWXvUEBGfCj1vXT765451+/bWK9AT0a020uoykRqrulR7+vSwXr6GTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dTzgVNuA; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CU+Ciedv"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cb1e623d1so349245e9.0
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dTzgVNuA"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso884125e9.0
         for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 10:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1727284308; x=1727889108; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
-        b=CU+Ciedvv+lsH5zaV5GhPVx2PMvID12wdv1UQpCKcBvDzIMrHic2Q9T60amYWCIJJm
-         LE7w2eivTqcvUARoarfg2UW5l1LsKQb0AIS95ZYEAsd1v4r2+KhIzY5C1oz1uvo0OO2f
-         St95hKta9fWasj3Clhf7Rjj9sEnO/V+iiIPLLPuEHrDbIrF3eZYemgpG5dQdOLpeLuje
-         YUZ2TNxH4+RU6Ybnb4mjchW/4u50CZ+SbL5V2lzdpFA0pES2WZ60vyw/F4m9tEmnl/As
-         ti2USiUPWa6hcdtXLCNzQW5K/AinAhoIMAIaM0pc8jLT2BR6Beffl168dNFfT8XGcitc
-         XQbQ==
+        bh=KaJivYDlItR4YIDqMIuLxegmAwwZvWWIxpxaaVqdrBQ=;
+        b=dTzgVNuAXBEEflLNiebDkbMkgH5WinXm8i9zbRlHofzMUgFFXRKvgNSlZz1AbmQIql
+         poxdYMVzo+1v6CtAQ4NxxKCg6r9SlxcEO7Bm2Cx/hfYZb+3G95dMPUTi2FKwNTBJUBjh
+         OZsvgLPK7nufiP29edgtBD8Wvz4bW0eb6YNy728U3gJvOYe6SQ2YLMQJ2hYerMdCQdWd
+         /t2xS6F5/5Fi1915Co6YSv+qsPiy5TFgmWWDwHhGVN3EsU5Nsc5CUDfMS27eI4V8VpYG
+         eZXTDWDFlxX7ulveAVfWNhbaH3jO/bax4yn3fv8xXazXd9OfHyuERZen2fGzf2hMlp1V
+         h9Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1727284308; x=1727889108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
-        b=RpyItbcFuit59Y3uUW2fZcvnEoXraAqYLXRSOTQJGXaokauUWxS/lxgKdHFUWrZ8ZN
-         g8sraCHB9BErN2AwliFJV8AmMISksFyH4c2McuGbe53XnjjTTxNVVx4WPv+HZj6bVNXP
-         kWWC48N3KvlCWm9HX72IO9PBairEiSzotFYTgNMgUjFlbTJAkyWYOwaiMjAljHDViPDt
-         PFOwwhMZbZnZqfVS+gLmJAHFPnE9h9SWXxnfo/wrUzLXwtg/4F40PejwlNTa0d8XXsF8
-         Fpq3ezXWmgIF6wG1UFUmRj4EOSeI7xc2Wpeo4edYV1ZMdDFr1CxH2MqrA2EnAAwTqWg+
-         3LOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN5Al4Ib0Np+NUckLYep6geXYZhicMT5+KZ1cq3vxxEyd06pHGG4K+7A0LpOol256LQ7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF9CCfWRSeKkET9PGrjAqiheEDXDAIVmWlccMZK/cPGIh0pFBy
-	mkKvemNLpjVlc9kpSHr93iyB+ZKn61j2XdkvN7Cy5v6kRlCrrRVVxm5jWVkECeU=
-X-Google-Smtp-Source: AGHT+IGBCTHIWfSfgWAoxWqUTo8+jlKpLyEBTIm6tcnrukMNtvBJLrfotsddLNAtN5yhINvOVzR10A==
-X-Received: by 2002:a05:600c:1c05:b0:42c:b63e:fea6 with SMTP id 5b1f17b1804b1-42e961362e8mr25316905e9.22.1727284307691;
-        Wed, 25 Sep 2024 10:11:47 -0700 (PDT)
+        bh=KaJivYDlItR4YIDqMIuLxegmAwwZvWWIxpxaaVqdrBQ=;
+        b=Ka7gKwOnf1ilkqDoYZYou32mp/qLhtWfjEXX/P9ERap5ZE6yRW72p6drSX8ikEvR+V
+         HvOToSwqpySTUOEyDdqi9NzeSVWptm0rXOLi8SnSyf9f08b5B2TLDMYi1iuWZdE5mIZO
+         mQTgIAdEbX9tjMhI6foIzCuqubmprRPL0nJZufHaHG9cuQ2BGJ+NKZuLmt1vqV4jUd+o
+         umrTqdZH049735CVP2nM/sQ0YOwqs6ODPb64KSPvLJY9J+ZdbneXjr7gsYLP/sgwXD5/
+         ZYgtHOyHxt4wmztnGQ+N1xrUBtoAaNqXj3RfcvCZWiAu234mYB0CE4QCXGjftF3cJJ9p
+         WHKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWynyuM4Sp8T0aObbx+ccCCCq7urmE6ug2VroraxbVexfW3+wCDyMKmEFwOZW/2yVrLuDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztO8dA1iluRHCOzSfCrHtYy4+OhBS1LYE4uy025ARYRGeHIDvC
+	X55jWJe+CRaEj1H365+AEMjujS5HQ1ERWzpczG/Aw8+de+FzukJIq+RR7gS3ra0=
+X-Google-Smtp-Source: AGHT+IGEUdwdXmmXxyj5s5u8wIU8mWo+iyIURbnXAseiU9n2QlRwwUQiN93/e4JQ8cQ12tQq4BVfKQ==
+X-Received: by 2002:a05:600c:3542:b0:424:895c:b84b with SMTP id 5b1f17b1804b1-42f521cb7b9mr2431035e9.4.1727284308140;
+        Wed, 25 Sep 2024 10:11:48 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e90cd2d3dsm44179475e9.1.2024.09.25.10.11.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969f1fe4sm24113855e9.14.2024.09.25.10.11.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 1C5475FA77;
+	by draig.lan (Postfix) with ESMTP id 4FA755FAAF;
 	Wed, 25 Sep 2024 18:11:41 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,9 +81,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Yanan Wang <wangyanan55@huawei.com>,
 	Thomas Huth <thuth@redhat.com>,
 	Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 08/10] MAINTAINERS: mention my gdbstub/next tree
-Date: Wed, 25 Sep 2024 18:11:38 +0100
-Message-Id: <20240925171140.1307033-9-alex.bennee@linaro.org>
+Subject: [PATCH 10/10] tests/tcg: enable basic testing for aarch64_be-linux-user
+Date: Wed, 25 Sep 2024 18:11:40 +0100
+Message-Id: <20240925171140.1307033-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240925171140.1307033-1-alex.bennee@linaro.org>
 References: <20240925171140.1307033-1-alex.bennee@linaro.org>
@@ -96,25 +96,129 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Make it easy for people to see what is already queued.
+We didn't notice breakage of aarch64_be because we don't have any TCG
+tests for it. However while the existing aarch64 compiler can target
+big-endian builds no one packages a BE libc. Instead we bang some
+rocks together to do the most basic of hello world with a nostdlib
+syscall test.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ configure                            |  5 ++++
+ tests/tcg/aarch64_be/hello.c         | 35 ++++++++++++++++++++++++++++
+ tests/tcg/Makefile.target            |  7 +++++-
+ tests/tcg/aarch64_be/Makefile.target | 17 ++++++++++++++
+ 4 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/aarch64_be/hello.c
+ create mode 100644 tests/tcg/aarch64_be/Makefile.target
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7ac2252303..f34b8843e4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3028,6 +3028,7 @@ F: gdb-xml/
- F: tests/tcg/multiarch/gdbstub/*
- F: scripts/feature_to_c.py
- F: scripts/probe-gdb-support.py
-+T: git https://gitlab.com/stsquad/qemu gdbstub/next
+diff --git a/configure b/configure
+index aa7aae70fa..1aebf8ece0 100755
+--- a/configure
++++ b/configure
+@@ -1274,6 +1274,7 @@ probe_target_compiler() {
+   target_arch=${1%%-*}
+   case $target_arch in
+     aarch64) container_hosts="x86_64 aarch64" ;;
++    aarch64_be) container_hosts="x86_64 aarch64" ;;
+     alpha) container_hosts=x86_64 ;;
+     arm) container_hosts="x86_64 aarch64" ;;
+     hexagon) container_hosts=x86_64 ;;
+@@ -1303,6 +1304,10 @@ probe_target_compiler() {
+     case $target_arch in
+       # debian-all-test-cross architectures
  
- Memory API
- M: Paolo Bonzini <pbonzini@redhat.com>
++      aarch64_be)
++        container_image=debian-all-test-cross
++        container_cross_prefix=aarch64-linux-gnu-
++        ;;
+       hppa|m68k|mips|riscv64|sparc64)
+         container_image=debian-all-test-cross
+         ;;
+diff --git a/tests/tcg/aarch64_be/hello.c b/tests/tcg/aarch64_be/hello.c
+new file mode 100644
+index 0000000000..93c6074db1
+--- /dev/null
++++ b/tests/tcg/aarch64_be/hello.c
+@@ -0,0 +1,35 @@
++/*
++ * Non-libc syscall hello world for Aarch64 BE
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#define __NR_write 64
++#define __NR_exit 93
++
++int write(int fd, char * buf, int len)
++{
++    register int x0 __asm__("x0") = fd;
++    register char * x1 __asm__("x1") = buf;
++    register int x2 __asm__("x2") = len;
++    register int x8 __asm__("x8") = __NR_write;
++
++    asm volatile("svc #0" : : "r"(x0), "r"(x1), "r"(x2), "r"(x8));
++
++    return len;
++}
++
++void exit(int ret)
++{
++    register int x0 __asm__("x0") = ret;
++    register int x8 __asm__("x8") = __NR_exit;
++
++    asm volatile("svc #0" : : "r"(x0), "r"(x8));
++    __builtin_unreachable();
++}
++
++void _start(void)
++{
++    write(1, "Hello World\n", 12);
++    exit(0);
++}
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 2da70b2fcf..9722145b97 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -103,9 +103,14 @@ ifeq ($(filter %-softmmu, $(TARGET)),)
+ # then the target. If there are common tests shared between
+ # sub-targets (e.g. ARM & AArch64) then it is up to
+ # $(TARGET_NAME)/Makefile.target to include the common parent
+-# architecture in its VPATH.
++# architecture in its VPATH. However some targets are so minimal we
++# can't even build the multiarch tests.
++ifneq ($(filter $(TARGET_NAME),aarch64_be),)
++-include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
++else
+ -include $(SRC_PATH)/tests/tcg/multiarch/Makefile.target
+ -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
++endif
+ 
+ # Add the common build options
+ CFLAGS+=-Wall -Werror -O0 -g -fno-strict-aliasing
+diff --git a/tests/tcg/aarch64_be/Makefile.target b/tests/tcg/aarch64_be/Makefile.target
+new file mode 100644
+index 0000000000..297d2cf71c
+--- /dev/null
++++ b/tests/tcg/aarch64_be/Makefile.target
+@@ -0,0 +1,17 @@
++# -*- Mode: makefile -*-
++#
++# A super basic AArch64 BE makefile. As we don't have any big-endian
++#l ibc available the best we can do is a basic Hello World.
++
++AARCH64BE_SRC=$(SRC_PATH)/tests/tcg/aarch64_be
++VPATH += $(AARCH64BE_SRC)
++
++AARCH64BE_TEST_SRCS=$(notdir $(wildcard $(AARCH64BE_SRC)/*.c))
++AARCH64BE_TESTS=$(AARCH64BE_TEST_SRCS:.c=)
++#MULTIARCH_TESTS = $(MULTIARCH_SRCS:.c=)
++
++# We need to specify big-endian cflags
++CFLAGS +=-mbig-endian -ffreestanding
++LDFLAGS +=-nostdlib
++
++TESTS += $(AARCH64BE_TESTS)
 -- 
 2.39.5
 
