@@ -1,60 +1,60 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2780884A2C
-	for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 17:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E2885628
+	for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 17:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727284311; cv=none; b=tgATTVow+RyktMgZ+OqHiWVGwVei7vhNW6sOxT/EAJNyojWajRPksBn58JEhlbEO1Q/wX5fdeD49TosjcOIQlprx1L8L7Y9RWY+l4it5y65+ypUTdIYuwOner8Pk1rfbHUVorfEkqfVfl/z98vdAtUMUXThybd5//WCpmb/zNDc=
+	t=1727284311; cv=none; b=AWkKWY1XTg6XZwjWXsSc+8heX+mE89LivwL9j3X4g7l4FUf/FZ7NiGSzDvDtIGFIL+5XNvXDZwWiu3o+VrgYb/ooCDkxvwpvypNwdeMOcaxeP9H1Sjc6UpCPAPxAUUF+WBCbgQdUn3Tl7spoKlL7EWCIS7NzP6eAc+cehSGF7ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727284311; c=relaxed/simple;
-	bh=3ocp18cipe28Y1G4M2yx66dkQYTqfF/PEb1KxGFg+rU=;
+	bh=lOeioTiHb1xpwW5Cln9C3vr+QU6UmszUoUpZcKnkq+k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iSyMAnorUrz+3gc8RDIKnpN4bFA4XpnlqPaabXFXdMw0kEeGy+zK4JhwqBj60/HaDXAT3CjHXqeigrnq4MTkBZ91dWxR2RRU+3fQNBQBy/ZwUrS5KV1YbJmbxKIrLWdZ6kF4gXrgI0H63Zdmxj44CT54SI5ADYEbYqVxgP0iPHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tF40LMqk; arc=none smtp.client-ip=209.85.221.52
+	 MIME-Version:Content-Type; b=abnFsgMZorJdBMZn5pDcrJZcAiNodkKlwyaL+1n1+Lmob+WvpoIn9XP02EXmDMLE4g+UInsL04OClpAl+qaiA6UXrnAX450mcXtqvtG4qCaFn3Ce2tYD7DuGKPL+ehj64HFxFFAJTopekkMIfRMhgI4vIGYJXQss3TkayER08RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CU+Ciedv; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tF40LMqk"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37cc4e718ecso27476f8f.0
-        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 10:11:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CU+Ciedv"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cb1e623d1so349245e9.0
+        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 10:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727284307; x=1727889107; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1727284308; x=1727889108; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
-        b=tF40LMqk2ISNDRwNasCuRpLI7/vY247CWXBRfajCHNuTRl1Pq46zeG+jJc2z1AE9hp
-         P0YKxZaGucZ6/n2RMe7Wt8aFdjQXLIRbjP4GkXmqfaf19dktvGAKywu+KlmYwM859oaY
-         c9w7rRmylpW7UxIg+zAK95PdrBz9uWCFFRT2y2tyhc7+9a+x6s3azoby0qy0TJ2/bCEI
-         D9pbJdG2/voi5r6rI1ViJVizk//Ec8Kn5+JPZOjNQnIQrBowyI2WgFQN02yTrEuNEPVO
-         xw/a6JhBIDw94qMjXhJFasptAXSjTIVWPANxqVqzVTLi3sqS9JOgido/yLna58AelI9f
-         vuSw==
+        bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
+        b=CU+Ciedvv+lsH5zaV5GhPVx2PMvID12wdv1UQpCKcBvDzIMrHic2Q9T60amYWCIJJm
+         LE7w2eivTqcvUARoarfg2UW5l1LsKQb0AIS95ZYEAsd1v4r2+KhIzY5C1oz1uvo0OO2f
+         St95hKta9fWasj3Clhf7Rjj9sEnO/V+iiIPLLPuEHrDbIrF3eZYemgpG5dQdOLpeLuje
+         YUZ2TNxH4+RU6Ybnb4mjchW/4u50CZ+SbL5V2lzdpFA0pES2WZ60vyw/F4m9tEmnl/As
+         ti2USiUPWa6hcdtXLCNzQW5K/AinAhoIMAIaM0pc8jLT2BR6Beffl168dNFfT8XGcitc
+         XQbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727284307; x=1727889107;
+        d=1e100.net; s=20230601; t=1727284308; x=1727889108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
-        b=ZQkXKNXwjVWHn07okOUq+Nbs1RGe1gf9sUr6h1a390eY0XoRkB+2gDbfHNAao4z6Ey
-         6I2GSZeBBftxC9Jgg9aORxxIlZ65XE2oeP2rT3aoeF3GBhe8D/TBTTzuwjXVia2RbYCJ
-         EafizR9DOK2beElXBqjGuDXU/ax0tQjcoNj7GaKZyVw8mp9FmObQWp4YXUftlCiVyCjI
-         E413NB7L+Aq0FXT+z1TuwCm29i+Fee5A/h6qSC/CYuY3DecGtFfQ2p8gW0qwA5EaI0Ki
-         USJSbrQJ0M7hCaLpqTr9czddn2PNKzcsu+CgS0N9C8rScBhp0rAOe5oYCTjJEkL6/l8d
-         fJnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWGzuHhnupAo4ptE7JTi4jWseM6VtTPMCVrgLxeq8GLAJmxwyLLbXZNUraSpBnvMi5Zzus=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrhBBJ4IhykKn5SQec1T0aQ4cnETPc12NDUfvcsJ1sC60jo/2k
-	lyTEGaN2YxBCa918e9e0ywFLjVMXsG0Joaq8gM6b6TuMgmL1WIs+8y6GvjLxk1s=
-X-Google-Smtp-Source: AGHT+IHV6HV/eWaJfeffMpjzbiz3n6OhSG/OKMDSorPfnryDAPUV5GyUbaXuXJP53F/aVYvFjacx1g==
-X-Received: by 2002:a5d:6685:0:b0:374:c977:7453 with SMTP id ffacd0b85a97d-37cc24762e0mr2263987f8f.25.1727284307287;
+        bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
+        b=RpyItbcFuit59Y3uUW2fZcvnEoXraAqYLXRSOTQJGXaokauUWxS/lxgKdHFUWrZ8ZN
+         g8sraCHB9BErN2AwliFJV8AmMISksFyH4c2McuGbe53XnjjTTxNVVx4WPv+HZj6bVNXP
+         kWWC48N3KvlCWm9HX72IO9PBairEiSzotFYTgNMgUjFlbTJAkyWYOwaiMjAljHDViPDt
+         PFOwwhMZbZnZqfVS+gLmJAHFPnE9h9SWXxnfo/wrUzLXwtg/4F40PejwlNTa0d8XXsF8
+         Fpq3ezXWmgIF6wG1UFUmRj4EOSeI7xc2Wpeo4edYV1ZMdDFr1CxH2MqrA2EnAAwTqWg+
+         3LOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVN5Al4Ib0Np+NUckLYep6geXYZhicMT5+KZ1cq3vxxEyd06pHGG4K+7A0LpOol256LQ7c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF9CCfWRSeKkET9PGrjAqiheEDXDAIVmWlccMZK/cPGIh0pFBy
+	mkKvemNLpjVlc9kpSHr93iyB+ZKn61j2XdkvN7Cy5v6kRlCrrRVVxm5jWVkECeU=
+X-Google-Smtp-Source: AGHT+IGBCTHIWfSfgWAoxWqUTo8+jlKpLyEBTIm6tcnrukMNtvBJLrfotsddLNAtN5yhINvOVzR10A==
+X-Received: by 2002:a05:600c:1c05:b0:42c:b63e:fea6 with SMTP id 5b1f17b1804b1-42e961362e8mr25316905e9.22.1727284307691;
         Wed, 25 Sep 2024 10:11:47 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e90274aa0sm35547145e9.0.2024.09.25.10.11.41
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e90cd2d3dsm44179475e9.1.2024.09.25.10.11.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 8619C5F92F;
-	Wed, 25 Sep 2024 18:11:40 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 1C5475FA77;
+	Wed, 25 Sep 2024 18:11:41 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
@@ -80,11 +80,10 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Laurent Vivier <laurent@vivier.eu>,
 	Yanan Wang <wangyanan55@huawei.com>,
 	Thomas Huth <thuth@redhat.com>,
-	Beraldo Leal <bleal@redhat.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 02/10] tests/docker: Fix microblaze atomics
-Date: Wed, 25 Sep 2024 18:11:32 +0100
-Message-Id: <20240925171140.1307033-3-alex.bennee@linaro.org>
+	Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 08/10] MAINTAINERS: mention my gdbstub/next tree
+Date: Wed, 25 Sep 2024 18:11:38 +0100
+Message-Id: <20240925171140.1307033-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240925171140.1307033-1-alex.bennee@linaro.org>
 References: <20240925171140.1307033-1-alex.bennee@linaro.org>
@@ -97,73 +96,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+Make it easy for people to see what is already queued.
 
-GCC produces invalid code for microblaze atomics.
-
-The fix is unfortunately not upstream, so fetch it from an external
-location and apply it locally.
-
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240919152308.10440-1-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .../debian-microblaze-cross.d/build-toolchain.sh          | 8 ++++++++
- tests/docker/dockerfiles/debian-toolchain.docker          | 7 +++++++
- 2 files changed, 15 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-index 23ec0aa9a7..c5cd0aa931 100755
---- a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-+++ b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-@@ -10,6 +10,8 @@ TOOLCHAIN_INSTALL=/usr/local
- TOOLCHAIN_BIN=${TOOLCHAIN_INSTALL}/bin
- CROSS_SYSROOT=${TOOLCHAIN_INSTALL}/$TARGET/sys-root
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7ac2252303..f34b8843e4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3028,6 +3028,7 @@ F: gdb-xml/
+ F: tests/tcg/multiarch/gdbstub/*
+ F: scripts/feature_to_c.py
+ F: scripts/probe-gdb-support.py
++T: git https://gitlab.com/stsquad/qemu gdbstub/next
  
-+GCC_PATCH0_URL=https://raw.githubusercontent.com/Xilinx/meta-xilinx/refs/tags/xlnx-rel-v2024.1/meta-microblaze/recipes-devtools/gcc/gcc-12/0009-Patch-microblaze-Fix-atomic-boolean-return-value.patch
-+
- export PATH=${TOOLCHAIN_BIN}:$PATH
- 
- #
-@@ -31,6 +33,12 @@ mv gcc-11.2.0 src-gcc
- mv musl-1.2.2 src-musl
- mv linux-5.10.70 src-linux
- 
-+#
-+# Patch gcc
-+#
-+
-+wget -O - ${GCC_PATCH0_URL} | patch -d src-gcc -p1
-+
- mkdir -p bld-hdr bld-binu bld-gcc bld-musl
- mkdir -p ${CROSS_SYSROOT}/usr/include
- 
-diff --git a/tests/docker/dockerfiles/debian-toolchain.docker b/tests/docker/dockerfiles/debian-toolchain.docker
-index 687a97fec4..ab4ce29533 100644
---- a/tests/docker/dockerfiles/debian-toolchain.docker
-+++ b/tests/docker/dockerfiles/debian-toolchain.docker
-@@ -10,6 +10,8 @@ FROM docker.io/library/debian:11-slim
- # ??? The build-dep isn't working, missing a number of
- # minimal build dependiencies, e.g. libmpc.
- 
-+RUN sed 's/^deb /deb-src /' </etc/apt/sources.list >/etc/apt/sources.list.d/deb-src.list
-+
- RUN apt update && \
-     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
-     DEBIAN_FRONTEND=noninteractive eatmydata \
-@@ -33,6 +35,11 @@ RUN cd /root && ./build-toolchain.sh
- # and the build trees by restoring the original image,
- # then copying the built toolchain from stage 0.
- FROM docker.io/library/debian:11-slim
-+RUN apt update && \
-+    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
-+    DEBIAN_FRONTEND=noninteractive eatmydata \
-+    apt install -y --no-install-recommends \
-+        libmpc3
- COPY --from=0 /usr/local /usr/local
- # As a final step configure the user (if env is defined)
- ARG USER
+ Memory API
+ M: Paolo Bonzini <pbonzini@redhat.com>
 -- 
 2.39.5
 
