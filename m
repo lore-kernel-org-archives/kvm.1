@@ -1,54 +1,54 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB5618F2E1
-	for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 15:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C23190499
+	for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 15:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276548; cv=none; b=LKXVwq4PL0LAI34BmJdhFrR9Rtpv2gm6C6fo7LPTN3y3AuYhYLQUiA1vg2IPv6fD2OfFHLn8/QzywR3Ch18fFWcioOod3IFhgS1i+uHtlvmydhx2rS+QSso4zF5CGWQAUSczeN1Kanrm9jjbpwKsdk994ZQDG/DE5AnwdpEXiT0=
+	t=1727276551; cv=none; b=q6r1TuE1qgY4g28ZdMUySHwWCA+9Nhh1vE8GNA7eaJnWs1v1neu09Q7YryiNeWeywBYWDjtk9kgvQCJowSBg+3BoKcWY/7VHIsqN6akYagoZIUFixqk54p/tnpvggMuMwJo3oGc1vvRGQf9H7aKhqditwdbcj/ObtVLb7lGymV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276548; c=relaxed/simple;
-	bh=vuy2srbwlGWCNhjJ429H+XQTUepQW5BfwFX52st1yXg=;
+	s=arc-20240116; t=1727276551; c=relaxed/simple;
+	bh=tOVKR1lo4TSaVSSD57+XbfuDxZ/gh43zpiGViV/8Jbk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J+A9kjD+lRv381W8pFV1yUKfho4AZkUY0EQ5+USCdyTCFpA6WtlX2OkMEmEYz867rnTxGNFH3WbiXfaos9RxZNpTclknB0//auGlOIAvFnpdQG+N5tYsTDABUou6MzA4Tca1oF49Vi5WjgVoq7Hpw2fCMkgXVbW2EQkrKL3bNK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P1KxEfU7; arc=none smtp.client-ip=209.85.128.201
+	 To:Cc:Content-Type; b=IZSggig7/hi/ZWoHDIUJB5xiIXiZrJU+5UqEJwI11BhxYsxBQgEZ5iiMrKX9rzBB6Du7AsxDZMjQK2fJXA1ku8dSuRpLu2ti1atN0DAFWGsaaci4Q/8o4+yRBKFZHtvYOQHr+QDOFV47fQSSN9QGZ9kcRvnfK7Bb2NQbzjyId90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GnkKjhtp; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P1KxEfU7"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e2261adfdeso8791677b3.2
-        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 08:02:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GnkKjhtp"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e21dcc7044so16151987b3.1
+        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 08:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727276546; x=1727881346; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727276548; x=1727881348; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TEh1/zkt2ebfm60sAnflL74oR8UqJJcIMQFWRvgC+dE=;
-        b=P1KxEfU7NFI1FLa68htOn3FIemF2YoJ6ZngfHUhsKoFBRiXxiwVBOTYecj3iV5fXut
-         Kp5pAy4MyYpTuIwIh1ul53pcejuye0feuUW/N2sSiiV23IoHpesKme5QnUN3QIRK9Scm
-         jOJSpxVOtjp+R4vV2H1BXWolNHvOaltnkFQZO4b8HH+yxzEJYon4nNKIV9abmiJ3Qr6z
-         MB45/dPAX38qoLlqeKxr2UzmTg6b3zQjOj2t0/4aKMhnPp9H0u99nESwyciFmWtxtP7X
-         WlwMG8GRS226I1RCGZJjImxo/4LOik3jTeV5QqHXPPvoYIyhU83s5SKOqD4zhyJaMGyV
-         AqrA==
+        bh=ApY23d/9zEIgxeEREKcGvRSADQZAXD1f0/BrlQ4mdDw=;
+        b=GnkKjhtp9zSMZYTexidLqwKc++D8bRxlmP6vfNPPiswSuKsY7b5gjmgIVcyTHNJmXV
+         R7cILxiDBk7XWsrqChfpEINGugxqUdT9I5FgI4htYuOm1ROc5WGR59a0jlhTFRO/tjum
+         CWVybAqQtX2snhNPb+A1mhvliI+J7VlZ0xZ3USnRGgmL1vakWwE8brOdDD8vlqavUm12
+         lanq2ZcCA7IIW/USsG0YE1Oa6h++SWt4alvAWiXjABfnGQRDtvpHHc+Nrb+8CBRvciCq
+         nkpjydToaKAfAY4HeApliRfcLdyZvFqwlsJLIYZPyN43lymbKggonsBTZKs6FZRRm5WP
+         HXJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727276546; x=1727881346;
+        d=1e100.net; s=20230601; t=1727276548; x=1727881348;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TEh1/zkt2ebfm60sAnflL74oR8UqJJcIMQFWRvgC+dE=;
-        b=XVKcYEj03V+vEh30Hmr53ihjIfBmrzFIsSCGnh1YjmnFUJWIyO8ToGQnrxkNQ6ZZob
-         AEdeFbuw10QW13XRdlfAqp0pknaUm4bEoY6h2HRhDZk9oednTjYz09D5nl9xiOvN4OpG
-         7btDlFXSA5Q/isIar3gd+/trdtcnq9yoDLKNObwqNMV5XMwJIHYuyameM9gN58I4B4fK
-         VNOyEPkmrq1xDhjh3S/fhu02RCBdWqK2ViHOid2v8N5I4RzkeDMN+Pw7g3nUlOyNEN/R
-         BdnN8toqYl67oW/NX2boIs01FRueb1d5kANcHWT6024zewHrhOWkHGt3wuqmB8C1hboa
-         4usw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ6cbPWw+HwbhDKZIEGY9/Qn4Fhb07wMYKalLamvvtnPCK6uf6vr++OB524oHjW/Bu3Pg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4qlhSCSdS3U8BWaD2PGp4pOcX0j6JQDmpnQy7jHqYtNI+muGX
-	CkxbkO0AwJzjCbfVzinuhaq5A3DDRBzN+0vXL8yMHiILro/Wumyki1znLS2NCgTdIikqLg==
-X-Google-Smtp-Source: AGHT+IGW5+6XYu5evov+Dvb+HROZj8E6YTyxVVP1a7XWDg5djajQJxqHbA/Whb8+5/ewCu11GBBmm/SO
+        bh=ApY23d/9zEIgxeEREKcGvRSADQZAXD1f0/BrlQ4mdDw=;
+        b=JV/Z5E1VlJOGFXdv8BtlLJEJdpn0KaFeJFiUErKJszrCsljWDlPCFuNvesdvOWX4+/
+         zBJeaIeagww/gtzdvnuEkrgd2E+4KIAwnWsQ7Gt1Mrsou4JT8cxWGaqt/IPGQqu8nQRw
+         08PoFoC2KeJQ2CC1RuOtMX8SbqTPcTe+u86F8LfoZZZBLC+I32GL0aORsWh5JbhFAw5A
+         3ilquczPu8QRsDjyrxU+PuDerape26Kl+id42h7t5b1zfEKlRILOrfVkUHq2jghnP7lp
+         NmIFfbWD+pEAzXIaVEKoQeq8hWnGUXkWkhNmgRNB8AZRzScaZQTobjNrhJoijYzyT5g2
+         Kkjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbL2krW9OCKqCYuRFp7PL08p66liueky0FDZ73Tcdhpq6wJ9qCfR+9P6rseH9ru+K3z/E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS8Qiab0n0+nK69VkJlSKdk8ZV0cycF9RBKqTv4PAT9n2BNIur
+	8vj/tu94ptZ3GnP2TwDrqWhKx0y9i4tKZs6uxFHILm+FCxFmj6jrSavgJwdDcbY1aCwTbA==
+X-Google-Smtp-Source: AGHT+IG0+ryHhOjgZiIz9yF/upguc+H1WcXc9rbc3LtAhjefmA+cSn7SHizdSFamvUM2J9fCM9A9Vr3/
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a05:690c:438d:b0:6b1:8b74:978a with SMTP id
- 00721157ae682-6e21d9d4ae9mr51697b3.4.1727276545723; Wed, 25 Sep 2024 08:02:25
- -0700 (PDT)
-Date: Wed, 25 Sep 2024 17:01:14 +0200
+ (user=ardb job=sendgmr) by 2002:a05:690c:d85:b0:6db:e107:75a2 with SMTP id
+ 00721157ae682-6e21da5c761mr429007b3.4.1727276548084; Wed, 25 Sep 2024
+ 08:02:28 -0700 (PDT)
+Date: Wed, 25 Sep 2024 17:01:15 +0200
 In-Reply-To: <20240925150059.3955569-30-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,14 +58,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240925150059.3955569-30-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=934; i=ardb@kernel.org;
- h=from:subject; bh=DJZDFnSYvzXqQFYRPN/gizuDfobz3ccWU866DGFdU/U=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6v7XV9cI3q9cJcJR8+Vf2+Fz2Wk/Dh/Y/X1ToOXyt
- a351cxsHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiXdsZGZaErou6cPCEcv22
- Prcpp+bqHWznepHA8X6Z9Zn/83etFNBlZOg9+zlgLqMlq/AX9n2rM647K2+Mmvyn9GzNS4f81qf fJ/EAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=715; i=ardb@kernel.org;
+ h=from:subject; bh=MI3z3hAzDWNLGP+bB6WD9qNMTMv7yb8jTXTlUIfHWCE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6sHwPz3fHPWC8oK2RzHe5nszs/XmM4NX7P1ae3YFv
+ bWd+fJLRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjI/9UMfwVfxZ9hrm+9xvze
+ 6zfvw/cKoUe5Kv5w1pmKsYfxH/f4do3hf+75iD2ndC64zYjxsFPZpbpKIrxBk/fzstDCxW8eO9h OYgAA
 X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
-Message-ID: <20240925150059.3955569-44-ardb+git@google.com>
-Subject: [RFC PATCH 14/28] x86/rethook: Use RIP-relative reference for return address
+Message-ID: <20240925150059.3955569-45-ardb+git@google.com>
+Subject: [RFC PATCH 15/28] x86/sync_core: Use RIP-relative addressing
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -90,29 +90,27 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Instead of pushing an immediate absolute address, which is incompatible
-with PIE codegen or linking, use a LEA instruction to take the address
-into a register.
+Use RIP-relative accesses and avoid fixups at runtime.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/kernel/rethook.c | 3 ++-
+ arch/x86/include/asm/sync_core.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/rethook.c b/arch/x86/kernel/rethook.c
-index 8a1c0111ae79..3b3c17ba3cd5 100644
---- a/arch/x86/kernel/rethook.c
-+++ b/arch/x86/kernel/rethook.c
-@@ -27,7 +27,8 @@ asm(
- #ifdef CONFIG_X86_64
- 	ANNOTATE_NOENDBR	/* This is only jumped from ret instruction */
- 	/* Push a fake return address to tell the unwinder it's a rethook. */
--	"	pushq $arch_rethook_trampoline\n"
-+	"	leaq arch_rethook_trampoline(%rip), %rdi\n"
-+	"	pushq %rdi\n"
- 	UNWIND_HINT_FUNC
- 	"       pushq $" __stringify(__KERNEL_DS) "\n"
- 	/* Save the 'sp - 16', this will be fixed later. */
+diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
+index ab7382f92aff..cfd2f3bca83b 100644
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -31,7 +31,8 @@ static inline void iret_to_self(void)
+ 		"pushfq\n\t"
+ 		"mov %%cs, %0\n\t"
+ 		"pushq %q0\n\t"
+-		"pushq $1f\n\t"
++		"leaq 1f(%%rip), %q0\n\t"
++		"pushq %q0\n\t"
+ 		"iretq\n\t"
+ 		"1:"
+ 		: "=&r" (tmp), ASM_CALL_CONSTRAINT : : "cc", "memory");
 -- 
 2.46.0.792.g87dc391469-goog
 
