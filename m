@@ -1,181 +1,236 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC474D599
-	for <kvm@vger.kernel.org>; Thu, 26 Sep 2024 00:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D3E14D444
+	for <kvm@vger.kernel.org>; Thu, 26 Sep 2024 01:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727309215; cv=none; b=RI3ujfC10/ojCq4BLXsDJrNOV8vOnUhdW96JLqM/d2L5NLc9I+72uHgO6KPodo9LxPA0kojkU9fa9/HHLYOMIzMwJN3tHxLvNhiCN+hpEXAFRsCya5tqxWfGVgV9GCJm1gLjYDPFr/sJ9VY57vlydD3YMkCtUXQKM0wcyvTDYxQ=
+	t=1727314519; cv=none; b=Gudz4xWga6eKScbLYSAgRiDj/LCmJusgbOAeJPYJBg+jCtNgSDYFBZKFrbq2++vvtqr/1iLbqnlzBjnMFMevWlH5zMixaCOmTVDyRlTOfu7V6sqxMuKs4HJlHoLndTNCsPOaqpuhj/KBnfAluXqq/mrvkPJy1wSFUBpzpxWtaio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727309215; c=relaxed/simple;
-	bh=tiaXzk/W2iQBTiuoW1hcUQOIKgM87mnnYdBHI0F8ZQ8=;
+	s=arc-20240116; t=1727314519; c=relaxed/simple;
+	bh=KYU/GVdx2SffFJn1dliltWJ7zMQtOV4x+z6L79CjWmU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=W8xbPCSiJMDcbRso+pHozo5SRBGgHuSMgMjjU60Cn7lryC1nIeEn4isltR7SHSv8UW+V8vHFaVUM8oRcQVytxawh3zKEDyICTlh6t4oTo1m84ei+0z++kGfDtsNPwofhaJIfMmYUC4wGKwUjS7QEi3bpbMukB9scCh75shwgFeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NANfeg3g; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=SHfpVdGlg5GN1oYqJ2HNOmfxQJ/GrAoMhhM9Z/Hrg2x4dz94Q7dBDB3SdT7aQJ7DkwvI1juiiOx+5bQY7kkBgs1IjKP4KdyCI5KVYJQ+z05mtn2ih6wTo5+/DXyvTSwqFmdWtkkKADD2/jyShbPUJYOCesZckDtX0AdxOpQjTnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VZmOHiVf; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NANfeg3g"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7198667a879so399968b3a.2
-        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 17:06:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VZmOHiVf"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e02a4de4f4eso972586276.1
+        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 18:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727309213; x=1727914013; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727314516; x=1727919316; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XCa5WlnWfvKFPIfqyLnyQEnWt7jWzLhfWoMpM959Mxo=;
-        b=NANfeg3gUVMln4RrZ02L7JUXBTW9nN4RvknTewO/tFxlEi0vp39DE06lmE+uHBc2WU
-         DkFFn5VaGd23PfBAW7wmSNBJNEYPi38FJj+5ipcAsxBpK5FYpaeYJ3CSPvMebw8gwM6X
-         b/9FrRZx7ki2iDhLZilFIg/ybslqPtXvIM79nbwnOcFZQ9SovTIGtQCx21eM+9mO37fZ
-         qEb/vuMFoyf+EqD3aZIDBp+XPLvAOBwiwKyAjmGUbsSp67YRmapdLYs4iQsOCcpZJmV7
-         nGg+7vG5Pt6KFovod8Lsbd67gKK+q5XmWQCGDZI+/Xd2KW1nJ6GR9IhHTdUgAO1tORs8
-         gBEg==
+        bh=xCPXKlvg3fvHTzjtwRf5eteIHvTFuMld4Zvbq5X/Dxs=;
+        b=VZmOHiVfNd1RolPuPyxc6uAaDapZZplAb7NfyZw2j4eZYQ/pmxD9ihsZ2ITrHV6z4C
+         ah3HzNoBaumc049He3aL653VgUMQOJbXctfNC2kzLxXd4FA4ZXohiVf5az+dU6uEE+6n
+         axO6NdBWAqDvtLNhhK6OArKxT178f0ntaTnnLKUe5AiifgOGqlrNgkaxWYhh+IticjYt
+         TzNk5e+NvFYzI52eZtgZUDFuxc9Y22vOGfV57fPkmd4rZMpaHDC3Sb411WRhYsUDGykY
+         D9Ktj2hf3r3UyFbtjNiOwJqIbjMr1Yts2SU5KVR7K/zzed42CnxWl2uPHPDULYPdiAUb
+         xyOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727309213; x=1727914013;
+        d=1e100.net; s=20230601; t=1727314516; x=1727919316;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XCa5WlnWfvKFPIfqyLnyQEnWt7jWzLhfWoMpM959Mxo=;
-        b=Yo5J+vymlPtYr+NRRPc9U1td9PCM6T2Xft+i0zwhZhy+tlCjHL/cUZCKCnhuUztEzc
-         sWtCiAny88W2yshIGLKRRmH9+K1egnlJXQEUBYHmf+FKAPg+xKfZZWVPbsB+ytySMaJ/
-         xwb+rJOUPv378YOLWq2Ec7jmF6AewMJ34+kS+2x1XZKlXSoBmyF8+m7CsCPbrMsQWm2R
-         011ruAl6iUUTSPxcyJTgM049+vLqrw/dG/LHC7/C9VIhypEkozs5SYkGJ79oNl52mvQH
-         Sb3ciVdNXPDWOzZazXAL3QsCoV+RMYFuFf6VuTNiPkp/HbHVjJJMzBV0G13WEqD7dpon
-         q3Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXH/1MT8FCIrfSKxQcoolSRBnwd8sbMgR8g+TZH7CJ+ONgvSXFk9fRbHTFnMSzqKF6yE2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLRIQMzh6mQ0i5aK7GDgTH5gnP/b9qIKXVNE5pHNLxcA/B13Po
-	N/2S87YYPQChlSKTex1d9121/nP0fXHcUMvgJ+YCE7OllAcCCDJUEJzRAJ8luPOF3ttiVnZyOZ1
-	yuw==
-X-Google-Smtp-Source: AGHT+IEh8OAvaVqV321JqbrtI5MQlQVyFC2h2qpEZTAVpMPaRd4jqfdepCyWJsj5AqhcGsOGLDaKqzP83vA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:2d14:b0:718:e9ab:d3e6 with SMTP id
- d2e1a72fcca58-71b0ae1a993mr12351b3a.6.1727309212829; Wed, 25 Sep 2024
- 17:06:52 -0700 (PDT)
-Date: Wed, 25 Sep 2024 17:06:45 -0700
-In-Reply-To: <20240924095422.GA66922@dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com>
+        bh=xCPXKlvg3fvHTzjtwRf5eteIHvTFuMld4Zvbq5X/Dxs=;
+        b=bdNDloge2lfCHM6AUt980DsPXN+oF/VHP9PKLMgQM+xFyHO2wd8pFP+efFSurWtk9Y
+         GU6CdTmk06UzGw5B8o4qn272dCQHGsC6SQtjwRupPDlmzKGxBZcZ5SUzZNU/QZS1043L
+         hlN6veB5oDxj8v5qCIrewm/sbCJVh1yiGCxjGMZSoi7dG0THjPG346lYhgp1o2eRfm6b
+         bcaoPt19sAuluvobe8YtUgp6GZ86MN5O7GUUcBCoxGbgRDkm6NtqaPdUYIGMwZF58WFJ
+         5uZulsVOH/0vY4gqW8whbyEHCR1x3ArJaym3O7wF0ODI8m6MALKKlfxBLcVL88iUf8mx
+         DL9w==
+X-Forwarded-Encrypted: i=1; AJvYcCU5qKH1BCeZunm1zuOv7v+Tofovoe02tw61gyr8zuc0djuixZpeWkI/HGbx+g9LeP3N3UA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZjv+o3CGb/nfsB7C91uE+du05A6do1kkVSwt/rSqtSmEO9MIg
+	Q9g3XDOzgeuEA8XZEF0ZflohiUxmTiyjbiWFzgzCNntjo+1vMRYp9OPkYALMSyMX2XLfLZ4x8dp
+	gZdBuhRQpv+tn9q07FQ==
+X-Google-Smtp-Source: AGHT+IHCtBDgdi+XBFMofkXIkzVJkl+teLSBao9sOlv55Q8B7jZN9hLVgp83Pu834/Q28A3MUQoEEh6YXmiO2wqz
+X-Received: from jthoughton.c.googlers.com ([fda3:e722:ac3:cc00:13d:fb22:ac12:a84b])
+ (user=jthoughton job=sendgmr) by 2002:a25:97c7:0:b0:e25:c8fc:b78c with SMTP
+ id 3f1490d57ef6-e25c8fcbb92mr1586276.9.1727314516206; Wed, 25 Sep 2024
+ 18:35:16 -0700 (PDT)
+Date: Thu, 26 Sep 2024 01:34:49 +0000
+In-Reply-To: <20240926013506.860253-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240923141810.76331-1-iorlov@amazon.com> <ZvGfnARMqZS0mkg-@google.com>
- <cb06b33acdad04bef8c9541b4247a36f51cf2d36.camel@amazon.co.uk>
- <ZvHhqRWW04jmk8TW@google.com> <20240924095422.GA66922@dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com>
-Message-ID: <ZvSllYdtddzHv7vM@google.com>
-Subject: Re: [PATCH 0/4] Process some MMIO-related errors without KVM exit
-From: Sean Christopherson <seanjc@google.com>
-To: Ivan Orlov <iorlov@amazon.com>
-Cc: Jack Allister <jalliste@amazon.co.uk>, Ivan Orlov <iorlov@amazon.co.uk>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"nh-open-source@amazon.com" <nh-open-source@amazon.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+References: <20240926013506.860253-1-jthoughton@google.com>
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+Message-ID: <20240926013506.860253-2-jthoughton@google.com>
+Subject: [PATCH v7 01/18] KVM: Remove kvm_handle_hva_range helper functions
+From: James Houghton <jthoughton@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Matlack <dmatlack@google.com>, 
+	David Rientjes <rientjes@google.com>, James Houghton <jthoughton@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Sep 24, 2024, Ivan Orlov wrote:
-> On Mon, Sep 23, 2024 at 02:46:17PM -0700, Sean Christopherson wrote:
->  > >
-> > > > No.  This is not architectural behavior.  It's not even remotely
-> > > > close to
-> > > > architectural behavior.  KVM's behavior isn't great, but making up
-> > > > _guest visible_
-> > > > behavior is not going to happen.
-> > >
-> > > Is this a no to the whole series or from the cover letter?
-> > 
-> > The whole series.
-> > 
-> > > For patch 1 we have observed that if a guest has incorrectly set it's
-> > > IDT base to point inside of an MMIO region it will result in a triple
-> > > fault (bare metal Cascake Lake Intel).
-> > 
-> > That happens because the IDT is garbage and/or the CPU is getting master abort
-> > semantics back, not because anything in the x86 architectures says that accessing
-> > MMIO during exception vectoring goes straight to shutdown.
-> >
-> 
-> Hi Sean, thank you for the detailed reply.
-> 
-> Yes, I ran the reproducer on my AMD Ryzen 5 once again, and it seems like
-> pointing the IDT descriptor base to a framebuffer works perfectly fine,
-> without any triple faults, so injecting it into guest is not a correct
-> solution.
-> 
-> However, I believe KVM should demonstrate consistent behaviour in
-> handling MMIO during event delivery on vmx/svm, so either by returning
-> an event delivery error in both cases or going into infinite loop in
-> both cases. I'm going to test the kvm/next with the commits you
-> mentioned, and send a fix if it still hits an infinite loop on SVM.
-> 
-> Also, I reckon as detecting such an issue on the KVM level doesn't
-> introduce much complexity, returning a sane error flag would be nice. For
-> instance, we could set one of the 'internal.data' elements to identify
-> that the problem occured due to MMIO during event delivery
-> 
-> > > Yes a sane operating system is not really going to be doing setting it's IDT
-> > > or GDT base to point into an MMIO region, but we've seen occurrences.
-> > > Normally when other external things have gone horribly wrong.
-> > >
-> > > Ivan can clarify as to what's been seen on AMD platforms regarding the
-> > > infinite loop for patch one. This was also tested on bare metal
-> > > hardware. Injection of the #UD within patch 2 may be debatable but I
-> > > believe Ivan has some more data from experiments backing this up.
-> > 
-> > I have no problems improving KVM's handling of scenarios that KVM can't emulate,
-> > but there needs to be reasonable justification for taking on complexity, and KVM
-> > must not make up guest visible behavior.
-> 
-> Regarding the #UD-related change: the way how I formulated it in the
-> cover letter and the patch is confusing, sorry. We are _alredy_ enqueuing
-> an #UD when fetching from MMIO, so I believe it is already architecturally
-> incorrect (see handle_emulation_failure in arch/x86/kvm/x86.c). However,
-> we return an emulation failure after that,
+kvm_handle_hva_range is only used by the young notifiers. In a later
+patch, it will be even further tied to the young notifiers. Instead of
+renaming kvm_handle_hva_range to something like
+kvm_handle_hva_range_young, simply remove kvm_handle_hva_range. This
+seems slightly more readable, though there is slightly more code
+duplication.
 
-Yeah, but only because the alternative sucks worse.  If KVM unconditionally exited
-with an emulation error, then unsuspecting (read: old) VMMs would likely terminate
-the guest, which gives guest userspace a way to DoS the entire VM, especially on
-older CPUs where KVM needs to emulate much more often.
+Finally, rename __kvm_handle_hva_range to kvm_handle_hva_range, now that
+the name is available.
 
-	if (kvm->arch.exit_on_emulation_error ||
-	    (emulation_type & EMULTYPE_SKIP)) {
-		prepare_emulation_ctxt_failure_exit(vcpu);
-		return 0;
-	}
+Suggested-by: David Matlack <dmatlack@google.com>
+Signed-off-by: James Houghton <jthoughton@google.com>
+---
+ virt/kvm/kvm_main.c | 81 +++++++++++++++++++++------------------------
+ 1 file changed, 37 insertions(+), 44 deletions(-)
 
-	kvm_queue_exception(vcpu, UD_VECTOR);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index d51357fd28d7..090e79e4304f 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -589,8 +589,8 @@ static void kvm_null_fn(void)
+ 	     node;							     \
+ 	     node = interval_tree_iter_next(node, start, last))	     \
+ 
+-static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+-							   const struct kvm_mmu_notifier_range *range)
++static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
++							 const struct kvm_mmu_notifier_range *range)
+ {
+ 	struct kvm_mmu_notifier_return r = {
+ 		.ret = false,
+@@ -666,42 +666,6 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+ 	return r;
+ }
+ 
+-static __always_inline int kvm_handle_hva_range(struct mmu_notifier *mn,
+-						unsigned long start,
+-						unsigned long end,
+-						gfn_handler_t handler)
+-{
+-	struct kvm *kvm = mmu_notifier_to_kvm(mn);
+-	const struct kvm_mmu_notifier_range range = {
+-		.start		= start,
+-		.end		= end,
+-		.handler	= handler,
+-		.on_lock	= (void *)kvm_null_fn,
+-		.flush_on_ret	= true,
+-		.may_block	= false,
+-	};
+-
+-	return __kvm_handle_hva_range(kvm, &range).ret;
+-}
+-
+-static __always_inline int kvm_handle_hva_range_no_flush(struct mmu_notifier *mn,
+-							 unsigned long start,
+-							 unsigned long end,
+-							 gfn_handler_t handler)
+-{
+-	struct kvm *kvm = mmu_notifier_to_kvm(mn);
+-	const struct kvm_mmu_notifier_range range = {
+-		.start		= start,
+-		.end		= end,
+-		.handler	= handler,
+-		.on_lock	= (void *)kvm_null_fn,
+-		.flush_on_ret	= false,
+-		.may_block	= false,
+-	};
+-
+-	return __kvm_handle_hva_range(kvm, &range).ret;
+-}
+-
+ void kvm_mmu_invalidate_begin(struct kvm *kvm)
+ {
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+@@ -794,7 +758,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+ 	 * that guest memory has been reclaimed.  This needs to be done *after*
+ 	 * dropping mmu_lock, as x86's reclaim path is slooooow.
+ 	 */
+-	if (__kvm_handle_hva_range(kvm, &hva_range).found_memslot)
++	if (kvm_handle_hva_range(kvm, &hva_range).found_memslot)
+ 		kvm_arch_guest_memory_reclaimed(kvm);
+ 
+ 	return 0;
+@@ -840,7 +804,7 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+ 	};
+ 	bool wake;
+ 
+-	__kvm_handle_hva_range(kvm, &hva_range);
++	kvm_handle_hva_range(kvm, &hva_range);
+ 
+ 	/* Pairs with the increment in range_start(). */
+ 	spin_lock(&kvm->mn_invalidate_lock);
+@@ -862,9 +826,19 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
+ 					      unsigned long start,
+ 					      unsigned long end)
+ {
++	struct kvm *kvm = mmu_notifier_to_kvm(mn);
++	const struct kvm_mmu_notifier_range range = {
++		.start		= start,
++		.end		= end,
++		.handler	= kvm_age_gfn,
++		.on_lock	= (void *)kvm_null_fn,
++		.flush_on_ret	= true,
++		.may_block	= false,
++	};
++
+ 	trace_kvm_age_hva(start, end);
+ 
+-	return kvm_handle_hva_range(mn, start, end, kvm_age_gfn);
++	return kvm_handle_hva_range(kvm, &range).ret;
+ }
+ 
+ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+@@ -872,6 +846,16 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+ 					unsigned long start,
+ 					unsigned long end)
+ {
++	struct kvm *kvm = mmu_notifier_to_kvm(mn);
++	const struct kvm_mmu_notifier_range range = {
++		.start		= start,
++		.end		= end,
++		.handler	= kvm_age_gfn,
++		.on_lock	= (void *)kvm_null_fn,
++		.flush_on_ret	= false,
++		.may_block	= false,
++	};
++
+ 	trace_kvm_age_hva(start, end);
+ 
+ 	/*
+@@ -887,17 +871,26 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+ 	 * cadence. If we find this inaccurate, we might come up with a
+ 	 * more sophisticated heuristic later.
+ 	 */
+-	return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn);
++	return kvm_handle_hva_range(kvm, &range).ret;
+ }
+ 
+ static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+ 				       struct mm_struct *mm,
+ 				       unsigned long address)
+ {
++	struct kvm *kvm = mmu_notifier_to_kvm(mn);
++	const struct kvm_mmu_notifier_range range = {
++		.start		= address,
++		.end		= address + 1,
++		.handler	= kvm_test_age_gfn,
++		.on_lock	= (void *)kvm_null_fn,
++		.flush_on_ret	= false,
++		.may_block	= false,
++	};
++
+ 	trace_kvm_test_age_hva(address);
+ 
+-	return kvm_handle_hva_range_no_flush(mn, address, address + 1,
+-					     kvm_test_age_gfn);
++	return kvm_handle_hva_range(kvm, &range).ret;
+ }
+ 
+ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+-- 
+2.46.0.792.g87dc391469-goog
 
-	if (!is_guest_mode(vcpu) && kvm_x86_call(get_cpl)(vcpu) == 0) {
-		prepare_emulation_ctxt_failure_exit(vcpu);
-		return 0;
-	}
-
-	return 1;
-
-And that's exactly why KVM_CAP_EXIT_ON_EMULATION_FAILURE exists.  VMMs that know
-they won't unintentionally give guest userspace what amounts to a privilege
-escalation can trap the emulation failure, do some logging or whatever, and then
-take whatever action it wants to take.
-
-> and I believe how we do this
-> is debatable. I maintain we should either set a flag in emulation_failure.flags
-> to indicate that the error happened due to fetch from mmio (to give more
-> information to VMM),
-
-Generally speaking, I'm not opposed to adding more information along those lines.
-Though realistically, I don't know that an extra flag is warranted in this case,
-as it shouldn't be _that_ hard for userspace to deduce what went wrong, especially
-if KVM_TRANSLATE2[*] lands (though I'm somewhat curious as to why QEMU doesn't do
-the page walks itself).
-
-[*] https://lore.kernel.org/all/20240910152207.38974-1-nikwip@amazon.de
-
-> or we shouldn't return an error at all... Maybe it should be KVM_EXIT_MMIO with
-> some flag set? What do you think?
-
-It'd be a breaking change and added complexity, for no benefit as far as I can
-tell.  KVM_EXIT_INTERNAL_ERROR is _not_ a death sentence, or at least it doesn't
-have to be.  Most VMMs do terminate the guest, but nothing is stopping userspace
-from grabbing RIP and emulating the instruction.  I.e. userspace doesn't need
-"permission" in the form of KVM_EXIT_MMIO to try and keep the guest alive.
