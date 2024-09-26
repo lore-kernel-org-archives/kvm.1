@@ -1,55 +1,55 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4418BB84
-	for <kvm@vger.kernel.org>; Thu, 26 Sep 2024 01:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1550118133C
+	for <kvm@vger.kernel.org>; Thu, 26 Sep 2024 01:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727314527; cv=none; b=IkcJ3vjnxXezkr2lcgJrD0zRv71+XOooumf5+vmnb9ztZuWoEIMec4LLdzD8jiD4Iy+SnSxW4acGH+AzcXvdYzIWo0zVBd+78uumwp32a9QBtJUQta7NGnmVpDoJIJEayiLe/e/t9CXgF77daLIaMOXADk6+V907TobNcQtuyCA=
+	t=1727314529; cv=none; b=CjdgOjcC7MoB0wNcG/X3hQVsyvi2uWEMTsAQBH2PeR7MMP6PLLRX7dVimkT3fl0mGb3hspWl/hA391I5DaKndGFaz8yLrmuZrQ9uhg3HMkWJMO2WG7qQc69EOndC7L6e3yRj1hC+L5mR46C/PWCCICxbeTQx+2CZo+tUhFMABuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727314527; c=relaxed/simple;
-	bh=i7ngJ/q5kYIHv8bPc7pXv+SigYhoKYSU3nQq3Jajqd0=;
+	s=arc-20240116; t=1727314529; c=relaxed/simple;
+	bh=0raPSAp7HnmbBOxblzsQepM7TqKA7NY1yCc61VEgCKk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iB0CAPBPfAb6LKYHLCPBcKBvWtBxtOqwzja6CneikZM3juETtyfwt8gxbwd39aQDGld8/IHYYWpB5gBrF0TqjxCdNiV7O6/6tP6Epk2zpg9iTWAnNoR3wb04nd8UQ8xlj5fxxd0mPzJtHvpF2YpZmjDPL37EvSkHOir7EQfpiQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MlGjxCjp; arc=none smtp.client-ip=209.85.219.202
+	 To:Cc:Content-Type; b=lm+OjA0xuROBgiOK81n69CPBn/jbNXTlY+z+5ma6V5wxcojjeObbWID/T6xYxkS96/7zgdKJopQ8w64jPECuVvN28x2l1P/1aLce6cyLVhNGApPmTDpXI4pcHBQRBY4pvQQChx8pIKORtEbSlUY2Ubi5mtDb5cpOHhiJZcYIYqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m/VTRhi4; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MlGjxCjp"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e02a4de4f4eso972754276.1
-        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 18:35:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m/VTRhi4"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6dbffbae597so10507187b3.2
+        for <kvm@vger.kernel.org>; Wed, 25 Sep 2024 18:35:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727314524; x=1727919324; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727314526; x=1727919326; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MAX0OZs2fthT88FLek8b9DqcvP6EmNxdVeFSdhP6yzs=;
-        b=MlGjxCjpMWcL04NToxLQANTbtyPP/2IaWbryTpoTSqvdMTDNpLq23u9qmd3cj/55HM
-         xidhNhzxb9HwSOdOCkiPbHBpbv+T0Ax0s+awYfnt4brcZ4olgm70YwhpHDtC9D5GDjQt
-         88UjhmatowSNEuq9LN1I5NLo1kpERexAc4dBIQ/DB3m3jE2bN61E7aRADdsPlhJnYEVM
-         u3ThGTkz0sm7PA7UyoGTzuV5vsE8QOrP2J246ZcG06s8Z875DZD8oV3SfK2KW0lPMjJn
-         ijOeuUGDv0+xbQ7o6RSAE9X2Mlt8gxhZEHGIhHDLYacpuJA9iT0iXjMhTBq4h3KSauBg
-         QUBw==
+        bh=MfYThc4u3zoEwhsYqTZzHZoRr9LypPNnm95GFpy1spA=;
+        b=m/VTRhi4Vb+l3sQ9+TsKzd34SVYj5ofUYIRw29d46kdZg/s++sbiH2HxV6TUSI+WVe
+         qrvHnx2MdK5vGGg7epJE12uX2HJOeFDslmOQvTk+RW6WJqC/GIttuF5sNSWF2IDe6r84
+         Oyl3FwIKr2RwMmIGCk06foCowlPWYirhsg5auSAa1k2dFNi/fcTElYCMWW0g9JrQCR8Q
+         RnZw2JSWLo2sbZpZx2YFITuhzBYe2UAHX3CfkY8Ofe7gULoecF/Wfp1c+cyBdt5dJB8M
+         Z9MCwdscIWgwu8MHVeq7SYR0pGIa7TpFAEsABLL5UCGNWygeUXj11bZIfoczL/UeldZR
+         DvPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727314524; x=1727919324;
+        d=1e100.net; s=20230601; t=1727314526; x=1727919326;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MAX0OZs2fthT88FLek8b9DqcvP6EmNxdVeFSdhP6yzs=;
-        b=u6aBSbCEkLxnZvOpp3ipS6xNsFcv2hihgxVyf9Fs8Aq2jodOqUG4R6mfkwPOeeAYJf
-         a1jzRMPrkEuZizX88+/IVZfgKWxeeQGginVzB1dxxSXtRTYF19Z9w4Hjatk9LRqA3kBo
-         Xcjssu4xzdbOTRpDL9ef00qY+7pyV8i3mqRgCZJCkwBAcQhctlZrT2eXBclh41kawAST
-         XHLnPDgneT29LPJM6XNT764mOt2hb1YVx/SuC1xH1oMxqFB2psyOBg6nCK3eLYNY0pXa
-         jRYyxjhJvo/bZvmUxBEfL9Taqv3o5OAQ196ay+1Q5MZ6fg4Cm3fv5G4cVtGac8Eeam9N
-         INAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVzWdSloyOEaxYsYMeA8xynDfKwnktZZhlJF9e7O+JwGUXLCLxLkc00ntOJqxadN+qfXIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGo5xa2CS5iQ0DXz3gF4G6iXHVpD50Lou0EsBL3AgfW/M75CAA
-	CGtNg20FUMo5m7jW6cPCWwSv3PiOR8zl0QO+fUvOb0JV0RUi1pd+IPP6c/yX0aBetDET8PpXi1G
-	3wMR8tt44SpVSZoyhIQ==
-X-Google-Smtp-Source: AGHT+IGaRNcJ0pUCHmWao5UQiFUuGRcX2zXYa1voIITtc2canA4FkWeSC7N08ZTT/PlEa6ZAuN210z4HqmS+Jzo6
+        bh=MfYThc4u3zoEwhsYqTZzHZoRr9LypPNnm95GFpy1spA=;
+        b=HM9gnF0+Xh1jZY3pa1Ie3HUFhDGo3mRIjCeMWbqkwf+2AeZ1NMq+Xa47l2DGdeIajP
+         rfNlcVXkzgCb743qAsB972Bhm1WTuDyMCxUDNmk4ZJevya2EI/Sks50U2IaOAlCV+lAq
+         XB3NiysdD2jpfi3QAJ79krFtRwUFajQ0q2XOAqn5Hw7fURhXLafHy0VS/NE9UMHUPYvc
+         ANkOKnmedO4TXV0z+7lZzsbloJwzA+KOWupcBjMD5zy3nIp7SQhyq7g2suUi3UAgQ3iC
+         7z9VvsH3PSgq9pxb06AHSm0sPw8c2klCpG9C02k1qynBxYa+ZOoFR8MzUPKFpo413+Bh
+         91Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaFl9nLZdiCGj0oJ0kUDUBL8xfjWLyD7Zm+YlaZkysV6s+tSA9ku3ku2eJ9a/Lag2iF6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLOLMYCEmY3Oz7XB0NFhkpT/9p919yAsiABs1LlN0XVEFQxovc
+	pSzMoYbIBiVzGGUwkhN6eJR3Z+OoQ8JVn7Sq/kmew88HUfjiJqyHblrc0axkBxNbqe5xQ9zejAd
+	S4wmXoh6GYkuO/Kdtig==
+X-Google-Smtp-Source: AGHT+IFc2BTb/n/6/Pa4YiRnYJohGJI1GOQLPmGDGx2avUwnGUEvHFpkm5PUE1m++wXUG9sRJDYpg95gpRMXrHPb
 X-Received: from jthoughton.c.googlers.com ([fda3:e722:ac3:cc00:13d:fb22:ac12:a84b])
- (user=jthoughton job=sendgmr) by 2002:a25:d608:0:b0:e11:6a73:b0d with SMTP id
- 3f1490d57ef6-e24d9dc640bmr3172276.6.1727314523065; Wed, 25 Sep 2024 18:35:23
- -0700 (PDT)
-Date: Thu, 26 Sep 2024 01:34:55 +0000
+ (user=jthoughton job=sendgmr) by 2002:a05:690c:5086:b0:6e2:1b8c:39bf with
+ SMTP id 00721157ae682-6e21d835b06mr289447b3.2.1727314525948; Wed, 25 Sep 2024
+ 18:35:25 -0700 (PDT)
+Date: Thu, 26 Sep 2024 01:34:57 +0000
 In-Reply-To: <20240926013506.860253-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240926013506.860253-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
-Message-ID: <20240926013506.860253-8-jthoughton@google.com>
-Subject: [PATCH v7 07/18] KVM: x86/mmu: Refactor low level rmap helpers to
- prep for walking w/o mmu_lock
+Message-ID: <20240926013506.860253-10-jthoughton@google.com>
+Subject: [PATCH v7 09/18] KVM: x86/mmu: Add support for lockless walks of rmap SPTEs
 From: James Houghton <jthoughton@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Matlack <dmatlack@google.com>, 
@@ -74,216 +73,228 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Sean Christopherson <seanjc@google.com>
 
-Refactor the pte_list and rmap code to always read and write rmap_head->val
-exactly once, e.g. by collecting changes in a local variable and then
-propagating those changes back to rmap_head->val as appropriate.  This will
-allow implementing a per-rmap rwlock (of sorts) by adding a LOCKED bit into
-the rmap value alongside the MANY bit.
+Add a lockless version of for_each_rmap_spte(), which is pretty much the
+same as the normal version, except that it doesn't BUG() the host if a
+non-present SPTE is encountered.  When mmu_lock is held, it should be
+impossible for a different task to zap a SPTE, _and_ zapped SPTEs must
+be removed from their rmap chain prior to dropping mmu_lock.  Thus, the
+normal walker BUG()s if a non-present SPTE is encountered as something is
+wildly broken.
+
+When walking rmaps without holding mmu_lock, the SPTEs pointed at by the
+rmap chain can be zapped/dropped, and so a lockless walk can observe a
+non-present SPTE if it runs concurrently with a different operation that
+is zapping SPTEs.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+[jthoughton: Added lockdep assertion for kvm_rmap_lock, synchronization fixup]
+Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 83 +++++++++++++++++++++++++-----------------
- 1 file changed, 50 insertions(+), 33 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 75 +++++++++++++++++++++++-------------------
+ 1 file changed, 42 insertions(+), 33 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index b4e543bdf3f0..17de470f542c 100644
+index 79676798ba77..72c682fa207a 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -920,21 +920,24 @@ static struct kvm_memory_slot *gfn_to_memslot_dirty_bitmap(struct kvm_vcpu *vcpu
- static int pte_list_add(struct kvm_mmu_memory_cache *cache, u64 *spte,
- 			struct kvm_rmap_head *rmap_head)
+@@ -932,7 +932,7 @@ static struct kvm_memory_slot *gfn_to_memslot_dirty_bitmap(struct kvm_vcpu *vcpu
+  */
+ #define KVM_RMAP_LOCKED	BIT(1)
+ 
+-static unsigned long kvm_rmap_lock(struct kvm_rmap_head *rmap_head)
++static unsigned long __kvm_rmap_lock(struct kvm_rmap_head *rmap_head)
  {
-+	unsigned long old_val, new_val;
+ 	unsigned long old_val, new_val;
+ 
+@@ -976,14 +976,25 @@ static unsigned long kvm_rmap_lock(struct kvm_rmap_head *rmap_head)
+ 	 */
+ 	} while (!atomic_long_try_cmpxchg_acquire(&rmap_head->val, &old_val, new_val));
+ 
+-	/* Return the old value, i.e. _without_ the LOCKED bit set. */
++	/*
++	 * Return the old value, i.e. _without_ the LOCKED bit set.  It's
++	 * impossible for the return value to be 0 (see above), i.e. the read-
++	 * only unlock flow can't get a false positive and fail to unlock.
++	 */
+ 	return old_val;
+ }
+ 
++static unsigned long kvm_rmap_lock(struct kvm *kvm,
++				   struct kvm_rmap_head *rmap_head)
++{
++	lockdep_assert_held_write(&kvm->mmu_lock);
++	return __kvm_rmap_lock(rmap_head);
++}
++
+ static void kvm_rmap_unlock(struct kvm_rmap_head *rmap_head,
+ 			    unsigned long new_val)
+ {
+-	WARN_ON_ONCE(new_val & KVM_RMAP_LOCKED);
++	KVM_MMU_WARN_ON(new_val & KVM_RMAP_LOCKED);
+ 	/*
+ 	 * Ensure that all accesses to the rmap have completed
+ 	 * before we actually unlock the rmap.
+@@ -1023,14 +1034,14 @@ static void kvm_rmap_unlock_readonly(struct kvm_rmap_head *rmap_head,
+ /*
+  * Returns the number of pointers in the rmap chain, not counting the new one.
+  */
+-static int pte_list_add(struct kvm_mmu_memory_cache *cache, u64 *spte,
+-			struct kvm_rmap_head *rmap_head)
++static int pte_list_add(struct kvm *kvm, struct kvm_mmu_memory_cache *cache,
++			u64 *spte, struct kvm_rmap_head *rmap_head)
+ {
+ 	unsigned long old_val, new_val;
  	struct pte_list_desc *desc;
  	int count = 0;
  
--	if (!rmap_head->val) {
--		rmap_head->val = (unsigned long)spte;
--	} else if (!(rmap_head->val & KVM_RMAP_MANY)) {
-+	old_val = rmap_head->val;
-+
-+	if (!old_val) {
-+		new_val = (unsigned long)spte;
-+	} else if (!(old_val & KVM_RMAP_MANY)) {
- 		desc = kvm_mmu_memory_cache_alloc(cache);
--		desc->sptes[0] = (u64 *)rmap_head->val;
-+		desc->sptes[0] = (u64 *)old_val;
- 		desc->sptes[1] = spte;
- 		desc->spte_count = 2;
- 		desc->tail_count = 0;
--		rmap_head->val = (unsigned long)desc | KVM_RMAP_MANY;
-+		new_val = (unsigned long)desc | KVM_RMAP_MANY;
- 		++count;
- 	} else {
--		desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+		desc = (struct pte_list_desc *)(old_val & ~KVM_RMAP_MANY);
- 		count = desc->tail_count + desc->spte_count;
+-	old_val = kvm_rmap_lock(rmap_head);
++	old_val = kvm_rmap_lock(kvm, rmap_head);
  
- 		/*
-@@ -943,21 +946,25 @@ static int pte_list_add(struct kvm_mmu_memory_cache *cache, u64 *spte,
- 		 */
- 		if (desc->spte_count == PTE_LIST_EXT) {
- 			desc = kvm_mmu_memory_cache_alloc(cache);
--			desc->more = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+			desc->more = (struct pte_list_desc *)(old_val & ~KVM_RMAP_MANY);
- 			desc->spte_count = 0;
- 			desc->tail_count = count;
--			rmap_head->val = (unsigned long)desc | KVM_RMAP_MANY;
-+			new_val = (unsigned long)desc | KVM_RMAP_MANY;
-+		} else {
-+			new_val = old_val;
- 		}
- 		desc->sptes[desc->spte_count++] = spte;
- 	}
-+
-+	rmap_head->val = new_val;
-+
- 	return count;
- }
- 
--static void pte_list_desc_remove_entry(struct kvm *kvm,
--				       struct kvm_rmap_head *rmap_head,
-+static void pte_list_desc_remove_entry(struct kvm *kvm, unsigned long *rmap_val,
- 				       struct pte_list_desc *desc, int i)
- {
--	struct pte_list_desc *head_desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+	struct pte_list_desc *head_desc = (struct pte_list_desc *)(*rmap_val & ~KVM_RMAP_MANY);
- 	int j = head_desc->spte_count - 1;
- 
- 	/*
-@@ -984,9 +991,9 @@ static void pte_list_desc_remove_entry(struct kvm *kvm,
- 	 * head at the next descriptor, i.e. the new head.
- 	 */
- 	if (!head_desc->more)
--		rmap_head->val = 0;
-+		*rmap_val = 0;
- 	else
--		rmap_head->val = (unsigned long)head_desc->more | KVM_RMAP_MANY;
-+		*rmap_val = (unsigned long)head_desc->more | KVM_RMAP_MANY;
- 	mmu_free_pte_list_desc(head_desc);
- }
- 
-@@ -994,24 +1001,26 @@ static void pte_list_remove(struct kvm *kvm, u64 *spte,
- 			    struct kvm_rmap_head *rmap_head)
- {
- 	struct pte_list_desc *desc;
-+	unsigned long rmap_val;
+ 	if (!old_val) {
+ 		new_val = (unsigned long)spte;
+@@ -1110,7 +1121,7 @@ static void pte_list_remove(struct kvm *kvm, u64 *spte,
+ 	unsigned long rmap_val;
  	int i;
  
--	if (KVM_BUG_ON_DATA_CORRUPTION(!rmap_head->val, kvm))
--		return;
-+	rmap_val = rmap_head->val;
-+	if (KVM_BUG_ON_DATA_CORRUPTION(!rmap_val, kvm))
-+		goto out;
+-	rmap_val = kvm_rmap_lock(rmap_head);
++	rmap_val = kvm_rmap_lock(kvm, rmap_head);
+ 	if (KVM_BUG_ON_DATA_CORRUPTION(!rmap_val, kvm))
+ 		goto out;
  
--	if (!(rmap_head->val & KVM_RMAP_MANY)) {
--		if (KVM_BUG_ON_DATA_CORRUPTION((u64 *)rmap_head->val != spte, kvm))
--			return;
-+	if (!(rmap_val & KVM_RMAP_MANY)) {
-+		if (KVM_BUG_ON_DATA_CORRUPTION((u64 *)rmap_val != spte, kvm))
-+			goto out;
- 
--		rmap_head->val = 0;
-+		rmap_val = 0;
- 	} else {
--		desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+		desc = (struct pte_list_desc *)(rmap_val & ~KVM_RMAP_MANY);
- 		while (desc) {
- 			for (i = 0; i < desc->spte_count; ++i) {
- 				if (desc->sptes[i] == spte) {
--					pte_list_desc_remove_entry(kvm, rmap_head,
-+					pte_list_desc_remove_entry(kvm, &rmap_val,
- 								   desc, i);
--					return;
-+					goto out;
- 				}
- 			}
- 			desc = desc->more;
-@@ -1019,6 +1028,9 @@ static void pte_list_remove(struct kvm *kvm, u64 *spte,
- 
- 		KVM_BUG_ON_DATA_CORRUPTION(true, kvm);
- 	}
-+
-+out:
-+	rmap_head->val = rmap_val;
- }
- 
- static void kvm_zap_one_rmap_spte(struct kvm *kvm,
-@@ -1033,17 +1045,19 @@ static bool kvm_zap_all_rmap_sptes(struct kvm *kvm,
- 				   struct kvm_rmap_head *rmap_head)
- {
- 	struct pte_list_desc *desc, *next;
-+	unsigned long rmap_val;
+@@ -1154,7 +1165,7 @@ static bool kvm_zap_all_rmap_sptes(struct kvm *kvm,
+ 	unsigned long rmap_val;
  	int i;
  
--	if (!rmap_head->val)
-+	rmap_val = rmap_head->val;
-+	if (!rmap_val)
+-	rmap_val = kvm_rmap_lock(rmap_head);
++	rmap_val = kvm_rmap_lock(kvm, rmap_head);
+ 	if (!rmap_val)
  		return false;
  
--	if (!(rmap_head->val & KVM_RMAP_MANY)) {
--		mmu_spte_clear_track_bits(kvm, (u64 *)rmap_head->val);
-+	if (!(rmap_val & KVM_RMAP_MANY)) {
-+		mmu_spte_clear_track_bits(kvm, (u64 *)rmap_val);
- 		goto out;
- 	}
- 
--	desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+	desc = (struct pte_list_desc *)(rmap_val & ~KVM_RMAP_MANY);
- 
- 	for (; desc; desc = next) {
- 		for (i = 0; i < desc->spte_count; i++)
-@@ -1059,14 +1073,15 @@ static bool kvm_zap_all_rmap_sptes(struct kvm *kvm,
- 
- unsigned int pte_list_count(struct kvm_rmap_head *rmap_head)
- {
-+	unsigned long rmap_val = rmap_head->val;
- 	struct pte_list_desc *desc;
- 
--	if (!rmap_head->val)
-+	if (!rmap_val)
- 		return 0;
--	else if (!(rmap_head->val & KVM_RMAP_MANY))
-+	else if (!(rmap_val & KVM_RMAP_MANY))
- 		return 1;
- 
--	desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+	desc = (struct pte_list_desc *)(rmap_val & ~KVM_RMAP_MANY);
- 	return desc->tail_count + desc->spte_count;
- }
- 
-@@ -1109,6 +1124,7 @@ static void rmap_remove(struct kvm *kvm, u64 *spte)
-  */
- struct rmap_iterator {
- 	/* private fields */
-+	struct rmap_head *head;
- 	struct pte_list_desc *desc;	/* holds the sptep if not NULL */
- 	int pos;			/* index of the sptep */
- };
-@@ -1123,18 +1139,19 @@ struct rmap_iterator {
- static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
+@@ -1246,23 +1257,18 @@ static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
  			   struct rmap_iterator *iter)
  {
-+	unsigned long rmap_val = rmap_head->val;
- 	u64 *sptep;
+ 	unsigned long rmap_val = kvm_rmap_get(rmap_head);
+-	u64 *sptep;
  
--	if (!rmap_head->val)
-+	if (!rmap_val)
+ 	if (!rmap_val)
  		return NULL;
  
--	if (!(rmap_head->val & KVM_RMAP_MANY)) {
-+	if (!(rmap_val & KVM_RMAP_MANY)) {
+ 	if (!(rmap_val & KVM_RMAP_MANY)) {
  		iter->desc = NULL;
--		sptep = (u64 *)rmap_head->val;
-+		sptep = (u64 *)rmap_val;
- 		goto out;
+-		sptep = (u64 *)rmap_val;
+-		goto out;
++		return (u64 *)rmap_val;
  	}
  
--	iter->desc = (struct pte_list_desc *)(rmap_head->val & ~KVM_RMAP_MANY);
-+	iter->desc = (struct pte_list_desc *)(rmap_val & ~KVM_RMAP_MANY);
+ 	iter->desc = (struct pte_list_desc *)(rmap_val & ~KVM_RMAP_MANY);
  	iter->pos = 0;
- 	sptep = iter->desc->sptes[iter->pos];
- out:
+-	sptep = iter->desc->sptes[iter->pos];
+-out:
+-	BUG_ON(!is_shadow_present_pte(*sptep));
+-	return sptep;
++	return iter->desc->sptes[iter->pos];
+ }
+ 
+ /*
+@@ -1272,14 +1278,11 @@ static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
+  */
+ static u64 *rmap_get_next(struct rmap_iterator *iter)
+ {
+-	u64 *sptep;
+-
+ 	if (iter->desc) {
+ 		if (iter->pos < PTE_LIST_EXT - 1) {
+ 			++iter->pos;
+-			sptep = iter->desc->sptes[iter->pos];
+-			if (sptep)
+-				goto out;
++			if (iter->desc->sptes[iter->pos])
++				return iter->desc->sptes[iter->pos];
+ 		}
+ 
+ 		iter->desc = iter->desc->more;
+@@ -1287,20 +1290,24 @@ static u64 *rmap_get_next(struct rmap_iterator *iter)
+ 		if (iter->desc) {
+ 			iter->pos = 0;
+ 			/* desc->sptes[0] cannot be NULL */
+-			sptep = iter->desc->sptes[iter->pos];
+-			goto out;
++			return iter->desc->sptes[iter->pos];
+ 		}
+ 	}
+ 
+ 	return NULL;
+-out:
+-	BUG_ON(!is_shadow_present_pte(*sptep));
+-	return sptep;
+ }
+ 
+-#define for_each_rmap_spte(_rmap_head_, _iter_, _spte_)			\
+-	for (_spte_ = rmap_get_first(_rmap_head_, _iter_);		\
+-	     _spte_; _spte_ = rmap_get_next(_iter_))
++#define __for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)	\
++	for (_sptep_ = rmap_get_first(_rmap_head_, _iter_);	\
++	     _sptep_; _sptep_ = rmap_get_next(_iter_))
++
++#define for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)			\
++	__for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)			\
++		if (!WARN_ON_ONCE(!is_shadow_present_pte(*(_sptep_))))	\
++
++#define for_each_rmap_spte_lockless(_rmap_head_, _iter_, _sptep_, _spte_)	\
++	__for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)			\
++		if (is_shadow_present_pte(_spte_ = mmu_spte_get_lockless(sptep)))
+ 
+ static void drop_spte(struct kvm *kvm, u64 *sptep)
+ {
+@@ -1396,11 +1403,12 @@ static bool __rmap_clear_dirty(struct kvm *kvm, struct kvm_rmap_head *rmap_head,
+ 	struct rmap_iterator iter;
+ 	bool flush = false;
+ 
+-	for_each_rmap_spte(rmap_head, &iter, sptep)
++	for_each_rmap_spte(rmap_head, &iter, sptep) {
+ 		if (spte_ad_need_write_protect(*sptep))
+ 			flush |= spte_wrprot_for_clear_dirty(sptep);
+ 		else
+ 			flush |= spte_clear_dirty(sptep);
++	}
+ 
+ 	return flush;
+ }
+@@ -1710,7 +1718,7 @@ static void __rmap_add(struct kvm *kvm,
+ 	kvm_update_page_stats(kvm, sp->role.level, 1);
+ 
+ 	rmap_head = gfn_to_rmap(gfn, sp->role.level, slot);
+-	rmap_count = pte_list_add(cache, spte, rmap_head);
++	rmap_count = pte_list_add(kvm, cache, spte, rmap_head);
+ 
+ 	if (rmap_count > kvm->stat.max_mmu_rmap_size)
+ 		kvm->stat.max_mmu_rmap_size = rmap_count;
+@@ -1859,13 +1867,14 @@ static unsigned kvm_page_table_hashfn(gfn_t gfn)
+ 	return hash_64(gfn, KVM_MMU_HASH_SHIFT);
+ }
+ 
+-static void mmu_page_add_parent_pte(struct kvm_mmu_memory_cache *cache,
++static void mmu_page_add_parent_pte(struct kvm *kvm,
++				    struct kvm_mmu_memory_cache *cache,
+ 				    struct kvm_mmu_page *sp, u64 *parent_pte)
+ {
+ 	if (!parent_pte)
+ 		return;
+ 
+-	pte_list_add(cache, parent_pte, &sp->parent_ptes);
++	pte_list_add(kvm, cache, parent_pte, &sp->parent_ptes);
+ }
+ 
+ static void mmu_page_remove_parent_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
+@@ -2555,7 +2564,7 @@ static void __link_shadow_page(struct kvm *kvm,
+ 
+ 	mmu_spte_set(sptep, spte);
+ 
+-	mmu_page_add_parent_pte(cache, sp, sptep);
++	mmu_page_add_parent_pte(kvm, cache, sp, sptep);
+ 
+ 	/*
+ 	 * The non-direct sub-pagetable must be updated before linking.  For
 -- 
 2.46.0.792.g87dc391469-goog
 
