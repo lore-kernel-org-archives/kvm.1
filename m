@@ -1,155 +1,121 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D0518BC26;
-	Fri, 27 Sep 2024 16:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC995142621;
+	Fri, 27 Sep 2024 16:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727453848; cv=none; b=b5GEP+VojNOqI942MtIm5rsYadjUDDU221okCf3pt2S55nEUcdS8ul7iCjVtfdXct7qH0lOKw7+EKlaXwGnLao5f4TNyFpJl/NpJgh1PIH91zaoLmDxHXtsoGxEzcgKJcayBQQFCf4GKJu0SOF16LwsXKTrtqDBYlaKbjJrp6rg=
+	t=1727454144; cv=none; b=VzxlLmgElqTwORlXStcA69cPuMGtwaPmcdfCP2M0l7xWnXenFBsq5lBXZetdtGG8NdfrR3gDPWB4CsJNlekuBknKsJUcpyC2u0+Edn/TPKduJ5IqZhUk2S8sunIIVm5h5mb5mOGzhiHBBNetfzq6NZ2/p0Fveemn0szMvKeJUaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727453848; c=relaxed/simple;
-	bh=bITM0Aeng2J6eq1p6hx8dT3atihTw0CutEtJW/1eOSY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t9ll2GHB6+MEuGKe0ai1gkZXKNu6FaXlm3sV6qY9iqgy2Pn6DX18vgiCD/hrttjvy02oCLqLikGhNDVBTgdT3quXOKxxRqi4v7MKmxbWJyL9rViMTZ7DYb4YJJSD5bLCWH9+LvuPu/tHaWZ4Xdf6OFLeeZQ8aatdifBc8e4qFCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=jjew5vEN; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="jjew5vEN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1727453847; x=1758989847;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=v/pCxVzGGt00J4HeXCQPyQbX0vz+zoWW8SfA60zWySw=;
-  b=jjew5vENxA3E9TV4WkYMc6Xn069QMqTuqjL3cYUK4LnuofUv0CMYfMsu
-   YYMmhtNE1TKDtYMsT/WPzqJ4VoVkFMDA80MgE6PjvbLBCIaiHpWaaciZE
-   q3lkcyhey0IHWaXtFHRkdbYYF8PswhSYfGewn855c9plc9KTt15/dSBWI
-   U=;
-X-IronPort-AV: E=Sophos;i="6.11,159,1725321600"; 
-   d="scan'208";a="335991852"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2024 16:17:10 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.10.100:14418]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.9.81:2525] with esmtp (Farcaster)
- id f6dd7ae9-f1d5-4b5e-bace-701045ca9ffd; Fri, 27 Sep 2024 16:17:08 +0000 (UTC)
-X-Farcaster-Flow-ID: f6dd7ae9-f1d5-4b5e-bace-701045ca9ffd
-Received: from EX19D031EUB001.ant.amazon.com (10.252.61.29) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 27 Sep 2024 16:17:08 +0000
-Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
- EX19D031EUB001.ant.amazon.com (10.252.61.29) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 27 Sep 2024 16:17:08 +0000
-Received: from email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com
- (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Fri, 27 Sep 2024 16:17:07 +0000
-Received: from dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com (dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com [10.253.74.38])
-	by email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com (Postfix) with ESMTPS id 854B8403DD;
-	Fri, 27 Sep 2024 16:17:06 +0000 (UTC)
-From: Ivan Orlov <iorlov@amazon.com>
-To: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <shuah@kernel.org>,
-	<tglx@linutronix.de>
-CC: Ivan Orlov <iorlov@amazon.com>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<x86@kernel.org>, <jalliste@amazon.com>, <nh-open-source@amazon.com>,
-	<pdurrant@amazon.co.uk>
-Subject: [PATCH 3/3] selftests: KVM: Add test case for MMIO during event delivery
-Date: Fri, 27 Sep 2024 16:16:57 +0000
-Message-ID: <20240927161657.68110-4-iorlov@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240927161657.68110-1-iorlov@amazon.com>
-References: <20240927161657.68110-1-iorlov@amazon.com>
+	s=arc-20240116; t=1727454144; c=relaxed/simple;
+	bh=MwxSYUQfpQZ8Dt7MR3StqGkeSe7twZkuP4tcbwLCnKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QeS2eFB1r9OQ9O31gn7wzBt5Xi2JttLHUzr5ubeIDu/BPHYye3+igHHZcNvdfc9hxwbzc4gLRZL3z3PoOwjuoqlzd/qvJ65L9lJhDFtqlfoxO0kLG2797z+uFTxKOApkJE0/yEMiMgBwYPsEQDyNDaW33sjsxxOmklGKfv6PosM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8EDBA14BF;
+	Fri, 27 Sep 2024 09:22:44 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B650E3F6A8;
+	Fri, 27 Sep 2024 09:22:08 -0700 (PDT)
+Date: Fri, 27 Sep 2024 17:22:03 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Keith Packard <keithp@keithp.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
+Message-ID: <ZvbbqzrfkgjM1VZ3@J2N7QTR9R3>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-32-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925150059.3955569-32-ardb+git@google.com>
 
-Extend the 'set_memory_region_test' with a test case which covers the
-MMIO during event delivery error handling. The test case
+On Wed, Sep 25, 2024 at 05:01:02PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> Bump the minimum GCC version to 8.1 to gain unconditional support for
+> referring to the per-task stack cookie using a symbol rather than
+> relying on the fixed offset of 40 bytes from %GS, which requires
+> elaborate hacks to support.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  Documentation/admin-guide/README.rst | 2 +-
+>  Documentation/process/changes.rst    | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-1) Tries to set an IDT descriptor base to point to an MMIO address
-2) Generates a #GP
-3) Verifies that we got a correct exit reason (KVM_EXIT_INTERNAL_ERROR)
-   and suberror code (KVM_INTERNAL_ERROR_DELIVERY_EV)
-4) Verifies that we got a corrent "faulty" GPA in internal.data[3]
+I'd like this for arm64 and others too (for unconditional support for
+-fpatchable-function-entry), so FWIW:
 
-Signed-off-by: Ivan Orlov <iorlov@amazon.com>
----
- .../selftests/kvm/set_memory_region_test.c    | 46 +++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
-index a8267628e9ed..e9e97346edf1 100644
---- a/tools/testing/selftests/kvm/set_memory_region_test.c
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c
-@@ -553,6 +553,51 @@ static void test_add_overlapping_private_memory_regions(void)
- 	close(memfd);
- 	kvm_vm_free(vm);
- }
-+
-+static const struct desc_ptr faulty_idt_desc = {
-+	.address = MEM_REGION_GPA,
-+	.size = 0xFFF,
-+};
-+
-+static void guest_code_faulty_idt_desc(void)
-+{
-+	__asm__ __volatile__("lidt %0"::"m"(faulty_idt_desc));
-+
-+	/* Generate a #GP by dereferencing a non-canonical address */
-+	*((uint8_t *)0xDEADBEEFDEADBEEFULL) = 0x1;
-+
-+	/* We should never reach this point */
-+	GUEST_ASSERT(0);
-+}
-+
-+/*
-+ * This test tries to point the IDT descriptor base to an MMIO address. This action
-+ * should cause a KVM internal error, so the VMM could handle such situations gracefully.
-+ */
-+static void test_faulty_idt_desc(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+
-+	pr_info("Testing a faulty IDT descriptor pointing to an MMIO address\n");
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code_faulty_idt_desc);
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_INTERNAL_ERROR);
-+	TEST_ASSERT(vcpu->run->internal.suberror == KVM_INTERNAL_ERROR_DELIVERY_EV,
-+		    "Unexpected suberror = %d", vcpu->run->internal.suberror);
-+	TEST_ASSERT(vcpu->run->internal.ndata > 4, "Unexpected internal error data array size = %d",
-+		    vcpu->run->internal.ndata);
-+
-+	/* The "faulty" GPA address should be = IDT base + offset of the GP vector */
-+	TEST_ASSERT(vcpu->run->internal.data[3] == MEM_REGION_GPA +
-+		    GP_VECTOR * sizeof(struct idt_entry),
-+		    "Unexpected GPA = %llx", vcpu->run->internal.data[3]);
-+
-+	kvm_vm_free(vm);
-+}
- #endif
- 
- int main(int argc, char *argv[])
-@@ -568,6 +613,7 @@ int main(int argc, char *argv[])
- 	 * KVM_RUN fails with ENOEXEC or EFAULT.
- 	 */
- 	test_zero_memory_regions();
-+	test_faulty_idt_desc();
- #endif
- 
- 	test_invalid_memory_region_flags();
--- 
-2.43.0
+I think you'll want to update scripts/min-tool-version.sh too; judging
+by the diff in the cover letter that's not handled elsehere in the
+series.
 
+Mark.
+
+> 
+> diff --git a/Documentation/admin-guide/README.rst b/Documentation/admin-guide/README.rst
+> index f2bebff6a733..3dda41923ed6 100644
+> --- a/Documentation/admin-guide/README.rst
+> +++ b/Documentation/admin-guide/README.rst
+> @@ -259,7 +259,7 @@ Configuring the kernel
+>  Compiling the kernel
+>  --------------------
+>  
+> - - Make sure you have at least gcc 5.1 available.
+> + - Make sure you have at least gcc 8.1 available.
+>     For more information, refer to :ref:`Documentation/process/changes.rst <changes>`.
+>  
+>   - Do a ``make`` to create a compressed kernel image. It is also possible to do
+> diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
+> index 00f1ed7c59c3..59b7d3d8a577 100644
+> --- a/Documentation/process/changes.rst
+> +++ b/Documentation/process/changes.rst
+> @@ -29,7 +29,7 @@ you probably needn't concern yourself with pcmciautils.
+>  ====================== ===============  ========================================
+>          Program        Minimal version       Command to check the version
+>  ====================== ===============  ========================================
+> -GNU C                  5.1              gcc --version
+> +GNU C                  8.1              gcc --version
+>  Clang/LLVM (optional)  13.0.1           clang --version
+>  Rust (optional)        1.78.0           rustc --version
+>  bindgen (optional)     0.65.1           bindgen --version
+> -- 
+> 2.46.0.792.g87dc391469-goog
+> 
+> 
