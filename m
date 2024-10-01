@@ -1,36 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80788191F8D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883B919309C;
 	Tue,  1 Oct 2024 05:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727758938; cv=none; b=OX1tacmnlnnIoz2VyJfv+LgI8jWjAVHjky+eX0op2OgkLKnua+nigERPPnehvUYAgO/yukQfWhY76vHQrxNZEB73wnSqCfAEVmLVrdB05x/SImusjAwj7SnCWUooj8Uv4aQ2B7x4lP+xdkhpUChnopUvvQDKdNhHn/rXpiML7CY=
+	t=1727758938; cv=none; b=t2XOrTS+kVhzDKlH48AFrmwqPTvHWC4pBTch0oRlSVcmopRgD5dEzdsYSJjFq21bi7UMLQuE7bmBeybrojs+gqRN2NDctVlWiCopYjsed3YXTFDDYZlsppTiWQ99jFYrkRo9V5ik+Fbc9n8ZcDpW6wMRdGh9oPpJD9+zr1XMySw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727758938; c=relaxed/simple;
-	bh=U7EmXCkYhk+0D2z/ABSBBVPD3dz44DJtR3mhNRJtEpU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gDyjgNPelG6503HcU3Hf+uFvAbRg2TRjI633gjzUNfhVVOGRx4PezdGmm4KGWKpzSZm9BA3HzHl+NbhfjZmbG1blf05jYg2LDJMqtI8gK1QBm5wwu7UIusZqFUp+1xmPFO2a7R8oBBQHLUbl0B4rBLJ6nd2NThYZerRjm2Ksj8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=WH9cmggB; arc=none smtp.client-ip=198.137.202.136
+	bh=zvaRZRA/DRQ9xLaRnwsO3ZrZNl5ciooyMbPHWdHOw+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rJXIlkWfRp+7vlNWgIrfWKof2UvozaWEpgS/Ytd20jqb1lk2VFGmiLRkyZwjt5HyTNksTWbTTlq/FOnaFQ4+sTbAkyxeRVaXZ7CAB/n5+rY6NMOGIrj2UZGCbB6+yxvdTFVLmKs6nBsr7FD/BzWJ85r2neheFetFAc1YsGX+04s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=T7a5ePra; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="WH9cmggB"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="T7a5ePra"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 49151A7P3643828
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 49151A7l3643828
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 30 Sep 2024 22:01:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 49151A7P3643828
+	Mon, 30 Sep 2024 22:01:37 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 49151A7l3643828
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024091601; t=1727758876;
-	bh=ySJL6936WxkCzK3GYA0yow9swO+GvxRvS+6BpZdApcM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WH9cmggBQZBWV0QFzUo3SfhUErsHuiV0Q68lhSeG9pqKeRUAkB7fg75Rhp8zLFGHE
-	 fmeAVNR8YSnO0LRYEvBEAqGU+8clWZEcI8YGA7AJrF2gYjJU3yT5RYnavgcGn+FzLX
-	 GcisfceOd2DAm4SKVtSoazMkOkBZqMFa7v8vCKI7H0F5lEosytgJ+fu9AkHC1xFgLS
-	 V9xphBxYQxxOvnnoLOg+NFsOKT/5gWUKG0meBCBOrAALdbQU4KEql3PQUY6Z6iiF6d
-	 ftCcQXBpVUX6bO8cJfV8AzouxREy6PWg9tEQjN2RZeKVW/V8kmUdrGziQ/dVYT+uDI
-	 7S/gIWSgahS0w==
+	s=2024091601; t=1727758898;
+	bh=qzvu60W6NQb8KVFLqmCzK1DwmY79Zr7QZJjLnO14se4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T7a5ePra+mmb6gkvbwl7glmEfla6+iaA7uQO/qBeQyJZR3vhUEDttPOhIPpU6Pbwp
+	 VMWr1oGGxmwetHhwiv7gsOxdXHqgOwY2uQjQye87+HeKtGVkC+TJ5h4eOUl3cXgj9a
+	 zzQCSb1fF2WnVbYP2dEBSFKgxMQ6AGFIscUTXvOyD9FANWsesYlzLrdxpGvAU8a8/5
+	 t2t5yPjIOQbNLxFhWx5gHT6zKHSKSUuZ0TZf2+tY9pF1Yt7OHaTIo7MpbaQr/6VpKm
+	 EKls8puQ+vuebIZfXThASRGflPRiy3vnW32o0F6dP1Al+dotE4ZLfs8sfNsrVURIVX
+	 llU+ULS2lTKHA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -38,124 +39,172 @@ Cc: seanjc@google.com, pbonzini@redhat.com, corbet@lwn.net, tglx@linutronix.de,
         mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
         x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
         andrew.cooper3@citrix.com, xin@zytor.com
-Subject: [PATCH v3 00/27] Enable FRED with KVM VMX
-Date: Mon, 30 Sep 2024 22:00:43 -0700
-Message-ID: <20241001050110.3643764-1-xin@zytor.com>
+Subject: [PATCH v3 22/27] KVM: nVMX: Add support for the secondary VM exit controls
+Date: Mon, 30 Sep 2024 22:01:05 -0700
+Message-ID: <20241001050110.3643764-23-xin@zytor.com>
 X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241001050110.3643764-1-xin@zytor.com>
+References: <20241001050110.3643764-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch set enables the Intel flexible return and event delivery
-(FRED) architecture with KVM VMX to allow guests to utilize FRED.
+From: Xin Li <xin3.li@intel.com>
 
-The FRED architecture defines simple new transitions that change
-privilege level (ring transitions). The FRED architecture was
-designed with the following goals:
+Enable the secondary VM exit controls to prepare for nested FRED.
 
-1) Improve overall performance and response time by replacing event
-   delivery through the interrupt descriptor table (IDT event
-   delivery) and event return by the IRET instruction with lower
-   latency transitions.
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Tested-by: Shan Kang <shan.kang@intel.com>
+---
 
-2) Improve software robustness by ensuring that event delivery
-   establishes the full supervisor context and that event return
-   establishes the full user context.
+Change since v2:
+* Read secondary VM exit controls from vmcs_conf insteasd of the hardware
+  MSR MSR_IA32_VMX_EXIT_CTLS2 to avoid advertising features to L1 that KVM
+  itself doesn't support, e.g. because the expected entry+exit pairs aren't
+  supported. (Sean Christopherson)
+---
+ Documentation/virt/kvm/x86/nested-vmx.rst |  1 +
+ arch/x86/kvm/vmx/capabilities.h           |  1 +
+ arch/x86/kvm/vmx/nested.c                 | 21 ++++++++++++++++++++-
+ arch/x86/kvm/vmx/vmcs12.c                 |  1 +
+ arch/x86/kvm/vmx/vmcs12.h                 |  2 ++
+ arch/x86/kvm/x86.h                        |  2 +-
+ 6 files changed, 26 insertions(+), 2 deletions(-)
 
-The new transitions defined by the FRED architecture are FRED event
-delivery and, for returning from events, two FRED return instructions.
-FRED event delivery can effect a transition from ring 3 to ring 0, but
-it is used also to deliver events incident to ring 0. One FRED
-instruction (ERETU) effects a return from ring 0 to ring 3, while the
-other (ERETS) returns while remaining in ring 0. Collectively, FRED
-event delivery and the FRED return instructions are FRED transitions.
-
-Intel VMX architecture is extended to run FRED guests, and the major
-changes are:
-
-1) New VMCS fields for FRED context management, which includes two new
-event data VMCS fields, eight new guest FRED context VMCS fields and
-eight new host FRED context VMCS fields.
-
-2) VMX nested-exception support for proper virtualization of stack
-levels introduced with FRED architecture.
-
-Search for the latest FRED spec in most search engines with this search
-pattern:
-
-  site:intel.com FRED (flexible return and event delivery) specification
-
-The first 20 patches add FRED support to VMX, and the rest 7 patches
-add FRED support to nested VMX.
-
-
-Following is the link to the v2 of this patch set:
-https://lore.kernel.org/kvm/20240207172646.3981-1-xin3.li@intel.com/
-
-Sean Christopherson (3):
-  KVM: x86: Use a dedicated flow for queueing re-injected exceptions
-  KVM: VMX: Don't modify guest XFD_ERR if CR0.TS=1
-  KVM: VMX: Pass XFD_ERR as pseudo-payload when injecting #NM
-
-Xin Li (21):
-  KVM: VMX: Add support for the secondary VM exit controls
-  KVM: VMX: Initialize FRED VM entry/exit controls in vmcs_config
-  KVM: VMX: Disable FRED if FRED consistency checks fail
-  KVM: VMX: Initialize VMCS FRED fields
-  KVM: x86: Use KVM-governed feature framework to track "FRED enabled"
-  KVM: VMX: Set FRED MSR interception
-  KVM: VMX: Save/restore guest FRED RSP0
-  KVM: VMX: Add support for FRED context save/restore
-  KVM: x86: Add a helper to detect if FRED is enabled for a vCPU
-  KVM: VMX: Virtualize FRED event_data
-  KVM: VMX: Virtualize FRED nested exception tracking
-  KVM: x86: Mark CR4.FRED as not reserved when guest can use FRED
-  KVM: VMX: Dump FRED context in dump_vmcs()
-  KVM: x86: Allow FRED/LKGS to be advertised to guests
-  KVM: x86: Allow WRMSRNS to be advertised to guests
-  KVM: VMX: Invoke vmx_set_cpu_caps() before nested setup
-  KVM: nVMX: Add support for the secondary VM exit controls
-  KVM: nVMX: Add a prerequisite to SHADOW_FIELD_R[OW] macros
-  KVM: nVMX: Add FRED VMCS fields
-  KVM: nVMX: Add VMCS FRED states checking
-  KVM: nVMX: Allow VMX FRED controls
-
-Xin Li (Intel) (3):
-  x86/cea: Export per CPU variable cea_exception_stacks
-  KVM: VMX: Do not use MAX_POSSIBLE_PASSTHROUGH_MSRS in array definition
-  KVM: nVMX: Add a prerequisite to existence of VMCS fields
-
- Documentation/virt/kvm/x86/nested-vmx.rst |  19 ++
- arch/x86/include/asm/kvm_host.h           |   9 +-
- arch/x86/include/asm/msr-index.h          |   1 +
- arch/x86/include/asm/vmx.h                |  32 ++-
- arch/x86/kvm/cpuid.c                      |   4 +-
- arch/x86/kvm/governed_features.h          |   1 +
- arch/x86/kvm/kvm_cache_regs.h             |  15 ++
- arch/x86/kvm/svm/svm.c                    |  15 +-
- arch/x86/kvm/vmx/capabilities.h           |  17 +-
- arch/x86/kvm/vmx/nested.c                 | 291 ++++++++++++++++----
- arch/x86/kvm/vmx/nested.h                 |   8 +
- arch/x86/kvm/vmx/nested_vmcs_fields.h     |  25 ++
- arch/x86/kvm/vmx/vmcs.h                   |   1 +
- arch/x86/kvm/vmx/vmcs12.c                 |  19 ++
- arch/x86/kvm/vmx/vmcs12.h                 |  38 +++
- arch/x86/kvm/vmx/vmcs_shadow_fields.h     |  37 ++-
- arch/x86/kvm/vmx/vmx.c                    | 308 +++++++++++++++++++---
- arch/x86/kvm/vmx/vmx.h                    |  15 +-
- arch/x86/kvm/x86.c                        | 140 ++++++----
- arch/x86/kvm/x86.h                        |   8 +-
- arch/x86/mm/cpu_entry_area.c              |   1 +
- 21 files changed, 846 insertions(+), 158 deletions(-)
- create mode 100644 arch/x86/kvm/vmx/nested_vmcs_fields.h
-
-
-base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+diff --git a/Documentation/virt/kvm/x86/nested-vmx.rst b/Documentation/virt/kvm/x86/nested-vmx.rst
+index ac2095d41f02..e64ef231f310 100644
+--- a/Documentation/virt/kvm/x86/nested-vmx.rst
++++ b/Documentation/virt/kvm/x86/nested-vmx.rst
+@@ -217,6 +217,7 @@ struct shadow_vmcs is ever changed.
+ 		u16 host_fs_selector;
+ 		u16 host_gs_selector;
+ 		u16 host_tr_selector;
++		u64 secondary_vm_exit_controls;
+ 	};
+ 
+ 
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 2962a3bb9747..c96e6cb18c9a 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -38,6 +38,7 @@ struct nested_vmx_msrs {
+ 	u32 pinbased_ctls_high;
+ 	u32 exit_ctls_low;
+ 	u32 exit_ctls_high;
++	u64 secondary_exit_ctls;
+ 	u32 entry_ctls_low;
+ 	u32 entry_ctls_high;
+ 	u32 misc_low;
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index a8e7bc04d9bf..42e43eb7561f 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -1454,6 +1454,7 @@ int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data)
+ 	case MSR_IA32_VMX_PINBASED_CTLS:
+ 	case MSR_IA32_VMX_PROCBASED_CTLS:
+ 	case MSR_IA32_VMX_EXIT_CTLS:
++	case MSR_IA32_VMX_EXIT_CTLS2:
+ 	case MSR_IA32_VMX_ENTRY_CTLS:
+ 		/*
+ 		 * The "non-true" VMX capability MSRs are generated from the
+@@ -1532,6 +1533,9 @@ int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata)
+ 		if (msr_index == MSR_IA32_VMX_EXIT_CTLS)
+ 			*pdata |= VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR;
+ 		break;
++	case MSR_IA32_VMX_EXIT_CTLS2:
++		*pdata = msrs->secondary_exit_ctls;
++		break;
+ 	case MSR_IA32_VMX_TRUE_ENTRY_CTLS:
+ 	case MSR_IA32_VMX_ENTRY_CTLS:
+ 		*pdata = vmx_control_msr(
+@@ -2471,6 +2475,11 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 		exec_control &= ~VM_EXIT_LOAD_IA32_EFER;
+ 	vm_exit_controls_set(vmx, exec_control);
+ 
++	if (exec_control & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
++		exec_control = __secondary_vm_exit_controls_get(vmcs01);
++		secondary_vm_exit_controls_set(vmx, exec_control);
++	}
++
+ 	/*
+ 	 * Interrupt/Exception Fields
+ 	 */
+@@ -6956,7 +6965,7 @@ static void nested_vmx_setup_exit_ctls(struct vmcs_config *vmcs_conf,
+ 		VM_EXIT_HOST_ADDR_SPACE_SIZE |
+ #endif
+ 		VM_EXIT_LOAD_IA32_PAT | VM_EXIT_SAVE_IA32_PAT |
+-		VM_EXIT_CLEAR_BNDCFGS;
++		VM_EXIT_CLEAR_BNDCFGS | VM_EXIT_ACTIVATE_SECONDARY_CONTROLS;
+ 	msrs->exit_ctls_high |=
+ 		VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR |
+ 		VM_EXIT_LOAD_IA32_EFER | VM_EXIT_SAVE_IA32_EFER |
+@@ -6965,6 +6974,16 @@ static void nested_vmx_setup_exit_ctls(struct vmcs_config *vmcs_conf,
+ 
+ 	/* We support free control of debug control saving. */
+ 	msrs->exit_ctls_low &= ~VM_EXIT_SAVE_DEBUG_CONTROLS;
++
++	if (msrs->exit_ctls_high & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
++		msrs->secondary_exit_ctls = vmcs_conf->secondary_vmexit_ctrl;
++		/*
++		 * As the secondary VM exit control is always loaded, do not
++		 * advertise any feature in it to nVMX until its nVMX support
++		 * is ready.
++		 */
++		msrs->secondary_exit_ctls &= 0;
++	}
+ }
+ 
+ static void nested_vmx_setup_entry_ctls(struct vmcs_config *vmcs_conf,
+diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
+index 106a72c923ca..98457d7b2b23 100644
+--- a/arch/x86/kvm/vmx/vmcs12.c
++++ b/arch/x86/kvm/vmx/vmcs12.c
+@@ -73,6 +73,7 @@ const unsigned short vmcs12_field_offsets[] = {
+ 	FIELD(PAGE_FAULT_ERROR_CODE_MATCH, page_fault_error_code_match),
+ 	FIELD(CR3_TARGET_COUNT, cr3_target_count),
+ 	FIELD(VM_EXIT_CONTROLS, vm_exit_controls),
++	FIELD(SECONDARY_VM_EXIT_CONTROLS, secondary_vm_exit_controls),
+ 	FIELD(VM_EXIT_MSR_STORE_COUNT, vm_exit_msr_store_count),
+ 	FIELD(VM_EXIT_MSR_LOAD_COUNT, vm_exit_msr_load_count),
+ 	FIELD(VM_ENTRY_CONTROLS, vm_entry_controls),
+diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
+index 56fd150a6f24..1fe3ed9108aa 100644
+--- a/arch/x86/kvm/vmx/vmcs12.h
++++ b/arch/x86/kvm/vmx/vmcs12.h
+@@ -185,6 +185,7 @@ struct __packed vmcs12 {
+ 	u16 host_gs_selector;
+ 	u16 host_tr_selector;
+ 	u16 guest_pml_index;
++	u64 secondary_vm_exit_controls;
+ };
+ 
+ /*
+@@ -360,6 +361,7 @@ static inline void vmx_check_vmcs12_offsets(void)
+ 	CHECK_OFFSET(host_gs_selector, 992);
+ 	CHECK_OFFSET(host_tr_selector, 994);
+ 	CHECK_OFFSET(guest_pml_index, 996);
++	CHECK_OFFSET(secondary_vm_exit_controls, 998);
+ }
+ 
+ extern const unsigned short vmcs12_field_offsets[];
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 0ed91512b757..890b7a6554d5 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -66,7 +66,7 @@ void kvm_spurious_fault(void);
+  * associated feature that KVM supports for nested virtualization.
+  */
+ #define KVM_FIRST_EMULATED_VMX_MSR	MSR_IA32_VMX_BASIC
+-#define KVM_LAST_EMULATED_VMX_MSR	MSR_IA32_VMX_VMFUNC
++#define KVM_LAST_EMULATED_VMX_MSR	MSR_IA32_VMX_EXIT_CTLS2
+ 
+ #define KVM_DEFAULT_PLE_GAP		128
+ #define KVM_VMX_DEFAULT_PLE_WINDOW	4096
 -- 
 2.46.2
 
