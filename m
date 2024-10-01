@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4BF1BC091;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865551BBBFC;
 	Tue,  1 Oct 2024 05:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727758940; cv=none; b=qeA05Kjkq5TEzst1elHostm8t2BDer/TWUIR5KqzXQXDEgsH9o+DoySEnwTUyng++WgmwPlaVh8yKLrYScfVpjpCRPjhlNbidr7V69VpxdY/rfe7JLrj6hsy/WcVo5PWXla+nV83aFZpg5Snq6b1wGvLs9wcOtEBEyfhHp3I4dQ=
+	t=1727758940; cv=none; b=j1ZHHRt0xgFHb7wFsBwTVYt7w+5H1oGi5ALKPCEUWizR8HHjl7sFH3R6aU9OsbbKGJXCyk3eNuQY/MPwa1RZcdFzyeASGyF+/hECmI/xwPjI2Lb/bePIb5ckhFwdMyVND9FwJAyhThLGCgesEgEF88Cajso52qUXIzpoVpkbA28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727758940; c=relaxed/simple;
-	bh=cCXS3QGJ3gGL/feyhUz/mholtXE/la9yMJrsJIIa3Z8=;
+	bh=8NwOtEgXFXbccpyKBCaKNF/+A8akEbIhiKyud8HIOrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFoTfrXXXUul3Zt3RPvTKyXS/c+vAVgcG+9fFZnSL5WpvHhD8TXqpxAQqHv/7UL1t2DH31k8ZrqhepFX/E87i5lDMaObiOfm1pNpvfbiXB7pFmasQi4pjQ+ItS89wr5NBsghaOsE/y90fP3J21Fl3M3x91D+zJNUoSd8xGFReVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=QITtegD9; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=TRxebXvP6cnVihgALfsdSGJeRtszfTQsJhYS5rioY6JL7xqLC6/JTnGhae7KboQ1cXDanktYqL2jWfTHwEBw1hQWw98p03QFMiyKutfGSpY7uoLMpGtm3k8djiMP23hdGJQK7lBvgkJ/9fJcmfv9B98xTkEHKdlCYQQtn47L6bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=HKYM0QUV; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="QITtegD9"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="HKYM0QUV"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 49151A7g3643828
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 49151A7j3643828
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 30 Sep 2024 22:01:32 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 49151A7g3643828
+	Mon, 30 Sep 2024 22:01:35 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 49151A7j3643828
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024091601; t=1727758893;
-	bh=UYAkdDGgqqEL7Q7x/r0wK+q8dSQmiECINofEe79ZVk4=;
+	s=2024091601; t=1727758896;
+	bh=sULUFEzl3r3MZGUBZyiAQe7f5ktOY3K1CWLQ4Ja4sN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QITtegD9RMAjCLagc7MIyxSEcq6XAQBaZEjdFbyKoYl5jNyirtuGTieqtNlwWM8xD
-	 DAKv3wccYOa66wR1PHKWBIHjos1AX3coG1V8z8zyGnrwsrbhoGG/L6bDSk7VTxG/kO
-	 HEFRhw/PP0uiLMdUtgGhaCUqhkjSbwkhqwZ7ei+o6ko+MtmFSxO7c3JkOXPzC9tc5I
-	 SBtQ+De1WSSWx0/FM3K8XFJgBiL34ErT1fZa3fAhqEQWLNMM91g9L/NkZrju1KOxP+
-	 an27O7U/AAj/AH22Y8cFNYGgKrd1Mde2VSZtmUQKuKDDo20gQYWRVlTUo8el76pDoT
-	 plDhi9IadUp2Q==
+	b=HKYM0QUV2DyCIgCdDwErfc+MbiGCsL4o0o0sFKYSfZr+Nt/8pIYVdw2OZMm81W4/d
+	 AR/vRseg3sBf9FtrTlGviT9AUnjr1IycMu8mWTNFfteP6ue6Csrpd9RWFiQpxyhTh6
+	 +PzUlaZv37Jly9EJWgwXwkqbn1fi6j11nbcTj88zG9QLo4zuntXQxoT5lBK9RdksU4
+	 TlyukvBkamMdzZNS03P0kLoj6mI7lIhaeMbpmFhlXdDv/5t94IKRNBln8thDS4vNmr
+	 mQOTnImZT60ooIGnxwyuIMQ2RAQPBnirBpaUBk7C+ue2N/AkgzY97k1YfMhAmihcRS
+	 o+Zjifa1IpVDw==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -39,9 +39,9 @@ Cc: seanjc@google.com, pbonzini@redhat.com, corbet@lwn.net, tglx@linutronix.de,
         mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
         x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
         andrew.cooper3@citrix.com, xin@zytor.com
-Subject: [PATCH v3 17/27] KVM: x86: Mark CR4.FRED as not reserved when guest can use FRED
-Date: Mon, 30 Sep 2024 22:01:00 -0700
-Message-ID: <20241001050110.3643764-18-xin@zytor.com>
+Subject: [PATCH v3 20/27] KVM: x86: Allow WRMSRNS to be advertised to guests
+Date: Mon, 30 Sep 2024 22:01:03 -0700
+Message-ID: <20241001050110.3643764-21-xin@zytor.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241001050110.3643764-1-xin@zytor.com>
 References: <20241001050110.3643764-1-xin@zytor.com>
@@ -55,67 +55,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when
-guest can use FRED, i.e.,
-  1) All of FRED KVM support is in place.
-  2) Guest enumerates FRED.
-Otherwise it is still a reserved bit.
+Allow WRMSRNS to be advertised to guests.
+
+WRMSRNS behaves exactly like WRMSR with the only difference being
+that it is not a serializing instruction by default.  It improves
+performance when being used in a hot path, e.g., setting FRED RSP0.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Tested-by: Shan Kang <shan.kang@intel.com>
 ---
+ arch/x86/kvm/cpuid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes since v2:
-* Don't allow CR4.FRED=1 before all of FRED KVM support is in place
-  (Sean Christopherson).
----
- arch/x86/include/asm/kvm_host.h | 2 +-
- arch/x86/kvm/vmx/vmx.c          | 4 ++++
- arch/x86/kvm/x86.h              | 2 ++
- 3 files changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 3830084b569b..87f9f0b6cf3c 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -136,7 +136,7 @@
- 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
- 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
- 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
--			  | X86_CR4_LAM_SUP))
-+			  | X86_CR4_LAM_SUP | X86_CR4_FRED))
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index c55d150ece8d..63a78ebf9482 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -700,7 +700,7 @@ void kvm_set_cpu_caps(void)
+ 	kvm_cpu_cap_mask(CPUID_7_1_EAX,
+ 		F(AVX_VNNI) | F(AVX512_BF16) | F(CMPCCXADD) |
+ 		F(FZRM) | F(FSRS) | F(FSRC) | F(FRED) | F(LKGS) |
+-		F(AMX_FP16) | F(AVX_IFMA) | F(LAM)
++		F(WRMSRNS) | F(AMX_FP16) | F(AVX_IFMA) | F(LAM)
+ 	);
  
- #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 03f42b218554..bfdd10773136 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8009,6 +8009,10 @@ void vmx_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- 	kvm_governed_feature_check_and_set(vcpu, X86_FEATURE_LAM);
- 	kvm_governed_feature_check_and_set(vcpu, X86_FEATURE_FRED);
- 
-+	/* Don't allow CR4.FRED=1 before all of FRED KVM support is in place. */
-+	if (!guest_can_use(vcpu, X86_FEATURE_FRED))
-+		vcpu->arch.cr4_guest_rsvd_bits |= X86_CR4_FRED;
-+
- 	vmx_setup_uret_msrs(vmx);
- 
- 	if (cpu_has_secondary_exec_ctrls())
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 992e73ee2ec5..0ed91512b757 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -561,6 +561,8 @@ enum kvm_msr_access {
- 		__reserved_bits |= X86_CR4_PCIDE;       \
- 	if (!__cpu_has(__c, X86_FEATURE_LAM))           \
- 		__reserved_bits |= X86_CR4_LAM_SUP;     \
-+	if (!__cpu_has(__c, X86_FEATURE_FRED))          \
-+		__reserved_bits |= X86_CR4_FRED;        \
- 	__reserved_bits;                                \
- })
- 
+ 	kvm_cpu_cap_init_kvm_defined(CPUID_7_1_EDX,
 -- 
 2.46.2
 
