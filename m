@@ -1,146 +1,112 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9E1BBBC9;
-	Tue,  1 Oct 2024 05:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691306F31E;
+	Tue,  1 Oct 2024 05:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727758941; cv=none; b=VjWoInlTX4SU60eOirtP5hNVUCOsaeRhg+gwjW6hyH+TNx7EQmy0pLoc0N05E8XlVgco60A1dztTSUAg2FLRlEdlq8Wh9HhsW0MpoUBGo5mNQFBj4L6Q5UfIOFbMIIw6agR79BalQID3KLrUPM2AYrAhti8LfwrReclXZcOi/wc=
+	t=1727760802; cv=none; b=BL0VLi9yFXEC5LMZEsmumzNjHu0V55RlXFdHr2IEgAJU7qnpMHA5s8xQVbBig/kn0GwrAmY+F6cHJeddpLjqLMb1Ip4RMz1zXPaoKRj5eOwslvNFRuZeFCWKcmD0/Mz0JJGKglRezcuKtp0uRwJiwfLq+OIat/NJXUHOjcZal0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727758941; c=relaxed/simple;
-	bh=XHFnI85DETCTZUsMiaMjTMhzUM8tB5OPWcBH8WtEpB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLCkNhQ8JFc9XQ6xWjWAzKQHECI9+OecL/+0pcIMy9XoX1LnmTI2va0xlp8MyT306cN2eyotDvwoDW51lFKJIffPjn2jh1dHPRn1exrVtGk+lzMsljcvfP0Pi4VOM2QDL71WMMbKbOgBH1V18axyVyuLri9WeYeHen+jUIiyr0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=phlplVaG; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1727760802; c=relaxed/simple;
+	bh=ALkA67D2rrKVC3yq6JegYHLnnbAgFq9HD2IAj9UHyx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n7BxmBmhO7/ZglhuShcpiCvqTm/qmT5EU2gtNYLAG8zRfhJn+eRBEXrXg/MsualD1XPpv3tC4XhF2XvkvAl5QjOZb+mcSTQpZ8d6Xd2UxzL/g592Z+j5j3/1ml2tNMNn7WYIn3rD6tUWVKKvmJKMTS/WvuM3+wpFaHsz7jmMDqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaVQMaga; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="phlplVaG"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 49151A7Z3643828
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 30 Sep 2024 22:01:25 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 49151A7Z3643828
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024091601; t=1727758886;
-	bh=SjNhSZbcKGusmLjwXANGU7MqZ8m12LMeSX+punktfiM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phlplVaGiCSI5D3kXFxsiMtEGU9zI3UNif41GiNqCtYU7U2Mkaf8M3Eba2v9+Kvx+
-	 dfF6WhOz3CH7s652NFXR3/evZNy3BCcDkiPUu+juMC6dGwD9NbD8izYzrgGzFqP2El
-	 69KQaiplOhd4VW02YZrKT8znZC3ev6ZAnpaiNaJBbODdUnaHqsZS8ixNFwu4W0xXFo
-	 ajoEqkQBHZpSh85iGWq63lAUpoP3qcKX4wJkQbHp7D3/jtV3ckcXykgz7o3Bah5PtU
-	 /5jFXDGeYHN1n1kYhYu3gJgEidSYpcn+b8lA2HWK3yfFrTSnKahwcfuFp/FfXib37N
-	 u745axsU1PUjg==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, corbet@lwn.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
-        andrew.cooper3@citrix.com, xin@zytor.com
-Subject: [PATCH v3 10/27] KVM: VMX: Set FRED MSR interception
-Date: Mon, 30 Sep 2024 22:00:53 -0700
-Message-ID: <20241001050110.3643764-11-xin@zytor.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241001050110.3643764-1-xin@zytor.com>
-References: <20241001050110.3643764-1-xin@zytor.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaVQMaga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B3C4CEC6;
+	Tue,  1 Oct 2024 05:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727760801;
+	bh=ALkA67D2rrKVC3yq6JegYHLnnbAgFq9HD2IAj9UHyx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kaVQMaga3ThzkwWDWuQk6rDB3RSXwRBcTwVGj8nhKaCxd8DGvY0nFCd3IYRsTljub
+	 AZKP4ayTicXJrMtWGj3619WfldHuCsfWcGmrgx6E5KyTalkkIaPvDa79j8IX7+KCf9
+	 tyL1xiG/I6r77qcfTBBo8IHr09HTVxQ5ElVlGqCP6PER85aneiWgpkfNVBK7/pOc2d
+	 0IB7OJr+GBkkTfq3dlA5pz5ppoFJHfbV+YEe6fDprG8RfaDEijzbt4+Mc2WLN9Cu7U
+	 G+M9qW3AxZz15VbiWMQ7LPrCzm4ijKVB3gpMkuSL/R/mT8sVLa15UwdAicPRjd0T7A
+	 AapjojwaZZpvA==
+Date: Mon, 30 Sep 2024 22:33:18 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Keith Packard <keithp@keithp.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 04/28] x86/boot: Permit GOTPCREL relocations for
+ x86_64 builds
+Message-ID: <20241001053318.elfwwiyluw6rlynz@treble>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-34-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240925150059.3955569-34-ardb+git@google.com>
 
-From: Xin Li <xin3.li@intel.com>
+On Wed, Sep 25, 2024 at 05:01:04PM +0200, Ard Biesheuvel wrote:
+> +		if (r_type == R_X86_64_GOTPCREL) {
+> +			Elf_Shdr *s = &secs[sec->shdr.sh_info].shdr;
+> +			unsigned file_off = offset - s->sh_addr + s->sh_offset;
+> +
+> +			/*
+> +			 * GOTPCREL relocations refer to instructions that load
+> +			 * a 64-bit address via a 32-bit relative reference to
+> +			 * the GOT.  In this case, it is the GOT entry that
+> +			 * needs to be fixed up, not the immediate offset in
+> +			 * the opcode. Note that the linker will have applied an
+> +			 * addend of -4 to compensate for the delta between the
+> +			 * relocation offset and the value of RIP when the
+> +			 * instruction executes, and this needs to be backed out
+> +			 * again. (Addends other than -4 are permitted in
+> +			 * principle, but make no sense in practice so they are
+> +			 * not supported.)
+> +                         */
+> +			if (rel->r_addend != -4) {
+> +				die("invalid addend (%ld) for %s relocation: %s\n",
+> +				    rel->r_addend, rel_type(r_type), symname);
+> +				break;
+> +			}
 
-Add FRED MSRs to the VMX passthrough MSR list and set FRED MSRs
-interception.
+For x86 PC-relative addressing, the addend is <reloc offset> -
+<subsequent insn offset>.  So a PC-relative addend can be something
+other than -4 when the relocation applies to the middle of an
+instruction, e.g.:
 
-8 FRED MSRs, i.e., MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
-MSR_IA32_FRED_SSP[123] and MSR_IA32_FRED_CONFIG, are all safe to be
-passthrough, because they all have a pair of corresponding host and
-guest VMCS fields.
+   5b381:	66 81 3d 00 00 00 00 01 06 	cmpw   $0x601,0x0(%rip)        # 5b38a <generic_validate_add_page+0x4a>	5b384: R_X86_64_PC32	boot_cpu_data-0x6
 
-Both MSR_IA32_FRED_RSP0 and MSR_IA32_FRED_SSP0 are dedicated for user
-level event delivery only, IOW they are NOT used in any kernel event
-delivery and the execution of ERETS.  Thus KVM can run safely with
-guest values in the 2 MSRs.  As a result, save and restore of their
-guest values are postponed until vCPU context switching and their host
-values are restored on returning to userspace.
+   5f283:	81 3d 00 00 00 00 ff ff ff 00 	cmpl   $0xffffff,0x0(%rip)        # 5f28d <x86_acpi_suspend_lowlevel+0x9d>	5f285: R_X86_64_PC32	smpboot_control-0x8
 
-Save/restore of MSR_IA32_FRED_RSP0 is done in the next patch.
+   72f67:       c6 05 00 00 00 00 01    movb   $0x1,0x0(%rip)        # 72f6e <sched_itmt_update_handler+0x6e>   72f69: R_X86_64_PC32    x86_topology_update-0x5
 
-Note, as MSR_IA32_FRED_SSP0 is an alias of MSR_IA32_PL0_SSP, its save
-and restore is done through the CET supervisor context management.
+Presumably that could also happen with R_X86_64_GOTPCREL?
 
-Signed-off-by: Xin Li <xin3.li@intel.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Shan Kang <shan.kang@intel.com>
----
- arch/x86/kvm/vmx/vmx.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 28cf89c97bda..c10c955722a3 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -176,6 +176,16 @@ static u32 vmx_possible_passthrough_msrs[] = {
- 	MSR_FS_BASE,
- 	MSR_GS_BASE,
- 	MSR_KERNEL_GS_BASE,
-+	MSR_IA32_FRED_RSP0,
-+	MSR_IA32_FRED_RSP1,
-+	MSR_IA32_FRED_RSP2,
-+	MSR_IA32_FRED_RSP3,
-+	MSR_IA32_FRED_STKLVLS,
-+	MSR_IA32_FRED_SSP1,
-+	MSR_IA32_FRED_SSP2,
-+	MSR_IA32_FRED_SSP3,
-+	MSR_IA32_FRED_CONFIG,
-+	MSR_IA32_FRED_SSP0,		/* Should be added through CET */
- 	MSR_IA32_XFD,
- 	MSR_IA32_XFD_ERR,
- #endif
-@@ -7880,6 +7890,28 @@ static void update_intel_pt_cfg(struct kvm_vcpu *vcpu)
- 		vmx->pt_desc.ctl_bitmask &= ~(0xfULL << (32 + i * 4));
- }
- 
-+static void vmx_set_intercept_for_fred_msr(struct kvm_vcpu *vcpu)
-+{
-+	bool flag = !guest_can_use(vcpu, X86_FEATURE_FRED);
-+
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP0, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP1, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP2, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP3, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_STKLVLS, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP1, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP2, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP3, MSR_TYPE_RW, flag);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_CONFIG, MSR_TYPE_RW, flag);
-+
-+	/*
-+	 * flag = !(CET.SUPERVISOR_SHADOW_STACK || FRED)
-+	 *
-+	 * A possible optimization is to intercept SSPs when FRED && !CET.SUPERVISOR_SHADOW_STACK.
-+	 */
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP0, MSR_TYPE_RW, flag);
-+}
-+
- void vmx_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -7957,6 +7989,8 @@ void vmx_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- 
- 	/* Refresh #PF interception to account for MAXPHYADDR changes. */
- 	vmx_update_exception_bitmap(vcpu);
-+
-+	vmx_set_intercept_for_fred_msr(vcpu);
- }
- 
- static __init u64 vmx_get_perf_capabilities(void)
 -- 
-2.46.2
-
+Josh
