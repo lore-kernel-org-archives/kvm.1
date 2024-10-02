@@ -1,75 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72051D0E3A;
-	Wed,  2 Oct 2024 14:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14E01D0F70;
+	Wed,  2 Oct 2024 14:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878563; cv=none; b=YCV1qdVDarpBo7BVeON/r9oJHoSWj68HQ1gaVNFrw3kaaa9nnjvsLMbpl8FkAlvAwCI3kZOC01Y4HnupnA+qMxq2XgXLTk0Xl9avNg3X58GFm1z3Zeun/MzLvOTZChMLeWIQD69ixFwLzmAaet7+EAkABwk0wk5d1D5FH8Nw/Dc=
+	t=1727878584; cv=none; b=EiWqxQ2ddGfu5CwWwvnBUioXohCZBLChmAINJzp8exLyxU1kDi9+Ok8jgdrLAuhPpCIeumBa134FnSUMuEUXoODaWgfLcLsYry/kG/uZkVgK8CkKqm5Ws0HLAdGtpwCU7JOLglahcEbkNv9LyxmhXTi2OdL6mSw8jX4vekAwPaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878563; c=relaxed/simple;
-	bh=yT+r31n70xCHi9EJMEKqCQB+IFdPVXH1wU6lHdxyhaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ogxHdMhTT84wJPaGovU94l/nH2soRBbyVKJdFG1+jGT2QZQEdGhLNWV57ABx6ohkzABdiyL6V1OGYcfWoRU6eXfji2AzI3ErrVH3IiH+HUz3zr83dqPocPq7vOCi0vd1Tw2g90xGvV2MXbxRbUYNp9mSkMfVWLH/kJy798RGbCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwWY+ofT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727878584; c=relaxed/simple;
+	bh=60AIUvEIO5ShnTtq9IwCjZTgsZLM713StqdUbqvB79M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rlrac1MfkjZLlqr+wMCzUmxIlRRkRngoOlUFuLGE9p+W/z4f8ckKV3QSvh0wxyN2PS3vrOuDKU15IgXYxYtDMTUA/zJ+5/0lzdKwrUwy57+zaGIZvGR/2X66nSKj16GHSy3ggKgmWQe1oywuBgOtKPpGLT7OeU21LjPle0M6fNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JxB5Mq83; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwWY+ofT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFEAC4CEC5;
-	Wed,  2 Oct 2024 14:16:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727878563;
-	bh=yT+r31n70xCHi9EJMEKqCQB+IFdPVXH1wU6lHdxyhaY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EwWY+ofTD1RSYoGGOL6Vcvz9EuF+qNPMnvZDH48oUuKzgPank5dJBlTdcWuZQjeQx
-	 RPK7QrHcfjLn4OhDBF1x6E8qByaJqxsXwu5RVXAV238lE2ev/IrSEp7z/kgTWzuwsJ
-	 iBUBL9pao1WJXmUH5P8USJ/xE0zO/Y3pvfFBUItQGXhNEoKN9SwCrSyZHvZKJyVtZ3
-	 aE3JUqnZi4SvXAjlPc/BvFJeMzQA8q9uwImceqlGnxE8Nm8uOg38gvA6aeMwn6h+R+
-	 nKv5rZQ2CPdKemFAu7st/jNezRO0kbukwY0dwNNQFaaFMzxuow6TsqtmQ7f9vN4sgG
-	 B0xvu5FSWOuGw==
-Date: Wed, 2 Oct 2024 07:16:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Aleksandr Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, stefanha@redhat.com, "Michael
- S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, mcgrof@kernel.org
-Subject: Re: [PATCH v2] vhost/vsock: specify module version
-Message-ID: <20241002071602.793d3e2d@kernel.org>
-In-Reply-To: <CAEivzxdP+7q9vDk-0V8tPuCo1mFw92jVx0u3B8jkyYKv8sLcdA@mail.gmail.com>
-References: <20240929182103.21882-1-aleksandr.mikhalitsyn@canonical.com>
-	<w3fc6fwdwaakygtoktjzavm4vsqq2ks3lnznyfcouesuu7cqog@uiq3y4gjj5m3>
-	<CAEivzxe6MJWMPCYy1TEkp9fsvVMuoUu-k5XOt+hWg4rKR57qTw@mail.gmail.com>
-	<ib52jo3gqsdmr23lpmsipytbxhecwvmjbjlgiw5ygwlbwletlu@rvuyibtxezwl>
-	<CAEivzxdP+7q9vDk-0V8tPuCo1mFw92jVx0u3B8jkyYKv8sLcdA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JxB5Mq83"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492E3nbX028187;
+	Wed, 2 Oct 2024 14:16:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding; s=pp1; bh=A7ZMEdNmTgiN7
+	NsGdNH6Pv8P47YEkBKClc7VeU53JJg=; b=JxB5Mq83UjVcT9wphw9ntkKlYNeSt
+	fpqs7kfobk7zBV5rSx/PaNo0LTUJwUPc57TJNxh6uniEkYE0JVMFtEVCOcGIfwlO
+	MJ/XTG/GGTxOMnZvVB4EHqBErdT6JOAEJ33oWfz9aL+jd0GxOLYe6DbL31zfNjag
+	6LXXNqvpGuehsuYjfhHiq83pz9ZZUo7p5geB2ljQ5AEkN7i84KOALD2OMDNtoCCV
+	/C5x2b+QPOydgJt0LmWexMbsBH2fSWUsle30ob5HfxFGTe4yw+CT/2LOiqLq4t0v
+	zQS73ElOjNMb5sXRVcX6EfNj6idM+5Qid7YXzjB1KpipKEUA/fRdmPn0A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217kv82dp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Oct 2024 14:16:21 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 492EGLbx018353;
+	Wed, 2 Oct 2024 14:16:21 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217kv82dd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Oct 2024 14:16:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 492BVeUc002356;
+	Wed, 2 Oct 2024 14:16:20 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41xxu1abyg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Oct 2024 14:16:20 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 492EGGK344171634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 2 Oct 2024 14:16:17 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D561520040;
+	Wed,  2 Oct 2024 14:16:16 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 992362004D;
+	Wed,  2 Oct 2024 14:16:16 +0000 (GMT)
+Received: from t35lp63.lnxne.boe (unknown [9.152.108.100])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  2 Oct 2024 14:16:16 +0000 (GMT)
+From: Nico Boehr <nrb@linux.ibm.com>
+To: frankja@linux.ibm.com, imbrenda@linux.ibm.com, thuth@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: [kvm-unit-tests PATCH v3 1/2] s390x: edat: move LC_SIZE to arch_def.h
+Date: Wed,  2 Oct 2024 16:15:54 +0200
+Message-ID: <20241002141616.357618-2-nrb@linux.ibm.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241002141616.357618-1-nrb@linux.ibm.com>
+References: <20241002141616.357618-1-nrb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Sct7xCrlz7-wnX49Whn5u2aimbBHVEnp
+X-Proofpoint-ORIG-GUID: J5fTcUqgqU0T78JX8JIA185ytliycGip
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-02_13,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1011 spamscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410020099
 
-On Mon, 30 Sep 2024 19:03:52 +0200 Aleksandr Mikhalitsyn wrote:
-> > At this point my question is, should we solve the problem higher and
-> > show all the modules in /sys/modules, either way?  
-> 
-> Probably, yes. We can ask Luis Chamberlain's opinion on this one.
-> 
-> +cc Luis Chamberlain <mcgrof@kernel.org>
-> 
-> >
-> > Your use case makes sense to me, so that we could try something like
-> > that, but obviously it requires more work I think.  
-> 
-> I personally am pretty happy to do more work on the generic side if
-> it's really valuable
-> for other use cases and folks support the idea.
+struct lowcore is defined in arch_def.h and LC_SIZE is useful to other
+tests as well, therefore move it to arch_def.h.
 
-IMHO a generic solution would be much better. I can't help but feel
-like exposing an arbitrary version to get the module to show up in 
-sysfs is a hack.
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+---
+ lib/s390x/asm/arch_def.h | 1 +
+ s390x/edat.c             | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-IIUC the list of built in modules is available in
-/lib/modules/*/modules.builtin, the user space can't read that?
+diff --git a/lib/s390x/asm/arch_def.h b/lib/s390x/asm/arch_def.h
+index 745a33878de5..5574a45156a9 100644
+--- a/lib/s390x/asm/arch_def.h
++++ b/lib/s390x/asm/arch_def.h
+@@ -119,6 +119,7 @@ enum address_space {
+ 
+ #define CTL2_GUARDED_STORAGE		(63 - 59)
+ 
++#define LC_SIZE	(2 * PAGE_SIZE)
+ struct lowcore {
+ 	uint8_t		pad_0x0000[0x0080 - 0x0000];	/* 0x0000 */
+ 	uint32_t	ext_int_param;			/* 0x0080 */
+diff --git a/s390x/edat.c b/s390x/edat.c
+index 16138397017c..e664b09d9633 100644
+--- a/s390x/edat.c
++++ b/s390x/edat.c
+@@ -17,7 +17,6 @@
+ 
+ #define PGD_PAGE_SHIFT (REGION1_SHIFT - PAGE_SHIFT)
+ 
+-#define LC_SIZE	(2 * PAGE_SIZE)
+ #define VIRT(x)	((void *)((unsigned long)(x) + (unsigned long)mem))
+ 
+ static uint8_t prefix_buf[LC_SIZE] __attribute__((aligned(LC_SIZE)));
+-- 
+2.46.2
+
