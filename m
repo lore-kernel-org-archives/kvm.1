@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A8084A36
-	for <kvm@vger.kernel.org>; Wed,  2 Oct 2024 22:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2A319ABD1
+	for <kvm@vger.kernel.org>; Wed,  2 Oct 2024 22:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727909581; cv=none; b=VDEJfYgwdl1YPJek3uz803h9R0Q2PGF1mYmXGF9RlnY8KZEawDVyjzcwgPkidzJmAwRIHlu1cU9JR2q5QiLgsaB6cT3dDfNBdZ+nxRLkvNzTphCdhHLSkGzcHjTUKDqXTYvDBwgTCX8R+lpf9N1QcXYistlXvxesCXROdzPN2iQ=
+	t=1727909632; cv=none; b=B5UWcHajnnhDKmbO4QwFXKoIaLGToHErc+z4H7eCQ2HDx3/WZyENeR7acV69Nc+zc3JxOVHX/APJNPdfd37MG8SQHAllqyy1a/Ks9bD0ycBkIIq40brhE7uUr+rx+i3gJaPPLH4YrawemL1kgVBr+t9OV3LCu17FG0wcwzJqBA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727909581; c=relaxed/simple;
-	bh=vfjlWc9/ns/0e5grtwJ30OGeQ9jj9aK1vXaHaGcR+WI=;
+	s=arc-20240116; t=1727909632; c=relaxed/simple;
+	bh=IYfkYmqtAKI5xmcoEK2mJNwiZ2ACW/LGfGivYgyZfig=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eyalK2UQDAga4elfVhrN5th1p79C0r290ZipwvVmw88Qj99AKm4mUuNvxRLnOp+mbrOG9Q9SLzA1HsmRg94yMTaRqBSOMfchyqp5fUIgSfmTwOP7RPJH7s32Rpt1c4p+X1nT94B1fZfrwFz2zf6BD/u/uqONAAr9HiVRXyDooTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvcO0GlV; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:MIME-Version; b=VxjrWQEKhPsfPYmlrS7wq6LY2Ty/HSgbLUsJwjwHvX626qtr3XA2VwKQCOuRwLfql3cXvrmb3VKh1wx0IhKASt/0jrF76KoTmvvrGJ7de7L5XxB+QjK2vpW7bIyYi6seT3+1VEZ6s5bM7lRW47xHKZPHkbSYhjkbqu05KJi3p4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvpQYYjU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvcO0GlV"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3B2A2C4CED3
-	for <kvm@vger.kernel.org>; Wed,  2 Oct 2024 22:53:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvpQYYjU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 184DAC4CED4
+	for <kvm@vger.kernel.org>; Wed,  2 Oct 2024 22:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727909581;
-	bh=vfjlWc9/ns/0e5grtwJ30OGeQ9jj9aK1vXaHaGcR+WI=;
+	s=k20201202; t=1727909632;
+	bh=IYfkYmqtAKI5xmcoEK2mJNwiZ2ACW/LGfGivYgyZfig=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=uvcO0GlVyu+2GeUwiDvwbliV60RrlmmRCuECwSv1Pjq9GkU270w1Eo5z4Iu6OcjwI
-	 TGngHFGn6hq6W0S5GEq7oCew5FFS4cbLThsfm5Tj+bR5zzuoF6EMMkvIXmlxOZwwx8
-	 F5mtCQHcrUEwNaB45pEn1Yab8aOB7aOBsQ+WDqc/hnVXubKqgqjVuJsTLt8Zm5d/xX
-	 enJgYFTsZyJmC4yZM8MgBBBj2xI9fFpLFGIwR5VCuZhre10rBvGONivo0Nd+X23+iu
-	 5VwEsNNcSCw/FU5EuGSsBzfmv0PdQlpw9Rc1wST+2PxRIAFlQV8UV6KOA+qzmsPz6h
-	 etzEO78LPERlA==
+	b=JvpQYYjURQeP1W3KbHEIce8yHX/IhjD324trmDk2pemR+Xws3ongxjQNquBANOBUM
+	 y1U3VD+QJ6ow/3YvTu0t8SKdHMsssvCOw41O/YU2HcN6Laeo3idS8tByFqYPaNWcZW
+	 eWBQDia7YC1sxMbY+RpBrbwiQ2u5os6T16IufH21cWgnsSPPBGKWDm1HgPu/2goV3k
+	 A+EuJmZIIfiGtB0hFbFxTeJwUGkuupgp5cq0oSo6Omg+c1tDO5Xf+oTHe+LflhYwQO
+	 BxfjjmhnlOFRCR4WdWDs6MmpQFTEQDQUgzYQy8DsmRHWj1I4aIHf2qFWk+REk4/9Pb
+	 jNgvgJUD6QMzQ==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 35D18C53BC2; Wed,  2 Oct 2024 22:53:01 +0000 (UTC)
+	id 128A0C53BBF; Wed,  2 Oct 2024 22:53:52 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: kvm@vger.kernel.org
 Subject: [Bug 219009] Random host reboots on Ryzen 7000/8000 using nested VMs
  (vls suspected)
-Date: Wed, 02 Oct 2024 22:53:00 +0000
+Date: Wed, 02 Oct 2024 22:53:51 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
@@ -48,7 +48,7 @@ X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219009-28872-bW4Ti1cByg@https.bugzilla.kernel.org/>
+Message-ID: <bug-219009-28872-joByTM99Ed@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-219009-28872@https.bugzilla.kernel.org/>
 References: <bug-219009-28872@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -64,9 +64,8 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D219009
 
---- Comment #19 from Ben Hirlston (ozonehelix@gmail.com) ---
-my curiousity relates to this new bug being caused by fixing the CVE's
-CVE-2021-3653, CVE-2021-3656
+--- Comment #20 from Ben Hirlston (ozonehelix@gmail.com) ---
+I am wondering if the fixes for those CVE's are related to this bug
 
 --=20
 You may reply to this email to add a comment.
