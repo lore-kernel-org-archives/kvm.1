@@ -1,135 +1,122 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676D51D0BAE;
-	Wed,  2 Oct 2024 15:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08521D14FA
+	for <kvm@vger.kernel.org>; Wed,  2 Oct 2024 16:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727884664; cv=none; b=N0aUGPrWV4OLhu1UptceEU5O/4j3K8j08XribYfY+svoDpmjx6aGH8nMSyyy47cCoC1xPqiyTNocjRYdgfUDeE68xpgtccC9dmyhDMh9UNNh/g+2a2g9RNPVsToq2rJjGO7utA01InE6q562XtB9+VEPIx8LqUYw86YGto6G6vQ=
+	t=1727885869; cv=none; b=kwxD5AhQoTOOEZTqeeiv7PYeH/lFrSzdyS5NA3EebIF8GFBMYO6RgL4HRpjXofXETvk2qTnff3N67Jzxv2ZSe9EMzGs99tSUOpnYuR4whspLMGKhOQ9bV2Hvvsq3dm6s3F4/UoZ1vBy9sVXpT8M8O2yQAtOTjIFCoMqqYAfKVDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727884664; c=relaxed/simple;
-	bh=HFyoN1KB22kjcksERl9V5QekGNZ3SHOYyFOCdgKSE6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LWT/jokUHYs1TaIT4nc4MfWx44x4wLahrnf6/eTTP5QyJiuc/NtOGx23/VoWdsVI7WIW+Fv+VSxMpMv7pZn4EbxAb/Ogi+yx3XNbDPTv04yhX6BYYGDI8EHoipp48kkku6sX/KlobthI4RIT96WQPD7vtSxA7HPLFNOfqAGcO+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V/JUgAhr; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1727885869; c=relaxed/simple;
+	bh=dJPiSQMtzoT6qmJD4ZlMBa33FRAvvOCW0QW5w3VD/sg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CkYx2SZvlTU45t5Yb3loAXDE5Rt8Nvruf2N1Cctwow2LxVHnmHmGA4B3p77wIJepNI03jiN/VlWLwM7jJ4WoFgLpLqDldkv31fosYRo0BH7I3n87FnY3ZQfVq4+RszryfugpplkbqRisCVoe7u6SFdSxgJEC2UZco8suivjVuBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zOuwqF03; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V/JUgAhr"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492FsKij007576;
-	Wed, 2 Oct 2024 15:57:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
-	IvUgEAPXlN8mmSnwURHqLu1CXZH/xygxVenqyXJdm3M=; b=V/JUgAhrOvaxmRA2
-	OVh32PWpBdOqcxgr+/xixKSrEjp4OD6IyR1BPwv6Q6tYumRmdK7l4Pyn5l4mf9Z+
-	QXCTf7eeQ+Smr/p5ElSZxzFe+StQB4bI5Gm16kU4sr9z42IVrNazozibx0Fg1kR4
-	+qi+8Y4We2S6aBCc2MQde4COHCb0XMvDGq6zMFT7rOs/Yg8x+BWNBpqtgoycdPVo
-	rF3xIQiU0pJOGmXRr8DdUu9cP3aF75rysWt4eJUQLMzTXN9gJ0Yq6sFOJl/1Artj
-	PCgA8p3WS5Y+6dRGUrLGyOIqhH0MNrIJVjqwgxST556qHKCo6lgfPoyBjFpY7mjC
-	0oflTQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42197t80p9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Oct 2024 15:57:40 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 492FudPf013835;
-	Wed, 2 Oct 2024 15:57:40 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42197t80p2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Oct 2024 15:57:40 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 492FnwZQ007923;
-	Wed, 2 Oct 2024 15:57:38 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xvgy3ah4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Oct 2024 15:57:38 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 492FvZDI56689128
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 2 Oct 2024 15:57:35 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D3D92004B;
-	Wed,  2 Oct 2024 15:57:35 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EF01420043;
-	Wed,  2 Oct 2024 15:57:34 +0000 (GMT)
-Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  2 Oct 2024 15:57:34 +0000 (GMT)
-Date: Wed, 2 Oct 2024 16:52:34 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Nico Boehr <nrb@linux.ibm.com>
-Cc: frankja@linux.ibm.com, thuth@redhat.com, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH v3 1/2] s390x: edat: move LC_SIZE to
- arch_def.h
-Message-ID: <20241002165234.3cb737fd@p-imbrenda.boeblingen.de.ibm.com>
-In-Reply-To: <20241002141616.357618-2-nrb@linux.ibm.com>
-References: <20241002141616.357618-1-nrb@linux.ibm.com>
-	<20241002141616.357618-2-nrb@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zOuwqF03"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5398c2e4118so29047e87.0
+        for <kvm@vger.kernel.org>; Wed, 02 Oct 2024 09:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727885866; x=1728490666; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ARJcCMXQ+rp7186iuswXniuSA2NCVjCtv9/VFdXLQe8=;
+        b=zOuwqF03EUdfGKL2IwAeXK63uplYHZq6a1xM7SbsjMqIagCuxEUk5ya3n8NWqAK1mF
+         hEDmZkLW+QF4HFnyPw0/qCPh1aIIA8BhQjM6UtO0HTkhTcB2v9FcrXNmV0upVGw4Uvb7
+         2fCP2RepZcNktFY42T/XJuhEYB0f5Z/whxGDeHIeSCvlQCxXxvOIDj5o1uoK2L+JGP+m
+         sEJYOdm1Q7U7CS8Mc3B1ED3UxW3LgaivyYFLyHWrMOLf8+BvgsbUDAZpEsDxslax1Gki
+         DQHcdMg07JhEJfkm/4uYVrptg9mh/0XpBsKTSyrdm+r8/4DeEvIdcnSGXAxmorq40U3A
+         9pMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727885866; x=1728490666;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ARJcCMXQ+rp7186iuswXniuSA2NCVjCtv9/VFdXLQe8=;
+        b=C6HDtN4l4187TYZ7yo9v7LOsMIS/nfKT+IYePlzdngb8FNpq4iG4WDjtWsvf8Z6MLr
+         uiYMXu5ZLevkFkWgcMfooNG+5hi5SymUIAaeeMd08vaiGuP9ALn3NE3gLiiyuykYtlLo
+         G5hI7RCF9si4QeSQRMV2wdg1kNE2w+pGvYc9L/Y/Pk2V22OwdyF4LEv/KkeHVxqzfMJS
+         eefQdOKgkaHOKJHHrUfrrMGAeLu5rf4eDWUSlrc0j4xWkbTxavpcb4cjDBOHC8DXsLI5
+         /0JOMYR9xUE3t+QA2oy/Zd8Yq0Xlqrrz/acUL8FzoxxysWjQbYYQ7Zw2ZYnEYdqXZyPj
+         MByA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQCCQrZ1aWi5NWNKdkFSou98LBnKrk5Jw2jfdlDRXP0ihX6z8eQb/MPL+ATEO9L07eYdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWg3DuLw+G8m6ffar2IS6QgJEw0iNofXBh+bFiaoa++EJBHV/D
+	BhfDG3Ct3hfxS/G8y3C9t5cRkZ8Tu+57db40qLXWY9LolWM3VqnVC3G+0daXi267+kntk0Cbcbh
+	qDB4E7RwxU61ObcsQVMrirfP1NrVWCP52wMRU
+X-Google-Smtp-Source: AGHT+IGsxRWz32UOeReGn8kkna8PcZY9fOYXyW+STw1/2gSLimHMsKPUTudsdcadk2EE8gUZlftzea8kLqZb40eMbVU=
+X-Received: by 2002:a05:6512:402a:b0:539:9f44:db7b with SMTP id
+ 2adb3069b0e04-539a1f6d772mr398247e87.1.1727885865603; Wed, 02 Oct 2024
+ 09:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jMkIUYrOyTewguZZpKCxgOfNWyIBbdn6
-X-Proofpoint-GUID: 8XwiG88QYJmW0hShBz-SiyODPub01BsG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-02_15,2024-09-30_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
- adultscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2410020114
+References: <20240913214316.1945951-1-vipinsh@google.com> <20240913214316.1945951-3-vipinsh@google.com>
+ <Zvx02r8XjllG7oI_@google.com>
+In-Reply-To: <Zvx02r8XjllG7oI_@google.com>
+From: Vipin Sharma <vipinsh@google.com>
+Date: Wed, 2 Oct 2024 09:17:06 -0700
+Message-ID: <CAHVum0eCmr=YJSvt1CjhS=dz8dTkF6vkJPmm2eyqhQaq+aWVVw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] KVM: x86/mmu: Use MMU shrinker to shrink KVM MMU
+ memory caches
+To: David Matlack <dmatlack@google.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, zhi.wang.linux@gmail.com, 
+	weijiang.yang@intel.com, mizhang@google.com, liangchen.linux@gmail.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed,  2 Oct 2024 16:15:54 +0200
-Nico Boehr <nrb@linux.ibm.com> wrote:
+On Tue, Oct 1, 2024 at 3:17=E2=80=AFPM David Matlack <dmatlack@google.com> =
+wrote:
+>
+> On 2024-09-13 02:43 PM, Vipin Sharma wrote:
+> > @@ -6997,13 +7007,50 @@ void kvm_mmu_invalidate_mmio_sptes(struct kvm *=
+kvm, u64 gen)
+> >  static unsigned long mmu_shrink_scan(struct shrinker *shrink,
+> >                                    struct shrink_control *sc)
+> >  {
+> > -     return SHRINK_STOP;
+> > +     struct kvm *kvm, *next_kvm, *first_kvm =3D NULL;
+> > +     unsigned long i, freed =3D 0;
+> > +     struct kvm_vcpu *vcpu;
+> > +
+> > +     mutex_lock(&kvm_lock);
+> > +     list_for_each_entry_safe(kvm, next_kvm, &vm_list, vm_list) {
+> > +             if (!first_kvm)
+> > +                     first_kvm =3D kvm;
+> > +             else if (first_kvm =3D=3D kvm)
+> > +                     break;
+> > +
+> > +             list_move_tail(&kvm->vm_list, &vm_list);
+> > +
+> > +             kvm_for_each_vcpu(i, vcpu, kvm) {
+> > +                     if (!mutex_trylock(&vcpu->arch.mmu_memory_cache_l=
+ock))
+> > +                             continue;
+> > +                     freed +=3D kvm_mmu_empty_memory_cache(&vcpu->arch=
+.mmu_shadow_page_cache);
+> > +                     freed +=3D kvm_mmu_empty_memory_cache(&vcpu->arch=
+.mmu_shadowed_info_cache);
+> > +                     mutex_unlock(&vcpu->arch.mmu_memory_cache_lock);
+> > +                     if (freed >=3D sc->nr_to_scan)
+> > +                             goto out;
+>
+> Looking at the caller in mm/shrinker.c, sc->nr_to_scan will be <=3D 128
+> (SHRINK_BATCH), which is only enough for 2 vCPUs. So I think the
+> shrinker will only ever free 2 vCPU caches of each VM (probably the
+> first 2 vCPUs) before reordering the list and moving onto the next VM on
+> the next call.
+>
+> Does that match the behavior you observe?
+>
+Yes, for dropping cache one time on a big VM, I get multiple calls of
+mmu_shrink_scan() where sc->nr_to_scan is at max 128 in each call.
 
-> struct lowcore is defined in arch_def.h and LC_SIZE is useful to other
-> tests as well, therefore move it to arch_def.h.
-> 
-> Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-> ---
->  lib/s390x/asm/arch_def.h | 1 +
->  s390x/edat.c             | 1 -
->  2 files changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/s390x/asm/arch_def.h b/lib/s390x/asm/arch_def.h
-> index 745a33878de5..5574a45156a9 100644
-> --- a/lib/s390x/asm/arch_def.h
-> +++ b/lib/s390x/asm/arch_def.h
-> @@ -119,6 +119,7 @@ enum address_space {
->  
->  #define CTL2_GUARDED_STORAGE		(63 - 59)
->  
-> +#define LC_SIZE	(2 * PAGE_SIZE)
->  struct lowcore {
->  	uint8_t		pad_0x0000[0x0080 - 0x0000];	/* 0x0000 */
->  	uint32_t	ext_int_param;			/* 0x0080 */
-> diff --git a/s390x/edat.c b/s390x/edat.c
-> index 16138397017c..e664b09d9633 100644
-> --- a/s390x/edat.c
-> +++ b/s390x/edat.c
-> @@ -17,7 +17,6 @@
->  
->  #define PGD_PAGE_SHIFT (REGION1_SHIFT - PAGE_SHIFT)
->  
-> -#define LC_SIZE	(2 * PAGE_SIZE)
->  #define VIRT(x)	((void *)((unsigned long)(x) + (unsigned long)mem))
->  
->  static uint8_t prefix_buf[LC_SIZE] __attribute__((aligned(LC_SIZE)));
-
+mmu_memory_cache_lock availability will play a role in selecting the
+two vCPUs. On a VM where not much faults are happening it will
+probably be the first two vCPUs.
