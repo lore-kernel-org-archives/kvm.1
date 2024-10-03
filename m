@@ -1,167 +1,116 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544571CF2B1
-	for <kvm@vger.kernel.org>; Thu,  3 Oct 2024 23:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB731D094C
+	for <kvm@vger.kernel.org>; Thu,  3 Oct 2024 23:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727999018; cv=none; b=QsjjeUzXfHkVJqMo6W3RTAKmr0IdiSy2GyhxgRTJtpuY06dtW5p3fBQOJloM53FcJWsCnCHYlPmH3tbLLAAHQoEYaTVQO7sxItjsGtX/uEcevr5arxhl6BIIZvM4OFkXIEd38PS2H9aI/m3Sy/sz3h7oYSXT3crV52TdQnXi6FY=
+	t=1727999023; cv=none; b=R5scP2CifqfI0ZjhgYzNkAwys8a2LyeXLiiavimtw5VM2oBa1ZfmAmls0XsqWQvomU132y0/FMWLswdnuIipyzTKwzDZXszSpWNhQG1JUz4o2himAMkp+bSsvxeo7oR3tPqTEZppOcrK62LdcL0DimSjK67DszhApxnNO+Ewr0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727999018; c=relaxed/simple;
-	bh=5U29iZZFBxQGptPoLMifIvs/bpbj5DZBwz1fHxqdbD8=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=r8dSYRyOqWlxyp2MhgbPBXjp1PAt+PW5pdVl4CXxHqeno/bAk9CzRySNowF+lVUKLILiQlTzD+IDmwMKUl3f/8wyzbU4clyKr2VKuPlKNKd7QQyiBxsJAljm+ftqRzmAQImpobNwkDIy6Fx4hM53cy4m9q/9l3r2iHsNUzSiETw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6sGEK0S; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1727999023; c=relaxed/simple;
+	bh=MrYOzORlxdvEa+Cs6Xo6pLGsWIU47wFJtrLYLFKiQI8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bVmD/7cMJ/PY0FatYF12NicgWCtUMPNH6Y3fTGkmjt1XqyFu9JQ3gP8f1dbjQXQzyEaVWNeazEuC0/ot31gYSaAqNfm/UANHs0nQaBCxIedd1krpav/xB8e4+eNkOd6gmHjHTlMKxsvaG4xk+DQeOHixl2cJSjqz5auyYZX3XKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S1z/LBtT; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6sGEK0S"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e0d77c602aso1556451a91.2
-        for <kvm@vger.kernel.org>; Thu, 03 Oct 2024 16:43:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S1z/LBtT"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e2555d3d0eso26359827b3.1
+        for <kvm@vger.kernel.org>; Thu, 03 Oct 2024 16:43:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727999017; x=1728603817; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SN3dVjC5fB1CQSshX6WwUlOM21L2K4T7gTVUDpU5VO4=;
-        b=R6sGEK0SG4OOmzKed1UA7F7lPzL4KmkbrArDZb192L9hwUxy2xew76wDcibZdyIdow
-         bKKkP9r3jV82sI7qBZg8p3jBaFRgdsfm76/YTe/MYa27Di5bO8HcVKifYDDnz3tQm6uY
-         GzvO2/GuBaTRJMUCaGJr7BWP8B+07lLTeqbroj3coeQpqfvBxhZa56jaTqJXOcST2fzj
-         xLtkuidp+n0FWreMRXKGvLWheBGSYotgygi1cdvt91E6LzHdcDLt4Ag6aIJEqTt7BM6n
-         LaPPZDQWkAtW25g7mLgo9oiB6ogJpulukrd8DzBJl39EUTrK3nXh8aKUHfNt29/GGvRE
-         KCLg==
+        d=google.com; s=20230601; t=1727999021; x=1728603821; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DtUCmr7mtM7hVh0Kaw2sO5RiGWbeEtWgmTNgsqx09LA=;
+        b=S1z/LBtTIshVaz+8AGSebKl0cVHrn8MjbXKHEqlMwOQiEvluIGxACu7iYcClx8T6gj
+         fm02n3+nRuIIJ5P+FnMFsIj7y84Lioj8NX7t97KTgrjltZOXBSPcmcuqNXbaApZMWBSK
+         lJs3xVHDA5bu5RoZZ7CmM8UlE9Dn/lhCYb4jr5KWMOLfMWmbfG8NWhfmaPwCT2k67t0M
+         jVmjijefKDQXGNXP8jX05yXoNoNcDZKIvj0V2AVGNMzcGClxpof3Towm3/Et/+fj3vUq
+         KB4R4JTm/N6FI8fghSEZ1PzOJ0x05wbI3fr32IlhrUJ0z5GwV9OlOxOhStt19fqdWNIB
+         qskQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727999017; x=1728603817;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+        d=1e100.net; s=20230601; t=1727999021; x=1728603821;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SN3dVjC5fB1CQSshX6WwUlOM21L2K4T7gTVUDpU5VO4=;
-        b=d/Md6Dmu+OtUPBm7jCknb2dXUq2t0sri3Rf3m74vRbj9Evt7ciFWhDlH0dehN/sBwm
-         6eee9lWk7SppD/uxJZ9JSGZO1By0L6uy0uTioWVysRXeDMAIPUyEKjugnwmkdX9hfKaJ
-         fYB89chNoVGfFqL/FyDy6UXHkF8Z7ssm9kveVT0KNFT6JjhnPLSSSOumxLDiC/Za3D1i
-         B/w1peZg6z9cAqoQDx91TXIjxeMZgtw6G5y5C2CWx4BUSXE5rVHiAThR7HAT2bNhFYu6
-         YXhJvFnWMCxZE3BFVLWi35x3ahPrKaKFmnkuleVWeAQaKkXpp2eE6BgLznnlXma8DsWC
-         cH5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXhmJ2epLTsdnr73thhoUc+yetnlrTlQqR5iGqTyH2khcyTUtBArgYn1FT5vVKpaJ2p8b4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEejiKgVCWnysIMoIFN4x820+VRGmu5LytY43CI6FZsBiclxMB
-	GCKE9CWRyhTzSltKUSszLUP8L/FMZGDedef//opq4qCEdWzWYfi8si6f/kO7ckAuxP9P+v/yEFI
-	8bsAjzT5FMrTGjnC7efg9lA==
-X-Google-Smtp-Source: AGHT+IHBOIxM9r0ehPl4c3IhMwECnflPechWmOVBJu0WiGbLsRHWGkU66D8A48Rkw+4e+C8ZFyGr8wE06O6tn38x1g==
-X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:146:b875:ac13:a9fc])
- (user=ackerleytng job=sendgmr) by 2002:a17:90a:51c7:b0:2e0:72ab:98e9 with
- SMTP id 98e67ed59e1d1-2e1e5dc5fcemr2279a91.0.1727999016517; Thu, 03 Oct 2024
- 16:43:36 -0700 (PDT)
-Date: Thu, 03 Oct 2024 23:43:35 +0000
-In-Reply-To: <diqzzfnkswiv.fsf@ackerleytng-ctop.c.googlers.com> (message from
- Ackerley Tng on Thu, 03 Oct 2024 21:32:08 +0000)
+        bh=DtUCmr7mtM7hVh0Kaw2sO5RiGWbeEtWgmTNgsqx09LA=;
+        b=rqQJq8+5WdlLSYPCTC7nqZsRfEDPQ3lOY0V/YmHdoNa7CKLkHgmD3ZT44DQzCymPfF
+         EimmzrYZ9H3t2S9F1xNSPQniFY7R2RT+QyAwmft3OOmEfx5G4ANf34S2h6Kf/8CshMkO
+         Z3btw4M4X1b1wTMXd78g7+C7Xd8zWnyd5SgeeF/ZubFjZzB9uBkUvx9ekjie6VpA+wqd
+         Ms09ywyGcV5oYCWyGgDtH6X8IAOQ9RcmoTVZ8otWqlhYZDfj1UFgs+Z+XZdZ6nEvZDui
+         kPAqpTZqvKM/vRNQHiaavTa0VQCK9cLVf4euDGQ/Rjw6HNXUJO5A0tzsEw5vNUGmAnei
+         RDcA==
+X-Gm-Message-State: AOJu0YyRVjiCohpAni3qgA0vN8MtcB9LLtmEuSE6MctoMbFQ3ksoV5VO
+	6u4IjWH0OUJx3O+iI4OfeqyAibS2cdop8LaSQxFpXZM58jVgcOji4/5RVZkJ2lzfhyWteoPrMHm
+	Iyw==
+X-Google-Smtp-Source: AGHT+IGTW2PoLyhi1EMsJ8TMLt9jNvc61TWk24+p5mZeg7b9r9RI7ofkvrv86tt32Dt8OzEiS0pstg/iI4E=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:690c:4502:b0:68d:52a1:bf4 with SMTP id
+ 00721157ae682-6e2c6fdd0afmr126887b3.2.1727999020776; Thu, 03 Oct 2024
+ 16:43:40 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu,  3 Oct 2024 16:43:26 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Message-ID: <diqzwmiosqfs.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [RFC PATCH 30/39] KVM: guest_memfd: Handle folio preparation for
- guest_memfd mmap
-From: Ackerley Tng <ackerleytng@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: quic_eberman@quicinc.com, tabba@google.com, roypat@amazon.co.uk, 
-	jgg@nvidia.com, peterx@redhat.com, david@redhat.com, rientjes@google.com, 
-	fvdl@google.com, jthoughton@google.com, seanjc@google.com, 
-	pbonzini@redhat.com, zhiquan1.li@intel.com, fan.du@intel.com, 
-	jun.miao@intel.com, isaku.yamahata@intel.com, muchun.song@linux.dev, 
-	mike.kravetz@oracle.com, erdemaktas@google.com, vannapurve@google.com, 
-	qperret@google.com, jhubbard@nvidia.com, willy@infradead.org, 
-	shuah@kernel.org, brauner@kernel.org, bfoster@redhat.com, 
-	kent.overstreet@linux.dev, pvorel@suse.cz, rppt@kernel.org, 
-	richard.weiyang@gmail.com, anup@brainfault.org, haibo1.xu@intel.com, 
-	ajones@ventanamicro.com, vkuznets@redhat.com, maciej.wieczor-retman@intel.com, 
-	pgonda@google.com, oliver.upton@linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-fsdevel@kvack.org
+X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+Message-ID: <20241003234337.273364-1-seanjc@google.com>
+Subject: [PATCH 00/11] KVM: selftests: AVX support + fixes
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Ackerley Tng <ackerleytng@google.com> writes:
+Enable CR4.OSXSAVE and XCR0.AVX by default when creating selftests vCPUs
+in order to play nice with compilers that have been configured to enable
+-march=x86-64-v3 by default.
 
-> Elliot Berman <quic_eberman@quicinc.com> writes:
->
->> On Tue, Sep 10, 2024 at 11:44:01PM +0000, Ackerley Tng wrote:
->>> Since guest_memfd now supports mmap(), folios have to be prepared
->>> before they are faulted into userspace.
->>>
->>> When memory attributes are switched between shared and private, the
->>> up-to-date flags will be cleared.
->>>
->>> Use the folio's up-to-date flag to indicate being ready for the guest
->>> usage and can be used to mark whether the folio is ready for shared OR
->>> private use.
->>
->> Clearing the up-to-date flag also means that the page gets zero'd out
->> whenever it transitions between shared and private (either direction).
->> pKVM (Android) hypervisor policy can allow in-place conversion between
->> shared/private.
->>
->> I believe the important thing is that sev_gmem_prepare() needs to be
->> called prior to giving page to guest. In my series, I had made a
->> ->prepare_inaccessible() callback where KVM would only do this part.
->> When transitioning to inaccessible, only that callback would be made,
->> besides the bookkeeping. The folio zeroing happens once when allocating
->> the folio if the folio is initially accessible (faultable).
->>
->> From x86 CoCo perspective, I think it also makes sense to not zero
->> the folio when changing faultiblity from private to shared:
->>  - If guest is sharing some data with host, you've wiped the data and
->>    guest has to copy again.
->>  - Or, if SEV/TDX enforces that page is zero'd between transitions,
->>    Linux has duplicated the work that trusted entity has already done.
->>
->> Fuad and I can help add some details for the conversion. Hopefully we
->> can figure out some of the plan at plumbers this week.
->
-> Zeroing the page prevents leaking host data (see function docstring for
-> kvm_gmem_prepare_folio() introduced in [1]), so we definitely don't want
-> to introduce a kernel data leak bug here.
+While it would be easier to force v2 (or earlier), there are enough tests
+that want XCR0 configured that it will (hopefully) be a net postive to
+enable all XCR0 features by default.
 
-Actually it seems like filemap_grab_folio() already gets a zeroed page.
+The only real hiccup is the CR4/CPUID sync test, which disables CR4.OSXSAVE
+to verify KVM toggles the associated CPUID bit.  And if it calls memset()
+while OSXAVE is disabled, kablooie.  Fixing that requires a bit of assembly,
+but overall I think it's worth carrying a few lines of assembly in order to
+gain test coverage for running AVX instructions in guests, and boy are
+compilers good at abusing AVX :-)
 
-filemap_grab_folio() eventually calls __alloc_pages_noprof()
--> get_page_from_freelist()
-   -> prep_new_page()
-      -> post_alloc_hook()
+Fix a few bugs/warts found along the way.  Notably, the CPUID test has an
+array out-of-bounds bug that can result in false passes (I only noticed
+because it was getting a false pass on gcc).
 
-and post_alloc_hook() calls kernel_init_pages(), which zeroes the page,
-depending on kernel config.
+Sean Christopherson (11):
+  KVM: selftests: Fix out-of-bounds reads in CPUID test's array lookups
+  KVM: selftests: Precisely mask off dynamic fields in CPUID test
+  KVM: selftests: Mask off OSPKE and OSXSAVE when comparing CPUID
+    entries
+  KVM: selftests: Rework OSXSAVE CR4=>CPUID test to play nice with AVX
+    insns
+  KVM: selftests: Configure XCR0 to max supported value by default
+  KVM: selftests: Verify XCR0 can be "downgraded" and "upgraded"
+  KVM: selftests: Drop manual CR4.OSXSAVE enabling from CR4/CPUID sync
+    test
+  KVM: selftests: Drop manual XCR0 configuration from AMX test
+  KVM: selftests: Drop manual XCR0 configuration from state test
+  KVM: selftests: Drop manual XCR0 configuration from SEV smoke test
+  KVM: selftests: Ensure KVM supports AVX for SEV-ES VMSA FPU test
 
-Paolo, was calling clear_highpage() in kvm_gmem_prepare_folio() zeroing an
-already empty page returned from filemap_grab_folio()?
+ .../selftests/kvm/include/x86_64/processor.h  |  5 ++
+ .../selftests/kvm/lib/x86_64/processor.c      | 24 +++++++
+ tools/testing/selftests/kvm/x86_64/amx_test.c | 23 ++-----
+ .../testing/selftests/kvm/x86_64/cpuid_test.c | 67 ++++++++++++-------
+ .../kvm/x86_64/cr4_cpuid_sync_test.c          | 53 +++++++++------
+ .../selftests/kvm/x86_64/sev_smoke_test.c     | 19 ++----
+ .../testing/selftests/kvm/x86_64/state_test.c |  5 --
+ .../selftests/kvm/x86_64/xcr0_cpuid_test.c    | 11 ++-
+ 8 files changed, 122 insertions(+), 85 deletions(-)
 
-> In-place conversion does require preservation of data, so for
-> conversions, shall we zero depending on VM type?
->
-> + Gunyah: don't zero since ->prepare_inaccessible() is a no-op
-> + pKVM: don't zero
-> + TDX: don't zero
-> + SEV: AMD Architecture Programmers Manual 7.10.6 says there is no
->   automatic encryption and implies no zeroing, hence perform zeroing
-> + KVM_X86_SW_PROTECTED_VM: Doesn't have a formal definition so I guess
->   we could require zeroing on transition?
->
-> This way, the uptodate flag means that it has been prepared (as in
-> sev_gmem_prepare()), and zeroed if required by VM type.
->
-> Regarding flushing the dcache/tlb in your other question [2], if we
-> don't use folio_zero_user(), can we relying on unmapping within core-mm
-> to flush after shared use, and unmapping within KVM To flush after
-> private use?
->
-> Or should flush_dcache_folio() be explicitly called on kvm_gmem_fault()?
->
-> clear_highpage(), used in the non-hugetlb (original) path, doesn't flush
-> the dcache. Was that intended?
->
->> Thanks,
->> Elliot
->>
->>>
->>> <snip>
->
-> [1] https://lore.kernel.org/all/20240726185157.72821-8-pbonzini@redhat.com/
-> [2] https://lore.kernel.org/all/diqz34ldszp3.fsf@ackerleytng-ctop.c.googlers.com/
+
+base-commit: efbc6bd090f48ccf64f7a8dd5daea775821d57ec
+-- 
+2.47.0.rc0.187.ge670bccf7e-goog
+
