@@ -1,56 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9C91D2B04
-	for <kvm@vger.kernel.org>; Thu,  3 Oct 2024 23:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E071D2B2A
+	for <kvm@vger.kernel.org>; Thu,  3 Oct 2024 23:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727999039; cv=none; b=pOJFpwbv7YQDAWFMG24j8u3IYttoKsPZrBbGP46nThavpldVKSv1SbU66qniBbjzKioUadnlO+MJf4pad6mt42FG6n+TOUezbcZf0IPrr/tMduWYH0tHuTqY4JxMVwOBmAh1ikucADhTyJon8iapl7nX4moNsnucOKndENuoKLA=
+	t=1727999041; cv=none; b=TuhnB9buHV7WIDi/QfDE/RYlHxHyBIqmHaVgY7Y6pCTWkJ1qgHo88j9ROdbLEtYW/AzdphuAEB0Ntxsg9SOu8m4pTD7dg//JrgqoxBZwwNOhEY3NL1sMSb2yACVbMY4SdtcynadXc7GK7ClcLV48EV9dBw1T5KFjFzXwLtCrhVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727999039; c=relaxed/simple;
-	bh=xqBlrWuS6MCxk0gww17oourN4jowUONsWvqCnk9wPn4=;
+	s=arc-20240116; t=1727999041; c=relaxed/simple;
+	bh=BC7/PgFAhuyr7N0SeAVV58DtND5eOdQFwYoP8EUI7lI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T/ydsmNs8wz0B+e7HKa1Raal4Iu5i1P6ZLvbEw/qFVmGdedz3xcT1wuqwYZfLfy2tvRXir6QcZu2JoT4ULYavV51jP4NRD5m3wqb+5PZ19fA5dW+qH1Og2Or9I7V610ozRXzBFElW79x3xWumTyhahgdznvd8xCNKAEI5U2EDQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gnj2GkHD; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=N0DOo2fCBx6MZRdqKFN/owBewa+oFSgPK54r0xEWx/ZZ4d6RJT/rReKzxJ3ByP/F75wmcfhTGnujDCbWxwnITL1eBTPzSRuLit6Pe6trJHR0IJrR+m3+5LvvpPVpOW0AhE0Y+RJZtLFp3VZyLf9Y3z5eZ+TOQwvq23qhOamdH7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AeSBXKvj; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gnj2GkHD"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-7e6cc094c2fso2792232a12.1
-        for <kvm@vger.kernel.org>; Thu, 03 Oct 2024 16:43:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AeSBXKvj"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-71ddfd240d2so650707b3a.3
+        for <kvm@vger.kernel.org>; Thu, 03 Oct 2024 16:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727999037; x=1728603837; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727999039; x=1728603839; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=lHVxAupwVdLj9JS6H09y9gDY/v8cy7swDNQclaU5Fj0=;
-        b=gnj2GkHD8H7lDTYPvn9kCqFhDvtxpsIaGjxuYiU9RxwrELTxOjmbGcSLg0lI3OLt5L
-         Ul9h+sC8EK9sVF4hA0f1BiHB1Mmy8h7+CeEzHKOkyl1I9Eb7e9E+shTIQoLXZeNSt6l1
-         fdOmPQ3mcZfdo5HGiIwbGIeetjrOJnwy9hh1fLlS05YBeGE2dwJFdm3AWQTsmARXlnBq
-         Bogd0xGiLGRoFKJIlj7qpHfTOEhD4Eo6YZF3Q3hw5+Ao9tpEmmJpld8iF9KazCwSFiTe
-         itkM3KiaX+xjwSzNYci0LcGcIuOK87kgNcraXB4kt60/O9bmXVJfPL0spN8Ei5l7i8Ns
-         abNQ==
+        bh=miF0NnrKs/LVUqtwEsnwKwGdVp/l7Rk6nLP0b8R2e6Q=;
+        b=AeSBXKvjerqysEKNtTqIN57t0U5a620aWths1DPeJfPv3lCKzSps0UzOVNf8PTzNFF
+         dFUsljWf+7Om+jHk+5p0BWFJzVrJSgIJ/pj23LVtPGKfIsaGUTC6C0vDFQq8ONX89GkB
+         Xg8mxehdZVMuy6ofMJgX8Lqkdmh/UR5hV7Mw0BW1LedP2zArTe+iEDdFiMJUbIWpdmUf
+         yNT9eprgzcAk5pYzZhEWxU/hEsDFJhW8zo/uPpqLgWpVvu4v/FxNcFKTqMXhsCDb2VGI
+         TyNy6a/4Ksr/0DABLjMiGToMn4dZ94LcML767Zn+MzdYBQOBljCu2sad+YHqeydOy9x8
+         +xdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727999037; x=1728603837;
+        d=1e100.net; s=20230601; t=1727999039; x=1728603839;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lHVxAupwVdLj9JS6H09y9gDY/v8cy7swDNQclaU5Fj0=;
-        b=ZZMiMKRlLFxCxed5/lxy6WTU02Nm3irlUXrUo3AlLqBaCmSrE7ecJWHnmzNebtNkST
-         e4jVaLS46Gn7AG+3D3ihsba74QO6Dl9qbsudk8Q/XuNFfoMLdCMu0IlmEC8qmkWY8Uub
-         pwnhrMiElyZq1vHsgVbWNlkvFC52Yb0/NQN/iwQ8n0vDeu5Gs79OqmKxyZEyREKayKOf
-         9HS9n68E4QCBziEukglbIxos/Vj7ttbhleQiDBIICsIXoV/QloJ9q6j/2ZPVPOWLmZ9k
-         syFbVOTaZACPwZnnLhi5oh4Kbiw76qjtX8LJroBtUoHOMu5ly9P7M4eCzcN0tQm2yApc
-         mKHQ==
-X-Gm-Message-State: AOJu0Yx5huOuOIu/cbhWoCrB7pz8v1krMpDj3/sfGfN3C7CgZTISp3s4
-	bUkZT4CJglE1ERuXWEM0AaJnhSrqREFmns8ZWrf7DMUIgn1v+Ds/UnhiXe/iI5xbVnf68YRxecs
-	W4Q==
-X-Google-Smtp-Source: AGHT+IGKroOpNriNfmU45AkA6nSG4g4BolcTa1/5RFMDjU2V8x+RltKhqqMU4YNPO1VDq4XZodpXpHwhZw0=
+        bh=miF0NnrKs/LVUqtwEsnwKwGdVp/l7Rk6nLP0b8R2e6Q=;
+        b=kcaBZr2QCB/CR8yPdZMwUf9p7iCYsUziZtlbBgvq7qAyVo//OuYikOhmfGcQL31ur/
+         ZIRK73AB4HkV7PBucjRjDklVjzfqoYF41GbIyUTB+AZQmut/e0N8RVSkau+yayi4NxNO
+         24lbYvhtjKJXmuLIZhXI9ZCXmNSEKimEerKJo/fZ+WUQoFMIMKWJgBb1+5fawwLH+u3z
+         9fjrlN/voOS2NdMIvW8e6sOIGxn+Wi5GhslrqfPTFoom3i9zhP7T+fR11DkfRJABG0bc
+         zru8RD+pOIzTINCiZQry6OODNctbhYdtDj6y0z/ne9S9ZrUdcqBSfWr3QxFeVvSxXeR6
+         hXBA==
+X-Gm-Message-State: AOJu0YwcDxtPPbt9GnhOpHfshQdBTnjvWTpGnpeaEkRYQ+EMrp/Kdzct
+	S1yQZ3F3HHxRgfXXAz7Zp2ZS/8gN8LBgIb+bZfcF5MDWU5xmwKIJIBM1D6jAYRP75jNLwQbB8A3
+	KAQ==
+X-Google-Smtp-Source: AGHT+IFxJ85cxWVOAwm7Y/0i5309oldZWB8K0r+VZOLEUf2bRY9vmsB1cfaYlvtoaXQ+SY+jIkaIglV0w3g=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:17ca:b0:2e0:8e0f:7bfd with SMTP id
- 98e67ed59e1d1-2e1b393e2eemr25111a91.2.1727999037305; Thu, 03 Oct 2024
- 16:43:57 -0700 (PDT)
+ (user=seanjc job=sendgmr) by 2002:a62:e815:0:b0:717:91ba:b156 with SMTP id
+ d2e1a72fcca58-71de2455097mr8131b3a.3.1727999039232; Thu, 03 Oct 2024 16:43:59
+ -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  3 Oct 2024 16:43:35 -0700
+Date: Thu,  3 Oct 2024 16:43:36 -0700
 In-Reply-To: <20241003234337.273364-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241003234337.273364-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241003234337.273364-10-seanjc@google.com>
-Subject: [PATCH 09/11] KVM: selftests: Drop manual XCR0 configuration from
- state test
+Message-ID: <20241003234337.273364-11-seanjc@google.com>
+Subject: [PATCH 10/11] KVM: selftests: Drop manual XCR0 configuration from SEV
+ smoke test
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,30 +70,59 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 
 Now that CR4.OSXSAVE and XCR0 are setup by default, drop the manual
-enabling from the state test, which is fully redundant with the default
-behavior.
+enabling from the SEV smoke test that validates FPU state can be
+transferred into the VMSA.
+
+In guest_code_xsave(), explicitly set the Requested-Feature Bitmask (RFBM)
+to exactly XFEATURE_MASK_X87_AVX instead of relying on the host side of
+things to enable only X87_AVX features in guest XCR0.  I.e. match the RFBM
+for the host XSAVE.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/x86_64/state_test.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../testing/selftests/kvm/x86_64/sev_smoke_test.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86_64/state_test.c b/tools/testing/selftests/kvm/x86_64/state_test.c
-index 1c756db329e5..141b7fc0c965 100644
---- a/tools/testing/selftests/kvm/x86_64/state_test.c
-+++ b/tools/testing/selftests/kvm/x86_64/state_test.c
-@@ -145,11 +145,6 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
+diff --git a/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c b/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
+index 2e9197eb1652..965fc362dee3 100644
+--- a/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
+@@ -41,8 +41,8 @@ static void guest_sev_code(void)
+ /* Stash state passed via VMSA before any compiled code runs.  */
+ extern void guest_code_xsave(void);
+ asm("guest_code_xsave:\n"
+-    "mov $-1, %eax\n"
+-    "mov $-1, %edx\n"
++    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
++    "xor %edx, %edx\n"
+     "xsave (%rdi)\n"
+     "jmp guest_sev_es_code");
  
- 		memset(buffer, 0xcc, sizeof(buffer));
+@@ -70,12 +70,6 @@ static void test_sync_vmsa(uint32_t policy)
  
--		set_cr4(get_cr4() | X86_CR4_OSXSAVE);
--		GUEST_ASSERT(this_cpu_has(X86_FEATURE_OSXSAVE));
+ 	double x87val = M_PI;
+ 	struct kvm_xsave __attribute__((aligned(64))) xsave = { 0 };
+-	struct kvm_sregs sregs;
+-	struct kvm_xcrs xcrs = {
+-		.nr_xcrs = 1,
+-		.xcrs[0].xcr = 0,
+-		.xcrs[0].value = XFEATURE_MASK_X87_AVX,
+-	};
+ 
+ 	vm = vm_sev_create_with_one_vcpu(KVM_X86_SEV_ES_VM, guest_code_xsave, &vcpu);
+ 	gva = vm_vaddr_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
+@@ -84,11 +78,6 @@ static void test_sync_vmsa(uint32_t policy)
+ 
+ 	vcpu_args_set(vcpu, 1, gva);
+ 
+-	vcpu_sregs_get(vcpu, &sregs);
+-	sregs.cr4 |= X86_CR4_OSFXSR | X86_CR4_OSXSAVE;
+-	vcpu_sregs_set(vcpu, &sregs);
 -
--		xsetbv(0, xgetbv(0) | supported_xcr0);
--
- 		/*
- 		 * Modify state for all supported xfeatures to take them out of
- 		 * their "init" state, i.e. to make them show up in XSTATE_BV.
+-	vcpu_xcrs_set(vcpu, &xcrs);
+ 	asm("fninit\n"
+ 	    "vpcmpeqb %%ymm4, %%ymm4, %%ymm4\n"
+ 	    "fldl %3\n"
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
