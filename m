@@ -1,110 +1,100 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664E61E32B1;
-	Fri,  4 Oct 2024 15:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7372C1C7262
+	for <kvm@vger.kernel.org>; Fri,  4 Oct 2024 15:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728055897; cv=none; b=lfpmPTqhvKTcHrS6t838aJRw7WUM95v7MxhMeEMTn0SeOKhWk55QRTMfL/98ocsA/uJdKzd61eZLr4BQKExdA0Zoru8O9xQcoaO6zEk2fCzLI99docslDo51S/4tMqwh4hJlAHBQXVPWNFOfvaK0ka88lB+JVJoDg3gmKD102l4=
+	t=1728057189; cv=none; b=XjNhfYo8Ni4Gh4wcKZ9qdBRwQhGeoLXEmM8NyCWMtSWff0/JvHEgaLcIKIQfdIt3ajyOCpIgI3UXTiKx+u3I4GtJyXLix5ms8gm+CAqEyec8NhvGv+3gMbS177p/i0dcMZTTUMmFKGmRLc/k9/qXxRQRxaF0zyU+HYHNPNGmYXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728055897; c=relaxed/simple;
-	bh=v7Zre/YaKbj6+fKD4qjivVod2+NDqTOIOtfVJGW7Y7o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WhYhj30ykwmF9w5oeQsCnNcctK+1QAl/SSh05QTmsr1BWpqmy8o2UAWJtwVWlLbWT7tQ7r/qyGpcnSC8h7wlJ5xuEMqonODZp3WH2psQ4UatB7VWaKvNp+BNcIru/soLzrfOWqEFvvCo1UTaC8DTdkA4DSR3yMwGURGIeJaDRBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73CFE153B;
-	Fri,  4 Oct 2024 08:32:05 -0700 (PDT)
-Received: from e122027.cambridge.arm.com (unknown [10.1.25.25])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B6B2C3F7C5;
-	Fri,  4 Oct 2024 08:31:31 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: [PATCH v5 43/43] KVM: arm64: Allow activating realms
-Date: Fri,  4 Oct 2024 16:28:04 +0100
-Message-Id: <20241004152804.72508-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241004152804.72508-1-steven.price@arm.com>
-References: <20241004152804.72508-1-steven.price@arm.com>
+	s=arc-20240116; t=1728057189; c=relaxed/simple;
+	bh=dk8hBzieIPbzvrhpctgGmM0IsPgACCkbqqNlKJy6X7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lV9FIjESGd1E8VyQYSQX+E3RrJgFu0tStGK2J4rBLmt7UwpetJk5+cdCCaygpMjCGrXyqJ9png/SnkPGThDiRAzdGzeZUg5jgiWKvkMSLz4walEGELvEYeKW7trZnhjx/AlcOMb/OZTkGGMwQfaPfB44QI0R/dLIUWFKLvNuZWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VBEdW6Td; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VBEdW6Td"
+Date: Fri, 4 Oct 2024 08:52:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1728057185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ivG9THqCQQnFANZXsktsXbgeggmF80l3fARD79rk4OU=;
+	b=VBEdW6TdJq+I0Nni5DzNlmiLE4pE738CbB+0OTgiHbZpgUoJi/Je1pnPd+L3nCltngGK6V
+	xKB4MNhUyy6gW7Y2Vp3j9rX5aK/0N45w1qn2+EmYweF+nBjIzxWopsR+3Lw9DCb0FB0nKd
+	dzkQ+bGU/2kC6D0PzBHZVzRUWj1GLfY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, qemu-arm@nongnu.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Enrico Joerns <ejo@pengutronix.de>
+Subject: Re: [BUG] ARM64 KVM: Data abort executing post-indexed LDR on MMIO
+ address
+Message-ID: <ZwAPWc-v9GhMbERF@linux.dev>
+References: <89f184d6-5b61-4c77-9f3b-c0a8f6a75d60@pengutronix.de>
+ <CAFEAcA_Yv2a=XCKw80y9iyBRoC27UL6Sfzgy4KwFDkC1gbzK7w@mail.gmail.com>
+ <a4c06f55-28ec-4620-b594-b7ff0bb1e162@pengutronix.de>
+ <CAFEAcA9F3AR-0OCKDy__eVBJRMi80G7bWNfANGZRR2W8iMhfJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA9F3AR-0OCKDy__eVBJRMi80G7bWNfANGZRR2W8iMhfJA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+On Fri, Oct 04, 2024 at 01:10:48PM +0100, Peter Maydell wrote:
+> On Fri, 4 Oct 2024 at 12:51, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> > > Strictly speaking this is a missing feature in KVM (in an
+> > > ideal world it would let you do MMIO with any instruction
+> > > that you could use on real hardware).
+> >
+> > I assume that's because KVM doesn't want to handle interruptions
+> > in the middle of such "composite" instructions?
+> 
+> It's because with the ISV=1 information in the ESR_EL2,
+> KVM has everything it needs to emulate the load/store:
+> it has the affected register number, the data width, etc. When
+> ISV is 0, simulating the load/store would require KVM
+> to load the actual instruction word, decode it to figure
+> out what kind of load/store it was, and then emulate
+> its behaviour. The instruction decode would be complicated
+> and if done in the kernel would increase the attack surface
+> exposed to the guest.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+On top of that, the only way to 'safely' fetch the instruction would be
+to pause all vCPUs in the VM to prevent the guest from remapping the
+address space behind either KVM or the VMM's back.
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 1c67d2ccdaa9..d8e0a447e0cc 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1194,6 +1194,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(realm, addr, end);
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1343,6 +1357,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1607,5 +1624,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
+> > static inline u32 __raw_readl(const volatile void __iomem *addr)
+> > {
+> >         return *(const volatile u32 __force *)addr;
+> > }
+> >
+> > I wouldn't necessarily characterize this as strange, we just erroneously
+> > assumed that with strongly ordered memory for MMIO regions and volatile
+> > accesses we had our bases covered and indeed we did until the bases
+> > shifted to include hardware-assisted virtualization. :-)
+
+This has nothing to do with ordering and everything to do with the
+instruction set && what your compiler decided to emit.
+
+> I'm not a fan of doing MMIO access via 'volatile' in C code,
+> personally -- I think the compiler has a tendency to do more
+> clever recombination than you might actually want, because
+> it doesn't know that the thing you're accessing isn't RAM-like.
+
++1
+
 -- 
-2.34.1
-
+Thanks,
+Oliver
