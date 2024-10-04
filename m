@@ -1,45 +1,46 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2089.outbound.protection.outlook.com [40.107.220.89])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2067.outbound.protection.outlook.com [40.107.100.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A3949641;
-	Fri,  4 Oct 2024 05:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC4A4E1CA;
+	Fri,  4 Oct 2024 05:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728020045; cv=fail; b=T8nNccS0FsJ1AQFrQ29IX3MQwyOHk/UnZ1PYtfaJRlGmK3SmY0J9gpt948ITW166xm1OZ4pu3Wgr2GCXXStRr9b9AWxzXVhAih2/DZ0ctDmFyytAn4cp/qiTbhaa3ryauTvAsohpzDnPxCytV/KpDmGygP1WW/cZlKp/4qjp5FQ=
+	t=1728020050; cv=fail; b=jRSVqIp9z7Pqt6tJxkuuse8cQeLX+OCnwxwTGQLIxJrBRwk/AH4hNqhPG+Ry0O0XTNUFGfFSe/q/iZIibAhZ6ps9HDrw+eAAvzK6Nb7z0argBQcQUOeys6qf3gcNhiWFebDpaJBTfD7g6uEfn4jo6WLlJdkDouFbsvtoTehSg9g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728020045; c=relaxed/simple;
-	bh=72mrjgpJcFHR92ObdIiA6CTgjPW70E/5Yijg7Bg/q8k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=StZH2JQjZZBC4tAP9kZkbTZ/4zHjgurZbyQ/SBSa/k2gAv2OUXYTGw1+g3I7ZDujRAhYbntboz5Kylsvmzg3DhDZWOTvGAz5PKz7+BjJ0/W0XTgKvLp7270FHgn/jKscxDTm4uLvn6WAMZi99GeolvQqPDHnHnkLPAy6oTZMEjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qQpQ6WgK; arc=fail smtp.client-ip=40.107.220.89
+	s=arc-20240116; t=1728020050; c=relaxed/simple;
+	bh=OswI/hEF8eFzEhj0t5ju8ib/RdAClRd9j48wGTeArCk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YMds6wZX6lgR6Q7FdKa69eqaq7oPKGe9qrjujaFCS/LDSNlrtTrYdYa3lyzHOc2N+AxhPBIaVtVZrDUmJAjnRmLKCFTW8xmq3FUiuU42TU1U94onzZgm8lNC/BE3C1tigvn78lL3WEeDEvGvRvLCoHIZM5QAarcHUJowO/VlNtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wMaeVq/2; arc=fail smtp.client-ip=40.107.100.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qQpQ6WgK"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wMaeVq/2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wrhW+4G91Owxt2XIBwB7tYtjFJOZusm7P7w/hDS280xk3RFBTM0m2Au5hMyQJobY78Me+oAWG+SNBENBxxIueuygoJ1iiPQmtA3/WcQGiRX94iVBAqDxrQQLkOO0lw1FQThfgGSBe4Kj46nIR0OmDFYeov2T/rLvlZqJKVCU8fm7lmQ2Ly7mSMmQb4pBRL1pHrPV8pPYrMgQQPy0BbaB2MjYFhJ/Uh41Ek/NbiMRKlXblMwG0dWAL5Trn4zmHQpERSc4B+S262yp/ug5BKDbbik0ifLIQluaNtr5oGu3ddHQduh+/uIfp6rF+p6E6dKQPiw6qmRDrNSbIRm2HYnpzw==
+ b=MbzEGMnVgea45/LmXbRG5W74Ldvmvr9Q57iyjtnIdd1waa5gG7rTfDtuVFBXBVeOuiq1Ubl9zT4zfcR1wPq+/cRyzbsmi4MDbjJEu8lZr4RBPStV+CLikWUp0Ui2gzZlsJnEFNphuOuWMlnAWtpOjQjiIXCzR4hwLugYIWUXPMnYieUVchnlr6UXsps4mGqsVtJa35gT/zkzNpteazSVhSVZPQT1B6T9TxUJ2X1hWh6gjN+EOVYLgWSJA3DoAVZ2SsbA7sIbtZmNqCUmskoXk9qW6maU8olYE4x0VgU3Wx6dkfTVeiJlMo6bRCUYU79UjanEbGPz7qKsVYuJXjo16Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2sNu0spT7uBUfTQ5jo5L4yWe/rZLJGgjO4qcF7nJbMQ=;
- b=XgSZotIxk1wpTIAX2t8l5UCvBlJ1YWgB9q0RN3C1d7iPAptjGQIRetH8I9pD/X5gZnbqLiWgSXoMfzAuODEx9Q+cRoCY/oVJHQtaUV94Xx/7KDp2GxGZfOOSGHgG7n9sEFd3LEFcFanZHnxSAU3/2IKH1j5GoXe1+vw3g8UhWUP1NMbJWrb4k3uE392MCgxtUppU/AjCXZKjMpWiO0ai7eQCiaQW1tZbM/ZgX43kLEu+XRCw3OdHj/lZeKkCnpIRYmMDe1oh0BLi4eHxRDS+Zh5n8crG9gwDmvkVfGJXcARzLgP9/1QfmHtzHlYXW019ltLPAuw/uibLzUmNxrYbzA==
+ bh=c/Lm0mCfn1GVpAXQ4WMcHLi7/LD9RQcYLhewAIPAPX8=;
+ b=PJdtjtqc3QcyzaG8RG8M1oe8K34/va8xAoDiBm6OtEQXWxB6UCHLoi9czlX4V2iaDuYnE0AyDTKH5H0x+dpxPoA/wYaMnmt8gl8i3shY2E2cAZsl1iQBclMIuN/TrqlwbarpQr3/DEhsB6P4xP+iDhBxphI/jJRIW0/4l8/koKCg0cXTdmyDa+xQhk91WU0ILEBtw2VToKesqEAbEAtF3E26n/wxA6GQikslkyRNm1tjAFXxSFr5GV8OQ/Mot83WgZTTf8Dm+8T4D7PbPM799UZ1nPeMSqR1A6/phjqc0A/Exv+kzaHnQGgLluaeHkcY/ZlDSE83igEhbqk8sKRZkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2sNu0spT7uBUfTQ5jo5L4yWe/rZLJGgjO4qcF7nJbMQ=;
- b=qQpQ6WgK3zL8a35zstSmCWDkYBEZR4GUSXMzBXpfVJ6oHH9IeYAsi0sX8Q1sjyb2zRxs2PkDnTuFnP098ldcbL7miec2QBrPWZB+ka6OsFZoNcaWDs3HXQmkgU4CScVzZvK+VMrTsrVdMK8h4yrfyrDMNKhDQLrfMhbBNQVivQw=
-Received: from MN0P222CA0017.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:531::22)
- by IA1PR12MB8587.namprd12.prod.outlook.com (2603:10b6:208:450::14) with
+ bh=c/Lm0mCfn1GVpAXQ4WMcHLi7/LD9RQcYLhewAIPAPX8=;
+ b=wMaeVq/2yjjlnCnQsl3SKPLBALxvBrpr+xlvyoAqT2xAMsRnWNE2klMyp8tBwU2gBauKth5i6PqLucWBPlAe+a9O659a1wuU8T6pYcLoG9/LS3ToAQMEredccY579cU3wJ2XWk6c7ZU2vHDeIGozrH/kpLEA8Y7whGXnofbOUP0=
+Received: from BN8PR04CA0019.namprd04.prod.outlook.com (2603:10b6:408:70::32)
+ by BY5PR12MB4051.namprd12.prod.outlook.com (2603:10b6:a03:20c::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Fri, 4 Oct
- 2024 05:34:00 +0000
-Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
- (2603:10b6:208:531:cafe::ab) by MN0P222CA0017.outlook.office365.com
- (2603:10b6:208:531::22) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 05:34:05 +0000
+Received: from BL6PEPF0001AB59.namprd02.prod.outlook.com
+ (2603:10b6:408:70:cafe::d0) by BN8PR04CA0019.outlook.office365.com
+ (2603:10b6:408:70::32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.18 via Frontend
- Transport; Fri, 4 Oct 2024 05:33:59 +0000
+ Transport; Fri, 4 Oct 2024 05:34:04 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,22 +48,24 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
+ BL6PEPF0001AB59.mail.protection.outlook.com (10.167.241.11) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8026.11 via Frontend Transport; Fri, 4 Oct 2024 05:33:59 +0000
+ 15.20.8026.11 via Frontend Transport; Fri, 4 Oct 2024 05:34:04 +0000
 Received: from chalupa-d178host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 4 Oct
- 2024 00:33:58 -0500
+ 2024 00:34:01 -0500
 From: Manali Shukla <manali.shukla@amd.com>
 To: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
 CC: <pbonzini@redhat.com>, <seanjc@google.com>, <shuah@kernel.org>,
 	<nikunj@amd.com>, <thomas.lendacky@amd.com>, <vkuznets@redhat.com>,
 	<manali.shukla@amd.com>, <bp@alien8.de>, <babu.moger@amd.com>
-Subject: [PATCH v3 0/4]  Add support for the Bus Lock Threshold
-Date: Fri, 4 Oct 2024 05:33:37 +0000
-Message-ID: <20241004053341.5726-1-manali.shukla@amd.com>
+Subject: [PATCH v3 3/4] KVM: X86: Add documentation about behavioral difference for KVM_EXIT_BUS_LOCK
+Date: Fri, 4 Oct 2024 05:33:40 +0000
+Message-ID: <20241004053341.5726-4-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241004053341.5726-1-manali.shukla@amd.com>
+References: <20241004053341.5726-1-manali.shukla@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,136 +78,75 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|IA1PR12MB8587:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c7f0202-7e63-45f5-2865-08dce4362626
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB59:EE_|BY5PR12MB4051:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55aa22ec-0f07-402f-56ea-08dce4362918
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|30052699003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Sk3vzlMR0FxXDIYy9JEPZvpPBTXC9upiBtPeWredE3eSwaznlrkIdNSF2DDe?=
- =?us-ascii?Q?a5FB7CUPwRY3asO0nhSvN7la6vSpSm4Gu2QNMVHaZhGQ+tAs/9D7wZ1b9z3Z?=
- =?us-ascii?Q?xfkyUnHmvCGKkNyEQIeuPILXBfP90bff62G30/BNkqcziH8sEU0jR7s4t/dR?=
- =?us-ascii?Q?vseew5t3ITq6W24VvO/KiDf92dXI+AcxHLv84QHxpRLh6WNAoHHAHaCZJXys?=
- =?us-ascii?Q?9oMa/GddwMQgb0mkzRrZ19gkvldd9z3Jwgelz0yFyFfpz9WT/Sns7jydznyx?=
- =?us-ascii?Q?PRK5IDf/yeqkDAae09M1oSt0TZwXy+IEEUyYaG8PldV3agT5LDnWBEr39WAc?=
- =?us-ascii?Q?VDCMywnBEg/Edi7cxef0Ty8Ttmy2Mvttq1QPfS1bndy7I9h7LjYhwnlSxRal?=
- =?us-ascii?Q?C6WIODT56zAOFk7mP5pV4MabQQSiDqyiLdFlnOA4pFMtGXPoc3hkt7rWHb0O?=
- =?us-ascii?Q?fnWHaE7E/ucMMK/wAftQOJgo9WuTDML6zy7sZFP+Yc09FGNY0Eq1TtagExel?=
- =?us-ascii?Q?H/POrXjFd4WT62B1NTfkutx+p9GqnZS18xYOz24e0pf3bosyff4JsHuUiWCu?=
- =?us-ascii?Q?OP80IzPxYjONc00r7jox/X8W+x3NeTixjxVZdbyRmNTm6zCAsX3/te+9640A?=
- =?us-ascii?Q?oLtvhahzrZBhXaZ/5kH/l9j+/lXfTwNQ8l/VPy+UfWogqmvdAM/5anEjf5iE?=
- =?us-ascii?Q?d9OS6WYcrrh8Q9JvxwMMNHpRacB08jhvwS0P8TXNAlgrf8mNS/Ezu9cw0igz?=
- =?us-ascii?Q?du6aoFuTUFjUxl5EJRFUOmEzueZnOBf0FVXQkmN2ShDsajEHRIKn+Xs7BmML?=
- =?us-ascii?Q?4niX1w61rTMagxMcUuE+rRUiAz5pNcbRg1cCbdmXBk+nrVe6P2KWc76EhWAY?=
- =?us-ascii?Q?Oo/YOeE+9cCxXTOOL3U7DWrb11DwCbt+qMqPsKKHs6zO7ITcYAyuscW5b1sn?=
- =?us-ascii?Q?Adc+SBDfYqkuJun+A49W12F0VP/dTYS0L6TvKmS/xJOImUIM+OuwMaAzpTtt?=
- =?us-ascii?Q?0xGX0qosf3bfubD5S86twq9XN+md/Jve2a6Pi/Fufn61tOQyaGg5YJbXy98v?=
- =?us-ascii?Q?HxYihA2C6U4WrFRact7BElCKhMlja6ZgHL9cuE8VUMSB3yg2EhKr7KU3lawt?=
- =?us-ascii?Q?tEgCcftUQUY0yszv4EbSG1aI5YCC/Ntr9q2B5Q5KLfMkSYBoQecSOtF3XFRz?=
- =?us-ascii?Q?H7gvN6bXdmWV+E0xD4usS6pay60RMcrsSo3hqQLH+NYtLHsy9K2Au7C578iu?=
- =?us-ascii?Q?xQVkKss7FSoFikBIOo8ADEY1H8oEaAwTvvOcy3qhOH9XYSkhYVQZDIJJYTAW?=
- =?us-ascii?Q?kLGJEVTLQXjKvlWbKhtxGnumUYeSaFL1eHOorbU/usVJUqd3v0t/oXedSfUX?=
- =?us-ascii?Q?Tk/ZFnn5+HssiAvqH9vwVp09WPWe?=
+	=?us-ascii?Q?KnEruY5VZxr5iDAFpeo4PNrKKFtllSI4EjZ7mIaDUMfwhdcwj1IwSpftrG2L?=
+ =?us-ascii?Q?B8gwdotMizJqrtZA3LesiVH9YOMVzdCCwYMui+qyTBx6WxmFkt55MK/nkC2o?=
+ =?us-ascii?Q?jaFL1imXlagiivCn5clYycgGmf7+gExcHLZnljZHZDONpMACTAKGey6je5i5?=
+ =?us-ascii?Q?kg6/CQzjEClOiNnrxUBybbkmIDhZHkYmngy8bf1lsO0anvTT1npoI8vFxy9Q?=
+ =?us-ascii?Q?HGC/BGraThmpFQsR8Yu9cojQ1ItKOUG8AoWkkNUfYORyzu4WLB8BTTyhxJAR?=
+ =?us-ascii?Q?/nwW3JDoBxcug+MqBFH1VfnrbaIOiAO6ONTf6n3nDDZBQDe8h32xrNM9oy2W?=
+ =?us-ascii?Q?C2vwWtYadF12gJ1WSFS8xETEEIoKoLtCImpzLOi+EfupE+I8JrRzYujWgP/L?=
+ =?us-ascii?Q?PIImEXFJyMJLe9AkLpD/ZbG85vrW0WgghSR+FspGMOD3FPHE2mjSd2VJDvUz?=
+ =?us-ascii?Q?ZRcuWa0VU0pgsdJL4ww/+rmeIdvi36WBSzfFttbWGC7kA/SaSVRcFLFXuT2p?=
+ =?us-ascii?Q?cTL7Jk9DemYS5Z40/v2LFSJrWnB7U35Cjy/+mQMQfkZ8EczoKwHHQper9+AH?=
+ =?us-ascii?Q?DXNBKX5afGNM152lzzCQN/wLi1jEBNWd71PKIlioGkURbnRdiidCQEVwn2kQ?=
+ =?us-ascii?Q?Xh/Wj2o634keaBBf85Z4dizYGuKtl+vLLbDVRlFM4ocyh+aXWjGuGqNfIZys?=
+ =?us-ascii?Q?EJmdp3s7k7PTiv6+iEjkP++VjxdpvlmSDhPPQN/G4XaYrCJNZh6gR+fo3G1c?=
+ =?us-ascii?Q?UBxRGnu4HHrQnHxrIOtQwI/AaCmun2o7W8DqWi1BQTz9q5SmMTywPZQKKISC?=
+ =?us-ascii?Q?ARWCFNWDbiNozZVq5Xp2ATZ10I7ugEDlORqgJZL5tLbrVpdneUlm3Ik1ZXH2?=
+ =?us-ascii?Q?TG2RotC1tLcQ2u0q48Vw6qI25awE0HJU452cBYnBC2ztmnwOfWk4cZLgLb6Z?=
+ =?us-ascii?Q?IUGVafs5YSvMLcEm+8cAonHMtcHvXlWf4cLjAMTjjHF/EDitqP5CUN2mNbJ9?=
+ =?us-ascii?Q?AX+PYoQCk8rr6sYM9NeNJ/Z24lO59YdE7vRzNMlM7+l5NCpYJlCQmVkET6Mv?=
+ =?us-ascii?Q?IpfgMaCTJ1UJwp44KiKcIeyQ18jIEsR9tGb8p6nRUczSvuJ/KFIb51DqBOQQ?=
+ =?us-ascii?Q?4BduJuKnBW7Ynrj0/umEwuM8EODlFvUIDghxtbeqz67oSVbxRNXcpoLGaKpK?=
+ =?us-ascii?Q?/WKUwD5ByuN/OY+A2uxa2/20lkFoYkRs0nlVcDaDuOHKq7cu1zY7LA6mWvQ/?=
+ =?us-ascii?Q?OoNgYPOuAQZ55UB4vnWgpEneUSzMCZa1vMRQhe0P3yGVDzy8kuc1u5wu9w3Z?=
+ =?us-ascii?Q?nTK5Aby4r1hnEZI3umomy6DBaGB3gy71sgzdleI2l0ua1kD8Mw0UZ+6jaWPG?=
+ =?us-ascii?Q?CgJhgEzEAa0Z60Fb8CKwR/FqW+Qu?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(30052699003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 05:33:59.8233
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 05:34:04.7970
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c7f0202-7e63-45f5-2865-08dce4362626
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55aa22ec-0f07-402f-56ea-08dce4362918
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB58.namprd02.prod.outlook.com
+	BL6PEPF0001AB59.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8587
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4051
 
-Misbehaving guests can cause bus locks to degrade the performance of
-a system. Non-WB (write-back) and misaligned locked RMW
-(read-modify-write) instructions are referred to as "bus locks" and
-require system wide synchronization among all processors to guarantee
-the atomicity. The bus locks can impose notable performance penalties
-for all processors within the system.
+Add a note about behavioral difference for KVM_EXIT_X86_BUS_LOCK
+between AMD CPUs and Intel CPUs in KVM_CAP_X86_BUS_LOCK_EXIT
+capability documentation.
 
-Support for the Bus Lock Threshold is indicated by CPUID
-Fn8000_000A_EDX[29] BusLockThreshold=1, the VMCB provides a Bus Lock
-Threshold enable bit and an unsigned 16-bit Bus Lock Threshold count.
+Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+---
+ Documentation/virt/kvm/api.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-VMCB intercept bit
-    VMCB Offset     Bits    Function
-    14h             5       Intercept bus lock operations
-
-Bus lock threshold count
-    VMCB Offset     Bits    Function
-    120h            15:0    Bus lock counter
-
-During VMRUN, the bus lock threshold count is fetched and stored in an
-internal count register.  Prior to executing a bus lock within the
-guest, the processor verifies the count in the bus lock register. If
-the count is greater than zero, the processor executes the bus lock,
-reducing the count. However, if the count is zero, the bus lock
-operation is not performed, and instead, a Bus Lock Threshold #VMEXIT
-is triggered to transfer control to the Virtual Machine Monitor (VMM).
-
-A Bus Lock Threshold #VMEXIT is reported to the VMM with VMEXIT code
-0xA5h, VMEXIT_BUSLOCK. EXITINFO1 and EXITINFO2 are set to 0 on
-a VMEXIT_BUSLOCK.  On a #VMEXIT, the processor writes the current
-value of the Bus Lock Threshold Counter to the VMCB.
-
-More details about the Bus Lock Threshold feature can be found in AMD
-APM [1].
-
-v2 -> v3
-- Drop parch to add virt tag in /proc/cpuinfo.
-- Incorporated Tom's review comments.
-
-v1 -> v2
-- Incorporated misc review comments from Sean.
-- Removed bus_lock_counter module parameter.
-- Set the value of bus_lock_counter to zero by default and reload the value by 1
-  in bus lock exit handler.
-- Add documentation for the behavioral difference for KVM_EXIT_BUS_LOCK.
-- Improved selftest for buslock to work on SVM and VMX.
-- Rewrite the commit messages.
-      
-Patches are prepared on kvm-next/next (efbc6bd090f4).
-
-Testing done:
-- Added a selftest for the Bus Lock Threshold functionality.
-- The bus lock threshold selftest has been tested on both Intel and AMD platforms.
-- Tested the Bus Lock Threshold functionality on SEV, SEV-ES, SEV-SNP guests.
-- Tested the Bus Lock Threshold functionality on nested guests.
-
-v1: https://lore.kernel.org/kvm/20240709175145.9986-4-manali.shukla@amd.com/T/
-v2: https://lore.kernel.org/kvm/20241001063413.687787-4-manali.shukla@amd.com/T/
-
-[1]: AMD64 Architecture Programmer's Manual Pub. 24593, April 2024,
-     Vol 2, 15.14.5 Bus Lock Threshold.
-     https://bugzilla.kernel.org/attachment.cgi?id=306250
-
-Manali Shukla (2):
-  x86/cpufeatures: Add CPUID feature bit for the Bus Lock Threshold
-  KVM: X86: Add documentation about behavioral difference for
-    KVM_EXIT_BUS_LOCK
-
-Nikunj A Dadhania (2):
-  KVM: SVM: Enable Bus lock threshold exit
-  KVM: selftests: Add bus lock exit test
-
- Documentation/virt/kvm/api.rst                |   4 +
- arch/x86/include/asm/cpufeatures.h            |   1 +
- arch/x86/include/asm/svm.h                    |   5 +-
- arch/x86/include/uapi/asm/svm.h               |   2 +
- arch/x86/kvm/svm/nested.c                     |  10 ++
- arch/x86/kvm/svm/svm.c                        |  27 ++++
- tools/testing/selftests/kvm/Makefile          |   1 +
- .../selftests/kvm/x86_64/kvm_buslock_test.c   | 130 ++++++++++++++++++
- 8 files changed, 179 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/kvm/x86_64/kvm_buslock_test.c
-
-
-base-commit: efbc6bd090f48ccf64f7a8dd5daea775821d57ec
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index e32471977d0a..49465323dc62 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -7884,6 +7884,10 @@ Note! Detected bus locks may be coincident with other exits to userspace, i.e.
+ KVM_RUN_X86_BUS_LOCK should be checked regardless of the primary exit reason if
+ userspace wants to take action on all detected bus locks.
+ 
++Note! On AMD CPUs, the bus lock exit to user space occurs with RIP pointing at
++the offending instruction. In contrast, on Intel CPUs, the RIP points to the
++instruction right after the guilty one after the bus lock exit to user space.
++
+ 7.23 KVM_CAP_PPC_DAWR1
+ ----------------------
+ 
 -- 
 2.34.1
 
