@@ -1,112 +1,140 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B13158862;
-	Sun,  6 Oct 2024 06:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D8338F83;
+	Sun,  6 Oct 2024 07:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728196006; cv=none; b=JuU1JEBXHNt9vBvK6j9vjfjW0JtFfsffR1O81aV/4J2REPSNn82HCMr7yCJ2FtzWouU1RJW+K/OuFTiR/GCHjDGNA46dAhNQin44cHqAehpl7xvjUfrZxzha/jCqaLXPbFvR4s3jVRbk+st7gTlg4yUnbmBsmWAxf5GznBIsE10=
+	t=1728201592; cv=none; b=tkXU8vjrM4WNrxM0ahDTQ63bdw2QSv2e0C39wZYSEE3JKVtQwUrIl99xPliRs25+QRzA1HBuZAaVzoGHxp/Jdj+MquuPgMZCA53CKiUDfDuPoJYsvi77MWfHC17ZjuPraXzwFNHBrpXHAZV2RrYAEgn9iMwlo2pynGIU+F7rnUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728196006; c=relaxed/simple;
-	bh=BwSmet5U3UeygxPIkLXf2oFWJOec+/C3NC4O/tCdlU8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=MF3Mtmkp+ik1kigfql32gyvn7EcQf/0gZiOXCei19bgyRFPi7+uyAIhB6nbRhGCQLA8ISSep5bctKoG2f6AeT7Ev78CKBJl3wUDY7DEfGVOZsLPn8d+1NqvTS+YrRMMUQY52gLrxgv3In8yVOQJMPRF6mFwi3lfjcemznFtLe+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bI7GUOyp; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1728201592; c=relaxed/simple;
+	bh=0WxMKip1+Fw9+cCQhm/3A9AY/qyKiRCE5qbNsKoaojU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PchLrEJs7UwXdIolqE4g1UoikMZCSOPmiOD5vCEopVo2aqF9ZdzDuud3jzQRcki1Cz1PMH12R10UYYgffACGGl4iePNGNtbunfP9xtbwHCf+C+lchmB+NQ5lfpxocv3PQwxEhFysRNiUbvxcS9aj4lA8vHtmb5T9jqjlWnBABWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJevdzPE; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bI7GUOyp"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0AB5440E021E;
-	Sun,  6 Oct 2024 06:26:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id tJkNPRUveA0w; Sun,  6 Oct 2024 06:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728195990; bh=FSNhRWJawPKwGCAyC5UzTVAx9BVH6LPc3vWgO6rGn44=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=bI7GUOypuitxvx6A+tgaftVrKiqqLnbjfUzlqS0WjU21fVUB4WCRpNB/yPQsNSeqO
-	 r6/1CFDLLf1zJwWsa6KBMiFVosQ1WX1srs/z4j/yyWU7gIx0TvBw/GbhNr9N6KHlqn
-	 tm6T2txMVhQxrF+AbC5vRuSNKJ3EnAr6T17W4nnf+a7fe1CHLFq37aRKGCbUnV/Kmi
-	 2BMaRsT6a1CCnXIiV5ibLprOMBhG+PAKkIYMqy8cv5PZypNTdfOufm8mV4VbSTEfhD
-	 UE9oGV56eDAkoxDW2zbQ3Gml6vr9GfZrBbNWPMpl30yEX5p56aHIqsoImTxX9iCP7Q
-	 u6L8SQWj5aXHQlHgjr6JDaq0tyPGUVv+9EwQ/ozyKetbxJYfUGGw2qKm+Gbx4TdgKd
-	 QvF/Jrl7z5b34nRranQCAKe1dA3JOvSqqeYRYc4SQ8hC9sELerXr1X/PvpA+lRHk7i
-	 KN1afkIWJPvbqDFTfVsrYu49Dxk0uaVI5ldEh5dT7P0KEQ0CXO4d8Bmh8XdaM/gplg
-	 IvWTWdJY/XTDC6+C9jSzaeigIPDC0A4j4eMsAshGS9yEHRF+ldqk2NpefFabSKx5YZ
-	 AG17X1tVho9SoanOOJpDDbL6HlLPgv50dvnO20F7YIW1E7Tq6I80Mi+JiPXZk7gMNp
-	 mmNShvLi2IoZLwx9LKMuArW0=
-Received: from [127.0.0.1] (dynamic-176-003-046-066.176.3.pool.telefonica.de [176.3.46.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F2F1340E0184;
-	Sun,  6 Oct 2024 06:26:19 +0000 (UTC)
-Date: Sun, 06 Oct 2024 08:26:16 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Manali Shukla <manali.shukla@amd.com>, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-CC: pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, nikunj@amd.com,
- thomas.lendacky@amd.com, vkuznets@redhat.com, manali.shukla@amd.com,
- babu.moger@amd.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/4=5D_x86/cpufeatures=3A_Add_CP?=
- =?US-ASCII?Q?UID_feature_bit_for_the_Bus_Lock_Threshold?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20241004053341.5726-2-manali.shukla@amd.com>
-References: <20241004053341.5726-1-manali.shukla@amd.com> <20241004053341.5726-2-manali.shukla@amd.com>
-Message-ID: <213827CA-4A73-4E3C-A4D1-3B325E34768D@alien8.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJevdzPE"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fad5024b8dso38792191fa.1;
+        Sun, 06 Oct 2024 00:59:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728201588; x=1728806388; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TPKYyYBqIk2nde1TDg/wyIZWJzsFsCGXcjUuTc5pqeY=;
+        b=OJevdzPEtGlNlxbHIDgOO+1lNvL7ODuxhcAxB1FR7dX8YHK6z4eNRBZuVtjntMPpnD
+         zeTxEJ6oYRmDVvD0vZ90hfWSC0rPgSkJui/x84HxYgD9oKHcVpLznQAAO+fbOvQhlTVX
+         LTo8HffgFj2Hyh8B+C22+xJ1yO32TB4FPdjn6DnrfqwOO+lgfPJJqkSg77LdflEqEtmI
+         RVAr17AhYV8DNdyJPOaquP3AxPYH6sU0A7rvikInuOFyeRPMCbqn0qVD+3f2w56T9Svt
+         PXiUVEoU/bMJ8J1XojXTdGvAxt/SmSI/yMH5Mgn2fZISA0lrkIgFdR43FPnVAQ55lnEu
+         TMZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728201588; x=1728806388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TPKYyYBqIk2nde1TDg/wyIZWJzsFsCGXcjUuTc5pqeY=;
+        b=Pqdu4rfCDHMCHJ/B07tFwaFXfLLFNbzvRG3ipYmhmLxAhxB7HdDDcU1ITuCPnqT8OD
+         UPJdVxhIk2m45MJOd60Aj0dGDhZJoliDw/vJy4GFNvbnyp4RRn3gJ5VyjYpxR9uNE//M
+         8tiMWxv3hSy4hSycE6JvuAzmpow7cGu8DkTpzkmQ9yKVGVMaWCHan+7E7S1yEaeOshAY
+         ku+zo0HqHGImW1DuZyi5HW9Zyj9f2Zi0amDT9kQWVgY+4S5Ad5bBkoJYE/36YmQFSp3Y
+         uuP2u0U1SLYJJCjAI0BzGWfZ2KOYD6Hgc+2W6Y/esP+WDnbMT9O4w6GyMdUTyefE7cFR
+         EGAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7xqcXYxC2kvadaDPkaP+FtIzetjmuUeOcD+uUHu84NJq8TnWxooN0WWCwxE9UEsdXt0KIhS+KSk5V@vger.kernel.org, AJvYcCUioEptRTQfe8n3fJ/Xi+7tMUlr4YtVPJU2P+CNWRY8M9J+Cli8f9Zckrfc342eq8TuUp0=@vger.kernel.org, AJvYcCUoMMg2v90GiOqpAyC/LuKsuOPweO2xETW4lhVNu8Olfr6eIyzTXyKt2Qxrqlv86AFKdXr1G39/qDK0BPA7s8E=@vger.kernel.org, AJvYcCVHE5n3goGY8QhRrcvl5IU52VRJ3qFf9Hffk8KiSshUT2CkSKWUybb6TSB8R4Ph4mG7Bl7d4ZI3/ZjWv2f3KTqbWQ==@vger.kernel.org, AJvYcCVQ09D00PIajCVmEb0Uxe7sRrr7n3seaefxHtP8sma1kpu0VaQgnRN7HIO4DNqpOv266dHJOnBTh+hm@vger.kernel.org, AJvYcCWLL7w6urDI4YGkTFSNuS0D8tnjtjZ82hJtx0BSRQt37CWGC8deghoKTRPRK3oqQzQohEJ7lGUQTzlgZBmr@vger.kernel.org, AJvYcCWeBLWhnr4EXzzxNv18ZQcfsEUoTqt+dPM2gmDXGwraRgkFycQLDwqZtVY1vz5IICkMWpAd7t5HJxWSm3lJ@vger.kernel.org, AJvYcCWzK/HfO7nX8ByarrXUrPXrMOON+GbCcX2LuBprEl8VxL6izsjq4TyIdjXpxrU8uOxkJEEup2VMVEg=@vger.kernel.org, AJvYcCXWgDTTjpnMNx9MbhWN1TDGR4gQXL+JVu71s/rQ2zxK5zmsGV0dUu3bNqQF4B8CtmretsiQGCYoh0RnLPe8@vger.kernel.org, AJvYcCXoZXxrEGbdwAP7G+wWoarb66twgfaO4gZDQPFOe18iPYxDr0W4VyryTJwlvRa/T6Rd4WGDn2TJwwf6HQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6yI66QOvVaBMSUte3pUHWM3ywtSwwB1XI4f7DwzA2Q7pexwme
+	Y8CfANz1lZ/p625PleZDMYj6Wt0xzp8PODT2KCeEqwyajE+44WFS0K3Ho7bXAwz/NmRfQz5r3TP
+	jjUbS7Yh+sniRt0ay9LOGJdU6Qjo=
+X-Google-Smtp-Source: AGHT+IE2zUoTNKRDJOdgkWI5Cw6UcFhRdeh7rJkjxE6MXyTsb+8X3cwADhQlSBEhykzT0ML1M4fcluEMHpcmKEmwoVU=
+X-Received: by 2002:a05:651c:1549:b0:2fa:c873:45ce with SMTP id
+ 38308e7fff4ca-2faf3c64dcemr33189261fa.30.1728201588155; Sun, 06 Oct 2024
+ 00:59:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-55-ardb+git@google.com> <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
+ <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
+ <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
+ <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
+ <5c7490bb-aa74-427b-849e-c28c343b7409@zytor.com> <CAFULd4Yj9LfTnWFu=c1M7Eh44+XFk0ibwL57r5H7wZjvKZ8yaA@mail.gmail.com>
+ <3bbb85ae-8ba5-4777-999f-d20705c386e7@zytor.com>
+In-Reply-To: <3bbb85ae-8ba5-4777-999f-d20705c386e7@zytor.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Sun, 6 Oct 2024 09:59:40 +0200
+Message-ID: <CAFULd4b==a7H0zdGVfABntL0efrS-F3eeHGu-63oyz1eh1DwXQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On October 4, 2024 7:33:38 AM GMT+02:00, Manali Shukla <manali=2Eshukla@amd=
-=2Ecom> wrote:
->Misbehaving guests can cause bus locks to degrade the performance of
->the system=2E The Bus Lock Threshold feature can be used to address this
->issue by providing capability to the hypervisor to limit guest's
->ability to generate bus lock, thereby preventing system slowdown due
->to performance penalities=2E
+On Sun, Oct 6, 2024 at 1:37=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrote=
+:
 >
->When the Bus Lock Threshold feature is enabled, the processor checks
->the bus lock threshold count before executing the buslock and decides
->whether to trigger bus lock exit or not=2E
+> On 10/5/24 01:31, Uros Bizjak wrote:
+> >>
+> >> movq $sym to leaq sym(%rip) which you said ought to be smaller (and in
+> >> reality appears to be the same size, 7 bytes) seems like a no-brainer
+> >> and can be treated as a code quality issue -- in other words, file bug
+> >> reports against gcc and clang.
+> >
+> > It is the kernel assembly source that should be converted to
+> > rip-relative form, gcc (and probably clang) have nothing with it.
+> >
 >
->The value of the bus lock threshold count '0' generates bus lock
->exits, and if the value is greater than '0', the bus lock is executed
->successfully and the bus lock threshold count is decremented=2E
+> Sadly, that is not correct; neither gcc nor clang uses lea:
 >
->Presence of the Bus Lock threshold feature is indicated via CPUID
->function 0x8000000A_EDX[29]=2E
+>         -hpa
 >
->Signed-off-by: Manali Shukla <manali=2Eshukla@amd=2Ecom>
->---
-> arch/x86/include/asm/cpufeatures=2Eh | 1 +
-> 1 file changed, 1 insertion(+)
 >
->diff --git a/arch/x86/include/asm/cpufeatures=2Eh b/arch/x86/include/asm/=
-cpufeatures=2Eh
->index dd4682857c12=2E=2E77fa8e743ccc 100644
->--- a/arch/x86/include/asm/cpufeatures=2Eh
->+++ b/arch/x86/include/asm/cpufeatures=2Eh
->@@ -382,6 +382,7 @@
-> #define X86_FEATURE_V_SPEC_CTRL		(15*32+20) /* "v_spec_ctrl" Virtual SPE=
-C_CTRL */
-> #define X86_FEATURE_VNMI		(15*32+25) /* "vnmi" Virtual NMI */
-> #define X86_FEATURE_SVME_ADDR_CHK	(15*32+28) /* SVME addr check */
->+#define X86_FEATURE_BUS_LOCK_THRESHOLD	(15*32+29) /* "buslock" Bus lock =
-threshold */
+> gcc version 14.2.1 20240912 (Red Hat 14.2.1-3) (GCC)
+>
+> hpa@tazenda:/tmp$ cat foo.c
+> int foobar;
+>
+> int *where_is_foobar(void)
+> {
+>          return &foobar;
+> }
+>
+> hpa@tazenda:/tmp$ gcc -mcmodel=3Dkernel -O2 -c -o foo.o foo.c
 
-Why does this feature flag need to be visible in /proc/cpuinfo?=20
+Indeed, but my reply was in the context of -fpie, which guarantees RIP
+relative access. IOW, the compiler will always generate sym(%rip) with
+-fpie, but (obviously) can't change assembly code in the kernel when
+the PIE is requested.
 
+Otherwise, MOV $immediate, %reg is faster when PIE is not required,
+which is the case with -mcmodel=3Dkernel. IIRC, LEA with %rip had some
+performance issues, which may not be the case anymore with newer
+processors.
 
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
+Due to the non-negligible impact of PIE, perhaps some kind of
+CONFIG_PIE config definition should be introduced, so the assembly
+code would be able to choose optimal asm sequence when PIE and non-PIE
+is requested?
+
+Uros.
