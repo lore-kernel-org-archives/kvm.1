@@ -1,130 +1,226 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E07E84E18
-	for <kvm@vger.kernel.org>; Wed,  9 Oct 2024 07:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642A1188737;
+	Wed,  9 Oct 2024 08:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728459947; cv=none; b=EIBkPpMR8J2ch6s78VoEXxoukJ+WIfceui0hGy3lhCC0leqhCImtT0PunR9MXLP4/NzMNsnev9n5E9Mg12yvRXRiIMXJ63jqJKC8QYNBWK6Kp78YmE/9In+zFaKmkjm7Z8kC83V6us2ve84kbYKYBrbVcqP71KKce9gxGMMkNGg=
+	t=1728461114; cv=none; b=AQymqOPVr1hhGrWB+5H3ChreT9woRZbxw+cRlXaykeihJIUDSVpjheG6uKoXZzY8SOEm4EdDA7gj6v5TPkuh6al9ItpY7lS/gCKVmiZ1DAwps66PbEQ7OpRxO1wo4E4yHok+M6BkHnVFE0h6/bkTBwOLjgGJUOSQCgitRQJhUTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728459947; c=relaxed/simple;
-	bh=AXLP2KyrAqjaejcHnTbI8HMVGaKN1T0qdKQjIwPuqBE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oOSd2eDb9+vBJLKNTK8sudkoOUSiCKh0JGYPG03w2LbSM21VB08iNTBp18mmesJ15w18bWCE8X/bRMuEfmLJyMA2f8UJa9GvzOrLtz8lUztazEJgY41r16uKUgdvvZhovjYoFgy3OrxqTtPc3R8yPK+F6g0P+llwmIzBBmDw5fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PnMK5yht; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728461114; c=relaxed/simple;
+	bh=DPzYwoAXdnJEo3Ar1EbaCUK518yNbF3ZH8uXcbO+nq4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F/Iv0CvQcgwbzryW1yg8QyJmAEfzKfnnwMkYcWbVQGuLTrw3zqbqmVxOiTo4rIYvmTXMoHsUyyOs1kYTJl7WeKBjm/A3ZHhXQ/O9kBwGmKfBoa4NzAnONKr/o6tXZKZoEnqIBIPu4eYcDl9Osq4bE8EbKSrHikgiv8zZd61M5nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPzXEIep; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PnMK5yht"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728459944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H7WnLoztQpWL0UuoG5WJ33odis8tMGytHkOB4fwng3Y=;
-	b=PnMK5yhtLnNu0jvjjwi41R4Ri8Ky+H5dXjuVJmw2xZ77hCE32K7l8quF+tcpxNUcbAG5bX
-	qNdap9c2lsBlGVJ02q50fDFhOcuXOoonvyke8Rq1c9zcKl0eAtZstqaoO1OLho42CUNPwj
-	IG8N1KEp2nI/VITkbCAYK8q9kDjTeJo=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-htZVxaiEMPu2rIvy38r9FA-1; Wed, 09 Oct 2024 03:45:12 -0400
-X-MC-Unique: htZVxaiEMPu2rIvy38r9FA-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2e28d7928d8so1709254a91.3
-        for <kvm@vger.kernel.org>; Wed, 09 Oct 2024 00:45:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728459912; x=1729064712;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H7WnLoztQpWL0UuoG5WJ33odis8tMGytHkOB4fwng3Y=;
-        b=ETgUhwqUmwXEmxAYnYLanoQiOPR903q+/3jdWSSftrWvv1cH1fjxovgwhJoTgmH4Ax
-         hAxo/9cEKi+eEsOToA1JVKfzOvGzYr6YZt6fq3mnIZpqWoz+w8NCMA0fbFRVG/hi368D
-         30YvoIlPPznvT92TDLnSQzFsIvMXy2LWObfVs0NLQdCZgUgk7rBPeCy/9wthC9FX+T4f
-         /yVp1biFHFRI1/BztxYx//q3RKnunl2P4k+OqSPldcdNFAkEd6O/PANp5vCrd3P5vVpK
-         XHNNbMlJFc2sUh+w+Rl6xUnRxb3awdqnyi7z0fdoPFLZD4MhHPk/zYAdW9RDSoEy5MnN
-         lwEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCJbvukydSr4jZLFGvjR7qWdtoBa5HFw/i2Ho6LPcNjtLetMMsI4vZsiUOPJW92tGsNyU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKwpgRNl0o+27qVyA/zNc0fwbt6qLKHDio+81hUcDUuOnO3s3c
-	tjpeDZRMSJTak4rXX/xXSd0CR6vp4+8gGOkPWrU+GhsMECvMlGj9U8Gm7A61l7hHbTWLyXZHzUP
-	zruk1mUIW8RzUUhalm7sLjcGyQcpidRt4N3hzyYlHKv5PpvKBfnLeAs3rUo9l+OSr2Kd+WP2vBS
-	HgaP9jvuEzLtUwW5r3Cwo7e5k7
-X-Received: by 2002:a17:90b:4a52:b0:2e2:991c:d795 with SMTP id 98e67ed59e1d1-2e2a2587e6cmr1772578a91.40.1728459911719;
-        Wed, 09 Oct 2024 00:45:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUXS3Vu8tqbV1XHkGBTCNaL2VDRz7beWlworvX+yKRqbV5bgZG5ofneJzBijB1Dsili4oRB7g3ygL6aKFSPxI=
-X-Received: by 2002:a17:90b:4a52:b0:2e2:991c:d795 with SMTP id
- 98e67ed59e1d1-2e2a2587e6cmr1771623a91.40.1728459881543; Wed, 09 Oct 2024
- 00:44:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPzXEIep"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F83C4CEC5;
+	Wed,  9 Oct 2024 08:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728461113;
+	bh=DPzYwoAXdnJEo3Ar1EbaCUK518yNbF3ZH8uXcbO+nq4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IPzXEIepdJLVf61I0DXwipijwI6ari0oinXoyonSihisOYNv0sYl6oq6E4rdnd/zg
+	 OZWfSkOgpfqj3gmbvPWCEwMYDtdQhfVc0GbKH4cMpX+U2o5SfZy8PlE+i/VbXCu0rx
+	 6f6dEXBqpw+RifVS/EDtXz1FGW6BGAE1MdN5FMKw8KIkecygJ5GT7idg9N74bceDO1
+	 IqIIB0H+SiOYkbKQ5KleSiHzHSJgb89+lq0N303FDzOXGb9MFRCpVkRuvR1WItKFtz
+	 YYzGaNqMn7dJJXyaBQ6Cu9UTU37NM+6GOLoS6jONmMxgU7yrh0N4YjI5tNn/RishY1
+	 Xn3Nqxdp6o/4g==
+Received: from 82-132-234-182.dab.02.net ([82.132.234.182] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1syRh0-001iDe-TE;
+	Wed, 09 Oct 2024 09:05:11 +0100
+Date: Wed, 09 Oct 2024 09:05:09 +0100
+Message-ID: <877cahvgzu.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-arm@nongnu.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+	Enrico Joerns <ejo@pengutronix.de>
+Subject: Re: [BUG] ARM64 KVM: Data abort executing post-indexed LDR on MMIO address
+In-Reply-To: <f096876b-f364-4291-88e0-ac189b4f26fe@pengutronix.de>
+References: <89f184d6-5b61-4c77-9f3b-c0a8f6a75d60@pengutronix.de>
+	<CAFEAcA_Yv2a=XCKw80y9iyBRoC27UL6Sfzgy4KwFDkC1gbzK7w@mail.gmail.com>
+	<a4c06f55-28ec-4620-b594-b7ff0bb1e162@pengutronix.de>
+	<CAFEAcA9F3AR-0OCKDy__eVBJRMi80G7bWNfANGZRR2W8iMhfJA@mail.gmail.com>
+	<4d559b9e-c208-46f3-851a-68086dc8a50f@pengutronix.de>
+	<864j5q7sdq.wl-maz@kernel.org>
+	<65ab10d7-6594-490c-be07-39f83ac3559a@pengutronix.de>
+	<87a5fiutai.wl-maz@kernel.org>
+	<0352a327-0e78-48d4-a876-d33689fcd766@pengutronix.de>
+	<8634l97cfs.wl-maz@kernel.org>
+	<f096876b-f364-4291-88e0-ac189b4f26fe@pengutronix.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241008-rss-v5-0-f3cf68df005d@daynix.com> <20241008-rss-v5-5-f3cf68df005d@daynix.com>
-In-Reply-To: <20241008-rss-v5-5-f3cf68df005d@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 9 Oct 2024 15:44:30 +0800
-Message-ID: <CACGkMEt054F1AZP7V0ocbUce_AvQV_Cw-K21y7Ky1gWa=eSpCA@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 05/10] tun: Pad virtio header with zero
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org, 
-	Yuri Benditovich <yuri.benditovich@daynix.com>, Andrew Melnychenko <andrew@daynix.com>, 
-	Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 82.132.234.182
+X-SA-Exim-Rcpt-To: a.fatoum@pengutronix.de, peter.maydell@linaro.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org, ejo@pengutronix.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Oct 8, 2024 at 2:55=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix.=
-com> wrote:
->
-> tun used to simply advance iov_iter when it needs to pad virtio header,
-> which leaves the garbage in the buffer as is. This is especially
-> problematic when tun starts to allow enabling the hash reporting
-> feature; even if the feature is enabled, the packet may lack a hash
-> value and may contain a hole in the virtio header because the packet
-> arrived before the feature gets enabled or does not contain the
-> header fields to be hashed. If the hole is not filled with zero, it is
-> impossible to tell if the packet lacks a hash value.
->
-> In theory, a user of tun can fill the buffer with zero before calling
-> read() to avoid such a problem, but leaving the garbage in the buffer is
-> awkward anyway so fill the buffer in tun.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+On Wed, 09 Oct 2024 07:11:52 +0100,
+Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> 
+> Hello Marc,
+> 
+> On 06.10.24 12:28, Marc Zyngier wrote:
+> > On Sun, 06 Oct 2024 08:59:56 +0100,
+> > Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >> On 05.10.24 23:35, Marc Zyngier wrote:
+> >>> On Sat, 05 Oct 2024 19:38:23 +0100,
+> >>> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >> One more question: This upgrading of DC IVAC to DC CIVAC is because
+> >> the code is run under virtualization, right?
+> > 
+> > Not necessarily. Virtualisation mandates the upgrade, but CIVAC is
+> > also a perfectly valid implementation of both IVAC and CVAC.  And it
+> > isn't uncommon that CPUs implement everything the same way.
+> 
+> Makes sense. After all, software should expect cache lines to
+> be evicted at any time due to capacity misses anyway.
+> 
+> >> I think following fix on the barebox side may work:
+> >>
+> >>   - Walk all pages about to be remapped
+> >>   - Execute the AT instruction on the page's base address
+> > 
+> > Why do you need AT if you are walking the PTs? If you walk, you
+> > already have access to the memory attributes. In general, AT can be
+> > slower than an actual walk.
+> >
+> > Or did you actually mean iterating over the VA range? Even in that
+> > case, AT can be a bad idea, as you are likely to iterate in page-size
+> > increments even if you have a block mapping. Walking the PTs tells you
+> > immediately how much a leaf is mapping (assuming you don't have any
+> > other tracking).
+> 
+> There's no other tracking and I hoped that using AT (which is already
+> being used for the mmuinfo shell command) would be easier.
 
-This sounds like an independent fix that is worth going to -net first.
+Heavy use of AT is debatable.
 
-Thanks
+It requires heavy synchronisation (the ISB between AT and the PAR_EL1
+readout), traps in some circumstances, and is not guaranteed to report
+the exact content of the page tables when it comes to memory
+attributes (it can instead report what the implementation actually
+does). In turn, it *may* hit in the TLBs. Or thrash them.
 
-> ---
->  drivers/net/tun_vnet.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-> index 7c7f3f6d85e9..c40bde0fdf8c 100644
-> --- a/drivers/net/tun_vnet.h
-> +++ b/drivers/net/tun_vnet.h
-> @@ -138,7 +138,8 @@ static inline int tun_vnet_hdr_put(int sz, struct iov=
-_iter *iter,
->         if (copy_to_iter(hdr, sizeof(*hdr), iter) !=3D sizeof(*hdr))
->                 return -EFAULT;
->
-> -       iov_iter_advance(iter, sz - sizeof(*hdr));
-> +       if (iov_iter_zero(sz - sizeof(*hdr), iter) !=3D sz - sizeof(*hdr)=
-)
-> +               return -EFAULT;
->
->         return 0;
->  }
->
-> --
-> 2.46.2
->
+But the real use of AT is when you do not have a virtual mapping for
+your page tables, making them difficult to walk in SW. For example,
+KVM uses AT to walk the guest's stage-1 PTs on stage-2 fault, because
+we don't have the guest's memory mapped at EL2 in general.
 
+Maybe this doesn't matter in your case, as this doesn't happen often
+enough to justify a dedicated SW walker.
+
+> 
+> I see now that it would be too suboptimal to do it this way and have
+> implemented a revised arch_remap_range[1] for barebox, which I just
+> Cc'd you on.
+
+I'll try to have a look.
+
+> 
+> [1]: https://lore.kernel.org/barebox/20241009060511.4121157-5-a.fatoum@pengutronix.de/T/#u
+> 
+> >>   - Only if the page was previously mapped cacheable, clean + invalidate
+> >>     the cache
+> >>   - Remove the current cache invalidation after remap
+> >>
+> >> Does that sound sensible?
+> > 
+> > This looks reasonable (apart from the AT thingy).
+> 
+> I have two (hopefully the last!) questions about remaining differing
+> behavior with KVM and without:
+> 
+> 1) Unaligned stack accesses crash in KVM:
+> 
+> start: /* This will be mapped at 0x40080000 */
+>         ldr     x0, =0x4007fff0
+>         mov     sp, x0
+>         stp     x0, x1, [sp] // This is ok
+> 
+>         ldr     x0, =0x4007fff8
+>         mov     sp, x0
+>         stp     x0, x1, [sp] // This crashes
+> 
+> I know that the stack should be 16 byte aligned, but why does it crash
+> only under KVM?
+
+KVM shouldn't be involved in any of this. What is SCTLR_EL1.SA set to?
+KVM resets it to 1, which is legal ("On a Warm reset, this field
+resets to an architecturally UNKNOWN value."). You shouldn't rely on
+it being 0 if you are doing unaligned accesses to the stack pointer.
+
+> 
+> Context: The barebox Image used for Qemu has a Linux ARM64 "Image" header,
+> so it's loaded at an offset and grows the stack down into this memory region
+> until the FDT's /memory could be decoded and a proper stack is set up.
+> 
+> A regression introduced earlier this year, caused the stack to grow down
+> from a non-16-byte address, which is fixed in [2].
+> 
+> [2]: https://lore.kernel.org/barebox/20241009060511.4121157-5-a.fatoum@pengutronix.de/T/#ma381512862d22530382aff1662caadad2c8bc182
+> 
+> 2) Using uncached memory for Virt I/O queues with KVM enabled is considerably
+>    slower. My guess is that these accesses keep getting trapped, but what I wonder
+>    about is the performance discrepancy between the big.LITTLE cores
+>    (measurement of barebox copying 1MiB using `time cp -v /dev/virtioblk0 /tmp`):
+> 
+>     KVM && !CACHED && 1x Cortex-A53:  0.137s
+>     KVM && !CACHED && 1x Cortex-A72: 54.030s
+>     KVM &&  CACHED && 1x Cortex-A53:  0.120s
+>     KVM &&  CACHED && 1x Cortex-A72:  0.035s
+> 
+> The A53s are CPUs 0-1 and the A72 are 2-5.
+> 
+> Any idea why accessing uncached memory from the big core is so much worse?
+
+KVM shouldn't trap these accesses at all, except for the initial
+faulting-in of the memory (once per page).
+
+But to see such a difference, the problem is likely somewhere else. As
+you seem to be using QEMU as the VMM, you are likely to fall into the
+"Mismatched attributes" sink-hole (see B2.16 "Mismatched memory
+attributes" in the ARM ARM).
+
+The gist of the problem is that QEMU is using a cacheable mapping for
+all of the guest memory, while you are using a NC mapping. Are these
+two guaranteed to be coherent? Not at all. The abysmal level of
+performance is likely to be caused by the rate of miss in the cache on
+the QEMU side. It simply doesn't observe the guest's writes until it
+misses (for fun, giggles and self-promotion, see [1]).
+
+As an experiment, you could run something that actively puts a lot of
+cache pressure in parallel to your guest. You should see the
+performance increase significantly.
+
+Now, this is very much a case of "don't do that". Virtio is, by
+definition, a cache coherent device. So either you use it with
+attributes that maintain coherency (and everything works), or you add
+cache maintenance to your virtio implementation (good luck getting the
+ordering right).
+
+HTH,
+
+	M.
+
+[1] http://events17.linuxfoundation.org/sites/events/files/slides/slides_10.pdf
+
+-- 
+Without deviation from the norm, progress is not possible.
