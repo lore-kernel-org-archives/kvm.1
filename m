@@ -1,46 +1,46 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2044.outbound.protection.outlook.com [40.107.220.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DB2191F98;
-	Wed,  9 Oct 2024 09:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56A31925AC;
+	Wed,  9 Oct 2024 09:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728466197; cv=fail; b=b33kp66toxd3gIIeSbGYwwiNrU7tL3TmjkHvnPSYm6RZXUTWPU0NQWqY3bj5jadSdnIn3y5q+CxR6vDbh194LqCVQpMZL5XO3Ma8Ru1s9aECYpbcoWXmyvAxr3wwJL+CFwKpFcrIF11FEbWHRnYSWnu14m2IZCx0lsA0HVhLzVM=
+	t=1728466203; cv=fail; b=fX/HVa0Wdo5ik30CTgdHthid4pvX5p/lQ/0iX1UeJeH5/wscUV/oF6ri1MfjNPdmKj6BOPC39GrvTXssj2jqPPl15aE+ceiZlUnKC3wivUB1R2dacjfciOeFwr4GtG1QSXdXN4CSdHn9hcdhZrslMzq32nzirPPnkAIznSXTNSQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728466197; c=relaxed/simple;
-	bh=cWaXLEhZMcg+PMgTxZCTtsTDebS7z8QHQHKPYBqOoUs=;
+	s=arc-20240116; t=1728466203; c=relaxed/simple;
+	bh=wTiiW3zg+ZEXEs6HyoUwSSwd2a1sEJVoTxWCh49OUQg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E1tLxFXmMfjJgG3SZX94IjqCFda6lkmdPecyFDacyldE9fedvIdLektjba0CY1XVsLPA/wh9H4XzARONK1NVUwmo249lMQQRPWwFVK+oWlogWudi2PI6LgMXmH7+rjhOLAidE+J1+DTxYewyGNItl9WmE4wCB/pj2pzflFN3qOo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CFiYMg+h; arc=fail smtp.client-ip=40.107.92.83
+	 MIME-Version:Content-Type; b=WjaDAFZP4AIFljP/GpOQZ6yE+sYtHPU+jPLAIx6Rtpq3cwtX7D0Va0IL9JCivbJTroIN+iX2r2NxM5Nke3q3TahWRmnlA7cev2kIyRVzgJwl9HUqY5EZojMiCm41AKuCgy6jkhYRSHfVo9RAeBcFRl0bMnFf53N74uqwBE1qInw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RBDTwyM2; arc=fail smtp.client-ip=40.107.220.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CFiYMg+h"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RBDTwyM2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PskKdzn5XP3P9SGKBV1slxzo1TWcgctWanXvOJ3ItgHqsIrgVl0cPShOTMFEwMpfXzjq1IWSVUJxbk3qjjG6LgiAZBphaq9W0z6SI5UhS2lG7b99lTV/KR4deyZNJxuY0tNS8OwC/fbSW3YWQtyu8mknshzyVd4cbwUZmHAaru6D1fqK4w0Nm25IzlTBE56Uqufk7am3fyvG/gC5+T+76yw1r9XOEOXvli+6RyHokdkoLRquJZzZjashbX49j6yqUHCxnJttVvOzRFB9jSSC3o/sMBwjPgFsD+Lpwjo65juqMYCBvZLvR68lFTG8n4KOtEdIbhCD9pUPvjo6LvpxLg==
+ b=DYPhSj5sNm0WFcrSSUT23pdYeDbSRdzpbPHDOdw1rGsrs+UTAzGyv1M5xFD1tOwuMbKzLq8Br3ingCqh3jabJyc5737ELC4Zjvicp3EjZO4ZygWAupYSeEjWK75HNW1Rl/XKpU+vdQQTtrW14CCpVYslN6lHRrJPVX68EQ9Sgio6voXII9k1XJ3GaoKWtacx0qyOpkEwawqaEUwhhE91u0KbCSYmnzGQ9qZjWJ+Z0jlJcZyyur1syVEf7p+pbwjnfIm8i+7QT3NbKI3mlsFSmFFs840ITj9wpQfMLdTFniI+dhmU6vUpR25zbCHBTb9Pa62YE9JnQHSeDHwNZKwRLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VeTCAzNGbCnsJxKh41jWXb6cwu0VGsWZ/DJ79YvQksw=;
- b=NcxrfceFFKOZXsauK+UEf28SMdctW7g1mGvfEbI5pWQ7tecC++GthYwp+pCpu0/OFXTJl9J/g0D3lb9yP22nZj7bBiJseVJTP55n1U1HFRGqufZ5pBWvZU6ZTQQ04OQVCzVQ4jtiXMauaNQHqU2mjL0n8iT4QSFaLPOPvIYkIrUkTZTTD8EmyClW/mYGcdBK5cBAoJOkpYDH6PCzoMTPP2g8M7k/mOIfaRiG4Tr7bfFyYGiygjklSRhj3sh+Br+1umNEZB6uPu4sxE9LoenrlKWCQz865Vjr0e2gpGr1p0nLPx/KTdx13jcx6CtLEy4azi5HDKuxjs/Y5I5U3tjgyw==
+ bh=gJbrswFKIOzOu5VNK+d/iLVqlwq3bvmZy+UUG5Gjm70=;
+ b=ptI+nwE+eR9ghcpoMxpYn3mTnE4FVsqfR7zI9UkmAJtVKWnGyov7J3BG/OO1YMKAkZ19uZ5G5ousipY8LtwAHNpBxW2d70dEkbYtibU3g/f2ToArkofFMj5xlLKjIXvBQTGzPCIde2xgJN69G4yo1PDgd07vzBZ/fz7yrerIDyQJCWvBp+/vLyqmxwMXcJFVBW563bj3bK5Xu4frZMFNn610l1F9neqZ7fLCTImD4xE3SK8/JpQChE7w7DoDuC8fMe9vs1MkwtoDEAQYpPLPata/fDx01cZofYdVZLT4lIdygkJRETHBa96SHXRd86rSNwfCw4QSeMPTEJedjO0H8A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VeTCAzNGbCnsJxKh41jWXb6cwu0VGsWZ/DJ79YvQksw=;
- b=CFiYMg+h/ePfJDQkUgbeLQ7l7CdDGR5FAotVZaQHIM4y9fL2E+XrY/tTs/Nb5+ufhanMkxycQkSjG85iLWA9Mau/xKyRY/FKyoWPhhg4PNnYPPfzjHsCtQNFgG6vJmytGbBpbdzJfvU05LVZOSd5cEBKz/3Ei9PABTREXkLdloE=
-Received: from BN8PR15CA0015.namprd15.prod.outlook.com (2603:10b6:408:c0::28)
- by SA3PR12MB9130.namprd12.prod.outlook.com (2603:10b6:806:37f::11) with
+ bh=gJbrswFKIOzOu5VNK+d/iLVqlwq3bvmZy+UUG5Gjm70=;
+ b=RBDTwyM2xrHB8+1k+DyQjyTmPvmXRFWKJOJduILd9XpHZuf3v81fRgkApCumiaVKYLoulVQY9A6o/j0p2GKTIkn8zCXEVjhY+kBZv+1eCQYwqH+yZhpniaHPXPzgQbY5IP8XkkYHe3Kq03v063SWp6KHLAjmO03O8wlQDc5eUjE=
+Received: from BN9PR03CA0296.namprd03.prod.outlook.com (2603:10b6:408:f5::31)
+ by DM6PR12MB4355.namprd12.prod.outlook.com (2603:10b6:5:2a3::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 09:29:51 +0000
-Received: from BL02EPF00021F6A.namprd02.prod.outlook.com
- (2603:10b6:408:c0:cafe::3) by BN8PR15CA0015.outlook.office365.com
- (2603:10b6:408:c0::28) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 09:29:59 +0000
+Received: from BL02EPF00021F6F.namprd02.prod.outlook.com
+ (2603:10b6:408:f5:cafe::86) by BN9PR03CA0296.outlook.office365.com
+ (2603:10b6:408:f5::31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.17 via Frontend
- Transport; Wed, 9 Oct 2024 09:29:51 +0000
+ Transport; Wed, 9 Oct 2024 09:29:58 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,22 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF00021F6A.mail.protection.outlook.com (10.167.249.6) with Microsoft
+ BL02EPF00021F6F.mail.protection.outlook.com (10.167.249.11) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8048.13 via Frontend Transport; Wed, 9 Oct 2024 09:29:51 +0000
+ 15.20.8048.13 via Frontend Transport; Wed, 9 Oct 2024 09:29:58 +0000
 Received: from gomati.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 9 Oct
- 2024 04:29:47 -0500
+ 2024 04:29:55 -0500
 From: Nikunj A Dadhania <nikunj@amd.com>
 To: <linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>, <bp@alien8.de>,
 	<x86@kernel.org>, <kvm@vger.kernel.org>
 CC: <mingo@redhat.com>, <tglx@linutronix.de>, <dave.hansen@linux.intel.com>,
 	<pgonda@google.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
 	<nikunj@amd.com>
-Subject: [PATCH v12 11/19] x86/sev: Change TSC MSR behavior for Secure TSC enabled guests
-Date: Wed, 9 Oct 2024 14:58:42 +0530
-Message-ID: <20241009092850.197575-12-nikunj@amd.com>
+Subject: [PATCH v12 13/19] x86/sev: Mark Secure TSC as reliable clocksource
+Date: Wed, 9 Oct 2024 14:58:44 +0530
+Message-ID: <20241009092850.197575-14-nikunj@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241009092850.197575-1-nikunj@amd.com>
 References: <20241009092850.197575-1-nikunj@amd.com>
@@ -79,102 +79,79 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6A:EE_|SA3PR12MB9130:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4392129-2812-469c-07a5-08dce844ed49
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6F:EE_|DM6PR12MB4355:EE_
+X-MS-Office365-Filtering-Correlation-Id: 913b1f5d-f601-4d1d-4bd2-08dce844f19d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+	BCL:0;ARA:13230040|1800799024|7416014|36860700013|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xF2sWa+4kqqX54rbAmzF+moguYPFTnakF2kvC2HZNxItBy5SbYzpGCUTi75e?=
- =?us-ascii?Q?Kw2+xmbG+7+VdaQysAz7DJ7qcvoMC6T0L6CLcyEQbnqefNwF1ou5kLzx6xrv?=
- =?us-ascii?Q?B19pW0qmTze/+CKDC/CFf7bdRi1gS2O8jeldkDbb4GWDkbrbhl2CVf6stg20?=
- =?us-ascii?Q?SJT8YxLtUQuZ5LjfLwfkZA/fHHvMxyaqOitNfBLu4E+yrvEthREpN+ZDJcDE?=
- =?us-ascii?Q?SnIbCHg+6WiL4KBDVEG7UZVW+EBKgYwecgzMhdCErOqygRZPrrqyUkJpO5ad?=
- =?us-ascii?Q?TIUK6N3tm47wvIk/QKM1oX14oPxRJ0DuSkrq+ZEG+JBgPfuNKjjp1cLTsEIJ?=
- =?us-ascii?Q?u3kyP+oGXvWWoX58Rt0PoNc8vHXa7xEGwVNPBMNMU7TacuPaPVnXZqcMc9jJ?=
- =?us-ascii?Q?IkScIpexwROiJSkAFSlRvnnZxSI6KnNErgRnVdWJJvmEbCnbOMVBF6Lc05wK?=
- =?us-ascii?Q?sLuLMeRVdWk2xx0boOGdg9hO8Mz3dIdtEKjCLSlR+JHvvBT+hLobEKCfeWN7?=
- =?us-ascii?Q?DkGEuCTeoN7eToAXjPAhD4lCl7y76KLPXL8t/v9+vej5ixf/tuovRY/h6AyT?=
- =?us-ascii?Q?3ikIuH7BIw1zL2BedMyXuRK4wNjQcbF+c2oiy75KjBXTL8mjqnCvVktdIGKy?=
- =?us-ascii?Q?9txJpZOwyu5d3EHodFCZo36zpNB0ig5s9xKz1vWFr2ubVvHw1qq9g36uFe+H?=
- =?us-ascii?Q?XA5hBJxB6pXwADFzdAUEpIyCUJZnh7Sj5xPb3jqpHT1OwHylfK2Dm2H0JkIH?=
- =?us-ascii?Q?fA2p2zEDQwcuTghcHKj7E8bQyYoRTw/AEg1EfjW6LjraSnusNRbfGOei0Um5?=
- =?us-ascii?Q?Zr4QdOJW9y6DD0P3k1ccygsA50zq9bjn9imR1xLOvI8CGoNZRgrKmlqVB/Cn?=
- =?us-ascii?Q?imJC0EAuHv62Pc19FHcOBh9eOsPkkc4d+RZ/H5OqR+qYY0K7A0vB3zn2kZpW?=
- =?us-ascii?Q?RQDSpahck7K2r5Sv/k1cEcSR26j0topXSY48xuN6F4Dow0GXsnLMfA0rZbfy?=
- =?us-ascii?Q?MeAtnYYJcOgnPcuYDND9Inf/NtqgsfWO5gugys3a/u/OscP9VOzqLUWq3Ahr?=
- =?us-ascii?Q?kcvVpsxQocrgSd3SemJz8FCpR6rKnToRPdGj0cQg6A0yYC5VLwxpstt8BnXj?=
- =?us-ascii?Q?r6cAF7f0nOzN0+cieGgn458CkrelESBCRB/dAfAYkPTFilY7Fpu6FMp2mmGq?=
- =?us-ascii?Q?JPrHwHWpzHHS2kIbRcs/nuXU30Q7MJzQaeA5dIHIIOua0Hrfv7EIod630Cv3?=
- =?us-ascii?Q?5Ey+3MEMMIeBDDL6Jipd9O8HMWcgL2C+3ueknztZeAWpQREKwYfymmAB8Jfx?=
- =?us-ascii?Q?sURwjhlajUI7xgYa9Rclhx+dXQkcPscVaHV1ObeUJwkZLanSkbr1NFRMhIKu?=
- =?us-ascii?Q?mLNfEGw=3D?=
+	=?us-ascii?Q?4v1li6dCsqb+9EpkdHDKFmnBuydq3PPjjULafyRbv891W/w7iUucj0aDhTes?=
+ =?us-ascii?Q?YqALkYp70rlUEhIe/B5IpZDX35RT0m7wUenjnPTzgLgCeSCX7YTCDnHJ97mU?=
+ =?us-ascii?Q?KmKJdYbxRBCgFMVInWtM1bPYzwuDdgIFl6RljobyStlLDNmZ6AJkrG5iWgNr?=
+ =?us-ascii?Q?TEJr9T3URtxgQLUcNfDk9aUCsNmTABAJ/WW+pqLIhWcQqWzOqq9ky+4Rc/1/?=
+ =?us-ascii?Q?jcXON2JX7IaRPTILdplstQRPyElLJK8kcGmkRqan/f0GYBUS6TzN6+n1fxuP?=
+ =?us-ascii?Q?59SI1jKP8nY4naHXdC/4S0de/ITPVii+GkUv9cojB77IT+XXdP9/TJXO/rOR?=
+ =?us-ascii?Q?nlmVMvsdSi9cpsnYOdDu1D9dsat3olQEWxFdNtFV5Laq6MX/PHEcC/aXJfzY?=
+ =?us-ascii?Q?/xVAwuyNXRY9YTGB+42VFn47Bg8ZXiuc7yPEo12dgqa0x5B7QoOEX9etMmEa?=
+ =?us-ascii?Q?nxglTHj0COnwJ1wP/uZzEV4d6H0H8oSpjCpg8PDBs2OjlhWEhiSYNgolv/ls?=
+ =?us-ascii?Q?j/gaLPWtV5JeeYXP0Bt9TCv8J4aWeVShPcXHnDBUFMkBC0pP631Ap8ESuDOq?=
+ =?us-ascii?Q?00yOkXR/zscggEmfl+9buocIuM1xncsHqwM+QkuQLYNfO6W9s2yXRbchJJoU?=
+ =?us-ascii?Q?SfV2RBLYb/MbYdKghKL7RxZjpXnAj/mFv6Ww924OK1M6KoE+w3yhJm1bRExX?=
+ =?us-ascii?Q?MRSyUsq03QMO7WOikwPl9dLEdclSJ1vKdH8Dc0uzbFJf3S9t6lFLzdxOk5vQ?=
+ =?us-ascii?Q?hqNp3f/b9XsVMBuWl9upCrVl5gOzDuLywBIuXrV83KeDEJUFFS/tHx0gfMu/?=
+ =?us-ascii?Q?MJI4YqyUdiGkXngNSrQpCGIUXpIK3YU0S1i4gzRGIIT7Jr2d6f7fvBN7bVSv?=
+ =?us-ascii?Q?h8If0c825D1PBBI24fnpK+ffvl4DBA4eyZkyFkNp+uthzhhqwt5dGpoWL7G1?=
+ =?us-ascii?Q?eMFJa6dUnXNVUwqz8VScIIZeVMXzoOykXqCuiEpTugK2YXYgHA820TyAYJXI?=
+ =?us-ascii?Q?hPnmDrjk/QUHyZsAtlMohvfVIMpIist6xAVtCAqVS2itsjhdWTrt6P20Qi5Y?=
+ =?us-ascii?Q?g7S6nWntNg80A3X5JesvYG94vbxeryCwQ4bTPMqBuv77TAsmlMnXaivaHwZY?=
+ =?us-ascii?Q?0GiJKrq+tBCkrRUXrqjJm3lFl+jEN+vm/fPMZrALtv7j84XtJnVmwKVJxwqo?=
+ =?us-ascii?Q?QBbzU+v5mBhM9i12dNhCwXNcDsKNZ5A7pgtjrwmGdtVvcCPeJ1T+V2+a2Fnq?=
+ =?us-ascii?Q?B4UFeScIQnjUZmzANC8HwXq3SpLFDJUcWXw2rLW3OgsCsYw9PvJjHaVnwGV0?=
+ =?us-ascii?Q?Ode/ICzcJrJrXmvJl4VOuhSqpsITgdKIbO5LC6M0rjFl3EMN2vSaiqnqlPBS?=
+ =?us-ascii?Q?obkhxo3a6wPJ76N7RqmEMfHJGJw2?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 09:29:51.5236
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 09:29:58.8180
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4392129-2812-469c-07a5-08dce844ed49
+X-MS-Exchange-CrossTenant-Network-Message-Id: 913b1f5d-f601-4d1d-4bd2-08dce844f19d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00021F6A.namprd02.prod.outlook.com
+	BL02EPF00021F6F.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9130
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4355
 
-Secure TSC enabled guests should not write to MSR_IA32_TSC(10H) register as
-the subsequent TSC value reads are undefined. MSR_IA32_TSC read/write
-accesses should not exit to the hypervisor for such guests.
-
-Accesses to MSR_IA32_TSC needs special handling in the #VC handler for the
-guests with Secure TSC enabled. Writes to MSR_IA32_TSC should be ignored,
-and reads of MSR_IA32_TSC should return the result of the RDTSC
-instruction.
+In SNP guest environment with Secure TSC enabled, unlike other clock
+sources (such as HPET, ACPI timer, APIC, etc.), the RDTSC instruction is
+handled without causing a VM exit, resulting in minimal overhead and
+jitters. Hence, mark Secure TSC as the only reliable clock source,
+bypassing unstable calibration.
 
 Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Tested-by: Peter Gonda <pgonda@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 ---
- arch/x86/coco/sev/core.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/x86/mm/mem_encrypt_amd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index d7e92fa1f6ff..5f555f905fad 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1335,6 +1335,30 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 		return ES_OK;
- 	}
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 86a476a426c2..e9fb5f24703a 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -516,6 +516,10 @@ void __init sme_early_init(void)
+ 	 * kernel mapped.
+ 	 */
+ 	snp_update_svsm_ca();
++
++	/* Mark the TSC as reliable when Secure TSC is enabled */
++	if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
++		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+ }
  
-+	/*
-+	 * TSC related accesses should not exit to the hypervisor when a
-+	 * guest is executing with SecureTSC enabled, so special handling
-+	 * is required for accesses of MSR_IA32_TSC:
-+	 *
-+	 * Writes: Writing to MSR_IA32_TSC can cause subsequent reads
-+	 *         of the TSC to return undefined values, so ignore all
-+	 *         writes.
-+	 * Reads:  Reads of MSR_IA32_TSC should return the current TSC
-+	 *         value, use the value returned by RDTSC.
-+	 */
-+	if (regs->cx == MSR_IA32_TSC && cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC)) {
-+		u64 tsc;
-+
-+		if (exit_info_1)
-+			return ES_OK;
-+
-+		tsc = rdtsc();
-+		regs->ax = UINT_MAX & tsc;
-+		regs->dx = UINT_MAX & (tsc >> 32);
-+
-+		return ES_OK;
-+	}
-+
- 	ghcb_set_rcx(ghcb, regs->cx);
- 	if (exit_info_1) {
- 		ghcb_set_rax(ghcb, regs->ax);
+ void __init mem_encrypt_free_decrypted_mem(void)
 -- 
 2.34.1
 
