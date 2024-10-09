@@ -1,204 +1,162 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDE64A3F;
-	Wed,  9 Oct 2024 06:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728453682; cv=fail; b=ReS01uWBuB3LVAl+p7hXiY+/dMtflFqT3Raj/a1yQcBf855CCfxIcBcjc/SJgVU4naRxUZGV8dJkYsnlZWr1ZPt4V64yF2JV6xmY4PzBifiqkrw4lds6s9HYCPP+yWzhCmXe2CtBedhbJsOzvfiLg6xMRRQhZ3Kj5BT0lM6YOHg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728453682; c=relaxed/simple;
-	bh=Q2nIfMzJz7Kw+n6YedMbMiZvq4ANirFvPt8+WYqqgUI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IqiWIAIwdZKW0PJtaw3ZRXL+rLXHuFRVlUoeBuqSjazz8SLU9iuxBqUbvnIrSz8D5v9bSe63tBKJ+dn1TqcCLgENjZq+nKQGYuWk+ukIAr56ZUVdOP4ruCt34bnck+JbWG784+2DH8yXWPlhBjcDig/UATnXA/8NeXr4/aUX2xY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=P1MhSpaT; arc=fail smtp.client-ip=40.107.236.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="P1MhSpaT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CQlBc2km8hXjdCZqFPPeMnpF1UpGdmhyZr9w5Rnf40a7yetmNqz4iLyzlpRXkpeiWHlZzv555AmYGhIegIN5uX/Bhn1aTCCGG2nHgL+C4KB01E/7NSJClQqkbIqi5iTOcsP9RGCIOnyrqySJzB+Jt1+XxppFJBiRp7lh07xdKwyxz83hsFJDw/JXGk+0mNWeJkHzmfmA7JGHaz0djn9hvUKXwjASsSvWUvuoFlvEfXDxhXatMX8PCJjvN6pLfX/ZrHYtYy5mtVdw80txid1IVjrDEqe6d+QEAVVk2Cnlvy+GMec73DePNq7KGGvWNgXBCuubnjV5ZHxLOCbJvWX5qA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rA7i4oBREuvRUSnspPrN5BgxkcuUJSg7UyPoL9Mg8TU=;
- b=I1bdtw7+EMn2DjPJ+1KYynh3l93UcJE9GcgmnWDWNEhzjieZgi2XJY09OszLO01PjpXA+xokJxY2bP23SZFEGLYPXSA0HzSeoccrbeVUNvt2Mh9xVOyFpdDGKjSbVgZOJ2XjDdErAf76IN9nL/Exb6T8Hyunxn0SjA/K2rcnivhgjSb8MenOvuWYc+Wj7j4QhcJJkbm4kdcknjhivssfBTDoGHYUKZJpG5hTS8+/13vi0wxvFdTEE8kMXisctNIwjh2K9QkDDx+qe6Rb3Gcg6SjtKZOgZC5Xk+jLU/OJuV+bo+P1C+s3FAgICtn5Cd2ke89u7VoDuVsd7KPrdU7nOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rA7i4oBREuvRUSnspPrN5BgxkcuUJSg7UyPoL9Mg8TU=;
- b=P1MhSpaTBQNFUzcfAG7U1r/Hi+ztL9RfH+YrvqYGnFXG2Q7uiKfnahMp1CS8mkfhFV9GvapeEEAPRlES7Qam6E9Ek3jX/OXNa2sD8G73nuY5zgMrAK/fPLYbVr6EMX3qcJvdwCtSWzB/odjxeAPrslN6K+ayXbZ1LqAHb0vq73Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY5PR12MB6599.namprd12.prod.outlook.com (2603:10b6:930:41::11)
- by MW4PR12MB7165.namprd12.prod.outlook.com (2603:10b6:303:21b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 06:01:17 +0000
-Received: from CY5PR12MB6599.namprd12.prod.outlook.com
- ([fe80::e369:4d69:ab4:1ba0]) by CY5PR12MB6599.namprd12.prod.outlook.com
- ([fe80::e369:4d69:ab4:1ba0%5]) with mapi id 15.20.8026.020; Wed, 9 Oct 2024
- 06:01:17 +0000
-Message-ID: <a1b2eba5-243c-4c7c-9ebd-3fce6cd4c973@amd.com>
-Date: Wed, 9 Oct 2024 11:31:07 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 01/14] x86/apic: Add new driver for Secure AVIC
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- dave.hansen@linux.intel.com, Thomas.Lendacky@amd.com, nikunj@amd.com,
- Santosh.Shukla@amd.com, Vasant.Hegde@amd.com, Suravee.Suthikulpanit@amd.com,
- David.Kaplan@amd.com, x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
- seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org
-References: <20240913113705.419146-1-Neeraj.Upadhyay@amd.com>
- <20240913113705.419146-2-Neeraj.Upadhyay@amd.com>
- <20241008191556.GNZwWE7EsxceGh4HM4@fat_crate.local>
- <8d0f9d2c-0ae4-442c-9ee4-288fd014599f@amd.com>
- <20241009052336.GAZwYTWDLWfSPtZe5b@fat_crate.local>
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-In-Reply-To: <20241009052336.GAZwYTWDLWfSPtZe5b@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0232.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:eb::10) To CY5PR12MB6599.namprd12.prod.outlook.com
- (2603:10b6:930:41::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931EF36D
+	for <kvm@vger.kernel.org>; Wed,  9 Oct 2024 06:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728454324; cv=none; b=p74Z08hrrCM8tn56ha41RJhCn7GtcUM85jsAjrBZ5vsyoHvq7YgBDVOGM1hyHy9NJ1qkcH3EnVZk625TfqHZ1WPCsD6RsHauJyPx5h3t2EgYmodyMEf/SkRGp4GMGx7NNyLSPVgVqRVW14ezHxIz4HxmVnnZ23Z/6OH6MfevJwc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728454324; c=relaxed/simple;
+	bh=cRKE11JMe+EoQ5AKczDzkrZzREHOA7C0sg9++MFgw7o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wzwu1WWdBhvYvU91rN46klkIAsl0F5TCMGn3syCBWII35DJ6d4U/7D/qlpxp61qXXRJLMQgid1SO8GhPyvZeD1mN+NOn8DajXJyiF+rXpDgbCHNGQglYt2joK4qUDzE54vYJbAQnF4WgqdbKq1luig7oSmVxAlZBr99OPpxXfWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1syPvM-0007eP-OX; Wed, 09 Oct 2024 08:11:52 +0200
+Message-ID: <f096876b-f364-4291-88e0-ac189b4f26fe@pengutronix.de>
+Date: Wed, 9 Oct 2024 08:11:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6599:EE_|MW4PR12MB7165:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88455d33-2570-41dd-e14c-08dce827ca24
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Nk9ySjhHYmR4dUVvelNSbkhHOStTcWpoYUl1ZEJhbTVYQnB5RHBHTkFGTGNz?=
- =?utf-8?B?RjkvUHB4UHZwWHNldUY3MDVMM3NzNEhnb3pDcEMva2lINFFOc2FSdmpmQ2tF?=
- =?utf-8?B?WXpLR3RxUEFjY2VNQk9QWUdlUm93VExKdUlYL1pvMitsb2RuSzBUenlSR2xw?=
- =?utf-8?B?YjhKYkw5SHRTK3VBaVRUYjNSMXYvZ1p4QTc0SGpubUZMOUtqajFMdjFrSTlG?=
- =?utf-8?B?MnUzU1VUNTZRSVUzU1crUERhQU9YT0xpc3E4aDBoaHhYOWU2VmVBeTQ4cmF2?=
- =?utf-8?B?ek4yWXZ2akQ4QXBPYnI3d2t6dGFoZkNlSXUyYjZ5V0RpNWdSNVlzK3ZxRFpK?=
- =?utf-8?B?d2ttdVluZW5uczBUS3FrSlRCb0d4Umd0d0VqdDdSQUVFS3M2TUpYa3ArVUxj?=
- =?utf-8?B?YmttNkQzajNieUwzUkVoWXVPYktMM1IrcWpickZxK2l0clV1Z0E3eE5FVVdW?=
- =?utf-8?B?eU5nbEZHY0lDMGhkNVBFRjd0SGd2RzcxR21uSERhU08vMGJZYktXQjJUNlhR?=
- =?utf-8?B?ZlRLY0lMVjduMjhOWWN2Z0g5bGhjVGFVR3ByQjZ2OVFWWk15NnRlTE5xeWM2?=
- =?utf-8?B?Z2VOd3M2ckllV2JtRktlOGlGbjZqRWhpaVR0QUtnek5waUJjUE13by9zcTdm?=
- =?utf-8?B?SGdsTzJqR1BVczFjbTRPVkxiSmFUNHMxNlZxQ1oreFMyVmlLQlpVNGtZQ0Zi?=
- =?utf-8?B?SHhycTZSMnZ2SnpIVmxDejBqZGVySzFCY0xSSk1KOCtrRWc1TVZCQmZaRGRE?=
- =?utf-8?B?UlhCNExGTDZqRFd2OVZ4V21vWnFVaHBEL2ovZm9CcFVMd01Cc3M5YmJDV2Nv?=
- =?utf-8?B?akVSdGM3dkNYWnVZR2poTWlUVXhBS1BIeG1pckRTVjEwMExUNWRRNzRKTytY?=
- =?utf-8?B?b2U5UDJoUWY4UHByeHhjNzRKWGtrV3BhRTNFdzBnc0RJeUxVb1pSejBLeHdY?=
- =?utf-8?B?WFlIZzIwWXpWVjFvL1RGNnBIcUlnZUh0L0ZqWEo1Tm13QjZMVkdWbVRRdXZ6?=
- =?utf-8?B?RURYRThVT3I5NWxQNm01Tm1LZ2pjZWRHdXNKZGpLRUhpb09wVzVIcW1WRTdW?=
- =?utf-8?B?Wlp6ZDc3T3BXdnFJanV4dnF0SzdLR0NqVEVrREFQbUxLbm5OZkhxakZoS3Jl?=
- =?utf-8?B?S1lQaDNWcXFLV1Y0RGFSMVRzVC9JTWNBczIyaCtKT3JBbmNZY1BPS3VVMFJR?=
- =?utf-8?B?U0g1eHF3bkVvRzlXVHdnK3dkaXcwYXBPZmFKTVdzVzlrNXJRTHk0Z3A3NVll?=
- =?utf-8?B?dFdWTVNpckNqd00rVDVlN1l5dUdsNGJFK1lGMzlTU0xSTGZ2Mm55aDBWZktF?=
- =?utf-8?B?RXJjYktJaHZjeEJvQXYvMlJIOHFXdzdlZjlGQmpEalVZR1k4NzlCQjRNSExr?=
- =?utf-8?B?VmdQQWFpK2MrVzlXeTl1ejlRNmdIZys4MWJhV0ZIQ2JFT2NJaVhDaVUyT2E4?=
- =?utf-8?B?QkRjWXY0em1TN09yWTM1dlJBeDFTMGU2TXp4ck1HOG14dkcyeCtBTGFYOWdH?=
- =?utf-8?B?YnJUZ0NlOGVKY2s5U1hkMk9zcmNHUXd2Q2w2ekV5WW1rdlRPVjNGeTdSZlhm?=
- =?utf-8?B?dWEvOEs4MDA5TGZVNHpMUEIveWFwSHRVQ0gyWndFNko5NlBJZW1Cc21qZnM2?=
- =?utf-8?B?Q3NCNXlXSEEvR2N5TWRqZlRUZ2htT0owTEdQVW02Q1daMG96bStmajhQSTF6?=
- =?utf-8?B?Wk9JaHVmcEtiZ3VuZ2Q3VEt2cnJBa05lL0ZVV1Rtc0ViMFE1dEpUanRRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6599.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SDAxS0RFUU1kRkEzd1Z4enNkdHFoYnhvZ01HcUlwM2xvNjFJeW5YZWFPOVM5?=
- =?utf-8?B?QXAzVndFVG1NOWxLTjE4djlZTElEVG1lTEl2cnFXaEM5RVZFYVlteXI3UjZm?=
- =?utf-8?B?amRvazRaaUhoODRHVTRmR0krVjhxUkpJdDlrTmZYNE11Ukp2UFhBaFFTR25Q?=
- =?utf-8?B?VE43WDd3N3g5bTlEL2hFaHJKWG1HQnlJTk1VWmgxTEFHcTFmeUNaS29mTUd3?=
- =?utf-8?B?YXNyUkYwRlI0UCtGNWVkVWwxcGM4aGxlTysrV28zSUNyc1N6VVBDOTVoUmNZ?=
- =?utf-8?B?aFA1RU9NTWsvdUdjTVJTU0RmS1hsQ2EwbitFNHRmZUNlbnFYdC8xSUU5N3Zq?=
- =?utf-8?B?NnY3QU9OUVdlVXFrL2llaTYzNVRZSkpwQzVKK1U5c3k4eXNpS2hONmpDVFJS?=
- =?utf-8?B?RWhIVlBtYkU4cldObEgzd054Zkx1S0tzNWJJYy9oTmJSWnp3dldZWG81WlZN?=
- =?utf-8?B?RmdCYVN3ZEhKZlhXNXRGYnl2SmlEL1AzY2QxYmx6SkQzeXBqM05lekd4K0FW?=
- =?utf-8?B?NDF4SmhsWjc2Q1hONUFJeXQ1cjhHNXFLZG1jYjBTcE9ZejFtM1RYc3ovcTlp?=
- =?utf-8?B?ODdvVzVHajdvaVFlbXRQT1BjYmRvTlcwbzhBQ3hKM2ZWYzFZbWRpZmJsdTFs?=
- =?utf-8?B?aUxRVS9rR2RVc0FKdjV5dnFNVmlrWmI1a3NuV2dWYTR3YVRveTh0Mi9QcC9T?=
- =?utf-8?B?cnRsRG5oRXduN0FUU1ExZGZ6ZmgyUzlieDBUaVozdmt2Z3VzajFCbVRzd1pp?=
- =?utf-8?B?cUJHY2Y5elUxbDRRSG1MaVNqaHJUbWlxL3pFK2Q2N1FYRDRjeXhqQmVXSlNx?=
- =?utf-8?B?SWlJTXo1cjNNdUxUSW5rU2tsa1VycysrYm9mUHlaZi84SDNHaGt3WVp3QVYv?=
- =?utf-8?B?d3ZjZTFxNVRnNG5nRE80VzIzdzJNT05JeExWUFVWZklhVk5BaGFuaUI0c0hP?=
- =?utf-8?B?aXp6VDE1Z2plRC9xMHRhbzUxY01TZVdybTR3dVlQK2YyTnR1bTgyTG4wdjlR?=
- =?utf-8?B?b1kvT0x5ejZNR2tCYXNJL0ZrQ3ErcVNnZ1FhbFlHbjZacmVVZWVELzhrcmFD?=
- =?utf-8?B?bnNvejFmK3VHYUY1K0ZoSEVrb1lHVjdKUEVTOCtIMGRoWVZVRXVPcng4ajZt?=
- =?utf-8?B?SnRUYitYaVo4Y1VBRnI1aVMzOWxFSno4Ri9ha01TK0hhSWRpMDRJcTJMSnpM?=
- =?utf-8?B?L0w4dkkvTG1YVHgyTFNOTytVemNGOU5DQzRMbFo2L21TYVNweXNYVWpuRy8r?=
- =?utf-8?B?S1dwMS9ndDZVMXFTb0wwdFBkTktxSzdrekdIQjNqTlZFYnV5cXhRSzFWYnVJ?=
- =?utf-8?B?eDJvZGp2bTBPbzNzQ01hdTh4eTlEZjBXSURFV1RwNGtuRG03Q3R0OUd3enNT?=
- =?utf-8?B?QVJqNnc2RXVKY1Rrck4rZjJ2clZ3VVgwbHM4QUk2Ni9kTHdQRWlDVEkybEUw?=
- =?utf-8?B?NDd1dG5sTjM3aGRTNXVrU0x3a2xDSXUvUVBoR0gwVTVLTFVEMUxoQTdXZXNV?=
- =?utf-8?B?NmtUZitvL2hZWDcxQzhNajZOVlY3N0RHakdrVUZxcnZETnFRTGlPcVNEYkQ0?=
- =?utf-8?B?cWVKT2U2aHRzR3poSjYwbFBNWmdBWC9aRDhtYzQwZW5EL01GSE5wM2djU2Vs?=
- =?utf-8?B?b3FYb1NwbEpDRHNielJrSFVGU0lVUW5aMmpmR21SaE44R2FSWGdsZ2FKeXdG?=
- =?utf-8?B?Nk4raGMzSDJ6dk9xZVNYaDZ0UGlPWWpNVCs3NWZtTDdBTkZPMmRLbVFveUR4?=
- =?utf-8?B?WnZEaW5oTDlsSm1oVE9PTnQ1enlWZ0o5NnV3Um40VnErTXFWY3ozSTlJdFdP?=
- =?utf-8?B?NXNyb3p1YlF0M3JNY3ZSSGFTR056RzVPNVN5c0NtWXhpRVZlY1ZMNTFNQjNz?=
- =?utf-8?B?MFpPZUZhUTgrL2lRdE5YUi9pT1oxOHl3UEQraDNYeGg4OGNlRUplQk1mWjg0?=
- =?utf-8?B?VU90cXBDbjk2R3hYcldTQnJXR2owMkgrYkpNaHFxeE9CUUM2MTU3VnVaaFVO?=
- =?utf-8?B?ZEZ4YnZBRDVod3UyVytNTjBNeS9Xd0FlMlR1RjV4L2x6ZkN4S24yaDhWcGxh?=
- =?utf-8?B?dllTN3BCMTNPRW9aM3BCa0hqQUw4RVdoOHhQRERNVjFvZXZTeXVnYlhYWjFi?=
- =?utf-8?Q?6PZ8kjdbPb4xZ14R+wXZFMJg0?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88455d33-2570-41dd-e14c-08dce827ca24
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6599.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 06:01:17.6454
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CITRtfMxrGzZIW1xI0D0zop+EH+APG+/TGkt7f+3ZhZLfThlVY8V9ApHQWRgX7NhRjel+O+Rt3DILHgbmX2iSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7165
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] ARM64 KVM: Data abort executing post-indexed LDR on MMIO
+ address
+To: Marc Zyngier <maz@kernel.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, Enrico Joerns <ejo@pengutronix.de>
+References: <89f184d6-5b61-4c77-9f3b-c0a8f6a75d60@pengutronix.de>
+ <CAFEAcA_Yv2a=XCKw80y9iyBRoC27UL6Sfzgy4KwFDkC1gbzK7w@mail.gmail.com>
+ <a4c06f55-28ec-4620-b594-b7ff0bb1e162@pengutronix.de>
+ <CAFEAcA9F3AR-0OCKDy__eVBJRMi80G7bWNfANGZRR2W8iMhfJA@mail.gmail.com>
+ <4d559b9e-c208-46f3-851a-68086dc8a50f@pengutronix.de>
+ <864j5q7sdq.wl-maz@kernel.org>
+ <65ab10d7-6594-490c-be07-39f83ac3559a@pengutronix.de>
+ <87a5fiutai.wl-maz@kernel.org>
+ <0352a327-0e78-48d4-a876-d33689fcd766@pengutronix.de>
+ <8634l97cfs.wl-maz@kernel.org>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <8634l97cfs.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kvm@vger.kernel.org
 
+Hello Marc,
 
-
-On 10/9/2024 10:53 AM, Borislav Petkov wrote:
-> On Wed, Oct 09, 2024 at 07:26:55AM +0530, Neeraj Upadhyay wrote:
->> As SECURE_AVIC feature is not supported (as reported by snp_get_unsupported_features())
->> by guest at this patch in the series, it is added to SNP_FEATURES_IMPL_REQ here. The bit
->> value within SNP_FEATURES_IMPL_REQ hasn't changed with this change as the same bit pos
->> was part of MSR_AMD64_SNP_RESERVED_MASK before this patch. In patch 14 SECURE_AVIC guest
->> support is indicated by guest.
+On 06.10.24 12:28, Marc Zyngier wrote:
+> On Sun, 06 Oct 2024 08:59:56 +0100,
+> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>> On 05.10.24 23:35, Marc Zyngier wrote:
+>>> On Sat, 05 Oct 2024 19:38:23 +0100,
+>>> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>> One more question: This upgrading of DC IVAC to DC CIVAC is because
+>> the code is run under virtualization, right?
 > 
-> So what's the point of adding it to SNP_FEATURES_IMPL_REQ here? What does that
-> do at all in this patch alone? Why is this change needed in here?
+> Not necessarily. Virtualisation mandates the upgrade, but CIVAC is
+> also a perfectly valid implementation of both IVAC and CVAC.  And it
+> isn't uncommon that CPUs implement everything the same way.
+
+Makes sense. After all, software should expect cache lines to
+be evicted at any time due to capacity misses anyway.
+
+>> I think following fix on the barebox side may work:
+>>
+>>   - Walk all pages about to be remapped
+>>   - Execute the AT instruction on the page's base address
+> 
+> Why do you need AT if you are walking the PTs? If you walk, you
+> already have access to the memory attributes. In general, AT can be
+> slower than an actual walk.
+>
+> Or did you actually mean iterating over the VA range? Even in that
+> case, AT can be a bad idea, as you are likely to iterate in page-size
+> increments even if you have a block mapping. Walking the PTs tells you
+> immediately how much a leaf is mapping (assuming you don't have any
+> other tracking).
+
+There's no other tracking and I hoped that using AT (which is already
+being used for the mmuinfo shell command) would be easier.
+
+I see now that it would be too suboptimal to do it this way and have
+implemented a revised arch_remap_range[1] for barebox, which I just
+Cc'd you on.
+
+[1]: https://lore.kernel.org/barebox/20241009060511.4121157-5-a.fatoum@pengutronix.de/T/#u
+
+>>   - Only if the page was previously mapped cacheable, clean + invalidate
+>>     the cache
+>>   - Remove the current cache invalidation after remap
+>>
+>> Does that sound sensible?
+> 
+> This looks reasonable (apart from the AT thingy).
+
+I have two (hopefully the last!) questions about remaining differing
+behavior with KVM and without:
+
+1) Unaligned stack accesses crash in KVM:
+
+start: /* This will be mapped at 0x40080000 */
+        ldr     x0, =0x4007fff0
+        mov     sp, x0
+        stp     x0, x1, [sp] // This is ok
+
+        ldr     x0, =0x4007fff8
+        mov     sp, x0
+        stp     x0, x1, [sp] // This crashes
+
+I know that the stack should be 16 byte aligned, but why does it crash
+only under KVM?
+
+Context: The barebox Image used for Qemu has a Linux ARM64 "Image" header,
+so it's loaded at an offset and grows the stack down into this memory region
+until the FDT's /memory could be decoded and a proper stack is set up.
+
+A regression introduced earlier this year, caused the stack to grow down
+from a non-16-byte address, which is fixed in [2].
+
+[2]: https://lore.kernel.org/barebox/20241009060511.4121157-5-a.fatoum@pengutronix.de/T/#ma381512862d22530382aff1662caadad2c8bc182
+
+2) Using uncached memory for Virt I/O queues with KVM enabled is considerably
+   slower. My guess is that these accesses keep getting trapped, but what I wonder
+   about is the performance discrepancy between the big.LITTLE cores
+   (measurement of barebox copying 1MiB using `time cp -v /dev/virtioblk0 /tmp`):
+
+    KVM && !CACHED && 1x Cortex-A53:  0.137s
+    KVM && !CACHED && 1x Cortex-A72: 54.030s
+    KVM &&  CACHED && 1x Cortex-A53:  0.120s
+    KVM &&  CACHED && 1x Cortex-A72:  0.035s
+
+The A53s are CPUs 0-1 and the A72 are 2-5.
+
+Any idea why accessing uncached memory from the big core is so much worse?
+
+Thank you!
+Ahmad
+
+> 
+> Thanks,
+> 
+> 	M.
 > 
 
-Before this patch, if hypervisor enables Secure AVIC  (reported in sev_status), guest would
-terminate in snp_check_features(). The reason for this is, SNP_FEATURES_IMPL_REQ had the Secure
-AVIC bit set before this patch, as that bit was part of MSR_AMD64_SNP_RESERVED_MASK 
-GENMASK_ULL(63, 18).
 
-#define SNP_FEATURES_IMPL_REQ	(MSR_AMD64_SNP_VTOM |			\
-				 ...
-				 MSR_AMD64_SNP_RESERVED_MASK)
-
-
-
-Adding MSR_AMD64_SNP_SECURE_AVIC_BIT (bit 18) to SNP_FEATURES_IMPL_REQ in this patch
-keeps that behavior intact as now with this change MSR_AMD64_SNP_RESERVED_MASK becomes
-GENMASK_ULL(63, 19).
-
-
-> IOW, why don't you do all the feature bit handling in the last patch, where it
-> all belongs logically?
-> 
-
-If we do that, then hypervisor could have enabled Secure AVIC support and the guest
-code at this patch won't catch the missing guest-support early and it can result in some
-unknown failures at later point during guest boot.
-
-
-- Neeraj
-
-> In the last patch you can start *testing* for
-> MSR_AMD64_SNP_SECURE_AVIC_ENABLED *and* enforce it with SNP_FEATURES_PRESENT.
-> 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
