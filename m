@@ -1,135 +1,132 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760D618C03D;
-	Thu, 10 Oct 2024 10:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2530118C03D;
+	Thu, 10 Oct 2024 10:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728554937; cv=none; b=SfGireK6rBpsxwcrtIOBLi2w1OZWvN1I8advoZlp88M33BqYmgAFGC/pRXxeWR3X6arqqVLKtkdiKjUaNn2019h1MBwICXngzwOzf1tX9prurmyqPmbvHnPeu+AAIcKHip9c749Yd0f99TqITftVdyFnidMXZyN2cevshF1Amp8=
+	t=1728555271; cv=none; b=Mnl66BeEa+jK3+CAN6aaFPrlKLySa/PxImXR6eCKz+gPnGAflCoZsgN95E7E6vK3N23KwsFxE16n7rcZB17tj9ct2aPOZK0yWx9CBzW4yeqpU/Qlspx6/97QHhRyBKLmExYuajwmkUYDJgh1kbht69DC8xEAO2qpTef1wnFokLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728554937; c=relaxed/simple;
-	bh=qf7nU/89BlzHddkiR5Ah6NYm8BRaW0Dkwo9DPkOtPw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oKz/DM4LNV2lY0r0Fg8W6o3vZrdiuuOX/SnyyxhcUfgq1U9cTeADaEc1qNaGoJnM1txlSI4Vsc4ERXbVmSbahKirE3AoT2Sz9/mTYGvrN2tFN0jpDucEZFU4/6/hF6NmQxrK8zE9Mw1tZbvNms24vyi1lxJO5vd0QWXLxRUiDKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BanpF6HT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1728555271; c=relaxed/simple;
+	bh=4XOtTBDm80OCEtb00/GJBSJ0Kj8E7EAKTwU4AEHFFIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RU3JeXwU8aKOJw4ilZ2PbohZ1KailyyKDlUHmM3MEKcnoPztSM1pFiDaQFBRR9HDWZfyS4wUuL232wjEbctQ00SkrmsLwSQgJdGb+qxclWh7feaZ5pr6ITRB65Hiyvtc/54nqFUt9BNuzOXuKYlII9CSEQ7LxlxK10qspiB4VhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=d6UDYk1y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GTucPEDk; arc=none smtp.client-ip=103.168.172.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BanpF6HT"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A3opwW009445;
-	Thu, 10 Oct 2024 10:08:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
-	aL//amxx9YdMMLbbRrJYlGUmmzOy3nusublparPcj28=; b=BanpF6HTCG9dbVeu
-	2dyS4pmAUwK9OFYDowEYBFPq9NQy89KoecZ9geHIvu6jU3+Z8Q/vZdcZ9RPr5+It
-	7x83jYv/7rp9r+1tFDtHtW19o/dYrzF16Y1mbUBsJynsB6wpUonWdmSi81McSy6u
-	wkYCpeHGhqcxxahQZ3zSLuXH1sJMKQigiAy7i7LI9dh0wZJoqXPB+xj/1fkabWtv
-	2wVaFhYuX6k0CjV7nHRVP6bU5YVuYSlxktJWRKLK0xpmS0EWTt8bIsj/tG2+DirE
-	pDBtLqd+bBdeRHyfCHITAAfK7TUaQWUbHPI2VLnJ99w8tdAbiFTKGOAbHWU7vm5e
-	4WCiBQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4267cmsray-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 10:08:55 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49AA8suU023460;
-	Thu, 10 Oct 2024 10:08:54 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4267cmsrau-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 10:08:54 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49A7M3CU022861;
-	Thu, 10 Oct 2024 10:08:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 423jg16tnk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 10:08:54 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49AA8oUA26608174
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Oct 2024 10:08:50 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7280A20079;
-	Thu, 10 Oct 2024 10:08:50 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13A3520078;
-	Thu, 10 Oct 2024 10:08:50 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.171.66.107])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 10 Oct 2024 10:08:49 +0000 (GMT)
-Date: Thu, 10 Oct 2024 12:07:29 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Nico Boehr <nrb@linux.ibm.com>
-Cc: frankja@linux.ibm.com, thuth@redhat.com, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH v4 1/2] s390x: edat: move LC_SIZE to
- arch_def.h
-Message-ID: <20241010120729.74417d7a@p-imbrenda>
-In-Reply-To: <20241010071228.565038-2-nrb@linux.ibm.com>
-References: <20241010071228.565038-1-nrb@linux.ibm.com>
-	<20241010071228.565038-2-nrb@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="d6UDYk1y";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GTucPEDk"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailflow.phl.internal (Postfix) with ESMTP id 1B9A5200A8D;
+	Thu, 10 Oct 2024 06:14:28 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 10 Oct 2024 06:14:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1728555268; x=
+	1728562468; bh=NXHWpk/5+EQAj4xJzSdQnJKqj7apSDgb8yWFmClPgYI=; b=d
+	6UDYk1yz+a/v0elUD0ReW9J/h7naA0kWjZwY1SmcWd23AWrO27HUenUp3BCOVYKW
+	Y5kPp7n7Xhaw/2Sdof5rHtNh5n6FgWET88Is8foFKHfSPrYCLyUZKbVJGx7X7i4Y
+	WbvBRyVPUNokB3Xd2QySpCCGZf5GFzSqfPS3GSxGTUNtTblxPb/cIWJrs3mfmLVQ
+	61sRKuylLJypcU0aa9mTyKY/3I0BlRrHh0bx0yzy4eud736yMqxOx0DZE5I2sSu/
+	fxGw95L6riD8ClxHUKVAOyfrJHDb5AkRRrUpCJ2yO7XD0EeJm1aRgjU2jM9qLf4g
+	6aMJdEAZ9PO3QxCNCH3TQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1728555268; x=1728562468; bh=NXHWpk/5+EQAj4xJzSdQnJKqj7ap
+	SDgb8yWFmClPgYI=; b=GTucPEDkbbaL9wcHDUrx+QDdHlrrQx9GJxTx/JRgyh7y
+	gzth01EghcsdF2lpsLBy2eZA88mMZWclDNG6pcN9F4Pp2PTjFleW0kY+Mv+QSzGo
+	CZW97jdGXZEu6cuKgj87Hay8yRCdf4n1RUQL5aolbJJd5dAzpzvGWcZprbOrv7pG
+	3XUSZ3C2E2fGPM1Svt0wu9WGL7pDk3jOGm2EceC1um4mHtfzmxLbWxcEgUurJTzf
+	pVs75J1pg5/cg7/eoq0BiMkXRApI1Hcd1p9Uqkl+8hWBUrvEvr8Z4cgSCt6Zy2R0
+	9gEg0zxboWudIufgDw3Q5mYvHkkSAAyoFr7goiHMfQ==
+X-ME-Sender: <xms:AKkHZ3tx2lp6y25YOCi1TiKPcSVw6WDGepNp_xRbQFkxbzhG1edG5A>
+    <xme:AKkHZ4fvUIAMx9savshJg6R82OPDDalOuzMbFG8AVo9_ma2ApDEThRzbZ4ojnXKg4
+    GjrZJGfS82TGX6ojoQ>
+X-ME-Received: <xmr:AKkHZ6yefTOeZpEa7uECkJ7zqr8qstNsC5_efEiogLhGgAeFNBh-SpTbxyGlbxBPvzXW1Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefhedgvdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
+    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
+    rdhnrghmvgdpnhgspghrtghpthhtohepiedupdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehtrggssggrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkvhhmsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqmhhsmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggt
+    khdrohhrghdprhgtphhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtg
+    hpthhtoheptghhvghnhhhurggtrghisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehm
+    phgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopegrnhhuphessghrrghinh
+    hfrghulhhtrdhorhhgpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhi
+    vhgvrdgtohhm
+X-ME-Proxy: <xmx:AKkHZ2ODfnzocGPow7KDLhe41iato70gAk-7vPYXfbRfvN02muJXag>
+    <xmx:AKkHZ3-ncOE6aD2k7LuD51g8_jc18sWtwQJGuCMw3Wnb9e643uTiuA>
+    <xmx:AKkHZ2UHbj8BuMxQ5qHVW1rXiXqWW2VyGweeRTrXcj5h9cBWWge0cA>
+    <xmx:AKkHZ4d1N7Yqtbt4bQDOZL_fd5XxlgxvmD0uog2S1wt07Gj2cpNWUg>
+    <xmx:BKkHZ_am_WdwVLgVtjHltkYQp8SuLRBIluzNFJsfn3VPZcavTYCIa7RL>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Oct 2024 06:14:08 -0400 (EDT)
+Date: Thu, 10 Oct 2024 13:14:03 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
+ 	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, 	paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, 	viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, 	akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, 	chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ 	yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net,
+ vbabka@suse.cz, 	vannapurve@google.com, ackerleytng@google.com,
+ mail@maciej.szmigiero.name, 	david@redhat.com, michael.roth@amd.com,
+ wei.w.wang@intel.com, 	liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, 	suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com,
+ 	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
+ quic_svaddagi@quicinc.com, 	quic_cvanscha@quicinc.com,
+ quic_pderrin@quicinc.com, quic_pheragu@quicinc.com,
+ 	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com,
+ 	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org,
+ qperret@google.com, 	keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, 	jgg@nvidia.com,
+ rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com,
+ 	hughd@google.com, jthoughton@google.com
+Subject: Re: [PATCH v3 04/11] KVM: guest_memfd: Allow host to mmap
+ guest_memfd() pages when shared
+Message-ID: <i44qkun5ddu3vwli7dxh27je72ywlrb7m5ercjhvprhleapv6x@52dwi3kwp2zx>
+References: <20241010085930.1546800-1-tabba@google.com>
+ <20241010085930.1546800-5-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QrklSppjDOa8axqHyeByuKcZTde49OXz
-X-Proofpoint-GUID: cOMhPNVn8eVEnlvnyEUbZc7sMcnJdEmG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-10_07,2024-10-09_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410100065
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010085930.1546800-5-tabba@google.com>
 
-On Thu, 10 Oct 2024 09:11:51 +0200
-Nico Boehr <nrb@linux.ibm.com> wrote:
+On Thu, Oct 10, 2024 at 09:59:23AM +0100, Fuad Tabba wrote:
+> +out:
+> +	if (ret != VM_FAULT_LOCKED) {
+> +		folio_put(folio);
+> +		folio_unlock(folio);
 
-> struct lowcore is defined in arch_def.h and LC_SIZE is useful to other
-> tests as well, therefore move it to arch_def.h.
-> 
-> Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Hm. Here and in few other places you return reference before unlocking.
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+I think it is safe because nobody can (or can they?) remove the page from
+pagecache while the page is locked so we have at least one refcount on the
+folie, but it *looks* like a use-after-free bug.
 
-> ---
->  lib/s390x/asm/arch_def.h | 1 +
->  s390x/edat.c             | 1 -
->  2 files changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/s390x/asm/arch_def.h b/lib/s390x/asm/arch_def.h
-> index 745a33878de5..5574a45156a9 100644
-> --- a/lib/s390x/asm/arch_def.h
-> +++ b/lib/s390x/asm/arch_def.h
-> @@ -119,6 +119,7 @@ enum address_space {
->  
->  #define CTL2_GUARDED_STORAGE		(63 - 59)
->  
-> +#define LC_SIZE	(2 * PAGE_SIZE)
->  struct lowcore {
->  	uint8_t		pad_0x0000[0x0080 - 0x0000];	/* 0x0000 */
->  	uint32_t	ext_int_param;			/* 0x0080 */
-> diff --git a/s390x/edat.c b/s390x/edat.c
-> index 16138397017c..e664b09d9633 100644
-> --- a/s390x/edat.c
-> +++ b/s390x/edat.c
-> @@ -17,7 +17,6 @@
->  
->  #define PGD_PAGE_SHIFT (REGION1_SHIFT - PAGE_SHIFT)
->  
-> -#define LC_SIZE	(2 * PAGE_SIZE)
->  #define VIRT(x)	((void *)((unsigned long)(x) + (unsigned long)mem))
->  
->  static uint8_t prefix_buf[LC_SIZE] __attribute__((aligned(LC_SIZE)));
+Please follow the usual pattern: _unlock() then _put().
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
