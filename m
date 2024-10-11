@@ -1,20 +1,20 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01D21859A;
-	Fri, 11 Oct 2024 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBAB20CCE6;
+	Fri, 11 Oct 2024 13:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728652827; cv=none; b=HP+0o4yRvlNHY4h+agWJ+TPvPKzzwd146FoAmgaMVJeR01tvSTp/CfsAjAPp5ZAmC3FbFh8TvAUCcJI2mzluuD4F3iy+8vj6MjZ0XDukyVMruy/sn7zkXxVHiikEPRLQXbpxQYdlNAcdAM63XbhF8+U5v4TltnOLh0AIHF+7RxQ=
+	t=1728653032; cv=none; b=nUe9vB2rq02I0QylSs1yLhty6Do8Sya8hhqXwuXn2SFrxX6UKKAHdtN6uw6n0IkEwueTXtCKINR3yeBTmmb3ETVpMP/Rm54XmzX3fKHnhHhXp12i5RkTVp0DYkkxKVmNaCJtJ3Z1HqYSbLvcgHWaBcM7PziKLwpFddjDNE6nC5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728652827; c=relaxed/simple;
-	bh=2jxyRGQEUaM24Td33Kfu4OO2Gf1opNBGn5+F1Nrr1DE=;
+	s=arc-20240116; t=1728653032; c=relaxed/simple;
+	bh=V2udko9ZAVBT/JZE9LFiU8HdpgIsV8hZNZ16ZvW3CpQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WcMJV58VxHJt1SzbtMgha62xEX/7TIWB3LOFC3uGr5A9HPBNsAJNirQ/LfSzUO7RhMd3Us34d8HNow/a3CX++tcL3cONcPpte+8TycUmSIO7Wd/X7hPTStKmm2/UXdd+29cKckxFmdwOezfbaBL7LLhvWWeSc0X7PGr/s4wetwA=
+	 Content-Type:Content-Disposition:In-Reply-To; b=nYV3R+ZKGFp17iYsNjQKHXkbmvi4y0cA+bjSXjuh+oAR/coAFBHTmwwqz+zTNpFy7XWjmVo3rnlyPsYcmwqIE7oZ5u5pXSPSWz0CWLK3W4PF6+fGcpG7Jg4QNfWPhrj7X5ffbpxXIU/VgaCmEFEXbkOfdiRfYnTnRFyGDUN3NR8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1B1C4CEC3;
-	Fri, 11 Oct 2024 13:20:23 +0000 (UTC)
-Date: Fri, 11 Oct 2024 14:20:21 +0100
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B39CC4CECE;
+	Fri, 11 Oct 2024 13:23:48 +0000 (UTC)
+Date: Fri, 11 Oct 2024 14:23:46 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
@@ -33,10 +33,10 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
 	Shanker Donthineni <sdonthineni@nvidia.com>,
 	Alper Gun <alpergun@google.com>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v6 05/11] arm64: rsi: Map unprotected MMIO as decrypted
-Message-ID: <ZwkmFWiSeULx_xgn@arm.com>
+Subject: Re: [PATCH v6 06/11] efi: arm64: Map Device with Prot Shared
+Message-ID: <Zwkm4v5aeUai7hcH@arm.com>
 References: <20241004144307.66199-1-steven.price@arm.com>
- <20241004144307.66199-6-steven.price@arm.com>
+ <20241004144307.66199-7-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,13 +45,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241004144307.66199-6-steven.price@arm.com>
+In-Reply-To: <20241004144307.66199-7-steven.price@arm.com>
 
-On Fri, Oct 04, 2024 at 03:43:00PM +0100, Steven Price wrote:
+On Fri, Oct 04, 2024 at 03:43:01PM +0100, Steven Price wrote:
 > From: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> Instead of marking every MMIO as shared, check if the given region is
-> "Protected" and apply the permissions accordingly.
+> Device mappings need to be emulated by the VMM so must be mapped shared
+> with the host.
 > 
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
