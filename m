@@ -1,165 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2730915624C
-	for <kvm@vger.kernel.org>; Sat, 12 Oct 2024 10:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D715443C
+	for <kvm@vger.kernel.org>; Sat, 12 Oct 2024 10:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728728952; cv=none; b=EaDy7nBbBsYJ1IpDCwRmxn5XUVZcEhdf+qd7F5qvBmMGXB9pRh6FPLV3dfiDei4fIOR+FywSj0cxJolPgkNKkzVTbB/bE2p2d3s84AXmRorfZbMlOfFbH9R9zYDtokAxoNb/AUZSXtk1jsCMiEwchAM0do2uxt0kP/zK4rsY9LI=
+	t=1728729760; cv=none; b=orRQ1/GvzEwztcPeWGwfnYgma0E54rrt3tnHq8Y0Kn1w/ixAPPvSSKX7JtslGzKioI/4UWybm2OpET5UghRor3c/RJdkX3xmk/kkADip1NwoMEmDqwfVlEEPZ1OqJJ89/hTP1tIDVSXjsubQvZV1Cg/m2IFtl64o1LyRuLeRdzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728728952; c=relaxed/simple;
-	bh=i+35KcqWfRxigU2EIhaJxKdHSfXUSTicv5fw/oXO2lw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KnawF9ti0VEmWYqr6hnk5RGXK3ZaPi8qN+PUlns4MHZPkrusvTWR6fL89rw7JmXDc3JdBkguVd2t/67kbo8V1TbsFLB3i/6Cbi4EQkhkt/X8lyXTwogB6V61IzDpbQNkY8F6ZQ7iuBiMyDB79eZjcSBxSo+c5JqgMU3w9WJIHK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jXHqmzEe; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728729760; c=relaxed/simple;
+	bh=F2Sp1fzcw8Uf/QMINhGhDYWS9F5dWa9nb4/qh8r/ALY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HqVOzHup3PNZRtSAm2CA9qUeVQcx6ynKXPOi8i6y+PNQpL+Dgs0t9sJdIgOKphjRDsBlwt6p8Q+XVcQe64mFwzijWYFAbtu9wLsJXjDNWuYNswQZ/Z5CA4dNh/qlYL4ehmWg+rOBFmX8Jn0ynIhHOhlzgNdTKfIRsO8Bs8cVaVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=none smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=CJ1ch+Xs; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=daynix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jXHqmzEe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728728951; x=1760264951;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=i+35KcqWfRxigU2EIhaJxKdHSfXUSTicv5fw/oXO2lw=;
-  b=jXHqmzEexQrcfXYK5v2MeqsA3FcvWgMoqM5LzXqaFLN6IHQ79Wbc/aip
-   twQ016IQD5sA/U65+2ze4WqdoiRdHulM/qw8zyn3COcwol22ToIYnQjML
-   Pn93Imzl9zdeEX0ZMQ5FSOLNr68xtPyb1kJViZu+BKs4QNjOaewgfVmEf
-   3VOc2ihjw9pVfMPC53XmAGeJpnxp076lRihMPAx1Q7ZMesRp3cyi5Ro+l
-   PFbrZ62Pu+chvGwyuI4NQoMR7NbfPX3jDWl3HMnjLg4qDrnhMlxAWfKnG
-   Vjp5z8rltdGD+P23i9nkUigtRgxoDBiM4BwzeRSCYVpQNbxkZa86KccAp
-   g==;
-X-CSE-ConnectionGUID: 17aBQ27jRyKZhmUeS32cMQ==
-X-CSE-MsgGUID: ew+AaXpcR66kCieSI802ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45634958"
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; 
-   d="scan'208";a="45634958"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2024 03:29:11 -0700
-X-CSE-ConnectionGUID: iSUSYFKcSyyEaLI1013xMA==
-X-CSE-MsgGUID: WLmQSF1tQ+WlPwsdfAOydQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,198,1725346800"; 
-   d="scan'208";a="77050877"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
-  by orviesa010.jf.intel.com with ESMTP; 12 Oct 2024 03:29:05 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-	Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org,
-	qemu-arm@nongnu.org,
-	Zhenyu Wang <zhenyu.z.wang@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 7/7] i386/cpu: add has_caches flag to check smp_cache configuration
-Date: Sat, 12 Oct 2024 18:44:29 +0800
-Message-Id: <20241012104429.1048908-8-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241012104429.1048908-1-zhao1.liu@intel.com>
-References: <20241012104429.1048908-1-zhao1.liu@intel.com>
+	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="CJ1ch+Xs"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20ca1b6a80aso12062195ad.2
+        for <kvm@vger.kernel.org>; Sat, 12 Oct 2024 03:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1728729757; x=1729334557; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rnVDkA3/NaAKhKgMUHvmItPchk02Cn37cnkYPg5p2Qw=;
+        b=CJ1ch+XsP3k9Bdzgi04+URwvUed22kf7IKlTv1B37FV6auETP4UlJefSeJXGYF9vSb
+         BndSPWHOFR5xJEBQbpFAxbda8AOE0AO2cUs5dvj0yNA6O+i1JXchGPZMtEEcUBJ1jDpA
+         9ae5pOZ4/yMrP9TjbkbPbVtkeUGQhjollE3J4wiGs9fK52X2x1+HrGucK/JOEL2JW79P
+         6cInfHli9hUziadd/Wsbh4zll4iZ37mOZPwoSCDOt8srfmrJtBy+AFMV/iBVQfaWP60W
+         LDAvyZwIkTLvul7Ko140liyADahfYrbPfITSn4SlImw3918FdMwtiQzT5teJi6CGysLl
+         wU9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728729757; x=1729334557;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rnVDkA3/NaAKhKgMUHvmItPchk02Cn37cnkYPg5p2Qw=;
+        b=eFGF6jFjh+l+rb9E1jHVmwJd2Vw0dXhjqB42yB8Sr+1TQVRwgg+1Pw7/70RaAtfO+C
+         77DUzuWlcXQxjAOeLzPWvMEfqsKSu00VrVLJwh/74XXHiD0bb7IQvD6ecM0K7JOOAllX
+         lff/o6o59HBl/ei9gKrwI+qF7XJ7zYQxWThMEPS0qnjhTgCftc8WO05C8yn7hdguNjZm
+         8iFeIIoWKa4DvM6uqmjZoACTGq2yqNaiUfioxgwZZ7Xuwih0XmIkSWS/s0LFeseZ21U6
+         0u/VOLXTcyVy5o0d/0H+FJm3XJqKj7U5jbtA3sapxfLoAtjt+uVqwr321cC2EhXgZbUr
+         EX9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUtCgTbc78v8AtBV+e9uOeSNQ8to766fOyHSh/neS4K9qmWdrCF5dVEa7dJKdWlUetj6sw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvgQ4NlZEnpXKhLrwP8sm7dVcbgNHQagOq4S4DHAeZoNEJ7CFr
+	Tnj1kEi6HYwrxm0ecjUG9K+ittwVq+LbDhQ1tjG4dPQcNQw6l0T7+/+hjWoEBQA=
+X-Google-Smtp-Source: AGHT+IHAAJSka16NZVOG9ERRGT0s8XZNSpBXGOA3FY01waa9+ItcfG5gf6PTH3meZ9nN0csYqZ692Q==
+X-Received: by 2002:a17:902:e5d2:b0:20c:ce9c:bbb0 with SMTP id d9443c01a7336-20cce9cbddfmr6671465ad.0.1728729757238;
+        Sat, 12 Oct 2024 03:42:37 -0700 (PDT)
+Received: from [157.82.207.107] ([157.82.207.107])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8c33ffadsm35367635ad.266.2024.10.12.03.42.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 12 Oct 2024 03:42:36 -0700 (PDT)
+Message-ID: <30bbebd8-1692-4b62-9a1f-070f6152061c@daynix.com>
+Date: Sat, 12 Oct 2024 19:42:31 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v5 01/10] virtio_net: Add functions for hashing
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jason Wang <jasowang@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com
+References: <20241008-rss-v5-0-f3cf68df005d@daynix.com>
+ <20241008-rss-v5-1-f3cf68df005d@daynix.com>
+ <67068a7261d8c_1cca3129414@willemb.c.googlers.com.notmuch>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <67068a7261d8c_1cca3129414@willemb.c.googlers.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On 2024/10/09 22:51, Willem de Bruijn wrote:
+> Akihiko Odaki wrote:
+>> They are useful to implement VIRTIO_NET_F_RSS and
+>> VIRTIO_NET_F_HASH_REPORT.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   include/linux/virtio_net.h | 188 +++++++++++++++++++++++++++++++++++++++++++++
+> 
+> No need for these to be in header files
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
-
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c | 2 ++
- include/hw/boards.h   | 3 +++
- target/i386/cpu.c     | 9 ++++-----
- 3 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index f3edbded2e7b..16e456678cb6 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -367,6 +367,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-         return false;
-     }
- 
-+    mc->smp_props.has_caches = true;
-+
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index e4a1035e3fa1..af62b09c89d1 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -153,6 +153,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -163,6 +165,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c8a04faf3764..6f711e98b527 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7853,12 +7853,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless Updates
--     * if user didn't set smp_cache.
--     */
--    x86_cpu_update_smp_cache_topo(ms, cpu);
-+    if (mc->smp_props.has_caches) {
-+        x86_cpu_update_smp_cache_topo(ms, cpu);
-+    }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
- 
--- 
-2.34.1
-
+I naively followed prior examples in this file. Do you have an 
+alternative idea?
