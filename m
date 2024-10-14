@@ -1,47 +1,47 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CA0231C9C;
-	Mon, 14 Oct 2024 04:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2510F1804E;
+	Mon, 14 Oct 2024 05:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728879721; cv=none; b=kTRmmf5fQCGGf/c7pVlvFuGfWSGsoeVUmfsaTJvgNhAIzqgvaXgAoxf0aEMZusmpjLenxI36ykP74pV4dHm1E7Secl7xhAM//Zghkb1064u2GLpYLTW3RhEav4HUghLkySDYcrYLrw02AEFwwn9de/MCaPjepzDyQG8fsQCNUm0=
+	t=1728882109; cv=none; b=kwGyOQy0TekceHLUFFJZ4puVkiBtvA0QpYU71l7h/47pqxvr0p6DFFZ+yM1NOJFg13OXbmuCmQF2H+IyaMKaOpTPbnDf2xOLdfPMK00WfDCTC/oG/9VmCO56KlL6nDNJ6s4ky4BmR9Jds7pnrlIUF7i1FmOnEiZSF9oCag1vV1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728879721; c=relaxed/simple;
-	bh=7u6BhScJFESan00qiEx5aDqMPc4HPZs7ourjTOn24dE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZcMc8JNl0Wsgh2uYLMTa9FBc6KNCvil3YzbkCwsWGsBlWgc0bQttWluPPk1R5hn8sZ9/C2FQRqhHzH4jrK18hL7p2iFwG4tgUXAR1TvWnXGNENf/bhBBdeouxxL4ieS7Nk858sRdBN4nsKUC3kWORLuTKLiNa8Q0bhQFjAN2oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8MvshJs; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1728882109; c=relaxed/simple;
+	bh=YQNIqpnXngZWhi/aJCruSivBm8gOysW+5qKPkdNBfDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PTADwx1i3ZxmIF44uAERiTu7Niv0ywZqH1FqwPephCnB+8FbJGPYt2xylJGf2oY1MJxPCUQpV+/klZRgx5VJvibIAq80649gduUKFS7+vUP//dODQoQvoGh2O9roy8jPsYeh1lTpa/WWakj4VhcG2M3Rx5RtDs3d210Q9KVzvS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EjuIS0Q2; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8MvshJs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EjuIS0Q2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728879720; x=1760415720;
+  t=1728882107; x=1760418107;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=7u6BhScJFESan00qiEx5aDqMPc4HPZs7ourjTOn24dE=;
-  b=S8MvshJsfdjkmxjsVpCmuVL9M0+sGQVTBTnHaRg7gAOHf0bn92+c6VB6
-   rXI65v/YBNgHEyG7RJb4ypxWbYfKChVwm+9Zd7KLVW+NoJhY4/Vdhk9B8
-   sNJdr2BLSA5FYrvviv82iTiZIsU8R5dhodWZmdasmkVjwnSwWJkpzcA4R
-   Quic9UYzbj+kCvzVHz3cfVCk5Pak2Cmqd9N+6ouym9YfXlFGTBSXobav8
-   p1s4xTYz7vC+bpOJTaHZa7Jq6siSO4NicRB1iCgzylZ+KmX6c34w65DRp
-   Sizvq6n3bdsw6dBnqLxTFccWsz0KoAiPb8LJdMzgJCkCDf7jTt5ecsexn
+  bh=YQNIqpnXngZWhi/aJCruSivBm8gOysW+5qKPkdNBfDI=;
+  b=EjuIS0Q2PXdQSyedin6GFfKpvigPOsHlqRQQJ5DH6y6FnABt7wN5WVK9
+   CJe3+ciVuYPd6d7O7rQ79MOGZ5VtXF6iNPNUU5QXopnhKjrCuQX0rvisZ
+   OHO3I7VeJHkABYCgF8lKhh7IZ9alAZBbqNxXNkd+a/JcWVZ8urJxuSO1y
+   NK4mZc+ijbDg5knuk21WL61q1dQC18ke2Mx8TSie4FoRL6yamJtFRT3xa
+   JaA4Aa59gYRr73JuQaXwxTLsG2+y3+hbEArvh7oZ7+00VkbpF8fflquAr
+   Q1iotc7dcAr6KkfClc08UyfuZldXWRSpekpCstc9yPqwRQH3jHVlvBv5e
    g==;
-X-CSE-ConnectionGUID: Uqp5JH6NSXy5aAeAsP26dg==
-X-CSE-MsgGUID: D4pTa8y+Rg+dvqdQCPcW6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="15840801"
+X-CSE-ConnectionGUID: 8Ol1yq/FQaqnr1v4/+dVSA==
+X-CSE-MsgGUID: 4kN7VA1kR+C6XHTDEolVNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="53635245"
 X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
-   d="scan'208";a="15840801"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 21:21:59 -0700
-X-CSE-ConnectionGUID: gx6nqTwuQEWJvHB5odwfcg==
-X-CSE-MsgGUID: SnXW3sGiSaWA5KlY3W61Qg==
+   d="scan'208";a="53635245"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 22:01:45 -0700
+X-CSE-ConnectionGUID: KY7a8L4UQWqt4lR8nk9GzA==
+X-CSE-MsgGUID: 8pKGXwuPTAOo3NAY3aMVLA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
-   d="scan'208";a="77466454"
+   d="scan'208";a="77331512"
 Received: from yzhao56-desk.sh.intel.com ([10.239.159.62])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 21:21:57 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 22:01:43 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -49,9 +49,9 @@ Cc: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Yuan Yao <yuan.yao@intel.com>
-Subject: [PATCH] KVM: VMX: Remove the unused variable "gpa" in __invept()
-Date: Mon, 14 Oct 2024 12:19:40 +0800
-Message-ID: <20241014041941.579-1-yan.y.zhao@intel.com>
+Subject: [PATCH v2] KVM: VMX: Remove the unused variable "gpa" in __invept()
+Date: Mon, 14 Oct 2024 12:59:31 +0800
+Message-ID: <20241014045931.1061-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -81,16 +81,19 @@ No functional changes expected.
 
 Cc: Yuan Yao <yuan.yao@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+--
+v2:
+Add the missing must_be_zero 64 bits.
 ---
  arch/x86/kvm/vmx/vmx.c     |  5 ++---
- arch/x86/kvm/vmx/vmx_ops.h | 15 +++++++--------
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ arch/x86/kvm/vmx/vmx_ops.h | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 80883f43d4c4..f19686d55d42 100644
+index 1a4438358c5e..c0f4bb506a58 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -480,10 +480,9 @@ noinline void invvpid_error(unsigned long ext, u16 vpid, gva_t gva)
+@@ -481,10 +481,9 @@ noinline void invvpid_error(unsigned long ext, u16 vpid, gva_t gva)
  			ext, vpid, gva);
  }
  
@@ -104,7 +107,7 @@ index 80883f43d4c4..f19686d55d42 100644
  
  static DEFINE_PER_CPU(struct vmcs *, vmxarea);
 diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
-index 8060e5fc6dbd..4616f8d120bb 100644
+index 93e020dc88f6..633c87e2fd92 100644
 --- a/arch/x86/kvm/vmx/vmx_ops.h
 +++ b/arch/x86/kvm/vmx/vmx_ops.h
 @@ -15,7 +15,7 @@ void vmwrite_error(unsigned long field, unsigned long value);
@@ -116,7 +119,7 @@ index 8060e5fc6dbd..4616f8d120bb 100644
  
  #ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
  /*
-@@ -312,13 +312,12 @@ static inline void __invvpid(unsigned long ext, u16 vpid, gva_t gva)
+@@ -312,13 +312,13 @@ static inline void __invvpid(unsigned long ext, u16 vpid, gva_t gva)
  	vmx_asm2(invvpid, "r"(ext), "m"(operand), ext, vpid, gva);
  }
  
@@ -129,12 +132,13 @@ index 8060e5fc6dbd..4616f8d120bb 100644
 -
 -	vmx_asm2(invept, "r"(ext), "m"(operand), ext, eptp, gpa);
 +		u64 eptp;
-+	} operand = { eptp };
++		u64 reserved_0;
++	} operand = { eptp, 0 };
 +	vmx_asm2(invept, "r"(ext), "m"(operand), ext, eptp);
  }
  
  static inline void vpid_sync_vcpu_single(int vpid)
-@@ -355,13 +354,13 @@ static inline void vpid_sync_vcpu_addr(int vpid, gva_t addr)
+@@ -355,13 +355,13 @@ static inline void vpid_sync_vcpu_addr(int vpid, gva_t addr)
  
  static inline void ept_sync_global(void)
  {
