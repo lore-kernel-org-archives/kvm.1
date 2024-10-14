@@ -1,81 +1,86 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9795C195811;
-	Mon, 14 Oct 2024 10:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADFB1AB51E;
+	Mon, 14 Oct 2024 11:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728903320; cv=none; b=NxwA2RxXYYWSNW3KgPSoHaXBfNlhnYGvuIa+ssLScwgrPU/F4ffVujn+nibSKWF38nzVFF+u7pArzqHJxrMbkp6yxCZMspnmyZqGG4YC2YRpFpXvx1U8dMSQqnjmgjjuOf8pBYEBXX96dXHP7hnfUc1d4cUk1jo2G7m98oXyLI0=
+	t=1728903621; cv=none; b=SIHyIifdBM6RmFwBPqgVgzWiJAwDG7BnEpixKD742wYCeXDHmNfn9+NAg/gh2G1ZC3CQwxpsTRqqFAfrLveXqglRPvji+KBGZbBBLkEuCb8NiHq9CYy+g8NAMMj90IJM7qxDreyiMCBQGMva8eCmMuovks2OQWOCh50i5o4TD1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728903320; c=relaxed/simple;
-	bh=Wv8sheBY9wyuuQECNz9jMXKquIBWVGBbSPFlBvDzmdQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdwHJbcGGL372SSPbncY3dvq7/SXjFlR5YIdbq2ZZlpR3ZTQ+mKvdSVN47H8d4lUdkIfwZjayN/lmS9lvn8x5VtLJ3veJNQFf14fCDRlz1eMCtSflYsReSwkKk9/eK9m15umKTLaGMgmFCfhpf4pOfI0uyKIMDQV/T04fpUB3gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q3zcjKYW; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q3zcjKYW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=w3x6GHag03/bv+m3o3GPI6JrLsYF4G1ACh00ZNPF3aY=; b=q3zcjKYWTFQ3YOrbR+FNOvIptJ
-	KGzYRKIyJbp/0zDclGmpW37bvjmpP9G/XzayP9wgQ1bqTWayG+H/H5MY4n+8fN7VOD2LUQ+4c3dQ+
-	tAPHVsDpMzXjjZ1Muj+K87+Sf6PFcgTomQS9YNCAwXavAB3LLKLJSWRxo4VWqCdrWf3X5WazbxAw8
-	H9x/hkgXd4KanqnjbBa6gh9o1Yv8XDRG2pF7Kc0lp5YlGHdGqDC8urAgdHOQlnqFQedwgvT+ws+SP
-	gqtSTyRP0sAvdrZHyDAl8fT65rprX9OY93Xr7/jjqRAykF9DwAsv1Q9MUhexFUnjSA87Q8gigDU42
-	jke87rDw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0IjB-00000006JqI-3HlN;
-	Mon, 14 Oct 2024 10:55:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0CB2A30015F; Mon, 14 Oct 2024 12:55:05 +0200 (CEST)
-Date: Mon, 14 Oct 2024 12:55:04 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Liang, Kan" <kan.liang@linux.intel.com>
-Cc: Mingwei Zhang <mizhang@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Xiong Zhang <xiong.y.zhang@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Kan Liang <kan.liang@intel.com>,
-	Zhenyu Wang <zhenyuw@linux.intel.com>,
-	Manali Shukla <manali.shukla@amd.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Jim Mattson <jmattson@google.com>,
-	Stephane Eranian <eranian@google.com>,
-	Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-	gce-passthrou-pmu-dev@google.com,
-	Samantha Alt <samantha.alt@intel.com>,
-	Zhiyuan Lv <zhiyuan.lv@intel.com>, Yanfei Xu <yanfei.xu@intel.com>,
-	Like Xu <like.xu.linux@gmail.com>,
-	Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [RFC PATCH v3 09/58] perf: Add a EVENT_GUEST flag
-Message-ID: <20241014105504.GB16066@noisy.programming.kicks-ass.net>
-References: <20240801045907.4010984-1-mizhang@google.com>
- <20240801045907.4010984-10-mizhang@google.com>
- <20241011184237.GQ17263@noisy.programming.kicks-ass.net>
- <a3326ee7-5ff0-4745-9e33-3ed5eec94c24@linux.intel.com>
+	s=arc-20240116; t=1728903621; c=relaxed/simple;
+	bh=ebamfkv7IgPXvDyLs+8HBwIvTIxriJQNMXxJv1O/XIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V19SREZf/vSQrEuGRnb9H8tourX6+y2PHdYZys9zCoRTsNPH/TRP0PfC95xzuzgdJSH+g6RwScfdBb6aNXRc6myx6dG8LS6y3RED4Hp5oN9mbKw5drUo/DfXSuksVU+ugPwOD6SVElCcV0IJblOnMdE4QmJdr74tKAsvVBUFMbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 58C151684;
+	Mon, 14 Oct 2024 04:00:49 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A6AC3F51B;
+	Mon, 14 Oct 2024 04:00:17 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Greg Marsden <greg.marsden@oracle.com>,
+	Ivan Ivanov <ivan.ivanov@suse.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1 17/57] kvm: Remove PAGE_SIZE compile-time constant assumption
+Date: Mon, 14 Oct 2024 11:58:24 +0100
+Message-ID: <20241014105912.3207374-17-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241014105912.3207374-1-ryan.roberts@arm.com>
+References: <20241014105514.3206191-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-1-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a3326ee7-5ff0-4745-9e33-3ed5eec94c24@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 11, 2024 at 03:49:44PM -0400, Liang, Kan wrote:
-> 
-> 
-> On 2024-10-11 2:42 p.m., Peter Zijlstra wrote:
-> > 
-> > Can you rework this one along these lines?
-> 
-> Sure.
+To prepare for supporting boot-time page size selection, refactor code
+to remove assumptions about PAGE_SIZE being compile-time constant. Code
+intended to be equivalent when compile-time page size is active.
 
-Thanks!
+Modify BUILD_BUG_ON() to compare with page size limit.
+
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+
+***NOTE***
+Any confused maintainers may want to read the cover note here for context:
+https://lore.kernel.org/all/20241014105514.3206191-1-ryan.roberts@arm.com/
+
+ virt/kvm/kvm_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cb2b78e92910f..6c862bc41a672 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4244,7 +4244,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 		goto vcpu_decrement;
+ 	}
+ 
+-	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
++	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE_MIN);
+ 	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+ 	if (!page) {
+ 		r = -ENOMEM;
+-- 
+2.43.0
+
