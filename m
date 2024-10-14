@@ -1,139 +1,194 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26A71AC884
-	for <kvm@vger.kernel.org>; Mon, 14 Oct 2024 14:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16D03A1B6;
+	Mon, 14 Oct 2024 15:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917253; cv=none; b=KQoctHhKT92CrDduzywwnIWQNjvwLGXAAfdWbBQHLRtNgH395Cn9UgYkiai1BAem5eKDqsjs4KcYie+WC/63KkMSmcQRp6O8OzUH2LxPth7pe+dlFG/XiTzniguMtzcxDWqDwQtzttSXjyG4U+0mTMODYn22APA2ZNxYP33HIbo=
+	t=1728918433; cv=none; b=sgi971ZGHMAiBqTiaJIHJRLxYKIa+n8X8ZvM7hEc/kdSzCh7lpp65bibNW6V5JRFrqpJ7g4HJfjN3MNhnEMn7sHaFH6cAlfl7zj9cZaOkvlOJv7vkDm3e7W6ItWOH7tVKX1BD43rOiPZWz+LxbgnYjSeOn03N8/tGxCSckzbvIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917253; c=relaxed/simple;
-	bh=I15jUcBUdXnJzCptx9GLa3TxQW1EuBqxNZMGYFsaP7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo5MRYAd84zrCJ/VJP4Pli7NqYZwAANVhN+oB4/aJRCGPQXPe8FdaOWBNIYrK+B/SFfppkxTW0DXAXF3IL1RBWh1PELmotenb95Up3reh7XRL5eTyaxgECLReBAIsr36+yYL2Ey6l0HPq5UllNot/5LC96SPTcylAcLbFWSA73U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xcgtso2C; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728918433; c=relaxed/simple;
+	bh=EvSSFxRgPZuWgvBuv++rbbv2H2ZAidHTI94XEz0Es9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FD5EOLrmivNOR5f6RrO1oeshejg/U3WgXXnHvx/WZDxj5Kw000rR8wR1Bhw6vcW+SEDFwG37u3WFzHN+RWaV63zNXPUC2HUjEtmaaG1O1My/3NyYnS9gzviM0Z+CqM7nTIvGOKKsPSkvaEOL8EjlH4kD46cLaYbud+CK83YrGCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U44RtaNT; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xcgtso2C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728917250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3vLbVvz73tLbmbnaPx4ieOXFlBDH6z0eEi0A+B6nUW0=;
-	b=Xcgtso2CPr3HpKcRZ0gM0ztTPXozzLlgCR3ZOYTfjVjcl/6gfmsj1ZTvsMDNCvSKMOQ5Mn
-	FTq5TCRuB4FHMjBTZ8WG79tLodF+cZ4lAIRcrp9xlCcOgPnpNVGdtgcDypMd8TRBRpz625
-	taOPGWG/3TLuJC2bhKIm6Af4+Vrvq7o=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-8KXKzAUyOoGjGD-HwYImmg-1; Mon,
- 14 Oct 2024 10:47:27 -0400
-X-MC-Unique: 8KXKzAUyOoGjGD-HwYImmg-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U44RtaNT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728918432; x=1760454432;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EvSSFxRgPZuWgvBuv++rbbv2H2ZAidHTI94XEz0Es9Q=;
+  b=U44RtaNTo/1DZrokZxx1aEnLKlRHDCO3gR3yPgsNX8mANiIxrCWeCnbR
+   YjmP9CMgFJhalgZUFFd+EKOTSqjup9vP665ojqIU9ZaCJfcUcbJbgOnXg
+   key95rOloThSyfhoYQC6z0iB0zRJv3dkinC7txl0QK2ZHpPsz9XyP5SMo
+   RS6YPI2mcQ0zJJya+DA9RtieTamnOlcgq/ux8yy538HHvMbowLUrxqYiZ
+   DaAOWywbPu8DNpZckKto+NTnQPbVmjpljk9l0P/uvco62ZazRmD0EVrtB
+   DaAzjUbTLHqUsRuHv4sgh/3Q/P6j0qyVyDmO/ZVkmA5augWEDeqhSYO54
+   w==;
+X-CSE-ConnectionGUID: Uvw+ui75TcSAo2sYMK8xmA==
+X-CSE-MsgGUID: 7FyvE2zmSY6NmKz2qcOQbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31966381"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="31966381"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 08:06:05 -0700
+X-CSE-ConnectionGUID: B+YGha7iSHaBF+VPCaOi5Q==
+X-CSE-MsgGUID: 1687BWLQRrO/l45+jE/E7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
+   d="scan'208";a="77781414"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 08:06:06 -0700
+Received: from [10.212.61.73] (kliang2-mobl1.ccr.corp.intel.com [10.212.61.73])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F38F1955F07;
-	Mon, 14 Oct 2024 14:47:25 +0000 (UTC)
-Received: from t14s.cit.tum.de (unknown [10.22.32.146])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F09031955E8F;
-	Mon, 14 Oct 2024 14:47:17 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org,
-	David Hildenbrand <david@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v2 7/7] s390/sparsemem: reduce section size to 128 MiB
-Date: Mon, 14 Oct 2024 16:46:19 +0200
-Message-ID: <20241014144622.876731-8-david@redhat.com>
-In-Reply-To: <20241014144622.876731-1-david@redhat.com>
-References: <20241014144622.876731-1-david@redhat.com>
+	by linux.intel.com (Postfix) with ESMTPS id C987220B5782;
+	Mon, 14 Oct 2024 08:06:02 -0700 (PDT)
+Message-ID: <4d63b685-6161-4dbe-990d-54c6dd352972@linux.intel.com>
+Date: Mon, 14 Oct 2024 11:06:01 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 09/58] perf: Add a EVENT_GUEST flag
+To: Peter Zijlstra <peterz@infradead.org>, Mingwei Zhang <mizhang@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Xiong Zhang <xiong.y.zhang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Kan Liang <kan.liang@intel.com>,
+ Zhenyu Wang <zhenyuw@linux.intel.com>, Manali Shukla
+ <manali.shukla@amd.com>, Sandipan Das <sandipan.das@amd.com>,
+ Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
+ Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+ gce-passthrou-pmu-dev@google.com, Samantha Alt <samantha.alt@intel.com>,
+ Zhiyuan Lv <zhiyuan.lv@intel.com>, Yanfei Xu <yanfei.xu@intel.com>,
+ Like Xu <like.xu.linux@gmail.com>,
+ Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org,
+ linux-perf-users@vger.kernel.org
+References: <20240801045907.4010984-1-mizhang@google.com>
+ <20240801045907.4010984-10-mizhang@google.com>
+ <20241014111416.GC16066@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <20241014111416.GC16066@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Ever since commit 421c175c4d609 ("[S390] Add support for memory hot-add.")
-we've been using a section size of 256 MiB on s390 and 32 MiB on s390.
-Before that, we were using a section size of 32 MiB on both
-architectures.
 
-Likely the reason was that we'd expect a storage increment size of
-256 MiB under z/VM back then. As we didn't support memory blocks spanning
-multiple memory sections, we would have had to handle having multiple
-memory blocks for a single storage increment, which complicates things.
-Although that issue reappeared with even bigger storage increment sizes
-later, nowadays we have memory blocks that can span multiple memory
-sections and we avoid any such issue completely.
 
-Now that we have a new mechanism to expose additional memory to a VM --
-virtio-mem -- reduce the section size to 128 MiB to allow for more
-flexibility and reduce the metadata overhead when dealing with hot(un)plug
-granularity smaller than 256 MiB.
+On 2024-10-14 7:14 a.m., Peter Zijlstra wrote:
+> On Thu, Aug 01, 2024 at 04:58:18AM +0000, Mingwei Zhang wrote:
+> 
+>> @@ -3334,9 +3401,15 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+>>  	 * would only update time for the pinned events.
+>>  	 */
+>>  	if (is_active & EVENT_TIME) {
+>> +		bool stop;
+>> +
+>> +		/* vPMU should not stop time */
+>> +		stop = !(event_type & EVENT_GUEST) &&
+>> +		       ctx == &cpuctx->ctx;
+>> +
+>>  		/* update (and stop) ctx time */
+>>  		update_context_time(ctx);
+>> -		update_cgrp_time_from_cpuctx(cpuctx, ctx == &cpuctx->ctx);
+>> +		update_cgrp_time_from_cpuctx(cpuctx, stop);
+>>  		/*
+>>  		 * CPU-release for the below ->is_active store,
+>>  		 * see __load_acquire() in perf_event_time_now()
+>> @@ -3354,7 +3427,18 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+>>  			cpuctx->task_ctx = NULL;
+>>  	}
+>>  
+>> -	is_active ^= ctx->is_active; /* changed bits */
+>> +	if (event_type & EVENT_GUEST) {
+>> +		/*
+>> +		 * Schedule out all !exclude_guest events of PMU
+>> +		 * with PERF_PMU_CAP_PASSTHROUGH_VPMU.
+>> +		 */
+> 
+> I thought the premise was that if we have !exclude_guest events, we'll
+> fail the creation of vPMU, and if we have vPMU we'll fail the creation
+> of !exclude_guest events.
+> 
+> As such, they're mutually exclusive, and the above comment doesn't make
+> sense, if we have a vPMU, there are no !exclude_guest events, IOW
+> schedule out the entire context.
 
-128 MiB has been used by x86-64 since the very beginning. arm64 with 4k
-base pages switched to 128 MiB as well: it's just big enough on these
-architectures to allows for using a huge page (2 MiB) in the vmemmap in
-sane setups with sizeof(struct page) == 64 bytes and a huge page mapping
-in the direct mapping, while still allowing for small hot(un)plug
-granularity.
+It's a typo. Right, it should schedule out all exclude_guest events of
+the passthrough PMUs.
 
-For s390, we could even switch to a 64 MiB section size, as our huge page
-size is 1 MiB: but the smaller the section size, the more sections we'll
-have to manage especially on bigger machines. Making it consistent with
-x86-64 and arm64 feels like te right thing for now.
+> 
+>> +		is_active = EVENT_ALL;
+>> +		__update_context_guest_time(ctx, false);
+>> +		perf_cgroup_set_timestamp(cpuctx, true);
+>> +		barrier();
+>> +	} else {
+>> +		is_active ^= ctx->is_active; /* changed bits */
+>> +	}
+>>  
+>>  	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+>>  		if (perf_skip_pmu_ctx(pmu_ctx, event_type))
+> 
+>> @@ -3864,13 +3953,22 @@ static int merge_sched_in(struct perf_event *event, void *data)
+>>  	if (!event_filter_match(event))
+>>  		return 0;
+>>  
+>> -	if (group_can_go_on(event, *can_add_hw)) {
+>> +	/*
+>> +	 * Don't schedule in any exclude_guest events of PMU with
+>> +	 * PERF_PMU_CAP_PASSTHROUGH_VPMU, while a guest is running.
+>> +	 */
+> 
+> More confusion; if we have vPMU there should not be !exclude_guest
+> events, right? So the above then becomes 'Don't schedule in any events'.
 
-Note that the smallest memory hot(un)plug granularity is also limited by
-the memory block size, determined by extracting the memory increment
-size from SCLP. Under QEMU/KVM, implementing virtio-mem, we expose 0;
-therefore, we'll end up with a memory block size of 128 MiB with a
-128 MiB section size.
+Right. I will correct the three comments.
 
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/s390/include/asm/sparsemem.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Kan
 
-diff --git a/arch/s390/include/asm/sparsemem.h b/arch/s390/include/asm/sparsemem.h
-index c549893602ea..ff628c50afac 100644
---- a/arch/s390/include/asm/sparsemem.h
-+++ b/arch/s390/include/asm/sparsemem.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_S390_SPARSEMEM_H
- #define _ASM_S390_SPARSEMEM_H
- 
--#define SECTION_SIZE_BITS	28
-+#define SECTION_SIZE_BITS	27
- #define MAX_PHYSMEM_BITS	CONFIG_MAX_PHYSMEM_BITS
- 
- #endif /* _ASM_S390_SPARSEMEM_H */
--- 
-2.46.1
+> 
+>> +	if (__this_cpu_read(perf_in_guest) && event->attr.exclude_guest &&
+>> +	    event->pmu->capabilities & PERF_PMU_CAP_PASSTHROUGH_VPMU &&
+>> +	    !(msd->event_type & EVENT_GUEST))
+>> +		return 0;
+>> +
+>> +	if (group_can_go_on(event, msd->can_add_hw)) {
+>>  		if (!group_sched_in(event, ctx))
+>>  			list_add_tail(&event->active_list, get_event_list(event));
+> 
+>> @@ -3945,7 +4049,23 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+>>  			WARN_ON_ONCE(cpuctx->task_ctx != ctx);
+>>  	}
+>>  
+>> -	is_active ^= ctx->is_active; /* changed bits */
+>> +	if (event_type & EVENT_GUEST) {
+>> +		/*
+>> +		 * Schedule in all !exclude_guest events of PMU
+>> +		 * with PERF_PMU_CAP_PASSTHROUGH_VPMU.
+>> +		 */
+> 
+> Idem.
+> 
+>> +		is_active = EVENT_ALL;
+>> +
+>> +		/*
+>> +		 * Update ctx time to set the new start time for
+>> +		 * the exclude_guest events.
+>> +		 */
+>> +		update_context_time(ctx);
+>> +		update_cgrp_time_from_cpuctx(cpuctx, false);
+>> +		barrier();
+>> +	} else {
+>> +		is_active ^= ctx->is_active; /* changed bits */
+>> +	}
+> 
 
