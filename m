@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EDB1F76AE;
-	Tue, 15 Oct 2024 16:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E331F76B5;
+	Tue, 15 Oct 2024 16:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729010615; cv=none; b=AP4KJDnA/tS2xxxbDXJB6FygcFYxOC0/VfgGp7Ja0jpYaEPvC6Fp/nqSlsryYlrcZuvzYiS6dj6Qp789F44OCq9ZSiJtMCHQ/0dOM4yn9xnYH1AfK8KNFaLh4wMa+/tZaNb8lQ5nvR78H9KbBdwCbxnxFSNN++9AXzBGlFyU/eM=
+	t=1729010616; cv=none; b=qn0Xz/wOPxswtSN3x9Df2EJlH2+G4knqP191caorb/S+RCe8erh0WYZJA056oGTNPPXzXAPdKBI1OerJHBbgZiztt1edVTsry2ib59/m2cWVCSr+HkYKkvCa8hUR/JhgmZ5K8vULZiNPBEUHKjBBs7TTc00O3wygivKDFQpZbTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729010615; c=relaxed/simple;
-	bh=28wM1qxewzfvNwL0+ykl/a4jcDIEgRX7sG0DD0vn/No=;
+	s=arc-20240116; t=1729010616; c=relaxed/simple;
+	bh=m5UAYB79TEfrioqAYLo0joh7a0Agaawt4tkZzvrD8QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JozlzrUnrbwM21xaEzoeN2g7+L/oqIsjjnur6TqjM5kAKJQCi0JFDlDSLfAls5ZOwTwk+ZqMmjCF6Et5WfRxeNFYQ9oSgHK6l74aTgcWjO6TcBcZx1iJA4FkhbdE8v/eZ7cOg7bWQWnQfTkfwXbEW3iYHvHrSVGAvMDbMwiKAdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=emPyMtaD; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=TrTcBvuBon4mWTDL8BpaMqN8uy2AyVDfyh+jWQwwfU5/PdDkdcTOAdWXBNKxtEHHuRzkxghB9/RsX8elkFyk5tJXzEOmGyQgttacly8ETdAbhXGiqijUmQ3kHZVTykhIbolzgU0vvnwRJo3lfCj+Kxor3wzl+pba9s7cVH96WFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HvNnXjsJ; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="emPyMtaD"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FFoU9Y031440;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HvNnXjsJ"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FDJZD2007796;
 	Tue, 15 Oct 2024 16:43:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=SJpHHEjRWzFGDQeMj
-	OuxfSFN2DEbe/pb15pnfE0bjyU=; b=emPyMtaDaNsXav3wxcUSHnTstBDPxgwBh
-	jUX7D2y5/xrYKQ/1jDWktrJ3j1RSTLqmJq1HA8DxzKYzoOGVkN7DyI/1TqdllbYl
-	eh7hYq6yN8h3R/JoKMnl4EgyFDMJdL7AadvbNTfHeo6uZCwUnUEMg8/ec7Ri8PB1
-	aeDBMFfuhRithmogR+0HLE9XD/frdcYgSSmEpMeWQ4l0Af/HF2943MQCtgUtUc0z
-	DZQoz7B39MFP9Q2XZWDjP8mdG+DkczxlCxZmjJt7WLKQzOvJ39iiqDDtifp/9RQI
-	DfrvfE3tByWNN+0NvNQbivNpvUxuIbSRcboTEs+6nkMIzjDLI8Bzw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429ucwg8kx-1
+	:mime-version:references:subject:to; s=pp1; bh=W4h7KWWUJ1nq8iuU+
+	j1U4vFtf2F9utqpqwfLBifPARA=; b=HvNnXjsJmmjwKw2I6TRGgW6vkHjtLT1/W
+	7pIpZXBy8TdZ6rcr88cQaV0/CJJeNSesOqgXbn/E30Ei41vXtGLsPsP2GsWsYgp1
+	yDnoP95uziu2mnSEguKUcqZL32Ks3aUCooYEQ1xdCkyPtFY4kWC1/cJH5VbhMSlG
+	JHYDcA8dClO06jewQ70fd1hm0XjFtwaeapix0Owp/O4vPAvTdPf/QK/AfWlnq08c
+	uikIM68UhrkURv9LVH9naxIJtTvHUIWpiGJT9MNuX4zLIAThnsl/iOBEE6eZU2Hr
+	J4zg5q1C6q1fOVSw3p6p/CkwwWoG1mc3d/M8OubzjJDZbNlLC7VDQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429s68h429-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 15 Oct 2024 16:43:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FE7Vka002473;
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49FFP7Lg005215;
 	Tue, 15 Oct 2024 16:43:32 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284emmxax-1
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4285nj4mk9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 15 Oct 2024 16:43:32 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49FGhSpM50069774
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49FGhS9I50069778
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Tue, 15 Oct 2024 16:43:28 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2DFF420043;
+	by IMSVA (Postfix) with ESMTP id 85A8620040;
 	Tue, 15 Oct 2024 16:43:28 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 064CA2004E;
+	by IMSVA (Postfix) with ESMTP id 5EAA020043;
 	Tue, 15 Oct 2024 16:43:28 +0000 (GMT)
 Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 15 Oct 2024 16:43:27 +0000 (GMT)
+	Tue, 15 Oct 2024 16:43:28 +0000 (GMT)
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: linux-kernel@vger.kernel.org
 Cc: borntraeger@de.ibm.com, nsg@linux.ibm.com, nrb@linux.ibm.com,
@@ -59,9 +59,9 @@ Cc: borntraeger@de.ibm.com, nsg@linux.ibm.com, nrb@linux.ibm.com,
         agordeev@linux.ibm.com, gor@linux.ibm.com,
         gerald.schaefer@linux.ibm.com, kvm@vger.kernel.org,
         linux-s390@vger.kernel.org
-Subject: [PATCH v3 07/11] s390/mm/gmap: Remove gmap_{en,dis}able()
-Date: Tue, 15 Oct 2024 18:43:22 +0200
-Message-ID: <20241015164326.124987-8-imbrenda@linux.ibm.com>
+Subject: [PATCH v3 09/11] s390/mm: Simplify get_fault_type()
+Date: Tue, 15 Oct 2024 18:43:24 +0200
+Message-ID: <20241015164326.124987-10-imbrenda@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015164326.124987-1-imbrenda@linux.ibm.com>
 References: <20241015164326.124987-1-imbrenda@linux.ibm.com>
@@ -73,83 +73,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Qi8ezuG3vi0fDN5plE30qjHRTkb9RQBY
-X-Proofpoint-GUID: Qi8ezuG3vi0fDN5plE30qjHRTkb9RQBY
+X-Proofpoint-GUID: 0ZzkNOr51_Qrin6GP7NUQDau07WJ4tF_
+X-Proofpoint-ORIG-GUID: 0ZzkNOr51_Qrin6GP7NUQDau07WJ4tF_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- mlxlogscore=801 spamscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 adultscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0
+ mlxlogscore=610 adultscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410150113
 
-Remove gmap_enable(), gmap_disable(), and gmap_get_enabled() since they do
-not have any users anymore.
+From: Heiko Carstens <hca@linux.ibm.com>
 
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+With the gmap code gone get_fault_type() can be simplified:
+
+- every fault with user_mode(regs) == true must be a fault in user address
+  space
+
+- every fault with user_mode(regs) == false is only a fault in user
+  address space if the used address space is the secondary address space
+
+- every other fault is within the kernel address space
+
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
 ---
- arch/s390/include/asm/gmap.h |  3 ---
- arch/s390/mm/gmap.c          | 31 -------------------------------
- 2 files changed, 34 deletions(-)
+ arch/s390/mm/fault.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/include/asm/gmap.h b/arch/s390/include/asm/gmap.h
-index 9725586f4259..64761c78f774 100644
---- a/arch/s390/include/asm/gmap.h
-+++ b/arch/s390/include/asm/gmap.h
-@@ -107,9 +107,6 @@ void gmap_remove(struct gmap *gmap);
- struct gmap *gmap_get(struct gmap *gmap);
- void gmap_put(struct gmap *gmap);
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index e48910b0b816..6e96fc7905fc 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -68,17 +68,10 @@ static enum fault_type get_fault_type(struct pt_regs *regs)
+ {
+ 	union teid teid = { .val = regs->int_parm_long };
  
--void gmap_enable(struct gmap *gmap);
--void gmap_disable(struct gmap *gmap);
--struct gmap *gmap_get_enabled(void);
- int gmap_map_segment(struct gmap *gmap, unsigned long from,
- 		     unsigned long to, unsigned long len);
- int gmap_unmap_segment(struct gmap *gmap, unsigned long to, unsigned long len);
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index a8746f71c679..329682655af2 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -281,37 +281,6 @@ void gmap_remove(struct gmap *gmap)
+-	if (likely(teid.as == PSW_BITS_AS_PRIMARY)) {
+-		if (user_mode(regs))
+-			return USER_FAULT;
+-		return KERNEL_FAULT;
+-	}
+-	if (teid.as == PSW_BITS_AS_SECONDARY)
++	if (user_mode(regs))
+ 		return USER_FAULT;
+-	/* Access register mode, not used in the kernel */
+-	if (teid.as == PSW_BITS_AS_ACCREG)
++	if (teid.as == PSW_BITS_AS_SECONDARY)
+ 		return USER_FAULT;
+-	/* Home space -> access via kernel ASCE */
+ 	return KERNEL_FAULT;
  }
- EXPORT_SYMBOL_GPL(gmap_remove);
  
--/**
-- * gmap_enable - switch primary space to the guest address space
-- * @gmap: pointer to the guest address space structure
-- */
--void gmap_enable(struct gmap *gmap)
--{
--	get_lowcore()->gmap = (unsigned long)gmap;
--}
--EXPORT_SYMBOL_GPL(gmap_enable);
--
--/**
-- * gmap_disable - switch back to the standard primary address space
-- * @gmap: pointer to the guest address space structure
-- */
--void gmap_disable(struct gmap *gmap)
--{
--	get_lowcore()->gmap = 0UL;
--}
--EXPORT_SYMBOL_GPL(gmap_disable);
--
--/**
-- * gmap_get_enabled - get a pointer to the currently enabled gmap
-- *
-- * Returns a pointer to the currently enabled gmap. 0 if none is enabled.
-- */
--struct gmap *gmap_get_enabled(void)
--{
--	return (struct gmap *)get_lowcore()->gmap;
--}
--EXPORT_SYMBOL_GPL(gmap_get_enabled);
--
- /*
-  * gmap_alloc_table is assumed to be called with mmap_lock held
-  */
 -- 
 2.47.0
 
