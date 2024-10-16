@@ -1,174 +1,205 @@
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F58E14A09E;
-	Wed, 16 Oct 2024 18:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BED5212F10
+	for <kvm@vger.kernel.org>; Wed, 16 Oct 2024 18:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729101888; cv=none; b=aPDa8CgmyBunvXi3NybNO6mHo6WWaMVx+pTxRI65cVfoNzJW/S4Oj90KNUQF/zxsj6BF2eHqTOpbSjS3GfEqVVog+S8DjEyp6SUdW5mTxs0ybTteYvB2K6AEB5MVu4epLOuKluOty1T/L+l+NjUssIXwVqqGAAsJnmD5LHFC8yE=
+	t=1729104878; cv=none; b=KSfJRenwvi4nMOWe1hlH/jtUbxRgyF4dqwFP/4nittB9BdDqRGmCiFdJ1Gip0zhXHbS2gIp5comddjfyk6KDtJoqLWvEeCaLMrFHAJRkCfvz+S57uBX89t8KSKzrRuNH1O1vAqH+xGpvZSFtmbbNla8I6T7j/sJGIohs+H6hJV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729101888; c=relaxed/simple;
-	bh=3SwVYbFol5wtjFCHhhGi1RnZJPVNjLTg+Hl+nxFfvos=;
-	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rgsoq/Ud2wdj6G+GIRs/QrBucCwqAu1NnLoSdIuN+YdoranC2oXy57zHi4pYnB9smDoZqQEkINV+BcAheNwfPm0jSBCjPcyxiqO8/6Qt9B2EM3V39qhydo0QQs3LebMPtQznxRPRQEC20NExXv23JDX8Xzg4f4oKHQ6WduzIkbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ca3EDRxR; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1729104878; c=relaxed/simple;
+	bh=acJ3ioyp/DOU7wsOKFr+uLibyRAqoHdzwcK6UIKLnAw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HoupwWHUSyqz5jQ4uzJWK2QddkNv0zlLdCdIhDkvii8W7CgtYhS/Q6pD39MOF9rn3V9FVCwkUMR+UZFjeWxjZlCkuqnUKS8usP5MGQvnMiCZyTxLcPs65k+LFRvK4s587uyrIRYYGL0qQBkpcTXbK9sfVf4br0RHRZdo9QbSabc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tcqi7kj7; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ca3EDRxR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tcqi7kj7"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6d9e31e66eeso5092367b3.1
+        for <kvm@vger.kernel.org>; Wed, 16 Oct 2024 11:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729101887; x=1760637887;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=3SwVYbFol5wtjFCHhhGi1RnZJPVNjLTg+Hl+nxFfvos=;
-  b=ca3EDRxRHZyrlI0mlzha2Rob/oCFGgWogXDeIfPVIiCDCfFK0rRHTt5S
-   S2ETmd3/XdjsOUP/1M5b2Z2JLIXCHUPVBzn3dkhunHU7fvTbb/RuxUljz
-   K1pMqsUlikXmmZL+TGzTiyX/6aBVjcxYb3dKPl3WD4WVr3k7TmGHVYsKb
-   0=;
-X-IronPort-AV: E=Sophos;i="6.11,208,1725321600"; 
-   d="scan'208";a="461374783"
-Subject: Re: [PATCH v8 01/11] cpuidle/poll_state: poll via smp_cond_load_relaxed()
-Thread-Topic: [PATCH v8 01/11] cpuidle/poll_state: poll via smp_cond_load_relaxed()
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:04:46 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:53735]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.7.250:2525] with esmtp (Farcaster)
- id 41eded31-3b27-4e62-b809-d97a7328555c; Wed, 16 Oct 2024 18:04:46 +0000 (UTC)
-X-Farcaster-Flow-ID: 41eded31-3b27-4e62-b809-d97a7328555c
-Received: from EX19D001UWA004.ant.amazon.com (10.13.138.251) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 16 Oct 2024 18:04:45 +0000
-Received: from EX19D001UWA003.ant.amazon.com (10.13.138.211) by
- EX19D001UWA004.ant.amazon.com (10.13.138.251) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 16 Oct 2024 18:04:45 +0000
-Received: from EX19D001UWA003.ant.amazon.com ([fe80::256a:26de:3ee6:48a2]) by
- EX19D001UWA003.ant.amazon.com ([fe80::256a:26de:3ee6:48a2%7]) with mapi id
- 15.02.1258.035; Wed, 16 Oct 2024 18:04:45 +0000
-From: "Okanovic, Haris" <harisokn@amazon.com>
-To: "ankur.a.arora@oracle.com" <ankur.a.arora@oracle.com>
-CC: "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "mtosatti@redhat.com"
-	<mtosatti@redhat.com>, "boris.ostrovsky@oracle.com"
-	<boris.ostrovsky@oracle.com>, "mark.rutland@arm.com" <mark.rutland@arm.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"konrad.wilk@oracle.com" <konrad.wilk@oracle.com>, "cl@gentwo.org"
-	<cl@gentwo.org>, "wanpengli@tencent.com" <wanpengli@tencent.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "maobibo@loongson.cn"
-	<maobibo@loongson.cn>, "daniel.lezcano@linaro.org"
-	<daniel.lezcano@linaro.org>, "misono.tomohiro@fujitsu.com"
-	<misono.tomohiro@fujitsu.com>, "arnd@arndb.de" <arnd@arndb.de>,
-	"will@kernel.org" <will@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, "Okanovic, Haris"
-	<harisokn@amazon.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>
-Thread-Index: AQHbD6IrafcYoukOUEmO4vkMpFXSV7KH1W0AgAHHPICAAB7zgIAAEOEA
-Date: Wed, 16 Oct 2024 18:04:45 +0000
-Message-ID: <d468117895b5a14b7ff30de7fd4da3edbf1a6b73.camel@amazon.com>
-References: <20240925232425.2763385-1-ankur.a.arora@oracle.com>
-	 <20240925232425.2763385-2-ankur.a.arora@oracle.com>
-	 <Zw5aPAuVi5sxdN5-@arm.com>
-	 <7f7ffdcdb79eee0e8a545f544120495477832cd5.camel@amazon.com>
-	 <87wmi8ou7g.fsf@oracle.com>
-In-Reply-To: <87wmi8ou7g.fsf@oracle.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B6D0E47BE666414CB400B6DA09E84439@amazon.com>
-Content-Transfer-Encoding: base64
+        d=google.com; s=20230601; t=1729104876; x=1729709676; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J0/8QZoT17A3EROr47LCPpO2aoyicep5UUu5G7/3+TQ=;
+        b=tcqi7kj7TPjaTo8Ei3D9Qqi1tdMJhKVBZSv9UMfIUMU2WNkaQfKzA2OeaUL/d72Syw
+         /uKhlmJQ4yjfzFAkl0+aSMl/b0vhl0v4NxO21PC+qlakUHjDMuLy7FK7t4dF1G/0cndd
+         Qj8z1H7DIE8en5YWBBELQoRSP3eE+WFROmrL1alX09fcj9hjtCyBKokEm1Q0BJCdnvL5
+         zifGGnHIAQ4k7acAP1tcUAqucyRkksInLPt+Fn3rVH3stVRP/u4uAxXTFZGgYU3fOiAG
+         85mxNly6Ymy273vBlKfuu4X0oSwHKamK2Eg/y1yLXS5+ljhukn0wwBZctzhp1a7B1unI
+         MZog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729104876; x=1729709676;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J0/8QZoT17A3EROr47LCPpO2aoyicep5UUu5G7/3+TQ=;
+        b=Odo+pVbektrNLsSluO4pDHpfZyVSCGRwIYBCBCQOlw0civOMP8RNjgk8NW4xPg8iCH
+         FBIH0/fHPmxpyWMjBu3Yl/O+6XNs+KWeFPxJRjmuMtTzCEJU1HOe3IJFYNQcyYWhDY5d
+         nhWcb12MutbbEX/xDV4SsTei5Y9QnQhgE5AMD3KwnqDQdyw7HyiGuGpe7WTwPEsKd5uj
+         vNnG4QFN53B1+4l/G6inc0w23NpoPg8IFFa77WrDf2mkvu36VpE+DQgO3GRaRXByOlkC
+         DsTAAWJHxuimKu9iP9aVyYLlsx/eMh4ncUnjbdhJwLwj2sRSnP2j6vYz6JAwgnitFp0F
+         BIBw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5IcfYR0sFxT82U+nnCuT/l5lRp3qwumRyP+7+yv91DY2FDd7UVNbUNFxwtr+BdUF8eaE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsLPNIR3AT+G02u7K6hUZOLH7JJHREB3xsf3aQ1nYYLVAedtpI
+	BUowcNE5LW8YH2HY6Lu2OevqXUWSAR5IN2TmDXOm/RyWp3cN9+AzqlMhScBVVsPb19nsTdy5+4W
+	mpQ==
+X-Google-Smtp-Source: AGHT+IGs9SUMgB5/fvEZ+YcbF2zWPEo1ZtZhn/bKOtUhnEycWjUvwWralHKNqXT9eNkXrZYNERhQOnYQAU8=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a05:690c:4447:b0:6e3:189a:ad65 with SMTP id
+ 00721157ae682-6e3d41c8134mr875717b3.5.1729104876083; Wed, 16 Oct 2024
+ 11:54:36 -0700 (PDT)
+Date: Wed, 16 Oct 2024 11:54:34 -0700
+In-Reply-To: <ZwezvcaZJOg7A9el@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <Zu0vvRyCyUaQ2S2a@google.com> <20241002124324.14360-1-mankku@gmail.com>
+ <Zv1gbzT1KTYpNgY1@google.com> <Zv15trTQIBxxiSFy@google.com>
+ <Zv2Ay9Y3TswTwW_B@google.com> <ZwezvcaZJOg7A9el@intel.com>
+Message-ID: <ZxAL6thxEH67CpW7@google.com>
+Subject: Re: [PATCH 1/1] KVM: nVMX: update VPPR on vmlaunch/vmresume
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Markku =?utf-8?Q?Ahvenj=C3=A4rvi?=" <mankku@gmail.com>, bp@alien8.de, dave.hansen@linux.intel.com, 
+	hpa@zytor.com, janne.karhunen@gmail.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com, 
+	tglx@linutronix.de, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-T24gV2VkLCAyMDI0LTEwLTE2IGF0IDEwOjA0IC0wNzAwLCBBbmt1ciBBcm9yYSB3cm90ZToNCj4g
-Q0FVVElPTjogVGhpcyBlbWFpbCBvcmlnaW5hdGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5p
-emF0aW9uLiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91
-IGNhbiBjb25maXJtIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4g
-DQo+IA0KPiANCj4gT2thbm92aWMsIEhhcmlzIDxoYXJpc29rbkBhbWF6b24uY29tPiB3cml0ZXM6
-DQo+IA0KPiA+IE9uIFR1ZSwgMjAyNC0xMC0xNSBhdCAxMzowNCArMDEwMCwgQ2F0YWxpbiBNYXJp
-bmFzIHdyb3RlOg0KPiA+ID4gQ0FVVElPTjogVGhpcyBlbWFpbCBvcmlnaW5hdGVkIGZyb20gb3V0
-c2lkZSBvZiB0aGUgb3JnYW5pemF0aW9uLiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRh
-Y2htZW50cyB1bmxlc3MgeW91IGNhbiBjb25maXJtIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNv
-bnRlbnQgaXMgc2FmZS4NCj4gPiA+IA0KPiA+ID4gDQo+ID4gPiANCj4gPiA+IE9uIFdlZCwgU2Vw
-IDI1LCAyMDI0IGF0IDA0OjI0OjE1UE0gLTA3MDAsIEFua3VyIEFyb3JhIHdyb3RlOg0KPiA+ID4g
-PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9jcHVpZGxlL3BvbGxfc3RhdGUuYyBiL2RyaXZlcnMvY3B1
-aWRsZS9wb2xsX3N0YXRlLmMNCj4gPiA+ID4gaW5kZXggOWI2ZDkwYTcyNjAxLi5mYzEyMDQ0MjYx
-NTggMTAwNjQ0DQo+ID4gPiA+IC0tLSBhL2RyaXZlcnMvY3B1aWRsZS9wb2xsX3N0YXRlLmMNCj4g
-PiA+ID4gKysrIGIvZHJpdmVycy9jcHVpZGxlL3BvbGxfc3RhdGUuYw0KPiA+ID4gPiBAQCAtMjEs
-MjEgKzIxLDIwIEBAIHN0YXRpYyBpbnQgX19jcHVpZGxlIHBvbGxfaWRsZShzdHJ1Y3QgY3B1aWRs
-ZV9kZXZpY2UgKmRldiwNCj4gPiA+ID4gDQo+ID4gPiA+ICAgICAgIHJhd19sb2NhbF9pcnFfZW5h
-YmxlKCk7DQo+ID4gPiA+ICAgICAgIGlmICghY3VycmVudF9zZXRfcG9sbGluZ19hbmRfdGVzdCgp
-KSB7DQo+ID4gPiA+IC0gICAgICAgICAgICAgdW5zaWduZWQgaW50IGxvb3BfY291bnQgPSAwOw0K
-PiA+ID4gPiAgICAgICAgICAgICAgIHU2NCBsaW1pdDsNCj4gPiA+ID4gDQo+ID4gPiA+ICAgICAg
-ICAgICAgICAgbGltaXQgPSBjcHVpZGxlX3BvbGxfdGltZShkcnYsIGRldik7DQo+ID4gPiA+IA0K
-PiA+ID4gPiAgICAgICAgICAgICAgIHdoaWxlICghbmVlZF9yZXNjaGVkKCkpIHsNCj4gPiA+ID4g
-LSAgICAgICAgICAgICAgICAgICAgIGNwdV9yZWxheCgpOw0KPiA+ID4gPiAtICAgICAgICAgICAg
-ICAgICAgICAgaWYgKGxvb3BfY291bnQrKyA8IFBPTExfSURMRV9SRUxBWF9DT1VOVCkNCj4gPiA+
-ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29udGludWU7DQo+ID4gPiA+IC0NCj4g
-PiA+ID4gLSAgICAgICAgICAgICAgICAgICAgIGxvb3BfY291bnQgPSAwOw0KPiA+ID4gPiArICAg
-ICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGxvb3BfY291bnQgPSAwOw0KPiA+ID4gPiAg
-ICAgICAgICAgICAgICAgICAgICAgaWYgKGxvY2FsX2Nsb2NrX25vaW5zdHIoKSAtIHRpbWVfc3Rh
-cnQgPiBsaW1pdCkgew0KPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZXYt
-PnBvbGxfdGltZV9saW1pdCA9IHRydWU7DQo+ID4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIGJyZWFrOw0KPiA+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgfQ0KPiA+ID4gPiAr
-DQo+ID4gPiA+ICsgICAgICAgICAgICAgICAgICAgICBzbXBfY29uZF9sb2FkX3JlbGF4ZWQoJmN1
-cnJlbnRfdGhyZWFkX2luZm8oKS0+ZmxhZ3MsDQo+ID4gPiA+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgVkFMICYgX1RJRl9ORUVEX1JFU0NIRUQgfHwNCj4gPiA+
-ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsb29wX2NvdW50
-KysgPj0gUE9MTF9JRExFX1JFTEFYX0NPVU5UKTsNCj4gPiA+IA0KPiA+ID4gVGhlIGFib3ZlIGlz
-IG5vdCBndWFyYW50ZWVkIHRvIG1ha2UgcHJvZ3Jlc3MgaWYgX1RJRl9ORUVEX1JFU0NIRUQgaXMN
-Cj4gPiA+IG5ldmVyIHNldC4gV2l0aCB0aGUgZXZlbnQgc3RyZWFtIGVuYWJsZWQgb24gYXJtNjQs
-IHRoZSBXRkUgd2lsbA0KPiA+ID4gZXZlbnR1YWxseSBiZSB3b2tlbiB1cCwgbG9vcF9jb3VudCBp
-bmNyZW1lbnRlZCBhbmQgdGhlIGNvbmRpdGlvbiB3b3VsZA0KPiA+ID4gYmVjb21lIHRydWUuIEhv
-d2V2ZXIsIHRoZSBzbXBfY29uZF9sb2FkX3JlbGF4ZWQoKSBzZW1hbnRpY3MgcmVxdWlyZSB0aGF0
-DQo+ID4gPiBhIGRpZmZlcmVudCBhZ2VudCB1cGRhdGVzIHRoZSB2YXJpYWJsZSBiZWluZyB3YWl0
-ZWQgb24sIG5vdCB0aGUgd2FpdGluZw0KPiA+ID4gQ1BVIHVwZGF0aW5nIGl0IGl0c2VsZi4gQWxz
-byBub3RlIHRoYXQgdGhlIGV2ZW50IHN0cmVhbSBjYW4gYmUgZGlzYWJsZWQNCj4gPiA+IG9uIGFy
-bTY0IG9uIHRoZSBrZXJuZWwgY29tbWFuZCBsaW5lLg0KPiA+IA0KPiA+IEFsdGVybmF0ZWx5IGNv
-dWxkIHdlIGNvbmRpdGlvbiBhcmNoX2hhbHRwb2xsX3dhbnQoKSBvbg0KPiA+IGFyY2hfdGltZXJf
-ZXZ0c3RybV9hdmFpbGFibGUoKSwgbGlrZSB2Nz8NCj4gDQo+IFllcywgSSdtIHRoaW5raW5nIG9m
-IHN0YWdpbmcgaXQgc29tZXdoYXQgbGlrZSB0aGF0LiBGaXJzdCBhbg0KPiBzbXBfY29uZF9sb2Fk
-X3JlbGF4ZWQoKSB3aGljaCBnZXRzIHJpZCBvZiB0aGlzIGlzc3VlLCBmb2xsb3dlZCBieQ0KPiBv
-bmUgYmFzZWQgb24gc21wX2NvbmRfbG9hZF9yZWxheGVkX3RpbWVvdXQoKS4NCj4gDQo+IFRoYXQg
-c2FpZCwgY29uZGl0aW9uaW5nIGp1c3QgYXJjaF9oYWx0cG9sbF93YW50KCkgd29uJ3Qgc3VmZmlj
-ZSBzaW5jZQ0KPiB3aGF0IENhdGFsaW4gcG9pbnRlZCBvdXQgYWZmZWN0cyBhbGwgdXNlcnMgb2Yg
-cG9sbF9pZGxlKCksIG5vdCBqdXN0DQo+IGhhbHRwb2xsLg0KDQpUaGUgb25seSBvdGhlciB1c2Vy
-cyBJIHNlZSB0b2RheSBhcmUgYXBtX2luaXQoKSBhbmQNCmFjcGlfcHJvY2Vzc29yX3NldHVwX2Nz
-dGF0ZXMoKSwgYm90aCBpbiB4ODYgcGF0aC4gUGVyaGFwcyBub3QgaWRlYWwsDQpidXQgc2hvdWxk
-IGJlIHN1ZmZpY2llbnQuDQoNCj4gDQo+IFJpZ2h0IG5vdyB0aGVyZSdzIG9ubHkgaGFsdHBvbGwg
-YnV0IHRoZXJlIGFyZSBmdXR1cmUgdXNlcnMgbGlrZQ0KPiB6aGVuZ2xpZmVuZyB3aXRoIGEgcGF0
-Y2ggZm9yIGFjcGktaWRsZSBoZXJlOg0KPiANCj4gICBodHRwczovL2xvcmUua2VybmVsLm9yZy9h
-bGwvZjhhMWY4NWItYzRiZi00YzM4LTgxYmYtNzI4ZjcyYTRmMmZlQGh1YXdlaS5jb20vDQo+IA0K
-PiA+ID4gRG9lcyB0aGUgY29kZSBhYm92ZSBicmVhayBhbnkgb3RoZXIgYXJjaGl0ZWN0dXJlPyBJ
-J2Qgc2F5IGlmIHlvdSB3YW50DQo+ID4gPiBzb21ldGhpbmcgbGlrZSB0aGlzLCBiZXR0ZXIgaW50
-cm9kdWNlIGEgbmV3IHNtcF9jb25kX2xvYWRfdGltZW91dCgpDQo+ID4gPiBBUEkuIFRoZSBhYm92
-ZSBsb29rcyBsaWtlIGEgaGFjayB0aGF0IG1heSBvbmx5IHdvcmsgb24gYXJtNjQgd2hlbiB0aGUN
-Cj4gPiA+IGV2ZW50IHN0cmVhbSBpcyBlbmFibGVkLg0KPiA+ID4gDQo+ID4gPiBBIGdlbmVyaWMg
-b3B0aW9uIGlzIHVkZWxheSgpIChvbiBhcm02NCBpdCB3b3VsZCB1c2UgV0ZFL1dGRVQgYnkNCj4g
-PiA+IGRlZmF1bHQpLiBOb3Qgc3VyZSBob3cgaW1wb3J0YW50IGl0IGlzIGZvciBwb2xsX2lkbGUo
-KSBidXQgdGhlIGRvd25zaWRlDQo+ID4gPiBvZiB1ZGVsYXkoKSB0aGF0IGl0IHdvbid0IGJlIGFi
-bGUgdG8gYWxzbyBwb2xsIG5lZWRfcmVzY2hlZCgpIHdoaWxlDQo+ID4gPiB3YWl0aW5nIGZvciB0
-aGUgdGltZW91dC4gSWYgdGhpcyBtYXR0ZXJzLCB5b3UgY291bGQgaW5zdGVhZCBtYWtlIHNtYWxs
-ZXINCj4gPiA+IHVkZWxheSgpIGNhbGxzLiBZZXQgYW5vdGhlciBwcm9ibGVtLCBJIGRvbid0IGtu
-b3cgaG93IGVuZXJneSBlZmZpY2llbnQNCj4gPiA+IHVkZWxheSgpIGlzIG9uIHg4NiB2cyBjcHVf
-cmVsYXgoKS4NCj4gPiA+IA0KPiA+ID4gU28gbWF5YmUgYW4gc21wX2NvbmRfbG9hZF90aW1lb3V0
-KCkgd291bGQgYmUgYmV0dGVyLCBpbXBsZW1lbnRlZCB3aXRoDQo+ID4gPiBjcHVfcmVsYXgoKSBn
-ZW5lcmljYWxseSBhbmQgdGhlIGFybTY0IHdvdWxkIHVzZSBMRFhSLCBXRkUgYW5kIHJlbHkgb24N
-Cj4gPiA+IHRoZSBldmVudCBzdHJlYW0gKG9yIGZhbGwgYmFjayB0byBjcHVfcmVsYXgoKSBpZiB0
-aGUgZXZlbnQgc3RyZWFtIGlzDQo+ID4gPiBkaXNhYmxlZCkuDQo+ID4gPiANCj4gPiA+IC0tDQo+
-ID4gPiBDYXRhbGluDQo+IA0KPiANCj4gLS0NCj4gYW5rdXINCg0K
+On Thu, Oct 10, 2024, Chao Gao wrote:
+> The issue is that KVM does not properly update vmcs01's SVI. In this case, L1
+> does not intercept EOI MSR writes from the deprivileged host (L2), so KVM
+
+Oof.  It's not simply that L1 doesn't intercept EOI, it's also that L1 doesn't
+have APICv enabled.
+
+Note, the only reason there aren't a slew of other issues in this setup is that
+KVM takes all APICv-related controls from vmcs12.  I.e. if L1 is sharing its APIC
+with L2, then KVM will effectively disable APICv when running L2.  Which is
+rather unfortunate for the pKVM-on-KVM case (lost performance), but functionally
+it's ok.
+
+E.g. if KVM enabled APICv in an APIC-passthrough scenario, then KVM would need
+to load the correct EOI bitmaps when running L2, and keep them up-to-date for
+both L1 and L2.
+
+> emulates EOI writes by clearing the highest bit in vISR and updating vPPR.
+> However, SVI in vmcs01 is not updated, causing it to retain the interrupt vector
+> that was just EOI'd. On the next VM-entry to L1, the CPU performs PPR
+> virtualization, setting vPPR to SVI & 0xf0, which results in an incorrect vPPR
+> 
+> Can you try this fix?
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 4a93ac1b9be9..3d24194a648d 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -122,6 +122,8 @@
+>  #define KVM_REQ_HV_TLB_FLUSH \
+>  	KVM_ARCH_REQ_FLAGS(32, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>  #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE	KVM_ARCH_REQ(34)
+> +#define KVM_REQ_UPDATE_HWAPIC_ISR \
+> +	KVM_ARCH_REQ_FLAGS(35, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>  
+>  #define CR0_RESERVED_BITS                                               \
+>  	(~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_TS \
+> @@ -764,6 +766,7 @@ struct kvm_vcpu_arch {
+>  	u64 apic_base;
+>  	struct kvm_lapic *apic;    /* kernel irqchip context */
+>  	bool load_eoi_exitmap_pending;
+> +	bool update_hwapic_isr;
+
+Obviously not your fault, but I'm really beginning to hate all of the flags we're
+accumulating, e.g. in addition to load_eoi_exitmap_pending and potentially
+update_hwapic_isr, VMX also has:
+
+	bool change_vmcs01_virtual_apic_mode;
+	bool reload_vmcs01_apic_access_page;
+	bool update_vmcs01_cpu_dirty_logging;
+	bool update_vmcs01_apicv_status;
+
+Doesn't (and shouldn't) need to be handled as part of this, but I wonder if we
+can clean things up a bit by impementing something along the lines of deferred
+requests, e.g. nested_vmx_defer_request(NESTED_VMX_REQ_XXX, vcpu).  We'd still
+need to add each request, but it would cut down on some of the boilerplate, e.g.
+
+	if (vmx->nested.change_vmcs01_virtual_apic_mode) {
+		vmx->nested.change_vmcs01_virtual_apic_mode = false;
+		vmx_set_virtual_apic_mode(vcpu);
+	}
+
+would become
+
+	if (nested_vmx_check_request(NESTED_VMX_REQ_VAPIC_MODE, vcpu))
+		vmx_set_virtual_apic_mode(vcpu);
+
+An alternative idea would be to use KVM_REQ_XXX directly, and shuffle them from
+vmx->nested to vcpu, but that would pollute KVM_REQ_XXX for the cases where KVM
+doesn't need a "normal" request.
+
+Another idea would be to temporarily switch to vmcs01 as needed, which would
+probably be ok for most cases since they are uncommon events, but for EOIs in
+this, situation the overhead would be non-trivial and completely unnecessary.
+
+>  	DECLARE_BITMAP(ioapic_handled_vectors, 256);
+>  	unsigned long apic_attention;
+>  	int32_t apic_arb_prio;
+> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
+> index b1eb46e26b2e..a8dad16161e4 100644
+> --- a/arch/x86/kvm/kvm_cache_regs.h
+> +++ b/arch/x86/kvm/kvm_cache_regs.h
+> @@ -220,6 +220,11 @@ static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+>  		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+>  	}
+>  
+> +	if (vcpu->arch.update_hwapic_isr) {
+> +		vcpu->arch.update_hwapic_isr = false;
+> +		kvm_make_request(KVM_REQ_UPDATE_HWAPIC_ISR, vcpu);
+
+I don't think we need a new request for this, KVM can refresh SVI directly in
+nested_vmx_vmexit(), e.g. along with change_vmcs01_virtual_apic_mode and friends.
+
+> +	}
+> +
+>  	vcpu->stat.guest_mode = 0;
+>  }
+>  
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index 5bb481aefcbc..d6a03c30f085 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -800,6 +800,9 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+>  	if (!__apic_test_and_clear_vector(vec, apic->regs + APIC_ISR))
+>  		return;
+>  
+> +	if (is_guest_mode(apic->vcpu))
+
+As above, I think this needs to be
+
+	if (is_guest_mode(apic->vcpu) && !nested_cpu_has_vid(get_vmcs12(vcpu)))
+
+because if virtual interrupt delivery is enabled, then EOIs are virtualized.
+Which means that this needs to be handled in vmx_hwapic_isr_update().
+
+Hmm, actually, there's more to it, I think.  If virtual interrupt deliver is
+disabled for L2, then writing vmcs02 is pointless because GUEST_INTR_STATUS is
+unused by the CPU.
+
+Argh, but hwapic_isr_update() doesn't take @vcpu.  That's easy enough to fix,
+just annoying.
+
+Chao, can you provide your SoB for your code?  If you've no objections, I'll
+massage it to avoid using a request and write a changelog, and then post it as
+part of a small series.
+
+Thanks again!
+
+> +		apic->vcpu->arch.update_hwapic_isr = true;
+> +
+>  	/*
+>  	 * We do get here for APIC virtualization enabled if the guest
+>  	 * uses the Hyper-V APIC enlightenment.  In this case we may need
