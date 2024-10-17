@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B2F1F4FA9
-	for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 16:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107F41E0DBF
+	for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 16:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729184027; cv=none; b=bQQ7/rgVQv3wX/PFAN5Jblui1tPwVBmA8baUJykCxH5PVrguYzdkKGlLx3lP99v0DZro5SCW+F0T6cawC5dQk3F5tHpH3AJs2bQnMvURjQcge535lDrbGuGXOyypU0jSLDQGIp8UoI4D3XnHrUjN9Qvs5Lz7Yof0iNd8p73xPM4=
+	t=1729184159; cv=none; b=GI9Q48buZcueizkcPNF2owHzfTtIJFcX/9nsR2PA1kuBuAwjMF0lSPCc0AfxX98qPgaPhopPIwgB1aKr4qPMxKVT6Ydycn6aZUYyYSor8lyrn/K+UJV1a9OfXdYow4tdS10vdP/UUA0VLPzICifnTw6jA1dpQcgMxpCl0r7e1I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729184027; c=relaxed/simple;
-	bh=v/R81eV4s1wGmETmkamsehWGcUohD+1F/Px24lHIzr4=;
+	s=arc-20240116; t=1729184159; c=relaxed/simple;
+	bh=A3Bik+uED0TcCq0mhqgECk3LPeT4BajnICFHkP82o8E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dwLXRu6n+U8pMPqNSMH2iVEo4HrKAvnnN4icc7qJ3zR9NSQAWvcuvionT3EkK6p0QFI5Y8ZgFo+Lz33+/6zKK6BM9zulED4Cb1nAf92WuDy1pPDyp/s89hQnqC+Eb0fWJjOlt1D86yWA9EM9psm1/45rjE9b06+LLzc+za+auWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DX5gcv6K; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=ZOGmndeEKK6WFQgOw8zjGuQVt+/QN9Sok98lXU/1mmbruxaREzn0EaZj1dSNoaXXgUoCFYfK/JGivoMogR4SoU4cBqeQJvkp7KrtCFJAvFjsz4RlP5ZaD9upCJYn642MvhY9h5LF0m23JujnIwW2kUEJvljGrUUUTqwA2qEs/ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WAK1xX1v; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DX5gcv6K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WAK1xX1v"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729184024;
+	s=mimecast20190719; t=1729184157;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9XbYAOM0FZRDyrY920uwf/7Z7ESNlYTyEbyjudrIOjc=;
-	b=DX5gcv6KQks8S1s+snteUIMO8Qs8XAO528X8JHi2f2eCCq8b51nExa2u4Y/Ej2SgTr/pK8
-	hMH8c70qn+ZlPvehGdc67lwbUsw8hUZKx4MfmHM5MOzbfw5WEbxYYVIWC8kpdMC06ykyMb
-	ZViMqVqhG7N64wsGb5GdiyilySbfjDU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+TF4EjUQe4akBV6YOBjHNWotRzFr1rk74khyhgxzXjA=;
+	b=WAK1xX1vFin5xiHSQgZe2YtIPBMNlkHYCg76nC9a6fiXcmNFIc0YKHpDnJmjvrr3GlYoXH
+	K2+J8jiQr+NEhO0Y6IkE8mL5vKME75E4RDSEfBdzTPS7BRYiVkYLJ64P5k+Y8LP+5F9tQ8
+	pvU/Jdsc16/8kOmKkz1klNLcFFV88qQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-TYU6B_MLMgOfKSgd16PK4A-1; Thu, 17 Oct 2024 12:53:43 -0400
-X-MC-Unique: TYU6B_MLMgOfKSgd16PK4A-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d603515cfso422519f8f.1
-        for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 09:53:42 -0700 (PDT)
+ us-mta-223-laEk7Jf6NuaoMSSa8pLOPg-1; Thu, 17 Oct 2024 12:55:56 -0400
+X-MC-Unique: laEk7Jf6NuaoMSSa8pLOPg-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d458087c0so1345437f8f.1
+        for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 09:55:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729184022; x=1729788822;
+        d=1e100.net; s=20230601; t=1729184154; x=1729788954;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9XbYAOM0FZRDyrY920uwf/7Z7ESNlYTyEbyjudrIOjc=;
-        b=tCxuHsMLCT0XwKMQ8nTPaxi0e1TcDS0iS75MFssjqAv+Ufh6IIXkn5b42EBzrW5+6v
-         Ym9cGLR2wmJUqdNHgjuwz1ek0WLkWbpBcsKvMKZ3sTCKTT11NUqQJP7sIq6v6k82ZFSW
-         ihGYmDZfq6BXul6SWLgAMHS4ftCW+uHcqiC246qLGr9UeRJRrTi5WtPpJBIswhpjtCXD
-         VKHRcpx9c8WZCOgnS7X3mKv4UOo7zUedC+URZ38ezVmTvFN7UAURC4u8voO+LgDB5asR
-         ppwDNpPAb8Lsxw2wfxW/6/GHzzUKBdMp6Acs7KDt4aasWfNHSIwClI4OqKZM96EhP3t+
-         B5sw==
-X-Gm-Message-State: AOJu0Yyc2hpKmk5mAZRBzBLeLIYUKtzGSI4qYzdRASMT1aWgpXALivKX
-	xGW7X43ssgrKnuV0CERpHIMmgKaz/cxfN79O0opOffSO/4jQhxfHpVEb7MbpV3oK2Cj22WOSvfc
-	8MqEoBglz1TEYnsD1QGfm+lmobhk9k8cB1AxIKuraCvbVOuQekQ==
-X-Received: by 2002:a5d:457b:0:b0:37d:38b4:b2d9 with SMTP id ffacd0b85a97d-37d5feae565mr13650640f8f.20.1729184021822;
-        Thu, 17 Oct 2024 09:53:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG4UCFWdwJ5xt3EKlDxp1lCWMBL+3nFkQaULzW/yCUcZKYHZlMqQuXMDMCThd69h5Kaw5P0Lw==
-X-Received: by 2002:a5d:457b:0:b0:37d:38b4:b2d9 with SMTP id ffacd0b85a97d-37d5feae565mr13650624f8f.20.1729184021378;
-        Thu, 17 Oct 2024 09:53:41 -0700 (PDT)
+        bh=+TF4EjUQe4akBV6YOBjHNWotRzFr1rk74khyhgxzXjA=;
+        b=lA8VucmbNq01tWFHUamofSC2q88HPTyN1J03zF3kgn77yuy6q+5k7ykE63HvVb8gzX
+         o94phSsstqKyeIGmCdq8ZSS1/qBvLW4tOS/oU2+BTgVQgEAP0h+ee7IxOb/F19iyc0AY
+         IFq7WNf3HS2p9K7Ee4/2c6xDZFjSDntGgubJc9OVe2gYndu1cEn2TZIDqd8XrsPSXWpr
+         jxY141xGlJ26FsfEuYM3cNXfAzaGNS9NhR4G5EMqHfvKYicIjLgSMHmFIDvrO6LW07HW
+         kXfbp12PtUGPCQIBSbg/r4IpXxNxEw5YVbYHjXIXpAJiTESgQkrDOeYcBzfgmbn2CTPW
+         tjww==
+X-Gm-Message-State: AOJu0Yy4at7VTBb0inpUK+aYItVrzKG5l0zWXyHGtnONYkld25LJW9tq
+	+WieZzVHBPeNol5rDGhwpErhXt2PuGcR5dtKVN++7V4KlYj272x1pHV22CnQ6pFtcf2fFuS+No5
+	jdm2BTkTTOuCHpR/40AdxmDz5UzBCT/1VKURmeQyqx35DgwIxRHnGd4IaHd0d
+X-Received: by 2002:a05:600c:46c7:b0:431:5475:3cd1 with SMTP id 5b1f17b1804b1-4315875fb2fmr24947555e9.17.1729184154475;
+        Thu, 17 Oct 2024 09:55:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGftvJZcxEKWFhN/3/ufIEpcdyKySAIL5OLAG96TfSpAvg7JFTk4Yz8MPMsb+oJ1rNYefBfRw==
+X-Received: by 2002:a05:600c:46c7:b0:431:5475:3cd1 with SMTP id 5b1f17b1804b1-4315875fb2fmr24947435e9.17.1729184154064;
+        Thu, 17 Oct 2024 09:55:54 -0700 (PDT)
 Received: from [192.168.10.28] ([151.95.144.54])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d7fa87c27sm7771464f8f.39.2024.10.17.09.53.39
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-431606c64b8sm899815e9.38.2024.10.17.09.55.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Oct 2024 09:53:40 -0700 (PDT)
-Message-ID: <33db440c-40f1-4203-850c-c43e05758335@redhat.com>
-Date: Thu, 17 Oct 2024 18:53:37 +0200
+        Thu, 17 Oct 2024 09:55:53 -0700 (PDT)
+Message-ID: <1012877d-1a99-4d0c-92bc-53025dfaf489@redhat.com>
+Date: Thu, 17 Oct 2024 18:55:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,15 +67,14 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/18] KVM: x86/mmu: Dedup logic for detecting TLB flushes
- on leaf SPTE changes
+Subject: Re: [PATCH 00/18] KVM: x86/mmu: A/D cleanups (on top of
+ kvm_follow_pfn)
 To: Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  Yan Zhao <yan.y.zhao@intel.com>, Sagi Shahar <sagis@google.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  David Matlack <dmatlack@google.com>, James Houghton <jthoughton@google.com>
 References: <20241011021051.1557902-1-seanjc@google.com>
- <20241011021051.1557902-16-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -113,18 +112,65 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20241011021051.1557902-16-seanjc@google.com>
+In-Reply-To: <20241011021051.1557902-1-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/11/24 04:10, Sean Christopherson wrote:
-> +static inline bool is_tlb_flush_required_for_leaf_spte(u64 old_spte,
-> +						       u64 new_spte)
-> +{
-> +	return is_mmu_writable_spte(old_spte) && !is_mmu_writable_spte(new_spte);
-> +}
+> This is effectively an extensive of the kvm_follow_pfn series[*] (and
+> applies on top of said series), but is x86-specific and is *almost*
+> entirely related to Accessed and Dirty bits.
+> 
+> There's no central theme beyond cleaning up things that were discovered
+> when digging deep for the kvm_follow_pfn overhaul, and to a lesser extent
+> the series to add MGLRU support in KVM x86.
 
-Shorter name? leaf_spte_change_needs_tlb_flush?
+Very nice - looks obvious in retrospect, as it often happens.
 
 Paolo
+
+> [*] https://lore.kernel.org/all/20241010182427.1434605-1-seanjc@google.com
+> 
+> Sean Christopherson (18):
+>    KVM: x86/mmu: Flush remote TLBs iff MMU-writable flag is cleared from
+>      RO SPTE
+>    KVM: x86/mmu: Always set SPTE's dirty bit if it's created as writable
+>    KVM: x86/mmu: Fold all of make_spte()'s writable handling into one
+>      if-else
+>    KVM: x86/mmu: Don't force flush if SPTE update clears Accessed bit
+>    KVM: x86/mmu: Don't flush TLBs when clearing Dirty bit in shadow MMU
+>    KVM: x86/mmu: Drop ignored return value from
+>      kvm_tdp_mmu_clear_dirty_slot()
+>    KVM: x86/mmu: Fold mmu_spte_update_no_track() into mmu_spte_update()
+>    KVM: x86/mmu: WARN and flush if resolving a TDP MMU fault clears
+>      MMU-writable
+>    KVM: x86/mmu: Add a dedicated flag to track if A/D bits are globally
+>      enabled
+>    KVM: x86/mmu: Set shadow_accessed_mask for EPT even if A/D bits
+>      disabled
+>    KVM: x86/mmu: Set shadow_dirty_mask for EPT even if A/D bits disabled
+>    KVM: x86/mmu: Use Accessed bit even when _hardware_ A/D bits are
+>      disabled
+>    KVM: x86/mmu: Process only valid TDP MMU roots when aging a gfn range
+>    KVM: x86/mmu: Stop processing TDP MMU roots for test_age if young SPTE
+>      found
+>    KVM: x86/mmu: Dedup logic for detecting TLB flushes on leaf SPTE
+>      changes
+>    KVM: x86/mmu: Set Dirty bit for new SPTEs, even if _hardware_ A/D bits
+>      are disabled
+>    KVM: Allow arch code to elide TLB flushes when aging a young page
+>    KVM: x86: Don't emit TLB flushes when aging SPTEs for mmu_notifiers
+> 
+>   arch/x86/kvm/Kconfig       |   1 +
+>   arch/x86/kvm/mmu/mmu.c     |  72 +++++++-----------------
+>   arch/x86/kvm/mmu/spte.c    |  59 ++++++++------------
+>   arch/x86/kvm/mmu/spte.h    |  72 ++++++++++++------------
+>   arch/x86/kvm/mmu/tdp_mmu.c | 109 +++++++++++++++++--------------------
+>   arch/x86/kvm/mmu/tdp_mmu.h |   2 +-
+>   virt/kvm/Kconfig           |   4 ++
+>   virt/kvm/kvm_main.c        |  20 ++-----
+>   8 files changed, 142 insertions(+), 197 deletions(-)
+> 
+> 
+> base-commit: 3f9cf3d569fdf7fb451294b636991291965573ce
 
