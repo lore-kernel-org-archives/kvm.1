@@ -1,74 +1,130 @@
-Received: from gentwo.org (gentwo.org [62.72.0.81])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9305E1DFDB5;
-	Thu, 17 Oct 2024 17:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CEA1DF990
+	for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 17:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729185960; cv=none; b=rwrznJq896if183++MEaWx5CjWkIYUSYKMDbUSX7HE2Nr2Y9LN0eFgyOydYASwl8uv58zY5ujC5Xj7lEe9IYg7BuXtOrDTXuIkFH614lcxbw1tjpN8EvKXz6SNUsHXeWUaIxilSS7xVaKWN6jDaRXD+oSaIwXAPpjPinOzA2MT4=
+	t=1729186825; cv=none; b=KddG8Hd/ahBIUcUOYQAY1tl+FRQ+lhyTvJTpEaxR5BmIANTygcxbAc5bbAdN9hSF+HbFe62ysu0nGjCpJHO255XGxcTq3K5Gw8i60bJlM01f7PnhjmHcBAykdHvkuZvB++81opHwlYf9r/eJ1p7Ck8IjRyqKsD0Qs2ZWOomfpWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729185960; c=relaxed/simple;
-	bh=oxTupLXSgxbLn39ngHQOrPR9z7y/bIXj7Kei68yHNAM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=IZ7EGhZL6B0C655twwLjyqemPjJ/oZtWVwGI8pf+IdKAbY+O1c+J3s6qv955YiFP9tguJklg7fMqCs96/bmnqhK3pOI+ZIi7ogxexUbF73AzfrOyOPpq3hlBGvgtsfvQ4jpzKrr4WYJYWwtO0chaEb2E6X0fbsG/wOpoaxvoIVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=L0Gevzpo; arc=none smtp.client-ip=62.72.0.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
+	s=arc-20240116; t=1729186825; c=relaxed/simple;
+	bh=dLn9d36dm2CDpdmYI4TuowHAHoMiQT1DP6ItK2LTOeo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VuKd316A7y1fXyJtunV+xGZbhjL5zYKTnZ7KqoJLQyj9KwLGKH9L0sOv2tNZArsib9KYlKd+KRSyDt+v6qguKKu3ajGBsCdnGlllcMSxQmvqgvQCgXZ1I7atW6w43i0O2lcF9FwyPjrqkR+5kopsxgb5H5jyNzTh98C69SYjKVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JfDKBTN7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="L0Gevzpo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1729184074;
-	bh=oxTupLXSgxbLn39ngHQOrPR9z7y/bIXj7Kei68yHNAM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=L0GevzpoDEAMzElBztpL1IWC/IxrvBuA849C4ewpzp9+I63Bjnl8V7oWWsDEi6x4u
-	 WXrb3V16oKlo/eebJBlEyHBU7XvC3VUmG7PzBVRAUR9VOlQ9nJrOZQg1XHxnszu91C
-	 Bv7KsLgC8BHeV1vx5Y1ITmA/7Wz6lNZzOUUmX/bk=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id C754540280; Thu, 17 Oct 2024 09:54:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id C5197400C9;
-	Thu, 17 Oct 2024 09:54:34 -0700 (PDT)
-Date: Thu, 17 Oct 2024 09:54:34 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-cc: Catalin Marinas <catalin.marinas@arm.com>, linux-pm@vger.kernel.org, 
-    kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-kernel@vger.kernel.org, will@kernel.org, tglx@linutronix.de, 
-    mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-    x86@kernel.org, hpa@zytor.com, pbonzini@redhat.com, wanpengli@tencent.com, 
-    vkuznets@redhat.com, rafael@kernel.org, daniel.lezcano@linaro.org, 
-    peterz@infradead.org, arnd@arndb.de, lenb@kernel.org, mark.rutland@arm.com, 
-    harisokn@amazon.com, mtosatti@redhat.com, sudeep.holla@arm.com, 
-    misono.tomohiro@fujitsu.com, maobibo@loongson.cn, 
-    joao.m.martins@oracle.com, boris.ostrovsky@oracle.com, 
-    konrad.wilk@oracle.com
-Subject: Re: [PATCH v8 01/11] cpuidle/poll_state: poll via
- smp_cond_load_relaxed()
-In-Reply-To: <87frowr0fo.fsf@oracle.com>
-Message-ID: <a07fb08b-d9d0-c9cc-8e03-3857d0adffdf@gentwo.org>
-References: <20240925232425.2763385-1-ankur.a.arora@oracle.com> <20240925232425.2763385-2-ankur.a.arora@oracle.com> <Zw5aPAuVi5sxdN5-@arm.com> <086081ed-e2a8-508d-863c-21f2ff7c5490@gentwo.org> <Zw6dZ7HxvcHJaDgm@arm.com> <1e56e83e-83b3-d4fd-67a8-0bc89f3e3d20@gentwo.org>
- <Zw6o_OyhzYd6hfjZ@arm.com> <87jze9rq15.fsf@oracle.com> <2c232dc6-6a13-e34b-bdcc-691c966796d4@gentwo.org> <87frowr0fo.fsf@oracle.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JfDKBTN7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729186820;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
+	b=JfDKBTN7EKK/7g00ZbFVAOFGAj+sX09EJtPKbT1THPVZu04ZswRCfPXhcSzgAHfWsJdEmo
+	+7We6LKORBxOOwyFJOnzKJqG4ivYQ08lR1n3IEFl+JuOni0sHCZqcDyWTjNRj2eVqB6vOa
+	xwMQ/v1Rer+86A6jIrUtOByGNFJNPmQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-4dAIlkk6PMOlel51bpaEBQ-1; Thu, 17 Oct 2024 13:40:18 -0400
+X-MC-Unique: 4dAIlkk6PMOlel51bpaEBQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43151e4ef43so8349175e9.3
+        for <kvm@vger.kernel.org>; Thu, 17 Oct 2024 10:40:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729186817; x=1729791617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
+        b=YPjymcpXS33X6tHc2BzHF9GZOehORqyoL6bZC4fxzcpbx5BVGhwr1NY2CfYLYAC7Bo
+         HklYFolTYHkfJODQkgDunCUereNrqR9/OzOmncYfHiP31F5EExip7jmGBvSu5XWposAK
+         2UI1bSPVd1uYkz4Pc8d0M3ctmh8TjzoRaJ1O/s6BqVnrGWqWx/SSvaPsvZ2CM69EcYyW
+         MDsqF6vCTWd9r/FniyQWWeQMT0fwL8MRzTBtdHhX09XSFUtOLzXK82FJYQCff00UL8oG
+         uY5qXipLdkc8cimc6LhhJJUhjP/t5SVc/fGX4pjowjmLeIwmLDFJMX0JJM/Sp39r73+l
+         bnhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNodHbrbeZ3w5iia5of25yAK+bXEXEjIK8W5yDGK2jTeFZf9NYjnoFxMd6tjWMIDQJxsE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfvVtrHWdwzrZ5u9JU32RhoTiv4eCpADGnkCNUpFVoAK/Izez0
+	7TsKDyNuWKMIsfWborCb3HE8w/BfDiFRSN+Vuxs7r4nsqjAyEdfEtxCuN/Ha8V5oZT2wvyvGPeE
+	Xc4hjFeuzg2aESONWtO9Y/4ALO0cg3Rja9ovQb4MgTTu6r0L7MbgWFMteNfPTSP+zcJNQcZ10id
+	bmdmfG1Qqfc/YNvhjNJDKhioUT
+X-Received: by 2002:a05:600c:1d8e:b0:431:57d2:d7b4 with SMTP id 5b1f17b1804b1-43157d2d7b9mr36507125e9.26.1729186817338;
+        Thu, 17 Oct 2024 10:40:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJXjIUBFBzWhc81QoCH/SVoEivw8XmjKVFXrcy86zA+s4Bvx/9zH7hnQ9Z4/zbRof1LT4xgUF82luj5UeBHDI=
+X-Received: by 2002:a05:600c:1d8e:b0:431:57d2:d7b4 with SMTP id
+ 5b1f17b1804b1-43157d2d7b9mr36506735e9.26.1729186816975; Thu, 17 Oct 2024
+ 10:40:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20241010182427.1434605-1-seanjc@google.com>
+In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 17 Oct 2024 19:40:04 +0200
+Message-ID: <CABgObfbQW-3vp=mNcR4giUGZ_gxhuRykvKj8gzBDY7pOg6xdBQ@mail.gmail.com>
+Subject: Re: [PATCH v13 00/85] KVM: Stop grabbing references to PFNMAP'd pages
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Yan Zhao <yan.y.zhao@intel.com>, David Matlack <dmatlack@google.com>, 
+	David Stevens <stevensd@chromium.org>, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Oct 2024, Ankur Arora wrote:
+On Thu, Oct 10, 2024 at 8:24=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+> v13:
+>  - Rebased onto v6.12-rc2
+>  - Collect reviews. [Alex and others]
+>  - Fix a transient bug in arm64 and RISC-V where KVM would leak a page
+>    refcount. [Oliver]
+>  - Fix a dangling comment. [Alex]
+>  - Drop kvm_lookup_pfn(), as the x86 that "needed" it was stupid and is (=
+was?)
+>    eliminated in v6.12.
+>  - Drop check_user_page_hwpoison(). [Paolo]
+>  - Drop the arm64 MTE fixes that went into 6.12.
+>  - Slightly redo the guest_memfd interaction to account for 6.12 changes.
 
-> > The other core will wake our core up by sending an IPI. The IPI will
-> > invoke a scheduler function on our core and the WFE will continue.
->
-> Why? The target core is not sleeping. It is *polling* on a memory
-> address (on arm64, via LDXR; WFE). Ergo an IPI is not needed to tell
-> it that a need-resched bit is set.
+Here is my own summary of the changes:
 
-The IPI is sent to interrupt the process that is not sleeping. This is
-done so the busy processor can reschedule the currently running process
-and respond to the event.
+patches removed from v12:
+01/02 - already upstream
+09 - moved to separate A/D series [1]
+34 - not needed due to new patch 36
+35 - gone after 620525739521376a65a690df899e1596d56791f8
 
-It does not matter if the core is "sleeping" or not.
+patches added or substantially changed in v13:
+05/06/07 - new, suggested by Yan Zhao
+08 - code was folded from mmu_spte_age into kvm_rmap_age_gfn_range
+14 - new, suggested by me in reply to 84/84 (yuck)
+15 - new, suggested by me in reply to 84/84
+19 - somewhat rewritten for new follow_pfnmap API
+27 - smaller changes due to new follow_pfnmap API
+36 - rewritten, suggested by me
+45 - new, cleanup
+46 - much simplified due to new patch 45
 
+Looks good to me, thanks and congratulations!! Should we merge it in
+kvm/next asap?
+
+Paolo
+
+[1] https://patchew.org/linux/20241011021051.1557902-1-seanjc@google.com/20=
+241011021051.1557902-5-seanjc@google.com/
 
