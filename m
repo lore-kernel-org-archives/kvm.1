@@ -1,251 +1,143 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2089.outbound.protection.outlook.com [40.107.92.89])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D7318E744;
-	Fri, 18 Oct 2024 08:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729241556; cv=fail; b=n1XHWF0kGAJiLejVD1ZHBarxhPIK3e6rHKM6HpYxXs9UM/v8UUYEdIOijH44Y9GZ12I+zFk7PHazGL8I/vJ3opTanVMwJr0IVqWWwL01bh1qg/FG3qh/c0vSSmA4wF+1zLaSxBZnHlCOVDbBR2pGaIZSWRhLSE6oGovjcNv0gy8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729241556; c=relaxed/simple;
-	bh=CsMi36V0VhL/+T8jXhGFDYIl9V9J/LMYchiVlNn7qGw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hZhtcfev+J1ARFOU/v1lXFVLRrojifrovco2Kh/M2LAtkdQdyN0nWRuj1PqqOE4hAcEbgJsMc15CtbslCXOgR3TX5KyK5Sa5+rQou+4gydWL0swNxFdNNS+jvsuZmp63BSGyejpk4TfQacwT85zJukaSkTZAYeDiYxP3C/4/ovg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0OD/jL7f; arc=fail smtp.client-ip=40.107.92.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D60D19005E;
+	Fri, 18 Oct 2024 09:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729242233; cv=none; b=AoVQ1yzOWTipRd7SnW5lJ76y083+BP0+owOcUI3K17Duwp+wJy/VafYZTvrvxllQ2c0pMx/YB7BabPA8It3DWhvqPsfIJLxZARUQjrKTMJlbrjhtO5E+XnZ+niLLNb7ysPE215A3Ai4uvrqKeBZRSZ7woGKyItcQ0V0f5JG8jcY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729242233; c=relaxed/simple;
+	bh=lGXZDdasYKEnFlv2mzNK2Z+xdDWSlyxeS0oofZeQIRw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VfkSAH+TNPo+3goKZpmQlL7mHqAWoBjJN2hTEybTm1wTJafXsu9+Ei7BxlcwRSXo6rzT9DSA4xkMbvZY6Jxd6QW+/KHwBG/aRrMoG19oRwC59T2wrcIwf6eQkzwoQsMspl4qnijxZvT/bSRLN7fHcEGKFm/yJx1izu/GeVSgJ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ohz5l6zp; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0OD/jL7f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UJ9zxhGe9siGFgt89R2lpsHGJsHsXYCLV8MFGWK4G6Pku/aOgu6jntX1cCshza+HXPyNRB2t/pzDMTmAWLz/18U0jahIoy3UxUr89oiPV88LkXLwOm2pGd8uO7tzfZ4XlPXmfC3VqA3uXjxAI/hZaAWEF0YVQHmkyltROEHwoX35+Kenui2CH0k3/UHUAR2f009v0art9S01G0pXU+7CwRi+5MeWZYxLx2LvSHtspfPQgq58DzZaIaOv12+iOTHstt8el/9XMeBg7j6y7UpGZq/G3qHZEf8ArEL3tiIJkLNPu2k7C3Wq6U+x4AlywBfEtdq6Bq3H3w5++OFef6Jf1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KQbsVaszZ0Box5GznutiBe0zkzLQePszSHzff2S+4HI=;
- b=gMl+pSrxOtyfFxjZV6QW4t8ySxZAWgffM4ImwbTLxIiNx8pAHiwXxMUfsyVKLP+qb6Uv9TLzq3Mjf+kRSypBPjKsu22MIqVWv5s45AWwS3CWybhOrNHmlyY44Y5YbLsAmOUpkAiLgXDxWRzQwAZokgO+pchrLAhRxxNhfjZ8fgd5xWdj957ssXhNA9U4MOOtZqCMbzrrH3XHTTrv3Z8UAMiz7vEwbsZmqXGoTYYjcIHYu3iDTbBDBRVyZ5jRraaUDm0YUvXtZjRYYjKwE5UzDubY4NtfD85edk9c4veG0iL7qIKPTBglxoqOFmNyBSIxts74Le/T1sClSZTeBgIefg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KQbsVaszZ0Box5GznutiBe0zkzLQePszSHzff2S+4HI=;
- b=0OD/jL7fpSUN4drOPdwty+CakFCPbX04ChDgOGfVPx5Ig4N+9enPzqmWd57eLYsWVPFdVcFpoG1A7L5bjbB5It9n3f376VtIiseH/lACU6SVqd57bbF89k/VcBK5X0wogEHPs2GFtdv2Dh9Tb5COIZhvuA4nFloe0HlrBkouPvs=
-Received: from CH5P223CA0010.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::11)
- by SN7PR12MB6887.namprd12.prod.outlook.com (2603:10b6:806:261::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 18 Oct
- 2024 08:52:30 +0000
-Received: from CH2PEPF00000146.namprd02.prod.outlook.com
- (2603:10b6:610:1f3:cafe::73) by CH5P223CA0010.outlook.office365.com
- (2603:10b6:610:1f3::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.21 via Frontend
- Transport; Fri, 18 Oct 2024 08:52:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH2PEPF00000146.mail.protection.outlook.com (10.167.244.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8069.17 via Frontend Transport; Fri, 18 Oct 2024 08:52:30 +0000
-Received: from volcano-62e7host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 18 Oct
- 2024 03:52:22 -0500
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
-CC: <pbonzini@redhat.com>, <seanjc@google.com>, <joao.m.martins@oracle.com>,
-	<david.kaplan@amd.com>, <jon.grimm@amd.com>, <santosh.shukla@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v2] KVM: SVM: Inhibit AVIC on SNP-enabled system without HvInUseWrAllowed feature
-Date: Fri, 18 Oct 2024 08:50:37 +0000
-Message-ID: <20241018085037.14131-1-suravee.suthikulpanit@amd.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ohz5l6zp"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49I5a5or013887;
+	Fri, 18 Oct 2024 09:03:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PiSI6j
+	1MtOwTiFNJHvrYIgaf6ieP1ybkj9J8bqKVcCM=; b=ohz5l6zpljUxai3ZmHz2U5
+	nxWu2Y9iNQqNkjPDhujNOQrO7+Zt1cE/K/KI+S+xUPDBFaTz1m6egFbx9ArPkyI4
+	iXrxrdPpdNGqQ00dSPTRGp+YqFh0Lehm1QgyEqzcMIWEqYY2BJkChxtZz4BnzfrE
+	YX20K5WPNogmsWISKe0kdEU/BO/o7HLaDwEcX7OPwFPW85Sq3huaJrHm3X5B8jiG
+	0WXm4dtev108yvW3a0tf44NpGMFo1FFqUm+JKJdlhlx6eVhXAYZWWDfae5gga69m
+	EBtNqryCofrRNR+ntNF7tUDdPRPD/BAfBJ9ElUbN5WWYf58NeNopB/w+bgNG1Yug
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42bhnf904q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Oct 2024 09:03:46 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49I61TIY006338;
+	Fri, 18 Oct 2024 09:03:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428651b527-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Oct 2024 09:03:46 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49I93gsk45416784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Oct 2024 09:03:42 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 715722004B;
+	Fri, 18 Oct 2024 09:03:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1130F20043;
+	Fri, 18 Oct 2024 09:03:42 +0000 (GMT)
+Received: from [9.171.57.243] (unknown [9.171.57.243])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Oct 2024 09:03:41 +0000 (GMT)
+Message-ID: <33070d84-d261-4cec-8272-aef4757af353@linux.ibm.com>
+Date: Fri, 18 Oct 2024 11:03:41 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000146:EE_|SN7PR12MB6887:EE_
-X-MS-Office365-Filtering-Correlation-Id: d06a3d77-a0cd-4a4c-93b8-08dcef523322
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SktLcHdSajl1Ri9OYVZqdUJmaUlOckd1TWJpb3RDdnpuUUFld29IY1NvaFd2?=
- =?utf-8?B?Y2xTTTlLZVR6K2dONzRmeGFLVFBlSEdrczE2UzFQOW5CZ28ydjdjelpBVjBZ?=
- =?utf-8?B?TFk3NmJ5UXZHTUJsc0t4V25XMFIwM1pnUEhmVjBNSTZsdDZwRHpZcHk1QnlB?=
- =?utf-8?B?QXExMHM4UTB1b2xHV0lud1JVTEtua0JmK1NYUFp3ajladlExYmJEelllemhT?=
- =?utf-8?B?RVdrV1dURFdKa0Vpc1JPVW13QnhxZ2lvR2JUYVVkTDFRdWs3aUZoV1VsVkFL?=
- =?utf-8?B?MGhNUmF5elp2bExyYndCZURXOHI0MzFOMnBIWGxQUkp3ZVlETG5pS0pycnZJ?=
- =?utf-8?B?clN1ZHNuSTZQL3hjZ0YzZVNOYXNoekdwY1A0dmNoc2dqNWEwZWwrcmVJZjYz?=
- =?utf-8?B?UENhUjFlc1lxZDlNQ2k2K3YzaW5DaktsQXlDbGUzdmc5aVExV25WTFBlcHpX?=
- =?utf-8?B?L0RvRVVFb3FWbWlBYUE5anhzS1ZUdW9sWXg4d3N3eXJpWXBwL2g3MWFxWncy?=
- =?utf-8?B?QjFlb0srZmFkRHRQNU1wdDFLdDFIWTArWGJDY1RJcDYwb1lmL3BlVHRDVEc1?=
- =?utf-8?B?dXRHeWZkQ1F3V3p1SjIwWDlmSTVXRkk4Rkt2SWprcTVncXVXYmJUNWlxdnVT?=
- =?utf-8?B?L1NabTQ1Wi9jM3BZWXdPZDBTbjJYYmxZTTVhNWF0aVpQUVEwL3ZjWkE2WUVK?=
- =?utf-8?B?eVhlN0xDZVozWElSSUl5VlpDbE5XbllqNVpLejEzSWt1WHBmZ1RJcld5ZnAy?=
- =?utf-8?B?czMzYzhUc1dzSlNKUVRLUmMzVTQvZ05xNjlTZXk5LzdRcmxuaHlsUHliV0hy?=
- =?utf-8?B?RTRrWU9VSmI4eVFGYW44VHFSVU4zN2xoZ3lqT0lndkQ2QTFDL3lKRGx4VlFu?=
- =?utf-8?B?U0g0K0hXNXZjYU82RnZETzVST0pHM1haVWVsNkw3ZVJ6UG9aZVprNjFKVVh6?=
- =?utf-8?B?bHU3ZnpHbkR1aENrcTNBQ0gvS0ErVzhUQU45VE9La3luemRlV0RBOGRVU3RC?=
- =?utf-8?B?RDE2RXhIM1hPY1JocXFhVmlQbzJUbFNQRlJuVTFqcHlYY3N4bHZRL21iTkZZ?=
- =?utf-8?B?RTdWMlBQTm9jZ2Q0czdzQ3VaQ2lzdWI4Z3AvN21SZlhxc3ZnTGl6aVY4VDV5?=
- =?utf-8?B?QndjL3BYNTAvcXBNdVFLNlM0SFlYVEhweDlyaENsajJGMVB1VTRTbUYxVTd0?=
- =?utf-8?B?ZXNZZzNaVWRQallTaHVuVGxuNkxCelJjSFE4VFd4dmQ5V2x6b1dTaFJ1MWNO?=
- =?utf-8?B?NzdlUDFFTVZ5UlpnVVV5VlErS0MzWnpjUkErTUt3bHRYYlAzZnVaVlg3bHpW?=
- =?utf-8?B?SGYrN0pJNy9takZvYjYyM3A0OXdCa2VnaDlETUxlVmp4emxHWDlSTFJpTVdQ?=
- =?utf-8?B?bXkwcnV6UUYzaXJDQTMxR25iL2tQZ0JjZVNlQ1VhcExkYUI1TmRSazhPZlYx?=
- =?utf-8?B?VEYwOWNiYk4wcnhEU3ZHVWJHSjQxemFsQkJ6M1hHQWQ1T05aMHk4QXROU1Rk?=
- =?utf-8?B?djBDZDEyOEVJaUVES3ZQNnYrcVFKZVRiYlVLU1plaENrQVRYNHV2R1l3OUVH?=
- =?utf-8?B?RFRKSlk1eDgzSkVnM2hIdEF2TkdkUC9ZckFIcmJLZ213YnVOWjFaSlpCcFg3?=
- =?utf-8?B?QXV0SlBMWGNQN0pZT3RoMVVmbFBJVXR3dlp1QnZmTm5LKzMzaENZS2sxeEI0?=
- =?utf-8?B?VDlsWUVxbENlRFJrVmVnSEJnV0I0VUNxdUl6NG4yM01MT1hreWtIZGZNMHkv?=
- =?utf-8?B?RGZGQ3NkdGNhWlB3YWloMXM5R2pZWFFYZ09OcmhaK2Z4K0xtZmtOenJXZ1pz?=
- =?utf-8?B?QWRZZUVFcXNReVV0cE9INFFtUkpaVXpEZElsbGp3bmluYXB3NmpKZVhhTUJh?=
- =?utf-8?B?bWZzQUZEWWVLR2NSWGlaVUQwQndXenpBeTY5YURPeXNNdkE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 08:52:30.3247
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d06a3d77-a0cd-4a4c-93b8-08dcef523322
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000146.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6887
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/5] selftests: kvm: s390: Add uc_skey VM test case
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>
+References: <D4WF2493HS7M.QHC37L73T9L5@linux.ibm.com>
+ <20241015141539.57638-1-schlameuss@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20241015141539.57638-1-schlameuss@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vjJf-AuTvSGVj3XZQtAI0KuaxeuRrG_e
+X-Proofpoint-ORIG-GUID: vjJf-AuTvSGVj3XZQtAI0KuaxeuRrG_e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=713
+ malwarescore=0 bulkscore=0 adultscore=0 spamscore=0 phishscore=0
+ clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410180056
 
-On SNP-enabled system, VMRUN marks AVIC Backing Page as in-use while
-the guest is running for both secure and non-secure guest. Any hypervisor
-write to the in-use vCPU's AVIC backing page (e.g. to inject an interrupt)
-will generate unexpected #PF in the host.
+On 10/15/24 4:15 PM, Christoph Schlameuss wrote:
+> Add a test case manipulating s390 storage keys from within the ucontrol
+> VM.
+> 
+> Storage key instruction (ISKE, SSKE and RRBE) intercepts and
+> Keyless-subset facility are disabled on first use, where the skeys are
+> setup by KVM in non ucontrol VMs.
+> 
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-Currently, attempt to run AVIC guest would result in the following error:
-
-    BUG: unable to handle page fault for address: ff3a442e549cc270
-    #PF: supervisor write access in kernel mode
-    #PF: error_code(0x80000003) - RMP violation
-    PGD b6ee01067 P4D b6ee02067 PUD 10096d063 PMD 11c540063 PTE 80000001149cc163
-    SEV-SNP: PFN 0x1149cc unassigned, dumping non-zero entries in 2M PFN region: [0x114800 - 0x114a00]
-    ...
-
-Newer AMD system is enhanced to allow hypervisor to modify the backing page
-for non-secure guest on SNP-enabled system. This enhancement is available
-when the CPUID Fn8000_001F_EAX bit 30 is set (HvInUseWrAllowed).
-
-This table describes AVIC support matrix w.r.t. SNP enablement:
-
-               | Non-SNP system |     SNP system
------------------------------------------------------
- Non-SNP guest |  AVIC Activate | AVIC Activate iff
-               |                | HvInuseWrAllowed=1
------------------------------------------------------
-     SNP guest |      N/A       |    Secure AVIC
-               |                |    x2APIC only
-
-Introduce APICV_INHIBIT_REASON_HVINUSEWR_NOT_ALLOWED to deactivate AVIC
-when the feature is not available on SNP-enabled system.
-
-See the AMD64 Architecture Programmer’s Manual (APM) Volume 2 for detail.
-(https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/
-programmer-references/40332.pdf)
-
-Fixes: 216d106c7ff7 ("x86/sev: Add SEV-SNP host initialization support")
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
----
-
-Change log v2:
- * Use APICv inhibit bit instead of disabling AVIC in driver.
-
- arch/x86/include/asm/cpufeatures.h | 1 +
- arch/x86/include/asm/kvm_host.h    | 9 ++++++++-
- arch/x86/kvm/svm/avic.c            | 6 ++++++
- arch/x86/kvm/svm/svm.h             | 3 ++-
- 4 files changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index dd4682857c12..921b6de80e24 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -448,6 +448,7 @@
- #define X86_FEATURE_SME_COHERENT	(19*32+10) /* AMD hardware-enforced cache coherency */
- #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" AMD SEV-ES full debug state swap support */
- #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
-+#define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Write to in-use hypervisor-owned pages allowed */
- 
- /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
- #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 4a68cb3eba78..1fef50025512 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1276,6 +1276,12 @@ enum kvm_apicv_inhibit {
- 	 */
- 	APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED,
- 
-+	/*
-+	 * Non-SNP guest cannot activate AVIC on SNP-enabled system w/o
-+	 * CPUID HvInUseWrAllowed feature.
-+	 */
-+	APICV_INHIBIT_REASON_HVINUSEWR_NOT_ALLOWED,
-+
- 	NR_APICV_INHIBIT_REASONS,
- };
- 
-@@ -1294,7 +1300,8 @@ enum kvm_apicv_inhibit {
- 	__APICV_INHIBIT_REASON(IRQWIN),			\
- 	__APICV_INHIBIT_REASON(PIT_REINJ),		\
- 	__APICV_INHIBIT_REASON(SEV),			\
--	__APICV_INHIBIT_REASON(LOGICAL_ID_ALIASED)
-+	__APICV_INHIBIT_REASON(LOGICAL_ID_ALIASED),	\
-+	__APICV_INHIBIT_REASON(HVINUSEWR_NOT_ALLOWED)
- 
- struct kvm_arch {
- 	unsigned long n_used_mmu_pages;
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 4b74ea91f4e6..cc4f0c00334a 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -202,6 +202,12 @@ int avic_vm_init(struct kvm *kvm)
- 	if (!enable_apicv)
- 		return 0;
- 
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP) &&
-+	    !boot_cpu_has(X86_FEATURE_HV_INUSE_WR_ALLOWED)) {
-+		pr_debug("APICv Inhibit due to Missing HvInUseWrAllowed.\n");
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_HVINUSEWR_NOT_ALLOWED);
-+	}
-+
- 	/* Allocating physical APIC ID table (4KB) */
- 	p_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
- 	if (!p_page)
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 76107c7d0595..13046bad2d6e 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -682,7 +682,8 @@ extern struct kvm_x86_nested_ops svm_nested_ops;
- 	BIT(APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED) |	\
- 	BIT(APICV_INHIBIT_REASON_APIC_ID_MODIFIED) |	\
- 	BIT(APICV_INHIBIT_REASON_APIC_BASE_MODIFIED) |	\
--	BIT(APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED)	\
-+	BIT(APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED) |	\
-+	BIT(APICV_INHIBIT_REASON_HVINUSEWR_NOT_ALLOWED)	\
- )
- 
- bool avic_hardware_setup(void);
--- 
-2.34.1
-
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
