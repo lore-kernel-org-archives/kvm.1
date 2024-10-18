@@ -1,209 +1,149 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50947205AB3;
-	Fri, 18 Oct 2024 11:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F66204923;
+	Fri, 18 Oct 2024 11:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729249222; cv=none; b=q/vxkfsBafcEyswioAmHYIF10XMyesJRaqwPwdLJA6BwVKY2HRW6e2OgZ5BG/j7dEoP6KMpkDs/kTtavdNLI9MWPZTFWhROeXyCSquqNqaAFPOVS4RN31qpFFOSKNoPmHtX5H+ulPYduzKQGpkdmxdhHHPRXdvst/E7MP9sjfKo=
+	t=1729249546; cv=none; b=inwGFS55QMoIjvP4zfbA34JlHghsJd6v2IENOBf4JkgdmSPOLTbh0dVctd1lG5Qs83UoIMIYQVENDHTu3AqkPakoUHT3Igc8Y9ZVl3fLam+YwmvWWUtuaHTKyBscmDkFZcAMirDt3kX6sVBf0LQKBB8ofH8pZ1GZl7fChLXAbvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729249222; c=relaxed/simple;
-	bh=Vtn4ty+DNVttgo/VCotVaihT5LPay8T9vsmHcQZE2Us=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uitC+9BM/kwE0vFkURwHI1ecD2iKpFn6IgLG5bjVpjTKYapEKUB7eKMBDdwvLWz2E75XMxEt/WlYuieU4TEthm6qnvOKM1BadDVT/H9c56c0miJJ4XxqcMSHolpuMTlap3TMkULSW/kwn83tEouWnNOdpqTEK352K00uUaOA8n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XVMC82SPnz1SCwM;
-	Fri, 18 Oct 2024 18:59:00 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id B37551402E2;
-	Fri, 18 Oct 2024 19:00:17 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 18 Oct 2024 19:00:17 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>,
-	Alexander Duyck <alexanderduyck@fb.com>, Chuck Lever
-	<chuck.lever@oracle.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
-	<jasowang@redhat.com>, =?UTF-8?q?Eugenio=20P=C3=A9rez?=
-	<eperezma@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Eric
- Dumazet <edumazet@google.com>, David Howells <dhowells@redhat.com>, Marc
- Dionne <marc.dionne@auristor.com>, Jeff Layton <jlayton@kernel.org>, Neil
- Brown <neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
-	<Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Trond Myklebust
-	<trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Shuah Khan
-	<shuah@kernel.org>, <kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<linux-mm@kvack.org>, <linux-afs@lists.infradead.org>,
-	<linux-nfs@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: [PATCH net-next v22 04/14] mm: page_frag: avoid caller accessing 'page_frag_cache' directly
-Date: Fri, 18 Oct 2024 18:53:41 +0800
-Message-ID: <20241018105351.1960345-5-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241018105351.1960345-1-linyunsheng@huawei.com>
-References: <20241018105351.1960345-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1729249546; c=relaxed/simple;
+	bh=9hDVWgN9eP3gLsc0lzjrta/0kQpsyqMF5QbErKfyG2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQ1acgqPttoW9idM1vXNoSaYQP3P342u1w5wbaV5L2o6GqalhIzfHTomg8JlOolhyarRdF937xh++H5oliCo5jjUdL/JEAy2fpg17kJY/22RstycxRYmMdDk4XBPFpEaed9wuxIJ/SUuzdo3oZ1VSfARwbP5sI4WFQMvWudMZas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BF1C4CEC3;
+	Fri, 18 Oct 2024 11:05:40 +0000 (UTC)
+Date: Fri, 18 Oct 2024 12:05:38 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: "Okanovic, Haris" <harisokn@amazon.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+	"joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"konrad.wilk@oracle.com" <konrad.wilk@oracle.com>,
+	"wanpengli@tencent.com" <wanpengli@tencent.com>,
+	"cl@gentwo.org" <cl@gentwo.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"maobibo@loongson.cn" <maobibo@loongson.cn>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"misono.tomohiro@fujitsu.com" <misono.tomohiro@fujitsu.com>,
+	"daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+	"arnd@arndb.de" <arnd@arndb.de>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"will@kernel.org" <will@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"mtosatti@redhat.com" <mtosatti@redhat.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: Re: [PATCH v8 01/11] cpuidle/poll_state: poll via
+ smp_cond_load_relaxed()
+Message-ID: <ZxJBAubok8pc5ek7@arm.com>
+References: <20240925232425.2763385-1-ankur.a.arora@oracle.com>
+ <20240925232425.2763385-2-ankur.a.arora@oracle.com>
+ <Zw5aPAuVi5sxdN5-@arm.com>
+ <7f7ffdcdb79eee0e8a545f544120495477832cd5.camel@amazon.com>
+ <ZxEYy9baciwdLnqh@arm.com>
+ <87h69amjng.fsf@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h69amjng.fsf@oracle.com>
 
-Use appropriate frag_page API instead of caller accessing
-'page_frag_cache' directly.
+On Thu, Oct 17, 2024 at 03:47:31PM -0700, Ankur Arora wrote:
+> Catalin Marinas <catalin.marinas@arm.com> writes:
+> > On Wed, Oct 16, 2024 at 03:13:33PM +0000, Okanovic, Haris wrote:
+> >> On Tue, 2024-10-15 at 13:04 +0100, Catalin Marinas wrote:
+> >> > On Wed, Sep 25, 2024 at 04:24:15PM -0700, Ankur Arora wrote:
+> >> > > +                     smp_cond_load_relaxed(&current_thread_info()->flags,
+> >> > > +                                           VAL & _TIF_NEED_RESCHED ||
+> >> > > +                                           loop_count++ >= POLL_IDLE_RELAX_COUNT);
+> >> >
+> >> > The above is not guaranteed to make progress if _TIF_NEED_RESCHED is
+> >> > never set. With the event stream enabled on arm64, the WFE will
+> >> > eventually be woken up, loop_count incremented and the condition would
+> >> > become true. However, the smp_cond_load_relaxed() semantics require that
+> >> > a different agent updates the variable being waited on, not the waiting
+> >> > CPU updating it itself. Also note that the event stream can be disabled
+> >> > on arm64 on the kernel command line.
+> >>
+> >> Alternately could we condition arch_haltpoll_want() on
+> >> arch_timer_evtstrm_available(), like v7?
+> >
+> > No. The problem is about the smp_cond_load_relaxed() semantics - it
+> > can't wait on a variable that's only updated in its exit condition. We
+> > need a new API for this, especially since we are changing generic code
+> > here (even it was arm64 code only, I'd still object to such
+> > smp_cond_load_*() constructs).
+> 
+> Right. The problem is that smp_cond_load_relaxed() used in this context
+> depends on the event-stream side effect when the interface does not
+> encode those semantics anywhere.
+> 
+> So, a smp_cond_load_timeout() like in [1] that continues to depend on
+> the event-stream is better because it explicitly accounts for the side
+> effect from the timeout.
+> 
+> This would cover both the WFxT and the event-stream case.
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
----
- drivers/vhost/net.c                                   |  2 +-
- include/linux/page_frag_cache.h                       | 10 ++++++++++
- net/core/skbuff.c                                     |  6 +++---
- net/rxrpc/conn_object.c                               |  4 +---
- net/rxrpc/local_object.c                              |  4 +---
- net/sunrpc/svcsock.c                                  |  6 ++----
- tools/testing/selftests/mm/page_frag/page_frag_test.c |  2 +-
- 7 files changed, 19 insertions(+), 15 deletions(-)
+Indeed.
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index f16279351db5..9ad37c012189 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1325,7 +1325,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 			vqs[VHOST_NET_VQ_RX]);
- 
- 	f->private_data = n;
--	n->pf_cache.va = NULL;
-+	page_frag_cache_init(&n->pf_cache);
- 
- 	return 0;
- }
-diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
-index 67ac8626ed9b..0a52f7a179c8 100644
---- a/include/linux/page_frag_cache.h
-+++ b/include/linux/page_frag_cache.h
-@@ -7,6 +7,16 @@
- #include <linux/mm_types_task.h>
- #include <linux/types.h>
- 
-+static inline void page_frag_cache_init(struct page_frag_cache *nc)
-+{
-+	nc->va = NULL;
-+}
-+
-+static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
-+{
-+	return !!nc->pfmemalloc;
-+}
-+
- void page_frag_cache_drain(struct page_frag_cache *nc);
- void __page_frag_cache_drain(struct page *page, unsigned int count);
- void *__page_frag_alloc_align(struct page_frag_cache *nc, unsigned int fragsz,
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 00afeb90c23a..6841e61a6bd0 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -753,14 +753,14 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
- 	if (in_hardirq() || irqs_disabled()) {
- 		nc = this_cpu_ptr(&netdev_alloc_cache);
- 		data = page_frag_alloc(nc, len, gfp_mask);
--		pfmemalloc = nc->pfmemalloc;
-+		pfmemalloc = page_frag_cache_is_pfmemalloc(nc);
- 	} else {
- 		local_bh_disable();
- 		local_lock_nested_bh(&napi_alloc_cache.bh_lock);
- 
- 		nc = this_cpu_ptr(&napi_alloc_cache.page);
- 		data = page_frag_alloc(nc, len, gfp_mask);
--		pfmemalloc = nc->pfmemalloc;
-+		pfmemalloc = page_frag_cache_is_pfmemalloc(nc);
- 
- 		local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 		local_bh_enable();
-@@ -850,7 +850,7 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
- 		len = SKB_HEAD_ALIGN(len);
- 
- 		data = page_frag_alloc(&nc->page, len, gfp_mask);
--		pfmemalloc = nc->page.pfmemalloc;
-+		pfmemalloc = page_frag_cache_is_pfmemalloc(&nc->page);
- 	}
- 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 1539d315afe7..694c4df7a1a3 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -337,9 +337,7 @@ static void rxrpc_clean_up_connection(struct work_struct *work)
- 	 */
- 	rxrpc_purge_queue(&conn->rx_queue);
- 
--	if (conn->tx_data_alloc.va)
--		__page_frag_cache_drain(virt_to_page(conn->tx_data_alloc.va),
--					conn->tx_data_alloc.pagecnt_bias);
-+	page_frag_cache_drain(&conn->tx_data_alloc);
- 	call_rcu(&conn->rcu, rxrpc_rcu_free_connection);
- }
- 
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index f9623ace2201..2792d2304605 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -452,9 +452,7 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- #endif
- 	rxrpc_purge_queue(&local->rx_queue);
- 	rxrpc_purge_client_connections(local);
--	if (local->tx_alloc.va)
--		__page_frag_cache_drain(virt_to_page(local->tx_alloc.va),
--					local->tx_alloc.pagecnt_bias);
-+	page_frag_cache_drain(&local->tx_alloc);
- }
- 
- /*
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 825ec5357691..b785425c3315 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1608,7 +1608,6 @@ static void svc_tcp_sock_detach(struct svc_xprt *xprt)
- static void svc_sock_free(struct svc_xprt *xprt)
- {
- 	struct svc_sock *svsk = container_of(xprt, struct svc_sock, sk_xprt);
--	struct page_frag_cache *pfc = &svsk->sk_frag_cache;
- 	struct socket *sock = svsk->sk_sock;
- 
- 	trace_svcsock_free(svsk, sock);
-@@ -1618,8 +1617,7 @@ static void svc_sock_free(struct svc_xprt *xprt)
- 		sockfd_put(sock);
- 	else
- 		sock_release(sock);
--	if (pfc->va)
--		__page_frag_cache_drain(virt_to_head_page(pfc->va),
--					pfc->pagecnt_bias);
-+
-+	page_frag_cache_drain(&svsk->sk_frag_cache);
- 	kfree(svsk);
- }
-diff --git a/tools/testing/selftests/mm/page_frag/page_frag_test.c b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-index 13c44133e009..e806c1866e36 100644
---- a/tools/testing/selftests/mm/page_frag/page_frag_test.c
-+++ b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-@@ -126,7 +126,7 @@ static int __init page_frag_test_init(void)
- 	u64 duration;
- 	int ret;
- 
--	test_nc.va = NULL;
-+	page_frag_cache_init(&test_nc);
- 	atomic_set(&nthreads, 2);
- 	init_completion(&wait);
- 
+> The part I'm a little less sure about is the case where WFxT and the
+> event-stream are absent.
+> 
+> As you said earlier, for that case on arm64, we use either short
+> __delay() calls or spin in cpu_relax(), both of which are essentially
+> the same thing.
+
+Something derived from __delay(), not exactly this function. We can't
+use it directly as we also want it to wake up if an event is generated
+as a result of a memory write (like the current smp_cond_load().
+
+> Now on x86 cpu_relax() is quite optimal. The spec explicitly recommends
+> it and from my measurement a loop doing "while (!cond) cpu_relax()" gets
+> an IPC of something like 0.1 or similar.
+> 
+> On my arm64 systems however the same loop gets an IPC of 2.  Now this
+> likely varies greatly but seems like it would run pretty hot some of
+> the time.
+
+For the cpu_relax() fall-back, it wouldn't be any worse than the current
+poll_idle() code, though I guess in this instance we'd not enable idle
+polling.
+
+I expect the event stream to be on in all production deployments. The
+reason we have a way to disable it is for testing. We've had hardware
+errata in the past where the event on spin_unlock doesn't cross the
+cluster boundary. We'd not notice because of the event stream.
+
+> So maybe the right thing to do would be to keep smp_cond_load_timeout()
+> but only allow polling if WFxT or event-stream is enabled. And enhance
+> cpuidle_poll_state_init() to fail if the above condition is not met.
+
+We could do this as well. Maybe hide this behind another function like
+arch_has_efficient_smp_cond_load_timeout() (well, some shorter name),
+checked somewhere in or on the path to cpuidle_poll_state_init(). Well,
+it might be simpler to do this in haltpoll_want(), backed by an
+arch_haltpoll_want() function.
+
+I assume we want poll_idle() to wake up as soon as a task becomes
+available. Otherwise we could have just used udelay() for some fraction
+of cpuidle_poll_time() instead of cpu_relax().
+
 -- 
-2.33.0
-
+Catalin
