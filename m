@@ -1,138 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06D545948
-	for <kvm@vger.kernel.org>; Fri, 18 Oct 2024 02:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6262158DB1;
+	Fri, 18 Oct 2024 02:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729218024; cv=none; b=fWUbRvsalN82MZN5fr+66AleJOonDhUg6vyHPyn5FuA8YnwE1gGzxsL3ro/EI6aU9J/MIpfdpFmA352NJjHocdsF5QpUPZ8JH5s3mh00LIvLODoPC76NOKnnqWDyb1Nf6f+pbgdKUM1TszecHXbIPnIs5CCmj7/iIGQ/eoo1jXY=
+	t=1729218111; cv=none; b=mie3AMRqCCWJthnNNVY7F7cOIS+3tF4Qkxr1GzBRQ3Mg6Sl2O3an7siJekM5+yq+uj8C+C3lyzmbxq6QymsDcUvVf5ViZTFg+g+FKl3UXdbpvj5G/Gg5n1/V6jxeR7+hM3m0yotajXJf2S75SY+DbrLUG5uQ/hs++NKmlA5mXCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729218024; c=relaxed/simple;
-	bh=8PKsoPgR4Ld+C0xF/qZFXE3weaPnEMpOVlDjd59wIDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A84itesz6ePa0rC/9G4ueAU9Lb7jvUS/Yq0nkVMw9J+v+JdpqU5vbS5lj99iA2IH9F0NHBkrP3MH9N5aKNCxrTdXD4LLRoSKPSwBXDXx938+965aU+PLW2l7NpN3FkOIMxC52sxyVTZUSAG2//jsjwWRAxwZmjNCTrpWQjVYLhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HnZrumzD; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1729218111; c=relaxed/simple;
+	bh=Nry3rVCi8/za/36G9Tg8vsDLl0xoAWHmEVnhEGzG+oQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SLkUNTgjzz4ts0c8Mce9OU17kRL18laLSIY8LQB84ejzWQgOOeQW0SPG0fROWtmplE82hRNI5r8VzVMj2gYA164pdiklqbNC/dHcDoZU9xM7QQOvW8+PnhiYg3ThfU/ThgnaqDB/oz5Lm8WLm0AJKhDgp8ngUjEwPJdxitbkl6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fB6aG3HU; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HnZrumzD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fB6aG3HU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729218023; x=1760754023;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8PKsoPgR4Ld+C0xF/qZFXE3weaPnEMpOVlDjd59wIDw=;
-  b=HnZrumzDVRHBa7Reqx6vPkQKuFm/GKVqDzpiucwhTiTxMWNLBzru6AHQ
-   6R6bJy4GCHuOTImvC6Eg4XS8fapmpLLUyavJZlbuNn8vYsyXXs3u1iM/C
-   38j6fUfcG856VG9LTQGAZltCFEbFcbV6wZ/nrWOy2Arh2av+svAal1FUq
-   ArtyHzxSaLOMGZf7twSUMor+uR9Ny1yOCZPOlzEnU9Ad2Yka1C3+luEZJ
-   oRIaDu3BZE2dD+dhuoq6acH2R49qNWMo1E3nKfgvzfBa4Sa7MBX0ZYheD
-   uKoG/Hlx7vPTPLjdsefCdrZWwm8Te50PMKlQ0AA6P8vkrZDxKNsd6jOlu
+  t=1729218109; x=1760754109;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Nry3rVCi8/za/36G9Tg8vsDLl0xoAWHmEVnhEGzG+oQ=;
+  b=fB6aG3HUQ805d7ZJQPdMAOpgcmYyiW8hBm7w5kGTkZQDxYMKgwn1VtkF
+   5HfzNaDzQ5ZupQB7Vzo5Yjp4C5R5bJIqDtHJF9MLDqaQz/ziVF3btpVlG
+   vAHqrj/7DkJQPMhayYyqDw2mXphLgvG9oBJzppdif/lqJrlSWsbaPXCoH
+   mFv2GBSmEXLAcO3GjAhyIDdkxC4XzuOg5pBtlIq6RODrgMjnfrdEvHX5p
+   0hXA1zd/4Onk6lNCpwgW17psCNJGbufbhPw60SLLHCPzMAQ8D8XGWq9F7
+   0+PR1QJepWv8Dq+7c5CIZpbwKK01idMJ1oXpKkGwfOMcS/tJlmyz38u4n
    A==;
-X-CSE-ConnectionGUID: 8AbT/fHZRrm/ZSdNTNnuhA==
-X-CSE-MsgGUID: g3kOMbUpSJa4t/vvcxRnUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="28827905"
-X-IronPort-AV: E=Sophos;i="6.11,212,1725346800"; 
-   d="scan'208";a="28827905"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 19:20:22 -0700
-X-CSE-ConnectionGUID: L+YNHYlyR+6QwKMonGQkjw==
-X-CSE-MsgGUID: GChpiH98T9WKlXP4N1D6Sg==
-X-ExtLoop1: 1
+X-CSE-ConnectionGUID: 2NfEmx/FRm2qOQua4Fukzg==
+X-CSE-MsgGUID: 96Z2KwPCQ6SRbmpliawfnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28834035"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="83557602"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.36])
-  by orviesa003.jf.intel.com with ESMTP; 17 Oct 2024 19:20:14 -0700
-Date: Fri, 18 Oct 2024 10:36:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-	Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
-	kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
-	Zhenyu Wang <zhenyu.z.wang@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 1/7] hw/core: Make CPU topology enumeration
- arch-agnostic
-Message-ID: <ZxHJri+rgdGKf/0L@intel.com>
-References: <20241012104429.1048908-1-zhao1.liu@intel.com>
- <20241012104429.1048908-2-zhao1.liu@intel.com>
- <ZxEte1KBwWuCdkb1@redhat.com>
+   d="scan'208";a="28834035"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 19:21:49 -0700
+X-CSE-ConnectionGUID: k3g80N+MTRKmVhktp9Jz2A==
+X-CSE-MsgGUID: weiLgmf8TK6MhJcOZRqcjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,212,1725346800"; 
+   d="scan'208";a="83376224"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.224.38]) ([10.124.224.38])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 19:21:46 -0700
+Message-ID: <aa3d2db8-e72c-42e2-b08f-6a4c9ad78748@intel.com>
+Date: Fri, 18 Oct 2024 10:21:36 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxEte1KBwWuCdkb1@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/25] KVM: TDX: Do TDX specific vcpu initialization
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Hunter, Adrian" <adrian.hunter@intel.com>,
+ "yuan.yao@linux.intel.com" <yuan.yao@linux.intel.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, "Huang, Kai"
+ <kai.huang@intel.com>, "isaku.yamahata@gmail.com"
+ <isaku.yamahata@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "sean.j.christopherson@intel.com" <sean.j.christopherson@intel.com>
+References: <20240812224820.34826-1-rick.p.edgecombe@intel.com>
+ <20240812224820.34826-19-rick.p.edgecombe@intel.com>
+ <20240813080009.zowu3woyffwlyazu@yy-desk-7060>
+ <1a200cd3-ad73-4a53-bc48-661f7d022ac0@intel.com>
+ <1be47d7f9d4b812c110572d8b413ecdbb537ceb7.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <1be47d7f9d4b812c110572d8b413ecdbb537ceb7.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Daniel,
-
-> > -/*
-> > - * CPUTopoLevel is the general i386 topology hierarchical representation,
-> > - * ordered by increasing hierarchical relationship.
-> > - * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-> > - * or AMD (CPUID[0x80000026]).
-> > - */
-> > -enum CPUTopoLevel {
-> > -    CPU_TOPO_LEVEL_INVALID,
-> > -    CPU_TOPO_LEVEL_SMT,
-> > -    CPU_TOPO_LEVEL_CORE,
-> > -    CPU_TOPO_LEVEL_MODULE,
-> > -    CPU_TOPO_LEVEL_DIE,
-> > -    CPU_TOPO_LEVEL_PACKAGE,
-> > -    CPU_TOPO_LEVEL_MAX,
-> > -};
-> > -
+On 10/17/2024 1:42 AM, Edgecombe, Rick P wrote:
+> On Wed, 2024-10-09 at 18:01 +0300, Adrian Hunter wrote:
+>> tdh_vp_init_apicid() passes x2APIC ID to TDH.VP.INIT which
+>> is one of the steps for the TDX Module to support topology
+>> information for the guest i.e. CPUID leaf 0xB and CPUID leaf 0x1F.
+>>
+>> If the host VMM does not provide CPUID leaf 0x1F values
+>> (i.e. the values are 0), then the TDX Module will use native
+>> values for both CPUID leaf 0x1F and CPUID leaf 0xB.
+>>
+>> To get 0x1F/0xB the guest must also opt-in by setting
+>> TDCS.TD_CTLS.ENUM_TOPOLOGY to 1.  AFAICT currently Linux
+>> does not do that.
+>>
+>> In the tdh_vp_init() case, topology information will not be
+>> supported.
+>>
+>> If topology information is not supported CPUID leaf 0xB and
+>> CPUID leaf 0x1F will #VE, and a Linux guest will return zeros.
+>>
+>> So, yes, it seems like tdh_vp_init_apicid() should only
+>> be called if there is non-zero CPUID leaf 0x1F values provided
+>> by host VMM. e.g. add a helper function
+>>
+>> bool tdx_td_enum_topology(struct kvm_cpuid2 *cpuid)
+>> {
+>> 	const struct tdx_sys_info_features *modinfo = &tdx_sysinfo->features;
+>> 	const struct kvm_cpuid_entry2 *entry;
+>>
+>> 	if (!(modinfo->tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM))
+>> 		return false;
+>>
+>> 	entry = kvm_find_cpuid_entry2(cpuid->entries, cpuid->nent, 0x1f, 0);
+>> 	if (!entry)
+>> 		return false;
+>>
+>> 	return entry->eax || entry->ebx || entry->ecx || entry->edx;
+>> }
 > 
-> snip
+> KVM usually leaves it up to userspace to not create nonsensical VMs. So I think
+> we can skip the check in KVM.
+
+It's not nonsensical unless KVM announces its own requirement for TD 
+guest that userspace VMM must provide valid CPUID leaf 0x1f value for 
+topology.
+
+It's architectural valid that userspace VMM creates a TD with legacy 
+topology, i.e., topology enumerated via CPUID 0x1 and 0x4.
+
+> In that case, do you see a need for the vanilla tdh_vp_init() SEAMCALL wrapper?
 > 
-> > @@ -18,3 +18,47 @@
-> >  ##
-> >  { 'enum': 'S390CpuEntitlement',
-> >    'data': [ 'auto', 'low', 'medium', 'high' ] }
-> > +
-> > +##
-> > +# @CpuTopologyLevel:
-> > +#
-> > +# An enumeration of CPU topology levels.
-> > +#
-> > +# @invalid: Invalid topology level.
+> The TDX module version we need already supports enum_topology, so the code:
+> 	if (modinfo->tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM)
+> 		err = tdh_vp_init_apicid(tdx, vcpu_rcx, vcpu->vcpu_id);
+> 	else
+> 		err = tdh_vp_init(tdx, vcpu_rcx);
 > 
-> Previously all topology levels were internal to QEMU, and IIUC
-> this CPU_TOPO_LEVEL_INVALID appears to have been a special
-> value to indicate  the cache was absent ?
+> The tdh_vp_init() branch shouldn't be hit.
 
-Now I haven't support this logic.
-x86 CPU has a "l3-cache" property, and maybe that property can be
-implemented or replaced by the "invalid" level support you mentioned.
+We cannot know what version of TDX module user might use thus we cannot 
+assume enum_topology is always there unless we make it a hard 
+requirement in KVM that TDX fails being enabled when
 
-> Now we're exposing this directly to the user as a settable
-> option. We need to explain what effect setting 'invalid'
-> has on the CPU cache config.
-
-If user set "invalid", QEMU will report the error message:
-
-qemu-system-x86_64: Invalid cache topology level: invalid. The topology should match valid CPU topology level
-
-Do you think this error message is sufficient?
-
-Thanks,
-Zhao
-
+   !(modinfo->tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM)
