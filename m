@@ -1,59 +1,59 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BB419C543
-	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CB919B3EE
+	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594590; cv=none; b=rd9Dq5L8BtNEXRObyqW9lMaluveQshpddBJHY7t0ekQGmSVLR+DY44gh/q8XvNAAmxJ5jecXDdng/eEOm4jN8VRNIB9LW5FvyqUYMsSQFyRpAtP57i0UzaH6NnHRfhi9HEVCU67J2lI/kRVznn1yzmk7xYmZn56uRtd1nSyfFv4=
+	t=1729594591; cv=none; b=NjrJeOSWi2VLX5DdcauE549Aq2IT3giM4Jr6vuamvhMN7+/ZfRv+bvE2PzRUS2vz/i8IdqengfeCnhuUtANaBr3haG/f31HkkOrr2tWRXHsZCqpIz4D1esXK2XXJlRrs0cq8o9oKOOIIY9oVTMyth642r31AxkjMRl7uBfV2lrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729594590; c=relaxed/simple;
-	bh=k4DUf5ld0t+Rj337VJF2t4M25SBJ9Xw6VHcscakA8eI=;
+	s=arc-20240116; t=1729594591; c=relaxed/simple;
+	bh=rPqdeMZHjsIWZRK4nVVQap0ga9cDd7eG9O38cGJ5E8o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qLhswaFaLwsh5eTsUoG3gUEVpZz6xslsoKNkbkUCHUmmI/MiB6guk5GWVXoyfnWt3agV62rO2cTabFYC+3RxjNQm1KYrw3fysqkbUgz14LceRFgZAx3qrOUIEPY1cPSeVtGDoPpMljRlNv71y0hGrqf9+LE6xULeE1LxqPdQD48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p+ENd5Vt; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version:Content-Type; b=iDxPEczEnqPfSr/+Xx5VnggtlLmdJXv/LBMR/jRRtcxfPCWw+6+Sc8xveN4+Ma8JE28Y44zJ1LFinMo8c3ZpC07zjwvaimU6CQe15i6TPPC3aJTF3bfsk4WahzDHzc+NVvBe5wt+34PQ5k7Hu1BejtCap72I5PMHFZkON/t1aK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SRCPG0kJ; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p+ENd5Vt"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c9362c26d8so11257442a12.1
-        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SRCPG0kJ"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c99be0a4bbso7348970a12.2
+        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729594586; x=1730199386; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729594588; x=1730199388; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CnSO5MY5LW+ONfwtsvf8QoavFQHBZ1D8g95DfEWZbMI=;
-        b=p+ENd5VtXICbWO6JW0bCZ4tbpeq5mAKAsa/ypnza2ffgkBGTD0KPdALhEC8YcvF6fD
-         jyIBW5t2mfd9aPSWtzBrx4GdQOAJltPH/D10aocPDQt4KddOKLXFps2JW6BpBJKZNbNy
-         atNDALJ/+Adw5UHZM5ZkTX0NNLW8gonouF3vFprpylIQDX37zVJfWl4f9+tbxHviOO4f
-         zHapx5OJC1ErhsCu6Hr0PbE7OP6T+liNML+uBhR9BF1C4OLqXTbvDgMOJvpl3FRG//Db
-         2tb4otUL+SmiuGAOxklV1arM2Zd8pyfslpfwrr25DB/wZW+6HZ8KML8PUMBKPn67N0G2
-         R7rQ==
+        bh=iZZo1oPZPqzjBeoixQ7wpptFRyTvJhgIff9wczeHXgQ=;
+        b=SRCPG0kJ5yUPdkxvlfaBwiQqmM4qKllaw7vxOk7aRpWVt6wrofsfteFuSd9bYpvit7
+         AESaeJY5p2tYoTpcfzXWUPhdr/LHgU3B7vV6A0TrORwSEbbSzpkn/dzVPnN5O7+cSqOu
+         gHUaeTilGc/VaNgKkPJz3wboK+oG51P4W5T8HdhHKX4PAgDtLx1C39x3nSQ9tXrnO0dZ
+         fLQ76e7P63pulEz9Mgoa6ZGd6eF5TfQeNT2mhz7MeAbsIQwt0zH2XpH22+98tMBV9m4l
+         VhyInp5BM1iA+73qgvQBX1W6ZP8eR3KBE2eC+z6NEKwUbJUFMIOrTzqAL41kv9Qc11Ew
+         ZFxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729594586; x=1730199386;
+        d=1e100.net; s=20230601; t=1729594588; x=1730199388;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CnSO5MY5LW+ONfwtsvf8QoavFQHBZ1D8g95DfEWZbMI=;
-        b=EpXcCiOh7cT1edyNFiFe5s+s2tTyc9c2xHqhKObjyRqFp83MyOlk8r8eAetXx6gUBw
-         X9Qe7xCB4zHgl8kpkDOWC/7m9vjZ4fz8D+eU5rck4lnyKOoLIv/gRdBmatx9CIlZHrk1
-         5lTSjT9+jOD9KlFWu6K1SZZeFxBtMHIYxsk6epYw/W/Ba3eO6/FlTZV59TwFSQEKKwrF
-         Hk8Vt1AZ4RpyxkTME9td84miIEbP3XmjB5vE09ttMtQySpQgeTu9U0zGpJew1NO3P9vX
-         pXH8umwVuook7ztKZRxMOVdsa7PRzP9Rrlyz4dUuJIkOTy19mbdpvwn1PygGG9zsul81
-         hFnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMZkKOuZ8eQN2ttD6NOdxCmpLcziBx1316ACnvLK/5p09TaUORo7shIrfHblpJ3vmKuws=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKvHB0KUNhx1uOxJsnigbprh4tmLsauBSZk7uLtzkQkN5Wga7w
-	oRO7O/behx5LlKq2MGc5E2ztDLlLqKNEhG61KPjXnoqBCRD9v5D7bEZny8PjSXk=
-X-Google-Smtp-Source: AGHT+IE/K5pr2g0U8BMqLhyIWw7NwWY4cgjvbPeZV6ZYZQj/JnrnlV+snPJRyVIL9w1vqQwf5cuM+A==
-X-Received: by 2002:a17:907:944e:b0:a9a:3f9c:f89d with SMTP id a640c23a62f3a-a9aaa5ee850mr282522466b.34.1729594586066;
-        Tue, 22 Oct 2024 03:56:26 -0700 (PDT)
+        bh=iZZo1oPZPqzjBeoixQ7wpptFRyTvJhgIff9wczeHXgQ=;
+        b=dn13UmfwzceV15omYz6P5cz67tVE39i6ezEeay/uqU0CBUSyE89fEauewmN0Z6aXzu
+         E1/5tUxuObTubYPfkxw+XbRoUP4CJM6p3cJbylIDMhH6cNxDPZiW+CigEyPQAHUZeton
+         2GUp2SlFMFZcTh18QXkc2g+nQeJkhRQXc7ML8snQeJ8S8h0Jy22+wZMYQpDicC6FfzgT
+         NMG4Chd9x7WowMHYLnZ80Cr/LV51E7UQ80teMlwrL9jt22dW5juUtgB6VonuYqsb5puU
+         xO24fRdlLzy0R56+E2r56ePBjXj2I9IphGiYXzWyGZacwuj2PXoBmq4dnnsYvnxrv8sP
+         4YPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ1fe7ZHEKhrjiDIINB4wNUrg+78T5TbAkHiO2RGgEIrTi2JNRI6cyw6VXaOuZMjHyIA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg0cQWyzYJtDvF6jbt2QCFb7ntSsdLAelR//I/Ft+nPXc6YSsp
+	wS+lbG4CFl3vfr4fdB6de93jFTPLFXwXuYB7oj38q2rk2lN2VTGzeJ2VZjv9pM8=
+X-Google-Smtp-Source: AGHT+IFRsXwXWWZ+1iUXj/NDdR1zmIgl8xhujNIEkYhFmxY8XSoNScTyD+Rf8wUGR1kAm8G1SujWGA==
+X-Received: by 2002:a05:6402:3514:b0:5cb:7594:9ece with SMTP id 4fb4d7f45d1cf-5cb782e16e2mr2678552a12.17.1729594588142;
+        Tue, 22 Oct 2024 03:56:28 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91559c06sm324381166b.138.2024.10.22.03.56.17
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66a657bcsm3124198a12.23.2024.10.22.03.56.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 22 Oct 2024 03:56:19 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 5CB715F9D0;
+	by draig.lan (Postfix) with ESMTP id 1AA775F925;
 	Tue, 22 Oct 2024 11:56:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 08/20] accel/tcg: add tracepoints for cpu_loop_exit_atomic
-Date: Tue, 22 Oct 2024 11:56:02 +0100
-Message-Id: <20241022105614.839199-9-alex.bennee@linaro.org>
+Subject: [PATCH v2 05/20] docs/devel: update tsan build documentation
+Date: Tue, 22 Oct 2024 11:55:59 +0100
+Message-Id: <20241022105614.839199-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
@@ -99,160 +99,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-We try to avoid using cpu_loop_exit_atomic as it brings in an all-core
-sync point. However on some cpu/kernel/benchmark combinations it is
-starting to show up in the performance profile. To make it easier to
-see whats going on add tracepoints for the slow path so we can see
-what is triggering the wait.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-It seems for a modern CPU it can be quite a bit, for example:
+Mention it's now possible to build with gcc, instead of clang, and
+explain how to build a sanitized glib version.
 
-./qemu-system-aarch64 \
-           -machine type=virt,virtualization=on,pflash0=rom,pflash1=efivars,gic-version=max \
-           -smp 4 \
-           -accel tcg \
-           -device virtio-net-pci,netdev=unet \
-           -device virtio-scsi-pci \
-           -device scsi-hd,drive=hd \
-           -netdev user,id=unet,hostfwd=tcp::2222-:22 \
-           -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=/dev/zen-ssd2/trixie-arm64,discard=unmap \
-           -serial mon:stdio \
-           -blockdev node-name=rom,driver=file,filename=(pwd)/pc-bios/edk2-aarch64-code.fd,read-only=true \
-           -blockdev node-name=efivars,driver=file,filename=$HOME/images/qemu-arm64-efivars \
-           -m 8192 \
-           -object memory-backend-memfd,id=mem,size=8G,share=on \
-           -kernel /home/alex/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image -append "root=/dev/sda2 console=ttyAMA0 systemd.unit=benchmark-stress-ng.service" \
-           -display none -d trace:load_atom\*_fallback,trace:store_atom\*_fallback
-
-With:
-
-  -cpu neoverse-v1,pauth-impdef=on => 2203343
-
-With:
-
-  -cpu cortex-a76 => 0
-
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240910174013.1433331-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-
 ---
-v2
-  - 0x prefixes for ra as per checkpatch
----
- accel/tcg/user-exec.c          |  2 +-
- accel/tcg/ldst_atomicity.c.inc |  9 +++++++++
- accel/tcg/trace-events         | 12 ++++++++++++
- 3 files changed, 22 insertions(+), 1 deletion(-)
+ docs/devel/testing/main.rst | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 51b2c16dbe..aa8af52cc3 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -29,7 +29,7 @@
- #include "exec/page-protection.h"
- #include "exec/helper-proto.h"
- #include "qemu/atomic128.h"
--#include "trace/trace-root.h"
-+#include "trace.h"
- #include "tcg/tcg-ldst.h"
- #include "internal-common.h"
- #include "internal-target.h"
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 134da3c1da..c735add261 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -168,6 +168,7 @@ static uint64_t load_atomic8_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
- #endif
+diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
+index 09725e8ea9..91f4dc61fb 100644
+--- a/docs/devel/testing/main.rst
++++ b/docs/devel/testing/main.rst
+@@ -628,20 +628,38 @@ Building and Testing with TSan
+ It is possible to build and test with TSan, with a few additional steps.
+ These steps are normally done automatically in the docker.
  
-     /* Ultimate fallback: re-execute in serial context. */
-+    trace_load_atom8_or_exit_fallback(ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -212,6 +213,7 @@ static Int128 load_atomic16_or_exit(CPUState *cpu, uintptr_t ra, void *pv)
-     }
- 
-     /* Ultimate fallback: re-execute in serial context. */
-+    trace_load_atom16_or_exit_fallback(ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -519,6 +521,7 @@ static uint64_t load_atom_8(CPUState *cpu, uintptr_t ra,
-         if (HAVE_al8) {
-             return load_atom_extract_al8x2(pv);
-         }
-+        trace_load_atom8_fallback(memop, ra);
-         cpu_loop_exit_atomic(cpu, ra);
-     default:
-         g_assert_not_reached();
-@@ -563,6 +566,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
-         break;
-     case MO_64:
-         if (!HAVE_al8) {
-+            trace_load_atom16_fallback(memop, ra);
-             cpu_loop_exit_atomic(cpu, ra);
-         }
-         a = load_atomic8(pv);
-@@ -570,6 +574,7 @@ static Int128 load_atom_16(CPUState *cpu, uintptr_t ra,
-         break;
-     case -MO_64:
-         if (!HAVE_al8) {
-+            trace_load_atom16_fallback(memop, ra);
-             cpu_loop_exit_atomic(cpu, ra);
-         }
-         a = load_atom_extract_al8x2(pv);
-@@ -897,6 +902,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
-         g_assert_not_reached();
-     }
- 
-+    trace_store_atom2_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -961,6 +967,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
-                 return;
-             }
-         }
-+        trace_store_atom4_fallback(memop, ra);
-         cpu_loop_exit_atomic(cpu, ra);
-     default:
-         g_assert_not_reached();
-@@ -1029,6 +1036,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
-     default:
-         g_assert_not_reached();
-     }
-+    trace_store_atom8_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
- 
-@@ -1107,5 +1115,6 @@ static void store_atom_16(CPUState *cpu, uintptr_t ra,
-     default:
-         g_assert_not_reached();
-     }
-+    trace_store_atom16_fallback(memop, ra);
-     cpu_loop_exit_atomic(cpu, ra);
- }
-diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
-index 4e9b450520..14f638810c 100644
---- a/accel/tcg/trace-events
-+++ b/accel/tcg/trace-events
-@@ -12,3 +12,15 @@ memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
- 
- # translate-all.c
- translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
+-There is a one time patch needed in clang-9 or clang-10 at this time:
++TSan is supported for clang and gcc.
++One particularity of sanitizers is that all the code, including shared objects
++dependencies, should be built with it.
++In the case of TSan, any synchronization primitive from glib (GMutex for
++instance) will not be recognized, and will lead to false positives.
 +
-+# ldst_atomicity
-+load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom8_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+load_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
++To build a tsan version of glib:
+ 
+ .. code::
+ 
+-  sed -i 's/^const/static const/g' \
+-      /usr/lib/llvm-10/lib/clang/10.0.0/include/sanitizer/tsan_interface.h
++   $ git clone --depth=1 --branch=2.81.0 https://github.com/GNOME/glib.git
++   $ cd glib
++   $ CFLAGS="-O2 -g -fsanitize=thread" meson build
++   $ ninja -C build
+ 
+ To configure the build for TSan:
+ 
+ .. code::
+ 
+-  ../configure --enable-tsan --cc=clang-10 --cxx=clang++-10 \
++  ../configure --enable-tsan \
+                --disable-werror --extra-cflags="-O0"
+ 
++When executing qemu, don't forget to point to tsan glib:
++
++.. code::
++
++   $ glib_dir=/path/to/glib
++   $ export LD_LIBRARY_PATH=$glib_dir/build/gio:$glib_dir/build/glib:$glib_dir/build/gmodule:$glib_dir/build/gobject:$glib_dir/build/gthread
++   # check correct version is used
++   $ ldd build/qemu-x86_64 | grep glib
++   $ qemu-system-x86_64 ...
++
+ The runtime behavior of TSAN is controlled by the TSAN_OPTIONS environment
+ variable.
+ 
 -- 
 2.39.5
 
