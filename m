@@ -1,59 +1,59 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DD019D8B7
-	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADAC19D080
+	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594598; cv=none; b=DUhHY27CdghowzUa8JpbFyWAN22g05Kxy1ph/Dc7Le0StbkRz4c8T6HKdk6R/rRmF2hC9ye/7SX5xxvKhQI8h8t2NXIJyGjoryDGvLlttLW5AjpMHbwyKI3Wcm9/kdYzifZpaghinxsqJsL+GOyHGPLh+SjXYv3uJvZBLJ7v5R8=
+	t=1729594598; cv=none; b=AzgOZhpp7PB+ywkvLV+Z6brSiv3U3kYAr3K9zJSE6FVWgY/WsvOaoeDzUMW6KJAi6EB/1wDZOvWi2DfNd/UqKjCME4S0GnjaLGjGKv2bEdgd2Payn8XGkWCnXs2DrmdAWJwqGqaYoxeY2ZNERWO6MGDlTdeGy71ugZaJUeKN3eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729594598; c=relaxed/simple;
-	bh=pMmE3lfG5fDHbWyJiM6aMnJ8N8Svupp+uAfMJ0Ot1Hs=;
+	bh=gx7elASkKACRM34GNEWipezg+FLNYL4fWbpRkWi7xsk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UDmZhw1nPKGloVtqutgra2RQpk2PH8wVtxawgZWr+M+Ia6FpZ7il+KV1xcQMEzBK1e8iGR1ZuABS7pX4MTbBaaJkRYKy37vW95hvAyws0mCsdP3iAhh5E7zM/nQ3C05biH/mhLhGauMiF6WhQ1MfglT2vkPfXsoSXZoh3x9/2Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sRzGTIPJ; arc=none smtp.client-ip=209.85.208.45
+	 MIME-Version:Content-Type; b=tW8HxbN8VZ2rHnIqP1rSF18OdsWmBZ4kPV8mH7kww/JjkerM4QqpY+NjhMEcBF9//HYR5Vp9WESOnMICfrX8QryU/Gjvu52Wmllo2f6D+AykhaY/eW6RAN16PYTPkgW4KBt7p6s2rChcNrIOdQJ9VFYlYf5aUgvPC2cPxUYuMM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EaLk2+Sy; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sRzGTIPJ"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1e63so6386759a12.0
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EaLk2+Sy"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5cb15b84544so3238027a12.2
         for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1729594595; x=1730199395; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ncBC08IoBkP10ef5QDpG5SV+FPj/pwrW84Mb8BGJC6M=;
-        b=sRzGTIPJrId/5/91hCEsLrOPVNCmxTyJgcmz1l06Z9IRXsHqK+jN4vorLJ2CTS4tvB
-         rHTPpRgF7qxSirodbYT/qiFsCuAuLKdJavVIRKVaVvgKQ8IsRl0/VAKz8GJ7gVzEm55F
-         2fzgCnaeC/XTO/wBRntrzkguendQC13jU22wevlmYgXy58FzMRlF0BIP7V/WsU0mNTWx
-         3AAgl8UkavIXtrs//MXnwZiqC42T9Of06fL/6UzhDylnCKGzVHrLBc3aKxl4v8duNPHE
-         i7mHEfShOMb/b2mVJej2m0FkPXR1mjgQoNvNMPKEr5/PnkJnYFCI0CDZ9eg0rWGUrrft
-         b3aQ==
+        bh=A1RT2huJ5JZoTziBJ4jD+CCwuEKWgio+GHjHj5uuvtc=;
+        b=EaLk2+SyoYx73S57iiWYF9rSx8ubLMYu24E2j+fPy8eGnlG3tuhYo/0Z9kJy2YLBL1
+         04e6G5xUv0L0glsrIfQPd73PqrLk5tC08vg1v8KXbsz5HKPyEEnfW+Oz/8P41Qf8AiKm
+         9UyNAarw/GykvPilTIqm/zMfAjk2NwCMFy3pUU5m4tGM+wPWk0bF8el6R/GuJrtT7Xq8
+         vquTyaG+FvpZB8vSgqJ6x/7xcWLELSJa14Du8ylpX/ZKyn2qbOgZWZbyFjk0FmYiKmOn
+         J211YB+kobX95+5I99hXIP5qxFPi3ckk6C3YOX56cnJL2+NlnzLye+/WPvFJxOiZJM1R
+         wn/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1729594595; x=1730199395;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ncBC08IoBkP10ef5QDpG5SV+FPj/pwrW84Mb8BGJC6M=;
-        b=SDoR1LCSVQy6pYGVHc1M+VwSsEzTjQfj+ad2n1knozLmvxNSG6mfSp/HlvRgfg9TEH
-         XpH9uH0M5RhajPaKm9aWg39HVJul+6jF0BmiUipXb3ib85wPlV5SX/UDtHyA6Squnwf3
-         nOCfg3TqHPtsXT530O+7f4fVvMg4qSebGutjYFdtSWvq+yfbt2M2EMU4K/sQEt6Dvi2l
-         DbuR1OECkEzEzaBRA7fF8jRszj5a/1QLXSMGLVBWvJXzZlkCn/Jv1A4jyYCy+PHKMc5g
-         u8tD/ktl6RvP6I2yi9B22J2/TEv46qiIzRQtUZQzYC3Y/5TVLxoKhikdC9DciPwilypL
-         dZpw==
-X-Forwarded-Encrypted: i=1; AJvYcCV053YdR34ax45Ve6U1EVWjGtuJKLgaG9b7HThfzUGvHMwY3lbGo/GEHuAPcYDFKsr4sJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6/HVf2mMqPSDdJNRleQdyGTJJa57X/0AovLY6MxRETolv2oDc
-	2qLCCebaT0MHjWVNoT8+ECAZ1Y+RR6Xw/IcHuBwPAj8WqnZBKTBDqZIu5fl2jCI=
-X-Google-Smtp-Source: AGHT+IHBLyW0mHPJl2GnPpKKp3UGFXSgagg2mGtBM8c3JT2vxTQvXvz98RyNa3XJTjQV1wo5eVGMhQ==
-X-Received: by 2002:a17:906:c10b:b0:a9a:6bd:95dc with SMTP id a640c23a62f3a-a9aad3715ccmr189373366b.46.1729594594783;
-        Tue, 22 Oct 2024 03:56:34 -0700 (PDT)
+        bh=A1RT2huJ5JZoTziBJ4jD+CCwuEKWgio+GHjHj5uuvtc=;
+        b=ZB4d82hkkXesJrNPqmQqQx8R3+tUEJcPn4zdQg6kRQfUSrKHXoVDA5kx1mZTRmzRas
+         3KoGb6/SV/xEIuyjJDyEaQHLds5uGaz3se0jSiPCTdL/ccPbZEWU2YoyVNRlrhUSh0Rl
+         OteWyK9vTAFyG9w9nkntp1litUBiYJOjej3I4f1zNb9S/+geRj+wlsuuxgW0ZXuxkCRC
+         Q21IJQi2eW15M5EUk/kp+Vy/PCnUzlgxCYfUKAJMKU0QO5jIdGHyC0mk4QrZpYF5rOLQ
+         LfT1J7dXzBdD4sxNI2tGmNgCZktBSxF2H3P+DqBGK8QE+hLdb9+PQHSwNvw+As8U20oo
+         gBJw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNWTmlPxlr0O1sSz7CihQWcweKqW+oObbyTZNQwD/wFAMKewXql9dMT5mS1xeJT3hxqE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy324e00hzzcRNUaQdPlQRmt1IJPkAvSttZ1LQmHpI58b0fq/0F
+	exdB8L8KzagvH6bhOhux3ZcJfbX4O2MDZTkb37zP4UUQ5j5usB78QTt8fVRGJPY=
+X-Google-Smtp-Source: AGHT+IH8FwAH1RdgvHht2IWETizlhtV8RNte8pvJdWVu1cT97HP0xl8CflJaCO4tn8KeVgLbDH6oBA==
+X-Received: by 2002:a17:907:6d0b:b0:a77:c30c:341 with SMTP id a640c23a62f3a-a9a694c71b9mr1507028066b.0.1729594595306;
+        Tue, 22 Oct 2024 03:56:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91559951sm321731866b.106.2024.10.22.03.56.22
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912ee04asm324230166b.61.2024.10.22.03.56.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 03:56:28 -0700 (PDT)
+        Tue, 22 Oct 2024 03:56:30 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 2565B5FC34;
+	by draig.lan (Postfix) with ESMTP id 4FCF95FC47;
 	Tue, 22 Oct 2024 11:56:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 17/20] plugins: add ability to register a GDB triggered callback
-Date: Tue, 22 Oct 2024 11:56:11 +0100
-Message-Id: <20241022105614.839199-18-alex.bennee@linaro.org>
+Subject: [PATCH v2 19/20] contrib/plugins: remove Makefile for contrib/plugins
+Date: Tue, 22 Oct 2024 11:56:13 +0100
+Message-Id: <20241022105614.839199-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
@@ -99,225 +99,184 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Now gdbstub has gained the ability to extend its command tables we can
-allow it to trigger plugin callbacks. This is probably most useful for
-QEMU developers debugging plugins themselves but might be useful for
-other stuff.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Trigger the callback by sending:
+Now replaced by meson build.
 
-  maintenance packet Qqemu.plugin_cb
-
-I've extended the memory plugin to report on the packet.
-
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240925204845.390689-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/qemu/plugin-event.h  |  1 +
- include/qemu/qemu-plugin.h   | 16 ++++++++++++++++
- plugins/plugin.h             |  9 +++++++++
- plugins/api.c                | 18 ++++++++++++++++++
- plugins/core.c               | 37 ++++++++++++++++++++++++++++++++++++
- tests/tcg/plugins/mem.c      | 11 +++++++++--
- plugins/qemu-plugins.symbols |  1 +
- 7 files changed, 91 insertions(+), 2 deletions(-)
+ configure                | 18 ---------
+ Makefile                 | 10 -----
+ contrib/plugins/Makefile | 87 ----------------------------------------
+ 3 files changed, 115 deletions(-)
+ delete mode 100644 contrib/plugins/Makefile
 
-diff --git a/include/qemu/plugin-event.h b/include/qemu/plugin-event.h
-index 7056d8427b..d9aa56cf4f 100644
---- a/include/qemu/plugin-event.h
-+++ b/include/qemu/plugin-event.h
-@@ -20,6 +20,7 @@ enum qemu_plugin_event {
-     QEMU_PLUGIN_EV_VCPU_SYSCALL_RET,
-     QEMU_PLUGIN_EV_FLUSH,
-     QEMU_PLUGIN_EV_ATEXIT,
-+    QEMU_PLUGIN_EV_GDBSTUB,
-     QEMU_PLUGIN_EV_MAX, /* total number of plugin events we support */
- };
+diff --git a/configure b/configure
+index 7dd3400ccb..101ca9ace9 100755
+--- a/configure
++++ b/configure
+@@ -1073,7 +1073,6 @@ if test "$plugins" != "no" && test $host_bits -eq 64; then
+         plugins="no"
+     else
+         plugins=yes
+-        subdirs="$subdirs contrib/plugins"
+     fi
+ fi
  
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 622c9a0232..99c3b365aa 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -802,6 +802,22 @@ QEMU_PLUGIN_API
- void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
-                                     qemu_plugin_udata_cb_t cb, void *userdata);
+@@ -1704,7 +1703,6 @@ LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
+ LINKS="$LINKS tests/avocado tests/data"
+ LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
+ LINKS="$LINKS python"
+-LINKS="$LINKS contrib/plugins/Makefile "
+ for f in $LINKS ; do
+     if [ -e "$source_path/$f" ]; then
+         symlink "$source_path/$f" "$f"
+@@ -1790,22 +1788,6 @@ if test "$default_targets" = "yes"; then
+   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
+ fi
  
-+
-+/**
-+ * qemu_plugin_register_gdb_cb() - register a gdb callback
-+ * @id: plugin ID
-+ * @cb: callback
-+ * @userdata: user data for callback
-+ *
-+ * When using the gdbstub to debug a guest you can send a command that
-+ * will trigger the callback. This is useful if you want the plugin to
-+ * print out collected state at particular points when debugging a
-+ * program.
-+ */
-+QEMU_PLUGIN_API
-+void qemu_plugin_register_gdb_cb(qemu_plugin_id_t id,
-+                                 qemu_plugin_udata_cb_t cb, void *userdata);
-+
- /* returns how many vcpus were started at this point */
- int qemu_plugin_num_vcpus(void);
- 
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 30e2299a54..f37667c9fb 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -118,4 +118,13 @@ struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
- 
- void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
- 
-+/**
-+ * plugin_register_gdbstub_commands - register gdbstub commands
-+ *
-+ * This should only be called once to register gdbstub commands so we
-+ * can trigger callbacks if needed.
-+ */
-+void plugin_register_gdbstub_commands(void);
-+
-+
- #endif /* PLUGIN_H */
-diff --git a/plugins/api.c b/plugins/api.c
-index 24ea64e2de..62141616f4 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -681,3 +681,21 @@ void qemu_plugin_update_ns(const void *handle, int64_t new_time)
-     }
- #endif
- }
-+
-+/*
-+ * gdbstub hooks
-+ */
-+
-+static bool gdbstub_callbacks;
-+
-+void qemu_plugin_register_gdb_cb(qemu_plugin_id_t id,
-+                                 qemu_plugin_udata_cb_t cb,
-+                                 void *udata)
-+{
-+    plugin_register_cb_udata(id, QEMU_PLUGIN_EV_GDBSTUB, cb, udata);
-+
-+    if (!gdbstub_callbacks) {
-+        plugin_register_gdbstub_commands();
-+        gdbstub_callbacks = true;
-+    }
-+}
-diff --git a/plugins/core.c b/plugins/core.c
-index bb105e8e68..e7fce08799 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -23,6 +23,7 @@
- #include "qemu/xxhash.h"
- #include "qemu/rcu.h"
- #include "hw/core/cpu.h"
-+#include "gdbstub/commands.h"
- 
- #include "exec/exec-all.h"
- #include "exec/tb-flush.h"
-@@ -147,6 +148,7 @@ static void plugin_cb__udata(enum qemu_plugin_event ev)
- 
-     switch (ev) {
-     case QEMU_PLUGIN_EV_ATEXIT:
-+    case QEMU_PLUGIN_EV_GDBSTUB:
-         QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
-             qemu_plugin_udata_cb_t func = cb->f.udata;
- 
-@@ -768,3 +770,38 @@ void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
-     g_array_free(score->data, TRUE);
-     g_free(score);
- }
-+
-+/*
-+ * gdbstub integration
-+ */
-+
-+static void handle_plugin_cb(GArray *params, void *user_ctx)
-+{
-+    plugin_cb__udata(QEMU_PLUGIN_EV_GDBSTUB);
-+    gdb_put_packet("OK");
-+}
-+
-+enum Command {
-+    PluginCallback,
-+    NUM_GDB_CMDS
-+};
-+
-+static const GdbCmdParseEntry cmd_handler_table[NUM_GDB_CMDS] = {
-+    [PluginCallback] = {
-+        .handler = handle_plugin_cb,
-+        .cmd_startswith = true,
-+        .cmd = "qemu.plugin_cb",
-+        .schema = "s?",
-+    },
-+};
-+
-+void plugin_register_gdbstub_commands(void)
-+{
-+    g_autoptr(GPtrArray) set_table = g_ptr_array_new();
-+
-+    for (int i = 0; i < NUM_GDB_CMDS; i++) {
-+        g_ptr_array_add(set_table, (gpointer) &cmd_handler_table[PluginCallback]);
-+    }
-+
-+    gdb_extend_set_table(set_table);
-+}
-diff --git a/tests/tcg/plugins/mem.c b/tests/tcg/plugins/mem.c
-index b0fa8a9f27..d416d92fc2 100644
---- a/tests/tcg/plugins/mem.c
-+++ b/tests/tcg/plugins/mem.c
-@@ -75,8 +75,7 @@ static gint addr_order(gconstpointer a, gconstpointer b)
-     return na->region_address > nb->region_address ? 1 : -1;
- }
- 
+-# contrib/plugins configuration
+-echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
+-echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
+-echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
+-echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
+-echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
+-if test "$host_os" = windows; then
+-  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
+-fi
+-if test "$host_os" = darwin; then
+-  echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
+-fi
+-if test "$host_os" = windows; then
+-  echo "CONFIG_WIN32=y" >> contrib/plugins/$config_host_mak
+-fi
 -
--static void plugin_exit(qemu_plugin_id_t id, void *p)
-+static void plugin_report(qemu_plugin_id_t id, void *p)
- {
-     g_autoptr(GString) out = g_string_new("");
+ # tests/tcg configuration
+ mkdir -p tests/tcg
+ echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
+diff --git a/Makefile b/Makefile
+index 917c9a34d1..b65b0bd41a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -187,11 +187,6 @@ SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
+ $(SUBDIR_RULES):
+ 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
  
-@@ -90,6 +89,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-     }
-     qemu_plugin_outs(out->str);
- 
-+    g_mutex_lock(&lock);
- 
-     if (do_region_summary) {
-         GList *counts = g_hash_table_get_values(regions);
-@@ -114,6 +114,12 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-         qemu_plugin_outs(out->str);
-     }
- 
-+    g_mutex_unlock(&lock);
-+}
-+
-+static void plugin_exit(qemu_plugin_id_t id, void *p)
-+{
-+    plugin_report(id, p);
-     qemu_plugin_scoreboard_free(counts);
- }
- 
-@@ -400,6 +406,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-         counts, CPUCount, mem_count);
-     io_count = qemu_plugin_scoreboard_u64_in_struct(counts, CPUCount, io_count);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-+    qemu_plugin_register_gdb_cb(id, plugin_report, NULL);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-     return 0;
- }
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index 032661f9ea..d272e8e0f3 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -25,6 +25,7 @@
-   qemu_plugin_read_register;
-   qemu_plugin_register_atexit_cb;
-   qemu_plugin_register_flush_cb;
-+  qemu_plugin_register_gdb_cb;
-   qemu_plugin_register_vcpu_exit_cb;
-   qemu_plugin_register_vcpu_idle_cb;
-   qemu_plugin_register_vcpu_init_cb;
+-ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+-.PHONY: plugins
+-plugins: contrib/plugins/all
+-endif
+-
+ .PHONY: recurse-all recurse-clean
+ recurse-all: $(addsuffix /all, $(SUBDIRS))
+ recurse-clean: $(addsuffix /clean, $(SUBDIRS))
+@@ -307,11 +302,6 @@ help:
+ 	$(call print-help,cscope,Generate cscope index)
+ 	$(call print-help,sparse,Run sparse on the QEMU source)
+ 	@echo  ''
+-ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+-	@echo  'Plugin targets:'
+-	$(call print-help,plugins,Build the example TCG plugins)
+-	@echo  ''
+-endif
+ 	@echo  'Cleaning targets:'
+ 	$(call print-help,clean,Remove most generated files but keep the config)
+ 	$(call print-help,distclean,Remove all generated files)
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+deleted file mode 100644
+index bbddd4800f..0000000000
+--- a/contrib/plugins/Makefile
++++ /dev/null
+@@ -1,87 +0,0 @@
+-# -*- Mode: makefile -*-
+-#
+-# This Makefile example is fairly independent from the main makefile
+-# so users can take and adapt it for their build. We only really
+-# include config-host.mak so we don't have to repeat probing for
+-# programs that the main configure has already done for us.
+-#
+-
+-include config-host.mak
+-
+-TOP_SRC_PATH = $(SRC_PATH)/../..
+-
+-VPATH += $(SRC_PATH)
+-
+-NAMES :=
+-NAMES += bbv
+-NAMES += execlog
+-NAMES += hotblocks
+-NAMES += hotpages
+-NAMES += howvec
+-
+-# The lockstep example communicates using unix sockets,
+-# and can't be easily made to work on windows.
+-ifneq ($(CONFIG_WIN32),y)
+-NAMES += lockstep
+-endif
+-
+-NAMES += hwprofile
+-NAMES += cache
+-NAMES += drcov
+-NAMES += ips
+-NAMES += stoptrigger
+-NAMES += cflow
+-
+-ifeq ($(CONFIG_WIN32),y)
+-SO_SUFFIX := .dll
+-LDLIBS += $(shell $(PKG_CONFIG) --libs glib-2.0)
+-else
+-SO_SUFFIX := .so
+-endif
+-
+-SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
+-
+-# The main QEMU uses Glib extensively so it is perfectly fine to use it
+-# in plugins (which many example do).
+-PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
+-PLUGIN_CFLAGS += -fPIC -Wall
+-PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
+-
+-# Helper that honours V=1 so we get some output when compiling
+-quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
+-quiet-command = $(call quiet-@,$2,$3)$1
+-
+-# for including , in command strings
+-COMMA := ,
+-
+-all: $(SONAMES)
+-
+-%.o: %.c
+-	$(call quiet-command, \
+-		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
+-	        BUILD, plugin $@)
+-
+-ifeq ($(CONFIG_WIN32),y)
+-lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
+-	$(call quiet-command, \
+-		$(CC) -shared -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-else ifeq ($(CONFIG_DARWIN),y)
+-lib%$(SO_SUFFIX): %.o
+-	$(call quiet-command, \
+-		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-else
+-lib%$(SO_SUFFIX): %.o
+-	$(call quiet-command, \
+-		$(CC) -shared -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-endif
+-
+-
+-clean distclean:
+-	rm -f *.o *$(SO_SUFFIX) *.d
+-	rm -Rf .libs
+-
+-.PHONY: all clean
+-.SECONDARY:
 -- 
 2.39.5
 
