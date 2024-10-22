@@ -1,58 +1,60 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4524C199254
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEA6198838
 	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594581; cv=none; b=ojK/+lQAIkCFpOEfR6aD/kQQAZ+t+0qYTbPZs9470cSVF1UD4GVxSWmbKRvDoE9i/vk4+c/XCd93CH7yrRoUNUE5+07JanzJYuSltbUulqDijEmLUuqgzMwvIxRdH+V14VfIjJQoige3TCGpRMRJDDTKIr3d4pJiHJD21N/60DA=
+	t=1729594581; cv=none; b=pPoCdjcPCr/uZNFrTpGiSM1GUt8Lt0GEfjoXWFEo5GbFqqtt1y9EuhNXGOroeeyVazfkx/fctvSxq55gNtEC+mdbfn8C61PLszfNdcAkGwgqd9YjDvvku8XFjx5vyKwrY6R+2Qnqdxw0Gsz1q6Q4RXUo+mN3RJ7hBsVcN9iWjxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729594581; c=relaxed/simple;
-	bh=XnfPRDxBufLEWEv2UlqxttDJgXzO5PyF2hrAqzQmkzc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=qnepvX7OK0b7qmScxuOjim/IB6o41w6+VagbuyPcSog/K3WwNPvBsnLfDd0QHHsc1gBKdZWv0G6S1FdZyxcgEif1mXAcoQ/0dvvFt2tknW/XFz9YMCGSTbczjoIZtuEwcWJOsLFEUjEMAO2ZF4I0q06Cf+Wo5lu832gdD1YBODw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tsDYHGnk; arc=none smtp.client-ip=209.85.218.45
+	bh=dycqCm1NPayXEmQsWH/9aZ0ifAR2NBSL9Ke2mXMrvic=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PR5mZyyePEVGv2ZMkcZaRAHoR7RSsncffMBSByaOl618qUkQjxcFUPRvvsYvb01DEijzBLcZyGq5pIYew5ScMh/390CTRZX6erMr0n6jrCDL85JuWE+Vct06DA1y7kmkkAKHW9eyrZPsteB+y+Z9zHnZwDHesy2Mjz/um+UzRD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dWlC8Otx; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tsDYHGnk"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a9a0472306cso740796166b.3
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dWlC8Otx"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53b13ea6b78so964003e87.2
         for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729594576; x=1730199376; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=COpfR9RLf2CLdazvbIhqB2YmojRnRaS7PX4PKuRZwh4=;
-        b=tsDYHGnkisVOa5BZ6ORvyj46JNVvn91VddurlSLemPZSXhU6s0LYUMDPLoqW9wOC07
-         ZJ6ysB0anCHOzXG0kH1cgsLcBT6ZlklXPQkohMLCzvbzFnQz9ONhggZiBhz0FdA+SkKL
-         bz2R4vmU8U8Ipo1ekPcSWieHYiDiskmkUHz8bdkgB83MLTKADoMXFX2q84LCvgq6LZTG
-         Wg7xRg97u8x+xcaNm+SX4/Iku7CongYAa01aClFwA1f/2vyPJ634BwIt74TF/VqJ7jVh
-         nB3WuvV0mat0KZ/gnf7wGHjLEwSH4EdPcaewFW6ukZVi+/pItYJe74J8S5t5ThN794fr
-         M3QQ==
+        d=linaro.org; s=google; t=1729594577; x=1730199377; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
+        b=dWlC8OtxoLze6ZOa5Wz+GP73CVZah6sLFeEV5ijCAEbcYr5YWUvG6N1dmplG/fQJob
+         bdbr22+NIAZ3VFFJ0ln2ZTHbfhFwf5o0WiD+1WWGKEnsm+Bf2opFKIEF3mKqlR9l4HhY
+         5DI54wqMUJEsckvBndPwGYAbudrwWH3jpudynGG/cy5tzzrFfB2qbBJpY+BDANTsdYDw
+         DYt5WUUu4MoRBy1MOrblrVupsp31GadoykW1yfTWpFKoju+Gu29uT1ykIoZnr3sCJzKh
+         FhcmcK+M9gj/NWo/CX6mkcyBTTHkvdm8cmQUYUQebdWujdCAei6gekAtHzKlxPm2mChR
+         YCVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729594576; x=1730199376;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=COpfR9RLf2CLdazvbIhqB2YmojRnRaS7PX4PKuRZwh4=;
-        b=rNoPCCP7cMabXJ8UvCoJ0jolwCILrjgLNQVQ+kyLRsqmLZAfdKV/Qz0acEPmOQ0qoq
-         rmcXEP08jYTRjYB1oimzVzBIWDGpwFQnkNyyr6Ik82N6T6TpfghTm0aj66uwjcD9k+jc
-         bdX82mrnm/QwszQ18sktZ6XpDu02xLC+SIu3cIum0BwSGx+8b2h5RRtTxpkSiCgTpDDn
-         BpWzsLafmH2IK1jcFPEI+RnnlprRWP9rb1LBH9Y7p2YVZA1VVKpkZlFKWlCOkNySQwus
-         r7J/TbxQxmg30R0TJ1kasvUvTVE/qUxw+EKCvRhg/gtzXu4P5Ifkz9HL1Kyt2SeCVqLD
-         mWuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSiCDnCnzrYWoGyfHf6mIEGGzWIjJ7wQNnXgDyeZkPeCwRH+h0EnwbdYfNHSY8CZJVEx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFCn1T73aIDIo4XkLICt/RBHaRjzBq2v1JQ2zJdoTq+E0VbCJH
-	JmZhPySqgp8+W6H34yDVEoSk1OEvs0+6wJluDZdb8ZbipFUbk26bB0bAHpZYVlw=
-X-Google-Smtp-Source: AGHT+IFvyKkyeRPJrAKRyY3MStdAXndUKfD+I3lEe2ovrB6KLCkuexA+w8IhgFRYygmb+9drojBW0Q==
-X-Received: by 2002:a17:906:c150:b0:a9a:47a:8908 with SMTP id a640c23a62f3a-a9aace2551cmr208312266b.9.1729594576427;
-        Tue, 22 Oct 2024 03:56:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729594577; x=1730199377;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
+        b=UX6w46OMMYBIgVI6iZ20huDVDaKiO0lFIWLGKAICYjTEFgE5X6I8cuPz8Ev/2+/cya
+         marP/HvEqjLhE+/9kDjRaEInzrj/kDBcCHOJZGc0RJX1rH6lATaJh0tHslTBHvPl8JST
+         GG7yIzZIJgrr0Ctpq7IfzZ32f/xJOOSLLQIVjZ/dY24upRSXecYBaCkuAA4q5+w0ZhDM
+         iznItWcKYCi/V6FLM4i7wCUFnFZxrXvHuR/mGaxiomrpQpv2BnhDRFRD3pcbTeRArsdQ
+         1hexZQZXVG8sdncXyJH9KSwGGtbibsnzGZFIdt1VVM7f1O6rkUEI57PmuLDiWjhLaWhW
+         O6yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9ILiINj8wtGx1h+LBdTo3Zf8AebNePDrFPVX6urnfbBOJrqRm7h0QeEvosGVb8TMOPJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHyyKJYoboKoJvv/x6nBVgmZFPo3iz7w+7ThCnWp3A3lV9dom6
+	dYVJCY/9/CjnpsVMRJtQm54/2EQf2F96IX70atiQth0Zawqy6JOZzRgcTagQIds=
+X-Google-Smtp-Source: AGHT+IGyaTZRzVDmFkdPhfv0rvAvIdjH0I+E59F1p2dZtHMO7E+32HML2OhzkPGNPbWtrxG3At+wRA==
+X-Received: by 2002:a05:6512:2388:b0:539:9767:903d with SMTP id 2adb3069b0e04-53a154eb91emr9004463e87.60.1729594577248;
+        Tue, 22 Oct 2024 03:56:17 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912edc33sm321447866b.58.2024.10.22.03.56.15
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d62e4sm321153666b.7.2024.10.22.03.56.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 22 Oct 2024 03:56:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id A8D0D5F89C;
-	Tue, 22 Oct 2024 11:56:14 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 0741C5F913;
+	Tue, 22 Oct 2024 11:56:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>,
@@ -82,118 +84,60 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 00/20] maintainer updates (testing, gdbstub, plugins)
-Date: Tue, 22 Oct 2024 11:55:54 +0100
-Message-Id: <20241022105614.839199-1-alex.bennee@linaro.org>
+Subject: [PATCH v2 04/20] meson: hide tsan related warnings
+Date: Tue, 22 Oct 2024 11:55:58 +0100
+Message-Id: <20241022105614.839199-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
+References: <20241022105614.839199-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is an aggregation of three of my maintainer trees which you can
-also get from their respective branches (testing/next, gdbstub/next
-and plugins/next). I didn't include the plugins on the last post as I
-hadn't had a chance to do my sweep through patches before travelling.
-I've also updated MAINTAINERS to point at my next trees.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-For testing we have mostly tweaks and cleanups. I've included some
-tracepoints tweaks for cpu_loop_exit_atomic purely as there was no
-where else to but it. There are also some cleanups to the tsan support
-from Pierrick. The mipsel tweaks have already been applied directly to
-the tree.
+When building with gcc-12 -fsanitize=thread, gcc reports some
+constructions not supported with tsan.
+Found on debian stable.
 
-For gdbstub more cleanups as well as fixing some gdbstub breakage of
-the untested aarch64-be linux-user target. I've added a very basic
-some test to prevent silly regressions in the future.
+qemu/include/qemu/atomic.h:36:52: error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’ [-Werror=tsan]
+   36 | #define smp_mb()                     ({ barrier(); __atomic_thread_fence(__ATOMIC_SEQ_CST); })
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For plugins again more cleanups. The GDB trigger patch will probably
-not get merged and should be considered an experimental hack for now.
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240910174013.1433331-2-pierrick.bouvier@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ meson.build | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-The following still need review:
-
-  plugins: add ability to register a GDB triggered callback
-  tests/tcg: enable basic testing for aarch64_be-linux-user
-  config/targets: update aarch64_be-linux-user gdb XML list
-  MAINTAINERS: mention my gdbstub/next tree
-  gitlab: make check-[dco|patch] a little more verbose
-  scripts/ci: remove architecture checks for build-environment updates
-  MAINTAINERS: mention my testing/next tree
-  tests/docker: add NOFETCH env variable for testing
-  MAINTAINERS: mention my plugins/next tree
-
-Alex Bennée (10):
-  tests/docker: add NOFETCH env variable for testing
-  MAINTAINERS: mention my testing/next tree
-  scripts/ci: remove architecture checks for build-environment updates
-  accel/tcg: add tracepoints for cpu_loop_exit_atomic
-  gitlab: make check-[dco|patch] a little more verbose
-  MAINTAINERS: mention my gdbstub/next tree
-  config/targets: update aarch64_be-linux-user gdb XML list
-  tests/tcg: enable basic testing for aarch64_be-linux-user
-  MAINTAINERS: mention my plugins/next tree
-  plugins: add ability to register a GDB triggered callback
-
-Gustavo Romero (2):
-  tests/tcg/aarch64: Use raw strings for regexes in test-mte.py
-  testing: Enhance gdb probe script
-
-Ilya Leoshkevich (2):
-  tests/docker: Fix microblaze atomics
-  tests/tcg/x86_64: Add cross-modifying code test
-
-Pierrick Bouvier (6):
-  meson: hide tsan related warnings
-  docs/devel: update tsan build documentation
-  dockerfiles: fix default targets for debian-loongarch-cross
-  meson: build contrib/plugins with meson
-  contrib/plugins: remove Makefile for contrib/plugins
-  plugins: fix qemu_plugin_reset
-
- MAINTAINERS                                   |  3 +
- docs/devel/testing/main.rst                   | 26 +++++-
- configure                                     | 23 ++---
- Makefile                                      | 10 ---
- configs/targets/aarch64_be-linux-user.mak     |  2 +-
- meson.build                                   | 14 ++-
- include/qemu/plugin-event.h                   |  1 +
- include/qemu/qemu-plugin.h                    | 16 ++++
- plugins/plugin.h                              |  9 ++
- accel/tcg/plugin-gen.c                        |  4 +
- accel/tcg/user-exec.c                         |  2 +-
- plugins/api.c                                 | 18 ++++
- plugins/core.c                                | 37 ++++++++
- tests/tcg/aarch64_be/hello.c                  | 35 ++++++++
- tests/tcg/plugins/mem.c                       | 11 ++-
- tests/tcg/x86_64/cross-modifying-code.c       | 80 +++++++++++++++++
- accel/tcg/ldst_atomicity.c.inc                |  9 ++
- .gitlab-ci.d/check-dco.py                     |  9 +-
- .gitlab-ci.d/check-patch.py                   |  9 +-
- accel/tcg/trace-events                        | 12 +++
- contrib/plugins/Makefile                      | 87 -------------------
- contrib/plugins/meson.build                   | 23 +++++
- plugins/qemu-plugins.symbols                  |  1 +
- scripts/ci/setup/ubuntu/build-environment.yml |  2 -
- scripts/probe-gdb-support.py                  | 75 ++++++++--------
- tests/docker/Makefile.include                 |  5 +-
- .../dockerfiles/debian-loongarch-cross.docker |  4 +-
- .../build-toolchain.sh                        |  8 ++
- .../dockerfiles/debian-toolchain.docker       |  7 ++
- tests/tcg/Makefile.target                     |  7 +-
- tests/tcg/aarch64/gdbstub/test-mte.py         |  4 +-
- tests/tcg/aarch64_be/Makefile.target          | 17 ++++
- tests/tcg/x86_64/Makefile.target              |  4 +
- 33 files changed, 397 insertions(+), 177 deletions(-)
- create mode 100644 tests/tcg/aarch64_be/hello.c
- create mode 100644 tests/tcg/x86_64/cross-modifying-code.c
- delete mode 100644 contrib/plugins/Makefile
- create mode 100644 contrib/plugins/meson.build
- create mode 100644 tests/tcg/aarch64_be/Makefile.target
-
+diff --git a/meson.build b/meson.build
+index d26690ce20..bdd67a2d6d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -538,7 +538,15 @@ if get_option('tsan')
+                          prefix: '#include <sanitizer/tsan_interface.h>')
+     error('Cannot enable TSAN due to missing fiber annotation interface')
+   endif
+-  qemu_cflags = ['-fsanitize=thread'] + qemu_cflags
++  tsan_warn_suppress = []
++  # gcc (>=11) will report constructions not supported by tsan:
++  # "error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’"
++  # https://gcc.gnu.org/gcc-11/changes.html
++  # However, clang does not support this warning and this triggers an error.
++  if cc.has_argument('-Wno-tsan')
++    tsan_warn_suppress = ['-Wno-tsan']
++  endif
++  qemu_cflags = ['-fsanitize=thread'] + tsan_warn_suppress + qemu_cflags
+   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
+ endif
+ 
 -- 
 2.39.5
 
