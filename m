@@ -1,87 +1,87 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F89F200CB0
-	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 21:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB1720124B
+	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 21:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729632933; cv=fail; b=RLqMQuZlQ9njRCLY8cwLCnXvTA8AkBvlHT8Gax3xn3pe5K7MKO+1tOGKvBQ+Kh9rPGVz5Zj3MjUM92XSj5hlmagn00oFb4JWPnwlKY9yFrwAtCRsetLFPe1fGElr4j6JnPVKZizSwB0xo41WjyXmQiFYp3rL1OiCOxteniez2nA=
+	t=1729632934; cv=fail; b=oL0piuM5TuizkfnJ1EGc/E7xNEP6g+Fw4wRIqCwaACMkUqGcWOofPbSzz1h/O/pON1nUuIrHzKAJ6TVQwMu1i22baJfoT3tPlFdnAZS6Cg3h/N7wbvR8Y4sQHq1EGj+4kFrybth0SE8CGjtQAljt5QsTXwtJmSl0WEc62VWHTW4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729632933; c=relaxed/simple;
-	bh=o0X81NanqCDv8nnUf8I0vliIAUg3GHfOfys8/Qvxs7U=;
+	s=arc-20240116; t=1729632934; c=relaxed/simple;
+	bh=OaOK0zfCm3t2D/iJ3gvR8OWqr3ttxYLJX05kPmI5LbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QJNltxjyYSqyDmDuqqa4zzVITDELQJyX911r6psntP9dioAPIAZVydZNDm2LfJeTLe3qJovwdZFl98QDFTdjrjwA/wTBKmhCHaLp2e0qQVZIXSB3A6f+CldR7lqNpYUtck5k46Cp0ce4X9COG01GHgnmuFUBbWimO23+b1VYS34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ShBp1awp; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=bDbqwP9t; arc=fail smtp.client-ip=205.220.165.32
+	 Content-Type:MIME-Version; b=POp31qfbQuFUtDKrXZ00sUXKqbuvVfvT0AtSECnF0gmesXb5c313UYLql1+DvHtBMg4rv7aW33HYXbb7a3FNeJpXJaG7vyy4yW29dIpxgLTz7OfP481EY2327gV24/3XhaChRWmAWwBPm/4NKYPH0dO6Xo9Fmvl8Bv2rI8CHdIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=EywQE6hM; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=nsHXG88a; arc=fail smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ShBp1awp";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="bDbqwP9t"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MLQZl8022739;
-	Tue, 22 Oct 2024 21:35:16 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="EywQE6hM";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="nsHXG88a"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MLQeBQ016675;
+	Tue, 22 Oct 2024 21:35:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=OIWqMKgNsqbitTcUMMAADhcXdRRq01tyynWWoGYh2v8=; b=
-	ShBp1awpCJzldOyoSwb8nsKQ7cvoNbnbRLWMJaMYq3uo906g6ImK3h6LHqpBhX0m
-	Lj9JYgkcB+uRBtf0fbgWEvIS/7m+0njLcfXkGrI1EamA0xym4wHFXn5qS5LwSpKI
-	cxu4FZq8h9mYgGQ6etVPxd5h4YrOYvhtb8CSrd8zpG8aKAZinFRvrs4aS3HGRhPt
-	+SLVfa0meLtdkRca9euf1BSjpsZPQVd+namdHVeMsd8feUGDEqGlwxkZsfuyvt95
-	qEKdGSye3nNZ6j81PdpQJN3iqLigu/uO1jYHBwLNO7L+OK2Rrgsv71n5DMHzmmxI
-	R2uHXB7/Mo7bLNDpghuyBA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c5aserar-1
+	corp-2023-11-20; bh=tI5kdNPntRMQNuLuBEJvdKTgE0oMkyr66BhPU/hYt6Y=; b=
+	EywQE6hMZj1zfLej3nX8V2rjw83Yhbv3xJ1LiX6EbdnCh6iIet/ItsMPvLOrtXrh
+	RuJQSi3ZCmwzhMrJchF9aSrKkJRRHVq/s5OaCnuSr82BHCgkrShgkQv43Oh9JiWZ
+	4CGi4yjcWwE7SdRGMWdt6rg78n221Atnoy5rS5VPl+SZIW3yYyH+XoWr/Xh6KctL
+	pdiYSO7J6VLoy4FQUi3cPsBmqiG7+K8QWuoLW92d1Y77rfpGCEBrqkFgYo7QAD/B
+	zI5EuQT3v32S7l+eN4c9jgB2BO9J/U9E0eEX6r05tBqVCABsEzcgKWG1Ncfd1zGK
+	XhzN5J4begRQ+dWRuYSraA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42cqv3dw6n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Oct 2024 21:35:15 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49MKeALH026254;
-	Tue, 22 Oct 2024 21:35:15 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2049.outbound.protection.outlook.com [104.47.56.49])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42c3788nvy-2
+	Tue, 22 Oct 2024 21:35:20 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49MKi39u022663;
+	Tue, 22 Oct 2024 21:35:19 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2043.outbound.protection.outlook.com [104.47.56.43])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42c8ew4vfk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Oct 2024 21:35:15 +0000
+	Tue, 22 Oct 2024 21:35:19 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hCXPdnLy793bMqKPnktF0sx5IBToqtv/2Z5CAG8Ulrg9LSI7nqdPiS/xElupEb5OMAlOKGDJnulSsDVBVBScod9SWBRGoubh+DKYcXXTNXzxNuaokedsW9SD85cMw0gyQEQFFqqeB7bDrRdWhGtxVDA5psAj1yahqr8Rnh7BxI+wK4N1pNAQPOd+3+F4NAm44OzK+btPES9dl+wKCAuzCzUsZbW0AfPE3TqkiOeTzt8WiwUla3Em0h2vczRPezDtNowMQcvd5hOjdQnQgx+ThlN/pSvzBjoAJZ4z/BW342xyoeoYKA/HtM3H8Er4gUi+fIxu9+Ae6TPQOwiFzeLrOw==
+ b=eRpD5Jiqm2M30+xt10eV0cCFc1p9cSeDOzLVrAAoHjwISOQi0tvmkeY+fEjQJ9v3p/M8It1Owx+uleWgA+5XU601jxW+V+cvoVec0Y4YFOdr+dClI3L3DrgOdsB+scQh5Hgy7aM+GCoYLaz25OMTPfBOXKfxTKOIGtGDBcnh9R5CIsBZLFFU2vVEhz6nITQV7L4aUFXh/1XQ5eYM9BAk3U+18MnD+GVCGh0IG5UG21Svci8cZBBKdVVSIhRKyJzXChrZqEjR/D0s7GhdfEjjScxvKzpP8vfdfM9WtESLqSH7aOHyt1RLNEztcfB7cUZVVFK1Q9ltylbBkcz1mjN8Fw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OIWqMKgNsqbitTcUMMAADhcXdRRq01tyynWWoGYh2v8=;
- b=SjkwpT2FRXdfN8NWEGgzrV4nBKm34ndY2k5Ln3aGiP3EurkjyczC/hFOscyLdhtO6ZP3Jt8nE4UmDDLfxawtQVyquTRqzBSNIWpKfaq9DQnaQvJ9kRPFFwu7Fw7A286rXHyiUb/aOT/Q3QymB1fgDBMSBeqGfb7xDdIpyBx1NgUFoYb0bc3W4KEiypOQskjPwCM35IVMS/0UHBUd1l+wwHI24uGSkYNi8/ssUQ4KDud6lgTJ0m9BZPffPNP9q1A2U5WhS3hjVSEhXsx3FEoFfIrvNvONfLGqQg7rhHO0VwZKvgEGumfsMNEGGnuiyKevrD6wogSdzjququ/5B5KoPQ==
+ bh=tI5kdNPntRMQNuLuBEJvdKTgE0oMkyr66BhPU/hYt6Y=;
+ b=ijEWw/NdbC4Lqfw6KhxWk2oJJXcUGxvbyYTLgZmALTydzJm+z6AHw0GR+Vcck3FnbqQlAerSBh2D4pEOILLNj0GzT4GvpnJNPvSVHXaK//pQR5jIIB1QXM4IUsWKmCp47rzr5hLO9mwAy5fDIKLyrsRiW0tbvKmU5D3Zhhg2PXyiG5cSJU94Mm5LP3oIWAeWISwBtIvF0za5EsLfrpOCO0twhZGmZExCpEG5cP7p+tCQPTHsbmMk9c09YsO/p9jo4q/+bAc3dwDi7DMs9HrV5oQM//wz3yikUqGCh/oCPw233KcqiP03Va4oOPSpasMKVg/r3xlmbVb/H6Ys23oXaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OIWqMKgNsqbitTcUMMAADhcXdRRq01tyynWWoGYh2v8=;
- b=bDbqwP9tnA96d59z2/qhzEilnamY50F89Sim3JpFDk0rKYm2OGC6zZH5rAdWVLMep16CNMD0xS3WKxR/QZ6UqGgbVBHKm/SuY0JAX5YOIC2lqV2qg5kmg7ZdyNw0EQ84hKYYGA6dCm/39zwNdnSYD5AIgG29shuGCmTKPxFRcy0=
+ bh=tI5kdNPntRMQNuLuBEJvdKTgE0oMkyr66BhPU/hYt6Y=;
+ b=nsHXG88al/Fp628RzJnPoYLWWfozhfKWN9azkHqMHZsTAU5vnV168pYGU9tpeP7fU89NuTvaCGDix2yRjM34UK3iIai5iADV2TZnumUm/RbOdfbBTz8VULtXxHHOjc2M5JI4n6VweErdsOcAb6zGgCxWetyR6FkBzQuvQX/janM=
 Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
  by SA2PR10MB4809.namprd10.prod.outlook.com (2603:10b6:806:113::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Tue, 22 Oct
- 2024 21:35:13 +0000
+ 2024 21:35:17 +0000
 Received: from CH3PR10MB7329.namprd10.prod.outlook.com
  ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
  ([fe80::f238:6143:104c:da23%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
- 21:35:13 +0000
+ 21:35:17 +0000
 From: =?UTF-8?q?=E2=80=9CWilliam=20Roche?= <william.roche@oracle.com>
 To: peterx@redhat.com, david@redhat.com, pbonzini@redhat.com,
         richard.henderson@linaro.org, philmd@linaro.org,
         peter.maydell@linaro.org, mtosatti@redhat.com, kvm@vger.kernel.org,
         qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Cc: william.roche@oracle.com, joao.m.martins@oracle.com
-Subject: [PATCH v1 1/4] accel/kvm: SIGBUS handler should also deal with si_addr_lsb
-Date: Tue, 22 Oct 2024 21:35:00 +0000
-Message-ID: <20241022213503.1189954-2-william.roche@oracle.com>
+Subject: [PATCH v1 4/4] accel/kvm: Report the loss of a large memory page
+Date: Tue, 22 Oct 2024 21:35:03 +0000
+Message-ID: <20241022213503.1189954-5-william.roche@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20241022213503.1189954-1-william.roche@oracle.com>
 References: <ZwalK7Dq_cf-EA_0@x1n>
  <20241022213503.1189954-1-william.roche@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BN8PR15CA0038.namprd15.prod.outlook.com
- (2603:10b6:408:80::15) To CH3PR10MB7329.namprd10.prod.outlook.com
+X-ClientProxiedBy: BL1PR13CA0072.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::17) To CH3PR10MB7329.namprd10.prod.outlook.com
  (2603:10b6:610:12c::16)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -91,233 +91,181 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA2PR10MB4809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02df668f-5a21-4e31-bddb-08dcf2e16948
+X-MS-Office365-Filtering-Correlation-Id: 6f3f7b29-874a-4850-e10d-08dcf2e16bcf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eWhUDAVhJCRw5cgbwbFWBfrADfLAVk6IotB3nvdUMOBxrr7NTkEyr75Vxd+C?=
- =?us-ascii?Q?bWiEjB1wcEQPKe7J4LBhGbaMxgfysXVURyltwD9MuZ8SGa5lZ8x4ViRlnVcN?=
- =?us-ascii?Q?MuZ41XH77tpxSWlgh7Z87ObbcxnPHrotPZMdiZszLSD7GoGPa2Kx4U6Q+CoH?=
- =?us-ascii?Q?+so45JTlXF26xlBThYKnh0AUODWGiarCfXAMIPaDIoHtQy+yoGZz0TpMeetm?=
- =?us-ascii?Q?Y5wAJ7Txbe3tvlTV0FPRzHSFIVnk4iGoF66TA5OHRzqKvQgUc028jaqH6Dqz?=
- =?us-ascii?Q?pkd2HyQs2n5vb4tBDu+6rdznY2OElHJJXlln9SVApH7iNV8DXxijVIaomAEU?=
- =?us-ascii?Q?Tjdw0AHnKdI4Fc4GBPWlTZzuJaeNfkVe0N7Umg2g/qiVeovjbTeRuRg8g4eC?=
- =?us-ascii?Q?ZD3hSJQKHCDIwWTzUYMPUEcE3DVhZ8xjuBt4w9zpOJCZVJ+d77cDU8/UGXn1?=
- =?us-ascii?Q?vRjwTreixBo0BZrBdb2qcE+BO4SWkIM7jY9Wrs82Q7FPWW7hzgqxVHhOByzB?=
- =?us-ascii?Q?Lo74Q8AS0XzIls0ZA49ww8yH+dLTMY5uUVKHI8QSyZ/2LU0L/y+FRz5e7n/e?=
- =?us-ascii?Q?p4XV2oR3hovI9be2QN57OQmHGfEN9tZRVto1PBI8uD5sg/FnLr9cBHDcLZwP?=
- =?us-ascii?Q?DT/EWm287tyB5eTEBxx85amLYBa0hNfR18FFrZtYo2YaFTAeUdBpYvDY6OzQ?=
- =?us-ascii?Q?YAtR6xnai4zRJC7WDM5+99Us4LLktdeLQhCFRspnV9ix+862tDvtrjvVPZok?=
- =?us-ascii?Q?ACjYH5jryrH5xjqH836zgbl+1pVGYmc82S2mFzvOwzs7iiGfDEroqGvg50si?=
- =?us-ascii?Q?QV1VoDb+0MC9Nm66253zRyqLirV4W58l/2/GexkGyVXQFyammfp79GLbTe0t?=
- =?us-ascii?Q?2bpfitIhs+xXsNRooEoFgdFadeQYmsXWpKnJISWs97tZ/eVvkTp2Wo5/zdlb?=
- =?us-ascii?Q?aIzZdiaAjPX9k5nHzayC9CRxvGEwWCCeIvMHkW/KH6DkFM6wlBLIPpjcaE5q?=
- =?us-ascii?Q?CK7JGCgoOElex6IIUyT+Ham3BQCbKdl/x1brzDXyOuG+PHdEEZDYo77BXzOn?=
- =?us-ascii?Q?yzzTXqYxX2xuojYkoA3BvJPmyHLF/6md6kebJFPtJqu9y68h1KEr6yxRKHuS?=
- =?us-ascii?Q?BKEoi3bWY6WbkBIvUaTCs3tYiQehV+wNY3Cn/1dN/GX1Bw7nmaCkpp0yYyOc?=
- =?us-ascii?Q?0XZI442fk9t/Q/irk6APgXIFkT+7XSnMXqnOleuz8/F03ZrP3oG34LHOG1Pb?=
- =?us-ascii?Q?mhZ6n2qsqz/egNuEkY8TfyRsCGrvR4l1tgA3JosEXjFJDyj7Ul6lCLEJtSP1?=
- =?us-ascii?Q?gL+9tXETxB+ORhaKJwvXHPt7nOU9EyEALsqy37hSfVWwA4bQtHp6bV5XrpHB?=
- =?us-ascii?Q?g9mKJVU=3D?=
+	=?us-ascii?Q?wgkbmYDWyfT7dA6PVL45rNeRIKLHrtUDMi7Df8Y88mFLq3QIfuu2NufNo2t8?=
+ =?us-ascii?Q?Uo5jHd8RddWn6Ok++TGG8rH+SAMoNaojNi/37D0imfbGHj40Kp/pcxqZRLun?=
+ =?us-ascii?Q?W63sckj0pphB2iK2MfYOwCgZfxP9pl1f4iPcAu9wd3BAdeVtHYNmrZXjxZ7n?=
+ =?us-ascii?Q?YO5bq2DsH2UusTfpvIY8Tu303kYiHdUrXpQrPa/BRvv5qEnCmCWfefQVewbA?=
+ =?us-ascii?Q?qRNVix7yfTUiT2sgj0hvrWdbvmYfTsOxBn4UOeSYxx6V245uc33rehopSusF?=
+ =?us-ascii?Q?FBpyHQL6nmeS8XT9auqMkglXY6TXih70cbGskD4eYbrKr6gyrdOdMxb3+yTe?=
+ =?us-ascii?Q?tk/wx97p21zPN8TwXtpjMzsbUEkXLNOQJPYEnjomZszje4s8dgJb/ggUs5Gf?=
+ =?us-ascii?Q?gF9iUDYwFSYkMLaMiRzUgNPEur5zT9OJDYhBlXdsasP9dCCNz8khaaCW9TMq?=
+ =?us-ascii?Q?IPKTI6knCv5oexdiS7Sc24BvuDKqSgfe8r+lHSp4YuhMXwHqaSifa+nZwc4D?=
+ =?us-ascii?Q?pV3lCJ5c8GeYk6vGRPqURoKzswMy1KOtc0Q0fUiQpZJI8qONG98mR2OnM6ec?=
+ =?us-ascii?Q?f4tiE47Dd6pCJJCtyS1y/6YGBuwtznaQhWMRDUajSQapTeitT8C+kNELs16/?=
+ =?us-ascii?Q?/djV9ziYpNSj8a/5FEIe7L8n7WLmLTo0+VoHU96foMG1zbs4vT3tR0Pp3YKr?=
+ =?us-ascii?Q?FIqhLnkcGWgYcsVF9V1EbuNFNZ3AoNAUbtFdL6sJwwjrqGrXu6bN7RH5gSOY?=
+ =?us-ascii?Q?PkuwSRqctCVKu6GfVFnD1fRCypaCghuBWrVpdEQSQ/HEdA7KzXSWsJxs5M+E?=
+ =?us-ascii?Q?R/Dy8eGIEcaNww26A6vSW4nGhPGLeYBhGJBOs4n3FNXqg85ZCghLnllWVyao?=
+ =?us-ascii?Q?/jklIXQy0DAsABVuc5w9SuLsKpUjMjqmm9nB9d3Olf5UTYv+O8FW9Z/fa5EQ?=
+ =?us-ascii?Q?s5ZLEZolIogWw8KWlBKt0cnpq1cEuw9q5z9BzEcJaze16slWrfEriw/MnBtT?=
+ =?us-ascii?Q?OxTjKDQH0jowR9qEBMrEEFzrWnmtT9ORBJ4QV9wPBY/kzu+Y07YxXbB25pzB?=
+ =?us-ascii?Q?b2NuuVs88CZLTKsHnkOPv1rzffVbbWm6KAGvWGjdvjX9DnZ1QjQmxsiF6mON?=
+ =?us-ascii?Q?M8daD08Eh7UTpU113yr19wGzcHkb/YIan117iepq0OCr13VlC9WwvwJW5y2C?=
+ =?us-ascii?Q?KtiIn+vLtglKaEcd986PtRnUCu0nSuVkb7UUDaPC0K4TipCvK4Q2oDS76Soh?=
+ =?us-ascii?Q?o4nP3Hs4DAufvjZEjIh6FIykGSF7MMtsWL56oLBtzQ52cCe6ge8Q6GLALk6e?=
+ =?us-ascii?Q?oYhu7lapBbcl4G2PcoL4epBGCfPbjZzY55aM+ZInkWPFz5aP2W95SJ5Jm54U?=
+ =?us-ascii?Q?eJcDHOU=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yUmMuu/9UPY31nN7DwE/0DRgAPP+aKaw2baBG2gJf1COwnAY81Im1iUdxvvf?=
- =?us-ascii?Q?b2WNUpGOWbS5BBTMXNPiIngzL4HAzZnk5fFexVRbgmKEFuoVCXqf/KWJ3e92?=
- =?us-ascii?Q?iDkfhJtpUbKZ57/N5piAnT5rz7zhpS/CuB1cdbNYIsHhYMrikYr5iLp94Dhk?=
- =?us-ascii?Q?ZJ47E0ZeQgvEyNgrxqpIpOUMQtToGc/LI5IPOQAiEcTOF9S2SNMJ29Pgbtmo?=
- =?us-ascii?Q?VOGdXOlwjrDIY6InU2qrah3HXA/2cETV809GcyqdU4Dj6eC/KzYkLGXYLDAa?=
- =?us-ascii?Q?Oo6Aj7krDKTxqOO+5sFEdj//kzXleqfSC97jaMLpklGiE8XEJFOvwLNr9cPw?=
- =?us-ascii?Q?fO+kNvkNgnIS+rweFgu5vCUIgBfllRyKwdzUxQWW+LC6JA8yz2IuJSdaqtcP?=
- =?us-ascii?Q?3dO1JanIgdXaka3ydOI8szqNQX4ZGv75H/VL0kpK6Ls9DVXU6e537JLrC40g?=
- =?us-ascii?Q?cfy7qthz832lEvMYFJh+dresb4GaQiKN7IAyma6N6YqpyQVg8RePO+vjB9YF?=
- =?us-ascii?Q?UTY1qBSfl3XHh4tl7rMkN00QM2oXlavPA6OdmcozUZLwItCK4CIY8PwaMoUs?=
- =?us-ascii?Q?uwX9zqJ9dulF6xAIWUwXO1kYqJY9Fb+h6h/xZT1ZdWQbv7uv3zTAxOgFLx/n?=
- =?us-ascii?Q?/6ZPIzbQD88lJWgFQiKHCXt7PWoYmtxlen+N/l0nfwP0TTzRoXNgRb+7kTBn?=
- =?us-ascii?Q?u+Rx1yosa8QE8vdM22C7gl2O4sXhHDIDSHgrfRSujeUKLRrF7qncLSzpBZO/?=
- =?us-ascii?Q?o3bladZEaiUJgQWaTb+ZRBJRaB6intBV6t7Lc2xTlyU/uKvQJ3OvkfGQJV3Q?=
- =?us-ascii?Q?YKJmnTW1gSSfCMuz/lmjzngwwbNI4Xf6RpnSdQtbf/tRHW7n9Ci8LPucUu1L?=
- =?us-ascii?Q?7WtmK5uDuUSH+JxgFSgCDg8/ldnlQbzl3zzmj3NgNYe9IhPfLLtCEx1MVcYO?=
- =?us-ascii?Q?m4mSV+WQPjDCEZQCVkw87Etj8RoqydV6Dx9Jj8PvWVFlCyrXEQvToO4r3yzK?=
- =?us-ascii?Q?RD7BMorLJqnY+5bZ/7renpPGu1wC1oSy3d/DAFZgUBXNdUa4eygUG0DB32b1?=
- =?us-ascii?Q?n0RwcA4OajvC5OX32+Oz49FpwdXzEeiC21XQ2UZc0nahCBTUdnkI33SX4Hjr?=
- =?us-ascii?Q?dKxN98tfyE1RYR9NUyhHRohHdFOdT6XqUQrG/HYkUSXrAMM2nVVtcAKdZ1k/?=
- =?us-ascii?Q?3rBafGX5j88wGrun4AyTgXxKjRh2IuSqAVmn9kCAv5pxSFQcU39mooD57B3r?=
- =?us-ascii?Q?M9saSyDTp7sARycDODswQPoUqHIWpQ9PHpsAZlUtBnsvW7RvEsN/XEp6Op7F?=
- =?us-ascii?Q?UmiCGNx7ylJZMh3u/gnxuwiLYXT2gA2DAd2Q4YvthxRc0G3KnrzYHfrKPLm6?=
- =?us-ascii?Q?LAnOuDB7XtkstXPtdxmsLlD9Xq0dTHpiJ7XbOEdrERWRkdkzfeIs5TyX9qjN?=
- =?us-ascii?Q?3BXzFxgJdr1oBgfL2yS+988saPSgakSXgYqKIkfPvRgF0WHUPypmYcvrOsyH?=
- =?us-ascii?Q?DwriPgONmKG/dpDwVXXF6V4WH/C4vRmrJCucKlPv5Rfg/FD4b/njNLfBN2wr?=
- =?us-ascii?Q?9GRz9Z0CFdg9W0Vhrz2iPDnRRsR1JKNNZIQtafcBEeQHZmt/tIGy/hRy3V9U?=
- =?us-ascii?Q?Nw=3D=3D?=
+	=?us-ascii?Q?x123bjovu5jVDClUllvJpCJUTE4sdL9IGnaRnxETRkJaFFaVjXh7GFAru2cR?=
+ =?us-ascii?Q?XNT6AxdxpyjocKzTkzdEkU+LVnt+9AQh2x7z+/Wv0YwidBE9/KOaf6nFpOe7?=
+ =?us-ascii?Q?IIWR/fwfqIKBbw2gIKTX0aFCwzRULjj4pe04Hci3LC5qEECchVgy8VnTMLLE?=
+ =?us-ascii?Q?TxGMecjbysuTP4A2jdlO/D6wWR0oQSdo2kfas1wN5Ib4I5MAjLiN2nAgHcgJ?=
+ =?us-ascii?Q?l6WU90rvON62L8DWoYntNez2+NsjGf7kgX8cGgGkvVJpLkR6zuj1zRSi5wTt?=
+ =?us-ascii?Q?13cjpBkMJOo6ljIwzkpAtKtHdlrNH+uFS8ZUoEdp+rJ4BvYeh9+QiR0r6Iai?=
+ =?us-ascii?Q?YizQZEMprFiM2pI9t/Ab5Le05Ix9FbNMrhbI92/oQlbUdm9paS71DSi2Fa2T?=
+ =?us-ascii?Q?43SZjrz/TVumP4LDxZF9DSrtOpbC/0SavAP0mvZdudMvoSFzCm8EEWLlmekF?=
+ =?us-ascii?Q?osnhU7xjEAxKRO2+MomMrHpg7fc/ZN8nesaqvFlqjrctyWNkGXz+5HDB5cfI?=
+ =?us-ascii?Q?1nns9+tA1Rp1bQwWxhfQUOoJT6Oesyw0v1v4PY/EGxr2gXLEVsAd60CU3EYz?=
+ =?us-ascii?Q?olukGze4uY2ODzxFPunBy98OkhT3eQg2cycZulih0x4GjUTjFCzuhL7kOqDV?=
+ =?us-ascii?Q?tRcPid/7v1i1q6dXrlkSPEighC6xiCPAIeXUs9V3Fav4THLAfVhbu9NLOOFq?=
+ =?us-ascii?Q?vFJileAgKL3/32ViMAQ4ZiJsu0vYcmi9LGPRg4rPPLFoPu/a5977QHyg3tu1?=
+ =?us-ascii?Q?S3p/Rpylq1DLeMkOz0XM2e5SczG3oaoR3lzhlFD3qjfizH1CPyj8Tu4v/Yun?=
+ =?us-ascii?Q?F0Tx2tzwulxvUTsVyS+8h6j8li9zaRM7LttRFszp1EPms/8/TemwAsmRdSmW?=
+ =?us-ascii?Q?QH/yLxHkR9+auWJwU26uQtE9v+m1cuP2FWnlAec4oAP4CqbrhvhTkAssnluo?=
+ =?us-ascii?Q?gs98a26itAByK4qnNZQeNSvVrCGem92wirL909RW697y770QEem5fx64lME3?=
+ =?us-ascii?Q?dAZVi0OJsyQu1/owE0SNrfK+1I+qsFJLJm5vzp+38u4SwhrqbIrDLIgCeFQP?=
+ =?us-ascii?Q?JUEpKl6m6D4l88bKciba2rvjTszdTGQ8y8UGcY/FQYkDJsR5RUuowaGh2BtY?=
+ =?us-ascii?Q?qN11d3lo0CB++t2BTaglVgjkYYbEGKAokXNBWEBfgssL5szLhT6RnZ4ltjAy?=
+ =?us-ascii?Q?rVzpwocpusAZt9fL6Uxwq9epPRNuYhjPH3oTs7+pUerTcFlCsVd757FKEmue?=
+ =?us-ascii?Q?HOUvjZkHbK8zBzJgZBmjP6m3yPhW/SzUY4ivA9adya/0V6vQXODyg+189V5k?=
+ =?us-ascii?Q?XAxEMB7QbvbvUIU7ceQhuQ1h3QmCl5y3K/0BnWK2KDJoSauL9mCQM9VBP1SC?=
+ =?us-ascii?Q?6dqQM136NfJH9r5CAD1TsFC2ctYtCpvKESX8YLcprcBJsQtS8C2l3NEjMDin?=
+ =?us-ascii?Q?X6pDXIZaqmvcl/nFov546NFJkpULPaAB74iUyp/j5wgF1vvczj0pjaQ/X3W9?=
+ =?us-ascii?Q?ueeGwWLVb4RiDjU11hMWejOQbsukR8YriWmdybkYQa9xsF1ySj12JZk05Uj9?=
+ =?us-ascii?Q?+HBVWGigJRykse40SabGCF5uPYWmXESwkhDS6Wqf+duxQvytAc960UvYb+1R?=
+ =?us-ascii?Q?Cg=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	3iZxWKtpBEbIBH3YwxfDUt1aegBIcIjb6i4PCwwRVByUxxvgTvPlw9J5Z3WSRVEC80F6/t9RffJfflODKV3LHGDas3KvGWcgOxdScwp90O6Q0+cD5jsK1/We2cQph3R8gSQxkuLGze/ZdIqunQk+pO22S7c1e8sFpj1X9AUz6x3a0Z/RTdpIDMg6XFOSTZymTwu/ri5oZAesm5GbHkMDL0IFzzsDjbNyNrYGMAUYFFJNaKEPaLdLcHHEKM9ZQzLRvefZsn42ahRCiyGGa0XXbiuh60j2Y8vcHbGD3HJW7CeqAtsIEwBF+iavz3ittDMz4FvKR8vundjgUR9C9ygNVK/ZPXxKfdPzQz/FD2tLp4uvrAaNk29w/Nh1bPMIz/S99/aTdpkIskFraHduUh0PeCDRoxkfvSutpawS+pnvKA1WkfrPbnwcmn4UASa+BYkDYjqGi7PDcav0VlOGINqlGQtVjXGqL3/Z6cur9+w4HZo7l6mZNvFf29QIny0P6QHvi+eAzwvyRmT501dK+dswtqjh9b3c+zGr7VbRT8oEZGcj6My+pp1/iiklvbownO+RmRcq3SH5/oRadwHq7ip/uc+wmqRmCeQzOELtIotdBMI=
+	kvQB+fSRTxLPRWCbkGWQwtdAAGDW5g2KenFAkdzcb31GBUhm/CJNgIRfUVPj3DqrbFARwM561qyZ4k5Ti2U11faMssXQXRyyCRaf6EaU0ewMYi5lDvJR1N6+QEkMQTysPUd+iTLSdeHA66omHOMdDMaWYByJpC8rgbKQ5cHpolUXVknCMvOhVlTmp3RD5QLAASNBNOH1TDzMQOtREY1oDPd2+CFX8X6GmNJOq5ASlvzI0gkMNGlEWWobl0Kt+xl/Mb82Hy08vT0dUEfsjOqTGmwNDvzLQLRj8FGgYtr702dj6SFqtrAORH2L5MmjQT0YHi/oB/iU2uWA+5vVfCUDRJ5T8/96z6mxrYumdOOh2hBi7KW5GCttEG2oRDqWPsc3MZjdO20B8p38bcjWovv+NMqWw9cqjFqsDBYwqGOMP96RqL+8AeR0IFbFcZ12v+VS32ci5FYzAzbKe+QPOprgBf+eLdNb/RgZ+3+dteqKdJMwoyiIeG+V4LkhjT0In2vJkZxGmeQASZqfmfuJvZp90YSEaFQxC+A9Mx6yuocKHdciLaLKSiR8W2AAHRKEoOQpudBihzARGGTMSLEt9pIvYcELi7KuG6VyWjKMsPERfZo=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02df668f-5a21-4e31-bddb-08dcf2e16948
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f3f7b29-874a-4850-e10d-08dcf2e16bcf
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 21:35:13.0088
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 21:35:17.2391
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3cXMivO1lnMr6Qp6dWYZx34aJhi/VWmwnWXXb31OXsSG0skMQg0v2MsnJKCAviuKtd3iyK/B8FfqHie7N6dRPI4N4FyWZT56BKBD6/qnkug=
+X-MS-Exchange-CrossTenant-UserPrincipalName: sFVdeSB4HVxEniajBtWFyqXgnfnBBryidToRk5YZkr8YRWzw+lRuBIWPeuUZfJtps9XSi/FQZxYA3+ZR9WeLoqevcJ1ouOernCppRzBEoKk=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4809
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-22_23,2024-10-22_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
  definitions=main-2410220140
-X-Proofpoint-GUID: 4Yq_wQtCSWgoGHr-HJTZhe5GhHCrlNvJ
-X-Proofpoint-ORIG-GUID: 4Yq_wQtCSWgoGHr-HJTZhe5GhHCrlNvJ
+X-Proofpoint-ORIG-GUID: ecCxOEelqQn7YK_WNp8pkcsNOeAQcmGu
+X-Proofpoint-GUID: ecCxOEelqQn7YK_WNp8pkcsNOeAQcmGu
 
 From: William Roche <william.roche@oracle.com>
 
-The SIGBUS signal siginfo reporting a HW memory error
-provides a si_addr_lsb field with an indication of the
-impacted memory page size.
-This information should be used to track the hwpoisoned
-page sizes.
+On HW memory error, we need to report better what the impact of this
+error is. So when an entire large page is impacted by an error (like the
+hugetlbfs case), we give a warning message when this page is first hit:
+Memory error: Loosing a large page (size: X) at QEMU addr Y and GUEST addr Z
 
 Signed-off-by: William Roche <william.roche@oracle.com>
 ---
- accel/kvm/kvm-all.c    | 6 ++++--
- accel/stubs/kvm-stub.c | 4 ++--
- include/qemu/osdep.h   | 5 +++--
- include/sysemu/kvm.h   | 4 ++--
- system/cpus.c          | 6 ++++--
- util/oslib-posix.c     | 3 +++
- 6 files changed, 18 insertions(+), 10 deletions(-)
+ accel/kvm/kvm-all.c      | 9 ++++++++-
+ include/sysemu/kvm_int.h | 6 ++++--
+ target/arm/kvm.c         | 2 +-
+ target/i386/kvm/kvm.c    | 2 +-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 801cff16a5..2adc4d9c24 100644
+index 40117eefa7..bddaf1e981 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2940,6 +2940,7 @@ void kvm_cpu_synchronize_pre_loadvm(CPUState *cpu)
- #ifdef KVM_HAVE_MCE_INJECTION
- static __thread void *pending_sigbus_addr;
- static __thread int pending_sigbus_code;
-+static __thread short pending_sigbus_addr_lsb;
- static __thread bool have_sigbus_pending;
- #endif
- 
-@@ -3651,7 +3652,7 @@ void kvm_init_cpu_signals(CPUState *cpu)
- }
- 
- /* Called asynchronously in VCPU thread.  */
--int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr)
-+int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr, short addr_lsb)
- {
- #ifdef KVM_HAVE_MCE_INJECTION
-     if (have_sigbus_pending) {
-@@ -3660,6 +3661,7 @@ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr)
-     have_sigbus_pending = true;
-     pending_sigbus_addr = addr;
-     pending_sigbus_code = code;
-+    pending_sigbus_addr_lsb = addr_lsb;
-     qatomic_set(&cpu->exit_request, 1);
-     return 0;
- #else
-@@ -3668,7 +3670,7 @@ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr)
- }
- 
- /* Called synchronously (via signalfd) in main thread.  */
--int kvm_on_sigbus(int code, void *addr)
-+int kvm_on_sigbus(int code, void *addr, short addr_lsb)
- {
- #ifdef KVM_HAVE_MCE_INJECTION
-     /* Action required MCE kills the process if SIGBUS is blocked.  Because
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index 8e0eb22e61..80780433d8 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -38,12 +38,12 @@ bool kvm_has_sync_mmu(void)
-     return false;
- }
- 
--int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr)
-+int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr, short addr_lsb)
- {
-     return 1;
- }
- 
--int kvm_on_sigbus(int code, void *addr)
-+int kvm_on_sigbus(int code, void *addr, short addr_lsb)
- {
-     return 1;
- }
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index fe7c3c5f67..838271c4b8 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -585,8 +585,9 @@ struct qemu_signalfd_siginfo {
-     uint64_t ssi_stime;   /* System CPU time consumed (SIGCHLD) */
-     uint64_t ssi_addr;    /* Address that generated signal
-                              (for hardware-generated signals) */
--    uint8_t  pad[48];     /* Pad size to 128 bytes (allow for
--                             additional fields in the future) */
-+    uint16_t ssi_addr_lsb;/* Least significant bit of address (SIGBUS) */
-+    uint8_t  pad[46];     /* Pad size to 128 bytes (allow for */
-+                          /* additional fields in the future) */
- };
- 
- int qemu_signalfd(const sigset_t *mask);
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c3a60b2890..1bde598404 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -207,8 +207,8 @@ int kvm_has_gsi_routing(void);
- bool kvm_arm_supports_user_irq(void);
- 
- 
--int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
--int kvm_on_sigbus(int code, void *addr);
-+int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr, short addr_lsb);
-+int kvm_on_sigbus(int code, void *addr, short addr_lsb);
- 
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
-diff --git a/system/cpus.c b/system/cpus.c
-index 1c818ff682..12e630f760 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -376,12 +376,14 @@ static void sigbus_handler(int n, siginfo_t *siginfo, void *ctx)
- 
-     if (current_cpu) {
-         /* Called asynchronously in VCPU thread.  */
--        if (kvm_on_sigbus_vcpu(current_cpu, siginfo->si_code, siginfo->si_addr)) {
-+        if (kvm_on_sigbus_vcpu(current_cpu, siginfo->si_code,
-+                               siginfo->si_addr, siginfo->si_addr_lsb)) {
-             sigbus_reraise();
-         }
-     } else {
-         /* Called synchronously (via signalfd) in main thread.  */
--        if (kvm_on_sigbus(siginfo->si_code, siginfo->si_addr)) {
-+        if (kvm_on_sigbus(siginfo->si_code,
-+                          siginfo->si_addr, siginfo->si_addr_lsb)) {
-             sigbus_reraise();
-         }
+@@ -1284,7 +1284,7 @@ static void kvm_unpoison_all(void *param)
      }
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 11b35e48fb..64517d1e40 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -767,6 +767,9 @@ void sigaction_invoke(struct sigaction *action,
-     } else if (info->ssi_signo == SIGILL || info->ssi_signo == SIGFPE ||
-                info->ssi_signo == SIGSEGV || info->ssi_signo == SIGBUS) {
-         si.si_addr = (void *)(uintptr_t)info->ssi_addr;
-+        if (info->ssi_signo == SIGBUS) {
-+            si.si_addr_lsb = (short int)info->ssi_addr_lsb;
-+        }
-     } else if (info->ssi_signo == SIGCHLD) {
-         si.si_pid = info->ssi_pid;
-         si.si_status = info->ssi_status;
+ }
+ 
+-void kvm_hwpoison_page_add(ram_addr_t ram_addr, size_t sz)
++void kvm_hwpoison_page_add(ram_addr_t ram_addr, size_t sz, void *ha, hwaddr gpa)
+ {
+     HWPoisonPage *page;
+ 
+@@ -1300,6 +1300,13 @@ void kvm_hwpoison_page_add(ram_addr_t ram_addr, size_t sz)
+     page->ram_addr = ram_addr;
+     page->page_size = sz;
+     QLIST_INSERT_HEAD(&hwpoison_page_list, page, list);
++
++    if (sz > TARGET_PAGE_SIZE) {
++        gpa = ROUND_DOWN(gpa, sz);
++        ha = (void *)ROUND_DOWN((uint64_t)ha, sz);
++        warn_report("Memory error: Loosing a large page (size: %zu) "
++            "at QEMU addr %p and GUEST addr 0x%" HWADDR_PRIx, sz, ha, gpa);
++    }
+ }
+ 
+ bool kvm_hwpoisoned_mem(void)
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index d2160be0ae..af569380ca 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -177,12 +177,14 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size);
+  * kvm_hwpoison_page_add:
+  *
+  * Parameters:
+- *  @ram_addr: the address in the RAM for the poisoned page
++ *  @addr: the address in the RAM for the poisoned page
+  *  @sz: size of the poisoned page as reported by the kernel
++ *  @hva: host virtual address aka QEMU addr
++ *  @gpa: guest physical address aka GUEST addr
+  *
+  * Add a poisoned page to the list
+  *
+  * Return: None.
+  */
+-void kvm_hwpoison_page_add(ram_addr_t ram_addr, size_t sz);
++void kvm_hwpoison_page_add(ram_addr_t addr, size_t sz, void *hva, hwaddr gpa);
+ #endif
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 11579e170b..f8eb553f7c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2363,7 +2363,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr, short addr_lsb)
+             if (sz == TARGET_PAGE_SIZE) {
+                 sz = qemu_ram_pagesize_from_host(addr);
+             }
+-            kvm_hwpoison_page_add(ram_addr, sz);
++            kvm_hwpoison_page_add(ram_addr, sz, addr, paddr);
+             /*
+              * If this is a BUS_MCEERR_AR, we know we have been called
+              * synchronously from the vCPU thread, so we can easily
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 71e674bca0..34cfa8b764 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -757,7 +757,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr, short addr_lsb)
+             if (sz == TARGET_PAGE_SIZE) {
+                 sz = qemu_ram_pagesize_from_host(addr);
+             }
+-            kvm_hwpoison_page_add(ram_addr, sz);
++            kvm_hwpoison_page_add(ram_addr, sz, addr, paddr);
+             kvm_mce_inject(cpu, paddr, code);
+ 
+             /*
 -- 
 2.43.5
 
