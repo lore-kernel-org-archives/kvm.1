@@ -1,60 +1,60 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F69D19D090
-	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DD019D8B7
+	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594595; cv=none; b=Nr3oZb6lomO4vwzkzp/E2EFE6M8kA1TIhyeehqetHkxxYHPG/5WwGR6ussiGpKNDnOh6ulfWCEXZQJhFMjv5a6QGgooM0EXYsDmJyhrDWfXHpyLVLwmtoiQ/ioPfe4qZaLFw/+ttnAoeY4zD8srweJPqDUCimIgtzVSHO8rcspo=
+	t=1729594598; cv=none; b=DUhHY27CdghowzUa8JpbFyWAN22g05Kxy1ph/Dc7Le0StbkRz4c8T6HKdk6R/rRmF2hC9ye/7SX5xxvKhQI8h8t2NXIJyGjoryDGvLlttLW5AjpMHbwyKI3Wcm9/kdYzifZpaghinxsqJsL+GOyHGPLh+SjXYv3uJvZBLJ7v5R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729594595; c=relaxed/simple;
-	bh=UXQdLtabbiMtGUHNw3CuGAH7Y7y/tqHPMvrpotkPjug=;
+	s=arc-20240116; t=1729594598; c=relaxed/simple;
+	bh=pMmE3lfG5fDHbWyJiM6aMnJ8N8Svupp+uAfMJ0Ot1Hs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NbA+VvrZ2BTvFRZRupsDUInzcO9K1iIZJc4BQWuJl9THKxjM5JClKZ3j1Y39Msx11GBwqujlf9c6WCgOEkVpCSF6NLu9rQ0rpXXulikv1qxgVvR13OVJiKFZU6Wng+cjZ7czl/BduytJlB64qD1N4L6TNiVxYh7Os0bHu6UgyNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VYyPx6am; arc=none smtp.client-ip=209.85.218.47
+	 MIME-Version:Content-Type; b=UDmZhw1nPKGloVtqutgra2RQpk2PH8wVtxawgZWr+M+Ia6FpZ7il+KV1xcQMEzBK1e8iGR1ZuABS7pX4MTbBaaJkRYKy37vW95hvAyws0mCsdP3iAhh5E7zM/nQ3C05biH/mhLhGauMiF6WhQ1MfglT2vkPfXsoSXZoh3x9/2Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sRzGTIPJ; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VYyPx6am"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a99f1fd20c4so751336266b.0
-        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sRzGTIPJ"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1e63so6386759a12.0
+        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729594593; x=1730199393; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729594595; x=1730199395; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pgb6ox3Ya7i122uZlocXrETTS1VOKhPW7bSAndX3jjQ=;
-        b=VYyPx6amSMKv5u/ZEpVNJyWbpoZ5ls+G6x341/ynWLqKBv8oT3adprYZ5/Lq46h7OM
-         fVbpfxDK1x2osBTWZMtqFnY4AOI2R8C55xwQHW0DlYoUiw+ciG6Inew2jeoXPvV5vM9X
-         i9NVhQRCjbTS6/ruHl0cqGGY76lxdWbIIB/bFuf3tysdH4JmwiizOhJYdYg5b+AgNXqM
-         mPjasm0pBrlLYGsm6awz7syGZ5OXY4hGZTE5P+RMM7ubf93Nn4k+r9H1+0RCWj81lEIY
-         deimx6jd9JZspDBnvkaJykF+IdifhBMj3+q6eQIZICuu/JG/KKeOzxeePHOLBU2mquGf
-         L7vA==
+        bh=ncBC08IoBkP10ef5QDpG5SV+FPj/pwrW84Mb8BGJC6M=;
+        b=sRzGTIPJrId/5/91hCEsLrOPVNCmxTyJgcmz1l06Z9IRXsHqK+jN4vorLJ2CTS4tvB
+         rHTPpRgF7qxSirodbYT/qiFsCuAuLKdJavVIRKVaVvgKQ8IsRl0/VAKz8GJ7gVzEm55F
+         2fzgCnaeC/XTO/wBRntrzkguendQC13jU22wevlmYgXy58FzMRlF0BIP7V/WsU0mNTWx
+         3AAgl8UkavIXtrs//MXnwZiqC42T9Of06fL/6UzhDylnCKGzVHrLBc3aKxl4v8duNPHE
+         i7mHEfShOMb/b2mVJej2m0FkPXR1mjgQoNvNMPKEr5/PnkJnYFCI0CDZ9eg0rWGUrrft
+         b3aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729594593; x=1730199393;
+        d=1e100.net; s=20230601; t=1729594595; x=1730199395;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Pgb6ox3Ya7i122uZlocXrETTS1VOKhPW7bSAndX3jjQ=;
-        b=K4j80YI8mkRwbOULt00xiPJJeVitPsnylfXk4rWFDvJO/RqYPcNlEmQVlPEtzoBcFa
-         tHWvzIpu66m8OJNWrLzHCoXWjTm+T82HXH6etPgSa0Tlz4QlnUCP+aTFokYvX5KM98jt
-         SDTQUeDprcSujrDfQfnR1NuzP/3imgV01P8JDqAw7Z7RqPQh3+wRojwDBGUNVPXGMYl6
-         NI4VRN2jvoICsaEcSnEqPY+p0x0OhrtbeTnnv+QFIxotYzgNizyz/0hj99uUowZG0Av2
-         O57FP4Y5BPIDPn1z8gzEByy03KvHSS3fv4fkIRztFQq2VcBM+zCny3+UWhBoiPpcLzAe
-         55ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXpsLFpMNtPVjS+CnG7yCiFtdYW7I9f7RXb0YPxcBNRgU6hxYlvkilymvv+3wZxs9KziiE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF78PquEgUEZbEguUHdNcuUD0BRxEFX1gOBNQCNuzq5dlo/gMf
-	zeGO34zAFdobNCqzzEjIBRcFVlZwNUaGhfJOn7Kkx2gqxHhFycjMWfBhFaQtiBU=
-X-Google-Smtp-Source: AGHT+IGPREmWhIG8Sxc2dRJUVUnivk8DPIAg98Rjd0GSZmqkbNvMhBR1OB4OKQK6ufaSF5tJ1fK0uw==
-X-Received: by 2002:a17:907:97d2:b0:a99:fb56:39cc with SMTP id a640c23a62f3a-a9aace98a17mr198686166b.38.1729594592591;
-        Tue, 22 Oct 2024 03:56:32 -0700 (PDT)
+        bh=ncBC08IoBkP10ef5QDpG5SV+FPj/pwrW84Mb8BGJC6M=;
+        b=SDoR1LCSVQy6pYGVHc1M+VwSsEzTjQfj+ad2n1knozLmvxNSG6mfSp/HlvRgfg9TEH
+         XpH9uH0M5RhajPaKm9aWg39HVJul+6jF0BmiUipXb3ib85wPlV5SX/UDtHyA6Squnwf3
+         nOCfg3TqHPtsXT530O+7f4fVvMg4qSebGutjYFdtSWvq+yfbt2M2EMU4K/sQEt6Dvi2l
+         DbuR1OECkEzEzaBRA7fF8jRszj5a/1QLXSMGLVBWvJXzZlkCn/Jv1A4jyYCy+PHKMc5g
+         u8tD/ktl6RvP6I2yi9B22J2/TEv46qiIzRQtUZQzYC3Y/5TVLxoKhikdC9DciPwilypL
+         dZpw==
+X-Forwarded-Encrypted: i=1; AJvYcCV053YdR34ax45Ve6U1EVWjGtuJKLgaG9b7HThfzUGvHMwY3lbGo/GEHuAPcYDFKsr4sJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6/HVf2mMqPSDdJNRleQdyGTJJa57X/0AovLY6MxRETolv2oDc
+	2qLCCebaT0MHjWVNoT8+ECAZ1Y+RR6Xw/IcHuBwPAj8WqnZBKTBDqZIu5fl2jCI=
+X-Google-Smtp-Source: AGHT+IHBLyW0mHPJl2GnPpKKp3UGFXSgagg2mGtBM8c3JT2vxTQvXvz98RyNa3XJTjQV1wo5eVGMhQ==
+X-Received: by 2002:a17:906:c10b:b0:a9a:6bd:95dc with SMTP id a640c23a62f3a-a9aad3715ccmr189373366b.46.1729594594783;
+        Tue, 22 Oct 2024 03:56:34 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d838csm323114066b.8.2024.10.22.03.56.20
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91559951sm321731866b.106.2024.10.22.03.56.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 22 Oct 2024 03:56:28 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id D97B25FC0F;
-	Tue, 22 Oct 2024 11:56:15 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 2565B5FC34;
+	Tue, 22 Oct 2024 11:56:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>,
@@ -83,11 +83,10 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH v2 14/20] tests/tcg/aarch64: Use raw strings for regexes in test-mte.py
-Date: Tue, 22 Oct 2024 11:56:08 +0100
-Message-Id: <20241022105614.839199-15-alex.bennee@linaro.org>
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 17/20] plugins: add ability to register a GDB triggered callback
+Date: Tue, 22 Oct 2024 11:56:11 +0100
+Message-Id: <20241022105614.839199-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
@@ -100,35 +99,225 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+Now gdbstub has gained the ability to extend its command tables we can
+allow it to trigger plugin callbacks. This is probably most useful for
+QEMU developers debugging plugins themselves but might be useful for
+other stuff.
 
-Use Python's raw string notation instead of string literals for regex so
-it's not necessary to double backslashes when regex special forms are
-used. Raw notation is preferred for regex and easier to read.
+Trigger the callback by sending:
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20241015140806.385449-1-gustavo.romero@linaro.org>
+  maintenance packet Qqemu.plugin_cb
+
+I've extended the memory plugin to report on the packet.
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/aarch64/gdbstub/test-mte.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/qemu/plugin-event.h  |  1 +
+ include/qemu/qemu-plugin.h   | 16 ++++++++++++++++
+ plugins/plugin.h             |  9 +++++++++
+ plugins/api.c                | 18 ++++++++++++++++++
+ plugins/core.c               | 37 ++++++++++++++++++++++++++++++++++++
+ tests/tcg/plugins/mem.c      | 11 +++++++++--
+ plugins/qemu-plugins.symbols |  1 +
+ 7 files changed, 91 insertions(+), 2 deletions(-)
 
-diff --git a/tests/tcg/aarch64/gdbstub/test-mte.py b/tests/tcg/aarch64/gdbstub/test-mte.py
-index a4cae6caa0..9ad98e7a54 100644
---- a/tests/tcg/aarch64/gdbstub/test-mte.py
-+++ b/tests/tcg/aarch64/gdbstub/test-mte.py
-@@ -23,8 +23,8 @@
- from test_gdbstub import arg_parser, main, report
+diff --git a/include/qemu/plugin-event.h b/include/qemu/plugin-event.h
+index 7056d8427b..d9aa56cf4f 100644
+--- a/include/qemu/plugin-event.h
++++ b/include/qemu/plugin-event.h
+@@ -20,6 +20,7 @@ enum qemu_plugin_event {
+     QEMU_PLUGIN_EV_VCPU_SYSCALL_RET,
+     QEMU_PLUGIN_EV_FLUSH,
+     QEMU_PLUGIN_EV_ATEXIT,
++    QEMU_PLUGIN_EV_GDBSTUB,
+     QEMU_PLUGIN_EV_MAX, /* total number of plugin events we support */
+ };
  
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 622c9a0232..99c3b365aa 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -802,6 +802,22 @@ QEMU_PLUGIN_API
+ void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
+                                     qemu_plugin_udata_cb_t cb, void *userdata);
  
--PATTERN_0 = "Memory tags for address 0x[0-9a-f]+ match \\(0x[0-9a-f]+\\)."
--PATTERN_1 = ".*(0x[0-9a-f]+)"
-+PATTERN_0 = r"Memory tags for address 0x[0-9a-f]+ match \(0x[0-9a-f]+\)."
-+PATTERN_1 = r".*(0x[0-9a-f]+)"
++
++/**
++ * qemu_plugin_register_gdb_cb() - register a gdb callback
++ * @id: plugin ID
++ * @cb: callback
++ * @userdata: user data for callback
++ *
++ * When using the gdbstub to debug a guest you can send a command that
++ * will trigger the callback. This is useful if you want the plugin to
++ * print out collected state at particular points when debugging a
++ * program.
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_register_gdb_cb(qemu_plugin_id_t id,
++                                 qemu_plugin_udata_cb_t cb, void *userdata);
++
+ /* returns how many vcpus were started at this point */
+ int qemu_plugin_num_vcpus(void);
  
+diff --git a/plugins/plugin.h b/plugins/plugin.h
+index 30e2299a54..f37667c9fb 100644
+--- a/plugins/plugin.h
++++ b/plugins/plugin.h
+@@ -118,4 +118,13 @@ struct qemu_plugin_scoreboard *plugin_scoreboard_new(size_t element_size);
  
- def run_test():
+ void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score);
+ 
++/**
++ * plugin_register_gdbstub_commands - register gdbstub commands
++ *
++ * This should only be called once to register gdbstub commands so we
++ * can trigger callbacks if needed.
++ */
++void plugin_register_gdbstub_commands(void);
++
++
+ #endif /* PLUGIN_H */
+diff --git a/plugins/api.c b/plugins/api.c
+index 24ea64e2de..62141616f4 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -681,3 +681,21 @@ void qemu_plugin_update_ns(const void *handle, int64_t new_time)
+     }
+ #endif
+ }
++
++/*
++ * gdbstub hooks
++ */
++
++static bool gdbstub_callbacks;
++
++void qemu_plugin_register_gdb_cb(qemu_plugin_id_t id,
++                                 qemu_plugin_udata_cb_t cb,
++                                 void *udata)
++{
++    plugin_register_cb_udata(id, QEMU_PLUGIN_EV_GDBSTUB, cb, udata);
++
++    if (!gdbstub_callbacks) {
++        plugin_register_gdbstub_commands();
++        gdbstub_callbacks = true;
++    }
++}
+diff --git a/plugins/core.c b/plugins/core.c
+index bb105e8e68..e7fce08799 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -23,6 +23,7 @@
+ #include "qemu/xxhash.h"
+ #include "qemu/rcu.h"
+ #include "hw/core/cpu.h"
++#include "gdbstub/commands.h"
+ 
+ #include "exec/exec-all.h"
+ #include "exec/tb-flush.h"
+@@ -147,6 +148,7 @@ static void plugin_cb__udata(enum qemu_plugin_event ev)
+ 
+     switch (ev) {
+     case QEMU_PLUGIN_EV_ATEXIT:
++    case QEMU_PLUGIN_EV_GDBSTUB:
+         QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+             qemu_plugin_udata_cb_t func = cb->f.udata;
+ 
+@@ -768,3 +770,38 @@ void plugin_scoreboard_free(struct qemu_plugin_scoreboard *score)
+     g_array_free(score->data, TRUE);
+     g_free(score);
+ }
++
++/*
++ * gdbstub integration
++ */
++
++static void handle_plugin_cb(GArray *params, void *user_ctx)
++{
++    plugin_cb__udata(QEMU_PLUGIN_EV_GDBSTUB);
++    gdb_put_packet("OK");
++}
++
++enum Command {
++    PluginCallback,
++    NUM_GDB_CMDS
++};
++
++static const GdbCmdParseEntry cmd_handler_table[NUM_GDB_CMDS] = {
++    [PluginCallback] = {
++        .handler = handle_plugin_cb,
++        .cmd_startswith = true,
++        .cmd = "qemu.plugin_cb",
++        .schema = "s?",
++    },
++};
++
++void plugin_register_gdbstub_commands(void)
++{
++    g_autoptr(GPtrArray) set_table = g_ptr_array_new();
++
++    for (int i = 0; i < NUM_GDB_CMDS; i++) {
++        g_ptr_array_add(set_table, (gpointer) &cmd_handler_table[PluginCallback]);
++    }
++
++    gdb_extend_set_table(set_table);
++}
+diff --git a/tests/tcg/plugins/mem.c b/tests/tcg/plugins/mem.c
+index b0fa8a9f27..d416d92fc2 100644
+--- a/tests/tcg/plugins/mem.c
++++ b/tests/tcg/plugins/mem.c
+@@ -75,8 +75,7 @@ static gint addr_order(gconstpointer a, gconstpointer b)
+     return na->region_address > nb->region_address ? 1 : -1;
+ }
+ 
+-
+-static void plugin_exit(qemu_plugin_id_t id, void *p)
++static void plugin_report(qemu_plugin_id_t id, void *p)
+ {
+     g_autoptr(GString) out = g_string_new("");
+ 
+@@ -90,6 +89,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     }
+     qemu_plugin_outs(out->str);
+ 
++    g_mutex_lock(&lock);
+ 
+     if (do_region_summary) {
+         GList *counts = g_hash_table_get_values(regions);
+@@ -114,6 +114,12 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+         qemu_plugin_outs(out->str);
+     }
+ 
++    g_mutex_unlock(&lock);
++}
++
++static void plugin_exit(qemu_plugin_id_t id, void *p)
++{
++    plugin_report(id, p);
+     qemu_plugin_scoreboard_free(counts);
+ }
+ 
+@@ -400,6 +406,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+         counts, CPUCount, mem_count);
+     io_count = qemu_plugin_scoreboard_u64_in_struct(counts, CPUCount, io_count);
+     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++    qemu_plugin_register_gdb_cb(id, plugin_report, NULL);
+     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
+     return 0;
+ }
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 032661f9ea..d272e8e0f3 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -25,6 +25,7 @@
+   qemu_plugin_read_register;
+   qemu_plugin_register_atexit_cb;
+   qemu_plugin_register_flush_cb;
++  qemu_plugin_register_gdb_cb;
+   qemu_plugin_register_vcpu_exit_cb;
+   qemu_plugin_register_vcpu_idle_cb;
+   qemu_plugin_register_vcpu_init_cb;
 -- 
 2.39.5
 
