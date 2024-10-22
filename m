@@ -1,60 +1,60 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEA6198838
-	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C801993AF
+	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594581; cv=none; b=pPoCdjcPCr/uZNFrTpGiSM1GUt8Lt0GEfjoXWFEo5GbFqqtt1y9EuhNXGOroeeyVazfkx/fctvSxq55gNtEC+mdbfn8C61PLszfNdcAkGwgqd9YjDvvku8XFjx5vyKwrY6R+2Qnqdxw0Gsz1q6Q4RXUo+mN3RJ7hBsVcN9iWjxk=
+	t=1729594583; cv=none; b=sSzbscSaxYYzjH0ogjFDl2/+6Lbd8NoThHCyUkQKkEgjMO3pyl0JkZbrGdvEgZLxocbXdjXJ6cah+kzkKtDBmPw72m7FOXv6EajlUjCfZzkck5RbYhqF5XrdxPP74eCpktfGIpafteY/w2ZTEFMDGM8Ol3URL4bRw62LFYzCJWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729594581; c=relaxed/simple;
-	bh=dycqCm1NPayXEmQsWH/9aZ0ifAR2NBSL9Ke2mXMrvic=;
+	s=arc-20240116; t=1729594583; c=relaxed/simple;
+	bh=3ocp18cipe28Y1G4M2yx66dkQYTqfF/PEb1KxGFg+rU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PR5mZyyePEVGv2ZMkcZaRAHoR7RSsncffMBSByaOl618qUkQjxcFUPRvvsYvb01DEijzBLcZyGq5pIYew5ScMh/390CTRZX6erMr0n6jrCDL85JuWE+Vct06DA1y7kmkkAKHW9eyrZPsteB+y+Z9zHnZwDHesy2Mjz/um+UzRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dWlC8Otx; arc=none smtp.client-ip=209.85.167.52
+	 MIME-Version:Content-Type; b=X7y/naC5kONFsQNhlJ1GW5N+dG65MNgThANWJazashwMkiaQ5GeeATub9SQXTHRSlogm/L49+lHJNlGLewdfzpMVsoQawu+ucFoCaAFkBHLqZQuno9IhbQT5QvvpN9HpRnOYNo/BtHxx0qz5RWN2wf/ba5Y1Q1Ilqm3XpAUkkW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TD6CnZVG; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dWlC8Otx"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53b13ea6b78so964003e87.2
-        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TD6CnZVG"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539f84907caso6173422e87.3
+        for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729594577; x=1730199377; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729594579; x=1730199379; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
-        b=dWlC8OtxoLze6ZOa5Wz+GP73CVZah6sLFeEV5ijCAEbcYr5YWUvG6N1dmplG/fQJob
-         bdbr22+NIAZ3VFFJ0ln2ZTHbfhFwf5o0WiD+1WWGKEnsm+Bf2opFKIEF3mKqlR9l4HhY
-         5DI54wqMUJEsckvBndPwGYAbudrwWH3jpudynGG/cy5tzzrFfB2qbBJpY+BDANTsdYDw
-         DYt5WUUu4MoRBy1MOrblrVupsp31GadoykW1yfTWpFKoju+Gu29uT1ykIoZnr3sCJzKh
-         FhcmcK+M9gj/NWo/CX6mkcyBTTHkvdm8cmQUYUQebdWujdCAei6gekAtHzKlxPm2mChR
-         YCVw==
+        bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
+        b=TD6CnZVGnEbUutRk7CHgsMOhkfnxV21JSxucRhiJLlh8JMtTWVUSKN9aFhaNHNnVa+
+         D0QRmmcYFvBP0UX66cto108U246jr4+NKR/ZztBZqxt8UhFniZdihU2fRKqBvWiYdSAW
+         NfiU81JMosnRSK/TLCZQJaLUa6SzotF9Cra6UIN4UbDjm4RDF5SdfXcT59KfgCtknlzS
+         K+EESU55I8YbVfHPLFKy+zRJoZt3iNk5dnLzzWAgIug+9uNlP5xXxic4oLU/t0AvbCsx
+         ux/5eq57XTUnh9wIwYddjF4LXUxQo1B1wbIXB9JcIcalkGHW4ISQZpjbUi/zvUTLSIOH
+         jz9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729594577; x=1730199377;
+        d=1e100.net; s=20230601; t=1729594579; x=1730199379;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
-        b=UX6w46OMMYBIgVI6iZ20huDVDaKiO0lFIWLGKAICYjTEFgE5X6I8cuPz8Ev/2+/cya
-         marP/HvEqjLhE+/9kDjRaEInzrj/kDBcCHOJZGc0RJX1rH6lATaJh0tHslTBHvPl8JST
-         GG7yIzZIJgrr0Ctpq7IfzZ32f/xJOOSLLQIVjZ/dY24upRSXecYBaCkuAA4q5+w0ZhDM
-         iznItWcKYCi/V6FLM4i7wCUFnFZxrXvHuR/mGaxiomrpQpv2BnhDRFRD3pcbTeRArsdQ
-         1hexZQZXVG8sdncXyJH9KSwGGtbibsnzGZFIdt1VVM7f1O6rkUEI57PmuLDiWjhLaWhW
-         O6yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9ILiINj8wtGx1h+LBdTo3Zf8AebNePDrFPVX6urnfbBOJrqRm7h0QeEvosGVb8TMOPJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHyyKJYoboKoJvv/x6nBVgmZFPo3iz7w+7ThCnWp3A3lV9dom6
-	dYVJCY/9/CjnpsVMRJtQm54/2EQf2F96IX70atiQth0Zawqy6JOZzRgcTagQIds=
-X-Google-Smtp-Source: AGHT+IGyaTZRzVDmFkdPhfv0rvAvIdjH0I+E59F1p2dZtHMO7E+32HML2OhzkPGNPbWtrxG3At+wRA==
-X-Received: by 2002:a05:6512:2388:b0:539:9767:903d with SMTP id 2adb3069b0e04-53a154eb91emr9004463e87.60.1729594577248;
-        Tue, 22 Oct 2024 03:56:17 -0700 (PDT)
+        bh=FXjwiUjPDmRUKmjejukivCx1FVXlutJ/frWtXF30WgI=;
+        b=Ggw91UbI6led7sRmAHOWkH195KzzRUOxZPYXsXmGp6XWZztG16I8GSVVlZHZt4q0QO
+         JuIoinF/fYpT8dnViYZvEccSb/whs21pHEJnk75twBCbSGIjvau5+SyQ5XDi417Gzyfn
+         7s8mFDsVKsAfg+ya0PxxgCCubCqTXy/Wi7bvHKBeKWrufXI8xbZBsWKoQ1pd3sBHvvpr
+         HvmR75rO0PhzptFGsQLlg0CXSdYN1YJfO85vQWpqTPdx+wN8VojPGPBWb5/drDgKCGqz
+         O31W8vrSc6zGBUdy4gW9z4DXiy4l9iHKttjo4tcAA/+C6X2a0jwyxFh9s0YEalQb3ytx
+         keKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgpsnIxe8lbBq2BMKB/0tFe+8ahR4VM00z2r4D0sIiymdS04z1AOrjTmL6qt8E87ur5VA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxHRxSpvwr9Bpda7VjQXVJA+RTRYZw/WVuoNElV2wSxrIMOH3v
+	y+dpN5x7jeIOSlWMmr8w/T+VH87d0VTDfyHH4aiwAZuJLIotSxJbH6dHVnsNpHs=
+X-Google-Smtp-Source: AGHT+IFnyQzZQ7bHbDbOpYPXpjtSnilsQDL7HRDM+s0y4d6oS+Xo96+ra1aRtC+YDcuLeBLbm75Uyw==
+X-Received: by 2002:a05:6512:108f:b0:536:9ef0:d829 with SMTP id 2adb3069b0e04-53a1544afc8mr7923850e87.44.1729594579206;
+        Tue, 22 Oct 2024 03:56:19 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d62e4sm321153666b.7.2024.10.22.03.56.15
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb675eb1bdsm2947453a12.10.2024.10.22.03.56.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 22 Oct 2024 03:56:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 0741C5F913;
-	Tue, 22 Oct 2024 11:56:15 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id BF0265F8A6;
+	Tue, 22 Oct 2024 11:56:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>,
@@ -83,10 +83,11 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 04/20] meson: hide tsan related warnings
-Date: Tue, 22 Oct 2024 11:55:58 +0100
-Message-Id: <20241022105614.839199-5-alex.bennee@linaro.org>
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 01/20] tests/docker: Fix microblaze atomics
+Date: Tue, 22 Oct 2024 11:55:55 +0100
+Message-Id: <20241022105614.839199-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
@@ -99,45 +100,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-When building with gcc-12 -fsanitize=thread, gcc reports some
-constructions not supported with tsan.
-Found on debian stable.
+GCC produces invalid code for microblaze atomics.
 
-qemu/include/qemu/atomic.h:36:52: error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’ [-Werror=tsan]
-   36 | #define smp_mb()                     ({ barrier(); __atomic_thread_fence(__ATOMIC_SEQ_CST); })
-      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The fix is unfortunately not upstream, so fetch it from an external
+location and apply it locally.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240910174013.1433331-2-pierrick.bouvier@linaro.org>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240919152308.10440-1-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- meson.build | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../debian-microblaze-cross.d/build-toolchain.sh          | 8 ++++++++
+ tests/docker/dockerfiles/debian-toolchain.docker          | 7 +++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index d26690ce20..bdd67a2d6d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -538,7 +538,15 @@ if get_option('tsan')
-                          prefix: '#include <sanitizer/tsan_interface.h>')
-     error('Cannot enable TSAN due to missing fiber annotation interface')
-   endif
--  qemu_cflags = ['-fsanitize=thread'] + qemu_cflags
-+  tsan_warn_suppress = []
-+  # gcc (>=11) will report constructions not supported by tsan:
-+  # "error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’"
-+  # https://gcc.gnu.org/gcc-11/changes.html
-+  # However, clang does not support this warning and this triggers an error.
-+  if cc.has_argument('-Wno-tsan')
-+    tsan_warn_suppress = ['-Wno-tsan']
-+  endif
-+  qemu_cflags = ['-fsanitize=thread'] + tsan_warn_suppress + qemu_cflags
-   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
- endif
+diff --git a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
+index 23ec0aa9a7..c5cd0aa931 100755
+--- a/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
++++ b/tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
+@@ -10,6 +10,8 @@ TOOLCHAIN_INSTALL=/usr/local
+ TOOLCHAIN_BIN=${TOOLCHAIN_INSTALL}/bin
+ CROSS_SYSROOT=${TOOLCHAIN_INSTALL}/$TARGET/sys-root
  
++GCC_PATCH0_URL=https://raw.githubusercontent.com/Xilinx/meta-xilinx/refs/tags/xlnx-rel-v2024.1/meta-microblaze/recipes-devtools/gcc/gcc-12/0009-Patch-microblaze-Fix-atomic-boolean-return-value.patch
++
+ export PATH=${TOOLCHAIN_BIN}:$PATH
+ 
+ #
+@@ -31,6 +33,12 @@ mv gcc-11.2.0 src-gcc
+ mv musl-1.2.2 src-musl
+ mv linux-5.10.70 src-linux
+ 
++#
++# Patch gcc
++#
++
++wget -O - ${GCC_PATCH0_URL} | patch -d src-gcc -p1
++
+ mkdir -p bld-hdr bld-binu bld-gcc bld-musl
+ mkdir -p ${CROSS_SYSROOT}/usr/include
+ 
+diff --git a/tests/docker/dockerfiles/debian-toolchain.docker b/tests/docker/dockerfiles/debian-toolchain.docker
+index 687a97fec4..ab4ce29533 100644
+--- a/tests/docker/dockerfiles/debian-toolchain.docker
++++ b/tests/docker/dockerfiles/debian-toolchain.docker
+@@ -10,6 +10,8 @@ FROM docker.io/library/debian:11-slim
+ # ??? The build-dep isn't working, missing a number of
+ # minimal build dependiencies, e.g. libmpc.
+ 
++RUN sed 's/^deb /deb-src /' </etc/apt/sources.list >/etc/apt/sources.list.d/deb-src.list
++
+ RUN apt update && \
+     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
+     DEBIAN_FRONTEND=noninteractive eatmydata \
+@@ -33,6 +35,11 @@ RUN cd /root && ./build-toolchain.sh
+ # and the build trees by restoring the original image,
+ # then copying the built toolchain from stage 0.
+ FROM docker.io/library/debian:11-slim
++RUN apt update && \
++    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
++    DEBIAN_FRONTEND=noninteractive eatmydata \
++    apt install -y --no-install-recommends \
++        libmpc3
+ COPY --from=0 /usr/local /usr/local
+ # As a final step configure the user (if env is defined)
+ ARG USER
 -- 
 2.39.5
 
