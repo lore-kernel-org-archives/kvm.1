@@ -1,59 +1,59 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E932F19C547
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A4619AD8D
 	for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 10:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729594593; cv=none; b=rOg4yvb/vbqhXbPOZFqkc4BQUhxFNI6NMxp4etcSaGx09Ng6JlFP6fS2tLbAlOXh8vmGyZaEu6PxMGrwKlFEVIIcItiFebe9w/UsFYr+94EfQ3KNDC3c0PqkpjEdKfUGsymIn/987u1yzz03xB51e6Iw3w1IOuHkgyhumdAK1RE=
+	t=1729594593; cv=none; b=hT0ZSmwSgVnCNC98k0jiJJR5omU8hG4TDTTQakJWCDaf88kXe5vXBKH6Zn7z4ByZME2nWZ/u0Z642pqKb6dCmO5idx0KEn1OhhZgwj2E2zMMtKs7k6R9UxmleHxOBiWtwKMPpCtYT/8GQavvkaDANKemiikyF13O1FJONAkYt9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729594593; c=relaxed/simple;
-	bh=F1IaLKRSbm9Uapi2UOS+fME09MgEwbeqN+Y21eQizjo=;
+	bh=lpxl7MPf0Wbio1YTPaq7dXRDfcIsws51Vanz7vypfTA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kcuHCJTkL6Vi9spTUAoSFUKRUFQjhW/hFd2qd+oPhJ7ISiDssoQ2LGgWf5ZySIjRpUgFOAkjt6IRWMZKnkh897MVcDh56LX1q1AACg9hG3YZ4Yhzj/x+TVNo3kKUwI+XQdEQXFVSr9VlM8NzdIxlNPH/n7JKS26BJyayyigFBOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dNmFWFyh; arc=none smtp.client-ip=209.85.208.45
+	 MIME-Version:Content-Type; b=QvYKTg45CQp4wNcVTkERkVNY9AYsmOKwgZiR4KYjtBpsW964fe1dzA5AXSRiqAXIeHzipe6VFAWlZAdZk3K0UF5+A2q8q/UzcRpEPc/gVWL6jEsP0GJ3Z7Ci5TIOJRD2h+qp2CZvhJCKFSpB+e2vxGSX0hvdUAFnnYJ64LaI0tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XGvCGT30; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dNmFWFyh"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c40aea5c40so1438931a12.0
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XGvCGT30"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9a628b68a7so711067066b.2
         for <kvm@vger.kernel.org>; Tue, 22 Oct 2024 03:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1729594590; x=1730199390; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nuVL16OURPo6SfQxD2PzScmfjsPxu4HizBAVk8u7e/E=;
-        b=dNmFWFyhPLs4vQfw1em4h4iTSPWVFo0nOvId2oeCaI9WIDqU5TuWJaQirhDYCn4fB+
-         dZW03RnCCgO87173O3HMEOuc/s7pPWe/9xD1xt6Iq2qSSbrriV/pu3fLYFe2SoWHhF4C
-         EDA5io6VwGcyN/WeP1JbaXV/n5mJpaMz0aiNdoLcK8MRMi7pIVwYSMTf95lpGdG0VLck
-         kuScnOxpHsWq1S5BzcUpX/m1sIdLjrlNtg2eU+glzYK3LbcUJrOtcKm5NV5y+2II9xcd
-         gudCGgic9irWC+i9fGEjx+PB26wxsW19CnoT54TeojC3eBfNWfxkYGpSTKcsa6ls1EbH
-         OxQg==
+        bh=rLOsiFp7nSYSKf/se2Emh5FqkyaR/LV5KofnrCQ0C68=;
+        b=XGvCGT30eJniLJsaD6TdeDgajZ0R2yPtywHUkY/xHmMvzNIEHH8YzHNLb72/S9Bl71
+         KTv/k+ddMPFkVvc/C0K7Bs/AUWklgF1cZUp1oUXgxpq9IocdkgJ89UMV2chWnHPTZ7Gk
+         RwD5+PA/UcH+5rtiGhCYP2qTMvujUL1+C7lbCJt3h3pRaLQ5yEnnh0U8oEp781BsKyQb
+         TfpGj0/LGinkRQUDF4PWZlTk19uildT8Dv+gsiGd4Y80aqCnYiTFacGNxjxiQfiYInOs
+         9sHNyT7RjxMQ6uKrcv8acFbmVQSvSibhZFXYT69xKt9UryolPJKE1BMYQt1osDVSqBwR
+         prxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1729594590; x=1730199390;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nuVL16OURPo6SfQxD2PzScmfjsPxu4HizBAVk8u7e/E=;
-        b=aFlTyFrT03LNj9XftjEnydvGcwjkXHs4ktwf3abg+kLfOOIc+LaOYzHvF/Fuhgcue+
-         wHltZw+e+mJ2T5f1nQPd3Wdd/l++sNMwMfKclXboW88bBGMNXdz73qGikRQo59CpsvSD
-         rPCV+ueg1lG7Hp+8uHAypB9UAEjpy6ANPyy9VUic9dTznfeo1u/noc9e1xSAYG5N2IWM
-         8ChG2zBPsvUN1MG2BwjIwQjmfuoq0dp4E8umRZrRousoaDAM3l43z2ajGq8BpYaS+oRo
-         uZvRwPrHe0ZXDKev8Ak2aiCLbOtoR2MXYs9pPU3dZiGzumv0luvSvoF0XrqDvxbV5Wo/
-         Ly4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUC9vGaz8edtDk43zmq1g9yZTdZ/Qn+PhNhLi3JgyORM6CIuoPocuQrne9qByPNjgIzUgU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqtpRa44io0BJ/Z0TWDL3sDpdNlZNwKuDmyFH8m3J4UnXwq3pY
-	/jP90B8N/2XlaNp2V+UdFGiywHYQQs66KM5OG3tdk1mzi+5j4SxdEkz4lT6K/PE=
-X-Google-Smtp-Source: AGHT+IHwi1+vxmbQ3YLA9r6WePtD03FZyJBvumSeivnyntfSu8jv5XX9sGc6cj7ZvugURHt1idsIcQ==
-X-Received: by 2002:a05:6402:35c2:b0:5c9:3070:701e with SMTP id 4fb4d7f45d1cf-5cb794670eemr2833546a12.9.1729594589755;
-        Tue, 22 Oct 2024 03:56:29 -0700 (PDT)
+        bh=rLOsiFp7nSYSKf/se2Emh5FqkyaR/LV5KofnrCQ0C68=;
+        b=XvMc3rADtUDqgY6dajTUlTAH6KGYSo1b7/VYgdnQOHJXrNvJBjPNgXCPaTvAh9A4TA
+         VnXXW2LypIsMjwYgW1WoZZcQHOLdxEe6eEOIzBG66byNLw9IvFK4bgDrqeIE7Fv1eD6A
+         lWPmvkBrMMIJNfb1qevIs/tPoxO/0VO8ZDScTnxLqSjnUMhMWiJZFYAsq+DrfrDf1TZF
+         oPBSwjZWg3XBInOv9YYUbFMZjeRVFKjLq6mrjOgm/XH9AI5Ks0n6Pm4/8fYrEQBdIdfs
+         JElH2P9X5iTgcCGpxWgF8+O03HFQQRiZu/in/uiV1hL5kENZEoCKQNZyrSf+8HhMZSq/
+         coww==
+X-Forwarded-Encrypted: i=1; AJvYcCXLcmnF1zC6Ynh36ha4AzTArQED2urAmrDg8NvQC5ruKok10iGUBZyWLKdmIXHrzSnChIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2Ldhug8Jre2ldFgBL5ud8ILgpZte+9F1zEUY+zdPb6/oFAhV/
+	9QMCkowfbMBsm57Cr5gy9gJsxQH2aaoK7Lc7wsnp5Y9ne4QXW+X36VsSBYeSJoA=
+X-Google-Smtp-Source: AGHT+IFvlb/CmT8eWULIjRtzdfUNfGcd5+oEeP4MY3wCJkBrE+WrjT0rHQJ8GXb9kTKmNzYQI1ufsA==
+X-Received: by 2002:a17:907:3182:b0:a9a:a7fd:d840 with SMTP id a640c23a62f3a-a9aa7fdd87bmr350993366b.1.1729594590177;
+        Tue, 22 Oct 2024 03:56:30 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c7255esm3123937a12.80.2024.10.22.03.56.19
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d6355sm324467166b.37.2024.10.22.03.56.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 22 Oct 2024 03:56:28 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id ADE0A5FABE;
+	by draig.lan (Postfix) with ESMTP id ECA855FC11;
 	Tue, 22 Oct 2024 11:56:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,10 +83,11 @@ Cc: Beraldo Leal <bleal@redhat.com>,
 	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 12/20] config/targets: update aarch64_be-linux-user gdb XML list
-Date: Tue, 22 Oct 2024 11:56:06 +0100
-Message-Id: <20241022105614.839199-13-alex.bennee@linaro.org>
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Gustavo Romero <gustavo.romero@linaro.org>
+Subject: [PATCH v2 15/20] testing: Enhance gdb probe script
+Date: Tue, 22 Oct 2024 11:56:09 +0100
+Message-Id: <20241022105614.839199-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241022105614.839199-1-alex.bennee@linaro.org>
 References: <20241022105614.839199-1-alex.bennee@linaro.org>
@@ -99,28 +100,120 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Attempting to run the binary asserts when it can't find the XML entry.
-We can fix it so we don't although I suspect other stuff is broken.
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2580
+Use list and set comprehension to simplify code. Also, gently handle
+invalid gdb filenames.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Message-Id: <20241015145848.387281-1-gustavo.romero@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configs/targets/aarch64_be-linux-user.mak | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/probe-gdb-support.py | 75 +++++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 36 deletions(-)
 
-diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
-index 778d22b2a9..dcef597a80 100644
---- a/configs/targets/aarch64_be-linux-user.mak
-+++ b/configs/targets/aarch64_be-linux-user.mak
-@@ -1,7 +1,7 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
- TARGET_BIG_ENDIAN=y
--TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
-+TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
+diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
+index 6dc58d06c7..6bcadce150 100644
+--- a/scripts/probe-gdb-support.py
++++ b/scripts/probe-gdb-support.py
+@@ -19,58 +19,61 @@
+ 
+ import argparse
+ import re
+-from subprocess import check_output, STDOUT
++from subprocess import check_output, STDOUT, CalledProcessError
++import sys
+ 
+-# mappings from gdb arch to QEMU target
+-mappings = {
+-    "alpha" : "alpha",
++# Mappings from gdb arch to QEMU target
++MAP = {
++    "alpha" : ["alpha"],
+     "aarch64" : ["aarch64", "aarch64_be"],
+-    "armv7": "arm",
++    "armv7": ["arm"],
+     "armv8-a" : ["aarch64", "aarch64_be"],
+-    "avr" : "avr",
++    "avr" : ["avr"],
+     # no hexagon in upstream gdb
+-    "hppa1.0" : "hppa",
+-    "i386" : "i386",
+-    "i386:x86-64" : "x86_64",
+-    "Loongarch64" : "loongarch64",
+-    "m68k" : "m68k",
+-    "MicroBlaze" : "microblaze",
++    "hppa1.0" : ["hppa"],
++    "i386" : ["i386"],
++    "i386:x86-64" : ["x86_64"],
++    "Loongarch64" : ["loongarch64"],
++    "m68k" : ["m68k"],
++    "MicroBlaze" : ["microblaze"],
+     "mips:isa64" : ["mips64", "mips64el"],
+-    "or1k" : "or1k",
+-    "powerpc:common" : "ppc",
++    "or1k" : ["or1k"],
++    "powerpc:common" : ["ppc"],
+     "powerpc:common64" : ["ppc64", "ppc64le"],
+-    "riscv:rv32" : "riscv32",
+-    "riscv:rv64" : "riscv64",
+-    "s390:64-bit" : "s390x",
++    "riscv:rv32" : ["riscv32"],
++    "riscv:rv64" : ["riscv64"],
++    "s390:64-bit" : ["s390x"],
+     "sh4" : ["sh4", "sh4eb"],
+-    "sparc": "sparc",
+-    "sparc:v8plus": "sparc32plus",
+-    "sparc:v9a" : "sparc64",
++    "sparc": ["sparc"],
++    "sparc:v8plus": ["sparc32plus"],
++    "sparc:v9a" : ["sparc64"],
+     # no tricore in upstream gdb
+     "xtensa" : ["xtensa", "xtensaeb"]
+ }
+ 
++
+ def do_probe(gdb):
+-    gdb_out = check_output([gdb,
+-                            "-ex", "set architecture",
+-                            "-ex", "quit"], stderr=STDOUT)
++    try:
++        gdb_out = check_output([gdb,
++                               "-ex", "set architecture",
++                               "-ex", "quit"], stderr=STDOUT, encoding="utf-8")
++    except (OSError) as e:
++        sys.exit(e)
++    except CalledProcessError as e:
++        sys.exit(f'{e}. Output:\n\n{e.output}')
++
++    found_gdb_archs = re.search(r'Valid arguments are (.*)', gdb_out)
+ 
+-    m = re.search(r"Valid arguments are (.*)",
+-                  gdb_out.decode("utf-8"))
++    targets = set()
++    if found_gdb_archs:
++        gdb_archs = found_gdb_archs.group(1).split(", ")
++        mapped_gdb_archs = [arch for arch in gdb_archs if arch in MAP]
+ 
+-    valid_arches = set()
++        targets = {target for arch in mapped_gdb_archs for target in MAP[arch]}
+ 
+-    if m.group(1):
+-        for arch in m.group(1).split(", "):
+-            if arch in mappings:
+-                mapping = mappings[arch]
+-                if isinstance(mapping, str):
+-                    valid_arches.add(mapping)
+-                else:
+-                    for entry in mapping:
+-                        valid_arches.add(entry)
++    # QEMU targets
++    return targets
+ 
+-    return valid_arches
+ 
+ def main() -> None:
+     parser = argparse.ArgumentParser(description='Probe GDB Architectures')
 -- 
 2.39.5
 
