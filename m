@@ -1,59 +1,59 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCD71AAE37
-	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9450D1AB6C4
+	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729683848; cv=none; b=txsPy8lUizU5GfUw7FIUSkzyZXjHnH6FMi6+7/ylVuXjtIGsnqBViOlL9+mrtmv553ZvG+5iwyJVxDlqoSvIdIJlVrfCM6q6ZJaheAY5VxkcPTtzpW8S3mhXPWACWWmqwiiptEEPahcCzbUJOCxUcnS9qHgs0gw4Y8Z61dMUTVM=
+	t=1729683851; cv=none; b=AqAVn9IY7BlZ26zyHhONGm5BW6OG4AQQLYz3ea8IuWzjgMPfxXZ8+flsknDdAh6SxqWnQI+ecaoTFNmXzGseS8ZHsBGOAB5rf8re1l6lPng//DqWi3V+5eqNZSJh4eNXn00KQfmQeLuzVxLLmiept3wDlyJ4BPt17bUwe3R2iqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729683848; c=relaxed/simple;
-	bh=rb3f1U6P64o9JDmRzVN/42YTd7peCfGvE1Ae01sbveQ=;
+	s=arc-20240116; t=1729683851; c=relaxed/simple;
+	bh=gx7elASkKACRM34GNEWipezg+FLNYL4fWbpRkWi7xsk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qqUxOqio+hk0ysyCGCoS8KrFVFFrnsYK+L1sA5MSCWsIemmxPRVWK/WZetQYtG5Ru5QYL1gJRhXAcGijGXTpO1kkcnqbEIjBxfoxp+JV1FDHJJ3wkD+427L5JWv+MR/Dp//hziehCp/P2BeLdrLgGquVJ9JO8w0adptG08kD8kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mJwJGB+t; arc=none smtp.client-ip=209.85.167.52
+	 MIME-Version:Content-Type; b=tKZfMOxyccGbFVJrWCITCUu7Q3GiSW0nVJIUg9/Ki5sZTr/Kk9Sdp0mRmaTJoNdnd0jQn8YN0xjoTfIBqffxroZBVsI27CqtkexVZijVeHs+E8uuBlVgQewbDvXABK14NrbqyYz72/NKolR6OEGWpdnuWaiDcdg5+sE4J6OaBbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oFFktXOQ; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mJwJGB+t"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e7e73740so5990280e87.3
-        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:44:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oFFktXOQ"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539d9fffea1so6324297e87.2
+        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729683845; x=1730288645; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729683848; x=1730288648; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=goM9TWkvUJk023ZZ8+wq0WOvMkki4+LOppFI2tLZ0P4=;
-        b=mJwJGB+tTCUA1l0SMupmB8Qlk3+o4JgmE6PXnOvjV0uXCA0z2KOBDmBuKSKiuNGXCD
-         q2ME6svMTZcFBRzBx8SOaET0Q1sC3fZzIv5GOj9o9khoyPBHxa4E567r/I8RjVzgs7vp
-         L8PBz4hdORRCG9elYIsNhvFJnNBzvQa84D+nt8bJ8ZWbX59ziADFFbbEEDhylsjOKZAt
-         I+ze9aTh6J1a6nGJeMguR0lpUsOk/1HkbfoPb40C1KzYr8inxjA771jkWoRH+6ug4am1
-         wrRpKP0yl0B8z1NT5vD5UdDfB4iDbyWvSMbSOEu+ZzMbroTl/IzV8n2xEkSdqYLXyYS2
-         vX4g==
+        bh=A1RT2huJ5JZoTziBJ4jD+CCwuEKWgio+GHjHj5uuvtc=;
+        b=oFFktXOQ/ojcyuo9pofFp6fwnh4Yb1692/BAYaxoWPcWh9d703EoJSDofRKZS4Yz84
+         XOPaLZGHBgjqxvL9rqejhX2FvMfRDMutDy5IA7tZCvfQsXT39tWzI6xHaxW48gliYJnD
+         ZHvx2n774GJXC4L51RWkUx25Y678c9VhaJo446oxlmt5lhhxaYU0j2KCKFj/2vKqoQGK
+         isEu9uqif9wGeVpjAVlSRwSB+BnoINEzu1j66i9QOC5Q4eQ0ujvcsLywIbtphg543XWb
+         PjdlQbYov2awGGDcyzhBIK5wW5Ap1QVPAWYsf7TMY/OWcevM8DXrhmfDZE0N9rF34X3e
+         A/+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729683845; x=1730288645;
+        d=1e100.net; s=20230601; t=1729683848; x=1730288648;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=goM9TWkvUJk023ZZ8+wq0WOvMkki4+LOppFI2tLZ0P4=;
-        b=ZUrvfkKm9xokU91gA1Wystw6WMGdIKyMsfdnpkpwWD/+/H2mRYAP1d4gSu26icNkvV
-         bZyNhr2LxuvZoXmkiNByqMVo5Icn9b0VNsmWWW+eIN7361P3HOLmkAP4PCOOfOuzW+xJ
-         hYC0AJj3Oqs/pkdITp5wA0xWqC16VwFvW1yFLmOsordlWxNAVNFPLk+MmKJr96OlZxNm
-         Hpu60PfYTeTBYMLEvnhE+wCpPwjiqwhEfVGrmEnQafOVPL94NPhWT5S+zu+vSSbqXVqx
-         9tQnEmZT0h8Gu6o+gJxik1tRf5N3AFDoC4pCqkQWGHC9mwsAaudn4Vz7hLpA3VP2JC8r
-         3UfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfB/QCcfyV/yVu6nY6pTBwQCt8XTzeGlsWPW41qBXBTQojL2chgcP7sw1ObcnmFsEvYcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNpZ3dbSTQdnriDBEMJWifnNBteVEhHzhfV020kSeiji1TWCUR
-	0rm6pfHQtqnDAz09MbIiOP48lKSzPkv87+WQf+NuToTJmOcwGK4tLJA4hvb/ahU=
-X-Google-Smtp-Source: AGHT+IHDtHU0ccJr5rc5xz8My9arnYk+SlnudjoCir3kQRdzjKiDoRSU1ko8s5OGs4YQqLHIEVXPxQ==
-X-Received: by 2002:a05:6512:398a:b0:539:f2f6:c70f with SMTP id 2adb3069b0e04-53b1a2fed80mr1092099e87.8.1729683844676;
-        Wed, 23 Oct 2024 04:44:04 -0700 (PDT)
+        bh=A1RT2huJ5JZoTziBJ4jD+CCwuEKWgio+GHjHj5uuvtc=;
+        b=n6CRxYwjCA7PYuynIJpnFuR5Asbg/mkdEYI+EqENG5GZ0ugLBXO8W6IpE1ku1NOqvd
+         gHEwKUrVXDs3AZ1M33toz966OiRuMm4UrYuQjxRt0YMy8B8h2MXwmAQXc8VbyUH3YXrK
+         rvcjx/qwzUsInhBaWPvvFRVas1G6pp44Csc/wtWqY68XefLMNtwk8T0W4V1biY22iU7E
+         YLXmRUdunEjwyJTCwOJg6aqJfxq1ktrV0y2n9nCyB61Nip+facPIMaGFhiBnAWxifsv/
+         Cx+7vrbQZyJBbpC87YXf21WGvt0hkWphjWNlef1XmxSJzr8fXXIcQIlWj57Tx8/O2TVv
+         sRaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVx+dooQcoc9P8yxjzOulIe2iVoO1GzZdzxHhVs3F2FkX43ELy6q5bF308OcI/LZTbO8TA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUXKmf1ViLkQhOY4D83JZOo1SNugpUp9gHvlZDFLLTts232NQc
+	KJYw9GqCsrz8VR/JR2AjUFW4YoyFfDO8zle9aUq0EUQnF8qKrscc/yOLOthhbkI=
+X-Google-Smtp-Source: AGHT+IETgBNh0DknbhC9Ao3EX1ccEbaAu/WRXZEm4OtaqSUPGIbyjDwlX/z+4aePDDFewBzHV61pag==
+X-Received: by 2002:a05:6512:3b87:b0:539:e873:6e2 with SMTP id 2adb3069b0e04-53b1a31d89dmr1220513e87.8.1729683846016;
+        Wed, 23 Oct 2024 04:44:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91370e54sm462834566b.102.2024.10.23.04.44.03
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66a6d798sm4478915a12.50.2024.10.23.04.44.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 04:44:03 -0700 (PDT)
+        Wed, 23 Oct 2024 04:44:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 6AE8B5FC0F;
+	by draig.lan (Postfix) with ESMTP id 9B1C55FC19;
 	Wed, 23 Oct 2024 12:34:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,11 +83,10 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	kvm@vger.kernel.org,
 	Beraldo Leal <bleal@redhat.com>,
 	Thomas Huth <thuth@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH v3 15/18] testing: Enhance gdb probe script
-Date: Wed, 23 Oct 2024 12:34:03 +0100
-Message-Id: <20241023113406.1284676-16-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 17/18] contrib/plugins: remove Makefile for contrib/plugins
+Date: Wed, 23 Oct 2024 12:34:05 +0100
+Message-Id: <20241023113406.1284676-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
@@ -100,122 +99,184 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Use list and set comprehension to simplify code. Also, gently handle
-invalid gdb filenames.
+Now replaced by meson build.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241022105614.839199-16-alex.bennee@linaro.org>
-Message-Id: <20241015145848.387281-1-gustavo.romero@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240925204845.390689-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/probe-gdb-support.py | 75 +++++++++++++++++++-----------------
- 1 file changed, 39 insertions(+), 36 deletions(-)
+ configure                | 18 ---------
+ Makefile                 | 10 -----
+ contrib/plugins/Makefile | 87 ----------------------------------------
+ 3 files changed, 115 deletions(-)
+ delete mode 100644 contrib/plugins/Makefile
 
-diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
-index 6dc58d06c7..6bcadce150 100644
---- a/scripts/probe-gdb-support.py
-+++ b/scripts/probe-gdb-support.py
-@@ -19,58 +19,61 @@
+diff --git a/configure b/configure
+index 7dd3400ccb..101ca9ace9 100755
+--- a/configure
++++ b/configure
+@@ -1073,7 +1073,6 @@ if test "$plugins" != "no" && test $host_bits -eq 64; then
+         plugins="no"
+     else
+         plugins=yes
+-        subdirs="$subdirs contrib/plugins"
+     fi
+ fi
  
- import argparse
- import re
--from subprocess import check_output, STDOUT
-+from subprocess import check_output, STDOUT, CalledProcessError
-+import sys
+@@ -1704,7 +1703,6 @@ LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
+ LINKS="$LINKS tests/avocado tests/data"
+ LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
+ LINKS="$LINKS python"
+-LINKS="$LINKS contrib/plugins/Makefile "
+ for f in $LINKS ; do
+     if [ -e "$source_path/$f" ]; then
+         symlink "$source_path/$f" "$f"
+@@ -1790,22 +1788,6 @@ if test "$default_targets" = "yes"; then
+   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
+ fi
  
--# mappings from gdb arch to QEMU target
--mappings = {
--    "alpha" : "alpha",
-+# Mappings from gdb arch to QEMU target
-+MAP = {
-+    "alpha" : ["alpha"],
-     "aarch64" : ["aarch64", "aarch64_be"],
--    "armv7": "arm",
-+    "armv7": ["arm"],
-     "armv8-a" : ["aarch64", "aarch64_be"],
--    "avr" : "avr",
-+    "avr" : ["avr"],
-     # no hexagon in upstream gdb
--    "hppa1.0" : "hppa",
--    "i386" : "i386",
--    "i386:x86-64" : "x86_64",
--    "Loongarch64" : "loongarch64",
--    "m68k" : "m68k",
--    "MicroBlaze" : "microblaze",
-+    "hppa1.0" : ["hppa"],
-+    "i386" : ["i386"],
-+    "i386:x86-64" : ["x86_64"],
-+    "Loongarch64" : ["loongarch64"],
-+    "m68k" : ["m68k"],
-+    "MicroBlaze" : ["microblaze"],
-     "mips:isa64" : ["mips64", "mips64el"],
--    "or1k" : "or1k",
--    "powerpc:common" : "ppc",
-+    "or1k" : ["or1k"],
-+    "powerpc:common" : ["ppc"],
-     "powerpc:common64" : ["ppc64", "ppc64le"],
--    "riscv:rv32" : "riscv32",
--    "riscv:rv64" : "riscv64",
--    "s390:64-bit" : "s390x",
-+    "riscv:rv32" : ["riscv32"],
-+    "riscv:rv64" : ["riscv64"],
-+    "s390:64-bit" : ["s390x"],
-     "sh4" : ["sh4", "sh4eb"],
--    "sparc": "sparc",
--    "sparc:v8plus": "sparc32plus",
--    "sparc:v9a" : "sparc64",
-+    "sparc": ["sparc"],
-+    "sparc:v8plus": ["sparc32plus"],
-+    "sparc:v9a" : ["sparc64"],
-     # no tricore in upstream gdb
-     "xtensa" : ["xtensa", "xtensaeb"]
- }
+-# contrib/plugins configuration
+-echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
+-echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
+-echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
+-echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
+-echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
+-if test "$host_os" = windows; then
+-  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
+-fi
+-if test "$host_os" = darwin; then
+-  echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
+-fi
+-if test "$host_os" = windows; then
+-  echo "CONFIG_WIN32=y" >> contrib/plugins/$config_host_mak
+-fi
+-
+ # tests/tcg configuration
+ mkdir -p tests/tcg
+ echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
+diff --git a/Makefile b/Makefile
+index 917c9a34d1..b65b0bd41a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -187,11 +187,6 @@ SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
+ $(SUBDIR_RULES):
+ 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
  
-+
- def do_probe(gdb):
--    gdb_out = check_output([gdb,
--                            "-ex", "set architecture",
--                            "-ex", "quit"], stderr=STDOUT)
-+    try:
-+        gdb_out = check_output([gdb,
-+                               "-ex", "set architecture",
-+                               "-ex", "quit"], stderr=STDOUT, encoding="utf-8")
-+    except (OSError) as e:
-+        sys.exit(e)
-+    except CalledProcessError as e:
-+        sys.exit(f'{e}. Output:\n\n{e.output}')
-+
-+    found_gdb_archs = re.search(r'Valid arguments are (.*)', gdb_out)
- 
--    m = re.search(r"Valid arguments are (.*)",
--                  gdb_out.decode("utf-8"))
-+    targets = set()
-+    if found_gdb_archs:
-+        gdb_archs = found_gdb_archs.group(1).split(", ")
-+        mapped_gdb_archs = [arch for arch in gdb_archs if arch in MAP]
- 
--    valid_arches = set()
-+        targets = {target for arch in mapped_gdb_archs for target in MAP[arch]}
- 
--    if m.group(1):
--        for arch in m.group(1).split(", "):
--            if arch in mappings:
--                mapping = mappings[arch]
--                if isinstance(mapping, str):
--                    valid_arches.add(mapping)
--                else:
--                    for entry in mapping:
--                        valid_arches.add(entry)
-+    # QEMU targets
-+    return targets
- 
--    return valid_arches
- 
- def main() -> None:
-     parser = argparse.ArgumentParser(description='Probe GDB Architectures')
+-ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+-.PHONY: plugins
+-plugins: contrib/plugins/all
+-endif
+-
+ .PHONY: recurse-all recurse-clean
+ recurse-all: $(addsuffix /all, $(SUBDIRS))
+ recurse-clean: $(addsuffix /clean, $(SUBDIRS))
+@@ -307,11 +302,6 @@ help:
+ 	$(call print-help,cscope,Generate cscope index)
+ 	$(call print-help,sparse,Run sparse on the QEMU source)
+ 	@echo  ''
+-ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+-	@echo  'Plugin targets:'
+-	$(call print-help,plugins,Build the example TCG plugins)
+-	@echo  ''
+-endif
+ 	@echo  'Cleaning targets:'
+ 	$(call print-help,clean,Remove most generated files but keep the config)
+ 	$(call print-help,distclean,Remove all generated files)
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+deleted file mode 100644
+index bbddd4800f..0000000000
+--- a/contrib/plugins/Makefile
++++ /dev/null
+@@ -1,87 +0,0 @@
+-# -*- Mode: makefile -*-
+-#
+-# This Makefile example is fairly independent from the main makefile
+-# so users can take and adapt it for their build. We only really
+-# include config-host.mak so we don't have to repeat probing for
+-# programs that the main configure has already done for us.
+-#
+-
+-include config-host.mak
+-
+-TOP_SRC_PATH = $(SRC_PATH)/../..
+-
+-VPATH += $(SRC_PATH)
+-
+-NAMES :=
+-NAMES += bbv
+-NAMES += execlog
+-NAMES += hotblocks
+-NAMES += hotpages
+-NAMES += howvec
+-
+-# The lockstep example communicates using unix sockets,
+-# and can't be easily made to work on windows.
+-ifneq ($(CONFIG_WIN32),y)
+-NAMES += lockstep
+-endif
+-
+-NAMES += hwprofile
+-NAMES += cache
+-NAMES += drcov
+-NAMES += ips
+-NAMES += stoptrigger
+-NAMES += cflow
+-
+-ifeq ($(CONFIG_WIN32),y)
+-SO_SUFFIX := .dll
+-LDLIBS += $(shell $(PKG_CONFIG) --libs glib-2.0)
+-else
+-SO_SUFFIX := .so
+-endif
+-
+-SONAMES := $(addsuffix $(SO_SUFFIX),$(addprefix lib,$(NAMES)))
+-
+-# The main QEMU uses Glib extensively so it is perfectly fine to use it
+-# in plugins (which many example do).
+-PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
+-PLUGIN_CFLAGS += -fPIC -Wall
+-PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
+-
+-# Helper that honours V=1 so we get some output when compiling
+-quiet-@ = $(if $(V),,@$(if $1,printf "  %-7s %s\n" "$(strip $1)" "$(strip $2)" && ))
+-quiet-command = $(call quiet-@,$2,$3)$1
+-
+-# for including , in command strings
+-COMMA := ,
+-
+-all: $(SONAMES)
+-
+-%.o: %.c
+-	$(call quiet-command, \
+-		$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<, \
+-	        BUILD, plugin $@)
+-
+-ifeq ($(CONFIG_WIN32),y)
+-lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
+-	$(call quiet-command, \
+-		$(CC) -shared -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-else ifeq ($(CONFIG_DARWIN),y)
+-lib%$(SO_SUFFIX): %.o
+-	$(call quiet-command, \
+-		$(CC) -bundle -Wl$(COMMA)-undefined$(COMMA)dynamic_lookup -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-else
+-lib%$(SO_SUFFIX): %.o
+-	$(call quiet-command, \
+-		$(CC) -shared -o $@ $^ $(LDLIBS), \
+-		LINK, plugin $@)
+-endif
+-
+-
+-clean distclean:
+-	rm -f *.o *$(SO_SUFFIX) *.d
+-	rm -Rf .libs
+-
+-.PHONY: all clean
+-.SECONDARY:
 -- 
 2.39.5
 
