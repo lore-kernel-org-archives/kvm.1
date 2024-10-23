@@ -1,157 +1,144 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437C1CEAB1
-	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 16:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E821CBE9A;
+	Wed, 23 Oct 2024 18:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729702436; cv=none; b=LHpAQbHFVbs637yf1+zZ06UrMPIgKg7xGdsB/I9cmNjCLHgstWbqjsPsx36/dHqE5fqBufMVJLtaeaG37vOOvguQNVFD4pCFXLwCYfS1mTMJMWDiioDMbgjr64UHB/wNfcoTF7cqtM/T2hwa5RLoAfDeji5bBYzY7tWWWZHnVUE=
+	t=1729706994; cv=none; b=Dh6t99zDyY5oGNIz69sMWWSgtsj+He6Uj4lMEJ9iCYEVMwbxEZriql8F0HiwqEeVS58n9WlNvz0lc3qc03reBxfWeJXUGGJliIwj2K9LGFvDUyR9WvN/siDF0HuYG9bObIxcJqUiHjZNGtxkgedxMkZajpmOkLQMFk7mTmipVAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729702436; c=relaxed/simple;
-	bh=IMpoj34+Vcu1yqoNRz8CfPnxKOMB0EbaLa7iaHTOuXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ozFZuSJYT4WAd35kug3zwIF3dJ40C7W33MWbyVbBt0ofO8O8J2d9aFHjYES+h079OQ/YTzf9FACAQJWx1N3JPYtl09hNFLq2w52opMEj4yzLnMmIIZeh5V/EkuuEIKYTlt7o5EclmRy/ekwnoIN/t2hoQJtEF1U/jfKS8SJW9KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IbMYZxBh; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1729706994; c=relaxed/simple;
+	bh=2rCl2EkGUq3eQaPQ784zJRGPXTj72TQkCboL00ZG36c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bstZYxNlhub0U+UpFmyYCMJWhm5K5Ty4WDq+8OL2ptBnOd+dBPm1f1uLI/nX88xNUFKSljVDhpUSM/GxABWwRDuNGLMcst64FBqa2h+VdZkZymuYrBz59IGGyg3U53SaxqM9UhdgdndwOtBsPI7S9hyC6HKNTscEJvGl7Ik83/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i3yF+k+u; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IbMYZxBh"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729702431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/IF9SiEEAYAkqizFMSgjGFAXz0S3XN8NxjjqJy4brgY=;
-	b=IbMYZxBh7mwgifzw4b12Vcu2Bbx8rG2+CNzZrZY2Xp3s/nUOWTcJhQ8izAVeZLAQ1Edl7o
-	U3476w/xWEpRtGnDsG7LFrDn1Kdm3a6GmoYmVakdXRK9jJAlyYb+8szs1dYA8A6HtcaJ8Q
-	3JotoEog5wKFSb5naZtZA5Hpq7Ry/FA=
-From: Andrew Jones <andrew.jones@linux.dev>
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	thuth@redhat.com,
-	lvivier@redhat.com,
-	frankja@linux.ibm.com,
-	imbrenda@linux.ibm.com,
-	nrb@linux.ibm.com,
-	npiggin@gmail.com
-Subject: [RFC kvm-unit-tests PATCH] lib/report: Return pass/fail result from report
-Date: Wed, 23 Oct 2024 18:53:48 +0200
-Message-ID: <20241023165347.174745-2-andrew.jones@linux.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i3yF+k+u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729706992; x=1761242992;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2rCl2EkGUq3eQaPQ784zJRGPXTj72TQkCboL00ZG36c=;
+  b=i3yF+k+uBOQmRdjZpBYCL3ImSOEtGsM6G3k3ZWGqlkdlDXgdVlxRW7jj
+   MvLA56tLukS58a1y9qj0Gfv4l7ONA4etzChTyZn6emryLwV3ts5z9GLu8
+   r9NrQ1jY57vjmlz+VsLbi5I8RsWkj3UiyObfUExZWJzcKEhTaQbKvjuOK
+   MhJjfKyEoDGHLer+EmogVNiUINbXTeJX7g9YS/GWE1Piq0ajj5kHXglVM
+   VRcjXN5xEKMBQVIO39Jj+qtBCikTMEhIfoGogReQC8OeZrPDhpywrMsWI
+   EOAlTyfVHcmXaZ719FvHTsiFZFLsHsfPAiYgZNtcVRgF41RBBhHsWsCBv
+   w==;
+X-CSE-ConnectionGUID: FcFXP+wOR9GDtlCDjCCprQ==
+X-CSE-MsgGUID: 0TTX3j1rQQCxuhTFhJQkwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="32166881"
+X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
+   d="scan'208";a="32166881"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 11:09:52 -0700
+X-CSE-ConnectionGUID: Zinfi+i6Sa6zRiLFIJWmzA==
+X-CSE-MsgGUID: C/7rh0eMSamHvy3oTBNjfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
+   d="scan'208";a="80497846"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.245.115.59])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 11:09:41 -0700
+Message-ID: <175dc21f-a4e6-484f-8ee0-ec64c6dfc392@intel.com>
+Date: Wed, 23 Oct 2024 21:09:35 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V13 03/14] KVM: x86: Fix Intel PT Host/Guest mode when
+ host tracing also
+To: Sean Christopherson <seanjc@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach
+ <mike.leach@linaro.org>, James Clark <james.clark@arm.com>,
+ coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+ Yicong Yang <yangyicong@hisilicon.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Will Deacon
+ <will@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ H Peter Anvin <hpa@zytor.com>, Kan Liang <kan.liang@linux.intel.com>,
+ Zhenyu Wang <zhenyuw@linux.intel.com>, mizhang@google.com,
+ kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org
+References: <20241014105124.24473-1-adrian.hunter@intel.com>
+ <20241014105124.24473-4-adrian.hunter@intel.com>
+ <Zw1iCMNSI4Lc0mSG@google.com>
+ <b29e8ba4-5893-4ca0-b2cc-55d95f2fc968@intel.com>
+ <ZxfTOQzcXTBEiXMG@google.com>
+ <2a8e6f2c-4284-4218-9b91-af6a4d65e982@intel.com>
+ <ZxgnoTKt2IBnBBJ2@google.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <ZxgnoTKt2IBnBBJ2@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-A nice pattern to use in order to try and maintain parsable reports,
-but also output unexpected values, is
+On 23/10/24 01:30, Sean Christopherson wrote:
+> On Tue, Oct 22, 2024, Adrian Hunter wrote:
+>> On 22/10/24 19:30, Sean Christopherson wrote:
+>>>>> LOL, yeah, this needs to be burned with fire.  It's wildly broken.  So for stable@,
+>>>>
+>>>> It doesn't seem wildly broken.  Just the VMM passing invalid CPUID
+>>>> and KVM not validating it.
+>>>
+>>> Heh, I agree with "just", but unfortunately "just ... not validating" a large
+>>> swath of userspace inputs is pretty widly broken.  More importantly, it's not
+>>> easy to fix.  E.g. KVM could require the inputs to exactly match hardware, but
+>>> that creates an ABI that I'm not entirely sure is desirable in the long term.
+>>
+>> Although the CPUID ABI does not really change.  KVM does not support
+>> emulating Intel PT, so accepting CPUID that the hardware cannot support
+>> seems like a bit of a lie.
+> 
+> But it's not all or nothing, e.g. KVM should support exposing fewer address ranges
+> than are supported by hardware, so that the same virtual CPU model can be run on
+> different generations of hardware.
+> 
+>> Aren't there other features that KVM does not support if the hardware support
+>> is not there?
+> 
+> Many.  But either features are one-off things without configurable properties,
+> or KVM does the right thing (usually).  E.g. nested virtualization heavily relies
+> on hardware, and has a plethora of knobs, but KVM (usually) honors and validates
+> the configuration provided by userspace.
+> 
+>> To some degree, a testing and debugging feature does not have to be
+>> available in 100% of cases because it can still be useful when it is
+>> available.
+> 
+> I don't disagree, but "works on my machine" is how KVM has gotten into so many
+> messes with such features.  I also don't necessarily disagree with supporting a
+> very limited subset of use cases, but I want such support to come as well-defined
+> package with proper guard rails, docs, and ideally tests.
 
-    if (!report(value == expected_value, "my test")) {
-        report_info("failure due to unexpected value (received %d, expected %d)",
-                    value, expected_value);
-    }
+Ok, so how about: leave VMM to choose CPUID, but then map it to what the
+hardware actually supports for what is possible.  So the guest user might
+not get trace data exactly as expected, or perhaps not at all, but at least
+KVM doesn't die.  Then add documentation to explain how it all works.
 
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
----
- lib/libcflat.h |  6 +++---
- lib/report.c   | 28 +++++++++++++++++++++-------
- 2 files changed, 24 insertions(+), 10 deletions(-)
+Note, the number of address ranges is not that much of an issue because
+currently all processors that support Intel PT virtualization have 2.
 
-diff --git a/lib/libcflat.h b/lib/libcflat.h
-index eec34c3f2710..b4110b9ec91b 100644
---- a/lib/libcflat.h
-+++ b/lib/libcflat.h
-@@ -97,11 +97,11 @@ void report_prefix_pushf(const char *prefix_fmt, ...)
- extern void report_prefix_push(const char *prefix);
- extern void report_prefix_pop(void);
- extern void report_prefix_popn(int n);
--extern void report(bool pass, const char *msg_fmt, ...)
-+extern bool report(bool pass, const char *msg_fmt, ...)
- 		__attribute__((format(printf, 2, 3), nonnull(2)));
--extern void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
-+extern bool report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
- 		__attribute__((format(printf, 3, 4), nonnull(3)));
--extern void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
-+extern bool report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
- 		__attribute__((format(printf, 3, 4), nonnull(3)));
- extern void report_abort(const char *msg_fmt, ...)
- 					__attribute__((format(printf, 1, 2)))
-diff --git a/lib/report.c b/lib/report.c
-index 0756e64e6f10..43c0102c1b0e 100644
---- a/lib/report.c
-+++ b/lib/report.c
-@@ -89,7 +89,7 @@ void report_prefix_popn(int n)
- 	spin_unlock(&lock);
- }
- 
--static void va_report(const char *msg_fmt,
-+static bool va_report(const char *msg_fmt,
- 		bool pass, bool xfail, bool kfail, bool skip, va_list va)
- {
- 	const char *prefix = skip ? "SKIP"
-@@ -114,14 +114,20 @@ static void va_report(const char *msg_fmt,
- 		failures++;
- 
- 	spin_unlock(&lock);
-+
-+	return pass || xfail;
- }
- 
--void report(bool pass, const char *msg_fmt, ...)
-+bool report(bool pass, const char *msg_fmt, ...)
- {
- 	va_list va;
-+	bool ret;
-+
- 	va_start(va, msg_fmt);
--	va_report(msg_fmt, pass, false, false, false, va);
-+	ret = va_report(msg_fmt, pass, false, false, false, va);
- 	va_end(va);
-+
-+	return ret;
- }
- 
- void report_pass(const char *msg_fmt, ...)
-@@ -142,24 +148,32 @@ void report_fail(const char *msg_fmt, ...)
- 	va_end(va);
- }
- 
--void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
-+bool report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
- {
-+	bool ret;
-+
- 	va_list va;
- 	va_start(va, msg_fmt);
--	va_report(msg_fmt, pass, xfail, false, false, va);
-+	ret = va_report(msg_fmt, pass, xfail, false, false, va);
- 	va_end(va);
-+
-+	return ret;
- }
- 
- /*
-  * kfail is known failure. If kfail is true then test will succeed
-  * regardless of pass.
-  */
--void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
-+bool report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
- {
-+	bool ret;
-+
- 	va_list va;
- 	va_start(va, msg_fmt);
--	va_report(msg_fmt, pass, false, kfail, false, va);
-+	ret = va_report(msg_fmt, pass, false, kfail, false, va);
- 	va_end(va);
-+
-+	return ret;
- }
- 
- void report_skip(const char *msg_fmt, ...)
--- 
-2.47.0
+I have a feeling QEMU was targeting compatibility with IceLake, which
+would probably work for all processors that support Intel PT virtualization
+except for one feature - the maximum number of cycle thresholds (dropped
+from 2048 to 16)
 
