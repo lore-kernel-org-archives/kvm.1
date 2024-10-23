@@ -1,59 +1,59 @@
 Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E6A1AB6ED
-	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF011ABEA0
+	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729683254; cv=none; b=VH4tHI3l3DPC6RlYLIWbH1l4AFfHT8Zgybscb/ps3X3OiXZ8IkGu6vq2FWJoVHDDV/R8xeyOresd/+J75rdjWIqKS0nLAciOQk0OblAlzOrgg2mNnS/kvxJxL4VTpY4t/Lj+IibR/TjpMnCNcR+EPkokd/V8fr5xlzfsYXDnLWI=
+	t=1729683254; cv=none; b=P4ab+L1vE4IVcoRinzt3/AxZQU7iv78fC9FWufg77pE+VJb00JECrvLaC0oUe5AOcKXH7dnmnkSzHFJIe5RixP8k1Tyb/kuedHMltLY1ffTMbY8HTUYFKz/YrySUc1m++ngFfW6YeP9GrKYbmRifFhAqD8G3JOYyq/POQBaMpdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729683254; c=relaxed/simple;
-	bh=FPDHoQuPMt65ENXagulYYLLxNsp02Qm7mdL6YjheHFc=;
+	bh=dycqCm1NPayXEmQsWH/9aZ0ifAR2NBSL9Ke2mXMrvic=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lvuv2Pze4GqsQp+ADGIUt/0Yf+FKzh3OJqCI8njU7TFTbOWawj44U++6dzcZ2+/DIEoi+7hII9f3yL90wKrePAyCr/BfsqvSxxDyX3yXGv2uokBZ11Qq2d9u2PePTy6P+dmX0jmStiOeHfV/lG2fCH3dM0N1oVhN1qlkkLZ+eMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DJIRWssy; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version:Content-Type; b=GzIny1DpoMZ568ntragsrDw+K/AtJD+uwmHwdDIn0/zPjkBLPG3k0CHuuOfGfmrZvcW2+DqaJDROlnsdpB+7KLt6T5k7uJPUVawdj+OU+/clcAkL/zsX36RfA54JKV4ZgfgBinr6o4urAhdxzLFFsqT8+w/PlHJthas9Ep4ypGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IYYHbcCF; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DJIRWssy"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso969550966b.1
-        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:34:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IYYHbcCF"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a0cee600aso830277466b.1
+        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729683250; x=1730288050; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729683251; x=1730288051; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lRYAOn92MElnY+r7ZLHmtJJWBk1GGo3GQl/0Duq+UXc=;
-        b=DJIRWssy3zTQp1JqsLrgNfkgD4mRkElqY/XLkyJa9qBJaR/ka4OEkwVBgUecB39vS6
-         On4K7DiMJgOKXZp45mloJS1EIaxDmQRJnGtYiIcJaYI7IdvSahVOHKbyGEvnyJjGiKRE
-         iygkC4t5pJhqyK7ce466CH4b47NBqqEk6TdyCBEBCdrQ1JiI1Yj8b+U+B2a1I3QIQrxC
-         qrC/KPGtNmhwH3h852GFI/oX/2HI0uX/yEqJdUb1buhLppbrJm03emL4UFM5ypAjfbRq
-         I9VvIUU+zKtY36nIPmSuDyp9FmOeZ7QwIRVglKdf8ILRB5WWxrAi7qXrzhmifkoeeFdr
-         TCKA==
+        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
+        b=IYYHbcCFwhuW49RZAF89pNnyGucFgecMVsXm0JeeMGTg7VRgPArjV98CErJg7DGZT2
+         6weDmPOwoGj5s1L0pu6b4P0m+EK9lFfbW8/ulSCSqm50ri2VmivDsRYJpsh8DOfOKR1o
+         jeYjT4GQ+aThnHE3V71DbIYq5M9rIN1zX5gcWUdLF72XwhbP4tYoZ7ncnZOYIgExtr6G
+         WglfC5wtPgTdrEphltlPoTRhi3ZojUnIytdKbaYAn7+EGlitr+AkubcGaNlh6B4UwelO
+         EUoZyyc0XLPGyEFR8sBYtjSi7n4WigXV42nmN/0HrakgI+ZLJHXccwbH2dpUS1EQTrAd
+         L9nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729683250; x=1730288050;
+        d=1e100.net; s=20230601; t=1729683251; x=1730288051;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lRYAOn92MElnY+r7ZLHmtJJWBk1GGo3GQl/0Duq+UXc=;
-        b=J/gtZCrVB21U/uAoJeMMETGCV2MQPuAwJO4cOkIkIVLKdrXNoogwdFw1nz4QbR7U14
-         dp+p55Wq9adtFUdaDid/GUh9Myl9GluB4kL+Oi3W+UmzsVgWO2MtwtMqBJ7NJdiZ5EQe
-         ojeZpTum2OpOq7nTkMKxoS2uE6eg/l+tIMPT0Tzn8Sa4ZEYQJgw0TMCHgbbGmV4KXTCy
-         gL21WpVHqFeEjIPXXmFUFSkc4jbQ7SvHyutVjgshvObI9NIpC5pCd30au7ImhSe/sA8W
-         LxK1jokcKGTcuw18CbyfzUvwOIO+Jo6w60p5rot8G6/oSLQcTx+AOgJMpo9FEC9P3sra
-         ltNg==
-X-Forwarded-Encrypted: i=1; AJvYcCX0vseU7kQqa8ZyOpUdj8HnPl1LxXfOJC4FZtjkWw81LJY/jovkLq3Oy5zM3hf3DQn9vVQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6WIqwKXi9KFKIx9IrPp6TrNYZRAn2L808nh8PWubS1s5XEgVB
-	SoNho3lPM491sGjsiIGqQhkCGo1I6MMbV0u6POZboIfcaFBCFJjrG3A3Kua5BBg=
-X-Google-Smtp-Source: AGHT+IG9ed8D/XA3RQ+vEybFyxLY6xveuq9hk50ZZpmXX0BS0cBlAFS0roggteE+iw+87DvUNNlLRQ==
-X-Received: by 2002:a17:907:7291:b0:a9a:9ab:6233 with SMTP id a640c23a62f3a-a9abf8a7feemr201487366b.34.1729683250497;
+        bh=/9/+YXB0yFn3lOXE+wDfnOMUk7oakkE6QbrJ6dxZQ+4=;
+        b=ds38LBnNQ7nqZ3kztpMvM1ThTcgLOvx+aTGxi/XfUW33BDHC5b6jxV4lKZp1r6y3wU
+         rZ3dmnBoSGa/QtfMU8OX2QaiZSmA5gn+NadtPjRJOpK3v25Tw8aurhaE78DrlmC2lbUj
+         YNhm8+Dm43yUA2dCTv15MLt5xXq45eJ9pUIewfeV6G/hFsGaxuy9ovzZ6ujOTh62cQQR
+         KuocfWVIdQwR+0mXsfNMMSFXclJQTcvA8FqBXb6M09O+zbj/n64JJZKIV+o2TGBLBQnw
+         jvES6mw/M3LlGhIZC4VMjxiPHPoH2DlBDCHLpWR/wFltVr/pNBd56aKpRe3Buq5hzU1S
+         Cvng==
+X-Forwarded-Encrypted: i=1; AJvYcCWJHmXYGPgr6HdPKzhfHcXLTBH+DQbV1n25IUH3ZwMdIyhUE3I1P1d1j4oXNDprKHV2rrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwboqJKsVsWYobtXvix45kkC9h7RybJsyUlHMgDzPJN5gVO9w/1
+	06yAX1tDqMiZXeq+Y0UF7eQLOmIRreu0JLJbNMqpLDJN/1Mfvpy4bCZFbKhsQhY=
+X-Google-Smtp-Source: AGHT+IHwbt07id+3Aor1n1Uw1SIwY71B+kw6O/tu5t2PwERx5fCQ43YmiWLOmkaJNzRIJ+hnNpC7YQ==
+X-Received: by 2002:a17:907:9496:b0:a9a:1bb4:800c with SMTP id a640c23a62f3a-a9abf85caf5mr187274866b.4.1729683250848;
         Wed, 23 Oct 2024 04:34:10 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d62e4sm461595266b.7.2024.10.23.04.34.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9acad2eeabsm12746666b.20.2024.10.23.04.34.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 04:34:07 -0700 (PDT)
+        Wed, 23 Oct 2024 04:34:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 283C55F8B5;
+	by draig.lan (Postfix) with ESMTP id 570455F8D7;
 	Wed, 23 Oct 2024 12:34:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Beraldo Leal <bleal@redhat.com>,
 	Thomas Huth <thuth@redhat.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 02/18] tests/docker: add NOFETCH env variable for testing
-Date: Wed, 23 Oct 2024 12:33:50 +0100
-Message-Id: <20241023113406.1284676-3-alex.bennee@linaro.org>
+Subject: [PATCH v3 04/18] meson: hide tsan related warnings
+Date: Wed, 23 Oct 2024 12:33:52 +0100
+Message-Id: <20241023113406.1284676-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
@@ -99,44 +99,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Testing non-auto built docker containers (i.e. custom built compilers)
-is a bit fiddly as you couldn't continue a build with a previously
-locally built container. While you can play games with REGISTRY its
-simpler to allow a NOFETCH that will go through the cached build
-process when you run the tests.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Message-Id: <20241022105614.839199-3-alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+When building with gcc-12 -fsanitize=thread, gcc reports some
+constructions not supported with tsan.
+Found on debian stable.
+
+qemu/include/qemu/atomic.h:36:52: error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’ [-Werror=tsan]
+   36 | #define smp_mb()                     ({ barrier(); __atomic_thread_fence(__ATOMIC_SEQ_CST); })
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240910174013.1433331-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/docker/Makefile.include | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ meson.build | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 681feae744..fead7d3abe 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -92,10 +92,10 @@ endif
- docker-image-alpine: NOUSER=1
+diff --git a/meson.build b/meson.build
+index d26690ce20..bdd67a2d6d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -538,7 +538,15 @@ if get_option('tsan')
+                          prefix: '#include <sanitizer/tsan_interface.h>')
+     error('Cannot enable TSAN due to missing fiber annotation interface')
+   endif
+-  qemu_cflags = ['-fsanitize=thread'] + qemu_cflags
++  tsan_warn_suppress = []
++  # gcc (>=11) will report constructions not supported by tsan:
++  # "error: ‘atomic_thread_fence’ is not supported with ‘-fsanitize=thread’"
++  # https://gcc.gnu.org/gcc-11/changes.html
++  # However, clang does not support this warning and this triggers an error.
++  if cc.has_argument('-Wno-tsan')
++    tsan_warn_suppress = ['-Wno-tsan']
++  endif
++  qemu_cflags = ['-fsanitize=thread'] + tsan_warn_suppress + qemu_cflags
+   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
+ endif
  
- debian-toolchain-run = \
--	$(if $(NOCACHE), 						\
-+	$(if $(NOCACHE)$(NOFETCH),					\
- 		$(call quiet-command,					\
- 			$(DOCKER_SCRIPT) build -t qemu/$1 -f $< 	\
--			$(if $V,,--quiet) --no-cache 			\
-+			$(if $V,,--quiet) $(if $(NOCACHE),--no-cache)	\
- 			--registry $(DOCKER_REGISTRY) --extra-files	\
- 			$(DOCKER_FILES_DIR)/$1.d/build-toolchain.sh,	\
- 			"BUILD", $1),				        \
-@@ -177,6 +177,7 @@ docker:
- 	@echo '    NETWORK=$$BACKEND     Enable virtual network interface with $$BACKEND.'
- 	@echo '    NOUSER=1             Define to disable adding current user to containers passwd.'
- 	@echo '    NOCACHE=1            Ignore cache when build images.'
-+	@echo '    NOFETCH=1            Do not fetch from the registry.'
- 	@echo '    EXECUTABLE=<path>    Include executable in image.'
- 	@echo '    EXTRA_FILES="<path> [... <path>]"'
- 	@echo '                         Include extra files in image.'
 -- 
 2.39.5
 
