@@ -1,164 +1,91 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F9E1AA7B8
-	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 14:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6E91ADFE4;
+	Wed, 23 Oct 2024 14:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694444; cv=none; b=YdfrNX2Jrv7VPZ8+o6JiMbiDFnefHUR4VEOBvVsL7tHr/udstoVfXgPB7tPDvrXu8JBCJMsyVqEk0cgRZ/c6cLPOqL0o9n/oYgnEUlLf9XqvlfCX4OUBfNfqvk62x0p3Fxdoq65DP/WsnJCUH1r2SyjHaDcI/uG6giDxikWWzcY=
+	t=1729695232; cv=none; b=dCVs4IYPtPPvN+8T5tLnuZoq3HTguGmiFFq4ZMRXASXC8LsBR9U8w8dxc+Ojq6MO3TKODxBDjE0p4zKsH/FJs1fXx+H7ZwW7kGbO5889DHyr72dkcoPYiEqFjFZ2v/cc85ldDFo2r1b9YmKlZ7fYvkVyvZ+6EDkmUIWoMZQng/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694444; c=relaxed/simple;
-	bh=rXSw6rl/FwxpR6S5sCi2ByVVB/wREw8k7WfMCp80FK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DMgysJq6S7QfURWYY0P0IVYsFobcPUtl19ytbwHN7oSooxnoHEw5rDQDd8npTYp30o669HxVLxHJnvuv7RYE2X2rTw1+yxRd+1rl0s+TaCzYRVdz1c5LO8ggRsYFIMKTZQU1ORaDF6a8q+ALGxplQYUN2o5MnUhdydkP+hAaC0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LwTdGWse; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729695232; c=relaxed/simple;
+	bh=iNfYJ4JXlpAYVqAHGPpB7Ak03akbgaV2OHGu0ciE5wM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FiqTySwD0Ktd+oLBUorvA3JUa4qZZkmecHpBYpmrmzGP55imjNQq9wc7Lr0zPFvQb27LneNT4ZxVGf4xV0Bpqgo5iulyHP09X4uY3k1CrVHCQwlDKRXqReO3W8DGt3AZxLj54XqKCixv2rVCTmFHOZ0u5/qbFPB8dfgVjFOus8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mOa9l1fL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LwTdGWse"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso998483666b.1
-        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 07:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729694441; x=1730299241; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nQ4elgHTyflOH9Bv96H4ahOZ9KYE4KjTj/LIpTd+d0s=;
-        b=LwTdGWseEPUy2q/kp06IPq7Qs5jWiN7xkY+6r9sIHakcgPNvBngyapuAp2V9UZhuBx
-         LC1F7YgumEzLV+soqsDN4+jBdnUouReY/6w0DFylvjupsBfNz9yq73vCqvum/NzjuCG4
-         GxfvJtraS5IGNvN98aUWtbDR/LAcEoPa47cBm2w+7pm/pH49KGLhMLTnP3akO4qyTMlJ
-         Fwsb6zn8Am22Zz80Kj7GTDnW2RHdJmhoqO42MKsHFXgso9spGslHYeQyR147StXMfz65
-         OKKEl53wHPFgYGhuKqDgn7OWbPkYQT4MdQ1V08UUaL0UdHXF8G+e4D4oXLQMv0Z7WNAo
-         rg0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729694441; x=1730299241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nQ4elgHTyflOH9Bv96H4ahOZ9KYE4KjTj/LIpTd+d0s=;
-        b=MMhMbK8mvTK9A0TqAX4FF0xLVidVau0+WnIzxsfpJabJHJc9UHLh8NmwxxBmHuBE3Z
-         u+tPWETkXfnCEtXaij6DdGG1p9fGVptZ/A0Ki/fvAXHrT65ahBHgsR/RKFInzCnOys3u
-         d45IrsY3/WMV+0kEzZKYlaCvmOh9dXLIo/4N19DHS8dtgcG0H2usbfSgb7knn+TDWmGN
-         EM1NupJDLSq0OBrkSZe6+CjiRc2jF2I//eGUEqffk6J2IC3MRQHHnrt6vd/ibI1YUNrO
-         VyaxMd8wECTB0rdRF6xqAxDSy4u1yrvg8v+mZATkdRJyLl9HHt0Ox1De3KjsDUxEo73y
-         cH6g==
-X-Gm-Message-State: AOJu0YyjwrAGCe8zwNy0bIQ0c0AVbTUooySnWxRJNDKgHzvYyY0yR4Vj
-	mlAVz067DZNxl0Udx6WNpIDD7ZLOBPN9qvT8rpuOl51XYGLZvZxB0d+qXLLVR/f9bYZbeLQ/JOM
-	GdK+xUQMXLeVJm5vd8bMsnabik2N808Yj
-X-Google-Smtp-Source: AGHT+IFoTYG8aNvvOAAPnxmacwy/akRQP7JIK+uMhuZfzdW+re4pMJ1TW9q7pv02Zp0yuLny4+v90aYo6ozMoQMRfls=
-X-Received: by 2002:a17:907:1c17:b0:a99:5d4c:7177 with SMTP id
- a640c23a62f3a-a9abf84b9a1mr242863266b.6.1729694441027; Wed, 23 Oct 2024
- 07:40:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mOa9l1fL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27FAC4CEE6;
+	Wed, 23 Oct 2024 14:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729695231;
+	bh=iNfYJ4JXlpAYVqAHGPpB7Ak03akbgaV2OHGu0ciE5wM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mOa9l1fLqxHoh/XYX8XHW0anBL3x6wpjc4bpwozLdbM2uPVZtcuFmFLvh4I2duAIF
+	 kv2RAx1vnmSjRv14ItIOx/RYeYxHLfDV0Y+R6niwTzgbSyv7UOvMmqzI7xxIGnJ78B
+	 jQCXnee4CQTSuXEXhYmpLkLhrDGJ7ngqQ/88eaGK0KsvAKgif1CevJ+PjhafKHYNuL
+	 avRFIQAMVE+gsyfqxuvvcm+SgCTXnyrzPyRiJzhZ/G+5GZyVJab0zYeLC6GDyuG8Zo
+	 tBHZC5LJdqsMefKpJ+6fJNydVOIx2/sP6I8FyOqRAiR86Dx+1rOHATT7oPRhak+/JE
+	 ZFBIJPJOQTeKw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t3ck9-0068vz-N6;
+	Wed, 23 Oct 2024 15:53:49 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH v5 01/37] arm64: Drop SKL0/SKL1 from TCR2_EL2
+Date: Wed, 23 Oct 2024 15:53:09 +0100
+Message-Id: <20241023145345.1613824-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241023145345.1613824-1-maz@kernel.org>
+References: <20241023145345.1613824-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240921100824.151761-1-jamestiotio@gmail.com> <20241023-13ecdc4f251cd2d070c9ee5e@orel>
-In-Reply-To: <20241023-13ecdc4f251cd2d070c9ee5e@orel>
-From: James R T <jamestiotio@gmail.com>
-Date: Wed, 23 Oct 2024 22:40:03 +0800
-Message-ID: <CAA_Li+u50w6bpjD=ppJaJY8i_i57drpDui-XQ_bMGAmZKuRZUQ@mail.gmail.com>
-Subject: Re: [kvm-unit-tests PATCH v5 0/5] riscv: sbi: Add support to test HSM extension
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, atishp@rivosinc.com, 
-	cade.richard@berkeley.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, alexandru.elisei@arm.com, broonie@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Oct 23, 2024 at 10:23=E2=80=AFPM Andrew Jones <andrew.jones@linux.d=
-ev> wrote:
->
-> On Sat, Sep 21, 2024 at 06:08:18PM +0800, James Raphael Tiovalen wrote:
-> > This patch series adds support for testing all 4 functions of the HSM
-> > extension as defined in the RISC-V SBI specification. The first 4
-> > patches add some helper routines to prepare for the HSM test, while
-> > the last patch adds the actual test for the HSM extension.
->
-> Hi James,
->
-> Patch1 is now merged and I've applied patch2 to riscv/sbi[1]. I've also
-> applied [2] and [3] to riscv/sbi so patches 3 and 4 of this series
-> should no longer be necessary. Can you please rebase patch5 on
-> riscv/sbi and repost?
->
+Despite what the documentation says, TCR2_EL2.{SKL0,SKL1} do not exist,
+and the corresponding information is in the respective TTBRx_EL2. This
+is a leftover from a development version of the architecture.
 
-Hi Andrew,
+This change makes TCR2_EL2 similar to TCR2_EL1 in that respect.
 
-Sure, I will rebase patch 5 on the riscv/sbi branch and repost it.
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/tools/sysreg | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Best regards,
-James Raphael Tiovalen
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 8d637ac4b7c6b..ee3adec6a7c82 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -2819,8 +2819,7 @@ Field	13	AMEC1
+ Field	12	AMEC0
+ Field	11	HAFT
+ Field	10	PTTWI
+-Field	9:8	SKL1
+-Field	7:6	SKL0
++Res0	9:6
+ Field	5	D128
+ Field	4	AIE
+ Field	3	POE
+-- 
+2.39.2
 
-> [1] https://gitlab.com/jones-drew/kvm-unit-tests/-/commits/riscv/sbi
-> [2] https://lore.kernel.org/all/20241023131718.117452-4-andrew.jones@linu=
-x.dev/
-> [3] https://lore.kernel.org/all/20241023132130.118073-6-andrew.jones@linu=
-x.dev/
->
-> Thanks,
-> drew
->
-> >
-> > v5:
-> > - Addressed all of Andrew's comments.
-> > - Added 2 new patches to clear on_cpu_info[cpu].func and to set the
-> >   cpu_started mask, which are used to perform cleanup after running the
-> >   HSM tests.
-> > - Added some new tests to validate suspension on RV64 with the high
-> >   bits set for suspend_type.
-> > - Picked up the hartid_to_cpu rewrite patch from Andrew's branch.
-> > - Moved the variables declared in riscv/sbi.c in patch 2 to group it
-> >   together with the other HSM test variables declared in patch 5.
-> >
-> > v4:
-> > - Addressed all of Andrew's comments.
-> > - Included the 2 patches from Andrew's branch that refactored some
-> >   functions.
-> > - Added timers to all of the waiting activities in the HSM tests.
-> >
-> > v3:
-> > - Addressed all of Andrew's comments.
-> > - Split the report_prefix_pop patch into its own series.
-> > - Added a new environment variable to specify the maximum number of
-> >   CPUs supported by the SBI implementation.
-> >
-> > v2:
-> > - Addressed all of Andrew's comments.
-> > - Added a new patch to add helper routines to clear multiple prefixes.
-> > - Reworked the approach to test the HSM extension by using cpumask and
-> >   on-cpus.
-> >
-> > Andrew Jones (1):
-> >   riscv: Rewrite hartid_to_cpu in assembly
-> >
-> > James Raphael Tiovalen (4):
-> >   riscv: sbi: Provide entry point for HSM tests
-> >   lib/on-cpus: Add helper method to clear the function from on_cpu_info
-> >   riscv: Add helper method to set cpu started mask
-> >   riscv: sbi: Add tests for HSM extension
-> >
-> >  riscv/Makefile          |   3 +-
-> >  lib/riscv/asm/smp.h     |   2 +
-> >  lib/on-cpus.h           |   1 +
-> >  lib/on-cpus.c           |  11 +
-> >  lib/riscv/asm-offsets.c |   5 +
-> >  lib/riscv/setup.c       |  10 -
-> >  lib/riscv/smp.c         |   8 +
-> >  riscv/sbi-tests.h       |  10 +
-> >  riscv/cstart.S          |  24 ++
-> >  riscv/sbi-asm.S         |  71 +++++
-> >  riscv/sbi.c             | 651 ++++++++++++++++++++++++++++++++++++++++
-> >  11 files changed, 785 insertions(+), 11 deletions(-)
-> >  create mode 100644 riscv/sbi-tests.h
-> >  create mode 100644 riscv/sbi-asm.S
-> >
-> > --
-> > 2.43.0
-> >
-> >
-> > --
-> > kvm-riscv mailing list
-> > kvm-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
