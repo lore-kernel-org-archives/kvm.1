@@ -1,59 +1,59 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E870F134BD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542001A265D
 	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729683847; cv=none; b=ZTFYgnSKfKSrww6kk2jGNlzC2sqWUylqK4/H+0wQU+CUsO/w5p4xwkNi0aHRqMvdEBIu6ymoWUlPxcSS53vdilHP0P9kgrvLvKCXvJnuEM/lLH3/1UgLlhHTueWztl1exwKFectjrZofBT0vAAxVbh13cH1H6BxgNhGURYuYvzs=
+	t=1729683848; cv=none; b=mPPhQd9v/KU8NX4lel/1oUcYshlwO+jBKRLQ7Ih2l5BPUczcPw9Yw522HOzM82zPFOUZIbNr6y9PJG/0FrbAd81OQp5kwMRRu0AdSS4H/u+A5WiunxS07in+5TvBwWQi3cMIxMSKLaX6Q/CO0AZyI8fjyi4AyZ/BRv+LZTxgN5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729683847; c=relaxed/simple;
-	bh=BXarhcb40GWzuIYmnr+ci9E7FXXyvsSMVj+QBu1fn8E=;
+	s=arc-20240116; t=1729683848; c=relaxed/simple;
+	bh=5yTCZimV0gEI7gmCOKCJLILXfJ8kpMTOraKSBNxiVlk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HT7FDhC6QAkDhSke/x3O95L9goyh7x3Pf9p0JtqlRkaz0qIfdOJSSD0l/iEaC/eWBKWD7qKrXiUbctMcbYlNrWs9s37iXJdLWD1YjKxpEA/F2N+NzVSrYJvpZ6EsWHxJnWApq7GZlA55qH2tRaAt9e1XHYhhLWyyD4g4NYeV1rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ITxa9Mtg; arc=none smtp.client-ip=209.85.208.44
+	 MIME-Version:Content-Type; b=NPO8f/hdK1L4nZ1Guq2xFnuTKCbGNp6yOak4CEK7h29faODo3dZZkVVa41pVDF5eTBLkyhROX7Puc9HQrT/ZEotnu+LXvvWZM/T/3F6KEj2hsqdtZUBnswryvUvs11LIJf3XkNzZo7geFkfEPdLR+oBFND9JLSUSk4LddDHRPZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EXErP1tg; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ITxa9Mtg"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5cb6704ff6bso4671433a12.3
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EXErP1tg"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a9aa8895facso338674966b.2
         for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:44:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1729683844; x=1730288644; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7/D/QQxPvGmndZaJy0kEIveJUD+81sSd1CLz3T6BVVI=;
-        b=ITxa9Mtg3RfEwxRzVJwAOfA1Va9griMjqMCo5NoMMUr7FO7agiV8rzEKNd48H/s3yx
-         OgYOLl57DT9M6HFQ7KE7xyl6EDmtqssyfqG84MZ74FLjHwtPiHPoRJWYVfbCZ2RQWa2P
-         ihxZxGO3fxVHm9cUY6l5zwXAeUwh4M2fBObiSx6m5kSV3mvymjdfTR1wUVX30WRl9fZO
-         8lUgzjKgdxoE4+igN9ktmBfBBMFbiOa0P7n7+blYnsHD7AO3895oF+ZyYRDSeCs4ncpU
-         M8DPzizVq6i/Uk+6c9/HhZuTb5bbe+6I5Cno86P0D9JFDGu9y6flv3OvaJekQw6nmc1s
-         O92A==
+        bh=0yP4SNsaEappmzZc/gnms0PRD/uAmEAQCRgu6RQMiI8=;
+        b=EXErP1tgIT7ow2MLebopcMO9QsJVfHVMYuvLMpiC0tzDx+HPF8Os2sG+iPVcqs3Qlt
+         J7/Zr7q+1g/Ip21bAJ3VrT4hg5w4ooFrm/22B6qvc2Un11pxLmDzh+yzN2WjnrPh8Ksl
+         001EQLE4La4xCs1wdnSS+T0moGBDzM/CQb6/I5C0J1nj+vISGbP8cVW9dlQZ5MwLm6LG
+         gmEgPV2axgLHGGpD0xF5Y4W9evIHyb9iiizrd6DamU5Z9uXhdyuEZMhZGtA9fAWj66RL
+         woQjnIkSlg+P27EuKqF9z8Hk5WhIYGSzI5q7sdIjTRnPXqgVYbWaVZrheqUowEv+Cygw
+         LoLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1729683844; x=1730288644;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7/D/QQxPvGmndZaJy0kEIveJUD+81sSd1CLz3T6BVVI=;
-        b=hPafjW5sba8T/SIjlDRNPX4GDgEbfMXBUPsPi942ALvf5xqWScrqptB3XrvHm7S8oy
-         nU4WBewGWXClc+4hBexke7BmA5Cy0dU3GkgAi2yfxb10mPj8bXHDbJB6waCXc33hkCug
-         FT67gHyLs/vFallWHWqHuQwpcuYHdcIZLePcCj4BxnBbRkuX8pfEsxfBqU4JbOfsXX8r
-         A96LC9fIwLWKqW9DDbdPR1zsToo7Drq0Z2lmXGmWR9FYJj4nm63kSGpjySG2uHHWw9aV
-         fhYt1hbmOn6Tf4hiXg/g2Sc7U5aCpUyrKnNcKldkLWmqRX2NvtZTKyCZecriP4wSS9lW
-         B18A==
-X-Forwarded-Encrypted: i=1; AJvYcCUhByXNht7pAYS8bXF87z0O6G82JDuhcCJft0SqiVwYCryusopyEif/MDXXzJXjsVDVN2w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFpz2jte0YTgc3FGlyLKMLSLQtORF/HjFb+ZeP9JzpWDz5cnex
-	gBHfopyyk9LPajU+NJplqu5czcLmUM0yEZkaR7y0YqDoSDVMxbO14Eb1FRw2Wew=
-X-Google-Smtp-Source: AGHT+IH3zSM2BlEpP3N6KkqeMBnwOhxkf5fGgndxyFj6xPVN+t2t4+UZ5S+M/nxkFu4HGabpb7TqCA==
-X-Received: by 2002:a17:907:9405:b0:a99:ee42:1f38 with SMTP id a640c23a62f3a-a9abf8aefbdmr202024366b.31.1729683844062;
+        bh=0yP4SNsaEappmzZc/gnms0PRD/uAmEAQCRgu6RQMiI8=;
+        b=PLWjDFIUsob6U26lILff2bfgxuYi3ineoxxrB9MBlOOAn01GtqgBMQa3uTgNskRWFa
+         6W7YpsImfzdtzMZ8twrk+fkt8lNqco557srqt1g+5MW6Bq+1ZhoGYIpVXMyWDgxnP5o0
+         M9KU5g728x/VfbkImPud6FGZ6ZYR4rjmLsE22u43nP4NIOhzCp9drT/xlVWpUrQZYSs+
+         OD/dFEUIfYvkdpqA0quI5wLMVyNpW2/DsAj8pu3/ZQlRW0b9Fqcp5yeGcnUPeVQ61ebs
+         nyLuOzuXx49J1QL1PP7FQYA8ywcOAbGX97Mf68oCu5P88dtcyIrHTv2A80wly71mW383
+         R/WA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9p4ruCe4TWvjkvHI0yiWW3ADuKYb57VOX9SaAJygaYkhvP8FrZ+YjAxSoj1ToFiErqdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy615SfbK/YWVSKp27yK5Tk7EYrR/bUhvFZnm3dPNu+6m4qrf6Q
+	6qFHzWvBP0sd+VQcdCB14iWdTXKraoJP8nMKOrwb4mcNFWXMaz5qKw4twAkqdYI=
+X-Google-Smtp-Source: AGHT+IHMnbwSpFbIxFr8E05r4uLkxn6q0bmtEG4CkFZ2WZbJ45lEqJq6MM15OG/HAzJxk8Ota85Nkw==
+X-Received: by 2002:a17:907:a4c:b0:a9a:e9c:1d8d with SMTP id a640c23a62f3a-a9abf8664aamr189274166b.17.1729683844365;
         Wed, 23 Oct 2024 04:44:04 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912edc33sm463333266b.58.2024.10.23.04.44.03
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91571ed3sm463602366b.164.2024.10.23.04.44.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 23 Oct 2024 04:44:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 7FB525FC11;
+	by draig.lan (Postfix) with ESMTP id B34075FC34;
 	Wed, 23 Oct 2024 12:34:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,10 +83,11 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	kvm@vger.kernel.org,
 	Beraldo Leal <bleal@redhat.com>,
 	Thomas Huth <thuth@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 16/18] MAINTAINERS: mention my plugins/next tree
-Date: Wed, 23 Oct 2024 12:34:04 +0100
-Message-Id: <20241023113406.1284676-17-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Robbin Ehn <rehn@rivosinc.com>
+Subject: [PATCH v3 18/18] plugins: fix qemu_plugin_reset
+Date: Wed, 23 Oct 2024 12:34:06 +0100
+Message-Id: <20241023113406.1284676-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
@@ -99,27 +100,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Make it easier to find where plugin patches are being staged.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Message-Id: <20241022105614.839199-17-alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+34e5e1 refactored the plugin context initialization. After this change,
+tcg_ctx->plugin_insn is not reset inconditionnally anymore, but only if
+one plugin at least is active.
+
+When uninstalling the last plugin active, we stopped reinitializing
+tcg_ctx->plugin_insn, which leads to memory callbacks being emitted.
+This results in an error as they don't appear in a plugin op sequence as
+expected.
+
+The correct fix is to make sure we reset plugin translation variables
+after current block translation ends. This way, we can catch any
+potential misuse of those after a given block, in more than fixing the
+current bug.
+
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2570
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Tested-by: Robbin Ehn <rehn@rivosinc.com>
+Message-Id: <20241015003819.984601-1-pierrick.bouvier@linaro.org>
+[AJB: trim patch version details from commit msg]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ accel/tcg/plugin-gen.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7eea7b7954..5b6c722a20 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3708,6 +3708,7 @@ F: include/tcg/
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 2ee4c22bef..0f47bfbb48 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -467,4 +467,8 @@ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
  
- TCG Plugins
- M: Alex Bennée <alex.bennee@linaro.org>
-+T: git https://gitlab.com/stsquad/qemu plugins/next
- R: Alexandre Iooss <erdnaxe@crans.org>
- R: Mahmoud Mandour <ma.mandourr@gmail.com>
- R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+     /* inject the instrumentation at the appropriate places */
+     plugin_gen_inject(ptb);
++
++    /* reset plugin translation state (plugin_tb is reused between blocks) */
++    tcg_ctx->plugin_db = NULL;
++    tcg_ctx->plugin_insn = NULL;
+ }
 -- 
 2.39.5
 
