@@ -1,60 +1,60 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76191B372C
-	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79591B4F2E
+	for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 11:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729683259; cv=none; b=ahKNKd6LW3Jep9IX/7ioW3fBErcdyuftD1bwev83z3bWCSchJBrRnQGDAtCPHJM2f8APSYcAIWD15+cMsDY62wyYOTKjy+u3pk7e1oo432We/ijKWYnNl/ZRQwgrKYdinTzDShPqJHlydR/1kVRRJ2ArPa0bn5IEUuNVFeOHuNs=
+	t=1729683261; cv=none; b=rZ1kwpux5nWONCSdNjzTDr6MMTmjUuNRzSPlXcMSrHZ5YBcZsIatQog3U3dit89P0uxQXK+s/G2pb7hpoG5WNrL/a7eUNwmUzjMW59Lq9guUZPL10mqTFkMfVJ8dR7HGw3X7HfmX6f8edTFUrFtw/79WA2m3cVI8DfKqCTAkMjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729683259; c=relaxed/simple;
-	bh=Q5mzuGLqF37xBsfrxu2F605v7jw6CLbKILyEGO55HYQ=;
+	s=arc-20240116; t=1729683261; c=relaxed/simple;
+	bh=XjeuRo7TzAGu1R/uBx/TgkWRcWrKW8ll6PR9wdm/+Pc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KZ5Mvd1UTzdetRzBkqAUjM9NTvTmRh127o1+XRXoTIxmywU1R0kp5zfuQmyTFkw3UvTTaGBIn1Wde5KU3HA7o1KFqM4epa3nG6tAlEfVYUhzByetRLY6G5aufJUdKMZ2ixfNOyXoEEhRDpZ+SnC+ngDHOYjdTtb6STAuH1ROXq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d14wI9yK; arc=none smtp.client-ip=209.85.218.42
+	 MIME-Version:Content-Type; b=E1vK67l0AFnlgiTCOVdEuHWtNhYIc0zyGdLzzZ03MhCQ30VMPs5Tk8/kVnFBFshB31zDr7r+9KRGO4RjvNlSEXVS0N96LEGY2TCmRCXboPDIp1aczVpgM+yTkvVb5peRqndLPIf1Heq+VSMZx+dyKCSci3ICzPI1bCOsElAXp48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i97Pd1zU; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d14wI9yK"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a1b71d7ffso1044094466b.1
-        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:34:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i97Pd1zU"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a86e9db75b9so881410766b.1
+        for <kvm@vger.kernel.org>; Wed, 23 Oct 2024 04:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729683256; x=1730288056; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1729683258; x=1730288058; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F14s2fuGgke3fc+cUXWbJXkLt5Skh4xTYd/t6sQdYbY=;
-        b=d14wI9yKloexMaEaV6CPoWpN0pSxuPdkxMNRtXtveuQXSxmBini9D+90jY/AK93Riw
-         GNNX5PKwsaRvxmk0BvPZaNmWPVR6pPXkRfVDpkao4dQkhoHECBBq+VOK+FPy2Dsx6HRS
-         3NaK7pbTHGgPbJFuTMI2ZH6t2njM/qyCWh2ujgw6m3NJhtXtck7Fa0WH8+JkDoz6gTaD
-         9Wsn+czPNW4JdmQcAx58ARhbY/CCCBta7SvbBc9jXY+lHZUhU4rlKyhW2IbZTvMMZli3
-         w4ESvJmoSqjerGy/0w3i+Z5bfjxB+Fk9P7J5GEyRJSeWVMtmsZJb9vWWT7aKjv8rFNcj
-         nHug==
+        bh=VE6CRJWS0PrV56e8l4nrxhdjzzIjf9914lqwk9uoLck=;
+        b=i97Pd1zUJYOCIYmzC+xt8f7/o1T5/rN522ZW3hBuMwUSopz2zbQW53IWix34FvcixL
+         5+yF57CM7CoK6BOS01n9O1nkG9QHeWfDxdyXv7yQ2yO9Eedz5gCddwqQzQPkTENlZ5p4
+         xjAfhMJ1DHxiUovm35myGt62HVbxBtD3pmiScx0pBtpo9MO27cZzlEDmxoMzh8UZ5BPl
+         Mq2+0GeVorQU2XT9OI/Kf+36tWmKVWAQXwApcyzvACa4jX/1Mz3e+ww498r2w7SdjtBI
+         I+SCYHNeze3bBTyA9GaajNif5848W5bxB7yNOSxy3gYfIUJI22ndzTNL2a+08XsgGNOq
+         +7nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729683256; x=1730288056;
+        d=1e100.net; s=20230601; t=1729683258; x=1730288058;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F14s2fuGgke3fc+cUXWbJXkLt5Skh4xTYd/t6sQdYbY=;
-        b=saUEmLhcul8/k8AFip8YdKALYPTNya+sJZ14DxYaWkyhFflktacLWklTv/1QV2xpvi
-         jI5y8khkXTN5/XhC3qpJEDp567Hd2SEhxyXoHOvUUFJQVewywv+oZx2BODv57Bls01I6
-         x706nEz3EpvIN8l5Sv08fEvZ+VkgneemAPQ+dLfwY4u1GeGKWV+GKB0wzPYKWKqCd6GK
-         +sTSJRIqJgWZ+rcC9hnVG1cCkYNv4zDLe/34dx8o5henNl9i2IpDeNGui6U+nDCv1Y9q
-         0vLn22amqPiBffl9XxRqJm2inuk0yCYCjUeQYROOdmIfTG+4MPzNR2tE98ni941g4ktO
-         8nkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXKnBrG10SRx6yeXALkU54MOcfIIb/qutyUYVCpF482fhx60Yf9kH/sCPOW1aLw4UddQ68=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUZQTuNBrX9IR8oFL2Oyfl63E9NywGiTEVOjXfWm3vdxTBPv1U
-	Q3gnXi/3zLx6j2Mwop5riJB4Zal995Hp6XoZKJf2dUAae3gvsV5g7L6T0MUhNPE=
-X-Google-Smtp-Source: AGHT+IGGBc55QM3qFCMBExtGsk6ICJf3Ug5DueFxLCCWUUU5RTVe6iZgYe//4a3K0VY6A0U2IduvZw==
-X-Received: by 2002:a17:907:97cb:b0:a99:fff3:2eb0 with SMTP id a640c23a62f3a-a9abf92cf40mr200716666b.40.1729683256020;
-        Wed, 23 Oct 2024 04:34:16 -0700 (PDT)
+        bh=VE6CRJWS0PrV56e8l4nrxhdjzzIjf9914lqwk9uoLck=;
+        b=B0pMrRH3h+1E8gwYhr7AUxWsCT8w/1o7Gd+qkEasFje2AIjXRF+dakoQxhkLQJL+Uz
+         jUCjCLvwdJmcn3JIeGPWezUclH0x/b4F2WP/PfwZJNx3WLuVeO7+fK5jTZusWvDb2MaN
+         hKwJ1KoW1rJaDgEli6YvGWaTvuf73KPNeGaeuaRumL8GR9MkJInI/rsTos4r9IU3nk9S
+         KIXy2defdkqq9pXP+6U102vr2vmkP7vd6wH9LziI7UBgo+wHvB4yF3FbNs3T03rIsvcG
+         xTXOqq4Zchzg/ult2eTpjN6yCoRuDRGKMLQcxR8cxME1S5/5PWcCFPMcmswgCsre9JpI
+         C7zw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/jMdOI7ZzwhMt+V/ry/87PduI3rjmskSpJwrbd0+NrsYklJsd64Nj6k0Seiut5JsSiDk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxfm/sjPgRgdDSFTKuBAfWULIXehDO/2un1aZWGdnMkz6AOFjc
+	jc+iokm7NPSOZOwxaGIHVca5C8t8TfVfalr3ngKtN2qNGNAMVkbbg9eGyEBs3Zg=
+X-Google-Smtp-Source: AGHT+IHrhhTz3PwOAFp8f6BmbbVAGO5Fci9mgs+aD3Tdtawg2G5g++Jm9xg3Lf7GfxT1VEbPz5On3w==
+X-Received: by 2002:a17:907:3e27:b0:a99:e82a:87ee with SMTP id a640c23a62f3a-a9abf9660a9mr167046366b.57.1729683257920;
+        Wed, 23 Oct 2024 04:34:17 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91559f15sm463603866b.133.2024.10.23.04.34.10
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91306fc0sm464586866b.91.2024.10.23.04.34.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 04:34:10 -0700 (PDT)
+        Wed, 23 Oct 2024 04:34:16 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 84B6C5F925;
-	Wed, 23 Oct 2024 12:34:07 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 1BD045FA0B;
+	Wed, 23 Oct 2024 12:34:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
@@ -84,9 +84,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Beraldo Leal <bleal@redhat.com>,
 	Thomas Huth <thuth@redhat.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 06/18] scripts/ci: remove architecture checks for build-environment updates
-Date: Wed, 23 Oct 2024 12:33:54 +0100
-Message-Id: <20241023113406.1284676-7-alex.bennee@linaro.org>
+Subject: [PATCH v3 12/18] config/targets: update aarch64_be-linux-user gdb XML list
+Date: Wed, 23 Oct 2024 12:34:00 +0100
+Message-Id: <20241023113406.1284676-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241023113406.1284676-1-alex.bennee@linaro.org>
 References: <20241023113406.1284676-1-alex.bennee@linaro.org>
@@ -99,37 +99,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-We were missing s390x here. There isn't much point testing for the
-architecture here as we will fail anyway if the appropriate package
-list is missing.
+Attempting to run the binary asserts when it can't find the XML entry.
+We can fix it so we don't although I suspect other stuff is broken.
 
-Message-Id: <20241022105614.839199-7-alex.bennee@linaro.org>
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2580
+Message-Id: <20241022105614.839199-13-alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/ci/setup/ubuntu/build-environment.yml | 2 --
- 1 file changed, 2 deletions(-)
+ configs/targets/aarch64_be-linux-user.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
-index edf1900b3e..56b51609e3 100644
---- a/scripts/ci/setup/ubuntu/build-environment.yml
-+++ b/scripts/ci/setup/ubuntu/build-environment.yml
-@@ -39,7 +39,6 @@
-       when:
-         - ansible_facts['distribution'] == 'Ubuntu'
-         - ansible_facts['distribution_version'] == '22.04'
--        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
- 
-     - name: Install packages for QEMU on Ubuntu 22.04
-       package:
-@@ -47,7 +46,6 @@
-       when:
-         - ansible_facts['distribution'] == 'Ubuntu'
-         - ansible_facts['distribution_version'] == '22.04'
--        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
- 
-     - name: Install armhf cross-compile packages to build QEMU on AArch64 Ubuntu 22.04
-       package:
+diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
+index 778d22b2a9..dcef597a80 100644
+--- a/configs/targets/aarch64_be-linux-user.mak
++++ b/configs/targets/aarch64_be-linux-user.mak
+@@ -1,7 +1,7 @@
+ TARGET_ARCH=aarch64
+ TARGET_BASE_ARCH=arm
+ TARGET_BIG_ENDIAN=y
+-TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
 -- 
 2.39.5
 
