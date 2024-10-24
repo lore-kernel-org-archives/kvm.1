@@ -1,87 +1,80 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1073B1B3933;
-	Thu, 24 Oct 2024 09:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1FE1C07C1;
+	Thu, 24 Oct 2024 09:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729760745; cv=none; b=b/B56qZgOlyMtzeP9w1ELzvl5jQfpUON4+mSIwMeQqknTbhvmUQApK0nYhsGKcU/SFpN69phvjPttdPadJrmfgyZQXqOCWYehhgtMvr+cYIeykj5Nwx+wkJd2sp3GoPmGwuzbF3+Ce089xDPNJawvV7ZRoQ59IpGfs9G63JIVEI=
+	t=1729762495; cv=none; b=pHgnEkQLrzmP0iZJEj1BoRViphl77c1Oo8o3zi6bDgXTI9sfsPUPsCstX9YFxUoC3yOl+FxWkrI/ptP/1HNjuVKdwc7N9IvsFoj1R71mPjVXeNRMXGRDqjBHFfxEU2hLok5gK4jSQkdlXiKhq7rvHf6NGZtfEBnxiQWHq7ZIpXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729760745; c=relaxed/simple;
-	bh=iLBl2uqkzw7TXsj+7GQ+KZq3Axo7bQMOS0R0jqOfu60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pw8DyCoV40wELXTX+xmNTBdoazBtoNfWFwUYrsU0aLM7pf3tE8Ept8wzV+EnQb577i3Sjslk0F+ejqBbyHgy1xNAk81Q9SgiTcpd9GfafYnNO8LqU9BXj+DnnUKX4D5lEqvVQCjIFmGKiJdNpUuMgPSN63LLbw+9MCjWVBJxLG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rx+c0tEI; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1729762495; c=relaxed/simple;
+	bh=+yesL1/Tjzt5TF8Vnp9EeBw/ptoHOo1EBeTHV+wYTQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LB4YSHaEt5rSmeFgN6HZHk+Gw1VR379CaQ/bHHBZYqd23cAopOv8logz2E760tnCr9xaTkXTrR/uA0fQDOwVbxcb0zeRwQlQRpk9IlauChdoP7Sl8Wdcbdn81tppPwKG0fgmvkmGeSGTFrVZD7hH00c9axH0TpGQO7/xLk9uSQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wM9sxCdb; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rx+c0tEI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=W+xcl40+d2Ufw9544YoSrmVFDCb6kVciErHqMFvT+8c=; b=Rx+c0tEIZxo7coLNsWBdyt0SWq
-	UKGh9Mf9mkwwzY/XdGBBjiIh2maXLa+oLD4E6yxVWQhkpUYHSvrX4BDjgqWcJ9OW+wXcJ4vWJJSqm
-	HBqy4/bBKWYI/EkO9fJ45cQ9kc4lT7UjhsmnXAP7wmXwJcf8HCk4W1xSka3nFy0SGal812vASUJh5
-	hplj0b0Wm+++l2Xzd947aSXrLbR72c7BOS4k+AAIt7nvcTYynSmZRDS7HNQZQ/vMYLMQo3WaMOXwQ
-	VcVGsJ1klkqJqXlVn2nycljCNgmPmobO2/Y+EC6bXbO0RaYR+wmV+TIOjZV/rtLC0qFqyjHnExA/5
-	f2NBrMtg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3tmp-0000000HOMu-2RXX;
-	Thu, 24 Oct 2024 09:05:43 +0000
-Date: Thu, 24 Oct 2024 02:05:43 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Srujana Challa <schalla@marvell.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	Nithin Kumar Dabilpuram <ndabilpuram@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [EXTERNAL] Re: [PATCH v2 0/2] vhost-vdpa: Add support for
- NO-IOMMU mode
-Message-ID: <ZxoN57kleWecXejY@infradead.org>
-References: <20240920140530.775307-1-schalla@marvell.com>
- <Zvu3HktM4imgHpUw@infradead.org>
- <DS0PR18MB5368BC2C0778D769C4CAC835A0442@DS0PR18MB5368.namprd18.prod.outlook.com>
- <Zw3mC3Ej7m0KyZVv@infradead.org>
- <20241016134127-mutt-send-email-mst@kernel.org>
- <ZxCrqPPbidzZb6w1@infradead.org>
- <20241019201059-mutt-send-email-mst@kernel.org>
- <ZxieizC7zeS7zyrd@infradead.org>
- <20241023041739-mutt-send-email-mst@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wM9sxCdb"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1729762490; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=wMMJARvMklmy7JTnx9koiikH8rF5s7OtNVXr+o/den4=;
+	b=wM9sxCdbJ1sWc7pqU89ZSgKshGkpDU2+qND7ekkjUckOJXZ7lT0c667IdrvhJ4bdN8Ajjs/rINJEWYtxUw1T7PnSHHnwDfTYB8Emj4OFp78OlfBXm7ze6kDbbmilOuZZHvfbwUXFZQPfRp1dbUa7wWHPGW01YXvsqnaaaOCHhRs=
+Received: from localhost.localdomain(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0WHoiyxC_1729762488 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 24 Oct 2024 17:34:49 +0800
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Alex Williamson <alex.williamson@redhat.com>
+Cc: linux-mm@kvack.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>,
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Xunlei Pang <xlpang@linux.alibaba.com>
+Subject: [PATCH v1: vfio: avoid unnecessary pin memory when dma map io address space 1/2]  mm: introduce vma flag VM_PGOFF_IS_PFN
+Date: Thu, 24 Oct 2024 17:34:43 +0800
+Message-ID: <da92b66f3ab0f51292d82ff9267ea1a15ec7e81c.1729760996.git.qinyuntan@linux.alibaba.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <cover.1729760996.git.qinyuntan@linux.alibaba.com>
+References: <cover.1729760996.git.qinyuntan@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241023041739-mutt-send-email-mst@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 23, 2024 at 04:19:02AM -0400, Michael S. Tsirkin wrote:
-> On Tue, Oct 22, 2024 at 11:58:19PM -0700, Christoph Hellwig wrote:
-> > On Sat, Oct 19, 2024 at 08:16:44PM -0400, Michael S. Tsirkin wrote:
-> > > Because people want to move from some vendor specific solution with vfio
-> > > to a standard vdpa compatible one with vdpa.
-> > 
-> > So now you have a want for new use cases and you turn that into a must
-> > for supporting completely insecure and dangerous crap.
-> 
-> Nope.
-> 
-> kernel is tainted -> unsupported
-> 
-> whoever supports tainted kernels is already in dangerous waters.
+Introduce a new vma flag 'VM_PGOFF_IS_PFN', which means
+vma->vm_pgoff == pfn. This allows us to directly obtain pfn
+through vma->vm_pgoff. No Functional Change.
 
-That's not a carte blanche for doing whatever crazy stuff you
-want.
+Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Reviewed-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Reviewed-by: Xunlei Pang <xlpang@linux.alibaba.com>
+---
+ include/linux/mm.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-And if you don't trust me I'll add Greg who has a very clear opinion
-on IOMMU-bypassing user I/O hooks in the style of the uio driver as
-well I think :)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index ecf63d2b05825..80849b1b9aa92 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -322,6 +322,12 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+ #define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
+ 
++#ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS	/* vma->vm_pgoff == pfn */
++    #define VM_PGOFF_IS_PFN   BIT(62)
++#else
++    #define VM_PGOFF_IS_PFN   VM_NONE
++#endif
++
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_BIT_1	33	/* bit only usable on 64-bit architectures */
+-- 
+2.43.5
+
