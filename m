@@ -1,125 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20621A4D1
-	for <kvm@vger.kernel.org>; Fri, 25 Oct 2024 15:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995EC1411E0
+	for <kvm@vger.kernel.org>; Fri, 25 Oct 2024 15:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729869288; cv=none; b=QeWV6OuMCLN/o3+qaj8e1qgcJlbwwohTU4ht1flSAyxjIYbUj9gNsB0O9ns7BwLqjb484O16wrhqZmcjsGHCTqy7CQourEaOPKy96f1RWpPafULID50rIHvI2PHVDwzPYXzGx0MetcOh1C8HQ4elml9IcC3aVCGfEI9QAFQVAPg=
+	t=1729871171; cv=none; b=kuAoZs0B6VVpR1pFpD4XxpbVphYrKZvKhE3TwgQaTaCQudCf8jNlXQKcSXjx3sA9bosWuqhqrO3/vdk/oG32irioT5VBWtyRDVpJY194dCrw6BHKY3/NKk/fzYMZrAhikEOz48o2wL6T2iPC+0fBaERMoarHI7f/UBfa+aSHnJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729869288; c=relaxed/simple;
-	bh=Lbj/6ZDYkPFZxCNambrPjgDOlmbT2PYTi20WVpcLMzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qe0Grxoq6g19LEkGAxJlJZGkshB4uTRL/HGdXG6wofTO52oCl9EUH//77STpO8RL6y17xbNwM/dFnvP6dNRiAtKaBSK/jgefJHQGivgwTVP5gtKvjcP96YbzdaUakaUiERs4gFpQAhl/Pswvm5rJ6NUj/kJhUBTlFwaCJ3R/MYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AFgtw71n; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AFgtw71n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729869285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ACGdF21cKkvnMHoeXpjOJK7M5S4ojlG1Lcv7sY6UCa8=;
-	b=AFgtw71nPiM9DTCs2WzBEGHUojiPIA+/1CrckALFoVmNCNE69+YKM77B8+ldk9gKAkMibx
-	TWh6o+YKknz5g7kg3IDp0tSB+rkSs/e2ZVEawzDEIQcmSQNPun1K4Ji8iCGp2i8ZtnOKmg
-	JinW6n3dMKayabFiZC0BfZvBgAanMbc=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-JyKffLwLP4WOg7IrO6F-yg-1; Fri,
- 25 Oct 2024 11:12:58 -0400
-X-MC-Unique: JyKffLwLP4WOg7IrO6F-yg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC5061955F35;
-	Fri, 25 Oct 2024 15:12:53 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.22.65.27])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 93CD030001A7;
-	Fri, 25 Oct 2024 15:12:45 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	David Hildenbrand <david@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v1 08/11] virtio-mem: mark device ready before registering callbacks in kdump mode
-Date: Fri, 25 Oct 2024 17:11:30 +0200
-Message-ID: <20241025151134.1275575-9-david@redhat.com>
-In-Reply-To: <20241025151134.1275575-1-david@redhat.com>
-References: <20241025151134.1275575-1-david@redhat.com>
+	s=arc-20240116; t=1729871171; c=relaxed/simple;
+	bh=E0n7nO+3obEoljEtO63VirXpJr5kVqVzmje2qTj39zw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CvqXamwZDC33J+crifZSKzsk3UM5hCFemev1KxmvcyNpIlHptL0AgGB0PuzrEIcfA7CrpuZfY2BSS27hupc9BSo5aHiXONnO9mkpgoLOlH+Fiimk+fQ1I029qFeCam8RIEVIzz7uri0PXD5rO/XZCswlZFSkANsMSbyoDhruxTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97E6C339;
+	Fri, 25 Oct 2024 08:46:36 -0700 (PDT)
+Received: from arm.com (unknown [10.57.25.65])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 62C283F73B;
+	Fri, 25 Oct 2024 08:46:01 -0700 (PDT)
+Date: Fri, 25 Oct 2024 16:45:54 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, thuth@redhat.com,
+	lvivier@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+	nrb@linux.ibm.com, npiggin@gmail.com
+Subject: Re: [RFC kvm-unit-tests PATCH] lib/report: Return pass/fail result
+ from report
+Message-ID: <Zxu9MkAob0zVCsYQ@arm.com>
+References: <20241023165347.174745-2-andrew.jones@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023165347.174745-2-andrew.jones@linux.dev>
 
-After the callbacks are registered we may immediately get a callback. So
-mark the device ready before registering the callbacks.
+Hi Drew,
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/virtio/virtio_mem.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Wed, Oct 23, 2024 at 06:53:48PM +0200, Andrew Jones wrote:
+> A nice pattern to use in order to try and maintain parsable reports,
+> but also output unexpected values, is
+> 
+>     if (!report(value == expected_value, "my test")) {
+>         report_info("failure due to unexpected value (received %d, expected %d)",
+>                     value, expected_value);
+>     }
 
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index b0b871441578..126f1d669bb0 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -2648,6 +2648,7 @@ static int virtio_mem_init_hotplug(struct virtio_mem *vm)
- 	if (rc)
- 		goto out_unreg_pm;
- 
-+	virtio_device_ready(vm->vdev);
- 	return 0;
- out_unreg_pm:
- 	unregister_pm_notifier(&vm->pm_notifier);
-@@ -2729,6 +2730,8 @@ static bool virtio_mem_vmcore_pfn_is_ram(struct vmcore_cb *cb,
- 
- static int virtio_mem_init_kdump(struct virtio_mem *vm)
- {
-+	/* We must be prepared to receive a callback immediately. */
-+	virtio_device_ready(vm->vdev);
- #ifdef CONFIG_PROC_VMCORE
- 	dev_info(&vm->vdev->dev, "memory hot(un)plug disabled in kdump kernel\n");
- 	vm->vmcore_cb.pfn_is_ram = virtio_mem_vmcore_pfn_is_ram;
-@@ -2870,8 +2873,6 @@ static int virtio_mem_probe(struct virtio_device *vdev)
- 	if (rc)
- 		goto out_del_vq;
- 
--	virtio_device_ready(vdev);
--
- 	/* trigger a config update to start processing the requested_size */
- 	if (!vm->in_kdump) {
- 		atomic_set(&vm->config_changed, 1);
--- 
-2.46.1
+This looks like a good idea to me, makes the usage of report() similar to
+the kernel pattern of wrapping an if condition around WARN_ON():
 
+	if (WARN_ON(condition)) {
+		do_stuff()
+	}
+
+Plus, current users are not affected by the change so I see no reason not
+to have the choice.
+
+> 
+> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+> ---
+>  lib/libcflat.h |  6 +++---
+>  lib/report.c   | 28 +++++++++++++++++++++-------
+>  2 files changed, 24 insertions(+), 10 deletions(-)
+> 
+> diff --git a/lib/libcflat.h b/lib/libcflat.h
+> index eec34c3f2710..b4110b9ec91b 100644
+> --- a/lib/libcflat.h
+> +++ b/lib/libcflat.h
+> @@ -97,11 +97,11 @@ void report_prefix_pushf(const char *prefix_fmt, ...)
+>  extern void report_prefix_push(const char *prefix);
+>  extern void report_prefix_pop(void);
+>  extern void report_prefix_popn(int n);
+> -extern void report(bool pass, const char *msg_fmt, ...)
+> +extern bool report(bool pass, const char *msg_fmt, ...)
+>  		__attribute__((format(printf, 2, 3), nonnull(2)));
+> -extern void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+> +extern bool report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+>  		__attribute__((format(printf, 3, 4), nonnull(3)));
+> -extern void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
+> +extern bool report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
+>  		__attribute__((format(printf, 3, 4), nonnull(3)));
+>  extern void report_abort(const char *msg_fmt, ...)
+>  					__attribute__((format(printf, 1, 2)))
+> diff --git a/lib/report.c b/lib/report.c
+> index 0756e64e6f10..43c0102c1b0e 100644
+> --- a/lib/report.c
+> +++ b/lib/report.c
+> @@ -89,7 +89,7 @@ void report_prefix_popn(int n)
+>  	spin_unlock(&lock);
+>  }
+>  
+> -static void va_report(const char *msg_fmt,
+> +static bool va_report(const char *msg_fmt,
+>  		bool pass, bool xfail, bool kfail, bool skip, va_list va)
+>  {
+>  	const char *prefix = skip ? "SKIP"
+> @@ -114,14 +114,20 @@ static void va_report(const char *msg_fmt,
+>  		failures++;
+>  
+>  	spin_unlock(&lock);
+> +
+> +	return pass || xfail;
+
+va_report() has 4 boolean parameters that the callers set. 'kfail' can be
+ignored, because all it does is control which variable serves as the
+accumulator for the failure.
+
+I was thinking about the 'skip' parameter - report_skip() sets pass = xfail
+= false, skip = true. Does it matter that va_report() returns false for
+report_skip()? I don't think so (report_skip() returns void), just wanting
+to make sure we've considered all the cases.  Sorry if this looks like
+nitpicking.
+
+Other than that, the patch looks good to me.
+
+Thanks,
+Alex
+
+>  }
+>  
+> -void report(bool pass, const char *msg_fmt, ...)
+> +bool report(bool pass, const char *msg_fmt, ...)
+>  {
+>  	va_list va;
+> +	bool ret;
+> +
+>  	va_start(va, msg_fmt);
+> -	va_report(msg_fmt, pass, false, false, false, va);
+> +	ret = va_report(msg_fmt, pass, false, false, false, va);
+>  	va_end(va);
+> +
+> +	return ret;
+>  }
+>  
+>  void report_pass(const char *msg_fmt, ...)
+> @@ -142,24 +148,32 @@ void report_fail(const char *msg_fmt, ...)
+>  	va_end(va);
+>  }
+>  
+> -void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+> +bool report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+>  {
+> +	bool ret;
+> +
+>  	va_list va;
+>  	va_start(va, msg_fmt);
+> -	va_report(msg_fmt, pass, xfail, false, false, va);
+> +	ret = va_report(msg_fmt, pass, xfail, false, false, va);
+>  	va_end(va);
+> +
+> +	return ret;
+>  }
+>  
+>  /*
+>   * kfail is known failure. If kfail is true then test will succeed
+>   * regardless of pass.
+>   */
+> -void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
+> +bool report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
+>  {
+> +	bool ret;
+> +
+>  	va_list va;
+>  	va_start(va, msg_fmt);
+> -	va_report(msg_fmt, pass, false, kfail, false, va);
+> +	ret = va_report(msg_fmt, pass, false, kfail, false, va);
+>  	va_end(va);
+> +
+> +	return ret;
+>  }
+>  
+>  void report_skip(const char *msg_fmt, ...)
+> -- 
+> 2.47.0
+> 
+> 
