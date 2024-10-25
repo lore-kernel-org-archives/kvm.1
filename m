@@ -1,159 +1,118 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E1518C002;
-	Fri, 25 Oct 2024 03:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBDE18BC2A;
+	Fri, 25 Oct 2024 06:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729828572; cv=none; b=mdp37DZl1AdQmEJs2RC+oT9CmFFDQLYjODicK4kI8mDw3p27j/bu9Zmc3tYSCz5P9AM1EITgGloT9cPttKYBbXdKaQOHSQ98M3MpYnySkaOE8qafz8puN8na30/XeokaxPTq2Rn4LQZSE8K77pEEERe+A3Bg6AU83REWWldUU+s=
+	t=1729836815; cv=none; b=U+3EA062kKZvP8s4yr8H60fGySs9RLCS+VYu13c/QLMjeeAEDLOry5PrDXyv/9yBP2BRxbpEhiZJrE7m0mCToQOjsH9eVggJvP9N64VmLtGQEni8cnDpqMbqVYQEAMq+uXbSkcZ0WVaES/eYHdXsQNo8JmqS/DzFxDbaLu8vnX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729828572; c=relaxed/simple;
-	bh=nFfAqX1nuEjPAzz8vWo8La/0AzColIlWjX443+G9qwY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KLbxf6mIkqEnvr2XXPSwnFU5AEiLZxa3aEi0cF7vVylSsJbwxgeW8xpX6Lk5v0ebXy80nIy+aI7w85EgmDMclI+xADWzz3O4q32s34stTWeon3XRAm6cFJo/i2Sxcjtvgd35ci8B+J9xyhPIJI7lMotFdayvC/CRWeTtNJ+BZ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=ghWgbpbQ; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+	s=arc-20240116; t=1729836815; c=relaxed/simple;
+	bh=6d0jNOYm8+UX1GI3ORK1fHvZg2kELwsSG52v2C5UXhY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=XpJfaPadzMut+GCOSchaAslbucElZQQfTFyK4Ws50Pfkf9ZYp7OdsNL4R/JlieuFubfLq6QKG7IE8+MGwqEUMMAgNyr4XdpeOONPs+o0SX0Nc6JoOWl3Ze+5OCuESQEElU/ALrGq9f9P/k0n+TczsF9v2ga/W6Xa48V6EvbIbiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M3Fp92Mp; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="ghWgbpbQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1729828564;
-	bh=zhqxaFdelNULJR0EVgv2G8QYzzTg5epKTyLS+XXXoa0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ghWgbpbQ6Ssp0Ya8t/2aTa4zdB6SP0T8GbEZQzex5ddeyDYOJkLpD26nX42ZVWgMw
-	 mbPeOXfF8MELMRShXm17Jk2H9nszVq1HUL4NZKaWkm9m2Ay3nfbEe4aiVFxHOOT1RA
-	 yhP0nLJxqZ985HnQMFIjcF4JwrstDc4f1QKEPypYh997qpSim6EKtD4zne6KElIaar
-	 0g4NitpCjZ0sJh+PalJO2mCjmt1b2uTyGHgmqF5BzdCs996XIxBuZS/Bt35vu9Ii4b
-	 2M3tAe7dq0Lm9jOtVs9/x8DslW0z9/d0vqJ9BY0Ht8Ie4s88CA0EowQJR1XIU2HfPs
-	 JcXvo8Jq6LeuQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XZTTw2Pjsz4w2N;
-	Fri, 25 Oct 2024 14:56:04 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gautam Menghani <gautam@linux.ibm.com>, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, naveen@kernel.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU
- before running it to avoid spurious interrupts
-In-Reply-To: <20241024173417.95395-1-gautam@linux.ibm.com>
-References: <20241024173417.95395-1-gautam@linux.ibm.com>
-Date: Fri, 25 Oct 2024 14:56:05 +1100
-Message-ID: <877c9wkf8q.fsf@mail.lhotse>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M3Fp92Mp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=Yqhk9X0Hpv5XLgEFxivgetJ23tlmLhIvDHYvaF3/RF0=; b=M3Fp92MpdZcnNiNxDY5LYNlsfQ
+	IkV4ivBXpPQQRb3Ck3yLPwIJm36djIj9TL9qKmD/XDH9tEQtYFPQ5pQ1MBDYjweS5LOEXo45X+W+W
+	XuUcsZlVdUzZxT02yjYXjUP92vURayFIJZyNhHMoDAzZ6PMapzGiqmnRWFEbDEPsXEk/AEAkBDPy/
+	6za1uQZx/Z5J3OQytaJImBEv5X5h7O6XY9Ha1/cI0wSOPo/EHJFlwUuPeKtdO+Z/jhp3n/mSnyi3l
+	VkzFd3rYSufi9c937pkpMPCKAOSGu8PsMbT4Abnk4wjqduo8ISrlISGdJK1tkVdEr86/BQT8CdEvL
+	kbF4CIbA==;
+Received: from [69.6.35.226] (helo=[127.0.0.1])
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t4DZI-00000008qB8-1qL8;
+	Fri, 25 Oct 2024 06:13:06 +0000
+Date: Fri, 25 Oct 2024 08:13:03 +0200
+From: David Woodhouse <dwmw2@infradead.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+CC: Miguel Luis <miguel.luis@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Len Brown <len.brown@intel.com>, Shuah Khan <shuah@kernel.org>,
+ David Woodhouse <dwmw@amazon.co.uk>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ Francesco Lavra <francescolavra.fl@gmail.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_6/6=5D_arm64=3A_Use_SYSTEM=5FOF?=
+ =?US-ASCII?Q?F2_PSCI_call_to_power_off_for_hibernate?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <ZxqmsiXV6ZYTANKY@linux.dev>
+References: <20241019172459.2241939-1-dwmw2@infradead.org> <20241019172459.2241939-7-dwmw2@infradead.org> <23C91005-7304-4312-A5E0-F5E6C05B3209@oracle.com> <ECD0CA58-2C3B-48F3-AF12-95E37CB0FC48@infradead.org> <ZxprcWDe2AXuLhD_@linux.dev> <691447A1-8F3F-4890-B00F-8068A14CA126@infradead.org> <ZxqmsiXV6ZYTANKY@linux.dev>
+Message-ID: <627769A8-AF84-47A1-B4F9-5F44C75A8058@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Hi Gautam,
-
-A few comments below ...
-
-Gautam Menghani <gautam@linux.ibm.com> writes:
-> Mask off the LPCR_MER bit before running a vCPU to ensure that it is not
-> set if there are no pending interrupts.
-
-I would typically leave this until the end of the change log. ie.
-describe the bug and how it happens first, then the fix at the end.
-
-But it's not a hard rule, so up to you.
-
-> Running a vCPU with LPCR_MER bit
-            ^
-        "an L2 vCPU"
-
-In general if you can qualify L0 vs L1 vs L2 everywhere it would help
-folks follow the description.
-
-> set and no pending interrupts results in L2 vCPU getting an infinite flood
-> of spurious interrupts. The 'if check' in kvmhv_run_single_vcpu() sets
-> the LPCR_MER bit if there are pending interrupts.
+On 24 October 2024 21:57:38 CEST, Oliver Upton <oliver=2Eupton@linux=2Edev>=
+ wrote:
+>On Thu, Oct 24, 2024 at 05:56:09PM +0200, David Woodhouse wrote:
+>> On 24 October 2024 17:44:49 CEST, Oliver Upton <oliver=2Eupton@linux=2E=
+dev> wrote:
+>> >IIUC, you're really wanting to 0x0 because there are hypervisors out
+>> >there that violate the final spec and *only* accept this value=2E
+>> >
+>> >That's perfectly fine, but it'd help avoid confusion if the supporting
+>> >comment was a bit more direct:
+>> >
+>> >	/*
+>> >	 * If no hibernate type is specified SYSTEM_OFF2 defaults to
+>> >	 * selecting HIBERNATE_OFF=2E
+>> >	 *
+>> >	 * There are hypervisors in the wild that violate the spec and
+>> >	 * reject calls that explicitly provide a hibernate type=2E For
+>> >	 * compatibility with these nonstandard implementations, pass 0
+>> >	 * as the type=2E
+>> >	 */
+>> >	 if (system_entering_hibernation())
+>> >		invoke_psci_fn(PSCI_FN_NATIVE(1_3, SYSTEM_OFF2), 0 , 0, 0);
+>>=20
+>> By the time this makes it into released versions of the guest Linux ker=
+nel, that comment won't be true any more=2E
 >
-> The spurious flood problem can be observed in 2 cases:
-> 1. Crashing the guest while interrupt heavy workload is running
->   a. Start a L2 guest and run an interrupt heavy workload (eg: ipistorm)
->   b. While the workload is running, crash the guest (make sure kdump
->      is configured)
->   c. Any one of the vCPUs of the guest will start getting an infinite
->      flood of spurious interrupts.
+>Then does it even matter? What is the problem you're trying to solve
+>with using a particular value for the hibernate type?
 >
-> 2. Running LTP stress tests in multiple guests at the same time
->    a. Start 4 L2 guests.
->    b. Start running LTP stress tests on all 4 guests at same time.
->    c. In some time, any one/more of the vCPUs of any of the guests will
->       start getting an infinite flood of spurious interrupts.
+>Either the goal of this is to make the PSCI client code compatible with
+>your hypervisor today (and any other implementation based on 'F ALP1') or
+>we don't care and go with whatever value we want=2E
 >
-> The root cause of both the above issues is the same:
-> 1. A NMI is sent to a running vCPU that has LPCR_MER bit set.
-> 2. In the NMI path, all registers are refreshed, i.e, H_GUEST_GET_STATE
->    is called for all the registers.
-> 3. When H_GUEST_GET_STATE is called for lpcr, the vcpu->arch.vcore->lpcr
->    of that vCPU at L1 level gets updated with LPCR_MER set to 1, and this
->    new value is always used whenever that vCPU runs, regardless of whether
->    there was a pending interrupt.
-> 4. Since LPCR_MER is set, the vCPU in L2 always jumps to the external
->    interrupt handler, and this cycle never ends.
+>Even if the comment eventually becomes stale, there is a ton of value in
+>documenting the exact implementation decision being made=2E
 >
-> Fix the spurious flood by making sure a vCPU's LPCR_MER is always masked
-> before running a vCPU.
 
-I think your original sentence at the top of the change log is actually more
-accurate. ie. it's not that LPCR_MER is always cleared, it's cleared
-*unless there's a pending interrupt*.
+Eventually it won't matter and we can go with whatever value we want=2E Bu=
+t yes, the goal is to be compatible with the hypervisor *today* until it ca=
+tches up the changes to the final versions of the spec=2E I didn't spend mu=
+ch time overthinking the comment=2E What was it=2E=2E=2E=2E
 
-> Fixes: ec0f6639fa88 ("KVM: PPC: Book3S HV nestedv2: Ensure LPCR_MER bit is passed to the L0")
-> Cc: stable@vger.kernel.org # v6.8+
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> V1 -> V2:
-> 1. Mask off the LPCR_MER in vcpu->arch.vcore->lpcr instead of resetting
-> it so that we avoid grabbing vcpu->arch.vcore->lock. (Suggested by
-> Ritesh in an internal review)
+	/*
+	 * Zero is an acceptable alternative to PSCI_1_3_OFF_TYPE_HIBERNATE_OFF
+	 * and is supported by hypervisors implementing an earlier version
+	 * of the pSCI v1=2E3 spec=2E
+	 */
 
-Did v1 take the vcore->lock? I don't remember it.
-
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8f7d7e37bc8c..b8701b5dde50 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -5089,9 +5089,19 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->  
->  	do {
->  		accumulate_time(vcpu, &vcpu->arch.guest_entry);
-> +		/*
-> +		 * L1's copy of L2's lpcr (vcpu->arch.vcore->lpcr) can get its MER bit
-                                     ^
-                                     LPCR
-> +		 * unexpectedly set - for e.g. during NMI handling when all register
-> +		 * states are synchronized from L0 to L1. L1 needs to inform L0 about
-> +		 * MER=1 only when there are pending external interrupts.
-> +		 * kvmhv_run_single_vcpu() anyway sets MER bit if there are pending
-> +		 * external interrupts. Hence, mask off MER bit when passing vcore->lpcr
-> +		 * here as otherwise it may generate spurious interrupts in L2 KVM
-> +		 * causing an endless loop, which results in L2 guest getting hung.
-> +		 */
->  		if (cpu_has_feature(CPU_FTR_ARCH_300))
->  			r = kvmhv_run_single_vcpu(vcpu, ~(u64)0,
-> -						  vcpu->arch.vcore->lpcr);
-> +						  vcpu->arch.vcore->lpcr & ~LPCR_MER);
- 
-This is much better than v1 which hid the clearing of LPCR_MER in a macro.
-
-But I still wonder if it would be better to clear it in
-kvmhv_run_single_vcpu() itself.
-
-The logic to set LPCR_MER is already in there, so why not ensure
-LPCR_MER is cleared as part of that some block?
-
-I realise there's another caller of kvmhv_run_single_vcpu() from the
-nested code, but that's OK because there's already a nested check in
-kvmhv_run_single_vcpu(), so you can still isolate this change to just
-the non-nested case.
-
-cheers
+That seems to cover it just fine, I think=2E
