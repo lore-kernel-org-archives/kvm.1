@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB1E2064E6
-	for <kvm@vger.kernel.org>; Fri, 25 Oct 2024 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20621A4D1
+	for <kvm@vger.kernel.org>; Fri, 25 Oct 2024 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729869207; cv=none; b=dnwd/b0nG2vu5lFm0yVnSeoOERxdI2z/hndRG2SBrxKjfLPNxnYGzBFxQasCRSFsFxDIXGja4uA8C5w2zwmmWW2lQEwNPjLBHZWlU8lsZTc9IHjjmiLWcI2o8337t5iBEQQpRmdGeK8TiQg4fk05f2DE50T972u9sjm42zMiyEY=
+	t=1729869288; cv=none; b=QeWV6OuMCLN/o3+qaj8e1qgcJlbwwohTU4ht1flSAyxjIYbUj9gNsB0O9ns7BwLqjb484O16wrhqZmcjsGHCTqy7CQourEaOPKy96f1RWpPafULID50rIHvI2PHVDwzPYXzGx0MetcOh1C8HQ4elml9IcC3aVCGfEI9QAFQVAPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729869207; c=relaxed/simple;
-	bh=l8Vke+v1qJcY3Kdt2qKC4wrsbTNgJAV880fY1X1hrJ8=;
+	s=arc-20240116; t=1729869288; c=relaxed/simple;
+	bh=Lbj/6ZDYkPFZxCNambrPjgDOlmbT2PYTi20WVpcLMzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqFQE4PRmdS3oTAF48hT4X1yqygG0LoMckAe4SUyZ2CucNhXWyjxjHHqKQyXq97D0W02DVB2f9jSYafxX60mPFqq+ZWlpEg0t5GnD034A3qnmBD43akcHgU1G6MJPutcNqDhHWlAUNU0gXoxifQAojgLv6wprciimH5IeEdwt5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Py6SXWnR; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Qe0Grxoq6g19LEkGAxJlJZGkshB4uTRL/HGdXG6wofTO52oCl9EUH//77STpO8RL6y17xbNwM/dFnvP6dNRiAtKaBSK/jgefJHQGivgwTVP5gtKvjcP96YbzdaUakaUiERs4gFpQAhl/Pswvm5rJ6NUj/kJhUBTlFwaCJ3R/MYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AFgtw71n; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Py6SXWnR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AFgtw71n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729869204;
+	s=mimecast20190719; t=1729869285;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=duV64aDOzPCg70Erai+k0MR4CZFFfLJs/Tny3PQhGqo=;
-	b=Py6SXWnRRaYj5YfdQ32q1Yz4tx1KceUdfrsMSo9rXb1hCRYtJuxPMeU8ELBtJ32Aby/wK/
-	mhlU3WLXKkd5ykcpAKH66baagvhntNHGedC+8wnLT5i+WVsKHJCChIoKylnhv0UHfOpJHn
-	o6afDZvZNqmL17RURTtHktZCkTVDDUw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=ACGdF21cKkvnMHoeXpjOJK7M5S4ojlG1Lcv7sY6UCa8=;
+	b=AFgtw71nPiM9DTCs2WzBEGHUojiPIA+/1CrckALFoVmNCNE69+YKM77B8+ldk9gKAkMibx
+	TWh6o+YKknz5g7kg3IDp0tSB+rkSs/e2ZVEawzDEIQcmSQNPun1K4Ji8iCGp2i8ZtnOKmg
+	JinW6n3dMKayabFiZC0BfZvBgAanMbc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-_q3EKHFQNEmGt7K_9EZzAQ-1; Fri,
- 25 Oct 2024 11:13:19 -0400
-X-MC-Unique: _q3EKHFQNEmGt7K_9EZzAQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-JyKffLwLP4WOg7IrO6F-yg-1; Fri,
+ 25 Oct 2024 11:12:58 -0400
+X-MC-Unique: JyKffLwLP4WOg7IrO6F-yg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 750F61956096;
-	Fri, 25 Oct 2024 15:13:17 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC5061955F35;
+	Fri, 25 Oct 2024 15:12:53 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.65.27])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 27021300018D;
-	Fri, 25 Oct 2024 15:13:08 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 93CD030001A7;
+	Fri, 25 Oct 2024 15:12:45 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -68,9 +68,9 @@ Cc: linux-mm@kvack.org,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Eric Farman <farman@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v1 11/11] s390/kdump: virtio-mem kdump support (CONFIG_PROC_VMCORE_DEVICE_RAM)
-Date: Fri, 25 Oct 2024 17:11:33 +0200
-Message-ID: <20241025151134.1275575-12-david@redhat.com>
+Subject: [PATCH v1 08/11] virtio-mem: mark device ready before registering callbacks in kdump mode
+Date: Fri, 25 Oct 2024 17:11:30 +0200
+Message-ID: <20241025151134.1275575-9-david@redhat.com>
 In-Reply-To: <20241025151134.1275575-1-david@redhat.com>
 References: <20241025151134.1275575-1-david@redhat.com>
 Precedence: bulk
@@ -82,94 +82,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Let's add support for including virtio-mem device RAM in the crash dump,
-setting NEED_PROC_VMCORE_DEVICE_RAM, and implementing
-elfcorehdr_fill_device_ram_ptload_elf64().
-
-To avoid code duplication, factor out the code to fill a PT_LOAD entry.
+After the callbacks are registered we may immediately get a callback. So
+mark the device ready before registering the callbacks.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/s390/Kconfig             |  1 +
- arch/s390/kernel/crash_dump.c | 39 ++++++++++++++++++++++++++++-------
- 2 files changed, 32 insertions(+), 8 deletions(-)
+ drivers/virtio/virtio_mem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index d339fe4fdedf..d80450d957a9 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -230,6 +230,7 @@ config S390
- 	select MODULES_USE_ELF_RELA
- 	select NEED_DMA_MAP_STATE	if PCI
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
-+	select NEED_PROC_VMCORE_DEVICE_RAM if PROC_VMCORE
- 	select NEED_SG_DMA_LENGTH	if PCI
- 	select OLD_SIGACTION
- 	select OLD_SIGSUSPEND3
-diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
-index edae13416196..97b9e71b734d 100644
---- a/arch/s390/kernel/crash_dump.c
-+++ b/arch/s390/kernel/crash_dump.c
-@@ -497,6 +497,19 @@ static int get_mem_chunk_cnt(void)
- 	return cnt;
- }
+diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+index b0b871441578..126f1d669bb0 100644
+--- a/drivers/virtio/virtio_mem.c
++++ b/drivers/virtio/virtio_mem.c
+@@ -2648,6 +2648,7 @@ static int virtio_mem_init_hotplug(struct virtio_mem *vm)
+ 	if (rc)
+ 		goto out_unreg_pm;
  
-+static void fill_ptload(Elf64_Phdr *phdr, unsigned long paddr,
-+		unsigned long vaddr, unsigned long size)
-+{
-+	phdr->p_type = PT_LOAD;
-+	phdr->p_vaddr = vaddr;
-+	phdr->p_offset = paddr;
-+	phdr->p_paddr = paddr;
-+	phdr->p_filesz = size;
-+	phdr->p_memsz = size;
-+	phdr->p_flags = PF_R | PF_W | PF_X;
-+	phdr->p_align = PAGE_SIZE;
-+}
-+
- /*
-  * Initialize ELF loads (new kernel)
-  */
-@@ -509,14 +522,8 @@ static void loads_init(Elf64_Phdr *phdr, bool os_info_has_vm)
- 	if (os_info_has_vm)
- 		old_identity_base = os_info_old_value(OS_INFO_IDENTITY_BASE);
- 	for_each_physmem_range(idx, &oldmem_type, &start, &end) {
--		phdr->p_type = PT_LOAD;
--		phdr->p_vaddr = old_identity_base + start;
--		phdr->p_offset = start;
--		phdr->p_paddr = start;
--		phdr->p_filesz = end - start;
--		phdr->p_memsz = end - start;
--		phdr->p_flags = PF_R | PF_W | PF_X;
--		phdr->p_align = PAGE_SIZE;
-+		fill_ptload(phdr, start, old_identity_base + start,
-+			    end - start);
- 		phdr++;
- 	}
- }
-@@ -526,6 +533,22 @@ static bool os_info_has_vm(void)
- 	return os_info_old_value(OS_INFO_KASLR_OFFSET);
- }
++	virtio_device_ready(vm->vdev);
+ 	return 0;
+ out_unreg_pm:
+ 	unregister_pm_notifier(&vm->pm_notifier);
+@@ -2729,6 +2730,8 @@ static bool virtio_mem_vmcore_pfn_is_ram(struct vmcore_cb *cb,
  
-+#ifdef CONFIG_PROC_VMCORE_DEVICE_RAM
-+/*
-+ * Fill PT_LOAD for a physical memory range owned by a device and detected by
-+ * its device driver.
-+ */
-+void elfcorehdr_fill_device_ram_ptload_elf64(Elf64_Phdr *phdr,
-+		unsigned long long paddr, unsigned long long size)
-+{
-+	unsigned long old_identity_base = 0;
-+
-+	if (os_info_has_vm())
-+		old_identity_base = os_info_old_value(OS_INFO_IDENTITY_BASE);
-+	fill_ptload(phdr, paddr, old_identity_base + paddr, size);
-+}
-+#endif
-+
- /*
-  * Prepare PT_LOAD type program header for kernel image region
-  */
+ static int virtio_mem_init_kdump(struct virtio_mem *vm)
+ {
++	/* We must be prepared to receive a callback immediately. */
++	virtio_device_ready(vm->vdev);
+ #ifdef CONFIG_PROC_VMCORE
+ 	dev_info(&vm->vdev->dev, "memory hot(un)plug disabled in kdump kernel\n");
+ 	vm->vmcore_cb.pfn_is_ram = virtio_mem_vmcore_pfn_is_ram;
+@@ -2870,8 +2873,6 @@ static int virtio_mem_probe(struct virtio_device *vdev)
+ 	if (rc)
+ 		goto out_del_vq;
+ 
+-	virtio_device_ready(vdev);
+-
+ 	/* trigger a config update to start processing the requested_size */
+ 	if (!vm->in_kdump) {
+ 		atomic_set(&vm->config_changed, 1);
 -- 
 2.46.1
 
