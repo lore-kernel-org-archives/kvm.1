@@ -1,85 +1,104 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06B018E36D
-	for <kvm@vger.kernel.org>; Mon, 28 Oct 2024 06:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D8318E37C
+	for <kvm@vger.kernel.org>; Mon, 28 Oct 2024 06:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097688; cv=none; b=S4+i6AF2zqYog7uVgp7CnaoYyBRz7bMWFjAzmyTeFBr1Ltm8vYPT4GB7YMoOBdadDjnY0bsc720Ii4PEwln74DZF5b6vHZSUjzJQ3fj6WJAnyMaicNOFQQUhlSaSTkH2Q6Y0aeODV3qWzdolLweqzdfwsEhJI3ER2w9p1OoB+Jo=
+	t=1730097782; cv=none; b=sqA/WiF+zY5n8W8hQH2TJ51wpNV4w3TDwVEexINWu/qyRYIEyVkwa+oSD7mDH6wUP3BGg4Z9kLCN9UagMTXuRqgTyZY9A5+TCBQZnDIhdO7Uwk4i4mOTDkrKvQj8P15O3KbBW3Mn7lQqlNkpCMlfvQXNwlyCKaXb49urcct14Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097688; c=relaxed/simple;
-	bh=NS+Tuf100NVa1bY+369mrzPv7GRrI/vVftNytsJXNYU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U+iuht5foqx+J/Ukaw5fePCBQQfWpGkmuWT8iufLVgtWvhPRPGabMXMy0+VgSX9pKFzLOHOAk4Qjqd15jxJrdBB8JLVcbziqpEYBEEi18NF+jKuhZL7uhupCsPZ9f9t6rECm+zzJquYLx4sVfWnsABNwU3L3Tne9LsVb6XDamDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kG3/Gsv5; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730097782; c=relaxed/simple;
+	bh=/ojNyzEvkXc3gjW31rjjvySL+jX2GWb/Xty5DpADLSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tYaKl/NXK7lpAi+XyTZVbDinhgmzK0Crn2RFWFjnZc2HjISbyE4m60gFl3qhkVjFFlajp/M/1Q1m9Ol+CwMSbnnnEGHxMEX1GKU/5A10Kpvh+Y3Rjnv2WD3l83X37mRNymt9KNGGJy4EOPBYEH7uTV9Vh1owFpZov5V8cQd9z2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X7Dc4T3q; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kG3/Gsv5"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539ebb5a20aso3875444e87.2
-        for <kvm@vger.kernel.org>; Sun, 27 Oct 2024 23:41:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730097684; x=1730702484; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NS+Tuf100NVa1bY+369mrzPv7GRrI/vVftNytsJXNYU=;
-        b=kG3/Gsv5K4JJHq8dpeTQ/s4O5B5HoKB8WD52ygd4YkwV3iniipVxHtWN5npoBdtOdy
-         yX6ZLUagY8ZBZXc6QcXGVDLP0518bU/fHNDoiQQ2hWzq2nSOA4/LxrXpGZDa1zNSxp2g
-         +Ja6x3uFSpeWCO63hKUmKQ1dbRW9OS3QXqFfGTFqNpuii/rmw8bT16oDl4U/EI9ptuXZ
-         7u3Iu2w17Zv+e0VjPhKzAp7WLXNOutU+ByZt0FraH2NQn6SVFL/YUp/jOBT0wqrZmBPd
-         M39//XZB/Qcy5YrYVYQPDHnPzcJQ/rhaPT/5lKp3KcVQ1XEJahVdw4pkEcrofrJFy7Lo
-         nAsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730097684; x=1730702484;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NS+Tuf100NVa1bY+369mrzPv7GRrI/vVftNytsJXNYU=;
-        b=achyIrnPbqViaNKkAhO0O4luCxDF1c7s4IdvfUNemHyIw6u4kyRD9I9SyB49R9eGp5
-         V/A9JSB0HRrMU3hXrZaPk9/xKWprJhYqdTOsA/7XlUoqiVm3Ru9BD+ehgdrfgnWkVZK/
-         LmJv0N8LVLIJROw5RdqP8j+9npeu6G8a+tv1cKsPQdhKBNDufCuTLb0thJkUsoOcmJ5+
-         Yr7YkUz6tuzcZbF5B7dmkhbsO6deOPhtnaX9EI9dSdYuBYTu1jp/IyQJUIMlbrwikXtw
-         10lX/7NHiMWww+iWamadeGQRbmpBdjsov8clZgVBKnkD9xiC2lrUi8Oyiflb3Opb9uY8
-         jloA==
-X-Forwarded-Encrypted: i=1; AJvYcCVECmIOJ0oU6TBwk97X8uxZfEAtGWCaAn5jybIKnTwlsrla0joyAEY+Ggppw/P52FBjaTc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxkq3ARssf5ucJybm0yt4RmpndB7sHl9uCjUHfHQvt9gHk3Pht2
-	7Fuorjc31fvATK5cuuOMOnRuME1rbGTbeuISjYKTXcyKiFWGZQ9aqzlqW/wEG+uBOnBFLJROjjs
-	UVpXTWHPU9Km6viQ20QXw/bFUGBjQ0w+cAwRGyQ==
-X-Google-Smtp-Source: AGHT+IFgFEA9LsVMQUWWo/dM/XVqyt5Trns048cVWzUxR/mKJTkgDk+3ErfamKRGebF05Z9nNEe+Ai1eCzQr3FLp3x4=
-X-Received: by 2002:a05:6512:3d93:b0:539:8bc6:694a with SMTP id
- 2adb3069b0e04-53b3491e22cmr2604980e87.43.1730097684106; Sun, 27 Oct 2024
- 23:41:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X7Dc4T3q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730097781; x=1761633781;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/ojNyzEvkXc3gjW31rjjvySL+jX2GWb/Xty5DpADLSs=;
+  b=X7Dc4T3qszp17f+GwUh1nXL2DwGEIc11DHDmmDksimXZ8/GRTNCGDOdt
+   eJ4mZYyznribSOVWAlKpacAdYMgeLs9NeYkmwHfuSPe1A7rRqjESCf9WV
+   Tza6HuPmxc1yh5qtBI4ug74eqovu87DNEqbDfxnEbyx+fOSZBNJoQSnZC
+   ktM9WX3edZIt1oJCOvkD8k5bSfYTyIfc/Kizn72/DXklhp5ne2iGqooHw
+   2ijfpspxKmD7EnuT5vA92SiXmtQHGXyQQyoh/Fc2ihHXwLcWsqI4+pMN8
+   WWFZYd+VsBTRTMSfsVUbMGI+dkNXwVRkHipfjWvfeByJoQmaihbwLrqy0
+   A==;
+X-CSE-ConnectionGUID: 1Q0EaZHEQZeomQ7lR0Uzkw==
+X-CSE-MsgGUID: TUyCQ8Q+SS69qa3qLbB1+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="40303042"
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; 
+   d="scan'208";a="40303042"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2024 23:43:00 -0700
+X-CSE-ConnectionGUID: iH8c8OTIT/ObRXKruBliKw==
+X-CSE-MsgGUID: t2yVzOgIQLm5dVqtEjvFKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,238,1725346800"; 
+   d="scan'208";a="104850200"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.36])
+  by fmviesa002.fm.intel.com with ESMTP; 27 Oct 2024 23:42:58 -0700
+Date: Mon, 28 Oct 2024 14:59:17 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	John Allen <john.allen@amd.com>
+Subject: Re: [PATCH v3 2/7] target/i386: Add RAS feature bits on EPYC CPU
+ models
+Message-ID: <Zx82ReAE9h7bLSNN@intel.com>
+References: <cover.1729807947.git.babu.moger@amd.com>
+ <63d01f172cabd5a7741434fb923ed7e1447776ee.1729807947.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240912131729.14951-1-yi.l.liu@intel.com> <20240912131729.14951-5-yi.l.liu@intel.com>
-In-Reply-To: <20240912131729.14951-5-yi.l.liu@intel.com>
-From: Zhangfei Gao <zhangfei.gao@linaro.org>
-Date: Mon, 28 Oct 2024 14:41:12 +0800
-Message-ID: <CABQgh9HvJLJ9Zsa69oHiNSPaRr+NGhrbY4n-80kNWA+DA5W_ug@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] iommufd: Extend IOMMU_GET_HW_INFO to report PASID capability
-To: Yi Liu <yi.l.liu@intel.com>
-Cc: joro@8bytes.org, jgg@nvidia.com, kevin.tian@intel.com, 
-	baolu.lu@linux.intel.com, alex.williamson@redhat.com, eric.auger@redhat.com, 
-	nicolinc@nvidia.com, kvm@vger.kernel.org, chao.p.peng@linux.intel.com, 
-	iommu@lists.linux.dev, zhenzhong.duan@intel.com, 
-	linux-kselftest@vger.kernel.org, vasant.hegde@amd.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <63d01f172cabd5a7741434fb923ed7e1447776ee.1729807947.git.babu.moger@amd.com>
 
-On Thu, 12 Sept 2024 at 21:18, Yi Liu <yi.l.liu@intel.com> wrote:
->
-> PASID usage requires PASID support in both device and IOMMU. Since the
-> iommu drivers always enable the PASID capability for the device if it
-> is supported, so it is reasonable to extend the IOMMU_GET_HW_INFO to
-> report the PASID capability to userspace.
->
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+(+John)
 
-Thanks Yi
+Hi Babu,
 
-Have verified on aarch64 platform.
+This patch is fine for me.
 
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+However, users recently reported an issue with SUCCOR support on AMD
+hosts: https://gitlab.com/qemu-project/qemu/-/issues/2571.
+
+Could you please double check and clarify that issue on AMD host?
+
+Thanks,
+Zhao
+
+On Thu, Oct 24, 2024 at 05:18:20PM -0500, Babu Moger wrote:
+> Date: Thu, 24 Oct 2024 17:18:20 -0500
+> From: Babu Moger <babu.moger@amd.com>
+> Subject: [PATCH v3 2/7] target/i386: Add RAS feature bits on EPYC CPU models
+> X-Mailer: git-send-email 2.34.1
+> 
+> Add the support for following RAS features bits on AMD guests.
+> 
+> SUCCOR: Software uncorrectable error containment and recovery capability.
+> 	The processor supports software containment of uncorrectable errors
+> 	through context synchronizing data poisoning and deferred error
+> 	interrupts.
+> 
+> McaOverflowRecov: MCA overflow recovery support.
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> ---
+> v3: No changes
+> 
+> v2: Added reviewed by from Zhao.
+> ---
+>  target/i386/cpu.c | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+
