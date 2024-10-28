@@ -1,85 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AC118A924;
-	Mon, 28 Oct 2024 06:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A52F191F79;
+	Mon, 28 Oct 2024 07:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097998; cv=none; b=J3ZtHsAZyrH8qGEVw+MaJQv9SHD0kf5mw//1+ssxKo/DvDrFAiZMCX0Wxg88ujEV4HIcDwuoQNtwPi6Rj5yorl8526qHnrQJvlCfpxH2YBDcd/zAAd8dy+1xngecpo/G5lXlok0KIBbaYpOuRq/8pova5ks7UJNcK/rK/i7lppk=
+	t=1730100632; cv=none; b=mpA6im63l9HgEnJBpJPPD8I/6gJ8pJmghSJgED0BEOd48NECMDmuf1tQtPTjU+QPNUbGr3VPbgSRCLhrvtf1g8D4VyrMcui/ReVdFqbCC4JUuy3OJY35ZH0G2nUQ/y5At4oPzr21NmDxpNVCUza1sqdiVWMja3WRlpTPgt6n5Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097998; c=relaxed/simple;
-	bh=JxpLCeEPUhJrMkdL0TYudbC/XbTxYSrHktHQOg5tBzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pajR0/ucKNIQXo/E8COdMX0upwc/8LRvqEdlN1DPHe3PvwIBxvHrdcJgyZVhaAbyaEiRtpSxQuiGXN2OTXcnm8WUid/G/JObx3NVF3ToBjf6LZSiAF1IenFBisuWbL8HC9T3pElTmPKXM+2hP0ROzci1+tLjYsooP8wvZLS3KcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXfr6iuk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730100632; c=relaxed/simple;
+	bh=MxYhjBjf/tvzWtOpWKpyyouzFad91PQW0/nSkr7Pexk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=T1EqeXFtL9Tv25m4pqluuZ1f4fdFsHQtF99pKGI/9Tgc/Nd9C4SdoKZFyG1JOGmDzkCx1AqhNf3taAR8icxQ8MBknLRR+DbMcT8269/yLmiIEMK52eGHkNoBpLNF6Wu6iEyJZLcOyuR9h+1x6t5PVJNmqrPjdKfEVQC+NQn7ZMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Boi1Zg9U; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oCPdjNXn; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXfr6iuk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA05C4CEC3;
-	Mon, 28 Oct 2024 06:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730097998;
-	bh=JxpLCeEPUhJrMkdL0TYudbC/XbTxYSrHktHQOg5tBzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pXfr6iukpFNitgAKIIVSyCYtDDCh3B1GaWuseUbNm4XLfuvHiPNIEI1RqzgXGCn+r
-	 T8x3ffU9NvEGqhEZOlcisSCjWlq5PsrCdXVG8sEw7pR+jCveH56xttouEjDQJDV8WY
-	 bx5SFdkmU/eJH7Hrzmkv07xrrIzZ4Y8X8n46X7ryPLmoTBBwUTYHLhLxEw9x3XHUY1
-	 Sze57dE6qj3rdN/EwuSVQ8/g13tIxT1HqDmg5aZ6q77NA2Bid5WHDDtaexWJgT2Sgx
-	 tKYkFMMAg8RNVBv4t74ApVds33Nr2L4PoRFdOrDOZnsgk8sPPHU+TQP6pn8GBLAoZx
-	 12xZsB0TjAqdA==
-Date: Mon, 28 Oct 2024 08:46:34 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Srinivasulu Thanneeru <dev.srinivasulu@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>, Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
-	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 05/18] dma: Provide an interface to allow allocate IOVA
-Message-ID: <20241028064634.GE1615717@unreal>
-References: <cover.1730037276.git.leon@kernel.org>
- <844f3dcf9c341b8178bfbc90909ef13d11dd2193.1730037276.git.leon@kernel.org>
- <CAMtOeKJeVrELCp5JpYTC64KdfKpbnW9a8QrnL6ziCYL48nc=qQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Boi1Zg9U";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oCPdjNXn"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730100628;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7y7RWelbheRVtoq3d6yz9NK/DqZz1bs7H+wrQ4ILfpg=;
+	b=Boi1Zg9UPsIBQ0baY5dSSoJ9HKobMMBSJKP3iAFcGDSn19CBv5rPcRoSV6m5feerUFoXbL
+	bvayPi7EGctkW8iNAXKZOS9ZRAnqJVfQPXL/3Kyn1pTKbHu5mfUG4/XASpBBI8CTUbKnLu
+	v5gCJY+JusyPE5ZFK4nwahRONEt804X3N34SCTs9EZwk5b82lncFe1FNiMoRBs966Ye42S
+	1e10+hczqITjisQS5AUzf33Vs+9QDoEHW4IVgqotqsVfk0jTRezvsH0U47ZvTdbsIlcOjV
+	W5Ntzir0XClUR3UXoHWEX9NbF8KaKmgUKtcZjWZi4yBUB0o4cpTLOwUIv8wvQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730100628;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7y7RWelbheRVtoq3d6yz9NK/DqZz1bs7H+wrQ4ILfpg=;
+	b=oCPdjNXn0ywzUwH4Xy1PuGBoOGiGNvKV7k37NYNpiuOo3iNllFN3pyyGcEBgg1w5YDfR6C
+	at10mMx7FCz1bsBg==
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	x86@kernel.org,
+	kvm@vger.kernel.org
+Subject: [PATCH 04/21] KVM: x86/xen: Initialize hrtimer in kvm_xen_init_vcpu()
+Date: Mon, 28 Oct 2024 08:29:23 +0100
+Message-Id: <c8e184b7acf1e073c0d6cf489031bc7d2b6304b0.1729864615.git.namcao@linutronix.de>
+In-Reply-To: <cover.1729864615.git.namcao@linutronix.de>
+References: <cover.1729864615.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMtOeKJeVrELCp5JpYTC64KdfKpbnW9a8QrnL6ziCYL48nc=qQ@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 09:54:49AM +0530, Srinivasulu Thanneeru wrote:
-> On Sun, Oct 27, 2024 at 10:23 PM Leon Romanovsky <leon@kernel.org> wrote:
-> >
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> >
-> > The existing .map_page() callback provides both allocating of IOVA
-> > and linking DMA pages. That combination works great for most of the
-> > callers who use it in control paths, but is less effective in fast
-> > paths where there may be multiple calls to map_page().
-> 
-> Can you please share perf stats with this patch in fast path, if available?
+The hrtimer is initialized in the KVM_XEN_VCPU_SET_ATTR ioctl. That caused
+problem in the past, because the hrtimer can be initialized multiple times,
+which was fixed by commit af735db31285 ("KVM: x86/xen: Initialize Xen timer
+only once"). This commit avoids initializing the timer multiple times by
+checking the field 'function' of struct hrtimer to determine if it has
+already been initialized.
 
-I don't have this data for HMM and VFIO as they have other benefits from this
-series except performance. For NVMe, I don't have the data yet, but it will
-come https://lore.kernel.org/all/cover.1730037261.git.leon@kernel.org/,
-as it is the main performant user of this API.
+Instead of "abusing" the 'function' field, move the hrtimer initialization
+into kvm_xen_init_vcpu() so that it will only be initialized once.
 
-This is the main reason why NVMe series is marked as RFC yet.
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: x86@kernel.org
+Cc: kvm@vger.kernel.org
+---
+ arch/x86/kvm/xen.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 622fe24da910..c386fbe6b58d 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1070,9 +1070,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, stru=
+ct kvm_xen_vcpu_attr *data)
+ 			break;
+ 		}
+=20
+-		if (!vcpu->arch.xen.timer.function)
+-			kvm_xen_init_timer(vcpu);
+-
+ 		/* Stop the timer (if it's running) before changing the vector */
+ 		kvm_xen_stop_timer(vcpu);
+ 		vcpu->arch.xen.timer_virq =3D data->u.timer.port;
+@@ -2235,6 +2232,7 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.xen.poll_evtchn =3D 0;
+=20
+ 	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
++	kvm_xen_init_timer(vcpu);
+=20
+ 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
+ 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
+--=20
+2.39.5
+
