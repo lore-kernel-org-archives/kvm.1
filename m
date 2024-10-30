@@ -1,158 +1,222 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EA11E47AC
-	for <kvm@vger.kernel.org>; Wed, 30 Oct 2024 12:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD201401B;
+	Wed, 30 Oct 2024 13:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730292690; cv=none; b=h3b7XARAclfZEtn2c6rdF6KQge60/OUQ0QJgNpJXAnsjfUDL8UkfDJkpwFBisCYsWmI5bOwQwWsSeaHzikWpY+545tHJCEPW9Y9ZbH8/wypbpjyAnaD4zkxxzlIVTsDP92xTmzq9urLurwjdOoMBJTu/4Znki+kKCjbwkflXLlI=
+	t=1730295228; cv=none; b=dziqmEpDSqomr57br6obYjLYkipCD4IRlls6O0dx4PkcjTP21CVywo83HQ7eEGsKUBzjDOdxq7tJNVeoR02/1hTNtlva2Zt5v256xF7EF54D2Efq1xxjoVV9jqErNkaKVvo8av1yLEykH+ISxk6jiPWivkgrPg3rZEfK3oRk89k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730292690; c=relaxed/simple;
-	bh=R7BmwOlr5WtleJBlCesb3Yq3ZyF0VV24sURzeamECds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GWyD3YsAJiHRS1HDQ3QD5s2ZpJis0YAsYNadCF0Cr/41WzDSdjtQ482z6lH2JqfayGRC2tE2HC9xqwiUbdVV89WW5gaDmATct+9xpb99jahgvPb7Yr+1tXYg1xDTY6nLpI2acBnInQUc5drW4iOHHpM5v4ubLPZltjWG6q2OHfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJW5Dfbs; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730295228; c=relaxed/simple;
+	bh=fA4Vc4kMl+nKRo8aRDn5Rp/ZNNJK2iXiS9et+ri6ATc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFq78gZhTtR1wvtR4wwQzweBzwYYXj4xpunmTrzJP0v+L4w2GELOCihBTlOkyo4pPdV02l7X16bqIHj8aipCf/AXqceE62/EmBh0COinwA14I8HzVvh+PbT8qQEqvxNK1/bkb+hVK/1KJLpABrMU07IkY6Yk6Pr9ssHC65HV5FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XMksxIRK; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJW5Dfbs"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2a999b287so5335866a91.0
-        for <kvm@vger.kernel.org>; Wed, 30 Oct 2024 05:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730292688; x=1730897488; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SUElr+XewgO9036D0OFEiFkKs5QXATuo+eL/s62zPh4=;
-        b=IJW5DfbsRRyJA4pRanwdbte0z85e1eKhg39oWwz7edNJKaDE+SE2Zlf9JA768zgIUb
-         /5buvxVnVV/TVNWOA7n48Nz8Lv5pPZDkn8hK/TtgGvsyquxPnGtBT/M2smir6OwrLo+K
-         /MjRHTxnRld3i165qTe7OiFl8MB/ZctYIkz2W50Keg3N9vjjozK62q2jonXtto2Z2Srz
-         cXzEwuyAh4aEjAvmVEWkacMN9UVavHu0VTBaT2uBTQKGnW2LOnyGLXPZhyLzAOZZ/KK9
-         Zx9PE88biplaJV7YAO0fFvODUJmalEuOXa16QMGremMe9M4iFhHZWlTFNA/WWBeYmefw
-         P9xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730292688; x=1730897488;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SUElr+XewgO9036D0OFEiFkKs5QXATuo+eL/s62zPh4=;
-        b=cCQDPq7N3kMT7+jwTdyNxLCCkfdNh0XPUs5qZcqYSAZ0mBDLhKGmmxzNZF2HC+fk3/
-         /ZEBSEvVVIFJlYFztClMNqvUUfPf8OrwaY3tm/vttvx+d8Fxn0upbqmfZEHWW1Gt1fVB
-         TM0AqBzjwsEwPzkaK24KXB1TLIpzT08XNn7VgkPQkBXum5Jrc9OCfW6WR1+7s7rXuO6/
-         8tsS6mGPseq8nN5cqCBjhnCulfx0G7NtOgE8n8q3/QIJBB3L2sNxUWjs7JQwpdEMdABV
-         gZfLBYOeiAYJcEGO+XABPAFvNbR+pOlZeP2j7H+W0s7TrhQRrWZmbi3Vof5svex0Jd13
-         W7aw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKJqGxTMqmD5ypO/VhUGWS1Wy8vG01PyH94WIADGAOFO0MAVYMPicmyoez/uiEFJNGqbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh17OuMcPnFMsvtoEz9XSyycVOvtP3Kr1Up2l9N1W/i4Q2Ekdg
-	XTWdiuWPLsvXOYmzEe246+NwZDz1fh6pYoBNxlhacVUT+bpKvPxJC+JtjT76OnlTQkvZaCrwA/Z
-	0YrNNbU+ln+Q9fjX7T3vmJWRKFB0=
-X-Google-Smtp-Source: AGHT+IE+517IrfAjOswjuQxHjzmSQ3gC2zsaLau5zStOA2lq1pkpmbPxPO5AIDrQ2CPg9wdtYt4xGsixyIPuzK//7ds=
-X-Received: by 2002:a17:90a:e20d:b0:2e2:ddfa:24d5 with SMTP id
- 98e67ed59e1d1-2e8f105e9bbmr16954960a91.15.1730292687748; Wed, 30 Oct 2024
- 05:51:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XMksxIRK"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49U2d5dh030110;
+	Wed, 30 Oct 2024 13:33:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=rIN9NEJdpGA1ijQ9VvtPh7aO1g5PzQ
+	xogRMddlUsnUg=; b=XMksxIRKpVClldO1sswFvm3W7qEYoC1DZC4u9Xot5yssHh
+	0xwhxxn1xYCq/jHdUbH/ZcWFVKsVbr7fT8V75KJKD08DJLd9BDTcz/8CKi/9+1Fv
+	y2z3oYKeG5tF09/9WDw4rLlHGXeAfNIosAtWFe1Y+MAr9IpOTognso/Kqqwkw5Q1
+	KMU/jMwHcWVwqo2IWPpslVGUyzieYEbJy+jSEFI9LoYsAeZSXJPJkRLGjLWC2zCa
+	XIFL4tuxxC0607O8yX9qj0aL4HYsIYGBbpN+A30epyVz7wq/XEbYJS610/wg/rJP
+	a8tHp94xwLI77Zg2zhrr/FDRUbzlSYq2aHhYjnFA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h8yq9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 13:33:31 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49UDXUxF014422;
+	Wed, 30 Oct 2024 13:33:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h8yq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 13:33:30 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49UDLV3u024535;
+	Wed, 30 Oct 2024 13:33:29 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42hcyjfxm6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 13:33:29 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49UDXSH257868608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Oct 2024 13:33:28 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E5752004B;
+	Wed, 30 Oct 2024 13:33:28 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 69A382004D;
+	Wed, 30 Oct 2024 13:33:26 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.39.21.224])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 30 Oct 2024 13:33:26 +0000 (GMT)
+Date: Wed, 30 Oct 2024 19:03:13 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
+        naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] arch/powerpc/kvm: Fix doorbells for nested KVM
+ guests on PowerNV
+Message-ID: <rbx6n7cqmslnj4re44hb6hdqcuhfbqvmxo5ebsrk2dqia3hj2w@jljlwne2nzvf>
+References: <20240627180342.110238-1-gautam@linux.ibm.com>
+ <20240627180342.110238-3-gautam@linux.ibm.com>
+ <D2GQSGNWNGX4.2R8TH3M64POGJ@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241029031400.622854-1-alexyonghe@tencent.com>
- <20241029031400.622854-3-alexyonghe@tencent.com> <ZyD76t8kY3dvO6Yg@google.com>
-In-Reply-To: <ZyD76t8kY3dvO6Yg@google.com>
-From: zhuangel570 <zhuangel570@gmail.com>
-Date: Wed, 30 Oct 2024 20:51:16 +0800
-Message-ID: <CANZk6aSUzdxT-QjCoaSe2BJJnr=W9Gz0WfBV2Lg+SctgZ2DiHQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: x86: introduce cache configurations for previous CR3s
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, wanpengli@tencent.com, 
-	alexyonghe@tencent.com, junaids@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D2GQSGNWNGX4.2R8TH3M64POGJ@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: OsRhtwN3hjjbeoIWhQDmj4n-gf4gJK2B
+X-Proofpoint-ORIG-GUID: q9JbYBXF1S6NMphUjl4TMaGARfrZW6cO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=999
+ bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410300103
 
-On Wed, Oct 30, 2024 at 4:38=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Tue, Oct 29, 2024, Yong He wrote:
-> > From: Yong He <alexyonghe@tencent.com>
+On Thu, Jul 04, 2024 at 10:10:05PM +1000, Nicholas Piggin wrote:
+> On Fri Jun 28, 2024 at 4:03 AM AEST, Gautam Menghani wrote:
+> > commit 6398326b9ba1("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
+> > introduced an optimization to use only vcpu->doorbell_request for SMT
+> > emulation for Power9 and above guests, but the code for nested guests 
+> > still relies on the old way of handling doorbells, due to which an L2
+> > guest cannot be booted with XICS with SMT>1. The command to repro
+> > this issue is:
 > >
-> > Introduce prev_roots_num param, so that we use more cache of
-> > previous CR3/root_hpa pairs, which help us to reduce shadow
-> > page table evict and rebuild overhead.
+> > qemu-system-ppc64 \
+> > 	-drive file=rhel.qcow2,format=qcow2 \
+> > 	-m 20G \
+> > 	-smp 8,cores=1,threads=8 \
+> > 	-cpu  host \
+> > 	-nographic \
+> > 	-machine pseries,ic-mode=xics -accel kvm
 > >
-> > Signed-off-by: Yong He <alexyonghe@tencent.com>
+> > Fix the plumbing to utilize vcpu->doorbell_request instead of vcore->dpdes 
+> > on P9 and above.
+> >
+> > Fixes: 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
+> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 > > ---
->
-> ...
->
-> > +uint __read_mostly prev_roots_num =3D KVM_MMU_NUM_PREV_ROOTS;
-> > +EXPORT_SYMBOL_GPL(prev_roots_num);
-> > +module_param_cb(prev_roots_num, &prev_roots_num_ops,
-> > +             &prev_roots_num, 0644);
->
-> Allowing the variable to be changed while KVM is running is unsafe.
+> >  arch/powerpc/kvm/book3s_hv.c        |  9 ++++++++-
+> >  arch/powerpc/kvm/book3s_hv_nested.c | 20 ++++++++++++++++----
+> >  2 files changed, 24 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index cea28ac05923..0586fa636707 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -4178,6 +4178,9 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+> >  	}
+> >  	hvregs.hdec_expiry = time_limit;
+> >  
+> > +	// clear doorbell bit as hvregs already has the info
+> > +	vcpu->arch.doorbell_request = 0;
+> > +
+> >  	/*
+> >  	 * When setting DEC, we must always deal with irq_work_raise
+> >  	 * via NMI vs setting DEC. The problem occurs right as we
+> > @@ -4694,6 +4697,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+> >  	struct kvm_nested_guest *nested = vcpu->arch.nested;
+> >  	unsigned long flags;
+> >  	u64 tb;
+> > +	bool doorbell_pending;
+> >  
+> >  	trace_kvmppc_run_vcpu_enter(vcpu);
+> >  
+> > @@ -4752,6 +4756,9 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+> >  	 */
+> >  	smp_mb();
+> >  
+> > +	doorbell_pending = !cpu_has_feature(CPU_FTR_ARCH_300) &&
+> > +				vcpu->arch.doorbell_request;
+> 
+> Hmm... is the feature test flipped here?
 
-Sorry, I have no intention to revise prev_roots_num, changing it 0444 is
-simpler and can improve performance, will update in next version.
+Sorry for responding late, I got involved in some other things. 
+Yes I think I got that part wrong, I guess it should've been
 
+doorbell_pending = !cpu_has_feature(CPU_FTR_HVMODE) &&
+                        vcpu->arch.doorbell_request;
+
+The objective of introducing this is to avoid returning to L1 midway
+when L0 is about to run L2. The issue is that if L1 does H_ENTER_NESTED
+and there is a doorbell for L2, this condition in kvmhv_run_single_vcpu
+will cause L0 to abort and go back to L1:
+
+	} else if (vcpu->arch.pending_exceptions ||
+		   vcpu->arch.doorbell_request ||
+		   xive_interrupt_pending(vcpu)) {
+		vcpu->arch.ret = RESUME_HOST;
+		goto out;
+	}
+
+Earlier, vc->dpdes was used to pass around doorbell state, that's why
+this condition did not cause problems, until 
+6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
+
+> 
+> > +
+> >  	if (!nested) {
+> >  		kvmppc_core_prepare_to_enter(vcpu);
+> >  		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
+> > @@ -4769,7 +4776,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+> >  				lpcr |= LPCR_MER;
+> >  		}
+> >  	} else if (vcpu->arch.pending_exceptions ||
+> > -		   vcpu->arch.doorbell_request ||
+> > +		   doorbell_pending ||
+> >  		   xive_interrupt_pending(vcpu)) {
+> >  		vcpu->arch.ret = RESUME_HOST;
+> >  		goto out;
+> > diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+> > index 05f5220960c6..b34eefa6b268 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> > @@ -32,7 +32,10 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+> >  	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+> >  
+> >  	hr->pcr = vc->pcr | PCR_MASK;
+> > -	hr->dpdes = vc->dpdes;
+> > +	if (cpu_has_feature(CPU_FTR_ARCH_300))
+> > +		hr->dpdes = vcpu->arch.doorbell_request;
+> > +	else
+> > +		hr->dpdes = vc->dpdes;
+> >  	hr->hfscr = vcpu->arch.hfscr;
+> >  	hr->tb_offset = vc->tb_offset;
+> >  	hr->dawr0 = vcpu->arch.dawr0;
+> 
+> Great find.
+> 
+> Nested is all POWER9 and later only, so I think you can just
+> change to using doorbell_request always.
+
+Noted.
+
+> 
+> And probably don't have to do anything for book3s_hv.c unless
+> I'm mistaken about the feature test.
 >
-> I also think a module param is the wrong way to try to allow for bigger c=
-aches.
-> The caches themselves are relatively cheap, at 16 bytes per entry.  And I=
- doubt
-> the cost of searching a larger cache in fast_pgd_switch() would have a me=
-asurable
-> impact, since the most recently used roots will be at the front of the ca=
-che,
-> i.e. only near-misses and misses will be affected.
 
-Maybe the context switch test could see some result, when the processes in =
-guest
-are 7 or 8 (all cache misses), nearly no performance drop.
+As pointed out above, the intention was to avoid the "else if" part in
+kvmhv_run_single_vcpu(). Please do  point out if I missed something here.
 
->
-> The only potential downside to larger caches I can think of, is that keep=
-ing
-> root_count elevated would make it more difficult to reclaim shadow pages =
-from
-> roots that are no longer relevant to the guest.  kvm_mmu_zap_oldest_mmu_p=
-ages()
-> in particular would refuse to reclaim roots.  That shouldn't be problemat=
-ic for
-> legacy shadow paging, because KVM doesn't recursively zap shadow pages.  =
-But for
-> nested TDP, mmu_page_zap_pte() frees the entire tree, in the common case =
-that
-> child SPTEs aren't shared across multiple trees (common in legacy shadow =
-paging,
-> extremely uncommon in nested TDP).
->
-> And for the nested TDP issue, if it's actually a problem, I would *love* =
-to
-> solve that problem by making KVM's forced reclaim more sophisticated.  E.=
-g. one
-> idea would be to kick all vCPUs if the maximum number of pages has been r=
-eached,
-> have each vCPU purge old roots from prev_roots, and then reclaim unused r=
-oots.
-> It would be a bit more complicated than that, as KVM would need a way to =
-ensure
-> forward progress, e.g. if the shadow pages limit has been reach with a si=
-ngle
-> root.  But even then, kvm_mmu_zap_oldest_mmu_pages() could be made a _lot=
-_ smarter.
-
-I not very familiar with TDP on TDP.
-I think you mean force free cached roots in kvm_mmu_zap_oldest_mmu_pages() =
-when
-no mmu pages could be zapped. Such as kick all VCPUs and purge cached roots=
-.
-
->
-> TL;DR: what if we simply bump the number of cached roots to ~16?
-
-I set the number to 11 because the PCID in guest kernel is 6
-(11+current=3D12), when
-there are more than 6 processes in guest, the PCID will be reused,
-then cached roots
-will not easily to hit.
-The context switch case shows no performance gain when process are 7 and 8.
+Thanks,
+Gautam
