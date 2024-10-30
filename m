@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C822803D;
-	Wed, 30 Oct 2024 19:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0B02281D3;
+	Wed, 30 Oct 2024 19:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730314879; cv=none; b=QWwbxaBeB61PnYxI95c+wvuqOhF1JdUz8ieOHA1/SY0RbDAf4ZVS22qaOElhP+nTGPlgYeh3t4I466rb9Pl8QlPBuBBucAr74wBMkoLgE+M/pFxLIGofCQSdhYLjS2GAv+S9yYDC9shvp0cV1n11kvouNSUGRxmp233/c177A0s=
+	t=1730314881; cv=none; b=scuO+EeJCps2FwuvTtKjaID74zR4H336msU6x78pljVazXEsB/04lYRGiFEEkDEU1EXQ7jy8c5g2Q0RONTE4cduyiLMUW1wSOzOOvxWUrpldkswnHdYFADn/VNj1aNfwvpZEeu7YavktHCLU6QIHbVclgWWozJNtfohwdmlEhQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730314879; c=relaxed/simple;
-	bh=fqmwphDCrskUaL59MGcD/o60ek35Jc4EKTRV3Dd/iMc=;
+	s=arc-20240116; t=1730314881; c=relaxed/simple;
+	bh=PFnZhuzjhmZwmPdfn+yrAnFOs+bLGYc33soDXvtJ5ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSaDKCc+SIX003tQ4PI3aaw9H4COT0+acS6cL4m35wf0g7uGn4nLGtEm+cedfBI56ftJr4uj1bc22oib5iZFYi5zqkmPzRFGe8hZpfb8uM5UA7gkaeqmIIvlySObCfii9FJ07OJ43T+SgGuEI1l2+qBuW6y2B3fTPnoFQpSd7os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nXrV47gV; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=HwiLpdGq84thZwD43ZNwZ/0MFs9MEz2RsbtJ/jwELML02gGcaIfNx0UCzXXmxMS+60ES2+//zsoDr19/6bIpYvam9VoHi8acLGz65blHdbqVl77pS+y0qegmQg73Fmb63XGUrX57q0mBi5P5mcF387Culh98b3kseHDBs4gNmw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWk9ItZ8; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nXrV47gV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWk9ItZ8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730314877; x=1761850877;
+  t=1730314879; x=1761850879;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=fqmwphDCrskUaL59MGcD/o60ek35Jc4EKTRV3Dd/iMc=;
-  b=nXrV47gVAU+VjlveJeC6DMi56X7MH9uwEd1jdQChzRAYqlaGtF64CZYU
-   VCMN/D2ZffN1SzWlwPn2lrk7Z11ge4l5zJUvHJ3NdeH0Lf6cwwH6VxyfC
-   bO0kNndnxRImwIvpBxJcFOt6mv/gKf6WgvLafeV7uLhxEdrlYkYrGrKJW
-   lIv0ZbB0nFXxf4y0PHJegNjVcFa4442DLcy5hcmc9a/AmcFdL8zB51ExY
-   IjxUrzsNS/VMUCw1G2YR+njE+GcUf+dU+RqAZqCweO+DKq0q0IaeD+yf0
-   AaTZ4ObbS7u/oizwvlG2ffAQOlooH6Sb75c01Dzye779H1b0mgfqOVNKd
-   w==;
-X-CSE-ConnectionGUID: sWDU3JisQ3GgQR9kjXHQjw==
-X-CSE-MsgGUID: 19HHaE1dQ3uhxfhPyhe7TQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="17678843"
+  bh=PFnZhuzjhmZwmPdfn+yrAnFOs+bLGYc33soDXvtJ5ls=;
+  b=AWk9ItZ8Ao5TFprHQetRZBb5prO4bihuhfWYJeTKcFA2JyhKrK4v2y3Y
+   aBRdsufqNJVR7OsVQ0QLcCyjZDhc0cdnjOt6LzXnktezc4Fd2vbwrScdM
+   qAEoqrfJU61m/ikg1QrjOgGsg4vvDol4FnI0AeSslOkXxlidfFqWmVtIg
+   kIsD5pH3YgdBHpbbezOnyEthzPQsJTIcQPnViQ/HdFk9/thLYRO0nubtf
+   YFX308+ZV7oM4NvNMIVI3d8OU7CLzPO7ci8qWW3ldYJpn/J8XLv7IwfIK
+   sU3kKTLJ/gBO+YKxCH+c27Mi+ZO/G9Qdus1HXhO6o5GjM4RGcLrX3kvPV
+   g==;
+X-CSE-ConnectionGUID: KEmDUjKKRS6opc7oaEorSA==
+X-CSE-MsgGUID: ANtsv8NnReurM0KbrxxpAQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="17678857"
 X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="17678843"
+   d="scan'208";a="17678857"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 12:01:07 -0700
-X-CSE-ConnectionGUID: Pr6ol+dMTJ2NETEbXzs0kg==
-X-CSE-MsgGUID: zQmAWYC2SyWkBoeUEIvyEA==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 12:01:08 -0700
+X-CSE-ConnectionGUID: HnAeGdStQMSH5siphOsnlA==
+X-CSE-MsgGUID: FHnolFZfSXyObX9m1gnFKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="82499453"
+   d="scan'208";a="82499465"
 Received: from sramkris-mobl1.amr.corp.intel.com (HELO rpedgeco-desk4..) ([10.124.223.186])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 12:01:07 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 12:01:08 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -54,11 +54,10 @@ Cc: rick.p.edgecombe@intel.com,
 	linux-kernel@vger.kernel.org,
 	tony.lindgren@linux.intel.com,
 	xiaoyao.li@intel.com,
-	reinette.chatre@intel.com,
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: [PATCH v2 22/25] KVM: TDX: create/free TDX vcpu structure
-Date: Wed, 30 Oct 2024 12:00:35 -0700
-Message-ID: <20241030190039.77971-23-rick.p.edgecombe@intel.com>
+	reinette.chatre@intel.com
+Subject: [PATCH v2 24/25] KVM: x86: Introduce KVM_TDX_GET_CPUID
+Date: Wed, 30 Oct 2024 12:00:37 -0700
+Message-ID: <20241030190039.77971-25-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241030190039.77971-1-rick.p.edgecombe@intel.com>
 References: <20241030190039.77971-1-rick.p.edgecombe@intel.com>
@@ -70,172 +69,282 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Implement vcpu related stubs for TDX for create, reset and free.
+Implement an IOCTL to allow userspace to read the CPUID bit values for a
+configured TD.
 
-For now, create only the features that do not require the TDX SEAMCALL.
-The TDX specific vcpu initialization will be handled by KVM_TDX_INIT_VCPU.
+The TDX module doesn't provide the ability to set all CPUID bits. Instead
+some are configured indirectly, or have fixed values. But it does allow
+for the final resulting CPUID bits to be read. This information will be
+useful for userspace to understand the configuration of the TD, and set
+KVM's copy via KVM_SET_CPUID2.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+To prevent userspace from starting to use features that might not have KVM
+support yet, filter the reported values by KVM's support CPUID bits.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Co-developed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Signed-off-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 uAPI breakout v2:
- - Drop dummy tdx_vcpu_reset() (Binbin)
- - Add TD state handling (Tony)
+ - Improve error path for tdx_vcpu_get_cpuid() (Xu)
+ - Drop unused cpuid in struct kvm_tdx (Xu)
+ - Rip out cpuid bit filtering
+ - Fixup SEAMCALL call sites due to function parameter changes to SEAMCALL
+   wrappers (Kai)
+ - Add mmu.h for kvm_gfn_direct_bits() (Binbin)
+ - Drop unused nr_premapped (Tao)
+ - Fix formatting for tdx_vcpu_get_cpuid_leaf() (Tony)
+ - Use helpers for phys_addr_bits (Paolo)
+
 uAPI breakout v1:
- - Dropped unnecessary WARN_ON_ONCE() in tdx_vcpu_create().
-   WARN_ON_ONCE(vcpu->arch.cpuid_entries),
-   WARN_ON_ONCE(vcpu->arch.cpuid_nent)
- - Use kvm_tdx instead of to_kvm_tdx() in tdx_vcpu_create() (Chao)
-
-v19:
- - removed stale comment in tdx_vcpu_create().
-
-v18:
- - update commit log to use create instead of allocate because the patch
-   doesn't newly allocate memory for TDX vcpu.
-
-v16:
- - Add AMX support as the KVM upstream supports it.
---
-2.46.0
+ - New patch
 ---
- arch/x86/kvm/vmx/main.c    | 42 ++++++++++++++++++++++++++++++++++----
- arch/x86/kvm/vmx/tdx.c     | 34 ++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/x86_ops.h |  8 ++++++++
- 3 files changed, 80 insertions(+), 4 deletions(-)
+ arch/x86/include/uapi/asm/kvm.h |   1 +
+ arch/x86/kvm/vmx/tdx.c          | 167 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/tdx_arch.h     |   5 +
+ arch/x86/kvm/vmx/tdx_errno.h    |   1 +
+ 4 files changed, 174 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 559f9450dec7..0548d54eb055 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -64,6 +64,40 @@ static void vt_vm_free(struct kvm *kvm)
- 		tdx_vm_free(kvm);
- }
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 2cfec4b42b9d..36fa03376581 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -931,6 +931,7 @@ enum kvm_tdx_cmd_id {
+ 	KVM_TDX_CAPABILITIES = 0,
+ 	KVM_TDX_INIT_VM,
+ 	KVM_TDX_INIT_VCPU,
++	KVM_TDX_GET_CPUID,
  
-+static int vt_vcpu_precreate(struct kvm *kvm)
-+{
-+	if (is_td(kvm))
-+		return 0;
-+
-+	return vmx_vcpu_precreate(kvm);
-+}
-+
-+static int vt_vcpu_create(struct kvm_vcpu *vcpu)
-+{
-+	if (is_td_vcpu(vcpu))
-+		return tdx_vcpu_create(vcpu);
-+
-+	return vmx_vcpu_create(vcpu);
-+}
-+
-+static void vt_vcpu_free(struct kvm_vcpu *vcpu)
-+{
-+	if (is_td_vcpu(vcpu)) {
-+		tdx_vcpu_free(vcpu);
-+		return;
-+	}
-+
-+	vmx_vcpu_free(vcpu);
-+}
-+
-+static void vt_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
-+{
-+	if (is_td_vcpu(vcpu))
-+		return;
-+
-+	vmx_vcpu_reset(vcpu, init_event);
-+}
-+
- static int vt_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
- {
- 	if (!is_td(kvm))
-@@ -100,10 +134,10 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.vm_destroy = vt_vm_destroy,
- 	.vm_free = vt_vm_free,
- 
--	.vcpu_precreate = vmx_vcpu_precreate,
--	.vcpu_create = vmx_vcpu_create,
--	.vcpu_free = vmx_vcpu_free,
--	.vcpu_reset = vmx_vcpu_reset,
-+	.vcpu_precreate = vt_vcpu_precreate,
-+	.vcpu_create = vt_vcpu_create,
-+	.vcpu_free = vt_vcpu_free,
-+	.vcpu_reset = vt_vcpu_reset,
- 
- 	.prepare_switch_to_guest = vmx_prepare_switch_to_guest,
- 	.vcpu_load = vmx_vcpu_load,
+ 	KVM_TDX_CMD_NR_MAX,
+ };
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 17df857ae4c1..479ffb8f41c8 100644
+index 9008db6cf3b4..1feb3307fd70 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -416,6 +416,40 @@ int tdx_vm_init(struct kvm *kvm)
- 	return 0;
+@@ -2,6 +2,7 @@
+ #include <linux/cpu.h>
+ #include <asm/tdx.h>
+ #include "capabilities.h"
++#include "mmu.h"
+ #include "x86_ops.h"
+ #include "tdx.h"
+ 
+@@ -857,6 +858,94 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	return ret;
  }
  
-+int tdx_vcpu_create(struct kvm_vcpu *vcpu)
++static u64 tdx_td_metadata_field_read(struct kvm_tdx *tdx, u64 field_id,
++				      u64 *data)
++{
++	u64 err;
++
++	err = tdh_mng_rd(tdx->tdr_pa, field_id, data);
++
++	return err;
++}
++
++#define TDX_MD_UNREADABLE_LEAF_MASK	GENMASK(30, 7)
++#define TDX_MD_UNREADABLE_SUBLEAF_MASK	GENMASK(31, 7)
++
++static int tdx_read_cpuid(struct kvm_vcpu *vcpu, u32 leaf, u32 sub_leaf,
++			  bool sub_leaf_set, struct kvm_cpuid_entry2 *out)
 +{
 +	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
++	u64 field_id = TD_MD_FIELD_ID_CPUID_VALUES;
++	u64 ebx_eax, edx_ecx;
++	u64 err = 0;
 +
-+	if (kvm_tdx->state != TD_STATE_INITIALIZED)
-+		return -EIO;
-+
-+	/* TDX only supports x2APIC, which requires an in-kernel local APIC. */
-+	if (!vcpu->arch.apic)
++	if (sub_leaf & TDX_MD_UNREADABLE_LEAF_MASK ||
++	    sub_leaf_set & TDX_MD_UNREADABLE_SUBLEAF_MASK)
 +		return -EINVAL;
 +
-+	fpstate_set_confidential(&vcpu->arch.guest_fpu);
++	/*
++	 * bit 23:17, REVSERVED: reserved, must be 0;
++	 * bit 16,    LEAF_31: leaf number bit 31;
++	 * bit 15:9,  LEAF_6_0: leaf number bits 6:0, leaf bits 30:7 are
++	 *                      implicitly 0;
++	 * bit 8,     SUBLEAF_NA: sub-leaf not applicable flag;
++	 * bit 7:1,   SUBLEAF_6_0: sub-leaf number bits 6:0. If SUBLEAF_NA is 1,
++	 *                         the SUBLEAF_6_0 is all-1.
++	 *                         sub-leaf bits 31:7 are implicitly 0;
++	 * bit 0,     ELEMENT_I: Element index within field;
++	 */
++	field_id |= ((leaf & 0x80000000) ? 1 : 0) << 16;
++	field_id |= (leaf & 0x7f) << 9;
++	if (sub_leaf_set)
++		field_id |= (sub_leaf & 0x7f) << 1;
++	else
++		field_id |= 0x1fe;
 +
-+	vcpu->arch.efer = EFER_SCE | EFER_LME | EFER_LMA | EFER_NX;
++	err = tdx_td_metadata_field_read(kvm_tdx, field_id, &ebx_eax);
++	if (err) //TODO check for specific errors
++		goto err_out;
 +
-+	vcpu->arch.cr0_guest_owned_bits = -1ul;
-+	vcpu->arch.cr4_guest_owned_bits = -1ul;
++	out->eax = (u32) ebx_eax;
++	out->ebx = (u32) (ebx_eax >> 32);
 +
-+	vcpu->arch.tsc_offset = kvm_tdx->tsc_offset;
-+	vcpu->arch.l1_tsc_offset = vcpu->arch.tsc_offset;
-+	vcpu->arch.guest_state_protected =
-+		!(to_kvm_tdx(vcpu->kvm)->attributes & TDX_TD_ATTR_DEBUG);
++	field_id++;
++	err = tdx_td_metadata_field_read(kvm_tdx, field_id, &edx_ecx);
++	/*
++	 * It's weird that reading edx_ecx fails while reading ebx_eax
++	 * succeeded.
++	 */
++	if (WARN_ON_ONCE(err))
++		goto err_out;
 +
-+	if ((kvm_tdx->xfam & XFEATURE_MASK_XTILE) == XFEATURE_MASK_XTILE)
-+		vcpu->arch.xfd_no_write_intercept = true;
++	out->ecx = (u32) edx_ecx;
++	out->edx = (u32) (edx_ecx >> 32);
++
++	out->function = leaf;
++	out->index = sub_leaf;
++	out->flags |= sub_leaf_set ? KVM_CPUID_FLAG_SIGNIFCANT_INDEX : 0;
++
++	/*
++	 * Work around missing support on old TDX modules, fetch
++	 * guest maxpa from gfn_direct_bits.
++	 */
++	if (leaf == 0x80000008) {
++		gpa_t gpa_bits = gfn_to_gpa(kvm_gfn_direct_bits(vcpu->kvm));
++		unsigned int g_maxpa = __ffs(gpa_bits) + 1;
++
++		out->eax = tdx_set_guest_phys_addr_bits(out->eax, g_maxpa);
++	}
 +
 +	return 0;
++
++err_out:
++	out->eax = 0;
++	out->ebx = 0;
++	out->ecx = 0;
++	out->edx = 0;
++
++	return -EIO;
 +}
 +
-+void tdx_vcpu_free(struct kvm_vcpu *vcpu)
-+{
-+	/* This is stub for now.  More logic will come. */
-+}
-+
- static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
+ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
  {
- 	const struct tdx_sys_info_td_conf *td_conf = &tdx_sysinfo->td_conf;
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index e7d5afce68f0..107c60ac94f4 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -122,12 +122,20 @@ void vmx_setup_mce(struct kvm_vcpu *vcpu);
- int tdx_vm_init(struct kvm *kvm);
- void tdx_mmu_release_hkid(struct kvm *kvm);
- void tdx_vm_free(struct kvm *kvm);
-+
- int tdx_vm_ioctl(struct kvm *kvm, void __user *argp);
-+
-+int tdx_vcpu_create(struct kvm_vcpu *vcpu);
-+void tdx_vcpu_free(struct kvm_vcpu *vcpu);
- #else
- static inline int tdx_vm_init(struct kvm *kvm) { return -EOPNOTSUPP; }
- static inline void tdx_mmu_release_hkid(struct kvm *kvm) {}
- static inline void tdx_vm_free(struct kvm *kvm) {}
-+
- static inline int tdx_vm_ioctl(struct kvm *kvm, void __user *argp) { return -EOPNOTSUPP; }
-+
-+static inline int tdx_vcpu_create(struct kvm_vcpu *vcpu) { return -EOPNOTSUPP; }
-+static inline void tdx_vcpu_free(struct kvm_vcpu *vcpu) {}
- #endif
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+@@ -1055,6 +1144,81 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	return ret;
+ }
  
- #endif /* __KVM_X86_VMX_X86_OPS_H */
++/* Sometimes reads multipple subleafs. Return how many enties were written. */
++static int tdx_vcpu_get_cpuid_leaf(struct kvm_vcpu *vcpu, u32 leaf, int max_cnt,
++				   struct kvm_cpuid_entry2 *output_e)
++{
++	int i;
++
++	if (!max_cnt)
++		return 0;
++
++	/* First try without a subleaf */
++	if (!tdx_read_cpuid(vcpu, leaf, 0, false, output_e))
++		return 1;
++
++	/*
++	 * If the try without a subleaf failed, try reading subleafs until
++	 * failure. The TDX module only supports 6 bits of subleaf index.
++	 */
++	for (i = 0; i < 0b111111; i++) {
++		if (i > max_cnt)
++			goto out;
++
++		/* Keep reading subleafs until there is a failure. */
++		if (tdx_read_cpuid(vcpu, leaf, i, true, output_e))
++			return i;
++
++		output_e++;
++	}
++
++out:
++	return i;
++}
++
++static int tdx_vcpu_get_cpuid(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
++{
++	struct kvm_cpuid2 __user *output, *td_cpuid;
++	struct kvm_cpuid_entry2 *output_e;
++	int r = 0, i = 0, leaf;
++
++	output = u64_to_user_ptr(cmd->data);
++	td_cpuid = kzalloc(sizeof(*td_cpuid) +
++			sizeof(output->entries[0]) * KVM_MAX_CPUID_ENTRIES,
++			GFP_KERNEL);
++	if (!td_cpuid)
++		return -ENOMEM;
++
++	for (leaf = 0; leaf <= 0x1f; leaf++) {
++		output_e = &td_cpuid->entries[i];
++		i += tdx_vcpu_get_cpuid_leaf(vcpu, leaf,
++					     KVM_MAX_CPUID_ENTRIES - i - 1,
++					     output_e);
++	}
++
++	for (leaf = 0x80000000; leaf <= 0x80000008; leaf++) {
++		output_e = &td_cpuid->entries[i];
++		i += tdx_vcpu_get_cpuid_leaf(vcpu, leaf,
++					     KVM_MAX_CPUID_ENTRIES - i - 1,
++					     output_e);
++	}
++
++	td_cpuid->nent = i;
++
++	if (copy_to_user(output, td_cpuid, sizeof(*output))) {
++		r = -EFAULT;
++		goto out;
++	}
++	if (copy_to_user(output->entries, td_cpuid->entries,
++			 td_cpuid->nent * sizeof(struct kvm_cpuid_entry2)))
++		r = -EFAULT;
++
++out:
++	kfree(td_cpuid);
++
++	return r;
++}
++
+ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
+ {
+ 	struct msr_data apic_base_msr;
+@@ -1108,6 +1272,9 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
+ 	case KVM_TDX_INIT_VCPU:
+ 		ret = tdx_vcpu_init(vcpu, &cmd);
+ 		break;
++	case KVM_TDX_GET_CPUID:
++		ret = tdx_vcpu_get_cpuid(vcpu, &cmd);
++		break;
+ 	default:
+ 		ret = -EINVAL;
+ 		break;
+diff --git a/arch/x86/kvm/vmx/tdx_arch.h b/arch/x86/kvm/vmx/tdx_arch.h
+index 9d41699e66a2..d80ec118834e 100644
+--- a/arch/x86/kvm/vmx/tdx_arch.h
++++ b/arch/x86/kvm/vmx/tdx_arch.h
+@@ -157,4 +157,9 @@ struct td_params {
+ 
+ #define MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM	BIT_ULL(20)
+ 
++/*
++ * TD scope metadata field ID.
++ */
++#define TD_MD_FIELD_ID_CPUID_VALUES		0x9410000300000000ULL
++
+ #endif /* __KVM_X86_TDX_ARCH_H */
+diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/kvm/vmx/tdx_errno.h
+index dc3fa2a58c2c..f9dbb3a065cc 100644
+--- a/arch/x86/kvm/vmx/tdx_errno.h
++++ b/arch/x86/kvm/vmx/tdx_errno.h
+@@ -23,6 +23,7 @@
+ #define TDX_FLUSHVP_NOT_DONE			0x8000082400000000ULL
+ #define TDX_EPT_WALK_FAILED			0xC0000B0000000000ULL
+ #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
++#define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
+ 
+ /*
+  * TDX module operand ID, appears in 31:0 part of error code as
 -- 
 2.47.0
 
