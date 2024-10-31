@@ -1,33 +1,61 @@
-Received: from mediconcil.de (mail.mediconcil.de [91.107.198.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602AD199FAF
-	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 20:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.107.198.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4484149C55;
+	Thu, 31 Oct 2024 20:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730407194; cv=none; b=cwuSc/dPhrWr9mzzdf4y/YFzMfOTQIRHc6mS52vSA1xf5r1XBag6YXlpZ1a7XWBPFGdTL8Rgw96zn98BNu+DowvVOZs5Y8BoT4vpuCTL10dOZ8MNzdFdvK9HJumhyMUlZcLwNNiYKLmsKgATkN8zolc82E6LZcS2uCN+etbWmSI=
+	t=1730407391; cv=none; b=NKI2eZTcXD4gGnQ966LEFxyxOQQE1uOmDpmih0aXhFnqDXs0qXpT/tqnr1ja1sYM9NqKu6O64NDv4bjvrq8Y/VGpEjABgGODWS1RZZxideCeTM4372rZLGT22XLmIEMQQ3h7ssAThUqauzBbEO3+lbw1i/PKmLI5grqyAKF8K8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730407194; c=relaxed/simple;
-	bh=TvR5BYmZF8Ioi3rUdxIKWoxJqY1greZXSh4RxUX61ak=;
+	s=arc-20240116; t=1730407391; c=relaxed/simple;
+	bh=H9TYKTBvHoQ5rvWOlZrf5R8cp5gm744S0WtiOVj2YhM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NwsucIHrBF2LZm2jYKefbeA+AniIQdwW4185qYcWM3wtMWcHGtAvs1OKR4x45yyonlhxEsp3KcM38/dJVKRQrJFE7+P3lpopOcF9dQ8F3zWJWQa+8NA6Mgr1jLefg7RnFetpSEWC5F/TQnEknNVryYlMNpVXTH36idSIfKU78E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpico.io; spf=none smtp.mailfrom=mias.mediconcil.de; arc=none smtp.client-ip=91.107.198.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpico.io
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mias.mediconcil.de
-Received: from bernie by mediconcil.de with local (Exim 4.96)
-	(envelope-from <bernie@mias.mediconcil.de>)
-	id 1t6bT7-00ENqN-17;
-	Thu, 31 Oct 2024 21:08:33 +0100
-Date: Thu, 31 Oct 2024 21:08:33 +0100
-From: Bernhard Kauer <bk@alpico.io>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Bernhard Kauer <bk@alpico.io>, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: drop the kvm_has_noapic_vcpu optimization
-Message-ID: <ZyPjwW55n0JHg0pu@mias.mediconcil.de>
-References: <20241018100919.33814-1-bk@alpico.io>
- <Zxfhy9uifey4wShq@google.com>
- <Zxf4FeRtA3xzdZG3@mias.mediconcil.de>
- <ZyOvPYHrpgPbxUtX@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dQ6vyye8Y2R4V3qRUCATesG+f7RmUzE2M+Is2l+G1NUeK/6fHM7Qd/ZKl2NlNiRAbO8XyZNvOTYFegqzhiXJPT8kXgN87d7JSrcOjY6tw7PvylqA2DSCMULKkfWZnjov8kxP7DF5OGoAadJoji7wnuGIXVUbKiC3I+Kh7wTH9sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lr7kPUgI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lr7kPUgI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7011FC4CEC3;
+	Thu, 31 Oct 2024 20:43:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730407391;
+	bh=H9TYKTBvHoQ5rvWOlZrf5R8cp5gm744S0WtiOVj2YhM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lr7kPUgI/7iVNgICJResGJ30FaV5ODcyHJ9WGRkVobW4I+2qmOuISPyR7TgVvtOL0
+	 SmzSJOoShZhbOMucGyUH2uuWA6uV+MEqkVpWqucL5pewOQIRjkLlpdRuvDl1QVDfWX
+	 j1897yIh4R6d4BkCIdg8zDSKqwvM5/ucAQVUt6ez1WZ9F859wkA3oJfZDIz3/BvZ9Q
+	 CFmDxviw5iM6FMEQKmQ/YcUbuNijZ7G5KlXaJgFBJfCLtyj90f3jtiAtedA93PWWwn
+	 Aojx0RCSHe5LU/8+xXjxLd+N9OOoZAjQdgre/g+5QavM+S81ng8FOAv7tC01+C4SFj
+	 e0eXzNVUyHdgQ==
+Date: Thu, 31 Oct 2024 22:43:06 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
+	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 00/17] Provide a new two step DMA mapping API
+Message-ID: <20241031204306.GB88858@unreal>
+References: <cover.1730298502.git.leon@kernel.org>
+ <3144b6e7-5c80-46d2-8ddc-a71af3c23072@kernel.dk>
+ <20241031083450.GA30625@lst.de>
+ <20241031090530.GC7473@unreal>
+ <20241031092113.GA1791@lst.de>
+ <20241031093746.GA88858@unreal>
+ <8b4500da-4ed8-4cd2-ba3b-0c2d0b5b4551@kernel.dk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -36,64 +64,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZyOvPYHrpgPbxUtX@google.com>
+In-Reply-To: <8b4500da-4ed8-4cd2-ba3b-0c2d0b5b4551@kernel.dk>
 
-On Thu, Oct 31, 2024 at 09:24:29AM -0700, Sean Christopherson wrote:
-> On Tue, Oct 22, 2024, Bernhard Kauer wrote:
-> > > > It used a static key to avoid loading the lapic pointer from
-> > > > the vcpu->arch structure.  However, in the common case the load
-> > > > is from a hot cacheline and the CPU should be able to perfectly
-> > > > predict it. Thus there is no upside of this premature optimization.
-> > >
-> > > Do you happen to have performance numbers?
-> >
-> > Sure.  I have some preliminary numbers as I'm still optimizing the
-> > round-trip time for tiny virtual machines.
-> >
-> > A hello-world micro benchmark on my AMD 6850U needs at least 331us.  With
-> > the static keys it requires 579us.  That is a 75% increase.
->
-> For the first VM only though, correct?
+On Thu, Oct 31, 2024 at 11:43:50AM -0600, Jens Axboe wrote:
+> On 10/31/24 3:37 AM, Leon Romanovsky wrote:
+> > On Thu, Oct 31, 2024 at 10:21:13AM +0100, Christoph Hellwig wrote:
+> >> On Thu, Oct 31, 2024 at 11:05:30AM +0200, Leon Romanovsky wrote:
+> >>> This series is a subset of the series you tested and doesn't include the
+> >>> block layer changes which most likely were the cause of the performance
+> >>> regression.
+> >>>
+> >>> This is why I separated the block layer changes from the rest of the series
+> >>> and marked them as RFC.
+> >>>
+> >>> The current patch set is viable for HMM and VFIO. Can you please retest
+> >>> only this series and leave the block layer changes for later till Christoph
+> >>> finds the answer for the performance regression?
+> >>
+> >> As the subset doesn't touch block code or code called by block I don't
+> >> think we need Jens to benchmark it, unless he really wants to.
+> > 
+> > He wrote this sentence in his email, while responding on subset which
+> > doesn't change anything in block layer: "just want to make sure
+> > something like this doesn't get merged until that is both fully
+> > understood and sorted out."
+> > 
+> > This series works like a charm for RDMA (HMM) and VFIO.
+> 
+> I don't care about rdma/vfio, nor do I test it, so you guys can do
+> whatever you want there, as long as it doesn't regress the iommu side.
+> The block series is separate, so we'll deal with that when we get there.
+> 
+> I don't know why you CC'ed linux-block on the series.
 
-That is right. If I keep one VM in the background the overhead is not
-measureable anymore.
+Because of the second part, which is marked as RFC and based on this
+one. I think that it is better to present whole picture to everyone
+interested in the discussion.
 
+Thanks
 
-> > Take the absolute values with a grain of salt as not all of my patches might
-> > be applicable to the general case.
-> >
-> > For the other side I don't have a relevant benchmark yet.  But I doubt you
-> > would see anything even with a very high IRQ rate.
-> >
-> >
-> > > > The downside is that code patching including an IPI to all CPUs
-> > > > is required whenever the first VM without an lapic is created or
-> > > > the last is destroyed.
-> > >
-> > > In practice, this almost never happens though.  Do you have a use case for
-> > > creating VMs without in-kernel local APICs?
-> >
-> > I switched from "full irqchip" to "no irqchip" due to a significant
-> > performance gain
->
-> Signifcant performance gain for what path?  I'm genuinely curious.
-
-I have this really slow PREEMPT_RT kernel (Debian 6.11.4-rt-amd64).
-The hello-world benchmark takes on average 100ms.  With IRQCHIP it goes
-up to 220ms.  An strace gives 83ms for the extra ioctl:
-
-        ioctl(4, KVM_CREATE_IRQCHIP, 0)         = 0 <0.083242>
-
-My current theory is that RCU takes ages on this kernel.  And creating an
-IOAPIC uses SRCU to synchronize the bus array...
-
-However, in my latest benchmark runs the overhead for IRQCHIP is down to 15
-microseconds.  So no big deal anymore.
-
-
-> Unless your VM doesn't need a timer and doesn't need interrupts of
-> any kind, emulating the local APIC in userspace is going to be much
-> less performant.
-
-
-Do you have any performance numbers?
+> 
+> -- 
+> Jens Axboe
+> 
