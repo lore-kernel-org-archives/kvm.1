@@ -1,83 +1,90 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D0A1CCB59
-	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 19:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED17F1CBEA2
+	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 19:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404596; cv=none; b=QFMdZSkumXk7ycZ+vlGwkXvev4OSzkKVowwXefhNgTA4tXOd0SptojWK+tA+KmHy4Y4huy4QOy0RKEnnbaGmNU4wQ2v861ijfd07UwfPdqITZLhJr1uorZ95FLCPTd8jmLkIEhG/UFitSKKJpl2TeKLbIakV7JI8+6nfDMBRXVg=
+	t=1730404607; cv=none; b=aiQ5nD7LhpEqNtxx41rFZKqaU3woUgWPs3hfJM9WPusoY4pCnu2itLsx9XIrDFjVmRymKd+Y4wKJDdMSIovOp25F4jPvvjK/2R3nxgKPF/vrmSjzw6LgYB+TvPd7qO5z6OdINSX/HF88s2lb691r8ySoudCl4DDfnYnsjWFhZfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404596; c=relaxed/simple;
-	bh=scF15DBRDvh6LFM+yJGz6csw0YC4b82QxVRvUgcjjIU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tuBf3kjMfCS/UnSSl8+5rIr1BJ0ZRsXTbQVptaYiCvmpAVrdCrNmvXTVD45fCE6lHkFEjBc7UWUUbj5ct5W30sf5335+0Kn/snjaTHnXnylQlrqyT41MA3cf3Ewmr0VrwEXveoMlR4OSE1zdsho/rL2BllHjikwp1IN8UF3UVqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FEP9wUf8; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1730404607; c=relaxed/simple;
+	bh=n42bIm0EJKSGiSdPBDn9xkTrd4XZQCY/ki0lBaAt+Bk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PB43wt9ML/fZtmdHeG6sknHRoo58raP7JKnwXPpdGzXa1+8gx3eNvtCqf7p3nlXi7pGC8EsFvJsuK6flP7QqG+c+MMBSTeLWGhc1FEyZnz7gtjBK++q6pKumXcZGsaPswrRFtEhke3q4OccoRx8xON2hxZ8Dbv+b1dN/x1D2zhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h0t050Bk; arc=none smtp.client-ip=95.215.58.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FEP9wUf8"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e30cf48435fso2560972276.0
-        for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 12:56:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730404593; x=1731009393; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XJBNJUwhGy6IFJuYLeumtEE8caNJWotKSkO0EVZhaWc=;
-        b=FEP9wUf8hnslC1NQFqAn9PxqzIrt8XTcRXc1CctzgifHR6xsfZ7Tw6bfHpZtOXZDoK
-         mLH3Hoat99LsGt+sLhjvyh4XgfhVffNnfv0HWtqX3L2LcvKuGSl8byIMM1MEt/uQcTAk
-         ltjm4/JD0dwDBlm83a3a5FPRDLr3blWvgkdMmtH6c7l5pHmtWz2uxEGFNDJo/fKznQrM
-         ZhzQ6NKXCuhgXfu2aVMDgSUXcAh1duO2vC6EdZApAzbPjkhi6EWNGIxZIzMN55Go/g/a
-         jHySlMve48YhzpuVG4Yq0vnI5aQELPaDKwkm4CXGhE9fCsHVK9TnYuWtxOCY5CAh1wNW
-         Oz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730404593; x=1731009393;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XJBNJUwhGy6IFJuYLeumtEE8caNJWotKSkO0EVZhaWc=;
-        b=cAun1MxG+JUCDwGTmOvWLTT93VEsAYEXKEJOdZDLughjEHv4gBLDn1fn2rQksbVOef
-         kGh58Yyu7U/tT88XJJiP4TRNCSY032qLSNJ8c6YxpvV+MlFXmueeUfHoumB84yvE50wI
-         TlCgp1l5AQztmmv1gHrCw24Sjn2VocZeTxXdTlZ7XUxiZMX6Wqzu3lEq08X/UTPYIPxY
-         dcktTZ0FdALOJpHa12QUNrm7Vchn1kOXZG+5uPPc3PcbZRLiaGloTry8HWJxYoIxkLy8
-         fqJPugBI6s436OAoov9wF2oMyt+bsj2UiGmyE/u6MIrLvqpO8IJOHySDQsT3pjCgv/qv
-         ec6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/KkSvLI2jyQf73ZJOLPHcYfg2T7AgwvctSxnPg3VeqXAynPIhM9MHnoXLyC7l23oMG6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywoz2g9FSKaL4yE5bM42t6KdZKlrmc6nFFF+qflXQaGq7t9cOXt
-	r6MVHruHf1TDpJ2W96JZbHmOd20INvIlcwUEnvR+T+5Iv78XN4oW18f9KvSrMTpe1m2/nm4u7WQ
-	SWw==
-X-Google-Smtp-Source: AGHT+IF5mY8H8HWNIZUe92ntcTAhodfObTAzfmyjPW6IHcMnBhuTa1ixQoAbbew71W7KOu+g/mzrj4F22KI=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a25:b28c:0:b0:e28:e97f:538d with SMTP id
- 3f1490d57ef6-e30cf49bcc3mr5142276.6.1730404593224; Thu, 31 Oct 2024 12:56:33
- -0700 (PDT)
-Date: Thu, 31 Oct 2024 12:51:52 -0700
-In-Reply-To: <20240913054315.130832-1-jiapeng.chong@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h0t050Bk"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730404601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ETPLCcFOzsbm2EUKzHQHpjrgkvcCKJmMREUbmAxMcBE=;
+	b=h0t050BkX3ihCZkm0W74a9hiZ/GkSTBi0EHcfzhpLzK/YJ1qkNFIaHnidJggXPZ2y98CAz
+	+QQQDV/z0K/cRFxB7iB9bC6zDRytorf1X/deRUGQClrGZKcG0MYC3n8M5EgSFI74RzFDRA
+	pJ2n8dZlCe24+bCRU88+I4G0KVC9jJs=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	kvm@vger.kernel.org,
+	syzbot <syzkaller@googlegroups.com>
+Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
+Date: Thu, 31 Oct 2024 19:56:28 +0000
+Message-ID: <173040458509.3411583.4399376120814266828.b4-ty@linux.dev>
+In-Reply-To: <20241028234533.942542-1-rananta@google.com>
+References: <20241028234533.942542-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240913054315.130832-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <173039503050.1508303.8326452918836844664.b4-ty@google.com>
-Subject: Re: [PATCH -next] KVM: selftests: Use ARRAY_SIZE for array length
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc: pbonzini@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Abaci Robot <abaci@linux.alibaba.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 13 Sep 2024 13:43:15 +0800, Jiapeng Chong wrote:
-> Use of macro ARRAY_SIZE to calculate array size minimizes
-> the redundant code and improves code reusability.
+On Mon, 28 Oct 2024 23:45:33 +0000, Raghavendra Rao Ananta wrote:
+> Improper use of userspace_irqchip_in_use led to syzbot hitting the
+> following WARN_ON() in kvm_timer_update_irq():
 > 
-> ./tools/testing/selftests/kvm/x86_64/debug_regs.c:169:32-33: WARNING: Use ARRAY_SIZE.
+> WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
+> kvm_timer_update_irq+0x21c/0x394
+> Call trace:
+>   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
+>   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
+>   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
+>   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
+>   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
+>   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
+>   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
+>   vfs_ioctl fs/ioctl.c:51 [inline]
+>   __do_sys_ioctl fs/ioctl.c:907 [inline]
+>   __se_sys_ioctl fs/ioctl.c:893 [inline]
+>   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
+>   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
+>   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
+>   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
+>   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
+>   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+>   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+> 
+> [...]
 
-Applied to kvm-x86 selftests, thanks!
+Applied to kvmarm/next, thanks!
 
-[1/1] KVM: selftests: Use ARRAY_SIZE for array length
-      https://github.com/kvm-x86/linux/commit/f8912210eb21
+[1/1] KVM: arm64: Get rid of userspace_irqchip_in_use
+      https://git.kernel.org/kvmarm/kvmarm/c/e571ebcff926
 
 --
-https://github.com/kvm-x86/linux/tree/next
+Best,
+Oliver
