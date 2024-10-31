@@ -1,242 +1,119 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846C01953B9;
-	Thu, 31 Oct 2024 09:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8821BD9ED;
+	Thu, 31 Oct 2024 09:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730366335; cv=none; b=iOtcZp5SQWsjIW2+1QshajCTPWi+GGdEV1tzSJvO0vvKTNVxEYTOKJEE65ToKfrj/1T4FPlOEK4966Kiqu+6y+PXDYg1jEnGG9FWPKClaqtQZYETgwGnVPytHwIGXsIwzMComDsP83G0RwkVJqb0ByHe/7YmHJ3PbD4OyU8Rvck=
+	t=1730366533; cv=none; b=hGgZwt0py35a186SZM/c63St8OK2pgMN0Qk+8rCHwbKoxP6xqwxR0qn8ndbGGJZe4atlm9Pbjs30UxMb1/Kco4nBN+VKPPLyujBECqwnntHUvoewdW6fValVy/L7Eih3ZLxM2tZ6CrH94H/3GdGevLrC4iqVv2RCJli7XWA7Fdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730366335; c=relaxed/simple;
-	bh=j9pEYC1oMnqKj6SaaODCHemQCh8YG4xtOCYKWT6m5Go=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ulbVgJcIXLmztBjqHHZ7sxg5fMRoAIC4sDHcCTQSBg5VK3bZcwTS62lTzHhYtWnr7e3kXMdbPe9fy3LxsUx4PWkaQNaLT//1dz5lfOmI0XCRE0p8079r+D6hLtmGs+rSxAhKcspCO+ZvMzZKV6DGMyqS9U21QRpJkpfTpFab0p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ea95kNvi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+lYYZtpA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ea95kNvi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+lYYZtpA; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1730366533; c=relaxed/simple;
+	bh=YGnkBVuQIN2Cht2/fLPoFP9QULXzYunea6TBVhxPAZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RvBsRddVHAO9mKUDtrZfO6pbUJIg8xNBDDIq4mPU0Fe6t53LiKUB1M3ogrdlIQ0fx7oTgSZxV58cvZxAXjbE5aF90MbPG28bgPH6RB7Oh7NFKjp9EYRc5rM/dhGY7BquEPbTloRXnfj4BG/PXcgehF5JodRPunCNGTSIrI/zfdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DMWQwnlQ; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ea95kNvi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+lYYZtpA";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ea95kNvi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+lYYZtpA"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 354531FE18;
-	Thu, 31 Oct 2024 09:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730366325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
-	b=Ea95kNviZxvF/MWH1YNektTuRzffklUHTKPVt+MLD8KNcUuk+RAFwME8rOfLDmUgeoNZCY
-	uHKrZVrKtjwKmHCfcdY6P5Xf2yD0jxjFQO3JjxZEAJHe6L/4OpVl2MN++X5CKYP5BBRjwP
-	GYrY0rVxH2Fcy1Msv0+vT1N9t5TR4LA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730366325;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
-	b=+lYYZtpATJvtnnHjt9JH6YqR8hovRj92QK7IQ/MlTx3aBUOCUlkgzMYDVjUJg00CqGIqAq
-	nLXkrGkIXGcGRXDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730366325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
-	b=Ea95kNviZxvF/MWH1YNektTuRzffklUHTKPVt+MLD8KNcUuk+RAFwME8rOfLDmUgeoNZCY
-	uHKrZVrKtjwKmHCfcdY6P5Xf2yD0jxjFQO3JjxZEAJHe6L/4OpVl2MN++X5CKYP5BBRjwP
-	GYrY0rVxH2Fcy1Msv0+vT1N9t5TR4LA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730366325;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
-	b=+lYYZtpATJvtnnHjt9JH6YqR8hovRj92QK7IQ/MlTx3aBUOCUlkgzMYDVjUJg00CqGIqAq
-	nLXkrGkIXGcGRXDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB49F136A5;
-	Thu, 31 Oct 2024 09:18:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uBqmKHNLI2f+JgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 31 Oct 2024 09:18:43 +0000
-Date: Thu, 31 Oct 2024 10:19:47 +0100
-Message-ID: <87plngwrws.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Philipp Stanner <pstanner@redhat.com>,	Damien Le Moal
- <dlemoal@kernel.org>,	Niklas Cassel <cassel@kernel.org>,	Sergey Shtylyov
- <s.shtylyov@omp.ru>,	Basavaraj Natikar <basavaraj.natikar@amd.com>,	Jiri
- Kosina <jikos@kernel.org>,	Benjamin Tissoires <bentiss@kernel.org>,	Arnd
- Bergmann <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Dubov <oakad@yahoo.com>,	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,	"David S. Miller"
- <davem@davemloft.net>,	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski
- <kuba@kernel.org>,	Paolo Abeni <pabeni@redhat.com>,	Rasesh Mody
- <rmody@marvell.com>,	GR-Linux-NIC-Dev@marvell.com,	Igor Mitsyanko
- <imitsyanko@quantenna.com>,	Sergey Matyukevich <geomatsi@gmail.com>,	Kalle
- Valo <kvalo@kernel.org>,	Sanjay R Mehta <sanju.mehta@amd.com>,	Shyam Sundar
- S K <Shyam-sundar.S-k@amd.com>,	Jon Mason <jdmason@kudzu.us>,	Dave Jiang
- <dave.jiang@intel.com>,	Allen Hubbe <allenbh@gmail.com>,	Bjorn Helgaas
- <bhelgaas@google.com>,	Alex Williamson <alex.williamson@redhat.com>,
-	Juergen Gross <jgross@suse.com>,	Stefano Stabellini
- <sstabellini@kernel.org>,	Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>,	Jaroslav Kysela <perex@perex.cz>,	Takashi
- Iwai <tiwai@suse.com>,	Chen Ni <nichen@iscas.ac.cn>,	Mario Limonciello
- <mario.limonciello@amd.com>,	Ricky Wu <ricky_wu@realtek.com>,	Al Viro
- <viro@zeniv.linux.org.uk>,	Breno Leitao <leitao@debian.org>,	Kevin Tian
- <kevin.tian@intel.com>,	Thomas Gleixner <tglx@linutronix.de>,	Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,	Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>,	Mostafa Saleh
- <smostafa@google.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Yi Liu
- <yi.l.liu@intel.com>,	Christian Brauner <brauner@kernel.org>,	Ankit Agrawal
- <ankita@nvidia.com>,	Eric Auger <eric.auger@redhat.com>,	Reinette Chatre
- <reinette.chatre@intel.com>,	Ye Bin <yebin10@huawei.com>,	Marek
- =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,	Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>,	Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,	Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,	Rui Salvaterra <rsalvaterra@gmail.com>,
-	linux-ide@vger.kernel.org,	linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org,	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,	ntb@lists.linux.dev,
-	linux-pci@vger.kernel.org,	kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org,	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 00/13] Remove implicit devres from pci_intx()
-In-Reply-To: <20241030221737.GA1223682@bhelgaas>
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	<20241030221737.GA1223682@bhelgaas>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DMWQwnlQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730366532; x=1761902532;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=YGnkBVuQIN2Cht2/fLPoFP9QULXzYunea6TBVhxPAZ8=;
+  b=DMWQwnlQJ7QRFBZCPL/to+Jh5emtbb/lC+reaxlLZICBRWAew5HE75r4
+   MZFTjUpyaaNHivmGaZ8dljM3WkW+1trBcqbXYvbZG0wfiyLMpQRGf/31X
+   mc+dEdLndDg3qHjVmw1zzHz2IsT6jobpPcW3FUmzg6iU8+2SXya8RRaCP
+   SFbPtKztMaek/dnElP9O+oRa0Et5b9FgC5ZPKKLONL4WmriAvlGa4+B1L
+   Bl1ni8ZclH2M35B1IzqI0DvsJIWD9M4tCmzBxANB0JIHiO2fglZVW/qwf
+   keY6iv52V1eT4DAtUp6VNjsrbTHcVQYb3FrEBiKWWGFZOMUbM4ZSCMauZ
+   w==;
+X-CSE-ConnectionGUID: z0HaoX2uR5yikZQdCOQT1A==
+X-CSE-MsgGUID: YzRDb7suQNWfgXF0xtHR1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="17737764"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="17737764"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 02:22:11 -0700
+X-CSE-ConnectionGUID: iMsz7zTRSaOO7PjEhPYepw==
+X-CSE-MsgGUID: MZcSl3FzS6aQSpd7nCJj9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="83377961"
+Received: from unknown (HELO [10.238.12.149]) ([10.238.12.149])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 02:22:08 -0700
+Message-ID: <fa3d75e8-c459-4b8e-b76a-e4209a23838c@linux.intel.com>
+Date: Thu, 31 Oct 2024 17:22:05 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_ENVRCPT(0.00)[yahoo.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_GT_50(0.00)[67];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,kernel.org,omp.ru,amd.com,arndb.de,linuxfoundation.org,yahoo.com,marvell.com,davemloft.net,google.com,quantenna.com,gmail.com,kudzu.us,intel.com,suse.com,epam.com,perex.cz,iscas.ac.cn,realtek.com,zeniv.linux.org.uk,debian.org,linutronix.de,linux.intel.com,ziepe.ca,nvidia.com,huawei.com,invisiblethingslab.com,linux.dev,vger.kernel.org,lists.linux.dev,lists.xenproject.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Score: -3.30
-X-Spam-Flag: NO
-
-On Wed, 30 Oct 2024 23:17:37 +0100,
-Bjorn Helgaas wrote:
-> 
-> On Tue, Oct 15, 2024 at 08:51:10PM +0200, Philipp Stanner wrote:
-> > @Driver-Maintainers: Your driver might be touched by patch "Remove
-> > devres from pci_intx()". You might want to take a look.
-> > 
-> > Changes since the RFC [1]:
-> >   - Add a patch deprecating pci{m}_intx(). (Heiner, Andy, Me)
-> >   - Add Acked-by's already given.
-> >   - Export pcim_intx() as a GPL function. (Alex)
-> >   - Drop patch for rts5280, since this driver will be removed quite
-> >     soon. (Philipp Hortmann, Greg)
-> >   - Use early-return in pci_intx_unmanaged() and pci_intx(). (Andy)
-> > 
-> > Hi all,
-> > 
-> > this series removes a problematic feature from pci_intx(). That function
-> > sometimes implicitly uses devres for automatic cleanup. We should get
-> > rid of this implicit behavior.
-> > 
-> > To do so, a pci_intx() version that is always-managed, and one that is
-> > never-managed are provided. Then, all pci_intx() users are ported to the
-> > version they need. Afterwards, pci_intx() can be cleaned up and the
-> > users of the never-managed version be ported back to pci_intx().
-> > 
-> > This way we'd get this PCI API consistent again.
-> > 
-> > Patch "Remove devres from pci_intx()" obviously reverts the previous
-> > patches that made drivers use pci_intx_unmanaged(). But this way it's
-> > easier to review and approve. It also makes sure that each checked out
-> > commit should provide correct behavior, not just the entire series as a
-> > whole.
-> > 
-> > Merge plan for this is to enter through the PCI tree.
-> > 
-> > [1] https://lore.kernel.org/all/20241009083519.10088-1-pstanner@redhat.com/
-> 
-> I *think* this series depends on resolution of Takashi's "Restore the
-> original INTX_DISABLE bit by pcim_intx()" patch [2], right?
-
-IIUC, it's not really dependent, as pcim_intx() has been used in
-pci_intx() internally when the PCI device is already managed.
-My patch is to correct the already existing behavior.  So I guess you
-can take this series, and I'll post the revised patch later (sorry, I
-was too busy for other tasks).
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 16/25] KVM: TDX: Get system-wide info about TDX module
+ on initialization
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, pbonzini@redhat.com,
+ seanjc@google.com, yan.y.zhao@intel.com, isaku.yamahata@gmail.com,
+ kai.huang@intel.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ xiaoyao.li@intel.com, reinette.chatre@intel.com,
+ Isaku Yamahata <isaku.yamahata@intel.com>
+References: <20241030190039.77971-1-rick.p.edgecombe@intel.com>
+ <20241030190039.77971-17-rick.p.edgecombe@intel.com>
+ <88ea52ea-df9f-45d6-9022-db4313c324e2@linux.intel.com>
+ <ZyNLYxNlD4WTABvq@tlindgre-MOBL1>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <ZyNLYxNlD4WTABvq@tlindgre-MOBL1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-thanks,
 
-Takashi
 
-> 
-> For now I'm postponing this series, but let me know if that's not the
-> right thing.
-> 
-> [2] https://lore.kernel.org/r/20241024155539.19416-1-tiwai@suse.de
-> 
-> > Philipp Stanner (13):
-> >   PCI: Prepare removing devres from pci_intx()
-> >   ALSA: hda_intel: Use always-managed version of pcim_intx()
-> >   drivers/xen: Use never-managed version of pci_intx()
-> >   net/ethernet: Use never-managed version of pci_intx()
-> >   net/ntb: Use never-managed version of pci_intx()
-> >   misc: Use never-managed version of pci_intx()
-> >   vfio/pci: Use never-managed version of pci_intx()
-> >   PCI: MSI: Use never-managed version of pci_intx()
-> >   ata: Use always-managed version of pci_intx()
-> >   wifi: qtnfmac: use always-managed version of pcim_intx()
-> >   HID: amd_sfh: Use always-managed version of pcim_intx()
-> >   Remove devres from pci_intx()
-> >   PCI: Deprecate pci_intx(), pcim_intx()
-> > 
-> >  drivers/ata/ahci.c                            |  2 +-
-> >  drivers/ata/ata_piix.c                        |  2 +-
-> >  drivers/ata/pata_rdc.c                        |  2 +-
-> >  drivers/ata/sata_sil24.c                      |  2 +-
-> >  drivers/ata/sata_sis.c                        |  2 +-
-> >  drivers/ata/sata_uli.c                        |  2 +-
-> >  drivers/ata/sata_vsc.c                        |  2 +-
-> >  drivers/hid/amd-sfh-hid/amd_sfh_pcie.c        |  4 +--
-> >  drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |  2 +-
-> >  .../wireless/quantenna/qtnfmac/pcie/pcie.c    |  2 +-
-> >  drivers/pci/devres.c                          | 29 +++++--------------
-> >  drivers/pci/pci.c                             | 19 ++++--------
-> >  include/linux/pci.h                           |  1 +
-> >  sound/pci/hda/hda_intel.c                     |  2 +-
-> >  14 files changed, 26 insertions(+), 47 deletions(-)
-> > 
-> > -- 
-> > 2.47.0
-> > 
+On 10/31/2024 5:18 PM, Tony Lindgren wrote:
+> On Thu, Oct 31, 2024 at 05:09:17PM +0800, Binbin Wu wrote:
+>>
+>>
+>> On 10/31/2024 3:00 AM, Rick Edgecombe wrote:
+>> [...]
+>>> +static u32 tdx_set_guest_phys_addr_bits(const u32 eax, int addr_bits)
+>>> +{
+>>> +	return (eax & ~GENMASK(23, 16)) | (addr_bits & 0xff) << 16;
+>>> +}
+>>> +
+>>> +#define KVM_TDX_CPUID_NO_SUBLEAF	((__u32)-1)
+>>> +
+>>> +static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char idx)
+>>> +{
+>>> +	const struct tdx_sys_info_td_conf *td_conf = &tdx_sysinfo->td_conf;
+>>> +
+>>> +	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+>>> +	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+>>> +	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+>>> +	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+>>> +	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+>>> +	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+>>> +
+>>> +	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+>>> +		entry->index = 0;
+>>> +
+>>> +	/* Work around missing support on old TDX modules */
+>>> +	if (entry->function == 0x80000008)
+>>> +		entry->eax = tdx_set_guest_phys_addr_bits(entry->eax, 0xff);
+>> Is it necessary to set bit 16~23 to 0xff?
+>> It seems that when userspace wants to retrieve the value, the GPAW will
+>> be set in tdx_read_cpuid() anyway.
+> Leaving it out currently produces:
+>
+> qemu-system-x86_64: KVM_TDX_INIT_VM failed: Invalid argument
+Yes, I forgot that userspace would use the value as the mask to filter cpuid.
+
+
+>
+> Regards,
+>
+> Tony
+
