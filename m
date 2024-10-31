@@ -1,131 +1,121 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5354F1465B4
-	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 20:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277151BDA99
+	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 20:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404826; cv=none; b=lOH28JyVb6l/U7ke8kSqlOBrHqIp+zwxJdEK+6lZJoHQ2TSBU/BiE6sHNcsLinhsCjD/QRrtBK0Yx1rlyktInqAMiARk+yWdkIYLtDWEdvP9Lx/8YIZvq3vOAz6mhlZ43LaqxSLSGo0N+jAAx8lCzc7U6xrCceUq09PjoM0mb5E=
+	t=1730405390; cv=none; b=ox6do/NGlZAX2HVo96vLKn/IHLZVcAG5D4moqLlqTuOKOqsqEIl4dAdiZ7Ha8Tg2VTluNGcXGpthf/fAdsjUC5tIuhS5kKyxproFKWMlfGDS4u2p7XPdGPXl9c2N5nVaQlWP/IysBSWDqYkr9sMrMhApxNhXzKljlRhdp1LxwxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404826; c=relaxed/simple;
-	bh=zac5tECCZ+2hkAkLwkJPyOhq3zwtGkq5DKIb7eG/CQ0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OtQz/QiA9/5UNmFXElY/p5hOODupSjSix5OvRO0nFXttKrq2L+PWAxSw4S1DOSv2CrQtQ0cJ2AtTiOmxbugwldKp9w0y9HeBRyK0tRY4wu9j2IYsmtHKaHtA05O9OF+vsBoi/k3Uv2/uZlB4ecnVZ8oGdD4qrqQwf7uq9BDJmEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hrhgrof2; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1730405390; c=relaxed/simple;
+	bh=Udpm6RI+vAu4DeQK4HRqdmPK9pOT5qP8mLEQJwd46mE=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=kTEbVmR4HG5GcOCxDqG6GJ1FXd2U/7VTncxjOXS02FJZVJMZkzF/94GQz+YD2NMgAqD6JA/P9JPd+udnZW5E/yALHl8yriq9hkcv6TrALrqyrDUvRwLdUtpvZGIA/wDRGaclJbk1qAztUaTg9JfbnFWYb/MlEHpPjOXrOrYw/Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fWHuCx5c; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hrhgrof2"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e2fb583e4cso1573597a91.3
-        for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 13:00:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fWHuCx5c"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e370d76c15so26693197b3.2
+        for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 13:09:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730404823; x=1731009623; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FpwPxjJzeooRz07SKSO5nraJTuWvMLmzD1+H6hUBWMw=;
-        b=Hrhgrof2N6km3Kx81E3r1YWa+yqp1J5yxr9FZnBty4ftJ3PekaiaKoZC+jjLAGAZBw
-         N+3nHx8hHS7836SAt88PAMs8+BgBEqfZ8/RD5n3g/hBd+fL7N63zPZu1N6afS3SORTd2
-         20ryHGYrExZ/UaxBeXcRIHbSJ/97E5rhaAYrjH1pDzO1hIIaMVd1BMbh6alZkDYEu+py
-         gKM9SKDMInQf8R9c8d2cQEisps2QYasoSKxxwnQLn1q2MlfLCNG+idsw+sDSrB+k/dC5
-         HaOB8r9VRE/gTvscqrhuxh9pia+I/h+tagn8HfWJredKO7prFVp7wtP8voWpdUkePnG5
-         eAzg==
+        d=google.com; s=20230601; t=1730405387; x=1731010187; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YYJVMBm1bZbfZ8BXA7U0ACFO0AHr0DoTfzETRNw+mrQ=;
+        b=fWHuCx5cDIIHZelGrsgLNx3xD+DnQeNFUTgNS8W1QPsGNgJcnIsA3fsViyrnxkxkpe
+         HW6xUxtayRY+3g1jiHnEG19m9fJ14qghiibOSvdwBv3BEDU/fyqkJen5D2JxFuKehIC8
+         vxivbQiAEbR+PWnzhVzKXtdm+heBGrQV1yRjl8I64AopbBXOrc/k3nBsAnGPN+Edu0CG
+         WabkXHum7FNXq8uayR6SrMo/U9gYMT/LOTEN0TgXqp0PoRBLDNAKVBp3pvumzQjmSvGN
+         NwL3BQN3Dp0D6AMCpjq7qLTpTOROFhrZFerBU/B1AmsSFSsabSYPgPnhvmEBin2/CbbL
+         2e9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730404823; x=1731009623;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FpwPxjJzeooRz07SKSO5nraJTuWvMLmzD1+H6hUBWMw=;
-        b=BdUCHrp00XFUV2PKDaZuI1sK8gcuxaqL0u2YPE5b0qxamB33zGUbpt6fO4tgIuLcKv
-         qX0y8c29ouJP+6kXFoGzMxZkkn0d6WS/3+dCnaLD8BiKsoyddvSjHFnCq2SGyuG8b6Ye
-         AfKMfk/gBcSHtBMwBl4R8VZ6pUR4WOV+1WfrnCcRZJdNgG0HuT3F147uTWlywdAriv3B
-         iKVoWewObgmql7HaxFHWBfJnzEQcNHgM01xMM6cQpGiLRhZPFPegKL5Nnm0TnViM2ffR
-         ZV9GC1iXk45h4UY8tdMS0VseQRjH9X3Ik2E5s49Rr4ZH1ztTRPnUW2foNrctugeJhNtM
-         YALg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVJWQjsMSlbLfjTzMJ/4yXLH2ggRYkC6CFgMHjnfPGTmQQbd2S2iTQU0rMDTjtxjMUnnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy27nO5ONBPWRe05J00EjyjLtYyS6DTiDI9BAXJWU7dAXYf9AC2
-	QSPq7WjT2/UU5e2gTncGLbqH8XAhAQ0LAAwvf69ZI8tlxnHi8iXwQhR09/Mi/PgmnzRvU9AYPs8
-	5aQ==
-X-Google-Smtp-Source: AGHT+IGcnRyQTYSmsVPQsBmNa2lNRelM00ivU7678Q9L5jhj6IvHRBmjGrs4VnkYXZDxVV0uM0cn6s3ZqbA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a17:90b:249:b0:2e2:ca33:1633 with SMTP id
- 98e67ed59e1d1-2e8f104cab8mr41417a91.1.1730404823666; Thu, 31 Oct 2024
- 13:00:23 -0700 (PDT)
-Date: Thu, 31 Oct 2024 13:00:22 -0700
-In-Reply-To: <20240823235648.3236880-1-dmatlack@google.com>
+        d=1e100.net; s=20230601; t=1730405387; x=1731010187;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YYJVMBm1bZbfZ8BXA7U0ACFO0AHr0DoTfzETRNw+mrQ=;
+        b=ZBlCBpgFW42/sdNbIapgu2BOyvdnG8LAjnc55M60zmu1us6gyvqm7dbi6GVKpGhDTQ
+         gjCfUOgJgHjbKlVzNvZD88qi6vrnUSfrjZeiNmQ9whxMmKBYNSTUQNHoe4mEYdDgZuTq
+         dUmy7FNyL3ETLn7TtIA1Y+svDDo0Q+fzNxQEfB0YMFWPOErzj0n10xNzupBt2JvL1kJI
+         UJAP+0dWeWn9hgiMDywx+FN8j+Lq0pUJhsBWubvGbnP0A4fyvDkGwcYhq47dvEQh2M8z
+         IS56Yqnsy+EUUp16kJXifohCNHS7xcSQbXkPNKyoj4ZqBYXkHcMrr7S/rlUgytYFgu+g
+         XhYw==
+X-Gm-Message-State: AOJu0YySLyFz5b0JkFVS8C8XMtvleVJ54Tk120bRGjAhoJvb8/0nTtT2
+	+fu17lcT5AAiVtlLyGRO6eQ0wBXcxhWxYnyrAxPeuL8N2R2RLVBKQMytMXQ1Y0kRd5c62nuBAD5
+	JWjsc2idwqsY9pdD2fkCWqw==
+X-Google-Smtp-Source: AGHT+IEpU/nsqHw2HNdrnKe90ZcgMwiw8711EjVnoYy7bqvyFHs6zt8GYUXoJCH86l1eGdVB7BBA9qy0Bkl/MtaP4g==
+X-Received: from coltonlewis-kvm.c.googlers.com ([fda3:e722:ac3:cc00:11b:3898:ac11:fa18])
+ (user=coltonlewis job=sendgmr) by 2002:a05:690c:6407:b0:6e3:8562:ffa with
+ SMTP id 00721157ae682-6e9d8b5f046mr14345247b3.5.1730405387276; Thu, 31 Oct
+ 2024 13:09:47 -0700 (PDT)
+Date: Thu, 31 Oct 2024 20:09:45 +0000
+In-Reply-To: <20240918205319.3517569-1-coltonlewis@google.com> (message from
+ Colton Lewis on Wed, 18 Sep 2024 20:53:13 +0000)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240823235648.3236880-1-dmatlack@google.com>
-Message-ID: <ZyPh1nARL4vThB4J@google.com>
-Subject: Re: [PATCH v2 0/6] KVM: x86/mmu: Optimize TDP MMU huge page recovery
- during disable-dirty-log
-From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Message-ID: <gsnth68sf306.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v2 0/6] Extend pmu_counters_test to AMD CPUs
+From: Colton Lewis <coltonlewis@google.com>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, mizhang@google.com, ljr.kernel@gmail.com, 
+	jmattson@google.com, aaronlewis@google.com, seanjc@google.com, 
+	pbonzini@redhat.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-On Fri, Aug 23, 2024, David Matlack wrote:
-> Rework the TDP MMU disable-dirty-log path to batch TLB flushes and
-> recover huge page mappings, rather than zapping and flushing for every
-> potential huge page mapping.
-> 
-> With this series, dirty_log_perf_test shows a decrease in the time it takes to
-> disable dirty logging, as well as a decrease in the number of vCPU faults:
-> 
->  $ ./dirty_log_perf_test -s anonymous_hugetlb_2mb -v 64 -e -b 4g
-> 
->  Before: Disabling dirty logging time: 14.334453428s (131072 flushes)
->  After:  Disabling dirty logging time: 4.794969689s  (76 flushes)
-> 
->  Before: 393,599      kvm:kvm_page_fault
->  After:  262,575      kvm:kvm_page_fault
-> 
+Bumping this for Mingwei
+
+Colton Lewis <coltonlewis@google.com> writes:
+
+> Extend pmu_counters_test to AMD CPUs.
+
+> As the AMD PMU is quite different from Intel with different events and
+> feature sets, this series introduces a new code path to test it,
+> specifically focusing on the core counters including the
+> PerfCtrExtCore and PerfMonV2 features. Northbridge counters and cache
+> counters exist, but are not as important and can be deferred to a
+> later series.
+
+> The first patch is a bug fix that could be submitted separately.
+
+> The series has been tested on both Intel and AMD machines, but I have
+> not found an AMD machine old enough to lack PerfCtrExtCore. I have
+> made efforts that no part of the code has any dependency on its
+> presence.
+
+> I am aware of similar work in this direction done by Jinrong Liang
+> [1]. He told me he is not working on it currently and I am not
+> intruding by making my own submission.
+
+> [1]  
+> https://lore.kernel.org/kvm/20231121115457.76269-1-cloudliang@tencent.com/
+
 > v2:
->  - Use a separate iterator to walk down to child SPTEs during huge page
->    recovery [Sean]
->  - Return SHADOW_NONPRESENT_VALUE in error conditions in
->    make_huge_spte() [Vipin][off-list]
-> 
-> v1: https://lore.kernel.org/kvm/20240805233114.4060019-8-dmatlack@google.com/
-> 
-> David Matlack (6):
->   KVM: x86/mmu: Drop @max_level from kvm_mmu_max_mapping_level()
->   KVM: x86/mmu: Batch TLB flushes when zapping collapsible TDP MMU SPTEs
->   KVM: x86/mmu: Refactor TDP MMU iter need resched check
->   KVM: x86/mmu: Recover TDP MMU huge page mappings in-place instead of
->     zapping
->   KVM: x86/mmu: Rename make_huge_page_split_spte() to make_small_spte()
->   KVM: x86/mmu: WARN if huge page recovery triggered during dirty
->     logging
-> 
->  arch/x86/include/asm/kvm_host.h |   4 +-
->  arch/x86/kvm/mmu/mmu.c          |  16 ++--
->  arch/x86/kvm/mmu/mmu_internal.h |   3 +-
->  arch/x86/kvm/mmu/spte.c         |  43 +++++++++--
->  arch/x86/kvm/mmu/spte.h         |   5 +-
->  arch/x86/kvm/mmu/tdp_mmu.c      | 129 +++++++++++++++++---------------
->  arch/x86/kvm/mmu/tdp_mmu.h      |   4 +-
->  arch/x86/kvm/x86.c              |  18 ++---
->  8 files changed, 128 insertions(+), 94 deletions(-)
+> * Test all combinations of VM setup rather than only the maximum
+>    allowed by hardware
+> * Add fixes tag to bug fix in patch 1
+> * Refine some names
 
-FYI, these are sitting in kvm-x86 mmu, but will be rebased next week, at which
-point I'll send the "official" thank yous.
+> v1:
+> https://lore.kernel.org/kvm/20240813164244.751597-1-coltonlewis@google.com/
 
-[1/8] KVM: x86/mmu: Drop @max_level from kvm_mmu_max_mapping_level()
-      https://github.com/kvm-x86/linux/commit/8ccd51cb5911
-[2/8] KVM: x86/mmu: Batch TLB flushes when zapping collapsible TDP MMU SPTEs
-      https://github.com/kvm-x86/linux/commit/35ef80eb29ab
-[3/8] KVM: x86/mmu: Check yielded_gfn for forward progress iff resched is needed
-      https://github.com/kvm-x86/linux/commit/d400ce271d9c
-[4/8] KVM: x86/mmu: Demote the WARN on yielded in xxx_cond_resched() to KVM_MMU_WARN_ON
-      https://github.com/kvm-x86/linux/commit/012a5c17cba4
-[5/8] KVM: x86/mmu: Refactor TDP MMU iter need resched check
-      https://github.com/kvm-x86/linux/commit/cb059b9e2432
-[6/8] KVM: x86/mmu: Recover TDP MMU huge page mappings in-place instead of zapping
-      https://github.com/kvm-x86/linux/commit/13237fb40c74
-[7/8] KVM: x86/mmu: Rename make_huge_page_split_spte() to make_small_spte()
-      https://github.com/kvm-x86/linux/commit/1d2a6d0b6438
-[8/8] KVM: x86/mmu: WARN if huge page recovery triggered during dirty logging
-      https://github.com/kvm-x86/linux/commit/ed5ca61d995f
+> Colton Lewis (6):
+>    KVM: x86: selftests: Fix typos in macro variable use
+>    KVM: x86: selftests: Define AMD PMU CPUID leaves
+>    KVM: x86: selftests: Set up AMD VM in pmu_counters_test
+>    KVM: x86: selftests: Test read/write core counters
+>    KVM: x86: selftests: Test core events
+>    KVM: x86: selftests: Test PerfMonV2
+
+>   .../selftests/kvm/include/x86_64/processor.h  |   7 +
+>   .../selftests/kvm/x86_64/pmu_counters_test.c  | 304 ++++++++++++++++--
+>   2 files changed, 277 insertions(+), 34 deletions(-)
+
+
+> base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
+> --
+> 2.46.0.662.g92d0881bb0-goog
