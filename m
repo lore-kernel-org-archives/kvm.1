@@ -1,90 +1,107 @@
-Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED17F1CBEA2
-	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 19:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9526D1CBE86
+	for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 19:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404607; cv=none; b=aiQ5nD7LhpEqNtxx41rFZKqaU3woUgWPs3hfJM9WPusoY4pCnu2itLsx9XIrDFjVmRymKd+Y4wKJDdMSIovOp25F4jPvvjK/2R3nxgKPF/vrmSjzw6LgYB+TvPd7qO5z6OdINSX/HF88s2lb691r8ySoudCl4DDfnYnsjWFhZfg=
+	t=1730404665; cv=none; b=aerPKfhRahE9hc5BZVYfKsVc4IfxMJdX+XuzTIsegP6QvrMAsfQKKskHcfnfAUt81gLbPeNULsGkcXcD9SQ13mxP4SxlqCcjJJ3mUh/gMWea8GbwmLh3JGsWU9c5cjPe1pGXQC/4GFN/jzPaVaXzjh6XWHDa8/QmRcLPoME+kns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404607; c=relaxed/simple;
-	bh=n42bIm0EJKSGiSdPBDn9xkTrd4XZQCY/ki0lBaAt+Bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PB43wt9ML/fZtmdHeG6sknHRoo58raP7JKnwXPpdGzXa1+8gx3eNvtCqf7p3nlXi7pGC8EsFvJsuK6flP7QqG+c+MMBSTeLWGhc1FEyZnz7gtjBK++q6pKumXcZGsaPswrRFtEhke3q4OccoRx8xON2hxZ8Dbv+b1dN/x1D2zhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h0t050Bk; arc=none smtp.client-ip=95.215.58.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1730404665; c=relaxed/simple;
+	bh=2Fc19aNgpDR3mzGTVv4Got1Gf+r4HHpn3RgIuaZAF2g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FJIOWdnYcMO+b5343jBLsfPk2PdSieXOeJSBwVVU5+UcPu9obZK3ci8QffHBDx/8/x2rFyyY6vxLPwtf2iVbUD826zd1bcz0/cvmKidnB1JmBd6z9Oppi90aQlgChHZvQuzxbQWiOlAMAX9fEiGyC8uXZgbxDRDEc07Ak5sxfSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SxN35wgT; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h0t050Bk"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730404601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ETPLCcFOzsbm2EUKzHQHpjrgkvcCKJmMREUbmAxMcBE=;
-	b=h0t050BkX3ihCZkm0W74a9hiZ/GkSTBi0EHcfzhpLzK/YJ1qkNFIaHnidJggXPZ2y98CAz
-	+QQQDV/z0K/cRFxB7iB9bC6zDRytorf1X/deRUGQClrGZKcG0MYC3n8M5EgSFI74RzFDRA
-	pJ2n8dZlCe24+bCRU88+I4G0KVC9jJs=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	kvm@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-Date: Thu, 31 Oct 2024 19:56:28 +0000
-Message-ID: <173040458509.3411583.4399376120814266828.b4-ty@linux.dev>
-In-Reply-To: <20241028234533.942542-1-rananta@google.com>
-References: <20241028234533.942542-1-rananta@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SxN35wgT"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7edbbc3a9f2so1072600a12.1
+        for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 12:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730404662; x=1731009462; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r3F9Tm970l4i2U3QXrbYzHLxCe+D7csKpxz2qtmFNYg=;
+        b=SxN35wgTI6NS20YXWP5iK0E8Tsd03KheAXwlbQf0XMyVS40H4fvYKiRPJeRgh93Xt/
+         86ke/rTF963NMz/TOcXIo2OQJ8CGn+km0n8ul0/gUr0t8EOy5U1JADRS7NY1JocVeKb3
+         4h6Z5YzLfl7x1o+WRPQD4GN6HkDLAEFakSw4Jj27BqkCOiTCdgUQTKm8W2yUoe87q/z/
+         ZJkcqzpg9yGuP24aRS7Nzu6gDs5kadry1S+mxHPGomHdyW2AQx+f6z0Q9lL0BnRoReFd
+         NcMyWlSI34kd7S95UY0z0ARR1wBQ4mj0CMRx6C8/U6oJh4YUhDvrzVWw7ZcqWW7xAfp/
+         ZSIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730404662; x=1731009462;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r3F9Tm970l4i2U3QXrbYzHLxCe+D7csKpxz2qtmFNYg=;
+        b=xBd4UzsanwXreAT1Fc/8F+4qazfSuh/cA2Kfxbp7iaF+X84yjzvMehOw6iOb8MUDvi
+         M08H1ZCuHePkhTa0Q8QrrhrSVfatqt3AudY2f03pCw9317uigPDL5xlYscv+4ZPVAOV+
+         kMADqClZQmRGsvG+KkqqrtNctmpfqcn0NpWpGu65ZTN0++XGXXVcn7CgB3dSRdOxABPA
+         t903osPPNv6rewr+95gR/y1gp6xgNvDSDS7zg9FP5HXnJwvJeTRelNahwd8YdcnrGNmE
+         d5owF1qymnvxy4dUyJDkEXHXsm9+BmplJiuNcj/eRV0sn5eKjZz1TyLnFptuaAx0FzTr
+         wXnw==
+X-Gm-Message-State: AOJu0Ywe63nXdOsx2M7m0lU7AUipirStTtqxngkIZNiJpMj1gbM5TmoD
+	lGksjERmdjQR2ftDUO3aqHyBMevZKsE6HBabAAl6a8LZpD4Ir9Rd/6Hglsgyo5mTt8/IIM3gK6W
+	HBQ==
+X-Google-Smtp-Source: AGHT+IHJeeAdS9rX0jZKNYaNs9beXWhUbrThmwMi/rJoQs4GPjqBRKiwtplnoDKJEyuaFFJpDVkqDduBv90=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a17:90b:2347:b0:2e2:eba1:a18e with SMTP id
+ 98e67ed59e1d1-2e8f11dc30cmr35626a91.5.1730404661753; Thu, 31 Oct 2024
+ 12:57:41 -0700 (PDT)
+Date: Thu, 31 Oct 2024 12:51:54 -0700
+In-Reply-To: <20241003234337.273364-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20241003234337.273364-1-seanjc@google.com>
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <173039505052.1508646.12399325550980838662.b4-ty@google.com>
+Subject: Re: [PATCH 00/11] KVM: selftests: AVX support + fixes
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, 28 Oct 2024 23:45:33 +0000, Raghavendra Rao Ananta wrote:
-> Improper use of userspace_irqchip_in_use led to syzbot hitting the
-> following WARN_ON() in kvm_timer_update_irq():
+On Thu, 03 Oct 2024 16:43:26 -0700, Sean Christopherson wrote:
+> Enable CR4.OSXSAVE and XCR0.AVX by default when creating selftests vCPUs
+> in order to play nice with compilers that have been configured to enable
+> -march=x86-64-v3 by default.
 > 
-> WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
-> kvm_timer_update_irq+0x21c/0x394
-> Call trace:
->   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
->   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
->   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
->   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
->   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
->   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
->   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
->   vfs_ioctl fs/ioctl.c:51 [inline]
->   __do_sys_ioctl fs/ioctl.c:907 [inline]
->   __se_sys_ioctl fs/ioctl.c:893 [inline]
->   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
->   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
->   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
->   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
->   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
->   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
->   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+> While it would be easier to force v2 (or earlier), there are enough tests
+> that want XCR0 configured that it will (hopefully) be a net postive to
+> enable all XCR0 features by default.
 > 
 > [...]
 
-Applied to kvmarm/next, thanks!
+Applied to kvm-x86 selftests, minus patch 1 which went into 6.12.  At some point
+in the 6.13 cycle I'll send a revert for the "march" madness.
 
-[1/1] KVM: arm64: Get rid of userspace_irqchip_in_use
-      https://git.kernel.org/kvmarm/kvmarm/c/e571ebcff926
+[01/11] KVM: selftests: Fix out-of-bounds reads in CPUID test's array lookups
+        (no commit info)
+[02/11] KVM: selftests: Precisely mask off dynamic fields in CPUID test
+        https://github.com/kvm-x86/linux/commit/c0124e2e74a7
+[03/11] KVM: selftests: Mask off OSPKE and OSXSAVE when comparing CPUID entries
+        https://github.com/kvm-x86/linux/commit/01e2827157ef
+[04/11] KVM: selftests: Rework OSXSAVE CR4=>CPUID test to play nice with AVX insns
+        https://github.com/kvm-x86/linux/commit/cf50f01336d3
+[05/11] KVM: selftests: Configure XCR0 to max supported value by default
+        https://github.com/kvm-x86/linux/commit/331b8ddaebc1
+[06/11] KVM: selftests: Verify XCR0 can be "downgraded" and "upgraded"
+        https://github.com/kvm-x86/linux/commit/d87b459428c0
+[07/11] KVM: selftests: Drop manual CR4.OSXSAVE enabling from CR4/CPUID sync test
+        https://github.com/kvm-x86/linux/commit/86502f01b8b9
+[08/11] KVM: selftests: Drop manual XCR0 configuration from AMX test
+        https://github.com/kvm-x86/linux/commit/fd7b6d77fa6d
+[09/11] KVM: selftests: Drop manual XCR0 configuration from state test
+        https://github.com/kvm-x86/linux/commit/818646fea3ea
+[10/11] KVM: selftests: Drop manual XCR0 configuration from SEV smoke test
+        https://github.com/kvm-x86/linux/commit/ce22d24024ea
+[11/11] KVM: selftests: Ensure KVM supports AVX for SEV-ES VMSA FPU test
+        https://github.com/kvm-x86/linux/commit/08cc7ab1a6ca
 
 --
-Best,
-Oliver
+https://github.com/kvm-x86/linux/tree/next
