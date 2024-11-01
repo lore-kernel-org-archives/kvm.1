@@ -1,156 +1,259 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F18E153BF8
-	for <kvm@vger.kernel.org>; Fri,  1 Nov 2024 07:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E84E839F4
+	for <kvm@vger.kernel.org>; Fri,  1 Nov 2024 08:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730446990; cv=none; b=s3kIAGqE3YIwrtWmSrDfxqDVTKUNx0bqBL7lpxNDc0DLKh0IZRT+TKqZQvJRYC/8W6lPFovJWS1jsp2pL8WLaJCysJdRNkhdd4Z2ZXqzuXvvW7rRquHs9EuuGj6O9uBDOq9533eexcShJskUC3IomcfAnG5JdZhgiAB2NSAqkTI=
+	t=1730448962; cv=none; b=UN6dj0vQgFI+WpQBJAPryJw+wZEFsINXb+k2Ywbzw8FlbL4TzSuV0IopwRSsqKdVw67tJL33PDaPJBWp5bi/p3iKTdaxFlz7YFQ1RC87da3K04XrxD64/GPshEXOXBZ4njA0v9qU60zKbz2jUxcgJdAxjFEfLlfeFy6Tkjm9g3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730446990; c=relaxed/simple;
-	bh=tvNnV5MECZVRu+hlHAjQvdjf98SRgQrhsiBPP45sJMc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BTZ+Fxs99slQKCUqPIsVq7sEufNVk4jbhmnMrsesETr4Q5wz1tsMgdZui+loA2KWL/5W4XuLHcxzz7J8XCXNT36DX6wh4voVA1zRAakrU/TV03kMMxmWb0BkmNyTh+XzP3aSAV9qqw3VWk24lM3FDaXTniZ0T/QfWl/ScOl2hgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DaZ1fmtp; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730448962; c=relaxed/simple;
+	bh=OeRYF2apaD+NDr933mJ/vBCoF1Va5KOdDbSi5mJxQUk=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gGRFavtLo5VoLhWsAiW85i/58nhgyjMoqwHkrQ2IhBgVx1tYeMF0S0XSwOSV4ibX5KgQC7BLdLfTMSh33SX9wLTYe7i8zrTNT3HyfE03xwgeTy/FPIg3zHNGfuy7nrA8Ql2LqJM/eR+lK5MVQR9Gtl1Fy2vozR5E9gm+y/FJolg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JTClZARt; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DaZ1fmtp"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20cbca51687so16342915ad.1
-        for <kvm@vger.kernel.org>; Fri, 01 Nov 2024 00:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730446987; x=1731051787; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dODtoQitSBROE/XsLMUd7NwCqUhJC+ZZvderyAPghfs=;
-        b=DaZ1fmtpt+xGATJ1V07QkJqfVv/7EY318Lc0Srl+bBipva8IBq6JhhvTnd7uwTRhA1
-         XxWQlxwE6CVvS5DcEpfuDdzo9NXJ45a/PNgL8jP4I5iDl7j2qARu2J0T63+XJd9ay+ht
-         RYWl434/ICkdtXhuPwq/xCp44i4bhQ+O5OWABSSnHWV60IGgbu6O/BTS4L3A4Omsza5C
-         QM4q8fvZ5SRy4KSNvHySFwP2jga4SLmpkbShQNPHIondIGYKz24YHTRbjLaTHvGvNhlF
-         jtX+QqEwQKpBTSl0biikjkguZynLe1wdNX59Xpcvvl1WmEAsWztrPRquVRqoKX6L+GEz
-         bz0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730446987; x=1731051787;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dODtoQitSBROE/XsLMUd7NwCqUhJC+ZZvderyAPghfs=;
-        b=rPZTzexeDq0d4bJJ5Rmgg4CrtixZN4Yu3YpMnC0LB/EYfDb0WbCOsHJUsiCWT/oH1S
-         jCZxacNZpSWSJWIxLlIoM0/PwfyE8OT6Wa4hyj+GJcmou63xftUHGyMPMOMI8nzN1908
-         25tSipXDYuB2nquwnqusUxLQQoGd8Dm2uJdDjY6HEsIoUYftf4gG84iZcKuWiXgtjg8P
-         RxGThOWNgEsO3coUK7eZyLlHNW3W0amukN2UM4pX+K/mFP/ih2CdHP0ABE+KMY4FGNXF
-         IIAsy7aov8IL5bVyctQeJ5PsPXSlNuhhs2BXPmqNfypeuQxQbkqf9u554aPLW3meoN1+
-         KcdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXC5cBxpuLyXlndlFLTB63uIUkCUUejfM1cZYs6WQ8/OB3My8pyQ4RctmP661QTVuBTYPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs7W6nO/y/zt0vC0RxJm0f6PnySHg5mkk+FhN6FBHPg/AVJxc0
-	6HmXgFVj419OfsIn3NMMwrTpmB64OkiiV9zQiLlrO6nulGutHprp1JdTKpDSHsyh/dIlRIIsM2y
-	I60Zc97KU8aoSr+JMZp/8up7DBEU=
-X-Google-Smtp-Source: AGHT+IFCyc5usWs/7BxilId46aueDKh1a62dp0LNle3bBBnJHQlRodaSqn24Ui5wuhlH+o33ZgIijSPpk7HLFn4Nntw=
-X-Received: by 2002:a17:90a:e7c2:b0:2e2:c406:ec84 with SMTP id
- 98e67ed59e1d1-2e94c53a6a2mr3401475a91.38.1730446987434; Fri, 01 Nov 2024
- 00:43:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JTClZARt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730448960; x=1761984960;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OeRYF2apaD+NDr933mJ/vBCoF1Va5KOdDbSi5mJxQUk=;
+  b=JTClZARtrFl9pUNeYne5xBcIMiDYU/HtFU7TUuY2ge189luK1+lQEjzF
+   wcpG+d9A5qTYkWODZFROgcDbL5jiyZsADYjAMMKD5hXPMi+CQmyjcg9/S
+   SZk93C0xEGvKxgqHKWgJasAiXa0SGiVCfCcp1atuY3IoFrZafkj6NUZWH
+   8f+8x1oWL62m71wQB8/CIiFZn2kuMZe3fTTSMhPiwAoe0XsVYWipYr6nJ
+   /yVGbKpBI3+GosvQKhj/Ej/L0vvEslG8o1tQewWF8o0LxuOHwey41XHae
+   1hv3cqZc+XmI/ig6HTUy7QkvAOndpw6YZsiyhZXRrmqlXkgqwsEG4wreJ
+   w==;
+X-CSE-ConnectionGUID: GdVyA7GRQ6+6yZ6kp/q3xA==
+X-CSE-MsgGUID: uIwbyzEqR5K6WbAjtG1Isg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17845993"
+X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; 
+   d="scan'208";a="17845993"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 01:15:59 -0700
+X-CSE-ConnectionGUID: FKT23MALQ2CRulJ7gc80ig==
+X-CSE-MsgGUID: t3SK6hiQRqeSZcJtirYTcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; 
+   d="scan'208";a="86834534"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+  by fmviesa003.fm.intel.com with ESMTP; 01 Nov 2024 01:15:54 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+	Alireza Sanaee <alireza.sanaee@huawei.com>,
+	qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	qemu-riscv@nongnu.org,
+	qemu-arm@nongnu.org,
+	Zhenyu Wang <zhenyu.z.wang@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v5 0/9] Introduce SMP Cache Topology
+Date: Fri,  1 Nov 2024 16:33:22 +0800
+Message-Id: <20241101083331.340178-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023124527.1092810-1-alexyonghe@tencent.com>
- <ZyJ7ZsP4RaRfcFQF@google.com> <CANZk6aQEH=9EFdsBfuRcUWhTu88Oc=x=Wp3bcqzQd1AVjcTTEg@mail.gmail.com>
- <ZyOfTCy5dJ32tzTr@google.com>
-In-Reply-To: <ZyOfTCy5dJ32tzTr@google.com>
-From: zhuangel570 <zhuangel570@gmail.com>
-Date: Fri, 1 Nov 2024 15:42:56 +0800
-Message-ID: <CANZk6aTQ5fn3AaKZq1uj1r45U6TMfkympu66yUEzEj_=ugQ51w@mail.gmail.com>
-Subject: Re: [PATCH] KVM: x86: Try to enable irr_pending state with disabled APICv
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, wanpengli@tencent.com, 
-	alexyonghe@tencent.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 31, 2024 at 11:16=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, Oct 31, 2024, zhuangel570 wrote:
-> > On Thu, Oct 31, 2024 at 2:31=E2=80=AFAM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Wed, Oct 23, 2024, Yong He wrote:
-> > > > From: Yong He <alexyonghe@tencent.com>
-> > > >
-> > > > Try to enable irr_pending when set APIC state, if there is
-> > > > pending interrupt in IRR with disabled APICv.
-> > > >
-> > > > In save/restore VM scenery with disabled APICv. Qemu/CloudHyperviso=
-r
-> > > > always send signals to stop running vcpu threads, then save
-> > > > entire VM state, including APIC state. There may be a pending
-> > > > timer interrupt in the saved APIC IRR that is injected before
-> > > > vcpu_run return. But when restoring the VM, since APICv is
-> > > > disabled, irr_pending is disabled by default, so this may cause
-> > > > the timer interrupt in the IRR to be suspended for a long time,
-> > > > until the next interrupt comes.
-> > > >
-> > > > Signed-off-by: Yong He <alexyonghe@tencent.com>
-> > > > ---
-> > > >  arch/x86/kvm/lapic.c | 4 ++++
-> > > >  1 file changed, 4 insertions(+)
-> > > >
-> > > > diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> > > > index 2098dc689088..7373f649958b 100644
-> > > > --- a/arch/x86/kvm/lapic.c
-> > > > +++ b/arch/x86/kvm/lapic.c
-> > > > @@ -3099,6 +3099,10 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu=
-, struct kvm_lapic_state *s)
-> > > >                                               apic_find_highest_irr=
-(apic));
-> > > >               kvm_x86_call(hwapic_isr_update)(apic_find_highest_isr=
-(apic));
-> > > >       }
-> > > > +
-> > > > +     /* Search the IRR and enable irr_pending state with disabled =
-APICv*/
-> > > > +     if (!enable_apicv && apic_search_irr(apic) !=3D -1)
-> > >
-> > > This can/should be an "else" from the above "if (apic->apicv_active)"=
-.  I also
-> > > think KVM can safely clear irr_pending in this case, which is also wh=
-y irr_pending
-> > > isn't handling in kvm_apic_update_apicv().  When APICv is disabled (i=
-nhibited) at
-> > > runtime, an IRQ may be in-flight, i.e. apic_search_irr() can get a fa=
-lse negative.
-> >
-> > Thank you for your review and suggestions.
-> >
-> > >
-> > > But when stuffing APIC state, I don't see how that can happen.  So th=
-is?
-> >
-> > Here is our case.
->
-> Sorry for not being clear.  I wasn't saying that the bug you encountered =
-can't
-> happen.  I 100% agree it's a real bug.  What I was saying can't happen is=
- an
-> in-flight virtual IRQ from another vCPU or device racing with setting API=
-C state,
-> and the VM (or VMM) having any expectation that everything would work cor=
-rectly.
->
-> And so, I think it's save for KVM to explicitly set irr_pending, i.e. to =
-potentially
-> _clear_ irr_pending.
+Hi Paolo,
 
-Got it, thanks.
+This is my v5, if you think it's okay, could this feature get the final
+merge? (Before the 9.2 cycle ends) :-)
 
->
-> If you are able to verify the psuedo-patch I posted fixes the bug you enc=
-ountered,
-> that is how I would like to fix the bug.
+Compared with v4 [1], there's no more changes except rebase and adding
+Acked/Reviewed-by tags (thanks!).
 
-Yes, your patch may fix the issue better, and I have checked on my test mac=
-hine
-and it is fixed.
+ARM side has also worked a lot on the smp-cache based on this series [2].
+
+This series is based on the Paolo's for-upstream-i386 (commit 1a519388a882
+("target/i386: Introduce GraniteRapids-v2 model")).
+
+Since AMD's Turin model hasn't been picked, there's actually no conflict
+at the moment, and this series can be applied to the master as well
+
+
+Background
+==========
+
+The x86 and ARM (RISCV) need to allow user to configure cache properties
+(current only topology):
+ * For x86, the default cache topology model (of max/host CPU) does not
+   always match the Host's real physical cache topology. Performance can
+   increase when the configured virtual topology is closer to the
+   physical topology than a default topology would be.
+ * For ARM, QEMU can't get the cache topology information from the CPU
+   registers, then user configuration is necessary. Additionally, the
+   cache information is also needed for MPAM emulation (for TCG) to
+   build the right PPTT. (Originally from Jonathan)
+
+
+About smp-cache
+===============
+
+The API design has been discussed heavily in [3].
+
+Now, smp-cache is implemented as a array integrated in -machine. Though
+-machine currently can't support JSON format, this is the one of the
+directions of future.
+
+An example is as follows:
+
+smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
+
+"cache" specifies the cache that the properties will be applied on. This
+field is the combination of cache level and cache type. Now it supports
+"l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+cache) and "l3" (L3 unified cache).
+
+"topology" field accepts CPU topology levels including "thread", "core",
+"module", "cluster", "die", "socket", "book", "drawer" and a special
+value "default".
+
+The "default" is introduced to make it easier for libvirt to set a
+default parameter value without having to care about the specific
+machine (because currently there is no proper way for machine to
+expose supported topology levels and caches).
+
+If "default" is set, then the cache topology will follow the
+architecture's default cache topology model. If other CPU topology level
+is set, the cache will be shared at corresponding CPU topology level.
+
+
+[1]: Patch v4: https://lore.kernel.org/qemu-devel/20241022135151.2052198-1-zhao1.liu@intel.com/
+[2]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20241010111822.345-1-alireza.sanaee@huawei.com/
+[3]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
+
+Thanks and Best Regards,
+Zhao
+---
+Changelog:
+
+Changes since Patch v4:
+ * Added Acked/Reviewed-by tags.
+ * Rebased on Paolo's for-upstream-i386 tag.
+
+Main changes since Patch v3:
+ * Stopped exposing "invalid" enumeration in QAPI and define it by a
+   macro instead. (Dainel)
+ * Checked cache topology after the arch machine loads the
+   user-configured cache model from MachineState.smp_cache and consumes
+   the special "default" level by replacing it with the specific level.
+   (Daniel)
+ * Described the omitting cache will use "default" level and described
+   the default cache topology model of i386 PC machine. (Daniel)
+
+Main changes since Patch v2:
+ * Updated version of new QAPI structures to v9.2. (Jonathan)
+ * Merged the QAPI change and smp-cache property support of machine
+   into one commit. (Jonathan)
+ * Picked Alireza's patch to add a has_caches flag.
+ * Polished english and coding style. (Jonathan)
+
+Main changes since Patch v1:
+ * Dropped handwriten smp-cache object and integrated cache properties
+   list into MachineState and used -machine to configure SMP cache
+   properties. (Markus)
+ * Dropped prefix of CpuTopologyLevel enumeration. (Markus)
+ * Rename CPU_TOPO_LEVEL_* to CPU_TOPOLOGY_LEVEL_* to match the QAPI's
+   generated code. (Markus)
+ * Renamed SMPCacheProperty/SMPCacheProperties (QAPI structures) to
+   SmpCacheProperties/SmpCachePropertiesWrapper. (Markus)
+ * Renamed SMPCacheName (QAPI structure) to SmpCacheLevelAndType and
+   dropped prefix. (Markus)
+ * Renamed 'name' field in SmpCacheProperties to 'cache', since the
+   type and level of the cache in SMP system could be able to specify
+   all of these kinds of cache explicitly enough.
+ * Renamed 'topo' field in SmpCacheProperties to 'topology'. (Markus)
+ * Returned error information when user repeats setting cache
+   properties. (Markus)
+ * Renamed SmpCacheLevelAndType to CacheLevelAndType, since this
+   representation is general across SMP or hybrid system.
+ * Dropped machine_check_smp_cache_support() and did the check when
+   -machine parses smp-cache in machine_parse_smp_cache().
+
+Main changes since RFC v2:
+ * Dropped cpu-topology.h and cpu-topology.c since QAPI has the helper
+   (CpuTopologyLevel_str) to convert enum to string. (Markus)
+ * Fixed text format in machine.json (CpuTopologyLevel naming, 2 spaces
+   between sentences). (Markus)
+ * Added a new level "default" to de-compatibilize some arch-specific
+   topo settings. (Daniel)
+ * Moved CpuTopologyLevel to qapi/machine-common.json, at where the
+   cache enumeration and smp-cache object would be added.
+   - If smp-cache object is defined in qapi/machine.json, storage-daemon
+     will complain about the qmp cmds in qapi/machine.json during
+     compiling.
+ * Referred to Daniel's suggestion to introduce cache JSON list, though
+   as a standalone object since -smp/-machine can't support JSON.
+ * Linked machine's smp_cache to smp-cache object instead of a builtin
+   structure. This is to get around the fact that the keyval format of
+   -machine can't support JSON.
+ * Wrapped the cache topology level access into a helper.
+ * Split as a separate commit to just include compatibility checking and
+   topology checking.
+ * Allow setting "default" topology level even though the cache
+   isn't supported by machine. (Daniel)
+ * Rewrote the document of smp-cache object.
+
+Main changes since RFC v1:
+ * Split CpuTopology renaimg out of this RFC.
+ * Use QAPI to enumerate CPU topology levels.
+ * Drop string_to_cpu_topo() since QAPI will help to parse the topo
+   levels.
+ * Set has_*_cache field in machine_get_smp(). (JeeHeng)
+ * Use "*_cache=topo_level" as -smp example as the original "level"
+   term for a cache has a totally different meaning. (Jonathan)
+---
+Alireza Sanaee (1):
+  i386/cpu: add has_caches flag to check smp_cache configuration
+
+Zhao Liu (8):
+  i386/cpu: Don't enumerate the "invalid" CPU topology level
+  hw/core: Make CPU topology enumeration arch-agnostic
+  qapi/qom: Define cache enumeration and properties for machine
+  hw/core: Check smp cache topology support for machine
+  hw/core: Add a helper to check the cache topology level
+  i386/cpu: Support thread and module level cache topology
+  i386/cpu: Update cache topology with machine's configuration
+  i386/pc: Support cache topology in -machine for PC machine
+
+ hw/core/machine-smp.c      | 128 +++++++++++++++++++++
+ hw/core/machine.c          |  44 ++++++++
+ hw/i386/pc.c               |   4 +
+ hw/i386/x86-common.c       |   4 +-
+ include/hw/boards.h        |  19 ++++
+ include/hw/i386/topology.h |  22 +---
+ qapi/machine-common.json   |  94 +++++++++++++++-
+ qemu-options.hx            |  31 ++++-
+ target/i386/cpu.c          | 225 ++++++++++++++++++++++++-------------
+ target/i386/cpu.h          |   4 +-
+ 10 files changed, 474 insertions(+), 101 deletions(-)
+
+-- 
+2.34.1
+
