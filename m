@@ -1,134 +1,131 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8159585628
-	for <kvm@vger.kernel.org>; Fri,  1 Nov 2024 01:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9FF1369AE
+	for <kvm@vger.kernel.org>; Fri,  1 Nov 2024 02:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730425497; cv=none; b=Qepf2qQzEdbdOt0GWIheK475xAxbL5XEMJDJpCY8d6o91nK0GHcdeQvebDm1DX4/mhgEdzlQhK3YdyUYoHBP8Z8908dFsjL+LMKQbPPr3V01j2mr9JZZ9VIoVOYNVfttjriZvcd5Q3pp/hcF/TiAa4Q13YCnM6RwCRN1OW9Yd9c=
+	t=1730427677; cv=none; b=qdcoCs0yF9AT6D83dE4lml/EYHfG+1S950o0y/dtSEQ3NBZWt0AA5dz7T6M3Ll6JyxQc33NUsAo5UOA09CiwvuiyBuIep1EIPAVVAtKugFR5RFfEtlnDoRJZT1nUUemrkHTSsj4/VczRO/KDrn8VrhaGSo2NxmIaIoDc5cHUr9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730425497; c=relaxed/simple;
-	bh=g2yXyh/XuQDbdRvLq+7Ht6ad5jWCH8+9YqK2Ecn3XOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SMalT8sxzNLN+WwrQ+7EXITS1LQrnmCv2IMd8mO9rE6nuPLltPu3HCSPgFIC0AvPq8etkwFOuhh31kOoObi/sojDUDReAkpwdlamxLCqB8/zX7y83/+9j1LhoME1IIqm8u4/1KUTdLOZWWbf2DprlzlnHH/rx9Xew9mUOz2QJRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hL5dc67r; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730427677; c=relaxed/simple;
+	bh=f5edtnaWl0000c3Tv65SjcYIpMNCaJtIb4m9wYByLX8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZfCuBv7XkG3exDDXa9O5bD7alr7a0R7/XgT1EJJMCiBZEjjmPIgrhrrKmTrVgtl3HFPg/33QGhlhDK740LGJkeQYOdoHjjixaLPezc7cVWY9mbkSDjeZF1HMmYw1RBOUSr5Fi6CjWJT2zKCE6LHxp0120jIzEynXds0J0smzI/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WbHXI+8a; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hL5dc67r"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20ca4877690so39635ad.1
-        for <kvm@vger.kernel.org>; Thu, 31 Oct 2024 18:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730425491; x=1731030291; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=u3XP5Wkv+RNW2+r7bEHxQsIWfnBYd0uQeyY2higphAI=;
-        b=hL5dc67rtTtM3eA56qsiD2AU8EThdGWnIaQXzeNT6jMvfQ9zp7z5Pzx06DWj8UJ3OW
-         AwEWEFRBCmkE7YHHYS7OvjoraJXAiYb6PmJHSc9ZyIs2mR0VFGshp/GLdTOAHJXQRSqf
-         OK9NZkThOJ2UAPRdro4wRydw+ssdp5ctQBmV/s4rGbFwJhcU2z0KUFv+gbfDXwHSsBL2
-         pi5CPxDEXoWGIQW7FE2oCAPTJeKdtXbuJeH+OHIPo0COhVXE96YQc51i4yPFDfvZ5Xar
-         CPYjb6uQq+OH1DZDmEOc56oy9bVoEEdOBSc8lTKpl3uXmhImlsh5mKbEqGHKck8tf68h
-         Okww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730425491; x=1731030291;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u3XP5Wkv+RNW2+r7bEHxQsIWfnBYd0uQeyY2higphAI=;
-        b=uR3Sw54Dt/zVZRHepobQhPAMPDz4xJNx+lAgK8xoP1Yr8bbXIDxNHU2ZnT1fdojNRC
-         g3NCuSRvZChBI8OU64dCqGIkqJbd6zzoRhpGEnAqEQqQYtj89xX7PQ0ggofstiZaohbu
-         bVBKaikU2o4zsBelgQZrR76THVA4heBEiFlulOo/UrGJumDaa6Fxn8+RmRK6x9zZ/fM2
-         Q2ogokWDsvadMP+ZeTt0430m8R3vwiVoZeqgUxaoSRfU3r2JImcwPuHZ85JOLv1/EUWe
-         AqYC79Ol5KKHeYk3ZZOtWKjeoUCRIA5cAuQKA/sKrnAJzcxjcGUmh4oMKaeJtmYU4XI3
-         Z35A==
-X-Forwarded-Encrypted: i=1; AJvYcCW0d14G8Sq1kzo7B/zgdOcncmqXX5YaY0j09ysO3/bzFN2SvIKwVJnnCeSl3h+UrUvGIBI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB3rjguXjuNFJL2gApGvfJr8f/9OYVwUufxznu3w30p3q0NSUg
-	MzsOSXQKFT4OEh5vl/sgQkBzya0ow3rRzrQIjnvsjm/kIMlBt/YLphK/ik1B6w==
-X-Gm-Gg: ASbGncv36MLWzPsRyQLfyvXx9yXL2nmyj6K7ZF+xPQSgOEmeWhoJUl/J+NweE+W8Fz5
-	fWgMdFctD9LtVsYv5YdvjamDv1nE8wxBFniFC7vdlC17iyATXbTc+5PvwGKd4llrCcsKkYak5ml
-	xO0Ry2S9IfokXTxyxgCW2O/jdhrgf6YbhTH0eFeU/G0DeEVtLLnedRME8ueKx/U3bS/fBhGRbQY
-	lZvGIp6NQnZrbEQZ+RRGtMZ4ry6HkWuiQwLnY47ejRJASDVIc0sfinJIY+xXIObfUQCNUj3vlfR
-	IWaKHfxeyUROl7POc06UDoE=
-X-Google-Smtp-Source: AGHT+IE5Sl0gNcxBorXKwK80EliT1yn0U0hB4LI9lWcpW0YggnBB9NdstYuNqAFfcfuSQro9x8ORag==
-X-Received: by 2002:a17:902:ce91:b0:207:14ca:f0c1 with SMTP id d9443c01a7336-2110427ce3cmr4195975ad.16.1730425490601;
-        Thu, 31 Oct 2024 18:44:50 -0700 (PDT)
-Received: from ?IPV6:2600:1700:38d4:55d0:1ce2:4bd3:4446:5b60? ([2600:1700:38d4:55d0:1ce2:4bd3:4446:5b60])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc1e5839sm1799727b3a.68.2024.10.31.18.44.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 18:44:49 -0700 (PDT)
-Message-ID: <d0a38982-b811-4429-8b89-81e5da3aaf72@google.com>
-Date: Thu, 31 Oct 2024 18:44:46 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WbHXI+8a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730427672; x=1761963672;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=f5edtnaWl0000c3Tv65SjcYIpMNCaJtIb4m9wYByLX8=;
+  b=WbHXI+8agBtQC68rehL4scurz5CKNmd4SYp4e38xwF8m0s7P/vQQ0kdH
+   R5uQfVkdciBVegwCkzKg0E0GxG4zQJVf2xxcWbbKGHSzqBaPfof85yOs4
+   kOViHFm7VK6WeE3wTH1uXszwYGREYw+cuXZX0IenpcT3/DJBXL58yWjWz
+   lY1CB7U4fL13O7V1IbEh1IgDgTsNfsVtbUmBXJlb74Z6A2nBOQgZoNVUM
+   V04Mcizz6325pua4TZJ/SMoaZ/iUY4rGqRv852yYHLh36Fq7SkMbR+tIM
+   pPts3fXCq7EaSNhWRoi9lbTxlK1DVEd7j3nWlzR+QUSgnnnm5IQk0lkTo
+   w==;
+X-CSE-ConnectionGUID: lybGvBN9TXO1rQ5XoYVkgQ==
+X-CSE-MsgGUID: yNZ4PwObTE+CgDJjdCbXEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="30082690"
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; 
+   d="scan'208";a="30082690"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 19:21:11 -0700
+X-CSE-ConnectionGUID: FmrdQIZqQ9a0t/TsjpyEKg==
+X-CSE-MsgGUID: nzCFyinlQqu3gqOKIYVunQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,248,1725346800"; 
+   d="scan'208";a="82502436"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.36])
+  by fmviesa007.fm.intel.com with ESMTP; 31 Oct 2024 19:21:05 -0700
+Date: Fri, 1 Nov 2024 10:38:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+	Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+	Zhenyu Wang <zhenyu.z.wang@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v4 2/9] hw/core: Make CPU topology enumeration
+ arch-agnostic
+Message-ID: <ZyQ/QJnTPvo9wO+H@intel.com>
+References: <20241022135151.2052198-1-zhao1.liu@intel.com>
+ <20241022135151.2052198-3-zhao1.liu@intel.com>
+ <31e8dc51-f70f-44eb-a768-61cfa50eed5b@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/26] mm: asi: Make some utility functions noinstr
- compatible
-To: Thomas Gleixner <tglx@linutronix.de>,
- Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>
-Cc: Ingo Molnar <mingo@redhat.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Alexandre Chartre <alexandre.chartre@oracle.com>,
- Liran Alon <liran.alon@oracle.com>,
- Jan Setje-Eilers <jan.setjeeilers@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@suse.de>,
- Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
- Khalid Aziz <khalid.aziz@oracle.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Valentin Schneider <vschneid@redhat.com>, Paul Turner <pjt@google.com>,
- Reiji Watanabe <reijiw@google.com>, Ofir Weisse <oweisse@google.com>,
- Yosry Ahmed <yosryahmed@google.com>, Patrick Bellasi <derkling@google.com>,
- KP Singh <kpsingh@google.com>, Alexandra Sandulescu <aesa@google.com>,
- Matteo Rizzo <matteorizzo@google.com>, Jann Horn <jannh@google.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org
-References: <20240712-asi-rfc-24-v1-0-144b319a40d8@google.com>
- <20240712-asi-rfc-24-v1-1-144b319a40d8@google.com>
- <20241025113455.GMZxuCX2Tzu8ulwN3o@fat_crate.local>
- <CA+i-1C3SZ4FEPJyvbrDfE-0nQtB_8L_H_i67dQb5yQ2t8KJF9Q@mail.gmail.com>
- <ab8ef5ef-f51c-4940-9094-28fbaa926d37@google.com> <878qu6205g.ffs@tglx>
-Content-Language: en-US
-From: Junaid Shahid <junaids@google.com>
-In-Reply-To: <878qu6205g.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <31e8dc51-f70f-44eb-a768-61cfa50eed5b@linaro.org>
 
-On 10/29/24 12:12 PM, Thomas Gleixner wrote:
+Hi Phil,
+
+> > -static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+> > +static uint32_t cpuid1f_topo_type(enum CpuTopologyLevel topo_level)
+> >   {
+> >       switch (topo_level) {
+> > -    case CPU_TOPO_LEVEL_INVALID:
+> > +    case CPU_TOPOLOGY_LEVEL_INVALID:
 > 
-> I doubt that it works as you want it to work.
+> Since we use an enum, I'd rather directly use CPU_TOPOLOGY_LEVEL__MAX.
+>
+> Or maybe in this case ...
 > 
-> +	inline notrace __attribute((__section__(".noinstr.text")))	\
+> >           return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
+> > -    case CPU_TOPO_LEVEL_SMT:
+> > +    case CPU_TOPOLOGY_LEVEL_THREAD:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+> > -    case CPU_TOPO_LEVEL_CORE:
+> > +    case CPU_TOPOLOGY_LEVEL_CORE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> > -    case CPU_TOPO_LEVEL_MODULE:
+> > +    case CPU_TOPOLOGY_LEVEL_MODULE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_MODULE;
+> > -    case CPU_TOPO_LEVEL_DIE:
+> > +    case CPU_TOPOLOGY_LEVEL_DIE:
+> >           return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+> >       default:
+>            /* Other types are not supported in QEMU. */
+>            g_assert_not_reached();
 > 
-> So this explicitely puts the inline into the .noinstr.text section,
-> which means when it is used in .text the compiler will generate an out-of
-> line function in the .noinstr.text section and insert a call into the
-> usage site. That's independent of the size of the inline.
-> 
+> ... return CPUID_1F_ECX_TOPO_LEVEL_INVALID as default.
 
-Oh, that's interesting. IIRC I had seen regular (.text) inline functions get 
-inlined into .noinstr.text callers. I assume the difference is that here the 
-section is marked explicitly rather than being implicit?
+I prefer the first way you mentioned since I want "default" to keep
+to detact unimplemented levels.
 
-In any case, I guess we could just mark these functions as plain noinstr. 
-(Unless there happens to be some other way to indicate to the compiler to place 
-any non-inlined copy of the function in .noinstr.text but still allow inlining 
-into .text if it makes sense optimization-wise.)
+> Can be cleaned on top, so:
 
-Thanks,
-Junaid
+Yes, I'll rebase (now there's the conflict) with this fixed.
 
+> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Thanks!
 
-
+Regards,
+Zhao
 
