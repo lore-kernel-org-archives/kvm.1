@@ -1,113 +1,238 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE2A1AC8AE;
-	Sat,  2 Nov 2024 05:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9E413C914
+	for <kvm@vger.kernel.org>; Sat,  2 Nov 2024 07:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730524129; cv=none; b=Sjn1mflHgxrifsPZ06j0PVB/2ekH5pwyIqJCHp+abE/QzAosF7JhjhVkghgArVCKlGOEPOwaOOckIHdakYfzj9CeV7z9BC0qxWxCyaXvqI4lqn2TwPZ9Yg6LrO04+n6Q6Ao87glHUqS4HX8YTC+DvrwyebgBhCjQn/IljctHwik=
+	t=1730533187; cv=none; b=Id3p5nAYvpOxO1Em28lbplO/bt5cdRiJiH2aIE2tz5bYOcr7kr/8yJJtFtGut1vFaFY+eaH2T+KVrjGa5pExhjUAsAijLp+4YQxMgdk9rrDaXKQARtYfnJiwzXsCFSprRw41/R/kfCTpwyCOSpuJ3UUtm5V4RdB/Mdc4iYRk9to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730524129; c=relaxed/simple;
-	bh=sIsbHOCdc77aqOwzZ9NdzfWbaJOX5esYl6OGr+8g17w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs65So6NS46gMA01gAFBbNAmaIiEJ3BbahXTfGEA7FG4G+po29VYXZKA3bGZRPHuF7ld5cyrMgiXYMKivoXpYV3PVhTYQjMpNAz5LY6nOPsXJhF25r+MJLgwNOLiOjnGiQDgvCFE7ORIf40znZSytPxii1/n9jVtPqXmckyMjRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=a4xaumWi; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1730533187; c=relaxed/simple;
+	bh=PEb7dEPLpsiEUBwEV+omdt0TcIQ9CKXJLt8jWJGdcI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W3Rtvq/wEmJDKCQ0/nf0Jz3pXH0EF1mBu+xFWehe6q36W5F5T1ZVsBDoCHhI35RBHObPvriUr1qhxG8GxBxgkuXuLO12sbZKZKMRzTL/0Ioq1k7OkQwIPBpG2o3ts9Pr78rgkys8ZODZZM/o0txmPNnHaH4F+2PKlIWB5fBM+jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Vo9PwtDe; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="a4xaumWi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=EYGEzTbzCwoX59fmg/fy+A0M2cH27/fC1+I1UrCmDZc=; b=a4xaumWihzxkWK0sSVMGC09NKL
-	/EsiX3Dv1qIhCPhGLJUqveSVG6gtBNZ1U93ayc7VzB9EgmgXdfbFST0I3zU+9qpSPpj/EUeuXlqIx
-	Fnyp/bs4rZTmQ47+xzgW7rRAjr5j8FEseJlNADJiY/fv/BDNRH88f6gSL6KPdvBBzDlVBBsLyjzkk
-	fP/fibZTx0A/vhFAcheY5lQxujutQNbon/Mm236ocUpZruF+bKXt0TmhNhrHVYo7eVv/SeGQ8KH+4
-	g+uQWinRficKJPYDWd7Q4JFj+CvmXIztzmdlGYHSgtOgVi4dL5DA4p08buP+34xGVLU0PPh/KaS/U
-	hXCzdZ5Q==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t76N9-0000000AHmC-3giW;
-	Sat, 02 Nov 2024 05:08:27 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	cgroups@vger.kernel.org,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	torvalds@linux-foundation.org
-Subject: [PATCH v3 06/28] do_mq_notify(): saner skb freeing on failures
-Date: Sat,  2 Nov 2024 05:08:04 +0000
-Message-ID: <20241102050827.2451599-6-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241102050827.2451599-1-viro@zeniv.linux.org.uk>
-References: <20241102050219.GA2450028@ZenIV>
- <20241102050827.2451599-1-viro@zeniv.linux.org.uk>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Vo9PwtDe"
+Message-ID: <f80e7b54-b897-4df2-a49d-bc6012640a8a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730533181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zkq8x4dmz9yfUFHPf0EELUUQUn7E8nglf4dRQUS+EMY=;
+	b=Vo9PwtDerSGdplleUNX0Y/p+JDHIf70BdVvazCyN6y7vBeSmJN/2zQyKwdwVLMDJ75gcUi
+	p2dyDGNKJmn61rctVMXgRmkGSEuGDVdgsPLZmNxceQZmMQrgLWD8jMvyZRZxdxYdGOxMmE
+	AmgT0wss4pgZ2ZNAb8fYVAZQLqSC69g=
+Date: Sat, 2 Nov 2024 08:39:35 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [RFC PATCH 2/7] block: don't merge different kinds of P2P
+ transfers in a single bio
+To: Leon Romanovsky <leon@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>
+Cc: Keith Busch <kbusch@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
+ iommu@lists.linux.dev, linux-nvme@lists.infradead.org,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
+References: <cover.1730037261.git.leon@kernel.org>
+ <34d44537a65aba6ede215a8ad882aeee028b423a.1730037261.git.leon@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <34d44537a65aba6ede215a8ad882aeee028b423a.1730037261.git.leon@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Migadu-Flow: FLOW_OUT
 
-cleanup is convoluted enough as it is; it's easier to have early
-failure outs do explicit kfree_skb(nc), rather than going to
-contortions needed to reuse the cleanup from late failures.
+在 2024/10/27 15:21, Leon Romanovsky 写道:
+> From: Christoph Hellwig <hch@lst.de>
+> 
+> To get out of the dma mapping helpers having to check every segment for
+> it's P2P status, ensure that bios either contain P2P transfers or non-P2P
+> transfers, and that a P2P bio only contains ranges from a single device.
+> 
+> This means we do the page zone access in the bio add path where it should
+> be still page hot, and will only have do the fairly expensive P2P topology
+> lookup once per bio down in the dma mapping path, and only for already
+> marked bios.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>   block/bio.c               | 36 +++++++++++++++++++++++++++++-------
+>   block/blk-map.c           | 32 ++++++++++++++++++++++++--------
+>   include/linux/blk_types.h |  2 ++
+>   3 files changed, 55 insertions(+), 15 deletions(-)
+> 
+> diff --git a/block/bio.c b/block/bio.c
+> index 2d3bc8bfb071..943a6d78cb3e 100644
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -928,8 +928,6 @@ static bool bvec_try_merge_page(struct bio_vec *bv, struct page *page,
+>   		return false;
+>   	if (xen_domain() && !xen_biovec_phys_mergeable(bv, page))
+>   		return false;
+> -	if (!zone_device_pages_have_same_pgmap(bv->bv_page, page))
+> -		return false;
+>   
+>   	*same_page = ((vec_end_addr & PAGE_MASK) == ((page_addr + off) &
+>   		     PAGE_MASK));
+> @@ -993,6 +991,14 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+>   	if (bio->bi_vcnt > 0) {
+>   		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
+>   
+> +		/*
+> +		 * When doing ZONE_DEVICE-based P2P transfers, all pages in a
+> +		 * bio must be P2P pages from the same device.
+> +		 */
+> +		if ((bio->bi_opf & REQ_P2PDMA) &&
+> +		    !zone_device_pages_have_same_pgmap(bv->bv_page, page))
+> +			return 0;
+> +
+>   		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
+>   				same_page)) {
+>   			bio->bi_iter.bi_size += len;
+> @@ -1009,6 +1015,9 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+>   		 */
+>   		if (bvec_gap_to_prev(&q->limits, bv, offset))
+>   			return 0;
+> +	} else {
+> +		if (is_pci_p2pdma_page(page))
+> +			bio->bi_opf |= REQ_P2PDMA | REQ_NOMERGE;
+>   	}
+>   
+>   	bvec_set_page(&bio->bi_io_vec[bio->bi_vcnt], page, len, offset);
+> @@ -1133,11 +1142,24 @@ static int bio_add_page_int(struct bio *bio, struct page *page,
+>   	if (bio->bi_iter.bi_size > UINT_MAX - len)
+>   		return 0;
+>   
+> -	if (bio->bi_vcnt > 0 &&
+> -	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
+> -				page, len, offset, same_page)) {
+> -		bio->bi_iter.bi_size += len;
+> -		return len;
+> +	if (bio->bi_vcnt > 0) {
+> +		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
+> +
+> +		/*
+> +		 * When doing ZONE_DEVICE-based P2P transfers, all pages in a
+> +		 * bio must be P2P pages from the same device.
+> +		 */
+> +		if ((bio->bi_opf & REQ_P2PDMA) &&
+> +		    !zone_device_pages_have_same_pgmap(bv->bv_page, page))
+> +			return 0;
+> +
+> +		if (bvec_try_merge_page(bv, page, len, offset, same_page)) {
+> +			bio->bi_iter.bi_size += len;
+> +			return len;
+> +		}
+> +	} else {
+> +		if (is_pci_p2pdma_page(page))
+> +			bio->bi_opf |= REQ_P2PDMA | REQ_NOMERGE;
+>   	}
+>   
+>   	if (bio->bi_vcnt >= bio->bi_max_vecs)
+> diff --git a/block/blk-map.c b/block/blk-map.c
+> index 0e1167b23934..03192b1ca6ea 100644
+> --- a/block/blk-map.c
+> +++ b/block/blk-map.c
+> @@ -568,6 +568,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+>   	const struct queue_limits *lim = &q->limits;
+>   	unsigned int nsegs = 0, bytes = 0;
+>   	struct bio *bio;
+> +	int error;
+>   	size_t i;
+>   
+>   	if (!nr_iter || (nr_iter >> SECTOR_SHIFT) > queue_max_hw_sectors(q))
+> @@ -588,15 +589,30 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+>   	for (i = 0; i < nr_segs; i++) {
+>   		struct bio_vec *bv = &bvecs[i];
+>   
+> -		/*
+> -		 * If the queue doesn't support SG gaps and adding this
+> -		 * offset would create a gap, fallback to copy.
+> -		 */
+> -		if (bvprvp && bvec_gap_to_prev(lim, bvprvp, bv->bv_offset)) {
+> -			blk_mq_map_bio_put(bio);
+> -			return -EREMOTEIO;
+> +		error = -EREMOTEIO;
+> +		if (bvprvp) {
+> +			/*
+> +			 * If the queue doesn't support SG gaps and adding this
+> +			 * offset would create a gap, fallback to copy.
+> +			 */
+> +			if (bvec_gap_to_prev(lim, bvprvp, bv->bv_offset))
+> +				goto put_bio;
+> +
+> +			/*
+> +			 * When doing ZONE_DEVICE-based P2P transfers, all pages
+> +			 * in a bio must be P2P pages, and from the same device.
+> +			 */
+> +			if ((bio->bi_opf & REQ_P2PDMA) &&
+> +			    zone_device_pages_have_same_pgmap(bvprvp->bv_page,
+> +					bv->bv_page))
+> +				goto put_bio;
+> +		} else {
+> +			if (is_pci_p2pdma_page(bv->bv_page))
+> +				bio->bi_opf |= REQ_P2PDMA | REQ_NOMERGE;
+>   		}
+> +
+>   		/* check full condition */
+> +		error = -EINVAL;
+>   		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
+>   			goto put_bio;
+>   		if (bytes + bv->bv_len > nr_iter)
+> @@ -611,7 +627,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+>   	return 0;
+>   put_bio:
+>   	blk_mq_map_bio_put(bio);
+> -	return -EINVAL;
+> +	return error;
+>   }
+>   
+>   /**
+> diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+> index dce7615c35e7..94cf146e8ce6 100644
+> --- a/include/linux/blk_types.h
+> +++ b/include/linux/blk_types.h
+> @@ -378,6 +378,7 @@ enum req_flag_bits {
+>   	__REQ_DRV,		/* for driver use */
+>   	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
+>   	__REQ_ATOMIC,		/* for atomic write operations */
+> +	__REQ_P2PDMA,		/* contains P2P DMA pages */
+>   	/*
+>   	 * Command specific flags, keep last:
+>   	 */
+> @@ -410,6 +411,7 @@ enum req_flag_bits {
+>   #define REQ_DRV		(__force blk_opf_t)(1ULL << __REQ_DRV)
+>   #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
+>   #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
+> +#define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- ipc/mqueue.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+#define REQ_P2PDMA	(__force blk_opf_t)BIT_ULL(__REQ_P2PDMA)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index fd05e3d4f7b6..48640a362637 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -1347,8 +1347,8 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- 			if (copy_from_user(nc->data,
- 					notification->sigev_value.sival_ptr,
- 					NOTIFY_COOKIE_LEN)) {
--				ret = -EFAULT;
--				goto free_skb;
-+				kfree_skb(nc);
-+				return -EFAULT;
- 			}
- 
- 			/* TODO: add a header? */
-@@ -1357,16 +1357,14 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- retry:
- 			sock = netlink_getsockbyfd(notification->sigev_signo);
- 			if (IS_ERR(sock)) {
--				ret = PTR_ERR(sock);
--				goto free_skb;
-+				kfree_skb(nc);
-+				return PTR_ERR(sock);
- 			}
- 
- 			timeo = MAX_SCHEDULE_TIMEOUT;
- 			ret = netlink_attachskb(sock, nc, &timeo, NULL);
--			if (ret == 1) {
--				sock = NULL;
-+			if (ret == 1)
- 				goto retry;
--			}
- 			if (ret)
- 				return ret;
- 		}
-@@ -1425,10 +1423,6 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- out:
- 	if (sock)
- 		netlink_detachskb(sock, nc);
--	else
--free_skb:
--		dev_kfree_skb(nc);
--
- 	return ret;
- }
- 
--- 
-2.39.5
+Use BIT_ULL instead of direct left shit.
+
+Zhu Yanjun
+
+>   
+>   #define REQ_NOUNMAP	(__force blk_opf_t)(1ULL << __REQ_NOUNMAP)
+>   
 
