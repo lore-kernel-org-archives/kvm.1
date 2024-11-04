@@ -1,229 +1,143 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAF31AE009
-	for <kvm@vger.kernel.org>; Mon,  4 Nov 2024 09:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923EA1AC426;
+	Mon,  4 Nov 2024 09:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730713363; cv=none; b=R99T4Faz4frVEIemqEYqAeyDfGqXql7GyqyKDU5KwiytdMq1syO5UWX/1ET+2A3mPwhY+5n8mzkZaG1vaJBCoALC8kqD7elsky+Gw1tjQTu6lJzM9sl9pqbO75/5/QFeh1fyir3IkR3Let5EobdSCSY2JU1Vm5TtY49mDse5aHg=
+	t=1730713429; cv=none; b=UvTUlYJMQVgvw4YqBpgIN29ju2Xaa18yoS6jy4VwYIntnv+RlWlOg4XI1N/tnhgML0W+Mv7u/x3qWgLN8ZDG0WqZaATGIoWeytRD797SPU0nuXc/rndMK4CM4owfTEV4+q/R+0uwfOH8ot3OxvcSt6e33uuAhFclG3r0PAIZMok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730713363; c=relaxed/simple;
-	bh=FaA23FPZtXnlFMOmMSac5PVY9+TGZG1Uuum22/rBL1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgSBKEEFcHksB9c49zU+hX16lpjjVut652qkzA0HZYNq660pzIQXBpDQJYHZ0U0CMUSb38FQOU384yMKDbTrOXL4g9bDeu+yM03UgRb4jAOAdPLYgjbPpyHhMX7V4X1xl4N2a34bmm8PmM388q9TIrWTadYmDvankRwKrfP7SEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=d4AdwlHN; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1730713429; c=relaxed/simple;
+	bh=BHQy9cw8IkQGQu73pQMwV9Rg9OnChJJTfBGrhKuQX28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nSRF1NGYvibeZ6WI2Udt7iHMaeCH2SuyIH28x4hxRmJ8Lh8N2tg3eKS9qkHBO/qoYgNZat1rTeFBOxAQppxiYjcznK6s3AtR2jqi+Pic6Sdf72NZJ2Od3+UhCPgTzteTVIa8AzkZXcbgbEZsMpjh+WJ5TLT8549VVMAOUfB1OdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eKZTjp5/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="d4AdwlHN"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48feVg012731;
-	Mon, 4 Nov 2024 09:42:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=iByb0
-	xSBywgeMzBO1BPHrpu5g4pFiXx4tglO6zRirAE=; b=d4AdwlHNEss5xFlavlNK3
-	wXUowNkTIInE0Le83Wpgd/XDY9pwNf72p5uLncYOUh9a2+BhGG3gAanYaCDHeH+/
-	PIKmVKMzFdP4cVkFX3IZmlQiyqCL5oiel8woZVLq4KMGJYmhBk7JPXsR5hI/nMMR
-	QQiCn1QyWtVHWuP5dldTefFiceevvOKbhPD7kvyYL9uOiYp+LRAdSqqLaQcR66f5
-	rSla0MNDgfsphrxLspmVQQgE3TPO+5gGBRSncyvqWCfjXjaDzoffkl+pl67T3jHn
-	T3f9BD40WW2iVy9v3E0A2r7+wMsmoQmHmYasm2cJPE4VAD5ld4vxt5Zan1H0pkXb
-	w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nanytbxt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 09:42:05 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A47XMQq009856;
-	Mon, 4 Nov 2024 09:42:04 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahbt0ep-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 09:42:03 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A49fqfo018519;
-	Mon, 4 Nov 2024 09:42:03 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahbt06k-7;
-	Mon, 04 Nov 2024 09:42:03 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
-        babu.moger@amd.com, zhao1.liu@intel.com, likexu@tencent.com,
-        like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
-        lyan@digitalocean.com, khorenko@virtuozzo.com,
-        alexander.ivanov@virtuozzo.com, den@virtuozzo.com, joe.jin@oracle.com,
-        davydov-max@yandex-team.ru
-Subject: [PATCH 6/7] target/i386/kvm: support perfmon-v2 for reset
-Date: Mon,  4 Nov 2024 01:40:21 -0800
-Message-ID: <20241104094119.4131-7-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241104094119.4131-1-dongli.zhang@oracle.com>
-References: <20241104094119.4131-1-dongli.zhang@oracle.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eKZTjp5/"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48f6gu004933;
+	Mon, 4 Nov 2024 09:43:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lT64JN
+	RYte/rsTHbhnobQpMIyA7V1hYp1YrzuDEW/kU=; b=eKZTjp5/ubpaXiV47hNlnf
+	eJoNMiGGLRTlVDNVE84ls6YVQuKd0ruXewXA8wO3qBvFaSfoMIjSCB6vaYz8b07i
+	QMJy6tfe6YeAxY6Lqr0wYjjB6196eEapwf61HZ+Hazq5Im7lf2Wsbbc9iNlkViQO
+	/3hHgby2HYjXirl1g0Jpm1Lc7Lw+Pu8hnFZbRd/YmvEKJ6FZB8/esrcSOQ8A3DC4
+	dC1SsBbBfiJBfni19pN7vNp3FQOHqBXcuSnNne+9fe3oX18LQlFmi4JGUGZ04xY5
+	ByxTLld5P1W8Pi63mM2OMstq66V32tJKQX5YGp1w/sl9oEJXnUPmAHJqNoif6GsQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42ptyar9c4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Nov 2024 09:43:46 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A3JCCax019503;
+	Mon, 4 Nov 2024 09:43:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj1tc4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Nov 2024 09:43:45 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A49hg6059113798
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 Nov 2024 09:43:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 168302004D;
+	Mon,  4 Nov 2024 09:43:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7589E20040;
+	Mon,  4 Nov 2024 09:43:41 +0000 (GMT)
+Received: from [9.171.49.1] (unknown [9.171.49.1])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 Nov 2024 09:43:41 +0000 (GMT)
+Message-ID: <462c0ab7-67f6-4815-8f23-433625b58150@linux.ibm.com>
+Date: Mon, 4 Nov 2024 10:43:41 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] s390/kvm: initialize uninitialized flags variable
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: borntraeger@de.ibm.com, nsg@linux.ibm.com, nrb@linux.ibm.com,
+        seiden@linux.ibm.com, hca@linux.ibm.com, agordeev@linux.ibm.com,
+        gor@linux.ibm.com, gerald.schaefer@linux.ibm.com, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20241030161906.85476-1-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20241030161906.85476-1-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6zniY-EFd4f8RwTTuUf6qlzREQUt9l6E
+X-Proofpoint-ORIG-GUID: 6zniY-EFd4f8RwTTuUf6qlzREQUt9l6E
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-04_07,2024-11-01_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411040085
-X-Proofpoint-ORIG-GUID: nmP97gL8Vk16FKAIIa4yfRAMlu4iMFBe
-X-Proofpoint-GUID: nmP97gL8Vk16FKAIIa4yfRAMlu4iMFBe
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=798 impostorscore=0 malwarescore=0
+ bulkscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411040085
 
-Since perfmon-v2, the AMD PMU supports additional registers. This update
-includes get/put functionality for these extra registers.
+On 10/30/24 5:19 PM, Claudio Imbrenda wrote:
+> The flags variable was being used uninitialized.
+> Initialize it to 0 as expected.
+> 
+> For some reason neither gcc nor clang reported a warning.
+> 
+> Fixes: ce2b276ebe51 ("s390/mm/fault: Handle guest-related program interrupts in KVM")
+> Reported-by: Janosch Frank <frankja@linux.ibm.com>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Similar to the implementation in KVM:
+Thanks for tracking this down, tprot selftest is green with this fix.
 
-- MSR_CORE_PERF_GLOBAL_STATUS and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS both
-use env->msr_global_status.
-- MSR_CORE_PERF_GLOBAL_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_CTL both use
-env->msr_global_ctrl.
-- MSR_CORE_PERF_GLOBAL_OVF_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
-both use env->msr_global_ovf_ctrl.
-
-No changes are needed for vmstate_msr_architectural_pmu or
-pmu_enable_needed().
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
----
- target/i386/cpu.h     |  4 ++++
- target/i386/kvm/kvm.c | 47 ++++++++++++++++++++++++++++++++++---------
- 2 files changed, 42 insertions(+), 9 deletions(-)
-
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 0505eb3b08..68ed798808 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -488,6 +488,10 @@ typedef enum X86Seg {
- #define MSR_CORE_PERF_GLOBAL_CTRL       0x38f
- #define MSR_CORE_PERF_GLOBAL_OVF_CTRL   0x390
- 
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS       0xc0000300
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_CTL          0xc0000301
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR   0xc0000302
-+
- #define MSR_K7_EVNTSEL0                 0xc0010000
- #define MSR_K7_PERFCTR0                 0xc0010004
- #define MSR_F15H_PERF_CTL0              0xc0010200
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 83ec85a9b9..918dcb61fe 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2074,6 +2074,8 @@ static void kvm_init_pmu_info_intel(CPUX86State *env)
- 
- static void kvm_init_pmu_info_amd(CPUX86State *env)
- {
-+    uint32_t eax, ebx;
-+    uint32_t unused;
-     int64_t family;
- 
-     has_pmu_version = 0;
-@@ -2102,6 +2104,13 @@ static void kvm_init_pmu_info_amd(CPUX86State *env)
-     }
- 
-     num_pmu_gp_counters = AMD64_NUM_COUNTERS_CORE;
-+
-+    cpu_x86_cpuid(env, 0x80000022, 0, &eax, &ebx, &unused, &unused);
-+
-+    if (eax & CPUID_8000_0022_EAX_PERFMON_V2) {
-+        has_pmu_version = 2;
-+        num_pmu_gp_counters = ebx & 0xf;
-+    }
- }
- 
- static bool is_same_vendor(CPUX86State *env)
-@@ -4144,13 +4153,14 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-             uint32_t step = 1;
- 
-             /*
--             * When PERFCORE is enabled, AMD PMU uses a separate set of
--             * addresses for the selector and counter registers.
--             * Additionally, the address of the next selector or counter
--             * register is determined by incrementing the address of the
--             * current register by two.
-+             * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a
-+             * separate set of addresses for the selector and counter
-+             * registers. Additionally, the address of the next selector or
-+             * counter register is determined by incrementing the address
-+             * of the current register by two.
-              */
--            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+                has_pmu_version == 2) {
-                 sel_base = MSR_F15H_PERF_CTL0;
-                 ctr_base = MSR_F15H_PERF_CTR0;
-                 step = 2;
-@@ -4162,6 +4172,15 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-                 kvm_msr_entry_add(cpu, sel_base + i * step,
-                                   env->msr_gp_evtsel[i]);
-             }
-+
-+            if (has_pmu_version == 2) {
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
-+                                  env->msr_global_status);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
-+                                  env->msr_global_ovf_ctrl);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
-+                                  env->msr_global_ctrl);
-+            }
-         }
- 
-         /*
-@@ -4637,13 +4656,14 @@ static int kvm_get_msrs(X86CPU *cpu)
-         uint32_t step = 1;
- 
-         /*
--         * When PERFCORE is enabled, AMD PMU uses a separate set of
--         * addresses for the selector and counter registers.
-+         * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a separate
-+         * set of addresses for the selector and counter registers.
-          * Additionally, the address of the next selector or counter
-          * register is determined by incrementing the address of the
-          * current register by two.
-          */
--        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+            has_pmu_version == 2) {
-             sel_base = MSR_F15H_PERF_CTL0;
-             ctr_base = MSR_F15H_PERF_CTR0;
-             step = 2;
-@@ -4653,6 +4673,12 @@ static int kvm_get_msrs(X86CPU *cpu)
-             kvm_msr_entry_add(cpu, ctr_base + i * step, 0);
-             kvm_msr_entry_add(cpu, sel_base + i * step, 0);
-         }
-+
-+        if (has_pmu_version == 2) {
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, 0);
-+        }
-     }
- 
-     if (env->mcg_cap) {
-@@ -4949,12 +4975,15 @@ static int kvm_get_msrs(X86CPU *cpu)
-             env->msr_fixed_ctr_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-             env->msr_global_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_STATUS:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-             env->msr_global_status = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-             env->msr_global_ovf_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_FIXED_CTR0 ... MSR_CORE_PERF_FIXED_CTR0 + MAX_FIXED_COUNTERS - 1:
--- 
-2.39.3
-
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
