@@ -1,49 +1,51 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292E21AC426
-	for <kvm@vger.kernel.org>; Mon,  4 Nov 2024 09:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2161AC88A
+	for <kvm@vger.kernel.org>; Mon,  4 Nov 2024 09:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730713348; cv=none; b=Kg5xL6Y4TC703p8jQtfh8aqBWqykhZcSOBfPXe4K0Dn5i0jztrG9FnD40VhqZhdF94GFLKRzC3e8PvXEejA6721UjRjJHSOaTVR15QLlRxqxqpuS/uzlHXliuQEoJx9uzvxXXcydGzabQbKUQR0K8PWhBe7xDvkwBB65bzLu4Jk=
+	t=1730713350; cv=none; b=ZhkgCbGOCmyUlxXNdbOe+Vqn+Boujo4jwYZUREkoEyZRYH6U9AtFN46SPC/Q6eD3xLUe6RSwNzJGE3ZDwiEAnK8b9SCwBtm78SFG6hQmqyAhtz6S1jyQRGLfMKMgYjcbklVisCTquQdIzcXplFUJnHlDLv7CmUnocQvcR+C03bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730713348; c=relaxed/simple;
-	bh=ZSYmqfoz7t+BUzI5agte4B32oF51dtz5KgzbgtZdds4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzqavT4IQ2pXMzkDuQin+5jgLv5NzRsHEKYMpHvRzQJ7HOHw2KzbneCUm1wCvceCMbQaG6KIcVr2AJxOY1DFkBnJM7WN1clx7VOcIZAERUYgH2iWHvqnu0E2gUClSznQpv+3qOIZhZ5R6cn6Zx3ZLgpV+X8d+ojWG7h3sdXRL0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=hLdiW093; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1730713350; c=relaxed/simple;
+	bh=23pmT7IFCidUDyVMxYxL1it8spDa0vJ9+uTmqhOPzSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E0fll1ZTvcOWLwLsZwo3Culv0sFXiJCBXbeyjtvEsdOuJHk7eP/vq3mdY8sJu4Hz/uZz2YKdtLjd2xSUehgANdWoJhB935Cn9GCs+2ruQVLjE5WiuisLmOiLjYm0Ybs+aJHRCWH2Z9EUpDKZ85n6LGI4xBbd108lw/BxM4lg6GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eO4YEgkT; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="hLdiW093"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eO4YEgkT"
 Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48fdat008888;
-	Mon, 4 Nov 2024 09:41:53 GMT
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48fdl3008884;
+	Mon, 4 Nov 2024 09:42:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=efxZ+pER+q4v74XJIjjsu0KmwnruS
-	Bhe+A90aSlQdbo=; b=hLdiW093K/QE38G1v1sC5r12yPvRtmd5+FDKAw+mrqNVD
-	6JiT4wVq6trvsw7yGzONcCUX++YlrHeekSb6KUWTHOv/uNMNsdTv1sklTCzzPwYl
-	JSJTTS784rijrhgm0DhcEtFYdjmLiXgY5F5gh9sYSisqx2oF8wuNwP8x/aOb/XHF
-	edQlYB7cIOmszSSNdo6h6yMRdjdNnty0gWwLt7spqzFcgkUvY5UoAkDZL267PCzX
-	oCRaLzR4aeKevgk7eBRfax+rP6cI+Kyzzvq+mI5HduAsYoYPq5iGBIctdA0x0kTy
-	VPwFrjjEhEnadc/z2D6eMMnfFGG+fWnLxsZOGgUWw==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=Mtp7c
+	F2I5l+mbvT9VpcvvHwkRan/n1Y5vkihKlaMSj8=; b=eO4YEgkTJt/vUl+KFvawb
+	Zqn141sWKxt2CWtY6q/lhve6vKPipqDgRVEVAwhY1CiRmhELErXnHWuUa8rltHrl
+	RwUprTlhNgpeSmewqV1JCkPHYv2WVFvqZF1mdIb+rUW7rDDKbysPLf66qOkqqGU9
+	M83qxVLEmRBijKpz3+RojPsDKS+qpnqfv71uMIvZ93PzKzHgwX2toBbge3VX1W5j
+	KbjFRIYpDVCVgG8r+gdXCkUAjhpg1gIIi3JCc2FTGSJSH4x0vkhyRsWR9nPh1uhv
+	kZVzI+PH5cpI2rHvH/7hFdbvS+PDOGQtOzjh6NMwaShHNhU9U2x//Z6b2okWIKGL
+	g==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nbpsj984-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nbpsj991-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 09:41:53 +0000 (GMT)
+	Mon, 04 Nov 2024 09:42:06 +0000 (GMT)
 Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A49fL0h009833;
-	Mon, 4 Nov 2024 09:41:52 GMT
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48xrOO009864;
+	Mon, 4 Nov 2024 09:42:05 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahbt084-1
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahbt0fh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 09:41:52 +0000
+	Mon, 04 Nov 2024 09:42:05 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A49fqfc018519;
-	Mon, 4 Nov 2024 09:41:52 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A49fqfq018519;
+	Mon, 4 Nov 2024 09:42:05 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahbt06k-1;
-	Mon, 04 Nov 2024 09:41:52 +0000
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahbt06k-8;
+	Mon, 04 Nov 2024 09:42:04 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
@@ -52,10 +54,12 @@ Cc: pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
         lyan@digitalocean.com, khorenko@virtuozzo.com,
         alexander.ivanov@virtuozzo.com, den@virtuozzo.com, joe.jin@oracle.com,
         davydov-max@yandex-team.ru
-Subject: [PATCH 0/7] target/i386/kvm/pmu: Enhancement, Bugfix and Cleanup
-Date: Mon,  4 Nov 2024 01:40:15 -0800
-Message-ID: <20241104094119.4131-1-dongli.zhang@oracle.com>
+Subject: [PATCH 7/7] target/i386/kvm: don't stop Intel PMU counters
+Date: Mon,  4 Nov 2024 01:40:22 -0800
+Message-ID: <20241104094119.4131-8-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241104094119.4131-1-dongli.zhang@oracle.com>
+References: <20241104094119.4131-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,86 +74,57 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phis
  mlxlogscore=999 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2409260000 definitions=main-2411040085
-X-Proofpoint-ORIG-GUID: DxPDOSl2QbZlB_mlYH2bG4qAi-qYaU3s
-X-Proofpoint-GUID: DxPDOSl2QbZlB_mlYH2bG4qAi-qYaU3s
+X-Proofpoint-ORIG-GUID: 6e8ieF02pb_kFg_RZwb-GTQwlJliHIY0
+X-Proofpoint-GUID: 6e8ieF02pb_kFg_RZwb-GTQwlJliHIY0
 
-This patchset addresses three bugs related to AMD PMU virtualization.
+The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM processes
+these MSRs one by one in a loop, only saving the config and triggering the
+KVM_REQ_PMU request. This approach does not immediately stop the event
+before updating PMC.
 
-1. The PerfMonV2 is still available if PERCORE if disabled via
-"-cpu host,-perfctr-core".
+In additional, PMU MSRs are set only at levels >= KVM_PUT_RESET_STATE,
+excluding runtime. Therefore, updating these MSRs without stopping events
+should be acceptable.
 
-2. The second issue is that using "-cpu host,-pmu" does not disable AMD PMU
-virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
-virtualization remains enabled. On the VM's Linux side, you might still
-see:
+Finally, KVM creates kernel perf events with host mode excluded
+(exclude_host = 1). While the events remain active, they don't increment
+the counter during QEMU vCPU userspace mode.
 
-[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
+migrate vPMU state"), because this isn't a bugfix.
 
-instead of:
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+---
+ target/i386/kvm/kvm.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
-[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
-
-To address this, we have introduced a new x86-specific accel/kvm property,
-"pmu-cap-disabled=true", which disables PMU virtualization via
-KVM_PMU_CAP_DISABLE.
-
-Another previous solution to re-use '-cpu host,-pmu':
-https://lore.kernel.org/all/20221119122901.2469-1-dongli.zhang@oracle.com/
-
-
-3. The third issue is that unreclaimed performance events (after a QEMU
-system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
-injected into the VM.
-
-The AMD PMU registers are not reset during QEMU system_reset.
-
-(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
-running "perf top", the PMU registers are not disabled properly.
-
-(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
-does not handle AMD PMU registers, causing some PMU events to remain
-enabled in KVM.
-
-(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
-preventing the reclamation of these events. Consequently, the
-kvm_pmc->perf_event remains active.
-
-(4) After a reboot, the VM kernel may report the following error:
-
-[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
-[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
-
-(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
-NMIs randomly into the VM kernel:
-
-[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
-
-To resolve these issues, we propose resetting AMD PMU registers during the
-VM reset process
-
-
-Dongli Zhang (7):
-  target/i386: disable PerfMonV2 when PERFCORE unavailable
-  target/i386/kvm: introduce 'pmu-cap-disabled' to set KVM_PMU_CAP_DISABLE
-  target/i386/kvm: init PMU information only once
-  target/i386/kvm: rename architectural PMU variables
-  target/i386/kvm: reset AMD PMU registers during VM reset
-  target/i386/kvm: support perfmon-v2 for reset
-  target/i386/kvm: don't stop Intel PMU counters
-
- accel/kvm/kvm-all.c        |   1 +
- include/sysemu/kvm_int.h   |   1 +
- qemu-options.hx            |   9 +-
- target/i386/cpu.c          |   3 +-
- target/i386/cpu.h          |  12 ++
- target/i386/kvm/kvm.c      | 340 ++++++++++++++++++++++++++++++++++------
- target/i386/kvm/kvm_i386.h |   2 +
- 7 files changed, 319 insertions(+), 49 deletions(-)
-
-base-commit: c94bee4cd6693c1c65ba43bb8970cf909dec378b
-
-Thank you very much!
-
-Dongli Zhang
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 918dcb61fe..c4a11c2e80 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -4111,13 +4111,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+         }
+ 
+         if (IS_INTEL_CPU(env) && has_pmu_version > 0) {
+-            if (has_pmu_version > 1) {
+-                /* Stop the counter.  */
+-                kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+-                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+-            }
+-
+-            /* Set the counter values.  */
+             for (i = 0; i < num_pmu_fixed_counters; i++) {
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
+                                   env->msr_fixed_counters[i]);
+@@ -4133,8 +4126,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+                                   env->msr_global_status);
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+                                   env->msr_global_ovf_ctrl);
+-
+-                /* Now start the PMU.  */
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
+                                   env->msr_fixed_ctr_ctrl);
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL,
+-- 
+2.39.3
 
