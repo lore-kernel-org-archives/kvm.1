@@ -1,198 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6851823AB;
-	Mon,  4 Nov 2024 09:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B9C1AD418;
+	Mon,  4 Nov 2024 09:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730711021; cv=none; b=IlnY1nc5QEuBZ8SQ8VryRQu67PhLniU4Kp1yewp0s/BBwMnkQoR9T85tbMx9BVh6nU0nKstdFR97xLy4DJxt8L/Mlvm57FT/OcDh9QF1kOIxt1ajJDJu8k6Il1ERdEmplvtQX2FTxi4uU+MQ4ceGxifqmUql7GqnHoG9I0KSzPY=
+	t=1730711458; cv=none; b=TOuCSDfwYhxGmjmKnOgIucdReToMksZWs0hVmlsdIoLo3CPajuQvgmGKmjh51wbYkj4EcPH/DJ2EjmvOkcpIDzdIdAmTkXSMfh1Cdzl/hCTL9Y5Dxts/7G/BXHKUJT18Z1a+bcQuuSedPdzYPKw+0u5mpZzDcEkvQJ0xNqHgXuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730711021; c=relaxed/simple;
-	bh=SGs6EJdQiqCeGX+vRL8+3qNu/fQ7GSWYyT6HHC957zA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J2fCxh0mUV3oNP6aQtXLsn6IktMHFIlen2jEIVERTwI33Tg7DQgZe2WVv5IqDH4jgRzyWRkh6m18q9OTTWV2i1UrUeqeRQMkAdFCxVRmn02XtClAac30gTnkhaeht/BHBV1RY/nWOLoDJ5Z0R91AtbNAbgETl42Jw2SmFQMAITg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mUbNrMjF; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mUbNrMjF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730711019; x=1762247019;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SGs6EJdQiqCeGX+vRL8+3qNu/fQ7GSWYyT6HHC957zA=;
-  b=mUbNrMjFQArQe3wrr6+jlnDIiE+lJD5Rmlg6DeR7+yYAZQbYO8cY+L4U
-   dUJfeMNs3yKQAYPRZ6orcbReIwvu1tR2JKndT7GVRmUEFnHvzREhiYw9N
-   qFoyXQDKx6cb/hSxXhUV8GIq/1M1oj585uepHnI8PlE/2FzDIBSkfKu2Y
-   2oO7sU5PbWNOUKjAIR6/y41N5sbjRemBvxdqB++NQIeNH/3k4hNLf0a8x
-   5p6Nu087SA94rGLlpZPL9M0EH9GSaXmx5eqCXbUjv1kFITtpXdtCQBSBN
-   x2sADpgrorf+VfZ+3fIWf7+z/5iYxaKvNCrlJS3QJPjbJw33Q/63SD2j7
-   g==;
-X-CSE-ConnectionGUID: Wz/dR2ZCRn+yK2Y0OJjXZQ==
-X-CSE-MsgGUID: rSWXovONTl+DjWNnD0/0pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="47904494"
-X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="47904494"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 01:03:38 -0800
-X-CSE-ConnectionGUID: R09q12jrR7CsMnCLZrWDIw==
-X-CSE-MsgGUID: BfT10bsdSj65dhe1kAT8gQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="84038475"
-Received: from unknown (HELO [10.238.12.149]) ([10.238.12.149])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 01:03:36 -0800
-Message-ID: <a441733d-1885-42f0-a046-2c8871c46d6b@linux.intel.com>
-Date: Mon, 4 Nov 2024 17:03:34 +0800
+	s=arc-20240116; t=1730711458; c=relaxed/simple;
+	bh=ZoNqXnHnnGF8lSD/qckoW6yk9+u13clamPp4V/MBF+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hu+B62kFxZkhzOGDzq1ntQlQbhzW+Ln3LaDYmxnCWulp+JQ54v4eBITnwAN9L+78iDLjd52EVZ/KfIdRYAYyc5EbG/lY4PsyFLAiu65lsBIOE9GYlNVYPu1Qy5fcSZTmzWVWJWtTcUlBH3EJ37kBT7pEqWsxfsa3SXKez17omD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 69D09227AAD; Mon,  4 Nov 2024 10:10:49 +0100 (CET)
+Date: Mon, 4 Nov 2024 10:10:48 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
+	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 07/17] dma-mapping: Implement link/unlink ranges API
+Message-ID: <20241104091048.GA25041@lst.de>
+References: <cover.1730298502.git.leon@kernel.org> <f8c7f160c9ae97fef4ccd355f9979727552c7374.1730298502.git.leon@kernel.org> <51c5a5d5-6f90-4c42-b0ef-b87791e00f20@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] KVM: x86: Check hypercall's exit to userspace
- generically
-To: "Huang, Kai" <kai.huang@intel.com>, "seanjc@google.com"
- <seanjc@google.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "yuan.yao@linux.intel.com" <yuan.yao@linux.intel.com>
-References: <20240826022255.361406-1-binbin.wu@linux.intel.com>
- <20240826022255.361406-2-binbin.wu@linux.intel.com>
- <ZyKbxTWBZUdqRvca@google.com>
- <3f158732a66829faaeb527a94b8df78d6173befa.camel@intel.com>
- <ZyLWMGcgj76YizSw@google.com>
- <1cace497215b025ed8b5f7815bdeb23382ecad32.camel@intel.com>
- <ZyUEMLoy6U3L4E8v@google.com>
- <ca1eab63d443c2c92c367cee418ae969ba90d6cd.camel@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ca1eab63d443c2c92c367cee418ae969ba90d6cd.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51c5a5d5-6f90-4c42-b0ef-b87791e00f20@arm.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-
-
-
-On 11/2/2024 5:13 AM, Huang, Kai wrote:
-> On Fri, 2024-11-01 at 09:39 -0700, Sean Christopherson wrote:
->> On Fri, Nov 01, 2024, Kai Huang wrote:
->>> On Thu, 2024-10-31 at 07:54 -0700, Sean Christopherson wrote:
->>>> On Thu, Oct 31, 2024, Kai Huang wrote:
->>>> -	ret = __kvm_emulate_hypercall(vcpu, nr, a0, a1, a2, a3, op_64_bit, cpl);
->>>> -	if (nr == KVM_HC_MAP_GPA_RANGE && !ret)
->>>> -		/* MAP_GPA tosses the request to the user space. */
->>>> -		return 0;
->>>> +	r = __kvm_emulate_hypercall(vcpu, nr, a0, a1, a2, a3, op_64_bit, cpl, &ret);
->>>> +	if (r <= r)
->>>> +		return r;
->>> ... should be:
->>>
->>> 	if (r <= 0)
->>> 		return r;
->>>
->>> ?
->>>
->>> Another option might be we move "set hypercall return value" code inside
->>> __kvm_emulate_hypercall().  So IIUC the reason to split
->>> __kvm_emulate_hypercall() out is for TDX, and while non-TDX uses RAX to carry
->>> the hypercall return value, TDX uses R10.
->>>
->>> We can additionally pass a "kvm_hypercall_set_ret_func" function pointer to
->>> __kvm_emulate_hypercall(), and invoke it inside.  Then we can change
->>> __kvm_emulate_hypercall() to return:
->>>      < 0 error,
->>>      ==0 return to userspace,
->>>      > 0 go back to guest.
->> Hmm, and the caller can still handle kvm_skip_emulated_instruction(), because the
->> return value is KVM's normal pattern.
->>
->> I like it!
->>
->> But, there's no need to pass a function pointer, KVM can write (and read) arbitrary
->> GPRs, it's just avoided in most cases so that the sanity checks and available/dirty
->> updates are elided.  For this code though, it's easy enough to keep kvm_rxx_read()
->> for getting values, and eating the overhead of a single GPR write is a perfectly
->> fine tradeoff for eliminating the return multiplexing.
->>
->> Lightly tested.  Assuming this works for TDX and passes testing, I'll post a
->> mini-series next week.
->>
->> --
->> From: Sean Christopherson <seanjc@google.com>
->> Date: Fri, 1 Nov 2024 09:04:00 -0700
->> Subject: [PATCH] KVM: x86: Refactor __kvm_emulate_hypercall() to accept reg
->>   names, not values
->>
->> Rework __kvm_emulate_hypercall() to take the names of input and output
->> (guest return value) registers, as opposed to taking the input values and
->> returning the output value.  As part of the refactor, change the actual
->> return value from __kvm_emulate_hypercall() to be KVM's de facto standard
->> of '0' == exit to userspace, '1' == resume guest, and -errno == failure.
->>
->> Using the return value for KVM's control flow eliminates the multiplexed
->> return value, where '0' for KVM_HC_MAP_GPA_RANGE (and only that hypercall)
->> means "exit to userspace".
->>
->> Use the direct GPR accessors to read values to avoid the pointless marking
->> of the registers as available, but use kvm_register_write_raw() for the
->> guest return value so that the innermost helper doesn't need to multiplex
->> its return value.  Using the generic kvm_register_write_raw() adds very
->> minimal overhead, so as a one-off in a relatively slow path it's well
->> worth the code simplification.
-> Ah right :-)
+On Thu, Oct 31, 2024 at 09:18:07PM +0000, Robin Murphy wrote:
+>>   +static int __dma_iova_link(struct device *dev, dma_addr_t addr,
+>> +		phys_addr_t phys, size_t size, enum dma_data_direction dir,
+>> +		unsigned long attrs)
+>> +{
+>> +	bool coherent = dev_is_dma_coherent(dev);
+>> +
+>> +	if (!coherent && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
 >
->> Suggested-by: Kai Huang <kai.huang@intel.com>
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
-> I think Binbin can help to test on TDX, and assuming it works,
-I tried to add a selftest case to do memory conversion via kvm hypercall
-directly for TDX.  And found TDX code didn't handle the return value for
-the hypercall properly.
-
-I tried to add a parameter to pass the cui callback as mentioned in
-https://lore.kernel.org/lkml/f95cd8c6-af5c-4d8f-99a8-16d0ec56d9a4@linux.intel.com/
-And then, made the following change in TDX code to make it work.
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index cd27ebd3d7d1..efa434c6547d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1072,6 +1072,15 @@ static int tdx_handle_triple_fault(struct kvm_vcpu *vcpu)
-         return 0;
-  }
-
-+static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
-+{
-+       u64 ret = vcpu->run->hypercall.ret;
-+
-+       kvm_r10_write(vcpu, ret);
-+       ++vcpu->stat.hypercalls;
-+
-+       return 1;
-+}
-+
-  static int tdx_emulate_vmcall(struct kvm_vcpu *vcpu)
-  {
-         int r;
-@@ -1087,7 +1096,7 @@ static int tdx_emulate_vmcall(struct kvm_vcpu *vcpu)
-          * R10: KVM hypercall number
-          * arguments: R11, R12, R13, R14.
-          */
--       r = __kvm_emulate_hypercall(vcpu, r10, r11, r12, r13, r14, true, 0, R10);
-+       r = __kvm_emulate_hypercall(vcpu, r10, r11, r12, r13, r14, true, 0, R10, complete_hypercall_exit);
-
-         return r > 0;
-  }
-
-
+> If you really imagine this can support non-coherent operation and 
+> DMA_ATTR_SKIP_CPU_SYNC, where are the corresponding explicit sync 
+> operations? dma_sync_single_*() sure as heck aren't going to work...
 >
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> In fact, same goes for SWIOTLB bouncing even in the coherent case.
+
+No with explicit sync operations.  But plain map/unmap works, I've
+actually verified that with nvme.  And that's a pretty large use
+case.
+
+>> +		arch_sync_dma_for_device(phys, size, dir);
 >
+> Plus if the aim is to pass P2P and whatever arbitrary physical addresses 
+> through here as well, how can we be sure this isn't going to explode?
+
+That's a good point.  Only mapped through host bridge P2P can even
+end up here, so the address is a perfectly valid physical address
+in the host.  But I'm not sure if all arch_sync_dma_for_device
+implementations handle IOMMU memory fine.
+
+>> +	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+>> +	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+>> +	struct iova_domain *iovad = &cookie->iovad;
+>> +	size_t iova_start_pad = iova_offset(iovad, phys);
+>> +	size_t iova_end_pad = iova_offset(iovad, phys + size);
+>
+> I thought the code below was wrong until I double-checked and realised that 
+> this is not what its name implies it to be...
+
+Which variable does this refer to, and what would be a better name?
+
+>> +		phys = iommu_iova_to_phys(domain, addr);
+>> +		if (WARN_ON(!phys))
+>> +			continue;
+>> +		len = min_t(size_t,
+>> +			end - addr, iovad->granule - iova_start_pad);
+>> +
+>> +		if (!dev_is_dma_coherent(dev) &&
+>> +		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+>> +			arch_sync_dma_for_cpu(phys, len, dir);
+>> +
+>> +		swiotlb_tbl_unmap_single(dev, phys, len, dir, attrs);
+>
+> How do you know that "phys" and "len" match what was originally allocated 
+> and bounced in, and this isn't going to try to bounce out too much, free 
+> the wrong slot, or anything else nasty? If it's not supposed to be 
+> intentional that a sub-granule buffer can be linked to any offset in the 
+> middle of the IOVA range as long as its original physical address is 
+> aligned to the IOVA granule size(?), why try to bounce anywhere other than 
+> the ends of the range at all?
+
+Mostly because the code is simpler and unless misused it just works.
+But it might be worth adding explicit checks for the start and end.
+
+>> +static void __iommu_dma_iova_unlink(struct device *dev,
+>> +		struct dma_iova_state *state, size_t offset, size_t size,
+>> +		enum dma_data_direction dir, unsigned long attrs,
+>> +		bool free_iova)
+>> +{
+>> +	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+>> +	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+>> +	struct iova_domain *iovad = &cookie->iovad;
+>> +	dma_addr_t addr = state->addr + offset;
+>> +	size_t iova_start_pad = iova_offset(iovad, addr);
+>> +	struct iommu_iotlb_gather iotlb_gather;
+>> +	size_t unmapped;
+>> +
+>> +	if ((state->__size & DMA_IOVA_USE_SWIOTLB) ||
+>> +	    (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)))
+>> +		iommu_dma_iova_unlink_range_slow(dev, addr, size, dir, attrs);
+>> +
+>> +	iommu_iotlb_gather_init(&iotlb_gather);
+>> +	iotlb_gather.queued = free_iova && READ_ONCE(cookie->fq_domain);
+>
+> Is is really worth the bother?
+
+Worth what?
+
+>> +	size = iova_align(iovad, size + iova_start_pad);
+>> +	addr -= iova_start_pad;
+>> +	unmapped = iommu_unmap_fast(domain, addr, size, &iotlb_gather);
+>> +	WARN_ON(unmapped != size);
+>> +
+>> +	if (!iotlb_gather.queued)
+>> +		iommu_iotlb_sync(domain, &iotlb_gather);
+>> +	if (free_iova)
+>> +		iommu_dma_free_iova(cookie, addr, size, &iotlb_gather);
+>
+> There's no guarantee that "size" is the correct value here, so this has 
+> every chance of corrupting the IOVA domain.
+
+Yes, but the same is true for every users of the iommu_* API as well.
+
+>> +/**
+>> + * dma_iova_unlink - Unlink a range of IOVA space
+>> + * @dev: DMA device
+>> + * @state: IOVA state
+>> + * @offset: offset into the IOVA state to unlink
+>> + * @size: size of the buffer
+>> + * @dir: DMA direction
+>> + * @attrs: attributes of mapping properties
+>> + *
+>> + * Unlink a range of IOVA space for the given IOVA state.
+>
+> If I initially link a large range in one go, then unlink a small part of 
+> it, what behaviour can I expect?
+
+As in map say 128k and then unmap 4k?  It will just work, even if that
+is not the intended use case, which is either map everything up front
+and unmap everything together, or the HMM version of random constant
+mapping and unmapping at page size granularity.
 
