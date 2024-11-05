@@ -1,93 +1,87 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99A51C57A5
-	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 05:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C739126BEE
+	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 05:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730785688; cv=none; b=r/6+1xSL5dXCMuSn7rEOFF38nnb2qz1Y9EWDU4gAjSVdp5VP5nx1WznJ+sUzVhgh2NZqz+2j0o4lEXa81afcKWZCrwZ8lHLb3uoIF8J4QIcgUbz/o/30jFiMXrVLOEPETClZL523nJV03KlKOH4Wuxf+6Ep78gUuSt5qSo5KzkY=
+	t=1730786025; cv=none; b=AzXfb7zosJ4h8MChrfUEtYgyQNGCa1qV+ocl6PMBvUi4YGyrXPta8vkB9T3RGCaHCKmFjVW5YwifhPvL9Oj2T6olNaTPZ8e31QUkzR3FJlayzXjiaDNQmdjdJRKqsozWEM23jltQkEl+lOTGgJgmSQJeIYVwQay7cl1C3Pj2XVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730785688; c=relaxed/simple;
-	bh=jmEXyz4VwD9eXFBJILlwng64IHSdm8vMkBB9NeY981c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jL9f53oDozukYr4UK0UwRXiP9G/ejumSEsP9WqM4GAApI5KnnasRz1cxy3yGZ6tsG6jLUTKl85kb11aOIiDancrAkN3YRNuktIMLraRCTxQQiwKHrfr/wiyhTbHSbAW3f/Gqb0pWtRXIqoKoB16PqIF+f6j4OYgDX8aFnM/Ah60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LB1Kxb2A; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1730786025; c=relaxed/simple;
+	bh=eFIgYsyVXpLfwNZ0WDZ01Ek7Ywd6Wo8hby6mzO9UQ28=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bK//40h0L4w7lmrWHOPJJc7QGOPNh3VfDd6nPcobqbcvoxAJKHVfQiAd11jFqoV8Rv2c4cxRhYZEXwI6xGSKlU8hNwjGPQN1O3B7ir9pJ3xAEUmAYht3YXkrB0kHBRWze4u/7dOavxmZRgBzEZ/Nl79RXr7QWTnYHPNvD6PtIhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WxQJwWW0; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LB1Kxb2A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730785687; x=1762321687;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jmEXyz4VwD9eXFBJILlwng64IHSdm8vMkBB9NeY981c=;
-  b=LB1Kxb2AJCu1RDGzPpAqaacEmIjbIl0seiq23xGG2+ee9BgnR93FIwm2
-   Ecd/cbfAWNLse6oz5F0+QO5EEr20z1IWLkoOW5Q8bDyT6X/LVh9exw8zi
-   tEaicWtBs9V0lgt7HnzwqWWXrxWvi59DWyza34ij9zmV/aEiUKID5OmDu
-   o8TU6XoqJNCHcRYZNOnBDj8tzKoCRIS0B5MIYMz/wwK28ygZtgZJZxbf4
-   Bm1U/3EDW9vPxmCHIaYrUyfUPD0YZvcmCXPSSv6OjWwS3gZr2NK5bpbyO
-   7Tc6UOgPPLZcr4FV1CHGaHkiyU9IWPCVabV087bXzXbi0vfjp56Oy4cWH
-   Q==;
-X-CSE-ConnectionGUID: xyPjlxeGQkiD+L5TpPlaEQ==
-X-CSE-MsgGUID: vcOX2wtDT3GaIoOJc5dINQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="34296034"
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
-   d="scan'208";a="34296034"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 21:48:07 -0800
-X-CSE-ConnectionGUID: 2IWyqnm9TqKKZeDF/qKxQw==
-X-CSE-MsgGUID: 1bq5UDDKQP2lUZKxixQBtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
-   d="scan'208";a="88446957"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 21:48:03 -0800
-Message-ID: <edca2671-b6b4-4c61-a30d-48c4bd68317b@linux.intel.com>
-Date: Tue, 5 Nov 2024 13:47:17 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WxQJwWW0"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7edbbc3a9f2so3488609a12.1
+        for <kvm@vger.kernel.org>; Mon, 04 Nov 2024 21:53:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730786024; x=1731390824; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CATQgkxqet+kiiFl27IyAPicUnMOKGQVJB4zHUMIsJU=;
+        b=WxQJwWW0bBorU/RgtNaMe/adMlP+7npWNLuq4eubpBdbJE0XBldq+PudesMj1/17MM
+         FFU9uKodsG4EPHCPn5NjZackp2T2ltuinh40BUYacp0sQuU2yzD2gYR4n59TDucxGnWV
+         0xMB9XYH7mDY9Ee7f2jUIC/wz7jBNqzWnK5HmfCzaiLF+FPwWjV2OiG3hKPZR6z39JX+
+         i2YehwmsULwsfbyN6ehX5pyLx6Gcm3aagbCl2L9PgWFgIs8Vo2F1nUcJeFwnycf8We63
+         ImPEadZ5hG99y6KtG94zt941YT+/awVjM3uK7rEuVBb7gpMGSy09KxUAFqYJvuk96B/S
+         vPxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730786024; x=1731390824;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CATQgkxqet+kiiFl27IyAPicUnMOKGQVJB4zHUMIsJU=;
+        b=dZL8vqUuFlkw0M3ia/l7iyFEmOaB4aCCw3HfvoCDZjImbYpg5Ey/M09OD85VLht8Ta
+         UBsXp/2k27474aGMOSY7+rJazjJzbrDYSqj8HrFIKcxaZe+JG7Pb2MsTQ75cf9ihCH/K
+         JCWYyeyyEo73DmGDJfaK16tO3ub3Ci889plPB51CmgaAwinjqP/EKZFD2cR2wnOquDXs
+         K8xL4OrXFQaobtUK0z4IIVjaKZkRKrTyqXMtdMvOJPm/6dw+EZs654HfcK+YS+ifLy7x
+         MAdREvSjO0+U1jP6N00fn74HGNGyKjBABGcZB7xavFyx9zMNGwdOeL9PN+VsZ+25LVuE
+         BPwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQpqlhqVbiMAhPFvfRwmCoYesX9dddgdtzzaeb68hOJG+uUEV7D2QIqxy325T0vCXlJdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNKzaq9yfgaC4SxJEFaHVuKWZfUOdJaOvJVI2rb8YfRKxGCe0w
+	+HderCe67c8xydLCjEk9goaHQ4UxUqkyfH+DQcfnnpgIzYjxUo1g/uetW7ThI52T5CsiBxZfXEm
+	s1A==
+X-Google-Smtp-Source: AGHT+IE6j+o01T6Bqwps+9UMPoL+PueNwC77slv8kXJ3ii1dNkE6QY41DyYsvleelHQM84FbAugxCqQ87JE=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a65:4389:0:b0:7ea:618:32b8 with SMTP id
+ 41be03b00d2f7-7edd7c9109bmr51755a12.10.1730786023765; Mon, 04 Nov 2024
+ 21:53:43 -0800 (PST)
+Date: Mon, 4 Nov 2024 21:53:42 -0800
+In-Reply-To: <173039504313.1508539.4634909288183844362.b4-ty@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/13] iommu/vt-d: Fail SVA domain replacement
-To: Yi Liu <yi.l.liu@intel.com>, joro@8bytes.org, jgg@nvidia.com,
- kevin.tian@intel.com
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, nicolinc@nvidia.com,
- kvm@vger.kernel.org, chao.p.peng@linux.intel.com, iommu@lists.linux.dev,
- zhenzhong.duan@intel.com, vasant.hegde@amd.com, will@kernel.org
-References: <20241104131842.13303-1-yi.l.liu@intel.com>
- <20241104131842.13303-11-yi.l.liu@intel.com>
- <0781f329-49a5-4652-ae94-d0bbefa8dbb0@linux.intel.com>
- <2b6a427e-bd3b-436d-9f24-b44d28ec4778@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <2b6a427e-bd3b-436d-9f24-b44d28ec4778@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20241024095956.3668818-1-roypat@amazon.co.uk> <173039504313.1508539.4634909288183844362.b4-ty@google.com>
+Message-ID: <Zymy5hjgMSMT64uI@google.com>
+Subject: Re: [PATCH] kvm: selftest: fix noop test in guest_memfd_test.c
+From: Sean Christopherson <seanjc@google.com>
+To: pbonzini@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Patrick Roy <roypat@amazon.co.uk>
+Cc: chao.p.peng@linux.intel.com, ackerleytng@google.com, graf@amazon.com, 
+	jgowans@amazon.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 11/5/24 13:30, Yi Liu wrote:
-> On 2024/11/5 11:30, Baolu Lu wrote:
->> On 11/4/24 21:18, Yi Liu wrote:
->>> There is no known usage that will attach SVA domain or detach SVA domain
->>> by replacing PASID to or from SVA domain. It is supposed to use the
->>> iommu_sva_{un}bind_device() which invoke the iommu_{at|de} 
->>> tach_device_pasid().
->>> So Intel iommu driver decides to fail the domain replacement if the old
->>> domain or new domain is SVA type.
->>
->> I would suggest dropping this patch.
->>
->> The iommu driver now supports switching SVA domains to and from other
->> types of domains. The current limitation comes from the iommu core,
->> where the SVA interface doesn't use replace.
+On Thu, Oct 31, 2024, Sean Christopherson wrote:
+> On Thu, 24 Oct 2024 10:59:53 +0100, Patrick Roy wrote:
+> > The loop in test_create_guest_memfd_invalid that is supposed to test
+> > that nothing is accepted as a valid flag to KVM_CREATE_GUEST_MEMFD was
+> > initializing `flag` as 0 instead of BIT(0). This caused the loop to
+> > immediately exit instead of iterating over BIT(0), BIT(1), ... .
 > 
-> I also noticed other iommu drivers (like ARM SMMUv3 and AMD iommu) would
-> support SVA replacement. So may we also make intel_svm_set_dev_pasid() be
-> able to handle the case in which @old==non-null? At first, it looks to be
-> dead code when SVA interface does not use replace. But this may make all
-> drivers aligned.
+> Applied to kvm-x86 fixes, thanks!
+> 
+> [1/1] kvm: selftest: fix noop test in guest_memfd_test.c
+>       https://github.com/kvm-x86/linux/commit/fd5b88cc7fbf
 
-yeah, that works for me.
+FYI, I rebased "fixes" onto 6.12-rc5 to avoid several pointless conflicts in
+other patches.  New hash:
+
+[1/1] KVM: selftests: fix unintentional noop test in guest_memfd_test.c
+      https://github.com/kvm-x86/linux/commit/945bdae20be5
