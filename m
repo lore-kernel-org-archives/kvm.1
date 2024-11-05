@@ -1,152 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C48C383
-	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 05:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCF31FEFA2
+	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 05:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730786065; cv=none; b=um7BD97xHNnKJiSIVHBMOqdCLiiY7yo04qcgsF3p6QwN1LXfNbpbTjlPPvYVn09S2ZjuIMlgJREdwPbtbRpHY/bqQHVwmmiPcq51C5W0LrfuyXLegDke66ZPITCQ35TA+3TiSwVCuE78pFPcwZjvigQrlT685QlmwnDYO0MkZuc=
+	t=1730786135; cv=none; b=QAfrRXPtD/6f7pqOepRcMI3hyDIbShkvJ1EqYyT/zNRlFu6Fv1yD7+jJzrlDNnwAH9x5orfl/uMp37Q0rkIqRrp5xGpXdrWiF5BvDKAgnJArCYGUmx94z2oDM+yvj93RIBjO1GiHR63tGEHQFs3AjthJDmorhJmkiTzXs80tG+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730786065; c=relaxed/simple;
-	bh=0OoOzBhx74szUGlwCfmlNKffvLdHmqvKY7RGCMHDX5g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NHlbv31rV5nyId+IAwAZzZ0kapHrRew8hmbj/mU+5/u92aHJxAvQLTlH4gXQ6/ESgPhjXYyUhBRspfPBoeoKLY105PjqeTIGkV5ZyuVpo9CCfCua9j+1uqfxUFSG9mrWB9kx6dYAGQruCOic5c5hdNqtAr8VGzlnQAhN3IWbvpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U2/DdAYy; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1730786135; c=relaxed/simple;
+	bh=EM+nXUdvDCm6N3UmMRTXiFNomsft+6ngsfGryxa8oRM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SjruTe76kZsonFTWtd4dRPkzZb15AuYWLKt7jaCjnZ5odqElNCF5XKJII85yVQsifUTJeNvbeP8tRWsGJrkiA6mOfvPqTw1XbdL45NF/mCFTJAhkbsFQGWPlv56v/oozlNCmbY4YOGQqgspwGH9Dq+9t6/kGt0llOrrkBj8cJfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zQSvdEAL; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U2/DdAYy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730786064; x=1762322064;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0OoOzBhx74szUGlwCfmlNKffvLdHmqvKY7RGCMHDX5g=;
-  b=U2/DdAYyy4XyIlOB3LjRkMKVenVWMKLK0Pl21wteKcJI2YgQko8VCR+h
-   aRfElNzam4jdl3mXcghV+hMMdypHrBAJHItMmw0vhh2BVDKPS0yT0sMG5
-   zmmwXMIG7XFJW31qa3UcWLIrEIHkYbKyuHYIgMh6JCCzNKEbfEjTHUFZw
-   lDz9mFfGh6m+HRfCJ/6qmhnOfgulSR7N05ZRsl45VRT80IgMxAYLGuTfN
-   z36etnvCj8hi81TfPaFS3aIetPMnxWr6zW7EOVa/dOi6pxAfe9gZROBE6
-   BMG0jTDGyVEnXn7gP4aQpjuRysbrB5/q4s4GsLqG4LCtm0hq9YBQpgM26
-   w==;
-X-CSE-ConnectionGUID: keYwzsFQTdGGxu8jz3mhVA==
-X-CSE-MsgGUID: 40O3IkWJSFGZbPE8VeIG+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="18131176"
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
-   d="scan'208";a="18131176"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 21:54:22 -0800
-X-CSE-ConnectionGUID: 2+4PkHRBR4qQrPgiR9OQsw==
-X-CSE-MsgGUID: lspzd9fQShCpuIDTMxksNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
-   d="scan'208";a="83995577"
-Received: from st-server.bj.intel.com ([10.240.193.102])
-  by orviesa006.jf.intel.com with ESMTP; 04 Nov 2024 21:54:19 -0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: kvm@vger.kernel.org,
-	x86@kernel.org
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	chao.gao@intel.com,
-	xiaoyao.li@intel.com,
-	jiaan.lu@intel.com,
-	xuelian.guo@intel.com,
-	tao1.su@linux.intel.com
-Subject: [PATCH v2] x86: KVM: Advertise CPUIDs for new instructions in Clearwater Forest
-Date: Tue,  5 Nov 2024 13:48:25 +0800
-Message-Id: <20241105054825.870939-1-tao1.su@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zQSvdEAL"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-20c77c8352dso45123195ad.1
+        for <kvm@vger.kernel.org>; Mon, 04 Nov 2024 21:55:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730786131; x=1731390931; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IwQ41DxPwHg/LBZhq9U/e3vXFnxJog0O/oye+eR+OCc=;
+        b=zQSvdEALJVVEodFzTR+avoITMzlbcJr4bL04TyrBVBxoIYKkh048TiKQl7PF/bFmkS
+         z2RN4Srn0zAfMqTqg4bJCEWuMFGQxVsvvxoosev8b05YDALsP4F6Q+NVPeBUhqieu8f+
+         sd0t2NXhaQ2zCKtM46pXDSMx13lu79jtloGbr6O7rbl46NjRI8tNyXwt/Kf3pFK7RLJs
+         Tr+f3nDsw6CVb9GjTFyo1Nl89gOLbueNowgaAsNp+zUyE0yms2TOeoCpL1IWFNF6rbge
+         eovpeBMFlrvGxwk0tLW3NDw0cl2H3Bjm/zPR69xBCF/vB/HmtohivQeVqkWV3jyoBm5G
+         JHcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730786131; x=1731390931;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IwQ41DxPwHg/LBZhq9U/e3vXFnxJog0O/oye+eR+OCc=;
+        b=EFgy8fBjVJzroCiBOkitArZ4NwM/VFavhYci3NYoc4l3Pog0IJ4VG4IPLFbhMFQNSm
+         YwWin8x8UeEjMpMA2sppBUdxqa3CbMyDWcZ3Y/YNUastCwHuL0k0P8IEEa6K8eX384sD
+         0tVe+UGkALBPME/FGT2/qTv42LYyQKf8MckbNLxAFSIc9ZztbXALKe5LKb3bVnSKYmBI
+         zeCV8jV83H00JFmSPaV9xEzxZ1lhOt6SgEBAEwmKKvn1hZCe4Hy+nK/sW0i/8q+R3oG4
+         mAb6Na/Ru5Mz4KRYnZ45FQ/nl7sPRqHSbX151jPqzac1fxLMGMwj24TX0o35zWA9R0y8
+         kiSw==
+X-Gm-Message-State: AOJu0YxKQBlZypRy5R+sxz+aVsOlzBiGWkY2gqyecZLLaPna4/U3DnGn
+	wbgaUKetPPmuWlzFpb9G30Jxf6AHEC0aB39AwajEUqoRmUIuiyWD4SgE6gTj4XHjNvmUL273AYq
+	6mB32W69nC/b6VO7FZpqJdIKKJZvF86PgGDWoZI0yYC4pQmgcT11Y2ZfksJoOriw38x3YhBDZ4v
+	gfpWm/jzsBuBXuU5CGxA0iKIByFhYu
+X-Google-Smtp-Source: AGHT+IEuUBIfr0pmpR1vDVKnUKE8uRFFxdiJcuGz5MS7Q3zeXILMN/DoM1JZEMxM44JWZ8BW2DwV5M3g8tM=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a17:902:f681:b0:20c:ce1f:13b6 with SMTP id
+ d9443c01a7336-210c68cf3b0mr1015755ad.3.1730786130327; Mon, 04 Nov 2024
+ 21:55:30 -0800 (PST)
+Date: Mon, 4 Nov 2024 21:55:28 -0800
+In-Reply-To: <172848588854.1055233.16718265016131437325.b4-ty@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20241004220153.287459-1-mlevitsk@redhat.com> <172848588854.1055233.16718265016131437325.b4-ty@google.com>
+Message-ID: <ZymzUI3HnkYMxyjk@google.com>
+Subject: Re: [PATCH] KVM: selftests: memslot_perf_test: increase guest sync timeout
+From: Sean Christopherson <seanjc@google.com>
+To: kvm@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kselftest@vger.kernel.org, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Latest Intel platform Clearwater Forest has introduced new instructions
-enumerated by CPUIDs of SHA512, SM3, SM4 and AVX-VNNI-INT16. Advertise
-these CPUIDs to userspace so that guests can query them directly.
+On Wed, Oct 09, 2024, Sean Christopherson wrote:
+> On Fri, 04 Oct 2024 18:01:53 -0400, Maxim Levitsky wrote:
+> > When memslot_perf_test is run nested, first iteration of test_memslot_rw_loop
+> > testcase, sometimes takes more than 2 seconds due to build of shadow page tables.
+> > 
+> > Following iterations are fast.
+> > 
+> > To be on the safe side, bump the timeout to 10 seconds.
+> > 
+> > [...]
+> 
+> Nice timing (lol), the alarm can also fire spuriously when running selftests
+> on a loaded arm64 host.
+> 
+> Applied to kvm-x86 fixes, thanks!
+> 
+> [1/1] KVM: selftests: memslot_perf_test: increase guest sync timeout
+>       https://github.com/kvm-x86/linux/commit/7d4e28327d7e
 
-SHA512, SM3 and SM4 are on an expected-dense CPUID leaf and some other
-bits on this leaf have kernel usages. Considering they have not truly
-kernel usages, hide them in /proc/cpuinfo.
+FYI, I rebased "fixes" onto 6.12-rc5 to avoid conflicts in other patches, new hash:
 
-These new instructions only operate in xmm, ymm registers and have no new
-VMX controls, so there is no additional host enabling required for guests
-to use these instructions, i.e. advertising these CPUIDs to userspace is
-safe.
+[1/1] KVM: selftests: memslot_perf_test: increase guest sync timeout
+      https://github.com/kvm-x86/linux/commit/2d0f2a648147
 
-Tested-by: Jiaan Lu <jiaan.lu@intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
----
-Changelog:
-v1->v2:
- - Merge whole patch set into a single patch. (Borislav)
- - Drop duplicate description in commit message. (Dave)
-
-v1: https://lore.kernel.org/all/20241104063559.727228-1-tao1.su@linux.intel.com/
----
- arch/x86/include/asm/cpufeatures.h |  3 +++
- arch/x86/kvm/cpuid.c               | 10 +++++-----
- arch/x86/kvm/reverse_cpuid.h       |  1 +
- 3 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 913fd3a7bac6..d96277dceabf 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -317,6 +317,9 @@
- #define X86_FEATURE_ZEN1		(11*32+31) /* CPU based on Zen1 microarchitecture */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
-+#define X86_FEATURE_SHA512		(12*32+ 0) /* SHA512 instructions */
-+#define X86_FEATURE_SM3			(12*32+ 1) /* SM3 instructions */
-+#define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
- #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
- #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions */
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 41786b834b16..bc98e19a3f36 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -698,14 +698,14 @@ void kvm_set_cpu_caps(void)
- 		kvm_cpu_cap_set(X86_FEATURE_SPEC_CTRL_SSBD);
- 
- 	kvm_cpu_cap_mask(CPUID_7_1_EAX,
--		F(AVX_VNNI) | F(AVX512_BF16) | F(CMPCCXADD) |
--		F(FZRM) | F(FSRS) | F(FSRC) |
--		F(AMX_FP16) | F(AVX_IFMA) | F(LAM)
-+		F(SHA512) | F(SM3) | F(SM4) | F(AVX_VNNI) | F(AVX512_BF16) |
-+		F(CMPCCXADD) | F(FZRM) | F(FSRS) | F(FSRC) | F(AMX_FP16) |
-+		F(AVX_IFMA) | F(LAM)
- 	);
- 
- 	kvm_cpu_cap_init_kvm_defined(CPUID_7_1_EDX,
--		F(AVX_VNNI_INT8) | F(AVX_NE_CONVERT) | F(PREFETCHITI) |
--		F(AMX_COMPLEX) | F(AVX10)
-+		F(AVX_VNNI_INT8) | F(AVX_NE_CONVERT) | F(AMX_COMPLEX) |
-+		F(AVX_VNNI_INT16) | F(PREFETCHITI) | F(AVX10)
- 	);
- 
- 	kvm_cpu_cap_init_kvm_defined(CPUID_7_2_EDX,
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 0d17d6b70639..e46220ece83c 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -46,6 +46,7 @@ enum kvm_only_cpuid_leafs {
- #define X86_FEATURE_AVX_VNNI_INT8       KVM_X86_FEATURE(CPUID_7_1_EDX, 4)
- #define X86_FEATURE_AVX_NE_CONVERT      KVM_X86_FEATURE(CPUID_7_1_EDX, 5)
- #define X86_FEATURE_AMX_COMPLEX         KVM_X86_FEATURE(CPUID_7_1_EDX, 8)
-+#define X86_FEATURE_AVX_VNNI_INT16      KVM_X86_FEATURE(CPUID_7_1_EDX, 10)
- #define X86_FEATURE_PREFETCHITI         KVM_X86_FEATURE(CPUID_7_1_EDX, 14)
- #define X86_FEATURE_AVX10               KVM_X86_FEATURE(CPUID_7_1_EDX, 19)
- 
-
-base-commit: 2e1b3cc9d7f790145a80cb705b168f05dab65df2
--- 
-2.34.1
-
+FWIW, I am planning on getting this to Paolo in time for -rc7.
