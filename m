@@ -1,67 +1,68 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1552B1EBFF3
-	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 18:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB391EF0AB
+	for <kvm@vger.kernel.org>; Tue,  5 Nov 2024 18:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730832426; cv=none; b=cosw7fNzrESrI24GU16XpBdyR7pl/hsJMufcvHGDDgMq/KFtNyZfQYeeXW/vrKVh8h0bLxKxXoEN/v+ytLd6a1ePC3f8pltV5IQ0/9Hwmdh/vR1e/tQh694ID3g+wlO0HxF/88RKfJcfyA7RR37hmRxLDKMQkgTKDo+Tm/7DI7s=
+	t=1730832611; cv=none; b=IDsyRzkGBSbfQeSeUe7xc1oF3dSLOXdm51VYD30pXncaAQbPkf9m3dYMOs0MyvaxZrMvctw2Xd00cqxl66cpv1aYzVDPGT8ZoKB+GW66Ul5b2Fa70FbJ20H4WVja5z9LRB+z/c9e1ZIVjyg+TgB0/vcqX4WOZB8nn9VqT3fPzoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730832426; c=relaxed/simple;
-	bh=1Z9EfTcjCfWMv62LcDK6R/g7LO2Qr95lhNak5fs4/7g=;
+	s=arc-20240116; t=1730832611; c=relaxed/simple;
+	bh=GuA3beCpCOsF/1gnaqKFYykwNqNyqB6S+p7rPkGGEko=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K2p6dnOhFmxuAE9sMkrxaEZRiFJVdvImw6YlF04aRuevgEJuY5bdtuUQR4bIZk+R9+RKPkesX+v3FbZx96ynJtdCoK0cHH2fURunYU53DanLKlDf0fHSBjlitI65qPVhwZIVOJq0wBsUfv9iyHvPVGDIXnJNLv/235ZBHnuSUnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oKKl5MnG; arc=none smtp.client-ip=209.85.222.52
+	 To:Cc:Content-Type; b=sE6l08nVjS2oo1NcqaqjmCGt0Rrl3Ue1ghoepXLLCiK5ZfrtXutQUYcSF6oXshVGM8Y2P9+fY4yoxeojbZYnIdeCK7LaRTz5BEF7x2lCExKu/i+2a9rQakvTlJawBsJvje/Iv/ihXTmi3HoPc3qdlwexLDHepFbfMYidll2fxws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XfFb3sEy; arc=none smtp.client-ip=209.85.222.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oKKl5MnG"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-84fd50f2117so2024082241.1
-        for <kvm@vger.kernel.org>; Tue, 05 Nov 2024 10:47:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XfFb3sEy"
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-851e191d541so1989243241.1
+        for <kvm@vger.kernel.org>; Tue, 05 Nov 2024 10:50:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730832424; x=1731437224; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730832609; x=1731437409; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1Z9EfTcjCfWMv62LcDK6R/g7LO2Qr95lhNak5fs4/7g=;
-        b=oKKl5MnGmbHCrYv3otvR8dX/GHq2Dda1hgJFhhUMqdizeUx1d7NhRbAAPWR6IvZbv8
-         1lCFyYxqCks533Gj0bBT7+y7ovz0n1dsVYuOC/pF5tUldPFP8tT2TcTAqzOplLErybWH
-         cx1FmiQ6oKScmhsNEBBEe93xCAmNtT8gHTjQtfK5HZzhqXzq9iOo0viK6PF4NizYm5R5
-         nwZO61jh5vDstDXZlcCNR5lL0B63QIOXSo5Grz2BFnuu19gtS8mQ2KNvN3qqs6VIeiIO
-         m1EJQYbfVlsQjTPOsmvsplVULCmeBaPVxUbLQSD03lwhcRV+gDKI0NIwGFVJ5SYc8pqI
-         1o9Q==
+        bh=GuA3beCpCOsF/1gnaqKFYykwNqNyqB6S+p7rPkGGEko=;
+        b=XfFb3sEy6bh09we+iyqQlLwnD76lkk5u0bxekUKVqfDHOvHL95+cVRcdc4I8OhOaDg
+         6ifdfcshF6jJN2VKL/BP8rWmf14vuT26H3/lMQ7zkeGHdocDkEEod4GBF8fJhT3CALD5
+         3ort2diLNibyMSa6VKKTAM07XBCTuCjaOuBspJhUfrcC0+LbSz7UviKPPUOgGNAVwXJZ
+         JsHulYPqHMp0+OyTazmcAoufmQ7up7i14pgeTZPdae1qEZxhZOWhLXfwaal3MwbeS0Sv
+         Os6DO4088NZ1tr4X4QTN7mYtoI1JzNPWzoJXBz5iqhAVR620wgpzzFY7r/8kx2Eyp0UV
+         ilvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730832424; x=1731437224;
+        d=1e100.net; s=20230601; t=1730832609; x=1731437409;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1Z9EfTcjCfWMv62LcDK6R/g7LO2Qr95lhNak5fs4/7g=;
-        b=nkftHg2eEKpI4iMQcergOq9zH4hsdsRXZwpEwG0wnUpbo9ddYDdQI6C2QZNoJnWpPC
-         oMPUtkKYaHfvAVUDqSssI5wBekszNRHmn4iiFxUPI6NeY4g2jkLkTwdHBctog1RfCayj
-         7eitbX/eyJmxxYumDFRcVsshJioPLjkPiO64bSvkH+wWK2MYVFuR2OwPLIiTEB72A7UW
-         Hr5DIeBoD+8shg8cfT2rLAbzCKitNtLo/ucePtfZlGwHxCNITCEfNPxJTet2/awmiFb4
-         BQA/4cA/632FhFGyXPgzOupEVHp3c7jZXjNhaSjobrhsahrFsOh/HIRhPNbtVtCNJUHn
-         73+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWXdmPFmVRgww+mIPA0XjO3Hr3MJiJL7xo1C6xNU4iNhWgJA3ILRvFBnw7waDyYOk/Xwvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpOV2sxc6qFiPsdONi1gwTHx1caHY2xxq62GnSlYffDtR8rI+B
-	up20/aqCvn1+CGv8uK/7umZrMB9tr1yQuuW2kfR0ceBiUen50EDSfKn7dWpixNOBFN0wIybV4qb
-	1ZmN6Pr7d5c6DUIkh0pdEHnhhoqfr7t5ddImn
-X-Google-Smtp-Source: AGHT+IEY5tibKcFrB8ToC/jSQHEFvwYVcsqLc1FFicyOsbkwk/AWQht7QBcG826QDeUtW2YoJNXGx2q4B51hQDGJhdE=
-X-Received: by 2002:a05:6102:2b86:b0:4a9:588c:6492 with SMTP id
- ada2fe7eead31-4a9588c64damr19015409137.6.1730832422383; Tue, 05 Nov 2024
- 10:47:02 -0800 (PST)
+        bh=GuA3beCpCOsF/1gnaqKFYykwNqNyqB6S+p7rPkGGEko=;
+        b=dfuXkb1V1ypnpI1UJGLtVUiFnpb7Ss8+aFcjSyLqOeaNHps4KoualZ6pkENZkKJjhm
+         O30Rj93NzQP+g588tyjEyH9IX0LJHoXWPYvSM0Rcej8NzhLG+B4YGwq9bWtYBUHZpJB7
+         1PufFt6ikDa5vDNVDgX4aKcdR3Lk3hyzuhnslPpxFJVec6/4QMTmGfaxPTM9pNR6xVj/
+         3EXV1kW4ldI0bXZELdb3RkQQzKMx9fjWuHJNBMQVMmE+TBL4FfaJPqbpqQNmt/xrGEK0
+         9V58BCvJxIU3VelxRLC+KOdH6eeaQ90KbcFjI3nv47Tqu15Al74xUpXwn6eAJwUKc8kF
+         xCRw==
+X-Forwarded-Encrypted: i=1; AJvYcCXcXwY8ZK8i0IXJQrHcz17ES0CpC8msSy+PXknI1urCoIH49d/orgKpfzGRC4i/cOhf9GA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5nQvqPBG9FmFDXPcA4utm7As/zeJ4BoJYeGdjtV+YfzTxm8zP
+	h4sBkU/ISvzqjZBRCk1zd3D3jRPOmYZkBcstumtSSInpkrWhGNR3Z08VSILx9M2ELVg7fZmStK6
+	oYxV8yEww267KELQIpCBHKwCxYDwjEoPNBnaQ
+X-Google-Smtp-Source: AGHT+IHkItXBC1B3UDEQgFBqAWgFVBkvDNSRLXCtLKqvyF8jaciAAlFayhRVV0lLZr7LoiK4iN896AfTAH7qS9CPm0k=
+X-Received: by 2002:a05:6102:3e92:b0:4a4:8287:6c34 with SMTP id
+ ada2fe7eead31-4a962e4a464mr16705037137.17.1730832608818; Tue, 05 Nov 2024
+ 10:50:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105184333.2305744-1-jthoughton@google.com> <20241105184333.2305744-6-jthoughton@google.com>
-In-Reply-To: <20241105184333.2305744-6-jthoughton@google.com>
+References: <20241105184333.2305744-1-jthoughton@google.com> <20241105184333.2305744-7-jthoughton@google.com>
+In-Reply-To: <20241105184333.2305744-7-jthoughton@google.com>
 From: Yu Zhao <yuzhao@google.com>
-Date: Tue, 5 Nov 2024 11:46:25 -0700
-Message-ID: <CAOUHufaKCN0SWk-QVmLG18m-3HH73Z4i-cogDxuXYsS_Tcva6Q@mail.gmail.com>
-Subject: Re: [PATCH v8 05/11] KVM: x86/mmu: Rearrange kvm_{test_,}age_gfn
+Date: Tue, 5 Nov 2024 11:49:32 -0700
+Message-ID: <CAOUHufYA9wSQqOtoEx4yp1t60s+iOoM7Bq9yT+pfY82y0dQWvA@mail.gmail.com>
+Subject: Re: [PATCH v8 06/11] KVM: x86/mmu: Only check gfn age in shadow MMU
+ if indirect_shadow_pages > 0
 To: James Houghton <jthoughton@google.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, Marc Zyngier <maz@kernel.org>, 
@@ -74,10 +75,9 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Nov 5, 2024 at 11:43=E2=80=AFAM James Houghton <jthoughton@google.c=
 om> wrote:
 >
-> Reorder the TDP MMU check to be first for both kvm_test_age_gfn and
-> kvm_age_gfn. For kvm_test_age_gfn, this allows us to completely avoid
-> needing to grab the MMU lock when the TDP MMU reports that the page is
-> young. Do the same for kvm_age_gfn merely for consistency.
+> Optimize both kvm_age_gfn and kvm_test_age_gfn's interaction with the
+> shadow MMU by, rather than checking if our memslot has rmaps, check if
+> there are any indirect_shadow_pages at all.
 >
 > Signed-off-by: James Houghton <jthoughton@google.com>
 
