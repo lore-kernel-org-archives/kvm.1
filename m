@@ -1,126 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF01DF729;
-	Wed,  6 Nov 2024 12:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB11DF740
+	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 12:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894617; cv=none; b=mbevG6V/EQgwEA55Jk8+cX6oDpdkCXM/pXm46pOZEVzetU4CenjNAOffnbL2HBKuTRUHBGAuHKXKbhzgquTcBIJCRFxAqELEm5V+RH81phlmSLVfmzb0wNd71T1kaPJbcIwDt75dsr2/tT+KnW4W9SEZJ9nZUkQWZCaaNNocgUU=
+	t=1730895762; cv=none; b=Pcarb+Xjr4sXY+FBkgXaIk3llBh+qzWSkdtm1Q2ITbSxILSs6fOBrHto7YZ1IVb6JSLluPSYCGnF4x23EQcCx7vGTLFT0qBWep0j5CizZrytXR+CoyJiGPS4F55sz8CA1sNhmOLVg/7TKmCfUx8rOXzQ2dTrJdk/cSz93GpXEQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894617; c=relaxed/simple;
-	bh=lCwMBpljskyRCExLi/a8YWjzwY2eIH1YDr8GaeQK/sk=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YzmD5P7lJ2+KbAxRw3p2yMIzZDdcKc21ww34gA7rbAOvFbN1xN35xhlNv7bjho2y5pH9OBTBKJnrknqo9CLe3RWEfJ8V2Z5TOYvyMROuMonxzJivqb68r/OBuKgLbW9212GLNbQxZ88EvfdA4DumqNUI2oAtvHvS9/orVurpPDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PGGGrkyU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730895762; c=relaxed/simple;
+	bh=LyySVVRvkQAroiXXmCxdnkRwGb8pMPzSex8f3OQ7zFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbc7bRP58u4qmcRzBE6H1pl+dZS0YSDK7kzp5Ki8Gz/yO+H6LKpd5Zrb+b4KLlW7WXqeiwGbangsrfcw7v2IwV9Jyh2tSNnwDwZAHAvwKaNRZMMK3FxWEqpa2Eq4Hmhoc4RRY6m7++8P/pg4f5Dn74NocfkIDJwNGX4iLxgpL2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NRP7kIx2; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PGGGrkyU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471E1C4CECD;
-	Wed,  6 Nov 2024 12:03:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730894617;
-	bh=lCwMBpljskyRCExLi/a8YWjzwY2eIH1YDr8GaeQK/sk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PGGGrkyUUUy0z1Mqcx5xqROA9jQDy6vuGf3cBZFvuzU0aUts8N9/2g/F0F9ssiIVo
-	 ZraIpV02Np+JVSYY+PHiS/v7Vfq1jeNjn+YghIkATbHmbg89oOqE37AaUcipNak0l+
-	 7cLUcOvr5iZo57XfgF3pjY6J8gfIXS67F6WRm/m5OBI+WESXazuYgEwxjrIiYuvG/K
-	 B8pHWJO7LU4uR2dmzxeGfLkZg6RqCTnfdF78+HQHL3hBZ7lfRq4qSZkW+DNSpKD1yw
-	 Yj/8eZXyaP9+wKZqQPvtPCmNa+Zp0l02m8o2jvShxbgtsBrFP8/n2GJe7uPyiylH5z
-	 S4tGuHYqsb1OA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t8el5-00AM93-6N;
-	Wed, 06 Nov 2024 12:03:35 +0000
-Date: Wed, 06 Nov 2024 12:03:34 +0000
-Message-ID: <86cyj81sdl.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jing Zhang <jingzhangos@google.com>
-Cc: KVM <kvm@vger.kernel.org>,
-	KVMARM <kvmarm@lists.linux.dev>,
-	ARMLinux <linux-arm-kernel@lists.infradead.org>,
-	Oliver Upton <oupton@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Colton Lewis <coltonlewis@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Shusen Li <lishusen2@huawei.com>
-Subject: Re: [PATCH v3 1/4] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
-In-Reply-To: <20241106083035.2813799-2-jingzhangos@google.com>
-References: <20241106083035.2813799-1-jingzhangos@google.com>
-	<20241106083035.2813799-2-jingzhangos@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NRP7kIx2"
+Date: Wed, 6 Nov 2024 13:22:31 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730895756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9LJ/byH+TE2QOe/LTi1hwN2NlyjwVEV1qLmtrG07yaI=;
+	b=NRP7kIx2s4ASrAZMW8AALEFWYQYvXioTe+OHOzAtAIlGN9N4Xv0xpJgfnJ01BR3LzE92Or
+	Vx6kXaCbtjIWSLnFdZpIkSOSN7TFqDFqaR3UtQdyNfEpAChJx+4dVgnF/RKqAYvwrz2YBb
+	RdDoQLDAvQwroEoiXSM+jFmkRIAVGVI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
+Cc: cade.richard@gmail.com, atishp@rivosinc.com, jamestiotio@gmail.com
+Subject: Re: [kvm-unit-tests PATCH v2 3/3] riscv: sbi: Add two in hart_mask
+ IPI test
+Message-ID: <20241106-7a94a002553733a6983389a0@orel>
+References: <20241106113814.42992-5-andrew.jones@linux.dev>
+ <20241106113814.42992-8-andrew.jones@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jingzhangos@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oupton@google.com, joey.gouly@arm.com, yuzenghui@huawei.com, suzuki.poulose@arm.com, jiangkunkun@huawei.com, pbonzini@redhat.com, andre.przywara@arm.com, coltonlewis@google.com, rananta@google.com, lishusen2@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106113814.42992-8-andrew.jones@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, 06 Nov 2024 08:30:32 +0000,
-Jing Zhang <jingzhangos@google.com> wrote:
+On Wed, Nov 06, 2024 at 12:38:18PM +0100, Andrew Jones wrote:
+> We should ensure that when hart_mask has more than one hartid
+> that both harts get IPIs with a single call of the IPI function.
 > 
-> From: Kunkun Jiang <jiangkunkun@huawei.com>
-> 
-> In all the vgic_its_save_*() functinos, they do not check whether
-> the data length is 8 bytes before calling vgic_write_guest_lock.
-> This patch adds the check. To prevent the kernel from being blown up
-> when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
-> are replaced together.
-> 
-> Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-> Signed-off-by: Jing Zhang <jingzhangos@google.com>
+> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 > ---
->  arch/arm64/kvm/vgic/vgic-its.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
+>  riscv/sbi.c | 39 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 38 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-> index ba945ba78cc7..2381bc5ce544 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> @@ -2095,6 +2095,10 @@ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
->  	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
->  		ite->collection->collection_id;
->  	val = cpu_to_le64(val);
-> +
-> +	if (KVM_BUG_ON(ite_esz != sizeof(val), kvm))
-> +		return -EINVAL;
-> +
->  	return vgic_write_guest_lock(kvm, gpa, &val, ite_esz);
->  }
+> diff --git a/riscv/sbi.c b/riscv/sbi.c
+> index cdf8d13cc9cf..8ccdf42f902a 100644
+> --- a/riscv/sbi.c
+> +++ b/riscv/sbi.c
+> @@ -364,10 +364,11 @@ static void check_ipi(void)
+>  	int nr_cpus_present = cpumask_weight(&cpu_present_mask);
+>  	int me = smp_processor_id();
+>  	unsigned long max_hartid = 0;
+> +	unsigned long hartid1, hartid2;
+>  	cpumask_t ipi_receivers;
+>  	static prng_state ps;
+>  	struct sbiret ret;
+> -	int cpu;
+> +	int cpu, cpu2;
 >  
-> @@ -2250,6 +2254,10 @@ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
->  	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
->  		(dev->num_eventid_bits - 1));
->  	val = cpu_to_le64(val);
-> +
-> +	if (KVM_BUG_ON(dte_esz != sizeof(val), kvm))
-> +		return -EINVAL;
-> +
->  	return vgic_write_guest_lock(kvm, ptr, &val, dte_esz);
->  }
+>  	ps = prng_init(0xDEADBEEF);
 >  
-> @@ -2431,12 +2439,17 @@ static int vgic_its_save_cte(struct vgic_its *its,
->  			     struct its_collection *collection,
->  			     gpa_t gpa, int esz)
->  {
-> +	struct kvm *kvm = its->dev->kvm;
+> @@ -398,6 +399,42 @@ static void check_ipi(void)
+>  	ipi_hart_check(&ipi_receivers);
+>  	report_prefix_pop();
+>  
+> +	report_prefix_push("two in hart_mask");
+> +
+> +	if (nr_cpus_present < 3) {
+> +		report_skip("3 cpus required");
+> +		goto end_two;
+> +	}
+> +
+> +	cpu = rand_online_cpu(&ps);
+> +	hartid1 = cpus[cpu].hartid;
+> +	hartid2 = 0;
+> +	for_each_present_cpu(cpu2) {
+> +		if (cpu2 == cpu || cpu2 == me)
+> +			continue;
+> +		hartid2 = cpus[cpu2].hartid;
+> +		if (__builtin_labs(hartid2 - hartid1) < BITS_PER_LONG)
 
-nit: just use its->dev->kvm consistently, as this is what we are
-already doing in this function.
+clang is complaining about these __builtin_labs calls not taking signed
+input. I'll add this wrapper
 
-	M.
+ static long __labs(long a)
+ {
+    return __builtin_labs(a);
+ }
 
--- 
-Without deviation from the norm, progress is not possible.
+> +			break;
+> +	}
+> +	if (cpu2 == nr_cpus) {
+> +		report_skip("hartids are too sparse");
+> +		goto end_two;
+> +	}
+> +
+> +	cpumask_clear(&ipi_done);
+> +	cpumask_clear(&ipi_receivers);
+> +	cpumask_set_cpu(cpu, &ipi_receivers);
+> +	cpumask_set_cpu(cpu2, &ipi_receivers);
+> +	on_cpu_async(cpu, ipi_hart_wait, (void *)d);
+> +	on_cpu_async(cpu2, ipi_hart_wait, (void *)d);
+> +	ret = sbi_send_ipi((1UL << __builtin_labs(hartid2 - hartid1)) | 1UL, hartid1 < hartid2 ? hartid1 : hartid2);
+> +	report(ret.error == SBI_SUCCESS, "ipi returned success");
+> +	while (!cpumask_equal(&ipi_done, &ipi_receivers))
+> +		cpu_relax();
+> +	ipi_hart_check(&ipi_receivers);
+> +end_two:
+> +	report_prefix_pop();
+> +
+>  	report_prefix_push("broadcast");
+>  	cpumask_clear(&ipi_done);
+>  	cpumask_copy(&ipi_receivers, &cpu_present_mask);
+> -- 
+> 2.47.0
+> 
