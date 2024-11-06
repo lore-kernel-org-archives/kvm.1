@@ -1,150 +1,220 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A317BB0F;
-	Wed,  6 Nov 2024 18:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B91A204934;
+	Wed,  6 Nov 2024 18:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730917027; cv=none; b=V1sF3sKLKiRBol0N/Q0BhSbcBnWCoyr3KTXD/667IaWU2UyG0iLt/cKJdXyrsvCM+YHHjH2ZTWlxLj9EzQ8XI8Tio0sQ0wApVjUarOrtIpMrzBULrprPNQIA0G8jBchp62a2EAmFkyX7vXONLUYT/6/xnyHDEPPUeENS2jI1tMk=
+	t=1730917046; cv=none; b=b/yq9Nb8ivw2AbMdRwKjNXkuL0rVRMGIHfm8FKlFajbEWl0wjgsAroMF/mOq+ynB4JimcchGdypYwKEPeggGC14srgjFrOQZ8pb8wxJ85VCtSrDsMR17QJYChoOrqw1rq3UCVYj0+3nbPhHgqO7XuwCJGUyLq2N4kr7ODUyB6lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730917027; c=relaxed/simple;
-	bh=7JRzx1UgEQQWBP6Jr+1QV83wR6xUeWOjkJYXM4uWv3Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ixPcQjDTk5/YaThT7e5XgT7KbT8i7vS77DUVFYH5tIOvIQw8y6Eccov5xVhx+Eev1sk3qQGlHxqnYx4NghX5Wer2Ilp0QWPINaeUYxSfuM1ttMHQKL9+oWrpTzAp3io4IFQgnML/XPz6jnhkQ5+FLfumtVggpE63co8E8aD2XDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=k3pff0QC; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1730917046; c=relaxed/simple;
+	bh=iOz1kyK1h6dpyS+gFYdERgAcIkwyLqV7rqyjyDHqGME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJ/o1dcG0/Hq5mCIR4LwKRY/2r6nLK/ZGgmvvYFn8w+hSCPtkBfAdFlihtI2Q0Nf8Q4yTnlc5/0ifTg7RGUzx4hYjXV+kQtavrGwsYavU/R9FF8HWOlFuctIdMOzsfujFWNNOov8OPdRC7iihm7fGa7Zkwcj01s8y9OpzZogO+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UbXwfjMt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="k3pff0QC"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1t8kCT-00GBen-B3; Wed, 06 Nov 2024 18:52:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=LBac3zL9ZPZQLfgdHj+CoiRzpyIdxumYQNZim816CMc=; b=k3pff0QC4zOecxiIeK12Ts7Hgb
-	174ZP04mieJ5KwiHE3EvQe2BG+/CuMM/xqsYHt/QTtivl3wNTqOafKT6w+3OhZOaKPku7zzDASJek
-	30JO8LHkUWL2DL0BMZVf6ZIW5U0soIr1ZvrIxHlXJzCBnnJC6bJuE0ZomoJ+Z+FsZ16t1LPvWTet2
-	dWnxd50XuejmChBQVP+hh6mde3j7nvQAeEzl7ElNyUvZIDhdl+87X+7mHn6TM8zNj0Hzasa829ZZG
-	1S4XQ1ZDlSlH4MuVlMv2CsfPdtn+dnfP1BTg/UoFLVYCdnFnTXv5D75pNZ9+9qEt5mrKUk8LSLCml
-	964E/QuA==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1t8kCS-0001o6-Lh; Wed, 06 Nov 2024 18:52:13 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1t8kCH-002ver-Vw; Wed, 06 Nov 2024 18:52:02 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 06 Nov 2024 18:51:18 +0100
-Subject: [PATCH net 1/4] virtio/vsock: Fix accept_queue memory leak
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UbXwfjMt"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9334640E0163;
+	Wed,  6 Nov 2024 18:17:21 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id mhpTMvEGzZ3n; Wed,  6 Nov 2024 18:17:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1730917037; bh=ZCw6KZ56wNE+x3+fx0qZaa5aMg59QwoMP17Ar6mfZ0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UbXwfjMtVaJKDReZ5xCe0stdzqv3JKcqAoFkjgtD4EyXqJHonBgTUAW3ZziahTcKG
+	 F5zGxxGayLyGEXocmrKfMvlgzg3uvCOwXPBHUWtF3/8Rg8k/l9XyY9gwbhErZhoizi
+	 HGXIjVUViDyobGE11uYx3ubolPXUEGnn+V+czkb1OMCjrGuzDvqkWr5VlwDc5U/81G
+	 uawT+mK8yLsKsrZCtQn7ky/U9oyUJH5XFB/pcsb7CcwdCZePZjOgLSv0zTXLL/3fly
+	 z9OHJrtJ6cx7gRbHpjVMNwcf6a9SKPJoquK9/xVQ1BzHXHqbadCx0j0sTCp3MU8Nwz
+	 DAWH+nt7NVjRt9YhJvoRXdYqAHpCy3xcBe1bxZRa+XBWLjgHMWU0E2hRSOAI7tdjV4
+	 XnSFsNXrIZOJJYEdVtYsHecY47CRw66+zS+PHyrTJyKHVGqhA5MXm4TBWO2OvObJdf
+	 Qj6QM6rowrjzMSdCquFsnKqEsEpqzUpcZC21iEmtBJD9ias3tPtOYWreh0/v2o408j
+	 xiBiq1BEYshdlpBSnZlPkIxKj4jGt9DU1q2jcxr+3zqD0QM53AQZcKeBpZM7C8nF8Z
+	 UqEsjSOubt0Lq+lVXoTuKMB8+Q0DAvn5PE9RpFwmfc6u5Un2SHp2PWGjK9XrGp02km
+	 OLF/VpS2XzUKuScLsDNwnkpY=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F91140E0169;
+	Wed,  6 Nov 2024 18:17:00 +0000 (UTC)
+Date: Wed, 6 Nov 2024 19:16:55 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, Thomas.Lendacky@amd.com,
+	nikunj@amd.com, Santosh.Shukla@amd.com, Vasant.Hegde@amd.com,
+	Suravee.Suthikulpanit@amd.com, David.Kaplan@amd.com, x86@kernel.org,
+	hpa@zytor.com, peterz@infradead.org, seanjc@google.com,
+	pbonzini@redhat.com, kvm@vger.kernel.org
+Subject: Re: [RFC 03/14] x86/apic: Populate .read()/.write() callbacks of
+ Secure AVIC driver
+Message-ID: <20241106181655.GYZyuyl0zDTTmlMKzz@fat_crate.local>
+References: <20240913113705.419146-1-Neeraj.Upadhyay@amd.com>
+ <20240913113705.419146-4-Neeraj.Upadhyay@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241106-vsock-mem-leaks-v1-1-8f4ffc3099e6@rbox.co>
-References: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
-In-Reply-To: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
-To: Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jia He <justin.he@arm.com>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>, 
- Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
- George Zhang <georgezhang@vmware.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240913113705.419146-4-Neeraj.Upadhyay@amd.com>
 
-As the final stages of socket destruction may be delayed, it is possible
-that virtio_transport_recv_listen() will be called after the accept_queue
-has been flushed, but before the SOCK_DONE flag has been set. As a result,
-sockets enqueued after the flush would remain unremoved, leading to a
-memory leak.
+On Fri, Sep 13, 2024 at 05:06:54PM +0530, Neeraj Upadhyay wrote:
+> @@ -24,6 +25,108 @@ static int x2apic_savic_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+>  	return x2apic_enabled() && cc_platform_has(CC_ATTR_SNP_SECURE_AVIC);
+>  }
+>  
+> +static inline u32 get_reg(char *page, int reg_off)
 
-vsock_release
-  __vsock_release
-    lock
-    virtio_transport_release
-      virtio_transport_close
-        schedule_delayed_work(close_work)
-    sk_shutdown = SHUTDOWN_MASK
-(!) flush accept_queue
-    release
-                                        virtio_transport_recv_pkt
-                                          vsock_find_bound_socket
-                                          lock
-                                          if flag(SOCK_DONE) return
-                                          virtio_transport_recv_listen
-                                            child = vsock_create_connected
-                                      (!)   vsock_enqueue_accept(child)
-                                          release
-close_work
-  lock
-  virtio_transport_do_close
-    set_flag(SOCK_DONE)
-    virtio_transport_remove_sock
-      vsock_remove_sock
-        vsock_remove_bound
-  release
+Just "reg" like the other APICs.
 
-Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
-socket destruction.
+> +{
+> +	return READ_ONCE(*((u32 *)(page + reg_off)));
+> +}
+> +
+> +static inline void set_reg(char *page, int reg_off, u32 val)
+> +{
+> +	WRITE_ONCE(*((u32 *)(page + reg_off)), val);
+> +}
+> +
+> +#define SAVIC_ALLOWED_IRR_OFFSET	0x204
+> +
+> +static u32 x2apic_savic_read(u32 reg)
+> +{
+> +	void *backing_page = this_cpu_read(apic_backing_page);
+> +
+> +	switch (reg) {
+> +	case APIC_LVTT:
+> +	case APIC_TMICT:
+> +	case APIC_TMCCT:
+> +	case APIC_TDCR:
+> +	case APIC_ID:
+> +	case APIC_LVR:
+> +	case APIC_TASKPRI:
+> +	case APIC_ARBPRI:
+> +	case APIC_PROCPRI:
+> +	case APIC_LDR:
+> +	case APIC_SPIV:
+> +	case APIC_ESR:
+> +	case APIC_ICR:
+> +	case APIC_LVTTHMR:
+> +	case APIC_LVTPC:
+> +	case APIC_LVT0:
+> +	case APIC_LVT1:
+> +	case APIC_LVTERR:
+> +	case APIC_EFEAT:
+> +	case APIC_ECTRL:
+> +	case APIC_SEOI:
+> +	case APIC_IER:
 
-unreferenced object 0xffff888109e3f800 (size 2040):
-  comm "kworker/5:2", pid 371, jiffies 4294940105
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
-  backtrace (crc 9e5f4e84):
-    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
-    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
-    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
-    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
-    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
-    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
-    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
-    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
-    [<ffffffff811070dd>] kthread+0xdd/0x110
-    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
-    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
+I'm sure those can be turned into ranges instead of enumerating every single
+APIC register...
 
-Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/virtio_transport_common.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> +	case APIC_EILVTn(0) ... APIC_EILVTn(3):
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index ccbd2bc0d2109aea4f19e79a0438f85893e1d89c..cd075f608d4f6f48f894543e5e9c966d3e5f22df 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1512,6 +1512,14 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 		return -ENOMEM;
- 	}
- 
-+	/* __vsock_release() might have already flushed accept_queue.
-+	 * Subsequent enqueues would lead to a memory leak.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK) {
-+		virtio_transport_reset_no_sock(t, skb);
-+		return -ESHUTDOWN;
-+	}
-+
- 	child = vsock_create_connected(sk);
- 	if (!child) {
- 		virtio_transport_reset_no_sock(t, skb);
+Like here.
+
+> +		return get_reg(backing_page, reg);
+> +	case APIC_ISR ... APIC_ISR + 0x70:
+> +	case APIC_TMR ... APIC_TMR + 0x70:
+> +		WARN_ONCE(!IS_ALIGNED(reg, 16), "Reg offset %#x not aligned at 16 bytes", reg);
+
+What's the point of a WARN...
+
+> +		return get_reg(backing_page, reg);
+
+... and then allowing the register access anyway?
+
+> +	/* IRR and ALLOWED_IRR offset range */
+> +	case APIC_IRR ... APIC_IRR + 0x74:
+> +		/*
+> +		 * Either aligned at 16 bytes for valid IRR reg offset or a
+> +		 * valid Secure AVIC ALLOWED_IRR offset.
+> +		 */
+> +		WARN_ONCE(!(IS_ALIGNED(reg, 16) || IS_ALIGNED(reg - SAVIC_ALLOWED_IRR_OFFSET, 16)),
+> +			  "Misaligned IRR/ALLOWED_IRR reg offset %#x", reg);
+> +		return get_reg(backing_page, reg);
+
+Ditto.
+
+And below too.
+
+> +	default:
+> +		pr_err("Permission denied: read of Secure AVIC reg offset %#x\n", reg);
+> +		return 0;
+> +	}
+> +}
+> +
+> +#define SAVIC_NMI_REQ_OFFSET		0x278
+> +
+> +static void x2apic_savic_write(u32 reg, u32 data)
+> +{
+> +	void *backing_page = this_cpu_read(apic_backing_page);
+> +
+> +	switch (reg) {
+> +	case APIC_LVTT:
+> +	case APIC_LVT0:
+> +	case APIC_LVT1:
+> +	case APIC_TMICT:
+> +	case APIC_TDCR:
+> +	case APIC_SELF_IPI:
+> +	/* APIC_ID is writable and configured by guest for Secure AVIC */
+> +	case APIC_ID:
+> +	case APIC_TASKPRI:
+> +	case APIC_EOI:
+> +	case APIC_SPIV:
+> +	case SAVIC_NMI_REQ_OFFSET:
+> +	case APIC_ESR:
+> +	case APIC_ICR:
+> +	case APIC_LVTTHMR:
+> +	case APIC_LVTPC:
+> +	case APIC_LVTERR:
+> +	case APIC_ECTRL:
+> +	case APIC_SEOI:
+> +	case APIC_IER:
+> +	case APIC_EILVTn(0) ... APIC_EILVTn(3):
+> +		set_reg(backing_page, reg, data);
+> +		break;
+> +	/* ALLOWED_IRR offsets are writable */
+> +	case SAVIC_ALLOWED_IRR_OFFSET ... SAVIC_ALLOWED_IRR_OFFSET + 0x70:
+> +		if (IS_ALIGNED(reg - SAVIC_ALLOWED_IRR_OFFSET, 16)) {
+> +			set_reg(backing_page, reg, data);
+> +			break;
+> +		}
+> +		fallthrough;
+> +	default:
+> +		pr_err("Permission denied: write to Secure AVIC reg offset %#x\n", reg);
+> +	}
+> +}
+> +
+>  static void x2apic_savic_send_IPI(int cpu, int vector)
+>  {
+>  	u32 dest = per_cpu(x86_cpu_to_apicid, cpu);
+> @@ -140,8 +243,8 @@ static struct apic apic_x2apic_savic __ro_after_init = {
+>  	.send_IPI_self			= x2apic_send_IPI_self,
+>  	.nmi_to_offline_cpu		= true,
+>  
+> -	.read				= native_apic_msr_read,
+> -	.write				= native_apic_msr_write,
+> +	.read				= x2apic_savic_read,
+> +	.write				= x2apic_savic_write,
+>  	.eoi				= native_apic_msr_eoi,
+>  	.icr_read			= native_x2apic_icr_read,
+>  	.icr_write			= native_x2apic_icr_write,
+> -- 
 
 -- 
-2.46.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
