@@ -1,139 +1,150 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B7B1922FC
-	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 18:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A317BB0F;
+	Wed,  6 Nov 2024 18:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730917009; cv=none; b=AsuKmn3GDZaa7Duxh+HykNdYnv/1QKG4tEMMo2IVrLoLxnmbEEwj0JbFqrE/xzwtAp/bqO6wTqaBJwCP/n0UM/0DzhceLeDXNpl5w/m+UbfKDo6ONljWfpcOKZ5X6Ybv8gOlUhH1iEmXmhc4SDlbSlsC1QOrXtKxvJEO2q3hygw=
+	t=1730917027; cv=none; b=V1sF3sKLKiRBol0N/Q0BhSbcBnWCoyr3KTXD/667IaWU2UyG0iLt/cKJdXyrsvCM+YHHjH2ZTWlxLj9EzQ8XI8Tio0sQ0wApVjUarOrtIpMrzBULrprPNQIA0G8jBchp62a2EAmFkyX7vXONLUYT/6/xnyHDEPPUeENS2jI1tMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730917009; c=relaxed/simple;
-	bh=akr2pHWvlpxX6Fg1IQ3TT51LBTF7P5k6M3NIk8ktde8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n4Uj1oZOF9/i4MhZIV3dUy1rIlalUYBnPtKPAw/B7wDTRJ+S0oPmaCKv9E74OHB+xaUkHZRt5+GVL33LHITyhmGezqEqktec/MvuNPeD9iI9Et9X4rb5LylRCvVUmQA10W48N38kjOQjUyXz0OAO+uswTD8qRg1MqBMSq/bMhXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0JtvWboH; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730917027; c=relaxed/simple;
+	bh=7JRzx1UgEQQWBP6Jr+1QV83wR6xUeWOjkJYXM4uWv3Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ixPcQjDTk5/YaThT7e5XgT7KbT8i7vS77DUVFYH5tIOvIQw8y6Eccov5xVhx+Eev1sk3qQGlHxqnYx4NghX5Wer2Ilp0QWPINaeUYxSfuM1ttMHQKL9+oWrpTzAp3io4IFQgnML/XPz6jnhkQ5+FLfumtVggpE63co8E8aD2XDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=k3pff0QC; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0JtvWboH"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539e8607c2aso4974e87.3
-        for <kvm@vger.kernel.org>; Wed, 06 Nov 2024 10:16:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730917005; x=1731521805; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LeWA172BYFuvJUs17jk2BLJpPj+VSqEWSdhQr3Tt5lU=;
-        b=0JtvWboH3eEW5OFU4FEkGSPWVz7e5CaDSAefUiLYMGiNdyurRGpz3m94gH8I1Q91aH
-         TAOHNCms7kxUlQ6HkP26itRt7DVrL+t1jFiGjvfJBWr5giyerfqH2Yfs7RkWPde8mPTc
-         47oZO9mWv7rIwQ1rObUa1dihidz0ILmp+PrYqS3nnz3GuPJQl6r79/6JiZwvQmKuVvlj
-         27G2C8AsyshjTvliTyCJ9bcseIclALsfzYvyREtzmPKXn0Xd5XuSfKtqjPQwSWPxlP4J
-         P0VoxRLeRfo0dmuCGGcA/BeXK7d7IKUAznJecKVc0ZgfPef1ekqiOXeggpeNCWzfuZMg
-         6H3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730917005; x=1731521805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LeWA172BYFuvJUs17jk2BLJpPj+VSqEWSdhQr3Tt5lU=;
-        b=sNz5+KoYZczqE5cnPFfS7x31PamyAqZZ/UboKJRfUViGRnc4ByUH42qyFxhFY2fHI0
-         PneMzED00dc53RXd1kIjGdlLbH/6dSybhsCQS1lN2NXljkMclGp98Yq6ycrc2VTiNxks
-         zUm2tvjOZD/qa4AI3/uXJ0xPzEXlyZOSeIByNsU7wCvDW5eVnN0reOtPMElSfXN7Bnvz
-         UZ122dBis9XB5AuYMrFX4r6qKFLevbw8HTfd2ttUMEo5tHFxxux6A+L4OCia7508t9KF
-         1vA27quq778uKTUwxecxM1S+phL9GOyk81fxlleibxGjMHeIfnz4H5GnyVDFTT1C9V2N
-         QCZA==
-X-Gm-Message-State: AOJu0YyDf/Dqj0Ma6ctdQ+Bkz4MfAXHPM5jlbnqWziSx9z5Q12CfgVTX
-	3WFGNX0Wao8QS9ssjcFKhbJxv2IkyG4gQ1gV8y2tGk8+WVjieNGza5o7VFj74ynvgx7Ufs1FT/o
-	sH3sd963VwmBxM21sC+epjyqY/RtsFgC0OD7OtT5MCwrepOUMwA==
-X-Google-Smtp-Source: AGHT+IH0eyYrDiApka0FCPYt2gCEKlK4/mAq7uw29tSP1xJ7qJxDTSHGX9xhi6kEHhZbsrB00EH2FETbJzZH1P9TZow=
-X-Received: by 2002:a05:6512:12c5:b0:539:e88f:23a1 with SMTP id
- 2adb3069b0e04-53b3491c80emr21831365e87.44.1730917005120; Wed, 06 Nov 2024
- 10:16:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="k3pff0QC"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1t8kCT-00GBen-B3; Wed, 06 Nov 2024 18:52:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=LBac3zL9ZPZQLfgdHj+CoiRzpyIdxumYQNZim816CMc=; b=k3pff0QC4zOecxiIeK12Ts7Hgb
+	174ZP04mieJ5KwiHE3EvQe2BG+/CuMM/xqsYHt/QTtivl3wNTqOafKT6w+3OhZOaKPku7zzDASJek
+	30JO8LHkUWL2DL0BMZVf6ZIW5U0soIr1ZvrIxHlXJzCBnnJC6bJuE0ZomoJ+Z+FsZ16t1LPvWTet2
+	dWnxd50XuejmChBQVP+hh6mde3j7nvQAeEzl7ElNyUvZIDhdl+87X+7mHn6TM8zNj0Hzasa829ZZG
+	1S4XQ1ZDlSlH4MuVlMv2CsfPdtn+dnfP1BTg/UoFLVYCdnFnTXv5D75pNZ9+9qEt5mrKUk8LSLCml
+	964E/QuA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1t8kCS-0001o6-Lh; Wed, 06 Nov 2024 18:52:13 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1t8kCH-002ver-Vw; Wed, 06 Nov 2024 18:52:02 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 06 Nov 2024 18:51:18 +0100
+Subject: [PATCH net 1/4] virtio/vsock: Fix accept_queue memory leak
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241106083035.2813799-1-jingzhangos@google.com>
- <20241106083035.2813799-2-jingzhangos@google.com> <86cyj81sdl.wl-maz@kernel.org>
-In-Reply-To: <86cyj81sdl.wl-maz@kernel.org>
-From: Jing Zhang <jingzhangos@google.com>
-Date: Wed, 6 Nov 2024 10:16:33 -0800
-Message-ID: <CAAdAUtgiWxhY6DQrS_B=6PhL3+V-qfJVSsqWWeVuGqW7DLcotw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
-To: Marc Zyngier <maz@kernel.org>
-Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
-	ARMLinux <linux-arm-kernel@lists.infradead.org>, Oliver Upton <oupton@google.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Kunkun Jiang <jiangkunkun@huawei.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Andre Przywara <andre.przywara@arm.com>, 
-	Colton Lewis <coltonlewis@google.com>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Shusen Li <lishusen2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241106-vsock-mem-leaks-v1-1-8f4ffc3099e6@rbox.co>
+References: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
+In-Reply-To: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jia He <justin.he@arm.com>, 
+ Arseniy Krasnov <avkrasnov@salutedevices.com>, 
+ Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
+ George Zhang <georgezhang@vmware.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Wed, Nov 6, 2024 at 4:03=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote:
->
-> On Wed, 06 Nov 2024 08:30:32 +0000,
-> Jing Zhang <jingzhangos@google.com> wrote:
-> >
-> > From: Kunkun Jiang <jiangkunkun@huawei.com>
-> >
-> > In all the vgic_its_save_*() functinos, they do not check whether
-> > the data length is 8 bytes before calling vgic_write_guest_lock.
-> > This patch adds the check. To prevent the kernel from being blown up
-> > when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
-> > are replaced together.
-> >
-> > Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-> > Signed-off-by: Jing Zhang <jingzhangos@google.com>
-> > ---
-> >  arch/arm64/kvm/vgic/vgic-its.c | 21 +++++++++++++++++++--
-> >  1 file changed, 19 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-=
-its.c
-> > index ba945ba78cc7..2381bc5ce544 100644
-> > --- a/arch/arm64/kvm/vgic/vgic-its.c
-> > +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> > @@ -2095,6 +2095,10 @@ static int vgic_its_save_ite(struct vgic_its *it=
-s, struct its_device *dev,
-> >              ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
-> >               ite->collection->collection_id;
-> >       val =3D cpu_to_le64(val);
-> > +
-> > +     if (KVM_BUG_ON(ite_esz !=3D sizeof(val), kvm))
-> > +             return -EINVAL;
-> > +
-> >       return vgic_write_guest_lock(kvm, gpa, &val, ite_esz);
-> >  }
-> >
-> > @@ -2250,6 +2254,10 @@ static int vgic_its_save_dte(struct vgic_its *it=
-s, struct its_device *dev,
-> >              (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
-> >               (dev->num_eventid_bits - 1));
-> >       val =3D cpu_to_le64(val);
-> > +
-> > +     if (KVM_BUG_ON(dte_esz !=3D sizeof(val), kvm))
-> > +             return -EINVAL;
-> > +
-> >       return vgic_write_guest_lock(kvm, ptr, &val, dte_esz);
-> >  }
-> >
-> > @@ -2431,12 +2439,17 @@ static int vgic_its_save_cte(struct vgic_its *i=
-ts,
-> >                            struct its_collection *collection,
-> >                            gpa_t gpa, int esz)
-> >  {
-> > +     struct kvm *kvm =3D its->dev->kvm;
->
-> nit: just use its->dev->kvm consistently, as this is what we are
-> already doing in this function.
+As the final stages of socket destruction may be delayed, it is possible
+that virtio_transport_recv_listen() will be called after the accept_queue
+has been flushed, but before the SOCK_DONE flag has been set. As a result,
+sockets enqueued after the flush would remain unremoved, leading to a
+memory leak.
 
-Sure. Will do.
->
->         M.
->
-> --
-> Without deviation from the norm, progress is not possible.
+vsock_release
+  __vsock_release
+    lock
+    virtio_transport_release
+      virtio_transport_close
+        schedule_delayed_work(close_work)
+    sk_shutdown = SHUTDOWN_MASK
+(!) flush accept_queue
+    release
+                                        virtio_transport_recv_pkt
+                                          vsock_find_bound_socket
+                                          lock
+                                          if flag(SOCK_DONE) return
+                                          virtio_transport_recv_listen
+                                            child = vsock_create_connected
+                                      (!)   vsock_enqueue_accept(child)
+                                          release
+close_work
+  lock
+  virtio_transport_do_close
+    set_flag(SOCK_DONE)
+    virtio_transport_remove_sock
+      vsock_remove_sock
+        vsock_remove_bound
+  release
+
+Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
+socket destruction.
+
+unreferenced object 0xffff888109e3f800 (size 2040):
+  comm "kworker/5:2", pid 371, jiffies 4294940105
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
+  backtrace (crc 9e5f4e84):
+    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
+    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
+    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
+    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
+    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
+    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
+    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
+    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
+    [<ffffffff811070dd>] kthread+0xdd/0x110
+    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
+    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
+
+Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/vmw_vsock/virtio_transport_common.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index ccbd2bc0d2109aea4f19e79a0438f85893e1d89c..cd075f608d4f6f48f894543e5e9c966d3e5f22df 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1512,6 +1512,14 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 		return -ENOMEM;
+ 	}
+ 
++	/* __vsock_release() might have already flushed accept_queue.
++	 * Subsequent enqueues would lead to a memory leak.
++	 */
++	if (sk->sk_shutdown == SHUTDOWN_MASK) {
++		virtio_transport_reset_no_sock(t, skb);
++		return -ESHUTDOWN;
++	}
++
+ 	child = vsock_create_connected(sk);
+ 	if (!child) {
+ 		virtio_transport_reset_no_sock(t, skb);
+
+-- 
+2.46.2
+
