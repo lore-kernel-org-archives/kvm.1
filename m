@@ -1,93 +1,134 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAB2190477
-	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 03:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30882190462
+	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 05:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730864443; cv=none; b=DYToByLUv/V7jIDtXFk8VJFyKsSerYZSJOUJrEeF8c3c+QD2or/DF3DHYctiQ66wxxXS+k6OdFoR9jeOmpvUTV7xvva+JskV8ce7Ilg4MnzuSHvfZf5Yh6GGgzdHLczkkCzKJWIexea1M2LnXKbN9/1c9lzp+MyFyVdtf2DfC0w=
+	t=1730870049; cv=none; b=lfuOaOq9JZuCkDvg3TkM7oql+UtCVcg8VMA3VVrhy+FhvRbiwdHEGMKaP/HH78RmLBGDIXPWAGGOnxUMtk411qDYGbYaKkyOcHxRpemApIuVDsxgwXirBZcARuj6LqpKsuxDaBUCpV3tockkPRZty+a+twuKW/7U5dll54dSzPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730864443; c=relaxed/simple;
-	bh=CMQ76uKI1FEpDkwvFQyA0kPM9eXSHdq8hIlxtAz4vQA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KWqOqFgt0GD/EM77EsFZ3fn3YbQB5Dcpj4n0Jpkdqf8VLEz1VVi/+WRzl3yA8dhlcW/53eHIWMqyDGlL59Sex1I/BMCM8d1Paz6VBaQBaMqGj5OklTHir+BkkTFqurMdrxeBgBQnDhxJM9gHA2Xn/7EQJyb+qyOlwM19nHUhcvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jsperbeck.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=osFozrZ4; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jsperbeck.bounces.google.com
+	s=arc-20240116; t=1730870049; c=relaxed/simple;
+	bh=+GUtlbwkwgEWibYVDjD+xb0kv0/BuZe7m5hWZoXt4oA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I0nUSF9J/b+XO89fEU0zh/So/PWhH9qJXPXwSmNCi4yurF102cw59+dYmC+jJKKiJAL2nQOzAiWzfLr+KkwggUB2V8WtOXXUW6vP68jGV+fhz70SXhUwnWwGoNNT0eHKMnADkJJW+6rGInMo2XQcVP8wE0yU6rO3T5cRz1SRmUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OhQFUejs; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="osFozrZ4"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e376aa4586so118426177b3.1
-        for <kvm@vger.kernel.org>; Tue, 05 Nov 2024 19:40:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730864441; x=1731469241; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LplVTGJVvGJFvhtTV6mcwx8iPQDI2scKmqd+ot8fMsw=;
-        b=osFozrZ4fRRdbnpx21dSCPnFkfbAyJQBT5sS9E9BHyQLY1lhn+iHBdu3R2h99tlUva
-         zQzeBN6MOf1M48V+4MqlkOQh8naoZaW/cioPiDnSkNSnI4mjYGKC9GBodMHiOQgsIIMK
-         aFUiGb572Av1HqXsjuPhXU8EWtpLV3MIiJTA27gdfWsDP/UZnJEoYoxyDyOAgUitfxV2
-         fqTKoOF2se6ApRH/+qoLLltX0oKhSPiYy+7dSmi2q/uNnobUEo11UzrgotMdb4dNaGmr
-         KvtxaT8IyqJQ4F60W4ghIcAM/2ffin85slLbqVQDiwUkY0nKhngb1UT13Nah/S9a3KjH
-         YuEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730864441; x=1731469241;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LplVTGJVvGJFvhtTV6mcwx8iPQDI2scKmqd+ot8fMsw=;
-        b=f80Pi8QTtkCZYrzC8atkmJCoR1K/g0AvK/rFwG9Qm+TsfSGc39+KcYi0A2sgeMKxDt
-         4da7TjD7NdzTNAgk64f64rggeQ2IAsc5JjSJLkE8YisLiduN7nHrp0u9SvEQYCzzoGi4
-         hja0ZF6wor6sRmPTJwHlZhRv/LkaBbJ9dFSvLoqwWCFv0ySi+6o+9/yNywRuFtdecEOt
-         mk1kCMLv1ldszlTN5eBQbU5tZEQCZda4xZTBo+dDAth5JiZWCkx+cKvgWWTbFu7LMFLl
-         uDtAQLQYYpmgS1JEaHYz3HicyKz61+HuNgBLYfgbcq8xYzWtcdVlhxh89HvznjPkxOnu
-         P4rQ==
-X-Gm-Message-State: AOJu0YyVFk9Pd74+FaUOq65hWLOx3jplv/UXODrzNWidftb1u9sm8tk0
-	Cgl4PkaPhbLAwhNGTi86gv253jxbmMF936uVLSS3UUznuYRuaQzpGSmN/bPrYrg50ocQhB1LQb8
-	Cu6CNqAZ04vUNoQ==
-X-Google-Smtp-Source: AGHT+IGzB+ojrRUXG2iLAlNNLqDQ7VKHBuH5SLcr3K23iMUurWN3UCPuphjmVaHR+inkaEx7vzmb8A5IqZO0L4g=
-X-Received: from jsperbeck7.c.googlers.com ([fda3:e722:ac3:cc00:59:977b:ac1c:3a1d])
- (user=jsperbeck job=sendgmr) by 2002:a05:690c:4c09:b0:6e7:e493:2db6 with SMTP
- id 00721157ae682-6ea3b951361mr2818897b3.3.1730864440817; Tue, 05 Nov 2024
- 19:40:40 -0800 (PST)
-Date: Tue,  5 Nov 2024 19:40:31 -0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OhQFUejs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730870048; x=1762406048;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=+GUtlbwkwgEWibYVDjD+xb0kv0/BuZe7m5hWZoXt4oA=;
+  b=OhQFUejss5JFXb8whodTnZ3yuSHNrzJErvta3aRXXPBKxZutn8U1BvHn
+   +FbJ2GVLNZhGl0H2soIoIZ1KmKLypWC7vgfBPAbiSml1Bm958zFJdEVTB
+   hUqXacLT7sksvMJxAImcTEGZfghjEwZspMd5qBM6rYsyjE+6KQsiYzhZM
+   wDsSYc3XCLAzamihGWm/VIrRUpod0lq/61AzRLBUJ5NbuNFWUZ05lkkh9
+   nSSTnaFc+smxouai10RDKGiVdoYzJSKRbWCCO6FlJzKxZfOm3jTGVzB5y
+   84dun5HDdfsxHVk0sPq41Hyw8YiZ9cDMTGyF2HJEoJweJv/9Vaj0f/ehl
+   g==;
+X-CSE-ConnectionGUID: eXHAKzM5Ty6+zFY271Zvtg==
+X-CSE-MsgGUID: hMGHxWcOTxKSlfnwEe417Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="42033297"
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
+   d="scan'208";a="42033297"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 21:14:07 -0800
+X-CSE-ConnectionGUID: fQA3sH3PQSqWqeOLGAOP3A==
+X-CSE-MsgGUID: kDnoeCr3Rl6N+jQwZCQX9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="89144608"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.120])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 21:14:01 -0800
+Date: Wed, 6 Nov 2024 07:13:56 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"riku.voipio@iki.fi" <riku.voipio@iki.fi>,
+	"imammedo@redhat.com" <imammedo@redhat.com>,
+	"Liu, Zhao1" <zhao1.liu@intel.com>,
+	"marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+	"anisinha@redhat.com" <anisinha@redhat.com>,
+	"mst@redhat.com" <mst@redhat.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+	"armbru@redhat.com" <armbru@redhat.com>,
+	"philmd@linaro.org" <philmd@linaro.org>,
+	"cohuck@redhat.com" <cohuck@redhat.com>,
+	"mtosatti@redhat.com" <mtosatti@redhat.com>,
+	"eblake@redhat.com" <eblake@redhat.com>,
+	"qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"wangyanan55@huawei.com" <wangyanan55@huawei.com>,
+	"berrange@redhat.com" <berrange@redhat.com>
+Subject: Re: [PATCH v6 09/60] i386/tdx: Initialize TDX before creating TD
+ vcpus
+Message-ID: <Zyr7FA10pmLhZBxL@tlindgre-MOBL1>
+References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+ <20241105062408.3533704-10-xiaoyao.li@intel.com>
+ <1235bac6ffe7be6662839adb2630c1a97d1cc4c5.camel@intel.com>
+ <c0ef6c19-756e-43f3-8342-66b032238265@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241106034031.503291-1-jsperbeck@google.com>
-Subject: [PATCH] KVM: selftests: use X86_MEMTYPE_WB instead of VMX_BASIC_MEM_TYPE_WB
-From: John Sperbeck <jsperbeck@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	John Sperbeck <jsperbeck@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c0ef6c19-756e-43f3-8342-66b032238265@intel.com>
 
-In 08a7d2525511 ("tools arch x86: Sync the msr-index.h copy with the
-kernel sources"), VMX_BASIC_MEM_TYPE_WB was removed.  Use X86_MEMTYPE_WB
-instead.
+On Wed, Nov 06, 2024 at 10:01:04AM +0800, Xiaoyao Li wrote:
+> On 11/6/2024 4:51 AM, Edgecombe, Rick P wrote:
+> > +Tony
+> > 
+> > On Tue, 2024-11-05 at 01:23 -0500, Xiaoyao Li wrote:
+> > > +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+> > > +{
+> > > +    X86CPU *x86cpu = X86_CPU(cpu);
+> > > +    CPUX86State *env = &x86cpu->env;
+> > > +    g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
+> > > +    int r = 0;
+> > > +
+> > > +    QEMU_LOCK_GUARD(&tdx_guest->lock);
+> > > +    if (tdx_guest->initialized) {
+> > > +        return r;
+> > > +    }
+> > > +
+> > > +    init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+> > > +                        sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+> > > +
+> > > +    r = setup_td_xfam(x86cpu, errp);
+> > > +    if (r) {
+> > > +        return r;
+> > > +    }
+> > > +
+> > > +    init_vm->cpuid.nent = kvm_x86_build_cpuid(env, init_vm->cpuid.entries, 0);
+> > > +    tdx_filter_cpuid(&init_vm->cpuid);
+> > > +
+> > > +    init_vm->attributes = tdx_guest->attributes;
+> > > +    init_vm->xfam = tdx_guest->xfam;
+> > > +
+> > > +    do {
+> > > +        r = tdx_vm_ioctl(KVM_TDX_INIT_VM, 0, init_vm);
+> > > +    } while (r == -EAGAIN);
+> > 
+> > KVM_TDX_INIT_VM can also return EBUSY. This should check for it, or KVM should
+> > standardize on one for both conditions. In KVM, both cases handle
+> > TDX_RND_NO_ENTROPY, but one tries to save some of the initialization for the
+> > next attempt. I don't know why userspace would need to differentiate between the
+> > two cases though, which makes me think we should just change the KVM side.
+> 
+> I remember I tested retrying on the two cases and no surprise showed.
+> 
+> I agree to change KVM side to return -EAGAIN for the two cases.
 
-Fixes: 08a7d2525511 ("tools arch x86: Sync the msr-index.h copy with the
-kernel sources")
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
----
- tools/testing/selftests/kvm/lib/x86_64/vmx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+OK yeah let's patch KVM for it.
 
-diff --git a/tools/testing/selftests/kvm/lib/x86_64/vmx.c b/tools/testing/selftests/kvm/lib/x86_64/vmx.c
-index 089b8925b6b2..d7ac122820bf 100644
---- a/tools/testing/selftests/kvm/lib/x86_64/vmx.c
-+++ b/tools/testing/selftests/kvm/lib/x86_64/vmx.c
-@@ -200,7 +200,7 @@ static inline void init_vmcs_control_fields(struct vmx_pages *vmx)
- 	if (vmx->eptp_gpa) {
- 		uint64_t ept_paddr;
- 		struct eptPageTablePointer eptp = {
--			.memory_type = VMX_BASIC_MEM_TYPE_WB,
-+			.memory_type = X86_MEMTYPE_WB,
- 			.page_walk_length = 3, /* + 1 */
- 			.ad_enabled = ept_vpid_cap_supported(VMX_EPT_VPID_CAP_AD_BITS),
- 			.address = vmx->eptp_gpa >> PAGE_SHIFT_4K,
--- 
-2.47.0.277.g8800431eea-goog
+Regards,
 
+Tony
