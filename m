@@ -1,169 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8145118F2EA
-	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 03:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8961F19006F
+	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 03:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730863832; cv=none; b=n2dWtfmnaH3iend2FU2rGlVgXyx3p6ABlYUL6JJjWaiDGmW8xNqB35/fUKrV67D6NJ3QD0uTUeH+65FfvQi/iP2uCSrwFWHXLMQPsodcKxFW14IwOo/fkelMmZBChxXOfk1sDeKh1ubfM96q6p7eLhmq+nFJpXrKaA/YJYKNUPo=
+	t=1730864179; cv=none; b=SwTjYoExSfUbL7GOMJA1/JqaG2bBdG+N47fNk+rSoFvlD/DKpBCo9PtIZcv4jD4fbTuUFEIViBte8pgzfTleN/U81hNfSH+OCKMR24n0Bs01XB4qzkxdTxrZEjfV+onMwQjleWwl2mMK/rBaz0IvHCZwGoe3atl/NYyUK47eRFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730863832; c=relaxed/simple;
-	bh=7Kk3znZIyerx2PDNIN0drxdx/hAXIsUrO3BiNtWqf8s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sevWrLrSxbLYTjdcyD4jUKOrsi+PsD/UelfivZMftvmoeKY8ibCQ1tSUCScK+8oS4knYktgsQMkVSMMxPbLy+t9Z/smI3yS2gCrgnN4ZtlRALf2FvyMev0DhF23ZWbRZQIHls5iJ4QwQWRT1PibKCjujK+dslzjxMhtUrLV8mKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hi5iB0tL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730864179; c=relaxed/simple;
+	bh=b/LjEV98+IEYePScSsvtFe/I008tMdVIcy/1aEMTVQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RONTn0NNMGmhnlLCcDqd+UxVbUwotPtha+L/axZAa/r8k17t+pQAJdoRYlgkMePgC5pSh+odredh9hZ2/Fsl8u3TXSunkT6d8Vnn1f6g/obUtNZt5u8bEHlfMqEdMDr7k7WDrdEu24iP82/b4bVjDSihhFOzl3owvFnWGqnWBm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mDR3niQ8; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hi5iB0tL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730863828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0+wD5C8mnnSFMtajBQ0Ep+tgIvgdpwZh5j0ZoDDULiE=;
-	b=Hi5iB0tLaQf31yx9Iofp4/Dxy0quCwgsAf3pCT25fI52+nj6NiYAzbCQQHxHtkd+WTBKIg
-	laRMHQYAUbWYP5cXCV8E3b18Lgen7vUkPExULkC2FORSGWzZ0hbUPScnK6mywyV6065qoI
-	Es+zO5palBD7DKwp0gLzC/lT/bKkua8=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-oQoryfmHNgyVupvvQDWDOQ-1; Tue, 05 Nov 2024 22:30:27 -0500
-X-MC-Unique: oQoryfmHNgyVupvvQDWDOQ-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2e2ca4fb175so6279906a91.3
-        for <kvm@vger.kernel.org>; Tue, 05 Nov 2024 19:30:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730863826; x=1731468626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0+wD5C8mnnSFMtajBQ0Ep+tgIvgdpwZh5j0ZoDDULiE=;
-        b=C0YCn43DkmqHcL+23+OyJdKSd0onXT0Z4iZ6cy31+lMhihYk23q9f6v2TJSM0bhn2B
-         PrDKR/BSJOcEMDNZdFDHgb90hnGndGPmx1bbEUwxNsHINId+uz10qgjOH3+Ij+/vXMrk
-         nlumkPEXLtrLsWoE1N4AWih1zqIGQXmMOGXbYlDocVye9SoQCNIvZVDWobeLP0Ynlxel
-         RTSpBI2GCMKOfs45d3r0qOvaZNWa/HqXB2PldIBylpg9Ar32c0gbJDXz3pMjChEXaBh/
-         ZITRIeN4eMyuSUQgADrqe7oIF7AT0HEbTrN94Xc5fVGOmsjSNCnFB+s5yRe0TV4m4aZL
-         zm+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWIj6DuAtJ+fSk1kZseAXPHX0QONXIO0afGf+ud1YHe6qM+G5Gfd/TcSwZ7nKMtBAvawrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6zWjY1d4ZE/AHTBKC7Myjgh4iMWoUXz+ztvM3dl5Ml5Z08nnf
-	nH1u1rt/qrkzvJYch7SZEZvzmsC7mDFCET+c34FGmzKY44Zt7csfVUKhn2rqMkl3zxrUbqAWmMR
-	i10kKgi5B4e4Mv3txYT0rm5C9BCfPWLk46s27Ala3W+o0p/KEGKzIR1wnLYobBvIN1ch265NIV+
-	d9N6w5LmsOd/6sky5hvGuWnaPq
-X-Received: by 2002:a17:90b:4c46:b0:2e2:8fb4:502d with SMTP id 98e67ed59e1d1-2e92ce52d78mr28691984a91.16.1730863826240;
-        Tue, 05 Nov 2024 19:30:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZ8ehhnb5warv41MQecmdcJ74fifjbHOtjAiOyNQliV/l9hnuvE6Steaw0kjpDyhiXUzeiDRKvVs9Tf1rD8pE=
-X-Received: by 2002:a17:90b:4c46:b0:2e2:8fb4:502d with SMTP id
- 98e67ed59e1d1-2e92ce52d78mr28691961a91.16.1730863825811; Tue, 05 Nov 2024
- 19:30:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mDR3niQ8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730864177; x=1762400177;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b/LjEV98+IEYePScSsvtFe/I008tMdVIcy/1aEMTVQg=;
+  b=mDR3niQ8oOIAv+NAzOVGUk2JCbRGdwBw3wPc7ENLFX0OuGFa5vjmpeLm
+   p0xnKBKXI+OGHFldOsGqKYq80BhaSkhhvKMLZf7umSpNZZcx+VnmYlDx3
+   hwLzU21BK7NFAP5SxE82C+HLF80/LiOarnMYYupSFxkPffk+OB5AiRW9B
+   dUoGx3TF/xZrpdeAbsM6eWl2VH9+KOeZOxxWUPs6MTHtMLllQSirVYpIk
+   vbiOpP7eukhTIaktGPezvPtDv69EbbAvRxhdWQ2L/DPw+RRkxf2E9aJUE
+   2PonIrj6eBbKxiIbF0jPdosO7lQFzExlo78oUX0YcrjfWHihzH2v1xGjM
+   g==;
+X-CSE-ConnectionGUID: 0mloQcXbQiyaDP8bcvvKwg==
+X-CSE-MsgGUID: QxiQLKG/QNCd1kcWCjvAvg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="34571407"
+X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
+   d="scan'208";a="34571407"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 19:36:16 -0800
+X-CSE-ConnectionGUID: J1yWAnCQSK60motsMdSHig==
+X-CSE-MsgGUID: LYxdUWSaT22FcM+nT4VHcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
+   d="scan'208";a="88855947"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.36])
+  by fmviesa004.fm.intel.com with ESMTP; 05 Nov 2024 19:36:12 -0800
+Date: Wed, 6 Nov 2024 11:54:04 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+	mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
+	likexu@tencent.com, like.xu.linux@gmail.com,
+	zhenyuw@linux.intel.com, groug@kaod.org, lyan@digitalocean.com,
+	khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+	den@virtuozzo.com, joe.jin@oracle.com, davydov-max@yandex-team.ru
+Subject: Re: [PATCH 1/7] target/i386: disable PerfMonV2 when PERFCORE
+ unavailable
+Message-ID: <ZyroXEOsRPonKD7x@intel.com>
+References: <20241104094119.4131-1-dongli.zhang@oracle.com>
+ <20241104094119.4131-2-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105185101.1323272-2-dtatulea@nvidia.com>
-In-Reply-To: <20241105185101.1323272-2-dtatulea@nvidia.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 6 Nov 2024 11:30:14 +0800
-Message-ID: <CACGkMEswM_3uhOHnzGwOMjfiPqpMgTnjVRhgpWquzTwVpwNr6g@mail.gmail.com>
-Subject: Re: [PATCH] vdpa/mlx5: Fix error path during device add
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Eugenio Perez Martin <eperezma@redhat.com>, 
-	Si-Wei Liu <si-wei.liu@oracle.com>, virtualization@lists.linux.dev, 
-	Gal Pressman <gal@nvidia.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Parav Pandit <parav@nvidia.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104094119.4131-2-dongli.zhang@oracle.com>
 
-On Wed, Nov 6, 2024 at 2:52=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com>=
- wrote:
->
-> In the error recovery path of mlx5_vdpa_dev_add(), the cleanup is
-> executed and at the end put_device() is called which ends up calling
-> mlx5_vdpa_free(). This function will execute the same cleanup all over
-> again. Most resources support being cleaned up twice, but the recent
-> mlx5_vdpa_destroy_mr_resources() doesn't.
->
-> This change drops the explicit cleanup from within the
-> mlx5_vdpa_dev_add() and lets mlx5_vdpa_free() do its work.
->
-> This issue was discovered while trying to add 2 vdpa devices with the
-> same name:
-> $> vdpa dev add name vdpa-0 mgmtdev auxiliary/mlx5_core.sf.2
-> $> vdpa dev add name vdpa-0 mgmtdev auxiliary/mlx5_core.sf.3
->
-> ... yields the following dump:
->
->   BUG: kernel NULL pointer dereference, address: 00000000000000b8
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   PGD 0 P4D 0
->   Oops: Oops: 0000 [#1] SMP
->   CPU: 4 UID: 0 PID: 2811 Comm: vdpa Not tainted 6.12.0-rc6 #1
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-g=
-f21b5a4aeb02-prebuilt.qemu.org 04/01/2014
->   RIP: 0010:destroy_workqueue+0xe/0x2a0
->   Code: ...
->   RSP: 0018:ffff88814920b9a8 EFLAGS: 00010282
->   RAX: 0000000000000000 RBX: ffff888105c10000 RCX: 0000000000000000
->   RDX: 0000000000000001 RSI: ffff888100400168 RDI: 0000000000000000
->   RBP: 0000000000000000 R08: ffff888100120c00 R09: ffffffff828578c0
->   R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
->   R13: ffff888131fd99a0 R14: 0000000000000000 R15: ffff888105c10580
->   FS:  00007fdfa6b4f740(0000) GS:ffff88852ca00000(0000) knlGS:00000000000=
-00000
->   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   CR2: 00000000000000b8 CR3: 000000018db09006 CR4: 0000000000372eb0
->   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->   Call Trace:
->    <TASK>
->    ? __die+0x20/0x60
->    ? page_fault_oops+0x150/0x3e0
->    ? exc_page_fault+0x74/0x130
->    ? asm_exc_page_fault+0x22/0x30
->    ? destroy_workqueue+0xe/0x2a0
->    mlx5_vdpa_destroy_mr_resources+0x2b/0x40 [mlx5_vdpa]
->    mlx5_vdpa_free+0x45/0x150 [mlx5_vdpa]
->    vdpa_release_dev+0x1e/0x50 [vdpa]
->    device_release+0x31/0x90
->    kobject_put+0x8d/0x230
->    mlx5_vdpa_dev_add+0x328/0x8b0 [mlx5_vdpa]
->    vdpa_nl_cmd_dev_add_set_doit+0x2b8/0x4c0 [vdpa]
->    genl_family_rcv_msg_doit+0xd0/0x120
->    genl_rcv_msg+0x180/0x2b0
->    ? __vdpa_alloc_device+0x1b0/0x1b0 [vdpa]
->    ? genl_family_rcv_msg_dumpit+0xf0/0xf0
->    netlink_rcv_skb+0x54/0x100
->    genl_rcv+0x24/0x40
->    netlink_unicast+0x1fc/0x2d0
->    netlink_sendmsg+0x1e4/0x410
->    __sock_sendmsg+0x38/0x60
->    ? sockfd_lookup_light+0x12/0x60
->    __sys_sendto+0x105/0x160
->    ? __count_memcg_events+0x53/0xe0
->    ? handle_mm_fault+0x100/0x220
->    ? do_user_addr_fault+0x40d/0x620
->    __x64_sys_sendto+0x20/0x30
->    do_syscall_64+0x4c/0x100
->    entry_SYSCALL_64_after_hwframe+0x4b/0x53
->   RIP: 0033:0x7fdfa6c66b57
->   Code: ...
->   RSP: 002b:00007ffeace22998 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
->   RAX: ffffffffffffffda RBX: 000055a498608350 RCX: 00007fdfa6c66b57
->   RDX: 000000000000006c RSI: 000055a498608350 RDI: 0000000000000003
->   RBP: 00007ffeace229c0 R08: 00007fdfa6d35200 R09: 000000000000000c
->   R10: 0000000000000000 R11: 0000000000000202 R12: 000055a4986082a0
->   R13: 0000000000000000 R14: 0000000000000000 R15: 00007ffeace233f3
->    </TASK>
->   Modules linked in: ...
->   CR2: 00000000000000b8
->
-> Fixes: 62111654481d ("vdpa/mlx5: Postpone MR deletion")
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Hi Dongli,
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+On Mon, Nov 04, 2024 at 01:40:16AM -0800, Dongli Zhang wrote:
+> Date: Mon,  4 Nov 2024 01:40:16 -0800
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH 1/7] target/i386: disable PerfMonV2 when PERFCORE
+>  unavailable
+> X-Mailer: git-send-email 2.43.5
+> 
+> When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
+> reflected in in guest dmesg.
+> 
+> [    0.285136] Performance Events: AMD PMU driver.
+> 
+> However, the guest cpuid indicates the PerfMonV2 is still available.
+> 
+> CPU:
+>    Extended Performance Monitoring and Debugging (0x80000022):
+>       AMD performance monitoring V2         = true
+>       AMD LBR V2                            = false
+>       AMD LBR stack & PMC freezing          = false
+>       number of core perf ctrs              = 0x6 (6)
+>       number of LBR stack entries           = 0x0 (0)
+>       number of avail Northbridge perf ctrs = 0x0 (0)
+>       number of available UMC PMCs          = 0x0 (0)
+>       active UMCs bitmask                   = 0x0
+> 
+> Disable PerfMonV2 in cpuid when PERFCORE is disabled.
+> 
+> Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> ---
+>  target/i386/cpu.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 3baa95481f..4490a7a8d6 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7103,6 +7103,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          *eax = *ebx = *ecx = *edx = 0;
+>          /* AMD Extended Performance Monitoring and Debug */
+>          if (kvm_enabled() && cpu->enable_pmu &&
+> +            (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_PERFCORE) &&
+>              (env->features[FEAT_8000_0022_EAX] & CPUID_8000_0022_EAX_PERFMON_V2)) {
+>              *eax |= CPUID_8000_0022_EAX_PERFMON_V2;
+>              *ebx |= kvm_arch_get_supported_cpuid(cs->kvm_state, index, count,
 
-Thanks
+You can define dependency like this:
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3baa95481fbc..99c69ec9f369 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1803,6 +1803,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+         .to = { FEAT_24_0_EBX,              ~0ull },
+     },
++    {
++        .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
++        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 }
++    }
+ };
+
+ typedef struct X86RegisterInfo32 {
+
+---
+Does this meet your needs?
+
+Regards,
+Zhao
 
