@@ -1,114 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1003B1925B6
-	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 08:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740951D4333
+	for <kvm@vger.kernel.org>; Wed,  6 Nov 2024 08:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730883146; cv=none; b=XM5PQgpnw391aYjSRQ76fEAOR+46LEMdGrDnNm0W2CPvMGwUO+US+Ps2DDaAayoUVpY63FYFgOKvw2OmBN5iwldO70lZccVOAC7iMXhK8m1Cy7YQkWWueEfYHM4r8qmkYt29WdOTQ/uyMaCFMmo4SSXTSLx95Q95M9fzLVNKzN0=
+	t=1730883277; cv=none; b=BX95bMRi1qYw0rtCiBAlUQx3Xeg8LiFJH3sLTJcGRUQO72xR6lu7E482qlURdMHs7vVmZ0jhCVqQXcaz/8ckAAVrTM7kXCHazYzwnY8qxVK9g/2hsmW1xS1HEQ7qxagxMhkJ0cCX7h+o5DijkQNa7lYImrafzIlzlHntY0qjJAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730883146; c=relaxed/simple;
-	bh=SAgahWnG2DeFpF6l8Do2xzl9AhovY4+m0h44ByCgbd8=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tQb1ZTqNd/d+RllocE616N1DThjh+SjZCsK+8OxBuwwCDTK4p8fladEcAnMiGGK4cNwo5gWtIp2qe8aDaWXAAY4Ht+zTCwGaLUJf4Ud9A+UiB7sWMdEleykU0Wwyscwn5shPqs2Ds6D/lTW0Rz3rzho7RswMwTs7+KnKzjHeMjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PxmF/GTE; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1730883277; c=relaxed/simple;
+	bh=UNYKLzF4r5hBnINqn9birE+zQ/11rAm97XqSomm41EU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f4V51H0Qryh0sMAM0bM/mAooAYYYKTPRBsnCuXAqotefqzbjiSAp+l6ilEoXmfvLrQzr6akXuA+WaZPUAyQg+HL34GKxDnJemqFFubh/KT92FBYti8NWOx+UBHHgjpeaRO5G3lhYZ3dFt7453yQDUWEsBu7QwI0JPx5ejSudsmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ORWrp1OH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PxmF/GTE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730883145; x=1762419145;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SAgahWnG2DeFpF6l8Do2xzl9AhovY4+m0h44ByCgbd8=;
-  b=PxmF/GTEvFfBrP6+ZO7/ZV92J5PKgVuGpG95MPANSxC00mwzPVOaISKW
-   fNW5k1UgbYg0tk6Q/AbSLWcPZQvNWjsq4rw1ER+JPN6qckBTwVUM3XSOF
-   zTqVyWjrhev7zyrqM4sINfg+5+Qu/nc82hOuvSTfiRZpWYKdVgwXS0onp
-   4ZpzDSObtXGEulC40SdLFU4mFolfTwgpf0/gMNCy2N17wGBDjbhvxptHz
-   L1nOoXnu5gYqzeY/ZjOVBl64FH/+xz36J3JFu5wqe/JiMiKZufFlkSnBv
-   alP4aOedzindYKXu0BGynabTziYZMk2nZhnYuHsfykx8BdOObBGCxgJ/v
-   Q==;
-X-CSE-ConnectionGUID: BcSY+ez3Tvat3QzTquBTjQ==
-X-CSE-MsgGUID: I6gxvefDR1yrVn3pHVZXEg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30553919"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="30553919"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 00:52:24 -0800
-X-CSE-ConnectionGUID: zVemqJI8SXK3F3FHGKp/Kw==
-X-CSE-MsgGUID: OW0B5Ob+SDS7hqqX6pSzxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="89554212"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.240.228]) ([10.124.240.228])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 00:52:21 -0800
-Message-ID: <42e0a0ad-e653-4007-b38e-66db452cea33@linux.intel.com>
-Date: Wed, 6 Nov 2024 16:52:18 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ORWrp1OH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730883274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fmyYpFxsyQqqojb1lv2cOtlXLCoNWTfRHptpZLl1D5g=;
+	b=ORWrp1OHJYhZOo7sjM8zSdMy1raWVfKbohf7xbeAyT2RtqO2Lwn4fTclXcaAYxSfj8SgJY
+	adAgsFl0F3NmO+YlE3z08tiGr1MBFLctVN//jSM4rGum9bfi7G1rlnfzmDwTuTlhwpjm1v
+	1THOfUGFk/5/V7Z73AoOaYWgw+f7UrY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-zTP2vlB7NoexTTwFQVZFBg-1; Wed, 06 Nov 2024 03:54:33 -0500
+X-MC-Unique: zTP2vlB7NoexTTwFQVZFBg-1
+X-Mimecast-MFC-AGG-ID: zTP2vlB7NoexTTwFQVZFBg
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4314c6ca114so47240195e9.1
+        for <kvm@vger.kernel.org>; Wed, 06 Nov 2024 00:54:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730883272; x=1731488072;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmyYpFxsyQqqojb1lv2cOtlXLCoNWTfRHptpZLl1D5g=;
+        b=Ul8LWrLVKw8Y7MQwgwUSOmS2bvsIlpE27rVI+FAwPl+SAJjl1PqW2Jp9A0/YOL50FY
+         Xmi8V9iAXI5c1WdaFhLuGUv0U1PXnbu0BsH93UR9DNK5o59LhwJDUKmrRisyoQ6MXPem
+         fEsGEIQSqQta/TSehduk5gkY6cpQM3FvUSVofQeRVhUJ4L1xipfvcaeGEu9yzf/tEFqP
+         k/9fW3Fy6vS5jS1j0T6ST8Bbn59QcvmLw07bwXcdUyh9k6xoPHy5FuFIdmv1BYYkp5kj
+         cKrTVGNWAnNPOiBszept4r9OC31ck/7xHqOv/89a/9pOMzV16T9uy8kfoplCyl4AMxC8
+         6Png==
+X-Forwarded-Encrypted: i=1; AJvYcCU5iu7uGFOqgD8KIOsrHgm3SDBSKx4wCglJ8A5RyDLF5iCGmqqFwPE9ubLbKt5S7+A246Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDTz7DuWFBzhJoS5S9bzEIlv7Ak1c15ORrcx7DSKkInqmQTEte
+	1TtGNltBlAgBrK+O76CF6aaRbQcLc3fFD/oNi9R0iZ0BcSHY8t5m0jFMyvhgxFPeuxNF9yP1TfN
+	fzvYEd13elpbeit7W+Ti078HvRoYzQTE+feP1uWjVBrSEX1vMEw==
+X-Received: by 2002:a05:6000:4601:b0:381:e702:af15 with SMTP id ffacd0b85a97d-381e702b189mr2660256f8f.37.1730883271962;
+        Wed, 06 Nov 2024 00:54:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHEs4dAlZ/Ixnt7FpOJvTxE+WzTktExbu7DVSB0TSOaCg2HjETlp7pqbWm4LVa4ZdPMRcAZxg==
+X-Received: by 2002:a05:6000:4601:b0:381:e702:af15 with SMTP id ffacd0b85a97d-381e702b189mr2660237f8f.37.1730883271620;
+        Wed, 06 Nov 2024 00:54:31 -0800 (PST)
+Received: from redhat.com ([2a02:14f:178:e74:5fcf:8a69:659d:f2b2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c1168afcsm18469576f8f.91.2024.11.06.00.54.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 00:54:30 -0800 (PST)
+Date: Wed, 6 Nov 2024 03:54:26 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost/net: Set num_buffers for virtio 1.0
+Message-ID: <20241106035029-mutt-send-email-mst@kernel.org>
+References: <20240915-v1-v1-1-f10d2cb5e759@daynix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, joro@8bytes.org, kevin.tian@intel.com,
- alex.williamson@redhat.com, eric.auger@redhat.com, nicolinc@nvidia.com,
- kvm@vger.kernel.org, chao.p.peng@linux.intel.com, iommu@lists.linux.dev,
- zhenzhong.duan@intel.com, vasant.hegde@amd.com
-Subject: Re: [PATCH v5 01/12] iommu: Introduce a replace API for device pasid
-To: Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-References: <20241104132513.15890-1-yi.l.liu@intel.com>
- <20241104132513.15890-2-yi.l.liu@intel.com>
- <9846d58f-c6c8-41e8-b9fc-aa782ea8b585@linux.intel.com>
- <4f33b93c-6e86-428d-a942-09cd959a2f08@intel.com>
- <6e395258-96a1-44a5-a98f-41667e4ef715@linux.intel.com>
- <64f4e0ea-fb0f-41d1-84a1-353d18d5d516@intel.com>
- <20241105151042.GC458827@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20241105151042.GC458827@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240915-v1-v1-1-f10d2cb5e759@daynix.com>
 
-On 2024/11/5 23:10, Jason Gunthorpe wrote:
-> On Tue, Nov 05, 2024 at 04:10:59PM +0800, Yi Liu wrote:
+On Sun, Sep 15, 2024 at 10:35:53AM +0900, Akihiko Odaki wrote:
+> The specification says the device MUST set num_buffers to 1 if
+> VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
 > 
->>>> not quite get why this handle is related to iommu driver flushing PRs.
->>>> Before __iommu_set_group_pasid(), the pasid is still attached with the
->>>> old domain, so is the hw configuration.
->>> I meant that in the path of __iommu_set_group_pasid(), the iommu drivers
->>> have the opportunity to flush the PRs pending in the hardware queue. If
->>> the attach_handle is switched (by calling xa_store()) before
->>> __iommu_set_group_pasid(), the pending PRs will be routed to iopf
->>> handler of the new domain, which is not desirable.
->> I see. You mean the handling of PRQs. I was interpreting you are talking
->> about PRQ draining.
-> I don't think we need to worry about this race, and certainly you
-> shouldn't be making the domain replacement path non-hitless just to
-> fence the page requests.
-> 
-> If a page request comes in during the race window of domain change
-> there are only three outcomes:
-> 
->    1) The old domain handles it and it translates on the old domain
->    2) The new domain handles it and it translates on the new domain
->    3) The old domain handles it and it translates on the new domain.
->       a) The page request is ack'd and the device retries and loads the
->         new domain - OK - at best it will use the new translation, at
->         worst it will retry.
->       b) the page request fails and the device sees the failure. This
->          is the same as #1 - OK
-> 
-> All are correct. We don't need to do more here than just let the race
-> resolve itself.
-> 
-> Once the domains are switched in HW we do have to flush everything
-> queued due to the fault path locking scheme on the domain.
+> Fixes: 41e3e42108bc ("vhost/net: enable virtio 1.0")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Agreed. To my understanding, the worst case is that the device retries
-the transaction which might result in another page fault, which will set
-up the translation in the new domain.
+True, this is out of spec. But, qemu is also out of spec :(
 
---
-baolu
+Given how many years this was out there, I wonder whether
+we should just fix the spec, instead of changing now.
+
+Jason, what's your take?
+
+
+> ---
+>  drivers/vhost/net.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+> index f16279351db5..d4d97fa9cc8f 100644
+> --- a/drivers/vhost/net.c
+> +++ b/drivers/vhost/net.c
+> @@ -1107,6 +1107,7 @@ static void handle_rx(struct vhost_net *net)
+>  	size_t vhost_hlen, sock_hlen;
+>  	size_t vhost_len, sock_len;
+>  	bool busyloop_intr = false;
+> +	bool set_num_buffers;
+>  	struct socket *sock;
+>  	struct iov_iter fixup;
+>  	__virtio16 num_buffers;
+> @@ -1129,6 +1130,8 @@ static void handle_rx(struct vhost_net *net)
+>  	vq_log = unlikely(vhost_has_feature(vq, VHOST_F_LOG_ALL)) ?
+>  		vq->log : NULL;
+>  	mergeable = vhost_has_feature(vq, VIRTIO_NET_F_MRG_RXBUF);
+> +	set_num_buffers = mergeable ||
+> +			  vhost_has_feature(vq, VIRTIO_F_VERSION_1);
+>  
+>  	do {
+>  		sock_len = vhost_net_rx_peek_head_len(net, sock->sk,
+> @@ -1205,7 +1208,7 @@ static void handle_rx(struct vhost_net *net)
+>  		/* TODO: Should check and handle checksum. */
+>  
+>  		num_buffers = cpu_to_vhost16(vq, headcount);
+> -		if (likely(mergeable) &&
+> +		if (likely(set_num_buffers) &&
+>  		    copy_to_iter(&num_buffers, sizeof num_buffers,
+>  				 &fixup) != sizeof num_buffers) {
+>  			vq_err(vq, "Failed num_buffers write");
+> 
+> ---
+> base-commit: 46a0057a5853cbdb58211c19e89ba7777dc6fd50
+> change-id: 20240908-v1-90fc83ff8b09
+> 
+> Best regards,
+> -- 
+> Akihiko Odaki <akihiko.odaki@daynix.com>
+
