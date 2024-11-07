@@ -1,161 +1,169 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB82B212D30
-	for <kvm@vger.kernel.org>; Thu,  7 Nov 2024 22:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B832194A6;
+	Thu,  7 Nov 2024 22:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731018755; cv=none; b=I4QehdvigI09d9e45cdVi59y0mBFGX6aeF6LKNsDrlr6sG0XpWtKDyVCKxc+yCxJNsIE+inhSlmcQD7NF5fk6tIGSpeMgb48Ch6ikaE4FFHu3uBvnVzQEuITcAizb173XGqjXl6krWyPPHK4nklXdvjR4Elx/4BdDphFCkFteYA=
+	t=1731018759; cv=none; b=HlLt9PNEcNkanV/ObtH5eiDtOtB8jt58aJkOof/Ohc1AoqIc6URtKUnM0UpIGzz5JOZOj7Y1HfeYbmwu49R0SJ5T/cKbfKYNrH7rwSvEpEctBqYUTyrS61zfC+g62WvuVN+R+KMN3/xl1t1SZyshsL0qqIkjyd8OiTfZKYHXnKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731018755; c=relaxed/simple;
-	bh=hgceEYWbNgenk5ztiLvob2RCbb5hxkvrKWHpbPAKSGM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RPMRGv3AjBcmsBIxOn+uJjfiUp2+4yQkey0XfvpFGPd62dGR6w0EZxRul4vfmQITN7M7hCPW4X4VLvQYhyQ3ssyS/w9J6CFgEinCxyhj4eGceFFhl94dvJwZCyyCxkp5nRI2GkdnrQwBhJJc4fpW0p+q4g5xbaz5FBVHQpnjIbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C1AeZmiI; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1731018759; c=relaxed/simple;
+	bh=3axHTgWvPaJXU6x/HwYNyCImPTdzE7DJqPuDZ6F6AzE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=fXJr0IiAV0cpTIlsanSD2sh+/NW+SL9MLqf3Y+HxDssH74J2LWCiaq0vv7TojBwx3z0ZawPrjiuNjvxtEvd82K+HYPkDiPwETQ3tnfKnllAvu67wmRbpaiHjfH2t5CJLHbGnGo0rLKgQddLgYpdkT5hme3bowV+UjoX/8L64+Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=E85Vpx1X; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C1AeZmiI"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e30cf48435fso2419055276.0
-        for <kvm@vger.kernel.org>; Thu, 07 Nov 2024 14:32:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731018753; x=1731623553; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e4vY0bI5vuWGCkQbYf92s3szBV/rAuFWIqfr4MnYBjM=;
-        b=C1AeZmiIHxc5zKxBaW3bdqvGU6Tciltj4FFfq6AfeAih2gLa5ehOqdbIVqHkf5qPZ6
-         noeMeBWfM+vIS6x5mcWAbSFY85XuEY1QmRNE+xfECnQuV+khanPlAC26GwRzA2KxAn3J
-         Lc3iYNYM9iSI0AEoE8e7lVxyDH/h+M3VNB0gv7Vq+kj0nnNZ9W5qT/xz48zKaQ28yrT/
-         FmSJyALzkhPwEaZiLtjxRlddAR3oLGnODLynOiHIPvBsjQ3qadwwZIJaHcZkugx7G0yB
-         Lvk/lnEBuS/GD9qnflpyuh5zNDadY0MorZzdUcSp5GM79LuJgkXHBEO46I3NgZ6BiEhV
-         OPVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731018753; x=1731623553;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=e4vY0bI5vuWGCkQbYf92s3szBV/rAuFWIqfr4MnYBjM=;
-        b=R5P472NYF2aIME8j4/QmTCyG/NdxTjk99nnOuC+C/elNlHZx3aMWw1o1wNwZJUeEjK
-         hXg2tBedLYvvKvQ4a9imOM/CNG4yRhxw5w0qrBKoEr4VccduOAekXz3No2H+QVQ8yJ7A
-         LyUbcdzRyznyJI5hqc1VQSupV7r3LVihqSPkan9u9vMmwDqCOojeF+gEJ65TcobHSsBC
-         e5QtEY84Z1xKDmtFFfDSXu4I+PsWq/Pgqb8xoYA0KjOPcyodws+51b36EEHxZXr+gB4u
-         wNYlgMLCYDTKEs+KkfqbrB61PgHezjgVd3d8TdBWFXyqmu4Tl4QuEwnf6rVOdkXr/x0J
-         M5fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdMW6Xx97ENm1NcKgxlUB6j7/S3J8nLVkTSKO0RcDswDv1XQo5CkU12ke8BophpYhAGc8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCKr9HK8im2R3iG2Y1dq/3pi85sGQv78j4hvmMIthNfuEDOcds
-	nVTKfxBkMTp2tyQR92vJZijshecHuQ6F38SoVYV0ABJM2qSRzn5tKX9WOmsg7euTxKhnr2oqiXI
-	eaQ==
-X-Google-Smtp-Source: AGHT+IGKXmE1nSEKaGpFn0x/nPSLRIPy2ki8n3MOo4lOfbtlHCujpBbzF9Ro6Y+PO/jXSoxIoMz6Wfh67BY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a25:86c4:0:b0:e30:c741:ab06 with SMTP id
- 3f1490d57ef6-e337f8ca272mr571276.5.1731018752699; Thu, 07 Nov 2024 14:32:32
- -0800 (PST)
-Date: Thu, 7 Nov 2024 14:32:31 -0800
-In-Reply-To: <CABQX2QMR=Nsn23zojFdhemR7tvGUz6_UM8Rgf6WLsxwDqoFtxg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="E85Vpx1X"
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id A7369212C4BF;
+	Thu,  7 Nov 2024 14:32:30 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A7369212C4BF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1731018750;
+	bh=dXEOtZcKhs1OyrLOGbwwuM7yb0GGsFy0HJU2nlATJVM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=E85Vpx1XKF/7gIXBsoZOI6XnWD4pHDLIv62Hmm0sqgJpnOf8/Cgg8V/QCKee3Vppr
+	 ry4FPI40feJ1miQYl+Dx+/AvjsAcrxqUrJygt4jVjT3OJnYKE30CU4CoZ3KZny5GG9
+	 XD4lpSNQQEk/X8UUGLdqFqJ/fa8hg8d9V2jWrOLw=
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	iommu@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	virtualization@lists.linux.dev
+Cc: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	mhklinux@outlook.com,
+	decui@microsoft.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	luto@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	peterz@infradead.org,
+	daniel.lezcano@linaro.org,
+	joro@8bytes.org,
+	robin.murphy@arm.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	arnd@arndb.de,
+	sgarzare@redhat.com,
+	jinankjain@linux.microsoft.com,
+	muminulrussell@gmail.com,
+	skinsburskii@linux.microsoft.com,
+	mukeshrathor@microsoft.com,
+	vkuznets@redhat.com,
+	ssengar@linux.microsoft.com,
+	apais@linux.microsoft.com
+Subject: [PATCH v2 0/4] Add new headers for Hyper-V Dom0
+Date: Thu,  7 Nov 2024 14:32:22 -0800
+Message-Id: <1731018746-25914-1-git-send-email-nunodasneves@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241030033514.1728937-1-zack.rusin@broadcom.com>
- <20241030033514.1728937-3-zack.rusin@broadcom.com> <CABgObfaRP6zKNhrO8_atGDLcHs=uvE0aT8cPKnt_vNHHM+8Nxg@mail.gmail.com>
- <CABQX2QMR=Nsn23zojFdhemR7tvGUz6_UM8Rgf6WLsxwDqoFtxg@mail.gmail.com>
-Message-ID: <Zy0__5YB9F5d0eZn@google.com>
-Subject: Re: [PATCH 2/3] KVM: x86: Add support for VMware guest specific hypercalls
-From: Sean Christopherson <seanjc@google.com>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Doug Covelli <doug.covelli@broadcom.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Joel Stanley <joel@jms.id.au>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 04, 2024, Zack Rusin wrote:
-> On Mon, Nov 4, 2024 at 5:13=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
-> >
-> > On Wed, Oct 30, 2024 at 4:35=E2=80=AFAM Zack Rusin <zack.rusin@broadcom=
-.com> wrote:
-> > >
-> > > VMware products handle hypercalls in userspace. Give KVM the ability
-> > > to run VMware guests unmodified by fowarding all hypercalls to the
-> > > userspace.
-> > >
-> > > Enabling of the KVM_CAP_X86_VMWARE_HYPERCALL_ENABLE capability turns
-> > > the feature on - it's off by default. This allows vmx's built on top
-> > > of KVM to support VMware specific hypercalls.
-> >
-> > Hi Zack,
->=20
-> Hi, Paolo.
->=20
-> Thank you for looking at this.
->=20
-> > is there a spec of the hypercalls that are supported by userspace? I
-> > would like to understand if there's anything that's best handled in
-> > the kernel.
->=20
-> There's no spec but we have open headers listing the hypercalls.
-> There's about a 100 of them (a few were deprecated), the full
-> list starts here:
-> https://github.com/vmware/open-vm-tools/blob/739c5a2f4bfd4cdda491e6a6f686=
-9d88c0bd6972/open-vm-tools/lib/include/backdoor_def.h#L97
-> They're not well documented, but the names are pretty self-explenatory.
+To support Hyper-V Dom0 (aka Linux as root partition), many new
+definitions are required.
 
-At a quick glance, this one needs to be handled in KVM:
+The plan going forward is to directly import definitions from
+Hyper-V code without waiting for them to land in the TLFS document.
+This is a quicker and more maintainable way to import definitions,
+and is a step toward the eventual goal of exporting headers directly
+from Hyper-V for use in Linux.
 
-  BDOOR_CMD_VCPU_MMIO_HONORS_PAT
+This patch series introduces new headers (hvhdk.h, hvgdk.h, etc,
+see patch #3) derived directly from Hyper-V code. hyperv-tlfs.h is
+replaced with hvhdk.h (which includes the other new headers)
+everywhere.
 
-and these probably should be in KVM:
+No functional change is expected.
 
-  BDOOR_CMD_GETTIME
-  BDOOR_CMD_SIDT
-  BDOOR_CMD_SGDT
-  BDOOR_CMD_SLDT_STR
-  BDOOR_CMD_GETTIMEFULL
-  BDOOR_CMD_VCPU_LEGACY_X2APIC_OK
-  BDOOR_CMD_STEALCLOCK
+Summary:
+Patch 1-2: Minor cleanup patches
+Patch 3: Add the new headers (hvhdk.h, etc..) in include/hyperv/
+Patch 4: Switch to the new headers
 
-and these maybe? (it's not clear what they do, from the name alone)
+Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+---
+Changelog:
+v2:
+- Rework the series to simply use the new headers everywhere
+  instead of fiddling around to keep hyperv-tlfs.h used in some
+  places, suggested by Michael Kelley and Easwar Hariharan
+- Fix compilation errors with some configs by adding missing
+  definitions and changing some names, thanks to Simon Horman for
+  catching those
+- Add additional definitions to the new headers to support them now
+  replacing hyperv-tlfs.h everywhere
+- Add additional context in the commit messages for patches #3 and #4
+- In patch #2, don't remove indirect includes. Only remove includes
+  which truly aren't used, suggested by Michael Kelley
 
-  BDOOR_CMD_GET_VCPU_INFO
-  BDOOR_CMD_VCPU_RESERVED
+---
+Nuno Das Neves (4):
+  hyperv: Move hv_connection_id to hyperv-tlfs.h
+  hyperv: Clean up unnecessary #includes
+  hyperv: Add new Hyper-V headers in include/hyperv
+  hyperv: Switch from hyperv-tlfs.h to hyperv/hvhdk.h
 
-> > If we allow forwarding _all_ hypercalls to userspace, then people will
-> > use it for things other than VMware and there goes all hope of
-> > accelerating stuff in the kernel in the future.
+ arch/arm64/hyperv/hv_core.c        |    3 +-
+ arch/arm64/hyperv/mshyperv.c       |    4 +-
+ arch/arm64/include/asm/mshyperv.h  |    2 +-
+ arch/x86/hyperv/hv_apic.c          |    1 -
+ arch/x86/hyperv/hv_init.c          |   21 +-
+ arch/x86/hyperv/hv_proc.c          |    3 +-
+ arch/x86/hyperv/ivm.c              |    1 -
+ arch/x86/hyperv/mmu.c              |    1 -
+ arch/x86/hyperv/nested.c           |    2 +-
+ arch/x86/include/asm/kvm_host.h    |    3 +-
+ arch/x86/include/asm/mshyperv.h    |    3 +-
+ arch/x86/include/asm/svm.h         |    2 +-
+ arch/x86/kernel/cpu/mshyperv.c     |    2 +-
+ arch/x86/kvm/vmx/hyperv_evmcs.h    |    2 +-
+ arch/x86/kvm/vmx/vmx_onhyperv.h    |    2 +-
+ arch/x86/mm/pat/set_memory.c       |    2 -
+ drivers/clocksource/hyperv_timer.c |    2 +-
+ drivers/hv/hv_balloon.c            |    4 +-
+ drivers/hv/hv_common.c             |    2 +-
+ drivers/hv/hv_kvp.c                |    2 +-
+ drivers/hv/hv_snapshot.c           |    2 +-
+ drivers/hv/hyperv_vmbus.h          |    2 +-
+ include/asm-generic/hyperv-tlfs.h  |    9 +
+ include/asm-generic/mshyperv.h     |    2 +-
+ include/clocksource/hyperv_timer.h |    2 +-
+ include/hyperv/hvgdk.h             |  303 +++++++
+ include/hyperv/hvgdk_ext.h         |   46 +
+ include/hyperv/hvgdk_mini.h        | 1295 ++++++++++++++++++++++++++++
+ include/hyperv/hvhdk.h             |  733 ++++++++++++++++
+ include/hyperv/hvhdk_mini.h        |  310 +++++++
+ include/linux/hyperv.h             |   11 +-
+ net/vmw_vsock/hyperv_transport.c   |    2 +-
+ 32 files changed, 2729 insertions(+), 52 deletions(-)
+ create mode 100644 include/hyperv/hvgdk.h
+ create mode 100644 include/hyperv/hvgdk_ext.h
+ create mode 100644 include/hyperv/hvgdk_mini.h
+ create mode 100644 include/hyperv/hvhdk.h
+ create mode 100644 include/hyperv/hvhdk_mini.h
 
-To some extent, that ship has sailed, no?  E.g. do KVM_XEN_HVM_CONFIG with
-KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL set, and userspace can intercept pretty =
-much
-all hypercalls with very few side effects.
+-- 
+2.34.1
 
-> > So even having _some_ checks in the kernel before going out to
-> > userspace would keep that door open, or at least try.
->=20
-> Doug just looked at this and I think I might have an idea on how to
-> limit the scope at least a bit: if you think it would help we could
-> limit forwarding of hypercalls to userspace only to those that that
-> come with a BDOOR_MAGIC (which is 0x564D5868) in eax. Would that help?
-
-I don't think it addresses Paolo's concern (if I understood Paolo's concern
-correctly), but it would help from the perspective of allowing KVM to suppo=
-rt
-VMware hypercalls and Xen/Hyper-V/KVM hypercalls in the same VM.
-
-I also think we should add CONFIG_KVM_VMWARE from the get-go, and if we're =
-feeling
-lucky, maybe even retroactively bury KVM_CAP_X86_VMWARE_BACKDOOR behind tha=
-t
-Kconfig.  That would allow limiting the exposure to VMware specific code, e=
-.g. if
-KVM does end up handling hypercalls in-kernel.  And it might deter abuse to=
- some
-extent.
