@@ -1,68 +1,68 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258A81DFE0F
-	for <kvm@vger.kernel.org>; Thu,  7 Nov 2024 10:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292F11922C4
+	for <kvm@vger.kernel.org>; Thu,  7 Nov 2024 10:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730973700; cv=none; b=DAPoFHwXInpzCw/LJbcOBeQKFHIMlFuW50dZZcc1TTU2Jt1ibB53Od1sREeoxT9RctaV/sNoxbGaTP85BMS8loyUlIjvUwT/l2OBtog+fN76ZeaXv+9899ttvWPJK33kO6btKPah27Ck4Nv/t5Jiyx/SEbS1MS8qqAn8n+b23TY=
+	t=1730973784; cv=none; b=rixh/nVzljpOxAgKspJb/uEUjC1Q0XvdpNSPWtm2Ut3vX5yEth1r4lvnGmxZg2FRYzX9GJL2EgFaZ8oFEVNPxwtP69r4Ut4EbQV/YkOQmRqVYZrxg2qA2Z3RBrWjPEG2jvW6aqtAtIQs6HWmUzyaKqKQsBYtw9I2N4FlOyBOeSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730973700; c=relaxed/simple;
-	bh=9+NhR9Xx1+f3gRATsntD+gpT35PbVTys1g6H1FzxVgk=;
+	s=arc-20240116; t=1730973784; c=relaxed/simple;
+	bh=cSxBkM/VvswSeAOwadsuJ4JSlJplKr5PUBsSc0t2I6o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n4HsIgPMAKKW+cdYPaiyijNL8M8V1hReNEW1+MfNoxNXRJr1svbGtQ45DSfaCq4dnO/fU94jveYTFmLcjvRzW5gobNtIDvE2/tOSb/xb7J3Q24Ngi9S7+5car8Esi0HiSGdnvBwqeqor/Dg1jdt8K2RaQ4h3WoImPqQNj/3/0cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L66QiljQ; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=J74NkYHJtamnc3To7fsJEp5pU3SOAJVe8Yy+byKsrfP3NnR5YPHKrcwooQIqwa8IH9F0lPeWONohTyeNpYYFBvmdVQnA5/y2cUaLrXna4nveTnKy4Gg1zM1Twzl9KbwRWtV/fQjyUrg/qVoGCx5q7TXdZ+uSLmUzDMZ8Bx6f+ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jHEgahw8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L66QiljQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jHEgahw8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730973697;
+	s=mimecast20190719; t=1730973782;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mCpCB9JiGuUJDI4bEMY+hAs6rw+MftrWNvH37HOo7LU=;
-	b=L66QiljQbT9jaqr1AtTdAhfZLtE440vkoI+4nDQBEoYhkF1Ropoxc/kX5Y4mBmgd8awCui
-	e9TiU4RZp4gX+tWQny5OnIo/+cVaSanu3MwqJ+aP+m7TLdpX8B477jCqlpn3H2pxtRTkuj
-	VygRPrp3mTmzfa+27W0FV4Lriwb9YPQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=RURwccUCrNdi9KBps0wRmpb2Gas3Fr3k2vFNwM24X7o=;
+	b=jHEgahw8bNXrn7elyoZhJ/BnMdn24ATN40tmHPcP9vXBO0LKh+xGIUx7wI7r1jiESIpg1e
+	4oxg0G9JnusBg4Y4ua/uz64MnltOMdac2t/PQpJ3wrmOBnvljYuqTtfinterm5GuxO/TnJ
+	A9Br64hG2kwnH2oIYwrJf+Kklg7ly4E=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-mkvFm-d_PmCOny2ZNrIF2A-1; Thu, 07 Nov 2024 05:01:35 -0500
-X-MC-Unique: mkvFm-d_PmCOny2ZNrIF2A-1
-X-Mimecast-MFC-AGG-ID: mkvFm-d_PmCOny2ZNrIF2A
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso4981665e9.1
-        for <kvm@vger.kernel.org>; Thu, 07 Nov 2024 02:01:35 -0800 (PST)
+ us-mta-517-eAxZAmcbO5eFu6TM8TeyRQ-1; Thu, 07 Nov 2024 05:03:00 -0500
+X-MC-Unique: eAxZAmcbO5eFu6TM8TeyRQ-1
+X-Mimecast-MFC-AGG-ID: eAxZAmcbO5eFu6TM8TeyRQ
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ff13df3759so7609561fa.0
+        for <kvm@vger.kernel.org>; Thu, 07 Nov 2024 02:03:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730973694; x=1731578494;
+        d=1e100.net; s=20230601; t=1730973778; x=1731578578;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:reply-to:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mCpCB9JiGuUJDI4bEMY+hAs6rw+MftrWNvH37HOo7LU=;
-        b=fYn2gul/Rd4GLL9PiHoXzY6MN9psohNuSSAMHDAvrXJ/ooF3sjRWvMtWs6PV2Uhlvs
-         VQBHC4Ql29Gtk/vWadVmAR0ZVKUjzcv+S1blX4b7lPL13vM/VQPE07KZT/fSX8M5TgqB
-         /h7FmBnFyTCcze1jCaz2iR3Q6TsoGNRrOi4ijNk2xjZeQWwbGypjsKORdRAPpMIBXru7
-         QBfBadvDzXhiEnzizNR4O3kDTcVwlseWafTB37cz4JB7fkc6kIZWUXuDcxethJUWT9ZU
-         l7ukQGiMYxl9LKUCGQNZDgnRd2y7fYgfdO7xCMII7R96KA1gmX0KkeC1rH/nDzahqBEW
-         aJVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVS82T/W6IHMGuO6aF8tMl4Vg7Z42ubSEo3+BvAsAU0tDdn3hp8gz+iqdpv1hoS+9gnVs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztYcf8zGqcdkTFYvKLUoTfBch43nLnqHtAzPIsTm9vMXXzrVEu
-	5nImowoh7XB/SqqLJcagVevxk7Uux5DS+AU7QY8YngMjNz3dcObSwEZSp+iiGFoNHTx6YiRvvSf
-	Iqll9RB/t2BZyapmuzPBcegzcb4cym9z6HO76kvf08TJ0e74+lg==
-X-Received: by 2002:a05:600c:500a:b0:431:561b:b32a with SMTP id 5b1f17b1804b1-4319acb8ce7mr389491775e9.19.1730973694505;
-        Thu, 07 Nov 2024 02:01:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEDbVGMXVLzPtnR/VZFbxL0VkGeLxamN/60E1uP2cgI2kd398S80zrlJSY+AcWQumz9NsWQYw==
-X-Received: by 2002:a05:600c:500a:b0:431:561b:b32a with SMTP id 5b1f17b1804b1-4319acb8ce7mr389491485e9.19.1730973694135;
-        Thu, 07 Nov 2024 02:01:34 -0800 (PST)
+        bh=RURwccUCrNdi9KBps0wRmpb2Gas3Fr3k2vFNwM24X7o=;
+        b=vSXTfyv/9jgvslLKE7t70gktMprM/K05qyy4yQ8cHOsfo+kuZOtBx7vOtHtphoKgXW
+         lqH11aVf68MnCF/lqnlgx+uIJHw9Q/LdMVNBLQY5VpUmMHMwj8J9X5TdC/yt9oZnheLm
+         s5zvacTRqTe3R+CR+q4azb77LjjyHiuBAsp1MtEVC/WL6iam9tuhS74/T++6kR0KPuxE
+         8NdsHuY8Fl1duZ3KRfLxKJbw6pdk3tHgkyPRiV8Di1iELdiOnh3j7fPbBSmeekIMCm1y
+         NHmEVRMCHnnjUIJpMXvs+2Ezj9fV53YuOrHmbQTcRSZSn8FK9rr7g1OQG/3dGJG7tGNn
+         Jd0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVKoSIsG0zvmN4aDZ6PxDMkyTL1dL0+sQmC+RdJ9tEUEcEMdEYuww9n2gTsXyXWmLOKjqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhiIuqrPhnQPD1WLJ9GG7oHJIvS4JZKNbIEkDzq6w5Pu3xDYdg
+	ReRw26b+ww/0Tz3sRh5OKHP5vv7vv42jXJ/R0tVgeRDqA3gHbZNl08rbpBVJiDr1Ap0RhrIez7X
+	37Kwe4ezvO3QwLzZ554srFO5jyykAqOuas5mZq/hiOOZC7KAxChADo8lYTw==
+X-Received: by 2002:a05:651c:b2b:b0:2fb:3960:9667 with SMTP id 38308e7fff4ca-2fedb7a2aa3mr164722401fa.14.1730973778268;
+        Thu, 07 Nov 2024 02:02:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0Ut1MJXLUB/mEk4xEIuR+xgwHSESlbS4qEeQM6UCMiizmJPXbkINe4oE0BVm87ZHXWpCwEg==
+X-Received: by 2002:a05:651c:b2b:b0:2fb:3960:9667 with SMTP id 38308e7fff4ca-2fedb7a2aa3mr164722081fa.14.1730973777872;
+        Thu, 07 Nov 2024 02:02:57 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6b3069sm53583895e9.14.2024.11.07.02.01.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6b3069sm53583895e9.14.2024.11.07.02.02.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 02:01:31 -0800 (PST)
-Message-ID: <fb52d778-79bc-41ca-845c-4d7044c7f0ee@redhat.com>
-Date: Thu, 7 Nov 2024 11:01:29 +0100
+        Thu, 07 Nov 2024 02:02:56 -0800 (PST)
+Message-ID: <185b1a15-7e94-466d-a870-d7a2cc3bb890@redhat.com>
+Date: Thu, 7 Nov 2024 11:02:55 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,118 +71,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: eric.auger@redhat.com
-Subject: Re: [kvm-unit-tests PATCH v2 1/3] lib/on-cpus: Correct and simplify
- synchronization
+Subject: Re: [kvm-unit-tests PATCH v2 2/3] lib/on-cpus: Add barrier after func
+ call
 Content-Language: en-US
 To: Andrew Jones <andrew.jones@linux.dev>, kvm@vger.kernel.org,
  kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev
 Cc: atishp@rivosinc.com, jamestiotio@gmail.com, alexandru.elisei@arm.com
 References: <20241031123948.320652-5-andrew.jones@linux.dev>
- <20241031123948.320652-6-andrew.jones@linux.dev>
+ <20241031123948.320652-7-andrew.jones@linux.dev>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20241031123948.320652-6-andrew.jones@linux.dev>
+In-Reply-To: <20241031123948.320652-7-andrew.jones@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 10/31/24 13:39, Andrew Jones wrote:
-> get/put_on_cpu_info() were providing per-cpu locking for the per-cpu
-> on_cpu info, but it's difficult to reason that they're correct since
-> they use test_and_set/clear rather than a typical lock. Just revert
-> to a typical spinlock to simplify it. Also simplify the break case
-> for on_cpu_async() - we don't care if func is NULL, we only care
-> that the cpu is idle. And, finally, add a missing barrier to
-> on_cpu_async(). Before commit 018550041b38 ("arm/arm64: Remove
-> spinlocks from on_cpu_async") the spin_unlock() provided an implicit
-> barrier at the correct location, but moving the release to the more
-> logical location, below the setting of idle, lost it.
+> It's reasonable for users of on_cpu() and on_cpumask() to assume
+> they can read data that 'func' has written when the call completes.
+> Ensure the caller doesn't observe a completion (target cpus are again
+> idle) without also being able to observe any writes which were made
+> by func(). Do so by adding barriers to implement the following
 >
-> Fixes: 018550041b38 ("arm/arm64: Remove spinlocks from on_cpu_async")
+>  target-cpu                                   calling-cpu
+>  ----------                                   -----------
+>  func() /* store something */                 /* wait for target to be idle */
+>  smp_wmb();                                   smp_rmb();
+>  set_cpu_idle(smp_processor_id(), true);      /* load what func() stored */
+>
 > Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
 Eric
 > ---
->  lib/on-cpus.c | 36 +++++++++++-------------------------
->  1 file changed, 11 insertions(+), 25 deletions(-)
+>  lib/on-cpus.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
 > diff --git a/lib/on-cpus.c b/lib/on-cpus.c
-> index 892149338419..f6072117fa1b 100644
+> index f6072117fa1b..356f284be61b 100644
 > --- a/lib/on-cpus.c
 > +++ b/lib/on-cpus.c
-> @@ -9,6 +9,7 @@
->  #include <on-cpus.h>
->  #include <asm/barrier.h>
->  #include <asm/smp.h>
-> +#include <asm/spinlock.h>
->  
->  bool cpu0_calls_idle;
->  
-> @@ -18,18 +19,7 @@ struct on_cpu_info {
->  	cpumask_t waiters;
->  };
->  static struct on_cpu_info on_cpu_info[NR_CPUS];
-> -static cpumask_t on_cpu_info_lock;
-> -
-> -static bool get_on_cpu_info(int cpu)
-> -{
-> -	return !cpumask_test_and_set_cpu(cpu, &on_cpu_info_lock);
-> -}
-> -
-> -static void put_on_cpu_info(int cpu)
-> -{
-> -	int ret = cpumask_test_and_clear_cpu(cpu, &on_cpu_info_lock);
-> -	assert(ret);
-> -}
-> +static struct spinlock lock;
->  
->  static void __deadlock_check(int cpu, const cpumask_t *waiters, bool *found)
->  {
-> @@ -81,18 +71,14 @@ void do_idle(void)
->  	if (cpu == 0)
->  		cpu0_calls_idle = true;
->  
-> -	set_cpu_idle(cpu, true);
-> -	smp_send_event();
-> -
->  	for (;;) {
-> +		set_cpu_idle(cpu, true);
-> +		smp_send_event();
-> +
->  		while (cpu_idle(cpu))
+> @@ -79,6 +79,7 @@ void do_idle(void)
 >  			smp_wait_for_event();
 >  		smp_rmb();
 >  		on_cpu_info[cpu].func(on_cpu_info[cpu].data);
-> -		on_cpu_info[cpu].func = NULL;
-> -		smp_wmb();
-> -		set_cpu_idle(cpu, true);
-> -		smp_send_event();
+> +		smp_wmb(); /* pairs with the smp_rmb() in on_cpu() and on_cpumask() */
 >  	}
 >  }
 >  
-> @@ -110,17 +96,17 @@ void on_cpu_async(int cpu, void (*func)(void *data), void *data)
->  
->  	for (;;) {
->  		cpu_wait(cpu);
-> -		if (get_on_cpu_info(cpu)) {
-> -			if ((volatile void *)on_cpu_info[cpu].func == NULL)
-> -				break;
-> -			put_on_cpu_info(cpu);
-> -		}
-> +		spin_lock(&lock);
-> +		if (cpu_idle(cpu))
-> +			break;
-> +		spin_unlock(&lock);
->  	}
->  
->  	on_cpu_info[cpu].func = func;
->  	on_cpu_info[cpu].data = data;
-> +	smp_wmb();
->  	set_cpu_idle(cpu, false);
-> -	put_on_cpu_info(cpu);
-> +	spin_unlock(&lock);
->  	smp_send_event();
+> @@ -145,12 +146,14 @@ void on_cpumask(const cpumask_t *mask, void (*func)(void *data), void *data)
+>  		smp_wait_for_event();
+>  	for_each_cpu(cpu, mask)
+>  		cpumask_clear_cpu(me, &on_cpu_info[cpu].waiters);
+> +	smp_rmb(); /* pairs with the smp_wmb() in do_idle() */
 >  }
 >  
+>  void on_cpu(int cpu, void (*func)(void *data), void *data)
+>  {
+>  	on_cpu_async(cpu, func, data);
+>  	cpu_wait(cpu);
+> +	smp_rmb(); /* pairs with the smp_wmb() in do_idle() */
+>  }
+>  
+>  void on_cpus(void (*func)(void *data), void *data)
 
