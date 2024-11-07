@@ -1,184 +1,133 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266C22139D3;
-	Thu,  7 Nov 2024 15:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B7212F13
+	for <kvm@vger.kernel.org>; Thu,  7 Nov 2024 15:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730993023; cv=none; b=Q5aduwriBjZ/qqy42FdBAWFWw2ZHRvomQTnEcnZYHq6/YYapZ1RgrYiDZekNKu+ngKeO0AiTjn1bhtOF7wPwDKzKKEVxXvHF7Dicn5fekntP/MJoY5uqKuUsrj4zVnlRrSe8YlONa8iAvMf7F3Xccnlr56nglpetNnnb+UYylOI=
+	t=1730993107; cv=none; b=gpO8Od4+xQcQTz4Vy4MsBjsTHAGW/UUXOswGxRR1pxzZRkK/OmVMMsXqP/AL0h654LqaiGyqHSvAJSMzk/IzdtWrwesGqTiqdt95x+HZkyQ+vvMKRuq18lEA1/FDaPRz5z/Bgwg4y8/1FiumPi/E51xgqjf0VF1eZvXNgWlBZ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730993023; c=relaxed/simple;
-	bh=kpFZRJEAe8iAGoQAb7BnMMqtjyylyhgY5ibqYfw3JwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acnljIjWKkdkRq4WgNBNQKHYHdbe06XtiS17NTW9ylMwc2EDoVb6kqq2kahSE5DJvvi4UnxB6/ZLj2HKE9PLxbQDgZe/qnjGNVVOa2s+JzbybfQEJ+QysK7qd3+cDOkopMANrcPcVJNFryPnhGc4qKC8OcR7t9hW8YDQ0XyY9y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UK/xibtM; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1730993107; c=relaxed/simple;
+	bh=p7dJkGag38x6jmOuugAhlDPsy/e762twANsn0sug05U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ic8M4AUOY+55WkmEnYdxodo3X3djQNrgNC2jpMzFukw8cVegcRgF0QWh096q+5UmHT44fxk6AITeYTkQ3NOFS4m307Uq9I15xmacAR5WHg1tD5Pz8CPSVnzmf6Vy/p2vbFNtB2Pn9YpVS7b3AUapSXrcoz2zUa0MxK87+KecSVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3bD8yNNH; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UK/xibtM"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7EeIR1027775;
-	Thu, 7 Nov 2024 15:23:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=mCGvaOKuIYvTaUIfJ
-	3g+A8nj3e4nN0QlTM2wtE0B17s=; b=UK/xibtMRXSgbzLkyYAnuRisVqED2po7P
-	qFUrlYHg7Co15A3zOLZR2mgsnEJ8XtmC/66xXgd33X9FFPT3WSY6V6nVMAsfX2Uy
-	qTUmY2za4+Es9dt8F7JObZYGpUJiAQFxmMTtrEbw7MbEiItsIfAXUM4uMbTZooSM
-	VflYQFHC4aqfZwWbxhUweu4faKpOn9aKEjb8EnnlDiSTJhJ3lSTC7a5HcBbatcHd
-	eN3bUh2abtrMnBPnzV+H/zkcpkr0KE0Ophfi7ErDD45cRoYhLEyNzyREI14VKryT
-	3AKXyMkWo2lW/BO62xNptSDsKz/cWHU+lylVVG2K2H2RA6D4mhRow==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rygs883h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 15:23:38 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7BxNlV031966;
-	Thu, 7 Nov 2024 15:23:37 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nydmree7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 15:23:37 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A7FNXpX45089252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Nov 2024 15:23:33 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 35F4C20040;
-	Thu,  7 Nov 2024 15:23:33 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06BAA2004B;
-	Thu,  7 Nov 2024 15:23:33 +0000 (GMT)
-Received: from vela.boeblingen.de.ibm.com (unknown [9.155.210.79])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Nov 2024 15:23:32 +0000 (GMT)
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, thuth@redhat.com,
-        david@redhat.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com
-Subject: [PATCH 1/4] KVM: s390: add concurrent-function facility to cpu model
-Date: Thu,  7 Nov 2024 16:23:16 +0100
-Message-ID: <20241107152319.77816-2-brueckner@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241107152319.77816-1-brueckner@linux.ibm.com>
-References: <20241107152319.77816-1-brueckner@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3bD8yNNH"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-20e5ab8e022so10542895ad.3
+        for <kvm@vger.kernel.org>; Thu, 07 Nov 2024 07:25:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730993105; x=1731597905; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1i/NT8kDl1I5UdgWhggo9LMsrphRB6xVVGaoWe7u/PI=;
+        b=3bD8yNNHMf3Z0rhlkjYiO7Z61ASVi7kElXwKRUwomA5rES/Y9NQwcIB0UXIPDb4W1W
+         qnyiQK8/LrIXtRi47P5eyGgMoOpxpHjZhkNa68cFmmVx5E1YoxMVr2O3mEZjpjHmVKuP
+         CQ4TPQvIrOfsE+X+u62u/F3IBQtbl+3lQKAlurCZovPDpBYxTLYV6uOxyi4onIrPf0sf
+         z1PVG9G/dkYfoANmoFcl1A582Qt6MU/xGbrVwqq240ORF+tAV+qYhCU7tSPqSdVCWKpC
+         2XC5DFXRK/JskBiKBbd272wFcrDlwxO7iEZwtq8srEcKIFdZT3HNNOwfoRP+XZ+xVU+b
+         j9Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730993105; x=1731597905;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1i/NT8kDl1I5UdgWhggo9LMsrphRB6xVVGaoWe7u/PI=;
+        b=CdVl4OSDOiRpKioTg0Nb4/42I57ik+vJl6d+bcK0iyRaR9UszH6VWRW8BKuAihPOic
+         xHhel7v2FnkTXJnwGOURQ9lUoPnDSKX34MT2DC78TfOFX8Qb2dR0X6Rg82Ht1kLSeK4y
+         MvlgR7wTnaKqluej2L5yrwLDFGr3Z+g+cTcWUP+NsXn1ZF2ouA+tT7reXpXrygY4k3ol
+         p6VhKetS980GYlssxwy/hJczIfHrdpuoly/rK2d1yryS2AKw5QyyMUI0O8Hdql8X98uA
+         3BLVOR/jmN6L8qNJuQHroxQSrlWrg9+M/6iq5q1bCYhzwNf2UKzxm7zknu7ZIjIBMTOf
+         ykGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ2H/yrDMVbSE56lb4ArYXnRS0vZedQ3eqEeqsGsUvKdyAJckLLsw5rNtglX7BZPmOluM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSZpUfI7I8j8/2aADHi2qrR+aVvKPBKVvld/QmAXG92+gB9Of3
+	Oj4sGqwxP629lKel5efEb6Vf7QLRMQkc/E6nMEA0bX8QnppFQlEY/HMOLF12VnazQ8JYnYcETrV
+	j+w==
+X-Google-Smtp-Source: AGHT+IHPf44zPu0w6mRTvI9zgBOzfAIWQRG6xMMazGzKoTTtcnxVL4NPfPHzTXy46v9QHxXsNcsXsXr29n0=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a17:903:22cf:b0:20c:857b:5dcb with SMTP id
+ d9443c01a7336-210c6c1493amr8234475ad.4.1730993105409; Thu, 07 Nov 2024
+ 07:25:05 -0800 (PST)
+Date: Thu, 7 Nov 2024 07:25:03 -0800
+In-Reply-To: <ZyxJMoYMfQKug02q@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PVSScK_8VEVTA8cDCrvdzoq02bFtGPAC
-X-Proofpoint-GUID: PVSScK_8VEVTA8cDCrvdzoq02bFtGPAC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 spamscore=0 bulkscore=0
- mlxlogscore=555 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411070114
+Mime-Version: 1.0
+References: <20241101193532.1817004-1-seanjc@google.com> <Zymk_EaHkk7FPqru@google.com>
+ <ZytLLD6wbQgNIHuL@intel.com> <Zyt1Cw8LT50rMKvf@google.com> <ZyxJMoYMfQKug02q@intel.com>
+Message-ID: <ZyzaxakxCPMxT7Hs@google.com>
+Subject: Re: [PATCH] KVM: x86: Update irr_pending when setting APIC state with
+ APICv disabled
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yong He <zhuangel570@gmail.com>, Maxim Levitsky <mlevitsk@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Adding support for concurrent-functions facility which provides
-additional subfunctions.
+On Thu, Nov 07, 2024, Chao Gao wrote:
+> On Wed, Nov 06, 2024 at 05:54:19AM -0800, Sean Christopherson wrote:
+> >On Wed, Nov 06, 2024, Chao Gao wrote:
+> >> >Furthermore, in addition to introducing this issue, commit 755c2bf87860 also
+> >> >papered over the underlying bug: KVM doesn't ensure CPUs and devices see APICv
+> >> >as disabled prior to searching the IRR.  Waiting until KVM emulates EOI to update
+> >> >irr_pending works because KVM won't emulate EOI until after refresh_apicv_exec_ctrl(),
+> >> >and because there are plenty of memory barries in between, but leaving irr_pending
+> >> >set is basically hacking around bad ordering, which I _think_ can be fixed by:
+> >> >
+> >> >diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> >> >index 83fe0a78146f..85d330b56c7e 100644
+> >> >--- a/arch/x86/kvm/x86.c
+> >> >+++ b/arch/x86/kvm/x86.c
+> >> >@@ -10548,8 +10548,8 @@ void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu)
+> >> >                goto out;
+> >> > 
+> >> >        apic->apicv_active = activate;
+> >> >-       kvm_apic_update_apicv(vcpu);
+> >> >        kvm_x86_call(refresh_apicv_exec_ctrl)(vcpu);
+> >> >+       kvm_apic_update_apicv(vcpu);
+> >> 
+> >> I may miss something important. how does this change ensure CPUs and devices see
+> >> APICv as disabled (thus won't manipulate the vCPU's IRR)? Other CPUs when
+> >> performing IPI virtualization just looks up the PID_table while IOMMU looks up
+> >> the IRTE table. ->refresh_apicv_exec_ctrl() doesn't change any of them.
+> >
+> >For Intel, which is a bug (one of many in this area).  AMD does update both.  The
+> >failure Maxim was addressing was on AMD (AVIC), which has many more scenarios where
+> >it needs to be inhibited/disabled.
+> 
+> Yes indeed. Actually the commit below fixes the bug for Intel already. Just the
+> approach isn't to let other CPUs and devices see APICv disabled. Instead, pick
+> up all pending IRQs (in PIR) before VM-entry and cancel VM-entry if needed.
+> 
+>   1 commit 7e1901f6c86c896acff6609e0176f93f756d8b2a
+>   2 Author: Paolo Bonzini <pbonzini@redhat.com>
+>   3 Date:   Mon Nov 22 19:43:09 2021 -0500
+>   4
+>   5     KVM: VMX: prepare sync_pir_to_irr for running with APICv disabled
+>   6
+>   7     If APICv is disabled for this vCPU, assigned devices may still attempt to
+>   8     post interrupts.  In that case, we need to cancel the vmentry and deliver
+>   9     the interrupt with KVM_REQ_EVENT.  Extend the existing code that handles
+>  10     injection of L1 interrupts into L2 to cover this case as well.
+>  11
+>  12     vmx_hwapic_irr_update is only called when APICv is active so it would be
+>  13     confusing to add a check for vcpu->arch.apicv_active in there.  Instead,
+>  14     just use vmx_set_rvi directly in vmx_sync_pir_to_irr.
 
-Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
----
- arch/s390/include/uapi/asm/kvm.h |  3 ++-
- arch/s390/kvm/kvm-s390.c         | 22 ++++++++++++++++++++++
- arch/s390/tools/gen_facilities.c |  1 +
- 3 files changed, 25 insertions(+), 1 deletion(-)
+Ah, right, and that approach works because the posted interrupt notification IRQ
+is guaranteed to cause a VM-Exit, and KVM keeps the destination CPU in the PID
+up-to-date even if APICv is inhibited.
 
-diff --git a/arch/s390/include/uapi/asm/kvm.h b/arch/s390/include/uapi/asm/kvm.h
-index 05eaf6db3ad4..60345dd2cba2 100644
---- a/arch/s390/include/uapi/asm/kvm.h
-+++ b/arch/s390/include/uapi/asm/kvm.h
-@@ -469,7 +469,8 @@ struct kvm_s390_vm_cpu_subfunc {
- 	__u8 kdsa[16];		/* with MSA9 */
- 	__u8 sortl[32];		/* with STFLE.150 */
- 	__u8 dfltcc[32];	/* with STFLE.151 */
--	__u8 reserved[1728];
-+	__u8 pfcr[16];		/* with STFLE.201 */
-+	__u8 reserved[1712];
- };
- 
- #define KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST	6
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 06e55f681a39..f9cc1c92a79d 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -348,6 +348,16 @@ static inline int plo_test_bit(unsigned char nr)
- 	return cc == 0;
- }
- 
-+static __always_inline void pfcr_query(u8 (*query)[16])
-+{
-+	asm volatile(
-+		"	lghi	0,0\n"
-+		"	.insn   rsy,0xeb0000000016,0,0,%[query]\n"
-+		: [query] "=QS" (*query)
-+		:
-+		: "cc", "0");
-+}
-+
- static __always_inline void __sortl_query(u8 (*query)[32])
- {
- 	asm volatile(
-@@ -429,6 +439,9 @@ static void __init kvm_s390_cpu_feat_init(void)
- 	if (test_facility(151)) /* DFLTCC */
- 		__dfltcc_query(&kvm_s390_available_subfunc.dfltcc);
- 
-+	if (test_facility(201))	/* PFCR */
-+		pfcr_query(&kvm_s390_available_subfunc.pfcr);
-+
- 	if (MACHINE_HAS_ESOP)
- 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_ESOP);
- 	/*
-@@ -1543,6 +1556,9 @@ static int kvm_s390_set_processor_subfunc(struct kvm *kvm,
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[1],
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[2],
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[3]);
-+	VM_EVENT(kvm, 3, "GET: guest PFCR   subfunc 0x%16.16lx.%16.16lx",
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[0],
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[1]);
- 
- 	return 0;
- }
-@@ -1757,6 +1773,9 @@ static int kvm_s390_get_processor_subfunc(struct kvm *kvm,
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[1],
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[2],
- 		 ((unsigned long *) &kvm->arch.model.subfuncs.dfltcc)[3]);
-+	VM_EVENT(kvm, 3, "GET: guest PFCR   subfunc 0x%16.16lx.%16.16lx",
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[0],
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[1]);
- 
- 	return 0;
- }
-@@ -1825,6 +1844,9 @@ static int kvm_s390_get_machine_subfunc(struct kvm *kvm,
- 		 ((unsigned long *) &kvm_s390_available_subfunc.dfltcc)[1],
- 		 ((unsigned long *) &kvm_s390_available_subfunc.dfltcc)[2],
- 		 ((unsigned long *) &kvm_s390_available_subfunc.dfltcc)[3]);
-+	VM_EVENT(kvm, 3, "GET: host  PFCR   subfunc 0x%16.16lx.%16.16lx",
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[0],
-+		 ((unsigned long *) &kvm_s390_available_subfunc.pfcr)[1]);
- 
- 	return 0;
- }
-diff --git a/arch/s390/tools/gen_facilities.c b/arch/s390/tools/gen_facilities.c
-index c3d5214c8442..e97b4faaf222 100644
---- a/arch/s390/tools/gen_facilities.c
-+++ b/arch/s390/tools/gen_facilities.c
-@@ -116,6 +116,7 @@ static struct facility_def facility_defs[] = {
- 			194, /* rdp enhancement facility */
- 			196, /* processor activity instrumentation facility */
- 			197, /* processor activity instrumentation extension 1 */
-+			201, /* concurrent-functions facility */
- 			-1  /* END */
- 		}
- 	},
--- 
-2.43.5
+But on AMD, the GA log interrupt is per-IOMMU and so isn't affined to the CPU on
+which the vCPU that generated that log entry is running, i.e. won't force an exit
+on the destination.  Oh, and the vCPU's entry in the IPI virtualization table
+needs to be marked as not-running so that the sender is forced to exit and kick
+the target.
 
+In theory, kicking the target vCPU in avic_ga_log_notifier() would allow keeping
+the associated IRTEs in guest/posted mode.  I'm mildly curious if that would
+yield better or worse performance/latency than going through the per-IRQ handler.
