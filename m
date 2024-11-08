@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA651E7C2F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75E81E2834
 	for <kvm@vger.kernel.org>; Fri,  8 Nov 2024 12:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731067484; cv=none; b=qnNHYh0BYRCkcUljwxZ6eqgsn1a4vGlVwVWHr3JVd2AqMqTfqjbqUKU/etBWeU0BPXcKh+pK+ouvU+qP5a6F2mk9gt4qgeF1jm5FSzfVLg4cL6jRh55sZKxWvvNsP6GjaEc+ryq/rVJ9/KPZ7hOaorm2IjNNv/dT8Q9l9DY+eww=
+	t=1731067484; cv=none; b=JqAtHjuhU234DON+8H6sX0v944oWjEVAehCMr65D2TTV0jF0vUWeLaAOg59eE7p52lkAP8svSeqt3v7n4pthc/tGb/SsD+3AmIJiqjhmLxigu6F+fOX5PBcKds6nu7pwZQQuDq5nfYO9bUIUGANQJnINm3623ZzDXu4c2MdRekg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731067484; c=relaxed/simple;
-	bh=V4RugJTuvyGaHxwOKya60LQUcMi6hhRYO69X0PS1uPo=;
+	bh=2s1wQPEzFpmggA2jawJvQiccvDr/ayphBD/48j9DeAE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Le2gMecXsSL5TUMvhjQ9Usd11I2rYSwzl8JTJ1pqgol/4opSlSgqtTuG5H0xnBiwqhuiDmcnd8mBmoJplz0EUNvmwqRj8ne8wdZdiRiSLbD2lyFT4wgnXRQE9Nf3x96mvSzEN/iASXSVjNnC+e2KEKQWYOptjVmUcQM94uCWXOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g9zzKq0q; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=IX9gjvePcUGc7zhyCT1glCNWg3rk96v7N37nGQkHXNRqSXLhWROUxMhH4A2ON9cZTB1b8OTWrC2ThnBk0cocA8fmkNpuxgd64sBBIiUCMd7ElukQSFZYH0QPyKqtWNLwZQqD4B36RcPp9mwsMMEOaIZM66VDwJB7XVMA4jxZCik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HWdhtepZ; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g9zzKq0q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HWdhtepZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731067483; x=1762603483;
+  t=1731067484; x=1762603484;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=V4RugJTuvyGaHxwOKya60LQUcMi6hhRYO69X0PS1uPo=;
-  b=g9zzKq0qOLqjxcuiPjFlhDHBlYIkj2GmwxCbScUYbUbGSrN5ljgN4Xuw
-   +jz5qf/EYx3+sbW/fxULFpCFkdctwRy+H1INKXC8pMnDQASxixYshPQnj
-   anIWe2t5c8KrTWSjSg6/dNvg6AjRypWD7IskHuWqowh9YL5DDC1WWZWS6
-   boGsZjokhBJsJT42oD41/6A3MMkAZ/7K/mK5ILkpowHlBFJGejnDeQKVJ
-   /qyaWnWWohgI/orL4e4L/0MN3zVaYcgn/Frrkv+sfs39hrjisH5Qo6Ryy
-   pRTSAAl4qDGI0X+0y3ZqROxI2KZ3SNOBuV5RWE0jRsgjQM0332TQxvnDn
-   A==;
-X-CSE-ConnectionGUID: plwahaB/QdGlOTLSQjhwJw==
-X-CSE-MsgGUID: CTQas5CVSoqGDWBzIrHY0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31116441"
+  bh=2s1wQPEzFpmggA2jawJvQiccvDr/ayphBD/48j9DeAE=;
+  b=HWdhtepZFf9CMY/6YSUc1S/JR/FoDzme9YgbmCyQfHHNmIqFrI0Z78Bv
+   aCjoSguv0caP0LDwqUzenb9CBLdQm+I/QiKeHBRz2/3k7Ic6h7I5c+1tk
+   1J7m0SWt3JDZX81OSIAvE4Gz7hZnLnQVjmYKuX5CmKzYBadJpaZ0mvFkO
+   cImcRPo9BKghT1ykMJJP2c1OUgXsxi0AchF+2e3juIDd4djAFI1z4Euk2
+   QeY4MqXzdsLueVomQyeVvHt177gsfh9aCdc0w6uxmQ7MrniGzJoY5ciJT
+   0lhnMIVD+VC0Qh2J9xHmCJey4zTDfCnup3BPnBv2DT0rxLZ4QQ7XW26pW
+   g==;
+X-CSE-ConnectionGUID: r+j/jhg5Sj2Gx+4kxTzQ8w==
+X-CSE-MsgGUID: +xae70bfScGhelrkccjU4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31116455"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31116441"
+   d="scan'208";a="31116455"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 04:04:33 -0800
-X-CSE-ConnectionGUID: vl5OxtZAQguZD0FznzMI6Q==
-X-CSE-MsgGUID: hrEr16b5Q4+Cx7B3TlXy+g==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 04:04:35 -0800
+X-CSE-ConnectionGUID: x/xJPLzuR/OL30nH6Ryz0g==
+X-CSE-MsgGUID: LFS4smFFRXO+0Ncx01WDww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="85679042"
+   d="scan'208";a="85679056"
 Received: from 984fee00a4c6.jf.intel.com ([10.165.58.231])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Nov 2024 04:04:32 -0800
+  by fmviesa008.fm.intel.com with ESMTP; 08 Nov 2024 04:04:34 -0800
 From: Yi Liu <yi.l.liu@intel.com>
 To: joro@8bytes.org,
 	jgg@nvidia.com,
@@ -58,9 +58,9 @@ Cc: alex.williamson@redhat.com,
 	zhenzhong.duan@intel.com,
 	vasant.hegde@amd.com,
 	willy@infradead.org
-Subject: [PATCH v4 5/7] iommu/vt-d: Make the blocked domain support PASID
-Date: Fri,  8 Nov 2024 04:04:25 -0800
-Message-Id: <20241108120427.13562-6-yi.l.liu@intel.com>
+Subject: [PATCH v4 7/7] iommu: Remove the remove_dev_pasid op
+Date: Fri,  8 Nov 2024 04:04:27 -0800
+Message-Id: <20241108120427.13562-8-yi.l.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241108120427.13562-1-yi.l.liu@intel.com>
 References: <20241108120427.13562-1-yi.l.liu@intel.com>
@@ -72,64 +72,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The blocked domain can be extended to park PASID of a device to be the
-DMA blocking state. By this the remove_dev_pasid() op is dropped.
+The iommu drivers that supports PASID have supported attaching pasid to the
+blocked_domain, hence remove the remove_dev_pasid op from the iommu_ops.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 ---
- drivers/iommu/intel/iommu.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/iommu/iommu.c | 17 ++++-------------
+ include/linux/iommu.h |  5 -----
+ 2 files changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 527f6f89d8a1..b08981bbd5ca 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3248,10 +3248,15 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
- 	return 0;
- }
- 
-+static int blocking_domain_set_dev_pasid(struct iommu_domain *domain,
-+					 struct device *dev, ioasid_t pasid,
-+					 struct iommu_domain *old);
-+
- static struct iommu_domain blocking_domain = {
- 	.type = IOMMU_DOMAIN_BLOCKED,
- 	.ops = &(const struct iommu_domain_ops) {
- 		.attach_dev	= blocking_domain_attach_dev,
-+		.set_dev_pasid	= blocking_domain_set_dev_pasid,
- 	}
- };
- 
-@@ -4105,13 +4110,16 @@ void domain_remove_dev_pasid(struct iommu_domain *domain,
- 	kfree(dev_pasid);
- }
- 
--static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
--					 struct iommu_domain *domain)
-+static int blocking_domain_set_dev_pasid(struct iommu_domain *domain,
-+					 struct device *dev, ioasid_t pasid,
-+					 struct iommu_domain *old)
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 6fd4b904f270..e970893168d8 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -3303,17 +3303,9 @@ static void iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
  {
- 	struct device_domain_info *info = dev_iommu_priv_get(dev);
+ 	const struct iommu_ops *ops = dev_iommu_ops(dev);
+ 	struct iommu_domain *blocked_domain = ops->blocked_domain;
+-	int ret = 1;
  
- 	intel_pasid_tear_down_entry(info->iommu, dev, pasid, false);
--	domain_remove_dev_pasid(domain, dev, pasid);
-+	domain_remove_dev_pasid(old, dev, pasid);
-+
-+	return 0;
+-	if (blocked_domain && blocked_domain->ops->set_dev_pasid) {
+-		ret = blocked_domain->ops->set_dev_pasid(blocked_domain,
+-							 dev, pasid, domain);
+-	} else {
+-		ops->remove_dev_pasid(dev, pasid, domain);
+-		ret = 0;
+-	}
+-
+-	WARN_ON(ret);
++	WARN_ON(blocked_domain->ops->set_dev_pasid(blocked_domain,
++						   dev, pasid, domain));
  }
  
- struct dev_pasid_info *
-@@ -4483,7 +4491,6 @@ const struct iommu_ops intel_iommu_ops = {
- 	.dev_disable_feat	= intel_iommu_dev_disable_feat,
- 	.is_attach_deferred	= intel_iommu_is_attach_deferred,
- 	.def_domain_type	= device_def_domain_type,
--	.remove_dev_pasid	= intel_iommu_remove_dev_pasid,
- 	.pgsize_bitmap		= SZ_4K,
- 	.page_response		= intel_iommu_page_response,
- 	.default_domain_ops = &(const struct iommu_domain_ops) {
+ static int __iommu_set_group_pasid(struct iommu_domain *domain,
+@@ -3371,9 +3363,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
+ 	int ret;
+ 
+ 	if (!domain->ops->set_dev_pasid ||
+-	    (!ops->remove_dev_pasid &&
+-	     (!ops->blocked_domain ||
+-	      !ops->blocked_domain->ops->set_dev_pasid)))
++	    !ops->blocked_domain ||
++	    !ops->blocked_domain->ops->set_dev_pasid)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (!group)
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index 0c3bfb66dc7c..1d033121bf00 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -537,9 +537,6 @@ static inline int __iommu_copy_struct_from_user_array(
+  *		- IOMMU_DOMAIN_DMA: must use a dma domain
+  *		- 0: use the default setting
+  * @default_domain_ops: the default ops for domains
+- * @remove_dev_pasid: Remove any translation configurations of a specific
+- *                    pasid, so that any DMA transactions with this pasid
+- *                    will be blocked by the hardware.
+  * @pgsize_bitmap: bitmap of all possible supported page sizes
+  * @owner: Driver module providing these ops
+  * @identity_domain: An always available, always attachable identity
+@@ -586,8 +583,6 @@ struct iommu_ops {
+ 			      struct iommu_page_response *msg);
+ 
+ 	int (*def_domain_type)(struct device *dev);
+-	void (*remove_dev_pasid)(struct device *dev, ioasid_t pasid,
+-				 struct iommu_domain *domain);
+ 
+ 	const struct iommu_domain_ops *default_domain_ops;
+ 	unsigned long pgsize_bitmap;
 -- 
 2.34.1
 
