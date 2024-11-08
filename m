@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7201E7648
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02B1E8842
 	for <kvm@vger.kernel.org>; Fri,  8 Nov 2024 12:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731068273; cv=none; b=KdCenaXY8Lbqena6c4gb5stYAg57vZAUb56hCNQ/n2L7bAchP5jfcRVtKwTQE13d7COTIdcBIeziuJMCH5pCv86pwpKcmHccELKtp3gguGEdODoI99IloAI9QqczUFI1upTbwwIrCZaUU4oyuNnU2FiVVtlI6M88cqRkmPKXb54=
+	t=1731068273; cv=none; b=fambQE132K1iWnmtZSgzI4dB4ec05oSlme8dNykiZi0OPYkN18b/g2ggBrkpwfIvjSQaO2YQUdtykAR36HTWgX7EX9YKUDnizCrk9Csc14e599G7nVK3F83Y8KV8p5iIluB5UuQQ8uGS+OTVXrcYApagq1ULSQYVkhBEgzRN4X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731068273; c=relaxed/simple;
-	bh=cTLLqq2ykU/HGdHB6WcOnjF2xGCXptzhaEq48UUFTBA=;
+	bh=eg6PD3CuAltZOvrslb8O1BllOcumlzSeflErh+2dj4U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GFr8Hp4Z3hMwEtL6XUdMh0EWpT/4DUFw+I6hYN8CGmacpAt2JOD4cNta5w1Zzn9nK4kvW5PiJ+9uitzr7DrVf5KFAYqWHkCcaB5m79YiDta3TLqeCzgPO/O5bXanQW0TyrnvgdnnOcoWxiAjkhTGoLcEurLvALilCAOy9SOyu0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I/uygt5f; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=rhruZ2+0aERNw1fiTfadRkOgIOSbpEmoLXqox7qEKbLZc7rWerkK62Cv4yGLEs2bINRN0mSzOt8ol2DRpYK1krrcKojBs3jdimQxGyCXzl3sA4bu6M1PUjykP/8GxmQM5NvzSzM/O/NKHW3rQ8fMkHvF+SjHZ2iz7dbhAalX0q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c7esiEQu; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I/uygt5f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c7esiEQu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731068271; x=1762604271;
+  t=1731068272; x=1762604272;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cTLLqq2ykU/HGdHB6WcOnjF2xGCXptzhaEq48UUFTBA=;
-  b=I/uygt5fn+ftOAYsLK/fiTy20ivOrKz/TqQF3e0iahAORD5TK57mF6ky
-   31wTHxQWnFOuqk5q3rTH3UlOVBZprBk+SVB3+ELEuK/DfMPg31VNvtpk0
-   4AA6e8vQKIPtcxHZKnVLVU6h28Bq9eIal1wMkb3KsXZVdar7Y4zreU/c6
-   /7oviALEQD7EjI/hNuwdxBFOuEjX67gSE0u+O0BSVZeAkugXd4DxCDUB/
-   Qx/UgucPm0s1o69GqdDCe0Ley6MQzkrrUFo5m6sv/uigbtq1SMc0D9oEa
-   KJd6xIwJehMZp4He+EmHll2wxcjwP41H8Qu9uTEkoZzPKuu8DO5pv4Olw
-   A==;
-X-CSE-ConnectionGUID: hZYr8JxnSi+2WiciGiLY3Q==
-X-CSE-MsgGUID: wWjxgMI/QZ+AqQ/xjl0fyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41560827"
+  bh=eg6PD3CuAltZOvrslb8O1BllOcumlzSeflErh+2dj4U=;
+  b=c7esiEQu57LwUVfchfvWQF4VrQvWgfdw4hV58kXflkGgTowsC/4Iitj0
+   fi/bw5bBkLiJNM5pj3dNd6K7phssina2ASNR31rSDtWQmJk6NBPbiWaq/
+   rxaeyCZ75cuKKaV8c53nnrvNvSUt8TZUtsonh9dKLW02UCZcMWmOIBYXh
+   8LHl89T/1XKZ3RTEvrX4FjieJGhAFmN8CNu///2Uz7okPop/igdZE5lcu
+   uGRBOkLhmB+fB4m1wsXqiYq22PhRLzVgmdirhXaAO1mvO1zJEZz4Nq+V+
+   v9fhpMUfNlixRtLgyvyMat4SHvzpZrnPSO/GCB721NRBz0PfxEwD9kmUi
+   g==;
+X-CSE-ConnectionGUID: vEHE9JqfThS+68nh9i5kEA==
+X-CSE-MsgGUID: fXFbiZOMToaZ0apiekAYFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41560841"
 X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="41560827"
+   d="scan'208";a="41560841"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 04:17:49 -0800
-X-CSE-ConnectionGUID: Wu0vrP9zQjWuu1Z71XJK0A==
-X-CSE-MsgGUID: +jKBSp0GQByhH/dFnqd8eg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 04:17:50 -0800
+X-CSE-ConnectionGUID: UOskUehgQ7ShGTgC2rwYQg==
+X-CSE-MsgGUID: su3n60svQCWS/BodfBcoVg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="85865452"
+   d="scan'208";a="85865460"
 Received: from 984fee00a4c6.jf.intel.com ([10.165.58.231])
-  by fmviesa010.fm.intel.com with ESMTP; 08 Nov 2024 04:17:48 -0800
+  by fmviesa010.fm.intel.com with ESMTP; 08 Nov 2024 04:17:49 -0800
 From: Yi Liu <yi.l.liu@intel.com>
 To: alex.williamson@redhat.com,
 	jgg@nvidia.com,
@@ -57,10 +57,11 @@ Cc: joro@8bytes.org,
 	iommu@lists.linux.dev,
 	zhenzhong.duan@intel.com,
 	vasant.hegde@amd.com,
-	will@kernel.org
-Subject: [PATCH v5 3/5] vfio: VFIO_DEVICE_[AT|DE]TACH_IOMMUFD_PT support pasid
-Date: Fri,  8 Nov 2024 04:17:40 -0800
-Message-Id: <20241108121742.18889-4-yi.l.liu@intel.com>
+	will@kernel.org,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH v5 5/5] iommufd: Extend IOMMU_GET_HW_INFO to report PASID capability
+Date: Fri,  8 Nov 2024 04:17:42 -0800
+Message-Id: <20241108121742.18889-6-yi.l.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241108121742.18889-1-yi.l.liu@intel.com>
 References: <20241108121742.18889-1-yi.l.liu@intel.com>
@@ -72,194 +73,176 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This extends the VFIO_DEVICE_[AT|DE]TACH_IOMMUFD_PT ioctls to attach/detach
-a given pasid of a vfio device to/from an IOAS/HWPT.
+PASID usage requires PASID support in both device and IOMMU. Since the
+iommu drivers always enable the PASID capability for the device if it
+is supported, so it is reasonable to extend the IOMMU_GET_HW_INFO to
+report the PASID capability to userspace.
 
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org> #aarch64 platform
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 ---
- drivers/vfio/device_cdev.c | 69 +++++++++++++++++++++++++++++++++-----
- include/uapi/linux/vfio.h  | 29 ++++++++++------
- 2 files changed, 80 insertions(+), 18 deletions(-)
+ drivers/iommu/iommufd/device.c | 24 +++++++++++++++++++++++-
+ drivers/pci/ats.c              | 33 +++++++++++++++++++++++++++++++++
+ include/linux/pci-ats.h        |  3 +++
+ include/uapi/linux/iommufd.h   | 14 +++++++++++++-
+ 4 files changed, 72 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-index bb1817bd4ff3..4519f482e212 100644
---- a/drivers/vfio/device_cdev.c
-+++ b/drivers/vfio/device_cdev.c
-@@ -162,9 +162,9 @@ void vfio_df_unbind_iommufd(struct vfio_device_file *df)
- int vfio_df_ioctl_attach_pt(struct vfio_device_file *df,
- 			    struct vfio_device_attach_iommufd_pt __user *arg)
- {
--	struct vfio_device *device = df->device;
- 	struct vfio_device_attach_iommufd_pt attach;
--	unsigned long minsz;
-+	struct vfio_device *device = df->device;
-+	unsigned long minsz, xend = 0;
- 	int ret;
+diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
+index a52937fba366..3620a039d3fa 100644
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -3,6 +3,8 @@
+  */
+ #include <linux/iommu.h>
+ #include <linux/iommufd.h>
++#include <linux/pci.h>
++#include <linux/pci-ats.h>
+ #include <linux/slab.h>
+ #include <uapi/linux/iommufd.h>
  
- 	minsz = offsetofend(struct vfio_device_attach_iommufd_pt, pt_id);
-@@ -172,11 +172,38 @@ int vfio_df_ioctl_attach_pt(struct vfio_device_file *df,
- 	if (copy_from_user(&attach, arg, minsz))
- 		return -EFAULT;
+@@ -1248,7 +1250,8 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
+ 	void *data;
+ 	int rc;
  
--	if (attach.argsz < minsz || attach.flags)
-+	if (attach.argsz < minsz)
- 		return -EINVAL;
+-	if (cmd->flags || cmd->__reserved)
++	if (cmd->flags || cmd->__reserved[0] || cmd->__reserved[1] ||
++	    cmd->__reserved[2])
+ 		return -EOPNOTSUPP;
  
-+	if (attach.flags & (~VFIO_DEVICE_ATTACH_PASID))
-+		return -EINVAL;
+ 	idev = iommufd_get_device(ucmd, cmd->dev_id);
+@@ -1305,6 +1308,25 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
+ 	if (device_iommu_capable(idev->dev, IOMMU_CAP_DIRTY_TRACKING))
+ 		cmd->out_capabilities |= IOMMU_HW_CAP_DIRTY_TRACKING;
+ 
++	cmd->out_max_pasid_log2 = 0;
 +
-+	if (attach.flags & VFIO_DEVICE_ATTACH_PASID)
-+		xend = offsetofend(struct vfio_device_attach_iommufd_pt, pasid);
++	if (dev_is_pci(idev->dev)) {
++		struct pci_dev *pdev = to_pci_dev(idev->dev);
++		int ctrl;
 +
-+	/*
-+	 * xend may be equal to minsz if a flag is defined for reusing a
-+	 * reserved field or a special usage of an existing field.
-+	 */
-+	if (xend > minsz) {
-+		if (attach.argsz < xend)
-+			return -EINVAL;
-+
-+		if (copy_from_user((void *)&attach + minsz,
-+				   (void __user *)arg + minsz, xend - minsz))
-+			return -EFAULT;
++		ctrl = pci_pasid_ctrl_status(pdev);
++		if (ctrl >= 0 && (ctrl & PCI_PASID_CTRL_ENABLE)) {
++			cmd->out_max_pasid_log2 =
++					ilog2(idev->dev->iommu->max_pasids);
++			if (ctrl & PCI_PASID_CTRL_EXEC)
++				cmd->out_capabilities |=
++						IOMMU_HW_CAP_PCI_PASID_EXEC;
++			if (ctrl & PCI_PASID_CTRL_PRIV)
++				cmd->out_capabilities |=
++						IOMMU_HW_CAP_PCI_PASID_PRIV;
++		}
 +	}
 +
-+	if ((attach.flags & VFIO_DEVICE_ATTACH_PASID) &&
-+	    !device->ops->pasid_attach_ioas)
-+		return -EOPNOTSUPP;
+ 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+ out_free:
+ 	kfree(data);
+diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
+index 6afff1f1b143..c35465120329 100644
+--- a/drivers/pci/ats.c
++++ b/drivers/pci/ats.c
+@@ -538,4 +538,37 @@ int pci_max_pasids(struct pci_dev *pdev)
+ 	return (1 << FIELD_GET(PCI_PASID_CAP_WIDTH, supported));
+ }
+ EXPORT_SYMBOL_GPL(pci_max_pasids);
 +
- 	mutex_lock(&device->dev_set->lock);
--	ret = device->ops->attach_ioas(device, &attach.pt_id);
-+	if (attach.flags & VFIO_DEVICE_ATTACH_PASID)
-+		ret = device->ops->pasid_attach_ioas(device, attach.pasid,
-+						     &attach.pt_id);
-+	else
-+		ret = device->ops->attach_ioas(device, &attach.pt_id);
- 	if (ret)
- 		goto out_unlock;
- 
-@@ -198,20 +225,46 @@ int vfio_df_ioctl_attach_pt(struct vfio_device_file *df,
- int vfio_df_ioctl_detach_pt(struct vfio_device_file *df,
- 			    struct vfio_device_detach_iommufd_pt __user *arg)
- {
--	struct vfio_device *device = df->device;
- 	struct vfio_device_detach_iommufd_pt detach;
--	unsigned long minsz;
-+	struct vfio_device *device = df->device;
-+	unsigned long minsz, xend = 0;
- 
- 	minsz = offsetofend(struct vfio_device_detach_iommufd_pt, flags);
- 
- 	if (copy_from_user(&detach, arg, minsz))
- 		return -EFAULT;
- 
--	if (detach.argsz < minsz || detach.flags)
-+	if (detach.argsz < minsz)
++/**
++ * pci_pasid_ctrl_status - Check the PASID status
++ * @pdev: PCI device structure
++ *
++ * Returns a negative value when no PASID capability is present.
++ * Otherwise the value of the control register is returned.
++ * Status reported are:
++ *
++ * PCI_PASID_CTRL_ENABLE - PASID enabled
++ * PCI_PASID_CTRL_EXEC - Execute permission enabled
++ * PCI_PASID_CTRL_PRIV - Privileged mode enabled
++ */
++int pci_pasid_ctrl_status(struct pci_dev *pdev)
++{
++	int pasid;
++	u16 ctrl;
++
++	if (pdev->is_virtfn)
++		pdev = pci_physfn(pdev);
++
++	pasid = pdev->pasid_cap;
++	if (!pasid)
 +		return -EINVAL;
 +
-+	if (detach.flags & (~VFIO_DEVICE_DETACH_PASID))
- 		return -EINVAL;
++	pci_read_config_word(pdev, pasid + PCI_PASID_CTRL, &ctrl);
++
++	ctrl &= PCI_PASID_CTRL_ENABLE | PCI_PASID_CTRL_EXEC |
++		PCI_PASID_CTRL_PRIV;
++
++	return ctrl;
++}
++EXPORT_SYMBOL_GPL(pci_pasid_ctrl_status);
+ #endif /* CONFIG_PCI_PASID */
+diff --git a/include/linux/pci-ats.h b/include/linux/pci-ats.h
+index 0e8b74e63767..f4e1d2010287 100644
+--- a/include/linux/pci-ats.h
++++ b/include/linux/pci-ats.h
+@@ -42,6 +42,7 @@ int pci_enable_pasid(struct pci_dev *pdev, int features);
+ void pci_disable_pasid(struct pci_dev *pdev);
+ int pci_pasid_features(struct pci_dev *pdev);
+ int pci_max_pasids(struct pci_dev *pdev);
++int pci_pasid_ctrl_status(struct pci_dev *pdev);
+ #else /* CONFIG_PCI_PASID */
+ static inline int pci_enable_pasid(struct pci_dev *pdev, int features)
+ { return -EINVAL; }
+@@ -50,6 +51,8 @@ static inline int pci_pasid_features(struct pci_dev *pdev)
+ { return -EINVAL; }
+ static inline int pci_max_pasids(struct pci_dev *pdev)
+ { return -EINVAL; }
++static inline int pci_pasid_ctrl_status(struct pci_dev *pdev)
++{ return -EINVAL; }
+ #endif /* CONFIG_PCI_PASID */
  
-+	if (detach.flags & VFIO_DEVICE_DETACH_PASID)
-+		xend = offsetofend(struct vfio_device_detach_iommufd_pt, pasid);
-+
-+	/*
-+	 * xend may be equal to minsz if a flag is defined for reusing a
-+	 * reserved field or a special usage of an existing field.
-+	 */
-+	if (xend > minsz) {
-+		if (detach.argsz < xend)
-+			return -EINVAL;
-+
-+		if (copy_from_user((void *)&detach + minsz,
-+				   (void __user *)arg + minsz, xend - minsz))
-+			return -EFAULT;
-+	}
-+
-+	if ((detach.flags & VFIO_DEVICE_DETACH_PASID) &&
-+	    !device->ops->pasid_detach_ioas)
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&device->dev_set->lock);
--	device->ops->detach_ioas(device);
-+	if (detach.flags & VFIO_DEVICE_DETACH_PASID)
-+		device->ops->pasid_detach_ioas(device, detach.pasid);
-+	else
-+		device->ops->detach_ioas(device);
- 	mutex_unlock(&device->dev_set->lock);
- 
- 	return 0;
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index c8dbf8219c4f..6899da70b929 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -931,29 +931,34 @@ struct vfio_device_bind_iommufd {
-  * VFIO_DEVICE_ATTACH_IOMMUFD_PT - _IOW(VFIO_TYPE, VFIO_BASE + 19,
-  *					struct vfio_device_attach_iommufd_pt)
-  * @argsz:	User filled size of this data.
-- * @flags:	Must be 0.
-+ * @flags:	Flags for attach.
-  * @pt_id:	Input the target id which can represent an ioas or a hwpt
-  *		allocated via iommufd subsystem.
-  *		Output the input ioas id or the attached hwpt id which could
-  *		be the specified hwpt itself or a hwpt automatically created
-  *		for the specified ioas by kernel during the attachment.
-+ * @pasid:	The pasid to be attached, only meaningful when
-+ *		VFIO_DEVICE_ATTACH_PASID is set in @flags
+ #endif /* LINUX_PCI_ATS_H */
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index cc1b94f43538..e5709502d8e4 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -547,9 +547,17 @@ enum iommu_hw_info_type {
+  *                                   IOMMU_HWPT_GET_DIRTY_BITMAP
+  *                                   IOMMU_HWPT_SET_DIRTY_TRACKING
   *
-  * Associate the device with an address space within the bound iommufd.
-  * Undo by VFIO_DEVICE_DETACH_IOMMUFD_PT or device fd close.  This is only
-  * allowed on cdev fds.
-  *
-- * If a vfio device is currently attached to a valid hw_pagetable, without doing
-- * a VFIO_DEVICE_DETACH_IOMMUFD_PT, a second VFIO_DEVICE_ATTACH_IOMMUFD_PT ioctl
-- * passing in another hw_pagetable (hwpt) id is allowed. This action, also known
-- * as a hw_pagetable replacement, will replace the device's currently attached
-- * hw_pagetable with a new hw_pagetable corresponding to the given pt_id.
-+ * If a vfio device or a pasid of this device is currently attached to a valid
-+ * hw_pagetable (hwpt), without doing a VFIO_DEVICE_DETACH_IOMMUFD_PT, a second
-+ * VFIO_DEVICE_ATTACH_IOMMUFD_PT ioctl passing in another hwpt id is allowed.
-+ * This action, also known as a hw_pagetable replacement, will replace the
-+ * currently attached hwpt of the device or the pasid of this device with a new
-+ * hwpt corresponding to the given pt_id.
-  *
-  * Return: 0 on success, -errno on failure.
++ * @IOMMU_HW_CAP_PASID_EXEC: Execute Permission Supported, user ignores it
++ *                           when the struct iommu_hw_info::out_max_pasid_log2
++ *                           is zero.
++ * @IOMMU_HW_CAP_PASID_PRIV: Privileged Mode Supported, user ignores it
++ *                           when the struct iommu_hw_info::out_max_pasid_log2
++ *                           is zero.
   */
- struct vfio_device_attach_iommufd_pt {
- 	__u32	argsz;
- 	__u32	flags;
-+#define VFIO_DEVICE_ATTACH_PASID	(1 << 0)
- 	__u32	pt_id;
-+	__u32	pasid;
+ enum iommufd_hw_capabilities {
+ 	IOMMU_HW_CAP_DIRTY_TRACKING = 1 << 0,
++	IOMMU_HW_CAP_PCI_PASID_EXEC = 1 << 1,
++	IOMMU_HW_CAP_PCI_PASID_PRIV = 1 << 2,
  };
  
- #define VFIO_DEVICE_ATTACH_IOMMUFD_PT		_IO(VFIO_TYPE, VFIO_BASE + 19)
-@@ -962,17 +967,21 @@ struct vfio_device_attach_iommufd_pt {
-  * VFIO_DEVICE_DETACH_IOMMUFD_PT - _IOW(VFIO_TYPE, VFIO_BASE + 20,
-  *					struct vfio_device_detach_iommufd_pt)
-  * @argsz:	User filled size of this data.
-- * @flags:	Must be 0.
-+ * @flags:	Flags for detach.
-+ * @pasid:	The pasid to be detached, only meaningful when
-+ *		VFIO_DEVICE_DETACH_PASID is set in @flags
+ /**
+@@ -565,6 +573,9 @@ enum iommufd_hw_capabilities {
+  *                 iommu_hw_info_type.
+  * @out_capabilities: Output the generic iommu capability info type as defined
+  *                    in the enum iommu_hw_capabilities.
++ * @out_max_pasid_log2: Output the width of PASIDs. 0 means no PASID support.
++ *                      PCI devices turn to out_capabilities to check if the
++ *                      specific capabilities is supported or not.
+  * @__reserved: Must be 0
   *
-- * Remove the association of the device and its current associated address
-- * space.  After it, the device should be in a blocking DMA state.  This is only
-- * allowed on cdev fds.
-+ * Remove the association of the device or a pasid of the device and its current
-+ * associated address space.  After it, the device or the pasid should be in a
-+ * blocking DMA state.  This is only allowed on cdev fds.
-  *
-  * Return: 0 on success, -errno on failure.
-  */
- struct vfio_device_detach_iommufd_pt {
- 	__u32	argsz;
- 	__u32	flags;
-+#define VFIO_DEVICE_DETACH_PASID	(1 << 0)
-+	__u32	pasid;
+  * Query an iommu type specific hardware information data from an iommu behind
+@@ -588,7 +599,8 @@ struct iommu_hw_info {
+ 	__u32 data_len;
+ 	__aligned_u64 data_uptr;
+ 	__u32 out_data_type;
+-	__u32 __reserved;
++	__u8 out_max_pasid_log2;
++	__u8 __reserved[3];
+ 	__aligned_u64 out_capabilities;
  };
- 
- #define VFIO_DEVICE_DETACH_IOMMUFD_PT		_IO(VFIO_TYPE, VFIO_BASE + 20)
+ #define IOMMU_GET_HW_INFO _IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_HW_INFO)
 -- 
 2.34.1
 
