@@ -1,54 +1,54 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE6E18A6A8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F26318A6AE;
 	Mon, 11 Nov 2024 10:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731320893; cv=none; b=VetdastXtNaY3VNdOKkrTq/9yLjqeFreeQWG/rEca7fIHLD8axs9eUCzUd+pzaBwRA8oz66iJjzxxRUDKN/+rsQXvk+Sm8GsvQN7FegoTCaOCWCm2ojH29ByN9hKM9uWA2BsBtDrAOScbfpdvlH2dW9Odv6ssnrdCIN2ZBUJ7ZI=
+	t=1731320896; cv=none; b=ugLI/uX9MaByzW6E3XO173UPl1QhUzweO13zqcCULmk6md4R7rHAgIzzyhBgAWrHiDRGz+iTzcTg4PcmUL1CSfhKSkEX80Y/J1TefOiv7b+bMoAAB3QE137R7Z0JLL0dE4RMsSC5wWZPD+S1NJVAJ3Te2hUZ6WrQz+IPiDlAfU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731320893; c=relaxed/simple;
-	bh=p7dFqWihnN+QLL8mvTGL9gu/pqIIO0i8Bjb0XT62xZU=;
+	s=arc-20240116; t=1731320896; c=relaxed/simple;
+	bh=7dO0arnWA1VJCyyAIjlCytHy6vOCA1OXvPvcwF8Dzm8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+0asWM1BM6RfCi8YlTN8JEAtVSrgRhaIDJQTAEfsCkJ79v9sgUC38CEY3yVQizV8qKCThWTY00LoJOYTGjAK3+zmnnGaArtwm4tZHyebx+PaeyqiiUYJjUHefFQXtcGhGU3FTzQAqmEI5d2LMRhz18hdq5qncmtT4Oplt50ytY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=M3kPzYYj; arc=none smtp.client-ip=52.95.49.90
+	 MIME-Version:Content-Type; b=EUq/uYoFalYpmEyHrf7r07dpbF2vGeQCwz0QjQhEuEl0Rqw8MykJxS0zfzby3H2izZpaJUE1OeGMhEZAvE7X5dN3LRYZ25kQ/WfZMrBYuE68y0dYZOd1THbDnIeJck8Q5z5AQQFldx/Kd9WvP2+Y1KWJRs81kGLMVi0x0ifWOug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=bZBQvS5+; arc=none smtp.client-ip=72.21.196.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="M3kPzYYj"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="bZBQvS5+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731320892; x=1762856892;
+  t=1731320891; x=1762856891;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6Znt9LySH4ZA9vBeKigC6MzlcO4GT24cmcWxN+qM4QI=;
-  b=M3kPzYYjP75pF39phwOT+Pg4x50lfI+ISBL4J6Wi/QywPkCwXQeTu3kE
-   l2HpPG+fW31OwwThWspIfYZM+vu3+El1UdhiBwsZ4xQsU5t7oaKBnlWju
-   qezvDPLKvsghx4K7hqbyQEJcFGNBTDOUuGhBePMLAGFAUNRZGHU9dx2Oc
-   E=;
+  bh=BGbwD6a3e8Ydvdk8hk6S240bw0jqNpcW0bpsM765uBY=;
+  b=bZBQvS5+dVvCiPPMg83oH3A1Z2f20IGdVVnvt+j+7vYc3gdX126KYcJi
+   Tn/uH3fDQlH0AbCtG7JZ5WdDBKiPqOPGjLTdOLWQuTbdB/Scv4oVeEikI
+   3NTQKuJ9winX3ahKH9gdx4icOe4BwfCKd97BNDRt+lHon/fLfHeHi+EZ0
+   k=;
 X-IronPort-AV: E=Sophos;i="6.12,144,1728950400"; 
-   d="scan'208";a="447786885"
+   d="scan'208";a="441674374"
 Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 10:28:09 +0000
-Received: from EX19MTAUEB001.ant.amazon.com [10.0.29.78:23533]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.51.63:2525] with esmtp (Farcaster)
- id 288f9a74-d88c-4846-9043-07a72c6cd009; Mon, 11 Nov 2024 10:28:08 +0000 (UTC)
-X-Farcaster-Flow-ID: 288f9a74-d88c-4846-9043-07a72c6cd009
-Received: from EX19D008UEA004.ant.amazon.com (10.252.134.191) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 10:28:09 +0000
+Received: from EX19MTAUEA002.ant.amazon.com [10.0.29.78:23109]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.90.76:2525] with esmtp (Farcaster)
+ id 7b9b6d70-a9ff-45a1-9d42-40b3e8884867; Mon, 11 Nov 2024 10:28:08 +0000 (UTC)
+X-Farcaster-Flow-ID: 7b9b6d70-a9ff-45a1-9d42-40b3e8884867
+Received: from EX19D008UEA002.ant.amazon.com (10.252.134.125) by
+ EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 10:28:05 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (10.250.64.231) by
- EX19D008UEA004.ant.amazon.com (10.252.134.191) with Microsoft SMTP Server
+ Mon, 11 Nov 2024 10:28:08 +0000
+Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
+ EX19D008UEA002.ant.amazon.com (10.252.134.125) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 10:28:04 +0000
+ Mon, 11 Nov 2024 10:28:08 +0000
 Received: from email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.228) with Microsoft SMTP
+ (10.124.125.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 10:28:04 +0000
+ 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 10:28:08 +0000
 Received: from dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com (dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com [10.253.74.38])
-	by email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com (Postfix) with ESMTPS id E159AA04F9;
-	Mon, 11 Nov 2024 10:28:02 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com (Postfix) with ESMTPS id 04A25A065E;
+	Mon, 11 Nov 2024 10:28:06 +0000 (UTC)
 From: Ivan Orlov <iorlov@amazon.com>
 To: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
 	<pbonzini@redhat.com>, <seanjc@google.com>, <shuah@kernel.org>,
@@ -56,9 +56,9 @@ To: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
 CC: Ivan Orlov <iorlov@amazon.com>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<x86@kernel.org>, <pdurrant@amazon.co.uk>, <dwmw@amazon.co.uk>
-Subject: [PATCH v2 2/6] KVM: x86: Add emulation status for vectoring during MMIO
-Date: Mon, 11 Nov 2024 10:27:45 +0000
-Message-ID: <20241111102749.82761-3-iorlov@amazon.com>
+Subject: [PATCH v2 5/6] selftests: KVM: extract lidt into helper function
+Date: Mon, 11 Nov 2024 10:27:48 +0000
+Message-ID: <20241111102749.82761-6-iorlov@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20241111102749.82761-1-iorlov@amazon.com>
 References: <20241111102749.82761-1-iorlov@amazon.com>
@@ -71,51 +71,62 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Add emulation status for vectoring error due to MMIO. Such a situation
-can occur if guest sets the IDT descriptor base to point to MMIO region,
-and triggers an exception after that.
-
-Exit to userspace with event delivery error when MMIO happens during
-vectoring.
+Implement a function for setting the IDT descriptor from the guest
+code. Replace the existing lidt occurrences with calls to this function
+as `lidt` is used in multiple places.
 
 Signed-off-by: Ivan Orlov <iorlov@amazon.com>
 ---
 V1 -> V2:
 - This patch wasn't included in V1.
 
- arch/x86/kvm/kvm_emulate.h | 2 ++
- arch/x86/kvm/x86.c         | 5 +++++
- 2 files changed, 7 insertions(+)
+ tools/testing/selftests/kvm/include/x86_64/processor.h | 5 +++++
+ tools/testing/selftests/kvm/set_memory_region_test.c   | 2 +-
+ tools/testing/selftests/kvm/x86_64/sev_smoke_test.c    | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 55a18e2f2dcd..f856bc979bdb 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -88,6 +88,8 @@ struct x86_instruction_info {
- #define X86EMUL_CMPXCHG_FAILED  4 /* cmpxchg did not see expected value */
- #define X86EMUL_IO_NEEDED       5 /* IO is needed to complete emulation */
- #define X86EMUL_INTERCEPTED     6 /* Intercepted by nested VMCB/VMCS */
-+/* Vectroing requires MMIO and can't be emulated */
-+#define X86EMUL_UNHANDLEABLE_VECTORING_IO	7
+diff --git a/tools/testing/selftests/kvm/include/x86_64/processor.h b/tools/testing/selftests/kvm/include/x86_64/processor.h
+index e247f99e0473..1a60c99b5833 100644
+--- a/tools/testing/selftests/kvm/include/x86_64/processor.h
++++ b/tools/testing/selftests/kvm/include/x86_64/processor.h
+@@ -571,6 +571,11 @@ static inline void set_cr4(uint64_t val)
+ 	__asm__ __volatile__("mov %0, %%cr4" : : "r" (val) : "memory");
+ }
  
- /* x86-specific emulation flags */
- #define X86EMUL_F_WRITE			BIT(0)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e338d583f48f..4ba371040685 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9122,6 +9122,11 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 		if (r == X86EMUL_RETRY_INSTR || r == X86EMUL_PROPAGATE_FAULT)
- 			return 1;
- 
-+		if (r == X86EMUL_UNHANDLEABLE_VECTORING_IO) {
-+			kvm_prepare_event_vectoring_exit(vcpu, cr2_or_gpa);
-+			return 0;
-+		}
++static inline void set_idt(const struct desc_ptr *idt_desc)
++{
++	__asm__ __volatile__("lidt %0"::"m"(*idt_desc));
++}
 +
- 		WARN_ON_ONCE(r != X86EMUL_UNHANDLEABLE);
- 		return handle_emulation_failure(vcpu, emulation_type);
- 	}
+ static inline u64 xgetbv(u32 index)
+ {
+ 	u32 eax, edx;
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index a8267628e9ed..a1c53cc854a5 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -235,7 +235,7 @@ static void guest_code_delete_memory_region(void)
+ 	 * in the guest will never succeed, and so isn't an option.
+ 	 */
+ 	memset(&idt, 0, sizeof(idt));
+-	__asm__ __volatile__("lidt %0" :: "m"(idt));
++	set_idt(&idt);
+ 
+ 	GUEST_SYNC(0);
+ 
+diff --git a/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c b/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
+index 2e9197eb1652..8c33e02a3183 100644
+--- a/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86_64/sev_smoke_test.c
+@@ -166,7 +166,7 @@ static void guest_shutdown_code(void)
+ 
+ 	/* Clobber the IDT so that #UD is guaranteed to trigger SHUTDOWN. */
+ 	memset(&idt, 0, sizeof(idt));
+-	__asm__ __volatile__("lidt %0" :: "m"(idt));
++	set_idt(&idt);
+ 
+ 	__asm__ __volatile__("ud2");
+ }
 -- 
 2.43.0
 
