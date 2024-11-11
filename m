@@ -1,54 +1,54 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86761946CF;
-	Mon, 11 Nov 2024 10:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC7E1974EA;
+	Mon, 11 Nov 2024 10:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731320896; cv=none; b=dz1JGcWUDm8ro4J2m0gMHs0BjrZP9m9NNFrSFvniteQMFi1ND7c5Q4VdWC8BmsdAQ2bysnZZY9Jotek/XfF+VydLPWqeo2t2ZChUmnaytY63bzFh4UAUM55x4rsoWXuTdzAluwUC2+8cw1ilmS+KLJ73oqJikZhHVKNsZO7mIFM=
+	t=1731320897; cv=none; b=GRhd7SDwu/8DL4xvVa207eANVCZI7nJgPEUcYHpQFu6/qdSQaFmzN9c8QMTL3lvhg0D89NmOu/ZK6pSXJFxtEY5w07MgcGzXD7/md6xugrYIUtZSE1BkfBo9frKb4FMejzcOHmdMvdc03WSoy2c+p9xfDVYL84cVLEgd9GrlvBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731320896; c=relaxed/simple;
-	bh=ld2htNMH0wPiH0yxfy3DynYM6vkDFeKlfvMRDP8V8sM=;
+	s=arc-20240116; t=1731320897; c=relaxed/simple;
+	bh=n797KENeKcPht39qvTxwH1l7x2mQGbvAXrsEkK9O7tc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WRFlDHmKc08ZD4PVqYluaRdbhSqDzddsZFQZyEUb68TnyL+fkls7M/wI7smYGdLBwy9UCpvYf/6y75bkjepF+kzRLO3YepoAxEAUC0t/VmEKZ79x/10Z767gu0smzc4OwaLtOUDzpY6xVCdtSV7yN1IxcuUSb1GRRwF1xL5Dxgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=V173LC85; arc=none smtp.client-ip=72.21.196.25
+	 MIME-Version:Content-Type; b=P70TDOOh96ZUnWDRNf+ZzulkWO9+RKTCSPxn2B2H/Gy4VaBaRZvZOkVSPqnN2WvMb2SgXwv6VQzfJspuhZW+NTTIhZWDCf7yjjRzTdH+8zgwh4NVm5thG00jDrXPWg3W3+NVetac+0iVDgpbXLdntrAQliqVLkHR5cCn4OsaFic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=u0sz+tHH; arc=none smtp.client-ip=99.78.197.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="V173LC85"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="u0sz+tHH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731320895; x=1762856895;
+  t=1731320896; x=1762856896;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ssZRDwUFYvqJoo1dkCRAk/I8OZ5DCMExWyKykGpw3fw=;
-  b=V173LC85Ld6MJ8D9Ry48jalfF5u2K2Ru0Tipdvh3jJqVsrbwbHMpuP5U
-   McJdN1QVe1AZQaxboGXnOyx1l+rYnT3jVuNrWKEFAqMAMeZNIj1Q9twl/
-   t4uza4QXrvo/WTYkhwitT1kIM6nQyxkjacfKrr5oZsSrhX1tk587DgRme
-   I=;
+  bh=jzdWoNEEE0WCR0PGgVygWDKm9UBymLpK5xCN/dEO6dw=;
+  b=u0sz+tHHc9tFvgGCUrAoP6Pv7qD/wFtJDYAspu71YI8DzXVr7cDIALzz
+   8OWcNg/PkFd1ACkfXQmGvzDaJk6igbVZBzS+iAKFh0koY8Z4nyiDpG+KN
+   vYCPFj8quAkRVsgqerYfo9K2LTr62OVUW7s9Rzc/h+/kIFyDIX/Kpf/ao
+   8=;
 X-IronPort-AV: E=Sophos;i="6.12,144,1728950400"; 
-   d="scan'208";a="441674387"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 10:28:14 +0000
-Received: from EX19MTAUEA002.ant.amazon.com [10.0.0.204:45389]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.26.144:2525] with esmtp (Farcaster)
- id c672870c-d482-4391-913e-d42e6c81d821; Mon, 11 Nov 2024 10:28:13 +0000 (UTC)
-X-Farcaster-Flow-ID: c672870c-d482-4391-913e-d42e6c81d821
+   d="scan'208";a="351182686"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 10:28:13 +0000
+Received: from EX19MTAUEA001.ant.amazon.com [10.0.0.204:10291]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.51.63:2525] with esmtp (Farcaster)
+ id f0e955ec-5ede-4893-9ec9-faaa533e2b5d; Mon, 11 Nov 2024 10:28:11 +0000 (UTC)
+X-Farcaster-Flow-ID: f0e955ec-5ede-4893-9ec9-faaa533e2b5d
 Received: from EX19D008UEA004.ant.amazon.com (10.252.134.191) by
- EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 10:28:08 +0000
-Received: from EX19MTAUWC002.ant.amazon.com (10.250.64.143) by
+ Mon, 11 Nov 2024 10:28:10 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (10.250.64.202) by
  EX19D008UEA004.ant.amazon.com (10.252.134.191) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 10:28:08 +0000
+ Mon, 11 Nov 2024 10:28:10 +0000
 Received: from email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com
- (10.25.36.210) by mail-relay.amazon.com (10.250.64.149) with Microsoft SMTP
+ (10.25.36.210) by mail-relay.amazon.com (10.250.64.203) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 10:28:07 +0000
+ 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 10:28:10 +0000
 Received: from dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com (dev-dsk-iorlov-1b-d2eae488.eu-west-1.amazon.com [10.253.74.38])
-	by email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com (Postfix) with ESMTPS id 9F7EBA04F9;
-	Mon, 11 Nov 2024 10:28:05 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1b-3ae3de11.us-east-1.amazon.com (Postfix) with ESMTPS id 5DF85A0227;
+	Mon, 11 Nov 2024 10:28:08 +0000 (UTC)
 From: Ivan Orlov <iorlov@amazon.com>
 To: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
 	<pbonzini@redhat.com>, <seanjc@google.com>, <shuah@kernel.org>,
@@ -56,9 +56,9 @@ To: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
 CC: Ivan Orlov <iorlov@amazon.com>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<x86@kernel.org>, <pdurrant@amazon.co.uk>, <dwmw@amazon.co.uk>
-Subject: [PATCH v2 4/6] KVM: SVM: Handle MMIO during vectroing error
-Date: Mon, 11 Nov 2024 10:27:47 +0000
-Message-ID: <20241111102749.82761-5-iorlov@amazon.com>
+Subject: [PATCH v2 6/6] selftests: KVM: Add test case for MMIO during vectoring
+Date: Mon, 11 Nov 2024 10:27:49 +0000
+Message-ID: <20241111102749.82761-7-iorlov@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20241111102749.82761-1-iorlov@amazon.com>
 References: <20241111102749.82761-1-iorlov@amazon.com>
@@ -71,43 +71,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Handle MMIO during vectoring error in check_emulate_instruction to
-prevent infinite loop on SVM and eliminate the difference in how the
-situation when the guest accesses MMIO during vectoring is handled on
-SVM and VMX.
+Extend the 'set_memory_region_test' with a test case which covers the
+MMIO during vectoring error handling. The test case
+
+1) Sets an IDT descriptor base to point to an MMIO address
+2) Generates a #GP in the guest
+3) Verifies that we got a correct exit reason and suberror code
+4) Verifies that we got a corrent reported GPA in internal.data[3]
+
+Also, add a definition of non-canonical address to processor.h
 
 Signed-off-by: Ivan Orlov <iorlov@amazon.com>
 ---
 V1 -> V2:
-- Detect the unhandleable vectoring error in svm_check_emulate_instruction
-instead of handling it in the common MMU code (which is specific for
-cached MMIO)
+- Get rid of pronouns, redundant comments and incorrect wording
+- Define noncanonical address in processor.h
+- Fix indentation and wrap lines at 80 columns
 
- arch/x86/kvm/svm/svm.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../selftests/kvm/include/x86_64/processor.h  |  2 +
+ .../selftests/kvm/set_memory_region_test.c    | 51 +++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index c1e29307826b..b69f0f98c576 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4797,9 +4797,16 @@ static void svm_enable_smi_window(struct kvm_vcpu *vcpu)
- static int svm_check_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
- 					 void *insn, int insn_len)
- {
--	bool smep, smap, is_user;
-+	bool smep, smap, is_user, is_vect;
- 	u64 error_code;
+diff --git a/tools/testing/selftests/kvm/include/x86_64/processor.h b/tools/testing/selftests/kvm/include/x86_64/processor.h
+index 1a60c99b5833..997df5003edb 100644
+--- a/tools/testing/selftests/kvm/include/x86_64/processor.h
++++ b/tools/testing/selftests/kvm/include/x86_64/processor.h
+@@ -1165,6 +1165,8 @@ void vm_install_exception_handler(struct kvm_vm *vm, int vector,
+ /* If a toddler were to say "abracadabra". */
+ #define KVM_EXCEPTION_MAGIC 0xabacadabaULL
  
-+	is_vect = to_svm(vcpu)->vmcb->control.exit_int_info &
-+		  SVM_EXITINTINFO_TYPE_MASK;
++#define NONCANONICAL 0xaaaaaaaaaaaaaaaaull
 +
-+	/* Emulation is not possible when MMIO happens during event vectoring. */
-+	if (kvm_is_emul_type_mmio(emul_type) && is_vect)
-+		return X86EMUL_UNHANDLEABLE_VECTORING_IO;
+ /*
+  * KVM selftest exception fixup uses registers to coordinate with the exception
+  * handler, versus the kernel's in-memory tables and KVM-Unit-Tests's in-memory
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index a1c53cc854a5..d65a9f20aa1a 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -553,6 +553,56 @@ static void test_add_overlapping_private_memory_regions(void)
+ 	close(memfd);
+ 	kvm_vm_free(vm);
+ }
 +
- 	/* Emulation is always possible when KVM has access to all guest state. */
- 	if (!sev_guest(vcpu->kvm))
- 		return X86EMUL_CONTINUE;
++static void guest_code_mmio_during_vectoring(void)
++{
++	const struct desc_ptr idt_desc = {
++		.address = MEM_REGION_GPA,
++		.size = 0xFFF,
++	};
++
++	set_idt(&idt_desc);
++
++	/* Generate a #GP by dereferencing a non-canonical address */
++	*((uint8_t *)NONCANONICAL) = 0x1;
++
++	GUEST_ASSERT(0);
++}
++
++/*
++ * This test points the IDT descriptor base to an MMIO address. It should cause
++ * a KVM internal error when an event occurs in the guest.
++ */
++static void test_mmio_during_vectoring(void)
++{
++	struct kvm_vcpu *vcpu;
++	struct kvm_run *run;
++	struct kvm_vm *vm;
++	u64 expected_gpa;
++
++	pr_info("Testing MMIO during vectoring error handling\n");
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code_mmio_during_vectoring);
++	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);
++
++	run = vcpu->run;
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_INTERNAL_ERROR);
++	TEST_ASSERT(run->internal.suberror == KVM_INTERNAL_ERROR_DELIVERY_EV,
++		    "Unexpected suberror = %d", vcpu->run->internal.suberror);
++	TEST_ASSERT(run->internal.ndata != 4, "Unexpected internal error data array size = %d",
++		    run->internal.ndata);
++
++	/* The reported GPA should be IDT base + offset of the GP vector */
++	expected_gpa = MEM_REGION_GPA + GP_VECTOR * sizeof(struct idt_entry);
++
++	TEST_ASSERT(run->internal.data[3] == expected_gpa,
++		    "Unexpected GPA = %llx (expected %lx)",
++		    vcpu->run->internal.data[3], expected_gpa);
++
++	kvm_vm_free(vm);
++}
+ #endif
+ 
+ int main(int argc, char *argv[])
+@@ -568,6 +618,7 @@ int main(int argc, char *argv[])
+ 	 * KVM_RUN fails with ENOEXEC or EFAULT.
+ 	 */
+ 	test_zero_memory_regions();
++	test_mmio_during_vectoring();
+ #endif
+ 
+ 	test_invalid_memory_region_flags();
 -- 
 2.43.0
 
