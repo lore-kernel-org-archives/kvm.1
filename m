@@ -1,39 +1,40 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0798F77;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7853615853B;
 	Mon, 11 Nov 2024 12:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731329678; cv=none; b=qIZ7j8Q3Zvo/tHdqI55NeKeC0wIFvEg7z7NaFsX+jIswNacY8dNNa8w7OoDNsMwVKVL6RNySgOoLaOiJXc1OuZuVQmGsTT/z9lpiSGOYvKbrRhk1l4+BBDGIC5j6ljRK05As1PTSBVwMCJZFPbSA2zUred1Dh4/eIDh4s4Q7HTs=
+	t=1731329678; cv=none; b=jLnuK1htfIjprsxY3/fs27yI81SeFNg06Mc/SCr2FzylImBcxZqIFjimqt1D59WIJ/skL5mxqg2FxbfsvrjSjRV60bsMTwlrXbyoXKGZ9cNj8pcojxHMexFFSg0SQMMH94zXMyoK5hfi4KellEpLf6APzf5gH8ZpUvD9WnO+CkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731329678; c=relaxed/simple;
-	bh=8ytttvrXBO0uc4kq8pwVGBvkkLqj5TLtL84oxCETWyM=;
-	h=Message-Id:Date:From:To:Cc:Subject; b=ZSi4Qe3acl/sLjre7R4fDojk8/6IU/lGoQODKhpzLRSV80qSaAuyoofbj9Ij4RfHW33JTWhN4gcfgTEWeYypASNXyzpISJOoh0UnIf0UpFnPnLjBsdIEQW7qLZOXWgczEXflvJeOgosQ7A7G91Xo6kIIWFXjRoq3av+AyVcNeqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=PA7kD+99; arc=none smtp.client-ip=90.155.92.199
+	bh=re7YlqIlSiYJgwFG46YU4SbL85meBq6Fe4HTgqcFdvk=;
+	h=Message-Id:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=QfKa9jnJsBihnKM9g8/LdOe71RERj6FmiNdbfcM7Qhai0vxcVuJKkIZoXuPPlbCBZNG+K5aqzSx62bAQmthfYrUXHa9LvatrGunvFFtbB+irSysoRtlMt7BwQnzFE5yIINix3d8rRUwzTmfDRb5FDlyiRQLkYgDGMPaZeoIGYzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ibVwk2A9; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="PA7kD+99"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ibVwk2A9"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Subject:Cc:To:From:Date:Message-Id:
-	Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=8ytttvrXBO0uc4kq8pwVGBvkkLqj5TLtL84oxCETWyM=; b=PA7kD+99Z5+YEOnVHluF7eGqYC
-	xnsFcKWN4mjniwvy7ZV06Z6R5MvfK9BmRQeuxxAc/et3ZUTcZh7R0n05DUHM4d+xfZ73hhpPhvr4G
-	Yu1wtrjADXSg2wDmeJ37jMGTV8vHwBuJCSigIL/KViXXecgrknhn8E8roycmw9YOZrMnlvXiAvzFp
-	SirUua05qUUpMCr2PA+VT5YaoKSljypnj7qHIXgiSsmqBmkUi3wFmtup3Pbm0WydDzdtMPP/RqM9E
-	kswkfUWc+gC/C88L/9rqDoGdd4064Nmcb/1J/xIHSDclmbi4Ca2F0kvICHNOIPK5B7leiwj7Sesav
-	m4OmG+BQ==;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
+	Subject:Cc:To:From:Date:Message-Id:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To;
+	bh=5G7tZh92XjzM00TzgErAKrW0ED3Ua0OvGoNXzUhcSY0=; b=ibVwk2A9uRdQ5Dm4vPQYhrvld0
+	L4VN0NGeWV0uHk24mDyhPoyF2y7YF6XhDybzQj/2zpEyqUgMYAv1KFMNpWCYayl+MLRsmBgNQkmSQ
+	Pa9OY6HyVG3Oh79AuiMtkomYkteCcvz6gEcVNPresdIqJpZYjJE1FVfFAgmFz3NH5JBqkEwjx1mX3
+	+E9gANxKibfLsdY0fXtEwOk3BBb9tKlxggcBepR5VFEHnitlfywbFbKQqRkd5YlUvHKvquzl4u4cK
+	KqDn8C+UOYarHprqt9AOxC2A0B3thkqtQa4axNRbob2iIFSxNOFEIEbA/qzD6D+SU0kb8gG1HR5Qz
+	3ejlvmIg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tATw9-0000000Cqjd-2bBN;
-	Mon, 11 Nov 2024 12:54:33 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tATwA-0000000Coer-207x;
+	Mon, 11 Nov 2024 12:54:34 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id C12A630042E; Mon, 11 Nov 2024 13:54:32 +0100 (CET)
-Message-Id: <20241111115935.796797988@infradead.org>
+	id E56AB3021DA; Mon, 11 Nov 2024 13:54:32 +0100 (CET)
+Message-Id: <20241111125219.033699387@infradead.org>
 User-Agent: quilt/0.65
-Date: Mon, 11 Nov 2024 12:59:35 +0100
+Date: Mon, 11 Nov 2024 12:59:44 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: seanjc@google.com,
  pbonzini@redhat.com,
@@ -42,38 +43,75 @@ To: seanjc@google.com,
 Cc: linux-kernel@vger.kernel.org,
  x86@kernel.org,
  kvm@vger.kernel.org,
- jthoughton@google.com
-Subject: [PATCH v2 00/12] x86/kvm/emulate: Avoid RET for FASTOPs
+ jthoughton@google.com,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH v2 09/12] x86/nospec: JMP_NOSPEC
+References: <20241111115935.796797988@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 
-Hi!
 
-At long last, a respin of these patches.
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/x86/include/asm/nospec-branch.h |   32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-The FASTOPs are special because they rely on RET to preserve CFLAGS, which is a
-problem with all the mitigation stuff. Also see things like: ba5ca5e5e6a1
-("x86/retpoline: Don't clobber RFLAGS during srso_safe_ret()").
-
-Rework FASTOPs to no longer use RET and side-step the problem of trying to make
-the various return thunks preserve CFLAGS for just this one case.
-
-There are two separate instances, test_cc() and fastop(). The first is
-basically a SETCC wrapper, which seems like a very complicated (and somewhat
-expensive) way to read FLAGS. Instead use the code we already have to emulate
-JCC to fully emulate the instruction.
-
-That then leaves fastop(), which when marked noinline is guaranteed to exist
-only once. As such, CALL+RET isn't needed, because we'll always be RETurning to
-the same location, as such replace with JMP+JMP.
-
-My plan is to take the objtool patches through tip/objtool/core, the nospec
-patches through tip/x86/core and either stick the fastop patches in that latter
-tree if the KVM folks agree, or they can merge the aforementioned two branches
-and then stick the patches on top, whatever works for people.
-
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -403,6 +403,17 @@ static inline void call_depth_return_thu
+ 	"call *%[thunk_target]\n",				\
+ 	X86_FEATURE_RETPOLINE_LFENCE)
+ 
++# define JMP_NOSPEC						\
++	ALTERNATIVE_2(						\
++	ANNOTATE_RETPOLINE_SAFE					\
++	"jmp *%[thunk_target]\n",				\
++	"jmp __x86_indirect_thunk_%V[thunk_target]\n",		\
++	X86_FEATURE_RETPOLINE,					\
++	"lfence;\n"						\
++	ANNOTATE_RETPOLINE_SAFE					\
++	"jmp *%[thunk_target]\n",				\
++	X86_FEATURE_RETPOLINE_LFENCE)
++
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ 
+ #else /* CONFIG_X86_32 */
+@@ -433,10 +444,31 @@ static inline void call_depth_return_thu
+ 	"call *%[thunk_target]\n",				\
+ 	X86_FEATURE_RETPOLINE_LFENCE)
+ 
++# define JMP_NOSPEC						\
++	ALTERNATIVE_2(						\
++	ANNOTATE_RETPOLINE_SAFE					\
++	"jmp *%[thunk_target]\n",				\
++	"       jmp    901f;\n"					\
++	"       .align 16\n"					\
++	"901:	call   903f;\n"					\
++	"902:	pause;\n"					\
++	"       lfence;\n"					\
++	"       jmp    902b;\n"					\
++	"       .align 16\n"					\
++	"903:	lea    4(%%esp), %%esp;\n"			\
++	"       pushl  %[thunk_target];\n"			\
++	"       ret;\n",					\
++	X86_FEATURE_RETPOLINE,					\
++	"lfence;\n"						\
++	ANNOTATE_RETPOLINE_SAFE					\
++	"jmp *%[thunk_target]\n",				\
++	X86_FEATURE_RETPOLINE_LFENCE)
++
+ # define THUNK_TARGET(addr) [thunk_target] "rm" (addr)
+ #endif
+ #else /* No retpoline for C / inline asm */
+ # define CALL_NOSPEC "call *%[thunk_target]\n"
++# define JMP_NOSPEC "jmp *%[thunk_target]\n"
+ # define THUNK_TARGET(addr) [thunk_target] "rm" (addr)
+ #endif
+ 
 
 
