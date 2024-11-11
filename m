@@ -1,40 +1,40 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A119CC20;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064DF19CCEC;
 	Mon, 11 Nov 2024 12:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731329679; cv=none; b=dav2UBF9ZUgDEqs8DzVOSyEHDm4ycGUX/5dDduwRz+UTWlFS2817GC/o50xL3XUKrVO8pq+7uwvY2i5BRjV9WCIY/XLftF9cqX9FSODGF+livEGlxGJc5WQPR7PZynFvE6MjBHQRBjVOY+QP02RPShiOtBJOxxlStut6KxqbsJ0=
+	t=1731329678; cv=none; b=gHdeLoGtL2ejGdNS7Y0L/UjQNjaMZXj1cWfZQ0I74pOz3WJL44qqTYC60eyUA4OTHm+te3/jav39EVeFhWERNl1ARR8MfJeIUgu10jAVmlUPx4t6qI4qqqmz538ClUbohEOmzaf0/Ttqk3Fu/74Mti02fwZCKYjsMHcTZvU4qBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731329679; c=relaxed/simple;
-	bh=kDi+TVCXm76xbQAD1/onHdkrODKXEEtiHXcBLawYGW4=;
+	s=arc-20240116; t=1731329678; c=relaxed/simple;
+	bh=teh3Enru7lZzQgzh8lrSHN3JIulND/XbK060Y3FnIJ4=;
 	h=Message-Id:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=pjaoi/11X1/zt0OCW0idZmgOUPV9OBXcqRUrriYRzp8I8Y32fEw9i5UsjHaLbUL1xk27uNpDEcbkPoGzz7jDHdZkAbn1jJD6lQ40Xpj7DkwS9YfbbNWEDdwTuSNlK09Kt/NI6yOQ8+QuAeKKz5I5RBAucqzBoClK2Ii87tOSJe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WoxR2q26; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type; b=sN0LuRJ4TFlwMMLvEjtXHRA2KFz7louEMxakLZ0YVALRMko8f9oiy291Rezq1pT5YOpk8tBlyOSvM69rmRIJnz5ieTHE7sxjKSAC/zZp4h/zZWauFbdokkIPuSdBMLhgrJ+eNQBRBtMPM0U5dNvNTU3ANzEQ+AFlh9CGYWD4T+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tCoslt4o; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WoxR2q26"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tCoslt4o"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-Id:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=cKtSfZ5sWaSTj7tZINYGDLIwyP/HVC5Nz5I81xWPCwk=; b=WoxR2q26i+JGKuI+u/OTnBS/As
-	fN2FnAawEqX+BeWD0xU8yoKIHkTbWmmIgJNS0w0wfaX+hAMsSCpueVLcPkHDCLSCBTY7T9lzNugWl
-	yBNCYhG9B6gpLKORP0MAw4J2cByVteC6b1QeZ6xT7/ZPP//bDHr16bWYcsEnoGHIx7lE+dxIqBU9h
-	y6xnub51UBoGZ67ajic4ja9gVG3eRS1IUqNKXFDyhAu35eRydrLEkgoOl+ndQdKPzgeqpvtHvwlXX
-	tBkjjrwbbbhug7Ix6u0q1XTf46MXqCT+bq+MUwAn2RqIr8heZZesK3QEp7zyRPyG+E0amY/eO4AcE
-	h5kq3Z3A==;
+	bh=Jgweoy9v1ry+vJ+0xQvkdC/DCJR/HfQjV7GgwvonHBA=; b=tCoslt4oQvJBkKyqO2AKiyeXgM
+	iCWODgLz3ZeKlKH/Toidjq+Tkfa5pe0ljO6URG9/rjg7c8XayO0akN7FWeVKUQgwGWXo6eKdCIH0C
+	wGurOUbm5cNKepwIFtb1U3f/ivU9biYpUSejYADugUan+BlPT49uFTsTvYJAyGrMpl/z1pvhc1XQp
+	3AcCeJsKbCHfrFl7+ZTsqYokSji7jETIUUANDT3eCYM09yYQVnWRYx/+mnZtIZsL/3wCCuADmXFFR
+	9WCLpPvsBhAYbGSuI2W6ee5HVUJxa0wXxrDnIfOOeoi/Gon9EJilORKV+5Y+ZvCbucN6pSxajFwKG
+	sq0tRYLQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tATwA-0000000Coet-23KF;
+	id 1tATwA-0000000Coep-1uVM;
 	Mon, 11 Nov 2024 12:54:34 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id F102C302795; Mon, 11 Nov 2024 13:54:32 +0100 (CET)
-Message-Id: <20241111125219.361243118@infradead.org>
+	id DDA8330122C; Mon, 11 Nov 2024 13:54:32 +0100 (CET)
+Message-Id: <20241111125218.788965667@infradead.org>
 User-Agent: quilt/0.65
-Date: Mon, 11 Nov 2024 12:59:47 +0100
+Date: Mon, 11 Nov 2024 12:59:42 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: seanjc@google.com,
  pbonzini@redhat.com,
@@ -45,7 +45,7 @@ Cc: linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org,
  jthoughton@google.com,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH v2 12/12] x86/kvm/emulate: Avoid RET for fastops
+Subject: [PATCH v2 07/12] objtool: Convert ANNOTATE_INTRA_FUNCTION_CALLS to ANNOTATE
 References: <20241111115935.796797988@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -55,122 +55,225 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Since there is only a single fastop() function, convert the FASTOP
-stuff from CALL_NOSPEC+RET to JMP_NOSPEC+JMP, avoiding the return
-thunks and all that jazz.
-
-Specifically FASTOPs rely on the return thunk to preserve EFLAGS,
-which not all of them can trivially do (call depth tracing suffers
-here).
-
-Objtool strenuously complains about this:
-
- - indirect call without a .rodata, fails to determine JUMP_TABLE,
-   annotate
- - fastop functions fall through, exception
- - unreachable instruction after fastop_return, save/restore
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kvm/emulate.c              |   20 +++++++++++++++-----
- include/linux/objtool_types.h       |    1 +
- tools/include/linux/objtool_types.h |    1 +
- tools/objtool/check.c               |   11 ++++++++++-
- 4 files changed, 27 insertions(+), 6 deletions(-)
+ include/linux/objtool.h             |   16 ++----
+ include/linux/objtool_types.h       |    1 
+ tools/include/linux/objtool_types.h |    1 
+ tools/objtool/check.c               |   96 ++++++++++++++----------------------
+ 4 files changed, 47 insertions(+), 67 deletions(-)
 
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -285,8 +285,8 @@ static void invalidate_registers(struct
-  * different operand sizes can be reached by calculation, rather than a jump
-  * table (which would be bigger than the code).
-  *
-- * The 16 byte alignment, considering 5 bytes for the RET thunk, 3 for ENDBR
-- * and 1 for the straight line speculation INT3, leaves 7 bytes for the
-+ * The 16 byte alignment, considering 5 bytes for the JMP, 4 for ENDBR
-+ * and 1 for the straight line speculation INT3, leaves 6 bytes for the
-  * body of the function.  Currently none is larger than 4.
-  */
- static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop);
-@@ -304,7 +304,7 @@ static int fastop(struct x86_emulate_ctx
- 	__FOP_FUNC(#name)
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -66,16 +66,6 @@
+ #else /* __ASSEMBLY__ */
  
- #define __FOP_RET(name) \
--	"11: " ASM_RET \
-+	"11: jmp fastop_return; int3 \n\t" \
- 	".size " name ", .-" name "\n\t"
+ /*
+- * This macro indicates that the following intra-function call is valid.
+- * Any non-annotated intra-function call will cause objtool to issue a warning.
+- */
+-#define ANNOTATE_INTRA_FUNCTION_CALL				\
+-	999:							\
+-	.pushsection .discard.intra_function_calls;		\
+-	.long 999b;						\
+-	.popsection;
+-
+-/*
+  * In asm, there are two kinds of code: normal C-type callable functions and
+  * the rest.  The normal callable functions can be called by other code, and
+  * don't do anything unusual with the stack.  Such normal callable functions
+@@ -152,6 +142,12 @@
  
- #define FOP_RET(name) \
-@@ -5071,14 +5071,24 @@ static void fetch_possible_mmx_operand(s
- 		kvm_read_mmx_reg(op->addr.mm, &op->mm_val);
- }
+ #define ANNOTATE_NOENDBR	ANNOTATE type=ANNOTYPE_NOENDBR
  
--static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
 +/*
-+ * All the FASTOP magic above relies on there being *one* instance of this
-+ * so it can JMP back, avoiding RET and it's various thunks.
++ * This macro indicates that the following intra-function call is valid.
++ * Any non-annotated intra-function call will cause objtool to issue a warning.
 + */
-+static noinline int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
- {
- 	ulong flags = (ctxt->eflags & EFLAGS_MASK) | X86_EFLAGS_IF;
++#define ANNOTATE_INTRA_FUNCTION_CALL ANNOTATE type=ANNOTYPE_INTRA_FUNCTION_CALLS
++
+ #endif /* __ASSEMBLY__ */
  
- 	if (!(ctxt->d & ByteOp))
- 		fop += __ffs(ctxt->dst.bytes) * FASTOP_SIZE;
- 
--	asm("push %[flags]; popf; " CALL_NOSPEC " ; pushf; pop %[flags]\n"
-+	asm("push %[flags]; popf \n\t"
-+	    UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
-+	    ASM_ANNOTATE(ANNOTYPE_JUMP_TABLE)
-+	    JMP_NOSPEC
-+	    "fastop_return: \n\t"
-+	    UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
-+	    "pushf; pop %[flags]\n"
- 	    : "+a"(ctxt->dst.val), "+d"(ctxt->src.val), [flags]"+D"(flags),
- 	      [thunk_target]"+S"(fop), ASM_CALL_CONSTRAINT
- 	    : "c"(ctxt->src2.val));
+ #else /* !CONFIG_OBJTOOL */
 --- a/include/linux/objtool_types.h
 +++ b/include/linux/objtool_types.h
-@@ -64,5 +64,6 @@ struct unwind_hint {
+@@ -63,5 +63,6 @@ struct unwind_hint {
+ #define ANNOTYPE_INSTR_END		4
  #define ANNOTYPE_UNRET_BEGIN		5
  #define ANNOTYPE_IGNORE_ALTS		6
- #define ANNOTYPE_INTRA_FUNCTION_CALLS	7
-+#define ANNOTYPE_JUMP_TABLE		8
++#define ANNOTYPE_INTRA_FUNCTION_CALLS	7
  
  #endif /* _LINUX_OBJTOOL_TYPES_H */
 --- a/tools/include/linux/objtool_types.h
 +++ b/tools/include/linux/objtool_types.h
-@@ -64,5 +64,6 @@ struct unwind_hint {
+@@ -63,5 +63,6 @@ struct unwind_hint {
+ #define ANNOTYPE_INSTR_END		4
  #define ANNOTYPE_UNRET_BEGIN		5
  #define ANNOTYPE_IGNORE_ALTS		6
- #define ANNOTYPE_INTRA_FUNCTION_CALLS	7
-+#define ANNOTYPE_JUMP_TABLE		8
++#define ANNOTYPE_INTRA_FUNCTION_CALLS	7
  
  #endif /* _LINUX_OBJTOOL_TYPES_H */
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -2386,6 +2386,14 @@ static int __annotate_late(struct objtoo
- 		insn->unret = 1;
- 		break;
+@@ -2274,7 +2274,8 @@ static int read_unwind_hints(struct objt
+ 	return 0;
+ }
  
-+	/*
-+	 * Must be after add_jump_table(); for it doesn't set a sane
-+	 * _jump_table value.
-+	 */
-+	case ANNOTYPE_JUMP_TABLE:
-+		insn->_jump_table = (void *)1;
-+		break;
-+
- 	default:
- 		break;
+-static int read_annotate(struct objtool_file *file, int (*func)(int type, struct instruction *insn))
++static int read_annotate(struct objtool_file *file,
++			 int (*func)(struct objtool_file *file, int type, struct instruction *insn))
+ {
+ 	struct section *rsec, *sec;
+ 	struct instruction *insn;
+@@ -2299,7 +2300,7 @@ static int read_annotate(struct objtool_
+ 
+ 		type = *(u32 *)(sec->data->d_buf + (reloc_idx(reloc) * sec->sh.sh_entsize) + 4);
+ 
+-		ret = func(type, insn);
++		ret = func(file, type, insn);
+ 		if (ret < 0)
+ 			return ret;
  	}
-@@ -3459,7 +3467,8 @@ static int validate_branch(struct objtoo
- 		if (func && insn_func(insn) && func != insn_func(insn)->pfunc) {
- 			/* Ignore KCFI type preambles, which always fall through */
- 			if (!strncmp(func->name, "__cfi_", 6) ||
--			    !strncmp(func->name, "__pfx_", 6))
-+			    !strncmp(func->name, "__pfx_", 6) ||
-+			    !strcmp(insn_func(insn)->name, "fastop"))
- 				return 0;
+@@ -2307,7 +2308,7 @@ static int read_annotate(struct objtool_
+ 	return 0;
+ }
  
- 			WARN("%s() falls through to next function %s()",
+-static int __annotate_ignore_alts(int type, struct instruction *insn)
++static int __annotate_ignore_alts(struct objtool_file *file, int type, struct instruction *insn)
+ {
+ 	if (type != ANNOTYPE_IGNORE_ALTS)
+ 		return 0;
+@@ -2316,7 +2317,7 @@ static int __annotate_ignore_alts(int ty
+ 	return 0;
+ }
+ 
+-static int __annotate_noendbr(int type, struct instruction *insn)
++static int __annotate_noendbr(struct objtool_file *file, int type, struct instruction *insn)
+ {
+ 	if (type != ANNOTYPE_NOENDBR)
+ 		return 0;
+@@ -2325,7 +2326,37 @@ static int __annotate_noendbr(int type,
+ 	return 0;
+ }
+ 
+-static int __annotate_retpoline_safe(int type, struct instruction *insn)
++static int __annotate_ifc(struct objtool_file *file, int type, struct instruction *insn)
++{
++	unsigned long dest_off;
++
++	if (type != ANNOTYPE_INTRA_FUNCTION_CALLS)
++		return 0;
++
++	if (insn->type != INSN_CALL) {
++		WARN_INSN(insn, "intra_function_call not a direct call");
++		return -1;
++	}
++
++	/*
++	 * Treat intra-function CALLs as JMPs, but with a stack_op.
++	 * See add_call_destinations(), which strips stack_ops from
++	 * normal CALLs.
++	 */
++	insn->type = INSN_JUMP_UNCONDITIONAL;
++
++	dest_off = arch_jump_destination(insn);
++	insn->jump_dest = find_insn(file, insn->sec, dest_off);
++	if (!insn->jump_dest) {
++		WARN_INSN(insn, "can't find call dest at %s+0x%lx",
++			  insn->sec->name, dest_off);
++		return -1;
++	}
++
++	return 0;
++}
++
++static int __annotate_retpoline_safe(struct objtool_file *file, int type, struct instruction *insn)
+ {
+ 	if (type != ANNOTYPE_RETPOLINE_SAFE)
+ 		return 0;
+@@ -2342,7 +2373,7 @@ static int __annotate_retpoline_safe(int
+ 	return 0;
+ }
+ 
+-static int __annotate_instr(int type, struct instruction *insn)
++static int __annotate_instr(struct objtool_file *file, int type, struct instruction *insn)
+ {
+ 	switch (type) {
+ 	case ANNOTYPE_INSTR_BEGIN:
+@@ -2360,7 +2391,7 @@ static int __annotate_instr(int type, st
+ 	return 0;
+ }
+ 
+-static int __annotate_unret(int type, struct instruction *insn)
++static int __annotate_unret(struct objtool_file *file, int type, struct instruction *insn)
+ {
+ 	if (type != ANNOTYPE_UNRET_BEGIN)
+ 		return 0;
+@@ -2370,55 +2401,6 @@ static int __annotate_unret(int type, st
+ 
+ }
+ 
+-static int read_intra_function_calls(struct objtool_file *file)
+-{
+-	struct instruction *insn;
+-	struct section *rsec;
+-	struct reloc *reloc;
+-
+-	rsec = find_section_by_name(file->elf, ".rela.discard.intra_function_calls");
+-	if (!rsec)
+-		return 0;
+-
+-	for_each_reloc(rsec, reloc) {
+-		unsigned long dest_off;
+-
+-		if (reloc->sym->type != STT_SECTION) {
+-			WARN("unexpected relocation symbol type in %s",
+-			     rsec->name);
+-			return -1;
+-		}
+-
+-		insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
+-		if (!insn) {
+-			WARN("bad .discard.intra_function_call entry");
+-			return -1;
+-		}
+-
+-		if (insn->type != INSN_CALL) {
+-			WARN_INSN(insn, "intra_function_call not a direct call");
+-			return -1;
+-		}
+-
+-		/*
+-		 * Treat intra-function CALLs as JMPs, but with a stack_op.
+-		 * See add_call_destinations(), which strips stack_ops from
+-		 * normal CALLs.
+-		 */
+-		insn->type = INSN_JUMP_UNCONDITIONAL;
+-
+-		dest_off = arch_jump_destination(insn);
+-		insn->jump_dest = find_insn(file, insn->sec, dest_off);
+-		if (!insn->jump_dest) {
+-			WARN_INSN(insn, "can't find call dest at %s+0x%lx",
+-				  insn->sec->name, dest_off);
+-			return -1;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+ /*
+  * Return true if name matches an instrumentation function, where calls to that
+  * function from noinstr code can safely be removed, but compilers won't do so.
+@@ -2554,7 +2536,7 @@ static int decode_sections(struct objtoo
+ 	 * Must be before add_call_destination(); it changes INSN_CALL to
+ 	 * INSN_JUMP.
+ 	 */
+-	ret = read_intra_function_calls(file);
++	ret = read_annotate(file, __annotate_ifc);
+ 	if (ret)
+ 		return ret;
+ 
 
 
