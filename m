@@ -1,92 +1,90 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F2213A250
-	for <kvm@vger.kernel.org>; Mon, 11 Nov 2024 20:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A991B5827;
+	Mon, 11 Nov 2024 20:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731357633; cv=none; b=TheahwHRZZNwHQFmmidQQu3syYg23dIjwqkI+JQRmeupCEnaKHXpVgX0+Z+gZz2ty3r0OWuh0gJFyoVQ68HIeAi5UeJ2hQidR7SHeZSNgZpBr9AOelScWuLtZkEPce5WSz++TvbiYPmHSZS1CS8SW8E+cR2w6YfwHkqvcYt7aJo=
+	t=1731357641; cv=none; b=DyRHtvHVDunvOFJgwX/HjMgzRLxjjqc9H9Jq52bSXcsCwYrjrBKTpc0kT9qAYV1DJTnMbpkEQe9zlmUqncf43kRTd/aRyZLhQRwUQz2U1sCPLtir2BdYt9ONBs+SMkE6L/LxQ7utDiBjOFAvIxMJpcxxa+0+rB7OVhfLuW1aN9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731357633; c=relaxed/simple;
-	bh=oERcGQ9LDVehJFUMZyeiUnRg+hZ6+rOpSWGKGuiOaKQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBaCDYSOcAs/7RlzRQ2RP/9EWui2FHXCVt8cmv61kuKwl2AfVuEoBNUUFcdqu/bI25fpsWZQQE2xYuHAEpnWAt++o8PennDqHqHtnVyyPMoxTx0KotIJRJq0R9y91dOtkaxccaEAAGtgy1rofv1Vpj89mdACNwVkw0b3cg+rjDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NSky0qXt; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1731357641; c=relaxed/simple;
+	bh=HyFMaRXITnzt3qjNKojKuR0TkanFbUkPSq/dln3OrRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CYoqTYY7QXNEmMUfhZj7GxGb1Wmxh9EP7PrSzOTVMlMIIESrgEOh8JiT69eqyNrn1xbn8KFt7cyvTfhP8EYarhURAZNGL2Z3CRUlAmGLXQpW/XF3ICzZX7AomUP/rp2dt312fkfc6Lym5kf/E5ftQKESpoNS9siGLe8/MWRVbqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHu05cTb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NSky0qXt"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1731357629;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b9CAj9JaGMN0ybNM1og6EH7btRUNarOLzlzuHTkv93s=;
-	b=NSky0qXt3FYZ1uz0lOO9GCgsPfAGi+hlH9gH52cProQINk5600PTWNOFHccqjfU+OaRCfF
-	t6d6uVZ5IEdvMi7EPmtGKg214jQbT/V7GI2CRh3Vur2lw6eVacBlV+8dEWOU6KKMJDnZkQ
-	qVkuJ46lmP6hM9u5vD/+H6Q6xWS0LZE=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: ARMLinux <linux-arm-kernel@lists.infradead.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	KVMARM <kvmarm@lists.linux.dev>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	KVM <kvm@vger.kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Joey Gouly <joey.gouly@arm.com>
-Cc: Colton Lewis <coltonlewis@google.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Shusen Li <lishusen2@huawei.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Eric Auger <eauger@redhat.com>
-Subject: Re: [PATCH v4 0/5] Some fixes about vgic-its
-Date: Mon, 11 Nov 2024 20:40:03 +0000
-Message-ID: <173135744708.2975582.6187985686343920631.b4-ty@linux.dev>
-In-Reply-To: <20241107214137.428439-1-jingzhangos@google.com>
-References: <20241107214137.428439-1-jingzhangos@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHu05cTb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470DAC4CECF;
+	Mon, 11 Nov 2024 20:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731357641;
+	bh=HyFMaRXITnzt3qjNKojKuR0TkanFbUkPSq/dln3OrRU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jHu05cTbLuzCMXfu/EO0asvCTvczfjZetFhAHLh0V4kK9q6DflN9ElW/ljISjezhZ
+	 7EZa6FmPUOABOVp7aIzf5RNIi2dorW0d9qRQnHqkIxWouF7R+1+VjAaYoQOTt7mNuB
+	 c+7zft/c82ac8mhE00YQZVqn5t2ZQrFwPH2+8XKNIxea+aRi8GWLsgTRiZVdbzG5n0
+	 1ayZwIVlTyDJu9VJ59Uk0UOKhwvCCTrSl6tvh7XGrLvV0k5T1orjv04vRwLGtVHndJ
+	 +NHrVy2UVGQMZ34BAtbanNgP0C14JwuNvggRlFT8yJEOuEtipWIBt4Ie3hl+wOBC4h
+	 aHr9Xw3t0x6CA==
+Date: Mon, 11 Nov 2024 12:40:38 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: "Kaplan, David" <David.Kaplan@amd.com>
+Cc: Amit Shah <amit@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"Shah, Amit" <Amit.Shah@amd.com>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"pawan.kumar.gupta@linux.intel.com" <pawan.kumar.gupta@linux.intel.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"daniel.sneddon@linux.intel.com" <daniel.sneddon@linux.intel.com>,
+	"kai.huang@intel.com" <kai.huang@intel.com>,
+	"Das1, Sandipan" <Sandipan.Das@amd.com>,
+	"boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+	"Moger, Babu" <Babu.Moger@amd.com>,
+	"dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
+	"andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
+Subject: Re: [RFC PATCH v2 1/3] x86: cpu/bugs: update SpectreRSB comments for
+ AMD
+Message-ID: <20241111204038.63ny4i74irngw2si@jpoimboe>
+References: <20241111163913.36139-1-amit@kernel.org>
+ <20241111163913.36139-2-amit@kernel.org>
+ <20241111193304.fjysuttl6lypb6ng@jpoimboe>
+ <LV3PR12MB9265A6B2030DAE155E7B560B94582@LV3PR12MB9265.namprd12.prod.outlook.com>
+ <20241111203906.a2y55qoi767hcmht@jpoimboe>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241111203906.a2y55qoi767hcmht@jpoimboe>
 
-On Thu, 7 Nov 2024 13:41:32 -0800, Jing Zhang wrote:
-> This patch series addresses a critical issue in the VGIC ITS tables'
-> save/restore mechanism, accompanied by a comprehensive selftest for bug
-> reproduction and verification.
+On Mon, Nov 11, 2024 at 12:39:09PM -0800, Josh Poimboeuf wrote:
+> This is why it's important to spell out all the different cases in the
+> comments.  I was attempting to document the justifications for the
+> existing behavior.
 > 
-> The fix is originally from Kunkun Jiang at [1].
+> You make some good points, though backing up a bit, I realize my comment
+> was flawed for another reason: the return thunks only protect the
+> kernel, but RSB filling on context switch is meant to protect user
+> space.
 > 
-> The identified bug manifests as a failure in VM suspend/resume operations.
-> The root cause lies in the repeated suspend attempts often required for
-> successful VM suspension, coupled with concurrent device interrupt registration
-> and freeing. This concurrency leads to inconsistencies in ITS mappings before
-> the save operation, potentially leaving orphaned Device Translation Entries
-> (DTEs) and Interrupt Translation Entries (ITEs) in the respective tables.
-> 
-> [...]
+> So, never mind...
 
-Taking the immediate fixes for now, selftest might need a bit more work
-(will review soon). Note that I squashed patch 2 + 3 together as well.
+That said, I still think the comments need an update.  I'll try to come
+up with something later.
 
-Applied to kvmarm/next, thanks!
-
-[3/5] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
-      https://git.kernel.org/kvmarm/kvmarm/c/7fe28d7e68f9
-[4/5] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
-      https://git.kernel.org/kvmarm/kvmarm/c/e9649129d33d
-[5/5] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
-      https://git.kernel.org/kvmarm/kvmarm/c/7602ffd1d5e8
-
---
-Best,
-Oliver
+-- 
+Josh
