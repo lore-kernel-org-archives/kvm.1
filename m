@@ -1,133 +1,209 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6B213698E;
-	Mon, 11 Nov 2024 21:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9EA165F1D
+	for <kvm@vger.kernel.org>; Mon, 11 Nov 2024 21:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731358826; cv=none; b=pCoRHp+P3Vu4Z4nSi9sIJnhf9DNozTDsoWYyMOpQcV0yBvatoulj0TbFxNIB6rMzponwfMiL2LqET9WV5HScYmPp9nP2xwT/zoIlvSJSfcOCcl6qawgqTjxkZFcBIYu3QQ+so2r4cE7o1RatEmCJJ4+2VZRx0KVUn4M94SVUZts=
+	t=1731360463; cv=none; b=M8ZIg33fMHw/5ToEVIoXBYGe1pwI+2WuvLCMxkvMJMCFBcMg3A44vt+7wkaf/hAwB3ZJMot6YYf5s/WwNTH04UPTllV7Cu4YCQGIoPdFcoAElpO3C+iohcHUIAkub2x8b2GRhkK4AUnMHnobcWhLE3q5sxjBg+wCfuJBfShbmp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731358826; c=relaxed/simple;
-	bh=/Br54z6T0qS7Wbf6l+prUwGUWQjI1w3sLhzxdzz7bFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kZ2bGilCTGwUql94yQww+FI7WL+ZGgyIxIM3vNdrxC3rMuJ1GEOOY7CyMfW6iEDrNia/So2QD9s60EVywDLaRpT+n+dSOgvDzji+6n+PQt4HmXdUJkuZJ1gJvNiRL3lQHaoh8woNVt2lKoUM2/BbIdQeZEdWkynpzxJu+HVbiac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LtuLLDAA; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1731360463; c=relaxed/simple;
+	bh=7gdx99zZFTJV7kjMusQaB+ZZVp3XgQyK/up+geK19Jw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R+uEMJ2BmSzuAZh4k3KtgUl4d15HUG/OaU7m+RhImnHjFQ7wGl8GkTGXbc/cKNjRdjVi0qQoX2IpZI9vFQl3Odn1TaCZrZWuTgapGq7Q4euXAvaw8vNDRhdO60Hr0ZeiZJUsWjwM7+dZJwMxqVyriWdMN54macjEa3XTAWEsOS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fcNx3Pq1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LtuLLDAA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731358824; x=1762894824;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/Br54z6T0qS7Wbf6l+prUwGUWQjI1w3sLhzxdzz7bFg=;
-  b=LtuLLDAAG4GB4/Eyzcyg+asDgqceO7qQK0Pj6xVl90qsydXCtAHBHTl6
-   1Isrdjbf57t/jRWAoaUWAQ0qsFYr0IEsU3vclFtBK7W67XjSN7SpflMb2
-   O7c2Cz3QNxMcgZjV1AcjdSITPVkCK4cdzzrh86XfpHa2T2bgF0q627Wns
-   cOlk2+1cIKlpKpVlDDjlibUb3NEENaKEcKfJ4760I49lfAaL1ertHQsHE
-   7Svtj36NnzGR0JUOvOqrQ6Pnqq46QzQlQJWcHnFYsiju5/yVywTgQU6QT
-   E4UyOhWCGpkb3iPFitqHnE6ngsHIYI811GRQ2yxYFAUKkzD+xmsyIZAEG
-   A==;
-X-CSE-ConnectionGUID: Z95lEN6cQc+JRKTOPDpzxQ==
-X-CSE-MsgGUID: ZkGu+/rNR3CObXXroajysQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31142218"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31142218"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 13:00:24 -0800
-X-CSE-ConnectionGUID: u9Ydgm7MTh6l7cOFDhJ/Xg==
-X-CSE-MsgGUID: zJYmaCWhTsCaNfXI+Ni5Fw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,146,1728975600"; 
-   d="scan'208";a="87468342"
-Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.124.223.216]) ([10.124.223.216])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 13:00:21 -0800
-Message-ID: <c4adf8da-fac0-4a1a-9b83-7a585fc63ca2@intel.com>
-Date: Mon, 11 Nov 2024 13:00:20 -0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fcNx3Pq1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731360460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hKTzfUrxnVHXdTB3XXfquz3VdrDTYaHm0nfSYpXbJms=;
+	b=fcNx3Pq111oEUf7zEXsHHRUker2VfkXB8TYrtrU5OM3Kwu71MglZx4WCjfW77VmMXkqSD4
+	RcCDVabyx6oo8oyuaBA9Q4sXYK5QExPF0gRuBUJ3SLCKTL0Z57uuFWQzUlpBuc0fsS0JRk
+	XA08LMPzz4m8ZKuZiYzTQEa1dEO6TkM=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-HIaLJBBfOTu28V4ViX5G6A-1; Mon, 11 Nov 2024 16:27:39 -0500
+X-MC-Unique: HIaLJBBfOTu28V4ViX5G6A-1
+X-Mimecast-MFC-AGG-ID: HIaLJBBfOTu28V4ViX5G6A
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-83ba5dcee51so25047339f.1
+        for <kvm@vger.kernel.org>; Mon, 11 Nov 2024 13:27:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731360458; x=1731965258;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hKTzfUrxnVHXdTB3XXfquz3VdrDTYaHm0nfSYpXbJms=;
+        b=uHLCrKeIdxmYzKosM4IzFr6PtuUIxEz3OI/MjPncE9RAf8FOVzXfWtZrHMF/0H5MsD
+         W+DtfLwesptv38kg4BeRSb/UBNp1qQdu4xXew8NZe66usDx15xUkhrNZL8VXom5YQRmu
+         szgR6zHOjR4addKDeaShZVbIATjZO9i2yrGq8LGCnJsJmRhRSGrPy+GRaHjUuKY4AFyr
+         XKpCxukce5y5qEkRAO3Wypb91QApQRZmcB1RhAhWPG28VjK9u+JWpFQvvHRWFvBeryuJ
+         qr6u9IAXaYVTD7jZsGUWYncKSuCYKebuzTbg/5Jfrjxuk12vO7eSCohR3EslP0D3Cy1Q
+         0F4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVanRTNFdErdP4byHVPvIruI7TgzkVRWEYBuZ8eVV05LjNTWqTEUMMNyzODJrDDE/8jrBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCA5iVPRC8V3/gu6mjOFepbMDhjutZKLkpgZtuBEqj0aM08nwf
+	oSZ6sW1l9t4Lt5E9wRPGjU4JkDP/lUgeaYEr+jecgd2hxrt+6tW5Mopf3K6UwHJ1P6/uUr73yl+
+	TTEuIUYJbSNogydEyueRN8YrdArnWk6zFlswPR75TGGJ1vd5qrQ==
+X-Received: by 2002:a05:6602:1355:b0:82a:249e:bdfd with SMTP id ca18e2360f4ac-83e0336c2d5mr389586939f.3.1731360458550;
+        Mon, 11 Nov 2024 13:27:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGX/Ggt58ehkyFsCDSKKtU9X8zNWVnKRm0joN8z3lTyNEVbcXKQvdETM55lD1avBOWaFa37pA==
+X-Received: by 2002:a05:6602:1355:b0:82a:249e:bdfd with SMTP id ca18e2360f4ac-83e0336c2d5mr389586139f.3.1731360458143;
+        Mon, 11 Nov 2024 13:27:38 -0800 (PST)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de787d6278sm1574968173.88.2024.11.11.13.27.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2024 13:27:37 -0800 (PST)
+Date: Mon, 11 Nov 2024 14:27:36 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ mst@redhat.com, jasowang@redhat.com, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, parav@nvidia.com,
+ feliu@nvidia.com, kevin.tian@intel.com, leonro@nvidia.com, maorg@nvidia.com
+Subject: Re: [PATCH V1 vfio 7/7] vfio/virtio: Enable live migration once
+ VIRTIO_PCI was configured
+Message-ID: <20241111142736.18a625df.alex.williamson@redhat.com>
+In-Reply-To: <112ebe08-06f3-4cb5-8cf0-8b49c56eac89@oracle.com>
+References: <20241104102131.184193-1-yishaih@nvidia.com>
+	<20241104102131.184193-8-yishaih@nvidia.com>
+	<20241105162904.34b2114d.alex.williamson@redhat.com>
+	<20241106135909.GO458827@nvidia.com>
+	<20241106152732.16ac48d3.alex.williamson@redhat.com>
+	<af8886fd-ec75-45fa-b627-2cd3c2ce905c@nvidia.com>
+	<20241107142554.1c38f347.alex.williamson@redhat.com>
+	<4ea48b12-03d0-40df-8c9c-96a78343f8c6@nvidia.com>
+	<d2b83eef-4f39-4583-86d8-fc5bf83dd47a@oracle.com>
+	<ba487f4f-b8d9-4e42-9aef-300a8ed3648a@nvidia.com>
+	<112ebe08-06f3-4cb5-8cf0-8b49c56eac89@oracle.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/10] TDX host: metadata reading tweaks, bug fix and
- info dump
-To: "Huang, Kai" <kai.huang@intel.com>, "seanjc@google.com"
- <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
- "peterz@infradead.org" <peterz@infradead.org>, "hpa@zytor.com"
- <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Williams, Dan J" <dan.j.williams@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "Hunter, Adrian" <adrian.hunter@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "Yamahata, Isaku"
- <isaku.yamahata@intel.com>
-References: <cover.1731318868.git.kai.huang@intel.com>
- <0adb0785-286c-4702-8454-372d4bb3b862@intel.com>
- <f5bc2da140f16da41af948adb50a369840ff890c.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <f5bc2da140f16da41af948adb50a369840ff890c.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 11/11/24 12:49, Huang, Kai wrote:
-> It also has a patch to fail module initialization when NO_MOD_BBP feature is not
-> support.
-> 
-> Just want to confirm, do you want to remove the code to:
-> 
->  - print CMRs;
->  - print TDX module versoin;
+On Mon, 11 Nov 2024 15:30:47 +0000
+Joao Martins <joao.m.martins@oracle.com> wrote:
 
-What is your goal?  What is the bare minimum amount of code to get there?
+> On 11/11/2024 14:17, Yishai Hadas wrote:
+> > On 11/11/2024 12:32, Joao Martins wrote: =20
+> >>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depend=
+s on VIRTIO_PCI
+> >>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select=
+ VFIO_PCI_CORE
+> >>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select=
+ IOMMUFD_DRIVER =20
+> >>>>
+> >>>> IIUC, this is not a dependency, the device will just lack dirty page
+> >>>> tracking with either the type1 backend or when using iommufd when the
+> >>>> IOMMU hardware doesn't have dirty page tracking, therefore all VM
+> >>>> memory is perpetually dirty.=C2=A0 Do I have that right? =20
+> >>>
+> >>> IOMMUFD_DRIVER is selected to utilize the dirty tracking functionalit=
+y of IOMMU.
+> >>> Therefore, this is a select option rather than a dependency, similar =
+to how the
+> >>> pds and mlx5 VFIO drivers handle it in their Kconfig files.
+> >>> =20
+> >>
+> >> Yishai, I think Alex is right here.
+> >>
+> >> 'select IOMMUFD_DRIVER' is more for VF dirty trackers where it uses th=
+e same
+> >> helpers as IOMMUFD does for dirty tracking. But it's definitely not si=
+gnaling
+> >> intent for 'IOMMU dirty tracking' but rather 'VF dirty tracking' =20
+> >=20
+> > I see, please see below.
+> >  =20
+> I should have said that in the context of VFIO drivers selecting it, not =
+broadly
+> across all drivers that select it.
+>=20
+> >>
+> >> If you want to tie in to IOMMU dirty tracking you probably want to do:
+> >>
+> >> =C2=A0=C2=A0=C2=A0=C2=A0'select IOMMUFD'
+> >> =20
+> >=20
+> > Looking at the below Kconfig(s) for AMD/INTEL_IOMMU [1], we can see tha=
+t if
+> > IOMMUFD is set IOMMFD_DRIVER is selected.
+> >  =20
+> Correct.
+>=20
+> > From that we can assume that to have 'IOMMU dirty tracking' the IOMMFD_=
+DRIVER is
+> > finally needed/selected, right ?
+> >  =20
+>=20
+> Right, if you have CONFIG_IOMMUFD then the IOMMU will in the end auto-sel=
+ect
+> IOMMU_DRIVER. But standalone at best you can assume that 'something does =
+dirty
+> tracking'. The context (i.e. who selects it) is what tells you if it's VF=
+ or IOMMU.
+>=20
+> In your example above, that option is meant to be selected by *a* dirty t=
+racker,
+> and it's because AMD/Intel was selecting that you would have IOMMU dirty
+> tracking. The option essentially selects IOVA bitmaps helpers (zerocopy s=
+cheme
+> to set bits in a bitmap) which is both used by VF dirty trackers and IOMM=
+U dirty
+> trackers. Originally this started in VFIO and later got moved into IOMMUF=
+D which
+> is why we have this kconfig to allow independent use.
+
+Yeah, I agree.  IOMMUFD_DRIVER is only configuring in iova_bitmap
+support independent of IOMMUFD, which mlx5 requires, but this does not.
+
+> > So you are saying that it's redundant in the vfio/virtio driver as it w=
+ill be
+> > selected down the road once needed ?
+> >  =20
+> Right.
+>=20
+> Of course, it will always depend on user enabling the right kconfigs and =
+such.
+> But that would be no different than the other drivers than don't support =
+VF
+> dirty tracking.
+>=20
+> > [1]
+> > https://elixir.bootlin.com/linux/v6.12-rc6/source/drivers/iommu/intel/K=
+config#L17
+> > https://elixir.bootlin.com/linux/v6.12-rc6/source/drivers/iommu/amd/Kco=
+nfig#L16
+> >  =20
+> >> But that is a big hammer, as you also need the VFIO_DEVICE_CDEV kconfi=
+g selected
+> >> as well and probably more. =20
+> >=20
+> > I agree, we didn't plan to add those dependencies.
+> >  =20
+> >>
+> >> Perhaps best to do like qat/hisilicon drivers and letting the user opt=
+ionally
+> >> pick it. Migration is anyways disabled when using type1 (unless you fo=
+rce it,
+> >> and it then it does the perpectual dirty trick). =20
+
+Yes, at least for QEMU, unless the user forces the device to support
+migration we'll add a migration blocker rather than use the perpetually
+dirty trick.  Ultimately the support depends on the underlying IOMMU
+capabilities where we're running anyway, so it makes sense to me to
+leave this to the user rather than trying to force a kernel config that
+can support IOMMU dirty page tracking.  Thanks,
+
+Alex
+
