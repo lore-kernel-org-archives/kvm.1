@@ -1,212 +1,164 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B0219D075;
-	Mon, 11 Nov 2024 12:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C04153BED;
+	Mon, 11 Nov 2024 13:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731329679; cv=none; b=CXKU+isRV+enR+WJtBejgCfFK0UAfWGZUfZP6514XPF2qjrcWpanIPumdv2TzO5vLy2ELqG+i4kH0oJpXI13nXm5si3yAaQJb/DCiBaZv7SAFJi3GObQbQjNL+xU7NJzh1jetTkH/VmgcqtkuIT/D5BgrxOJUq2gkzB1LLbn3os=
+	t=1731330571; cv=none; b=XnfirOG/Idr8pLOHCoOtTLXn8WMDEyDNczLfsuUPgKIFRtKrj2RqAy4sQMA1cVIB+4RHcNbjx+mknfRht4gXrGobLrTJ6HTSuZEJrm1R7SclCZspyvZuBksi9u5VQoDtPs9+X7G9k5q4RFPKux6FzyrG1d9sRiCKK7PFs4Fodns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731329679; c=relaxed/simple;
-	bh=xCKBCWveVHzvPaCu6KcEW6e5D2t80IxrzBBBa7ugjmE=;
-	h=Message-Id:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=AUTXGyCNbZHdj8noIwJ0WrrQDPdlwoAXgsykzre36RTfC7uT4BhzR0Jp4GnlO56TKD6nILBokyiK71v1o12vUtVjg0ep8owGCGhbsyIlJHTjDcBes2oQpsu6RiNP85kl66fOr5qDP+p5Z3/TTCAtJMIph+W8n1PuJNNq1DiyTKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZEktBubi; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZEktBubi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
-	Subject:Cc:To:From:Date:Message-Id:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To;
-	bh=gFiDthjTb2jV5OQYX2IoNEzMxtX8OE63urpzPswRdWY=; b=ZEktBubiLEUyquOyzWHYXGjm3n
-	Aa0Axe6XO0Kz4ruDdUSO7hkfdNJgkwmAWwQ8adlFgCdzVf6x2qy+Csg43woEpJNhd1PYrdTAoq68R
-	hZYiai+JvTFunN1sNG3zX1NcBc314JVDfVNX6fGyw6Li9sG7OXKIYDjuTZW1qxat20PQDsshmNbHZ
-	KFGvlU7KJ/NlOUMlBxT8zfG2dfM8EL8uvvgfamNsl+UmI6cwu8IBGe3SV7204tGy7UWUXZ9ZoiOWT
-	DMdrIsHPMQUo0dhPAzCApoEPXljeDymBBPN4TrjbSDk4BVR7E+59cgAShA0dY/PSZj5PmQs/4qZoo
-	YcL79ucg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tATw9-0000000Cqje-2bIy;
-	Mon, 11 Nov 2024 12:54:34 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id D1453300DF3; Mon, 11 Nov 2024 13:54:32 +0100 (CET)
-Message-Id: <20241111125218.469665219@infradead.org>
-User-Agent: quilt/0.65
-Date: Mon, 11 Nov 2024 12:59:39 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: seanjc@google.com,
- pbonzini@redhat.com,
- jpoimboe@redhat.com,
- tglx@linutronix.de
-Cc: linux-kernel@vger.kernel.org,
- x86@kernel.org,
- kvm@vger.kernel.org,
- jthoughton@google.com,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH v2 04/12] objtool: Convert instrumentation_{begin,end}() to ANNOTATE
-References: <20241111115935.796797988@infradead.org>
+	s=arc-20240116; t=1731330571; c=relaxed/simple;
+	bh=zAnfbjazIKCKkvUjNTVKN/Fduo3MPuJ3ZujI3eyZNtc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OwUzxXsZUK3Nv9zzXB2qgXvZegQChzs7SQ/FpxrM1LQ9sZoLBk1o3E+CYHigxEiCMvdVvDv9uiC7j+3T0Ku4m5OeJgre2SX34G3mMtWSl9yr/Ja7nqe6gSF1k/Mx1kENJpzaf6nKJwKDIfML2gmiMoYhFgaP9G4RxZIjCO5zHLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 695071CE0;
+	Mon, 11 Nov 2024 05:09:55 -0800 (PST)
+Received: from [10.57.91.162] (unknown [10.57.91.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 69E743F66E;
+	Mon, 11 Nov 2024 05:09:20 -0800 (PST)
+Message-ID: <a63e7c3b-ce96-47a5-b462-d5de3a2edb56@arm.com>
+Date: Mon, 11 Nov 2024 13:09:20 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFCv1 0/7] vfio: Allow userspace to specify the address
+ for each MSI vector
+To: Nicolin Chen <nicolinc@nvidia.com>, maz@kernel.org, tglx@linutronix.de,
+ bhelgaas@google.com, alex.williamson@redhat.com
+Cc: jgg@nvidia.com, leonro@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ dlemoal@kernel.org, kevin.tian@intel.com, smostafa@google.com,
+ andriy.shevchenko@linux.intel.com, reinette.chatre@intel.com,
+ eric.auger@redhat.com, ddutile@redhat.com, yebin10@huawei.com,
+ brauner@kernel.org, apatel@ventanamicro.com,
+ shivamurthy.shastri@linutronix.de, anna-maria@linutronix.de,
+ nipun.gupta@amd.com, marek.vasut+renesas@mailbox.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org
+References: <cover.1731130093.git.nicolinc@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <cover.1731130093.git.nicolinc@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 2024-11-09 5:48 am, Nicolin Chen wrote:
+> On ARM GIC systems and others, the target address of the MSI is translated
+> by the IOMMU. For GIC, the MSI address page is called "ITS" page. When the
+> IOMMU is disabled, the MSI address is programmed to the physical location
+> of the GIC ITS page (e.g. 0x20200000). When the IOMMU is enabled, the ITS
+> page is behind the IOMMU, so the MSI address is programmed to an allocated
+> IO virtual address (a.k.a IOVA), e.g. 0xFFFF0000, which must be mapped to
+> the physical ITS page: IOVA (0xFFFF0000) ===> PA (0x20200000).
+> When a 2-stage translation is enabled, IOVA will be still used to program
+> the MSI address, though the mappings will be in two stages:
+>    IOVA (0xFFFF0000) ===> IPA (e.g. 0x80900000) ===> 0x20200000
+> (IPA stands for Intermediate Physical Address).
+> 
+> If the device that generates MSI is attached to an IOMMU_DOMAIN_DMA, the
+> IOVA is dynamically allocated from the top of the IOVA space. If attached
+> to an IOMMU_DOMAIN_UNMANAGED (e.g. a VFIO passthrough device), the IOVA is
+> fixed to an MSI window reported by the IOMMU driver via IOMMU_RESV_SW_MSI,
+> which is hardwired to MSI_IOVA_BASE (IOVA==0x8000000) for ARM IOMMUs.
+> 
+> So far, this IOMMU_RESV_SW_MSI works well as kernel is entirely in charge
+> of the IOMMU translation (1-stage translation), since the IOVA for the ITS
+> page is fixed and known by kernel. However, with virtual machine enabling
+> a nested IOMMU translation (2-stage), a guest kernel directly controls the
+> stage-1 translation with an IOMMU_DOMAIN_DMA, mapping a vITS page (at an
+> IPA 0x80900000) onto its own IOVA space (e.g. 0xEEEE0000). Then, the host
+> kernel can't know that guest-level IOVA to program the MSI address.
+> 
+> To solve this problem the VMM should capture the MSI IOVA allocated by the
+> guest kernel and relay it to the GIC driver in the host kernel, to program
+> the correct MSI IOVA. And this requires a new ioctl via VFIO.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- include/linux/instrumentation.h     |   11 +++-----
- include/linux/objtool.h             |    9 ++++--
- include/linux/objtool_types.h       |    2 +
- tools/include/linux/objtool_types.h |    2 +
- tools/objtool/check.c               |   49 +++++++-----------------------------
- 5 files changed, 25 insertions(+), 48 deletions(-)
+Once VFIO has that information from userspace, though, do we really need 
+the whole complicated dance to push it right down into the irqchip layer 
+just so it can be passed back up again? AFAICS 
+vfio_msi_set_vector_signal() via VFIO_DEVICE_SET_IRQS already explicitly 
+rewrites MSI-X vectors, so it seems like it should be pretty 
+straightforward to override the message address in general at that 
+level, without the lower layers having to be aware at all, no?
 
---- a/include/linux/instrumentation.h
-+++ b/include/linux/instrumentation.h
-@@ -4,14 +4,14 @@
- 
- #ifdef CONFIG_NOINSTR_VALIDATION
- 
-+#include <linux/objtool.h>
- #include <linux/stringify.h>
- 
- /* Begin/end of an instrumentation safe region */
- #define __instrumentation_begin(c) ({					\
- 	asm volatile(__stringify(c) ": nop\n\t"				\
--		     ".pushsection .discard.instr_begin\n\t"		\
--		     ".long " __stringify(c) "b - .\n\t"		\
--		     ".popsection\n\t" : : "i" (c));			\
-+		     __ASM_ANNOTATE(c, ANNOTYPE_INSTR_BEGIN)		\
-+		     : : "i" (c));					\
- })
- #define instrumentation_begin() __instrumentation_begin(__COUNTER__)
- 
-@@ -48,9 +48,8 @@
-  */
- #define __instrumentation_end(c) ({					\
- 	asm volatile(__stringify(c) ": nop\n\t"				\
--		     ".pushsection .discard.instr_end\n\t"		\
--		     ".long " __stringify(c) "b - .\n\t"		\
--		     ".popsection\n\t" : : "i" (c));			\
-+		     __ASM_ANNOTATE(c, ANNOTYPE_INSTR_END)		\
-+		     : : "i" (c));					\
- })
- #define instrumentation_end() __instrumentation_end(__COUNTER__)
- #else /* !CONFIG_NOINSTR_VALIDATION */
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -51,13 +51,16 @@
- 	".long 998b\n\t"						\
- 	".popsection\n\t"
- 
--#define ASM_ANNOTATE(x)						\
--	"911:\n\t"						\
-+#define __ASM_ANNOTATE(s, x)					\
- 	".pushsection .discard.annotate,\"M\",@progbits,8\n\t"	\
--	".long 911b - .\n\t"					\
-+	".long " __stringify(s) "b - .\n\t"			\
- 	".long " __stringify(x) "\n\t"				\
- 	".popsection\n\t"
- 
-+#define ASM_ANNOTATE(x)						\
-+	"911:\n\t"						\
-+	__ASM_ANNOTATE(911, x)
-+
- #define ANNOTATE_NOENDBR	ASM_ANNOTATE(ANNOTYPE_NOENDBR)
- 
- #else /* __ASSEMBLY__ */
---- a/include/linux/objtool_types.h
-+++ b/include/linux/objtool_types.h
-@@ -59,5 +59,7 @@ struct unwind_hint {
-  */
- #define ANNOTYPE_NOENDBR		1
- #define ANNOTYPE_RETPOLINE_SAFE		2
-+#define ANNOTYPE_INSTR_BEGIN		3
-+#define ANNOTYPE_INSTR_END		4
- 
- #endif /* _LINUX_OBJTOOL_TYPES_H */
---- a/tools/include/linux/objtool_types.h
-+++ b/tools/include/linux/objtool_types.h
-@@ -59,5 +59,7 @@ struct unwind_hint {
-  */
- #define ANNOTYPE_NOENDBR		1
- #define ANNOTYPE_RETPOLINE_SAFE		2
-+#define ANNOTYPE_INSTR_BEGIN		3
-+#define ANNOTYPE_INSTR_END		4
- 
- #endif /* _LINUX_OBJTOOL_TYPES_H */
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2367,48 +2367,19 @@ static int __annotate_retpoline_safe(int
- 	return 0;
- }
- 
--static int read_instr_hints(struct objtool_file *file)
-+static int __annotate_instr(int type, struct instruction *insn)
- {
--	struct section *rsec;
--	struct instruction *insn;
--	struct reloc *reloc;
--
--	rsec = find_section_by_name(file->elf, ".rela.discard.instr_end");
--	if (!rsec)
--		return 0;
--
--	for_each_reloc(rsec, reloc) {
--		if (reloc->sym->type != STT_SECTION) {
--			WARN("unexpected relocation symbol type in %s", rsec->name);
--			return -1;
--		}
--
--		insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
--		if (!insn) {
--			WARN("bad .discard.instr_end entry");
--			return -1;
--		}
-+	switch (type) {
-+	case ANNOTYPE_INSTR_BEGIN:
-+		insn->instr++;
-+		break;
- 
-+	case ANNOTYPE_INSTR_END:
- 		insn->instr--;
--	}
--
--	rsec = find_section_by_name(file->elf, ".rela.discard.instr_begin");
--	if (!rsec)
--		return 0;
-+		break;
- 
--	for_each_reloc(rsec, reloc) {
--		if (reloc->sym->type != STT_SECTION) {
--			WARN("unexpected relocation symbol type in %s", rsec->name);
--			return -1;
--		}
--
--		insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
--		if (!insn) {
--			WARN("bad .discard.instr_begin entry");
--			return -1;
--		}
--
--		insn->instr++;
-+	default:
-+		break;
- 	}
- 
- 	return 0;
-@@ -2654,7 +2625,7 @@ static int decode_sections(struct objtoo
- 	if (ret)
- 		return ret;
- 
--	ret = read_instr_hints(file);
-+	ret = read_annotate(file, __annotate_instr);
- 	if (ret)
- 		return ret;
- 
+Thanks,
+Robin.
 
+> Extend the VFIO path to allow an MSI target IOVA to be forwarded into the
+> kernel and pushed down to the GIC driver.
+> 
+> Add VFIO ioctl VFIO_IRQ_SET_ACTION_PREPARE with VFIO_IRQ_SET_DATA_MSI_IOVA
+> to carry the data.
+> 
+> The downstream calltrace is quite long from the VFIO to the ITS driver. So
+> in order to carry the MSI IOVA from the top to its_irq_domain_alloc(), add
+> patches in a leaf-to-root order:
+> 
+>    vfio_pci_core_ioctl:
+>      vfio_pci_set_irqs_ioctl:
+>        vfio_pci_set_msi_prepare:                           // PATCH-7
+>          pci_alloc_irq_vectors_iovas:                      // PATCH-6
+>            __pci_alloc_irq_vectors:                        // PATCH-5
+>              __pci_enable_msi/msix_range:                  // PATCH-4
+>                msi/msix_capability_init:                   // PATCH-3
+>                  msi/msix_setup_msi_descs:
+>                    msi_insert_msi_desc();                  // PATCH-1
+>                  pci_msi_setup_msi_irqs:
+>                    msi_domain_alloc_irqs_all_locked:
+>                      __msi_domain_alloc_locked:
+>                        __msi_domain_alloc_irqs:
+>                          __irq_domain_alloc_irqs:
+>                            irq_domain_alloc_irqs_locked:
+>                              irq_domain_alloc_irqs_hierarchy:
+>                                msi_domain_alloc:
+>                                  irq_domain_alloc_irqs_parent:
+>                                    its_irq_domain_alloc(); // PATCH-2
+> 
+> Note that this series solves half the problem, since it only allows kernel
+> to set the physical PCI MSI/MSI-X on the device with the correct head IOVA
+> of a 2-stage translation, where the guest kernel does the stage-1 mapping
+> that MSI IOVA (0xEEEE0000) to its own vITS page (0x80900000) while missing
+> the stage-2 mapping from that IPA to the physical ITS page:
+>    0xEEEE0000 ===> 0x80900000 =x=> 0x20200000
+> A followup series should fill that gap, doing the stage-2 mapping from the
+> vITS page 0x80900000 to the physical ITS page (0x20200000), likely via new
+> IOMMUFD ioctl. Once VMM sets up this stage-2 mapping, VM will act the same
+> as bare metal relying on a running kernel to handle the stage-1 mapping:
+>    0xEEEE0000 ===> 0x80900000 ===> 0x20200000
+> 
+> This series (prototype) is on Github:
+> https://github.com/nicolinc/iommufd/commits/vfio_msi_giova-rfcv1/
+> It's tested by hacking the host kernel to hard-code a stage-2 mapping.
+> 
+> Thanks!
+> Nicolin
+> 
+> Nicolin Chen (7):
+>    genirq/msi: Allow preset IOVA in struct msi_desc for MSI doorbell
+>      address
+>    irqchip/gic-v3-its: Bypass iommu_cookie if desc->msi_iova is preset
+>    PCI/MSI: Pass in msi_iova to msi_domain_insert_msi_desc
+>    PCI/MSI: Allow __pci_enable_msi_range to pass in iova
+>    PCI/MSI: Extract a common __pci_alloc_irq_vectors function
+>    PCI/MSI: Add pci_alloc_irq_vectors_iovas helper
+>    vfio/pci: Allow preset MSI IOVAs via VFIO_IRQ_SET_ACTION_PREPARE
+> 
+>   drivers/pci/msi/msi.h             |   3 +-
+>   include/linux/msi.h               |  11 +++
+>   include/linux/pci.h               |  18 ++++
+>   include/linux/vfio_pci_core.h     |   1 +
+>   include/uapi/linux/vfio.h         |   8 +-
+>   drivers/irqchip/irq-gic-v3-its.c  |  21 ++++-
+>   drivers/pci/msi/api.c             | 136 ++++++++++++++++++++----------
+>   drivers/pci/msi/msi.c             |  20 +++--
+>   drivers/vfio/pci/vfio_pci_intrs.c |  41 ++++++++-
+>   drivers/vfio/vfio_main.c          |   3 +
+>   kernel/irq/msi.c                  |   6 ++
+>   11 files changed, 212 insertions(+), 56 deletions(-)
+> 
 
