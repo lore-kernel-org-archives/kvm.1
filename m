@@ -1,63 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43902215007;
-	Tue, 12 Nov 2024 18:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BFC216449;
+	Tue, 12 Nov 2024 18:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731434843; cv=none; b=F7HSd6u5sNjF8A0zg0yHeXHVYl3lLTfWduhcVZeDspzLlnNfqPkiMYR4p8qWrm46aOfA2ocFvRgHVQxkZ6V7f7CsBHXhlaPxZovWpEdVhYl1XFiGlCTQqOW/jZKaTZ1B4semkOWZjOg+LFdKiax1sJTDpfGLkFCKy90DQs30g9I=
+	t=1731435058; cv=none; b=YG1P+5znpwLasTaymlIUL21/e2uIS2B+UMnYfEJdg3NxnxPPc/7BLR6BiEQpREj+qNc4XVvmg1dlA1FeUMSMoFk0ZbsFVc4wSfzo993HOkq376jKNKrqNZaN2jCq+OneVEFVKO1Vx8iVQIFIpvlj5y02FvlJqBuLFwQCgQT+sUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731434843; c=relaxed/simple;
-	bh=YfH1GvXFKsdKUR7M0E2fxAHJRtaL1PPV2LsMW7nnb7E=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=dthvOS75e8k8KrKn2O4iuSbMHzga3hmMBr+qFwA7uj5YaBcRULxdCR0xLXldGSxh4KOAdLf967UAv/sjBxNWzGvY7xn+NqMWkxriUe1I0Ilyw0TwgyX9H0nim/U33r2s4s/VhPuNR1cbLllOi6wFvM0y0f2WyuHfDvnwHfsBkb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8N1juX8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731435058; c=relaxed/simple;
+	bh=LEQ3H94W9G+4p1zBDNvVrlmIym5MwkCk8vk1Mz9frXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fP+uuqBUYNvHGBSDFZU5EB5yJHXSjEJOTRreH1V+s04chEHojV1uhMHqTseRmiXI6AXSwHkdB+XmRZ5lMO0iO85BlEXi6JQUdETCNFEFLHNjlQgU7l+JKTXOSQcAkhwsyRbr3E4oMGjGAWCJjJLvIa34PRHGa9HOfdW7ZERHoMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=AP13VNhF; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8N1juX8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE40C4CECD;
-	Tue, 12 Nov 2024 18:07:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731434843;
-	bh=YfH1GvXFKsdKUR7M0E2fxAHJRtaL1PPV2LsMW7nnb7E=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=A8N1juX8oS7mci0uA1LWmOIwJnYN/dTzG7Xl1GwrLgifbW4vnChXbb4imPHknhp6E
-	 IzK2dguEDPAKvHiVkJ86/WfF2u5Wv3yGcT71EBQdrsWp2au17o9wbOmvI32XKIA2yw
-	 7McP/jgLmFZUWMaK0vQKQkfXBjcx/8cSywdxJ8uD3sEP8Rhv5u69WeJCbvGzrSd8+0
-	 wNMlHHRGie2AIauCb+Q4pcIzzj4XdX2/8ctZqo3GUfTV7DtvdPgQLiS6/DaBRimYPs
-	 QU2ZPgizTgpRidU17FJ6wHWcwNWC1BvyBz8Q/pYAXneItnP/WCYbN+JDGOQ57wMSin
-	 AFPjQUCHK81Bw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71DFB3809A80;
-	Tue, 12 Nov 2024 18:07:34 +0000 (UTC)
-Subject: Re: [GIT PULL] virtio: bugfixes
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20241111085050-mutt-send-email-mst@kernel.org>
-References: <20241111085050-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20241111085050-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-X-PR-Tracked-Commit-Id: 83e445e64f48bdae3f25013e788fcf592f142576
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0ccd733ac99edc473aaee90c8f6adc346d82befb
-Message-Id: <173143485302.621786.7229515238200918820.pr-tracker-bot@kernel.org>
-Date: Tue, 12 Nov 2024 18:07:33 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, angus.chen@jaguarmicro.com, christophe.jaillet@wanadoo.fr, cvam0000@gmail.com, dtatulea@nvidia.com, eperezma@redhat.com, feliu@nvidia.com, gregkh@linuxfoundation.org, jasowang@redhat.com, jiri@nvidia.com, lege.wang@jaguarmicro.com, lingshan.zhu@kernel.org, mst@redhat.com, pstanner@redhat.com, qwerty@theori.io, v4bel@theori.io, yuancan@huawei.com
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="AP13VNhF"
+Received: from [172.27.3.244] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 4ACIAE083429129
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 12 Nov 2024 10:10:14 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4ACIAE083429129
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024101701; t=1731435015;
+	bh=6Kx7RtEhxS9ERAWk+qY7jBAYM7lxFcKMRDRKdoGvtOc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AP13VNhFxKlW2B9mIEBBxfwn4PhNlLH+AqHj29XlAWqwf/a37gjL1uL9DkZHwdkqZ
+	 lBvEdDhGfXoJgNofNIf7KT2Q1YPqMjto5ISr2VFVvt8+ia3eUY+VE8WS0RHe2Ej0OC
+	 P6nV81LRCQ5OJ7CSyxwIJGQM/5fyZXB9WNx3CbBRPjPgoTeb1rLovKWzt7mt1yhzHi
+	 Wa2gjYRNbTfL/Sv9nMcpmvm58+FG72Iv1DpkOyWVd5F++r5206Fuausdkkjb8NN0hL
+	 rpnNl0Yn/UICTfZFhxK9ybCUVjuHoTCElUlWVbga4QGHPzy66gKSZOBpuI4PCYYZEy
+	 LdiZ5prEbc4cQ==
+Message-ID: <8c70586e-2513-42d4-b2cd-476caa416c16@zytor.com>
+Date: Tue, 12 Nov 2024 10:10:14 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86: kvm: add back X86_LOCAL_APIC dependency
+To: Sean Christopherson <seanjc@google.com>, Arnd Bergmann <arnd@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+ <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Isaku Yamahata <isaku.yamahata@intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20241112065415.3974321-1-arnd@kernel.org>
+ <ZzOY-AlBgouiIbDB@google.com>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <ZzOY-AlBgouiIbDB@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The pull request you sent on Mon, 11 Nov 2024 08:50:50 -0500:
+On 11/12/24 10:05, Sean Christopherson wrote:
+>>
+>> Fixes: ea4290d77bda ("KVM: x86: leave kvm.ko out of the build if no vendor module is requested")
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202410060426.e9Xsnkvi-lkp@intel.com/
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> ---
+>> Question: is there actually any point in keeping KVM support for 32-bit host
+>> processors?
+> 
+> Nope.  We need _a_ 32-bit KVM build to run as a nested (L1) hypervisor for testing
+> purposes, but AFAIK there's zero need to keep 32-bit KVM up-to-date.
+> 
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+What do you mean here? Running an old kernel with the 32-bit KVM in a VM 
+for testing the L0 hypervisor?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0ccd733ac99edc473aaee90c8f6adc346d82befb
+	-hpa
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
