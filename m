@@ -1,67 +1,67 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39001230981
-	for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 11:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A95D215007
+	for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 11:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731409668; cv=none; b=COfa+gYxT+HcBLegVNak0dKE3YHyXVOoDFd/YcMXx5WRo033OILXj9plOlVLvV8uqZbNcOPW7bMJg9eVWKLsHsj06w1I4gl8tsrJw4zgqlDO2pNsJVpEJytyGsiiQ6kbYOL25hbLP1orzC9CV8CySIqbC88X9p7623u9yynELrQ=
+	t=1731410026; cv=none; b=LJHOBEYbpHBGboBESOQGhR/V6OwkAwgIx+MAi7WnBSCgIMpjuJC8W/BqCVlrVpj/gzmUFeKUyWl6IeHFbyodgKhGnlsJHmYFs8mX2BRsBpTuUNdq3o6Kce/ivxNK6lnqkEOiADA+E3ys5FYWS85AMSqSbJhKeyVSqMM8iqFr8fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731409668; c=relaxed/simple;
-	bh=eH+SSkJlMVzt7U2UOu6QFaaAUoRlwyFbEytonszWLkQ=;
+	s=arc-20240116; t=1731410026; c=relaxed/simple;
+	bh=qtqXsLcgweTg0CZr5YGAfFq/4t4LicnMU77zEJ6wBqg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LJ2LmMa0ve8WHVYAvS6wU4uVl4+QNvVW077LZohYhkgFnLsW09xg5U6Jdd1ySN0CqTZOfw3M9S1oJBvg8vAN8d+1Pv64EStvjJUW6t4Vegq0e5+jxtmohH24h6v88z5ZW2YP/5aPhLmTyCXgrn/ynxR0RdNbzuPKnMcRB2rHGHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R7qOMb+J; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=RVhlwv+tVnLuST6Ov9yJXeY3F2l4Esem3X14b46DCeis2VyZF8Z9zoPUEHWXThU435DZbXwfS7C6EC0LRB2/VWMPSiPgV2RnBZ/U/vuk4S/+ye598iUgctdRCWRVBH/W7QcvjrzVv1KaqtpXPK7YVBjm+BaVdVR4yBkM/2ytjPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WwrYh+PS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R7qOMb+J"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WwrYh+PS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731409665;
+	s=mimecast20190719; t=1731410024;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0lSL/7bgI4rvJwqOY4vLSEDOl6p9CLwapYsj+TEEFXo=;
-	b=R7qOMb+J7ULUaWqrT3DD1AYgM5Uzox42zKOf9UAKT1D9M9//8ddcR/g7x4Yj5vcxchji+R
-	gjp3llfHplVYXwf0dk6dkZ0HYZDknpiqfYR13kExpi1W/2lVd0OSRDnV28q5J4olW0ESy9
-	MZJBkFJHHd41qrq7jZEe1/58XkTfGwc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=SzTxMEuDp8444TtWjJA2KU2Ps/WIqufTO2E/1rzCe3I=;
+	b=WwrYh+PSpX5XZLrFIMI6K2HqcW2PNAQWkHlE2Ne/4TSdXpB4+EjPqx4ag3G/ufGnK0N6dP
+	7Z0ySqw2IVBVeHeJTQVdX390SHCLgzwRdQGI27s/vdyteIwm7kJkWzNXlGNWeBXOHsLURh
+	28Hv1C3k1acNu1NKXiuykQ0QQbpxBvc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-Wvk7cNnCP8OePWMcsAixUA-1; Tue, 12 Nov 2024 06:07:43 -0500
-X-MC-Unique: Wvk7cNnCP8OePWMcsAixUA-1
-X-Mimecast-MFC-AGG-ID: Wvk7cNnCP8OePWMcsAixUA
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d4a211177so3158024f8f.0
-        for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 03:07:43 -0800 (PST)
+ us-mta-462-lEZOGhJLNF6xuIz9T5hmYA-1; Tue, 12 Nov 2024 06:13:42 -0500
+X-MC-Unique: lEZOGhJLNF6xuIz9T5hmYA-1
+X-Mimecast-MFC-AGG-ID: lEZOGhJLNF6xuIz9T5hmYA
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-37d5ca5bfc8so2950057f8f.0
+        for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 03:13:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731409662; x=1732014462;
+        d=1e100.net; s=20230601; t=1731410021; x=1732014821;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=0lSL/7bgI4rvJwqOY4vLSEDOl6p9CLwapYsj+TEEFXo=;
-        b=GpEqPcQtGFpcPOSLnEjYRZJ/z9WQsxXq5Kp40hDlCknFRkbVwbU5d1eM1fW8y13lMz
-         podQYNQUVAHILiXB0O5ksXTQsCnPs5JwaoLwbXWO6jCw44MdmxlobZnfgMpb/z10anLU
-         BXbxc9FoamdllVMXu0JzofcjpeLzkb8Q5YiTE1RoOvte003RoUElpYSSSLM46V2JfbtN
-         CG/uW/YX0cFx67YaSjD7DHZ/uccGVfo+MN4K1IEsvhDJCPbbZkg89ULR4kPDRCNPdD+d
-         ABgSLtQd/bGDrSNBPcovWdeWSNLvlluvMFOC+zVDvy2tmNegI8ua6yvHYKsnspj48S9x
-         zVfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUaTb5sbXmtvy2Q2jZvBlDqPIMjG9f/fdqagBk6O/FODN8C3eIItebyLHttNXvBj0AAuX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFZfJaW8NFnL19NOwsZcPIPOIAO9snYGgsll2fPqY4ckei+0EB
-	Sx92WDj5ZND6pTKZP1raLGeH+CWi3B4TqqE53nbFt8WVr6woYNonTKhdyzCsty8c2waA5vXw96M
-	IRNZEviyfs/ENISsb4T/nDPbCNpFgECdX174GpO3NNM8WLVqTqA==
-X-Received: by 2002:a05:6000:2a5:b0:37d:529f:ac1e with SMTP id ffacd0b85a97d-381f188c7abmr14885477f8f.53.1731409662437;
-        Tue, 12 Nov 2024 03:07:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmp6vuCy5oyMtfQqd91rnLM9KeskYtFL/gXvJ/72CoLHySAzDEjkTpZvEahCUW7ghDBTcRTA==
-X-Received: by 2002:a05:6000:2a5:b0:37d:529f:ac1e with SMTP id ffacd0b85a97d-381f188c7abmr14885446f8f.53.1731409662046;
-        Tue, 12 Nov 2024 03:07:42 -0800 (PST)
+        bh=SzTxMEuDp8444TtWjJA2KU2Ps/WIqufTO2E/1rzCe3I=;
+        b=RtVv7LE1TqSwSWCN8WNWgxhjIS+wF1Bb3+XjMHvGj/6Qel2+pkfYfsfy96Go13KiUb
+         6n5JCbzsOd0EaWe/90LoKK0X/FubEg8Tk6toRjnGXaBiBVJ9UJQ1MVQqG2c77iZZDZjO
+         l7xWLmYR4gRH+TpL/RK1hvJFl/R3p+kx/TVKTW+6sgy7LHC35YamoWcqIppTg18VTMQv
+         hr9j9LF/oAIz9Iig13fOYmOiNS8oiXNE6eThYG422j5M1ug489/+xCGPVx4j9lb2x10b
+         V1aN2XM7H06Z8/70o6phLa5XuBoSBxSPTYiqlwm9dXegBBD7Dp8imoBzbjHBc01wZ5+s
+         vZtg==
+X-Forwarded-Encrypted: i=1; AJvYcCVRUUcYIaCkzTYquiQAamcqJSJfoGdjzXiSEo5OABbSm1l4l8nDlCAWa2VlwdgR92j0C6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUBT8BEnlXQv53+G0kWPhGztQO88gJOK5WTq5Afhumh/fxZhL7
+	5E44P0k92Khc5AImfkr+mVbnIFZNSJNsAnJ+pY0nSFEENqHbkvM2QEwdYSk+8ILdZCV/iCZ6HPY
+	BpcyQBwHAMCc0/1DUkqMnHZ2LG1WlkG3JhIm1iNVpr74nb4OAAQ==
+X-Received: by 2002:a5d:6da8:0:b0:37d:4e74:67f with SMTP id ffacd0b85a97d-381f183f6c7mr14598449f8f.37.1731410021356;
+        Tue, 12 Nov 2024 03:13:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEj5B7he/sREMSXDurDScPLqtb9aPRjKOyFK71PBxW8R3EdcWVcletITLxA8ukNvyrGU76ujw==
+X-Received: by 2002:a5d:6da8:0:b0:37d:4e74:67f with SMTP id ffacd0b85a97d-381f183f6c7mr14598426f8f.37.1731410021015;
+        Tue, 12 Nov 2024 03:13:41 -0800 (PST)
 Received: from ?IPV6:2003:cb:c739:8e00:7a46:1b8c:8b13:d3d? (p200300cbc7398e007a461b8c8b130d3d.dip0.t-ipconnect.de. [2003:cb:c739:8e00:7a46:1b8c:8b13:d3d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97c976sm14963402f8f.28.2024.11.12.03.07.40
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda03e8asm15134253f8f.90.2024.11.12.03.13.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 03:07:41 -0800 (PST)
-Message-ID: <b0e80857-b9cb-4e93-81bd-93e8dc4b1d51@redhat.com>
-Date: Tue, 12 Nov 2024 12:07:39 +0100
+        Tue, 12 Nov 2024 03:13:39 -0800 (PST)
+Message-ID: <f5b43126-acbd-4e3f-8ec4-3a5c20957445@redhat.com>
+Date: Tue, 12 Nov 2024 12:13:37 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] system/physmem: poisoned memory discard on reboot
+Subject: Re: [PATCH v2 3/7] accel/kvm: Report the loss of a large memory page
 To: =?UTF-8?Q?=E2=80=9CWilliam_Roche?= <william.roche@oracle.com>,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
@@ -78,7 +78,7 @@ Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
  wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
 References: <e2ac7ad0-aa26-4af2-8bb3-825cba4ffca0@redhat.com>
  <20241107102126.2183152-1-william.roche@oracle.com>
- <20241107102126.2183152-3-william.roche@oracle.com>
+ <20241107102126.2183152-4-william.roche@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -126,117 +126,22 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20241107102126.2183152-3-william.roche@oracle.com>
+In-Reply-To: <20241107102126.2183152-4-william.roche@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 07.11.24 11:21, “William Roche wrote:
 > From: William Roche <william.roche@oracle.com>
 > 
-> We take into account the recorded page sizes to repair the
-> memory locations, calling ram_block_discard_range() to punch a hole
-> in the backend file when necessary and regenerate a usable memory.
-> Fall back to unmap/remap the memory location(s) if the kernel doesn't
-> support the madvise calls used by ram_block_discard_range().
+> When an entire large page is impacted by an error (hugetlbfs case),
+> report better the size and location of this large memory hole, so
+> give a warning message when this page is first hit:
+> Memory error: Loosing a large page (size: X) at QEMU addr Y and GUEST addr Z
 > 
-> Hugetlbfs poison case is also taken into account as a hole punch
-> with fallocate will reload a new page when first touched.
-> 
-> Signed-off-by: William Roche <william.roche@oracle.com>
-> ---
->   system/physmem.c | 50 +++++++++++++++++++++++++++++-------------------
->   1 file changed, 30 insertions(+), 20 deletions(-)
-> 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 750604d47d..dfea120cc5 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -2197,27 +2197,37 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
->               } else if (xen_enabled()) {
->                   abort();
->               } else {
-> -                flags = MAP_FIXED;
-> -                flags |= block->flags & RAM_SHARED ?
-> -                         MAP_SHARED : MAP_PRIVATE;
-> -                flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
-> -                prot = PROT_READ;
-> -                prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
-> -                if (block->fd >= 0) {
-> -                    area = mmap(vaddr, length, prot, flags, block->fd,
-> -                                offset + block->fd_offset);
-> -                } else {
-> -                    flags |= MAP_ANONYMOUS;
-> -                    area = mmap(vaddr, length, prot, flags, -1, 0);
-> -                }
-> -                if (area != vaddr) {
-> -                    error_report("Could not remap addr: "
-> -                                 RAM_ADDR_FMT "@" RAM_ADDR_FMT "",
-> -                                 length, addr);
-> -                    exit(1);
-> +                if (ram_block_discard_range(block, offset + block->fd_offset,
-> +                                            length) != 0) {
-> +                    if (length > TARGET_PAGE_SIZE) {
-> +                        /* punch hole is mandatory on hugetlbfs */
-> +                        error_report("large page recovery failure addr: "
-> +                                     RAM_ADDR_FMT "@" RAM_ADDR_FMT "",
-> +                                     length, addr);
-> +                        exit(1);
-> +                    }
 
-For shared memory we really need it.
+Hm, I wonder if we really want to special-case hugetlb here.
 
-Private file-backed is weird ... because we don't know if the shared or 
-the private page is problematic ... :(
-
-Maybe we should just do:
-
-if (block->fd >= 0) {
-	/* mmap(MAP_FIXED) cannot reliably zap our problematic page. */
-	error_report(...);
-	exit(-1);
-}
-
-Or alternatively
-
-if (block->fd >= 0 && qemu_ram_is_shared(block)) {
-	/* mmap() cannot possibly zap our problematic page. */
-	error_report(...);
-	exit(-1);
-} else if (block->fd >= 0) {
-	/*
-	 * MAP_PRIVATE file-backed ... mmap() can only zap the private
-	 * page, not the shared one ... we don't know which one is
-	 * problematic.
-	 */
-	warn_report(...);
-}
-
-
-> +                    flags = MAP_FIXED;
-> +                    flags |= block->flags & RAM_SHARED ?
-> +                             MAP_SHARED : MAP_PRIVATE;
-> +                    flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
-> +                    prot = PROT_READ;
-> +                    prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
-> +                    if (block->fd >= 0) {
-> +                        area = mmap(vaddr, length, prot, flags, block->fd,
-> +                                    offset + block->fd_offset);
-> +                    } else {
-> +                        flags |= MAP_ANONYMOUS;
-> +                        area = mmap(vaddr, length, prot, flags, -1, 0);
-> +                    }
-> +                    if (area != vaddr) {
-> +                        error_report("Could not remap addr: "
-> +                                     RAM_ADDR_FMT "@" RAM_ADDR_FMT "",
-> +                                     length, addr);
-> +                        exit(1);
-> +                    }
-> +                    memory_try_enable_merging(vaddr, length);
-> +                    qemu_ram_setup_dump(vaddr, length);
-
-Can we factor the mmap hack out into a separate helper function to clean 
-this up a bit?
-
+Why not make the warning independent of the underlying page size?
 
 -- 
 Cheers,
