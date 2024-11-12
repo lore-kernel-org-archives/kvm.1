@@ -1,154 +1,112 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFAF206E7C;
-	Tue, 12 Nov 2024 16:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A762076D2;
+	Tue, 12 Nov 2024 17:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731428785; cv=none; b=IOINERmOvlErsqYjGHMtFzpmCns5BtouGtZV0hALVfnerN4CgfoKxzjhw1LaCRZHIRvO5ounhg/7RBYS70kxKQHn0q7HMzMc6eqPKlxcj7jjAFRQ835ZVr16qc+6hqoULTGE6i3AFVxD9K6fTTVjA4WuFv2ULIVeRzb0P55jtKc=
+	t=1731430929; cv=none; b=I3YZEBxDv7oW/iWJN9UDKvjgMudgp70ZL6jdpfPH4dxfy7/BIuXToLkUuPwcrOSS347N7SKpYaN8wHT9cIZEM5c1p5Gowo8ckJGQpkJbPrbr2Eicxkp0Nrze76MB+oU3tiYAbArhKliCSBf62e0YgAsjkGSEbz8G2VsUpqX04Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731428785; c=relaxed/simple;
-	bh=Ls2C5dAbn1TuHV0GGTkJv3icv2+cvSrD8LtkUTi0Tno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Up/REFFeu0+SxrQdDZeiIfawSZ0oa1M7zrn4xC+5/I1R1EePzJRAmRkj76AxGfPxi7DPIx+9b2KG1wsze0lP1KwDwu0wHzoViY0vuK6HdFUIiIoofl6cFQubsF53XMVdH0JBFuqsmt/KKl3czqLR+vEuGd1FbvhPUQ3OO0I/VsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GdB0j0Xi; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1731430929; c=relaxed/simple;
+	bh=M7ma40ELUhNvpjlyWrEKeeikRjFdp5fR7WH70jTeKyk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NxFgz03G1tkQT4dti1EHPtovam7dI6ul3OAtIl1V5cSuQdY6c6KKFBOo6tmbPuj8a9lKd4GqVuaOOUKIrJWxAMab9oDawkVepSgUvFhl6f8hNAP/UPpbWnnXiEyjHEw8NFdCOvkMyA0O1svqydF7G2VyjAexhNtB61Ej/MBuiSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqR2b69D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GdB0j0Xi"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACFe178001995;
-	Tue, 12 Nov 2024 16:26:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Tw506hrZ4T0Ft6pUS
-	0eidGEC0mgU2GmEStUjpwpYmEY=; b=GdB0j0Xi2JxFFsHvMSP2dLKv02mOKg5eR
-	wjEOg1CNOY2sIXheY28eHjYF1y+ETnRI5jmskbja3qVB/o28PArUueXiETQeCZvL
-	+5qq4SNuTxWo+SmPeL+vWV5qbx46LHKaTtEIiC3uqqCjRHVwAmh7rg5gTiUE7QzF
-	+b45YA58c5qItppGAUgF6Vu12M3Nd3q4bpydadOs96oHjvWTz/Vxli+ivjXxlXhD
-	qCRjNlA6lBvdpD+XaBpVTSGOoLMplO/ze6yBge4ZiCi2GqAu0cIhxqwG9ns4d35q
-	H7ow1KTbLONGFQoqe4TDLbfEymbsRG8embaiiXFbSgFTnG3NZDExA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42v9uy85ns-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2024 16:26:17 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AC9ODUZ026315;
-	Tue, 12 Nov 2024 16:26:17 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42tms14dgx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2024 16:26:17 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4ACGQDm457999766
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Nov 2024 16:26:13 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB5F120049;
-	Tue, 12 Nov 2024 16:26:13 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BBE120040;
-	Tue, 12 Nov 2024 16:26:13 +0000 (GMT)
-Received: from li-9fd7f64c-3205-11b2-a85c-df942b00d78d.fritz.box (unknown [9.179.25.251])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Nov 2024 16:26:13 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, david@redhat.com,
-        borntraeger@linux.ibm.com, cohuck@redhat.com,
-        linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, hca@linux.ibm.com,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>
-Subject: [GIT PULL 14/14] KVM: s390: selftests: Add regression tests for PFCR subfunctions
-Date: Tue, 12 Nov 2024 17:23:28 +0100
-Message-ID: <20241112162536.144980-15-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112162536.144980-1-frankja@linux.ibm.com>
-References: <20241112162536.144980-1-frankja@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DUGMi_mmSBAlqTZ3l6MNmzVXAuFvnZUR
-X-Proofpoint-GUID: DUGMi_mmSBAlqTZ3l6MNmzVXAuFvnZUR
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqR2b69D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FF8C4CECD;
+	Tue, 12 Nov 2024 17:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731430928;
+	bh=M7ma40ELUhNvpjlyWrEKeeikRjFdp5fR7WH70jTeKyk=;
+	h=From:Date:Subject:To:Cc:From;
+	b=SqR2b69DC6UN/itpJEpDivAQ0WvaMssRwPhcspNX/mBkej8BPF1Rw5mvH/VmvJnwr
+	 j+KBHXnB+P72BUU6kRisTvThNZzKNzsAZu2I8OCTS3ccQNp6RkjSGElf05GWaapgeq
+	 GygTNfQq4WFPFD6HbZjFMM9L4k5NQWAg1/dt7wEPZ7rSBwYG9vhqmtlGPIDIqUUfDz
+	 eeqo1aGJPX5InyoQIJ1OGBznqxkgIaih249umw8VFgNpHn5vOG1JG/kv90KfPl7/e/
+	 C0IDVpeKNFSzaj+tFoySzfF3F65anDOQd9IrpLBAN9rXoCoD6W3AYFQ3D0MP1hzdPq
+	 xhGAifx0T49Yw==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 12 Nov 2024 10:02:04 -0700
+Subject: [PATCH] LoongArch: KVM: Ensure ret is always initialized in
+ kvm_eiointc_{read,write}()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411120128
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241112-loongarch-kvm-eiointc-fix-sometimes-uninitialized-v1-1-7d881f728d67@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAuKM2cC/x2NwQrCMBAFf6Xs2QUT60F/RTzEZNs+bDaSxCIt/
+ fcGjwPDzEZFMqTQvdsoy4KCpA3MqSM/OR2FERqTPdveGGN5TklHl/3E7yWyIEGr5wE/LilKRZT
+ CX4Wiws1YJbAJt+HaX8LLBkut+8nS9P/z8dz3Ayn4i+SDAAAA
+X-Change-ID: 20241112-loongarch-kvm-eiointc-fix-sometimes-uninitialized-1d9f543db2d2
+To: Huacai Chen <chenhuacai@kernel.org>, 
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
+Cc: WANG Xuerui <kernel@xen0n.name>, Xianglai Li <lixianglai@loongson.cn>, 
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, llvm@lists.linux.dev, 
+ patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2092; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=M7ma40ELUhNvpjlyWrEKeeikRjFdp5fR7WH70jTeKyk=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOnGXfwfr9Tscn6wWXnZO4P13Smcx9d9U1hz6dpJIR7d6
+ O+uszd0d5SyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJMLAxMrRt2i9n3hHp2hvo
+ XGSinp6h8jmfeePJI7Jf+7KVrDn03zP8U2hUcJ74foXf4vOxe091zapQWOHgkC9zdz1nvpK9eP8
+ CLgA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Check if the PFCR query reported in userspace coincides with the
-kernel reported function list. Right now we don't mask the functions
-in the kernel so they have to be the same.
+  arch/loongarch/kvm/intc/eiointc.c:323:2: error: variable 'ret' is used uninitialized whenever switch default is taken [-Werror,-Wsometimes-uninitialized]
+    323 |         default:
+        |         ^~~~~~~
+  arch/loongarch/kvm/intc/eiointc.c:697:2: error: variable 'ret' is used uninitialized whenever switch default is taken [-Werror,-Wsometimes-uninitialized]
+    697 |         default:
+        |         ^~~~~~~
 
-Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Reviewed-by: Hariharan Mari <hari55@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241107152319.77816-5-brueckner@linux.ibm.com
-[frankja@linux.ibm.com: Added commit description]
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20241107152319.77816-5-brueckner@linux.ibm.com>
+Set ret to -EINVAL in the default case to resolve the warning, as len
+was not a valid value for the functions to handle.
+
+Fixes: e24e9e0c1da4 ("LoongArch: KVM: Add EIOINTC read and write functions")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- tools/arch/s390/include/uapi/asm/kvm.h            |  3 ++-
- .../selftests/kvm/s390x/cpumodel_subfuncs_test.c  | 15 +++++++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+It appears that my previous version of this change did not get
+incorporated in the new revision. I did not mark this as a v2 since it
+has been some time.
 
-diff --git a/tools/arch/s390/include/uapi/asm/kvm.h b/tools/arch/s390/include/uapi/asm/kvm.h
-index 05eaf6db3ad4..60345dd2cba2 100644
---- a/tools/arch/s390/include/uapi/asm/kvm.h
-+++ b/tools/arch/s390/include/uapi/asm/kvm.h
-@@ -469,7 +469,8 @@ struct kvm_s390_vm_cpu_subfunc {
- 	__u8 kdsa[16];		/* with MSA9 */
- 	__u8 sortl[32];		/* with STFLE.150 */
- 	__u8 dfltcc[32];	/* with STFLE.151 */
--	__u8 reserved[1728];
-+	__u8 pfcr[16];		/* with STFLE.201 */
-+	__u8 reserved[1712];
- };
+https://lore.kernel.org/r/20240916-loongarch-kvm-eiointc-fix-sometimes-uninitialized-v1-1-85142dcb2274@kernel.org
+---
+ arch/loongarch/kvm/intc/eiointc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index 0084839f41506eb3b99c2c38f9721f3c0101e384..6af3ecbe29caaaef1582b1fbb941c01638e721cf 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -323,6 +323,7 @@ static int kvm_eiointc_read(struct kvm_vcpu *vcpu,
+ 	default:
+ 		WARN_ONCE(1, "%s: Abnormal address access: addr 0x%llx, size %d\n",
+ 						__func__, addr, len);
++		ret = -EINVAL;
+ 	}
+ 	spin_unlock_irqrestore(&eiointc->lock, flags);
  
- #define KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST	6
-diff --git a/tools/testing/selftests/kvm/s390x/cpumodel_subfuncs_test.c b/tools/testing/selftests/kvm/s390x/cpumodel_subfuncs_test.c
-index 222ba1cc3cac..27255880dabd 100644
---- a/tools/testing/selftests/kvm/s390x/cpumodel_subfuncs_test.c
-+++ b/tools/testing/selftests/kvm/s390x/cpumodel_subfuncs_test.c
-@@ -214,6 +214,19 @@ static void test_dfltcc_asm_block(u8 (*query)[32])
- 			: "cc", "0", "1");
- }
+@@ -697,6 +698,7 @@ static int kvm_eiointc_write(struct kvm_vcpu *vcpu,
+ 	default:
+ 		WARN_ONCE(1, "%s: Abnormal address access: addr 0x%llx, size %d\n",
+ 						__func__, addr, len);
++		ret = -EINVAL;
+ 	}
+ 	spin_unlock_irqrestore(&eiointc->lock, flags);
  
-+/*
-+ * Testing Perform Function with Concurrent Results (PFCR)
-+ * CPU subfunctions's ASM block
-+ */
-+static void test_pfcr_asm_block(u8 (*query)[16])
-+{
-+	asm volatile("	lghi	0,0\n"
-+			"	.insn   rsy,0xeb0000000016,0,0,%[query]\n"
-+			: [query] "=QS" (*query)
-+			:
-+			: "cc", "0");
-+}
-+
- typedef void (*testfunc_t)(u8 (*array)[]);
- 
- struct testdef {
-@@ -249,6 +262,8 @@ struct testdef {
- 	{ "SORTL", cpu_subfunc.sortl, sizeof(cpu_subfunc.sortl), test_sortl_asm_block, 150 },
- 	/* DFLTCC - Facility bit 151 */
- 	{ "DFLTCC", cpu_subfunc.dfltcc, sizeof(cpu_subfunc.dfltcc), test_dfltcc_asm_block, 151 },
-+	/* Concurrent-function facility - Facility bit 201 */
-+	{ "PFCR", cpu_subfunc.pfcr, sizeof(cpu_subfunc.pfcr), test_pfcr_asm_block, 201 },
- };
- 
- int main(int argc, char *argv[])
+
+---
+base-commit: f7cc7a98fb7124abc269ebf162fcb3a8893b660a
+change-id: 20241112-loongarch-kvm-eiointc-fix-sometimes-uninitialized-1d9f543db2d2
+
+Best regards,
 -- 
-2.47.0
+Nathan Chancellor <nathan@kernel.org>
 
