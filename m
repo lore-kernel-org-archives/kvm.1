@@ -1,87 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5BD23099B;
-	Tue, 12 Nov 2024 11:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E7F1BCA11;
+	Tue, 12 Nov 2024 11:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731411620; cv=none; b=eEpQ3A5I01NTzDKJtMlc73qfMgmwFDi7XSlZfkxKi8l20FrOxslb5Hz+RbtBhviFnA0JATPdqvIt0niVJ2fXBSn6R3pklWNSWRTiw8HkRrFL02oDKeKkZTiqDcBA69vKPAd8JN1mK2bPxSlbfplwGgoEIwh8nhIgz0/+FkPaLtQ=
+	t=1731412736; cv=none; b=Qbo6G8k8npuF2xUOrDVU3Do+0cMtvGbQKF6OlBiovuSk7vzDY894PqDHGvVukeMT1GtlOA6GCBswk5L4Lg/24ilRRGBSyY5AuKovfG6BJoI9xvNNoSy4ZeZr9QpSm5cmyjTDCt0qjJlv8xuYuA+StGj6JRnJ3IcpW4HLiMJ8QpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731411620; c=relaxed/simple;
-	bh=8qmj0pHUDgMKjJ62WWArHo5zo6dEwy07xVsYgZ4lj5A=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kymfNh/QgzWxwj8WHq8ksZT6kg+p2AmHtzo7KJ7eth0SoFVgK61EEOQDF+zuVaqmaYejFOF6EgAlGDO3t4wWZdufHECPmJ6+qpddVEzcstvtCDn1sDc5h/tnhaIjJFNOHFL7Jc+3JXBp8cvW2hqn2V4LG0drUXTFFvptNCuZpDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y7tWldnR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731412736; c=relaxed/simple;
+	bh=TUNmIAPn6+pKk5nzKQZ1OjgyCLxgxK7kaAVkQhXghrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uHCDUQlNftbl/GL43xtYnfDSKYlmra4qSAF6j9K32//FRfl1SaBEg8bCtwE6hkJ6KGZqGsHywR07PVWToWCjza0oKrE/YWffO5/Lb4N6gkpLGKcc8Pbx3v3u9yDABdJZtbjnm4iy0hWnYQ9qHR07FQMJB+KOA62WeshA7Ula7MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NW0Cnhro; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y7tWldnR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDA6C4CECD;
-	Tue, 12 Nov 2024 11:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731411620;
-	bh=8qmj0pHUDgMKjJ62WWArHo5zo6dEwy07xVsYgZ4lj5A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Y7tWldnREzY69DhPL2F5PQ7pFRxkb1KpKGgUFx3athIhRv2OPwsy2I9luyTFKtl6X
-	 hRpHbJOy5ETGWvmB18KsjvEQs5NYG9gfZg+uovkGu94RbAPZzh3qP41RsloKFsoTv7
-	 BrPX9WyFZ56ACcdDjxjkDuIql8NftBrIMQ55yKdcenG7TaHQWo0ekAoJUvMmzVZKqp
-	 IRDF/vXzMZBiHVYWoQ670cJzf1rK+oLun15YJMi3VXRYem8an4L0xm1AKu5qlU4lGZ
-	 nPeO3jEHUat4TNugTLo6wVM831E7oeYKPkxua7ARmF6vA8EglLWKBrEzEzK8uxNOEi
-	 UTAr9rSON+jJA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 711BB3809A80;
-	Tue, 12 Nov 2024 11:40:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NW0Cnhro"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3B28440E0219;
+	Tue, 12 Nov 2024 11:58:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id K0mb3qn6eQ2E; Tue, 12 Nov 2024 11:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1731412724; bh=pUkUnh5KepZX+fycGuZ0Jah4PiIPhoLoA1x5Uf4hXQk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NW0CnhroUylwEPqyeQXOXk8N75MoxkYs5HX51aINwz3/N/Sc7QvF6fhvnOXKzoZRf
+	 xHSLAW//IkLuS48CV8o11VTS6McVekMZAMwpamDs4YVLPhQDNmf64ZEaxxus0GGAh1
+	 qSm0zujyK+5Aa3NjLrR3izo2/Fax5WjEvrBPKKyOJlpU30V3d45abZlL1dz5IgzPRx
+	 GXYmy23QGxIHNOEK1PhwMAAO87iixqGjQNabWLH+NZbhIaRq+QqJpHr/7VqLypeI2m
+	 ScUs8D9oodqzw53BS8LofG4633bSXF0nx64RDWGHc8Ia/zrNSdtEYHGYo8tFxRfGdh
+	 4FspwmabVVWm0tBOtytantZjshy+wSmwCh5zk9kS0vs3PHtgq0xZk6hPsVqUN8TGMe
+	 Ehd0UMrKfLP0EW6Kvj5FMTGqr49PWzuOI+XzN4N4RnPJ9CSv9Kx0lE5HavG8Oet23k
+	 40HNeBNrEPuBeq0ifurBg2yRkYUwIjnx1YzxQ6dFQr47sTeKYNVE08/QY6aZWncPwu
+	 LSFoR6is7HANMt4McbKCzKnrpbjq0T2OSV79cnZD4yOSD8iw7LludXMY0cYHfsbLr2
+	 oLGPqeuAjK/Vnit3Shi4DXwmAxSwAC2+k9HHEtponuRrHhnTgrI+L79/9oN18K7WEk
+	 B77eLJ7GBNfM7YBGD/6uFgVc=
+Received: from zn.tnic (p200300ea973a31e1329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:973a:31e1:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 42A8D40E019C;
+	Tue, 12 Nov 2024 11:58:19 +0000 (UTC)
+Date: Tue, 12 Nov 2024 12:58:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Amit Shah <amit@kernel.org>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
+	linux-doc@vger.kernel.org, amit.shah@amd.com,
+	thomas.lendacky@amd.com, tglx@linutronix.de, peterz@infradead.org,
+	pawan.kumar.gupta@linux.intel.com, corbet@lwn.net, mingo@redhat.com,
+	dave.hansen@linux.intel.com, hpa@zytor.com, seanjc@google.com,
+	pbonzini@redhat.com, daniel.sneddon@linux.intel.com,
+	kai.huang@intel.com, sandipan.das@amd.com,
+	boris.ostrovsky@oracle.com, Babu.Moger@amd.com,
+	david.kaplan@amd.com, dwmw@amazon.co.uk
+Subject: Re: [RFC PATCH v2 1/3] x86: cpu/bugs: update SpectreRSB comments for
+ AMD
+Message-ID: <20241112115811.GAZzNC08WU5h8bLFcf@fat_crate.local>
+References: <20241111163913.36139-1-amit@kernel.org>
+ <20241111163913.36139-2-amit@kernel.org>
+ <20241111193304.fjysuttl6lypb6ng@jpoimboe>
+ <564a19e6-963d-4cd5-9144-2323bdb4f4e8@citrix.com>
+ <20241112014644.3p2a6te3sbh5x55c@jpoimboe>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/3] virtio/vsock: Fix memory leaks
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173141163025.493337.14764955128462375316.git-patchwork-notify@kernel.org>
-Date: Tue, 12 Nov 2024 11:40:30 +0000
-References: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
-In-Reply-To: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, justin.he@arm.com, avkrasnov@salutedevices.com,
- dtor@vmware.com, acking@vmware.com, georgezhang@vmware.com,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241112014644.3p2a6te3sbh5x55c@jpoimboe>
 
-Hello:
+On Mon, Nov 11, 2024 at 05:46:44PM -0800, Josh Poimboeuf wrote:
+> Subject: [PATCH] x86/bugs: Update insanely long comment about RSB attacks
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Why don't you stick this insanely long comment in
+Documentation/admin-guide/hw-vuln/ while at it?
 
-On Thu, 07 Nov 2024 21:46:11 +0100 you wrote:
-> Short series fixing some memory leaks that I've stumbled upon while toying
-> with the selftests.
-> 
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> ---
-> Changes in v2:
-> - Remove the refactoring patch from the series [Stefano]
-> - PATCH 2: Drop "virtio" from the commit title [Stefano]
-> - Collect Reviewed-by [Stefano]
-> - Link to v1: https://lore.kernel.org/r/20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co
-> 
-> [...]
+Its place is hardly in the code. You can point to it from the code tho...
 
-Here is the summary with links:
-  - [net,v2,1/3] virtio/vsock: Fix accept_queue memory leak
-    https://git.kernel.org/netdev/net/c/d7b0ff5a8667
-  - [net,v2,2/3] vsock: Fix sk_error_queue memory leak
-    https://git.kernel.org/netdev/net/c/fbf7085b3ad1
-  - [net,v2,3/3] virtio/vsock: Improve MSG_ZEROCOPY error handling
-    https://git.kernel.org/netdev/net/c/60cf6206a1f5
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
