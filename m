@@ -1,142 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF55213156
-	for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 17:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284EF215007
+	for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 18:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731433468; cv=none; b=APG+33hiT/7OZCVVo8rMvjQqsGsDyYNLxqhHDnImoVmAiVKlWIc8hAkR710Bj3cYmDsxNG+DQZeTiC0gWtEGgH+c/Z2UDfpQd18RTerBaQY66uT6VhVasdo37sd3Q7SOqEp6NKja3JxqgH1MN3YziUCi/AVLjFb3q2sFbKd9ONQ=
+	t=1731434748; cv=none; b=V6GYiqt9gkarMSCDQDgTe1HMqcqyzJaVa8L5vY8YXD84tpKfM8m7kuTPOLaIU08+QDcmjXFbfAMvKUZl2O2/ejvV3kXPFumQ18YGh/xsNEHZ0ofq5lm1GZuKt9G3lacoJa6dNge1cLzSt9ofw9QTFL+/e/1NlLW81n9GqWF7LuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731433468; c=relaxed/simple;
-	bh=RDfArepTU8NJiFtWt6ibJ1faxB56iYRNzWqS2Kgk2uY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nFn18CvTf5aRgTuMb/BM47Dw+/U016PTJN6nGhlROyOqDzVSWGHcAX4aQ17hLyWaA6WuL8uCU4EGOzVQnkbxo+cXXTyP0hZZy5jUOn9PDu2AecVuhoThFifMvemkk7qAJpJ66iV60fWu79hUlKgrTBvHG29JNoQbFDHiLfovfzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NYKW3wa4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731434748; c=relaxed/simple;
+	bh=1TNtYrw0cI+4IbhwahK3f27e0NBbir3ttqfscikF/Tc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=X8quWoEWk/4WXr+XNG/hWhT8Z9z7TnjFfHyAGxm41Y2H0Iu6mkmRQCozolEa2hh3DjjNxy+qGJ0t6Gviprg3bl0JEiIZv8qckON9kFGPGlP/AboeKv4/xtP+7oSD3W81Gm9Ov6Cf9mE6xNgmNCe+zke0kHMkeV57LOy3r4kMfNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q1KN+lI9; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NYKW3wa4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731433465;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eVzX8IrUiHDIGjgNVYIdt2apAWg2olnejFrDZpVW494=;
-	b=NYKW3wa4c8eH6J31r647I8RM3NKO+yUtzg8YY7bogY1zTM1yQsl9VqPRDwY+S9GnF0V2R9
-	qDXJYTA4XTafCKMT8b/o3ZyyOGxDPPwl67+DuaMZBt4wiuXzxutkq5J0KrSGUC5DboRyP2
-	bWE0JSoeJ1jj69cmr2xG1/cSoO2qkm0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-hhJkM9c4M5eGxTlZnC3MoQ-1; Tue, 12 Nov 2024 12:44:24 -0500
-X-MC-Unique: hhJkM9c4M5eGxTlZnC3MoQ-1
-X-Mimecast-MFC-AGG-ID: hhJkM9c4M5eGxTlZnC3MoQ
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-431518e6d8fso42653745e9.0
-        for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 09:44:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q1KN+lI9"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2118b20e83aso57509015ad.0
+        for <kvm@vger.kernel.org>; Tue, 12 Nov 2024 10:05:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731434746; x=1732039546; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6syIpXROohiAYDOvSaTBOoRkASAnslDzHcGzJCB1UlA=;
+        b=Q1KN+lI96oQNSWTGl2pHpOuMsfPJ32PkiO0JY4MyeFfcIG+oXG7rDMS50YCHmMNV2p
+         tPqGAvLndJ6FceUyoY3IhR1HGK+ywIm9jeO2VSMJ5AtFbkrIp/7s7nKXiF7+aXXdauFi
+         VhZfuE2Id5FblglCgX38OEEDpOPbPmdz2PY9IbW0fnl9cYAFFPDfwZU23v2gVp9tigEW
+         UbJlOrco+AeUsTLeDxw8nBv86epgViDFUkaHUF4d8dFPn8IXyfRv28X/N/kEXadTVOds
+         k10uDJ+JpHo8n/l7HVPvpXhNjplY5Ma3u441WlWzRerm2aS2NwkiH/9cMY5Ka7n2ZXHg
+         8dXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731433463; x=1732038263;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eVzX8IrUiHDIGjgNVYIdt2apAWg2olnejFrDZpVW494=;
-        b=e/jfFPn97EMdSnY14IpWK+fEIIkm5LbDdEXK0mqRUvqma15xBNrvELt3DR2h7aT173
-         RVOIs416Y+sdrc6x9i4aqFn6c77XX+qnwH9Fh93W2WROrGDRq3O8Hbj6vSH9lRjBQTVL
-         hHvVdhGQ3vUYm6kzifehLvrfdWlDjRiV+ueWZR52yRodzJzr3FsW0SvScbhPYirVtIuK
-         Qw4jnHK/w3ch4mNp/vo7F13cedLHvhi9I1dg0cJHoals/wE/RiHuE77z6l44ucscztBT
-         g57F/xp+oAK2IGeaREHhbmg2m8GmW6KjBA5RcZJn0S6AcRcisSmlR1LUW/qNbLT7/5jb
-         l4Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCUb59raVsx6FgQXdyhpNQk437b9lTkNyNfqOh3R2I81frPX7g2h7t053nzPmAeFb3b0WUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2S+pCyL7OdU5kPL7sFwUwpL835sp8U5QjJFph39A567ahXZO8
-	aFDUi74lcO10rjyH84ygZILq6EtDDOihHLdezJTyGSBDybl4cSsbvR9kWnP/Ie6cBFe9OaMj00O
-	gaJIJT3Nb5tv3tZlsnLd9PkrwsunfyIz/lq7UxxDO6JcUxD1HeoP5OKrxME+1+vwc0kKWarO1TC
-	GqjL9tO2ELFY7rTOnZyNB8Qgz+
-X-Received: by 2002:a05:600c:6987:b0:431:3a6d:b84a with SMTP id 5b1f17b1804b1-432bcafc5a6mr122920625e9.4.1731433462945;
-        Tue, 12 Nov 2024 09:44:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFk1+sll6qKj8ZxjfW1Guv/zAkO9AMei6W+uBdtH7yxnyBBvnBSeRCXgDgU3LYFUHOhAclwT5YnnRTovc4RLzg=
-X-Received: by 2002:a05:600c:6987:b0:431:3a6d:b84a with SMTP id
- 5b1f17b1804b1-432bcafc5a6mr122920445e9.4.1731433462644; Tue, 12 Nov 2024
- 09:44:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731434746; x=1732039546;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6syIpXROohiAYDOvSaTBOoRkASAnslDzHcGzJCB1UlA=;
+        b=PgArassUGuvoufD2xbUu3EnLAGReDti80Bp1AwktlDirzARP5YNFi9QwHKpJ54DnnH
+         IhdWgsvphyKmEhxJdJoIc1/4S9hj6m6QEdiVjlWHP5Y8dHB/ZSMOAGbGp+81fYSCIkgv
+         kq+FHezgoGylM1N3pSNIMVSFUIJJGQzSvny/Nc/+UAzpdw22c03SFbAsDS2HlqKUfhcE
+         h7WK5eSgPuRniARLmekY+4cYQVeJll679Yd3ctYpSguMYFQQIiTrya5btokygbSBvE60
+         ptsl1hePkbOfgSmNNPuf+0oBfQJQlv+meG1dzUXbRgG0Zj5hJPvGqX8omsVBcTy7I9wT
+         He5A==
+X-Forwarded-Encrypted: i=1; AJvYcCX1TuxVPCwpWM/hyAvn0HVRT4NdiiSodhzgxOftXJBzvFD9zIMJXHVVktH1z5EGENFONMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYF7DkOjdZ+NMI7fU1CWUg8GTJE48Esdbmb+13rTvJZ4xx2c+a
+	RAO3hqTwGEaWypDsrUuq2IdR6CAqDCSbB1hQV7+SZ/zQLvndSA82Axfn06UCqqr+HCwovnZKfcK
+	eDA==
+X-Google-Smtp-Source: AGHT+IH4kIZHreHu/wwqMQNUg569gEssFax5NR336gUa63Ml5d5Oc6cqepxT2wPIVMkXWwz+u3m8I7kF464=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a17:902:7596:b0:20b:96e2:59a2 with SMTP id
+ d9443c01a7336-211833138acmr1094805ad.0.1731434746498; Tue, 12 Nov 2024
+ 10:05:46 -0800 (PST)
+Date: Tue, 12 Nov 2024 10:05:44 -0800
+In-Reply-To: <20241112065415.3974321-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241030033514.1728937-1-zack.rusin@broadcom.com>
- <20241030033514.1728937-3-zack.rusin@broadcom.com> <CABgObfaRP6zKNhrO8_atGDLcHs=uvE0aT8cPKnt_vNHHM+8Nxg@mail.gmail.com>
- <CABQX2QMR=Nsn23zojFdhemR7tvGUz6_UM8Rgf6WLsxwDqoFtxg@mail.gmail.com>
- <Zy0__5YB9F5d0eZn@google.com> <CABQX2QNxFDhH1frsGpSQjSs3AWSdTibkxPrjq1QC7FGZC8Go-Q@mail.gmail.com>
- <e3f943a7-a40a-45cb-b0d9-e3ed58344d8b@redhat.com> <CADH9ctD1uf_yBA3NXNQu7TJa_TPhLRN=0YZ3j2gGhgmaFRdCFg@mail.gmail.com>
- <c3026876-8061-4ab2-9321-97cc05bad510@redhat.com> <CADH9ctBivnvP1tNcatLKzd8EDz8Oo6X65660j8ccxYzk3aFzCA@mail.gmail.com>
-In-Reply-To: <CADH9ctBivnvP1tNcatLKzd8EDz8Oo6X65660j8ccxYzk3aFzCA@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 12 Nov 2024 18:44:07 +0100
-Message-ID: <CABgObfZEyCQMiq6CKBOE7pAVzUDkWjqT2cgfbwjW-RseH8VkLw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] KVM: x86: Add support for VMware guest specific hypercalls
-To: Doug Covelli <doug.covelli@broadcom.com>
-Cc: Zack Rusin <zack.rusin@broadcom.com>, Sean Christopherson <seanjc@google.com>, 
-	kvm <kvm@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Joel Stanley <joel@jms.id.au>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, 
-	linux-kselftest <linux-kselftest@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20241112065415.3974321-1-arnd@kernel.org>
+Message-ID: <ZzOY-AlBgouiIbDB@google.com>
+Subject: Re: [PATCH] x86: kvm: add back X86_LOCAL_APIC dependency
+From: Sean Christopherson <seanjc@google.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	kernel test robot <lkp@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Il lun 11 nov 2024, 21:55 Doug Covelli <doug.covelli@broadcom.com> ha scritto:
->
-> BDOOR_CMD_VCPU_MMIO_HONORS_PAT and BDOOR_CMD_VCPU_LEGACY_X2APIC_OK are not
-> actually backdoor calls - they are flags returned by BDOOR_CMD_GET_VCPU_INFO.
->
-> BDOOR_CMD_VCPU_MMIO_HONORS_PAT is only ever set to 1 on ESX as it is only
-> relevant for PCI passthru which is not supported on Linux/Windows/macOS.  IIRC
-> this was added over 10 years ago for some Infiniband device vendor to use in
-> their driver although I'm not sure that ever materialized.
+On Tue, Nov 12, 2024, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Enabling KVM now causes a build failure on x86-32 if X86_LOCAL_APIC
+> is disabled:
+> 
+> arch/x86/kvm/svm/svm.c: In function 'svm_emergency_disable_virtualization_cpu':
+> arch/x86/kvm/svm/svm.c:597:9: error: 'kvm_rebooting' undeclared (first use in this function); did you mean 'kvm_irq_routing'?
+>   597 |         kvm_rebooting = true;
+>       |         ^~~~~~~~~~~~~
+>       |         kvm_irq_routing
+> arch/x86/kvm/svm/svm.c:597:9: note: each undeclared identifier is reported only once for each function it appears in
+> make[6]: *** [scripts/Makefile.build:221: arch/x86/kvm/svm/svm.o] Error 1
+> In file included from include/linux/rculist.h:11,
+>                  from include/linux/hashtable.h:14,
+>                  from arch/x86/kvm/svm/avic.c:18:
+> arch/x86/kvm/svm/avic.c: In function 'avic_pi_update_irte':
+> arch/x86/kvm/svm/avic.c:909:38: error: 'struct kvm' has no member named 'irq_routing'
+>   909 |         irq_rt = srcu_dereference(kvm->irq_routing, &kvm->irq_srcu);
+>       |                                      ^~
+> include/linux/rcupdate.h:538:17: note: in definition of macro '__rcu_dereference_check'
+>   538 |         typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
+> 
+> Move the dependency to the same place as before.
+> 
+> Fixes: ea4290d77bda ("KVM: x86: leave kvm.ko out of the build if no vendor module is requested")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202410060426.e9Xsnkvi-lkp@intel.com/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> Question: is there actually any point in keeping KVM support for 32-bit host
+> processors?
 
-Ok. So I guess false is safe.
+Nope.  We need _a_ 32-bit KVM build to run as a nested (L1) hypervisor for testing
+purposes, but AFAIK there's zero need to keep 32-bit KVM up-to-date.
 
-> BDOOR_CMD_VCPU_LEGACY_X2APIC_OK indicates if it is OK to use x2APIC w/o
-> interrupt remapping (e.g a virtual IOMMU).  I'm not sure if KVM supports this
-> but I think this one can be set to TRUE unconditionally as we have no plans to
-> use KVM_CREATE_IRQCHIP - if anything we would use KVM_CAP_SPLIT_IRQCHIP although
-> my preference would be to handle all APIC/IOAPIC/PIC emulation ourselves
-> provided we can avoid CR8 exits but that is another discussion.
+> From what I can tell, the only 32-bit CPUs that support this are
+> the rare Atom E6xx and Z5xx models and the even older Yonah/Sossaman "Core
+> Duo", everything else is presumably better off just running a 64-bit kernel
+> even for 32-bit guests?
 
-Split irqchip should be the best tradeoff. Without it, moves from cr8
-stay in the kernel, but moves to cr8 always go to userspace with a
-KVM_EXIT_SET_TPR exit. You also won't be able to use Intel
-flexpriority (in-processor accelerated TPR) because KVM does not know
-which bits are set in IRR. So it will be *really* every move to cr8
-that goes to userspace.
+Yep.  I am 99.9% certain there are no users of 32-bit KVM.  There have been
+multiple instances in the past few years where 32-bit KVM was quite broken, for
+several kernel releases, and no one complained.
 
-> For now I think it makes sense to handle BDOOR_CMD_GET_VCPU_INFO at userlevel
-> like we do on Windows and macOS.
->
-> BDOOR_CMD_GETTIME/BDOOR_CMD_GETTIMEFULL are similar with the former being
-> deprecated in favor of the latter.  Both do essentially the same thing which is
-> to return the host OS's time - on Linux this is obtained via gettimeofday.  I
-> believe this is mainly used by tools to fix up the VM's time when resuming from
-> suspend.  I think it is fine to continue handling these at userlevel.
-
-As long as the TSC is not involved it should be okay.
-
-Paolo
-
-> > >> Anyway, one question apart from this: is the API the same for the I/O
-> > >> port and hypercall backdoors?
-> > >
-> > > Yeah the calls and arguments are the same.  The hypercall based
-> > > interface is an attempt to modernize the backdoor since as you pointed
-> > > out the I/O based interface is kind of hacky as it bypasses the normal
-> > > checks for an I/O port access at CPL3.  It would be nice to get rid of
-> > > it but unfortunately I don't think that will happen in the foreseeable
-> > > future as there are a lot of existing VMs out there with older SW that
-> > > still uses this interface.
-> >
-> > Yeah, but I think it still justifies that the KVM_ENABLE_CAP API can
-> > enable the hypercall but not the I/O port.
-> >
-> > Paolo
-
+Paolo, should we go ahead and start the process of removing 32-bit support in x86?
+I forget who it was, but someone from the QEMU world mentioned that dropping 32-bit
+support in KVM would allow dropping a rather large pile of code in QEMU too.
