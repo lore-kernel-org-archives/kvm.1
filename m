@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568B521A4A0;
-	Tue, 12 Nov 2024 20:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91E519F115;
+	Tue, 12 Nov 2024 20:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731442189; cv=none; b=eIFXAPRn2Mb9yhdKYaUBLUFH5BxiKowtkFFc21yLNSBLuBnNbat+aqyFBOmUHEu8dA9wO4lbbISDG11axjUi1GES4qmp7dFTwNSgn8DTtb8aiVUMnC5I1GoHGK0s4T+tpp387SN+FXNk2z7DBjsnzgOdxQTcKsmzr+LNoAoBFWU=
+	t=1731442651; cv=none; b=TvgwZrVwQRIaexgKtx7Fsy9Pt/eNTO3Mbcfph5DtVEnGaGBvtdfeTXOjy0eWX1WCaeDBA7/O33uCA5MoMbewbt4PVNbZHWKjQzo8bJ0a7vEFHa5e/VUhT3VQ0OFIivpX6ytSwThcCyoPE+DHJTIAEt5NXmcAc/T5CygM0Dc+kmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731442189; c=relaxed/simple;
-	bh=NrSy1gcbCnYaZdvche+ClurqCbL4Ri/JGOE72EFEnhI=;
+	s=arc-20240116; t=1731442651; c=relaxed/simple;
+	bh=QOM1SncF/0wvo5h5vR+fjDqEBF/TMWPHc3ABRK9nA8Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UxE9Dls8cXc6DF5BlmioLtCstlxl/a0mtChUA/7RahlDL/gFnas8AWEUqQ3OftfFJqclt9HtXm0thsoyQ8WAZ+r0cN0WrO5zWPK0avdqRR4ox8iolkoRHtww92iYeN/7hg+xpZWzXlgm1EJ9tbasDLxHy91PugwgqET1yTK9UBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aFb1+/wO; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=MQnRttHLWC5/Pzh+Xr8iRt7ILA7VFQT7peTyp53ArfQKT4+mZ70+RbEAKoxY2BsNO1j2I+ekSC5L/M1AndJjTXSIvxprdkpfrCKwSkJNMBeehzhlT7+7RCypHcih6oLN4hSym+NfaINb+ciDJDGUVT3SlUeikbp9hrAb4RWravQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NwE1Fl6p; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aFb1+/wO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NwE1Fl6p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731442188; x=1762978188;
+  t=1731442650; x=1762978650;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=NrSy1gcbCnYaZdvche+ClurqCbL4Ri/JGOE72EFEnhI=;
-  b=aFb1+/wOl3I7DRstQr93RPdxIpaVM87+U2AO6+S+W9pnhzJp67hipHGm
-   muPK1Q13Sz4nFmKBUKLAFoRrHvzeSjprHs32UThJ539qtzuVXUxfjLZZi
-   oYPu2KjB5ukrrvEg/ozzUkbakck9i/d6FKIfB2+bltvgJirE86xOWM33m
-   L3YGgchgJPeBIjaFEU2P7H2rJanXiYHR0Zk1X23ua9/6z2ZvXVwF1LhVm
-   OmAocGNv6vnRtfFyKrMdivPS8x1Fc0pznA3vbT6n14JyaWlL/TOwF+Ql0
-   c20fBAAYazgG1K1F4/90E2sy1desSWBl+tsFwqncbAr/yFwFqx+yKr0aK
-   w==;
-X-CSE-ConnectionGUID: bun7+JtUR++PqiLbC5IYjg==
-X-CSE-MsgGUID: n+8JCCzvR5u/eWgPwFnR8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31266803"
+  bh=QOM1SncF/0wvo5h5vR+fjDqEBF/TMWPHc3ABRK9nA8Y=;
+  b=NwE1Fl6pGWCd2ZITKqFDelDSEHyK+bluEZrPpBQPKCQdINBc6LOxR9jm
+   vfsbeUvWOWutfTXCpLcGguL6AY6yiSE+IB2I5+a14O8++av5PCeIX1bZx
+   0tLfc9uqT7ptTVjyxXS56X4fTGmX70TUCwDaLyoW6w55BH67D2drH04WT
+   9UNUf7hXVfeVGcoOl8+RjDLdiAZxfHNRNe+UTxpUATS/pkf2R8klnFUho
+   E2PpeTw7DF4EwURuIiZGrZiPUgwumnfF+50i48EGZPD45DxjmGwNtlOkN
+   6K/gnsSymWFY1T/Z9el7ZZ5U0KQeEVKppqCp98SCaac9H1yj9o2v5Dozy
+   g==;
+X-CSE-ConnectionGUID: o0QoXIeOTdePzUEu+MG++g==
+X-CSE-MsgGUID: r3HHHQISTlmUE9Ohm3c29Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31268263"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31266803"
+   d="scan'208";a="31268263"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 12:09:46 -0800
-X-CSE-ConnectionGUID: 67ptqpQoTXOdNgJ+dr7m2A==
-X-CSE-MsgGUID: eE0Thl9SThWiZUtRxsOLog==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 12:17:30 -0800
+X-CSE-ConnectionGUID: C2Y4q5K/QAib5ewk6kBiTg==
+X-CSE-MsgGUID: +j7j5hQeS6COyRTBgTtW/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,149,1728975600"; 
-   d="scan'208";a="87536575"
+   d="scan'208";a="87538518"
 Received: from jairdeje-mobl1.amr.corp.intel.com (HELO [10.124.220.61]) ([10.124.220.61])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 12:09:44 -0800
-Message-ID: <235f3512-9949-4d69-ae43-1280548fd983@intel.com>
-Date: Tue, 12 Nov 2024 12:09:44 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 12:17:29 -0800
+Message-ID: <4df744b9-041a-4ed7-aa34-a78923f79cf9@intel.com>
+Date: Tue, 12 Nov 2024 12:17:28 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/25] x86/virt/tdx: Add SEAMCALL wrappers for TDX
- KeyID management
+Subject: Re: [PATCH v2 06/25] x86/virt/tdx: Add SEAMCALL wrappers for TDX TD
+ creation
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>, pbonzini@redhat.com,
  seanjc@google.com
 Cc: yan.y.zhao@intel.com, isaku.yamahata@gmail.com, kai.huang@intel.com,
@@ -63,7 +63,7 @@ Cc: yan.y.zhao@intel.com, isaku.yamahata@gmail.com, kai.huang@intel.com,
  Sean Christopherson <sean.j.christopherson@intel.com>,
  Binbin Wu <binbin.wu@linux.intel.com>, Yuan Yao <yuan.yao@intel.com>
 References: <20241030190039.77971-1-rick.p.edgecombe@intel.com>
- <20241030190039.77971-6-rick.p.edgecombe@intel.com>
+ <20241030190039.77971-7-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,22 +109,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20241030190039.77971-6-rick.p.edgecombe@intel.com>
+In-Reply-To: <20241030190039.77971-7-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/30/24 12:00, Rick Edgecombe wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> Intel TDX protects guest VMs from malicious host and certain physical
-> attacks. Pre-TDX Intel hardware has support for a memory encryption
-> architecture called MK-TME, which repurposes several high bits of
-> physical address as "KeyID". TDX ends up with reserving a sub-range of
-> MK-TME KeyIDs as "TDX private KeyIDs".
+> +u64 tdh_mng_create(u64 tdr, u64 hkid)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = tdr,
+> +		.rdx = hkid,
+> +	};
+> +	clflush_cache_range(__va(tdr), PAGE_SIZE);
+> +	return seamcall(TDH_MNG_CREATE, &args);
+> +}
+> +EXPORT_SYMBOL_GPL(tdh_mng_create);
 
-The changelog there was great.  It read my mind because I was wondering
-why some of the operations didn't get combined in helper functions which
-could be exported.
+I'd _prefer_ that this explain why the clflush is there.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-
+The other goofy thing here is why it's getting a physical address passed
+in.  It's my old 32-bit paranoia kicking in, but everything that has a
+valid virtual address _also_ has a valid physical address.  The inverse
+is not true, though.  So I like to keep things as pointers as long as
+possible.
