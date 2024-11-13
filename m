@@ -1,66 +1,38 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B936C147
-	for <kvm@vger.kernel.org>; Wed, 13 Nov 2024 14:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8320E282ED
+	for <kvm@vger.kernel.org>; Wed, 13 Nov 2024 14:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731506417; cv=none; b=njkwd90f4t6d39Go4FUrErrko3eJgIaUQVeFHveCT8/cKIp/ivYXsTDYo2168X0/4XXqynOS8FuQQ6AY6A6tC0MgBIev2c9ESRW7Xi8QqMPin/vKDS+/XL8+/yK8UggB1rwqEFyJ0rxZ8ukHTBdDlaKoDIMP5S7Fj7WntCzVQc0=
+	t=1731507360; cv=none; b=X4E7+cQVYpELwZGV7ko6rF/Ols3WFMOqmPNVuLuMlggX2bR9CVM/W7ndrD2RCJMzHV2lfTNLu26xhWSGB6QGKotXfYFbxY6fCGC/zTG6jvWfTBRWlQA4G2iINODFBI8RS36dEfue89jkOgGhXI/sV6oK53KdA1jcfSODpPIX4rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731506417; c=relaxed/simple;
-	bh=A5nmkRUCOaho6qpdbcszh+0eBFJI8Uo1zg21kEPTZLA=;
+	s=arc-20240116; t=1731507360; c=relaxed/simple;
+	bh=BhUVQTaxLsAJyNyqUeTjebjHTvgal8Qlf+/AL5Kf4eI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wc0Vg73MwsDXrWtwPen0w8phMqouKepKYUDVpJoRh+JiNowIzv5Lec6OQ0HziX/Utk8Co6RDfpHoMtpSWS4R6p+rf58ytoXw5pjoi86HvTcSGnL/E29n6dULLzJclZJoPOHGqo+cFA1rZhIWxSBWdErcs7pv8LXHWx59xZuNDfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CG+WKhdY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=SwH6C2f2ib4Gp2NnCOqxm/69RU23WSRAHrYp8MmEQ+XsQpT3UaeRDRZ6qF8/xOHFqlpAWRJDLZxQfgyKv7r1msFyy4SLc+Esj1pjFesHq29uxSVGAGrAFe2PR1n4m7pjhopzEQB6ufse1nUnB/lA05Ul9s13/mNzxwZm0ZBEuzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Ys0X/1I1; arc=none smtp.client-ip=178.154.239.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CG+WKhdY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731506414;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AVx4/gA1b+N1rOmhGjbTcX75Rwbv2pLi4Mqqu/aJuY0=;
-	b=CG+WKhdYdkVDvVeiNPxM9sDbhG+FtrPqg8z+IlYRJsC0HV5QhZ/Qb9dCfgOHBAqb0RyMFK
-	LS87iWryVBvbW45u8dB+AzSz9vagKf+7YKSYlPXhaV97SMAa8yJO2wBPOXvEFoeVEDDDEI
-	5WiCTCIOeAtkxOW2KGa1E6A0DG0qJs4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-S-Vc4U5FPDuMVYU4RNWy3A-1; Wed, 13 Nov 2024 09:00:12 -0500
-X-MC-Unique: S-Vc4U5FPDuMVYU4RNWy3A-1
-X-Mimecast-MFC-AGG-ID: S-Vc4U5FPDuMVYU4RNWy3A
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-37d5116f0a6so3802501f8f.0
-        for <kvm@vger.kernel.org>; Wed, 13 Nov 2024 06:00:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731506411; x=1732111211;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AVx4/gA1b+N1rOmhGjbTcX75Rwbv2pLi4Mqqu/aJuY0=;
-        b=NjSM8QEMEQmuQi5sSgz0G0FLqiSl+G1kh3JQIt9kO/7M30xTR8HhZcjOii9qBEunrs
-         +gEqahYdhXnx7V58AeItMyVql/GjyO+YM13i8tbLcLQDisciQPvRL+uHBAbl8SYsqPRG
-         UbLfZ8Y7tZ+dYolb2hd2gUJGrt+4hJ+Bt8mVNfo4aal/KH8VM0fK1dp8gdqojaQgpztx
-         quWaBgfga+IXkaLhAlyBkSTCCIY+o+v8l0GgM3MO/dELXTczhU6oOs008J6M6qgs0GvD
-         KtzfayCFgewKxV58nlfc33vofIZ1fwEZclZCu28SbQ+uNu7QqJWaytAdfc18fslF2lzi
-         WE5A==
-X-Gm-Message-State: AOJu0YxW+0b4a/ikowUaBjlH1ZwAxnrV72OiCi0ILxI/Vj75afbzGxyN
-	i99yfahS4QKGa2DImm+fMY6ST0D/4829uN9mEw2tV1bjjbCHB2EOqeDY3nCnP0TQTzQjMavS5Nh
-	sig52vXQct30zWxY65LzWglYuDnZ5r90xRlm15XJp/L5qaFK0yw==
-X-Received: by 2002:a05:6000:1566:b0:37d:501f:483f with SMTP id ffacd0b85a97d-381f187fa4fmr18589624f8f.44.1731506411516;
-        Wed, 13 Nov 2024 06:00:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGU/s3evJgX8MGdQpJBKqdL6zizrlHwo1GdnrtC2YnbDh8e0Pi9FkUhEs+zUV4C78I4IVYLow==
-X-Received: by 2002:a05:6000:1566:b0:37d:501f:483f with SMTP id ffacd0b85a97d-381f187fa4fmr18589600f8f.44.1731506411132;
-        Wed, 13 Nov 2024 06:00:11 -0800 (PST)
-Received: from [192.168.10.47] ([151.49.84.243])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-381ed9ea4c5sm18776869f8f.76.2024.11.13.06.00.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 06:00:10 -0800 (PST)
-Message-ID: <14523fc7-2519-47b7-85cc-1ef2a3e8e340@redhat.com>
-Date: Wed, 13 Nov 2024 15:00:09 +0100
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Ys0X/1I1"
+Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:3f48:0:640:7695:0])
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7A2D460C69;
+	Wed, 13 Nov 2024 17:15:42 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8011:701:66e1:20a5:ba04:640b] (unknown [2a02:6bf:8011:701:66e1:20a5:ba04:640b])
+	by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id eFMhLi43WeA0-o7dHQnkG;
+	Wed, 13 Nov 2024 17:15:41 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1731507341;
+	bh=iBWa/wjom9iHI5eiPfgN++JO1f2akO7Rl9FK3yRoHdA=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=Ys0X/1I13TkGM3xmGNKIXZpQF4kGXejVLB6JqWv3LtSOsPsNiQQhuyAkSmzRtPDD9
+	 QBKDhqWr5/BA0UHv7iLEIAB5AN82ChpCdeiU37Vc0d/cv+jgmrbwoT8eUOb6qAZ4+T
+	 NjVr6gRkeC1t2Z/RDgNLhyU4FxbL/mGhLF0fnqHE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+Message-ID: <7a42f98f-610d-43b2-8e31-9b28fc674191@yandex-team.ru>
+Date: Wed, 13 Nov 2024 17:15:40 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,67 +40,348 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: build warning after merge of the kvm tree
-To: Sean Christopherson <seanjc@google.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: KVM <kvm@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20241028192945.2f1433fc@canb.auug.org.au>
- <20241113172902.7ada7d6e@canb.auug.org.au> <ZzSwb6TQ9fXH37f7@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 7/7] target/i386: Add EPYC-Genoa model to support Zen 4
+ processor series
+To: babu.moger@amd.com
+Cc: weijiang.yang@intel.com, philmd@linaro.org, dwmw@amazon.co.uk,
+ paul@xen.org, joao.m.martins@oracle.com, qemu-devel@nongnu.org,
+ mtosatti@redhat.com, kvm@vger.kernel.org, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, yang.zhong@intel.com, jing2.liu@intel.com,
+ vkuznets@redhat.com, michael.roth@amd.com, wei.huang2@amd.com,
+ berrange@redhat.com, bdas@redhat.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org
+References: <20230504205313.225073-1-babu.moger@amd.com>
+ <20230504205313.225073-8-babu.moger@amd.com>
+ <e8e0bc10-07ea-4678-a319-fc8d6938d9bd@yandex-team.ru>
+ <4b38c071-ecb0-112b-f4c4-d1d68e5db63d@amd.com>
+ <24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru>
+ <7f7bf82f-c550-48c8-af38-e0992829f57d@amd.com>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <ZzSwb6TQ9fXH37f7@google.com>
+From: Maksim Davydov <davydov-max@yandex-team.ru>
+In-Reply-To: <7f7bf82f-c550-48c8-af38-e0992829f57d@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/13/24 14:58, Sean Christopherson wrote:
->>> Introduced by commit
->>>
->>>    5f6a3badbb74 ("KVM: x86/mmu: Mark page/folio accessed only when zapping leaf SPTEs")
+Hi!
+Thank you very much!
+I'm looking forward to your Genoa/Turin series.
+
+And I've sent patch series to KVM:
+https://lore.kernel.org/lkml/20241113133042.702340-1-davydov-max@yandex-team.ru/
+
+On 11/12/24 19:23, Moger, Babu wrote:
+> Hi Maksim,
+> 
+> On 11/12/24 04:09, Maksim Davydov wrote:
 >>
->> I am still seeing this warning.
+>>
+>> On 11/8/24 23:56, Moger, Babu wrote:
+>>> Hi Maxim,
+>>>
+>>> Thanks for looking into this. I will fix the bits I mentioned below in
+>>> upcoming Genoa/Turin model update.
+>>>
+>>> I have few comments below.
+>>>
+>>> On 11/8/2024 12:15 PM, Maksim Davydov wrote:
+>>>> Hi!
+>>>> I compared EPYC-Genoa CPU model with CPUID output from real EPYC Genoa
+>>>> host. I found some mismatches that confused me. Could you help me to
+>>>> understand them?
+>>>>
+>>>> On 5/4/23 23:53, Babu Moger wrote:
+>>>>> Adds the support for AMD EPYC Genoa generation processors. The model
+>>>>> display for the new processor will be EPYC-Genoa.
+>>>>>
+>>>>> Adds the following new feature bits on top of the feature bits from
+>>>>> the previous generation EPYC models.
+>>>>>
+>>>>> avx512f         : AVX-512 Foundation instruction
+>>>>> avx512dq        : AVX-512 Doubleword & Quadword Instruction
+>>>>> avx512ifma      : AVX-512 Integer Fused Multiply Add instruction
+>>>>> avx512cd        : AVX-512 Conflict Detection instruction
+>>>>> avx512bw        : AVX-512 Byte and Word Instructions
+>>>>> avx512vl        : AVX-512 Vector Length Extension Instructions
+>>>>> avx512vbmi      : AVX-512 Vector Byte Manipulation Instruction
+>>>>> avx512_vbmi2    : AVX-512 Additional Vector Byte Manipulation Instruction
+>>>>> gfni            : AVX-512 Galois Field New Instructions
+>>>>> avx512_vnni     : AVX-512 Vector Neural Network Instructions
+>>>>> avx512_bitalg   : AVX-512 Bit Algorithms, add bit algorithms Instructions
+>>>>> avx512_vpopcntdq: AVX-512 AVX-512 Vector Population Count Doubleword and
+>>>>>                     Quadword Instructions
+>>>>> avx512_bf16    : AVX-512 BFLOAT16 instructions
+>>>>> la57            : 57-bit virtual address support (5-level Page Tables)
+>>>>> vnmi            : Virtual NMI (VNMI) allows the hypervisor to inject
+>>>>> the NMI
+>>>>>                     into the guest without using Event Injection mechanism
+>>>>>                     meaning not required to track the guest NMI and
+>>>>> intercepting
+>>>>>                     the IRET.
+>>>>> auto-ibrs       : The AMD Zen4 core supports a new feature called
+>>>>> Automatic IBRS.
+>>>>>                     It is a "set-and-forget" feature that means that,
+>>>>> unlike e.g.,
+>>>>>                     s/w-toggled SPEC_CTRL.IBRS, h/w manages its IBRS
+>>>>> mitigation
+>>>>>                     resources automatically across CPL transitions.
+>>>>>
+>>>>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>>>>> ---
+>>>>>    target/i386/cpu.c | 122 ++++++++++++++++++++++++++++++++++++++++++++++
+>>>>>    1 file changed, 122 insertions(+)
+>>>>>
+>>>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>>>>> index d50ace84bf..71fe1e02ee 100644
+>>>>> --- a/target/i386/cpu.c
+>>>>> +++ b/target/i386/cpu.c
+>>>>> @@ -1973,6 +1973,56 @@ static const CPUCaches epyc_milan_v2_cache_info
+>>>>> = {
+>>>>>        },
+>>>>>    };
+>>>>> +static const CPUCaches epyc_genoa_cache_info = {
+>>>>> +    .l1d_cache = &(CPUCacheInfo) {
+>>>>> +        .type = DATA_CACHE,
+>>>>> +        .level = 1,
+>>>>> +        .size = 32 * KiB,
+>>>>> +        .line_size = 64,
+>>>>> +        .associativity = 8,
+>>>>> +        .partitions = 1,
+>>>>> +        .sets = 64,
+>>>>> +        .lines_per_tag = 1,
+>>>>> +        .self_init = 1,
+>>>>> +        .no_invd_sharing = true,
+>>>>> +    },
+>>>>> +    .l1i_cache = &(CPUCacheInfo) {
+>>>>> +        .type = INSTRUCTION_CACHE,
+>>>>> +        .level = 1,
+>>>>> +        .size = 32 * KiB,
+>>>>> +        .line_size = 64,
+>>>>> +        .associativity = 8,
+>>>>> +        .partitions = 1,
+>>>>> +        .sets = 64,
+>>>>> +        .lines_per_tag = 1,
+>>>>> +        .self_init = 1,
+>>>>> +        .no_invd_sharing = true,
+>>>>> +    },
+>>>>> +    .l2_cache = &(CPUCacheInfo) {
+>>>>> +        .type = UNIFIED_CACHE,
+>>>>> +        .level = 2,
+>>>>> +        .size = 1 * MiB,
+>>>>> +        .line_size = 64,
+>>>>> +        .associativity = 8,
+>>>>> +        .partitions = 1,
+>>>>> +        .sets = 2048,
+>>>>> +        .lines_per_tag = 1,
+>>>>
+>>>> 1. Why L2 cache is not shown as inclusive and self-initializing?
+>>>>
+>>>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
+>>>> * cache inclusive. Read-only. Reset: Fixed,1.
+>>>> * cache is self-initializing. Read-only. Reset: Fixed,1.
+>>>
+>>> Yes. That is correct. This needs to be fixed. I Will fix it.
+>>>>
+>>>>> +    },
+>>>>> +    .l3_cache = &(CPUCacheInfo) {
+>>>>> +        .type = UNIFIED_CACHE,
+>>>>> +        .level = 3,
+>>>>> +        .size = 32 * MiB,
+>>>>> +        .line_size = 64,
+>>>>> +        .associativity = 16,
+>>>>> +        .partitions = 1,
+>>>>> +        .sets = 32768,
+>>>>> +        .lines_per_tag = 1,
+>>>>> +        .self_init = true,
+>>>>> +        .inclusive = true,
+>>>>> +        .complex_indexing = false,
+>>>>
+>>>> 2. Why L3 cache is shown as inclusive? Why is it not shown in L3 that
+>>>> the WBINVD/INVD instruction is not guaranteed to invalidate all lower
+>>>> level caches (0 bit)?
+>>>>
+>>>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
+>>>> * cache inclusive. Read-only. Reset: Fixed,0.
+>>>> * Write-Back Invalidate/Invalidate. Read-only. Reset: Fixed,1.
+>>>>
+>>>
+>>> Yes. Both of this needs to be fixed. I Will fix it.
+>>>
+>>>>
+>>>>
+>>>> 3. Why the default stub is used for TLB, but not real values as for
+>>>> other caches?
+>>>
+>>> Can you please eloberate on this?
+>>>
+>>
+>> For L1i, L1d, L2 and L3 cache we provide the correct information about
+>> characteristics. In contrast, for L1i TLB, L1d TLB, L2i TLB and L2d TLB
+>> (0x80000005 and 0x80000006) we use the same value for all CPU models.
+>> Sometimes it seems strange. For instance, the current default value in
+>> QEMU for L2 TLB associativity for 4 KB pages is 4. But 4 is a reserved
+>> value for Genoa (as PPR for Family 19h Model 11h says)
 > 
-> Paolo, can you grab the patch from Bagas?
+> Yes. I see that. We may need to address this sometime in the future.
 > 
-> https://lore.kernel.org/all/20241028125835.26714-1-bagasdotme@gmail.com
+>>
+>>>>
+>>>>> +    },
+>>>>> +};
+>>>>> +
+>>>>>    /* The following VMX features are not supported by KVM and are left
+>>>>> out in the
+>>>>>     * CPU definitions:
+>>>>>     *
+>>>>> @@ -4472,6 +4522,78 @@ static const X86CPUDefinition
+>>>>> builtin_x86_defs[] = {
+>>>>>                { /* end of list */ }
+>>>>>            }
+>>>>>        },
+>>>>> +    {
+>>>>> +        .name = "EPYC-Genoa",
+>>>>> +        .level = 0xd,
+>>>>> +        .vendor = CPUID_VENDOR_AMD,
+>>>>> +        .family = 25,
+>>>>> +        .model = 17,
+>>>>> +        .stepping = 0,
+>>>>> +        .features[FEAT_1_EDX] =
+>>>>> +            CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
+>>>>> CPUID_CLFLUSH |
+>>>>> +            CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA |
+>>>>> CPUID_PGE |
+>>>>> +            CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 |
+>>>>> CPUID_MCE |
+>>>>> +            CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE | CPUID_DE |
+>>>>> +            CPUID_VME | CPUID_FP87,
+>>>>> +        .features[FEAT_1_ECX] =
+>>>>> +            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
+>>>>> +            CPUID_EXT_XSAVE | CPUID_EXT_AES |  CPUID_EXT_POPCNT |
+>>>>> +            CPUID_EXT_MOVBE | CPUID_EXT_SSE42 | CPUID_EXT_SSE41 |
+>>>>> +            CPUID_EXT_PCID | CPUID_EXT_CX16 | CPUID_EXT_FMA |
+>>>>> +            CPUID_EXT_SSSE3 | CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ |
+>>>>> +            CPUID_EXT_SSE3,
+>>>>> +        .features[FEAT_8000_0001_EDX] =
+>>>>> +            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
+>>>>> +            CPUID_EXT2_FFXSR | CPUID_EXT2_MMXEXT | CPUID_EXT2_NX |
+>>>>> +            CPUID_EXT2_SYSCALL,
+>>>>> +        .features[FEAT_8000_0001_ECX] =
+>>>>> +            CPUID_EXT3_OSVW | CPUID_EXT3_3DNOWPREFETCH |
+>>>>> +            CPUID_EXT3_MISALIGNSSE | CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
+>>>>> +            CPUID_EXT3_CR8LEG | CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM |
+>>>>> +            CPUID_EXT3_TOPOEXT | CPUID_EXT3_PERFCORE,
+>>>>> +        .features[FEAT_8000_0008_EBX] =
+>>>>> +            CPUID_8000_0008_EBX_CLZERO |
+>>>>> CPUID_8000_0008_EBX_XSAVEERPTR |
+>>>>> +            CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_IBPB |
+>>>>> +            CPUID_8000_0008_EBX_IBRS | CPUID_8000_0008_EBX_STIBP |
+>>>>> +            CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
+>>>>> +            CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
+>>>>
+>>>> 4. Why 0x80000008_EBX features related to speculation vulnerabilities
+>>>> (BTC_NO, IBPB_RET, IbrsPreferred, INT_WBINVD) are not set?
+>>>
+>>> KVM does not expose these bits to the guests yet.
+>>>
+>>> I normally check using the ioctl KVM_GET_SUPPORTED_CPUID.
+>>>
+>>
+>> I'm not sure, but at least the first two of these features seem to be
+>> helpful to choose the appropriate mitigation. Do you think that we should
+>> add them to KVM?
+> 
+> Yes. Sure.
+> 
+>>
+>>>
+>>>>
+>>>>> +        .features[FEAT_8000_0021_EAX] =
+>>>>> +            CPUID_8000_0021_EAX_No_NESTED_DATA_BP |
+>>>>> +            CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
+>>>>> +            CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
+>>>>> +            CPUID_8000_0021_EAX_AUTO_IBRS,
+>>>>
+>>>> 5. Why some 0x80000021_EAX features are not set?
+>>>> (FsGsKernelGsBaseNonSerializing, FSRC and FSRS)
+>>>
+>>> KVM does not expose FSRC and FSRS bits to the guests yet.
+>>
+>> But KVM exposes the same features (0x7 ecx=1, bits 10 and 11) for Intel
+>> CPU models. Do we have to add these bits for AMD to KVM?
+> 
+> Yes. Sure.
+>>
+>>>
+>>> The KVM reports the bit FsGsKernelGsBaseNonSerializing. I will check if
+>>> we can add this bit to the Genoa and Turin.
+> 
+> Will add this in my qemu series.
+> 
+>>>
+>>>>
+>>>>> +        .features[FEAT_7_0_EBX] =
+>>>>> +            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 |
+>>>>> CPUID_7_0_EBX_AVX2 |
+>>>>> +            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 |
+>>>>> CPUID_7_0_EBX_ERMS |
+>>>>> +            CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_AVX512F |
+>>>>> +            CPUID_7_0_EBX_AVX512DQ | CPUID_7_0_EBX_RDSEED |
+>>>>> CPUID_7_0_EBX_ADX |
+>>>>> +            CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_AVX512IFMA |
+>>>>> +            CPUID_7_0_EBX_CLFLUSHOPT | CPUID_7_0_EBX_CLWB |
+>>>>> +            CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
+>>>>> +            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
+>>>>> +        .features[FEAT_7_0_ECX] =
+>>>>> +            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP |
+>>>>> CPUID_7_0_ECX_PKU |
+>>>>> +            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
+>>>>> +            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
+>>>>> +            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
+>>>>> +            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
+>>>>> +            CPUID_7_0_ECX_RDPID,
+>>>>> +        .features[FEAT_7_0_EDX] =
+>>>>> +            CPUID_7_0_EDX_FSRM,
+>>>>
+>>>> 6. Why L1D_FLUSH is not set? Because only vulnerable MMIO stale data
+>>>> processors have to use it, am I right?
+>>>
+>>> KVM does not expose L1D_FLUSH to the guests. Not sure why. Need to
+>>> investigate.
+>>>
+>>
+>> It seems that KVM has exposed L1D_FLUSH since da3db168fb67
+> 
+> Sure. Will update my patch series.
+> 
+>>
+>>>
+>>>>
+>>>>> +        .features[FEAT_7_1_EAX] =
+>>>>> +            CPUID_7_1_EAX_AVX512_BF16,
+>>>>> +        .features[FEAT_XSAVE] =
+>>>>> +            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
+>>>>> +            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES,
+>>>>> +        .features[FEAT_6_EAX] =
+>>>>> +            CPUID_6_EAX_ARAT,
+>>>>> +        .features[FEAT_SVM] =
+>>>>> +            CPUID_SVM_NPT | CPUID_SVM_NRIPSAVE | CPUID_SVM_VNMI |
+>>>>> +            CPUID_SVM_SVME_ADDR_CHK,
+>>>>> +        .xlevel = 0x80000022,
+>>>>> +        .model_id = "AMD EPYC-Genoa Processor",
+>>>>> +        .cache_info = &epyc_genoa_cache_info,
+>>>>> +    },
+>>>>>    };
+>>>>>    /*
+>>>>
+>>>
+>>
+>> So, If you don't mind, I will send a patch to KVM within a few hours. I
+>> will add bits for FSRC, FSRS and some bits from 0x80000008_EBX
+>>
+> 
+> FSRC and FSRS are not used anywhere in the kernel. It is mostly FYI kind
+> of information. It does not hurt to add.  Please go ahead.
+> 
 
-Oops, I have just sent and applied one.  Sorry Bagas.
-
-Paolo
-
+-- 
+Best regards,
+Maksim Davydov
