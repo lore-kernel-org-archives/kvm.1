@@ -1,111 +1,117 @@
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6950815C14F;
-	Wed, 13 Nov 2024 15:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A22F41C92;
+	Wed, 13 Nov 2024 16:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731513302; cv=none; b=NkGMQK6eRV2HShtm/MjRqjvBYfb9XmoltNjwrlnLUnmdiG01mjMsoFXxc0w5I7zrZAN21PIhElbAT0k3ziVMkAVYRCPV84SLiwRuQEdIU1VThBY26Ny1THidECmsjgCyJmO1IgZA5eFO8A5nRuFk4jGoLU1BPdDp7ZETaQ6vFrg=
+	t=1731513831; cv=none; b=oVGxnsV6VXX2w71hTtH2i5bXsfhOGwlroLdxur8Rs/BGR9Nz7pRsXH+8MyonL8HDzNiXMzIeTZP9hHcSdufOld/ucCux5DioEU5fftDwWAwtrL0HhN/HcrTWNA4ks9sl0bcOPBQzy1N7KvzkCZvjlkNPAqFSe77IOS80YWVOtgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731513302; c=relaxed/simple;
-	bh=b6raCtJWp3Lrtmt82BKBBCDTyBvC2ZcakCXrj2CG5fY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=LOx7VKoV/t87OSBKx7eAdMKy7if4eYNfpQN0LeafaZZjk4TAdSTmG2MGtJgagJI8I319lZ2d9f99N3pfUI1qMH9vM2vP9H1tXIMYgc1KexeKTiNHqE/Oz94rman/YPctqFg5faAXCDPHxD+9neZqap74mFnUTCX+qaW6/pBdqkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ryBxYC+6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=McfWnMBH; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1731513831; c=relaxed/simple;
+	bh=0rvZTMtJ3F13U4qn3mQOzLEvAdJLknVek+g7ayMUb44=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OSkUbHNqQdRftNof0QEYp1Eo9XGgExQWPXolYfFvK+J+OIrxpoyjKvaOsFRYpzJfrNLEZGSoo24KFvG7keoYOd0t6mamnb2YmDF376XahvTpxMChBZmwF6oaXDF6OghjgRA08/kloP8PMdIlikB6iOuXZCDOJhwB4oOqq4ZlqAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ULaUpO5D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1bikosKo; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ryBxYC+6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="McfWnMBH"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id D7907114019C;
-	Wed, 13 Nov 2024 10:54:57 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 13 Nov 2024 10:54:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1731513297;
-	 x=1731599697; bh=czwPBljBW6AVGfYo7dHlvTWz3D+Y4F6MZEMNWo3u4TI=; b=
-	ryBxYC+6nLUrw6xhwDLaU9w4v58WDdofhK0Q1hydOpn/UU+jeMa0cm/a5pqde2AS
-	8krGEzq10Q1nx6ARR5z/4UfqV4hAhpKci/vHZ5sbTC7+F5D4oGtz3fejw2D0U0i6
-	qKcY+rrXrlDe/E2AniU+XGQyzOFxAInJm5NYJDyWjtsIo00iyAexHZZ2l2r+2AOH
-	uzqTAZSgq8aZWK/NK+Aol1jn5f6iqhOUQyCWKvAbuNMtwC7cq4U6fKgJP84edIED
-	afIfgoTDBdikFV/ewjF9fkSOHxslXmA7WWCiGRWkYPaXaN021ujxIRYCPJ/zhz09
-	O6e2ht9TGcWPLhcbm/vrmQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1731513297; x=
-	1731599697; bh=czwPBljBW6AVGfYo7dHlvTWz3D+Y4F6MZEMNWo3u4TI=; b=M
-	cfWnMBH/I553+pJNrNatFiHT5PLU2xs/0V/yQXEbizkzfeWcci3458py1hJfbNwG
-	YCk4PSd2cHnaZNMUwrW7xsilVWyO/TYLLXnfoKJJ9dIRgSUrevUmszVB3Abpwoty
-	i89qN/p6oE7mlYPHzDdJN6rGFGo8AO2TI4DM6HJ3XlOHLnM91SYzcWYpk9/IAzny
-	3xS/Ui4xcxe1rdSbRlrjvCgpEVNx+2zf5ag6u1OBM22wl/FV4ngyQ7Vz+oXggcH1
-	85yTBgz/+JUn0pqOwnlCx+6s4k8enKsPsP81AShqp0Bq1YMHtl4UsE02br+CGGiA
-	dx0A10RwXCN12KTUwQmbw==
-X-ME-Sender: <xms:0cs0Z96tl1lYLdQExseoqt9ZU66qY96Smb3Lozhm-8DDtoDH5YYGTA>
-    <xme:0cs0Z66XaIA2WecykFuc2M5RgQXmu-zNLqnhfyQxOMCJy5WL3bj9WpT4CbSabvntC
-    uIje4aBSs-jnxmuPGE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvddtgdekudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
-    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduhedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtg
-    hpthhtohepmhhitghhrggvlhdrrhhothhhsegrmhgurdgtohhmpdhrtghpthhtohepshgv
-    rghnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehishgrkhhurdihrghmrghhrg
-    htrgesihhnthgvlhdrtghomhdprhgtphhtthhopehlkhhpsehinhhtvghlrdgtohhmpdhr
-    tghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdp
-    rhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:0cs0Z0dBl1SSgKmWmej0sHzJAWYvJkfUVR6r1QhYP6yeYkVKEuz30g>
-    <xmx:0cs0Z2IBZO32QBkgqA8A2YqPKDOeHg8Wg5boUwvcXLOIICRC7IHGZA>
-    <xmx:0cs0ZxJnbmu_VxgSl4Vrlk4juVnZbjcH-nPeU_taq8jfEASaRARg_A>
-    <xmx:0cs0Z_yqGhD1yEo0G1si8vc07SkmDhWARr3wYRCpcfo_tMdj2Jo2Jg>
-    <xmx:0cs0ZzjDN-t1aHOYQWS4BHWbu63_XkQV6nPR13C5lJxCp6Q-AF7bOzzC>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 425D02220071; Wed, 13 Nov 2024 10:54:57 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ULaUpO5D";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1bikosKo"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1731513828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mtC6I/wVh3bb76vb3t0LUdhFECXQ4KT3wwkegPBL5lI=;
+	b=ULaUpO5DuZ2pMJ9QlEii8n5VH6LQrYmON5UKYjXr0uXw+BUKWIg3fJdbqxb7NYrD27WKbP
+	MxbAa92xpSgi5CzUkOgozoczZ7yU3XwWuzeDxuX/evohe/FFAGHe4xC3fZza0Gwnx+RFdk
+	r3zRuOySUPvmBBd8Nwz5eOvEW61/VGQlgm4svSukGmofp5FPDxCdXC5h22VbV6mxNSkHV/
+	m23pCYVsbhhkRw7VJUH8Fcw4fSz3FJZzpDU5hwbyaB7IEGc7yd49G99fyDPYTLNeklt0g/
+	2GqGG/XpRctO4FYQIGmbqt6TlNZN4ZgL+uLI8ZghI3jUtQKhCtWaG5SjTgvJvQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1731513828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mtC6I/wVh3bb76vb3t0LUdhFECXQ4KT3wwkegPBL5lI=;
+	b=1bikosKoqAqJ9LV5ympvkJTzAxL5PJTgiwLFysyriYVLswkkIvCB4AFn7UaMhQltW9CflT
+	PspCYbjP3/ELnqDQ==
+To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>, Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rasesh Mody
+ <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko
+ <imitsyanko@quantenna.com>, Sergey Matyukevich <geomatsi@gmail.com>, Kalle
+ Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, Shyam
+ Sundar S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave
+ Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Alex Williamson
+ <alex.williamson@redhat.com>, Juergen Gross <jgross@suse.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Philipp Stanner <pstanner@redhat.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, Chen Ni
+ <nichen@iscas.ac.cn>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Mostafa Saleh <smostafa@google.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>, Kunwu Chan
+ <chentao@kylinos.cn>, Ankit Agrawal <ankita@nvidia.com>, Christian Brauner
+ <brauner@kernel.org>, Reinette Chatre <reinette.chatre@intel.com>, Eric
+ Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-input@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 01/11] PCI: Prepare removing devres from pci_intx()
+In-Reply-To: <20241113124158.22863-3-pstanner@redhat.com>
+References: <20241113124158.22863-2-pstanner@redhat.com>
+ <20241113124158.22863-3-pstanner@redhat.com>
+Date: Wed, 13 Nov 2024 17:04:00 +0100
+Message-ID: <87plmzktn3.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 13 Nov 2024 16:54:36 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Sean Christopherson" <seanjc@google.com>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Paolo Bonzini" <pbonzini@redhat.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "kernel test robot" <lkp@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "Michael Roth" <michael.roth@amd.com>,
- "Isaku Yamahata" <isaku.yamahata@intel.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <e1c9a950-ffd9-4b84-b416-8d7b3054ed5a@app.fastmail.com>
-In-Reply-To: <ZzS62W60NS_sM31K@google.com>
-References: <20241112065415.3974321-1-arnd@kernel.org>
- <ZzS62W60NS_sM31K@google.com>
-Subject: Re: [PATCH] x86: kvm: add back X86_LOCAL_APIC dependency
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 13, 2024, at 15:42, Sean Christopherson wrote:
->
-> The dependency can and should go on "config KVM", not on the vendor 
-> modules.  The net effect on the build is the same, but preventing
-> the user from  selecting KVM will provide a slightly better experience.
+On Wed, Nov 13 2024 at 13:41, Philipp Stanner wrote:
+> +/**
+> + * pci_intx_unmanaged - enables/disables PCI INTx for device dev,
+> + * unmanaged version
+> + * @pdev: the PCI device to operate on
+> + * @enable: boolean: whether to enable or disable PCI INTx
 
-Makes sense, sending v2 now.
+Except that the argument is of type int, which really should be type bool.
 
-       Arnd
+> + * Enables/disables PCI INTx for device @pdev
+> + *
+> + * This function behavios identically to pci_intx(), but is never managed with
+> + * devres.
+
+behavios?
+
+> + */
+> +void pci_intx_unmanaged(struct pci_dev *pdev, int enable)
+
+I find this function name mildy confusing. This _unmanaged suffix is not
+really telling me anything. And the reference that this behaves
+identically to pci_intx() makes it even worse.
+
+This function is about controlling the PCI INTX_DISABLE bit in the
+PCI_COMMAND config word, right?
+
+So naming it pci_intx_control() would make it entirely clear what this
+is about, no?
+
+Thanks,
+
+        tglx
