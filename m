@@ -1,109 +1,141 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDD613AD39
-	for <kvm@vger.kernel.org>; Thu, 14 Nov 2024 15:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5A5149C53;
+	Thu, 14 Nov 2024 15:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731598067; cv=none; b=L3XyTB41NH8RRG9p3CzX0c5SxI2oeb+U18vNJrALd90NLN1DgLD8YUoEHeUyo32FYjFip8v7ZwLEEBFM34TOako7cqJEYoDufl2GUXqhbUCcYDqaJ4tZ+NdGDlAeGHcHvyBc7/jq4APmSIXKProghpNvH/rwEiCFu1TEdgg1w+g=
+	t=1731598532; cv=none; b=IuQAwOFVbdCe9v0rfrLzNbVdw7k5rOf5WnVauphGZJ0Rn/Npb0XkDoRYsVOY5fScHBIz+iJjMQGyG0WnFw2Tf8WHmkZQg72uvBQMj+a+AcnmQGtDqsamCwveRYgTHYixzDWnLfF49hbkLFoPeUtaU+jR7CGvdc6LPgVuxdlcfWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731598067; c=relaxed/simple;
-	bh=+sEmkHc/gqLQvISFoccR4dMFAmG47Net4ZXwSAJbm4Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p+IuVdBWr87vmNx2uhlQFpENG66WFpIfNbD1C6X7rWKAlYqa7ix0FsOn7o9FqVCqeqEs8ugo+wMrw9fh7Lgx5bq0Njt4nWPJ1kszDul1qgfF2DNFIPlqeytgRgt1RlMuOfwvY20YnKJS1VTTF2wuhANXKglNoVBdy3XZn7jA4k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xmxKhmBg; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xmxKhmBg"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e381c19246fso692898276.3
-        for <kvm@vger.kernel.org>; Thu, 14 Nov 2024 07:27:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731598065; x=1732202865; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9Xf/8xQttXv6s1otjnUDSrcU0au/N/ujN3TYRfLjxk=;
-        b=xmxKhmBgJ2W2AlqyLUPMOLWjJOH50GSs0N6RUjG/liOgs7dhmcY42OgZJuI/4F2lRL
-         oOlVdZZ0uYvnDjuDyjNd+tUcxzjYhxauLsDOW5otbdaqBnRHA7T/1n44Un/htj3jpi7E
-         eyeFEGzZL9dl0itAqFWYGjCz/hXN2jOpFZd5cD858CD3UfQtm4FlkqAnHC0KP+DBYp1q
-         IRlT/kGGbKA3XBDeyTdStmtCjqzACtkVrG0fnIDOY9Ndj1TRb0GaPiR/7MMKxBhS4D2v
-         GUOIe8XNzz/SWDlBOpZypP2qqtua8KsvTZEG42j1Xs1zxn0s5CJtf2r3ms8bKdQ7gHQL
-         T0Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731598065; x=1732202865;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9Xf/8xQttXv6s1otjnUDSrcU0au/N/ujN3TYRfLjxk=;
-        b=iXj1eJyLnSvCBgyXn6aj7zfeqxqBg4JK1sCSEMFUuAUChZaQ2e3DC6eclEXPlS3NSB
-         c9Yb41kEQ8vnutAGc0YH+K2/pXY30GSE9l46uhP9MMfut4vDNPnhI+scrhsoBuAJsp2G
-         65e1iQi7LmF3VCFqb0LPcnyLjcAEVVFywtU7FDL0LNlXsaRVGBg9TklpE8AB6vK9FkdV
-         yl8x75VydHDTMkl2Knc6ZWtXVkQ7JmdDkyUewrHDmdTNEEFeLcCmjl7np6UpXyRP331P
-         Ugw2twg4Ypy10IMo9tPeUjIrlIGZF2PDSW/nTVj2I+LFdOfpO5KdIyLBCrJ/IAUCL0b/
-         wr8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXFgYQo2i8RIxKzykaqskOrV9M0feqBDy+CqiMR9aIEvkuLtamkT8HN8rDiukInCLxqB6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKSZngBd1X41+PdMkefLzCR+nzx/dL9DVVHztKrRQd/hZjBMQi
-	RFRAS6LjXaU+vmEJF39gEZoBusCNUvrtIh9ggIpgrQgsuqc8MLHsNScSDQNEzfTZ7lav1iBRGQk
-	SNw==
-X-Google-Smtp-Source: AGHT+IEJo8nhGMfASjDL+OnfXK4TsEyvl3lVzMG2j+jkJrNX/kWWBy5xmaToI/BTiIj+gtovk3WW0O25DXA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a25:c4c3:0:b0:e38:c43:3002 with SMTP id
- 3f1490d57ef6-e380c4331a5mr80697276.10.1731598064751; Thu, 14 Nov 2024
- 07:27:44 -0800 (PST)
-Date: Thu, 14 Nov 2024 07:27:43 -0800
-In-Reply-To: <ZzMaCzDNJAOCMFl6@intel.com>
+	s=arc-20240116; t=1731598532; c=relaxed/simple;
+	bh=IT4Y74OkXGP7crFm1QoLu/BRJuwnmPvZBB2U0jdzxGs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FRrQL58tAFKo/QceAetQXFIBILtPyrYT3n/l4M2Jxc0VgNtkbCx05kfZcZFyYbUT5lU41aKhC99xA9fFZbH26lknv7XSHhW5Mhb1LAmQ4Qxb38ifV1ErMkwJU6FoVWm/6yorx77njehVgKqLvfXMzBm7/fySbLgHcetM9Zzg4hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6827B169E;
+	Thu, 14 Nov 2024 07:35:57 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A1FB3F59E;
+	Thu, 14 Nov 2024 07:35:16 -0800 (PST)
+Message-ID: <2621385c-6fcf-4035-a5a0-5427a08045c8@arm.com>
+Date: Thu, 14 Nov 2024 15:35:15 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241101191447.1807602-1-seanjc@google.com> <20241101191447.1807602-6-seanjc@google.com>
- <ZzMaCzDNJAOCMFl6@intel.com>
-Message-ID: <ZzYW7zVd47ctDfM8@google.com>
-Subject: Re: [PATCH 5/5] KVM: nVMX: Honor event priority when emulating PI
- delivery during VM-Enter
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFCv1 0/7] vfio: Allow userspace to specify the address
+ for each MSI vector
+To: Alex Williamson <alex.williamson@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, tglx@linutronix.de, maz@kernel.org,
+ bhelgaas@google.com, leonro@nvidia.com,
+ shameerali.kolothum.thodi@huawei.com, dlemoal@kernel.org,
+ kevin.tian@intel.com, smostafa@google.com,
+ andriy.shevchenko@linux.intel.com, reinette.chatre@intel.com,
+ eric.auger@redhat.com, ddutile@redhat.com, yebin10@huawei.com,
+ brauner@kernel.org, apatel@ventanamicro.com,
+ shivamurthy.shastri@linutronix.de, anna-maria@linutronix.de,
+ nipun.gupta@amd.com, marek.vasut+renesas@mailbox.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org
+References: <cover.1731130093.git.nicolinc@nvidia.com>
+ <a63e7c3b-ce96-47a5-b462-d5de3a2edb56@arm.com>
+ <ZzPOsrbkmztWZ4U/@Asurada-Nvidia> <20241113013430.GC35230@nvidia.com>
+ <20241113141122.2518c55a.alex.williamson@redhat.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241113141122.2518c55a.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 12, 2024, Chao Gao wrote:
-> On Fri, Nov 01, 2024 at 12:14:47PM -0700, Sean Christopherson wrote:
-> >Move the handling of a nested posted interrupt notification that is
-> >unblocked by nested VM-Enter (unblocks L1 IRQs when ack-on-exit is enabled
-> >by L1) from VM-Enter emulation to vmx_check_nested_events().  To avoid a
-> >pointless forced immediate exit, i.e. to not regress IRQ delivery latency
-> >when a nested posted interrupt is pending at VM-Enter, block processing of
-> >the notification IRQ if and only if KVM must block _all_ events.  Unlike
-> >injected events, KVM doesn't need to actually enter L2 before updating the
-> >vIRR and vmcs02.GUEST_INTR_STATUS, as the resulting L2 IRQ will be blocked
-> >by hardware itself, until VM-Enter to L2 completes.
-> >
-> >Note, very strictly speaking, moving the IRQ from L2's PIR to IRR before
-> >entering L2 is still technically wrong.  But, practically speaking, only a
-> >userspace that is deliberately checking KVM_STATE_NESTED_RUN_PENDING
-> >against PIR and IRR can even notice; L2 will see architecturally correct
-> >behavior, as KVM ensure the VM-Enter is finished before doing anything
-> >that would effectively preempt the PIR=>IRR movement.
+On 13/11/2024 9:11 pm, Alex Williamson wrote:
+> On Tue, 12 Nov 2024 21:34:30 -0400
+> Jason Gunthorpe <jgg@nvidia.com> wrote:
 > 
-> In my understanding, L1 can notice some priority issue in some cases. e.g.,
-> L1 enables NMI window VM-exit and enters L2 with a nested posted interrupt
-> notification. Assuming L2 doesn't block NMIs, then NMI window VM-exit should
-> happen immediately after nested VM-enter even before the nested posted
-> interrupt processing.
->
-> Another case is the nested VM-enter may inject some events (i.e.,
-> vmcs12->vm_entry_intr_info_field has a valid event). Event injection has
-> higher priority over external interrupt VM-exit. The event injection may
-> encounter EPT_VIOLATION which needs to be reflected to L1. In this case,
-> L1 is supposed to observe the EPT VIOLATION before the nested posted interrupt
-> processing.
+>> On Tue, Nov 12, 2024 at 01:54:58PM -0800, Nicolin Chen wrote:
+>>> On Mon, Nov 11, 2024 at 01:09:20PM +0000, Robin Murphy wrote:
+>>>> On 2024-11-09 5:48 am, Nicolin Chen wrote:
+>>>>> To solve this problem the VMM should capture the MSI IOVA allocated by the
+>>>>> guest kernel and relay it to the GIC driver in the host kernel, to program
+>>>>> the correct MSI IOVA. And this requires a new ioctl via VFIO.
+>>>>
+>>>> Once VFIO has that information from userspace, though, do we really need
+>>>> the whole complicated dance to push it right down into the irqchip layer
+>>>> just so it can be passed back up again? AFAICS
+>>>> vfio_msi_set_vector_signal() via VFIO_DEVICE_SET_IRQS already explicitly
+>>>> rewrites MSI-X vectors, so it seems like it should be pretty
+>>>> straightforward to override the message address in general at that
+>>>> level, without the lower layers having to be aware at all, no?
+>>>
+>>> Didn't see that clearly!! It works with a simple following override:
+>>> --------------------------------------------------------------------
+>>> @@ -497,6 +497,10 @@ static int vfio_msi_set_vector_signal(struct vfio_pci_core_device *vdev,
+>>>                  struct msi_msg msg;
+>>>
+>>>                  get_cached_msi_msg(irq, &msg);
+>>> +               if (vdev->msi_iovas) {
+>>> +                       msg.address_lo = lower_32_bits(vdev->msi_iovas[vector]);
+>>> +                       msg.address_hi = upper_32_bits(vdev->msi_iovas[vector]);
+>>> +               }
+>>>                  pci_write_msi_msg(irq, &msg);
+>>>          }
+>>>   
+>>> --------------------------------------------------------------------
+>>>
+>>> With that, I think we only need one VFIO change for this part :)
+>>
+>> Wow, is that really OK from a layering perspective? The comment is
+>> pretty clear on the intention that this is to resync the irq layer
+>> view of the device with the physical HW.
+>>
+>> Editing the msi_msg while doing that resync smells bad.
+>>
+>> Also, this is only doing MSI-X, we should include normal MSI as
+>> well. (it probably should have a resync too?)
+> 
+> This was added for a specific IBM HBA that clears the vector table
+> during a built-in self test, so it's possible the MSI table being in
+> config space never had the same issue, or we just haven't encountered
+> it.  I don't expect anything else actually requires this.
 
-Hmm, right, L1 could also observe the PIR=>IRR movement.  How about this?
+Yeah, I wasn't really suggesting to literally hook into this exact case; 
+it was more just a general observation that if VFIO already has one 
+justification for tinkering with pci_write_msi_msg() directly without 
+going through the msi_domain layer, then adding another (wherever it 
+fits best) can't be *entirely* unreasonable.
 
-  Note, very strictly speaking, moving the IRQ from L2's PIR to IRR before
-  entering L2 is still technically wrong.  But, practically speaking, only
-  an L1 hypervisor or an L0 userspace that is deliberately checking event
-  priority against PIR=>IRR processing can even notice; L2 will see
-  architecturally correct behavior, as KVM ensures the VM-Enter is finished
-  before doing anything that would effectively preempt the PIR=>IRR movement.
+At the end of the day, the semantic here is that VFIO does know more 
+than the IRQ layer, and does need to program the endpoint differently 
+from what the irqchip assumes, so I don't see much benefit in dressing 
+that up more than functionally necessary.
+
+>> I'd want Thomas/Marc/Alex to agree.. (please read the cover letter for
+>> context)
+> 
+> It seems suspect to me too.  In a sense it is still just synchronizing
+> the MSI address, but to a different address space.
+> 
+> Is it possible to do this with the existing write_msi_msg callback on
+> the msi descriptor?  For instance we could simply translate the msg
+> address and call pci_write_msi_msg() (while avoiding an infinite
+> recursion).  Or maybe there should be an xlate_msi_msg callback we can
+> register.  Or I suppose there might be a way to insert an irqchip that
+> does the translation on write.  Thanks,
+
+I'm far from keen on the idea, but if there really is an appetite for 
+more indirection, then I guess the least-worst option would be yet 
+another type of iommu_dma_cookie to work via the existing 
+iommu_dma_compose_msi_msg() flow, with some interface for VFIO to update 
+per-device addresses directly. But then it's still going to need some 
+kind of "layering violation" for VFIO to poke the IRQ layer into 
+re-composing and re-writing a message whenever userspace feels like 
+changing an address, because we're fundamentally stepping outside the 
+established lifecycle of a kernel-managed IRQ around which said layering 
+was designed...
+
+Thanks,
+Robin.
