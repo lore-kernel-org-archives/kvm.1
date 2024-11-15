@@ -1,98 +1,111 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E7E2D7BF;
-	Fri, 15 Nov 2024 01:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C520D155A2F;
+	Fri, 15 Nov 2024 04:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731633694; cv=none; b=HWoSPfxO8mBxdZ4gUdDpReU9EkJTQnRdJtvoERzH/CDV6HSDoKXaebLDmmDfngpCn0IqYQE3hj6cDcImiqif4S2dtKpdAnUsJlbowgzUkOyw2Uu9dMiRBOnUg0izCz0teFK0I+uNa8DLuShUGmJvu3jsFSAOxTctKgusuBrMFgk=
+	t=1731643546; cv=none; b=fGWgBcpoCReVdbHd11oTZ4LsudoccyJ8Dfs7YKW6ZsEokhPQCRGVrlqCReJQ7um3A4ohRtqakbzhVxFyi/+eLUo6dyIGnAsnXS5oWEeBP9BGR13yl5p7GyXk33RHvCnziUzOzS3th7eCrZebK20PjYxml3CNhJrPnXsz7wnJww0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731633694; c=relaxed/simple;
-	bh=qSbEpx3MPH5WMHVUzgI23tLS0qo5RoScUOwmCoRBrcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nzVNJhQ5YIQFEvoGpKGHmLz+bIN8KgEG1TIMTjyhVbhqbMc97+fTf6fOsg4eiIETsB95Z9c1PoLhO57f7iwS2CKGQn8Acl4co2LhC1U+2IHIsiRLTTXFXPZ+owsuvMxpurC+xsGqFcG6AfT+OnKnExxiKglKjQPQ+6MjX1DvCP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JiMIKNqB; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731643546; c=relaxed/simple;
+	bh=b3AT6AKpS+kUcgi7BA3eUNf9UYufYRVv8pj3DCDRr3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GGmBtZbhzFugRNQAv9QorSda1U0XH9NGFrpV637px1AYpwXazjRJs2pGZsIVKB5NNnLH9V449/405f4bwzpKPx56M7b/zzeoHwMG5Pz3yS6MEdtR5IgYLp6GVZogfbmX59pDxcxqfwQQqfJ4UYxq6WgSh0DfUuFlw1GGyj9Om9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Rws3Vb3j; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JiMIKNqB"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5cf844d5a60so1577612a12.1;
-        Thu, 14 Nov 2024 17:21:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731633692; x=1732238492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K4SxzXcUOTfNFk+31HBVCyd87PgVtWIQnMIx3uawTpg=;
-        b=JiMIKNqBZr4GsqnjRHBQR1AAw2SQa7lxoF5kADEVnIcKWz8uTidAZOdRNIzuS3cXAn
-         urotSycVSrGIQRW1OSh8k9cCecx28AgVhv3fHaajbxnjg2ljULTqIg5agz2X+Cczr5ru
-         +3Rwc6fgyAQ9wcag0tcIej/r4Z1A9DiNPRmtTPe6aJhf/c30P+bXgJh2lwWEjBTikdcH
-         qcMvQe+zHX575TSgtAAd7RDLZ7q7Do3MfCEGe9AmhJPbWqa4rUp7pmV9cU+JdG039D+R
-         aER9ElidK2Ufqpu8JEdvITdRu/FgSEwGm/24bRFi2MBfXxf687j4RUBeeu8CPtruBVMI
-         wjJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731633692; x=1732238492;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K4SxzXcUOTfNFk+31HBVCyd87PgVtWIQnMIx3uawTpg=;
-        b=TUHY8PtLkCdguit2+kaYPUjiaIJHjtbBeMbU+HxrgBN0UhAuAZBY7wH0Xk9K6W4OE+
-         iszhR6xfzynupn1tYUxyscP/mVQtz0+FAE4k4YgKjjkmFs0ez3ciD2Prno84nZc2OBfx
-         wAdOUYtTTAkW6YjPNBOol7c+fOBlA9DRw3/B9w7uvr1ddQKKvj7FqWla+j51O2ADycpT
-         YDDQUQvk+99VDdWlIfpC3NEfZDeO2V8qxl5eZ3pM2e3SJnk64GUZ2t1pQ5lZfKLD6mcK
-         qRo9sTiZolZo1IdO7vwbEMNKmXq+3r3a0Jsl7fPGIY1wkusnqkm0bwTaXjl0MVl2QJ0k
-         pKxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbxU4xVq34IVLe8sqTZvMRRt5+hzZ2cCohffj6SGVCGwuQMKbIVnbS41kztZ0nuOm9/UkaAzEs4Pk=@vger.kernel.org, AJvYcCUzD0Mtp+oZ6BsC0PaUsYCriX9Zy2Spb5daglg52bozCY0rObrq1W3Pxz0zTGFhtEw/bQRyhoD+CsCxjPoC@vger.kernel.org
-X-Gm-Message-State: AOJu0YwprzwGacjSOO5dYG/piKDiBn8wreXuKQipQYsR2DdqzCe8i4vg
-	R79ZwyPfXAsQQGbulvCvH26fcuczThzSNxet/+qPeRQmcqFfGWSj
-X-Google-Smtp-Source: AGHT+IH57fPHsz5nrCROK7JC7I5XWaRtJiaQzkQjFuTXNiO+kJzJKVECVzRk72Kym8g9qwEwwETexQ==
-X-Received: by 2002:a05:6402:2696:b0:5cf:758e:cf94 with SMTP id 4fb4d7f45d1cf-5cf8de675a2mr947977a12.8.1731633691373;
-        Thu, 14 Nov 2024 17:21:31 -0800 (PST)
-Received: from gi4n-KLVL-WXX9.. ([2a01:e11:5400:7400:dc78:53a0:d8e6:28cd])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df51653sm120724466b.48.2024.11.14.17.21.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 17:21:30 -0800 (PST)
-From: Gianfranco Trad <gianf.trad@gmail.com>
-To: pbonzini@redhat.com,
-	corbet@lwn.net
-Cc: kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Gianfranco Trad <gianf.trad@gmail.com>
-Subject: [PATCH v2] Documentation: kvm: fix typo in api.rst
-Date: Fri, 15 Nov 2024 02:18:35 +0100
-Message-ID: <20241115011831.300705-5-gianf.trad@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Rws3Vb3j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1731643539;
+	bh=Wx/CjR4XQVbMA/M/7ZlkINu4DHcqhXpv+A7XlpzDKT0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Rws3Vb3jSwIryU89IFhPz4hk5sRmwRvWdOer12+TYocqdFo8fkgEdV/8fyS4dq0qU
+	 MBq80BLmza3iQj+NZJ7CkBjLfZe5ZLFiykqN+H6KdfHgHToFIkJMe34bU7voPKSQhv
+	 V0y4zZA9aaHbkYpCfvp/R1TKRuhkhL1D9KLB49nIQobh1gL2F7qtm3GYUHlZUQkSiM
+	 sBqrmSsj/FrTxON3xWKnXmCFrAFvtj50Gh1TlGhIQKezaV6b0lxwTWSRFB7Xjf/AnX
+	 C2ihr/CpVXaBsSAxxpjaTaTKU7uT73pMsFi2yywJ7+nZndj+bLnmKGl0PWbwl5SReh
+	 qn5PlaNc2bTtQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XqNjG3qnPz4w2F;
+	Fri, 15 Nov 2024 15:05:37 +1100 (AEDT)
+Date: Fri, 15 Nov 2024 15:05:39 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+ <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Christoffer Dall <cdall@cs.columbia.edu>, Marc Zyngier <maz@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
+ Mailing List <linux-next@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, KVM <kvm@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the kvm-arm tree with the arm64
+ tree
+Message-ID: <20241115150539.49a010d8@canb.auug.org.au>
+In-Reply-To: <20241031143519.73eca58b@canb.auug.org.au>
+References: <20241031143519.73eca58b@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/XXiwl.9JUZ0mVUdsW+F./dd";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-Fix minor typo in api.rst where the word physical was misspelled
-as physcial.
+--Sig_/XXiwl.9JUZ0mVUdsW+F./dd
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
----
-Notes: 
-  - changes in v2: fixed a typo in the shortlog...
+Hi all,
 
- Documentation/virt/kvm/api.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, 31 Oct 2024 14:35:19 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> Today's linux-next merge of the kvm-arm tree got a conflict in:
+>=20
+>   arch/arm64/tools/sysreg
+>=20
+> between commit:
+>=20
+>   034993461890 ("arm64/sysreg: Update ID_AA64MMFR1_EL1 to DDI0601 2024-09=
+")
+>=20
+> from the arm64 tree and commit:
+>=20
+>   9ae424d2a1ae ("arm64: Define ID_AA64MMFR1_EL1.HAFDBS advertising FEAT_H=
+AFT")
+>=20
+> from the kvm-arm tree.
+>=20
+> I fixed it up (the former is a superset of the latter) and can carry the
+> fix as necessary. This is now fixed as far as linux-next is concerned,
+> but any non trivial conflicts should be mentioned to your upstream
+> maintainer when your tree is submitted for merging.  You may also want
+> to consider cooperating with the maintainer of the conflicting tree to
+> minimise any particularly complex conflicts.
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index edc070c6e19b..4ed8f222478a 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -5574,7 +5574,7 @@ KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA
-   in guest physical address space. This attribute should be used in
-   preference to KVM_XEN_ATTR_TYPE_SHARED_INFO as it avoids
-   unnecessary invalidation of an internal cache when the page is
--  re-mapped in guest physcial address space.
-+  re-mapped in guest physical address space.
- 
-   Setting the hva to zero will disable the shared_info page.
- 
--- 
-2.43.0
+This is now a conflict between the kvm tree and the arm64 tree
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/XXiwl.9JUZ0mVUdsW+F./dd
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmc2yJQACgkQAVBC80lX
+0GxpFAf/cQgjBGmp0pMjruTdLl8Hr4qupKlZHr45AB1gG+CNedjxlkr0Y91erLzK
+IZqnrM7FPX4e9vmEsNJxWkFehL0y0CN0PppIryMceaSq6xLB0j9rJIN6hLX4sO6m
+FW/fdlfHx07rokJGpmYlUU3w57xGMlM3R5BxBsg2NddwrFlmMMmvACvhufKwRGZL
+A6zmhK83ieNr6Tyq7N6XbBM95+Xam98MXAAwM31HjF7sVeyYwVbIcsvfk7RM/xHe
+evE960s+Q9xJH56ifB+6xEMCBOu3W3l3UW5ZBYhfiMfOJy7z/UyX/dlzv/205hK5
+yDU4kuMkPiTShEyZsFF3h4UvR8tjZA==
+=jzxC
+-----END PGP SIGNATURE-----
+
+--Sig_/XXiwl.9JUZ0mVUdsW+F./dd--
