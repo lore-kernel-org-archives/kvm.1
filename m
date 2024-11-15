@@ -1,67 +1,67 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FB21D54E2
-	for <kvm@vger.kernel.org>; Fri, 15 Nov 2024 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0AB15573A
+	for <kvm@vger.kernel.org>; Fri, 15 Nov 2024 17:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731690643; cv=none; b=Y+UFIAfYOfwew90563eACDump5hQbgSOlNlV61O+6P8//xhvmEATVjL9yq7UcfBOWpv/rfNcpf2A/65GtKL4Jz9Yc9wOX+bivz46FvllZRaWSaEKsExnAyE6TIGCXBCZw8up0NXVYJMmTNgar16N9CzCch1ozOvvUIAfHYRFUQA=
+	t=1731691230; cv=none; b=pRnH77E+3RVMyjd7qFBXpbYnRuzVi4Yo8RCpm3+IH6iBhcEBSu+9eWTwwdQ/hb7po8BDLQ712I2LbPKSFHY4WY0cg0LoH725Dq/crRsCsFHB7ZJidNWMoZz/8Zb3EuwnxlrunM5crVOYWuTwUcyyTLMsYOfOcc188/ysfLXvngc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731690643; c=relaxed/simple;
-	bh=VFsz53rKK1c3y7SHDdK7nkd3SLfBSUfMhdGyM3Cgze8=;
+	s=arc-20240116; t=1731691230; c=relaxed/simple;
+	bh=HtTOt1WYSRmKLfVNSmRQh+Y+jvBZR1tvqD02X2OOGb4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VK3QJuBbIYXaPGLULSCiI5otEMqAmnfsKxlxY3xqcvXDAQeYioqueiSrsTgThbkWPtJtjKPlX9qFEFPLZMb+RXQL5EnPeWZQgjqE1ac3m4NiFUSPdG/xbdhKtOId01jXsoBZFxOWvnySx0nmKJEur/C11KyUWpuQYQU3xDfrr5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OdYT92Go; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=P04igR5G4VKYhOGN5c9hWoFnt2EG4jp7RwMJkUSPTFWx/T/GmAdHOd50hlSyrwjcRmqkW2fvJ6Y2pf5oMvcJyGeqebgkVArGI1yH+KFguBDY8y7L5g/E8JdihKptRXldLigU0wC+a0bQgUkZKCSpPMKY98130y1eJflpwIQkrRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLZUGV/m; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OdYT92Go"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLZUGV/m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731690640;
+	s=mimecast20190719; t=1731691227;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=48OliLDzjGOtoC4m2e/3Cn/tIGUFMAeqWxw8T4GQ1zM=;
-	b=OdYT92GoFPTGA37LSlDbTHKE5nAb3kcSFpxgegaT+8xhjqQhyKWdlBszejHUyf7Mrcu7su
-	LKWrqma7a5Q2V+aAu12OdK+a/rmd/tYnknbSG/ml/FgHR9tMEmprDzHqHvEuPc8dbnFbam
-	Z76qWcijnVdyoz23YcEbQkX0D96ng2o=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0+ejgmuJB3V2O2WYI8XqlXSmKnq9xsdZLaYqBP/ydSQ=;
+	b=DLZUGV/mB/hcrZ7WBoX7TxgVnKRBxzIVclPyN8QdqfPzQeTG8M8d0AiXtadjSUeCGBCqt9
+	x/sopKQpRYY8bQmtDZF1uCLh+tfkeBl1bBR3QTlKM/nL7e8z40ipOLPHd+LwecZkoVBdcj
+	tLzTsLmPJchaOFOAUv4LVgYuNRul1ig=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-533-X7gsZEd8NvWPXin8MgSYfA-1; Fri, 15 Nov 2024 12:10:39 -0500
-X-MC-Unique: X7gsZEd8NvWPXin8MgSYfA-1
-X-Mimecast-MFC-AGG-ID: X7gsZEd8NvWPXin8MgSYfA
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-53da2737de5so1306419e87.0
-        for <kvm@vger.kernel.org>; Fri, 15 Nov 2024 09:10:38 -0800 (PST)
+ us-mta-355-sVkhd3Q1Ot-clOwb__QN-g-1; Fri, 15 Nov 2024 12:20:25 -0500
+X-MC-Unique: sVkhd3Q1Ot-clOwb__QN-g-1
+X-Mimecast-MFC-AGG-ID: sVkhd3Q1Ot-clOwb__QN-g
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3822f550027so177564f8f.1
+        for <kvm@vger.kernel.org>; Fri, 15 Nov 2024 09:20:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731690637; x=1732295437;
+        d=1e100.net; s=20230601; t=1731691225; x=1732296025;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=48OliLDzjGOtoC4m2e/3Cn/tIGUFMAeqWxw8T4GQ1zM=;
-        b=d70eiWpaeufggFAosMrcfj8C4ZDn/XXJx3SBpmL+/sOor0SwKkKptyWJeMJAdZlJZi
-         Ah4yUEKNGXENT+FWrxN3iHstfpZtufO47HNtBPJqQaF8hJoe55ECPpZPxyTRtFQKUl3W
-         2pHV3NXwAellmD+r5kpb+7Vi9EaNBLuGsioRsAmjKFaT9IMnwregug/JpPRteopd8nbL
-         6sT5C0dWyMlA2LGPs6Z32VxxqXEZpC3OiCJWXspVbttWOApZ52l2Mv5sunPSYRoTBGLG
-         /JP5CWM5mXhLfvCNwSS+aL3K9WeBg3H3fAbbL6YRLVM0uhq0OVqSAnqc0gLxOtoZvQx2
-         AoAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrfcJA8UWLxaes/TBvtfaLMBWHKqqh+n5BZ2P9OUBBocAtq6OjXYhNbl88oKt8C9gG87Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvBb+Hbx6k9ugOmfVM6Ja5+SuBZmAw7U5vnYx1qN9NHJe64KT1
-	ec4armO6RUkw+ObPjlNlmX20ZQK8OfDwUE6qQO9VLFsXv92rNjqsBeAWV7BQUqH5I1i02gH1jKc
-	sS9p/p41av+wTlDk3L+7qQv1Hj8QpwKyGpmNIJfxkkxnTxEQZAA==
-X-Received: by 2002:a05:6512:39c6:b0:539:f13c:e5d1 with SMTP id 2adb3069b0e04-53dab3b0648mr1791124e87.38.1731690637358;
-        Fri, 15 Nov 2024 09:10:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFq5FUuRRyR5Vm7BO6UHaxJzl2kq52Rh+JW8BLqfChE5k/Qq35g8v4m3WQZHC3kxF7OpNDRyQ==
-X-Received: by 2002:a05:6512:39c6:b0:539:f13c:e5d1 with SMTP id 2adb3069b0e04-53dab3b0648mr1791114e87.38.1731690636916;
-        Fri, 15 Nov 2024 09:10:36 -0800 (PST)
+        bh=0+ejgmuJB3V2O2WYI8XqlXSmKnq9xsdZLaYqBP/ydSQ=;
+        b=ASOUKScfHcNljvBkDtKvnlp1EBWcEd1qi47sQLlTf4xuxB6B1nG+j1MpHZYcHX+3Ne
+         8kclqeJEspTU3C0tG/5zHGkz+AK+xhNlVGk/PXZFycj63z0bGHFJryEvkuLVwZ/l22sM
+         TDBHpRjP1TM6j7rK4zniQSavWxAHLoYdVDtQT/xK3VxdQvIyFVPGfyYTwEFLFWoDGJ8a
+         Tv5nMBZGMHl0BfIOpTUQ5hf50kZM9Wd2+Wefy0i4epNR70MRgK/SzI3i6hp0WhQ8WKK/
+         bNodCxaJ/Fe+EBBNdJoNWPK+Td8aXTo8bhWAOZ0XAhjxq5YByK2yvfpPXyNSY686Uu4C
+         eOqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQvKyJv0Vt4bgK8r0A8cnWb+vaEUYLPsFJ2VQ/LEXCOVojoySgWIvGZgbRYhPZ7vhktyA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJpbr4e0xDlbW8Pzq5SHS0HyZL78la0LRVZQi56mcqY0gO+lYE
+	4ipW8HYLMHE396NApRmgRPQpQbya3vKdGXqc1KynC9WoxK3KNnU2y7awsFN6NbMRQUgwYk19P+j
+	U9XScsKhSQX1xOi279vhq7LJx4adRVHMm7Y4FxS8DqH2/0AWfcp1n5Vs35Q==
+X-Received: by 2002:a5d:59ad:0:b0:382:2f62:bd45 with SMTP id ffacd0b85a97d-3822f62bff4mr1029809f8f.29.1731691224704;
+        Fri, 15 Nov 2024 09:20:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGiHc0aA9rNB4klNL+ebkxJEuTEkAuN+XQpT94vaI8oEt4AheK1W4WQXFlmF2ArotLZ+4sP4Q==
+X-Received: by 2002:a5d:59ad:0:b0:382:2f62:bd45 with SMTP id ffacd0b85a97d-3822f62bff4mr1029789f8f.29.1731691224330;
+        Fri, 15 Nov 2024 09:20:24 -0800 (PST)
 Received: from ?IPV6:2003:cb:c721:8100:177e:1983:5478:64ec? (p200300cbc7218100177e1983547864ec.dip0.t-ipconnect.de. [2003:cb:c721:8100:177e:1983:5478:64ec])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab721d7sm61558775e9.9.2024.11.15.09.10.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbeb47sm4844132f8f.63.2024.11.15.09.20.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Nov 2024 09:10:36 -0800 (PST)
-Message-ID: <dcdce8e1-51da-42da-a892-59c6ccd9de23@redhat.com>
-Date: Fri, 15 Nov 2024 18:10:33 +0100
+        Fri, 15 Nov 2024 09:20:22 -0800 (PST)
+Message-ID: <23912b62-9a91-4489-abc1-5d8b34231303@redhat.com>
+Date: Fri, 15 Nov 2024 18:20:21 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,35 +69,20 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 0/6] Direct Map Removal for guest_memfd
-To: Patrick Roy <roypat@amazon.co.uk>, tabba@google.com,
- quic_eberman@quicinc.com, seanjc@google.com, pbonzini@redhat.com,
- jthoughton@google.com, ackerleytng@google.com, vannapurve@google.com,
- rppt@kernel.org
-Cc: graf@amazon.com, jgowans@amazon.com, derekmn@amazon.com,
- kalyazin@amazon.com, xmarcalx@amazon.com, linux-mm@kvack.org,
- corbet@lwn.net, catalin.marinas@arm.com, will@kernel.org,
- chenhuacai@kernel.org, kernel@xen0n.name, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com, shuah@kernel.org,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, faresx@amazon.com
-References: <20241030134912.515725-1-roypat@amazon.co.uk>
- <4aa0ccf4-ebbe-4244-bc85-8bc8dcd14e74@redhat.com>
- <27646c08-f724-49f7-9f45-d03bad500219@amazon.co.uk>
- <d1a69eb7-85d5-4ffa-88e2-f4841713c1d7@redhat.com>
- <90c9d8c0-814e-4c86-86ef-439cb5552cb6@amazon.co.uk>
- <10e4d078-3cdb-4d1c-a1a3-80e91b247217@redhat.com>
- <02f77d32-e2a1-431b-bb67-33d36c06acd3@amazon.co.uk>
- <f4c5d0a6-a582-44e3-8949-c199cc0bfba7@redhat.com>
- <f1f34ac0-d505-4982-aad9-86a0db9f4a35@amazon.co.uk>
+Subject: Re: [RFC PATCH 0/6] Enable shared device assignment
+To: Rob Nertney <rnertney@nvidia.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Edgecombe Rick P <rick.p.edgecombe@intel.com>,
+ Wang Wei W <wei.w.wang@intel.com>, Peng Chao P <chao.p.peng@intel.com>,
+ Gao Chao <chao.gao@intel.com>, Wu Hao <hao.wu@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+References: <20240725072118.358923-1-chenyi.qiang@intel.com>
+ <b7197241-7826-49b7-8dfc-04ffecb8a54b@intel.com>
+ <84ef5f82-6224-4489-91be-8c1163d5b287@intel.com>
+ <Zzd69pa75CKM1OzU@rnertney-mlt>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -145,73 +130,66 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <f1f34ac0-d505-4982-aad9-86a0db9f4a35@amazon.co.uk>
+In-Reply-To: <Zzd69pa75CKM1OzU@rnertney-mlt>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 15.11.24 17:59, Patrick Roy wrote:
-> 
-> 
-> On Tue, 2024-11-12 at 14:52 +0000, David Hildenbrand wrote:
->> On 12.11.24 15:40, Patrick Roy wrote:
->>> I remember talking to someone at some point about whether we could reuse
->>> the proc-local stuff for guest memory, but I cannot remember the outcome
->>> of that discussion... (or maybe I just wanted to have a discussion about
->>> it, but forgot to follow up on that thought?).  I guess we wouldn't use
->>> proc-local _allocations_, but rather just set up proc-local mappings of
->>> the gmem allocations that have been removed from the direct map.
+On 15.11.24 17:47, Rob Nertney wrote:
+> On Tue, Oct 08, 2024 at 04:59:45PM +0800, Chenyi Qiang wrote:
+>> Hi Paolo,
 >>
->> Yes. And likely only for memory we really access / try access, if possible.
-> 
-> Well, if we start on-demand mm-local mapping the things we want to
-> access, we're back in TLB flush hell, no?
-
-At least the on-demand mapping shouldn't require a TLB flush? Only 
-"unmapping" if we want to restrict the size of a "mapped pool" of 
-restricted size.
-
-Anyhow, this would be a pure optimization, to avoid the expense of 
-mapping everything, when in practice you'd like not access most of it.
-
-(my theory, happy to be told I'm wrong :) )
-
-> And we can't know
-> ahead-of-time what needs to be mapped, so everything would need to be
-> mapped (unless we do something like mm-local mapping a page on first
-> access, and then just never unmapping it again, under the assumption
-> that establishing the mapping won't be expensive)
-
-Right, the whole problem is that we don't know that upfront.
-
-> 
->>>
->>> I'm wondering, where exactly would be the differences to Sean's idea
->>> about messing with the CR3 register inside KVM to temporarily install
->>> page tables that contain all the gmem stuff, conceptually? Wouldn't we
->>> run into the same interrupt problems that Sean foresaw for the CR3
->>> stuff? (which, admittedly, I still don't quite follow what these are :(
->>> ).
+>> Kindly ping for this thread. The in-place page conversion is discussed
+>> at Linux Plumbers. Does it give some direction for shared device
+>> assignment enabling work?
 >>
->> I'd need some more details on that. If anything would rely on the direct
->> mapping (from IRQ context?) than ... we obviously cannot remove the
->> direct mapping :)
+> Hi everybody.
+
+Hi,
+
 > 
-> I've talked to Fares internally, and it seems that generally doing
-> mm-local mappings of guest memory would work for us. We also figured out
-> what the "interrupt problem" is, namely that if we receive an interrupt
-> while executing in a context that has mm-local mappings available, those
-> mappings will continue to be available while the interrupt is being
-> handled.
+> Our NVIDIA GPUs currently support this shared-memory/bounce-buffer method to
+> provide AI acceleration within TEE CVMs. We require passing though the GPU via
+> VFIO stubbing, which means that we are impacted by the absence of an API to
+> inform VFIO about page conversions.
+> 
+> The CSPs have enough kernel engineers who handle this process in their own host
+> kernels, but we have several enterprise customers who are eager to begin using
+> this solution in the upstream. AMD has successfully ported enough of the
+> SEV-SNP support into 6.11 and our initial testing shows successful operation,
+> but only by disabling discard via these two QEMU patches:
+> - https://github.com/AMDESE/qemu/commit/0c9ae28d3e199de9a40876a492e0f03a11c6f5d8
+> - https://github.com/AMDESE/qemu/commit/5256c41fb3055961ea7ac368acc0b86a6632d095
+> 
+> This "workaround" is a bit of a hack, as it effectively requires greater than
+> double the amount of host memory than as to be allocated to the guest CVM. The
+> proposal here appears to be a promising workaround; are there other solutions
+> that are recommended for this use case?
 
-Isn't that likely also the case with secretmem where we removed the 
-directmap, but have an effective per-mm mapping in the (user-space 
-portion) of the page table?
+What people we are working on is supporting private and shared memory in 
+guest_memfd, and allowing an in-place conversion between shared and 
+private: this avoids discards + reallocation and consequently any double 
+memory allocation.
 
-> I'm talking to my security folks to see how much of a concern
-> this is for the speculation hardening we're trying to achieve. Will keep
-> you in the loop there :)
+To get stuff into VFIO, we must only map the currently shared pages 
+(VFIO will pin + map them), and unmap them (VFIO will unmap + unpin 
+them) before converting them to private.
 
-Thanks!
+This series should likely achieve the 
+unmap-before-conversion-to-private, and map-after-conversion-to-shared, 
+such that it could be compatible with guest_memfd.
+
+QEMU would simply mmap the guest_memfd to obtain a user space mapping, 
+from which it can pass address ranges to VFIO like we already do. This 
+user space mapping only allows for shared pages to be faulted in. 
+Currently private pages cannot be faulted in (inaccessible -> SIGBUS). 
+So far the theory.
+
+I'll note that this is likely not the most elegant solution, but 
+something that would achieve in a reasonable timeframe one solution to 
+the problem.
+
+Cheers!
+
 
 -- 
 Cheers,
