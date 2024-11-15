@@ -1,140 +1,121 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07081F16B;
-	Fri, 15 Nov 2024 00:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDCF77F1B;
+	Fri, 15 Nov 2024 01:19:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731631560; cv=none; b=mvVDqSuzTv88YxT/51x2CtFoTmFybyMuMg3TdL8kzfGFKmtJg+TE7thNEmT3IfWaj1GGZU812GA6EBJUazOVu2f7DWnRj+HBicah2TtThb6xm1iQqHUKNkktbQOru0D6oJmuRV/1orMm0sowXujS/FaAwI7PuUW2cvDYu6U3wd0=
+	t=1731633587; cv=none; b=cmdbcqyCJ0q+rMYxtBWPQPffyrcEmo5L5i0Xk9NtIKcMOfkD/j3fV6eFwTbf13BaEuAkYATPxkaXrOxOFarsX0LNLqZCJyKX+I2oeBPVjZmkT62hL3rJQ5OZaTEahFLFlxQP62v70FNSTIBOTzg8czW1kWupM5Jsyh0vqe67Y6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731631560; c=relaxed/simple;
-	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Hsbajgh4HTTeocdX8VajV9QVZq58fSUMvDgoG5yjV8KTIUL00c+7JOIjvNTdmHl44a3NvYmRP8Xi9vovWRlssWL2U2b+3dU3TYueJWEf2B5qDOwHZ8isOL1+MOYpl8BfkPAjs7V9+N4C6yGPOB2tdY2teZS2ggDK0xdcepmCcSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QOnTTM3u; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B6FonATM; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1731633587; c=relaxed/simple;
+	bh=h7oRV1nbfjsFc00eUaw9KaflULdd94NiX150E/lhGig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AhZoB4wz1v14a8/3E2WHxsGSm0iRkWodnR+yMgv806mP7cqu/GBtfV65kIyrjig/V2TPRgBP65/BC0AUjG4CsS5fCX+cQ9XSZqmmeiQ/UW1KyXZL2B6w7cOPMnnONSIo7RUHnJR2D9FYngDsTpLMSmYvoI0jNGId2xE1rRqnf9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W2lHmIDj; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QOnTTM3u";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B6FonATM"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1731631556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
-	b=QOnTTM3upVgvLOqHHkULAR/Sd+IXv2/jwWShAxdu/d9Ou3VRQKwRFQcKkxYFlQbNCHuDKC
-	qmtZIl1QGU9LvuaVEHVi6mN8leBtPwfqyHUmV8sQ4okR7sVQBV4nqtQqHtK44NZWa+achm
-	KJtmcrXFernLrXFh8br79W+BBZcbUPnfW6G5ETbNxP5n4/wMMrok/VJbm/1lHIAX31JScD
-	X4TbcxeFRb0UaQ4ZOxoYrise9V26pZtUHGM6uIGxT7DAWZfdtWm58X+EkXZorarJx6j3sJ
-	jv7CYR1gtAzR1m3FucHfJnoCrMS9Ay9Ifg0KTixSjK7w1MQSxCZuE9xVfV0ltA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1731631556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
-	b=B6FonATMAX4OxdtMR8JNBP8qWfBOIV1vFazP675PCOfWlXztCY+avvBu11Vcb9coe6V9WE
-	q7IVbFH9tV+539Aw==
-To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>, Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rasesh Mody
- <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko
- <imitsyanko@quantenna.com>, Sergey Matyukevich <geomatsi@gmail.com>, Kalle
- Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar
- S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>, Ricky Wu
- <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao
- <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>, Mostafa Saleh
- <smostafa@google.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi
- Liu <yi.l.liu@intel.com>, Kunwu Chan <chentao@kylinos.cn>, Ankit Agrawal
- <ankita@nvidia.com>, Christian Brauner <brauner@kernel.org>, Reinette
- Chatre <reinette.chatre@intel.com>, Eric
- Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 11/11] Remove devres from pci_intx()
-In-Reply-To: <49bb6fc9ebff3cae844da0465ceadeef8d3217c7.camel@redhat.com>
-References: <20241113124158.22863-2-pstanner@redhat.com>
- <20241113124158.22863-13-pstanner@redhat.com> <87msi3ksru.ffs@tglx>
- <49bb6fc9ebff3cae844da0465ceadeef8d3217c7.camel@redhat.com>
-Date: Fri, 15 Nov 2024 01:46:13 +0100
-Message-ID: <8734jtl3xm.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W2lHmIDj"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c95a962c2bso350718a12.2;
+        Thu, 14 Nov 2024 17:19:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731633583; x=1732238383; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OTJiLj8Cl/gid6IIoC6CA3YIEMl5qRRB8q0gUg2Qs+w=;
+        b=W2lHmIDjyUqglGGgfaMAYDQZ6bpE2T746VG19dns/YZu9JGZm9mobHocFVvqAywBwT
+         ZlPxWdKlV1V0jwknJRAl86pHhkJI3hnPGdwtmk1mLieXM62oCmJfNKac0zZ9modgrW0R
+         0AreC0LyvxfjklM30dlzhOf7SPxllnjcRRtfxnT9pLxa9XAL01Jlr6UmhuiVtTKaQm69
+         1X4Jo6rbwaJ9CkcxEuvQccRAn8QJsmlSCwXJ5ujRPcdn+9rZrhPpi3nO/m6RL72C1iwE
+         Yr23djfzEs5/TJeMjxllm/RnG0Lrlu+nbfGAoOIybyXphnSklUnhmC+qvE9AMDGgZStR
+         /Ntg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731633583; x=1732238383;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OTJiLj8Cl/gid6IIoC6CA3YIEMl5qRRB8q0gUg2Qs+w=;
+        b=ShY/thZ0lzxkDfzjrJIQr0BXii5w9/OX3C4EkzKZQwsmmcbW4m3LOKYEEv0oHf408O
+         ljROXXJBD1FGxj/6htS2z5Umw/vvg1Zmpmr95tVhxoqeY5KeVYwhAKc+L/FuNew5DsDm
+         4RSkMgrEGE/pClFMjv3RG62e42OLDnEC2kU9LHvNL1ImaEsKkEHbt0NK40aCzRr393+j
+         nNdFYSE751xw8DvYRUv7icod01Cd8Gkm8VMTQxKr+myZusBcW4QMGDd0QA1QJNVpH0I5
+         9hE/0B3jrC9ZKfNKkpCfwDiGQAy+dzgLsbXelSKe1kaDKBoSU7MtAfyYecmy3qRYp7w6
+         goRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8Yle7Pz4tIObXx0HPbmskgpOIuQCuUn07jI/tx/FdGtCR5iVEPt1L7L6yXUyWqmys1xo=@vger.kernel.org, AJvYcCUIG2KmewvUQhNM/UjxQDp3/8qUcroKTpDS2FU97Hjs+Tjt1WBBJvPYsLQdnr1OZhlh3B712L5g6wkhc7qn@vger.kernel.org, AJvYcCXUFsUnyX12++WSMsuW4Bt7IYvfM6hicB/tB81FYAZ5O0mV0kGOdalu0EbxK+tEqYw++2H7ibd9lU35@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkYGDeelDlv3W/L2ngD5NX24AOEVrunEmyLxYgucihNNdXVhVH
+	yt3D1yH2l0A6Q2cp5FOHeJiKA0xjmCm8Qup4+kHVvV3PYNl21RNz
+X-Google-Smtp-Source: AGHT+IGtW9iSQmpcrn6weGm5G253EH2j+gzOxZzvx687F8weem2GgXEiQKu5n+yi+N9etxW9vKM2UA==
+X-Received: by 2002:aa7:c3c9:0:b0:5cf:9004:bd4c with SMTP id 4fb4d7f45d1cf-5cf9004be90mr278753a12.29.1731633583291;
+        Thu, 14 Nov 2024 17:19:43 -0800 (PST)
+Received: from ?IPV6:2a01:e11:5400:7400:dc78:53a0:d8e6:28cd? ([2a01:e11:5400:7400:dc78:53a0:d8e6:28cd])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf79bb3b04sm1065585a12.42.2024.11.14.17.19.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 17:19:42 -0800 (PST)
+Message-ID: <d824d93d-8724-4e71-acb9-215010d8c3fb@gmail.com>
+Date: Fri, 15 Nov 2024 02:19:41 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Documentation: kvm: fix tipo in api.rst
+To: Sean Christopherson <seanjc@google.com>
+Cc: corbet@lwn.net, pbonzini@redhat.com, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241114223738.290924-3-gianf.trad@gmail.com>
+ <ZzaE9dYmSqg3U33y@google.com>
+From: Gianfranco Trad <gianf.trad@gmail.com>
+Content-Language: en-US, it
+Autocrypt: addr=gianf.trad@gmail.com; keydata=
+ xjMEZyAY2RYJKwYBBAHaRw8BAQdA3W2zVEPRi03dmb95c7NkmFyBZi+VAplZZX9YVcsduG3N
+ JkdpYW5mcmFuY28gVHJhZCA8Z2lhbmYudHJhZEBnbWFpbC5jb20+wo8EExYIADcWIQRJFQhW
+ JFLZFapGQPDIleIjeBnIywUCZyAY2QUJA8JnAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEMiV
+ 4iN4GcjL+JkA/RWGFWAqY06TH+ZZKuhNhvJhj2+dqgPF0QRjILpGSVJyAQCsvpKVS6H9ykYP
+ Qyi/UyxIKxa8tcdSP1oUj9YIAHUcC844BGcgGNkSCisGAQQBl1UBBQEBB0BlosN6xF2pP/d7
+ RVTlTFktASXfYhN0cghGG6dk5r47NgMBCAfCfgQYFggAJhYhBEkVCFYkUtkVqkZA8MiV4iN4
+ GcjLBQJnIBjZBQkDwmcAAhsMAAoJEMiV4iN4GcjLuIIBAJBEkfB4sVF7T46JBpJBP5jBHm4B
+ nmn274Qd7agQUZR4AQDfkC/p4qApuqZvZ3H0qOkexpf9swGV1UtmmzYQdmjyAw==
+In-Reply-To: <ZzaE9dYmSqg3U33y@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-T24gVGh1LCBOb3YgMTQgMjAyNCBhdCAxMDowNSwgUGhpbGlwcCBTdGFubmVyIHdyb3RlOg0KPiBP
-biBXZWQsIDIwMjQtMTEtMTMgYXQgMTc6MjIgKzAxMDAsIFRob21hcyBHbGVpeG5lciB3cm90ZToN
-Cj4+IE9uIFdlZCwgTm92IDEzIDIwMjQgYXQgMTM6NDEsIFBoaWxpcHAgU3Rhbm5lciB3cm90ZToN
-Cj4+ID4gcGNpX2ludHgoKSBpcyBhIGh5YnJpZCBmdW5jdGlvbiB3aGljaCBjYW4gc29tZXRpbWVz
-IGJlIG1hbmFnZWQNCj4+ID4gdGhyb3VnaA0KPj4gPiBkZXZyZXMuIFRoaXMgaHlicmlkIG5hdHVy
-ZSBpcyB1bmRlc2lyYWJsZS4NCj4+ID4gDQo+PiA+IFNpbmNlIGFsbCB1c2VycyBvZiBwY2lfaW50
-eCgpIGhhdmUgYnkgbm93IGJlZW4gcG9ydGVkIGVpdGhlciB0bw0KPj4gPiBhbHdheXMtbWFuYWdl
-ZCBwY2ltX2ludHgoKSBvciBuZXZlci1tYW5hZ2VkIHBjaV9pbnR4X3VubWFuYWdlZCgpLA0KPj4g
-PiB0aGUNCj4+ID4gZGV2cmVzIGZ1bmN0aW9uYWxpdHkgY2FuIGJlIHJlbW92ZWQgZnJvbSBwY2lf
-aW50eCgpLg0KPj4gPiANCj4+ID4gQ29uc2VxdWVudGx5LCBwY2lfaW50eF91bm1hbmFnZWQoKSBp
-cyBub3cgcmVkdW5kYW50LCBiZWNhdXNlDQo+PiA+IHBjaV9pbnR4KCkNCj4+ID4gaXRzZWxmIGlz
-IG5vdyB1bm1hbmFnZWQuDQo+PiA+IA0KPj4gPiBSZW1vdmUgdGhlIGRldnJlcyBmdW5jdGlvbmFs
-aXR5IGZyb20gcGNpX2ludHgoKS4gSGF2ZSBhbGwgdXNlcnMgb2YNCj4+ID4gcGNpX2ludHhfdW5t
-YW5hZ2VkKCkgY2FsbCBwY2lfaW50eCgpLiBSZW1vdmUgcGNpX2ludHhfdW5tYW5hZ2VkKCkuDQo+
-PiA+IA0KPj4gPiBTaWduZWQtb2ZmLWJ5OiBQaGlsaXBwIFN0YW5uZXIgPHBzdGFubmVyQHJlZGhh
-dC5jb20+DQo+PiA+IC0tLQ0KPj4gPiDCoGRyaXZlcnMvbWlzYy9jYXJkcmVhZGVyL3J0c3hfcGNy
-LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyICstDQo+PiA+IMKgZHJpdmVycy9taXNjL3Rp
-Zm1fN3h4MS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA2
-ICstLQ0KPj4gPiDCoC4uLi9uZXQvZXRoZXJuZXQvYnJvYWRjb20vYm54MngvYm54MnhfbWFpbi5j
-wqAgfMKgIDIgKy0NCj4+ID4gwqBkcml2ZXJzL25ldC9ldGhlcm5ldC9icm9jYWRlL2JuYS9ibmFk
-LmPCoMKgwqDCoMKgwqAgfMKgIDIgKy0NCj4+ID4gwqBkcml2ZXJzL250Yi9ody9hbWQvbnRiX2h3
-X2FtZC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArLQ0KPj4gPiDCoGRyaXZl
-cnMvbnRiL2h3L2ludGVsL250Yl9od19nZW4xLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAy
-ICstDQo+PiA+IMKgZHJpdmVycy9wY2kvZGV2cmVzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArLQ0KPj4gPiDCoGRyaXZlcnMvcGNpL21z
-aS9hcGkuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
-wqAgMiArLQ0KPj4gPiDCoGRyaXZlcnMvcGNpL21zaS9tc2kuY8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMiArLQ0KPj4gPiDCoGRyaXZlcnMvcGNp
-L3BjaS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgfCA0MyArLS0tLS0tLS0tLS0tLS0NCj4+ID4gLS0tLQ0KPj4gPiDCoGRyaXZlcnMvdmZp
-by9wY2kvdmZpb19wY2lfY29yZS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDIgKy0N
-Cj4+ID4gwqBkcml2ZXJzL3ZmaW8vcGNpL3ZmaW9fcGNpX2ludHJzLmPCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgfCAxMCArKy0tLQ0KPj4gPiDCoGRyaXZlcnMveGVuL3hlbi1wY2liYWNrL2NvbmZf
-c3BhY2VfaGVhZGVyLmPCoMKgIHzCoCAyICstDQo+PiA+IMKgaW5jbHVkZS9saW51eC9wY2kuaMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEg
-LQ0KPj4gPiDCoDE0IGZpbGVzIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDYyIGRlbGV0aW9u
-cygtKQ0KPj4gDQo+PiBOb3cgSSdtIHV0dGVybHkgY29uZnVzZWQuIFRoaXMgdW5kb2VzIHRoZSBw
-Y2lfaW50eF91bm1hbmFnZWQoKSBjaHVybg0KPj4gd2hpY2ggeW91IGNhcmVmdWxseSBzcGxpdCBp
-bnRvIHNldmVyYWwgcGF0Y2hlcyBmaXJzdC4NCj4NCj4gSGF2ZSB5b3UgcmVhZCB0aGUgZW1haWwg
-SSBoYXZlIGxpbmtlZD8NCj4NCj4gVGhlcmUgaXMgYWxzbyB0aGUgY292ZXItbGV0dGVyIChkb2Vz
-IGFueW9uZSBpbiB0aGUgY29tbXVuaXR5IGV2ZXIgcmVhZA0KPiB0aG9zZT8pIHdoaWNoIGV4cGxp
-Y2l0bHkgc3RhdGVzOg0KPg0KPiAiUGF0Y2ggIlJlbW92ZSBkZXZyZXMgZnJvbSBwY2lfaW50eCgp
-IiBvYnZpb3VzbHkgcmV2ZXJ0cyB0aGUgcHJldmlvdXMNCj4gcGF0Y2hlcyB0aGF0IG1hZGUgZHJp
-dmVycyB1c2UgcGNpX2ludHhfdW5tYW5hZ2VkKCkuIEJ1dCB0aGlzIHdheSBpdCdzDQo+IGVhc2ll
-ciB0byByZXZpZXcgYW5kIGFwcHJvdmUuIEl0IGFsc28gbWFrZXMgc3VyZSB0aGF0IGVhY2ggY2hl
-Y2tlZCBvdXQNCj4gY29tbWl0IHNob3VsZCBwcm92aWRlIGNvcnJlY3QgYmVoYXZpb3IsIG5vdCBq
-dXN0IHRoZSBlbnRpcmUgc2VyaWVzIGFzIGENCj4gd2hvbGUuIg0KDQpJIHJlYWQgaXQgYW5kIEkg
-YXNzdW1lIHlvdXIgaW50ZW50aW9uIHdhcyB0byBmb3JjZSBhbiBleWUgb24gZXZlcnkgdXNlDQpj
-YXNlIG9mIHBjaV9pbnR4KCkgYW5kIG5vdCBqdXN0IG9uIHRob3NlIHdoaWNoIG5lZWQgdG8gYmUg
-Y29udmVydGVkIHRvDQpwY2ltX2ludHgoKS4NCg0KSSdtIG5vdCBjb252aW5jZWQgdGhhdCB0aGlz
-IGlzIG5lZWRlZCwgYnV0IGZhaXIgZW5vdWdoLg0KDQoNCg0KDQo=
+On 15/11/24 00:17, Sean Christopherson wrote:
+> I must know.  Is the "tipo" in the shortlog intentional? :-)
+> 
+> On Thu, Nov 14, 2024, Gianfranco Trad wrote:
+>> Fix minor typo in api.rst where the word physical was misspelled
+>> as physcial.
+>>
+>> Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
+>> ---
+>>   Documentation/virt/kvm/api.rst | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index edc070c6e19b..4ed8f222478a 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -5574,7 +5574,7 @@ KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA
+>>     in guest physical address space. This attribute should be used in
+>>     preference to KVM_XEN_ATTR_TYPE_SHARED_INFO as it avoids
+>>     unnecessary invalidation of an internal cache when the page is
+>> -  re-mapped in guest physcial address space.
+>> +  re-mapped in guest physical address space.
+>>   
+>>     Setting the hva to zero will disable the shared_info page.
+>>   
+>> -- 
+>> 2.43.0
+>>
+Ouch... I wish it was, that would have been a hell of a story :,-).
+I might think of it for future patches *jokes*. But no, probably my 
+brain's italian side subconsciously kicked in (tipo is an existent word 
+in italian), in that moment...
+
+Thanks for noticing Sean, I'll send a v2 asap.
+
+--Gian
