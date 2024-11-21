@@ -1,160 +1,202 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1725A1A08A3
-	for <kvm@vger.kernel.org>; Thu, 21 Nov 2024 18:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417A31D79A6
+	for <kvm@vger.kernel.org>; Thu, 21 Nov 2024 18:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732213181; cv=none; b=SNbt8ErGOFLT7idU6eGaZK4uBJ43PPZe7hSXZ+tBqDcsv8Q6ii+pCZj3/NuROX1FnXhwxYy9ZzWevysf0r0iMLj92KZUtdUCJZO5defRACnYq1EqQMcdUUYv/g+KX4PS/oKuEKZboHNDCbcC1cnyLcMEq0lXXThcj369wkdANbk=
+	t=1732215201; cv=none; b=N6hm5Pc1A54/ogKreDkoFu/9YOx2nlQ7i3Scq0cJ0/E5lJy8lcxfWuNn6DsL2fdeW8fCQXBg9D/BgH84kxbV7zI9B7NA0Wbl3ymKFFyPU7acQkAbq+eennWa/x5ZVJXFj7cwMIuAILSCoMP9Huf3ovZQmW9gMEpCqGx11savwpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732213181; c=relaxed/simple;
-	bh=EW3bBLGqFZuVOquRcnnHYxrZc3htXZlVYjqsYt+HG3M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uz4eEdPfRcWPaBLPZmngSa8YlvupMnLKehDb1vwYiLlkThZGSjKdewE6xVvuGSqTVgOXXQJnhGPjTzTuTtjmw/+NyOhOYzg0IkBO4UuGIokU+6ers3pmNxgAjC8RBNB9fACpVFGdRhokmvsTCMMP/gWdo+OZuNMtImuTCluXdmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MZHJLhYM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732215201; c=relaxed/simple;
+	bh=eGhYnE5emXo94Pyg5quiuPFdiSkETv0T4xLbIt+gbbE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tmiwxqi00o7uU8sf8hH2WY+Qr/wHWbqKej68ARHc/7+7IAEeeCODXRX9f6ok0tjslicFCxYpLy1TdC//n2bmQJ3ZqqmA67MtJPaSpmtuN+xz1eEMyO8Fg44rIA866pTfkn7RBseqCazW7uJicuCgX9Wt9+EhmHcF1ZVeImasNNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mizhang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=epBHLhlg; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mizhang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MZHJLhYM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732213179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6bSHmUUve5JUe0VVjTwXDvvxVOJ/4Qyk3ST+VWP2lMc=;
-	b=MZHJLhYMQKYGytsrs9mdQGoxYJu4Ejh6JTESNHdXu7m7LQsYUGJVRI4pGoqYwQ53MLRStp
-	aOdGXfNdC9HL9zk/BNDALJu9EmbdkE2UZyPi4E7vqnKgXi3Fkt4MS4c9GdSLlIu/ojDeoJ
-	csJMCcmqTp/E2luuKDuF7YRegzmF7S8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-t2_2AKPuOJ-y4UCj58EU8A-1; Thu, 21 Nov 2024 13:19:37 -0500
-X-MC-Unique: t2_2AKPuOJ-y4UCj58EU8A-1
-X-Mimecast-MFC-AGG-ID: t2_2AKPuOJ-y4UCj58EU8A
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4314f1e0f2bso8830655e9.1
-        for <kvm@vger.kernel.org>; Thu, 21 Nov 2024 10:19:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="epBHLhlg"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6eeb2b305efso30331267b3.0
+        for <kvm@vger.kernel.org>; Thu, 21 Nov 2024 10:53:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1732215199; x=1732819999; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+9Madf5AUgYPaX6aUUL9JHycbWIRkK+aZqhIzgnbrs=;
+        b=epBHLhlgmfnklftRQidJ2GmzQ+NWXPZW4UK+9IvFWJMBEz545B6BzS5+fs/HgOlrnx
+         doncHJ6bH3mEZomG9hhOSpCDC+ZE+C3Mc/+aN+F+YxDoy56mOWkBuePVzTJzJM5Ze4H5
+         +6Qlc8xxQq9s4SlVnaaZZvNG1g3T5ZP7k8taUUxiWkBMEC/JdmAeMU6qyir8OpILwAQ9
+         TsYABene16OKHGimxZX0pZsTEPOdJScw+vldYYnQJ08ZAp3Lf0TvloFI6D7bEPIQLpbH
+         EvppUyxtL6gq8rgZWbESl63tfumL8ia9OBvjtEVJCcM37Pqnj8w0BbokVSYVXEdXneHP
+         2y7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732213175; x=1732817975;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1732215199; x=1732819999;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6bSHmUUve5JUe0VVjTwXDvvxVOJ/4Qyk3ST+VWP2lMc=;
-        b=pZaJ0ws5EAgubHCrMy3d8d3Sk6VM4WWXKFt1np4q8LyIIX0ADcepiHvzc7Gtoil3zP
-         qZDfqRXYSq4iX0L5YhUGJpjWd18lz6oMib9mJlKtQa8EMIPry4sLbYuAio86NP1CXzmy
-         RFFzo2IZJpeVvtZTsJL8t/TrB/loSpK25UInwwC3FiOfDVck34Of0oF//ksrj3aw0Ivo
-         xCBwZKDfIKkqJE4jBpLDaaJ4r5s7/xpfwPr4JdQHMgyRexCZKSJ1yDv94K2mc+mpGfYT
-         Q16fLqsRu5n3SvYN18nA8k7Y/6p7h7usUUbHw2FqACarZATA+XqDjXt5ZTdKcT82JEIV
-         uj6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUiAAUbPoFIDmKVRCmXnqLlbZvavjixJ8MZgB9rTes02fbTg4ZeZsRC/+RJ4Y/lzTPkxQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuFy3rDz3juVF/CTZHz3qcQDlDb7Y+QYwhR0rIAqeMNJP3KSuD
-	MHBZV2lfbF7xsCnnTn2yeooURM03vhXBp/mMiLuXIQ00fr5hNYGFYqzn7qM+Y78demv5JGAbn4k
-	jEmPaLJTxBYah7Kg38CffcyPJgOF7SqEbQTxSfon6NIsBZYeDu/UfiCmVlw==
-X-Gm-Gg: ASbGnctcXcxL3/6JMNlI7boVxGBdIqYLTmAzKv+oAS4RlIVSH7fzQyBSkSAMsNZFdQx
-	tFEZEOVYOGat1632jNDORATaHPCPkz3QX/OosL2PmJBGL5Y1gxp3jsxL3qy+rvfUfm0z3Y01lQ1
-	NGhaHNR9N9pt/vnpl6s/KQLDmbMufBy0Ow3iiBdPiF16Fp+ap896HF5rpk+1O5u3nl7bkC3htz7
-	onDK5KEoG2sCnl05CnBZO4/MctWeyDOFv5m7J4ZQD/dyOpRJz0+5A==
-X-Received: by 2002:a05:600c:314b:b0:431:51c0:c90f with SMTP id 5b1f17b1804b1-4334f0202damr63248545e9.21.1732213175444;
-        Thu, 21 Nov 2024 10:19:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFlbswkPsJ2lZyPxiokUXA1d8lSrr31vnDcP+V8VFKHQkVPt3llt+6wRwlSHdB/BCqQqAboZQ==
-X-Received: by 2002:a05:600c:314b:b0:431:51c0:c90f with SMTP id 5b1f17b1804b1-4334f0202damr63248365e9.21.1732213175059;
-        Thu, 21 Nov 2024 10:19:35 -0800 (PST)
-Received: from [192.168.10.3] ([151.62.196.119])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-433b4643100sm66575945e9.39.2024.11.21.10.19.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 10:19:34 -0800 (PST)
-Message-ID: <d4048dc8-b740-47f6-8e1e-258441eb77d1@redhat.com>
-Date: Thu, 21 Nov 2024 19:19:33 +0100
+        bh=T+9Madf5AUgYPaX6aUUL9JHycbWIRkK+aZqhIzgnbrs=;
+        b=IYQB4rQ36/Zgv6s6yLvowBT9+d/4PATnw6od7LHLitSTF/lSxlGn+1X4W1ak0JxvMz
+         UtTwcMa9WdDMl2qYEirMjZAYhjFlc9IvuQ08fD0S3eiGutHZWS+CyJoDPfvHDx0/Lmsj
+         gg72BdsPZKgQCvPiXTCDuvwBEUiFyIuCwQuGycFW5Z529sAEWaNqj4SwV4m6t/QPsKdg
+         6D3CgUMsLEXLvLcR75oTGludNeWnXykxr/VJx0YxCT3F46rUhQRIwAWdJHeY48e89m4E
+         v6uf+eC50Hfn6ZXZD8A817c7OAmrNg1zrGmcrL/6NegnaS/8sCMt3oT/TV4e/CqK1vgT
+         n92Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWUVWd1qExFsk0C8nns584t4UTPPDLhwgchAfipoF64qYaPQa+q7fCu2Ugmbw1EuHaMG+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB4VEzEPUg4G2TCQqudkS3gwjGz5CZAlRMF08OppqR1X0QXe5x
+	bor67uXyYHhAeZd9ed7noFq49KtuS4KiyNyyrIndCss143VsR//zDhOrpUrXgM4xKGlsOWwW0M3
+	5x181oA==
+X-Google-Smtp-Source: AGHT+IFW1c+yo5NB9i6gITZMQ/WYNQr1/fXSlza8bauLrwlg/McJYGaXVTMf7a6D63EaXjw6XMTTYqlKnd3N
+X-Received: from mizhang-super.c.googlers.com ([34.105.13.176]) (user=mizhang
+ job=sendgmr) by 2002:a25:ab92:0:b0:e30:d5cf:775a with SMTP id
+ 3f1490d57ef6-e38f74af44emr892276.6.1732215199276; Thu, 21 Nov 2024 10:53:19
+ -0800 (PST)
+Reply-To: Mingwei Zhang <mizhang@google.com>
+Date: Thu, 21 Nov 2024 18:52:53 +0000
+In-Reply-To: <20241121185315.3416855-1-mizhang@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] First batch of KVM changes for Linux 6.13 merge window
-To: Sasha Levin <sashal@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, torvalds@linux-foundation.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- "anup@brainfault.org" <anup@brainfault.org>
-References: <20241120135842.79625-1-pbonzini@redhat.com>
- <Zz8t95SNFqOjFEHe@sashalap> <20241121132608.GA4113699@thelio-3990X>
- <901c7d58-9ca2-491b-8884-c78c8fb75b37@redhat.com> <Zz9E8lYTsfrMjROi@sashalap>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <Zz9E8lYTsfrMjROi@sashalap>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20241121185315.3416855-1-mizhang@google.com>
+X-Mailer: git-send-email 2.47.0.371.ga323438b13-goog
+Message-ID: <20241121185315.3416855-2-mizhang@google.com>
+Subject: [RFC PATCH 01/22] x86/aperfmperf: Introduce get_host_[am]perf()
+From: Mingwei Zhang <mizhang@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Huang Rui <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Len Brown <lenb@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Perry Yuan <perry.yuan@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/21/24 15:34, Sasha Levin wrote:
-> On Thu, Nov 21, 2024 at 03:07:03PM +0100, Paolo Bonzini wrote:
->> On 11/21/24 14:26, Nathan Chancellor wrote:
->>> On Thu, Nov 21, 2024 at 07:56:23AM -0500, Sasha Levin wrote:
->>>> Hi Paolo,
->>>>
->>>> On Wed, Nov 20, 2024 at 08:58:42AM -0500, Paolo Bonzini wrote:
->>>>>      riscv: perf: add guest vs host distinction
->>>>
->>>> When merging this PR into linus-next, I've started seeing build errors:
->>>>
->>>> Looks like this is due to 2c47e7a74f44 ("perf/core: Correct perf
->>>> sampling with guest VMs") which went in couple of days ago through
->>>> Ingo's perf tree and changed the number of parameters for
->>>> perf_misc_flags().
->>
->> Thanks Sasha. :(  Looks like Stephen does not build for risc-v.
-> 
-> He does :)
->
-> This issue was reported[1] about a week ago in linux-next
+From: Jim Mattson <jmattson@google.com>
 
-Yeah, that's Linaro not Stephen.
+In preparation for KVM pass-through of IA32_APERF and IA32_MPERF,
+introduce wrappers that read these MSRs. Going forward, all kernel
+code that needs host APERF/MPERF values should use these wrappers
+instead of rdmsrl().
 
-> and a fix was
-> sent out (the one you linked to be used for conflict resolution), but it
-> looks like it wasn't picked up by either the perf tree or the KVM tree.
+While these functions currently just read the MSRs directly, future
+patches will enhance them to handle cases where the MSRs contain guest
+values. Moving all host APERF/MPERF reads to use these functions now
+will make it easier to add this functionality later.
 
-Yeah, that's not surprising. :(  Neither KVM nor I weren't CC'd on 
-either the report or the bugfix; and the perf tree didn't have the code 
-at all as Ingo pointed out 
-(https://lore.kernel.org/all/ZzxDvLKGz1ouWzgX@gmail.com/).  Anup was 
-CC'd on the bugfix but he must have missed too and didn't notify me.
+No functional change intended.
 
-Paolo
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Mingwei Zhang <mizhang@google.com>
+Signed-off-by: Mingwei Zhang <mizhang@google.com>
+---
+ arch/x86/include/asm/topology.h  |  3 +++
+ arch/x86/kernel/cpu/aperfmperf.c | 22 ++++++++++++++++++----
+ drivers/cpufreq/amd-pstate.c     |  4 ++--
+ drivers/cpufreq/intel_pstate.c   |  5 +++--
+ 4 files changed, 26 insertions(+), 8 deletions(-)
+
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 92f3664dd933b..2ef9903cf85d7 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -302,6 +302,9 @@ static inline void arch_set_max_freq_ratio(bool turbo_disabled) { }
+ static inline void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled) { }
+ #endif
+ 
++extern u64 get_host_aperf(void);
++extern u64 get_host_mperf(void);
++
+ extern void arch_scale_freq_tick(void);
+ #define arch_scale_freq_tick arch_scale_freq_tick
+ 
+diff --git a/arch/x86/kernel/cpu/aperfmperf.c b/arch/x86/kernel/cpu/aperfmperf.c
+index f642de2ebdac8..3be5070ba3361 100644
+--- a/arch/x86/kernel/cpu/aperfmperf.c
++++ b/arch/x86/kernel/cpu/aperfmperf.c
+@@ -40,8 +40,8 @@ static void init_counter_refs(void)
+ {
+ 	u64 aperf, mperf;
+ 
+-	rdmsrl(MSR_IA32_APERF, aperf);
+-	rdmsrl(MSR_IA32_MPERF, mperf);
++	aperf = get_host_aperf();
++	mperf = get_host_mperf();
+ 
+ 	this_cpu_write(cpu_samples.aperf, aperf);
+ 	this_cpu_write(cpu_samples.mperf, mperf);
+@@ -94,6 +94,20 @@ void arch_set_max_freq_ratio(bool turbo_disabled)
+ }
+ EXPORT_SYMBOL_GPL(arch_set_max_freq_ratio);
+ 
++u64 get_host_aperf(void)
++{
++	WARN_ON_ONCE(!irqs_disabled());
++	return native_read_msr(MSR_IA32_APERF);
++}
++EXPORT_SYMBOL_GPL(get_host_aperf);
++
++u64 get_host_mperf(void)
++{
++	WARN_ON_ONCE(!irqs_disabled());
++	return native_read_msr(MSR_IA32_MPERF);
++}
++EXPORT_SYMBOL_GPL(get_host_mperf);
++
+ static bool __init turbo_disabled(void)
+ {
+ 	u64 misc_en;
+@@ -474,8 +488,8 @@ void arch_scale_freq_tick(void)
+ 	if (!cpu_feature_enabled(X86_FEATURE_APERFMPERF))
+ 		return;
+ 
+-	rdmsrl(MSR_IA32_APERF, aperf);
+-	rdmsrl(MSR_IA32_MPERF, mperf);
++	aperf = get_host_aperf();
++	mperf = get_host_mperf();
+ 	acnt = aperf - s->aperf;
+ 	mcnt = mperf - s->mperf;
+ 
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index b63863f77c677..c26092284be56 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -446,8 +446,8 @@ static inline bool amd_pstate_sample(struct amd_cpudata *cpudata)
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+-	rdmsrl(MSR_IA32_APERF, aperf);
+-	rdmsrl(MSR_IA32_MPERF, mperf);
++	aperf = get_host_aperf();
++	mperf = get_host_mperf();
+ 	tsc = rdtsc();
+ 
+ 	if (cpudata->prev.mperf == mperf || cpudata->prev.tsc == tsc) {
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 400337f3b572d..993a66095547f 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -27,6 +27,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/pm_qos.h>
+ #include <linux/bitfield.h>
++#include <linux/topology.h>
+ #include <trace/events/power.h>
+ 
+ #include <asm/cpu.h>
+@@ -2423,8 +2424,8 @@ static inline bool intel_pstate_sample(struct cpudata *cpu, u64 time)
+ 	u64 tsc;
+ 
+ 	local_irq_save(flags);
+-	rdmsrl(MSR_IA32_APERF, aperf);
+-	rdmsrl(MSR_IA32_MPERF, mperf);
++	aperf = get_host_aperf();
++	mperf = get_host_mperf();
+ 	tsc = rdtsc();
+ 	if (cpu->prev_mperf == mperf || cpu->prev_tsc == tsc) {
+ 		local_irq_restore(flags);
+-- 
+2.47.0.371.ga323438b13-goog
 
