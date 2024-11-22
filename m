@@ -1,184 +1,165 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531841DF971;
-	Fri, 22 Nov 2024 17:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AE570809;
+	Fri, 22 Nov 2024 18:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732296619; cv=none; b=KhjGXYKzI2x5qwQUUTnZMVc2ATJlQ6Bit7lJVaXpyyGDJdCfFqlPjm5lft+ofdouPNnbrvQUimcOCDMhsuhjHPsQXf506Rja9ljV7poMO37/3WvMraaqDaAtv1eIfES8waMsyrXtd9eqq8TbbVs7HUGzAL+8e0nlWoAiQDQCDik=
+	t=1732298665; cv=none; b=c+kqg4GlvKvnEvzEPo1ImF4dgruLSR3ryhE4m/JcaWjc1FErJ5aHN3jucPgynr6IFOj1XCb2ymOqCtje0qhTwM4avf38ogZWn74z39D+MNSVrFKn42aQj2wo1X1LK726dY8+DFMfqyf2OkmKd/aE4TwH3P+lvg+2laDGC5uAzFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732296619; c=relaxed/simple;
-	bh=NP4UwV7v0F5OWwafmKBxrz1ZvzT7sYQGx0nqCDPo+1s=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=eRkJYEXK3f7M4lTzkzbNOcSSFeaFQd6HQbPP5sue817mJ8y4FnzlwMgq8WBTHjTp43Ea8GzXty0UXX1Uq06gEDk/MoSshbJqmN2+gLmAo0L6ptqcXRHqY0bDoJ3+k70hR+eQdO2s7AjIjMKWxZFPmklh5OciJb6i12Q6HcGoJ0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J6u/19z1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1732298665; c=relaxed/simple;
+	bh=5fdyHu+mVj81YDXP9szqeZG7VAo7sEaZDDuoEAjH5Zc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kskOI6anJMPKEY7JrATBsyXRlLcvM9BzRzTDJlJx4BWqFzmYwymvWDVI4PMX3ZsTiGLNKAfNLTM8BT4mjD7vuYcPDJdcHrC1xnKzE6PZ721+UXDsxPpHbkprPXa0L19KZKU4JCv6SpzDG5+CNNDNTGYW0cZMftzsm+Ch2ceXjPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BDg+Gqmf; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J6u/19z1"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AMAMOeZ020697;
-	Fri, 22 Nov 2024 17:29:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=XQD1PU6ptvKeI0fuFGCRRH
-	zhvac3i1byGnmnm5ZKMNQ=; b=J6u/19z19r8pbkyVFouVXseewIRW9lf/XXr5OY
-	xMtAMdYaR3wbGrkPjNxVCsc/cdxs5Esu1wm8TydJwBef+M0BvxaSF9jfDpYnYmlX
-	+NYxvkagKjvymiPGHp3V36XefLFtIiHUGHY/Ys1DKRbfZxyNxOWRWrkkGjOmYut3
-	5juU7WFtSNtEhTnw2VmGVr6wOmeH4/e9RpCHAfnaZm6yKReEWAjAZdBKokIgW70C
-	g0OKLCxgXEDYM5RhHvopGMf1BeBSEU3vCTaL6UwIS4NzDhtoXiTichlvFIgPmhfo
-	vzmP+fYvX1Dvf3M28vvcC3EXX+mxASbVbFC4QPokrTRSClSw==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 431sv2nwj4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 17:29:43 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AMHTgut021006
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 17:29:42 GMT
-Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 22 Nov 2024 09:29:41 -0800
-From: Elliot Berman <quic_eberman@quicinc.com>
-Subject: [PATCH v5 0/2] mm: Refactor KVM guest_memfd to introduce guestmem
- library
-Date: Fri, 22 Nov 2024 09:29:37 -0800
-Message-ID: <20241122-guestmem-library-v5-0-450e92951a15@quicinc.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BDg+Gqmf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732298664; x=1763834664;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5fdyHu+mVj81YDXP9szqeZG7VAo7sEaZDDuoEAjH5Zc=;
+  b=BDg+Gqmf88HKcvahbChsOq55SFSlliBX7JYhC6rubujqM/sw0es1yJ0N
+   0ZRnNSQGNh5qGlUIpPQ5UZJ3/fpMU4mvvjvNG6+eWNB8+Ohznz2WM8E95
+   dGdlTfnUFn24OzE4tP6+thg7/2NkTVE07sfM922+gQFpOCyfNDR+x4Qa7
+   Wsqcd9uRVBVGUS1PcdkfZhFOOlnnIVE7GJVyQ2nA1bn9mNUkaTcrJH4tq
+   gHKn7ydsks3zYzo4/nv94ay88nWoUIytgbXWExPF+MrVk/O4HXMwBGEZ2
+   edeOX6VAMliP20c9PPZ+PaLZwrtAOcbL19f+iecNJA3gcA2SbSWOgcJQQ
+   A==;
+X-CSE-ConnectionGUID: WZycwU88R/q1GbRDyuL8Dw==
+X-CSE-MsgGUID: LzAuAvQdQZCjhadOgGavGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="43528543"
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
+   d="scan'208";a="43528543"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 10:04:08 -0800
+X-CSE-ConnectionGUID: OWtiQNibR46e3oQ+kvB95A==
+X-CSE-MsgGUID: GdN/y0T+TrqpvMi2L9/Cbw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
+   d="scan'208";a="95730016"
+Received: from bjrankin-mobl3.amr.corp.intel.com (HELO [10.124.220.110]) ([10.124.220.110])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 10:04:08 -0800
+Message-ID: <30d0cef5-82d5-4325-b149-0e99833b8785@intel.com>
+Date: Fri, 22 Nov 2024 10:04:06 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] x86/virt/tdx: Add SEAMCALL wrappers for TDX KeyID
+ management
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
+ pbonzini@redhat.com, seanjc@google.com
+Cc: isaku.yamahata@gmail.com, kai.huang@intel.com,
+ linux-kernel@vger.kernel.org, tony.lindgren@linux.intel.com,
+ xiaoyao.li@intel.com, yan.y.zhao@intel.com, x86@kernel.org,
+ adrian.hunter@intel.com, Isaku Yamahata <isaku.yamahata@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Yuan Yao <yuan.yao@intel.com>
+References: <20241115202028.1585487-1-rick.p.edgecombe@intel.com>
+ <20241115202028.1585487-2-rick.p.edgecombe@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20241115202028.1585487-2-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIG/QGcC/23NTQ6CMBCG4auQrq3pD7TUlfcwLqAMMImAttBIC
- He3kJhodPl+yTyzEA8OwZNTshAHAT0OfYzskBDbFn0DFKvYRDCRcs4FbSbwYwcdvWHpCjdTlUs
- lbSkMzxWJZ3cHNT538nKN3aIfBzfvH4Lc1jcmf7EgKaOa1xVAnimtyvNjQou9PdqhIxsX0g9Cs
- D9EGglmM6NrLaVh5ptY1/UFy5Xc0vUAAAA=
-X-Change-ID: 20241112-guestmem-library-68363cb29186
-To: Paolo Bonzini <pbonzini@redhat.com>,
-        Andrew Morton
-	<akpm@linux-foundation.org>,
-        Sean Christopherson <seanjc@google.com>,
-        "Fuad
- Tabba" <tabba@google.com>,
-        Ackerley Tng <ackerleytng@google.com>,
-        "Mike
- Rapoport" <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        "H. Peter
- Anvin" <hpa@zytor.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>, Trond Myklebust <trondmy@kernel.org>,
-        "Anna
- Schumaker" <anna@kernel.org>,
-        Mike Marshall <hubcap@omnibond.com>,
-        "Martin
- Brandenburg" <martin@omnibond.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-CC: James Gowans <jgowans@amazon.com>, Mike Day <michael.day@amd.com>,
-        <linux-fsdevel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-doc@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
-        <devel@lists.orangefs.org>, <linux-arm-kernel@lists.infradead.org>,
-        "Elliot
- Berman" <quic_eberman@quicinc.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: F6Lm3BVFcc9UAbluTuBt_BvMDPNh2TaM
-X-Proofpoint-ORIG-GUID: F6Lm3BVFcc9UAbluTuBt_BvMDPNh2TaM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 malwarescore=0 mlxscore=0 mlxlogscore=984 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411220147
 
-In preparation for adding more features to KVM's guest_memfd, refactor
-and introduce a library which abtracts some of the core-mm decisions
-about managing folios associated with guest memory. The goal of the
-refactor serves two purposes:
+On 11/15/24 12:20, Rick Edgecombe wrote:
+> +struct tdx_td {
+> +	hpa_t tdr;
+> +	hpa_t *tdcs;
+> +};
 
-1. Provide an easier way to reason about memory in guest_memfd. KVM
-   needs to support multiple confidentiality models (TDX, SEV, pKVM, Arm
-   CCA). These models support different semantics for when the host
-   can(not) access guest memory. An abstraction for the allocator and
-   managing the state of pages will make it eaiser to reason about the
-   state of folios within the guest_memfd.
+This is a step in the right direction because it gives the wrappers some
+more type safety.
 
-2. Provide a common implementation for other users such as Gunyah [1] and
-   guestmemfs [2].
+But an hpa_t is _barely_ better than a u64.  If the 'tdr' is a page,
+then it needs to be _stored_ as a page:
 
-In this initial series, I'm seeking comments for the line I'm drawing
-between library and user (KVM). I've not introduced new functionality in
-this series; the first new feature will probably be Fuad's mappability
-patches [3].
+	struct page *tdr_page;
 
-I've decided to only bring out the address_space from guest_memfd as it
-seemed the simplest approach. In the current iteration, KVM "attaches"
-the guestmem to the inode. I expect we'll want to provide some helpers
-for inode, file, and vm operations when it's relevant to
-mappability/accessiblity/faultability.
+Also, please don't forget to spell these things out:
 
-I'd appreciate any feedback, especially on how much we should pull into
-the guestmem library.
+	/* TD root structure: */
+	struct page *tdr_page;
 
-[1]: https://lore.kernel.org/lkml/20240222-gunyah-v17-0-1e9da6763d38@quicinc.com/
-[2]: https://lore.kernel.org/all/20240805093245.889357-1-jgowans@amazon.com/
-[3]: https://lore.kernel.org/all/20241010085930.1546800-3-tabba@google.com/
+And the tdcs is an array of pages, right?  So it should be:
 
-Changes in v5:
-- Free all folios when the owner removes detaches the guestmem
-- Link to v4: https://lore.kernel.org/r/20241120-guestmem-library-v4-0-0c597f733909@quicinc.com
+	struct page **tdcs_pages;
 
-Changes in v4:
-- Update folio_free() to add address_space mapping instead of
-  invalidate_folio/free_folio path.
-- Link to v3: https://lore.kernel.org/r/20241113-guestmem-library-v3-0-71fdee85676b@quicinc.com
+Or heck, I _think_ it can theoretically be defined as a variable-length
+array:
 
-Changes in v3:
- - Refactor/extract only the address_space
- - Link to v2: https://lore.kernel.org/all/20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com/
+	struct page *tdcs_pages[];
 
-Changes in v2:
-- Significantly reworked to introduce "accessible" and "safe" reference
-  counters
-- Link to v1: https://lore.kernel.org/r/20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com
+and use the helpers that we have for that.
 
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
----
-Elliot Berman (2):
-      filemap: Pass address_space mapping to ->free_folio()
-      mm: guestmem: Convert address_space operations to guestmem library
+Putting it all together, you would have this:
 
- Documentation/filesystems/locking.rst |   2 +-
- MAINTAINERS                           |   2 +
- fs/nfs/dir.c                          |  11 +-
- fs/orangefs/inode.c                   |   3 +-
- include/linux/fs.h                    |   2 +-
- include/linux/guestmem.h              |  34 ++++++
- mm/Kconfig                            |   3 +
- mm/Makefile                           |   1 +
- mm/filemap.c                          |   9 +-
- mm/guestmem.c                         | 201 ++++++++++++++++++++++++++++++++++
- mm/secretmem.c                        |   3 +-
- mm/vmscan.c                           |   4 +-
- virt/kvm/Kconfig                      |   1 +
- virt/kvm/guest_memfd.c                |  98 +++++------------
- 14 files changed, 290 insertions(+), 84 deletions(-)
----
-base-commit: 5cb1659f412041e4780f2e8ee49b2e03728a2ba6
-change-id: 20241112-guestmem-library-68363cb29186
+struct tdx_td {
+	/* TD root structure: */
+	struct page *tdr_page;
 
-Best regards,
--- 
-Elliot Berman <quic_eberman@quicinc.com>
+	int tdcs_nr_pages;
+	/* TD control structure: */
+	struct page *tdcs_pages[];
+};
 
+That's *MUCH* harder to misuse.  It's 100% obvious that you have a
+single page, plus a variable-length array of pages.  This is all from
+just looking at the structure definition.
+
+You know that 'tdr' is not just some random physical address.  It's a
+whole physical page.  It's page-aligned.  It was allocated, from the
+allocator.  It doesn't point to special memory.
+
+Ditto for "hpa_t *tdcs".  It's not obvious from the data structure that
+it's an array or if it's an array how it got allocated or how large it is.
