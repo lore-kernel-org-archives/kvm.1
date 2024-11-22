@@ -1,163 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC8A17B4E9
-	for <kvm@vger.kernel.org>; Fri, 22 Nov 2024 07:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EA718B473;
+	Fri, 22 Nov 2024 09:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732261931; cv=none; b=iBYLn8fgf67vILWYteh3Jpb1Kuj7Cs6dBFYSQeYMA6BFQUUYsugWEHwry5bfnp3ATZBOnH4apYXLlxvoI4RfB3EpnR1+bGwu3nARjH19m+mpolGHcp7/tThbuiP1ItYMSeQfw6HuTgf0m6NqHu4rdzNP9xeHKkBMuPwg1oqQzmA=
+	t=1732266709; cv=none; b=Jfq0YHmYywESOwzRFAzdSta3YRHzRTgx9nufgqiDJn6RVnvz+2ga/8jyzmkWrE+i6XszMG5fDV/BRAeoLD/zggy79zySLO7PjuIwdKAEVXs6vNVvWHeQ03hN2Tdjw0XthdcohOIh7nrnXPgDkZ993kRL7M2TfG7ADLOMFcQrW0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732261931; c=relaxed/simple;
-	bh=14gNrbZwr4FwtDxhLh5ypoXNB6/niQbMSNKxqDfxcFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S4fhfjWjpE8fl04LHkuA05onvgZmP6tOq+cRhdSTfur+LNCZIiGCNbvSHZBWhYYks3KzIyCChP/sffybhgqFNFwbdI7AFgq2kWq7866iXMPatYQKyVgiyasJ2K+2L7dHD4MlJNNXHubjIU+s3OSbmK+y1S3+8l7YhDuY8kyTxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wiheg3Yi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732266709; c=relaxed/simple;
+	bh=YzIb4ozSuFNohYnKeFqJQnA1QpxzdVirBPJofbxJBPA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DUg2Og0Qm0REI0ul9kqRonap9wv4CUdPD7htiOaw1CV3CpH3RuaRrOUrUT12kHa95mleJZjNK1NjuFYYJh22Y/ToM35w945KICKDiivDKmlzLNmVPNhqmd3y/NN9bR6p/PlygEm2jYyRlvrrLq66AEvcQ+3kKJpEnb8zn0r3nSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEA3vhEA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wiheg3Yi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732261928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D9p/amWDuKtYCK1WkCl/Fua58/N/1s7xV60ca3EpfR4=;
-	b=Wiheg3YiY59olp9GKjJlscHrxjYnBBWbPMk4DtspywipdtpULhGHGCPY5udWzsfN0iMF5m
-	y/24NH7BjmYRzMctp3QP7o32k6kwZR8QUFL5XcwEsIEBLAmc/lkEKFXp1yYhn+cdPOBBss
-	bJkMMTsvNKU/wHRq/xejZwDl4USy4b8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-100-HBEew0p3NECkehH9sfpIIQ-1; Fri,
- 22 Nov 2024 02:52:04 -0500
-X-MC-Unique: HBEew0p3NECkehH9sfpIIQ-1
-X-Mimecast-MFC-AGG-ID: HBEew0p3NECkehH9sfpIIQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 53B6E1955F3D;
-	Fri, 22 Nov 2024 07:52:01 +0000 (UTC)
-Received: from localhost (unknown [10.72.113.10])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B9441955F43;
-	Fri, 22 Nov 2024 07:51:59 +0000 (UTC)
-Date: Fri, 22 Nov 2024 15:51:54 +0800
-From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	kexec@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YEA3vhEA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8061FC4CED9;
+	Fri, 22 Nov 2024 09:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732266708;
+	bh=YzIb4ozSuFNohYnKeFqJQnA1QpxzdVirBPJofbxJBPA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YEA3vhEAFqa2niH2eyMKUIKbJBypKF9Qv9pK7hC777v0Y1pe+175Y7EUALpEJa7Fy
+	 /FSJa/Cxe4j43RkcyQQEMYPgRR5nEO5F+N55DimDkvNdGqGjhUSHr+IXh2B9mdPJWk
+	 +mJnPCWJwk6TKVToXoMr5M5WgwyAI/7l51bAhEWta7gBcQKL0d+gIpKyrflW3yq6rM
+	 DkYKUgnXqt92p60aRWI+q7n1QW9/H14AJAO6neVmR4h4SLmGqx8jme5SLCwBPZ99Ss
+	 +ziUetiOakNBOH3ZNaLKrpiDbHqM0C1fFzTS90bHLKtGBSzLs3GvZQ+wGtgljMfnNT
+	 gPiEfRFCoTefw==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1tEPhX-00000006l3w-0kjr;
+	Fri, 22 Nov 2024 10:11:43 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	Thomas Huth <thuth@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v1 07/11] fs/proc/vmcore: introduce
- PROC_VMCORE_DEVICE_RAM to detect device RAM ranges in 2nd kernel
-Message-ID: <Z0A4Gl1dUINrTTUX@MiWiFi-R3L-srv>
-References: <20241025151134.1275575-1-david@redhat.com>
- <20241025151134.1275575-8-david@redhat.com>
- <Zz22ZidsMqkafYeg@MiWiFi-R3L-srv>
- <4b07a3eb-aad6-4436-9591-289c6504bb92@redhat.com>
- <Zz3sm+BhCrTO3bId@MiWiFi-R3L-srv>
- <3ed18ba1-e4b1-461e-a3a7-5de2df59ca60@redhat.com>
- <Zz63aGL7NcrONk+p@MiWiFi-R3L-srv>
- <c353466b-6860-4ca2-a4fa-490648246ddc@redhat.com>
+	Ani Sinha <anisinha@redhat.com>,
+	Dongjiu Geng <gengdongjiu1@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v4 09/15] acpi/ghes: better name GHES memory error function
+Date: Fri, 22 Nov 2024 10:11:26 +0100
+Message-ID: <a19b4321f1f52df5b582b2476f4396c131c3a81d.1732266152.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1732266152.git.mchehab+huawei@kernel.org>
+References: <cover.1732266152.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c353466b-6860-4ca2-a4fa-490648246ddc@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On 11/21/24 at 08:47pm, David Hildenbrand wrote:
-> > > 
-> > > That would work, but I don't completely like it.
-> > > 
-> > > (a) I want s390x to select NEED_PROC_VMCORE_DEVICE_RAM instead. Staring at a
-> > > bunch of similar cases (git grep "config NEED" | grep Kconfig, git grep
-> > > "config ARCH_WANTS" | grep Kconfig), "select" is the common way to do it.
-> > > 
-> > > So unless there is a pretty good reason, I'll keep
-> > > NEED_PROC_VMCORE_DEVICE_RAM as is.
-> > 
-> > That's easy to satify, see below:
-> 
-> Yes, this is mostly what I have right now, except
-> 
-> > 
-> > ============simple version=====
-> > fs/proc/Kconfig:
-> > config NEED_PROC_VMCORE_DEVICE_RAM
-> >          def n
-> 
-> using "bool" here like other code. (I assume you meant "def_bool n", "bool"
-> seems to achieve the same thing)
+The current function used to generate GHES data is specific for
+memory errors. Give a better name for it, as we now have a generic
+function as well.
 
-Yes, you are right. I didn't check it carefully.
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ hw/acpi/ghes-stub.c    | 2 +-
+ hw/acpi/ghes.c         | 2 +-
+ include/hw/acpi/ghes.h | 4 ++--
+ target/arm/kvm.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-> 
-> > 
-...... 
-> > ===================
-> > fs/proc/Kconfig:
-> > config PROVIDE_PROC_VMCORE_DEVICE_RAM
-> >          def_bool n
-> > 
-> > config NEED_PROC_VMCORE_DEVICE_RAM
-> >          def_bool n
-> > 
-> > config PROC_VMCORE_DEVICE_RAM
-> >          def_bool y
-> >          depends on PROC_VMCORE
-> >          depends on NEED_PROC_VMCORE_DEVICE_RAM
-> >          depends on PROVIDE_PROC_VMCORE_DEVICE_RAM
-> > 
-> > drivers/virtio/Kconfig:
-> > config VIRTIO_MEM
-> >          select PROVIDE_PROC_VMCORE_DEVICE_RAM if PROC_VMCORE
-> >                                                ~~~~~~~~~~~~~~
-> > 
-> > arch/s390/Kconfig:
-> > config S390
-> >          select NEED_PROC_VMCORE_DEVICE_RAM if PROC_VMCORE
-> >                                             ~~~~~~~~~~~~~~
-> > ========================
-> > 
-> > One last thing I haven't got well, If PROC_VMCORE_DEVICE_RAM has had
-> > dependency on PROC_VMCORE, can we take off the ' if PROC_VMCORE' when
-> > select PROVIDE_PROC_VMCORE_DEVICE_RAM and NEED_PROC_VMCORE_DEVICE_RAM?
-> 
-> We could; it would mean that in a .config file you would end up with
-> "NEED_PROC_VMCORE_DEVICE_RAM=y" with "#PROC_VMCORE" and no notion of
-> "PROC_VMCORE_DEVICE_RAM".
-
-Fair enough. I didn't think of this. Then keeping it is obvisouly
-better. Thanks.
-
-> 
-> I don't particularly like that -- needing something that apparently does not
-> exist. Not sure if there is a best practice here, staring at some examples I
-> don't seem to find a consistent rule. I can just drop it, not the end of the
-> world.
-> 
-> 
-> Did you get to look at the other code changes in this patch set? Your
-> feedback would be highly appreciated!
-
-Will try. While I may not have valuable input about virtio-mem code.
+diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+index 2b64cbd2819a..7cec1812dad9 100644
+--- a/hw/acpi/ghes-stub.c
++++ b/hw/acpi/ghes-stub.c
+@@ -11,7 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "hw/acpi/ghes.h"
+ 
+-int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
++int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     return -1;
+ }
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index a96856d5110b..ad7d895def2a 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -415,7 +415,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+     return;
+ }
+ 
+-int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
++int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     /* Memory Error Section Type */
+     const uint8_t guid[] =
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index 8859346af51a..21666a4bcc8b 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -74,15 +74,15 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+                      const char *oem_id, const char *oem_table_id);
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+                           GArray *hardware_errors);
++int acpi_ghes_memory_errors(uint16_t source_id, uint64_t error_physical_addr);
+ void ghes_record_cper_errors(const void *cper, size_t len,
+                              uint16_t source_id, Error **errp);
+-int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
+ 
+ /**
+  * acpi_ghes_present: Report whether ACPI GHES table is present
+  *
+  * Returns: true if the system has an ACPI GHES table and it is
+- * safe to call acpi_ghes_record_errors() to record a memory error.
++ * safe to call acpi_ghes_memory_errors() to record a memory error.
+  */
+ bool acpi_ghes_present(void);
+ #endif
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 7b6812c0de2e..b4260467f8b9 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2387,7 +2387,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+              */
+             if (code == BUS_MCEERR_AR) {
+                 kvm_cpu_synchronize_state(c);
+-                if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
++                if (!acpi_ghes_memory_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
+                     kvm_inject_arm_sea(c);
+                 } else {
+                     error_report("failed to record the error");
+-- 
+2.47.0
 
