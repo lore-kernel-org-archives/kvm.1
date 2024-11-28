@@ -1,119 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4DE85628;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F460126F0A;
 	Thu, 28 Nov 2024 03:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732764272; cv=none; b=Oy/Y5KSH9P5Fdl9m5sPWemZCrXWY+vK2trLtAYmBQ+t3A44LclYaPKNtR5cMcUYr2R6miJIYKV0vmLize4xodRWGCChvlg16LexYfvs2HnA7LVRNhV9X97ulkxUZXku32m7biRYiYHFlwZ0Fmu6JN+HfmY89GXaaXmUPUhf0zVI=
+	t=1732764273; cv=none; b=fFMA1LU+PiEv91BXo7N6ljWTZ5FAkA+kdP3516eRj+yYPaO3z+dIO7c8F1cOtHbmPevYM9q8l6iFW04tz6SOATpdULakJqNpKzAZI/6o4AHEUoruvkP/HHuQoAiw9Kb0QN7gn8O9pSNZKq4FnUDR8NbFBOKJc8wFa5gvgs+DOHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732764272; c=relaxed/simple;
-	bh=t9I8gRbEtmPzkIACZOgvBgzSwFLwvZB2LITtZ23TNmM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=neqqU1aVYi+/e5xIZfig8dhuGqck95O3zx7QvNstez47qU1/OmfCgnMVn2ceVSBvVwEZ0wJla/zxQUh4ahpDVPXowCVkUcT537M5JUEGmGyu74XYd7OOAOn0xpYLKH8SJTMx/g9gvCYZgj6kis+PxZ/gBax0MrFJuGTGi8kjV68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MRbAd9Jv; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MRbAd9Jv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732764270; x=1764300270;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=t9I8gRbEtmPzkIACZOgvBgzSwFLwvZB2LITtZ23TNmM=;
-  b=MRbAd9Jv+ZD/fo1ptlxfsQgXqoaJmlFpd2E3Pt5TP1RqBYXQ12h+1pS0
-   +yAp51CrPz09AoUaEbHvOmfUp1Mm1nXOd+3ehw0QOFHMlBAbl4DPwx4RK
-   Y8qx1vk99P97biO4yROQOzrMdNLt3y0Mzw96zqlEDzRK+E7ous4coZyza
-   76KLMtGw1x9RyTOOve5TROGhZ8MBcj4e6LPZXUZMJjhK/osFdD2YE+8G7
-   xuwuj02BgcBMdTpru2DiATQTVR2vO43YzKtd4RaoK2CrUDA5+BNzR2UJ/
-   HLOpqi1v99AxlX8P6/5NhmEHY/5k6/qpPrKG2exvu5nvtPJEvkP7WC5PZ
-   w==;
-X-CSE-ConnectionGUID: v+1RK5CbQW6HVJh90ro5ow==
-X-CSE-MsgGUID: /ymyfVwOQiWNWRGCl3t+ig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="43651954"
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
-   d="scan'208";a="43651954"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 19:24:30 -0800
-X-CSE-ConnectionGUID: 77p0RRlCTN695A3JEMHkHw==
-X-CSE-MsgGUID: dQXiu69YQTavgAV7EPrb8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
-   d="scan'208";a="91927227"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 19:24:27 -0800
-Message-ID: <ad240077-ca7a-4306-a06f-6cf57b3ce4f2@intel.com>
-Date: Thu, 28 Nov 2024 11:24:25 +0800
+	s=arc-20240116; t=1732764273; c=relaxed/simple;
+	bh=EjkvW4gjfOJA84QL3KmTkVwlKCmvLvKi5oh4xfXoomo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=J9V5iClO4Hifkc/WLlcRHfDni/llO/ueiZO+VGCLTmIBmGsYMsCTR5HXfoFRLfefJy1DZaU8HhnqI2D2xGqHdLYOMhhy8kiQO79f0tTlZ24y87LMaVhGGgyGFVY4U2NXbHH2JvaDPkVBylx7GgMDTdJQFJVbrXAhCSeRz2Gs4pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from zq-Legion-Y7000.. (unknown [180.111.103.148])
+	by APP-05 (Coremail) with SMTP id zQCowADn7X1l4kdnnF0cBg--.1330S2;
+	Thu, 28 Nov 2024 11:24:22 +0800 (CST)
+From: zhouquan@iscas.ac.cn
+To: anup@brainfault.org,
+	ajones@ventanamicro.com,
+	atishp@atishpatra.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu
+Cc: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: [PATCH 3/4] RISC-V: KVM: Allow Ziccrse extension for Guest/VM
+Date: Thu, 28 Nov 2024 11:22:07 +0800
+Message-Id: <77198ab759eb01ca490f4c2199910e778b57d372.1732762121.git.zhouquan@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1732762121.git.zhouquan@iscas.ac.cn>
+References: <cover.1732762121.git.zhouquan@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] KVM: x86: Bump hypercall stat prior to fully
- completing hypercall
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Tom Lendacky <thomas.lendacky@amd.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
- Kai Huang <kai.huang@intel.com>
-References: <20241128004344.4072099-1-seanjc@google.com>
- <20241128004344.4072099-5-seanjc@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20241128004344.4072099-5-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADn7X1l4kdnnF0cBg--.1330S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cry5ur4DCry8XFWxtFyDGFg_yoW8Wr4kpr
+	n5CFZxCr4rA3s3uws7t3s8Wr48W3y5Wws0k3y7ur4fJFy0yry8JFn8Aa43JF1DJay0qr1k
+	uF1fWr1rZws8Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+	WxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+	Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26F4j6r4UJwAm72CE4IkC6x0Yz7
+	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF
+	7I0E8cxan2IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUCYLPUUUUU=
+X-CM-SenderInfo: 52kr31xxdqqxpvfd2hldfou0/1tbiBg0PBmdHkZDi4gAAsj
 
-On 11/28/2024 8:43 AM, Sean Christopherson wrote:
-> Increment the "hypercalls" stat for KVM hypercalls as soon as KVM knows
-> it will skip the guest instruction, i.e. once KVM is committed to emulating
-> the hypercall.  Waiting until completion adds no known value, and creates a
-> discrepancy where the stat will be bumped if KVM exits to userspace as a
-> result of trying to skip the instruction, but not if the hypercall itself
-> exits.
-> 
-> Handling the stat in common code will also avoid the need for another
-> helper to dedup code when TDX comes along (TDX needs a separate completion
-> path due to GPR usage differences).
+From: Quan Zhou <zhouquan@iscas.ac.cn>
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Extend the KVM ISA extension ONE_REG interface to allow KVM user space
+to detect and enable Ziccrse extension for Guest/VM.
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/kvm/x86.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 13fe5d6eb8f3..11434752b467 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9979,7 +9979,6 @@ static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
->   	if (!is_64_bit_hypercall(vcpu))
->   		ret = (u32)ret;
->   	kvm_rax_write(vcpu, ret);
-> -	++vcpu->stat.hypercalls;
->   	return kvm_skip_emulated_instruction(vcpu);
->   }
->   
-> @@ -9990,6 +9989,8 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
->   {
->   	unsigned long ret;
->   
-> +	++vcpu->stat.hypercalls;
-> +
->   	trace_kvm_hypercall(nr, a0, a1, a2, a3);
->   
->   	if (!op_64_bit) {
-> @@ -10070,7 +10071,6 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
->   	}
->   
->   out:
-> -	++vcpu->stat.hypercalls;
->   	return ret;
->   }
->   EXPORT_SYMBOL_GPL(__kvm_emulate_hypercall);
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+---
+ arch/riscv/include/uapi/asm/kvm.h | 1 +
+ arch/riscv/kvm/vcpu_onereg.c      | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+index 340618131249..f7afb4267148 100644
+--- a/arch/riscv/include/uapi/asm/kvm.h
++++ b/arch/riscv/include/uapi/asm/kvm.h
+@@ -179,6 +179,7 @@ enum KVM_RISCV_ISA_EXT_ID {
+ 	KVM_RISCV_ISA_EXT_SSNPM,
+ 	KVM_RISCV_ISA_EXT_SVVPTC,
+ 	KVM_RISCV_ISA_EXT_ZABHA,
++	KVM_RISCV_ISA_EXT_ZICCRSE,
+ 	KVM_RISCV_ISA_EXT_MAX,
+ };
+ 
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index 9a30a98f30bc..ed8e17da1536 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -64,6 +64,7 @@ static const unsigned long kvm_isa_ext_arr[] = {
+ 	KVM_ISA_EXT_ARR(ZFHMIN),
+ 	KVM_ISA_EXT_ARR(ZICBOM),
+ 	KVM_ISA_EXT_ARR(ZICBOZ),
++	KVM_ISA_EXT_ARR(ZICCRSE),
+ 	KVM_ISA_EXT_ARR(ZICNTR),
+ 	KVM_ISA_EXT_ARR(ZICOND),
+ 	KVM_ISA_EXT_ARR(ZICSR),
+@@ -157,6 +158,7 @@ static bool kvm_riscv_vcpu_isa_disable_allowed(unsigned long ext)
+ 	case KVM_RISCV_ISA_EXT_ZFA:
+ 	case KVM_RISCV_ISA_EXT_ZFH:
+ 	case KVM_RISCV_ISA_EXT_ZFHMIN:
++	case KVM_RISCV_ISA_EXT_ZICCRSE:
+ 	case KVM_RISCV_ISA_EXT_ZICNTR:
+ 	case KVM_RISCV_ISA_EXT_ZICOND:
+ 	case KVM_RISCV_ISA_EXT_ZICSR:
+-- 
+2.34.1
 
