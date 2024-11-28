@@ -1,57 +1,57 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C0FDDD9
-	for <kvm@vger.kernel.org>; Thu, 28 Nov 2024 00:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FB71CA8D
+	for <kvm@vger.kernel.org>; Thu, 28 Nov 2024 00:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732755355; cv=none; b=mJB1JRL7nfX1KyJwNGO1VDuR9yjrfN+l907/08GKHgW2xXYulIQ17lQK1koMq4lY+GjG4IdWyo+sSqTkHOugTrYx63nSw8sKGM9XBiNGeucgSUMXjAXNpuEwVsc1X2bsKm/0qQsNEJtMNCUHf3ZrCHXvbhid1h7JkumPfjzCm4s=
+	t=1732755357; cv=none; b=LGXE4qP3XNJcyxaBG+dbbP3mVIAFBqSL4C8udyiQWsc/uMOgJtZ7ZX7kAJX86976dE46iyXU3EdEDelhTVFwRS8ojPVOx7W2ALJg6ZSv/vvKPWYTyrdHEmSFCICLolfEzwAXAybA83BctWtnWisg/wRybycSn/n0J84Sch0YYjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732755355; c=relaxed/simple;
-	bh=jpG2Z0wLkJo4m6LTchsXKdavjrJbj2n+h3dPpHrcu5s=;
+	s=arc-20240116; t=1732755357; c=relaxed/simple;
+	bh=/I1QDhTu7A4uX6aQjK9uL6OFtLwJ4Jmbm1md8fy4gPw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UPYXeRH8yFW7p3IUBedTwWZgjfBvVJ2dfi45xbJCY8TlfVPqTu3oNM4J/JoZpVWNidgzo7ReGcq+WR9Y0QyLPM2GVb+YAHr8zD2waVyMU5Uj6Ke648CypvGxc1VO3UjWg52kVxD7/nk3TqQeLoVWwBNTXQ4Myywsxif1U4otylE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QlDAc/c2; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=oSXWecEIBh/Y2AxJJlxPuSvb+sJrxBROb2qXGsTeGPEszAFiez7WhdY//CQWRUxHmbbTVBdvBd2NFX4YXDnyDLbgPCtEF9dN9B/oE2sqT9afMgZH0jl3W0zflq7ALai4j+GdkSbWSGq39nNc1gCeY43aRiJTbK4lmRJz/1ticww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UgCmZ9iZ; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QlDAc/c2"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7254237c888so106429b3a.1
-        for <kvm@vger.kernel.org>; Wed, 27 Nov 2024 16:55:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UgCmZ9iZ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ea2dc1a51fso327619a91.2
+        for <kvm@vger.kernel.org>; Wed, 27 Nov 2024 16:55:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732755352; x=1733360152; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732755355; x=1733360155; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziTWoMDGGemt4FbzSlGzzl5MJ7+5E+c66t+aoBco/o8=;
-        b=QlDAc/c2dz8Vac0PPavKSqLbiYEKn0APmRbTXNK9/OBPY5aypII6RaO02OENb50nUq
-         UW60J3QHK/yI011mTxhIR2QxTcX19k3ccjzLcXJEn9WIaf5DUy1ytwUNofLTBDPLZuOf
-         JydWLAKMSeIpPbhmRevuP3fTq5YZWtFhJ+Y2WRIuQySWF/jdHzhH7cJu+G3c47w4/lTN
-         bt/1bbjJQSTxAm5oGzIqJkW+RYJwd6F/ybuDkwXFEg7EzbQZGtOKc4QjjD04P2bjHh1Z
-         9PskMITtgZzuA25DxNAtcXiKjia9cAXSUJIouOYx4Uez7J+F9cw4c/Orna4/ix+VGDm0
-         fw7g==
+        bh=qVBMujG2OTqdwJQgPPGju5b8tNjOmRcixGV2iZuWWwY=;
+        b=UgCmZ9iZ4JA7nZC57i4q8YFvqd4pfMTFRWrZY5Smb0SfHVQOWhfGZHmJ8pxTdfmbmZ
+         qIr6bKBWxZiaz8iNZblUSLnJvOw88WQD6DSJG4mWkYlTIVQ35f5wMIakY0yclU1VTdkL
+         si3YDnSQ1C6qeDFTaS2vtiK7S45VaaJmVZUaJzEjdPytg7SP/l1mxYQUj1oxmC+UQsmh
+         jHr3bBkLC2akZbDN7w4uKKf5xvvHdC9AnZzrLYsNydKAXWlBpaySbstWwhAkn/s5yYRe
+         z6nPSQu4R012rvR/P8ICe2CLzXDc9LAhk61YMrwR4VYrWimvF623jQmG6mD5oSsDRXX2
+         W4Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732755352; x=1733360152;
+        d=1e100.net; s=20230601; t=1732755355; x=1733360155;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ziTWoMDGGemt4FbzSlGzzl5MJ7+5E+c66t+aoBco/o8=;
-        b=PE9F2j5JOJroT12TcJjq4dNp7Zp2p8+eKgYFA8GBBQ8KRZnq4dIv0kTJHPru9EB1rn
-         lgJTlO47pvYHWiXC0Lpbwq56GIvOIS47JX2Ti9t88BlPn/Av0OlIajgZPZ5hMtm4uwQz
-         4lwJj5PcdHL4iYXPYDyXDWlQG3WqOnINWVKMYb/gcms0PWrE471J1kKeDuaFjanD2NXg
-         5EuBDK31bGyz/qi8x6/bOOqtaLfA+BF7m14yjlq+GqfMGKSgCE5aIjjbwIWCQ3m2jr8/
-         qIQB3D3drcIAzOm61roKt0FkweOWK6NJXy7UK+rAEqw+X3VtCuPwp7BdqyIglWgK23Q2
-         r9/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUYih6HWtGiwb0aurF7aODirJwrlOiRQETP24bAsnEziQv2h223UK4oJXC0rhKXaN2kVzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZce4LdSWU/ltdZUY7zEog4fyjotHX6ClTuVX30RHJTBKxwe+v
-	Q3P3vKZ2lODHhh9MjKT/DMXI0jzkqn0aZIF+PKKbMNcEXfMgHVFO+lR0T5kqW6L9BzIRl/m4uD2
-	hXQ==
-X-Google-Smtp-Source: AGHT+IGFU4JhoxY8Wl9h7ACp8Vt7EFu0qd1J8Nu7Xlwl+xjZW64YiOpSApDQOPp2K//2LZM+CyuzFG/tlB0=
-X-Received: from pjbnc6.prod.google.com ([2002:a17:90b:37c6:b0:2e2:93e2:fe46])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2252:b0:2ea:8b06:ffcb
- with SMTP id 98e67ed59e1d1-2ee08eb2b91mr6443403a91.14.1732755351961; Wed, 27
- Nov 2024 16:55:51 -0800 (PST)
+        bh=qVBMujG2OTqdwJQgPPGju5b8tNjOmRcixGV2iZuWWwY=;
+        b=ki2hlY4fTr5PbdqjGinnUsA1OuvP115k6tgh5idnqoFQjvzsqYP+W05wATRN1CPdeJ
+         7+D8ZYAkxHvbyAaJ4lZ8YiwNVbCwc7/Rxp96ersIZKadILdBI27onrShjOECcbO9ZmrC
+         0TcB/qq1qQTlui5LTac8Ytc4yRV9FjTDzvgdm89QsUKwoHLHONB6iWli9ScvTP+jrL3E
+         CJPslNVwE73MinSUWhS05+G/9T6W4nw1ZcMDeNppz0wVV9m+MjYlk2uoI+tm4gFO2URT
+         9rgiaYWkns74ktW9RupM1Kp5zNLMa4Hy9Qg0RBnqMLGqfg/6kTzJVR71AmH0PDPnifWl
+         EfmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEKlmKngkLJZiVuAH8IWncEsnH33pDcXQ0XatXy0rLymeC1OmwdDGF+3iPXji3I6ofQ84=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya7xaCJIMYyNXtQQEknF8PLdePnC1sOLgzIM8JAFONwXTYWzTd
+	ycBFXCd2sB6KjiSFpKJP8WY6pkLdOLCkLtiL/Lgltrz2nxDzcauqO8e8D0F2O1AlECQ0D45T4a9
+	BuA==
+X-Google-Smtp-Source: AGHT+IH+xlYFxzyyjYgkHwbv9v8SXpOlp7wHMGVgiCiV61K5VskA6YHcas7fec5b54n5jx+SjDlTSzyBffA=
+X-Received: from pjbmf12.prod.google.com ([2002:a17:90b:184c:b0:2d8:8d32:2ea3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388b:b0:2ea:7329:4d
+ with SMTP id 98e67ed59e1d1-2ee097ca9damr5929096a91.34.1732755355263; Wed, 27
+ Nov 2024 16:55:55 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 27 Nov 2024 16:55:32 -0800
+Date: Wed, 27 Nov 2024 16:55:34 -0800
 In-Reply-To: <20241128005547.4077116-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241128005547.4077116-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241128005547.4077116-2-seanjc@google.com>
-Subject: [PATCH v4 01/16] KVM: Move KVM_REG_SIZE() definition to common uAPI header
+Message-ID: <20241128005547.4077116-4-seanjc@google.com>
+Subject: [PATCH v4 03/16] KVM: selftests: Assert that vcpu_{g,s}et_reg() won't truncate
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -77,63 +77,42 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
 	Muhammad Usama Anjum <usama.anjum@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Define KVM_REG_SIZE() in the common kvm.h header, and delete the arm64 and
-RISC-V versions.  As evidenced by the surrounding definitions, all aspects
-of the register size encoding are generic, i.e. RISC-V should have moved
-arm64's definition to common code instead of copy+pasting.
+Assert that the register being read/written by vcpu_{g,s}et_reg() is no
+larger than a uint64_t, i.e. that a selftest isn't unintentionally
+truncating the value being read/written.
 
-Acked-by: Anup Patel <anup@brainfault.org>
+Ideally, the assert would be done at compile-time, but that would limit
+the checks to hardcoded accesses and/or require fancier compile-time
+assertion infrastructure to filter out dynamic usage.
+
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/include/uapi/asm/kvm.h | 3 ---
- arch/riscv/include/uapi/asm/kvm.h | 3 ---
- include/uapi/linux/kvm.h          | 4 ++++
- 3 files changed, 4 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-index 66736ff04011..568bf858f319 100644
---- a/arch/arm64/include/uapi/asm/kvm.h
-+++ b/arch/arm64/include/uapi/asm/kvm.h
-@@ -43,9 +43,6 @@
- #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
- #define KVM_DIRTY_LOG_PAGE_OFFSET 64
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 287a3ec06df4..4c4e5a847f67 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -707,6 +707,8 @@ static inline uint64_t vcpu_get_reg(struct kvm_vcpu *vcpu, uint64_t id)
+ 	uint64_t val;
+ 	struct kvm_one_reg reg = { .id = id, .addr = (uint64_t)&val };
  
--#define KVM_REG_SIZE(id)						\
--	(1U << (((id) & KVM_REG_SIZE_MASK) >> KVM_REG_SIZE_SHIFT))
--
- struct kvm_regs {
- 	struct user_pt_regs regs;	/* sp = sp_el0 */
- 
-diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
-index 3482c9a73d1b..9f60d6185077 100644
---- a/arch/riscv/include/uapi/asm/kvm.h
-+++ b/arch/riscv/include/uapi/asm/kvm.h
-@@ -211,9 +211,6 @@ struct kvm_riscv_sbi_sta {
- #define KVM_RISCV_TIMER_STATE_OFF	0
- #define KVM_RISCV_TIMER_STATE_ON	1
- 
--#define KVM_REG_SIZE(id)		\
--	(1U << (((id) & KVM_REG_SIZE_MASK) >> KVM_REG_SIZE_SHIFT))
--
- /* If you need to interpret the index values, here is the key: */
- #define KVM_REG_RISCV_TYPE_MASK		0x00000000FF000000
- #define KVM_REG_RISCV_TYPE_SHIFT	24
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 502ea63b5d2e..343de0a51797 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1070,6 +1070,10 @@ struct kvm_dirty_tlb {
- 
- #define KVM_REG_SIZE_SHIFT	52
- #define KVM_REG_SIZE_MASK	0x00f0000000000000ULL
++	TEST_ASSERT(KVM_REG_SIZE(id) <= sizeof(val), "Reg %lx too big", id);
 +
-+#define KVM_REG_SIZE(id)		\
-+	(1U << (((id) & KVM_REG_SIZE_MASK) >> KVM_REG_SIZE_SHIFT))
+ 	vcpu_ioctl(vcpu, KVM_GET_ONE_REG, &reg);
+ 	return val;
+ }
+@@ -714,6 +716,8 @@ static inline void vcpu_set_reg(struct kvm_vcpu *vcpu, uint64_t id, uint64_t val
+ {
+ 	struct kvm_one_reg reg = { .id = id, .addr = (uint64_t)&val };
+ 
++	TEST_ASSERT(KVM_REG_SIZE(id) <= sizeof(val), "Reg %lx too big", id);
 +
- #define KVM_REG_SIZE_U8		0x0000000000000000ULL
- #define KVM_REG_SIZE_U16	0x0010000000000000ULL
- #define KVM_REG_SIZE_U32	0x0020000000000000ULL
+ 	vcpu_ioctl(vcpu, KVM_SET_ONE_REG, &reg);
+ }
+ 
 -- 
 2.47.0.338.g60cca15819-goog
 
