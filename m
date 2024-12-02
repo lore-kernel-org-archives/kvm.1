@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA37E20CCC5;
-	Mon,  2 Dec 2024 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3448120CCE9;
+	Mon,  2 Dec 2024 12:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733141068; cv=none; b=rcC8NmWcEHVJeNZMtuSJrhVIwOKwFJ33BPo1+4pXaz0Rdb35a2Buiu2ky3H4bMeYLDhfqsO/dsOnIOfMdqUGJ29QGcHf13s/lrOh87IEVofGzxirvh4Kt+t7wls8gHrsD4JrTvDotG/NXYVvnvwxBthtOk3oZNrE35dWJDBOC0k=
+	t=1733141070; cv=none; b=nqU6z2bk2abLSdlwIP2po97Q0TWFB10Tz/4HKqwVFPEPVF3SfWixK4Lgzm5Jc08Kl/3p6h+rq8CIfmQyXVwkgLwxKQyOreEdzUPjqqzXT8IlNjSZmAu8uAXKoIpQGXVM0Y+AiIDcyO2QIQ2kZyHPbjphehwRPXQ0HES/zXohaoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733141068; c=relaxed/simple;
-	bh=rwIZNHK8K2cbMDrjttnAWkZObvHb0ZFLdaa8N3u5Gag=;
+	s=arc-20240116; t=1733141070; c=relaxed/simple;
+	bh=ntyjtRQBzDCZOIUj0LJQ6UP3yD/2RxIZEvoUeHfG6AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9Au7r6qOfNrNCrJClbgAytIKynZ14SS0bPq2zX205mIlbDEh7HIJv4GCDLhCXXAbe+vvQlv92uLSBvzeQ+UOLlR625wduMcw+OCPCkdAr6Fwe8FXuieLNatKCgiIujt3CoXoDZBf2GhRdUbjYGFCmu0WeiXGABIKVcVXK+SatY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RL93bExF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=AV4c1Vt4NKyiY8MIVPHiB8Ayg/LwCKLYzrXRhPpzWe6M+qQbCZ9iwFmo3E0f3+78HEsqae2SWEqG3ZGjCt1nJQXMxPEr43so6Zniwul5fAYQrb1/P5/7qR2UoF+VUbVxVykUlcSx7iUGmFAIGZj2uyfqOe3GB5eVK8R6vd2Eolg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fX6bjgMM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RL93bExF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C3CC4CED2;
-	Mon,  2 Dec 2024 12:04:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fX6bjgMM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E4FC4CED9;
+	Mon,  2 Dec 2024 12:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733141067;
-	bh=rwIZNHK8K2cbMDrjttnAWkZObvHb0ZFLdaa8N3u5Gag=;
+	s=k20201202; t=1733141069;
+	bh=ntyjtRQBzDCZOIUj0LJQ6UP3yD/2RxIZEvoUeHfG6AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RL93bExFYhz4owtaRmYkI8/ptRqQXYfU4Ernovq07v/1uOQ2He+CwsUA2YUnc3zlD
-	 +WWf8coQU0C6LUu8BYQCqf8L3ATQ2UPx4g5VtVCnfdkkZEIHCACuOIX60SHa5jOijM
-	 xIH5l/5PTRTK2UovFvfL02zG+6lxY16MSukdxXR/nL8Xx/HraryZIB+y6hdNyRwPNv
-	 HZ4uy9sdMMfTrFF2K1DGtqrj5TncTVwf6zIh/JboK1r/LLTV4YbI3j0XiRUXuBCuUY
-	 3yCa+w3PZbfCqDwh2TsVnx96wjcB6xcCj0qlD9gRSaeGuwTEO+0y8f0pGmiBKKLCmX
-	 DeYvWhn4LDoUw==
+	b=fX6bjgMMjsXlPDLo1IEsaQKWmPR4SblrZXCbeg37u/bq3D+InFtE7D4RJMLwq0AAu
+	 wXmCZ4216vCdb+bKZam+RE6uemLAd52Fs+VBtnwNLaqI+lhw2OPtsczG835M5ym8q+
+	 aXYWHX4y7rGURQCaldGPr0CnHYLOpoudCLB+7oVZBu2jGqXM1JgBZOr0p1hNpbZZ4M
+	 SIPN+ua7mu/0m4u9L7qL8gHaubpuGcCWLVu25fCGsfkaUJsV3aGmy2Mf+ewNPyuz3F
+	 QzHH33FaB3Sgxsj3uIojxEzQSy+8uN+qPCvmsW0r5QYhxEPm59rXxc83Ca8KShPCNN
+	 WpkFxgFcxc9zw==
 From: Borislav Petkov <bp@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	X86 ML <x86@kernel.org>
@@ -35,9 +35,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	KVM <kvm@vger.kernel.org>,
 	LKML <linux-kernel@vger.kernel.org>,
 	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH v2 3/4] x86/bugs: KVM: Add support for SRSO_MSR_FIX
-Date: Mon,  2 Dec 2024 13:04:15 +0100
-Message-ID: <20241202120416.6054-4-bp@kernel.org>
+Subject: [PATCH v2 4/4] Documentation/kernel-parameters: Fix a typo in kvm.enable_virt_at_load text
+Date: Mon,  2 Dec 2024 13:04:16 +0100
+Message-ID: <20241202120416.6054-5-bp@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241202120416.6054-1-bp@kernel.org>
 References: <20241202120416.6054-1-bp@kernel.org>
@@ -51,153 +51,26 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-Add support for
-
-  CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
-  indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
-  SRSO.
-
-enable this BpSpecReduce bit to mitigate SRSO across guest/host
-boundaries.
+s/lode/load/
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
+ Documentation/admin-guide/kernel-parameters.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: Add some doc blurb about the modalities of the mitigation.
-
- Documentation/admin-guide/hw-vuln/srso.rst | 10 ++++++++++
- arch/x86/include/asm/cpufeatures.h         |  1 +
- arch/x86/include/asm/msr-index.h           |  1 +
- arch/x86/kernel/cpu/bugs.c                 | 10 +++++++++-
- arch/x86/kvm/svm/svm.c                     |  6 ++++++
- arch/x86/lib/msr.c                         |  2 ++
- 6 files changed, 29 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
-index 2ad1c05b8c88..79a8f7dea06d 100644
---- a/Documentation/admin-guide/hw-vuln/srso.rst
-+++ b/Documentation/admin-guide/hw-vuln/srso.rst
-@@ -104,7 +104,17 @@ The possible values in this file are:
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index dc663c0ca670..e623e2b53be2 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2695,7 +2695,7 @@
+ 			VMs, i.e. on the 0=>1 and 1=>0 transitions of the
+ 			number of VMs.
  
-    (spec_rstack_overflow=ibpb-vmexit)
- 
-+ * 'Mitigation: Reduced Speculation':
- 
-+   This mitigation gets automatically enabled when the above one "IBPB on
-+   VMEXIT" has been selected and the CPU supports the BpSpecReduce bit.
-+
-+   Currently, the mitigation is automatically enabled when KVM enables
-+   virtualization and can incur some cost. If no VMs will run on the system,
-+   you can either disable virtualization or set kvm.enable_virt_at_load=0 to
-+   enable it only when a VM gets started and thus when really needed. See the
-+   text in Documentation/admin-guide/kernel-parameters.txt on this parameter
-+   for more details.
- 
- In order to exploit vulnerability, an attacker needs to:
- 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 2787227a8b42..94582c0ed9f2 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -465,6 +465,7 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* CPU is not affected by SRSO */
- #define X86_FEATURE_SRSO_USER_KERNEL_NO	(20*32+30) /* CPU is not affected by SRSO across user/kernel boundaries */
-+#define X86_FEATURE_SRSO_MSR_FIX	(20*32+31) /* MSR BP_CFG[BpSpecReduce] can be used to mitigate SRSO for VMs */
- 
- /*
-  * Extended auxiliary flags: Linux defined - for features scattered in various
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 3ae84c3b8e6d..1372a569fb58 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -717,6 +717,7 @@
- 
- /* Zen4 */
- #define MSR_ZEN4_BP_CFG                 0xc001102e
-+#define MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT 4
- #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
- 
- /* Fam 19h MSRs */
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 8854d9bce2a5..a2eb7c0700da 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2523,6 +2523,7 @@ enum srso_mitigation {
- 	SRSO_MITIGATION_SAFE_RET,
- 	SRSO_MITIGATION_IBPB,
- 	SRSO_MITIGATION_IBPB_ON_VMEXIT,
-+	SRSO_MITIGATION_BP_SPEC_REDUCE,
- };
- 
- enum srso_mitigation_cmd {
-@@ -2540,7 +2541,8 @@ static const char * const srso_strings[] = {
- 	[SRSO_MITIGATION_MICROCODE]		= "Vulnerable: Microcode, no safe RET",
- 	[SRSO_MITIGATION_SAFE_RET]		= "Mitigation: Safe RET",
- 	[SRSO_MITIGATION_IBPB]			= "Mitigation: IBPB",
--	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only"
-+	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only",
-+	[SRSO_MITIGATION_BP_SPEC_REDUCE]	= "Mitigation: Reduced Speculation"
- };
- 
- static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
-@@ -2665,6 +2667,12 @@ static void __init srso_select_mitigation(void)
- 
- ibpb_on_vmexit:
- 	case SRSO_CMD_IBPB_ON_VMEXIT:
-+		if (boot_cpu_has(X86_FEATURE_SRSO_MSR_FIX)) {
-+			pr_notice("Reducing speculation to address VM/HV SRSO attack vector.\n");
-+			srso_mitigation = SRSO_MITIGATION_BP_SPEC_REDUCE;
-+			break;
-+		}
-+
- 		if (IS_ENABLED(CONFIG_MITIGATION_SRSO)) {
- 			if (!boot_cpu_has(X86_FEATURE_ENTRY_IBPB) && has_microcode) {
- 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index dd15cc635655..e4fad330cd25 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -608,6 +608,9 @@ static void svm_disable_virtualization_cpu(void)
- 	kvm_cpu_svm_disable();
- 
- 	amd_pmu_disable_virt();
-+
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_MSR_FIX))
-+		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
- }
- 
- static int svm_enable_virtualization_cpu(void)
-@@ -685,6 +688,9 @@ static int svm_enable_virtualization_cpu(void)
- 		rdmsr(MSR_TSC_AUX, sev_es_host_save_area(sd)->tsc_aux, msr_hi);
- 	}
- 
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_MSR_FIX))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-+
- 	return 0;
- }
- 
-diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
-index 4bf4fad5b148..5a18ecc04a6c 100644
---- a/arch/x86/lib/msr.c
-+++ b/arch/x86/lib/msr.c
-@@ -103,6 +103,7 @@ int msr_set_bit(u32 msr, u8 bit)
- {
- 	return __flip_bit(msr, bit, true);
- }
-+EXPORT_SYMBOL_GPL(msr_set_bit);
- 
- /**
-  * msr_clear_bit - Clear @bit in a MSR @msr.
-@@ -118,6 +119,7 @@ int msr_clear_bit(u32 msr, u8 bit)
- {
- 	return __flip_bit(msr, bit, false);
- }
-+EXPORT_SYMBOL_GPL(msr_clear_bit);
- 
- #ifdef CONFIG_TRACEPOINTS
- void do_trace_write_msr(unsigned int msr, u64 val, int failed)
+-			Enabling virtualization at module lode avoids potential
++			Enabling virtualization at module load avoids potential
+ 			latency for creation of the 0=>1 VM, as KVM serializes
+ 			virtualization enabling across all online CPUs.  The
+ 			"cost" of enabling virtualization when KVM is loaded,
 -- 
 2.43.0
 
