@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C742C1DC734;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6815B1DDC0C;
 	Mon,  2 Dec 2024 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733160139; cv=none; b=KnzXxvbNKVnJJLQXa5TrsHLg2VerGXilbbzLmYcEGJ/lfUu4FT3bF6GoFZN9NtABTWAYInrkkTyZVHyI8tMIy3lM+A740zz2pkYL4x0ubUNW2Rkl2qqBLpvv60FrMXnOdkdo9SHwl9o6VohEYa3tUXd/pqr58w8kdiGpRvp/ANI=
+	t=1733160140; cv=none; b=I3up9angp/aCIfQC6x+VmN4CTmHTaL57SP6x1Uy/XuoWhgIfGWgkhlJM0l+MczzqsMgVxh/RdCe0C2R8mrR8J7g7iy3U45GSTJx/8O2gIY7Ia4vjsTI1yyx8ANy2PXjyN6B+35AEv4ffNAy9b0sg908UYtZWWz7DgeYtUP4jXnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733160139; c=relaxed/simple;
-	bh=CoOnX/hzc+Zpn2UPDBxSfXiFz117lrAvmCt/lMNCmRg=;
+	s=arc-20240116; t=1733160140; c=relaxed/simple;
+	bh=HmEk0RAxHAj5K5OGiepCVArlYvZ8T1KHJ8vERxPf9yQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SdEVu81Rj++SKvDIHwwPYAQaP339OzbA6TzteExZCviUXhwcPtHGFGJg7FkruKxJwTn9IIanWrwOdn8G5LTYZeHYGZOhzXyWJ9zU1jqYqJDyK98/NfwnrRGCoGGhU2LCmqWidjoPshuZ2hIyaHzeYRxegHMV4rarumI7bhAEz/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGABxW+N; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Pv0pahL9o46xU/HTbpUQ4fay9ao9O5eaJZ3rHEJ7FT7A/LR0SACYPAkoVH5ZQNO7Z8MCtp2U+6rF0g7V8xAWTWCKcGgMd9o5elDJ9Z69gR1pS2M6w9/8hjKetp4m4k4qaIMPNx7Oa18FXI5i2pVF+9lbOBwj0Td9vwphw6mdvhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kf0VHJ8i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGABxW+N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34D9C4CED2;
-	Mon,  2 Dec 2024 17:22:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kf0VHJ8i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D15C4CEE1;
+	Mon,  2 Dec 2024 17:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1733160139;
-	bh=CoOnX/hzc+Zpn2UPDBxSfXiFz117lrAvmCt/lMNCmRg=;
+	bh=HmEk0RAxHAj5K5OGiepCVArlYvZ8T1KHJ8vERxPf9yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGABxW+N605E2ciLQQiog5+QuvAtrGCzd2SfGtkE0Tc0BLaySEI4yfnYnBjA3wrpH
-	 p7ajh6/4aIo4GvRAhtkXKrYOwA7MqIN7wxCFnJjbD5IM1A9lO7cm56qtSuiDoXPDt3
-	 fggfSgnGmuSTYw7LqeJsh7M66DkPiKPFDTeyOymvzpuUj2/xoN6Nd6REo1fKNBX6k0
-	 e7yKA4cTzEujfNaMIjWEEllBpLPX+kdNE4LUnVgMubvLgEBV/y4Je9SZkkCIgorK34
-	 TeQ36chZzTtIQoqnYzSY8jcMhzcqRrUBrn4ADXY9FwzPkk32gf6b9FpfLh5s9lg1Lz
-	 s6Clu7b3lI6SA==
+	b=kf0VHJ8iDQjtz83w10Wm8bbChUEcKiR4XCQQdhTXoK9kNWIUVGhG65cax0AuXfoqa
+	 LPqOz0uqAAAfQOkjPduyGKu06ycbgXWKIgvPZ54XfuTKrwJCC/h+Xdahpzwmtm0bjT
+	 pD2iBlHQfSLD7raP2j/G8MzXJRyFM2clA0KZEKh+yJ27cCMysjvZNSDnVZgMVv7SJE
+	 L9IRb5ZfPu0HJysaRHgbP50jZyPgtSjq9cZaAxpAmDmLYAYT4e7TYDkde887yac8dI
+	 AUkW3r58XWaAzL5Mhj8cuM+ID/gpidhnzrE8Bs6owSApvXbEA70ht9SH8Da96MwBcv
+	 QpzEBgMPFfo2g==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tIA7l-00HQcf-Nj;
+	id 1tIA7l-00HQcf-5H;
 	Mon, 02 Dec 2024 17:22:17 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Christoffer Dall <christoffer.dall@arm.com>
-Subject: [PATCH 10/11] KVM: arm64: nv: Sanitise CNTHCTL_EL2
-Date: Mon,  2 Dec 2024 17:21:33 +0000
-Message-Id: <20241202172134.384923-11-maz@kernel.org>
+Subject: [PATCH 07/11] KVM: arm64: Handle counter access early in non-HYP context
+Date: Mon,  2 Dec 2024 17:21:30 +0000
+Message-Id: <20241202172134.384923-8-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241202172134.384923-1-maz@kernel.org>
 References: <20241202172134.384923-1-maz@kernel.org>
@@ -60,75 +60,94 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Inject some sanity in CNTHCTL_EL2, ensuring that we don't handle
-more than we advertise to the guest.
+We already deal with CNTPCT_EL0 accesses in non-HYP context.
+Let's add CNTVCT_EL0 as a good measure.
+
+This is also an opportunity to simplify things and make it
+plain that this code is only for non-HYP context handling.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h    |  2 +-
- arch/arm64/kvm/nested.c              | 15 +++++++++++++++
- include/clocksource/arm_arch_timer.h |  2 ++
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 34 +++++++++++++++----------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index e18e9244d17a4..cf571d41faa89 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -490,7 +490,6 @@ enum vcpu_sysreg {
- 	VBAR_EL2,	/* Vector Base Address Register (EL2) */
- 	RVBAR_EL2,	/* Reset Vector Base Address Register */
- 	CONTEXTIDR_EL2,	/* Context ID Register (EL2) */
--	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
- 	SP_EL2,		/* EL2 Stack Pointer */
- 	CNTHP_CTL_EL2,
- 	CNTHP_CVAL_EL2,
-@@ -501,6 +500,7 @@ enum vcpu_sysreg {
- 	MARKER(__SANITISED_REG_START__),
- 	TCR2_EL2,	/* Extended Translation Control Register (EL2) */
- 	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
-+	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
- 
- 	/* Any VNCR-capable reg goes after this point */
- 	MARKER(__VNCR_START__),
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 9b36218b48def..9113c6025d6f3 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1271,6 +1271,21 @@ int kvm_init_nv_sysregs(struct kvm *kvm)
- 		res0 |= MDCR_EL2_EnSTEPOP;
- 	set_sysreg_masks(kvm, MDCR_EL2, res0, res1);
- 
-+	/* CNTHCTL_EL2 */
-+	res0 = GENMASK(63, 20);
-+	res1 = 0;
-+	if (!kvm_has_feat(kvm, ID_AA64PFR0_EL1, RME, IMP))
-+		res0 |= CNTHCTL_CNTPMASK | CNTHCTL_CNTVMASK;
-+	if (!kvm_has_feat(kvm, ID_AA64MMFR0_EL1, ECV, CNTPOFF)) {
-+		res0 |= CNTHCTL_ECV;
-+		if (!kvm_has_feat(kvm, ID_AA64MMFR0_EL1, ECV, IMP))
-+			res0 |= (CNTHCTL_EL1TVT | CNTHCTL_EL1TVCT |
-+				 CNTHCTL_EL1NVPCT | CNTHCTL_EL1NVVCT);
-+	}
-+	if (!kvm_has_feat(kvm, ID_AA64MMFR1_EL1, VH, IMP))
-+		res0 |= GENMASK(11, 8);
-+	set_sysreg_masks(kvm, CNTHCTL_EL2, res0, res1);
-+
- 	return 0;
+diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+index 30e572de28749..719479b42b329 100644
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -506,7 +506,7 @@ static inline u64 compute_counter_value(struct arch_timer_context *ctxt)
+ 	return arch_timer_read_cntpct_el0() - timer_get_offset(ctxt);
  }
  
-diff --git a/include/clocksource/arm_arch_timer.h b/include/clocksource/arm_arch_timer.h
-index c62811fb41309..ce6521ad04d12 100644
---- a/include/clocksource/arm_arch_timer.h
-+++ b/include/clocksource/arm_arch_timer.h
-@@ -26,6 +26,8 @@
- #define CNTHCTL_EL1TVCT			(1 << 14)
- #define CNTHCTL_EL1NVPCT		(1 << 15)
- #define CNTHCTL_EL1NVVCT		(1 << 16)
-+#define CNTHCTL_CNTVMASK		(1 << 18)
-+#define CNTHCTL_CNTPMASK		(1 << 19)
+-static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
++static bool kvm_handle_cntxct(struct kvm_vcpu *vcpu)
+ {
+ 	struct arch_timer_context *ctxt;
+ 	u32 sysreg;
+@@ -516,18 +516,19 @@ static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
+ 	 * We only get here for 64bit guests, 32bit guests will hit
+ 	 * the long and winding road all the way to the standard
+ 	 * handling. Yes, it sucks to be irrelevant.
++	 *
++	 * Also, we only deal with non-hypervisor context here (either
++	 * an EL1 guest, or a non-HYP context of an EL2 guest).
+ 	 */
++	if (is_hyp_ctxt(vcpu))
++		return false;
++
+ 	sysreg = esr_sys64_to_sysreg(kvm_vcpu_get_esr(vcpu));
  
- enum arch_timer_reg {
- 	ARCH_TIMER_REG_CTRL,
+ 	switch (sysreg) {
+ 	case SYS_CNTPCT_EL0:
+ 	case SYS_CNTPCTSS_EL0:
+ 		if (vcpu_has_nv(vcpu)) {
+-			if (is_hyp_ctxt(vcpu)) {
+-				ctxt = vcpu_hptimer(vcpu);
+-				break;
+-			}
+-
+ 			/* Check for guest hypervisor trapping */
+ 			val = __vcpu_sys_reg(vcpu, CNTHCTL_EL2);
+ 			if (!vcpu_el2_e2h_is_set(vcpu))
+@@ -539,16 +540,23 @@ static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
+ 
+ 		ctxt = vcpu_ptimer(vcpu);
+ 		break;
++	case SYS_CNTVCT_EL0:
++	case SYS_CNTVCTSS_EL0:
++		if (vcpu_has_nv(vcpu)) {
++			/* Check for guest hypervisor trapping */
++			val = __vcpu_sys_reg(vcpu, CNTHCTL_EL2);
++
++			if (val & CNTHCTL_EL1TVCT)
++				return false;
++		}
++
++		ctxt = vcpu_vtimer(vcpu);
++		break;
+ 	default:
+ 		return false;
+ 	}
+ 
+-	val = arch_timer_read_cntpct_el0();
+-
+-	if (ctxt->offset.vm_offset)
+-		val -= *kern_hyp_va(ctxt->offset.vm_offset);
+-	if (ctxt->offset.vcpu_offset)
+-		val -= *kern_hyp_va(ctxt->offset.vcpu_offset);
++	val = compute_counter_value(ctxt);
+ 
+ 	vcpu_set_reg(vcpu, kvm_vcpu_sys_get_rt(vcpu), val);
+ 	__kvm_skip_instr(vcpu);
+@@ -593,7 +601,7 @@ static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 	    __vgic_v3_perform_cpuif_access(vcpu) == 1)
+ 		return true;
+ 
+-	if (kvm_hyp_handle_cntpct(vcpu))
++	if (kvm_handle_cntxct(vcpu))
+ 		return true;
+ 
+ 	return false;
 -- 
 2.39.2
 
