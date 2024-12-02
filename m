@@ -1,153 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6815B1DDC0C;
-	Mon,  2 Dec 2024 17:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF1F1662E7;
+	Mon,  2 Dec 2024 17:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733160140; cv=none; b=I3up9angp/aCIfQC6x+VmN4CTmHTaL57SP6x1Uy/XuoWhgIfGWgkhlJM0l+MczzqsMgVxh/RdCe0C2R8mrR8J7g7iy3U45GSTJx/8O2gIY7Ia4vjsTI1yyx8ANy2PXjyN6B+35AEv4ffNAy9b0sg908UYtZWWz7DgeYtUP4jXnc=
+	t=1733160382; cv=none; b=qpULl9H19c5m3Q8kRWmmSew4VIuqNns941vQXbHitSxSaOZpscmcGQkMMwGGoxC44CUY+uqx0BexC8xJOwloiB8s6Mqr1QeTcr9rCHke2odDbtrSY0Xu7xWnEwMqK1Mb52tCjiTAHMxOtQpM52YkHYLP54XcCzj8f3vVTMvcBwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733160140; c=relaxed/simple;
-	bh=HmEk0RAxHAj5K5OGiepCVArlYvZ8T1KHJ8vERxPf9yQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pv0pahL9o46xU/HTbpUQ4fay9ao9O5eaJZ3rHEJ7FT7A/LR0SACYPAkoVH5ZQNO7Z8MCtp2U+6rF0g7V8xAWTWCKcGgMd9o5elDJ9Z69gR1pS2M6w9/8hjKetp4m4k4qaIMPNx7Oa18FXI5i2pVF+9lbOBwj0Td9vwphw6mdvhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kf0VHJ8i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733160382; c=relaxed/simple;
+	bh=BsEHNjcP0yoRdiQY8UO4KVSJoS6Aba+uZoD/T0TC2EA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g1qL9BxjOIw79ujo228YOvOZbLT9BNBresJU42RoOuiJDz1v3uha7TIXIM5itOGSkaDjyFUZKDk9zh+JhThHG7HOUOqbnNIgLLrhLB39ZeqQ8ag2v5IC2t38yXKPlINOaiUqLqCEMcCtqLtDRgrgt38u8n4dJ7vKqlp3szQtn5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LjPuhyV3; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kf0VHJ8i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D15C4CEE1;
-	Mon,  2 Dec 2024 17:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733160139;
-	bh=HmEk0RAxHAj5K5OGiepCVArlYvZ8T1KHJ8vERxPf9yQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kf0VHJ8iDQjtz83w10Wm8bbChUEcKiR4XCQQdhTXoK9kNWIUVGhG65cax0AuXfoqa
-	 LPqOz0uqAAAfQOkjPduyGKu06ycbgXWKIgvPZ54XfuTKrwJCC/h+Xdahpzwmtm0bjT
-	 pD2iBlHQfSLD7raP2j/G8MzXJRyFM2clA0KZEKh+yJ27cCMysjvZNSDnVZgMVv7SJE
-	 L9IRb5ZfPu0HJysaRHgbP50jZyPgtSjq9cZaAxpAmDmLYAYT4e7TYDkde887yac8dI
-	 AUkW3r58XWaAzL5Mhj8cuM+ID/gpidhnzrE8Bs6owSApvXbEA70ht9SH8Da96MwBcv
-	 QpzEBgMPFfo2g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tIA7l-00HQcf-5H;
-	Mon, 02 Dec 2024 17:22:17 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Christoffer Dall <christoffer.dall@arm.com>
-Subject: [PATCH 07/11] KVM: arm64: Handle counter access early in non-HYP context
-Date: Mon,  2 Dec 2024 17:21:30 +0000
-Message-Id: <20241202172134.384923-8-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241202172134.384923-1-maz@kernel.org>
-References: <20241202172134.384923-1-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LjPuhyV3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733160380; x=1764696380;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BsEHNjcP0yoRdiQY8UO4KVSJoS6Aba+uZoD/T0TC2EA=;
+  b=LjPuhyV3uvetnO/24BAYLzUkfjXPMnlUN0rZAWep89fJsRbDUD+sfJ7B
+   P2nYyHBzwF5VPOZtMCTjV1CC6/wWZX5iHYgp+eI3ni7syP9EfHkw+k0Tg
+   op0TOEhDQ5vsTpeyQ+Aq0p3Gis+GY8eVQQdpWm4UZulc8kDUMGQWqxeSM
+   YxFCR/hs4QAzkvag8yATR1JjfUso7SeTweGHeWFP5aye7exGM+PZVKgre
+   8h4CDaQwWwz8oPUtQvLEs/TwtPXJsOvCPlSNww5fNLuALNsPRQ+kFKkeB
+   wmlTmoYO+b+biEC2ReyhWh5+lgJkgZ+nx2opAMNxJh7u8mlbHNH6aReGH
+   A==;
+X-CSE-ConnectionGUID: icCyv0IkSx+1htiA5cVBNg==
+X-CSE-MsgGUID: IM9glH9dSNWu1e6BvyihxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="55833040"
+X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
+   d="scan'208";a="55833040"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 09:26:19 -0800
+X-CSE-ConnectionGUID: bxI9jJ1zQqeonRA7mmffsA==
+X-CSE-MsgGUID: dRWQFCk7QlGCSxdVrLqoOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
+   d="scan'208";a="130638664"
+Received: from sramkris-mobl1.amr.corp.intel.com (HELO [10.124.222.246]) ([10.124.222.246])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 09:26:18 -0800
+Message-ID: <7222b969-30a8-42de-b2ca-601f6d1b03cd@intel.com>
+Date: Mon, 2 Dec 2024 09:26:16 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, andersson@kernel.org, christoffer.dall@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/2] x86: cpu/bugs: add AMD ERAPS support; hardware
+ flushes RSB
+To: Amit Shah <amit@kernel.org>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org
+Cc: amit.shah@amd.com, thomas.lendacky@amd.com, bp@alien8.de,
+ tglx@linutronix.de, peterz@infradead.org, jpoimboe@kernel.org,
+ pawan.kumar.gupta@linux.intel.com, corbet@lwn.net, mingo@redhat.com,
+ dave.hansen@linux.intel.com, hpa@zytor.com, seanjc@google.com,
+ pbonzini@redhat.com, daniel.sneddon@linux.intel.com, kai.huang@intel.com,
+ sandipan.das@amd.com, boris.ostrovsky@oracle.com, Babu.Moger@amd.com,
+ david.kaplan@amd.com, dwmw@amazon.co.uk, andrew.cooper3@citrix.com
+References: <cover.1732219175.git.jpoimboe@kernel.org>
+ <20241128132834.15126-1-amit@kernel.org>
+ <20241128132834.15126-2-amit@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20241128132834.15126-2-amit@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-We already deal with CNTPCT_EL0 accesses in non-HYP context.
-Let's add CNTVCT_EL0 as a good measure.
+On 11/28/24 05:28, Amit Shah wrote:
+> From: Amit Shah <amit.shah@amd.com>
+> 
+> When Automatic IBRS is disabled, Linux flushed the RSB on every context
+> switch.  This RSB flush is not necessary in software with the ERAPS
+> feature on Zen5+ CPUs that flushes the RSB in hardware on a context
+> switch (triggered by mov-to-CR3).
+> 
+> Additionally, the ERAPS feature also tags host and guest addresses in
+> the RSB - eliminating the need for software flushing of the RSB on
+> VMEXIT.
+> 
+> Disable all RSB flushing by Linux when the CPU has ERAPS.
+> 
+> Feature mentioned in AMD PPR 57238.  Will be resubmitted once APM is
+> public - which I'm told is imminent.
 
-This is also an opportunity to simplify things and make it
-plain that this code is only for non-HYP context handling.
+There was a _lot_ of discussion about this. But all of that discussion
+seems to have been trimmed out and it seems like we're basically back
+to: "this is new hardware supposed to mitigate SpectreRSB, thus it
+mitigates SpectreRSB."
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/hyp/include/hyp/switch.h | 34 +++++++++++++++----------
- 1 file changed, 21 insertions(+), 13 deletions(-)
-
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index 30e572de28749..719479b42b329 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -506,7 +506,7 @@ static inline u64 compute_counter_value(struct arch_timer_context *ctxt)
- 	return arch_timer_read_cntpct_el0() - timer_get_offset(ctxt);
- }
- 
--static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
-+static bool kvm_handle_cntxct(struct kvm_vcpu *vcpu)
- {
- 	struct arch_timer_context *ctxt;
- 	u32 sysreg;
-@@ -516,18 +516,19 @@ static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
- 	 * We only get here for 64bit guests, 32bit guests will hit
- 	 * the long and winding road all the way to the standard
- 	 * handling. Yes, it sucks to be irrelevant.
-+	 *
-+	 * Also, we only deal with non-hypervisor context here (either
-+	 * an EL1 guest, or a non-HYP context of an EL2 guest).
- 	 */
-+	if (is_hyp_ctxt(vcpu))
-+		return false;
-+
- 	sysreg = esr_sys64_to_sysreg(kvm_vcpu_get_esr(vcpu));
- 
- 	switch (sysreg) {
- 	case SYS_CNTPCT_EL0:
- 	case SYS_CNTPCTSS_EL0:
- 		if (vcpu_has_nv(vcpu)) {
--			if (is_hyp_ctxt(vcpu)) {
--				ctxt = vcpu_hptimer(vcpu);
--				break;
--			}
--
- 			/* Check for guest hypervisor trapping */
- 			val = __vcpu_sys_reg(vcpu, CNTHCTL_EL2);
- 			if (!vcpu_el2_e2h_is_set(vcpu))
-@@ -539,16 +540,23 @@ static bool kvm_hyp_handle_cntpct(struct kvm_vcpu *vcpu)
- 
- 		ctxt = vcpu_ptimer(vcpu);
- 		break;
-+	case SYS_CNTVCT_EL0:
-+	case SYS_CNTVCTSS_EL0:
-+		if (vcpu_has_nv(vcpu)) {
-+			/* Check for guest hypervisor trapping */
-+			val = __vcpu_sys_reg(vcpu, CNTHCTL_EL2);
-+
-+			if (val & CNTHCTL_EL1TVCT)
-+				return false;
-+		}
-+
-+		ctxt = vcpu_vtimer(vcpu);
-+		break;
- 	default:
- 		return false;
- 	}
- 
--	val = arch_timer_read_cntpct_el0();
--
--	if (ctxt->offset.vm_offset)
--		val -= *kern_hyp_va(ctxt->offset.vm_offset);
--	if (ctxt->offset.vcpu_offset)
--		val -= *kern_hyp_va(ctxt->offset.vcpu_offset);
-+	val = compute_counter_value(ctxt);
- 
- 	vcpu_set_reg(vcpu, kvm_vcpu_sys_get_rt(vcpu), val);
- 	__kvm_skip_instr(vcpu);
-@@ -593,7 +601,7 @@ static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
- 	    __vgic_v3_perform_cpuif_access(vcpu) == 1)
- 		return true;
- 
--	if (kvm_hyp_handle_cntpct(vcpu))
-+	if (kvm_handle_cntxct(vcpu))
- 		return true;
- 
- 	return false;
--- 
-2.39.2
-
+Could we please summarize the previous discussions in the changelog?
+Otherwise, I fear it will be lost.
