@@ -1,94 +1,126 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDA71DDC26
-	for <kvm@vger.kernel.org>; Mon,  2 Dec 2024 18:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB17E0E8
+	for <kvm@vger.kernel.org>; Mon,  2 Dec 2024 18:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733164569; cv=none; b=M1T/S5rj5cXCz0HjWkArEkIDIpZ5FX3xGd453jpA1H0cKY15bxZxTMXc/DoKUeTW/d1yp5UA6GkVaAuM0IEX2CPIZ+x2wO5kP90OHwRTAFN+dsW/pEZshGjGwDgNafke39rJNUHlC6JYAgMT/s6U2QeVHS4vRoOKlClN2Und7nc=
+	t=1733165068; cv=none; b=aORBwLQ65vAE8k71atdfYcGVoeVaRDlILlgk1f+zjj5seAriFjzJtAryStBZDLENCp16tLBsp2RSxgHgVT7gUt4LuKc94lZ4s6Z3ZWfDpbgUfAoovAPgguEmPbvJhDJv6ptqrkuDQjyvGg0uiVbywSC+0asxM7n+1hdHxNG5ZNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733164569; c=relaxed/simple;
-	bh=JhPRv+gPDMTF92gaKR88jFjruNF+A0nmJtg8odH4PDk=;
+	s=arc-20240116; t=1733165068; c=relaxed/simple;
+	bh=XMiiPXZTYZeEpJBk8U9EnSPpjw/bdDBl+/T3JKR0A3M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p7ZoumA4NhhGrYqY6TwIVUnYqjWTw9ToCGBsFu/xaOGcomE7mCS7UmvVqHqr42ugsnoQpGno2aNfU2uP9+ZMmEwWlYFXLIwcaGl/5DHWquYqk9TbrIwNCP0M36+wLlJAh9h4VncEXooCmCOA3X7olCuTWo2CKFUBWHFhiPt9dtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GwPTX+we; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=gpO7ANTD+fy30gyqXC2inEeD/97I8ebVUB+5Jef1Cup0cKCFRzo0riYlcRBNoX3f09QHh6y48390VF53BbjVrK04ELZgOjAX3IARvowESIlG4AC3LxWWH2Lsg3NNzhAXS3Ip4SF2Kw+v2XCGSfU/cTrhW6LgZSkgtRs1Os5GTAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1tsRKX4g; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GwPTX+we"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ee534bdee3so3261209a91.0
-        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 10:36:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1tsRKX4g"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ee5668e09bso3506269a91.3
+        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 10:44:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733164567; x=1733769367; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733165066; x=1733769866; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmhoE4cYt7rjQRHzT+iWiPMuGFQ3/gi9W/Su2Z8nl8A=;
-        b=GwPTX+wexZa1w2E7LcIVqu4jNea4h97hp1wyVyQ0WpJvj/kpvfIIguj4rrmo/tNd9q
-         LIlwE0Wz/ce9Jn0xyKz1krRy55+5c56p/A5/tShp3shIoQ7jKlLkGApmhC29MCWpljvR
-         HptgIyL75BYEeoPosOw+AUtdI0lozuzCFg56Rv7/Nj2CaCfgNeiLe1pGYbOYhFbdZ8ak
-         k8K67YLFtvNYOcynYQu1qGN31tMaAck6gLAEb/PYv00B/Cw6y8soyRBXaDOt9nYseJ/o
-         JN6lRifwmGrEhGzzz6BYLG7UW6Mv0y49oYmTqFFtGD5xkI7Ru3tRizHTvOFb6QuU24qw
-         Bx7Q==
+        bh=EvvKZTjXnx9iZrBeE4PJ9zcvpwtrkWJI0eWnaDHr26c=;
+        b=1tsRKX4gsz81xZWF8Rd4T1LISMWDknrrebgP42fUUNxwPWCs+ItM8v1gOcS3VYGjqI
+         6T2gW72fC6Veq/ukpqzccKpicEQPVP64kBU0cInNX23nvoyBg8PbGTZ/PB+haewB3rnl
+         Det8eSXfQuSXdqF1ao1fGepIIDRVxboym+YQBvrYymr/hP0QUd0G81uNORetIro5ymhP
+         puUiqemJj0Zs/Upb4lUZs7tmiNNhtxsCkpUnsdcHQc36ZQqdbugD6q6/tMLgmdISORL8
+         IZSc5kj06+wzKa6x9yL/oO5S01qBSxnMYS8CLIumPegVlkh1aklfHrCzQoKJWh3d5eC3
+         TuGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733164567; x=1733769367;
+        d=1e100.net; s=20230601; t=1733165066; x=1733769866;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmhoE4cYt7rjQRHzT+iWiPMuGFQ3/gi9W/Su2Z8nl8A=;
-        b=ap2Do/XQReKUpFDSIL1+ewPa5exBmUr+ZhlkMA72qmzbXPdHKVxqRep0nyJ0He9XQ3
-         VgMQ4pXFquZe/bFyJUFgW5otYRpKpYebUey1leSPkMHCsX9njXdwVh1jo0tkR2Jy1WFm
-         mHd+otWY8ldFMYN6sS8fQKURuoloXGK36e5edG2UV4k3zbOqato72AVGSnaobAVK65XB
-         qkJFS/ZEFB4GQY96sjHJEXUzKuBNxQTCJIqrUI/B/XJzczzLsuLKt1YIn75lKYuIXtS0
-         dyg2DadGaNhKFcc4z2DJR1SB0z7A8oI+vfMbbTm2xeBFwf+G3787yGTj5EPKm6rs0JJO
-         BH/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU62kfaAUySzVwMC/+F7aQ6RNc4Wwmc7wmqBDJ6s6g+xpXoMUZy6synPVJ1l/KzPMoEnfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ660utL81sRQv3atzYHMEy9lBDw2+i/FmX5EB09XIo3rnic5t
-	L8/hwqd89DscfYOlAAZUmWt6VcfFGu1CSkiKi9CD7ncFpEeyMXSCO8JD/3e65XDc4+TcxAfzjIV
-	KKQ==
-X-Google-Smtp-Source: AGHT+IG+yibGcr3UBT8GYMqK9RUzkIylDwqwGeEVnrlV5H+vn+hjSd3rZQdwVZ+U5jysAAzoOzzga9AddC8=
-X-Received: from pjbsw8.prod.google.com ([2002:a17:90b:2c88:b0:2e0:915d:d594])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c07:b0:2ee:ab29:1a63
- with SMTP id 98e67ed59e1d1-2eeab291d40mr9629060a91.3.1733164567155; Mon, 02
- Dec 2024 10:36:07 -0800 (PST)
-Date: Mon, 2 Dec 2024 10:36:05 -0800
-In-Reply-To: <0dd91e39-c4b7-4740-b469-6f71e48b72de@intel.com>
+        bh=EvvKZTjXnx9iZrBeE4PJ9zcvpwtrkWJI0eWnaDHr26c=;
+        b=Cx0NxiIpm/gZ05LoMR+OgukPRhDhvihOTAgkqicdbf3PXmj0IDySiL2/Kb1M+J9MuI
+         C0N1PxgpqYf85omm7KUUM4PF9IVY0GECSAmKn7XPcqFVRORxVXfOSnViPsjJPc4mesOz
+         3gWnoZToWP2GaBqOFLWPACmIItLcDkq+u2Vlgrm1MYyr0m+dSx5C2rBepawwBgv5VJtx
+         gLd/p3fEsK6XqEQjJrDFCm8ww51UcotUDcz0PbOgl3fecEUhIEkryzZ5QRkSQtN+L27W
+         oVmH0BYawEzZVpy3HKKtmW0paNwnmsP/odv+vavzyqEcAyI8T1KwoJpmF9eMhmk3XF3Q
+         bVkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXs0VXD9ucm5KjOSsiPJx0zC1Enz3sthE1EzphCwNgqxabTPSFxCI77N9ETSbRrPybB7hs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk0cejl/ofEV4GuhLf97wvohHigs7HJa9uTPfhYDPoGWQCwM7M
+	ptRMlA6DR8b5AUpiW0fvmM17yBZh7f/cbeeQjJggmrfcCvigAkCRMq2dyumtiiiBBpgLKaR5EQx
+	qNQ==
+X-Google-Smtp-Source: AGHT+IGY/pWE/JvM1zeCaiXWWtmArKkTSnFTXrJ8bYSxAS/RlH7PaacfBmlD9LvJsCAXHrFgB51idE3WnAQ=
+X-Received: from pjbli9.prod.google.com ([2002:a17:90b:48c9:b0:2e9:38ea:ca0f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388b:b0:2ee:f80c:6884
+ with SMTP id 98e67ed59e1d1-2eef80c6ae0mr1153622a91.33.1733165066275; Mon, 02
+ Dec 2024 10:44:26 -0800 (PST)
+Date: Mon, 2 Dec 2024 10:44:24 -0800
+In-Reply-To: <ce45a9cb-44a4-4a3d-bc81-608a0871ae6d@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1732219175.git.jpoimboe@kernel.org> <20241128132834.15126-1-amit@kernel.org>
- <20241128132834.15126-2-amit@kernel.org> <7222b969-30a8-42de-b2ca-601f6d1b03cd@intel.com>
- <4601ca077c95393837eb40909c941a4d67bb04dd.camel@kernel.org> <0dd91e39-c4b7-4740-b469-6f71e48b72de@intel.com>
-Message-ID: <Z03-FSa6nvVbFjwc@google.com>
-Subject: Re: [RFC PATCH v3 1/2] x86: cpu/bugs: add AMD ERAPS support; hardware
- flushes RSB
+References: <20241128004344.4072099-1-seanjc@google.com> <20241128004344.4072099-6-seanjc@google.com>
+ <ce45a9cb-44a4-4a3d-bc81-608a0871ae6d@intel.com>
+Message-ID: <Z04ACJSrBSPlyqY4@google.com>
+Subject: Re: [PATCH v4 5/6] KVM: x86: Always complete hypercall via function callback
 From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Amit Shah <amit@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-doc@vger.kernel.org, thomas.lendacky@amd.com, 
-	bp@alien8.de, tglx@linutronix.de, peterz@infradead.org, jpoimboe@kernel.org, 
-	pawan.kumar.gupta@linux.intel.com, corbet@lwn.net, mingo@redhat.com, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, pbonzini@redhat.com, 
-	daniel.sneddon@linux.intel.com, kai.huang@intel.com, sandipan.das@amd.com, 
-	boris.ostrovsky@oracle.com, Babu.Moger@amd.com, david.kaplan@amd.com, 
-	dwmw@amazon.co.uk, andrew.cooper3@citrix.com, Amit Shah <Amit.Shah@amd.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Dec 02, 2024, Dave Hansen wrote:
-> On 12/2/24 10:09, Amit Shah wrote:
-> > I can still include the summary of the discussion in this patch - I
-> > just feel it isn't necessary with the rework.
+On Thu, Nov 28, 2024, Xiaoyao Li wrote:
+> On 11/28/2024 8:43 AM, Sean Christopherson wrote:
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 11434752b467..39be2a891ab4 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -9982,10 +9982,11 @@ static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
+> >   	return kvm_skip_emulated_instruction(vcpu);
+> >   }
+> > -unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
+> > -				      unsigned long a0, unsigned long a1,
+> > -				      unsigned long a2, unsigned long a3,
+> > -				      int op_64_bit, int cpl)
+> > +int __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
+> > +			    unsigned long a0, unsigned long a1,
+> > +			    unsigned long a2, unsigned long a3,
+> > +			    int op_64_bit, int cpl,
+> > +			    int (*complete_hypercall)(struct kvm_vcpu *))
+> >   {
+> >   	unsigned long ret;
+> > @@ -10061,7 +10062,7 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
+> >   			vcpu->run->hypercall.flags |= KVM_EXIT_HYPERCALL_LONG_MODE;
+> >   		WARN_ON_ONCE(vcpu->run->hypercall.flags & KVM_EXIT_HYPERCALL_MBZ);
+> > -		vcpu->arch.complete_userspace_io = complete_hypercall_exit;
+> > +		vcpu->arch.complete_userspace_io = complete_hypercall;
+> >   		/* stat is incremented on completion. */
+> >   		return 0;
+> >   	}
+> > @@ -10071,13 +10072,15 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
+> >   	}
+> >   out:
+> > -	return ret;
+> > +	vcpu->run->hypercall.ret = ret;
+> > +	complete_hypercall(vcpu);
+> > +	return 1;
 > 
-> It's necessary.
+> shouldn't it be
 > 
-> There's a new hardware feature. You want it to replace a software
-> sequence in certain situations. You have to make an actual, coherent
-> argument argument as to why the hardware feature is a suitable replacement.
+> 	return complete_hypercall(vcpu);
 > 
-> For instance (and I'm pretty sure we've gone over this more than once),
-> the changelog here still makes the claim that a "context switch" and a
-> "mov-to-CR3" are the same thing.
+> ?
 
-+1000.  I want a crisp, precise description of the actual hardware behavior, so
-that KVM can do the right thing when virtualizing ERAPS.
+Ouch.  Yes, it most definitely should be.
+
+> Originally, kvm_emulate_hypercall() returns kvm_skip_emulated_instruction().
+> Now it becomes
+> 
+> 	kvm_skip_emulated_instruction();
+> 	return 1;
+> 
+> I don't go deep to see if kvm_skip_emulated_instruction() always return 1
+> for this case.
+
+It doesn't.  KVM needs to exit to userspace if userspace is single-stepping, or
+in the extremely unlikely scenario that KVM can't skip the emulated instruction
+(which can very theoretically happen on older AMD CPUs).
