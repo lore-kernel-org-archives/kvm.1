@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AE71DAC95;
-	Mon,  2 Dec 2024 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6081D1DB55C;
+	Mon,  2 Dec 2024 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733160139; cv=none; b=LXsls9IwywMXGl5zP1VJJJhgi3dpZUDo4X/WISCRsPKjKEQTBQ6y+7DncYtqZEEsZ+kGQ5xF1rKfzC6WhjkYSf/Akw7+Zuj0hAPVS3jUkLb7ES3LSJAJ3Ce2HwWbw/5TANx+JRibXxAwu2Usy3o3xrGhvuNdsoxHnlvZmxNwPzE=
+	t=1733160139; cv=none; b=GSLzDUUbZEyosl/RwrJEAFHX4ETI8yiwL55oxYthG0mjTUNolxxYKOUnXJPPdR8m07pudMZwXSnSnL9Tp0mJSNpCZbH4/iBDKdYwo/sb6FXaCDreF9Y49Rfi+XyLzP3QjZzG5pfZFyeNAaNV5U6U1AL3UFbAs1XK6bzyO0gQjQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733160139; c=relaxed/simple;
-	bh=J7TuCkQQXw+zmd80r09KMLYg2hEdv2a0XVnhIHkAbss=;
+	bh=qUpHIbiQuhU1+4N8+i0jJ8LE2+QbS+HIXdOvz3fZ3rY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bSQ/Kt5RExcDO0l5CxI/c9Y7ESZPs8YVPamVHPH/N6L9JPQawxDwsbJXtERDTP8pY8IpagiUtuls4PPo4QyJIM4dBUkmmSPhRnKUYYl6nBTC7UrCEsKIalARfRFcxKCPURRMQ5Ivy1mGIYntjLq6caNdmB89olag03O3QqDpzbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YdcoHz4i; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=EQeRem7cFDrj7bQ+HTkAn7z5E2gyiE+a9+5Av72UzP3SOdahv48lg9hX6XKiC7AFu3ykhnCrlqyOnJNKswJfZ+Qxz18RcdudYtmeBO4SBeHQmzpCspQfTKN+0COw4I+dr2z0Tv1lvadHFm71Qg86eskt9SLA+e0hqMzARrJVpCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJQvALwK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YdcoHz4i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F1DC4CED9;
-	Mon,  2 Dec 2024 17:22:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJQvALwK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41555C4CED2;
+	Mon,  2 Dec 2024 17:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733160138;
-	bh=J7TuCkQQXw+zmd80r09KMLYg2hEdv2a0XVnhIHkAbss=;
+	s=k20201202; t=1733160139;
+	bh=qUpHIbiQuhU1+4N8+i0jJ8LE2+QbS+HIXdOvz3fZ3rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdcoHz4iTIJIXtUnsr61yVLJ8PmKBzRNZKiU81xSEL+NiO3t2JPPtc1OrgHlwRyM2
-	 H70RAVFBHtpl9zDZKhpRJ+fuiOtZA6FRkvm+uaiCmJ3X7BUNUdthCi5WC+O/3RKRi/
-	 DL4L04g+IxHM3AwSQM3Y728ZDnBhfc9BRdWUiR4CtQEI728XAnbV+u+Mux3mETLnIT
-	 /glsemXKqWYqIG/6np74nCuk++sZINMLMfc3zrJZCo3K5Up7xgx8jI5b94UmmgO0LL
-	 g9YQa+yKB9sOG53wJcG0NJOBmfms95UZ2KMlPsLaxzQ2UY1LKpCNYgjDJtNwrpERgo
-	 yEdhUutLoqAjQ==
+	b=GJQvALwKuojaOwApZOvPIEns1+xCORL3IpvdtPpzgCIt1NRrXPSqm40X/u8X5h2qo
+	 YzaIkLkJIN3xkfsyhXA1IWNK+bJn5rsofmeEs//JKBiP3A78ZsZmzxW4KBNkRZoz2J
+	 V4eMOh5PywnxjCf00/vGP6iC6squEZ5u3GY2t7QT3JUtznyCm8hrQfTgEGQ8Vtm4jI
+	 5vsXdFuKgEmuWEIgaK8KZToh4XQnM3otHCFbJjY/BYqDaxuvAlRD9Sf+BO/Ti1d3rO
+	 SbwZ9WMQeMOPzrB3CCthGmuqMxiG1L2c6/VRlW01fbJvFEZ4OrPEp7rgmOTGgv3Dro
+	 ih6X2Pw+5v9LQ==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tIA7k-00HQcf-Of;
-	Mon, 02 Dec 2024 17:22:16 +0000
+	id 1tIA7l-00HQcf-BP;
+	Mon, 02 Dec 2024 17:22:17 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Christoffer Dall <christoffer.dall@arm.com>
-Subject: [PATCH 05/11] KVM: arm64: nv: Accelerate EL0 timer read accesses when FEAT_ECV in use
-Date: Mon,  2 Dec 2024 17:21:28 +0000
-Message-Id: <20241202172134.384923-6-maz@kernel.org>
+Subject: [PATCH 08/11] KVM: arm64: nv: Add trap routing for CNTHCTL_EL2.EL1{NVPCT,NVVCT,TVT,TVCT}
+Date: Mon,  2 Dec 2024 17:21:31 +0000
+Message-Id: <20241202172134.384923-9-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241202172134.384923-1-maz@kernel.org>
 References: <20241202172134.384923-1-maz@kernel.org>
@@ -60,158 +60,128 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Although FEAT_ECV allows us to correctly emulate the timers, it also
-reduces performances pretty badly.
-
-Mitigate this by emulating the CTL/CVAL register reads in the
-inner run loop, without returning to the general kernel.
+For completeness, fun, and cerebral meltdown, add the virtualisation
+related traps to the counter and timers.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/arch_timer.c     | 15 -------
- arch/arm64/kvm/hyp/vhe/switch.c | 71 +++++++++++++++++++++++++++++++++
- include/kvm/arm_arch_timer.h    | 15 +++++++
- 3 files changed, 86 insertions(+), 15 deletions(-)
+ arch/arm64/kvm/emulate-nested.c | 58 +++++++++++++++++++++++++++++++--
+ 1 file changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index c9a46d34b40cf..2c4499dd63732 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -101,21 +101,6 @@ u64 timer_get_cval(struct arch_timer_context *ctxt)
- 	}
+diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
+index 1ffbfd1c3cf2e..03d21044c41f5 100644
+--- a/arch/arm64/kvm/emulate-nested.c
++++ b/arch/arm64/kvm/emulate-nested.c
+@@ -89,6 +89,9 @@ enum cgt_group_id {
+ 	CGT_HCRX_EnFPM,
+ 	CGT_HCRX_TCR2En,
+ 
++	CGT_CNTHCTL_EL1TVT,
++	CGT_CNTHCTL_EL1TVCT,
++
+ 	CGT_ICH_HCR_TC,
+ 	CGT_ICH_HCR_TALL0,
+ 	CGT_ICH_HCR_TALL1,
+@@ -124,6 +127,8 @@ enum cgt_group_id {
+ 	__COMPLEX_CONDITIONS__,
+ 	CGT_CNTHCTL_EL1PCTEN = __COMPLEX_CONDITIONS__,
+ 	CGT_CNTHCTL_EL1PTEN,
++	CGT_CNTHCTL_EL1NVPCT,
++	CGT_CNTHCTL_EL1NVVCT,
+ 
+ 	CGT_CPTR_TTA,
+ 	CGT_MDCR_HPMN,
+@@ -393,6 +398,18 @@ static const struct trap_bits coarse_trap_bits[] = {
+ 		.mask		= HCRX_EL2_TCR2En,
+ 		.behaviour	= BEHAVE_FORWARD_RW,
+ 	},
++	[CGT_CNTHCTL_EL1TVT] = {
++		.index		= CNTHCTL_EL2,
++		.value		= CNTHCTL_EL1TVT,
++		.mask		= CNTHCTL_EL1TVT,
++		.behaviour	= BEHAVE_FORWARD_RW,
++	},
++	[CGT_CNTHCTL_EL1TVCT] = {
++		.index		= CNTHCTL_EL2,
++		.value		= CNTHCTL_EL1TVCT,
++		.mask		= CNTHCTL_EL1TVCT,
++		.behaviour	= BEHAVE_FORWARD_READ,
++	},
+ 	[CGT_ICH_HCR_TC] = {
+ 		.index		= ICH_HCR_EL2,
+ 		.value		= ICH_HCR_TC,
+@@ -487,6 +504,32 @@ static enum trap_behaviour check_cnthctl_el1pten(struct kvm_vcpu *vcpu)
+ 	return BEHAVE_FORWARD_RW;
  }
  
--static u64 timer_get_offset(struct arch_timer_context *ctxt)
--{
--	u64 offset = 0;
--
--	if (!ctxt)
--		return 0;
--
--	if (ctxt->offset.vm_offset)
--		offset += *ctxt->offset.vm_offset;
--	if (ctxt->offset.vcpu_offset)
--		offset += *ctxt->offset.vcpu_offset;
--
--	return offset;
--}
--
- static void timer_set_ctl(struct arch_timer_context *ctxt, u32 ctl)
- {
- 	struct kvm_vcpu *vcpu = ctxt->vcpu;
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 80581b1c39959..b014b0b10bf5d 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -256,6 +256,74 @@ void kvm_vcpu_put_vhe(struct kvm_vcpu *vcpu)
- 	host_data_ptr(host_ctxt)->__hyp_running_vcpu = NULL;
- }
- 
-+static bool kvm_hyp_handle_timer(struct kvm_vcpu *vcpu, u64 *exit_code)
++static bool is_nested_nv2_guest(struct kvm_vcpu *vcpu)
 +{
-+	u64 esr, val;
++	u64 val;
 +
-+	/*
-+	 * Having FEAT_ECV allows for a better quality of timer emulation.
-+	 * However, this comes at a huge cost in terms of traps. Try and
-+	 * satisfy the reads from guest's hypervisor context without
-+	 * returning to the kernel if we can.
-+	 */
-+	if (!is_hyp_ctxt(vcpu))
-+		return false;
-+
-+	esr = kvm_vcpu_get_esr(vcpu);
-+	if ((esr & ESR_ELx_SYS64_ISS_DIR_MASK) != ESR_ELx_SYS64_ISS_DIR_READ)
-+		return false;
-+
-+	switch (esr_sys64_to_sysreg(esr)) {
-+	case SYS_CNTP_CTL_EL02:
-+		val = __vcpu_sys_reg(vcpu, CNTP_CTL_EL0);
-+		break;
-+	case SYS_CNTP_CTL_EL0:
-+		if (vcpu_el2_e2h_is_set(vcpu))
-+			val = read_sysreg_el0(SYS_CNTP_CTL);
-+		else
-+			val = __vcpu_sys_reg(vcpu, CNTP_CTL_EL0);
-+		break;
-+	case SYS_CNTP_CVAL_EL02:
-+		val = __vcpu_sys_reg(vcpu, CNTP_CVAL_EL0);
-+		break;
-+	case SYS_CNTP_CVAL_EL0:
-+		if (vcpu_el2_e2h_is_set(vcpu)) {
-+			val = read_sysreg_el0(SYS_CNTP_CVAL);
-+
-+			if (!has_cntpoff())
-+				val -= timer_get_offset(vcpu_hptimer(vcpu));
-+		} else {
-+			val = __vcpu_sys_reg(vcpu, CNTP_CVAL_EL0);
-+		}
-+		break;
-+	case SYS_CNTV_CTL_EL02:
-+		val = __vcpu_sys_reg(vcpu, CNTV_CTL_EL0);
-+		break;
-+	case SYS_CNTV_CTL_EL0:
-+		if (vcpu_el2_e2h_is_set(vcpu))
-+			val = read_sysreg_el0(SYS_CNTV_CTL);
-+		else
-+			val = __vcpu_sys_reg(vcpu, CNTV_CTL_EL0);
-+		break;
-+	case SYS_CNTV_CVAL_EL02:
-+		val = __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0);
-+		break;
-+	case SYS_CNTV_CVAL_EL0:
-+		if (vcpu_el2_e2h_is_set(vcpu))
-+			val = read_sysreg_el0(SYS_CNTV_CVAL);
-+		else
-+			val = __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0);
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	vcpu_set_reg(vcpu, kvm_vcpu_sys_get_rt(vcpu), val);
-+	__kvm_skip_instr(vcpu);
-+
-+	return true;
++	val = __vcpu_sys_reg(vcpu, HCR_EL2);
++	return ((val & (HCR_E2H | HCR_TGE | HCR_NV2 | HCR_NV1 | HCR_NV)) == (HCR_E2H | HCR_NV2 | HCR_NV));
 +}
 +
- static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
- 	u64 esr = kvm_vcpu_get_esr(vcpu);
-@@ -409,6 +477,9 @@ static bool kvm_hyp_handle_sysreg_vhe(struct kvm_vcpu *vcpu, u64 *exit_code)
- 	if (kvm_hyp_handle_tlbi_el2(vcpu, exit_code))
- 		return true;
- 
-+	if (kvm_hyp_handle_timer(vcpu, exit_code))
-+		return true;
-+
- 	if (kvm_hyp_handle_cpacr_el1(vcpu, exit_code))
- 		return true;
- 
-diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
-index 6e3f6b7ff2b22..c1ba31fab6f52 100644
---- a/include/kvm/arm_arch_timer.h
-+++ b/include/kvm/arm_arch_timer.h
-@@ -156,4 +156,19 @@ static inline bool has_cntpoff(void)
- 	return (has_vhe() && cpus_have_final_cap(ARM64_HAS_ECV_CNTPOFF));
- }
- 
-+static inline u64 timer_get_offset(struct arch_timer_context *ctxt)
++static enum trap_behaviour check_cnthctl_el1nvpct(struct kvm_vcpu *vcpu)
 +{
-+	u64 offset = 0;
++	if (!is_nested_nv2_guest(vcpu) ||
++	    !(__vcpu_sys_reg(vcpu, CNTHCTL_EL2) & CNTHCTL_EL1NVPCT))
++		return BEHAVE_HANDLE_LOCALLY;
 +
-+	if (!ctxt)
-+		return 0;
-+
-+	if (ctxt->offset.vm_offset)
-+		offset += *ctxt->offset.vm_offset;
-+	if (ctxt->offset.vcpu_offset)
-+		offset += *ctxt->offset.vcpu_offset;
-+
-+	return offset;
++	return BEHAVE_FORWARD_RW;
 +}
 +
- #endif
++static enum trap_behaviour check_cnthctl_el1nvvct(struct kvm_vcpu *vcpu)
++{
++	if (!is_nested_nv2_guest(vcpu) ||
++	    !(__vcpu_sys_reg(vcpu, CNTHCTL_EL2) & CNTHCTL_EL1NVVCT))
++		return BEHAVE_HANDLE_LOCALLY;
++
++	return BEHAVE_FORWARD_RW;
++}
++
+ static enum trap_behaviour check_cptr_tta(struct kvm_vcpu *vcpu)
+ {
+ 	u64 val = __vcpu_sys_reg(vcpu, CPTR_EL2);
+@@ -534,6 +577,8 @@ static enum trap_behaviour check_mdcr_hpmn(struct kvm_vcpu *vcpu)
+ static const complex_condition_check ccc[] = {
+ 	CCC(CGT_CNTHCTL_EL1PCTEN, check_cnthctl_el1pcten),
+ 	CCC(CGT_CNTHCTL_EL1PTEN, check_cnthctl_el1pten),
++	CCC(CGT_CNTHCTL_EL1NVPCT, check_cnthctl_el1nvpct),
++	CCC(CGT_CNTHCTL_EL1NVVCT, check_cnthctl_el1nvvct),
+ 	CCC(CGT_CPTR_TTA, check_cptr_tta),
+ 	CCC(CGT_MDCR_HPMN, check_mdcr_hpmn),
+ };
+@@ -850,11 +895,15 @@ static const struct encoding_to_trap_config encoding_to_cgt[] __initconst = {
+ 		      SYS_CNTHP_CVAL_EL2, CGT_HCR_NV),
+ 	SR_RANGE_TRAP(SYS_CNTHV_TVAL_EL2,
+ 		      SYS_CNTHV_CVAL_EL2, CGT_HCR_NV),
+-	/* All _EL02, _EL12 registers */
++	/* All _EL02, _EL12 registers up to CNTKCTL_EL12*/
+ 	SR_RANGE_TRAP(sys_reg(3, 5, 0, 0, 0),
+ 		      sys_reg(3, 5, 10, 15, 7), CGT_HCR_NV),
+ 	SR_RANGE_TRAP(sys_reg(3, 5, 12, 0, 0),
+-		      sys_reg(3, 5, 14, 15, 7), CGT_HCR_NV),
++		      sys_reg(3, 5, 14, 1, 0), CGT_HCR_NV),
++	SR_TRAP(SYS_CNTP_CTL_EL02,	CGT_CNTHCTL_EL1NVPCT),
++	SR_TRAP(SYS_CNTP_CVAL_EL02,	CGT_CNTHCTL_EL1NVPCT),
++	SR_TRAP(SYS_CNTV_CTL_EL02,	CGT_CNTHCTL_EL1NVVCT),
++	SR_TRAP(SYS_CNTV_CVAL_EL02,	CGT_CNTHCTL_EL1NVVCT),
+ 	SR_TRAP(OP_AT_S1E2R,		CGT_HCR_NV),
+ 	SR_TRAP(OP_AT_S1E2W,		CGT_HCR_NV),
+ 	SR_TRAP(OP_AT_S12E1R,		CGT_HCR_NV),
+@@ -1184,6 +1233,11 @@ static const struct encoding_to_trap_config encoding_to_cgt[] __initconst = {
+ 	SR_TRAP(SYS_CNTP_CTL_EL0,	CGT_CNTHCTL_EL1PTEN),
+ 	SR_TRAP(SYS_CNTPCT_EL0,		CGT_CNTHCTL_EL1PCTEN),
+ 	SR_TRAP(SYS_CNTPCTSS_EL0,	CGT_CNTHCTL_EL1PCTEN),
++	SR_TRAP(SYS_CNTV_TVAL_EL0,	CGT_CNTHCTL_EL1TVT),
++	SR_TRAP(SYS_CNTV_CVAL_EL0,	CGT_CNTHCTL_EL1TVT),
++	SR_TRAP(SYS_CNTV_CTL_EL0,	CGT_CNTHCTL_EL1TVT),
++	SR_TRAP(SYS_CNTVCT_EL0,		CGT_CNTHCTL_EL1TVCT),
++	SR_TRAP(SYS_CNTVCTSS_EL0,	CGT_CNTHCTL_EL1TVCT),
+ 	SR_TRAP(SYS_FPMR,		CGT_HCRX_EnFPM),
+ 	/*
+ 	 * IMPDEF choice:
 -- 
 2.39.2
 
