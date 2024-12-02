@@ -1,126 +1,102 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB17E0E8
-	for <kvm@vger.kernel.org>; Mon,  2 Dec 2024 18:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51691DDC39
+	for <kvm@vger.kernel.org>; Mon,  2 Dec 2024 18:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733165068; cv=none; b=aORBwLQ65vAE8k71atdfYcGVoeVaRDlILlgk1f+zjj5seAriFjzJtAryStBZDLENCp16tLBsp2RSxgHgVT7gUt4LuKc94lZ4s6Z3ZWfDpbgUfAoovAPgguEmPbvJhDJv6ptqrkuDQjyvGg0uiVbywSC+0asxM7n+1hdHxNG5ZNc=
+	t=1733165272; cv=none; b=Gj1C08jPbr0kPeBmsjpvFJE2tUMXLmXw8KbAqFi3i30xl6SkgeaCW5wY2ai5Ewn2WrOHEiWjlpBN40a90IdhlmHvz4m8DwEEchtvcgj6ZjWpQb3qIRtGGAXR64mmZbkUu9Ryd11IwJ2LXBYJ97UHJShpBbqc9VISteMO7e7FbeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733165068; c=relaxed/simple;
-	bh=XMiiPXZTYZeEpJBk8U9EnSPpjw/bdDBl+/T3JKR0A3M=;
+	s=arc-20240116; t=1733165272; c=relaxed/simple;
+	bh=/WDv/GV0NhSrxZ0Vl7TJjeNE20slEbisRuFwg3yb7uM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gpO7ANTD+fy30gyqXC2inEeD/97I8ebVUB+5Jef1Cup0cKCFRzo0riYlcRBNoX3f09QHh6y48390VF53BbjVrK04ELZgOjAX3IARvowESIlG4AC3LxWWH2Lsg3NNzhAXS3Ip4SF2Kw+v2XCGSfU/cTrhW6LgZSkgtRs1Os5GTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1tsRKX4g; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=Rf64tPZFimgWM4IhgSb4/VQ3ZqTKNaF7eCLniIU4LGXSBu6Q9ErFrxFXPC4eXs5mzfkDDM1C8fLwNlIh819msiI3WxQQ56RakdEC9QGYGDL/E4FW5mDfwhEakZjscgj5GOMimLX5v+AxwyfSwD9vfqPeKp//kVwS1XDNW9ZZamM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u+QG/vEX; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1tsRKX4g"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ee5668e09bso3506269a91.3
-        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 10:44:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u+QG/vEX"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ee8ced572eso2298990a91.0
+        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 10:47:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733165066; x=1733769866; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733165270; x=1733770070; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvvKZTjXnx9iZrBeE4PJ9zcvpwtrkWJI0eWnaDHr26c=;
-        b=1tsRKX4gsz81xZWF8Rd4T1LISMWDknrrebgP42fUUNxwPWCs+ItM8v1gOcS3VYGjqI
-         6T2gW72fC6Veq/ukpqzccKpicEQPVP64kBU0cInNX23nvoyBg8PbGTZ/PB+haewB3rnl
-         Det8eSXfQuSXdqF1ao1fGepIIDRVxboym+YQBvrYymr/hP0QUd0G81uNORetIro5ymhP
-         puUiqemJj0Zs/Upb4lUZs7tmiNNhtxsCkpUnsdcHQc36ZQqdbugD6q6/tMLgmdISORL8
-         IZSc5kj06+wzKa6x9yL/oO5S01qBSxnMYS8CLIumPegVlkh1aklfHrCzQoKJWh3d5eC3
-         TuGQ==
+        bh=u34wPynLWdSa99IQ6xhu/7M3+TIv2HNu87ct2rQpiWw=;
+        b=u+QG/vEXVdcYmU1ZqkBfIft9cg+2lVxs+neqt5vpV7PHtS9+G5SXfE/cpwojVCWYFp
+         UebaKy6nWMg8laltRAKN9KMC4spU5A+Z5oOnyFL2aQy7IvA3gZdnmvU/k+8/r8zTifW0
+         fVFJnWKvOX9FUqbL89OgD2cgI6P9vrP/Fnk1XkTSYd/VGKrvQNT1ID1jj54ney46cX2u
+         NISzS8OXdrgJsaqfiPyBD+T9n3PFN04UtWSwEdfVi4YV2LAi02tkLzL7y7SNzi/p/iQ1
+         zrspoUC2Hh8a25sdgZQA0hLLOxE849ZWJbelGQlwteS7pRW9vaU4XCmXaGONvle4uuXn
+         2I+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733165066; x=1733769866;
+        d=1e100.net; s=20230601; t=1733165270; x=1733770070;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvvKZTjXnx9iZrBeE4PJ9zcvpwtrkWJI0eWnaDHr26c=;
-        b=Cx0NxiIpm/gZ05LoMR+OgukPRhDhvihOTAgkqicdbf3PXmj0IDySiL2/Kb1M+J9MuI
-         C0N1PxgpqYf85omm7KUUM4PF9IVY0GECSAmKn7XPcqFVRORxVXfOSnViPsjJPc4mesOz
-         3gWnoZToWP2GaBqOFLWPACmIItLcDkq+u2Vlgrm1MYyr0m+dSx5C2rBepawwBgv5VJtx
-         gLd/p3fEsK6XqEQjJrDFCm8ww51UcotUDcz0PbOgl3fecEUhIEkryzZ5QRkSQtN+L27W
-         oVmH0BYawEzZVpy3HKKtmW0paNwnmsP/odv+vavzyqEcAyI8T1KwoJpmF9eMhmk3XF3Q
-         bVkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXs0VXD9ucm5KjOSsiPJx0zC1Enz3sthE1EzphCwNgqxabTPSFxCI77N9ETSbRrPybB7hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk0cejl/ofEV4GuhLf97wvohHigs7HJa9uTPfhYDPoGWQCwM7M
-	ptRMlA6DR8b5AUpiW0fvmM17yBZh7f/cbeeQjJggmrfcCvigAkCRMq2dyumtiiiBBpgLKaR5EQx
-	qNQ==
-X-Google-Smtp-Source: AGHT+IGY/pWE/JvM1zeCaiXWWtmArKkTSnFTXrJ8bYSxAS/RlH7PaacfBmlD9LvJsCAXHrFgB51idE3WnAQ=
-X-Received: from pjbli9.prod.google.com ([2002:a17:90b:48c9:b0:2e9:38ea:ca0f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388b:b0:2ee:f80c:6884
- with SMTP id 98e67ed59e1d1-2eef80c6ae0mr1153622a91.33.1733165066275; Mon, 02
- Dec 2024 10:44:26 -0800 (PST)
-Date: Mon, 2 Dec 2024 10:44:24 -0800
-In-Reply-To: <ce45a9cb-44a4-4a3d-bc81-608a0871ae6d@intel.com>
+        bh=u34wPynLWdSa99IQ6xhu/7M3+TIv2HNu87ct2rQpiWw=;
+        b=d8itwIhpYSD+SeY+b48n7C3NWcyKVhE8/UVVKTPmO5pN/DPaS4ciGE+BaW9e0BaohG
+         GYnlnf/nM9TWCoTfGd5+kaqDYgo7JNdISCf8jAa+wsM4nlPgeQCwrdkwR7WwKG07dDwP
+         NGvROJy8E42jrfl7jnhIt/yZ6y7bStmNRwJYpCLyzLzJBI8aEJ+A+NFehiNADPbXLp5M
+         cMhkj+sEfhx2ODEzpEeGpUpVPIH/mS8R2aUmwR1EqqU1pHxjFRif1iYp8eFuvpKGYmFR
+         zliJ6akmHJ+jmkF0wAwgLQLBCum2tlxvhk/k0tSJBTnqiDgd6NPBjvAhI+sPdYtDQ+b2
+         gaMw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6DblN3H9V0pW43nSS6LzbAYZtbMyLtHsTiVp6xqbzyt34UyGt6zElrokrMYu5/GLQe50=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg67PiKEbe7v9a7LcftyuqsVH9ayd/CCbzIMWW6TGZBmcrrJyh
+	Z9YU94SlfEGGC82iXMu0C1BM7TSH2a/pZqVxc9vvRswIrturCjxTSAGmjkapH7Y0cJmBjrOZYT2
+	oKQ==
+X-Google-Smtp-Source: AGHT+IH1lOkxtOKe5VZ1YQsUZ2R4iUJCkzIbDFJGQzaxTbOPx9DRSSWOWSynHC4tj/4TdwIvmt3yGcRJFdA=
+X-Received: from pjbsv8.prod.google.com ([2002:a17:90b:5388:b0:2ea:6aa8:c4ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dd2:b0:2ee:c5ea:bd91
+ with SMTP id 98e67ed59e1d1-2eec5eabed1mr7923335a91.29.1733165269950; Mon, 02
+ Dec 2024 10:47:49 -0800 (PST)
+Date: Mon, 2 Dec 2024 10:47:48 -0800
+In-Reply-To: <20241128092546.7a5b3f30@p-imbrenda>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20241128004344.4072099-1-seanjc@google.com> <20241128004344.4072099-6-seanjc@google.com>
- <ce45a9cb-44a4-4a3d-bc81-608a0871ae6d@intel.com>
-Message-ID: <Z04ACJSrBSPlyqY4@google.com>
-Subject: Re: [PATCH v4 5/6] KVM: x86: Always complete hypercall via function callback
+References: <20241128005547.4077116-1-seanjc@google.com> <20241128005547.4077116-16-seanjc@google.com>
+ <20241128092546.7a5b3f30@p-imbrenda>
+Message-ID: <Z04A1Oh0LCKtCN4p@google.com>
+Subject: Re: [PATCH v4 15/16] KVM: selftests: Use canonical $(ARCH) paths for
+ KVM selftests directories
 From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kai Huang <kai.huang@intel.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Andrew Jones <ajones@ventanamicro.com>, James Houghton <jthoughton@google.com>, 
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Nov 28, 2024, Xiaoyao Li wrote:
-> On 11/28/2024 8:43 AM, Sean Christopherson wrote:
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index 11434752b467..39be2a891ab4 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -9982,10 +9982,11 @@ static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
-> >   	return kvm_skip_emulated_instruction(vcpu);
-> >   }
-> > -unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
-> > -				      unsigned long a0, unsigned long a1,
-> > -				      unsigned long a2, unsigned long a3,
-> > -				      int op_64_bit, int cpl)
-> > +int __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
-> > +			    unsigned long a0, unsigned long a1,
-> > +			    unsigned long a2, unsigned long a3,
-> > +			    int op_64_bit, int cpl,
-> > +			    int (*complete_hypercall)(struct kvm_vcpu *))
-> >   {
-> >   	unsigned long ret;
-> > @@ -10061,7 +10062,7 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
-> >   			vcpu->run->hypercall.flags |= KVM_EXIT_HYPERCALL_LONG_MODE;
-> >   		WARN_ON_ONCE(vcpu->run->hypercall.flags & KVM_EXIT_HYPERCALL_MBZ);
-> > -		vcpu->arch.complete_userspace_io = complete_hypercall_exit;
-> > +		vcpu->arch.complete_userspace_io = complete_hypercall;
-> >   		/* stat is incremented on completion. */
-> >   		return 0;
-> >   	}
-> > @@ -10071,13 +10072,15 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
-> >   	}
-> >   out:
-> > -	return ret;
-> > +	vcpu->run->hypercall.ret = ret;
-> > +	complete_hypercall(vcpu);
-> > +	return 1;
+On Thu, Nov 28, 2024, Claudio Imbrenda wrote:
+> On Wed, 27 Nov 2024 16:55:46 -0800
+> > diff --git a/tools/testing/selftests/kvm/include/x86_64/svm_util.h b/tools/testing/selftests/kvm/include/x86/svm_util.h
+> > similarity index 94%
+> > rename from tools/testing/selftests/kvm/include/x86_64/svm_util.h
+> > rename to tools/testing/selftests/kvm/include/x86/svm_util.h
+> > index 044f0f872ba9..b74c6dcddcbd 100644
+> > --- a/tools/testing/selftests/kvm/include/x86_64/svm_util.h
+> > +++ b/tools/testing/selftests/kvm/include/x86/svm_util.h
+> > @@ -1,8 +1,5 @@
+> >  /* SPDX-License-Identifier: GPL-2.0-only */
+> >  /*
+> > - * tools/testing/selftests/kvm/include/x86_64/svm_utils.h
 > 
-> shouldn't it be
+> this line clearly has to go ^
 > 
-> 	return complete_hypercall(vcpu);
+> > - * Header for nested SVM testing
 > 
-> ?
+> but I think this one can stay? ^
 
-Ouch.  Yes, it most definitely should be.
+It should go too, the header contains declarations for helpers that having nothing
+to do with nested SVM.
 
-> Originally, kvm_emulate_hypercall() returns kvm_skip_emulated_instruction().
-> Now it becomes
-> 
-> 	kvm_skip_emulated_instruction();
-> 	return 1;
-> 
-> I don't go deep to see if kvm_skip_emulated_instruction() always return 1
-> for this case.
-
-It doesn't.  KVM needs to exit to userspace if userspace is single-stepping, or
-in the extremely unlikely scenario that KVM can't skip the emulated instruction
-(which can very theoretically happen on older AMD CPUs).
+On a somewhat related topic, the file should probably be "svm.h", but that's a
+future cleanup.
