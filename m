@@ -1,63 +1,66 @@
-Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
+Received: from mail-io1-f73.google.com (mail-io1-f73.google.com [209.85.166.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE658288DA
-	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 01:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB49288DA
+	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 01:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733187609; cv=none; b=hxhM3+WbkVub4ylTHWLevlbGFPVmmYO1KkQFcoLgJ3Cu+3U7Jnss264HvUWQL99jGCzJ/YTZq/KpEsGIXiu9Pf2NUABPVafX1Gnqc2KsHW92LcqwBTLmjRdQLfgrRtZjwr/XxnrMVwsfT6fkfh7bhJBUzZF78JmKW2OVlwmn9rU=
+	t=1733187631; cv=none; b=dNfCfX0MgSunQnrW2wAmxDZDavmHRcKQJNftcBECc02ODOeLXYjKXjgnH+x/xFAVIGZu2idNE8/G7zENDp/avECD8uL6erpvP2iHGnKdSyoymAAw9rG6u+AU+ALhGJOqkDBT7Yiwjdl2Dv0puQKCCu669YBjZW/QwJIVF7N1gQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733187609; c=relaxed/simple;
-	bh=tt1n7+zJzjSkuUlJGp2Vz5ZrLaY83PHy98RvVR/1bSU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=D3vaXS5yq3moGkTywB0wJfuzVYhkHKoCqdUuMlmNPHx7Ofr2tHki9yGaSowE/QiKMTvmADRB2Z5pEHREwELWHGM77tbERTC2IHgM7lRkIrqc46cfAPKA2DtuiS3lIPVCLlq82iezUYwbAPuDmpbX9M4zWNEpTs5G2Z7ul08czgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a1F80d6I; arc=none smtp.client-ip=209.85.166.74
+	s=arc-20240116; t=1733187631; c=relaxed/simple;
+	bh=xMS1uH7AFuF+2czM41v55mFLwPP1FGhTkUrAHqIpFLQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SFti2vd2KgkuOxpLWCL7h8f2Sjf6XujIeMcYjkFSrpYoxn/6ac574Yir34jlVx087386Xd52ksvSPanjE74EkwocFj9VRDPXo+Zf7VsIHLX4YsuIITxwB0nB0PhJol9kNA+MwpbFhnrasVUuEatlHw2hj/2QyD7a3REIp2vMX8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bGNGE+sy; arc=none smtp.client-ip=209.85.166.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a1F80d6I"
-Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-843faa97bf9so466279039f.3
-        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 17:00:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bGNGE+sy"
+Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-8419aa46a87so501818039f.2
+        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 17:00:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733187607; x=1733792407; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gPDpv/chkg5p0fi43rAQfMRL2kKLevnRZ1FyVaa7akc=;
-        b=a1F80d6IosIzBRDYlQ6UzkJVB/Em3nazPeHGjmLlECodPis5+Muy1lpjUcinbg3jZr
-         YNcRt8BrLaIlBXsE8Im0SpB+gwi/ReiG6jDQEDrFNI0XP32AZlFEspmaFYz0iV8T2mC3
-         6JdBRBI0MvoaaH1qUu97PeFeKev7cUGBJ0tzIvBm82vmpEcKRh3YIyhevEs81nPfdCRA
-         c9yjFsRgclzdsM+/QXd0iJbqPGmQ+Fmk+pKr0K9rtGeEgymGyfqYLxXJyM1Cd1UwnxbW
-         k7532RuXmuxis3sLcSIKtG2sbK3bt9F8m8TjK3fvDGzidZAbaOWHMzvDTixUqafqME4E
-         DRtg==
+        d=google.com; s=20230601; t=1733187629; x=1733792429; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HXZpw0j64Kx8pQRMw/cVhgPa64V3XlxKoRy53BFPQ2Y=;
+        b=bGNGE+syU6EU8nH8CsTHcbpa3ZrmXan1SGoQgctp1qlcRbPKbhG3WjQ7cUxCSVPfxw
+         xA3iDmmjKYLGEJAOKuAUGPtFQcSDLUeRU0Rw0Mcf+O0yiwA694dp0zT6bVqWqZ8Vjohu
+         Xfyf2FmD0KVbshy3NyEBFzjFAGIt3pqzuzKlTre2THpvP+7RXV62OXMtBBtaT13NOh6y
+         6kyxOh/s0RFS83XPdzZXzUx6DHMQWWouqXhjHc7CgGuVhxR+2JZstufGZ+5j1Q95fhwf
+         f/AXpdLwBlab1JMNXv267CFWsUYJTCh8ZfmQflWpLNZdAhrTRF4GHuz9Xq0AlLoo7O9c
+         6DYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733187607; x=1733792407;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gPDpv/chkg5p0fi43rAQfMRL2kKLevnRZ1FyVaa7akc=;
-        b=mMHtq+6NMzD7/YlrTNPfR6TKvGqi0KJM0vXSJe6UGqlNIEnI1nOtYHntomF0LvQOSd
-         CKswfwN3tsz9w4VEmqywHwKbV4Gc3DNLOk3koQNKZ/kx30N4PaE980MSaWWFkaphA6ll
-         UAFZwbEgTF67AhG5IX9GAKWNZSnUYkEM6RsDhcr+prYH9kb00CFwcD9rm7fYOwMaU609
-         84L9lWVNUj1pxb+YQCP6KxERwLnK3vU48kJ2muXnZyRIyp1wg6469cVCudbcHAIMEdyR
-         8ZsTivsdHwuBLxPhzisoXLzj0GyBtvl1dHcrE7uSPsow63Q40zOwfqDEYNfU6dcNPh07
-         vr0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWL3I/mJsa9cAAHNR+eUtmBMLrI/NBhi25z+Q+yiK8RZIlE9hQbA17RgDaRNMAayeydv3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEawhmrlQr1wmk6zo9uwimPsca0N9dNqzeNzJyXKSTsQaF7y1/
-	+BeEHO5Z7j1izxfgD39bRTTJIQJkNr62OS+mY4mKpNAJJWwMgxzQTa4sfPDwtX6OvYlagcRDrIR
-	WLV6puBu7NmwmaBNN/iNrllVBEd6M5A==
-X-Google-Smtp-Source: AGHT+IHqJwhD7dDrPHnnwi0nKSyWpAXx88t8MplXy6qAA9f67EUD1JW80naumNLzsou5U5ZEc/gbCz70e8AwEIt7ij7T
-X-Received: from ioay19.prod.google.com ([2002:a6b:c413:0:b0:841:802b:8e24])
+        d=1e100.net; s=20230601; t=1733187629; x=1733792429;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HXZpw0j64Kx8pQRMw/cVhgPa64V3XlxKoRy53BFPQ2Y=;
+        b=rJuixLG0ya/ESp2Bi1SiTUqDujPTOidPpVL/mtJz87yBnBSSrXCvNEY02moU8vHswV
+         7xUXUeTlXC6uYLjpJ+1qEayuM2ptAIK7gPDeo+Np5dhmduVULy4OsouxaZLCwRt97MBH
+         qPNY3a6JyCSZ4OodmwtLRn6SWlDJDeirllTKuNar0FJno31KOpXCWFguCv1/nCimobAN
+         rdhA1dOcGvWDdeKli1B6D5U+HnxvBQxMWG7WgHwPuQIgMkOlO+55zE+Pz2b61QropWBi
+         vuV6dhxN3kKTVsoDCknZ5drHycXOxt7WOk2TNVTd81unbvRwmewBYVK/VbdoIo7EC+OS
+         41DA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ62flRaZAxzKCRjt+o65CFgdvIcC83Soj+O7L/UFm32HGYK/zYUYSJtqFCiDt3wP/yAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiYA1XbafoE7+utBW5UmzUl6AhuwIkvmNbqzQGnYeVxFwbCncX
+	6NpMFHPTdXeBPPV5hKc1tm73f3hW8DRAYmP7lZBVhdXpbG53Az1aqQCCWlyY88uD4W6XNiDMvtz
+	ostxRiPia+L14NKj2BjIy7V1StwMKoQ==
+X-Google-Smtp-Source: AGHT+IEZmspYrC4umegddmCrbePNuN6PHswfr1n3f4QWHFbbvkBj0Jxf86Z77+97glx5zKlFrBkgAIn3Vka01mS0VDUG
+X-Received: from iotr20.prod.google.com ([2002:a05:6602:2354:b0:841:8ee4:fc23])
  (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6602:1546:b0:82a:2a67:9429 with SMTP id ca18e2360f4ac-8445b554fbbmr110164539f.5.1733187606796;
- Mon, 02 Dec 2024 17:00:06 -0800 (PST)
-Date: Tue,  3 Dec 2024 00:59:19 +0000
+ 2002:a05:6602:6422:b0:83a:db84:41a8 with SMTP id ca18e2360f4ac-8445b5ccdddmr90500239f.10.1733187629246;
+ Mon, 02 Dec 2024 17:00:29 -0800 (PST)
+Date: Tue,  3 Dec 2024 00:59:21 +0000
+In-Reply-To: <20241203005921.1119116-1-kevinloughlin@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20241203005921.1119116-1-kevinloughlin@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241203005921.1119116-1-kevinloughlin@google.com>
-Subject: [RFC PATCH 0/2] KVM: SEV: Prefer WBNOINVD over WBINVD for cache
+Message-ID: <20241203005921.1119116-3-kevinloughlin@google.com>
+Subject: [RFC PATCH 2/2] KVM: SEV: Prefer WBNOINVD over WBINVD for cache
  maintenance efficiency
 From: Kevin Loughlin <kevinloughlin@google.com>
 To: linux-kernel@vger.kernel.org
@@ -88,24 +91,104 @@ instead of WBINVD. WBNOINVD still writes back all dirty lines
 (preventing host data corruption by SEV guests) but does *not*
 invalidate processor caches.
 
-First, provide helper functions to use WBINVD similar to how WBINVD is
-invoked. Second, check for WBNOINVD support and execute WBNOINVD if
-possible in lieu of WBINVD to avoid cache invalidations
+Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-Kevin Loughlin (2):
-  x86, lib, xenpv: Add WBNOINVD helper functions
-  KVM: SEV: Prefer WBNOINVD over WBINVD for cache maintenance efficiency
-
- arch/x86/include/asm/paravirt.h       |  7 ++++++
- arch/x86/include/asm/paravirt_types.h |  1 +
- arch/x86/include/asm/smp.h            |  7 ++++++
- arch/x86/include/asm/special_insns.h  | 12 ++++++++-
- arch/x86/kernel/paravirt.c            |  6 +++++
- arch/x86/kvm/svm/sev.c                | 35 +++++++++++++++++----------
- arch/x86/lib/cache-smp.c              | 12 +++++++++
- arch/x86/xen/enlighten_pv.c           |  1 +
- 8 files changed, 67 insertions(+), 14 deletions(-)
-
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 943bd074a5d3..dbe40f728c4b 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -116,6 +116,7 @@ static int sev_flush_asids(unsigned int min_asid, unsigned int max_asid)
+ 	 */
+ 	down_write(&sev_deactivate_lock);
+ 
++	/* SNP firmware expects WBINVD before SNP_DF_FLUSH, so do *not* use WBNOINVD */
+ 	wbinvd_on_all_cpus();
+ 
+ 	if (sev_snp_enabled)
+@@ -710,6 +711,14 @@ static void sev_clflush_pages(struct page *pages[], unsigned long npages)
+ 	}
+ }
+ 
++static void sev_wb_on_all_cpus(void)
++{
++	if (boot_cpu_has(X86_FEATURE_WBNOINVD))
++		wbnoinvd_on_all_cpus();
++	else
++		wbinvd_on_all_cpus();
++}
++
+ static unsigned long get_num_contig_pages(unsigned long idx,
+ 				struct page **inpages, unsigned long npages)
+ {
+@@ -2774,11 +2783,11 @@ int sev_mem_enc_unregister_region(struct kvm *kvm,
+ 	}
+ 
+ 	/*
+-	 * Ensure that all guest tagged cache entries are flushed before
+-	 * releasing the pages back to the system for use. CLFLUSH will
+-	 * not do this, so issue a WBINVD.
++	 * Ensure that all dirty guest tagged cache entries are written back
++	 * before releasing the pages back to the system for use. CLFLUSH will
++	 * not do this without SME_COHERENT, so issue a WB[NO]INVD.
+ 	 */
+-	wbinvd_on_all_cpus();
++	sev_wb_on_all_cpus();
+ 
+ 	__unregister_enc_region_locked(kvm, region);
+ 
+@@ -2900,11 +2909,11 @@ void sev_vm_destroy(struct kvm *kvm)
+ 	}
+ 
+ 	/*
+-	 * Ensure that all guest tagged cache entries are flushed before
+-	 * releasing the pages back to the system for use. CLFLUSH will
+-	 * not do this, so issue a WBINVD.
++	 * Ensure that all dirty guest tagged cache entries are written back
++	 * before releasing the pages back to the system for use. CLFLUSH will
++	 * not do this without SME_COHERENT, so issue a WB[NO]INVD.
+ 	 */
+-	wbinvd_on_all_cpus();
++	sev_wb_on_all_cpus();
+ 
+ 	/*
+ 	 * if userspace was terminated before unregistering the memory regions
+@@ -3130,12 +3139,12 @@ static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va)
+ 	 * by leaving stale encrypted data in the cache.
+ 	 */
+ 	if (WARN_ON_ONCE(wrmsrl_safe(MSR_AMD64_VM_PAGE_FLUSH, addr | asid)))
+-		goto do_wbinvd;
++		goto do_wb_on_all_cpus;
+ 
+ 	return;
+ 
+-do_wbinvd:
+-	wbinvd_on_all_cpus();
++do_wb_on_all_cpus:
++	sev_wb_on_all_cpus();
+ }
+ 
+ void sev_guest_memory_reclaimed(struct kvm *kvm)
+@@ -3149,7 +3158,7 @@ void sev_guest_memory_reclaimed(struct kvm *kvm)
+ 	if (!sev_guest(kvm) || sev_snp_guest(kvm))
+ 		return;
+ 
+-	wbinvd_on_all_cpus();
++	sev_wb_on_all_cpus();
+ }
+ 
+ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+@@ -3858,7 +3867,7 @@ static int __sev_snp_update_protected_guest_state(struct kvm_vcpu *vcpu)
+ 		 * guest-mapped page rather than the initial one allocated
+ 		 * by KVM in svm->sev_es.vmsa. In theory, svm->sev_es.vmsa
+ 		 * could be free'd and cleaned up here, but that involves
+-		 * cleanups like wbinvd_on_all_cpus() which would ideally
++		 * cleanups like sev_wb_on_all_cpus() which would ideally
+ 		 * be handled during teardown rather than guest boot.
+ 		 * Deferring that also allows the existing logic for SEV-ES
+ 		 * VMSAs to be re-used with minimal SNP-specific changes.
 -- 
 2.47.0.338.g60cca15819-goog
 
