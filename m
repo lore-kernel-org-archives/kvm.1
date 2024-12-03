@@ -1,165 +1,185 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056C317ADE1;
-	Tue,  3 Dec 2024 21:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733262409; cv=fail; b=brYspvLwr0BQwiYPfDP9OX2U785NyFXtzV6Stfct2Tl4gAo6J58IJVKLsvO93WS/NHplJGYbqGJp3107/pLmDwjFO7ArjA5rBqtUsq83AXbat6UnI6NlE13cFMAqtrzhw4bzy8JdAcZwPvhBbf0ZAk82unWPe6jhEhE1KCI3vrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733262409; c=relaxed/simple;
-	bh=gPWWF56n/hgtrWPF7kDDP0YlC8p5NXDq6BF/w/ZO3qc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=fM1O/ALfSnU/tGn/VCMOnVbKQnbpaNIDO0CiNDofjIWMuTw3+KmxcDLp8XDZCD8TQ9kXNEAygv7UYuTeDJhvbxIIJIwzEJfUNKJUCcZRXdgG/ofKM2S2dOTiepOPyTEfXOD505BfsrHoRrqONIkFdn3TQBE7zWYQpIXWIi+Fgug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SN0A0j7i; arc=fail smtp.client-ip=40.107.243.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCD01DFDB7
+	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 22:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733263589; cv=none; b=rTzBVI7y7zOu/IN0NsoZJJnBaHe4coIkX8jsQYA3NaD6Y4q17oMsNMy4jtMJMq6x2+mq221zUUM7xbO78p0vonKNG68HcPLXZ0xKmbTpASD6PS+fxFk4Ip7BVPBeROo89RuZyTxed4uhw3G+A209R/ecxRvmu4MwFypzHdwD2fs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733263589; c=relaxed/simple;
+	bh=AD9m5l1akbuPM1ybWrq29tq8zaQy3+HM6xJLensm4Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=odcmvoqzBZHHNSvRdg8p1/ikLBt1WJQa24vzFpXKKKNbeH187qr6oNwv//ZZYyuP9NID58Ufk7ZGTUubznJO+ULyyr4TxT6F4Tm77474l/K4LzqH3JuKL7ylpn+d8ACfLRi69DiWeLO5hhJl5+pjjsdJIKevq5nKLY6NGs4clPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bqc7qY9M; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SN0A0j7i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DpbVuwcX7FvZKrulWqGWctal8Ais3GA+URPrQ/s0x/UCyWj6rfvKW6e/mTehHQpww0R/zda5+A4wnqtHrmk+XLtkjIBhqyrmWewHtzVCc55aGDWtIQb3pve5XgVef8f6dsquU64pE+ItWNRhnyyyofFfRl0VKovx1fbciXKPOceuTs4+eLNZs/ZnaFqUBOA9iAFXng9z9g0E/9vWtWLz1QkpiLRPUT7BDkPGwqM49Xbu4o34LH3vTk1taR938OpQKzVojcLFzyQghmTT9XV3miCy+Um0SbUDOBvNNc0lh0fV8O/MS82F2rBxjQkr0LSvDHiExMcTfiEjtS1FZatQog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=snmwSH0bVGsJ19kIjdDwEwLPlFgd6KfZt49K+Wf9ii4=;
- b=B1uoYCvVPIOZ3CdqVN1CtuYsltK1nhPh0b0EFU7D2rqAoA6MgUADaY7DmngEGgBvQAHn2GQ2nHZvCrJypI3oG9k4NSqWMPC97lBwaCVZ5tLDlw6JHduTEF9A6lGXfIiO186ddyqh53KyBMOMYhJ0z5GeYEtrO86fxtITdm7qZFM7l6hZQMEPl25xrY8a98+t2ChjO7TXoTDBfx0/nFjtLg8uCNaeNNgR0Gr3+kGfZS29up5LXZOsXdqVQOCyUiVZ/EhpiZh10+xv9grTJHmfkxrBqN64BgZIb3TjtrxlAMNiFv1Y5Tt7/X1/dRsQU4bcp7evXB7HE27OqUKd6Cj5gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=snmwSH0bVGsJ19kIjdDwEwLPlFgd6KfZt49K+Wf9ii4=;
- b=SN0A0j7iS2Os/Yja1ACRmfvrjS/ijniiKKcDbhyBVB6lLZ67lOiq3PJBqLvIinCo8dAnK1Zf7pYiaYo4UZUARpCT6jLy8zsO3QM5Ry67uTdBPTs8i0+JtRZx4OYcuVBWVpi1YROhKBE4qaM795K0mJx5rCA2Z1LLzaZ1xkuqwDE=
-Received: from CH2PR05CA0013.namprd05.prod.outlook.com (2603:10b6:610::26) by
- SJ2PR12MB8925.namprd12.prod.outlook.com (2603:10b6:a03:542::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8207.18; Tue, 3 Dec 2024 21:46:44 +0000
-Received: from CH3PEPF00000011.namprd21.prod.outlook.com
- (2603:10b6:610:0:cafe::4) by CH2PR05CA0013.outlook.office365.com
- (2603:10b6:610::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.9 via Frontend Transport; Tue, 3
- Dec 2024 21:46:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH3PEPF00000011.mail.protection.outlook.com (10.167.244.116) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8251.1 via Frontend Transport; Tue, 3 Dec 2024 21:46:43 +0000
-Received: from [10.23.192.43] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 3 Dec
- 2024 15:46:42 -0600
-Message-ID: <c09a99e8-913f-4a86-ba0b-c64d5cdcfb2e@amd.com>
-Date: Tue, 3 Dec 2024 13:46:36 -0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bqc7qY9M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733263586;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WIePSw9erBGB0EkQKOgbCaIeXQNXPbcij9sycEa1gJw=;
+	b=bqc7qY9M13k/fi+/eIXlGtXlprb+CXf1VHQJYi8cz74ZjHWY3tsF3MKiX09BHDZ1pjCAvQ
+	NhQCqfPtarVJD0TtRoFfqOn84USLCHGUSE+4Dz9cyd6YTcsqIOX5CtKy0NRVVsAYPFXcgy
+	vMFQo0sIUaP/GEjloQa+aQ6PjLjeFW8=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-xqdGQH9jMv-KkoVtQqkQ4w-1; Tue, 03 Dec 2024 17:06:25 -0500
+X-MC-Unique: xqdGQH9jMv-KkoVtQqkQ4w-1
+X-Mimecast-MFC-AGG-ID: xqdGQH9jMv-KkoVtQqkQ4w
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-71d40b4f511so956452a34.2
+        for <kvm@vger.kernel.org>; Tue, 03 Dec 2024 14:06:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733263584; x=1733868384;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WIePSw9erBGB0EkQKOgbCaIeXQNXPbcij9sycEa1gJw=;
+        b=UrWT+8DHOcnQ6Kkl6VPrFyIAIMRG5w4GXbwdnCmkEtJZe1I/iuYgrTlDyo+s1zc7LG
+         HCswMEryW9CdNFz7q6akOFXpWKPsaCHvhbWw+UOTwhh9eGJC5AMkDuPEfe9dVmNakZ6Z
+         qKTpcXlSZSmmm9btFO89bejjwnqga4iQ+ooXbZ5z2ZT46nvlhv2rWZzd2cJKDspZK+0a
+         kF4kTOKabmD+XRLeLTF//eE0YXXqBQBq2uIHi20K6YscM7u0tmleZvriwBv7Xr5/5kKq
+         RmdmlZuKJb35DLOip435qGPWRJzbtiTnxhEaWbxuWIUAev4vwnU/SXyPDllWj6CP30PR
+         4VpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX+FzcoqCk4hJaUJYsddujiYu8Q3LbI7556Sna9e59Ep0wVly8btXM3Pzs4gvslUXnGPcI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvR2J7oBXhBL8XnhUI4S1jzxZ8LgrSNlNnF2LpSDUn2KOU9HPT
+	MdqEKTtj/JQlqdMKXnWDGD9oqDNBCtNd+FkSA9WbHbufWiMGnU4u4jlvl71ubtzS7QQ83LSDu16
+	vso7G2WtAM4NMOKvNKf3ArbqdcyWamWPGu4r2F5ektuGdV8LEeQ==
+X-Gm-Gg: ASbGncuxH94K5TEvz5xbBFtgNW2ShhIhzyroI/J9dV3O9QNbbSc77KgNElM4N0mpcfb
+	9hxoOGppJDSWLHandiW6w69Bc553QLWVkjy6VGvo7r/qvrDlFJO0Xe31CS+fNNgQn0JjO5KcEoK
+	zvcbxX4l3eXyqiJgJAWdAnzFPjj7brm3erRyxRmp2b9MVIjf8DaAIubWMJ9KSAA2fLUPrJpp4Ad
+	KyM4Vhsw8Sd4kQ+2Y3SK98p51qjrxjcTiKMWpsMfHzIb0Yfdi+sOQ==
+X-Received: by 2002:a05:6870:82a0:b0:29e:723c:8e9d with SMTP id 586e51a60fabf-29e8864ab96mr932472fac.4.1733263584305;
+        Tue, 03 Dec 2024 14:06:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7jGvGfB3Me4o3Jd6sSOMboIoUa4ByGG2+wC0X4ZrR+2bwV76NNF/fqntlqJRNv1VOTSapnA==
+X-Received: by 2002:a05:6870:82a0:b0:29e:723c:8e9d with SMTP id 586e51a60fabf-29e8864ab96mr932465fac.4.1733263583944;
+        Tue, 03 Dec 2024 14:06:23 -0800 (PST)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29de9945bc7sm4029719fac.43.2024.12.03.14.06.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 14:06:23 -0800 (PST)
+Date: Tue, 3 Dec 2024 15:06:20 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Mitchell Augustin <mitchell.augustin@canonical.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org, Bjorn Helgaas
+ <bhelgaas@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: drivers/pci: (and/or KVM): Slow PCI initialization during VM
+ boot with passthrough of large BAR Nvidia GPUs on DGX H100
+Message-ID: <20241203150620.15431c5c.alex.williamson@redhat.com>
+In-Reply-To: <CAHTA-uZWGmoLr0R4L608xzvBAxnr7zQPMDbX0U4MTfN3BAsfTQ@mail.gmail.com>
+References: <CAHTA-uYp07FgM6T1OZQKqAdSA5JrZo0ReNEyZgQZub4mDRrV5w@mail.gmail.com>
+	<20241126103427.42d21193.alex.williamson@redhat.com>
+	<CAHTA-ubXiDePmfgTdPbg144tHmRZR8=2cNshcL5tMkoMXdyn_Q@mail.gmail.com>
+	<20241126154145.638dba46.alex.williamson@redhat.com>
+	<CAHTA-uZp-bk5HeE7uhsR1frtj9dU+HrXxFZTAVeAwFhPen87wA@mail.gmail.com>
+	<20241126170214.5717003f.alex.williamson@redhat.com>
+	<CAHTA-uY3pyDLH9-hy1RjOqrRR+OU=Ko6hJ4xWmMTyoLwHhgTOQ@mail.gmail.com>
+	<20241127102243.57cddb78.alex.williamson@redhat.com>
+	<CAHTA-uaGZkQ6rEMcRq6JiZn8v9nZPn80NyucuSTEXuPfy+0ccw@mail.gmail.com>
+	<20241203122023.21171712.alex.williamson@redhat.com>
+	<CAHTA-uZWGmoLr0R4L608xzvBAxnr7zQPMDbX0U4MTfN3BAsfTQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: SVM: Convert plain error code numbers to defines
-To: Sean Christopherson <seanjc@google.com>
-CC: LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, KVM
-	<kvm@vger.kernel.org>, Pavan Kumar Paluri <papaluri@amd.com>
-References: <20241202214032.350109-1-huibo.wang@amd.com>
- <Z05MrWbtZQXOY2qk@google.com>
-Content-Language: en-US
-From: "Melody (Huibo) Wang" <huibo.wang@amd.com>
-In-Reply-To: <Z05MrWbtZQXOY2qk@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000011:EE_|SJ2PR12MB8925:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9558454f-db6b-4d72-aeaa-08dd13e3fa87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?a2E1ODcwaTRpVzFNcDBzMisramlnN0FZODhaYjVBb1RIQmhFdk11ZDVWREcr?=
- =?utf-8?B?ejZnRS9ndXhVcG5yYnVjeWVWTDkzMFNmNlpBZzVFRUkxLzkvUnhObjdOWTJS?=
- =?utf-8?B?SnBVeVVaSG5QVks2bFh3ZTE3bkR0MXFsL1FmOFRMbk84ellLRXhVa0sza01V?=
- =?utf-8?B?VGQ0VUp6RitiaFQ3TkpoRStuNFJISEFtMnZUcjAyQ2czMnVWRWhReHV2YTh0?=
- =?utf-8?B?M2NzcjdRWVlzczdZQzNkVUt1THpMZ1FTYlB5REM3V0pjQk8yNERIdXUvaTZD?=
- =?utf-8?B?bkdsM1VoektKWFVFWUhsZXI5bUh1SmZNQk9oakphN1B0UkYvQnVEVnpXMXVU?=
- =?utf-8?B?TTd5UTBvVm52a25GaG55a1ZzSDlkRnJIdEExeWFYNW13Y3R2R0grRU01REd4?=
- =?utf-8?B?MnpSUGZVY3hWM0N5elNJdTVaNTBpR1VWU1BwZ1NLVDkvYlpOeG91bUtBT1U2?=
- =?utf-8?B?QWxRcEN6QmhXTzlCOVNmdEJuL2lCMDQwZnZ3Q0V1S1VEYWdpUVlOSEo4cVVR?=
- =?utf-8?B?cHhFemNZVk5EV0RTc3NKQzcrV2V5TGQyNjRPbDZqV0VCalBSVms2RjBYajd5?=
- =?utf-8?B?QUZmekpNU05xQ3QzdTYrc096RkZaQmoxYWFsTnJISEFKVXB4YndKbDc3QnlS?=
- =?utf-8?B?UVlZbDJjTlFmdUdZUG0xZlFaM0JjeHE4VmE0TE5RZmtpZjEraUlKVDA2RzRt?=
- =?utf-8?B?Q0o0Y3F0WktSdS9rdTRqMTAwVXEybEdiQVNTNFErN2svcHJUUVVTdk5IWG5m?=
- =?utf-8?B?WkxqTkhtaFpVN2RTcUtmbjZEazJETHFWWWdHR1pUTFRCTjgzNU9QZlJlR1B3?=
- =?utf-8?B?YUxVSll3L2hWcGg2b3A1UFVXZVZzRTFpZVVQODUwQS8wdm1Bc0pGSllYZWxS?=
- =?utf-8?B?bEVOcXNHeWxydStqVUk2T0JvSG42RmRuSS9FNUNaQ0N5MmVJa1V2K0FHVGx1?=
- =?utf-8?B?S0EyaDBDK1Voald4ZmpFSEdCYk5oSTRhVzFzdUV0azlmM1ZmajRIaUd1cEVR?=
- =?utf-8?B?eTl6WWxmZUdWdjNBRjY0bktFYzJyZGw2S0lNNWpQODJPbkZNdlhKYTljQ1Vt?=
- =?utf-8?B?N1R5NVdzNUFLOHp6RGJUYmtEaERPOGpnUm9pQjZqbUNEdVpCalE1TGNsMDhs?=
- =?utf-8?B?aVR1TGxZTTZ0dHRWYzlxZVZPN0REU1RneG9lbVdXeXBuUlhIcXdsbFhkQ2w5?=
- =?utf-8?B?ZTAzUFBwbXl1RUJJVkp1bDVmVkhOaWRQRytHblp4MnUxeUd6UHlKaG1jVXJ0?=
- =?utf-8?B?UEE4MmFtOFRhdDlLSitMVlhzZDhhaHlxMlBSbU5iaXRjTVBscE1VV2lWdGR0?=
- =?utf-8?B?L3JIYmhDd1M1bS82WFd6cUpXL2l0U0tMYTFROVZTM1htc0IzNlFjSVNnWmhX?=
- =?utf-8?B?TEhLOUVVRlNpVmpHYk8waGFCUFJ4VXRPUXN0QTlNMm9sblVublhsdUhZWWtX?=
- =?utf-8?B?ZFV2RWtHVVlnZU5tcVo3NUdQRm5lZEZXSjkveFlrNnRxWkx2UjNHVzhOcEJE?=
- =?utf-8?B?VS8wSlFpaHcxdW5wUVlSdms3S280TUd0aEdxRWphRjlIWGhKaVoxVXcxWFA2?=
- =?utf-8?B?ejVEVjZzbGZEQlBEM0JINzkxb1d1Wm5QWEVEYWR0Q3kxTG9POHpOblpGOXZO?=
- =?utf-8?B?M0tRTzZ1UXJDbmVibjcxR25NOEgvUUNQUXNBVUtMTndwcWdCUUUvRUY0WGZP?=
- =?utf-8?B?czY4SGZOcUtXWHNtTjdzTlFKdmZOVEh0c2FhOTFIaks4MTdLT0l4dnNUck1W?=
- =?utf-8?B?UThrTEUvSWJETUgvM3RJcmw3dHdHUFhvK1BnMTU4amU0QVpFTHlDNE4rOG1k?=
- =?utf-8?B?UUMyZFdhVDZKOWN3RWVVOFllSzRjMHQ2aVdGUWxObHlPM1p6S0lTeEtydGtS?=
- =?utf-8?B?RFZsVGlqK25ySmxQblFaQlYzdTZHblhmZWVWQy9WS1RHTXlPelY0WGJVQ3Fq?=
- =?utf-8?Q?fghmatOohupwPvdIi8Q/Qfh4FL+5Keaj?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 21:46:43.7240
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9558454f-db6b-4d72-aeaa-08dd13e3fa87
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000011.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8925
 
-Hi Sean,
+On Tue, 3 Dec 2024 14:33:10 -0600
+Mitchell Augustin <mitchell.augustin@canonical.com> wrote:
 
-On 12/2/2024 4:11 PM, Sean Christopherson wrote:
-
+> Thanks.
 > 
-> E.g. something like this?  Definitely feel free to suggest better names.
+> I'm thinking about the cleanest way to accomplish this:
 > 
-> static inline void svm_vmgexit_set_return_code(struct vcpu_svm *svm,
-> 					       u64 response, u64 data)
-> {
-> 	ghcb_set_sw_exit_info_1(svm->sev_es.ghcb, response);
-> 	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, data);
-> }
-> 
-If I make this function more generic where the exit info is set for both KVM and the guest, then maybe I can write something like this:
+> 1. I'm wondering if replacing the pci_info() calls with equivalent
+> printk_deferred() calls might be sufficient here. This works in my
+> initial test, but I'm not sure if this is definitive proof that we
+> wouldn't have any issues in all deployments, or if my configuration is
+> just not impacted by this kind of deadlock.
 
-void ghcb_set_exit_info(struct ghcb *ghcb,
-                      u64 info1, u64 info2)
+Just switching to printk_deferred() alone seems like wishful thinking,
+but if you were also to wrap the code in console_{un}lock(), that might
+be a possible low-impact solution.
+
+> 2. I did also draft a patch that would just eliminate the redundancy
+> and disable the impacted logs by default, and allow them to be
+> re-enabled with a new kernel command line option
+> "pci=bar_logging_enabled" (at the cost of the performance gains due to
+> reduced redundancy). This works well in all of my tests.
+
+I suspect Bjorn would prefer not to add yet another pci command line
+option and as we've seen here, the logs are useful by default.
+ 
+> Do you think either of those approaches would work / be appropriate?
+> Ultimately I am trying to avoid messy changes that would require
+> actually propagating all of the info needed for these logs back up to
+> pci_read_bases(), if at all possible, since there seems like no
+> obvious way to do that without changing the signature of
+> __pci_read_base() or tracking additional state.
+
+The calling convention of __pci_read_base() is already changing if
+we're having the caller disable decoding and it doesn't have a lot of
+callers, so I don't think I'd worry about changing the signature.
+
+I think maybe another alternative that doesn't hold off the console
+would be to split the BAR sizing and resource processing into separate
+steps.  For example pci_read_bases() might pass arrays like:
+
+        u32 bars[PCI_STD_NUM_BARS] = { 0 };
+        u32 romsz = 0;
+
+To a function like:
+
+void __pci_read_bars(struct pci_dev *dev, u32 *bars, u32 *romsz,
+                     int num_bars, int rom)
 {
-	ghcb_set_sw_exit_info_1(ghcb, info1);
-	ghcb_set_sw_exit_info_2(ghcb, info2);
+        u16 orig_cmd;
+        u32 tmp;
+        int i;
 
+        if (!dev->mmio_always_on) {
+                pci_read_config_word(dev, PCI_COMMAND, &orig_cmd);
+                if (orig_cmd & PCI_COMMAND_DECODE_ENABLE) {
+                        pci_write_config_word(dev, PCI_COMMAND,
+                                orig_cmd & ~PCI_COMMAND_DECODE_ENABLE);
+                }
+        }
+
+        for (i = 0; i < num_bars; i++) {
+                unsigned int pos = PCI_BASE_ADDRESS_0 + (i << 2);
+
+                pci_read_config_dword(dev, pos, &tmp);
+                pci_write_config_dword(dev, pos, ~0);
+                pci_read_config_dword(dev, pos, &bars[i]);
+                pci_write_config_dword(dev, pos, tmp);
+        }
+                
+        if (rom) {
+                pci_read_config_dword(dev, rom, &tmp);
+                pci_write_config_dword(dev, rom, PCI_ROM_ADDRESS_MASK);
+                pci_read_config_dword(dev, rom, romsz);
+                pci_write_config_dword(dev, rom, tmp);
+        }
+
+        if (!dev->mmio_always_on && (orig_cmd & PCI_COMMAND_DECODE_ENABLE))
+                pci_write_config_word(dev, PCI_COMMAND, orig_cmd);
 }
-This way we can address every possible case that sets the exit info - not only KVM. 
 
-And I am not sure about the wrappers for each specific case because we will have too many, too specific small functions, but if you want them I can add them.
+pci_read_bases() would then iterate in a similar way that it does now,
+passing pointers to the stashed data to __pci_read_base(), which would
+then only do the resource processing and could freely print.
 
-Thanks,
-Melody
+To me that seems better than blocking the console... Maybe there are
+other ideas on the list.  Thanks,
+
+Alex
 
