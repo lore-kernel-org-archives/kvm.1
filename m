@@ -1,85 +1,99 @@
-Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7091F8930
-	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 16:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30811F76A4;
+	Tue,  3 Dec 2024 16:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242568; cv=none; b=eHxmP68S8okFY2Gp7xKhndzN9I9ruiakuGK/Nu1b8OwcRscpPaIbOOxoPskVEorvYgTpv2/Z7hA0PfrFAqkR2DIutGfl9NQm0nSWp1o5dZbKHx6msda6e++95WFxY8x5bh5Fz2AZUY/vCTehVyn7Npzky1vk1fvhiAb8ZKo3fCI=
+	t=1733242873; cv=none; b=Oqrs8jc5F1PiL5N28g3Rtf1Zzo3LjxRA/lKXj1YV2JwUn9PwRGNCqDJgxdkjW5lqNrA03py54HjObYjmlMOXunBv5u2kvsJDtYg0IgRgJZaipdCpjrhi+xTytPZ6uHzzdSWJP3ARFWeJo40wLznY5+wufZARo06HpGUU/kXxLo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242568; c=relaxed/simple;
-	bh=b1m9jZprQYUbRGlvvXUB8jLOLQ+kqPuuU7N6MrP7aXs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DGMX3iPXjKarhnJiqqrRIjmZSOcEsUCcWYLwuHkZ7jRW9sDRSN/RP8bDC4J7x34Rj6emss8q+fz4fWTS5lYNlzsdD1kv7oIF+H3jExz0aJIY1ZmdTmRNJvO+P3UqO7CCrHGSpgv2wj9x9SXkwfKbkSMpqq3h/lEZBuifeQMCalE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4Y2m3m2ln7z4x7N7
-	for <kvm@vger.kernel.org>; Tue, 03 Dec 2024 17:16:04 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:829d:a1e7:5b32:5d8e])
-	by andre.telenet-ops.be with cmsmtp
-	id kGFw2D0013sLyzB01GFwsi; Tue, 03 Dec 2024 17:15:56 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tIVZ5-000DLE-T6;
-	Tue, 03 Dec 2024 17:15:55 +0100
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tIVZ5-00AGsi-Q0;
-	Tue, 03 Dec 2024 17:15:55 +0100
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@atishpatra.org>
-Cc: linux-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] riscv: Remove duplicate CLINT_TIMER selections
-Date: Tue,  3 Dec 2024 17:15:53 +0100
-Message-Id: <448dba3309fe341f4095b227b75ae5fc6b05f51a.1733242214.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733242873; c=relaxed/simple;
+	bh=/NcUnBYCseC1c5n4V7Yq6LjgKQASIenEHRjXnxEaO+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MaSFbt5Kp2irIosAaJRcqp343pswZhiiKg6CN27TkfO53oUcWhlmPdah503SbOuabVQeTLhciWefjpPgIxl//Yd/JsBCi2iRlGJuB1gnC+/7r6tV3Ui78l3/sDSpuDDyf6AXY2LFGaEBwQInCJo/4XGEMUAfec2gsK27MH1tISw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQ796POB; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQ796POB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C934C4CECF;
+	Tue,  3 Dec 2024 16:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733242873;
+	bh=/NcUnBYCseC1c5n4V7Yq6LjgKQASIenEHRjXnxEaO+s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eQ796POBt2fYvbC3ysEMGNeA5CtoJzxBlDTX6eG+yK39IZOhTMotpSj5tnJk+vwiL
+	 mNZ+IaWjfYhO/8bfOeVH1FjwZ7PuHcN+O3qEcx0evXBNxxHySYDQ/EeI/nmSNZNkwo
+	 Hf4BPc87WAjCZUV6UIGe0wCrZ2xGUBROSyEI5RJchsUoPYnzrnvfkjLYqh0mHdSMdc
+	 2ipa40ettnZd1j8piE131QCLLAalP0opU4TcHfIR7NmTO0k8jeDEDQh8wTfAz1qT2M
+	 kOq6CcpskOJYZgFNos/WOC2f90YAqmD8e/CANI9UrSGok8Uq+xDHjK1aEi48DhKrkT
+	 gMxlq6gF8gJSQ==
+Date: Tue, 3 Dec 2024 16:21:07 +0000
+From: Simon Horman <horms@kernel.org>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	Long Li <longli@microsoft.com>, Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Leon Romanovsky <leon@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: mana: Fix memory leak in mana_gd_setup_irqs
+Message-ID: <20241203162107.GF9361@kernel.org>
+References: <20241128194300.87605-1-mlevitsk@redhat.com>
+ <SN6PR02MB4157DBBACA455AC00A24EA08D4292@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157DBBACA455AC00A24EA08D4292@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-Since commit f862bbf4cdca696e ("riscv: Allow NOMMU kernels to run in
-S-mode") in v6.10, CLINT_TIMER is selected by the main RISCV symbol when
-RISCV_M_MODE is enabled.
+On Thu, Nov 28, 2024 at 09:49:35PM +0000, Michael Kelley wrote:
+> From: Maxim Levitsky <mlevitsk@redhat.com> Sent: Thursday, November 28, 2024 11:43 AM
+> > 
+> > Commit 8afefc361209 ("net: mana: Assigning IRQ affinity on HT cores")
+> > added memory allocation in mana_gd_setup_irqs of 'irqs' but the code
+> > doesn't free this temporary array in the success path.
+> > 
+> > This was caught by kmemleak.
+> > 
+> > Fixes: 8afefc361209 ("net: mana: Assigning IRQ affinity on HT cores")
+> > Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+> > ---
+> >  drivers/net/ethernet/microsoft/mana/gdma_main.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > index e97af7ac2bb2..aba188f9f10f 100644
+> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > @@ -1375,6 +1375,7 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
+> >  	gc->max_num_msix = nvec;
+> >  	gc->num_msix_usable = nvec;
+> >  	cpus_read_unlock();
+> > +	kfree(irqs);
+> >  	return 0;
+> > 
+> >  free_irq:
+> 
+> FWIW, there's a related error path leak. If the kcalloc() to populate
+> gc->irq_contexts fails, the irqs array is not freed. Probably could
+> extend this patch to fix that leak as well.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- arch/riscv/Kconfig.socs | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-index f51bb24bc84c6e47..d4ea91cdb2b138b2 100644
---- a/arch/riscv/Kconfig.socs
-+++ b/arch/riscv/Kconfig.socs
-@@ -53,7 +53,6 @@ config ARCH_THEAD
- 
- config ARCH_VIRT
- 	bool "QEMU Virt Machine"
--	select CLINT_TIMER if RISCV_M_MODE
- 	select POWER_RESET
- 	select POWER_RESET_SYSCON
- 	select POWER_RESET_SYSCON_POWEROFF
-@@ -73,7 +72,6 @@ config ARCH_CANAAN
- config SOC_CANAAN_K210
- 	bool "Canaan Kendryte K210 SoC"
- 	depends on !MMU && ARCH_CANAAN
--	select CLINT_TIMER if RISCV_M_MODE
- 	select ARCH_HAS_RESET_CONTROLLER
- 	select PINCTRL
- 	select COMMON_CLK
--- 
-2.34.1
-
+Yes, as that problem also appears to be introduced by the cited commit
+I agree it would be good to fix them both in one patch.
