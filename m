@@ -1,183 +1,159 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1130D1DFDA7;
-	Tue,  3 Dec 2024 09:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF741E2856
+	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 10:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733219450; cv=none; b=WZIuEe2hpDBda+GLyHdHRtaLrMj4BDp+8mlsIqFcGtYdSKOs7JLgkYRGwustRAdo+E94NX/ae6Mg+6X1b/3TA46K9C1eAbAuNfFfJ7HAqBq94IS15+DAO7QxOPCpL+fjpk68hOEEB9LroLGRgb2GH8BAs6EM0K/p1pO+MHk4EeE=
+	t=1733222562; cv=none; b=cSG1TObXbZUA+Mza4aZPrTioSJlmvvf26qMLXF0BdKdrViQDVf/vKUVqaJ09XB7Z8HeIDaAW4HRZ8U4eP9sZQQEinglihwyiLlsysp1QgS9JV1rHsr1PZoLQt+Z6Eb38cl0YFXXov5PtX8c/w4imypwPEsYeprqEBGjbnEToudA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733219450; c=relaxed/simple;
-	bh=hD5EsQIPZqmfmv9zOa5f96mENiNJ8c5VildI0lB0HFg=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=O0wdWhJoUS9E1bF/2M0hmrhotD7GsXa1LbnmQehgv9yscaySjCosYWIu3fxdt6KV6UTmKX0iCmoDZva2+U6EUGlUyzT4lZOygA07GN4WNpalYfl2zQuTVrpxwwPd4nJKig3vD745qamB8RyxVqujTdvku9UgIrblN14H678nIA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Ax6+F01E5nNKBPAA--.23398S3;
-	Tue, 03 Dec 2024 17:50:44 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMAxlsBu1E5nN7VzAA--.57761S3;
-	Tue, 03 Dec 2024 17:50:41 +0800 (CST)
-Subject: Re: [PATCH 1/2] LoongArch: KVM: Protect kvm_check_requests() with
- SRCU
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
- <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-References: <20241203065058.4164631-1-chenhuacai@loongson.cn>
- <e0c59558-09ec-1e51-9b36-86b69f7e8bde@loongson.cn>
- <CAAhV-H58ct9uGzyyL5Pz2kVM50K+1B0eGJ0zzb_2aV1Jzwp5+Q@mail.gmail.com>
-From: bibo mao <maobibo@loongson.cn>
-Message-ID: <d9a79372-24bd-23bb-8030-4b903db814b5@loongson.cn>
-Date: Tue, 3 Dec 2024 17:50:00 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1733222562; c=relaxed/simple;
+	bh=GClxry7kOfIsY1EQO6Rm5I2oCXDUT6JUC3Wc7LhTng0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OutJCr/Q+QV0CVHcUcdQBH3WQa8VBPEGqoeqGIkSqa9xiBWkMoVwFy4q+cx5ebHFgSODRQm/4l+5LkMcfPg9BpS4KvPoxaGsiu+0bTsRVCSKmYdRrQ2fr/0MoF9NTo39IwTs9jNvwDBRzu+pbcDq9ZfkC2Ua+HS9/PRpA48TO/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H8Sk6ytT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H8Sk6ytT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733222559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D5AHi0uk+oN+zpkzvh/QNmG2L3UPAKNwXGcHrJAQaZM=;
+	b=H8Sk6ytTS4IFg0JTv0MhJmAEQkXT7h8ytnQqFORdPMTSslAe/OXh6IJ5Xdyde7euLA7Nf8
+	ZnP3fmAigX229yVlp5whxTiDRH1nFTZPa8IgIEbh8G7/Qg2wO7nnDeh8w6MM2eYw/YcTif
+	DgaTJ1L4Yw38IJvm43ZBi634ldGwO1E=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-300-P5838zgdOW6m0hg0rLlvbA-1; Tue,
+ 03 Dec 2024 05:42:36 -0500
+X-MC-Unique: P5838zgdOW6m0hg0rLlvbA-1
+X-Mimecast-MFC-AGG-ID: P5838zgdOW6m0hg0rLlvbA
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DE7BF19560BD;
+	Tue,  3 Dec 2024 10:42:32 +0000 (UTC)
+Received: from localhost (unknown [10.72.113.10])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A28330000DF;
+	Tue,  3 Dec 2024 10:42:29 +0000 (UTC)
+Date: Tue, 3 Dec 2024 18:42:25 +0800
+From: Baoquan He <bhe@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	kexec@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+	Thomas Huth <thuth@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v1 03/11] fs/proc/vmcore: disallow vmcore modifications
+ after the vmcore was opened
+Message-ID: <Z07gkXQDrNfL10hu@MiWiFi-R3L-srv>
+References: <20241025151134.1275575-1-david@redhat.com>
+ <20241025151134.1275575-4-david@redhat.com>
+ <Z0BL/UopaH5Xg5jS@MiWiFi-R3L-srv>
+ <d29d7816-a3e5-4f34-bb0c-dd427931efb4@redhat.com>
+ <Z0SMqYX8gMvdiU4T@MiWiFi-R3L-srv>
+ <a7ccbd86-2a62-4191-8742-ce45b6e8f73c@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H58ct9uGzyyL5Pz2kVM50K+1B0eGJ0zzb_2aV1Jzwp5+Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxlsBu1E5nN7VzAA--.57761S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZryUWr13Cr1UXr48KryUArc_yoWrZr45pr
-	9rGF4I9r4rXry7Aw1jyr1DJr1Utw4DCF1xXr18Jr1UAw1qvr1DJFyUJrWUWFy5C34rCF4x
-	AF15trnIyr1UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	XVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a7ccbd86-2a62-4191-8742-ce45b6e8f73c@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+On 11/29/24 at 11:38am, David Hildenbrand wrote:
+> On 25.11.24 15:41, Baoquan He wrote:
+> > On 11/22/24 at 10:30am, David Hildenbrand wrote:
+> > > On 22.11.24 10:16, Baoquan He wrote:
+> > > > On 10/25/24 at 05:11pm, David Hildenbrand wrote:
+> > > > ......snip...
+> > > > > @@ -1482,6 +1470,10 @@ int vmcore_add_device_dump(struct vmcoredd_data *data)
+> > > > >    		return -EINVAL;
+> > > > >    	}
+> > > > > +	/* We'll recheck under lock later. */
+> > > > > +	if (data_race(vmcore_opened))
+> > > > > +		return -EBUSY;
+> > > > 
+> > > 
+> > > Hi,
+> > > 
+> > > > As I commented to patch 7, if vmcore is opened and closed after
+> > > > checking, do we need to give up any chance to add device dumping
+> > > > as below?
+> > > > 
+> > > > fd = open(/proc/vmcore);
+> > > > ...do checking;
+> > > > close(fd);
+> > > > 
+> > > > quit any device dump adding;
+> > > > 
+> > > > run makedumpfile on s390;
+> > > >     ->fd = open(/proc/vmcore);
+> > > >       -> try to dump;
+> > > >     ->close(fd);
+> > > 
+> > > The only reasonable case where this could happen (with virtio_mem) would be
+> > > when you hotplug a virtio-mem device into a VM that is currently in the
+> > > kdump kernel. However, in this case, the device would not provide any memory
+> > > we want to dump:
+> > > 
+> > > (1) The memory was not available to the 1st (crashed) kernel, because
+> > >      the device got hotplugged later.
+> > > (2) Hotplugged virtio-mem devices show up with "no plugged memory",
+> > >      meaning there wouldn't be even something to dump.
+> > > 
+> > > Drivers will be loaded (as part of the kernel or as part of the initrd)
+> > > before any kdump action is happening. Similarly, just imagine your NIC
+> > > driver not being loaded when you start dumping to a network share ...
+> > > 
+> > > This should similarly apply to vmcoredd providers.
+> > > 
+> > > There is another concern I had at some point with changing the effective
+> > > /proc/vmcore size after someone already opened it, and might assume the size
+> > > will stay unmodified (IOW, the file was completely static before vmcoredd
+> > > showed up).
+> > > 
+> > > So unless there is a real use case that requires tracking whether the file
+> > > is no longer open, to support modifying the vmcore afterwards, we should
+> > > keep it simple.
+> > > 
+> > > I am not aware of any such cases, and my experiments with virtio_mem showed
+> > > that the driver get loaded extremely early from the initrd, compared to when
+> > > we actually start messing with /proc/vmcore from user space.
 
+It's OK, David, I don't have strong opinion about the current
+implementation. I raised this concern because
 
-On 2024/12/3 下午5:17, Huacai Chen wrote:
-> On Tue, Dec 3, 2024 at 4:27 PM bibo mao <maobibo@loongson.cn> wrote:
->>
->>
->>
->> On 2024/12/3 下午2:50, Huacai Chen wrote:
->>> When we enable lockdep we get such a warning:
->>>
->>>    =============================
->>>    WARNING: suspicious RCU usage
->>>    6.12.0-rc7+ #1891 Tainted: G        W
->>>    -----------------------------
->>>    include/linux/kvm_host.h:1043 suspicious rcu_dereference_check() usage!
->>>    other info that might help us debug this:
->>>    rcu_scheduler_active = 2, debug_locks = 1
->>>    1 lock held by qemu-system-loo/948:
->>>     #0: 90000001184a00a8 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0xf4/0xe20 [kvm]
->>>    stack backtrace:
->>>    CPU: 0 UID: 0 PID: 948 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc7+ #1891
->>>    Tainted: [W]=WARN
->>>    Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
->>>    Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 900000012c578000
->>>            900000012c57b920 0000000000000000 900000012c57b928 9000000007e53788
->>>            900000000815bcc8 900000000815bcc0 900000012c57b790 0000000000000001
->>>            0000000000000001 4b031894b9d6b725 0000000004dec000 90000001003299c0
->>>            0000000000000414 0000000000000001 000000000000002d 0000000000000003
->>>            0000000000000030 00000000000003b4 0000000004dec000 90000001184a0000
->>>            900000000806d000 9000000007e53788 00000000000000b4 0000000000000004
->>>            0000000000000004 0000000000000000 0000000000000000 9000000107baf600
->>>            9000000008916000 9000000007e53788 9000000005924778 0000000010000044
->>>            00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
->>>            ...
->>>    Call Trace:
->>>    [<9000000005924778>] show_stack+0x38/0x180
->>>    [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
->>>    [<90000000059eb754>] lockdep_rcu_suspicious+0x194/0x240
->>>    [<ffff8000022143bc>] kvm_gfn_to_hva_cache_init+0xfc/0x120 [kvm]
->>>    [<ffff80000222ade4>] kvm_pre_enter_guest+0x3a4/0x520 [kvm]
->>>    [<ffff80000222b3dc>] kvm_handle_exit+0x23c/0x480 [kvm]
->>>
->>> Fix it by protecting kvm_check_requests() with SRCU.
->>>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->>> ---
->>>    arch/loongarch/kvm/vcpu.c | 4 +++-
->>>    1 file changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>> index cab1818be68d..d18a4a270415 100644
->>> --- a/arch/loongarch/kvm/vcpu.c
->>> +++ b/arch/loongarch/kvm/vcpu.c
->>> @@ -240,7 +240,7 @@ static void kvm_late_check_requests(struct kvm_vcpu *vcpu)
->>>     */
->>>    static int kvm_enter_guest_check(struct kvm_vcpu *vcpu)
->>>    {
->>> -     int ret;
->>> +     int idx, ret;
->>>
->>>        /*
->>>         * Check conditions before entering the guest
->>> @@ -249,7 +249,9 @@ static int kvm_enter_guest_check(struct kvm_vcpu *vcpu)
->>>        if (ret < 0)
->>>                return ret;
->>>
->>> +     idx = srcu_read_lock(&vcpu->kvm->srcu);
->>>        ret = kvm_check_requests(vcpu);
->>> +     srcu_read_unlock(&vcpu->kvm->srcu, idx);
->>>
->>>        return ret;
->>>    }
->>>
->> How about adding rcu readlock with closest function
->> kvm_update_stolen_time()?
-> I have considered this method before. But then I read vcpu_run() of
-> x86, it protect the whole vcpu_run() except  the subroutine
-> xfer_to_guest_mode_handle_work(), so I think protect the whole
-> kvm_check_requests() is more like x86.srcu_readlock is to protect memslot or io_bus region to be removed and 
-freed.
+1) I saw the original vmcoredd only warn when doing register if
+vmcore_opened is true;
 
-Both is ok for me, it up to you.
+2) in patch 1, it says vmcore_mutex is introduced to protect vmcore
+modifications from concurrent opening. If we are confident, the old
+vmcoredd_mutex can guarantee it, I could be wrong here.
 
-Regards
-Bibo Mao
-> 
-> Huacai
-> 
->>
->>    static int kvm_check_requests(struct kvm_vcpu *vcpu)
->>    {
->> +       int idx;
->> +
->>           if (!kvm_request_pending(vcpu))
->>                   return RESUME_GUEST;
->>
->> @@ -213,8 +215,11 @@ static int kvm_check_requests(struct kvm_vcpu *vcpu)
->>           if (kvm_dirty_ring_check_request(vcpu))
->>                   return RESUME_HOST;
->>
->> -       if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
->> +       if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu)) {
->> +               idx = srcu_read_lock(&vcpu->kvm->srcu);
->>                   kvm_update_stolen_time(vcpu);
->> +               srcu_read_unlock(&vcpu->kvm->srcu, idx);
->> +       }
->>
->>           return RESUME_GUEST;
->>    }
->>
->> Both method look good to me.
->>
->> Regards
->> Bibo Mao
->>
+Anyway, it's just a tiny concern, I believe it won't cause issue at
+present. So it's up to you. 
+
+Thanks
 
