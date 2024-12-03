@@ -1,232 +1,262 @@
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1298C84D02
-	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 01:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A038C11;
+	Tue,  3 Dec 2024 01:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733187637; cv=none; b=kl2iURS82wCUGVHPLhViAPG+npxg9aD8J5zw5I4kuc9F5Q+kEsLdtddyr8PS+cLtBDiGhZc6FyZOWPhG/YaI6i+3xlWzp/iWyhUVJEgpBDfKyvyxAXcc0LdMj3Mca5HQ84M7i7dbWjkrwrKF9bQgh+a+El4y2hx9GwsDlk7GD+A=
+	t=1733187817; cv=none; b=CJvLv3SUKht7SZSfISLuxkednm7xsmAjpn+9eE9nUwBPknKsHiYoQG78c3/vqe35HCTXst6mEckVk3KEZ+jsPr4Ci19pOFixhUFTolRSpAcGetw4f3GtiGFpOxrKe65Cc2zgCo8pg9viQEwseB6OsfFCUOGEilaacs2fHoO76tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733187637; c=relaxed/simple;
-	bh=ST360jAFSalxvsspokUYZryLYZwouzKdgllkKmYC1PE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RQoxJnt8a7JnAfopBdveKQdQrW4DU2AfxpZ8v4xKFjSspQ/kZHfjwRdzPRjcytGW6Aa7NMvSrJtRCtu0i9rsbwCvH8un4TECHLI5ppgCdL08zyp8g21FD+lkOL+p9BX7TZi/J4TsNgp36CIZrMuriL82lINgfO977oJW4iDmHJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s5kcEFcy; arc=none smtp.client-ip=209.85.160.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
+	s=arc-20240116; t=1733187817; c=relaxed/simple;
+	bh=RIvmX5zZ0l539ax8/LZmKUX086JpEhRWOfQUoKYm7us=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pDHsIKvjKS5gk8GCKCGi4x+eDa8FuRIs06kxbHMX/06M1n3cF6nMzX3bIRY+kCHb0Vho/VeU5kt6FTkspisF4/71A1XR5JsfkeyIry+eQG+4wB/bVOA4kQ0ukgoQRiCp8J3FHNu3cg1Qk61YVGHgOLWzTPoosZJimRtyz20VCyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VGqLU5Z5; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s5kcEFcy"
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-29e2ba6ad4eso2559513fac.1
-        for <kvm@vger.kernel.org>; Mon, 02 Dec 2024 17:00:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733187635; x=1733792435; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d+a3eBnHKvD8AQod1gMB/LKTW1oN3to08D39Docv/eQ=;
-        b=s5kcEFcy5TKbtLr+Mn+ETnIALmVdTD59D6XO/wgxQGs/mDhP2EctuZwWLBtFoVo/jt
-         w6Y6RSvcVAqkbxa6OhLIPjOCJzjUGw6GbXCbGLTCtEDB1eJqr9OLRfO2j+eXJfeBmvJa
-         sRL9qekdRcfthxSLM96H38PJa2sOmpJ1OZ1Tcm7oaUPGF4iDI9X/z2cXcfHr5luTk9PG
-         jnudyRR1CdTNNwUzxlMz/hZTHBlA2gdb5cRkzbjBW5IGUul+2htdgtuTGMkw4XB+D9uj
-         wJ927vp508jtyBXUkjN2u2ZNboZBNtRtq1M3NiDvpmWbaVM3ctzdjXem8bH2DVhZrlB3
-         FLjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733187635; x=1733792435;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d+a3eBnHKvD8AQod1gMB/LKTW1oN3to08D39Docv/eQ=;
-        b=SZDdsUVkDHobBDfRqu/cX1rpneWfp5EBwKHx4dEtfdvjejpr+Ik+ENX0erfQMEFI6s
-         KvI1TZDrOBm0zf0KI1LM8GwCD+4aIXledXHCadWj/StYgvGLecrsd4QW+UJDMfWn1MB9
-         zZmlGVrhzk2VtXHWWCbi/VnxvahHM5K8D3PKdqIerFDswK5T/GgG019kvwUIdzaRpq1o
-         oMJFt8iGwLFUwm3KJ6UJQ2lZyklXuKYH014sgXxT3siOvWBym6m4PdlnES7YydLkmCAQ
-         CaQdf5sjRsPRwCZZ49LLVBId6fhEF/fZdZPOKIsPK99HqBmLnk1tgb+a6OCvSiVnuxJe
-         JpOg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvHWOVRj7jPGorFJmnvQccoBlHkb6iphxeJxRhi1LSIjaNhkxZbVBWu+ZEqztsfba+5sY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9eCtbCjQJ9rCZmCKQPy6WEB5LiEl81qlsi8Um1TDpO161QZjx
-	ndfYp17refbNZm0DjjNRoLhUSCOOQ16hdQq7RZgdknLBtdVsXw687hB6ZztvjPWgSRrb9supKnf
-	it3lM0hrrDL/l0LNLId0YpSb9zB3/rw==
-X-Google-Smtp-Source: AGHT+IHlAWUl/6xhfzZLqge5+mtkzOWOXTSZQKntjfye63eE/1sMNIDsJdEGUh7DCOLnVMK90ja1kBMWTjMKXb6+Bxua
-X-Received: from ioay19.prod.google.com ([2002:a6b:c413:0:b0:841:802b:8e24])
- (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6602:2b85:b0:83a:872f:4b98 with SMTP id ca18e2360f4ac-8445b53e7d6mr104251439f.2.1733187625111;
- Mon, 02 Dec 2024 17:00:25 -0800 (PST)
-Date: Tue,  3 Dec 2024 00:59:20 +0000
-In-Reply-To: <20241203005921.1119116-1-kevinloughlin@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VGqLU5Z5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733187816; x=1764723816;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RIvmX5zZ0l539ax8/LZmKUX086JpEhRWOfQUoKYm7us=;
+  b=VGqLU5Z5pev6s3k/eKnK1E7b+oP6sP2/J/KnaWGsH3Bv3iPVRsJkzl+w
+   DZQoe2i8dN/fhOpnUEQbK9vrSQ4Nc38+CDWFW7D7WsJneFMZYdp/TyC89
+   3qiw8XBKC8LeWCcgeLckPjsTIGSLA1qKV+Gp9oZh75NjycGx12XBee/4/
+   4e9OUBoIoRd7/AlmcTdfQf4quq7TfYpgGyf0uXwZlKp/rCD7XghZV02y5
+   3+5XHCuUAu++HEIzUV2wkPXdlt+xXH76E+9uXngYPGt+/gr5f915METNO
+   WjCQmpK+PVZw4dT7OkKTpkRRQ6ev0UrRO6fXMtHDJu2Uakd4Xd04bRdai
+   g==;
+X-CSE-ConnectionGUID: xJlxD+2/QyyxkXflUHlHKQ==
+X-CSE-MsgGUID: Jf6c+SoXRxSYjMC+sJUN7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="36237950"
+X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
+   d="scan'208";a="36237950"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 17:03:34 -0800
+X-CSE-ConnectionGUID: PXXY/jDDQyKF99goQ5Bfyw==
+X-CSE-MsgGUID: z9c/wuqmQ6ScVa3aG4HxTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
+   d="scan'208";a="116535790"
+Received: from jairdeje-mobl1.amr.corp.intel.com (HELO rpedgeco-desk4..) ([10.124.223.7])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 17:03:25 -0800
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: kvm@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	dave.hansen@intel.com
+Cc: isaku.yamahata@gmail.com,
+	kai.huang@intel.com,
+	linux-kernel@vger.kernel.org,
+	tony.lindgren@linux.intel.com,
+	xiaoyao.li@intel.com,
+	yan.y.zhao@intel.com,
+	rick.p.edgecombe@intel.com,
+	x86@kernel.org,
+	adrian.hunter@intel.com,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Yuan Yao <yuan.yao@intel.com>
+Subject: [RFC PATCH v2 1/6] x86/virt/tdx: Add SEAMCALL wrappers for TDX KeyID management
+Date: Mon,  2 Dec 2024 17:03:11 -0800
+Message-ID: <20241203010317.827803-2-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241203010317.827803-1-rick.p.edgecombe@intel.com>
+References: <20241203010317.827803-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241203005921.1119116-1-kevinloughlin@google.com>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241203005921.1119116-2-kevinloughlin@google.com>
-Subject: [RFC PATCH 1/2] x86, lib, xenpv: Add WBNOINVD helper functions
-From: Kevin Loughlin <kevinloughlin@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, kvm@vger.kernel.org, thomas.lendacky@amd.com, 
-	pgonda@google.com, sidtelang@google.com, mizhang@google.com, 
-	virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, 
-	bcm-kernel-feedback-list@broadcom.com, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-In line with WBINVD usage, add WBONINVD helper functions, accounting
-for kernels built with and without CONFIG_PARAVIRT_XXL.
+Intel TDX protects guest VMs from malicious host and certain physical
+attacks. Pre-TDX Intel hardware has support for a memory encryption
+architecture called MK-TME, which repurposes several high bits of
+physical address as "KeyID". TDX ends up with reserving a sub-range of
+MK-TME KeyIDs as "TDX private KeyIDs".
 
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
+Like MK-TME, these KeyIDs can be associated with an ephemeral key. For TDX
+this association is done by the TDX module. It also has its own tracking
+for which KeyIDs are in use. To do this ephemeral key setup and manipulate
+the TDX module's internal tracking, KVM will use the following SEAMCALLs:
+ TDH.MNG.KEY.CONFIG: Mark the KeyID as in use, and initialize its
+                     ephemeral key.
+ TDH.MNG.KEY.FREEID: Mark the KeyID as not in use.
+
+These SEAMCALLs both operate on TDR structures, which are setup using the
+previously added TDH.MNG.CREATE SEAMCALL. KVM's use of these operations
+will go like:
+ - tdx_guest_keyid_alloc()
+ - Initialize TD and TDR page with TDH.MNG.CREATE (not yet-added), passing
+   KeyID
+ - TDH.MNG.KEY.CONFIG to initialize the key
+ - TD runs, teardown is started
+ - TDH.MNG.KEY.FREEID
+ - tdx_guest_keyid_free()
+
+Don't try to combine the tdx_guest_keyid_alloc() and TDH.MNG.KEY.CONFIG
+operations because TDH.MNG.CREATE and some locking need to be done in the
+middle. Don't combine TDH.MNG.KEY.FREEID and tdx_guest_keyid_free() so they
+are symmetrical with the creation path.
+
+So implement tdh_mng_key_config() and tdh_mng_key_freeid() as separate
+functions than tdx_guest_keyid_alloc() and tdx_guest_keyid_free().
+
+The TDX module provides SEAMCALLs to hand pages to the TDX module for
+storing TDX controlled state. SEAMCALLs that operate on this state are
+directed to the appropriate TD VM using references to the pages originally
+provided for managing the TD's state. So the host kernel needs to track
+these pages, both as an ID for specifying which TD to operate on, and to
+allow them to be eventually reclaimed. The TD VM associated pages are
+called TDR (Trust Domain Root) and TDCS (Trust Domain Control Structure).
+
+Introduce "struct tdx_td" for holding references to pages provided to the
+TDX module for this TD VM associated state. Don't plan for any TD
+associated state that is controlled by KVM to live in this struct. Only
+expect it to hold data for concepts specific to the TDX architecture, for
+which there can't already be preexisting storage for in KVM.
+
+Add both the TDR page and an array of TDCS pages, even though the SEAMCALL
+wrappers will only need to know about the TDR pages for directing the
+SEAMCALLs to the right TD. Adding the TDCS pages to this struct will let
+all of the TD VM associated pages handed to the TDX module be tracked in
+one location. For a type to specify physical pages, use KVM's hpa_t type.
+Do this for KVM's benefit This is the common type used to hold physical
+addresses in KVM, so will make interoperability easier.
+
+Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Yuan Yao <yuan.yao@intel.com>
 ---
- arch/x86/include/asm/paravirt.h       |  7 +++++++
- arch/x86/include/asm/paravirt_types.h |  1 +
- arch/x86/include/asm/smp.h            |  7 +++++++
- arch/x86/include/asm/special_insns.h  | 12 +++++++++++-
- arch/x86/kernel/paravirt.c            |  6 ++++++
- arch/x86/lib/cache-smp.c              | 12 ++++++++++++
- arch/x86/xen/enlighten_pv.c           |  1 +
- 7 files changed, 45 insertions(+), 1 deletion(-)
+SEAMCALL RFC:
+ - Use struct page (Dave)
 
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index d4eb9e1d61b8..c040af2d8eff 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -187,6 +187,13 @@ static __always_inline void wbinvd(void)
- 	PVOP_ALT_VCALL0(cpu.wbinvd, "wbinvd", ALT_NOT_XEN);
+SEAMCALL RFC:
+ - Introduce struct tdx_td to use instead of raw TDR u64
+
+uAPI breakout v2:
+ - Change to use 'u64' as function parameter to prepare to move
+   SEAMCALL wrappers to arch/x86. (Kai)
+ - Split to separate patch
+ - Move SEAMCALL wrappers from KVM to x86 core;
+ - Move TDH_xx macros from KVM to x86 core;
+ - Re-write log
+
+uAPI breakout v1:
+ - Make argument to C wrapper function struct kvm_tdx * or
+   struct vcpu_tdx * .(Sean)
+ - Drop unused helpers (Kai)
+ - Fix bisectability issues in headers (Kai)
+ - Updates from seamcall overhaul (Kai)
+
+v19:
+ - Update the commit message to match the patch by Yuan
+ - Use seamcall() and seamcall_ret() by paolo
+
+v18:
+ - removed stub functions for __seamcall{,_ret}()
+ - Added Reviewed-by Binbin
+ - Make tdx_seamcall() use struct tdx_module_args instead of taking
+   each inputs.
+---
+ arch/x86/include/asm/tdx.h  | 12 ++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.c | 26 ++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h | 16 +++++++++-------
+ 3 files changed, 47 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index d33e46d53d59..139c003acd1b 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -121,6 +121,18 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
+ 
+ int tdx_guest_keyid_alloc(void);
+ void tdx_guest_keyid_free(unsigned int keyid);
++
++struct tdx_td {
++	/* TD root structure: */
++	struct page *tdr_page;
++
++	int tdcs_nr_pages;
++	/* TD control structure: */
++	struct page **tdcs_pages;
++};
++
++u64 tdh_mng_key_config(struct tdx_td *td);
++u64 tdh_mng_key_freeid(struct tdx_td *td);
+ #else
+ static inline void tdx_init(void) { }
+ static inline int tdx_cpu_enable(void) { return -ENODEV; }
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index b883c1a4b002..2d1cebce8c07 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1562,3 +1562,29 @@ void tdx_guest_keyid_free(unsigned int keyid)
+ 	ida_free(&tdx_guest_keyid_pool, keyid);
  }
- 
-+extern noinstr void pv_native_wbnoinvd(void);
+ EXPORT_SYMBOL_GPL(tdx_guest_keyid_free);
 +
-+static __always_inline void wbnoinvd(void)
++static inline u64 tdx_tdr_pa(struct tdx_td *td)
 +{
-+	PVOP_ALT_VCALL0(cpu.wbnoinvd, "wbnoinvd", ALT_NOT_XEN);
++	return page_to_pfn(td->tdr_page) << PAGE_SHIFT;
 +}
 +
- static inline u64 paravirt_read_msr(unsigned msr)
- {
- 	return PVOP_CALL1(u64, cpu.read_msr, msr);
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 8d4fbe1be489..9a3f38ad1958 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -87,6 +87,7 @@ struct pv_cpu_ops {
- #endif
- 
- 	void (*wbinvd)(void);
-+	void (*wbnoinvd)(void);
- 
- 	/* cpuid emulation, mostly so that caps bits can be disabled */
- 	void (*cpuid)(unsigned int *eax, unsigned int *ebx,
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index ca073f40698f..ecf93a243b83 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -112,6 +112,7 @@ void native_play_dead(void);
- void play_dead_common(void);
- void wbinvd_on_cpu(int cpu);
- int wbinvd_on_all_cpus(void);
-+int wbnoinvd_on_all_cpus(void);
- 
- void smp_kick_mwait_play_dead(void);
- 
-@@ -160,6 +161,12 @@ static inline int wbinvd_on_all_cpus(void)
- 	return 0;
- }
- 
-+static inline int wbnoinvd_on_all_cpus(void)
++u64 tdh_mng_key_config(struct tdx_td *td)
 +{
-+	wbnoinvd();
-+	return 0;
-+}
++	struct tdx_module_args args = {
++		.rcx = tdx_tdr_pa(td),
++	};
 +
- static inline struct cpumask *cpu_llc_shared_mask(int cpu)
- {
- 	return (struct cpumask *)cpumask_of(0);
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index aec6e2d3aa1d..c2d16ddcd79b 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -117,7 +117,12 @@ static inline void wrpkru(u32 pkru)
- 
- static __always_inline void native_wbinvd(void)
- {
--	asm volatile("wbinvd": : :"memory");
-+	asm volatile("wbinvd" : : : "memory");
++	return seamcall(TDH_MNG_KEY_CONFIG, &args);
 +}
++EXPORT_SYMBOL_GPL(tdh_mng_key_config);
 +
-+static __always_inline void native_wbnoinvd(void)
++u64 tdh_mng_key_freeid(struct tdx_td *td)
 +{
-+	asm volatile("wbnoinvd" : : : "memory");
- }
- 
- static inline unsigned long __read_cr4(void)
-@@ -173,6 +178,11 @@ static __always_inline void wbinvd(void)
- 	native_wbinvd();
- }
- 
-+static __always_inline void wbnoinvd(void)
-+{
-+	native_wbnoinvd();
-+}
++	struct tdx_module_args args = {
++		.rcx = tdx_tdr_pa(td),
++	};
 +
- #endif /* CONFIG_PARAVIRT_XXL */
- 
- static __always_inline void clflush(volatile void *__p)
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index fec381533555..a66b708d8a1e 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -121,6 +121,11 @@ noinstr void pv_native_wbinvd(void)
- 	native_wbinvd();
- }
- 
-+noinstr void pv_native_wbnoinvd(void)
-+{
-+	native_wbnoinvd();
++	return seamcall(TDH_MNG_KEY_FREEID, &args);
 +}
++EXPORT_SYMBOL_GPL(tdh_mng_key_freeid);
 +
- static noinstr void pv_native_safe_halt(void)
- {
- 	native_safe_halt();
-@@ -149,6 +154,7 @@ struct paravirt_patch_template pv_ops = {
- 	.cpu.write_cr0		= native_write_cr0,
- 	.cpu.write_cr4		= native_write_cr4,
- 	.cpu.wbinvd		= pv_native_wbinvd,
-+	.cpu.wbnoinvd		= pv_native_wbnoinvd,
- 	.cpu.read_msr		= native_read_msr,
- 	.cpu.write_msr		= native_write_msr,
- 	.cpu.read_msr_safe	= native_read_msr_safe,
-diff --git a/arch/x86/lib/cache-smp.c b/arch/x86/lib/cache-smp.c
-index 7af743bd3b13..7ac5cca53031 100644
---- a/arch/x86/lib/cache-smp.c
-+++ b/arch/x86/lib/cache-smp.c
-@@ -20,3 +20,15 @@ int wbinvd_on_all_cpus(void)
- 	return 0;
- }
- EXPORT_SYMBOL(wbinvd_on_all_cpus);
-+
-+static void __wbnoinvd(void *dummy)
-+{
-+	wbnoinvd();
-+}
-+
-+int wbnoinvd_on_all_cpus(void)
-+{
-+	on_each_cpu(__wbnoinvd, NULL, 1);
-+	return 0;
-+}
-+EXPORT_SYMBOL(wbnoinvd_on_all_cpus);
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index d6818c6cafda..a5c76a6f8976 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1162,6 +1162,7 @@ static const typeof(pv_ops) xen_cpu_ops __initconst = {
- 		.write_cr4 = xen_write_cr4,
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 9b708a8fb568..95002e7ff4c5 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -17,13 +17,15 @@
+ /*
+  * TDX module SEAMCALL leaf functions
+  */
+-#define TDH_PHYMEM_PAGE_RDMD	24
+-#define TDH_SYS_KEY_CONFIG	31
+-#define TDH_SYS_INIT		33
+-#define TDH_SYS_RD		34
+-#define TDH_SYS_LP_INIT		35
+-#define TDH_SYS_TDMR_INIT	36
+-#define TDH_SYS_CONFIG		45
++#define TDH_MNG_KEY_CONFIG		8
++#define TDH_MNG_KEY_FREEID		20
++#define TDH_PHYMEM_PAGE_RDMD		24
++#define TDH_SYS_KEY_CONFIG		31
++#define TDH_SYS_INIT			33
++#define TDH_SYS_RD			34
++#define TDH_SYS_LP_INIT			35
++#define TDH_SYS_TDMR_INIT		36
++#define TDH_SYS_CONFIG			45
  
- 		.wbinvd = pv_native_wbinvd,
-+		.wbnoinvd = pv_native_wbnoinvd,
- 
- 		.read_msr = xen_read_msr,
- 		.write_msr = xen_write_msr,
+ /* TDX page types */
+ #define	PT_NDA		0x0
 -- 
-2.47.0.338.g60cca15819-goog
+2.47.1
 
