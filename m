@@ -1,275 +1,384 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C81F4289
-	for <kvm@vger.kernel.org>; Tue,  3 Dec 2024 14:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D217BB16;
+	Tue,  3 Dec 2024 14:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733234890; cv=none; b=S1v901A6LXCJWpy4KWlz47mgW7hnUDHqmWo1dVYdBjkBmhHEMSq2YlTUv8zPmqPXYXPR4ogpOB2BfW5ZP10TUmcQSrKNw83l2PqQJR3fQ/16v5wOHqbZV0qzfgZFZc8lp6/vVvzuYB8gFTfN8kQvX+pcWqhFHyP3LOD7iB5XjNU=
+	t=1733235617; cv=none; b=Wvvxw6YpdOp3eX2rBqUdqqBXTEHB0m2M3x+A470D3/nDFZpiSAL2CpfMjSfclYeZ/E8Mci+lwGnu3nZE5ZtMuK0/o1ECw3YS9364E82u8pyCYWeTmixbL5Z7mcfTduw58M0zLDWHkKZeyd819KBzqm2KxFLmReLKHAUPzZ3QQy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733234890; c=relaxed/simple;
-	bh=uVRcyVKfRXam3qy/wpCW1/XY6LtZ5ibJPJtWicYVchU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=spLcIKwiBqF3gbKGO2/pOFm1va6X+w3Sz6hmJaKe4ibwPnlK4+pl/mRlgMVKtiGriRtzy0oIYB7mZaQskAbOxU/kCPdva3IU0PyKWVnlBYCPE8bRv50JEvZ2J6m3LPnkssfWF8iO5PNfm6SaUQqrCrHQtmEjEx0DfB8/6YoEQCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bA82blMl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733235617; c=relaxed/simple;
+	bh=s2SqqMNG8bkReQAgImrfGF1AvrnPnThhdA7ZNCRj1jE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=em8QtPNrk8sV0z+NIOE7t2J+uW2oBjkES5dY/AOq8WJGqYn58u0tuAq6tYeXLJ5h7yPlzdsrR/p7IzKGLABr+DjrTs7Mm36m36y2FRYq29IIbOYwtfsy34PzTvPtIRjJy+GX2D7SISqToUuGVAGT9oEKczeq2v4yy1QuCmnzKP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bz//0v3y; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bA82blMl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733234887;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rQlKhIjktQisMCSLTubj7AX53kolWko2uaY5lKb28A4=;
-	b=bA82blMlzeZjlzEmG8l6F33zGRAbY5EyySWmsHAwKLY9RSFwLtNQ7O//Ii2CNI3juy0URv
-	Zwx5OTQdLDuqahYj8a0Fr6Zvq5gu7ITo1xwEiBkPEWg5hfgTUPmY01+TF5bv5WKz8cLGvS
-	XMM8W5ubIgmuojoYH378tdeLjoP8LrA=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-YsrVvxn_Nf64O3FS9zyCgw-1; Tue, 03 Dec 2024 09:08:06 -0500
-X-MC-Unique: YsrVvxn_Nf64O3FS9zyCgw-1
-X-Mimecast-MFC-AGG-ID: YsrVvxn_Nf64O3FS9zyCgw
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-53df70e05b7so3878374e87.1
-        for <kvm@vger.kernel.org>; Tue, 03 Dec 2024 06:08:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733234885; x=1733839685;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rQlKhIjktQisMCSLTubj7AX53kolWko2uaY5lKb28A4=;
-        b=tN85b2rswzyUNLd2mwzTr2ZmLg2n6+CoP/jfBLX7Snr8hssBJonoz5LSvtQQlf+btN
-         LKrKcPgrM64c8Pb6UTJpSoJghwkBuYOzeMXm6iRhgHtkwPfBNthFXDILFwxPRugVTU8D
-         n2Y39Z3lrY9BAxTVKSOijKrrQncSyif7Ih+KGXadeS7pFre3EHrck6854qN1/qE9PsSE
-         govTSzQX+woAIxTjkAR4TgU7SP4uUTGAPgmqGNWMtDHTkmiczA/3q7hX6H9afoEeqwpn
-         Ys/DyybNwPvAgPhIsMjwoqWvP+2YyCgjdJEb+YyZWKPNWkYEZXBVF1sTcpj5j/Bttuj5
-         vKKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXscI31LpEJ/ayvOIF3XDEkKNGru0v96/+iGjtPY2kirGphZ3bZne7QX1G9jzyYSpTXarw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtO50m2kPeX1vXhjTeUhPZvAx2MM2i28bF7lYv7ZsUeaKnl4VI
-	NSMTtK/oYdyvIvGhNAVkj64bPV60fm1uaVfh8KiKIbf7oq6g3DYgyhifD38Bz+Fd9iFFl4frdP4
-	mT+9s213vt1IkCjp084FmHA28/en5n5zIQWNsMMjNfOpRsoJ8IPSPLeED8vIu
-X-Gm-Gg: ASbGncstxFmeOxA76PjEI0nGwPV+EiUzwjrjcYiJ3nhXQwSOemENJdEfB39GopMDHfK
-	o1H/6DyUxEgCYcIVG+Y0ld4x8eIfjE/L9R2r5t8a0V0DHib/nvdWeAWmWK7xodVHoDnlHnDL/RW
-	EmcuAsytDoHNP00B2o7H7SIunIekVOmZj5XWvCuK9JT9mG9SQAbUNu/c8EX2pwO14Urso6xSW3B
-	GwZQOiVD4pPGMmUiz5C54g/flsoIaZd+AUNw53+awTNH3MWT/jeP6+8OxPjkOsWQRfrRQaAEViR
-	8trMcElivZ3VindnqF94E3A9pRqJt8ynVg5nrAeTzfOYeedcBHOz5j4r+1QoGKqS9QQVMUw2Dol
-	DgA==
-X-Received: by 2002:a05:6512:1384:b0:53d:dcfe:3252 with SMTP id 2adb3069b0e04-53e129ff3abmr1811447e87.23.1733234884504;
-        Tue, 03 Dec 2024 06:08:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE0Y6fMLCBrrALi4s1t2Q1RJwq+7dGUtdswkgE0z+RA6PJAIXFweR6z/INeel9u/Z5zwJ5Nwg==
-X-Received: by 2002:a05:6512:1384:b0:53d:dcfe:3252 with SMTP id 2adb3069b0e04-53e129ff3abmr1811372e87.23.1733234883877;
-        Tue, 03 Dec 2024 06:08:03 -0800 (PST)
-Received: from ?IPV6:2003:cb:c746:1b00:fd9e:c26c:c552:1de7? (p200300cbc7461b00fd9ec26cc5521de7.dip0.t-ipconnect.de. [2003:cb:c746:1b00:fd9e:c26c:c552:1de7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385df9ef1d6sm12403562f8f.102.2024.12.03.06.08.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 06:08:03 -0800 (PST)
-Message-ID: <753a033c-7341-4a3a-8546-c31a50d35aff@redhat.com>
-Date: Tue, 3 Dec 2024 15:08:00 +0100
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bz//0v3y"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BDF8040E021C;
+	Tue,  3 Dec 2024 14:20:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id TdUGDkFbDPTk; Tue,  3 Dec 2024 14:20:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1733235607; bh=BZeJ1b95eAqJbQxIv6AsrDch7h30Uxh79jYaoVPQxk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bz//0v3y5+ecRmZTqMCe+UzAJ8Zql5zCw6Kk6qGF7LoqEDos18vkLiP6WTiot6EoZ
+	 0DUOJ7qyGXWr9ILsKJnUAauACWOWxQV/6QHN5zjN/txF8ejD+mBdsznJ6y2wksYWrg
+	 oD7A9c7RCb2diE3DxLq7Z/EftTx+9WwWi3O6bpS1I1NGGDrDMAlkrw/NFNTcCYc5RX
+	 GNAudwMxdMCSKwPSV0ZDZHlTbbWzbqwef5B4j9v4tPebcEdhUA1mdnB7DNgX8j/ptF
+	 sZvzZuSOOvPazqux+lYKu8g+vRh8fGLmQ0WmclorpVJLIFiY5Y8UdA2/BrdbxFvOJk
+	 SY4WRSBiF8OJGgRmC+t2UYw8xN8qYz1yrwFGJwn3xCHyd7dp1q8JHiPnTWOcx5vZsP
+	 MivRQC3lbutkSg/PphVUFyy2tYN2J03ph2/XW16YaJCZWpHi9wzCd/qr74oPsm+lxq
+	 m+MrXo2YWeWE/5qrLN5arXcj/2B083EgLERhniYxYnYQ6Jf48euTTN4dnuZAVsJt0b
+	 krROaXWAdf7MA3t7taUYZ7h5tEPpexveQtAJzMcXWaoh6LgzXcjE11f2RDd4axFhFq
+	 scgT/GPQ4n5PUiYJtWWVmv1Xx/GFBcF9xB8N0Uc7bGCw2zA2RYi5d9zhvdtQVoiKmo
+	 YGDVwXZy0IDU20Ds3UZRGLfU=
+Received: from zn.tnic (pd9530b86.dip0.t-ipconnect.de [217.83.11.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73C3B40E0163;
+	Tue,  3 Dec 2024 14:19:56 +0000 (UTC)
+Date: Tue, 3 Dec 2024 15:19:50 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, x86@kernel.org,
+	kvm@vger.kernel.org, mingo@redhat.com, tglx@linutronix.de,
+	dave.hansen@linux.intel.com, pgonda@google.com, seanjc@google.com,
+	pbonzini@redhat.com
+Subject: Re: [PATCH v15 01/13] x86/sev: Carve out and export SNP guest
+ messaging init routines
+Message-ID: <20241203141950.GCZ08ThrMOHmDFeaa2@fat_crate.local>
+References: <20241203090045.942078-1-nikunj@amd.com>
+ <20241203090045.942078-2-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/7] hugetlbfs memory HW error fixes
-To: William Roche <william.roche@oracle.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
- imammedo@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
-References: <cf587c8b-3894-4589-bfea-be5db70e81f3@redhat.com>
- <20241125142718.3373203-1-william.roche@oracle.com>
- <48b09647-d2ba-43e5-8e73-16fb4ace6da5@oracle.com>
- <874e2625-b5e7-4247-994a-9b341abbdceb@redhat.com>
- <e09204a4-1570-4d39-afc7-e839a0a492d8@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <e09204a4-1570-4d39-afc7-e839a0a492d8@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241203090045.942078-2-nikunj@amd.com>
 
-On 03.12.24 01:15, William Roche wrote:
-> On 12/2/24 17:00, David Hildenbrand wrote:
->> On 02.12.24 16:41, William Roche wrote:
->>> Hello David,
->>
->> Hi,
->>
->> sorry for reviewing yet, I was rather sick the last 1.5 weeks.
+On Tue, Dec 03, 2024 at 02:30:33PM +0530, Nikunj A Dadhania wrote:
+> Currently, the sev-guest driver is the only user of SNP guest messaging.
+> All routines for initializing SNP guest messaging are implemented within
+> the sev-guest driver and are not available during early boot. In
+> prepratation for adding Secure TSC guest support, carve out APIs to
+
+Unknown word [prepratation] in commit message.
+Suggestions: ['preparation', 'preparations', 'reparation', 'perpetration', 'reputation', 'perpetuation', 'peroration', 'presentation', 'repatriation', 'propagation', "preparation's"]
+
+Please introduce a spellchecker into your patch creation workflow.
+
+> allocate and initialize guest messaging descriptor context and make it part
+> of coco/sev/core.c. As there is no user of sev_guest_platform_data anymore,
+> remove the structure.
 > 
-> I hope you get well soon!
-
-Getting there, thanks! :)
-
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h              |  24 ++-
+>  arch/x86/coco/sev/core.c                | 183 +++++++++++++++++++++-
+>  drivers/virt/coco/sev-guest/sev-guest.c | 197 +++---------------------
+>  arch/x86/Kconfig                        |   1 +
+>  drivers/virt/coco/sev-guest/Kconfig     |   1 -
+>  5 files changed, 220 insertions(+), 186 deletions(-)
 > 
->>> I've finally tested many page mapping possibilities and tried to
->>> identify the error injection reaction on these pages to see if mmap()
->>> can be used to recover the impacted area.
->>> I'm using the latest upstream kernel I have for that:
->>> 6.12.0-rc7.master.20241117.ol9.x86_64
->>> But I also got similar results with a kernel not supporting
->>> MADV_DONTNEED, for example: 5.15.0-301.163.5.2.el9uek.x86_64
->>>
->>>
->>> Let's start with mapping a file without modifying the mapped area:
->>> In this case we should have a clean page cache mapped in the process.
->>> If an error is injected on this page, the kernel doesn't even inform the
->>> process about the error as the page is replaced (no matter if the
->>> mapping was shared of not).
->>>
->>> The kernel indicates this situation with the following messages:
->>>
->>> [10759.371701] Injecting memory failure at pfn 0x10d88e
->>> [10759.374922] Memory failure: 0x10d88e: corrupted page was clean:
->>> dropped without side effects
->>> [10759.377525] Memory failure: 0x10d88e: recovery action for clean LRU
->>> page: Recovered
->>
->> Right. The reason here is that we can simply allocate a new page and
->> load data from disk. No corruption.
->>
->>>
->>>
->>> Now when the page content is modified, in the case of standard page
->>> size, we need to consider a MAP_PRIVATE or MAP_SHARED
->>> - in the case of a MAP_PRIVATE page, this page is corrupted and the
->>> modified data are lost, the kernel will use the SIGBUS mechanism to
->>> inform this process if needed.
->>>      But remapping the area sweeps away the poisoned page, and allows the
->>> process to use the area.
->>>
->>> - In the case of a MAP_SHARED page, if the content hasn't been sync'ed
->>> with the file backend, we also loose the modified data, and the kernel
->>> can also raise SIGBUS.
->>>      Remapping the area recreates a page cache from the "on disk" file
->>> content, clearing the error.
->>
->> In a mmap(MAP_SHARED, fd) region that will also require fallocate IIUC.
-> 
-> I would have expected the same thing, but what I noticed is that in the
-> case of !hugetlb, even poisoned shared memory seem to be recovered with:
-> mmap(location, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, fd, 0)
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 91f08af31078..f78c94e29c74 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -14,6 +14,7 @@
+>  #include <asm/insn.h>
+>  #include <asm/sev-common.h>
+>  #include <asm/coco.h>
+> +#include <asm/set_memory.h>
+>  
+>  #define GHCB_PROTOCOL_MIN	1ULL
+>  #define GHCB_PROTOCOL_MAX	2ULL
+> @@ -170,10 +171,6 @@ struct snp_guest_msg {
+>  	u8 payload[PAGE_SIZE - sizeof(struct snp_guest_msg_hdr)];
+>  } __packed;
+>  
+> -struct sev_guest_platform_data {
+> -	u64 secrets_gpa;
+> -};
+> -
+>  struct snp_guest_req {
+>  	void *req_buf;
+>  	size_t req_sz;
+> @@ -253,6 +250,7 @@ struct snp_msg_desc {
+>  
+>  	u32 *os_area_msg_seqno;
+>  	u8 *vmpck;
+> +	int vmpck_id;
+>  };
+>  
+>  /*
+> @@ -458,6 +456,20 @@ void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
+>  void snp_kexec_finish(void);
+>  void snp_kexec_begin(void);
+>  
+> +static inline bool snp_is_vmpck_empty(struct snp_msg_desc *mdesc)
+> +{
+> +	static const char zero_key[VMPCK_KEY_LEN] = {0};
+> +
+> +	if (mdesc->vmpck)
+> +		return !memcmp(mdesc->vmpck, zero_key, VMPCK_KEY_LEN);
+> +
+> +	return true;
+> +}
+
+This function looks silly in a header with that array allocation.
+
+I think you should simply do:
+
+	if (memchr_inv(mdesc->vmpck, 0, VMPCK_KEY_LEN))
+
+at the call sites and not have this helper at all.
+
+But please do verify whether what I'm saying actually makes sense and if it
+does, this can be a cleanup pre-patch.
 
 
-Let me take a look at your tool below if I can find an explanation of 
-what is happening, because it's weird :)
+> +
+> +int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id);
+> +struct snp_msg_desc *snp_msg_alloc(void);
+> +void snp_msg_free(struct snp_msg_desc *mdesc);
+> +
+>  #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+>  
+>  #define snp_vmpl 0
+> @@ -498,6 +510,10 @@ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
+>  static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
+>  static inline void snp_kexec_finish(void) { }
+>  static inline void snp_kexec_begin(void) { }
+> +static inline bool snp_is_vmpck_empty(struct snp_msg_desc *mdesc) { return false; }
+> +static inline int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id) { return -1; }
+> +static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
+> +static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
+>  
+>  #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+>  
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index c5b0148b8c0a..3cc741eefd06 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/psp-sev.h>
+>  #include <linux/dmi.h>
+>  #include <uapi/linux/sev-guest.h>
+> +#include <crypto/gcm.h>
+>  
+>  #include <asm/init.h>
+>  #include <asm/cpu_entry_area.h>
+> @@ -2580,15 +2581,9 @@ static struct platform_device sev_guest_device = {
+>  
+>  static int __init snp_init_platform_device(void)
+>  {
+> -	struct sev_guest_platform_data data;
+> -
+>  	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+>  		return -ENODEV;
+>  
+> -	data.secrets_gpa = secrets_pa;
+> -	if (platform_device_add_data(&sev_guest_device, &data, sizeof(data)))
+> -		return -ENODEV;
+> -
+>  	if (platform_device_register(&sev_guest_device))
+>  		return -ENODEV;
+>  
+> @@ -2667,3 +2662,179 @@ static int __init sev_sysfs_init(void)
+>  }
+>  arch_initcall(sev_sysfs_init);
+>  #endif // CONFIG_SYSFS
+> +
+> +static void free_shared_pages(void *buf, size_t sz)
+> +{
+> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +	int ret;
+> +
+> +	if (!buf)
+> +		return;
+> +
+> +	ret = set_memory_encrypted((unsigned long)buf, npages);
+> +	if (ret) {
+> +		WARN_ONCE(ret, "failed to restore encryption mask (leak it)\n");
 
-[...]
+Looking at where this lands:
 
-> 
-> At the end of this email, I included the source code of a simplistic
-> test case that shows that the page is replaced in the case of standard
-> page size.
-> 
-> The idea of this test is simple:
-> 
-> 1/ Create a local FILE with:
-> # dd if=/dev/zero of=./FILE bs=4k count=2
-> 2+0 records in
-> 2+0 records out
-> 8192 bytes (8.2 kB, 8.0 KiB) copied, 0.000337674 s, 24.3 MB/s
-> 
-> 2/ As root run:
-> # ./poisonedShared4k
-> Mapping 8192 bytes from file FILE
-> Reading and writing the first 2 pages content:
-> Read: Read: Wrote: Initial mem page 0
-> Wrote: Initial mem page 1
-> Data pages at 0x7f71a19d6000  physically 0x124fb0000
-> Data pages at 0x7f71a19d7000  physically 0x128ce4000
-> Poisoning 4k at 0x7f71a19d6000
-> Signal 7 received
-> 	code 4		Signal code
-> 	addr 0x7f71a19d6000	Memory location
-> 	si_addr_lsb 12
-> siglongjmp used
-> Remapping the poisoned page
-> Reading and writing the first 2 pages content:
-> Read: Read: Initial mem page 1
-> Wrote: Rewrite mem page 0
-> Wrote: Rewrite mem page 1
-> Data pages at 0x7f71a19d6000  physically 0x10c367000
-> Data pages at 0x7f71a19d7000  physically 0x128ce4000
-> 
-> 
->    ---
-> 
-> As we can see, this process:
-> - maps the FILE,
-> - tries to read and write the beginning of the first 2 pages
-> - gives their physical addresses
-> - poison the first page with a madvise(MADV_HWPOISON) call
-> - shows the SIGBUS signal received and recovers from it
-> - simply remaps the same page from the file
-> - tries again to read and write the beginning of the first 2 pages
-> - gives their physical addresses
-> 
+set_memory_encrypted
+|-> __set_memory_enc_dec
+
+and that doing now:
+
+        if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+                if (!down_read_trylock(&mem_enc_lock))
+                        return -EBUSY;
 
 
-Turns out the code will try to truncate the pagecache page using 
-mapping->a_ops->error_remove_folio().
+after
 
-That, however, is only implemented on *some* filesystems.
+859e63b789d6 ("x86/tdx: Convert shared memory back to private on kexec")
 
-Most prominently, it is not implemented on shmem as well.
+we probably should pay attention to this here firing and maybe turning that
+_trylock() into a normal down_read*
+
+Anyway, just something to pay attention to in the future.
+
+> +		return;
+> +	}
+> +
+> +	__free_pages(virt_to_page(buf), get_order(sz));
+> +}
+
+...
+
+> +struct snp_msg_desc *snp_msg_alloc(void)
+> +{
+> +	struct snp_msg_desc *mdesc;
+> +	void __iomem *mem;
+> +
+> +	BUILD_BUG_ON(sizeof(struct snp_guest_msg) > PAGE_SIZE);
+> +
+> +	mdesc = kzalloc(sizeof(struct snp_msg_desc), GFP_KERNEL);
+
+The above ones use GFP_KERNEL_ACCOUNT. What's the difference?
+
+> +	if (!mdesc)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	mem = ioremap_encrypted(secrets_pa, PAGE_SIZE);
+> +	if (!mem)
+> +		goto e_free_mdesc;
+> +
+> +	mdesc->secrets = (__force struct snp_secrets_page *)mem;
+> +
+> +	/* Allocate the shared page used for the request and response message. */
+> +	mdesc->request = alloc_shared_pages(sizeof(struct snp_guest_msg));
+> +	if (!mdesc->request)
+> +		goto e_unmap;
+> +
+> +	mdesc->response = alloc_shared_pages(sizeof(struct snp_guest_msg));
+> +	if (!mdesc->response)
+> +		goto e_free_request;
+> +
+> +	mdesc->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
+> +	if (!mdesc->certs_data)
+> +		goto e_free_response;
+> +
+> +	/* initial the input address for guest request */
+> +	mdesc->input.req_gpa = __pa(mdesc->request);
+> +	mdesc->input.resp_gpa = __pa(mdesc->response);
+> +	mdesc->input.data_gpa = __pa(mdesc->certs_data);
+> +
+> +	return mdesc;
+> +
+> +e_free_response:
+> +	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+> +e_free_request:
+> +	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+> +e_unmap:
+> +	iounmap(mem);
+> +e_free_mdesc:
+> +	kfree(mdesc);
+> +
+> +	return ERR_PTR(-ENOMEM);
+> +}
+> +EXPORT_SYMBOL_GPL(snp_msg_alloc);
+> +
+> +void snp_msg_free(struct snp_msg_desc *mdesc)
+> +{
+> +	if (!mdesc)
+> +		return;
+> +
+> +	mdesc->vmpck = NULL;
+> +	mdesc->os_area_msg_seqno = NULL;
+
+	memset(mdesc, ...);
+
+at the end instead of those assignments.
+
+> +	kfree(mdesc->ctx);
+> +
+> +	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+> +	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+> +	iounmap((__force void __iomem *)mdesc->secrets);
 
 
-So if you run your test with shmem (e.g., /tmp/FILE), it doesn't work.
+> +	kfree(mdesc);
+> +}
+> +EXPORT_SYMBOL_GPL(snp_msg_free);
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+> index b699771be029..5268511bc9b8 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
 
-Using fallocate+MADV_DONTNEED seems to work on shmem.
+...
+
+> @@ -993,115 +898,57 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+>  		return -ENODEV;
+>  
+> -	if (!dev->platform_data)
+> -		return -ENODEV;
+> -
+> -	data = (struct sev_guest_platform_data *)dev->platform_data;
+> -	mapping = ioremap_encrypted(data->secrets_gpa, PAGE_SIZE);
+> -	if (!mapping)
+> -		return -ENODEV;
+> -
+> -	secrets = (__force void *)mapping;
+> -
+> -	ret = -ENOMEM;
+>  	snp_dev = devm_kzalloc(&pdev->dev, sizeof(struct snp_guest_dev), GFP_KERNEL);
+>  	if (!snp_dev)
+> -		goto e_unmap;
+> -
+> -	mdesc = devm_kzalloc(&pdev->dev, sizeof(struct snp_msg_desc), GFP_KERNEL);
+> -	if (!mdesc)
+> -		goto e_unmap;
+> -
+> -	/* Adjust the default VMPCK key based on the executing VMPL level */
+> -	if (vmpck_id == -1)
+> -		vmpck_id = snp_vmpl;
+> +		return -ENOMEM;
+>  
+> -	ret = -EINVAL;
+> -	mdesc->vmpck = get_vmpck(vmpck_id, secrets, &mdesc->os_area_msg_seqno);
+> -	if (!mdesc->vmpck) {
+> -		dev_err(dev, "Invalid VMPCK%d communication key\n", vmpck_id);
+> -		goto e_unmap;
+> -	}
+> +	mdesc = snp_msg_alloc();
+> +	if (IS_ERR_OR_NULL(mdesc))
+> +		return -ENOMEM;
+>  
+> -	/* Verify that VMPCK is not zero. */
+> -	if (is_vmpck_empty(mdesc)) {
+> -		dev_err(dev, "Empty VMPCK%d communication key\n", vmpck_id);
+> -		goto e_unmap;
+> -	}
+> +	ret = snp_msg_init(mdesc, vmpck_id);
+> +	if (ret)
+> +		return -EIO;
+
+You just leaked mdesc here.
+
+Audit all your error paths.
+
+Thx.
 
 -- 
-Cheers,
+Regards/Gruss,
+    Boris.
 
-David / dhildenb
-
+https://people.kernel.org/tglx/notes-about-netiquette
