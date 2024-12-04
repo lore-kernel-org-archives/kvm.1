@@ -1,55 +1,55 @@
-Received: from mail-ua1-f73.google.com (mail-ua1-f73.google.com [209.85.222.73])
+Received: from mail-ot1-f73.google.com (mail-ot1-f73.google.com [209.85.210.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8DB1C3C14
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 19:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1E71A8F9A
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 19:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733339660; cv=none; b=luxgb/Tj5KlxjvG8os5wBTd+h5B0v1CAxKiDvuhHkefUACMXXwf9JZewjFHhdK/Ijp0bVh3d6FFg7B/Wos/bUo/44J2CRQjn48SDVNqLpMHfVRPR4dI6YsaC+THHKWMAMRivw0su3dFmSiByfZP8tpOKOHpiMgGtHxhh9OCRTZA=
+	t=1733339661; cv=none; b=alB2rI9KDn/AfBjCzRRWcUL7x6DLR4g83rVNbrQR8+oV/Q3ZuYa7/7sqfOCJmWE9Wvtn3TmDelkkxkYV1YsovBKEQ1X8Sl2bf0Sdtg2eZAkZi6FLlNWBixyF6tEXuB9+fHOywMF5EuafCsvsMbkDk/npGlTbMK8izUaIJoZwqeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733339660; c=relaxed/simple;
-	bh=gwG4wHoxIC9ohviESrC4i1SBquoILkHgmJR3YvyQL40=;
+	s=arc-20240116; t=1733339661; c=relaxed/simple;
+	bh=TpUkUFBOXODTTMhFPZD2lNGB5T081ke6yKBQcgGS+ss=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=agOquxNGbS6aMDwq7yCj9lwdyMR7RqCh116k0D8/ex3p4AnMWk9vKFq7kXl8rZnIRRUvaSDwgEiehv6a/JokKGt6sUDrxspJXOLmEcDZCzXCGAZR+duIExZjsezetRmCjZdvXFcPfEfOYj4Fx7cuLYWIf0Lf17CRZfc2pOvFuFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HynfjS9g; arc=none smtp.client-ip=209.85.222.73
+	 To:Cc:Content-Type; b=J0X6yxFhyVvJwH7TYMIhPvyaxyc6OAuh8hCOFEvl9lvH1WkNWhEgpjIuYiW3t2Izihp0tp7tt3ZamX6jqHdxYxQOQMxQnSeq2hmLty0kRixXxS/vcn2KZlovNzs04LhRiMetrktzKV+6l8o4Um/SAOqtprJmJ2o05qxtzcKaSs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k55UV2wp; arc=none smtp.client-ip=209.85.210.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HynfjS9g"
-Received: by mail-ua1-f73.google.com with SMTP id a1e0cc1a2514c-85bd8a1a59cso17685241.1
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 11:14:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k55UV2wp"
+Received: by mail-ot1-f73.google.com with SMTP id 46e09a7af769-71d5f5ffc2aso126928a34.1
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 11:14:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733339658; x=1733944458; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733339659; x=1733944459; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rnZJyT6N3r8vTjoa4UcLa/XGdQ+PqihxUkrotorxiRo=;
-        b=HynfjS9gexIPiXe0xn8pvL/i2eC2Ggh91wY+OOggUnrAwLxAjOIBijfWJSvdnLKJOA
-         IDIQ0UpU4YJKosuerBA3hZPGSkUY5DOfLZTe2xv9Oma6DL0ILGK14eogVDe1tH3R4aHu
-         WDaB3GyTR/CkclNtL/FiD1aMx7xwLuW5CoixkQWJxTbzFnoN6bD7bo6atK6prLlAIy+d
-         eFA8kbCN1gEQPGR7ICo/vdLJu5zic2VZrqAV6SAZds5uEkZeHz3z2tWVEiFIw42C+uYf
-         sUP+a1/E0aH/MMPZYF78OdT5A65OzEfKhfDNGfcuCFyjQhjpidTPdTds+toCaSmVnS+l
-         z0Jg==
+        bh=QAQf3CS/PWwFToEYvErsd8wUXXWpCS3gaH7WeW/jjGQ=;
+        b=k55UV2wpB+kQRl+gbfTP1ICVDfPAXkFhbcIMhO4AHNV+DHiAr/Uf9O4Vjak5FnOg/a
+         r9eU+1BgxJ9M2obz0NIir5XE5kYm/Rke+Bw2iyV1zIzibuYmbaqWA/5DrnFRGLxk3cKE
+         2djkRF+B+rzi3dY5mc7nGolIuY96T4owSbcj+HtqgQZZgA2emkWCTiSHghI3X1BuDkH2
+         bsvtt1mJl/NeNbLcJod0vqVc6lyUk520gFbB/pTz3+sGrSD8X7mNtFuqNjpcOfUs9ZRd
+         rShKitaZQ2Dt2VMaCQNzSin3NriMtegyVz3tIWmV+gBVicOsMua4maJc1zwVh0V6W4LT
+         ShEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733339658; x=1733944458;
+        d=1e100.net; s=20230601; t=1733339659; x=1733944459;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rnZJyT6N3r8vTjoa4UcLa/XGdQ+PqihxUkrotorxiRo=;
-        b=gLXgHXxM3oOvoecvLw5E/YXXRXUlEFT4m2mxTI1bb2RbkH1+F5r100mXUC6xcHoBb2
-         F92ocS+8WbmpCaI4mUTnM4i227VaSQfWLA1V/vtbNBB7S2a2lFDN0SP43G2mXvOaUsla
-         XJJ4fsKitW+1JD7blSsz6bbykW1VVYPg4fAOD9zt3PSo+o+T6kr+5cf0ULHwkPXaobUm
-         z1A0A6zfL2HzhpbELb05tpCdHeu9mJB0ArXRuz57DfHlfI5KB5P80gkpKf3v1Jz2LL7S
-         Kx3Q91rThm2V6bDH1Ye9KXQczN9BBKQko84H+wzaVw9EfLZIGGlX9mF8PbpI1yxqeGVH
-         G1tg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYyz+mbIuE4axRl1SvLDG/7tq9tQaX0yFt5SaZ5vP/0HY1tKfc1yUy2RoGYvVg8399Yf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9X5cK+jwrb4P4DNM7uSiEBx8GaMyUdzHrba34urMoXl4OsN5y
-	7c1pYIyw3O6nIJ29dtgo3qXzHQvKGxcjk2WyIzIIWpkIosq12lJ8M2EXLJTSc7qmpM3JklKoIHg
-	cELgNhgiywI82KJGnkw==
-X-Google-Smtp-Source: AGHT+IHeflh53wCdtG/eOTj3NVvzDZ1TR16bpwDBvuZyMyTF5KFF0ZrmPFZ5n9dphqqxj6PK08wZjYTOW77Q8bPv
-X-Received: from vkbfc18.prod.google.com ([2002:a05:6122:4b12:b0:50d:6d20:c212])
+        bh=QAQf3CS/PWwFToEYvErsd8wUXXWpCS3gaH7WeW/jjGQ=;
+        b=BB7FtvOWKnO7VQR2svNiOobk6yod4GJMb23X5yCyZ0vmhXfKU8oX7sYlfRIGkMM+PP
+         mX/koD+tlJPwryy1Tr/VTLZUzl6J3bVG1o373c8MWENbfWNSNb0uDb3GNWwZFCVcXpdz
+         vNr4wXpAJNw1+F60RGoFE8CI2hfFx5tm7keTqbsnV2HYKruf+rv/84vdkDDEKWPQE2A7
+         ehyg/bbB5R33v86hmR2tmXIS6Z6K/w7Wc+EWUIDZMA3GaC60B7pgW+lSYC4C23gF/2Kj
+         f63vTB3ykQHodYjNkeLSD4BRrocHEmU2OUQr29/LzE07lpqZEIS8rh5G0zk+KmejIlmJ
+         KWng==
+X-Forwarded-Encrypted: i=1; AJvYcCUmin4DFmRJhtj+wotGxUrajJFsu5z4uVQBYtZ8UTy6YEFVseJkZGFuemu8cGpHNw7vdyQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOhHkVojBGQ3phr3KyOhZQNuQa+EKKl/mp/nTKg6CtjFR25NE+
+	1WYOAnfG5aoPjpelYhQEUo+ONJ8L6b2jeZeVFepaciCQkPmBU2Zzjtz5IBOs7J4NZQUH2O1X7Yx
+	3AVeRjpKw6OEDt+RoIw==
+X-Google-Smtp-Source: AGHT+IF4lgVNFWtAABhlVyCvDTypvCqwQE4E76pJaa2ei5llPSfzgOLBadwb4XjVCcPSe7j0KBf+vwviXHvnVJ9Y
+X-Received: from vsvj2.prod.google.com ([2002:a05:6102:3e02:b0:4af:5a5c:cdaa])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6122:8d0:b0:50d:4cb8:5aef with SMTP id 71dfb90a1353d-515bf2ff82amr10640137e0c.6.1733339657905;
- Wed, 04 Dec 2024 11:14:17 -0800 (PST)
-Date: Wed,  4 Dec 2024 19:13:38 +0000
+ 2002:a05:6830:348b:b0:71d:4c3b:f464 with SMTP id 46e09a7af769-71dad63c3e4mr7692549a34.13.1733339659221;
+ Wed, 04 Dec 2024 11:14:19 -0800 (PST)
+Date: Wed,  4 Dec 2024 19:13:39 +0000
 In-Reply-To: <20241204191349.1730936-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241204191349.1730936-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204191349.1730936-4-jthoughton@google.com>
-Subject: [PATCH v1 03/13] KVM: Allow late setting of KVM_MEM_USERFAULT on
- guest_memfd memslot
+Message-ID: <20241204191349.1730936-5-jthoughton@google.com>
+Subject: [PATCH v1 04/13] KVM: Advertise KVM_CAP_USERFAULT in KVM_CHECK_EXTENSION
 From: James Houghton <jthoughton@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, 
@@ -73,55 +72,43 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Currently guest_memfd memslots can only be deleted. Slightly change the
-logic to allow KVM_MR_FLAGS_ONLY changes when the only flag being
-changed is KVM_MEM_USERFAULT.
+Advertise support for KVM_CAP_USERFAULT when kvm_has_userfault() returns
+true. Currently this is merely IS_ENABLED(CONFIG_HAVE_KVM_USERFAULT), so
+it is somewhat redundant.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- virt/kvm/kvm_main.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ include/uapi/linux/kvm.h | 1 +
+ virt/kvm/kvm_main.c      | 4 ++++
+ 2 files changed, 5 insertions(+)
 
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 641a2e580441..d9a135c895d7 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -936,6 +936,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_PRE_FAULT_MEMORY 236
+ #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+ #define KVM_CAP_X86_GUEST_MODE 238
++#define KVM_CAP_USERFAULT 239
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 23fa3e911c4e..fa851704db94 100644
+index fa851704db94..b552cdef2850 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -2009,9 +2009,6 @@ int __kvm_set_memory_region(struct kvm *kvm,
- 		if ((kvm->nr_memslot_pages + npages) < kvm->nr_memslot_pages)
- 			return -EINVAL;
- 	} else { /* Modify an existing slot. */
--		/* Private memslots are immutable, they can only be deleted. */
--		if (mem->flags & KVM_MEM_GUEST_MEMFD)
--			return -EINVAL;
- 		if ((mem->userspace_addr != old->userspace_addr) ||
- 		    (npages != old->npages) ||
- 		    ((mem->flags ^ old->flags) & KVM_MEM_READONLY))
-@@ -2025,6 +2022,16 @@ int __kvm_set_memory_region(struct kvm *kvm,
- 			return 0;
- 	}
- 
-+	/*
-+	 * Except for being able to set KVM_MEM_USERFAULT, private memslots are
-+	 * immutable, they can only be deleted.
-+	 */
-+	if (mem->flags & KVM_MEM_GUEST_MEMFD &&
-+	    !(change == KVM_MR_CREATE ||
-+	      (change == KVM_MR_FLAGS_ONLY &&
-+	       (mem->flags ^ old->flags) == KVM_MEM_USERFAULT)))
-+		return -EINVAL;
-+
- 	if ((change == KVM_MR_CREATE || change == KVM_MR_MOVE) &&
- 	    kvm_check_memslot_overlap(slots, id, base_gfn, base_gfn + npages))
- 		return -EEXIST;
-@@ -2040,7 +2047,7 @@ int __kvm_set_memory_region(struct kvm *kvm,
- 	new->npages = npages;
- 	new->flags = mem->flags;
- 	new->userspace_addr = mem->userspace_addr;
--	if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-+	if (mem->flags & KVM_MEM_GUEST_MEMFD && change == KVM_MR_CREATE) {
- 		r = kvm_gmem_bind(kvm, new, mem->guest_memfd, mem->guest_memfd_offset);
- 		if (r)
- 			goto out;
+@@ -4804,6 +4804,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ #ifdef CONFIG_KVM_PRIVATE_MEM
+ 	case KVM_CAP_GUEST_MEMFD:
+ 		return !kvm || kvm_arch_has_private_mem(kvm);
++#endif
++#ifdef CONFIG_HAVE_KVM_USERFAULT
++	case KVM_CAP_USERFAULT:
++		return kvm_has_userfault(kvm);
+ #endif
+ 	default:
+ 		break;
 -- 
 2.47.0.338.g60cca15819-goog
 
