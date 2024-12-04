@@ -1,69 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64091F7077
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1801F8ACE
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733316910; cv=none; b=QjAppafRdi6tnF93X/KQbqyEbZOj9T/XXXlFUYXX3WfSQW89mJoQyxhmPmQyplG80nzmdsP1jevY4slGBV2E7yb+YQ0jr1l6mB0rV8G5NdgC1k33CepG3HeId9CTe0SgzZlv9Mz7KAfpzFJ9/j4cNnlkp3y0vfULBCp/nHApRTE=
+	t=1733316914; cv=none; b=qdjYAcmTU2MwtfIani/fIkE3ezrkWtUFhTtxieutFtyX3VKFrzIOgL1I/XNPwS/PUiYLhjxCpGZmhomu8RMwozNpaq5g9xXswxTNN0AT9A6UlRSecNIKFYSc/8nuzJtA31C9lTT+TKPgP8Q2a4z5vYNjSpfbjAwvmfVnR/tDIvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733316910; c=relaxed/simple;
-	bh=GU+EylrtNkBl0PCgVUrji2d7nB4cQuMPE/K3NHw4YGM=;
+	s=arc-20240116; t=1733316914; c=relaxed/simple;
+	bh=8EJBn/hbfhsOHacsaBstPaeEQTFd5MZoCB7W0faV+24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMAfUbaE3swduQoiz7um/zkgu0JmHYDNVGZdRg4bZcMr2kXz3TWYo8Wm8DZ7nglZMqYQk4FRctTRxuR6qREPBqbK/SnZk57X91BX1fJAvARecpbQNT2uEIwFpvJSuFQKUOcRYpw5voM0GkJ7J1sz0UzpCvrHHtYOkpub/CegNWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O6nHUCsJ; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=UJXqr9Pz7VTg7EfLZD1xWIom/jeERxqUPqyEJiz7WWIKnYbWVboWRDeJn4ULiP2H4evfqunu3lfpKcN+k6GccTzR6XJ6NBlBDghbG39Hkp+t54m85mqTxBL6G6d4j2xKBbjmWZF36E2yPULcj1jxIN29n768UWUXXtjHIlgkkkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HW9TwMYZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O6nHUCsJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HW9TwMYZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733316908;
+	s=mimecast20190719; t=1733316911;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3TMBFu0zsYs/BK8mI3BuEemyVvVnFxsrbDwOUtwonV0=;
-	b=O6nHUCsJ7VBy/f4+kT+4tfTdhK/ev61TkwjjZmbff2s2hSLFi7tSIAgK3HtznPqESiFD67
-	3GPit59iFITU0dpq2t2encr920VrsREEynoNQas1dY6Twbx1LmfOX6U7FTd0C2wr16YROs
-	ko1dwVeLZENjU3yZ0sIbtda2Qki/U44=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/hPjJFLUCb0ZdSDAqGVI3uh+hCPNkczr7XmzIQmCEzE=;
+	b=HW9TwMYZcntEQr7xS7j4/OtJZ/LxnuMjXcoifWK0hbxH3ifBovz2sKwBlhzTulR+yA0BAc
+	nSd/tDtSw8MB2kOt2TcE0DKXl9jhTkMv2wojCjz1KBGy/Fls8+n44PORqicAKaDoKosuvE
+	Gq2EmsKtWgsd+tuS01suX2Knx1B1IMo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-T5LvoyFHP2-im7i1q7l_mw-1; Wed, 04 Dec 2024 07:55:06 -0500
-X-MC-Unique: T5LvoyFHP2-im7i1q7l_mw-1
-X-Mimecast-MFC-AGG-ID: T5LvoyFHP2-im7i1q7l_mw
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385dcae001fso2825618f8f.1
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:06 -0800 (PST)
+ us-mta-6-ORv5kIEqNfijGcDWRxadvg-1; Wed, 04 Dec 2024 07:55:10 -0500
+X-MC-Unique: ORv5kIEqNfijGcDWRxadvg-1
+X-Mimecast-MFC-AGG-ID: ORv5kIEqNfijGcDWRxadvg
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4349fd2965fso62448975e9.1
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733316906; x=1733921706;
+        d=1e100.net; s=20230601; t=1733316909; x=1733921709;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3TMBFu0zsYs/BK8mI3BuEemyVvVnFxsrbDwOUtwonV0=;
-        b=qab0Bl7XAsSwY4LKrcS/BIscfbdH5Cf6tQ6YPLe46T7riIZB4//wEXDAEexOQFfjxb
-         ddcLkr3vO5GiHO76OGQUFXdf4d4uJoINGMolgq6wJNLaC960lKvKD5l4qyLboZClXdj1
-         vVmiC38sOvUn3E4K/s3Ko/36CXbHtirGVajjDu5P2kKNIK4N8kgLZDSJyh7tR/yM6eVw
-         jOQpyKX6/bDtAjyBIf79e9XV6qPdvQ6+qr6GDgvUoRSJf6FzhSgn+eKIcHWkHHztJQMk
-         yzUcHhaQEr2YCMtLzJRl6Kqwk6v9BlM1LCnCbCcXT2o9oM8arxOrBuLcds2YLw53/Gdv
-         HHKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWQ9ZaKE/OtaUGcl4lk7zIKkmKqYlJEEfnEiehqWXNJ6+I85OAX/vxMlT5zugtRkOKBhI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOmNMsfCG5M0/AnNBeKQ3boXWMJE89H3vBXU5FvP3ynM7PbZtk
-	hZD0cNusTWBAu7O+l1w4fRkV56U9Zd8OKg/oqggKVKUnoPt2DSeSazyEEDR1aSMrU36k7v/v85A
-	tr7xNl6A/FbsccDOCtkHCXn1+AjetuT/b0eiTeGIQ3xY0GqPoQw==
-X-Gm-Gg: ASbGncuQ0XQCYNRIZ/15zWmWIOG/t/kRjzpxwLYes2D1t9pq/0wT8Uw+CSN/zoiPvo7
-	Q3z86o2hpb30tJ/Kk0mE1ajyD5GSY9VNZG8+Jh6qRttq7RA6qVsp/VX4Q8QxBRZNX2MgoAVsciW
-	E7PUsoOa0OXo6GfDuvRsEwy1LAYhUf1fPZOdJGNMTuCQbZIpohLPJKYp6wb26xRG7of60p4Qp3u
-	AZBqy9glpPnAef5DG9bnixW+6c5y8448cxRr1VXGc1eb9LpGoPmXQIm6AUYeEg0N7XDD183qLiz
-	Bk4de47S3y0lzuQ3xAoWtRgLlGtBB37IzG4=
-X-Received: by 2002:a05:6000:156e:b0:385:fa2e:a33e with SMTP id ffacd0b85a97d-38607c0e1e7mr3561597f8f.43.1733316905753;
-        Wed, 04 Dec 2024 04:55:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH3Vs5XvVpD9wVjl4Do+O4dwdUFKsmLeUCgsK0LBk5udBDNdRPox9DV3gXL42llKQONJirIJg==
-X-Received: by 2002:a05:6000:156e:b0:385:fa2e:a33e with SMTP id ffacd0b85a97d-38607c0e1e7mr3561572f8f.43.1733316905408;
-        Wed, 04 Dec 2024 04:55:05 -0800 (PST)
+        bh=/hPjJFLUCb0ZdSDAqGVI3uh+hCPNkczr7XmzIQmCEzE=;
+        b=auhncHdeI9JIwA0smR6jezpksFtig8MTJTzqLt8JyaZa4SN/OYxvPzrUREBd42xxMs
+         bmQyrAnvVWaJ/86JKWKZLACsdnI3a0Ozba/7s7te2onCPExgIc4YSiGWBILxoC00FfEQ
+         6FLVrKaW0x2C1uBN6f0xR5akmKG7eJvEfgnN8yVH6UNKwAuMQyXzfhY7CasWDJIlSJjh
+         XfM3oj4v8LILqpWemU2pS83NWxgElqaoJHvPgIqdUbcAu88bmfCQsgR6Z3pAMhXoEyUI
+         9cY0zDtgcPwJha5JZBr392HjFH1epqwyP5wVqU3H8ATFq+7i/3kddciAhwCNFT7zEr6s
+         UUaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVcMAhjH0e6ptIC+hHXzCIIZALtD/NrW0B7YRYDZFIcix4GaC1V7O97fLHNDCKbljt/Kg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7zwA6hx4njk7NC7/N30UzsWz0mkN7mnH2sVEUw5v3fK8yHQa/
+	7qjKJey11n+469gkPv9iu7dRvRK16dSLvIt73lMgsSioChPpcI9qEV8y5VqDsZSL1dvfFNJxFky
+	TJ49WHCxQOGmaxkmchnELu2BVB3JQwXZJEd6Ypa6BNpXgYq44WA==
+X-Gm-Gg: ASbGnctA+PPa1JzCCrazO7pp+AvQa/BvAg3oqc1NmY2Q/r1aQscMBfuHWJvazNSB2TU
+	LjSXsO2DO0w/jQuSOryXi2ZvCEWEmvHl3oOC/krRHSq0E0UwG/tVNv4FDhuTRbS3HsmdrWbS/rp
+	BxN9QikRqVW6za/5qLJqrs6fEEUKOe+qUKOkJcql1+P45KHkz9fZOxlwVrmE0m+pna0GOHh/TsM
+	KzBvC4RxBBew+x3xdZSTpV7bbJo0A+aBd2f56hQAtF/Nd8+3SiwWgCJUo6bmosrZ/+V+XoqpQBL
+	VSq/jbiKKc8ouuyGiicNkZXWNotIrfy8CXo=
+X-Received: by 2002:a05:600c:1989:b0:431:6083:cd30 with SMTP id 5b1f17b1804b1-434d09b2a75mr60274855e9.6.1733316908759;
+        Wed, 04 Dec 2024 04:55:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFKlYOU/tZlshqWyJGjVsl03zkEzffSPE/+D71b9Tfd5+g4TqcfXtmwO5t6x/22DC/lF4E/bA==
+X-Received: by 2002:a05:600c:1989:b0:431:6083:cd30 with SMTP id 5b1f17b1804b1-434d09b2a75mr60274425e9.6.1733316908112;
+        Wed, 04 Dec 2024 04:55:08 -0800 (PST)
 Received: from localhost (p200300cbc70be10038d68aa111b0a20a.dip0.t-ipconnect.de. [2003:cb:c70b:e100:38d6:8aa1:11b0:a20a])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-385ed8dee66sm10241947f8f.104.2024.12.04.04.55.04
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-385db7f86dasm16267209f8f.66.2024.12.04.04.55.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 04:55:04 -0800 (PST)
+        Wed, 04 Dec 2024 04:55:06 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -91,9 +91,9 @@ Cc: linux-mm@kvack.org,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Eric Farman <farman@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 06/12] fs/proc/vmcore: factor out allocating a vmcore range and adding it to a list
-Date: Wed,  4 Dec 2024 13:54:37 +0100
-Message-ID: <20241204125444.1734652-7-david@redhat.com>
+Subject: [PATCH v2 07/12] fs/proc/vmcore: factor out freeing a list of vmcore ranges
+Date: Wed,  4 Dec 2024 13:54:38 +0100
+Message-ID: <20241204125444.1734652-8-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241204125444.1734652-1-david@redhat.com>
 References: <20241204125444.1734652-1-david@redhat.com>
@@ -111,92 +111,47 @@ use it also outside of vmcore.c later.
 Acked-by: Baoquan He <bhe@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- fs/proc/vmcore.c           | 21 ++-------------------
- include/linux/crash_dump.h | 14 ++++++++++++++
- 2 files changed, 16 insertions(+), 19 deletions(-)
+ fs/proc/vmcore.c           |  9 +--------
+ include/linux/crash_dump.h | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-index 8d262017ca11..9b72e255dd03 100644
+index 9b72e255dd03..e7b3cde44890 100644
 --- a/fs/proc/vmcore.c
 +++ b/fs/proc/vmcore.c
-@@ -709,11 +709,6 @@ static const struct proc_ops vmcore_proc_ops = {
- 	.proc_mmap	= mmap_vmcore,
- };
+@@ -1592,14 +1592,7 @@ void vmcore_cleanup(void)
+ 		proc_vmcore = NULL;
+ 	}
  
--static struct vmcore_range * __init get_new_element(void)
--{
--	return kzalloc(sizeof(struct vmcore_range), GFP_KERNEL);
--}
+-	/* clear the vmcore list. */
+-	while (!list_empty(&vmcore_list)) {
+-		struct vmcore_range *m;
 -
- static u64 get_vmcore_size(size_t elfsz, size_t elfnotesegsz,
- 			   struct list_head *vc_list)
- {
-@@ -1116,7 +1111,6 @@ static int __init process_ptload_program_headers_elf64(char *elfptr,
- 						size_t elfnotes_sz,
- 						struct list_head *vc_list)
- {
--	struct vmcore_range *new;
- 	int i;
- 	Elf64_Ehdr *ehdr_ptr;
- 	Elf64_Phdr *phdr_ptr;
-@@ -1139,13 +1133,8 @@ static int __init process_ptload_program_headers_elf64(char *elfptr,
- 		end = roundup(paddr + phdr_ptr->p_memsz, PAGE_SIZE);
- 		size = end - start;
+-		m = list_first_entry(&vmcore_list, struct vmcore_range, list);
+-		list_del(&m->list);
+-		kfree(m);
+-	}
++	vmcore_free_ranges(&vmcore_list);
+ 	free_elfcorebuf();
  
--		/* Add this contiguous chunk of memory to vmcore list.*/
--		new = get_new_element();
--		if (!new)
-+		if (vmcore_alloc_add_range(vc_list, start, size))
- 			return -ENOMEM;
--		new->paddr = start;
--		new->size = size;
--		list_add_tail(&new->list, vc_list);
- 
- 		/* Update the program header offset. */
- 		phdr_ptr->p_offset = vmcore_off + (paddr - start);
-@@ -1159,7 +1148,6 @@ static int __init process_ptload_program_headers_elf32(char *elfptr,
- 						size_t elfnotes_sz,
- 						struct list_head *vc_list)
- {
--	struct vmcore_range *new;
- 	int i;
- 	Elf32_Ehdr *ehdr_ptr;
- 	Elf32_Phdr *phdr_ptr;
-@@ -1182,13 +1170,8 @@ static int __init process_ptload_program_headers_elf32(char *elfptr,
- 		end = roundup(paddr + phdr_ptr->p_memsz, PAGE_SIZE);
- 		size = end - start;
- 
--		/* Add this contiguous chunk of memory to vmcore list.*/
--		new = get_new_element();
--		if (!new)
-+		if (vmcore_alloc_add_range(vc_list, start, size))
- 			return -ENOMEM;
--		new->paddr = start;
--		new->size = size;
--		list_add_tail(&new->list, vc_list);
- 
- 		/* Update the program header offset */
- 		phdr_ptr->p_offset = vmcore_off + (paddr - start);
+ 	/* clear vmcore device dump list */
 diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
-index 788a45061f35..9717912ce4d1 100644
+index 9717912ce4d1..5d61c7454fd6 100644
 --- a/include/linux/crash_dump.h
 +++ b/include/linux/crash_dump.h
-@@ -121,6 +121,20 @@ struct vmcore_range {
- 	loff_t offset;
- };
+@@ -135,6 +135,17 @@ static inline int vmcore_alloc_add_range(struct list_head *list,
+ 	return 0;
+ }
  
-+/* Allocate a vmcore range and add it to the list. */
-+static inline int vmcore_alloc_add_range(struct list_head *list,
-+		unsigned long long paddr, unsigned long long size)
++/* Free a list of vmcore ranges. */
++static inline void vmcore_free_ranges(struct list_head *list)
 +{
-+	struct vmcore_range *m = kzalloc(sizeof(*m), GFP_KERNEL);
++	struct vmcore_range *m, *tmp;
 +
-+	if (!m)
-+		return -ENOMEM;
-+	m->paddr = paddr;
-+	m->size = size;
-+	list_add_tail(&m->list, list);
-+	return 0;
++	list_for_each_entry_safe(m, tmp, list, list) {
++		list_del(&m->list);
++		kfree(m);
++	}
 +}
 +
  #else /* !CONFIG_CRASH_DUMP */
