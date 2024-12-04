@@ -1,69 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38CD20ADC3
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B54F20B7E3
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733316922; cv=none; b=ode3/M+QEWh7vunVclTdWyPl1hDWbhGjR9OibhkK4VUYiYLBR2ezUP80EsYMMJV9Rv4X50Fl9gIPiu5eJmxLX56p7zRgkK4ycaP1ZGnngg4IP8NFV8v/nsWAZPSRrb8CYM4p+XRvow5tHRWde9KYSD3+GoXpMqO8a2ELZvIwuCg=
+	t=1733316925; cv=none; b=lxuP6aQKuLPKhB/++4iNPLrfwjBc9zFxT+P41Esh407wAf5odwAcIIDxICA0HDzOeH34OuGDiaBfquliHJ+fzxeqt/taGplxxdzcoFfIt3ZxNIKTcHMXLCh8hZEMZCF43jmDyKZiaXKCC5o8r7VGOE1QXN10nNGC8GLrjZO6Kqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733316922; c=relaxed/simple;
-	bh=Rg9yOQYGTd6pgwnyhp2VaHUTS4HPDRcUrf1ti8sagOE=;
+	s=arc-20240116; t=1733316925; c=relaxed/simple;
+	bh=N+omNMBxmCIiBaT6aoDaJz2BLDTJK2NT8K0YRXJ+Was=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfwEixJLrwQGB9+DI36jwOR7mFToI5SJnKp8WZQddgfWqFDp3lVMBeuSj0YCl6gBfHNdCr0PrirBtcBKMOBDnPtd8hRkOigbraCgznHsfXqwkl0wLWCTfAJg/CqckedBy3S/KnrF4nrH1Zs7A6QFAGNgAS1M6/AFKqs/q5pZ3wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DUavDXe+; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=b9KRPzyjKoj4KOysait6NMPlWUDFwAo4HpZKRzKbF3DD9bsWI4Fiq+fLFIkMXvzhlst/ANQSWjrGHspRk5Rv3owlL9zbKoSBjgPJrWEyZaKlHr/FDL0QBmaoeCo3LVxHz2axXE+DHim4i/h/ykZSblY3kj9WQgT0NFKRf0RdzC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RyB7qRkf; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DUavDXe+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RyB7qRkf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733316918;
+	s=mimecast20190719; t=1733316923;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DHduTfm8MEvatODJJecU9qsghwDNoQQYbaQi+lekCuQ=;
-	b=DUavDXe+EocDq/emTEexAQnMIRk6z+c0jipANA2ZDXsjAAM/Z0ZXTo4gmzSSNK0/Pzfz0Y
-	uIsWxnfHBO2c4idoXDBGQxA6v7VeWWfzM2hicycG0sNGkN03yHXJa6iNVbTXudlfO8lQxr
-	95FXUX4OTe8o6IDBNbcKR2bzS/mm2mE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=GxsrWUisM+4YkdsHUV4TP4AYDbO5CJkwL1nd2GKtk5k=;
+	b=RyB7qRkfuvfnA0iiQsCFk/v/gyBHEByviqwCgjKudHCUETNFBZwZ4EUd72DxgQfzmSpxp1
+	HhQlmtqxerY8auna45eouC+ysJMxkar4w7Vt0iwmeR7HwR8bBNEJOnEOw7AJgGZTxU27V5
+	YHgWGapmbfoOblF0WXIwPVgl4HBTpQw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-324-fEujbqZlNryyKxYZe6-4_Q-1; Wed, 04 Dec 2024 07:55:15 -0500
-X-MC-Unique: fEujbqZlNryyKxYZe6-4_Q-1
-X-Mimecast-MFC-AGG-ID: fEujbqZlNryyKxYZe6-4_Q
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-434a4ad78a1so55293585e9.0
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:14 -0800 (PST)
+ us-mta-169-ZsT-FkP2OEOqLe2-FqadIg-1; Wed, 04 Dec 2024 07:55:21 -0500
+X-MC-Unique: ZsT-FkP2OEOqLe2-FqadIg-1
+X-Mimecast-MFC-AGG-ID: ZsT-FkP2OEOqLe2-FqadIg
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385e03ee802so2252132f8f.1
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733316910; x=1733921710;
+        d=1e100.net; s=20230601; t=1733316921; x=1733921721;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DHduTfm8MEvatODJJecU9qsghwDNoQQYbaQi+lekCuQ=;
-        b=CPmffH42spTFW1A33PfzKa5+Y5kdTMI+VcLRCKvnxbicjMA0BpAowLf78H/aqKNI34
-         P4yGROVL5YcXD3rMTby+dE7sxLq3xLPRgmq7zIb90VQW65pmmVo5sOgWmO8VvulS1jRP
-         I9CBXw2JNcKgrCRrB/8YGzLGFTZ/PU/BcgPQFFYChToqaI5P8Tj/+jnt6Hh2sOWICe4m
-         qE8cDaBLteH8hlUJIfX8n5N/TotaAE3xwvw85OBZf7cXyaZmQhwxpIinEGrafUiPA2o1
-         uW8hAaopx8Y7/loW/Zmu3yssumSzMeeFDoTsPOJXTa3ksqZZAZpahQDtmbbvvbjQf0jF
-         UmtA==
-X-Forwarded-Encrypted: i=1; AJvYcCVReGnNId6H8inkfVocJM+VZJkgj5hBjs5DgOPvMZteyF0ecXWEgLHfgyXmAWGh1XYePvQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFdVhEIXiBLS/K5yiBzqRUpteEA7pyKrqIVtzjfgj48zSfO3Mj
-	3XvNvzgPrTl7E7s1V4irCVdjlJKsnGJS6dmRJb94cHSmqXt72CPYuCqjpbkmJKxjT1aiaImFEto
-	PAAj0Lkg5oJ/vI/l/6dZe6ed1tvUYTCONabje14XNZ9F1jYRNSw==
-X-Gm-Gg: ASbGncuNPOB9KEGEbdDH0T1hgXLV+f0l/QWt/pEevt4XCv4PPIaco7iPYty9D3/eFCm
-	gCYFthEMzEO9kHo7Drd4Fgq2BK1TZPikK2XDXYjAiGxX4JHDH560VTumkcIb9+xpiOGZhI4WJaG
-	Z8KPPwliAlgSDJss6wY0oZBjYqU+QKbNqUK6511DmFC3ZOdhHdaUsZp8DnzLLgAoRjZ19wU/a5+
-	wLbMx6Usf9k40lZ2tlR/r3v2sotO++LfoyrgoUvfv0yA857ikRJhd52VoqmOYxzkquj6cg7x1M/
-	cD8AkGCQFJr/HK5kc3SGxqqjyaY2mezhWJY=
-X-Received: by 2002:a05:600c:1c88:b0:434:9df4:5472 with SMTP id 5b1f17b1804b1-434d0a15068mr60073415e9.31.1733316910488;
-        Wed, 04 Dec 2024 04:55:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWq3Nj3w3HYlBbZnRWgOzE8l6L8boPfRZN2lwS+xZGCeTjU6KZId+aHdXHdM4P1FN9VEFBqg==
-X-Received: by 2002:a05:600c:1c88:b0:434:9df4:5472 with SMTP id 5b1f17b1804b1-434d0a15068mr60073175e9.31.1733316910084;
-        Wed, 04 Dec 2024 04:55:10 -0800 (PST)
+        bh=GxsrWUisM+4YkdsHUV4TP4AYDbO5CJkwL1nd2GKtk5k=;
+        b=Qr5YMhe4tnPSuBqOdRfmbKTdFML0j1bLuiLoAB10XvkEzNnCVC3wntn+Xbtm8osdiD
+         Syakn2AP3JAi6BBc0V/l6YHT+nPpXpzWg9erc7x/5GEYvdbF7QUqJEmS3frui9DQOwqj
+         oI0jMnK43qSoZr8KprNBWDx24Y1jTtPGlFTHYEZ6q/H+ntn32cpsaSFVzHVl47ouWeQd
+         5dvejZXit4cBjbWq38xkXLzhlg3+uQOmglhnYHMOY9Z13AXvP9C8CAkwEMuCKgYGdKUQ
+         tvAlJ2Twkz2tDqfjuVEA59vL+Zevwc9tJmD5BEtmwXpHX/lFPij9ep/ayUqNp5Czmxuy
+         KOOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPMaCPByE47dNBnSh18N0uplJeCGEq5a4GzpTKEhfeucwyhXOjzLPjFvsuvU1eBFYlTfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGeB/wEtvzr4WM2s6cWmfmItP8wzf9A4tvUGj7/TtURvKqCY2H
+	TpEzqTNFO4W0escjuyw9NAFZnRsMORbFNaDltLtr84PeOW/ZXbpHqXCYry7WPYQEtUXqkLJSYTw
+	PaM15OBxQW0PLI2FczG2bJksc7bhOEWQeQnOJq7enQTXhXKIHAA==
+X-Gm-Gg: ASbGncuT7w8yBS+m2Dvt5C89znlZxgKIvn4nncOWgYqO5ratpvNv9+c44u1m54kNzh0
+	WarI1VyhFq2PI/aPmFJXCitdCfsOdqAop2Pn08gWffdJ3FBRp6kJeG7di+kge0hEjRoyH0U1CAU
+	/HHUKYkAovoSQeQKx0DGHxMnS3zX9FtrnQ9QcmYMUD2uHuCNZxaprZ08EzEF7/DyCJUVs2E437Y
+	Zob1onPcsbVxqFEmKPa1CUoma8ETmM9KDUduDUk11KpnLPRBxYWOfwAqOC/m1jnU3hzSEN5UL/X
+	jkXPCb2x5GRau73L+luZvFbdjmZLQpPpXLA=
+X-Received: by 2002:a5d:5986:0:b0:382:4115:1ccb with SMTP id ffacd0b85a97d-385fd3cd078mr5363632f8f.7.1733316920736;
+        Wed, 04 Dec 2024 04:55:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVrn7snw7RGTPCk/ImHOMtvIc2Zo//ldD8UcsohYWGwkye1iFqtEVkXPmZASBRCfdSRO6pnw==
+X-Received: by 2002:a5d:5986:0:b0:382:4115:1ccb with SMTP id ffacd0b85a97d-385fd3cd078mr5363620f8f.7.1733316920347;
+        Wed, 04 Dec 2024 04:55:20 -0800 (PST)
 Received: from localhost (p200300cbc70be10038d68aa111b0a20a.dip0.t-ipconnect.de. [2003:cb:c70b:e100:38d6:8aa1:11b0:a20a])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434d5280746sm23704445e9.21.2024.12.04.04.55.08
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434d52c0bc7sm23529155e9.35.2024.12.04.04.55.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 04:55:09 -0800 (PST)
+        Wed, 04 Dec 2024 04:55:19 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -91,9 +91,9 @@ Cc: linux-mm@kvack.org,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Eric Farman <farman@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 08/12] fs/proc/vmcore: introduce PROC_VMCORE_DEVICE_RAM to detect device RAM ranges in 2nd kernel
-Date: Wed,  4 Dec 2024 13:54:39 +0100
-Message-ID: <20241204125444.1734652-9-david@redhat.com>
+Subject: [PATCH v2 11/12] virtio-mem: support CONFIG_PROC_VMCORE_DEVICE_RAM
+Date: Wed,  4 Dec 2024 13:54:42 +0100
+Message-ID: <20241204125444.1734652-12-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241204125444.1734652-1-david@redhat.com>
 References: <20241204125444.1734652-1-david@redhat.com>
@@ -105,283 +105,137 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-s390 allocates+prepares the elfcore hdr in the dump (2nd) kernel, not in
-the crashed kernel.
+Let's implement the get_device_ram() vmcore callback, so
+architectures that select NEED_PROC_VMCORE_NEED_DEVICE_RAM, like s390
+soon, can include that memory in a crash dump.
 
-RAM provided by memory devices such as virtio-mem can only be detected
-using the device driver; when vmcore_init() is called, these device
-drivers are usually not loaded yet, or the devices did not get probed
-yet. Consequently, on s390 these RAM ranges will not be included in
-the crash dump, which makes the dump partially corrupt and is
-unfortunate.
-
-Instead of deferring the vmcore_init() call, to an (unclear?) later point,
-let's reuse the vmcore_cb infrastructure to obtain device RAM ranges as
-the device drivers probe the device and get access to this information.
-
-Then, we'll add these ranges to the vmcore, adding more PT_LOAD
-entries and updating the offsets+vmcore size.
-
-Use a separate Kconfig option to be set by an architecture to include this
-code only if the arch really needs it. Further, we'll make the config
-depend on the relevant drivers (i.e., virtio_mem) once they implement
-support (next). The alternative of having a PROVIDE_PROC_VMCORE_DEVICE_RAM
-config option was dropped for now for simplicity.
-
-The current target use case is s390, which only creates an elf64
-elfcore, so focusing on elf64 is sufficient.
+Merge ranges, and process ranges that might contain a mixture of plugged
+and unplugged, to reduce the total number of ranges.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- fs/proc/Kconfig            |  18 +++++
- fs/proc/vmcore.c           | 156 +++++++++++++++++++++++++++++++++++++
- include/linux/crash_dump.h |   9 +++
- 3 files changed, 183 insertions(+)
+ drivers/virtio/virtio_mem.c | 88 +++++++++++++++++++++++++++++++++++++
+ fs/proc/Kconfig             |  1 +
+ 2 files changed, 89 insertions(+)
 
-diff --git a/fs/proc/Kconfig b/fs/proc/Kconfig
-index d80a1431ef7b..5668620ab34d 100644
---- a/fs/proc/Kconfig
-+++ b/fs/proc/Kconfig
-@@ -61,6 +61,24 @@ config PROC_VMCORE_DEVICE_DUMP
- 	  as ELF notes to /proc/vmcore. You can still disable device
- 	  dump using the kernel command line option 'novmcoredd'.
- 
-+config NEED_PROC_VMCORE_DEVICE_RAM
-+	bool
-+
-+config PROC_VMCORE_DEVICE_RAM
-+	def_bool y
-+	depends on PROC_VMCORE && NEED_PROC_VMCORE_DEVICE_RAM
-+	help
-+	  If the elfcore hdr is allocated and prepared by the dump kernel
-+	  ("2nd kernel") instead of the crashed kernel, RAM provided by memory
-+	  devices such as virtio-mem will not be included in the dump
-+	  image, because only the device driver can properly detect them.
-+
-+	  With this config enabled, these RAM ranges will be queried from the
-+	  device drivers once the device gets probed, so they can be included
-+	  in the crash dump.
-+
-+	  Relevant architectures should select NEED_PROC_VMCORE_DEVICE_RAM.
-+
- config PROC_SYSCTL
- 	bool "Sysctl support (/proc/sys)" if EXPERT
- 	depends on PROC_FS
-diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-index e7b3cde44890..6dc293d0eb5b 100644
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -79,6 +79,8 @@ static bool vmcore_opened;
- /* Whether the vmcore is currently open. */
- static unsigned int vmcore_open;
- 
-+static void vmcore_process_device_ram(struct vmcore_cb *cb);
-+
- void register_vmcore_cb(struct vmcore_cb *cb)
- {
- 	INIT_LIST_HEAD(&cb->next);
-@@ -90,6 +92,8 @@ void register_vmcore_cb(struct vmcore_cb *cb)
- 	 */
- 	if (vmcore_opened)
- 		pr_warn_once("Unexpected vmcore callback registration\n");
-+	if (!vmcore_open && cb->get_device_ram)
-+		vmcore_process_device_ram(cb);
- 	mutex_unlock(&vmcore_mutex);
+diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+index 73477d5b79cf..8a294b9cbcf6 100644
+--- a/drivers/virtio/virtio_mem.c
++++ b/drivers/virtio/virtio_mem.c
+@@ -2728,6 +2728,91 @@ static bool virtio_mem_vmcore_pfn_is_ram(struct vmcore_cb *cb,
+ 	mutex_unlock(&vm->hotplug_mutex);
+ 	return is_ram;
  }
- EXPORT_SYMBOL_GPL(register_vmcore_cb);
-@@ -1535,6 +1539,158 @@ int vmcore_add_device_dump(struct vmcoredd_data *data)
- EXPORT_SYMBOL(vmcore_add_device_dump);
- #endif /* CONFIG_PROC_VMCORE_DEVICE_DUMP */
- 
++
 +#ifdef CONFIG_PROC_VMCORE_DEVICE_RAM
-+static int vmcore_realloc_elfcore_buffer_elf64(size_t new_size)
++static int virtio_mem_vmcore_add_device_ram(struct virtio_mem *vm,
++		struct list_head *list, uint64_t start, uint64_t end)
 +{
-+	char *elfcorebuf_new;
++	int rc;
 +
-+	if (WARN_ON_ONCE(new_size < elfcorebuf_sz))
-+		return -EINVAL;
-+	if (get_order(elfcorebuf_sz_orig) == get_order(new_size)) {
-+		elfcorebuf_sz_orig = new_size;
-+		return 0;
-+	}
-+
-+	elfcorebuf_new = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
-+						  get_order(new_size));
-+	if (!elfcorebuf_new)
-+		return -ENOMEM;
-+	memcpy(elfcorebuf_new, elfcorebuf, elfcorebuf_sz);
-+	free_pages((unsigned long)elfcorebuf, get_order(elfcorebuf_sz_orig));
-+	elfcorebuf = elfcorebuf_new;
-+	elfcorebuf_sz_orig = new_size;
-+	return 0;
++	rc = vmcore_alloc_add_range(list, start, end - start);
++	if (rc)
++		dev_err(&vm->vdev->dev,
++			 "Error adding device RAM range: %d\n", rc);
++	return rc;
 +}
 +
-+static void vmcore_reset_offsets_elf64(void)
++static int virtio_mem_vmcore_get_device_ram(struct vmcore_cb *cb,
++		struct list_head *list)
 +{
-+	Elf64_Phdr *phdr_start = (Elf64_Phdr *)(elfcorebuf + sizeof(Elf64_Ehdr));
-+	loff_t vmcore_off = elfcorebuf_sz + elfnotes_sz;
-+	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)elfcorebuf;
-+	Elf64_Phdr *phdr;
-+	int i;
++	struct virtio_mem *vm = container_of(cb, struct virtio_mem,
++					     vmcore_cb);
++	const uint64_t device_start = vm->addr;
++	const uint64_t device_end = vm->addr + vm->usable_region_size;
++	uint64_t chunk_size, cur_start, cur_end, plugged_range_start = 0;
++	LIST_HEAD(tmp_list);
++	int rc;
 +
-+	for (i = 0, phdr = phdr_start; i < ehdr->e_phnum; i++, phdr++) {
-+		u64 start, end;
++	if (!vm->plugged_size)
++		return 0;
 +
-+		/*
-+		 * After merge_note_headers_elf64() we should only have a single
-+		 * PT_NOTE entry that starts immediately after elfcorebuf_sz.
-+		 */
-+		if (phdr->p_type == PT_NOTE) {
-+			phdr->p_offset = elfcorebuf_sz;
++	/* Process memory sections, unless the device block size is bigger. */
++	chunk_size = max_t(uint64_t, PFN_PHYS(PAGES_PER_SECTION),
++			   vm->device_block_size);
++
++	mutex_lock(&vm->hotplug_mutex);
++
++	/*
++	 * We process larger chunks and indicate the complete chunk if any
++	 * block in there is plugged. This reduces the number of pfn_is_ram()
++	 * callbacks and mimic what is effectively being done when the old
++	 * kernel would add complete memory sections/blocks to the elfcore hdr.
++	 */
++	cur_start = device_start;
++	for (cur_start = device_start; cur_start < device_end; cur_start = cur_end) {
++		cur_end = ALIGN_DOWN(cur_start + chunk_size, chunk_size);
++		cur_end = min_t(uint64_t, cur_end, device_end);
++
++		rc = virtio_mem_send_state_request(vm, cur_start,
++						   cur_end - cur_start);
++
++		if (rc < 0) {
++			dev_err(&vm->vdev->dev,
++				"Error querying block states: %d\n", rc);
++			goto out;
++		} else if (rc != VIRTIO_MEM_STATE_UNPLUGGED) {
++			/* Merge ranges with plugged memory. */
++			if (!plugged_range_start)
++				plugged_range_start = cur_start;
 +			continue;
 +		}
 +
-+		start = rounddown(phdr->p_offset, PAGE_SIZE);
-+		end = roundup(phdr->p_offset + phdr->p_memsz, PAGE_SIZE);
-+		phdr->p_offset = vmcore_off + (phdr->p_offset - start);
-+		vmcore_off = vmcore_off + end - start;
-+	}
-+	set_vmcore_list_offsets(elfcorebuf_sz, elfnotes_sz, &vmcore_list);
-+}
-+
-+static int vmcore_add_device_ram_elf64(struct list_head *list, size_t count)
-+{
-+	Elf64_Phdr *phdr_start = (Elf64_Phdr *)(elfcorebuf + sizeof(Elf64_Ehdr));
-+	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)elfcorebuf;
-+	struct vmcore_range *cur;
-+	Elf64_Phdr *phdr;
-+	size_t new_size;
-+	int rc;
-+
-+	if ((Elf32_Half)(ehdr->e_phnum + count) != ehdr->e_phnum + count) {
-+		pr_err("too many device ram ranges\n");
-+		return -ENOSPC;
++		/* Flush any plugged range. */
++		if (plugged_range_start) {
++			rc = virtio_mem_vmcore_add_device_ram(vm, &tmp_list,
++							      plugged_range_start,
++							      cur_start);
++			if (rc)
++				goto out;
++			plugged_range_start = 0;
++		}
 +	}
 +
-+	/* elfcorebuf_sz must always cover full pages. */
-+	new_size = sizeof(Elf64_Ehdr) +
-+		   (ehdr->e_phnum + count) * sizeof(Elf64_Phdr);
-+	new_size = roundup(new_size, PAGE_SIZE);
-+
-+	/*
-+	 * Make sure we have sufficient space to include the new PT_LOAD
-+	 * entries.
-+	 */
-+	rc = vmcore_realloc_elfcore_buffer_elf64(new_size);
-+	if (rc) {
-+		pr_err("resizing elfcore failed\n");
++	/* Flush any plugged range. */
++	if (plugged_range_start)
++		rc = virtio_mem_vmcore_add_device_ram(vm, &tmp_list,
++						      plugged_range_start,
++						      cur_start);
++out:
++	mutex_unlock(&vm->hotplug_mutex);
++	if (rc < 0) {
++		vmcore_free_ranges(&tmp_list);
 +		return rc;
 +	}
-+
-+	/* Modify our used elfcore buffer size to cover the new entries. */
-+	elfcorebuf_sz = new_size;
-+
-+	/* Fill the added PT_LOAD entries. */
-+	phdr = phdr_start + ehdr->e_phnum;
-+	list_for_each_entry(cur, list, list) {
-+		WARN_ON_ONCE(!IS_ALIGNED(cur->paddr | cur->size, PAGE_SIZE));
-+		elfcorehdr_fill_device_ram_ptload_elf64(phdr, cur->paddr, cur->size);
-+
-+		/* p_offset will be adjusted later. */
-+		phdr++;
-+		ehdr->e_phnum++;
-+	}
-+	list_splice_tail(list, &vmcore_list);
-+
-+	/* We changed elfcorebuf_sz and added new entries; reset all offsets. */
-+	vmcore_reset_offsets_elf64();
-+
-+	/* Finally, recalculate the total vmcore size. */
-+	vmcore_size = get_vmcore_size(elfcorebuf_sz, elfnotes_sz,
-+				      &vmcore_list);
-+	proc_vmcore->size = vmcore_size;
++	list_splice_tail(&tmp_list, list);
 +	return 0;
 +}
-+
-+static void vmcore_process_device_ram(struct vmcore_cb *cb)
-+{
-+	unsigned char *e_ident = (unsigned char *)elfcorebuf;
-+	struct vmcore_range *first, *m;
-+	LIST_HEAD(list);
-+	int count;
-+
-+	/* We only support Elf64 dumps for now. */
-+	if (WARN_ON_ONCE(e_ident[EI_CLASS] != ELFCLASS64)) {
-+		pr_err("device ram ranges only support Elf64\n");
-+		return;
-+	}
-+
-+	if (cb->get_device_ram(cb, &list)) {
-+		pr_err("obtaining device ram ranges failed\n");
-+		return;
-+	}
-+	count = list_count_nodes(&list);
-+	if (!count)
-+		return;
-+
-+	/*
-+	 * For some reason these ranges are already know? Might happen
-+	 * with unusual register->unregister->register sequences; we'll simply
-+	 * sanity check using the first range.
-+	 */
-+	first = list_first_entry(&list, struct vmcore_range, list);
-+	list_for_each_entry(m, &vmcore_list, list) {
-+		unsigned long long m_end = m->paddr + m->size;
-+		unsigned long long first_end = first->paddr + first->size;
-+
-+		if (first->paddr < m_end && m->paddr < first_end)
-+			goto out_free;
-+	}
-+
-+	/* If adding the mem nodes succeeds, they must not be freed. */
-+	if (!vmcore_add_device_ram_elf64(&list, count))
-+		return;
-+out_free:
-+	vmcore_free_ranges(&list);
-+}
-+#else /* !CONFIG_PROC_VMCORE_DEVICE_RAM */
-+static void vmcore_process_device_ram(struct vmcore_cb *cb)
-+{
-+}
 +#endif /* CONFIG_PROC_VMCORE_DEVICE_RAM */
-+
- /* Free all dumps in vmcore device dump list */
- static void vmcore_free_device_dumps(void)
- {
-diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
-index 5d61c7454fd6..2f2555e6407c 100644
---- a/include/linux/crash_dump.h
-+++ b/include/linux/crash_dump.h
-@@ -20,6 +20,8 @@ extern int elfcorehdr_alloc(unsigned long long *addr, unsigned long long *size);
- extern void elfcorehdr_free(unsigned long long addr);
- extern ssize_t elfcorehdr_read(char *buf, size_t count, u64 *ppos);
- extern ssize_t elfcorehdr_read_notes(char *buf, size_t count, u64 *ppos);
-+void elfcorehdr_fill_device_ram_ptload_elf64(Elf64_Phdr *phdr,
-+		unsigned long long paddr, unsigned long long size);
- extern int remap_oldmem_pfn_range(struct vm_area_struct *vma,
- 				  unsigned long from, unsigned long pfn,
- 				  unsigned long size, pgprot_t prot);
-@@ -99,6 +101,12 @@ static inline void vmcore_unusable(void)
-  *              indicated in the vmcore instead. For example, a ballooned page
-  *              contains no data and reading from such a page will cause high
-  *              load in the hypervisor.
-+ * @get_device_ram: query RAM ranges that can only be detected by device
-+ *   drivers, such as the virtio-mem driver, so they can be included in
-+ *   the crash dump on architectures that allocate the elfcore hdr in the dump
-+ *   ("2nd") kernel. Indicated RAM ranges may contain holes to reduce the
-+ *   total number of ranges; such holes can be detected using the pfn_is_ram
-+ *   callback just like for other RAM.
-  * @next: List head to manage registered callbacks internally; initialized by
-  *        register_vmcore_cb().
-  *
-@@ -109,6 +117,7 @@ static inline void vmcore_unusable(void)
-  */
- struct vmcore_cb {
- 	bool (*pfn_is_ram)(struct vmcore_cb *cb, unsigned long pfn);
-+	int (*get_device_ram)(struct vmcore_cb *cb, struct list_head *list);
- 	struct list_head next;
- };
- extern void register_vmcore_cb(struct vmcore_cb *cb);
+ #endif /* CONFIG_PROC_VMCORE */
+ 
+ static int virtio_mem_init_kdump(struct virtio_mem *vm)
+@@ -2737,6 +2822,9 @@ static int virtio_mem_init_kdump(struct virtio_mem *vm)
+ #ifdef CONFIG_PROC_VMCORE
+ 	dev_info(&vm->vdev->dev, "memory hot(un)plug disabled in kdump kernel\n");
+ 	vm->vmcore_cb.pfn_is_ram = virtio_mem_vmcore_pfn_is_ram;
++#ifdef CONFIG_PROC_VMCORE_DEVICE_RAM
++	vm->vmcore_cb.get_device_ram = virtio_mem_vmcore_get_device_ram;
++#endif /* CONFIG_PROC_VMCORE_DEVICE_RAM */
+ 	register_vmcore_cb(&vm->vmcore_cb);
+ 	return 0;
+ #else /* CONFIG_PROC_VMCORE */
+diff --git a/fs/proc/Kconfig b/fs/proc/Kconfig
+index 5668620ab34d..6ae966c561e7 100644
+--- a/fs/proc/Kconfig
++++ b/fs/proc/Kconfig
+@@ -67,6 +67,7 @@ config NEED_PROC_VMCORE_DEVICE_RAM
+ config PROC_VMCORE_DEVICE_RAM
+ 	def_bool y
+ 	depends on PROC_VMCORE && NEED_PROC_VMCORE_DEVICE_RAM
++	depends on VIRTIO_MEM
+ 	help
+ 	  If the elfcore hdr is allocated and prepared by the dump kernel
+ 	  ("2nd kernel") instead of the crashed kernel, RAM provided by memory
 -- 
 2.47.1
 
