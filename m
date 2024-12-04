@@ -1,119 +1,145 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296E5239188
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 18:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D172391B8
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 18:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733335878; cv=none; b=IE6ecyffI3+5uG1vSN8KtKPAcdGcWc15aKQiJ/Hnyuq9w8Y/aKIVLMbtICzBRY8Rp1daZmt/O3ZoSkLzQTN6dxxDvQXbzJxEkkIQboLUlVeYq/nbiiEmaVHEDHU+ftPBiXOXQHH/seSMPekW+sJKa88STXvQnOj0KXr4HrKoilo=
+	t=1733336167; cv=none; b=qC0ajiaP9YWtcRqR4nSFA4ePU9Aj8fb/zQee2vhYFl7+1A6I5HqGFcsUyNhvto+47lCQC6bD7/jz9bOSwGZhCnGoGO6t6uQddE9aFMTLFB5DWF+l55NM+D3hR3wXEx6OHyvD9i0aQGd1SU130cTJBGXnW4Fx0filGIygvJPDOdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733335878; c=relaxed/simple;
-	bh=X6BEDT6fDm7D7Y0nWW+xKECtJAeRFs5IERZbxKQu3YA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=huemsts0zhwiraE/sUH26IOXX++ruYo3OwVNB1B5igmEfTSjinlAD9olO72T2PL2b9O0ImVyOmjxD7Vbws1rNN9Hrt9fHf5DiGdyqCOeUpJA56WcuahKSWV1orNGnJOjkNBfdhlWXYNd/iVyXASHW23FNPWbNKOVTQrV554czsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bQgvKdKt; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1733336167; c=relaxed/simple;
+	bh=OQ/DTeSHuXcQ3cs9GY6uWtcOsCFC+KsZnoZMd6/m3/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FPWe5s6q8JKS4HwTrkyx01Fx9jVCflyV/p00439Uu1JtCCnCLcTpgtbLzh0kjzdnXkESOKgrUC6UPfCESUGmMkoC8dtAtkdFOMj2ISyu7qs6tv9dheYxeGjhliIqPztnBLvtSkThxVQNjIxuuZifFb9DmoJ0AK8myULlMfXha4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miqNfU3/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bQgvKdKt"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9ec267b879so114152466b.2
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 10:11:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1733335874; x=1733940674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UsHq11mNN/cIeDGdLbelslfoGN88pEnsDmEEyawNX0M=;
-        b=bQgvKdKtmQIh+0ohEA8WTbSZF+b1Byo5G2ZaIHDe25BE/UeVd4MUhqGWoNPz2rxM83
-         4uJm+/QBMFxlYu9hbemGi16ymWc7Q1NYJtGXJmG9XDLMFYd5nUQNqewzVL6h9ROiJmpz
-         TlS5PyQYbEKMMsr1K1yBKxC7cJtyJsgcbzs6s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733335874; x=1733940674;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UsHq11mNN/cIeDGdLbelslfoGN88pEnsDmEEyawNX0M=;
-        b=LMgnOKzqW8yPTBGC37G8rgAuq0yGiFehBhBdVQp4/8g0jTq9CuvTxlfxCNifEFkO4e
-         sGezsfxb9WWlhzvZjMKfGsoQLH0sNckNG/ZZqbVJ3x+Zx0Uusts3XjA+PAoRQh4PcbR+
-         ksxEt7etnxkzhf7CMSnkgnOX4h+q2BtL5bbgFNkjTvpdFZW40iLypcgSg2UIL1snfsgK
-         nner/ZEByj2HbEiKMXwuVeMNdMhNrAJoPHeEa7kgjiHJ35tLXGjXvmM39nni5H39Wfro
-         DdEJCz0yuskQ3QSvWEQHuD0BNMUiFR5hZwbos7tIPW+KNR6zoH459pwEr6zZ7tmbtEf1
-         Bi9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVXavCIWT/i/108h1uuZB8O4Z9+eQapaY+tLMuCKfpo6Y1nPm1G4d23BkAymfQKzTROtNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0bHpVowrNCDVa5SFFYXoHA07uXouvDWP7c6zi5LUITmMEa/Ku
-	t6yNg8saRDpHs7TjiHGxprkDgOUZErhGwztco0QmJRdZs8TIBunL1dTpXPqtHgDu8D7sIrdEF94
-	zfVs=
-X-Gm-Gg: ASbGncvhyfg/HKCgFrL4umArO2hrqTs0bJ2Z0Bcl/lu8YzXNhItXoRGUnclHdJ25RtP
-	oA/jE6RD3AHudgz8kLLWUUTLPTDtsFQlUz0SK/P6nQUy+wZBgwubFpQ6+lkENvHWXJbSyPTWICG
-	6kAX3WgWRoWakSvjaZhzWuoQWie+vU5SOYQgxyO+YgngunaTJzoCzqo9WnWdF6srjqr5ErUsH6M
-	RK4eegAsHsP1KefsHzMf3a3aRpTxfijwxJwVQ0w4OpsRsewZbVv8eCRcNuKNhPXf4MRvCmBjwAM
-	RtrCW9zKd+I/JJDfxZ91JxXh
-X-Google-Smtp-Source: AGHT+IFocnDbO6YHvudDVpw3TyRMqWCpTHkMJ4pVwwYFsfLz6TOU+GiCuw3enVvZ85LfrZi+HtAAlQ==
-X-Received: by 2002:a17:906:23e9:b0:a9a:f82:7712 with SMTP id a640c23a62f3a-aa5f7f57cbfmr721688066b.52.1733335874166;
-        Wed, 04 Dec 2024 10:11:14 -0800 (PST)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa599955e08sm760405766b.194.2024.12.04.10.11.12
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 10:11:12 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d0e75dd846so5385910a12.3
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 10:11:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUJUGVOe8z7gFT3b7toRnHXg5UpeAHkqkdLSuXKCUZNGOvO58v91Kmkaxb3FXBPja+Ff7Y=@vger.kernel.org
-X-Received: by 2002:a17:906:3d22:b0:aa5:392a:f5a7 with SMTP id
- a640c23a62f3a-aa5f7f57ccamr725005966b.57.1733335871860; Wed, 04 Dec 2024
- 10:11:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miqNfU3/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71076C4CECD;
+	Wed,  4 Dec 2024 18:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733336166;
+	bh=OQ/DTeSHuXcQ3cs9GY6uWtcOsCFC+KsZnoZMd6/m3/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=miqNfU3/uJZvnbHAvw/kPMs3tp5XuuuOMhS5s6ZMeL88xVoXDxG39P9Oe7sDNz1HJ
+	 ev+HESzCtVEdciUA4+WaYwDE04Bq9qFjugFtcpT3h7WPAl0pW7SH7Dv4yBOFHm1xqz
+	 +nebS/kojoNqHfCwvcF4Z1qQ00QFhMbFWOxxxk2M=
+Date: Wed, 4 Dec 2024 19:16:03 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Kirti Wankhede <kwankhede@nvidia.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 2/3] vfio/mdev: inline needed class_compat functionality
+Message-ID: <2024120410-promoter-blandness-efa1@gregkh>
+References: <147a2a3e-8227-4f1b-9ab4-d0b4f261d2a6@gmail.com>
+ <0a14a4df-fbb5-4613-837f-f8025dc73380@gmail.com>
+ <2024120430-boneless-wafer-bf0c@gregkh>
+ <fb0fc57d-955f-404e-a222-e3864cce2b14@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204103042.1904639-1-arnd@kernel.org> <20241204103042.1904639-10-arnd@kernel.org>
-In-Reply-To: <20241204103042.1904639-10-arnd@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 4 Dec 2024 10:10:55 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wh_b8b1qZF8_obMKpF+xfYnPZ6t38F1+5pK-eXNyCdJ7g@mail.gmail.com>
-Message-ID: <CAHk-=wh_b8b1qZF8_obMKpF+xfYnPZ6t38F1+5pK-eXNyCdJ7g@mail.gmail.com>
-Subject: Re: [PATCH 09/11] x86: rework CONFIG_GENERIC_CPU compiler flags
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Shevchenko <andy@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Sean Christopherson <seanjc@google.com>, Davide Ciminaghi <ciminaghi@gnudd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fb0fc57d-955f-404e-a222-e3864cce2b14@gmail.com>
 
-  "On second thought , let=E2=80=99s not go to x86-64 microarchitectural
-levels. =E2=80=98Tis a silly place"
+On Wed, Dec 04, 2024 at 06:01:36PM +0100, Heiner Kallweit wrote:
+> On 04.12.2024 10:32, Greg Kroah-Hartman wrote:
+> > On Tue, Dec 03, 2024 at 09:11:47PM +0100, Heiner Kallweit wrote:
+> >> vfio/mdev is the last user of class_compat, and it doesn't use it for
+> >> the intended purpose. See kdoc of class_compat_register():
+> >> Compatibility class are meant as a temporary user-space compatibility
+> >> workaround when converting a family of class devices to a bus devices.
+> > 
+> > True, so waht is mdev doing here?
+> > 
+> >> In addition it uses only a part of the class_compat functionality.
+> >> So inline the needed functionality, and afterwards all class_compat
+> >> code can be removed.
+> >>
+> >> No functional change intended. Compile-tested only.
+> >>
+> >> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> >> ---
+> >>  drivers/vfio/mdev/mdev_core.c | 12 ++++++------
+> >>  1 file changed, 6 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/drivers/vfio/mdev/mdev_core.c b/drivers/vfio/mdev/mdev_core.c
+> >> index ed4737de4..a22c49804 100644
+> >> --- a/drivers/vfio/mdev/mdev_core.c
+> >> +++ b/drivers/vfio/mdev/mdev_core.c
+> >> @@ -18,7 +18,7 @@
+> >>  #define DRIVER_AUTHOR		"NVIDIA Corporation"
+> >>  #define DRIVER_DESC		"Mediated device Core Driver"
+> >>  
+> >> -static struct class_compat *mdev_bus_compat_class;
+> >> +static struct kobject *mdev_bus_kobj;
+> > 
+> > 
+> > 
+> >>  
+> >>  static LIST_HEAD(mdev_list);
+> >>  static DEFINE_MUTEX(mdev_list_lock);
+> >> @@ -76,7 +76,7 @@ int mdev_register_parent(struct mdev_parent *parent, struct device *dev,
+> >>  	if (ret)
+> >>  		return ret;
+> >>  
+> >> -	ret = class_compat_create_link(mdev_bus_compat_class, dev, NULL);
+> >> +	ret = sysfs_create_link(mdev_bus_kobj, &dev->kobj, dev_name(dev));
+> > 
+> > This feels really wrong, why create a link to a random kobject?  Who is
+> > using this kobject link?
+> > 
+> >>  	if (ret)
+> >>  		dev_warn(dev, "Failed to create compatibility class link\n");
+> >>  
+> >> @@ -98,7 +98,7 @@ void mdev_unregister_parent(struct mdev_parent *parent)
+> >>  	dev_info(parent->dev, "MDEV: Unregistering\n");
+> >>  
+> >>  	down_write(&parent->unreg_sem);
+> >> -	class_compat_remove_link(mdev_bus_compat_class, parent->dev, NULL);
+> >> +	sysfs_remove_link(mdev_bus_kobj, dev_name(parent->dev));
+> >>  	device_for_each_child(parent->dev, NULL, mdev_device_remove_cb);
+> >>  	parent_remove_sysfs_files(parent);
+> >>  	up_write(&parent->unreg_sem);
+> >> @@ -251,8 +251,8 @@ static int __init mdev_init(void)
+> >>  	if (ret)
+> >>  		return ret;
+> >>  
+> >> -	mdev_bus_compat_class = class_compat_register("mdev_bus");
+> >> -	if (!mdev_bus_compat_class) {
+> >> +	mdev_bus_kobj = class_pseudo_register("mdev_bus");
+> > 
+> > But this isn't a class, so let's not fake it please.  Let's fix this
+> > properly, odds are all of this code can just be removed entirely, right?
+> > 
+> 
+> After I removed class_compat from i2c core, I asked Alex basically the
+> same thing: whether class_compat support can be removed from vfio/mdev too.
+> 
+> His reply:
+> I'm afraid we have active userspace tools dependent on
+> /sys/class/mdev_bus currently, libvirt for one.  We link mdev parent
+> devices here and I believe it's the only way for userspace to find
+> those parent devices registered for creating mdev devices.  If there's a
+> desire to remove class_compat, we might need to add some mdev
+> infrastructure to register the class ourselves to maintain the parent
+> links.
+> 
+> 
+> It's my understanding that /sys/class/mdev_bus has nothing in common
+> with an actual class, it's just a container for devices which at least
+> partially belong to other classes. And there's user space tools depending
+> on this structure.
 
-On Wed, 4 Dec 2024 at 02:31, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> To allow reliably building a kernel for either the oldest x86-64
-> CPUs or a more recent level, add three separate options for
-> v1, v2 and v3 of the architecture as defined by gcc and clang
-> and make them all turn on CONFIG_GENERIC_CPU.
+That's odd, when this was added, why was it added this way?  The
+class_compat stuff is for when classes move around, yet this was always
+done in this way?
 
-The whole "v2", "v3", "v4" etc naming seems to be some crazy glibc
-artifact and is stupid and needs to die.
+And what tools use this symlink today that can't be updated?
 
-It has no relevance to anything. Please do *not* introduce that
-mind-fart into the kernel sources.
+thanks,
 
-I have no idea who came up with the "microarchitecture levels"
-garbage, but as far as I can tell, it's entirely unofficial, and it's
-a completely broken model.
-
-There is a very real model for microarchitectural features, and it's
-the CPUID bits. Trying to linearize those bits is technically wrong,
-since these things simply aren't some kind of linear progression.
-
-And worse, it's a "simplification" that literally adds complexity. Now
-instead of asking "does this CPU support the cmpxchgb16 instruction?",
-the question instead becomes one of "what the hell does 'v3' mean
-again?"
-
-So no. We are *NOT* introducing that idiocy in the kernel.
-
-                Linus
+greg k-h
