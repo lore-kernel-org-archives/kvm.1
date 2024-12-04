@@ -1,69 +1,69 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9282203704
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDED20A5EA
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733316918; cv=none; b=rbYL9ttc89S/H1AWAAdh8hyTphpl0/+oj93PVCy15nsar40b1O/RF+WfcxSKiVhrSO2X25wsbn31r+bU6MC3/oE7rNXgOEhSK14nz0TAHZ7NDTHwG4durHO/gWcKq5hoKfJVvws2WAFM9S2vCzpU0KOden8P1Gqv3Iu3NPoAEA0=
+	t=1733316921; cv=none; b=Yu2BFnuQNS794vRxVMVjOvF9ZpLv0GPSWNOpK95D0Wz2JwfFKDNhCYmyFuCg3FIBIgDXGZF2mTllvuVB1d2m6gAUQePNGV8siT/RJtB6QDxg7yd9Ln4Y5BkQyC9L6zXmffKSSQxci8AwCb5uEd/4n8Z1pMv0pNchQnrGzWP4XT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733316918; c=relaxed/simple;
-	bh=+kw0hVN/R7EKfAHQdf+parzKCkCR3tVH/e099GIq3Ww=;
+	s=arc-20240116; t=1733316921; c=relaxed/simple;
+	bh=saVx3j66yQi6SYE+wOeyLCRXDHSMKU0oWoMw4xOdqbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us9O66wxvxh+TDjlD2ZoGXm8Iezf1hxewyIgDh4wVHJYuJHKNpFH5h6uXnlr20m6oclDyAkDtZKQxEp3/HfgItHZ6PYEPq/nfyKwR08tQMZkPjg0MZKaVuTXX8yeyRu2+3ECT9NbpG9QG3MATiO7Hut2BINuhLWeQEIinMInoPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZFomIgrP; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=AomUow5eGwiEg8PqGDDo048LHvFEC9phJ4IINkHA4NsbV9c502emIC9HujvI7fPRDmQ4iC/gCulfx/920Km2NnugG/MIdU1b/VlpS/61/giqdVgkKMqXKq3fkcC1xj6g4Z0Y0lrnYJ3zlIJQX1Fi2Ij/ShVwPhMh2MzX2bG+n0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MtvRQ1LI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZFomIgrP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MtvRQ1LI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733316916;
+	s=mimecast20190719; t=1733316919;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=na4vd6mThSkzeb6NVT06w3pd7mJ97fz8U44/x2n2hr0=;
-	b=ZFomIgrPWyEqZA16QxQVbj5dj3zEpDpCeIbOYVdI+NAfyp9xYxh3X1AhNtLFyvnkbmEFEG
-	Ex+Ys+DGTrpYQ6Euf8ZYRt2/fYi0lk3/4jzIuFgcQGOHAubOrQFxlxz+Vmm9AyzuVyC0oH
-	Ot1SRxkma+T7Dz9WZpZHjMSYaHBpWzg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8qWcPvM3uPJNBlH29eIda0Org6XNMptmimUFcDc8wZo=;
+	b=MtvRQ1LIxxunX1Dg7u4XHUNejUaXA89M9WYIk1FZisZJ2g90sZl/u0dxaffx2MVhI6QfCO
+	evRox4GICvgxExyuPK5wB9lltC6eh1Tiy2gscgOAFbeS4a1ikYk3ooeP0rNRI8CnvyoWon
+	VPIXBPmA8x+mLDjJy6UKWInYeAbJLb8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-9BvXodZ3N8SXRUFAqMX1kA-1; Wed, 04 Dec 2024 07:55:15 -0500
-X-MC-Unique: 9BvXodZ3N8SXRUFAqMX1kA-1
-X-Mimecast-MFC-AGG-ID: 9BvXodZ3N8SXRUFAqMX1kA
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-434a51e44d0so55173055e9.3
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:14 -0800 (PST)
+ us-mta-494-qcAyLu53M9SN59ajtTm5xw-1; Wed, 04 Dec 2024 07:55:17 -0500
+X-MC-Unique: qcAyLu53M9SN59ajtTm5xw-1
+X-Mimecast-MFC-AGG-ID: qcAyLu53M9SN59ajtTm5xw
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4349e97bfc4so62390385e9.3
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733316913; x=1733921713;
+        d=1e100.net; s=20230601; t=1733316916; x=1733921716;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=na4vd6mThSkzeb6NVT06w3pd7mJ97fz8U44/x2n2hr0=;
-        b=nktXKG7C994JIC2KWhRZFuxpfiE/oqDCXQsuW8XFK66p8bkYXjUpgLB7DkIo/5Bgyx
-         r8xmS6fcUl2LN0vNQokRTCfECWcBY5+/DWyJoV1SR6R/5YRrSd4QHcJ49rKSLPg2GSIv
-         M0r8LT7gaTmkCPP/Cl+wCi6ZHSWAB4BFDSQmftKT2VICzsEuCBZdDrIWB1tcL4JPrbhM
-         o/YTgVvbDG02QIDrm5WyG/T/DWfMOp+ocsENeWFDANF1lBrgEVJROI5ZLZjsaRmwX5x3
-         Ux5JWQ5VbOVAYSbKVvr/uhydmVjAru1WlXRf8V2784/a9l5uo5zeWiTd+kaqJE6U/PO1
-         f2qA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWJu/zBCPBMOEONX6Tbnr3A13fDt+5OQtxnzRij0ll9uaox9qPsNPW88k+cu3cOMnBSaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXV75VAAz5dj68OffWhAE8/MolYlbNzWSkgb4JUguTyDeIWrdA
-	cpICfCH3jIStJv5HPaISUtNAxdaawn0WkVH8vf8S4yn7O2DLzZsHzFdsHwE9JynILBHFhhwQ+zd
-	TMyY20uVo+cM2WCNvSssznb9m5pv5qfoOXuXDwzZnOw6DoGYo+A==
-X-Gm-Gg: ASbGncsQUj/7eeuFpmOxjK9zCwnIy74Zcp6Oid7GreB8KRZgzjIUJUBpFCdcGnvT9xN
-	/ZiGSdRCEyVOixomoqbY4W1/0PVtvTxH6jpEJxgRbYJxNNCgprAT1YSkKijpzt5CJYAroNvJlZ/
-	TU/VC8Sv+hIgiCY9k00dc+p17HLF0DgT2djX5zLZd2BfYf0rPowTccTcZb+UdH+b+wxhl5liKW0
-	5wtGkQtBltf8YjqcOn5TOIUUnINmWvmDJLys/aSrVJuDxnXmSxYUHjIdOUfieO3Y/q5QK2Wl0qU
-	jstm3Zy4/qXl2awG7aHqj4vemhI531ubm/M=
-X-Received: by 2002:a05:600c:3550:b0:434:a781:f5d5 with SMTP id 5b1f17b1804b1-434d0a15047mr62644285e9.30.1733316913739;
-        Wed, 04 Dec 2024 04:55:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHdVB6YFjtubaQuZKYqVl7K3swrZVKNM9mWRen9YVYSXicgBrRTJ3zdugRU4fK2CCWYQJl/Fg==
-X-Received: by 2002:a05:600c:3550:b0:434:a781:f5d5 with SMTP id 5b1f17b1804b1-434d0a15047mr62643915e9.30.1733316913375;
-        Wed, 04 Dec 2024 04:55:13 -0800 (PST)
+        bh=8qWcPvM3uPJNBlH29eIda0Org6XNMptmimUFcDc8wZo=;
+        b=D/759v3Wg0spqzIjxzO/BFSLhSiV5Q6YrXXoeZs/84rvDlmltVMePoAh0Khm1GYuc8
+         2zM4Pxu+CTrjxPo3mQElYkpFoXpXh7ddtw/qutVFp+3tYI5JCNllMnP7TNr7XnME/mpa
+         rR4dr1phYFh8+XARpKFKwGoTCAMqXQoxK1lHMgzhYKUzuhfw2GCyGtWrictu/WTsOLvh
+         WVMyNMCJwqW3eDWv6gFNBFbQEnBSq6vZYMZdR4eqfGKLPTsai+f4AIpTEhBBbajVjWzd
+         FJzrRz+cimGyyxf56tc97uz8EVd5z2GCY6VevdTQAv1ePoFbf7wKG1qZKN9PNd1WuxfY
+         0g2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXeSMYs+5S3CZNzDyfqjryY0eVmZUfSXmjSqamUoeumJCpUMuEAzZO4+4oDTWgdehFfhH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQhOu2uWsdBHJp6jVvXw+hhbugpYe5AmJF7F2q17IyCRsuF8Cf
+	oJNQAAEMVO+TShoOdLAxUJ7fII7+HOrPHs3UEgeXkJo1FuB/xzyy5YBbNQ2izTuzP77pedjX03G
+	xoGZMcrgMPpUuPsgxanyRvVtrAwkeKja5J6/MKpL/xuVhLL00KA==
+X-Gm-Gg: ASbGnctSKDdXi16TtYdLw2bUGoCkb4anClvAziTO9+2KW03BHFEPX6LqGvx/qRV79pR
+	dRTGLJL3zJM/XFqJKVzLOeBcfjNWvu5U/eEonn6M9sM2sbfkvUdBuE3nOym5O9/35EuBCR8FZKr
+	UZyIerxX5iTFl+mRS6J6AaPrAis1dadGt5YHFinsn7rWai3kxrf5NPwRKCMlmQ1vHoAu91Dte6m
+	K54o7acExWgctU3CTK95k3YzYTmC3GG9f+fORVwcFv7XygKseNle+Yj/vME+UP29O2D1qHh9vgd
+	k7jxU8AeKoT83GOmgngo6rM15TriR1bohco=
+X-Received: by 2002:a05:600c:4fc9:b0:434:a986:11cf with SMTP id 5b1f17b1804b1-434d09c0faamr58499775e9.8.1733316916539;
+        Wed, 04 Dec 2024 04:55:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0Ukl1ZPphCA+wOQqYI2PG+9UegKLtZCsee5cNCt9biGs2cCCF0gJFsDeKmcsipWxLJl404A==
+X-Received: by 2002:a05:600c:4fc9:b0:434:a986:11cf with SMTP id 5b1f17b1804b1-434d09c0faamr58499655e9.8.1733316916209;
+        Wed, 04 Dec 2024 04:55:16 -0800 (PST)
 Received: from localhost (p200300cbc70be10038d68aa111b0a20a.dip0.t-ipconnect.de. [2003:cb:c70b:e100:38d6:8aa1:11b0:a20a])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-385df488559sm15210226f8f.63.2024.12.04.04.55.10
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434d52a3139sm24274545e9.28.2024.12.04.04.55.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 04:55:12 -0800 (PST)
+        Wed, 04 Dec 2024 04:55:14 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -91,9 +91,9 @@ Cc: linux-mm@kvack.org,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Eric Farman <farman@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 09/12] virtio-mem: mark device ready before registering callbacks in kdump mode
-Date: Wed,  4 Dec 2024 13:54:40 +0100
-Message-ID: <20241204125444.1734652-10-david@redhat.com>
+Subject: [PATCH v2 10/12] virtio-mem: remember usable region size
+Date: Wed,  4 Dec 2024 13:54:41 +0100
+Message-ID: <20241204125444.1734652-11-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241204125444.1734652-1-david@redhat.com>
 References: <20241204125444.1734652-1-david@redhat.com>
@@ -105,44 +105,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After the callbacks are registered we may immediately get a callback. So
-mark the device ready before registering the callbacks.
+Let's remember the usable region size, which will be helpful in kdump
+mode next.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/virtio/virtio_mem.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/virtio/virtio_mem.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index b0b871441578..126f1d669bb0 100644
+index 126f1d669bb0..73477d5b79cf 100644
 --- a/drivers/virtio/virtio_mem.c
 +++ b/drivers/virtio/virtio_mem.c
-@@ -2648,6 +2648,7 @@ static int virtio_mem_init_hotplug(struct virtio_mem *vm)
- 	if (rc)
- 		goto out_unreg_pm;
+@@ -133,6 +133,8 @@ struct virtio_mem {
+ 	uint64_t addr;
+ 	/* Maximum region size in bytes. */
+ 	uint64_t region_size;
++	/* Usable region size in bytes. */
++	uint64_t usable_region_size;
  
-+	virtio_device_ready(vm->vdev);
- 	return 0;
- out_unreg_pm:
- 	unregister_pm_notifier(&vm->pm_notifier);
-@@ -2729,6 +2730,8 @@ static bool virtio_mem_vmcore_pfn_is_ram(struct vmcore_cb *cb,
- 
- static int virtio_mem_init_kdump(struct virtio_mem *vm)
+ 	/* The parent resource for all memory added via this device. */
+ 	struct resource *parent_resource;
+@@ -2368,7 +2370,7 @@ static int virtio_mem_cleanup_pending_mb(struct virtio_mem *vm)
+ static void virtio_mem_refresh_config(struct virtio_mem *vm)
  {
-+	/* We must be prepared to receive a callback immediately. */
-+	virtio_device_ready(vm->vdev);
- #ifdef CONFIG_PROC_VMCORE
- 	dev_info(&vm->vdev->dev, "memory hot(un)plug disabled in kdump kernel\n");
- 	vm->vmcore_cb.pfn_is_ram = virtio_mem_vmcore_pfn_is_ram;
-@@ -2870,8 +2873,6 @@ static int virtio_mem_probe(struct virtio_device *vdev)
- 	if (rc)
- 		goto out_del_vq;
+ 	const struct range pluggable_range = mhp_get_pluggable_range(true);
+-	uint64_t new_plugged_size, usable_region_size, end_addr;
++	uint64_t new_plugged_size, end_addr;
  
--	virtio_device_ready(vdev);
--
- 	/* trigger a config update to start processing the requested_size */
- 	if (!vm->in_kdump) {
- 		atomic_set(&vm->config_changed, 1);
+ 	/* the plugged_size is just a reflection of what _we_ did previously */
+ 	virtio_cread_le(vm->vdev, struct virtio_mem_config, plugged_size,
+@@ -2378,8 +2380,8 @@ static void virtio_mem_refresh_config(struct virtio_mem *vm)
+ 
+ 	/* calculate the last usable memory block id */
+ 	virtio_cread_le(vm->vdev, struct virtio_mem_config,
+-			usable_region_size, &usable_region_size);
+-	end_addr = min(vm->addr + usable_region_size - 1,
++			usable_region_size, &vm->usable_region_size);
++	end_addr = min(vm->addr + vm->usable_region_size - 1,
+ 		       pluggable_range.end);
+ 
+ 	if (vm->in_sbm) {
+@@ -2763,6 +2765,8 @@ static int virtio_mem_init(struct virtio_mem *vm)
+ 	virtio_cread_le(vm->vdev, struct virtio_mem_config, addr, &vm->addr);
+ 	virtio_cread_le(vm->vdev, struct virtio_mem_config, region_size,
+ 			&vm->region_size);
++	virtio_cread_le(vm->vdev, struct virtio_mem_config, usable_region_size,
++			&vm->usable_region_size);
+ 
+ 	/* Determine the nid for the device based on the lowest address. */
+ 	if (vm->nid == NUMA_NO_NODE)
 -- 
 2.47.1
 
