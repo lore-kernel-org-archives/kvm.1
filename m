@@ -1,77 +1,77 @@
 Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8B93D0D5;
-	Wed,  4 Dec 2024 20:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F19017335C;
+	Wed,  4 Dec 2024 20:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733344720; cv=none; b=V+x5z8jpFR95jBPYqknPHkmKV72Fhr/eNlVnQnPh/p42WqafmQ3NQGD4ly079AEVXRIOu7BcwoblU5MiI3pRlWtJc5xN07GpVegPFrRhtSHEXElxr6m1BBYFrK1i7TqGJ25C4aVSJ+u+VcOR5iDX+CJnUJ3o/d9QoNUnhrSXze4=
+	t=1733345565; cv=none; b=CR8mdx5oJNj3ggAkWeSBM03nvAgjIG0ma8jsy0pCAyjDfOSKAaro9zFPB8GE39NywDPFXKzLzUZyiDzQwJHzYccwO0J0TWKKMKW8/vmZO+qUKYP5Jb3mDgsEVeAOiM448Ly1Z8I51cRLpahLxJweweWr4OuPCqAdpYHbcBwuKTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733344720; c=relaxed/simple;
-	bh=VQBTDrrTUucSRw8JgUt8ni66mHo0/auasFVHGVJMEzI=;
+	s=arc-20240116; t=1733345565; c=relaxed/simple;
+	bh=paSPirvo2hOk24PuqUZvfkWTNvDtkMqM8JhfKacPhS0=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Z7ExpYlU/zdlPEVQGgoC8w9OMt4QFNjtWfS6PK26nZM6Vh1CCj/BnUH8BRcO8W9y3J/QvWQCYM+KlpD0iPZQ8TS/CW0vJOegR6nT0mpD6ONLyGCjOKHyYewJOx1/ZxKoKnF5PRAa7njfffeltrFImj15NjsY1pzF1MkcZLSI/T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=qoCHFVF4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=V0SSfTMk; arc=none smtp.client-ip=202.12.124.150
+	 Subject:Content-Type; b=X7Z0OHiWN2JBJNQDQWBx3Yb8RnCsdRNQ1p3vYZnlJVhoOhMf3W60/1CIg+HGO+Fsk8rvjXpuxMo3Et9yFx5c11sDrpmavq9tdYPYTKMbmqHgrLPl/Ntrlds6SkwhgcikRNj2vSFU+OC2iYtH3kDKi+HJ9gg1g3PP3Q4rxHsBcz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=jtZbbN3h; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EYkNwwM0; arc=none smtp.client-ip=202.12.124.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="qoCHFVF4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="V0SSfTMk"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="jtZbbN3h";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EYkNwwM0"
 Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 104B31140171;
-	Wed,  4 Dec 2024 15:38:37 -0500 (EST)
+	by mailfout.stl.internal (Postfix) with ESMTP id 775DB1140151;
+	Wed,  4 Dec 2024 15:52:42 -0500 (EST)
 Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 04 Dec 2024 15:38:37 -0500
+  by phl-compute-10.internal (MEProxy); Wed, 04 Dec 2024 15:52:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1733344716;
-	 x=1733431116; bh=ksk/xRcQCZNYpbBOvPXhkI3woRZO+aaqHCZZvSVVLLw=; b=
-	qoCHFVF4S5D2doDweDzCR4Ylyq8+iJA2Up03bTAnYLbmxRXQYJj7j3dcCWpQ3lY4
-	OHUp1dm2BVtiEu3MrA2q5ydj8+mRE7QBCqp0ECCp0VKB3PLBtgEo0mcRIFBPb33x
-	1ddeIEHFVFcM5s68EYf3i1px0E8Z3viKt+vqhwoagDxMw+kKK2k+/YFcAugMVQLP
-	Z/zGclMKCapYGS2EBQJzexoGYUUKHcVkHeqAvk94Akr/YuP7GG3VTBLkNaaJ+SsU
-	wtqmE+7d+6o3KLQ3quxb7TsVWdj6ptxaSTeiBN3Dm1ELxvHCHxgCHxTFpfTGpuWN
-	1mPxAbxmu5tEsIjVb1jSaA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1733345562;
+	 x=1733431962; bh=IARXqKJwMmq8+o594ye4w7KUMzZo7+xJIp2pYHwAhu0=; b=
+	jtZbbN3hDZFJCu+ykQ+vucyGEqK+JgVQ+uW1DbBKuaMFaeaGVSUUDf+lZsfYC1lu
+	nrdd1Zosp7xkokwqieU5F+zaqxA5pZf1eUoOsvy5Nw0tX0EC/tP9gW1nl3O8XAlK
+	8J3BYpVt6DtuJ+yat+o/oVFggiz35xVpKALD+NCtfLODU2TQuL3psEwPb+IAPUmj
+	7Zdapy2a6PF9+4L0CBIm/9msfujXrlY+zM1SeK10YKIWbrxjfkNZ1PM+3Nh/GZWr
+	9euE3vA7FSkmp137VIVMVllA61swXcAwrVCwhwQEHAiCVO2B8qzwYQ1O0ikkac1P
+	zDQfDYe4O1g8wYHvcChNbQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733344716; x=
-	1733431116; bh=ksk/xRcQCZNYpbBOvPXhkI3woRZO+aaqHCZZvSVVLLw=; b=V
-	0SSfTMkDud9RO0XEh9wgmA5abO7TD/+iNLFPtVPfNft6slLo9XV7+QVyruNKUFMy
-	clOLwQoK9I/A68fArltA42j6Y/GgCCLq5cSL11YhqL9DI2owaKFgotCaZVxm4Hzr
-	YlAodhIHstCawUKA9F11zr9Yd1EC/R1ypo0KfhHl5CwHuzl0ngY2yn7+GPPY4YdG
-	oZW/uqDHY3IaDnAWoHc3WO4nraq/2HJQ1HxbnXe3YxoMrS66LlKAxyyoI2oi1SOb
-	KlEh8KlbcAk0cMgfXbaQGKjyxbirWorhs7dyYq00qBDCSQRAVCponj1Upc4J57s3
-	1lVVUOHH7GQPimn8y6YoA==
-X-ME-Sender: <xms:zL1QZ_3FDXLAbKztnXiCuxxARK19Rpm9C7I5UUPyQQ4FrbNHvl5Ghg>
-    <xme:zL1QZ-G28CL1974tU6SbCKP9-l0SKBDoG6nUWU7GC38C1uGpP4q3Uo4eJri4LFmfo
-    qQL5S6u5AofKYpvKrs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieehgddufeehucetufdoteggodetrfdotf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733345562; x=
+	1733431962; bh=IARXqKJwMmq8+o594ye4w7KUMzZo7+xJIp2pYHwAhu0=; b=E
+	YkNwwM0E7CEak+uP4n0DAY4kDFY8c5x/DMb2vLQZFJ+75/yHwiVOluJYL7ZabENa
+	SrMi8N/Dq8KvL7OwWqn4ftxFlLa0EWIj83KIDekBnpxdZ6bt2WPVji7/tUSfBC85
+	TI3eaoMlCV0wSg0sWJmiuWyjFNKJ7Mku7PsrzQohnXgDjN/pJOd6lnOin8DYRSBO
+	qJyDITmbGVCY6Z4gnLu1gcL6bvFtg0avlJJVsSaY6ORLQMsfh+nurXZYs4QaqD09
+	jMkPpmPvYjtSez1K6xkHy3PoFywVv0qbUzRlqdNU+RolibgjeCygvS88nqmlZgOF
+	/ArI9BfkPm09MhhAuF1vg==
+X-ME-Sender: <xms:GcFQZw_b1_3yQmnXEQPOwpfKv3s-J4eEUvmRRBRRI9LNb-8LVaTAKA>
+    <xme:GcFQZ4vbgT9wLxlcZD8dxOpAZDmqiYsLSgLYnu5ng1zSOdn9e2W3X1uQDuC7tRhgL
+    kiX8Oq5Dmw7MoNiHW0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieehgddufeekucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
     htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
     necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
     guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
     jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudej
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudei
     pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
     gtphhtthhopegrnhguhidrshhhvghvtghhvghnkhhosehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepfhhnthhothhhsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghimhhinhgrgh
-    hhihesghhnuhguugdrtghomhdprhgtphhtthhopehsvggrnhhjtgesghhoohhglhgvrdgt
-    ohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtth
-    hopegrnhguhieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghrnhgusehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:zL1QZ_5bmNF3wlrWiVzllBMuNvMPA9v7KB3SR9GBLyM-1FDlGZXRTA>
-    <xmx:zL1QZ03LkHcoMaIYTBYMu5HiJI4Pc84pP6zanTJlo4c2kGtnKDs3Hw>
-    <xmx:zL1QZyGCjWz5jpGcHxDpchV68ZKoknPHrnt3PRb2jby8ugFZnbU7hQ>
-    <xmx:zL1QZ1-qfHAFb6YwugznW2kovljpts5sG44MQBd7OjlpzrCFDdmg_Q>
-    <xmx:zL1QZwVlPoss2pnnJk2SobNTuiMeFEdt3C1ATY5yVXZod2haWD5EuxSq>
+    thhtoheptghimhhinhgrghhhihesghhnuhguugdrtghomhdprhgtphhtthhopehsvggrnh
+    hjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggr
+    ugdrohhrghdprhgtphhtthhopegrnhguhieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
+X-ME-Proxy: <xmx:GcFQZ2C0DZvNq-j9kmCne1c41Mc2ccRZlNduYb5BVxtXndeq3u7oZw>
+    <xmx:GcFQZwd5RyKGmu8ZBzXo9YXL0zuQJVOFc_JA8hWvdgErKe-CTLSSXQ>
+    <xmx:GcFQZ1OW4q_104X1mv2eeA_npl7Rz9uGi__KrJXxXJqwv50DHDNi6A>
+    <xmx:GcFQZ6kv84UGoYbIvjxqK6jwuxUMTyvLzbZkc_zgd6mKeX-ktqxDTg>
+    <xmx:GsFQZ2sU2KMiqepgfuT_SpYptr3hdceedKoMjBoPgkGVXmcmnIMCPt8y>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1DF612220072; Wed,  4 Dec 2024 15:38:36 -0500 (EST)
+	id 3FFCA2220072; Wed,  4 Dec 2024 15:52:41 -0500 (EST)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -79,10 +79,10 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 04 Dec 2024 21:38:05 +0100
+Date: Wed, 04 Dec 2024 21:52:01 +0100
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Andy Shevchenko" <andy.shevchenko@gmail.com>,
- "Arnd Bergmann" <arnd@kernel.org>, "Ferry Toth" <fntoth@gmail.com>
+ "Arnd Bergmann" <arnd@kernel.org>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
  "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
  "Borislav Petkov" <bp@alien8.de>,
@@ -93,103 +93,66 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
  "Sean Christopherson" <seanjc@google.com>,
  "Davide Ciminaghi" <ciminaghi@gnudd.com>,
  "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-Message-Id: <206b50a2-922f-4a29-8c1a-b8695b19e65c@app.fastmail.com>
+Message-Id: <d84fc2e4-ca81-42b1-ae44-292d0b32c7ed@app.fastmail.com>
 In-Reply-To: 
- <CAHp75VfzHmV2anw6C8iSCiwnJc2YNa+1aLDj6Frf9OZyGjD0MQ@mail.gmail.com>
+ <CAHp75VcQcDD3gbfc6UzH3wYgge6EqSBEyWWOQ_dTkz8Eo+XgFw@mail.gmail.com>
 References: <20241204103042.1904639-1-arnd@kernel.org>
- <20241204103042.1904639-9-arnd@kernel.org>
- <CAHp75VfzHmV2anw6C8iSCiwnJc2YNa+1aLDj6Frf9OZyGjD0MQ@mail.gmail.com>
-Subject: Re: [PATCH 08/11] x86: document X86_INTEL_MID as 64-bit-only
+ <20241204103042.1904639-7-arnd@kernel.org>
+ <CAHp75VcQcDD3gbfc6UzH3wYgge6EqSBEyWWOQ_dTkz8Eo+XgFw@mail.gmail.com>
+Subject: Re: [PATCH 06/11] x86: drop SWIOTLB and PHYS_ADDR_T_64BIT for PAE
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 4, 2024, at 19:55, Andy Shevchenko wrote:
-> +Cc: Ferry
->
+On Wed, Dec 4, 2024, at 19:41, Andy Shevchenko wrote:
 > On Wed, Dec 4, 2024 at 12:31=E2=80=AFPM Arnd Bergmann <arnd@kernel.org=
 > wrote:
 >>
 >> From: Arnd Bergmann <arnd@arndb.de>
 >>
->> The X86_INTEL_MID code was originally introduced for the
->> 32-bit Moorestown/Medfield/Clovertrail platform, later the 64-bit
->> Merrifield/Moorefield variant got added, but the final
+>> Since kernels with and without CONFIG_X86_PAE are now limited
+>> to the low 4GB of physical address space, there is no need to
+>> use either swiotlb or 64-bit phys_addr_t any more, so stop
+>> selecting these and fix up the build warnings from that.
 >
-> variant got --> variants were
-
-Fixed
-
->> Morganfield/Broxton 14nm chips were canceled before they hit
->> the market.
->
-> Inaccurate. "Broxton for Mobile", and not "Broxton" in general.
-
-Changed to "but the final Morganfield 14nm platform was canceled
-before it hit the market"=20
-
->> To help users understand what the option actually refers to,
->> update the help text, and make it a hard dependency on 64-bit
->> kernels. While they could theoretically run a 32-bit kernel,
->> the devices originally shipped with 64-bit one in 2015, so that
->> was proabably never tested.
->
-> probably
-
-Fixed.
-
-> It's all other way around (from SW point of view). For unknown reasons
-> Intel decided to release only 32-bit SW and it became the only thing
-> that was heavily tested (despite misunderstanding by some developers
-> that pointed finger to the HW without researching the issue that
-> appears to be purely software in a few cases) _that_ time.  Starting
-> ca. 2017 I enabled 64-bit for Merrifield and from then it's being used
-> by both 32- and 64-bit builds.
->
-> I'm totally fine to drop 32-bit defaults for Merrifield/Moorefield,
-> but let's hear Ferry who might/may still have a use case for that.
-
-Ok. I tried to find the oldest Android image and saw it used a 64-bit
-kernel, but that must have been after your work then.
-
->
->> -               Moorestown MID devices
->
-> FTR, a year or so ago it was a (weak) interest to revive Medfield, but
-> I think it would require too much work even for the person who is
-> quite familiar with HW, U-Boot, and Linux kernel, so it is most
-> unlikely to happen.
-
-Ok.
-
->> +
->> +         The only supported devices are the 22nm Merrified (Z34xx) a=
-nd
->> +         Moorefield (Z35xx) SoC used in Android devices such as the
->> +         Asus Zenfone 2, Asus FonePad 8 and Dell Venue 7.
->
-> The list is missing the Intel Edison DIY platform which is probably
-> the main user of Intel MID kernels nowadays.
-
-Ah, that explains a lot ;-)
-
-Changed now to
-
-          The only supported devices are the 22nm Merrified (Z34xx) and
-          Moorefield (Z35xx) SoC used in the Intel Edison board and
-          a small number of Android devices such as the Asus Zenfone 2,
-          Asus FonePad 8 and Dell Venue 7.
-
 > ...
 >
->> -         Intel MID platforms are based on an Intel processor and chi=
-pset which
->> -         consume less power than most of the x86 derivatives.
+>>         mtrr_type_lookup(addr, addr + PMD_SIZE, &uniform);
+>>         if (!uniform) {
+>>                 pr_warn_once("%s: Cannot satisfy [mem %#010llx-%#010l=
+lx] with a huge-page mapping due to MTRR override.\n",
+>> -                            __func__, addr, addr + PMD_SIZE);
+>> +                            __func__, (u64)addr, (u64)addr + PMD_SIZ=
+E);
 >
-> Why remove this? AFAIK it states the truth.
+> Instead of castings I would rather:
+> 1) have addr and size (? does above have off-by-one error?) or end;
+> 2) use struct resource / range with the respective %p[Rr][a] specifier
+> or use %pa.
 
-It seemed irrelevant for users that configure the kernel. I've
-put it back now.
+Changed as below now. I'm still not sure whether the mtrr_type_lookup
+end argument is meant to be inclusive or exclusive, so I've left
+that alone, but the printed range should be correct now.
 
-Thanks for the review!
+Thanks,
 
      Arnd
+
+@@ -740,11 +740,12 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgp=
+rot_t prot)
+ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
+ {
+        u8 uniform;
++       struct resource res =3D DEFINE_RES_MEM(addr, PMD_SIZE);
+=20
+        mtrr_type_lookup(addr, addr + PMD_SIZE, &uniform);
+        if (!uniform) {
+-               pr_warn_once("%s: Cannot satisfy [mem %#010llx-%#010llx]=
+ with a huge-page mapping due to MTRR override.\n",
+-                            __func__, (u64)addr, (u64)addr + PMD_SIZE);
++               pr_warn_once("%s: Cannot satisfy %pR with a huge-page ma=
+pping due to MTRR override.\n",
++                            __func__, &res);
+                return 0;
+        }
+=20
+
