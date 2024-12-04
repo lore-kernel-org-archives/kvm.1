@@ -1,167 +1,109 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9955C1547C3;
-	Wed,  4 Dec 2024 16:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E0615B10D;
+	Wed,  4 Dec 2024 16:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733330062; cv=none; b=dOCgEp4FiTsiEajGNqN4gaOvujcO36PJXWET8Y8Q9/vgdtvVKTief9Hfh27NblUXh9umza7u6Bfn3DO0TBABXNMwdKPQrw4w7Ltff2KQbDb2WpJEg2i5IcX3oftJKvV0qBkccEV4V0UMzP1W32F3Wy32Pdc/+njRXyy6wTUHS6Y=
+	t=1733330282; cv=none; b=cuj9EeCRPgAcJRJsrjJnFYFsEd/FLNCMjDpfkusgJHjuO4JamFuWIdwl3o/9unibyQ148xsAUrIrh9CINJWrFdhO+8pWv23cquf7J6aSmsfmKcnGYzoDwgCrI7l/dLJdBvtTk+qKoUSPck3aGdLpJtm2e0g1gP9irBczq5REtWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733330062; c=relaxed/simple;
-	bh=x78ACWAOEZm++OCDsqG7/c0mVwye3P8tzwVfBS2KS84=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=RpTjS67rY0FZGg3yxOTortPjr+5xQ3sPGUYNfP+efvGLbX1op6ZssskoNXJv6A/F3/fcEpbePZJe1xicSUJiTnrOOq8mcVSg+6BfJcLg/P4+YhoZx8bOr5CuUxsU97LII4iJrcF6fpbIYjf71W80KM02kmH9Pvqyrkv6yMDrxSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Bgz/rgP/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=i3QZhTqh; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1733330282; c=relaxed/simple;
+	bh=x+97R4+Qu2pFUYhYlj9AO6jmWcDs0wrX0RY+HiKcAFA=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=IKgpLspmZNp4BSaSbXw0k58akXRPUKGI0m7mZvTfNCxQAs7dAVMIYFgThhtAz7uE+HmiebTvcVIgAGiKAStFeVxejJNPDhmSExEcCvbp634TJXIvq0albMR1yaL3lW8Nb3Mbu1ZQAm9pMdh/AqFdNw0eZv+RaIdnRmjtGR4PeL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Y7GsxTJU; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Bgz/rgP/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="i3QZhTqh"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4B62811401D5;
-	Wed,  4 Dec 2024 11:34:18 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 04 Dec 2024 11:34:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1733330058;
-	 x=1733416458; bh=Ah70jlP4CTaxYAWVJ4RDilPcmjlaIxhGSKcMYOP92jw=; b=
-	Bgz/rgP/rbciUaPGqY2T3BoA6Hn2zEV/kByiE1kyZQG+kfS/TkxHGrVjWOlfxDYe
-	8ZH9j2sz2cZ9F2yFj4Of2USSJIFYFI6uDLo7a5j6pqOp3zw1y77xCG9o+s5CouU0
-	NYt4X+V92Zmk1CIlQ8OOSiuA/cGNrJlRw9+tLMELy++7d7CuGE3nXUfSbx5CjpSC
-	cBylWUXFob1xjRec19aW292Kpq6vsRMo+qPZjm64Hah7zdxM7Nf/HQj9PQ8lwfS8
-	BKZyLL8UVf/OYQT9vLXu+EUxyiJ4enKDTkDxWN7OnJSeXaeDxJ0xzlu4muvc3U9t
-	NiGSUq166HdOcv5YrGIpWg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733330058; x=
-	1733416458; bh=Ah70jlP4CTaxYAWVJ4RDilPcmjlaIxhGSKcMYOP92jw=; b=i
-	3QZhTqhBZKJAh64ysePHTOf5V9j0ogPScaaqrkuI/8qEz0S4w9N63NXsrN+bonbS
-	AFxzlYlj10Nn8vT4NRUQUCOzgK81UwvV6a+ceHmTu6TB14eGtUdYJQM+ZNnEH/Zp
-	yIATyZITF9MNZQF64PZK8kIFrq4OeEfa8MkRDqi5ykZlDNXK5yucS/czq2o1ARCv
-	DOqjPaVQz0gX0cf+BE/uEWO+kZOyGMzHqB+reItDcdnh1teFuJ3Eq2Epqtx8xbVu
-	lO7K9H6cJAb4HMZJBiIyTzyXiCMO1jUTmEoPy0FZeUXoMpaIPUvYxDJC2ZALPx9g
-	R01wmE0Do74tWgIsLyRcA==
-X-ME-Sender: <xms:iYRQZ5P4VkR9mZXjSbymRRoy_dVJGGGO2fgNixTyN1iz5o8b1eRt7Q>
-    <xme:iYRQZ78E1iUGLfxfK2V_YNHcB4b8fnvBbhJctOqcnHBkJvbaaKdK9DYZV5G3AuDvV
-    ePwdBmGq2WHT8TH6ew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieehgdekiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
-    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduhedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtg
-    hpthhtoheptghimhhinhgrghhhihesghhnuhguugdrtghomhdprhgtphhtthhopehsvggr
-    nhhjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvg
-    grugdrohhrghdprhgtphhtthhopegrnhguhieskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphht
-    thhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:iYRQZ4T3112cRzwmCs5KIhZTO7PC40uLVK1f5fb7qcRgieEPEFSXJg>
-    <xmx:iYRQZ1tn6Oe_zSU_P3NsbgNWOppvawQfIK1GXrcVLkiEIBvpl84eLw>
-    <xmx:iYRQZxeI9_hIN2rr4QXf81ZGygsLT6b28nbbmcqx4dYpgXXdY4YgXQ>
-    <xmx:iYRQZx04xE3iirr5QntJttrlCLCtfFrE_z9P1c0P4DvPS10Yw7vZGQ>
-    <xmx:ioRQZ82OD2mhqILmQZxp7mH4r5lmE-yzLCstRa81WHTlxPCYuR9p44RM>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 68E422220072; Wed,  4 Dec 2024 11:34:17 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Y7GsxTJU"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 4B4GbNvO1111657
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 4 Dec 2024 08:37:24 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4B4GbNvO1111657
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024111601; t=1733330245;
+	bh=zUEN7Y+zdFzQNIkoosq21iA5Pa8Pqr2J5qBpK5Y272I=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=Y7GsxTJUzd7tnZOvV4vTQGc+ZqIqIKUED8WoxyjNaD9/qwlJWnGMSVsDsR6xfo1NM
+	 XwdaMDhlkQMFzQ/goZnyTulzCo0fSlk+acOc25XPc68WilK6UxXl9oOxRiTXa/b2l6
+	 92fqn0VXHvhrbW4dPxcGapY9zTLvuZSJobPBBQ9E7p1eNsKDg73z5va/Z8iLxrzil7
+	 KbBSX0DP89lVUbVMEbw3DEYqw5TLJNaWUj5dyEf4nRnmTFOTwC3Dd+DREmD/Ink4i1
+	 WwdTyki9632ll2v+Mf5TUiBba9o0bZJqU3yHbZggPgpS0WzM+ENO1d8qqXWSL5mOX/
+	 +XZl47y3EXMQg==
+Date: Wed, 04 Dec 2024 08:37:22 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Brian Gerst <brgerst@gmail.com>, Arnd Bergmann <arnd@kernel.org>
+CC: linux-kernel@vger.kernel.org, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Davide Ciminaghi <ciminaghi@gnudd.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 05/11] x86: remove HIGHMEM64G support
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAMzpN2joPcvg887tJLF_4SU4aJt+wTGy2M_xaExrozLS-mvXsw@mail.gmail.com>
+References: <20241204103042.1904639-1-arnd@kernel.org> <20241204103042.1904639-6-arnd@kernel.org> <CAMzpN2joPcvg887tJLF_4SU4aJt+wTGy2M_xaExrozLS-mvXsw@mail.gmail.com>
+Message-ID: <A0F192E7-EFD2-4DD4-8E84-764BF7210C6A@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 04 Dec 2024 17:33:57 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Sean Christopherson" <seanjc@google.com>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Andy Shevchenko" <andy@kernel.org>, "Matthew Wilcox" <willy@infradead.org>,
- "Davide Ciminaghi" <ciminaghi@gnudd.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-Message-Id: <bb9d86e4-4641-4b1b-af9e-7d468dc2e2ee@app.fastmail.com>
-In-Reply-To: <Z1B1phcpbiYWLgCD@google.com>
-References: <20241204103042.1904639-1-arnd@kernel.org>
- <20241204103042.1904639-12-arnd@kernel.org> <Z1B1phcpbiYWLgCD@google.com>
-Subject: Re: [PATCH 11/11] x86: drop 32-bit KVM host support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 4, 2024, at 16:30, Sean Christopherson wrote:
-> On Wed, Dec 04, 2024, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> There are very few 32-bit machines that support KVM, the main exceptions
->> are the "Yonah" Generation Xeon-LV and Core Duo from 2006 and the Atom
->> Z5xx "Silverthorne" from 2008 that were all release just before their
->> 64-bit counterparts.
->> 
->> Using KVM as a host on a 64-bit CPU using a 32-bit kernel generally
->> works fine, but is rather pointless since 64-bit kernels are much better
->> supported and deal better with the memory requirements of VM guests.
->> 
->> Drop all the 32-bit-only portions and the "#ifdef CONFIG_X86_64" checks
->> of the x86 KVM code and add a Kconfig dependency to only allow building
->> this on 64-bit kernels.
+On December 4, 2024 5:29:17 AM PST, Brian Gerst <brgerst@gmail=2Ecom> wrote=
+:
+>On Wed, Dec 4, 2024 at 5:34=E2=80=AFAM Arnd Bergmann <arnd@kernel=2Eorg> =
+wrote:
+>>
+>> From: Arnd Bergmann <arnd@arndb=2Ede>
+>>
+>> The HIGHMEM64G support was added in linux-2=2E3=2E25 to support (then)
+>> high-end Pentium Pro and Pentium III Xeon servers with more than 4GB of
+>> addressing, NUMA and PCI-X slots started appearing=2E
+>>
+>> I have found no evidence of this ever being used in regular dual-socket
+>> servers or consumer devices, all the users seem obsolete these days,
+>> even by i386 standards:
+>>
+>>  - Support for NUMA servers (NUMA-Q, IBM x440, unisys) was already
+>>    removed ten years ago=2E
+>>
+>>  - 4+ socket non-NUMA servers based on Intel 450GX/450NX, HP F8 and
+>>    ServerWorks ServerSet/GrandChampion could theoretically still work
+>>    with 8GB, but these were exceptionally rare even 20 years ago and
+>>    would have usually been equipped with than the maximum amount of
+>>    RAM=2E
+>>
+>>  - Some SKUs of the Celeron D from 2004 had 64-bit mode fused off but
+>>    could still work in a Socket 775 mainboard designed for the later
+>>    Core 2 Duo and 8GB=2E Apparently most BIOSes at the time only allowe=
+d
+>>    64-bit CPUs=2E
+>>
+>>  - In the early days of x86-64 hardware, there was sometimes the need
+>>    to run a 32-bit kernel to work around bugs in the hardware drivers,
+>>    or in the syscall emulation for 32-bit userspace=2E This likely stil=
+l
+>>    works but there should never be a need for this any more=2E
+>>
+>> Removing this also drops the need for PHYS_ADDR_T_64BIT and SWIOTLB=2E
+>> PAE mode is still required to get access to the 'NX' bit on Atom
+>> 'Pentium M' and 'Core Duo' CPUs=2E
 >
-> While 32-bit KVM doesn't need to be a thing for x86 usage, Paolo 
-> expressed concerns
-> that dropping 32-bit support on x86 would cause general 32-bit KVM 
-> support to
-> bitrot horribly.  32-bit x86 doesn't get much testing, but I do at 
-> least boot VMs
-> with it on a semi-regular basis.  I don't think we can say the same for 
-> other
-> architectures with 32-bit variants.
+>8GB of memory is still useful for 32-bit guest VMs=2E
+>
+>
+>Brian Gerst
+>
 
-I see.
-
-> PPC apparently still has 32-bit users[1][2],
-
-I looked at the links but only see 64-bit users there.
-
-There is KVM support for 32-bit BookE (e500v2, e500mc)
-in the PPC85xx and QorIQ P1/P2/P3/P4, and Crystal mentioned
-that there might be users, but did not point to anyone
-in particular.
-
-The A-EON AmigaOne X5000 and Powerboard Tyche that were
-mentioned in the thread as being actively used are both
-64-bit QorIQ P5/T2 (e5500, e6500) based. These are the
-same platform ("85xx" in Linux, "e500" in qemu), so it's
-easy to confuse. We can probably ask again if anyone
-cares about removing the 32-bit side of this.
-
-> and 32-bit RISC-V is a thing,
-
-There are many 32-bit RISC-V chips, but all RISC-V
-SoCs supported by Linux today are in fact 64-bit.
-
-While there is still talk of adding support for 32-bit
-SoCs, the only usecase for those is really to allow
-machines with smaller amounts of physical RAM, which
-tends to rule out virtualization.
-
-There is one more platform that supports virtualization
-on 32-bit CPUs, which is the MIPS P5600 core in the
-Baikal T1.
-
-I still think it makes sense to just drop KVM support
-for all 32-bit hosts, but I agree that it also
-makes sense to keep x86-32 as the last one of those
-for testing purposes.
-
-    Arnd
+By the way, there are 64-bit machines which require swiotlb=2E
