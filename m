@@ -1,153 +1,246 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-vs1-f73.google.com (mail-vs1-f73.google.com [209.85.217.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B965E1C3BEF;
-	Wed,  4 Dec 2024 18:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489841C3BF0
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 19:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733338559; cv=none; b=px4FC7D8E88ux6pynxWOzxK8OdwVF/NxuUfeGjDTF0HrqlFByt0OCzGEaV+O3pHO1NwXGMx/8fux5vhfF/H/J813IUT1CvBWJ+7ZHc/R20Vge3Z00rmKL9hqBURJVK8CYxfN0jXQbRz8uKis32lgRXBTMrsorpnYv9rKRIHreSM=
+	t=1733339658; cv=none; b=dUuAdIf4Q6I0fsd2tGda9HXmC19UQdtnAw8dJJIEgAb3yaTFOH31p3SZhgHEX2ZB1rcKYBrRnH91njs3iImnM/R7rnKSK03olcbaDqdEqKEnA2E/mTv4hPQFhoRQ3NSxQPiqJ5iQ/yke49z4vIWP96m6yM5gbJCzggu6/NkAIrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733338559; c=relaxed/simple;
-	bh=Q1I96KHKoKquP99zDV8hikTm7n6IHjkE0xL4a4TEJxU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lDlcGq6wwtcJIDymdnx5IPKBzbH9HK/1cilsT4PgwQftQbQ4uCP1HQRrEmBF1nVbOfd2r7XvgxVuZ+i6BO7rY01hXSiKG+wWnkfpK7lChVhuyinqYuZC7a2ZrkjD7N9egAmXMEXsJkc1cjk6xOT+f/MfU9ipXdGi9NQRDVnqxvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FdltHmvw; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733339658; c=relaxed/simple;
+	bh=xW7uoGnTy/4eMBEjOG4u+2rSCh0tjmvM8kudrhHK2JY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=To4RGhHLB4Ywiy5qCjhEBERbr0Lcb+wXjMrqD4/4Dr57JvQdC/wGvWGIPStTHf287LeYr41W2xH7UVY6FjbIDO3BYTgh1XqAJT8yH39rrEVD0bsFvH6MU3v//piHtkWAtndLFFCcMaIa45xDekxDMKMxzLRID5NrPqVKXQs4rZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fMTVbn08; arc=none smtp.client-ip=209.85.217.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FdltHmvw"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9e8522445dso7267466b.1;
-        Wed, 04 Dec 2024 10:55:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fMTVbn08"
+Received: by mail-vs1-f73.google.com with SMTP id ada2fe7eead31-4afaabf616eso10207137.3
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 11:14:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733338556; x=1733943356; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c1/QHLcx9K+qGIU6YvEpG3MhDlT7rfFaGUxo0C4Xc9Y=;
-        b=FdltHmvwVDG4CiObU6fs8IiyJMnlJf1M47SKWTx8Fo+6VLn5710uQzC4g9lFmVT09t
-         wMBCxcE+0mYWAXtqXHMvGAZ/dGLrymbvVD+fStKsBYvm730MBWvYWpPzMTsdrA9OOyZq
-         GJ4KUHOsjqkTO7yvEpEZ/MpTrPAqd/9fdkWMHfBUNwrMclEl+1sY8jMTX36EPuMouJEf
-         Vz+tXVNsacqLI/AzUIfrvc/CaqWUOZ1JiAbOkZZWhLS5NfmP74L+uZgYPIE2VyhzsztQ
-         U9LjDNGWt8pyYobZWCkRa+mFikVUiA2DhPEf1glB53daxZUBrMFLSkXl8EoER6IT3F6L
-         uIUQ==
+        d=google.com; s=20230601; t=1733339655; x=1733944455; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GtNJo0QiZibz4F5AJzlr0Gn0CnNz2HNSdOIlXuZpqw4=;
+        b=fMTVbn081jx71lq2JVUn//76hPUHTjVAC8sfjS6UcrduMXgHqtwAmxLqOVKEkBRkLN
+         s1C42pT4fICBIFD+J/Wqnax8weKUh48xKL6VFNvROb/lzctkOw/5lQY7pWAeYrYIcgCK
+         +GykYOynRs3Nnd+3/YwzpYhhy8sngpcGhj0JZx99CIHhPve4WOyCl33aT+3Yo3LaJO/s
+         4vlJhMKSGrKVvVIgQs5CdiQbcjjoVIrIlGF5dxnB5EVmPq4HPgACRHVJRKhdTZkvx19Y
+         G3L79CTLE5zXzy7+PBVLJTZfflTYajHeEebUOL8+khLXASjX102MT9k2hmjtqFoYIjaA
+         NLRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733338556; x=1733943356;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c1/QHLcx9K+qGIU6YvEpG3MhDlT7rfFaGUxo0C4Xc9Y=;
-        b=j2YBps+XLwzXaVHkwnmS7JopneIldd+AkjNjQ6xvOv4Rp8tcIwM2G+0fnBVbNwuSja
-         ZC8AIxx/Gfw6OvuHlpWaF/fubLsecdbKhDh2KE9+pDydVti5IETsxtRe/GK0Zr2aFESo
-         EMfyD4+FDCDyJxuR2b/83mTmsLJ+/MWIFmV6PxXZHzD3xNxVVOrJg56b5Sr7jOohOWRd
-         KazTVIBUlKHQSmhmAn3qw8gA/C7dXdza1jW0q3vJZpfEX3je6Yp9FmndzeOCFW+LDby4
-         o6mhA5lzMDeUccQfjtwoeY3BQDrnmBAhX/r1SwAgU8GDSMOAFFvfrdBG8GzeO5/Lhhf3
-         CP+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVdR0VdrIHoNXxLbsGPg7Jz4qCv4DYQvDsuafXPg4ehr3lF7hEXlkWH2qcflM1JdktWlDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRA1mxgXls5zWhYtZC/bHIZEN/1Ld/0EQj8gROYqtHc0PRCcYd
-	6hH94oWpM4WXvIAN/cw5pLhzpPezcGdfF08n2W3Mzh2SSgG5Prau9QtE64IuHmU36p4VM/nFOFf
-	rufRdeE0sPdkqIFP4G+G17yzJJc8=
-X-Gm-Gg: ASbGnctf+Bly5uY3fITnTYSMw2rZmD82Oo6ZePwUnEQPycjie6+dQWRfxcv7kctNwhM
-	KyqOVcuv+0gkWD1XK1FyqSpt7dCaawQY=
-X-Google-Smtp-Source: AGHT+IHO73y0YMfpyzVFzPRnJuX/MCTvcGmO3AohXcef59b3IHqy3sLghsRluNcSGYhVKKHz6SZLH/YUcm+SMs8TWEw=
-X-Received: by 2002:a17:906:23e1:b0:aa5:4adc:5a1f with SMTP id
- a640c23a62f3a-aa5f7da98eamr589602866b.33.1733338555820; Wed, 04 Dec 2024
- 10:55:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733339655; x=1733944455;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GtNJo0QiZibz4F5AJzlr0Gn0CnNz2HNSdOIlXuZpqw4=;
+        b=HKsWyfICyTDXrlg+bCybyTfXsHhlt1t3QHVYoG2Hd/cKXmd5OXPaPGHTiMsKTT0JD0
+         3OT9kygC4c/ni+Xjo4Y6xbn8w0OJWqyJ7N4f2IzVLB2n5udH6YaGTVOIiXbbFEsJEBKu
+         fG8yHqdYIF3ZKSxShXq8eaMitg7XWpDC7Igiuw9UEE6PTLstN2Xtmc23Krabcu3uo5i7
+         r289AzaRl75x7emuPU8HSoctz6TN1AvVNqzJoaPXlAOcymGFQ8U6IaWxvwMUzCDhP+ik
+         LKbyOu3haptLe08Ot/DfnMIcdmCOgV66/dIbn8xGNQmiOWlbT0IFe9z3B8yfwX8dnJxL
+         W6gg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9NTR1qQNvc3focJo4mmZ3ZzrU4cQmZVam1jIc9Az15+QbI6FeeOsLP+eFk0QmUpR0UPQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdbMOBdQpukaSKHQCPb23KoP82em8WuLio+iUG6D2+NWnsacmn
+	WuH9qiXw9hCyX2zv2jL2D5jYn9t/vlfT2ZZkJ8t71ekfMQkUt7zHR22NAzK9YhOBGbwi1N4xGxD
+	6Tf0pyuOpbYoM9m+4xg==
+X-Google-Smtp-Source: AGHT+IF1BXeXjzm2ynkFwLfcOwwZSEy3kJcGkjF9TH4hluS8IOC1jCo7DbvQ0TVKaPL1457lCJsGhUwjD3KkdK7U
+X-Received: from vsbhy8.prod.google.com ([2002:a67:e7c8:0:b0:4af:497d:2ec1])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6102:3ed2:b0:4af:58f7:15ec with SMTP id ada2fe7eead31-4af971fcbddmr10423490137.4.1733339655146;
+ Wed, 04 Dec 2024 11:14:15 -0800 (PST)
+Date: Wed,  4 Dec 2024 19:13:35 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241204103042.1904639-1-arnd@kernel.org> <20241204103042.1904639-9-arnd@kernel.org>
-In-Reply-To: <20241204103042.1904639-9-arnd@kernel.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 4 Dec 2024 20:55:19 +0200
-Message-ID: <CAHp75VfzHmV2anw6C8iSCiwnJc2YNa+1aLDj6Frf9OZyGjD0MQ@mail.gmail.com>
-Subject: Re: [PATCH 08/11] x86: document X86_INTEL_MID as 64-bit-only
-To: Arnd Bergmann <arnd@kernel.org>, Ferry Toth <fntoth@gmail.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Andy Shevchenko <andy@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Sean Christopherson <seanjc@google.com>, Davide Ciminaghi <ciminaghi@gnudd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241204191349.1730936-1-jthoughton@google.com>
+Subject: [PATCH v1 00/13] KVM: Introduce KVM Userfault
+From: James Houghton <jthoughton@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Yan Zhao <yan.y.zhao@intel.com>, 
+	James Houghton <jthoughton@google.com>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Anish Moorthy <amoorthy@google.com>, Peter Gonda <pgonda@google.com>, Peter Xu <peterx@redhat.com>, 
+	David Matlack <dmatlack@google.com>, Wang@google.com, Wei W <wei.w.wang@intel.com>, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-+Cc: Ferry
+This is a continuation of the original KVM Userfault RFC[1] from July.
+It contains the simplifications we talked about at LPC[2].
 
-On Wed, Dec 4, 2024 at 12:31=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
-te:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The X86_INTEL_MID code was originally introduced for the
-> 32-bit Moorestown/Medfield/Clovertrail platform, later the 64-bit
-> Merrifield/Moorefield variant got added, but the final
+Please see the RFC[1] for the problem description. In summary,
+guest_memfd VMs have no mechanism for doing post-copy live migration.
+KVM Userfault provides such a mechanism. Today there is no upstream
+mechanism for installing memory into a guest_memfd, but there will
+be one soon (e.g. [3]).
 
-variant got --> variants were
+There is a second problem that KVM Userfault solves: userfaultfd-based
+post-copy doesn't scale very well. KVM Userfault when used with
+userfaultfd can scale much better in the common case that most post-copy
+demand fetches are a result of vCPU access violations. This is a
+continuation of the solution Anish was working on[4]. This aspect of
+KVM Userfault is important for userfaultfd-based live migration when
+scaling up to hundreds of vCPUs with ~30us network latency for a
+PAGE_SIZE demand-fetch.
 
-> Morganfield/Broxton 14nm chips were canceled before they hit
-> the market.
+The implementation in this series is version than the RFC[1]. It adds...
+ 1. a new memslot flag is added: KVM_MEM_USERFAULT,
+ 2. a new parameter, userfault_bitmap, into struct kvm_memory_slot,
+ 3. a new KVM_RUN exit reason: KVM_MEMORY_EXIT_FLAG_USERFAULT,
+ 4. a new KVM capability KVM_CAP_USERFAULT.
 
-Inaccurate. "Broxton for Mobile", and not "Broxton" in general.
+KVM Userfault does not attempt to catch KVM's own accesses to guest
+memory. That is left up to userfaultfd.
+
+When enabling KVM_MEM_USERFAULT for a memslot, the second-stage mappings
+are zapped, and new faults will check `userfault_bitmap` to see if the
+fault should exit to userspace.
+
+When KVM_MEM_USERFAULT is enabled, only PAGE_SIZE mappings are
+permitted.
+
+When disabling KVM_MEM_USERFAULT, huge mappings will be reconstructed
+(either eagerly or on-demand; the architecture can decide).
+
+KVM Userfault is not compatible with async page faults. Nikita has
+proposed a new implementation of async page faults that is more
+userspace-driven that *is* compatible with KVM Userfault[5].
+
+Performance
+===========
+
+The takeaways I have are:
+
+1. For cases where lock contention is not a concern, there is a
+   discernable win because KVM Userfault saves the trip through the
+   userfaultfd poll/read/WAKE cycle.
+
+2. Using a single userfaultfd without KVM Userfault gets very slow as
+   the number of vCPUs increases, and it gets even slower when you add
+   more reader threads. This is due to contention on the userfaultfd
+   wait_queue locks. This is the contention that KVM Userfault avoids.
+   Compare this to the multiple-userfaultfd runs; they are much faster
+   because the wait_queue locks are sharded perfectly (1 per vCPU).
+   Perfect sharding is only possible because the vCPUs are configured to
+   touch only their own chunk of memory.
+
+Config:
+ - 64M per vcpu
+ - vcpus only touch their 64M (`-b 64M -a`)
+ - THPs disabled
+ - MGLRU disabled
+
+Each run used the following command:
+
+./demand_paging_test -b 64M -a -v <#vcpus>  \
+	-s shmem		     \ # if using shmem
+	-r <#readers> -u <uffd_mode> \ # if using userfaultfd
+	-k \			     \ # if using KVM Userfault
+	-m 3			       # when on arm64
+
+note: I patched demand_paging_test so that, when using shmem, the page
+      cache will always be preallocated, not only in the `-u MINOR`
+      case. Otherwise the comparison would be unfair. I left this patch
+      out in the selftest commits, but I am happy to add it if it would
+      be useful.
+
+== x86 (96 LPUs, 48 cores, TDP MMU enabled) ==
+
+-- Anonymous memory, single userfaultfd
+
+	userfault mode
+vcpus				2	8	64
+	no userfault		306845	220402	47720
+	MISSING (single reader)	90724	26059	3029
+	MISSING			86840	37912	1664
+	MISSING + KVM UF	143021	104385	34910
+	KVM UF			160326	128247	39913
+
+-- shmem (preallocated), single userfaultfd
+
+vcpus				2	8	64
+	no userfault		375130	214635	54420
+	MINOR (single reader)	102336	31704	3244
+	MINOR 			97981	36982	1673
+	MINOR + KVM UF		161835	113716	33577
+	KVM UF			181972	131204	42914
+
+-- shmem (preallocated), multiple userfaultfds
+
+vcpus				2	8	64
+	no userfault		374060	216108	54433
+	MINOR			102661	56978	11300
+	MINOR + KVM UF		167080	123461	48382
+	KVM UF			180439	122310	42539
+
+== arm64 (96 PEs, AmpereOne) ==
+
+-- shmem (preallocated), single userfaultfd
+
+vcpus:				2	8	64
+	no userfault		419069	363081	34348
+	MINOR (single reader)	87421	36147	3764
+	MINOR			84953	43444	1323
+	MINOR + KVM UF		164509	139986	12373
+	KVM UF			185706	122153	12153
+
+-- shmem (preallocated), multiple userfaultfds
+
+vcpus:				2	8	64
+	no userfault		401931	334142	36117
+	MINOR			83696	75617	15996
+	MINOR + KVM UF		176327	115784	12198
+	KVM UF			190074	126966	12084
+
+This series is based on the latest kvm/next.
+
+[1]: https://lore.kernel.org/kvm/20240710234222.2333120-1-jthoughton@google.com/
+[2]: https://lpc.events/event/18/contributions/1757/
+[3]: https://lore.kernel.org/kvm/20241112073837.22284-1-yan.y.zhao@intel.com/
+[4]: https://lore.kernel.org/all/20240215235405.368539-1-amoorthy@google.com/
+[5]: https://lore.kernel.org/kvm/20241118123948.4796-1-kalyazin@amazon.com/#t
+
+James Houghton (13):
+  KVM: Add KVM_MEM_USERFAULT memslot flag and bitmap
+  KVM: Add KVM_MEMORY_EXIT_FLAG_USERFAULT
+  KVM: Allow late setting of KVM_MEM_USERFAULT on guest_memfd memslot
+  KVM: Advertise KVM_CAP_USERFAULT in KVM_CHECK_EXTENSION
+  KVM: x86/mmu: Add support for KVM_MEM_USERFAULT
+  KVM: arm64: Add support for KVM_MEM_USERFAULT
+  KVM: selftests: Fix vm_mem_region_set_flags docstring
+  KVM: selftests: Fix prefault_mem logic
+  KVM: selftests: Add va_start/end into uffd_desc
+  KVM: selftests: Add KVM Userfault mode to demand_paging_test
+  KVM: selftests: Inform set_memory_region_test of KVM_MEM_USERFAULT
+  KVM: selftests: Add KVM_MEM_USERFAULT + guest_memfd toggle tests
+  KVM: Documentation: Add KVM_CAP_USERFAULT and KVM_MEM_USERFAULT
+    details
+
+ Documentation/virt/kvm/api.rst                |  33 +++-
+ arch/arm64/kvm/Kconfig                        |   1 +
+ arch/arm64/kvm/mmu.c                          |  23 ++-
+ arch/x86/kvm/Kconfig                          |   1 +
+ arch/x86/kvm/mmu/mmu.c                        |  27 +++-
+ arch/x86/kvm/mmu/mmu_internal.h               |  20 ++-
+ arch/x86/kvm/x86.c                            |  36 +++--
+ include/linux/kvm_host.h                      |  19 ++-
+ include/uapi/linux/kvm.h                      |   6 +-
+ .../selftests/kvm/demand_paging_test.c        | 145 ++++++++++++++++--
+ .../testing/selftests/kvm/include/kvm_util.h  |   5 +
+ .../selftests/kvm/include/userfaultfd_util.h  |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  42 ++++-
+ .../selftests/kvm/lib/userfaultfd_util.c      |   2 +
+ .../selftests/kvm/set_memory_region_test.c    |  33 ++++
+ virt/kvm/Kconfig                              |   3 +
+ virt/kvm/kvm_main.c                           |  47 +++++-
+ 17 files changed, 409 insertions(+), 36 deletions(-)
 
 
-> To help users understand what the option actually refers to,
-> update the help text, and make it a hard dependency on 64-bit
-> kernels. While they could theoretically run a 32-bit kernel,
-> the devices originally shipped with 64-bit one in 2015, so that
-> was proabably never tested.
+base-commit: 4d911c7abee56771b0219a9fbf0120d06bdc9c14
+-- 
+2.47.0.338.g60cca15819-goog
 
-probably
-
-It's all other way around (from SW point of view). For unknown reasons
-Intel decided to release only 32-bit SW and it became the only thing
-that was heavily tested (despite misunderstanding by some developers
-that pointed finger to the HW without researching the issue that
-appears to be purely software in a few cases) _that_ time.  Starting
-ca. 2017 I enabled 64-bit for Merrifield and from then it's being used
-by both 32- and 64-bit builds.
-
-I'm totally fine to drop 32-bit defaults for Merrifield/Moorefield,
-but let's hear Ferry who might/may still have a use case for that.
-
-...
-
-> -               Moorestown MID devices
-
-FTR, a year or so ago it was a (weak) interest to revive Medfield, but
-I think it would require too much work even for the person who is
-quite familiar with HW, U-Boot, and Linux kernel, so it is most
-unlikely to happen.
-
-...
-
->           Select to build a kernel capable of supporting Intel MID (Mobil=
-e
->           Internet Device) platform systems which do not have the PCI leg=
-acy
-> -         interfaces. If you are building for a PC class system say N her=
-e.
-> +         interfaces.
-> +
-> +         The only supported devices are the 22nm Merrified (Z34xx) and
-> +         Moorefield (Z35xx) SoC used in Android devices such as the
-> +         Asus Zenfone 2, Asus FonePad 8 and Dell Venue 7.
-
-The list is missing the Intel Edison DIY platform which is probably
-the main user of Intel MID kernels nowadays.
-
-...
-
-> -         Intel MID platforms are based on an Intel processor and chipset=
- which
-> -         consume less power than most of the x86 derivatives.
-
-Why remove this? AFAIK it states the truth.
-
-
---=20
-With Best Regards,
-Andy Shevchenko
