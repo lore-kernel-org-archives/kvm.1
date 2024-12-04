@@ -1,128 +1,180 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39191DEFEA
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 10:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580C21E3DF7;
+	Wed,  4 Dec 2024 10:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733308286; cv=none; b=ujovG31Vb4BtYmNi+i9/SRUnS4skPE0uyNFO5NNn3zHUJIk+jD1yX8TSgKgbsRhfQuDHVagQUXJdeGUv7z6P6U/72TACdVsdNuIGPfzvMvL74+N+JRkDIRMakXM2gPVZCPBzFg5ICHiEHGznLKWlj+3d89wbrfMEjKQZNNrsLLE=
+	t=1733308288; cv=none; b=kSmq65Fh47rgF6OsnvYah0/QMUVnOd24rKLojVjXA8to1HY5YSKLKEe2hBsdIgzNSfyppcFGno7oiSgPLfvUq2JNzc2i+kr7naL3H+zqeuWNbqdhJcSkVpWYN4tEWiX3HsP14Xiq36vTJ1G0assNazlN1G0ZPtITCOQlGMsy+38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733308286; c=relaxed/simple;
-	bh=r0YdPCfkW3WmeY7CSxvYSy9ijT0JApNn+evb9OV6AyY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kjdPLofNy9g85O0gGsFRC5YHsofXZL6o6zyu25VImOcMcMhYJ6KqQKnQVwPIBZmCQa/ZUdsBT3KpfaVE+HYAqu5bpX+9+bpds3h8EMmkYhG6RnG3jH2agm9viVHFgtFVTrZAi+A+Zy2nBBRjZ8TzjFWphkCeRl+DSYu/PmJT2EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=yHzctCnE; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1733308288; c=relaxed/simple;
+	bh=NXpil0dDa1CdzIC4Hd6SCr6UtCBY59zoL0p5pdLcUns=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Zg/ZZpYR27NZQcNwLOxpJ2F0H/8Yy5zik/q0iZwuLMtPXzFdgNrlqjAWUwsAe87SphSNd41nvytevtzrtkdpfFy5szEMiKBs2z1nZyHtRrd80lF011I6TwzmABNejT/CIp7x/uuCoWJJFYmIEMzIka1KthHWn2WsEvzRfgfuBqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDoF8VaH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="yHzctCnE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1733308284; x=1764844284;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=r0YdPCfkW3WmeY7CSxvYSy9ijT0JApNn+evb9OV6AyY=;
-  b=yHzctCnEpuvMQVfARxD1LrffKY6jWzgkE5BhtK6H50hJAy+FIaBupAeT
-   HmWm/j66jsgtZeoKTkB8QRcJE2O0Ie+tXSlSO7tqg5HGgCiOpWKBaQGVd
-   1ICaq2NunxcDsxjac5kEq6zSURad2Sc3yV3QjlTP03hY43wF5C8jOVQo4
-   1v6DnP/hqID8pdbDKUJynZSwFsGyMmqj6Y2C91VDnyEfiwWbu2t4pgR3/
-   qFL/B/c6VR7ZMlxSGqR9L0tBAXtRPhV33bCWhRQ9FHD5BS6kgGQ07/AGF
-   y+PHxEFa5NqX37CPAcPv9VntR5f9fo7KgwiqP6xwF+8TlFZUdnbVFxC9j
-   Q==;
-X-CSE-ConnectionGUID: CZPZjHfUTDSgQz0WJMX9AQ==
-X-CSE-MsgGUID: C7yECW8eSqCGXf/l/TDPkQ==
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="asc'?scan'208";a="38772663"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Dec 2024 03:31:16 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 4 Dec 2024 03:31:14 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Wed, 4 Dec 2024 03:31:12 -0700
-Date: Wed, 4 Dec 2024 10:30:44 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-CC: Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
-	<palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Damien Le Moal
-	<dlemoal@kernel.org>, Anup Patel <anup@brainfault.org>, Atish Patra
-	<atishp@atishpatra.org>, <linux-riscv@lists.infradead.org>,
-	<kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>
-Subject: Re: [PATCH] riscv: Remove duplicate CLINT_TIMER selections
-Message-ID: <20241204-aliens-cover-66b60e058ca4@wendy>
-References: <448dba3309fe341f4095b227b75ae5fc6b05f51a.1733242214.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDoF8VaH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A385C4CED6;
+	Wed,  4 Dec 2024 10:31:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733308288;
+	bh=NXpil0dDa1CdzIC4Hd6SCr6UtCBY59zoL0p5pdLcUns=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sDoF8VaHK0NiKugchsLccWP7WTeYUxReORvD6JHYVVKhEK7MVwm3fTj4jqZ1YRW7M
+	 5LIb8jZ5pVDM25d0eEliFVMzlogchcIzLVgAzlF01kIFSX7SZQ6ZLZ0s8bbmeOL91e
+	 uj1jlmmr6avQ97ljdkyWI/sSL+WZ8zx7jS2LyYaKr1xlnhJIQXCzyjcQJxxv9OvdAc
+	 /yRmYRUtzCoYruvmpyIKUdUL0/sc3gH5UZDFvt/SiZI1MCZaJEQGX4XkXIvDEZsBLg
+	 cyLQS0Nw8FojQdc1GzqcCjBNwHwe6JAJyeQtwu9/wI7M6UaRzzr2dUcB0HIMDkWTUU
+	 5Hc5IYx0Nb8lw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Davide Ciminaghi <ciminaghi@gnudd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Subject: [PATCH 07/11] x86: drop support for CONFIG_HIGHPTE
+Date: Wed,  4 Dec 2024 11:30:38 +0100
+Message-Id: <20241204103042.1904639-8-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241204103042.1904639-1-arnd@kernel.org>
+References: <20241204103042.1904639-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="g2aKOaNiiQhFm06t"
-Content-Disposition: inline
-In-Reply-To: <448dba3309fe341f4095b227b75ae5fc6b05f51a.1733242214.git.geert+renesas@glider.be>
+Content-Transfer-Encoding: 8bit
 
---g2aKOaNiiQhFm06t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Arnd Bergmann <arnd@arndb.de>
 
-On Tue, Dec 03, 2024 at 05:15:53PM +0100, Geert Uytterhoeven wrote:
-> Since commit f862bbf4cdca696e ("riscv: Allow NOMMU kernels to run in
-> S-mode") in v6.10, CLINT_TIMER is selected by the main RISCV symbol when
-> RISCV_M_MODE is enabled.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+With the maximum amount of RAM now 4GB, there is very little point
+to still have PTE pages in highmem. Drop this for simplification.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-and in case Palmer isn't sure if he should apply it or not:
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+The only other architecture supporting HIGHPTE is 32-bit arm, and
+once that feature is removed as well, the highpte logic can be
+dropped from common code as well.
 
-Cheers,
-Conor.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ .../admin-guide/kernel-parameters.txt         |  7 -----
+ arch/x86/Kconfig                              |  9 -------
+ arch/x86/include/asm/pgalloc.h                |  5 ----
+ arch/x86/mm/pgtable.c                         | 27 +------------------
+ 4 files changed, 1 insertion(+), 47 deletions(-)
 
-> ---
->  arch/riscv/Kconfig.socs | 2 --
->  1 file changed, 2 deletions(-)
->=20
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index f51bb24bc84c6e47..d4ea91cdb2b138b2 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -53,7 +53,6 @@ config ARCH_THEAD
-> =20
->  config ARCH_VIRT
->  	bool "QEMU Virt Machine"
-> -	select CLINT_TIMER if RISCV_M_MODE
->  	select POWER_RESET
->  	select POWER_RESET_SYSCON
->  	select POWER_RESET_SYSCON_POWEROFF
-> @@ -73,7 +72,6 @@ config ARCH_CANAAN
->  config SOC_CANAAN_K210
->  	bool "Canaan Kendryte K210 SoC"
->  	depends on !MMU && ARCH_CANAAN
-> -	select CLINT_TIMER if RISCV_M_MODE
->  	select ARCH_HAS_RESET_CONTROLLER
->  	select PINCTRL
->  	select COMMON_CLK
-> --=20
-> 2.34.1
->=20
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index eca370e99844..cf25853a5c4a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7341,13 +7341,6 @@
+ 				16 - SIGBUS faults
+ 			Example: user_debug=31
+ 
+-	userpte=
+-			[X86,EARLY] Flags controlling user PTE allocations.
+-
+-				nohigh = do not allocate PTE pages in
+-					HIGHMEM regardless of setting
+-					of CONFIG_HIGHPTE.
+-
+ 	vdso=		[X86,SH,SPARC]
+ 			On X86_32, this is an alias for vdso32=.  Otherwise:
+ 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index d0d055f6f56e..d8a8bf9ea9b9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1621,15 +1621,6 @@ config X86_PMEM_LEGACY
+ 
+ 	  Say Y if unsure.
+ 
+-config HIGHPTE
+-	bool "Allocate 3rd-level pagetables from highmem"
+-	depends on HIGHMEM
+-	help
+-	  The VM uses one page table entry for each page of physical memory.
+-	  For systems with a lot of RAM, this can be wasteful of precious
+-	  low memory.  Setting this option will put user-space page table
+-	  entries in high memory.
+-
+ config X86_CHECK_BIOS_CORRUPTION
+ 	bool "Check for low memory corruption"
+ 	help
+diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+index dcd836b59beb..582cf5b7ec8c 100644
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -29,11 +29,6 @@ static inline void paravirt_release_pud(unsigned long pfn) {}
+ static inline void paravirt_release_p4d(unsigned long pfn) {}
+ #endif
+ 
+-/*
+- * Flags to use when allocating a user page table page.
+- */
+-extern gfp_t __userpte_alloc_gfp;
+-
+ #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+ /*
+  * Instead of one PGD, we acquire two PGDs.  Being order-1, it is
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index bdf63524e30a..895d91e879b4 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -12,12 +12,6 @@ phys_addr_t physical_mask __ro_after_init = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+ EXPORT_SYMBOL(physical_mask);
+ #endif
+ 
+-#ifdef CONFIG_HIGHPTE
+-#define PGTABLE_HIGHMEM __GFP_HIGHMEM
+-#else
+-#define PGTABLE_HIGHMEM 0
+-#endif
+-
+ #ifndef CONFIG_PARAVIRT
+ static inline
+ void paravirt_tlb_remove_table(struct mmu_gather *tlb, void *table)
+@@ -26,29 +20,10 @@ void paravirt_tlb_remove_table(struct mmu_gather *tlb, void *table)
+ }
+ #endif
+ 
+-gfp_t __userpte_alloc_gfp = GFP_PGTABLE_USER | PGTABLE_HIGHMEM;
+-
+ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ {
+-	return __pte_alloc_one(mm, __userpte_alloc_gfp);
+-}
+-
+-static int __init setup_userpte(char *arg)
+-{
+-	if (!arg)
+-		return -EINVAL;
+-
+-	/*
+-	 * "userpte=nohigh" disables allocation of user pagetables in
+-	 * high memory.
+-	 */
+-	if (strcmp(arg, "nohigh") == 0)
+-		__userpte_alloc_gfp &= ~__GFP_HIGHMEM;
+-	else
+-		return -EINVAL;
+-	return 0;
++	return __pte_alloc_one(mm, GFP_PGTABLE_USER);
+ }
+-early_param("userpte", setup_userpte);
+ 
+ void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte)
+ {
+-- 
+2.39.5
 
---g2aKOaNiiQhFm06t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ1AvNAAKCRB4tDGHoIJi
-0vHtAQC82qG49EDSoaB2PeTLrfhjmint5mOs27szHVRiwtSjhgD8CTPFKDSZQ/N0
-ltKkzalZOnfOWfs44+mL9vkAJURnBwQ=
-=yxzy
------END PGP SIGNATURE-----
-
---g2aKOaNiiQhFm06t--
