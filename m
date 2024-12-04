@@ -1,175 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C920B20CCD5
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 16:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4763B20CCEB
+	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 16:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733330433; cv=none; b=rMxPHjW4TWV9WpU2jnnL8E4x34HbF4AoeJVK65pd7BAW9OzFoEYCDO+kjLLfQtjwBoLz9dcoYjjMDB7m+1q0R5qdiXvlfq6jwvmyiSxBWQriwexYG7n3scyIPq1QgIwb/d+QD2zj1QBE00U/une3PVxaCi4DvU0Ldt27i8wTyiA=
+	t=1733331460; cv=none; b=FL0KRKTqlGZeCBXD063GEnfyHPIY94EdI3RKI6lLqMgzYjdpwAGoYL+PKzUJ5RJSiQjFNY9pSdaM6vFH8ge+6C3V+yDDHqAphSuZyQyNPpenzSmguV0JeaR5m4WAmvrAAKxeGtXNl4eJXCFxt2w2iBkgczhKIP8bH04gwyg7o68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733330433; c=relaxed/simple;
-	bh=E07o7SrVn6fMgHQ2ye3xvGGrM1Xm8Ed0AWBR9iBbFuE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PuTt987EGp7cA+GKOWR7ORgcMFWkRp5DUQT1ZFp/lDqZcT/5SU1kRoXEUV9MitEbaNlRuP6XeckKnzJmCyh36JFxfDqXA2MsFhbmG7wCdhGO/Q2rWjrPu8776vUAbuInGrsOA/oPtmPYennlM7Jc4WkQwim1KW3lfj7DPYFDFTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QelsXKaS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733331460; c=relaxed/simple;
+	bh=0HUzdTNj6kvO/sxYp+pg359CCM/bjPbiDVwJpcSLg88=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ryxwyOBcHtxn1NB0YMjh6C/Gf1keF09jyUJakKKAoWa8gecyV00RIFI/o9sri0Bt2jMk3pKJWSvTKpLbiAT+WC3sBViqFfIunuykCW93sOv+UqqIdOtNlzjveJ/2ss4in7ogaRQ/ITmjJt4kU3lA/9FbgTx5feW92OedU8pCjBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3Oyxv/k; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QelsXKaS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733330429;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VEeC3RYjo0ryc9cx1hBsYweGmp9PRkMA7aFXlYOXkWM=;
-	b=QelsXKaS6XX7se4l1KQo73xSWxnez2d7LhuAXJp4VCxeubakZFlN7pTXVh1mxMvT3i3bQk
-	qjdahc3NOZv3lMl6YQzR7LLHnPZi+uZb3E1qmPheABbGiVLyG4sDzK9YoX+dOHS3UyL3N5
-	inCwDyeQoRy2/GW69N1aPuB3+Agff1o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-yQuReqxrNsm1gkdPbPrVrw-1; Wed, 04 Dec 2024 11:40:28 -0500
-X-MC-Unique: yQuReqxrNsm1gkdPbPrVrw-1
-X-Mimecast-MFC-AGG-ID: yQuReqxrNsm1gkdPbPrVrw
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-434a29a93cdso53094935e9.1
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 08:40:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3Oyxv/k"
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3a781e908a7so158905ab.0
+        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 08:57:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733331458; x=1733936258; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sfmZWfaFUyauxIzYDnk1HIum5vCQdB8u8dJVsYfif1M=;
+        b=c3Oyxv/kzmiznaUPrXSJLDY2VK/2Q8b6RHMmOV+84ItJ5kf1coPkvNo4uaCfXX3Hus
+         P2JQFiBFvU1rmXRcv1inBFHLIkVUhsIg6Py7efPMdXMGtzNbqNBrEjLpM3xEsCsjIzch
+         zgW9zKD/BWtYxxt4oqSoaYDzAv2voAYJDIqgOjhdDQktwvuAoZ3Boo4a8OZtJRlwBZww
+         X+64LOK8FaNCz48IZn+ZECmrJlQRfM0lyVjjxanyb9ohtn9O/cxi2LuzTUpw7ahBSPIk
+         Vr7bDC7abhJos4jx880eYCiQZM13O6C5Ro2YqO93PuM14OO4IQnGkvL/NxVTdSOmCt5t
+         HyqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733330427; x=1733935227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733331458; x=1733936258;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VEeC3RYjo0ryc9cx1hBsYweGmp9PRkMA7aFXlYOXkWM=;
-        b=E6isQ3RN9sUYnuSnJXYrMOLc8IP4oHSnsaPVfhrHZ+mR1mTJBAX6ahmrlyKyTUuXLB
-         gRdYcpWd3PRY1K7sZSkbbENywdw1GsVDb5jSIBwV4O06hcR+tJazm0e0l9pd+543JkM3
-         FEnp/akon7J23JEsEvrC1tMmE1TOCmXP4KCDKP/uoNKWG07EaCeOvvL3jfqj9W25RWmE
-         zwwdXgow+p0QBUbVxir8Bt4JdyAbMDql72YpU1TwmvX7zJ8A+cRuaEOMQjThv8zR1H2Q
-         x0tBhjnNTQafLzv1lxSIPKI7dpzT8uhAhYSaOezZj3pCmcGOLCQb3xhngcSFGGMtLul0
-         z7EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkRirTtv6DKu0zWR9+rbGjaLsm77HH39Go+3pJ59qkQn7W1+eYG1BZXFlp1TnFzE8fT28=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5lGrQztNCFTdkGdUsswokVSXe81EifsoEccb5z2LgU3p9n90c
-	G+zu/tJLY006mjuTsT5DhrELRaB6QsZDwNWgU8ZHKndS7Hd5dzDf9T8XWuuzNzKzAvEZSVWCGel
-	8WgdlkVC6C4asVd68aC029zAN9t96GctTtSk+ThfA/aqNXrZwuQ==
-X-Gm-Gg: ASbGnctuTtalrdvkj7pxgyJxBInkeDI9iqNH8YQrm3jM4mFoQFMtbHoB0Lbyks4ZGh9
-	iMrW9pzQxA/g0AMlCQTeJ+txwV2M7z8hq2LO6kjzRx2VyRJb6sxB6X3OwjffHFpaw4+mt8CCeKY
-	Elv4h8VdqzKvg9SBbv6I+fRPiX/HJbMQAJ8m0OIrlAuCZYiqk7WHfw52f3XaLz6+QvEIvbVbt4C
-	S/SM/3MlWUyel+vtvIz8yr1fFWKEXJ6CYY2emCCtedL05ronFWV+Ww91M1353GW5XjDaOcf6qdk
-	xTBlSRcTzNIB3Sn8U1j+NQ==
-X-Received: by 2002:a05:600c:35cf:b0:431:52b7:a499 with SMTP id 5b1f17b1804b1-434d0a07e76mr56634725e9.20.1733330426904;
-        Wed, 04 Dec 2024 08:40:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFlmQvivINODRz0LjSbG3GHEmn9Krx7Hqgr3pzwsWlsNg+E/WUPCGldC0NDYZMcYKm+/x0RRg==
-X-Received: by 2002:a05:600c:35cf:b0:431:52b7:a499 with SMTP id 5b1f17b1804b1-434d0a07e76mr56634495e9.20.1733330426521;
-        Wed, 04 Dec 2024 08:40:26 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d52cbd42sm29861995e9.38.2024.12.04.08.40.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:40:26 -0800 (PST)
-Date: Wed, 4 Dec 2024 17:40:25 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
- <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v5 10/16] acpi/ghes: better name GHES memory error
- function
-Message-ID: <20241204174025.52e3756a@imammedo.users.ipa.redhat.com>
-In-Reply-To: <1f16080ef9848dacb207ffdbb2716b1c928d8fad.1733297707.git.mchehab+huawei@kernel.org>
-References: <cover.1733297707.git.mchehab+huawei@kernel.org>
-	<1f16080ef9848dacb207ffdbb2716b1c928d8fad.1733297707.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+        bh=sfmZWfaFUyauxIzYDnk1HIum5vCQdB8u8dJVsYfif1M=;
+        b=E24SlsEc+FhDg72WK9fdO1pMmPNqt9hCV/ly3zsvcOEDgUgI2TqlWuc06Fdp2LmcvG
+         FZqT1DJOXeKwNKI76i0msg6LEi3LJ8D+sUPeL1+dRZ4GhgbIDwPTdzfzQ6zCV3VIlhHk
+         ETMq0WB0bNQDgvy4o4ng1Un71BoKZKuWvlBojhY3L8gCKgw4lCFFynfCD1Gr6pLpcEiP
+         HiIDdZ+FxA7K8oHaOLSTdJtuajU3cm2Qap9Szj//C60jSDuvUQfYYG8CL3esOhOCmJOG
+         GOxhyxQT7hGR1PKE2CnVQZoW5jlNc43wmI3XsviFVElUos6E/yt3/E/llpGK3FS/oI0v
+         ysvg==
+X-Gm-Message-State: AOJu0YwJ5Spg4/MwFB+1LDNDZ8n1l1an1w9OABb09jDxsVHXMdFrseEC
+	2K+2+XxTS0+BSrfshpyhqN9nJVP9HudsapirKtTu01SYrW7p0DpwWAJHDku92CdmvcTviBhaP5p
+	QWW5nGbyE500RSsVDbng5UEvIld7sd3v/UsaK
+X-Gm-Gg: ASbGncveR4Ah9AmmJBekGSATUoEzeTAlDWvgZZmOQwmjl7vqro4UkE8+kWRyfGDhKZm
+	oJ3zB89w1Z4JiZ5nwmTYc1rUDnTswaw==
+X-Google-Smtp-Source: AGHT+IGsVjekEc6VwhrFlrIDeAOXUGOndFAXAYVwx/+uQqFZtni53tvqfJXUpqrgjf1M2MWknzQGCI3eZVcZBFQ1W38=
+X-Received: by 2002:a05:6e02:370a:b0:3a7:a468:69df with SMTP id
+ e9e14a558f8ab-3a800ab423fmr3177165ab.3.1733331458201; Wed, 04 Dec 2024
+ 08:57:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20241204134345.189041-1-davydov-max@yandex-team.ru> <20241204134345.189041-2-davydov-max@yandex-team.ru>
+In-Reply-To: <20241204134345.189041-2-davydov-max@yandex-team.ru>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 4 Dec 2024 08:57:27 -0800
+Message-ID: <CALMp9eRa3yJ=-azTVtsapHsfCFTo74mTMQXPkguxD3P8upYchg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] x86: KVM: Advertise FSRS and FSRC on AMD to userspace
+To: Maksim Davydov <davydov-max@yandex-team.ru>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	babu.moger@amd.com, seanjc@google.com, mingo@redhat.com, bp@alien8.de, 
+	tglx@linutronix.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	pbonzini@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed,  4 Dec 2024 08:41:18 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Wed, Dec 4, 2024 at 5:43=E2=80=AFAM Maksim Davydov
+<davydov-max@yandex-team.ru> wrote:
+>
+> Fast short REP STOSB and fast short CMPSB support on AMD processors are
+> provided in other CPUID function in comparison with Intel processors:
+> * FSRS: 10 bit in 0x80000021_EAX
+> * FSRC: 11 bit in 0x80000021_EAX
 
-> The current function used to generate GHES data is specific for
-> memory errors. Give a better name for it, as we now have a generic
-> function as well.
-> 
-> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+I have to wonder why these bits aren't documented in the APM. I assume
+you pulled them out of some PPR? I would be hesitant to include CPUID
+bit definitions that may be microarchitecture-specific rather than
+architectural.
 
-not that it matters but for FYI
-Sign off of author goes 1st and then after it other tags
-that were added later
+Perhaps someone from AMD should at least ACK this change?
 
+> AMD bit numbers differ from existing definition of FSRC and
+> FSRS. So, the new appropriate values have to be added with new names.
+>
+> It's safe to advertise these features to userspace because they are a par=
+t
+> of CPU model definition and they can't be disabled (as existing Intel
+> features).
+>
+> Fixes: 2a4209d6a9cb ("KVM: x86: Advertise fast REP string features inhere=
+nt to the CPU")
+> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
 > ---
->  hw/acpi/ghes-stub.c    | 2 +-
->  hw/acpi/ghes.c         | 2 +-
->  include/hw/acpi/ghes.h | 4 ++--
->  target/arm/kvm.c       | 2 +-
->  4 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-> index 2b64cbd2819a..7cec1812dad9 100644
-> --- a/hw/acpi/ghes-stub.c
-> +++ b/hw/acpi/ghes-stub.c
-> @@ -11,7 +11,7 @@
->  #include "qemu/osdep.h"
->  #include "hw/acpi/ghes.h"
->  
-> -int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
-> +int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
->  {
->      return -1;
->  }
-> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-> index 4b5332f8c667..414a4a1ee00e 100644
-> --- a/hw/acpi/ghes.c
-> +++ b/hw/acpi/ghes.c
-> @@ -415,7 +415,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
->      return;
->  }
->  
-> -int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
-> +int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
->  {
->      /* Memory Error Section Type */
->      const uint8_t guid[] =
-> diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-> index 8859346af51a..21666a4bcc8b 100644
-> --- a/include/hw/acpi/ghes.h
-> +++ b/include/hw/acpi/ghes.h
-> @@ -74,15 +74,15 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
->                       const char *oem_id, const char *oem_table_id);
->  void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
->                            GArray *hardware_errors);
-> +int acpi_ghes_memory_errors(uint16_t source_id, uint64_t error_physical_addr);
->  void ghes_record_cper_errors(const void *cper, size_t len,
->                               uint16_t source_id, Error **errp);
-> -int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
->  
->  /**
->   * acpi_ghes_present: Report whether ACPI GHES table is present
->   *
->   * Returns: true if the system has an ACPI GHES table and it is
-> - * safe to call acpi_ghes_record_errors() to record a memory error.
-> + * safe to call acpi_ghes_memory_errors() to record a memory error.
->   */
->  bool acpi_ghes_present(void);
->  #endif
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 7b6812c0de2e..b4260467f8b9 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -2387,7 +2387,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
->               */
->              if (code == BUS_MCEERR_AR) {
->                  kvm_cpu_synchronize_state(c);
-> -                if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
-> +                if (!acpi_ghes_memory_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
->                      kvm_inject_arm_sea(c);
->                  } else {
->                      error_report("failed to record the error");
-
+>  arch/x86/include/asm/cpufeatures.h | 2 ++
+>  arch/x86/kvm/cpuid.c               | 4 ++--
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cp=
+ufeatures.h
+> index 17b6590748c0..45f87a026bba 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -460,6 +460,8 @@
+>  #define X86_FEATURE_NULL_SEL_CLR_BASE  (20*32+ 6) /* Null Selector Clear=
+s Base */
+>  #define X86_FEATURE_AUTOIBRS           (20*32+ 8) /* Automatic IBRS */
+>  #define X86_FEATURE_NO_SMM_CTL_MSR     (20*32+ 9) /* SMM_CTL MSR is not =
+present */
+> +#define X86_FEATURE_AMD_FSRS           (20*32+10) /* AMD Fast short REP =
+STOSB supported */
+> +#define X86_FEATURE_AMD_FSRC           (20*32+11) /* AMD Fast short REP =
+CMPSB supported */
+>
+>  #define X86_FEATURE_SBPB               (20*32+27) /* Selective Branch Pr=
+ediction Barrier */
+>  #define X86_FEATURE_IBPB_BRTYPE                (20*32+28) /* MSR_PRED_CM=
+D[IBPB] flushes all branch type predictions */
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index 097bdc022d0f..7bc095add8ee 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -799,8 +799,8 @@ void kvm_set_cpu_caps(void)
+>
+>         kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
+>                 F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLoc=
+k */ |
+> -               F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr =
+*/ |
+> -               F(WRMSR_XX_BASE_NS)
+> +               F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | F(AMD_FSRS) |
+> +               F(AMD_FSRC) | 0 /* PrefetchCtlMsr */ | F(WRMSR_XX_BASE_NS=
+)
+>         );
+>
+>         kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
+> --
+> 2.34.1
+>
