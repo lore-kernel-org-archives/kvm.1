@@ -1,145 +1,122 @@
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4763B20CCEB
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 16:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B08A20C49E;
+	Wed,  4 Dec 2024 16:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331460; cv=none; b=FL0KRKTqlGZeCBXD063GEnfyHPIY94EdI3RKI6lLqMgzYjdpwAGoYL+PKzUJ5RJSiQjFNY9pSdaM6vFH8ge+6C3V+yDDHqAphSuZyQyNPpenzSmguV0JeaR5m4WAmvrAAKxeGtXNl4eJXCFxt2w2iBkgczhKIP8bH04gwyg7o68=
+	t=1733331467; cv=none; b=QKSR+WMZ4SrHSdpGii6BVjwlBwBOdPehZBfPk2nQYOpFNf1gkVTJQjGUM5ln0EVesVL2TUdmHa5g01D+ZJ+z2ENh+FG6OvYI0142vwBB/HeFFFskL9PWciiTUO8+g95z76e1U3gRAuCnrdkhh5V3l6uw8QduqCXKSOtLNLpsb8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331460; c=relaxed/simple;
-	bh=0HUzdTNj6kvO/sxYp+pg359CCM/bjPbiDVwJpcSLg88=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ryxwyOBcHtxn1NB0YMjh6C/Gf1keF09jyUJakKKAoWa8gecyV00RIFI/o9sri0Bt2jMk3pKJWSvTKpLbiAT+WC3sBViqFfIunuykCW93sOv+UqqIdOtNlzjveJ/2ss4in7ogaRQ/ITmjJt4kU3lA/9FbgTx5feW92OedU8pCjBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3Oyxv/k; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733331467; c=relaxed/simple;
+	bh=OmlM/m2R322eQUasLFsEn4qvfuYaHqlzq4wwyRr9AzI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=GLGbWVPO8POuEdfxR0K7BqfeSkITO/0dmhZo3IWKIwyVAHd5RliBSRtGs6Kx7SZYFGaayXcr6b1hdg719P+c/1FLWtz3fk89PwmRemskOuYQDfrlCYuVDZfM7dphiXa0I6pjeA4pg7+08RKDeZX+02Z0j4nyMoPpZ9o90cOQRnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=PtTIps+U; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Cg4o1o6p; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3Oyxv/k"
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3a781e908a7so158905ab.0
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 08:57:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733331458; x=1733936258; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sfmZWfaFUyauxIzYDnk1HIum5vCQdB8u8dJVsYfif1M=;
-        b=c3Oyxv/kzmiznaUPrXSJLDY2VK/2Q8b6RHMmOV+84ItJ5kf1coPkvNo4uaCfXX3Hus
-         P2JQFiBFvU1rmXRcv1inBFHLIkVUhsIg6Py7efPMdXMGtzNbqNBrEjLpM3xEsCsjIzch
-         zgW9zKD/BWtYxxt4oqSoaYDzAv2voAYJDIqgOjhdDQktwvuAoZ3Boo4a8OZtJRlwBZww
-         X+64LOK8FaNCz48IZn+ZECmrJlQRfM0lyVjjxanyb9ohtn9O/cxi2LuzTUpw7ahBSPIk
-         Vr7bDC7abhJos4jx880eYCiQZM13O6C5Ro2YqO93PuM14OO4IQnGkvL/NxVTdSOmCt5t
-         HyqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733331458; x=1733936258;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sfmZWfaFUyauxIzYDnk1HIum5vCQdB8u8dJVsYfif1M=;
-        b=E24SlsEc+FhDg72WK9fdO1pMmPNqt9hCV/ly3zsvcOEDgUgI2TqlWuc06Fdp2LmcvG
-         FZqT1DJOXeKwNKI76i0msg6LEi3LJ8D+sUPeL1+dRZ4GhgbIDwPTdzfzQ6zCV3VIlhHk
-         ETMq0WB0bNQDgvy4o4ng1Un71BoKZKuWvlBojhY3L8gCKgw4lCFFynfCD1Gr6pLpcEiP
-         HiIDdZ+FxA7K8oHaOLSTdJtuajU3cm2Qap9Szj//C60jSDuvUQfYYG8CL3esOhOCmJOG
-         GOxhyxQT7hGR1PKE2CnVQZoW5jlNc43wmI3XsviFVElUos6E/yt3/E/llpGK3FS/oI0v
-         ysvg==
-X-Gm-Message-State: AOJu0YwJ5Spg4/MwFB+1LDNDZ8n1l1an1w9OABb09jDxsVHXMdFrseEC
-	2K+2+XxTS0+BSrfshpyhqN9nJVP9HudsapirKtTu01SYrW7p0DpwWAJHDku92CdmvcTviBhaP5p
-	QWW5nGbyE500RSsVDbng5UEvIld7sd3v/UsaK
-X-Gm-Gg: ASbGncveR4Ah9AmmJBekGSATUoEzeTAlDWvgZZmOQwmjl7vqro4UkE8+kWRyfGDhKZm
-	oJ3zB89w1Z4JiZ5nwmTYc1rUDnTswaw==
-X-Google-Smtp-Source: AGHT+IGsVjekEc6VwhrFlrIDeAOXUGOndFAXAYVwx/+uQqFZtni53tvqfJXUpqrgjf1M2MWknzQGCI3eZVcZBFQ1W38=
-X-Received: by 2002:a05:6e02:370a:b0:3a7:a468:69df with SMTP id
- e9e14a558f8ab-3a800ab423fmr3177165ab.3.1733331458201; Wed, 04 Dec 2024
- 08:57:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="PtTIps+U";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Cg4o1o6p"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 149F2254015C;
+	Wed,  4 Dec 2024 11:57:44 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 04 Dec 2024 11:57:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1733331463;
+	 x=1733417863; bh=099pZMbdMufqaYvT8JVCnYw+P2j6nx8hhRn2+90AELo=; b=
+	PtTIps+UCsVKotZdIq3Vb5EGjxJeDYVVjVhlxIezxJs3zIVVvlRTtDdabWriwYQe
+	eeoDyuapPAKkG727iob/P17ovCjT7A2q3p6orJ42XYwcVXs0kfsf9Jw8uSXA90Zj
+	+qKNM9J+yJkfL/dmA0Xl88haeCage6owUMr4cDspkLg9/Eqa5gmqS2805eiKYu+O
+	xP+7v8xyrf7UnzeWGPPrOUwzIlWCoYleCFq9mIRzikc1D6bwiDsdGrw0zrgJGa62
+	A7kgRZ9eYxi+zucqC9uJkLIkipOUzAbnHUE1znsu/OqrjeGzvn1TTQGJ0CKYhyFU
+	3cdAmuS4fqZvwH4TCWIClA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733331463; x=
+	1733417863; bh=099pZMbdMufqaYvT8JVCnYw+P2j6nx8hhRn2+90AELo=; b=C
+	g4o1o6ps+plM3rodX6KeK6XmYRHlBY2DCMpsyK3vrEm5ZFgRkk1YbfFI688X12zc
+	2FNvy8KnCkG4l5ETITWOTWVclqj7h3GEDM3NcnsT5lumrwQxUHT7Nuv3esbi4W2o
+	qtZJmRlV412PTLlqik97koc/SGRCp77w/XnpB1LgO7zGKQ/cwN8hnVPSa7dqMNAj
+	6rpqwoJgHf4I7Rz5B8PqbJE0UbpeRwrNINHyBeRPMqbxZWt/Azj3gsSfO0nsYQxe
+	M/F0y02R/o8ACFMzcA5w5EkGNphh8aO6f0kZGBCMqylq7PhoK9GJq8hilMFt9T3m
+	fx1gizxjMy06Bvl9VLz6A==
+X-ME-Sender: <xms:B4pQZwH2-bRyh0kTJoJ54SrnH8cROTX-zxWgUpK4H3f6jeaPp0e8Xw>
+    <xme:B4pQZ5XAVJAQ3SMzm6rRYLFyzx5N2fkIxHIPoTOppK5Z3xamAqocwVL7pO9JtXSRw
+    oeMglLmjSvm0vOaTT8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieehgdeludcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
+    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
+    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
+    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduiedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtg
+    hpthhtohepsghrghgvrhhsthesghhmrghilhdrtghomhdprhgtphhtthhopegtihhmihhn
+    rghghhhisehgnhhuuggurdgtohhmpdhrtghpthhtohepshgvrghnjhgtsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghp
+    thhtoheprghnugihsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhhnugeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepthhglhigsehlihhnuhhtrhhonhhigidruggv
+X-ME-Proxy: <xmx:B4pQZ6I12E9RJSFpcVQytVMbncj0V-KbCsfb7dsz02JNdy-C0ft5HA>
+    <xmx:B4pQZyHOeXE0EX2jrxlI2nD7wShbc56CZNxhnMH7GbUnLG2k0ZzBlQ>
+    <xmx:B4pQZ2UuvqA9Y8bsXygYD8tj_qd_DXi-IUrCgLv0iJA_oArBgZhbWw>
+    <xmx:B4pQZ1MbqyrnFmduXoyASUkmsMglzX_TN-24d_GhcXT8W1CqzkzAQw>
+    <xmx:B4pQZzV3aivK60IGJiR_L_0JCtqS6Qommh5vFOZIx8Z0kxNdBRSTqbL5>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 402742220072; Wed,  4 Dec 2024 11:57:43 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204134345.189041-1-davydov-max@yandex-team.ru> <20241204134345.189041-2-davydov-max@yandex-team.ru>
-In-Reply-To: <20241204134345.189041-2-davydov-max@yandex-team.ru>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 4 Dec 2024 08:57:27 -0800
-Message-ID: <CALMp9eRa3yJ=-azTVtsapHsfCFTo74mTMQXPkguxD3P8upYchg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] x86: KVM: Advertise FSRS and FSRC on AMD to userspace
-To: Maksim Davydov <davydov-max@yandex-team.ru>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	babu.moger@amd.com, seanjc@google.com, mingo@redhat.com, bp@alien8.de, 
-	tglx@linutronix.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Dec 2024 17:55:34 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "H. Peter Anvin" <hpa@zytor.com>, "Brian Gerst" <brgerst@gmail.com>,
+ "Arnd Bergmann" <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Andy Shevchenko" <andy@kernel.org>, "Matthew Wilcox" <willy@infradead.org>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Davide Ciminaghi" <ciminaghi@gnudd.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
+Message-Id: <13308b89-53d1-4977-970f-81b34f40f070@app.fastmail.com>
+In-Reply-To: <A0F192E7-EFD2-4DD4-8E84-764BF7210C6A@zytor.com>
+References: <20241204103042.1904639-1-arnd@kernel.org>
+ <20241204103042.1904639-6-arnd@kernel.org>
+ <CAMzpN2joPcvg887tJLF_4SU4aJt+wTGy2M_xaExrozLS-mvXsw@mail.gmail.com>
+ <A0F192E7-EFD2-4DD4-8E84-764BF7210C6A@zytor.com>
+Subject: Re: [PATCH 05/11] x86: remove HIGHMEM64G support
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 4, 2024 at 5:43=E2=80=AFAM Maksim Davydov
-<davydov-max@yandex-team.ru> wrote:
+On Wed, Dec 4, 2024, at 17:37, H. Peter Anvin wrote:
+> On December 4, 2024 5:29:17 AM PST, Brian Gerst <brgerst@gmail.com> wrote:
+>>>
+>>> Removing this also drops the need for PHYS_ADDR_T_64BIT and SWIOTLB.
+>>> PAE mode is still required to get access to the 'NX' bit on Atom
+>>> 'Pentium M' and 'Core Duo' CPUs.
 >
-> Fast short REP STOSB and fast short CMPSB support on AMD processors are
-> provided in other CPUID function in comparison with Intel processors:
-> * FSRS: 10 bit in 0x80000021_EAX
-> * FSRC: 11 bit in 0x80000021_EAX
+> By the way, there are 64-bit machines which require swiotlb.
 
-I have to wonder why these bits aren't documented in the APM. I assume
-you pulled them out of some PPR? I would be hesitant to include CPUID
-bit definitions that may be microarchitecture-specific rather than
-architectural.
+What I meant to write here was that CONFIG_X86_PAE no longer
+needs to select PHYS_ADDR_T_64BIT and SWIOTLB. I ended up
+splitting that change out to patch 06/11 with a better explanation,
+so the sentence above is just wrong now and I've removed it
+in my local copy now.
 
-Perhaps someone from AMD should at least ACK this change?
+Obviously 64-bit kernels still generally need swiotlb.
 
-> AMD bit numbers differ from existing definition of FSRC and
-> FSRS. So, the new appropriate values have to be added with new names.
->
-> It's safe to advertise these features to userspace because they are a par=
-t
-> of CPU model definition and they can't be disabled (as existing Intel
-> features).
->
-> Fixes: 2a4209d6a9cb ("KVM: x86: Advertise fast REP string features inhere=
-nt to the CPU")
-> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
-> ---
->  arch/x86/include/asm/cpufeatures.h | 2 ++
->  arch/x86/kvm/cpuid.c               | 4 ++--
->  2 files changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cp=
-ufeatures.h
-> index 17b6590748c0..45f87a026bba 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -460,6 +460,8 @@
->  #define X86_FEATURE_NULL_SEL_CLR_BASE  (20*32+ 6) /* Null Selector Clear=
-s Base */
->  #define X86_FEATURE_AUTOIBRS           (20*32+ 8) /* Automatic IBRS */
->  #define X86_FEATURE_NO_SMM_CTL_MSR     (20*32+ 9) /* SMM_CTL MSR is not =
-present */
-> +#define X86_FEATURE_AMD_FSRS           (20*32+10) /* AMD Fast short REP =
-STOSB supported */
-> +#define X86_FEATURE_AMD_FSRC           (20*32+11) /* AMD Fast short REP =
-CMPSB supported */
->
->  #define X86_FEATURE_SBPB               (20*32+27) /* Selective Branch Pr=
-ediction Barrier */
->  #define X86_FEATURE_IBPB_BRTYPE                (20*32+28) /* MSR_PRED_CM=
-D[IBPB] flushes all branch type predictions */
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 097bdc022d0f..7bc095add8ee 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -799,8 +799,8 @@ void kvm_set_cpu_caps(void)
->
->         kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
->                 F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLoc=
-k */ |
-> -               F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr =
-*/ |
-> -               F(WRMSR_XX_BASE_NS)
-> +               F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | F(AMD_FSRS) |
-> +               F(AMD_FSRC) | 0 /* PrefetchCtlMsr */ | F(WRMSR_XX_BASE_NS=
-)
->         );
->
->         kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
-> --
-> 2.34.1
->
+       Arnd
