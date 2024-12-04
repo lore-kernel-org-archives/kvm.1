@@ -1,198 +1,290 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CB120B81D
-	for <kvm@vger.kernel.org>; Wed,  4 Dec 2024 12:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB623746E;
+	Wed,  4 Dec 2024 13:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733316929; cv=none; b=hY6cHNSZbC0f/x38lAP9iGgM1l0NfOSjK9a7G9h0PB74ATZkI9GwhpPp3g0beXip2dIajxzBeIPTpn4O8A2i3ZBXTa+h/L9wdcOtgXkY5iA10aQJyWehSbTvIZXV45ldbhEEFIM7K+Zbssle1Z3HpLtByU4fylHg7adbpt6tXHc=
+	t=1733317533; cv=none; b=CybCbXFp43ptfG/5Zsb3ulyqlRd9zxIb3y/javqtB5u9VwsMDCWE0bHUBMADRBq9eUZ3SNjwdO+NBIO1BktYZ9YPYFwN+EmG1VXIiFMpnyuPSKRPJk64u2HMaCcKVpU34NJZf2IPFLlUJPsGDNDWE5c0jpLWN3Yvxp/Idons5UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733316929; c=relaxed/simple;
-	bh=uRjaOZTjHUvybJWAv9vGsJi33hCxx6hpGz/B8OQ605Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnTQgitynwSkECW810x4yanGuXvCsnsqF8DY+EB2uQJI4NQHoUILURu54nMCDkegLEf7TVSm4KfUT5ccK4irWpz16Dl7pV9Xe4N5H2ZLUfAS7ldUco3C1zhSZNRO4f2cxrK1x9/LSeZ942j+LQNviqXbmuuuuSbSAw2Kubcj8qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1MFR3wp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733317533; c=relaxed/simple;
+	bh=XVtkq5iJ4Mj7hRv7CqYFdnVlFpaRegC0V8RTwadfHQk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JX81zvCkiLjglNgOOAL3myYxjYxbujl6bgVlU6ykQU4b4Rlw6J+aSXV54MCb8c0+ru18wWqKuVmXyHP23H3IulaeOBKDDI5P9pRm+2B6jraxANbAJGF6CvxewrTpIpf1ty2+7JC+gLVl/dVVuULkuFCMDz8NMqCdspzlD6PxFng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wL73UjeX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qPufNg0a; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1MFR3wp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733316926;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wL73UjeX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qPufNg0a"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1733317524;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QMLpjiP43p31BywTFNffjh3NzCBHssnVGTYWU2BwGcs=;
-	b=L1MFR3wpxcV/woNa0Zy01CNEt6DrB3JVd7u4D56T/aeRj8PjUWj/m45fANd7oGkPqMPA8c
-	GMyYHfkRgceZSbK/QHx/4+DRbIwtJGABz3UFZtJCPauuhy3LVbqSXm6BvmmBUpR35tmrQT
-	9UD6KBowp1AdB1+hkupOSSaZcwe73H8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-1ggfWQ9oP26N_mM1-kbgDg-1; Wed, 04 Dec 2024 07:55:25 -0500
-X-MC-Unique: 1ggfWQ9oP26N_mM1-kbgDg-1
-X-Mimecast-MFC-AGG-ID: 1ggfWQ9oP26N_mM1-kbgDg
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4349f32c9a6so55271045e9.3
-        for <kvm@vger.kernel.org>; Wed, 04 Dec 2024 04:55:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733316924; x=1733921724;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QMLpjiP43p31BywTFNffjh3NzCBHssnVGTYWU2BwGcs=;
-        b=O5p5XZshZnb7HCIyO9l8HKCrU8QneOmx4vw42673l1P9l4W+0mml4ponns06OQLeUR
-         LLTLZFbABZL/cKu4bDt2Tk5+seLJFMQaVGKMrpTeFodUCA26i5K4EgH1HzvnCQtIEHXB
-         lphA7hwJrd9tg3xn4+SZ1SFDbueryfO/HqAWP6sPVgXzd8X+0NZrTFVjlBVMg1g9DtqA
-         8szmtrIemIWEYHfrHxVpEfRdJj9dKMLxYL9OoT4lofZGQfbH8ygcq5XZ0DpprKoF+eOn
-         F8rOpji52w4WynH1rPETV+j7ECF+beZlzT6dObw85C0Ap5wSvRoUkZCNdLvj1kemaKRb
-         lIrg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlrLgmtV37j1Ws8/Eg2CruYE4gaUQ1wpDc6EOTNVWtyQEQbBJ+MV5faiOE+rXv9QQY3Y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNAE8i8m/UWQww+OQVZmqIFlWlmLciwH02LHnDx2jGkapYC9W7
-	P+A0z4/x8Nw9B3zCpBf82PkpscM1wZ9Jr00oRgjRTv8kctfMr5Jon6oUiC2g7CEq4nK/sYdmA8C
-	9NRF8QerjTMOQ96C5m9GO0Ti/mFTY/r/gOw5SZ9KTFL+9pRUzCA==
-X-Gm-Gg: ASbGncvxCItkuOSbwyV8QQhTEhijTO5B/p7eoU2mg6XsZwmCDSvrF8+N8Te8V/KYALy
-	xIDGyP4nkNDS+NORSp+E1Hd/kWlsoKHyj/BhYohJ3p92sAaEorCUqlS6/2YMjQirjt5A6H5aoR9
-	rsjKBwaBnu48db937bjvcqiPoCZub/OYvsVvXvdCdpaEv0tozJFkBeWqROdYg2rPVp+rhVT2tRr
-	9mwidRXT1hm99DlM2GZ+5+gU8WOFp5w5nyXDYtTajJ1xVE1NEdkxLUENwjO8W1G84IzsrR2LDaX
-	CqDX6FvJeLq08UOPdVStm9JFSAP9vrzToME=
-X-Received: by 2002:a05:600c:1910:b0:434:a962:2aa2 with SMTP id 5b1f17b1804b1-434d0a178d4mr49286605e9.33.1733316924468;
-        Wed, 04 Dec 2024 04:55:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFFzA2SYKI5zve6AhLcTcIqYEQR+M/xeFfejA5VMHPdifDyO5ycBtXVIAK8EC4IQe7u0N0Ewg==
-X-Received: by 2002:a05:600c:1910:b0:434:a962:2aa2 with SMTP id 5b1f17b1804b1-434d0a178d4mr49286335e9.33.1733316924087;
-        Wed, 04 Dec 2024 04:55:24 -0800 (PST)
-Received: from localhost (p200300cbc70be10038d68aa111b0a20a.dip0.t-ipconnect.de. [2003:cb:c70b:e100:38d6:8aa1:11b0:a20a])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434d52c0bc7sm23531055e9.35.2024.12.04.04.55.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 04:55:22 -0800 (PST)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	David Hildenbrand <david@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 12/12] s390/kdump: virtio-mem kdump support (CONFIG_PROC_VMCORE_DEVICE_RAM)
-Date: Wed,  4 Dec 2024 13:54:43 +0100
-Message-ID: <20241204125444.1734652-13-david@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241204125444.1734652-1-david@redhat.com>
-References: <20241204125444.1734652-1-david@redhat.com>
+	bh=ROH6zlh02KHc87r45BDTv/cN5afbSIuh9toQ2ctg4yk=;
+	b=wL73UjeXWyYQQmB1Pp1remQXdjAmCrtcWFIChE7E9HHlqL9M/l/akN/1PUyWWcio+M4hsd
+	d7PhJzhCnsWkx4s2pdhDctBT82t3yAu7JL5tjJcYh5qKSbFl1hdbxAKNn5Bt1Rnq8D3xyh
+	1W12Torjr4e84kQ605+X6R3Xvphy304E3U+iWFWCCSOPeoenFGFisFQOMcWHZkqvkIm/Yo
+	rqrivG3Lb9g3nGu76ZInJIUVeq0VCHCnHokMrMp17Gv781GoLj6bgF39qb7BhDi4tsMRg6
+	qBrRpQNn0HXqJMPWSPvD3rrF6D76de00gbF5IouDkUgEw4GC/F5dlO0bLlErmA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1733317524;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ROH6zlh02KHc87r45BDTv/cN5afbSIuh9toQ2ctg4yk=;
+	b=qPufNg0aO0AVR52BVTeAWUHTNUKlqiQiXfPzDa82iuoktna7Zd4GaEhPSAChG0cycCtYIt
+	oiuHXrVUC/U2oQBQ==
+To: Anup Patel <anup@brainfault.org>
+Cc: Andrew Jones <ajones@ventanamicro.com>, iommu@lists.linux.dev,
+ kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ tjeznach@rivosinc.com, zong.li@sifive.com, joro@8bytes.org,
+ will@kernel.org, robin.murphy@arm.com, atishp@atishpatra.org,
+ alex.williamson@redhat.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu
+Subject: Re: [RFC PATCH 01/15] irqchip/riscv-imsic: Use hierarchy to reach
+ irq_set_affinity
+In-Reply-To: <CAAhSdy27gaVJaXBrx8GB+Xr4ZTvp8hd0Jg8JokzehgC-=5pOmA@mail.gmail.com>
+References: <20241114161845.502027-17-ajones@ventanamicro.com>
+ <20241114161845.502027-18-ajones@ventanamicro.com> <87mshcub2u.ffs@tglx>
+ <CAAhSdy08gi998HsTkGpaV+bTWczVSL6D8c7EmuTQqovo63oXDw@mail.gmail.com>
+ <874j3ktrjv.ffs@tglx> <87ser4s796.ffs@tglx>
+ <CAAhSdy27gaVJaXBrx8GB+Xr4ZTvp8hd0Jg8JokzehgC-=5pOmA@mail.gmail.com>
+Date: Wed, 04 Dec 2024 14:05:23 +0100
+Message-ID: <87mshbsing.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Let's add support for including virtio-mem device RAM in the crash dump,
-setting NEED_PROC_VMCORE_DEVICE_RAM, and implementing
-elfcorehdr_fill_device_ram_ptload_elf64().
+On Wed, Dec 04 2024 at 09:13, Anup Patel wrote:
+> On Wed, Dec 4, 2024 at 4:29=E2=80=AFAM Thomas Gleixner <tglx@linutronix.d=
+e> wrote:
+>> As I was looking at something else MSI related I had a look at
+>> imsic_irq_set_affinity() again.
+>>
+>> It's actually required to have the message write in that function and
+>> not afterwards as you invoke imsic_vector_move() from that function.
+>>
+>> That's obviously not true for the remap case as that will not change the
+>> message address/data pair because the remap table entry is immutable -
+>> at least I assume so for my mental sanity sake :)
+>>
+>> But that brings me to a related question. How is this supposed to work
+>> with non-atomic message updates? PCI/MSI does not necessarily provide
+>> masking, and the write of the address/data pair is done in bits and
+>> pieces. So you can end up with an intermediate state seen by the device
+>> which ends up somewhere in interrupt nirvana space.
+>>
+>> See the dance in msi_set_affinity() and commit 6f1a4891a592
+>> ("x86/apic/msi: Plug non-maskable MSI affinity race") for further
+>> explanation.
+>>
+>> The way how the IMSIC driver works seems to be pretty much the same as
+>> the x86 APIC mess:
+>>
+>>         @address is the physical address of the per CPU MSI target
+>>         address and @data is the vector ID on that CPU.
+>>
+>> So the non-atomic update in case of non-maskable MSI suffers from the
+>> same problem. It works most of the time, but if it doesn't you might
+>> stare at the occasionally lost interrupt and the stale device in
+>> disbelief for quite a while :)
+>
+> Yes, we have the same challenges as x86 APIC when changing
+> MSI affinity.
+>>
+>> I might be missing something which magically prevent that though :)
+>>
+> Your understanding is correct. In fact, the IMSIC msi_set_affinity()
+> handling is inspired from x86 APIC approach due to similarity in
+> the overall MSI controller.
+>
+> The high-level idea of imsic_irq_set_affinity() is as follows:
+>
+> 1) Allocate new_vector (new CPU IMSIC address + new ID on that CPU)
+>
+> 2) Update the MSI address and data programmed in the device
+> based on new_vector (see imsic_msi_update_msg())
+>
+> 3) At this point the device points to the new_vector but old_vector
+> (old CPU IMSIC address + old ID on that CPU) is still enabled and
+> we might have received MSI on old_vector while we were busy
+> setting up a new_vector for the device. To address this, we call
+> imsic_vector_move().
+>
+> 4) The imsic_vector_move() marks the old_vector as being
+> moved and schedules a lazy timer on the old CPU.
+>
+> 5) The lazy timer expires on the old CPU and results in
+> __imsic_local_sync() being called on the old CPU.
+>
+> 6) If there was a pending MSI on the old vector then the
+> __imsic_local_sync() function injects an MSI to the
+> new_vector using an MMIO write.
+>
+> It is very unlikely that an MSI from device will be dropped
+> (unless I am missing something) but the unsolved issue
+> is that handling of in-flight MSI received on the old_vector
+> during the MSI re-programming is delayed which may have
+> side effects on the device driver side.
 
-To avoid code duplication, factor out the code to fill a PT_LOAD entry.
+Interrupt delivery can be delayed for tons of other reasons.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/s390/Kconfig             |  1 +
- arch/s390/kernel/crash_dump.c | 39 ++++++++++++++++++++++++++++-------
- 2 files changed, 32 insertions(+), 8 deletions(-)
+But yes, you are missing something which is worse than a jiffie delay:
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 0077969170e8..c230bad7f5cc 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -240,6 +240,7 @@ config S390
- 	select MODULES_USE_ELF_RELA
- 	select NEED_DMA_MAP_STATE	if PCI
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
-+	select NEED_PROC_VMCORE_DEVICE_RAM if PROC_VMCORE
- 	select NEED_SG_DMA_LENGTH	if PCI
- 	select OLD_SIGACTION
- 	select OLD_SIGSUSPEND3
-diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
-index cd0c93a8fb8b..f699df2a2b11 100644
---- a/arch/s390/kernel/crash_dump.c
-+++ b/arch/s390/kernel/crash_dump.c
-@@ -508,6 +508,19 @@ static int get_mem_chunk_cnt(void)
- 	return cnt;
- }
- 
-+static void fill_ptload(Elf64_Phdr *phdr, unsigned long paddr,
-+		unsigned long vaddr, unsigned long size)
-+{
-+	phdr->p_type = PT_LOAD;
-+	phdr->p_vaddr = vaddr;
-+	phdr->p_offset = paddr;
-+	phdr->p_paddr = paddr;
-+	phdr->p_filesz = size;
-+	phdr->p_memsz = size;
-+	phdr->p_flags = PF_R | PF_W | PF_X;
-+	phdr->p_align = PAGE_SIZE;
-+}
-+
- /*
-  * Initialize ELF loads (new kernel)
-  */
-@@ -520,14 +533,8 @@ static void loads_init(Elf64_Phdr *phdr, bool os_info_has_vm)
- 	if (os_info_has_vm)
- 		old_identity_base = os_info_old_value(OS_INFO_IDENTITY_BASE);
- 	for_each_physmem_range(idx, &oldmem_type, &start, &end) {
--		phdr->p_type = PT_LOAD;
--		phdr->p_vaddr = old_identity_base + start;
--		phdr->p_offset = start;
--		phdr->p_paddr = start;
--		phdr->p_filesz = end - start;
--		phdr->p_memsz = end - start;
--		phdr->p_flags = PF_R | PF_W | PF_X;
--		phdr->p_align = PAGE_SIZE;
-+		fill_ptload(phdr, start, old_identity_base + start,
-+			    end - start);
- 		phdr++;
- 	}
- }
-@@ -537,6 +544,22 @@ static bool os_info_has_vm(void)
- 	return os_info_old_value(OS_INFO_KASLR_OFFSET);
- }
- 
-+#ifdef CONFIG_PROC_VMCORE_DEVICE_RAM
-+/*
-+ * Fill PT_LOAD for a physical memory range owned by a device and detected by
-+ * its device driver.
-+ */
-+void elfcorehdr_fill_device_ram_ptload_elf64(Elf64_Phdr *phdr,
-+		unsigned long long paddr, unsigned long long size)
-+{
-+	unsigned long old_identity_base = 0;
-+
-+	if (os_info_has_vm())
-+		old_identity_base = os_info_old_value(OS_INFO_IDENTITY_BASE);
-+	fill_ptload(phdr, paddr, old_identity_base + paddr, size);
-+}
-+#endif
-+
- /*
-  * Prepare PT_LOAD type program header for kernel image region
-  */
--- 
-2.47.1
+CPU                                     Device
+  msi_update_msg()
+     compose()
+     write()
+       write(msg->address_lo); [1]
+       write(msg->address_hi); [2]
+                                        Raises interrupt [3]
+       write(msg->data);       [4]
 
+[2] can be ignored as it should not change (otherwise 32bit only devices
+would not work).
+
+Lets assume that the original message was:
+
+     addr_lo =3D 0x1000, data =3D 0x10    (CPU1, vector 0x10)
+=20=20=20=20=20=20=20
+The new message is
+
+     addr_lo =3D 0x2000, data =3D 0x20    (CPU2, vector 0x20)
+
+After [2] the device sees:
+
+     addr_lo =3D 0x2000, data =3D 0x10    (CPU2, vector 0x10)
+
+The interrupt raised in [3] will end up on CPU2 at vector 0x10 which
+might be not in use or used by some other device. In any case the
+interrupt is not reaching the real device handler and you can't see that
+interrupt as pending in CPU1.
+
+That's why x86 in case of non-remapped interrupts has this for the two
+situations:
+
+  1) old->data =3D=3D new->data
+
+     write_msg(new);=20
+
+     The next interrupt either arrives on the old CPU or on the new CPU
+     depending on timing. There is no intermediate state because the
+     vector (data) is the same on both CPUs.
+
+  2) old->data !=3D new->data
+
+     tmp_msg.addr =3D old_msg.addr
+     tmp_msg.data =3D new_msg.data
+
+     write_msg(tmp_msg);
+
+     So after that write the device might raise the interrupt on CPU1
+     and vector 0x20.
+
+     The next step is
+
+     write_msg(new);=20
+
+     which changes the destination CPU to CPU2.
+
+     So depending what the device has observed the interrupt might end
+     up on
+
+     CPU1 vector 0x10   (old)
+     CPU1 vector 0x20   (tmp)
+     CPU2 vector 0x20   (new)
+
+     CPU1 vector 0x20 (tmp) is then checked in the pending register and
+     the interrupt is retriggered if pending.
+
+That requires to move the interrupt from actual interrupt context on the
+old target CPU. It allows to evaluate the old target CPUs pending
+register with local interrupts disabled, which obviously does not work
+remote.
+
+I don't see a way how that can work remote with the IMSIC either even if
+you can easily access the pending state of the remote CPU:
+
+CPU0                            CPU1                   Device
+set_affinity()
+  write_msg(tmp)
+    write(addr); // CPU1
+    write(data); // vector 0x20
+                                                        raise IRQ
+                                handle vector 0x20
+                                (spurious or other device)
+
+    check_pending(CPU1, 0x20) =3D=3D false -> Interrupt is lost
+
+Remapped interrupts do not have that issue because the table update is
+atomic vs. a concurrently raised interrupt, so that it either ends up on
+the old or on the new destination. The device message does not change as
+it always targets the table entry, which is immutable after setup.
+
+That's why x86 has this special msi affinity setter for the non remapped
+case. For the remapped case it's just using the hierarchy default which
+ends up at the remap domain.
+
+So the hierarchies look like this:
+
+   1) non-remap
+
+      PCI/MSI device domain
+         irq_chip.irq_set_affinity =3D msi_set_affinity;
+      VECTOR domain
+
+   2) remap
+
+      PCI/MSI device domain
+         irq_chip.irq_set_affinity =3D msi_domain_set_affinity;
+      REMAP domain
+         irq_chip.irq_set_affinity =3D remap_set_affinity;
+      VECTOR domain
+
+The special case of msi_set_affinity() is not involved in the remap case
+and solely utilized for the non-remap horrors. The remap case does not
+require the interrupt to be moved in interrupt context either because
+there is no intermediate step and pending register check on the old CPU
+involved.
+
+The vector cleanup of the old CPU always happens when the interrupt
+arrives on the new target for the first time independent of remapping
+mode. That's required for both cases to take care of the case where the
+interrupt is raised on the old vector (cpu1, 0x10) before the write
+happens and is pending in CPU1. So after desc::lock is released and
+interrupts are reenabled the interrupt is handled on CPU1. The next one
+is guaranteed to arrive on CPU2 and that triggers the clean up of the
+CPU1 vector, which releases it for reuse in the matrix allocator.
+
+I think you should model it in a similar way instead of trying to
+artificially reuse imsic_irq_set_affinity() for the remap case,
+especially when you decide to close the non-maskable MSI hole described
+above, which I recommend to do :)
+
+You still can utilize msi-lib and just have your private implementation
+of init_dev_msi_info() as a wrapper around the library similar to
+mbi_init_dev_msi_info() and its_init_dev_msi_info(). That wrapper would
+just handle the non-remap case to set info::chip:irq_set_affinity to the
+magic non-remap function.
+
+Hope that helps.
+
+> I believe in the future RISC-V AIA v2.0 (whenever that
+> happens) will address the gaps in AIA v1.0 (like this one).
+
+If that is strictly translation table based, yes.
+
+Thanks,
+
+        tglx
