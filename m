@@ -1,34 +1,35 @@
 Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3201E49F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D418AE2;
 	Wed,  4 Dec 2024 13:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733319954; cv=none; b=Jf2/d719CXgqHDBF15tvRToh2uOGHJW0ufcZL7HK39j0mmCPU+piIyZNBUO3T+8sH1eOLxryaBiFEXgyMhF67Qa/zuyw6stbVhTTNaQfDkJMutP9sWbleCaJ4ANB+kNyojaLVvG6kS7Ty4K2uGnS3768LeDceqI3XzBO2Sh+1As=
+	t=1733319954; cv=none; b=glpLhF+2bLBaResmgsewZqKc1j5dpbNlSb7gTPImz6SAtbOpK/N86WM1cuxths4nAmEChVFZGhqKeWlM1Msa80YdA+04kqGOhrFwcnV5mxAjCvxNe2zz85W7BFynn5wK70MdKOPLYhwMZvcIHw6voe5Jn5wrB46fUZ3EimdNmks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733319954; c=relaxed/simple;
-	bh=g8AvYIW7jH+ii3UmW0T9VTZeV7PGvLHweWjBnNIFyv4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IXSfe9vnMZc6I3ewW8Tecw2KW8PtZ0wIFEVSyShm1dmR8SUltY/dR+z2H9WLfB89uHeJSARKoTrTc1Pfpr3HAWtE7VZwfElcODLuxLDaHjWS4Fmjwnz8fhKyTIep7DCyyayDWR1Orp0P3jqnEgMmXPgRvQXwi+xxH7dF4zfUwqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=nn4gQnVB; arc=none smtp.client-ip=178.154.239.200
+	bh=9pHtMb0zhA8IZCgqFuHY/Df1oDagn1gFNoblrBgk7TQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GsCxAXz0RcBVfJeUg44s7Vl8MZBLLnABcdsXapUYoRwpKeeipvUVyndQl6R98TpqydK+BcXR5TEQWOMOmcIYUoZTpDsHi5bHVH57n4Y53uq+hYpmTwNWsb0wUAHBluo8I0ks5zUOULlSN3/ZLzCIOoSBgedCOtEC7C9cfrAyrzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=kwR+4FO4; arc=none smtp.client-ip=178.154.239.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="nn4gQnVB"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="kwR+4FO4"
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:2e8b:0:640:9795:0])
-	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 3BAAB60A5A;
-	Wed,  4 Dec 2024 16:43:58 +0300 (MSK)
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id C5D6260A5C;
+	Wed,  4 Dec 2024 16:43:59 +0300 (MSK)
 Received: from davydov-max-lin.yandex.net (unknown [2a02:6bf:8011:701:66e1:20a5:ba04:640b])
-	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id lhgH281Ia8c0-9M2fCnfb;
-	Wed, 04 Dec 2024 16:43:57 +0300
+	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id lhgH281Ia8c0-xxrqopuL;
+	Wed, 04 Dec 2024 16:43:59 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1733319837;
-	bh=Kvl3o13+wUbdHQxbdlklNiUKst3/boeificR7MkTy2U=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=nn4gQnVBWxmBDeSxz4o8bb4JnJZVKk5iuGrfWb/N01CM83Z6+1rbHVJoMjLSAsiz0
-	 yMOXTZGRILyAccyHZlHO1sM53hLANQMeEBzp0roZxuWJEnXgK0mN4HznjKmq1g5yBG
-	 dBpgHiEHTbxzozqinMq13sLF63XhRwmPv1B4VJiY=
+	s=default; t=1733319839;
+	bh=D1MIm1QJ9PdNAbNZFIfayaS97QQZKZ2TJT5zCanRheI=;
+	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=kwR+4FO4fbmtBWD61ERQfkdv8F09T7EoK+jrju1B6fX3dBms5MZqjbT6elDEvDQpX
+	 GZn0/JcPu4B0pguZdwhQKOW8QzsZsGAmQwQWungKdRi1l1ILFEsh7vj081cidKskYG
+	 81YJK/rVp0bcfMaONsOypaDDpYdSsGPiZUggg8Ys=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
 From: Maksim Davydov <davydov-max@yandex-team.ru>
 To: kvm@vger.kernel.org
@@ -44,10 +45,12 @@ Cc: davydov-max@yandex-team.ru,
 	hpa@zytor.com,
 	jmattson@google.com,
 	pbonzini@redhat.com
-Subject: [PATCH v3 0/2] x86: KVM: Add missing AMD features
-Date: Wed,  4 Dec 2024 16:43:43 +0300
-Message-Id: <20241204134345.189041-1-davydov-max@yandex-team.ru>
+Subject: [PATCH v3 2/2] x86: KVM: Advertise AMD's speculation control features
+Date: Wed,  4 Dec 2024 16:43:45 +0300
+Message-Id: <20241204134345.189041-3-davydov-max@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241204134345.189041-1-davydov-max@yandex-team.ru>
+References: <20241204134345.189041-1-davydov-max@yandex-team.ru>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -56,36 +59,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds definition of some missing AMD features in
-0x80000008_EBX and 0x80000021_EAX functions. It also gives an opportunity
-to expose these features to userspace. 
+It seems helpful to expose to userspace some speculation control features
+from 0x80000008_EBX function:
+* 16 bit. IBRS always on. Indicates whether processor prefers that
+  IBRS is always on. It simplifies speculation managing.
+* 18 bit. IBRS is preferred over software solution. Indicates that
+  software mitigations can be replaced with more performant IBRS.
+* 19 bit. IBRS provides Same Mode Protection. Indicates that when IBRS
+  is set indirect branch predictions are not influenced by any prior
+  indirect branches.
+* 29 bit. BTC_NO. Indicates that processor isn't affected by branch type
+  confusion. It's used during mitigations setting up.
 
-Related discussion in QEMU:
-https://lore.kernel.org/kvm/24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru/
+Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+---
+ arch/x86/include/asm/cpufeatures.h | 3 +++
+ arch/x86/kvm/cpuid.c               | 5 +++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-v3 -> v2:
-* rebased onto the newest master
-* AMD_IBPB_RET was removed because all work had been done in 71dd5d5300d2
-* renamed "IBRS provides same mode protection" bit
-
-v2 -> v1:
-* fixed the bug in the FSRC definition
-
-v2:
-https://lore.kernel.org/kvm/20241126094424.943192-1-davydov-max@yandex-team.ru/
-
-v1:
-https://lore.kernel.org/kvm/20241113133042.702340-1-davydov-max@yandex-team.ru/
-
-
-Maksim Davydov (2):
-  x86: KVM: Advertise FSRS and FSRC on AMD to userspace
-  x86: KVM: Advertise AMD's speculation control features
-
- arch/x86/include/asm/cpufeatures.h | 5 +++++
- arch/x86/kvm/cpuid.c               | 9 +++++----
- 2 files changed, 10 insertions(+), 4 deletions(-)
-
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 45f87a026bba..0a709d03ee5c 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -343,7 +343,10 @@
+ #define X86_FEATURE_AMD_IBPB		(13*32+12) /* Indirect Branch Prediction Barrier */
+ #define X86_FEATURE_AMD_IBRS		(13*32+14) /* Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_AMD_STIBP		(13*32+15) /* Single Thread Indirect Branch Predictors */
++#define X86_FEATURE_AMD_IBRS_ALWAYS_ON	(13*32+16) /* Indirect Branch Restricted Speculation always-on preferred */
+ #define X86_FEATURE_AMD_STIBP_ALWAYS_ON	(13*32+17) /* Single Thread Indirect Branch Predictors always-on preferred */
++#define X86_FEATURE_AMD_IBRS_PREFERRED	(13*32+18) /* Indirect Branch Restricted Speculation is preferred over SW solution */
++#define X86_FEATURE_AMD_IBRS_SAME_MODE	(13*32+19) /* Indirect Branch Restricted Speculation provides Same Mode protection */
+ #define X86_FEATURE_AMD_PPIN		(13*32+23) /* "amd_ppin" Protected Processor Inventory Number */
+ #define X86_FEATURE_AMD_SSBD		(13*32+24) /* Speculative Store Bypass Disable */
+ #define X86_FEATURE_VIRT_SSBD		(13*32+25) /* "virt_ssbd" Virtualized Speculative Store Bypass Disable */
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 7bc095add8ee..204192425e2c 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -756,8 +756,9 @@ void kvm_set_cpu_caps(void)
+ 	kvm_cpu_cap_mask(CPUID_8000_0008_EBX,
+ 		F(CLZERO) | F(XSAVEERPTR) |
+ 		F(WBNOINVD) | F(AMD_IBPB) | F(AMD_IBRS) | F(AMD_SSBD) | F(VIRT_SSBD) |
+-		F(AMD_SSB_NO) | F(AMD_STIBP) | F(AMD_STIBP_ALWAYS_ON) |
+-		F(AMD_PSFD) | F(AMD_IBPB_RET)
++		F(AMD_SSB_NO) | F(AMD_STIBP) | F(AMD_IBRS_ALWAYS_ON) |
++		F(AMD_STIBP_ALWAYS_ON) | F(AMD_IBRS_PREFERRED) |
++		F(AMD_IBRS_SAME_MODE) | F(AMD_PSFD) | F(BTC_NO) | F(AMD_IBPB_RET)
+ 	);
+ 
+ 	/*
 -- 
 2.34.1
 
