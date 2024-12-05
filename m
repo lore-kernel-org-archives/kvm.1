@@ -1,142 +1,252 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105B92391AB;
-	Thu,  5 Dec 2024 07:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CF61C07C0;
+	Thu,  5 Dec 2024 07:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733383060; cv=none; b=KsjS41Zlm8DNMMbgoQhPWKO4UqKxnR5TTw9qfSkvleqf1JQLrSV378cr/5V3gmaQs8dpYcd8bbgVYob0mbKPxiFNBIFIK2xw1uY5i2rna9rPB3iUFqAYIntaRQZElI9Pn45ZuEKKPmN0HHSMj4ep35MhEvf+KTWoKtqsenKH02k=
+	t=1733385478; cv=none; b=D/jbz1ymBm6EQ5X9lsVDO+1cnfbU1iX8T/grbgWgWCcsWlyJKagbuGRSf6Iz7fSZIFyO7xxynUCKJ4D9yoFMS5aWTjVl2IHHHcre0RJhuzVGnEgcXCRK95y7J5IJCWlKRlgj7O0r8U5oJ099WRb3R9/eR4hZ2xHYgbFYZ78YHx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733383060; c=relaxed/simple;
-	bh=Z3/tFN7h17xUO2ncrQc4H3nnV14DtFEmAsCjm4/o2ac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T0q/PdwbiLSAgbdbBzJAk1lhv/ophWPdT+DpnSixhrEP4w9MCeFNZylPd9AD0QjXxoiI5pOJjeMgEZea5HkIlxKARvJ433IxWK2gRcPrIaHkUSdwsBu5KnMeeD2luhr4xIZpLsdODtLTwG2IzM3rij09UF77aMXZs3MZpmRn7X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=ymCPqgO8; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1733385478; c=relaxed/simple;
+	bh=uSg/bKSfO3eT91O/43MYGhR9yGuKLhFP26XP6tdrvvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ABQpv8q/9fiDhXutFqKuh5WfmYNxtAr0/Q/AVVrKA4U4wtRz7u/0kRaJ7ks0J0ZGGu6fDI7dtGSHztDcMK8PZ9kD+idu6kkDEXML2SjYIEqf4b3S9+gdd5Gi0SKzQIqD93FxzW2qkRh1AJyTBkq/HzUzY1d4hQegiHOGuHjI1y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzNy7hDj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="ymCPqgO8"
-Received: from [192.168.7.205] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 4B57Gv3Y1462253
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 4 Dec 2024 23:16:58 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 4B57Gv3Y1462253
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024111601; t=1733383020;
-	bh=YkeScXjRFcOS65pjCguRHyt/CbJRADw5S8VOqyQ9fR4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ymCPqgO8DxJvyrBe3JsgG8uQLVyos1tT6RnqBy1ozbbWA0AhM5JdxrxUEyqqoaK0A
-	 fn61DEoWqyGXKYdGmY2srhA5sJ+JUcyKwhznecugKSSIJQAPZSpP4Jg59yE1gBwAmu
-	 HAPeBTVxwA0XdlqCE2X6tyFbcWGmEJaQN2ep3IhcIBJm5o8iPlY66sRDzXPMqxzv6U
-	 Y/G3aZw4FsNXqnLwnHrc33fF8SCZgSh50NScLWteiWg5qfr610m8VXh2QHn2bqEeve
-	 D1JduC/2c5wKrwL9sk2DTKjAKGfVX7XVqn/Sjb+jvAd6eM+l51kC7O/o0cVNRklJDk
-	 aSd4FjBLuHhTQ==
-Message-ID: <857ad555-4175-4816-81d7-f98ad091a1db@zytor.com>
-Date: Wed, 4 Dec 2024 23:16:57 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzNy7hDj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBE1C4CED1;
+	Thu,  5 Dec 2024 07:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733385477;
+	bh=uSg/bKSfO3eT91O/43MYGhR9yGuKLhFP26XP6tdrvvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JzNy7hDj8yY2NKW/uvISgo3NyxjO5tVuz9ugbFYNzkQfy3Jc07JeH3iFdxKdfhbIn
+	 Gs/DgdTpri/fG+tYQuzRGCSnAZsUMiTYX0IFB5XsAAS9Q4+iP1SMD9P5lq/pdweH4y
+	 xH59t/A4HWQPKx6IXoYrtQGY5va/K9fYZ5c+M7u0T4jY0BudHV5nEELfQIfrTLMnmm
+	 6UyC8sSBc38He6D6wSmTiyXbOiPcxIMIuT/hlbZr40n/bhxEegN1wxzTyURvEXXhcT
+	 ctNs0wdcfwYa3sys0zSE5LdNI7ekWciGjI2EbYVmf9lpjoZmNsqXxQyP5XmEpeihLJ
+	 KK1KmMgaXWcDg==
+Date: Thu, 5 Dec 2024 09:57:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Kai Huang <kai.huang@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
+	dave.hansen@intel.com, kirill.shutemov@linux.intel.com,
+	peterz@infradead.org, tony.luck@intel.com, tglx@linutronix.de,
+	bp@alien8.de, mingo@redhat.com, hpa@zytor.com, seanjc@google.com,
+	pbonzini@redhat.com, rafael@kernel.org, david@redhat.com,
+	dan.j.williams@intel.com, len.brown@intel.com, ak@linux.intel.com,
+	isaku.yamahata@intel.com, ying.huang@intel.com, chao.gao@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, nik.borisov@suse.com,
+	bagasdotme@gmail.com, sagis@google.com, imammedo@redhat.com
+Subject: Re: [PATCH v15 08/23] x86/virt/tdx: Use all system memory when
+ initializing TDX module as TDX memory
+Message-ID: <Z1Fc8g47vfpz9EVW@kernel.org>
+References: <cover.1699527082.git.kai.huang@intel.com>
+ <87e19d1931e33bfaece5b79602cfbd517df891f1.1699527082.git.kai.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 16/27] KVM: VMX: Virtualize FRED nested exception
- tracking
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
-        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com
-References: <20241001050110.3643764-1-xin@zytor.com>
- <20241001050110.3643764-17-xin@zytor.com> <ZxnoE6ltLawgPHdZ@intel.com>
- <5ded5ea5-6a31-47ef-ae12-f32615ada248@zytor.com> <Zx8wS/wAI99yLmPh@intel.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <Zx8wS/wAI99yLmPh@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87e19d1931e33bfaece5b79602cfbd517df891f1.1699527082.git.kai.huang@intel.com>
 
-On 10/27/2024 11:33 PM, Chao Gao wrote:
->>>> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
->>>> index d81144bd648f..03f42b218554 100644
->>>> --- a/arch/x86/kvm/vmx/vmx.c
->>>> +++ b/arch/x86/kvm/vmx/vmx.c
->>>> @@ -1910,8 +1910,11 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
->>>> 		vmcs_write32(VM_ENTRY_INSTRUCTION_LEN,
->>>> 			     vmx->vcpu.arch.event_exit_inst_len);
->>>> 		intr_info |= INTR_TYPE_SOFT_EXCEPTION;
->>>> -	} else
->>>> +	} else {
->>>> 		intr_info |= INTR_TYPE_HARD_EXCEPTION;
->>>> +		if (ex->nested)
->>>> +			intr_info |= INTR_INFO_NESTED_EXCEPTION_MASK;
->>>
->>> how about moving the is_fred_enable() check from kvm_multiple_exception() to here? i.e.,
->>>
->>> 		if (ex->nested && is_fred_enabled(vcpu))
->>> 			intr_info |= INTR_INFO_NESTED_EXCEPTION_MASK;
->>>
->>> It is slightly clearer because FRED details don't bleed into kvm_multiple_exception().
->>
->> But FRED is all about events, including exception/interrupt/trap/...
->>
->> logically VMX nested exception only works when FRED is enabled, see how it is
->> set at 2 places in kvm_multiple_exception().
-> 
-> "VMX nested exception only works ..." is what I referred to as "FRED details"
-> 
-> I believe there are several reasons to decouple the "nested exception" concept
-> from FRED:
-> 
-> 1. Readers new to FRED can understand kvm_multiple_exception() without needing
->     to know FRED details. Readers just need to know nested exceptions are
->     exceptions encountered during delivering another event (exception/NMI/interrupts).
-> 
-> 2. Developing KVM's generic "nested exception" concept can support other vendors.
->     "nested" becomes a property of an exception. only how nested exceptions are
->     reported to guests is specific to vendors (i.e., VMX/SVM).
-> 
-> 3. This series handles ex->event_data in a similar approach: set it regardless
->     of FRED enablement and let VMX/SVM code decide to consume or ignore it.
+Hi,
 
-This is a nice way to look at the nature of nested exception, and I have
-made the change for the next iteration.
+I've been auditing for_each_mem_pfn_range() users and it's usage in TDX is
+dubious for me.
 
-Thanks!
-     Xin
+On Fri, Nov 10, 2023 at 12:55:45AM +1300, Kai Huang wrote:
+> 
+> As TDX-usable memory is a fixed configuration, take a snapshot of the
+> memory configuration from memblocks at the time of module initialization
+> (memblocks are modified on memory hotplug).  This snapshot is used to
+
+AFAUI this could happen long after free_initmem() which discards all
+memblock data on x86.
+
+> enable TDX support for *this* memory configuration only.  Use a memory
+> hotplug notifier to ensure that no other RAM can be added outside of
+> this configuration.
+ 
+...
+
+> +/*
+> + * Ensure that all memblock memory regions are convertible to TDX
+> + * memory.  Once this has been established, stash the memblock
+> + * ranges off in a secondary structure because memblock is modified
+> + * in memory hotplug while TDX memory regions are fixed.
+> + */
+> +static int build_tdx_memlist(struct list_head *tmb_list)
+> +{
+> +	unsigned long start_pfn, end_pfn;
+> +	int i, ret;
+> +
+> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, NULL) {
+
+Unles ARCH_KEEP_MEMBLOCK is defined this won't work after free_initmem()
+
+> +		/*
+> +		 * The first 1MB is not reported as TDX convertible memory.
+> +		 * Although the first 1MB is always reserved and won't end up
+> +		 * to the page allocator, it is still in memblock's memory
+> +		 * regions.  Skip them manually to exclude them as TDX memory.
+> +		 */
+> +		start_pfn = max(start_pfn, PHYS_PFN(SZ_1M));
+> +		if (start_pfn >= end_pfn)
+> +			continue;
+> +
+> +		/*
+> +		 * Add the memory regions as TDX memory.  The regions in
+> +		 * memblock has already guaranteed they are in address
+> +		 * ascending order and don't overlap.
+> +		 */
+> +		ret = add_tdx_memblock(tmb_list, start_pfn, end_pfn);
+> +		if (ret)
+> +			goto err;
+> +	}
+> +
+> +	return 0;
+> +err:
+> +	free_tdx_memlist(tmb_list);
+> +	return ret;
+> +}
+> +
+>  static int init_tdx_module(void)
+>  {
+> +	int ret;
+> +
+> +	/*
+> +	 * To keep things simple, assume that all TDX-protected memory
+> +	 * will come from the page allocator.  Make sure all pages in the
+> +	 * page allocator are TDX-usable memory.
+> +	 *
+> +	 * Build the list of "TDX-usable" memory regions which cover all
+> +	 * pages in the page allocator to guarantee that.  Do it while
+> +	 * holding mem_hotplug_lock read-lock as the memory hotplug code
+> +	 * path reads the @tdx_memlist to reject any new memory.
+> +	 */
+> +	get_online_mems();
+> +
+> +	ret = build_tdx_memlist(&tdx_memlist);
+> +	if (ret)
+> +		goto out_put_tdxmem;
+> +
+>  	/*
+>  	 * TODO:
+>  	 *
+> -	 *  - Build the list of TDX-usable memory regions.
+>  	 *  - Get TDX module "TD Memory Region" (TDMR) global metadata.
+>  	 *  - Construct a list of TDMRs to cover all TDX-usable memory
+>  	 *    regions.
+> @@ -168,7 +267,14 @@ static int init_tdx_module(void)
+>  	 *
+>  	 *  Return error before all steps are done.
+>  	 */
+> -	return -EINVAL;
+> +	ret = -EINVAL;
+> +out_put_tdxmem:
+> +	/*
+> +	 * @tdx_memlist is written here and read at memory hotplug time.
+> +	 * Lock out memory hotplug code while building it.
+> +	 */
+> +	put_online_mems();
+> +	return ret;
+>  }
+>  
+>  static int __tdx_enable(void)
+> @@ -258,6 +364,56 @@ static int __init record_keyid_partitioning(u32 *tdx_keyid_start,
+>  	return 0;
+>  }
+>  
+> +static bool is_tdx_memory(unsigned long start_pfn, unsigned long end_pfn)
+> +{
+> +	struct tdx_memblock *tmb;
+> +
+> +	/*
+> +	 * This check assumes that the start_pfn<->end_pfn range does not
+> +	 * cross multiple @tdx_memlist entries.  A single memory online
+> +	 * event across multiple memblocks (from which @tdx_memlist
+> +	 * entries are derived at the time of module initialization) is
+> +	 * not possible.  This is because memory offline/online is done
+> +	 * on granularity of 'struct memory_block', and the hotpluggable
+> +	 * memory region (one memblock) must be multiple of memory_block.
+> +	 */
+> +	list_for_each_entry(tmb, &tdx_memlist, list) {
+> +		if (start_pfn >= tmb->start_pfn && end_pfn <= tmb->end_pfn)
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +static int tdx_memory_notifier(struct notifier_block *nb, unsigned long action,
+> +			       void *v)
+> +{
+> +	struct memory_notify *mn = v;
+> +
+> +	if (action != MEM_GOING_ONLINE)
+> +		return NOTIFY_OK;
+> +
+> +	/*
+> +	 * Empty list means TDX isn't enabled.  Allow any memory
+> +	 * to go online.
+> +	 */
+> +	if (list_empty(&tdx_memlist))
+> +		return NOTIFY_OK;
+> +
+> +	/*
+> +	 * The TDX memory configuration is static and can not be
+> +	 * changed.  Reject onlining any memory which is outside of
+> +	 * the static configuration whether it supports TDX or not.
+> +	 */
+> +	if (is_tdx_memory(mn->start_pfn, mn->start_pfn + mn->nr_pages))
+> +		return NOTIFY_OK;
+> +
+> +	return NOTIFY_BAD;
+> +}
+> +
+> +static struct notifier_block tdx_memory_nb = {
+> +	.notifier_call = tdx_memory_notifier,
+> +};
+> +
+>  static int __init tdx_init(void)
+>  {
+>  	u32 tdx_keyid_start, nr_tdx_keyids;
+> @@ -281,6 +437,13 @@ static int __init tdx_init(void)
+>  		return -ENODEV;
+>  	}
+>  
+> +	err = register_memory_notifier(&tdx_memory_nb);
+> +	if (err) {
+> +		pr_err("initialization failed: register_memory_notifier() failed (%d)\n",
+> +				err);
+> +		return -ENODEV;
+> +	}
+> +
+>  	/*
+>  	 * Just use the first TDX KeyID as the 'global KeyID' and
+>  	 * leave the rest for TDX guests.
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index a3c52270df5b..c11e0a7ca664 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -27,4 +27,10 @@ enum tdx_module_status_t {
+>  	TDX_MODULE_ERROR
+>  };
+>  
+> +struct tdx_memblock {
+> +	struct list_head list;
+> +	unsigned long start_pfn;
+> +	unsigned long end_pfn;
+> +};
+> +
+>  #endif
+> -- 
+> 2.41.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
