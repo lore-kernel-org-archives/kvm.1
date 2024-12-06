@@ -1,123 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F6D1EF097;
-	Fri,  6 Dec 2024 09:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725071FA828;
+	Fri,  6 Dec 2024 09:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733477697; cv=none; b=bajn6mCTeC3LqMbv5NweHxtXmt8IVWL3g4+sqwKrd2jP2UtfqAqGHA+FHRjFV6CD1N+O9oAWNY1P9F37osdVLpzbrCOAdWcXkgTB6981rNYzik8mPbjeKyqWgiXbom9CDvPCRICJtc9//lmcWzvb4s2Obqhw6sl7/6gWesqy9RA=
+	t=1733477714; cv=none; b=U42ng46gLd9cEIjMsD58GO7gSnwfmdAQ7N8Jbfsg3oHpZ1tXulW8lNMlAxc0JmBmOCpwIJojgDbRRGUcWw91rFHRpsAeuqk7NaltX4LzDSZFdtlvJFxYMYkZ23sfs4gjVIrFydSoiIr3dBzAkuLnZi6t1i41d0ho0hzW30mk93w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733477697; c=relaxed/simple;
-	bh=/i0+YCGdEkqQWh9rUMU2mm58oTj6C06sUI/9CvnFWeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YWPdSmPl6QgJJAqTHJ9I4HdXTKH35qEPQexaUx3M1eNu+rfkmJUleW9Tf0FkK6pl3xdDp9HKlN/cLel2RGoODinrJzC9MSi/4DFjeKYEMSEPOfzJL1dvXmR5Lf/mvdzZZxvjZQggb5ZBgjRqVsbfmrRiBVPdzh00bO8C4BVF0Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xzl4y1Yr; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xzl4y1Yr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733477696; x=1765013696;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/i0+YCGdEkqQWh9rUMU2mm58oTj6C06sUI/9CvnFWeo=;
-  b=Xzl4y1YrfNhuh9z9mC+p2xqVBqhKNMOSiOAp7T4ATREtrQHq7xHo/xcf
-   sg0lgnoMdFrfuhQgmeBIWo2GpOlB28s7run1mN/RW4IdTKTBKcEa4j+oX
-   F55fJZYT8SMGanAgfhTTDht9qUUNRL2RRTagQplH0EJXRuVAwgkN/tfqV
-   OOg5PTLULNDX0anq238n4mSEXui6TDJyN3VK/ESUY0x9Mbxzbm1Znij+0
-   9lwmZ2IXpI8TIYlMENkny6gDlvvCkd/WHFKrZgPWE5aM1GJro7GulWfHg
-   Op5L512I/Ia7Eyy+JVs00Z5qBSKl1eqRCCp+Isbk9atRFS0s5yp7KYPo7
-   w==;
-X-CSE-ConnectionGUID: XgtgCHCKTOmgmu49EEI1AA==
-X-CSE-MsgGUID: Joh8vJMlRVKCWUEoADDYkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33953897"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
-   d="scan'208";a="33953897"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 01:34:55 -0800
-X-CSE-ConnectionGUID: rXIgzfzBQ8yRDHJPmvq4+g==
-X-CSE-MsgGUID: YI3MsMMqRHqmywejOfkvhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
-   d="scan'208";a="99421496"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa004.jf.intel.com with ESMTP; 06 Dec 2024 01:34:51 -0800
-Date: Fri, 6 Dec 2024 17:31:39 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, kai.huang@intel.com,
-	adrian.hunter@intel.com, reinette.chatre@intel.com,
-	xiaoyao.li@intel.com, tony.lindgren@linux.intel.com,
-	isaku.yamahata@intel.com, yan.y.zhao@intel.com, chao.gao@intel.com,
-	michael.roth@amd.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/7] KVM: TDX: Handle TDG.VP.VMCALL<ReportFatalError>
-Message-ID: <Z1LEe1VL2YvoCp0A@yilunxu-OptiPlex-7050>
-References: <20241201035358.2193078-1-binbin.wu@linux.intel.com>
- <20241201035358.2193078-6-binbin.wu@linux.intel.com>
+	s=arc-20240116; t=1733477714; c=relaxed/simple;
+	bh=3aOCMcExKSwPvRwWxBM/nVNwCKgoDEymiGzYRImEMac=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gigmAPwMsdEBuZRG3gRGV6YE2Xgnz/c78St/nMDdV+mlqI7xQd9xvx8sr4DLXF48wRwkChmy1VXe38zS1+7jBFnHOtGVBKfw71sQHt3dfovnAgIne2033C3LbTH2ziiu9JxbbSO6Zm+6irNgMFlc6VNakCaauMTN2H1hcyVgI3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Y4Qzg6gPKzqTY1;
+	Fri,  6 Dec 2024 17:33:19 +0800 (CST)
+Received: from dggemv703-chm.china.huawei.com (unknown [10.3.19.46])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2C680140360;
+	Fri,  6 Dec 2024 17:35:08 +0800 (CST)
+Received: from kwepemn100017.china.huawei.com (7.202.194.122) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 6 Dec 2024 17:35:07 +0800
+Received: from huawei.com (10.50.165.33) by kwepemn100017.china.huawei.com
+ (7.202.194.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Dec
+ 2024 17:35:07 +0800
+From: Longfang Liu <liulongfang@huawei.com>
+To: <alex.williamson@redhat.com>, <jgg@nvidia.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <jonathan.cameron@huawei.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxarm@openeuler.org>, <liulongfang@huawei.com>
+Subject: [PATCH 2/5] hisi_acc_vfio_pci: add eq and aeq interruption restore
+Date: Fri, 6 Dec 2024 17:33:09 +0800
+Message-ID: <20241206093312.57588-3-liulongfang@huawei.com>
+X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20241206093312.57588-1-liulongfang@huawei.com>
+References: <20241206093312.57588-1-liulongfang@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241201035358.2193078-6-binbin.wu@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemn100017.china.huawei.com (7.202.194.122)
 
-> +static int tdx_report_fatal_error(struct kvm_vcpu *vcpu)
-> +{
-> +	u64 reg_mask = kvm_rcx_read(vcpu);
-> +	u64* opt_regs;
-> +
-> +	/*
-> +	 * Skip sanity checks and let userspace decide what to do if sanity
-> +	 * checks fail.
-> +	 */
-> +	vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
-> +	vcpu->run->system_event.type = KVM_SYSTEM_EVENT_TDX_FATAL;
-> +	vcpu->run->system_event.ndata = 10;
-> +	/* Error codes. */
-> +	vcpu->run->system_event.data[0] = tdvmcall_a0_read(vcpu);
-> +	/* GPA of additional information page. */
-> +	vcpu->run->system_event.data[1] = tdvmcall_a1_read(vcpu);
-> +	/* Information passed via registers (up to 64 bytes). */
-> +	opt_regs = &vcpu->run->system_event.data[2];
-> +
-> +#define COPY_REG(REG, MASK)						\
-> +	do {								\
-> +		if (reg_mask & MASK)					\
-> +			*opt_regs = kvm_ ## REG ## _read(vcpu);		\
-> +		else							\
-> +			*opt_regs = 0;					\
-> +		opt_regs++;						\
-> +	} while (0)
-> +
-> +	/* The order is defined in GHCI. */
-> +	COPY_REG(r14, BIT_ULL(14));
-> +	COPY_REG(r15, BIT_ULL(15));
-> +	COPY_REG(rbx, BIT_ULL(3));
-> +	COPY_REG(rdi, BIT_ULL(7));
-> +	COPY_REG(rsi, BIT_ULL(6));
-> +	COPY_REG(r8, BIT_ULL(8));
-> +	COPY_REG(r9, BIT_ULL(9));
-> +	COPY_REG(rdx, BIT_ULL(2));
+In order to ensure that the task packets of the accelerator
+device are not lost during the migration process, it is necessary
+to send an EQ and AEQ command to the device after the live migration
+is completed and to update the completion position of the task queue.
 
-Nit:
+Let the device recheck the completed tasks data and if there are
+uncollected packets, device resend a task completion interrupt
+to the software.
 
-#undef COPY_REG
+Fixes:b0eed085903e("hisi_acc_vfio_pci: Add support for VFIO live migration")
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+---
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Thanks,
-Yilun
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 8518efea3a52..4c8f1ae5b636 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -463,6 +463,19 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	return 0;
+ }
+ 
++static void vf_qm_xeqc_save(struct hisi_qm *qm,
++			    struct hisi_acc_vf_migration_file *migf)
++{
++	struct acc_vf_data *vf_data = &migf->vf_data;
++	u16 eq_head, aeq_head;
++
++	eq_head = vf_data->qm_eqc_dw[0] & 0xFFFF;
++	qm_db(qm, 0, QM_DOORBELL_CMD_EQ, eq_head, 0);
++
++	aeq_head = vf_data->qm_aeqc_dw[0] & 0xFFFF;
++	qm_db(qm, 0, QM_DOORBELL_CMD_AEQ, aeq_head, 0);
++}
++
+ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 			   struct hisi_acc_vf_migration_file *migf)
+ {
+@@ -571,6 +584,9 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 		return -EINVAL;
+ 
+ 	migf->total_length = sizeof(struct acc_vf_data);
++	/* Save eqc and aeqc interrupt information */
++	vf_qm_xeqc_save(vf_qm, migf);
++
+ 	return 0;
+ }
+ 
+-- 
+2.24.0
 
-> +
-> +	/*
-> +	 * Set the status code according to GHCI spec, although the vCPU may
-> +	 * not return back to guest.
-> +	 */
-> +	tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_SUCCESS);
-> +
-> +	/* Forward request to userspace. */
-> +	return 0;
-> +}
