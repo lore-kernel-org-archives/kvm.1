@@ -1,94 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB9A322E
-	for <kvm@vger.kernel.org>; Sat,  7 Dec 2024 15:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D49242AA1;
+	Sun,  8 Dec 2024 08:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733584606; cv=none; b=eE+xot6bfk8198axpptxmyh76QaNvEIVuPnwRb2JWQlngOsX6X4KsV1oL3C5Ac9Riz3hHa1Gc121T8tZiiqvNa2w4CM4YaOz4UqvOh61LTGv70RAssLtkQY7C1lFRS0e+V6tkuSYZF1g6bhGev3GArgW6NUM43h1B6PwBNh242M=
+	t=1733647188; cv=none; b=RZRvBXq3AiqKj3BS/jtx75JM+G/F0Wy5DEchTmF4B9IQ4FRKNZ5dgTf8aIZCSOYjvE0GC9n8vGOKDOLqU1yDF9Mv5wfVdFcMR5d6X2i1oxDULx5OsO+GIDXTZg+oyBbnx4NU3S6jf8n1LLQAnBDcNhAadtROyK68+kApqVSNWWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733584606; c=relaxed/simple;
-	bh=x/KMFEIVqax4T/aG/WHn7WGXnsRDVrcyjhCbfHSeBIQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IeTzgIb3TEy4NXZfX0Mxf9MSKDELYS+O0cj8z++X4KTM8HXv9imHnBM+if9EH864VxyCbYwrmHA5XVik+ufyLKQT1gruI70+NgJs8S47niJIVDGJr8H+GpmV6zYPfIPKMqDP5EMCGE0EVShGLy378ZM6p/it7pxpq8r6amQpX8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LzSpP+3t; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733647188; c=relaxed/simple;
+	bh=tT7DJArqKW6MwBceu7Q0vNFLZNQR8atiULSQ4sx8jVE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kqdQ9161d7Vylis4E1UaClr2G/RDKC9cz4V/mwDxepSHDuS1yikUjGzeqkTWBmw+9bciww0WnbcJEl1Jm//dQK3Uqgxt9MwCJc377ylSfOY61QbRjMkIJVChrMvim98c5ei2OjG05+JV9cDuQNFPRXbe6S0jghpzH2dAP4my3Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=vJd6GVvv; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LzSpP+3t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733584603;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=buWahY26YGerNzLHfmySJVio+/sH3JcpVBTbZ+QbVEk=;
-	b=LzSpP+3tsGVQtDpk+iOQ1prilRDNQve6iGZZRg+sOWjMZRs0wtMI6qFH2F9z5PELLVY/qD
-	LZc79bLL2tsK0cwbMmuKzFBYQKV6zPbL0rLB83uMMYJzhRBqxcLbWr4eFNgHVfaCpQ/6EI
-	sdG5ViJFFK6uo4JiuTYpAAvIeDzyIMY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-ra82krBVOB2rHcR1JLV2jA-1; Sat,
- 07 Dec 2024 10:16:39 -0500
-X-MC-Unique: ra82krBVOB2rHcR1JLV2jA-1
-X-Mimecast-MFC-AGG-ID: ra82krBVOB2rHcR1JLV2jA
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8843919560AA;
-	Sat,  7 Dec 2024 15:16:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.194.102])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F31C31955F3E;
-	Sat,  7 Dec 2024 15:16:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id A692321E66D2; Sat,  7 Dec 2024 16:16:31 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  Shiju Jose <shiju.jose@huawei.com>,
-  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Ani Sinha
- <anisinha@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Dongjiu Geng
- <gengdongjiu1@gmail.com>,  Eduardo Habkost <eduardo@habkost.net>,  Eric
- Blake <eblake@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  John
- Snow <jsnow@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-  Michael Roth <michael.roth@amd.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Shannon
- Zhao <shannon.zhaosl@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  kvm@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  qemu-arm@nongnu.org,
-  qemu-devel@nongnu.org
-Subject: Re: [PATCH 00/31] Prepare GHES driver to support error injection
-In-Reply-To: <20241207093922.1efa02ec@foz.lan> (Mauro Carvalho Chehab's
-	message of "Sat, 7 Dec 2024 09:39:22 +0100")
-References: <cover.1733504943.git.mchehab+huawei@kernel.org>
-	<87frn03tun.fsf@pond.sub.org> <87wmgc2f48.fsf@pond.sub.org>
-	<20241207093922.1efa02ec@foz.lan>
-Date: Sat, 07 Dec 2024 16:16:31 +0100
-Message-ID: <87o71no75c.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="vJd6GVvv"
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3b05:0:640:71ba:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 58FFE60B55;
+	Sun,  8 Dec 2024 11:39:41 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:b71b::1:31])
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id UdfGLq1Ie4Y0-zDixKZWu;
+	Sun, 08 Dec 2024 11:39:40 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1733647180;
+	bh=rGpELdekKzdiqfxyGNqzin4EZuk4jJlZXxCMADyQvn4=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=vJd6GVvvM3f3Ye6nq4OVY6b/tBdYaaPibhKlCJSTntryrfTSv9luPt14rgixpSMZr
+	 lvNTuIdESHQw9OsI2l/tF4gaIAh3WbkfLRE5on0YkUynoW7rdeiysqoVKPXlGkyxxo
+	 r3yWAsarKEViiXX+0VqX0sBXRMvSwHCBR3IFOtsU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH v2 6.6 6.12] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
+Date: Sun,  8 Dec 2024 11:38:30 +0300
+Message-Id: <20241208083830.77587-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
 
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-[...]
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
->> However, it doesn't apply for me.  What's your base?
->
-> That's weird. Despite my mistake, the series is based on v9.2.0-rc3 
-> (which was identical to master last time I rebased).
+To solve this preserve faultin pfn in separate local variable
+and pass it in kvm_release_pfn_clean().
 
-Either something conflicting got committed meanwhile, or I screwed up
-somehow.
+Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
 
-> Should it be based against some other branch?
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
 
-No, master is fine.
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+---
+v1 -> v2:
+ * Instead of new struct field prefer local variable to snapshot faultin pfn
+ as suggested by Sean Christopherson. 
+ * Tested patch for 6.1 and 6.12
+
+ arch/x86/kvm/mmu/mmu.c         | 10 ++++++++--
+ arch/x86/kvm/mmu/paging_tmpl.h |  5 ++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 294775b7383b..ff85526a9d48 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4363,6 +4363,7 @@ static bool is_page_fault_stale(struct kvm_vcpu *vcpu,
+ 
+ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	/* Dummy roots are used only for shadowing bad guest roots. */
+@@ -4384,6 +4385,8 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4398,7 +4401,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+@@ -4447,6 +4450,7 @@ EXPORT_SYMBOL_GPL(kvm_handle_page_fault);
+ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 				  struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	if (page_fault_handle_page_track(vcpu, fault))
+@@ -4464,6 +4468,8 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	read_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4474,7 +4480,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 
+ out_unlock:
+ 	read_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ #endif
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index c85255073f67..c6b2c52aceac 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -777,6 +777,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	struct guest_walker walker;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	WARN_ON_ONCE(fault->is_tdp);
+@@ -835,6 +836,8 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
+ 	}
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -848,7 +851,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+-- 
+2.34.1
 
