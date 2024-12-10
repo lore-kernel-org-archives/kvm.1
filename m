@@ -1,160 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765E1A9B35;
-	Tue, 10 Dec 2024 13:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4451E515;
+	Tue, 10 Dec 2024 13:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733837138; cv=none; b=elbZUkFTj54KO+XSIKzSTnlwUc+x7LABm6J1GxmJJtS0AJSsLSBnOahogYG562a3y3xR/tzonS5OJ/BloWvTJIeHkT4mP/K0D/ZoW7U76n+pa/cI+N+UUoTDg3n5oHkLN64vRLsCoLGrBRn6s1LyBit6IMlTxiK+tqfzFJtCWWc=
+	t=1733838662; cv=none; b=QgYTyH/ba9TZzFOC4JoGSCOD7/xnswXl9hNm6wZ8Wubc7Y5UeuSW6WFB8skzwkX6ftO9Mjrd9+BG+SZX6jrVnOEac4TeZ2MooY9cvCjtYopd8QwOMu5mrJtLZE+cgHmIcsFjFvLUYRXRPlbxXuOrTxySrGTUlD6MGyO3Q55RND8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733837138; c=relaxed/simple;
-	bh=bi31w4C9P7/TJaW7cGQs0Y+Rs38Ld+aZeTlgD6CpGxM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RDVo2QCKBITvmOdi330JZs/scjlZTLQv8cuouy54UsUiKBQCwddlNOz1zw9gyNSeU6glb/d0jaAewKlKIbNcvReNxp0ykfN5iZFT42+ku7UrDJSBch1YdfHvdVkYJv0ml7aW4psU9xadtl4LtrlWss/yWaj4uTEbjrEXlZZ7zRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F6DqMCih; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733838662; c=relaxed/simple;
+	bh=ZXg1bGozVdzn4a1tzlvDLtBv4mWbQKIU/XP6jeBIDvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bqz6aH7Fn4JBy3lOvF+4aWs8EHGs+nskYxyR6U2Q23auIDb34LbTuzzllkxnULI1B6HBAbLYEaMtpz6eW4U8xTTF/zmEJt3l2ZgY3kKHsldKXRjPzK8Pggf0rpaZYKF+IpVj6V8bZ8Kt8Pyg/YqTZYXaBGI1OjFrxUVuhVrq09I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yf/VLn2I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F6DqMCih"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733837136; x=1765373136;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bi31w4C9P7/TJaW7cGQs0Y+Rs38Ld+aZeTlgD6CpGxM=;
-  b=F6DqMCihYYsIXCZEtafPyN5nrKvs2B5tJza257eVOM+MYMZXSFizvV0X
-   RL6xhtllGHSLmPdSnQOxHb9fQc1Mcn8dhl4uDce7aVynuaN80LVWcmhwT
-   +5VmBJKVXYvP2kfKRE/5NBdN2Z0L2r/p9gGt6GHesedLIIj1cO2pNsXaE
-   GtHP/BmbP/SXD1+TotkINPVaCuPcdu3rEG4UpQ4udw+o5Kqus2Bxq8JlQ
-   PzHaIRNTimZD9wRKTaQjoBVwG3tnojBdkObFZjmWfOhT56NHP7/RoXYJI
-   4qw8uFI8wVE/2Hm0kmnU8pF8Y7GA7kZxc5vvb/aRqrWoB9PGe0h116E+F
-   w==;
-X-CSE-ConnectionGUID: nQARR9UGSxKYGBbOmbk58g==
-X-CSE-MsgGUID: ebumhScYRH+QXlMT3o/mxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="37864755"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="37864755"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:25:34 -0800
-X-CSE-ConnectionGUID: xA0Vhk/WRHK7ZqrGa8LK6g==
-X-CSE-MsgGUID: IC4iE49KTOWRATKi0w7bCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="95750023"
-Received: from rthomas.sc.intel.com ([172.25.112.51])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:25:33 -0800
-From: Ramesh Thomas <ramesh.thomas@intel.com>
-To: alex.williamson@redhat.com,
-	jgg@ziepe.ca,
-	schnelle@linux.ibm.com,
-	gbayer@linux.ibm.com
-Cc: kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	ankita@nvidia.com,
-	yishaih@nvidia.com,
-	pasic@linux.ibm.com,
-	julianr@linux.ibm.com,
-	bpsegal@us.ibm.com,
-	ramesh.thomas@intel.com,
-	kevin.tian@intel.com,
-	cho@microsoft.com
-Subject: [PATCH v3 2/2] vfio/pci: Remove #ifdef iowrite64 and #ifdef ioread64
-Date: Tue, 10 Dec 2024 05:19:38 -0800
-Message-Id: <20241210131938.303500-3-ramesh.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241210131938.303500-1-ramesh.thomas@intel.com>
-References: <20241210131938.303500-1-ramesh.thomas@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yf/VLn2I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C58C4CED6;
+	Tue, 10 Dec 2024 13:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733838661;
+	bh=ZXg1bGozVdzn4a1tzlvDLtBv4mWbQKIU/XP6jeBIDvc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yf/VLn2IQhrXOEzbHiLZVrJssWuYF5wdEhW0xeWpZnpKA5ogq7bmRblmgPOoIPExb
+	 qDmFeAJsOhFmvg0N8uuL+IpFFeLdmUXKNtt3zQNIy5mHNEEXSYHX4BbLa6cxzh7SVM
+	 3Fj7X0jnC1pipSs1zsUOkP7Jd5r0jLEEEWudF1d+cH7SQwKvghPYc+4HEjGYEcxLC7
+	 TQ2GNtjGAnkN9RNJSFrEprr6Ri7FngS8zf38cVNimyVvSfa/GuCJZ2YleDRGEFoiGQ
+	 JUs7rG7AUMKGfPAIDS7ylefYJM5qU+wqsAWuURPi0BwNpx3MyzbEGtmMlYMWeSZ0e0
+	 nuu81ImImT/ng==
+Date: Tue, 10 Dec 2024 13:50:52 +0000
+From: Will Deacon <will@kernel.org>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, catalin.marinas@arm.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	pbonzini@redhat.com, vkuznets@redhat.com, rafael@kernel.org,
+	daniel.lezcano@linaro.org, peterz@infradead.org, arnd@arndb.de,
+	lenb@kernel.org, mark.rutland@arm.com, harisokn@amazon.com,
+	mtosatti@redhat.com, sudeep.holla@arm.com, cl@gentwo.org,
+	maz@kernel.org, misono.tomohiro@fujitsu.com, maobibo@loongson.cn,
+	zhenglifeng1@huawei.com, joao.m.martins@oracle.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v9 05/15] arm64: barrier: add support for
+ smp_cond_relaxed_timeout()
+Message-ID: <20241210135052.GB15607@willie-the-truck>
+References: <20241107190818.522639-1-ankur.a.arora@oracle.com>
+ <20241107190818.522639-6-ankur.a.arora@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107190818.522639-6-ankur.a.arora@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Remove the #ifdef iowrite64 and #ifdef ioread64 checks around calls to
-64 bit IO access. Since default implementations have been enabled, the
-checks are not required.
+On Thu, Nov 07, 2024 at 11:08:08AM -0800, Ankur Arora wrote:
+> Support a waited variant of polling on a conditional variable
+> via smp_cond_relaxed_timeout().
+> 
+> This uses the __cmpwait_relaxed() primitive to do the actual
+> waiting, when the wait can be guaranteed to not block forever
+> (in case there are no stores to the waited for cacheline.)
+> For this we depend on the availability of the event-stream.
+> 
+> For cases when the event-stream is unavailable, we fallback to
+> a spin-waited implementation which is identical to the generic
+> variant.
+> 
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> ---
+>  arch/arm64/include/asm/barrier.h | 54 ++++++++++++++++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/barrier.h b/arch/arm64/include/asm/barrier.h
+> index 1ca947d5c939..ab2515ecd6ca 100644
+> --- a/arch/arm64/include/asm/barrier.h
+> +++ b/arch/arm64/include/asm/barrier.h
+> @@ -216,6 +216,60 @@ do {									\
+>  	(typeof(*ptr))VAL;						\
+>  })
+>  
+> +#define __smp_cond_load_timeout_spin(ptr, cond_expr,			\
+> +				     time_expr_ns, time_limit_ns)	\
+> +({									\
+> +	typeof(ptr) __PTR = (ptr);					\
+> +	__unqual_scalar_typeof(*ptr) VAL;				\
+> +	unsigned int __count = 0;					\
+> +	for (;;) {							\
+> +		VAL = READ_ONCE(*__PTR);				\
+> +		if (cond_expr)						\
+> +			break;						\
+> +		cpu_relax();						\
+> +		if (__count++ < smp_cond_time_check_count)		\
+> +			continue;					\
+> +		if ((time_expr_ns) >= time_limit_ns)			\
+> +			break;						\
+> +		__count = 0;						\
+> +	}								\
+> +	(typeof(*ptr))VAL;						\
+> +})
 
-Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
----
- drivers/vfio/pci/vfio_pci_rdwr.c | 12 ------------
- 1 file changed, 12 deletions(-)
+This is a carbon-copy of the asm-generic timeout implementation. Please
+can you avoid duplicating that in the arch code?
 
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index a0595c745732..78a3d0809415 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -62,9 +62,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_iowrite##size);
- VFIO_IOWRITE(8)
- VFIO_IOWRITE(16)
- VFIO_IOWRITE(32)
--#ifdef iowrite64
- VFIO_IOWRITE(64)
--#endif
- 
- #define VFIO_IOREAD(size) \
- int vfio_pci_core_ioread##size(struct vfio_pci_core_device *vdev,	\
-@@ -90,9 +88,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_ioread##size);
- VFIO_IOREAD(8)
- VFIO_IOREAD(16)
- VFIO_IOREAD(32)
--#ifdef ioread64
- VFIO_IOREAD(64)
--#endif
- 
- #define VFIO_IORDWR(size)						\
- static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,\
-@@ -128,9 +124,7 @@ static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,\
- VFIO_IORDWR(8)
- VFIO_IORDWR(16)
- VFIO_IORDWR(32)
--#if defined(ioread64) && defined(iowrite64)
- VFIO_IORDWR(64)
--#endif
- 
- /*
-  * Read or write from an __iomem region (MMIO or I/O port) with an excluded
-@@ -156,7 +150,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 		else
- 			fillable = 0;
- 
--#if defined(ioread64) && defined(iowrite64)
- 		if (fillable >= 8 && !(off % 8)) {
- 			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
-@@ -164,7 +157,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 				return ret;
- 
- 		} else
--#endif
- 		if (fillable >= 4 && !(off % 4)) {
- 			ret = vfio_pci_iordwr32(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
-@@ -382,12 +374,10 @@ static void vfio_pci_ioeventfd_do_write(struct vfio_pci_ioeventfd *ioeventfd,
- 		vfio_pci_core_iowrite32(ioeventfd->vdev, test_mem,
- 					ioeventfd->data, ioeventfd->addr);
- 		break;
--#ifdef iowrite64
- 	case 8:
- 		vfio_pci_core_iowrite64(ioeventfd->vdev, test_mem,
- 					ioeventfd->data, ioeventfd->addr);
- 		break;
--#endif
- 	}
- }
- 
-@@ -441,10 +431,8 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
- 	      pos >= vdev->msix_offset + vdev->msix_size))
- 		return -EINVAL;
- 
--#ifndef iowrite64
- 	if (count == 8)
- 		return -EINVAL;
--#endif
- 
- 	ret = vfio_pci_core_setup_barmap(vdev, bar);
- 	if (ret)
--- 
-2.34.1
-
+Will
