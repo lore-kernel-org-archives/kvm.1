@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC561226173;
-	Tue, 10 Dec 2024 00:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAA9226195;
+	Tue, 10 Dec 2024 00:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733791729; cv=none; b=B9NuWPMWFQxkYljXxAg7GXsEgFed9H5UVmcQjdHsncP1NDFYoZaflnKJ0R2M1d3f7vu2BkV/yi6MM/2ZQ4yo7SRRml5kqvNTACKwN4jKxrwwwg9eXfSWv6ldHpxFpDHDJ8CNMrqAzuLZZvVK3A8feMVuEPo/b4pjrkUZZfpFLyY=
+	t=1733791732; cv=none; b=N88bfg8LeeEO5YkIX7seRKJmo+CU1DcedLh4sjJMRd1ISFuhcoQeI5BILkx2tCv5/5BL5AHdlaFXUpimGGpJel0RGrsNiwrIWOJ+fQAMJB8K1Rwqlr23/i0oFAjsYcsRckJXIkZfesvbs6RrLWRjaL0UVLWWp21JOjZHr7T1LPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733791729; c=relaxed/simple;
-	bh=30ltR/0kh3Q1IFeb8do8LGhyHFYvpma6JQxut931cHM=;
+	s=arc-20240116; t=1733791732; c=relaxed/simple;
+	bh=kfu6C0SYQzrE02TTUxcV+ExCr0Z5wpO62XbaFtIPi00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNP9YrKPrACmbERHqlzl+npK1eGAtXdRGivuYjNDAv241KXqwfImQcKPLJeQuaTyuxIJlca2MjOSQ0r/amo+v+XhIfvImop0OZvkxl+imLwebCyUZ4VebLdLwjkr9VxvH0IQdzmNZ0SiKHmoEd5Xj7b6KZt4kCABUuntP1+ZdzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJkb9PGb; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=B4C048g2zN9RsUWX3AdNYXuR5eTSQTioovgNKP9cXURoCRVkcRHarKi6g6hieuXJklXGnRRAOYR7hgq8GbvzP/WBpJHod17VSCFS1CaQB4dWzesf1mEtS4m7e0gumMwcxfUvZYJ1AwzC3jinzaMjUy6iYDjMibi7w3Ao7plR0Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZjcYahN; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJkb9PGb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZjcYahN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733791727; x=1765327727;
+  t=1733791731; x=1765327731;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=30ltR/0kh3Q1IFeb8do8LGhyHFYvpma6JQxut931cHM=;
-  b=NJkb9PGb2z0aADEDEX/N9hDm2+drtQZxnnRAWJT1N6yQqZud2ahaQE6i
-   3EypwwaQoWjdZeN3FCYQbjCopCksLJ6476/z8DiL3CnPkf8T9kvmsPuCS
-   wdebnpL2tX7bVbjXWNkYzAAFcoO033YmmBI9rO+C6NjRqwsNRHaid1bUJ
-   YoRv1SeHFbd19k780V10wPeTsukVqWriLhp0LOCKagQl/PqkRluiAXfLI
-   FO1FLTg40mwvJ/+JxqVQ5wFphphnECru1SN4jNXysMgASTTJqKSonmliD
-   Mh1UDhuLk7qdrmC+ATAZCH36UXOt+a+N1ob4v3xumFDvXxKH0VwkGKMRw
-   g==;
-X-CSE-ConnectionGUID: pOqak0gxTSKAPK30oQbGBQ==
-X-CSE-MsgGUID: CKFyqCL0QHykJjZ4Zxbg1Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44793790"
+  bh=kfu6C0SYQzrE02TTUxcV+ExCr0Z5wpO62XbaFtIPi00=;
+  b=lZjcYahNrDCYwem7KYxcjZoSbQ0UD1rje6B8xRqtemwVadQHGNTI2Wdc
+   K19WXy/GaKbL0G2C3/3R5nS/QrEnGfoAmFf9J724WVaHjTe9QnV1YKP/7
+   c+BFPA0J3rn37tZiMYyqM5dhucaYY24cUjoTCUC9KWvTAc7Kj9XED+kt1
+   QGMLDCiT8lmX0Slkc6MEuGzDCViXVG6aBVp3+bbg64bWZLi0YGqTHT8Vl
+   h5zZko8i3HugtGkafpfMnkNLUO4FzXCOzL2uJFBIbAcYef2AJsP7vs0z+
+   67ZLwymfjFSa6U69Fsvu7hJ1ctfjU/SZjL/2JTNAot9rw03irybkFj0Xa
+   w==;
+X-CSE-ConnectionGUID: IguIgon4QHGjOZAHjGBg5Q==
+X-CSE-MsgGUID: zdpRGAaBRq2Hs8HMZgf4pQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="44793795"
 X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; 
-   d="scan'208";a="44793790"
+   d="scan'208";a="44793795"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 16:48:47 -0800
-X-CSE-ConnectionGUID: /1tLC4jZT/a/fB9zOgZoWA==
-X-CSE-MsgGUID: QOUcOScUS0WS0kCZ7q501w==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 16:48:51 -0800
+X-CSE-ConnectionGUID: XJb69Tf9T1+UYNO2sQYqWg==
+X-CSE-MsgGUID: t1pYN42hTly3om0OgkVXaw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; 
-   d="scan'208";a="96033103"
+   d="scan'208";a="96033116"
 Received: from litbin-desktop.sh.intel.com ([10.239.156.93])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 16:48:43 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 16:48:47 -0800
 From: Binbin Wu <binbin.wu@linux.intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com,
@@ -58,9 +58,9 @@ Cc: rick.p.edgecombe@intel.com,
 	chao.gao@intel.com,
 	linux-kernel@vger.kernel.org,
 	binbin.wu@linux.intel.com
-Subject: [PATCH 16/18] KVM: TDX: Add a method to ignore hypercall patching
-Date: Tue, 10 Dec 2024 08:49:42 +0800
-Message-ID: <20241210004946.3718496-17-binbin.wu@linux.intel.com>
+Subject: [PATCH 17/18] KVM: TDX: Make TDX VM type supported
+Date: Tue, 10 Dec 2024 08:49:43 +0800
+Message-ID: <20241210004946.3718496-18-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20241210004946.3718496-1-binbin.wu@linux.intel.com>
 References: <20241210004946.3718496-1-binbin.wu@linux.intel.com>
@@ -74,58 +74,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Because guest TD memory is protected, VMM patching guest binary for
-hypercall instruction isn't possible.  Add a method to ignore hypercall
-patching.  Note: guest TD kernel needs to be modified to use
-TDG.VP.VMCALL for hypercall.
+Now all the necessary code for TDX is in place, it's ready to run TDX
+guest.  Advertise the VM type of KVM_X86_TDX_VM so that the user space
+VMM like QEMU can start to use it.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
 TDX "the rest" breakout:
-- Renamed from
-  "KVM: TDX: Add a method to ignore for TDX to ignore hypercall patch"
-  to "KVM: TDX: Add a method to ignore hypercall patching".
-- Dropped KVM_BUG_ON() in vt_patch_hypercall(). (Rick)
-- Remove "with a warning" from "Add a method to ignore hypercall
-  patching with a warning." in changelog to reflect code change.
+- Move down to the end of patch series.
 ---
- arch/x86/kvm/vmx/main.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 01ad3865d54f..81b9d2379a74 100644
+index 81b9d2379a74..d1f58f9552ea 100644
 --- a/arch/x86/kvm/vmx/main.c
 +++ b/arch/x86/kvm/vmx/main.c
-@@ -657,6 +657,19 @@ static u32 vt_get_interrupt_shadow(struct kvm_vcpu *vcpu)
- 	return vmx_get_interrupt_shadow(vcpu);
- }
+@@ -1060,6 +1060,7 @@ static int __init vt_init(void)
+ 				sizeof(struct vcpu_tdx));
+ 		vcpu_align = max_t(unsigned, vcpu_align,
+ 				__alignof__(struct vcpu_tdx));
++		kvm_caps.supported_vm_types |= BIT(KVM_X86_TDX_VM);
+ 	}
  
-+static void vt_patch_hypercall(struct kvm_vcpu *vcpu,
-+				  unsigned char *hypercall)
-+{
-+	/*
-+	 * Because guest memory is protected, guest can't be patched. TD kernel
-+	 * is modified to use TDG.VP.VMCALL for hypercall.
-+	 */
-+	if (is_td_vcpu(vcpu))
-+		return;
-+
-+	vmx_patch_hypercall(vcpu, hypercall);
-+}
-+
- static void vt_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
- {
- 	if (is_td_vcpu(vcpu))
-@@ -921,7 +934,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.update_emulated_instruction = vmx_update_emulated_instruction,
- 	.set_interrupt_shadow = vt_set_interrupt_shadow,
- 	.get_interrupt_shadow = vt_get_interrupt_shadow,
--	.patch_hypercall = vmx_patch_hypercall,
-+	.patch_hypercall = vt_patch_hypercall,
- 	.inject_irq = vt_inject_irq,
- 	.inject_nmi = vt_inject_nmi,
- 	.inject_exception = vt_inject_exception,
+ 	/*
 -- 
 2.46.0
 
