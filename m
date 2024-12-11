@@ -1,119 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CD81C304A;
-	Wed, 11 Dec 2024 22:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4E01A841F;
+	Wed, 11 Dec 2024 22:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733955609; cv=none; b=hLhP/vjTndfso2Xf3efgEI4kZFPcEV7MM467tRizoEbkaenisa9GdQgmvQyq0IORFqes/8ee/UAejThLiX4h2rhw4SShHtcjuEPd/NkWw/CFfgWTnYHt/J5/Q9w1tS/j46eYOXCe2oy93+eyCSkCV5iCw6KMwEAOV/FJiiZuHt8=
+	t=1733955804; cv=none; b=ilgxxUUot87e/ckhkicUc6LvwRiFYYEdUvcAdocpveyboHj//1SXyEsyyin4aqIdncBWw9vkLrNqhUyD8WQU1bZzVh1q3mt+qUP9aP/HV7xR1oIBx4FxVVShyLKIAwKYwFjm0JJueI4kBnhkSLXAbbZZBAXRyy4bm2MlwHpCkhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733955609; c=relaxed/simple;
-	bh=VLhIlSr54TL2QmDP8JRM72GWULbrO+1dbQF3pJw1ea8=;
+	s=arc-20240116; t=1733955804; c=relaxed/simple;
+	bh=FAHaJzqzxhNMZUVphM4CCAPbYqfD6DAlT1PbmpRowAs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=elv6m3HdSOdEICY/3aSSgbWXYNWERWVQvLHMz7jD+zQ5MPv52a+Ojl5HhSdtYC77lVZ9iESwHsvGc+MKnEAWdKjTCT3pPr5ThpQjkSNRYcPKX0UZGQkU0aRg9bEt5blGlf5OPECdYn7Ax1f0iOCkpbnZ9VWavFsACWBFOPOEfhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBNirnu6; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cgU6g5WqKbALueTdLtjh2pEql7etCc75OzV274sjJpM4PiEidujhTSLo8NzXrRF2f9vQOkHLjka+MWQsAk9yDBwwlgEqWMAxJpJIlyHqvbg5iOWMmkmpbtn0asMSBDGxmIG6eNR0pTwhCcjXK1aXNmAYb8i2+DXzXklV2izYZgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VgroUNht; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBNirnu6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4576FC4CED2;
-	Wed, 11 Dec 2024 22:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733955609;
-	bh=VLhIlSr54TL2QmDP8JRM72GWULbrO+1dbQF3pJw1ea8=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VgroUNht"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8CD2140E02BC;
+	Wed, 11 Dec 2024 22:23:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Za_wmwg4_34v; Wed, 11 Dec 2024 22:23:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1733955795; bh=Ew8nV/ChJV7CVLh5nxiJBga8I8SZyEPbO518A/BfRuA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kBNirnu6kCr1d7gsDMgZrNuAXLYpD8uzILmzzbrNO1Mnk09f4n481Cndxfrau3+jJ
-	 FpLkwRUeISCmz/SpemPgohhlQ3XgJzMdmIoVZ+IhBa91qhgYo51NaglvZU5BDtIZwB
-	 //WGIgbYueq/MY8+Vmm6UVkGftTY+5cuZd/vROmxV6NP1K5rtWTWqMiA7gXfNGL2rJ
-	 x8QxUc2OB1rxoUChWT6mPdO+zhCO+RaRL8TgtaiQ2BKywx4s0f0kj5Ngw6pkMs+dfE
-	 zgxHiHxwQbMNfdTxhMs7Xm5RVvG80KHa9zyTwAQzCJbyWkRaNGRYrBbAH41l/rU6DO
-	 Lf0Zf/ATio7bQ==
-Date: Wed, 11 Dec 2024 22:20:00 +0000
-From: Will Deacon <will@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
-	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, linux-mm@kvack.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v4 04/18] iommu: add kernel-doc for iommu_unmap and
- iommu_unmap_fast
-Message-ID: <20241211222000.GH17486@willie-the-truck>
-References: <cover.1733398913.git.leon@kernel.org>
- <da4827fda833e69dbe487ef404a9333c51d8ed2e.1733398913.git.leon@kernel.org>
+	b=VgroUNhtZd5joOyUMAT4CY3FiyX434MVYvhhDb2aj3y0CAM7oGobPhG3BqA5gcsKo
+	 4bwdr5vlq+Kxs7NxNTduteizrtOa0ZgO/GbvCuOudFrT1PrbQ08+IIh9KkB4iDsFps
+	 aE69hFYeLw6jdbyniGWm2pU8Zdc02NL55s4j6G3VqAMAwBH0Xf4dkAZVExhrCECNs0
+	 AAU7vwhXQaJplePBfGuNhSvzblH3amPeYAfJUsk/Q/wp/86jS3jTpXAeIAnh5zov2w
+	 hKMBue8UNvduT4NZoLu4omz/p0+y/qMYXAUtSOTDg7LDhGMSQqWN+Xpjo97eFJ9MxI
+	 /iywiRjeYTndDkqaZCK7/gmkusik4iCLCwKNtz5il/UOOKzF7xNP7BxQzhjp/gQbsY
+	 hhkM4AA1QEJyMbD70udJSpDh+ShunVYQRvlizcJIXQa0CgoTaLHA2PfcawFG+4ywrV
+	 6D7Y0elZu07io7zSaNgFuqgz93d8t75qKIsyLvhvCwWu7Csz2ftIj7um8YRtthiOZF
+	 H9Gv9ZYU56pyQcfh5sh0Mma+96WCOFdWVme/ZOMRaK1cGWQQc2TqD5doPyqHQdWoax
+	 OSiS9+xEV5jepO0vuy/BJjD7IC1XfXqt9F8Kk0+rxDqdXRvbQtbN3IcjOo3Xt90FNq
+	 BJo9UmngeTsd966DUcDQZZfg=
+Received: from zn.tnic (p200300Ea971F93ce329c23FffEA6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:93ce:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DAF6240E02B9;
+	Wed, 11 Dec 2024 22:23:03 +0000 (UTC)
+Date: Wed, 11 Dec 2024 23:22:57 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, mingo@redhat.com,
+	tglx@linutronix.de, dave.hansen@linux.intel.com, pgonda@google.com,
+	seanjc@google.com, pbonzini@redhat.com
+Subject: Re: [PATCH v15 04/13] x86/sev: Change TSC MSR behavior for Secure
+ TSC enabled guests
+Message-ID: <20241211222257.GKZ1oQwZcSXSMXPvoY@fat_crate.local>
+References: <20241203090045.942078-1-nikunj@amd.com>
+ <20241203090045.942078-5-nikunj@amd.com>
+ <20241209155718.GBZ1cTXp2XsgtvUzHm@fat_crate.local>
+ <0477b378-aa35-4a68-9ff6-308aada2e790@amd.com>
+ <15e82ca3-9166-cdb4-7d66-e1c6600919d7@amd.com>
+ <20241211190023.GGZ1nhR7YQWGysKeEW@fat_crate.local>
+ <984f8f36-8492-9278-81b3-f87b9b193597@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <da4827fda833e69dbe487ef404a9333c51d8ed2e.1733398913.git.leon@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <984f8f36-8492-9278-81b3-f87b9b193597@amd.com>
 
-On Thu, Dec 05, 2024 at 03:21:03PM +0200, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Add kernel-doc section for iommu_unmap and iommu_unmap_fast to document
-> existing limitation of underlying functions which can't split individual
-> ranges.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/iommu/iommu.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index ec75d14497bf..9eb7c7d7aa70 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -2590,6 +2590,24 @@ size_t iommu_unmap(struct iommu_domain *domain,
->  }
->  EXPORT_SYMBOL_GPL(iommu_unmap);
->  
-> +/**
-> + * iommu_unmap_fast() - Remove mappings from a range of IOVA without IOTLB sync
-> + * @domain: Domain to manipulate
-> + * @iova: IO virtual address to start
-> + * @size: Length of the range starting from @iova
-> + * @iotlb_gather: range information for a pending IOTLB flush
-> + *
-> + * iommu_unmap_fast() will remove a translation created by iommu_map(). It cannot
-> + * subdivide a mapping created by iommu_map(), so it should be called with IOVA
-> + * ranges that match what was passed to iommu_map(). The range can aggregate
-> + * contiguous iommu_map() calls so long as no individual range is split.
-> + *
-> + * Basicly iommu_unmap_fast() as the same as iommu_unmap() but for callers
+On Wed, Dec 11, 2024 at 04:01:31PM -0600, Tom Lendacky wrote:
+> It could be any reason... maybe the hypervisor wants to know when this
+> MSR used in order to tell the guest owner to update their code. Writing
+> to or reading from that MSR is not that common, so I would think we want
+> to keep the same behavior that has been in effect.
 
-Typo: s/Basicly/Basically/
-Typo: s/as the same/is the same/
+Ah, I thought you're gonna say something along the lines of, yeah, we must use
+the HV GHCB protocol because of <raisins> and there's no other way this could
+work.
 
-> + * which manage IOTLB flush range externaly to perform batched sync.
+> But if we do want to make this change, maybe do it separate from the
+> Secure TSC series since it alters the behavior of SEV-ES guests and
+> SEV-SNP guests without Secure TSC.
 
-Grammar: s/manage IOTLB flush range/manage the IOTLB flushing/
-Typo: s/externaly/externally/
-Grammar: s/to perform batched sync/to perform a batched sync/
+Already suggested so - this should be a separate patch.
 
-With those:
+It would be interesting to see if it brings any improvement by avoiding the HV
+call... especially since RDTSC is used a *lot* and prominently at that in
+sched_clock, for example.
 
-Acked-by: Will Deacon <will@kernel.org>
+-- 
+Regards/Gruss,
+    Boris.
 
-Thank you for doing this!
-
-Will
+https://people.kernel.org/tglx/notes-about-netiquette
