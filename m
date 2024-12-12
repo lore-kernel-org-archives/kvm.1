@@ -1,184 +1,155 @@
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33F86F2FE
-	for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 15:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB58223302
+	for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 15:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017957; cv=none; b=oDBgrw7X4x6ppb1DM5XuU1CI7itfVGSqBtHx9pdXBrKc32wea2ekxaNWCqxX/BTzLlr7V2wSTeW78H6xbGsTxKtZ3R1kIklruyKB1smoI2J/+TE3XvW/q6G3LIqHDXtvxVyH1HpfgBdeOWBYox362va4RA0f0B2vA43aXJr8EzI=
+	t=1734018133; cv=none; b=phgkAvyEhm4+dJr2EDfJiuU7Xs0reSt3f/AOdPcvD7QUM0RiXFHUI7puuZXny2y+SSoHoJydsV2ablfYqoQOl05BdKWziMLv53er7q1pwZwRz2j+yhsLgCKXuwOyCIds6Tkzvs8KIUFsLV8SokJCdSM6I3ETBAWgks+V3RCsZz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017957; c=relaxed/simple;
-	bh=YOOEBPTJZDrSeED6ji+So3Mj4MJWAInvl0Qni0IrTn0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f1wXlyAatGhEUbaLJ2usyCKy/w1dt+lOwRhSyCFs9AXyGYbkAS+ODa0Jl3h81er9w2SMGRtogI9yqH/gpLzaAE1+YVE2n3jwuxtWCp0xJtFXOJkVyqXzYElYxLAZ+km1Uj+0mAcIlBxoh9grEczns+fBHv7IUxbvm8r0ApBc9c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1tLkXB-00000003f6l-1DsD;
-	Thu, 12 Dec 2024 15:51:21 +0100
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>,
-	kvm@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH] target/i386: Reset TSCs of parked vCPUs too on VM reset
-Date: Thu, 12 Dec 2024 15:51:15 +0100
-Message-ID: <5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1734018133; c=relaxed/simple;
+	bh=fukLmqnaJraW/2v7q2qULQxlYWaXiBQWviatK4l3x20=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FqltWlD5G4f740gKqyFcAERO8gbw41Oe0nWG0B4aufqbGzntPIpntx1zbcSXXrOiK3IdvpFuTzGxYWstcXqqxKu/emah47lOBCmL3SZo4GX32W61S4Nsb0tOpiO2xuafmisQm2H9TCa37659Zrvl2va8EZG+eEyr5lIY+0uWuZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PPI5i7mW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PPI5i7mW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734018130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GwnYZoIOyRvAz2iL7Xc1JQqOWzhArnZy+3zS3Tov6v0=;
+	b=PPI5i7mWtwDAMdDL/cG61QBNSxlkpbDz/F2k5mlqlaS+S8GiqJQz4dTK28/xrJBfTrNHw1
+	PgB89BJVgxvc7DdELGW1PlLEqPNJl4FvDOxjH7ERLAkuuJsFhOxothyGsJnNZBSlWMtPbN
+	KQUgsD8qE2ccY1coF1oIaDTSNcBH4Xc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-JpfeG2suPtyQfJaLiCnr7g-1; Thu, 12 Dec 2024 10:42:07 -0500
+X-MC-Unique: JpfeG2suPtyQfJaLiCnr7g-1
+X-Mimecast-MFC-AGG-ID: JpfeG2suPtyQfJaLiCnr7g
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-434f3398326so9992455e9.0
+        for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 07:42:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734018126; x=1734622926;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GwnYZoIOyRvAz2iL7Xc1JQqOWzhArnZy+3zS3Tov6v0=;
+        b=nGsTJa6XbAIKoLiqT8b+8JhFzPmbCWPJM3eIwIeZmVt9y3ACvqUZPLyFA1K/Dc01Ui
+         LsW3aDqSoEGXGgiSlF9icbvI4CczEFwUlzmNzi+xv/Ath9jHSm4EC7trPa/PF7EonYul
+         K9w5GqAzCimuh4TtzNa4p80lgcMJiFUGfqMpSH+ZOn3ELYO9ZApnp42cd8Kz0lUquXbO
+         clDlkIDEoZ/KPCnkk2bwK1IJH1uXxkhTyQ+bweLjJBwldPF5yRRC8kmfMUohEQUH633K
+         raPg3r8wI5yjiRDe6FOIlDLK7S14k+FQ0vgAp7L/f4+mzUPGy67z0MLhu+Xgo6JYWodk
+         sNOQ==
+X-Gm-Message-State: AOJu0YyKKYIGwArqkBfQqpmP7m670vVhHDVZoKKABymrGgVM28GPG5GT
+	ibFJnSfO9GUd+uNtofVTsqfVJANpQKWvc+mucWQ7FBXRGhHIl25cEb1KbtoX0xg2R2FPyWl3IPn
+	F6UcaPXtIkNv2x7z1/tBQRSeXEHpNmdBaHaRMKqu3iIMsIv37UA==
+X-Gm-Gg: ASbGncsY8KQXXwtfU4ojoGEJloXQgwdpDDMcULiXgbHdCf2p0Vwn0psn/TL0SzZ2idT
+	EHagPzMPCrf0AMzYLc051Z86kYAGhiKv3pAX/EKXXucZxuLMSADCT7i3+pyF/b3CWPmXu+8//L1
+	MPIbJABYpW1ahWHqLgpZatEZpVFPMAeJ++w9hUOIeQSlMq4liDlZ3vgspDmN0MW4lKVZ5xNW/EB
+	E1/3qbBM1fZsGuJKvqoHk6fuSsyYXwVNhYvjusg4ZzppDZTkcaurDzsq+9a
+X-Received: by 2002:a05:6000:2cf:b0:386:4332:cc99 with SMTP id ffacd0b85a97d-387888069d8mr3157732f8f.17.1734018126222;
+        Thu, 12 Dec 2024 07:42:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHsodZpbrf8J7/oaYzyqOrF+t95qa3MPBpLVtsfTFotrDy5D819vIPk3Y7tmLvjrhTY14AivA==
+X-Received: by 2002:a05:6000:2cf:b0:386:4332:cc99 with SMTP id ffacd0b85a97d-387888069d8mr3157708f8f.17.1734018125894;
+        Thu, 12 Dec 2024 07:42:05 -0800 (PST)
+Received: from [192.168.10.27] ([151.81.118.45])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3878248e61dsm4325250f8f.21.2024.12.12.07.42.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Dec 2024 07:42:05 -0800 (PST)
+Message-ID: <3b440ac3-391d-493b-9384-218bd61d7e67@redhat.com>
+Date: Thu, 12 Dec 2024 16:42:02 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: mhej@vps-ovh.mhejs.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/6] KVM: x86: Refactor __kvm_emulate_hypercall() into
+ a macro
+To: Adrian Hunter <adrian.hunter@intel.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Tom Lendacky <thomas.lendacky@amd.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
+ Kai Huang <kai.huang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20241128004344.4072099-1-seanjc@google.com>
+ <20241128004344.4072099-7-seanjc@google.com>
+ <90577aad-552a-4cf8-a4a3-a4efcf997455@intel.com>
+ <6423ec9d-46a2-43a3-ae9a-8e074337cd84@redhat.com>
+ <Z1ier7QAy9qj7x4V@google.com>
+ <0751a7b8-f8d3-4e27-b710-0a2bd7d06f7e@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <0751a7b8-f8d3-4e27-b710-0a2bd7d06f7e@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On 12/12/24 08:32, Adrian Hunter wrote:
+> On 10/12/24 22:03, Sean Christopherson wrote:
+>> What I do deeply care about though is consistency within KVM, across vendors and
+>> VM flavors.  And that means that guest registers absolutely need to be captured in
+>> vcpu->arch.regs[].
+> 
+> In general, TDX host VMM does not know what guest register
+> values are.
+> 
+> This case, where some GPRs are passed to the host VMM via
+> arguments of the TDG.VP.VMCALL TDCALL, is really just a
+> side effect of the choice of argument passing rather than
+> any attempt to share guest registers with the host VMM.
+> 
+> It could be regarded as more consistent to never use
+> vcpu->arch.regs[] for confidential guests.
 
-Since commit 5286c3662294 ("target/i386: properly reset TSC on reset")
-QEMU writes the special value of "1" to each online vCPU TSC on VM reset
-to reset it.
+Yes, that's where I stand as well.  There's reasons to use 
+vcpu->arch.regs[] when "decrypted" values are available, and reasons to 
+not use it at all.  Both of them could be considered the more consistent 
+choice, and I think I prefer slightly the latter, but it's definitely 
+not a hill to die on...
 
-However parked vCPUs don't get that handling and due to that their TSCs
-get desynchronized when the VM gets reset.
-This in turn causes KVM to turn off PVCLOCK_TSC_STABLE_BIT in its exported
-PV clock.
-Note that KVM has no understanding of vCPU being currently parked.
+Paolo
 
-Without PVCLOCK_TSC_STABLE_BIT the sched clock is marked unstable in
-the guest's kvm_sched_clock_init().
-This causes a performance regressions to show in some tests.
-
-Fix this issue by writing the special value of "1" also to TSCs of parked
-vCPUs on VM reset.
-
-
-Reproducing the issue:
-1) Boot a VM with "-smp 2,maxcpus=3" or similar
-
-2) device_add host-x86_64-cpu,id=vcpu,node-id=0,socket-id=0,core-id=2,thread-id=0
-
-3) Wait a few seconds
-
-4) device_del vcpu
-
-5) Inside the VM run:
-# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
-Observe the sched_clock_stable() value is 1.
-
-6) Reboot the VM
-
-7) Once the VM boots once again run inside it:
-# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
-Observe the sched_clock_stable() value is now 0.
-
-
-Fixes: 5286c3662294 ("target/i386: properly reset TSC on reset")
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- accel/kvm/kvm-all.c                | 11 +++++++++++
- configs/targets/i386-softmmu.mak   |  1 +
- configs/targets/x86_64-softmmu.mak |  1 +
- include/sysemu/kvm.h               |  8 ++++++++
- target/i386/kvm/kvm.c              | 15 +++++++++++++++
- 5 files changed, 36 insertions(+)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 801cff16a5a2..dec1d1c16a0d 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -437,6 +437,16 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
-     return kvm_fd;
- }
- 
-+static void kvm_reset_parked_vcpus(void *param)
-+{
-+    KVMState *s = param;
-+    struct KVMParkedVcpu *cpu;
-+
-+    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
-+        kvm_arch_reset_parked_vcpu(cpu->vcpu_id, cpu->kvm_fd);
-+    }
-+}
-+
- int kvm_create_vcpu(CPUState *cpu)
- {
-     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
-@@ -2728,6 +2738,7 @@ static int kvm_init(MachineState *ms)
-     }
- 
-     qemu_register_reset(kvm_unpoison_all, NULL);
-+    qemu_register_reset(kvm_reset_parked_vcpus, s);
- 
-     if (s->kernel_irqchip_allowed) {
-         kvm_irqchip_create(s);
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 2ac69d5ba370..2eb0e8625005 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
-+TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index e12ac3dc59bf..920e9a42006f 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
-+TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c3a60b28909a..ab17c09a551f 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -377,6 +377,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
- 
-+#ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
-+void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd);
-+#else
-+static inline void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
-+{
-+}
-+#endif
-+
- bool kvm_vcpu_id_is_valid(int vcpu_id);
- 
- /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 8e17942c3ba1..2ff618fbf138 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2415,6 +2415,21 @@ void kvm_arch_after_reset_vcpu(X86CPU *cpu)
-     }
- }
- 
-+void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
-+{
-+    g_autofree struct kvm_msrs *msrs = NULL;
-+
-+    msrs = g_malloc0(sizeof(*msrs) + sizeof(msrs->entries[0]));
-+    msrs->entries[0].index = MSR_IA32_TSC;
-+    msrs->entries[0].data = 1; /* match the value in x86_cpu_reset() */
-+    msrs->nmsrs++;
-+
-+    if (ioctl(kvm_fd, KVM_SET_MSRS, msrs) != 1) {
-+        warn_report("parked vCPU %lu TSC reset failed: %d",
-+                    vcpu_id, errno);
-+    }
-+}
-+
- void kvm_arch_do_init_vcpu(X86CPU *cpu)
- {
-     CPUX86State *env = &cpu->env;
