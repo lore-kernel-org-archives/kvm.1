@@ -1,110 +1,238 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555F92210DF;
-	Thu, 12 Dec 2024 15:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF0E229679
+	for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 16:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019164; cv=none; b=Pqw2mBZqnk57sNil3BfNCx0wPcqycDN/C9w3BPWnf2yIll8Cfb/M/F7gJT6nu8O2kHSGNkkRVrn2AUq83GOBbOwlj4RgF1pfs43ZXVnPZ/zLMaZM7G3U1IW6qX7ae0L2XpQ5LJt/I78CS4dgaiGqDx9nLreIN32SyEJeCXtcTtg=
+	t=1734019248; cv=none; b=EPk8tKzYwn88l/lrQ2sMk01/nJaq/7bx9yCh2dHoqAz8OcOv9A9K0LnqkTwJFQuzZfoYB48PQz4MSIzgU/swvS3rdrjR5LA7WRaImphvrAUdCGt84qYz8xR7cYGBJEBuL8+xqk1MedA0zaySZzzYi+sv+xFIhJ416BLtr6Xee4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019164; c=relaxed/simple;
-	bh=htyA68FieJOP69TX3kYzNwjqycLAUVfrP3PNbCaBpUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubhF44uIa9U0TOBamUr8OAjkoUH/qJ7p0zo5ApFkPMzupbrVYtEK8/E+zrJTe46pTFOasGgLWyUlw0UeT7iBA5VRozGXu1TuObVBbWMxuD8QIcmPp43+/Vxv7tflP4ATR08IpE9/q5KaaUsQdkZyUMLkPCCKHYyjlv9vm2GLFRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDDFE176C;
-	Thu, 12 Dec 2024 07:59:50 -0800 (PST)
-Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.39.50])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EDF03F720;
-	Thu, 12 Dec 2024 07:59:19 -0800 (PST)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: [PATCH v6 43/43] KVM: arm64: Allow activating realms
-Date: Thu, 12 Dec 2024 15:56:08 +0000
-Message-ID: <20241212155610.76522-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241212155610.76522-1-steven.price@arm.com>
-References: <20241212155610.76522-1-steven.price@arm.com>
+	s=arc-20240116; t=1734019248; c=relaxed/simple;
+	bh=spXPe6J+hAd1xcstIc+wLBGw0T0Z4b3dnrQPIqfwW34=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sfZcJ2xUSrEp0X0zaXmtURZiNX4Als6pbbe2NxA9UyTNHtb6gi/LzlMn/eOL7j2sDrOG0d/RnbCEu5bp7ncLtZDHN7j1qZcFx4K2xgB0UiJqkg4+qoApqE3BBQNaAMzp08wS3f75vse8eB4c0pCpXUOS9xEIDOxYlU+AsxuaVwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QKxkH+Mk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QKxkH+Mk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734019245;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1xUt3njQqKB3GxrQmc7u8qp2nc5B6UvBhDcKxZw3dI=;
+	b=QKxkH+Mk27jzP6YrLOgxa72W0xWHnYQOKbas3pEDmFvJgHBX3Hr2p9H+qZzZ4Y6ce5UBfj
+	ruzww3/jabEWoCdD8ueIGZHv7mRBDbojjiSJE8yNQxZLWcRyjyEwlRaGhVxbxzI4iCrpRu
+	AWExT9AmJoWoz0Q/u4p080Hn+tqR+34=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-SWZT7hJuPKy8NSsJFyKh3Q-1; Thu, 12 Dec 2024 11:00:43 -0500
+X-MC-Unique: SWZT7hJuPKy8NSsJFyKh3Q-1
+X-Mimecast-MFC-AGG-ID: SWZT7hJuPKy8NSsJFyKh3Q
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436289a570eso2300295e9.0
+        for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 08:00:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734019242; x=1734624042;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L1xUt3njQqKB3GxrQmc7u8qp2nc5B6UvBhDcKxZw3dI=;
+        b=inItm6VRfdM2xodiIRZ3j338JpcNI6ypUFEr1tIZ59ByhlzCfn/sSRf8QFFvMvjgrB
+         fOtcYwr3G7v5wyiKPor/eOe9rwidsrB92mEhy+bS62AGzOlCGEXiJzuoIxXq0HzTcf5e
+         LfOkOouEv5Os/XapCwvlvo4ZoB8I8ZE0F48blKEIdFkHPu1g6I8/Cv/x3fAj3nwtiNYt
+         d7LJJAIx3mLbFG3rCPDDQYQ7f7bjIgZySnybsnZoL42dmZUcS2676vEcPYlLYDSFUdR3
+         G5T1x1BBP9UOJfIQ7C8Rb5PDMoPbejbKtRgEl3eOfG0MOzckrcevqGAeWDTAG5S80AxQ
+         T7oA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXshLhY7zZCTW7MpoStUU0nBc2Jt5GxGxIgTEargmXsY0pgX+xrYrpI7T4/GCz7GoWoh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8NC3ROe7A70I9GQSjma+5FwwxBZA8o3LZV4poMVnJbFlJ1dIU
+	JhZKurNUnn2ghCbIxsDkDQPU+8TIXAGzzYglleeGtIpPj1BxrPugO8RCQQwP0bcoKBhkBtKWm+o
+	PxZlDZKZYS5cq90LT3EXqxSKbBEo1Z8ByWnaZonSB2KS5b6zs6w==
+X-Gm-Gg: ASbGnctsaFXYGc/w700qUgRp0oPLcesZCc2CTB6ZDYqSNJUz3eTL2f9/2qlbCFxMBn3
+	ZYC/dNqolRrmvi+MbuJUsRc24ezKxPnIDIj4THGU9euCKvyEo5x9I4YBP8Qj0FygGsps4EckZcB
+	ZuiaLgxMB9HUL+bvC3fCNpRNR6THjvDsxc7omoJpvq8Ur2D1eV8PcH4kMWSswTVr5PnctGen+KL
+	1YRx+BczjV3GMzOUbUfZPQ4wiEwyBxO5qq30bcCkXEDdQOD/LtCyS0UKlbNYuasgbZZjvK+018t
+	yT5749UNdlYGds9zPs1snKOOy6oR
+X-Received: by 2002:a05:600c:35c9:b0:434:a734:d279 with SMTP id 5b1f17b1804b1-4361c3c6fbfmr77212635e9.16.1734019242397;
+        Thu, 12 Dec 2024 08:00:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7u0oYx1r7VH0iNnzyx8lXhphV11Pdrlgtw2BV0y+oru5OMlvI5mJMkYXy9VHum2h0WgePHA==
+X-Received: by 2002:a05:600c:35c9:b0:434:a734:d279 with SMTP id 5b1f17b1804b1-4361c3c6fbfmr77207515e9.16.1734019239178;
+        Thu, 12 Dec 2024 08:00:39 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559ec46sm20705235e9.20.2024.12.12.08.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 08:00:37 -0800 (PST)
+Date: Thu, 12 Dec 2024 17:00:34 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] target/i386: Reset TSCs of parked vCPUs too on VM reset
+Message-ID: <20241212170034.081aa98f@imammedo.users.ipa.redhat.com>
+In-Reply-To: <5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com>
+References: <5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+On Thu, 12 Dec 2024 15:51:15 +0100
+"Maciej S. Szmigiero" <mail@maciej.szmigiero.name> wrote:
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> 
+> Since commit 5286c3662294 ("target/i386: properly reset TSC on reset")
+> QEMU writes the special value of "1" to each online vCPU TSC on VM reset
+> to reset it.
+> 
+> However parked vCPUs don't get that handling and due to that their TSCs
+> get desynchronized when the VM gets reset.
+> This in turn causes KVM to turn off PVCLOCK_TSC_STABLE_BIT in its exported
+> PV clock.
+> Note that KVM has no understanding of vCPU being currently parked.
+> 
+> Without PVCLOCK_TSC_STABLE_BIT the sched clock is marked unstable in
+> the guest's kvm_sched_clock_init().
+> This causes a performance regressions to show in some tests.
+> 
+> Fix this issue by writing the special value of "1" also to TSCs of parked
+> vCPUs on VM reset.
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 3116ecee37a8..39d056e5c5b2 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1147,6 +1147,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(realm, addr, end);
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1296,6 +1310,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1567,5 +1584,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
--- 
-2.43.0
+does TSC still ticks when vCPU is parked or it is paused at some value?
+
+> 
+> 
+> Reproducing the issue:
+> 1) Boot a VM with "-smp 2,maxcpus=3" or similar
+> 
+> 2) device_add host-x86_64-cpu,id=vcpu,node-id=0,socket-id=0,core-id=2,thread-id=0
+> 
+> 3) Wait a few seconds
+> 
+> 4) device_del vcpu
+> 
+> 5) Inside the VM run:
+> # echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+> Observe the sched_clock_stable() value is 1.
+> 
+> 6) Reboot the VM
+> 
+> 7) Once the VM boots once again run inside it:
+> # echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+> Observe the sched_clock_stable() value is now 0.
+> 
+> 
+> Fixes: 5286c3662294 ("target/i386: properly reset TSC on reset")
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> ---
+>  accel/kvm/kvm-all.c                | 11 +++++++++++
+>  configs/targets/i386-softmmu.mak   |  1 +
+>  configs/targets/x86_64-softmmu.mak |  1 +
+>  include/sysemu/kvm.h               |  8 ++++++++
+>  target/i386/kvm/kvm.c              | 15 +++++++++++++++
+>  5 files changed, 36 insertions(+)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 801cff16a5a2..dec1d1c16a0d 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -437,6 +437,16 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
+>      return kvm_fd;
+>  }
+>  
+> +static void kvm_reset_parked_vcpus(void *param)
+> +{
+> +    KVMState *s = param;
+> +    struct KVMParkedVcpu *cpu;
+> +
+> +    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
+> +        kvm_arch_reset_parked_vcpu(cpu->vcpu_id, cpu->kvm_fd);
+> +    }
+> +}
+> +
+>  int kvm_create_vcpu(CPUState *cpu)
+>  {
+>      unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+> @@ -2728,6 +2738,7 @@ static int kvm_init(MachineState *ms)
+>      }
+>  
+>      qemu_register_reset(kvm_unpoison_all, NULL);
+> +    qemu_register_reset(kvm_reset_parked_vcpus, s);
+>  
+>      if (s->kernel_irqchip_allowed) {
+>          kvm_irqchip_create(s);
+> diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
+> index 2ac69d5ba370..2eb0e8625005 100644
+> --- a/configs/targets/i386-softmmu.mak
+> +++ b/configs/targets/i386-softmmu.mak
+> @@ -1,4 +1,5 @@
+>  TARGET_ARCH=i386
+>  TARGET_SUPPORTS_MTTCG=y
+>  TARGET_KVM_HAVE_GUEST_DEBUG=y
+> +TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+>  TARGET_XML_FILES= gdb-xml/i386-32bit.xml
+> diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
+> index e12ac3dc59bf..920e9a42006f 100644
+> --- a/configs/targets/x86_64-softmmu.mak
+> +++ b/configs/targets/x86_64-softmmu.mak
+> @@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
+>  TARGET_BASE_ARCH=i386
+>  TARGET_SUPPORTS_MTTCG=y
+>  TARGET_KVM_HAVE_GUEST_DEBUG=y
+> +TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+>  TARGET_XML_FILES= gdb-xml/i386-64bit.xml
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index c3a60b28909a..ab17c09a551f 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -377,6 +377,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s);
+>  int kvm_arch_init_vcpu(CPUState *cpu);
+>  int kvm_arch_destroy_vcpu(CPUState *cpu);
+>  
+> +#ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
+> +void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd);
+> +#else
+> +static inline void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
+> +{
+> +}
+> +#endif
+> +
+>  bool kvm_vcpu_id_is_valid(int vcpu_id);
+>  
+>  /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 8e17942c3ba1..2ff618fbf138 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2415,6 +2415,21 @@ void kvm_arch_after_reset_vcpu(X86CPU *cpu)
+>      }
+>  }
+>  
+> +void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
+> +{
+> +    g_autofree struct kvm_msrs *msrs = NULL;
+> +
+> +    msrs = g_malloc0(sizeof(*msrs) + sizeof(msrs->entries[0]));
+> +    msrs->entries[0].index = MSR_IA32_TSC;
+> +    msrs->entries[0].data = 1; /* match the value in x86_cpu_reset() */
+> +    msrs->nmsrs++;
+> +
+> +    if (ioctl(kvm_fd, KVM_SET_MSRS, msrs) != 1) {
+> +        warn_report("parked vCPU %lu TSC reset failed: %d",
+> +                    vcpu_id, errno);
+> +    }
+> +}
+> +
+>  void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>  {
+>      CPUX86State *env = &cpu->env;
+> 
 
