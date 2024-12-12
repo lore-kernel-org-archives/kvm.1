@@ -1,80 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B4E223C79
-	for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 15:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8002F23693D;
+	Thu, 12 Dec 2024 15:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019083; cv=none; b=p30+jXfBIlwxlKQfG99KgwHvVcF8CIwC8ipssNTPyeBCnK7SLpJBHK9pRvVoJzUWJ3cc4o5qliqzJa3D0iYVJ1weS30LxmLftnYHoIX4aFaSfXxh1yCHxevQTLfyexFPD/HsmhGyrCtkPsT+hr/jdn+irBaMYUYRcu0AocbrHtQ=
+	t=1734019084; cv=none; b=IPQmQO1D1WxYAbKf+v/V9G2LaaF5+kpNKLrugid7sFCVPdRFWHpNYfnh/2v/gsuglxR+05+CYSTcK2hJM9SCc7oDMYUEvR/I3PWsdH1vCXY9Y8umIQ94gJOR4DOnbwOh3ETRzD9e8bdZrUVxzuukFrCOQpB9yxFc4a1U8iTpzDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019083; c=relaxed/simple;
-	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	s=arc-20240116; t=1734019084; c=relaxed/simple;
+	bh=t+d12CUf7uYi4jHxGnyA+s0DkxdV8jOZ3LR1A48RKzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMR9wX0qL4GfgJ3clMfAxZH3gT64a6OYXvV1DFfQ9E2zLpqtnREXyscMpCjaC0jy1dOJIdwgeEl9QL0Y/rlQ9/Me9GAcLIPUDm0a71eT90tYXKYn7JVesa/KsvjYo+UpiMQ4cXmRMjMvDhYq5v+IDyOGkIquQxpjKQujwIANbUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ChNQwghG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ChNQwghG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734019079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
-	b=ChNQwghGMmOxvOhnVcBeMl7HUhKJG+JaWggEymmf3/tVwgZx+/bTIORRTo1CsUHHji4zDW
-	USmR3eVKuBehvilJ1eTvm6HyK09nIMm27jDSA3Bqq091rCCfKBNoffdAPmcMn4Rd5egc8F
-	4mTTK5P65qBrhSsMMssfDQfJdf9K3ik=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-MqRagtswOuy-PPfTnblRUg-1; Thu, 12 Dec 2024 10:57:58 -0500
-X-MC-Unique: MqRagtswOuy-PPfTnblRUg-1
-X-Mimecast-MFC-AGG-ID: MqRagtswOuy-PPfTnblRUg
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385dcadffebso375318f8f.0
-        for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 07:57:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734019077; x=1734623877;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
-        b=Ofnoe9omofwAo8IAGX+3873laORZyGN01BohCq2jJ3CSE0qvHX03pUyaipHKmPt2rG
-         LBTuFvGcS0yVTvMqPziUO8JuZZ6etwa9WOU7XN2DxECawjUpmatEklqbPh6kDJWRDjLc
-         pJqsWb7IkfimyHD+Cw9Yd3nivagttnkBbFj5aUKSwYj6Y2Na1Lq/kMa6LBVuWoCIak5G
-         P/NaHO7bYh9jodHY3qB19nJa//5X/mHs2LYG1iwVuqPTqcSuaqBhBMZkHmmo8yOoxFze
-         mHzRdRuw9rIq9tul+ER0wgxiea+00OzrtFIDnlXqcRWhFPXLHIepVxy7HFYGRXhazPRf
-         cYCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUduNSKLIqoAc/1HfDtJk2eeukp5Xk4y+goc76tsxWmW5Kyu+9GOLzCScBqSZzQy7sK+Po=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJXAOSd7vQQ8KmJ5OQiZcidbsxJD7l9IBDrI80IyCfXgJKVOPM
-	jLmReN+Lz6C4cbwE3aEje3lV3IAdaLnmABYrfAzSzpkaz9WuODCfreWkaBAnsS4SI9ASmkr9Rux
-	goGDx5SdMLVfWIBwSmRKmZI3VUvKliZ4iboGzi+w2Gol7fSRQkQ==
-X-Gm-Gg: ASbGnct15Ls4L3QnSLmHMQY5mH1abJUgwdFLppajrr2a5w1EkT292u6X30kd+hTCLJW
-	+/B2JQ2nXG2TggtU7aGJhzF0RIA9PhmP4F+lOrML0lUEipN6JP29oAyCrVvFwXVgLxVwDLRWTCx
-	vVxc8OtSmfpG4KixSVfVhoKK4BDRBdycYhXfb2usUe+/oivrTYpHiwMaPJnyumjtzIvtGiQxx3x
-	0KAeWLDcL1r+WTZDkXfhOI9uBv4N6iaVHB7hy20pRIBTFGwt6bMOhKbukSq
-X-Received: by 2002:a05:6000:4013:b0:386:3e3c:ef1 with SMTP id ffacd0b85a97d-3864cea4553mr6574617f8f.35.1734019077126;
-        Thu, 12 Dec 2024 07:57:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFR83C5MMeDF8fnzp4KAbDZ9IwQ9YCimFBYLAP7JHpn0+TXjU2U2saynfWppJ2/nv7QP+Warw==
-X-Received: by 2002:a05:6000:4013:b0:386:3e3c:ef1 with SMTP id ffacd0b85a97d-3864cea4553mr6574608f8f.35.1734019076832;
-        Thu, 12 Dec 2024 07:57:56 -0800 (PST)
-Received: from [192.168.10.47] ([151.81.118.45])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878251dee1sm4340989f8f.102.2024.12.12.07.57.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 07:57:56 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	kvm@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: Re: [PATCH] target/i386: Reset TSCs of parked vCPUs too on VM reset
-Date: Thu, 12 Dec 2024 16:57:55 +0100
-Message-ID: <20241212155755.524767-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com>
-References: 
+	 MIME-Version; b=o+ydp9Cvkk+osc4nxJgsWdy+YY9YGffoKThvmLo7qsoh70AK9cnTUtEQZ9PUHvpp82CvmHFNHPR0f4+I0YT/A7cXwQwWnta5cWhety+qdBahP5EXFHihZ1nNKI9OujPK1nMn057zRlV6qUAw0xu8c8h1J68Jqnv0Ob4GppGSw1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E71811762;
+	Thu, 12 Dec 2024 07:58:29 -0800 (PST)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.39.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 90CDB3F720;
+	Thu, 12 Dec 2024 07:57:58 -0800 (PST)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: [PATCH v6 22/43] KVM: arm64: Validate register access for a Realm VM
+Date: Thu, 12 Dec 2024 15:55:47 +0000
+Message-ID: <20241212155610.76522-23-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241212155610.76522-1-steven.price@arm.com>
+References: <20241212155610.76522-1-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,7 +55,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Queued, thanks.
+The RMM only allows setting the GPRS (x0-x30) and PC for a realm
+guest. Check this in kvm_arm_set_reg() so that the VMM can receive a
+suitable error return if other registers are accessed.
 
-Paolo
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+Changes since v5:
+ * Upper GPRS can be set as part of a HOST_CALL return, so fix up the
+   test to allow them.
+---
+ arch/arm64/kvm/guest.c | 43 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+index 12dad841f2a5..1ee2fe072f1a 100644
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -73,6 +73,24 @@ static u64 core_reg_offset_from_id(u64 id)
+ 	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
+ }
+ 
++static bool kvm_realm_validate_core_reg(u64 off)
++{
++	/*
++	 * Note that GPRs can only sometimes be controlled by the VMM.
++	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
++	 * from the REC).
++	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
++	 * For emulated MMIO X0 is always used.
++	 */
++	switch (off) {
++	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
++	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
++	case KVM_REG_ARM_CORE_REG(regs.pc):
++		return true;
++	}
++	return false;
++}
++
+ static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+ {
+ 	int size;
+@@ -115,6 +133,9 @@ static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+ 	if (vcpu_has_sve(vcpu) && core_reg_offset_is_vreg(off))
+ 		return -EINVAL;
+ 
++	if (kvm_is_realm(vcpu->kvm) && !kvm_realm_validate_core_reg(off))
++		return -EPERM;
++
+ 	return size;
+ }
+ 
+@@ -783,12 +804,34 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+ 	return kvm_arm_sys_reg_get_reg(vcpu, reg);
+ }
+ 
++/*
++ * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
++ * that are available depends on the Realm state and the reason for the last
++ * exit.  All other registers are reset to architectural or otherwise defined
++ * reset values by the RMM, except for a few configuration fields that
++ * correspond to Realm parameters.
++ */
++static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
++				   const struct kvm_one_reg *reg)
++{
++	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
++		u64 off = core_reg_offset_from_id(reg->id);
++
++		return kvm_realm_validate_core_reg(off);
++	}
++
++	return false;
++}
++
+ int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+ {
+ 	/* We currently use nothing arch-specific in upper 32 bits */
+ 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
+ 		return -EINVAL;
+ 
++	if (kvm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
++		return -EINVAL;
++
+ 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
+ 	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
+ 	case KVM_REG_ARM_FW:
+-- 
+2.43.0
 
