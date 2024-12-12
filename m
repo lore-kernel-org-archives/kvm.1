@@ -1,52 +1,80 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3856235C3E;
-	Thu, 12 Dec 2024 15:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B4E223C79
+	for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 15:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019080; cv=none; b=XUo35S/+V2BhoN/ZKiUMd62LjOVU/9oZyqsrmgCThoolQNREIaVKoyLjH3LVevtTcHRZAvwx99ZP10mcL4EAJQIy4fl6nypl7Ba93yXRaB+VJ301MOBds1XvLFzyDZYfW5ot4ddg+V9Dr1p1J2rRuNbq671lbSG6ZCClewjMCk4=
+	t=1734019083; cv=none; b=p30+jXfBIlwxlKQfG99KgwHvVcF8CIwC8ipssNTPyeBCnK7SLpJBHK9pRvVoJzUWJ3cc4o5qliqzJa3D0iYVJ1weS30LxmLftnYHoIX4aFaSfXxh1yCHxevQTLfyexFPD/HsmhGyrCtkPsT+hr/jdn+irBaMYUYRcu0AocbrHtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019080; c=relaxed/simple;
-	bh=DZeF1e4TT84SeI4r/JOhbgWIZisZcHOZ18nfdK9uGtQ=;
+	s=arc-20240116; t=1734019083; c=relaxed/simple;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dfmuw82Uyuj33U6lLES5WgwlTSSHEap4AhJ4+9D4v0+xvkkJllR+rgYCisKirSyZXWR6GSa+SkkWyS1edHk0MapNCm+1vkE1Y9/D98vhI7hHun1E+Sjd3ljf8EqCL53ikQL3TqulM/yx5WTaGlc6RnRJdCn8UeFysvq/CHbaz2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 589391762;
-	Thu, 12 Dec 2024 07:58:26 -0800 (PST)
-Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.39.50])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0953F3F720;
-	Thu, 12 Dec 2024 07:57:54 -0800 (PST)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: [PATCH v6 21/43] KVM: arm64: Handle realm VCPU load
-Date: Thu, 12 Dec 2024 15:55:46 +0000
-Message-ID: <20241212155610.76522-22-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241212155610.76522-1-steven.price@arm.com>
-References: <20241212155610.76522-1-steven.price@arm.com>
+	 MIME-Version; b=JMR9wX0qL4GfgJ3clMfAxZH3gT64a6OYXvV1DFfQ9E2zLpqtnREXyscMpCjaC0jy1dOJIdwgeEl9QL0Y/rlQ9/Me9GAcLIPUDm0a71eT90tYXKYn7JVesa/KsvjYo+UpiMQ4cXmRMjMvDhYq5v+IDyOGkIquQxpjKQujwIANbUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ChNQwghG; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ChNQwghG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734019079;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	b=ChNQwghGMmOxvOhnVcBeMl7HUhKJG+JaWggEymmf3/tVwgZx+/bTIORRTo1CsUHHji4zDW
+	USmR3eVKuBehvilJ1eTvm6HyK09nIMm27jDSA3Bqq091rCCfKBNoffdAPmcMn4Rd5egc8F
+	4mTTK5P65qBrhSsMMssfDQfJdf9K3ik=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-91-MqRagtswOuy-PPfTnblRUg-1; Thu, 12 Dec 2024 10:57:58 -0500
+X-MC-Unique: MqRagtswOuy-PPfTnblRUg-1
+X-Mimecast-MFC-AGG-ID: MqRagtswOuy-PPfTnblRUg
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385dcadffebso375318f8f.0
+        for <kvm@vger.kernel.org>; Thu, 12 Dec 2024 07:57:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734019077; x=1734623877;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+        b=Ofnoe9omofwAo8IAGX+3873laORZyGN01BohCq2jJ3CSE0qvHX03pUyaipHKmPt2rG
+         LBTuFvGcS0yVTvMqPziUO8JuZZ6etwa9WOU7XN2DxECawjUpmatEklqbPh6kDJWRDjLc
+         pJqsWb7IkfimyHD+Cw9Yd3nivagttnkBbFj5aUKSwYj6Y2Na1Lq/kMa6LBVuWoCIak5G
+         P/NaHO7bYh9jodHY3qB19nJa//5X/mHs2LYG1iwVuqPTqcSuaqBhBMZkHmmo8yOoxFze
+         mHzRdRuw9rIq9tul+ER0wgxiea+00OzrtFIDnlXqcRWhFPXLHIepVxy7HFYGRXhazPRf
+         cYCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUduNSKLIqoAc/1HfDtJk2eeukp5Xk4y+goc76tsxWmW5Kyu+9GOLzCScBqSZzQy7sK+Po=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJXAOSd7vQQ8KmJ5OQiZcidbsxJD7l9IBDrI80IyCfXgJKVOPM
+	jLmReN+Lz6C4cbwE3aEje3lV3IAdaLnmABYrfAzSzpkaz9WuODCfreWkaBAnsS4SI9ASmkr9Rux
+	goGDx5SdMLVfWIBwSmRKmZI3VUvKliZ4iboGzi+w2Gol7fSRQkQ==
+X-Gm-Gg: ASbGnct15Ls4L3QnSLmHMQY5mH1abJUgwdFLppajrr2a5w1EkT292u6X30kd+hTCLJW
+	+/B2JQ2nXG2TggtU7aGJhzF0RIA9PhmP4F+lOrML0lUEipN6JP29oAyCrVvFwXVgLxVwDLRWTCx
+	vVxc8OtSmfpG4KixSVfVhoKK4BDRBdycYhXfb2usUe+/oivrTYpHiwMaPJnyumjtzIvtGiQxx3x
+	0KAeWLDcL1r+WTZDkXfhOI9uBv4N6iaVHB7hy20pRIBTFGwt6bMOhKbukSq
+X-Received: by 2002:a05:6000:4013:b0:386:3e3c:ef1 with SMTP id ffacd0b85a97d-3864cea4553mr6574617f8f.35.1734019077126;
+        Thu, 12 Dec 2024 07:57:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFR83C5MMeDF8fnzp4KAbDZ9IwQ9YCimFBYLAP7JHpn0+TXjU2U2saynfWppJ2/nv7QP+Warw==
+X-Received: by 2002:a05:6000:4013:b0:386:3e3c:ef1 with SMTP id ffacd0b85a97d-3864cea4553mr6574608f8f.35.1734019076832;
+        Thu, 12 Dec 2024 07:57:56 -0800 (PST)
+Received: from [192.168.10.47] ([151.81.118.45])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878251dee1sm4340989f8f.102.2024.12.12.07.57.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 07:57:56 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Zhao Liu <zhao1.liu@intel.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	kvm@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH] target/i386: Reset TSCs of parked vCPUs too on VM reset
+Date: Thu, 12 Dec 2024 16:57:55 +0100
+Message-ID: <20241212155755.524767-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,46 +83,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When loading a realm VCPU much of the work is handled by the RMM so only
-some of the actions are required. Rearrange kvm_arch_vcpu_load()
-slightly so we can bail out early for a realm guest.
+Queued, thanks.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/arm.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 6e83b2e3a6cf..f588b528c3f9 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -656,10 +656,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 
- 	kvm_vgic_load(vcpu);
- 	kvm_timer_vcpu_load(vcpu);
--	if (has_vhe())
--		kvm_vcpu_load_vhe(vcpu);
--	kvm_arch_vcpu_load_fp(vcpu);
--	kvm_vcpu_pmu_restore_guest(vcpu);
- 	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
- 		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
- 
-@@ -675,6 +671,15 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 
- 	vcpu_set_pauth_traps(vcpu);
- 
-+	/* No additional state needs to be loaded on Realmed VMs */
-+	if (vcpu_is_rec(vcpu))
-+		return;
-+
-+	if (has_vhe())
-+		kvm_vcpu_load_vhe(vcpu);
-+	kvm_arch_vcpu_load_fp(vcpu);
-+	kvm_vcpu_pmu_restore_guest(vcpu);
-+
- 	kvm_arch_vcpu_load_debug_state_flags(vcpu);
- 
- 	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
--- 
-2.43.0
+Paolo
 
