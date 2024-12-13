@@ -1,117 +1,102 @@
-Received: from mail.wilcox-tech.com (mail.wilcox-tech.com [45.32.83.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D870C7DA62
-	for <kvm@vger.kernel.org>; Fri, 13 Dec 2024 03:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.32.83.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD8679F5;
+	Fri, 13 Dec 2024 05:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734062326; cv=none; b=XcIE2Kv8htdvwR/N402lSGrGdx6R4ZQ7TuYO/Wkp0kd8bGCPLQEkQXLCPPy2VriIpH8P7bBXEmaj+I0NakRoknCaRPfzFTv7KQMOiiHqYLC5MSi/MmDU2QojQeM7pLZHbqmcBfF2TYpb+wPu30AKFDju050+gKetihcbjbSVkyg=
+	t=1734067563; cv=none; b=tDUI9nfiQaKi+grH21AcKQ1JxeNRuftcT95DkRAhAHZuRJgq7g+OAd60Lg7+CVqOhBvU9Yds9wVyQue0AoXcF1ECLvRjksRbvCAHkIdzKPx7KN2Gx8Mly4I5fHcQGtwAESs2yjMgopCBC0fLVmw1pjH3d2PVheMBBvecCGudjdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734062326; c=relaxed/simple;
-	bh=zTn3PxlxF5bcug/5oevEdlwocu+z7R8NRL4NpTujYK8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ixl14Wm4z1QVcCIEbC+8VpLltuM04EjU+yXMNBQeC7f8y+HUuxoj25xRFMuT6T9yCI7Bl+S8HRYEQ+6mrMDo8EzI3FM+qGPKbQcFEBaYbaMMzH3M+s8+xrTtPp+5UxhJWEedrM0D92LR8HqUgzAp6h58D+oQKCxX2Rvwjt+GEJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Wilcox-Tech.com; spf=pass smtp.mailfrom=Wilcox-Tech.com; arc=none smtp.client-ip=45.32.83.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Wilcox-Tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Wilcox-Tech.com
-Received: (qmail 15664 invoked from network); 13 Dec 2024 03:51:32 -0000
-Received: from ip98-184-130-195.tu.ok.cox.net (HELO smtpclient.apple) (AWilcox@Wilcox-Tech.com@98.184.130.195)
-  by mail.wilcox-tech.com with ESMTPA; 13 Dec 2024 03:51:32 -0000
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1734067563; c=relaxed/simple;
+	bh=M2xdmdLNhUnONPFOKg4DD+NknFYDEaK+x9KyPHrv24s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HJye4tLFOdtdtJRylVIdQ4swmLY/OK3kSO2urkQcPjcal6j87Mjdp1IVM0b8DA19An3kk4HkmEGFZXWi+UbPJYzPohvPHb1X+GJdzWpf7taYDwOFxTQGhGtV7lHtIvK4tx8JeRqKY+0YW6hmfm5UX2ki3Gh5OTj16nt1TS6RxF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bw4/mjm1; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bw4/mjm1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D513C4CED1;
+	Fri, 13 Dec 2024 05:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734067562;
+	bh=M2xdmdLNhUnONPFOKg4DD+NknFYDEaK+x9KyPHrv24s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bw4/mjm10HI4gIYEq6PcUyF1AyHtdTx8xY1u9mQ/MqJN77zbADAxHBaxyRlLd3fvm
+	 K+xp87WmOhOZL0i+Bq0ipg5X8v20dbpQflvkGqWjrmRLY/0GuREkoyHJNVYE+cNf5x
+	 z8LCuZGHvDXUpEOFv59Bb7IqvPJLfr+Ey53P+W4LJrWqp6nhL8os12GgjvLuqPfWM7
+	 tQzQgeo6YclbvdVoVzle3X83Llu3G9oxPWspWAnjZkdc3+GZOJaUxSQ04u5mGgaPm3
+	 thWesm1LM0XsGyHp4VpoNWDNgdZGRIRa8iRReDoOdNpvWyxV8vC93Zm54QQh6yd+QZ
+	 BUiwJG/w6t0xg==
+Date: Fri, 13 Dec 2024 06:25:47 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Philipp Stanner <pstanner@redhat.com>,
+	amien Le Moal <dlemoal@kernel.org>,
+	Basavaraj Natikar <basavaraj.natikar@amd.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Dubov <oakad@yahoo.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Chen Ni <nichen@iscas.ac.cn>, Ricky Wu <ricky_wu@realtek.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Yi Liu <yi.l.liu@intel.com>, Kunwu Chan <chentao@kylinos.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v3 00/11] Remove implicit devres from pci_intx()
+Message-ID: <Z1vFWyHkBD4d5xnG@ryzen>
+References: <20241209130632.132074-2-pstanner@redhat.com>
+ <20241212192118.GA3359591@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [RFC 0/5] KVM: drop 32-bit host support on all architectures
-From: "A. Wilcox" <AWilcox@Wilcox-Tech.com>
-In-Reply-To: <20241212125516.467123-1-arnd@kernel.org>
-Date: Thu, 12 Dec 2024 21:51:26 -0600
-Cc: kvm@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Alexander Graf <graf@amazon.com>,
- Crystal Wood <crwood@redhat.com>,
- Anup Patel <anup@brainfault.org>,
- Atish Patra <atishp@atishpatra.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Paul Durrant <paul@xen.org>,
- Marc Zyngier <maz@kernel.org>,
- linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <35E5C2A3-94AC-446B-A0A1-84B043DBC890@Wilcox-Tech.com>
-References: <20241212125516.467123-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212192118.GA3359591@bhelgaas>
 
-On Dec 12, 2024, at 6:55=E2=80=AFAM, Arnd Bergmann <arnd@kernel.org> =
-wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> I submitted a patch to remove KVM support for x86-32 hosts earlier
-> this month, but there were still concerns that this might be useful =
-for
-> testing 32-bit host in general, as that remains supported on three =
-other
-> architectures. I have gone through those three now and prepared =
-similar
-> patches, as all of them seem to be equally obsolete.
->=20
-> Support for 32-bit KVM host on Arm hardware was dropped back in 2020
-> because of lack of users, despite Cortex-A7/A15/A17 based SoCs being
-> much more widely deployed than the other virtualization capable 32-bit
-> CPUs (Intel Core Duo/Silverthorne, PowerPC e300/e500/e600, MIPS P5600)
-> combined.
+On Thu, Dec 12, 2024 at 01:21:18PM -0600, Bjorn Helgaas wrote:
+> On Mon, Dec 09, 2024 at 02:06:22PM +0100, Philipp Stanner wrote:
+> 
+> Applied the ones with maintainer acks to pci/devres for v6.14, thanks!
+
+I don't see this on:
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/
+
+Did you perhaps forget to push?
 
 
-I do use 32-bit KVM on a Core Duo =E2=80=9CYonah=E2=80=9D and a Power =
-Mac G4 (MDD), for
-purposes of bisecting kernel issues without having to reboot the host
-machine (when it can be duplicated in a KVM environment).
-
-I suppose it would still be possible to run the hosts on 6.12 LTS for
-some time with newer guests, but it would be unfortunate.
-
-Best,
--arw
-
-
->=20
-> It probably makes sense to drop all of these at the same time, =
-provided
-> there are no actual users remaining (not counting regression testing
-> that developers might be doing). Please let me know if you are still
-> using any of these machines, or think there needs to be deprecation
-> phase first.
->=20
->      Arnd
-
---
-Anna Wilcox (she/her)
-SW Engineering: C++/Rust, DevOps, POSIX, Py/Ruby
-Wilcox Technologies Inc.  |  Ad=C3=A9lie Linux=
+Kind regards,
+Niklas
