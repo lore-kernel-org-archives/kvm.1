@@ -1,104 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1112F200B9B
-	for <kvm@vger.kernel.org>; Mon, 16 Dec 2024 09:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2551FFC68;
+	Mon, 16 Dec 2024 09:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734340523; cv=none; b=iS1s/SPHmL5Unq8YdCNpQdO+F0QjVrk+0W+US0rxBrp8QKgLxmYQ3HSg0pYNGJNOJN4p9voFvXkOmdTnPFRk6qgMvCmGg3P3ldGyndmG5OKNvFFvuBLOVlyCwf3n/M2R1yONEIsazPZtfo5fRmQJSMvPCThtf2Sk8gwzYFZXw2Y=
+	t=1734340929; cv=none; b=et4FS8S8iK4CnGDZOrowdIT+M6+j4UnUOjBI94O5Cl4GObEeHXf+yn6Cj1txhs3OF44oa58zhJj8xQXOFEl8lX4hJuTDz/we9OL5JRF/NrVlsY30YrtOw6tdsZl3HQDS5p3jqyIJ/DH301uXHcq1ud8rSYhjlgKVkanTijGvv9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734340523; c=relaxed/simple;
-	bh=TJpYlcg6dWaGA9ySxl7/52eeOV4SoQozbiFW3JnEhFo=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tUEVGduuWNWwKBxsEeyMkF1/iNdRNHCQm4XXaWjX3pk83tgL/z2/1mrQ2MNvUhoXLDRQnNWpSTnSXpVylDTW8hQmF1/pUa55hG3e+ZLhFnZKbRpMzuMTQmlK5wihTqB/Rg6GUZA3i3bvvAfmQ+RMjMqCdQo9vvIuEA+stc3MtKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDCPIFVa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734340929; c=relaxed/simple;
+	bh=Os/W+aDq16zedvVbNZyhVyIOycTJMHypKTDKRMZIx90=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KOqM6tCugYJV8ALTUN2hQu4NemVv61mnNeoFDUU4dpDSX5vWPm1+KByyTF5VDIXovdmDRrbDixFh3p2Z7JMB7YD1zRIWud7PO4FNrlNLpLPKPwp9MR5SYAZXvED7yQQWRUHFUkpJRZ/+r8f5goHzp4kjqrAOW1qMa9I9JVCeoPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UlMKMS2T; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDCPIFVa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 98A68C4CEDE
-	for <kvm@vger.kernel.org>; Mon, 16 Dec 2024 09:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734340522;
-	bh=TJpYlcg6dWaGA9ySxl7/52eeOV4SoQozbiFW3JnEhFo=;
-	h=From:To:Subject:Date:From;
-	b=EDCPIFVaVUuY8BpwWucQGF2sO15nLb1REiCnNU3s87VSm3RlOgp92EKHxVYHjbW2/
-	 lyWJOCAA8zwwF8nrT++2UY4VYpzk/CzbM50ihCMAe9gFHs0/MMxaA+0PMm7qeB9WE0
-	 /UvcyCuCVqXpqmqwcAq1GfsBXLQVvR9IOkX2tXcaOPlpp5IyH+Ovq4HSwmuv2ehYEX
-	 /WGq+13Yhw9D1825LozT1EMrRrnW/XE4QAnIs4K915lm6nXs91ev45KRqOWcabuxLn
-	 +sb9ikVYjXHoRRD7tdsM4If0dha/9np9Hob3iWzEfbFk7QYGxQqPinj+PaFGLjcm5c
-	 k6gIEQEgHo1+Q==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 7BE7FC41606; Mon, 16 Dec 2024 09:15:22 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UlMKMS2T"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BFNaFge019517;
+	Mon, 16 Dec 2024 09:22:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Uumz/cfkkP8SE93T/
+	q0y69bMndxcNuc22uLhOh5aCd0=; b=UlMKMS2Tc0Gvuf30V6nPXU0sbJkrXpZfj
+	YvBiz+Y5YchDSFFgYy90dRJXAmZV4BWd2P0vdLBmGqS5nnHZuUv/QqjD69qn9T75
+	M1rfF48U9S2pL37ZGmPInq4ZG/UIg95o4uZIN6xWItW6OwSpSCcs1REPGZFAtaPU
+	Y9sDwSABIkZC85oGOtJezZywgtETqkPKWcRsTPhmx8KtUAo6IwQ1r76HEJFqgJNS
+	nYOn3QER09fvHotT3XBO9FWyEjfwIa/4B9lp9B3R8bdj+HHSQhSprkjG48Vf0uX2
+	J2KxezFBn1g4tjfImOMj8JlOWs1h9gKdiPWVxDENsAWv66PK+S0Pg==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43j8xahwa3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 09:22:03 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BG4paf9005488;
+	Mon, 16 Dec 2024 09:22:02 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hnbmw81m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 09:22:02 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BG9Lx7Z35914470
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Dec 2024 09:21:59 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E889F2004B;
+	Mon, 16 Dec 2024 09:21:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3466420040;
+	Mon, 16 Dec 2024 09:21:58 +0000 (GMT)
+Received: from darkmoore.ibmuc.com (unknown [9.179.0.126])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 16 Dec 2024 09:21:58 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
 To: kvm@vger.kernel.org
-Subject: [Bug 219602] New: Default of kvm.enable_virt_at_load breaks other
- virtualization solutions (by default)
-Date: Mon, 16 Dec 2024 09:15:22 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Product: Virtualization
-X-Bugzilla-Component: kvm
-X-Bugzilla-Version: unspecified
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: acmelab@proton.me
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression
-Message-ID: <bug-219602-28872@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Ulrich Weigand <ulrich.weigand@de.ibm.com>,
+        Dominik Dingel <dingel@linux.vnet.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH v2 1/6] kvm: s390: Reject setting flic pfault attributes on ucontrol VMs
+Date: Mon, 16 Dec 2024 10:21:35 +0100
+Message-ID: <20241216092140.329196-2-schlameuss@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241216092140.329196-1-schlameuss@linux.ibm.com>
+References: <20241216092140.329196-1-schlameuss@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RdzZBTYOoDGCNjQqdpKhgfCafpBnB8ox
+X-Proofpoint-ORIG-GUID: RdzZBTYOoDGCNjQqdpKhgfCafpBnB8ox
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 mlxlogscore=675 adultscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 bulkscore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412160074
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219602
+Prevent null pointer dereference when processing the
+KVM_DEV_FLIC_APF_ENABLE and KVM_DEV_FLIC_APF_DISABLE_WAIT ioctls in the
+interrupt controller.
 
-            Bug ID: 219602
-           Summary: Default of kvm.enable_virt_at_load breaks other
-                    virtualization solutions (by default)
-           Product: Virtualization
-           Version: unspecified
-          Hardware: All
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: kvm
-          Assignee: virtualization_kvm@kernel-bugs.osdl.org
-          Reporter: acmelab@proton.me
-        Regression: No
+Fixes: 3c038e6be0e2 ("KVM: async_pf: Async page fault support on s390")
+Reported-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+---
+ Documentation/virt/kvm/devices/s390_flic.rst | 4 ++++
+ arch/s390/kvm/interrupt.c                    | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-Previously (kernel 6.11 and lower) VMs of other virtualization solutions su=
-ch
-as VirtualBox could be started with the KVM module enabled.
+diff --git a/Documentation/virt/kvm/devices/s390_flic.rst b/Documentation/virt/kvm/devices/s390_flic.rst
+index ea96559ba501..b784f8016748 100644
+--- a/Documentation/virt/kvm/devices/s390_flic.rst
++++ b/Documentation/virt/kvm/devices/s390_flic.rst
+@@ -58,11 +58,15 @@ Groups:
+     Enables async page faults for the guest. So in case of a major page fault
+     the host is allowed to handle this async and continues the guest.
+ 
++    -EINVAL is returned when called on the FLIC of a ucontrol VM.
++
+   KVM_DEV_FLIC_APF_DISABLE_WAIT
+     Disables async page faults for the guest and waits until already pending
+     async page faults are done. This is necessary to trigger a completion interrupt
+     for every init interrupt before migrating the interrupt list.
+ 
++    -EINVAL is returned when called on the FLIC of a ucontrol VM.
++
+   KVM_DEV_FLIC_ADAPTER_REGISTER
+     Register an I/O adapter interrupt source. Takes a kvm_s390_io_adapter
+     describing the adapter to register::
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index ea8dce299954..22d73c13e555 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -2678,9 +2678,13 @@ static int flic_set_attr(struct kvm_device *dev, struct kvm_device_attr *attr)
+ 		kvm_s390_clear_float_irqs(dev->kvm);
+ 		break;
+ 	case KVM_DEV_FLIC_APF_ENABLE:
++		if (kvm_is_ucontrol(dev->kvm))
++			return -EINVAL;
+ 		dev->kvm->arch.gmap->pfault_enabled = 1;
+ 		break;
+ 	case KVM_DEV_FLIC_APF_DISABLE_WAIT:
++		if (kvm_is_ucontrol(dev->kvm))
++			return -EINVAL;
+ 		dev->kvm->arch.gmap->pfault_enabled = 0;
+ 		/*
+ 		 * Make sure no async faults are in transition when
+-- 
+2.47.1
 
-Since 6.12 setting kvm.enable_virt_at_load=3D0 needs to be set at boot if t=
-he KVM
-module is enabled, if you want to use other virtualization solution beside =
-KVM.=20
-
-The commit that introduced the new behavior is
-https://github.com/torvalds/linux/commit/b4886fab6fb620b96ad7eeefb9801c42df=
-a91741.
-To be clear it is not about the feature itself, but the default. I am also
-aware that this might be intentional; but given it deviates from
-previous/expected behavior, it seems like a regression.
-
-The fix would be to set the feature to be off by default. This would be
-trivial, but first I need to know for sure that this is considered a bug.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
