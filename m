@@ -1,99 +1,104 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F196E1FF60B
-	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 16:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7C717753
+	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 16:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734451221; cv=none; b=Z5ws8RWmDKl4Gs/vbEg15nkPdSFtpilXmdh822x6jZfAfcuLihlnOSB0f4gZLIzdcb7A0kJC0UwhCug4l+mI8ph23/WSB93ITjc2H3BFlw8c30FXUyeAKeOrdxRQzhfS8UuEDz8ll12tKsj/n2LQ1luxz//hwrWaKabhPB/JtWQ=
+	t=1734451342; cv=none; b=n7Y2s0RQH9VP7XPfiTzUM+97tZPCe1IlF/3h2zcZ8STEamT8/RtWGn7R4BrYSek4guQLYeYaCItmkmqQcUyYs/7R6kqupqZdOGAHicYQHegu2kzp1cVtkz2er0C2AzFgeOCbqNFhsvSsVZNJuvmCnb6LeVPhpbyfjrVLGS14NxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734451221; c=relaxed/simple;
-	bh=yMkXhimHSNgkCBtW6GdCu0qlZ/ulIAiC5pNf9JbKmis=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IMiwiXAaiO/ws7Q2Zi40MCrvPem4rwhbIUshzE+tnoCc6XhOw7mywmxZsAv6X5Ru3wHiPm9WBCvpjbBzuPjwQWytAq3uGYnKyykoYP77gX3ITD+aL/aLjupDzT6r+V9OpeKId4bmnffn75PXLtFfQoc/ZYOolr4/+u9kOS8vNbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FRZleV7S; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1734451342; c=relaxed/simple;
+	bh=snrT2Ns6e36l2ymjYWcaUa+kTGd+p3goxe68uIQLrSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXHoXZ5Xc/W9Or3KyrQ6Dxi60VwikWAF2m0wThfFCG9ki9+4+unTt3gvj2EMTE4zHfxpEvATX3/Gs1QWazLk27H9OKNEy19n30xlWRWNjGtMVbyGa8zAwW8HYh9YfvSpuwYWX0TA1CL0sgE24YPxz293QSPlCB6mXhveMgB9LO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kJWiDmEv; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FRZleV7S"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d0d32cd31aso6735086a12.0
-        for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 08:00:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734451218; x=1735056018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yMkXhimHSNgkCBtW6GdCu0qlZ/ulIAiC5pNf9JbKmis=;
-        b=FRZleV7S6N3uH8R+za9DNTKgPyMOScy6hJa1YLIVyflfthbswn65RvKJbCX7CLE0Cy
-         Yy46jrOP3RVTLHCoBof0LJ1aAc+O5WX8xSndxJqKP/fBkF5yJeBMZSPSsRvY9bbgDLQS
-         Xu5hTwIOU7dwlEU3Phn8MRVJCOohNC4/OrWy1WFMLNxHGDR2hSknzvr6CMRd+kO9FQSB
-         Mw4sAcmZ9DKckUJBkJVLgkkR+ojddp8eh2cgntxE5z91TmF+MqqbXj5QyipXtK4afWbu
-         s1o+Qanq+de/wkzRfZD8Uk6geWArpdyTkUx/7PTaogmD9d4y1zuiLuwE88SCgM6ri9WV
-         NlTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734451218; x=1735056018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yMkXhimHSNgkCBtW6GdCu0qlZ/ulIAiC5pNf9JbKmis=;
-        b=qLs0wkcNunYiTtOwr9O18K0Fr3ax5DG7D0BbVrrCwtwaHnx+hZuiKDLJCvf8r1Wq4+
-         8RExUBnOJ7NMHYMX21k2gTxnM0ZlU5fgLByo9XN6yIRdB2CsTXZSXx48Q4jJBdck4vGP
-         Awwc75XxpoDvZFIuq8yx5J7xXx0CNCyplclx1TPLagEm4sEWckg0//LEbFPw1Ss80uLW
-         LVAtovtD95rBRuodVsEpDBqzU5hq3AzaAvVMpHECJdniS+HyjdhXH/laEXi1w949xuq2
-         zmqqwRoiuog4JveWGNqiJQXqRFOtxRTARPvsTy7JleUzokjhYfPlE0EfToqDlCcLQJx/
-         f+aA==
-X-Forwarded-Encrypted: i=1; AJvYcCWg1/BIp8fGWRZsf/F/n5XLVw73T4TE3XDaH/Esa6GS5IZwsoNsDuRaocilfsVZ38h1OKM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygunSa2KSq68e4tiswC/alaaVmZlENSlKN6oNtsowb8JXSSk29
-	4nAQcWZFxCLisawBzu20omnBVAzCbOG20zdJWYTQIC+73dLGGsNyBxvxc0VACYGsb9eq6t/oxRf
-	GKmgZIF1dooThbPcqGuFccMMm0lhGo9gSDRn6
-X-Gm-Gg: ASbGnctASiMvKgwE60AatvOtaigxZfHqJN8wfbnxeQwAelPMk/QNO6Sty0XDvl1mx4P
-	NzOfK7+PusaJM6IeQh+LNCIuDWhrgF9Gvl4/jOA==
-X-Google-Smtp-Source: AGHT+IFNZC7Hw++tMkFStafWWMV/GkZvsv2xsoec16XXjJA34YsckivhWJKovnlU3n2/vwLA3YFKSwnXRytZtX+iWQc=
-X-Received: by 2002:a05:6402:5415:b0:5d0:bf5e:eb8 with SMTP id
- 4fb4d7f45d1cf-5d63c3dbc28mr38182350a12.23.1734451217876; Tue, 17 Dec 2024
- 08:00:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kJWiDmEv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734451340; x=1765987340;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=snrT2Ns6e36l2ymjYWcaUa+kTGd+p3goxe68uIQLrSY=;
+  b=kJWiDmEv+7weZ0xrokI7uGpZkSfrpxRQa3SmPfJFEcO7ZJ67a9jiTO5Y
+   ulEmEyTdB8cD/8X0QQFbRcmOShWs+BSkXR5LfiTVSr6z4JkL4ZVcE5Jdr
+   DLFwbMcYIBgtfoZ4wkvyGR3F1h0YWwvUsxJSaDPhGUFU7zXIIyDjszyb6
+   DoNQcZd2jyML2PlEYNbYo3iHDtDaR4K2Ux2tBfbSZJHDfBT5l/dcfSYge
+   phfYLfJ2gAv+TiLkMcaQrIQDDqCeQxiv3XzSUDrtCm2ootGszZl90IzQj
+   n3kCMuonpUfc8oNIBDPd3z+nYN4LSFVt2z4uoAvA2TXocl9XOSQa7iZET
+   A==;
+X-CSE-ConnectionGUID: ApSz/ZOUSWeyJTD3wrbW2w==
+X-CSE-MsgGUID: YMV6eS1YR1a0tqXftVNF5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34174200"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; 
+   d="scan'208";a="34174200"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 08:02:19 -0800
+X-CSE-ConnectionGUID: FpTVphQ0QCe50Aevqj3iLw==
+X-CSE-MsgGUID: YSqaj35bR1275uo0MM1xOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="98018723"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa007.jf.intel.com with ESMTP; 17 Dec 2024 08:02:14 -0800
+Date: Wed, 18 Dec 2024 00:20:53 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Alireza Sanaee <alireza.sanaee@huawei.com>
+Cc: Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+	Zhenyu Wang <zhenyu.z.wang@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v2 0/7] Introduce SMP Cache Topology
+Message-ID: <Z2Gk5Ta43HJ9ChAT@intel.com>
+References: <20240908125920.1160236-1-zhao1.liu@intel.com>
+ <20241217142342.00007d96@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1734392473.git.ashish.kalra@amd.com>
-In-Reply-To: <cover.1734392473.git.ashish.kalra@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 17 Dec 2024 08:00:06 -0800
-X-Gm-Features: AbW1kvYYZJqPhmb3aGCl1ViLv-OIblMbuwwguLZErK06_FPk8Pypubp8GuwTI4k
-Message-ID: <CAAH4kHa2msL_gvk12h_qv9h2M43hVKQQaaYeEXV14=R3VtqsPg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] Move initializing SEV/SNP functionality to KVM
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, michael.roth@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217142342.00007d96@huawei.com>
 
-On Mon, Dec 16, 2024 at 3:57=E2=80=AFPM Ashish Kalra <Ashish.Kalra@amd.com>=
- wrote:
->
-> From: Ashish Kalra <ashish.kalra@amd.com>
-
-> The on-demand SEV initialization support requires a fix in QEMU to
-> remove check for SEV initialization to be done prior to launching
-> SEV/SEV-ES VMs.
-> NOTE: With the above fix for QEMU, older QEMU versions will be broken
-> with respect to launching SEV/SEV-ES VMs with the newer kernel/KVM as
-> older QEMU versions require SEV initialization to be done before
-> launching SEV/SEV-ES VMs.
+> Hi Zhao,
+> 
+> I wonder if this patch-set requires rebase for the new cycle?
 >
 
-I don't think this is okay. I think you need to introduce a KVM
-capability to switch over to the new way of initializing SEV VMs and
-deprecate the old way so it doesn't need to be supported for any new
-additions to the interface.
+Hi Alireza,
 
+Yes, as some general patches are merged.
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+(Pls refer the v5: https://lore.kernel.org/qemu-devel/20241101083331.340178-1-zhao1.liu@intel.com/)
+
+I'll send a new version this week, to include the remaining patches
+(i386 path and your has_caches flag):
+
+i386/cpu: Support thread and module level cache topology
+i386/cpu: Update cache topology with machine's configuration
+i386/pc: Support cache topology in -machine for PC machine
+i386/cpu: add has_caches flag to check smp_cache configuration
+
+Regards,
+Zhao
+
