@@ -1,265 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F258D1E8823;
-	Tue, 17 Dec 2024 13:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734442048; cv=fail; b=nATeCry+DqFXVVVT08qtYSs7n3JpHbX0HFA+MNw4gIyvkB8WU+ogqumZIqBaAtDD7GTOCtvMjmjj/IPzez2AdikOLhbd6ZsLISL+bGvYRK1OR+mnjf7aqZrweLaYNkTJYM/kLf4oZ8vUKDWppGIrBvMgRhdjIGxWaT5XGHvHn+g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734442048; c=relaxed/simple;
-	bh=dyY4Cvdof3uE6O9+FWnDIuluBslYaFSWbr8QSmQk12U=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HRhBz7dk1gXpbqW8HP+4bEBSKxODnm3Xloqhqaky7g7GchdR0DSfeqRxLYoKA+BEU7YHlE9BZASAfPqZ4yQh7BKfXaFlw7Pg2Y4zZ02515dBvO2+9jB+yP6lZTnT4pBloyUUjAOJ6/g1J0sAZJWsbaX9TfeNziXVo44x+hMlAfk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QXq7LmX6; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16121F4E5A;
+	Tue, 17 Dec 2024 13:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734443682; cv=none; b=lk7oWKEPMXq0MnrZ1UDyIdXM2f7+JLxWc79AoTaoPCTBwUx4pmyMfISDRwcFgZvWsqKA0RIqsfcQJXDD3MdUjyvf4RpcE6FTCE11GyCLc8jbHZJkyj+Rufqp4Rd5Tmnxevgjwr1/rrRkymAZS6DD4WurkHUeSxrua7QEHt7G0MA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734443682; c=relaxed/simple;
+	bh=MJYvanA7h6xElrGbzS7cgU/XuHLjMHmUTjsO1NBkkmQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rpSqg9fGlZ0g0aklP8u96aoriVOrB63BJbCj0WSLX9/2zSqFPqsdbjezMTkR/NgqleQcBYtQe6Uo5s5NnlSvVJfnQPdunwltv4Xaoa6L18DAUu7WUF+HFNSW50q8+PaCmsrWBN4GxrZCuaMJ544sM+RcSFWaCvzd/RmZ3HoTslM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mt/S1djM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QXq7LmX6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734442047; x=1765978047;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=dyY4Cvdof3uE6O9+FWnDIuluBslYaFSWbr8QSmQk12U=;
-  b=QXq7LmX6t+PjggUp0qeY3W4xIVWxtSHzVDaWfFLV1tDO6mdAU7gQzud3
-   z3UrqrpMsLXOjPi/Qg7ERoxUNGtH3qKxKEeIyqdSj3q2DLbrQVsBPQZew
-   4Gpy6EFGtNUa7V8jazugfsFLU0gEEi4e/sikZvZCcDLg2srTstbHi1dv9
-   V6LxjCV9dAvlhwZ52O/7V+JwSD/FXUUh5MSG/8Nwr8v5fgxMLrJLN5Q2H
-   D7VyXHJs0SBlaj7/o9DL5nudNJxXf1CfsMVnKB5bCeGEXNpHuQmxrgm/O
-   I0jgYWokj7ctjvKf/gAElJmr4Ti2wlnC8D7s/jScK4JkTGGNnPEDS/iGW
-   Q==;
-X-CSE-ConnectionGUID: 6DRcwicESji5rqpYGOhfYw==
-X-CSE-MsgGUID: umwdN+mXSCukEg4aiG/K4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="38645756"
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; 
-   d="scan'208";a="38645756"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 05:27:26 -0800
-X-CSE-ConnectionGUID: roVNDxRMRnObZyBY2d+6Lg==
-X-CSE-MsgGUID: hLNGrgclQYCxXyJGzxzHEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="101673255"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 17 Dec 2024 05:27:26 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 17 Dec 2024 05:27:25 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Tue, 17 Dec 2024 05:27:25 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 17 Dec 2024 05:27:25 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cwY4S0IfU1JeDhr8HGNE90xuku1AtXZPDxdDo3m+Iv/F4pIhZNb1kiJfPc/uL9cZ0lkUlY1533lqEs83+MEc1miBlr5oq9LjoZLfet94Dr/pKClDHUCIfKZdFpnPs+NZ28HkEGe7yb2zBPg6LCN/e9+zCiUc7I6OCCBL94hqtKBIv9Okoe6hFho8gQRC3bpvfhkh+dS3yTzd4O2/IIIZGpG6YjB6nayllO3exmJ4NuCKQ9K3BXben+3MQh5xouZ+TBt3tQYvszjeXuDTT8gE0c/ehaF2PgfFpJGldBWfYqtQ0ymkGw7meJz2XJ8DsKJ6tv20NYdHJ61E4ivF6YJqng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OkYJ93nZclUm4VLNkWE4Rr46obv/GvZmCq/k5QbG3Yc=;
- b=p7/7RBXaMF/IP8xOGXvq9lA7NxWYTX/gQvNZDmDEaH533+TiwqTIOALiKPCt86HpvzCMgfm0yK8QxZNL+VV7wH0xZyB8tlde6W52cP8+Tkd3QjPZWqNIr0XbalKcPvLhndLNhY5ahw/o2Va8J4UNk1axvmbB14oSskg/+uHQe2ywC8NUIT2LmD2solEeN04F1PuclbUl2yHqLITXfQ4z8G8goUd68SqMgF4gm5Vw5bTdNkVKk1PcIMsqTqu0aeuLb+q4o3tcyaSNwjFWg0t9gFBF5VhwjoHxxzPoK8Nfz1YO5X0CXw09blPdS/JkUyg2yP5zm5AQSThTQEJeeBOLGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- PH7PR11MB7500.namprd11.prod.outlook.com (2603:10b6:510:275::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.21; Tue, 17 Dec 2024 13:27:23 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%7]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
- 13:27:23 +0000
-Date: Tue, 17 Dec 2024 20:53:04 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<isaku.yamahata@intel.com>, <binbin.wu@linux.intel.com>,
-	<rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 13/18] KVM: x86/tdp_mmu: Propagate attr_filter to MMU
- notifier callbacks
-Message-ID: <Z2F0MMiHf/CHwGjd@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20241213195711.316050-1-pbonzini@redhat.com>
- <20241213195711.316050-14-pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241213195711.316050-14-pbonzini@redhat.com>
-X-ClientProxiedBy: SI2PR01CA0049.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::13) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mt/S1djM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E2C4CED3;
+	Tue, 17 Dec 2024 13:54:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734443682;
+	bh=MJYvanA7h6xElrGbzS7cgU/XuHLjMHmUTjsO1NBkkmQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mt/S1djMQv2WKW+N+6KKkms2IQ1X3PdPdb1FPNA96XVd+FinfPwpeF2uZtKFEKvNN
+	 xE3Lw7ewIK4es9B4N8UXNFLkviXVRiu3QhfTnXpkceyBSDMK/rySiS/PFrKHO1qRwY
+	 pTK63wWPW30a7odQ83dsSr8UV2Awh4eTvcpKoHRft+fY+hK5ZA+oPt6sBv2QuGflNn
+	 4bpPk9wAS+j7VLkBkTMShQ8Ee7MDcvuYFjuOsgrRD86H3B1oaXPtB+I07LueAjxn6j
+	 TytSd/HYGlhQ9ZdZOJtut9HdVs5UWsQcIR24P90fLClRnkfRhxXUJ9Hn0wnMnbfMmN
+	 00fgvv3XahMlQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tNY24-004Zaf-2Z;
+	Tue, 17 Dec 2024 13:54:40 +0000
+Date: Tue, 17 Dec 2024 13:54:39 +0000
+Message-ID: <86v7viqusg.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: Fix set_id_regs selftest for ASIDBITS becoming unwritable
+In-Reply-To: <53b40aa8-f51c-4c4e-a4ad-e6a9512e5197@sirena.org.uk>
+References: <20241216-kvm-arm64-fix-set-id-asidbits-v1-1-8b105b888fc3@kernel.org>
+	<875xnisocy.wl-maz@kernel.org>
+	<53b40aa8-f51c-4c4e-a4ad-e6a9512e5197@sirena.org.uk>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|PH7PR11MB7500:EE_
-X-MS-Office365-Filtering-Correlation-Id: 890313cd-c6f5-4506-bd32-08dd1e9e8a2a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?k1niDclyGSJHYZQ2kWO3jYemoXz7dugjnIcgo9aqg5UEgVr/0+MYZXPfbXoc?=
- =?us-ascii?Q?gHBISnTJjCUvIXS4GNNU8+vAFcGxY6S4Klv0tQgODng1F3gyUve73t4zH9Sv?=
- =?us-ascii?Q?g/hYRIGGN6pOaCIS+2rWc9VctXW4riks0lX2vK/Qg0HGrCLAZm3SMx5ij6s2?=
- =?us-ascii?Q?p0mszTogcDVdPKeV7HZwtMaFuq/KrJ7QgvktIbIeRC+LEiJ8k+JAHN3b3eli?=
- =?us-ascii?Q?SAGIdsuJzMTgoINjEIWPl3L5CkgiZS3KTCxlOxQEMyDQNyTH7jPwUT5peD1I?=
- =?us-ascii?Q?lHU3rDeYNna8soT08rsNx+HcFS6Vjf94AFDiensaNwaxZ8vCezIpCkinH8Jf?=
- =?us-ascii?Q?ObWWXPMNYJhUsaYHF9vYwKZGfT0dAuQuMZ6zEELTAG+i4GjPKBy8aQnnnbIH?=
- =?us-ascii?Q?2OTcudYxV+pdplPq/fVDipjt2DGxad/27/RV6+2z8yKGCzou/5ypxnRR6gOd?=
- =?us-ascii?Q?6GLiQvdRyHIgyk1LSk67hkdyJHpFORiuZiZcduaWkTwTTypBkFswHREX56Ru?=
- =?us-ascii?Q?Wi7jx2kEeZzPUS1GxGAgqCfFHsDVhJA9YCSDYBfzycXI7vaYiPK2D1vwTPqy?=
- =?us-ascii?Q?I6zuxp3A/oWKRr9Yxr3K9IJwUH1flNCJ6L09MBEkgzYuoPN4rL4ClUiOjaT4?=
- =?us-ascii?Q?dp45TkqHF2AENWnVbNSPgC5ApFYfTZqczuvfoWtRNPOOq6/p7p6eOAEdMUt8?=
- =?us-ascii?Q?oZZUXqyb7+jBpamBQwlsasj0Z3i5s9fF63N2UNPwXjD/pO8nVBXg+R2VVfvW?=
- =?us-ascii?Q?pMW7HJNewRI86sPrGYKD2DB5ZcKCq1q+uKgHMsh4Okw2MMKmDA3bKHTBRDNO?=
- =?us-ascii?Q?Mg3RniwZTws1exeHiiAK7LXjxRJVW47K4KqEbAlKHtzP9BRbWX7LkyKBgjHx?=
- =?us-ascii?Q?Ic6fGg/dNGJcOv4VkdtapXBEBJwEKNg07xUyTAIGfl8bBIv9QGS0COtU+L6k?=
- =?us-ascii?Q?KWwEKWkqYJvuu0WlrB9tgm6/Vqd2jsij6JOXFRNP2DzbdcYNBXYj6CPm60M2?=
- =?us-ascii?Q?RNr/aHus4qKeLnccXBihwWrq25xBJhGEvQdPANP+Iw8JpKiiIVYhQwIliq+/?=
- =?us-ascii?Q?Es2/V+nTACa/oEG9kJhMmXg6jt7UW5hXLn+k5dcQjWdBgIoCyyZxRPLn0eDs?=
- =?us-ascii?Q?X1lzec0OQBAWM3QBC9hAzknbCarUgEg2D3iozldkBCXXw973Zv6tqexxJ3+K?=
- =?us-ascii?Q?kEhFpiCCgj2gUVlo7Jl3WpplNgOmQE0p+tHVwqWdGCr1XveNfXUBECUkKYc6?=
- =?us-ascii?Q?+8I3Pvcv7NrTX9HY2A+ifPCJ74EM/SJ+QoC7QfQXqe8nV0daJMhB1puw+Xm8?=
- =?us-ascii?Q?AqFEiMQnDO5rjCMnvmM5lRaswj6UTrRrpHpHOHBqacoexz/6cGwKuPivsyOo?=
- =?us-ascii?Q?AfWHSZU6TszMkp0hLeGdaTQgunBD?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5cUtYuP/cztQGUJXoOMJf4+hytuHUQwCfjZejfQJ4XsySILY3JF6Nk0TMq1U?=
- =?us-ascii?Q?JK0wr25GtLjEcwCpdJ8TO/CY5E+EwSomFKOfPAPmPdEgWxMcuzcHM7bN9hV+?=
- =?us-ascii?Q?/4O3wkyM6QfTzwpYr/lz3Y9wruL/Axc8i5LXe/s+2MuTKzkK/vaNbqRNdKI7?=
- =?us-ascii?Q?VMeeXb1qpy0A6Rlvoj6LUJt/WEZMsBMOkAncJlfX/KCgCjDBG4ohsK2wbiJj?=
- =?us-ascii?Q?UqlO8r457STxteamh16xlWgFngNuXPjPXB5WpBx8yYYWTLw6zAxNrbNqJWsY?=
- =?us-ascii?Q?4hNAgTu8wiLtB4+AXpyDgYYCb494tNTnfqrMJvCzORFt/puEjh1JR2pkfZnB?=
- =?us-ascii?Q?6Qg55zeQyf6rPmvfv4M7udb9wugatgx644RKjoCb4Mcaqg9i6ssdqmEdxfLK?=
- =?us-ascii?Q?wnaVPiqssBjtwn1jGuGi0Lpf95yhJoJ8zXXJb8ga89Ecwwr7U7dqjBhd4wDm?=
- =?us-ascii?Q?RoHrCUQc9ZmKQ4fyz9LMpNtkGqLggj3g/QOotJFVspc8X6om2yl20n7lcfQk?=
- =?us-ascii?Q?TCZSr9ahSqTi/nTa/oUC44W/1XC1nOOteIMYSmW5I6QKknW7IxITeRUTHJDU?=
- =?us-ascii?Q?oZHl4OQrjyZGfmcz60WB43b6+x4mFZb7UMRW+ue/F32VOSOLfjup/UY922B6?=
- =?us-ascii?Q?7VBYQXSCxOu4EbPiB2Na8kffy4YGKnmORjBiX/yVSR6OuNPQSRwqobe8zhlF?=
- =?us-ascii?Q?NFzKyMoRx7E77P2hppNYwDqBj1KfU/w31b6XByjBmzxCT7rlc3Kru7otP2ix?=
- =?us-ascii?Q?aH0xIn39UpInYSI+AX4GEpO5xXBo4SYQbhHII88Vu7O9cK1KxD9/H7TqyFbL?=
- =?us-ascii?Q?bZJnO0mHDPPZoEsLcuux+S5/oXg0JYQHOgFD3KZk6m0v8D7IoXTR+vZnUebQ?=
- =?us-ascii?Q?r8N5aXe4yzqMGtQGa8DEwl7gsoT0+TyT55TQDkGMp8eu/jbHyOPS4igzRSfO?=
- =?us-ascii?Q?RrEpvfOF/tsX9vwA3gyd1N9rrLf0SIjP7jyM22QIHVGB36xJiymThrihiiNA?=
- =?us-ascii?Q?GZHBufwhlsNUJKYHZixumiC6drwHK5TkFxz9fx6P5Ai3tEueXVF+sYCCt3iS?=
- =?us-ascii?Q?BjYtxBz/ybYy/Qm+rNF9mTzKl45PNutvgQvjlhygWlNn8aWZAt/R57swHhVs?=
- =?us-ascii?Q?wT+HOyeRWkj/BII6xNN3a3BoqlB2hXmxNSK/YNjNR9On3gBl5nIdTmaJnK2Z?=
- =?us-ascii?Q?Q8TDCNAd+f48luEZk68Qd1CrsRKbIxI96JIE/E8bF3EkxyQMF1nBRyvn9JhT?=
- =?us-ascii?Q?75pC0m79bGWaNrAQh9N9IXCV5vz4LNZ8xDDDBPG7w+qxTTe1LV50R1VufSQE?=
- =?us-ascii?Q?1XUC+GuiZQ9YGam/yu4d95O7u+zqJWoxaKKTmReeuDq+MblQM7n90CvsJS3s?=
- =?us-ascii?Q?JASyyGuhNGnrQtj3sWHN/oMRj9e/QiLsijqODtQJ4Qeo2qJPiXccK4YNoDer?=
- =?us-ascii?Q?WTWLNYtQQAeVmHPhVUBR94y3WX1NketGYm99ZAEMS9mNqv3fJmudj/OPcjbY?=
- =?us-ascii?Q?JlVY1THO3N419CpiCdt7DD26V6hKBpu+1ok5wt7gpRqfXm8qeanbkxf67qIh?=
- =?us-ascii?Q?wxd7xFdWIjpjLqQH7STX44qlPgUqhnom0KkB3JYh?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 890313cd-c6f5-4506-bd32-08dd1e9e8a2a
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 13:27:22.9936
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MhKm9OkbWmkFB06Ds1p11XGyrfQjBkfkh/HTvNVknPpscsB60PXuvWAyiGZJpJZf5VeVWiUzqJTfhNmnB8YwjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7500
-X-OriginatorOrg: intel.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, pbonzini@redhat.com, shuah@kernel.org, catalin.marinas@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Dec 13, 2024 at 02:57:06PM -0500, Paolo Bonzini wrote:
-> Teach the MMU notifier callbacks how to check kvm_gfn_range.process to
-> filter which KVM MMU root types to operate on.
+On Tue, 17 Dec 2024 13:12:12 +0000,
+Mark Brown <broonie@kernel.org> wrote:
 > 
-> The private GPAs are backed by guest memfd. Such memory is not subjected
-> to MMU notifier callbacks because it can't be mapped into the host user
-> address space. Now kvm_gfn_range conveys info about which root to operate
-> on. Enhance the callback to filter the root page table type.
+> [1  <text/plain; us-ascii (7bit)>]
+> On Tue, Dec 17, 2024 at 08:30:37AM +0000, Marc Zyngier wrote:
+> > Mark Brown <broonie@kernel.org> wrote:
 > 
-> The KVM MMU notifier comes down to two functions.
-> kvm_tdp_mmu_unmap_gfn_range() and __kvm_tdp_mmu_age_gfn_range():
-> - invalidate_range_start() calls kvm_tdp_mmu_unmap_gfn_range()
-> - invalidate_range_end() doesn't call into arch code
-> - the other callbacks call __kvm_tdp_mmu_age_gfn_range()
+> > > Fixes: 03c7527e97f7 ("KVM: arm64: Do not allow ID_AA64MMFR0_EL1.ASIDbits to be overridden")
 > 
-> For VM's without a private/shared split in the EPT, all operations
-> should target the normal(direct) root.
+> > A patch for a test doesn't fix anything in the kernel.
 > 
-> With the switch from for_each_tdp_mmu_root() to
-> __for_each_tdp_mmu_root() in kvm_tdp_mmu_handle_gfn(), there are no
-> longer any users of for_each_tdp_mmu_root(). Remove it.
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Message-ID: <20240718211230.1492011-14-rick.p.edgecombe@intel.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kvm/mmu/tdp_mmu.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> index d17a3cf1596d..9a004c999a28 100644
-> --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> @@ -193,9 +193,6 @@ static struct kvm_mmu_page *tdp_mmu_next_root(struct kvm *kvm,
->  		     !tdp_mmu_root_match((_root), (_types)))) {			\
->  		} else
->  
-> -#define for_each_tdp_mmu_root(_kvm, _root, _as_id)			\
-> -	__for_each_tdp_mmu_root(_kvm, _root, _as_id, KVM_ALL_ROOTS)
-> -
->  #define for_each_valid_tdp_mmu_root(_kvm, _root, _as_id)		\
->  	__for_each_tdp_mmu_root(_kvm, _root, _as_id, KVM_VALID_ROOTS)
->  
-> @@ -1172,12 +1169,16 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
->  	return ret;
->  }
->  
-> +/* Used by mmu notifier via kvm_unmap_gfn_range() */
->  bool kvm_tdp_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range,
->  				 bool flush)
->  {
-> +	enum kvm_tdp_mmu_root_types types;
->  	struct kvm_mmu_page *root;
->  
-> -	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, KVM_ALL_ROOTS)
-> +	types = kvm_gfn_range_filter_to_root_types(kvm, range->attr_filter) | KVM_INVALID_ROOTS;
-Just curious: 
-though adding KVM_INVALID_ROOTS matches the old KVM_ALL_ROOTS, why do we need
-to unmap an invalid root?
+> The selftests are shipped as part of the kernel source and frequently
+> used for testing the kernel, it's all one source base and we want to
+> ensure that for example the test fix gets backported if the relevant
+> kernel patch does.
 
-> +
-> +	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, types)
->  		flush = tdp_mmu_zap_leafs(kvm, root, range->start, range->end,
->  					  range->may_block, flush);
->  
-> @@ -1217,17 +1218,21 @@ static bool __kvm_tdp_mmu_age_gfn_range(struct kvm *kvm,
->  					struct kvm_gfn_range *range,
->  					bool test_only)
->  {
-> +	enum kvm_tdp_mmu_root_types types;
->  	struct kvm_mmu_page *root;
->  	struct tdp_iter iter;
->  	bool ret = false;
->  
-> +	types = kvm_gfn_range_filter_to_root_types(kvm, range->attr_filter);
-> +
->  	/*
->  	 * Don't support rescheduling, none of the MMU notifiers that funnel
->  	 * into this helper allow blocking; it'd be dead, wasteful code.  Note,
->  	 * this helper must NOT be used to unmap GFNs, as it processes only
->  	 * valid roots!
->  	 */
-> -	for_each_valid_tdp_mmu_root(kvm, root, range->slot->as_id) {
-> +	WARN_ON(types & ~KVM_VALID_ROOTS);
-> +	__for_each_tdp_mmu_root(kvm, root, range->slot->as_id, types) {
->  		guard(rcu)();
->  
->  		tdp_root_for_each_leaf_pte(iter, kvm, root, range->start, range->end) {
-> -- 
-> 2.43.5
-> 
-> 
+That's not what Fixes: describes. If you want to invent a new tag that
+expresses a dependency, do that. Don't use these tags to misrepresent
+what the patches does.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
