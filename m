@@ -1,79 +1,79 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE81F8F04
-	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 23:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8891E489
+	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 23:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734479940; cv=none; b=EGkiEpthgvvhRI+2MMWmXvnjgT818uxzdlhI3ipj2k1Yj1HNSaZV71iBoXX9uaUTP6VVngS9sNHd4xf2ey5+Bvvkvr0yfhZ6tET7buhzejMVWcs/h7qeCtSIeXxzSXpvmmIV0fI7JKlWPkIjvq3XW/o9RksrPrDD24YXTTnWdkQ=
+	t=1734479989; cv=none; b=MgvLlQX8k/Dte024KV0Spd5OoWyqlVE/9yq3I2Rxd8SY9+qkPW8HfJL6lbRTjHzaaFaiVQ3pR7qPD3++DwB6FvS1jpS+5s8VaK5LctuL1o5VNmaN/UWcGEP7TI2yELyL7JO3Ae7+xjJ8I2HLDl8fZ3RIYAFDPKhDDbcl0gMDLS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734479940; c=relaxed/simple;
-	bh=253X2/Ygyqv2mDIgmCRCiJ2f6echdqbAGCfdLInW6S8=;
+	s=arc-20240116; t=1734479989; c=relaxed/simple;
+	bh=HQcTbZF4VMZK8Gh4tXVj30gF2zRoK9ozXa54vb+6DVg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bjS/8GEk1An/Zr0oGmMKszuiOKYNqjzr9ZvwtLu1uRfxgtHBUrJDV0HzpejPKsT4blwdKRw8YRz9Qm9IplBrmOgUc+srjmJsT2z4KlkYjUHVsuQdaTxrHnFG1XPXPHmCsGhEd/+WUKdg2sAvqPzLMYRnBB/v7QiUgUVzWYaxEEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LjGq7mLW; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:MIME-Version; b=PSp4NSKdhjOTqc8BltpzMQ1dJQPVLaAJu5TB/VSHhsWSMXiGALDdGk1AUeQtiZdDcE7s8RM+EZjpbcbqKmJ3hiTkCY8KJjVMmlO5dbauKEW4c7UBvPPkvxWyRnSo2Q/IVtKAS1+LjL6qgrvdcUfwVXXlmrjMk9md1EMPmLxM9bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aEqBqRnX; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LjGq7mLW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aEqBqRnX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734479937;
+	s=mimecast20190719; t=1734479986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ctAzpqF3UG/0IGfBE9fGS9dSSJ927UqahSGZ4siHpoA=;
-	b=LjGq7mLWdjgi/UDdYXnaZY8yy34NWCx50YjYWphXMvanjgseRr5ozZkw/ShUPiBfjB5Pvg
-	iymzKIHowDSimR7sO6BNZ9XwwYjhrXuePt6Pzb4H74yLh1bHBFnYbfgXi919BC9/RGIRE+
-	DXDd68ZmSgnqB1wXOeeQz2VKCheaVC8=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Xsypa/lk2ZGEp9VFcicxVIBsaAtVG1MIYQ3EBVCbIQM=;
+	b=aEqBqRnX2pe2cM0XM0SHZESy0zTzYj7z66y1NPAas8e4iCNXWFxfyDQkVWSmmY3z7YAYvd
+	XR96UvLei4NYQqRvJW1Pl3fAYn5Sl+xY1o/bCEQEGHMm7WT2GLVuykVoaO9rYnPp1jf56g
+	J2w7VXemqAJqhyDWPHQw48JpLHdvm1I=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-nmy04h7FMZyPJ9SU18hztg-1; Tue, 17 Dec 2024 18:58:55 -0500
-X-MC-Unique: nmy04h7FMZyPJ9SU18hztg-1
-X-Mimecast-MFC-AGG-ID: nmy04h7FMZyPJ9SU18hztg
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a7d60252cbso2324765ab.0
-        for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 15:58:55 -0800 (PST)
+ us-mta-435-jLcfPw_fMnyS-9CUNTXRFw-1; Tue, 17 Dec 2024 18:59:45 -0500
+X-MC-Unique: jLcfPw_fMnyS-9CUNTXRFw-1
+X-Mimecast-MFC-AGG-ID: jLcfPw_fMnyS-9CUNTXRFw
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a9d195e6e5so60465725ab.2
+        for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 15:59:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734479935; x=1735084735;
+        d=1e100.net; s=20230601; t=1734479984; x=1735084784;
         h=content-transfer-encoding:mime-version:user-agent:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ctAzpqF3UG/0IGfBE9fGS9dSSJ927UqahSGZ4siHpoA=;
-        b=JHUyiMkuAgvhhdDAX3QC28odihIg4YjmQkyfkMg/qdJFavPppNF/qsSf6t7xH0VwKd
-         bC080zFKDi2z6FL1aNl73EDLp/ixg4+M82OcmVYqpWHn4uJBug3tobO3JT1TcYsc7KpE
-         Z8w68P20kyHJuUtH225hS6Q2qxoPsWdHW7iSm1qSQ1bvKfP1M4HpqzXTCsE9gC0u4oaN
-         vgoddwl0U+XpXzg7IxBz/+AknBJMpkNBmMYAZiDrhlrgXYf3yKptAvBs2Ch+Hi7sYom4
-         gs7hm/ydue+xQ8CUp17U58sZfVqRmIf5dZF0v2d5cAxGFbbZYa3zQSC5iPvlgM9cFCzy
-         kyFQ==
-X-Gm-Message-State: AOJu0YwCLdHYgO+zRpi62YgtzmfOz05U44pBJoWtRQtO46ohur+JBZDB
-	ssDmyQy2ar9q7nk5pdtqVUxuaf9RoR7j61YDArvUsvTI9LEDBFrHcioAdAp6+13PLnYO4M/df1t
-	8PQc8HlBsBY16nJyBEU6QRWOU2PWytSMXl14Uk+u8LnEdz1FlqA==
-X-Gm-Gg: ASbGncuqhiRcXheGv8+CL0giKhh0uM3vyiYbirCB6yKorEtDIWpiDl421pPYx/ChaPW
-	Dx4J3lJFL1dTzEcVgMxzQLGAD+vzta3ap2rEVC9gb1IcFOkuyap9Xd5HRf1jxhWxYOn8IAzWbbp
-	3nRz1NSBAjlbEMBBRagNSdbh1hII846igL+v+df9NI1z/djQhYtgSguh1kn58/FKbSJ6dGSizoa
-	IJhvH+a+MCw74toHcJG/7OpfW+6P4436Y6P3IHTWfRx5YSOM/LZm52E
-X-Received: by 2002:a05:6e02:1c81:b0:3a7:7bab:33f8 with SMTP id e9e14a558f8ab-3bb0ac12cbamr52792835ab.12.1734479935329;
-        Tue, 17 Dec 2024 15:58:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGA+uenBegmVd3ZbmklJV5z9+lx0na5Cd6JyRPWDb28FbNFSzXQThlGzm9jXpNBxqxJhvkv+Q==
-X-Received: by 2002:a05:6e02:1c81:b0:3a7:7bab:33f8 with SMTP id e9e14a558f8ab-3bb0ac12cbamr52792705ab.12.1734479935042;
-        Tue, 17 Dec 2024 15:58:55 -0800 (PST)
+        bh=Xsypa/lk2ZGEp9VFcicxVIBsaAtVG1MIYQ3EBVCbIQM=;
+        b=a0M7sreDldedZv7p1smZ2g/YnyIdPJnJ0Q94tDcf96zm0xpMso+jXiRS9Yi8le2nlZ
+         oimxnIAwEkT54p2QYTXTMJI7Y3P/4/0xBinQShjCAmpgP0f6A5nq7bX2U229jR56Qmgi
+         J2H/XaRiZvYXOwKku8J4s3zjuKkDpRsw5lYy69Jv9wS/WW1/4Rk58Bq3GbkzS+3UJb0Y
+         cuSue6wArqmOhveGd/C2gSvKPVpbLv3YIvC2xLfsNXTwhuyAVZot++1wtozuiK5axpQp
+         1CLzn5yDmuzIEALEyod5HrWeoGbJyY3AFx1Cl6odeZGgEENsGooNFU754E2Hjb1h4pAx
+         DAzg==
+X-Gm-Message-State: AOJu0YykU797alxNHH2VAMvxoy9kIryqlsWNxC2CBJ0yBjEd9nuQeMQe
+	Bjbw1x1SGl1AMIk5bmKeanefMkNA6BzvIhUYwAcDrKJH/bXjAaLlyxo4L+bDfu89+SrOKk1wbFi
+	J+0kQxj8v6caJKhtKWFG1CeVPv/UbpeJUv9Y9HtiBgTNPSsdRjw==
+X-Gm-Gg: ASbGnct2auBFoAq+FAjdYKw/+M65dLfD/3G3Gx8J0u7TSdGcwOj09TcKaSKf7re3V7Z
+	I/ufCkSiEvcEQb37SIyGU1dUX8gOTN/SxU9z/2W1BQeX11+EI99tdju5v6hn8fLLFnqDRzqSo46
+	ENWYOUTEUdFFmIQA/waGKMQZT5H/INcMhE9EhE+/m3roCTKLhkF+FUT8qY33CtEZrwSPlJ7TUyl
+	Ty04SYxlpaVJidp8AtEQgiLUWrtRThYUmMiqBcgwISJSpL+BVxCCHOn
+X-Received: by 2002:a05:6e02:1a6f:b0:3a7:6566:1e8f with SMTP id e9e14a558f8ab-3bdc437a770mr6531585ab.16.1734479984509;
+        Tue, 17 Dec 2024 15:59:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEh6/ypJZLhK7ivl0lgAtAroRZ1XmcT/bT9+gVvRVYoPSUO/W9REARAZoYFbA0fbPyZB29Hmg==
+X-Received: by 2002:a05:6e02:1a6f:b0:3a7:6566:1e8f with SMTP id e9e14a558f8ab-3bdc437a770mr6531445ab.16.1734479984103;
+        Tue, 17 Dec 2024 15:59:44 -0800 (PST)
 Received: from starship ([2607:fea8:fc01:8d8d:6adb:55ff:feaa:b156])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e5e3c69e42sm1901805173.156.2024.12.17.15.58.54
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3b24cf3ae02sm24028405ab.49.2024.12.17.15.59.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 15:58:54 -0800 (PST)
-Message-ID: <f91364794fd3d08e2eb142b53a4e18c5b05cb7c4.camel@redhat.com>
-Subject: Re: [PATCH 02/20] KVM: selftests: Sync dirty_log_test iteration to
- guest *before* resuming
+        Tue, 17 Dec 2024 15:59:43 -0800 (PST)
+Message-ID: <5b5b12bdc8a653901f28c754fcdced9103ae5c27.camel@redhat.com>
+Subject: Re: [PATCH 05/20] KVM: selftests: Precisely track number of
+ dirty/clear pages for each iteration
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
  <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Peter Xu
 	 <peterx@redhat.com>
-Date: Tue, 17 Dec 2024 18:58:53 -0500
-In-Reply-To: <20241214010721.2356923-3-seanjc@google.com>
+Date: Tue, 17 Dec 2024 18:59:42 -0500
+In-Reply-To: <20241214010721.2356923-6-seanjc@google.com>
 References: <20241214010721.2356923-1-seanjc@google.com>
-	 <20241214010721.2356923-3-seanjc@google.com>
+	 <20241214010721.2356923-6-seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 Precedence: bulk
@@ -85,45 +85,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 On Fri, 2024-12-13 at 17:07 -0800, Sean Christopherson wrote:
-> Sync the new iteration to the guest prior to restarting the vCPU, otherwise
-> it's possible for the vCPU to dirty memory for the next iteration using the
-> current iteration's value.
+> Track and print the number of dirty and clear pages for each iteration.
+> This provides parity between all log modes, and will allow collecting the
+> dirty ring multiple times per iteration without spamming the console.
+> 
+> Opportunistically drop the "Dirtied N pages" print, which is redundant
+> and wrong.  For the dirty ring testcase, the vCPU isn't guaranteed to
+> complete a loop.  And when the vCPU does complete a loot, there are no
+Typo
+> guarantees that it has *dirtied* that many pages; because the writes are
+> to random address, the vCPU may have written the same page over and over,
+> i.e. only dirtied one page.
+
+Counting how many times a vCPU wrote is also a valid statistic
+
+I think it would be the best to include it as well (e.g call it number of
+loops that vCPU did).
+
+Best regards,
+	Maxim Levitsky
+
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  tools/testing/selftests/kvm/dirty_log_test.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  tools/testing/selftests/kvm/dirty_log_test.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
 > diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-> index cdae103314fc..41c158cf5444 100644
+> index 55a744373c80..08cbecd1a135 100644
 > --- a/tools/testing/selftests/kvm/dirty_log_test.c
 > +++ b/tools/testing/selftests/kvm/dirty_log_test.c
-> @@ -859,9 +859,9 @@ static void run_test(enum vm_guest_mode mode, void *arg)
->  		 */
->  		if (++iteration == p->iterations)
->  			WRITE_ONCE(host_quit, true);
+> @@ -388,8 +388,6 @@ static void dirty_ring_collect_dirty_pages(struct kvm_vcpu *vcpu, int slot,
+>  
+>  	if (READ_ONCE(dirty_ring_vcpu_ring_full))
+>  		dirty_ring_continue_vcpu();
 > -
-> -		sem_post(&sem_vcpu_cont);
->  		sync_global_to_guest(vm, iteration);
-> +
-> +		sem_post(&sem_vcpu_cont);
+> -	pr_info("Iteration %ld collected %u pages\n", iteration, count);
+>  }
+>  
+>  static void dirty_ring_after_vcpu_run(struct kvm_vcpu *vcpu)
+> @@ -508,24 +506,20 @@ static void log_mode_after_vcpu_run(struct kvm_vcpu *vcpu)
+>  static void *vcpu_worker(void *data)
+>  {
+>  	struct kvm_vcpu *vcpu = data;
+> -	uint64_t pages_count = 0;
+>  
+>  	while (!READ_ONCE(host_quit)) {
+> -		pages_count += TEST_PAGES_PER_LOOP;
+>  		/* Let the guest dirty the random pages */
+>  		vcpu_run(vcpu);
+>  		log_mode_after_vcpu_run(vcpu);
 >  	}
 >  
->  	pthread_join(vcpu_thread, NULL);
-
-
-AFAIK, this patch doesn't 100% gurantee that this won't happen:
-
-The READ_ONCE that guest uses only guarntees no wierd compiler optimizations are used.
-The guest can still read the iteration value to a register, get #vmexit, after which the iteration
-will be increased and then write the old value.
-
-
-Is this worth to reorder this to decrease the chances of this happening? I am not sure, as this will
-just make this problem rarer and thus harder to debug.
-Currently the test just assumes that this can happen and deals with this.
-
-
-Best regards,
-      Maxim Levitsky
+> -	pr_info("Dirtied %"PRIu64" pages\n", pages_count);
+> -
+>  	return NULL;
+>  }
+>  
+>  static void vm_dirty_log_verify(enum vm_guest_mode mode, unsigned long *bmap)
+>  {
+> +	uint64_t page, nr_dirty_pages = 0, nr_clean_pages = 0;
+>  	uint64_t step = vm_num_host_pages(mode, 1);
+> -	uint64_t page;
+>  	uint64_t *value_ptr;
+>  	uint64_t min_iter = 0;
+>  
+> @@ -544,7 +538,7 @@ static void vm_dirty_log_verify(enum vm_guest_mode mode, unsigned long *bmap)
+>  		if (__test_and_clear_bit_le(page, bmap)) {
+>  			bool matched;
+>  
+> -			host_dirty_count++;
+> +			nr_dirty_pages++;
+>  
+>  			/*
+>  			 * If the bit is set, the value written onto
+> @@ -605,7 +599,7 @@ static void vm_dirty_log_verify(enum vm_guest_mode mode, unsigned long *bmap)
+>  				    " incorrect (iteration=%"PRIu64")",
+>  				    page, *value_ptr, iteration);
+>  		} else {
+> -			host_clear_count++;
+> +			nr_clean_pages++;
+>  			/*
+>  			 * If cleared, the value written can be any
+>  			 * value smaller or equals to the iteration
+> @@ -639,6 +633,12 @@ static void vm_dirty_log_verify(enum vm_guest_mode mode, unsigned long *bmap)
+>  			}
+>  		}
+>  	}
+> +
+> +	pr_info("Iteration %2ld: dirty: %-6lu clean: %-6lu\n",
+> +		iteration, nr_dirty_pages, nr_clean_pages);
+> +
+> +	host_dirty_count += nr_dirty_pages;
+> +	host_clear_count += nr_clean_pages;
+>  }
+>  
+>  static struct kvm_vm *create_vm(enum vm_guest_mode mode, struct kvm_vcpu **vcpu,
 
