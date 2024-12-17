@@ -1,120 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353351F8AEC;
-	Tue, 17 Dec 2024 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3431F75B7
+	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448448; cv=none; b=mITCEjp73ZUCetMVBBt7whBa353CSC4fdY8+uA88DW/skctD7Qv119XZ/JVVuQJoMi1QLD1NymRQC752I1MJwz2Qaqjujv5k/1E71qtlEliN798O09owdKoq69ohdqFciSBnFP1lclRtwBnRQtJR2F2GKYAQVRpofLLDS9oqmd4=
+	t=1734450760; cv=none; b=o/Qoj3lCucIJHWXMaDN/tONkV0/d6rXw3ussRNF+8MZNFAKJSbghwP6lr55CNcjDzaO4NTgsgs+19yq5PgB0w4qvoFDdLwZP1LvA8EDTZZQATl5AhsnE+iCDp4OF2c5oENeUwvIg/t5rQLHF6pl9aAJCO9/d25BqgK3yU/519bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448448; c=relaxed/simple;
-	bh=yZevPphbLIaRcs4edJZitg1YrBi5XxHxu0Vy608/eXQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T5aLWaTE2DKU+K8Qy9RMDs4Coi9FxkLdyfnpW6M9bwhQswbgIy0VSIXhS52x+9SaGjLxSSn+0UDm0fEDHsn/TNV4C0byvWOXqUp5IkTeV6DaRP5dB53XOMWBFVMESYE1nTWRB9HOgZ7gb63bYygZzUg+1pbkn9tkDufB9qBvWoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVpAi/l7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734450760; c=relaxed/simple;
+	bh=JZij+wD+aNQXqNIXiQsIf0+y4ig+Hkuohj66YlIjbPQ=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VPgrtdTZ20WZZGUMI2srCwkwuOnaMdHZ0eXxoUQdr5uNSJUJoZ3GJBgS682SAfinjDeuoVuSYAoEWuYKBB5tJ5AERPDMFfAc29LEGEe0kniQo0LGziGugbFGzPsfXY06UqbWBD5/gOmUWkzmzota+cBH6w/w1GJRAEAaS8gH5k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL8fTSN2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVpAi/l7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A52C4CEE3;
-	Tue, 17 Dec 2024 15:14:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL8fTSN2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ECE3DC4CEDE
+	for <kvm@vger.kernel.org>; Tue, 17 Dec 2024 15:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734448446;
-	bh=yZevPphbLIaRcs4edJZitg1YrBi5XxHxu0Vy608/eXQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVpAi/l7lLaLPGkcTPxyiHf2mWf2kmyJpdtrkSFp3/WDfmpKBfvnjTWkfrzmnB30o
-	 BuO4tJmStr5c0qMclqzwIeBnPojDCy+3t0GeIL0xfw+g8RekjJe/vi29co6rZmIDPT
-	 0rFSM22mdkAqdnclPzFeEWtb0TW5hLbvIaWGb3cnze6rxC6MagPai3qp5C87/bXnxO
-	 f0UEj/ryjnwc2AV22CXwyUhb5Bc8KFfoqve/BgsKai6BciftKCqjG8bwXWsgksGrh5
-	 sWm7u7k04T20OfCR5zgbmljHJ5i9zqTbKHGwaOiuQk79pd164ZimGTIDiiX/qXfS/z
-	 zMD/LKAkYvjdA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tNZGu-004bWV-TJ;
-	Tue, 17 Dec 2024 15:14:04 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Eric Auger <eauger@redhat.com>,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: [PATCH 12/16] KVM: arm64: nv: Respect virtual HCR_EL2.TWx setting
-Date: Tue, 17 Dec 2024 15:13:27 +0000
-Message-Id: <20241217151331.934077-13-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241217151331.934077-1-maz@kernel.org>
-References: <20241217151331.934077-1-maz@kernel.org>
+	s=k20201202; t=1734450760;
+	bh=JZij+wD+aNQXqNIXiQsIf0+y4ig+Hkuohj66YlIjbPQ=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=ZL8fTSN2PxPtMMPC21WYYZz8bipy5W7XXjFhMH3smAaH2eDp+7taInMHtP0v8vfiH
+	 1mw8NfgEyPpfDdA6uKDR9zWtzE6FKYLXqIxb9qKQBSt5PilgNPsNHiXnqRJWuTEoAA
+	 HWoIsydB/Npvr+Sxa5mzmCvgRRjE/UTxeL5182S2uFyTA2Rd83VS6DSRr5jQyhrx/O
+	 wZ//UGsKje0AeCpMJk/dOzcExw8oQV+tN7/dCjzOwkCQIKHCB8nKu05Mwukmq0VAjL
+	 dIpBKn/1spSUqfe2M4gih+4cWsm1TW2FEVI1huxfxEWQG5/k51C3mkLEgl07J8fRoU
+	 r7a/gPZhvCScg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id E0791C41606; Tue, 17 Dec 2024 15:52:39 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: kvm@vger.kernel.org
+Subject: [Bug 219602] By default kvm.enable_virt_at_load breaks other
+ virtualization solutions
+Date: Tue, 17 Dec 2024 15:52:39 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
+X-Bugzilla-Product: Virtualization
+X-Bugzilla-Component: kvm
+X-Bugzilla-Version: unspecified
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: acmelab@proton.me
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-219602-28872-7SvCKPgI24@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-219602-28872@https.bugzilla.kernel.org/>
+References: <bug-219602-28872@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, andre.przywara@arm.com, eauger@redhat.com, gankulkarni@os.amperecomputing.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Jintack Lim <jintack.lim@linaro.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219602
 
-Forward exceptions due to WFI or WFE instructions to the virtual EL2 if
-they are not coming from the virtual EL2 and virtual HCR_EL2.TWx is set.
+--- Comment #2 from Pinky (acmelab@proton.me) ---
+(In reply to hch from comment #1)
+> On Mon, Dec 16, 2024 at 09:15:22AM +0000, bugzilla-daemon@kernel.org wrot=
+e:
+> > Previously (kernel 6.11 and lower) VMs of other virtualization solutions
+> such
+> > as VirtualBox could be started with the KVM module enabled.
+>=20
+> There is no other in-tree user of the hardware virtualization
+> capabilities, so this can't break anything by definition.
 
-Signed-off-by: Jintack Lim <jintack.lim@linaro.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/include/asm/kvm_emulate.h | 13 +++++++++++++
- arch/arm64/kvm/handle_exit.c         |  6 +++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+That sounds like a dead-end argument to me. What is the use case for this n=
+ew
+feature actually? What would be the disadvantage to turn this off by defaul=
+t?
 
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index cf811009a33c9..5d2af20f75890 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -281,6 +281,19 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
- 	return vcpu->arch.fault.esr_el2;
- }
- 
-+static inline bool guest_hyp_wfx_traps_enabled(const struct kvm_vcpu *vcpu)
-+{
-+	u64 esr = kvm_vcpu_get_esr(vcpu);
-+	bool is_wfe = !!(esr & ESR_ELx_WFx_ISS_WFE);
-+	u64 hcr_el2 = __vcpu_sys_reg(vcpu, HCR_EL2);
-+
-+	if (!vcpu_has_nv(vcpu) || vcpu_is_el2(vcpu))
-+		return false;
-+
-+	return ((is_wfe && (hcr_el2 & HCR_TWE)) ||
-+		(!is_wfe && (hcr_el2 & HCR_TWI)));
-+}
-+
- static __always_inline int kvm_vcpu_get_condition(const struct kvm_vcpu *vcpu)
- {
- 	u64 esr = kvm_vcpu_get_esr(vcpu);
-diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
-index d7c2990e7c9ed..206eb6698db70 100644
---- a/arch/arm64/kvm/handle_exit.c
-+++ b/arch/arm64/kvm/handle_exit.c
-@@ -129,8 +129,12 @@ static int kvm_handle_fpasimd(struct kvm_vcpu *vcpu)
- static int kvm_handle_wfx(struct kvm_vcpu *vcpu)
- {
- 	u64 esr = kvm_vcpu_get_esr(vcpu);
-+	bool is_wfe = !!(esr & ESR_ELx_WFx_ISS_WFE);
- 
--	if (esr & ESR_ELx_WFx_ISS_WFE) {
-+	if (guest_hyp_wfx_traps_enabled(vcpu))
-+		return kvm_inject_nested_sync(vcpu, kvm_vcpu_get_esr(vcpu));
-+
-+	if (is_wfe) {
- 		trace_kvm_wfx_arm64(*vcpu_pc(vcpu), true);
- 		vcpu->stat.wfe_exit_stat++;
- 	} else {
--- 
-2.39.2
+--=20
+You may reply to this email to add a comment.
 
+You are receiving this mail because:
+You are watching the assignee of the bug.=
