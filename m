@@ -1,98 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FED148855
-	for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 16:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617174690
+	for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 16:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734538554; cv=none; b=iC+cqopPTlnMWnSUyEQD2oY3pTHdrtotDXGzAgzObgo466Bw9x+OAFlM46TzzDor0SgUht76XjvCFuV7zJ/ek+48VSsCfP5I/BIBWTFWmkS+Jl3hWV85SSJdZObNEjxr25Lpz96InoYsjQrY4t0vbN07zfgsphxRTTNpHsJNz2o=
+	t=1734538592; cv=none; b=VS0pLm84qBr3rBggRFsnFQgfM+FMoxT48wyFKnY0PFxtudoSfIANk1lAnL2ckOOJwngwpu4TTfqPvDXC7sVed9iS6VCqif7N1q8BERDRMRW50DvCdPQbFSdlgE7A80egb2ulYfudtrSAatAe5iIztVYD+hRxS5PlT+P05oQqYRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734538554; c=relaxed/simple;
-	bh=ZDuCEKT0/oRRNImm1XMVi47v0lb6hMFRoy25AeCBJaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSs1cSMc37IXMo3H5PWTw8I9KWaLqW9kO0N2DMsc0Rv5QSrO5r7py9Unocbn2QXfmd1H865CSK2hNRqaPVRod6U9w5EvrWv7pesHr+OR7T/s7ZMAP8unfWwrgmX5nNuAqyhyco1T9Afdk6y+6/hB1+XR6ZoU36OfKqoHXmyBwtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZDhD5Oc; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734538592; c=relaxed/simple;
+	bh=8rYrXyYgQXw8tOo1dAScQZ+VsC6Rhj8S+6SbPdWdtdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DeuWjuHiti7InkPnv9DUduGBwtlM242HmPq/NJMOvTpHXF+94difQroS+Z/dVtd36p8kki1tQbplW+4gkdB0vgvwl3esElcTlNV7D3jareHhiJkqowxSdREaHmWFmbWU8rQHV3PcmeKCX1MP6cJare6rKcp/hKgXHyWbfgeUtoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RJnYUrqU; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZDhD5Oc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734538552; x=1766074552;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ZDuCEKT0/oRRNImm1XMVi47v0lb6hMFRoy25AeCBJaw=;
-  b=PZDhD5OcgfnHy0dKw4522HNSBR03TJni6TB3H1jiq3n9TqxIvT4Dhrbf
-   l5kPTCdfWQ8EvG8KSzCYutJFmonO73CjdxMWlZKCNhlK6/FWQcXuwh9i2
-   5UeJdr8vYOoncBkmnQMWBLbQ0GZw0OUIHIyHMwQzAIgz+HUhY6tP18MrO
-   9e9kwJ3QUs01mEO4F7JZmIQANYJZLqZTXaOlDTrVjnvGccCzHu7XdBspb
-   6YMKxGoaJzLKtdfducojwkVKQA5gyqH7I1pB1Sd15U0CcwlB531Ts7tjR
-   U+aOW8dGOppXVNyPrZTYyvR7WNT4nx0m9m7iXQZTH6fz5KwGIO1ZR0vxg
-   g==;
-X-CSE-ConnectionGUID: CVNLLejvSUSMAEMaogtpkg==
-X-CSE-MsgGUID: XuGdV/aFQeG/J6xCeYuDBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34911664"
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
-   d="scan'208";a="34911664"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 08:15:52 -0800
-X-CSE-ConnectionGUID: aEJDl8zWTMqdq1zsFDQVMA==
-X-CSE-MsgGUID: or0tceHkRTuUzrBj/QC8pA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
-   d="scan'208";a="98464566"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa009.fm.intel.com with ESMTP; 18 Dec 2024 08:15:46 -0800
-Date: Thu, 19 Dec 2024 00:34:26 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
-	kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Daniel Henrique Barboza <danielhb413@gmail.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-Message-ID: <Z2L5kvVIr3JpvMzu@intel.com>
-References: <20241218155913.72288-1-philmd@linaro.org>
- <20241218155913.72288-3-philmd@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RJnYUrqU"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434e3953b65so47353665e9.1
+        for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 08:16:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734538588; x=1735143388; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LgKPhFrfn+FSpszjwReu0WlKGkAYalZZQp3pOzgu1Nw=;
+        b=RJnYUrqUiiqw80+DDjSqo+6BOw5G3geMRupQNF1cjNcQyFPpPb+M7P8HEBJWpd0mhC
+         QBrk5ACBeRqZW3sfHmgJF0WPNcuKTRQjqgw3LQHwGQ0EQCxxjO8a34kfZtZgog1yBacv
+         PQ1qeYNfPo8tWxkZiUNIp8bxYmuGnN1pnSbWyiiHc5vFayu0sWShRVCwMz/yvMrqkbX/
+         XQIoOO7C+BHb0irwreHNLXuCmP7An0bNl10w3ozWxkkkqHcpRRx0TK7bNv6PdRVWpgNP
+         oXRJjjg6rT6VsfdHxtAAuzIC3UyaYxoFMk1FlccV3kggau/fAz1PiNOuyQXSUseiDPXn
+         mcaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734538588; x=1735143388;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LgKPhFrfn+FSpszjwReu0WlKGkAYalZZQp3pOzgu1Nw=;
+        b=NSGV7RHEJKSOKw/9m6zZNXB0Kkwkm0Snky/lpaG0rNshYesAKc7J96gaaE/yOflF97
+         8R5Z8UMloRZx6TZyTPreJ0a0AEt8enkO0cbUfEOgDx4MuxApWkpx8X89vr2RrEO7UkgT
+         tGGYVoUZhnv2EmjuhDe86Sqec1eEi2C8DgFWAQdSR8Y/OY2mUnsWcCfpICzuc59ovXj/
+         k6OOMuJF+t4MNg8gSVt7mQVVupiHhnuvQAa0kF1CX2xespAL2gJpVxhgQhfCLMhrObFa
+         y+1Wean4neWyWmeiBheNEs9U0PNY89vb3gqmt2rFfzBitVJ0ZfKOo6fbEy35YCdF1KNK
+         OXVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUReGoT4KzMtwtlnmCJIMcthJJD9yQMRmD4uJ+n1NmWHusRxpdjLHLtFGjfrtQ1bk8/Lv4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw21+dM0tTX2YcIJCA7qTeOXv7W4fUytpGowT0yuqZrMsc/pM70
+	EQ3/+9G+ad25WQF9UwWCwGDgvuwYCfnyZh46feXRVailxMyYPttuFNukShiF0oE=
+X-Gm-Gg: ASbGncso664Er9Iwu1xPcNHwBmQnrDNLYpEz6/0HwEzS2v+CL9PZc40BDYM/e8YQMx4
+	osazDrmrGHSEmJZqADWHRYwiR55WmE/Kpy6nAPqHMY11WHn/l5egh8pn3rq/Bzp5pXJ6SVq7SwC
+	bWr243atm2H2/VLXH7Z2oQmMesGBzWwGXrFRCUmXPSlAgI6CmcsEIpoH7dpIjjY7auD/3FDEJke
+	tjvnh2aAOFDqZwsx3HwpnnVmk+GqlCXc3vqYCn026gR33gPYoah0dqjlr7IrTmMLTt5LWME
+X-Google-Smtp-Source: AGHT+IG3+PUCAO/8ELd7L3fpgTuG/KKzGhdHfkztmZ1kLBBJfKykC4ur7GBo+SwGLH+hKx0U79ssRA==
+X-Received: by 2002:a05:600c:474d:b0:434:f131:1e6d with SMTP id 5b1f17b1804b1-4365535fd93mr40310565e9.10.1734538588312;
+        Wed, 18 Dec 2024 08:16:28 -0800 (PST)
+Received: from [192.168.1.117] ([78.196.4.158])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b01b73sm25160225e9.14.2024.12.18.08.16.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2024 08:16:27 -0800 (PST)
+Message-ID: <4a746daa-74be-4abd-9583-47fcbab4dc35@linaro.org>
+Date: Wed, 18 Dec 2024 17:16:26 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] system: Move 'exec/confidential-guest-support.h' to
+ system/
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+ kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
+References: <20241218155913.72288-1-philmd@linaro.org>
+ <20241218155913.72288-2-philmd@linaro.org> <Z2L4seQo7Z7LPpTh@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Z2L4seQo7Z7LPpTh@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241218155913.72288-3-philmd@linaro.org>
 
-On Wed, Dec 18, 2024 at 04:59:13PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 18 Dec 2024 16:59:13 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-> X-Mailer: git-send-email 2.45.2
+On 18/12/24 17:30, Zhao Liu wrote:
+> On Wed, Dec 18, 2024 at 04:59:12PM +0100, Philippe Mathieu-DaudÃ© wrote:
+>> Date: Wed, 18 Dec 2024 16:59:12 +0100
+>> From: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
+>> Subject: [PATCH 1/2] system: Move 'exec/confidential-guest-support.h' to
+>>   system/
+>> X-Mailer: git-send-email 2.45.2
+>>
+>> "exec/confidential-guest-support.h" is specific to system
+>> emulation, so move it under the system/ namespace.
+>> Mechanical change doing:
+>>
+>>    $ sed -i \
+>>      -e 's,exec/confidential-guest-support.h,sysemu/confidential-guest-support.h,' \
+>>          $(git grep -l exec/confidential-guest-support.h)
+>>
+>> Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
+>> ---
+>>   include/{exec => system}/confidential-guest-support.h | 6 +++---
+>>   target/i386/confidential-guest.h                      | 2 +-
+>>   target/i386/sev.h                                     | 2 +-
+>>   backends/confidential-guest-support.c                 | 2 +-
+>>   hw/core/machine.c                                     | 2 +-
+>>   hw/ppc/pef.c                                          | 2 +-
+>>   hw/ppc/spapr.c                                        | 2 +-
+>>   hw/s390x/s390-virtio-ccw.c                            | 2 +-
+>>   system/vl.c                                           | 2 +-
+>>   target/s390x/kvm/pv.c                                 | 2 +-
+>>   10 files changed, 12 insertions(+), 12 deletions(-)
+>>   rename include/{exec => system}/confidential-guest-support.h (96%)
+>>
 > 
-> "system/confidential-guest-support.h" is not needed,
-> remove it. Reorder #ifdef'ry to reduce declarations
-> exposed on user emulation.
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  target/i386/sev.h  | 29 ++++++++++++++++-------------
->  hw/i386/pc_sysfw.c |  2 +-
->  2 files changed, 17 insertions(+), 14 deletions(-)
-> 
+> (MAINTAINERS is missed to change? :-))
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Yeah there is no entry for CGS in MAINTAINERS :(
 
