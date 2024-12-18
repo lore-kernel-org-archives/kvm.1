@@ -1,91 +1,106 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE121FBEB7
-	for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 21:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6485383;
+	Wed, 18 Dec 2024 21:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734557872; cv=none; b=Kj6NhKQi3crpSi+ATcLmSaCPglvq9AONIDwURovQtU/az4CslMhEEJ/FGzXaxMi4HT/+NBripNLXR3nDZO/amzjCAwJOHzofQxUbJuJOYOK017MUjd0Oab8Rjw1Qp7DEAJjnaXCPHtRo0JExj0trcuuc56469wV4BGo1toOQosE=
+	t=1734559035; cv=none; b=fILePbGwXVPXDAE37wJjXJ0QAIi+7JVaOitXSGT00H2QyrcT28PvEhprEfhVpTgbHv1lXS0R1HP5NthYo26eiF7V1w9NNxd05dXvvgM2FNpEt9SQNORP6K1VmTSROKDGTV3FWvQhhhUZzRabVOyrr8qFxPOjcfaJyH1ujsHDyWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734557872; c=relaxed/simple;
-	bh=Z0grQxxymEt0iej/U411Hr9y6+t0LNvaPALtibuXxHU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mmfAB1n/kp9AqpB2b535FTXx63bPbTPTpY7RulWDh45IqXlUtg9zTDXug8kb7/NTs69hxVOQMGkyljFRriuAHD++1UkMKDcPmZ7egs+I/uPArVYYx1LdsyZ8Q6/dDNvQM7TnmjOyQmYrA7NwSVOwv3Vhdz35z/O749KF6LxrzzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GsAaOsg5; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1734559035; c=relaxed/simple;
+	bh=VMKwp68beag1rsGtcORCKXKjoNZOGhbCbWJbdj3nI28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lUMhuMiqpC+OYe8ONDGWCBI8D7ZnDbS8kH2i7hFv0folXgcipxHhwljr4NGM13sMOt6BVMI3MCGN1hb4pl9ZE+i153JGgA2NGFCT/sJkMi2swHpsuVEpKDfE8oiycnrr0ACfE0SeG1lgYm3UWdcvj4y073Pcsg1HCBnWlWa0xvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FMEo39IH; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GsAaOsg5"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2efc3292021so148695a91.1
-        for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 13:37:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FMEo39IH"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso879155e9.2;
+        Wed, 18 Dec 2024 13:57:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734557870; x=1735162670; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKW6RYDwVNOGp97UdIa1U2fUa+fRF37h4zaoaXCLjlE=;
-        b=GsAaOsg5SJDGoRb3u3Z0EOZgr5eM3Uu2nLp/diyw4Gny9deiRjtPh5SBTzwocJfauM
-         si7MHStnbRrmL4T9fC3yBIG1o/mpamZ+QcUnxpf+XfQiUemvvqwL4xfgHPu4QO2e4GM8
-         IFF2tHRFCYWFe2rfku/97qD0tI4cvN/dBXjQ11Y87qBeFSp05dGQ/WOmseDNKwcBkcyF
-         Gi/eWzlLeNcE8x9GJ8QvTMPt7i1kOz8TlmG4B43WtsPoHdK7v8juaydIbBIwLCyYV93R
-         n/KMIHiUlNDi6NCNC3WNpJtKs+aziNEPmBHlNZpfy3B+YXkoEnsxG+c7O8KXThetq6AR
-         rHVw==
+        d=gmail.com; s=20230601; t=1734559032; x=1735163832; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2LOHLjHabArNW5VIUyqYrw9ykNXPW0+LpDm9qCPwqpY=;
+        b=FMEo39IH0rHqGmATNBcpR0zhyZzbrA7dhi4xqP+iEYRbPBhkpWLrtOckpcIIPzioS9
+         eGWBExQgyLgNOolDnZwKEdWLk0+j1gjeT5/2UeK3lyWpL5wGXnQPf3WFQ55XaTREZT+h
+         OTcYdmrmq0+8FXnNRSo9QsXZshaFqxT+hLV03oprznvB2ws++PdwNiZyZBdyONrATXEO
+         dY9mbGmTcPEVEbvj4lXoda5ANoJRYiZwfsVF963aP2HbsJuthub7kgdVvpplx5m/56Gm
+         kMCkCaXVZSf2l4Nbvrr+nzvQdajr5f2MmuQ+ThTK+OOAX6y/EU1WQR2KHrCJ+VwJ/R0H
+         dyYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734557870; x=1735162670;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKW6RYDwVNOGp97UdIa1U2fUa+fRF37h4zaoaXCLjlE=;
-        b=lnPII/LYTgTwJbVp7/Qef4rKL8yXSrk1MRTH/OS7Uz0zGTNw3RfJ1K2EgmyZBTYu0i
-         sDB4r3CoIcc1zN4SFDSjcs/XNuugC4gDIJeQlaQ/XDsNu7Lz4qssa/Ntb2nJm3N/QzYd
-         rOEoe4hebUe4nEEO3BE/M+9Ys9pkdZztgNpuT+LEF6Mvvpv7Ya3QXx69B2ps3sEzWp9c
-         ROQizXqfRtEtZXtG9bhZjrVUhMyDECtVN/UikWW1nAgjbvOzzIVM3jhV/8b14n33ieij
-         uvadTroOCGiJGZR0+V85cg/tpt0hfdNxiKxDVAHRJMjsiLwBDWagogiQcdLUwcL84RvR
-         sv7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVQcSAPY4coEcLqOheOA4hBMmvdOCGV/rmQmGWaY0utfjTJPlWU/lqcnHWoHDNYQB1UA40=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycYR/sxknqBsvz1OQVQnPZq8hb6SYKZbBIRYDwmFKCPSdkS+mp
-	MwUFwUYqwuBppzwim9WwA731h4D+tMQWRKG4lXuqcU+bVSxuMZOQj99D3cSJ+DUzM2VtJ5ekjYy
-	ctQ==
-X-Google-Smtp-Source: AGHT+IGRqhtqkL9hKkzXjSkyFpptnWEVrJn395W/rGkd0x7zdgCLY+aBw2ILiLv84mQ9u5OCA+5V/nk9SSw=
-X-Received: from pjbpa1.prod.google.com ([2002:a17:90b:2641:b0:2ea:5fc2:b503])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5252:b0:2ea:498d:809f
- with SMTP id 98e67ed59e1d1-2f443d45486mr1113117a91.26.1734557870279; Wed, 18
- Dec 2024 13:37:50 -0800 (PST)
-Date: Wed, 18 Dec 2024 13:37:48 -0800
-In-Reply-To: <5b5b12bdc8a653901f28c754fcdced9103ae5c27.camel@redhat.com>
+        d=1e100.net; s=20230601; t=1734559032; x=1735163832;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2LOHLjHabArNW5VIUyqYrw9ykNXPW0+LpDm9qCPwqpY=;
+        b=jAtJlXMfSroMsaMSyj9tV0K2/RF4ZSVB7XjeVOhoS5tfKd9h1rZ45aCTOxL0wVYWuZ
+         b4/Nsw/GnjoqhGk/0gXqh3gqcZB2BL/8L4AQGQle3YM2/iFkeT8QyuwCGjzkhM/Zo21v
+         3dNJsLf9pdxnK/haauBlhJ+bVv76zSs8qA0ofKnVXFILnLFvdO1HLN79tpzktXzLHFcI
+         i0z7dt7RKkigA5TQFDu1kRax9A9kdgLbuyKtoTuSIY4LxBuqVsS10y/SEVoswXcOjj/B
+         Je47wu04QyNMvHUEWvcnNTd8ECVWo2imd8ZxPqWnBeBqW2W5VKCFTQLiPrl26JbgJ+Jx
+         CG3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUuMu9cl5oMQv1o3LEIPD72qBUOzoZaL/+SLmXgMNSiCQCAgI2WMeYrUN+c1yBalXGaqsTNW69E7b/t/4pB1Q9b@vger.kernel.org, AJvYcCUzYjTv900SpbtiuLcyDa1khGY5QxFYgKzVwzazs8HbAPwZZ7ZWKrHV+cGntpywAYPBnfA=@vger.kernel.org, AJvYcCX1ly3e78v9ja9ABdZRNKWTRqj7WFOXgk5XxLXBBrhcraJbccAbE1uJlUSibva3SBCL//KYXg8OPBnXZ2C2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6Rp5MaksqJ8NPYKBFrjgGVv5sPrrL9uLb0hn7qVxNxz0Ye53w
+	4kgzdVITiA3zi4O9KsHDmv1brCJ+8ORzkmKjaNvwtXCuy5V75WP4
+X-Gm-Gg: ASbGncsEgVkN+72uU499GdIejNAGJdElRMIW9q7YTmMxzOjTh0e+jJl+aL+jAlKP82B
+	U7NMToA6nHv2qyP2at2C3QX+qz+t57j3GgbPRoJe8UGdksIy15+W0VlOdHOPnf8L7FEstzEYb+1
+	MSg74EhFXoLsC0e5tfM5RWrp036KosmMVOrtFC5ve233cZ4qmU5FWQk1tRF9Zid+xeK9mnnhslo
+	4LJL9cja09VxYud5tlK0wM4xnI/IMwBJY0v2hOj4uticb6S7AUjjPRdRIX2wA94TAsyu+MxEbM7
+	lNbC0m2Zaw3Gs/4sSLfWHrVd7FVX
+X-Google-Smtp-Source: AGHT+IHc2nTeOAn7Cz5A6Wuy+3VMml2/uO3mZOip7BhDbLyuVs+vICnk5hLOqCFh5rA1kSqNE6CAaA==
+X-Received: by 2002:a05:6000:4b0c:b0:386:4a60:6650 with SMTP id ffacd0b85a97d-388e4d8e6e7mr4235383f8f.42.1734559031423;
+        Wed, 18 Dec 2024 13:57:11 -0800 (PST)
+Received: from ?IPV6:2a02:8012:e013:0:3fe7:9506:a78f:9d50? ([2a02:8012:e013:0:3fe7:9506:a78f:9d50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b1904asm31770635e9.30.2024.12.18.13.57.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2024 13:57:10 -0800 (PST)
+Message-ID: <565a0127-f7da-4c68-8ac5-f0c6827c1899@gmail.com>
+Date: Wed, 18 Dec 2024 21:57:08 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241214010721.2356923-1-seanjc@google.com> <20241214010721.2356923-6-seanjc@google.com>
- <5b5b12bdc8a653901f28c754fcdced9103ae5c27.camel@redhat.com>
-Message-ID: <Z2NArA9PtR7OdIs6@google.com>
-Subject: Re: [PATCH 05/20] KVM: selftests: Precisely track number of
- dirty/clear pages for each iteration
-From: Sean Christopherson <seanjc@google.com>
-To: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] Enhance event delivery error handling
+To: Sean Christopherson <seanjc@google.com>, Ivan Orlov <iorlov@amazon.com>
+Cc: bp@alien8.de, dave.hansen@linux.intel.com, mingo@redhat.com,
+ pbonzini@redhat.com, shuah@kernel.org, tglx@linutronix.de, hpa@zytor.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, x86@kernel.org, dwmw@amazon.co.uk,
+ pdurrant@amazon.co.uk, jalliste@amazon.co.uk
+References: <20241217181458.68690-1-iorlov@amazon.com>
+ <Z2MYImBJGSjmBOII@google.com>
+Content-Language: en-US
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
+In-Reply-To: <Z2MYImBJGSjmBOII@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 17, 2024, Maxim Levitsky wrote:
-> On Fri, 2024-12-13 at 17:07 -0800, Sean Christopherson wrote:
-> > Track and print the number of dirty and clear pages for each iteration.
-> > This provides parity between all log modes, and will allow collecting the
-> > dirty ring multiple times per iteration without spamming the console.
-> > 
-> > Opportunistically drop the "Dirtied N pages" print, which is redundant
-> > and wrong.  For the dirty ring testcase, the vCPU isn't guaranteed to
-> > complete a loop.  And when the vCPU does complete a loot, there are no
-> Typo
-> > guarantees that it has *dirtied* that many pages; because the writes are
-> > to random address, the vCPU may have written the same page over and over,
-> > i.e. only dirtied one page.
+On 12/18/24 18:44, Sean Christopherson wrote:
+> On Tue, Dec 17, 2024, Ivan Orlov wrote:
+>> Currently, the unhandleable vectoring (e.g. when guest accesses MMIO
+>> during vectoring) is handled differently on VMX and SVM: on VMX KVM
+>> returns internal error, when SVM goes into infinite loop trying to
+>> deliver an event again and again.
+>>
+>> This patch series eliminates this difference by returning a KVM internal
+>> error when KVM can't emulate during vectoring for both VMX and SVM.
+>>
+>> Also, introduce a selftest test case which covers the error handling
+>> mentioned above.
 > 
-> Counting how many times a vCPU wrote is also a valid statistic
+> A few nits throughout, but I'll address them when applying.  Thanks!
 > 
-> I think it would be the best to include it as well (e.g call it number of
-> loops that vCPU did).
 
-Heh, I originally had it that way, but dropped it because it didn't seem all that
-interesting.  I'll add it back.
+Hi Sean,
+
+Awesome, thanks a lot for fixing the commits and for the review.
+
+-- 
+Kind regards,
+Ivan Orlov
