@@ -1,206 +1,115 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4641E9B38
-	for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 16:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9A149E16
+	for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 16:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734538251; cv=none; b=BiqR3hcJXh6uOQvfcXAPqOhXXtqd0RehiB6MFqIi8npmUHHNreMj/ONDFdsUIm5N3knl6KAsMFETMrOux/rEOPRQwbIHox7LvJ13sccMA/W0jTjIf+3SfoWW79X3OtJGLqjaW39dyQthSompzrNUqw88ILZqrDHIv2zLzSW+osQ=
+	t=1734538330; cv=none; b=qwBIQfMpvQUihIZdZ8c9FP/fXDoKpD/v2rOhKuD0r/cQj7uPsc7Uk7lNHW94l9LW+m3SOIHapDnRR+Gb9LuqLSBzpiz2688McBj6D5cc7fKLqcfe192MN0yXE0DDijRyL6T+EFb/9TN//7TIAxriRLlbnMMb19ZNORhiCJr15hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734538251; c=relaxed/simple;
-	bh=tm2idR5oCI96oSwbL8AhpE0TKqNCyhE1Sx+p/lQYVE4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z3c+mXAK8gfCuT8hYmYmHZa/Qw6IG0orq2YLWLEyNGyB7uyzz8Ot/lYGT5qAdXSZhi1JzhaIRDSbKiwJy3Bjks6MuCSY/6iSbisUebG0DHLBoblr9fvurLfFaPeJEZTon8U9rDZpt7Ag7Z5wOkG4nTQtCCZc5SAiSIG6wqz2zMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i80S6ucz; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1734538330; c=relaxed/simple;
+	bh=ucG6hpTV+IReE+lOfCzMaRfXRUtudEvIopsU4oH+NGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YSsHdjZlCjX1oYAGUsvceRXMDpTZzwIbYe5S3Iim+R9bvx9lm3Y3CCxTGOSyHB7P6bVrC4WO9AorLO7hbuAR8GTZ7TroEx3KcFuY4PSMmZqhNmSBq8arI/6Mj5ZRv2y11d79oYG81CaGwIW4+698mMXY8AWr80KhKsK/Fzn2nWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OuC44nx+; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i80S6ucz"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-72aa68f306fso200535b3a.0
-        for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 08:10:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734538249; x=1735143049; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Su6tksW57BKWOWTqO35gQ+U3eN3S8xYiaD0KOZC+Wxw=;
-        b=i80S6ucz0ubxPnQl4kzl0MfDE4Mn4uL/FrBl8aiSo1lwOQETyHEpwloVe3THEAb2tB
-         eMefC9381xy75Q7IxujgR0fKjNLTM+YslPvQEgsdQrcnsWf6xQYQFdQzAel0c7M+B/Bm
-         czxrVRNqcGZISvTIe0qd2BOoJ7n2GGhdu9giJciO3ygyYVKdYJMtkulLyI4viSsFmvTe
-         A6RfT8zpQQr0Ky2qsSV61++U8kzkSRPTlqMa0e1ds5TWhmGgs+pIm7D8Sr59W4KNDEH4
-         AML+VliIccASaD9ZmNHRHji/BlzXpHp8K39cwr8pQ9CFirwwTcMS8Dn0nYKH3iEagti2
-         9iDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734538249; x=1735143049;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Su6tksW57BKWOWTqO35gQ+U3eN3S8xYiaD0KOZC+Wxw=;
-        b=WiERDx9jWWmRXPe/qDlEN8/thG9kXYNzHlvzi1xk7Xo3uoee/XY7d4GGjxpJe9frIz
-         1iiiKWl0nr8FAZby3+NNwhJLX5zGb0a6gnnBCFcCx34SLnuMIlI1B69r3NMS/kBZ3AxQ
-         WIDwQeWokEcyGV7J3A5V65oZ0dOUspuP0i/hMqUyQlxXq2awAAJ6VL86+LUIJR/RN2jG
-         ycKCV8BkbtJuDHUlXbpJ/L5KqtmkmfqquZjgZS7qgCjO48AuMw+vSJkvXYdccS+ReXf1
-         oLicjJ1YsROF9lhn9drIZBmCH99uyyoJ0P7PkN0brxOc1TFD+cTFkuqwlcP3tntLBYz9
-         vJUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvQRTnklyj8+7AqEC1c5vnvdiVxOwvcxnYK51gVTHDftMEsGMP5F6cPaEhzFJPgOBFjZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg/ONUZZJxi4YLKS2hSU/MwELDh1GBBwrLlh6B6AG7NqtkHK2W
-	G65H0At43gibuxIO7HeZ4ZJO935mCld1yTzT1NeH2PwmPwXc8fpsH4FhFCUrdzbGqNqXnHIKFsa
-	EeQ==
-X-Google-Smtp-Source: AGHT+IHDp6bKNXmrY8dloG12vtDgp74rrLlhvzbwBVviqYvE7fCLItLRlLdveyCHfjjkMrdDYFqDNBsI6Sg=
-X-Received: from pgnq3.prod.google.com ([2002:a63:8c43:0:b0:7fd:5670:5a2d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d806:b0:1d9:3b81:cdd3
- with SMTP id adf61e73a8af0-1e5b46000e5mr6129262637.1.1734538249491; Wed, 18
- Dec 2024 08:10:49 -0800 (PST)
-Date: Wed, 18 Dec 2024 08:10:48 -0800
-In-Reply-To: <Z2JhXfA14UjC1/fs@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OuC44nx+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734538328; x=1766074328;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ucG6hpTV+IReE+lOfCzMaRfXRUtudEvIopsU4oH+NGE=;
+  b=OuC44nx+E55fTdMxoIIib4El/Uz+DB1une806QE27kD7EKG/zHg7DNrj
+   Zp6UYHR3uFC84+MBdgVs/yoCc3nRnS0KtwWkLL42QfnXPXAWe8nl/u3Kh
+   ZYPZ5RfLeSvi5Duh53em+4zdV7ik/J7b+1dmNwBTSSYtSJWEQ+N0THCvX
+   pPzVt1Hjt7UV6Mr0N1JLL8jD3uFPOJppxG25oT5oqAKCUoXCvqrFuSyAr
+   IZ93Umy/+mRFibDY8ThA9HGyM1jQumEcfE4b9JKyUDmmZ35wi9kYVlvL0
+   0PF2rTpD+gpd0M/gZ3QB8L3fflY5mfhVqGNd8HKaoQK+bA2CYfK8IScc0
+   A==;
+X-CSE-ConnectionGUID: r7YM3V41T/qM+BM+q18Eyg==
+X-CSE-MsgGUID: 60qIU2wiQUmct/xJfW2gZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="46029667"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
+   d="scan'208";a="46029667"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 08:12:06 -0800
+X-CSE-ConnectionGUID: tmGK/hGKRq60K++Lad7knw==
+X-CSE-MsgGUID: fWJY/bGUTrOKqmE5Tbi2rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="98724460"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa008.jf.intel.com with ESMTP; 18 Dec 2024 08:12:02 -0800
+Date: Thu, 19 Dec 2024 00:30:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+	kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Daniel Henrique Barboza <danielhb413@gmail.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+	Yanan Wang <wangyanan55@huawei.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH 1/2] system: Move 'exec/confidential-guest-support.h' to
+ system/
+Message-ID: <Z2L4seQo7Z7LPpTh@intel.com>
+References: <20241218155913.72288-1-philmd@linaro.org>
+ <20241218155913.72288-2-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241121115139.26338-1-yan.y.zhao@intel.com> <20241121115703.26381-1-yan.y.zhao@intel.com>
- <Z2IJP-T8NVsanjNd@google.com> <Z2JhXfA14UjC1/fs@yzhao56-desk.sh.intel.com>
-Message-ID: <Z2L0CPLKg9dh6imZ@google.com>
-Subject: Re: [RFC PATCH 2/2] KVM: TDX: Kick off vCPUs when SEAMCALL is busy
- during TD page removal
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, dave.hansen@linux.intel.com, 
-	rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com, 
-	reinette.chatre@intel.com, xiaoyao.li@intel.com, tony.lindgren@intel.com, 
-	binbin.wu@linux.intel.com, dmatlack@google.com, isaku.yamahata@intel.com, 
-	isaku.yamahata@gmail.com, nik.borisov@suse.com, linux-kernel@vger.kernel.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241218155913.72288-2-philmd@linaro.org>
 
-On Wed, Dec 18, 2024, Yan Zhao wrote:
-> On Tue, Dec 17, 2024 at 03:29:03PM -0800, Sean Christopherson wrote:
-> > On Thu, Nov 21, 2024, Yan Zhao wrote:
-> > > For tdh_mem_range_block(), tdh_mem_track(), tdh_mem_page_remove(),
-> > > 
-> > > - Upon detection of TDX_OPERAND_BUSY, retry each SEAMCALL only once.
-> > > - During the retry, kick off all vCPUs and prevent any vCPU from entering
-> > >   to avoid potential contentions.
-> > > 
-> > > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> > > ---
-> > >  arch/x86/include/asm/kvm_host.h |  2 ++
-> > >  arch/x86/kvm/vmx/tdx.c          | 49 +++++++++++++++++++++++++--------
-> > >  2 files changed, 40 insertions(+), 11 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > > index 521c7cf725bc..bb7592110337 100644
-> > > --- a/arch/x86/include/asm/kvm_host.h
-> > > +++ b/arch/x86/include/asm/kvm_host.h
-> > > @@ -123,6 +123,8 @@
-> > >  #define KVM_REQ_HV_TLB_FLUSH \
-> > >  	KVM_ARCH_REQ_FLAGS(32, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
-> > >  #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE	KVM_ARCH_REQ(34)
-> > > +#define KVM_REQ_NO_VCPU_ENTER_INPROGRESS \
-> > > +	KVM_ARCH_REQ_FLAGS(33, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
-> > >  
-> > >  #define CR0_RESERVED_BITS                                               \
-> > >  	(~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_TS \
-> > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > > index 60d9e9d050ad..ed6b41bbcec6 100644
-> > > --- a/arch/x86/kvm/vmx/tdx.c
-> > > +++ b/arch/x86/kvm/vmx/tdx.c
-> > > @@ -311,6 +311,20 @@ static void tdx_clear_page(unsigned long page_pa)
-> > >  	__mb();
-> > >  }
-> > >  
-> > > +static void tdx_no_vcpus_enter_start(struct kvm *kvm)
-> > > +{
-> > > +	kvm_make_all_cpus_request(kvm, KVM_REQ_NO_VCPU_ENTER_INPROGRESS);
-> > 
-> > I vote for making this a common request with a more succient name, e.g. KVM_REQ_PAUSE.
-> KVM_REQ_PAUSE looks good to me. But will the "pause" cause any confusion with
-> the guest's pause state?
-
-Maybe?
-
-> > And with appropriate helpers in common code.  I could have sworn I floated this
-> > idea in the past for something else, but apparently not.  The only thing I can
-> Yes, you suggested me to implement it via a request, similar to
-> KVM_REQ_MCLOCK_INPROGRESS. [1].
-> (I didn't add your suggested-by tag in this patch because it's just an RFC).
+On Wed, Dec 18, 2024 at 04:59:12PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Wed, 18 Dec 2024 16:59:12 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 1/2] system: Move 'exec/confidential-guest-support.h' to
+>  system/
+> X-Mailer: git-send-email 2.45.2
 > 
-> [1] https://lore.kernel.org/kvm/ZuR09EqzU1WbQYGd@google.com/
+> "exec/confidential-guest-support.h" is specific to system
+> emulation, so move it under the system/ namespace.
+> Mechanical change doing:
 > 
-> > find is an old arm64 version for pausing vCPUs to emulated.  Hmm, maybe I was
-> > thinking of KVM_REQ_OUTSIDE_GUEST_MODE?
-> KVM_REQ_OUTSIDE_GUEST_MODE just kicks vCPUs outside guest mode, it does not set
-> a bit in vcpu->requests to prevent later vCPUs entering.
+>   $ sed -i \
+>     -e 's,exec/confidential-guest-support.h,sysemu/confidential-guest-support.h,' \
+>         $(git grep -l exec/confidential-guest-support.h)
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  include/{exec => system}/confidential-guest-support.h | 6 +++---
+>  target/i386/confidential-guest.h                      | 2 +-
+>  target/i386/sev.h                                     | 2 +-
+>  backends/confidential-guest-support.c                 | 2 +-
+>  hw/core/machine.c                                     | 2 +-
+>  hw/ppc/pef.c                                          | 2 +-
+>  hw/ppc/spapr.c                                        | 2 +-
+>  hw/s390x/s390-virtio-ccw.c                            | 2 +-
+>  system/vl.c                                           | 2 +-
+>  target/s390x/kvm/pv.c                                 | 2 +-
+>  10 files changed, 12 insertions(+), 12 deletions(-)
+>  rename include/{exec => system}/confidential-guest-support.h (96%)
+> 
 
-Yeah, I was mostly just talking to myself. :-)
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-> > Anyways, I don't see any reason to make this an arch specific request.
-> After making it non-arch specific, probably we need an atomic counter for the
-> start/stop requests in the common helpers. So I just made it TDX-specific to
-> keep it simple in the RFC.
+(MAINTAINERS is missed to change? :-))
 
-Oh, right.  I didn't consider the complications with multiple users.  Hrm.
-
-Actually, this doesn't need to be a request.  KVM_REQ_OUTSIDE_GUEST_MODE will
-forces vCPUs to exit, at which point tdx_vcpu_run() can return immediately with
-EXIT_FASTPATH_EXIT_HANDLED, which is all that kvm_vcpu_exit_request() does.  E.g.
-have the zap side set wait_for_sept_zap before blasting the request to all vCPU,
-and then in tdx_vcpu_run():
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b49dcf32206b..508ad6462e6d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -921,6 +921,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-                return EXIT_FASTPATH_NONE;
-        }
- 
-+       if (unlikely(READ_ONCE(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap)))
-+               return EXIT_FASTPATH_EXIT_HANDLED;
-+
-        trace_kvm_entry(vcpu, force_immediate_exit);
- 
-        if (pi_test_on(&tdx->pi_desc)) {
-
-
-Ooh, but there's a subtle flaw with that approach.  Unlike kvm_vcpu_exit_request(),
-the above check would obviously happen before entry to the guest, which means that,
-in theory, KVM needs to goto cancel_injection to re-request req_immediate_exit and
-cancel injection:
-
-	if (req_immediate_exit)
-		kvm_make_request(KVM_REQ_EVENT, vcpu);
-	kvm_x86_call(cancel_injection)(vcpu);
-
-But!  This actually an opportunity to harden KVM.  Because the TDX module doesn't
-guarantee entry, it's already possible for KVM to _think_ it completely entry to
-the guest without actually having done so.  It just happens to work because KVM
-never needs to force an immediate exit for TDX, and can't do direct injection,
-i.e. can "safely" skip the cancel_injection path.
-
-So, I think can and should go with the above suggestion, but also add a WARN on
-req_immediate_exit being set, because TDX ignores it entirely.
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b49dcf32206b..e23cd8231144 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -914,6 +914,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-        struct vcpu_tdx *tdx = to_tdx(vcpu);
-        struct vcpu_vt *vt = to_tdx(vcpu);
- 
-+       /* <comment goes here> */
-+       WARN_ON_ONCE(force_immediate_exit);
-+
-        /* TDX exit handle takes care of this error case. */
-        if (unlikely(tdx->state != VCPU_TD_STATE_INITIALIZED)) {
-                tdx->vp_enter_ret = TDX_SW_ERROR;
-@@ -921,6 +924,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-                return EXIT_FASTPATH_NONE;
-        }
- 
-+       if (unlikely(to_kvm_tdx(vcpu->kvm)->wait_for_sept_zap))
-+               return EXIT_FASTPATH_EXIT_HANDLED;
-+
-        trace_kvm_entry(vcpu, force_immediate_exit);
- 
-        if (pi_test_on(&tdx->pi_desc)) {
