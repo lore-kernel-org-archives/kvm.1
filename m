@@ -1,126 +1,163 @@
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604882163AF
-	for <kvm@vger.kernel.org>; Thu, 19 Dec 2024 07:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C2C1FAC26
+	for <kvm@vger.kernel.org>; Thu, 19 Dec 2024 08:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734594391; cv=none; b=u41VGUNw/lx9QbhdUp7/dxaxignwUqyt8iM9VU+Kn3kGwYDTVnQWv896j+hVa92PHyXWRto2rOjmJyDM0+wrlNxExfuf4vh7fw0u5nQ+Xx3U0nl4iesHpkCoTlXA2lfusAjJeE1PXnCurqZLXl3fNh5yndxNN5ChY1L/EWh6W4c=
+	t=1734596057; cv=none; b=ZWbZymoR5syZACuJU2GjwTVFk/at38H23B+G3ajdwz+scblY1nsJawq+8wR8b2ZDDG6n+gGbrNd/4jZSCgKqj7u1Pj8tlT3aB3rTXfRSeirQGD0I2FdY1ROxducBq695uS8JxvE9PHz4KicunXwbJwzlP3XU85bnVyjKIwoStNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734594391; c=relaxed/simple;
-	bh=7somDA3en/hJolBi8kdko15hS7Vg45ntK/V1RkSgs4o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t9VSmF9ptg1lnsFr+jdZSuDOTZbyZLdbfvsVdZJyQ9obk12QrmlG4R7bDTMAtdj+Vc00bX/C273ab5ACKDnwHCHOM6fHtWQre5Gdg9Vn7Uip2OE7z/rNbYzG1Yi7XguqMbA8l8hejpzG9PczxC5cxJCfUMmbmilIX1qWhWrwOMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=fNtPrkBx; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	s=arc-20240116; t=1734596057; c=relaxed/simple;
+	bh=sJD1HzK00lYZY9+cHhZD1q8bcprwUdJTGT1EY0BZmJw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ANPiViuj76k8lQhcUHP6TPELiCx9ad9f1ujpNE/cJV/aoh6kZIq7UVjNbKAZbaJLv9JQtijxokd8EqYIFBIzfzUGcJkVbEv3oX0vV8bQnmqzaAYbGwAdShAtBXzceFDNIEhl/DnwqYaABmWnIPQkkCsgVrTLcqCPyz4uA5k2QLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bWaNKqID; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="fNtPrkBx"
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-844e161a8b4so15131039f.0
-        for <kvm@vger.kernel.org>; Wed, 18 Dec 2024 23:46:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1734594388; x=1735199188; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FzlfxWAFyTOjTnsD6DMp9PLLcJQhroXi6XJ0Ja4jKS8=;
-        b=fNtPrkBxghH49xHCTr69cdcSqidEDMMiFD52lk9xL/LNFTzR3ktQUnJ60kqHpy8+Jl
-         88LTjAK//boS0ZHZ1yYHhxvFM9WN3powY0nkj9n+V3tHS2QeSn2lFxbKdS99IiDAH4jr
-         0R7AxQihNjiXO3Pw7sW4p4dcFj4LjXaRyfHRhAzDRBm8tinH9ExzvbtG0rAAVRXeZzHc
-         SlhjviBBZkgps+t+bVlWKBrR6t8MHSq9zYBhEg/v/PibsdGjgvvT/f7T3C58xblGqWG1
-         d2kfFp+BDqlcgkEJfHFrMBWs9hqAQsNvZ59l+abZlb+ToicjWe8zYOM6fjxdIN5j8NlD
-         BlHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734594388; x=1735199188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FzlfxWAFyTOjTnsD6DMp9PLLcJQhroXi6XJ0Ja4jKS8=;
-        b=KcLIZaxFooqtlXjXjBjB0T/rGECL6gk2EypRAPlwB4b2hhJ1BJwo/hnYkpeskGz+En
-         R1coqiVtVtjKSrop3LzrOi94QnTjK5w5JtE77xCz+QkdGKQktaPgOdAJEdNAR1zGjQIE
-         1yenMuTOGV+tFw98Z7SwldA/EqHhqOh2LaOqfphh3d9sMYwMtekmsPPaKlhgSWPHlQAE
-         h+U5g1YRSeO1k9+WF3GoNj8Maqrk1xb2bhrsnS6ZWNYB2t1jpriYW3zTf5VqAoQQWc+9
-         x768tWc95PfboposklWlFIC5S5SgWieo18SSozecJq90ZR4kBYYFYoqGkcyWSelmPsQN
-         J82w==
-X-Forwarded-Encrypted: i=1; AJvYcCUI188pVjpUH8b3MOzmRcrJMhcvBV62cy3AUYtMJLMQvVReTu2QuC00f6y7jlj5qORgLJQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytJ9vlDR9H2crEXyVM1tJpkavEDpPL6iCqBtsocyQcas/mFtpV
-	/9dujRR/wII8nwvZ9t9n97vvEcLZe0p8KxxW7rs3bzA7OonOr3i837eSa01Dmn225COBzWIt3ew
-	uaye7vcs4cSPYQfIiPHtcJ5ZMu3t4gziA7fS4DA==
-X-Gm-Gg: ASbGncsiyHZpqO+Sw+jO7NmWkBF/42jKGQqPFaN4AVZdV7a7WTVc2My8NPwTr4JUNL3
-	Spb3iHILKim6B2aKJ0DB1mrr2s+27Q9AjJrvbs4OG
-X-Google-Smtp-Source: AGHT+IEl2VHIINWWOqX/TIjrPphy37QQEWpY//lPf2cQsAGp5Fr2UzQ2zg1QergkXg+gvTvXBtQ46kjIk7rWXXu2I5s=
-X-Received: by 2002:a05:6e02:164e:b0:3a7:8208:b847 with SMTP id
- e9e14a558f8ab-3c014994c32mr17541505ab.22.1734594388418; Wed, 18 Dec 2024
- 23:46:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bWaNKqID"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734596056; x=1766132056;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sJD1HzK00lYZY9+cHhZD1q8bcprwUdJTGT1EY0BZmJw=;
+  b=bWaNKqIDH2xOitGuW3inef5k7BLUieyen2ZSAzUCxxGJb2UJ7Vxmq3W0
+   9zLXjnaUk7yfyTdtCBTo21yxtueZmXs+ke14CWmkQCzMID4/+VqLq0TJ8
+   0zNZRYuqmi+Dzhw86xlPQyra18TMrOGUrQJaskepzt9fZUsQLN3UTom9O
+   O1ejw1HI6uPNCEhVpzos34Z/LDg9jNp18oJi786f3IQn/SLst1D3nAvfv
+   Qe6y0j+BcqoGp5wD/RYbkBamekWjO5OI8o0EUSGnTShhCX50Txy60ps8S
+   l9ujzQQ1jnU01VQCehK+CsVxc+879KltQ8VGsKXO22u7Hw+t6pO9covE7
+   g==;
+X-CSE-ConnectionGUID: H1zwdVaxRbe5zgtzyz5Mag==
+X-CSE-MsgGUID: 7yT6xDIWSl65Fs/hUB5g0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34378600"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
+   d="scan'208";a="34378600"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 00:14:15 -0800
+X-CSE-ConnectionGUID: EOAUv0rrQ8ifIgUQ8s7VTg==
+X-CSE-MsgGUID: 6ckPH2LHT8mTQwa3lrXScw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="129097513"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+  by fmviesa001.fm.intel.com with ESMTP; 19 Dec 2024 00:14:11 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alireza Sanaee <alireza.sanaee@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Cc: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v6 0/4] i386: Support SMP Cache Topology
+Date: Thu, 19 Dec 2024 16:32:33 +0800
+Message-Id: <20241219083237.265419-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619153913.867263-1-cleger@rivosinc.com>
-In-Reply-To: <20240619153913.867263-1-cleger@rivosinc.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 19 Dec 2024 13:16:16 +0530
-X-Gm-Features: AbW1kvZvVibTIPOmSKzCzxVje5Rw-BrkbRTFTVX8TQ75LxnNOw1pz_vbOq-3DA4
-Message-ID: <CAAhSdy0NkNgZraqnrTGtGYn-aM+tJ8hhGF4n3U+JP+VOF2BJfw@mail.gmail.com>
-Subject: Re: [PATCH 0/5] riscv: add support for Zaamo and Zalrsc extensions
-To: Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shuah Khan <shuah@kernel.org>, 
-	Atish Patra <atishp@atishpatra.org>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Palmer,
+Hi folks,
 
-On Wed, Jun 19, 2024 at 9:11=E2=80=AFPM Cl=C3=A9ment L=C3=A9ger <cleger@riv=
-osinc.com> wrote:
->
-> Since commit e87412e621f1 ("integrate Zaamo and Zalrsc text (#1304)"),
-> the A extension has been described as a set of instructions provided by
-> Zaamo and Zalrsc. Add these two extensions.
->
-> This series is based on the Zc one [1].
->
-> Link: https://lore.kernel.org/linux-riscv/20240619113529.676940-1-cleger@=
-rivosinc.com/
->
-> ---
->
-> Cl=C3=A9ment L=C3=A9ger (5):
->   dt-bindings: riscv: add Zaamo and Zalrsc ISA extension description
->   riscv: add parsing for Zaamo and Zalrsc extensions
->   riscv: hwprobe: export Zaamo and Zalrsc extensions
->   RISC-V: KVM: Allow Zaamo/Zalrsc extensions for Guest/VM
->   KVM: riscv: selftests: Add Zaamo/Zalrsc extensions to get-reg-list
->     test
+This is my v6. since Phili has already merged the general smp cache
+part, v6 just includes the remaining i386-specific changes to support
+SMP cache topology for PC machine (currently all patches have got
+Reviewed-by from previous review).
 
-These patches conflict with some of the KVM patches which
-I have queued for Linux-6.14.
+Compared with v5 [1], there's no change and just series just picks
+the unmerged patches and rebases on the master branch (based on the
+commit 8032c78e556c "Merge tag 'firmware-20241216-pull-request' of
+https://gitlab.com/kraxel/qemu into staging").
 
-If you can ACK these patches then I can take it through the
-KVM RISC-V tree.
+The patch 4 ("i386/cpu: add has_caches flag to check smp_cache"), which
+introduced a has_caches flag, is also ARM side wanted.
 
-Regards,
-Anup
+Though now this series targets to i386, to help review, I still include
+the previous introduction about smp cache topology feature.
 
->
->  Documentation/arch/riscv/hwprobe.rst          |  8 ++++++++
->  .../devicetree/bindings/riscv/extensions.yaml | 19 +++++++++++++++++++
->  arch/riscv/include/asm/hwcap.h                |  2 ++
->  arch/riscv/include/uapi/asm/hwprobe.h         |  2 ++
->  arch/riscv/include/uapi/asm/kvm.h             |  2 ++
->  arch/riscv/kernel/cpufeature.c                |  9 ++++++++-
->  arch/riscv/kernel/sys_hwprobe.c               |  2 ++
->  arch/riscv/kvm/vcpu_onereg.c                  |  4 ++++
->  .../selftests/kvm/riscv/get-reg-list.c        |  8 ++++++++
->  9 files changed, 55 insertions(+), 1 deletion(-)
->
-> --
-> 2.45.2
->
+
+Background
+==========
+
+The x86 and ARM (RISCV) need to allow user to configure cache properties
+(current only topology):
+ * For x86, the default cache topology model (of max/host CPU) does not
+   always match the Host's real physical cache topology. Performance can
+   increase when the configured virtual topology is closer to the
+   physical topology than a default topology would be.
+ * For ARM, QEMU can't get the cache topology information from the CPU
+   registers, then user configuration is necessary. Additionally, the
+   cache information is also needed for MPAM emulation (for TCG) to
+   build the right PPTT. (Originally from Jonathan)
+
+
+About smp-cache
+===============
+
+The API design has been discussed heavily in [3].
+
+Now, smp-cache is implemented as a array integrated in -machine. Though
+-machine currently can't support JSON format, this is the one of the
+directions of future.
+
+An example is as follows:
+
+smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
+
+"cache" specifies the cache that the properties will be applied on. This
+field is the combination of cache level and cache type. Now it supports
+"l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+cache) and "l3" (L3 unified cache).
+
+"topology" field accepts CPU topology levels including "thread", "core",
+"module", "cluster", "die", "socket", "book", "drawer" and a special
+value "default".
+
+The "default" is introduced to make it easier for libvirt to set a
+default parameter value without having to care about the specific
+machine (because currently there is no proper way for machine to
+expose supported topology levels and caches).
+
+If "default" is set, then the cache topology will follow the
+architecture's default cache topology model. If other CPU topology level
+is set, the cache will be shared at corresponding CPU topology level.
+
+
+[1]: Patch v5: https://lore.kernel.org/qemu-devel/20241101083331.340178-1-zhao1.liu@intel.com/
+[2]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20241010111822.345-1-alireza.sanaee@huawei.com/
+[3]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
+
+Thanks and Best Regards,
+Zhao
+---
+Alireza Sanaee (1):
+  i386/cpu: add has_caches flag to check smp_cache configuration
+
+Zhao Liu (3):
+  i386/cpu: Support thread and module level cache topology
+  i386/cpu: Update cache topology with machine's configuration
+  i386/pc: Support cache topology in -machine for PC machine
+
+ hw/core/machine-smp.c |  2 ++
+ hw/i386/pc.c          |  4 +++
+ include/hw/boards.h   |  3 ++
+ qemu-options.hx       | 31 +++++++++++++++++-
+ target/i386/cpu.c     | 76 ++++++++++++++++++++++++++++++++++++++++---
+ 5 files changed, 111 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
