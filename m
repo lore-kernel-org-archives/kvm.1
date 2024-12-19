@@ -1,159 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C321FAC26
-	for <kvm@vger.kernel.org>; Thu, 19 Dec 2024 08:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E037C218ADB
+	for <kvm@vger.kernel.org>; Thu, 19 Dec 2024 08:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734596085; cv=none; b=fBgAGZToYwOrN7cewH4mAPwJDPlR1Dbmt++1BzCfV2Q6u/NJ2DxF364WOLd3Mf8IR2p++yianPkHQW38XkMby/Ou9cPYqP5QRhdW/9tWhCxdrO6FKEl44Gqn9eDuP3IYom2cVZm10FExCWyrWAOTDQGgyJPaF30y9IyzH5zsYXs=
+	t=1734596853; cv=none; b=VW6Ih0VQIxIrYfuKxpQSWN+oeh2hHmLQioTlCNrpRi5MadSPV+amFFDVIwcx33cIRNG+0O53XeFf2j/p30aZhhIr/J1bPUD/ke4nWWOz+bNY2O8RJH4xSOqUrTEryWiiKT7NBnthaB1WD1MYu5I5q5EhdPfakB4L8kwksAzXuEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734596085; c=relaxed/simple;
-	bh=HyQNL2QRST3bzAofC6NdSneNk+dJQgGE9UE8ka+3X3M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T7F49XC3DIlniE5/S7cdFGCL0n6gm30jeJpTPSegeGYsORKa2KBzXWHkDD0voBczPZmnwiu6E/GmUzXBfXc7aZ9jvGKWZRyNGy5bVNzpAp7sksqbYFSS3dnjrQ1AFjdCV6fp+DtmW+6W5fNAryTugFI153G+mj/iD5jc3PjyyKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EsS0dMTW; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734596853; c=relaxed/simple;
+	bh=9Kg0EpyGbNWmbLXzmSnkWZzB/4WEIkUM06TEMZ3mse0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YvKY0UHWgGcyKnTIxT4DZkfeJTwPn/oDwCf3pLo4yRxYVa/JbLkJJhUAXb9shiv+zp+htYa6+ltib4oJ/AQchIgzfr4JiB2Y0KV6M7y8EgzJ9Mdls8QSW9+/3o3izjXV7OxEXZXYDo27oRf/2IgQGWmGe1Je5/3CHx8zXt6skzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tC43fJUH; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EsS0dMTW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734596084; x=1766132084;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HyQNL2QRST3bzAofC6NdSneNk+dJQgGE9UE8ka+3X3M=;
-  b=EsS0dMTWK93HgjzXjskQKv4aUACO+m2N3o0pnNrMSctCA+CwUC2jXKfd
-   vf8w1rArVtjAo8wfDHK4+YNxwh08GXcsuOC8iQebda6fAOD/3TF6b3nmU
-   80uc67ySUdOfokCGtI6bYB7ftjZ8fEvAh0pq8qhq1xDore7zZJM7Min3x
-   p0ErETiz/yjnBD8zh4U6NnMOx94pibVjnKZyKfr9AFakwLVkCqBffWWcc
-   o/uKShYbsrB12YQd3DKe75yc8NM8HQ36iUH56n1GTSCBXTcwxInQb0J2m
-   6APP5vGW5HgTdlZALqtY8bopd+zIOQ6lY/HLsnpOzQ2QFLWeeYdtgP7qN
-   g==;
-X-CSE-ConnectionGUID: 5jUce27PRxKkJZg3cRlBKg==
-X-CSE-MsgGUID: kx2mfKYQRY+628XaEvsn7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34378672"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
-   d="scan'208";a="34378672"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 00:14:29 -0800
-X-CSE-ConnectionGUID: 6Zn6Kp97QoubQDBwujTxcw==
-X-CSE-MsgGUID: 3p7A14JdQe+SIqaC6tm+xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="129097570"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by fmviesa001.fm.intel.com with ESMTP; 19 Dec 2024 00:14:26 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alireza Sanaee <alireza.sanaee@huawei.com>,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 4/4] i386/cpu: add has_caches flag to check smp_cache configuration
-Date: Thu, 19 Dec 2024 16:32:37 +0800
-Message-Id: <20241219083237.265419-5-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241219083237.265419-1-zhao1.liu@intel.com>
-References: <20241219083237.265419-1-zhao1.liu@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tC43fJUH"
+Date: Thu, 19 Dec 2024 09:27:23 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1734596847;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d71FDRw7sb/hwKp15A9H9JDZgsrFxTPnUW1N4IE71dk=;
+	b=tC43fJUHnDsdTf6dJqeyuQ5ch84/FltV77h05CNCWBgyMRDZT2NkzfzILlYLJ6V38yTppx
+	/e6yYd55o7CzYbt+VtY77vIWICDaqN/+n/utdACJci/lMr8PoxD6mtlIk/u8PGEDIgmPxC
+	Z2dnWQd2j78JrPf6/DkiKjRPK9hympc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: kvm@vger.kernel.org
+Subject: Re: [kvm-unit-tests PATCH 1/3] riscv: Add Image header to flat
+ binaries
+Message-ID: <20241219-d78dcb3804da755f52c2a8a3@orel>
+References: <20241210044442.91736-1-samuel.holland@sifive.com>
+ <20241210044442.91736-2-samuel.holland@sifive.com>
+ <20241218-d2753dad681a37b3b15c7c75@orel>
+ <dbb66354-b08d-49f6-82a4-840be58bddb1@sifive.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbb66354-b08d-49f6-82a4-840be58bddb1@sifive.com>
+X-Migadu-Flow: FLOW_OUT
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On Wed, Dec 18, 2024 at 05:06:09PM -0600, Samuel Holland wrote:
+> Hi Drew,
+> 
+> On 2024-12-18 4:13 AM, Andrew Jones wrote:
+> > On Mon, Dec 09, 2024 at 10:44:40PM -0600, Samuel Holland wrote:
+> >> This allows flat binaries to be understood by U-Boot's booti command and
+> >> its PXE boot flow.
+> >>
+> >> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> >> ---
+> >>  riscv/cstart.S | 16 +++++++++++++++-
+> >>  1 file changed, 15 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/riscv/cstart.S b/riscv/cstart.S
+> >> index b7ee9b9c..106737a1 100644
+> >> --- a/riscv/cstart.S
+> >> +++ b/riscv/cstart.S
+> >> @@ -39,15 +39,29 @@
+> >>   * The hartid of the current core is in a0
+> >>   * The address of the devicetree is in a1
+> >>   *
+> >> - * See Linux kernel doc Documentation/riscv/boot.rst
+> >> + * See Linux kernel doc Documentation/arch/riscv/boot.rst and
+> >> + * Documentation/arch/riscv/boot-image-header.rst
+> >>   */
+> >>  .global start
+> >>  start:
+> >> +	j	1f
+> >> +	.balign	8
+> >> +	.dword	0				// text offset
+> > 
+> > When I added a header like this for the bpi I needed the text offset to be
+> > 0x200000, like Linux has it.  Did you do something to avoid that?
+> 
+> It turns out that U-Boot on my board is configured to ignore the first 0x200000
+> bytes of DRAM entirely, so the binary ended up at the right address for the
+> wrong reason. I can send a v2 with this field changed to 0x200000 (which also
+> works on my board).
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
+Sounds good.
 
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c |  2 ++
- include/hw/boards.h   |  3 +++
- target/i386/cpu.c     | 11 +++++------
- 3 files changed, 10 insertions(+), 6 deletions(-)
+Thanks,
+drew
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index b954eb849027..fe66961341fe 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -325,6 +325,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
-     }
-+
-+    mc->smp_props.has_caches = true;
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 5723ee76bdea..c647e507d1a9 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -156,6 +156,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -166,6 +168,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index bd5620dcc086..a9700fba991f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8039,13 +8039,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
--     * if user didn't set smp_cache.
--     */
--    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
--        return;
-+    if (mc->smp_props.has_caches) {
-+        if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
-+            return;
-+        }
-     }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
--- 
-2.34.1
-
+> 
+> Regards,
+> Samuel
+> 
+> >> +	.dword	stacktop - ImageBase		// image size
+> >> +	.dword	0				// flags
+> >> +	.word	(0 << 16 | 2 << 0)		// version
+> >> +	.word	0				// res1
+> >> +	.dword	0				// res2
+> >> +	.ascii	"RISCV\0\0\0"			// magic
+> >> +	.ascii	"RSC\x05"			// magic2
+> >> +	.word	0				// res3
+> >> +
+> >>  	/*
+> >>  	 * Stash the hartid in scratch and shift the dtb address into a0.
+> >>  	 * thread_info_init() will later promote scratch to point at thread
+> >>  	 * local storage.
+> >>  	 */
+> >> +1:
+> >>  	csrw	CSR_SSCRATCH, a0
+> >>  	mv	a0, a1
+> >>  
+> >> -- 
+> >> 2.39.3 (Apple Git-146)
+> >>
+> > 
+> > Thanks,
+> > drew
+> 
