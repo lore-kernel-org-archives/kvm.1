@@ -1,333 +1,283 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F1E1A707D;
-	Fri, 20 Dec 2024 08:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8053B1BD9D8
+	for <kvm@vger.kernel.org>; Fri, 20 Dec 2024 09:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734685090; cv=none; b=ZOxDijqKoNOOjvFW10siU7EDQigzHNkSQ3YQmk/EY26DiljbWn5JQmUJ/1MRxJlMD+5IORUoLCmvtfmLFQ7+Hm30Un0pIrtkVL2YvptnGtEWq6GfZqSIVVgjIz/X9eet6776pJ9d/4k0bOdVcGSoNB53ZJUiuwDRQQEWvvIltUk=
+	t=1734688696; cv=none; b=bq89W803FvnEJUJAPWMO1uktZxe+EzabgPZXLoAShg8Hd+Ylzux+Iv5SJ6ELbFyCLZ7sDt/EXr4DGCJQdTtOOJWyRLamVw9xis/W2+2k6hhdEqiZRZQ/Iq+bWYy2OQgchmTYh5g45vKPQhpeSb7KhopmfHLnDs8IrYp244nPKUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734685090; c=relaxed/simple;
-	bh=2M1ZKDHj1ahtpOdevTF1TPstBMgTAUOSLTlSFITzBis=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ri0SXy36zEALGZfLwJ0pjDAqihsb+T3gpFexYLuudHbaGVsyVwxwPS6mJWLSHx/6c+tqeFbaJz6dJlApg3FP1WLpxV8FfC63H0sSgdwRwCpx1QQTO0mDuVy20xK2vh8T33xf8fzbljTcGYpsiAgVlHAGVaPBgYdEA0BmEduVJVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iW5ftIgB; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734688696; c=relaxed/simple;
+	bh=SWZVAjauoTk5Tr73MQf63MFsR2PwFd1JePhlh7+LCDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=phctK/tGis3etjJPwLWdQkegL+Bhuexaoopmf0puEWYK/YBypMGqcsFLvgmTl9APJ6OLMmCM6Zl8HYbRACuAl5QKum96owGXHVd1N3irgjKQ+jiVCLsxYiPhAgX6VDPdpb1Db8+DCT7xRCZ/cgPOwupTMF5lkpAfZxRb3hU1OUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lVBke+Ma; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iW5ftIgB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734685088; x=1766221088;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2M1ZKDHj1ahtpOdevTF1TPstBMgTAUOSLTlSFITzBis=;
-  b=iW5ftIgBT7gdQcr0nUu9Wb7x/yin7oV/+NP7B47KIu3X7faxLTGLOT8B
-   pOyDgsndQLJ/OPB9P/R5mBfCD0EeYiNOWckaDGcdbcjmfkhkB63x49AGQ
-   /yGMvpR/YE/JXjKgvkEa5JW2ATYWKNyYieWzya4/HF5nTSZ1HUb4hUSdd
-   QxuWq4kTdiF+8XALJAQhAUBfHYNSlpmiOEbT/TITQMYN5HrbHXAn51h6u
-   Sb2fbB60XXqINwG+xbLkE45VpOP6FSkFa9TZEb0/hKwtwmFEaOkzn0EVL
-   f4LqmDjgZi65AwJWlCREhxTMCClBK6WCygGuhXzVjFH6Bvc6rPiD8S/r3
-   w==;
-X-CSE-ConnectionGUID: KFROoET5RUCe+CEtMlpnZg==
-X-CSE-MsgGUID: u85kcWxYSUuLO5cvKYj1fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="60610846"
-X-IronPort-AV: E=Sophos;i="6.12,250,1728975600"; 
-   d="scan'208";a="60610846"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 00:58:08 -0800
-X-CSE-ConnectionGUID: +AsmofAeRIWJc6Bq//PSNg==
-X-CSE-MsgGUID: Qgz7xLTTTqKYFqD9qVpvUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="98284698"
-Received: from yzhao56-desk.sh.intel.com ([10.239.159.62])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 00:58:05 -0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: peterx@redhat.com,
-	rick.p.edgecombe@intel.com,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	Yan Zhao <yan.y.zhao@intel.com>
-Subject: [PATCH 2/2] KVM: selftests: TDX: Test dirty ring on a gmemfd slot
-Date: Fri, 20 Dec 2024 16:23:46 +0800
-Message-ID: <20241220082346.15914-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20241220082027.15851-1-yan.y.zhao@intel.com>
-References: <20241220082027.15851-1-yan.y.zhao@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lVBke+Ma"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK3rFLZ024507;
+	Fri, 20 Dec 2024 09:57:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=g5n7U5
+	9aBBHQBgMOZ3AZLfqPVbxZZHxn157y+qjB3Ng=; b=lVBke+MaAl+2NvnQvhE028
+	DeZkGfF2I5yjJvWzjsnqaCrlzF7MpL+FS2ZowoXPF0Ls0hSTwaoYPKageGV+8dKe
+	pmNlsyiDHif/sdnpdEk57CfoCDPL8nQQCWNGuiJWMQJMsi9b49or2Kjl5F5r4h8z
+	h7fP+9Li5D1RwRzZyALbsIxVsEnNmo5A0NQzA20+dijtbadGac/ONWya/MPsui4g
+	qmb/k2VbL7RX9lZSWYoZ27bRjkG+j4Tw2ICXBTOl3IhxiIgPv+dX382v0TfZ4fk7
+	6xJlOvOg1pC+nYbpbaBZZMR0RrOYZQoWgMF4MYZUJX8YOOOOvz2I0573EoQPK2MA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43n12h9eba-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 09:57:48 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BK9rMBG015268;
+	Fri, 20 Dec 2024 09:57:48 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43n12h9eb6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 09:57:48 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK6iNNE011252;
+	Fri, 20 Dec 2024 09:57:47 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hpjkhb3x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 09:57:47 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BK9vkVs28902108
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Dec 2024 09:57:46 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 50B7658055;
+	Fri, 20 Dec 2024 09:57:46 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF11458043;
+	Fri, 20 Dec 2024 09:57:42 +0000 (GMT)
+Received: from [9.124.215.200] (unknown [9.124.215.200])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Dec 2024 09:57:42 +0000 (GMT)
+Message-ID: <5c0bf4e1-ada7-4f81-9ac4-57b997324659@linux.ibm.com>
+Date: Fri, 20 Dec 2024 15:27:41 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] ppc: spapr: Enable 2nd DAWR on Power10 pSeries
+ machine
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>, danielhb413@gmail.com,
+        qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, clg@kaod.org,
+        npiggin@gmail.com, groug@kaod.org
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <170679876639.188422.11634974895844092362.stgit@ltc-boston1.aus.stglabs.ibm.com>
+ <170679878985.188422.6745903342602285494.stgit@ltc-boston1.aus.stglabs.ibm.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <170679878985.188422.6745903342602285494.stgit@ltc-boston1.aus.stglabs.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OFNRTC2luvWvDp3ZawkrQqMVrskKJWMx
+X-Proofpoint-GUID: Ce1MkxMVBg3AzveHHuvGKnyhh2rnSU_5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ bulkscore=0 phishscore=0 adultscore=0 impostorscore=0 mlxlogscore=853
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412200078
 
-Slots with the KVM_MEM_GUEST_MEMFD flag do not support dirty bit tracking.
-However, it is still possible for userspace to trigger the resetting of the
-dirty ring, asking KVM to reset SPTEs in the mirror root by clearing the
-accessed bit or write bit.
+Hi Shiva,
 
-Test this to ensure that TDs are not negatively impacted.
+On 2/1/24 20:16, Shivaprasad G Bhat wrote:
+> As per the PAPR, bit 0 of byte 64 in pa-features property
+> indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
+> DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
+> whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
+> the pa-feature bit in guest DT using cap-dawr1 machine capability.
+> 
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> ---
+>   hw/ppc/spapr.c         |    7 ++++++-
+>   hw/ppc/spapr_caps.c    |   36 ++++++++++++++++++++++++++++++++++++
+>   hw/ppc/spapr_hcall.c   |   25 ++++++++++++++++---------
+>   include/hw/ppc/spapr.h |    6 +++++-
+>   target/ppc/kvm.c       |   12 ++++++++++++
+>   target/ppc/kvm_ppc.h   |   12 ++++++++++++
+>   6 files changed, 87 insertions(+), 11 deletions(-)
+> 
 
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
----
- tools/testing/selftests/kvm/Makefile          |   1 +
- .../selftests/kvm/x86_64/tdx_dirty_ring.c     | 231 ++++++++++++++++++
- 2 files changed, 232 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86_64/tdx_dirty_ring.c
+<snipped>
 
-diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-index 46fd2194add3..46ee465a0443 100644
---- a/tools/testing/selftests/kvm/Makefile
-+++ b/tools/testing/selftests/kvm/Makefile
-@@ -157,6 +157,7 @@ TEST_GEN_PROGS_x86_64 += pre_fault_memory_test
- TEST_GEN_PROGS_x86_64 += x86_64/tdx_vm_tests
- TEST_GEN_PROGS_x86_64 += x86_64/tdx_shared_mem_test
- TEST_GEN_PROGS_x86_64 += x86_64/tdx_upm_test
-+TEST_GEN_PROGS_x86_64 += x86_64/tdx_dirty_ring
- 
- # Compiled outputs used by test targets
- TEST_GEN_PROGS_EXTENDED_x86_64 += x86_64/nx_huge_pages_test
-diff --git a/tools/testing/selftests/kvm/x86_64/tdx_dirty_ring.c b/tools/testing/selftests/kvm/x86_64/tdx_dirty_ring.c
-new file mode 100644
-index 000000000000..ffeb0a2a70aa
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86_64/tdx_dirty_ring.c
-@@ -0,0 +1,231 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <signal.h>
-+
-+#include <asm/barrier.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "tdx/tdcall.h"
-+#include "tdx/tdx.h"
-+#include "tdx/tdx_util.h"
-+#include "tdx/test_util.h"
-+#include "test_util.h"
-+
-+#define TDX_TEST_DIRTY_RING_GPA (0xc0400000)
-+#define TDX_TEST_DIRTY_RING_GVA (0x90400000)
-+#define TDX_TEST_DIRTY_RING_REGION_SLOT 11
-+#define TDX_TEST_DIRTY_RING_REGION_SIZE 0x200000
-+
-+#define TDX_TEST_DIRTY_RING_REPORT_PORT 0x50
-+#define TDX_TEST_DIRTY_RING_REPORT_SIZE 4
-+#define TDX_TEST_DIRTY_RING_COUNT 256
-+#define TDX_TEST_DIRTY_RING_GUEST_WRITE_MAX_CNT 3
-+
-+static int reset_index;
-+
-+/*
-+ * Write to a private GPA in a guest_memfd slot.
-+ * Exit to host after each write to allow host to check dirty ring.
-+ */
-+void guest_code_dirty_gpa(void)
-+{
-+	uint64_t count = 0;
-+
-+	while (count <= TDX_TEST_DIRTY_RING_GUEST_WRITE_MAX_CNT) {
-+		count++;
-+		memset((void *)TDX_TEST_DIRTY_RING_GVA, 1, 8);
-+		tdg_vp_vmcall_instruction_io(TDX_TEST_DIRTY_RING_REPORT_PORT,
-+					     TDX_TEST_DIRTY_RING_REPORT_SIZE,
-+					     TDG_VP_VMCALL_INSTRUCTION_IO_WRITE,
-+					     &count);
-+	}
-+	tdx_test_success();
-+}
-+
-+/*
-+ * Verify that KVM_MEM_LOG_DIRTY_PAGES cannot be set on a memslot with flag
-+ * KVM_MEM_GUEST_MEMFD.
-+ */
-+static void verify_turn_on_log_dirty_pages_flag(struct kvm_vcpu *vcpu)
-+{
-+	struct userspace_mem_region *region;
-+	int ret;
-+
-+	region = memslot2region(vcpu->vm, TDX_TEST_DIRTY_RING_REGION_SLOT);
-+	region->region.flags |= KVM_MEM_LOG_DIRTY_PAGES;
-+
-+	ret = __vm_ioctl(vcpu->vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
-+
-+	TEST_ASSERT(ret, "KVM_SET_USER_MEMORY_REGION2 incorrectly succeeds\n"
-+		    "ret: %i errno: %i slot: %u new_flags: 0x%x",
-+		    ret, errno, region->region.slot, region->region.flags);
-+	region->region.flags &= ~KVM_MEM_LOG_DIRTY_PAGES;
-+}
-+
-+static inline bool dirty_gfn_is_dirtied(struct kvm_dirty_gfn *gfn)
-+{
-+	return smp_load_acquire(&gfn->flags) == KVM_DIRTY_GFN_F_DIRTY;
-+}
-+
-+static inline void dirty_gfn_set_collected(struct kvm_dirty_gfn *gfn)
-+{
-+	smp_store_release(&gfn->flags, KVM_DIRTY_GFN_F_RESET);
-+}
-+
-+static bool dirty_ring_empty(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-+	struct kvm_dirty_gfn *cur;
-+	int i;
-+
-+	for (i = 0; i < TDX_TEST_DIRTY_RING_COUNT; i++) {
-+		cur = &dirty_gfns[i];
-+
-+		if (dirty_gfn_is_dirtied(cur))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+/*
-+ * Purposely reset the dirty ring incorrectly by resetting a dirty ring entry
-+ * even when KVM does not report the entry as dirty.
-+ *
-+ * In the entry, a slot with flag KVM_MEM_GUEST_MEMFD (which does not allow
-+ * dirty page tracking) is specified.
-+ *
-+ * This is to verify that userspace cannot do anything wrong to cause entries
-+ * in private EPT get zapped (caused by incorrect write permission reduction).
-+ */
-+static void reset_dirty_ring(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-+	struct kvm_dirty_gfn *cur = &dirty_gfns[reset_index];
-+	uint32_t cleared;
-+
-+	cur->slot = TDX_TEST_DIRTY_RING_REGION_SLOT;
-+	cur->offset = 0;
-+	dirty_gfn_set_collected(cur);
-+	cleared = kvm_vm_reset_dirty_ring(vcpu->vm);
-+	reset_index += cleared;
-+
-+	TEST_ASSERT(cleared == 1, "Unexpected cleared count %d\n", cleared);
-+}
-+
-+/*
-+ * The vCPU worker to loop vcpu_run(). After each vCPU access to a GFN, check if
-+ * the dirty ring is empty and reset the dirty ring.
-+ */
-+static void reset_dirty_ring_worker(struct kvm_vcpu *vcpu)
-+{
-+	while (1) {
-+		vcpu_run(vcpu);
-+
-+		if (vcpu->run->exit_reason == KVM_EXIT_IO &&
-+		    vcpu->run->io.port == TDX_TEST_SUCCESS_PORT &&
-+		    vcpu->run->io.size == TDX_TEST_SUCCESS_SIZE &&
-+		    vcpu->run->io.direction == TDG_VP_VMCALL_INSTRUCTION_IO_WRITE)
-+			break;
-+
-+		if (vcpu->run->exit_reason == KVM_EXIT_IO &&
-+		    vcpu->run->io.port == TDX_TEST_DIRTY_RING_REPORT_PORT &&
-+		    vcpu->run->io.size == TDX_TEST_DIRTY_RING_REPORT_SIZE &&
-+		    vcpu->run->io.direction == TDG_VP_VMCALL_INSTRUCTION_IO_WRITE) {
-+			TEST_ASSERT(dirty_ring_empty(vcpu),
-+				    "Guest write on a gmemfd slot should not cause GFN dirty\n");
-+			reset_dirty_ring(vcpu);
-+		}
-+	}
-+	TDX_TEST_ASSERT_SUCCESS(vcpu);
-+}
-+
-+void reset_dirty_ring_on_gmemfd_slot(bool manual_protect_and_init_set)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	vm = td_create();
-+	td_initialize(vm, VM_MEM_SRC_ANONYMOUS, 0);
-+
-+	vm_enable_dirty_ring(vm, TDX_TEST_DIRTY_RING_COUNT * sizeof(struct kvm_dirty_gfn));
-+
-+	/*
-+	 * Let KVM detect that kvm_dirty_log_manual_protect_and_init_set() is
-+	 * true in kvm_arch_mmu_enable_log_dirty_pt_masked() to check if
-+	 * kvm_mmu_slot_gfn_write_protect() will be called on a memslot that
-+	 * does not have dirty track enabled.
-+	 */
-+	if (manual_protect_and_init_set) {
-+		u64 manual_caps;
-+
-+		manual_caps = kvm_check_cap(KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2);
-+
-+		manual_caps &= (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE |
-+				KVM_DIRTY_LOG_INITIALLY_SET);
-+
-+		if (!manual_caps)
-+			return;
-+
-+		vm_enable_cap(vm, KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2, manual_caps);
-+	}
-+
-+	vcpu = td_vcpu_add(vm, 0, guest_code_dirty_gpa);
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    TDX_TEST_DIRTY_RING_GPA,
-+				    TDX_TEST_DIRTY_RING_REGION_SLOT,
-+				    TDX_TEST_DIRTY_RING_REGION_SIZE / getpagesize(),
-+				    KVM_MEM_GUEST_MEMFD);
-+	vm->memslots[MEM_REGION_TEST_DATA] = TDX_TEST_DIRTY_RING_REGION_SLOT;
-+
-+	____vm_vaddr_alloc(vm, TDX_TEST_DIRTY_RING_REGION_SIZE,
-+			   TDX_TEST_DIRTY_RING_GVA,
-+			   TDX_TEST_DIRTY_RING_GPA, MEM_REGION_TEST_DATA, true);
-+	td_finalize(vm);
-+
-+	printf("Verifying reset dirty ring on gmemfd slot with dirty log initially %s:\n",
-+	       manual_protect_and_init_set ? "set" : "unset");
-+
-+	verify_turn_on_log_dirty_pages_flag(vcpu);
-+	reset_dirty_ring_worker(vcpu);
-+
-+	kvm_vm_free(vm);
-+	printf("\t ... PASSED\n");
-+}
-+
-+/*
-+ * Test if resetting a GFN in a memslot with the KVM_MEM_GUEST_MEMFD flag in the
-+ * dirty ring does not negatively impact TDs.
-+ * (when manual protect and initially_set is off)
-+ */
-+void verify_reset_dirty_ring_config1(void)
-+{
-+	reset_dirty_ring_on_gmemfd_slot(false);
-+}
-+
-+/*
-+ * Test if resetting a GFN in a memslot with the KVM_MEM_GUEST_MEMFD flag in the
-+ * dirty ring does not negatively impact TDs.
-+ * (when manual protect and initially_set is on)
-+ */
-+void verify_reset_dirty_ring_config2(void)
-+{
-+	reset_dirty_ring_on_gmemfd_slot(true);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	ksft_print_header();
-+
-+	if (!is_tdx_enabled())
-+		ksft_exit_skip("TDX is not supported by the KVM. Exiting.\n");
-+
-+	ksft_set_plan(2);
-+	ksft_test_result(!run_in_new_process(&verify_reset_dirty_ring_config1),
-+			 "verify_reset_dirty_ring_config1\n");
-+	ksft_test_result(!run_in_new_process(&verify_reset_dirty_ring_config2),
-+			 "verify_reset_dirty_ring_config2\n");
-+	ksft_finished();
-+	return 0;
-+}
--- 
-2.43.2
+> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+> index fcefd1d1c7..34c1c77c95 100644
+> --- a/hw/ppc/spapr_hcall.c
+> +++ b/hw/ppc/spapr_hcall.c
+> @@ -814,11 +814,12 @@ static target_ulong h_set_mode_resource_set_ciabr(PowerPCCPU *cpu,
+>       return H_SUCCESS;
+>   }
+>   
+> -static target_ulong h_set_mode_resource_set_dawr0(PowerPCCPU *cpu,
+> -                                                  SpaprMachineState *spapr,
+> -                                                  target_ulong mflags,
+> -                                                  target_ulong value1,
+> -                                                  target_ulong value2)
+> +static target_ulong h_set_mode_resource_set_dawr(PowerPCCPU *cpu,
+> +                                                     SpaprMachineState *spapr,
+> +                                                     target_ulong mflags,
+> +                                                     target_ulong resource,
+> +                                                     target_ulong value1,
+> +                                                     target_ulong value2)
+>   {
+>       CPUPPCState *env = &cpu->env;
+>   
+> @@ -831,8 +832,13 @@ static target_ulong h_set_mode_resource_set_dawr0(PowerPCCPU *cpu,
+>           return H_P4;
+>       }
+>   
+> -    ppc_store_dawr0(env, value1);
+> -    ppc_store_dawrx0(env, value2);
+> +    if (resource == H_SET_MODE_RESOURCE_SET_DAWR0) {
+> +        ppc_store_dawr0(env, value1);
+> +        ppc_store_dawrx0(env, value2);
+> +    } else {
 
+Should we explicitly check here for resource == 
+H_SET_MODE_RESOURCE_SET_DAWR0 ?
+
+> +        ppc_store_dawr1(env, value1);
+> +        ppc_store_dawrx1(env, value2);
+
+and then do an else g_assert_not_reached() ?
+
+With suggested changes after addressing other review comments from 
+Nick/David:
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> +    }
+>   
+>       return H_SUCCESS;
+>   }
+> @@ -911,8 +917,9 @@ static target_ulong h_set_mode(PowerPCCPU *cpu, SpaprMachineState *spapr,
+>                                               args[3]);
+>           break;
+>       case H_SET_MODE_RESOURCE_SET_DAWR0:
+> -        ret = h_set_mode_resource_set_dawr0(cpu, spapr, args[0], args[2],
+> -                                            args[3]);
+> +    case H_SET_MODE_RESOURCE_SET_DAWR1:
+> +        ret = h_set_mode_resource_set_dawr(cpu, spapr, args[0], args[1],
+> +                                           args[2], args[3]);
+>           break;
+>       case H_SET_MODE_RESOURCE_LE:
+>           ret = h_set_mode_resource_le(cpu, spapr, args[0], args[2], args[3]);
+> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+> index e91791a1a9..2b13c9a00e 100644
+> --- a/include/hw/ppc/spapr.h
+> +++ b/include/hw/ppc/spapr.h
+> @@ -80,8 +80,10 @@ typedef enum {
+>   #define SPAPR_CAP_RPT_INVALIDATE        0x0B
+>   /* Support for AIL modes */
+>   #define SPAPR_CAP_AIL_MODE_3            0x0C
+> +/* DAWR1 */
+> +#define SPAPR_CAP_DAWR1                 0x0D
+>   /* Num Caps */
+> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
+> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_DAWR1 + 1)
+>   
+>   /*
+>    * Capability Values
+> @@ -403,6 +405,7 @@ struct SpaprMachineState {
+>   #define H_SET_MODE_RESOURCE_SET_DAWR0           2
+>   #define H_SET_MODE_RESOURCE_ADDR_TRANS_MODE     3
+>   #define H_SET_MODE_RESOURCE_LE                  4
+> +#define H_SET_MODE_RESOURCE_SET_DAWR1           5
+>   
+>   /* Flags for H_SET_MODE_RESOURCE_LE */
+>   #define H_SET_MODE_ENDIAN_BIG    0
+> @@ -986,6 +989,7 @@ extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
+>   extern const VMStateDescription vmstate_spapr_cap_fwnmi;
+>   extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
+>   extern const VMStateDescription vmstate_spapr_wdt;
+> +extern const VMStateDescription vmstate_spapr_cap_dawr1;
+>   
+>   static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
+>   {
+> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+> index 26fa9d0575..3d8a8f35b6 100644
+> --- a/target/ppc/kvm.c
+> +++ b/target/ppc/kvm.c
+> @@ -89,6 +89,7 @@ static int cap_large_decr;
+>   static int cap_fwnmi;
+>   static int cap_rpt_invalidate;
+>   static int cap_ail_mode_3;
+> +static int cap_dawr1;
+>   
+>   static uint32_t debug_inst_opcode;
+>   
+> @@ -143,6 +144,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>       cap_ppc_nested_kvm_hv = kvm_vm_check_extension(s, KVM_CAP_PPC_NESTED_HV);
+>       cap_large_decr = kvmppc_get_dec_bits();
+>       cap_fwnmi = kvm_vm_check_extension(s, KVM_CAP_PPC_FWNMI);
+> +    cap_dawr1 = kvm_vm_check_extension(s, KVM_CAP_PPC_DAWR1);
+>       /*
+>        * Note: setting it to false because there is not such capability
+>        * in KVM at this moment.
+> @@ -2109,6 +2111,16 @@ int kvmppc_set_fwnmi(PowerPCCPU *cpu)
+>       return kvm_vcpu_enable_cap(cs, KVM_CAP_PPC_FWNMI, 0);
+>   }
+>   
+> +bool kvmppc_has_cap_dawr1(void)
+> +{
+> +    return !!cap_dawr1;
+> +}
+> +
+> +int kvmppc_set_cap_dawr1(int enable)
+> +{
+> +    return kvm_vm_enable_cap(kvm_state, KVM_CAP_PPC_DAWR1, 0, enable);
+> +}
+> +
+>   int kvmppc_smt_threads(void)
+>   {
+>       return cap_ppc_smt ? cap_ppc_smt : 1;
+> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+> index 1975fb5ee6..493d6bb477 100644
+> --- a/target/ppc/kvm_ppc.h
+> +++ b/target/ppc/kvm_ppc.h
+> @@ -68,6 +68,8 @@ bool kvmppc_has_cap_htm(void);
+>   bool kvmppc_has_cap_mmu_radix(void);
+>   bool kvmppc_has_cap_mmu_hash_v3(void);
+>   bool kvmppc_has_cap_xive(void);
+> +bool kvmppc_has_cap_dawr1(void);
+> +int kvmppc_set_cap_dawr1(int enable);
+>   int kvmppc_get_cap_safe_cache(void);
+>   int kvmppc_get_cap_safe_bounds_check(void);
+>   int kvmppc_get_cap_safe_indirect_branch(void);
+> @@ -377,6 +379,16 @@ static inline bool kvmppc_has_cap_xive(void)
+>       return false;
+>   }
+>   
+> +static inline bool kvmppc_has_cap_dawr1(void)
+> +{
+> +    return false;
+> +}
+> +
+> +static inline int kvmppc_set_cap_dawr1(int enable)
+> +{
+> +    abort();
+> +}
+> +
+>   static inline int kvmppc_get_cap_safe_cache(void)
+>   {
+>       return 0;
+> 
+> 
+> 
