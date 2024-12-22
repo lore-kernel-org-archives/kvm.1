@@ -1,151 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E6E192B62;
-	Sun, 22 Dec 2024 22:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1618F2CF
+	for <kvm@vger.kernel.org>; Sun, 22 Dec 2024 23:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734906968; cv=none; b=trVUNzOJM58aV7fhtNY2Yi5oDcIhCFk0g5ijz/Hm0nJ9vsdIzYH3msb4kOcoKbwwJF6yoHNGN7JaZ4T0uuXWVetrc7sfNjpvYegRA9yo1qy/NQwvOA5UhKwQ2mKgpg2ybIIcPpKj2Vt5oBO7OfiiQsMcuftmRIS/m2B7llOxOTM=
+	t=1734909028; cv=none; b=d1uIkHJ9eDXK7OtFh7rLu3AO+HMDT39O7ot9Mviy6jxI54dUEndtnNhPK+VoPi0E2hcXMwXoUJEnXgr7vwRcd6SOtmgued4HXvoyqjKKX6kBo7FYUiK+Ab0BKZDNxj2dQcw1rB4DO7Rt5YAvQxiH0nKQyokYICqbkMCGdGAh/vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734906968; c=relaxed/simple;
-	bh=/43HSdEtYyVjDZJjnecKHUCc3uqTj+JIRgsPRb+NMrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pBkIIqyy99mssrkcJr7D4b88K2ZTwzaMucYKPw8Jr7S2LuuvJ8oty2hOlk5d96HJSYOEN04H2GBX2QRMTMnIHaVonweYaj6q4MDqbHJ77N3fhVvOlmGRHsK1DI0UQB4BkMfFWwYg1cmm298axJKTbe5LoaCvzHsn5xsqycxcdmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLOakvNX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLOakvNX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA08C4CECD;
-	Sun, 22 Dec 2024 22:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734906967;
-	bh=/43HSdEtYyVjDZJjnecKHUCc3uqTj+JIRgsPRb+NMrQ=;
-	h=Date:From:To:Cc:Subject:From;
-	b=PLOakvNX3nznLdM0zf+oPLS6/dOKix5wtjclqBXG/Qckr1H+w6xdsT/6d9qj/ldfn
-	 T3yaEIvxehrVnx3mmaGehfkVd2uu8krKqTuFeXZfRXOBd7+Li3Qe8SguMQj3uKplEs
-	 F1HkZ2rnDpj3VTvDwxgGDe7BuiOD/fvmT5GSVYdPoFKamg/o61PJqQPRoplUydRZ19
-	 tJvJDWfYAydIUOeSC6f8CtwhetQNqT36B6B/bnV+Q93Wz3yO+3YLRpFrEpddtdGefH
-	 8+secFKHbkoobdiwm9KyMbjEbFIxYKmn6c76YeFf91bmuvTEWNVwSOFBroYe3ei8Lu
-	 cE4uEv3Bh44eA==
-Date: Sun, 22 Dec 2024 16:36:04 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Athul Krishna <athul.krishna.kr@protonmail.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: [bugzilla-daemon@kernel.org: [Bug 219619] New: vfio-pci: screen
- graphics artifacts after 6.12 kernel upgrade]
-Message-ID: <20241222223604.GA3735586@bhelgaas>
+	s=arc-20240116; t=1734909028; c=relaxed/simple;
+	bh=RVm7jNBUUrHNTFNgINUmEkqp1qzYNHhAXPW+cKo6nLU=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=mwaqlzomriKR11e3QHh5rsaf/oJAiKflBLLUKC6KZyDUb08y0ZQrq1xm6R0kp/wjQtYVc4BGAFuMhe4eLIO7nn3zNU6Iz10Sv7lysk0Ryeb5u4AyFolM23Vyes5X7vEPVlVTNBY/kCL7f/3r3AHuVjdjSkHy+N5bhuvcE2AB4q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3a819a4e83dso37619445ab.1
+        for <kvm@vger.kernel.org>; Sun, 22 Dec 2024 15:10:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734909026; x=1735513826;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=71tl5pK598wl7Ium1IiibAaoLnjGY1ZCnhcKpC8zXtU=;
+        b=VBrIxcHQkcXeLiYC8782kurkcwIEC30Z3VkxIKW/p14xiOdzkwreoL3GLz7ZCwGuKH
+         X5fDer9iP3niSMQL705ZfiuORHI0r2OUPx8Z99WtlMS8hFjgL+aVuO+dLx1NwuUMpj9K
+         49evpcFxv2hjDDCBoKIeAG8WKMPgp+k990pdgZb1kmEnQn4kAZFWEZSDu34uRd8+1zxA
+         kroaJTnCI41LbhV51G8gPltE1cFy2eguO1f1qFrjT7ReLxwtgqfAoYXuR+QhHELFOrsD
+         o00rHFZcIXVDxv8LOdHZOti0eIusIGcGv3gwjWXpoVuUhy+RMTrAEfC/3ljoFOg1LpjY
+         MX6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWf95/wd+6Tp5Ie9qNd5cndeZrsNcgvFlBEotw9FtXzRHO+R6inV3hSnwDC7OVq5pfEpx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWURk2EQIDh4gA3KvhwKp+Tq53gz1SvQmLGAHeNjVuhiSMqZ+l
+	vryBaOxgUJRQRgFzL28oRzRFaWc8tWig6VwmEP/B4ha+t/9QM/0CgGrnILhH1szT6UiWq0qc7rB
+	ZSntj+WMmuVjCpLfFQbOBv3PA0MxjE945LPAH+tRSqryQY8A2wVnxCKs=
+X-Google-Smtp-Source: AGHT+IERGq8zgv2rLFTEUytthEd2WLJ8gT9yzeFGaVtm2/jiGfdeP6y4I2po56TjkU90idpzX/FhCE1EcA2eDX/3kP8pQouSoWBA
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Received: by 2002:a05:6e02:2384:b0:3a7:fe8c:b014 with SMTP id
+ e9e14a558f8ab-3c2d5917533mr98929775ab.21.1734909026190; Sun, 22 Dec 2024
+ 15:10:26 -0800 (PST)
+Date: Sun, 22 Dec 2024 15:10:26 -0800
+In-Reply-To: <67598fb9.050a0220.17f54a.003b.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67689c62.050a0220.2f3838.000d.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING in vmx_handle_exit (2)
+From: syzbot <syzbot+ac0bc3a70282b4d586cc@syzkaller.appspotmail.com>
+To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
+	tglx@linutronix.de, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Forwarding since not everybody follows bugzilla.  Apparently bisected
-to f9e54c3a2f5b ("vfio/pci: implement huge_fault support").
+syzbot has found a reproducer for the following issue on:
 
-Athul, f9e54c3a2f5b appears to revert cleanly from v6.13-rc1.  Can you
-verify that reverting it is enough to avoid these artifacts?
+HEAD commit:    bcde95ce32b6 Merge tag 'devicetree-fixes-for-6.13-1' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10635fe8580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4f1586bab1323870
+dashboard link: https://syzkaller.appspot.com/bug?extid=ac0bc3a70282b4d586cc
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=129c58c4580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=134e5f30580000
 
-#regzbot introduced: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-bcde95ce.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d1b2e8d294e3/vmlinux-bcde95ce.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/593ff4631acc/bzImage-bcde95ce.xz
 
------ Forwarded message from bugzilla-daemon@kernel.org -----
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ac0bc3a70282b4d586cc@syzkaller.appspotmail.com
 
-Date: Sat, 21 Dec 2024 10:10:02 +0000
-From: bugzilla-daemon@kernel.org
-To: bjorn@helgaf9e54c3a2f5bas.com
-Subject: [Bug 219619] New: vfio-pci: screen graphics artifacts after 6.12 kernel upgrade
-Message-ID: <bug-219619-41252@https.bugzilla.kernel.org/>
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 6008 at arch/x86/kvm/vmx/vmx.c:6480 __vmx_handle_exit arch/x86/kvm/vmx/vmx.c:6480 [inline]
+WARNING: CPU: 1 PID: 6008 at arch/x86/kvm/vmx/vmx.c:6480 vmx_handle_exit+0x40f/0x1f70 arch/x86/kvm/vmx/vmx.c:6637
+Modules linked in:
+CPU: 1 UID: 0 PID: 6008 Comm: syz-executor324 Not tainted 6.13.0-rc3-syzkaller-00301-gbcde95ce32b6 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:__vmx_handle_exit arch/x86/kvm/vmx/vmx.c:6480 [inline]
+RIP: 0010:vmx_handle_exit+0x40f/0x1f70 arch/x86/kvm/vmx/vmx.c:6637
+Code: 07 38 d0 7f 08 84 c0 0f 85 b1 11 00 00 44 0f b6 a5 49 99 00 00 31 ff 44 89 e6 e8 4c 86 68 00 45 84 e4 75 52 e8 62 84 68 00 90 <0f> 0b 90 48 8d bd 4a 99 00 00 c6 85 49 99 00 00 01 48 b8 00 00 00
+RSP: 0018:ffffc90003d17a58 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888031ba0000 RCX: ffffffff81319144
+RDX: ffff8880230ea440 RSI: ffffffff8131914e RDI: 0000000000000001
+RBP: ffffc9000428c000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
+R13: 0000000080000021 R14: ffff888031ba02d8 R15: dffffc0000000000
+FS:  00007f4811d6b6c0(0000) GS:ffff88806a700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4811d4ad58 CR3: 0000000030878000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ vcpu_enter_guest arch/x86/kvm/x86.c:11081 [inline]
+ vcpu_run+0x3047/0x4f50 arch/x86/kvm/x86.c:11242
+ kvm_arch_vcpu_ioctl_run+0x44a/0x1740 arch/x86/kvm/x86.c:11560
+ kvm_vcpu_ioctl+0x6ce/0x1520 virt/kvm/kvm_main.c:4340
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4811dbb649
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 1c 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4811d6b168 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f4811e3d348 RCX: 00007f4811dbb649
+RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000007
+RBP: 00007f4811e3d340 R08: 00007f4811d6b6c0 R09: 0000000000000000
+R10: 00007f4811d6b6c0 R11: 0000000000000246 R12: 00007f4811e3d34c
+R13: 0000000000000000 R14: 00007ffea79b5e30 R15: 00007ffea79b5f18
+ </TASK>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=219619
 
-            Bug ID: 219619
-           Summary: vfio-pci: screen graphics artifacts after 6.12 kernel
-                    upgrade
-           Product: Drivers
-           Version: 2.5
-          Hardware: AMD
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: PCI
-          Assignee: drivers_pci@kernel-bugs.osdl.org
-          Reporter: athul.krishna.kr@protonmail.com
-        Regression: No
-
-Created attachment 307382
-  --> https://bugzilla.kernel.org/attachment.cgi?id=307382&action=edit
-dmesg
-
-Device: Asus Zephyrus GA402RJ
-CPU: Ryzen 7 6800HS
-GPU: RX 6700S
-Kernel: 6.13.0-rc3-g8faabc041a00
-
-Problem:
-Launching games or gpu bench-marking tools in qemu windows 11 vm will cause
-screen artifacts, ultimately qemu will pause with unrecoverable error.
-
-Commit:
-f9e54c3a2f5b79ecc57c7bc7d0d3521e461a2101 is the first bad commit
-commit f9e54c3a2f5b79ecc57c7bc7d0d3521e461a2101
-Author: Alex Williamson <alex.williamson@redhat.com>
-Date:   Mon Aug 26 16:43:53 2024 -0400
-
-    vfio/pci: implement huge_fault support
-
-    With the addition of pfnmap support in vmf_insert_pfn_{pmd,pud}() we can
-    take advantage of PMD and PUD faults to PCI BAR mmaps and create more
-    efficient mappings.  PCI BARs are always a power of two and will typically
-    get at least PMD alignment without userspace even trying.  Userspace
-    alignment for PUD mappings is also not too difficult.
-
-    Consolidate faults through a single handler with a new wrapper for
-    standard single page faults.  The pre-faulting behavior of commit
-    d71a989cf5d9 ("vfio/pci: Insert full vma on mmap'd MMIO fault") is removed
-    in this refactoring since huge_fault will cover the bulk of the faults and
-    results in more efficient page table usage.  We also want to avoid that
-    pre-faulted single page mappings preempt huge page mappings.
-
-    Link: https://lkml.kernel.org/r/20240826204353.2228736-20-peterx@redhat.com
-    Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-    Signed-off-by: Peter Xu <peterx@redhat.com>
-    Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-    Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-    Cc: Borislav Petkov <bp@alien8.de>
-    Cc: Catalin Marinas <catalin.marinas@arm.com>
-    Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-    Cc: Dave Hansen <dave.hansen@linux.intel.com>
-    Cc: David Hildenbrand <david@redhat.com>
-    Cc: Gavin Shan <gshan@redhat.com>
-    Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-    Cc: Heiko Carstens <hca@linux.ibm.com>
-    Cc: Ingo Molnar <mingo@redhat.com>
-    Cc: Jason Gunthorpe <jgg@nvidia.com>
-    Cc: Matthew Wilcox <willy@infradead.org>
-    Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-    Cc: Paolo Bonzini <pbonzini@redhat.com>
-    Cc: Ryan Roberts <ryan.roberts@arm.com>
-    Cc: Sean Christopherson <seanjc@google.com>
-    Cc: Sven Schnelle <svens@linux.ibm.com>
-    Cc: Thomas Gleixner <tglx@linutronix.de>
-    Cc: Vasily Gorbik <gor@linux.ibm.com>
-    Cc: Will Deacon <will@kernel.org>
-    Cc: Zi Yan <ziy@nvidia.com>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
- drivers/vfio/pci/vfio_pci_core.c | 60 ++++++++++++++++++++++++++++------------
- 1 file changed, 43 insertions(+), 17 deletions(-)
-
--- 
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.
-
------ End forwarded message -----
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
