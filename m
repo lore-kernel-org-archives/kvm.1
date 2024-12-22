@@ -1,45 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3680B
-	for <kvm@vger.kernel.org>; Sun, 22 Dec 2024 19:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A9818FDA9
+	for <kvm@vger.kernel.org>; Sun, 22 Dec 2024 19:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734896097; cv=none; b=kQCVDG8HaROrc60GA0NhYXWq+EZksTsTNZts/kss+hchb2FeNhVIA7hvpU2gTfbiptZFmMdywrdY9W0rWlrYfHId1EEs+sRmI1yjfVdBCzEvvKbj/onV/0dJuCwmLsQ6px2bnQvR6lTRAwShi9Q95Wf5ypPs8An2WWsMRMO6VaU=
+	t=1734896098; cv=none; b=DSo1pT33JCtHN47fsMlaBWVw54sZLMJU1SerkvCSxiKeVBkeQVZOG+JGISfhu+VB8jGNFa/UvWSA3XP1yBKLDa/IBCUvWrxfy9jiZYoGHuuwYma0kH6xBoH7dDfhHoy/ULLu97uaM03JhjiCaCjGnEg4j6o3+clpvGAT/PE7LyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734896097; c=relaxed/simple;
-	bh=VpaGvHkioPZxuJVqRs+NYitCf28NTXQ1nnuggBgdVzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G4js8DsXrwGLqgGQuGCLKITELxthSl8wxOePayc2jXhgAxBC9RZwWuNY35zNWFfZD6REC8ZwnQZtqLk0+ikWbuU8yXpWjW2g7qMs91nXj3Jo9cbXRSSqfIQQIPqJcoO6KqnGbaRdNpE+GWYHIZcyPSzbGz64/25RGd+sO2HF/AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U298Tz1q; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1734896098; c=relaxed/simple;
+	bh=YAqwZRLXFi8t3u5dj2HCuxZkJBnY+5Q0eK02rCwcKHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aPeDNCeDnaEw7Gn3b+6bVGEU8SdzwohfDp9Pi/vXXY93iWAnBCjkvoiWCJxEiB41DwLfjN9jYQ7f/fieb5pm4WzkwfpaYdD9LRrXn4LWpaBQJ55EVFg9K1XBD36B4Sw8Jd79Osj5sR8JobQ2J7SIWQ+v2CokbSn97Ie8JNrmYas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BIuhaFam; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U298Tz1q"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BIuhaFam"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734896093;
+	s=mimecast20190719; t=1734896095;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Lp1xD+evB6Y/pJb2UaXlb0njWjmhti4602syzXVzzq0=;
-	b=U298Tz1qwvVJc0SFDy52nNa4dyVa1lkyfufAy3lb5iitI5xbhSKJKwUyUi1I8/P/TMvZ3+
-	A3nzUAXpk7dfdApS87jRUL4ynYSjGFsiiNJJdTMG1KqQT8UZTT5NRdPvJGONTHBiV4Darg
-	J8ctFABYnE1yCLLUEV46n+7O7nXXzZo=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iSURQ5skVbJB4BaezFHGl1Fr9+462ymQtr3vxlCxzX8=;
+	b=BIuhaFam2cANUb6LjzASbwwp5Z3NxJ9OObFN3G8SGYPVxdOmBvxOOu9Fp2W0ENsM5GjIE7
+	67ZJon/Fog+k4X2EjFeruUFfE16xwmzaEmog53gVwAYMisF22A849bArHcyJn/3ekHRA57
+	RT8y8xoKO3XYxipDU5p0Ie20Sg8OE08=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-w7FIv2VPNKSYFXQQjaITaA-1; Sun,
- 22 Dec 2024 14:34:49 -0500
-X-MC-Unique: w7FIv2VPNKSYFXQQjaITaA-1
-X-Mimecast-MFC-AGG-ID: w7FIv2VPNKSYFXQQjaITaA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-psspLQGONPKmplsH11HRRQ-1; Sun,
+ 22 Dec 2024 14:34:51 -0500
+X-MC-Unique: psspLQGONPKmplsH11HRRQ-1
+X-Mimecast-MFC-AGG-ID: psspLQGONPKmplsH11HRRQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D67FE19560AB;
-	Sun, 22 Dec 2024 19:34:47 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6544719560B2;
+	Sun, 22 Dec 2024 19:34:50 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B3DE11956086;
-	Sun, 22 Dec 2024 19:34:46 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 688E21956086;
+	Sun, 22 Dec 2024 19:34:49 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -47,9 +49,11 @@ Cc: yan.y.zhao@intel.com,
 	isaku.yamahata@intel.com,
 	binbin.wu@linux.intel.com,
 	rick.p.edgecombe@intel.com
-Subject: [PATCH v6 00/18] TDX MMU prep series part 1
-Date: Sun, 22 Dec 2024 14:34:27 -0500
-Message-ID: <20241222193445.349800-1-pbonzini@redhat.com>
+Subject: [PATCH v6 02/18] KVM: Add member to struct kvm_gfn_range to indicate private/shared
+Date: Sun, 22 Dec 2024 14:34:29 -0500
+Message-ID: <20241222193445.349800-3-pbonzini@redhat.com>
+In-Reply-To: <20241222193445.349800-1-pbonzini@redhat.com>
+References: <20241222193445.349800-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -60,64 +64,148 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hi,
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-this is the essentially final version of the TDX MMU prep series, focusing
-on supporting TDX's separation of EPT into a direct part (for shared pages)
-and a part that is managed by the TDX module and cached (into a "mirror"
-EPT) by KVM.
+Add new members to strut kvm_gfn_range to indicate which mapping
+(private-vs-shared) to operate on: enum kvm_gfn_range_filter
+attr_filter. Update the core zapping operations to set them appropriately.
 
-The only difference from v5 is squashing in Yan's
-https://lore.kernel.org/kvm/20241104084229.29882-1-yan.y.zhao@intel.com/,
-and a few comment and commit message updates.
+TDX utilizes two GPA aliases for the same memslots, one for memory that is
+for private memory and one that is for shared. For private memory, KVM
+cannot always perform the same operations it does on memory for default
+VMs, such as zapping pages and having them be faulted back in, as this
+requires guest coordination. However, some operations such as guest driven
+conversion of memory between private and shared should zap private memory.
 
-Paolo
+Internally to the MMU, private and shared mappings are tracked on separate
+roots. Mapping and zapping operations will operate on the respective GFN
+alias for each root (private or shared). So zapping operations will by
+default zap both aliases. Add fields in struct kvm_gfn_range to allow
+callers to specify which aliases so they can only target the aliases
+appropriate for their specific operation.
 
-Isaku Yamahata (12):
-  KVM: Add member to struct kvm_gfn_range to indicate private/shared
-  KVM: x86/mmu: Add an external pointer to struct kvm_mmu_page
-  KVM: x86/mmu: Add an is_mirror member for union kvm_mmu_page_role
-  KVM: x86/tdp_mmu: Take struct kvm in iter loops
-  KVM: x86/mmu: Support GFN direct bits
-  KVM: x86/tdp_mmu: Extract root invalid check from tdx_mmu_next_root()
-  KVM: x86/tdp_mmu: Introduce KVM MMU root types to specify page table
-    type
-  KVM: x86/tdp_mmu: Take root in tdp_mmu_for_each_pte()
-  KVM: x86/tdp_mmu: Support mirror root for TDP MMU
-  KVM: x86/tdp_mmu: Propagate building mirror page tables
-  KVM: x86/tdp_mmu: Propagate tearing down mirror page tables
-  KVM: x86/tdp_mmu: Take root types for
-    kvm_tdp_mmu_invalidate_all_roots()
+There was feedback that target aliases should be specified such that the
+default value (0) is to operate on both aliases. Several options were
+considered. Several variations of having separate bools defined such
+that the default behavior was to process both aliases. They either allowed
+nonsensical configurations, or were confusing for the caller. A simple
+enum was also explored and was close, but was hard to process in the
+caller. Instead, use an enum with the default value (0) reserved as a
+disallowed value. Catch ranges that didn't have the target aliases
+specified by looking for that specific value.
 
-Paolo Bonzini (1):
-  KVM: x86/tdp_mmu: Propagate attr_filter to MMU notifier callbacks
+Set target alias with enum appropriately for these MMU operations:
+ - For KVM's mmu notifier callbacks, zap shared pages only because private
+   pages won't have a userspace mapping
+ - For setting memory attributes, kvm_arch_pre_set_memory_attributes()
+   chooses the aliases based on the attribute.
+ - For guest_memfd invalidations, zap private only.
 
-Rick Edgecombe (5):
-  KVM: x86/mmu: Zap invalid roots with mmu_lock held for write at
-    uninit
-  KVM: x86: Add a VM type define for TDX
-  KVM: x86/mmu: Make kvm_tdp_mmu_alloc_root() return void
-  KVM: x86/tdp_mmu: Don't zap valid mirror roots in
-    kvm_tdp_mmu_zap_all()
-  KVM: x86/mmu: Prevent aliased memslot GFNs
+Link: https://lore.kernel.org/kvm/ZivIF9vjKcuGie3s@google.com/
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Message-ID: <20240718211230.1492011-3-rick.p.edgecombe@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu/mmu.c   |  6 ++++++
+ include/linux/kvm_host.h |  6 ++++++
+ virt/kvm/guest_memfd.c   |  2 ++
+ virt/kvm/kvm_main.c      | 14 ++++++++++++++
+ 4 files changed, 28 insertions(+)
 
- arch/x86/include/asm/kvm-x86-ops.h |   4 +
- arch/x86/include/asm/kvm_host.h    |  26 ++-
- arch/x86/include/uapi/asm/kvm.h    |   1 +
- arch/x86/kvm/mmu.h                 |  31 +++
- arch/x86/kvm/mmu/mmu.c             |  50 ++++-
- arch/x86/kvm/mmu/mmu_internal.h    |  64 +++++-
- arch/x86/kvm/mmu/spte.h            |   5 +
- arch/x86/kvm/mmu/tdp_iter.c        |  10 +-
- arch/x86/kvm/mmu/tdp_iter.h        |  21 +-
- arch/x86/kvm/mmu/tdp_mmu.c         | 325 ++++++++++++++++++++++-------
- arch/x86/kvm/mmu/tdp_mmu.h         |  51 ++++-
- arch/x86/kvm/x86.c                 |   3 +
- include/linux/kvm_host.h           |   6 +
- virt/kvm/guest_memfd.c             |   2 +
- virt/kvm/kvm_main.c                |  14 ++
- 15 files changed, 506 insertions(+), 107 deletions(-)
-
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 3f749fb5ec6c..a8f75971d3cb 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7452,6 +7452,12 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+ 	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
+ 		return false;
+ 
++	/* Unmap the old attribute page. */
++	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
++		range->attr_filter = KVM_FILTER_SHARED;
++	else
++		range->attr_filter = KVM_FILTER_PRIVATE;
++
+ 	return kvm_unmap_gfn_range(kvm, range);
+ }
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 9df216943eb4..c788d0bd952a 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -255,11 +255,17 @@ union kvm_mmu_notifier_arg {
+ 	unsigned long attributes;
+ };
+ 
++enum kvm_gfn_range_filter {
++	KVM_FILTER_SHARED		= BIT(0),
++	KVM_FILTER_PRIVATE		= BIT(1),
++};
++
+ struct kvm_gfn_range {
+ 	struct kvm_memory_slot *slot;
+ 	gfn_t start;
+ 	gfn_t end;
+ 	union kvm_mmu_notifier_arg arg;
++	enum kvm_gfn_range_filter attr_filter;
+ 	bool may_block;
+ };
+ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 18c87feaf68f..b2aa6bf24d3a 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -118,6 +118,8 @@ static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+ 			.end = slot->base_gfn + min(pgoff + slot->npages, end) - pgoff,
+ 			.slot = slot,
+ 			.may_block = true,
++			/* guest memfd is relevant to only private mappings. */
++			.attr_filter = KVM_FILTER_PRIVATE,
+ 		};
+ 
+ 		if (!found_memslot) {
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index de2c11dae231..164cd4f7f8ba 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -594,6 +594,11 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+ 			 */
+ 			gfn_range.arg = range->arg;
+ 			gfn_range.may_block = range->may_block;
++			/*
++			 * HVA-based notifications aren't relevant to private
++			 * mappings as they don't have a userspace mapping.
++			 */
++			gfn_range.attr_filter = KVM_FILTER_SHARED;
+ 
+ 			/*
+ 			 * {gfn(page) | page intersects with [hva_start, hva_end)} =
+@@ -2408,6 +2413,14 @@ static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
+ 	gfn_range.arg = range->arg;
+ 	gfn_range.may_block = range->may_block;
+ 
++	/*
++	 * If/when KVM supports more attributes beyond private .vs shared, this
++	 * _could_ set KVM_FILTER_{SHARED,PRIVATE} appropriately if the entire target
++	 * range already has the desired private vs. shared state (it's unclear
++	 * if that is a net win).  For now, KVM reaches this point if and only
++	 * if the private flag is being toggled, i.e. all mappings are in play.
++	 */
++
+ 	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+ 		slots = __kvm_memslots(kvm, i);
+ 
+@@ -2464,6 +2477,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ 	struct kvm_mmu_notifier_range pre_set_range = {
+ 		.start = start,
+ 		.end = end,
++		.arg.attributes = attributes,
+ 		.handler = kvm_pre_set_memory_attributes,
+ 		.on_lock = kvm_mmu_invalidate_begin,
+ 		.flush_on_ret = true,
 -- 
 2.43.5
+
 
