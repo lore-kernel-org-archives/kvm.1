@@ -1,55 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0F518027
-	for <kvm@vger.kernel.org>; Wed,  1 Jan 2025 07:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDDC2B2CF
+	for <kvm@vger.kernel.org>; Wed,  1 Jan 2025 07:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735716655; cv=none; b=JXTXLjLjVtCsh32eJtAd17/VzyOQ0qJl3vv6P4rXkS+MIMFiIALlb9Ig/1YcVJVBqCq8FZKhwCtAXWcYEGMOwSpWInkCyae5nyVDf+ip4hszVpXETLzQ/Xzit2YoB+e9I/BV61Kd/tyEuC1g1AzWJsH3Y5CNwxnOGsqDfrDWadY=
+	t=1735716660; cv=none; b=dj3RVCA+lZA6cowbj7iAumRszRRdqEKzsKsavCg9kXcyFWFbr5emqtQdrXGNAddZw2/skUYd7qZyisT05uKtP+WgWX0plCS4XsmXoqkJKlSa8I+QV+E8+gt5Y754obs+TB7LtjzD8VoIsWrni9s2theLSiJ/Dk5DSSMlii35d6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735716655; c=relaxed/simple;
-	bh=wLm/fWj5usyI8I2l03ZqzH7nzYmkD3uYW9K/bKNwxe0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fxzUiudn1eonTQq8R8gcPbs9HtRbUluEdEnop5SM4M9jqTAholGl2ttkEiL64GBY/BP0Q/VBiCzwiYnhKVmGu6ASPwUoEimmCuEWdwqvFKGDnMicEQoz4kIsPRXd4WcqkW+eaDIR9HFK3AQmJe9TtmOSMUOI1io3EhXJM30h5Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QT5Zivpa; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1735716660; c=relaxed/simple;
+	bh=renLBwXRoZp79NynkcELHoVSnBpoGzBZ/LZekdxTHao=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TFDkiY+ReT2BoCqw8elzBJDaYQnxuavME45xmEj3VDAK6Vy2zeUSO/vYEbEwjS8izevC/Rg3+ZJIpdjP6Bb56f5IuTMZEoA3xlsLtBxjGv4P8+gV0zC9Rk4HL+cq7sTDgyvScXd7do9VvA1YPcvlPvhyN9xqm/sJ8FgA4UWrJns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HnePgFCX; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QT5Zivpa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HnePgFCX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1735716652;
+	s=mimecast20190719; t=1735716657;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1Dz2fi77c+edfiNqNZRa4gt6Q6EsarDpaBvAZPsrQJ8=;
-	b=QT5ZivpaNgASoEfUD6xzC94LceQCjSQaUgkAiC2x6CWKzdKqJef3ihX6KrLoZujQ/xpu9e
-	owa6EsX8OE8ZM5ljxiE6BID+vdxMkPpowEeS4axhG8Vu8AzhYkiLZhMFFQeImK2d7Dnj1U
-	b/rmg3WpG7GMvEnJDCNahZLTQdGAO5U=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EH7ZkouCWaaYbb/7xcHZ2tgh3cTKMC2iueR8APQyPag=;
+	b=HnePgFCXYSGVMdRfxFfZtrsfQMhNJR8+moPFz3GMDyHHjMUI6c8v/VQInIDQEWedfL3L5v
+	F1+fZ2lbeNDKQ8ADYQ9USg0y5o2mx9aqX/2DVzbQDEe7H9F3N8fT84w2i9FHdhsIZ31V80
+	rmvw/BUwThfVY2ErJgodEplupJugxD8=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-zcmw1YctPN6IeUfX4NaI2g-1; Wed,
- 01 Jan 2025 02:30:51 -0500
-X-MC-Unique: zcmw1YctPN6IeUfX4NaI2g-1
-X-Mimecast-MFC-AGG-ID: zcmw1YctPN6IeUfX4NaI2g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-4b3rj4joOS2KBh6ck9DjvA-1; Wed,
+ 01 Jan 2025 02:30:54 -0500
+X-MC-Unique: 4b3rj4joOS2KBh6ck9DjvA-1
+X-Mimecast-MFC-AGG-ID: 4b3rj4joOS2KBh6ck9DjvA
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5BDF21956086;
-	Wed,  1 Jan 2025 07:30:49 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B3D531956089;
+	Wed,  1 Jan 2025 07:30:52 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 30DAD19560AA;
-	Wed,  1 Jan 2025 07:30:48 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4823719560AA;
+	Wed,  1 Jan 2025 07:30:51 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: kai.huang@intel.com,
 	rick.p.edgecombe@intel.com,
 	dave.hansen@linux.intel.com,
-	yan.y.zhao@intel.com
-Subject: [PATCH 00/11] x86/virt/tdx: Add SEAMCALL wrappers for KVM
-Date: Wed,  1 Jan 2025 02:30:36 -0500
-Message-ID: <20250101073047.402099-1-pbonzini@redhat.com>
+	yan.y.zhao@intel.com,
+	Sean Christopherson <sean.j.christopherson@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Yuan Yao <yuan.yao@intel.com>
+Subject: [PATCH 02/11] x86/virt/tdx: Add SEAMCALL wrappers for TDX TD creation
+Date: Wed,  1 Jan 2025 02:30:38 -0500
+Message-ID: <20250101073047.402099-3-pbonzini@redhat.com>
+In-Reply-To: <20250101073047.402099-1-pbonzini@redhat.com>
+References: <20250101073047.402099-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -60,45 +68,168 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-This is a completed version of Rick's RFC series at
-https://lore.kernel.org/r/20241115202028.1585487-1-rick.p.edgecombe@intel.com/.
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-I took all the "Add SEAMCALL wrappers" patches from the various
-TDX parts and placed them in a single series, so that they can be
-reviewed and provided in a topic branch by Dave.
+Intel TDX protects guest VMs from malicious hosts and certain physical
+attacks. It defines various control structures that hold state for things
+like TDs or vCPUs. These control structures are stored in pages given to
+the TDX module and encrypted with either the global KeyID or the guest
+KeyIDs.
 
-I will rebase kvm-coco-queue on top of these, but it's New Year's
-Day and I only have a few minutes before turning off the computer
-for good for a few days, so I'm not sure I will manage to push the
-result.
+To manipulate these control structures the TDX module defines a few
+SEAMCALLs. KVM will use these during the process of creating a TD as
+follows:
 
-In the meanwhile, this gives people time to review while I'm not
-available.
+1) Allocate a unique TDX KeyID for a new guest.
 
-Paolo
+1) Call TDH.MNG.CREATE to create a "TD Root" (TDR) page, together with
+   the new allocated KeyID. Unlike the rest of the TDX guest, the TDR
+   page is crypto-protected by the 'global KeyID'.
 
-Isaku Yamahata (5):
-  x86/virt/tdx: Add SEAMCALL wrapper tdh_mem_sept_add() to add SEPT
-    pages
-  x86/virt/tdx: Add SEAMCALL wrappers to add TD private pages
-  x86/virt/tdx: Add SEAMCALL wrappers to manage TDX TLB tracking
-  x86/virt/tdx: Add SEAMCALL wrappers to remove a TD private page
-  x86/virt/tdx: Add SEAMCALL wrappers for TD measurement of initial
-    contents
+2) Call the previously added TDH.MNG.KEY.CONFIG on each package to
+   configure the KeyID for the guest. After this step, the KeyID to
+   protect the guest is ready and the rest of the guest will be protected
+   by this KeyID.
 
-Rick Edgecombe (6):
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX KeyID management
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX TD creation
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX vCPU creation
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX page cache management
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX VM/vCPU field access
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX flush operations
+3) Call TDH.MNG.ADDCX to add TD Control Structure (TDCS) pages.
 
- arch/x86/include/asm/tdx.h  |  38 ++++
- arch/x86/virt/vmx/tdx/tdx.c | 362 ++++++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  46 ++++-
- 3 files changed, 439 insertions(+), 7 deletions(-)
+4) Call TDH.MNG.INIT to initialize the TDCS.
 
+To reclaim these pages for use by the kernel other SEAMCALLs are needed,
+which will be added in future patches.
+
+Add tdh_mng_addcx(), tdh_mng_create() and tdh_mng_init() to export these
+SEAMCALLs so that KVM can use them to create TDs.
+
+For SEAMCALLs that give a page to the TDX module to be encrypted, CLFLUSH
+the page mapped with KeyID 0, such that any dirty cache lines don't write
+back later and clobber TD memory or control structures. Don't worry about
+the other MK-TME KeyIDs because the kernel doesn't use them. The TDX docs
+specify that this flush is not needed unless the TDX module exposes the
+CLFLUSH_BEFORE_ALLOC feature bit. Be conservative and always flush. Add a
+helper function to facilitate this.
+
+Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Yuan Yao <yuan.yao@intel.com>
+Message-ID: <20241115202028.1585487-3-rick.p.edgecombe@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/include/asm/tdx.h  |  3 +++
+ arch/x86/virt/vmx/tdx/tdx.c | 51 +++++++++++++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h |  3 +++
+ 3 files changed, 57 insertions(+)
+
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 4a94671aa2fd..8aadd3d67a6d 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -123,8 +123,11 @@ struct tdx_td {
+ 	hpa_t *tdcs;
+ };
+ 
++u64 tdh_mng_addcx(struct tdx_td *td, hpa_t tdcs);
+ u64 tdh_mng_key_config(struct tdx_td *td);
++u64 tdh_mng_create(struct tdx_td *td, hpa_t hkid);
+ u64 tdh_mng_key_freeid(struct tdx_td *td);
++u64 tdh_mng_init(struct tdx_td *td, u64 td_params, hpa_t *tdr);
+ #else
+ static inline void tdx_init(void) { }
+ static inline int tdx_cpu_enable(void) { return -ENODEV; }
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 0eafdbe327a2..849b7063021c 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1457,6 +1457,29 @@ void __init tdx_init(void)
+ 	check_tdx_erratum();
+ }
+ 
++/*
++ * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
++ * a CLFLUSH of pages is required before handing them to the TDX module.
++ * Be conservative and make the code simpler by doing the CLFLUSH
++ * unconditionally.
++ */
++static void tdx_clflush_page(hpa_t tdr)
++{
++	clflush_cache_range(__va(tdr), PAGE_SIZE);
++}
++
++u64 tdh_mng_addcx(struct tdx_td *td, hpa_t tdcs)
++{
++	struct tdx_module_args args = {
++		.rcx = tdcs,
++		.rdx = td->tdr,
++	};
++
++	tdx_clflush_page(tdcs);
++	return seamcall(TDH_MNG_ADDCX, &args);
++}
++EXPORT_SYMBOL_GPL(tdh_mng_addcx);
++
+ u64 tdh_mng_key_config(struct tdx_td *td)
+ {
+ 	struct tdx_module_args args = {
+@@ -1467,6 +1490,18 @@ u64 tdh_mng_key_config(struct tdx_td *td)
+ }
+ EXPORT_SYMBOL_GPL(tdh_mng_key_config);
+ 
++u64 tdh_mng_create(struct tdx_td *td, hpa_t hkid)
++{
++	struct tdx_module_args args = {
++		.rcx = td->tdr,
++		.rdx = hkid,
++	};
++
++	tdx_clflush_page(td->tdr);
++	return seamcall(TDH_MNG_CREATE, &args);
++}
++EXPORT_SYMBOL_GPL(tdh_mng_create);
++
+ 
+ u64 tdh_mng_key_freeid(struct tdx_td *td)
+ {
+@@ -1477,3 +1512,19 @@ u64 tdh_mng_key_freeid(struct tdx_td *td)
+ 	return seamcall(TDH_MNG_KEY_FREEID, &args);
+ }
+ EXPORT_SYMBOL_GPL(tdh_mng_key_freeid);
++
++u64 tdh_mng_init(struct tdx_td *td, u64 td_params, hpa_t *tdr)
++{
++	struct tdx_module_args args = {
++		.rcx = td->tdr,
++		.rdx = td_params,
++	};
++	u64 ret;
++
++	ret = seamcall_ret(TDH_MNG_INIT, &args);
++
++	*tdr = args.rcx;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(tdh_mng_init);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 5579317f67ab..0861c3f09576 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -15,8 +15,11 @@
+ /*
+  * TDX module SEAMCALL leaf functions
+  */
++#define TDH_MNG_ADDCX			1
+ #define TDH_MNG_KEY_CONFIG		8
++#define TDH_MNG_CREATE			9
+ #define TDH_MNG_KEY_FREEID		20
++#define TDH_MNG_INIT			21
+ #define TDH_PHYMEM_PAGE_RDMD		24
+ #define TDH_SYS_KEY_CONFIG		31
+ #define TDH_SYS_INIT			33
 -- 
 2.43.5
+
 
