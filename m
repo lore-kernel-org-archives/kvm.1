@@ -1,88 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4C31B85FA;
-	Fri,  3 Jan 2025 06:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC5A93D
+	for <kvm@vger.kernel.org>; Fri,  3 Jan 2025 08:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735885602; cv=none; b=uK/0o89KF68cARfY/aK+LX3waaHZ9oHOVbLdxgh0HcLWpISJsqePXadU5RtmsNiZs53miRwfZ8STBm2NPhqjrBQ+IMGMz9Yg6aLIUi6ivjt8uJYNts51uLqRkj3AzjU6RxYHoyT+RcZfLAIPUF1CXq/SsWxk4U0MoKdkn4iYvF8=
+	t=1735891638; cv=none; b=RyLm3HatnahidcjgTuSXfxNoDF55J1/48zCzKzvFssOtUat3slWhb4DeRC3Cyts0mB+4W6tmkxU2s0UNizHahfU1ri55Ikl5x4Zmsw3TyWOBL2n6PmkCUCsSm1S80ucrk3Tj57K3Z5zhD/sowTdAEGh/yIzxeZkviWyIGZd9nhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735885602; c=relaxed/simple;
-	bh=aF/+aLAuMH/kL/bHHyraAzqvwP02S0rlgq64vO4nxuI=;
+	s=arc-20240116; t=1735891638; c=relaxed/simple;
+	bh=V9eWh/15VXEA7gCguj+BFRdYMLZ5oi0QEKqx0Wixdm0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aX+HOzEEuGdfJXYP28Clufmh9je28R77MgS8wTDoVCOIiKk8qcKyGojjBPApKSnYMYA7egYNeQ08/P1Dm8lSdsFAnYfFLV1hb2Qb7s7wAcBdiuxQej+XtKFlh3Roi7ekfVkv/AMk+gt94KRpBM8vY5VD/SPbLcCJFcmPEp6BXpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzR20blO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RbjsEbziUF8Pib7tlSg5R43/aB5a3SA0UxEDRtT/jdYFZ0D1NW3KK/5GwheYDAHEo1qRODvUOZ5rdknScgLUeaCWb6YsP9CleQyfEIJBCvpwidQOpH/t6u9UawSVg5/zCvJemukNHOE7IAZrswV36LKVYJF34E1KzdJ/pdH62ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y5ZZ6fk0; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzR20blO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64841C4CECE;
-	Fri,  3 Jan 2025 06:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735885601;
-	bh=aF/+aLAuMH/kL/bHHyraAzqvwP02S0rlgq64vO4nxuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DzR20blOC5nqMo+VGpx4e2e6Y9gh4AGyzEb3fCxuz1S5zikCiX+Q1UZqBSjIOCoef
-	 8gGmwwTDzjq4D4Cph+yT1p3f8CEvnc87aYXXZmVj5kyoS/EVwmn4RE3beTsGZzBRCH
-	 nwlMDHXDn4H9ARFRdeDkyVi3vgGMoASANHfaxzmQ=
-Date: Fri, 3 Jan 2025 07:26:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, peterx@redhat.com,
-	precification@posteo.de, athul.krishna.kr@protonmail.com,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH] vfio/pci: Fallback huge faults for unaligned pfn
-Message-ID: <2025010322-overblown-symptom-d4cd@gregkh>
-References: <20250102183416.1841878-1-alex.williamson@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y5ZZ6fk0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735891636; x=1767427636;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=V9eWh/15VXEA7gCguj+BFRdYMLZ5oi0QEKqx0Wixdm0=;
+  b=Y5ZZ6fk0KQ0uvx6xRJn2P6FOsFEC2QNYVit3DkJeWdVjZ5c0o8nMHcob
+   BqwW+u7bLSMtHgOm7i/gt/bn3hSBp+eQ2wNOuaxjQtJgf9c51FOyMTCbV
+   bGKaES0XmFXUE6o8GSEQ0yip4zSXFj1rR2nD7c2KQVc42yJwvxlyYOirj
+   foSGXhAIX1uAdnToUV1xuQS6JmdHZsO7KNOEtonnLLqsrGb5EWZL/Lnno
+   qi6HZT+hhje+lK4HFQ5ZtpBHf/yJnBNhuIJuAcDVEkTP6b4coE/vYQUWm
+   fzLSvkyVxxWAet3g95acXn/D/0jTPeG4sIZFhTVsjlbG24nL08TX64VYe
+   w==;
+X-CSE-ConnectionGUID: 0CfYLv1sS1+mId96A8+GmQ==
+X-CSE-MsgGUID: wGMEaycZS7e75a6C2efjTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11303"; a="47127276"
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="47127276"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 00:07:16 -0800
+X-CSE-ConnectionGUID: GVxnOHgASdqfBFLYpSpnkQ==
+X-CSE-MsgGUID: IoJpPDfHRa+7zTghEf19Nw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="106708690"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa004.jf.intel.com with ESMTP; 03 Jan 2025 00:07:13 -0800
+Date: Fri, 3 Jan 2025 16:25:58 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Alireza Sanaee <alireza.sanaee@huawei.com>
+Cc: Rob Herring <robh@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
+Message-ID: <Z3efFsigJ6SxhqMf@intel.com>
+References: <20241219083237.265419-1-zhao1.liu@intel.com>
+ <44212226-3692-488b-8694-935bd5c3a333@redhat.com>
+ <Z2t2DuMBYb2mioB0@intel.com>
+ <20250102145708.0000354f@huawei.com>
+ <CAL_JsqKeA4dSwO40VgARVAiVM=w1PU8Go8GJYv4v8Wri64UFbw@mail.gmail.com>
+ <20250102180141.00000647@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250102183416.1841878-1-alex.williamson@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250102180141.00000647@huawei.com>
 
-On Thu, Jan 02, 2025 at 11:32:54AM -0700, Alex Williamson wrote:
-> The PFN must also be aligned to the fault order to insert a huge
-> pfnmap.  Test the alignment and fallback when unaligned.
+On Thu, Jan 02, 2025 at 06:01:41PM +0000, Alireza Sanaee wrote:
+> Date: Thu, 2 Jan 2025 18:01:41 +0000
+> From: Alireza Sanaee <alireza.sanaee@huawei.com>
+> Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
+> X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 > 
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=219619
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> Reported-by: Precific <precification@posteo.de>
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
+> On Thu, 2 Jan 2025 11:09:51 -0600
+> Rob Herring <robh@kernel.org> wrote:
+> 
+> > On Thu, Jan 2, 2025 at 8:57 AM Alireza Sanaee
+> > <alireza.sanaee@huawei.com> wrote:
+> > >
+> > > On Wed, 25 Dec 2024 11:03:42 +0800
+> > > Zhao Liu <zhao1.liu@intel.com> wrote:
+> > >  
+> > > > > > About smp-cache
+> > > > > > ===============
+> > > > > >
+> > > > > > The API design has been discussed heavily in [3].
+> > > > > >
+> > > > > > Now, smp-cache is implemented as a array integrated in
+> > > > > > -machine. Though -machine currently can't support JSON
+> > > > > > format, this is the one of the directions of future.
+> > > > > >
+> > > > > > An example is as follows:
+> > > > > >
+> > > > > > smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
+> > > > > >
+> > > > > > "cache" specifies the cache that the properties will be
+> > > > > > applied on. This field is the combination of cache level and
+> > > > > > cache type. Now it supports "l1d" (L1 data cache), "l1i" (L1
+> > > > > > instruction cache), "l2" (L2 unified cache) and "l3" (L3
+> > > > > > unified cache).
+> > > > > >
+> > > > > > "topology" field accepts CPU topology levels including
+> > > > > > "thread", "core", "module", "cluster", "die", "socket",
+> > > > > > "book", "drawer" and a special value "default".  
+> > > > >
+> > > > > Looks good; just one thing, does "thread" make sense?  I think
+> > > > > that it's almost by definition that threads within a core share
+> > > > > all caches, but maybe I'm missing some hardware configurations.
+> > > > >  
+> > > >
+> > > > Hi Paolo, merry Christmas. Yes, AFAIK, there's no hardware has
+> > > > thread level cache.  
+> > >
+> > > Hi Zhao and Paolo,
+> > >
+> > > While the example looks OK to me, and makes sense. But would be
+> > > curious to know more scenarios where I can legitimately see benefit
+> > > there.
+> > >
+> > > I am wrestling with this point on ARM too. If I were to
+> > > have device trees describing caches in a way that threads get their
+> > > own private caches then this would not be possible to be
+> > > described via device tree due to spec limitations (+CCed Rob) if I
+> > > understood correctly.  
+> > 
+> > You asked me for the opposite though, and I described how you can
+> > share the cache. If you want a cache per thread, then you probably
+> > want a node per thread.
+> > 
+> > Rob
+> > 
+> 
+> Hi Rob,
+> 
+> That's right, I made the mistake in my prior message, and you recalled
+> correctly. I wanted shared caches between two threads, though I have
+> missed your answer before, just found it.
 > 
 
-Hi,
+Thank you all!
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Alireza, do you know how to configure arm node through QEMU options?
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+However, IIUC, arm needs more effort to configure cache per thread (by
+configuring node topology)...In that case, since no one has explicitly
+requested the need for cache per thread, I can disable cache per thread
+for now. I can return an error for this scenario during the general
+smp-cache option parsing (in the future, if there is a real need, it can
+be easily re-enabled).
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+Will drop cache per thread in the next version.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+Thanks,
+Zhao
 
-thanks,
-
-greg k-h's patch email bot
