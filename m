@@ -1,84 +1,73 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B5E1FA27F
-	for <kvm@vger.kernel.org>; Fri,  3 Jan 2025 15:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477F81FA24A
+	for <kvm@vger.kernel.org>; Fri,  3 Jan 2025 15:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735917545; cv=none; b=YR/WFSjVNUm7H+J4iWekYXxFp71iTc6MRzuo0HCN1wHqXJepHSPz7wtdXWEuPXuu+YSqmItGT4bHWSkTvF537EO2tGYm30InzntktkHupyLtrH6Uhu38RBkSxCi8B/91lJ/kcsrvEpaPcgP0N0m6RN9Fc3Fqgv3GpmU2wWjliNE=
+	t=1735918281; cv=none; b=hflgssIPjNuqKWpUGNFG7SdTIAi8Sf9Fkr3RPSHP9aZGOjPqgnxQtft7x7ZkhMcPhFnPp2dx3LJdYzt4isYRE+KBiyzVpPQ1SFPrAa/9ofMu9VTGCVJ35iRN8vewVriPKc3UV1QU/YWM92fUt0r/kgVFO+6ozEZUPKJ5PmPqehw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735917545; c=relaxed/simple;
-	bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
+	s=arc-20240116; t=1735918281; c=relaxed/simple;
+	bh=UxzyePBqFZ2gnpbI9K6VX5Sh4Z2rlQhso6W0tOBdMno=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RBNkpuu9VstfV7ft3dKOoycD9sJHbD6zYJnM4zMh51AJo8Z4rWp71SiBbu7Ys+K4COYN4ZuUsK9jqMzqgW4CEXgovas+fhF5EY9E6YZ35tSxkIlxKsVsy4GXOs8Byq2yxopuiN91RKGuEN9alzWv5ZjxwPO3EZC+jCLS/DIG3W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=AZVJgi4L; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=JzXqbFsUfic9fIxvo58+9K1uAquwxX9CFKvdZazKHnhhl+zen5y2a2KUkDfh4Jx+HXrYuxp//hLeWD0CMY89QQrUMu3fTybBL9nvt6hn27NPl6O8MHTqlIUfNtlXt0n2XwqJKOF5G+v3BupCkfxxskuyscRvPFSuwaPanChlh3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iDt79RED; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="AZVJgi4L"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7b6f75f61f9so1655455885a.0
-        for <kvm@vger.kernel.org>; Fri, 03 Jan 2025 07:19:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1735917543; x=1736522343; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
-        b=AZVJgi4LFgjJiTQIAexsmTdplUM0cWXGuBu6YqQg7Iz980c0iZh9jKFmhCdv69yx7R
-         OSA1IF7JVTdhaLuhamsR1j6cgm5HcPpMbML1A4zOT4LPaJoQdoMxb0cJQR0Rk/HYLgxx
-         kkYwhV5gYv9uOx0gGUWOYjjZHGD9tW7vw6WMmvnPo8CvY4XAD47cBbanFAplj0NMY0hz
-         fK1IY25OEu5xjZKUd7JDzTqWktBCqew5ZY7H+OR2VvSy74obzVUaEiD2QLXoSDZ/SVn2
-         WuYSkTKRqjIw7dGeJC/ZIqfYOlDRhie3CcxG8ppgErfuvX2XqADNQg/4+Hg8UXXh1qNQ
-         iicg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735917543; x=1736522343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
-        b=JLmccZl0IY+DcwyJ4PApPi9kprZ+wvEoyQPQ/fcve3TJz1nOwUh4nbXcE1Pehpv4Bp
-         fURiP5EP6Zv1y/fUHzbRODWXv7Rgnlm8ywfgGgq2y4BjDZGxMfzCdPq8dBm7IZum4uMc
-         KNb+0SOlVRj3D7dgZ5cw227anE6Q/vxNoiN/QPvuycfR1CaoAVRRO4wwXUE8WB0u0tID
-         SuGDzRVp9EJIyw5bpMpJ7MHQIdJSKc+Azgw8OI2L2Gm5sVEibMX6vj+5AVZ/zeHz6ovq
-         kWPJ+8nPmjuezSfIBJYnJLIpJbVj2eVs/qtRPBwJXeLTqvY31sb9zU0iAmguILD76KhH
-         qnxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpaKzRz+fEM/NFYEv9AVgDowwg2E5K1SoPHZXXBgIPVfSJNBxP6mWphigDukeA1UmUxXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgxxTFi+PC5IAkGBk0TK+rvJG7cQ9nUlZfZ4mSuosxEDCWfOfU
-	ST6JSNGL2/ZW3DdJBIhaBCiaCmSghsdx0BQTl4sEag6aioIfU22g6RfflelFat8=
-X-Gm-Gg: ASbGncstrXXIPkNi4PXtZUR5xnfIZzNf5UAluTkId4DYm1obqUkC4ZhY/mJhUgdUQ/9
-	tH1vDrrabri9mZnFQtl2lneieVmHQEWW4BibeCpKxSiu+VvPmEg/nwCPPNIhso3nlUFUyLrKUSr
-	WtvlPJ8vgZFGJ78vSNfl7Dp4d6yebTF15Fg3QrSL5J4ubLxmykVzhTu7a3/O7sdJPLDxHqtlYhk
-	XtdoDE0e7yejbm6rWn9zLqkHi4448xNgBRWO7sQxk1XhTGG6HBtdtS4LOSQ9/8pGrFj7z79ekZQ
-	+IhzwX/5wkManOF5I/ntYvZn49Ur7g==
-X-Google-Smtp-Source: AGHT+IHTG+Bq32SHg17tHpm9vXIkHAkuaGHUCVV1avASRsb7eSYGQtc9W1/GwgW3NuW7igfw1fFU3w==
-X-Received: by 2002:a05:620a:488a:b0:7b6:d5cb:43a9 with SMTP id af79cd13be357-7b9ba773db8mr7230744485a.23.1735917542951;
-        Fri, 03 Jan 2025 07:19:02 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac478f0fsm1277723385a.71.2025.01.03.07.19.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2025 07:19:01 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tTjS0-00000000iwx-2edn;
-	Fri, 03 Jan 2025 11:19:00 -0400
-Date: Fri, 3 Jan 2025 11:19:00 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org,
-	quic_bqiang@quicinc.com, kvalo@kernel.org, prestwoj@gmail.com,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	iommu@lists.linux.dev, kernel@quicinc.com,
-	johannes@sipsolutions.net, jtornosm@redhat.com
-Subject: Re: [PATCH RFC/RFT] vfio/pci: Create feature to disable MSI
- virtualization
-Message-ID: <20250103151900.GE26854@ziepe.ca>
-References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
- <20240812170014.1583783-1-alex.williamson@redhat.com>
- <20240813163053.GK1985367@ziepe.ca>
- <87r0aspby6.ffs@tglx>
- <03fdfde8dc05ecce1f1edececf0800d8cb919ac1.camel@infradead.org>
- <20250103143138.GC26854@ziepe.ca>
- <432d4304b579c5bd6973628c3c4aaad476627f7b.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iDt79RED"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735918278; x=1767454278;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UxzyePBqFZ2gnpbI9K6VX5Sh4Z2rlQhso6W0tOBdMno=;
+  b=iDt79REDXin+L++uBEUE6X2FAYMKuKW5RLIuYcOITe40NTGt5M/ejLCs
+   dhKLqVlobM+rMWKVcG4F6N2dnC/STgWXzdK5zZl+YUU24IMhwA+BkihQp
+   p+AaFlmhCEQpuJ5tPF0pJApBew4DH01xMkoPG0DRB2HtqFRjr7TPiQzZ+
+   kwMEevhPiBG6crQVD9Z7zlkEgpV3aojDU202vNbFn73MYPUjMwkBSK5Kd
+   ecp/QAc3lFRfWAHub7zUetuqLfUbfy/fmtRXN9GIX9OfCL4NKAvpkBTnH
+   E5wrWa/B60Gf00yCCtSSRk0u1j8gmDLw4Ra2lYT+jQVC4Ro2AeFy1EFm/
+   g==;
+X-CSE-ConnectionGUID: HyEk1X3cTFCnCbfno5M+yA==
+X-CSE-MsgGUID: KqmVfjmNTd+Syg2F2ncxcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="39847827"
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="39847827"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 07:31:17 -0800
+X-CSE-ConnectionGUID: duyNQYX0Sv6TDimdUERQGA==
+X-CSE-MsgGUID: JRXouV0sStKa4cn3i3YZDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="132668761"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa002.jf.intel.com with ESMTP; 03 Jan 2025 07:31:13 -0800
+Date: Fri, 3 Jan 2025 23:50:00 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Alireza Sanaee <alireza.sanaee@huawei.com>
+Cc: Rob Herring <robh@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	"Daniel P . Berrang" <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe Mathieu-Daud <philmd@linaro.org>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
+Message-ID: <Z3gHKEalN6sLv8Mf@intel.com>
+References: <20241219083237.265419-1-zhao1.liu@intel.com>
+ <44212226-3692-488b-8694-935bd5c3a333@redhat.com>
+ <Z2t2DuMBYb2mioB0@intel.com>
+ <20250102145708.0000354f@huawei.com>
+ <CAL_JsqKeA4dSwO40VgARVAiVM=w1PU8Go8GJYv4v8Wri64UFbw@mail.gmail.com>
+ <20250102180141.00000647@huawei.com>
+ <Z3efFsigJ6SxhqMf@intel.com>
+ <20250103140457.00004c4b@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,29 +76,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <432d4304b579c5bd6973628c3c4aaad476627f7b.camel@infradead.org>
+In-Reply-To: <20250103140457.00004c4b@huawei.com>
 
-On Fri, Jan 03, 2025 at 02:47:11PM +0000, David Woodhouse wrote:
+> > > > You asked me for the opposite though, and I described how you can
+> > > > share the cache. If you want a cache per thread, then you probably
+> > > > want a node per thread.
+> > > > 
+> > > > Rob
+> > > >   
+> > > 
+> > > Hi Rob,
+> > > 
+> > > That's right, I made the mistake in my prior message, and you
+> > > recalled correctly. I wanted shared caches between two threads,
+> > > though I have missed your answer before, just found it.
+> > >   
+> > 
+> > Thank you all!
+> > 
+> > Alireza, do you know how to configure arm node through QEMU options?
+> 
+> Hi Zhao, do you mean the -smp param?
+>
 
-> Probably best for the hypervisor to have some way to *advertise* that
-> it's handling this though, as guests also might want to run on
-> hypervisors which don't.
+I mean do you know how to configure something like "a node per thread"
+by QEMU option? :-) I'm curious about the relationship between "node"
+and the SMP topology on the ARM side in the current QEMU. I'm not sure
+if this "node" refers to the NUMA node.
 
-If the hypervisor doesn't properly virtualize the device it shouldn't
-assign it to a VM to start with :\
+Thanks,
+Zhao
 
-Intel looked at the question of advertising clean interrupt remapping
-when trying to virtualize IMS and it didn't seem so great.
-
-Bare metal machines need to work, so any test they could think of
-adding would either fail on bare metal or fail on existing VMs.
-
-VMM's have taken the approach of not telling the guest they are in VMs
-and then also not implementing the bare metal HW behaviors with full
-fidelity. So we have no way to discover that the VMM is, in fact,
-emulating broken "hw".
-
-Thus we get this push that all kernels need to accomodate the worst
-VMM behaviors :(
-
-Jason
