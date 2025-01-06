@@ -1,113 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5EA4206E;
-	Mon,  6 Jan 2025 02:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018001D7E5B
+	for <kvm@vger.kernel.org>; Mon,  6 Jan 2025 02:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736129928; cv=none; b=ggPPvoeYcwP+ykYZZBO4XeYG6cW5xxCEe0NLG8VZDrXnnC3X2caGrv99AzRhywNajGmyrzy64Yn9yo+iQ0Qo7b9b5FmJzD1wsOyOdjwmTow1OLabGL6A4IHcx9VJJYD8Yr2/yE10k5A7IscfGPRramcOwXR+Yq/R/68NrgXdvms=
+	t=1736130776; cv=none; b=XMjgg3GqcJJwJq9SjGWe9F79JRbowjNEyB3FGCmCcZH7avvXD2GP80IN4xzVIiR99iAIT4RyeSjYdB6QtSsXFWHsQBOaZ7womakE/Ea0hlLH+g9zjvzFo0QEz6IUrKepwK8ugs/3uD0aiC8pU8KleS4eMpp1hTI/GS4T5TEeRAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736129928; c=relaxed/simple;
-	bh=TDLA25HF20ow9vuFzExnUuFJwQ0y0m/M//u4rkjqGnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ui0mIgMm0KJKGdARbTD5xTeACriRPa4TIIScvKappadsTUcQsLHE0J40JqeMj9ZWTdOwjaLEY6ZZIYWMrD+JyHxky4OQnmQrri7LAhSpadlZYrROlkcz2bZQz6MofYxsOVXVKMJphEELZCr+MYQuikBD1bPSV9MF/FHt92jKy14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tmecjr9Q; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736130776; c=relaxed/simple;
+	bh=7qa+op98IAU4gbyEANPQ1kB+n62Hq0ZlDURcfnIZoXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZT3jvV05BI6HeUO7gvettfUxMAkDMthY5+Dj5uhllSDCPpoFMBKmv8BxlIOEs5vTaGWKVEna7NV2XwoMOIxZrd/Z7ULWB7aVZqtm83dKHuYqvhfUPI0xXqo8GYceghizEKziF2I07yyptHNKslAMvceh7KcWr5Ot81i0E4kmCAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw; spf=pass smtp.mailfrom=csie.ntu.edu.tw; dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b=INt6nZgz; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csie.ntu.edu.tw
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tmecjr9Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736129926; x=1767665926;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TDLA25HF20ow9vuFzExnUuFJwQ0y0m/M//u4rkjqGnQ=;
-  b=Tmecjr9QyZC0+lOx+lZ7BUmGwTg9hGGGvSj5q4NMczbsrNPCugzMBrx+
-   cYXZtcXKcbKPyu9hOBjb2j8zTvZExrDLWo/Zr6kIpOgcO8eRlz4V/ULB9
-   Sn8hjHBEE9WUR4Q0ao0wM9pJ8o97m5lAaLsdFnt28iP1tpv3T6U4YjkMp
-   yU3GZyXR+bjWiYDhrGFs4tD5jATj1HCd3ZisJJ+CLFj9dFA5YxvsrQ1lx
-   KUEBKxrcs1p43jTmvPZR9es12HPxbJnMUNYtVy98QFD/vtJaDy5NeNH+O
-   qF30o9+tGe81enhVC5V5j5mkLNN5Eiw2+2UgDcae9gTd9TGb8q2Cq+ULx
-   g==;
-X-CSE-ConnectionGUID: V66DoPN6Tg6/nXw+cJcm/g==
-X-CSE-MsgGUID: 8iGygUu0RJ2LbCnPx0vl3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11306"; a="36387992"
-X-IronPort-AV: E=Sophos;i="6.12,291,1728975600"; 
-   d="scan'208";a="36387992"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2025 18:18:46 -0800
-X-CSE-ConnectionGUID: 7dEtBfVSQMu7ljuNTBc7MA==
-X-CSE-MsgGUID: UACoyiFJTU+1w75KKvEdjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,291,1728975600"; 
-   d="scan'208";a="107283200"
-Received: from unknown (HELO [10.238.1.62]) ([10.238.1.62])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2025 18:18:44 -0800
-Message-ID: <7416f775-9859-4148-acbf-875dbb9db108@linux.intel.com>
-Date: Mon, 6 Jan 2025 10:18:41 +0800
+	dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b="INt6nZgz"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so20291935a91.3
+        for <kvm@vger.kernel.org>; Sun, 05 Jan 2025 18:32:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=csie.ntu.edu.tw; s=google; t=1736130773; x=1736735573; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hizUyDaKTky7G883O428eVAJirBV+mTazBL7cmKBgjA=;
+        b=INt6nZgzcVbguxa4aG2FhMoizs3+rymMJOi/hGzFkauERLLSWupi9qTDwBDsdrityc
+         QpdlrTuHWMl/78IQe2TGMRTUEIuaR8CedGakX+aPJ7SGwa4F+6AunXeEXO7XqtHCMT69
+         qKrb7EiMHb/tG3lwCTwbKncyVDz2nkuQNTOBvhYPr0Ek+Za5xH/W/JvxnEVhrywtDYvr
+         kRkrQ69SkZjFUP/gEjsDmwuyZUhecKvpAn+5LrQ2Hp5Wb435cWpgSfT/r1qPjbXLgY2s
+         ni45l7K6myjvwCNHWpXHPzYm8kOSJ5gs+R3Ng5pxDQjPHj5R0hjOppo+xsy3nsWMVxcj
+         K2fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736130773; x=1736735573;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hizUyDaKTky7G883O428eVAJirBV+mTazBL7cmKBgjA=;
+        b=HI10AUiopAuh3vn+LgGDpiPlO5MSjdOazYJMk+yke7sShXSEmT3SbI4tuNWzq4QYX/
+         w2400bcTOAIu8tmzTq57Qj9Z0jiZqDK0chO452U2HJ19CQ+kj5AB3ErIZ4rDRFxLzpn3
+         RwI9vq7544xiRzknRgT1nQcBGUUbrHN3IXg4UHcMXLPvv5uEcCYM55K2x4UrS72dV3D/
+         YK1VJvgKi7adYM9Iuo5r5P5OI9bj2pS+ppVDCVOMM9BGZlwetgLVFIS5UdqnELm7n6hJ
+         acXEk6LHunaVxzrqfW06OSFNB0i3OVgZp0CcbyLLd3xapPEjsKCqwUayUmYVGIbcbo2s
+         4Asw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8Q2B4X+tfCzTOO2Cfme/r78rlmVUlvQQg8De9+ZNJtn2Grz/piEztU1OVb65eWrbJ2g4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6loN9fCFWBgR8yBIHGavxI6BbdY7lKVZ53mypUP4Ww0un4le2
+	i7J9l5dyH0PFnzbfUdyPX18MDssp/HMdMEVXDZfXuHIxwMEqHYWOqHq4HuX6bL6EVzwHPFJQsCX
+	khFZZkk6zdv51/ezIe4/ZK+JJ+xbItx7Z7EfVwmq7Qzw=
+X-Gm-Gg: ASbGncvm0LB7nOe305POTP0e42fqaEYTXWYDmrnEqlzHh4X8cdsjLStxKIwX615k1RB
+	G5uTY/iRLpP/ZDahOWDzAm/vaVOvBYGd6kmBivBbYNaLZ+drWFfuivqmfXKEw2lu0MSr5pWhIr0
+	IafwDPWZPljMvdw7E3SPPjf5Yj0XlUaP7Qosqyvbi2SrdU1TOTUYtQKEtb1xWUMSh1YCUK5CZf/
+	ZxfzphdmSLpTPathNJo0EnrloDISVNMujGVJ5YyiFqW+6PL8yKeGvOjGlLQNKNbIHhUgbfL/RNM
+	YE/ckM5/K5BUhTQI5R4=
+X-Google-Smtp-Source: AGHT+IFlKEWP1PZp3HGGHASjNs+dk5FEFAFR9mW7wibwp+bi2To37zelGhRWfoPjkS8UwpaDLhX/vg==
+X-Received: by 2002:a17:90a:d647:b0:2ee:c9dd:b7ea with SMTP id 98e67ed59e1d1-2f452eb12famr84759397a91.24.1736130773115;
+        Sun, 05 Jan 2025 18:32:53 -0800 (PST)
+Received: from zenbook (118-163-61-247.hinet-ip.hinet.net. [118.163.61.247])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f4478a9108sm36139009a91.43.2025.01.05.18.32.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jan 2025 18:32:52 -0800 (PST)
+Date: Mon, 6 Jan 2025 10:33:39 +0800
+From: Wei-Lin Chang <r09922117@csie.ntu.edu.tw>
+To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
+	Chase Conklin <chase.conklin@arm.com>, Eric Auger <eauger@redhat.com>, r09922117@csie.ntu.edu.tw
+Subject: Re: [PATCH v2 09/12] KVM: arm64: nv: Propagate
+ CNTHCTL_EL2.EL1NV{P,V}CT bits
+Message-ID: <qbmqsm3llnpy2t4ig3uyggkapwlbox2wnfu52gksbhcq4vfpqx@dz5bbn3asn5s>
+References: <20241217142321.763801-1-maz@kernel.org>
+ <20241217142321.763801-10-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/16] KVM: TDX: Add methods to ignore virtual apic
- related operation
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com,
- reinette.chatre@intel.com, xiaoyao.li@intel.com,
- tony.lindgren@linux.intel.com, isaku.yamahata@intel.com,
- yan.y.zhao@intel.com, chao.gao@intel.com, linux-kernel@vger.kernel.org
-References: <20241209010734.3543481-1-binbin.wu@linux.intel.com>
- <20241209010734.3543481-14-binbin.wu@linux.intel.com>
- <CAGtprH98GkZuFgJ6ZFTFUv2Bqzow9yw7WCd7TAyKPUe=2iqfbg@mail.gmail.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <CAGtprH98GkZuFgJ6ZFTFUv2Bqzow9yw7WCd7TAyKPUe=2iqfbg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217142321.763801-10-maz@kernel.org>
+X-Gm-Spam: 0
+X-Gm-Phishy: 0
 
+Hi Marc and other KVM ARM developers,
 
+I have a question while learning about NV and reading the code:
 
+On Tue, Dec 17, 2024 at 02:23:17PM +0000, Marc Zyngier wrote:
+> Allow a guest hypervisor to trap accesses to CNT{P,V}CT_EL02 by
+> propagating these trap bits to the host trap configuration.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/arch_timer.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+> index 6f04f31c0a7f2..e5951e6eaf236 100644
+> --- a/arch/arm64/kvm/arch_timer.c
+> +++ b/arch/arm64/kvm/arch_timer.c
+> @@ -824,6 +824,10 @@ static void timer_set_traps(struct kvm_vcpu *vcpu, struct timer_map *map)
+>  	 * Apply the enable bits that the guest hypervisor has requested for
+>  	 * its own guest. We can only add traps that wouldn't have been set
+>  	 * above.
+> +	 * Implementation choices: we do not support NV when E2H=0 in the
+> +	 * guest, and we don't support configuration where E2H is writable
+> +	 * by the guest (either FEAT_VHE or FEAT_E2H0 is implemented, but
+> +	 * not both). This simplifies the handling of the EL1NV* bits.
 
-On 1/4/2025 6:04 AM, Vishal Annapurve wrote:
-> On Sun, Dec 8, 2024 at 5:12 PM Binbin Wu <binbin.wu@linux.intel.com> wrote:
->> From: Isaku Yamahata <isaku.yamahata@intel.com>
->> ...
->> +}
->> +
->>   static void vt_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
->>   {
->>          struct pi_desc *pi = vcpu_to_pi_desc(vcpu);
->> @@ -236,6 +245,22 @@ static void vt_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
->>          memset(pi->pir, 0, sizeof(pi->pir));
-> Should this be a nop for TDX VMs? pre_state_restore could cause
-> pending PIRs to get cleared as KVM doesn't have ability to sync them
-> to vIRR in absence of access to the VAPIC page.
-This callback is called by kvm_lapic_reset() and kvm_apic_set_state().
-If it is call by kvm_lapic_reset(), it should be cleared.
+Previously I was not aware that KVM ARM has these constraints on guest's
+view of NV and E2H, so I appreciate this comment very much. However,
+after digging through the code I could not find anywhere where these
+constraints are enforced, for example initially I thought I would find
+ID_AA64MMFR2_EL1_NV being zeroed in limit_nv_id_regs(), or HCR_NV added
+to the res0 mask of HCR_EL2, base on whether FEAT_VHE or FEAT_E2H0 is
+available to the guest. But seems like in these places the code applies
+constraints looking at the host's capabilities, not the guest's.
+Do you mind providing some pointers for me to investigate the code mode?
 
-If it is called by kvm_apic_set_state() when userspace want to setup the
-lapic. It will be needed when live migration is enabled for TDX.
-For VMX VM, the PIR is synced to vIRR and then the state will be sent to
-destination VM.
-For TDX guest, I am not sure the final solution to sync PIR from source to
-destination TDX guest. I guess TDX module probably will do the job. Will
-ask Intel guys to check what is the solution.
-For this base series, TDX live migration is not supported yet, it is OK
-to reset PIR for now.
+Thank you so much, I'd appreciate any help.
 
->
->>   }
->>
->> +static void vt_hwapic_irr_update(struct kvm_vcpu *vcpu, int max_irr)
->> +{
->> +       if (is_td_vcpu(vcpu))
->> +               return;
->> +
->> +       return vmx_hwapic_irr_update(vcpu, max_irr);
->> +}
->> +
+Wei-Lin Chang
 
+>  	 */
+>  	if (vcpu_has_nv(vcpu) && !is_hyp_ctxt(vcpu)) {
+>  		u64 val = __vcpu_sys_reg(vcpu, CNTHCTL_EL2);
+> @@ -834,6 +838,9 @@ static void timer_set_traps(struct kvm_vcpu *vcpu, struct timer_map *map)
+>  
+>  		tpt |= !(val & (CNTHCTL_EL1PCEN << 10));
+>  		tpc |= !(val & (CNTHCTL_EL1PCTEN << 10));
+> +
+> +		tpt02 |= (val & CNTHCTL_EL1NVPCT);
+> +		tvt02 |= (val & CNTHCTL_EL1NVVCT);
+>  	}
+>  
+>  	/*
+> -- 
+> 2.39.2
+> 
