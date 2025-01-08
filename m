@@ -1,129 +1,133 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615FF15350B
-	for <kvm@vger.kernel.org>; Wed,  8 Jan 2025 15:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB5F1FAC53
+	for <kvm@vger.kernel.org>; Wed,  8 Jan 2025 15:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736348464; cv=none; b=t1g16yNCwjvzt7BdYnoh5SS7i4zKKBP42AXTKkl56gfrS1lYDo5KimdbvEAfubZPjqb1tKVmfrn98Kwx6Mw8kku3xeEkbqfvtJ/UZuKN27A33jBYkvlWu6WL1SKD9T4gFGbFzw4+/2SVlIn/hVYuIVhAlAZEtgny05SeQQUeFzY=
+	t=1736349482; cv=none; b=oxjHT8VTkHC7n8BgLeRdmN81GkqUmyIJjG9Ou0kXUVSd5EeP6Ra87iOvy18HFjnzn3uBEBo7y3fWbZv54glskXpd8S5fw0eWqGCqUpkOkDRYVQaeB9raJ5RE40xhieAi79poMjj1H84svLCB4034jYICwUDhVG+Pnx2Wt0AUTdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736348464; c=relaxed/simple;
-	bh=nyV2yl3XmNDhQ40W7YYCBaBWCDclqEByPJGKII1QDBA=;
+	s=arc-20240116; t=1736349482; c=relaxed/simple;
+	bh=uFCerLUu2T4I661JjtdcuupWXppPvMcsX+lF2HSHy+Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nfat2+xKRBQRSgYbpoeas3z74EfZF4ZwL97Ukd7EEny2ioIeNcMQFEIvACG/gi55URJCySCDdSc5f9MNckwt3XlwoH6j5x5cWAD5ydM0NWdkXI/lO3l5LUSWP+W6Hfo6scuBWy5agy4KAs9i7bR/2L/p8kzIlHKJfw9NaJfRUDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wTKCtLEm; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=NfVUtvO2b5LQvvlx/E6gfDA0mfNKjVeiVpwvkIdUR6RRK3HJNI73KPJIb7GcR634f8+7oUAnP8d7OIgZezjugS5KhKij8zcElnEddnXa+VjeZuLYo0ji+pTjmDBNF+zl3J5X/5T/NJmmr/JAkqOj/YEpdNBSv7rg8gEoF41eE/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L3n43rRu; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wTKCtLEm"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2efc3292021so38942462a91.1
-        for <kvm@vger.kernel.org>; Wed, 08 Jan 2025 07:01:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L3n43rRu"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2163dc0f689so118617185ad.1
+        for <kvm@vger.kernel.org>; Wed, 08 Jan 2025 07:18:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736348463; x=1736953263; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736349480; x=1736954280; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/BxpHeQa6+oVcHk1D5x+DCISdWdWpyOX6w9TVx4KjZs=;
-        b=wTKCtLEmrkvOllL+NbJrzl5JdEYnqCasorgC26rk+s9Edr/zfpzvGqGv6bfRs6zTmQ
-         w/O/weH//g9a2zUwA8vyCGV0g182INkzpgilen5s05iPmOIxvOq4CtIAz2DiFd6z28LZ
-         bXHq/TjMLM40a0OO6yA3lASpJPaDZasSYjKC82+xfaElrdPCM7UgjcNIThZXYj6UA2BI
-         T7dVSg2BAz+EgxZFr7YzE0og91ZG2CWR2z1UqjTZ1kLPhIKzJmYNsMvdJMsvUilNI0+8
-         4M6hmw5mzeU3zFMrf9AKdUWKFaaV/uktoal+eUu5GDaJSigZmycO2sARmUgwN1guuP5z
-         IRdg==
+        bh=svCTvF2tEKcLu+qPTwRtfvESTV0KIhI9s6mPVElDk6A=;
+        b=L3n43rRu6hL6wjCUJwxH3TF8wwYlHDJ1OtIbj8j1aGYjOUv7Pb9z/3yB/wEY8Fd1/W
+         NMm9o54tDjfBrgrKIrX5kx9ePwvh4wu0fkzeobMGH0WWCu1azrJePWwwZvioxRNO1x8f
+         IZzqsEDFAW2jIjWDmxu0cdFD09XP6bfdr9RrxyHh7gVuRkzwz6ygMQVWGhukv2IwTeQh
+         MHTG/Lq/P0R5cAYmVxR8TybP6FxKGYe+xyScsX0eORSEtDAmzKUb09bwP8ZsVYgF3n++
+         2FicAWN5QaqRE+xV1faCpKv/gNcHtA0eVCMoAYszLuwBnL2eskLSAke5lY+BcA6ttuEx
+         F74g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736348463; x=1736953263;
+        d=1e100.net; s=20230601; t=1736349480; x=1736954280;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=/BxpHeQa6+oVcHk1D5x+DCISdWdWpyOX6w9TVx4KjZs=;
-        b=CSFNJ7xWE8PMe9vaHGAsp9nCV9QvpQtFpH8yJtmnA/q0AMIdAaBSe4MY5UBPUDcVBa
-         3zM+n0wEvLUzruCADtQjpma8WPMlpyORTsbXZkj+YicZRb2FU3pJUhkfFhAs+ND+0p2q
-         ggxTh1CFUywPOpKzewmURyo7LDIa3aalRfIGIp7Cq+4E3fdHdYo7oPfVKL2C8HFXCckc
-         Vx11Dh12ksnrvf38iq4Pkoj/CdRDJWqGZGuq6A3hZz60orTtzRNwHC9r8+n9L/tzNqIK
-         z78Vvx9OwkYa0S/aaM4rTqDT8Vh1KOTh1BaC8+YfB9mNYFmVCFrsQGenuJZSfFD9TkWZ
-         lLxg==
-X-Forwarded-Encrypted: i=1; AJvYcCX8Wk2zHX+IA2XXzQZfNub3S/d6zN9B27Pt1precq2byWgID/gaykggFPzL37+MxpbA+dI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNnQVQf0XSL8EnPK+ftujGmzc4L0tgx8LXH50oNYBVH4IX7OAs
-	S3QcvKE0CBWTaymXgVzkZ1UPaVhBYIrkLF1LkfSBcmAjlwQuo4m4ZSGd5Si2wUZBjtaOG9L05F0
-	63Q==
-X-Google-Smtp-Source: AGHT+IHPEwOjIRpY3qflTXtWlCZWrnzWqpeJtMdMBn2fUt52cnKKWya/HJRk3WY+oGQFCmrz/1mIlOBmAf0=
-X-Received: from pfbcv10.prod.google.com ([2002:a05:6a00:44ca:b0:725:e60b:1e4f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:178e:b0:725:f4c6:6b81
- with SMTP id d2e1a72fcca58-72d21f459e8mr4979296b3a.2.1736348462619; Wed, 08
- Jan 2025 07:01:02 -0800 (PST)
-Date: Wed, 8 Jan 2025 07:01:01 -0800
-In-Reply-To: <Z34NGyZL7G_j716N@tlindgre-MOBL1>
+        bh=svCTvF2tEKcLu+qPTwRtfvESTV0KIhI9s6mPVElDk6A=;
+        b=jcWMBikZYcUOq4RAUQQ5KYrUpyMgJdsWWQSciIviwxm5E5r6P7fKM0573Xkmmqfx2O
+         uy+iQwPYC4BkHFqcX7knydzsLZ+meQfKzBfabvOcpB6OvrMOyTEsdWV2Sc5hcdGGm3fc
+         ORxbV/4osEL2pl+0uIBt8NRM6jHOS8MvH7dYLdnsUi/DulJ7hkVNx73t4eFPqjOjZPD1
+         AXWIj7btn4A7EUmZ8erg3x8fw5ykqBNJUOhOhWeaySs/NX7WWx8dq9lv/+WAXtIFYKS4
+         T0QpbACFYYFKyiP5fEdCoYOCGL7yhop9Wb8bbxlK4U7F50D4+R9NR5qngO0F/+67MVsX
+         AS0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXFZMxjTlTCzkZy9cKF2o4BIM4o1VIT8oZdHRixZ6CGadwZR3YrEMUc3V+JAUQ37YuxASg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnpXA5VdBfMIG4tPDYoplfSUS1EmRs5TnahzmMVGtu5+B305Il
+	CwMo8mypgcG9ezC6ppNtoyrDL5GmSXTEcHhveLpoq4SzOfaGpqOIp9rFMdV+BJ3fzy88oh/9nQs
+	z8Q==
+X-Google-Smtp-Source: AGHT+IFYAiCogwDWTnPToi/jJEHLUboqAk8gG89TQ75qc0dKdOOeMNdVVTuuEmP2XX0QF1uwlCrcwpKzxi0=
+X-Received: from pfbbt23.prod.google.com ([2002:a05:6a00:4397:b0:727:3c81:f42a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d83:b0:1e4:80a9:3fb8
+ with SMTP id adf61e73a8af0-1e88cfa6e23mr4807863637.16.1736349480035; Wed, 08
+ Jan 2025 07:18:00 -0800 (PST)
+Date: Wed, 8 Jan 2025 07:17:58 -0800
+In-Reply-To: <CABCjUKB-pzcY-XFzpBQ6mRi-LiPJ7exAwr+RQXR-pD+P0cxrYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20241030190039.77971-1-rick.p.edgecombe@intel.com>
- <CABgObfZsF+1YGTQO_+uF+pBPm-i08BrEGCfTG8_o824776c=6Q@mail.gmail.com>
- <94e37a815632447d4d16df0a85f3ec2e346fca49.camel@intel.com>
- <Z3zZw2jYII2uhoFx@tlindgre-MOBL1> <7f8d0beb-cc02-467d-ae2a-10e22571e5cf@suse.com>
- <Z34NGyZL7G_j716N@tlindgre-MOBL1>
-Message-ID: <Z36TLcX1kOe1ltjp@google.com>
-Subject: Re: [PATCH v2 00/25] TDX vCPU/VM creation
+References: <20250107042202.2554063-1-suleiman@google.com> <20250107042202.2554063-3-suleiman@google.com>
+ <Z31KK-9Z_b-UleVT@google.com> <CABCjUKB-pzcY-XFzpBQ6mRi-LiPJ7exAwr+RQXR-pD+P0cxrYA@mail.gmail.com>
+Message-ID: <Z36XJl1OAahVkxhl@google.com>
+Subject: Re: [PATCH v3 2/3] KVM: x86: Include host suspended time in steal time.
 From: Sean Christopherson <seanjc@google.com>
-To: Tony Lindgren <tony.lindgren@linux.intel.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, Reinette Chatre <reinette.chatre@intel.com>
+To: Suleiman Souhlal <suleiman@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chao Gao <chao.gao@intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ssouhlal@freebsd.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 08, 2025, Tony Lindgren wrote:
-> On Tue, Jan 07, 2025 at 02:41:51PM +0200, Nikolay Borisov wrote:
-> > On 7.01.25 =D0=B3. 9:37 =D1=87., Tony Lindgren wrote:
-> > > --- a/arch/x86/kvm/lapic.c
-> > > +++ b/arch/x86/kvm/lapic.c
-> > > @@ -139,6 +139,8 @@ __read_mostly DEFINE_STATIC_KEY_FALSE(kvm_has_noa=
-pic_vcpu);
-> > >   EXPORT_SYMBOL_GPL(kvm_has_noapic_vcpu);
-> > >   __read_mostly DEFINE_STATIC_KEY_DEFERRED_FALSE(apic_hw_disabled, HZ=
-);
-> > > +EXPORT_SYMBOL_GPL(apic_hw_disabled);
-> >=20
-> > Is it really required to expose this symbol? apic_hw_disabled is define=
-d as
-> > static inline in the header?
-
-No, apic_hw_disabled can't be "static inline", because it's a variable, not=
- a
-function.
-
-> For loadable modules yes, otherwise we'll get:
+On Wed, Jan 08, 2025, Suleiman Souhlal wrote:
+> On Wed, Jan 8, 2025 at 12:37=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > On Tue, Jan 07, 2025, Suleiman Souhlal wrote:
+> > > Note that the case of a suspend happening during a VM migration
+> > > might not be accounted.
+> >
+> > And this isn't considered a bug because?  I asked for documentation, no=
+t a
+> > statement of fact.
 >=20
-> ERROR: modpost: "apic_hw_disabled" [arch/x86/kvm/kvm-intel.ko] undefined!
->=20
-> This is similar to the EXPORT_SYMBOL_GPL(kvm_has_noapic_vcpu) already
-> there.
+> I guess I don't really understand what the difference between documentati=
+on
+> and statements of fact is.
 
-Heh, which is a hint that you're using the wrong helper.  TDX should check
-lapic_in_kernel(), not kvm_apic_present().  The former verifies that local =
-APIC
-emulation/virtualization is handed in-kernel, i.e. by KVM.  The latter chec=
-ks
-that the local APIC is in-kernel *and* that the vCPU's local APIC is hardwa=
-re
-enabled, and checking that the local APIC is hardware enabled is unnecessar=
-y
-and only works by sheer dumb luck.
+It's the difference between "X may be buggy" and "X has this exact caveat b=
+ecause
+KVM doesn't support saving/restoring associated metadata".  For this case, =
+I'm
+pretty sure it's possible to document exactly when suspended time will be l=
+ost,
+what may happen if that accounted time is lost, what userspace could do to =
+avoid
+dropping suspend time, and finally for the changelog only, specifically why=
+ KVM
+support for accounting suspended time is *intentionally* not providing APIs=
+ to
+save/restore pending suspended time.
 
-The only reason kvm_create_lapic() stuffs the enable bit is to avoid toggli=
-ng
-the static key, which incurs costly IPIs to patch kernel text.  If
-apic_hw_disabled were to be removed (which is somewhat seriously being cons=
-idered),
-this code would be deleted and TDX would break.
+> It's not completely clear to me what the desired behavior would be when
+> suspending during a VM migration.
 
-	/*
-	 * Stuff the APIC ENABLE bit in lieu of temporarily incrementing
-	 * apic_hw_disabled; the full RESET value is set by kvm_lapic_reset().
-	 */
-	vcpu->arch.apic_base =3D MSR_IA32_APICBASE_ENABLE;
+That's fine, it's not your (or KVM's) responsibility to know the desired
+behavior for every possible/theoretical use case.  But as above, it *is* KV=
+M's
+responsibility to properly document any caveats with functionality.
+
+> If we wanted to inject the suspend duration that happened after the migra=
+tion
+> started, but before it ended, I suppose we would need to add a way for th=
+e
+> new VM instance to add to steal time, possibly through a new uAPI.
+
+It's not just migration, and it's not just the case where the host is suspe=
+nded
+*after* vCPU state is saved.  Pending suspended time will also be lost if v=
+CPU
+state is saved after suspend+resume without entering the guest (because the
+accounting is done late in KVM_RUN).
+
+> It is also not clear to me why we would want that.
+
+Which is fine as well.  If some crazy use case cares about accounting suspe=
+nded
+time across save+restore, then the onus is on that use case to implement an=
+d
+justify appropriate support.
