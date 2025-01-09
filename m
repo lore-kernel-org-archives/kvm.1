@@ -1,160 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916FF207E07
-	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 09:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE46A207A2A
+	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 09:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736502553; cv=none; b=CBjm9Ng81AfhZdHDlFrxjkakeL/uK3bSH9pp2+2uka/IhAx5qaeja+JG6JGGyWYgaMEK5vmKA2VouhTrZOgwFmm8oDaqToDTbU+1PdXwxaBsdvg/igj3YLxQoREG1yz1BVGye92dV/LkgtcQv1QLVaC1kHNj+DjpStEqHhNqgak=
+	t=1736502702; cv=none; b=UZ9ZXKvmFZxO1qT3UxT4sbEF7hoonNDyifr3YFR0/NDHkUN8ymcw8pqRARwsJvyXfoShlhDG67MfRN/xbaUXHAOD1FYECHVBol8FhwN4MOLaCLmwAh3ea3aQIgqyCRXXYN+/xmY2hu11VqzdL5kpatTnNEPR/CVBekdXHow7PDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736502553; c=relaxed/simple;
-	bh=qhsRGNUqK6OAKrKR2V1iKiCXi3FqvXqzYw8GoxWzqw4=;
+	s=arc-20240116; t=1736502702; c=relaxed/simple;
+	bh=dlRCjbceXiOhOjqzagMQ1Mu3ZftwOVkJg5fOlUkDJqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TG165zsoDkVTVi6Lza+O3poTmgzukfnoRRO1+hZE0HYWfPGwzSQ5znGLVxWl6zUDLWx+2btFu6GVCrP/tvAYDQkT+c7o+kCYsypqN1zakFScfbzhV685EEkb5hlDeGyeIIzUPtppKSH7/cqajEO1fDAtn75iylwymGwxNPsCg9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B5TG5MzY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hohcSpHHR9LP3LuLLeCWbiHRBv+f3mIn7DbF19fxpmJAcZ27O+/Bt1y+j6kc+Mc0miDpn25JitrSXDmj0il/nCQSbdp4x6GsCk56OVQSeqlpLt5PRwOFDzH/DNnGIC2q823vAzCVV6dN+H2B6XmCVCvgTQu9Mz5zawiLkzkOc1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJcpAN39; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B5TG5MzY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736502550;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
-	b=B5TG5MzYjawtiRug+VISUYgaiodKP5t+JySCekzCKzgiSrAt+ch4fbV2omaw4kYZwV64A1
-	HiHhnZyW9yx6uYNu9AE/TDNVuLF/6jbiVJV80h7mcsinPGpXHrJ21aV92yIAx/TEep81VD
-	0xBF4aAIOo2yBjKbX//FLF+bS8HUuoI=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-4MZgabkXNhuQgvQVxwTFEw-1; Fri, 10 Jan 2025 04:49:09 -0500
-X-MC-Unique: 4MZgabkXNhuQgvQVxwTFEw-1
-X-Mimecast-MFC-AGG-ID: 4MZgabkXNhuQgvQVxwTFEw
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5d3bf8874dbso1973856a12.2
-        for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 01:49:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736502548; x=1737107348;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
-        b=J+LxhtFDOm8yhvmlwLIR74mpijS9Lji3U1leZntO8r22wcTnKz9Qm3DVbeaE1yHUCH
-         FHDepR9QXn6mF1va1ooYSLwhZf84biXE8laja2Z/YOlBNxzsQBe+x1+tLzPc2dBXMteO
-         3AAVEf7LEvEx06c6VoNReyE8khdkB2nUNexE5uGCkb+MIsH0U+sbStI6MMU0Mi/4jPLb
-         U6cQei1SwWf8+P8+PzdVHGf8Bzr63KoxXeIUZfZEnFMVStf1nCmQNfk5+r+Ub5r5MdxC
-         6yC3HLQ3F9eBm7/7BA3Y/AXGYGyGKcARLKpef7DnRjVckzMAwOMwpNmNjiFB0hXHWLtD
-         Jokw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmRl8183828jd+LF86g5pRemLP3z1qZJK8v+b9NEMmJOLa0swhrL1w1z4y8o3ED+QHKOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJOktQ2qvxS02gnUpKzH4SyE94cOWGIT2YBkE57xml0X1fGG60
-	kknr6+MCG5G94WNqXnoNNMqXn8Hdl+bGBE9bQnVQGVm8pVHEuf2XmmexS9UH/JiDrFwMBokYMQd
-	IDhTg2sB67ibm/7Q2+w3KgySw7Vabk8YvMfKCsJsCMy/mnZFYSA==
-X-Gm-Gg: ASbGnctCU3EdMr/6e8z5Gs1Jrt9AaArdnbP/Yy7FRBXHDhQ8JkyKqiChD0msrUsfuLL
-	tCN5fB2Gj8N6J0AMDeTTJocwPkf7jxnx0xNuOOwgb5GHeLsJMKiMdSZjPkeLdHKioniByck78Qw
-	0ooO2yVwKHaQAMfpflnzSX+SVjtfgkmCXUMxL3nkTPIC+z0onI+5D9YUdy6RFuvEx0vhuhGNeYG
-	s0URC7tFEVaVru2LRN7o+msMuDqXFuJ+x7Q7QM5PKVRTZKG69wCA8HlYbMF
-X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809149a12.24.1736502547974;
-        Fri, 10 Jan 2025 01:49:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7NcV6qvOmi3pOuIGf31hIeLvRpTDpjsTfMUkfqpvbiE2Dvo13pJInSk8Nx0om0nJMaf5Oqg==
-X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809135a12.24.1736502547530;
-        Fri, 10 Jan 2025 01:49:07 -0800 (PST)
-Received: from leonardi-redhat ([176.206.32.19])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c29fsm1446933a12.9.2025.01.10.01.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 01:49:06 -0800 (PST)
-Date: Fri, 10 Jan 2025 10:49:02 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, Jakub Kicinski <kuba@kernel.org>, 
-	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 5/5] vsock: prevent null-ptr-deref in
- vsock_*[has_data|has_space]
-Message-ID: <7ve3d5nuqddbdxbocmexobolzdf4qzsmro7kknnwkuqetznkfk@lispccbzv3lg>
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-6-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJcpAN39"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736502700; x=1768038700;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dlRCjbceXiOhOjqzagMQ1Mu3ZftwOVkJg5fOlUkDJqE=;
+  b=oJcpAN39FuwmdXrDdjq8D1ikwXe4SJTX0oYvzy8gVQcd8vhQ7zl813cg
+   4y6XZq8C23BxNbGbBbjI5wC8hoqoH5tkEdvp98ttMbc4il6lLUGVE7PM1
+   l3bOJYlz8LMAOFS8fFqID8exocs+xJ3BwvfQLceyDhhwxL+gGtzvdj9S1
+   vHvOU9miqRferjoTSyL3ocLRXfAUVRiRYzrVqXrDLiaD6bFVl+xHBSO6l
+   IXVLE11FRwlE8skxOA86M2ToIyCQRTj0N9xRweSmBeuYu223zqRsH3ETL
+   3wlAV35+IUY326dfRF0yR0iT6ld0NqWNRAUmbV0+QkBd/hrHvf4YbzOCZ
+   Q==;
+X-CSE-ConnectionGUID: KZcl0M9bS1a1aBbmPOV/QQ==
+X-CSE-MsgGUID: sXU+OZ7QRNeJscX8KP8pAw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="47458149"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="47458149"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 01:51:40 -0800
+X-CSE-ConnectionGUID: sfEaav1hRwedm1aEQy2Pzg==
+X-CSE-MsgGUID: +GZZj3wXT8K8qCwrRmn3Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="104245902"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 10 Jan 2025 01:51:37 -0800
+Date: Fri, 10 Jan 2025 05:50:34 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	David Hildenbrand <david@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z4BEqnzkfN2yQg63@yilunxu-OptiPlex-7050>
+References: <20241213070852.106092-3-chenyi.qiang@intel.com>
+ <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
+ <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+ <219a4a7a-7c96-4746-9aba-ed06a1a00f3e@amd.com>
+ <58b96b74-bf9c-45d3-8c2e-459ec2206fc8@intel.com>
+ <8c8e024d-03dc-4201-8038-9e9e60467fad@amd.com>
+ <ca9bc239-d59b-4c53-9f14-aa212d543db9@intel.com>
+ <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
+ <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
+ <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250110083511.30419-6-sgarzare@redhat.com>
+In-Reply-To: <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
 
-On Fri, Jan 10, 2025 at 09:35:11AM +0100, Stefano Garzarella wrote:
->Recent reports have shown how we sometimes call vsock_*_has_data()
->when a vsock socket has been de-assigned from a transport (see attached
->links), but we shouldn't.
->
->Previous commits should have solved the real problems, but we may have
->more in the future, so to avoid null-ptr-deref, we can return 0
->(no space, no data available) but with a warning.
->
->This way the code should continue to run in a nearly consistent state
->and have a warning that allows us to debug future problems.
->
->Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
->Cc: stable@vger.kernel.org
->Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
->Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
->Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
->Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
->Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
->Co-developed-by: Wongi Lee <qwerty@theori.io>
->Signed-off-by: Wongi Lee <qwerty@theori.io>
->Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->---
-> net/vmw_vsock/af_vsock.c | 9 +++++++++
-> 1 file changed, 9 insertions(+)
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 74d35a871644..fa9d1b49599b 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected);
->
-> s64 vsock_stream_has_data(struct vsock_sock *vsk)
-> {
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	return vsk->transport->stream_has_data(vsk);
-> }
-> EXPORT_SYMBOL_GPL(vsock_stream_has_data);
->@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vsock_sock *vsk)
-> {
-> 	struct sock *sk = sk_vsock(vsk);
->
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	if (sk->sk_type == SOCK_SEQPACKET)
-> 		return vsk->transport->seqpacket_has_data(vsk);
-> 	else
->@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_data);
->
-> s64 vsock_stream_has_space(struct vsock_sock *vsk)
-> {
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	return vsk->transport->stream_has_space(vsk);
-> }
-> EXPORT_SYMBOL_GPL(vsock_stream_has_space);
->-- 
->2.47.1
->
+On Fri, Jan 10, 2025 at 05:00:22AM +0800, Xu Yilun wrote:
+> > > 
+> > > https://github.com/aik/qemu/commit/3663f889883d4aebbeb0e4422f7be5e357e2ee46
+> > > 
+> > > but I am not sure if this ever saw the light of the day, did not it?
+> > > (ironically I am using it as a base for encrypted DMA :) )
+> > 
+> > Yeah, we are doing the same work. I saw a solution from Michael long
+> > time ago (when there was still
+> > a dedicated hostmem-memfd-private backend for restrictedmem/gmem)
+> > (https://github.com/AMDESE/qemu/commit/3bf5255fc48d648724d66410485081ace41d8ee6)
+> > 
+> > For your patch, it only implement the interface for
+> > HostMemoryBackendMemfd. Maybe it is more appropriate to implement it for
+> > the parent object HostMemoryBackend, because besides the
+> > MEMORY_BACKEND_MEMFD, other backend types like MEMORY_BACKEND_RAM and
+> > MEMORY_BACKEND_FILE can also be guest_memfd-backed.
+> > 
+> > Think more about where to implement this interface. It is still
+> > uncertain to me. As I mentioned in another mail, maybe ram device memory
+> > region would be backed by guest_memfd if we support TEE IO iommufd MMIO
+> 
+> It is unlikely an assigned MMIO region would be backed by guest_memfd or be
+> implemented as part of HostMemoryBackend. Nowadays assigned MMIO resource is
+> owned by VFIO types, and I assume it is still true for private MMIO.
+> 
+> But I think with TIO, MMIO regions also need conversion. So I support an
+> object, but maybe not guest_memfd_manager.
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Sorry, I mean the name only covers private memory, but not private MMIO.
 
-Thanks!
-Luigi
-
+> 
+> Thanks,
+> Yilun
+> 
+> > in future. Then a specific object is more appropriate. What's your opinion?
+> > 
+> 
