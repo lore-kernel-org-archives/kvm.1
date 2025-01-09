@@ -1,139 +1,129 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C52216E37;
-	Thu,  9 Jan 2025 12:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB4218AC6;
+	Thu,  9 Jan 2025 13:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736426780; cv=none; b=p1wvoSrurTnxMlKA8Z9xtup9LFsos73aYlYs+NpEVYPlSPbQiOzuY0ClfMMlDVkG86hm75x0ZLVRqJ39+vK3Y6KHCrsapo2/J1LF3EJ3/YrWlFjGq4o87+Ya2IN4gLMqKMENBOSJSP30vt6g2iy7FzyjR42zx0nu6CrMRLGCwOA=
+	t=1736428906; cv=none; b=PL3Wru/RclgfT/dzdGjLclNYLbpc45lyCBGnfZYZMkdcWAz4yX1pdDkefiavs1EQS2HByUm1CRXyRFJ4qbU9XegEF1uHT+9dAg24yxNJT3lS4mLlO0uuB2+mJdqdRlVqGN+koqtGTPt4npMFrBnc2NjkKHRNxodCEUyuvjZR2GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736426780; c=relaxed/simple;
-	bh=nOOZA+iN0ga0CTphyM/C05+qgOczZ68TEd0WLotUewg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=KLmbaAeFCp6TgOP0r0KdtNF5ImN+Wb50AgQZO8ihSXNF+lsZN6JV0RNYJ0Z/m+QvY4sj6x6M1VNr5yhs+PuimaAv9xGBCtaRiDBNQR4kWymGBbqJSNJN0TqWGYENUV1ulFjMkyKThZfD0R9tCJgxuLeEIldf6B4/V/gW09lJH7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fvRoZwRM; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736428906; c=relaxed/simple;
+	bh=uA1KoJ0EVn4JPa8fEqid30FHAIr6fqP4vqAv435NFUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Du+mHZ9ET3nuNQytTKa23EiGOf8cKGzhXEc6ABQ20PWEV9cK29IinadhvtKmzW5UwWLozSfAnYUIuWLxsEHC/RhaydL5bk1K97wf0xU7EYZpJS1RXV19miAUeu0zKhjTk8GOkVvOvxbZQ4UOkmw65fXaJ7a5GmvrfPg//XurPxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O41+eNVw; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fvRoZwRM"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b85d5cc39eso87453285a.3;
-        Thu, 09 Jan 2025 04:46:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736426777; x=1737031577; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kaPMLCUZXOj8V/TsoKhneA/pbfWV2N1nHu6od460Xzw=;
-        b=fvRoZwRMvr5M/MLiHu4/wjKv6pIXRtlIZXjCImm2KGwBN8zmaSX1NjxlzebJvvr/QK
-         enQ+pTbyap/SMJmZKseFnH27xnx7GQAUpwXV2RveO2tBTzDcYtFKn8Vrqx9hSeg5Pzew
-         Ta6PQ8sesIuV7hE+h46OikRUBwoqHodMahXI7xAphfnDlZeZ+1pF+49Lvr2SaoRIiVq3
-         BLsB4FZR6+uc1VsvswzCgquThpNrvI/BcqEM89Pu2PmDvPgMVHR+OV1IN+HXWDHiToXL
-         48K0w4y53Hh2LoGhH/UNgrZGRBG10DKbmpc8Qum1Vc3NcChXiJ25eMs+iz3dxBwE2Sl/
-         wh/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736426777; x=1737031577;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kaPMLCUZXOj8V/TsoKhneA/pbfWV2N1nHu6od460Xzw=;
-        b=wX9UYrGAhzRzaVioXKMg0g6DAfet2PVRLBNpJ5xSopSBM17/T3bg2ZAXk8Rfn30Ao9
-         3mPsJG7u8jD23NoC91/dh+JPKS3O+7zZUftqkmSViCi+WtyT/segvJO/IJ4zbs7uIEre
-         0+XcDIP4LZjmcF4/ks/tmDnTSXiYMjyltABnHVau53+wwm7rb7v017xCNNxVEoweGHbm
-         z9sUzF+BmAdn+5UWUD6hTUsGi3SDDPuMFWcer+M+Olc0yWi1VpiSLa9PykVb3tR4NDOG
-         8FgywiGrXTm/zZqbz7QaebpckzN3rXMCIROAPEl9KAq7la88KRr9czjKfbWoSS7/EjKK
-         U7mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURWYcFuaNu6VJZwalB584a/mzeDyRc6h8UCC1qguwoR3ou4HVZBdbXPfF/hGyXEQJJefWVnwqaPvm38zTVTXjK@vger.kernel.org, AJvYcCUkaJFEShQ0LhXToNzOloP5CekWcGzGXxFQBIjWF2s/6EgFSk7KrFA2azE8Kbh9XxfLruA=@vger.kernel.org, AJvYcCUrlRjwYs2JqEXVDKlCCQodaFAJ2fTZVu4EBJ73Og+VCyd0aDIVZfc04UhaoVk3vSz2QHcf6yWcvpNBqFA+@vger.kernel.org, AJvYcCVYZhGyEyxCYhYLSbYaRaWVB537feG/zIYcbJIWW1PJMC8KhuOwgYgouT7Epqz+gDSgy+5fK+ni@vger.kernel.org, AJvYcCW6IY0XLhpA0mIIvp0FWZ4/Uq3nu+4LsHD4h1VvVnxe+TCl8wswai4hq4UT4OuemTiThInFpC/oZx4I@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw00mAZAtw1hhDB44QuHsQaxhOIAaWXBu9aRkcS1wPyIRAq6iQw
-	hckMKAdFePZ3lftHb/mDQz79lEu9j3/McUJ2Rrtq300827xAgWsZ
-X-Gm-Gg: ASbGnctRW9bcYo2V9/31gJ+TVIQIV1D13IbG9vqGdgInL2ZC7z8PtGzs7W4f/ihBDHz
-	onFR5Kbl4BypUTARCK7ejXQBCVBHHGDHSTMgQ/dTkj7rFe6P3cqbru3KZuZRNcQN0gZiSbHKQIG
-	d5Ebkd8dj7ONdwcl1hs7Orm9v+UVp5lqMGV2wUS38bTrWPpJ+IHrerBUttrcc7ZgBYC1IEj8lFL
-	+PPywj39KDAqgHkHEOdkfxZI6a3XSSTCTI+9SjMhRhk4OvRohuV7S4uWKveI4+V4hoXLjnGHkQH
-	pXkIcCxUT1AGMVgVXvSKI6A8nlyZ
-X-Google-Smtp-Source: AGHT+IElltpq0Se5BPymgSR44p/+E1b35WmaB/SUjKp4ksNe7YwiYRSh+K5j9T3I6qKRunWydJbAbg==
-X-Received: by 2002:a05:620a:444f:b0:7b6:f1be:4f7e with SMTP id af79cd13be357-7bcd9755084mr912637385a.26.1736426777023;
-        Thu, 09 Jan 2025 04:46:17 -0800 (PST)
-Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3516068sm62500685a.100.2025.01.09.04.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 04:46:16 -0800 (PST)
-Date: Thu, 09 Jan 2025 07:46:15 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- Shuah Khan <shuah@kernel.org>, 
- linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, 
- kvm@vger.kernel.org, 
- virtualization@lists.linux-foundation.org, 
- linux-kselftest@vger.kernel.org, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Stephen Hemminger <stephen@networkplumber.org>, 
- gur.stavi@huawei.com, 
- devel@daynix.com
-Message-ID: <677fc517b7b6e_362bc12945@willemb.c.googlers.com.notmuch>
-In-Reply-To: <571a2d61-5fbe-4e49-b4d1-6bf0c7604a57@daynix.com>
-References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
- <20250109-tun-v2-2-388d7d5a287a@daynix.com>
- <20250109023056-mutt-send-email-mst@kernel.org>
- <571a2d61-5fbe-4e49-b4d1-6bf0c7604a57@daynix.com>
-Subject: Re: [PATCH v2 2/3] tun: Pad virtio header with zero
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O41+eNVw"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5090abXX000770;
+	Thu, 9 Jan 2025 13:21:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=PIYv3HT1t7t/RxD2CzYvxMvKNpNRTsobx9e1PcdHI
+	4Q=; b=O41+eNVwrjnbtCpkyRE2aGtUtngxpY51WzYFvlZQgEYCEIM/sAyJJ5TfD
+	JWKJGeUodawGaNpBvTJzaOnJJyvJAsskDLBsYFYfxaFd0GvARVTImtEEkTzTa/Xw
+	yHRC0Z2VsxEait13k/A9XLOmmzPzKyOVQ7IOpbEEv3Yx8x//d74jJxXzo4NYXFci
+	3/f0DxUbfIyRgwT/GOz6KCJb947Na1pnZIT4lyihZ5hdCxD/gLDqQdJVh2punLkG
+	5DCZP5lxiC340r1RFlJND+sQlHYdFDUk1HUdQvfG3LRpFKElM3uPH6olsUsh6VSf
+	7tyZya6e6NQfybnRbd0/tdx6doxQA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441tu5n7e1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 13:21:26 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 509DFhi6008704;
+	Thu, 9 Jan 2025 13:21:25 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441tu5n7dx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 13:21:25 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 509BNhsI003601;
+	Thu, 9 Jan 2025 13:21:25 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfatdedn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 13:21:24 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 509DLLnI15073628
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jan 2025 13:21:21 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4637A20043;
+	Thu,  9 Jan 2025 13:21:21 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4CE5320040;
+	Thu,  9 Jan 2025 13:21:18 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com.com (unknown [9.124.223.189])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jan 2025 13:21:18 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
+Date: Thu,  9 Jan 2025 18:50:53 +0530
+Message-ID: <20250109132053.158436-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hvpgz_N-ryofrwSI8xwElybReki8Q0Ff
+X-Proofpoint-ORIG-GUID: GT_WvY8RHmULRGyFL4N4ZliWEMN7eZqS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=808 adultscore=0 bulkscore=0 impostorscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501090104
 
-Akihiko Odaki wrote:
-> On 2025/01/09 16:31, Michael S. Tsirkin wrote:
-> > On Thu, Jan 09, 2025 at 03:58:44PM +0900, Akihiko Odaki wrote:
-> >> tun used to simply advance iov_iter when it needs to pad virtio header,
-> >> which leaves the garbage in the buffer as is. This is especially
-> >> problematic when tun starts to allow enabling the hash reporting
-> >> feature; even if the feature is enabled, the packet may lack a hash
-> >> value and may contain a hole in the virtio header because the packet
-> >> arrived before the feature gets enabled or does not contain the
-> >> header fields to be hashed. If the hole is not filled with zero, it is
-> >> impossible to tell if the packet lacks a hash value.
+Currently, on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
+available for KVM Guests running on PowerNV and not for the KVM guests
+running on pSeries hypervisors. This prevents a pSeries hypervisor from
+leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
+H_STUFF_TCE hcalls that results in slow startup times for large memory
+guests.
 
-Zero is a valid hash value, so cannot be used as an indication that
-hashing is inactive.
+Fix this by enabling the CAP_SPAPR_TCE_VFIO on the pSeries hosts for the
+nested PAPR guests.
 
-> >> In theory, a user of tun can fill the buffer with zero before calling
-> >> read() to avoid such a problem, but leaving the garbage in the buffer is
-> >> awkward anyway so fill the buffer in tun.
-> >>
-> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > 
-> > But if the user did it, you have just overwritten his value,
-> > did you not?
-> 
-> Yes. but that means the user expects some part of buffer is not filled 
-> after read() or recvmsg(). I'm a bit worried that not filling the buffer 
-> may break assumptions others (especially the filesystem and socket 
-> infrastructures in the kernel) may have.
+Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+Cc: stable@vger.kernel.org
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+ arch/powerpc/kvm/powerpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If this is user memory that is ignored by the kernel, just reflected
-back, then there is no need in general to zero it. There are many such
-instances, also in msg_control.
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index ce1d91eed231..9c479c7381e4 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -554,7 +554,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 		r = 1;
+ 		break;
+ 	case KVM_CAP_SPAPR_TCE_VFIO:
+-		r = !!cpu_has_feature(CPU_FTR_HVMODE);
++		r = !!cpu_has_feature(CPU_FTR_HVMODE) || is_kvmppc_hv_enabled(kvm);
+ 		break;
+ 	case KVM_CAP_PPC_RTAS:
+ 	case KVM_CAP_PPC_FIXUP_HCALL:
 
-If not zeroing leads to ambiguity with the new feature, that would be
-a reason to add it -- it is always safe to do so.
- 
-> If we are really confident that it will not cause problems, this 
-> behavior can be opt-in based on a flag or we can just write some 
-> documentation warning userspace programmers to initialize the buffer.
+base-commit: eea6e4b4dfb8859446177c32961c96726d0117be
+-- 
+2.47.1
+
