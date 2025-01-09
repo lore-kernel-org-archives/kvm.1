@@ -1,199 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F76201039;
-	Thu,  9 Jan 2025 07:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196F6201036
+	for <kvm@vger.kernel.org>; Thu,  9 Jan 2025 07:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736407407; cv=none; b=OdXASFDyi9kdfwWuKCnLk7t98G2LanH10c9EukOva2MYcqCDzfl3QEqdzWuUch2qOTH6FQrD3rnoiaP+vZFqO8Sgl4q5zGf6rect3viuiI+dUNSbDDtzykMIiSQ7N7zp2MOWIBVJPuqQ5dARiHMjIZ4qSyTHeNxaDYWLcUl98Qw=
+	t=1736407903; cv=none; b=AU+TCCB4JRy3Gl5T5xVGojEVC6OnjfJMdirCEjUu8KLlSEQ13sFZccwyYKmOlW/jb2zwDt6eo2elUQ7XCFisp2GPijjvhr0ACvk6lCdpoIOjLlrL9oH4pZTqaY57So5bNseUlArRr+i/IwxBtBI70F1J3SBDatbDTtWLskZUagM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736407407; c=relaxed/simple;
-	bh=5RtwYatc7XhYn22UVzvrAmXoefZVhRa51czG3ToYe9M=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Txk4mYDVgySIQzRr2QYNDWt56ylK608Nlq2CEkCZ0ycAh3mBORafNqPSw7sh5LxCBvRpA8Guqg7RLgUysULgr9+LTv4+gfhGuSQD+AnjocISMKEleb3fHPzwtpmUzEVLkE4lxBy/cQzdZOFR+q5jpCSfFOGvf1vq3fZotNZ/1R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VbJ391R6; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736407903; c=relaxed/simple;
+	bh=rBPdYEnZvtSaWGeIKaMzYx3ocXn/sfrS1kD4E5tn0hU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKriXcvFpb2Vz2MR8x9nfiXrCFS7jbAV3tmyKJPUMyc1LxkZdjKbwEjKA8cT2T74MDaVKtUdgbeFIVXC7V5rtxxeKvdQ5MCyHA2P+eu7f6VvdX5y39WP7YlLt2ZNojQD3H4+maty4tmG9cyHbFJMvYytQQig+w1VXMHnkOZcCPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K0lkGLKM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VbJ391R6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736407405; x=1767943405;
-  h=date:from:to:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to;
-  bh=5RtwYatc7XhYn22UVzvrAmXoefZVhRa51czG3ToYe9M=;
-  b=VbJ391R6EGtk+igehPwDG1/AkRzOlVGThIFC4uJRim+CTFX8s2WEH9J0
-   mk14TedrJdUiZgw247WGneOg370pjMnajKVHFP7cBLjYFNBkHLEJ+BGtt
-   lrqmgMg+E+gbU9mO9kVjjvD81sg0b4WxJk+RiOtjYHlwaPYhv/xfk9K7g
-   2qrrZrIQOKvhf74l2IOkpi+xgErTjUiqoXdpzMVuFVMXgL+1YVu0iqkUR
-   NKI0FO3hfRnuJPhMh75O3tDU3YxcuLIBKXnEr/tSY50xBiwrNNF7djrzR
-   5hAEcwL2G9W6diW86zvacpXVPAjIDfR5Q2FBuGNkgll4TFuhf/pzBXL1/
-   A==;
-X-CSE-ConnectionGUID: BHK9w8uCSXyVfU3SrvKY9Q==
-X-CSE-MsgGUID: sFYgzrPzS4G46ByyGFTiXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36881452"
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="36881452"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 23:23:24 -0800
-X-CSE-ConnectionGUID: 61UpxkwVSgaeTrD6q7mOEA==
-X-CSE-MsgGUID: h27PgmbLToehe3kcn8ABVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="108431421"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 08 Jan 2025 23:23:19 -0800
-Date: Thu, 9 Jan 2025 03:22:16 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
- kAPI
-Message-ID: <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-2-yilun.xu@linux.intel.com>
- <b1f3c179-31a9-4592-a35b-b96d2e8e8261@amd.com>
- <20250108132358.GP5556@nvidia.com>
- <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
- <20250108145843.GR5556@nvidia.com>
- <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
- <20250108162227.GT5556@nvidia.com>
- <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K0lkGLKM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736407901;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pr4ssIrc4EtFfekk83GYUXsTrXGomg6Zpaa+C070Fnc=;
+	b=K0lkGLKMUBXU6NSdPQsjULTBgMrkPptPl6FkLRdPDD2+VM7CYqTYALxrYhrXpQb72pczqW
+	wtz4BKv5Vy1NTzSa99qSe0fkPfFhHQHflje+Ht4L8K8iQnDFKLiTifn12fk3a4UVe7ksqH
+	RFLwf70wP5mxphD3v2TPn8XnEMCA88U=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-ZPLj1nz3NCqqslY9fQBDXg-1; Thu, 09 Jan 2025 02:31:39 -0500
+X-MC-Unique: ZPLj1nz3NCqqslY9fQBDXg-1
+X-Mimecast-MFC-AGG-ID: ZPLj1nz3NCqqslY9fQBDXg
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-aa68952272bso68432766b.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jan 2025 23:31:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736407898; x=1737012698;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pr4ssIrc4EtFfekk83GYUXsTrXGomg6Zpaa+C070Fnc=;
+        b=HRILeGqZpuoedAM8u7cKCH5PoiYxedof+dT2BDlaQQkp7Ok6ZDZI3KY2CEqp+RI9d1
+         573NzN2myQclBfSd5WQj5/khwza5JHVB2fRXnL8eUqnYvDIcNcA/Cx+ZmNXWT6NPHz2H
+         5x03Bh2kUR6jGAEloAergje3ift+DTKkIxDy89jY2/CE5sLlIxoKINs7judtBSwC7mkQ
+         fCLlHTuayIjO9hXmBAXuY/HaLiSX6qMA1lVEmNSLSfwqgA9f0LPVTH2wL7uGMW4429ks
+         3u2W0cErP2MDTiupAU9e2mI/cbBzMlUrrVkNTOGRsVuO3VeSZv/bY+hbCVlh+zm1PtOj
+         VcOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ8DnhvjUYADA6oeH4CCy6sv+7RV9iLI5VonCaQhwAgRulTDPFUQOCGpqGnai9f4TmWRk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylBPQpdnICKwJv2XbRfeXUs2ZbVVOVEE1f7Wa/ZEE1ZUTF/2GF
+	kge6jRey1G1Rc/MyLwGwadYg46bTKI2geR9c4nq+AM/BU7QuxiPKIWK+Ckf7JwCKKO9LpH+SOhD
+	/oo5vwg2AgpQ2JEeKj+o+uY4hQRBYKYXtKlaqNfXVahm4qqZ0hw==
+X-Gm-Gg: ASbGncvnr3za4AL8NeTnvJKWZrTP975eALUEEqRC0K8Y9SF3DqJ0AxZtsrnOZH/haFJ
+	I25TOJSVrkApYn25uR1WVOx7Z8pOj7vdZEs495x5dq1Qay63dHdyk2An30+9S6AfiD7naLECPec
+	Iqg0N3dTTRh2PaV5mgivLhKd48RyKswmCjl0W1ptEnmsDFR1CrItVhrYbetuIN6q4GRESTzOJfU
+	ESD3QYp7BQwK6bSYN52V0vLeCJTcSXCtWUDckCMESLAxDxz6gU=
+X-Received: by 2002:a17:906:6a04:b0:aa6:800a:128c with SMTP id a640c23a62f3a-ab2ab6a8dc8mr488064166b.11.1736407897984;
+        Wed, 08 Jan 2025 23:31:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4ZKe0mzkcp2svj7dRwqQX0ex75ZtTovLeEL0VhHSiIUTDBhHXztbYHy36NKkZRj6x0d75Jg==
+X-Received: by 2002:a17:906:6a04:b0:aa6:800a:128c with SMTP id a640c23a62f3a-ab2ab6a8dc8mr488061666b.11.1736407897607;
+        Wed, 08 Jan 2025 23:31:37 -0800 (PST)
+Received: from redhat.com ([2a02:14f:175:d62d:93ef:d7e2:e7da:ed72])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90638acsm42482166b.20.2025.01.08.23.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 23:31:36 -0800 (PST)
+Date: Thu, 9 Jan 2025 02:31:30 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	linux-kselftest@vger.kernel.org,
+	Yuri Benditovich <yuri.benditovich@daynix.com>,
+	Andrew Melnychenko <andrew@daynix.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	gur.stavi@huawei.com, devel@daynix.com
+Subject: Re: [PATCH v2 2/3] tun: Pad virtio header with zero
+Message-ID: <20250109023056-mutt-send-email-mst@kernel.org>
+References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
+ <20250109-tun-v2-2-388d7d5a287a@daynix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+In-Reply-To: <20250109-tun-v2-2-388d7d5a287a@daynix.com>
 
-On Wed, Jan 08, 2025 at 07:44:54PM +0100, Simona Vetter wrote:
-> On Wed, Jan 08, 2025 at 12:22:27PM -0400, Jason Gunthorpe wrote:
-> > On Wed, Jan 08, 2025 at 04:25:54PM +0100, Christian König wrote:
-> > > Am 08.01.25 um 15:58 schrieb Jason Gunthorpe:
-> > > > I have imagined a staged approach were DMABUF gets a new API that
-> > > > works with the new DMA API to do importer mapping with "P2P source
-> > > > information" and a gradual conversion.
-> > > 
-> > > To make it clear as maintainer of that subsystem I would reject such a step
-> > > with all I have.
-> > 
-> > This is unexpected, so you want to just leave dmabuf broken? Do you
-> > have any plan to fix it, to fix the misuse of the DMA API, and all
-> > the problems I listed below? This is a big deal, it is causing real
-> > problems today.
-> > 
-> > If it going to be like this I think we will stop trying to use dmabuf
-> > and do something simpler for vfio/kvm/iommufd :(
+On Thu, Jan 09, 2025 at 03:58:44PM +0900, Akihiko Odaki wrote:
+> tun used to simply advance iov_iter when it needs to pad virtio header,
+> which leaves the garbage in the buffer as is. This is especially
+> problematic when tun starts to allow enabling the hash reporting
+> feature; even if the feature is enabled, the packet may lack a hash
+> value and may contain a hole in the virtio header because the packet
+> arrived before the feature gets enabled or does not contain the
+> header fields to be hashed. If the hole is not filled with zero, it is
+> impossible to tell if the packet lacks a hash value.
 > 
-> As the gal who help edit the og dma-buf spec 13 years ago, I think adding
-> pfn isn't a terrible idea. By design, dma-buf is the "everything is
-> optional" interface. And in the beginning, even consistent locking was
-> optional, but we've managed to fix that by now :-/
+> In theory, a user of tun can fill the buffer with zero before calling
+> read() to avoid such a problem, but leaving the garbage in the buffer is
+> awkward anyway so fill the buffer in tun.
 > 
-> Where I do agree with Christian is that stuffing pfn support into the
-> dma_buf_attachment interfaces feels a bit much wrong.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-So it could a dmabuf interface like mmap/vmap()? I was also wondering
-about that. But finally I start to use dma_buf_attachment interface
-because of leveraging existing buffer pin and move_notify.
+But if the user did it, you have just overwritten his value,
+did you not?
 
+> ---
+>  drivers/net/tun_vnet.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> > > We have already gone down that road and it didn't worked at all and
-> > > was a really big pain to pull people back from it.
-> > 
-> > Nobody has really seriously tried to improve the DMA API before, so I
-> > don't think this is true at all.
+> diff --git a/drivers/net/tun_vnet.c b/drivers/net/tun_vnet.c
+> index fe842df9e9ef..ffb2186facd3 100644
+> --- a/drivers/net/tun_vnet.c
+> +++ b/drivers/net/tun_vnet.c
+> @@ -138,7 +138,8 @@ int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
+>  	if (copy_to_iter(hdr, sizeof(*hdr), iter) != sizeof(*hdr))
+>  		return -EFAULT;
+>  
+> -	iov_iter_advance(iter, sz - sizeof(*hdr));
+> +	if (iov_iter_zero(sz - sizeof(*hdr), iter) != sz - sizeof(*hdr))
+> +		return -EFAULT;
+>  
+>  	return 0;
+>  }
 > 
-> Aside, I really hope this finally happens!
-> 
-> > > > 3) Importing devices need to know if they are working with PCI P2P
-> > > > addresses during mapping because they need to do things like turn on
-> > > > ATS on their DMA. As for multi-path we have the same hacks inside mlx5
-> > > > today that assume DMABUFs are always P2P because we cannot determine
-> > > > if things are P2P or not after being DMA mapped.
-> > > 
-> > > Why would you need ATS on PCI P2P and not for system memory accesses?
-> > 
-> > ATS has a significant performance cost. It is mandatory for PCI P2P,
-> > but ideally should be avoided for CPU memory.
-> 
-> Huh, I didn't know that. And yeah kinda means we've butchered the pci p2p
-> stuff a bit I guess ...
-> 
-> > > > 5) iommufd and kvm are both using CPU addresses without DMA. No
-> > > > exporter mapping is possible
-> > > 
-> > > We have customers using both KVM and XEN with DMA-buf, so I can clearly
-> > > confirm that this isn't true.
-> > 
-> > Today they are mmaping the dma-buf into a VMA and then using KVM's
-> > follow_pfn() flow to extract the CPU pfn from the PTE. Any mmapable
-> > dma-buf must have a CPU PFN.
-> > 
-> > Here Xu implements basically the same path, except without the VMA
-> > indirection, and it suddenly not OK? Illogical.
-> 
-> So the big difference is that for follow_pfn() you need mmu_notifier since
-> the mmap might move around, whereas with pfn smashed into
-> dma_buf_attachment you need dma_resv_lock rules, and the move_notify
-> callback if you go dynamic.
-> 
-> So I guess my first question is, which locking rules do you want here for
-> pfn importers?
-
-follow_pfn() is unwanted for private MMIO, so dma_resv_lock.
-
-> 
-> If mmu notifiers is fine, then I think the current approach of follow_pfn
-> should be ok. But if you instead dma_resv_lock rules (or the cpu mmap
-> somehow is an issue itself), then I think the clean design is create a new
-
-cpu mmap() is an issue, this series is aimed to eliminate userspace
-mapping for private MMIO resources.
-
-> separate access mechanism just for that. It would be the 5th or so (kernel
-> vmap, userspace mmap, dma_buf_attach and driver private stuff like
-> virtio_dma_buf.c where you access your buffer with a uuid), so really not
-> a big deal.
-
-OK, will think more about that.
-
-Thanks,
-Yilun
-
-> 
-> And for non-contrived exporters we might be able to implement the other
-> access methods in terms of the pfn method generically, so this wouldn't
-> even be a terrible maintenance burden going forward. And meanwhile all the
-> contrived exporters just keep working as-is.
-> 
-> The other part is that cpu mmap is optional, and there's plenty of strange
-> exporters who don't implement. But you can dma map the attachment into
-> plenty devices. This tends to mostly be a thing on SoC devices with some
-> very funky memory. But I guess you don't care about these use-case, so
-> should be ok.
-> 
-> I couldn't come up with a good name for these pfn users, maybe
-> dma_buf_pfn_attachment? This does _not_ have a struct device, but maybe
-> some of these new p2p source specifiers (or a list of those which are
-> allowed, no idea how this would need to fit into the new dma api).
-> 
-> Cheers, Sima
 > -- 
-> Simona Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+> 2.47.1
+
