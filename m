@@ -1,55 +1,55 @@
-Received: from mail-ua1-f73.google.com (mail-ua1-f73.google.com [209.85.222.73])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD002054E9
-	for <kvm@vger.kernel.org>; Thu,  9 Jan 2025 20:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5793E205AAE
+	for <kvm@vger.kernel.org>; Thu,  9 Jan 2025 20:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736455802; cv=none; b=N2UY92YjBcE+wDXcxGYzA0V7m4/MSPpC439OZ38LJ+3xsHobhlMPU9UhYtZHi5UO4rf7gg7Cxfd0V06G60def4IS9OoD/+gXyZKleKh5f+U/iEPp1fEacLstfZ0KtO9cfq11c4zGAj4c94FL+vYF0WpqPQXa5aV9VgC7KdUE6hY=
+	t=1736455803; cv=none; b=FrDrsN569EJEG8nCb8BhaitqeA/rYpaqqhYjYgb3cKLwJq+VXLqq/LMeK4FohhcdnMWV1+nUDcQ+w6ljuhrKXrids0+Ip/Q5qLkUN+ezyIMJkfeHZv+vFv4l9vooI8dt1ufIDYXdz/LjDpMEbCfc5t3WIRkHl6YZDmASTABklaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736455802; c=relaxed/simple;
-	bh=tSVByeVc+YvO1YwpxO6WQbJnBeXOFHCPwH2YC78/pxw=;
+	s=arc-20240116; t=1736455803; c=relaxed/simple;
+	bh=Bf6Z/SdUsbkpIsqoT2JIQQkVc3cDT9ghaIOkviu+ke8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BSpCw4PQDj70yQi4EKUv1KV+SMHIgsrS6+ppqvMSJhgvgMOATGV0oVVCL1Yer3Ee42B3UvMg6CboxY7HnAdkTbAkJHKxTX/K+qi+Wna+jvU4xJ0bncTmJm7XjQZeJUYEHk7CVjSSGEEpNODU0+KP+/nTbn4HnZBK4DZqDhCEG6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mcF52Ldy; arc=none smtp.client-ip=209.85.222.73
+	 To:Cc:Content-Type; b=fl2OZPB4+BwxL86TVQnjEt48xqC/nM+sEXpIuTF3gI3eXTnzGPNnrkvp8b3gq4EsykxfCfQG6N0+1CZ3ntoIuwYgPy3NiF2CYJwQTQm0dkGKQySe9OXWCWYZElt4XNn+y0Mm4+Y/mxgbrKMY8BNeydiMAHb1JB2iTZbL43WJDUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XKvnVZX5; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mcF52Ldy"
-Received: by mail-ua1-f73.google.com with SMTP id a1e0cc1a2514c-85ba1d9dcf8so359753241.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jan 2025 12:49:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XKvnVZX5"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4675749a982so22458031cf.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jan 2025 12:50:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736455798; x=1737060598; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736455800; x=1737060600; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1DrcQjgptnhIcToWnmFksBp0MRaAX2CW6X5qNo+eD6A=;
-        b=mcF52LdyaRfn8cLItO/k6gTIxPtxYCogEWTleb8jRHW5KCCfdg6b4Wxm6SdmctkCMX
-         666H6Ru4TkG1aTe9t4Cx2NzHHduVFIL1s7ZFcPOhgwUIzhQVeJHbyt0aeS4j/Oapc5fu
-         7WQ3Fgq27FPX/bljvQi0dHJd4D7DxZu8V4Adm4i7utDYAPDeC3sqkPvp9A+lDvOTQ/zV
-         ffGQKir7iTjt/Et9/bvsItbKw6jxc+VOWSL9KKCaMOfpIEm9vfkeeUofLque5fwYuXoM
-         U1gMtxRzhZkup6Zk6CeoK3meC4LYDukumG0Ay0mTX2jVcv+XULeQyFs+sfljBZPOEE/U
-         C3hg==
+        bh=Ej4vKCsRcXi3JRFU5yXFClNg+jWCgVgQEDR3f6Axo50=;
+        b=XKvnVZX53ule8fsbj+y0ODeoguCnwbs4AppPD6dYohQG0IVcsTq9Wc/PzEeZxwOOts
+         SOzF59ti/yPAf6ZnKEVI2TWAV6LqOIhs/T0xwb2X5442vyG1iFMqv+1QT1iB82ax2+kJ
+         36rgyIhocAVPUvxPwFAuikBPR0bfbHEz9ceRCvqM8gd7JY1Ca90FFJUc4ptq3XLXR763
+         tlU6dWx4OFkqlvhmsE8fFZl8ygqH5peXACJMsW+JqgwXM4/D+XUob67JkkHjzJxJc535
+         OR5bZKmyb6W0se36a8r3GUuNXq/oZOM5UQmZXtDv7zsn1+ZAlAICDSjekWNkwFLW+r+B
+         ar+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736455798; x=1737060598;
+        d=1e100.net; s=20230601; t=1736455800; x=1737060600;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1DrcQjgptnhIcToWnmFksBp0MRaAX2CW6X5qNo+eD6A=;
-        b=Yij/1L1fGxxinO410GKapI/ZcLlBSZ6aKVTKu1HNZe0HgZ5UkWPOe3RppEXqr6nx3M
-         wtjdn4wY2TZsLSpowUsPH+HRFVygVawmN2WhJ6ZPi1FQIfrlB3f/xDnUpLXtHfX4ImJw
-         J/QIQbVo0cu9+4zCa8wCfnKpzdGIdBh0yttxyQhCLbAfqisDqEaNzLYIzzoFhMCBNN/c
-         VjP9SX6qNXsKs/K25V0eLqSyPz4CdjLJXtJFxntds6EKX3JkHMk9WndciB7gDe3adw7r
-         JeNpBNBf73gUA+Gzz1uQqW+lUbE+PAeYd7ysHbyZoRGnzChUBkimhf2aRKbTny297OCR
-         9CpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXr9bqu/o0dAyeG5Wa8FVaC7YCqbi+ezWAGzewi7Y3c/5G3TwZN00zU6j+StgqYiHcw1tQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVqm0J7+lnkHMeH/BwO79vymqhjdmbhHRjG2+HjhHhUCZVRvQ5
-	DPXtXlNLGZze4jhK01vTB0pvgP0o7L0os/18Y/SYAlV+GxlGMlmSASpKCd9bo+I3bjrZ5Nk/bGq
-	/RsMHZDJDcvnNCnLE2Q==
-X-Google-Smtp-Source: AGHT+IEK0449o9KbC3fWak3S16jydYyIqzxOV/2eZ44AIR7w7I0DQuvF+HeqMnZYowZ6lm/VqNUOgc0IX+KhZU1E
-X-Received: from vscv18.prod.google.com ([2002:a05:6102:3312:b0:4af:df7b:f439])
+        bh=Ej4vKCsRcXi3JRFU5yXFClNg+jWCgVgQEDR3f6Axo50=;
+        b=V/OO8mInDMrDmodPpP6EPgdoMtPuEAQuyLptAKVUsmr+k1X25n/oJb/C3Iq6fhSyTI
+         VKC3+NHgYgCZwEJJKcvxV2sqrL4mPalb2iSeaoB5yj2WdSBKKIhueCXF0AjnCU0O7eEQ
+         GTn6Ahaeu5ZW6J6rRwmfqaEX5Jb+PGuMNhPhZd5CxcvlAOv4Nhg/IP7ku7uUYkhSnSQ7
+         CbHkrqeiUMoaYZrjgpgjLeOdapkcXHl5dnoXX+CtTtR2k1V16sMCIrNGRpSzTMJ/+Isq
+         2t9Qarvgw6f5Np4m9GJ1jaOykR5aH2sJ8AEIwVnf/7yCGbNUfCrfptL7jTK/JM+2D4eX
+         lwbA==
+X-Forwarded-Encrypted: i=1; AJvYcCVX6Cu/EE11+JlEglgJRedmBmutNcFGzfFhFZRzHHleP4OvQuOTIibJEUiFZ1/OykRrej8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/G2Q/M+uQYRm1qcMnnOnsrcz5CyNOnjkZTC8pUXVGgWNsSeU5
+	R19mCAJLWOsLIZJoPk390T+7HsZL8Omvz9H4Rot69L5FdZpADrvUaWQ0BtQCAjmUnYv8nB/qGqm
+	0g5390MIoMeMc5s0R6A==
+X-Google-Smtp-Source: AGHT+IEjWh1ifMEjbhq2t/4s1LokEzVaJxOMILKR5p4NmJRJSQEQbDzHfJF1YycGc5qCqnm1VGVZZj4bYy7TorUf
+X-Received: from qtbiw5.prod.google.com ([2002:a05:622a:6f85:b0:466:928b:3b7c])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6102:2c02:b0:4af:d487:45f3 with SMTP id ada2fe7eead31-4b3d0ffc73fmr8314563137.23.1736455798514;
- Thu, 09 Jan 2025 12:49:58 -0800 (PST)
-Date: Thu,  9 Jan 2025 20:49:20 +0000
+ 2002:a05:622a:14e:b0:467:5926:fcf2 with SMTP id d75a77b69052e-46c7107e0b4mr103936581cf.9.1736455800057;
+ Thu, 09 Jan 2025 12:50:00 -0800 (PST)
+Date: Thu,  9 Jan 2025 20:49:22 +0000
 In-Reply-To: <20250109204929.1106563-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250109204929.1106563-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20250109204929.1106563-5-jthoughton@google.com>
-Subject: [PATCH v2 04/13] KVM: Advertise KVM_CAP_USERFAULT in KVM_CHECK_EXTENSION
+Message-ID: <20250109204929.1106563-7-jthoughton@google.com>
+Subject: [PATCH v2 06/13] KVM: arm64: Add support for KVM_MEM_USERFAULT
 From: James Houghton <jthoughton@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, 
@@ -72,43 +72,84 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Advertise support for KVM_CAP_USERFAULT when kvm_has_userfault() returns
-true. Currently this is merely IS_ENABLED(CONFIG_HAVE_KVM_USERFAULT), so
-it is somewhat redundant.
+Adhering to the requirements of KVM Userfault:
+1. When it is toggled on, zap the second stage with
+   kvm_arch_flush_shadow_memslot(). This is to respect userfault-ness.
+2. When KVM_MEM_USERFAULT is enabled, restrict new second-stage mappings
+   to be PAGE_SIZE, just like when dirty logging is enabled.
+
+Do not zap the second stage when KVM_MEM_USERFAULT is disabled to remain
+consistent with the behavior when dirty logging is disabled.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- include/uapi/linux/kvm.h | 1 +
- virt/kvm/kvm_main.c      | 4 ++++
- 2 files changed, 5 insertions(+)
+ arch/arm64/kvm/Kconfig |  1 +
+ arch/arm64/kvm/mmu.c   | 26 +++++++++++++++++++++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index c302edf1c984..defcad38d423 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -936,6 +936,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_PRE_FAULT_MEMORY 236
- #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
- #define KVM_CAP_X86_GUEST_MODE 238
-+#define KVM_CAP_USERFAULT 239
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index ead632ad01b4..d89b4088b580 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -38,6 +38,7 @@ menuconfig KVM
+ 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+ 	select SCHED_INFO
+ 	select GUEST_PERF_EVENTS if PERF_EVENTS
++	select HAVE_KVM_USERFAULT
+ 	help
+ 	  Support hosting virtualized guest machines.
  
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 882c1f7b4aa8..30f09141df64 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4811,6 +4811,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- #ifdef CONFIG_KVM_PRIVATE_MEM
- 	case KVM_CAP_GUEST_MEMFD:
- 		return !kvm || kvm_arch_has_private_mem(kvm);
-+#endif
-+#ifdef CONFIG_HAVE_KVM_USERFAULT
-+	case KVM_CAP_USERFAULT:
-+		return kvm_has_userfault(kvm);
- #endif
- 	default:
- 		break;
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index c9d46ad57e52..e099bdcfac42 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1493,7 +1493,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+ 	 * logging_active is guaranteed to never be true for VM_PFNMAP
+ 	 * memslots.
+ 	 */
+-	if (logging_active) {
++	if (logging_active || kvm_memslot_userfault(memslot)) {
+ 		force_pte = true;
+ 		vma_shift = PAGE_SHIFT;
+ 	} else {
+@@ -1582,6 +1582,13 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+ 	mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+ 	mmap_read_unlock(current->mm);
+ 
++	if (kvm_gfn_userfault(kvm, memslot, gfn)) {
++		kvm_prepare_memory_fault_exit(vcpu, gfn << PAGE_SHIFT,
++					      PAGE_SIZE, write_fault,
++					      exec_fault, false, true);
++		return -EFAULT;
++	}
++
+ 	pfn = __kvm_faultin_pfn(memslot, gfn, write_fault ? FOLL_WRITE : 0,
+ 				&writable, &page);
+ 	if (pfn == KVM_PFN_ERR_HWPOISON) {
+@@ -2073,6 +2080,23 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 				   enum kvm_mr_change change)
+ {
+ 	bool log_dirty_pages = new && new->flags & KVM_MEM_LOG_DIRTY_PAGES;
++	u32 new_flags = new ? new->flags : 0;
++	u32 changed_flags = (new_flags) ^ (old ? old->flags : 0);
++
++	/*
++	 * If KVM_MEM_USERFAULT has been enabled, drop all the stage-2 mappings
++	 * so that we can respect userfault-ness.
++	 */
++	if ((changed_flags & KVM_MEM_USERFAULT) &&
++	    (new_flags & KVM_MEM_USERFAULT) &&
++	    change == KVM_MR_FLAGS_ONLY)
++		kvm_arch_flush_shadow_memslot(kvm, old);
++
++	/*
++	 * Nothing left to do if not toggling dirty logging.
++	 */
++	if (!(changed_flags & KVM_MEM_LOG_DIRTY_PAGES))
++		return;
+ 
+ 	/*
+ 	 * At this point memslot has been committed and there is an
 -- 
 2.47.1.613.gc27f4b7a9f-goog
 
