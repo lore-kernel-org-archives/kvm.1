@@ -1,209 +1,164 @@
-Received: from mail-lj1-f201.google.com (mail-lj1-f201.google.com [209.85.208.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D7324B23B
-	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 18:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E320764A;
+	Fri, 10 Jan 2025 18:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736534992; cv=none; b=pioNwiwpWqvurQN1OX9ucuoWxv/2uPK2WNRjkGFJN/XEgz/DgxGkiswDoCkSpczJlOmGQ1LBFrYMJg2gdgMtF/vLUeE+MWS0qbWCWWglDa2u1ALQI7HOu2+HBswXevCF81vM+nAI20zv/go3OTUi5UjYODlyP5+5vJHIy9f4PH8=
+	t=1736535255; cv=none; b=VUJ/NozgnvvZqPE43J544XbzByafdaMiI2neI74xbj52jcsMfrV4Gxg4sptEaqXfTuGN2EOsUThatM5n5QRO3That/Tz8gAzyB3Rnw2Vs7zZNZ4nwApXLmlXwwVKs9z+hTP3Z4PSdyGPBEzMz9zJkSrcLWfkC4c7zjzw8bERhlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736534992; c=relaxed/simple;
-	bh=gGBo/k79fltK/LiW8yEcfC3C6FkuDBayaBiJeug/v8c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=P4zO5vmrIL2j7a86eHgjRrcDQhMtpnuTFvpcW8t1noTj55U6vbV+ThUC9hNSFeYX/a+KcsaVV06S75MlJVIcBZvZV7j4zifaEVg+Ms/sPqFWAy16SME3CeCLgFm3vz2v2hGg+eYAomLxcNEXQqZFbn/X1msu/5E/dI3gijiIpk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kE6reLP8; arc=none smtp.client-ip=209.85.208.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+	s=arc-20240116; t=1736535255; c=relaxed/simple;
+	bh=N67Au3zI8gSuIxYQ9HZyBG+m19KuGbzYRH6GokXtSEg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dxGBeIjNbWOEDW6RnHoIGgho7esES+FwzcAp5IuXi/qUPjCbGyzjySyfkox+kyIN/0z8q61pwhrCC7Fmnf0bqUPYyC+rID7nCPQg3NWc2XM8iJEKXwaLI7vFzAFU0C4jVF5dtpHGPOJhmiO9IqZgJvUlPn2pWqorhjHqf7NWt6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gUcds19a; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kE6reLP8"
-Received: by mail-lj1-f201.google.com with SMTP id 38308e7fff4ca-30220c5ca63so15155651fa.3
-        for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 10:49:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gUcds19a"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534989; x=1737139789; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
-        b=kE6reLP8NOZWKtjY/BW/gJFcO/ok6W54r1rBaIYtePgbdAKSk+08TEmkP6TcuzJVGM
-         lcuvsJcHNQHKQOJk6sUiME+iCwSUOKsCv0p/ExS+IfD9mg0nrNnF3XpxNxeBKyB2l1Da
-         FQr7kNKEjGWFGsnb/z8Q1QhlJKSGUg2y18PentLh6MAQ4rKAdoHFo+NMBsnxYZhEZm9d
-         zK7/aZkNNWvvkYgmt7CLXb6eggI6yezb+QwStNl9HmEZh6HR1BTahvdJFhImfldlwaXn
-         hGs5eONnpM3RYiTR8Gel95Cf0ribXI14biePpMT439JP82UMUHZUK4UHcoEiiO7ndKNA
-         jsMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534989; x=1737139789;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
-        b=jH05gLiKQLZkGBLSk9KbhZrOybcjfTN8sjDzg+E+L/RJrvC6QHWkikcFvoN5nBhPot
-         qUIJiIx+IFGZhufIjDHMrL4ztTD7rG42CKGV6FCmRgMqDeahO1iCO9+HRKbQaehfYV28
-         yF2ZuUGSM7rLIuooIcaJWZQjtGI/6reBePl0SZE59nQUxy9wl3ynkltf3cN7DvBvHqrx
-         bVtTYmihOdBJex5gJk6Nqv+4qpvz3k4xtgx0g+X8dFb71bcsPONup8ufM4K3LFrwX11q
-         dzlmkNvnTnIS6mlZTOMknF2jpYITigEnEUF6/L0Lm8ZLa9P/GuTxj+kXkyeVAZt5DsQ9
-         ZDbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVdjOWXs3s8jGdCbSwEpcIOdncbpJFc2KXCD0jmsqmOVcqYJPeYYPCZ9/yzp/H9PlT7es=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxlDV8FgJm5Sp/GTeTNEYOImI9+g5ZhHFsyn1BcW6JnbLHSvEi
-	AVzK7UJ5ewISRggSJ4pe98x/+ANoA95qg2RQGwiPrqKPF9QKRFE2y/+gy/g5pV8giyVO2jjtooZ
-	elYeZ3WY8TA==
-X-Google-Smtp-Source: AGHT+IFKWz0raFavEVPdqLi0m3c/SgK/uJNRKjAz6M2EuA2Ei6coxzOA0we1XFhGSIskVPMsumh+r4On/rf0kg==
-X-Received: from wmrn35.prod.google.com ([2002:a05:600c:5023:b0:434:f2eb:aa72])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d07:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-436e269a5f5mr112362055e9.13.1736534508901;
- Fri, 10 Jan 2025 10:41:48 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:54 +0000
-In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1736535254; x=1768071254;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=dVDd8Owu5mmhfXq9kotQZKYGFY24PHmq4HgS4SvakZc=;
+  b=gUcds19avaxUCstr+CyS1qGDEVfX5eIYn1FsMRpvSnk3NIL+7QaQVVO+
+   WC3At/RfLGwocCOwNi0BCWwDBvK+RE0Wfj66wNSe55a18EsfHmq+vl/5/
+   BjTk8+u4TdMQ4M0zo6WOIawLA5woqMwze3OIGClshsNsyBvtDoNXPs8BL
+   k=;
+X-IronPort-AV: E=Sophos;i="6.12,305,1728950400"; 
+   d="scan'208";a="13453976"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 18:54:12 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [10.0.43.254:2623]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.45.180:2525] with esmtp (Farcaster)
+ id b928f9af-217a-405f-8ef6-6ae3379b2b81; Fri, 10 Jan 2025 18:54:11 +0000 (UTC)
+X-Farcaster-Flow-ID: b928f9af-217a-405f-8ef6-6ae3379b2b81
+Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 18:54:10 +0000
+Received: from [192.168.12.16] (10.106.82.30) by EX19D022EUC002.ant.amazon.com
+ (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39; Fri, 10 Jan 2025
+ 18:54:09 +0000
+Message-ID: <bda9f9a8-1e5a-454e-8506-4e31e6b4c152@amazon.com>
+Date: Fri, 10 Jan 2025 18:54:03 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
-X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-28-8419288bc805@google.com>
-Subject: [PATCH RFC v2 28/29] x86/pti: Disable PTI when ASI is on
-From: Brendan Jackman <jackmanb@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mike Rapoport <rppt@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [RFC PATCH 0/2] mm: filemap: add filemap_grab_folios
+To: David Hildenbrand <david@redhat.com>, <willy@infradead.org>,
+	<pbonzini@redhat.com>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
+CC: <michael.day@amd.com>, <jthoughton@google.com>, <michael.roth@amd.com>,
+	<ackerleytng@google.com>, <graf@amazon.de>, <jgowans@amazon.com>,
+	<roypat@amazon.co.uk>, <derekmn@amazon.com>, <nsaenz@amazon.es>,
+	<xmarcalx@amazon.com>
+References: <20250110154659.95464-1-kalyazin@amazon.com>
+ <5608af05-0b7a-4e11-b381-8b57b701e316@redhat.com>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJj5ki9BQkDwmcAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOR1wD/UTcn4GbLC39QIwJuWXW0DeLoikxFBYkbhYyZ5CbtrtAA/2/rnR/zKZmyXqJ6
+ ULlSE8eWA3ywAIOH8jIETF2fCaUCzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmPmSL0FCQPCZwACGwwACgkQr5LKIKmaZPNCxAEAxwnrmyqSC63nf6hoCFCfJYQapghC
+ abLV0+PWemntlwEA/RYx8qCWD6zOEn4eYhQAucEwtg6h1PBbeGK94khVMooF
+In-Reply-To: <5608af05-0b7a-4e11-b381-8b57b701e316@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D002EUC003.ant.amazon.com (10.252.51.218) To
+ EX19D022EUC002.ant.amazon.com (10.252.51.137)
 
-Now that ASI has support for sandboxing userspace, although userspace
-now has much more mapped than it would under KPTI, in theory none of
-that data is important to protect.
+On 10/01/2025 17:01, David Hildenbrand wrote:
+> On 10.01.25 16:46, Nikita Kalyazin wrote:
+>> Based on David's suggestion for speeding up guest_memfd memory
+>> population [1] made at the guest_memfd upstream call on 5 Dec 2024 [2],
+>> this adds `filemap_grab_folios` that grabs multiple folios at a time.
+>>
+> 
+> Hi,
 
-Note that one particular impact of this is it makes locally defeating
-KASLR easier. I don't think this is a great loss given [1] etc.
+Hi :)
 
-Why do we pass in an argument instead of just having
-pti_check_boottime_disable() check boot_cpu_has(X86_FEATURE_ASI)? Just
-for clarity: I wanted it to be at least _sort of_ visible that it would
-break if you reordered asi_check_boottime_disable() afterwards.
+> 
+>> Motivation
+>>
+>> When profiling guest_memfd population and comparing the results with
+>> population of anonymous memory via UFFDIO_COPY, I observed that the
+>> former was up to 20% slower, mainly due to adding newly allocated pages
+>> to the pagecache.  As far as I can see, the two main contributors to it
+>> are pagecache locking and tree traversals needed for every folio.  The
+>> RFC attempts to partially mitigate those by adding multiple folios at a
+>> time to the pagecache.
+>>
+>> Testing
+>>
+>> With the change applied, I was able to observe a 10.3% (708 to 635 ms)
+>> speedup in a selftest that populated 3GiB guest_memfd and a 9.5% (990 to
+>> 904 ms) speedup when restoring a 3GiB guest_memfd VM snapshot using a
+>> custom Firecracker version, both on Intel Ice Lake.
+> 
+> Does that mean that it's still 10% slower (based on the 20% above), or
+> were the 20% from a different micro-benchmark?
 
-[1]:  https://gruss.cc/files/prefetch.pdf
-      and https://dl.acm.org/doi/pdf/10.1145/3623652.3623669
+Yes, it is still slower:
+  - isolated/selftest: 2.3%
+  - Firecracker setup: 8.9%
 
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- arch/x86/include/asm/pti.h |  6 ++++--
- arch/x86/mm/init.c         |  2 +-
- arch/x86/mm/pti.c          | 14 +++++++++++++-
- 3 files changed, 18 insertions(+), 4 deletions(-)
+Not sure why the values are so different though.  I'll try to find an 
+explanation.
 
-diff --git a/arch/x86/include/asm/pti.h b/arch/x86/include/asm/pti.h
-index ab167c96b9ab474b33d778453db0bb550f42b0ac..79b9ba927db9b76ac3cc72cdda6f8b5fc413d352 100644
---- a/arch/x86/include/asm/pti.h
-+++ b/arch/x86/include/asm/pti.h
-@@ -3,12 +3,14 @@
- #define _ASM_X86_PTI_H
- #ifndef __ASSEMBLY__
- 
-+#include <linux/types.h>
-+
- #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
- extern void pti_init(void);
--extern void pti_check_boottime_disable(void);
-+extern void pti_check_boottime_disable(bool asi_enabled);
- extern void pti_finalize(void);
- #else
--static inline void pti_check_boottime_disable(void) { }
-+static inline void pti_check_boottime_disable(bool asi_enabled) { }
- #endif
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index ded3a47f2a9c1f554824d4ad19f3b48bce271274..4ccf6d60705652805342abefc5e71cd00c563207 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -754,8 +754,8 @@ void __init init_mem_mapping(void)
- {
- 	unsigned long end;
- 
--	pti_check_boottime_disable();
- 	asi_check_boottime_disable();
-+	pti_check_boottime_disable(boot_cpu_has(X86_FEATURE_ASI));
- 	probe_page_size_mask();
- 	setup_pcid();
- 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 851ec8f1363a8b389ea4579cc68bf3300a4df27c..b7132080d3c9b6962a0252383190335e171bafa6 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -76,7 +76,7 @@ static enum pti_mode {
- 	PTI_FORCE_ON
- } pti_mode;
- 
--void __init pti_check_boottime_disable(void)
-+void __init pti_check_boottime_disable(bool asi_enabled)
- {
- 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
- 		pti_mode = PTI_FORCE_OFF;
-@@ -91,6 +91,18 @@ void __init pti_check_boottime_disable(void)
- 		return;
- 	}
- 
-+	if (asi_enabled) {
-+		/*
-+		 * Having both ASI and PTI enabled is not a totally ridiculous
-+		 * thing to do; if you want ASI but you are not confident in the
-+		 * sensitivity annotations then it provides useful
-+		 * defence-in-depth. But, the implementation doesn't support it.
-+		 */
-+		if (pti_mode != PTI_FORCE_OFF)
-+			pti_print_if_insecure("disabled by ASI");
-+		return;
-+	}
-+
- 	if (pti_mode == PTI_FORCE_ON)
- 		pti_print_if_secure("force enabled on command line.");
- 
+>>
+>> Limitations
+>>
+>> While `filemap_grab_folios` handles THP/large folios internally and
+>> deals with reclaim artifacts in the pagecache (shadows), for simplicity
+>> reasons, the RFC does not support those as it demonstrates the
+>> optimisation applied to guest_memfd, which only uses small folios and
+>> does not support reclaim at the moment.
+> 
+> It might be worth pointing out that, while support for larger folios is
+> in the works, there will be scenarios where small folios are unavoidable
+> in the future (mixture of shared and private memory).
+> 
+> How hard would it be to just naturally support large folios as well?
 
--- 
-2.47.1.613.gc27f4b7a9f-goog
+I don't think it's going to be impossible.  It's just one more dimension 
+that needs to be handled.  `__filemap_add_folio` logic is already rather 
+complex, and processing multiple folios while also splitting when 
+necessary correctly looks substantially convoluted to me.  So my idea 
+was to discuss/validate the multi-folio approach first before rolling 
+the sleeves up.
+
+> We do have memfd_pin_folios() that can deal with that and provides a
+> slightly similar interface (struct folio **folios).
+> 
+> For reference, the interface is:
+> 
+> long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+>                       struct folio **folios, unsigned int max_folios,
+>                       pgoff_t *offset)
+> 
+> Maybe what you propose could even be used to further improve
+> memfd_pin_folios() internally? However, it must do this FOLL_PIN thingy,
+> so it must process each and every folio it processed.
+
+Thanks for the pointer.  Yeah, I see what you mean.  I guess, it can 
+potentially allocate/add folios in a batch and then pin them?  Although 
+swap/readahead logic may make it more difficult to implement.
+
+> -- 
+> Cheers,
+> 
+> David / dhildenb 
 
