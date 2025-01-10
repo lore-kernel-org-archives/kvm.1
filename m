@@ -1,117 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE46A207A2A
-	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 09:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D87920ADC9
+	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 10:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736502702; cv=none; b=UZ9ZXKvmFZxO1qT3UxT4sbEF7hoonNDyifr3YFR0/NDHkUN8ymcw8pqRARwsJvyXfoShlhDG67MfRN/xbaUXHAOD1FYECHVBol8FhwN4MOLaCLmwAh3ea3aQIgqyCRXXYN+/xmY2hu11VqzdL5kpatTnNEPR/CVBekdXHow7PDo=
+	t=1736503457; cv=none; b=omU+0xZGkvxMhFJT5Mmj+e7XQba1fZ4+riNPT3SnkRkFY8A2PavCReggJ6RDThA5cev0aKoWhTeKhvVY7JR6ID/JKLS60fH2sqwiayDgwMZ4x8h81Ue4dnnyKyoNKDf4bsKE/0pfQoLQ01nH+jxdCga1E4muGKtAjhvflja2CjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736502702; c=relaxed/simple;
-	bh=dlRCjbceXiOhOjqzagMQ1Mu3ZftwOVkJg5fOlUkDJqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hohcSpHHR9LP3LuLLeCWbiHRBv+f3mIn7DbF19fxpmJAcZ27O+/Bt1y+j6kc+Mc0miDpn25JitrSXDmj0il/nCQSbdp4x6GsCk56OVQSeqlpLt5PRwOFDzH/DNnGIC2q823vAzCVV6dN+H2B6XmCVCvgTQu9Mz5zawiLkzkOc1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJcpAN39; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736503457; c=relaxed/simple;
+	bh=qNaQzpehQQCjP6U1Smo/Nd38XDFDvWBgAvAJl4KW8uA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bCM12V1MGqNAWjuzU2Y27fGYqD/nrvZtMpS2mFKhtTpRdLwZCDrvb8WjXaK0B5CL8lijmFYAWEECIP4BCDNd1uG8rjy8vPgk2C4HCLTyaPy1k0VXqR+rJaK5YoFEosqGwzUIZ4YksG6Rd8IhhAgSAEZAasmsGTol8fjxGQmqEyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=T430dLon; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJcpAN39"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736502700; x=1768038700;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dlRCjbceXiOhOjqzagMQ1Mu3ZftwOVkJg5fOlUkDJqE=;
-  b=oJcpAN39FuwmdXrDdjq8D1ikwXe4SJTX0oYvzy8gVQcd8vhQ7zl813cg
-   4y6XZq8C23BxNbGbBbjI5wC8hoqoH5tkEdvp98ttMbc4il6lLUGVE7PM1
-   l3bOJYlz8LMAOFS8fFqID8exocs+xJ3BwvfQLceyDhhwxL+gGtzvdj9S1
-   vHvOU9miqRferjoTSyL3ocLRXfAUVRiRYzrVqXrDLiaD6bFVl+xHBSO6l
-   IXVLE11FRwlE8skxOA86M2ToIyCQRTj0N9xRweSmBeuYu223zqRsH3ETL
-   3wlAV35+IUY326dfRF0yR0iT6ld0NqWNRAUmbV0+QkBd/hrHvf4YbzOCZ
-   Q==;
-X-CSE-ConnectionGUID: KZcl0M9bS1a1aBbmPOV/QQ==
-X-CSE-MsgGUID: sXU+OZ7QRNeJscX8KP8pAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="47458149"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="47458149"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 01:51:40 -0800
-X-CSE-ConnectionGUID: sfEaav1hRwedm1aEQy2Pzg==
-X-CSE-MsgGUID: +GZZj3wXT8K8qCwrRmn3Iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="104245902"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 10 Jan 2025 01:51:37 -0800
-Date: Fri, 10 Jan 2025 05:50:34 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	David Hildenbrand <david@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
-	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
-	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-Message-ID: <Z4BEqnzkfN2yQg63@yilunxu-OptiPlex-7050>
-References: <20241213070852.106092-3-chenyi.qiang@intel.com>
- <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
- <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
- <219a4a7a-7c96-4746-9aba-ed06a1a00f3e@amd.com>
- <58b96b74-bf9c-45d3-8c2e-459ec2206fc8@intel.com>
- <8c8e024d-03dc-4201-8038-9e9e60467fad@amd.com>
- <ca9bc239-d59b-4c53-9f14-aa212d543db9@intel.com>
- <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
- <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
- <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="T430dLon"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-218c8aca5f1so38272885ad.0
+        for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 02:04:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736503453; x=1737108253; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SbCDbM8KQIXhK7Foj8Bp5mpZOBTNVuVCawxI33XikWY=;
+        b=T430dLonjsSAlmOPpq7K62Twr27dL4/lXuDT+WU9UJck6NoShVeGAWEMj3/qYGuPUH
+         8mFqeyWqrs3KumgimS1EVzKIAbfut7Q6WFp3lbwPxwNIlQW+OXhm2kvjOrHKOSu6iqPI
+         sz/FqNdIYJA4ikICrLBHVmtTbdwxQopPQElXiVYW7dAqXkWuZoKMx6Zw89YIS/Th91ce
+         Ns0K96mE2Zn4xFfW4n87qUJX3hCp1Gib74kwWQA+fZkHc86483l3Pjv4ZrGuT8cAcCyA
+         BBkYOpeD6sTng1k2vf1MDl18Lz3AF5XyU9d57Jr5VnFpopMkpnaVZ8zaYlzJEQ7HL9kX
+         0Lpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736503453; x=1737108253;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SbCDbM8KQIXhK7Foj8Bp5mpZOBTNVuVCawxI33XikWY=;
+        b=VX1ZqhNsARFF1K1Fyx90OsGI8XhgpX7QHwO3nIRbEx75B9/ctKLnqvCrNYhNCPg4Kw
+         EtT2QGf8h5Fyc0tcPHrb5ETckKYc9W0YVRTX/wsfUzsgVLcOlJTSnWwYzXCrVl8Rq1SZ
+         0d/EtiudUfsPLqah6F3oaeinRi0JaQ+gwQZPzFhANEKnM/GuD+dT+gh+9WEGxLgv1wWb
+         bT21K3j/Pk9qJTP4Ns0ZOasUTCUzqeG20Wk48/DJaB6oCHiERgHrP7n2HOZX7YqylVC9
+         ++XCSfKQ8k+BIbGU+loqLqcEktGApEzhr1HuSLw+ZikDhVwNAMv1iFr+36xCiH4TE1Ll
+         nqrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAM4pRfbQx9cOzUjOJPu7IeTVO4zfhFjRePf2qWQ/lV19a2sk/nhxTRS+OMX62NBkQwx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrKvm126bcrsALEQK94sSRy2cZfEDMUkgjpSfj5zgM1d+ugIGB
+	2hchuoGl+eEX9uLqE8EvmSrh5Hyc1Xg2Oj7m8dXmKwYyZsDXQB/8qkH+up0i+r8=
+X-Gm-Gg: ASbGncscczIFdTURmuU+hjfNMBXvhMFY3uRdQpJ+ZcfNPfSXbBB+WllETBnvgE4n0oO
+	N5nO/tuwD8URf3GcH9dH5srZmqa9DvkHuFa9p89YZf77f1BcwZQAa6dmEDGrF+bREXPBzxqVKgd
+	dKJIIR1U/G4aE65d4lrtGuPd/nLXX8Z6TQWTdZSt+5xRCCpweMfQYShfNJXSTd9UG76xHN8hNKM
+	BaB7VLuYSTHhDRM3PJvpQQ92Rihu4zgz0rfGs0QeNWDgk0xXa/Su/HIzLvHm9PczGI=
+X-Google-Smtp-Source: AGHT+IGwGJ74ps/x/Eb/FXDjZwvLuJmQUxKHNbskjBfpmMO+fHvECFMcSxYPTjF3D4hGyGv0Hh3cVw==
+X-Received: by 2002:a05:6a00:179f:b0:72a:bc54:84f7 with SMTP id d2e1a72fcca58-72d21f4f2e5mr15271389b3a.12.1736503453610;
+        Fri, 10 Jan 2025 02:04:13 -0800 (PST)
+Received: from [157.82.203.37] ([157.82.203.37])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067e9e1sm1247468b3a.131.2025.01.10.02.04.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 02:04:13 -0800 (PST)
+Message-ID: <1f2908ed-e938-4365-8f1e-9f1c7753fb9b@daynix.com>
+Date: Fri, 10 Jan 2025 19:04:07 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
+User-Agent: Mozilla Thunderbird
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v2 3/3] tun: Set num_buffers for virtio 1.0
+To: Jason Wang <jasowang@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com,
+ devel@daynix.com
+References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
+ <20250109-tun-v2-3-388d7d5a287a@daynix.com>
+ <CACGkMEsm5DCb+n3NYeRjmq3rAANztZz5QmV8rbPNo+cH-=VzDQ@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CACGkMEsm5DCb+n3NYeRjmq3rAANztZz5QmV8rbPNo+cH-=VzDQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 10, 2025 at 05:00:22AM +0800, Xu Yilun wrote:
-> > > 
-> > > https://github.com/aik/qemu/commit/3663f889883d4aebbeb0e4422f7be5e357e2ee46
-> > > 
-> > > but I am not sure if this ever saw the light of the day, did not it?
-> > > (ironically I am using it as a base for encrypted DMA :) )
-> > 
-> > Yeah, we are doing the same work. I saw a solution from Michael long
-> > time ago (when there was still
-> > a dedicated hostmem-memfd-private backend for restrictedmem/gmem)
-> > (https://github.com/AMDESE/qemu/commit/3bf5255fc48d648724d66410485081ace41d8ee6)
-> > 
-> > For your patch, it only implement the interface for
-> > HostMemoryBackendMemfd. Maybe it is more appropriate to implement it for
-> > the parent object HostMemoryBackend, because besides the
-> > MEMORY_BACKEND_MEMFD, other backend types like MEMORY_BACKEND_RAM and
-> > MEMORY_BACKEND_FILE can also be guest_memfd-backed.
-> > 
-> > Think more about where to implement this interface. It is still
-> > uncertain to me. As I mentioned in another mail, maybe ram device memory
-> > region would be backed by guest_memfd if we support TEE IO iommufd MMIO
+On 2025/01/10 12:27, Jason Wang wrote:
+> On Thu, Jan 9, 2025 at 2:59 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> The specification says the device MUST set num_buffers to 1 if
+>> VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
 > 
-> It is unlikely an assigned MMIO region would be backed by guest_memfd or be
-> implemented as part of HostMemoryBackend. Nowadays assigned MMIO resource is
-> owned by VFIO types, and I assume it is still true for private MMIO.
+> Have we agreed on how to fix the spec or not?
 > 
-> But I think with TIO, MMIO regions also need conversion. So I support an
-> object, but maybe not guest_memfd_manager.
+> As I replied in the spec patch, if we just remove this "MUST", it
+> looks like we are all fine?
 
-Sorry, I mean the name only covers private memory, but not private MMIO.
+My understanding is that we should fix the kernel and QEMU instead. 
+There may be some driver implementations that assumes num_buffers is 1 
+so the kernel and QEMU should be fixed to be compatible with such 
+potential implementations.
 
-> 
-> Thanks,
-> Yilun
-> 
-> > in future. Then a specific object is more appropriate. What's your opinion?
-> > 
-> 
+It is also possible to make future drivers with existing kernels and 
+QEMU by ensuring they will not read num_buffers when 
+VIRTIO_NET_F_MRG_RXBUF has not negotiated, and that's what "[PATCH v3] 
+virtio-net: Ignore num_buffers when unused" does.
+https://lore.kernel.org/r/20250110-reserved-v3-1-2ade0a5d2090@daynix.com
+
+Regards,
+Akihiko Odaki
