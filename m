@@ -1,68 +1,90 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2088.outbound.protection.outlook.com [40.107.237.88])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AB62080F2;
-	Fri, 10 Jan 2025 21:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22EC208965
+	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 21:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736543296; cv=fail; b=FJ59nLDdPRJbpB6u8MHY6oWdnqAFtEZ8qfvJ7eXa72Z1fJHfaRELiFlzSRe6Jya4sXKAmC0Mbnv16aXwqgQ9p5VpVEsmfv5MiaHNACGE09VRe+a0Wdtmp4QYi7lzqK0whX/CpjhePfzykrbL2JwT1CfKU/dGdCvIlYrXuqykEj4=
+	t=1736543680; cv=fail; b=laIhvuPiRm5POL7AwCojeEiMlhu7mPYiMC1cPxc5t9JbgiO/7lbxnbvZU1MEuFT/iYtY9pY/dA31ZpCyFMNQzd7AlJVgnm7UaEmMf+ROQFhca88KYdNe22h7OJ2W0GR1lGBJ98FrgX1ogwt9DYHTklailB4gQOuo9ma+hC10z4I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736543296; c=relaxed/simple;
-	bh=DGq12vO80zkMD+7Xs2jCVqt4wUdnbLAExZv5791ObLM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=L6x3TSSLgnWOVxRQ5vlRm1yIGucho1iHhMVfZyT4GvJ0tQeik2L4lGu9UQU+QwApgQpUDzhs42aaokx9RS6elqVVPZ7Wzkin4L1AsQ20HmUUYWskVuHFa9quNjjhVTokWKWca1/Kt86wnHr9377SZPB4ViBBIHlUnmVc5LuYRX0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WAzRjjeS; arc=fail smtp.client-ip=40.107.237.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1736543680; c=relaxed/simple;
+	bh=18IfD3mcwSrIEgQKED1ar0xlRc7Ejwhnw6cR3wS3Wao=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eFGT2Pz36dpwKdKRF5yJcC0ciYaOSqwjQ35Ng/BkRjf6zxk/M9BWdwF25AEjGNwAIYelsNFcFb5V1DW1ST8Mfnn2Ikf8OEEbefOF68rW34etHniXFdazZqh9ZwRc9KNMjtNYTvGlUKMLwztMq8aT4ZVhb2wPSmoktz9QWhC5TzM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=UsdsBT6D; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=m+ELgm+p; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WAzRjjeS"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="UsdsBT6D";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="m+ELgm+p"
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ALBxYe029153;
+	Fri, 10 Jan 2025 21:14:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=wkMs6C7sK8sOJ2wiBqwjDD3q4UylJA1RmKTNBANxBA4=; b=
+	UsdsBT6DYxi8SCD3YhXzuzVLPIHNfep0btsfqdOy6GYWKknRzyOinmMyDpTaMwqn
+	ssqcj4VlTYkbk2XEEyDsRRycocxGjt8A9Sprva+iv8qdN2roADL40CuPARehldk+
+	DYN3DWkRozy7dtg99cNfizXZCkbJUUIG9gh/3hQcbUdVEiPKjosQDN8BtycQEC6E
+	7TtFUvfTsEdjqiR6WpvE3Ew6aOZxcFZ4doGDAGcvcXEiobQAFT9Z6Y+YzOwVWQjA
+	ZEABfaYk9Br7BensD3s953fHP51pjbRfxOECebUY/LkOIroxiZXfmKvmMa+XVTRC
+	pIBQ6ZcvsYxYXm2dncJELQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xuk0c34y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jan 2025 21:14:26 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 50AKUL49027457;
+	Fri, 10 Jan 2025 21:14:26 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2048.outbound.protection.outlook.com [104.47.70.48])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43xued5mxn-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jan 2025 21:14:26 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MDzx+a/fqoHgELri40DtecZb5+dUcjiCAo/r1wcxESp7IY9YWxgQUB8JjrRpttRqCDAEQmYXia/n+pxrVUQCcZx3JO9cIKx5BQ5jS6SmKp3s1ATCOn2PwnRFe+ETQHqxN6GzqFvYHk7nsRgdynBP8+1zIBMI0MyNEEhed0G41M6Qkv1fiyqKReDxNHM5AsAAlwbWvzyJomx/9nizXtlU9HKVbA8kp+UUAdFa3agrmgSVyxc4j+9TuPUm0iUEAmWgR7w4MWCdnIbgBNuBZ//30BuWzCNudWAYSUG4OOP5mx2DgQGr2BXzse6Y84cLLaALoGIG4L8cygimT+wuXeiA5g==
+ b=knDHO3wXVPctYI1qm2/d1SmwkudbAGdVbwVyzAP2u6hwzMUBv0N2Cn6clCDTb/i6bMtCdy1qClcZpZPF4HCs3jgulEzErr6VMPXS1KzQvOaGf3mvkUfP01ZQR2VsfvgML8czI+7OceH9Ylpa/SynchuxNsktuX21KS4OGDfrS5sg4KcyvjD2YLq7L6QA5dvMNYjhIjEcqpBWvEqCEAFiVOz4LzthAmvIdQsDEVThjl/vb1JWk8QSqIR+4s+C9JWAV0bU+Vzre64GYDU/DJPYtmX+BfJa2Fo5UVWTbyG6adAzB95xu93UyHmbTNPIuKl4IAmgjPwlhN2EDMLHYSPb2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uSfg84KfS2/DuFe8JuJZo5twuYnNeLPGmVj+vl9Es2c=;
- b=YXzQBXWsJJ5X2toqZT3CoJHo6OWELaAlj9OhBha43EGoF5y6OQf9dG3gG2n9Qrt7RV1e8v4M2wzzZAJFvEkOSc/b+sto0K73IW9bAsvCnEDsl6ebJW0veSpKNh+3TyaTxK5uN+cPmbmoq7yRGZ1J9T/Ob+HjLdbexWkb7ywmeiwi9gHuj05iTzUmt4c0KTNdX3mA7rMoJ7eGl14Eqdgz2aWCl7GshH4d6HkcUJx8ExZipQZr3g2DlprUtPbrJOvO73lbs77mlhuMszk5LNi1XZq4EgNrGPlo+UF5HHP7N52QOe4+3hk4ulykGe+1Fu+2UoEf+gQnHcn+MYuKsE3KfQ==
+ bh=wkMs6C7sK8sOJ2wiBqwjDD3q4UylJA1RmKTNBANxBA4=;
+ b=svxIaU3sj2gLu+hO6p15j8QVgXSdX1HaIR7VHl+g6Dx1RaSgQySdFQKLCvLfcjyFGVGPcUus9mhRwtHB4wOMjfTyo1dmYhNnGKvNwvaNcF6VZoWM8rE26w+3laNtojMSENoQ6iD/7+F8Df57XJwRy2/pCTawp8yB2neySsNyRyBPYFV8YmxrsWjQV8/aLNSxev8E9P8EvofAs7glV5hXgAi5sYzVTYY4n94Uci4v1aYQJd5N6jERgsy2iBCsjhhvVFYwD6EgOd49dxOcjIPf6d+lKhEmqWdREHxH0k2o6pOK9VPWtBYKwLtMovCem97T4+fSKQ6iZfLmikV/0JI25A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uSfg84KfS2/DuFe8JuJZo5twuYnNeLPGmVj+vl9Es2c=;
- b=WAzRjjeS1kIAP0E5p16pH5QbLhJfbtxSYOlsW4z5lH6NyqDTB17LNvxRwmtF7Rp5lEVnOTtyugRvmCNJj57qLoCswGMM5Sh93BY4tZIrfFxMqnvm5vlmj2cXNpMvCxxN7A1ey/xa28F/GqWn5irkQgBZdSjxMqWyUX6/2YmNkuc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB5672.namprd12.prod.outlook.com (2603:10b6:806:23c::5)
- by DM4PR12MB5963.namprd12.prod.outlook.com (2603:10b6:8:6a::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8335.10; Fri, 10 Jan 2025 21:08:12 +0000
-Received: from SA1PR12MB5672.namprd12.prod.outlook.com
- ([fe80::60f:5e8d:f0da:4eca]) by SA1PR12MB5672.namprd12.prod.outlook.com
- ([fe80::60f:5e8d:f0da:4eca%4]) with mapi id 15.20.8335.010; Fri, 10 Jan 2025
- 21:08:12 +0000
-Message-ID: <7cf9f0fd-279e-4e4d-99ac-966a752090a2@amd.com>
-Date: Fri, 10 Jan 2025 15:08:08 -0600
-User-Agent: Mozilla Thunderbird
-Reply-To: michael.day@amd.com
-Subject: Re: [RFC PATCH 2/2] KVM: guest_memfd: use filemap_grab_folios in
- write
-To: Nikita Kalyazin <kalyazin@amazon.com>, willy@infradead.org,
- pbonzini@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: david@redhat.com, jthoughton@google.com, michael.roth@amd.com,
- ackerleytng@google.com, graf@amazon.de, jgowans@amazon.com,
- roypat@amazon.co.uk, derekmn@amazon.com, nsaenz@amazon.es,
- xmarcalx@amazon.com
-References: <20250110154659.95464-1-kalyazin@amazon.com>
- <20250110154659.95464-3-kalyazin@amazon.com>
-From: Mike Day <michael.day@amd.com>
-Content-Language: en-US
-In-Reply-To: <20250110154659.95464-3-kalyazin@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0045.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2d0::22) To SA1PR12MB5672.namprd12.prod.outlook.com
- (2603:10b6:806:23c::5)
+ bh=wkMs6C7sK8sOJ2wiBqwjDD3q4UylJA1RmKTNBANxBA4=;
+ b=m+ELgm+pteZNydPt1H5fUBJsCIg3IEZtH/+zOCGqY5lMk1WEXx5nQ/4/kVjAxJpRgD61Slm+RmL4uyER7vTAO3HqS1+yw45j++OPiixPtFLoM1YE0VjFZ/OylmtHpEBTtGoxtF8QvPl0bGL+ds5aQpBRXLc7UrdQgH6U07kqm6U=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by BL3PR10MB6113.namprd10.prod.outlook.com (2603:10b6:208:3b8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Fri, 10 Jan
+ 2025 21:14:24 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.8335.011; Fri, 10 Jan 2025
+ 21:14:24 +0000
+From: =?UTF-8?q?=E2=80=9CWilliam=20Roche?= <william.roche@oracle.com>
+To: david@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
+        qemu-arm@nongnu.org
+Cc: william.roche@oracle.com, peterx@redhat.com, pbonzini@redhat.com,
+        richard.henderson@linaro.org, philmd@linaro.org,
+        peter.maydell@linaro.org, mtosatti@redhat.com, imammedo@redhat.com,
+        eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+        wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
+Subject: [PATCH v5 6/6] hostmem: Handle remapping of RAM
+Date: Fri, 10 Jan 2025 21:14:05 +0000
+Message-ID: <20250110211405.2284121-7-william.roche@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250110211405.2284121-1-william.roche@oracle.com>
+References: <cf587c8b-3894-4589-bfea-be5db70e81f3@redhat.com>
+ <20250110211405.2284121-1-william.roche@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BL1PR13CA0257.namprd13.prod.outlook.com
+ (2603:10b6:208:2ba::22) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,347 +92,214 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5672:EE_|DM4PR12MB5963:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c2d9731-3f37-4fa6-fed3-08dd31bae431
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|BL3PR10MB6113:EE_
+X-MS-Office365-Filtering-Correlation-Id: c293fe0c-6b39-46ac-de1f-08dd31bbc1f9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NUFyaGhMM0ZMMUNmS2drQjhJWW5MSGQ0WDZ6QitZS2NZUVVrL2tXbHYydEcy?=
- =?utf-8?B?bUZBS3JlRDZhbUtmay9TRWs5dk9TS29FMmVPZjE4UlJBV0gzQ3owdnRMaEQ4?=
- =?utf-8?B?ZHJydTlSQ2VacGJHclJQYnU2K2hVKzJwK29pMXlsUzFMbjJaUDMzTFk0WVkx?=
- =?utf-8?B?aG1NTlIveHRaVEh0dDV3ODJzQm5lYUI2eEt6OEQzSVA4QUUwQVcrblREYVpl?=
- =?utf-8?B?T1g3Q1dPTWxCVmlKT3VIYXV0OEI3em9zd242TXR4aTg4bGpXaGFDWFFaaUVu?=
- =?utf-8?B?WFpYWFY0VUVhUDZ6cUgrckJWYXZUZzYzRS9OdnRzTGl0YVlMT0FFcjlPd3dB?=
- =?utf-8?B?a3B4K1RrMjB2K0JPSjM5ZnZNTkNSemNhUnNTb2w4b0JkdXAzak1RWHZjdTVj?=
- =?utf-8?B?RHZtYXZNT21teXZPZ0ZjVnc0MHM3WE01SUxnRUhLYkJndE9zRHJVTmlGT05N?=
- =?utf-8?B?QUxOMVRndVJaUXJLaHNUNXNpbkgxWUp6T0ZkM3J3VUtnL29MZ1JTS05xMktj?=
- =?utf-8?B?M1dWMDdpdUtEaE9hT1Y1d2FtZlUwbVV1ODdoTjNHT0N1Wkk2V1haWjFocWRZ?=
- =?utf-8?B?UnFnYzdYUGRkVG5qLzBiZ0Z2dHEzU21hMEpNbEdXMXdqNXh3dHZ0c1dQTGs1?=
- =?utf-8?B?eHdkaS83TkNjUklyYVdnTnRsTTBkaE9MNEk2d3JXUXVQdUF1RmJmZjRWcmd4?=
- =?utf-8?B?Z0VnNFE2a3V6YzdXNkxpeUo3RExERUZRSHRmUVdwdXlmZkFZWWlBZ2NhdXZZ?=
- =?utf-8?B?cTVmYlEveUEwcG1YV0pkZHc0d0lya3BzVXMra3dDZ3NZL1M2N2g4Mno4elUy?=
- =?utf-8?B?N3JPZklqYWF2em9NZWRjL2pNNzVDWXlBRnZZWWcrYlloeCtEbTk4a1ZoVGhI?=
- =?utf-8?B?RFZaK0UrUnlPQ1hnem1nWS9zVlAwd2t4a09Vb1RVK2Q4aGtFSEx6aDExTjFH?=
- =?utf-8?B?SlNNWEtQM3Q0RjFjd21DSGIweld0Q1Nsek40cjdURGNGejc0UDNaMXNYK1ZT?=
- =?utf-8?B?cFRVRklscUtCTi9JVzJNV05uRGxtUCtTR0VuMlNLVWRod0k0Wk4yb1poK2VO?=
- =?utf-8?B?OW96OWlUZkZPRFVaYUEyYjJlai9OTTZuREJZNnRzYXgxTk5McU9kbDR0YllK?=
- =?utf-8?B?RERzSjczK2lhdDU5dEtFaDl1aU0zRmN3dDJKUHljU2o4TnZPV1F3K3ZVSS80?=
- =?utf-8?B?ajB0Rmc0b28zcWo0SldkT1p6Slc5SkZZUUsvMkdxVUNvNDZRRXhTOXIvd2xu?=
- =?utf-8?B?cG42cUtJUFUwUFBKakFBakE5QUdGcy9RQ3puc1BHeGZIamVxcFNHZFZ4SkNr?=
- =?utf-8?B?OEl2NTVlc2FMVnlRM1VxbGlNSWFHOTBWY29yZUU1eXduNGdmWnBPa1VBZkxC?=
- =?utf-8?B?L0NOQmhQTXpObEM2Y0dxWnVCYTRxbCtUMDRmOTVSR3V5NzI2NWRWRmdXWFFM?=
- =?utf-8?B?YWM4enFBajhjQ29kSmIrS0dnL3NhOUMwald5Q0tublUxMXNpSDJKU0p3RmJu?=
- =?utf-8?B?SGZ4U25iODdqTW9QSDlkNWRNZ0QzRXZtTmhldTZoZ0kvVC9aS1FHR2tCVnJZ?=
- =?utf-8?B?UDVLVTYxNkhQeUhFZFBtMklUK3dtaVFVSytwek1VZ2tYTndVZDU5YUhKb051?=
- =?utf-8?B?T2VvenRWTUYwNGJDeFF1S1ZiUFkxWVlLQllHbEN3b3E5cHZJNk4xSjVpT2Jo?=
- =?utf-8?B?WHdoSGdNQThJSWg3ekdKWkw1S096TzQwQUcrbVlwWEZpQnpMRUhmb2xHKzB3?=
- =?utf-8?B?NDRsTE5UbVlVdE04bldaa3R1WEVjbkNJUUZ5L28waEVkcWZGb1AvRTg0eU14?=
- =?utf-8?B?RzBDejJOcTRsZGV5cE5lY2dEa25UYWlLNXcrSmxTNUc1a1pqZXkxWHRXVllK?=
- =?utf-8?Q?0YVSSIfDUdqHe?=
+	=?us-ascii?Q?XntNov/0NkoXMF0w3NBZfzaEhhIR+vKklU/52b0FV432syXSGC61/0HqCk9w?=
+ =?us-ascii?Q?acpg/2SiCkk6xBSp0WeGG8TIiIwBJ6iVu1jIkI8oeCNyL9HmJdvUme7NFhBT?=
+ =?us-ascii?Q?UvQT6MvVlyWKdYwQ7F3Pw9IB5KpXyoaDRsJMuKm/nDf0gcYRizUR33LldKav?=
+ =?us-ascii?Q?jFQdn0zHTrIpmgoicWoZS6l2+eeO9OGSiK2UJpv9zBSMTFDFM8IoulbL40Eo?=
+ =?us-ascii?Q?X7d17/5jSjWzF8gMyqxYo22rwCiIHVEUe7UJIPXpgUh2zHJTcw0WZKa1dpUp?=
+ =?us-ascii?Q?SGYMHahNqTX6W2pX1nDPX5gnY7KCy5NEzCmW2v6Xyywn49j/u2wJcBBRu2zy?=
+ =?us-ascii?Q?H/0paSfQ+k2lsCL8qeV0MWLXOjRd9wcLgPgkCsC11T8gKe1Pna7p0mMGPV7B?=
+ =?us-ascii?Q?nFJiAyx9M2AfN/O4gqO+qFdd1VnrTP9w1xR4VzVLEj/golpStQaotO6RR8ww?=
+ =?us-ascii?Q?D3pGwJHez4slVZsQ06vXhVvfoWA5vei4zBOisJz0qdXBezgqYy5KqqG3C5CJ?=
+ =?us-ascii?Q?qMVMYuweAHkn0DbUeGQ1k5TBBXtJ4vlzFY7Cv37cM1n0gCSaJSGpnHXFDu51?=
+ =?us-ascii?Q?CXToAd1JEs5rBlG6niEKbWXVmY+7XLJ504fMq3J51y704QI1OnthrrwiIlGq?=
+ =?us-ascii?Q?dMcJld/W0QKgR1TzA4M0tIyfSWS8ksTSpDaTSWLIIFlJ8UJndaKpa6JHf0qm?=
+ =?us-ascii?Q?XHblALmH5CrxmkK34aX5iemdXVckxlxSr/2G5kv3PI53ReE8TFHgmSxYnJfy?=
+ =?us-ascii?Q?Tys+vQzWrV9l+e62+AgerLXxN6yzgBWDcIe2yHwWVRu+f6sDMvz653oE843n?=
+ =?us-ascii?Q?JPai5hTK1qUr1dZwWvcQR/moCTieMgwWP0qqYiIm4m63k6dx2pLApURZCTo5?=
+ =?us-ascii?Q?pdLPmFofwVdF62oU1M1P8vfhm2FHjIrZsVKOGEFlGuoI1jqyOkDuVS4M6hUw?=
+ =?us-ascii?Q?XSf/jB00CRetRmWsMRVHj5Lya+xko0XOtLPnS9FxEyc3jjtpxFvRmIJ6aX1g?=
+ =?us-ascii?Q?SgFz4A953aJXZ200c7DkecKC0dcf8QLEjMhJaJTyyvElYWntFJNJADRLYC3j?=
+ =?us-ascii?Q?R38OZI/EB0s4KXDkG9bCT4yySgcZObHC29vMmxfmfWAya7/InPNlZk2YlNKJ?=
+ =?us-ascii?Q?QP5ILvkP5LQlborMB9g9Bpr7Tyaee4R/pHM5w92q4ExZOlkB5ElXxE4iYGcH?=
+ =?us-ascii?Q?XvtBJBiqkb4MrdqTXgXN0bLlqocotHzsNFOYA2ZZemaEzyGJLd9m0SFaCy8K?=
+ =?us-ascii?Q?EuIMTJB05dqASiTiXq5yKKPYU/tyd14B8i4ZuLRu/20JocVW7O6N283WdgHC?=
+ =?us-ascii?Q?8djNymDM4vmJeOgkdppAzOkKwGH8YnkKoxrHZfZWG7CbWu2rgmcTTQhnYlxk?=
+ =?us-ascii?Q?BBaV4yGO2JWFr5Lkv9KYEm13orAs?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5672.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UVoxck1lbWx1NVdhOTg0VTU0UGU1cnVBeVdTUDFFUUxBL1VRZVloK1Q5MUhu?=
- =?utf-8?B?VzZTQlZZRUxvc0lVcEVrdUZXbW9vY1hqK2lXazZ5L0VaVzdaY3BIS2VYUGZn?=
- =?utf-8?B?Y0xvSi9od2NVQmUvT3VJVXVzelEvYWszVHJiS1h5RmJrYlZRZFJvbitNS0ow?=
- =?utf-8?B?OTBmcGZzaHFFNi82cmV4czhmYmVkdlVidHR2enpBajlYa2xjLzdTbUFsUUJ3?=
- =?utf-8?B?YXJTTXRoVjZLbFd3SUhrbGlTeXFydDF6ei8raHlJU2NDaERnMHBla0pwV0Zx?=
- =?utf-8?B?K1pQWTFEbGp2K0I5YXNnSXNnTUU0Ym9SZWZPYlNQY0FldCs0eEpJMytVUWV0?=
- =?utf-8?B?UzN4MmhRMWxaRWNtNk9RSGZyZEZqeDgzWlU1V0ZIc3h0ZkpOQlBwT3NZVWZJ?=
- =?utf-8?B?WHFJMVV3QkdKaW9vT1pwWWkrV2JKQUNxc0N1UDdUVS9HUlMvS3A1TEF6TUxO?=
- =?utf-8?B?ZFAvV25JclcraHRrb3dZUWxVakNmVXFEaVNNbWw4UEwvTit5dms2dmRwRlFF?=
- =?utf-8?B?RGxGaktkWGlRNld0WXVmSFJKWWZKakdybFBod3NET0Z4Sjgwb3c1Z3R6Njdl?=
- =?utf-8?B?NXNGNUZac0Y2b2t0OWMrMTR1NmpWWWQwemlFelA4S1gxcEM0azlsM28rNlA2?=
- =?utf-8?B?ck8rS2ZOU241TXh6WEkyT0I3d3dzamZDcElnUFdvY0ZCSDVUTEZFY0Q0MGlI?=
- =?utf-8?B?U1R2NHlLZFQvN1FHQXE5RDY0RUFUUmZ6bVByU21zY2lrRFZVS1I4UFpCNGpT?=
- =?utf-8?B?SmoxTXBqTmdYaitWTEJPeU9ocmhVVmw3UEM4eHlXZXQycVlFQzNLSFQwanY4?=
- =?utf-8?B?L2JrMlJwdHlhOS9aRGZobEhTdHF1dHRVWngzSGxBQjJudlRIanZUdzdXdDhz?=
- =?utf-8?B?WHExYTBSdDZMRlI2d1lCcWJSaU9tZWZMSGlUOFpGQVhiRC9wK1lCSDRrcTV6?=
- =?utf-8?B?VmxqMklnZi9OQmxkY1k4ZjdCNU5FaGJJQVpwblBhc2tuQnlTbldxZ0Y5VWRW?=
- =?utf-8?B?dUNORXZCYVBZMTVaeHNZTFgrWE5lbHlCenMrdUc1c0dXbVFNTUVFeDFVdytW?=
- =?utf-8?B?eUtzaHozNThQcGc0WkVKb2NjS2F5bE5UUWcxT2lVNmlMYzMybERTWGZjaGEy?=
- =?utf-8?B?WFZaZ2tvTVgyYmpVUithVmxHQVk1VWtBV3h2Y3NVakJ2K1JsMmtnSktmMXRR?=
- =?utf-8?B?aUp4U0c4UGtOL1NoNUZFcXF0UU03YzFMWDdUOW13V0VmRm5TUnF1UUV5dGlN?=
- =?utf-8?B?ejJKa3pmdTBPOVduS3llTGNTYlUxb0l4TzVYbEYyWVYzQ01XdUNQLytVWGg2?=
- =?utf-8?B?aENxOGNTbTVQdkFWN3RoNGNiNk1ua0U1enhoN1lUbCtLd0NXSW4xUytLWWdm?=
- =?utf-8?B?cXMrUE93WUZPd29zR3JWRUFDN29Mb2hpYUFyTVZpZWJFM0FWdmFkbFdlUkoz?=
- =?utf-8?B?UG9aKzFoUVM1NHozTEdoaTRlMU1NdkdqQzR2Y3oxMlZWVzZKcjdlejlQZnM3?=
- =?utf-8?B?VzBodjBsa0lhQWZGMTQ4V2hTQXgvZkdJTHJna2pWK0o2WmhkTXBGRmsrMExq?=
- =?utf-8?B?cEJINnc4cGRCMnlIdjdlZGtGRXNaOWluYWVPUkUzQW02OUdYUGVrL1N6ajZy?=
- =?utf-8?B?VmMrS2tIZ043TzNzR2dVNEVsRjhYcHJGTDVsMGIrVFVXZnlIdHZDTUJBQzZk?=
- =?utf-8?B?WStWaDJNaGQrcGRqS1AwTGNrMWlyU2pQaHpEOTVDaFNSY0lDSzhsako4UHgx?=
- =?utf-8?B?a3psWjFYOEQ3YlZveVArbW5NK0YzVURHNHd1Qlg1UDhvd29PSDB3S3lZNzdq?=
- =?utf-8?B?MnJxUjAzeXRTZmxkY0hlSUVYcE5QZ24xeGFNaFFZUkpuNkgyaW5pZmdSTGk3?=
- =?utf-8?B?T3ROUDhNZGFOMGt4RU9haVJ6SFo3Sm84Szd4d3crYXRCZzI0R1RHNkVjcmoz?=
- =?utf-8?B?L2I1Y2VOWEN5ejhOcWdQSHF5OEhxU203eFhFZzJtYk1aL3VtZGk0Zitzc291?=
- =?utf-8?B?QXlUaUFIME4zZHMvMU4zRmh0RmNNdEtpREpqY1dIRUVXS21VVUVMcG9jbWVG?=
- =?utf-8?B?VmFCSXVpZ0ZxUjVRalhINmMxaXQ4eFV6RmJHaXY2WHBTTU5ZSzU3S2VEWVQ4?=
- =?utf-8?Q?/FtOmlTRqm8wS7skVfiBmfRxF?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c2d9731-3f37-4fa6-fed3-08dd31bae431
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5672.namprd12.prod.outlook.com
+	=?us-ascii?Q?64+ou7+DUKGHErgYyTFf+IlP1QZWeM1Ce8dr+lNzFgbaDDZ88AiV/6SeOhHN?=
+ =?us-ascii?Q?/xJnLiT2QzkVD5sAKpA3vmrD2LIluYPNRPeA7fY6dJ9InStZx6iZ8rslbDBQ?=
+ =?us-ascii?Q?PmOWUksASOhNAdLASoyRX7lWUGZQmiNFv3892RPpBBXoQ5haAxZuMatUBOtI?=
+ =?us-ascii?Q?0V2Rn1ZZyTeQ9Cdij+l3mFcz990bIZnVuh0d8dOntJDSJTjl+EYgcDS7JUyG?=
+ =?us-ascii?Q?cbNw8T20KltU72yPMvjams4+1GvInw5BcShREtvauyODyweSHtKuISrzFPwx?=
+ =?us-ascii?Q?oMgjDcdf+I8zcunf5eWYQj3xVIr0O7Q6PaWERJFeQC9dzuV0YMJwk3mu5UKs?=
+ =?us-ascii?Q?13tznu/kB47V0UPChUVSsP96v0cNOGTpjei09As4yKvJVjsm9VeXYlfOWr/f?=
+ =?us-ascii?Q?FnAYvWbMOFoCLByEyqVWnSZEMiJv9vH8oJQ8XngIuD30dOj0dFMmiP86in9o?=
+ =?us-ascii?Q?aq6a+a33Ipwxrf5j7yKmm8DeyaSGViQo9RD3FmB3hTkfKcRbT6dQyETKxwtv?=
+ =?us-ascii?Q?vNMeFvvnxUC4GnxVcIEzSjsrdlCKC3G7LKq/BV+X7mdGBQBo9QXYeIK2Fy/q?=
+ =?us-ascii?Q?4VeMJwVMh5Achwi2bzyQoXvfP/HkrR6p7eMynXZf9+RgyGJP6iWCS+AR6ibW?=
+ =?us-ascii?Q?fi2kMNBkwIxczCpZPrHYBRTA5iNxmyrvcCMYYFlKgqiYJ8PTIbBPNc0VerK+?=
+ =?us-ascii?Q?wbXAgasWgLv7T8nPFvFr6nNeHiknXUVdIaAYR3QZ/ODV/EPELxwDXh9fRVUD?=
+ =?us-ascii?Q?pyRc0RZDnhvLJA0xJUe12GAigzTHnfLFj6caHoSUvQCE3P2d4vplmIoVeb2/?=
+ =?us-ascii?Q?2IgMYjJk23p6IlRAvTtfj15KNkfgqZhv3OqxvXV2w79aheCA0vHO4LkhePZN?=
+ =?us-ascii?Q?5x9l5UysV8QY6KbTRzOc0o5zjPJWmWGXDIWV0msv5wVNtvUDp/8lDHEa8myY?=
+ =?us-ascii?Q?IlfQuWuIZIozK4r0w3QpCLB3yKbTitmBhUWy9KeH/4Xk1uks55xvEfANx+G9?=
+ =?us-ascii?Q?oUNbUXhPYbsB9wZzYAQ9O1cc7mMUGJJC6rRplA5VG/bLMT2H8CMNeQLCNrCY?=
+ =?us-ascii?Q?3oJ+y18HAytm08bqDMBLzDr1Oxu1+iFm8QWy6Z2h9dXomN18M6F6WIC06Uh8?=
+ =?us-ascii?Q?dkuKD3b9YeEOqLFGEX/nJ+NPB/ouhY7UNT2U+Esazj5Kvk2CKwd/4qVpi4rp?=
+ =?us-ascii?Q?W64hdXtMyi+ibONRrjRB6NWmXmy1RG7iWrDMiiNVP7Bo1cyTajQcOOxRCpnQ?=
+ =?us-ascii?Q?7y7es9BOwtZTA4dv0fTDr2kBZ7FJlQKB9sTtEC8FdsMoc603dRcD+UsyY9ng?=
+ =?us-ascii?Q?EThIcFGnUEILgTQ9kPq2TlyCmnOLCJYDDQT65JpDkJ0Hc03n0+exdM2hSbsc?=
+ =?us-ascii?Q?Kp+RoKLcPIe1Nz4OAaDNUqJj/LyonLGfCX7s5I5g5Q3nN7hQ/HU8WjUclpmh?=
+ =?us-ascii?Q?GMCd7Jq78pX4PzDdjPEHJAriu6rEe8+Ow8N68C6gUbSHl/5rRQcxNordffPC?=
+ =?us-ascii?Q?ht8IbmONkBq/veaQim4DUfzPnb7jCT6Ro9Hc1jPMR7ims1FyW2KuYgillQok?=
+ =?us-ascii?Q?/NH5Gs/lmarGnNAL4R2FK4Dp+7i6PS6FdsQo+8VJloTEoih5TwizQyFiqh4C?=
+ =?us-ascii?Q?nQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	ThzyUfUVsp5j8bzmjghNQh3BbKy5AC4KykcMM2I7KuPHW0nyY4mstJe4+zxh8JSAz047iYq+UVBxzbbi2jaPeaaxzWXquSwrp4AEmkVPw3EJwv1kj4+yRYXFPYUM75tnze/kA7tA62rPb3zZwQ7sn55u+KaD+08t6MNYe5PgRmxjMmz/CCdRddJ96lHwCrz4mt1bEkiPbxmCIcyoQbD4YPd/K64X2jSJ4tXjBpOqDgCl67guzbCuzOIIZtkQCm11Mi9CPYuVcsz7xzOAM7HZWulihgWmvM476kEY3En11qCYRE5FPnVEBWE3AzYU5WSXRV6ur0ZdGgQ9d2dmaboUN7fZHRStPjXUa5zXtnI/YxQ4bgG4DW0MkUHDIKZWSodikN4MEdRtvLURlalDOvVqwwdk6Bqs+XLdIHKgUvEy/8D8r6SBIFtkdsx2+Eanl29QHTE0OJut3n9KXx6cJxV4m/mpKLL9NI2LOfUty9qhZJkRhNFENgkQWicObdxUUAxh+81lyLcTuqla3OPgndCTal2OTR6ZTGCx+mT9RF1y7aoqwcARiCiiAfq0EgLBVm7Sglhb3vQ4mlPDjfWcx/64zg3fhG9CRLuYjXCTvK8dVW0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c293fe0c-6b39-46ac-de1f-08dd31bbc1f9
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 21:08:11.9798
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 21:14:24.0900
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UWyiRRRN7VRGr8g52A2dguFz3mb9QmRYHem129aFpJZRKh7HFlnv9QK27ys6/IXEvcx+4DwB4OeakPSkgnTBlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5963
+X-MS-Exchange-CrossTenant-UserPrincipalName: SEYuU667FoIUe77J1Hu3ck66SZiSDjJoehnJPgcu3oGLqLIIzE9izS8WQ3rLuWGet+OY4RqzSWVnb9zP3IotCHQQZd1uS2nUfDjp7Daf85o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR10MB6113
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-10_09,2025-01-10_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 adultscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
+ definitions=main-2501100163
+X-Proofpoint-ORIG-GUID: tANY9DuXCRva5u45w-eaQ_bEXLJMBqE4
+X-Proofpoint-GUID: tANY9DuXCRva5u45w-eaQ_bEXLJMBqE4
 
+From: David Hildenbrand <david@redhat.com>
 
+Let's register a RAM block notifier and react on remap notifications.
+Simply re-apply the settings. Exit if something goes wrong.
 
-On 1/10/25 09:46, Nikita Kalyazin wrote:
-> The write syscall on guest_memfd makes use of filemap_grab_folios to
-> grab folios in batches.  This speeds up population by 8.3% due to the
-> reduction in locking and tree walking when adding folios to the
-> pagecache.
-> 
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-> ---
->   virt/kvm/guest_memfd.c | 176 +++++++++++++++++++++++++++++++++--------
->   1 file changed, 143 insertions(+), 33 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index e80566ef56e9..ccfadc3a7389 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -102,17 +102,134 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
->   	return filemap_grab_folio(inode->i_mapping, index);
->   }
->   
-> +/*
-> + * Returns locked folios on success.  The caller is responsible for
-> + * setting the up-to-date flag before the memory is mapped into the guest.
-> + * There is no backing storage for the memory, so the folios will remain
-> + * up-to-date until they're removed.
-> + *
-> + * Ignore accessed, referenced, and dirty flags.  The memory is
-> + * unevictable and there is no storage to write back to.
-> + */
-> +static int kvm_gmem_get_folios(struct inode *inode, pgoff_t index,
-> +			       struct folio **folios, int num)
-> +{
-> +	return filemap_grab_folios(inode->i_mapping, index, folios, num);
-> +}
-> +
->   #if defined(CONFIG_KVM_GENERIC_PRIVATE_MEM) && !defined(CONFIG_KVM_AMD_SEV)
-> +static int kvm_kmem_gmem_write_inner(struct inode *inode, pgoff_t index,
-> +				     const void __user *buf,
-> +                                     struct folio **folios, int num)
-> +{
-> +	int ret, i, num_grabbed, num_written;
-> +
-> +	num_grabbed = kvm_gmem_get_folios(inode, index, folios, num);
-> +	if (num_grabbed < 0)
-> +		return num_grabbed;
-> +
-> +	for (i = 0; i < num_grabbed; i++) {
-> +		struct folio *folio = folios[i];
-> +		void *vaddr;
-> +
-> +		if (folio_test_hwpoison(folio)) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			ret = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		if (folio_test_uptodate(folio)) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			ret = -ENOSPC;
-> +			break;
-> +		}
-> +
-> +		folio_unlock(folio);
-> +
-> +		vaddr = kmap_local_folio(folio, 0);
-> +		ret = copy_from_user(vaddr, buf + (i << PAGE_SHIFT), PAGE_SIZE);
-> +		if (ret)
-> +			ret = -EINVAL;
-> +		kunmap_local(vaddr);
-> +
-> +		if (ret) {
-> +			folio_put(folio);
-> +			break;
-> +		} else {
-> +			kvm_gmem_mark_prepared(folio);
-> +			folio_put(folio);
-> +		}
-> +	}
-> +
-> +	num_written = i;
-> +
-> +	for (i = num_written; i < num_grabbed; i++) {
-> +		folio_unlock(folios[i]);
-> +		folio_put(folios[i]);
-> +	}
-> +
-> +	return num_written ?: ret;
-> +}
-> +
-> +static struct folio *kvm_kmem_gmem_write_folio(struct inode *inode, pgoff_t index,
-> +					       const char __user *buf)
-> 
+Merging and dump settings are handled by the remap notification
+in addition to memory policy and preallocation.
 
-This could probably be rewritten as:
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: William Roche <william.roche@oracle.com>
+---
+ backends/hostmem.c       | 34 ++++++++++++++++++++++++++++++++++
+ include/system/hostmem.h |  1 +
+ system/physmem.c         |  4 ----
+ 3 files changed, 35 insertions(+), 4 deletions(-)
 
-	struct folio *p_folio;
-	int ret;
-
-	ret = kvm_kmem_gmem_write_inner(inode, index, buf, &p_folio, 1);
-	
-	if (ret == 1)
-		return p_folio;
-	else
-		return ERR_PTR(ret);
-
-Would remove a few lines of duplicated code and use only one prototype.
-
-Mike
-
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 46d80f98b4..4589467c77 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -361,11 +361,37 @@ static void host_memory_backend_set_prealloc_threads(Object *obj, Visitor *v,
+     backend->prealloc_threads = value;
+ }
+ 
++static void host_memory_backend_ram_remapped(RAMBlockNotifier *n, void *host,
++                                             size_t offset, size_t size)
 +{
-> +	struct folio *folio;
-> +	void *vaddr;
-> +	int ret = 0;
-> +
-> +	folio = kvm_gmem_get_folio(inode, index);
-> +	if (IS_ERR(folio))
-> +		return ERR_PTR(-EFAULT);
-> +
-> +	if (folio_test_hwpoison(folio)) {
-> +		ret = -EFAULT;
-> +		goto out_unlock_put;
-> +	}
-> +
-> +	if (folio_test_uptodate(folio)) {
-> +		ret = -ENOSPC;
-> +		goto out_unlock_put;
-> +	}
-> +
-> +	folio_unlock(folio);
-> +
-> +	vaddr = kmap_local_folio(folio, 0);
-> +	ret = copy_from_user(vaddr, buf, PAGE_SIZE);
-> +	if (ret)
-> +		ret = -EINVAL;
-> +	kunmap_local(vaddr);
-> +
-> +	if (ret) {
-> +		folio_put(folio);
-> +		kvm_gmem_mark_prepared(folio);
-> +		goto out_err;
-> +	}
-> +
-> +	folio_put(folio);
-> +
-> +	return folio;
-> +
-> +out_unlock_put:
-> +	folio_unlock(folio);
-> +	folio_put(folio);
-> +out_err:
-> +	return ERR_PTR(ret);
-> +}
-> +
->   static ssize_t kvm_kmem_gmem_write(struct file *file, const char __user *buf,
->   				   size_t count, loff_t *offset)
->   {
-> +	struct inode *inode = file_inode(file);
-> +	int ret = 0, batch_size = FILEMAP_GET_FOLIOS_BATCH_SIZE;
->   	pgoff_t start, end, index;
-> -	ssize_t ret = 0;
->   
->   	if (!PAGE_ALIGNED(*offset) || !PAGE_ALIGNED(count))
->   		return -EINVAL;
->   
-> -	if (*offset + count > i_size_read(file_inode(file)))
-> +	if (*offset + count > i_size_read(inode))
->   		return -EINVAL;
->   
->   	if (!buf)
-> @@ -123,9 +240,8 @@ static ssize_t kvm_kmem_gmem_write(struct file *file, const char __user *buf,
->   
->   	filemap_invalidate_lock(file->f_mapping);
->   
-> -	for (index = start; index < end; ) {
-> -		struct folio *folio;
-> -		void *vaddr;
-> +	for (index = start; index + batch_size - 1 < end; ) {
-> +		struct folio *folios[FILEMAP_GET_FOLIOS_BATCH_SIZE] = { NULL };
->   		pgoff_t buf_offset = (index - start) << PAGE_SHIFT;
->   
->   		if (signal_pending(current)) {
-> @@ -133,46 +249,40 @@ static ssize_t kvm_kmem_gmem_write(struct file *file, const char __user *buf,
->   			goto out;
->   		}
->   
-> -		folio = kvm_gmem_get_folio(file_inode(file), index);
-> -		if (IS_ERR(folio)) {
-> -			ret = -EFAULT;
-> +		ret = kvm_kmem_gmem_write_inner(inode, index, buf + buf_offset, folios, batch_size);
-> +		if (ret < 0)
->   			goto out;
-> -		}
->   
-> -		if (folio_test_hwpoison(folio)) {
-> -			folio_unlock(folio);
-> -			folio_put(folio);
-> -			ret = -EFAULT;
-> +		index += ret;
-> +		if (ret < batch_size)
-> +			break;
-> +	}
-> +
-> +	for (; index < end; index++) {
-> +		struct folio *folio;
-> +		pgoff_t buf_offset = (index - start) << PAGE_SHIFT;
-> +
-> +		if (signal_pending(current)) {
-> +			ret = -EINTR;
->   			goto out;
->   		}
->   
-> -		if (folio_test_uptodate(folio)) {
-> -			folio_unlock(folio);
-> -			folio_put(folio);
-> -			ret = -ENOSPC;
-> +		folio = kvm_kmem_gmem_write_folio(inode, index,
-> +						  buf + buf_offset);
-> +		if (IS_ERR(folio)) {
-> +			ret = PTR_ERR(folio);
->   			goto out;
->   		}
-> -
-> -		folio_unlock(folio);
-> -
-> -		vaddr = kmap_local_folio(folio, 0);
-> -		ret = copy_from_user(vaddr, buf + buf_offset, PAGE_SIZE);
-> -		if (ret)
-> -			ret = -EINVAL;
-> -		kunmap_local(vaddr);
-> -
-> -		kvm_gmem_mark_prepared(folio);
-> -		folio_put(folio);
-> -
-> -		index = folio_next_index(folio);
-> -		*offset += PAGE_SIZE;
->   	}
->   
->   out:
->   	filemap_invalidate_unlock(file->f_mapping);
-> +	if (index > start) {
-> +		*offset += (index - start) << PAGE_SHIFT;
-> +		return (index - start) << PAGE_SHIFT;
-> +	}
->   
-> -	return ret && start == (*offset >> PAGE_SHIFT) ?
-> -		ret : *offset - (start << PAGE_SHIFT);
-> +	return ret;
->   }
->   #endif
->   
++    HostMemoryBackend *backend = container_of(n, HostMemoryBackend,
++                                              ram_notifier);
++    Error *err = NULL;
++
++    if (!host_memory_backend_mr_inited(backend) ||
++        memory_region_get_ram_ptr(&backend->mr) != host) {
++        return;
++    }
++
++    host_memory_backend_apply_settings(backend, host + offset, size, &err);
++    if (err) {
++        /*
++         * If memory settings can't be successfully applied on remap,
++         * don't take the risk to continue without them.
++         */
++        error_report_err(err);
++        exit(1);
++    }
++}
++
+ static void host_memory_backend_init(Object *obj)
+ {
+     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
+     MachineState *machine = MACHINE(qdev_get_machine());
+ 
++    backend->ram_notifier.ram_block_remapped = host_memory_backend_ram_remapped;
++    ram_block_notifier_add(&backend->ram_notifier);
++
+     /* TODO: convert access to globals to compat properties */
+     backend->merge = machine_mem_merge(machine);
+     backend->dump = machine_dump_guest_core(machine);
+@@ -379,6 +405,13 @@ static void host_memory_backend_post_init(Object *obj)
+     object_apply_compat_props(obj);
+ }
+ 
++static void host_memory_backend_finalize(Object *obj)
++{
++    HostMemoryBackend *backend = MEMORY_BACKEND(obj);
++
++    ram_block_notifier_remove(&backend->ram_notifier);
++}
++
+ bool host_memory_backend_mr_inited(HostMemoryBackend *backend)
+ {
+     /*
+@@ -595,6 +628,7 @@ static const TypeInfo host_memory_backend_info = {
+     .instance_size = sizeof(HostMemoryBackend),
+     .instance_init = host_memory_backend_init,
+     .instance_post_init = host_memory_backend_post_init,
++    .instance_finalize = host_memory_backend_finalize,
+     .interfaces = (InterfaceInfo[]) {
+         { TYPE_USER_CREATABLE },
+         { }
+diff --git a/include/system/hostmem.h b/include/system/hostmem.h
+index 5c21ca55c0..170849e8a4 100644
+--- a/include/system/hostmem.h
++++ b/include/system/hostmem.h
+@@ -83,6 +83,7 @@ struct HostMemoryBackend {
+     HostMemPolicy policy;
+ 
+     MemoryRegion mr;
++    RAMBlockNotifier ram_notifier;
+ };
+ 
+ bool host_memory_backend_mr_inited(HostMemoryBackend *backend);
+diff --git a/system/physmem.c b/system/physmem.c
+index b8cd49a110..306e71861d 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2205,7 +2205,6 @@ void qemu_ram_remap(ram_addr_t addr)
+ {
+     RAMBlock *block;
+     ram_addr_t offset;
+-    void *vaddr;
+     size_t page_size;
+ 
+     RAMBLOCK_FOREACH(block) {
+@@ -2215,7 +2214,6 @@ void qemu_ram_remap(ram_addr_t addr)
+             page_size = qemu_ram_pagesize(block);
+             offset = QEMU_ALIGN_DOWN(offset, page_size);
+ 
+-            vaddr = ramblock_ptr(block, offset);
+             if (block->flags & RAM_PREALLOC) {
+                 ;
+             } else if (xen_enabled()) {
+@@ -2236,8 +2234,6 @@ void qemu_ram_remap(ram_addr_t addr)
+                     }
+                     qemu_ram_remap_mmap(block, offset, page_size);
+                 }
+-                memory_try_enable_merging(vaddr, page_size);
+-                qemu_ram_setup_dump(vaddr, page_size);
+                 ram_block_notify_remap(block->host, offset, page_size);
+             }
+ 
+-- 
+2.43.5
+
