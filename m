@@ -1,160 +1,83 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7A5211269
-	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 14:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EBC211269
+	for <kvm@vger.kernel.org>; Fri, 10 Jan 2025 14:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736519593; cv=none; b=n0VQwwRcSNR+LIOTEurOoar08sTp4n/67H+WpCZLfmbakquDc8Vjx3BI2i00XbAhOSMwsPJIuxLyGCv9bSS1djUzuj3og47unnOyJrW+1V22dDWx6HhysAsAKhM571Qw8SeJ47JJyFhcvo8sTViaodyC2m6dzMJpdTe7bUvhET0=
+	t=1736519734; cv=none; b=SH3Y6x39jlXKPzcv40yHWpuFc6crPG5p+vNS/H+twfVs2FaDOgbb5D1gUWQSTnNBRC5b6oTxGstAKrCXdkIXpNJIOuQTRKV2uzW9rZPOmOFbxdDWBWn/5AERTHss6PeMvYZbi3FIrZzu+trSChFFHhFKK6bq0Bm8jsA1msL0tKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736519593; c=relaxed/simple;
-	bh=o68AVswZC8MMXvOqV0CQg1sP/nxOf+4m/m/wx22k+98=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iwYRgLJTRecv1JSrl05mTd1UisQEdB3YT2CmcHfNQPOGTJ9bm9/UoFG+kJWLJd4wxDbZ5wrTMy8+7mInXGUKo8uUNeZWXgXfJKdZnU0DG4Uzg4Q2uV3iaRM4AuSHWkuUQhqeapO7RF4SaTlKXbqq8KqrASr1dIftYReHIB8ZslM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mB3X0nmj; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1736519734; c=relaxed/simple;
+	bh=XxZTQ94IOB5giv2MX3QhVKqpyrKqpYGSguRp1nXjqRg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=powH0/s4Wmfw3m+R+cd1xVlD0e8XtWKenpy5HsVGALyMCwJyCoOanBk5LkMOr2HEvHboCrxq9vbRXJ2sZ1IRk6T8b2fHfwl3491uX6FsaOVePYah5916BOS7NZEPoKklIABWbruXANRbTnVCXY9Wtlu6QukTwofyaE6Kw01rXKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=go8IX5Qj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mB3X0nmj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736519591; x=1768055591;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=o68AVswZC8MMXvOqV0CQg1sP/nxOf+4m/m/wx22k+98=;
-  b=mB3X0nmjRpEha0bnl9t3LDLiL0OEudYoKSbXYRgjQUfSlcd97DeoC6/9
-   r4Il2ClE17G1oxtLcpoHAafOxJhTlpDYcU7xD5YkUICSQA6WOVnb1KMqK
-   AWpTMvkHjzuvayocoBUztWdou6tlLtXauuWkOPP9qlBDVybAJ06t6/ccD
-   GS2/GpCNmt9KyHvJv4yRSEeJDGs0hRBGl/DQ2Pczuc/1dzVoftHIbZrv/
-   1ITP/MI+3LtDxlcOMLyB/o99qu5RJSmotfu1LEfAmiRFYzHTTWimttaGh
-   QrMsg6SqpraBlL41DEdlBAfPkHnN2SQR32dIf629vQL/Hrwy6sC23xXq2
-   A==;
-X-CSE-ConnectionGUID: OjyWCAcPRZqMgGirwdzaBg==
-X-CSE-MsgGUID: sIxLCZ+xTIO6reZk3svCiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="62185543"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="62185543"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 06:33:11 -0800
-X-CSE-ConnectionGUID: WH9uslLgRtmIp6NNuu6cKw==
-X-CSE-MsgGUID: YLK1mSrmR5etTRZwxZqQ/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="108790955"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by orviesa003.jf.intel.com with ESMTP; 10 Jan 2025 06:33:07 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alireza Sanaee <alireza.sanaee@huawei.com>,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v7 RESEND 5/5] i386/cpu: add has_caches flag to check smp_cache configuration
-Date: Fri, 10 Jan 2025 22:51:15 +0800
-Message-Id: <20250110145115.1574345-6-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250110145115.1574345-1-zhao1.liu@intel.com>
-References: <20250110145115.1574345-1-zhao1.liu@intel.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="go8IX5Qj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D32CC4CED6;
+	Fri, 10 Jan 2025 14:35:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736519734;
+	bh=XxZTQ94IOB5giv2MX3QhVKqpyrKqpYGSguRp1nXjqRg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=go8IX5QjRYm7Sfxekep3fqF3SL1bscXJahGh6ZNlPpJC6mBgoxVqzs7xdV5Ks0lbU
+	 zKTkUR5gaf3YYK76mC8EWS+Of1a/SLBc0p9Ftwb8vZArfo2iZ5Ov1bQh8OcrUHac61
+	 IoN42jeN69LWBJx1J+QZCJWLitM78nFEsrrzh7fs=
+Date: Fri, 10 Jan 2025 15:35:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Kirti Wankhede <kwankhede@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 2/3] vfio/mdev: inline needed class_compat functionality
+Message-ID: <2025011041-fervor-enlarged-9d52@gregkh>
+References: <147a2a3e-8227-4f1b-9ab4-d0b4f261d2a6@gmail.com>
+ <0a14a4df-fbb5-4613-837f-f8025dc73380@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a14a4df-fbb5-4613-837f-f8025dc73380@gmail.com>
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On Tue, Dec 03, 2024 at 09:11:47PM +0100, Heiner Kallweit wrote:
+> vfio/mdev is the last user of class_compat, and it doesn't use it for
+> the intended purpose. See kdoc of class_compat_register():
+> Compatibility class are meant as a temporary user-space compatibility
+> workaround when converting a family of class devices to a bus devices.
+> 
+> In addition it uses only a part of the class_compat functionality.
+> So inline the needed functionality, and afterwards all class_compat
+> code can be removed.
+> 
+> No functional change intended. Compile-tested only.
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
+Did this ever get tested?
 
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c |  2 ++
- include/hw/boards.h   |  3 +++
- target/i386/cpu.c     | 11 +++++------
- 3 files changed, 10 insertions(+), 6 deletions(-)
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>  drivers/vfio/mdev/mdev_core.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/vfio/mdev/mdev_core.c b/drivers/vfio/mdev/mdev_core.c
+> index ed4737de4..a22c49804 100644
+> --- a/drivers/vfio/mdev/mdev_core.c
+> +++ b/drivers/vfio/mdev/mdev_core.c
+> @@ -18,7 +18,7 @@
+>  #define DRIVER_AUTHOR		"NVIDIA Corporation"
+>  #define DRIVER_DESC		"Mediated device Core Driver"
+>  
+> -static struct class_compat *mdev_bus_compat_class;
+> +static struct kobject *mdev_bus_kobj;
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 4e020c358b66..0be0ac044c22 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -332,6 +332,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
-     }
-+
-+    mc->smp_props.has_caches = true;
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 2ad711e56dbe..97125b027070 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -156,6 +156,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -166,6 +168,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index b6d6c4b96d49..7bc619236680 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8040,13 +8040,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
--     * if user didn't set smp_cache.
--     */
--    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
--        return;
-+    if (mc->smp_props.has_caches) {
-+        if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
-+            return;
-+        }
-     }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
--- 
-2.34.1
+If you want to resubmit this, after testing, you need some BIG comments
+here as to what you are doing and why, and that no one else should EVER
+do this again so they don't cut/paste from this code to create the same
+mess.
 
+thanks,
+
+greg k-h
