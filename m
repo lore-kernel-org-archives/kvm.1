@@ -1,138 +1,136 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BE8235C07;
-	Mon, 13 Jan 2025 10:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ACB235C12
+	for <kvm@vger.kernel.org>; Mon, 13 Jan 2025 10:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736763208; cv=none; b=GS+qstBP/T2w2GuwF25eVQuXmLyGGj5IqI5p1SjrxJ/hRTvQoPOm+wSOzDiam+CPOzrzEvae8brlq32OoWgWeXYbKMbmr9GniP4H4hAa+p/NNmF1VAreOz9j88qlohGsxmIaX1fc2IwesznwHakFSDSbxM0VwDkgj1fhafFoXXI=
+	t=1736763871; cv=none; b=d0ZHy425pA/hTnpr9qrtPM/g9kPX6GV8f7l90afB1ooNjVpWyWS0jhvghkgDkO4aG61tZZmBR9AQKzu0yLm3kL79ol30uNn1L9Dx48Q1guTbFLkcmYdMrpEBDsUetc2S9tz18OFWD/T4h0W16IhFkvr9wami/HlCv2badG9oM1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736763208; c=relaxed/simple;
-	bh=AbEypxldcB557r7ML3RWblxFpClAAQjKh+mk6I/n4hI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wlg15qLr+UOUOqCIm8CG13U/8Jaag9WN5yqCIk4WbpxkgYt3hcwXnd0nH88mya5YJ0rwPZkkJPRjv6hMZb1NHj0mVfX+aZWm+MoKjjECR+tzlO++Cmc3CSSeQUejxJYG9B4Dzr9DtCMdkFMo+XHlzaLzB3t/qvQ0Uo23/9dYYqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=ja5p8TTx; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1736763871; c=relaxed/simple;
+	bh=F4qf+2lORgz1p+95k0zKTTdI+gT5PnvTukho1wgb1nM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A2Lvdu1kEkF02Bc+u54njmjvRrMQLIM/8n93fnm7AsZg3huKPppMFQEiYhbnt1w0rgrJhLew7bjqjQo7kUcemfB+X/uke1As8KQMUucy31xdtzUsJhQ0hLT+m4mmkGdwg5zJRg4FiCmft/Tbrpdcw3MDm9LYPnD7g8SgtsYnr58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MCzYeIGU; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="ja5p8TTx"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXHRa-00DhCO-Tc; Mon, 13 Jan 2025 11:13:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=XmtGPnPvH6It0GR990T2qwUAKTVPIjKO4lymK4SpZf0=; b=ja5p8TTx11VmfSU8AkwM9xXOmC
-	R0HlPnuhaO1aaA7LAjGwUBgO0aROIcDCW4554r3UreeZMe+JNAeN6PwYZdoPIeZ/a9Ltr0v6pqZk1
-	pfgzT/3Cx6JtLcVuSP1PyMhcWVrhxendX5WNGukCBli1xObGZmO3AYDtBF4RaWeQH0hyrsaoDmXM5
-	ctWBMBsU6CeUXHU/QRGCyegPn52elUhgWOvbCK3wwso/sAASLSTVO/V6u2dsF0xAxNy4nqza65VKJ
-	o6G7pBxsDYS7UQt2L858VXvhHpMHcEgoILEFvv0/wl/CqRDS2y5sJxMQgal2aQkRXYRIjmhDq40nM
-	mI39Dq5Q==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXHRZ-00030N-L5; Mon, 13 Jan 2025 11:13:13 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tXHRG-00DToB-7D; Mon, 13 Jan 2025 11:12:54 +0100
-Message-ID: <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
-Date: Mon, 13 Jan 2025 11:12:52 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MCzYeIGU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736763868; x=1768299868;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=F4qf+2lORgz1p+95k0zKTTdI+gT5PnvTukho1wgb1nM=;
+  b=MCzYeIGUxhFoJhB27A2QRjuG9EMXdxIM/+c9ZDNx1H+jYRzejdHKFI9K
+   qEdWfZvkcdJx2Wf5/G+W4JFvDogWttFzpLg4zmbXd8C0dArIfU/dtM+f5
+   yA5XMHoPq6WNLiJ7FmW/1hfTGvq4OsXNk5iDcsrVb7mVzpt5DLQCF4wRE
+   LVDvC1aN/h5WXYhS4I4H8bEollUbUapMfaHFOoABV9dxc7AL2rIg6GTp2
+   AMMcnWyskDFCrnHTW40ZNFt79gkYBVIN8Rit0y+Gg6CArpUvUvbY73rpP
+   dBU0FXJU32Vk7XnFHtj8EonjBLQc7ukswkXc9vHNOSzuS03rUy5WGQFoj
+   A==;
+X-CSE-ConnectionGUID: sCBrPfMoReiyiZFRIywlaw==
+X-CSE-MsgGUID: iwkagot8QdmbOdfPYbXVFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="37246120"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="37246120"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 02:24:28 -0800
+X-CSE-ConnectionGUID: Rf+dTPLGTnCIgxLFGBw4Yg==
+X-CSE-MsgGUID: EcR+H/ruS/OfAorpyr/i6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="104946053"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa007.jf.intel.com with ESMTP; 13 Jan 2025 02:24:25 -0800
+Date: Mon, 13 Jan 2025 06:23:18 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	David Hildenbrand <david@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z4RA1vMGFECmYNXp@yilunxu-OptiPlex-7050>
+References: <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+ <219a4a7a-7c96-4746-9aba-ed06a1a00f3e@amd.com>
+ <58b96b74-bf9c-45d3-8c2e-459ec2206fc8@intel.com>
+ <8c8e024d-03dc-4201-8038-9e9e60467fad@amd.com>
+ <ca9bc239-d59b-4c53-9f14-aa212d543db9@intel.com>
+ <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
+ <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
+ <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
+ <Z4BEqnzkfN2yQg63@yilunxu-OptiPlex-7050>
+ <565fb987-a16d-4e15-ab03-807bf3920aa1@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
- changes
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
- kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
- Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
- Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <565fb987-a16d-4e15-ab03-807bf3920aa1@intel.com>
 
-On 1/13/25 10:07, Stefano Garzarella wrote:
-> On Mon, 13 Jan 2025 at 09:57, Stefano Garzarella <sgarzare@redhat.com> wrote:
->> On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
+On Mon, Jan 13, 2025 at 11:34:44AM +0800, Chenyi Qiang wrote:
 > 
-> [...]
 > 
->>>
->>> So, if I get this right:
->>> 1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
->>> 2. transport->release() calls vsock_remove_bound() without checking if sk
->>>   was bound and moved to bound list (refcnt=1)
->>> 3. vsock_bind() assumes sk is in unbound list and before
->>>   __vsock_insert_bound(vsock_bound_sockets()) calls
->>>   __vsock_remove_bound() which does:
->>>      list_del_init(&vsk->bound_table); // nop
->>>      sock_put(&vsk->sk);               // refcnt=0
->>>
->>> The following fixes things for me. I'm just not certain that's the only
->>> place where transport destruction may lead to an unbound socket being
->>> removed from the unbound list.
->>>
->>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>> index 7f7de6d88096..0fe807c8c052 100644
->>> --- a/net/vmw_vsock/virtio_transport_common.c
->>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>> @@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
->>>
->>>       if (remove_sock) {
->>>               sock_set_flag(sk, SOCK_DONE);
->>> -              virtio_transport_remove_sock(vsk);
->>> +              if (vsock_addr_bound(&vsk->local_addr))
->>> +                      virtio_transport_remove_sock(vsk);
->>
->> I don't get this fix, virtio_transport_remove_sock() calls
->>    vsock_remove_sock()
->>      vsock_remove_bound()
->>        if (__vsock_in_bound_table(vsk))
->>            __vsock_remove_bound(vsk);
->>
->>
->> So, should already avoid this issue, no?
+> On 1/10/2025 5:50 AM, Xu Yilun wrote:
+> > On Fri, Jan 10, 2025 at 05:00:22AM +0800, Xu Yilun wrote:
+> >>>>
+> >>>> https://github.com/aik/qemu/commit/3663f889883d4aebbeb0e4422f7be5e357e2ee46
+> >>>>
+> >>>> but I am not sure if this ever saw the light of the day, did not it?
+> >>>> (ironically I am using it as a base for encrypted DMA :) )
+> >>>
+> >>> Yeah, we are doing the same work. I saw a solution from Michael long
+> >>> time ago (when there was still
+> >>> a dedicated hostmem-memfd-private backend for restrictedmem/gmem)
+> >>> (https://github.com/AMDESE/qemu/commit/3bf5255fc48d648724d66410485081ace41d8ee6)
+> >>>
+> >>> For your patch, it only implement the interface for
+> >>> HostMemoryBackendMemfd. Maybe it is more appropriate to implement it for
+> >>> the parent object HostMemoryBackend, because besides the
+> >>> MEMORY_BACKEND_MEMFD, other backend types like MEMORY_BACKEND_RAM and
+> >>> MEMORY_BACKEND_FILE can also be guest_memfd-backed.
+> >>>
+> >>> Think more about where to implement this interface. It is still
+> >>> uncertain to me. As I mentioned in another mail, maybe ram device memory
+> >>> region would be backed by guest_memfd if we support TEE IO iommufd MMIO
+> >>
+> >> It is unlikely an assigned MMIO region would be backed by guest_memfd or be
+> >> implemented as part of HostMemoryBackend. Nowadays assigned MMIO resource is
+> >> owned by VFIO types, and I assume it is still true for private MMIO.
+> >>
+> >> But I think with TIO, MMIO regions also need conversion. So I support an
+> >> object, but maybe not guest_memfd_manager.
+> > 
+> > Sorry, I mean the name only covers private memory, but not private MMIO.
 > 
-> I got it wrong, I see now what are you trying to do, but I don't think
-> we should skip virtio_transport_remove_sock() entirely, it also purge
-> the rx_queue.
+> So you suggest renaming the object to cover the private MMIO. Then how
 
-Isn't rx_queue empty-by-definition in case of !__vsock_in_bound_table(vsk)?
+Yes.
 
->> Can the problem be in vsock_bind() ?
+> about page_conversion_manager, or page_attribute_manager?
 
-Well, I wouldn't say so.
-
->> Is this issue pre-existing or introduced by this series?
-> 
-> I think this is pre-existing, can you confirm?
-
-Yup, I agree, pre-existing.
-
-> In that case, I'd not stop this series, and fix it in another patch/series.
-
-Yeah, sure thing.
+Maybe memory_attribute_manager? Strictly speaking MMIO resource is not
+backed by pages.
 
 Thanks,
-Michal
+Yilun
 
+> 
+> > 
+> >>
+> >> Thanks,
+> >> Yilun
+> >>
+> >>> in future. Then a specific object is more appropriate. What's your opinion?
+> >>>
+> >>
+> 
