@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6C98F49
-	for <kvm@vger.kernel.org>; Mon, 13 Jan 2025 10:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB55D8F49
+	for <kvm@vger.kernel.org>; Mon, 13 Jan 2025 10:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736765671; cv=none; b=QOMswkAmaA2GM0tNw9YwiIveQUsDNxVmBYNq7V9sjL+N8KeMku4cJxZJUlecYGM6mOzybRdlzBL/NpJjdstK72TzWrg7z/zLgwnetpRLYh4lf1gWdt0sWpLyrIoHgYYs1weUVgfREo+J5xGiDaWu8G31ZYE9glp4WfbO66SVSQM=
+	t=1736765806; cv=none; b=heqyrt5OfzmRX2Y1x9nfhi7XJkMNI/U9WeSdWMTBSf+LfZQbyD7xlS3yuOH4Hr6xk62XdOQFYFjz4Xa0Euk8JsSPn0u2odoUvF8PdvAOQBybOyhCly8R4b5WfOI9PjBSzB9QSgChAGwjsAfXq5uGuRE8PkoQ3rZahC5um5v/wsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736765671; c=relaxed/simple;
-	bh=TOOrF38oqaBnJB/eez+HmHVopaxkPdbTGgDp/pU5RjQ=;
+	s=arc-20240116; t=1736765806; c=relaxed/simple;
+	bh=Ffpu9+s28n95nG5W3Qyqcjr9G/muce6kEMF3vXv6lDs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eGfaDgD0ZUhh6XaIYWwLObKU5b3/3NDQhdrRPSeLgxU1u/fcUa6pwhdML5MhRC8VebbZZkODB/E2pvwzrxxriHgBaTiLe1RI6A9IlT4vgEYlSxWASEYZG5vOVvsb/tIyPsUAuvL08vU5RxlgL9J9RtQF0mdcPJN8PPK0ETd3mHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LIt5VkaR; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=AmIWAz4jdo/PxeIJkeHBH68ezcezl0CQUDjmgp7A3Fl3IaUwTqL/9q1izP613vpXCh617rMUz4TRvW1f4Ac0rKQKXKXqrj2g7rR1wVjAx5Ne3q+1r3LFF/1kKIRrBQckwLgLS2fm9HLG1zqQjULUGsToHcddD1jPKGic7w1xEBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AvsLuknP; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LIt5VkaR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AvsLuknP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736765668;
+	s=mimecast20190719; t=1736765803;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9HQOfMOM95s+EYJU8hmkRhPiA1PBXDgzbMrXSQJD8gI=;
-	b=LIt5VkaRS4Bhji3HJNr414NLizBbi+Z91JMM4wsvCSwxtAI2eEOzGC+vfL7PNWmaWuy1JX
-	sLOADvAetS+ydR5XXl/0OoJfQfKdE9CN6HOWpByyVzr0Sa0nDBL9nLmGRVY1tI2SFt8Jzr
-	sc5R9rwf337VG+LDbiTsu9NJlsftUu4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Bqt6IiG5+9sByjnA4zN5pMEQNuV3hcpep/21Cc5Uf5E=;
+	b=AvsLuknPOzNzImwlKv84hcq97DmOljSwdv98oEj1GR/7OgZzvToMiDgQ+/tunndt7UvOkt
+	kQFuK1aD6S5tY5gQdgNlwphIGy54bzzGMZdVUHoZwxHSVdQTmwTLKVgcvffqfEODeemEDS
+	zZo1asNkIzxs5N1XJni9keoDr991JqQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484-QVTEde7wMemBbGhFKM0ylQ-1; Mon, 13 Jan 2025 05:54:26 -0500
-X-MC-Unique: QVTEde7wMemBbGhFKM0ylQ-1
-X-Mimecast-MFC-AGG-ID: QVTEde7wMemBbGhFKM0ylQ
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4362f893bfaso23210515e9.1
-        for <kvm@vger.kernel.org>; Mon, 13 Jan 2025 02:54:26 -0800 (PST)
+ us-mta-63-ElsM9lDQP2KyT6tbNht0cw-1; Mon, 13 Jan 2025 05:56:42 -0500
+X-MC-Unique: ElsM9lDQP2KyT6tbNht0cw-1
+X-Mimecast-MFC-AGG-ID: ElsM9lDQP2KyT6tbNht0cw
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4359eb032c9so33074675e9.2
+        for <kvm@vger.kernel.org>; Mon, 13 Jan 2025 02:56:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736765665; x=1737370465;
+        d=1e100.net; s=20230601; t=1736765801; x=1737370601;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=9HQOfMOM95s+EYJU8hmkRhPiA1PBXDgzbMrXSQJD8gI=;
-        b=KaPcjoaWLhz0/Q7nnHOhxw58nmRbNRh78VjnaxBSi0XURq3vA7E3wymwnjT4bvL8HH
-         Rvx9+zYvVUfds6RTSJ2vPtsmXVeiT/cXvQ2f+Iy6F53h1GHQMLRNQaj54ZSthWO2Yi9h
-         kAL4ommQMHHOJgiw/TlUr+mq7KpmNUk17xQa2BEeh/diYV8GaqaKKA9QwIY63glTWweR
-         QhlBXVS/zIacXnb2myD84qdEIKgaqrRv7I+iJmuxEsgqGe+ojvUX/fKOICfSVkggCzJW
-         k+tgdfG0Jj0aciNCyn8tY6YRXehWiWkdNJ+WWUAu3IIfSNLacUC4MetYNofwdYJyVPkx
-         XE/g==
-X-Forwarded-Encrypted: i=1; AJvYcCW0sMtMGfyOGvP4wx9ldFx7MZwdFNzwov6jonxYtw2M0e12ViGOuUl//B93BoK8KMtHz4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwkX93fCGvCnM16JTHY3ePB+UMDCKYEc7wzkKQ3VnqrbI2cSMt
-	N3r5+JdKIg6bMZlzkDKon+94uU019YCcVGFGq/oTjbjLLyVWr2ibq0jTgz9uqN9v0VIz8ElsVL9
-	SeCuqhlUZwCQdobj/qRD4u67/tkYWmHBbi3Y16gh0TUm+k5glZw==
-X-Gm-Gg: ASbGncufdeYidlttaeqeNXykvbMC7mpzt9bt/nq2tDjOCPAhEurcrFw4U8vNVSv0jmP
-	/o9DgMMtQIfaGckbY7i8fCsKe817brM88beUrzDisNaFHOhIPTHJ3vWa3T4ugT83CbLKScTORiI
-	AINvziK1XiNNuB/EN74J0V//vb9mJMwqM/hVtXv/plMNLSNEXMeqGcSJoprbacg37NUIsV0SYFo
-	vlN322LOWaSkCdIndHh+vaejfZpifm0J5sU2632HNH0odkT7oJ+OpgSxXUdVWftHuHa2thiL+yS
-	T/+jsJaoKZ/4nbY=
-X-Received: by 2002:a05:600c:3584:b0:434:9dfe:20e6 with SMTP id 5b1f17b1804b1-436e26f47efmr114821915e9.23.1736765665679;
-        Mon, 13 Jan 2025 02:54:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEyL+SmsZ0teQQ4tuEt73eTUidVAJRv36R6SY49pOR4C8+5lo76tUXh61eXsqtBs68kHDjhqw==
-X-Received: by 2002:a05:600c:3584:b0:434:9dfe:20e6 with SMTP id 5b1f17b1804b1-436e26f47efmr114821745e9.23.1736765665332;
-        Mon, 13 Jan 2025 02:54:25 -0800 (PST)
+        bh=Bqt6IiG5+9sByjnA4zN5pMEQNuV3hcpep/21Cc5Uf5E=;
+        b=jXORVicd7SQn3LAcHP756SVCpG+ojUX67Qb6hMuH7kz2pILfWGViCnOwYQctUl/2ZR
+         20KnM8tHj+u0oFp51uZdiDZ40KHxE6hBgTeGA0WTDc+0QHQsTrDTqh9dmsMGfSLyHZOo
+         8gZOO9HOxvsu2Vl13JXLGEZHA7DeZILwwEkZqw3iH6cFnWV9/KR3ZK9zG/wYUfdKgtZH
+         bypfxZEAhd6NBQbKbNc1/VOARejW6bPj2CBTUAUnzwUNI6/MB1eJyUVJ3RXlpopqwQBf
+         eQcDZ8sw8xuVczFA7KbyaSqC5WJIZtvtRkyz+quAIDY/xDeaR1wXrq+xwBcgrqZyZeBb
+         juGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVt7rXfnQE1RpbiE8/p/rhVtw2CsBCDnOc7HEMwI6M8flQhxpr0G196CpbSMp3DlCuz3s4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdS7l9wCjRDojRD4FbEB0a2zdvxCU27Aae0i0PY/Ss14WwGSjU
+	f7urPxaJ5BnMmSnvkS+mjXP8jo89daXugO11xOCcbYNpN+eTPw9Axxcba757os4BCjv8Ce0iFac
+	gxoyZOPB2dQcSIbW5BAAQF+jy5nVnm7Lf28KPNY9/YmeHqgfl6Q==
+X-Gm-Gg: ASbGncv4l/tOaFMoYVQ2PDzzXO0y/Q3WzPNBu0uQd0UjKOa4i9hRCtt3vrFw9DKEMEU
+	bIFab3EcFQLMXHjZMtQnNU1cICDEWuTeeR1Yg6yoLshr/QHs5nXQCCN6pJPuJR/J1PuGzRngmsc
+	4ZSFaMd7SPQSQwYL9pnU48ys0fdO/NKo2q4wdQnnjwnl/SBFpc94y9edwJTnLIo79t07TilZkah
+	UBnpnSjNLYcq6fgMD75e2uyq+sy8wocMIScI+ft3OGuV13HjMeR9JUGbGny3coVGM1snnMcPUYg
+	CND3x1BeyjKyaR4=
+X-Received: by 2002:a05:600c:5246:b0:434:feb1:adbb with SMTP id 5b1f17b1804b1-436e271d5d6mr185865255e9.31.1736765800924;
+        Mon, 13 Jan 2025 02:56:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+BRgJuFH5H5TuTYWmTL0xnS/ANrc8IOsYYBRorVvUh0h5E9NVB5udF6X1PquPeA7N7buHSw==
+X-Received: by 2002:a05:600c:5246:b0:434:feb1:adbb with SMTP id 5b1f17b1804b1-436e271d5d6mr185864985e9.31.1736765800561;
+        Mon, 13 Jan 2025 02:56:40 -0800 (PST)
 Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fb99sm141190115e9.3.2025.01.13.02.54.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e62133sm139003545e9.33.2025.01.13.02.56.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 02:54:24 -0800 (PST)
-Message-ID: <9dfde186-e3af-40e3-b79f-ad4c71a4b911@redhat.com>
-Date: Mon, 13 Jan 2025 11:54:23 +0100
+        Mon, 13 Jan 2025 02:56:40 -0800 (PST)
+Message-ID: <3e23b5b0-963c-4ca1-a26b-dd5f247a3a60@redhat.com>
+Date: Mon, 13 Jan 2025 11:56:38 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,20 +74,17 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-To: Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy
- <aik@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 6/7] RAMBlock: make guest_memfd require coordinate discard
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Williams Dan J <dan.j.williams@intel.com>,
  Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>
 References: <20241213070852.106092-1-chenyi.qiang@intel.com>
- <20241213070852.106092-3-chenyi.qiang@intel.com>
- <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
- <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+ <20241213070852.106092-7-chenyi.qiang@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -135,69 +132,34 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+In-Reply-To: <20241213070852.106092-7-chenyi.qiang@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 08.01.25 11:56, Chenyi Qiang wrote:
+On 13.12.24 08:08, Chenyi Qiang wrote:
+> As guest_memfd is now managed by guest_memfd_manager with
+> RamDiscardManager, only block uncoordinated discard.
 > 
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+> ---
+>   system/physmem.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> On 1/8/2025 12:48 PM, Alexey Kardashevskiy wrote:
->> On 13/12/24 18:08, Chenyi Qiang wrote:
->>> As the commit 852f0048f3 ("RAMBlock: make guest_memfd require
->>> uncoordinated discard") highlighted, some subsystems like VFIO might
->>> disable ram block discard. However, guest_memfd relies on the discard
->>> operation to perform page conversion between private and shared memory.
->>> This can lead to stale IOMMU mapping issue when assigning a hardware
->>> device to a confidential VM via shared memory (unprotected memory
->>> pages). Blocking shared page discard can solve this problem, but it
->>> could cause guests to consume twice the memory with VFIO, which is not
->>> acceptable in some cases. An alternative solution is to convey other
->>> systems like VFIO to refresh its outdated IOMMU mappings.
->>>
->>> RamDiscardManager is an existing concept (used by virtio-mem) to adjust
->>> VFIO mappings in relation to VM page assignment. Effectively page
->>> conversion is similar to hot-removing a page in one mode and adding it
->>> back in the other, so the similar work that needs to happen in response
->>> to virtio-mem changes needs to happen for page conversion events.
->>> Introduce the RamDiscardManager to guest_memfd to achieve it.
->>>
->>> However, guest_memfd is not an object so it cannot directly implement
->>> the RamDiscardManager interface.
->>>
->>> One solution is to implement the interface in HostMemoryBackend. Any
->>
->> This sounds about right.
->>
->>> guest_memfd-backed host memory backend can register itself in the target
->>> MemoryRegion. However, this solution doesn't cover the scenario where a
->>> guest_memfd MemoryRegion doesn't belong to the HostMemoryBackend, e.g.
->>> the virtual BIOS MemoryRegion.
->>
->> What is this virtual BIOS MemoryRegion exactly? What does it look like
->> in "info mtree -f"? Do we really want this memory to be DMAable?
-> 
-> virtual BIOS shows in a separate region:
-> 
->   Root memory region: system
->    0000000000000000-000000007fffffff (prio 0, ram): pc.ram KVM
->    ...
->    00000000ffc00000-00000000ffffffff (prio 0, ram): pc.bios KVM
->    0000000100000000-000000017fffffff (prio 0, ram): pc.ram
-> @0000000080000000 KVM
-> 
-> We also consider to implement the interface in HostMemoryBackend, but
-> maybe implement with guest_memfd region is more general. We don't know
-> if any DMAable memory would belong to HostMemoryBackend although at
-> present it is.
-> 
-> If it is more appropriate to implement it with HostMemoryBackend, I can
-> change to this way.
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 532182a6dd..585090b063 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -1872,7 +1872,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+>           assert(kvm_enabled());
+>           assert(new_block->guest_memfd < 0);
+>   
+> -        ret = ram_block_discard_require(true);
+> +        ret = ram_block_coordinated_discard_require(true);
+>           if (ret < 0) {
+>               error_setg_errno(errp, -ret,
+>                                "cannot set up private guest memory: discard currently blocked");
 
-Not sure that's the right place. Isn't it the (cc) machine that controls 
-the state?
-
-It's not really the memory backend, that's just the memory provider.
+Would that also unlock virtio-mem by accident?
 
 -- 
 Cheers,
