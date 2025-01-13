@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D920A85947;
-	Mon, 13 Jan 2025 02:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0B4125D5;
+	Mon, 13 Jan 2025 02:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736733793; cv=none; b=HMtOoWkHPzTwQ1t5+/pZqQuBgyIpbiqDRsqAMVcoAljNSODFcvJKpbxVMoIRk6L9q5dA/V7L5ZWneo99eyK8/0TbP6fDE9NNBiW2jRcgdxVevPGG6aM+oJ+RdgMWHKn8faN0Lqvf8+uezIzLNhhgM7z3qByEGFDO33bp4phDqok=
+	t=1736734178; cv=none; b=B8uVW4QNpZARv4NLbDS5ODxx/bbqka8rUfkNAjkC63wQQojH3t02dW+aLph5vMJvOEC/vPKy1uL7vQblHtnxF7hGHKs2uF/NEfQUcZu751HOQYLqGw9rEBC7FUpqZYTnwV936QXj2K98LXLVYMwp12jpbJAy20NPLzzeZSEmPao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736733793; c=relaxed/simple;
-	bh=sfdBtqi6lW1iH1mBJQIYGkSw01kBDN/4/lkRXmrvHmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PVbxjDPOOEK9URrztsCUfk5PWhzmjd5Cv/cP3YRGiKKWUHjYEtwkUdpoJuHboOMegcdMl76KmP66VelnBy/wuJRa3eZ+yAeSAHebU7wFeWeRp+VVasMXaskQA0cnShZ5Xd580zYVxQDKLYvqzv+nknoP2mtTWPaIYE0jXWPIEh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TLNatuf+; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1736734178; c=relaxed/simple;
+	bh=vp1TK9ckxcl2xdsdpCR4Hs+hfYadThZX+6WHkwH8NhI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ukQ8gGPnW1pUqggejf0TmEtSk+AUlOx8gOqxy72wQu8ERHOGE99xwoQBtMLO6CvhFTDBm8L9yv34ctwex3q0JVYFaVrMes6ejsBQBGy5PUzDqqT+/M5o5F/nzDVNMsq8bLzIJIRYiCB96ytOPqZCh9pflqbMm6RcKMfw4opVEFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SXZaKfnT; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TLNatuf+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SXZaKfnT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736733791; x=1768269791;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sfdBtqi6lW1iH1mBJQIYGkSw01kBDN/4/lkRXmrvHmA=;
-  b=TLNatuf+ZhgtR7aZyuJ2SqOeU+uagBpDL9Yom/TgksPlxNf/eU2qJywM
-   SVqxX4yC8BWW/ZnOkojqNgk8ZFlSVz2cOLgoPg4y9rRAZ1KbVLa9VUSx2
-   /J/4YkpNby4xC5OdSzQg3WgUTpRirCtd5MvL4RluG4d3aXQ0W630KidZW
-   1CRKz9K8/EGdhqFoW0UcgPH1WW91MenWF+kiF5m2R8MIWVWV1nnL2vz/s
-   wx1ixaKbAQET5/08JOGKgxlHDPP42ZbayT+nQBu9A9OpJdL7vPWH1f6CP
-   gZLTI5ruDuytYyd0B7f+oX+DSvEc1709KE9k3h7wkiMqB42TBnzjMIoHL
-   g==;
-X-CSE-ConnectionGUID: FdhQIpvbTOWXz/HaSa1Stw==
-X-CSE-MsgGUID: 33YiZ72DSMqWJ27XE8m5vQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="54391729"
+  t=1736734176; x=1768270176;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=vp1TK9ckxcl2xdsdpCR4Hs+hfYadThZX+6WHkwH8NhI=;
+  b=SXZaKfnTMToX3ZW0eJP47EVfKWhKcM07Qeohm78LAbwVqTGMakXSBegd
+   4zexoIVfWJjDOndhENfL5le1t+lJ1Kk+TrlAUC7zDRKw71lffTCCZYUPi
+   gTmgXnOQ4CjBR9hBR/FL15m1elRxp2k+8k1+z2+Lvj1zcYmr7acxcxRRl
+   C70BO9yXjzw074q0ERlwvMavgaY+SeXg9nc0Re7D/lIEAgvCh6IvaroTk
+   P941wySdzJIlaVOH/Pk/dQaV3jSI3uruhjsTQ9NNPJG4yQS5H5wRmvQ8C
+   zxOwyw7UGJmBUBr4LK2Ly9hjVQfHUvqdgPU+9xW+9vScOC+qaZ3QzxFrK
+   w==;
+X-CSE-ConnectionGUID: ACRRiwGNSPOcSupQ5uPdvA==
+X-CSE-MsgGUID: qXvPpjKPSUKM4aN1JWOfDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="54522339"
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="54391729"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2025 18:03:10 -0800
-X-CSE-ConnectionGUID: tor/JwdrTRy7aj7CM+8CFw==
-X-CSE-MsgGUID: /fEgISF7RYOs+l5WqseWcg==
+   d="scan'208";a="54522339"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2025 18:09:36 -0800
+X-CSE-ConnectionGUID: nH7d6XE2SWaU5hPjujvllg==
+X-CSE-MsgGUID: GilHLt81QJ2lABuJoPRvHw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="104279066"
+   d="scan'208";a="135141731"
 Received: from unknown (HELO [10.238.1.62]) ([10.238.1.62])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2025 18:03:06 -0800
-Message-ID: <8a9b761b-3ffc-4e67-8254-cf4150a997ae@linux.intel.com>
-Date: Mon, 13 Jan 2025 10:03:04 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2025 18:09:33 -0800
+Message-ID: <e3a2e8fa-b496-4010-9a8c-bfeb131bc43b@linux.intel.com>
+Date: Mon, 13 Jan 2025 10:09:30 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,6 +53,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 12/16] KVM: TDX: Inhibit APICv for TDX guest
+From: Binbin Wu <binbin.wu@linux.intel.com>
 To: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com,
  reinette.chatre@intel.com, xiaoyao.li@intel.com,
@@ -60,268 +61,384 @@ Cc: rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com,
  yan.y.zhao@intel.com, chao.gao@intel.com, linux-kernel@vger.kernel.org
 References: <20241209010734.3543481-1-binbin.wu@linux.intel.com>
  <20241209010734.3543481-13-binbin.wu@linux.intel.com>
+ <8a9b761b-3ffc-4e67-8254-cf4150a997ae@linux.intel.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20241209010734.3543481-13-binbin.wu@linux.intel.com>
+In-Reply-To: <8a9b761b-3ffc-4e67-8254-cf4150a997ae@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-DQpPbiAxMi85LzIwMjQgOTowNyBBTSwgQmluYmluIFd1IHdyb3RlOg0KPiBGcm9tOiBJc2Fr
-dSBZYW1haGF0YSA8aXNha3UueWFtYWhhdGFAaW50ZWwuY29tPg0KPg0KPiBJbmhpYml0IEFQ
-SUN2IGZvciBURFggZ3Vlc3QgaW4gS1ZNIHNpbmNlIFREWCBkb2Vzbid0IHN1cHBvcnQgQVBJ
-Q3YgYWNjZXNzZXMNCj4gZnJvbSBob3N0IFZNTS4NCj4NCj4gRm9sbG93IGhvdyBTRVYgaW5o
-aWJpdHMgQVBJQ3YuICBJLmUsIGRlZmluZSBhIG5ldyBpbmhpYml0IHJlYXNvbiBmb3IgVERY
-LCBzZXQNCj4gaXQgb24gVEQgaW5pdGlhbGl6YXRpb24sIGFuZCBhZGQgdGhlIGZsYWcgdG8g
-a3ZtX3g4Nl9vcHMucmVxdWlyZWRfYXBpY3ZfaW5oaWJpdHMuDQpGb3IgVERYIGd1ZXN0cywg
-QVBJQ3YgaXMgYWx3YXlzIGVuYWJsZWQgYnkgVERYIG1vZHVsZS4gQnV0IGluIGN1cnJlbnQg
-VERYIGJhc2ljIHN1cHBvcnQgcGF0Y2ggc2VyaWVzLCBURFggY29kZSBpbmhpYml0cyBBUElD
-diBmb3IgVERYIGd1ZXN0cyBmcm9tIHRoZSB2aWV3IG9mIEtWTS4gU3luY2VkIHdpdGggSXNh
-a3UsIHRoZSByZWFzb24gd2FzIHRvIHByZXZlbnQgdGhlIEFQSUN2IGFjdGl2ZSBzdGF0ZSBm
-cm9tIHRvZ2dsaW5nIGR1cmluZyBydW50aW1lLiBTZWFuIHJhaXNlZCB0aGUgY29uY2VybiBp
-biBhIFBVQ0sgc2Vzc2lvbiB0aGF0IGl0IGlzIG5vdCBjb25jZXB0IHJpZ2h0IHRvICJsaWUi
-IHRvIEtWTSB0aGF0IEFQSUN2IGlzIGRpc2FibGVkIHdoaWxlIGl0IGlzIGFjdHVhbGx5IGVu
-YWJsZWQuIEluc3RlYWQsIGl0J3MgYmV0dGVyIHRvIG1ha2UgQVBJQ3YgZW5hYmxlZCBhbmQg
-cHJldmVudCBpdCBmcm9tIGJlaW5nIGRpc2FibGVkIGZyb20gdGhlIHZpZXcgb2YgS1ZNLiBG
-b2xsb3dpbmcgaXMgdGhlIGFuYWx5c2lzIGFib3V0IHRoZSBBUElDdiBhY3RpdmUgc3RhdGUg
-Zm9yIFREWCB0byBraWNrIG9mZiBmdXJ0aGVyIGRpc2N1c3Npb25zLiBBUElDdiBhY3RpdmUg
-c3RhdGUgPT09PT09PT09PT09PT09PT09IEZyb20gdGhlIHZpZXcgb2YgS1ZNLCB3aGV0aGVy
-IEFQSUN2IHN0YXRlIGlzIGFjdGl2ZSBvciBub3QgaXMgZGVjaWRlZCBieTogMS4gQVBJQyBp
-cyBodyBlbmFibGVkIDIuIFZNIGFuZCB2Q1BVIGhhdmUgbm8gaW5oaWJpdCByZWFzb25zIHNl
-dC4gQVBJQyBodyBlbmFibGVkIC0tLS0tLS0tLS0tLS0tLSBBZnRlciBURFggdkNQVSBpbml0
-LCBBUElDIGlzIHNldCB0byB4MkFQSUMgbW9kZS4gSG93ZXZlciwgdXNlcnNwYWNlIGNvdWxk
-IGRpc2FibGUgQVBJQyB2aWEgS1ZNX1NFVF9MQVBJQyBvciBLVk1fU0VUX3tTUkVHUywgU1JF
-R1MyfS4gLSBLVk1fU0VUX0xBUElDIEN1cnJlbnRseSwgS1ZNIGFsbG93cyB1c2Vyc3BhY2Ug
-dG8gDQpyZXF1ZXN0IEtWTV9TRVRfTEFQSUMgdG8gc2V0IHRoZSBzdGF0ZSBvZiBMQVBJQyBm
-b3IgVERYIGd1ZXN0cy4gVGhlcmUgYXJlIHR3byBvcHRpb25zOiAtIEZvcmNlIHgyQVBJQyBt
-b2RlIGFuZCBkZWZhdWx0IGJhc2UgYWRkcmVzcyB3aGVuIHVzZXJzcGFjZSByZXF1ZXN0IEtW
-TV9TRVRfTEFQSUMuIC0gU2ltcGx5IHJlamVjdCBLVk1fU0VUX0xBUElDIGZvciBURFggZ3Vl
-c3QgKGFwaWMtPmd1ZXN0X2FwaWNfcHJvdGVjdGVkIGlzIHRydWUpLCBzaW5jZSBtaWdyYXRp
-b24gaXMgbm90IHN1cHBvcnRlZCB5ZXQuIENob29zZSBvcHRpb24gMiBmb3Igc2ltcGxpY2l0
-eSBmb3Igbm93LiAtIEtWTV9TRVRfe1NSRUdTLCBTUkVHUzJ9IEtWTSByZWplY3RzIHVzZXJz
-cGFjZSB0byBzZXQgQVBJQyBiYXNlIHdoZW4gdmNwdS0+a3ZtLT5hcmNoLmhhc19wcm90ZWN0
-ZWRfc3RhdGUgYW5kIHZjcHUtPmFyY2guZ3Vlc3Rfc3RhdGVfcHJvdGVjdGVkIGFyZSBib3Ro
-IHNldC4gQ3VycmVudGx5IGZvciBURFgsIGt2bS0+YXJjaC5oYXNfcHJvdGVjdGVkX3N0YXRl
-IGlzIG5vdCBzZXQsIHNvIHVzZXJzcGFjZSBpcyBhbGxvd2VkIHRvIG1vZGlmeSBBUElDIGJh
-c2UuIFRoZXJlIGFyZSB0aHJlZSBvcHRpb25zOiAtIFJlamVjdCBLVk1fU0VUX3tTUkVHUywg
-U1JFR1MyfSB3aGVuIGVpdGhlciB2Y3B1LT5hcmNoLmd1ZXN0X3N0YXRlX3Byb3RlY3RlZCBv
-ciB2Y3B1LT5rdm0tPmFyY2guaGFzX3Byb3RlY3RlZF9zdGF0ZSBpcyBzZXQuIC0gQ2hlY2sg
-dmNwdS0+YXJjaC5ndWVzdF9zdGF0ZV9wcm90ZWN0ZWQgYmVmb3JlIGt2bV9hcGljX3NldF9i
-YXNlKCkgaW4gX19zZXRfc3JlZ3NfY29tbW9uKCkuIC0gU2V0IGhhc19wcm90ZWN0ZWRfc3Rh
-dGUgZm9yIFREWCBndWVzdHMuIENob29zZSBvcHRpb24gMywgaS5lLiB0byBzZXQgaGFzX3By
-b3RlY3RlZF9zdGF0ZSBmb3IgVERYIGd1ZXN0cywgYWxpZ25pbmcgd2l0aCBTRVYvU05QLiBB
-UElDdiBpbmhpYml0IHJlYXNvbnMgDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0gQVBJQ3YgY291
-bGQgYmUgZGlzYWJsZWQgZHVlIHRvIGEgZmV3IGluaGliaXQgcmVhc29ucy4gLSBBUElDVl9J
-TkhJQklUX1JFQVNPTl9ESVNBQkxFRCBGb3IgVERYLCB0aGlzIGNvdWxkIGJlIHRyaWdnZXJl
-ZCB3aGVuIHRoZSBtb2R1bGUgcGFyYW1ldGVyIGVuYWJsZV9hcGljdiBpcyBzZXQgdG8gZmFs
-c2UuIGVuYWJsZV9hcGljdiBjb3VsZCBiZSBjaGVja2VkIGluIHRkeF9icmluZ3VwKCkuIERp
-c2FibGUgVERYIHN1cHBvcnQgaWYgIWVuYWJsZV9hcGljdi4gU28gdGhhdCBBUElDVl9JTkhJ
-QklUX1JFQVNPTl9ESVNBQkxFRCB3aWxsIG5vdCBiZSBzZXQgZHVyaW5nIHJ1bnRpbWUgYW5k
-IGFwaWMtPmFwaWN2X2FjdGl2ZSBpcyBpbml0aWFsaXplZCB0byB0cnVlLiAtIEFQSUNWX0lO
-SElCSVRfUkVBU09OX1BIWVNJQ0FMX0lEX0FMSUFTRUQgS1ZNIHdpbGwgcmVqZWN0IHVzZXJz
-cGFjZSB0byBtb2RpZnkgQVBJQyBiYXNlLCBpLmUuLCBBUElDIG1vZGUgd2lsbCBhbHdheXMg
-YmUgeDJBUElDIG1vZGUsIHRoZSBvbmx5IHJlYXNvbiB0aGlzIGNvdWxkIGJlIHNldCBpcyBp
-dCBmYWlscyB0byBhbGxvY2F0ZSBtZW1vcnkgZm9yIEtWTSBhcGljIG1hcC4gLSBBUElDVl9J
-TkhJQklUX1JFQVNPTl9QSVRfUkVJTkogQmFzZWQgb24gY3VycmVudCBjb2RlLCB0aGlzIGlz
-IHJlbGV2YW50IG9ubHkgdG8gQU1EJ3MgQVZJQywgc28gdGhpcyByZWFzb24gd2lsbCBub3Qg
-YmUgc2V0IGZvciBURFggZ3Vlc3RzLiBIb3dldmVyLCBLVk0gaXMgYWxzbyBub3QgYmUgYWJs
-ZSB0byBpbnRlcmNlcHQgRU9JIGZvciBURFggZ3Vlc3RzLiBGb3IgVERYLCBpZiBpbi1rZXJu
-ZWwgUElUIGlzIGVuYWJsZWQgYW5kIGluIHJlLWluamVjdCBtb2RlLCB0aGUgdXNlIG9mIFBJ
-VCBpbiBndWVzdCBtYXkgaGF2ZSBwcm9ibGVtLiBGb3J0dW5hdGVseSwgbW9kZXJuIE9TZXMg
-ZG9uJ3QgdXNlIFBJVC4gT3B0aW9uczogLSBFbmZvcmNlIGlycWNoaXAgDQpzcGxpdCBmb3Ig
-VERYIGd1ZXN0cywgaS5lLiBpbi1rZXJuZWwgUElUIGlzIG5vdCBzdXBwb3J0ZWQuIC0gTGVh
-dmUgaXQgYXMgaXQgaXMgYW5kIGV4cGVjdCBQSVQgd2lsbCBub3QgYmUgdXNlZC4gLSBSZWFz
-b25zIHdpbGwgbm90IGJlIHNldCBmb3IgVERYIC0gQVBJQ1ZfSU5ISUJJVF9SRUFTT05fSFlQ
-RVJWIFREWCBkb2Vzbid0IHN1cHBvcnQgSHlwZXJWIGd1ZXN0IHlldC4gLSBBUElDVl9JTkhJ
-QklUX1JFQVNPTl9BQlNFTlQgSW4ta2VybmVsIExBUElDIGlzIGNoZWNrZWQgaW4gdGR4X3Zj
-cHVfY3JlYXRlKCkuIC0gQVBJQ1ZfSU5ISUJJVF9SRUFTT05fQkxPQ0tJUlEgVERYIGRvZXNu
-J3Qgc3VwcG9ydCBLVk1fU0VUX0dVRVNUX0RFQlVHLiAtIEFQSUNWX0lOSElCSVRfUkVBU09O
-X0FQSUNfSURfTU9ESUZJRUQgS1ZNIHdpbGwgcmVqZWN0IHVzZXJzcGFjZSB0byBtb2RpZnkg
-QVBJQyBiYXNlLCBpLmUuLCBBUElDIG1vZGUgd2lsbCBhbHdheXMgYmUgeDJBUElDIG1vZGUu
-IC0gQVBJQ1ZfSU5ISUJJVF9SRUFTT05fQVBJQ19CQVNFX01PRElGSUVEIEtWTSB3aWxsIHJl
-amVjdCB1c2Vyc3BhY2UgdG8gc2V0IEFQSUMgYmFzZS4gLSBSZWFzb25zIHJlbGV2YW50IG9u
-bHkgdG8gQU1EJ3MgQVZJQyAtIEFQSUNWX0lOSElCSVRfUkVBU09OX05FU1RFRCwgLSBBUElD
-Vl9JTkhJQklUX1JFQVNPTl9JUlFXSU4sIC0gQVBJQ1ZfSU5ISUJJVF9SRUFTT05fU0VWLCAt
-IEFQSUNWX0lOSElCSVRfUkVBU09OX0xPR0lDQUxfSURfQUxJQVNFRC4gU3VtbWFyeSBhYm91
-dCBBUElDdiBpbmhpYml0IHJlYXNvbnM6IEFQSUN2IGNvdWxkIHN0aWxsIGJlIGRpc2FibGVk
-IHJ1bnRpbWUgaW4gc29tZSBjb3JuZXIgY2FzZSwgZS5nLCBBUElDVl9JTkhJQklUX1JFQVNP
-Tl9QSFlTSUNBTF9JRF9BTElBU0VEIGR1ZSB0byBtZW1vcnkgYWxsb2NhdGlvbiBmYWlsdXJl
-LiBBZnRlciBjaGVja2luZyBlbmFibGVfYXBpY3YgaW4gdGR4X2JyaW5ndXAoKSwgDQphcGlj
-LT5hcGljdl9hY3RpdmUgaXMgaW5pdGlhbGl6ZWQgYXMgdHJ1ZSBpbiBrdm1fY3JlYXRlX2xh
-cGljKCkuIElmIEFQSUN2IGlzIGluaGliaXRlZCBkdWUgdG8gYW55IHJlYXNvbiBydW50aW1l
-LCB0aGUgcmVmcmVzaF9hcGljdl9leGVjX2N0cmwoKSBjYWxsYmFjayBjb3VsZCBiZSB1c2Vk
-IHRvIGNoZWNrIGlmIEFQSUN2IGlzIGRpc2FibGVkIGZvciBURFgsIGlmIEFQSUN2IGlzIGRp
-c2FibGVkLCBidWcgdGhlIFZNLiBDaGFuZ2VzIG9mIEFQSUN2IGFjdGl2ZSBmcm9tIGZhbHNl
-IHRvIHRydWUgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IExh
-enkgY2hlY2sgZm9yIHBlbmRpbmcgQVBJQyBFT0kgd2hlbiBJbi1rZXJuZWwgSU9BUElDIC0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIElu
-LWtlcm5lbCBJT0FQSUMgZG9lcyBub3QgcmVjZWl2ZSBFT0kgd2l0aCBBTUQgU1ZNIEFWSUMg
-c2luY2UgdGhlIHByb2Nlc3NvciBhY2NlbGVyYXRlcyB3cml0ZSB0byBBUElDIEVPSSByZWdp
-c3RlciBhbmQgZG9lcyBub3QgdHJhcCBpZiB0aGUgaW50ZXJydXB0IGlzIGVkZ2UtdHJpZ2dl
-cmVkLiBTbyB0aGVyZSBpcyBhIHdvcmthcm91bmQgYnkgbGF6eSBjaGVjayBmb3IgcGVuZGlu
-ZyBBUElDIEVPSSBhdCB0aGUgdGltZSB3aGVuIHNldHRpbmcgbmV3IElPQVBJQyBpcnEsIGFu
-ZCB1cGRhdGUgSU9BUElDIEVPSSBpZiBubyBwZW5kaW5nIEFQSUMgRU9JLiBLVk0gaXMgYWxz
-byBub3QgYmUgYWJsZSB0byBpbnRlcmNlcHQgRU9JIGZvciBURFggZ3Vlc3RzLiAtIFdoZW4g
-QVBJQ3YgaXMgZW5hYmxlZCBUaGUgY29kZSBvZiBsYXp5IGNoZWNrIGZvciBwZW5kaW5nIEFQ
-SUMgRU9JIGRvZXNuJ3Qgd29yayBmb3IgVERYIGJlY2F1c2UgS1ZNIGNhbid0IGdldCB0aGUg
-c3RhdHVzIG9mIHJlYWwgSVJSIGFuZCBJU1IsIGFuZCB0aGUgdmFsdWVzIGFyZSAwcyBpbiB2
-SVJSIGFuZCB2SVNSIA0KaW4gYXBpYy0+cmVnc1tdLCBrdm1fYXBpY19wZW5kaW5nX2VvaSgp
-IHdpbGwgYWx3YXlzIHJldHVybiBmYWxzZS4gU28gdGhlIFJUQyBwZW5kaW5nIEVPSSB3aWxs
-IGFsd2F5cyBiZSBjbGVhcmVkIHdoZW4gaW9hcGljX3NldF9pcnEoKSBpcyBjYWxsZWQgZm9y
-IFJUQy4gVGhlbiB1c2Vyc3BhY2UgbWF5IG1pc3MgdGhlIGNvYWxlc2NlZCBSVEMgaW50ZXJy
-dXB0cy4gLSBXaGVuIFdoZW4gQVBJQ3YgaXMgZGlzYWJsZWQgaW9hcGljX2xhenlfdXBkYXRl
-X2VvaSgpIHdpbGwgbm90IGJlIGNhbGxlZO+8jHRoZW4gcGVuZGluZyBFT0kgc3RhdHVzIGZv
-ciBSVEMgd2lsbCBub3QgYmUgY2xlYXJlZCBhZnRlciBzZXR0aW5nIGFuZCB0aGlzIHdpbGwg
-bWlzbGVhZCB1c2Vyc3BhY2UgdG8gc2VlIGNvYWxlc2NlZCBSVEMgaW50ZXJydXB0cy4gT3B0
-aW9uczogLSBGb3JjZSBpcnFjaGlwIHNwbGl0IGZvciBURFggZ3Vlc3RzIHRvIGVsaW1pbmF0
-ZSB0aGUgdXNlIG9mIGluLWtlcm5lbCBJT0FQSUMuIC0gTGVhdmUgaXQgYXMgaXQgaXMsIGJ1
-dCB0aGUgdXNlIG9mIFJUQyBtYXkgbm90IGJlIGFjY3VyYXRlLiBrdm1fY2FuX3Bvc3RfdGlt
-ZXJfaW50ZXJydXB0KCkgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFdoZXRoZXIg
-aG91c2VrZWVwaW5nIENQVSBjYW4gZGVsaXZlciB0aW1lciBpbnRlcnJ1cHQgdG8gdGFyZ2V0
-IHZDUFUgdmlhIHBvc3RlZCBpbnRlcnJ1cHQgd2hlbiBub2h6X2Z1bGwgb3B0aW9uIHNldC4g
-LSBXaGVuIEFQSUN2IGFjdGl2ZSBpcyBmYWxzZSwgaXQgYWx3YXlzIHJldHVybiBmYWxzZS4g
-LSBXaGVuIEFQSUN2IGFjdGl2ZSBpcyB0cnVlLCBpdCBhbHNvIGRlcGVuZHMgb24gd2hldGhl
-ciBtd2FpdCBvciBobHQgaW4gZ3Vlc3QgaXMgc2V0LiBGb3IgVERYIGd1ZXN0cywgaGx0IHdp
-bGwgdHJpZ2dlciAjVkUgdW5jb25kaXRpb25hbGx5IGFuZCBURFggZ3Vlc3RzIHJlcXVlc3Qg
-SExUIHZpYSBURFZNQ0FMTC4gV2hldGhlciBtd2FpdCBpcyANCmFsbG93ZWQgZGVwZW5kcyBv
-biB0aGUgY3B1aWQgY29uZmlndXJhdGlvbiBpbiBURF9QQVJBTVMuIFNvIGN1cnJlbnQgaW1w
-bGVtZW50YXRpb24gb2Yga3ZtX213YWl0X2luX2d1ZXN0KCkgYW5kIGt2bV9obHRfaW5fZ3Vl
-c3QoKSBkb2Vzbid0IHJlZmxlY3QgdGhlIHJlYWwgc3RhdHVzIGZvciBURFggZ3Vlc3RzLiBI
-b3dldmVyLCBTZWFuIG1lbnRpb25lZCAiY29uc3VsdGluZyBrdm1fY2FuX3Bvc3RfdGltZXJf
-aW50ZXJydXB0KCkgaW4gdGhlIGV4cGlyYXRpb24gcGF0aCBpcyBzaWxseSIuIFRoZXJlIGNv
-dWxkIGJlIGNsZWFudXBzIGZvciB0aGlzIHBhcnQuIGh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
-L2t2bS9aMzJaakdINzJXUEtCTWFtQGdvb2dsZS5jb20vIFNvLCBkb24ndCBkbyBhbnkgVERY
-LXNwZWNpZmljIGxvZ2ljIGZvciBpdC4gYXBpY190aW1lcl9leHBpcmVkKCkgLS0tLS0tLS0t
-LS0tLS0tLS0tLS0gQWJvdXQga3ZtX2Nhbl9wb3N0X3RpbWVyX2ludGVycnVwdCgpIGluIHRo
-ZSBleHBpcmF0aW9uIHBhdGgsIHNlZSB0aGUgZGVzY3JpcHRpb24gYWJvdmUuIEZvciB0aGUg
-cmVzdCBwYXJ0LCB3aGVuIHRoZSBmdW5jdGlvbiBpcyBub3QgY2FsbGVkIGZyb20gdGltZXIg
-ZnVuY3Rpb24gLSBJZiBhcGljdl9hY3RpdmUsIHRoZSB0aW1lciBpbnRlcnJ1cHQgd2lsbCBi
-ZSBpbmplY3RlZCB2aWEga3ZtX2FwaWNfaW5qZWN0X3BlbmRpbmdfdGltZXJfaXJxcygpLiAt
-IElmICFhcGljdl9hY3RpdmUsIHRoZSB0aW1lciBpbnRlcnJ1cHQgd2lsbCBiZSBoYW5kbGVk
-IHZpYSBsYXBpY190aW1lci5wZW5kaW5nIGFwcHJvYWNoLCBhbmQgZmluYWxseSwgdGhlIHRp
-bWVyIGludGVycnVwdCBpcyBhbHNvIGJlIGluamVjdGVkIHZpYSBrdm1fYXBpY19pbmplY3Rf
-cGVuZGluZ190aW1lcl9pcnFzKCkuIEJhc2ljYWxseSwgdGhleSBhcmUgZnVuY3Rpb25hbGx5
-IGVxdWl2YWxlbnQgd2l0aCBzdWJ0bGUgZGlmZmVyZW5jZXMuIEUuZy4sIGlmIGFuIA0KaHJ0
-aW1lciBmaXJlcyB3aGlsZSBLVk0gaXMgaGFuZGxpbmcgYSB3cml0ZSB0byBUTUlDVCwgS1ZN
-IHdpbGwgZGVsaXZlciB0aGUgaW50ZXJydXB0IGlmIGNvbmZpZ3VyZWQgdG8gcG9zdCB0aW1l
-ciwgYnV0IG5vdCBpZiBBUElDdiBpcyBkaXNhYmxlZCwgYmVjYXVzZSB0aGUgbGF0dGVyIHdp
-bGwgaW5jcmVtZW50ICJwZW5kaW5nIiwgYW5kICJwZW5kaW5nIiB3aWxsIGJlIGNsZWFyZWQg
-YmVmb3JlIGhhbmRsaW5nIHRoZSBuZXcgVE1JQ1QuIERpdHRvIGZvciBzd2l0Y2ggQVBJQyB0
-aW1lciBtb2Rlcy4gU2VhbiBtZW50aW9uZWQgdGhlIGVudGlyZSBsYXBpY190aW1lci5wZW5k
-aW5nIGFwcHJvYWNoIG1heSBuZWVkIHRvIGJlIGRpdGNoZWQsIGFuZCB0aGUgdGltZXIgaW50
-ZXJydXB0IGNvdWxkIGJlIGRpcmVjdGx5IGRlbGl2ZXJlZCBubyBtYXR0ZXIgYXBpY3YgaXMg
-YWN0aXZlIG9yIG5vdC4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcva3ZtL1ozMlpqR0g3MldQ
-S0JNYW1AZ29vZ2xlLmNvbS8gVGhpcyBpcyBub3QgVERYIHNwZWNpZmljLCBsZWF2ZSBpdCBm
-b3Igbm93LiBPcHRpb25zOiAtIEZpeCBrdm1fbXdhaXRfaW5fZ3Vlc3QoKS9rdm1faGx0X2lu
-X2d1ZXN0KCkgZm9yIFREWCBndWVzdHMuIC0gVk1YIHByZWVtcHRpb24gdGltZXIgY2FuJ3Qg
-YmUgdXNlZCBieSBURFggZ3Vlc3RzIGFueXdheSwgbGVhdmUga3ZtX213YWl0X2luX2d1ZXN0
-KCkva3ZtX2hsdF9pbl9ndWVzdCgpIGFzIHRoZW0gYXJlLCBwb3N0ZWQgdGltZXIgaW50ZXJy
-dXB0IGNvdWxkIGJlIHVzZWQgd2hlbiB1c2Vyc3BhY2UgcmVxdWVzdGVkIHRvIGRpc2FibGUg
-ZXhpdCBmb3IgbXdhaXQvaGx0LiAtIFZNWCBwcmVlbXB0aW9uIHRpbWVyIGNhbid0IGJlIHVz
-ZWQgYnkgVERYIGd1ZXN0cyBhbnl3YXksIHNraXAgY2hlY2tpbmcga3ZtX213YWl0X2luX2d1
-ZXN0KCkva3ZtX2hsdF9pbl9ndWVzdCgpLiBrdm1fYXJjaF9keV9oYXNfcGVuZGluZ19pbnRl
-cnJ1cHQoKSANCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIEJlZm9yZSBl
-bmFibGluZyBvZmYtVEQgZGVidWcsIHRoZXJlIGlzIG5vIGZ1bmN0aW9uYWwgY2hhbmdlIGJl
-Y2F1c2UgdGhlcmUgaXMgbm8gUEFVU0UgRXhpdCBmb3IgVERYIGd1ZXN0cy4gQWZ0ZXIgZW5h
-Ymxpbmcgb2ZmLVREIGRlYnVnLCB0aGUga3ZtX3ZjcHVfYXBpY3ZfYWN0aXZlKHZjcHUpIHNo
-b3VsZCBiZSB0cnVlIHRvIGdldCB0aGUgcGVuZGluZyBpbnRlcnJ1cHQgZnJvbSBQSUQuIFNl
-dCBBUElDdiB0byBhY3RpdmUgZm9yIFREWCBpcyB0aGUgcmlnaHQgdGhpbmcgdG8gZG8uIHVw
-ZGF0ZV9jcjhfaW50ZXJjZXB0KCkgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBGdW5jdGlvbmFs
-bHkgdW5jaGFuZ2VkIGJlY2F1c2UgdGhlIGNhbGxiYWNrIHVwZGF0ZV9jcjhfaW50ZXJjZXB0
-KCkgZm9yIFREWCBpcyBpZ25vcmVkLiBTZXQgQVBJQ3YgdG8gYWN0aXZlIGZvciBURFggY2Fu
-IHJldHVybiBlYXJsaWVyIHRvIHNraXAgdW5uZWNlc3NhcnkgY29kZS4ga3ZtX2xhcGljX3Jl
-c2V0KCkga3ZtX2FwaWNfc2V0X3N0YXRlKCkgLS0tLS0tLS0tLS0tLS0tLS0tLS0gVGhlIGNh
-bGxiYWNrcyBhcGljdl9wb3N0X3N0YXRlX3Jlc3RvcmUoKSwgaHdhcGljX2lycl91cGRhdGUo
-KSwgYW5kIGh3YXBpY19pc3JfdXBkYXRlKCkgd2lsbCBiZSBjYWxsZWQgZm9yIFREWCBndWVz
-dHMgd2hlbiBhcGljdiBpcyBhY3RpdmUsIHRoZXNlIGNhbGxiYWNrcyBoYXZlIGJlZW4gaWdu
-b3JlZCBieSBURFggY29kZSBhbHJlYWR5LCBubyBmdW5jdGlvbmFsIGNoYW5nZXMuIElzc3Vl
-cyA9PT09PT0gUElDIGludGVycnVwdHMgLS0tLS0tLS0tLS0tLS0gS1ZNIGluamVjdCBQSUMg
-aW50ZXJydXB0IHZpYSBldmVudCBpbmplY3Rpb24gcGF0aC4gQ3VycmVudGx5LCBURFggY29k
-ZSBkb2Vzbid0IGhhbmRsZSB0aGlzLCB0aHVzIFBJQyBpbnRlcnJ1cHRzIHdpbGwgYmUgbG9z
-dC4gRm9ydHVuYXRlbHksIG1vZGVybiBPU2VzIA0KZG9uJ3QgdXNlIFBJQy4gV2UgY291bGQg
-dXNlIHBvc3RlZC1pbnRlcnJ1cHQgaW4gdG8gZGVsaXZlciBQSUMgaW50ZXJydXB0IGlmIG5l
-ZWRlZC4gT3IgY2FuIHdlIGFzc3VtZSBQSUMgd2lsbCBub3QgYmUgdXNlZCBieSBURFggZ3Vl
-c3RzPyBJbi1rZXJuZWwgUElUIGluIHJlLWluamVjdCBtb2RlIC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0gU2VlIHRoZSBkZXNjcmlwdGlvbiBmb3IgIkFQSUNWX0lOSElCSVRf
-UkVBU09OX1BJVF9SRUlOSiIgYWJvdmUuIExhenkgY2hlY2sgZm9yIHBlbmRpbmcgQVBJQyBF
-T0kgb2YgSW4ta2VybmVsIElPQVBJQyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0gU2VlIHRoZSBkZXNjcmlwdGlvbiBmb3IgdGhlIHNhbWUg
-aXRlbSBpbiAiQ2hhbmdlcyBvZiBBUElDdiBhY3RpdmUgZnJvbSBmYWxzZSB0byB0cnVlIi4g
-T3BlbjogRm9yIHRoZSBpc3N1ZXMgcmVsYXRlZCB0byBpbi1rZXJuZWwgUElUIGFuZCBpbi1r
-ZXJuZWwgSU9BUElDLCBzaG91bGQgS1ZNIGZvcmNlIGlycWNoaXAgc3BsaXQgZm9yIFREWCBn
-dWVzdHMgdG8gZWxpbWluYXRlIHRoZSB1c2Ugb2YgaW4ta2VybmVsIFBJVCBhbmQgaW4ta2Vy
-bmVsIElPQVBJQz8gUHJvcG9zZWQgY29kZSBjaGFuZ2UgPT09PT09PT09PT09PT09PT09PT0g
-QmVsb3cgaXMgdGhlIHByb3Bvc2VkIGNvZGUgY2hhbmdlIHRvIGNoYW5nZSBBUElDdiBhY3Rp
-dmUgZnJvbSBmYWxzZSB0byB0cnVlIGZvciBURFggZ3Vlc3RzLiBGb3JjZSBpcnFjaGlwIHNw
-bGl0IGZvciBURVggZ3Vlc3RzIGlzIG5vdCBpbmNsdWRlZC4gTm90ZSwgYnkgcmVqZWN0aW5n
-IEtWTV9HRVRfTEFQSUMvS1ZNX1NFVF9MQVBJQyBmb3IgVERYIGd1ZXN0cyAoaS5lLiwgd2hl
-biBndWVzdF9hcGljX3Byb3RlY3RlZCksIGl0IHJldHVybnMgYW4gZXJyb3IgY29kZSBpbnN0
-ZWFkIG9mIHJldHVybmluZyAwLiBJdCByZXF1aXJlcyBtb2RpZmljYXRpb25zIGluIA0KUUVN
-VSBURFggc3VwcG9ydCBjb2RlIHRvIGF2b2lkIHJlcXVlc3RpbmcgS1ZNX0dFVF9MQVBJQy9L
-Vk1fU0VUX0xBUElDLiA4PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gZGlmZiAtLWdpdCBhL2Fy
-Y2gveDg2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmggYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9r
-dm1faG9zdC5oIGluZGV4IDA3ODc4NTVhYjAwNi4uOTcwMjVhMjQwZDU0IDEwMDY0NCAtLS0g
-YS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9rdm1faG9zdC5oICsrKyBiL2FyY2gveDg2L2luY2x1
-ZGUvYXNtL2t2bV9ob3N0LmggQEAgLTEyODksMTUgKzEyODksNiBAQCBlbnVtIGt2bV9hcGlj
-dl9pbmhpYml0IHsgKi8gQVBJQ1ZfSU5ISUJJVF9SRUFTT05fTE9HSUNBTF9JRF9BTElBU0VE
-LCAtIC8qKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKiovIC0gLyogSU5ISUJJVHMgdGhhdCBhcmUgcmVsZXZhbnQgb25seSB0byB0aGUg
-SW50ZWwncyBBUElDdi4gKi8gLSAvKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqLyAtIC0gLyogLSAqIEFQSUN2IGlzIGRpc2FibGVk
-IGJlY2F1c2UgVERYIGRvZXNuJ3Qgc3VwcG9ydCBpdC4gLSAqLyAtIEFQSUNWX0lOSElCSVRf
-UkVBU09OX1REWCwgLSBOUl9BUElDVl9JTkhJQklUX1JFQVNPTlMsIH07IEBAIC0xMzE2LDgg
-KzEzMDcsNyBAQCBlbnVtIGt2bV9hcGljdl9pbmhpYml0IHsgX19BUElDVl9JTkhJQklUX1JF
-QVNPTihJUlFXSU4pLCBcIF9fQVBJQ1ZfSU5ISUJJVF9SRUFTT04oUElUX1JFSU5KKSwgXCBf
-X0FQSUNWX0lOSElCSVRfUkVBU09OKFNFViksIFwgLSBfX0FQSUNWX0lOSElCSVRfUkVBU09O
-KExPR0lDQUxfSURfQUxJQVNFRCksIFwgLSBfX0FQSUNWX0lOSElCSVRfUkVBU09OKFREWCkg
-KyANCl9fQVBJQ1ZfSU5ISUJJVF9SRUFTT04oTE9HSUNBTF9JRF9BTElBU0VEKSBzdHJ1Y3Qg
-a3ZtX2FyY2ggeyB1bnNpZ25lZCBsb25nIG5fdXNlZF9tbXVfcGFnZXM7IGRpZmYgLS1naXQg
-YS9hcmNoL3g4Ni9rdm0vdm14L21haW4uYyBiL2FyY2gveDg2L2t2bS92bXgvbWFpbi5jIGlu
-ZGV4IDliNzliNGJiMDYzZi4uZGY5Y2M0YTdmMmQ4IDEwMDY0NCAtLS0gYS9hcmNoL3g4Ni9r
-dm0vdm14L21haW4uYyArKysgYi9hcmNoL3g4Ni9rdm0vdm14L21haW4uYyBAQCAtNzgyLDgg
-Kzc4MiwxMCBAQCBzdGF0aWMgdm9pZCB2dF9zZXRfYXBpY19hY2Nlc3NfcGFnZV9hZGRyKHN0
-cnVjdCBrdm1fdmNwdSAqdmNwdSkgc3RhdGljIHZvaWQgdnRfcmVmcmVzaF9hcGljdl9leGVj
-X2N0cmwoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KSB7IC0gaWYgKFdBUk5fT05fT05DRShpc190
-ZF92Y3B1KHZjcHUpKSkgKyBpZiAoaXNfdGRfdmNwdSh2Y3B1KSkgeyArIEtWTV9CVUdfT04o
-IWt2bV92Y3B1X2FwaWN2X2FjdGl2ZSh2Y3B1KSwgdmNwdS0+a3ZtKTsgcmV0dXJuOyArIH0g
-dm14X3JlZnJlc2hfYXBpY3ZfZXhlY19jdHJsKHZjcHUpOyB9IEBAIC05MDgsOCArOTEwLDcg
-QEAgc3RhdGljIGludCB2dF9nbWVtX3ByaXZhdGVfbWF4X21hcHBpbmdfbGV2ZWwoc3RydWN0
-IGt2bSAqa3ZtLCBrdm1fcGZuX3QgcGZuKSBCSVQoQVBJQ1ZfSU5ISUJJVF9SRUFTT05fQkxP
-Q0tJUlEpIHwgXCBCSVQoQVBJQ1ZfSU5ISUJJVF9SRUFTT05fUEhZU0lDQUxfSURfQUxJQVNF
-RCkgfCBcIEJJVChBUElDVl9JTkhJQklUX1JFQVNPTl9BUElDX0lEX01PRElGSUVEKSB8IFwg
-LSBCSVQoQVBJQ1ZfSU5ISUJJVF9SRUFTT05fQVBJQ19CQVNFX01PRElGSUVEKSB8IFwgLSBC
-SVQoQVBJQ1ZfSU5ISUJJVF9SRUFTT05fVERYKSkgKyBCSVQoQVBJQ1ZfSU5ISUJJVF9SRUFT
-T05fQVBJQ19CQVNFX01PRElGSUVEKSkgc3RydWN0IGt2bV94ODZfb3BzIHZ0X3g4Nl9vcHMg
-X19pbml0ZGF0YSA9IHsgLm5hbWUgPSANCktCVUlMRF9NT0ROQU1FLCBkaWZmIC0tZ2l0IGEv
-YXJjaC94ODYva3ZtL3ZteC90ZHguYyBiL2FyY2gveDg2L2t2bS92bXgvdGR4LmMgaW5kZXgg
-NjdmYzM5MWZlNzk4Li5jYzUxNmFiMmQ5OTAgMTAwNjQ0IC0tLSBhL2FyY2gveDg2L2t2bS92
-bXgvdGR4LmMgKysrIGIvYXJjaC94ODYva3ZtL3ZteC90ZHguYyBAQCAtNjE0LDYgKzYxNCw3
-IEBAIGludCB0ZHhfdm1faW5pdChzdHJ1Y3Qga3ZtICprdm0pIHN0cnVjdCBrdm1fdGR4ICpr
-dm1fdGR4ID0gdG9fa3ZtX3RkeChrdm0pOyBrdm0tPmFyY2guaGFzX3ByaXZhdGVfbWVtID0g
-dHJ1ZTsgKyBrdm0tPmFyY2guaGFzX3Byb3RlY3RlZF9zdGF0ZSA9IHRydWU7IC8qICogQmVj
-YXVzZSBndWVzdCBURCBpcyBwcm90ZWN0ZWQsIFZNTSBjYW4ndCBwYXJzZSB0aGUgaW5zdHJ1
-Y3Rpb24gaW4gVEQuIEBAIC0yMzU0LDggKzIzNTUsNiBAQCBzdGF0aWMgaW50IF9fdGR4X3Rk
-X2luaXQoc3RydWN0IGt2bSAqa3ZtLCBzdHJ1Y3QgdGRfcGFyYW1zICp0ZF9wYXJhbXMsIGdv
-dG8gdGVhcmRvd247IH0gLSBrdm1fc2V0X2FwaWN2X2luaGliaXQoa3ZtLCBBUElDVl9JTkhJ
-QklUX1JFQVNPTl9URFgpOyAtIHJldHVybiAwOyAvKiBAQCAtMjc0MSw3ICsyNzQwLDYgQEAg
-c3RhdGljIGludCB0ZHhfdGRfdmNwdV9pbml0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgdTY0
-IHZjcHVfcmN4KSByZXR1cm4gLUVJTzsgfSAtIHZjcHUtPmFyY2guYXBpYy0+YXBpY3ZfYWN0
-aXZlID0gZmFsc2U7IHZjcHUtPmFyY2gubXBfc3RhdGUgPSBLVk1fTVBfU1RBVEVfUlVOTkFC
-TEU7IHJldHVybiAwOyBAQCAtMzI3Myw2ICszMjcxLDExIEBAIGludCBfX2luaXQgdGR4X2Jy
-aW5ndXAodm9pZCkgZ290byBzdWNjZXNzX2Rpc2FibGVfdGR4OyB9ICsgaWYgKCFlbmFibGVf
-YXBpY3YpIHsgKyBwcl9lcnIoIkFQSUN2IGlzIHJlcXVpcmVkIGZvciBURFhcbiIpOyArIGdv
-dG8gc3VjY2Vzc19kaXNhYmxlX3RkeDsgKyB9ICsgaWYgDQooIXRkcF9tbXVfZW5hYmxlZCB8
-fCAhZW5hYmxlX21taW9fY2FjaGluZykgeyBwcl9lcnIoIlREUCBNTVUgYW5kIE1NSU8gY2Fj
-aGluZyBpcyByZXF1aXJlZCBmb3IgVERYXG4iKTsgZ290byBzdWNjZXNzX2Rpc2FibGVfdGR4
-OyBkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL3g4Ni5jIGIvYXJjaC94ODYva3ZtL3g4Ni5j
-IGluZGV4IGU0MzNjOGVlNjNhNS4uODM3YTI4N2Q4YzQ3IDEwMDY0NCAtLS0gYS9hcmNoL3g4
-Ni9rdm0veDg2LmMgKysrIGIvYXJjaC94ODYva3ZtL3g4Ni5jIEBAIC01MTA4LDYgKzUxMDgs
-OSBAQCB2b2lkIGt2bV9hcmNoX3ZjcHVfcHV0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkgc3Rh
-dGljIGludCBrdm1fdmNwdV9pb2N0bF9nZXRfbGFwaWMoc3RydWN0IGt2bV92Y3B1ICp2Y3B1
-LCBzdHJ1Y3Qga3ZtX2xhcGljX3N0YXRlICpzKSB7ICsgaWYgKHZjcHUtPmFyY2guYXBpYy0+
-Z3Vlc3RfYXBpY19wcm90ZWN0ZWQpICsgcmV0dXJuIC1FSU5WQUw7ICsga3ZtX3g4Nl9jYWxs
-KHN5bmNfcGlyX3RvX2lycikodmNwdSk7IHJldHVybiBrdm1fYXBpY19nZXRfc3RhdGUodmNw
-dSwgcyk7IEBAIC01MTE4LDYgKzUxMjEsOSBAQCBzdGF0aWMgaW50IGt2bV92Y3B1X2lvY3Rs
-X3NldF9sYXBpYyhzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIHsgaW50IHI7ICsgaWYgKHZjcHUt
-PmFyY2guYXBpYy0+Z3Vlc3RfYXBpY19wcm90ZWN0ZWQpICsgcmV0dXJuIC1FSU5WQUw7ICsg
-ciA9IGt2bV9hcGljX3NldF9zdGF0ZSh2Y3B1LCBzKTsgaWYgKHIpIHJldHVybiByOw0K
+
+
+
+On 1/13/2025 10:03 AM, Binbin Wu wrote:
+>
+> On 12/9/2024 9:07 AM, Binbin Wu wrote:
+>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>
+>> Inhibit APICv for TDX guest in KVM since TDX doesn't support APICv accesses
+>> from host VMM.
+>>
+>> Follow how SEV inhibits APICv.  I.e, define a new inhibit reason for TDX, set
+>> it on TD initialization, and add the flag to kvm_x86_ops.required_apicv_inhibits.
+>
+Resend due to the format mess.
+
+For TDX guests, APICv is always enabled by TDX module. But in current TDX
+basic support patch series, TDX code inhibits APICv for TDX guests from
+the view of KVM. Synced with Isaku, the reason was to prevent the APICv
+active state from toggling during runtime.
+
+Sean raised the concern in a PUCK session that it is not concept right to
+"lie" to KVM that APICv is disabled while it is actually enabled. Instead,
+it's better to make APICv enabled and prevent it from being disabled from
+the view of KVM.
+
+Following is the analysis about the APICv active state for TDX to kick off
+further discussions.
+
+APICv active state
+==================
+ From the view of KVM, whether APICv state is active or not is decided by:
+1. APIC is hw enabled
+2. VM and vCPU have no inhibit reasons set.
+
+APIC hw enabled
+---------------
+
+After TDX vCPU init, APIC is set to x2APIC mode. However, userspace could
+disable APIC via KVM_SET_LAPIC or KVM_SET_{SREGS, SREGS2}.
+
+- KVM_SET_LAPIC
+   Currently, KVM allows userspace to request KVM_SET_LAPIC to set the state
+   of LAPIC for TDX guests.
+   There are two options:
+   - Force x2APIC mode and default base address when userspace request
+     KVM_SET_LAPIC.
+   - Simply reject KVM_SET_LAPIC for TDX guest (apic->guest_apic_protected
+     is true), since migration is not supported yet.
+   Choose option 2 for simplicity for now.
+
+- KVM_SET_{SREGS, SREGS2}
+   KVM rejects userspace to set APIC base when
+   vcpu->kvm->arch.has_protected_state and vcpu->arch.guest_state_protected
+   are both set.
+   Currently for TDX, kvm->arch.has_protected_state is not set, so userspace
+   is allowed to modify APIC base.
+   There are three options:
+   - Reject KVM_SET_{SREGS, SREGS2} when either vcpu->arch.guest_state_protected
+     or vcpu->kvm->arch.has_protected_state is set.
+   - Check vcpu->arch.guest_state_protected before kvm_apic_set_base() in
+     __set_sregs_common().
+   - Set has_protected_state for TDX guests.
+   Choose option 3, i.e. to set has_protected_state for TDX guests, aligning
+   with SEV/SNP.
+
+APICv inhibit reasons
+---------------------
+
+APICv could be disabled due to a few inhibit reasons.
+
+- APICV_INHIBIT_REASON_DISABLED
+   For TDX, this could be triggered when the module parameter enable_apicv is
+   set to false.
+   enable_apicv could be checked in tdx_bringup(). Disable TDX support if
+   !enable_apicv. So that APICV_INHIBIT_REASON_DISABLED will not be set
+   during runtime and apic->apicv_active is initialized to true.
+
+- APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED
+   KVM will reject userspace to modify APIC base, i.e., APIC mode will always
+   be x2APIC mode, the only reason this could be set is it fails to allocate
+   memory for KVM apic map.
+
+- APICV_INHIBIT_REASON_PIT_REINJ
+   Based on current code, this is relevant only to AMD's AVIC, so this reason
+   will not be set for TDX guests. However, KVM is also not be able to
+   intercept EOI for TDX guests. For TDX, if in-kernel PIT is enabled and in
+   re-inject mode, the use of PIT in guest may have problem. Fortunately,
+   modern OSes don't use PIT.
+   Options:
+   - Enforce irqchip split for TDX guests, i.e. in-kernel PIT is not supported.
+   - Leave it as it is and expect PIT will not be used.
+
+- Reasons will not be set for TDX
+   - APICV_INHIBIT_REASON_HYPERV
+     TDX doesn't support HyperV guest yet.
+   - APICV_INHIBIT_REASON_ABSENT
+     In-kernel LAPIC is checked in tdx_vcpu_create().
+   - APICV_INHIBIT_REASON_BLOCKIRQ
+     TDX doesn't support KVM_SET_GUEST_DEBUG.
+   - APICV_INHIBIT_REASON_APIC_ID_MODIFIED
+     KVM will reject userspace to modify APIC base, i.e., APIC mode will always
+     be x2APIC mode.
+   - APICV_INHIBIT_REASON_APIC_BASE_MODIFIED
+     KVM will reject userspace to set APIC base.
+
+- Reasons relevant only to AMD's AVIC
+   - APICV_INHIBIT_REASON_NESTED,
+   - APICV_INHIBIT_REASON_IRQWIN,
+   - APICV_INHIBIT_REASON_SEV,
+   - APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED.
+
+Summary about APICv inhibit reasons:
+APICv could still be disabled runtime in some corner case, e.g,
+APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED due to memory allocation failure.
+After checking enable_apicv in tdx_bringup(), apic->apicv_active is
+initialized as true in kvm_create_lapic().  If APICv is inhibited due to any
+reason runtime, the refresh_apicv_exec_ctrl() callback could be used to check
+if APICv is disabled for TDX, if APICv is disabled, bug the VM.
+
+
+Changes of APICv active from false to true
+==========================================
+
+Lazy check for pending APIC EOI when In-kernel IOAPIC
+-----------------------------------------------------
+In-kernel IOAPIC does not receive EOI with AMD SVM AVIC since the processor
+accelerates write to APIC EOI register and does not trap if the interrupt
+is edge-triggered. So there is a workaround by lazy check for pending APIC
+EOI at the time when setting new IOAPIC irq, and update IOAPIC EOI if no
+pending APIC EOI.
+KVM is also not be able to intercept EOI for TDX guests.
+- When APICv is enabled
+   The code of lazy check for pending APIC EOI doesn't work for TDX because
+   KVM can't get the status of real IRR and ISR, and the values are 0s in
+   vIRR and vISR in apic->regs[], kvm_apic_pending_eoi() will always return
+   false. So the RTC pending EOI will always be cleared when ioapic_set_irq()
+   is called for RTC. Then userspace may miss the coalesced RTC interrupts.
+- When When APICv is disabled
+   ioapic_lazy_update_eoi() will not be called，then pending EOI status for
+   RTC will not be cleared after setting and this will mislead userspace to
+   see coalesced RTC interrupts.
+Options:
+- Force irqchip split for TDX guests to eliminate the use of in-kernel IOAPIC.
+- Leave it as it is, but the use of RTC may not be accurate.
+
+kvm_can_post_timer_interrupt()
+------------------------------
+Whether housekeeping CPU can deliver timer interrupt to target vCPU via
+posted interrupt when nohz_full option set.
+- When APICv active is false, it always return false.
+- When APICv active is true, it also depends on whether mwait or hlt in guest
+   is set.
+   For TDX guests, hlt will trigger #VE unconditionally and TDX guests request
+   HLT via TDVMCALL. Whether mwait is allowed depends on the cpuid configuration
+   in TD_PARAMS.
+   So current implementation of kvm_mwait_in_guest() and kvm_hlt_in_guest()
+   doesn't reflect the real status for TDX guests.
+However, Sean mentioned "consulting kvm_can_post_timer_interrupt() in the
+expiration path is silly". There could be cleanups for this part.
+https://lore.kernel.org/kvm/Z32ZjGH72WPKBMam@google.com/
+So, don't do any TDX-specific logic for it.
+
+apic_timer_expired()
+--------------------
+About kvm_can_post_timer_interrupt() in the expiration path, see the
+description above.
+For the rest part, when the function is not called from timer function
+- If apicv_active, the timer interrupt will be injected via
+   kvm_apic_inject_pending_timer_irqs().
+- If !apicv_active, the timer interrupt will be handled via
+   lapic_timer.pending approach, and finally, the timer interrupt is also be
+   injected via kvm_apic_inject_pending_timer_irqs().
+Basically, they are functionally equivalent with subtle differences.  E.g.,
+if an hrtimer fires while KVM is handling a write to TMICT, KVM will deliver
+the interrupt if configured to post timer, but not if APICv is disabled,
+because the latter will increment "pending", and "pending" will be cleared
+before handling the new TMICT.  Ditto for switch APIC timer modes.
+Sean mentioned the entire lapic_timer.pending approach may need to be ditched,
+and the timer interrupt could be directly delivered no matter apicv is active
+or not. https://lore.kernel.org/kvm/Z32ZjGH72WPKBMam@google.com/
+This is not TDX specific, leave it for now.
+
+Options:
+- Fix kvm_mwait_in_guest()/kvm_hlt_in_guest() for TDX guests.
+- VMX preemption timer can't be used by TDX guests anyway, leave
+   kvm_mwait_in_guest()/kvm_hlt_in_guest() as them are, posted timer interrupt
+   could be used when userspace requested to disable exit for mwait/hlt.
+- VMX preemption timer can't be used by TDX guests anyway, skip checking
+   kvm_mwait_in_guest()/kvm_hlt_in_guest().
+
+kvm_arch_dy_has_pending_interrupt()
+-----------------------------------
+Before enabling off-TD debug, there is no functional change because there
+is no PAUSE Exit for TDX guests.
+After enabling off-TD debug, the kvm_vcpu_apicv_active(vcpu) should be true
+to get the pending interrupt from PID. Set APICv to active for TDX is the
+right thing to do.
+
+update_cr8_intercept()
+----------------------
+Functionally unchanged because the callback update_cr8_intercept() for TDX
+is ignored. Set APICv to active for TDX can return earlier to skip unnecessary
+code.
+
+kvm_lapic_reset()
+kvm_apic_set_state()
+--------------------
+The callbacks apicv_post_state_restore(), hwapic_irr_update(), and
+hwapic_isr_update() will be called for TDX guests when apicv is active,
+these callbacks have been ignored by TDX code already, no functional changes.
+
+
+Issues
+======
+
+PIC interrupts
+--------------
+KVM inject PIC interrupt via event injection path.
+Currently, TDX code doesn't handle this, thus PIC interrupts will be lost.
+Fortunately, modern OSes don't use PIC.
+We could use posted-interrupt in to deliver PIC interrupt if needed.
+Or can we assume PIC will not be used by TDX guests?
+
+In-kernel PIT in re-inject mode
+-------------------------------
+See the description for "APICV_INHIBIT_REASON_PIT_REINJ" above.
+
+Lazy check for pending APIC EOI of In-kernel IOAPIC
+---------------------------------------------------
+See the description for the same item in "Changes of APICv active from false
+to true".
+
+Open:
+For the issues related to in-kernel PIT and in-kernel IOAPIC, should KVM
+force irqchip split for TDX guests to eliminate the use of in-kernel PIT
+and in-kernel IOAPIC?
+
+
+Proposed code change
+====================
+Below is the proposed code change to change APICv active from false to true
+for TDX guests.
+
+Force irqchip split for TEX guests is not included.
+
+Note, by rejecting KVM_GET_LAPIC/KVM_SET_LAPIC for TDX guests (i.e., when
+guest_apic_protected), it returns an error code instead of returning 0.
+It requires modifications in QEMU TDX support code to avoid requesting
+KVM_GET_LAPIC/KVM_SET_LAPIC.
+
+8<----------------------------------------------------------------------------
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 0787855ab006..97025a240d54 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1289,15 +1289,6 @@ enum kvm_apicv_inhibit {
+       */
+      APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED,
+
+-    /*********************************************************/
+-    /* INHIBITs that are relevant only to the Intel's APICv. */
+-    /*********************************************************/
+-
+-    /*
+-     * APICv is disabled because TDX doesn't support it.
+-     */
+-    APICV_INHIBIT_REASON_TDX,
+-
+      NR_APICV_INHIBIT_REASONS,
+  };
+
+@@ -1316,8 +1307,7 @@ enum kvm_apicv_inhibit {
+      __APICV_INHIBIT_REASON(IRQWIN),            \
+      __APICV_INHIBIT_REASON(PIT_REINJ),        \
+      __APICV_INHIBIT_REASON(SEV),            \
+-    __APICV_INHIBIT_REASON(LOGICAL_ID_ALIASED),    \
+-    __APICV_INHIBIT_REASON(TDX)
++    __APICV_INHIBIT_REASON(LOGICAL_ID_ALIASED)
+
+  struct kvm_arch {
+      unsigned long n_used_mmu_pages;
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index 9b79b4bb063f..df9cc4a7f2d8 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -782,8 +782,10 @@ static void vt_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+
+  static void vt_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+  {
+-    if (WARN_ON_ONCE(is_td_vcpu(vcpu)))
++    if (is_td_vcpu(vcpu)) {
++        KVM_BUG_ON(!kvm_vcpu_apicv_active(vcpu), vcpu->kvm);
+          return;
++    }
+
+      vmx_refresh_apicv_exec_ctrl(vcpu);
+  }
+@@ -908,8 +910,7 @@ static int vt_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn)
+       BIT(APICV_INHIBIT_REASON_BLOCKIRQ) |            \
+       BIT(APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED) |    \
+       BIT(APICV_INHIBIT_REASON_APIC_ID_MODIFIED) |        \
+-     BIT(APICV_INHIBIT_REASON_APIC_BASE_MODIFIED) |        \
+-     BIT(APICV_INHIBIT_REASON_TDX))
++     BIT(APICV_INHIBIT_REASON_APIC_BASE_MODIFIED))
+
+  struct kvm_x86_ops vt_x86_ops __initdata = {
+      .name = KBUILD_MODNAME,
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 67fc391fe798..cc516ab2d990 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -614,6 +614,7 @@ int tdx_vm_init(struct kvm *kvm)
+      struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+
+      kvm->arch.has_private_mem = true;
++    kvm->arch.has_protected_state = true;
+
+      /*
+       * Because guest TD is protected, VMM can't parse the instruction in TD.
+@@ -2354,8 +2355,6 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+          goto teardown;
+      }
+
+-    kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_TDX);
+-
+      return 0;
+
+      /*
+@@ -2741,7 +2740,6 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+          return -EIO;
+      }
+
+-    vcpu->arch.apic->apicv_active = false;
+      vcpu->arch.mp_state = KVM_MP_STATE_RUNNABLE;
+
+      return 0;
+@@ -3273,6 +3271,11 @@ int __init tdx_bringup(void)
+          goto success_disable_tdx;
+      }
+
++    if (!enable_apicv) {
++        pr_err("APICv is required for TDX\n");
++        goto success_disable_tdx;
++    }
++
+      if (!tdp_mmu_enabled || !enable_mmio_caching) {
+          pr_err("TDP MMU and MMIO caching is required for TDX\n");
+          goto success_disable_tdx;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e433c8ee63a5..837a287d8c47 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5108,6 +5108,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+  static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
+                      struct kvm_lapic_state *s)
+  {
++    if (vcpu->arch.apic->guest_apic_protected)
++        return -EINVAL;
++
+      kvm_x86_call(sync_pir_to_irr)(vcpu);
+
+      return kvm_apic_get_state(vcpu, s);
+@@ -5118,6 +5121,9 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+  {
+      int r;
+
++    if (vcpu->arch.apic->guest_apic_protected)
++        return -EINVAL;
++
+      r = kvm_apic_set_state(vcpu, s);
+      if (r)
+          return r;
+
+
