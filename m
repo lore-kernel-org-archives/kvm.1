@@ -1,65 +1,65 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF48226523
-	for <kvm@vger.kernel.org>; Tue, 14 Jan 2025 22:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46239226883
+	for <kvm@vger.kernel.org>; Tue, 14 Jan 2025 22:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736895523; cv=none; b=uOvlkv6Sq5t8UF5TRO4nytG4M1Z59dLpqnXchUtmfMD3RdGobdFna+H0l01ccgau24lJcDQ4k7K2tnax9kEQ1IPTJDcameGzQ8O48Z+qC0QpSVuKiBK7UAxJwVKHhJQUq+KDODo/l9zh0Gl6RxzfHpd/YhYk6+4dxVYq52iawBc=
+	t=1736895527; cv=none; b=RGPaWGz8Tp+MT42DgZ0h8eW+7nsmSAUQRw7EFtEVuUdaxChpZ9k6g7IJh1yB/rt9CIp91okDZuH8P3y0l4WwZOBDihbv/lentyIbf9ORMKEtMroq1cNoDhCh7MedgsSYYyTyfiaxn6E/tjGadhrA1CJuiUmKXpb5RLdTYCcrPGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736895523; c=relaxed/simple;
-	bh=D26Mz7N1pZVpB7ZSRh7CV+vm7XrT3DFpbyMeC4eMdE4=;
+	s=arc-20240116; t=1736895527; c=relaxed/simple;
+	bh=HiTXq6OQK4mbtcvGc/N9RwcHNfGrvhnCJNp02HkOAWs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YoIgylAVO2emUHl8BSeigoZhOPElF9im+zfX8pUa1R/HTdVek4WawPifwElUxgYIG4QIfaJx+l6x6aAAUHIjBK5IpLDvcY17cBXYws+Jf+oa7rKWO6K2+SuhWvvXvMPsT3yWChVv/zzJBBMV3zBSrw9h1Qi7360w1ZEWjjNeQNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=pAAw75lT; arc=none smtp.client-ip=209.85.214.174
+	 In-Reply-To:To:Cc; b=V2hm81SdQKc9QU5eJcMpU1jW3j9Zf8/lFbeNEObYJ6JsjVKPlLQl07HmbMRlt4kGR0WfqMPw5XY/Ak4Tnwp9yvbsObTV6WVoEqmVmlSASQTcZI4aiCknAOAulcwF4XwOjPhzY/oUeoLtTG3Cs1lo59e4C9s0qUIeFwlq6ZelGiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=PDs9JcNZ; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="pAAw75lT"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2166360285dso107552495ad.1
-        for <kvm@vger.kernel.org>; Tue, 14 Jan 2025 14:58:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="PDs9JcNZ"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21675fd60feso134182405ad.2
+        for <kvm@vger.kernel.org>; Tue, 14 Jan 2025 14:58:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736895521; x=1737500321; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736895524; x=1737500324; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xSrHfq1ODaepQOo+hHypeE7yxwo5oeqvpXeWUiwKXOQ=;
-        b=pAAw75lTYphMOK1JXNYS7Ah4Y5mOm1qI+llUkBpnlVnOlXCTiFUECrvuMG050sam0n
-         AS76uLhQBpimnzjCHm438hBtpWPj8uPbvMQ85GR+K7sQ0mOLe9XEN4NJl6cZvMnM8hhE
-         UGTxWUsUy8X6d8WgLX7zm8i9e0dBMDffSqysCps3G+kdPCijY+DSUUs+7l84zcNgBvw+
-         icngQ2dpMw/AZC1Asm58VGRxah0yCL73KUrjt8bcwh8+5XfPv5X9l87D+g4WczTMWa0V
-         EhatGzqdw0108el2+/zmJirFfwjoU8TAPZKto56yozXh8Mc9m2bEFF5sRpaUwSL7USN3
-         12Sw==
+        bh=R5NzVVWM8qA9Fo1+GRIirXQzRfzq/r/+NUc9JNQjhEc=;
+        b=PDs9JcNZCoTeXnLTLCEEOn5O7icdomuySvkAjmy3PF9sf0RnD9bKC9TmQTBHdjM+iM
+         VyJdkcREqNEfLtwRI93JIG/qKUvMzynW9OTew3BbGgajB/15xMiU2XDdXn1gYm1SGZ1i
+         YY/8DCOxkPqeKqf/Voacmu9Lq5j7/52Z+9iGwH/jX2hFIC2RUgySCuXxoxIlQFc7wg0P
+         UTRq6xqHoJc/cZaRyRtXCSibubX5B7vjIjSqDAQM2zceYGUB9jVnTeZt7AW60tRCS3ES
+         XhWZEHbQmIx21QHRZnlXuz1w0IXBBfXEG001bM2EqLPS+h6GO7MHwwN6CG6G1NqnjWLA
+         dmzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736895521; x=1737500321;
+        d=1e100.net; s=20230601; t=1736895524; x=1737500324;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xSrHfq1ODaepQOo+hHypeE7yxwo5oeqvpXeWUiwKXOQ=;
-        b=ily3e3r8YXJQM+c4DljECO8cfiR/CwuVS80sly3gumUasoVSjOEZtHx4JiDvhTYVM4
-         ZY5Av1PUb6A2SPfS89FC6hpY94Ll1CnWbcy7VNJjA3ytv3wRhKApvhXgWNmLBhTZ0sF+
-         HHX/Cw+xjc6f7LiOZRJ5jy5mUjlu4wfcAVNOWIkquu+ZmktRyR0QBGNvmUPh0jX7t10i
-         rKDCEauAAY+9e4U4GkR2wESyFWf2AkhT8amltRLSTMhSW/HFFVM5VN+hmPGzDUEOZ9m5
-         3BlRA05l6G152fniXuBoPyIK2tOWAtjXUUgCq0ScWFzrVBxtijpJp1dG7a5vSgMPue7I
-         9rhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWng1hqHvzp2aXo9gsztfyaZwHmr2gkBohjTIIfDaTPK2twcrLhlj/y3QOU2BE3MBm4afY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLNvpYqWplK4PnzYGOvNzveEegB7Qpb+hNckTCgtHS8sdiY098
-	iBIfliHLrcJJfpaGRci/ODj76oaVj2N4u2PvS0V4x7YaLOoD+uSGs5k7f5L82pM=
-X-Gm-Gg: ASbGncuGoAjAbxGHLVsbqUVfW8rkJTvybq/kMPvaSXgKUvkzv4aPRZgmfeKMBD/3KLa
-	pfeMxVVxA5j41fTopv/x2iSP7p5PthBT+8OKEXAhY9J4SyDxEy82gpHqf+U2BVinHZR/9CNtmK4
-	4gmNdzBK2sfXNtGdOwjbo9hAHosFG8XhMLKdSv4cBr7lryo0uWom4Z/mUzVETVRzyJk5ixiqP5y
-	wcmF+q2oGjQHpNvpIR0ONZt5cIl+WPHQD45qMfWphKB/fdsJALf7gp0lWs85g8wT+askg==
-X-Google-Smtp-Source: AGHT+IGRbE9PP4sSJth3Mz+63UAwD8egHvRzP0t3VjOdXACcY1KJUtRtoWF3ulON7ndSDCLW6GT5WA==
-X-Received: by 2002:a17:902:ec82:b0:216:2dc5:2310 with SMTP id d9443c01a7336-21a83fcf8bcmr435627195ad.48.1736895520852;
-        Tue, 14 Jan 2025 14:58:40 -0800 (PST)
+        bh=R5NzVVWM8qA9Fo1+GRIirXQzRfzq/r/+NUc9JNQjhEc=;
+        b=D3hGgkBW/NofJVjyEcOPLu84k3sd65XWRHkMhGceTfiNyTTg2A58lQsQE0itZHqpDT
+         99G//xyjmOuIhumw97AzwfPr5wbGJBBZtmSqcHDpRQyUiSi2y8YATetpV0Cvc/FWce3W
+         EI1WcE2ZzxvHBB1v4veyLTZfYraZBLImLWRQ0+bIn61FKZJdCHOUhUPEWLxTxQpdMP07
+         BG/9ignmJhg+OObgEJcmQghQLzIRj7g7xLyTZeSb82V+a0+GtiIkh17xIxFEscU951y0
+         NfHbNW51bLu1cRZgdABt/H8Gt/C+tTuBJ7Uo/a/eEQIUYf+xMYR6JmOIUdhV2Gi+sP5O
+         8V6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Eojtvwf4go8FgONzpQiPGY21VmuyyncRU/qp1P0tto6JaPzZfIi0qgHk4oWRODqac00=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6a2WRB4X4t4CtniXgNG9Bt3yHZ2T4dMhovmSlzvT9MzlmyEFx
+	v1M/hUN31zEQ2cUaqSv9PDo/GsD6/wVCxeaGuDD63Rj4W5/sFVNzlbyqNtTqyKY=
+X-Gm-Gg: ASbGnctP6YIqRvIZy+ydqda5LWYKORAB/8libh8jaJip5m0PZsVtjt9OXTAwRErAKa3
+	7ai1Kcns0EjI5di6fEMVvVjveF3ZpiAByoU8/SWMdZjEltj0gvOxKRsXRPA4b5mj0nwGCRGms+K
+	Iq4WZFMUBX0w9OpmTcnEq+gECZ61Zb6sjDdkj6YdqIvpfgEy/v61cBkSGcee70Ndmr/pCZw2yau
+	SgYyL34amuESa0GH6IBXtv7n5sZ+Busb4/ZOyY6GAe8dXL7H2qxSyOiJ+081GV4Vg7lbQ==
+X-Google-Smtp-Source: AGHT+IEMFajbox3otJ+OHxS2DGlG5iVgYY9Ppx0qRDeaLCpVzaKhI8pKM7MfO5qFetS73gaIgtP45A==
+X-Received: by 2002:a17:903:32c3:b0:215:f1c2:fcc4 with SMTP id d9443c01a7336-21a83fe4f63mr405013495ad.41.1736895524581;
+        Tue, 14 Jan 2025 14:58:44 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10df7asm71746105ad.47.2025.01.14.14.58.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10df7asm71746105ad.47.2025.01.14.14.58.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 14:58:40 -0800 (PST)
+        Tue, 14 Jan 2025 14:58:44 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
-Date: Tue, 14 Jan 2025 14:57:38 -0800
-Subject: [PATCH v2 13/21] RISC-V: perf: Add a mechanism to defined legacy
- event encoding
+Date: Tue, 14 Jan 2025 14:57:40 -0800
+Subject: [PATCH v2 15/21] RISC-V: perf: Skip PMU SBI extension when not
+ implemented
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250114-counter_delegation-v2-13-8ba74cdb851b@rivosinc.com>
+Message-Id: <20250114-counter_delegation-v2-15-8ba74cdb851b@rivosinc.com>
 References: <20250114-counter_delegation-v2-0-8ba74cdb851b@rivosinc.com>
 In-Reply-To: <20250114-counter_delegation-v2-0-8ba74cdb851b@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -86,116 +86,114 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
  devicetree@vger.kernel.org, kvm@vger.kernel.org, 
  kvm-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-perf-users@vger.kernel.org, Atish Patra <atishp@rivosinc.com>
+ linux-perf-users@vger.kernel.org, Atish Patra <atishp@rivosinc.com>, 
+ Charlie Jenkins <charlie@rivosinc.com>
 X-Mailer: b4 0.15-dev-13183
 
-RISC-V ISA doesn't define any standard event encodings or specify
-any event to counter mapping. Thus, event encoding information
-and corresponding counter mapping fot those events needs to be
-provided in the driver for each vendor.
+From: Charlie Jenkins <charlie@rivosinc.com>
 
-Add a framework to support that. The individual platform events
-will be added later.
+When the PMU SBI extension is not implemented, sbi_v2_available should
+not be set to true. The SBI implementation for counter config matching
+and firmware counter read  should also be skipped when the SBI extension
+is not implemented.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 ---
- drivers/perf/riscv_pmu_dev.c   | 51 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/perf/riscv_pmu.h | 13 +++++++++++
- 2 files changed, 64 insertions(+)
+ drivers/perf/riscv_pmu_dev.c | 46 ++++++++++++++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/perf/riscv_pmu_dev.c b/drivers/perf/riscv_pmu_dev.c
-index c7adda948b5d..7742eb6d1ed2 100644
+index c80f8ef79204..83e7d1f6b016 100644
 --- a/drivers/perf/riscv_pmu_dev.c
 +++ b/drivers/perf/riscv_pmu_dev.c
-@@ -307,6 +307,56 @@ static struct sbi_pmu_event_data pmu_cache_event_sbi_map[PERF_COUNT_HW_CACHE_MAX
- 	},
- };
+@@ -410,18 +410,22 @@ static void rvpmu_sbi_check_event(struct sbi_pmu_event_data *edata)
+ 	}
+ }
  
-+/*
-+ * Vendor specific PMU events.
-+ */
-+struct riscv_pmu_event {
-+	u64 event_id;
-+	u32 counter_mask;
-+};
-+
-+struct riscv_vendor_pmu_events {
-+	unsigned long vendorid;
-+	unsigned long archid;
-+	unsigned long implid;
-+	const struct riscv_pmu_event *hw_event_map;
-+	const struct riscv_pmu_event (*cache_event_map)[PERF_COUNT_HW_CACHE_OP_MAX]
-+						       [PERF_COUNT_HW_CACHE_RESULT_MAX];
-+};
-+
-+#define RISCV_VENDOR_PMU_EVENTS(_vendorid, _archid, _implid, _hw_event_map, _cache_event_map) \
-+	{ .vendorid = _vendorid, .archid = _archid, .implid = _implid, \
-+	  .hw_event_map = _hw_event_map, .cache_event_map = _cache_event_map },
-+
-+static struct riscv_vendor_pmu_events pmu_vendor_events_table[] = {
-+};
-+
-+const struct riscv_pmu_event *current_pmu_hw_event_map;
-+const struct riscv_pmu_event (*current_pmu_cache_event_map)[PERF_COUNT_HW_CACHE_OP_MAX]
-+							   [PERF_COUNT_HW_CACHE_RESULT_MAX];
-+
-+static void rvpmu_vendor_register_events(void)
-+{
-+	int cpu = raw_smp_processor_id();
-+	unsigned long vendor_id = riscv_cached_mvendorid(cpu);
-+	unsigned long impl_id = riscv_cached_mimpid(cpu);
-+	unsigned long arch_id = riscv_cached_marchid(cpu);
-+
-+	for (int i = 0; i < ARRAY_SIZE(pmu_vendor_events_table); i++) {
-+		if (pmu_vendor_events_table[i].vendorid == vendor_id &&
-+		    pmu_vendor_events_table[i].implid == impl_id &&
-+		    pmu_vendor_events_table[i].archid == arch_id) {
-+			current_pmu_hw_event_map = pmu_vendor_events_table[i].hw_event_map;
-+			current_pmu_cache_event_map = pmu_vendor_events_table[i].cache_event_map;
-+			break;
-+		}
-+	}
-+
-+	if (!current_pmu_hw_event_map || !current_pmu_cache_event_map) {
-+		pr_info("No default PMU events found\n");
-+	}
-+}
-+
- static void rvpmu_sbi_check_event(struct sbi_pmu_event_data *edata)
+-static void rvpmu_sbi_check_std_events(struct work_struct *work)
++static void rvpmu_check_std_events(struct work_struct *work)
  {
- 	struct sbiret ret;
-@@ -1547,6 +1597,7 @@ static int __init rvpmu_devinit(void)
- 	    riscv_isa_extension_available(NULL, SSCSRIND)) {
- 		static_branch_enable(&riscv_pmu_cdeleg_available);
- 		cdeleg_available = true;
-+		rvpmu_vendor_register_events();
+-	for (int i = 0; i < ARRAY_SIZE(pmu_hw_event_map); i++)
+-		rvpmu_sbi_check_event(&pmu_hw_event_map[i]);
+-
+-	for (int i = 0; i < ARRAY_SIZE(pmu_cache_event_map); i++)
+-		for (int j = 0; j < ARRAY_SIZE(pmu_cache_event_map[i]); j++)
+-			for (int k = 0; k < ARRAY_SIZE(pmu_cache_event_map[i][j]); k++)
+-				rvpmu_sbi_check_event(&pmu_cache_event_map[i][j][k]);
++	if (riscv_pmu_sbi_available()) {
++		for (int i = 0; i < ARRAY_SIZE(pmu_hw_event_sbi_map); i++)
++			rvpmu_sbi_check_event(&pmu_hw_event_sbi_map[i]);
++
++		for (int i = 0; i < ARRAY_SIZE(pmu_cache_event_sbi_map); i++)
++			for (int j = 0; j < ARRAY_SIZE(pmu_cache_event_sbi_map[i]); j++)
++				for (int k = 0; k < ARRAY_SIZE(pmu_cache_event_sbi_map[i][j]); k++)
++					rvpmu_sbi_check_event(&pmu_cache_event_sbi_map[i][j][k]);
++	} else {
++		DO_ONCE_LITE_IF(1, pr_err, "Boot time config matching not required for smcdeleg\n");
++	}
+ }
+ 
+-static DECLARE_WORK(check_std_events_work, rvpmu_sbi_check_std_events);
++static DECLARE_WORK(check_std_events_work, rvpmu_check_std_events);
+ 
+ static ssize_t rvpmu_format_show(struct device *dev,
+ 				 struct device_attribute *attr, char *buf)
+@@ -549,6 +553,9 @@ static int rvpmu_sbi_ctr_get_idx(struct perf_event *event)
+ 
+ 	cflags = rvpmu_sbi_get_filter_flags(event);
+ 
++	if (!riscv_pmu_sbi_available())
++		return -ENOENT;
++
+ 	/*
+ 	 * In legacy mode, we have to force the fixed counters for those events
+ 	 * but not in the user access mode as we want to use the other counters
+@@ -562,10 +569,9 @@ static int rvpmu_sbi_ctr_get_idx(struct perf_event *event)
+ 			cflags |= SBI_PMU_CFG_FLAG_SKIP_MATCH;
+ 			ctr_mask = BIT(CSR_INSTRET - CSR_CYCLE);
+ 		}
+-	}
+-
+-	if (pmu_sbi_is_fw_event(event) && cdeleg_available)
++	} else if (pmu_sbi_is_fw_event(event) && cdeleg_available) {
+ 		ctr_mask = firmware_cmask;
++	}
+ 
+ 	/* retrieve the available counter index */
+ #if defined(CONFIG_32BIT)
+@@ -871,7 +877,7 @@ static u64 rvpmu_ctr_read(struct perf_event *event)
+ 		return val;
  	}
  
- 	if (!(sbi_available || cdeleg_available))
-diff --git a/include/linux/perf/riscv_pmu.h b/include/linux/perf/riscv_pmu.h
-index 525acd6d96d0..a3e1fdd5084a 100644
---- a/include/linux/perf/riscv_pmu.h
-+++ b/include/linux/perf/riscv_pmu.h
-@@ -28,6 +28,19 @@
+-	if (pmu_sbi_is_fw_event(event)) {
++	if (pmu_sbi_is_fw_event(event) && riscv_pmu_sbi_available()) {
+ 		ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_FW_READ,
+ 				hwc->idx, 0, 0, 0, 0, 0);
+ 		if (ret.error)
+@@ -1952,14 +1958,16 @@ static int __init rvpmu_devinit(void)
+ 	int ret;
+ 	struct platform_device *pdev;
  
- #define RISCV_PMU_CONFIG1_GUEST_EVENTS 0x1
+-	if (sbi_spec_version >= sbi_mk_version(0, 3) &&
+-	    sbi_probe_extension(SBI_EXT_PMU)) {
+-		static_branch_enable(&riscv_pmu_sbi_available);
+-		sbi_available = true;
++	if (sbi_probe_extension(SBI_EXT_PMU)) {
++		if (sbi_spec_version >= sbi_mk_version(0, 3)) {
++			static_branch_enable(&riscv_pmu_sbi_available);
++			sbi_available = true;
++		}
++
++		if (sbi_spec_version >= sbi_mk_version(2, 0))
++			sbi_v2_available = true;
+ 	}
  
-+#define HW_OP_UNSUPPORTED		0xFFFF
-+#define CACHE_OP_UNSUPPORTED		0xFFFF
-+
-+#define PERF_MAP_ALL_UNSUPPORTED					\
-+	[0 ... PERF_COUNT_HW_MAX - 1] = {HW_OP_UNSUPPORTED, 0x0}
-+
-+#define PERF_CACHE_MAP_ALL_UNSUPPORTED					\
-+[0 ... C(MAX) - 1] = {							\
-+	[0 ... C(OP_MAX) - 1] = {					\
-+		[0 ... C(RESULT_MAX) - 1] = {CACHE_OP_UNSUPPORTED, 0x0}	\
-+	},								\
-+}
-+
- struct cpu_hw_events {
- 	/* currently enabled events */
- 	int			n_events;
+-	if (sbi_spec_version >= sbi_mk_version(2, 0))
+-		sbi_v2_available = true;
+ 	/*
+ 	 * We need all three extensions to be present to access the counters
+ 	 * in S-mode via Supervisor Counter delegation.
 
 -- 
 2.34.1
