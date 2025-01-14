@@ -1,72 +1,56 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1192230D15;
-	Tue, 14 Jan 2025 08:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6AC1CDA19;
+	Tue, 14 Jan 2025 08:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736842916; cv=none; b=RnBPZ8pQR35tR/U4HndnpNcnIrnxg4XKkArFOl26m0XtbCjAHYNTvvKu/ub1U4/Sb/+vGWp8YIu4A3tO8NOtZC35EqQhY62de5St93ycV0R8QTIiF3thAf/Qw3Bppv84d269FCOqPZzAZ44Ypr+rnE6Lo5TsrtDv8MHaNdrSfVM=
+	t=1736843935; cv=none; b=rGW0xy4ucJRNbPK8F2Q6NLC1o0vXaBjGi+8zLPfInfiphyUSYkohtEoGf5ZEreLPlqH/nSQaYFUyzF76LWwwVxrM7kmilqh1OewoZL17X7vr2Ll7wkzFIoP+EPrQu5+k9h1wnRC5pSVi7JpQstPGOPY/VY04m0XDr69JmnsVm/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736842916; c=relaxed/simple;
-	bh=YFJKCb0jqMAhlwNKuT95tl8Htv3gL4ALSvmG3zHbfqM=;
+	s=arc-20240116; t=1736843935; c=relaxed/simple;
+	bh=WCmlIJb/eJ3RtRwBL0vbXX0Y9UrynyAEdph0c+wowPY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hXd3qDeOB25dVIW5NPHA6zNDiN5SCBMw8nvsPyvASf38Cp6SsSWK5kxr1NIH7dDTiq8ZmD1fP9GfD/ACaOa2z7aisS+CtvlH5VfXkG23tBQWhDUCJINwrhsmTaeR5EMahQaoKQ29RlOUa7FsT/sSkMgNB/2FeUFutj6cFar+GjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jE+YwIxA; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=fL0Xr8X8zyI0a/u3GvEX/o7PP+kalNtm0XPaSBemICoiVh//aP7oDh2W5WYv0HRABVFLgIsdrZt9cUkeFUdE15u2yBvZZnN19mVpkfITi/+G5LM7yni7nopqQ5zLT9Y4ta4RCDplBBsMtshG982cQ9fk3SVe/7t3FTayZFff5fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssv9xXhO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jE+YwIxA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736842915; x=1768378915;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YFJKCb0jqMAhlwNKuT95tl8Htv3gL4ALSvmG3zHbfqM=;
-  b=jE+YwIxA2nOhW+W9BCs4jSJhqopYxRk4B67+LzoVqAGAZH8a/J4J1vRu
-   c0mN6CRT8yOcpGfLVty90jA9IW2pbBKaIrkh5ZZY5wKwvu6RnrXvtx0np
-   o3lycRhHKOjg7JktovKkjtydHlHdURcNdpfHgwSQEh0aVp+6VThQiS6eS
-   ITs2kDSfjXQjGKoB1gLJwMqK3bKmEk9YQ6qhfB0LYxZZzAyupuh+zy+gh
-   e/wcO/R1h6tgTVN8Lvtwq2maymOfPuVsAfn8SuSRpN+6vqefDaFOspTp2
-   QcjqEKms8bK6NlnWMUVsGUosNQCssMTczyho9FB6GbR+kqlyD165UYxCF
-   w==;
-X-CSE-ConnectionGUID: BnSZLHJnRRWbIPOHB9XLUw==
-X-CSE-MsgGUID: pbJmPwsoSlWp/K5HjV79Mg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40893898"
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="40893898"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 00:21:54 -0800
-X-CSE-ConnectionGUID: 4bgDJI7lSkCxurHBiLu3JA==
-X-CSE-MsgGUID: O/PUG0G3R9COCkCPxJ2Amg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105610990"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa008.jf.intel.com with ESMTP; 14 Jan 2025 00:21:49 -0800
-Date: Tue, 18 Jun 2024 07:28:43 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-9-yilun.xu@linux.intel.com>
- <20250108133026.GQ5556@nvidia.com>
- <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050>
- <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
- <20250113164935.GP5556@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssv9xXhO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3272C4CEDD;
+	Tue, 14 Jan 2025 08:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736843934;
+	bh=WCmlIJb/eJ3RtRwBL0vbXX0Y9UrynyAEdph0c+wowPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ssv9xXhOL7JbMMQrzlaq27YWcIfBrJoOCeudEXG9TZo+CTwB4dvd5GSjmpavw7e45
+	 mnFmWBsl8OxWd53GB8Ai3qRopj9qNOYzrIKnjN918usYV953p8Z71j8T9h8bRRgd80
+	 mbGV/Q9H0WnXVRuMYHxZFQGgigZ6wJf8UrCX5GqCfJBdnZINfpgPJQrTxLzhlJg07Y
+	 BIQWvXINHA2mvOIkrZyZDtdpZqKLm7qpvrTk+kx7XKDDXEu0pCnY7dzHvA1pZbR8yv
+	 o9iPi8YszEl9iejfRQW/qe5KSfvou9DSiPIxxOEteYKg009tI7JHlqlu+nZukZHN0U
+	 oaCRxAZ2exYjA==
+Date: Tue, 14 Jan 2025 10:38:47 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
+	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, linux-mm@kvack.org,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v5 00/17] Provide a new two step DMA mapping API
+Message-ID: <20250114083847.GE3146852@unreal>
+References: <cover.1734436840.git.leon@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,69 +59,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250113164935.GP5556@nvidia.com>
+In-Reply-To: <cover.1734436840.git.leon@kernel.org>
 
-On Mon, Jan 13, 2025 at 12:49:35PM -0400, Jason Gunthorpe wrote:
-> On Sat, Jan 11, 2025 at 11:48:06AM +0800, Xu Yilun wrote:
+On Tue, Dec 17, 2024 at 03:00:18PM +0200, Leon Romanovsky wrote:
+> Changelog:
+
+<...>
+
+> Christoph Hellwig (6):
+>   PCI/P2PDMA: Refactor the p2pdma mapping helpers
+>   dma-mapping: move the PCI P2PDMA mapping helpers to pci-p2pdma.h
+>   iommu: generalize the batched sync after map interface
+>   iommu/dma: Factor out a iommu_dma_map_swiotlb helper
+>   dma-mapping: add a dma_need_unmap helper
+>   docs: core-api: document the IOVA-based API
 > 
-> > > > > can be sure what is the correct UAPI. In other words, make the
-> > > > > VFIO device into a CC device should also prevent mmaping it and so on.
-> > > > 
-> > > > My idea is prevent mmaping first, then allow VFIO device into CC dev (TDI).
-> > > 
-> > > I think you need to start the TDI process much earlier. Some arches
-> > > are going to need work to prepare the TDI before the VM is started.
-> > 
-> > Could you elaborate more on that? AFAICS Intel & AMD are all good on
-> > "late bind", but not sure for other architectures.
+> Leon Romanovsky (11):
+>   iommu: add kernel-doc for iommu_unmap and iommu_unmap_fast
+>   dma-mapping: Provide an interface to allow allocate IOVA
+>   dma-mapping: Implement link/unlink ranges API
+>   mm/hmm: let users to tag specific PFN with DMA mapped bit
+>   mm/hmm: provide generic DMA managing logic
+>   RDMA/umem: Store ODP access mask information in PFN
+>   RDMA/core: Convert UMEM ODP DMA mapping to caching IOVA and page
+>     linkage
+>   RDMA/umem: Separate implicit ODP initialization from explicit ODP
+>   vfio/mlx5: Explicitly use number of pages instead of allocated length
+>   vfio/mlx5: Rewrite create mkey flow to allow better code reuse
+>   vfio/mlx5: Enable the DMA link API
 > 
-> I'm not sure about this, the topic has been confused a bit, and people
-> often seem to  misunderstand what the full scenario actually is. :\
+>  Documentation/core-api/dma-api.rst   |  70 +++++
+>  drivers/infiniband/core/umem_odp.c   | 250 +++++----------
+>  drivers/infiniband/hw/mlx5/mlx5_ib.h |  12 +-
+>  drivers/infiniband/hw/mlx5/odp.c     |  65 ++--
+>  drivers/infiniband/hw/mlx5/umr.c     |  12 +-
+>  drivers/iommu/dma-iommu.c            | 454 +++++++++++++++++++++++----
+>  drivers/iommu/iommu.c                |  84 ++---
+>  drivers/pci/p2pdma.c                 |  38 +--
+>  drivers/vfio/pci/mlx5/cmd.c          | 376 +++++++++++-----------
+>  drivers/vfio/pci/mlx5/cmd.h          |  35 ++-
+>  drivers/vfio/pci/mlx5/main.c         |  87 +++--
+>  include/linux/dma-map-ops.h          |  54 ----
+>  include/linux/dma-mapping.h          |  86 +++++
+>  include/linux/hmm-dma.h              |  33 ++
+>  include/linux/hmm.h                  |  21 ++
+>  include/linux/iommu.h                |   4 +
+>  include/linux/pci-p2pdma.h           |  84 +++++
+>  include/rdma/ib_umem_odp.h           |  25 +-
+>  kernel/dma/direct.c                  |  44 +--
+>  kernel/dma/mapping.c                 |  18 ++
+>  mm/hmm.c                             | 264 ++++++++++++++--
+>  21 files changed, 1423 insertions(+), 693 deletions(-)
+>  create mode 100644 include/linux/hmm-dma.h
 
-Yes, it is in early stage and open to discuss.
+Hi Robin,
+
+Can you please Ack the dma-iommu changes?
+
+Thanks
 
 > 
-> What I'm talking abou there is that you will tell the secure world to
-> create vPCI function that has the potential to be secure "TDI run"
-> down the road. The VM will decide when it reaches the run state. This
-
-Yes.
-
-> is needed so the secure world can prepare anything it needs prior to
-> starting the VM.
-
-OK. From Dan's patchset there are some touch point for vendor tsm
-drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
-
-Maybe we could move to Dan's thread for discussion.
-
-https://lore.kernel.org/linux-coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com/
-
-> Setting up secure vIOMMU emulation, for instance. I
-
-I think this could be done at VM late bind time.
-
-> expect ARM will need this, I'd be surprised if AMD actually doesn't in
-> the full scenario with secure viommu.
-
-AFAICS, AMD needs secure viommu.
-
+> -- 
+> 2.47.0
 > 
-> It should not be a surprise to the secure world after the VM has
-> started that suddenly it learns about a vPCI function that wants to be
-
-With some pre-VM stage touch point, it wouldn't be all of a sudden.
-
-> secure. This should all be pre-arranged as possible before starting
-
-But our current implementation is not to prepare as much as possible,
-but only necessary, so most of the secure work for vPCI function is done
-at late bind time.
-
-Thank,
-Yilun
-
-> the VM, even if alot of steps happen after the VM starts running (or
-> maybe don't happen at all).
 > 
-> Jason
