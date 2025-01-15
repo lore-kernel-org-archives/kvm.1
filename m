@@ -1,182 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12131EEA3D;
-	Wed, 15 Jan 2025 09:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395371DB138;
+	Wed, 15 Jan 2025 10:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736934038; cv=none; b=KpLxC9eToFnCzvgCjT9w9OnRneMg9m0xKoGVCOLS7iF/rxMRs5nW50kk0g2GJ557pzRMfqy3M/0wjpqnX5RyCS0mM/6lH7ixdI1v6e0ILpMf/6F6oxAUhWEYC8ZZhc/4uW0/vHPVYRcq1eXLsSd1Vu07nSpjPk7WHPncwjRNNKM=
+	t=1736936428; cv=none; b=s2gpMcqpZegBJfDuLq9Bo2/QyXkXS+Iwjt6IypbvfgkWhPU/5V8spPn54nahXJ2OukN3oRmfe7+iRmO2MSNJ21GsMTJ+pudgK4ShZoLJPmz4pSke2s6KdLfDEM4WeJU287VSzua4Xq3NB0XKnAbIO3GZeKU+qHWoWgmykPYJ97w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736934038; c=relaxed/simple;
-	bh=82OrV5Ilm8OITGM6qaDm+HchWp6oYpILZKE7zDsl07k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sWvg1MRX86stLK6yxugNeMO1p9GwRYQBb3hHMKxsqaNoHYnQB5ycVj6WB3KpPCmnWzhumzMHwWOOC5idZEqjhn1+cV8KMRBU4UeC9OyuaKSPPRrnmwpx0KPPPk6Oib2G287VMZ9mrvPKKPeaoNsROuubEqIoKA8eYUOmzrxt7bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=llbztw3U; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736936428; c=relaxed/simple;
+	bh=34JBOL+zmXvpqgSI8+nty0X501Jw+lBz7cs5HMeIv/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ecwnq2DZ+prf7wCq7hyUyGwuToUcLqYqLGQFJDI+lAt3BDuYGmY9Ven2W5cm/g1fz+GYByGL/6RpMAUS+4gl0i/1Nxnd0H7j69tcJNIGhFQOLAU7jheB/P4XInj2fUnuxGzHd2gjh38I/eeZYxGAWaViuzPOi6f+QITA5mDEicw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PB8OzkBf; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="llbztw3U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736934037; x=1768470037;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=82OrV5Ilm8OITGM6qaDm+HchWp6oYpILZKE7zDsl07k=;
-  b=llbztw3UCQo5MiWaV5E5wmLm1lOJORfx7ahZgtCbu/9XF3xgtwOqiBTK
-   n1+kuDmKW8wUUllqtfG+MMy2fPMNiHOH3jhe7TKtMuEA7NgzN0knHW5I9
-   AO9Pk2IQ6ym1Jg/smZoV7JatInAKEtV7I++qHwj8cjQfaEEQemh7hAQ4R
-   d8pQbD8blvbppf2JadnnDfKoOsLBh7qsWb1+daQfJJRfDcWjRDnLCSofu
-   tgtkevM8Nsjw+SIKQKLWNN1jVm0+NRrNJYZyZMVPLaH/r+n/UXjEew0oY
-   pdomJVL6axcPxkk7N9ujEDHnOW0MwQ0wc0n5u1dHf8vPrcpZvX0s2odIF
-   A==;
-X-CSE-ConnectionGUID: XvoCcSSKRd6PmiP2dHUCcw==
-X-CSE-MsgGUID: 3KVtDgZTRca8XLCHY8esXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="41196458"
-X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
-   d="scan'208";a="41196458"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 01:40:36 -0800
-X-CSE-ConnectionGUID: AFvWLxNCRqmZZaKJgAMkew==
-X-CSE-MsgGUID: gr2GYsDeQ2qrDawvPhaIgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="105564576"
-Received: from dliang1-mobl.ccr.corp.intel.com (HELO [10.238.10.216]) ([10.238.10.216])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 01:40:34 -0800
-Message-ID: <67f0292e-6eea-4788-977c-50af51910945@linux.intel.com>
-Date: Wed, 15 Jan 2025 17:40:30 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PB8OzkBf"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50F85gHI017620;
+	Wed, 15 Jan 2025 10:20:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JJ6HKq
+	fUSWCMS+eOo8zfcV7T2eVAkhZjQRFPu2Ff1zI=; b=PB8OzkBfArqOv82ewgehZ9
+	rE72inVzN4BP9ZCPGzdTlXJaYalXZOaz9cCPRR+rc2Sqk8ftNQ+xvUzU9bCOu0cn
+	NiOJoY7/nDWbWgc2/q/FwmOqnw8QbsXozABtCDhGPL8/1ldHHT5hgw2q0LPpVh9+
+	7OqUu9x3ztCmb4bslo8A56gK2zKBOxkxIJuzIk0PXTkr9OQdRYQlaHkEvI54V0s9
+	QGz8ZQmrAGF4Hq9vABRQL6q8rLAdCLDwMNTvSIdEwufht+jhaE3P2hiEgPpGZ4am
+	87Eu9cI9/ai9SfOpQb4H1wxhWdJrxub/gTYUv71Cj2CTzHYbFiwoOdaFtEKNI5MA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4469730hxk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 10:20:21 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50F6gAqd007386;
+	Wed, 15 Jan 2025 10:20:20 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443yn7s1w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 10:20:20 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50FAKGxY56164818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jan 2025 10:20:16 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B47F2004E;
+	Wed, 15 Jan 2025 10:20:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 644A92004D;
+	Wed, 15 Jan 2025 10:20:16 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Jan 2025 10:20:16 +0000 (GMT)
+Date: Wed, 15 Jan 2025 11:20:14 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        schlameuss@linux.ibm.com, david@redhat.com, willy@infradead.org,
+        hca@linux.ibm.com, svens@linux.ibm.com, agordeev@linux.ibm.com,
+        gor@linux.ibm.com, nrb@linux.ibm.com, nsg@linux.ibm.com
+Subject: Re: [PATCH v1 07/13] KVM: s390: move some gmap shadowing functions
+ away from mm/gmap.c
+Message-ID: <20250115112014.19ca99f2@p-imbrenda>
+In-Reply-To: <91c13ac1-ad31-46e2-8a07-9b759caaf33d@linux.ibm.com>
+References: <20250108181451.74383-1-imbrenda@linux.ibm.com>
+	<20250108181451.74383-8-imbrenda@linux.ibm.com>
+	<91c13ac1-ad31-46e2-8a07-9b759caaf33d@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/6] KVM: x86: Prep KVM hypercall handling for TDX
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kai Huang <kai.huang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, "Hunter, Adrian"
- <adrian.hunter@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20241128004344.4072099-1-seanjc@google.com>
- <173457537849.3292936.8364596188659598507.b4-ty@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <173457537849.3292936.8364596188659598507.b4-ty@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0ZhncPHzJScdkmu-7GRgnKKpGkoDVVg4
+X-Proofpoint-GUID: 0ZhncPHzJScdkmu-7GRgnKKpGkoDVVg4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-15_04,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 phishscore=0 clxscore=1015
+ suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ mlxlogscore=773 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501150076
 
+On Wed, 15 Jan 2025 09:56:11 +0100
+Janosch Frank <frankja@linux.ibm.com> wrote:
 
+> On 1/8/25 7:14 PM, Claudio Imbrenda wrote:
+> > Move some gmap shadowing functions from mm/gmap.c to kvm/vsie.c and
+> > kvm/kvm-s390.c .
+> >   
+> 
+> Why though?
 
+to start removing stuff from mm
 
-On 12/19/2024 10:40 AM, Sean Christopherson wrote:
-> On Wed, 27 Nov 2024 16:43:38 -0800, Sean Christopherson wrote:
->> Effectively v4 of Binbin's series to handle hypercall exits to userspace in
->> a generic manner, so that TDX
->>
->> Binbin and Kai, this is fairly different that what we last discussed.  While
->> sorting through Binbin's latest patch, I stumbled on what I think/hope is an
->> approach that will make life easier for TDX.  Rather than have common code
->> set the return value, _and_ have TDX implement a callback to do the same for
->> user return MSRs, just use the callback for all paths.
->>
->> [...]
-> Applied patch 1 to kvm-x86 fixes.  I'm going to hold off on the rest until the
-> dust settles on the SEAMCALL interfaces, e.g. in case TDX ends up marshalling
-> state into the "normal" GPRs.
-Hi Sean, Based on your suggestions in the link https://lore.kernel.org/kvm/Z1suNzg2Or743a7e@google.com, the v2 of "KVM: TDX: TDX hypercalls may exit to userspace" is planned to morph the TDG.VP.VMCALL with KVM hypercall to EXIT_REASON_VMCALL and marshall r10~r14 from vp_enter_args in struct vcpu_tdx to the appropriate x86 registers for KVM hypercall handling.
+> 
+> I don't really want to have gmap code in vsie.c
+> If you want to add a new mm/gmap-vsie.c then do so but I don't see a 
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index ef66985ddc91..d5aaf66af835 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -935,6 +935,23 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-         return tdx_exit_handlers_fastpath(vcpu);
-  }
-+static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
-+{
-+       tdvmcall_set_return_code(vcpu, vcpu->run->hypercall.ret);
-+       return 1;
-+}
-+
-+static int tdx_emulate_vmcall(struct kvm_vcpu *vcpu)
-+{
-+       kvm_rax_write(vcpu, to_tdx(vcpu)->vp_enter_args.r10);
-+       kvm_rbx_write(vcpu, to_tdx(vcpu)->vp_enter_args.r11);
-+       kvm_rcx_write(vcpu, to_tdx(vcpu)->vp_enter_args.r12);
-+       kvm_rdx_write(vcpu, to_tdx(vcpu)->vp_enter_args.r13);
-+       kvm_rsi_write(vcpu, to_tdx(vcpu)->vp_enter_args.r14);
-+
-+       return __kvm_emulate_hypercall(vcpu, 0, complete_hypercall_exit);
-+}
-+
-  static int handle_tdvmcall(struct kvm_vcpu *vcpu)
-  {
-         switch (tdvmcall_leaf(vcpu)) {
-@@ -1286,6 +1303,8 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-                 return 0;
-         case EXIT_REASON_TDCALL:
-                 return handle_tdvmcall(vcpu);
-+       case EXIT_REASON_VMCALL:
-+               return tdx_emulate_vmcall(vcpu);
-         default:
-                 break;
-         }
+will do
 
+> need to move gmap code from mm to kvm and you give no explanation 
+> whatsoever.
 
-To test TDX, I made some modifications to your patch
-"KVM: x86: Refactor __kvm_emulate_hypercall() into a macro"
-Are the following changes make sense to you?
+the goal is to remove gmap from mm, as mentioned in the cover letter
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a2198807290b..2c5df57ad799 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10088,9 +10088,7 @@ int kvm_emulate_hypercall(struct kvm_vcpu *vcpu)
-         if (kvm_hv_hypercall_enabled(vcpu))
-                 return kvm_hv_hypercall(vcpu);
--       return __kvm_emulate_hypercall(vcpu, rax, rbx, rcx, rdx, rsi,
--                                      is_64_bit_hypercall(vcpu),
--                                      kvm_x86_call(get_cpl)(vcpu),
-+       return __kvm_emulate_hypercall(vcpu, kvm_x86_call(get_cpl)(vcpu),
-                                        complete_hypercall_exit);
-  }
-  EXPORT_SYMBOL_GPL(kvm_emulate_hypercall);
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index b00ecbfef000..989bed5b48b0 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -623,19 +623,18 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
-                               int op_64_bit, int cpl,
-                               int (*complete_hypercall)(struct kvm_vcpu *));
--#define __kvm_emulate_hypercall(_vcpu, nr, a0, a1, a2, a3, op_64_bit, cpl, complete_hypercall) \
--({                                                                                             \
--       int __ret;                                                                              \
--                                                                                               \
--       __ret = ____kvm_emulate_hypercall(_vcpu,                                                \
--                                         kvm_##nr##_read(_vcpu), kvm_##a0##_read(_vcpu),       \
--                                         kvm_##a1##_read(_vcpu), kvm_##a2##_read(_vcpu),       \
--                                         kvm_##a3##_read(_vcpu), op_64_bit, cpl,               \
--                                         complete_hypercall);                                  \
--                                                                                               \
--       if (__ret > 0)                                                                          \
--               __ret = complete_hypercall(_vcpu);                                              \
--       __ret;                                                                                  \
-+#define __kvm_emulate_hypercall(_vcpu, cpl, complete_hypercall)                                \
-+({                                                                                     \
-+       int __ret;                                                                      \
-+       __ret = ____kvm_emulate_hypercall(_vcpu, kvm_rax_read(_vcpu),                   \
-+                                         kvm_rbx_read(_vcpu), kvm_rcx_read(_vcpu),     \
-+                                         kvm_rdx_read(_vcpu), kvm_rsi_read(_vcpu),     \
-+                                         is_64_bit_hypercall(_vcpu), cpl,              \
-+                                         complete_hypercall);                          \
-+                                                                                       \
-+       if (__ret > 0)                                                                  \
-+               __ret = complete_hypercall(_vcpu);                                      \
-+       __ret;                                                                          \
-  })
-  int kvm_emulate_hypercall(struct kvm_vcpu *vcpu);
-
+> 
+> Maybe add a vsie-gmap.c in kvm but I'm not so thrilled about that for 
+> the reasons mentioned above.
 
