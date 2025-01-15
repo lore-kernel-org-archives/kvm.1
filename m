@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC7619CC2A
-	for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 16:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB29B1A8F61
+	for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 16:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736957371; cv=none; b=Lut7cy8YkZAdRF0ym7II7hOVev30u9QQRxhLM9AJhFG1qCkEsGZBuS3AwHizBjZms2RP4zzWcOpljp5PyTuf2vDRRzEWF5F1+j9S19J9Jv4wHLt8HOcODb6zsJLqqq7k0fO+XF+2I1pFxDfAQdGiNflq1Rzp5+pr3bBe9qmx6RA=
+	t=1736957373; cv=none; b=YA3OGT8SLWEAs8mmq+EFU9/6bRpIIz+rULM11rMK7sLhZCcgf1af/iVQdtnkibXujo8ZQ8/FlwFVrml+RjZ/Y0sk1qCVDYU5ULFhzY5iBq28mm242Xsvy8+Zn2U3l9G33LOPsJAifDhFiuXxTvC3/Wz3XBMtHlzZOGY/7zC/GNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736957371; c=relaxed/simple;
-	bh=T7YuXZggi8WPZ7qQKgD2CDLBOyMbpxUgGctFMfgYxS4=;
+	s=arc-20240116; t=1736957373; c=relaxed/simple;
+	bh=h1UttIEC386EP1mIPiIQo5HxmuVVcTY1+JhNV7VMiXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q6bjdfgKWzC3CD1uTGKDsn1y0zLq6YuCcbuxf2X8VIQlCvGNB1gAEh5czvBuhQ/dxb+o1bvdUbeqdX5gkIhz9AFd3QlLyge5t8smw6383Rt9L8dw3X1Z704p5z5GtjhFIIWlL6MeUato/7l4FthfkyG6yAb9MXVT6crGhgdVEGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YijLCEl+; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=ou5snpxf3gM2cTbJC717bwO+4wy0IF0I+gjQd/C4Bge/QoqKGE7ks8OOisqY7kzS+JZpaKZVXx/G/Kayo6yNXU8vXDn1NJ3UqpjS+3X5dNTNezExm2c0F1PnyDkMY0H5HPulWY3tvvtoMcOzxkHK1CGSLNkItI+Fpt1mE4aCI5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S/4gJoP/; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YijLCEl+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S/4gJoP/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736957368;
+	s=mimecast20190719; t=1736957369;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SjNCQAEI1MvIIE3E6tfKplbXDN2oVTWgFY8dZR6B+bM=;
-	b=YijLCEl+xmheby45832C44ijutO7p3v12jBkIddfR5rsjL7kObRET29S80Jcxf/Ab1p5bU
-	+WejioF9+2ei6uqwn1PSwU9D9d1rogPDdSfzGI+svntHtYtc+HJWhuIHeLZlK/zNTK4Gug
-	zyxqM5/qZ6s3tSCoKtyFVMp3A8a0qKQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=C+rWN8wW5HmFcP/0LsBDIhnB7Fn0K8Q9xiLc7Myko4k=;
+	b=S/4gJoP/jfr12e5b5oDllywMYxHidsaw8CF6+wIkUkCCzc570cM848ApUbdfjkmFbbqvCB
+	urg6UvcoIMnhU1wVJa6f+FQ+2Epx0AE+oJlhyLKbLpYMpM8riUkKaZUe9XRF0vpH3FFjpn
+	RyV+Xw4tcAhwz2z85NBjAaGUo6U40Ys=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-3ChBBQ4fOb6TyoQpmhOjcA-1; Wed,
- 15 Jan 2025 11:09:23 -0500
-X-MC-Unique: 3ChBBQ4fOb6TyoQpmhOjcA-1
-X-Mimecast-MFC-AGG-ID: 3ChBBQ4fOb6TyoQpmhOjcA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-7IIiT96VO8yaYz81MpKLnA-1; Wed,
+ 15 Jan 2025 11:09:28 -0500
+X-MC-Unique: 7IIiT96VO8yaYz81MpKLnA-1
+X-Mimecast-MFC-AGG-ID: 7IIiT96VO8yaYz81MpKLnA
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD52E1955DCC;
-	Wed, 15 Jan 2025 16:09:21 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 867B7195605F;
+	Wed, 15 Jan 2025 16:09:26 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 53E9830001BE;
-	Wed, 15 Jan 2025 16:09:20 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 57CAC3003FD1;
+	Wed, 15 Jan 2025 16:09:25 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -49,13 +49,11 @@ Cc: kai.huang@intel.com,
 	rick.p.edgecombe@intel.com,
 	dave.hansen@linux.intel.com,
 	yan.y.zhao@intel.com,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
 	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Yuan Yao <yuan.yao@intel.com>
-Subject: [PATCH v3 04/14] x86/virt/tdx: Add SEAMCALL wrappers for TDX page cache management
-Date: Wed, 15 Jan 2025 11:09:02 -0500
-Message-ID: <20250115160912.617654-5-pbonzini@redhat.com>
+	Sean Christopherson <sean.j.christopherson@intel.com>
+Subject: [PATCH v3 07/14] x86/virt/tdx: Add SEAMCALL wrapper tdh_mem_sept_add() to add SEPT pages
+Date: Wed, 15 Jan 2025 11:09:05 -0500
+Message-ID: <20250115160912.617654-8-pbonzini@redhat.com>
 In-Reply-To: <20250115160912.617654-1-pbonzini@redhat.com>
 References: <20250115160912.617654-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -68,162 +66,146 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Intel TDX protects guest VMs from malicious host and certain physical
-attacks. The TDX module uses pages provided by the host for both control
-structures and for TD guest pages. These pages are encrypted using the
-MK-TME encryption engine, with its special requirements around cache
-invalidation. For its own security, the TDX module ensures pages are
-flushed properly and track which usage they are currently assigned. For
-creating and tearing down TD VMs and vCPUs KVM will need to use the
-TDH.PHYMEM.PAGE.RECLAIM, TDH.PHYMEM.CACHE.WB, and TDH.PHYMEM.PAGE.WBINVD
-SEAMCALLs.
+TDX architecture introduces the concept of private GPA vs shared GPA,
+depending on the GPA.SHARED bit. The TDX module maintains a Secure EPT
+(S-EPT or SEPT) tree per TD for private GPA to HPA translation. Wrap the
+TDH.MEM.SEPT.ADD SEAMCALL with tdh_mem_sept_add() to provide pages to the
+TDX module for building a TD's SEPT tree. (Refer to these pages as SEPT
+pages).
 
-Add tdh_phymem_page_reclaim() to enable KVM to call
-TDH.PHYMEM.PAGE.RECLAIM to reclaim the page for use by the host kernel.
-This effectively resets its state in the TDX module's page tracking
-(PAMT), if the page is available to be reclaimed. This will be used by KVM
-to reclaim the various types of pages owned by the TDX module. It will
-have a small wrapper in KVM that retries in the case of a relevant error
-code. Don't implement this wrapper in arch/x86 because KVM's solution
-around retrying SEAMCALLs will be better located in a single place.
+Callers need to allocate and provide a normal page to tdh_mem_sept_add(),
+which then passes the page to the TDX module via the SEAMCALL
+TDH.MEM.SEPT.ADD. The TDX module then installs the page into SEPT tree and
+encrypts this SEPT page with the TD's guest keyID. The kernel cannot use
+the SEPT page until after reclaiming it via TDH.MEM.SEPT.REMOVE or
+TDH.PHYMEM.PAGE.RECLAIM.
 
-Add tdh_phymem_cache_wb() to enable KVM to call TDH.PHYMEM.CACHE.WB to do
-a cache write back in a way that the TDX module can verify, before it
-allows a KeyID to be freed. The KVM code will use this to have a small
-wrapper that handles retries. Since the TDH.PHYMEM.CACHE.WB operation is
-interruptible, have tdh_phymem_cache_wb() take a resume argument to pass
-this info to the TDX module for restarts. It is worth noting that this
-SEAMCALL uses a SEAM specific MSR to do the write back in sections. In
-this way it does export some new functionality that affects CPU state.
+Before passing the page to the TDX module, tdh_mem_sept_add() performs a
+CLFLUSH on the page mapped with keyID 0 to ensure that any dirty cache
+lines don't write back later and clobber TD memory or control structures.
+Don't worry about the other MK-TME keyIDs because the kernel doesn't use
+them. The TDX docs specify that this flush is not needed unless the TDX
+module exposes the CLFLUSH_BEFORE_ALLOC feature bit. Do the CLFLUSH
+unconditionally for two reasons: make the solution simpler by having a
+single path that can handle both !CLFLUSH_BEFORE_ALLOC and
+CLFLUSH_BEFORE_ALLOC cases. Avoid wading into any correctness uncertainty
+by going with a conservative solution to start.
 
-Add tdh_phymem_page_wbinvd_tdr() to enable KVM to call
-TDH.PHYMEM.PAGE.WBINVD to do a cache write back and invalidate of a TDR,
-using the global KeyID. The underlying TDH.PHYMEM.PAGE.WBINVD SEAMCALL
-requires the related KeyID to be encoded into the SEAMCALL args. Since the
-global KeyID is not exposed to KVM, a dedicated wrapper is needed for TDR
-focused TDH.PHYMEM.PAGE.WBINVD operations.
+Callers should specify "GPA" and "level" for the TDX module to install the
+SEPT page at the specified position in the SEPT. Do not include the root
+page level in "level" since TDH.MEM.SEPT.ADD can only add non-root pages to
+the SEPT. Ensure "level" is between 1 and 3 for a 4-level SEPT or between 1
+and 4 for a 5-level SEPT.
 
+Call tdh_mem_sept_add() during the TD's build time or during the TD's
+runtime. Check for errors from the function return value and retrieve
+extended error info from the function output parameters.
+
+The TDX module has many internal locks. To avoid staying in SEAM mode for
+too long, SEAMCALLs returns a BUSY error code to the kernel instead of
+spinning on the locks. Depending on the specific SEAMCALL, the caller
+may need to handle this error in specific ways (e.g., retry). Therefore,
+return the SEAMCALL error code directly to the caller. Don't attempt to
+handle it in the core kernel.
+
+TDH.MEM.SEPT.ADD effectively manages two internal resources of the TDX
+module: it installs page table pages in the SEPT tree and also updates the
+TDX module's page metadata (PAMT). Don't add a wrapper for the matching
+SEAMCALL for removing a SEPT page (TDH.MEM.SEPT.REMOVE) because KVM, as the
+only in-kernel user, will only tear down the SEPT tree when the TD is being
+torn down. When this happens it can just do other operations that reclaim
+the SEPT pages for the host kernels to use, update the PAMT and let the
+SEPT get trashed.
+
+[Kai: Switched from generic seamcall export]
+[Yan: Re-wrote the changelog]
 Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Yuan Yao <yuan.yao@intel.com>
-Message-ID: <20241203010317.827803-5-rick.p.edgecombe@intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Message-ID: <20241112073624.22114-1-yan.y.zhao@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/tdx.h  | 16 ++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.c | 42 +++++++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  3 +++
- 3 files changed, 61 insertions(+)
+ arch/x86/include/asm/tdx.h  |  7 ++++++-
+ arch/x86/virt/vmx/tdx/tdx.c | 19 +++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 2b993ea24297..4176f734118b 100644
+index 1d84cf8e2abe..1be640718692 100644
 --- a/arch/x86/include/asm/tdx.h
 +++ b/arch/x86/include/asm/tdx.h
-@@ -137,6 +137,19 @@ struct tdx_vp {
+@@ -137,7 +137,6 @@ struct tdx_vp {
  	struct page **tdcx_pages;
  };
  
-+
-+static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
-+{
-+	u64 ret;
-+
-+	ret = page_to_phys(page);
-+	/* KeyID bits are just above the physical address bits: */
-+	ret |= hkid << boot_cpu_data.x86_phys_bits;
-+	
-+	return ret;
-+
+-
+ static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
+ {
+ 	u64 ret;
+@@ -147,10 +146,16 @@ static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
+ 	ret |= hkid << boot_cpu_data.x86_phys_bits;
+ 	
+ 	return ret;
 +}
-+
+ 
++static inline int pg_level_to_tdx_sept_level(enum pg_level level)
++{
++        WARN_ON_ONCE(level == PG_LEVEL_NONE);
++        return level - 1;
+ }
+ 
  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
++u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
  u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page);
  u64 tdh_mng_key_config(struct tdx_td *td);
-@@ -146,6 +159,9 @@ u64 tdh_mng_key_freeid(struct tdx_td *td);
- u64 tdh_mng_init(struct tdx_td *td, u64 td_params, u64 *extended_err);
- u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx);
- u64 tdh_vp_init_apicid(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid);
-+u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64 *tdx_size);
-+u64 tdh_phymem_cache_wb(bool resume);
-+u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_cpu_enable(void) { return -ENODEV; }
+ u64 tdh_mng_create(struct tdx_td *td, u16 hkid);
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index a3804e8bdf55..39c4d023e452 100644
+index 83fc01bfd55d..77f9c9c2514c 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1586,3 +1586,45 @@ u64 tdh_vp_init_apicid(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
- 	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
+@@ -1491,6 +1491,25 @@ u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page)
  }
- EXPORT_SYMBOL_GPL(tdh_vp_init_apicid);
-+
-+/*
-+ * TDX ABI defines output operands as PT, OWNER and SIZE. These are TDX defined fomats.
-+ * So despite the names, they must be interpted specially as described by the spec. Return
-+ * them only for error reporting purposes.
-+ */
-+u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64 *tdx_size)
+ EXPORT_SYMBOL_GPL(tdh_mng_addcx);
+ 
++u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2)
 +{
 +	struct tdx_module_args args = {
-+		.rcx = page_to_phys(page),
++		.rcx = gpa | level,
++		.rdx = tdx_tdr_pa(td),
++		.r8 = page_to_phys(page),
 +	};
 +	u64 ret;
 +
-+	ret = seamcall_ret(TDH_PHYMEM_PAGE_RECLAIM, &args);
++	tdx_clflush_page(page);
++	ret = seamcall_ret(TDH_MEM_SEPT_ADD, &args);
 +
-+	*tdx_pt = args.rcx;
-+	*tdx_owner = args.rdx;
-+	*tdx_size = args.r8;
++	*ext_err1 = args.rcx;
++	*ext_err2 = args.rdx;
 +
 +	return ret;
 +}
-+EXPORT_SYMBOL_GPL(tdh_phymem_page_reclaim);
++EXPORT_SYMBOL_GPL(tdh_mem_sept_add);
 +
-+u64 tdh_phymem_cache_wb(bool resume)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = resume ? 1 : 0,
-+	};
-+
-+	return seamcall(TDH_PHYMEM_CACHE_WB, &args);
-+}
-+EXPORT_SYMBOL_GPL(tdh_phymem_cache_wb);
-+
-+u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td)
-+{
-+	struct tdx_module_args args = {};
-+
-+	args.rcx = mk_keyed_paddr(tdx_global_keyid, td->tdr_page);
-+
-+	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
-+}
-+EXPORT_SYMBOL_GPL(tdh_phymem_page_wbinvd_tdr);
+ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+ {
+ 	struct tdx_module_args args = {
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index f0464f7d9780..7a15c9afcdfa 100644
+index 62cb7832c42d..308d3aa565d7 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -24,11 +24,14 @@
- #define TDH_MNG_INIT			21
- #define TDH_VP_INIT			22
- #define TDH_PHYMEM_PAGE_RDMD		24
-+#define TDH_PHYMEM_PAGE_RECLAIM		28
- #define TDH_SYS_KEY_CONFIG		31
- #define TDH_SYS_INIT			33
- #define TDH_SYS_RD			34
- #define TDH_SYS_LP_INIT			35
- #define TDH_SYS_TDMR_INIT		36
-+#define TDH_PHYMEM_CACHE_WB		40
-+#define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_SYS_CONFIG			45
- 
- /*
+@@ -16,6 +16,7 @@
+  * TDX module SEAMCALL leaf functions
+  */
+ #define TDH_MNG_ADDCX			1
++#define TDH_MEM_SEPT_ADD		3
+ #define TDH_VP_ADDCX			4
+ #define TDH_MNG_KEY_CONFIG		8
+ #define TDH_MNG_CREATE			9
 -- 
 2.43.5
 
