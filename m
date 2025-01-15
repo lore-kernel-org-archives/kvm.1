@@ -1,63 +1,64 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455D3161321
-	for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 18:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693101D63C5
+	for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 18:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736965858; cv=none; b=fgNVFrzHMX2k7bgOYtj9JgSEdh8EZtc4YuJEMb0nkQMqpJZ+Uf3HJw3VBstwDshDHSkz5BnoZiTXRMHe1Y8ybzDWkBFK/6miK2BevqSBsQ/JIS0Mi5INjbJlVwWGmiD68bgvUY4ofXoOXv7FX4p8yfvGM+wG1k0E2p+onzA0UaI=
+	t=1736965860; cv=none; b=qSdNbqqaKcOyNdkejvnM9cR23Ke1NIEvfxxPV3sm+vny3F74QzrIRCKauCjBQuVVBO92jtLDWjv7WWRDYtzYNjNitvaof5gYycPEPHJmhjV5shmx6lxg+qVGV85KOHGjB3JWpFFuaADcI2kfVCMifcPnakMKeAbdmYABMZVwjsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736965858; c=relaxed/simple;
-	bh=43OBilrV18+B5fdkEVcCHjSJ8iWjDPj4M//wXsiMjWE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eWoldXb8le615gS396UeA56fZkFEHSMEQAeYLl2xBNpyHzpnEUyQZ8mcAynxCG0qG7ouo8F3CkEN6sj2LdmtZ/dsFQhXmGwE1sgGGH/S3naxp4xpIuotnP+cwdnE19CPexQSYHJGWl3+fgOSiCLqFjVXxjK+HQAbrf6eAeAzK0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=JZIZ8WpP; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1736965860; c=relaxed/simple;
+	bh=C2yg3QgtuxibTBRy1VBsgb98ZP1o7dJeXGlHHQuTfM8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=I5YcUGzBetbYDFr5h1QFUAkhyAE1w4EEyO436HdVn1dk73S/2QnexiUZf1g5mc3ropkMj/7u3VJvFFiCjxCQCuqKIwpBjLLwmDZMNre6sWXVTCx1CcdUJNzc7sKtE/W4V1pRnykhrNDbD3u0eSmJ98hXEm4VtfkVJkJOVbyRYrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=LHs7oues; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="JZIZ8WpP"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21654fdd5daso122338635ad.1
-        for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 10:30:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="LHs7oues"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2167141dfa1so1961245ad.1
+        for <kvm@vger.kernel.org>; Wed, 15 Jan 2025 10:30:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736965855; x=1737570655; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/ajGRMGn1FxbsN+PpYAIsQKTZUngiruAaZC1M7x3JFs=;
-        b=JZIZ8WpPERLiAapvWO2r5Zb5bd7aKQ5oJa4cR9dfKR3Bd/Xs2igJEUM+BkfudBvfoP
-         ZEX2b251XdQyvErJ2A4ZVpbOLUWo7UoY+ISHtluck8wmNmcDmDLdo4xC4EBdctgM/dVM
-         kcqlV/yO33xxVu3oIUTejidVo+R4ItQJnBNX67c/HCV95RVJzV3KLt+A3jQa8677PgP6
-         JtMAKudZBSd91nJBSYr5ipCiB1iusqMZvRHnFVp3KGKPG2+hGKCHffTM4Nt9WBrXLWWH
-         UPGNznKk/0DODull2p416BSog/YLYt9cpoU4can1tx6v77SQUXWfO+2V5YetLnXpmrzM
-         eG9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736965855; x=1737570655;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736965858; x=1737570658; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/ajGRMGn1FxbsN+PpYAIsQKTZUngiruAaZC1M7x3JFs=;
-        b=oJ3qasa8BZZ6UsadBLWSitX8uGS25QyXGQ9TkliwwigAig0oFPjgx8cbCd/U7jD36f
-         m0hIzXtRARgC79Lp+NPrHK9q9FqPO1FscghuSyQc8PxXUqhcqftu//H6X4dKzExxfE+i
-         o4OHH60mnd0orU23zA04AFEIfllBTzS3djRfDs15yY/DHxm1mInpotimzKPcKrstTNdx
-         R5DRzlfZBiRP9IH1YmI0T6KBjF+FLlA1QbYwZDn9Lr9rYqSjt0uNKKwQmYXYiZ1JD46E
-         sheOIqidDTz1fkWJWpPRH+874LjIiqH4BiNxu6A112o/a+/e9ITVhMbqU/VTreAtfvau
-         agqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ81SHt9OZeSAlSkE2WT5vlnXFz7EBKCL2bgdq56fqt7s9W2ky1YIcBHNvQFMVH3moh/0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+5Fafi/C41QoHGOlDYqFYRJSPUiGh1cxDb0r0D5OtpBMSidpk
-	BGmZHOTLaCbdg9aBv2e6OWh6HTFNYheMVNLUk9ygM5w1pSCZlVpQiqiOAniK0Rk=
-X-Gm-Gg: ASbGnctBerbLl3/VO3pdy4f6h1ARdgJwaN1FeYG6zna7XRc+2gYAkt8X27i1MQEUjdo
-	NfwY2EpwmyHxiTXkroy1FdKoo3JuZnBsExo1iKSIvUUhXeGvQW8yy3Yga8gYqhJbpSp5MI4pI6x
-	8/WKU4XP+O59SVyq4LydTxx3r0jXBpiQaWpihv2XjMKKiTdQJUyTDsq7D4Ft8+iBeUFHr/Cn6yc
-	C/mUC3oJi0HHyZ1nqvEe6ahdPCEyV4iTaBIxUoGFJGTDuk5+h0u58jRV2iV3rXeTl154g==
-X-Google-Smtp-Source: AGHT+IEFG9EqfNb6O2FfoTObOooM3/6B60y7w3sfOaKZm6tCWCH+RNJht379tQ8uKw/jXGcfHEEVRQ==
-X-Received: by 2002:a17:902:f644:b0:212:40e0:9562 with SMTP id d9443c01a7336-21a83f69651mr458458845ad.25.1736965855468;
-        Wed, 15 Jan 2025 10:30:55 -0800 (PST)
+        bh=nTd9Qo5vidtOLE+cxHwuaQqNzwk6goJIP9mJXkel4TI=;
+        b=LHs7ouesPdcBD/sHmOaAIgtbX2sEhwhBDScp3XPSeRssl6YoRva4njcBwMEoFySyPZ
+         lth5Ocg8Fihq6ncLEatWf+Bhf7foPy3tdSqiG1NbjB1h9+F9HGLMpNvfPgWrxqr1FQ5a
+         ldmCOCi6yjymuzY//9GQT527aZvCE3/yIJL6PYE53FYNz0RUqXoUwA7SJG55ghpopSUk
+         mgOPU5y9iPRm+rxQlVhVvPk0qnV8vTKzF4Jw8ENyyBIoje0m4af6SNRF8hGwLsNX2eLk
+         UPyeCPub0grs8IfPTYm7H5PWKeR2JN0W+ityrjy2GZR8DFUDF394vwDDawzBjXCt8c6A
+         q8KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736965858; x=1737570658;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nTd9Qo5vidtOLE+cxHwuaQqNzwk6goJIP9mJXkel4TI=;
+        b=moMP8YibHGrFWRl1YvAYGCayVolEGJqKZuH68vERz03zqpFqMoh3eTjKRpuVa3SIQf
+         cYkyHKPgFtDyBlqvbBWCb06Z4yvweXskXUD7ZyjFW2gXt0iHsnjPhTwz7fKdN7ga3NQ5
+         e+LaXpMe5soyj8MMDjFgkhrATcrnKYWuEpETQkhqgOUn8A2uY0FYQWlRjIEoezToV2CG
+         iQy0fery1JSoZ/M9Ht2ULSkKAyiwabzLggP5vJ/8pGcujYACy72wO0/OClLgJ7aIV5jA
+         UGtkjzhN/gAJxkdgKRCoKOnMX7sFSxWged4uEodiq1P9pEZbp4Tsf+IzfEWSSpzPJou0
+         Z7Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVN+aokehA9+0oZtAKUVhL64nyQYZ2Q5YiyPiFxkvpHAmRi5TG+krEAEe0SG211toC5RtE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzukE0Q7ljcdBycjHyrxABfG3SjgKk3aZn7oItgDSaRDyO1iCPK
+	iQlNFGWvSqCWdvRpezecGUYDQ6jSECwkCaejzGNpF4ZMFUdAVjks50zGEW5mbI4=
+X-Gm-Gg: ASbGncudoxdidHerRfGWsunRCqnB36eG9oonBew2SpJLx88gSnCU1+YHw/+Ql3GxcTv
+	8fNpyOgxGuCNwEuqxNNKm1w+P1qEGae+A5vTnW0tgf2Fq9O/2B93yhF2PbHnDolPUss4szf+tol
+	Q1bgY8NZEKM5uEhKsTnTDsnqeDLikFBVn0S+ONzE4aYOq4vJBZUj27XZ+K28gULoD3zRhIoqdlm
+	ckZVi375ieVfOvEZ06eH2LRg5aJdUbRyUBsMVJTFo4F7V8P+JggdQUTwugJBF04uUczIw==
+X-Google-Smtp-Source: AGHT+IHHO3B1HJhEuywvwBIX7b7bfSC/4ve6r1ZbOzw3ZYVhbL87vWT2YRpjRvKHUMwV10zBAIgK0g==
+X-Received: by 2002:a17:903:2291:b0:215:58be:334e with SMTP id d9443c01a7336-21bf0bb89cemr59154695ad.10.1736965857674;
+        Wed, 15 Jan 2025 10:30:57 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f219f0dsm85333195ad.139.2025.01.15.10.30.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f219f0dsm85333195ad.139.2025.01.15.10.30.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 10:30:55 -0800 (PST)
+        Wed, 15 Jan 2025 10:30:57 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
-Subject: [PATCH v2 0/9] Add SBI v3.0 PMU enhancements
-Date: Wed, 15 Jan 2025 10:30:40 -0800
-Message-Id: <20250115-pmu_event_info-v2-0-84815b70383b@rivosinc.com>
+Date: Wed, 15 Jan 2025 10:30:42 -0800
+Subject: [PATCH v2 2/9] drivers/perf: riscv: Add raw event v2 support
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,11 +67,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAND+h2cC/12OQWrDMBBFr2K07gTP2BWSKaX3CME4yriZhaVUc
- kRKyN2ryJu2oM0TzPvvrhJH4aSG5q4iZ0kSfAF6aZQ7T/6TQU6FFbXUY4sGLst15Mx+HcXPAaz
- RTOhYH0+dKkeXyLPcqnB/KHyWtIb4Xf0Zn7+bCtH+V2WEFqZ+ttpiTzibjyg5JPFu58KiDo9NH
- /nrWjLXbUMtnNJUM4fmraoJ6Ze61oyZoLwWDHZsysar1fRH//6MP06JocAi69BkvcMOoqOy/Pg
- BmvULkCgBAAA=
+Message-Id: <20250115-pmu_event_info-v2-2-84815b70383b@rivosinc.com>
+References: <20250115-pmu_event_info-v2-0-84815b70383b@rivosinc.com>
+In-Reply-To: <20250115-pmu_event_info-v2-0-84815b70383b@rivosinc.com>
 To: Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>, 
  Mark Rutland <mark.rutland@arm.com>, 
  Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -82,64 +81,83 @@ Cc: linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
  Atish Patra <atishp@rivosinc.com>
 X-Mailer: b4 0.15-dev-13183
 
-SBI v3.0 specification[1] added two new improvements to the PMU chaper.
+SBI v3.0 introduced a new raw event type that allows wider
+mhpmeventX width to be programmed via CFG_MATCH.
 
-1. Added an additional get_event_info function to query event availablity
-in bulk instead of individual SBI calls for each event. This helps in
-improving the boot time.
-
-2. Raw event width allowed by the platform is widened to have 56 bits
-with RAW event v2 as per new clarification in the priv ISA[2].
-
-Apart from implementing these new features, this series improves the gpa
-range check in KVM and updates the kvm SBI implementation to SBI v3.0.
-
-The opensbi patches have been merged. This series can be found at [4].
-This series will conflict with counter delegation patch series[4]. This
-series is gated on SBI v3.0 freeze requirement while counter delegation
-series is very early. I will rebase one of them on the other as we gather
-more reviews and closer to merge.
-
-[1] https://github.com/riscv-non-isa/riscv-sbi-doc/releases/download/vv3.0-rc2/riscv-sbi.pdf
-[2] https://github.com/riscv/riscv-isa-manual/issues/1578
-[3] https://github.com/atishp04/linux/tree/b4/pmu_event_info_v2
-[4] https://lore.kernel.org/kvm/20250114-counter_delegation-v2-0-8ba74cdb851b@rivosinc.com/
+Use the raw event v2 if SBI v3.0 is available.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
-Changes in v2:
-- Dropped PATCH 2 to be taken during rcX.
-- Improved gpa range check validation by introducing a helper function
-  and checking the entire range.
-- Link to v1: https://lore.kernel.org/r/20241119-pmu_event_info-v1-0-a4f9691421f8@rivosinc.com
+ arch/riscv/include/asm/sbi.h |  4 ++++
+ drivers/perf/riscv_pmu_sbi.c | 16 ++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
----
-Atish Patra (9):
-      drivers/perf: riscv: Add SBI v3.0 flag
-      drivers/perf: riscv: Add raw event v2 support
-      RISC-V: KVM: Add support for Raw event v2
-      drivers/perf: riscv: Implement PMU event info function
-      drivers/perf: riscv: Export PMU event info function
-      KVM: Add a helper function to validate vcpu gpa range
-      RISC-V: KVM: Use the new gpa range validate helper function
-      RISC-V: KVM: Implement get event info function
-      RISC-V: KVM: Upgrade the supported SBI version to 3.0
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index 3d250824178b..6ce385a3a7bb 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -160,7 +160,10 @@ struct riscv_pmu_snapshot_data {
+ 
+ #define RISCV_PMU_RAW_EVENT_MASK GENMASK_ULL(47, 0)
+ #define RISCV_PMU_PLAT_FW_EVENT_MASK GENMASK_ULL(61, 0)
++/* SBI v3.0 allows extended hpmeventX width value */
++#define RISCV_PMU_RAW_EVENT_V2_MASK GENMASK_ULL(55, 0)
+ #define RISCV_PMU_RAW_EVENT_IDX 0x20000
++#define RISCV_PMU_RAW_EVENT_V2_IDX 0x30000
+ #define RISCV_PLAT_FW_EVENT	0xFFFF
+ 
+ /** General pmu event codes specified in SBI PMU extension */
+@@ -218,6 +221,7 @@ enum sbi_pmu_event_type {
+ 	SBI_PMU_EVENT_TYPE_HW = 0x0,
+ 	SBI_PMU_EVENT_TYPE_CACHE = 0x1,
+ 	SBI_PMU_EVENT_TYPE_RAW = 0x2,
++	SBI_PMU_EVENT_TYPE_RAW_V2 = 0x3,
+ 	SBI_PMU_EVENT_TYPE_FW = 0xf,
+ };
+ 
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 170aa93106b9..5d5b399b3e77 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -59,7 +59,7 @@ asm volatile(ALTERNATIVE(						\
+ #define PERF_EVENT_FLAG_USER_ACCESS	BIT(SYSCTL_USER_ACCESS)
+ #define PERF_EVENT_FLAG_LEGACY		BIT(SYSCTL_LEGACY)
+ 
+-PMU_FORMAT_ATTR(event, "config:0-47");
++PMU_FORMAT_ATTR(event, "config:0-55");
+ PMU_FORMAT_ATTR(firmware, "config:62-63");
+ 
+ static bool sbi_v2_available;
+@@ -527,8 +527,10 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 		break;
+ 	case PERF_TYPE_RAW:
+ 		/*
+-		 * As per SBI specification, the upper 16 bits must be unused
+-		 * for a hardware raw event.
++		 * As per SBI v0.3 specification,
++		 *  -- the upper 16 bits must be unused for a hardware raw event.
++		 * As per SBI v3.0 specification,
++		 *  -- the upper 8 bits must be unused for a hardware raw event.
+ 		 * Bits 63:62 are used to distinguish between raw events
+ 		 * 00 - Hardware raw event
+ 		 * 10 - SBI firmware events
+@@ -537,8 +539,14 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 
+ 		switch (config >> 62) {
+ 		case 0:
++			if (sbi_v3_available) {
++			/* Return error any bits [56-63] is set  as it is not allowed by the spec */
++				if (!(config & ~RISCV_PMU_RAW_EVENT_V2_MASK)) {
++					*econfig = config & RISCV_PMU_RAW_EVENT_V2_MASK;
++					ret = RISCV_PMU_RAW_EVENT_V2_IDX;
++				}
+ 			/* Return error any bits [48-63] is set  as it is not allowed by the spec */
+-			if (!(config & ~RISCV_PMU_RAW_EVENT_MASK)) {
++			} else if (!(config & ~RISCV_PMU_RAW_EVENT_MASK)) {
+ 				*econfig = config & RISCV_PMU_RAW_EVENT_MASK;
+ 				ret = RISCV_PMU_RAW_EVENT_IDX;
+ 			}
 
- arch/riscv/include/asm/kvm_vcpu_pmu.h |   3 +
- arch/riscv/include/asm/kvm_vcpu_sbi.h |   2 +-
- arch/riscv/include/asm/sbi.h          |  13 +++
- arch/riscv/kvm/vcpu_pmu.c             |  75 +++++++++++++-
- arch/riscv/kvm/vcpu_sbi_pmu.c         |   3 +
- arch/riscv/kvm/vcpu_sbi_sta.c         |   6 +-
- drivers/perf/riscv_pmu_sbi.c          | 190 +++++++++++++++++++++++++---------
- include/linux/kvm_host.h              |   2 +
- include/linux/perf/riscv_pmu.h        |   2 +
- virt/kvm/kvm_main.c                   |  21 ++++
- 10 files changed, 258 insertions(+), 59 deletions(-)
----
-base-commit: e32a80927434907f973f38a88cd19d7e51991d24
-change-id: 20241018-pmu_event_info-986e21ce6bd3
---
-Regards,
-Atish patra
+-- 
+2.34.1
 
