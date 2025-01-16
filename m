@@ -1,117 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208931991BB;
-	Thu, 16 Jan 2025 08:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C851A26AF6
+	for <kvm@vger.kernel.org>; Thu, 16 Jan 2025 08:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737016375; cv=none; b=j1tUTEGo7GI+WqulOlrqnNk6w24aKxO4sg4okuD7mv8Wagrgi22IAoXmzLWiQ6AIogXblTPN0K+ZQ4pw61EpC3DI69w/3w+Bq7f9DF5ElrmnV7zzm6U3lEN+1GtGm2NzCjGaLUzGas8VQoj76V31UMdl0LtWjNnTuZugXu1a+jA=
+	t=1737017642; cv=none; b=EK6Si/xOgj+41F2EVm/1E9Q+eG1eZtTpdM2tbRwg8SsBLEE5TbEzFXiTnDGrkjnLhlzDK6G+cZ+y0yr/daLSxLd6j81WcSnaeO5FLYCHENDmqExW8OGnWBuInD9DQdJL7xlH15aTU8fKGYRA/Wy3oP5RMiCw8KSWxmZ1/Atc5ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737016375; c=relaxed/simple;
-	bh=VGrWjvhJhhUTVfrWrN34OBRcBc2wi3Pd0KUwUFHy7HQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bxkPozW8rm+LQB4zHiZtAlMrwtzGlC4v42OR5NW8m9OAmowdi8tNyHFHoFROSl4vL78hL26O3eGrUY5Wq3I+q38ORnKt4tVlO6X1VayeX9wnIAuh7wfxaggTiayscQ9XSfTHGTqp86zcjum1k+aMln8JITKY4Cx3JRITmtg31Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpbUqyUK; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737017642; c=relaxed/simple;
+	bh=yZw1YWix7/0v17N1NyNVK3/J2P5q4Pb8NI/rZF51DAI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dv/t3dmicSaMichXUpjwWllJJKECnUmyRfDPU9yMIhVoGDmNgAiXtth/nwuIDzYTOFrKsVkumI/m8BAhZYS46Z2CweNFkf2b6jdP3P9Dp0t4CX9C+9K4CEtBSvXYPK5RQ0xCwbsNhKjhoAf3gt4R/g9KIYitqCyzyb3YnBZlFkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qy0ceT0X; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpbUqyUK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qy0ceT0X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737016375; x=1768552375;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VGrWjvhJhhUTVfrWrN34OBRcBc2wi3Pd0KUwUFHy7HQ=;
-  b=FpbUqyUKLgNFG+nm4yXJRJDWyBwnf0z1xzDuLj9Z3J1Rc2u3Ltw1alVK
-   PP+QQavVU5rkVuz/09G0G+2wR0HHKatirlmGHtVjxuLbegtpPyzV1Nsvt
-   YdfvKLVmGH/1a/CKClV7DYe+r5nVbq+qFpvl0vlK3BGMmVFVEmUwxa5KT
-   +AGUSWlkekrxiZU1tg8V0P2EwdEvd6KcUiGHLOm3YXy1zWxIyuE4Zay04
-   f1Q5QkSt+24xj+V/7H5HoiejBlQW8Kv14s/oLT45VfhaTd3CN0pSKwnLf
-   cJ3p2Ie9nVzTf58MWbUaGTPfp4X+TZLPZCbF+OrbC1AhoTSxlaxsx1yFC
-   w==;
-X-CSE-ConnectionGUID: 1QgLggWiTjut7nKEhpRSHg==
-X-CSE-MsgGUID: uDgruy7WQwmwzXcimfQ5Wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="48782703"
+  t=1737017641; x=1768553641;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yZw1YWix7/0v17N1NyNVK3/J2P5q4Pb8NI/rZF51DAI=;
+  b=Qy0ceT0Xm5bzlUzb7x5FthKLFLOwWP60OBaR1xvsozyrcvb/4DzbPVs1
+   TwXmn7r5PYRjaUh20aPtuBEoFIG2fMDYBTKNXHQjBKMGlAI3bvcq1AivS
+   iTN6fdCSqJ6x4gPm60fRcfNHc5hyi3Vm0A3XmGSLHCmGi3no6KJ/wIm7a
+   e+IQllK0VqD6+wz5pBKCkiKVZBXNR4T4dOGRbknzdp2lPh4GFE0mArR/X
+   8IGXbMxXQTzbXcF6p5fTIGK3fDge619dcBwJDOhSBeYrAa+cs6JzKJstJ
+   HI7vTYOVR9Jhy1ppdZqD9vnTMRSPoPD3n7i8gzrQVjH3NlrC79Slh0agM
+   g==;
+X-CSE-ConnectionGUID: 106tcQ+QRY22mgclXDgY2g==
+X-CSE-MsgGUID: Z99RUZGhSJegLnA/YB2mWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="41069500"
 X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; 
-   d="scan'208";a="48782703"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 00:32:54 -0800
-X-CSE-ConnectionGUID: RHQ6cZtPQfClhhKO2tTqFw==
-X-CSE-MsgGUID: eaHL4luvRdGgumdMQzCsTA==
+   d="scan'208";a="41069500"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 00:54:01 -0800
+X-CSE-ConnectionGUID: JcpwkuKERM6AP3SrjlcAZA==
+X-CSE-MsgGUID: wvbgJKILTuSSIhHdUD1R+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; 
-   d="scan'208";a="105178638"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 16 Jan 2025 00:32:49 -0800
-Date: Thu, 20 Jun 2024 07:39:36 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
- kAPI
-Message-ID: <ZnNsOOqM4ziy2reV@yilunxu-OptiPlex-7050>
-References: <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
- <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
- <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
- <20250110203838.GL5556@nvidia.com>
- <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
- <20250114173103.GE5556@nvidia.com>
- <Z4d4AaLGrhRa5KLJ@phenom.ffwll.local>
- <20250115093234.GB6805@lst.de>
- <20250115133419.GN5556@nvidia.com>
- <20250116053348.GA24046@lst.de>
+   d="scan'208";a="105471015"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 00:53:55 -0800
+Message-ID: <3345330e-c111-4d08-9852-9dede46957d2@intel.com>
+Date: Thu, 16 Jan 2025 16:53:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250116053348.GA24046@lst.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 56/60] i386/tdx: Don't treat SYSCALL as unavailable
+To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
+ kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+ <20241105062408.3533704-57-xiaoyao.li@intel.com>
+ <f1c7bba2-7b21-4e10-a245-36673e93f8b7@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <f1c7bba2-7b21-4e10-a245-36673e93f8b7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 16, 2025 at 06:33:48AM +0100, Christoph Hellwig wrote:
-> On Wed, Jan 15, 2025 at 09:34:19AM -0400, Jason Gunthorpe wrote:
-> > > Or do you mean some that don't have pages associated with them, and
-> > > thus have pfn_valid fail on them?  They still have a PFN, just not
-> > > one that is valid to use in most of the Linux MM.
-> > 
-> > He is talking about private interconnect hidden inside clusters of
-> > devices.
-> > 
-> > Ie the system may have many GPUs and those GPUs have their own private
-> > interconnect between them. It is not PCI, and packets don't transit
-> > through the CPU SOC at all, so the IOMMU is not involved.
-> > 
-> > DMA can happen on that private interconnect, but from a Linux
-> > perspective it is not DMA API DMA, and the addresses used to describe
-> > it are not part of the CPU address space. The initiating device will
-> > have a way to choose which path the DMA goes through when setting up
-> > the DMA.
+On 11/5/2024 5:59 PM, Paolo Bonzini wrote:
+> On 11/5/24 07:24, Xiaoyao Li wrote:
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>   target/i386/kvm/tdx.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> index 9cb099e160e4..05475edf72bd 100644
+>> --- a/target/i386/kvm/tdx.c
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -734,6 +734,13 @@ static int 
+>> tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
+>>           requested = env->features[w];
+>>           unavailable = requested & ~actual;
+>> +        /*
+>> +         * Intel enumerates SYSCALL bit as 1 only when processor in 
+>> 64-bit
+>> +         * mode and before vcpu running it's not in 64-bit mode.
+>> +         */
+>> +        if (w == FEAT_8000_0001_EDX && unavailable & 
+>> CPUID_EXT2_SYSCALL) {
+>> +            unavailable &= ~CPUID_EXT2_SYSCALL;
+>> +        }
+>>           mark_unavailable_features(cpu, w, unavailable, unav_prefix);
+>>           if (unavailable) {
+>>               mismatch = true;
 > 
-> So how is this in any way relevant to dma_buf which operates on
-> a dma_addr_t right now and thus by definition can't be used for
-> these?
+> This seems like a TDX module bug?  
 
-One part of dma-buf is the fd-based machanism for exporters to share
-buffers across devices & subsystems, while still have buffer's lifetime
-controlled by exporters.  Another part is the way the importers use
-the buffer (i.e. the dma_addr_t based kAPI).
+I don't think so. The value of CPUID_EXT2_SYSCALL depends on the mode of 
+the vcpu. Per SDM, it's 0 outside 64-bit mode.
 
-The fd-based exporting machanism is what we want to dmaareuse for buffer
-sharing. But we are pursuing some extended buffer sharing and DMA usage
-which doesn't fit into existing DMA API mapping, e.g. for GPA/userspace
-IOVA accessing, or IIUC other side channel DMA, multi-channel DMA ...
+The initial state of TDX vcpu is 32-bit protected mode. At the time of 
+calling KVM_TDX_GET_CPUID, vcpu hasn't started running. So the value 
+should be 0.
 
-Thanks,
-Yilun 
+There indeed is a TDX module. After vcpu starts running and TD guest 
+switches to 64-bit mode. The value of this bit returned by TDX module 
+via global metadata CPUID value still remains 0.
+
+Off the topic, for me, it's really a bad API to return TDX's CPUID value 
+via TD-scope metadata. It fits better with TD VCPU scope metadata.
+
+> It's the kind of thing that I guess 
+> could be worked around in KVM.
+> 
+> If we do it in QEMU, I'd rather see it as
+> 
+>              actual = cpuid_entry_get_reg(entry, wi->cpuid.reg);
+>              switch (w) {
+>              case FEAT_8000_0001_EDX:
+>                  actual |= CPUID_EXT2_SYSCALL;
+>                  break;
+>              }
+>              break;
+
+I'll change to this way.
+
+
+> Paolo
+> 
+
