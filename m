@@ -1,153 +1,186 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7DC19E97F;
-	Fri, 17 Jan 2025 16:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D9C19F135
+	for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 16:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737131408; cv=none; b=c3M1byE7Yi7sISlEDceBpMkuV4Q8+IZVTMtd4fyKvGUn2AcDgrEeJToxoLn4gB+ou0jna5IV/HPhN8uMVFEDfVWMa2mHQ7OsUD8GsXBhcm1B9x3xhYd1VqabWPx98qPHJWYPMS8jScnZX0rVwtyGrEQ9wk68brmTIsy5MKxuK04=
+	t=1737131410; cv=none; b=A3mlnHHqt29IsuAx/VmF269YAtvbL4Wx+1bnpVz/BxadehndYG8OGZhyDYU2r0lbppEAa2Su7kq5kD7i0bgB8VPTvN34BsuzAFe0Wnimc2J4vzENhUWOKVYXX2/kJmxBHHOeHmjxX/th0PCJJ4sBW0HZ5tKdG2t1nO9gRxoNn/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737131408; c=relaxed/simple;
-	bh=bId4wEBRFLBHUHfZlv5z5tp41OgM+L/tk3pL8D1TE1M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iOL4mCyRkE5eGMGyNLuvLKiYHcgq01lRH1HAXfLtBCS4a91Sq8g6c7FNmvJ13H1KXmkgU3QXTSJzQor2FMZCaBu135ZbTcQlu9fWVtKRo64RZHBEuIM3BEytGcXq77MaV+DFjlcatpB8B/oYHgTTY9U1+48SKiLV0TNISZ18CIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kjxTiCZm; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1737131410; c=relaxed/simple;
+	bh=b+j8O1fpySwBHjRCH9MHnwAqg83B8SsV5VqTyV6rv9Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lIju2m7+dXwacglVCajxkV892HyjXGaW+ou9IzueL7y+nVR0MmMIf90+bwcM6OCUN23zBb0rT8cNLZecoVPxxTKcOC6jvoiM86dVdeNPeZOlqdylPgpDue+o8zUUEut9hfJo1TMm8xbjJPnhm0AIlKuxK73jebwtiqtYkAp1Z1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aUX84xUq; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kjxTiCZm"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50HE6Px8021268;
-	Fri, 17 Jan 2025 16:30:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zJy4PY
-	vzNanPP7E6WBYyzxKpdgX9yJ3KTl5KENiBnU8=; b=kjxTiCZm01FarPgMQuVZBx
-	kLFLfROS0zBxhvWBKFhzZzT7Y/q81rCbiNyC+hDQMbbqPsJ/QaCDC4ddhTlTy65+
-	VCPahXbqAIRuMNlsW2IxBRPLClxuQeX7YfSmGjk+K8YiTF6ctt8Z4ldaVRjRjpW9
-	uZst8/QlIN7RzFCBodww0wQ8f5fDGocIVtpYplz7STfWjRlY5XYQZ7x/hkcK5gBw
-	TrAIbtO7XI684kgskEQyZGXaY28iw8BdtXm74OTq4H6RTCSxi34nur1G6olkyXEl
-	Tn51phEFSV7Pqvg5mLEwbp+fBYhZ8R0h13yUm4c/GwBqBlJENqTSajsq9DOu+y1w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 447rp58qhc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jan 2025 16:30:01 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50HGU0n8017451;
-	Fri, 17 Jan 2025 16:30:00 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 447rp58qh7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jan 2025 16:30:00 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50HDYPxK004576;
-	Fri, 17 Jan 2025 16:30:00 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4442yt3wbs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jan 2025 16:30:00 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50HGTuJp56557870
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jan 2025 16:29:56 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9025A20040;
-	Fri, 17 Jan 2025 16:29:56 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7A0B2004D;
-	Fri, 17 Jan 2025 16:29:55 +0000 (GMT)
-Received: from [9.171.8.211] (unknown [9.171.8.211])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Jan 2025 16:29:55 +0000 (GMT)
-Message-ID: <5ab8dfc2-077f-4151-818c-b120c3671ec3@linux.ibm.com>
-Date: Fri, 17 Jan 2025 17:29:55 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aUX84xUq"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43623bf2a83so16616005e9.0
+        for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 08:30:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737131406; x=1737736206; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MygWVLHFA/Ogghouk9TRsaDRRHDK/dBL9FKQqgrSGb0=;
+        b=aUX84xUqHKfu/GM/QUvJNLjWOqZG8aVIrLUk95c/KromshQx+G9LYsi0HlTnEFlGj/
+         K1Vb8X2hUDtSltJtBj5TJ4LrHookpcN8P1qz+X5FcKsz4fFPX9IS36/prqbnnmfnyzAx
+         e/mqttu1g0NFfytnj9eD9UXnXw5vHAuF+t6jQL9FBOCYgN3y1GFAxbFA54adsKv22TbD
+         il4CFa9DhoNwgPU4i1KDGOKx/tvb6WmT77kSLB1u13qe8oT2Gl0gUazRVj6uMtEFXo3q
+         XGGswpEytQ4/K0mcj/wc1DBK26yJ4PxIVH2JrbITGlzYZ6IiiGLIgGsmSDcyx/GbI+WX
+         zSKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737131406; x=1737736206;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MygWVLHFA/Ogghouk9TRsaDRRHDK/dBL9FKQqgrSGb0=;
+        b=sTGtZUjpGnWw2lRjIZiaf2UtYjQwcjebfeivaU9WziOV08EhQF94x1C5YfEKhHiTZe
+         Owe3IKUycKbFe+rkppSBRch07Fz15Kpezw+8jgwCFGcSG3k+bVoV3DyoP/HVdWg3hO7u
+         1eNQ3F21bXGDz1KJWyh6E5/qqw1svwEJ0nRsna+yJa+Au1ZJ3BVbve3FXdxKsCCh/NGO
+         RkQmQ24SdYE3GykPUtUwoa6t8P6uAEy6KbuXBuFJo6mW3YAA7+a1AcXHc4VBWeZIVNYf
+         Z0Zu37NgmgSCfRNJFNuBLR6z9hTaQ0RvWb1QsW28t1P6i97+kDrKZpcF/qbBqPmhiwSM
+         wy0g==
+X-Gm-Message-State: AOJu0YzMRroHRYowys3iQJKFo+GnrGY3fTofMpFAYLeqak2gkNxmhoyp
+	C83YjzdDhgQOHBmckimrc+/+D7cxycGKJSl3+n/fDaHe2Af2hRvifKvjOtxNOzFoxN/8qLAaUzY
+	090ZSJuuB/7tgoJ4uYWfMdZwLzKNFuZzbLjtZp6kNGG5Uh9EUYeSoA9AdMeTyPTYtxwkGE3YLj9
+	UxyuV+KtQcbP2OzkxVcPL02QA=
+X-Google-Smtp-Source: AGHT+IEHuE0O1Pmu3qZGQgThvn78WhmP89neBbw/jiEtDzguRVKTsO5hOjuvNpTFKXWiuoSlKkap9d2uOA==
+X-Received: from wmsp9.prod.google.com ([2002:a05:600c:1d89:b0:434:9da4:2fa5])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:524c:b0:432:7c08:d0ff
+ with SMTP id 5b1f17b1804b1-4389143768fmr35144945e9.23.1737131405542; Fri, 17
+ Jan 2025 08:30:05 -0800 (PST)
+Date: Fri, 17 Jan 2025 16:29:47 +0000
+In-Reply-To: <20250117163001.2326672-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/15] KVM: s390: get rid of gmap_translate()
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        schlameuss@linux.ibm.com, david@redhat.com, willy@infradead.org,
-        hca@linux.ibm.com, svens@linux.ibm.com, agordeev@linux.ibm.com,
-        gor@linux.ibm.com, nrb@linux.ibm.com, nsg@linux.ibm.com,
-        seanjc@google.com, seiden@linux.ibm.com
-References: <20250116113355.32184-1-imbrenda@linux.ibm.com>
- <20250116113355.32184-9-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20250116113355.32184-9-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ho4iPq328Zgj2A77xSn11FXQbiVlSFR-
-X-Proofpoint-ORIG-GUID: ajdlhbMNgUEQZ0n3GhgFE1RuxXuLOsxx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-17_06,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=619
- impostorscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 malwarescore=0
- priorityscore=1501 clxscore=1015 spamscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501170130
+Mime-Version: 1.0
+References: <20250117163001.2326672-1-tabba@google.com>
+X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
+Message-ID: <20250117163001.2326672-2-tabba@google.com>
+Subject: [RFC PATCH v5 01/15] mm: Consolidate freeing of typed folios on final folio_put()
+From: Fuad Tabba <tabba@google.com>
+To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, tabba@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/16/25 12:33 PM, Claudio Imbrenda wrote:
-> Add gpa_to_hva(), which uses memslots, and use it to replace all uses
-> of gmap_translate().
-> 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->   arch/s390/include/asm/gmap.h |  1 -
->   arch/s390/kvm/interrupt.c    | 19 +++++++++++--------
->   arch/s390/kvm/kvm-s390.h     |  9 +++++++++
->   arch/s390/mm/gmap.c          | 20 --------------------
->   4 files changed, 20 insertions(+), 29 deletions(-)
-> 
+Some folio types, such as hugetlb, handle freeing their own
+folios. Moreover, guest_memfd will require being notified once a
+folio's reference count reaches 0 to facilitate shared to private
+folio conversion, without the folio actually being freed at that
+point.
 
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+As a first step towards that, this patch consolidates freeing
+folios that have a type. The first user is hugetlb folios. Later
+in this patch series, guest_memfd will become the second user of
+this.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+---
+ include/linux/page-flags.h | 15 +++++++++++++++
+ mm/swap.c                  | 24 +++++++++++++++++++-----
+ 2 files changed, 34 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 691506bdf2c5..6615f2f59144 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -962,6 +962,21 @@ static inline bool page_has_type(const struct page *page)
+ 	return page_mapcount_is_type(data_race(page->page_type));
+ }
+ 
++static inline int page_get_type(const struct page *page)
++{
++	return page->page_type >> 24;
++}
++
++static inline bool folio_has_type(const struct folio *folio)
++{
++	return page_has_type(&folio->page);
++}
++
++static inline int folio_get_type(const struct folio *folio)
++{
++	return page_get_type(&folio->page);
++}
++
+ #define FOLIO_TYPE_OPS(lname, fname)					\
+ static __always_inline bool folio_test_##fname(const struct folio *folio) \
+ {									\
+diff --git a/mm/swap.c b/mm/swap.c
+index 10decd9dffa1..6f01b56bce13 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -94,6 +94,20 @@ static void page_cache_release(struct folio *folio)
+ 		unlock_page_lruvec_irqrestore(lruvec, flags);
+ }
+ 
++static void free_typed_folio(struct folio *folio)
++{
++	switch (folio_get_type(folio)) {
++	case PGTY_hugetlb:
++		free_huge_folio(folio);
++		return;
++	case PGTY_offline:
++		/* Nothing to do, it's offline. */
++		return;
++	default:
++		WARN_ON_ONCE(1);
++	}
++}
++
+ void __folio_put(struct folio *folio)
+ {
+ 	if (unlikely(folio_is_zone_device(folio))) {
+@@ -101,8 +115,8 @@ void __folio_put(struct folio *folio)
+ 		return;
+ 	}
+ 
+-	if (folio_test_hugetlb(folio)) {
+-		free_huge_folio(folio);
++	if (unlikely(folio_has_type(folio))) {
++		free_typed_folio(folio);
+ 		return;
+ 	}
+ 
+@@ -934,13 +948,13 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 		if (!folio_ref_sub_and_test(folio, nr_refs))
+ 			continue;
+ 
+-		/* hugetlb has its own memcg */
+-		if (folio_test_hugetlb(folio)) {
++		if (unlikely(folio_has_type(folio))) {
++			/* typed folios have their own memcg, if any */
+ 			if (lruvec) {
+ 				unlock_page_lruvec_irqrestore(lruvec, flags);
+ 				lruvec = NULL;
+ 			}
+-			free_huge_folio(folio);
++			free_typed_folio(folio);
+ 			continue;
+ 		}
+ 		folio_unqueue_deferred_split(folio);
+-- 
+2.48.0.rc2.279.g1de40edade-goog
+
