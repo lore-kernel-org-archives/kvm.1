@@ -1,63 +1,38 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8911F9F72
-	for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 10:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEE11F91FF
+	for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 10:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.40.148.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737110128; cv=none; b=ko9y0RA+bpDRnTbbwZXcxZpBON0ARLmBDgB0QesV2d/bpQixJWYKl6BrDnzJKoW8gZUxq60k6s2/vlNbMGxeGNhXZZibQqvUCh9UEYPyHssmZiw2S4dSPyvLzvJaeZDWCuW62BTSO1PBIvQ48l61TRFmmG87c278KetLynhkuw0=
+	t=1737110369; cv=none; b=CLaXQkuqJnCoRCALc4omha+XXyUZvFxmH0KKJYymCJCVi8EgUwr7F6t9h+xuTBzKxdARxXOEFmMwNR6D8lAtmYjNFf8xdrXJ0SBx1ExivtNkEDa83Ls+9mG6ijflL82WzLOg+geDiW1f17QitNLVCvznyzEcWBtnhq9VGVzNhPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737110128; c=relaxed/simple;
-	bh=70bfaT34dxfacCnCOxEBqaLDOi2/f294fVDQPUnDUSM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=OAdqSydmJ5cWfEmdThwIeZxwvNnxpPmkeyLeu82f8B/Sih3/NajVrb3qAB5WysTyQj+oUAb2v1CBF5Quy8qYq0xQRwLyL8zqDKv2s9hzkBwjoUAr1c34+45sAdVLNwn5Ue3Mho4d2GQ4KYB6ddHzAuVHBf3Bn7cjiznIWjf8ysY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=P6RxKjc+; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	s=arc-20240116; t=1737110369; c=relaxed/simple;
+	bh=mbtjENaIu932I2dZxMZEecTSNyXFXwtP3N06YtRjxuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hH1rvLIj8HRfIJSp8PxTjj4/4s3A9VlLcnLwY0nfGo/qleD/Wl8TUtPsCx6k9FGO53VsHdkZvttAF6+B8fDffbyrY+a54tgz8wIjwGGAUWy5ETMoowk78uQEe2FL83397RyVTAIzk9dYyoL+/CG8u95nNahqnvm8TPJtpFG25QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk; spf=pass smtp.mailfrom=codethink.co.uk; dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b=opAnlRzp; arc=none smtp.client-ip=78.40.148.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codethink.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="P6RxKjc+"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2166651f752so44689715ad.3
-        for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 02:35:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737110126; x=1737714926; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1s3j+Lo8FohUApnn9jxJmXSbe+FtIPWK2NNPguyY5ds=;
-        b=P6RxKjc+Fvu+48J+Mgoj+P8aOkuqRlMij+k5AS9ELVIjMH2zLxK3uhS13pQt4yC0+0
-         SomVAFK9Y8lOX+rGAfJ+8QWuuaqdOiMCj58MXIAMLQkMhlTJqEnVSQm54EYFUyf3JXFO
-         iFpdKCmikfvAxOlwTASDIo3/nLsTSERDHlJTrf/qyFfOlZg+1D9C8cN/cZJVQRoeO/HN
-         8svSpUy0Sv7EkTGsfCES7GE+q0zLb6hvRw7J9GuoDEwhWFqK18Oo75KTb/B2Dj2lhvLl
-         uLAsgFpsmqrYJTAZLa4r0xKU7tcKBO7o3jBCYpu69EoOjnRCmiJqR8o/fFBHtxL73jH8
-         bRsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737110126; x=1737714926;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1s3j+Lo8FohUApnn9jxJmXSbe+FtIPWK2NNPguyY5ds=;
-        b=rs8xxMpG44pF/ZsHmySvEih6gw0tvAEA5+D8KvU5pKMrnNFZ8/mwoUaPh4ApMBW8aj
-         b9ysFFB+5iKQ0sn9mhzsfR+rNXi7DVzH+LZjHtT1PVUtBqAtJ24PUxJg4YhMEk+8S+3a
-         dwhi+aUI8FT83aHp3pB2nAFEv5jIPqtavTn4RWebLAW/wKpjUmPo+Vxzdomb4TfbULvb
-         I3WojT+ql1IAMIeGeiq4c6NA2TtcVEIYOAL2GpRfoemgAGn/Occ7cFSyqLRFLogKCt+r
-         1YVAqjauY2+FDQ9o4HqFbACeodevlLLVgtVT3z1ysnQSIIaQhoZAXoQs9EqRm9u8gUE2
-         aUOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWH0vf81cCcnjXhStOTAh/YZV2rjoP+zAlx0THlmRrgr7l614CEghM2pXqnfNUxMDoIG6o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhDsz4S89ZjvCqcKNvTW1WviYE4yHJv/o3CwVDgr4IqWSMO/P+
-	/2SB47P5xJP0PeQSiBGOf/XY2Dmcp0AjbqmLt3IoKyEzrurc0PWzq4I3cnN5UUI=
-X-Gm-Gg: ASbGncu1BqOVv8N3xUPrh+Bw2xFldObuSJrBsJ6BZ3TY6E3BFzuiYOmO4qRPBAF3oDZ
-	vdL+Z6JHDQUq0NatN4nfzQ4a+YEkGuttpkeOOx+6s9GL3xm/NMV2BvFrmNZvVyagl9xWflvmu+Y
-	KHxWPnnAiMW6wMHL9Nw0wja4t37R5KFT5Zg2GEqAQOmmkt83LN1bSvII3pynGhl8/cCGJ/mPih0
-	iEWm855N2guYVzUySoqO0kjcnDuKNO48ikny1sLRtBWignc1DBzn5piFgv2nSHI2Hw=
-X-Google-Smtp-Source: AGHT+IGPzLz6S37k0uPz0pnAPaNjl5ykAtTRRDNMCEBSSX1EJykbz5I62peVJ/pXXng63XBSAbFQiQ==
-X-Received: by 2002:a05:6a21:788b:b0:1e1:9bea:659e with SMTP id adf61e73a8af0-1eb215d4c46mr3415218637.35.1737110125973;
-        Fri, 17 Jan 2025 02:35:25 -0800 (PST)
-Received: from [157.82.203.37] ([157.82.203.37])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab81754csm1564334b3a.63.2025.01.17.02.35.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jan 2025 02:35:25 -0800 (PST)
-Message-ID: <51f0c6ba-21bc-4fef-a906-5d83ab29b7ff@daynix.com>
-Date: Fri, 17 Jan 2025 19:35:19 +0900
+	dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b="opAnlRzp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=eJEZXV6ErJzZgAb2S4mxKqHkE7EJGWkaUmJxlxdIwMo=; b=opAnlRzp9YY03rDguvYkpVKpQ1
+	dimMYiLfMteqmySR0M7LCmMkFEwwFHjbGxoTAaDK4NjWeSvpVvLYFErzQIpsq0o/IiiULK5wmXWlj
+	/DTPlr/hKWZ3DDqxAaNDzfdprMwz/SwLPalzncN5Q9SABfjSGj7MKISt4POTNCtFnI6xEphhiLxgV
+	l2yJFvtW9hec6aYOwMzGj9iqpPGnnCzWm0L3nqa6Df/hOwss5zZXKukq3bFhCoO/VEwKBa/aGUtSp
+	SjAJqUAbAVHBXeEibHU3RqqjqN1n5ANIUa4GO2MDbHm4vsDILSDFVVyZ0rbvw6VwY+KzcFlenk+p1
+	eGLynzOQ==;
+Received: from [167.98.27.226] (helo=[10.35.6.157])
+	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+	id 1tYj6X-007I2a-E9; Fri, 17 Jan 2025 09:57:29 +0000
+Message-ID: <2509980e-028c-4d49-bb98-a864a9176212@codethink.co.uk>
+Date: Fri, 17 Jan 2025 09:57:29 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,79 +40,121 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 9/9] tap: Use tun's vnet-related code
-To: Jason Wang <jasowang@redhat.com>
-References: <20250116-tun-v3-0-c6b2871e97f7@daynix.com>
- <20250116-tun-v3-9-c6b2871e97f7@daynix.com>
- <678a21a9388ae_3e503c294f4@willemb.c.googlers.com.notmuch>
-Content-Language: en-US
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com,
- devel@daynix.com
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <678a21a9388ae_3e503c294f4@willemb.c.googlers.com.notmuch>
+Subject: Re: [PATCH kvmtool] kvmtool: virtio: fix endian for big endian hosts
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: kvm@vger.kernel.org, felix.chong@codethink.co.uk,
+ lawrence.hunter@codethink.co.uk, roan.richmond@codethink.co.uk
+References: <20250115101125.526492-1-ben.dooks@codethink.co.uk>
+ <20250115-73a1112ddbc729143d052afb@orel>
+ <01e504c1-58d3-4652-9366-1f518b7bd86e@codethink.co.uk>
+ <20250116-e80c8bf6f54d88dbd6d5e7a9@orel>
+Content-Language: en-GB
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+In-Reply-To: <20250116-e80c8bf6f54d88dbd6d5e7a9@orel>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Sender: ben.dooks@codethink.co.uk
 
-On 2025/01/17 18:23, Willem de Bruijn wrote:
-> Akihiko Odaki wrote:
->> tun and tap implements the same vnet-related features so reuse the code.
+On 16/01/2025 09:28, Andrew Jones wrote:
+> On Wed, Jan 15, 2025 at 03:09:58PM +0000, Ben Dooks wrote:
+>> On 15/01/2025 14:24, Andrew Jones wrote:
+>>> On Wed, Jan 15, 2025 at 10:11:25AM +0000, Ben Dooks wrote:
+>>>> When running on a big endian host, the virtio mmio-modern.c correctly
+>>>> sets all reads to return little endian values. However the header uses
+>>>> a 4 byte char for the magic value, which is always going to be in the
+>>>> correct endian regardless of host endian.
+>>>>
+>>>> To make the simplest change, simply avoid endian convresion of the
+>>>> read of the magic value. This fixes the following bug from the guest:
+>>>>
+>>>> [    0.592838] virtio-mmio 10020000.virtio: Wrong magic value 0x76697274!
+>>>>
+>>>> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+>>>> ---
+>>>>    virtio/mmio-modern.c | 5 ++++-
+>>>>    1 file changed, 4 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/virtio/mmio-modern.c b/virtio/mmio-modern.c
+>>>> index 6c0bb38..fd9c0cb 100644
+>>>> --- a/virtio/mmio-modern.c
+>>>> +++ b/virtio/mmio-modern.c
+>>>> @@ -66,7 +66,10 @@ static void virtio_mmio_config_in(struct kvm_cpu *vcpu,
+>>>>    		return;
+>>>>    	}
+>>>> -	*data = cpu_to_le32(val);
+>>>> +	if (addr != VIRTIO_MMIO_MAGIC_VALUE)
+>>>> +		*data = cpu_to_le32(val);
+>>>> +	else
+>>>> +		*data = val;
+>>>>    }
+>>>>    static void virtio_mmio_config_out(struct kvm_cpu *vcpu,
+>>>> -- 
+>>>> 2.37.2.352.g3c44437643
+>>>>
+>>>
+>>> I think vendor_id should also have the same issue, but drivers don't
+>>> notice because they all use VIRTIO_DEV_ANY_ID. So how about the
+>>> change below instead?
+>>>
+>>> Thanks,
+>>> drew
+>>>
+>>> diff --git a/include/kvm/virtio-mmio.h b/include/kvm/virtio-mmio.h
+>>> index b428b8d32f48..133817c1dc44 100644
+>>> --- a/include/kvm/virtio-mmio.h
+>>> +++ b/include/kvm/virtio-mmio.h
+>>> @@ -18,7 +18,7 @@ struct virtio_mmio_ioevent_param {
+>>>    };
+>>>
+>>>    struct virtio_mmio_hdr {
+>>> -       char    magic[4];
+>>> +       u32     magic;
+>>>           u32     version;
+>>>           u32     device_id;
+>>>           u32     vendor_id;
+>>> diff --git a/virtio/mmio.c b/virtio/mmio.c
+>>> index fae73b52dae0..782268e8f842 100644
+>>> --- a/virtio/mmio.c
+>>> +++ b/virtio/mmio.c
+>>> @@ -6,6 +6,7 @@
+>>>    #include "kvm/irq.h"
+>>>    #include "kvm/fdt.h"
+>>>
+>>> +#include <linux/byteorder.h>
+>>>    #include <linux/virtio_mmio.h>
+>>>    #include <string.h>
+>>>
+>>> @@ -168,10 +169,10 @@ int virtio_mmio_init(struct kvm *kvm, void *dev, struct virtio_device *vdev,
+>>>                   return r;
+>>>
+>>>           vmmio->hdr = (struct virtio_mmio_hdr) {
+>>> -               .magic          = {'v', 'i', 'r', 't'},
+>>> +               .magic          = le32_to_cpu(0x74726976), /* 'virt' */
 >>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   drivers/net/Kconfig    |   1 +
->>   drivers/net/Makefile   |   6 +-
->>   drivers/net/tap.c      | 152 +++++--------------------------------------------
->>   drivers/net/tun_vnet.c |   5 ++
->>   4 files changed, 24 insertions(+), 140 deletions(-)
 >>
->> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
->> index 1fd5acdc73c6..c420418473fc 100644
->> --- a/drivers/net/Kconfig
->> +++ b/drivers/net/Kconfig
->> @@ -395,6 +395,7 @@ config TUN
->>   	tristate "Universal TUN/TAP device driver support"
->>   	depends on INET
->>   	select CRC32
->> +	select TAP
->>   	help
->>   	  TUN/TAP provides packet reception and transmission for user space
->>   	  programs.  It can be viewed as a simple Point-to-Point or Ethernet
->> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
->> index bb8eb3053772..2275309a97ee 100644
->> --- a/drivers/net/Makefile
->> +++ b/drivers/net/Makefile
->> @@ -29,9 +29,9 @@ obj-y += mdio/
->>   obj-y += pcs/
->>   obj-$(CONFIG_RIONET) += rionet.o
->>   obj-$(CONFIG_NET_TEAM) += team/
->> -obj-$(CONFIG_TUN) += tun-drv.o
->> -tun-drv-y := tun.o tun_vnet.o
->> -obj-$(CONFIG_TAP) += tap.o
->> +obj-$(CONFIG_TUN) += tun.o
+>> just doing the change of magic type and then doing
+>> 	.magic = 0x74726976;
+>>
+>> should work, as then magic is in host order amd will get converted
+>> to le32 in the IO code. Don't think vendor_id suffers as it was
+>> converted from string to hex.
 > 
-> Is reversing the previous changes to tun.ko intentional?
+> Oh, right. I overthought that one. I prefer the magic in hex better than
+> the special casing in virtio_mmio_config_in()
 > 
-> Perhaps the previous approach with a new CONFIG_TUN_VNET is preferable
-> over this. In particular over making TUN select TAP, a new dependency.
+> Thanks,
+> drew
 
-Jason, you also commented about CONFIG_TUN_VNET for the previous 
-version. Do you prefer the old approach, or the new one? (Or if you have 
-another idea, please tell me.)
+Ok, will wait a few days to see if anyone else has a comment.
 
-> 
->> +obj-$(CONFIG_TAP) += tap-drv.o
->> +tap-drv-y := tap.o tun_vnet.o
->>   obj-$(CONFIG_VETH) += veth.o
->>   obj-$(CONFIG_VIRTIO_NET) += virtio_net.o
->>   obj-$(CONFIG_VXLAN) += vxlan/
+I assume you're ok with me re-doing my patch?
 
+Thanks for the review.
+
+
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
+
+https://www.codethink.co.uk/privacy.html
