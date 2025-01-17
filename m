@@ -1,135 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DB81F7564;
-	Fri, 17 Jan 2025 06:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3153A1D6DBF
+	for <kvm@vger.kernel.org>; Fri, 17 Jan 2025 07:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737096939; cv=none; b=b66Wqp8Dt2c5MzosCHqWaK8fp+PYZLIBuqElf6WHX1qkbhAZdDx3/+s9McFZD5l8Eg6Fig5DK7SCEszxBVaBRo9701vwC+JH3SbugSPJoyZJ6AQgA0EUZ0DotPM52Qy7g54j3YAfrCitCwotDSy9IVvgZ0w+p42KXfQ1iTgYpIM=
+	t=1737097599; cv=none; b=FQRNoaoJ0I20NH1LfxaRpnMAUH7kR9vEhaUTaXXb1waMy8OwX+HUyaq4pxH7/zEyhqWavvmhWJBD0PDODKCadFVgxdyIt2+OeVh7QkOSt7wgJgqSCcfAp6pGI6Zh7Uwv5EkHoLzbxJtw4SaDtN7glrWB6EG/HXudjszzGt+PCUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737096939; c=relaxed/simple;
-	bh=a0dUK/jQpDvIM8/nBDBU73ylJDOTGNarHp7F4VWxh2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HnCHSUbzysG/bEvSX0dG7b3Vl5dqtljVCE3ATwYU0I0zV+HYjyi2fVDA20fhn7hqk3AXSKpumXjlYq+/AqEtMhUbwTRyswuid3VHgAxDtJmFU+4PhSNZM1fFPcOmuSJWxRWVtUxTLOTIZGyUgJ1w/Wwj2unWQgDHVUKpe4nwoOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BAGWZ/7f; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737097599; c=relaxed/simple;
+	bh=mTDjaC6HpLnOsXoFVd0zRCF3zzfZavhEPJ3YTAXHll4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=i5cFJoJyg7aGMKE8ybPhflpa+NhZnTQ0dRxQe+c9BKQ/JeE58LbA4Sl40RM/k2K/e1MpTMZ8tJlA7vSDWTUQMYSQM5bh/0EPhXmxkndGfg7c4A6MmsgA/3bgMVcu7Qmc37+WnazrbHpignpWJ73YmF0mF2WL6WFlbIA/gIRRvBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=FhPOibNV; arc=none smtp.client-ip=209.85.166.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BAGWZ/7f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737096939; x=1768632939;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=a0dUK/jQpDvIM8/nBDBU73ylJDOTGNarHp7F4VWxh2Y=;
-  b=BAGWZ/7fEaIl3foWPAIo9ZebSnMETgwNPT+d4AS3tZBxpsHVYlSdKtJH
-   iZSGwMb6LEYb9BHRSNM+wFt2bjgAB9P3iRSEhX5oIouwDTwsB1ydCWUEd
-   7vD+dbVLcQTvXU38njr6T0Imn9ILxs1ub0vIQt5/MjeVMH3w2h7LXBeMy
-   sU8Zz/iMikNIv2aTFv2byENAKBF+GauKVt2j71jWBVg1gfYE+faNnwh3q
-   jeQR9C5Nw9y27sysl7SMBR0eUS8Q8+L9fIn6WeaCdOmQ1K+In0Nxmn8NV
-   jpB/n/IZP6ItDdZRluSx9Xr6wZf2dXBpmavCrvqNz8Oay6C458F5i2agh
-   Q==;
-X-CSE-ConnectionGUID: 8rUuzQchQpiCvDL8nrI29g==
-X-CSE-MsgGUID: IsoL10krTd6lmtOAqkhRdw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="41284406"
-X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
-   d="scan'208";a="41284406"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 22:55:38 -0800
-X-CSE-ConnectionGUID: RxiCzTo0ROmjq7QbZX/TYg==
-X-CSE-MsgGUID: jaCx/4CdQQ2PY/ze4H41mQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
-   d="scan'208";a="106312339"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2025 22:55:32 -0800
-Date: Fri, 21 Jun 2024 06:02:17 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
-	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
- kAPI
-Message-ID: <ZnSm6ULbJbxOU27J@yilunxu-OptiPlex-7050>
-References: <20250115133821.GO5556@nvidia.com>
- <f6c2524f-5ef5-4c2c-a464-a7b195e0bf6c@amd.com>
- <1afd5049-d1d4-4fd6-8259-e7a5454e6a1d@amd.com>
- <20250115141458.GP5556@nvidia.com>
- <c86cfee1-063a-4972-a343-ea0eff2141c9@amd.com>
- <86afb69a-79bd-4719-898e-c6c2e62103f7@amd.com>
- <20250115151056.GS5556@nvidia.com>
- <6f7a14aa-f607-45f9-9e15-759e26079dec@amd.com>
- <20250115170942.GT5556@nvidia.com>
- <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="FhPOibNV"
+Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3ce8a4e95f3so16156185ab.2
+        for <kvm@vger.kernel.org>; Thu, 16 Jan 2025 23:06:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1737097595; x=1737702395; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LfYpH+Y1jpQO12PadF3pL3zexhSFdkqlBmV2LuVWqDs=;
+        b=FhPOibNVQKTH3KRto8pB2n+wj9fn5UNrfSqV9W6Xn4Mjl9JrTNHQGdnAHbGng5b9RL
+         Iz3Po8nDsWzqq5/J+0rnNq8q815tuMVFS6LY2C/28MwqsVuW4zm+SeWWvBvOI9W9M3qy
+         56oaOAyKUgHAXB2Z7J0BhkzjSU6VIOqhgOhXvkbcfWhiZwmNKEPAsHWaPnIoQnEj0QsM
+         KXcXHgeqf4fJRGvZs7T+pMCvb2Al3Hmpo4b5m5UPYkxgdh9FheSkta8YBRKQD/nnDNAv
+         iLiDYq0XOAX4wlxIxCzRYneVzt6svrh42Mn5w0X76FD5XxA8f9lvOSvBwEuIVcOx4mSh
+         0oOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737097595; x=1737702395;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LfYpH+Y1jpQO12PadF3pL3zexhSFdkqlBmV2LuVWqDs=;
+        b=qM36AdHdcJItkztaKNHOmArFXLoplWeYkjEM8n4VRb5GwMAh2vZO4lzaYe4toPf/Xn
+         tB+0E+dgb34Ob8Nrske8oRy5gPR8C2fwdRWLRA5u/DVenfwnQ5jqczwaOkBKqAQ3nINN
+         0qjb/SSavza6MRQaxnSY+w6PGKn0zUNS6hwgBaF6P4Q1zTCXjvSQFxz9NbFPxGoP6ls2
+         4z8QH+cgM5td1I6aFfNNFwq3k5MIKlQIudCowNZrW7J3KexxnIQ6Qqur0cIfGM6mj3G0
+         +VEF8pkX4dk7mcKRc+0EwffUD4xO27GIoWhStEarM3jLPXCKqpTu1GTdlbSlsFfDzjJd
+         soPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXbJ4PQHcGDI1d9xS50qpfdCZb6CfwGGNUJxzEdUNj5oHaLY3QVIWh+KrNTjxmrTbyszAI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDnNIPfyQrN1gS+XXFL4lDMoILt4ZRAU4unEsyb4WnhiL5Nze4
+	yhQIahhCyah7lMxERPKLl6EJkD9mOEMnEm54vdjOwzAzHUyCghXmNh75uV89rX91Clfo8YOeE2P
+	Q3DFbZLycEHvTalKOwOnWSLTvIuQQeVimLIUheZHeu0898gGK7w8=
+X-Gm-Gg: ASbGnctEa8GcZOJ0R+4m8FMopcVwswRIkfqpXeRd+dxyfOhQ6If0JoLE3sEHDRdNBcf
+	rRp/zDiiBK5Ipery+zZbosiV37KKRTaBWNI/jIwo=
+X-Google-Smtp-Source: AGHT+IF+AL3eLH94oddazC6IWMSZ5U/suLVNW1B+QIp0pFHRGvcni4BJzwXCFG3UMDaASPRqHB6/9Ut3S6E7Kq7eQYM=
+X-Received: by 2002:a05:6e02:2402:b0:3a7:e0c0:5f27 with SMTP id
+ e9e14a558f8ab-3cf743df906mr16474775ab.2.1737097595136; Thu, 16 Jan 2025
+ 23:06:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 17 Jan 2025 12:36:23 +0530
+X-Gm-Features: AbW1kvZIPS-DR3om7fqXj69kIV9exvX1qxrHBy8YHvK5NBpiQJVs4OBbEUSSQSw
+Message-ID: <CAAhSdy1ekLq08nByCh9E-ZZsMcm7rCpkA+FyAPwvQctEgjwFZA@mail.gmail.com>
+Subject: [GIT PULL] KVM/riscv changes for 6.14
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Atish Patra <atishp@rivosinc.com>, 
+	Atish Patra <atishp@atishpatra.org>, 
+	"open list:KERNEL VIRTUAL MACHINE FOR RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jan 16, 2025 at 04:13:13PM +0100, Christian König wrote:
->    Am 15.01.25 um 18:09 schrieb Jason Gunthorpe:
-> 
->  On Wed, Jan 15, 2025 at 05:34:23PM +0100, Christian König wrote:
-> 
->     Granted, let me try to improve this.
->     Here is a real world example of one of the issues we ran into and why
->     CPU mappings of importers are redirected to the exporter.
->     We have a good bunch of different exporters who track the CPU mappings
->     of their backing store using address_space objects in one way or
->     another and then uses unmap_mapping_range() to invalidate those CPU
->     mappings.
->     But when importers get the PFNs of the backing store they can look
->     behind the curtain and directly insert this PFN into the CPU page
->     tables.
->     We had literally tons of cases like this where drivers developers cause
->     access after free issues because the importer created a CPU mappings on
->     their own without the exporter knowing about it.
->     This is just one example of what we ran into. Additional to that
->     basically the whole synchronization between drivers was overhauled as
->     well because we found that we can't trust importers to always do the
->     right thing.
-> 
->  But this, fundamentally, is importers creating attachments and then
->  *ignoring the lifetime rules of DMABUF*. If you created an attachment,
->  got a move and *ignored the move* because you put the PFN in your own
->  VMA, then you are not following the attachment lifetime rules!
-> 
->    Move notify is solely for informing the importer that they need to
->    re-fresh their DMA mappings and eventually block for ongoing DMA to end.
-> 
->    This semantics doesn't work well for CPU mappings because you need to hold
->    the reservation lock to make sure that the information stay valid and you
->    can't hold a lock while returning from a page fault.
+Hi Paolo,
 
-Dealing with CPU mapping and resource invalidation is a little hard, but is
-resolvable, by using other types of locks. And I guess for now dma-buf
-exporters should always handle this CPU mapping VS. invalidation contention if
-they support mmap().
+We have the following KVM RISC-V changes for 6.14:
+1) Svvptc, Zabha, and Ziccrse extension support
+2) Virtualize SBI system suspend extension
+3) Trap related exit statistics as SBI PMU firmware counters
 
-It is resolvable so with some invalidation notify, a decent importers could
-also handle the contention well.
+Please pull.
 
-IIUC now the only concern is importer device drivers are easier to do
-something wrong, so move CPU mapping things to exporter. But most of the
-exporters are also device drivers, why they are smarter?
+Regards,
+Anup
 
-And there are increasing mapping needs, today exporters help handle CPU primary
-mapping, tomorrow should they also help on all other mappings? Clearly it is
-not feasible. So maybe conditionally give trust to some importers.
+The following changes since commit fc033cf25e612e840e545f8d5ad2edd6ba613ed5:
 
-Thanks,
-Yilun
+  Linux 6.13-rc5 (2024-12-29 13:15:45 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-6.14-1
+
+for you to fetch changes up to af79caa83f6aa41e9092292a2ba7f701e57353ec:
+
+  RISC-V: KVM: Add new exit statstics for redirected traps (2024-12-30
+14:01:02 +0530)
+
+----------------------------------------------------------------
+KVM/riscv changes for 6.14
+
+- Svvptc, Zabha, and Ziccrse extension support for Guest/VM
+- Virtualize SBI system suspend extension for Guest/VM
+- Trap related exit statstics as SBI PMU firmware counters for Guest/VM
+
+----------------------------------------------------------------
+Andrew Jones (2):
+      RISC-V: KVM: Add SBI system suspend support
+      KVM: riscv: selftests: Add SBI SUSP to get-reg-list test
+
+Atish Patra (2):
+      RISC-V: KVM: Update firmware counters for various events
+      RISC-V: KVM: Add new exit statstics for redirected traps
+
+Quan Zhou (5):
+      RISC-V: KVM: Allow Svvptc extension for Guest/VM
+      RISC-V: KVM: Allow Zabha extension for Guest/VM
+      RISC-V: KVM: Allow Ziccrse extension for Guest/VM
+      KVM: riscv: selftests: Add Svvptc/Zabha/Ziccrse exts to get-reg-list test
+      RISC-V: KVM: Redirect instruction access fault trap to guest
+
+ arch/riscv/include/asm/kvm_host.h                |  5 ++
+ arch/riscv/include/asm/kvm_vcpu_sbi.h            |  1 +
+ arch/riscv/include/uapi/asm/kvm.h                |  4 ++
+ arch/riscv/kvm/Makefile                          |  1 +
+ arch/riscv/kvm/vcpu.c                            |  7 ++-
+ arch/riscv/kvm/vcpu_exit.c                       | 37 ++++++++++--
+ arch/riscv/kvm/vcpu_onereg.c                     |  6 ++
+ arch/riscv/kvm/vcpu_sbi.c                        |  4 ++
+ arch/riscv/kvm/vcpu_sbi_system.c                 | 73 ++++++++++++++++++++++++
+ tools/testing/selftests/kvm/riscv/get-reg-list.c | 18 +++++-
+ 10 files changed, 150 insertions(+), 6 deletions(-)
+ create mode 100644 arch/riscv/kvm/vcpu_sbi_system.c
