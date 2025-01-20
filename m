@@ -1,229 +1,220 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AA013CFA6;
-	Mon, 20 Jan 2025 04:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A015534E
+	for <kvm@vger.kernel.org>; Mon, 20 Jan 2025 04:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737348803; cv=none; b=Eif6hyjvOwGUdb/AcU98DfVOUp9qJtdEzn/rGcL7nzDERtky2EfC1fRMq5hRn3wQEpxgOjKi3kdNIPrkDQXFJqpmKurRHZojDw9fhRksaZ0kDC5jtWHjlqZK+33JrAnXv27+6h2EefPzOw4eSr6qScX0NE1cbSJ9xTvr+gBfT4w=
+	t=1737349088; cv=none; b=epFX8bnwpPBl6R3bl3iJeRPkfApStBpGjmeXmV+wu5yJp950pRPEztF4Br2BMhSVXQYbw8ri/3GhB9Yhi85+2hSle+1C/xxwcgax7u/prKwYHlDpW91axioICzSnXxQw58NauMgNNJQJqH2gsfFlg4JuHehzLn5oWhT1F24QyoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737348803; c=relaxed/simple;
-	bh=Y0xUv/KrGZMTDVn3d6aDjHsZO9ljCANXeLbTh4Y3AmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qd5SstJaigaqcZUGvG/BEIPv0PcaL6SioiMTSThN0oD4QD353KCkjklmmO1wXoCeuZmAqVGtuRfnDZQ25Pa2hIzJMNflmHxheEWeXTIjD6rJlll1htYLSmsIxJC5Wkc2lbK3nh1VO53FVQVgMyNuDZh3gtjFZtJvBi5JHjOOtPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AB+NAedf; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737349088; c=relaxed/simple;
+	bh=JBhx4FBRzKbzrz2Al5pNMHO5F3JgbgRL5B/gVFGVg/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q3oTJlykwVy0GiOJZAlbM8A6YPM5Dv8s5lvp7R3T/YqWAH/LxiXxufpe2dKkS9DficW1VxM7oLxA9rLZqxBUnI0Gkb4PdS/Nb44xdViMzgEu5O6raQhhFseeUmuAQxAnZ+3lJL5zhz09b0Vk7+nsanR9zo0wFdk8xTWWtB6rfHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=1whu3BnK; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AB+NAedf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737348802; x=1768884802;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Y0xUv/KrGZMTDVn3d6aDjHsZO9ljCANXeLbTh4Y3AmU=;
-  b=AB+NAedfBwPyBmUQNbagOES/N0hlOJhjzEwYecWIgsJ6ruahVvWNlqpw
-   OJPxXxv2nUa39UHZWmVft9Ur31jDH1eNVTUlnZPUyF2ZuccmI30i8OGzd
-   Mg52CQE1lxSo3/D5oLsljkLtaxm4eZI1bZ7QrRamYATbyFvlMQGNF/+Vu
-   GDSsO7srDBMuXhHkFH1ntgbIGNiOjUwcyYGfTEzCOWWlwFod+QDTT8EyK
-   cv/wvxRamriVEjb+P4cQtxPlIYXrR2Vf+IZ3H9GOlGRXkxZQ4u2QfAUxQ
-   oLwzIP2GhcXF+yLmVI5N0H9OSrBWhJ1uNcAFssYQQ2d8TWVW+ieZWBxBP
-   w==;
-X-CSE-ConnectionGUID: +i7wqT37T5yWulO+10vYDg==
-X-CSE-MsgGUID: 7C6SEItjRqe4t52PZQLgdg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11320"; a="36926152"
-X-IronPort-AV: E=Sophos;i="6.13,218,1732608000"; 
-   d="scan'208";a="36926152"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2025 20:53:21 -0800
-X-CSE-ConnectionGUID: pzuQM0SDQPu1WYfF97IPTg==
-X-CSE-MsgGUID: 3MYTX9d4QRCtd/oYUVB0Lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="137273330"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 19 Jan 2025 20:53:16 -0800
-Date: Mon, 24 Jun 2024 03:59:53 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <Znh+uTMe/wX2RIJm@yilunxu-OptiPlex-7050>
-References: <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
- <20250113164935.GP5556@nvidia.com>
- <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
- <20250114133553.GB5556@nvidia.com>
- <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
- <20250115130102.GM5556@nvidia.com>
- <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
- <20250117132523.GA5556@nvidia.com>
+	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="1whu3BnK"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2eec9b3a1bbso5487211a91.3
+        for <kvm@vger.kernel.org>; Sun, 19 Jan 2025 20:58:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737349085; x=1737953885; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q4oIihNr6GZKGbnqtazZfNL+Wdu+eK7TRKf6H4jFUt4=;
+        b=1whu3BnKNwtvtqezELWKQt0hPy+FN+eYxFnvphEYfi8qsgYC7W5bmfPPeQAFhfje9v
+         CbaxUnTt6ZJUMsN9QS2shX24wJG64A76ZVHipVlxgXyEAgvl2W/LCo8UaIbMIpcWZ0X5
+         Ht6uaEyQYqQOsJy/RhVomU6JHqfZ9tvSSRWxgAfHN7lvUluRmH0VrqL7ULtJ/cg3AKhm
+         jweriYhaI57MWQQL1HLbdLdrvzjT1mJJE3knFLDLbBqku7AWN5eVh22I363rpyLfcFWm
+         yJcgtQoFIZXlMUwvua1s94+1pI0FzQy1IXT0XLOlcY4cXT0mISggZP6IZFZ1k01USb2L
+         TWVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737349085; x=1737953885;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q4oIihNr6GZKGbnqtazZfNL+Wdu+eK7TRKf6H4jFUt4=;
+        b=fjMUonrDf1Z0yDtd6mcxo/9KdbqLnRxVdxdIhuzgmMjtCO4nA+uFNHMnGNfYIXdH+S
+         PQOZHpIHjsTAj5phPGt/BvW3j6xeas3XRvjTpYUVzgsy6RjzYth5rvaTrvQ76QM3dOgK
+         tBQBQOF9VHwzrv6e+j4gYnl6ABHQV6WwCeAAxD+kLmTTO1uWVImkPd4CAHxQIMhPVK1+
+         cNFH4JlsEsctY9XSjVRRKN9O9bvaZbpVrw2NW51Oix4NQyRjMFPTgVJhXfWUxkmYpPRu
+         CKGerLENSLXmsIwgJMhTn+dw/X5h2XUj9q6bw/kGbF+iFdtZhNqwMwxptucOHDW6eeGM
+         AkQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWw3vxfZcfkqauUoYtvk6/KSPUq8mAqG4bEYMl5vVfpjbMOMMpCeT2ivgVBusvja0Q3s2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeRFDVrPIpUn0LXHzLVfeQmbGESO1hxrev40IqrTsK/ZC8nx4i
+	PIslj7I5Y2siPpABTutybx7J6yStSJk8p5XFXg2767zg9AV1373Sd2rbQjR12qM=
+X-Gm-Gg: ASbGncvHJWmUi6OXbC0pj27gtBLVHR/7vmCZvkT1O9Q66tI+gubVX4gvOBus8lbYExq
+	WFEjinO2uZqx0wDe4ORk/DzhD//YOuKQvvnAno1RP7UA65HDevWle9JpmH7VmTeu3/7dxh5XYnL
+	POkttHIvYlcZIcMxKVMhRsJS+68i7xo2AlRnZCp+DvRDe/ZEInmF5YPxcrMBTgCQQ6zU1/jPT9o
+	nbw5ZtdpwFrqk0n29OUx+2TcFshLp5UmzYT9+50lfeC3X1aSpEaMg83ugGqFYIPiZFgvbMMyGx7
+	Dy9K
+X-Google-Smtp-Source: AGHT+IE8MzXrgaBKBfP61PbTUvr8PgxgGWYeOWK4EEWyIPyWkez8gj6KrIAnQzmUFU9EFnwQTPVCzw==
+X-Received: by 2002:a05:6a20:914e:b0:1e1:70ab:b369 with SMTP id adf61e73a8af0-1eb214983dfmr16605568637.13.1737349085531;
+        Sun, 19 Jan 2025 20:58:05 -0800 (PST)
+Received: from [157.82.203.37] ([157.82.203.37])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab817529sm6251103b3a.67.2025.01.19.20.58.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Jan 2025 20:58:05 -0800 (PST)
+Message-ID: <8052733d-3e79-4fd5-9bea-9d3724820bb8@daynix.com>
+Date: Mon, 20 Jan 2025 13:57:59 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117132523.GA5556@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] tun: Set num_buffers for virtio 1.0
+To: Jason Wang <jasowang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com,
+ devel@daynix.com
+References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
+ <20250109-tun-v2-3-388d7d5a287a@daynix.com>
+ <CACGkMEsm5DCb+n3NYeRjmq3rAANztZz5QmV8rbPNo+cH-=VzDQ@mail.gmail.com>
+ <20250110052246-mutt-send-email-mst@kernel.org>
+ <2e015ee6-8a3b-43fb-b119-e1921139c74b@daynix.com>
+ <CACGkMEuiyfH-QitiiKJ__-8NiTjoOfc8Nx5BwLM-GOfPpVEitA@mail.gmail.com>
+ <fcb301e8-c808-4e20-92dd-2e3b83998d18@daynix.com>
+ <CACGkMEvBU3mLbW+-nOscriR-SeDvPSm1mtwwgznYFOocuao5MQ@mail.gmail.com>
+ <cc79bef1-c24e-448d-bc20-f8302e341b2c@daynix.com>
+ <CACGkMEsJUb3ZLm3rLuaayDAS4kf-vbY03wL4M9j1K+Z=a4BDig@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CACGkMEsJUb3ZLm3rLuaayDAS4kf-vbY03wL4M9j1K+Z=a4BDig@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 17, 2025 at 09:25:23AM -0400, Jason Gunthorpe wrote:
-> On Fri, Jan 17, 2025 at 09:57:40AM +0800, Baolu Lu wrote:
-> > On 1/15/25 21:01, Jason Gunthorpe wrote:
-> > > On Wed, Jan 15, 2025 at 11:57:05PM +1100, Alexey Kardashevskiy wrote:
-> > > > On 15/1/25 00:35, Jason Gunthorpe wrote:
-> > > > > On Tue, Jun 18, 2024 at 07:28:43AM +0800, Xu Yilun wrote:
-> > > > > 
-> > > > > > > is needed so the secure world can prepare anything it needs prior to
-> > > > > > > starting the VM.
-> > > > > > OK. From Dan's patchset there are some touch point for vendor tsm
-> > > > > > drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
-> > > > > > 
-> > > > > > Maybe we could move to Dan's thread for discussion.
-> > > > > > 
-> > > > > > https://lore.kernel.org/linux-
-> > > > > > coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-
-> > > > > > xfh.jf.intel.com/
-> > > > > I think Dan's series is different, any uapi from that series should
-> > > > > not be used in the VMM case. We need proper vfio APIs for the VMM to
-> > > > > use. I would expect VFIO to be calling some of that infrastructure.
-> > > > Something like this experiment?
-> > > > 
-> > > > https://github.com/aik/linux/commit/
-> > > > ce052512fb8784e19745d4cb222e23cabc57792e
-> > > Yeah, maybe, though I don't know which of vfio/iommufd/kvm should be
-> > > hosting those APIs, the above does seem to be a reasonable direction.
-> > > 
-> > > When the various fds are closed I would expect the kernel to unbind
-> > > and restore the device back.
-> > 
-> > I am curious about the value of tsm binding against an iomnufd_vdevice
-> > instead of the physical iommufd_device.
+On 2025/01/20 9:40, Jason Wang wrote:
+> On Thu, Jan 16, 2025 at 1:30 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2025/01/16 10:06, Jason Wang wrote:
+>>> On Wed, Jan 15, 2025 at 1:07 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>
+>>>> On 2025/01/13 12:04, Jason Wang wrote:
+>>>>> On Fri, Jan 10, 2025 at 7:12 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>>>
+>>>>>> On 2025/01/10 19:23, Michael S. Tsirkin wrote:
+>>>>>>> On Fri, Jan 10, 2025 at 11:27:13AM +0800, Jason Wang wrote:
+>>>>>>>> On Thu, Jan 9, 2025 at 2:59 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>>>>>>
+>>>>>>>>> The specification says the device MUST set num_buffers to 1 if
+>>>>>>>>> VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
+>>>>>>>>
+>>>>>>>> Have we agreed on how to fix the spec or not?
+>>>>>>>>
+>>>>>>>> As I replied in the spec patch, if we just remove this "MUST", it
+>>>>>>>> looks like we are all fine?
+>>>>>>>>
+>>>>>>>> Thanks
+>>>>>>>
+>>>>>>> We should replace MUST with SHOULD but it is not all fine,
+>>>>>>> ignoring SHOULD is a quality of implementation issue.
+>>>>>>>
+>>>>>
+>>>>> So is this something that the driver should notice?
+>>>>>
+>>>>>>
+>>>>>> Should we really replace it? It would mean that a driver conformant with
+>>>>>> the current specification may not be compatible with a device conformant
+>>>>>> with the future specification.
+>>>>>
+>>>>> I don't get this. We are talking about devices and we want to relax so
+>>>>> it should compatibile.
+>>>>
+>>>>
+>>>> The problem is:
+>>>> 1) On the device side, the num_buffers can be left uninitialized due to bugs
+>>>> 2) On the driver side, the specification allows assuming the num_buffers
+>>>> is set to one.
+>>>>
+>>>> Relaxing the device requirement will replace "due to bugs" with
+>>>> "according to the specification" in 1). It still contradicts with 2) so
+>>>> does not fix compatibility.
+>>>
+>>> Just to clarify I meant we can simply remove the following:
+>>>
+>>> """
+>>> The device MUST use only a single descriptor if VIRTIO_NET_F_MRG_RXBUF
+>>> was not negotiated. Note: This means that num_buffers will always be 1
+>>> if VIRTIO_NET_F_MRG_RXBUF is not negotiated.
+>>> """
+>>>
+>>> And
+>>>
+>>> """
+>>> If VIRTIO_NET_F_MRG_RXBUF has not been negotiated, the device MUST set
+>>> num_buffers to 1.
+>>> """
+>>>
+>>> This seems easier as it reflects the fact where some devices don't set
+>>> it. And it eases the transitional device as it doesn't need to have
+>>> any special care.
+>>
+>> That can potentially break existing drivers that are compliant with the
+>> current and assumes the num_buffers is set to 1.
 > 
-> Interesting question
->  
-> > It is likely that the kvm pointer should be passed to iommufd during the
-> > creation of a viommu object. 
-> 
-> Yes, I fully expect this
-> 
-> > If my recollection is correct, the arm
-> > smmu-v3 needs it to obtain the vmid to setup the userspace event queue:
-> 
-> Right now it will use a VMID unrelated to KVM. BTM support on ARM will
-> require syncing the VMID with KVM.
-> 
-> AMD and Intel may require the KVM for some reason as well.
-> 
-> For CC I'm expecting the KVM fd to be the handle for the cVM, so any
-> RPCs that want to call into the secure world need the KVM FD to get
-> the cVM's identifier. Ie a "bind to cVM" RPC will need the PCI
-> information and the cVM's handle.
+> Those drivers are already 'broken'. Aren't they?
 
-I also expect this.
+The drivers are not broken, but vhost_net is. The driver works fine as 
+long as it's used with a device compliant with the specification. If we 
+relax the device requirement in the future specification, the drivers 
+may not work with devices compliant with the revised specification.
 
-> 
-> From that perspective it does make sense that any cVM related APIs,
-> like "bind to cVM" would be against the VDEVICE where we have a link
-> to the VIOMMU which has the KVM. On the iommufd side the VIOMMU is
-> part of the object hierarchy, but does not necessarily have to force a
-> vIOMMU to appear in the cVM.
-> 
-> But it also seems to me that VFIO should be able to support putting
-> the device into the RUN state
-
-Firstly I think VFIO should support putting device into *LOCKED* state.
-From LOCKED to RUN, there are many evidence fetching and attestation
-things that only guest cares. I don't think VFIO needs to opt-in.
-
-But that doesn't impact this concern. I actually think VFIO should
-provide 'bind' uAPI to support these device side configuration things
-rather than iommufd uAPI. IIUC iommufd should only do the setup on
-IOMMU side.
-
-The switching of TDISP state to LOCKED involves device side
-differences that should be awared by the device owner, VFIO driver.
-
-E.g. as we previously mentioned, to check if all MMIOs are never mapped.
-
-Another E.g. invalidate MMIOs when device is to be LOCKED, some Pseudo
-Code:
-
-@@ -1494,7 +1494,15 @@ static int vfio_pci_ioctl_tsm_bind(struct vfio_pci_core_device *vdev,
-        if (!kvm)
-                return -ENOENT;
-
-+       down_write(&vdev->memory_lock);
-+       vfio_pci_dma_buf_move(vdev, true);
-+
-        ret = pci_tsm_dev_bind(pdev, kvm, &bind.intf_id);
-+
-+       if (__vfio_pci_memory_enabled(vdev))
-+               vfio_pci_dma_buf_move(vdev, false);
-+       up_write(&vdev->memory_lock);
-
-
-BTW, we may still need viommu/vdevice APIs during 'bind', if some IOMMU
-side configurations are required by secure world. TDX does have some.
-
-> without involving KVM or cVMs.
-
-It may not be feasible for all vendors. I believe AMD would have one
-firmware call that requires cVM handle *AND* move device into LOCKED
-state. It really depends on firmware implementation.
-
-So I'm expecting a coarse TSM verb pci_tsm_dev_bind() for vendors to do
-any host side preparation and put device into LOCKED state.
+Regards,
+Akihiko Odaki
 
 > 
-> > Intel TDX connect implementation also needs a reference to the kvm
-> > pointer to obtain the secure EPT information. This is crucial because
-> > the CPU's page table must be shared with the iommu. 
+> Thanks
 > 
-> I thought kvm folks were NAKing this sharing entirely? Or is the
-
-I believe this is still Based on the general EPT sharing idea, is it?
-
-There are several major reasons for the objection. In general, KVM now
-has many "page non-present" tricks in EPT, which are not applicable to
-IOPT. If shared, KVM has to take IOPT concerns into account, which is
-quite a burden for KVM maintaining.
-
-> secure EPT in the secure world and not directly managed by Linux?
-
-Yes, the secure EPT is in the secure world and managed by TDX firmware.
-Now a SW Mirror Secure EPT is introduced in KVM and managed by KVM
-directly, and KVM will finally use firmware calls to propagate Mirror
-Secure EPT changes to secure EPT.
-
-Secure EPT are controlled by TDX module, basically KVM cannot play any
-of the tricks. And TDX firmware should ensure any SEPT setting would be
-applicable for Secure IOPT. I hope this could remove most of the
-concerns.
-
-I remember we've talked about SEPT sharing architechture for TDX TIO
-before, but didn't get information back from KVM folks. Not sure how
-things will go. Maybe will find out when we have some patches posted.
-
-Thanks,
-Yilun
-
+>>
+>> Regards,
+>> Akihiko Odaki
+>>
+>>>
+>>> Then we don't need any driver normative so I don't see any conflict.
+>>>
+>>> Michael suggests we use "SHOULD", but if this is something that the
+>>> driver needs to be aware of I don't know how "SHOULD" can help a lot
+>>> or not.
+>>>
+>>>>
+>>>> Instead, we should make the driver requirement stricter to change 2).
+>>>> That is what "[PATCH v3] virtio-net: Ignore num_buffers when unused" does:
+>>>> https://lore.kernel.org/r/20250110-reserved-v3-1-2ade0a5d2090@daynix.com
+>>>>
+>>>>>
+>>>>>>
+>>>>>> We are going to fix all implementations known to buggy (QEMU and Linux)
+>>>>>> anyway so I think it's just fine to leave that part of specification as is.
+>>>>>
+>>>>> I don't think we can fix it all.
+>>>>
+>>>> It essentially only requires storing 16 bits. There are details we need
+>>>> to work out, but it should be possible to fix.
+>>>
+>>> I meant it's not realistic to fix all the hypervisors. Note that
+>>> modern devices have been implemented for about a decade so we may have
+>>> too many versions of various hypervisors. (E.g DPDK seems to stick
+>>> with the same behaviour of the current kernel).
+>>   > >>
+>>>> Regards,
+>>>> Akihiko Odaki
+>>>>
+>>>
+>>> Thanks
+>>>
+>>
 > 
-> AFAIK AMD is going to mirror the iommu page table like today.
-> 
-> ARM, I suspect, will not have an "EPT" under Linux control, so
-> whatever happens will be hidden in their secure world.
-> 
-> Jason
+
