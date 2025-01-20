@@ -1,22 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5284D1E32D7
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528BC1E9B33
 	for <kvm@vger.kernel.org>; Mon, 20 Jan 2025 16:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737389918; cv=none; b=ZLnEVYPd+XLFdRqiyemg9q6dEDXxFU3zVl+i79N5h6SEE3tEj4Vko4lwJtEV4dOiswu7o0Cy3ErwnP32bJPyu3xkpjG9ELn0xnzyKa98xCPHhxORd5eyoGsUYL9Si6ODvqxwwgwALWfpzpqjoOKGCT4g+8wYHc8aqbp8/GhP2Go=
+	t=1737389918; cv=none; b=g/cKQxHJHNgbASMMwB6//eliqZNo7Ie/iqHjp0ZLSxQ8kHs6xwMdcyrqFld39IeZiypbFWb5k1YvLPZ4d52w97wWyfAwJBLkjbLHiirBrkwWAfzI8khWuJ+IVMfUsHLB12AOCYl/m4aYG4SvLMMP53rAGV2sTgdcT1Dx+pqxiwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1737389918; c=relaxed/simple;
-	bh=vmWp/d3ggKFMlfuH8NdzhF5Bt/Nf1IIfjVydr8sC11E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VIG3kpZyjM1TAUBqmdZJlRZU3bPE1kb1a/J8f0yQ7gzX22WnbAZXRE+d5hZVazKRZu+4nOEF8S6beFsbgeZVjz7SyXo2hnn7lixAc7kuubqv0qUAC32DsqVQ2IzJl/jow1S7vDCrjTvuO7UxWl+hAIz+WfaB3mtOPUijudpLQ5U=
+	bh=z+vQqh7pwTAsF9RkwsAn/t9oMzJjPX+0U290heMAJu4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hG4ZcRw1DGWxMIlP9YnN21Xp72iEqrfs3i2sm59onsoK5tCTjssj+VQCJlsLEp1FY60sAElLXZofDU5Ppf5t9fUUiv0qwQBGN3qWwYjsZx3dDsQSDKwuTdmdOiYEPIZAzUWoXWJNe7bekKvAQarpw1OATEX6jR6nthTO2qvpE6A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74DD21063;
-	Mon, 20 Jan 2025 08:19:00 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6DE021688;
+	Mon, 20 Jan 2025 08:19:03 -0800 (PST)
 Received: from localhost.localdomain (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7C153F5A1;
-	Mon, 20 Jan 2025 08:18:30 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4D383F5A1;
+	Mon, 20 Jan 2025 08:18:33 -0800 (PST)
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -25,10 +26,12 @@ Cc: apatel@ventanamicro.com,
 	andre.przywara@arm.com,
 	kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org
-Subject: [PATCH kvmtool v1 0/2] Error handling fixes
-Date: Mon, 20 Jan 2025 16:17:58 +0000
-Message-ID: <20250120161800.30270-1-alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool v1 2/2] Do not a print a warning on failing host<->guest address translation
+Date: Mon, 20 Jan 2025 16:18:00 +0000
+Message-ID: <20250120161800.30270-3-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250120161800.30270-1-alexandru.elisei@arm.com>
+References: <20250120161800.30270-1-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,26 +40,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two fixes for how kvmtool handles errors, both found while working on
-integrating kvmtool with the kvm-unit-tests automatic test runner (patches
-incoming).
+guest_flat_to_host() and host_to_guest_flat return NULL, respectively 0,
+when the address is not found in the existing memslots. It is expected that
+the calling code will handle this error.
 
-The first patch is needed so kvm-unit-tests can detect when a test failed.
+However, both functions also print an error message containing the
+offending address. This can be redundant, if the calling code also prints
+the address, or even misleading, if the calling code can gracefully handle
+the failure, like is the case in kvm__dump_mem().
 
-The second is just to make it easier to interpret a particular error message.
+Change the warning to a debug, since knowing the address might still be
+useful for those call sites where the address isn't printed, or if the
+error isn't handled at all.
 
-Alexandru Elisei (2):
-  Propagate the error code from any VCPU thread
-  Do not a print a warning on failing host<->guest address translation
+Before, when running the PMU test from kvm-unit-tests using the test
+runner, which redirects stdout (where kvm__dump_mem() writes) and stderr
+(where pr_warning() writes):
 
- builtin-run.c         |  9 +++++----
- include/kvm/kvm-cpu.h |  2 +-
- kvm-cpu.c             | 17 ++++++++++-------
- kvm.c                 |  4 ++--
- 4 files changed, 18 insertions(+), 14 deletions(-)
+  Error: KVM exit reason: 9 ("KVM_EXIT_FAIL_ENTRY")
+  Warning: unable to translate guest address 0x0 to host
 
+ Registers:
 
-base-commit: 6d754d01fe2cb366f3b636d8a530f46ccf3b10d8
+<snip>
+
+*lr:
+ 0x00000000: <unknown>
+ 0x00000008: <unknown>
+ 0x00000010: <unknown>
+ 0x00000018: <unknown>
+
+The error is caused by the VCPU migrating to a physical CPU with a
+different PMU. In the example, the warning not only is unnecessary, but is
+quite a distance away from the offending address and can confuse the person
+looking at the code, like it happened to the patch author.
+
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+ kvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kvm.c b/kvm.c
+index 42b881217df6..07089cf1b332 100644
+--- a/kvm.c
++++ b/kvm.c
+@@ -354,7 +354,7 @@ void *guest_flat_to_host(struct kvm *kvm, u64 offset)
+ 			return bank->host_addr + (offset - bank_start);
+ 	}
+ 
+-	pr_warning("unable to translate guest address 0x%llx to host",
++	pr_debug("unable to translate guest address 0x%llx to host",
+ 			(unsigned long long)offset);
+ 	return NULL;
+ }
+@@ -371,7 +371,7 @@ u64 host_to_guest_flat(struct kvm *kvm, void *ptr)
+ 			return bank->guest_phys_addr + (ptr - bank_start);
+ 	}
+ 
+-	pr_warning("unable to translate host address %p to guest", ptr);
++	pr_debug("unable to translate host address %p to guest", ptr);
+ 	return 0;
+ }
+ 
 -- 
 2.34.1
 
