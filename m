@@ -1,176 +1,228 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E1F1B413E
-	for <kvm@vger.kernel.org>; Mon, 20 Jan 2025 10:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3804194147;
+	Mon, 20 Jan 2025 10:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737369689; cv=none; b=PZfXcPRkLieMxoWcehGkbSOwS0NA2EoXpoMpAR4QXjUc3PPc4K1agdU7/l48R6OsvibV4Ni35T293ASv8VNxo3IdTZRormEkwm7jbpBVh5MUROEXVinlvTPuOPyS7TcNCTUxX1ugVuYiNFCl0JqkUfEYsXsMZtQoBIW1x2xbUu4=
+	t=1737369822; cv=none; b=uGmCL2csoqjyI3M6WwLFUlMvtNWDBf6ihKkTnUbnKejr4yC6FU1qzUao1GOtQ3S611ttrrr28ctMxhLJ9FwTWImTLeiQMBK+SQSFSHGGPdmk6RuyZMjUPqSi8kidunv6nNF0bIWJs1y9pM9cEOmHLLXxpUqlJ3dxkjbCheUiEAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737369689; c=relaxed/simple;
-	bh=X6rzbi/DOyJt96CiJTUfqNxFG+FmcgUKxIxrzmRXXAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bqv+WAG3j9CrQw8wXjlh9P0UHXRYkgooj7ua2/tzSMWa+k1Ub/zAsdnPJeVpl55SakK1G28EMgr2zjGx1eCAOP4w4TluNM2EIaDgCL5RoLJSAO8rChrR0dF8ehrj6ASgv2waH2MblJxLTN8jot83AH2lAdY9Il2ICKjDzT8f588=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P0GktQo7; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737369822; c=relaxed/simple;
+	bh=grB4oa8g9PT8SWgNQq4LwO/Fj3xhcwely6BQDW1ZXwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aZ+wqrK5M+ZaHYmltfXMfSKPVtE5QdzR7RGzoDcJibj1m/hSuOtRgO+8q1cAyZcf4mxQpqQsUOHtYF31hJ5YAC+CJJ8epgZApsgCUMbFhmiOCZE0WmYZGCt8x1V1RVExbtFyvmxzEFAcxaQ4XLwqNy3Geajvd5zPxUiplThnLb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=moRGY5rB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bdCWdIuQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=moRGY5rB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bdCWdIuQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P0GktQo7"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43621d2dd4cso74835e9.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jan 2025 02:41:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737369686; x=1737974486; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wa8U7ekwRqzLAwTlgofMJWDrrrDutQV4QhHlQEndWGc=;
-        b=P0GktQo70YZrnF3DFzME+2I73sivY8UF7L86bpdiFSvMB3qT5satnYvBnzij8HzNxl
-         WErIC8GdWZ0dsenVyWl+aUA4VFEdmosmR5+tduKEEt9YBomywfqTYHfQQzzU/xisSD7Q
-         nEsjXN8cCny0y2ei0MwAzD9h/6JFhEi6FbeeH38H9vlOg5G5Vjf1cGMQ3zWL8Z0b6Viu
-         YMNTkeKnkwH1ToYjzMQk/QI4y0WSSNV8Nfcorcmjo9jVPwe6zkemckAczLj0Yc8uJlY/
-         Xy3xkAOLsz6V8xbLuf9mnpHbr+VGOEnTBpzmwAnEPwFEdI47/DYPvBr1fC1/E1MKfImX
-         amxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737369686; x=1737974486;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wa8U7ekwRqzLAwTlgofMJWDrrrDutQV4QhHlQEndWGc=;
-        b=EUC8R3ObdEIin9JeTMyN6y3cUIIo8L+pb8jRDvLnuDKcMe/dqUehXkVCR+vE97bu/+
-         BqkOx3QpxE9cY84jvqK53C9Ik/8/TLo9UAEtaujcVUo0J9nsajvgHlV6B2yKiCeWXJ4a
-         Zc8ieU/FzjDOENcRyB9KTi1V6dAYapKKWs+uPP+poSBXOK+YsQOd7zSS+nS7CQLPou7Z
-         e4/FUtyicMSH3AZfzCBQNnYGuaw9CAG/DFJv/sSAUzSrLdDNVkcob4qknSFAK2r8fvbt
-         DcJyQM0DzzuHv048jMewCib+pv1zzhBn3V0g/RCwv3sQ1Tp6tExqI9Y2H1VM5WCgvxpK
-         xngA==
-X-Gm-Message-State: AOJu0Yyci8twYs3paYZ+I/3z6X9mMaDY+y0UyJ9KfXRKef5CIK2llzP3
-	4lqD1Vhay+KmQhEDx+U8LBsPT2qxqIQo53PsDa9K1YrmNd749CTkt/wwzvCfLOv/8rqOHajkG4i
-	CScAGHgymqq0WGJS3nyRm/AxSZbeUQoRP4Tiz
-X-Gm-Gg: ASbGncvPI5bST4985TwQ0nfkn85j980SDhiLoW1HcscAenOFLs28nLVUn4gatD86gSD
-	X3i16ASuP3Fmn+CP/vmlBkrG0Ux4bNz+Wdc8iCslDsxLdq08vag==
-X-Google-Smtp-Source: AGHT+IH8V90wUWmza7AHfIRy6XGoAOzH/BHgH1iFvRMewjUCt2v1FkW0WfzG9YSgoTPWS8RLVSaEKE3KU2xpoH2YkDs=
-X-Received: by 2002:a05:600c:160a:b0:42c:9e35:cde6 with SMTP id
- 5b1f17b1804b1-438a08f2f4amr2342115e9.2.1737369686185; Mon, 20 Jan 2025
- 02:41:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="moRGY5rB";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bdCWdIuQ";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="moRGY5rB";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bdCWdIuQ"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7CF6A21108;
+	Mon, 20 Jan 2025 10:43:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1737369818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ciL894RNwZ6L87CNo+rK+xBrJ0vrSFIJHYIK07Mtjv0=;
+	b=moRGY5rB+hezygYkYydERGekqefjftbAaPba33TjbE4HGCSv1AgwTWqSLtH0kHWZOaxJ2z
+	oPrt4NKA4VQ4SK4Ff46v1leOxVRAubqGKnArw0jtrdCA8DTfpG7evtuZLMLSCXasG2O99S
+	otlZ/kS4yR+IL3ngZ/3fv1orro7VvHE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1737369818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ciL894RNwZ6L87CNo+rK+xBrJ0vrSFIJHYIK07Mtjv0=;
+	b=bdCWdIuQ+jWgdfSvxCVfgkYCcLPIyevnpN4LabHZRc2809ZrZ6d0xeRZh+c6xPgMPzNSv+
+	K21+6DTkITGR3+BA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=moRGY5rB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bdCWdIuQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1737369818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ciL894RNwZ6L87CNo+rK+xBrJ0vrSFIJHYIK07Mtjv0=;
+	b=moRGY5rB+hezygYkYydERGekqefjftbAaPba33TjbE4HGCSv1AgwTWqSLtH0kHWZOaxJ2z
+	oPrt4NKA4VQ4SK4Ff46v1leOxVRAubqGKnArw0jtrdCA8DTfpG7evtuZLMLSCXasG2O99S
+	otlZ/kS4yR+IL3ngZ/3fv1orro7VvHE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1737369818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ciL894RNwZ6L87CNo+rK+xBrJ0vrSFIJHYIK07Mtjv0=;
+	b=bdCWdIuQ+jWgdfSvxCVfgkYCcLPIyevnpN4LabHZRc2809ZrZ6d0xeRZh+c6xPgMPzNSv+
+	K21+6DTkITGR3+BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A494139CB;
+	Mon, 20 Jan 2025 10:43:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4+exANoojmfLOQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 20 Jan 2025 10:43:38 +0000
+Message-ID: <176781cc-75b8-449b-bd56-06d1c25e2276@suse.cz>
+Date: Mon, 20 Jan 2025 11:43:37 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250117163001.2326672-1-tabba@google.com> <20250117163001.2326672-6-tabba@google.com>
- <r425iid27x5ybtm4awz3gx2sxibuhlsr6me3e6e3kjtl5nuwia@2xgh3frgoovs>
-In-Reply-To: <r425iid27x5ybtm4awz3gx2sxibuhlsr6me3e6e3kjtl5nuwia@2xgh3frgoovs>
-From: Fuad Tabba <tabba@google.com>
-Date: Mon, 20 Jan 2025 10:40:49 +0000
-X-Gm-Features: AbW1kvY0Ctf9m93HrlbiEv-nOB8N3ILayL1LhKZu0dv-V19y4dKMdkR14DjXPsg
-Message-ID: <CA+EHjTzRnGoY_bPcV4VFb-ORi5Z4qYTdQ-w4A0nsB91bUAOuAg@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 05/15] KVM: guest_memfd: Folio mappability states
- and functions that manage their transition
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
-	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
-	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 01/15] mm: Consolidate freeing of typed folios on
+ final folio_put()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>,
+ kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net,
+ vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
+ isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
+ suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
+ quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
+ quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com,
+ quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com,
+ james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev,
+ maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com,
+ roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com,
+ rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com
+References: <20250117163001.2326672-1-tabba@google.com>
+ <20250117163001.2326672-2-tabba@google.com>
+ <0f588655-62c0-46c3-bd15-01016615953f@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <0f588655-62c0-46c3-bd15-01016615953f@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7CF6A21108
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[redhat.com,kernel.org,ellerman.id.au,brainfault.org,sifive.com,dabbelt.com,eecs.berkeley.edu,google.com,zeniv.linux.org.uk,infradead.org,linux-foundation.org,intel.com,linux.intel.com,digikod.net,maciej.szmigiero.name,amd.com,oracle.com,gmail.com,arm.com,quicinc.com,huawei.com,linux.dev,amazon.co.uk,nvidia.com];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[60];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Flag: NO
 
-On Mon, 20 Jan 2025 at 10:30, Kirill A. Shutemov <kirill@shutemov.name> wrote:
->
-> On Fri, Jan 17, 2025 at 04:29:51PM +0000, Fuad Tabba wrote:
-> > +/*
-> > + * Marks the range [start, end) as not mappable by the host. If the host doesn't
-> > + * have any references to a particular folio, then that folio is marked as
-> > + * mappable by the guest.
-> > + *
-> > + * However, if the host still has references to the folio, then the folio is
-> > + * marked and not mappable by anyone. Marking it is not mappable allows it to
-> > + * drain all references from the host, and to ensure that the hypervisor does
-> > + * not transition the folio to private, since the host still might access it.
-> > + *
-> > + * Usually called when guest unshares memory with the host.
-> > + */
-> > +static int gmem_clear_mappable(struct inode *inode, pgoff_t start, pgoff_t end)
-> > +{
-> > +     struct xarray *mappable_offsets = &kvm_gmem_private(inode)->mappable_offsets;
-> > +     void *xval_guest = xa_mk_value(KVM_GMEM_GUEST_MAPPABLE);
-> > +     void *xval_none = xa_mk_value(KVM_GMEM_NONE_MAPPABLE);
-> > +     pgoff_t i;
-> > +     int r = 0;
-> > +
-> > +     filemap_invalidate_lock(inode->i_mapping);
-> > +     for (i = start; i < end; i++) {
-> > +             struct folio *folio;
-> > +             int refcount = 0;
-> > +
-> > +             folio = filemap_lock_folio(inode->i_mapping, i);
-> > +             if (!IS_ERR(folio)) {
-> > +                     refcount = folio_ref_count(folio);
-> > +             } else {
-> > +                     r = PTR_ERR(folio);
-> > +                     if (WARN_ON_ONCE(r != -ENOENT))
-> > +                             break;
-> > +
-> > +                     folio = NULL;
-> > +             }
-> > +
-> > +             /* +1 references are expected because of filemap_lock_folio(). */
-> > +             if (folio && refcount > folio_nr_pages(folio) + 1) {
->
-> Looks racy.
->
-> What prevent anybody from obtaining a reference just after check?
->
-> Lock on folio doesn't stop random filemap_get_entry() from elevating the
-> refcount.
->
-> folio_ref_freeze() might be required.
+On 1/20/25 11:39, David Hildenbrand wrote:
+> On 17.01.25 17:29, Fuad Tabba wrote:
+>> diff --git a/mm/swap.c b/mm/swap.c
+>> index 10decd9dffa1..6f01b56bce13 100644
+>> --- a/mm/swap.c
+>> +++ b/mm/swap.c
+>> @@ -94,6 +94,20 @@ static void page_cache_release(struct folio *folio)
+>>   		unlock_page_lruvec_irqrestore(lruvec, flags);
+>>   }
+>>   
+>> +static void free_typed_folio(struct folio *folio)
+>> +{
+>> +	switch (folio_get_type(folio)) {
+>> +	case PGTY_hugetlb:
+>> +		free_huge_folio(folio);
+>> +		return;
+>> +	case PGTY_offline:
+>> +		/* Nothing to do, it's offline. */
+>> +		return;
+> 
+> Please drop the PGTY_offline part for now, it was rather to highlight 
+> what could be done.
+> 
+> But the real goal will be to not make offline pages
+> use the refcount at all (frozen).
+> 
+> If we really want the temporary PGTY_offline change, it should be 
+> introduced separately.
+> 
+> Apart from that LGTM!
 
-I thought the folio lock would be sufficient, but you're right,
-nothing prevents getting a reference after the check. I'll use a
-folio_ref_freeze() when I respin.
+I gues you mean the WARN_ON_ONCE(1) should be dropped from the default:
+handler as well, right? IIUC offline pages are not not yet frozen so there
+will be warnings otherwise. And I haven't check if the other types are
+frozen (I know slab is, very recently :)
 
-Thanks,
-/fuad
 
-> > +                     /*
-> > +                      * Outstanding references, the folio cannot be faulted
-> > +                      * in by anyone until they're dropped.
-> > +                      */
-> > +                     r = xa_err(xa_store(mappable_offsets, i, xval_none, GFP_KERNEL));
-> > +             } else {
-> > +                     /*
-> > +                      * No outstanding references. Transition the folio to
-> > +                      * guest mappable immediately.
-> > +                      */
-> > +                     r = xa_err(xa_store(mappable_offsets, i, xval_guest, GFP_KERNEL));
-> > +             }
-> > +
-> > +             if (folio) {
-> > +                     folio_unlock(folio);
-> > +                     folio_put(folio);
-> > +             }
-> > +
-> > +             if (WARN_ON_ONCE(r))
-> > +                     break;
-> > +     }
-> > +     filemap_invalidate_unlock(inode->i_mapping);
-> > +
-> > +     return r;
-> > +}
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
