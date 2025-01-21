@@ -1,192 +1,121 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7671F2C57;
-	Tue, 21 Jan 2025 15:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276551F2C57
+	for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 15:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737474866; cv=none; b=JGSIy2EZxWtGVEqYQ8SKvx19TZkfjg0qH2dmUrK3O1mYrJQbqfur3HOnHEcJvCBTnRpkmmH/oCSUis3ewyDkf1zzi1ykniSDI+AzRobxc9sr4MVuV+jjtYytINCsBGBf8f/8PwfsfwJocUoqgJOYddNysu1qoFlF6lB3iKQxnj4=
+	t=1737474916; cv=none; b=ZXvWUxmWuj7pwkZDiy+EVKl6l1w19asebeeOwvMOd3aBN0DJqnQN28IC142Amq3NZ7jLwYCX5XZlGi1ea8b3dRn74HM6IuCQEM+CtBT/D/2H4n1Ny6asz78Qw6iGPRJXe9wIeWJFv+6d40Ivfz0/xSQGs0R+pFZqTaFwTvitm3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737474866; c=relaxed/simple;
-	bh=/FxALeXiZ2dSXGuzdwGd0Zb6gO5IhoyS2kxWj2mQ5vE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EEnu9dcMrxu+yd/i0948elVxrbMh1qnV0hhmxIi2yGTCorO7YKd4fvBytTd+0JijOqlDTgjSceMqtcAK7721gXoPBnYRjnnrWsSA0ELrLHrFq9TrhNNY3O22BqMJfjywBJnQXjwJsVJpSIPmgaAPSFiuNN8n9e9nlApBZ7KyYbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 653FF1063;
-	Tue, 21 Jan 2025 07:54:52 -0800 (PST)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A408B3F738;
-	Tue, 21 Jan 2025 07:54:20 -0800 (PST)
-Date: Tue, 21 Jan 2025 15:54:17 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
-	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
-	oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests
- if not configured for qemu
-Message-ID: <Z4_DKTMeDQqsqV_6@raptor>
-References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-4-alexandru.elisei@arm.com>
- <20250121-45faf6a9a9681c7c9ece5f44@orel>
+	s=arc-20240116; t=1737474916; c=relaxed/simple;
+	bh=7XZXwF5wdlElwvcZPmyQUeHz6RNJPSi3z8M5J77LL5o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QQZRkX5b4TNgjsGb6H4TerPN8MXTMrpIlioVUbJshYuC74Oe6bIpspPC8W/IclIN+6AAeh3zL9swDrvWQbVvV01Poo5+iW8SeRHWpoOYYh4S9cFiibvHqV24/AXoNd838axQa/EmDdJxar6KmnlGgQDUh5YagcC21+LK4oY3DXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MVZ+M1k0; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MVZ+M1k0"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef9e38b0cfso10742735a91.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 07:55:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737474914; x=1738079714; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e6+Apqyoldz7GJ9ISR71ryeAIIRuwHBMgh+a+9AIAM8=;
+        b=MVZ+M1k0/B76YG2eIdls7pkV+v0S8N6D5IGWzPlLpmaP+lIs2hSqj6MyEkB29g1Aqs
+         TONd9Qo8kPCTVamBiJO4tIHmnOGdQmaEF3HBrdqWivcLBVKsh/hkAMofXpDoP0L8tQus
+         DFw10sx/uCMnAL+cYAf6fRwKejzdgkfIayIxgFvHA3S4/CCZRiCWdPLf5ajzVNwsn57O
+         6L9z2t4yRWSGjSvntfZFsdjswzSfiWrd4mecha2zEUKOdezIjiA2dI1wMbmb1Sj5fdFR
+         b2IbBy8IuSCBu9SdM/BptVbdIaKx71492mhWBVTzjdZKehpE+6xa4F18LGRNUpeXPlYx
+         oFrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737474914; x=1738079714;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e6+Apqyoldz7GJ9ISR71ryeAIIRuwHBMgh+a+9AIAM8=;
+        b=sDEZaxgr1IvHaro0M5UfGuNImb2hOnklio5GuB2GaDtEr4SRrF2rKk2f5ODIhKBR47
+         Io5XsXs9ZLWpH8M7W+ACcmAXOCloWOL3Ijhz6eiaU+XVP512qoWgBEOTadoh8xJ0ClxP
+         Jh5zFFMVnyoEt+TkTJx8FEZP2/jcClR/36ukobHZ/X5WrTdtQI0OdvtDujqGCpelnibK
+         /Z4t1GA7BYh3i5KMpGr9Zp/hJzSMZur8m9PdvTkYcBewoNju7WsSGGnu3xxZHsjsXlGN
+         upgy8lJdqOX2PWYEQ/ZqphciI8l/qnOLXvTYGq6Cyp1lq/xGxsW2Hvr3YoH8DAAWdBg8
+         nwcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVfuB1jBQ3TI1Vjfl9xxqxRnZoZKj59KEio9nn1mTiAHfXkHN2PKw8ejsOU58a2AJcs2k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpkj/cJ1PJOzmU/PWQdY39aijoCoc6weeBArv0dZhdU5Lwft/s
+	ByqWxAIccVP4vXUo037eS9EvfH+cAzV0x5GVOLMV2YnCPzp0RDDyM1OQRiIGyOlkkBgil/EKEGE
+	KpA==
+X-Google-Smtp-Source: AGHT+IGh29y2t1Ejp1CgkeenXGZZ++olVnu2uIXJAQWnhFxMiW+EJMMlUGjS1gR0STV1P0L/xv7sb9wVQrc=
+X-Received: from pfblu23.prod.google.com ([2002:a05:6a00:7497:b0:725:3321:1f0c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2382:b0:725:ef4b:de28
+ with SMTP id d2e1a72fcca58-72dafb365b8mr23518496b3a.17.1737474914409; Tue, 21
+ Jan 2025 07:55:14 -0800 (PST)
+Date: Tue, 21 Jan 2025 07:55:13 -0800
+In-Reply-To: <Z42Q-sbPMA9zZMIC@archie.me>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250121-45faf6a9a9681c7c9ece5f44@orel>
+Mime-Version: 1.0
+References: <03a04e86-c629-44df-9022-05c42b4c736f@gmx.de> <Z42Q-sbPMA9zZMIC@archie.me>
+Message-ID: <Z4_DYfJKl3jqzU_Y@google.com>
+Subject: Re: kconfig does not accept a lower value for KVM_MAX_NR_VCPUS
+From: Sean Christopherson <seanjc@google.com>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: "Toralf =?utf-8?Q?F=C3=B6rster?=" <toralf.foerster@gmx.de>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux KVM <kvm@vger.kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Drew,
+On Mon, Jan 20, 2025, Bagas Sanjaya wrote:
+> On Sun, Jan 19, 2025 at 12:04:04PM +0100, Toralf F=C3=B6rster wrote:
+> > I was wondering why I cannot put a lower value here during make oldconf=
+ig:
 
-On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
-> On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
-> > Arm and arm64 support running the tests under kvmtool. Unsurprisingly,
-> > kvmtool and qemu have a different command line syntax for configuring and
-> > running a virtual machine.
-> > 
-> > On top of that, when kvm-unit-tests has been configured to run under
-> > kvmtool (via ./configure --target=kvmtool), the early UART address changes,
-> > and if then the tests are run with qemu, this warning is displayed:
-> > 
-> > WARNING: early print support may not work. Found uart at 0x9000000, but early base is 0x1000000.
-> > 
-> > At the moment, the only way to run a test under kvmtool is manually, as no
-> > script has any knowledge of how to invoke kvmtool. Also, unless one looks
-> > at the logs, it's not obvious that the test runner is using qemu to run the
-> > tests, and not kvmtool.
-> > 
-> > To avoid any confusion for unsuspecting users, refuse to run a test via the
-> > testing scripts when kvm-unit-tests has been configured for kvmtool.
-> > 
-> > There are four different ways to run a test using the test infrastructure:
-> > with run_tests.sh, by invoking arm/run or arm/efi/run with the correct
-> > parameters (only the arm directory is mentioned here because the tests can
-> > be configured for kvmtool only on arm and arm64), and by creating
-> > standalone tests. Add a check in each of these locations for the supported
-> > virtual machine manager.
-> > 
-> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> > ---
-> >  arm/efi/run             | 8 ++++++++
-> >  arm/run                 | 9 +++++++++
-> >  run_tests.sh            | 8 ++++++++
-> >  scripts/mkstandalone.sh | 8 ++++++++
-> >  4 files changed, 33 insertions(+)
-> > 
-> > diff --git a/arm/efi/run b/arm/efi/run
-> > index 8f41fc02df31..916f4c4deef6 100755
-> > --- a/arm/efi/run
-> > +++ b/arm/efi/run
-> > @@ -12,6 +12,14 @@ fi
-> >  source config.mak
-> >  source scripts/arch-run.bash
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "$0 does not support '$TARGET'"
-> > +    exit 2
-> > +esac
-> > +
-> >  if [ -f /usr/share/qemu-efi-aarch64/QEMU_EFI.fd ]; then
-> >  	DEFAULT_UEFI=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd
-> >  elif [ -f /usr/share/edk2/aarch64/QEMU_EFI.silent.fd ]; then
-> > diff --git a/arm/run b/arm/run
-> > index efdd44ce86a7..6db32cf09c88 100755
-> > --- a/arm/run
-> > +++ b/arm/run
-> > @@ -8,6 +8,15 @@ if [ -z "$KUT_STANDALONE" ]; then
-> >  	source config.mak
-> >  	source scripts/arch-run.bash
-> >  fi
-> > +
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +   echo "'$TARGET' not supported"
-> > +   exit 3
-> 
-> I think we want exit code 2 here.
+The lower limit of 1024 in the Kconfig exists to ensure backwards compatibi=
+lity.
+CONFIG_KVM_MAX_NR_VCPUS is effectively exposed to userspace via KVM_CAP_MAX=
+_VCPUS,
+and prior to the Kconfig KVM hardcoded KVM_CAP_MAX_VCPUS to 1024.
 
-Exit code 2 is already in use in arm/run. Now that I'm looking more closely
-at it, exit code 2 is already in use in run_tests.sh, same for
-mkstandalone.sh and arm/efi/run.
+I did float the idea of setting the range to 1 - 4096, but we opted to go w=
+ith
+the conservative approach because the benefits are relatively minor, and we=
+ didn't
+want to risk indirectly breaking userspace.
 
-How about using 3 everywhere as the exit code?
-
-Also, your idea (below) to use a function to test for supported $TARGETs is
-a very good one, I'll do it in the next iteration.
-
-Thanks,
-Alex
-
-> 
-> > +esac
-> > +
-> >  processor="$PROCESSOR"
-> >  
-> >  if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
-> > diff --git a/run_tests.sh b/run_tests.sh
-> > index 23d81b2caaa1..61480d0c05ed 100755
-> > --- a/run_tests.sh
-> > +++ b/run_tests.sh
-> > @@ -100,6 +100,14 @@ while [ $# -gt 0 ]; do
-> >      shift
-> >  done
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "$0 does not support '$TARGET'"
-> > +    exit 2
-> > +esac
-> > +
-> >  # RUNTIME_log_file will be configured later
-> >  if [[ $tap_output == "no" ]]; then
-> >      process_test_output() { cat >> $RUNTIME_log_file; }
-> > diff --git a/scripts/mkstandalone.sh b/scripts/mkstandalone.sh
-> > index 2318a85f0706..4de97056e641 100755
-> > --- a/scripts/mkstandalone.sh
-> > +++ b/scripts/mkstandalone.sh
-> > @@ -7,6 +7,14 @@ fi
-> >  source config.mak
-> >  source scripts/common.bash
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "'$TARGET' not supported for standlone tests"
-> > +    exit 2
-> > +esac
-> > +
-> >  temp_file ()
-> >  {
-> >  	local var="$1"
-> > -- 
-> > 2.47.1
-> >
-> 
-> I think we could put the check in a function in scripts/arch-run.bash and
-> just use the same error message for all cases.
-> 
-> Thanks,
-> drew
-> 
-> > 
-> > -- 
-> > kvm-riscv mailing list
-> > kvm-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
+> >   Maximum number of vCPUs per KVM guest (KVM_MAX_NR_VCPUS) [1024] (NEW)=
+ 16
+> >   Maximum number of vCPUs per KVM guest (KVM_MAX_NR_VCPUS) [1024] (NEW)=
+ 8
+> >   Maximum number of vCPUs per KVM guest (KVM_MAX_NR_VCPUS) [1024] (NEW)
+> >=20
+>=20
+> Hi Toralf,
+>=20
+> From arch/x86/kvm/Kconfig:
+>=20
+> >config KVM_MAX_NR_VCPUS
+> >	int "Maximum number of vCPUs per KVM guest"
+> >	depends on KVM
+> >	range 1024 4096
+> >	default 4096 if MAXSMP
+> >	default 1024
+> >	help
+> >	  Set the maximum number of vCPUs per KVM guest. Larger values will inc=
+rease
+> >	  the memory footprint of each KVM guest, regardless of how many vCPUs =
+are
+> >	  created for a given VM.
+>=20
+> I don't know your use case, but you can safely choose the default (1024).
+>=20
+> Thanks.
+>=20
+> --=20
+> An old man doll... just what I always wanted! - Clara
