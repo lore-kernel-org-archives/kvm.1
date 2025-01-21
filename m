@@ -1,106 +1,98 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF2C1F540D
-	for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 20:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E611AF0A6
+	for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 20:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737493017; cv=none; b=hlJFP7eY94GaBEkdHjYyJt36G5xn4w97nA4uoQUTC//+/X1TxpYnZP6grqoz1zSJN64Li2h1KYkfJ3edRX2oz0Q9F18JTQQTrjzkm8M+l0VZ6i6uX+JFAzmo3EwUCPpxdBMNSMMtaLTEAlHPBn8q6YGsmqgdWVpnd8AG+JfLC+c=
+	t=1737493197; cv=none; b=IH1ldtkZRNPVC+sGHf0sjgSiVYEctecpsUnCGqvTxJEW+C86Aw12cYx93wdlP+1jyLdUan34zthO/tQqv0vZURx9dSaoEs3JylYCIxPnh0BSMOmmFDbraPsyAaUr37T1eDd/tqJa/kjtxD68iexZ71sJ1vtz83RGRk1J7eFg8to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737493017; c=relaxed/simple;
-	bh=oUeI4xqiwKehrm14csxiidLnNyGQ54ADBOT0ioMFNH0=;
+	s=arc-20240116; t=1737493197; c=relaxed/simple;
+	bh=RSJ2jNH2a0MQIQoYiFMyHb3AyOc07mKg8rE2aqyvfqw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tq7/84+5tRZ0BXLwD4a5xym9CDeYAWrxO5O+2JhNZ9Aowgc7bPGmbdHGan2Qm/eI2YQs7wv+ZgrVNLue1RDSaHmT44q6hhDiKaQCpYnImucfcMEydzAqsukljB2MKm9W5ZflcFVnSTWUB4kRS9SIVaGJAfdIIGauy4y3AtDHAYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kHPndlNE; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=OYNHCIYXdgPKV4APY4ubUGuJP7zWN5mhb0COBeKqShQCybyMhCYV3/9WcQj5xRohcUkdh93B2OUDxG3i6OcHbg7xCkeNW4GLvlKLEuOb9qVz09PEW56JNQA9AYIE+mYoBJ3tU/8C25ewizAIY/WpzG74hy6e2sKhDrrtVwn+IHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fJYF95Jd; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kHPndlNE"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-21631cbf87dso115660855ad.3
-        for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 12:56:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fJYF95Jd"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2f780a3d6e5so8531519a91.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jan 2025 12:59:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737493015; x=1738097815; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737493195; x=1738097995; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FPmPdXxg4qDDFjuISJwDdAIVLc44OyHMr66SXY5pv74=;
-        b=kHPndlNEfWXUCZ0isYHUdZwFTgmeO2TUXOEgt361wZVAwhd5PNyig8m04rzDj9OJgy
-         3vmk6tLCYoLfAtKC7cbgBWjb/pP3Boecb6NqIvJoREGT1c/eGzeuHh4vXLey0ACWdMoa
-         od2wmbim3Bw+8ziZMH/d1rJlrg4jZljwkz63qBPqyIFodbiIGYho3wkLhP/6BlC1DlQj
-         zuGzdsBYGL8pSyD4BCh1tkkWQqODtsVFt7qie7rOjrUE1npcvtSg+SHBEFQNBUMYnhCl
-         Xg1NwxFJHB4bCKTl4NVgy53pajIIQIJrmslDISKB3XXDCmVrczGfOahIEtS5w+6qyzo+
-         xf5Q==
+        bh=Im/FOdhXlQQwLZxJNctfvsJTmb5xZBqKT77VsroFJb8=;
+        b=fJYF95JdWW+3TFVEqpF80Z0AQj9HTZEEKpjepEaUCa+SvMjE5L0ea+9VG5oyIFdRiz
+         Zqjr4B1jq0seiZpaXD5uX1v+wCfkKyrFrgLXeyOMH2jXIWE12T3vRhxwb+MoDX3GzBh4
+         VD9uO3HOpeceWnrkM3w0bDX8xtwcIFCHuU6mWO/CmwlDTG6T6+tik9CzYr1SQXP47/Pc
+         DAQP66MlBSPD02lDhtbZ8nPDjVmPojMlwmuyeIVFvB9I1Ye05z6fjkf3BxjU9SH/c21l
+         vJNoU6Ba++hA4uhuuW1wOuEOT+jI6lgCGBAJI521bVNSy60BHnd+qG72zqUyZva1xwfb
+         Mj+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737493015; x=1738097815;
+        d=1e100.net; s=20230601; t=1737493195; x=1738097995;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FPmPdXxg4qDDFjuISJwDdAIVLc44OyHMr66SXY5pv74=;
-        b=d1wCH6dWzVZ5fHzz3dFTzeYXRQ5nzo4F9tIiFc+oeUiNPZf8JEWV4OF/MkAnm/Axbz
-         sp/Xn4H/OnhLqpcubft+D3HDLLqmsiL2C7uKz9Vbzv13uNlcs0N37sxZriuG43cwOdE7
-         aJ1/nI2fD27kBWwjyTrp/QCson+pcHOB5AfTQVzgAZwzScmS2MXKJMEXkv49yWF8GroX
-         BQcYbqw0ovkZIrEk01EsSrI8IAPOj7DmSip9T7GXSX54S6dD55t6B+NmljjizsQjxkne
-         QwrLYwr7QUTCXTdvY2AS1RZRSk4YJTV2k8U3Jlpm99Q1MwIgHHIh8yyz2Dao9PflFSLO
-         R6Ig==
-X-Gm-Message-State: AOJu0Yw5NI7MW5Q7bZ+PbXjNxU6Og7Y+oUKn7l0+G9sggAuK7QTaZ6tZ
-	yfL+WlyYieMhieXjqFP6/14JiBPAOjyAELZf2K2PNRPjchqtBpzJzCHBTlY0niWNzbrmr2ACYlK
-	gDw==
-X-Google-Smtp-Source: AGHT+IFdrRQcFubciantcwlkp+b6rBGHmd4snduv+064ENHS/VQS3HzU5edUM2r89L0j7KTtpRdHOth+VXE=
-X-Received: from pfwo10.prod.google.com ([2002:a05:6a00:1bca:b0:72d:b2a2:bed7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258e:b0:1e0:d632:b9e0
- with SMTP id adf61e73a8af0-1eb21481d85mr30143462637.13.1737493015514; Tue, 21
- Jan 2025 12:56:55 -0800 (PST)
-Date: Tue, 21 Jan 2025 12:56:54 -0800
-In-Reply-To: <gsntplkh2wia.fsf@coltonlewis-kvm.c.googlers.com>
+        bh=Im/FOdhXlQQwLZxJNctfvsJTmb5xZBqKT77VsroFJb8=;
+        b=uEEONoHh4gTcSJxHUfbmo94vHGX9g7b1hvpOkpQTn09T/rRiD3Rr7/6jz0h6A8K0Lp
+         JZdfK3VwXxAOIvLrBvdlB6uHu6W3YYgv0z7E9TQtaCOY8uqNV4vYuj208VEEyzOa98bn
+         f3sY0fKxRYKojsNqYQg989Lmpvkg/Kez0f1ASsO3UK8Jh17j/Scn3Ye7OTg38rdtdQu9
+         RUlq6m9xc/DTf0IjstFS0LRUL0devf0Ps9Cc+RNQIhX1qLPWmduH9/YpsipYcHR8F/UB
+         ZZ+k3Vt5DSXFNdU6SUgCwlEAv8k/J+4+F+ayih169TZJKUtdMwrTGMwVyaP/h+nFuM4X
+         /XmA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4neKHdqmtANCgOJWcElJ1Fz9eaLPUJCmbFDI02Epg+2s+QKYPidhyXeCHqVnr3Q0tA30=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBJG69lUuS3M4dtFYkKazfaz0JjRun7zPsyvWwyhLfjqxPaKAH
+	uHi2KjSAZwCtBAw3VO78FoMXnrop08GZud0c5QH98r2OWtfQ0p6WvlrankQkQrCMETKKW099g0u
+	OtA==
+X-Google-Smtp-Source: AGHT+IE0WEQ1HbyrNa9QwgA1eLbu9Bad3RgEPgNdFBtCisMjil/J3jYFk3ITHYWwWAza5LJWZWmmQvJGbHE=
+X-Received: from pjbqi11.prod.google.com ([2002:a17:90b:274b:b0:2ef:973a:3caf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d887:b0:2ea:3f34:f194
+ with SMTP id 98e67ed59e1d1-2f782c90219mr30311411a91.10.1737493195186; Tue, 21
+ Jan 2025 12:59:55 -0800 (PST)
+Date: Tue, 21 Jan 2025 12:59:54 -0800
+In-Reply-To: <Z43n5J+a3BPqTBsP@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <Z37FYUU4ppiZsa68@google.com> <gsntplkh2wia.fsf@coltonlewis-kvm.c.googlers.com>
-Message-ID: <Z5AKFlSJ9wgbX_MS@google.com>
-Subject: Re: [PATCH v2 3/6] KVM: x86: selftests: Set up AMD VM in pmu_counters_test
+References: <20250106155652.484001-1-kentaishiguro@sslab.ics.keio.ac.jp> <Z43n5J+a3BPqTBsP@intel.com>
+Message-ID: <Z5AKygcUcmnEtm0d@google.com>
+Subject: Re: [RFC] Para-virtualized TLB flush for PV-waiting vCPUs
 From: Sean Christopherson <seanjc@google.com>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, mizhang@google.com, ljr.kernel@gmail.com, 
-	jmattson@google.com, aaronlewis@google.com, pbonzini@redhat.com, 
-	shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Chao Gao <chao.gao@intel.com>
+Cc: Kenta Ishiguro <kentaishiguro@sslab.ics.keio.ac.jp>, pbonzini@redhat.com, 
+	kvm@vger.kernel.org, vkuznets@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jan 20, 2025, Colton Lewis wrote:
-> > > +static void test_core_counters(void)
-> > > +{
-> > > +	uint8_t nr_counters = nr_core_counters();
-> > > +	bool core_ext = kvm_cpu_has(X86_FEATURE_PERF_CTR_EXT_CORE);
-> > > +	bool perfmon_v2 = kvm_cpu_has(X86_FEATURE_PERFMON_V2);
-> > > +	struct kvm_vcpu *vcpu;
-> > > +	struct kvm_vm *vm;
-> > > +
-> > > +	for (uint8_t ce = 0; ce <= core_ext; ce++) {
+On Mon, Jan 20, 2025, Chao Gao wrote:
+> On Tue, Jan 07, 2025 at 12:56:52AM +0900, Kenta Ishiguro wrote:
+> >In oversubscribed environments, the latency of flushing the remote TLB can
+> >become significant when the destination virtual CPU (vCPU) is the waiter
+> >of a para-virtualized queued spinlock that halts with interrupts disabled.
+> >This occurs because the waiter does not respond to remote function call
+> >requests until it releases the spinlock. As a result, the source vCPU
+> >wastes CPU time performing busy-waiting for a response from the
+> >destination vCPU.
+> >
+> >To mitigate this issue, this patch extends the target of the PV TLB flush
+> >to include vCPUs that are halting to wait on the PV qspinlock. Since the
+> >PV qspinlock waiters voluntarily yield before being preempted by KVM,
+> >their state does not get preempted, and the current PV TLB flush overlooks
+> >them. This change allows vCPUs to bypass waiting for PV qspinlock waiters
+> >during TLB shootdowns.
 > 
-> > Kernel style is to not declared variables inside for-loops.
-> 
-> I ran it through checkpatch and it didn't complain.
+> This doesn't seem to be a KVM-specific problem; other hypervisors should
+> have the same problem. So, I think we can implement a more generic solution
+> w/o involving the hypervisor. e.g., the guest can track which vCPUs are
+> waiting on PV qspinlock, delay TLB flush on them and have those vCPUs
+> perform TLB flush after they complete their wait (e.g., right after the
+> halt() in kvm_wait()).
 
-...
+I don't think that works though.  E.g. what if the vCPU takes an NMI (guest NMI)
+while waiting on the spinlock, and the NMI handler accesses the virtual address
+that was supposed to be flushed?
 
-
-> > > +					vcpu_set_cpuid_property(
-> 
-> > Google3!  (Never, ever wrap immediately after the opening paranethesis).
-> 
-> Checkpatch didn't complain.
-
-Checkpatch is a perl script, not sentient AI.  It's nothing more than a tool to
-help detect common goofs, typos, egregious flaws, etc.  The absense of checkpatch
-warnings/errors does not mean a patch has no issues.  Coding style in particular
-is quite subjective and prone to "exceptions to the rule", which makes is especially
-hard to "enforce" via checkpatch.
-
-As explained in Documentation/process/4.Coding.rst, what matters most is consistency:
-
-  A code base as large as the kernel requires some uniformity of code to make it
-  possible for developers to quickly understand any part of it.  So there is no
-  longer room for strangely-formatted code.
-
-https://www.kernel.org/doc/html/v5.0/process/4.Coding.html#coding-style
+The PV approach works because the hypervisor can guarantee the flush will occur
+before the vCPU can run *any* code.
