@@ -1,429 +1,146 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5D2135D7;
-	Thu, 23 Jan 2025 14:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7D72116F8
+	for <kvm@vger.kernel.org>; Thu, 23 Jan 2025 14:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737643611; cv=none; b=Yx5oizB7Pj2JtrA1tFWKRyN93nJZuYXNWmxnGUBrHpBN5i4K/hvjmHo1s0muOMdJOaClwB+/p+xFc9sbKFVQkfrfNEJjyr+jmTc2RlisAd8VIqR2wPXMYro//8evASYHiCNYAx6CzlwHxya3Dn7+i54H9FhxhFydCQ0/gssQbSk=
+	t=1737644248; cv=none; b=t14fJN2F5HUSe6mopY8b6diNgYv16aV5BNHk2rQ4eI0L0ihmPZ8EOtu/TzfKEI3L4/DjAApQjbbc5ntRH7BGb5eIfkE6NEULamY6fohm0HO3kxNz2fd3Lv6Mj0Ub/ejtQ6MrpGLhEPnlhsX+nL4YJTdEH7UkfDKnxy2Six6GMFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737643611; c=relaxed/simple;
-	bh=audRnsOxmoC01B3yXU5Edc03CYcgYpidRPnZvYYFZag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaqdsbAQc2aPyA10Qa+bEAdWMxAhinREQHMddiJ7PC5EAZH0IfnSBJRM7CjBi7C4SrKXfwiVIi1+Ola+W+LYNTayqjJGgtKmauQQ5qK2bm9CQB55vQ6ttHC64tMAFW86SHE4FovDImqCYB22RGuPyS8ep72w3lFgTiNH+hGx3pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sdXQJx3i; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sdXQJx3i"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N7XJjE030461;
-	Thu, 23 Jan 2025 14:46:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=DimjIr2Zc1ZLpHO7J
-	7lJt1ATZjKcGh2Zadum6EoQIB4=; b=sdXQJx3iIit+vsmrI7WenabqT6pkHAvGG
-	MKCDPe+HHaby87Q8BLtmM7WGNp+EpVnCZ8wU8Q62w3qAwYXef+ZddlUX7fTkLSQC
-	Hju18n7Wo7Yta79cWWwky9ALFR7MpGte/s7mYHAcSONMcWqacesAbxha4Sv5sOiA
-	1E4EU4WFtMenTrUX+8YFsGTf9DUjYcjtisKRojNRYECtocOu0dWOyOAlQXxcigZD
-	/aLkOv3PfKnh3Dg3vauYfNejwDO3806TxQ97ugeGS8WQDOd7nZ1z6KXL1L3yKo7b
-	k0FiBrcRG7TSyVt1YnOl1eohC/vbfZMhHb+Z1wBzV3pOtC0agRAWg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bhfpj06s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 14:46:36 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50NEOaMu018033;
-	Thu, 23 Jan 2025 14:46:35 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bhfpj06p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 14:46:35 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50NDnRrC019223;
-	Thu, 23 Jan 2025 14:46:35 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmsp5g5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 14:46:35 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NEkVQn16056616
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jan 2025 14:46:31 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A65F220040;
-	Thu, 23 Jan 2025 14:46:31 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68EE620043;
-	Thu, 23 Jan 2025 14:46:31 +0000 (GMT)
-Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jan 2025 14:46:31 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, frankja@linux.ibm.com, borntraeger@de.ibm.com,
-        schlameuss@linux.ibm.com, david@redhat.com, willy@infradead.org,
-        hca@linux.ibm.com, svens@linux.ibm.com, agordeev@linux.ibm.com,
-        gor@linux.ibm.com, nrb@linux.ibm.com, nsg@linux.ibm.com,
-        seanjc@google.com, seiden@linux.ibm.com, pbonzini@redhat.com
-Subject: [PATCH v4 11/15] KVM: s390: stop using lists to keep track of used dat tables
-Date: Thu, 23 Jan 2025 15:46:23 +0100
-Message-ID: <20250123144627.312456-12-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250123144627.312456-1-imbrenda@linux.ibm.com>
-References: <20250123144627.312456-1-imbrenda@linux.ibm.com>
+	s=arc-20240116; t=1737644248; c=relaxed/simple;
+	bh=fTZJUqNlLAPc9pkjyRGCHYO7ddQj8V2OMB2Uz4GvzRw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=oM9kWwb99JQHe/p+rlFiqxC5bBeWqN4zc4emVY1UdTeYS8eRzLMZCjOrZgi8ZiXmN6WQiFby5k/TubeR9hyffimaitsF6bXS5yGCCwVyb1K/zEDfLCNduvzyNu8ZBzv6k2mb/fvhqx8JmAt0PXWkG4WDZe/UkWeuIC33sbEyBjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3ce7a0ec1easo6042665ab.0
+        for <kvm@vger.kernel.org>; Thu, 23 Jan 2025 06:57:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737644245; x=1738249045;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sjuCHk3cPJJKbPfJoSuHlqOyDip86LFpntpwDG2Tqqs=;
+        b=OdyHt/Ulp5TgzoP4v3AxRVoCRIpO+I4apg9Au8Q1anFIjjiMd0j2OA9GGHxZOvJ+Lf
+         hZDh5bZCa0Hz07eDAxSm+P+gHwzWpoegHJL+27RmywzJGd+TgwMJbXTKaq6HeCmQW9fS
+         VkGL3Ded9oTgwSQNe/fAKF/LvIh7RB8He5bIQZ1oEgFZ9k/voA42Shkxz294InIXQnwK
+         gJmKgksxv8Pjq1c59PBVp3oaol+EWzAmT6McY5eignPUWjYFaVTxz5oUfydSpXUXzxEo
+         LO3yB6Y0ipluZhwlg7ulC2oMV8t0Afof+scfFKfXe0vuPwVPvBPwP/B4wS+lxKoOLD98
+         +e7A==
+X-Gm-Message-State: AOJu0YyKjgxsu31eViFJkHw+VxP5IVyrtE8RFb6LyBft0oQxpsv7dEr7
+	Kzu+XqhlXWATJIhX/FPhNpzmGvVT4W0KUYNtuCz/l+9NUDiQCrILlI1yOn5hdqmwx34MvcZgHEp
+	nB76V2lav+5fSJCemLnYNOQa6OHM/c4fpHh/76MJ5ftjxzgK2vYHorh8UpA==
+X-Google-Smtp-Source: AGHT+IHWLkyfFCQWskam3uUwmD2hoz5Qzs9kx9zV6bEZEIwvQxTB/p3y2+5Twyk/F7RLhst1A0/5xTGsslhJBR1XfKKxOPDkT+1v
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HcaCIsV36YIB3bDoZs-1BajXP8N46YBM
-X-Proofpoint-ORIG-GUID: f5BrDvwAhYKBY9JZZWzua1O9mjFyPhuW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_06,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 mlxscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501230108
+X-Received: by 2002:a05:6e02:1fc1:b0:3cf:b7c0:8819 with SMTP id
+ e9e14a558f8ab-3cfb7c08acfmr41500115ab.9.1737644244103; Thu, 23 Jan 2025
+ 06:57:24 -0800 (PST)
+Date: Thu, 23 Jan 2025 06:57:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <679258d4.050a0220.2eae65.000a.GAE@google.com>
+Subject: [syzbot] [kvm?] WARNING: suspicious RCU usage in kvm_vcpu_gfn_to_memslot
+From: syzbot <syzbot+cdeaeec70992eca2d920@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Until now, every dat table allocated to map a guest was put in a
-linked list. The page->lru field of struct page was used to keep track
-of which pages were being used, and when the gmap is torn down, the
-list was walked and all pages freed.
+Hello,
 
-This patch gets rid of the usage of page->lru. Page tables are now
-freed by recursively walking the dat table tree.
+syzbot found the following issue on:
 
-Since s390_unlist_old_asce() becomes useless now, remove it.
+HEAD commit:    95ec54a420b8 Merge tag 'powerpc-6.14-1' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15ff45df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f27a9722e53abeaa
+dashboard link: https://syzkaller.appspot.com/bug?extid=cdeaeec70992eca2d920
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=133ed618580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=110449f8580000
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Acked-by: Steffen Eiden <seiden@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-95ec54a4.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/06bc523d1d96/vmlinux-95ec54a4.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c0b342c3e200/bzImage-95ec54a4.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+cdeaeec70992eca2d920@syzkaller.appspotmail.com
+
+=============================
+WARNING: suspicious RCU usage
+6.13.0-syzkaller-00918-g95ec54a420b8 #0 Not tainted
+-----------------------------
+./include/linux/kvm_host.h:1038 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+no locks held by syz-executor167/5303.
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5303 Comm: syz-executor167 Not tainted 6.13.0-syzkaller-00918-g95ec54a420b8 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x226/0x340 kernel/locking/lockdep.c:6845
+ __kvm_memslots include/linux/kvm_host.h:1036 [inline]
+ kvm_vcpu_memslots include/linux/kvm_host.h:1050 [inline]
+ kvm_vcpu_gfn_to_memslot+0x429/0x4c0 virt/kvm/kvm_main.c:2554
+ kvm_vcpu_write_guest_page virt/kvm/kvm_main.c:3238 [inline]
+ kvm_vcpu_write_guest+0x7c/0x130 virt/kvm/kvm_main.c:3274
+ kvm_xen_write_hypercall_page+0x2ff/0x5f0 arch/x86/kvm/xen.c:1299
+ kvm_set_msr_common+0x150/0x3da0 arch/x86/kvm/x86.c:3751
+ vmx_set_msr+0x15da/0x2790 arch/x86/kvm/vmx/vmx.c:2487
+ __kvm_set_msr arch/x86/kvm/x86.c:1877 [inline]
+ kvm_vcpu_reset+0xbea/0x1740 arch/x86/kvm/x86.c:12456
+ kvm_arch_vcpu_create+0x8dc/0xa80 arch/x86/kvm/x86.c:12305
+ kvm_vm_ioctl_create_vcpu+0x3d6/0xa00 virt/kvm/kvm_main.c:4106
+ kvm_vm_ioctl+0x7e2/0xd30 virt/kvm/kvm_main.c:5019
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9a62a26369
+Code: 48 83 c4 28 c3 e8 37 17 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff83b20f38 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fff83b21108 RCX: 00007f9a62a26369
+RDX: 0000000000000000 RSI: 000000000000ae41 RDI: 0000000000000004
+RBP: 00007f9a62a99610 R08: 00007fff83b21108 R09: 00007fff83b21108
+R10: 00007fff83b21108 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007fff83b210f8 R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+
+
 ---
- arch/s390/include/asm/gmap.h |   5 --
- arch/s390/mm/gmap.c          | 102 ++++++++---------------------------
- arch/s390/mm/pgalloc.c       |   2 -
- 3 files changed, 23 insertions(+), 86 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/arch/s390/include/asm/gmap.h b/arch/s390/include/asm/gmap.h
-index dbf2329281d2..b489c4589618 100644
---- a/arch/s390/include/asm/gmap.h
-+++ b/arch/s390/include/asm/gmap.h
-@@ -23,7 +23,6 @@
- /**
-  * struct gmap_struct - guest address space
-  * @list: list head for the mm->context gmap list
-- * @crst_list: list of all crst tables used in the guest address space
-  * @mm: pointer to the parent mm_struct
-  * @guest_to_host: radix tree with guest to host address translation
-  * @host_to_guest: radix tree with pointer to segment table entries
-@@ -35,7 +34,6 @@
-  * @guest_handle: protected virtual machine handle for the ultravisor
-  * @host_to_rmap: radix tree with gmap_rmap lists
-  * @children: list of shadow gmap structures
-- * @pt_list: list of all page tables used in the shadow guest address space
-  * @shadow_lock: spinlock to protect the shadow gmap list
-  * @parent: pointer to the parent gmap for shadow guest address spaces
-  * @orig_asce: ASCE for which the shadow page table has been created
-@@ -45,7 +43,6 @@
-  */
- struct gmap {
- 	struct list_head list;
--	struct list_head crst_list;
- 	struct mm_struct *mm;
- 	struct radix_tree_root guest_to_host;
- 	struct radix_tree_root host_to_guest;
-@@ -61,7 +58,6 @@ struct gmap {
- 	/* Additional data for shadow guest address spaces */
- 	struct radix_tree_root host_to_rmap;
- 	struct list_head children;
--	struct list_head pt_list;
- 	spinlock_t shadow_lock;
- 	struct gmap *parent;
- 	unsigned long orig_asce;
-@@ -141,7 +137,6 @@ int gmap_protect_one(struct gmap *gmap, unsigned long gaddr, int prot, unsigned
- void gmap_sync_dirty_log_pmd(struct gmap *gmap, unsigned long dirty_bitmap[4],
- 			     unsigned long gaddr, unsigned long vmaddr);
- int s390_disable_cow_sharing(void);
--void s390_unlist_old_asce(struct gmap *gmap);
- int s390_replace_asce(struct gmap *gmap);
- void s390_uv_destroy_pfns(unsigned long count, unsigned long *pfns);
- int __s390_uv_destroy_range(struct mm_struct *mm, unsigned long start,
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index 1f83262a5a55..07df1a7b5ebe 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -82,9 +82,7 @@ struct gmap *gmap_alloc(unsigned long limit)
- 	gmap = kzalloc(sizeof(struct gmap), GFP_KERNEL_ACCOUNT);
- 	if (!gmap)
- 		goto out;
--	INIT_LIST_HEAD(&gmap->crst_list);
- 	INIT_LIST_HEAD(&gmap->children);
--	INIT_LIST_HEAD(&gmap->pt_list);
- 	INIT_RADIX_TREE(&gmap->guest_to_host, GFP_KERNEL_ACCOUNT);
- 	INIT_RADIX_TREE(&gmap->host_to_guest, GFP_ATOMIC | __GFP_ACCOUNT);
- 	INIT_RADIX_TREE(&gmap->host_to_rmap, GFP_ATOMIC | __GFP_ACCOUNT);
-@@ -94,7 +92,6 @@ struct gmap *gmap_alloc(unsigned long limit)
- 	page = gmap_alloc_crst();
- 	if (!page)
- 		goto out_free;
--	list_add(&page->lru, &gmap->crst_list);
- 	table = page_to_virt(page);
- 	crst_table_init(table, etype);
- 	gmap->table = table;
-@@ -197,6 +194,27 @@ static void gmap_rmap_radix_tree_free(struct radix_tree_root *root)
- 	} while (nr > 0);
- }
- 
-+static void gmap_free_crst(unsigned long *table, bool free_ptes)
-+{
-+	bool is_segment = (table[0] & _SEGMENT_ENTRY_TYPE_MASK) == 0;
-+	int i;
-+
-+	if (is_segment) {
-+		if (!free_ptes)
-+			goto out;
-+		for (i = 0; i < _CRST_ENTRIES; i++)
-+			if (!(table[i] & _SEGMENT_ENTRY_INVALID))
-+				page_table_free_pgste(page_ptdesc(phys_to_page(table[i])));
-+	} else {
-+		for (i = 0; i < _CRST_ENTRIES; i++)
-+			if (!(table[i] & _REGION_ENTRY_INVALID))
-+				gmap_free_crst(__va(table[i] & PAGE_MASK), free_ptes);
-+	}
-+
-+out:
-+	free_pages((unsigned long)table, CRST_ALLOC_ORDER);
-+}
-+
- /**
-  * gmap_free - free a guest address space
-  * @gmap: pointer to the guest address space structure
-@@ -205,24 +223,17 @@ static void gmap_rmap_radix_tree_free(struct radix_tree_root *root)
-  */
- void gmap_free(struct gmap *gmap)
- {
--	struct page *page, *next;
--
- 	/* Flush tlb of all gmaps (if not already done for shadows) */
- 	if (!(gmap_is_shadow(gmap) && gmap->removed))
- 		gmap_flush_tlb(gmap);
- 	/* Free all segment & region tables. */
--	list_for_each_entry_safe(page, next, &gmap->crst_list, lru)
--		__free_pages(page, CRST_ALLOC_ORDER);
-+	gmap_free_crst(gmap->table, gmap_is_shadow(gmap));
-+
- 	gmap_radix_tree_free(&gmap->guest_to_host);
- 	gmap_radix_tree_free(&gmap->host_to_guest);
- 
- 	/* Free additional data for a shadow gmap */
- 	if (gmap_is_shadow(gmap)) {
--		struct ptdesc *ptdesc, *n;
--
--		/* Free all page tables. */
--		list_for_each_entry_safe(ptdesc, n, &gmap->pt_list, pt_list)
--			page_table_free_pgste(ptdesc);
- 		gmap_rmap_radix_tree_free(&gmap->host_to_rmap);
- 		/* Release reference to the parent */
- 		gmap_put(gmap->parent);
-@@ -311,7 +322,6 @@ static int gmap_alloc_table(struct gmap *gmap, unsigned long *table,
- 	crst_table_init(new, init);
- 	spin_lock(&gmap->guest_table_lock);
- 	if (*table & _REGION_ENTRY_INVALID) {
--		list_add(&page->lru, &gmap->crst_list);
- 		*table = __pa(new) | _REGION_ENTRY_LENGTH |
- 			(*table & _REGION_ENTRY_TYPE_MASK);
- 		page = NULL;
-@@ -1243,7 +1253,6 @@ static void gmap_unshadow_pgt(struct gmap *sg, unsigned long raddr)
- 	__gmap_unshadow_pgt(sg, raddr, __va(pgt));
- 	/* Free page table */
- 	ptdesc = page_ptdesc(phys_to_page(pgt));
--	list_del(&ptdesc->pt_list);
- 	page_table_free_pgste(ptdesc);
- }
- 
-@@ -1271,7 +1280,6 @@ static void __gmap_unshadow_sgt(struct gmap *sg, unsigned long raddr,
- 		__gmap_unshadow_pgt(sg, raddr, __va(pgt));
- 		/* Free page table */
- 		ptdesc = page_ptdesc(phys_to_page(pgt));
--		list_del(&ptdesc->pt_list);
- 		page_table_free_pgste(ptdesc);
- 	}
- }
-@@ -1301,7 +1309,6 @@ static void gmap_unshadow_sgt(struct gmap *sg, unsigned long raddr)
- 	__gmap_unshadow_sgt(sg, raddr, __va(sgt));
- 	/* Free segment table */
- 	page = phys_to_page(sgt);
--	list_del(&page->lru);
- 	__free_pages(page, CRST_ALLOC_ORDER);
- }
- 
-@@ -1329,7 +1336,6 @@ static void __gmap_unshadow_r3t(struct gmap *sg, unsigned long raddr,
- 		__gmap_unshadow_sgt(sg, raddr, __va(sgt));
- 		/* Free segment table */
- 		page = phys_to_page(sgt);
--		list_del(&page->lru);
- 		__free_pages(page, CRST_ALLOC_ORDER);
- 	}
- }
-@@ -1359,7 +1365,6 @@ static void gmap_unshadow_r3t(struct gmap *sg, unsigned long raddr)
- 	__gmap_unshadow_r3t(sg, raddr, __va(r3t));
- 	/* Free region 3 table */
- 	page = phys_to_page(r3t);
--	list_del(&page->lru);
- 	__free_pages(page, CRST_ALLOC_ORDER);
- }
- 
-@@ -1387,7 +1392,6 @@ static void __gmap_unshadow_r2t(struct gmap *sg, unsigned long raddr,
- 		__gmap_unshadow_r3t(sg, raddr, __va(r3t));
- 		/* Free region 3 table */
- 		page = phys_to_page(r3t);
--		list_del(&page->lru);
- 		__free_pages(page, CRST_ALLOC_ORDER);
- 	}
- }
-@@ -1417,7 +1421,6 @@ static void gmap_unshadow_r2t(struct gmap *sg, unsigned long raddr)
- 	__gmap_unshadow_r2t(sg, raddr, __va(r2t));
- 	/* Free region 2 table */
- 	page = phys_to_page(r2t);
--	list_del(&page->lru);
- 	__free_pages(page, CRST_ALLOC_ORDER);
- }
- 
-@@ -1449,7 +1452,6 @@ static void __gmap_unshadow_r1t(struct gmap *sg, unsigned long raddr,
- 		r1t[i] = _REGION1_ENTRY_EMPTY;
- 		/* Free region 2 table */
- 		page = phys_to_page(r2t);
--		list_del(&page->lru);
- 		__free_pages(page, CRST_ALLOC_ORDER);
- 	}
- }
-@@ -1544,7 +1546,6 @@ int gmap_shadow_r2t(struct gmap *sg, unsigned long saddr, unsigned long r2t,
- 		 _REGION_ENTRY_TYPE_R1 | _REGION_ENTRY_INVALID;
- 	if (sg->edat_level >= 1)
- 		*table |= (r2t & _REGION_ENTRY_PROTECT);
--	list_add(&page->lru, &sg->crst_list);
- 	if (fake) {
- 		/* nothing to protect for fake tables */
- 		*table &= ~_REGION_ENTRY_INVALID;
-@@ -1628,7 +1629,6 @@ int gmap_shadow_r3t(struct gmap *sg, unsigned long saddr, unsigned long r3t,
- 		 _REGION_ENTRY_TYPE_R2 | _REGION_ENTRY_INVALID;
- 	if (sg->edat_level >= 1)
- 		*table |= (r3t & _REGION_ENTRY_PROTECT);
--	list_add(&page->lru, &sg->crst_list);
- 	if (fake) {
- 		/* nothing to protect for fake tables */
- 		*table &= ~_REGION_ENTRY_INVALID;
-@@ -1712,7 +1712,6 @@ int gmap_shadow_sgt(struct gmap *sg, unsigned long saddr, unsigned long sgt,
- 		 _REGION_ENTRY_TYPE_R3 | _REGION_ENTRY_INVALID;
- 	if (sg->edat_level >= 1)
- 		*table |= sgt & _REGION_ENTRY_PROTECT;
--	list_add(&page->lru, &sg->crst_list);
- 	if (fake) {
- 		/* nothing to protect for fake tables */
- 		*table &= ~_REGION_ENTRY_INVALID;
-@@ -1833,7 +1832,6 @@ int gmap_shadow_pgt(struct gmap *sg, unsigned long saddr, unsigned long pgt,
- 	/* mark as invalid as long as the parent table is not protected */
- 	*table = (unsigned long) s_pgt | _SEGMENT_ENTRY |
- 		 (pgt & _SEGMENT_ENTRY_PROTECT) | _SEGMENT_ENTRY_INVALID;
--	list_add(&ptdesc->pt_list, &sg->pt_list);
- 	if (fake) {
- 		/* nothing to protect for fake tables */
- 		*table &= ~_SEGMENT_ENTRY_INVALID;
-@@ -2623,49 +2621,6 @@ int __s390_uv_destroy_range(struct mm_struct *mm, unsigned long start,
- }
- EXPORT_SYMBOL_GPL(__s390_uv_destroy_range);
- 
--/**
-- * s390_unlist_old_asce - Remove the topmost level of page tables from the
-- * list of page tables of the gmap.
-- * @gmap: the gmap whose table is to be removed
-- *
-- * On s390x, KVM keeps a list of all pages containing the page tables of the
-- * gmap (the CRST list). This list is used at tear down time to free all
-- * pages that are now not needed anymore.
-- *
-- * This function removes the topmost page of the tree (the one pointed to by
-- * the ASCE) from the CRST list.
-- *
-- * This means that it will not be freed when the VM is torn down, and needs
-- * to be handled separately by the caller, unless a leak is actually
-- * intended. Notice that this function will only remove the page from the
-- * list, the page will still be used as a top level page table (and ASCE).
-- */
--void s390_unlist_old_asce(struct gmap *gmap)
--{
--	struct page *old;
--
--	old = virt_to_page(gmap->table);
--	spin_lock(&gmap->guest_table_lock);
--	list_del(&old->lru);
--	/*
--	 * Sometimes the topmost page might need to be "removed" multiple
--	 * times, for example if the VM is rebooted into secure mode several
--	 * times concurrently, or if s390_replace_asce fails after calling
--	 * s390_remove_old_asce and is attempted again later. In that case
--	 * the old asce has been removed from the list, and therefore it
--	 * will not be freed when the VM terminates, but the ASCE is still
--	 * in use and still pointed to.
--	 * A subsequent call to replace_asce will follow the pointer and try
--	 * to remove the same page from the list again.
--	 * Therefore it's necessary that the page of the ASCE has valid
--	 * pointers, so list_del can work (and do nothing) without
--	 * dereferencing stale or invalid pointers.
--	 */
--	INIT_LIST_HEAD(&old->lru);
--	spin_unlock(&gmap->guest_table_lock);
--}
--EXPORT_SYMBOL_GPL(s390_unlist_old_asce);
--
- /**
-  * s390_replace_asce - Try to replace the current ASCE of a gmap with a copy
-  * @gmap: the gmap whose ASCE needs to be replaced
-@@ -2685,8 +2640,6 @@ int s390_replace_asce(struct gmap *gmap)
- 	struct page *page;
- 	void *table;
- 
--	s390_unlist_old_asce(gmap);
--
- 	/* Replacing segment type ASCEs would cause serious issues */
- 	if ((gmap->asce & _ASCE_TYPE_MASK) == _ASCE_TYPE_SEGMENT)
- 		return -EINVAL;
-@@ -2697,15 +2650,6 @@ int s390_replace_asce(struct gmap *gmap)
- 	table = page_to_virt(page);
- 	memcpy(table, gmap->table, 1UL << (CRST_ALLOC_ORDER + PAGE_SHIFT));
- 
--	/*
--	 * The caller has to deal with the old ASCE, but here we make sure
--	 * the new one is properly added to the CRST list, so that
--	 * it will be freed when the VM is torn down.
--	 */
--	spin_lock(&gmap->guest_table_lock);
--	list_add(&page->lru, &gmap->crst_list);
--	spin_unlock(&gmap->guest_table_lock);
--
- 	/* Set new table origin while preserving existing ASCE control bits */
- 	asce = (gmap->asce & ~_ASCE_ORIGIN) | __pa(table);
- 	WRITE_ONCE(gmap->asce, asce);
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index 58696a0c4e4a..e7627bb98bb2 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -173,8 +173,6 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
- 	}
- 	table = ptdesc_to_virt(ptdesc);
- 	__arch_set_page_dat(table, 1);
--	/* pt_list is used by gmap only */
--	INIT_LIST_HEAD(&ptdesc->pt_list);
- 	memset64((u64 *)table, _PAGE_INVALID, PTRS_PER_PTE);
- 	memset64((u64 *)table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
- 	return table;
--- 
-2.48.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
