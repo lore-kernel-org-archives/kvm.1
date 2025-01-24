@@ -1,476 +1,241 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51156E552
-	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 16:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB78E552
+	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 16:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737737162; cv=none; b=jnB57CqpP1uLPT/IX9WyY1PnuWV17IbNEaKGIaIR80H+S3L3IU0GBdHajmHtAEI/x13ojDlfVLBCww9B6SLumyCz8P2rWAkYwHalPMNAdZ+Gkwnae0ICOouwvup7L8TRImsVR0GHBqMnBql+O1npFbPWG9OQMnDTnmNmrvevvI4=
+	t=1737737169; cv=none; b=RLfKWSWZ++j0BmnCh6wvGYd4EKqS4xcTxfPrOJyC5OkpqNPVXSVO7cdTDkOAR5ZyvTlKHAsppjQIPerqqbEBFNgQgUBnecRgculbCBYagow4MnAykx4KDL1SzJredKAXGkJ1oJfl+E3ES972yWY3Ey3aW/SNXuNt0AFW0/YEaVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737737162; c=relaxed/simple;
-	bh=L49e6rqBy6bsL/cwamgUOiyrr7shhTeMpfe8FK14/XM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i9+kGr3MeDrmFT5cRnBBV4HocS493QZQ4ZYL0lpyDRPfWCXR6yL2QstSbmHnS4fIyswTcF19cTr606W6bhmi1IL0oZ/LU8+yfkThto22jEnLdhl9Gp/PiSJSTJoCr0bbzuyN3yDo8yyc4ydjQcgE+s2vnHg+miviLvnVWXpl2tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=qx7zpzzN; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1737737169; c=relaxed/simple;
+	bh=N+Mt+qTUKw/SH0UsKSJGSrCqq616EtMGkgJ8Ljk0Dww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JNpcy0lf27fQVG/R55gqX1W8/U0hOcjLwJLPC4wsGgtDCVPIykGDyldRr57AGwL50t/DtdBdwlTazcIyDi5CVJygQcE2TUIk9kDg+UXTwaSsCXGQpDtfyyT+slFl6ABBpWxVe0b+bDORod70yRoyX+kLvYSYodyx7VqzvZ6g1PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WAhrACfC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="qx7zpzzN"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3862d161947so1280674f8f.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 08:45:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1737737157; x=1738341957; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8XbLCxX1uSj7HqhlHeupCA+OPJANyZfPb/u1FQWnOY=;
-        b=qx7zpzzNXWpiWT3aUDUh+su2uquFRDu98sxPjT+4n5fMZe4mNK4IR2gU94YsLtGxtu
-         cVYtqhJrDSM5lp9h0b41QowVPbZn0PqPlvvesmnldbugNygHW7q7p6KJ7C+q5Sl4c9Vh
-         NP4owE4w1a9APXePxwGB2fvNvll5LjE1YfQnLfhpavWepJA/nqcQ8okfO7b5mL5elp6I
-         kaxtdF4td9Y9ZbGbhOFN2nPk0YsihAvPr2Tdwa923k6UQiXJU20czNK41TXcqf3rAH1I
-         BjKHobklsgWgEoIJGH6L16aDU+Zbq+t68wEW3Z8I8Oa2kHcQxCX8WEdostziUVz3yXu/
-         Z5/A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WAhrACfC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737737166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=51dnXDvsNcSCF08xduw6b/Qmzvzq46UpLQCneaoBf8Y=;
+	b=WAhrACfCIwSwzcHBuIi9L5+s8gqNBpSYffsZGK0W2QY/wBMUDO7wVkhxi51Rsu6E7xLT/r
+	cCRN6h2obgpRdzgBkMw6UF/c4cwYgL+teMgCDAB0V1wLWt5qqdSGrrb3mIVzobkQ6Oog7y
+	bPwmGr7ggXKzrOtl+Xjifioxnvphy8I=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-227-b72-HId4OiKgxywCaGNAQA-1; Fri, 24 Jan 2025 11:46:05 -0500
+X-MC-Unique: b72-HId4OiKgxywCaGNAQA-1
+X-Mimecast-MFC-AGG-ID: b72-HId4OiKgxywCaGNAQA
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-2acd587d640so1758720fac.0
+        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 08:46:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737737157; x=1738341957;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8XbLCxX1uSj7HqhlHeupCA+OPJANyZfPb/u1FQWnOY=;
-        b=pbT1jeAOaiaycCGuVJi5kKSXEn5PZlmfZjPo7R8TIgJKTHOSytQIAAN6jd9gWlOU/4
-         glnHoCuHPmFzo/WXmGT4Uq5xkJBFUexs2XRkoOPlosGGlVQkGkdN7JYmf90tkF1WtBn4
-         2OpsWARmSLIQucWuu91tk+WwtWp36J4wZBWYiOtcZaMtO7+2LSyd4/7K1BUGQ1YKESdM
-         IL3qp4TzQUzEj3QmfwekgSFLhZRVZMKZfsVhjIAEAIseUWDeJZjELtluViUFtKsgIYWi
-         rZncYF/+j8IR5vBD5efrbXxr+rADzFEqNu0MPO8DCL951Jh2hOACKSZfhZZ4wYNSzMm5
-         MVYg==
-X-Gm-Message-State: AOJu0Yz7Pr9GHaveGZcQDA0ozs8mNa2S+uzyvY4cBn2L+/koBLjfEoYe
-	GSfcly0P0X/gE/9CxF0IF3Wz2IRMpAsQIcI1+2W04Z7fIX78cor1puda/PBwqEw=
-X-Gm-Gg: ASbGnct/NUkFkXWuCYuRup3xST3pgo9YtBbmQCUxUDfrZKt1GY1vJcmr6vpFiRcL5/t
-	A8sQLBYgDBBvCsg+bB1mPP7qhV9mJmBh5LfVfrk4OzVy8de5ODGhNwX7CQq7D/iOP9xAZz+r2ks
-	z3pU2qA+3P4kTvxabEmPHsgWLCiiB8Sjd93Jjb0NxntEtNmgeM5eV03az9lO2Y7DaO8YzLwmDXY
-	qE5jmchwXDg885XokHIVWQrDnBvRKYLbMw7uOTOOhIF+1Om9rSCmCnTJ9WOE06ndxCdG7DfAyBv
-	sadmHgXLZq33YiTBjuThPKch/+OMO5j230sm4mL61lP0oNI59A==
-X-Google-Smtp-Source: AGHT+IFZ06OqkC/xFYj3mlUFAD1jtP/egeeNxGmAtPlkgVm838MqiNeQ+jA5lmrsUJLnFKyL9LMO5g==
-X-Received: by 2002:a5d:59a2:0:b0:38a:88f8:aad7 with SMTP id ffacd0b85a97d-38bf57bdb18mr27720843f8f.54.1737737157210;
-        Fri, 24 Jan 2025 08:45:57 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:e17:9700:16d2:7456:6634:9626? ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d865sm3254071f8f.38.2025.01.24.08.45.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jan 2025 08:45:56 -0800 (PST)
-Message-ID: <dd156ff1-3425-491a-830f-ce28abc6ed7e@rivosinc.com>
-Date: Fri, 24 Jan 2025 17:45:55 +0100
+        d=1e100.net; s=20230601; t=1737737164; x=1738341964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=51dnXDvsNcSCF08xduw6b/Qmzvzq46UpLQCneaoBf8Y=;
+        b=ZzCsg1FbNCCLkJ/2ikyLD004jsAu501edAsiup+xL7citMFQbPcnKS9niWc19yZ25G
+         SgI0eHZ8Vewcoz7lbWiFaHpYeddMxy7Ju1kNjcWhoA6LPKOBUyza+cmqarTbkB+ETxvo
+         pwFuiZh06HC29kEPUyxtr31pBJBq5edexPY3YR5isURC0+70UsR1kPn204mPnn4jKcaz
+         zOgUuD9Q3W36ku+RnbC/5/nElu3E8r2oJZF1ArXdSEhxRnAYvH/d/UOJB89tFP4sEqf8
+         Wr1qmIDBeT5chIFL8G3p2SWL2vM4BmmJBcw0YkUG2id61UB0wHiEE5vhUij0yAbCY7Kh
+         +M5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXVk1Y4ewc1XSraMmh4Y7Z96tMqKZG0UDephFuJAXcxh04YTbikY/VNfQcXjrvSjVYK188=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPyE2Q/v+sPjhNvk4QP02eiKrU/hvxixXJ0Vkt1ekReWQmgDiW
+	Qb/RnZEtHsMTF1WmBs+Re3a29GSm6hrwS6u+YrVlSJ93zCOqrbhLHQnhEHKLhxw3l6TM1tQBEnI
+	C1P0TNnUdBFqSN+aUFi0EI1Z1rvxQ4DtyoFGSNSVMwlBr9nHgPw==
+X-Gm-Gg: ASbGncssEGpOTrEIazIazPQ3OQic/wz5clS+pnycS/oPtX4xIh/NgB54vAP2Tkk7XKC
+	Sdqy87KnQwPvumLqFknsn1smgBAZEDE0q9K77zQvh3Im0TBGAmHrO9bYGOFPkPx1Ih8ZBi1FcQT
+	bUCshj+O6RNhRDR+McMbRrDQ4EJ3FT0DBa/cXUXoHpmzP+yxNNwkSKLG1bGF6GZstGd00vq9M5i
+	idm0Wt2yQ9Ek94wdAJEE+QxQm+YbwWJIYsU79E8FWugWUJinXoY8pzlOWY2q11yOVlH3AGOlF77
+	v+KRQugdLgzYBe0NyqYKLKBhqRd6qNI=
+X-Received: by 2002:a05:6214:19c8:b0:6d8:cff9:f373 with SMTP id 6a1803df08f44-6e1b21c4106mr427082996d6.30.1737734153271;
+        Fri, 24 Jan 2025 07:55:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGz9G2Pe5z23hXavPMrogrJhKCVJEtNpCmuOw2NH/cjb1ms5gHZUdf8IgcLgtK64ImsjBm57w==
+X-Received: by 2002:a05:6214:19c8:b0:6d8:cff9:f373 with SMTP id 6a1803df08f44-6e1b21c4106mr427082656d6.30.1737734152916;
+        Fri, 24 Jan 2025 07:55:52 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com. [99.254.114.190])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e20525abf0sm9759386d6.54.2025.01.24.07.55.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jan 2025 07:55:52 -0800 (PST)
+Date: Fri, 24 Jan 2025 10:55:49 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Chenyi Qiang <chenyi.qiang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z5O4BSCjlhhu4rrw@x1n>
+References: <2b2730f3-6e1a-4def-b126-078cf6249759@amd.com>
+ <Z462F1Dwm6cUdCcy@x1n>
+ <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050>
+ <Z4-6u5_9NChu_KZq@x1n>
+ <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
+ <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050>
+ <Z5EgFaWIyjIiOZnv@x1n>
+ <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050>
+ <Z5Jylb73kDJ6HTEZ@x1n>
+ <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v2 2/2] riscv: Add tests for SBI FWFT
- extension
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- Andrew Jones <ajones@ventanamicro.com>, Anup Patel
- <apatel@ventanamicro.com>, Atish Patra <atishp@rivosinc.com>
-References: <20250123165405.3524478-1-cleger@rivosinc.com>
- <20250123165405.3524478-3-cleger@rivosinc.com>
- <20250123-c4b9bac80893db142bc99690@orel>
-Content-Language: en-US
-From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
-In-Reply-To: <20250123-c4b9bac80893db142bc99690@orel>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050>
 
+On Fri, Jan 24, 2025 at 05:47:45PM +0800, Xu Yilun wrote:
+> On Thu, Jan 23, 2025 at 11:47:17AM -0500, Peter Xu wrote:
+> > On Thu, Jan 23, 2025 at 05:33:53PM +0800, Xu Yilun wrote:
+> > > On Wed, Jan 22, 2025 at 11:43:01AM -0500, Peter Xu wrote:
+> > > > On Wed, Jan 22, 2025 at 05:41:31PM +0800, Xu Yilun wrote:
+> > > > > On Wed, Jan 22, 2025 at 03:30:05PM +1100, Alexey Kardashevskiy wrote:
+> > > > > > 
+> > > > > > 
+> > > > > > On 22/1/25 02:18, Peter Xu wrote:
+> > > > > > > On Tue, Jun 25, 2024 at 12:31:13AM +0800, Xu Yilun wrote:
+> > > > > > > > On Mon, Jan 20, 2025 at 03:46:15PM -0500, Peter Xu wrote:
+> > > > > > > > > On Mon, Jan 20, 2025 at 09:22:50PM +1100, Alexey Kardashevskiy wrote:
+> > > > > > > > > > > It is still uncertain how to implement the private MMIO. Our assumption
+> > > > > > > > > > > is the private MMIO would also create a memory region with
+> > > > > > > > > > > guest_memfd-like backend. Its mr->ram is true and should be managed by
+> > > > > > > > > > > RamdDiscardManager which can skip doing DMA_MAP in VFIO's region_add
+> > > > > > > > > > > listener.
+> > > > > > > > > > 
+> > > > > > > > > > My current working approach is to leave it as is in QEMU and VFIO.
+> > > > > > > > > 
+> > > > > > > > > Agreed.  Setting ram=true to even private MMIO sounds hackish, at least
+> > > > > > > > 
+> > > > > > > > The private MMIO refers to assigned MMIO, not emulated MMIO. IIUC,
+> > > > > > > > normal assigned MMIO is always set ram=true,
+> > > > > > > > 
+> > > > > > > > void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+> > > > > > > >                                         Object *owner,
+> > > > > > > >                                         const char *name,
+> > > > > > > >                                         uint64_t size,
+> > > > > > > >                                         void *ptr)
+> > > > 
+> > > > [1]
+> > > > 
+> > > > > > > > {
+> > > > > > > >      memory_region_init(mr, owner, name, size);
+> > > > > > > >      mr->ram = true;
+> > > > > > > > 
+> > > > > > > > 
+> > > > > > > > So I don't think ram=true is a problem here.
+> > > > > > > 
+> > > > > > > I see.  If there's always a host pointer then it looks valid.  So it means
+> > > > > > > the device private MMIOs are always mappable since the start?
+> > > > > > 
+> > > > > > Yes. VFIO owns the mapping and does not treat shared/private MMIO any
+> > > > > > different at the moment. Thanks,
+> > > > > 
+> > > > > mm.. I'm actually expecting private MMIO not have a host pointer, just
+> > > > > as private memory do.
+> > > > > 
+> > > > > But I'm not sure why having host pointer correlates mr->ram == true.
+> > > > 
+> > > > If there is no host pointer, what would you pass into "ptr" as referenced
+> > > > at [1] above when creating the private MMIO memory region?
+> > > 
+> > > Sorry for confusion. I mean existing MMIO region use set mr->ram = true,
+> > > and unmappable region (gmem) also set mr->ram = true. So don't know why
+> > > mr->ram = true for private MMIO is hackish.
+> > 
+> > That's exactly what I had on the question in the previous email - please
+> > have a look at what QEMU does right now with memory_access_is_direct().
+> 
+> I see memory_access_is_direct() should exclude mr->ram_device == true, which
+> is the case for normal assigned MMIO and for private assigned MMIO. So
+> this func is not a problem.
 
+I'm not sure even if so.
 
-On 24/01/2025 17:35, Andrew Jones wrote:
-> On Thu, Jan 23, 2025 at 05:54:04PM +0100, Clément Léger wrote:
->> Add tests for the FWFT SBI extension. Currently, only the reserved range
->> as well as the misaligned exception delegation are used.
->>
->> Signed-off-by: Clément Léger <cleger@rivosinc.com>
->> ---
->>  riscv/Makefile      |   2 +-
->>  lib/riscv/asm/sbi.h |  34 ++++++++
->>  riscv/sbi-fwft.c    | 189 ++++++++++++++++++++++++++++++++++++++++++++
->>  riscv/sbi.c         |   3 +
->>  4 files changed, 227 insertions(+), 1 deletion(-)
->>  create mode 100644 riscv/sbi-fwft.c
->>
->> diff --git a/riscv/Makefile b/riscv/Makefile
->> index 5b5e157c..52718f3f 100644
->> --- a/riscv/Makefile
->> +++ b/riscv/Makefile
->> @@ -17,7 +17,7 @@ tests += $(TEST_DIR)/sieve.$(exe)
->>  
->>  all: $(tests)
->>  
->> -$(TEST_DIR)/sbi-deps = $(TEST_DIR)/sbi-asm.o
->> +$(TEST_DIR)/sbi-deps = $(TEST_DIR)/sbi-asm.o $(TEST_DIR)/sbi-fwft.o
->>  
->>  # When built for EFI sieve needs extra memory, run with e.g. '-m 256' on QEMU
->>  $(TEST_DIR)/sieve.$(exe): AUXFLAGS = 0x1
->> diff --git a/lib/riscv/asm/sbi.h b/lib/riscv/asm/sbi.h
->> index 98a9b097..397400f2 100644
->> --- a/lib/riscv/asm/sbi.h
->> +++ b/lib/riscv/asm/sbi.h
->> @@ -11,6 +11,12 @@
->>  #define SBI_ERR_ALREADY_AVAILABLE	-6
->>  #define SBI_ERR_ALREADY_STARTED		-7
->>  #define SBI_ERR_ALREADY_STOPPED		-8
->> +#define SBI_ERR_NO_SHMEM		-9
->> +#define SBI_ERR_INVALID_STATE		-10
->> +#define SBI_ERR_BAD_RANGE		-11
->> +#define SBI_ERR_TIMEOUT			-12
->> +#define SBI_ERR_IO			-13
->> +#define SBI_ERR_LOCKED			-14
->>  
->>  #ifndef __ASSEMBLY__
->>  #include <cpumask.h>
->> @@ -23,6 +29,7 @@ enum sbi_ext_id {
->>  	SBI_EXT_SRST = 0x53525354,
->>  	SBI_EXT_DBCN = 0x4442434E,
->>  	SBI_EXT_SUSP = 0x53555350,
->> +	SBI_EXT_FWFT = 0x46574654,
->>  };
->>  
->>  enum sbi_ext_base_fid {
->> @@ -71,6 +78,33 @@ enum sbi_ext_dbcn_fid {
->>  	SBI_EXT_DBCN_CONSOLE_WRITE_BYTE,
->>  };
->>  
->> +
->> +enum sbi_ext_fwft_fid {
->> +	SBI_EXT_FWFT_SET = 0,
->> +	SBI_EXT_FWFT_GET,
->> +};
->> +
->> +#define SBI_FWFT_MISALIGNED_EXC_DELEG		0x0
->> +#define SBI_FWFT_LANDING_PAD			0x1
->> +#define SBI_FWFT_SHADOW_STACK			0x2
->> +#define SBI_FWFT_DOUBLE_TRAP			0x3
->> +#define SBI_FWFT_PTE_AD_HW_UPDATING		0x4
->> +#define SBI_FWFT_POINTER_MASKING_PMLEN		0x5
->> +#define SBI_FWFT_LOCAL_RESERVED_START		0x6
->> +#define SBI_FWFT_LOCAL_RESERVED_END		0x3fffffff
->> +#define SBI_FWFT_LOCAL_PLATFORM_START		0x40000000
->> +#define SBI_FWFT_LOCAL_PLATFORM_END		0x7fffffff
->> +
->> +#define SBI_FWFT_GLOBAL_RESERVED_START		0x80000000
->> +#define SBI_FWFT_GLOBAL_RESERVED_END		0xbfffffff
->> +#define SBI_FWFT_GLOBAL_PLATFORM_START		0xc0000000
->> +#define SBI_FWFT_GLOBAL_PLATFORM_END		0xffffffff
->> +
->> +#define SBI_FWFT_PLATFORM_FEATURE_BIT		BIT(30)
->> +#define SBI_FWFT_GLOBAL_FEATURE_BIT		BIT(31)
->> +
->> +#define SBI_FWFT_SET_FLAG_LOCK			BIT(0)
->> +
->>  struct sbiret {
->>  	long error;
->>  	long value;
->> diff --git a/riscv/sbi-fwft.c b/riscv/sbi-fwft.c
->> new file mode 100644
->> index 00000000..7866a917
->> --- /dev/null
->> +++ b/riscv/sbi-fwft.c
->> @@ -0,0 +1,189 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * SBI verification
->> + *
->> + * Copyright (C) 2024, Rivos Inc., Clément Léger <cleger@rivosinc.com>
->> + */
->> +#include <libcflat.h>
->> +#include <stdlib.h>
->> +
->> +#include <asm/csr.h>
->> +#include <asm/processor.h>
->> +#include <asm/ptrace.h>
->> +#include <asm/sbi.h>
->> +
->> +void check_fwft(void);
->> +
->> +
->> +static struct sbiret fwft_set_raw(unsigned long feature_id, unsigned long value,
->> +				  unsigned long flags)
->> +{
->> +	return sbi_ecall(SBI_EXT_FWFT, SBI_EXT_FWFT_SET, feature_id, value,
->> +			 flags, 0, 0, 0);
->> +}
->> +
->> +static struct sbiret fwft_set(uint32_t feature_id, unsigned long value,
->> +			      unsigned long flags)
->> +{
->> +	return fwft_set_raw(feature_id, value, flags);
->> +}
->> +
->> +static struct sbiret fwft_get_raw(unsigned long feature_id)
->> +{
->> +	return sbi_ecall(SBI_EXT_FWFT, SBI_EXT_FWFT_GET, feature_id, 0, 0, 0, 0,
->> +			 0);
->> +}
->> +
->> +static struct sbiret fwft_get(uint32_t feature_id)
->> +{
->> +	return fwft_get_raw(feature_id);
->> +}
-> 
-> nit: s/feature_id/feature/ for all the above, as that would exactly match
-> the spec, but no biggy.
-> 
->> +
->> +static void fwft_check_reserved(unsigned long id)
->> +{
->> +	struct sbiret ret;
->> +
->> +	ret = fwft_get(id);
->> +	report(ret.error == SBI_ERR_DENIED,
->> +	       "get reserved feature 0x%lx error == SBI_ERR_DENIED", id);
->> +
->> +	ret = fwft_set(id, 1, 0);
->> +	report(ret.error == SBI_ERR_DENIED,
->> +	       "set reserved feature 0x%lx error == SBI_ERR_DENIED", id);
-> 
-> I think we need something like gen_report(), which is in riscv/sbi.c, in
-> order to output the unexpected errors if we don't get what we expect. I've
-> pushed a few patches to my riscv/sbi branch[1] in order to provide
-> sbiret_report_error().
-> 
-> [1] https://gitlab.com/jones-drew/kvm-unit-tests/-/commits/riscv/sbi
-
-Ok sounds good, I'll use that function. And I'll do that on SSE testing
-as well.
+VFIO's current use case is pretty special - it still has a host pointer,
+it's just that things like memcpy() might not be always suitable to be
+applied on MMIO mapped regions.  Alex explained the rational in commit
+4a2e242bbb3.  I mean, the host pointer is valid even if ram_device=true in
+this case.  Even if no direct access allowed (memcpy, etc.) it still
+operates on the host address using ram_device_mem_ops.
 
 > 
->> +}
->> +
->> +static void fwft_check_base(void)
->> +{
->> +	struct sbiret ret;
->> +
->> +	report_prefix_push("base");
->> +
->> +	fwft_check_reserved(SBI_FWFT_LOCAL_RESERVED_START);
->> +	fwft_check_reserved(SBI_FWFT_LOCAL_RESERVED_END);
->> +	fwft_check_reserved(SBI_FWFT_GLOBAL_RESERVED_START);
->> +	fwft_check_reserved(SBI_FWFT_GLOBAL_RESERVED_END);
->> +
->> +	/* Check id > 32 bits */
->> +	if (__riscv_xlen > 32) {
->> +		ret = fwft_get_raw(BIT(32));
->> +		report(ret.error == SBI_ERR_INVALID_PARAM,
->> +		"get feature 0x%lx error == SBI_ERR_INVALID_PARAM", BIT(32));
+> But I think flatview_access_allowed() is a problem that it doesn't filter
+> out the private memory. When memory is converted to private, the result
+> of host access can't be what you want and should be errored out. IOW,
+> the host ptr is sometimes invalid.
 > 
-> Need to indent the string under ret.error.
+> > I'm not 100% sure it'll work if the host pointer doesn't exist.
+> > 
+> > Let's take one user of it to be explicit: flatview_write_continue_step()
+> > will try to access the ram pointer if it's direct:
+> > 
+> >     if (!memory_access_is_direct(mr, true)) {
+> >         ...
+> >     } else {
+> >         /* RAM case */
+> >         uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, l,
+> >                                                false, true);
+> > 
+> >         memmove(ram_ptr, buf, *l);
+> >         invalidate_and_set_dirty(mr, mr_addr, *l);
+> > 
+> >         return MEMTX_OK;
+> >     }
+> > 
+> > I don't see how QEMU could work yet if one MR set ram=true but without a
+> > host pointer..
+> > 
+> > As discussed previously, IMHO it's okay that the pointer is not accessible,
 > 
->> +
->> +		ret = fwft_set_raw(BIT(32), 0, 0);
->> +		report(ret.error == SBI_ERR_INVALID_PARAM,
->> +		"set feature 0x%lx error == SBI_ERR_INVALID_PARAM", BIT(32));
-> 
-> Need to indent the string under ret.error.
-> 
->> +	}
->> +
->> +	report_prefix_pop();
->> +}
->> +
->> +static bool misaligned_handled;
->> +
->> +static void misaligned_handler(struct pt_regs *regs)
->> +{
->> +	misaligned_handled = true;
->> +	regs->epc += 4;
->> +}
->> +
->> +static void fwft_check_misaligned_exc_deleg(void)
->> +{
->> +	struct sbiret ret;
->> +
->> +	report_prefix_push("misaligned_exc_deleg");
->> +
->> +	ret = fwft_get(SBI_FWFT_MISALIGNED_EXC_DELEG);
->> +	if (ret.error == SBI_ERR_NOT_SUPPORTED) {
->> +		report_skip("SBI_FWFT_MISALIGNED_EXC_DELEG is not supported");
->> +		return;
->> +	}
->> +	report(!ret.error, "Get misaligned deleg feature no error: %lx",
->> +	       ret.error);
->> +	if (ret.error)
->> +		return;
-> 
-> With the new sbiret_report_error() this can become
-> 
->   if (!sbiret_report_error(ret, 0, "Get misaligned deleg feature no error"))
->       return;
-> 
->> +
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 2, 0);
->> +	report(ret.error == SBI_ERR_INVALID_PARAM,
->> +	       "Set misaligned deleg feature invalid value error");
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 0xFFFFFFFF, 0);
->> +	report(ret.error == SBI_ERR_INVALID_PARAM,
->> +	       "Set misaligned deleg feature invalid value error");
-> 
-> Need sbiret_report_error() to ensure we can see what the returned error
-> was if it isn't what we expected.
-> 
-> We should have a different error message for each test so testers can
-> look up the one that failed by the message. Maybe just output the
-> invalid test value too.
+> Maybe I missed something in previous discussion, I assume it is OK cause
+> no address_space_rw is happening on this host ptr when memory is
+> private, is it?
 
-Yes sure, I'll include the set value as well.
+Yes, and when there is a mapped host address and someone tries to access an
+address that is bound to a private page, QEMU should get a SIGBUS.  This
+code is not ready yet for gmem, but I believe it'll work like that when
+in-place gmem folio conversions will be ready.  So far QEMU's gmem works by
+providing two layers of memory backends, which is IMHO pretty tricky.
 
 > 
->> +
->> +	if (__riscv_xlen > 32) {
->> +		ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, BIT(32), 0);
->> +		report(ret.error == SBI_ERR_INVALID_PARAM,
->> +		       "Set misaligned deleg with value > 32bits invalid param error");
->> +
->> +		ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 0, BIT(32));
->> +		report(ret.error == SBI_ERR_INVALID_PARAM,
->> +		       "Set misaligned deleg with flag > 32bits invalid param error");
+> > but still I assume QEMU assumes the pointer at least existed for a ram=on
+> > MR.  I don't know whether it's suitable to set ram=on if the pointer
+> > doesn't ever exist.
 > 
-> Same two comments as above.
-> 
->> +	}
->> +
->> +	/* Set to 0 and check after with get */
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 0, 0);
->> +	report(!ret.error, "Set misaligned deleg feature value no error");
-> 
->  sbiret_report_error()
-> 
->> +	ret = fwft_get(SBI_FWFT_MISALIGNED_EXC_DELEG);
->> +	if (ret.error)
->> +		report_fail("Get misaligned deleg feature after set: %lx",
->> +			    ret.error);
->> +	else
->> +		report(ret.value == 0, "Set misaligned deleg feature value 0");
-> 
->  sbiret_report(ret, 0, 0, "get/set misaligned deleg feature value 0")
-> 
->> +
->> +	/* Set to 1 and check after with get */
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 1, 0);
->> +	report(!ret.error, "Set misaligned deleg feature value no error");
->> +	ret = fwft_get(SBI_FWFT_MISALIGNED_EXC_DELEG);
->> +	if (ret.error)
->> +		report_fail("Get misaligned deleg feature after set: %lx",
->> +			    ret.error);
->> +	else
->> +		report(ret.value == 1, "Set misaligned deleg feature value 1");
-> 
-> Same sbiret_report_error / sbiret_report comments as above.
-> 
-> We should get SBI_ERR_NOT_SUPPORTED if the platform doesn't support
-> delegating misaligned exceptions, right? If so, then we should tolerate
-> that and skip the trap test below.
+> In theory, any code logic should not depends on an invalid pointer. I
+> think a NULL pointer would be much better than a invalid pointer, at
+> least you can check whether to access. So if you think an invalid
+> pointer is OK, a NULL pointer should be also OK.
 
-I can't find/remember in which discussion it was discussed but the
-consensus was that it is not an UNSUPPORTED error since the trap exist
-on all implementations an can always be delegated. So this is actually
-not and error, the trap is delegated but the platform does not generate
-any misalign access traps. The S-mode can then check if the platform
-misaligned accesses traps or not by itself.
+Definitely not suggesting to install an invalid pointer anywhere.  The
+mapped pointer will still be valid for gmem for example, but the fault
+isn't.  We need to differenciate two things (1) virtual address mapping,
+then (2) permission and accesses on the folios / pages of the mapping.
+Here I think it's okay if the host pointer is correctly mapped.
 
-> 
->> +
->> +	install_exception_handler(EXC_LOAD_MISALIGNED, misaligned_handler);
->> +
->> +	asm volatile (
->> +		".option push\n"
->> +		/*
->> +		 * Disable compression so the lw takes exactly 4 bytes and thus
->> +		 * can be skipped reliably from the exception handler.
->> +		 */
->> +		".option arch,-c\n"
-> 
-> What's the difference between this and .option norvc ?
+For your private MMIO use case, my question is if there's no host pointer
+to be mapped anyway, then what's the benefit to make the MR to be ram=on?
+Can we simply make it a normal IO memory region?  The only benefit of a
+ram=on MR is, IMHO, being able to be accessed as RAM-like.  If there's no
+host pointer at all, I don't yet understand how that helps private MMIO
+from working.
 
-I felt like this is mode generic than norvc/rvc. .arch works with all
-extension AFAIK, norvc/rvc is purely relevant to C. Both of them works
-the same way (at least to my trials with it).
+Thanks,
 
-> 
->> +		"lw %[val], 1(%[val_addr])\n"
->> +		".option pop\n"
->> +		: [val] "+r" (ret.value)
->> +		: [val_addr] "r" (&ret.value)
->> +		: "memory");
->> +
->> +	if (!misaligned_handled)
->> +		report_skip("Verify misaligned load exception trap in supervisor");
-> 
-> If we skip this test when we can't set SBI_FWFT_MISALIGNED_EXC_DELEG to 1,
-> then we should always fail this test when we don't get the exception.
-
-See my comment above. This is likely to be just an additional
-information then. ie platform traps upon misaligned accesses. Probably
-not what you expected though.
-
-> 
->> +	else
->> +		report_pass("Verify misaligned load exception trap in supervisor");
->> +
->> +	install_exception_handler(EXC_LOAD_MISALIGNED, NULL);
->> +
->> +	/* Lock the feature */
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 0, SBI_FWFT_SET_FLAG_LOCK);
->> +	report(!ret.error, "Set misaligned deleg feature value 0 and lock no error");
->> +	ret = fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 1, 0);
->> +	report(ret.error == SBI_ERR_LOCKED,
->> +	       "Set misaligned deleg feature value 0 and lock no error");
->> +	ret = fwft_get(SBI_FWFT_MISALIGNED_EXC_DELEG);
->> +	report(!ret.error, "Get misaligned deleg locked value no error");
-> 
-> Need sbiret_report_error() for all these tests.
-> 
->> +
->> +	report_prefix_pop();
->> +}
->> +
->> +void check_fwft(void)
->> +{
->> +	report_prefix_push("fwft");
->> +
->> +	if (!sbi_probe(SBI_EXT_FWFT)) {
->> +		report_skip("FWFT extension not available");
->> +		report_prefix_pop();
->> +		return;
->> +	}
->> +
->> +	fwft_check_base();
->> +	fwft_check_misaligned_exc_deleg();
->> +
->> +	report_prefix_pop();
->> +}
->> diff --git a/riscv/sbi.c b/riscv/sbi.c
->> index 6f4ddaf1..8600e38e 100644
->> --- a/riscv/sbi.c
->> +++ b/riscv/sbi.c
->> @@ -32,6 +32,8 @@
->>  
->>  #define	HIGH_ADDR_BOUNDARY	((phys_addr_t)1 << 32)
->>  
->> +void check_fwft(void);
->> +
->>  static long __labs(long a)
->>  {
->>  	return __builtin_labs(a);
->> @@ -1451,6 +1453,7 @@ int main(int argc, char **argv)
->>  	check_hsm();
->>  	check_dbcn();
->>  	check_susp();
->> +	check_fwft();
->>  
->>  	return report_summary();
->>  }
->> -- 
->> 2.47.1
->>
-> 
-> Thanks,
-> drew
+-- 
+Peter Xu
 
