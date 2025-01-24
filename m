@@ -1,171 +1,138 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D97D155C9E
-	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 15:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D8B111AD
+	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 15:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737732168; cv=none; b=VIzN2o5WrOIf0T8KMRdpqDtHwb+7ZDGGf0xYW4Z6REdMAyBnSWJnvwX4YvwtJMv35TsDcDbxYzsu8njjbCIXqqWz630bLAqFBe4Ef1ixIIxsGjPXw+8J8P6qwlmKHM6YjTAmhkGBDgHfCUPYjt85Ot9KztVFJq8A7L+8g3kIls8=
+	t=1737733009; cv=none; b=A/t4nZyOEbkSsC7N9FJnmkDlr62VDBZ8EXEqO2AsguTSoz+zVGdNn6nvqsFhopnD+NpJZx3rILRACYpMRmYCrQb+JW5X2oZveDN7P1v8YSrfG+2Dkta4f2Se+Hym2yy1fmv1guoo4yCwLxGWFA2UHwMpArZVB1Fr4U8RUcacjvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737732168; c=relaxed/simple;
-	bh=DwitzjRGQEzgyZZn0UD4LNiBUZsqGx1Qrum3CBb5LtE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=I7LnyflJhsqYWzDifCnSsz8v6vAvdq3s1Dkrt2dfx3EF6lyPeq1xFHJeOMc09ZkZ3s8stIPfFpBg1yJtjT6RVYIVsetkjXhYhIa+uZL30SYUhPfFNe/etjJZvz5FMqDbAhtKogMNLNbVR23EkSKKjgR6u4GfTOjsPflXM4jMeFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AlYu5wyl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737733009; c=relaxed/simple;
+	bh=fG4aDY8zhpKCiKdQRcXqyteAruEVD1PJikGp4m2uDTw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=me2mrI0IpFt7mKcROluW6BtVBnnGIXf6iFpVtrWcegp65U+oiLuvLln6cSOLbEzpLt9Hd/kkUnek7xr4SLt+KPwnzCKY7RykJLPsh2thK5W0wkN5ORIkAW2k/LRGp7ieiamIFteZZuMezi1WM/2n0DXAjK2B+EffPbJO/vJxOLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=clPnZthq; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AlYu5wyl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737732164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DwitzjRGQEzgyZZn0UD4LNiBUZsqGx1Qrum3CBb5LtE=;
-	b=AlYu5wylCVEvmaGCJoylwxj4kYhsZLifdnCnrsJLfyKiEiNysQ5opPenaJHdzb26ikUmrO
-	RGI8ql0yXUMBoNws2XJhT3XV1/CJeA8T+nzGTj1kml6C2SBwgWqOxmTkiC7vASlWtffFzu
-	nqmrIWuBqUi+auEllwgnpfYDB3rbLz4=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-9kVkwWXWNuuyG2-NOcJEpA-1; Fri, 24 Jan 2025 10:22:35 -0500
-X-MC-Unique: 9kVkwWXWNuuyG2-NOcJEpA-1
-X-Mimecast-MFC-AGG-ID: 9kVkwWXWNuuyG2-NOcJEpA
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6d88ccf14aeso35586156d6.1
-        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 07:22:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="clPnZthq"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef9b9981f1so6312941a91.3
+        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 07:36:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737733007; x=1738337807; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zySajsS8cwcbLlH1pRl9LatQbg5W2rfh2JDwbVXk9PM=;
+        b=clPnZthqLFi2ldlq9M2NhptRr2pi05VZzl44/dV3an44J802R8mVD1GAaSuyiKKKFA
+         V6JAJb/VT8nb6QY5XRSSobq/Zi24pV8j/+xc8p5Yx3eucilw+f+ybBYE7YRUNUDNcz1e
+         +Lwi9Jm1SizRKWF2jX3GeNER7nVy/T0ZMDd1Pb+IhqgDA8+EmJFzp1qvR5h1PH9cxbts
+         FSAqCRprYbqQJG7TEpmqhUaO0XP4VTgYyKFOhbhsj+nHHeMZAidO2b7jtUlkTfIXsjwL
+         KrEQsiPFA8opZU8MJk/gwck7aJnTD8ndDiGgznftSp5/f0zEzzVT/X0b2cGm8/sb9/+W
+         jGyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737732153; x=1738336953;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DwitzjRGQEzgyZZn0UD4LNiBUZsqGx1Qrum3CBb5LtE=;
-        b=Zg3ZQ1h8gFYjf2LbpWDOF8rzeUjlg7BycqkS7DYwLbfPRuNgWrecaaoU0wzcuSknio
-         7zo3HYgVXGMzlon6jFIn8bh542BqNYGQ79uq3Bn0eDi5sM8XQKlFiJClymFUfWEvHEka
-         +957J7NyNeo1bYex0VEDrFnf7EBAW2dRrroFYGS66IBJynfiiuYqX6j30N48/McrkiA7
-         AK9mvdEp1t9DDmkVJYLhrxQ1YyGcA97AlWUx/6W+wJoC5xue0z2p4rB1PhReSjYd4QpI
-         hH+8I1Re5M46tTJg0dvZLnrNWBggXskpAzATxXGntLFcr2JZWeomZeNtpdjq1AICGhZo
-         VFHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVPHVw/ywjzLcUYLw3ozF/v2W2DtZXpKNaPRBTLCJzCtzpBgN4TmML05TY6QgwRvXYQirQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSdY9SnUP3K8hMBrpC4Fe06HcQUxVmgbS5z8CP+U5OaqzXyqhy
-	/aul9UU5o1LpaM3ydJlGo55hgeHshA9QUmi9vFkkQMSO1SA13A5EG+pdyhmL4jv+KgFrSIJD3ep
-	6991r72I7pf58vs8ogJImXhqRS3fqmITO3giQAMtM4X/xjdhZ9Q==
-X-Gm-Gg: ASbGncs6w41Fab1/6dsECk8qXQnOXJ40S81j4h6TUhvBzuGxDyNE8DZp9mjqZ+EBRVR
-	7xqI41HwGMgh0o7IowsupeaqaIr/B3HrvZ2PR+mDuiYmyisgpMYr80oSegI6qGlx9DMPrxL+FV+
-	VH5HsKD73B/+Nc/ip3FsjJxVQDwKiR/fxXeZRk0u2pFcCQ2SsKgpvqtxk69eH6oJbyhlIPKUHSO
-	juDs+KTfJTZBLJGGvQkiZwMrqf/RYs0axCB3rWKTHI5HsM+Wo7f2q2RG+OZb427JkZNIW2bzhb/
-	ktaE2Q3krq3Ejahzrxgl2hMCBWL6t31mu/eO++1pdLjclAAuv5FZc84=
-X-Received: by 2002:a05:6214:1302:b0:6d8:861f:adca with SMTP id 6a1803df08f44-6e1b2235c9fmr497774356d6.42.1737732153309;
-        Fri, 24 Jan 2025 07:22:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE5TeadQAXYF5iUiWYdZcwN/B3B0GhQEA3OgvrN+YGY06rhpOtkdAXjp93P8gBhIIoKYtqxZQ==
-X-Received: by 2002:a05:6214:1302:b0:6d8:861f:adca with SMTP id 6a1803df08f44-6e1b2235c9fmr497773786d6.42.1737732152904;
-        Fri, 24 Jan 2025 07:22:32 -0800 (PST)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2058c2a51sm9344776d6.109.2025.01.24.07.22.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 07:22:32 -0800 (PST)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Jann Horn <jannh@google.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-perf-users@vger.kernel.org, xen-devel@lists.xenproject.org,
- kvm@vger.kernel.org, linux-arch@vger.kernel.org, rcu@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, Juergen Gross <jgross@suse.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
- <alexey.amakhalov@broadcom.com>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan
- Gupta <pawan.kumar.gupta@linux.intel.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski
- <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
- <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
- Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
- Biesheuvel <ardb@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
- <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, Juri Lelli
- <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, Yair
- Podemsky <ypodemsk@redhat.com>, Tomas Glozar <tglozar@redhat.com>, Vincent
- Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Kees Cook <kees@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Christoph Hellwig <hch@infradead.org>, Shuah
- Khan <shuah@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, "Mike
- Rapoport (Microsoft)" <rppt@kernel.org>, Samuel Holland
- <samuel.holland@sifive.com>, Rong Xu <xur@google.com>, Nicolas Saenz
- Julienne <nsaenzju@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Yosry Ahmed <yosryahmed@google.com>, "Kirill A. Shutemov"
- <kirill.shutemov@linux.intel.com>, "Masami Hiramatsu (Google)"
- <mhiramat@kernel.org>, Jinghao Jia <jinghao7@illinois.edu>, Luis
- Chamberlain <mcgrof@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: Re: [PATCH v4 29/30] x86/mm, mm/vmalloc: Defer
- flush_tlb_kernel_range() targeting NOHZ_FULL CPUs
-In-Reply-To: <Z4_Sl-zu7GprkbaL@pc636>
-References: <20250114175143.81438-1-vschneid@redhat.com>
- <20250114175143.81438-30-vschneid@redhat.com>
- <CAG48ez1Mh+DOy0ysOo7Qioxh1W7xWQyK9CLGNU9TGOsLXbg=gQ@mail.gmail.com>
- <xhsmh34hhh37q.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <Z4qBMqcMg16p57av@pc636>
- <xhsmhwmetfk9d.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <Z44wSJTXknQVKWb0@pc636>
- <xhsmhr04xfow1.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <Z4_Sl-zu7GprkbaL@pc636>
-Date: Fri, 24 Jan 2025 16:22:19 +0100
-Message-ID: <xhsmh8qr0p784.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+        d=1e100.net; s=20230601; t=1737733007; x=1738337807;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zySajsS8cwcbLlH1pRl9LatQbg5W2rfh2JDwbVXk9PM=;
+        b=ZeaqITIP3dFQtIqFtzY+FdDjpXLT+c5g0dc2TdwqPo4n6gd2Dxm/qVFO1upjoHhZW8
+         KQaQBf4Iq6iQPceUf+/wnirJVViU1UwlAgHcwUpQVdrDMWV+m8YWCeK6upnBoExFZZxm
+         Tl10WCmnZrRLCtqojZ6ZEvrZEk3+P+f8h5PZ/IIb3/3aV1xbbpfC87fs8f7G6tR0ZB/F
+         Xv2DVLtgcIg5i3Y2S+t/DXI8M/+bpJxZBdF09zQ4QLNMsxnhCTdibt8NAU/f21/2Wn01
+         2Zo92kK1/DDtLAYL7Ls4FwqQdq92tkusGOnUPnnjU+YXCynn8Oye5OwDhZOi+yi8/raN
+         HjMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMOXQq6p7DUE58x/LTntdjXBhiBsUwcfLzhpWOUwemNvT9+gMZgLSFqJolB6NUKUwNy3o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1jUIRZFRNJdWchlKneVXgJG2fRK1rnVjOWXt04sNfmpcESgPv
+	jIGfh7Gwxk/2xAsA7Zzog7NH15RoffILA/CRIu7yBSUwA+JYD4LBoneGiI8GPYtB+2zeIfmgZR+
+	WMA==
+X-Google-Smtp-Source: AGHT+IGwDamLsIG5SMyUkpnBBffaQBPnLO+znhjCx6dxksry2Nng62jhf6tyHwFuU1xlMzJrpqs4p8rDJ7I=
+X-Received: from pfbcg7.prod.google.com ([2002:a05:6a00:2907:b0:728:aad0:33a4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:18a7:b0:725:f376:f4ff
+ with SMTP id d2e1a72fcca58-72dafa46e92mr39729312b3a.13.1737733007188; Fri, 24
+ Jan 2025 07:36:47 -0800 (PST)
+Date: Fri, 24 Jan 2025 07:36:45 -0800
+In-Reply-To: <pfx63yk5euw6zsjmmpuetfuhhk7jcann3trlirp6y5u26lljn7@mtbwoswzoae3>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <37a79ba3-9ce0-479c-a5b0-2bd75d573ed3@stanley.mountain>
+ <Z4qYrXJ4YtvpNztT@google.com> <pfx63yk5euw6zsjmmpuetfuhhk7jcann3trlirp6y5u26lljn7@mtbwoswzoae3>
+Message-ID: <Z5OzjYqOVz7nrnJ1@google.com>
+Subject: Re: [bug report] KVM: x86: Unify TSC logic (sleeping in atomic?)
+From: Sean Christopherson <seanjc@google.com>
+To: "Michal =?utf-8?Q?Koutn=C3=BD?=" <mkoutny@suse.com>
+Cc: Yafang Shao <laoar.shao@gmail.com>, Dan Carpenter <dan.carpenter@linaro.org>, kvm@vger.kernel.org, 
+	Peter Zijlstra <peterz@infradead.org>, Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21/01/25 18:00, Uladzislau Rezki wrote:
->> >
->> > As noted before, we defer flushing for vmalloc. We have a lazy-threshold
->> > which can be exposed(if you need it) over sysfs for tuning. So, we can add it.
->> >
->>
->> In a CPU isolation / NOHZ_FULL context, isolated CPUs will be running a
->> single userspace application that will never enter the kernel, unless
->> forced to by some interference (e.g. IPI sent from a housekeeping CPU).
->>
->> Increasing the lazy threshold would unfortunately only delay the
->> interference - housekeeping CPUs are free to run whatever, and so they will
->> eventually cause the lazy threshold to be hit and IPI all the CPUs,
->> including the isolated/NOHZ_FULL ones.
->>
-> Do you have any testing results for your workload? I mean how much
-> potentially we can allocate. Again, maybe it is just enough to back
-> and once per-hour offload it.
->
+On Fri, Jan 24, 2025, Michal Koutn=C3=BD wrote:
+> On Fri, Jan 17, 2025 at 09:51:41AM -0800, Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > That's not the problematic commit.  This popped because commit 8722903c=
+bb8f
+> > ("sched: Define sched_clock_irqtime as static key") in the tip tree tur=
+ned
+> > sched_clock_irqtime into a static key (it was a simple "int").
+> >=20
+> > https://lore.kernel.org/all/20250103022409.2544-2-laoar.shao@gmail.com
+>=20
+> Thanks for the analysis, it's spot on. What a bad luck.
+>=20
+> Is there a precedent for static key switching in non-preemptible
+> contexts?
 
-Potentially as much as you want... In our Openshift environments, you can
-get any sort of container executing on the housekeeping CPUs and they're
-free to do pretty much whatever they want. Per CPU isolation they're not
-allowed/meant to disturb isolated CPUs, however.
+Abuse static_key_deferred to push the patching to a workqueue?
 
-> Apart of that how critical IPIing CPUs affect your workloads?
->
+> More generally, why does KVM do this tsc check in vcpu_load?=20
 
-If I'm being pedantic, a single IPI to an isolated CPU breaks the
-isolation. If we can't quiesce IPIs to isolated CPUs, then we can't
-guarantee that whatever is running on the isolated CPUs is actually
-isolated / shielded from third party interference.
+The logic triggers when a vCPU migrates to a different pCPU.  The code dete=
+cts
+that the case where TSC is inconsistent between pCPUs, and would cause time=
+ to go
+backwards from the guest's perspective.  E.g. TSC =3D X on CPU0, migrate to=
+ CPU1
+where TSC =3D X - Y.
 
+> Shouldn't possible unstability for that cpu be already checked and decide=
+d at
+> boot (regardless of KVM)? (Unless unstability itself is not stable proper=
+ty.
+> Which means any previously measured IRQ times are skewed.)
+
+This isn't a problem that's unique to KVM.  The clocksource watchdog also m=
+arks
+TSC unstable from non-preemptible context (presumably from IRQ context?)
+
+  clocksource_watchdog()
+  |
+  -> spin_lock(&watchdog_lock);
+     |
+     -> __clocksource_unstable()
+        |
+        -> clocksource.mark_unstable() =3D=3D tsc_cs_mark_unstable()
+           |
+           -> disable_sched_clock_irqtime()
+
+Uh, and sched_clock_register() toggles the static key on with IRQs disabled=
+...
+
+	/* Cannot register a sched_clock with interrupts on */
+	local_irq_save(flags);
+
+	...
+
+	/* Enable IRQ time accounting if we have a fast enough sched_clock() */
+	if (irqtime > 0 || (irqtime =3D=3D -1 && rate >=3D 1000000))
+		enable_sched_clock_irqtime();
+
+	local_irq_restore(flags);
+
+> (Or a third option to revert the static-keyness if Yafang doesn't have
+
+Given there are issues all over the place, either a revert or a generic fix=
+.
