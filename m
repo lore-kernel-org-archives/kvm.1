@@ -1,69 +1,68 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2051.outbound.protection.outlook.com [40.107.223.51])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2086.outbound.protection.outlook.com [40.107.236.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13C223B0;
-	Fri, 24 Jan 2025 18:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9874421C178;
+	Fri, 24 Jan 2025 18:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737743499; cv=fail; b=W2vEkB8MwA3vhQQVx1NNEq0dPHOLsr+kGn8cWo8snLMX+Qsn/8pnxfpJucDj1FSz5Q0HMRjkF1uKfF98PJHc5pGR6N+btBziGAaY5ErGZ7eUdgJyFcuJb5AlL/ZZK0+wU5yuzKXs/O1Co33GktuFwpnAQVww1BTZhEXHW6ji1Lo=
+	t=1737743501; cv=fail; b=lgE/kgMQnkTmorL3YrwFJmAD0e6+XBqSS24EOlkg6KZk/jg8PPvqDAnC77rklI/Q/MmMGzMMGVVMHr0Tc5U7mupLbPSc5NK7m4YZmwL2XGDCKQZMzluGNU0jQdxJB/yuSOa1Fy7bYyJ34e9yHE7euJ/sZmO8vKwxm1Y6keDC7N4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737743499; c=relaxed/simple;
-	bh=mVDhl8gc8G/p75pwk3uy78Ni3VAWxdg7CSj8F5h7y5Y=;
+	s=arc-20240116; t=1737743501; c=relaxed/simple;
+	bh=YDcvHxq2botZi81D6AEE9wbFhLPHVtZeJaVsIZtR6o4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=izLV+4pnPjQ0fcM6/yihC021hDXg0OY1kMt9obs+hrrisBR5f1tMlI0GfGMX9UD+dqvxSC5CLuE828L7WRGrGlQFc3uEy9LThsTi513o678WCEdtDX6Oa9raYlHNJH7c8w9ffKmWa8XZJGqSfhRYakHItBYdpnafmfiEjpobo6A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a859ZExG; arc=fail smtp.client-ip=40.107.223.51
+	 MIME-Version:Content-Type; b=tWK03GQt5Q0jziK+k/D1l7vsJlqAUtC999H24nz30CQVz0zm52tLuu5W108Pq4Hu752FaXvlSBveKBpS6/eUDq7OKUSXPNV9cmhFKXmovYGN2O+RkE7ToY00OJZb71vypDVJ9Jt2wlDgCEcLW+yteKcfQy838EN6pp0IC2boZO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ewsMC/du; arc=fail smtp.client-ip=40.107.236.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a859ZExG"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ewsMC/du"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hyWpZ1YrgqXE/craAYkKDevF1e9T1spThPRLE/+uNlL9x8dWmGgVDmWpUn9OLzq0bmx1L0oA6YkjSo+kBlH/uJOu/lh9AG1WUdL4/V2wbycNFdEk4+U6y7Gof0MPXHthliuBKaTTEmHVBBaV5t5saQn91+7epeNtKccyMVIR7nbZ0rggyj6FXBX7PaAsjXfZsFlCpxVysTdtQWKcQaty1Sgx2tJr5+7PQG8MzFZ2SPD5QVU0d8fQXl7biCaszJ0zK54SSat1j/trHltdwIfYO3owmB6Eg40fjNdl6ov+E9n63aUwu0VVw59mhFZgBnJrcHVwhri020zWSeEiYPPPug==
+ b=vUMcs2utO4c/uCXSqgNWfJR5Tx2G/7IXLm2yR+C7GfGJSSy7VKgkmfmZGFXS1RWlpM3iOwlvoU5/YUmyU6kawnAsgunCDSQCkSlfKiQhQNOP8G9+6dtJnwAIj19ZI3wpc5p/Kax3MxcXMOwFDak2Rc3jKisn9NquNbxKonObGTGpUqsqsygMgUfNgHIGc37ko51TP3RicqS+Z+RYd5NApFckLbgRVB+O+l4WKUtc1B9tlWDilIlfutsSaa8VmR8zNNkN/IoW+Cw0icmE1XZ7Y85PdjkvbaZajRdW5ZZr4AvdOlscZsBMGuSe8G0AfWzNoDPARL8CmLNvyEle3AE7ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hG2nK1PYoccYYsNyeHvpOdr1J8TvGa6Kd981LFx3fU0=;
- b=IerDI357KAulBfPb4ZChOxy2FwRwsGhgC/B2THPeAogzTr0PnEY9hMzk3phHPfp51XqQ2xFRySxV7+fkyKUpTIpu/icqqdvNTGNH4RRUsgUZpmE53DP4nm7FPLQxmo/Y0JoY6qUtIR7UuOIp4oYN7jgs3S8jXbmMmOZuwdu9dXDMCG5JPMpXoPHHFVDiQoXreWKSUpDr7PIg4efSSg0xA2gclcQubulzOd93t08FqLbkTDtsASYMlz4qACfYAauBMppXTkkEh/SWQDnG6TqUynu2ObK9Xi9s5vokGfmDUUqdPJQu5JahPSxWx+uI/wCzmVl+4JEcmNBIgEys6DclIA==
+ bh=hDUePpC+uBA5jmjoJiISfzCOb5fJDGl6q2+V7qsG1QU=;
+ b=JJA4rIRqZaWhtkVsQxKA9Tq+gGxUpOOlcayA9wMx6NB4FMXSLUtnhd2dWfgy8UMZWIapnkZViAuq61Hr0YaR33aYLCygyRqfpIM+vyWZoy5eJ+Ca2UokAu/zPfBLuy0pAMYleVK0TVl6QcSXMuiIfh1Mt+uaJR/46Dv4DJ6LUFBkKftIqY+oTLZLnSFpU/H7iq/Q2EdzOGfmSY0uCFsZSM2rwNQ85BnUQm1Fxj7/FOOPpZDwXIZAwsZeQL7ukKYT/eD6+jnpLqEE1zxD4LqJVsDVXdULVgpexidOrs80IA7OSPEjZvJz2bQephAlf6IwjkWGnNlJlTAyhrayqiTnRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hG2nK1PYoccYYsNyeHvpOdr1J8TvGa6Kd981LFx3fU0=;
- b=a859ZExGTkuKU9E0PGykTuZXQLQzQU81tHaO89lZA3xwn6d7Bdeqyt1OkCsw0H8VXdetoO6uiHr4oORuhUR8Eceq7qGNaDWS3R4KgK8AoAxT6j8RvnQ/SYq40HEqvNX/7Ua6ELUyA7rWRa8M02dqB47IdacTVzZ/emUGGzqI6H+vVfaPPasH+LQ9RrQVNhZ1TkmhQ0IU/TKmeCz4jmXb5STKSjv/Udt7CeTZ12H49s8xoHQXuYQJRzZrXXJ6IJPYO9Zn0Rdu0l0MLG2aH+9HXrKAf/PysU/5RsZHG7AMZRsBEe08I+OiWA2tN9037P38soAloBSWUd0UQUQlAhHTPg==
-Received: from SA0PR12CA0011.namprd12.prod.outlook.com (2603:10b6:806:6f::16)
- by IA1PR12MB6602.namprd12.prod.outlook.com (2603:10b6:208:3a2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Fri, 24 Jan
- 2025 18:31:32 +0000
-Received: from SN1PEPF00026369.namprd02.prod.outlook.com
- (2603:10b6:806:6f:cafe::2e) by SA0PR12CA0011.outlook.office365.com
- (2603:10b6:806:6f::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.19 via Frontend Transport; Fri,
- 24 Jan 2025 18:31:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ bh=hDUePpC+uBA5jmjoJiISfzCOb5fJDGl6q2+V7qsG1QU=;
+ b=ewsMC/duVr1IXfk3JV20MvT3H1x1ZFo43J6m/rrjLNuB2YqHunfkMjZ4Tue1YUt1QzrKVRCAL4j3ei+vThB0ocO4bNES8C73s3E+BcA15e/gK6bGrHAOQJzHqpzlW3O/tCRaoGy8G3+cmFcMUrHPFcw9/tGVYqGF9S41XpSjDSFqYn/xuOELQTOgwWm55BUvi4Os93csY7jnmJAHSmVNKGrivDufYeZWaPEQZyQXM9qckkoMEFR4/AVVjPaf2u/TZ8BzsNYKmRUJlWi0DhjLjfG+WF1waySKRWqaozoCWu+N1+hfHE2FhB2lJnyHS0+ZGdQrIFlj7Z+dMWtXppHQMw==
+Received: from MN2PR05CA0050.namprd05.prod.outlook.com (2603:10b6:208:236::19)
+ by DS0PR12MB8413.namprd12.prod.outlook.com (2603:10b6:8:f9::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8377.19; Fri, 24 Jan 2025 18:31:33 +0000
+Received: from BL6PEPF0001AB74.namprd02.prod.outlook.com
+ (2603:10b6:208:236:cafe::f0) by MN2PR05CA0050.outlook.office365.com
+ (2603:10b6:208:236::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.13 via Frontend Transport; Fri,
+ 24 Jan 2025 18:31:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SN1PEPF00026369.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL6PEPF0001AB74.mail.protection.outlook.com (10.167.242.167) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8377.8 via Frontend Transport; Fri, 24 Jan 2025 18:31:32 +0000
+ 15.20.8377.8 via Frontend Transport; Fri, 24 Jan 2025 18:31:33 +0000
 Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 24 Jan
- 2025 10:31:15 -0800
+ 2025 10:31:17 -0800
 Received: from drhqmail201.nvidia.com (10.126.190.180) by
  drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 24 Jan 2025 10:31:15 -0800
+ 15.2.1544.14; Fri, 24 Jan 2025 10:31:17 -0800
 Received: from localhost.nvidia.com (10.127.8.14) by mail.nvidia.com
  (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Fri, 24 Jan 2025 10:31:15 -0800
+ Transport; Fri, 24 Jan 2025 10:31:17 -0800
 From: <ankita@nvidia.com>
 To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
 	<yishaih@nvidia.com>, <shameerali.kolothum.thodi@huawei.com>,
@@ -74,9 +73,9 @@ CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
 	<kjaju@nvidia.com>, <udhoke@nvidia.com>, <dnigam@nvidia.com>,
 	<nandinid@nvidia.com>, <anuaggarwal@nvidia.com>, <mochs@nvidia.com>,
 	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 2/4] vfio/nvgrace-gpu: Expose the blackwell device PF BAR1 to the VM
-Date: Fri, 24 Jan 2025 18:31:00 +0000
-Message-ID: <20250124183102.3976-3-ankita@nvidia.com>
+Subject: [PATCH v6 4/4] vfio/nvgrace-gpu: Add GB200 SKU to the devid table
+Date: Fri, 24 Jan 2025 18:31:02 +0000
+Message-ID: <20250124183102.3976-5-ankita@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124183102.3976-1-ankita@nvidia.com>
 References: <20250124183102.3976-1-ankita@nvidia.com>
@@ -91,204 +90,79 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|IA1PR12MB6602:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f5934af-697b-4f2a-bd5f-08dd3ca5537e
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB74:EE_|DS0PR12MB8413:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c3d0532-6828-4474-2dbc-08dd3ca553fa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|13003099007|7053199007;
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QSPxtzz+1wvXm5jmfmvZgKQVipfO3BB9JrR9bqJ8AilGtL7Tu4DssmIs2yio?=
- =?us-ascii?Q?8AzywcjvJc7tTTIP7RNdYt0UrCwR3xyKb6OQ11tOaEAyzpsGlBpXBfh47JIg?=
- =?us-ascii?Q?K+9+OeN1WgIM3S4frrHwE4B37jIbBIZIY0ym1g53Ihe7QwwqjdEBbD5RyMcy?=
- =?us-ascii?Q?w7ZbOkCNgUuR3TfaOrSLGUta0yJd+3sjXeALGcYrGA597jckyN1jXA9FhhYu?=
- =?us-ascii?Q?vX3Go3pAFlwlI9gVTiXsWIQnofeasYE2MNEzE2BQx+qAdYeZeRATprJdGxsf?=
- =?us-ascii?Q?BzncYRjnVzZgAS5DoTcDpy1daYVfItd2ErQ28y1zDXOB51o46Tc73MPJ3+K8?=
- =?us-ascii?Q?xpqbU7Pvl66irWiV6s39bzd/G4Ej5UT9TmP8ywvywnYLeJliTvVwmhOwwJcB?=
- =?us-ascii?Q?IWow2BlKnM+hIir/BqdBFJo17/kGsHGa6sPlco6XR8hsc5E62O+VhPRHm0r5?=
- =?us-ascii?Q?6Zf5h6Icfo/8dPFCOrEh71aepglSM6N0XjXUyFdbcMhCNKB5e0ItJy2ef7yV?=
- =?us-ascii?Q?pWTnjTNf66/gq8MGOFGJf9EjCqiP0rpMkEud52I3kBp9CNveA/sXCJMU+6Qw?=
- =?us-ascii?Q?q0M/wZgWKJx/1I5gWh/lnwNWistE8TAUnE4HJyEPgWETMmb3mzO8RwUq7nn/?=
- =?us-ascii?Q?1w7oKnM2+QhbAs6UKyXEbwk2JdykMFLRkt9wg5kQ04b+ztUyjL43BZ7pWZMo?=
- =?us-ascii?Q?SLoVoLZhD5vLHSv08POS1tfrSf22dIt7QWZvzNQa37kkrkYQWSx/h8MBIAX0?=
- =?us-ascii?Q?XKHZT+8NiD1XAsEhwa6rNM4m41wH3yxM/pmqas6rbynlCbX6Fx9aWpyPjEga?=
- =?us-ascii?Q?qCOa83u0kNkDT1EuX4VD6+edQehpwdpt12zxkwvwLG0qIqi9P4pGujRSB4Xt?=
- =?us-ascii?Q?95t9eYKw3+oPnxNAFYVPunWyMICHVH5wGew1Krkobl9zysKMVzx5zrFjyC6o?=
- =?us-ascii?Q?SWRTF+g+mrNMCu71FUTVwD6lB1GL5pfpyciUojd7Jbbl5LIhQOkkJ1NA0bOL?=
- =?us-ascii?Q?J0xD7uihT/KR8Hn61SLcv09FHY3lWq7p/TTFVvjT2gktCQGbdaybfNjsnKXs?=
- =?us-ascii?Q?HzNGiiujBMcfuVikKfgpiLW/GYzXSQoXWXN95jakxJ441bBHVTfbeGWsRhus?=
- =?us-ascii?Q?jN1MOj2cU4/txkIfPmw62X5V3Dk39TIe/GvRIs26JA5he5kG2vyg3tve805t?=
- =?us-ascii?Q?KFaSiGOTrhWSHOnZAVPx8tBHen5DQFFzwRzsLGnB7mMxIK4vwZUmi7aA5dR+?=
- =?us-ascii?Q?YYTOkkB9djvhpK6eMBEO6I+WEiraI6nfJZJR3wTNUDE/zdFGPoP50mqFJSs/?=
- =?us-ascii?Q?q6HY/plJWS4VeAXzW1f5cK5ioEksgS+iYgZDMje5pWz5JgO31OnCQsOzsIyz?=
- =?us-ascii?Q?jIO8eyB9ETrTs5h2G7i2jN+j8YDjHYcgqcExSI7SE+kSYt6n5qncc1eaBuc7?=
- =?us-ascii?Q?uDf2RkK5N6cQOM3r891yHRin5f+DsVbtbmKlq2qI+wUA+0JaxT6DW52adZw4?=
- =?us-ascii?Q?sjYMnbuv0gS1Kus=3D?=
+	=?us-ascii?Q?h93Ou6q2TDl70kH4HqiVP3DFm37tzj0vcQLSYWotf5x4H91/bdITOC5h6bUR?=
+ =?us-ascii?Q?cpf3g/M1QJbi/XrlEUodvVsJD3EajVWDRJWt0dsNFWK+p1xyXWjQtELK9V9A?=
+ =?us-ascii?Q?hnOHag7XgFg6auN+JC3/hd6YWAw10xG1OiZut2DzmpGKxZhj7YiMOlzpvtbR?=
+ =?us-ascii?Q?76cQgkD69v3Va4cwKt2TZ0yJ/3LiKN97konyoCdFXtIuZMi4KFhnnebnOD+o?=
+ =?us-ascii?Q?NHRQtq2FjO19cuKk/CO+ajas+CyWsDuj4txyZEq1HxCeapfe50VDZEOA1N0O?=
+ =?us-ascii?Q?gkwacSjjctJB/8Pwy8r4A0mdF5uq+eSYCb1n8ETEoBw2FirkBLlaf295dcMt?=
+ =?us-ascii?Q?PggRbMBS2aln4An4adUCxpSgUZGbdp2ArS2awYRxU9PWbUwCyPP/hNIEMrYr?=
+ =?us-ascii?Q?Sk+vXgNpa1kqm5iba9WEMJN0JyuwCS9pE7NqKsq6WQsoEI1MsC7emfT0+dTN?=
+ =?us-ascii?Q?bSNHZXqwLZhLD0GS0OWLtTlIzLjf+Arb0M7dUfgb5h8JOharfdhVC0FJUxMK?=
+ =?us-ascii?Q?iAeOOvtrsVblMIx7pWihChEp1RZGSKxzmAmD/MrBaX1m7odQieI0ORKeLYok?=
+ =?us-ascii?Q?8AVqi+2p/ESvlFxnTsiL/sa3oFOA9gd2rPqsirZE+6CszVsPFxAYz4aBIIh2?=
+ =?us-ascii?Q?m6XkkHR3oJESbUGBA0wgphcuSwxVuI5cUC9R+r+FSR52edeMoXahMIECybV+?=
+ =?us-ascii?Q?4YrKqzB4rsLrk+oiG+WsjlWGeBpS3r+zZcPWByqWaR0NySpAS4uQzpZYpIw7?=
+ =?us-ascii?Q?VAlTjZLPX3WkxxMW1H5+N2QC7uvoPjrAo1MO1mZCsijVB1unJsoJtFAsq7EC?=
+ =?us-ascii?Q?tiExeFXbQxeeJb05e4Ks/mLm1iH1YMqri0i9PQ76aioArfZ392LhYiwm+50s?=
+ =?us-ascii?Q?l/C8wsZiqznXYxtghNXP3ZYQc68mPgaHBy9oGGaim5maHCb8mKv8WFBxzkNt?=
+ =?us-ascii?Q?zkclxpMekEUQZh7ObhFB+VM+SINWZ5Sj5g08Wf+qnr2CxwjEtyKtAZjPgk8w?=
+ =?us-ascii?Q?GD04KfLQF/++juIJbeXlBW8AqIWCY8IIV6QH7QhE6BoZ1mQBIJlBJzCxrj2b?=
+ =?us-ascii?Q?MY428wIHvQpNvvopO50ewaNPCYzpqd/uDjwAfcdLFZGB49TDUzH2S+j1is5E?=
+ =?us-ascii?Q?ghmWRK9DXvYYF/OWaCTlw+9gYVRtG3H6bmJlXwTkTW8Ual3Fj1UZAB/q6Gr0?=
+ =?us-ascii?Q?7rsEQn3PKHqmaM1m+TuSPHquBzS0QEXtd6DJ/KPp9z6KR73S5OHV5huWfh/q?=
+ =?us-ascii?Q?WOZqh5r9b6ZJTDNt/BcCcoTJ/j2AJlrFryFPKKwm6Ss+csavxpaoSV8Y8KP6?=
+ =?us-ascii?Q?mgXF3ZocRfXTrjBesjkFL8YSUPeRMVOFQwCVhXeW6wBkAB1t/t2lzP/s5Cqs?=
+ =?us-ascii?Q?EJmYS1vmoPaHDk7Iu8c7+RuDzki+R/s4ZQzuCQik/3UeW73ydqC1RRF/x6Oy?=
+ =?us-ascii?Q?YJp5N2L62P+tkgwx8ri4wol+CicuEOE9FECWBc/JGjDMO9bRT4jKgpTiToM0?=
+ =?us-ascii?Q?qof3ItmamQHARyY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2025 18:31:32.3313
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2025 18:31:33.1247
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f5934af-697b-4f2a-bd5f-08dd3ca5537e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c3d0532-6828-4474-2dbc-08dd3ca553fa
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00026369.namprd02.prod.outlook.com
+	BL6PEPF0001AB74.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6602
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8413
 
 From: Ankit Agrawal <ankita@nvidia.com>
 
-There is a HW defect on Grace Hopper (GH) to support the
-Multi-Instance GPU (MIG) feature [1] that necessiated the presence
-of a 1G region carved out from the device memory and mapped as
-uncached. The 1G region is shown as a fake BAR (comprising region 2 and 3)
-to workaround the issue.
+NVIDIA is productizing the new Grace Blackwell superchip
+SKU bearing device ID 0x2941.
 
-The Grace Blackwell systems (GB) differ from GH systems in the following
-aspects:
-1. The aforementioned HW defect is fixed on GB systems.
-2. There is a usable BAR1 (region 2 and 3) on GB systems for the
-GPUdirect RDMA feature [2].
+Add the SKU devid to nvgrace_gpu_vfio_pci_table.
 
-This patch accommodate those GB changes by showing the 64b physical
-device BAR1 (region2 and 3) to the VM instead of the fake one. This
-takes care of both the differences.
-
-Moreover, the entire device memory is exposed on GB as cacheable to
-the VM as there is no carveout required.
-
-Link: https://www.nvidia.com/en-in/technologies/multi-instance-gpu/ [1]
-Link: https://docs.nvidia.com/cuda/gpudirect-rdma/ [2]
-
-Cc: Kevin Tian <kevin.tian@intel.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+CC: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 ---
- drivers/vfio/pci/nvgrace-gpu/main.c | 67 +++++++++++++++++++----------
- 1 file changed, 45 insertions(+), 22 deletions(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index b76368958d1c..778bfd0655de 100644
+index 655a624134cc..e5ac39c4cc6b 100644
 --- a/drivers/vfio/pci/nvgrace-gpu/main.c
 +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -17,9 +17,6 @@
- #define RESMEM_REGION_INDEX VFIO_PCI_BAR2_REGION_INDEX
- #define USEMEM_REGION_INDEX VFIO_PCI_BAR4_REGION_INDEX
+@@ -991,6 +991,8 @@ static const struct pci_device_id nvgrace_gpu_vfio_pci_table[] = {
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2345) },
+ 	/* GH200 SKU */
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2348) },
++	/* GB200 SKU */
++	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2941) },
+ 	{}
+ };
  
--/* Memory size expected as non cached and reserved by the VM driver */
--#define RESMEM_SIZE SZ_1G
--
- /* A hardwired and constant ABI value between the GPU FW and VFIO driver. */
- #define MEMBLK_SIZE SZ_512M
- 
-@@ -72,7 +69,7 @@ nvgrace_gpu_memregion(int index,
- 	if (index == USEMEM_REGION_INDEX)
- 		return &nvdev->usemem;
- 
--	if (index == RESMEM_REGION_INDEX)
-+	if (nvdev->resmem.memlength && index == RESMEM_REGION_INDEX)
- 		return &nvdev->resmem;
- 
- 	return NULL;
-@@ -757,40 +754,67 @@ nvgrace_gpu_init_nvdev_struct(struct pci_dev *pdev,
- 			      u64 memphys, u64 memlength)
- {
- 	int ret = 0;
-+	u64 resmem_size = 0;
- 
- 	/*
--	 * The VM GPU device driver needs a non-cacheable region to support
--	 * the MIG feature. Since the device memory is mapped as NORMAL cached,
--	 * carve out a region from the end with a different NORMAL_NC
--	 * property (called as reserved memory and represented as resmem). This
--	 * region then is exposed as a 64b BAR (region 2 and 3) to the VM, while
--	 * exposing the rest (termed as usable memory and represented using usemem)
--	 * as cacheable 64b BAR (region 4 and 5).
-+	 * On Grace Hopper systems, the VM GPU device driver needs a non-cacheable
-+	 * region to support the MIG feature owing to a hardware bug. Since the
-+	 * device memory is mapped as NORMAL cached, carve out a region from the end
-+	 * with a different NORMAL_NC property (called as reserved memory and
-+	 * represented as resmem). This region then is exposed as a 64b BAR
-+	 * (region 2 and 3) to the VM, while exposing the rest (termed as usable
-+	 * memory and represented using usemem) as cacheable 64b BAR (region 4 and 5).
- 	 *
- 	 *               devmem (memlength)
- 	 * |-------------------------------------------------|
- 	 * |                                           |
- 	 * usemem.memphys                              resmem.memphys
-+	 *
-+	 * This hardware bug is fixed on the Grace Blackwell platforms and the
-+	 * presence of the bug can be determined through nvdev->has_mig_hw_bug.
-+	 * Thus on systems with the hardware fix, there is no need to partition
-+	 * the GPU device memory and the entire memory is usable and mapped as
-+	 * NORMAL cached (i.e. resmem size is 0).
- 	 */
-+	if (nvdev->has_mig_hw_bug)
-+		resmem_size = SZ_1G;
-+
- 	nvdev->usemem.memphys = memphys;
- 
- 	/*
- 	 * The device memory exposed to the VM is added to the kernel by the
--	 * VM driver module in chunks of memory block size. Only the usable
--	 * memory (usemem) is added to the kernel for usage by the VM
--	 * workloads. Make the usable memory size memblock aligned.
-+	 * VM driver module in chunks of memory block size. Note that only the
-+	 * usable memory (usemem) is added to the kernel for usage by the VM
-+	 * workloads.
- 	 */
--	if (check_sub_overflow(memlength, RESMEM_SIZE,
-+	if (check_sub_overflow(memlength, resmem_size,
- 			       &nvdev->usemem.memlength)) {
- 		ret = -EOVERFLOW;
- 		goto done;
- 	}
- 
- 	/*
--	 * The USEMEM part of the device memory has to be MEMBLK_SIZE
--	 * aligned. This is a hardwired ABI value between the GPU FW and
--	 * VFIO driver. The VM device driver is also aware of it and make
--	 * use of the value for its calculation to determine USEMEM size.
-+	 * The usemem region is exposed as a 64B Bar composed of region 4 and 5.
-+	 * Calculate and save the BAR size for the region.
-+	 */
-+	nvdev->usemem.bar_size = roundup_pow_of_two(nvdev->usemem.memlength);
-+
-+	/*
-+	 * If the hardware has the fix for MIG, there is no requirement
-+	 * for splitting the device memory to create RESMEM. The entire
-+	 * device memory is usable and will be USEMEM. Return here for
-+	 * such case.
-+	 */
-+	if (!nvdev->has_mig_hw_bug)
-+		goto done;
-+
-+	/*
-+	 * When the device memory is split to workaround the MIG bug on
-+	 * Grace Hopper, the USEMEM part of the device memory has to be
-+	 * MEMBLK_SIZE aligned. This is a hardwired ABI value between the
-+	 * GPU FW and VFIO driver. The VM device driver is also aware of it
-+	 * and make use of the value for its calculation to determine USEMEM
-+	 * size. Note that the device memory may not be 512M aligned.
- 	 */
- 	nvdev->usemem.memlength = round_down(nvdev->usemem.memlength,
- 					     MEMBLK_SIZE);
-@@ -809,10 +833,9 @@ nvgrace_gpu_init_nvdev_struct(struct pci_dev *pdev,
- 	}
- 
- 	/*
--	 * The memory regions are exposed as BARs. Calculate and save
--	 * the BAR size for them.
-+	 * The resmem region is exposed as a 64b BAR composed of region 2 and 3
-+	 * for Grace Hopper. Calculate and save the BAR size for the region.
- 	 */
--	nvdev->usemem.bar_size = roundup_pow_of_two(nvdev->usemem.memlength);
- 	nvdev->resmem.bar_size = roundup_pow_of_two(nvdev->resmem.memlength);
- done:
- 	return ret;
 -- 
 2.34.1
 
