@@ -1,138 +1,160 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D8B111AD
-	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 15:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225D714D430
+	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 15:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737733009; cv=none; b=A/t4nZyOEbkSsC7N9FJnmkDlr62VDBZ8EXEqO2AsguTSoz+zVGdNn6nvqsFhopnD+NpJZx3rILRACYpMRmYCrQb+JW5X2oZveDN7P1v8YSrfG+2Dkta4f2Se+Hym2yy1fmv1guoo4yCwLxGWFA2UHwMpArZVB1Fr4U8RUcacjvk=
+	t=1737734259; cv=none; b=iR8oyH1pwH6q5F/Tzxp8V+2plT/vMqSnULyir/iUR9lT+vgWqI1fdz3OdedOgu0jQjNeJoBNwkyL9d1CuzUb+0MWR7LgLCyiWNDfEEbwy6Lp7skzERVjf6OYZ976XcGHG8v2UGTduXhPUe3TAclolhk/WX5VXdO1wkFtK8ihq80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737733009; c=relaxed/simple;
-	bh=fG4aDY8zhpKCiKdQRcXqyteAruEVD1PJikGp4m2uDTw=;
+	s=arc-20240116; t=1737734259; c=relaxed/simple;
+	bh=MCFC8LwOSdqenQJ6mD9M2wEf/jfkjOqhZgOKTdpa/Hc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=me2mrI0IpFt7mKcROluW6BtVBnnGIXf6iFpVtrWcegp65U+oiLuvLln6cSOLbEzpLt9Hd/kkUnek7xr4SLt+KPwnzCKY7RykJLPsh2thK5W0wkN5ORIkAW2k/LRGp7ieiamIFteZZuMezi1WM/2n0DXAjK2B+EffPbJO/vJxOLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=clPnZthq; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=FkRzj7fBbxjKYmCLxLB3nEdyVWhm6emGCBjvl4dhAiUlZl25xsuUAV+kVVnumRr9a1QENKwEknTJdnnl1I3kflHNMhoJL8FwndZBF447rcO+55+D3+LgbSUHWawfIJ14csfp+G2zs6+o5D5HLSN9wAyyw/NBfQJ/XE5JaUPnwpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=izvesjLK; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="clPnZthq"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef9b9981f1so6312941a91.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 07:36:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="izvesjLK"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-21638389f63so34496505ad.1
+        for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 07:57:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737733007; x=1738337807; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zySajsS8cwcbLlH1pRl9LatQbg5W2rfh2JDwbVXk9PM=;
-        b=clPnZthqLFi2ldlq9M2NhptRr2pi05VZzl44/dV3an44J802R8mVD1GAaSuyiKKKFA
-         V6JAJb/VT8nb6QY5XRSSobq/Zi24pV8j/+xc8p5Yx3eucilw+f+ybBYE7YRUNUDNcz1e
-         +Lwi9Jm1SizRKWF2jX3GeNER7nVy/T0ZMDd1Pb+IhqgDA8+EmJFzp1qvR5h1PH9cxbts
-         FSAqCRprYbqQJG7TEpmqhUaO0XP4VTgYyKFOhbhsj+nHHeMZAidO2b7jtUlkTfIXsjwL
-         KrEQsiPFA8opZU8MJk/gwck7aJnTD8ndDiGgznftSp5/f0zEzzVT/X0b2cGm8/sb9/+W
-         jGyg==
+        d=google.com; s=20230601; t=1737734257; x=1738339057; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ldRJ9lDQzBkTYhlUwBS5PtcuGQGyOG6AjPsYZmKonB0=;
+        b=izvesjLKiD8Fd04Mq1hZmPnxCl/MCew6h64Azg324YE8o8svZrHFYH840a0KXT1zJo
+         xTH1KnMbEaUkj/IS2J4hJXHj+zkGATXnNIWKU4odgL69ZuQPEJGVI4HszdW5/XNjAqOM
+         DCut3A3Rr720MgdOvnPbWXyxTnbv2zq1UuBSNDP2IFQakHw+4EhhqgRLqbKcDhyX3c8M
+         wN9wrF8ID0Q5KVTmBQoRUDQGdTbwjbZqsfUNymc91b/30gxEPmO9q2h0zk5EA1vorpnE
+         72lOcfUZ0pkUR8oeuGTswDi6IUfTidsmbsuppcsVXgXjpmYtThJ1W8mUvVKlzFfLQi5A
+         ZFjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737733007; x=1738337807;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zySajsS8cwcbLlH1pRl9LatQbg5W2rfh2JDwbVXk9PM=;
-        b=ZeaqITIP3dFQtIqFtzY+FdDjpXLT+c5g0dc2TdwqPo4n6gd2Dxm/qVFO1upjoHhZW8
-         KQaQBf4Iq6iQPceUf+/wnirJVViU1UwlAgHcwUpQVdrDMWV+m8YWCeK6upnBoExFZZxm
-         Tl10WCmnZrRLCtqojZ6ZEvrZEk3+P+f8h5PZ/IIb3/3aV1xbbpfC87fs8f7G6tR0ZB/F
-         Xv2DVLtgcIg5i3Y2S+t/DXI8M/+bpJxZBdF09zQ4QLNMsxnhCTdibt8NAU/f21/2Wn01
-         2Zo92kK1/DDtLAYL7Ls4FwqQdq92tkusGOnUPnnjU+YXCynn8Oye5OwDhZOi+yi8/raN
-         HjMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMOXQq6p7DUE58x/LTntdjXBhiBsUwcfLzhpWOUwemNvT9+gMZgLSFqJolB6NUKUwNy3o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1jUIRZFRNJdWchlKneVXgJG2fRK1rnVjOWXt04sNfmpcESgPv
-	jIGfh7Gwxk/2xAsA7Zzog7NH15RoffILA/CRIu7yBSUwA+JYD4LBoneGiI8GPYtB+2zeIfmgZR+
-	WMA==
-X-Google-Smtp-Source: AGHT+IGwDamLsIG5SMyUkpnBBffaQBPnLO+znhjCx6dxksry2Nng62jhf6tyHwFuU1xlMzJrpqs4p8rDJ7I=
-X-Received: from pfbcg7.prod.google.com ([2002:a05:6a00:2907:b0:728:aad0:33a4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:18a7:b0:725:f376:f4ff
- with SMTP id d2e1a72fcca58-72dafa46e92mr39729312b3a.13.1737733007188; Fri, 24
- Jan 2025 07:36:47 -0800 (PST)
-Date: Fri, 24 Jan 2025 07:36:45 -0800
-In-Reply-To: <pfx63yk5euw6zsjmmpuetfuhhk7jcann3trlirp6y5u26lljn7@mtbwoswzoae3>
+        d=1e100.net; s=20230601; t=1737734257; x=1738339057;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ldRJ9lDQzBkTYhlUwBS5PtcuGQGyOG6AjPsYZmKonB0=;
+        b=BWC+MT74wlFYm3rJgXE+0I5HokS5f/sY526DBlkpFfS3VYhnAlB+9c3aFyel67w00W
+         S6MzpYb8BLPvTbhNCV2a4ANK6hfQkPNvVwjFqMQCD46KRKymTPCQ+TB/q/BZHUhB//rG
+         S722KPu/BS7yvlp1XWTgaw7LzmUs3PlcTGo/kME/XribwJPx/6yl9D3cT9hbYfEgWl2j
+         M0IOWpdeTv3huDWHMW4NKaqK9LkNFbSToU7Z/a51vWgMSWuUrVg1+CEdZlob8w5JCAsW
+         +Jg8+CUkcd4hmB1ErVmjHcH1BbQllHtU8yyg9VGLhnJ0YjYVQUStdicogWPRo4ubgnG/
+         i33g==
+X-Forwarded-Encrypted: i=1; AJvYcCXhCJAaa71o3gEauhm+0I+030nNN6r6tzMzdENErSYVVhl4aFttihCR7P72aSNDY6MVAFo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH+719L9g+ippD03VH5iw4+WwABs2j+X0u1hUmxeFwk8WC7V8e
+	n/p8s+TeWad/+BXP23sQYAx/min0ePrre48pxZsoYdBS3Lrxd5B34a33m8KP1yz+cf+d5PyZY6D
+	q7A==
+X-Google-Smtp-Source: AGHT+IF7cWJvitveW7PxhwCFPD8smjqtOrfKXudEXX9R7O6MK16dckcWo2sUvTcAtkgvvmxZ2SsVzm3d2n8=
+X-Received: from pfwy36.prod.google.com ([2002:a05:6a00:1ca4:b0:72a:9fce:4f44])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3391:b0:1e0:d123:7166
+ with SMTP id adf61e73a8af0-1eb2148de80mr49217980637.14.1737734257383; Fri, 24
+ Jan 2025 07:57:37 -0800 (PST)
+Date: Fri, 24 Jan 2025 07:57:35 -0800
+In-Reply-To: <Z5B5TJz9vn43AFcT@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <37a79ba3-9ce0-479c-a5b0-2bd75d573ed3@stanley.mountain>
- <Z4qYrXJ4YtvpNztT@google.com> <pfx63yk5euw6zsjmmpuetfuhhk7jcann3trlirp6y5u26lljn7@mtbwoswzoae3>
-Message-ID: <Z5OzjYqOVz7nrnJ1@google.com>
-Subject: Re: [bug report] KVM: x86: Unify TSC logic (sleeping in atomic?)
+References: <20250117234204.2600624-1-seanjc@google.com> <20250117234204.2600624-3-seanjc@google.com>
+ <Z4rwlyysGukXBBw4@google.com> <Z4r4UtpAIVe-EGeI@google.com> <Z5B5TJz9vn43AFcT@google.com>
+Message-ID: <Z5O4b3c2gfdr9inN@google.com>
+Subject: Re: [PATCH 2/5] KVM: selftests: Only validate counts for
+ hardware-supported arch events
 From: Sean Christopherson <seanjc@google.com>
-To: "Michal =?utf-8?Q?Koutn=C3=BD?=" <mkoutny@suse.com>
-Cc: Yafang Shao <laoar.shao@gmail.com>, Dan Carpenter <dan.carpenter@linaro.org>, kvm@vger.kernel.org, 
-	Peter Zijlstra <peterz@infradead.org>, Vincent Guittot <vincent.guittot@linaro.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Mingwei Zhang <mizhang@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jan 24, 2025, Michal Koutn=C3=BD wrote:
-> On Fri, Jan 17, 2025 at 09:51:41AM -0800, Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > That's not the problematic commit.  This popped because commit 8722903c=
-bb8f
-> > ("sched: Define sched_clock_irqtime as static key") in the tip tree tur=
-ned
-> > sched_clock_irqtime into a static key (it was a simple "int").
-> >=20
-> > https://lore.kernel.org/all/20250103022409.2544-2-laoar.shao@gmail.com
->=20
-> Thanks for the analysis, it's spot on. What a bad luck.
->=20
-> Is there a precedent for static key switching in non-preemptible
-> contexts?
+On Wed, Jan 22, 2025, Mingwei Zhang wrote:
+> On Fri, Jan 17, 2025, Sean Christopherson wrote:
+> > On Sat, Jan 18, 2025, Mingwei Zhang wrote:
+> > > On Fri, Jan 17, 2025, Sean Christopherson wrote:
+> > > > @@ -582,18 +585,26 @@ static void test_intel_counters(void)
+> > > >  
+> > > >  	/*
+> > > >  	 * Detect the existence of events that aren't supported by selftests.
+> > > > -	 * This will (obviously) fail any time the kernel adds support for a
+> > > > -	 * new event, but it's worth paying that price to keep the test fresh.
+> > > > +	 * This will (obviously) fail any time hardware adds support for a new
+> > > > +	 * event, but it's worth paying that price to keep the test fresh.
+> > > >  	 */
+> > > >  	TEST_ASSERT(nr_arch_events <= NR_INTEL_ARCH_EVENTS,
+> > > >  		    "New architectural event(s) detected; please update this test (length = %u, mask = %x)",
+> > > > -		    nr_arch_events, kvm_cpu_property(X86_PROPERTY_PMU_EVENTS_MASK));
+> > > > +		    nr_arch_events, this_cpu_property(X86_PROPERTY_PMU_EVENTS_MASK));
+> > > 
+> > > This is where it would make troubles for us (all companies that might be
+> > > using the selftest in upstream kernel and having a new hardware). In
+> > > this case when we get new hardware, the test will fail in the downstream
+> > > kernel. We will have to wait until the fix is ready, and backport it
+> > > downstream, re-test it.... It takes lots of extra work.
+> > 
+> > If Intel can't upstream what should be a *very* simple patch to enumerate the
+> > new encoding and its expected count in advance of hardware being shipped to
+> > partners, then we have bigger problems.  I don't know what level of pre-silicon
+> > and FPGA-based emulation testing Intel does these days, but I wouldn't be at all
+> > surprised if KVM tests are being run well before silicon arrives.
+> 
+> Right, Intel folks will be the 1st one that is impacted. But it should
+> be easy to fix on their end. But upstreaming the change may come very
+> late.
 
-Abuse static_key_deferred to push the patching to a workqueue?
+And I'm saying we do what we can to motivate upstreaming the "fix" sooner than
+later.
 
-> More generally, why does KVM do this tsc check in vcpu_load?=20
+> > I am not at all convinced that this will ever affect anyone besides the Intel
+> > engineers doing early enablement, and I am definitely not convinced it will ever
+> > take significant effort above beyond what would be required irrespective of what
+> > approach we take.  E.g. figuring out what the expected count is might be time
+> > consuming, but I don't expect updating the test to be difficult.
+> 
+> It will affect the downstream kernels, I think? Like Paolo mentioned,
+> old distro kernel may run on new hardware. In usual cases, Intel HW has
+> already come out for a while, and the upstream software update is still
+> there under review.
 
-The logic triggers when a vCPU migrates to a different pCPU.  The code dete=
-cts
-that the case where TSC is inconsistent between pCPUs, and would cause time=
- to go
-backwards from the guest's perspective.  E.g. TSC =3D X on CPU0, migrate to=
- CPU1
-where TSC =3D X - Y.
+This isn't a usual case.  Or at least, it shouldn't be.  The effort required
+should be more on par with adding Family/Model/Stepping information, and Intel
+is quite capable of landing those types of changes well in advance of general
+availability.
 
-> Shouldn't possible unstability for that cpu be already checked and decide=
-d at
-> boot (regardless of KVM)? (Unless unstability itself is not stable proper=
-ty.
-> Which means any previously measured IRQ times are skewed.)
+E.g. commit 7beade0dd41d ("x86/cpu: Add several Intel server CPU model numbers")
+added Sierra Forest and Granite Rapids two years before they launched.  I don't
+know when third parties first got silicion, but I would be surprised if it was
+much, if at all, before that commit.
 
-This isn't a problem that's unique to KVM.  The clocksource watchdog also m=
-arks
-TSC unstable from non-preemptible context (presumably from IRQ context?)
+> Fixing the problem is never difficult. But we need a minor fix for each new
+> generation of HW that adds a new architecture event. I can imagine fixing
+> that needs a simple patch, but each of them has to cc stable tree
 
-  clocksource_watchdog()
-  |
-  -> spin_lock(&watchdog_lock);
-     |
-     -> __clocksource_unstable()
-        |
-        -> clocksource.mark_unstable() =3D=3D tsc_cs_mark_unstable()
-           |
-           -> disable_sched_clock_irqtime()
+Yes, but sending patches to LTS kernels isn't inherently bad.  If the changes end
+up conflicting regularly, then we can certainly reconsider the cost vs. benefit
+of the assert.
 
-Uh, and sched_clock_register() toggles the static key on with IRQs disabled=
-...
+> and with "Fixes" tag.
 
-	/* Cannot register a sched_clock with interrupts on */
-	local_irq_save(flags);
+Nit, it doesn't need a Fixes, just Cc: stable@.
 
-	...
+> > > Perhaps we can just putting nr_arch_events = NR_INTEL_ARCH_EVENTS
+> > > if the former is larger than or equal to the latter? So that the "test"
+> > > only test what it knows. It does not test what it does not know, i.e.,
+> > > it does not "assume" it knows everything. We can always a warning or
+> > > info log at the moment. Then expanding the capability of the test should
+> > > be added smoothly later by either maintainers of SWEs from CPU vendors
+> > > without causing failures.
+> > 
+> > If we just "warn", we're effectively relying on a future Intel engineer to run
+> > the test *and* check the logs *and* actually act on the warning.  Given that tests
+> > are rarely run manually with a human pouring over the output, I highly doubt that
+> > will pan out.
+> 
+> In reality, we may not even need to warn. If the test only covers what
+> it knows, then there is no alarm to report.
 
-	/* Enable IRQ time accounting if we have a fast enough sched_clock() */
-	if (irqtime > 0 || (irqtime =3D=3D -1 && rate >=3D 1000000))
-		enable_sched_clock_irqtime();
-
-	local_irq_restore(flags);
-
-> (Or a third option to revert the static-keyness if Yafang doesn't have
-
-Given there are issues all over the place, either a revert or a generic fix=
-.
+The assertion/warn isn't about test correctness, it's about ensuring test coverage
+and distributing maintenance burden.  I don't want to have to chase down someone
+at Intel that can provide the gory details on whatever architectural event comes
+along next.
