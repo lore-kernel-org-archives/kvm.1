@@ -1,272 +1,230 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292CC35952;
-	Fri, 24 Jan 2025 13:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737725218; cv=fail; b=CIWMMzljWiCbyIuOLjzlMcwDRpDPbi8GP6cVN0hB/97s7YFIXmpH67H0TgslT5hCL2qKIehMMgTkBfjOhhxGHJOW4uF81X0ntuhVuY3yeAbTbI03nQ7Gdm6+Y2gwf1mWg5I2ap9DFnfrdpjY6aEmWuI/aizw/V0GZ27Dnw4TZUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737725218; c=relaxed/simple;
-	bh=dLVhE9alcTRDKxrLk9cHnFW3U8OGQrNZd51D3ZxttIs=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YRigvDWTDxxF9ivYkRjXRTkobA9eM4Wr8IaD52G4yJEsBAHr3j/YY0EN2qBroZopvYdieM/1dDNEXsHexnVys8YReVCEDCG5PHkbyB+v2KwaSNg6T4XvkI7/soMNWxhZIId8Y5xh8UnPxpXbKQ6goWAzkFaa7L1cnETTHWH80II=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EDzJhJYS; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F246200CB
+	for <kvm@vger.kernel.org>; Fri, 24 Jan 2025 13:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737725824; cv=none; b=OGgExaaPt9RWM6gK/lova9NQXRJy+pFUB9HmBIyCWyEJ/ERm5XJpxJTmY5vt+Xmyl8axFn7EPlk9chAmI33iov/Kt4K/PxSS6OwTbYsoaq8SmEXEnPJYi9hiAp7V64/fA8kub3Gqaa4PeVS61e2OxYh31KGvGafoo6bFsJEazwc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737725824; c=relaxed/simple;
+	bh=af0DaxV6gEg0cz4KoUno4KNU4bEqf0Z7gl2SqxN9zGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t3TAB8ysaQhJWYBzdubfPEsDlqeWLKBFugYKgGn8fySf7by20M6fE/V346L2D0qTO0MbS3rYOJZBjkKMFvR6SZO80vG8AmSMsBq3iwW9dHaEryiN+KmCGu/3CUAWzXri8iyxmJq13PQsBHT6WAFL5PWILHEnobtvcXjTb/pg1bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nqLsVPrO; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EDzJhJYS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nqLsVPrO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737725218; x=1769261218;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dLVhE9alcTRDKxrLk9cHnFW3U8OGQrNZd51D3ZxttIs=;
-  b=EDzJhJYSpFLfvbYssYlV/e4m3nW5yxzeaSckOO7aLF4+Vkqn3S+tJzCs
-   2nl47S+zTgef9XfCnds9znHDvDNs5Uf4EMt5FeZgvi4ZXwtEABxtnJTZf
-   Yr0AC1DxguxmaryATD2hWRlXxZh5MevbDtjgYRWkKWDQ8QmrIo8k4eUG7
-   sO2jdWy15PWHTpp2VAE6Wn4C+Zb/azxgcOce0vNFkFtV8kM5nnDpwn4ss
-   kjv0dkHe7oKI/bNhqxTKn86w0J982VNLYO2Jt+jRQAkoZfihPnRFwrsDv
-   2skfpILyKZpnlvtTuh1lrXcS5lN+Ct7dnctVKS/u7lXQt7nTU/RWzdqzn
-   Q==;
-X-CSE-ConnectionGUID: i73cDnb5TQS+fM/13tTMRQ==
-X-CSE-MsgGUID: OnQ+yG6nS3CN+HsCs1QmdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="55670893"
+  t=1737725823; x=1769261823;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=af0DaxV6gEg0cz4KoUno4KNU4bEqf0Z7gl2SqxN9zGQ=;
+  b=nqLsVPrOq+8NFi5FtW5e88cJkCTzPl6f96OElVY6AXS44AVNvoE9f35S
+   z/wh01Vv1h6k+8JDO93Cw7dVMxxp3UZ4Re/TlcvG5Wqf9HpEpbepgS8j6
+   g8q0Cdzc6NN4XshtmKTUnUm7j25jILjhy6sr07glWNY2/9IZCO5Hzlv6r
+   dN/Rft4jivHd5/uI+vE7xF4hph6ohNJ7ASirRu/lEO//DYdvQ0lq3RdrL
+   Fm6JmWOHfzdBs5MzIIhyUdwuvnIgS1fGJIoSC5cUX+7dJ2i3cJ6tV/Ou4
+   8TBUsMQs8SGDI4WgsfW+29T6YML4wEZMsVLU4FmN2f+SzXZhMHURDv+5H
+   A==;
+X-CSE-ConnectionGUID: /jbZFH8VSj2KOSb2hMnqyQ==
+X-CSE-MsgGUID: YldXA/PmRB66wE1MvMe1Bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246166"
 X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; 
-   d="scan'208";a="55670893"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 05:26:57 -0800
-X-CSE-ConnectionGUID: ZmYRnUCvT0SaTDOCu02fLQ==
-X-CSE-MsgGUID: 7n2VO1ZNRf2X4038zk8j8g==
+   d="scan'208";a="49246166"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 05:37:02 -0800
+X-CSE-ConnectionGUID: m1YELRpEQyCroeMZVOOfMg==
+X-CSE-MsgGUID: +wRgE7xvQeC2aFaSV889oA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; 
-   d="scan'208";a="138640865"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 24 Jan 2025 05:26:56 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 24 Jan 2025 05:26:55 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Fri, 24 Jan 2025 05:26:55 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.49) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 24 Jan 2025 05:26:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MLir8fv7l79N85PzEuSDpzJdi2/X/PZyPE4Em66B42VcGUt2qNaiC5+U8zlw04k27xWpt01hDPIoxOHpgNM81Qb4ZjqgeE/D/hC4xbuHu+X42gegaeyyRCg0k/z1QgHy+mjSh1ElisJmfG+aeQHfuxpg/PbbtfmoAxPB5htg5A0egYNcet+/Kom+v15Mg5u6MdSoX+xdYsK7FeDZF9nJgu213e35tujKOZhZ9magKrnzvyQyqUtZW+8H2uGlpN19ERpw3osr0Y9Tg7Eo/wlP7bifAHCPWAQFCpa0GGYDxgX7hZOudlGymUTkS102+oHbuZYkF0CMhHlWM6mBO5Nj2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L3gd6DTnQCkipaKyWTEOX5J5zoQBsMquc6yboH8QzeE=;
- b=NuIA9Nw6Vqq24tgm8b/y49LM/3/n5YrMDIgRjIEXXBTwU70wnyJ8Acd53Ju3/5u/w4ZZc8R3nsihMXZw++0ecTYU5B6pQNn4kHx9RZta35Ht5LkgudSMM99wzT/bAVhAK2rowtTHuOzNkrK0KO8pMKyuBfLzYUrg7GYOcomoAUwNA8uwbADWWTdzRBxVZ7lbbKlsZb++RKZswG/aFg/7pT5GA3g92WrZhjdSYX5RZMTdtRkzgxJnaYVkPHtsVb9uN/umlO0kIYxdI4X1+gnV703UwzkSH75FjTgGpZPI4R9gpwyuULhi4vKSEYl0J5jg4NtVapXZTQJVMUELhVQtuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
- by PH7PR11MB6331.namprd11.prod.outlook.com (2603:10b6:510:1fd::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.18; Fri, 24 Jan
- 2025 13:26:54 +0000
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a%4]) with mapi id 15.20.8377.009; Fri, 24 Jan 2025
- 13:26:53 +0000
-Message-ID: <84f9ab89-483f-4659-8e7c-5b69748d83b8@intel.com>
-Date: Fri, 24 Jan 2025 21:31:59 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFCv2 06/13] iommufd: Make attach_handle generic
-To: Nicolin Chen <nicolinc@nvidia.com>
-CC: <jgg@nvidia.com>, <will@kernel.org>, <robin.murphy@arm.com>,
-	<kevin.tian@intel.com>, <tglx@linutronix.de>, <maz@kernel.org>,
-	<alex.williamson@redhat.com>, <joro@8bytes.org>, <shuah@kernel.org>,
-	<reinette.chatre@intel.com>, <eric.auger@redhat.com>, <yebin10@huawei.com>,
-	<apatel@ventanamicro.com>, <shivamurthy.shastri@linutronix.de>,
-	<bhelgaas@google.com>, <anna-maria@linutronix.de>, <yury.norov@gmail.com>,
-	<nipun.gupta@amd.com>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<patches@lists.linux.dev>, <jean-philippe@linaro.org>, <mdf@kernel.org>,
-	<mshavit@google.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<smostafa@google.com>, <ddutile@redhat.com>
-References: <cover.1736550979.git.nicolinc@nvidia.com>
- <c708aedc678c63e2466b43ab9d4f8ac876e49aa1.1736550979.git.nicolinc@nvidia.com>
- <62ccc75d-3f30-4167-b9e1-21dd95a6631d@intel.com>
- <Z4wP8ad/4Q5wMryd@nvidia.com>
- <2b6c52f6-037f-43d9-8384-7b48764a3e81@intel.com>
- <Z43lMrJDdFEDaArW@nvidia.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <Z43lMrJDdFEDaArW@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR04CA0007.apcprd04.prod.outlook.com
- (2603:1096:4:197::19) To DS0PR11MB7529.namprd11.prod.outlook.com
- (2603:10b6:8:141::20)
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="111804081"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:36:58 -0800
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Igor Mammedov <imammedo@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Francesco Lavra <francescolavra.fl@gmail.com>,
+	xiaoyao.li@intel.com,
+	qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: [PATCH v7 00/52] QEMU TDX support
+Date: Fri, 24 Jan 2025 08:19:56 -0500
+Message-Id: <20250124132048.3229049-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|PH7PR11MB6331:EE_
-X-MS-Office365-Filtering-Correlation-Id: f066dfd5-022e-4a99-681b-08dd3c7ac422
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RzRjbTZhNWdyZkNrN0NoZDM1ZjFxUlNiOG0wTlJtTDdYU1R3YzE4NlBoU2U1?=
- =?utf-8?B?UkxCVmVlNWVpR21LdEEvNDNsanpRTWZGeE1DSUZTcEtsYVBqQkJPSFI1OHMr?=
- =?utf-8?B?VGNETWR3djZwQVQxOVNXNW9PS3dkTTRXUDhCNy9xVzBqalRydFF2MjRwMDFL?=
- =?utf-8?B?M1padHZ6czdDb3BWUWZtaHZUQVdveDBUMityQ0pvSkQwTk5wM3A1MzBFMHAr?=
- =?utf-8?B?V0JiNGZiTzNHUVI3bm40cExUQmNFYjk0WjBnY092ZHlHOHZjRlo2Y09YZEwx?=
- =?utf-8?B?anlwUDA3QTQvOUIyaExJMisxcWswekZySkJ4d0pTaFV5NHRpNzlDTWFBTTBB?=
- =?utf-8?B?bXRQa0R2WXluVERjMGlIRVVrNnh5c3BFdVdheUlDRDh1SHExL1Bqa1VteG5B?=
- =?utf-8?B?V1dJYWtGVmttMUR3blduUDRrVEExOEZNakdYTVA1Tlk0aUFIM1hwTm1DOGly?=
- =?utf-8?B?RGhST2I2cTlia2Q2WWdNOTIxMldHVFFVVWdONHc0Ky9UT2ttMGtOSE5hNHcx?=
- =?utf-8?B?ald3WElVanhmN1N2RUFkTFJrc3Z1Tk9yWS9zdm9OcVRJTjAvTjlFWmhtZFZI?=
- =?utf-8?B?TU5wSUwzN1Y3NlE2LzRXWlpOWWdUc2R6bmlud25KNEF1bThuamtXZ3hSdHZt?=
- =?utf-8?B?alkvc0FtRVJianFqZ2dwdnFoaWZtdGZMYVZ2eEtKUG9zV3g3c0xlVGtabEtO?=
- =?utf-8?B?azk3eVZOY3ZHUzIyMnM2bXVieG5jbm4yVVZiQ0lrYm9sVzFHYVlzaWNybmd4?=
- =?utf-8?B?dE9uS05XZ3RjR1lGSEYvMFR2dnplME9MQ2tueitQdDdpWjNJVXY2SUJwSXF4?=
- =?utf-8?B?VjExdjdoZ2RjcmNxKzBGczN3cDJ6SWJXK2dxbGJpZFh2b20yZ0xVNDVpZGlC?=
- =?utf-8?B?UzhENVdCa09CTmpnK2taT2Z0d3FuK3NsN3hIcFR5eXFHbjJuQW9lbEs4bTA4?=
- =?utf-8?B?QnR1WDMwYmw5TUFPTHNiVVpMbjZVajg4QklDVEZTcExXWGQ2dWFLbFJUbitS?=
- =?utf-8?B?TEI0YWMybVd1dFkzeXpEbTB6bk5BN0FlWUNMbXRzekRGYUZLcUdvSjNmUFZw?=
- =?utf-8?B?dUw5eS9DS3UweUJpOThSZ2plVnF1cSs5bGVCSWVUdEhkV3B6VlFXRVZLYXE0?=
- =?utf-8?B?NmYxaGdjTlMzNWNESEhVR2VLWWtHM2l3QWZ6YklkeCtrWTlXTGlyV2t3WlRx?=
- =?utf-8?B?VWlkcXJPSXJhMndLd3BuK0I5L2hUdnpmNEhPZjFxdHJiSXhjZ0dQbmcrR0dR?=
- =?utf-8?B?dytjVnZBTWdiL0ZSelFHODVyQk1EUTBiSGtEWWRqOFozWjRxWkhFb3kzTkVy?=
- =?utf-8?B?VVBBOVh2SDNjL092ZWliTTRiR2JlaVUyQXNPaURCcjd1WmVNemhMTGlFUUs5?=
- =?utf-8?B?VjRENldORkV2a0EzZE1SbU5kMEYxUmFKeXJmb1hJdUsrdHM1SzIxdHZGSlVv?=
- =?utf-8?B?eXJBb2g5WTdOSTBHSDkvbG9BaGtZZXQrbnQ0QVdsN1h1aGdlMkp6a0ZhMDVD?=
- =?utf-8?B?Nm05Ukl2M3NjSTVrcjNoaXYyeWxhMmdCOTFtb3pneDVLMEYxbkVmdis1QmZp?=
- =?utf-8?B?SkxXcnpSYWNTNFBQQlNuV08rNzZRRkYrYlhBV3RzZ3phSGZudW5CWElYNjBx?=
- =?utf-8?B?aXZVeVZPY1dDanFMbW9ZV3NsTmQ2Mng5enJBR1F1L1AxVHIzWEFITmVEek9v?=
- =?utf-8?B?Z2ovdVpVV1FwMUVOWGh1aFAxRE4yREdFUW0xVmh3WXAxekxTeUhWekJSMW5w?=
- =?utf-8?B?cDhCNHNkOG9qcy9KTUNPWi9MU0ZjM0UyZVpxcHo4WCtKNkpuSkQyS1hnRDJK?=
- =?utf-8?B?MmVkVnRzV01vUmJMSG8yb0UvVUFQRkdMNTdacWNlSXBqZzhyNkh5WlY4M2Uv?=
- =?utf-8?Q?eR8Z2nrIL0XYE?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7529.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2lET2dpRyt6QXVXSlhwc1lsenkwdFNOQmE0UWhQYmVWRy9iazk1dElqQ0NE?=
- =?utf-8?B?NkV5a3VJMDgwNVpSS3ljZVl0TnJURlhZY3pmdTJNRlpHNENNQndyQUVWOWcv?=
- =?utf-8?B?eHNacU4vNjZidkdCOHVjYU1BcmthUXF6ZzVUY0l4QlBvNHFyT3RqRktpS2tl?=
- =?utf-8?B?Mmp4VGVuZDBWUDE0QkZxWjhLSjFPVURNbjZlSHJteGVNV3Z3TlZ2d0theFE2?=
- =?utf-8?B?NWFrMzhkNHlKMVdyMGptL1I2TUJFSEMwYWl4dXhtRHEvOXo1WjUzQ3J3QzVM?=
- =?utf-8?B?dWxsYkl4RFNXeUJVR0JRYkFnMUNQRkJBa0pKenc4R1ZhM2FjQW9NWjNzL1RV?=
- =?utf-8?B?VFF5UTBJTFJic2dBSmxIaVdoc2w2WnM0NXJBOFV4Q05JWVhuSVRMSFVqTWRt?=
- =?utf-8?B?NmMreDNnQ3pZeWJCOUJ2eXBRdjA5VkQzM0owRTB2RjdiWjFtNFNEcEZsaTBD?=
- =?utf-8?B?dVNaQjN0UElCcS9LUTB5aEVncFNiazBKL3pjRmNPMXJJU1ZubGVnVFZyV2dK?=
- =?utf-8?B?bHhOOVdlNHBZWHhvOXZBSG13T2kxT3hLK04zS05Od1IxdHVpa1o5NUhPTHZ4?=
- =?utf-8?B?Q3dUc0xYM0ZrSXNicXQ1Ly9LNExET1F6VTZhWmowa0tza1M0N2pMZjIwdGsw?=
- =?utf-8?B?U1JyTWVzZFVzVVdoZzgybmpuaVB3eUNJajVmWTdxa1NLZzR6cWREZTVxMnRr?=
- =?utf-8?B?VzkrRXdwTFVXdm9QMnBROEN4bWd6a3E1bW92Ky9ic0dYa1MvUlREemcvZFRJ?=
- =?utf-8?B?SURnaUNoVmt4bFNmQzJwTUxqSWZRTGwrNE1WZ0pIZ1ZBbkc1NmFTZHVRMng0?=
- =?utf-8?B?a04xcTNZaGc4YkZKYXIzUW9XMENqYmNjdE5LSDcyaktIUDJyUFRpUno0Rklw?=
- =?utf-8?B?Mnh6ZWF0cWpjTWdjTGQxenVPVWRhL3Z1Qll4anRrbDRRbVlteXFUdHBINnNV?=
- =?utf-8?B?S0REYjZoRGNwYmRUc2N3L2xPMUpxbHZHTithczJaN0cweU42OTR0cmhPRjVr?=
- =?utf-8?B?T1ZmV0Zwcmhha3orRDdJalpuRzlkYWR3KzM2aWRndlJPRE8xSUdBaENqM3ZI?=
- =?utf-8?B?cVdQc05YZUZlbjNHa3QrWk5PdmVja1NqZ2RDb3ZZOG5TczlvZVJVbTNUQlZk?=
- =?utf-8?B?TzVSbGN4ZFowOTJpSzNOWkZhbjdyR1RUOFZObkI4L3VPaUd3NWJvTlpXYnBt?=
- =?utf-8?B?L2pIQ3p2R1QzSUtJSERKM2dINTBlUkVUeTVnOFJ1bzNpVG5Db3NzS1pkbll6?=
- =?utf-8?B?RG9IbHR2L1o5TmdDb3JxN1NJMUpDcFFpazlMVEovby8vVExMQm5oN2pNcU1M?=
- =?utf-8?B?bkk1K0x0V3FlVm9RUDM0U3k5cUt5UGhOb3dWb0VMc25PZHN1dmVNdDArUDY5?=
- =?utf-8?B?a1J1NFlUKzhDWUN3TkM0SFN2dytqdW9kRFZTeEtEQnNkMnBPazFmbkxKeUlF?=
- =?utf-8?B?SmR6MHpuZEQzUU5jbXBxV3pibXRHY0tTZzZaQ2FzbUJNTkh1d2Q3RTUwaEw0?=
- =?utf-8?B?QmJHK21RRTZWaFVtMG9Mczg4WUxzUkxXdy9GOTFXOFJIQVg1RWFOSThVcXIv?=
- =?utf-8?B?NCtqTHZidCt2V0o4dk5tMTM1dlFBdjl0NnMzeUtXa0c0QVkxam5Fbi9NUUhM?=
- =?utf-8?B?cWVQMlJCVVFNeWlMM0E3TTU4dUtOVHRBbGNUaDN5TGl2RTJoUmk0MjBpVUt4?=
- =?utf-8?B?VnFYN1FPRXFORSsrNW9IeHR1aGFjaWdIYjRwUEd4WHVRNFVVZGJNV296WHNq?=
- =?utf-8?B?Mm55T3FUTFh4NHA2U2VueEp3Z05yVGNvUEM4WnpKTkdaQ3JpeWIweUlXalpk?=
- =?utf-8?B?MVZpT0tVejhZRktEVXpYc0pONHVpRHcxdXRWU1hwTUUwZjA4L3AyOXhuT3Z5?=
- =?utf-8?B?d2loaGFIMHgrMHQzS3U4ajM0NGpMS21pVGk5MFp4V3YrK1ZxaEhwMzJaUWd0?=
- =?utf-8?B?eXB5Y1JHbEJWZndVbnlUY0xNQnllWlRsVG9LbEk3eVN4UkdPWkR4MUhzdHlw?=
- =?utf-8?B?OVRHK2RGYWtiSnlsRzJjdW1UQ2xMOXVGOGtaTXIvWXFmWURsa3J2eW5RZ2h6?=
- =?utf-8?B?ZG5EanoxRFcxZTlRSjYrMFpNS25BVS9WVzYvLzM0ZWx6RmpmWVYyUXdVVjlI?=
- =?utf-8?Q?9/s9IRRwfL09YzLF+gnAE5d+1?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f066dfd5-022e-4a99-681b-08dd3c7ac422
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2025 13:26:53.4324
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w/ELXWnrVZsGcFK6OCsoDHWrjRVAYNN6zt7dP5TbiiL8whrTgsssmZw8tkfl1mQGEtk/+Q04ReN5AreE/jXnOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6331
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On 2025/1/20 13:54, Nicolin Chen wrote:
-> On Sun, Jan 19, 2025 at 06:40:57PM +0800, Yi Liu wrote:
->> On 2025/1/19 04:32, Nicolin Chen wrote:
->>> On Sat, Jan 18, 2025 at 04:23:22PM +0800, Yi Liu wrote:
->>>> On 2025/1/11 11:32, Nicolin Chen wrote:
->>>>> +static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
->>>>> +				      struct iommufd_device *idev)
->>>>> +{
->>>>> +	struct iommufd_attach_handle *handle;
->>>>> +	int rc;
->>>>> +
->>>>> +	if (hwpt->fault) {
->>>>> +		rc = iommufd_fault_domain_attach_dev(hwpt, idev, true);
->>>>> +		if (rc)
->>>>> +			return rc;
->>>>> +	}
->>>>> +
->>>>> +	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
->>>>> +	if (!handle) {
->>>>> +		rc = -ENOMEM;
->>>>> +		goto out_fault_detach;
->>>>> +	}
->>>>> +
->>>>> +	handle->idev = idev;
->>>>> +	rc = iommu_attach_group_handle(hwpt->domain, idev->igroup->group,
->>>>> +				       &handle->handle);
->>>>> +	if (rc)
->>>>> +		goto out_free_handle;
->>>>> +
->>>>> +	return 0;
->>>>> +
->>>>> +out_free_handle:
->>>>> +	kfree(handle);
->>>>> +	handle = NULL;
->>>>> +out_fault_detach:
->>>>> +	if (hwpt->fault)
->>>>> +		iommufd_fault_domain_detach_dev(hwpt, idev, handle, true);
->>>>> +	return rc;
->>>>> +}
->>>
->>> Here the revert path passes in a handle=NULL..
->>
->> aha. got it. Perhaps we can allocate handle first. In the below thread, it
->> is possible that a failed domain may have pending PRIs, it would require
->> the caller to call the auto response. Although, we are likely to swap the
->> order, but it is nice to have for the caller to do it.
->>
->> https://lore.kernel.org/linux-iommu/f685daca-081a-4ede-b1e1-559009fa9ebc@intel.com/
-> 
-> Hmm, I don't really see a point in letting the detach flow to
-> scan the two lists in hwpt->fault against a zero-ed handle...
-> which feels like a waste of CPU cycles?
+This is the v7 series of TDX QEMU enabling. The series is also available
+in github:
+https://github.com/intel-staging/qemu-tdx/tree/tdx-qemu-upstream-v7
 
-I meant you may call iommufd_fault_domain_attach_dev() after allocating
-handle. Then in the error path, the handle is not zeroed when calling
-iommufd_fault_domain_detach_dev(). The cpu circle will not be wasted if
-if the two lists are empty. But it would be required if the lists are not
-empty. :)
+To boot TD guest, please always use the latest TDX module (1.5) and OVMF
+available.
 
-> And I am not sure how that xa_insert part is realted?
+Note, this series has a dependency on
+https://lore.kernel.org/qemu-devel/20241217123932.948789-1-xiaoyao.li@intel.com/
 
-Maybe I failed to make it clear. That thread had discussed a case that the
-PRIs may be forwarded to hwpt before the attach succeeds. But it is needed
-to flush the PRIs in htwp->fault. Although I would swap the order of
-xa_insert() and __iommu_set_group_pasid(), it is still nice if iommufd side
-flushes the two lists in the error handling path.
+=== future work ===
+- CPU model
 
-Regards,
-Yi Liu
+  It now only supports booting TD VM with "-cpu host". It is the only
+  case that not supposed to hit any warning/error.
+
+  When using named CPU model, even the same model as host, it likely
+  hits warning like some feature not supported or some feature enforced
+  on. It's a future work to decide if needs to introduce TDX specific
+  named CPU models.
+
+- Attestation support
+
+  Attestation support is dropped in this version becuase KVM side remove
+  the support of the related user exit. Atttestation support will be
+  submitted separately when KVM regain the support.
+
+- gdb support
+
+  gdb support to debug a TD in off-debug mode is left as future work.
+
+=== Changes in v7 ===
+ - Remove patch 40 and 41. Need to re-think on it and will submit them
+   later.
+ - Patch 44 in v6 is replaced by patch 38 in v7;
+ - Patch 45 in v6 is replaced by patch 39 in v7;
+ - Drop patch 58 and 59 in v6, since the variant of them is merged
+   already;
+ - squash some patches into their user patch;
+ - For other, please see individual patch for change history;
+
+v6:
+https://lore.kernel.org/qemu-devel/20241105062408.3533704-1-xiaoyao.li@intel.com/
+
+Chao Peng (1):
+  i386/tdx: load TDVF for TD guest
+
+Isaku Yamahata (4):
+  i386/tdx: Make sept_ve_disable set by default
+  i386/tdvf: Introduce function to parse TDVF metadata
+  i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
+  i386/tdx: Don't synchronize guest tsc for TDs
+
+Xiaoyao Li (47):
+  *** HACK *** linux-headers: Update headers to pull in TDX API changes
+  i386: Introduce tdx-guest object
+  i386/tdx: Implement tdx_kvm_type() for TDX
+  i386/tdx: Implement tdx_kvm_init() to initialize TDX VM context
+  i386/tdx: Get tdx_capabilities via KVM_TDX_CAPABILITIES
+  i386/tdx: Introduce is_tdx_vm() helper and cache tdx_guest object
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+  i386/tdx: Initialize TDX before creating TD vcpus
+  i386/tdx: Add property sept-ve-disable for tdx-guest object
+  i386/tdx: Wire CPU features up with attributes of TD guest
+  i386/tdx: Validate TD attributes
+  i386/tdx: Set APIC bus rate to match with what TDX module enforces
+  i386/tdx: Implement user specified tsc frequency
+  i386/tdx: Parse TDVF metadata for TDX VM
+  i386/tdx: Don't initialize pc.rom for TDX VMs
+  i386/tdx: Track mem_ptr for each firmware entry of TDVF
+  i386/tdx: Track RAM entries for TDX VM
+  headers: Add definitions from UEFI spec for volumes, resources, etc...
+  i386/tdx: Setup the TD HOB list
+  i386/tdx: Call KVM_TDX_INIT_VCPU to initialize TDX vcpu
+  i386/tdx: Finalize TDX VM
+  i386/tdx: Enable user exit on KVM_HC_MAP_GPA_RANGE
+  i386/tdx: Handle KVM_SYSTEM_EVENT_TDX_FATAL
+  i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility
+  i386/cpu: introduce x86_confidential_guest_cpu_instance_init()
+  i386/tdx: implement tdx_cpu_instance_init()
+  i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID 0x1f
+  i386/tdx: Force exposing CPUID 0x1f
+  i386/tdx: Set kvm_readonly_mem_enabled to false for TDX VM
+  i386/tdx: Disable SMM for TDX VMs
+  i386/tdx: Disable PIC for TDX VMs
+  i386/tdx: Only configure MSR_IA32_UCODE_REV in kvm_init_msrs() for TDs
+  i386/apic: Skip kvm_apic_put() for TDX
+  cpu: Don't set vcpu_dirty when guest_state_protected
+  i386/cgs: Rename *mask_cpuid_features() to *adjust_cpuid_features()
+  i386/tdx: Implement adjust_cpuid_features() for TDX
+  i386/tdx: Apply TDX fixed0 and fixed1 information to supported CPUIDs
+  i386/tdx: Mask off CPUID bits by unsupported TD Attributes
+  i386/cpu: Move CPUID_XSTATE_XSS_MASK to header file and introduce
+    CPUID_XSTATE_MASK
+  i386/tdx: Mask off CPUID bits by unsupported XFAM
+  i386/tdx: Mark the configurable bit not reported by KVM as unsupported
+  i386/cgs: Introduce x86_confidential_guest_check_features()
+  i386/tdx: Fetch and validate CPUID of TD guest
+  i386/tdx: Don't treat SYSCALL as unavailable
+  i386/tdx: Make invtsc default on
+  i386/tdx: Validate phys_bits against host value
+  docs: Add TDX documentation
+
+ accel/kvm/kvm-all.c                        |   17 +-
+ configs/devices/i386-softmmu/default.mak   |    1 +
+ docs/system/confidential-guest-support.rst |    1 +
+ docs/system/i386/tdx.rst                   |  156 +++
+ docs/system/target-i386.rst                |    1 +
+ hw/i386/Kconfig                            |    6 +
+ hw/i386/kvm/apic.c                         |    5 +
+ hw/i386/meson.build                        |    1 +
+ hw/i386/pc.c                               |   29 +-
+ hw/i386/pc_sysfw.c                         |    7 +
+ hw/i386/tdvf-hob.c                         |  130 +++
+ hw/i386/tdvf-hob.h                         |   26 +
+ hw/i386/tdvf.c                             |  187 +++
+ hw/i386/x86-common.c                       |    6 +-
+ include/hw/i386/tdvf.h                     |   45 +
+ include/standard-headers/uefi/uefi.h       |  187 +++
+ include/system/kvm.h                       |    1 +
+ linux-headers/asm-x86/kvm.h                |   70 ++
+ linux-headers/linux/kvm.h                  |    1 +
+ qapi/qom.json                              |   35 +
+ qapi/run-state.json                        |   31 +-
+ system/runstate.c                          |   67 ++
+ target/arm/kvm.c                           |    5 +
+ target/i386/confidential-guest.h           |   44 +-
+ target/i386/cpu.c                          |   50 +-
+ target/i386/cpu.h                          |   27 +
+ target/i386/host-cpu.c                     |    2 +-
+ target/i386/host-cpu.h                     |    1 +
+ target/i386/kvm/kvm.c                      |  114 +-
+ target/i386/kvm/kvm_i386.h                 |   15 +
+ target/i386/kvm/meson.build                |    2 +
+ target/i386/kvm/tdx-stub.c                 |   20 +
+ target/i386/kvm/tdx.c                      | 1213 ++++++++++++++++++++
+ target/i386/kvm/tdx.h                      |   65 ++
+ target/i386/sev.c                          |    9 +-
+ target/loongarch/kvm/kvm.c                 |    5 +
+ target/mips/kvm.c                          |    5 +
+ target/ppc/kvm.c                           |    5 +
+ target/riscv/kvm/kvm-cpu.c                 |    5 +
+ target/s390x/kvm/kvm.c                     |    5 +
+ 40 files changed, 2517 insertions(+), 85 deletions(-)
+ create mode 100644 docs/system/i386/tdx.rst
+ create mode 100644 hw/i386/tdvf-hob.c
+ create mode 100644 hw/i386/tdvf-hob.h
+ create mode 100644 hw/i386/tdvf.c
+ create mode 100644 include/hw/i386/tdvf.h
+ create mode 100644 include/standard-headers/uefi/uefi.h
+ create mode 100644 target/i386/kvm/tdx-stub.c
+ create mode 100644 target/i386/kvm/tdx.c
+ create mode 100644 target/i386/kvm/tdx.h
+
+-- 
+2.34.1
+
