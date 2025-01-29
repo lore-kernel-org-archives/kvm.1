@@ -1,173 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771211E200E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC3F1E25F1
 	for <kvm@vger.kernel.org>; Wed, 29 Jan 2025 17:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738171425; cv=none; b=tRTZudBxajYBhxdbANae4GsI/xPUUccXREz/DRrfbZkf4xymMW/w6fvY2iD3vC3zRV8PH2x3HW549djjFB4najOq50BOKN06n41lBE92ppnU4oWF9o4Zn7DR6yNYWxCURAqiK8lNG/2hlIEFqzUXOWSi5K3PnGttl7dxpZkiAus=
+	t=1738171425; cv=none; b=Q8knrQlmg3Qct4SvGwxHVizkjgKZaRcODsR76DQBwpqzNigJoAg0AlZN+zOt2eetJwCOolWhukOMlTLlHRiRG01adXwVxk8+Xj/h9EvJV7Asc8DKpx70HlUuvvANLE9dlAc+OjwslsR200AjZ+irDXNKH0OoNxC9RuZGVGzDvig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738171425; c=relaxed/simple;
-	bh=lTP2WZGK7rl5hpI7hR7S+twULR2cKHG1SjFFxN33iF0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=puABYAZFeQSmebRc4dY9mrQKQMPDnuQgStGenOPO8Ztdklv0J+ULjuK6qupy5WbLy2Faeik3IOVnWfEEPqB1+thBKX0wgsB4JlBANCdi/PiB3asrsUaP8e21veQ5AbT6rhCTcHQBH3bjU2hJ2VdFKPeJt1SUojT4v3zd72ixYuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3bAWx54; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	bh=zjFy8tL6ycA9u7oJbIEiNZF5VVWtz8XZQG69IoGVR+I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WN1VL+7vt0pfULvSk9GVX66/N9YmFYfbvYlKH3lyoqH/ZQkfokAZzQ/is5UI26D1b+rIIYyPDtxnFdUi4lGcxxLQpcy52+Y0nsTHchMEA1Hp8KbtidS9iG5Ux2cuOEC1eXAzB5rJWohb7sMrJ+STuiyWZzg/Bw//j85WozU4gJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqphjvqB; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3bAWx54"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738171422;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cUinW45xP5e5WNhMH3KfMBEndfX+Wq9Gq0wkIWuPQkM=;
-	b=I3bAWx54rCorILOhbHxkyJWp3CX1p+bjvafSd9mEXnFeVpi4rpI8JfJ79xnEE6YiEg3NnA
-	IF65reYuPPsyD6NPtXSV5DMxfUktk3bTOV/FDsRBei9v5KpClYf6XNoTZFTdrxGAbz2wRH
-	m4nqVlI1DjJKTpzfHP2LlmnaRBIbz70=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-HdeL1vELMDq9g6WeKj3eWg-1; Wed, 29 Jan 2025 12:23:39 -0500
-X-MC-Unique: HdeL1vELMDq9g6WeKj3eWg-1
-X-Mimecast-MFC-AGG-ID: HdeL1vELMDq9g6WeKj3eWg
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361b090d23so36494855e9.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jan 2025 09:23:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqphjvqB"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-436328fcfeeso54865805e9.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jan 2025 09:23:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738171422; x=1738776222; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LJ160MXGhYFmROJLbL7eYj3t8ftygUUVZySLs0qAKPY=;
+        b=CqphjvqBG/mlgglSiXD+HWlOvWlpzgEGjsB0f+lu3WknJPYy2S5EV/r24Drq9UDB3c
+         iC27A1JeNRVnD7wtign+DUZEAv9KzUeGnPO7jLaqASTGxmK707OdH06fEnSwumtCVh9U
+         WkEHrNBYOC8f5vRKLP5bBC/OYA8NNig0vulkgqcIukb0y7YzkG9K7uWa2suLgv/U3BSd
+         uv9SwLqLzmMk0o8b4S9Q8MU8R8pcr+FNuzuCRMFEnDswaopZXZQzj1tKK13letyVJwHn
+         C1F8l4RsHQhsm/HyArjhp8wHMQlguMAJN6kA9HDUDU3pxsfz0f2KCf8166QUcMsRkD5f
+         Aesw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738171418; x=1738776218;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cUinW45xP5e5WNhMH3KfMBEndfX+Wq9Gq0wkIWuPQkM=;
-        b=MC53zZhVf6ief50pwrXRfQwZwcMYRX2y0JI+Ov+hphk8Ee/NEK2IYn9yx01BvmkRZY
-         H3rKr3pEwAOwwvxnEVSMntJTgpFf8hByylbWEq7xp4Ae8vfPZrsF0rjRhLdSEztFEoxc
-         /UWuTq0i+uJkZ3tP80D5fTV70VRLkiJp/fHUYFGXaDhM0QYqUH8Vq6cMIq+bdH7TZWLE
-         e3cDVwwJ6XOB4mt7lbYcm0EUIdWECPDGDH1P3nxVOE+DaABc1uaToTSQX1eww1l2vwjd
-         fNPX8Mc7rzZCT+27gusozcNpQGJvgHSZJwvHOluYQhPdHzPv8YCn8EXql4ngqmwHVuZX
-         sDFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWM4hTI+gA+A0pg8oMV8fDNZMm0RQh7PRidiW4w2HOvzljNnBD1DB8CndHZXK6OqJYHKXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJpC08EVxINay2jrnf+QFiXhBXonwNfdBcuHEjCx7txPB5Jqzk
-	bdJ/yGDCfaBn97d8t4cjJL2Ln6BDJtbJvUe0xZaIZ3tb91QMUNsKOgUMiR/18k92d5SxgBMNvxo
-	K9wC+VZiC78+YfaOm6Mt1/+fotUF5tRtkFrqa0dd3s047504tBg==
-X-Gm-Gg: ASbGncsfuXonJKTZxUIxK6HXFyTV1MTrC5KvO/jz6t7W7byqFXc/gUuPdMhhDzL44ES
-	5SgWmnY/fqrta3b8kCS244N+mTzZTe4qFQK5sodlx9bc5qufPkixZb44PPqfv+OYIfLwbk5nUZW
-	AyH+8yjAczzWbsn1AVKOJhmKeZo4o/4HQUc3oBatZbTBqPNBlEYI6tdKXOuNojoUTCvvRgJi+VF
-	AFRrmiKb1uUKhBSrcFSN/6dmWWaddmzHbWzHYpWvVGQEubfs8CSZnmrE39v4wk3b3Ic/RErxzDU
-	BeuesHTrbWQbzc0+Rvb4UnunOPwU0f9vF+H4pvsQjJoTVzd9B3BE
-X-Received: by 2002:a05:600c:468d:b0:434:f270:a513 with SMTP id 5b1f17b1804b1-438dc429eb0mr37292645e9.29.1738171418181;
-        Wed, 29 Jan 2025 09:23:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpj2GyirYUousb08KORRhwwxL2nA/aWckunw7W2c2Pu3YOW2k9PIs9cw16oemlKH4tI9rx+g==
-X-Received: by 2002:a05:600c:468d:b0:434:f270:a513 with SMTP id 5b1f17b1804b1-438dc429eb0mr37292495e9.29.1738171417820;
-        Wed, 29 Jan 2025 09:23:37 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc24cefsm29536565e9.15.2025.01.29.09.23.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jan 2025 09:23:36 -0800 (PST)
-Message-ID: <21ac88b0-fe93-4933-893c-7ffb09267e7b@redhat.com>
-Date: Wed, 29 Jan 2025 18:23:33 +0100
+        d=1e100.net; s=20230601; t=1738171422; x=1738776222;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LJ160MXGhYFmROJLbL7eYj3t8ftygUUVZySLs0qAKPY=;
+        b=wnX1tZxSa3GK175uO/lzakQ4bES87DivCte4WMeWywe/lTX1w2lRf8NdzLHv4J2zHp
+         UQnX4UFyIN710dnWQVWfsj+e4TAlbFA9dWLq1ht8kgcV+utoUB/DT1+z1GCT0tx5Qcnc
+         QtRhaEwLC3DDn02nIIBN2l+J4uOYfH/PYx5nnIz+Y3x/tyl6/Q8gMDjJec7S/uoFe4px
+         cAVs5kpayuU7Ulh63ilHsUniuqcGHuujZNARa5AkDB8cl2WpYlT6q0OZFJHobUMgQ8la
+         j9dKqkJRBJZ7gEQiRt5iZc3LWnP+5DAumyLQDJ05ClwNbe/i85pBEKSO4VkvMZcpEjZK
+         Cnhg==
+X-Gm-Message-State: AOJu0Yz3Za6JikMnJMRMO1zXvETEWNdqss1JuARg5dF21V3QIhlzvf/Z
+	XK3D79h88VsIodIvfRKmrXO5ZVxPWMLrHhTY4zKXGzdKoGyEESDmy+8Q7TTT7fcBWtwIXD4KKrW
+	0WgKqx16zQDzFISmHIOculg4dOiim8Cst3Gh3fbBVQgMQUZGh5xOJcWjEAt2j40Lxjp7LVS0tbV
+	m8Fu7yG9DvQOBlFkyPCNgE5aI=
+X-Google-Smtp-Source: AGHT+IHzze1fd9XcgYyloPMAtmGdSptsFbtkXMC3i4as+lZ1qQjtORL3JE2QGX7gEDdKOF6yr1lLOcmjHw==
+X-Received: from wmbg5.prod.google.com ([2002:a05:600c:a405:b0:434:fb78:6216])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b23:b0:436:f960:3428
+ with SMTP id 5b1f17b1804b1-438dc42ff3cmr36674135e9.29.1738171421994; Wed, 29
+ Jan 2025 09:23:41 -0800 (PST)
+Date: Wed, 29 Jan 2025 17:23:18 +0000
+In-Reply-To: <20250129172320.950523-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH RFCv2 09/13] iommufd: Add IOMMU_OPTION_SW_MSI_START/SIZE
- ioctls
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, will@kernel.org,
- robin.murphy@arm.com, kevin.tian@intel.com, tglx@linutronix.de,
- maz@kernel.org, alex.williamson@redhat.com, joro@8bytes.org,
- shuah@kernel.org, reinette.chatre@intel.com, yebin10@huawei.com,
- apatel@ventanamicro.com, shivamurthy.shastri@linutronix.de,
- bhelgaas@google.com, anna-maria@linutronix.de, yury.norov@gmail.com,
- nipun.gupta@amd.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, patches@lists.linux.dev,
- jean-philippe@linaro.org, mdf@kernel.org, mshavit@google.com,
- shameerali.kolothum.thodi@huawei.com, smostafa@google.com, ddutile@redhat.com
-References: <cover.1736550979.git.nicolinc@nvidia.com>
- <d3cb1694e07be0e214dc44dcb2cb74f014606560.1736550979.git.nicolinc@nvidia.com>
- <0521187e-c511-4ab1-9ffa-be2be8eacd04@redhat.com>
- <20250129145800.GG5556@nvidia.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250129145800.GG5556@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250129172320.950523-1-tabba@google.com>
+X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
+Message-ID: <20250129172320.950523-10-tabba@google.com>
+Subject: [RFC PATCH v2 09/11] KVM: arm64: Introduce KVM_VM_TYPE_ARM_SW_PROTECTED
+ machine type
+From: Fuad Tabba <tabba@google.com>
+To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, tabba@google.com
+Content-Type: text/plain; charset="UTF-8"
 
+Introduce a new virtual machine type,
+KVM_VM_TYPE_ARM_SW_PROTECTED, to serve as a development and
+testing vehicle for Confidential (CoCo) VMs, similar to the x86
+KVM_X86_SW_PROTECTED_VM type.
 
+Initially, this is used to test guest_memfd without needing any
+underlying protection.
 
+Similar to the x86 type, this is currently only for development
+and testing.  Do not use KVM_VM_TYPE_ARM_SW_PROTECTED for "real"
+VMs, and especially not in production. The behavior and effective
+ABI for software-protected VMs is unstable.
 
-On 1/29/25 3:58 PM, Jason Gunthorpe wrote:
-> On Wed, Jan 29, 2025 at 02:44:12PM +0100, Eric Auger wrote:
->> Hi,
->>
->>
->> On 1/11/25 4:32 AM, Nicolin Chen wrote:
->>> For systems that require MSI pages to be mapped into the IOMMU translation
->>> the IOMMU driver provides an IOMMU_RESV_SW_MSI range, which is the default
->>> recommended IOVA window to place these mappings. However, there is nothing
->>> special about this address. And to support the RMR trick in VMM for nested
->> well at least it shall not overlap VMM's RAM. So it was not random either.
->>> translation, the VMM needs to know what sw_msi window the kernel is using.
->>> As there is no particular reason to force VMM to adopt the kernel default,
->>> provide a simple IOMMU_OPTION_SW_MSI_START/SIZE ioctl that the VMM can use
->>> to directly specify the sw_msi window that it wants to use, which replaces
->>> and disables the default IOMMU_RESV_SW_MSI from the driver to avoid having
->>> to build an API to discover the default IOMMU_RESV_SW_MSI.
->> IIUC the MSI window will then be different when using legacy VFIO
->> assignment and iommufd backend.
-> ? They use the same, iommufd can have userspace override it. Then it
-> will ignore the reserved region.
-In current arm-smmu-v3.c you have
-        region = iommu_alloc_resv_region(MSI_IOVA_BASE, MSI_IOVA_LENGTH,
-                                         prot, IOMMU_RESV_SW_MSI,
-GFP_KERNEL);
+Signed-off-by: Fuad Tabba <tabba@google.com>
+---
+ Documentation/virt/kvm/api.rst    |  5 +++++
+ arch/arm64/include/asm/kvm_host.h | 10 ++++++++++
+ arch/arm64/kvm/arm.c              |  5 +++++
+ arch/arm64/kvm/mmu.c              |  3 ---
+ include/uapi/linux/kvm.h          |  6 ++++++
+ 5 files changed, 26 insertions(+), 3 deletions(-)
 
-in arm_smmu_get_resv_regions()
-If you overwrite the default region, don't you need to expose the user
-defined resv region?
-
->
->> MSI reserved regions are exposed in
->> /sys/kernel/iommu_groups/<n>/reserved_regions
->> 0x0000000008000000 0x00000000080fffff msi
->  
->> Is that configurability reflected accordingly?
-> ?
->
-> Nothing using iommufd should parse that sysfs file.
-Right but aren't you still supposed to populate the sysfs files
-properly. This region must be carved out from the IOVA space, right?
->  
->> How do you make sure it does not collide with other resv regions? I
->> don't see any check here.
-> Yes this does need to be checked, it does look missing. It still needs
-> to create a reserved region in the ioas when attaching to keep the
-> areas safe and it has to intersect with the incoming reserved
-> regions from the driver.
->
->>> + * @IOMMU_OPTION_SW_MSI_START:
->>> + *    Change the base address of the IOMMU mapping region for MSI doorbell(s).
->>> + *    It must be set this before attaching a device to an IOAS/HWPT, otherwise
->>> + *    this option will be not effective on that IOAS/HWPT. User can choose to
->>> + *    let kernel pick a base address, by simply ignoring this option or setting
->>> + *    a value 0 to IOMMU_OPTION_SW_MSI_SIZE. Global option, object_id must be 0
->> I think we should document it cannot be put at a random place either.
-> It can be put at any place a map can be placed.
-to me It cannot overlap with guest RAM IPA so userspace needs to be
-cautious about that
-
-Eric
->
-> That also needs to be checked when creating a domain, it can't be
-> outside the geometry.
->
-> Jason
->
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index f15b61317aad..7953b07c8c2b 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -214,6 +214,11 @@ exposed by the guest CPUs in ID_AA64MMFR0_EL1[PARange]. It only affects
+ size of the address translated by the stage2 level (guest physical to
+ host physical address translations).
+ 
++KVM_VM_TYPE_ARM_SW_PROTECTED is currently only for development and testing of
++confidential VMs without having underlying support. Do not use
++KVM_VM_TYPE_ARM_SW_PROTECTED for "real" VMs, and especially not in production.
++The behavior and effective ABI for software-protected VMs is unstable.
++
+ 
+ 4.3 KVM_GET_MSR_INDEX_LIST, KVM_GET_MSR_FEATURE_INDEX_LIST
+ ----------------------------------------------------------
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index e18e9244d17a..e8a0db2ac4fa 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -380,6 +380,8 @@ struct kvm_arch {
+ 	 * the associated pKVM instance in the hypervisor.
+ 	 */
+ 	struct kvm_protected_vm pkvm;
++
++	unsigned long vm_type;
+ };
+ 
+ struct kvm_vcpu_fault_info {
+@@ -1529,4 +1531,12 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
+ #define kvm_has_s1poe(k)				\
+ 	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
+ 
++#define kvm_arch_has_private_mem(kvm)			\
++	(IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&		\
++	 ((kvm)->arch.vm_type & KVM_VM_TYPE_ARM_SW_PROTECTED))
++
++#define kvm_arch_gmem_supports_shared_mem(kvm)		\
++	(IS_ENABLED(CONFIG_KVM_GMEM_SHARED_MEM) &&	\
++	 ((kvm)->arch.vm_type & KVM_VM_TYPE_ARM_SW_PROTECTED))
++
+ #endif /* __ARM64_KVM_HOST_H__ */
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index a102c3aebdbc..ecdb8db619d8 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -171,6 +171,9 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ {
+ 	int ret;
+ 
++	if (type & ~KVM_VM_TYPE_MASK)
++		return -EINVAL;
++
+ 	mutex_init(&kvm->arch.config_lock);
+ 
+ #ifdef CONFIG_LOCKDEP
+@@ -212,6 +215,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 
+ 	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+ 
++	kvm->arch.vm_type = type;
++
+ 	return 0;
+ 
+ err_free_cpumask:
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index c1f3ddb88cb9..8e19248533f1 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -869,9 +869,6 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+ 	u64 mmfr0, mmfr1;
+ 	u32 phys_shift;
+ 
+-	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+-		return -EINVAL;
+-
+ 	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+ 	if (is_protected_kvm_enabled()) {
+ 		phys_shift = kvm_ipa_limit;
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 3ac805c5abf1..a3973d2b1a69 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -656,6 +656,12 @@ struct kvm_enable_cap {
+ #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
+ #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
+ 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
++
++#define KVM_VM_TYPE_ARM_SW_PROTECTED	(1UL << 9)
++
++#define KVM_VM_TYPE_MASK	(KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
++				 KVM_VM_TYPE_ARM_SW_PROTECTED)
++
+ /*
+  * ioctls for /dev/kvm fds:
+  */
+-- 
+2.48.1.262.g85cc9f2d1e-goog
 
