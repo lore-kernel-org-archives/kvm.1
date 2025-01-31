@@ -1,506 +1,483 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0911F1300;
-	Fri, 31 Jan 2025 17:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F971F2360;
+	Fri, 31 Jan 2025 17:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738345390; cv=none; b=FRueFa9jNEGN7LGELWS15ud4DAFfjmVOwdsQqlRetQLMnE+9ehRU2nAb+CHMdhVPNeYuOGQjYasE473PXnfHYughmszrLmJygcWUejypWdSP9dyAYhg6qpAfOoZ1KwGmIcf+Y58pjJxBGbisHjFQrgsnSpNMbyf8Y4ELptz+IH0=
+	t=1738345548; cv=none; b=s33bf7AOJLAK88vWJ9laBN/MR3gY8C4WOZ6FjAGv8OXjJxdqrZa9jxJWdGrMl2m8FJRwqK/YlUFaZvkp0o3Nyl8mi4UZLAwQJj0fnBb7LpkL7xFJQlMHlnMw/Fw3TAAboBNV1EWAOnFHA19AmAC+eTqNtgVYEcTkA97xGuoyKx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738345390; c=relaxed/simple;
-	bh=x0uOxxNWsvtIJha7MqKmwihF/O/RS5bBMIi0M93WaHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dQZnNsDPJi6Ex0H5CH2PgUGmHftwOPWYSdJ1WeU9kgfQ/xIA9izboLuyZnssWrN+V/AeVnA/QTYa/ybkF3KyCkye1l83LZh2VIgTLeGpAYsvrVOb5b5OagL8RmjJ160hlGrcsNKt2jBDsjqnX87GWCAzPYAaPc7uZ06JGdDWIO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onaBHHrn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738345548; c=relaxed/simple;
+	bh=LtizhXTHtfGr0a4uyDDlAcCu32NCBWRWgX358My2va0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ueQAhwaKg0KtC+vkd9pw3Vg/zJQLfJM38aJpfsnpn6aDlcJ7db4AUlIX+pWRw0uP3ItgeDbh1Ju7+8wcg8SVqhq6fRNd2LXbQ0jfXyrxikQ7Ev78ruCslvGDe4UW8VMlrccUfdQ7IPpGCE7gTrCM0eJHosemhyzMLHv1tmyyiPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QO5UK8lU; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onaBHHrn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E82C4AF0F;
-	Fri, 31 Jan 2025 17:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738345390;
-	bh=x0uOxxNWsvtIJha7MqKmwihF/O/RS5bBMIi0M93WaHg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=onaBHHrnl9eAHQg6TJoQRme7fnp1+9turwzj+tRqdSciV5MFyoxEns44hB2yv4odM
-	 tBupV60NCuaTOH3N1yzJxoNtseVvNTpAe2/aH1Cs2F23Juz16hAy//6cBawLGABNBr
-	 mzxTkayHqEyuol0liWr1vZ1dWOWaUb60qbhuGwQ41y1AKzfEef9HiRJ9llbWTuaKTa
-	 9IxMuCidsuhYEbVfS6g0/ExI11qHk5L1aRMEdLrbkvZIkQ6T3K1c9HjufGzciWtqV+
-	 p1fVG414cJoKsXBB+3g9aNWUUqo1AoLwZv7E4AJ8Glo5U+BbqN64huFJFBystd9hyl
-	 BL4m4TP1lJmVA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1tdv2o-00000006ggf-48pX;
-	Fri, 31 Jan 2025 18:43:06 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Ani Sinha <anisinha@redhat.com>,
-	Cleber Rosa <crosa@redhat.com>,
-	Dongjiu Geng <gengdongjiu1@gmail.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Eric Blake <eblake@redhat.com>,
-	John Snow <jsnow@redhat.com>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Shannon Zhao <shannon.zhaosl@gmail.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 00/14] Change ghes to use HEST-based offsets and add support for error inject
-Date: Fri, 31 Jan 2025 18:42:41 +0100
-Message-ID: <cover.1738345063.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QO5UK8lU"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21669fd5c7cso40691265ad.3;
+        Fri, 31 Jan 2025 09:45:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738345546; x=1738950346; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AHGax4hoNoCFK8uMn60wvh4xfs/D3J09QEwYzNMX7L8=;
+        b=QO5UK8lU30rp5pENEcglL7dQBChyckvao6Y7ZXnnV7JH/DITdC3Ol+ENgNzWtCCaCv
+         0EIY72pDzNvu241fJEyiuAz9qFTA/4yombP8I/0wf/ecQcVqqUUNKtznSALQmWt5d628
+         2sdYFYNil3q1TOt4USoazfWjqpao84C7vn2z+FLkpDJuadW6rDCtw13EjDnj+2BcrVQ5
+         +4Pk92OGgDrHbuz418/kr/T4otXmd1PSjhw/5ZG7VX9OmZRMzfEEGMmtHN+mLsHeebHE
+         Qr1p/rkr1FCqV/mG4KCNgF77Ni98hkejaBhfzpIMcNa7LQ1LQkM0OPjmDYJNySAZuGME
+         g1fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738345546; x=1738950346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AHGax4hoNoCFK8uMn60wvh4xfs/D3J09QEwYzNMX7L8=;
+        b=fh88PAaErhwiCN8tfKeuGWyon3CMEL2v/lNIm3aOeKTa8kNbef3lM77af+IPIefD9C
+         Fih08VypTFIpXs8DZMqP6eR/pcb3BVxedTxuyKUyHDDexaTZmNmBXX4k+v4yzeVgPKdB
+         c4SLZmtIS6eDrSJKYzHPjj9Zu8lz92cXOD7hBUUjNNgDKRWTHHqUOZRzFezM7NmTTijl
+         WHXA0KoQUhdg3/CdOs1OqeSawQ4/uEv2dFuqsiPSMwx3TcIGMJpgWBynl6nayOPYPO0k
+         OwbAaDuSQjXt6rYLErHXO9Ft74MRnP3HTjW8v3HHAE1wSOyk2xNmKzOMdzeBElLX4kC2
+         0kaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVf8Fu3ih/ib/QOlOU3E+WOT2Qlif9L1JAVVQn8RDMdkCEQ4RDnlBnNzLGjXWe8g7Sn4E0Z0OPwOdHyPq4aUNON@vger.kernel.org, AJvYcCVxbZvFxBiKkG4sHZXoFBAsX1UkAKKepfwy1Xye4wxwCqvRU6TTwza3IwAf+IfIgpwWFSVsBNUPGtzA@vger.kernel.org, AJvYcCWVZtC5Mg3AJAb6R/1CazworJFvVGUpFNq6OtqCtT3FUExFBhItUGgYfshyMaGyHIhjNIFPO3uClRdWRQW2@vger.kernel.org, AJvYcCXJblFc4hGu5tdoKzOi23qwHw2F65CXMV7tGWzGhDb1EpN53NGw46iU7M/1LEXvYaMIkys=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAjVKf2G7cP2JMdHbKhkpTMnvBRt75LjHxqBY1UP5Qutb/Piam
+	4R6NXPYg3+9PC2xL9MBASaq5c3/5NBFxY9YO+1aBVV8sPtiHOno=
+X-Gm-Gg: ASbGncvlyu1C5YIx/8tzIM59BbK9PzNqeV6kwUUdMVNw3y9GJ9IEfxpiyencH+Y2GRj
+	jk/MmZlJ1edjFtgO8a2+2qhfMUbLQDwWV7nClqTrQA7tFDlyrv4Of7cajdDSYyp8T4sJ4odh+8o
+	DQTdBRNmo47LDibQovMYA0q02IEhyqzthP/uyLmmTn4GiJgd0ifOlvqVJd2iKDU+UutqC+ys7dU
+	4/gR7WsE9mlPXwOeddWxXYQKtb/vsC0bjbIzDyyomEiS1gnvBLBx2D2XUow/Bi7MzjVhztvUAaM
+	mi4eo+fpox8G7q0=
+X-Google-Smtp-Source: AGHT+IFmqTOI0/2HC2NK8R/nQ3xP1/wKaQScsH01OoR9/XrAZ3uJwlCmnrJ/mGKIBgwmAauKXsrbOA==
+X-Received: by 2002:a05:6a00:2183:b0:725:c8ea:b30b with SMTP id d2e1a72fcca58-72fd0c0b836mr14940619b3a.11.1738345545868;
+        Fri, 31 Jan 2025 09:45:45 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72fe69bbb7esm3702551b3a.106.2025.01.31.09.45.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2025 09:45:45 -0800 (PST)
+Date: Fri, 31 Jan 2025 09:45:44 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	David Ahern <dsahern@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, sdf@fomichev.me,
+	asml.silence@gmail.com, dw@davidwei.uk,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>
+Subject: Re: [PATCH RFC net-next v2 2/6] selftests: ncdevmem: Implement
+ devmem TCP TX
+Message-ID: <Z50MSEBi2yQ99Y5z@mini-arch>
+References: <20250130211539.428952-1-almasrymina@google.com>
+ <20250130211539.428952-3-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250130211539.428952-3-almasrymina@google.com>
 
-Now that the ghes preparation patches were merged, let's add support
-for error injection.
+On 01/30, Mina Almasry wrote:
+> Add support for devmem TX in ncdevmem.
+> 
+> This is a combination of the ncdevmem from the devmem TCP series RFCv1
+> which included the TX path, and work by Stan to include the netlink API
+> and refactored on top of his generic memory_provider support.
+> 
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> 
+> ---
+> 
+> v2:
+> - make errors a static variable so that we catch instances where there
+>   are less than 20 errors across different buffers.
+> - Fix the issue where the seed is reset to 0 instead of its starting
+>   value 1.
+> - Use 1000ULL instead of 1000 to guard against overflow (Willem).
+> - Do not set POLLERR (Willem).
+> - Update the test to use the new interface where iov_base is the
+>   dmabuf_offset.
+> - Update the test to send 2 iov instead of 1, so we get some test
+>   coverage over sending multiple iovs at once.
+> - Print the ifindex the test is using, useful for debugging issues where
+>   maybe the test may fail because the ifindex of the socket is different
+>   from the dmabuf binding.
+> ---
+>  .../selftests/drivers/net/hw/ncdevmem.c       | 276 +++++++++++++++++-
+>  1 file changed, 272 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> index 19a6969643f4..8455f19ecd1a 100644
+> --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> @@ -40,15 +40,18 @@
+>  #include <fcntl.h>
+>  #include <malloc.h>
+>  #include <error.h>
+> +#include <poll.h>
+>  
+>  #include <arpa/inet.h>
+>  #include <sys/socket.h>
+>  #include <sys/mman.h>
+>  #include <sys/ioctl.h>
+>  #include <sys/syscall.h>
+> +#include <sys/time.h>
+>  
+>  #include <linux/memfd.h>
+>  #include <linux/dma-buf.h>
+> +#include <linux/errqueue.h>
+>  #include <linux/udmabuf.h>
+>  #include <libmnl/libmnl.h>
+>  #include <linux/types.h>
+> @@ -80,6 +83,8 @@ static int num_queues = -1;
+>  static char *ifname;
+>  static unsigned int ifindex;
+>  static unsigned int dmabuf_id;
+> +static uint32_t tx_dmabuf_id;
+> +static int waittime_ms = 500;
+>  
+>  struct memory_buffer {
+>  	int fd;
+> @@ -93,6 +98,8 @@ struct memory_buffer {
+>  struct memory_provider {
+>  	struct memory_buffer *(*alloc)(size_t size);
+>  	void (*free)(struct memory_buffer *ctx);
+> +	void (*memcpy_to_device)(struct memory_buffer *dst, size_t off,
+> +				 void *src, int n);
+>  	void (*memcpy_from_device)(void *dst, struct memory_buffer *src,
+>  				   size_t off, int n);
+>  };
+> @@ -153,6 +160,20 @@ static void udmabuf_free(struct memory_buffer *ctx)
+>  	free(ctx);
+>  }
+>  
+> +static void udmabuf_memcpy_to_device(struct memory_buffer *dst, size_t off,
+> +				     void *src, int n)
+> +{
+> +	struct dma_buf_sync sync = {};
+> +
+> +	sync.flags = DMA_BUF_SYNC_START | DMA_BUF_SYNC_WRITE;
+> +	ioctl(dst->fd, DMA_BUF_IOCTL_SYNC, &sync);
+> +
+> +	memcpy(dst->buf_mem + off, src, n);
+> +
+> +	sync.flags = DMA_BUF_SYNC_END | DMA_BUF_SYNC_WRITE;
+> +	ioctl(dst->fd, DMA_BUF_IOCTL_SYNC, &sync);
+> +}
+> +
+>  static void udmabuf_memcpy_from_device(void *dst, struct memory_buffer *src,
+>  				       size_t off, int n)
+>  {
+> @@ -170,6 +191,7 @@ static void udmabuf_memcpy_from_device(void *dst, struct memory_buffer *src,
+>  static struct memory_provider udmabuf_memory_provider = {
+>  	.alloc = udmabuf_alloc,
+>  	.free = udmabuf_free,
+> +	.memcpy_to_device = udmabuf_memcpy_to_device,
+>  	.memcpy_from_device = udmabuf_memcpy_from_device,
+>  };
+>  
+> @@ -188,7 +210,7 @@ void validate_buffer(void *line, size_t size)
+>  {
+>  	static unsigned char seed = 1;
+>  	unsigned char *ptr = line;
+> -	int errors = 0;
+> +	static int errors;
+>  	size_t i;
+>  
+>  	for (i = 0; i < size; i++) {
+> @@ -202,7 +224,7 @@ void validate_buffer(void *line, size_t size)
+>  		}
+>  		seed++;
+>  		if (seed == do_validation)
+> -			seed = 0;
+> +			seed = 1;
+>  	}
+>  
+>  	fprintf(stdout, "Validated buffer\n");
+> @@ -394,6 +416,49 @@ static int bind_rx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
+>  	return -1;
+>  }
+>  
+> +static int bind_tx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
+> +			 struct ynl_sock **ys)
+> +{
+> +	struct netdev_bind_tx_req *req = NULL;
+> +	struct netdev_bind_tx_rsp *rsp = NULL;
+> +	struct ynl_error yerr;
+> +
+> +	*ys = ynl_sock_create(&ynl_netdev_family, &yerr);
+> +	if (!*ys) {
+> +		fprintf(stderr, "YNL: %s\n", yerr.msg);
+> +		return -1;
+> +	}
+> +
+> +	req = netdev_bind_tx_req_alloc();
+> +	netdev_bind_tx_req_set_ifindex(req, ifindex);
+> +	netdev_bind_tx_req_set_fd(req, dmabuf_fd);
+> +
+> +	rsp = netdev_bind_tx(*ys, req);
+> +	if (!rsp) {
+> +		perror("netdev_bind_tx");
+> +		goto err_close;
+> +	}
+> +
+> +	if (!rsp->_present.id) {
+> +		perror("id not present");
+> +		goto err_close;
+> +	}
+> +
+> +	fprintf(stderr, "got tx dmabuf id=%d\n", rsp->id);
+> +	tx_dmabuf_id = rsp->id;
+> +
+> +	netdev_bind_tx_req_free(req);
+> +	netdev_bind_tx_rsp_free(rsp);
+> +
+> +	return 0;
+> +
+> +err_close:
+> +	fprintf(stderr, "YNL failed: %s\n", (*ys)->err.msg);
+> +	netdev_bind_tx_req_free(req);
+> +	ynl_sock_destroy(*ys);
+> +	return -1;
+> +}
+> +
+>  static void enable_reuseaddr(int fd)
+>  {
+>  	int opt = 1;
+> @@ -432,7 +497,7 @@ static int parse_address(const char *str, int port, struct sockaddr_in6 *sin6)
+>  	return 0;
+>  }
+>  
+> -int do_server(struct memory_buffer *mem)
+> +static int do_server(struct memory_buffer *mem)
+>  {
+>  	char ctrl_data[sizeof(int) * 20000];
+>  	struct netdev_queue_id *queues;
+> @@ -686,6 +751,207 @@ void run_devmem_tests(void)
+>  	provider->free(mem);
+>  }
+>  
+> +static uint64_t gettimeofday_ms(void)
+> +{
+> +	struct timeval tv;
+> +
+> +	gettimeofday(&tv, NULL);
+> +	return (tv.tv_sec * 1000ULL) + (tv.tv_usec / 1000ULL);
+> +}
+> +
+> +static int do_poll(int fd)
+> +{
+> +	struct pollfd pfd;
+> +	int ret;
+> +
+> +	pfd.revents = 0;
+> +	pfd.fd = fd;
+> +
+> +	ret = poll(&pfd, 1, waittime_ms);
+> +	if (ret == -1)
+> +		error(1, errno, "poll");
+> +
+> +	return ret && (pfd.revents & POLLERR);
+> +}
+> +
+> +static void wait_compl(int fd)
+> +{
+> +	int64_t tstop = gettimeofday_ms() + waittime_ms;
+> +	char control[CMSG_SPACE(100)] = {};
+> +	struct sock_extended_err *serr;
+> +	struct msghdr msg = {};
+> +	struct cmsghdr *cm;
+> +	int retries = 10;
+> +	__u32 hi, lo;
+> +	int ret;
+> +
+> +	msg.msg_control = control;
+> +	msg.msg_controllen = sizeof(control);
+> +
+> +	while (gettimeofday_ms() < tstop) {
+> +		if (!do_poll(fd))
+> +			continue;
+> +
+> +		ret = recvmsg(fd, &msg, MSG_ERRQUEUE);
+> +		if (ret < 0) {
+> +			if (errno == EAGAIN)
+> +				continue;
+> +			error(1, ret, "recvmsg(MSG_ERRQUEUE)");
+> +			return;
+> +		}
+> +		if (msg.msg_flags & MSG_CTRUNC)
+> +			error(1, 0, "MSG_CTRUNC\n");
+> +
+> +		for (cm = CMSG_FIRSTHDR(&msg); cm; cm = CMSG_NXTHDR(&msg, cm)) {
+> +			if (cm->cmsg_level != SOL_IP &&
+> +			    cm->cmsg_level != SOL_IPV6)
+> +				continue;
+> +			if (cm->cmsg_level == SOL_IP &&
+> +			    cm->cmsg_type != IP_RECVERR)
+> +				continue;
+> +			if (cm->cmsg_level == SOL_IPV6 &&
+> +			    cm->cmsg_type != IPV6_RECVERR)
+> +				continue;
+> +
+> +			serr = (void *)CMSG_DATA(cm);
+> +			if (serr->ee_origin != SO_EE_ORIGIN_ZEROCOPY)
+> +				error(1, 0, "wrong origin %u", serr->ee_origin);
+> +			if (serr->ee_errno != 0)
+> +				error(1, 0, "wrong errno %d", serr->ee_errno);
+> +
+> +			hi = serr->ee_data;
+> +			lo = serr->ee_info;
+> +
+> +			fprintf(stderr, "tx complete [%d,%d]\n", lo, hi);
+> +			return;
+> +		}
+> +	}
+> +
+> +	error(1, 0, "did not receive tx completion");
+> +}
+> +
+> +static int do_client(struct memory_buffer *mem)
+> +{
+> +	char ctrl_data[CMSG_SPACE(sizeof(struct dmabuf_tx_cmsg))];
+> +	struct sockaddr_in6 server_sin;
+> +	struct sockaddr_in6 client_sin;
+> +	struct dmabuf_tx_cmsg ddmabuf;
+> +	struct ynl_sock *ys = NULL;
+> +	struct msghdr msg = {};
+> +	ssize_t line_size = 0;
+> +	struct cmsghdr *cmsg;
+> +	struct iovec iov[2];
+> +	uint64_t off = 100;
+> +	char *line = NULL;
+> +	size_t len = 0;
+> +	int socket_fd;
+> +	int ret, mid;
+> +	int opt = 1;
+> +
+> +	ret = parse_address(server_ip, atoi(port), &server_sin);
+> +	if (ret < 0)
+> +		error(1, 0, "parse server address");
+> +
+> +	socket_fd = socket(AF_INET6, SOCK_STREAM, 0);
+> +	if (socket_fd < 0)
+> +		error(1, socket_fd, "create socket");
+> +
+> +	enable_reuseaddr(socket_fd);
+> +
+> +	ret = setsockopt(socket_fd, SOL_SOCKET, SO_BINDTODEVICE, ifname,
+> +			 strlen(ifname) + 1);
+> +	if (ret)
+> +		error(1, ret, "bindtodevice");
+> +
+> +	if (bind_tx_queue(ifindex, mem->fd, &ys))
+> +		error(1, 0, "Failed to bind\n");
+> +
 
-On this series, the first 6 patches chang to the math used to calculate offsets at HEST
-table and hardware_error firmware file, together with its migration code. Migration tested
-with both latest QEMU released kernel and upstream, on both directions.
+[..]
 
-The next patches add a new QAPI to allow injecting GHESv2 errors, and a script using such QAPI
-   to inject ARM Processor Error records.
+> +	ret = parse_address(client_ip, atoi(port), &client_sin);
+> +	if (ret < 0)
+> +		error(1, 0, "parse client address");
+> +
+> +	ret = bind(socket_fd, &client_sin, sizeof(client_sin));
+> +	if (ret)
+> +		error(1, ret, "bind");
+> +
 
-If I'm counting well, this is the 19th submission of my error inject patches.
+Can we wrap the two above in 'if (client_ip) {}'? For my case, as long as
+we do SO_BINDTODEVICE, the autobind will do the right thing and I don't
+have to explicitly pass '-c' (ncdemem crashes right now if it's
+not passed).
 
----
-v3:
-- addressed more nits;
-- hest_add_le now points to the beginning of HEST table;
-- removed HEST from tests/data/acpi;
-- added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
+> +	ret = setsockopt(socket_fd, SOL_SOCKET, SO_ZEROCOPY, &opt, sizeof(opt));
+> +	if (ret)
+> +		error(1, ret, "set sock opt");
+> +
+> +	fprintf(stderr, "Connect to %s %d (via %s)\n", server_ip,
+> +		ntohs(server_sin.sin6_port), ifname);
+> +
 
-v2: 
-- address some nits;
-- improved ags cleanup patch and removed ags.present field;
-- added some missing le*_to_cpu() calls;
-- update date at copyright for new files to 2024-2025;
-- qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
-- added HEST and DSDT tables after the changes to make check target happy.
-  (two patches: first one whitelisting such tables; second one removing from
-   whitelist and updating/adding such tables to tests/data/acpi)
+[..]
 
-It follows a diff against v2 to better show the differences.
+> +	ret = connect(socket_fd, &server_sin, sizeof(server_sin));
+> +	if (ret)
+> +		error(1, ret, "connect");
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 50313ed7ee96..f5e899155d34 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -29,12 +29,6 @@ static const uint32_t ged_supported_events[] = {
-     ACPI_GED_ERROR_EVT,
- };
- 
--/*
-- * ACPI 5.0b: 5.6.6 Device Object Notifications
-- * Table 5-135 Error Device Notification Values
-- */
--#define ERROR_DEVICE_NOTIFICATION   0x80
--
- /*
-  * The ACPI Generic Event Device (GED) is a hardware-reduced specific
-  * device[ACPI v6.1 Section 5.6.9] that handles all platform events,
-@@ -124,9 +118,14 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                                       aml_int(0x80)));
-                 break;
-             case ACPI_GED_ERROR_EVT:
-+                /*
-+                 * ACPI 5.0b: 5.6.6 Device Object Notifications
-+                 * Table 5-135 Error Device Notification Values
-+                 * Defines 0x80 as the value to be used on notifications
-+                 */
-                 aml_append(if_ctx,
-                            aml_notify(aml_name(ACPI_APEI_ERROR_DEVICE),
--                                      aml_int(ERROR_DEVICE_NOTIFICATION)));
-+                                      aml_int(0x80)));
-                 break;
-             case ACPI_GED_NVDIMM_HOTPLUG_EVT:
-                 aml_append(if_ctx,
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index ef57ad14a38b..bcef0b22e612 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -41,6 +41,12 @@
- /* Address offset in Generic Address Structure(GAS) */
- #define GAS_ADDR_OFFSET 4
- 
-+/*
-+ * ACPI spec 1.0b
-+ * 5.2.3 System Description Table Header
-+ */
-+#define ACPI_DESC_HEADER_OFFSET     36
-+
- /*
-  * The total size of Generic Error Data Entry
-  * ACPI 6.1/6.2: 18.3.2.7.1 Generic Error Data,
-@@ -226,8 +232,8 @@ ghes_gen_err_data_uncorrectable_recoverable(GArray *block,
-  * Initialize "etc/hardware_errors" and "etc/hardware_errors_addr" fw_cfg blobs.
-  * See docs/specs/acpi_hest_ghes.rst for blobs format.
-  */
--static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker,
--                                   int num_sources)
-+static void build_ghes_error_table(AcpiGhesState *ags, GArray *hardware_errors,
-+                                   BIOSLinker *linker, int num_sources)
- {
-     int i, error_status_block_offset;
- 
-@@ -272,13 +278,15 @@ static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker,
-                                        i * ACPI_GHES_MAX_RAW_DATA_LENGTH);
-     }
- 
--    /*
--     * Tell firmware to write hardware_errors GPA into
--     * hardware_errors_addr fw_cfg, once the former has been initialized.
--     */
--    bios_linker_loader_write_pointer(linker, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, 0,
--                                     sizeof(uint64_t),
--                                     ACPI_HW_ERROR_FW_CFG_FILE, 0);
-+    if (!ags->use_hest_addr) {
-+        /*
-+         * Tell firmware to write hardware_errors GPA into
-+         * hardware_errors_addr fw_cfg, once the former has been initialized.
-+         */
-+        bios_linker_loader_write_pointer(linker, ACPI_HW_ERROR_ADDR_FW_CFG_FILE,
-+                                         0, sizeof(uint64_t),
-+                                         ACPI_HW_ERROR_FW_CFG_FILE, 0);
-+    }
- }
- 
- /* Build Generic Hardware Error Source version 2 (GHESv2) */
-@@ -365,11 +373,11 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
-     uint32_t hest_offset;
-     int i;
- 
--    build_ghes_error_table(hardware_errors, linker, num_sources);
-+    hest_offset = table_data->len;
- 
--    acpi_table_begin(&table, table_data);
-+    build_ghes_error_table(ags, hardware_errors, linker, num_sources);
- 
--    hest_offset = table_data->len;
-+    acpi_table_begin(&table, table_data);
- 
-     /* Error Source Count */
-     build_append_int_noprefix(table_data, num_sources, 4);
-@@ -383,7 +391,6 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
-      * Tell firmware to write into GPA the address of HEST via fw_cfg,
-      * once initialized.
-      */
--
-     if (ags->use_hest_addr) {
-         bios_linker_loader_write_pointer(linker,
-                                          ACPI_HEST_ADDR_FW_CFG_FILE, 0,
-@@ -399,13 +406,13 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-     fw_cfg_add_file(s, ACPI_HW_ERROR_FW_CFG_FILE, hardware_error->data,
-                     hardware_error->len);
- 
--    /* Create a read-write fw_cfg file for Address */
--    fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
--
-     if (ags->use_hest_addr) {
-         fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
-             NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    } else {
-+        /* Create a read-write fw_cfg file for Address */
-+        fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
-+            NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
-     }
- }
- 
-@@ -432,7 +439,7 @@ static void get_hw_error_offsets(uint64_t ghes_addr,
- }
- 
- static void get_ghes_source_offsets(uint16_t source_id,
--                                    uint64_t hest_entry_addr,
-+                                    uint64_t hest_addr,
-                                     uint64_t *cper_addr,
-                                     uint64_t *read_ack_start_addr,
-                                     Error **errp)
-@@ -441,12 +448,13 @@ static void get_ghes_source_offsets(uint16_t source_id,
-     uint64_t err_source_entry, error_block_addr;
-     uint32_t num_sources, i;
- 
-+    hest_addr += ACPI_DESC_HEADER_OFFSET;
- 
--    cpu_physical_memory_read(hest_entry_addr, &num_sources,
-+    cpu_physical_memory_read(hest_addr, &num_sources,
-                              sizeof(num_sources));
-     num_sources = le32_to_cpu(num_sources);
- 
--    err_source_entry = hest_entry_addr + sizeof(num_sources);
-+    err_source_entry = hest_addr + sizeof(num_sources);
- 
-     /*
-      * Currently, HEST Error source navigates only for GHESv2 tables
-@@ -468,7 +476,6 @@ static void get_ghes_source_offsets(uint16_t source_id,
-         /* Compare CPER source address at the GHESv2 structure */
-         addr += sizeof(type);
-         cpu_physical_memory_read(addr, &src_id, sizeof(src_id));
--
-         if (le16_to_cpu(src_id) == source_id) {
-             break;
-         }
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 7d3580244179..7b6e90d69298 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -956,8 +956,10 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     build_dbg2(tables_blob, tables->linker, vms);
- 
-     if (vms->ras) {
--        AcpiGhesState *ags;
-+        static const AcpiNotificationSourceId *notify;
-         AcpiGedState *acpi_ged_state;
-+        unsigned int notify_sz;
-+        AcpiGhesState *ags;
- 
-         acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-                                                        NULL));
-@@ -967,16 +969,16 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-             acpi_add_table(table_offsets, tables_blob);
- 
-             if (!ags->use_hest_addr) {
--                acpi_build_hest(ags, tables_blob, tables->hardware_errors,
--                                tables->linker, hest_ghes_notify_9_2,
--                                ARRAY_SIZE(hest_ghes_notify_9_2),
--                                vms->oem_id, vms->oem_table_id);
-+                notify = hest_ghes_notify_9_2;
-+                notify_sz = ARRAY_SIZE(hest_ghes_notify_9_2);
-             } else {
--                acpi_build_hest(ags, tables_blob, tables->hardware_errors,
--                                tables->linker, hest_ghes_notify,
--                                ARRAY_SIZE(hest_ghes_notify),
--                                vms->oem_id, vms->oem_table_id);
-+                notify = hest_ghes_notify;
-+                notify_sz = ARRAY_SIZE(hest_ghes_notify);
-             }
-+
-+            acpi_build_hest(ags, tables_blob, tables->hardware_errors,
-+                            tables->linker, notify, notify_sz,
-+                            vms->oem_id, vms->oem_table_id);
-         }
-     }
- 
-diff --git a/scripts/arm_processor_error.py b/scripts/arm_processor_error.py
-index 4ac04ab08299..b0e8450e667e 100644
---- a/scripts/arm_processor_error.py
-+++ b/scripts/arm_processor_error.py
-@@ -12,11 +12,110 @@
- #
- #   - ARM registers: power_state, mpidr.
- 
-+"""
-+Generates an ARM processor error CPER, compatible with
-+UEFI 2.9A Errata.
-+
-+Injecting such errors can be done using:
-+
-+    $ ./scripts/ghes_inject.py arm
-+    Error injected.
-+
-+Produces a simple CPER register, as detected on a Linux guest:
-+
-+[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-+[Hardware Error]: event severity: recoverable
-+[Hardware Error]:  Error 0, type: recoverable
-+[Hardware Error]:   section_type: ARM processor error
-+[Hardware Error]:   MIDR: 0x0000000000000000
-+[Hardware Error]:   running state: 0x0
-+[Hardware Error]:   Power State Coordination Interface state: 0
-+[Hardware Error]:   Error info structure 0:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x02: cache error
-+[Hardware Error]:    error_info: 0x000000000091000f
-+[Hardware Error]:     transaction type: Data Access
-+[Hardware Error]:     cache error, operation type: Data write
-+[Hardware Error]:     cache level: 2
-+[Hardware Error]:     processor context not corrupted
-+[Firmware Warn]: GHES: Unhandled processor error type 0x02: cache error
-+
-+The ARM Processor Error message can be customized via command line
-+parameters. For instance:
-+
-+    $ ./scripts/ghes_inject.py arm --mpidr 0x444 --running --affinity 1 \
-+        --error-info 12345678 --vendor 0x13,123,4,5,1 --ctx-array 0,1,2,3,4,5 \
-+        -t cache tlb bus micro-arch tlb,micro-arch
-+    Error injected.
-+
-+Injects this error, as detected on a Linux guest:
-+
-+[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-+[Hardware Error]: event severity: recoverable
-+[Hardware Error]:  Error 0, type: recoverable
-+[Hardware Error]:   section_type: ARM processor error
-+[Hardware Error]:   MIDR: 0x0000000000000000
-+[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x0000000000000000
-+[Hardware Error]:   error affinity level: 0
-+[Hardware Error]:   running state: 0x1
-+[Hardware Error]:   Power State Coordination Interface state: 0
-+[Hardware Error]:   Error info structure 0:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x02: cache error
-+[Hardware Error]:    error_info: 0x0000000000bc614e
-+[Hardware Error]:     cache level: 2
-+[Hardware Error]:     processor context not corrupted
-+[Hardware Error]:   Error info structure 1:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x04: TLB error
-+[Hardware Error]:    error_info: 0x000000000054007f
-+[Hardware Error]:     transaction type: Instruction
-+[Hardware Error]:     TLB error, operation type: Instruction fetch
-+[Hardware Error]:     TLB level: 1
-+[Hardware Error]:     processor context not corrupted
-+[Hardware Error]:     the error has not been corrected
-+[Hardware Error]:     PC is imprecise
-+[Hardware Error]:   Error info structure 2:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x08: bus error
-+[Hardware Error]:    error_info: 0x00000080d6460fff
-+[Hardware Error]:     transaction type: Generic
-+[Hardware Error]:     bus error, operation type: Generic read (type of instruction or data request cannot be determined)
-+[Hardware Error]:     affinity level at which the bus error occurred: 1
-+[Hardware Error]:     processor context corrupted
-+[Hardware Error]:     the error has been corrected
-+[Hardware Error]:     PC is imprecise
-+[Hardware Error]:     Program execution can be restarted reliably at the PC associated with the error.
-+[Hardware Error]:     participation type: Local processor observed
-+[Hardware Error]:     request timed out
-+[Hardware Error]:     address space: External Memory Access
-+[Hardware Error]:     memory access attributes:0x20
-+[Hardware Error]:     access mode: secure
-+[Hardware Error]:   Error info structure 3:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x10: micro-architectural error
-+[Hardware Error]:    error_info: 0x0000000078da03ff
-+[Hardware Error]:   Error info structure 4:
-+[Hardware Error]:   num errors: 2
-+[Hardware Error]:    error_type: 0x14: TLB error|micro-architectural error
-+[Hardware Error]:   Context info structure 0:
-+[Hardware Error]:    register context type: AArch64 EL1 context registers
-+[Hardware Error]:    00000000: 00000000 00000000
-+[Hardware Error]:   Vendor specific error info has 5 bytes:
-+[Hardware Error]:    00000000: 13 7b 04 05 01                                   .{...
-+[Firmware Warn]: GHES: Unhandled processor error type 0x02: cache error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x04: TLB error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x08: bus error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x10: micro-architectural error
-+[Firmware Warn]: GHES: Unhandled processor error type 0x14: TLB error|micro-architectural error
-+"""
-+
- import argparse
- import re
- 
- from qmp_helper import qmp, util, cper_guid
- 
-+
- class ArmProcessorEinj:
-     """
-     Implements ARM Processor Error injection via GHES
-diff --git a/scripts/qmp_helper.py b/scripts/qmp_helper.py
-old mode 100644
-new mode 100755
-index 4f7ebb31b424..8e375d6a6cab
---- a/scripts/qmp_helper.py
-+++ b/scripts/qmp_helper.py
-@@ -541,7 +541,7 @@ def send_cper_raw(self, cper_data):
- 
-         self._connect()
- 
--        if self.send_cmd("inject-ghes-error", cmd_arg):
-+        if self.send_cmd("inject-ghes-v2-error", cmd_arg):
-             print("Error injected.")
- 
-     def send_cper(self, notif_type, payload):
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 544ff174784d..80ca7779797b 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2371,7 +2371,6 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
-     assert(code == BUS_MCEERR_AR || code == BUS_MCEERR_AO);
- 
-     ags = acpi_ghes_get_state();
--
-     if (ags && addr) {
-         ram_addr = qemu_ram_addr_from_host(addr);
-         if (ram_addr != RAM_ADDR_INVALID &&
-diff --git a/tests/data/acpi/aarch64/virt/HEST b/tests/data/acpi/aarch64/virt/HEST
-deleted file mode 100644
-index 8b0cf87700fa..000000000000
-Binary files a/tests/data/acpi/aarch64/virt/HEST and /dev/null differ
+The most new error() invocations, you pass 'ret' as a second argument.
+We need to use 'errno' instead where possible to give the users correct errors
+for diagnostics.
 
--
+> +
+> +	while (1) {
+> +		free(line);
+> +		line = NULL;
+> +		/* Subtract 1 from line_size to remove trailing newlines that
+> +		 * get_line are surely to parse...
+> +		 */
+> +		line_size = getline(&line, &len, stdin) - 1;
+> +
+> +		if (line_size < 0)
+> +			break;
+> +
+> +		mid = (line_size / 2) + 1;
+> +
+> +		iov[0].iov_base = (void *)100;
+> +		iov[0].iov_len = mid;
+> +		iov[1].iov_base = (void *)2000;
+> +		iov[1].iov_len = line_size - mid;
+> +
+> +		provider->memcpy_to_device(mem, (size_t)iov[0].iov_base, line,
+> +					   iov[0].iov_len);
 
-Mauro Carvalho Chehab (14):
-  acpi/ghes: Prepare to support multiple sources on ghes
-  acpi/ghes: add a firmware file with HEST address
-  acpi/ghes: Use HEST table offsets when preparing GHES records
-  acpi/generic_event_device: Update GHES migration to cover hest addr
-  acpi/generic_event_device: add logic to detect if HEST addr is
-    available
-  acpi/ghes: only set hw_error_le or hest_addr_le
-  acpi/ghes: add a notifier to notify when error data is ready
-  acpi/ghes: Cleanup the code which gets ghes ged state
-  acpi/generic_event_device: add an APEI error device
-  tests/acpi: virt: allow acpi table changes for a new table: HEST
-  arm/virt: Wire up a GED error device for ACPI / GHES
-  tests/acpi: virt: add a HEST table to aarch64 virt and update DSDT
-  qapi/acpi-hest: add an interface to do generic CPER error injection
-  scripts/ghes_inject: add a script to generate GHES error inject
+This generates the following on my side:
 
- MAINTAINERS                                   |  10 +
- hw/acpi/Kconfig                               |   5 +
- hw/acpi/aml-build.c                           |  10 +
- hw/acpi/generic_event_device.c                |  43 ++
- hw/acpi/ghes-stub.c                           |   7 +-
- hw/acpi/ghes.c                                | 231 ++++--
- hw/acpi/ghes_cper.c                           |  38 +
- hw/acpi/ghes_cper_stub.c                      |  19 +
- hw/acpi/meson.build                           |   2 +
- hw/arm/virt-acpi-build.c                      |  37 +-
- hw/arm/virt.c                                 |  19 +-
- hw/core/machine.c                             |   2 +
- include/hw/acpi/acpi_dev_interface.h          |   1 +
- include/hw/acpi/aml-build.h                   |   2 +
- include/hw/acpi/generic_event_device.h        |   1 +
- include/hw/acpi/ghes.h                        |  45 +-
- include/hw/arm/virt.h                         |   2 +
- qapi/acpi-hest.json                           |  35 +
- qapi/meson.build                              |   1 +
- qapi/qapi-schema.json                         |   1 +
- scripts/arm_processor_error.py                | 476 ++++++++++++
- scripts/ghes_inject.py                        |  51 ++
- scripts/qmp_helper.py                         | 702 ++++++++++++++++++
- target/arm/kvm.c                              |   7 +-
- tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
- .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
- tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
- tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
- tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
- 29 files changed, 1666 insertions(+), 81 deletions(-)
- create mode 100644 hw/acpi/ghes_cper.c
- create mode 100644 hw/acpi/ghes_cper_stub.c
- create mode 100644 qapi/acpi-hest.json
- create mode 100644 scripts/arm_processor_error.py
- create mode 100755 scripts/ghes_inject.py
- create mode 100755 scripts/qmp_helper.py
-
--- 
-2.48.1
-
-
+ncdevmem.c:911:15: warning: format specifies type 'int' but the argument has type 'uint64_t' (aka 'unsigned long') [-Wformat]
+  910 |                         "read line_size=%ld off=%d iov[0].iov_base=%d, iov[0].iov_len=%d, iov[1].iov_base=%d, iov[1].iov_len=%d\n",
+      |                                                 ~~
+      |                                                 %lu
+  911 |                         line_size, off, iov[0].iov_base, iov[0].iov_len,
+      |                                    ^~~
+ncdevmem.c:911:20: warning: format specifies type 'int' but the argument has type 'void *' [-Wformat]
+  910 |                         "read line_size=%ld off=%d iov[0].iov_base=%d, iov[0].iov_len=%d, iov[1].iov_base=%d, iov[1].iov_len=%d\n",
+      |                                                                    ~~
+  911 |                         line_size, off, iov[0].iov_base, iov[0].iov_len,
+      |                                         ^~~~~~~~~~~~~~~
+ncdevmem.c:911:37: warning: format specifies type 'int' but the argument has type '__kernel_size_t' (aka 'unsigned long') [-Wformat]
+  910 |                         "read line_size=%ld off=%d iov[0].iov_base=%d, iov[0].iov_len=%d, iov[1].iov_base=%d, iov[1].iov_len=%d\n",
+      |                                                                                       ~~
+      |                                                                                       %lu
+  911 |                         line_size, off, iov[0].iov_base, iov[0].iov_len,
+      |                                                          ^~~~~~~~~~~~~~
+ncdevmem.c:912:4: warning: format specifies type 'int' but the argument has type 'void *' [-Wformat]
+  910 |                         "read line_size=%ld off=%d iov[0].iov_base=%d, iov[0].iov_len=%d, iov[1].iov_base=%d, iov[1].iov_len=%d\n",
+      |                                                                                                           ~~
+  911 |                         line_size, off, iov[0].iov_base, iov[0].iov_len,
+  912 |                         iov[1].iov_base, iov[1].iov_len);
+      |                         ^~~~~~~~~~~~~~~
+ncdevmem.c:912:21: warning: format specifies type 'int' but the argument has type '__kernel_size_t' (aka 'unsigned long') [-Wformat]
+  910 |                         "read line_size=%ld off=%d iov[0].iov_base=%d, iov[0].iov_len=%d, iov[1].iov_base=%d, iov[1].iov_len=%d\n",
+      |                                                                                                                              ~~
+      |                                                                                                                              %lu
+  911 |                         line_size, off, iov[0].iov_base, iov[0].iov_len,
+  912 |                         iov[1].iov_base, iov[1].iov_len);
+      |                                          ^~~~~~~~~~~~~~
