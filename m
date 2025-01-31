@@ -1,372 +1,186 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4731B6D14
-	for <kvm@vger.kernel.org>; Fri, 31 Jan 2025 10:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E31E2821;
+	Fri, 31 Jan 2025 11:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738321079; cv=none; b=NaFR9IoyBTJYeWRd1ovUs9okF8k/s5TcQcBdppNJ/hC+zshgS8hJS9090GTMk8mYiy1XKTvPO5lLQKFJUcnUnBumSCkwivClrz4O/C+NsfE7oxzaX9wBPgao5LPoaFU4ijinBNyI+dbx0dTtj8ivnh+8dTV7DLe8kCaypL+P87Q=
+	t=1738322723; cv=none; b=VNzSNDewf3Nq9urMdj4ZGIs5l7JPBYXnbAQj8bOg1g7qOhwNxcWt28Y3jZhZ46BCsTcGzEjlrT3oC2PJMdjRHknI33CiZRE1V4OuofELvUs8Nu15/nMDfacSERZ99GkMlaXxny9nMBG4FDy3XfPlIJ8UXEg6BSPAT5xSiAsTj18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738321079; c=relaxed/simple;
-	bh=HmcFTHtCSkE4p5Vx86iDRx2lQmsuGDOrl0D76rU1PtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oaUKqamBfjTPMJBVk65WXp4DHKWBJhWikC9bWAtJ3m9hUyZWS6OHvGwwXds++u5+2Wg8ibyFfZvkpSmzaDe4ysbHWjnAnnpODUQ/eJNbY0OVJER0HxamslXkcEqiYuYp0kaIwrvG/DSQTohixqKz78JGKGfWVAEoMJiLRP0SZdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSXhyynl; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738322723; c=relaxed/simple;
+	bh=bKJAUpLRphd+Hcr/qCpsEWZd0XYy+4eRXlJfCJP+pVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u23IIUc6Ucdygu2W451Bjkoeq0q/83F8kTWUmn3QUKUTUAIW2RV2wajWqKnwWqCfLFt3RnRhNqAb6g14dmoMu7+iSidCNupfmcWufFutMg6qBSOEy3ZFMRi7YApt1KLuLMWHRhb9xIYW+FIssCMLKstACaKXVq/Jzd0YSXjAyzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fjEnV9nP; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSXhyynl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738321077; x=1769857077;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=HmcFTHtCSkE4p5Vx86iDRx2lQmsuGDOrl0D76rU1PtE=;
-  b=MSXhyynlO3cBPAq5CR2/tV7aRvrJ3PfU1+kqZ5tpn+7UpkzT8czO8BO3
-   az82wXGCTQvTlYGKiWfdIelhp06L68uLEic5z/z214Lbr/MyGYbRVlnQh
-   5Usi8Sh1inUaS3mz9aaqCjC2g4L9OTDO4Ire7zL24UQEhxOKiUXNLipol
-   PzV26Zvy/8/skQ6uGWf1m9QTVY+bGkQ74odxuzn2x1PV1neDZW94ZuHaJ
-   lw84wMsIAd2EL3HxFUPmZvELH16Cfk5nNT4dBu/dD293btxvlvigtZDUK
-   jgtscE7mp2ruG7Nm/cjwGmO7OX5xCwvXxT56NzQI9+9FXREFxCK3FJhb8
-   A==;
-X-CSE-ConnectionGUID: w1iCSdupRziwx6fS6OH8mA==
-X-CSE-MsgGUID: GA1gulZATj2iTpdiXCW/Rw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="38791511"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="38791511"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:57:56 -0800
-X-CSE-ConnectionGUID: CU2o7CGHTiq3+ruC5mnwMg==
-X-CSE-MsgGUID: KzH4pnsiRAeRpkEPf8kLrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="146779572"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 31 Jan 2025 02:57:54 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tdoid-000mHt-2a;
-	Fri, 31 Jan 2025 10:57:51 +0000
-Date: Fri, 31 Jan 2025 18:57:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
-	Farrah Chen <farrah.chen@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [kvm:kvm-coco-queue-20250129 43/129] arch/x86/kvm/vmx/main.c:176:13:
- error: 'vt_exit' undeclared; did you mean 'vmx_exit'?
-Message-ID: <202501311811.fRf67aOn-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fjEnV9nP"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50V2OTaQ021969;
+	Fri, 31 Jan 2025 11:25:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=BcnCOVqRzirCzflU/
+	EanKz6V9kgrfshsWJJNnPhsPrk=; b=fjEnV9nP3mmi+fUUoiv62clLC9BGzllbR
+	zvB1nuSuAcdVnAYRC+DQhPd7fPmOPMsw5eHCgsDKz7Ciyvg1YrNviPODE/fIKG7l
+	iG+rdS1eHJ2W3rCqqSBYGf6GUiG5cX28+vNXYWlcg/ArcQySQs7NaNm7JsXYMyMP
+	4wYf0ZjH89OfK5f1tBGm9dUUzQxerNefmsX9mrJpI2fHJXFM1WN9aYEIe57D1108
+	pP0JL7Q0LDoW7wX1cwlP0uvVjy6N9E7nCFNKvcj2Za2iIZx/SVUFpx8ZzQeNf7w5
+	qId0P7MkxYhKBknuzLHuAlB6ZRrN4jR2UL92fLVc+Gf9M+fNGAWXA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44gnby9x00-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jan 2025 11:25:19 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50V8BILi017237;
+	Fri, 31 Jan 2025 11:25:18 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44gfayb9f2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jan 2025 11:25:18 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50VBPF8G55837160
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Jan 2025 11:25:15 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1598720139;
+	Fri, 31 Jan 2025 11:25:15 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C341920133;
+	Fri, 31 Jan 2025 11:25:10 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.171.25.38])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 31 Jan 2025 11:25:10 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com, david@redhat.com
+Subject: [GIT PULL v2 01/20] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
+Date: Fri, 31 Jan 2025 12:24:51 +0100
+Message-ID: <20250131112510.48531-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250131112510.48531-1-imbrenda@linux.ibm.com>
+References: <20250131112510.48531-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NgBUnH8vimi8lBYlwNb2HhR2-JuMtZGS
+X-Proofpoint-GUID: NgBUnH8vimi8lBYlwNb2HhR2-JuMtZGS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-31_04,2025-01-31_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2501310083
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git kvm-coco-queue-20250129
-head:   0bc4f452607db4e7eee4d3056cd6ec98636260bc
-commit: 4b55a8f7c5f508fe1dd0005aecc81bbb5676aaec [43/129] KVM: VMX: Refactor VMX module init/exit functions
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20250131/202501311811.fRf67aOn-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250131/202501311811.fRf67aOn-lkp@intel.com/reproduce)
+From: David Hildenbrand <david@redhat.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501311811.fRf67aOn-lkp@intel.com/
+We try to reuse the same vsie page when re-executing the vsie with a
+given SCB address. The result is that we use the same shadow SCB --
+residing in the vsie page -- and can avoid flushing the TLB when
+re-running the vsie on a CPU.
 
-All errors (new ones prefixed by >>):
+So, when we allocate a fresh vsie page, or when we reuse a vsie page for
+a different SCB address -- reusing the shadow SCB in different context --
+we set ihcpu=0xffff to trigger the flush.
 
-   In file included from include/linux/kallsyms.h:14,
-                    from include/linux/ftrace.h:13,
-                    from include/linux/kvm_host.h:32,
-                    from arch/x86/kvm/vmx/x86_ops.h:5,
-                    from arch/x86/kvm/vmx/main.c:4:
-   arch/x86/kvm/vmx/main.c: In function '__exittest':
->> arch/x86/kvm/vmx/main.c:176:13: error: 'vt_exit' undeclared (first use in this function); did you mean 'vmx_exit'?
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/module.h:140:18: note: in definition of macro 'module_exit'
-     140 |         { return exitfn; }                                      \
-         |                  ^~~~~~
-   arch/x86/kvm/vmx/main.c:176:13: note: each undeclared identifier is reported only once for each function it appears in
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/module.h:140:18: note: in definition of macro 'module_exit'
-     140 |         { return exitfn; }                                      \
-         |                  ^~~~~~
-   In file included from include/linux/compiler_types.h:89,
-                    from <command-line>:
-   arch/x86/kvm/vmx/main.c: At top level:
->> arch/x86/kvm/vmx/main.c:176:13: error: 'vt_exit' undeclared here (not in a function); did you mean 'vmx_exit'?
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/compiler_attributes.h:92:65: note: in definition of macro '__copy'
-      92 | # define __copy(symbol)                 __attribute__((__copy__(symbol)))
-         |                                                                 ^~~~~~
-   arch/x86/kvm/vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
->> include/linux/module.h:139:49: error: redefinition of '__exittest'
-     139 |         static inline exitcall_t __maybe_unused __exittest(void)                \
-         |                                                 ^~~~~~~~~~
-   arch/x86/kvm/vmx/main.c:183:1: note: in expansion of macro 'module_exit'
-     183 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
-   include/linux/module.h:139:49: note: previous definition of '__exittest' with type 'void (*(void))(void)'
-     139 |         static inline exitcall_t __maybe_unused __exittest(void)                \
-         |                                                 ^~~~~~~~~~
-   arch/x86/kvm/vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
->> include/linux/module.h:141:14: error: redefinition of 'cleanup_module'
-     141 |         void cleanup_module(void) __copy(exitfn)                \
-         |              ^~~~~~~~~~~~~~
-   arch/x86/kvm/vmx/main.c:183:1: note: in expansion of macro 'module_exit'
-     183 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
-   include/linux/module.h:141:14: note: previous definition of 'cleanup_module' with type 'void(void)'
-     141 |         void cleanup_module(void) __copy(exitfn)                \
-         |              ^~~~~~~~~~~~~~
-   arch/x86/kvm/vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
---
-   In file included from include/linux/kallsyms.h:14,
-                    from include/linux/ftrace.h:13,
-                    from include/linux/kvm_host.h:32,
-                    from vmx/x86_ops.h:5,
-                    from vmx/main.c:4:
-   vmx/main.c: In function '__exittest':
-   vmx/main.c:176:13: error: 'vt_exit' undeclared (first use in this function); did you mean 'vmx_exit'?
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/module.h:140:18: note: in definition of macro 'module_exit'
-     140 |         { return exitfn; }                                      \
-         |                  ^~~~~~
-   vmx/main.c:176:13: note: each undeclared identifier is reported only once for each function it appears in
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/module.h:140:18: note: in definition of macro 'module_exit'
-     140 |         { return exitfn; }                                      \
-         |                  ^~~~~~
-   In file included from include/linux/compiler_types.h:89,
-                    from <command-line>:
-   vmx/main.c: At top level:
-   vmx/main.c:176:13: error: 'vt_exit' undeclared here (not in a function); did you mean 'vmx_exit'?
-     176 | module_exit(vt_exit);
-         |             ^~~~~~~
-   include/linux/compiler_attributes.h:92:65: note: in definition of macro '__copy'
-      92 | # define __copy(symbol)                 __attribute__((__copy__(symbol)))
-         |                                                                 ^~~~~~
-   vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
->> include/linux/module.h:139:49: error: redefinition of '__exittest'
-     139 |         static inline exitcall_t __maybe_unused __exittest(void)                \
-         |                                                 ^~~~~~~~~~
-   vmx/main.c:183:1: note: in expansion of macro 'module_exit'
-     183 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
-   include/linux/module.h:139:49: note: previous definition of '__exittest' with type 'void (*(void))(void)'
-     139 |         static inline exitcall_t __maybe_unused __exittest(void)                \
-         |                                                 ^~~~~~~~~~
-   vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
->> include/linux/module.h:141:14: error: redefinition of 'cleanup_module'
-     141 |         void cleanup_module(void) __copy(exitfn)                \
-         |              ^~~~~~~~~~~~~~
-   vmx/main.c:183:1: note: in expansion of macro 'module_exit'
-     183 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
-   include/linux/module.h:141:14: note: previous definition of 'cleanup_module' with type 'void(void)'
-     141 |         void cleanup_module(void) __copy(exitfn)                \
-         |              ^~~~~~~~~~~~~~
-   vmx/main.c:176:1: note: in expansion of macro 'module_exit'
-     176 | module_exit(vt_exit);
-         | ^~~~~~~~~~~
+However, after we looked up the SCB address in the radix tree, but before
+we grabbed the vsie page by raising the refcount to 2, someone could reuse
+the vsie page for a different SCB address, adjusting page->index and the
+radix tree. In that case, we would be reusing the vsie page with a
+wrong page->index.
 
+Another corner case is that we might set the SCB address for a vsie
+page, but fail the insertion into the radix tree. Whoever would reuse
+that page would remove the corresponding radix tree entry -- which might
+now be a valid entry pointing at another page, resulting in the wrong
+vsie page getting removed from the radix tree.
 
-vim +176 arch/x86/kvm/vmx/main.c
+Let's handle such races better, by validating that the SCB address of a
+vsie page didn't change after we grabbed it (not reuse for a different
+SCB; the alternative would be performing another tree lookup), and by
+setting the SCB address to invalid until the insertion in the tree
+succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
 
-     3	
-   > 4	#include "x86_ops.h"
-     5	#include "vmx.h"
-     6	#include "nested.h"
-     7	#include "pmu.h"
-     8	#include "posted_intr.h"
-     9	
-    10	#define VMX_REQUIRED_APICV_INHIBITS				\
-    11		(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
-    12		 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
-    13		 BIT(APICV_INHIBIT_REASON_HYPERV) |			\
-    14		 BIT(APICV_INHIBIT_REASON_BLOCKIRQ) |			\
-    15		 BIT(APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED) |	\
-    16		 BIT(APICV_INHIBIT_REASON_APIC_ID_MODIFIED) |		\
-    17		 BIT(APICV_INHIBIT_REASON_APIC_BASE_MODIFIED))
-    18	
-    19	struct kvm_x86_ops vt_x86_ops __initdata = {
-    20		.name = KBUILD_MODNAME,
-    21	
-    22		.check_processor_compatibility = vmx_check_processor_compat,
-    23	
-    24		.hardware_unsetup = vmx_hardware_unsetup,
-    25	
-    26		.enable_virtualization_cpu = vmx_enable_virtualization_cpu,
-    27		.disable_virtualization_cpu = vmx_disable_virtualization_cpu,
-    28		.emergency_disable_virtualization_cpu = vmx_emergency_disable_virtualization_cpu,
-    29	
-    30		.has_emulated_msr = vmx_has_emulated_msr,
-    31	
-    32		.vm_size = sizeof(struct kvm_vmx),
-    33		.vm_init = vmx_vm_init,
-    34		.vm_destroy = vmx_vm_destroy,
-    35	
-    36		.vcpu_precreate = vmx_vcpu_precreate,
-    37		.vcpu_create = vmx_vcpu_create,
-    38		.vcpu_free = vmx_vcpu_free,
-    39		.vcpu_reset = vmx_vcpu_reset,
-    40	
-    41		.prepare_switch_to_guest = vmx_prepare_switch_to_guest,
-    42		.vcpu_load = vmx_vcpu_load,
-    43		.vcpu_put = vmx_vcpu_put,
-    44	
-    45		.update_exception_bitmap = vmx_update_exception_bitmap,
-    46		.get_feature_msr = vmx_get_feature_msr,
-    47		.get_msr = vmx_get_msr,
-    48		.set_msr = vmx_set_msr,
-    49		.get_segment_base = vmx_get_segment_base,
-    50		.get_segment = vmx_get_segment,
-    51		.set_segment = vmx_set_segment,
-    52		.get_cpl = vmx_get_cpl,
-    53		.get_cpl_no_cache = vmx_get_cpl_no_cache,
-    54		.get_cs_db_l_bits = vmx_get_cs_db_l_bits,
-    55		.is_valid_cr0 = vmx_is_valid_cr0,
-    56		.set_cr0 = vmx_set_cr0,
-    57		.is_valid_cr4 = vmx_is_valid_cr4,
-    58		.set_cr4 = vmx_set_cr4,
-    59		.set_efer = vmx_set_efer,
-    60		.get_idt = vmx_get_idt,
-    61		.set_idt = vmx_set_idt,
-    62		.get_gdt = vmx_get_gdt,
-    63		.set_gdt = vmx_set_gdt,
-    64		.set_dr7 = vmx_set_dr7,
-    65		.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
-    66		.cache_reg = vmx_cache_reg,
-    67		.get_rflags = vmx_get_rflags,
-    68		.set_rflags = vmx_set_rflags,
-    69		.get_if_flag = vmx_get_if_flag,
-    70	
-    71		.flush_tlb_all = vmx_flush_tlb_all,
-    72		.flush_tlb_current = vmx_flush_tlb_current,
-    73		.flush_tlb_gva = vmx_flush_tlb_gva,
-    74		.flush_tlb_guest = vmx_flush_tlb_guest,
-    75	
-    76		.vcpu_pre_run = vmx_vcpu_pre_run,
-    77		.vcpu_run = vmx_vcpu_run,
-    78		.handle_exit = vmx_handle_exit,
-    79		.skip_emulated_instruction = vmx_skip_emulated_instruction,
-    80		.update_emulated_instruction = vmx_update_emulated_instruction,
-    81		.set_interrupt_shadow = vmx_set_interrupt_shadow,
-    82		.get_interrupt_shadow = vmx_get_interrupt_shadow,
-    83		.patch_hypercall = vmx_patch_hypercall,
-    84		.inject_irq = vmx_inject_irq,
-    85		.inject_nmi = vmx_inject_nmi,
-    86		.inject_exception = vmx_inject_exception,
-    87		.cancel_injection = vmx_cancel_injection,
-    88		.interrupt_allowed = vmx_interrupt_allowed,
-    89		.nmi_allowed = vmx_nmi_allowed,
-    90		.get_nmi_mask = vmx_get_nmi_mask,
-    91		.set_nmi_mask = vmx_set_nmi_mask,
-    92		.enable_nmi_window = vmx_enable_nmi_window,
-    93		.enable_irq_window = vmx_enable_irq_window,
-    94		.update_cr8_intercept = vmx_update_cr8_intercept,
-    95	
-    96		.x2apic_icr_is_split = false,
-    97		.set_virtual_apic_mode = vmx_set_virtual_apic_mode,
-    98		.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
-    99		.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
-   100		.load_eoi_exitmap = vmx_load_eoi_exitmap,
-   101		.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
-   102		.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
-   103		.hwapic_isr_update = vmx_hwapic_isr_update,
-   104		.sync_pir_to_irr = vmx_sync_pir_to_irr,
-   105		.deliver_interrupt = vmx_deliver_interrupt,
-   106		.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
-   107	
-   108		.set_tss_addr = vmx_set_tss_addr,
-   109		.set_identity_map_addr = vmx_set_identity_map_addr,
-   110		.get_mt_mask = vmx_get_mt_mask,
-   111	
-   112		.get_exit_info = vmx_get_exit_info,
-   113		.get_entry_info = vmx_get_entry_info,
-   114	
-   115		.vcpu_after_set_cpuid = vmx_vcpu_after_set_cpuid,
-   116	
-   117		.has_wbinvd_exit = cpu_has_vmx_wbinvd_exit,
-   118	
-   119		.get_l2_tsc_offset = vmx_get_l2_tsc_offset,
-   120		.get_l2_tsc_multiplier = vmx_get_l2_tsc_multiplier,
-   121		.write_tsc_offset = vmx_write_tsc_offset,
-   122		.write_tsc_multiplier = vmx_write_tsc_multiplier,
-   123	
-   124		.load_mmu_pgd = vmx_load_mmu_pgd,
-   125	
-   126		.check_intercept = vmx_check_intercept,
-   127		.handle_exit_irqoff = vmx_handle_exit_irqoff,
-   128	
-   129		.cpu_dirty_log_size = PML_LOG_NR_ENTRIES,
-   130		.update_cpu_dirty_logging = vmx_update_cpu_dirty_logging,
-   131	
-   132		.nested_ops = &vmx_nested_ops,
-   133	
-   134		.pi_update_irte = vmx_pi_update_irte,
-   135		.pi_start_assignment = vmx_pi_start_assignment,
-   136	
-   137	#ifdef CONFIG_X86_64
-   138		.set_hv_timer = vmx_set_hv_timer,
-   139		.cancel_hv_timer = vmx_cancel_hv_timer,
-   140	#endif
-   141	
-   142		.setup_mce = vmx_setup_mce,
-   143	
-   144	#ifdef CONFIG_KVM_SMM
-   145		.smi_allowed = vmx_smi_allowed,
-   146		.enter_smm = vmx_enter_smm,
-   147		.leave_smm = vmx_leave_smm,
-   148		.enable_smi_window = vmx_enable_smi_window,
-   149	#endif
-   150	
-   151		.check_emulate_instruction = vmx_check_emulate_instruction,
-   152		.apic_init_signal_blocked = vmx_apic_init_signal_blocked,
-   153		.migrate_timers = vmx_migrate_timers,
-   154	
-   155		.msr_filter_changed = vmx_msr_filter_changed,
-   156		.complete_emulated_msr = kvm_complete_insn_gp,
-   157	
-   158		.vcpu_deliver_sipi_vector = kvm_vcpu_deliver_sipi_vector,
-   159	
-   160		.get_untagged_addr = vmx_get_untagged_addr,
-   161	};
-   162	
-   163	struct kvm_x86_init_ops vt_init_ops __initdata = {
-   164		.hardware_setup = vmx_hardware_setup,
-   165		.handle_intel_pt_intr = NULL,
-   166	
-   167		.runtime_ops = &vt_x86_ops,
-   168		.pmu_ops = &intel_pmu_ops,
-   169	};
-   170	
-   171	static void __vt_exit(void)
-   172	{
-   173		vmx_exit();
-   174		kvm_x86_vendor_exit();
-   175	}
- > 176	module_exit(vt_exit);
-   177	
+These scenarios are rare, the effects a bit unclear, and these issues were
+only found by code inspection. Let's CC stable to be safe.
 
+Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Tested-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Message-ID: <20250107154344.1003072-2-david@redhat.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+---
+ arch/s390/kvm/vsie.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index a687695d8f68..513e608567cc 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1362,8 +1362,14 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
+ 	rcu_read_unlock();
+ 	if (page) {
+-		if (page_ref_inc_return(page) == 2)
+-			return page_to_virt(page);
++		if (page_ref_inc_return(page) == 2) {
++			if (page->index == addr)
++				return page_to_virt(page);
++			/*
++			 * We raced with someone reusing + putting this vsie
++			 * page before we grabbed it.
++			 */
++		}
+ 		page_ref_dec(page);
+ 	}
+ 
+@@ -1393,15 +1399,20 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 			kvm->arch.vsie.next++;
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 	}
+-	page->index = addr;
+-	/* double use of the same address */
++	/* Mark it as invalid until it resides in the tree. */
++	page->index = ULONG_MAX;
++
++	/* Double use of the same address or allocation failure. */
+ 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
+ 		page_ref_dec(page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+ 	}
++	page->index = addr;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
+ 
+ 	vsie_page = page_to_virt(page);
+@@ -1496,7 +1507,9 @@ void kvm_s390_vsie_destroy(struct kvm *kvm)
+ 		vsie_page = page_to_virt(page);
+ 		release_gmap_shadow(vsie_page);
+ 		/* free the radix tree entry */
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 		__free_page(page);
+ 	}
+ 	kvm->arch.vsie.page_count = 0;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.48.1
+
