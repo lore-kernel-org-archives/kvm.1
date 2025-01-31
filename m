@@ -1,185 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B4A2BB15;
-	Fri, 31 Jan 2025 09:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F5413A3ED
+	for <kvm@vger.kernel.org>; Fri, 31 Jan 2025 09:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738314575; cv=none; b=st7NQTqIAJrVvPlqnuik0T4dJlAccK/lYxbjjYI2SIKdHfhVYDZ2QUxg3WO/sHNZgFrzIziSCIS1OD4thKJQD4yhh5FlkAEzQQVforFt4IAgh7l/y0tSXyzHYB0rUD2q8ZBrIGP4/FeyZuwO3BmEH5obR5wPd1mXTFb2X2bbja4=
+	t=1738314694; cv=none; b=uuRKoCK1mXNo+jhuk7wyweXNFAur8IwQchHgRR7mgONOJ4hwg61pzAF04HScGxNM15GUNjVpOOssSa094tr6PoQlKe+vK+C+L5dxS4JG0O/phLptoZQUEc0l3+av5tSOmiLzMAMQPaclie0tYGfu0MBQyja6q3GBDDjNfOjCbvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738314575; c=relaxed/simple;
-	bh=OFkh54zJD2NZ80nIDeuODN8ZbPLuQVqC5NfP5c5+kts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TmKIL3qsqSGAvY/7TyP/4qVVz4/lV5O1ZWX2U3X2nucHjh1uOob8zXKQwnnJj0F+xvgtUb19mkq6ACX/6OoWjwi+PcaZapBK0DMhd/B/xu3JfZS/qRxxovBaPdftGdlMambBGjjoZdoYMP4V0K7HiQQf+YOj0icrM2vz5QNoP4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKHaGFiH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738314694; c=relaxed/simple;
+	bh=PS+IV4yLHa5msWd97PwwTmrol0o6BSyiBj3Hus7IVYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VRLJncutWDXyJkk5bXGRBoyqnT0F9BkLIwwdG6yS+MSF/xk/cB477vidfI89iWhAP3SlIP98eB/hFLRhZrJV6VdUkR5kZz6iYALMes4cYQWG0hlu4lndHVpPKKIVFH2Npyq5LDZWCTNvjXiieTDL3SMxyh/o4opZ/5oaDxbwfns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K5D4ZuVJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKHaGFiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C1CC4CED1;
-	Fri, 31 Jan 2025 09:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738314575;
-	bh=OFkh54zJD2NZ80nIDeuODN8ZbPLuQVqC5NfP5c5+kts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vKHaGFiH98f0ILT14IAQOj9WeQK3fwh8ZqZrFPqkhT7d7V3gg5a9AtVD7ggDEWU7O
-	 55GQdD1QJgbgrnJBkMCqgFajkud1Vdv5mLw0+nQlQl16WslYxZp4PiMcGH4+8pwrHJ
-	 mbZdG1nfcR/9pdWTsZmraM6P22/3Cxp4bdtb+t8CJQGgHiwyB1zO8BjcCq+1WQDJqz
-	 dkZh4/XawzORyNqsAd62JiwC1OjSQf544cd6yw6utMepLJ5vEMLz60g6B7Fmqa3yjr
-	 EFFbf1WP7PZgeudjucPZhdKiPOsjBYd3LUgnkg1jhhg1hCWDTM13Mfj6S+jmYsiUeg
-	 f7MZUYN2tPlvg==
-Date: Fri, 31 Jan 2025 09:09:27 +0000
-From: Simon Horman <horms@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	David Ahern <dsahern@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, sdf@fomichev.me,
-	asml.silence@gmail.com, dw@davidwei.uk,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Kaiyuan Zhang <kaiyuanz@google.com>
-Subject: Re: [PATCH RFC net-next v2 5/6] net: devmem: Implement TX path
-Message-ID: <20250131090927.GB24105@kernel.org>
-References: <20250130211539.428952-1-almasrymina@google.com>
- <20250130211539.428952-6-almasrymina@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K5D4ZuVJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738314691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=14rCBZaJT9OsQjy0NJbdU1G7apIb+cCXgpKJmSgMQT0=;
+	b=K5D4ZuVJUqEve0RjTvN+O/GCHyppwwrI8Bw3PFjQU4gRD4bZoTmxsu2bk7b1g9YPkrEliu
+	xbFI77kf6rzBInX1KBYgH2AY5GPbR/xy9qSJ/p44T1eWdcBlDulDHCHXyHO9cw8Mrnfzju
+	Yx+LpsvXvqjIgynWT76bTolQM+XMW5I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-37-RD8IS1gQPxyFe5dVT8UtlA-1; Fri, 31 Jan 2025 04:11:29 -0500
+X-MC-Unique: RD8IS1gQPxyFe5dVT8UtlA-1
+X-Mimecast-MFC-AGG-ID: RD8IS1gQPxyFe5dVT8UtlA
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-436723bf7ffso14595895e9.3
+        for <kvm@vger.kernel.org>; Fri, 31 Jan 2025 01:11:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738314688; x=1738919488;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=14rCBZaJT9OsQjy0NJbdU1G7apIb+cCXgpKJmSgMQT0=;
+        b=YKPC+4BXGITaPS72EsDT01MpUMlZCzUY32tFdU5HC1/UI1KGO6s0botvU/pKuvirUd
+         O/jvSsdu05X7rzUf3VRDSCXu+mY5+UoSVZsOEE6j7vybL8P32M4TSNaLOkvhhsDdO6Mp
+         aReNFhUripA21rVLVVXi0wC/DriVqbJ0OuGB6xeU22GNj6EHWKga4gse1UcPhGrrxizF
+         lzQKLKrQYhlDlGapQentH9DBLKke08jkfLWLqKbVm5YvlR685scX8OQUZWFxvV78qlCu
+         Yq6PxshdKvFkQt/zEOqMDQ6x16kHxG9IVsc68aBSnaKtRZnwNw6++HRi2aktgIIlwDm4
+         PaRw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFfIVyp/MsJ1vqj/hiWNORo+JvQ2ylSo7b9ylL9nRRdxPBkEl4fFz4UPKvMbMpkq5epbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCcK5J/BEs0q+hbRTh7PJ5Cod6VD8js9zD11sQMYS+jlfcCINu
+	6te4uDYAj1G9T51gBscRhhtpb4ZndDbdJ+wygLnTLD/sfhPXBWKElU+iy2GkuQMi4jA3P0xdfTv
+	bVUPaGfgRmeF4tpxFNMKpmbzJetYwERHRNlrZSm+QuZJtLCndQQ==
+X-Gm-Gg: ASbGncs98cscT48pPtw36HBX56BwraUNTeVfWzjaALfVZuVDGPubw390mNz7x4omfvg
+	1+ZtUXLx1VduxzB+v5CFscm2u1Vejawi2zlfR6RiYtoJ781zf/sH/SqVPOlcFSMz7quh9UyN/oD
+	R6iqvkKpUOmW7kCYvL9TEZ2/Z8XklFk2S51lsjSQpMlSsmE7ksDnSsZ9GjYKlptvo0oSHuRIauE
+	mgTLScjeiOT3WKE8GM7ePP2cCVQAQFkDSAltGoYsV6YS8ok7KTUWQCijvpdLe1K+IdC9oqC8O3k
+	2yzhKgQds5mPRxVHugkVbHJVcsoMibUWvFf+FRSUZGIaudSqx1Ykbq3H8g0oVhzDVgUYjIftBUi
+	ELwzWgHJlv9ttGnhAY6V+PL4PMm2auaFC
+X-Received: by 2002:a05:600c:4753:b0:434:f817:4492 with SMTP id 5b1f17b1804b1-438dc435842mr108178075e9.31.1738314687604;
+        Fri, 31 Jan 2025 01:11:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEpIsVujEAcCfAed42r4ZOsAe4hIdhd/HnI5IzGOKOSzslNGTeRa001StzSVJRx55ivfX7lXw==
+X-Received: by 2002:a05:600c:4753:b0:434:f817:4492 with SMTP id 5b1f17b1804b1-438dc435842mr108177355e9.31.1738314687109;
+        Fri, 31 Jan 2025 01:11:27 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70a:1c00:b8d4:bc62:e7ed:ec0e? (p200300cbc70a1c00b8d4bc62e7edec0e.dip0.t-ipconnect.de. [2003:cb:c70a:1c00:b8d4:bc62:e7ed:ec0e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c0ec2f4sm4214290f8f.11.2025.01.31.01.11.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jan 2025 01:11:26 -0800 (PST)
+Message-ID: <dec9250c-aec5-43c4-aaf4-736b14fc3186@redhat.com>
+Date: Fri, 31 Jan 2025 10:11:23 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250130211539.428952-6-almasrymina@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 04/11] KVM: guest_memfd: Add KVM capability to
+ check if guest_memfd is shared
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net,
+ vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com,
+ mail@maciej.szmigiero.name, michael.roth@amd.com, wei.w.wang@intel.com,
+ liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, jthoughton@google.com
+References: <20250129172320.950523-1-tabba@google.com>
+ <20250129172320.950523-5-tabba@google.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250129172320.950523-5-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 30, 2025 at 09:15:38PM +0000, Mina Almasry wrote:
-> Augment dmabuf binding to be able to handle TX. Additional to all the RX
-> binding, we also create tx_vec needed for the TX path.
+On 29.01.25 18:23, Fuad Tabba wrote:
+> Add the KVM capability KVM_CAP_GMEM_SHARED_MEM, which indicates
+> that the VM supports shared memory in guest_memfd, or that the
+> host can create VMs that support shared memory. Supporting shared
+> memory implies that memory can be mapped when shared with the
+> host.
 > 
-> Provide API for sendmsg to be able to send dmabufs bound to this device:
+> For now, this checks only whether the VM type supports sharing
+> guest_memfd backed memory. In the future, it will be expanded to
+> check whether the specific memory address is shared with the
+> host.
 > 
-> - Provide a new dmabuf_tx_cmsg which includes the dmabuf to send from.
-> - MSG_ZEROCOPY with SCM_DEVMEM_DMABUF cmsg indicates send from dma-buf.
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>   include/uapi/linux/kvm.h |  1 +
+>   virt/kvm/guest_memfd.c   | 13 +++++++++++++
+>   virt/kvm/kvm_main.c      |  4 ++++
+>   3 files changed, 18 insertions(+)
 > 
-> Devmem is uncopyable, so piggyback off the existing MSG_ZEROCOPY
-> implementation, while disabling instances where MSG_ZEROCOPY falls back
-> to copying.
-> 
-> We additionally pipe the binding down to the new
-> zerocopy_fill_skb_from_devmem which fills a TX skb with net_iov netmems
-> instead of the traditional page netmems.
-> 
-> We also special case skb_frag_dma_map to return the dma-address of these
-> dmabuf net_iovs instead of attempting to map pages.
-> 
-> Based on work by Stanislav Fomichev <sdf@fomichev.me>. A lot of the meat
-> of the implementation came from devmem TCP RFC v1[1], which included the
-> TX path, but Stan did all the rebasing on top of netmem/net_iov.
-> 
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> Signed-off-by: Kaiyuan Zhang <kaiyuanz@google.com>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 502ea63b5d2e..3ac805c5abf1 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -933,6 +933,7 @@ struct kvm_enable_cap {
+>   #define KVM_CAP_PRE_FAULT_MEMORY 236
+>   #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+>   #define KVM_CAP_X86_GUEST_MODE 238
+> +#define KVM_CAP_GMEM_SHARED_MEM 239
+>   
+>   struct kvm_irq_routing_irqchip {
+>   	__u32 irqchip;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 86441581c9ae..4e1144ed3446 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -308,6 +308,13 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>   }
+>   
+>   #ifdef CONFIG_KVM_GMEM_SHARED_MEM
+> +static bool kvm_gmem_is_shared(struct file *file, pgoff_t pgoff)
 
+I assume you want to call this something like:
+
+kvm_gmem_folio_is_shared
+kvm_gmem_offset_is_shared
+kvm_gmem_range_is_shared
 ...
 
-> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+To make it clearer that you are only checking one piece and not the 
+whole thing.
 
-> index 0e41699df419..9ba6994e2a05 100644
-> --- a/net/core/netdev-genl.c
-> +++ b/net/core/netdev-genl.c
+But then, I wonder if that could be handled in kvm_gmem_get_folio(),
+and e.g., specified via a flag?
 
-...
+kvm_gmem_get_folio(inode, vmf->pgoff, KVM_GMEM_GF_SHARED);
 
-> @@ -911,10 +912,68 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
->  	return err;
->  }
->  
-> -/* stub */
->  int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
->  {
-> -	return 0;
-> +	struct net_devmem_dmabuf_binding *binding;
-> +	struct list_head *sock_binding_list;
-> +	struct net_device *netdev;
-> +	u32 ifindex, dmabuf_fd;
-> +	struct sk_buff *rsp;
-> +	int err = 0;
-> +	void *hdr;
-> +
-> +	if (GENL_REQ_ATTR_CHECK(info, NETDEV_A_DEV_IFINDEX) ||
-> +	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_DMABUF_FD))
-> +		return -EINVAL;
-> +
-> +	ifindex = nla_get_u32(info->attrs[NETDEV_A_DEV_IFINDEX]);
-> +	dmabuf_fd = nla_get_u32(info->attrs[NETDEV_A_DMABUF_FD]);
-> +
-> +	sock_binding_list =
-> +		genl_sk_priv_get(&netdev_nl_family, NETLINK_CB(skb).sk);
-> +	if (IS_ERR(sock_binding_list))
-> +		return PTR_ERR(sock_binding_list);
-> +
-> +	rsp = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-> +	if (!rsp)
-> +		return -ENOMEM;
-> +
-> +	hdr = genlmsg_iput(rsp, info);
-> +	if (!hdr) {
-> +		err = -EMSGSIZE;
-> +		goto err_genlmsg_free;
-> +	}
-> +
-> +	rtnl_lock();
-> +
-> +	netdev = __dev_get_by_index(genl_info_net(info), ifindex);
-> +	if (!netdev || !netif_device_present(netdev)) {
-> +		err = -ENODEV;
-> +		goto err_unlock;
-> +	}
-> +
-> +	binding = net_devmem_bind_dmabuf(netdev, DMA_TO_DEVICE, dmabuf_fd,
-> +					 info->extack);
-> +	if (IS_ERR(binding)) {
-> +		err = PTR_ERR(binding);
-> +		goto err_unlock;
-> +	}
-> +
-> +	list_add(&binding->list, sock_binding_list);
-> +
-> +	nla_put_u32(rsp, NETDEV_A_DMABUF_ID, binding->id);
-> +	genlmsg_end(rsp, hdr);
-> +
-> +	rtnl_unlock();
-> +
-> +	return genlmsg_reply(rsp, info);
-> +
-> +	net_devmem_unbind_dmabuf(binding);
+Maybe existing callers would want to pass KVM_GMEM_GF_PRIVATE, and the 
+ones that "don't care" don't pas anything?
 
-Hi Mina,
+-- 
+Cheers,
 
-It appears that the line above is unreachable.
-I guess it was part of an unwind that is no-longer needed
-and thus can now be removed.
+David / dhildenb
 
-Flagged by Smatch.
-
-> +err_unlock:
-> +	rtnl_unlock();
-> +err_genlmsg_free:
-> +	nlmsg_free(rsp);
-> +	return err;
->  }
-
-...
