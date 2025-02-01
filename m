@@ -1,56 +1,56 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B84154BFF
-	for <kvm@vger.kernel.org>; Sat,  1 Feb 2025 01:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F809156F2B
+	for <kvm@vger.kernel.org>; Sat,  1 Feb 2025 01:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738373928; cv=none; b=gb7mgwtU5gQOMuSaZJxFYKcaLSGISAUFcJGQp++i+JpFYG+Evz6yAnFCOR5kNv0BZir2p+NW/3RF/rggPMcwGsWrPt+QxdP8idoY33z4DrfnZOrS7GAQLUQ4evGVfl4Q3qJDGRTwpP576dJ/sqe8Wci+WCO3RKT1qsSB1XDghLI=
+	t=1738373929; cv=none; b=sNwuRMXreD6w2E+ur10TtbMm8t1M+6N1j4d2Wji6QnTZGXPHDoQPxGLD07Sx7xx4Gai9p+Tbufqk9npM5ac8+/3EfrOEzH5IlFf+s4/62xTMo/3zDtfz0qd/BT9+cXcSU8uZ6zN9h1jMq+hqKk4IGZi985RoT3iJRrX1klPyNU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738373928; c=relaxed/simple;
-	bh=S0cfkfcvuIT723YoScs3tAnJNc+E1NoNA3KNUZ4zydY=;
+	s=arc-20240116; t=1738373929; c=relaxed/simple;
+	bh=v9H+2tMmNqFAeOpfbgGt/nZWndkG/fhbAY6d0wjp8N4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n3TaIfkXJTgIbceh+LL6IxZV2YkDQ4orn0y+jmvYF3XWHZls08ijWyYMyma8mdj/P7mJA5O+0av9fBujTcRP5fYCA9ljnfUHNJMaXtFflvwGMIV0o4G0eSNASFXpkC9th1u6wlvlJqZ+MkKZY4x5UaLo3xVQdbVWoh3VjQuTLJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iWbk1Nx7; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=YrcKVD1Wd1ujsQo+qfA7mC+HxMNClUtn9oQEsg2ZpO3gWgjVdMPBCO3FmYQmMu3B3IH5qlpPK4aWD0nHJ3xqMbBsY/M1d7weYYmQ2EdFgDk0YhHLR82lB2A4xd579rkXxe7OWdeSjNGxaX4X5ctIlmPdDWsko5llaoZ+SajJXlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t0ej3dpj; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iWbk1Nx7"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-218cf85639eso77797835ad.3
-        for <kvm@vger.kernel.org>; Fri, 31 Jan 2025 17:38:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t0ej3dpj"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2166a1a5cc4so52476855ad.3
+        for <kvm@vger.kernel.org>; Fri, 31 Jan 2025 17:38:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738373924; x=1738978724; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738373928; x=1738978728; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=SqlXkof1Dlk5EqS0bEckGBOreF1G6+rbdQPzOVsecgY=;
-        b=iWbk1Nx7O508UiEO7t8Dgh9RTqpAmC8oWhiRPGVgRUp8LfzfTdNm1UgPsoFb89j2j4
-         Z7moPpVM4Cmi9OmZxhm6F9soZiCeUsjG0pEYjcYKDCbF6vfRGuhuAbR/+E2Wh/3tdxEc
-         8X1qVuIbh3llf7KBmktmhVJN5fsu+h1q9/LPypB4IZZgrMx0GCJq7ATvJoQ4J6dDPoX2
-         U/aTgVoFnTcsRAdwbOqUKtwyP0pS+lbR6euXlebXSTRU1PTuCOJQHvQa5JjQEoCIttri
-         x6TKlMQ6A8anLp5yEQqmQXNj53NS87ceFdGLniCUEZcDWUdyCmcqxZKR89urm0SDyaN2
-         fcMQ==
+        bh=IMAYQckruDa+SPrRiOqDGSNb0t/dgyYc3adSwMI6g+M=;
+        b=t0ej3dpjti584ksrWRkhAetjp9cq+Y2yxlydSPG9jPuYcmYYI1E9R1yUAdMelTNhsc
+         sX3lNxs6JeFoG/8hZaU0/tm7HyFIIk6boWx12JDB2U5bAFAjZWf28RFF+di035R/LR6v
+         /QtdgXUj/S114EmPUmAEqTmIBnjNzZPp7CGqLSE9VHso2tJidBso3XNTyuVOZ9saKXWk
+         NF/zYkqRpBlsez8tAOOS9VTL0gfErKPrGXNtmzr4jT8MwjTnC0sJvs1lygxIaQfvajhh
+         v1hK4qaVZ7FU3yDczElr6xJ5rR+L4p7Up9cCEtlr8MARjsjK36audKkRzNBbKgvdY21q
+         sL6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738373924; x=1738978724;
+        d=1e100.net; s=20230601; t=1738373928; x=1738978728;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SqlXkof1Dlk5EqS0bEckGBOreF1G6+rbdQPzOVsecgY=;
-        b=AtntJVtA9dOYhB4xx8d0uyc1sgzCiDoWxyCryyA0qD3Mw8zuVZUw37Y4noyImtg11u
-         cnWbIwWdt3ZWRHjAEX6Ch9igoqVTr4FEOUom7aRAtG9948l1SzBKuIG4AectQH66UfNf
-         kKtbeT5hLKlACqcYxMndC6mUPJ3VufyYjOgM1Y+tqdVJtvwygRrwO8a/bfQXmEne8ifm
-         8Rhk3RxTO4QX5zrm60IVKddg7qwxf4diyWxcD4AVF8womprbs2AvJQcB/gbvkcSQccvV
-         HN3qQVGZqiw3tESFJ8O2sBKK3aYnvZ4gi/LraphgPvv0L+FYjyioiOLJtjgoXdidK6UJ
-         B0rg==
-X-Gm-Message-State: AOJu0Ywef5K4Q4JuBcKY+krfN7FXBkMkSLUWfL/M8p99w47g0b6PYH+W
-	GQPZVJtxCNyLtERMonwo2OrmEf5tnccXbx7h8k43IvHIPv4NDMGBRB5hcOOjzz4JBhXNywh4BcT
-	c1Q==
-X-Google-Smtp-Source: AGHT+IFNf5S0vTL27XQUYWusQWzi4oXLJZ2sw5QHFsmsRqLpME4oOPmWgN3SSRp50OLDEWb6ANqX8m4TZdQ=
-X-Received: from plek12.prod.google.com ([2002:a17:903:450c:b0:21b:d402:6f93])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e751:b0:216:4d1f:5c83
- with SMTP id d9443c01a7336-21dd7de1c73mr200004905ad.47.1738373924151; Fri, 31
- Jan 2025 17:38:44 -0800 (PST)
+        bh=IMAYQckruDa+SPrRiOqDGSNb0t/dgyYc3adSwMI6g+M=;
+        b=kOxGxNP0myl2AuRE0qmRm6Jh4VYtwq4t9ZtsRxIXAnqZ9/E3Ia+rzj6jcquQyirNTW
+         HhVTLFXSGLMHWjD3fPGQCrm6attI2UplqDlLHwNClqzu6LGVg3ePy1WUgjEt6FTs7kbi
+         I/+V//w1XHfAkrISV3a3/d9lvArVziFRl1PTsaI30bpTXDyPiuSBlPrgeVCyP0rDmP0l
+         8EOd4gN6e94a3Gou20++Bza/Iy/PMQoHM7HR83d5W9IUu6juLgGuC8R/yRxN2nVH92nO
+         +vOYaFfnPKdjtQzSYQ81YP9hIlud5ONq/9lOegeyCvJiSRxLRjRIzG23bW2qG7dS4v8u
+         wUOA==
+X-Gm-Message-State: AOJu0YzKUFPH9DUQs0tSnJKmhJaC3Gg6pcInjGGii1ndhfs8RogXYPPY
+	oxj+fOFTxkcUaFY9KNOVq22A+5sxW5y76FAH5kFdJecPY6CKnVbbMCRw7TcqOzHh0vNvJw2MHWB
+	Cpw==
+X-Google-Smtp-Source: AGHT+IGH8xQcFoI+aZS/paLcJ3lHOSsoPD/bioCvxQShclhq3Gc+aulVvgApxgkYoQcRJY3B5N26fOk0g0I=
+X-Received: from pjvf15.prod.google.com ([2002:a17:90a:da8f:b0:2ea:5fc2:b503])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dacd:b0:216:50fb:5dfc
+ with SMTP id d9443c01a7336-21dd7c3cddemr179335675ad.9.1738373927642; Fri, 31
+ Jan 2025 17:38:47 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jan 2025 17:38:24 -0800
+Date: Fri, 31 Jan 2025 17:38:26 -0800
 In-Reply-To: <20250201013827.680235-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250201013827.680235-1-seanjc@google.com>
 X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
-Message-ID: <20250201013827.680235-9-seanjc@google.com>
-Subject: [PATCH v2 08/11] KVM: x86: Pass reference pvclock as a param to kvm_setup_guest_pvclock()
+Message-ID: <20250201013827.680235-11-seanjc@google.com>
+Subject: [PATCH v2 10/11] KVM: x86: Setup Hyper-V TSC page before Xen PV
+ clocks (during clock update)
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -71,74 +72,38 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Pass the reference pvclock structure that's used to setup each individual
-pvclock as a parameter to kvm_setup_guest_pvclock() as a preparatory step
-toward removing kvm_vcpu_arch.hv_clock.
+When updating paravirtual clocks, setup the Hyper-V TSC page before
+Xen PV clocks.  This will allow dropping xen_pvclock_tsc_unstable in favor
+of simply clearing PVCLOCK_TSC_STABLE_BIT in the reference flags.
 
-No functional change intended.
-
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 Reviewed-by: Paul Durrant <paul@xen.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/kvm/x86.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5f3ad13a8ac7..06d27b3cc207 100644
+index 9eabd70891dd..c68e7f7ba69d 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -3116,17 +3116,17 @@ u64 get_kvmclock_ns(struct kvm *kvm)
- 	return data.clock;
- }
- 
--static void kvm_setup_guest_pvclock(struct kvm_vcpu *v,
-+static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
-+				    struct kvm_vcpu *vcpu,
- 				    struct gfn_to_pfn_cache *gpc,
- 				    unsigned int offset,
- 				    bool force_tsc_unstable)
- {
--	struct kvm_vcpu_arch *vcpu = &v->arch;
- 	struct pvclock_vcpu_time_info *guest_hv_clock;
- 	struct pvclock_vcpu_time_info hv_clock;
- 	unsigned long flags;
- 
--	memcpy(&hv_clock, &vcpu->hv_clock, sizeof(hv_clock));
-+	memcpy(&hv_clock, ref_hv_clock, sizeof(hv_clock));
- 
- 	read_lock_irqsave(&gpc->lock, flags);
- 	while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
-@@ -3165,7 +3165,7 @@ static void kvm_setup_guest_pvclock(struct kvm_vcpu *v,
- 	kvm_gpc_mark_dirty_in_slot(gpc);
- 	read_unlock_irqrestore(&gpc->lock, flags);
- 
--	trace_kvm_pvclock_update(v->vcpu_id, &hv_clock);
-+	trace_kvm_pvclock_update(vcpu->vcpu_id, &hv_clock);
- }
- 
- static int kvm_guest_time_update(struct kvm_vcpu *v)
-@@ -3272,18 +3272,18 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
- 			vcpu->hv_clock.flags |= PVCLOCK_GUEST_STOPPED;
- 			vcpu->pvclock_set_guest_stopped_request = false;
- 		}
--		kvm_setup_guest_pvclock(v, &vcpu->pv_time, 0, false);
-+		kvm_setup_guest_pvclock(&vcpu->hv_clock, v, &vcpu->pv_time, 0, false);
- 
- 		vcpu->hv_clock.flags &= ~PVCLOCK_GUEST_STOPPED;
+@@ -3280,6 +3280,8 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
+ 		hv_clock.flags &= ~PVCLOCK_GUEST_STOPPED;
  	}
  
++	kvm_hv_setup_tsc_page(v->kvm, &hv_clock);
++
  #ifdef CONFIG_KVM_XEN
  	if (vcpu->xen.vcpu_info_cache.active)
--		kvm_setup_guest_pvclock(v, &vcpu->xen.vcpu_info_cache,
-+		kvm_setup_guest_pvclock(&vcpu->hv_clock, v, &vcpu->xen.vcpu_info_cache,
- 					offsetof(struct compat_vcpu_info, time),
- 					xen_pvclock_tsc_unstable);
- 	if (vcpu->xen.vcpu_time_info_cache.active)
--		kvm_setup_guest_pvclock(v, &vcpu->xen.vcpu_time_info_cache, 0,
-+		kvm_setup_guest_pvclock(&vcpu->hv_clock, v, &vcpu->xen.vcpu_time_info_cache, 0,
+ 		kvm_setup_guest_pvclock(&hv_clock, v, &vcpu->xen.vcpu_info_cache,
+@@ -3289,7 +3291,6 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
+ 		kvm_setup_guest_pvclock(&hv_clock, v, &vcpu->xen.vcpu_time_info_cache, 0,
  					xen_pvclock_tsc_unstable);
  #endif
- 	kvm_hv_setup_tsc_page(v->kvm, &vcpu->hv_clock);
+-	kvm_hv_setup_tsc_page(v->kvm, &hv_clock);
+ 	return 0;
+ }
+ 
 -- 
 2.48.1.362.g079036d154-goog
 
