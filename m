@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB6020ADE0;
-	Mon,  3 Feb 2025 17:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C1620ADE0;
+	Mon,  3 Feb 2025 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738602602; cv=none; b=YbNc8qLkX5c8j1S+XVBoJ79KGek8jNcds+uJ4UQBfJVw+UvlM6I/GKcrT3901jlwMXhgsfjRwhZ+Eh5TnBZsWyCKkcel/sAzod9Mh0G/TIYlREvniNFCcz9/zkgDJ+t9Pxjq706pCFjsEI59nPJnTsk7RvLdLlMPPd4XBGvt48Q=
+	t=1738602607; cv=none; b=iaIJOo0dStZQngJ7KHuof/K56k9/WMCk5uDEno2x47b/IvBqFnBp59IA/23H47+Sii36IfbAhOfrP6z7JG+2WVTveVbnQBClJE+5QQYhVgkOe70FgDDIczq6/3D5K79/aHVQCMuFPlEWOiD9AHQwYtPs4xh1ZpbipaLxmUMBIqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738602602; c=relaxed/simple;
-	bh=/xOWC5s+kBlz25L3alti/wKPz7ym2Cwd9PBQxKFX9Oo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y68hZ77hq4DPXO0anf9AcNHAq86DsJiuUDV0Bjm+ANX2hd+ZZXhmakxOH0ACGEfnQUgf9LZjKdFtzPusItuTkHjoK3PusTKTlSmaTkSUxxbSKqz52zpf6NcF44a4dknprR/ewC194rUG56REmazmnCJZMNDbfbnN765z7DO65Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Obo/iH59; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738602607; c=relaxed/simple;
+	bh=8Mc+BGP11CmKsckKZSbGP97r2utDifUGHIerjkonr3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dbJZIv2jTtKMIaFPRAXaCLHCzbAEnAvWab5n+Ctg8CU8OuMwz3e1Q/i8ga7/KvE4BRaPd3R1feepFsqxMD/Y2QdDUbeDQ3c2LfLylSz5i/x6Qf62l6WczGMuduCT1S6pRgqlVZ/tXXv2bBFvtzmm37878goPH8k1vBYAERgOeC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PqZnS+l6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Obo/iH59"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B93C4CED2;
-	Mon,  3 Feb 2025 17:10:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqZnS+l6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EB4C4CED2;
+	Mon,  3 Feb 2025 17:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738602601;
-	bh=/xOWC5s+kBlz25L3alti/wKPz7ym2Cwd9PBQxKFX9Oo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Obo/iH59DoimLTEV+3mdrMYojvojshGcrN6xcvAcqqSV4PNS4OxcVm/uzkYQ+6GC2
-	 CuihOQmiSMqiaXOLGBb2m6jOmFJBC2hyWSP9nilxG6S7T0V7zejy1WhFrKfTlKXyFB
-	 dtuq8Sjo6+sVnB+AiLL2lqBWDP8EQ42CE5vRCjBrN+hKo6sTD29BNQFZynst6U7Vjv
-	 MVMX2u4K44CGmzFjF3YSZELsO16jRCngD7GYuyPDpYkCrLGVRDaUfdJznLl8A8x07G
-	 hXaiSogNKJmZCHYvdqO5qo60jeFpKbJTOv6GjPCmHbibgn+HvnEons88aQ3mzcJ0dV
-	 SI7QtrPJ5BOjA==
+	s=k20201202; t=1738602607;
+	bh=8Mc+BGP11CmKsckKZSbGP97r2utDifUGHIerjkonr3o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PqZnS+l6pbHuEiyP9pxqSMR2PHAi6C/wUU0Xz2rmupE9hcqzw6XnVboLr4PgulDI9
+	 6gm+bAj+DZ73mobRhIl6Pe1zawe8S1R4n6uuFqmHuzAzx05+rs89j+iO4LkVQrJjuL
+	 VdWrMsB74TMXQ/CpY96E0BVc13V0HOsW3avqAADblVDXhBlOqegIb23A8mGN7PPDC0
+	 awOmjrC0x7K5dXRlUKOsqncqJZS1qOpRM9OF382NzYGSx3gnuka+GqwGL1w6uU19hE
+	 2ZBW3FvlGBwrvTiWLbqrjSlpeRKWAooIGOLEtX9FYU0jlYC9nlE5W/TCoBxW7fo0xv
+	 pMCd3rXHpvyzw==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
@@ -34,10 +35,12 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Vasant Hegde <vasant.hegde@amd.com>,
 	Maxim Levitsky <mlevitsk@redhat.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>
-Subject: [PATCH 0/3] KVM: x86: Address performance degradation due to APICv inhibits
-Date: Mon,  3 Feb 2025 22:33:00 +0530
-Message-ID: <cover.1738595289.git.naveen@kernel.org>
+Subject: [PATCH 2/3] KVM: x86: Remove use of apicv_update_lock when toggling guest debug state
+Date: Mon,  3 Feb 2025 22:33:02 +0530
+Message-ID: <dc6cf3403e29c0296926e3bd8f0d4e87b67f4600.1738595289.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1738595289.git.naveen@kernel.org>
+References: <cover.1738595289.git.naveen@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,52 +49,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When AVIC is enabled (kvm_amd avic=1), guests with kernel-irqchip=on and 
-PIT in reinject mode (default configuration) show degraded performance.  
-This is because even though APICv is inhibited, we see other inhibits 
-being set/cleared causing contention on apicv_update_lock. Rework 
-inhibit code so that apicv_update_lock is not required unless APICv 
-state is changing. More details in patch 3.
+apicv_update_lock is not required when querying the state of guest
+debug in all the vcpus. Remove usage of the same, and switch to
+kvm_set_or_clear_apicv_inhibit() helper to simplify the code.
 
-In a test setup with two guests (-smp 16, -netdev tap,vhost=on, -device 
-virtio-net-pci,mq=on), multiple instances of netperf TCP_RR sending 
-traffic to the other guest, sar shows:
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+---
+ arch/x86/kvm/x86.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Without this patch series, kvm_amd avic=0 (default):
-Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         ens2 1323407.59 1323406.87 250722.47 126654.46      0.00      0.00      0.00      0.00
-
-Without this patch series, kvm_amd avic=1:
-Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         ens2 1057711.25 1057697.51 200385.83 101225.23      0.00      0.00      0.00      0.00
-
-We see ~20% degradation in packet rate.
-
-With this patch series, kvm_amd avic=1:
-Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         ens2 1315433.91 1315434.46 249211.99 125891.47      0.00      0.00      0.00      0.00
-
-
-- Naveen
-
-
-
-Naveen N Rao (AMD) (3):
-  KVM: x86: hyper-v: Convert synic_auto_eoi_used to an atomic
-  KVM: x86: Remove use of apicv_update_lock when toggling guest debug
-    state
-  KVM: x86: Decouple APICv activation state from apicv_inhibit_reasons
-
- arch/x86/include/asm/kvm_host.h |  14 ++--
- arch/x86/kvm/hyperv.c           |  17 ++---
- arch/x86/kvm/x86.c              | 125 ++++++++++++++++----------------
- 3 files changed, 72 insertions(+), 84 deletions(-)
-
-
-base-commit: eb723766b1030a23c38adf2348b7c3d1409d11f0
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b2d9a16fd4d3..11235e91ae90 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12038,19 +12038,14 @@ static void kvm_arch_vcpu_guestdbg_update_apicv_inhibit(struct kvm *kvm)
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long i;
+ 
+-	if (!enable_apicv)
+-		return;
+-
+-	down_write(&kvm->arch.apicv_update_lock);
+-
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		if (vcpu->guest_debug & KVM_GUESTDBG_BLOCKIRQ) {
+ 			set = true;
+ 			break;
+ 		}
+ 	}
+-	__kvm_set_or_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_BLOCKIRQ, set);
+-	up_write(&kvm->arch.apicv_update_lock);
++
++	kvm_set_or_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_BLOCKIRQ, set);
+ }
+ 
+ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
 -- 
 2.48.1
 
