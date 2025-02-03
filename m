@@ -1,64 +1,64 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C301FCD00
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDB61FBC86
 	for <kvm@vger.kernel.org>; Mon,  3 Feb 2025 08:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738571806; cv=none; b=Xg7Jouhl0I0vjtHEtRSpB/XfiqgkzuAIo0UmPwCMgQaJlx+G9EPinATY4lG319zVOckDWRiUWJp+8HkcPGUgfRUt5CZBBsmfGQXHckz4ro1k8t/NyklnOBw+wqTlOe8/+GAZBcrYF3NltDA3+kZfNgTaphgmuoHkdnDhtVRvOzs=
+	t=1738571806; cv=none; b=CGW+8dm8aAOKqyK++oAE/MLYFpyHjdBUn/IzUpcjSKjlKen4Ve+nP1+2+AG1mCiafdTAGm3EBa0mOCfP9Ge5y7El9iICHn1qJ3o4+eH0eAGCCIaNQxmgKfiC0HcqbYhkc0cYzyrgSHBz1lpRMmcmrzs1MQGYmp/F0rQxpgX4yX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738571806; c=relaxed/simple;
-	bh=M2SF6ovTZV654s61gYtGNNRknRSLebGHJVLd/GTgYOM=;
+	bh=AaPBhkgaZX7ILQj/JrLmZqmr5IDtasGLRTnKRk1JJb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmIIX1e4IRdr2ITvKj5c0NVKiiInONKlVBd89HpeaXGXTr5aodpCl0bbE9tw1S4U5TRoSBmgFrmuKN7KrrW2AfOXFPWDuD4eyt9WAURqo7oD8Mz2U0xcaQnNfLjUGFufRuuT2rt9z5oIqvAu6frsAhlMKhm1LXP5JKqIbiFMV0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FEWe+CUh; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=o4slL4tg9bmfepiccg5r5KK5RIS7ns4ditn5vZ1wi2uwd7DfD/pIPyMg1935YBHZcBY324BJJxWvvGNiP5p4MPfPxTo2kkQ8rhh7WXmSJrO50rLaKk+IS1yV+D2PQJyg6ItTF2W6OQAkwQibz+0UMSEYZb5n4t3mmL73/bVQqVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WSoxhcid; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FEWe+CUh"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5135OCo0013752;
-	Mon, 3 Feb 2025 08:36:35 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WSoxhcid"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5137MOUS014586;
+	Mon, 3 Feb 2025 08:36:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/a+3oPjaYZa+uvs5q
-	0AZpd1+n08noVzWAo7KIiewfdg=; b=FEWe+CUheZs1BARjacg17+wGBMB7OFvla
-	ejY1FVtmnmWqunyTaDNcPtCgOxjsX+YXK50D5zcYbgia1JOiFiJJd0R0nuKgrRr/
-	Cm3RT+VdjZg5kgmkZjGygiMBK/zvNzWhLv0CYPjsevsT8Hikk1k+b5/gvVV0YrBA
-	e4H3DAaMHR9W2Uyo5EdwA3IecA/qABW58sGSXLpKyA+uS3ln2wEIBfyeSUst9IjU
-	Ddkf3U041fIbjBWd5GrLxoAcdI44+KtBU46T1Ip/6dMQzaec3M0ZtxvFuvBI5OXo
-	Mm9XdvfZUfAOVQR+aFhoMqdHX+6rNVOI8Cubq+HYthKLZT4HUERxg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jqm78swa-1
+	:mime-version:references:subject:to; s=pp1; bh=Pr7HN/ZedBZbzihlH
+	Fz4VOiMJjWk5u6rYTRp8SByVk0=; b=WSoxhcid4tJ6hOwi5bVixx5jFvZG1cdN1
+	JI06qMOq7CO97l0UyYAJI7FcNf1u501956OIJZKeFRBzZd76CrJohD1LnFgSkV05
+	jtCI0I57HpT4M1MfCEefTw6zDJztDNOXeTtlSL+QD7uLIsz2JWR/dT1AtTPuEizt
+	EEndgBUiPXVqeC1GXNpz5PcQRYnHS2NiGGv9MVL+ZG4NO0u2xHBqNLhVIoG6xMOR
+	jo1k4X5uyhSI1FLZfYvpZAGXI5QPP/Z45Z/jVt8lg7rj4YP5HOnvo/7TxVs8hcYJ
+	7B6EcynEadizL6+PTGtzPUkIChwCQK+H4EaGj/9x914lpA5erln1w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jbht2xck-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5134v5CT005258;
-	Mon, 3 Feb 2025 08:36:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j05jn6ba-1
+	Mon, 03 Feb 2025 08:36:36 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5137feRJ024635;
+	Mon, 3 Feb 2025 08:36:35 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxxmwe5h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:34 +0000
+	Mon, 03 Feb 2025 08:36:35 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aUF319726650
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aVMI47382876
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Feb 2025 08:36:30 GMT
+	Mon, 3 Feb 2025 08:36:32 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B775520040;
-	Mon,  3 Feb 2025 08:36:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id CABA220040;
+	Mon,  3 Feb 2025 08:36:31 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4616820043;
-	Mon,  3 Feb 2025 08:36:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5CFAA20043;
+	Mon,  3 Feb 2025 08:36:31 +0000 (GMT)
 Received: from t14-nrb.lan (unknown [9.171.84.16])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Feb 2025 08:36:30 +0000 (GMT)
+	Mon,  3 Feb 2025 08:36:31 +0000 (GMT)
 From: Nico Boehr <nrb@linux.ibm.com>
 To: thuth@redhat.com, pbonzini@redhat.com, andrew.jones@linux.dev
 Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
         Christoph Schlameuss <schlameuss@linux.ibm.com>
-Subject: [kvm-unit-tests GIT PULL 12/18] s390x/Makefile: Split snippet makefile rules into new file
-Date: Mon,  3 Feb 2025 09:35:20 +0100
-Message-ID: <20250203083606.22864-13-nrb@linux.ibm.com>
+Subject: [kvm-unit-tests GIT PULL 14/18] s390x: Move SIE assembly into new file
+Date: Mon,  3 Feb 2025 09:35:22 +0100
+Message-ID: <20250203083606.22864-15-nrb@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250203083606.22864-1-nrb@linux.ibm.com>
 References: <20250203083606.22864-1-nrb@linux.ibm.com>
@@ -70,143 +70,202 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qQTyOlHzfn9Fu3zOi8Pnky0mOnF5AbMP
-X-Proofpoint-ORIG-GUID: qQTyOlHzfn9Fu3zOi8Pnky0mOnF5AbMP
+X-Proofpoint-ORIG-GUID: UVMXOXQMdOHvMPIJJKqi_QYSuB9Y4QkH
+X-Proofpoint-GUID: UVMXOXQMdOHvMPIJJKqi_QYSuB9Y4QkH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502030068
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 impostorscore=0 phishscore=0 spamscore=0 mlxscore=0
+ mlxlogscore=915 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502030068
 
 From: Janosch Frank <frankja@linux.ibm.com>
 
-It's time to move the snippet related Makefile parts into a new file
-to make s390x/Makefile less busy.
+In contrast to the other functions in cpu.S it's quite lengthy so
+let's split it off.
 
 Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240806084409.169039-2-frankja@linux.ibm.com
-[ nrb: fix out-of-tree build ]
+Link: https://lore.kernel.org/r/20240806084409.169039-4-frankja@linux.ibm.com
 Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
 ---
- s390x/Makefile          | 39 ++++-----------------------------------
- s390x/snippets/Makefile | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+), 35 deletions(-)
- create mode 100644 s390x/snippets/Makefile
+ s390x/Makefile  |  2 +-
+ s390x/cpu-sie.S | 74 +++++++++++++++++++++++++++++++++++++++++++++++++
+ s390x/cpu.S     | 64 ------------------------------------------
+ 3 files changed, 75 insertions(+), 65 deletions(-)
+ create mode 100644 s390x/cpu-sie.S
 
 diff --git a/s390x/Makefile b/s390x/Makefile
-index b3b2ae8c..e41a6433 100644
+index 63e96d86..e5572cb6 100644
 --- a/s390x/Makefile
 +++ b/s390x/Makefile
-@@ -123,10 +123,12 @@ asmlib = $(TEST_DIR)/cstart64.o $(TEST_DIR)/cpu.o
+@@ -122,7 +122,7 @@ cflatobjs += lib/s390x/fault.o
+ 
+ OBJDIRS += lib/s390x
+ 
+-asmlib = $(TEST_DIR)/cstart64.o $(TEST_DIR)/cpu.o
++asmlib = $(TEST_DIR)/cstart64.o $(TEST_DIR)/cpu.o $(TEST_DIR)/cpu-sie.o
  
  FLATLIBS = $(libcflat)
  
-+# Snippets
- SNIPPET_DIR = $(TEST_DIR)/snippets
- SNIPPET_SRC_DIR = $(SRCDIR)/s390x/snippets
- snippet_asmlib = $(SNIPPET_DIR)/c/cstart.o
- snippet_lib = $(snippet_asmlib) lib/auxinfo.o
-+include $(SNIPPET_SRC_DIR)/Makefile
- 
- # perquisites (=guests) for the snippet hosts.
- # $(TEST_DIR)/<snippet-host>.elf: snippets = $(SNIPPET_DIR)/<c/asm>/<snippet>.gbin
-@@ -152,39 +154,6 @@ else
- snippet-hdr-obj =
- endif
- 
--# the asm/c snippets %.o have additional generated files as dependencies
--$(SNIPPET_DIR)/asm/%.o: $(SNIPPET_SRC_DIR)/asm/%.S $(asm-offsets)
--	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
--
--$(SNIPPET_DIR)/c/%.o: SNIPPET_INCLUDE := $(SNIPPET_SRC_DIR)/lib
--$(SNIPPET_DIR)/c/%.o: $(SNIPPET_DIR)/c/%.c $(asm-offsets)
--	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
--
--$(SNIPPET_DIR)/asm/%.elf: $(SNIPPET_DIR)/asm/%.o $(SNIPPET_DIR)/asm/flat.lds
--	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_DIR)/asm/flat.lds $<
--
--$(SNIPPET_DIR)/asm/%.gbin: $(SNIPPET_DIR)/asm/%.elf
--	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
--	truncate -s '%4096' $@
--
--$(SNIPPET_DIR)/c/%.elf: $(SNIPPET_DIR)/c/%.o $(snippet_lib) $(FLATLIBS) $(SNIPPET_DIR)/c/flat.lds
--	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_DIR)/c/flat.lds $< $(snippet_lib) $(FLATLIBS)
--
--$(SNIPPET_DIR)/c/%.gbin: $(SNIPPET_DIR)/c/%.elf
--	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
--	truncate -s '%4096' $@
--
--%.hdr: %.gbin $(HOST_KEY_DOCUMENT)
--	$(GEN_SE_HEADER) -k $(HOST_KEY_DOCUMENT) -c $<,0x0,0x00000000000000420000000000000000 --psw-addr 0x4000 -o $@
--
--.SECONDARY:
--%.gobj: %.gbin
--	$(OBJCOPY) -I binary -O elf64-s390 -B "s390:64-bit" $< $@
--
--.SECONDARY:
--%.hdr.obj: %.hdr
--	$(OBJCOPY) -I binary -O elf64-s390 -B "s390:64-bit" $< $@
--
- lds-autodepend-flags = -MMD -MF $(dir $*).$(notdir $*).d -MT $@
- %.lds: %.lds.S $(asm-offsets)
- 	$(CPP) $(lds-autodepend-flags) $(CPPFLAGS) -P -C -o $@ $<
-@@ -238,8 +207,8 @@ $(snippet_asmlib): $$(patsubst %.o,%.S,$$@) $(asm-offsets)
- 	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
- 
- 
--arch_clean: asm_offsets_clean
--	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(SNIPPET_DIR)/*/*.{o,elf,*bin,*obj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d $(TEST_DIR)/.*.d lib/s390x/.*.d $(comm-key)
-+arch_clean: asm_offsets_clean snippet_clean
-+	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(TEST_DIR)/.*.d lib/s390x/.*.d $(comm-key)
- 
- generated-files = $(asm-offsets)
- $(tests:.elf=.o) $(asmlib) $(cflatobjs): $(generated-files)
-diff --git a/s390x/snippets/Makefile b/s390x/snippets/Makefile
+diff --git a/s390x/cpu-sie.S b/s390x/cpu-sie.S
 new file mode 100644
-index 00000000..ccadd733
+index 00000000..9370b5c0
 --- /dev/null
-+++ b/s390x/snippets/Makefile
-@@ -0,0 +1,35 @@
-+# the asm/c snippets %.o have additional generated files as dependencies
-+$(SNIPPET_DIR)/asm/%.o: $(SNIPPET_SRC_DIR)/asm/%.S $(asm-offsets)
-+	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
++++ b/s390x/cpu-sie.S
+@@ -0,0 +1,74 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * s390x SIE assembly library
++ *
++ * Copyright (c) 2019 IBM Corp.
++ *
++ * Authors:
++ *    Janosch Frank <frankja@linux.ibm.com>
++ */
++#include <asm/asm-offsets.h>
 +
-+$(SNIPPET_DIR)/c/%.o: SNIPPET_INCLUDE := $(SNIPPET_SRC_DIR)/lib
-+$(SNIPPET_DIR)/c/%.o: $(SNIPPET_SRC_DIR)/c/%.c $(asm-offsets)
-+	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
++/*
++ * sie64a calling convention:
++ * %r2 pointer to sie control block
++ * %r3 guest register save area
++ */
++.globl sie64a
++sie64a:
++	# Save host grs, fprs, fpc
++	stmg	%r0,%r14,SIE_SAVEAREA_HOST_GRS(%r3)	# save kernel registers
++	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
++	std	\i, \i * 8  + SIE_SAVEAREA_HOST_FPRS(%r3)
++	.endr
++	stfpc	SIE_SAVEAREA_HOST_FPC(%r3)
 +
-+$(SNIPPET_DIR)/asm/%.elf: $(SNIPPET_DIR)/asm/%.o $(SNIPPET_DIR)/asm/flat.lds
-+	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_SRC_DIR)/asm/flat.lds $<
++	stctg	%c1, %c1, SIE_SAVEAREA_HOST_ASCE(%r3)
++	lctlg	%c1, %c1, SIE_SAVEAREA_GUEST_ASCE(%r3)
 +
-+$(SNIPPET_DIR)/asm/%.gbin: $(SNIPPET_DIR)/asm/%.elf
-+	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
-+	truncate -s '%4096' $@
++	# Store scb and save_area pointer into stack frame
++	stg	%r2,__SF_SIE_CONTROL(%r15)	# save control block pointer
++	stg	%r3,__SF_SIE_SAVEAREA(%r15)	# save guest register save area
++.globl sie_entry_gregs
++sie_entry_gregs:
++	# Load guest's gprs, fprs and fpc
++	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
++	ld	\i, \i * 8 + SIE_SAVEAREA_GUEST_FPRS(%r3)
++	.endr
++	lfpc	SIE_SAVEAREA_GUEST_FPC(%r3)
++	lmg	%r0,%r13,SIE_SAVEAREA_GUEST_GRS(%r3)
 +
-+$(SNIPPET_DIR)/c/%.elf: $(SNIPPET_DIR)/c/%.o $(snippet_lib) $(FLATLIBS) $(SNIPPET_DIR)/c/flat.lds
-+	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_DIR)/c/flat.lds $< $(snippet_lib) $(FLATLIBS)
++	# Move scb ptr into r14 for the sie instruction
++	lg	%r14,__SF_SIE_CONTROL(%r15)
 +
-+$(SNIPPET_DIR)/c/%.gbin: $(SNIPPET_DIR)/c/%.elf
-+	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
-+	truncate -s '%4096' $@
++.globl sie_entry
++sie_entry:
++	sie	0(%r14)
++	nopr	7
++	nopr	7
++	nopr	7
 +
-+%.hdr: %.gbin $(HOST_KEY_DOCUMENT)
-+	$(GEN_SE_HEADER) -k $(HOST_KEY_DOCUMENT) -c $<,0x0,0x00000000000000420000000000000000 --psw-addr 0x4000 -o $@
++.globl sie_exit
++sie_exit:
++	# Load guest register save area
++	lg	%r14,__SF_SIE_SAVEAREA(%r15)
 +
-+.SECONDARY:
-+%.gobj: %.gbin
-+	$(OBJCOPY) -I binary -O elf64-s390 -B "s390:64-bit" $< $@
++	# Restore the host asce
++	lctlg	%c1, %c1, SIE_SAVEAREA_HOST_ASCE(%r14)
 +
-+.SECONDARY:
-+%.hdr.obj: %.hdr
-+	$(OBJCOPY) -I binary -O elf64-s390 -B "s390:64-bit" $< $@
++	# Store guest's gprs, fprs and fpc
++	stmg	%r0,%r13,SIE_SAVEAREA_GUEST_GRS(%r14)	# save guest gprs 0-13
++	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
++	std	\i, \i * 8  + SIE_SAVEAREA_GUEST_FPRS(%r14)
++	.endr
++	stfpc	SIE_SAVEAREA_GUEST_FPC(%r14)
 +
-+snippet_clean:
-+	$(RM) $(SNIPPET_DIR)/*/*.{o,elf,*bin,*obj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d
++	# Restore host's gprs, fprs and fpc
++	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
++	ld	\i, \i * 8 + SIE_SAVEAREA_HOST_FPRS(%r14)
++	.endr
++	lfpc	SIE_SAVEAREA_HOST_FPC(%r14)
++	lmg	%r0,%r14,SIE_SAVEAREA_HOST_GRS(%r14)	# restore kernel registers
++.globl sie_exit_gregs
++sie_exit_gregs:
++	br	%r14
+diff --git a/s390x/cpu.S b/s390x/cpu.S
+index 9155b044..2ff4b8e1 100644
+--- a/s390x/cpu.S
++++ b/s390x/cpu.S
+@@ -62,70 +62,6 @@ smp_cpu_setup_state:
+ 	/* If the function returns, just loop here */
+ 0:	j	0
+ 
+-/*
+- * sie64a calling convention:
+- * %r2 pointer to sie control block
+- * %r3 guest register save area
+- */
+-.globl sie64a
+-sie64a:
+-	# Save host grs, fprs, fpc
+-	stmg	%r0,%r14,SIE_SAVEAREA_HOST_GRS(%r3)	# save kernel registers
+-	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+-	std	\i, \i * 8  + SIE_SAVEAREA_HOST_FPRS(%r3)
+-	.endr
+-	stfpc	SIE_SAVEAREA_HOST_FPC(%r3)
+-
+-	stctg	%c1, %c1, SIE_SAVEAREA_HOST_ASCE(%r3)
+-	lctlg	%c1, %c1, SIE_SAVEAREA_GUEST_ASCE(%r3)
+-
+-	# Store scb and save_area pointer into stack frame
+-	stg	%r2,__SF_SIE_CONTROL(%r15)	# save control block pointer
+-	stg	%r3,__SF_SIE_SAVEAREA(%r15)	# save guest register save area
+-.globl sie_entry_gregs
+-sie_entry_gregs:
+-	# Load guest's gprs, fprs and fpc
+-	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+-	ld	\i, \i * 8 + SIE_SAVEAREA_GUEST_FPRS(%r3)
+-	.endr
+-	lfpc	SIE_SAVEAREA_GUEST_FPC(%r3)
+-	lmg	%r0,%r13,SIE_SAVEAREA_GUEST_GRS(%r3)
+-
+-	# Move scb ptr into r14 for the sie instruction
+-	lg	%r14,__SF_SIE_CONTROL(%r15)
+-
+-.globl sie_entry
+-sie_entry:
+-	sie	0(%r14)
+-	nopr	7
+-	nopr	7
+-	nopr	7
+-
+-.globl sie_exit
+-sie_exit:
+-	# Load guest register save area
+-	lg	%r14,__SF_SIE_SAVEAREA(%r15)
+-
+-	# Restore the host asce
+-	lctlg	%c1, %c1, SIE_SAVEAREA_HOST_ASCE(%r14)
+-
+-	# Store guest's gprs, fprs and fpc
+-	stmg	%r0,%r13,SIE_SAVEAREA_GUEST_GRS(%r14)	# save guest gprs 0-13
+-	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+-	std	\i, \i * 8  + SIE_SAVEAREA_GUEST_FPRS(%r14)
+-	.endr
+-	stfpc	SIE_SAVEAREA_GUEST_FPC(%r14)
+-
+-	# Restore host's gprs, fprs and fpc
+-	.irp i, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+-	ld	\i, \i * 8 + SIE_SAVEAREA_HOST_FPRS(%r14)
+-	.endr
+-	lfpc	SIE_SAVEAREA_HOST_FPC(%r14)
+-	lmg	%r0,%r14,SIE_SAVEAREA_HOST_GRS(%r14)	# restore kernel registers
+-.globl sie_exit_gregs
+-sie_exit_gregs:
+-	br	%r14
+-
+ 	.align	8
+ reset_psw:
+ 	.quad	0x0008000180000000
 -- 
 2.47.1
 
