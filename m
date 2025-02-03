@@ -1,63 +1,67 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88850206F19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6D02066DC
 	for <kvm@vger.kernel.org>; Mon,  3 Feb 2025 08:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738571809; cv=none; b=UaWZM3mjShMGzXZ/XaUmwrykhJPsXvttMSm9DgufW+hNt9GzxyceWt6DsxyWJdkSBtv9e2+cAuUys78uU3tNnPv613XKlv2hvuuQaM9e1qM5zEjS2bxHpwiDQ/13W2w2OoJ1aYhhh4ec9YpVkV9YYWTcyqEQnrJaDd9bY/2noWk=
+	t=1738571810; cv=none; b=o61fugAVTrz0ylgmRtSCpVPMrFNj+5uTRRCICatrys7LuojF9AXnwgsWaQiVEPlQL6YDGXgAr7SroXKQCAAwpDpgZkQpGRHOpZyJoOtR4keleIbBYNa2tGr9j6oyLRaG1ljeC6ruv4xOEDl83H2hh65+SnPVEDpqPhOsumEZ6bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738571809; c=relaxed/simple;
-	bh=6P5z+4LJU18rE1I/34p8nPTX4NPOt1cL9y1MPI1fA4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nAOXbQ70xNXm1Lw7das4pqztOovf5NzsUl+GldSuDGwn1yIAu9rdwl0JsAOUokpj2xjpZQljBOwoqUq0GwNv5LDy+7bkMNTN3iExTN2ZNMSVuH1cFajjNDQ+hJo5lUoBNIo4uKZjld1vFoh6HsLbbv+M2CZAVlJNS+7kxygS2No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CuZ6yDSF; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1738571810; c=relaxed/simple;
+	bh=fKumqxNAa62hWFXFFkG5i6fQMIrHgXBnMTlNdwgwo84=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YhWBDcJsV7llz966ueNph1WpIzhVQ7uXa7qsV8IM1cd4Fx4nNoyVYooRAJENTdE8WSou22tW48tM6al0ESeETC0MgaOE4JUKIvLd3aFTFlNAMlCPT0G4zG8qe7ENQIbnLePLOspnKgaq31R6XwMAB5SmCehLekw3VGbR3XYUEzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Pnhzu7yM; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CuZ6yDSF"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51320sRi006368;
-	Mon, 3 Feb 2025 08:36:29 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Pnhzu7yM"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5138HbaO013869;
+	Mon, 3 Feb 2025 08:36:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=xzlLtiA3mZb/MH0jgyn0Azh1HII9nu7nBrzomFcGV
-	Bw=; b=CuZ6yDSFaKmiSNJC5w970QG6OzdhHy8v/fN6isL+zkewOmL24pyvqj7Ma
-	f7LYeQMapz6dYcLjyIl8o6Vpl8NKMR3UDFbc310ZXI3OVwV7+NiVYmW44I+TVPxu
-	jiud7PMH9PKwFQMC7XC3PDMEYV+epQ0r7z+5WvbFtN5WTICFJ+ZYdtXHDrY1i5D1
-	UQDtYDqEp7sBSE7L5pylMgc+nuKz52i+dHBvnBidb886exY951Gn/QkvyhERCWLN
-	wSdKux9is8k2kYjx2SG8fZ8b9beMiVVB3Xetg4PGEzpNJIMsZv8UzqzwYr2u6T+T
-	KjC7dq5vBHqQLTrJ1AF85QP7lIcEg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jmmy9cbs-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=HB5LBycd+LciFtaDJ
+	vDUYLFDWAezLuL3wzSwWoYU8CE=; b=Pnhzu7yMA3nLitePJF/3r820UiwO0GY10
+	IoIvHe5OCmMYUfXN7M7QLW0OXBIAd5s3dmVUs2Qo82OBXzbVhhO6C68FFpbzzXOF
+	KRG5jXMryIyeoUO1S3o2j+51y1i/ZBaBKs7wevOhe8d8zQZ25+3hS8LLUEF9WOm6
+	+UvlfacpGUIzC8ufWCPxqofpNLLEtvzYz2C17JZlhIcN49kWA99sNtcTBLNwrQh8
+	S5kt77xUjp1SyBd78jwWIy3XE6LKIU+ays/9ta9T2oHCdYePVnSF4a7osXdXSLli
+	7aUNbW/9A8k57RyV7j18A9adDmf4BElSICSsLqqhVeL3yTE4CFL3g==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jbht2xct-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:28 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5134v9EZ021493;
-	Mon, 3 Feb 2025 08:36:27 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j0n153fa-1
+	Mon, 03 Feb 2025 08:36:37 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5137laen024533;
+	Mon, 3 Feb 2025 08:36:36 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxxmwe5t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:27 +0000
+	Mon, 03 Feb 2025 08:36:36 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aOMP56623386
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aWeb20185538
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Feb 2025 08:36:24 GMT
+	Mon, 3 Feb 2025 08:36:32 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 42FF320043;
-	Mon,  3 Feb 2025 08:36:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5C61A20040;
+	Mon,  3 Feb 2025 08:36:32 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D140D20040;
-	Mon,  3 Feb 2025 08:36:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E23EB20043;
+	Mon,  3 Feb 2025 08:36:31 +0000 (GMT)
 Received: from t14-nrb.lan (unknown [9.171.84.16])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Feb 2025 08:36:23 +0000 (GMT)
+	Mon,  3 Feb 2025 08:36:31 +0000 (GMT)
 From: Nico Boehr <nrb@linux.ibm.com>
 To: thuth@redhat.com, pbonzini@redhat.com, andrew.jones@linux.dev
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com
-Subject: [kvm-unit-tests GIT PULL 00/18] s390x: new edat, diag258 and STFLE tests; fixes for genprotimg >= 2.36.0; cleanups for snippets and makefiles
-Date: Mon,  3 Feb 2025 09:35:08 +0100
-Message-ID: <20250203083606.22864-1-nrb@linux.ibm.com>
+Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [kvm-unit-tests GIT PULL 15/18] lib: s390x: Split SIE fw structs from lib structs
+Date: Mon,  3 Feb 2025 09:35:23 +0100
+Message-ID: <20250203083606.22864-16-nrb@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250203083606.22864-1-nrb@linux.ibm.com>
+References: <20250203083606.22864-1-nrb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,129 +70,521 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8LyvZCg_nbZ_GtXxSw6fDqFY-APSrocO
-X-Proofpoint-ORIG-GUID: 8LyvZCg_nbZ_GtXxSw6fDqFY-APSrocO
+X-Proofpoint-ORIG-GUID: lVtbiVkfTApMH-lGnb-U8JseY04B-TEC
+X-Proofpoint-GUID: lVtbiVkfTApMH-lGnb-U8JseY04B-TEC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502030068
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 impostorscore=0 phishscore=0 spamscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502030068
 
-Hi Paolo and/or Thomas,
+From: Janosch Frank <frankja@linux.ibm.com>
 
-Changes in this pull request:
-- cpacf query function were reworked in the kernel, that fix was
-  cherry-picked by Nina. This fixes issues with possible incorrect
-  instruction format
-- Claudio extended the edat test for a special case with a 2G page at
-  the end of memory to ensure the correct addressing exception happens.
-- I added a test for diag258 where we had some issues with
-  virtual-physical address confusion.
-- Nina took the time to add library functions that help exiting from a
-  snippet s390x.
-- Nina contributed a test for STFLE interpretive execution. Thank you!
-- Marc did a lot of magic fixing issues in our Makefiles. This fixes
-  several issues with out-of-tree-builds. We now also build out-of-tree
-  in our downstream CI to avoid unpleasant surprises for maintainers :)
-  Marc, thanks for contributing your Makefile knowledge and for turning my
-  complaints into something productive
-- Janosch also invested some time to clean up snippets and Makefiles,
-  which made the code a lot nicer, thanks for that as well!
-- we have a compatibility issue with genprotimg
-  versions >= 2.36.0. Thanks Marc to fixing that. You should upgrade
-  kvm-unit-tests if you use genprotimg >= 2.36.0!
+The SIE control block is huge and takes up too much space.
 
-Note that there are two checkpatch errors:
-> ERROR: space prohibited before that ':' (ctx:WxW)
-I would suggest to ignore them, the code really looks ugly otherwise.
+Let's split the hardware definitions from sie.h into its own header,
+so that sie.h will only contain library functions and structs
 
-Thanks
-Nico
-
-MERGE: https://gitlab.com/kvm-unit-tests/kvm-unit-tests/-/merge_requests/73
-
-PIPELINE: https://gitlab.com/Nico-Boehr/kvm-unit-tests/-/pipelines/1650287644
-
-PULL: https://gitlab.com/Nico-Boehr/kvm-unit-tests.git pr-2025-01-31
-----
-The following changes since commit 2e66bb4b9423970ceb6ea195bd8697733bcd9071:
-
-  Makefile: Use 'vpath' for out-of-source builds and not 'VPATH' (2025-01-31 10:40:51 +0100)
-
-are available in the Git repository at:
-
-  https://gitlab.com/Nico-Boehr/kvm-unit-tests.git pr-2025-01-31
-
-for you to fetch changes up to 12b23c79ac6c5af4f9351c7502c4a3ffccf4b8eb:
-
-  s390x/Makefile: Add auxinfo.o to cflatobjs (2025-01-31 13:02:25 +0100)
-
-----------------------------------------------------------------
-Claudio Imbrenda (1):
-      s390x: edat: test 2G large page spanning end of memory
-
-Janosch Frank (4):
-      s390x/Makefile: Split snippet makefile rules into new file
-      s390x/Makefile: Add more comments
-      s390x: Move SIE assembly into new file
-      lib: s390x: Split SIE fw structs from lib structs
-
-Marc Hartmayer (4):
-      s390x/Makefile: snippets: Add separate target for the ELF snippets
-      s390x: Support newer version of genprotimg
-      s390x/Makefile: Make sure the linker script is generated in the build directory
-      s390x/Makefile: Add auxinfo.o to cflatobjs
-
-Nico Boehr (2):
-      s390x: edat: move LC_SIZE to arch_def.h
-      s390x: add test for diag258
-
-Nina Schoetterl-Glausch (7):
-      s390x: Split and rework cpacf query functions
-      s390x: lib: Remove double include
-      s390x: Add sie_is_pv
-      s390x: Add function for checking diagnose intercepts
-      s390x: Add library functions for exiting from snippet
-      s390x: Use library functions for snippet exit
-      s390x: Add test for STFLE interpretive execution (format-0)
-
- lib/s390x/asm/arch_def.h          |  17 +++
- lib/s390x/asm/cpacf.h             |  77 ++++++++++--
- lib/s390x/asm/facility.h          |  10 +-
- lib/s390x/asm/sie-arch.h          | 238 +++++++++++++++++++++++++++++++++++
- lib/s390x/pv_icptdata.h           |  42 -------
- lib/s390x/sie-icpt.c              |  60 +++++++++
- lib/s390x/sie-icpt.h              |  39 ++++++
- lib/s390x/sie.c                   |   5 +-
- lib/s390x/sie.h                   | 237 ++--------------------------------
- lib/s390x/snippet-exit.h          |  45 +++++++
- s390x/Makefile                    |  75 ++++++-----
- s390x/cpu-sie.S                   |  74 +++++++++++
- s390x/cpu.S                       |  64 ----------
- s390x/diag258.c                   | 259 ++++++++++++++++++++++++++++++++++++++
- s390x/edat.c                      |  19 ++-
- s390x/pv-diags.c                  |   9 +-
- s390x/pv-icptcode.c               |  12 +-
- s390x/pv-ipl.c                    |   8 +-
- s390x/sie-dat.c                   |  12 +-
- s390x/snippets/Makefile           |  35 ++++++
- s390x/snippets/c/sie-dat.c        |  19 +--
- s390x/snippets/c/stfle.c          |  29 +++++
- s390x/snippets/lib/snippet-exit.h |  28 +++++
- s390x/stfle-sie.c                 | 138 ++++++++++++++++++++
- s390x/unittests.cfg               |   6 +
- 25 files changed, 1124 insertions(+), 433 deletions(-)
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240806084409.169039-5-frankja@linux.ibm.com
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+---
+ lib/s390x/asm/sie-arch.h | 238 +++++++++++++++++++++++++++++++++++++++
+ lib/s390x/sie.h          | 231 +------------------------------------
+ 2 files changed, 239 insertions(+), 230 deletions(-)
  create mode 100644 lib/s390x/asm/sie-arch.h
- delete mode 100644 lib/s390x/pv_icptdata.h
- create mode 100644 lib/s390x/sie-icpt.c
- create mode 100644 lib/s390x/sie-icpt.h
- create mode 100644 lib/s390x/snippet-exit.h
- create mode 100644 s390x/cpu-sie.S
- create mode 100644 s390x/diag258.c
- create mode 100644 s390x/snippets/Makefile
- create mode 100644 s390x/snippets/c/stfle.c
- create mode 100644 s390x/snippets/lib/snippet-exit.h
- create mode 100644 s390x/stfle-sie.c
+
+diff --git a/lib/s390x/asm/sie-arch.h b/lib/s390x/asm/sie-arch.h
+new file mode 100644
+index 00000000..4911c988
+--- /dev/null
++++ b/lib/s390x/asm/sie-arch.h
+@@ -0,0 +1,238 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef _S390X_SIE_ARCH_H_
++#define _S390X_SIE_ARCH_H_
++
++#include <stdint.h>
++#include <asm/arch_def.h>
++
++#define CPUSTAT_STOPPED    0x80000000
++#define CPUSTAT_WAIT       0x10000000
++#define CPUSTAT_ECALL_PEND 0x08000000
++#define CPUSTAT_STOP_INT   0x04000000
++#define CPUSTAT_IO_INT     0x02000000
++#define CPUSTAT_EXT_INT    0x01000000
++#define CPUSTAT_RUNNING    0x00800000
++#define CPUSTAT_RETAINED   0x00400000
++#define CPUSTAT_TIMING_SUB 0x00020000
++#define CPUSTAT_SIE_SUB    0x00010000
++#define CPUSTAT_RRF        0x00008000
++#define CPUSTAT_SLSV       0x00004000
++#define CPUSTAT_SLSR       0x00002000
++#define CPUSTAT_ZARCH      0x00000800
++#define CPUSTAT_MCDS       0x00000100
++#define CPUSTAT_KSS        0x00000200
++#define CPUSTAT_SM         0x00000080
++#define CPUSTAT_IBS        0x00000040
++#define CPUSTAT_GED2       0x00000010
++#define CPUSTAT_G          0x00000008
++#define CPUSTAT_GED        0x00000004
++#define CPUSTAT_J          0x00000002
++#define CPUSTAT_P          0x00000001
++
++struct kvm_s390_sie_block {
++	uint32_t 	cpuflags;		/* 0x0000 */
++	uint32_t : 1;			/* 0x0004 */
++	uint32_t 	prefix : 18;
++	uint32_t : 1;
++	uint32_t 	ibc : 12;
++	uint8_t		reserved08[4];		/* 0x0008 */
++#define PROG_IN_SIE (1<<0)
++	uint32_t	prog0c;			/* 0x000c */
++union {
++		uint8_t	reserved10[16];		/* 0x0010 */
++		struct {
++			uint64_t	pv_handle_cpu;
++			uint64_t	pv_handle_config;
++		};
++	};
++#define PROG_BLOCK_SIE	(1<<0)
++#define PROG_REQUEST	(1<<1)
++	uint32_t 	prog20;		/* 0x0020 */
++	uint8_t		reserved24[4];		/* 0x0024 */
++	uint64_t	cputm;			/* 0x0028 */
++	uint64_t	ckc;			/* 0x0030 */
++	uint64_t	epoch;			/* 0x0038 */
++	uint32_t	svcc;			/* 0x0040 */
++#define LCTL_CR0	0x8000
++#define LCTL_CR6	0x0200
++#define LCTL_CR9	0x0040
++#define LCTL_CR10	0x0020
++#define LCTL_CR11	0x0010
++#define LCTL_CR14	0x0002
++	uint16_t   	lctl;			/* 0x0044 */
++	int16_t		icpua;			/* 0x0046 */
++#define ICTL_OPEREXC	0x80000000
++#define ICTL_PINT	0x20000000
++#define ICTL_LPSW	0x00400000
++#define ICTL_STCTL	0x00040000
++#define ICTL_ISKE	0x00004000
++#define ICTL_SSKE	0x00002000
++#define ICTL_RRBE	0x00001000
++#define ICTL_TPROT	0x00000200
++	uint32_t	ictl;			/* 0x0048 */
++#define ECA_CEI		0x80000000
++#define ECA_IB		0x40000000
++#define ECA_SIGPI	0x10000000
++#define ECA_MVPGI	0x01000000
++#define ECA_AIV		0x00200000
++#define ECA_VX		0x00020000
++#define ECA_PROTEXCI	0x00002000
++#define ECA_APIE	0x00000008
++#define ECA_SII		0x00000001
++	uint32_t	eca;			/* 0x004c */
++#define ICPT_INST	0x04
++#define ICPT_PROGI	0x08
++#define ICPT_INSTPROGI	0x0C
++#define ICPT_EXTREQ	0x10
++#define ICPT_EXTINT	0x14
++#define ICPT_IOREQ	0x18
++#define ICPT_WAIT	0x1c
++#define ICPT_VALIDITY	0x20
++#define ICPT_STOP	0x28
++#define ICPT_OPEREXC	0x2C
++#define ICPT_PARTEXEC	0x38
++#define ICPT_IOINST	0x40
++#define ICPT_KSS	0x5c
++#define ICPT_INT_ENABLE	0x64
++#define ICPT_PV_INSTR	0x68
++#define ICPT_PV_NOTIFY	0x6c
++#define ICPT_PV_PREF	0x70
++	uint8_t		icptcode;		/* 0x0050 */
++	uint8_t		icptstatus;		/* 0x0051 */
++	uint16_t	ihcpu;			/* 0x0052 */
++	uint8_t		reserved54;		/* 0x0054 */
++#define IICTL_CODE_NONE		 0x00
++#define IICTL_CODE_MCHK		 0x01
++#define IICTL_CODE_EXT		 0x02
++#define IICTL_CODE_IO		 0x03
++#define IICTL_CODE_RESTART	 0x04
++#define IICTL_CODE_SPECIFICATION 0x10
++#define IICTL_CODE_OPERAND	 0x11
++	uint8_t		iictl;			/* 0x0055 */
++	uint16_t	ipa;			/* 0x0056 */
++	uint32_t	ipb;			/* 0x0058 */
++	uint32_t	scaoh;			/* 0x005c */
++#define FPF_BPBC 	0x20
++	uint8_t		fpf;			/* 0x0060 */
++#define ECB_GS		0x40
++#define ECB_TE		0x10
++#define ECB_SPECI	0x08
++#define ECB_SRSI	0x04
++#define ECB_HOSTPROTINT	0x02
++	uint8_t		ecb;			/* 0x0061 */
++#define ECB2_CMMA	0x80
++#define ECB2_IEP	0x20
++#define ECB2_PFMFI	0x08
++#define ECB2_ESCA	0x04
++	uint8_t    	ecb2;                   /* 0x0062 */
++#define ECB3_DEA 0x08
++#define ECB3_AES 0x04
++#define ECB3_RI  0x01
++	uint8_t    	ecb3;			/* 0x0063 */
++	uint32_t	scaol;			/* 0x0064 */
++	uint8_t		sdf;			/* 0x0068 */
++	uint8_t    	epdx;			/* 0x0069 */
++	uint8_t    	reserved6a[2];		/* 0x006a */
++	uint32_t	todpr;			/* 0x006c */
++#define GISA_FORMAT1 0x00000001
++	uint32_t	gd;			/* 0x0070 */
++	uint8_t		reserved74[12];		/* 0x0074 */
++	uint64_t	mso;			/* 0x0080 */
++	uint64_t	msl;			/* 0x0088 */
++	struct psw	gpsw;			/* 0x0090 */
++	uint64_t	gg14;			/* 0x00a0 */
++	uint64_t	gg15;			/* 0x00a8 */
++	uint8_t		reservedb0[8];		/* 0x00b0 */
++#define HPID_KVM	0x4
++#define HPID_VSIE	0x5
++	uint8_t		hpid;			/* 0x00b8 */
++	uint8_t		reservedb9[7];		/* 0x00b9 */
++	union {
++		struct {
++			uint32_t	eiparams;	/* 0x00c0 */
++			uint16_t	extcpuaddr;	/* 0x00c4 */
++			uint16_t	eic;		/* 0x00c6 */
++		};
++		uint64_t	mcic;			/* 0x00c0 */
++	} __attribute__ ((__packed__));
++	uint32_t	reservedc8;		/* 0x00c8 */
++	uint16_t	pgmilc;			/* 0x00cc */
++	uint16_t	iprcc;			/* 0x00ce */
++	uint32_t	dxc;			/* 0x00d0 */
++	uint16_t	mcn;			/* 0x00d4 */
++	uint8_t		perc;			/* 0x00d6 */
++	uint8_t		peratmid;		/* 0x00d7 */
++	uint64_t	peraddr;		/* 0x00d8 */
++	uint8_t		eai;			/* 0x00e0 */
++	uint8_t		peraid;			/* 0x00e1 */
++	uint8_t		oai;			/* 0x00e2 */
++	uint8_t		armid;			/* 0x00e3 */
++	uint8_t		reservede4[4];		/* 0x00e4 */
++	uint64_t	tecmc;			/* 0x00e8 */
++	uint8_t		reservedf0[12];		/* 0x00f0 */
++#define CRYCB_FORMAT_MASK 0x00000003
++#define CRYCB_FORMAT0 0x00000000
++#define CRYCB_FORMAT1 0x00000001
++#define CRYCB_FORMAT2 0x00000003
++	uint32_t	crycbd;			/* 0x00fc */
++	uint64_t	gcr[16];		/* 0x0100 */
++	union {
++		uint64_t	gbea;			/* 0x0180 */
++		uint64_t	sidad;
++	};
++	uint8_t		reserved188[8];		/* 0x0188 */
++	uint64_t   	sdnxo;			/* 0x0190 */
++	uint8_t    	reserved198[8];		/* 0x0198 */
++	uint32_t	fac;			/* 0x01a0 */
++	uint8_t		reserved1a4[20];	/* 0x01a4 */
++	uint64_t	cbrlo;			/* 0x01b8 */
++	uint8_t		reserved1c0[8];		/* 0x01c0 */
++#define ECD_HOSTREGMGMT	0x20000000
++#define ECD_MEF		0x08000000
++#define ECD_ETOKENF	0x02000000
++#define ECD_ECC		0x00200000
++	uint32_t	ecd;			/* 0x01c8 */
++	uint8_t		reserved1cc[18];	/* 0x01cc */
++	uint64_t	pp;			/* 0x01de */
++	uint8_t		reserved1e6[2];		/* 0x01e6 */
++	uint64_t	itdba;			/* 0x01e8 */
++	uint64_t   	riccbd;			/* 0x01f0 */
++	uint64_t	gvrd;			/* 0x01f8 */
++	uint64_t	reserved200[48];	/* 0x0200 */
++	uint64_t	pv_grregs[16];		/* 0x0380 */
++} __attribute__((packed));
++
++union esca_sigp_ctrl {
++	uint16_t value;
++	struct {
++		uint8_t c : 1;
++		uint8_t reserved: 7;
++		uint8_t scn;
++	};
++};
++
++struct esca_entry {
++	union esca_sigp_ctrl sigp_ctrl;
++	uint16_t   reserved1[3];
++	uint64_t   sda;
++	uint64_t   reserved2[6];
++};
++
++union ipte_control {
++	unsigned long val;
++	struct {
++		unsigned long k  : 1;
++		unsigned long kh : 31;
++		unsigned long kg : 32;
++	};
++};
++
++struct esca_block {
++	union ipte_control ipte_control;
++	uint64_t   reserved1[7];
++	uint64_t   mcn[4];
++	uint64_t   reserved2[20];
++	struct esca_entry cpu[256];
++};
++
++#endif /* _S390X_SIE_ARCH_H_ */
+diff --git a/lib/s390x/sie.h b/lib/s390x/sie.h
+index 53cd767f..3ec49ed0 100644
+--- a/lib/s390x/sie.h
++++ b/lib/s390x/sie.h
+@@ -4,236 +4,7 @@
+ 
+ #include <stdint.h>
+ #include <asm/arch_def.h>
+-
+-#define CPUSTAT_STOPPED    0x80000000
+-#define CPUSTAT_WAIT       0x10000000
+-#define CPUSTAT_ECALL_PEND 0x08000000
+-#define CPUSTAT_STOP_INT   0x04000000
+-#define CPUSTAT_IO_INT     0x02000000
+-#define CPUSTAT_EXT_INT    0x01000000
+-#define CPUSTAT_RUNNING    0x00800000
+-#define CPUSTAT_RETAINED   0x00400000
+-#define CPUSTAT_TIMING_SUB 0x00020000
+-#define CPUSTAT_SIE_SUB    0x00010000
+-#define CPUSTAT_RRF        0x00008000
+-#define CPUSTAT_SLSV       0x00004000
+-#define CPUSTAT_SLSR       0x00002000
+-#define CPUSTAT_ZARCH      0x00000800
+-#define CPUSTAT_MCDS       0x00000100
+-#define CPUSTAT_KSS        0x00000200
+-#define CPUSTAT_SM         0x00000080
+-#define CPUSTAT_IBS        0x00000040
+-#define CPUSTAT_GED2       0x00000010
+-#define CPUSTAT_G          0x00000008
+-#define CPUSTAT_GED        0x00000004
+-#define CPUSTAT_J          0x00000002
+-#define CPUSTAT_P          0x00000001
+-
+-struct kvm_s390_sie_block {
+-	uint32_t 	cpuflags;		/* 0x0000 */
+-	uint32_t : 1;			/* 0x0004 */
+-	uint32_t 	prefix : 18;
+-	uint32_t : 1;
+-	uint32_t 	ibc : 12;
+-	uint8_t		reserved08[4];		/* 0x0008 */
+-#define PROG_IN_SIE (1<<0)
+-	uint32_t	prog0c;			/* 0x000c */
+-union {
+-		uint8_t	reserved10[16];		/* 0x0010 */
+-		struct {
+-			uint64_t	pv_handle_cpu;
+-			uint64_t	pv_handle_config;
+-		};
+-	};
+-#define PROG_BLOCK_SIE	(1<<0)
+-#define PROG_REQUEST	(1<<1)
+-	uint32_t 	prog20;		/* 0x0020 */
+-	uint8_t		reserved24[4];		/* 0x0024 */
+-	uint64_t	cputm;			/* 0x0028 */
+-	uint64_t	ckc;			/* 0x0030 */
+-	uint64_t	epoch;			/* 0x0038 */
+-	uint32_t	svcc;			/* 0x0040 */
+-#define LCTL_CR0	0x8000
+-#define LCTL_CR6	0x0200
+-#define LCTL_CR9	0x0040
+-#define LCTL_CR10	0x0020
+-#define LCTL_CR11	0x0010
+-#define LCTL_CR14	0x0002
+-	uint16_t   	lctl;			/* 0x0044 */
+-	int16_t		icpua;			/* 0x0046 */
+-#define ICTL_OPEREXC	0x80000000
+-#define ICTL_PINT	0x20000000
+-#define ICTL_LPSW	0x00400000
+-#define ICTL_STCTL	0x00040000
+-#define ICTL_ISKE	0x00004000
+-#define ICTL_SSKE	0x00002000
+-#define ICTL_RRBE	0x00001000
+-#define ICTL_TPROT	0x00000200
+-	uint32_t	ictl;			/* 0x0048 */
+-#define ECA_CEI		0x80000000
+-#define ECA_IB		0x40000000
+-#define ECA_SIGPI	0x10000000
+-#define ECA_MVPGI	0x01000000
+-#define ECA_AIV		0x00200000
+-#define ECA_VX		0x00020000
+-#define ECA_PROTEXCI	0x00002000
+-#define ECA_APIE	0x00000008
+-#define ECA_SII		0x00000001
+-	uint32_t	eca;			/* 0x004c */
+-#define ICPT_INST	0x04
+-#define ICPT_PROGI	0x08
+-#define ICPT_INSTPROGI	0x0C
+-#define ICPT_EXTREQ	0x10
+-#define ICPT_EXTINT	0x14
+-#define ICPT_IOREQ	0x18
+-#define ICPT_WAIT	0x1c
+-#define ICPT_VALIDITY	0x20
+-#define ICPT_STOP	0x28
+-#define ICPT_OPEREXC	0x2C
+-#define ICPT_PARTEXEC	0x38
+-#define ICPT_IOINST	0x40
+-#define ICPT_KSS	0x5c
+-#define ICPT_INT_ENABLE	0x64
+-#define ICPT_PV_INSTR	0x68
+-#define ICPT_PV_NOTIFY	0x6c
+-#define ICPT_PV_PREF	0x70
+-	uint8_t		icptcode;		/* 0x0050 */
+-	uint8_t		icptstatus;		/* 0x0051 */
+-	uint16_t	ihcpu;			/* 0x0052 */
+-	uint8_t		reserved54;		/* 0x0054 */
+-#define IICTL_CODE_NONE		 0x00
+-#define IICTL_CODE_MCHK		 0x01
+-#define IICTL_CODE_EXT		 0x02
+-#define IICTL_CODE_IO		 0x03
+-#define IICTL_CODE_RESTART	 0x04
+-#define IICTL_CODE_SPECIFICATION 0x10
+-#define IICTL_CODE_OPERAND	 0x11
+-	uint8_t		iictl;			/* 0x0055 */
+-	uint16_t	ipa;			/* 0x0056 */
+-	uint32_t	ipb;			/* 0x0058 */
+-	uint32_t	scaoh;			/* 0x005c */
+-#define FPF_BPBC 	0x20
+-	uint8_t		fpf;			/* 0x0060 */
+-#define ECB_GS		0x40
+-#define ECB_TE		0x10
+-#define ECB_SPECI	0x08
+-#define ECB_SRSI	0x04
+-#define ECB_HOSTPROTINT	0x02
+-	uint8_t		ecb;			/* 0x0061 */
+-#define ECB2_CMMA	0x80
+-#define ECB2_IEP	0x20
+-#define ECB2_PFMFI	0x08
+-#define ECB2_ESCA	0x04
+-	uint8_t    	ecb2;                   /* 0x0062 */
+-#define ECB3_DEA 0x08
+-#define ECB3_AES 0x04
+-#define ECB3_RI  0x01
+-	uint8_t    	ecb3;			/* 0x0063 */
+-	uint32_t	scaol;			/* 0x0064 */
+-	uint8_t		sdf;			/* 0x0068 */
+-	uint8_t    	epdx;			/* 0x0069 */
+-	uint8_t    	reserved6a[2];		/* 0x006a */
+-	uint32_t	todpr;			/* 0x006c */
+-#define GISA_FORMAT1 0x00000001
+-	uint32_t	gd;			/* 0x0070 */
+-	uint8_t		reserved74[12];		/* 0x0074 */
+-	uint64_t	mso;			/* 0x0080 */
+-	uint64_t	msl;			/* 0x0088 */
+-	struct psw	gpsw;			/* 0x0090 */
+-	uint64_t	gg14;			/* 0x00a0 */
+-	uint64_t	gg15;			/* 0x00a8 */
+-	uint8_t		reservedb0[8];		/* 0x00b0 */
+-#define HPID_KVM	0x4
+-#define HPID_VSIE	0x5
+-	uint8_t		hpid;			/* 0x00b8 */
+-	uint8_t		reservedb9[7];		/* 0x00b9 */
+-	union {
+-		struct {
+-			uint32_t	eiparams;	/* 0x00c0 */
+-			uint16_t	extcpuaddr;	/* 0x00c4 */
+-			uint16_t	eic;		/* 0x00c6 */
+-		};
+-		uint64_t	mcic;			/* 0x00c0 */
+-	} __attribute__ ((__packed__));
+-	uint32_t	reservedc8;		/* 0x00c8 */
+-	uint16_t	pgmilc;			/* 0x00cc */
+-	uint16_t	iprcc;			/* 0x00ce */
+-	uint32_t	dxc;			/* 0x00d0 */
+-	uint16_t	mcn;			/* 0x00d4 */
+-	uint8_t		perc;			/* 0x00d6 */
+-	uint8_t		peratmid;		/* 0x00d7 */
+-	uint64_t	peraddr;		/* 0x00d8 */
+-	uint8_t		eai;			/* 0x00e0 */
+-	uint8_t		peraid;			/* 0x00e1 */
+-	uint8_t		oai;			/* 0x00e2 */
+-	uint8_t		armid;			/* 0x00e3 */
+-	uint8_t		reservede4[4];		/* 0x00e4 */
+-	uint64_t	tecmc;			/* 0x00e8 */
+-	uint8_t		reservedf0[12];		/* 0x00f0 */
+-#define CRYCB_FORMAT_MASK 0x00000003
+-#define CRYCB_FORMAT0 0x00000000
+-#define CRYCB_FORMAT1 0x00000001
+-#define CRYCB_FORMAT2 0x00000003
+-	uint32_t	crycbd;			/* 0x00fc */
+-	uint64_t	gcr[16];		/* 0x0100 */
+-	union {
+-		uint64_t	gbea;			/* 0x0180 */
+-		uint64_t	sidad;
+-	};
+-	uint8_t		reserved188[8];		/* 0x0188 */
+-	uint64_t   	sdnxo;			/* 0x0190 */
+-	uint8_t    	reserved198[8];		/* 0x0198 */
+-	uint32_t	fac;			/* 0x01a0 */
+-	uint8_t		reserved1a4[20];	/* 0x01a4 */
+-	uint64_t	cbrlo;			/* 0x01b8 */
+-	uint8_t		reserved1c0[8];		/* 0x01c0 */
+-#define ECD_HOSTREGMGMT	0x20000000
+-#define ECD_MEF		0x08000000
+-#define ECD_ETOKENF	0x02000000
+-#define ECD_ECC		0x00200000
+-	uint32_t	ecd;			/* 0x01c8 */
+-	uint8_t		reserved1cc[18];	/* 0x01cc */
+-	uint64_t	pp;			/* 0x01de */
+-	uint8_t		reserved1e6[2];		/* 0x01e6 */
+-	uint64_t	itdba;			/* 0x01e8 */
+-	uint64_t   	riccbd;			/* 0x01f0 */
+-	uint64_t	gvrd;			/* 0x01f8 */
+-	uint64_t	reserved200[48];	/* 0x0200 */
+-	uint64_t	pv_grregs[16];		/* 0x0380 */
+-} __attribute__((packed));
+-
+-union esca_sigp_ctrl {
+-	uint16_t value;
+-	struct {
+-		uint8_t c : 1;
+-		uint8_t reserved: 7;
+-		uint8_t scn;
+-	};
+-};
+-
+-struct esca_entry {
+-	union esca_sigp_ctrl sigp_ctrl;
+-	uint16_t   reserved1[3];
+-	uint64_t   sda;
+-	uint64_t   reserved2[6];
+-};
+-
+-union ipte_control {
+-	unsigned long val;
+-	struct {
+-		unsigned long k  : 1;
+-		unsigned long kh : 31;
+-		unsigned long kg : 32;
+-	};
+-};
+-
+-struct esca_block {
+-	union ipte_control ipte_control;
+-	uint64_t   reserved1[7];
+-	uint64_t   mcn[4];
+-	uint64_t   reserved2[20];
+-	struct esca_entry cpu[256];
+-};
++#include <asm/sie-arch.h>
+ 
+ struct vm_uv {
+ 	uint64_t vm_handle;
+-- 
+2.47.1
+
