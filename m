@@ -1,221 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5AA1D9688;
-	Mon,  3 Feb 2025 06:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84201F8F04
+	for <kvm@vger.kernel.org>; Mon,  3 Feb 2025 08:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738564813; cv=none; b=hDsCn+hE+T/8e50uD1StS3izhAXGJg7jbEcC0wBoQZvcb2MrvmWCmqJ37LRf1HyxG70ukombFzeBaLrtFCF05zG1FjNE3jbkWHVo02gV33uxF3T8i4rvNkvrxo+DglhfbPkwt3NBhu0eYm+ZQMhq/kuuBDO9lbn6Tlb5Vqv0z/M=
+	t=1738571717; cv=none; b=q6s08WLbw4QDoWd6Ro7TsCQdg4AhgQKHWUWPw6xbrWIXrmGRJbcZCNq8EFndtcQXzQa4mkYxfgI6/KqB8nykR5P+NS+pvMciezlS967WxUQB8klLnHvpXG+B4zpoQbivQwrGwOAo3+HQE2oSWwOvQ44BzTv3FldrA4I7aDrF/60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738564813; c=relaxed/simple;
-	bh=AJGgSFjnLvG14ktKseDbhiBaz0pVxRoJIgQO3axUhs0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/Dqx2BMoH3RS9XzK7fCUF0gCeLmSAd/9OWfeVm16A8baq51I9kXFPq5fOpyTlznHMwfupzlbvk+zEwuwQ6akYAhjVZUGmjTSc83q8rRze0RQC/XkNk1U/MGgPvZbb2YakgcPNU8LrlShjKzyywnodDtZ+FWFDeMBTPNosJA5Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7mV7qoj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738571717; c=relaxed/simple;
+	bh=AjeBmdJxOhB8EePWx9LMdeDziY3O7eZmfuZLVM3LnCA=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=PsqGkonAheQwENAeoX3umYyMO5wKfq8iAvHuYfxofscmWBXP7ELOGdx0CRE4gki7zxnkn2/M4JU6QkxIexj1WtURGDkgHxTxoQAuRw70xbF8s+UvBlcC5R4lcX1jk8PhuTaOnpx8NVimkuCvHBBOiSEmnC17RSvhDwiJESN8t7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZQWJ8PfT; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7mV7qoj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C7C4CEE3;
-	Mon,  3 Feb 2025 06:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738564812;
-	bh=AJGgSFjnLvG14ktKseDbhiBaz0pVxRoJIgQO3axUhs0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7mV7qojzSljEw9/4oBg/Zab3ZpVmvcVt6liE7RilHmx/v7pwx/+oE0YvP9qauEff
-	 83LOJMP7n7Mgco9Gkb/lC1rDNPjT9I9nGVpq1qZCS1XMsu5N/7Uv6bJtGbX9neIuJd
-	 NCqgCf3BC1AZUz1QTDOAIPQGH36yzkdmTDVXPBcuadVKVW1kfZlOY8ezW/FAj3/1iK
-	 VLxNsCwu60l2nxiUj4nV3ZoZp/k5VcmfY266gsAbXk1fzE2aklJ1eOPbRktoPjYmgK
-	 SKTi+gKvoNwyCrhM/r+qFUOm7g2U0VOxvu3BXACWAf2OyTvcv79lPRTqhuJOWI9fLU
-	 KtG3NA3k36CBw==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>
-Subject: [PATCH v2 2/2] KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids
-Date: Mon,  3 Feb 2025 12:07:46 +0530
-Message-ID: <b79610c60de53048f3fda942fd45973c4ab1de97.1738563890.git.naveen@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1738563890.git.naveen@kernel.org>
-References: <cover.1738563890.git.naveen@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZQWJ8PfT"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef9e38b0cfso7658127a91.0
+        for <kvm@vger.kernel.org>; Mon, 03 Feb 2025 00:35:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738571715; x=1739176515; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bCVGsPkdqv8VOcstVdRRWjGTGpKBIG2jSUrhWhisdPo=;
+        b=ZQWJ8PfTXWf9rjNMsrbTjBAJbETXlU/CjR5KASUzY0l/Ub2eookgHzsLD363AJRHx/
+         mrVTbegfVsjcApqwzcEBOSAtvHE50uT/nuV2S2k6sxkgf4hkW6YuBjk6jWffs2UPh354
+         ihB5+AMeb70RmDTt9egjCIo8tRjleB3Ym3AsBI7VjUNPVI16F6CbvoC5pYs7cpL5sTUt
+         7XQtWAC3Ky+siA/93SsIZaGLAJIdWEIP2gu86eQqppgOFLsLN2whPa6w3Yap5IB+pcDk
+         IYQmpY+9GJs8oEh6St7eW/fxTlyNVqOTysF2OfUwtxAmDNQZKFx5crqzxsY0zieWl2gz
+         P9TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738571715; x=1739176515;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCVGsPkdqv8VOcstVdRRWjGTGpKBIG2jSUrhWhisdPo=;
+        b=HXaJ4+iaZGIynqBENG6ODqTZUWBIRk7nq/8XqNUmUNfFByOiBNnZ5pUeD8IG97inO7
+         8XqqhhVQ/R4YPbIRONYhSHmGqhu1MGcG5vdW+MkSwBSt3MjUxi+n2ulwCqOzHndDgZSd
+         A+z+R1aquFK/Zf7ynEa6JOAB6YILQaNDli6g6OJ+vcZ4pNxZS9YKswOrqf5FenBeXlf1
+         3DJnrKY3C8K1rlODyh3LrgcjGTGjO/cVF8nQqJHDAS+JD7BJaQA+Twyaf54a1UZXT6Q/
+         dDCDCBCJAd3gb0UsAgyOSx7EAo+CNhSOBiYwugCj5aRTXLZ19SB832GAxVDOvO19TrFk
+         +1Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQCAkqVWog2JOLy56DN+MmHaBQuC67JQIUBLY1EpuqEOExxC3oNcjgL9PUfRjKlcjklKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHQF7bEx03UkvO7Pyi7A7KclrOcabNyUppdoKAYGMQDWNviBsu
+	pd9kbMzmd677eVO2urDW0FkAaAcddwtXL1Q8rL+p/8ZcUIeX88QyvcPcwduK1o9VVT30dmXhOGe
+	YWn2hl8+elC2oAk4IsgkYEQ==
+X-Google-Smtp-Source: AGHT+IHj+Cug/2vDcc3qbw44IShUmb2Dal+tFzb8jNSGxbKWVsDIeVzNOQ+erfgJBUWM/FABAfOHIsgQxSoSDHqCzA==
+X-Received: from pjbnc13.prod.google.com ([2002:a17:90b:37cd:b0:2ea:46ed:5d3b])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2748:b0:2f4:465d:5c94 with SMTP id 98e67ed59e1d1-2f83abd9978mr32152246a91.11.1738571714919;
+ Mon, 03 Feb 2025 00:35:14 -0800 (PST)
+Date: Mon, 03 Feb 2025 08:35:12 +0000
+In-Reply-To: <83d44307f30ad8ce19de3edcdc00c179750e0e23.camel@infradead.org>
+ (message from Amit Shah on Tue, 28 Jan 2025 10:42:57 +0100)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Message-ID: <diqzr04fpgsf.fsf@ackerleytng-ctop-specialist.c.googlers.com>
+Subject: Re: [RFC PATCH 00/39] 1G page support for guest_memfd
+From: Ackerley Tng <ackerleytng@google.com>
+To: Amit Shah <amit@infradead.org>
+Cc: tabba@google.com, quic_eberman@quicinc.com, roypat@amazon.co.uk, 
+	jgg@nvidia.com, peterx@redhat.com, david@redhat.com, rientjes@google.com, 
+	fvdl@google.com, jthoughton@google.com, seanjc@google.com, 
+	pbonzini@redhat.com, zhiquan1.li@intel.com, fan.du@intel.com, 
+	jun.miao@intel.com, isaku.yamahata@intel.com, muchun.song@linux.dev, 
+	mike.kravetz@oracle.com, erdemaktas@google.com, vannapurve@google.com, 
+	qperret@google.com, jhubbard@nvidia.com, willy@infradead.org, 
+	shuah@kernel.org, brauner@kernel.org, bfoster@redhat.com, 
+	kent.overstreet@linux.dev, pvorel@suse.cz, rppt@kernel.org, 
+	richard.weiyang@gmail.com, anup@brainfault.org, haibo1.xu@intel.com, 
+	ajones@ventanamicro.com, vkuznets@redhat.com, maciej.wieczor-retman@intel.com, 
+	pgonda@google.com, oliver.upton@linux.dev, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-fsdevel@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-KVM allows VMMs to specify the maximum possible APIC ID for a virtual
-machine through KVM_CAP_MAX_VCPU_ID capability so as to limit data
-structures related to APIC/x2APIC. Utilize the same to set the AVIC
-physical max index in the VMCB, similar to VMX. This helps hardware
-limit the number of entries to be scanned in the physical APIC ID table
-speeding up IPI broadcasts for virtual machines with smaller number of
-vcpus.
+Amit Shah <amit@infradead.org> writes:
 
-The minimum allocation required for the Physical APIC ID table is one 4k
-page supporting up to 512 entries. With AVIC support for 4096 vcpus
-though, it is sufficient to only allocate memory to accommodate the
-AVIC physical max index that will be programmed into the VMCB. Limit
-memory allocated for the Physical APIC ID table accordingly.
+> Hey Ackerley,
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- arch/x86/kvm/svm/avic.c | 54 ++++++++++++++++++++++++++++++-----------
- arch/x86/kvm/svm/svm.c  |  6 +++++
- arch/x86/kvm/svm/svm.h  |  1 +
- 3 files changed, 47 insertions(+), 14 deletions(-)
+Hi Amit,
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 4c940f4fd34d..e6ec3bcb1e37 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -85,6 +85,17 @@ struct amd_svm_iommu_ir {
- 	void *data;		/* Storing pointer to struct amd_ir_data */
- };
- 
-+static inline u32 avic_get_max_physical_id(struct kvm *kvm, bool x2apic_mode)
-+{
-+	u32 avic_max_physical_id = x2apic_mode ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
-+
-+	/*
-+	 * Assume vcpu_id is the same as APIC ID. Per KVM_CAP_MAX_VCPU_ID, max_vcpu_ids
-+	 * represents the max APIC ID for this vm, rather than the max vcpus.
-+	 */
-+	return min(kvm->arch.max_vcpu_ids - 1, avic_max_physical_id);
-+}
-+
- static void avic_activate_vmcb(struct vcpu_svm *svm)
- {
- 	struct vmcb *vmcb = svm->vmcb01.ptr;
-@@ -103,7 +114,7 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
- 	 */
- 	if (x2avic_enabled && apic_x2apic_mode(svm->vcpu.arch.apic)) {
- 		vmcb->control.int_ctl |= X2APIC_MODE_MASK;
--		vmcb->control.avic_physical_id |= x2avic_max_physical_id;
-+		vmcb->control.avic_physical_id |= avic_get_max_physical_id(svm->vcpu.kvm, true);
- 		/* Disabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, false);
- 	} else {
-@@ -114,7 +125,7 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
- 
- 		/* For xAVIC and hybrid-xAVIC modes */
--		vmcb->control.avic_physical_id |= AVIC_MAX_PHYSICAL_ID;
-+		vmcb->control.avic_physical_id |= avic_get_max_physical_id(svm->vcpu.kvm, false);
- 		/* Enabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, true);
- 	}
-@@ -174,6 +185,12 @@ int avic_ga_log_notifier(u32 ga_tag)
- 	return 0;
- }
- 
-+static inline int avic_get_physical_id_table_order(struct kvm *kvm)
-+{
-+	/* Limit to the maximum physical ID supported in x2avic mode */
-+	return get_order((avic_get_max_physical_id(kvm, true) + 1) * sizeof(u64));
-+}
-+
- void avic_vm_destroy(struct kvm *kvm)
- {
- 	unsigned long flags;
-@@ -185,7 +202,8 @@ void avic_vm_destroy(struct kvm *kvm)
- 	if (kvm_svm->avic_logical_id_table_page)
- 		__free_page(kvm_svm->avic_logical_id_table_page);
- 	if (kvm_svm->avic_physical_id_table_page)
--		__free_page(kvm_svm->avic_physical_id_table_page);
-+		__free_pages(kvm_svm->avic_physical_id_table_page,
-+			     avic_get_physical_id_table_order(kvm));
- 
- 	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
- 	hash_del(&kvm_svm->hnode);
-@@ -198,22 +216,12 @@ int avic_vm_init(struct kvm *kvm)
- 	int err = -ENOMEM;
- 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
- 	struct kvm_svm *k2;
--	struct page *p_page;
- 	struct page *l_page;
--	u32 vm_id, entries;
-+	u32 vm_id;
- 
- 	if (!enable_apicv)
- 		return 0;
- 
--	/* Allocating physical APIC ID table */
--	entries = x2avic_max_physical_id + 1;
--	p_page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
--			     get_order(sizeof(u64) * entries));
--	if (!p_page)
--		goto free_avic;
--
--	kvm_svm->avic_physical_id_table_page = p_page;
--
- 	/* Allocating logical APIC ID table (4KB) */
- 	l_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
- 	if (!l_page)
-@@ -264,6 +272,24 @@ void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb)
- 		avic_deactivate_vmcb(svm);
- }
- 
-+int avic_alloc_physical_id_table(struct kvm *kvm)
-+{
-+	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
-+	struct page *p_page;
-+
-+	if (kvm_svm->avic_physical_id_table_page || !enable_apicv || !irqchip_in_kernel(kvm))
-+		return 0;
-+
-+	p_page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
-+			     avic_get_physical_id_table_order(kvm));
-+	if (!p_page)
-+		return -ENOMEM;
-+
-+	kvm_svm->avic_physical_id_table_page = p_page;
-+
-+	return 0;
-+}
-+
- static u64 *avic_get_physical_id_entry(struct kvm_vcpu *vcpu,
- 				       unsigned int index)
- {
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 7640a84e554a..19b9ebea4773 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1423,6 +1423,11 @@ void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_vmcb)
- 	svm->vmcb = target_vmcb->ptr;
- }
- 
-+static int svm_vcpu_precreate(struct kvm *kvm)
-+{
-+	return avic_alloc_physical_id_table(kvm);
-+}
-+
- static int svm_vcpu_create(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm;
-@@ -5009,6 +5014,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.emergency_disable_virtualization_cpu = svm_emergency_disable_virtualization_cpu,
- 	.has_emulated_msr = svm_has_emulated_msr,
- 
-+	.vcpu_precreate = svm_vcpu_precreate,
- 	.vcpu_create = svm_vcpu_create,
- 	.vcpu_free = svm_vcpu_free,
- 	.vcpu_reset = svm_vcpu_reset,
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 9d7cdb8fbf87..68687c3bcce7 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -696,6 +696,7 @@ bool avic_hardware_setup(void);
- int avic_ga_log_notifier(u32 ga_tag);
- void avic_vm_destroy(struct kvm *kvm);
- int avic_vm_init(struct kvm *kvm);
-+int avic_alloc_physical_id_table(struct kvm *kvm);
- void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb);
- int avic_incomplete_ipi_interception(struct kvm_vcpu *vcpu);
- int avic_unaccelerated_access_interception(struct kvm_vcpu *vcpu);
--- 
-2.48.1
+> On Tue, 2024-09-10 at 23:43 +0000, Ackerley Tng wrote:
+>> Hello,
+>> 
+>> This patchset is our exploration of how to support 1G pages in
+>> guest_memfd, and
+>> how the pages will be used in Confidential VMs.
+>
+> We've discussed this patchset at LPC and in the guest-memfd calls.  Can
+> you please summarise the discussions here as a follow-up, so we can
+> also continue discussing on-list, and not repeat things that are
+> already discussed?
 
+Thanks for this question! Since LPC, Vishal and I have been tied up with
+some Google internal work, which slowed down progress on 1G page support
+for guest_memfd. We will have progress this quarter and the next few
+quarters on 1G page support for guest_memfd.
+
+The related updates are
+
+1. No objections on using hugetlb as the source of 1G pages.
+
+2. Prerequisite hugetlb changes.
+
++ I've separated some of the prerequisite hugetlb changes into another
+  patch series hoping to have them merged ahead of and separately from
+  this patchset [1].
++ Peter Xu contributed a better patchset, including a bugfix [2].
++ I have an alternative [3].
++ The next revision of this series (1G page support for guest_memfd)
+  will be based on alternative [3]. I think there should be no issues
+  there.
++ I believe Peter is also waiting on the next revision before we make
+  further progress/decide on [2] or [3].
+
+3. No objections for allowing mmap()-ing of guest_memfd physical memory
+   when memory is marked shared to avoid double-allocation.
+
+4. No objections for splitting pages when marked shared.
+
+5. folio_put() callback for guest_memfd folio cleanup/merging.
+
++ In Fuad's series [4], Fuad used the callback to reset the folio's
+  mappability status.
++ The catch is that the callback is only invoked when folio->page_type
+  == PGTY_guest_memfd, and folio->page_type is a union with folio's
+  mapcount, so any folio with a non-zero mapcount cannot have a valid
+  page_type.
++ I was concerned that we might not get a callback, and hence
+  unintentionally skip merging pages and not correctly restore hugetlb
+  pages
++ This was discussed at the last guest_memfd upstream call (2025-01-23
+  07:58 PST), and the conclusion is that using folio->page_type works,
+  because
+    + We only merge folios in two cases: (1) when converting to private
+      (2) when truncating folios (removing from filemap).
+    + When converting to private, in (1), we can forcibly unmap all the
+      converted pages or check if the mapcount is 0, and once mapcount
+      is 0 we can install the callback by setting folio->page_type =
+      PGTY_guest_memfd
+    + When truncating, we will be unmapping the folios anyway, so
+      mapcount is also 0 and we can install the callback.
+
+Hope that covers the points that you're referring to. If there are other
+parts that you'd like to know the status on, please let me know which
+aspects those are!
+
+> Also - as mentioned in those meetings, we at AMD are interested in this
+> series along with SEV-SNP support - and I'm also interested in figuring
+> out how we collaborate on the evolution of this series.
+
+Thanks all your help and comments during the guest_memfd upstream calls,
+and thanks for the help from AMD.
+
+Extending mmap() support from Fuad with 1G page support introduces more
+states that made it more complicated (at least for me).
+
+I'm modeling the states in python so I can iterate more quickly. I also
+have usage flows (e.g. allocate, guest_use, host_use,
+transient_folio_get, close, transient_folio_put) as test cases.
+
+I'm almost done with the model and my next steps are to write up a state
+machine (like Fuad's [5]) and share that.
+
+I'd be happy to share the python model too but I have to work through
+some internal open-sourcing processes first, so if you think this will
+be useful, let me know!
+
+Then, I'll code it all up in a new revision of this series (target:
+March 2025), which will be accompanied by source code on GitHub.
+
+I'm happy to collaborate more closely, let me know if you have ideas for
+collaboration!
+
+> Thanks,
+>
+> 		Amit
+
+[1] https://lore.kernel.org/all/cover.1728684491.git.ackerleytng@google.com/T/
+[2] https://lore.kernel.org/all/20250107204002.2683356-1-peterx@redhat.com/T/
+[3] https://lore.kernel.org/all/diqzjzayz5ho.fsf@ackerleytng-ctop.c.googlers.com/
+[4] https://lore.kernel.org/all/20250117163001.2326672-1-tabba@google.com/T/
+[5] https://lpc.events/event/18/contributions/1758/attachments/1457/3699/Guestmemfd%20folio%20state%20page_type.pdf
