@@ -1,75 +1,63 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07F1FAC23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88850206F19
 	for <kvm@vger.kernel.org>; Mon,  3 Feb 2025 08:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738571809; cv=none; b=QCcb7pmP6bbe4v65hV8GxEEyueVP1l3sn9cfvtRp+tQpj7DcAk5WgrwW2ARApHE4F+Ogw7ZXukRBzc8PJlNeuEp2y8HztWJj/PBaMgGnpUeck7McP9daIiB/fb1bKmo3e8vttB5LenjXeuKfLBqg4XM2WtDEpX+D5aMeSc3ADns=
+	t=1738571809; cv=none; b=UaWZM3mjShMGzXZ/XaUmwrykhJPsXvttMSm9DgufW+hNt9GzxyceWt6DsxyWJdkSBtv9e2+cAuUys78uU3tNnPv613XKlv2hvuuQaM9e1qM5zEjS2bxHpwiDQ/13W2w2OoJ1aYhhh4ec9YpVkV9YYWTcyqEQnrJaDd9bY/2noWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738571809; c=relaxed/simple;
-	bh=QDVDZYrHdUZh2zI77ftl8Fb4u8BuJlQAmN7nKBHDijE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+MB7qT/BTAs5PfMvo+Ha+kXDK5G2uKR/edLEwn4FLr7Uw5eRhYtKBWHjImooPJodSLS00yDPg2KX7yuVG8DaVSrXgwM7NtE4R4yfxm8cEyvdhUzTcETsTbOv4HxS8bkJFizdtYpKm40I378utLTq2Oe++VA2K7OGW9AgY2FtA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NfWCNZMU; arc=none smtp.client-ip=148.163.156.1
+	bh=6P5z+4LJU18rE1I/34p8nPTX4NPOt1cL9y1MPI1fA4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nAOXbQ70xNXm1Lw7das4pqztOovf5NzsUl+GldSuDGwn1yIAu9rdwl0JsAOUokpj2xjpZQljBOwoqUq0GwNv5LDy+7bkMNTN3iExTN2ZNMSVuH1cFajjNDQ+hJo5lUoBNIo4uKZjld1vFoh6HsLbbv+M2CZAVlJNS+7kxygS2No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CuZ6yDSF; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NfWCNZMU"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5135NvBW013502;
-	Mon, 3 Feb 2025 08:36:36 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CuZ6yDSF"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51320sRi006368;
+	Mon, 3 Feb 2025 08:36:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=1fzZgQI3foxMfX61C
-	0R8fj1NsCIsfPMorxhWj3LgIQk=; b=NfWCNZMUXFqmTHoyClh2PoHYYzaJr4Iy9
-	1Iyk11WCUBZD300WzHnDQ1w8zjNK/kbH6sR0TjAOp3nK3xhK//fytg9u/NwvLYKg
-	Ux5sPSpkq34uhlYG47EcnbMy5hU6DPvwTzqFrRueKSHH22Q07vWUE1fw/47vIzg1
-	xxtJdhG6VxS2NBSVgDp7lPYD3tlEa1fUdf22xxgjM76mbJ/OsPHeevXh4bZLFM1N
-	piPkEzOv6xcpIBHTvvdIoAMBs7EsrVS3WPlxR8FieStRMkS8hf4BQn5D/YL6gKXq
-	GjxQECXc5RkiqAQM3N7jxxXIYGCZiUeIzWKxws8jDizWFUEXXWI4A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jqm78swh-1
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=xzlLtiA3mZb/MH0jgyn0Azh1HII9nu7nBrzomFcGV
+	Bw=; b=CuZ6yDSFaKmiSNJC5w970QG6OzdhHy8v/fN6isL+zkewOmL24pyvqj7Ma
+	f7LYeQMapz6dYcLjyIl8o6Vpl8NKMR3UDFbc310ZXI3OVwV7+NiVYmW44I+TVPxu
+	jiud7PMH9PKwFQMC7XC3PDMEYV+epQ0r7z+5WvbFtN5WTICFJ+ZYdtXHDrY1i5D1
+	UQDtYDqEp7sBSE7L5pylMgc+nuKz52i+dHBvnBidb886exY951Gn/QkvyhERCWLN
+	wSdKux9is8k2kYjx2SG8fZ8b9beMiVVB3Xetg4PGEzpNJIMsZv8UzqzwYr2u6T+T
+	KjC7dq5vBHqQLTrJ1AF85QP7lIcEg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jmmy9cbs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:35 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5138MhiU023802;
-	Mon, 3 Feb 2025 08:36:35 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jqm78sw8-1
+	Mon, 03 Feb 2025 08:36:28 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5134v9EZ021493;
+	Mon, 3 Feb 2025 08:36:27 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j0n153fa-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:35 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51388AUq006543;
-	Mon, 3 Feb 2025 08:36:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hyek5b7g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 08:36:33 +0000
+	Mon, 03 Feb 2025 08:36:27 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aUTp19726648
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5138aOMP56623386
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Feb 2025 08:36:30 GMT
+	Mon, 3 Feb 2025 08:36:24 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 335D520040;
-	Mon,  3 Feb 2025 08:36:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 42FF320043;
+	Mon,  3 Feb 2025 08:36:24 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AE43C2004B;
-	Mon,  3 Feb 2025 08:36:29 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D140D20040;
+	Mon,  3 Feb 2025 08:36:23 +0000 (GMT)
 Received: from t14-nrb.lan (unknown [9.171.84.16])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Feb 2025 08:36:29 +0000 (GMT)
+	Mon,  3 Feb 2025 08:36:23 +0000 (GMT)
 From: Nico Boehr <nrb@linux.ibm.com>
 To: thuth@redhat.com, pbonzini@redhat.com, andrew.jones@linux.dev
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        Marc Hartmayer <mhartmay@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [kvm-unit-tests GIT PULL 11/18] s390x/Makefile: snippets: Add separate target for the ELF snippets
-Date: Mon,  3 Feb 2025 09:35:19 +0100
-Message-ID: <20250203083606.22864-12-nrb@linux.ibm.com>
+Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com
+Subject: [kvm-unit-tests GIT PULL 00/18] s390x: new edat, diag258 and STFLE tests; fixes for genprotimg >= 2.36.0; cleanups for snippets and makefiles
+Date: Mon,  3 Feb 2025 09:35:08 +0100
+Message-ID: <20250203083606.22864-1-nrb@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250203083606.22864-1-nrb@linux.ibm.com>
-References: <20250203083606.22864-1-nrb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -78,62 +66,129 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jX1OpnWfgahZqw9gLxtqLkN1gdM2Ls3k
-X-Proofpoint-ORIG-GUID: BIBRqJjr7YCjRZ1BQ-uK3Pn2yH8b5TFb
+X-Proofpoint-GUID: 8LyvZCg_nbZ_GtXxSw6fDqFY-APSrocO
+X-Proofpoint-ORIG-GUID: 8LyvZCg_nbZ_GtXxSw6fDqFY-APSrocO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502030068
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030068
 
-From: Marc Hartmayer <mhartmay@linux.ibm.com>
+Hi Paolo and/or Thomas,
 
-It's unusual to create multiple files in one target rule, and it's even more
-unusual to create an ELF file with a `.gbin` file extension first, and then
-overwrite it in the next step. It might even lead to errors as the input file
-path is also used as the output file path - but this depends on the objcopy
-implementation. Therefore, create an extra target for the ELF files and list it
-as a prerequisite for the *.gbin targets.
+Changes in this pull request:
+- cpacf query function were reworked in the kernel, that fix was
+  cherry-picked by Nina. This fixes issues with possible incorrect
+  instruction format
+- Claudio extended the edat test for a special case with a 2G page at
+  the end of memory to ensure the correct addressing exception happens.
+- I added a test for diag258 where we had some issues with
+  virtual-physical address confusion.
+- Nina took the time to add library functions that help exiting from a
+  snippet s390x.
+- Nina contributed a test for STFLE interpretive execution. Thank you!
+- Marc did a lot of magic fixing issues in our Makefiles. This fixes
+  several issues with out-of-tree-builds. We now also build out-of-tree
+  in our downstream CI to avoid unpleasant surprises for maintainers :)
+  Marc, thanks for contributing your Makefile knowledge and for turning my
+  complaints into something productive
+- Janosch also invested some time to clean up snippets and Makefiles,
+  which made the code a lot nicer, thanks for that as well!
+- we have a compatibility issue with genprotimg
+  versions >= 2.36.0. Thanks Marc to fixing that. You should upgrade
+  kvm-unit-tests if you use genprotimg >= 2.36.0!
 
-Signed-off-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240604115932.86596-2-mhartmay@linux.ibm.com
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
----
- s390x/Makefile | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Note that there are two checkpatch errors:
+> ERROR: space prohibited before that ':' (ctx:WxW)
+I would suggest to ignore them, the code really looks ugly otherwise.
 
-diff --git a/s390x/Makefile b/s390x/Makefile
-index 4424877e..b3b2ae8c 100644
---- a/s390x/Makefile
-+++ b/s390x/Makefile
-@@ -160,14 +160,18 @@ $(SNIPPET_DIR)/c/%.o: SNIPPET_INCLUDE := $(SNIPPET_SRC_DIR)/lib
- $(SNIPPET_DIR)/c/%.o: $(SNIPPET_DIR)/c/%.c $(asm-offsets)
- 	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
- 
--$(SNIPPET_DIR)/asm/%.gbin: $(SNIPPET_DIR)/asm/%.o $(SNIPPET_DIR)/asm/flat.lds
-+$(SNIPPET_DIR)/asm/%.elf: $(SNIPPET_DIR)/asm/%.o $(SNIPPET_DIR)/asm/flat.lds
- 	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_DIR)/asm/flat.lds $<
--	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $@ $@
-+
-+$(SNIPPET_DIR)/asm/%.gbin: $(SNIPPET_DIR)/asm/%.elf
-+	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
- 	truncate -s '%4096' $@
- 
--$(SNIPPET_DIR)/c/%.gbin: $(SNIPPET_DIR)/c/%.o $(snippet_lib) $(FLATLIBS) $(SNIPPET_DIR)/c/flat.lds
-+$(SNIPPET_DIR)/c/%.elf: $(SNIPPET_DIR)/c/%.o $(snippet_lib) $(FLATLIBS) $(SNIPPET_DIR)/c/flat.lds
- 	$(CC) $(LDFLAGS) -o $@ -T $(SNIPPET_DIR)/c/flat.lds $< $(snippet_lib) $(FLATLIBS)
--	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $@ $@
-+
-+$(SNIPPET_DIR)/c/%.gbin: $(SNIPPET_DIR)/c/%.elf
-+	$(OBJCOPY) -O binary -j ".rodata" -j ".lowcore" -j ".text" -j ".data" -j ".bss" --set-section-flags .bss=alloc,load,contents $< $@
- 	truncate -s '%4096' $@
- 
- %.hdr: %.gbin $(HOST_KEY_DOCUMENT)
--- 
-2.47.1
+Thanks
+Nico
 
+MERGE: https://gitlab.com/kvm-unit-tests/kvm-unit-tests/-/merge_requests/73
+
+PIPELINE: https://gitlab.com/Nico-Boehr/kvm-unit-tests/-/pipelines/1650287644
+
+PULL: https://gitlab.com/Nico-Boehr/kvm-unit-tests.git pr-2025-01-31
+----
+The following changes since commit 2e66bb4b9423970ceb6ea195bd8697733bcd9071:
+
+  Makefile: Use 'vpath' for out-of-source builds and not 'VPATH' (2025-01-31 10:40:51 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/Nico-Boehr/kvm-unit-tests.git pr-2025-01-31
+
+for you to fetch changes up to 12b23c79ac6c5af4f9351c7502c4a3ffccf4b8eb:
+
+  s390x/Makefile: Add auxinfo.o to cflatobjs (2025-01-31 13:02:25 +0100)
+
+----------------------------------------------------------------
+Claudio Imbrenda (1):
+      s390x: edat: test 2G large page spanning end of memory
+
+Janosch Frank (4):
+      s390x/Makefile: Split snippet makefile rules into new file
+      s390x/Makefile: Add more comments
+      s390x: Move SIE assembly into new file
+      lib: s390x: Split SIE fw structs from lib structs
+
+Marc Hartmayer (4):
+      s390x/Makefile: snippets: Add separate target for the ELF snippets
+      s390x: Support newer version of genprotimg
+      s390x/Makefile: Make sure the linker script is generated in the build directory
+      s390x/Makefile: Add auxinfo.o to cflatobjs
+
+Nico Boehr (2):
+      s390x: edat: move LC_SIZE to arch_def.h
+      s390x: add test for diag258
+
+Nina Schoetterl-Glausch (7):
+      s390x: Split and rework cpacf query functions
+      s390x: lib: Remove double include
+      s390x: Add sie_is_pv
+      s390x: Add function for checking diagnose intercepts
+      s390x: Add library functions for exiting from snippet
+      s390x: Use library functions for snippet exit
+      s390x: Add test for STFLE interpretive execution (format-0)
+
+ lib/s390x/asm/arch_def.h          |  17 +++
+ lib/s390x/asm/cpacf.h             |  77 ++++++++++--
+ lib/s390x/asm/facility.h          |  10 +-
+ lib/s390x/asm/sie-arch.h          | 238 +++++++++++++++++++++++++++++++++++
+ lib/s390x/pv_icptdata.h           |  42 -------
+ lib/s390x/sie-icpt.c              |  60 +++++++++
+ lib/s390x/sie-icpt.h              |  39 ++++++
+ lib/s390x/sie.c                   |   5 +-
+ lib/s390x/sie.h                   | 237 ++--------------------------------
+ lib/s390x/snippet-exit.h          |  45 +++++++
+ s390x/Makefile                    |  75 ++++++-----
+ s390x/cpu-sie.S                   |  74 +++++++++++
+ s390x/cpu.S                       |  64 ----------
+ s390x/diag258.c                   | 259 ++++++++++++++++++++++++++++++++++++++
+ s390x/edat.c                      |  19 ++-
+ s390x/pv-diags.c                  |   9 +-
+ s390x/pv-icptcode.c               |  12 +-
+ s390x/pv-ipl.c                    |   8 +-
+ s390x/sie-dat.c                   |  12 +-
+ s390x/snippets/Makefile           |  35 ++++++
+ s390x/snippets/c/sie-dat.c        |  19 +--
+ s390x/snippets/c/stfle.c          |  29 +++++
+ s390x/snippets/lib/snippet-exit.h |  28 +++++
+ s390x/stfle-sie.c                 | 138 ++++++++++++++++++++
+ s390x/unittests.cfg               |   6 +
+ 25 files changed, 1124 insertions(+), 433 deletions(-)
+ create mode 100644 lib/s390x/asm/sie-arch.h
+ delete mode 100644 lib/s390x/pv_icptdata.h
+ create mode 100644 lib/s390x/sie-icpt.c
+ create mode 100644 lib/s390x/sie-icpt.h
+ create mode 100644 lib/s390x/snippet-exit.h
+ create mode 100644 s390x/cpu-sie.S
+ create mode 100644 s390x/diag258.c
+ create mode 100644 s390x/snippets/Makefile
+ create mode 100644 s390x/snippets/c/stfle.c
+ create mode 100644 s390x/snippets/lib/snippet-exit.h
+ create mode 100644 s390x/stfle-sie.c
