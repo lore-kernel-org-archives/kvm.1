@@ -1,154 +1,175 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDEA207DE0;
-	Tue,  4 Feb 2025 09:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F70C207E16
+	for <kvm@vger.kernel.org>; Tue,  4 Feb 2025 10:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738661896; cv=none; b=iR1v7+7Awqn5tpdP444WVrPhejr4cWeIsw88yTRoFH6R5lh4WNKWZYMXs808zzHA4NHI4fHcTMkNy8bs6xO8q+0uTQ88g6t7dEMpgDQq3PN4LlOK4lboACILtT2Tj81DiBSoF31RpoFl/al0XRvSDX5pVUI82VIWSTNjfbuunHc=
+	t=1738663206; cv=none; b=dHGubl53GJW7P5UvxktEtSX7I0rCRB0JuV1CsI8X2lCrU/p/WoAvVVmtF9I1SI2JTKMMgRbX0/0RMH6S125yOnIHHSrBI+5PSAE40zygwCQ5/TZK2cDFWpK6OatRZwwc/R4068WyEnAFosSptJPIpLgBqHrT3LbjWn5Be14ok/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738661896; c=relaxed/simple;
-	bh=oOeCzDXeF8jK6OYqKTjdctgjul+DBpGMXax4zVKoOzg=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=r0jjhc4YhctVRUN/7DqBoNURYAUIHdka7Dw8wDDL4Rf4HTMd3qdHr0EE5ePUcmyCKD6p5aY5HR+qEu/4YDwal8Il2pf/CikONtwFPx731py8X9Bhs9kngF23FdYV8qlmRLeqpCpmuWJkYBmCwcf2y3jVerN4ONAPIBoptN6cGi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jg05QVcz; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738663206; c=relaxed/simple;
+	bh=13yYCdlqzP0i/IMnvVFj2IM29vtkaVbgxxGjD98q0uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kbUv6S8SSfa7r/DCG7WMNxW7gJAcxUddKFYh1VvruRgQ3F7wrf5Lf7R9U8lxFPFvfRyGm0eBwesjiL0NX/xwhovJeBXzOulnPNw6KlPPbxJjNA81WakJrOFtYvXnJ0nU+Z72gMXGWQabZGkYD2pQcn3V0wM2auqlMGcupBslpG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e0vtwYCk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jg05QVcz"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa67ac42819so803806266b.0;
-        Tue, 04 Feb 2025 01:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738661893; x=1739266693; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CxrGF0NbT5RA+zpDXBklhKJHF4FCs+rYNXfB+92lHyY=;
-        b=Jg05QVcz3t9E4ZZU/7V568jFU9lGpluCCawgT96l2zW4x7NfQOGRTPeJG5UV0amvbN
-         OmaaOijoU+Q70kd7Fj8Hy11XoY5ZlXtaHPiN14ipFX48vaZafxzHIRWXYDaxlRjNQRX1
-         CMFbogxlkR+8Jr3FuVNiaXsT+i0mGTdEuuiBIDi0FQiam8tnllI8lNXYVEBmTY50pHdI
-         N2Hh5P7d2p6bpp7NltaVk/pG4Z1ZyqHHLFzv0kCx8A0ayFUutcKyfgcoauF+LjIn5o85
-         tDpSEWbr8iBAOqLK+feLBCrfsB/7va8AatGpBi10yqDNn7jLkwZfpgIGnxN2kgRqa73r
-         pK0Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e0vtwYCk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738663203;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zgeNydwTSVAcIR1ERMtZzBL7x3bZ2CBWxaGQ1arPFzQ=;
+	b=e0vtwYCkpOGR8m9MsCv6B/4gyKpbBHFaINEQ82b7ZAxpJU7/TDt9OYOOAmSBHtcaauuT9I
+	ibz7Wbfow0Bo4Qf6/J+QKviAgbCyF99GVf4fvz+vO3dC0l4wMfSklJHp4pTVmdsGXZ9G3O
+	uHzIvyGqxrlWYdFYQpmo465UF2UKgeQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-QLW4TiThMdOtd3w-QXkrfg-1; Tue, 04 Feb 2025 05:00:01 -0500
+X-MC-Unique: QLW4TiThMdOtd3w-QXkrfg-1
+X-Mimecast-MFC-AGG-ID: QLW4TiThMdOtd3w-QXkrfg
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38c24ac3706so3699910f8f.0
+        for <kvm@vger.kernel.org>; Tue, 04 Feb 2025 02:00:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738661893; x=1739266693;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1738663200; x=1739268000;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CxrGF0NbT5RA+zpDXBklhKJHF4FCs+rYNXfB+92lHyY=;
-        b=fZKsh98QMZygzzjeHy8A1eeK1tdi+Zf8gtbL6dZdkkiVW74bfUAdr0xKSezCgwwWVr
-         IupI0lQGPiAzUw4+6uu0fgC8gZ4dHkeblDi2aMl51pgq8o49hZpzPn7lBTp+79l2zHy8
-         yT2v3UeY0o1A0kX7pDDBe7ueGdvYDuQUtvOB33Bsem/22uyHkfEeZ1TZCWCtW5e3E8St
-         DuwnpWvD/Tdb47wZKsflkCTSSAnvKwUJqV47SOPkPmIfHr89+ySgXdwBVFs1uCDU9iiW
-         B1qmg4EIYyDYzNGClgf5dX0rgBiEfL9z32F86Kt/FVpxeVGCxyFeHgCGqDDU1CW3p+7o
-         FGlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURScQybXy2VzozAvtYkau6ioXdV18D/MW+62WyHZRtYMJntw1RAnt0CI1p07efbaII3RxeNI9+WihiKLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzP5uA0BrSx2EtwXl2qh5G6v7/OEziQaPnSUW52ipJ1DT+VNwUa
-	nk5qy6G2T39T6cgC3V3XjI5vawUWd7Pcy6UE+L68FDcDclWV2Q0X
-X-Gm-Gg: ASbGnctOVzpMpzNpWVZU0TdvJ1tCpq2VUNjCEkUPiheI44VQ3vB6jskeStSTnRvj8iD
-	vtHdGJdy6PH8QbBSfJdGUjhYB+QwZgs5iPBcuRwdP+i8bAOOpfdzTzAa4hhQD1+wmrKEnqkhITL
-	ViaEptj7mV6AeZk2lv3abdx1Kk8vQzJgjGIklOP26v3ZEhTTzvrXSq/AKejRyNfx+oIXbMlHnJQ
-	+vddwvV3EFuouC6LXOEZeG0+RbsNCa3c9Ik6Dl/PlMKFIOTSgh17ap+KxFRN5PG/W/9UP6iffAO
-	INbHV2LybrlsWp3PrlZoBLwdycX2n6/jIZQIHdaZkMVeXtU=
-X-Google-Smtp-Source: AGHT+IFDwdCbXMxp8UJ7YfuN/ii8dyMqd4tJD/SwNfC/IgqAQPvlPzSwxAoJ1hb9zADxwcscQVMWbQ==
-X-Received: by 2002:a17:907:9482:b0:ab6:85dc:b6d4 with SMTP id a640c23a62f3a-ab6cfcb3b63mr2934683366b.9.1738661892933;
-        Tue, 04 Feb 2025 01:38:12 -0800 (PST)
-Received: from [192.168.20.51] (54-240-197-238.amazon.com. [54.240.197.238])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab74f50df2csm49252166b.141.2025.02.04.01.38.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 01:38:12 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <6b2d960c-1340-4e91-ad17-0ccadd378a81@xen.org>
-Date: Tue, 4 Feb 2025 09:38:11 +0000
+        bh=zgeNydwTSVAcIR1ERMtZzBL7x3bZ2CBWxaGQ1arPFzQ=;
+        b=e8dodogbvQr/b2M6gqYSNGLnhA1Y+ivjT/Jp96yUim0+E+NDblOxxR2WUlYjqj309B
+         1b84MDQKqRspmErWpSdMVPMtgWRXzo9+vvdnvMlvv9qbYvXJL4pPmrGehf1q9bz3JLGu
+         gGUr0YcEMYA5YsMLCwDA5WeHoKKqSzqDndj0k/w2OQFZgORsNkTt/PnDccCnXyAfDSfA
+         mlRJAqn7Iu5q5Dm/eHr5gInQpIliLbPvq37rT+8WTMZnptoL/4Ws4NHLOdAbwMk9RBVy
+         8d7t1LVmoKpJ8XQu3BfD1tYcs9lnr/sEt0qDtQgkmmvFuBLDfbNXveQfZx9H1a/F15t9
+         zZ+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVAZqQYuuagUWyYd4Du2nTB3hRM29g8uFDQfGU1Z8KNaf6NP+8AnPiUCnHhG7VMS1+ciUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/d6LInDr6BWVSAWmM0JBy92pqg4u1BLMYMTUXw/nTq6UfeU3Z
+	RqrwLfQKMrCleWSB9lQwpSlGSwhGsL3a4R+O4gTFAyW0zkUmeXzGDLK49QZHqMW9FYHXXweMVT0
+	hS2M4X60IicoFqK/mL71+NspvLbNSk/Ps/etlIkL6l31EfoHUUA==
+X-Gm-Gg: ASbGncsh3d2onWYyL7/eX7AYqBThzRHjvGC10Q70yKrIYuC+32jexO0IkOh0Lxh+wil
+	2w71QtRJtWqDFojaLXdX4eaYoyvOX1owSc8GHgKK8O1l0/IhmW16FU3yCr5XYgN6ni6g0MppVdm
+	+gfdK+NsKrP97J4wqTWKxljzCIf7PR5wxTBC16uynfX14IUn/+DKA3RNZuAjKL0E4AvLxIuTdER
+	acByJH8oF5x4JeyS1Vct/81Obi8y/FkriRBrIg3p6RskxXv7rmYps61kAL/Koj1DPTTWillJtou
+	4Y4iRa5pgg==
+X-Received: by 2002:a05:6000:1a8c:b0:38c:5bb2:b932 with SMTP id ffacd0b85a97d-38c5bb2bc01mr15890537f8f.3.1738663200396;
+        Tue, 04 Feb 2025 02:00:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHip7X4zS0O52PMEjczmtT0iNBH7IEeL8QYtKHFPjqYHRGplFJ791FYs65FAXVNjmO63CfRDA==
+X-Received: by 2002:a05:6000:1a8c:b0:38c:5bb2:b932 with SMTP id ffacd0b85a97d-38c5bb2bc01mr15890363f8f.3.1738663199563;
+        Tue, 04 Feb 2025 01:59:59 -0800 (PST)
+Received: from sgarzare-redhat ([185.121.209.52])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc6df51sm223944825e9.30.2025.02.04.01.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 01:59:59 -0800 (PST)
+Date: Tue, 4 Feb 2025 10:59:55 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: syzbot <syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, edumazet@google.com, eperezma@redhat.com, horms@kernel.org, 
+	jasowang@redhat.com, kuba@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	stefanha@redhat.com, syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev, 
+	xuanzhuo@linux.alibaba.com
+Subject: Re: [syzbot] [net?] general protection fault in add_wait_queue
+Message-ID: <6fonjxxkozzmv7huzavck5nsfivx3nsyyicthulg5aiyrmjpql@o7pexllumdxt>
+References: <67a09300.050a0220.d7c5a.008b.GAE@google.com>
+ <2483d8c1-961e-4a7f-9ce7-ffd21a380c70@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: paul@xen.org
-Subject: Re: [PATCH v2 08/11] KVM: x86: Pass reference pvclock as a param to
- kvm_setup_guest_pvclock()
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+352e553a86e0d75f5120@syzkaller.appspotmail.com,
- Paul Durrant <pdurrant@amazon.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Vitaly Kuznetsov <vkuznets@redhat.com>
-References: <20250201013827.680235-1-seanjc@google.com>
- <20250201013827.680235-9-seanjc@google.com>
- <792ae6f4-903f-41b2-a0f2-369d92a1fc3f@xen.org>
-Content-Language: en-US
-Organization: Xen Project
-In-Reply-To: <792ae6f4-903f-41b2-a0f2-369d92a1fc3f@xen.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2483d8c1-961e-4a7f-9ce7-ffd21a380c70@rbox.co>
 
-On 04/02/2025 09:33, Paul Durrant wrote:
-> On 01/02/2025 01:38, Sean Christopherson wrote:
->> Pass the reference pvclock structure that's used to setup each individual
->> pvclock as a parameter to kvm_setup_guest_pvclock() as a preparatory step
->> toward removing kvm_vcpu_arch.hv_clock.
+On Tue, Feb 04, 2025 at 01:38:50AM +0100, Michal Luczaj wrote:
+>On 2/3/25 10:57, syzbot wrote:
+>> Hello,
 >>
->> No functional change intended.
+>> syzbot found the following issue on:
 >>
->> Reviewed-by: Paul Durrant <paul@xen.org>
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
->>   arch/x86/kvm/x86.c | 14 +++++++-------
->>   1 file changed, 7 insertions(+), 7 deletions(-)
+>> HEAD commit:    c2933b2befe2 Merge tag 'net-6.14-rc1' of git://git.kernel...
+>> git tree:       net-next
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=16f676b0580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=d033b14aeef39158
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
+>> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13300b24580000
+>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12418518580000
 >>
->> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> index 5f3ad13a8ac7..06d27b3cc207 100644
->> --- a/arch/x86/kvm/x86.c
->> +++ b/arch/x86/kvm/x86.c
->> @@ -3116,17 +3116,17 @@ u64 get_kvmclock_ns(struct kvm *kvm)
->>       return data.clock;
->>   }
->> -static void kvm_setup_guest_pvclock(struct kvm_vcpu *v,
->> +static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info 
->> *ref_hv_clock,
->> +                    struct kvm_vcpu *vcpu,
-> 
-> So, here 'v' becomes 'vcpu'
-> 
->>                       struct gfn_to_pfn_cache *gpc,
->>                       unsigned int offset,
->>                       bool force_tsc_unstable)
->>   {
->> -    struct kvm_vcpu_arch *vcpu = &v->arch;
->>       struct pvclock_vcpu_time_info *guest_hv_clock;
->>       struct pvclock_vcpu_time_info hv_clock;
->>       unsigned long flags;
->> -    memcpy(&hv_clock, &vcpu->hv_clock, sizeof(hv_clock));
->> +    memcpy(&hv_clock, ref_hv_clock, sizeof(hv_clock));
->>       read_lock_irqsave(&gpc->lock, flags);
->>       while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
->> @@ -3165,7 +3165,7 @@ static void kvm_setup_guest_pvclock(struct 
->> kvm_vcpu *v,
->>       kvm_gpc_mark_dirty_in_slot(gpc);
->>       read_unlock_irqrestore(&gpc->lock, flags);
->> -    trace_kvm_pvclock_update(v->vcpu_id, &hv_clock);
->> +    trace_kvm_pvclock_update(vcpu->vcpu_id, &hv_clock);
->>   }
->>   static int kvm_guest_time_update(struct kvm_vcpu *v)
->> @@ -3272,18 +3272,18 @@ static int kvm_guest_time_update(struct 
->> kvm_vcpu *v)
->>               vcpu->hv_clock.flags |= PVCLOCK_GUEST_STOPPED;
->>               vcpu->pvclock_set_guest_stopped_request = false;
->>           }
->> -        kvm_setup_guest_pvclock(v, &vcpu->pv_time, 0, false);
->> +        kvm_setup_guest_pvclock(&vcpu->hv_clock, v, &vcpu->pv_time, 
->> 0, false);
-> 
-> Yet here an below you still use 'v'. Does this actually compile?
-> 
+>> Downloadable assets:
+>> disk image: https://storage.googleapis.com/syzbot-assets/c7667ae12603/disk-c2933b2b.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/944ca63002c1/vmlinux-c2933b2b.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/30748115bf0b/bzImage-c2933b2b.xz
+>>
+>> The issue was bisected to:
+>>
+>> commit fcdd2242c0231032fc84e1404315c245ae56322a
+>> Author: Michal Luczaj <mhal@rbox.co>
+>> Date:   Tue Jan 28 13:15:27 2025 +0000
+>>
+>>     vsock: Keep the binding until socket destruction
+>
+>syzbot is correct (thanks), bisected commit introduced a regression.
+>
+>sock_orphan(sk) is being called without taking into consideration that it
+>does `sk->sk_wq = NULL`. Later, if SO_LINGER is set, sk->sk_wq gets
+>dereferenced in virtio_transport_wait_close().
+>
+>Repro, as shown by syzbot, is simply
+>from socket import *
+>lis = socket(AF_VSOCK, SOCK_STREAM)
+>lis.bind((1, 1234)) # VMADDR_CID_LOCAL
+>lis.listen()
+>s = socket(AF_VSOCK, SOCK_STREAM)
+>s.setsockopt(SOL_SOCKET, SO_LINGER, (1<<32) | 1)
+>s.connect(lis.getsockname())
+>s.close()
+>
+>A way of fixing this is to put sock_orphan(sk) back where it was before the
+>breaking patch and instead explicitly flip just the SOCK_DEAD bit, i.e.
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 075695173648..06250bb9afe2 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -824,13 +824,14 @@ static void __vsock_release(struct sock *sk, int level)
+> 	 */
+> 	lock_sock_nested(sk, level);
+>
+>-	sock_orphan(sk);
+>+	sock_set_flag(sk, SOCK_DEAD);
+>
+> 	if (vsk->transport)
+> 		vsk->transport->release(vsk);
+> 	else if (sock_type_connectible(sk->sk_type))
+> 		vsock_remove_sock(vsk);
+>
+>+	sock_orphan(sk);
+> 	sk->sk_shutdown = SHUTDOWN_MASK;
+>
+> 	skb_queue_purge(&sk->sk_receive_queue);
+>
+>I'm not sure this is the most elegant code (sock_orphan(sk) sets SOCK_DEAD
+>on a socket that is already SOCK_DEAD), but here it goes:
+>https://lore.kernel.org/netdev/20250204-vsock-linger-nullderef-v1-0-6eb1760fa93e@rbox.co/
 
-Sorry, my misreading of the patch... this is in caller context so no 
-problem. The inconsistent naming was misleading me.
+What about the fix proposed here:
+https://lore.kernel.org/lkml/20250203124959.114591-1-aha310510@gmail.com/
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+>
+>One more note: man socket(7) says lingering also happens on shutdown().
+>Should vsock follow that?
+
+Good point, I think so.
+IMHO we should handle both of them in af_vsock.c if it's possible, but 
+maybe we need a bit of refactoring.
+
+Anyway, net-next material, right?
+
+Stefano
 
