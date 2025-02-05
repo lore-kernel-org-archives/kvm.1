@@ -1,59 +1,57 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE0521D003
-	for <kvm@vger.kernel.org>; Wed,  5 Feb 2025 23:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AAC21D5BA
+	for <kvm@vger.kernel.org>; Wed,  5 Feb 2025 23:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738797499; cv=none; b=MW1s2P12Cs3fRhvGeiQ6Pkn+7N+0239woIO4J3nsNA5t99auTPbJt+dFTKtiHo94XoNVs3nEmUxm77FCmBVVp09NklWfzFpSTaUDjks9xb2xL4AwN+OB53sFQkcQFz5pPhrvnvck6ELvMc/BpKSsv9JoNIe0CQjGW9bwwNXCmzk=
+	t=1738797500; cv=none; b=TjH5Gt/yESvhi9wbgYcE7pt/FkmPDYK/m8S44hoB6r6eWFZexRxemxRi0lcvxl+hCeUFOVTlRmYVT5mNZ1wtkubUX1/r/kb7yhvU8oca8fba7pG978zxvFR2BwqRnVz3b2R0mrZKaaoECVI2jSWYeBRWJQujlf7wBAj6+UyyNTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738797499; c=relaxed/simple;
-	bh=4QmfjawvTW7/JuBzJw2fN4Til1n8dAtbherJt5RYjtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsJ4H04XmpeJwPvSZWfHDv5KA7eFSjdDCiMtYbtcplXvWtC5iZ0RkWjPYtUj7wQM/F6jaChW7CcjmVsyJ9lZ1EdGeUsSPQJ4hzNkgXpknnVVVPl3Ipi8ROtKXckdkqgzJw30g/Dgl3juTonR2JUSsgk+Z5vYcKy3Fi2nnyHLpUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HVaQe0SQ; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1738797500; c=relaxed/simple;
+	bh=kFcSzQugjI8f1XT2ZsNs4WHVykWp2kuPt9Rb3z6SNL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gZhrHaKSKM1MBMCCbtlvaiCub3z+hG4WzDywut1y8k3js48e+5JHn8/NjXEvjWB92dWNPU233d4HQGmxvXLfVpfPHbLemGWnc+6JYis/jw1qQO+d+brrFOw17P6DTqwI8aCc+gT3ekbagoA2V9a97WMF+sm76ZPG18UZrhzRrkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hj3FRC9m; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HVaQe0SQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hj3FRC9m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738797496;
+	s=mimecast20190719; t=1738797495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JL6vZNRbPmBlHb8nArQ9k01zTpT4aI26y7m8102a0EY=;
-	b=HVaQe0SQDAdMSgCd6B+QBk2iwMq279Z1hLzPANoidLNkR/bfPNXXRgT5AKXW7MkUMxZ00l
-	QoBYJwiLPONjV4z0jZ3OxNUpX9CGMTTNbjP1z5UiuGMfyuS38PUrkcP6g+0Qpy5D8VSoy/
-	yoa3CBVV/hQYr2HgDmZJsnXOgVxeb2o=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lxr7VZoBp9SRemPHjQq6QqkK5CRHvwkSMpiB9VkcVIg=;
+	b=hj3FRC9mT4mtUCCB9vwqPgU8wc6c5J8o7vtW7Y+2FlofIla5g4rm8FXKX18+fSWV4fovUR
+	1JqhcvEU6jvpKtSEjjfh+wX7uiFvFiZCaE0ZMW+lWEiJH3wTMcmNoKthhF2nJtw24lIOND
+	WwZWfoEBaXO/iqzXecM9BHExhsAX5Kk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-MHVeKkGdMVO6MwCp5BIpSA-1; Wed,
- 05 Feb 2025 18:18:13 -0500
-X-MC-Unique: MHVeKkGdMVO6MwCp5BIpSA-1
-X-Mimecast-MFC-AGG-ID: MHVeKkGdMVO6MwCp5BIpSA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-wnlDHOwxOda7dsA9fSpD-g-1; Wed,
+ 05 Feb 2025 18:18:10 -0500
+X-MC-Unique: wnlDHOwxOda7dsA9fSpD-g-1
+X-Mimecast-MFC-AGG-ID: wnlDHOwxOda7dsA9fSpD-g
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D6201956094;
-	Wed,  5 Feb 2025 23:18:12 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA90D1955E80;
+	Wed,  5 Feb 2025 23:18:08 +0000 (UTC)
 Received: from omen.home.shazbot.org (unknown [10.22.81.141])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 16BB61800570;
-	Wed,  5 Feb 2025 23:18:10 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6969B1800570;
+	Wed,  5 Feb 2025 23:18:06 +0000 (UTC)
 From: Alex Williamson <alex.williamson@redhat.com>
 To: alex.williamson@redhat.com
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	peterx@redhat.com,
 	mitchell.augustin@canonical.com,
-	clg@redhat.com
-Subject: [PATCH 2/5] vfio/type1: Convert all vaddr_get_pfns() callers to use vfio_batch
-Date: Wed,  5 Feb 2025 16:17:18 -0700
-Message-ID: <20250205231728.2527186-3-alex.williamson@redhat.com>
-In-Reply-To: <20250205231728.2527186-1-alex.williamson@redhat.com>
-References: <20250205231728.2527186-1-alex.williamson@redhat.com>
+	clg@redhat.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/5] vfio: Improve DMA mapping performance for huge pfnmaps
+Date: Wed,  5 Feb 2025 16:17:16 -0700
+Message-ID: <20250205231728.2527186-1-alex.williamson@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,79 +61,48 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This is a step towards passing the structure to vaddr_get_pfns()
-directly in order to provide greater distinction between page backed
-pfns and pfnmaps.
+As GPU BAR sizes increase, the overhead of DMA mapping pfnmap ranges has
+become a significant overhead for VMs making use of device assignment.
+Not only does each mapping require upwards of a few seconds, but BARs
+are mapped in and out of the VM address space multiple times during
+guest boot.  Also factor in that multi-GPU configurations are
+increasingly commonplace and BAR sizes are continuing to increase.
+Configurations today can already be delayed minutes during guest boot.
 
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
----
- drivers/vfio/vfio_iommu_type1.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+We've taken steps to make Linux a better guest by batching PCI BAR
+sizing operations[1], but it only provides and incremental improvement.
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 119cf886d8c0..2e95f5f4d881 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -471,12 +471,12 @@ static int put_pfn(unsigned long pfn, int prot)
- 
- #define VFIO_BATCH_MAX_CAPACITY (PAGE_SIZE / sizeof(struct page *))
- 
--static void vfio_batch_init(struct vfio_batch *batch)
-+static void __vfio_batch_init(struct vfio_batch *batch, bool single)
- {
- 	batch->size = 0;
- 	batch->offset = 0;
- 
--	if (unlikely(disable_hugepages))
-+	if (single || unlikely(disable_hugepages))
- 		goto fallback;
- 
- 	batch->pages = (struct page **) __get_free_page(GFP_KERNEL);
-@@ -491,6 +491,16 @@ static void vfio_batch_init(struct vfio_batch *batch)
- 	batch->capacity = 1;
- }
- 
-+static void vfio_batch_init(struct vfio_batch *batch)
-+{
-+	__vfio_batch_init(batch, false);
-+}
-+
-+static void vfio_batch_init_single(struct vfio_batch *batch)
-+{
-+	__vfio_batch_init(batch, true);
-+}
-+
- static void vfio_batch_unpin(struct vfio_batch *batch, struct vfio_dma *dma)
- {
- 	while (batch->size) {
-@@ -730,7 +740,7 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
- static int vfio_pin_page_external(struct vfio_dma *dma, unsigned long vaddr,
- 				  unsigned long *pfn_base, bool do_accounting)
- {
--	struct page *pages[1];
-+	struct vfio_batch batch;
- 	struct mm_struct *mm;
- 	int ret;
- 
-@@ -738,7 +748,9 @@ static int vfio_pin_page_external(struct vfio_dma *dma, unsigned long vaddr,
- 	if (!mmget_not_zero(mm))
- 		return -ENODEV;
- 
--	ret = vaddr_get_pfns(mm, vaddr, 1, dma->prot, pfn_base, pages);
-+	vfio_batch_init_single(&batch);
-+
-+	ret = vaddr_get_pfns(mm, vaddr, 1, dma->prot, pfn_base, batch.pages);
- 	if (ret != 1)
- 		goto out;
- 
-@@ -757,6 +769,7 @@ static int vfio_pin_page_external(struct vfio_dma *dma, unsigned long vaddr,
- 	}
- 
- out:
-+	vfio_batch_fini(&batch);
- 	mmput(mm);
- 	return ret;
- }
+This series attempts to fully address the issue by leveraging the huge
+pfnmap support added in v6.12.  When we insert pfnmaps using pud and pmd
+mappings, we can later take advantage of the knowledge of the mapping
+level page mask to iterate on the relevant mapping stride.  In the
+commonly achieved optimal case, this results in a reduction of pfn
+lookups by a factor of 256k.  For a local test system, an overhead of
+~1s for DMA mapping a 32GB PCI BAR is reduced to sub-millisecond (8M
+page sized operations reduced to 32 pud sized operations).
+
+Please review, test, and provide feedback.  I hope that mm folks can
+ack the trivial follow_pfnmap_args update to provide the mapping level
+page mask.  Naming is hard, so any preference other than pgmask is
+welcome.  Thanks,
+
+Alex
+
+[1]https://lore.kernel.org/all/20250120182202.1878581-1-alex.williamson@redhat.com/
+
+
+Alex Williamson (5):
+  vfio/type1: Catch zero from pin_user_pages_remote()
+  vfio/type1: Convert all vaddr_get_pfns() callers to use vfio_batch
+  vfio/type1: Use vfio_batch for vaddr_get_pfns()
+  mm: Provide page mask in struct follow_pfnmap_args
+  vfio/type1: Use mapping page mask for pfnmaps
+
+ drivers/vfio/vfio_iommu_type1.c | 107 ++++++++++++++++++++------------
+ include/linux/mm.h              |   2 +
+ mm/memory.c                     |   1 +
+ 3 files changed, 72 insertions(+), 38 deletions(-)
+
 -- 
 2.47.1
 
