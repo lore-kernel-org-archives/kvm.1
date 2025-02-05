@@ -1,225 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C86222566;
-	Wed,  5 Feb 2025 14:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B51519B4
+	for <kvm@vger.kernel.org>; Wed,  5 Feb 2025 15:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766525; cv=none; b=RjLHpdaQkNdYCmcigxnAtDwzYXj96JBeXROeHQePj9VPZsjHR/enMEHOUriZLgOLHmd1ZeV8XvPx7GTs2hEwTGIbigfDepqJvauKMIZokxkA6qYV2CuPHqdPIMyFYYaHpQRhSIsRWVe0YbFxp3Lzw3RzhvL+cN5AUQ9Dqjz9goY=
+	t=1738768027; cv=none; b=Ji/jmUyiFIjH7iJAJ8i40e8Qi8MasGscGWwaKWmiiKzUcXg2ivA1+mFFNrTBgHEY2P2+0zAEZmlstegb/pbU6ESwr4In3DUpvf+3OsfX1v/ucuolkqZSI1eIQS4RaWm1yu+bHLpxTwTqf8iMNNc4CtJiusGrVO/K0NFF29fz7tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766525; c=relaxed/simple;
-	bh=7aNBsgnJ1xpYJupIDdeW59JsJ73w9EGqwdcut5LVDS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihRZQVYEdOmbRfz7cByQIfpAT4n6Mp8wL4VZL38J3z9dIk4WV64a09ASPb4zwAQUZK+/5HlIg/Q4Ir0+i3XEk0YVj5QGeyCj+jTeDWLgjFzgHcAFgvWgWxXljGJGhiQSS5JrTp5r9VXngTTDFv211IbtRRGxzOmKsVPUcqbgOzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2YNA18v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738768027; c=relaxed/simple;
+	bh=H9Hy4gOxKEd66YhBYkMkYPFJBkFFoDc4atCnWsCOGpI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gqr2Mz9mlyapY7GbkS5cIrSXJ3xTysewB9vNaAeU0GdXXmkqeVZ3iQvIUvP/GWnmvEndalg8oypoaF1uvoGoyEtIrJpJbnYOTMKIAxfVJC9iy9Uth+5boTpB7VIaedWXdkkr2NSJgBOghU2C5bXVUElFnFsdMeyhxSghqGp4YSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gsO61bSW; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2YNA18v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93270C4CEE3;
-	Wed,  5 Feb 2025 14:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738766525;
-	bh=7aNBsgnJ1xpYJupIDdeW59JsJ73w9EGqwdcut5LVDS4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2YNA18v52GskOrMKLkrTwzfQn8Km0PjGIUu87kMojGGjoog/10G95TBZ6vnkCJOA
-	 YBN2VL9nccEhcQB+VjXd8HFCxCAmenqSYB1f1SLAze41y9IxYfGcUyvzovhFkucE4f
-	 p08Hgr2aFu7TPrkMKUHPLcHRhBWfTuIFNxLXuqn9BzHXEN+JSM2GV9t331JEbLcVO1
-	 GSPh9+fHX0PFZ54Xj0VKJbbudJl6ZriCoRRfT0mEAv2qtfV12c5C2YyCHBJpXp/Avp
-	 6rDEaptuPvVVvZW3SFE4g/gPs6SQsVGFwUV+bcIiAAsYiTd1k+zUacXb4F76FSGdZJ
-	 rbwrAoMwir3bw==
-From: Leon Romanovsky <leon@kernel.org>
-To: Christoph Hellwig <hch@lst.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-nvme@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-mm@kvack.org,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v7 14/17] RDMA/umem: Separate implicit ODP initialization from explicit ODP
-Date: Wed,  5 Feb 2025 16:40:34 +0200
-Message-ID: <f6ae7422e8df156e18c5b5a98a334f09d95f3519.1738765879.git.leonro@nvidia.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1738765879.git.leonro@nvidia.com>
-References: <cover.1738765879.git.leonro@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gsO61bSW"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2f9f2bf2aaeso614748a91.1
+        for <kvm@vger.kernel.org>; Wed, 05 Feb 2025 07:07:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738768025; x=1739372825; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x4oW/dAfjtIYVmLRtu5aqY7ul2Z1RIM2CtrfkUILPao=;
+        b=gsO61bSW110ErjobseKoFM5n2BZAL5TM9uJxpvx5TWiU1kEFSQF0IZ3VzD3Fhj7tYz
+         33c4rg/635u2atWKKB36HCeTvHiAQmDGqmSf4UDV93ZfB1mAD4Jc3lFJzihSTHLg7M7D
+         7vc8uysACLMiFAPEGfP8umBWEnKCgQs0uDyEyQ4afkCuSR4ZbKAdCBOp8TpcVnmEfxHo
+         qLgBZYVLzaxA5tE64Bk19tuD9nCXeTXumOjQYmChWxSaFmJZKzCInfSb4beEMu1DLOnk
+         LIV2Bx3YMtH2pevYbgKcs8RDCuVRRTyg11NJnPHRcggkoind/+HM25ELaFF/EEtD87p7
+         gGvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738768025; x=1739372825;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=x4oW/dAfjtIYVmLRtu5aqY7ul2Z1RIM2CtrfkUILPao=;
+        b=v+X+9SBa4ZufUwvdw3kBeZJZcglRSlld6A+iUR/7d2RU9Sr2RlG4ihNzIlLFYyxpqa
+         H278mk3X5NG9aLzoEkOhr9cv88Xs/VP0dVMA6LRAz4wtoxDBun4epanFbfX7wREJFmfD
+         LKTZPjHxuIwDd56SQdvp5WkvS1x1mqyrejX56g31SE5WCEIMBZHh/7llHk58lYP51kSv
+         I2XElMOqnr3TekQeAv3CQJAHD0QAPv9Moa6DEXkldmrSs+glq4QubPuQnc+qlT0d3ue2
+         oWzdfztRsaPV5oXXalxg4gE3hpDR8nqIW61Rt0mNhy9LFmB56vws+EvPWd3MxTJuXCqb
+         j4/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWbtXUKUnAs7efaVqzyw2936SNuKhmHZMuMIavh+DKjOLuVb3Hsq8marCZFc5Fb4BZMYnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzwbj+OMGvAGLA2SQeKHp+s7487ythZoxlhga2blGtQnHxAq/eW
+	E8SJJKbEnDQ8D/HX7cK4STEUVqjzprEEt1Sa1EPM7ELtYV+C7tPqN44T3g+7ffhkPH3nmFpKDqu
+	wMQ==
+X-Google-Smtp-Source: AGHT+IHXf9TWBtdxouWYPQZ0tUW8cJ9QFjrqHbhdh6cqzplE7+BtUhY/bbSQzbcNUl1oWImGd1KSiadmTfM=
+X-Received: from pfbfb15.prod.google.com ([2002:a05:6a00:2d8f:b0:725:eccc:e998])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:450a:b0:729:a31:892d
+ with SMTP id d2e1a72fcca58-73035117eb6mr5841339b3a.8.1738768025226; Wed, 05
+ Feb 2025 07:07:05 -0800 (PST)
+Date: Wed, 5 Feb 2025 07:06:58 -0800
+In-Reply-To: <43f702b383fb99d435f2cdb8ef35cc1449fe6c23.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250201011400.669483-1-seanjc@google.com> <20250201011400.669483-2-seanjc@google.com>
+ <43f702b383fb99d435f2cdb8ef35cc1449fe6c23.camel@infradead.org>
+Message-ID: <Z6N-kn1-p6nIWHeP@google.com>
+Subject: Re: [PATCH 1/5] KVM: x86/xen: Restrict hypercall MSR to unofficial
+ synthetic range
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+cdeaeec70992eca2d920@syzkaller.appspotmail.com, 
+	Joao Martins <joao.m.martins@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On Wed, Feb 05, 2025, David Woodhouse wrote:
+> On Fri, 2025-01-31 at 17:13 -0800, Sean Christopherson wrote:
+> > --- a/arch/x86/kvm/xen.c
+> > +++ b/arch/x86/kvm/xen.c
+> > @@ -1324,6 +1324,14 @@ int kvm_xen_hvm_config(struct kvm *kvm, struct k=
+vm_xen_hvm_config *xhc)
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 xhc->blob_size_32 || xhc->blob_size_64)=
+)
+> > =C2=A0		return -EINVAL;
+> > =C2=A0
+> > +	/*
+> > +	 * Restrict the MSR to the range that is unofficially reserved for
+> > +	 * synthetic, virtualization-defined MSRs, e.g. to prevent confusing
+> > +	 * KVM by colliding with a real MSR that requires special handling.
+> > +	 */
+> > +	if (xhc->msr && (xhc->msr < 0x40000000 || xhc->msr > 0x4fffffff))
+> > +		return -EINVAL;
+> > +
+> > =C2=A0	mutex_lock(&kvm->arch.xen.xen_lock);
+> > =C2=A0
+> > =C2=A0	if (xhc->msr && !kvm->arch.xen_hvm_config.msr)
+>=20
+> I'd prefer to see #defines for those magic values.
 
-Create separate functions for the implicit ODP initialization
-which is different from the explicit ODP initialization.
+Can do.  Hmm, and since this would be visible to userspace, arguably the #d=
+efines
+should go in arch/x86/include/uapi/asm/kvm.h
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/infiniband/core/umem_odp.c | 91 +++++++++++++++---------------
- 1 file changed, 46 insertions(+), 45 deletions(-)
+> Especially as there is a corresponding requirement that they never be set
+> from host context (which is where the potential locking issues come in).
+> Which train of thought leads me to ponder this as an alternative (or
+> additional) solution:
+>=20
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -3733,7 +3733,13 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, stru=
+ct msr_data *msr_info)
+>         u32 msr =3D msr_info->index;
+>         u64 data =3D msr_info->data;
+> =20
+> -       if (msr && msr =3D=3D vcpu->kvm->arch.xen_hvm_config.msr)
+> +       /*
+> +        * Do not allow host-initiated writes to trigger the Xen hypercal=
+l
+> +        * page setup; it could incur locking paths which are not expecte=
+d
+> +        * if userspace sets the MSR in an unusual location.
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index 30cd8f353476..51d518989914 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -48,41 +48,44 @@
- 
- #include "uverbs.h"
- 
--static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
--				   const struct mmu_interval_notifier_ops *ops)
-+static void ib_init_umem_implicit_odp(struct ib_umem_odp *umem_odp)
-+{
-+	umem_odp->is_implicit_odp = 1;
-+	umem_odp->umem.is_odp = 1;
-+	mutex_init(&umem_odp->umem_mutex);
-+}
-+
-+static int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
-+			    const struct mmu_interval_notifier_ops *ops)
- {
- 	struct ib_device *dev = umem_odp->umem.ibdev;
-+	size_t page_size = 1UL << umem_odp->page_shift;
-+	unsigned long start;
-+	unsigned long end;
- 	int ret;
- 
- 	umem_odp->umem.is_odp = 1;
- 	mutex_init(&umem_odp->umem_mutex);
- 
--	if (!umem_odp->is_implicit_odp) {
--		size_t page_size = 1UL << umem_odp->page_shift;
--		unsigned long start;
--		unsigned long end;
--
--		start = ALIGN_DOWN(umem_odp->umem.address, page_size);
--		if (check_add_overflow(umem_odp->umem.address,
--				       (unsigned long)umem_odp->umem.length,
--				       &end))
--			return -EOVERFLOW;
--		end = ALIGN(end, page_size);
--		if (unlikely(end < page_size))
--			return -EOVERFLOW;
--
--		ret = hmm_dma_map_alloc(dev->dma_device, &umem_odp->map,
--					(end - start) >> PAGE_SHIFT,
--					1 << umem_odp->page_shift);
--		if (ret)
--			return ret;
--
--		ret = mmu_interval_notifier_insert(&umem_odp->notifier,
--						   umem_odp->umem.owning_mm,
--						   start, end - start, ops);
--		if (ret)
--			goto out_free_map;
--	}
-+	start = ALIGN_DOWN(umem_odp->umem.address, page_size);
-+	if (check_add_overflow(umem_odp->umem.address,
-+			       (unsigned long)umem_odp->umem.length, &end))
-+		return -EOVERFLOW;
-+	end = ALIGN(end, page_size);
-+	if (unlikely(end < page_size))
-+		return -EOVERFLOW;
-+
-+	ret = hmm_dma_map_alloc(dev->dma_device, &umem_odp->map,
-+				(end - start) >> PAGE_SHIFT,
-+				1 << umem_odp->page_shift);
-+	if (ret)
-+		return ret;
-+
-+	ret = mmu_interval_notifier_insert(&umem_odp->notifier,
-+					   umem_odp->umem.owning_mm, start,
-+					   end - start, ops);
-+	if (ret)
-+		goto out_free_map;
- 
- 	return 0;
- 
-@@ -106,7 +109,6 @@ struct ib_umem_odp *ib_umem_odp_alloc_implicit(struct ib_device *device,
- {
- 	struct ib_umem *umem;
- 	struct ib_umem_odp *umem_odp;
--	int ret;
- 
- 	if (access & IB_ACCESS_HUGETLB)
- 		return ERR_PTR(-EINVAL);
-@@ -118,16 +120,10 @@ struct ib_umem_odp *ib_umem_odp_alloc_implicit(struct ib_device *device,
- 	umem->ibdev = device;
- 	umem->writable = ib_access_writable(access);
- 	umem->owning_mm = current->mm;
--	umem_odp->is_implicit_odp = 1;
- 	umem_odp->page_shift = PAGE_SHIFT;
- 
- 	umem_odp->tgid = get_task_pid(current->group_leader, PIDTYPE_PID);
--	ret = ib_init_umem_odp(umem_odp, NULL);
--	if (ret) {
--		put_pid(umem_odp->tgid);
--		kfree(umem_odp);
--		return ERR_PTR(ret);
--	}
-+	ib_init_umem_implicit_odp(umem_odp);
- 	return umem_odp;
- }
- EXPORT_SYMBOL(ib_umem_odp_alloc_implicit);
-@@ -248,7 +244,7 @@ struct ib_umem_odp *ib_umem_odp_get(struct ib_device *device,
- }
- EXPORT_SYMBOL(ib_umem_odp_get);
- 
--void ib_umem_odp_release(struct ib_umem_odp *umem_odp)
-+static void ib_umem_odp_free(struct ib_umem_odp *umem_odp)
- {
- 	struct ib_device *dev = umem_odp->umem.ibdev;
- 
-@@ -258,14 +254,19 @@ void ib_umem_odp_release(struct ib_umem_odp *umem_odp)
- 	 * It is the driver's responsibility to ensure, before calling us,
- 	 * that the hardware will not attempt to access the MR any more.
- 	 */
--	if (!umem_odp->is_implicit_odp) {
--		mutex_lock(&umem_odp->umem_mutex);
--		ib_umem_odp_unmap_dma_pages(umem_odp, ib_umem_start(umem_odp),
--					    ib_umem_end(umem_odp));
--		mutex_unlock(&umem_odp->umem_mutex);
--		mmu_interval_notifier_remove(&umem_odp->notifier);
--		hmm_dma_map_free(dev->dma_device, &umem_odp->map);
--	}
-+	mutex_lock(&umem_odp->umem_mutex);
-+	ib_umem_odp_unmap_dma_pages(umem_odp, ib_umem_start(umem_odp),
-+				    ib_umem_end(umem_odp));
-+	mutex_unlock(&umem_odp->umem_mutex);
-+	mmu_interval_notifier_remove(&umem_odp->notifier);
-+	hmm_dma_map_free(dev->dma_device, &umem_odp->map);
-+}
-+
-+void ib_umem_odp_release(struct ib_umem_odp *umem_odp)
-+{
-+	if (!umem_odp->is_implicit_odp)
-+		ib_umem_odp_free(umem_odp);
-+
- 	put_pid(umem_odp->tgid);
- 	kfree(umem_odp);
- }
--- 
-2.48.1
+That's just as likely to break userspace.  Doing a save/restore on the MSR =
+doesn't
+make a whole lot of sense since it's effectively a "command" MSR, but IMO i=
+t's not
+any less likely than userspace putting the MSR index outside of the synthet=
+ic range.
 
+Side topic, upstream QEMU doesn't even appear to put the MSR at the Hyper-V
+address.  It tells the guest that's where the MSR is located, but the confi=
+g
+passed to KVM still uses the default.
+
+        /* Hypercall MSR base address */
+        if (hyperv_enabled(cpu)) {
+            c->ebx =3D XEN_HYPERCALL_MSR_HYPERV;
+            kvm_xen_init(cs->kvm_state, c->ebx);
+        } else {
+            c->ebx =3D XEN_HYPERCALL_MSR;
+        }
+
+...
+
+        /* hyperv_enabled() doesn't work yet. */
+        uint32_t msr =3D XEN_HYPERCALL_MSR;
+        ret =3D kvm_xen_init(s, msr);
+        if (ret < 0) {
+            return ret;
+        }
+
+Userspace breakage aside, disallowng host writes would fix the immediate is=
+sue,
+and I think would mitigate all concerns with putting the host at risk.  But=
+ it's
+not enough to actually make an overlapping MSR index work.  E.g. if the MSR=
+ is
+passed through to the guest, the write will go through to the hardware MSR,=
+ unless
+the WRMSR happens to be emulated.
+
+I really don't want to broadly support redirecting any MSR, because to trul=
+y go
+down that path we'd need to deal with x2APIC, EFER, and other MSRs that hav=
+e
+special treatment and meaning.
+
+While KVM's stance is usually that a misconfigured vCPU model is userspace'=
+s
+problem, in this case I don't see any value in letting userspace be stupid.=
+  It
+can't work generally, it creates unique ABI for KVM_SET_MSRS, and unless th=
+ere's
+a crazy use case I'm overlooking, there's no sane reason for userspace to p=
+ut the
+index in outside of the synthetic range (whereas defining seemingly nonsens=
+ical
+CPUID feature bits is useful for testing purposes, implementing support in
+userspace, etc).
