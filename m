@@ -1,131 +1,103 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AAB1C6FE0;
-	Thu,  6 Feb 2025 14:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884941EA7FD
+	for <kvm@vger.kernel.org>; Thu,  6 Feb 2025 14:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738851155; cv=none; b=fF0PAXYuGHtlLdoCEIAa71G4tvw9319WNCaSzLkzU9Is3B6RethBOGi9Men4Ak6O1qmUwGBoPpTaFNd4Kq48yN+XtvzrO6mxxWCcbcEk/iYDsay8Qo632HvhIf5v0lr6okk857Wc9oglLogCNo5rxE8443HDPn987BiIZhe6g1E=
+	t=1738851183; cv=none; b=QrUGeTBXsWxXL5Rol+bM6rtcy3xmsRTOaqmdQOxPBukxUJJjNok/zICfUk9zNgTuDl2UNHVRupL7clm4d2OBgj2U7MtFHGInmMP2GkR6lb1jsZipGOuCUuniDOOeDNBWwD/q63wBNpYT1Ft9Qy7jXybaaRq2vQ2UhAV4De9jKQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738851155; c=relaxed/simple;
-	bh=f9xA7XWmR1We7sDj+xor/lbZ7RmI0r/FRir2tEAOjkA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DCAWYz2eNIhplzkcpQqyQenZGz9ERZdCpFnx+yXlpVk5YviHPIbVNQRmaEU+4k5ItFbkU+shF8Gwxht5xZ54H6hrqQsYI+J5lNpQxPK1DkT4rb7ps4CiWYtDdAKBCmALAGiNO6CL7mpUKMR7Z2hs4lw/MbfNrg8mWlPWqlh7uFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o5tn02Wp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1738851183; c=relaxed/simple;
+	bh=ZMq35FrhEk5mDeRr7RJiv16EUshbu3LSB2bSHyn92zU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n5DpncQc8m7Rjd7KqFGsEyHO+BJeb3+NFRi89XWljeDNHwzXxG7g75OHfAfRWtdYAE7NxlfoZGCkIU8qV05RAc1AbG8MpSD7V0jOo5+oit/8Hu9Xd6r/z6TyteJVD7IGNOoZn9CdmW9Br7TZvG/KMONXQTvk7zhwEBi+XteI89M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GNqtcr11; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o5tn02Wp"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 516C7a0v024426;
-	Thu, 6 Feb 2025 14:12:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=f9xA7X
-	WmR1We7sDj+xor/lbZ7RmI0r/FRir2tEAOjkA=; b=o5tn02Wp3wpRVP9tx40Cnr
-	nh/1KQgf57b5pIRO0uH27Icpe4p3w9hEKLph+BfWKNZJ9Tce2eX3QR6lKuKit86P
-	C1ohyOs+WOevlDZ4wFzHcnp1NL42oRsCWuRTES0P8Ke9DnY5YuV+g55ZWNmLc2yB
-	8RvI6fatvtNB/y6XlyPBhtk7CKcd+VzztlobCn44f9sc6Q18PL9cGYH2lFqnw+0O
-	cL4GsR/v8BRxDmxtrQhbrTSllU5eW5cZOLSIC3WpOQapdsfUD6/JfmRTC5WQSi8o
-	vFHbyxjQIk+c3ipBNfQlq+wSr7yTj8EfswReMszUqCy8/dAN0gQbRJtUPdTYcJLQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44mattdwru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 14:12:31 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 516AgmWg007127;
-	Thu, 6 Feb 2025 14:12:30 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxayxs6j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 14:12:30 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 516ECTLj22938308
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Feb 2025 14:12:29 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5556B58062;
-	Thu,  6 Feb 2025 14:12:29 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 558A358055;
-	Thu,  6 Feb 2025 14:12:28 +0000 (GMT)
-Received: from [9.61.248.214] (unknown [9.61.248.214])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Feb 2025 14:12:28 +0000 (GMT)
-Message-ID: <02675184-0ce5-4f08-9d5d-f42987b77b5b@linux.ibm.com>
-Date: Thu, 6 Feb 2025 09:12:27 -0500
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GNqtcr11"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738851182; x=1770387182;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZMq35FrhEk5mDeRr7RJiv16EUshbu3LSB2bSHyn92zU=;
+  b=GNqtcr11CfJg7By4oLSYdkeYcHVT4SSUzd3BPD2VvjT3oQJk2iREPpIO
+   OyvLmpf20lS/Wq01SkVYYhDuxdvAImYL/TL90Q7JUJiHK+3AN3IfaHKGJ
+   D0gcnZysrDL7Uz4jf2o0w5aio/tYYfkVXj/dMSCZPNB+E35wEEyqi1Qws
+   dSg6s1LZ0Kq7myn/wX2k4UBwsdhzBI5XrDmSkfwZD0sE9tuf7KVeLPUcp
+   xiOZUSvmHfVvDWAkar/3NczBBby9E3BzSCWbU6mTiVc/eGFa0XAVdAoN6
+   1hD2y2fDm0hS3KrUFIWXNaoGX81KL2X4tR/MpeEC65yGi3WTQX3S6VZqo
+   Q==;
+X-CSE-ConnectionGUID: LZ9nkyIPQO+dtgB47RUDUA==
+X-CSE-MsgGUID: yizg1aC/T/a7S3EZJiXS6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="38686408"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="38686408"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 06:13:01 -0800
+X-CSE-ConnectionGUID: dGmgrJBGSfyPuxx/edfiyg==
+X-CSE-MsgGUID: 4Ek+cwODRZqo7tx2bSyBtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="116180151"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa003.jf.intel.com with ESMTP; 06 Feb 2025 06:12:57 -0800
+Date: Thu, 6 Feb 2025 22:32:25 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [RFC v2 1/5] qapi/qom: Introduce kvm-pmu-filter object
+Message-ID: <Z6TH+ZyLg/6pgKId@intel.com>
+References: <20250122090517.294083-1-zhao1.liu@intel.com>
+ <20250122090517.294083-2-zhao1.liu@intel.com>
+ <871pwc3dyw.fsf@pond.sub.org>
+ <Z6SMxlWhHgronott@intel.com>
+ <87h657p8z0.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/vfio-ap: Signal eventfd when guest AP
- configuration is changed
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Anthony Krowiak <akrowiak@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        jjherne@linux.ibm.com, alex.williamson@redhat.com
-References: <20250107183645.90082-1-rreyes@linux.ibm.com>
- <Z4U6iu5JidJUxDgX@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <f69bba4b-a97e-4166-9ce1-c8a2ad634696@linux.ibm.com>
- <f1af50b3-f966-445d-ab89-3d213f55b93a@linux.ibm.com>
- <Z6RnfwawWop0v1CW@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-Content-Language: en-US
-From: Rorie Reyes <rreyes@linux.ibm.com>
-In-Reply-To: <Z6RnfwawWop0v1CW@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dypPC_fK1VqygqcN5e7E83RU4fwU1aQ9
-X-Proofpoint-ORIG-GUID: dypPC_fK1VqygqcN5e7E83RU4fwU1aQ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_03,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 suspectscore=0 adultscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 bulkscore=0 phishscore=0 malwarescore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502060115
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h657p8z0.fsf@pond.sub.org>
 
+> Let's ignore how to place it for now, and focus on where we would *like*
+> to place it.
+> 
+> Is it related to anything other than ObjectType / ObjectOptions in the
+> QMP reference manual?
 
-On 2/6/25 2:40 AM, Alexander Gordeev wrote:
-> On Wed, Feb 05, 2025 at 12:47:55PM -0500, Anthony Krowiak wrote:
->>>> How this patch is synchronized with the mentioned QEMU series?
->>>> What is the series status, especially with the comment from Cédric
->>>> Le Goater [1]?
->>>>
->>>> 1. https://lore.kernel.org/all/20250107184354.91079-1-rreyes@linux.ibm.com/T/#mb0d37909c5f69bdff96289094ac0bad0922a7cce
-> ...
->>> Hey Alex, sorry for the long delay. This patch is synchronized with the
->>> QEMU series by registering an event notifier handler to process AP
->>> configuration
->>>
->>> change events. This is done by queuing the event and generating a CRW.
->>> The series status is currently going through a v2 RFC after implementing
->>> changes
->>>
->>> requested by Cedric and Tony.
->>>
->>> Let me know if there's anything else you're concerned with
->>>
->>> Thanks!
->> I don't think that is what Alex was asking. I believe he is asking how the
->> QEMU and kernel patch series are going to be synchronized.
->> Given the kernel series changes a value in vfio.h which is used by QEMU, the
->> two series need to be coordinated since the vfio.h file
->> used by QEMU can not be updated until the kernel code is available. So these
->> two sets of code have
->> to be merged upstream during a merge window. which is different for the
->> kernel and QEMU. At least I think that is what Alex is asking.
-> Correct.
-> Thanks for the clarification, Anthony!
+Yes!
 
-Tony, thank you for the back up!
+> I guess qapi/kvm.json is for KVM-specific stuff in general, not just the
+> KVM PMU filter.  Should we have a section for accelerator-specific
+> stuff, with subsections for the various accelerators?
+> 
+> [...]
 
-Alexander, is there anything else you need from my end for clarification?
+If we consider the accelerator from a top-down perspective, I understand
+that we need to add accelerator.json, kvm.json, and kvm-pmu-filter.json.
+
+The first two files are just to include subsections without any additional
+content. Is this overkill? Could we just add a single kvm-pmu-filter.json
+(I also considered this name, thinking that kvm might need to add more
+things in the future)?
+
+Of course, I lack experience with the file organization here. If you think
+the three-level sections (accelerator.json, kvm.json, and kvm-pmu-filter.json)
+is necessary, I am happy to try this way. :-)
+
 
