@@ -1,187 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B90922619A
-	for <kvm@vger.kernel.org>; Thu,  6 Feb 2025 09:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B6422652F
+	for <kvm@vger.kernel.org>; Thu,  6 Feb 2025 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834510; cv=none; b=nKcLkMdaNRUy/+PnDTxks5Y/47CTvbIEDDck4p6sUIjiz4WdweduvtlCLDD6tPz0FZgGc/z86Jo/mLLCDhWFcZklkGEPDzeDJTlK4DHs8tUOOn5vyHSjozgMqs2rBxJ3caEQW2f/AOGrLBvKUtQcY9I229iUZ2jOfYxoo5VC9/s=
+	t=1738834767; cv=none; b=o91go0muL5MCUiwmSW3keXgYZbaDvfvWuwD/C4tMewpvLIK/QHp9Dr1j0M7Kfzii+uGLP6M2OYBv9Av0numMHRg6e0LSS8kLTajshY/56F3Cj7CqSRXOeBugwFy9LxsP0D4YsDW7P61QnvgwNzmGaQv24ljIB9+VhprySX8lsiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834510; c=relaxed/simple;
-	bh=SbzsFpxSlqt0LRVCVphwfchnZcpRBWTRP4V0UBxDljg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G8VKxYpn/Ia3ZHkJRhUsuyGC4DXqZKsKaSZn5joeq/QBOqga9oygv4xOA0TyhmkaQubB3b4OPUrlmyS/HAwqp5+21pVUYgpLO0BvopdJRrBekBjarfc0EghsUIaqXcYyI358UZk+xvJ+B4SelQnCugB9QsqJSGzO6WJCmYUmMZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IcJJowGG; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738834767; c=relaxed/simple;
+	bh=gHZyVt/xSbXZtV8kcHlEOIKgq/QQx2RvyNdyyAQthno=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oocK7vvJ4LZG+UFERvKsjYzYRH1AktPcSWnUxBIMZYSDIbrwCO2ZguLnCWBo/aq8cULd/q7UQFE3DdVJMGKH8hlcufD1er0nHrWunG7BhCFTz4eU3/71vEACoqviN6oqm3+V4+3hSJj6obWe8gNnudFzNEZpWZ3Ch8DQ6Qx7cDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J2G6kyba; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IcJJowGG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738834508; x=1770370508;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SbzsFpxSlqt0LRVCVphwfchnZcpRBWTRP4V0UBxDljg=;
-  b=IcJJowGGcq6pLclLSWDg6Mf/wiX3tLTaF8tEWCqfRz2HfN/ew4qekgKD
-   9KJHhmL0RJwQ8kzd8wcnTlQShci99I0l9eAoSpySbbBNFp+cgWjvUkaiM
-   B6sjW0IE5FIC08ELzBNdnNC/m7TiOjpTYI1wDIYWDpGcTITSppjwvCOBv
-   SlW5DPUpRDw2wDQZxiHV0zPXLoF+QMEsPg5C8fRZjSx+WRQJmIJvD9u6k
-   XT+lcZSlFp8rwwEy6SoMU6hmR4jR2/dSnj2a2/flU5XpvkFMGbV6o8LYt
-   mq1v79WHrnag8GH4PXhostJWaOjLzxdXdvp7jeg+ISe4kdHqE+zPtlVxq
-   w==;
-X-CSE-ConnectionGUID: Yns/o7BWRfKhtR5A08HCWQ==
-X-CSE-MsgGUID: dgJlccH6Rla4c4tChfmXjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="61905381"
-X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
-   d="scan'208";a="61905381"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:35:08 -0800
-X-CSE-ConnectionGUID: 2gIBkdsDS86vB5dYK1Hsqw==
-X-CSE-MsgGUID: Mm5+m0RnTiC1gkfud4HxFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="142041740"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa001.fm.intel.com with ESMTP; 06 Feb 2025 01:35:03 -0800
-Date: Thu, 6 Feb 2025 17:54:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
-	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
-	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
-	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-Message-ID: <Z6SG2NLxxhz4adlV@intel.com>
-References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <20250122090517.294083-4-zhao1.liu@intel.com>
- <87zfj01z8x.fsf@pond.sub.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J2G6kyba"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738834765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zK/6lQqcEYL/R1meCPdVrlsxMHj74L1KpqoscZburOw=;
+	b=J2G6kybaKqh+c3kzyoA396CTGAVHCc4MdtWZjFLNUWROteKUuj7Q9auitdaBfE5PLP197f
+	oOqyKbxB7J+8QZi3q4ntlBB/j1tfPlPP229z/1fDcGwU32PvMfPGgPjFQ+PPLmFDFyyq8k
+	ZW1zVMEVwd8Q7T3v/yTYZ5DAC9jttvc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-22-YmISwbySNiqa90P0fOp9dg-1; Thu, 06 Feb 2025 04:39:23 -0500
+X-MC-Unique: YmISwbySNiqa90P0fOp9dg-1
+X-Mimecast-MFC-AGG-ID: YmISwbySNiqa90P0fOp9dg
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38c24ac3706so442909f8f.0
+        for <kvm@vger.kernel.org>; Thu, 06 Feb 2025 01:39:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738834762; x=1739439562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zK/6lQqcEYL/R1meCPdVrlsxMHj74L1KpqoscZburOw=;
+        b=uVmCN2F8Pjp1a/ZRu7WhUVtaa4BKcE0RoXh1hsjQ1fSKIZY0zxv4RMSHoSMxDqgyBE
+         rFpVFc8Sg0fKhRdj9+eoEiJbMcSWYMZanB6Dp7G9hSBHgwTKEqc7QU7DlpUzIbetS8/L
+         3RnI7rD3tTJINCT/0twD2EVSO50nNDpCNDzFJDpsy4lOi869btdKxksKXs+c/HT76ME2
+         7L09QFUCINCD81Pvo0zQxOCn89801FqkbNXKnIURqnZj7dEJaPyfpgb9tH3mIJWdLonE
+         cQawvHDpNpM47D3I4Ypc7mrit8SSG/3/0KB3ch8ZcgApmwl2As/z/MrKmUSRLglrM54E
+         KgrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXhZzi5GzGXd3/sup0qGbgIf7jdVQlSzoeC0NPvIabqMtjPeok9mVpL0cooif6G7+GmII=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2DQ9NqHtBE/ByVUjYwkCuNQ689UmRzpmCZ53KLiYLj3tfbEgI
+	g1dDmwJUty7p0TdPAou5wedKEvm77dVBIayX/LMk2NDvton0qG9VSNUVxTrFZg1hKkhU3Yrj8PI
+	o83PtqTBJ4HrQdzr3IqwmoEkQKMUS9+/ltXFvo+7D8459DtdE/gYNw5GY6UqMkZfDyuy3ynpCKe
+	stGWfeOsvkqGADu/6SQsiGypvh
+X-Gm-Gg: ASbGncutGWEHinpmEUJN040wYhTk/FTHmttdFAebdFG9cgFdXt40OzRCZjCVYbqfKVN
+	doE50q1m0+Tc3x6rA5OftuE7SXi76YyL6J2shN1S19oyqfSgh79BniefAPT6J
+X-Received: by 2002:a5d:6da8:0:b0:38a:a11e:7af6 with SMTP id ffacd0b85a97d-38db48a92bbmr4538307f8f.6.1738834761941;
+        Thu, 06 Feb 2025 01:39:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpew+3VV/qOv0PNC07nCRiS2S9+c5C+JNNGHJrfpdky5+B8ifZWgPwO9qowgfQ/usuET5m5ZbGL4B3N12rG2g=
+X-Received: by 2002:a5d:6da8:0:b0:38a:a11e:7af6 with SMTP id
+ ffacd0b85a97d-38db48a92bbmr4538285f8f.6.1738834761541; Thu, 06 Feb 2025
+ 01:39:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfj01z8x.fsf@pond.sub.org>
+References: <20250204155656.775615-1-maz@kernel.org>
+In-Reply-To: <20250204155656.775615-1-maz@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 6 Feb 2025 10:39:10 +0100
+X-Gm-Features: AWEUYZno2kuDpIE83k3643TzUSKf5V_RnzWbIr0C8_DMiPc6ZkU3_VvAeoPh5cU
+Message-ID: <CABgObfaY9iXAj8QVn0keEpuLR6Fe0z3NLNdx2COnbgDGTLX7sQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/arm64 fixes for 6.14, take #1
+To: Marc Zyngier <maz@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>, Dmytro Terletskyi <dmytro_terletskyi@epam.com>, 
+	Fuad Tabba <tabba@google.com>, Lokesh Vutla <lokeshvutla@google.com>, 
+	Mark Brown <broonie@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, Wei-Lin Chang <r09922117@csie.ntu.edu.tw>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 05, 2025 at 11:07:10AM +0100, Markus Armbruster wrote:
-> Date: Wed, 05 Feb 2025 11:07:10 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [RFC v2 3/5] i386/kvm: Support event with select & umask
->  format in KVM PMU filter
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > The select&umask is the common way for x86 to identify the PMU event,
-> > so support this way as the "x86-default" format in kvm-pmu-filter
-> > object.
-> 
-> So, format 'raw' lets you specify the PMU event code as a number, wheras
-> 'x86-default' lets you specify it as select and umask, correct?
+On Tue, Feb 4, 2025 at 4:57=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
+>
+> Paolo,
+>
+> This is the first set of KVM/arm64 fixes for 6.14, most of them
+> addressing issues exposed by code introduced in the merge window
+> (timers, debug, protected mode...). Details in the tag, as usual.
+>
+> Please pull,
 
-Yes!
+Done, thanks.
 
-> Why do we want both?
+Paolo
 
-This 2 formats are both wildly used in x86(for example, in perf tool).
-
-x86 documents usually specify the umask and select fields.
-
-But raw format could also be applied for ARM since ARM just uses a number
-to encode event.
-
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> [...]
-> 
-> > diff --git a/qapi/kvm.json b/qapi/kvm.json
-> > index d51aeeba7cd8..93b869e3f90c 100644
-> > --- a/qapi/kvm.json
-> > +++ b/qapi/kvm.json
-> > @@ -27,11 +27,13 @@
-> >  #
-> >  # @raw: the encoded event code that KVM can directly consume.
-> >  #
-> > +# @x86-default: standard x86 encoding format with select and umask.
-> 
-> Why is this named -default?
-
-Intel and AMD both use umask+select to encode events, but this format
-doesn't have a name... so I call it `default`, or what about
-"x86-umask-select"?
-
-> > +#
-> >  # Since 10.0
-> >  ##
-> >  { 'enum': 'KVMPMUEventEncodeFmt',
-> >    'prefix': 'KVM_PMU_EVENT_FMT',
-> > -  'data': ['raw'] }
-> > +  'data': ['raw', 'x86-default'] }
-> >  
-> >  ##
-> >  # @KVMPMURawEvent:
-> > @@ -46,6 +48,25 @@
-> >  { 'struct': 'KVMPMURawEvent',
-> >    'data': { 'code': 'uint64' } }
-> >  
-> > +##
-> > +# @KVMPMUX86DefalutEvent:
-> 
-> Default, I suppose.
-
-Thanks!
-
-> > +#
-> > +# x86 PMU event encoding with select and umask.
-> > +# raw_event = ((select & 0xf00UL) << 24) | \
-> > +#              (select) & 0xff) | \
-> > +#              ((umask) & 0xff) << 8)
-> 
-> Sphinx rejects this with "Unexpected indentation."
-> 
-> Is the formula needed here?
-
-I tried to explain the relationship between raw format and umask+select.
-
-Emm, where do you think is the right place to put the document like
-this?
-
-...
-
-> > +##
-> > +# @KVMPMUX86DefalutEventVariant:
-> > +#
-> > +# The variant of KVMPMUX86DefalutEvent with the string, rather than
-> > +# the numeric value.
-> > +#
-> > +# @select: x86 PMU event select field.  This field is a 12-bit
-> > +#     unsigned number string.
-> > +#
-> > +# @umask: x86 PMU event umask field. This field is a uint8 string.
-> 
-> Why are these strings?  How are they parsed into numbers?
-
-In practice, the values associated with PMU events (code for arm, select&
-umask for x86) are often expressed in hexadecimal. Further, from linux
-perf related information (tools/perf/pmu-events/arch/*/*/*.json), x86/
-arm64/riscv/nds32/powerpc all prefer the hexadecimal numbers and only
-s390 uses decimal value.
-
-Therefore, it is necessary to support hexadecimal in order to honor PMU
-conventions.
-
-However, unfortunately, standard JSON (RFC 8259) does not support
-hexadecimal numbers. So I can only consider using the numeric string in
-the QAPI and then parsing it to a number.
-
-I parse this string into number by qemu_strtou64().
+>
+>         M.
+>
+> The following changes since commit 01009b06a6b52d8439c55b530633a971c13b6c=
+b2:
+>
+>   arm64/sysreg: Get rid of TRFCR_ELx SysregFields (2025-01-17 11:07:55 +0=
+000)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kv=
+marm-fixes-6.14-1
+>
+> for you to fetch changes up to 0e459810285503fb354537e84049e212c5917c33:
+>
+>   KVM: arm64: timer: Don't adjust the EL2 virtual timer offset (2025-02-0=
+4 15:10:38 +0000)
+>
+> ----------------------------------------------------------------
+> KVM/arm64 fixes for 6.14, take #1
+>
+> - Correctly clean the BSS to the PoC before allowing EL2 to access it
+>   on nVHE/hVHE/protected configurations
+>
+> - Propagate ownership of debug registers in protected mode after
+>   the rework that landed in 6.14-rc1
+>
+> - Stop pretending that we can run the protected mode without a GICv3
+>   being present on the host
+>
+> - Fix a use-after-free situation that can occur if a vcpu fails to
+>   initialise the NV shadow S2 MMU contexts
+>
+> - Always evaluate the need to arm a background timer for fully emulated
+>   guest timers
+>
+> - Fix the emulation of EL1 timers in the absence of FEAT_ECV
+>
+> - Correctly handle the EL2 virtual timer, specially when HCR_EL2.E2H=3D=
+=3D0
+>
+> ----------------------------------------------------------------
+> Lokesh Vutla (1):
+>       KVM: arm64: Flush hyp bss section after initialization of variables=
+ in bss
+>
+> Marc Zyngier (4):
+>       KVM: arm64: Fix nested S2 MMU structures reallocation
+>       KVM: arm64: timer: Always evaluate the need for a soft timer
+>       KVM: arm64: timer: Correctly handle EL1 timer emulation when !FEAT_=
+ECV
+>       KVM: arm64: timer: Don't adjust the EL2 virtual timer offset
+>
+> Oliver Upton (2):
+>       KVM: arm64: Flush/sync debug state in protected mode
+>       KVM: arm64: Fail protected mode init if no vgic hardware is present
+>
+>  arch/arm64/kvm/arch_timer.c        | 49 +++++++++-----------------------=
+------
+>  arch/arm64/kvm/arm.c               | 20 ++++++++++++++++
+>  arch/arm64/kvm/hyp/nvhe/hyp-main.c | 24 +++++++++++++++++++
+>  arch/arm64/kvm/nested.c            |  9 +++----
+>  arch/arm64/kvm/sys_regs.c          | 16 ++++++++++---
+>  5 files changed, 73 insertions(+), 45 deletions(-)
+>
 
