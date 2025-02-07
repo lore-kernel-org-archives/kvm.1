@@ -1,22 +1,22 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2C217BB16;
-	Fri,  7 Feb 2025 03:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985EE17AE1D;
+	Fri,  7 Feb 2025 03:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738898806; cv=none; b=SAoyqAhpYVNqpBdXK9J/C5CEDZ6okh1eW5Mxb5yaCNzouGuOeuU3PIpcwKps93k1+za2g0haNsWAgm0bP9kRZQBiD7NB6IU48JkyNlENdcOz3uQWzOndMNsHcaxrvurpM3i1C8GhJBRuzqhgQ+mpqnHDsE9ejU+oRbGqQO744Yc=
+	t=1738898806; cv=none; b=P9Bt5O6aE0Z6ftiYLE9GUAXh2iNsUtpmbs7qrbJV4xVGjeILv8glmi7A543ZuqvjqexaPQ1e7gOjHjfWnTGOXimvbwc2P9qVgFUXOCOWizlg7ehQ5yYTKc6/Q6ZH7Fyzr7hLQ0WcJk46E7UihEmQ7A+7ckB2p5pAWFdSo2O63Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738898806; c=relaxed/simple;
-	bh=uAACmwfTwi1FpXNOSvbzbkrI3utd3c8GcS6yWKXUNI0=;
+	bh=02FGwJ1b4L+Qmh0mt8jK4ZSLOxYlbCsmrNC1feJZQn4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mjsx69c+huLlqn+2vKkBdeTxXzxOFO0frHuEM9t1NMGvhhOlwdfKTO53wKWAYJS5Ft7TuLVqRCVbNHtZQz0EV5q+7JUhXWkoGMWimtBBm+ZcUx0r3rQKNMuo8K1bR/AOCRqhOAZVYSSrnAuTyAr+YteykRYqOvNcw6NKaRSMdnY=
+	 MIME-Version; b=Mo5RkZo2QDjq8oZhwKwnx4TzpVsRsjfw21dsZw2XoVnILVnSBTxEbqqdiwdKFoKug9mo7hE4mdT5EsZRajooz7PHFHpKezMz4Xk0qXvF8un+Uw0vA/TmJFGnJIJfgPtqDPTDRCIBi8Y99hd5DQ2nErwc/zqLVf6/rv4wUk7+KK4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8CxieBtfaVnRDFuAA--.17414S3;
-	Fri, 07 Feb 2025 11:26:37 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8Dxfa9rfaVnPjFuAA--.59786S3;
+	Fri, 07 Feb 2025 11:26:35 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowMDx_MRqfaVn0JsDAA--.12326S5;
+	by front1 (Coremail) with SMTP id qMiowMDx_MRqfaVn0JsDAA--.12326S4;
 	Fri, 07 Feb 2025 11:26:35 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Tianrui Zhao <zhaotianrui@loongson.cn>
@@ -25,9 +25,9 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] LoongArch: KVM: Set host with kernel mode when switch to VM mode
-Date: Fri,  7 Feb 2025 11:26:34 +0800
-Message-Id: <20250207032634.2333300-4-maobibo@loongson.cn>
+Subject: [PATCH 2/3] LoongArch: KVM: Remove duplicated cache attribute setting
+Date: Fri,  7 Feb 2025 11:26:33 +0800
+Message-Id: <20250207032634.2333300-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250207032634.2333300-1-maobibo@loongson.cn>
 References: <20250207032634.2333300-1-maobibo@loongson.cn>
@@ -38,37 +38,35 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMDx_MRqfaVn0JsDAA--.12326S5
+X-CM-TRANSID:qMiowMDx_MRqfaVn0JsDAA--.12326S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-PRMD and ERA register is only meaningful on the beginning stage
-of exception entry, and it can be overwritten for nested irq or
-exception.
-
-When CPU runs in VM mode, interrupt need be enabled on host. And the
-mode for host had better be kernel mode rather than random.
+Cache attribute comes from GPA->HPA secondary mmu page table and is
+configured when kvm is enabled. It is the same for all VMs, remove
+duplicated cache attribute setting on vCPU context switch.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- arch/loongarch/kvm/switch.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/vcpu.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index 0c292f818492..1be185e94807 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -85,7 +85,7 @@
- 	 * Guest CRMD comes from separate GCSR_CRMD register
- 	 */
- 	ori	t0, zero, CSR_PRMD_PIE
--	csrxchg	t0, t0,   LOONGARCH_CSR_PRMD
-+	csrwr	t0, LOONGARCH_CSR_PRMD
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index fb72095c8077..20f941af3e9e 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1548,9 +1548,6 @@ static int _kvm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
  
- 	/* Set PVM bit to setup ertn to guest context */
- 	ori	t0, zero, CSR_GSTAT_PVM
+ 	/* Restore timer state regardless */
+ 	kvm_restore_timer(vcpu);
+-
+-	/* Control guest page CCA attribute */
+-	change_csr_gcfg(CSR_GCFG_MATC_MASK, CSR_GCFG_MATC_ROOT);
+ 	kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
+ 
+ 	/* Restore hardware PMU CSRs */
 -- 
 2.39.3
 
