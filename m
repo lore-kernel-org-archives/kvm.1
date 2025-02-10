@@ -1,62 +1,62 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE49250BF9
-	for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 21:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB075253332
+	for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 21:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739223375; cv=none; b=R8goU6a/galXTDgN1sAloeNpyRTPpJOWxVtCO7aA+iKlcSl8O6kxD7TlLIy4Up6YJWqQKqJ1lVH74ldAu9MOK1pzqFp6o9HR7qBPZEDkiAfse8Ol7UY4ix1cY5elAbRNnxEPZG5fZxV7i3dCUNlz9IDOvvGKgUhqPW9aeUTso28=
+	t=1739223378; cv=none; b=B05fZNVBCeBO+9UqKBtwunkjk6cJLUGahsDn/gIf2ptUhio5s/EDs9j0RZM4h8MdTHzh9bPNKuh+qkoj/THhD3fhHi6X6rZqCS3BWmKSGb9ZDVV1ynprt1xO+ydsSJKKgGqhkBhP+PJFzcTx5y5YKYZtvuZ1NiH6x+BseM7zHgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739223375; c=relaxed/simple;
-	bh=F4Do9nbuxLrfh5xxDqR9A4aZTOH4TmDTDJYChmTpD4Y=;
+	s=arc-20240116; t=1739223378; c=relaxed/simple;
+	bh=o8LicozigsBJPUxfw0UjH/+haPfd2EDEodthfJ8bhLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MsfCIIxAWcFoPypC9tOK0Xt7pPc0ZZD7M0h+PWLJ3BXB5QcKOIt3SH4r3MqtBeaRYN3TgzZgPPEanjpE9FRQ1FDiYQOln4w9eurA4oksftdxre8XvCQW3QJXHedyqFoDTbYpkebzfOvlpaChkkqz0SpHboXRI+fqWxeNtCLFv7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=KXbXruID; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version:Content-Type; b=Jgd260PRAOK4hra+NqY0TcVncIUBGRZBBAFn6ownsnQ6WDZmaWnObDoTxhw89kPSPtSDJFFVr/vquw6eiPsVetO3dXdvJP0zNGRL3OEj3ndwI+FJEp0jevqGsDMzK0SHVz9CjxS9vf4CiD235KbqqWtRaxmx3U8unyil3nignvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=ITFlHvtE; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="KXbXruID"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43618283d48so33636875e9.1
-        for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 13:36:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="ITFlHvtE"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38dc9f3cc80so1290647f8f.0
+        for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 13:36:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1739223371; x=1739828171; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1739223374; x=1739828174; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Omq0jMe02v0O4r8y1/1Uapc6yttVgCIGxdH7exDcAxo=;
-        b=KXbXruIDB5G787QuytbS/uJyneis5sSddcj6YIG44vZiEAUCh25Q78QUIAC/vwyGiA
-         A6PICK03/C/dN5x2nlfH0JAVtO2n4kxw1Gw3M09rnL1oRefT3Ey/DnDCsIHRJk6ZhyXI
-         p7v//l/Z/cBaIm4xrVRrWc+GLNoQKOo93Khlis7KgCnOK34Op8z2ngFaL1QZ3XVFkU1h
-         tVgn5KXfMYam6p+L+nwIWt6RoaNnwBsV9+skYR6HCzx8r9dZ5+QnBdolYsRLCokKaGqZ
-         dEIeDvb6MbO+a59s+xZIwKNeQaow/Rdhe2O4vWsvNCudBc2yf9zpt9FFX98iFJvf1ven
-         kMug==
+        bh=NTEMNxwWUDdJDHTSWR5BaYosnBDapUg7Ev6g031TeV8=;
+        b=ITFlHvtE9yI34d5cje450muBPt/uRI0f9R13H4R0RygM0vIL/8Xr2ysMO8unqgYTbL
+         ilwAb+1ia1vprAdNB+fNCPkd5qonAVLvZVCX2Br8Fm4V+SoAaOpCsh54e72jSUdPHbes
+         01iBiW6k0H/dIX1t0423EJjcZY8OqljAgf5P50pxRi+df2jBcTN5l55YapSlJ/eQfrld
+         fpZsQO4LG/uT2O9nulvkbEDsd/2M9frh9SU3Zle1aI5iz4CEWzdSQMHonhxzL8z1n+SK
+         pVAJHfF2Sc3cPaED4zc52foMO+cuFm7Jt9yDbI7D0QtcjgwQcWUtftPkuVEJ828wWWuh
+         gHIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739223371; x=1739828171;
+        d=1e100.net; s=20230601; t=1739223374; x=1739828174;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Omq0jMe02v0O4r8y1/1Uapc6yttVgCIGxdH7exDcAxo=;
-        b=DOXmclECpERIcOj7Ne4dVB+EWTefud9oAgw7th+VZx61dGIazmBjgIZLKT4IsJC/Nn
-         4y0kScEUdN7DyhhayBnoM/PzGzs8vFiDEd/+pib8vciitg+mRYc0q2IOWx6bAHaQFSVC
-         GxOahugS3QJzivV6U57ootlPJ6oYZ0e2zK2bT2dFnfGEy5bBo3/tH0ztYW+AQuVNyr7c
-         bsx+iEWt1DoiPFn8WqkENI6nG5Pnmat8s2t91bu+krzBYsbR67LaWGTq0/Vshnkblvn8
-         yj9oGjxyuToEgSrJtBOM9AtTpEyW7j9is8ybU5++P/J2KW7kCsnB8yl3xKk4yz4/KeUv
-         tNZw==
-X-Forwarded-Encrypted: i=1; AJvYcCURaRkoa2UX4Vqs3lktADpD/Lb/qJ0sQwzwpF/gfqBajbQYFtgNyvdQIlBnQO/HkHXFylg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHHzbfuRdxC1UfTTZu6ficrg8s2BFgeYmLc3nqswF0mK/8gJ1a
-	z+3yQWGq+Lh1KP7XZP4iIO5eFI2n4TpEczqAGMARriclFIb6UXivm+V3wNgPRNs=
-X-Gm-Gg: ASbGncsWEohDp1Hv49XLVZtb9lNSNnxuiu1NHzR2RbeuhUVvlnJKKNjP3OFcgkWGeqr
-	Z4K1be0ShihRXHd8/rQRYX8Pqd5veVGHtYrvm1pm/u2AqWYWlmmnglLWMpB9ARhCunCexui67um
-	CQuPUqK6/5mYjkuUyFT+08SiA8PtXvRiPi+ks79KrMlHcsBcA6ASEypy77CTSTWTUqhaJlZDxBJ
-	LB6ur8ZXkpSa15pO+y0aY1XegL3vXQmRPg0ZI+D8tOuv3WUFOZfgZXwOLEiz/gmqZSfFSFOptgf
-	l2vgiKpjTLVfsfSY
-X-Google-Smtp-Source: AGHT+IEW4IwiVYF//YV32GNZdcYc01vxx73uhLVhCiMW8eGAxNPBu731uRffpK0oYRexJJNizE9I8g==
-X-Received: by 2002:a05:600c:510c:b0:434:a4b3:5ebe with SMTP id 5b1f17b1804b1-4394c847ad4mr11919565e9.24.1739223371617;
-        Mon, 10 Feb 2025 13:36:11 -0800 (PST)
+        bh=NTEMNxwWUDdJDHTSWR5BaYosnBDapUg7Ev6g031TeV8=;
+        b=mz0W0gSmoy8xZGhTeD57ChIkKf5mwpLeft0tf0jRnTIZ69qIv2zNG6cCvALFzH1uPO
+         S6VIuWPPa5rkqHPHE73v3E+YpVzPSF3lkfI7tFZQEbeBm8T86s45hkoAHfsTLVq3HzOk
+         lR7CKeqVky7vpuSEf9cr+RbOm+SYflQ6j1x1KchncoZjTVPc2lqBo2Z/nJ1VVGhhg52m
+         5kyxu8Db4ZTLpFZYJBrcrlYBS/MyI/pCkuZHBu0Dj/62sxZeBSqtVxDv0aY+k4UCZxKh
+         4YB9a4umHHhr52u5o7ItuVgWJLkt2ak1Yzz020HgYZKeYDEH3FF4FY95T5++0HC4Epbj
+         dCWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyllv2YX94DvkP8PsR8vRbgnXJ9vo0dLIzRWZ2ZwwIJfcAkMyvdtzB4RehTDq/Mr1PK54=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz3liVXKDvMQzGwzgvF54Sq+xHHtaJBn9X98RnSGrbrs/gRMax
+	8g9x0VktRWIf/QEHMf+7D5tnP/IrNkQWvvcwA/3+zyicJiJ9UXzjAmIJiHJ9vlo=
+X-Gm-Gg: ASbGncuISDXdySCzFp53RA2Xq3kX8G8/tPJ/CxgY/KsVzbQWoZHjPn6m8yCohIhUjPI
+	EqbCIeOKNunpnvjf2RigHxjnKtaZUseJF1OBwvTRs672fPx+jYaPvKukWR0irY6c93KMeBEZEuT
+	c1oPnhJibIRRhuwJkC014B6QX9BUYcbnyIhS9CrtifVLpEC4tPHRleJrHLZwpYZ+4RNwADE5pn7
+	kiys7zDwtVb1yGLRAw8PuDK5H7fFee0PlRaJSKTDzybXJXpIIaF2+Ow0DmXsosUI2eykIpe/KUn
+	3Cdx3JZFCnueHVKG
+X-Google-Smtp-Source: AGHT+IFeyF81bBn0bup3UjkgQ031iOdpi9/jVXiALJpdAtVQDgUVud0mvsDq+oa8j9/bPhnXjupeow==
+X-Received: by 2002:a5d:5552:0:b0:38d:c2d7:b5a1 with SMTP id ffacd0b85a97d-38dc8dddd9amr9308427f8f.19.1739223374260;
+        Mon, 10 Feb 2025 13:36:14 -0800 (PST)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394376118esm47541515e9.40.2025.02.10.13.36.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394376118esm47541515e9.40.2025.02.10.13.36.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 13:36:11 -0800 (PST)
+        Mon, 10 Feb 2025 13:36:13 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
@@ -72,9 +72,9 @@ To: Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-kselftest@vger.kernel.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
 	Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH v2 06/15] riscv: misaligned: add a function to check misalign trap delegability
-Date: Mon, 10 Feb 2025 22:35:39 +0100
-Message-ID: <20250210213549.1867704-7-cleger@rivosinc.com>
+Subject: [PATCH v2 08/15] riscv: misaligned: enable IRQs while handling misaligned accesses
+Date: Mon, 10 Feb 2025 22:35:41 +0100
+Message-ID: <20250210213549.1867704-9-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250210213549.1867704-1-cleger@rivosinc.com>
 References: <20250210213549.1867704-1-cleger@rivosinc.com>
@@ -87,85 +87,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Checking for the delegability of the misaligned access trap is needed
-for the KVM FWFT extension implementation. Add a function to get the
-delegability of the misaligned trap exception.
+We can safely reenable IRQs if they were enabled in the previous
+context. This allows to access user memory that could potentially
+trigger a page fault.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
 ---
- arch/riscv/include/asm/cpufeature.h  |  5 +++++
- arch/riscv/kernel/traps_misaligned.c | 17 +++++++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/traps.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
-index ad7d26788e6a..8b97cba99fc3 100644
---- a/arch/riscv/include/asm/cpufeature.h
-+++ b/arch/riscv/include/asm/cpufeature.h
-@@ -69,12 +69,17 @@ int cpu_online_unaligned_access_init(unsigned int cpu);
- #if defined(CONFIG_RISCV_SCALAR_MISALIGNED)
- void unaligned_emulation_finish(void);
- bool unaligned_ctl_available(void);
-+bool misaligned_traps_can_delegate(void);
- DECLARE_PER_CPU(long, misaligned_access_speed);
- #else
- static inline bool unaligned_ctl_available(void)
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index 55d9f3450398..3eecc2addc41 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -206,6 +206,11 @@ enum misaligned_access_type {
+ static void do_trap_misaligned(struct pt_regs *regs, enum misaligned_access_type type)
  {
- 	return false;
- }
-+static inline bool misaligned_traps_can_delegate(void)
-+{
-+	return false;
-+}
- #endif
- 
- bool check_vector_unaligned_access_emulated_all_cpus(void);
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 7d6185deea33..1d523cf96ff0 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -716,6 +716,8 @@ static int cpu_online_check_unaligned_access_emulated(unsigned int cpu)
- }
- #endif
- 
-+static bool misaligned_traps_delegated;
+ 	irqentry_state_t state = irqentry_enter(regs);
++	bool enable_irqs = !regs_irqs_disabled(regs);
 +
- #ifdef CONFIG_RISCV_SBI
++	/* Enable interrupts if they were enabled in the interrupted context. */
++	if (enable_irqs)
++		local_irq_enable();
  
- struct misaligned_deleg_req {
-@@ -732,8 +734,6 @@ static int sbi_request_unaligned_delegation(void)
- 	return sbi_err_map_linux_errno(ret.error);
- }
+ 	if (type ==  MISALIGNED_LOAD) {
+ 		if (handle_misaligned_load(regs))
+@@ -217,6 +222,9 @@ static void do_trap_misaligned(struct pt_regs *regs, enum misaligned_access_type
+ 				      "Oops - store (or AMO) address misaligned");
+ 	}
  
--static bool misaligned_traps_delegated;
--
- static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
- {
- 	if (sbi_request_unaligned_delegation() && misaligned_traps_delegated) {
-@@ -782,6 +782,7 @@ static int cpu_online_sbi_unaligned_setup(unsigned int cpu __always_unused)
- {
- 	return 0;
- }
++	if (enable_irqs)
++		local_irq_disable();
 +
- #endif
- 
- int cpu_online_unaligned_access_init(unsigned int cpu)
-@@ -792,3 +793,15 @@ int cpu_online_unaligned_access_init(unsigned int cpu)
- 
- 	return cpu_online_check_unaligned_access_emulated(cpu);
+ 	irqentry_exit(regs, state);
  }
-+
-+bool misaligned_traps_can_delegate(void)
-+{
-+	/*
-+	 * Either we successfully requested misaligned traps delegation for all
-+	 * CPUS or the SBI does not implemented FWFT extension but delegated the
-+	 * exception by default.
-+	 */
-+	return misaligned_traps_delegated ||
-+	       all_cpus_unaligned_scalar_access_emulated();
-+}
-+EXPORT_SYMBOL_GPL(misaligned_traps_can_delegate);
-\ No newline at end of file
+ 
 -- 
 2.47.2
 
