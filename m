@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15771F4639;
-	Mon, 10 Feb 2025 18:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80F52580CF;
+	Mon, 10 Feb 2025 18:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739212921; cv=none; b=BGKQWBq+SyZhadKBdspto4YmY0z4IEr+GW4dS9TuWqF+hz/X8JPJ0bD3seSDQmH661qxO8pqIILYojyzfDxsMnIPrFtHE7n7ji42nvyqScCccPyv/1yY6Vt3EKTr4vTk8wfOfpb7C5BfAJAwdg7Z/cmUf4K0COpC9gnvkftSspo=
+	t=1739212921; cv=none; b=Xp6TSWhRd4JtMIaUh+XcZqQ77J1b8IA/A9j8McBQBPb6iwBvoPyH5qEhnPVi6b9LsCAtLjnhTHxHVinLcA8omjHR3Uto5AF3nAVcEJVZPy2yXPxy2a3iFeYKFKhlqSmMQIGzcDfAtbHY99j6gAlLjOgIJG6ks2rLCvf8GV5ekC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739212921; c=relaxed/simple;
-	bh=LBhMAoSTvoszfWJXdD38bJcBWVL2ZZN33sSHGe7TcMo=;
+	bh=JoVlWRgVnY+j9LNB7Hewwr7ScankrSkCZVdzMJAowdw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=crnpM24QnAgr+hMutNQsR2ae85A7Vvrlc6MIZPGrujOwPdHsuV51pDRNRHZAujbNnAW/GXNhHHebbqNk1A4RcSh9JU5ogIqJ2Du7jjKHq4LkYE5OlZefj6dOiTg1Vl47n/fKyJ/DiHw9VH+aMQSMojYJ6UJ4y9fPZqfxqqVBux4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XByF0I4t; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=PHVybTnoOmTNCzvrnZfGptb+widxAU/R4G4rXZJAR5ijMSW7vAa6kbyWayOEBnQnQR6cWxM1aHQtNE/YlFPZ9AY8yAZRwuRmOheOgVl1dmgJPgfllAEw7vw8+W78ogVu7Nv0bzopiFvCBdZ6SIIeqknVgu9JsqvbBKusV3eUce8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRVtVYcD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XByF0I4t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F9AC4CEE4;
-	Mon, 10 Feb 2025 18:42:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRVtVYcD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12052C4CED1;
+	Mon, 10 Feb 2025 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739212920;
-	bh=LBhMAoSTvoszfWJXdD38bJcBWVL2ZZN33sSHGe7TcMo=;
+	s=k20201202; t=1739212921;
+	bh=JoVlWRgVnY+j9LNB7Hewwr7ScankrSkCZVdzMJAowdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XByF0I4tRIAVss43HkQ/y7gYcB3nO1fiwJWEdkoiJ33THdXyahtUVlhGH2HCTM9rc
-	 p2nDr9h9LF3BTdi4BVTs4WXf26eEmvVDOrOubxUr6Xl3gYZ+AlPVxgwosajLBSJDa1
-	 xAJG2LDl1PU582/nbf67j8lCZVtv3W/vJfhnvjuETWxojR8Za4QyRc7l1IwU00VYx4
-	 Zqw8RWiqBKS8yfPpHTvNB/rLiXC7LrZZ/y57+zGu2teXZ1RrfcvPgIKrEm2JEVSL6A
-	 yOvb25ZKq0dOwVBiiA/dEx4QVTt1XmV88rl6f17JZNqc2mU9GYFFfMnvkxfLEU4Gzi
-	 1Pdsv67XA7fxg==
+	b=FRVtVYcDoe5z4kQ62EbJ8KMf2Y5SiHgvBE9s48t3SWrALqE+az43AjJC5fmKN8tti
+	 PmHNR3cTocCL6/Vrbcr9ZySjDpYvpJCAArz5IOhZseDUNrNzp9qU8voR4sh3tecark
+	 vFHfffifTejg4BWnV/Qnaz4jkBnHFqgBiDUyV6BsWQypYjkTtVffq457C0C1RzIQyv
+	 zCAhCM8VGvROW8dOaJ+j923/l7i80Yl7PRy444kj9aT3bNNxw76tf2RYMtg9dSv0Cl
+	 ISO5IWSreYByFox7tHjvZ3y7wrE6AuA3TNr2YiYl9XkMIxBrfWhIG6W36CcTSAjSQN
+	 2xuw/QVQvInrA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1thYjG-002g2I-Ip;
-	Mon, 10 Feb 2025 18:41:58 +0000
+	id 1thYjH-002g2I-2D;
+	Mon, 10 Feb 2025 18:41:59 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH 06/18] KVM: arm64: Plug FEAT_GCS handling
-Date: Mon, 10 Feb 2025 18:41:37 +0000
-Message-Id: <20250210184150.2145093-7-maz@kernel.org>
+Subject: [PATCH 08/18] KVM: arm64: Add description of FGT bits leading to EC!=0x18
+Date: Mon, 10 Feb 2025 18:41:39 +0000
+Message-Id: <20250210184150.2145093-9-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250210184150.2145093-1-maz@kernel.org>
 References: <20250210184150.2145093-1-maz@kernel.org>
@@ -60,64 +60,78 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-We don't seem to be handling the GCS-specific exception class.
-Handle it by delivering an UNDEF to the guest, and populate the
-relevant trap bits.
+The current FTP tables are only concerned with the bits generating
+ESR_ELx.EC==0x18. However, we want an exhaustive view of what KVM
+really knows about.
+
+So let's add another small table that provides that extra information.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/handle_exit.c | 11 +++++++++++
- arch/arm64/kvm/sys_regs.c    |  8 ++++++++
- 2 files changed, 19 insertions(+)
+ arch/arm64/kvm/emulate-nested.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
-index 4f8354bf7dc5f..624a78a99e38a 100644
---- a/arch/arm64/kvm/handle_exit.c
-+++ b/arch/arm64/kvm/handle_exit.c
-@@ -294,6 +294,16 @@ static int handle_svc(struct kvm_vcpu *vcpu)
- 	return 1;
- }
- 
-+static int kvm_handle_gcs(struct kvm_vcpu *vcpu)
-+{
-+	/* We don't expect GCS, so treat it with contempt */
-+	if (kvm_has_feat(vcpu->kvm, ID_AA64PFR1_EL1, GCS, IMP))
-+		WARN_ON_ONCE(1);
-+
-+	kvm_inject_undefined(vcpu);
-+	return 1;
-+}
-+
- static int handle_ls64b(struct kvm_vcpu *vcpu)
- {
- 	struct kvm *kvm = vcpu->kvm;
-@@ -384,6 +394,7 @@ static exit_handle_fn arm_exit_handlers[] = {
- 	[ESR_ELx_EC_BRK64]	= kvm_handle_guest_debug,
- 	[ESR_ELx_EC_FP_ASIMD]	= kvm_handle_fpasimd,
- 	[ESR_ELx_EC_PAC]	= kvm_handle_ptrauth,
-+	[ESR_ELx_EC_GCS]	= kvm_handle_gcs,
+diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
+index bbfe89c37a86e..4f468759268c0 100644
+--- a/arch/arm64/kvm/emulate-nested.c
++++ b/arch/arm64/kvm/emulate-nested.c
+@@ -1279,16 +1279,21 @@ enum fg_filter_id {
+ 	__NR_FG_FILTER_IDS__
  };
  
- static exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu)
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 18721c773475d..2ecd0d51a2dae 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5056,6 +5056,14 @@ void kvm_calculate_traps(struct kvm_vcpu *vcpu)
- 						HFGITR_EL2_nBRBIALL);
+-#define SR_FGF(sr, g, b, p, f)					\
+-	{							\
+-		.encoding	= sr,				\
+-		.end		= sr,				\
+-		.tc		= {				\
++#define __FGT(g, b, p, f)					\
++		{						\
+ 			.fgt = g ## _GROUP,			\
+ 			.bit = g ## _EL2_ ## b ## _SHIFT,	\
+ 			.pol = p,				\
+ 			.fgf = f,				\
+-		},						\
++		}
++
++#define FGT(g, b, p)		__FGT(g, b, p, __NO_FGF__)
++
++#define SR_FGF(sr, g, b, p, f)					\
++	{							\
++		.encoding	= sr,				\
++		.end		= sr,				\
++		.tc		= __FGT(g, b, p, f),		\
+ 		.line = __LINE__,				\
  	}
  
-+	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, GCS, IMP)) {
-+		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nGCS_EL0 |
-+						HFGxTR_EL2_nGCS_EL1);
-+		kvm->arch.fgu[HFGITR_GROUP] |= (HFGITR_EL2_nGCSPUSHM_EL1 |
-+						HFGITR_EL2_nGCSSTR_EL1 |
-+						HFGITR_EL2_nGCSEPP);
+@@ -1989,6 +1994,14 @@ static const struct encoding_to_trap_config encoding_to_fgt[] __initconst = {
+ 	SR_FGT(SYS_AMEVCNTR0_EL0(0),	HAFGRTR, AMEVCNTR00_EL0, 1),
+ };
+ 
++/* Additional FGTs that do not fire with ESR_EL2.EC==0x18 */
++static const union trap_config non_0x18_fgt[] __initconst = {
++	FGT(HFGITR, nGCSSTR_EL1, 0),
++	FGT(HFGITR, SVC_EL1, 1),
++	FGT(HFGITR, SVC_EL0, 1),
++	FGT(HFGITR, ERET, 1),
++};
++
+ static union trap_config get_trap_config(u32 sysreg)
+ {
+ 	return (union trap_config) {
+@@ -2199,6 +2212,13 @@ int __init populate_nv_trap_config(void)
+ 		}
+ 	}
+ 
++	for (int i = 0; i < ARRAY_SIZE(non_0x18_fgt); i++) {
++		if (!aggregate_fgt(non_0x18_fgt[i])) {
++			ret = -EINVAL;
++			kvm_err("non_0x18_fgt[%d] is reserved\n", i);
++		}
 +	}
 +
- 	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
- out:
- 	mutex_unlock(&kvm->arch.config_lock);
+ 	ret = check_all_fgt_masks(ret);
+ 
+ 	kvm_info("nv: %ld fine grained trap handlers\n",
 -- 
 2.39.2
 
