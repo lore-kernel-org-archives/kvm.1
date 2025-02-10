@@ -1,60 +1,62 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A7024C68A
-	for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 21:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E104424CEDC
+	for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 21:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739223368; cv=none; b=fvL9a/djfa3sBLgRhz4/3s7jjQ2BrQdmp94HufU3T1LQS12eGRddnnigg7TRFkOw8Sin3PZ+oQZUSd4p9wdbO11pHQ6FqToGHOjIVDfnNpUVhMGWUgeUsGne9cVZhjUNh9faIzh6YD0PUptCDE+/iiiVOeCI8tdQDwNFSt7xaOY=
+	t=1739223370; cv=none; b=MBZ93ckQQcwNgfm3t0sa7ltP9vGb/uVbl546XYbCQcuksVrgLD3ZKPumyfj5rercyqQVVhnC0arpyDAvg/pVJuE7s8E2VMMzDScDlbVbFKwaL1o+xuJKQC+HU81YjzWDFwViRIhocbGP5ArMiKvm9XNNgjkWadtKf5NfcFLR4rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739223368; c=relaxed/simple;
-	bh=jEkz+QiOaYAp2NfnlBujqXjuCX/+tViBFGDnVxkoxC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H9+DGwfOTr9m2jzxVbOnvACUXNjSjdp8d3q74R5rpmHbhHg19+oZHGVhbCQu3Udiln2YRMr/dxC8edhJqd3/90YOsai1DQ23PuLRSY9cfCEKZ7CKngcR+Q4iMwYrlwa3YOoymDBtSssBePSUsFICwsjeUbovdjjc29lnAEZkeC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=IOYvdsU7; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1739223370; c=relaxed/simple;
+	bh=FpB5O8tTVYsJf4s/U7ogtYS7K3aviElxXOMssz8eUCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jOJ2zT5NrixLRd2X/zgvJ8Ga5zPONO/sZTy/R4v6WAZxhCh355cFAFq6++K7yRS/fpkc/U+AKlCgNRu2BsUivbp/4UTRFwwnXugH3gTmhQQnZAYfUPPQkC9wOe939zQpsXls2pTOu+v9SRxpWd9qz6/xoRzrWZTg1wB8ceFiZi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=tZ+JjSQA; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="IOYvdsU7"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a39e659cso33490295e9.2
-        for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 13:36:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="tZ+JjSQA"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-439473da55aso8262945e9.2
+        for <kvm@vger.kernel.org>; Mon, 10 Feb 2025 13:36:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1739223363; x=1739828163; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6yU4FXNF/aJSJZFUWClLEZsdkRc6GvSutSyHshCkXTg=;
-        b=IOYvdsU7o1daVRWPRJIkDlbnwjPe7RxQ5oZRSKAlxgxeDXGTAy/QIanfvFP39UQsVy
-         mVjSkslH4g5au9cbxigEMh4s0L43szU6FD/IpT/RETK+MMQHfdVWJjoV6f8aXpQb/EHm
-         AOx5JOrDEbwEPefTDr5qHGTG0dIow0HEoT6O06laK2EhyTT/8qYuOXANYyBpyhn6YP1Q
-         /031nuuqcJlIp+refzQU2t6DHwm8uoSciQSHPfg7K3MEJNribRHz37/Ag4Sw2pAvXglX
-         7mit9sPEtP/ddrhcuXfTx53NkB9Qiw/W7asL9NpCKody4j80PziEycDmsPXCpKkkWnn4
-         aNag==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1739223366; x=1739828166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t9JWUPguvJXyATshOaEX8SYplIWPzd3JQCRzjjvJvmU=;
+        b=tZ+JjSQA+Ap6lIB85/I7ByYMIbZ+WtVNR8gDiU8JDzHacv0HnyWiJNBFkp0+sUHEuP
+         jGADN5Ewf4zrMTiWKBetNqVgqywQbW9etDsn0ka8IzjnhtDp8Yd7vVrvccBYLypEiti1
+         +AsdvZfm0HisZW4VcHdbJ3ffUoii08xZAw5ruW+9oRe7TspsTFFOhc4W3tMKfUU6QrQ1
+         EaXikjnTQOr5ZGWrw8Olq9XlQThD9+YyioCfma7Sls2yBMMrg2YSAz2jt4Hb/CYiPkjM
+         CHrPwut7vvCAsHJuGwUxlwSn0Q/9vM7WD2mWqgC78kYofbsVs7uJ0glN2sl9ayWUfW1a
+         G3yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739223363; x=1739828163;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6yU4FXNF/aJSJZFUWClLEZsdkRc6GvSutSyHshCkXTg=;
-        b=lXqmOIKbKHoUtEiNaW7d2pGlvejjkpCuFLJTspz48yFbLJG99y60Hvq4iUj8wXcaNP
-         mrKUG0fVyyg/mI5ojU75d9wp5Hc7S7mhve1M3gqnsrgNNOzBWKvqnP2/Lr+nt1gtPD8h
-         T5AxJ4reymRHv4Vdwzq4konTdetyws6jFrj1HF24L7Zg19HKuxXHon4V/NQ0kr/YSTuI
-         G59thS8JohmEWqLKiRC4b/796FMY+8wd7/o5csXjbVm7gHqi39NxV9QszmXeaUi/Jg9e
-         GsfHovIDlHelSMGJi56x4hlUa/7gejTUwiPs1AW2VmcfxavKdZpqGyYlZuhZvdMkkmPA
-         yyEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVT76myYct3/Vkn5IPme5cyay4ZOkYKg7sBoQlZONVeUbauOqEl0BkFGYl1LgJnFzzKV+0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznFZ+s2W94g1bVnkNEv5/2FukxGWi80gh7256NSFb2ILczlrqS
-	7GbuCPxlvNwBoce1SWoteKbG3IWyscDXkV0tqyb/DKaJzlkPP18dDtzjgskYgng=
-X-Gm-Gg: ASbGncteYM0dotaSei//4pNxt7sNKpRNyJybxq7nJoVfMM484QZ5EHaH1vkIG1l+xMB
-	TbD9NRUNtF6QgC8dB6hkAGfvOIOxeWscolehNrrKpmo+hKsj6yjqOCCJrEPYe9ILKW4Tok4Zojt
-	qrl52/ksV6zAU8/k9CdLOUBw9QW6r6cJMqb3VgaNN9kBgl0w2HKadrBglr2dnqpuf1d/+aB0LGz
-	wDRUHntVBMcRil7VjlP79lW8T80Ytl7191M8R/dFrob5OPUv8gQSU+LUmwScAT+HlPJeGDyN6SB
-	Je7AUvaG4ayhu20z
-X-Google-Smtp-Source: AGHT+IFdcS4HQCNhje+KNC3N8lAKJy2LPgA9t1uWAzjtM8uA+e8s58Wwe4c6e5iEnxu0WhpQbc7aeg==
-X-Received: by 2002:a05:600c:56d0:b0:434:9c1b:b36a with SMTP id 5b1f17b1804b1-4392dfbd5d8mr96573665e9.13.1739223363313;
-        Mon, 10 Feb 2025 13:36:03 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739223366; x=1739828166;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t9JWUPguvJXyATshOaEX8SYplIWPzd3JQCRzjjvJvmU=;
+        b=R+b0aDvejvmPNdmon5xjfcgl59OG3WDf/UYBW5F1HvcqxWCDbP4Yeioo7zlciJQhYy
+         jOcXBfqS3HVHkdiMI7KmqLr0lqdfhSkLIMBYBbJAXXnHmPUS7BhvueBH1UDNG9vjHNMv
+         u4//S1r/oI8TqKgDB0HzpsqKjsu41Hh22HCJLybvJuTY4ubWJj+HfUlYDDnxXWjpMu3S
+         nbsbuJ21tQUsS0O4UMnF1yllYHgSHGVa/nq89bPS/xLrQxZNMCMLAH22pBSrhDnKTD6N
+         UlLVkHQx+E3xyQ/pTpclVC0bxUe+nNeajSQEktHnnzbFQjQuzhWi1DsMIZYhVpH5YDUG
+         0Tjg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtrMShCuT8MaUMzaDfnNsjkHdvYdmwO6wryQvxaxypcIes0YKpYZVjg3oHam/tlKYgIYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAMGelqL7rz3BY1xHzgHYqG6638yzuq6gqTUVfDssskjkvbm19
+	Aoih56If4jxYEKf9cb2Lj/vMRLWQm9RS7wkXk+kfMf1dxR7AEr4t4C2a0F1+HBQ=
+X-Gm-Gg: ASbGncuIY/ftRkIcsASnLmUS2eqdM3uTe1iL+cUpTFVhUudKvNPwGxmKV8kshMwPuvK
+	I33NURubjuldtS0TwzwJ+LsjhoDu9mBcUrDJP3xE0WQyQZjM4gaBkXBHMYzfaiy9JLv8+lXabq1
+	lNtmzYZG2DJPEkG/zOVENs8c7xBJC/ubiENXUj0Jz5TOdNY0gFLWBwnR8E3O2Qijdq4TrK7EB1p
+	35OI++X0og5SQiKkv74tneC+0mLYRE2t2E+/hUZ4zH9/4I/mFfG8X0QncoYp7xvoi0mHTTF3d9f
+	BnQgm+BLxpFqr5DZ
+X-Google-Smtp-Source: AGHT+IFCUBo5ZJUEfRAM++W2IWKipAW2usGjFmvIL0zfj471rainYZRPFDdB0RmyHu2I/2e1UVroug==
+X-Received: by 2002:a05:600c:1d86:b0:439:4499:54de with SMTP id 5b1f17b1804b1-439449955c6mr51321255e9.31.1739223365934;
+        Mon, 10 Feb 2025 13:36:05 -0800 (PST)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394376118esm47541515e9.40.2025.02.10.13.36.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394376118esm47541515e9.40.2025.02.10.13.36.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 13:36:02 -0800 (PST)
+        Mon, 10 Feb 2025 13:36:05 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
@@ -70,10 +72,12 @@ To: Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-kselftest@vger.kernel.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
 	Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH v2 00/15] riscv: add SBI FWFT misaligned exception delegation support
-Date: Mon, 10 Feb 2025 22:35:33 +0100
-Message-ID: <20250210213549.1867704-1-cleger@rivosinc.com>
+Subject: [PATCH v2 02/15] riscv: misaligned: request misaligned exception from SBI
+Date: Mon, 10 Feb 2025 22:35:35 +0100
+Message-ID: <20250210213549.1867704-3-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250210213549.1867704-1-cleger@rivosinc.com>
+References: <20250210213549.1867704-1-cleger@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,218 +87,201 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The SBI Firmware Feature extension allows the S-mode to request some
-specific features (either hardware or software) to be enabled. This
-series uses this extension to request misaligned access exception
-delegation to S-mode in order to let the kernel handle it. It also adds
-support for the KVM FWFT SBI extension based on the misaligned access
-handling infrastructure.
+Now that the kernel can handle misaligned accesses in S-mode, request
+misaligned access exception delegation from SBI. This uses the FWFT SBI
+extension defined in SBI version 3.0.
 
-FWFT SBI extension is part of the SBI V3.0 specifications [1]. It can be
-tested using the qemu provided at [2] which contains the series from
-[3]. kvm-unit-tests [4] can be used inside kvm to tests the correct
-delegation of misaligned exceptions. Upstream OpenSBI can be used.
-
-The tests can be run using the included kselftest:
-
-$ qemu-system-riscv64 \
-	-cpu rv64,trap-misaligned-access=true,v=true \
-	-M virt \
-	-m 1024M \
-	-bios fw_dynamic.bin \
-	-kernel Image
- ...
-
- # ./misaligned
- TAP version 13
- 1..23
- # Starting 23 tests from 1 test cases.
- #  RUN           global.gp_load_lh ...
- #            OK  global.gp_load_lh
- ok 1 global.gp_load_lh
- #  RUN           global.gp_load_lhu ...
- #            OK  global.gp_load_lhu
- ok 2 global.gp_load_lhu
- #  RUN           global.gp_load_lw ...
- #            OK  global.gp_load_lw
- ok 3 global.gp_load_lw
- #  RUN           global.gp_load_lwu ...
- #            OK  global.gp_load_lwu
- ok 4 global.gp_load_lwu
- #  RUN           global.gp_load_ld ...
- #            OK  global.gp_load_ld
- ok 5 global.gp_load_ld
- #  RUN           global.gp_load_c_lw ...
- #            OK  global.gp_load_c_lw
- ok 6 global.gp_load_c_lw
- #  RUN           global.gp_load_c_ld ...
- #            OK  global.gp_load_c_ld
- ok 7 global.gp_load_c_ld
- #  RUN           global.gp_load_c_ldsp ...
- #            OK  global.gp_load_c_ldsp
- ok 8 global.gp_load_c_ldsp
- #  RUN           global.gp_load_sh ...
- #            OK  global.gp_load_sh
- ok 9 global.gp_load_sh
- #  RUN           global.gp_load_sw ...
- #            OK  global.gp_load_sw
- ok 10 global.gp_load_sw
- #  RUN           global.gp_load_sd ...
- #            OK  global.gp_load_sd
- ok 11 global.gp_load_sd
- #  RUN           global.gp_load_c_sw ...
- #            OK  global.gp_load_c_sw
- ok 12 global.gp_load_c_sw
- #  RUN           global.gp_load_c_sd ...
- #            OK  global.gp_load_c_sd
- ok 13 global.gp_load_c_sd
- #  RUN           global.gp_load_c_sdsp ...
- #            OK  global.gp_load_c_sdsp
- ok 14 global.gp_load_c_sdsp
- #  RUN           global.fpu_load_flw ...
- #            OK  global.fpu_load_flw
- ok 15 global.fpu_load_flw
- #  RUN           global.fpu_load_fld ...
- #            OK  global.fpu_load_fld
- ok 16 global.fpu_load_fld
- #  RUN           global.fpu_load_c_fld ...
- #            OK  global.fpu_load_c_fld
- ok 17 global.fpu_load_c_fld
- #  RUN           global.fpu_load_c_fldsp ...
- #            OK  global.fpu_load_c_fldsp
- ok 18 global.fpu_load_c_fldsp
- #  RUN           global.fpu_store_fsw ...
- #            OK  global.fpu_store_fsw
- ok 19 global.fpu_store_fsw
- #  RUN           global.fpu_store_fsd ...
- #            OK  global.fpu_store_fsd
- ok 20 global.fpu_store_fsd
- #  RUN           global.fpu_store_c_fsd ...
- #            OK  global.fpu_store_c_fsd
- ok 21 global.fpu_store_c_fsd
- #  RUN           global.fpu_store_c_fsdsp ...
- #            OK  global.fpu_store_c_fsdsp
- ok 22 global.fpu_store_c_fsdsp
- #  RUN           global.gen_sigbus ...
- [12797.988647] misaligned[618]: unhandled signal 7 code 0x1 at 0x0000000000014dc0 in misaligned[4dc0,10000+76000]
- [12797.988990] CPU: 0 UID: 0 PID: 618 Comm: misaligned Not tainted 6.13.0-rc6-00008-g4ec4468967c9-dirty #51
- [12797.989169] Hardware name: riscv-virtio,qemu (DT)
- [12797.989264] epc : 0000000000014dc0 ra : 0000000000014d00 sp : 00007fffe165d100
- [12797.989407]  gp : 000000000008f6e8 tp : 0000000000095760 t0 : 0000000000000008
- [12797.989544]  t1 : 00000000000965d8 t2 : 000000000008e830 s0 : 00007fffe165d160
- [12797.989692]  s1 : 000000000000001a a0 : 0000000000000000 a1 : 0000000000000002
- [12797.989831]  a2 : 0000000000000000 a3 : 0000000000000000 a4 : ffffffffdeadbeef
- [12797.989964]  a5 : 000000000008ef61 a6 : 626769735f6e0000 a7 : fffffffffffff000
- [12797.990094]  s2 : 0000000000000001 s3 : 00007fffe165d838 s4 : 00007fffe165d848
- [12797.990238]  s5 : 000000000000001a s6 : 0000000000010442 s7 : 0000000000010200
- [12797.990391]  s8 : 000000000000003a s9 : 0000000000094508 s10: 0000000000000000
- [12797.990526]  s11: 0000555567460668 t3 : 00007fffe165d070 t4 : 00000000000965d0
- [12797.990656]  t5 : fefefefefefefeff t6 : 0000000000000073
- [12797.990756] status: 0000000200004020 badaddr: 000000000008ef61 cause: 0000000000000006
- [12797.990911] Code: 8793 8791 3423 fcf4 3783 fc84 c737 dead 0713 eef7 (c398) 0001
- #            OK  global.gen_sigbus
- ok 23 global.gen_sigbus
- # PASSED: 23 / 23 tests passed.
- # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-With kvm-tools:
-
- # lkvm run -k sbi.flat -m 128
-  Info: # lkvm run -k sbi.flat -m 128 -c 1 --name guest-97
-  Info: Removed ghost socket file "/root/.lkvm//guest-97.sock".
-
- ##########################################################################
- #    kvm-unit-tests
- ##########################################################################
-
- ... [test messages elided]
- PASS: sbi: fwft: FWFT extension probing no error
- PASS: sbi: fwft: get/set reserved feature 0x6 error == SBI_ERR_DENIED
- PASS: sbi: fwft: get/set reserved feature 0x3fffffff error == SBI_ERR_DENIED
- PASS: sbi: fwft: get/set reserved feature 0x80000000 error == SBI_ERR_DENIED
- PASS: sbi: fwft: get/set reserved feature 0xbfffffff error == SBI_ERR_DENIED
- PASS: sbi: fwft: misaligned_deleg: Get misaligned deleg feature no error
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature invalid value error
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature invalid value error
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature value no error
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature value 0
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature value no error
- PASS: sbi: fwft: misaligned_deleg: Set misaligned deleg feature value 1
- PASS: sbi: fwft: misaligned_deleg: Verify misaligned load exception trap in supervisor
- SUMMARY: 50 tests, 2 unexpected failures, 12 skipped
-
-This series is available at [6].
-
-Link: https://github.com/riscv-non-isa/riscv-sbi-doc/releases/download/vv3.0-rc2/riscv-sbi.pdf [1]
-Link: https://github.com/rivosinc/qemu/tree/dev/cleger/misaligned [2]
-Link: https://lore.kernel.org/all/20241211211933.198792-3-fkonrad@amd.com/T/ [3]
-Link: https://github.com/clementleger/kvm-unit-tests/tree/dev/cleger/fwft_v1 [4]
-Link: https://github.com/clementleger/unaligned_test [5]
-Link: https://github.com/rivosinc/linux/tree/dev/cleger/fwft_v1 [6]
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
 ---
+ arch/riscv/include/asm/cpufeature.h        |  3 +-
+ arch/riscv/kernel/traps_misaligned.c       | 96 +++++++++++++++++++++-
+ arch/riscv/kernel/unaligned_access_speed.c | 11 ++-
+ 3 files changed, 105 insertions(+), 5 deletions(-)
 
-V2:
- - Added Kselftest for misaligned testing
- - Added get_user() usage instead of __get_user()
- - Reenable interrupt when possible in misaligned access handling
- - Document that riscv supports unaligned-traps
- - Fix KVM extension state when an init function is present
- - Rework SBI misaligned accesses trap delegation code
- - Added support for CPU hotplugging
- - Added KVM SBI reset callback
- - Added reset for KVM SBI FWFT lock
- - Return SBI_ERR_DENIED_LOCKED when LOCK flag is set
-
-Clément Léger (15):
-  riscv: add Firmware Feature (FWFT) SBI extensions definitions
-  riscv: misaligned: request misaligned exception from SBI
-  riscv: misaligned: use on_each_cpu() for scalar misaligned access
-    probing
-  riscv: misaligned: use correct CONFIG_ ifdef for
-    misaligned_access_speed
-  riscv: misaligned: move emulated access uniformity check in a function
-  riscv: misaligned: add a function to check misalign trap delegability
-  riscv: misaligned: factorize trap handling
-  riscv: misaligned: enable IRQs while handling misaligned accesses
-  riscv: misaligned: use get_user() instead of __get_user()
-  Documentation/sysctl: add riscv to unaligned-trap supported archs
-  selftests: riscv: add misaligned access testing
-  RISC-V: KVM: add SBI extension init()/deinit() functions
-  RISC-V: KVM: add SBI extension reset callback
-  RISC-V: KVM: add support for FWFT SBI extension
-  RISC-V: KVM: add support for SBI_FWFT_MISALIGNED_DELEG
-
- Documentation/admin-guide/sysctl/kernel.rst   |   4 +-
- arch/riscv/include/asm/cpufeature.h           |   8 +-
- arch/riscv/include/asm/kvm_host.h             |   5 +-
- arch/riscv/include/asm/kvm_vcpu_sbi.h         |  12 +
- arch/riscv/include/asm/kvm_vcpu_sbi_fwft.h    |  37 +++
- arch/riscv/include/asm/sbi.h                  |  33 +++
- arch/riscv/include/uapi/asm/kvm.h             |   1 +
- arch/riscv/kernel/traps.c                     |  57 ++--
- arch/riscv/kernel/traps_misaligned.c          | 138 +++++++++-
- arch/riscv/kernel/unaligned_access_speed.c    |  11 +-
- arch/riscv/kvm/Makefile                       |   1 +
- arch/riscv/kvm/vcpu.c                         |   7 +-
- arch/riscv/kvm/vcpu_sbi.c                     |  58 ++++
- arch/riscv/kvm/vcpu_sbi_fwft.c                | 226 ++++++++++++++++
- arch/riscv/kvm/vcpu_sbi_sta.c                 |   3 +-
- .../selftests/riscv/misaligned/.gitignore     |   1 +
- .../selftests/riscv/misaligned/Makefile       |  12 +
- .../selftests/riscv/misaligned/common.S       |  33 +++
- .../testing/selftests/riscv/misaligned/fpu.S  | 180 +++++++++++++
- tools/testing/selftests/riscv/misaligned/gp.S | 103 +++++++
- .../selftests/riscv/misaligned/misaligned.c   | 254 ++++++++++++++++++
- 21 files changed, 1137 insertions(+), 47 deletions(-)
- create mode 100644 arch/riscv/include/asm/kvm_vcpu_sbi_fwft.h
- create mode 100644 arch/riscv/kvm/vcpu_sbi_fwft.c
- create mode 100644 tools/testing/selftests/riscv/misaligned/.gitignore
- create mode 100644 tools/testing/selftests/riscv/misaligned/Makefile
- create mode 100644 tools/testing/selftests/riscv/misaligned/common.S
- create mode 100644 tools/testing/selftests/riscv/misaligned/fpu.S
- create mode 100644 tools/testing/selftests/riscv/misaligned/gp.S
- create mode 100644 tools/testing/selftests/riscv/misaligned/misaligned.c
-
+diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+index 569140d6e639..ad7d26788e6a 100644
+--- a/arch/riscv/include/asm/cpufeature.h
++++ b/arch/riscv/include/asm/cpufeature.h
+@@ -64,8 +64,9 @@ void __init riscv_user_isa_enable(void);
+ 	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), _validate)
+ 
+ bool check_unaligned_access_emulated_all_cpus(void);
++void unaligned_access_init(void);
++int cpu_online_unaligned_access_init(unsigned int cpu);
+ #if defined(CONFIG_RISCV_SCALAR_MISALIGNED)
+-void check_unaligned_access_emulated(struct work_struct *work __always_unused);
+ void unaligned_emulation_finish(void);
+ bool unaligned_ctl_available(void);
+ DECLARE_PER_CPU(long, misaligned_access_speed);
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 7cc108aed74e..66eef398bad4 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -16,6 +16,7 @@
+ #include <asm/entry-common.h>
+ #include <asm/hwprobe.h>
+ #include <asm/cpufeature.h>
++#include <asm/sbi.h>
+ #include <asm/vector.h>
+ 
+ #define INSN_MATCH_LB			0x3
+@@ -635,7 +636,7 @@ bool check_vector_unaligned_access_emulated_all_cpus(void)
+ 
+ static bool unaligned_ctl __read_mostly;
+ 
+-void check_unaligned_access_emulated(struct work_struct *work __always_unused)
++static void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+ {
+ 	int cpu = smp_processor_id();
+ 	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
+@@ -646,6 +647,13 @@ void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+ 	__asm__ __volatile__ (
+ 		"       "REG_L" %[tmp], 1(%[ptr])\n"
+ 		: [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
++}
++
++static int cpu_online_check_unaligned_access_emulated(unsigned int cpu)
++{
++	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
++
++	check_unaligned_access_emulated(NULL);
+ 
+ 	/*
+ 	 * If unaligned_ctl is already set, this means that we detected that all
+@@ -654,9 +662,10 @@ void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+ 	 */
+ 	if (unlikely(unaligned_ctl && (*mas_ptr != RISCV_HWPROBE_MISALIGNED_SCALAR_EMULATED))) {
+ 		pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
+-		while (true)
+-			cpu_relax();
++		return -EINVAL;
+ 	}
++
++	return 0;
+ }
+ 
+ bool check_unaligned_access_emulated_all_cpus(void)
+@@ -688,4 +697,85 @@ bool check_unaligned_access_emulated_all_cpus(void)
+ {
+ 	return false;
+ }
++static int cpu_online_check_unaligned_access_emulated(unsigned int cpu)
++{
++	return 0;
++}
+ #endif
++
++#ifdef CONFIG_RISCV_SBI
++
++struct misaligned_deleg_req {
++	atomic_t error;
++};
++
++static int sbi_request_unaligned_delegation(void)
++{
++	struct sbiret ret;
++
++	ret = sbi_ecall(SBI_EXT_FWFT, SBI_EXT_FWFT_SET,
++			SBI_FWFT_MISALIGNED_EXC_DELEG, 1, 0, 0, 0, 0);
++
++	return sbi_err_map_linux_errno(ret.error);
++}
++
++static bool misaligned_traps_delegated;
++
++static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
++{
++	if (sbi_request_unaligned_delegation() && misaligned_traps_delegated) {
++		pr_crit("Misaligned trap delegation non homogeneous (expected delegated)");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static void
++cpu_unaligned_sbi_request_delegation(void *arg)
++{
++	struct misaligned_deleg_req *req = arg;
++
++	if (sbi_request_unaligned_delegation())
++		atomic_set(&req->error, 1);
++}
++
++static void unaligned_sbi_request_delegation(void)
++{
++	struct misaligned_deleg_req req = {.error = ATOMIC_INIT(0)};
++
++	on_each_cpu(cpu_unaligned_sbi_request_delegation, &req, 1);
++	if (atomic_read(&req.error) == 0) {
++		pr_info("SBI misaligned access exception delegation ok\n");
++		misaligned_traps_delegated = true;
++		/*
++		 * Note that we don't have to take any specific action here, if
++		 * the delegation is successful, then
++		 * check_unaligned_access_emulated() will verify that indeed the
++		 * platform traps on misaligned accesses.
++		 */
++	}
++}
++
++void unaligned_access_init(void)
++{
++	if (sbi_probe_extension(SBI_EXT_FWFT) > 0)
++		unaligned_sbi_request_delegation();
++}
++#else
++void unaligned_access_init(void) {}
++
++static int cpu_online_sbi_unaligned_setup(unsigned int cpu __always_unused)
++{
++	return 0;
++}
++#endif
++
++int cpu_online_unaligned_access_init(unsigned int cpu)
++{
++	int ret = cpu_online_sbi_unaligned_setup(cpu);
++	if (ret)
++		return ret;
++
++	return cpu_online_check_unaligned_access_emulated(cpu);
++}
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 91f189cf1611..2f3aba073297 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -188,13 +188,20 @@ arch_initcall_sync(lock_and_set_unaligned_access_static_branch);
+ 
+ static int riscv_online_cpu(unsigned int cpu)
+ {
++	int ret;
+ 	static struct page *buf;
+ 
+ 	/* We are already set since the last check */
+ 	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
+ 		goto exit;
+ 
+-	check_unaligned_access_emulated(NULL);
++	ret = cpu_online_unaligned_access_init(cpu);
++	if (ret)
++		return ret;
++
++	if (per_cpu(misaligned_access_speed, cpu) == RISCV_HWPROBE_MISALIGNED_SCALAR_EMULATED)
++		goto exit;
++
+ 	buf = alloc_pages(GFP_KERNEL, MISALIGNED_BUFFER_ORDER);
+ 	if (!buf) {
+ 		pr_warn("Allocation failure, not measuring misaligned performance\n");
+@@ -403,6 +410,8 @@ static int check_unaligned_access_all_cpus(void)
+ {
+ 	bool all_cpus_emulated, all_cpus_vec_unsupported;
+ 
++	unaligned_access_init();
++
+ 	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
+ 	all_cpus_vec_unsupported = check_vector_unaligned_access_emulated_all_cpus();
+ 
 -- 
 2.47.2
 
