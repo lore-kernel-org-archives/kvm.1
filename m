@@ -1,127 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C9F24C671;
-	Tue, 11 Feb 2025 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B81250BE4;
+	Tue, 11 Feb 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739284666; cv=none; b=ZP+qNOFYop543TxWoASTJksR3hGgg+rte3o1qSh5EwR710CdwrTjxE5NGly6GGxh4KD9KqkeuKDJra60zS90nQ7UANGcgpHjBAOoD6PM6d6WTFGI3/oXZeSMHsBaM0a3Ahv42rDwrct7I5YXhj/DOwFRJOtFAYpMbQNwSXEkPoY=
+	t=1739284791; cv=none; b=eHCizzMVQIFI2vOXXz8pi02pXBT4cMc0lpg+xIhKnivWuhhq+PF5bz5SZD4vfLe1odCDCMnuUwMNQ63e/CfLdwcLJwF7n85WTpKk44IONOkZxk/2FCD75ReQTVHs50oHZ3ePTIivX7OcpAlzpPK06Vcsad/uDHZpkzXudlf6aOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739284666; c=relaxed/simple;
-	bh=zZUX3dcU+L2kq2852aFMoMk3aZLTjDr55brLUK+tEGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G0j9T09K0eYHAr/t3OWzE0o9r/uk9S7R9QZpzf+qShQUNSNjSYXAfVsgR1BcPy03xB35LIqSRMEsS5CaKzIjEK7Yauveb496+aOIUruF/u6cSZYXBRGP8sVr9AWreQ6sFtaV/VkRpnGgwLU/GMv+Va7sQP64D9nt/Cge6priDv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utkVcdLp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739284791; c=relaxed/simple;
+	bh=ulwfMWLqUipyPdhn0d5FcC7nI6gKuz6DeB1kG8AxMNs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DeZSFlSOA/+K7vsX/rhMT2r48RTeAUFYxkUoTm3duxKarY0oBM5o7/4ULqzNZUHdXh9Fyx7Z/VpYkAQQ4b8b4zS1SE6Lh3b9XhCeR5YRSHoHkYIYFHSLHxmLHeH5Fber3qi1pK7i/H0FLf/bFKhh4z7WK4jZMvAnf5nZ45CpwEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LP0rlXMG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utkVcdLp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B03C4CEDD;
-	Tue, 11 Feb 2025 14:37:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LP0rlXMG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9565AC4CEE7;
+	Tue, 11 Feb 2025 14:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739284665;
-	bh=zZUX3dcU+L2kq2852aFMoMk3aZLTjDr55brLUK+tEGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=utkVcdLpn7mhlzeCQlCl0e5CSJBIx+gf4u7jOBBevgdb45xMvhkBwJB+o5T9MpQTL
-	 vEwtRn3d7j8uRTqJH6W6XMArk/IA1fwUV5T95bV25LlkWM7ReXsysLWLtNaEj7//Pw
-	 Ls+AiG04rqk5FfEJgL0EPOr4FgCOl36qq5968KjCG3MeK//m7mRtx5sL+qGjEcrLUs
-	 F93GmqBVws5cymC7IBVr2rFnjT0ORoAV9r3m1ZpBZTGsFdlW8WTijxVl3jmWb/kyHK
-	 UGfgO2aHTysXes1+IaCbiklFGuv+LH6h2Fbbp9G9i9ztSO+fGEZjPwXWl1UQxtdESv
-	 Xir8rjnFJ8zdg==
-Date: Tue, 11 Feb 2025 20:07:02 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
-	Vasant Hegde <vasant.hegde@amd.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>
-Subject: Re: [PATCH 3/3] KVM: x86: Decouple APICv activation state from
- apicv_inhibit_reasons
-Message-ID: <6y4yuwuz4twz7gc6farvpuekl5ryx3sk2j6mw4howdwz42nwoo@hyecnb3nobmu>
-References: <cover.1738595289.git.naveen@kernel.org>
- <405a98c2f21b9fe73eddbc35c80b60d6523db70c.1738595289.git.naveen@kernel.org>
- <Z6EOxxZA9XLdXvrA@google.com>
- <60cef3e4-8e94-4cf1-92ae-34089e78a82d@redhat.com>
- <Z6FVaLOsPqmAPNWu@google.com>
- <uroh6wvlhfj4whlf2ull4iob6k7nr4igeplcfvax7nksav6mtf@ek5ja23dkjtn>
- <CABgObfbZYBRx96Cye9HdF=TMkrVMcGa7hJiyYZ4KY3WvbD+4nw@mail.gmail.com>
+	s=k20201202; t=1739284790;
+	bh=ulwfMWLqUipyPdhn0d5FcC7nI6gKuz6DeB1kG8AxMNs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LP0rlXMGLRh/nqMxHiNqoW3AR21kS1Fp9qT49KQsF2pUrNVejxJH0ybGchsu4V9Yn
+	 VHe7MwTywpcPkaSPnBBMiQabSecYn8rmK9ifvMqax7UvfZIllX1k3G+DHMJZ2CORpw
+	 DSMSZaLMQXgYZXT0I5S1YWLagVEwuSmwGuwlBvwZM/LdOBldlKVD5IX43ldU6FkdYv
+	 uFraiWubH/fSBDqImIWpaSHo3a9NCs99icA7CU/rq8E/8nSj9xiOSCLR6nLyjeTWnX
+	 XO4u2XtdLAoA0150ckjC0QrgS7XMaRDqAWK9QzFPLqQriAe3twjX8lLY/dN6oLj6Ib
+	 hzlYq24RdQp5Q==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso932822066b.3;
+        Tue, 11 Feb 2025 06:39:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWUonT5ooSekcBd4ZZeHyGXfRVsMskLDU9HxBL9NNdG+dHGVVhrDdyX/9RpDVLqgjFhQ3E=@vger.kernel.org, AJvYcCXBoIc+/+Ko3i9kOFwPGU7wtf67q0n8aCLZ4AyBEPCKEx20s21pr6KwSZFw0X98ECQh3Pz+V1y5A6QIHNq4@vger.kernel.org
+X-Gm-Message-State: AOJu0YyP1MKJwFkGFKIWbFX3A23JhgRPFGmp72Fq5lLkJBSeNOVVlZOT
+	hFrUA9ll5coQhdNSF4yytimKdkdRmkqDbUNJxJedTj1nGDRB1up3BtIX7vMVFVugly+VHgTwc4l
+	7ogE5ojN/iL0/jOkV9QTj2XpCD88=
+X-Google-Smtp-Source: AGHT+IGLR5ULI7gGLte0l7vRhZ2ZWqb5CWOtTbE4sI1QcMB4fXVUok//FjZVBam+puAjUPcYnE1+qzleMg68ltPCw1E=
+X-Received: by 2002:a17:907:9719:b0:ab6:e10e:2f5 with SMTP id
+ a640c23a62f3a-ab789bf6ae5mr2003093166b.37.1739284789169; Tue, 11 Feb 2025
+ 06:39:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfbZYBRx96Cye9HdF=TMkrVMcGa7hJiyYZ4KY3WvbD+4nw@mail.gmail.com>
+References: <20250211020118.3275874-1-maobibo@loongson.cn>
+In-Reply-To: <20250211020118.3275874-1-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 11 Feb 2025 22:39:38 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4w1sC93ag45Jx8B21Db4QRN3Jgtd1hqmLPEX3iCcHiWQ@mail.gmail.com>
+X-Gm-Features: AWEUYZnKR2iBOFeYKrnSINo32nx0jZbTx4gSoq7LUFeCrgBTWcFZ7G7vKb2B6iI
+Message-ID: <CAAhV-H4w1sC93ag45Jx8B21Db4QRN3Jgtd1hqmLPEX3iCcHiWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] LoongArch: KVM: Some tiny code cleanup
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 04, 2025 at 03:08:57PM +0100, Paolo Bonzini wrote:
-> On Tue, Feb 4, 2025 at 12:15 PM Naveen N Rao <naveen@kernel.org> wrote:
-> > As a separate change, I have been testing a patch that moves the
-> > PIT_REINJ inhibit from PIT creation to the point at which the guest
-> > actually programs it so that default guest configurations can utilize
-> > AVIC:
-> 
-> In-kernel PIC and PIT is sort of a legacy setup; the so-called
-> "split irqchip" (LAPIC in KVM, PIC/PIT in userspace) is strongly
-> preferred.  So I don't think it's particularly important to cater
-> for PIT_REINJ.
+Series applied, thanks.
 
-Sure, though it would be nice if we can enable AVIC to function in wider 
-configurations especially if the guest doesn't use the PIT :)
+Huacai
 
-> 
-> > If it is, or if we choose to delay PIT_REINJ inhibit to vcpu creation time,
-> > then making PT_REINJ or IRQWIN inhibits sticky will prevent AVIC from being
-> > enabled later on. I can see in my tests that BIOS (both seabios and edk2)
-> > programs the PIT though Linux guest itself doesn't (unless -no-hpet is used).
-> 
-> Even with -no-hpet, Linux should turn off the PIT relatively soon
-> and only rely on the local APIC's timer.
-
-I am not seeing that. With -no-hpet, I see that the guest continues to 
-use the PIT, as well as the local APIC timer.
-
-> 
-> > You're right -- APICv isn't actually being toggled, but IRQWIN inhibit is
-> > constantly being set and cleared while trying to inject device interrupts into
-> > the guests. The places where we set/clear IRQWIN inhibit has comments
-> > indicating that it is only required for ExtINT, though that's not actually the
-> > case here.
-> >
-> > What is actually happening is that since the PIT is in reinject mode, APICv is
-> > not active in the guest. When that happens, kvm_cpu_has_injectable_intr()
-> > returns true when any interrupt is pending:
-> >
-> >     /*
-> >      * check if there is injectable interrupt:
-> >      * when virtual interrupt delivery enabled,
-> >      * interrupt from apic will handled by hardware,
-> >      * we don't need to check it here.
-> >      */
-> >     int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v)
-> >     {
-> >             if (kvm_cpu_has_extint(v))
-> >                     return 1;
-> >
-> >             if (!is_guest_mode(v) && kvm_vcpu_apicv_active(v))
-> >                     return 0;
-> >
-> >             return kvm_apic_has_interrupt(v) != -1; /* LAPIC */
-> >     }
-> >
-> > The second if condition fails since APICv is not active. So,
-> > kvm_check_and_inject_events() calls enable_irq_window() to request for an IRQ
-> > window to inject those interrupts.
-> 
-> Ok, that's due solely to the presence of *another* active inhibit.
-> Since sticky inhibits cannot work, making the IRQWIN inhibit per-CPU
-> will still cause vCPUs to pound on the apicv_update_lock, but only on
-> the read side of the rwsem so that should be more tolerable.
-> 
-> Using atomics is considerably more complicated and I'd rather avoid it.
-
-Understood, thanks!
-
-
-- Naveen
-
+On Tue, Feb 11, 2025 at 10:01=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
+te:
+>
+> There is some tiny code cleanup with VM context switch or vCPU context
+> switch path, and it fixes typo issue about macro usage GCFG register.
+>
+> ---
+>   v1 .. v2:
+>     1. Remove comments about LOONGARCH_CSR_GCFG definition in header file=
+.
+>     2. Add notes why PRMD need be kernel mode when switch to VM.
+> ---
+> Bibo Mao (3):
+>   LoongArch: KVM: Fix typo issue about GCFG feature detection
+>   LoongArch: KVM: Remove duplicated cache attribute setting
+>   LoongArch: KVM: Set host with kernel mode when switch to VM mode
+>
+>  arch/loongarch/kvm/main.c   | 4 ++--
+>  arch/loongarch/kvm/switch.S | 2 +-
+>  arch/loongarch/kvm/vcpu.c   | 3 ---
+>  3 files changed, 3 insertions(+), 6 deletions(-)
+>
+>
+> base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+> --
+> 2.39.3
+>
