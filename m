@@ -1,87 +1,91 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8374A253B43
-	for <kvm@vger.kernel.org>; Tue, 11 Feb 2025 18:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C59F26139F
+	for <kvm@vger.kernel.org>; Tue, 11 Feb 2025 19:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739299994; cv=none; b=NXQro7lI1d6My9CSZLZEiEpH4U0fkTtoD+OpSzQLGwAKgRnkaLcTvGai4KIJnYRbYKPjBb9kUn5eUs0YWhRv7Pgzd4u05/ekn6h3o4RuquQY/GahyokYogJZncBoLkgNSVIUWlXpRPTYJOsvs+JblowC9Y3YdrN5zoFfpmwzNOk=
+	t=1739300615; cv=none; b=Is3K7wuVa1b9qWDvHBFtS0+++FqssXYOxxaE2g9T88ND+VdrPwFsUxa/r5TlinS0hjk1mME8dR9E3iEZtYiqGMHJ9HZfZ7WhN8PHYUHDJymsxrzBm6ZlgRVg7fLlZZ8HWbcyHVTkFOqoh3LuCUL2z9Bg7z6D+JuAIEehhjG2BOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739299994; c=relaxed/simple;
-	bh=yYcU2JZAoQo0PdjybSDTkRZ6mPUenfDV1ftO6rPg5Uc=;
+	s=arc-20240116; t=1739300615; c=relaxed/simple;
+	bh=aFRbjSre0n/PpbhfPdOu1q5jYzsALXfM3ldTnjaDe4k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dwtoATi+eU64Yzwj36sy1KFJ5dz22DX7n4Pu+K/OtbccHAGh3Y6E8lBNJ1eOzPYBUA7+bc7TRFjQf0qfsLEuu5uv2OE2o5EP6MIsIPOoZJqjlOfh0OnTRlIkH483gxSMmGu54EN5JB2osN6ZjKZofxZ/n2RbAvNN9TGLGMSbmMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wVfmklPW; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Y4rrr53aFYfHPWOc8+53iLtYdjuSYnz3Lf1zQ6ZK3F6GqqHoLWWCIZ4ZyH+tyY7RMXg0/2O9XSupZixQTy4ZqIYoKYlqc/KQTfEYITatIqXrjC/A+h8+aAfbNYopohRphrcMhDTOz/HZgZ3B0ckPg76govdrb2h+ZD9m6jUd41A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q+9jUF1d; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wVfmklPW"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-21f40f40788so135793285ad.3
-        for <kvm@vger.kernel.org>; Tue, 11 Feb 2025 10:53:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q+9jUF1d"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-21f68852b7bso128774985ad.1
+        for <kvm@vger.kernel.org>; Tue, 11 Feb 2025 11:03:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739299993; x=1739904793; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1739300613; x=1739905413; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hSdXzw5i+XGLoyBoJnanrigNUDo0sEg9JmDuJ0DaxPQ=;
-        b=wVfmklPWmdKqL1wwIhnKrVwNMDsl8ft9pm3I3k5WtiVdqR1raSyrxwFcTtogrLTCWl
-         IZXbLBjggkMZ/2owg48P+BHLt5hAS6vcWE6q4s+3mMwOtBue6PzJUGbFCojkbcId9pl/
-         MrIqm49u17Jh27PIZuO66G3rLKFZH0Hr0wOPBj5jwZ8WSLBkAycysuegAZwX65rFtXVj
-         CPnkpIRc4Nl+k1NvOmIkUaKSEXXSGcOkGyyIxpAou1ahisovocJKRiM252/E+xDUo3oo
-         unrQxnMO4zqR0gTNwmnBxa/kaqjKMGmcpUi+QpyZOu6ZWZmLYWyjYzV8FMMefpEhZICI
-         lZhg==
+        bh=X6RZHwu8fSUx1PRlASdGoMqhsw6pMz1JSKazfVdmFy0=;
+        b=q+9jUF1dp8fOhBh0u/9JltV1yPnW1ywnhgEDOTJFIe1TtXi+JNS56XKxP3IhbTSKcM
+         MN7HL26FTuOzviCSghyORszxraETEmkLudxSBdFPFni3qpqXJCU8wMtqTHb8i+kEmsnE
+         Nyv7CjaJPqZg4akjmcXLBTCGiutIJ63iLfLNhNGGhycg8y5ZCBtn5+ZZDKo6CoJ0VvFD
+         e8ZCSh1lQcHJ1pFvodN/qzGB4Wo9LsxI/z/ltuDmnloTCCVCTQBhbotAmwNoClrinkqt
+         1PYP5SVRqyOoSD3wN6A4lUx+VBD2Mar58hlZCMbIenvgRNgloUHjl2klp9fW6fRJmgjt
+         fhMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739299993; x=1739904793;
+        d=1e100.net; s=20230601; t=1739300613; x=1739905413;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hSdXzw5i+XGLoyBoJnanrigNUDo0sEg9JmDuJ0DaxPQ=;
-        b=VCujv3nA9TGvE1lBrjMVAuD0Ia5SpMAvuV/zw4yre38k46pPKXFyyZTeK9DWHKMDfQ
-         GR0YUC5nUBZHz/jBuBd+LEDNQkiYznRC45D8Nz1yS9d42YNPNXGp6wax4gNmDZgN0IdA
-         vsTgOAy+mA9pybbw+X1tWztp4Llp3qItEwoQhGGrj4gkPQQtSgtEFAvNfVORalHStZ48
-         AogMAtbgiapBDXjBEhDkpqC0tnEpH4o9lF8HHpEzNIx0v9XlwkVZLsgDH8l/4Cih7Qtt
-         HHj3+a254LXmhQnqEzF1mcpkLrDzIqOzhIbf51MCePG5ed9jkf/zfdlfmSqCBDiWUBeC
-         hbYg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/uBnPL+R6uwApG/5l0L4OASNEky7GDJj1xwISsb4E+yobb31DpZ9Q9WZAoyMYGJhtLRc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywps+HShHqGRet93oDb+qLZCJ0WgHinGeewyQ7X+Bu/TdBDi07u
-	Yh2LAwmxBKT16M3AMxu/BPCdZHU3q1QEgJbpJzfz6kU1At6jVfCmuuleLwKzWTZxRWeS3DkV6u1
-	+Xw==
-X-Google-Smtp-Source: AGHT+IFX8Gb8h6J+XoaDUIOL0BfhgtQAHFbQcWrM3kh7lUuCjN0+4w5jTeoVicZi2AD+wRaXv1IpPGRPdQY=
-X-Received: from pgc1.prod.google.com ([2002:a05:6a02:2f81:b0:ad8:6337:811d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7314:b0:1ed:7540:45d5
- with SMTP id adf61e73a8af0-1ee5c74ccf3mr617940637.17.1739299992823; Tue, 11
- Feb 2025 10:53:12 -0800 (PST)
-Date: Tue, 11 Feb 2025 10:53:11 -0800
-In-Reply-To: <20241127172654.1024-2-kalyazin@amazon.com>
+        bh=X6RZHwu8fSUx1PRlASdGoMqhsw6pMz1JSKazfVdmFy0=;
+        b=HKD5JyigyLZ8nnJCdFApXwd7X+E7YVZX3eUAZ4SQgFxRm1saAPWNghBjhYxxthlWje
+         3xaBHvyfe/+2gWtrdGYT3ny1FdnwVATs2K4N4hc0/TP1GAavk0tS7fb2OIJ1fLheta+5
+         iK4B3hSiZERWy+xZeoVAHin0Ogy/QJmTtytFMJrC5KAixRSbxnVAFvrxkjCd1OkVhW0J
+         jKI/RIFJqXpTLCdq2SGmECde0IvgwT74ZR+lesOvR6YHGhGr6F62l0KoaptvIPgefge0
+         h6cwAtXpsEcGPewcCzgUsP9FHXsDU1u169r2fwB8dGHNVQ+KOkpbey6xvG3hNzCrp7+2
+         oCqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXd7tDgb0x9RpyZeOUV2WXeZDtj/5zYsxhVBCv2xzIf0owHxpLNTaGBvXRBHyNYWyS8BVY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxV8CO9DhP7GQzYpgsWN257xMCPPlh3MEQGLqci+Z174YDqyrX1
+	UWdEW78nDj4VB4Q6pk4Wc+Lfe4Yn9AEKTecTgUGEDgHwTICRB9dAKk3FgyiQ61+y9ol1XwtjNyT
+	zOQ==
+X-Google-Smtp-Source: AGHT+IF83FAVS6JbAJzhSAAsNQR7sGHkfYmlENylg6JcCsQBTAIdcwm5DyQRH0pv2Gc0GyUcz7M5iSbKK64=
+X-Received: from pfbbh7.prod.google.com ([2002:a05:6a00:3087:b0:730:7b6c:d5d1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258e:b0:1e0:d6ef:521a
+ with SMTP id adf61e73a8af0-1ee5c732f01mr650938637.1.1739300613311; Tue, 11
+ Feb 2025 11:03:33 -0800 (PST)
+Date: Tue, 11 Feb 2025 11:03:32 -0800
+In-Reply-To: <20250211184021.GFZ6uZlZWPVTI5qO1_@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20241127172654.1024-1-kalyazin@amazon.com> <20241127172654.1024-2-kalyazin@amazon.com>
-Message-ID: <Z6ucl7U79RuBsYJt@google.com>
-Subject: Re: [PATCH 1/2] KVM: x86: async_pf: remove support for KVM_ASYNC_PF_SEND_ALWAYS
+References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-2-seanjc@google.com>
+ <20250211150114.GCZ6tmOqV4rI04HVuY@fat_crate.local> <Z6uIGwxx9HzZQ-N7@google.com>
+ <20250211184021.GFZ6uZlZWPVTI5qO1_@fat_crate.local>
+Message-ID: <Z6ufBMy4u0jcmIl0@google.com>
+Subject: Re: [PATCH 01/16] x86/tsc: Add a standalone helpers for getting TSC
+ info from CPUID.0x15
 From: Sean Christopherson <seanjc@google.com>
-To: Nikita Kalyazin <kalyazin@amazon.com>
-Cc: pbonzini@redhat.com, corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	vkuznets@redhat.com, xiaoyao.li@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, roypat@amazon.co.uk, 
-	xmarcalx@amazon.com
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Nov 27, 2024, Nikita Kalyazin wrote:
-> 3a7c8fafd1b42adea229fd204132f6a2fb3cd2d9 ("x86/kvm: Restrict
-> ASYNC_PF to user space") stopped setting KVM_ASYNC_PF_SEND_ALWAYS in
-> Linux guests.  While the flag can still be used by legacy guests, the
-> mechanism is best effort so KVM is not obliged to use it.
+On Tue, Feb 11, 2025, Borislav Petkov wrote:
+> On Tue, Feb 11, 2025 at 09:25:47AM -0800, Sean Christopherson wrote:
+> > Because obviously optimizing code that's called once during boot is super
+> > critical?
+> 
+> Because let's stick 'em where they belong and keep headers containing only
+> small, trivial and inlineable functions.
 
-What's the actual motivation to remove it from KVM?  I agreed KVM isn't required
-to honor KVM_ASYNC_PF_SEND_ALWAYS from a guest/host ABI perspective, but that
-doesn't mean that dropping a feature has no impact.  E.g. it's entirely possible
-removing this support could negatively affect a workload running on an old kernel.
-
-Looking back at the discussion[*] where Vitaly made this suggestion, I don't see
-anything that justifies dropping this code.  It costs KVM practically nothing to
-maintain this code.
-
-[*] https://lore.kernel.org/all/20241118130403.23184-1-kalyazin@amazon.com
+LOL, sorry, I was being sarcastic and poking fun at myself.  I completely agree
+there's no reason to make them inline.
