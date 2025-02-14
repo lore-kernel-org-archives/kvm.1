@@ -1,164 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F124227BAB;
-	Fri, 14 Feb 2025 09:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F10245030;
+	Fri, 14 Feb 2025 09:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739525047; cv=none; b=jtqUjNH0hWLs96cfhU7bVzeq8QfpnwQ/+DN/XsXC/w2Ux2rwysXmbJ+ORF7rhYqq/WxxqhToQJ+Gy2c0MlmGNG+CR1x/HEAkTxcbQn5deIVhM+K8FoiI1d+RfdGQRS358Bshs7O2H2g6dEMnbDQ6daXLMF0Qkrc9+NkDOrmKze0=
+	t=1739526224; cv=none; b=DVZt4/CHGw+YBXk72Gjg4VWc/088IYCQ6Zbz+XveqK5Xvn54gakRD9wbxBHY9rMTJjyW7VZ8OG6W2dWBFTfNdM2WTWwfmTA2GBA0ftxUIwG2nY9wO7G1bwwgX+aC0eyTdqTOpO21Li6HM1+J2/tGMI4QH9P7hwil6GPIxTncCxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739525047; c=relaxed/simple;
-	bh=Mfy+ddENg5qvhmHKsXDrCIS3v98wZceAIoRgJrBPpiE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uma7oPVlQuxsQWFm/3LOe517wE8k5qjV2Rt3WJ6iogv5usc+P5oEhf/62sguAcVOqOmlHtwKDh7hsFj2uHEWsphvYVrefMNWmzjjQ3SqXVNfzDJrV8lK5eU8X3NDQUDuMJ02t4XG4ZKgo4gRDjcUjqSDkkT3je9dkLopKuIijFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDWIymUw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739526224; c=relaxed/simple;
+	bh=bR+EitM9xMeO4ilPsO7nnJll1F8pa8yA4EQ84Hrt8Wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ro6jgstguWrjhyAVXpbeYCZqEZZm6tjqfkgNrsrGaL46GVnmibAmwlgpMdPtgx2gvi0mvBDY/bv6oXhKbZ9EBtpE7l8Byo8TmumuVRisaronlIArDwqTlhyW2VgAXzg9Mu0TBfoCoiLB7nlPwjLCo7FzATfLFqoADenfPAOvi0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PdNx/IaB; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDWIymUw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F31C4CED1;
-	Fri, 14 Feb 2025 09:24:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739525046;
-	bh=Mfy+ddENg5qvhmHKsXDrCIS3v98wZceAIoRgJrBPpiE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QDWIymUw7wH10bLW2shWeKckkb0k5SLz7UsvShpl02/TVwsNy+jWlkSE9VZIPeB+O
-	 6DQe7BXlahbQY5v4V9BCdhnXBUfrbwbzO7GsYsHNXeIYlSNWlcWkP1M+4ML/fzfPv4
-	 LSkqE1iD/nLQI5ZIuu7p174UBm4WINc9D37mgl73PgRR6ddnAI66xzkpgskmsYqmIB
-	 CHuqLZJslaE+wQ13WMoMH7eLgKQ5Cl1hnjPzyDNllLEuVf6Yhv6YxvEvz6D+gD94Rg
-	 lXjC7ou10W7jkPVjsQSFjXekuaZkk7UZ6qrVHb5iBsiA2XIYLW3oK9Ezc2lLimq1wb
-	 DZJsROpGN5toA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tirvX-00412s-VH;
-	Fri, 14 Feb 2025 09:24:04 +0000
-Date: Fri, 14 Feb 2025 09:24:03 +0000
-Message-ID: <86pljkswuk.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v4 00/27] KVM: arm64: Implement support for SME in non-protected guests
-In-Reply-To: <20250214-kvm-arm64-sme-v4-0-d64a681adcc2@kernel.org>
-References: <20250214-kvm-arm64-sme-v4-0-d64a681adcc2@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PdNx/IaB"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E2mM8M017021;
+	Fri, 14 Feb 2025 09:43:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VaXU7j
+	+cCekekrvpguCYcm8IKdQ46uzhM3dlVAX4zWg=; b=PdNx/IaBeUROA2QfRBczLL
+	UTK7XCYy77H0v2dLI+bfYdYziUSbWx5fPa11wOMv+wb+PtSuf0mRCo8fv3g5iy/4
+	3b9ApGEJRDkwa5vMBleL+bUcOyvJaQaFBUqgUnVaZO00XnqDvGab5afyz/+WDJJy
+	cZMDl+B2+m9sDyUfzqqG9kGR86EStkMCZ0a/BClQlz2wPyMOWR2xPrmVW9XooXZD
+	Pp9nEieNLJfu3c0etlqx1Gc2a8Zgba0pnRf8OvAqssKI4F6Dcp9rTCoIEj5pv1mN
+	lCYSkCgw8TrRS0eSa1wCZNpOBm7equqoCD5Pzm0REXjrcyOm3XwBYVaTo2N1IVIw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44skjuvgjr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 09:43:37 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51E78fwn000924;
+	Fri, 14 Feb 2025 09:43:37 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pjknjx95-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 09:43:37 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51E9hX4e22086234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 09:43:33 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DDF320063;
+	Fri, 14 Feb 2025 09:43:33 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EE942004E;
+	Fri, 14 Feb 2025 09:43:32 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.171.26.252])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri, 14 Feb 2025 09:43:32 +0000 (GMT)
+Date: Fri, 14 Feb 2025 10:43:31 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com, nrb@linux.ibm.com, seiden@linux.ibm.com,
+        nsg@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com
+Subject: Re: [PATCH v1 1/2] KVM: s390: fix issues when splitting folios
+Message-ID: <20250214104331.1865aba5@p-imbrenda>
+In-Reply-To: <e58310a9-0fd7-44fa-b66b-b98502dbed30@redhat.com>
+References: <20250213200755.196832-1-imbrenda@linux.ibm.com>
+	<20250213200755.196832-2-imbrenda@linux.ibm.com>
+	<e58310a9-0fd7-44fa-b66b-b98502dbed30@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: broonie@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, catalin.marinas@arm.com, suzuki.poulose@arm.com, will@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, Dave.Martin@arm.com, tabba@google.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fc6ZKaGCZLcaAT_njmm-yKN56OgkwNye
+X-Proofpoint-ORIG-GUID: fc6ZKaGCZLcaAT_njmm-yKN56OgkwNye
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_03,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxlogscore=700 lowpriorityscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502140067
 
-On Fri, 14 Feb 2025 01:57:43 +0000,
-Mark Brown <broonie@kernel.org> wrote:
-> 
-> I've removed the RFC tag from this version of the series, but the items
-> that I'm looking for feedback on remains the same:
-> 
->  - The userspace ABI, in particular:
->   - The vector length used for the SVE registers, access to the SVE
->     registers and access to ZA and (if available) ZT0 depending on
->     the current state of PSTATE.{SM,ZA}.
->   - The use of a single finalisation for both SVE and SME.
-> 
->  - The addition of control for enabling fine grained traps in a similar
->    manner to FGU but without the UNDEF, I'm not clear if this is desired
->    at all and at present this requires symmetric read and write traps like
->    FGU. That seemed like it might be desired from an implementation
->    point of view but we already have one case where we enable an
->    asymmetric trap (for ARM64_WORKAROUND_AMPERE_AC03_CPU_38) and it
->    seems generally useful to enable asymmetrically.
-> 
-> This series implements support for SME use in non-protected KVM guests.
+On Thu, 13 Feb 2025 21:17:10 +0100
+David Hildenbrand <david@redhat.com> wrote:
 
-[...]
-
-Just to be clear: I do not intend to review a series that doesn't
-cover the full gamut of KVM from day 1. Protected mode is an absolute
-requirement. It is the largest KVM deployment, and Android phones the
-only commonly available platform with SME. If CCA gets merged prior to
-SME support, supporting it will also be a requirement.
-
-> Much of this is very similar to SVE, the main additional challenge that
-> SME presents is that it introduces a new vector length similar to the
-> SVE vector length and two new controls which change the registers seen
-> by guests:
+> > +	struct folio *folio = page_folio(page);
+> >   	int rc;
+> >   
+> >   	lockdep_assert_not_held(&mm->mmap_lock);
+> > @@ -2645,7 +2646,11 @@ int kvm_s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio, bool
+> >   	lru_add_drain_all();
+> >   	if (split) {
+> >   		folio_lock(folio);
+> > -		rc = split_folio(folio);
+> > +		rc = min_order_for_split(folio);
+> > +		if (rc > 0)
+> > +			rc = -EINVAL;
+> > +		if (!rc)
+> > +			rc = split_huge_page_to_list_to_order(page, NULL, 0);  
 > 
->  - PSTATE.ZA enables the ZA matrix register and, if SME2 is supported,
->    the ZT0 LUT register.
->  - PSTATE.SM enables streaming mode, a new floating point mode which
->    uses the SVE register set with the separately configured SME vector
->    length.  In streaming mode implementation of the FFR register is
->    optional.
-> 
-> It is also permitted to build systems which support SME without SVE, in
-> this case when not in streaming mode no SVE registers or instructions
-> are available.  Further, there is no requirement that there be any
-> overlap in the set of vector lengths supported by SVE and SME in a
-> system, this is expected to be a common situation in practical systems.
-> 
-> Since there is a new vector length to configure we introduce a new
-> feature parallel to the existing SVE one with a new pseudo register for
-> the streaming mode vector length.  Due to the overlap with SVE caused by
-> streaming mode rather than finalising SME as a separate feature we use
-> the existing SVE finalisation to also finalise SME, a new define
-> KVM_ARM_VCPU_VEC is provided to help make user code clearer.  Finalising
-> SVE and SME separately would introduce complication with register access
-> since finalising SVE makes the SVE regsiters writeable by userspace and
-> doing multiple finalisations results in an error being reported.
-> Dealing with a state where the SVE registers are writeable due to one of
-> SVE or SME being finalised but may have their VL changed by the other
-> being finalised seems like needless complexity with minimal practical
-> utility, it seems clearer to just express directly that only one
-> finalisation can be done in the ABI.
->
-> Access to the floating point registers follows the architecture:
-> 
->  - When both SVE and SME are present:
->    - If PSTATE.SM == 0 the vector length used for the Z and P registers
->      is the SVE vector length.
->    - If PSTATE.SM == 1 the vector length used for the Z and P registers
->      is the SME vector length.
->  - If only SME is present:
->    - If PSTATE.SM == 0 the Z and P registers are inaccessible and the
->      floating point state accessed via the encodings for the V registers. 
->    - If PSTATE.SM == 1 the vector length used for the Z and P registers
->  - The SME specific ZA and ZT0 registers are only accessible if SVCR.ZA is 1.
-> 
-> The VMM must understand this, in particular when loading state SVCR
-> should be configured before other state.
+> split_huge_page() ?
 
-Why SVCR? This isn't a register, just an architected accessor to
-PSTATE.{ZA,SM}. Userspace already has direct access to PSTATE, so I
-don't understand this requirement.
+ah, yes
 
-Isn't it that there is simply a dependency between restoring PSTATE
-and any of the vector stuff? Also, how do you preserve the current ABI
-that do not have this requirement?
+> 
+> But see my reply to #2. Likely we should just undo the refactorings you 
+> added while moving the code.
+> 
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
