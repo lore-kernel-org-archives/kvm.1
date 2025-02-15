@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FFA2B9B4;
-	Sat, 15 Feb 2025 17:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C56C1DF982;
+	Sat, 15 Feb 2025 17:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739641102; cv=none; b=hcV1cJF/Rxzx5Vpwqwj9H57yVfnbkRVYPSuEi+cLMmj/AlGfWzoJZgwMmiglKtyIQJ8j1PKdacIyLOY6etM/vhzBK2JlpeEapZReQsQB7llmXDQ0iFclg0cOqMiumzEEzKsOFehH1zji8xsKp+AMp9mX6+pko5oQHsu3PUjNtjo=
+	t=1739641103; cv=none; b=fqCT1P1TBGbUewGDMNMcIh7RLWrWJa/zSg60vQA9pZbSO90T6Q5NB7Dnm73o9mUXXpOV0x9lDK+thwPRIP0p5XQAecESH8yRKvZxlvpL/daE8e3iV4QhbK6AMeHuCH2PACSoYdZyta6hKScS9whDu69iXxVudueCX0wKCyXclZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739641102; c=relaxed/simple;
-	bh=XymYMKvSscNoNyr9c1xKeKhz7KoZPOt8xd5DrF64n9g=;
+	s=arc-20240116; t=1739641103; c=relaxed/simple;
+	bh=3rQ7sS5vZjM6vbenQtanAQbuJs7l4zbUMP/xYyxer3w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BGcjO4lyU2yJdgzoB4HFxUInd+jckhBaxwSuhC85gaV4MCZWWWoEmHakYJIugpcVdTsPTh3jSBjwPFHXwjpAXdBsd9TQqMUvzuly+IHGopr/xwFsagp0rXxqoYzUk+Rs9itVGeaCFlxEaicUpkLj9e7xRgIR4YMud/jwipgM4NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlgoqgP8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=asqo0T2GWd0Wj+FdaQLPSYImI9ZYqoBUyhuUeoPIRM1vzh+1zK3z+aCu/4chlp4ugkUCQMYtcc+Itw5L5qCAjkvCc0HU9NewGtqONXZnCuY+YBFiRvDIs0NmOae7g5akhu6hy0WMrqsLb2vF9UBBhPIEtH9LqLG1Q8ieXb9Ajjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqNdv9ij; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlgoqgP8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62494C4CEE2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqNdv9ij"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F321CC4CEE6;
 	Sat, 15 Feb 2025 17:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739641102;
-	bh=XymYMKvSscNoNyr9c1xKeKhz7KoZPOt8xd5DrF64n9g=;
+	s=k20201202; t=1739641103;
+	bh=3rQ7sS5vZjM6vbenQtanAQbuJs7l4zbUMP/xYyxer3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlgoqgP8oGA2xyi/FZ9j07Armi+ZphS1EixA0//5+jEH1TlM8fNIXu5CfG4GzL7fm
-	 3rkTxzRYzSfU06RYn6dGnVdjmdAU4LzlxSf8yJvKPEhLr6RUev/88VUsLN4Z5fHp0j
-	 S9iZmQO65I5fzjgi5VBWmCTcHWZKnPtGpKoZeL6sDt4qMv9gpgUesM9ajoThcuVOtZ
-	 pX5LpB5jK89OgSNfgAcRahlsjWSKMsSi1xvQZsjNA1nZNDPV+YN8NWBjg1nKgqKLLn
-	 czp7yLZD0jsB5VmYOwh7bg3huPyUjATAEVRodZ43/hgDx2XmbTyQOJhBC/JfGCwVEN
-	 gf6Dg+bC0qBmQ==
+	b=ZqNdv9ijD2WnHJbw/M4ayw7EwnhIIy8oV6Fh84I+iq/RQLXdwMoc9i5FOXPcix+w0
+	 h3KehIgFEtI/eeg1w/7yrPkqamDb4dBv7i+r7v++Qh8F/igG8+Q1/U5gsSp0g5ezdR
+	 kxCe2qmpj7WVxDGBBtXrBT85gJ/MdjlpxdhtLiW27F8JDmrYUGMO4b2v3J1/blzJXo
+	 FQWL+XUbtQfoKQHuxJ1CKhwk12Gty2DE2IY4X3q6Wdv5Zo7WLoiHpUQsIO9bJ1zrSQ
+	 FtQQEqMiDscJbt9t85ZdMXxiuTBQBdi7n173lS4rnBNHVakFG6ZK4Xs+w1CVjZQTHS
+	 kuPs1TMyRbkIw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tjM7Q-004Pqp-GC;
-	Sat, 15 Feb 2025 17:38:20 +0000
+	id 1tjM7R-004Pqp-2F;
+	Sat, 15 Feb 2025 17:38:21 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH 01/14] arm64: cpufeature: Handle NV_frac as a synonym of NV2
-Date: Sat, 15 Feb 2025 17:38:03 +0000
-Message-Id: <20250215173816.3767330-2-maz@kernel.org>
+Subject: [PATCH 04/14] KVM: arm64: Mark HCR.EL2.{NV*,AT} RES0 when ID_AA64MMFR4_EL1.NV_frac is 0
+Date: Sat, 15 Feb 2025 17:38:06 +0000
+Message-Id: <20250215173816.3767330-5-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250215173816.3767330-1-maz@kernel.org>
 References: <20250215173816.3767330-1-maz@kernel.org>
@@ -59,62 +59,36 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-With ARMv9.5, an implementation supporting Nested Virtualization
-is allowed to only support NV2, and to avoid supporting the old
-(and useless) ARMv8.3 variant.
+Enforce HCR_EL2.{NV*,AT} being RES0 when NV2 is disabled, so that
+we can actually rely on these bits never being flipped behind our back.
 
-This is indicated by ID_AA64MMFR2_EL1.NV being 0 (as if NV wasn't
-implemented) and ID_AA64MMDR4_EL1.NV_frac being 1 (indicating that
-NV2 is actually supported).
-
-Given that KVM only deals with NV2 and refuses to use the old NV,
-detecting NV2 or NV_frac is what we need to enable it.
+This of course relies on our earlier ID reg sanitising.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/nested.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 4eb7c6698ae43..94605e91f0e5f 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -497,6 +497,7 @@ static const struct arm64_ftr_bits ftr_id_aa64mmfr3[] = {
- 
- static const struct arm64_ftr_bits ftr_id_aa64mmfr4[] = {
- 	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR4_EL1_E2H0_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR4_EL1_NV_frac_SHIFT, 4, 0),
- 	ARM64_FTR_END,
- };
- 
-@@ -2162,7 +2163,7 @@ static bool has_nested_virt_support(const struct arm64_cpu_capabilities *cap,
- 	if (kvm_get_mode() != KVM_MODE_NV)
- 		return false;
- 
--	if (!has_cpuid_feature(cap, scope)) {
-+	if (!cpucap_multi_entry_cap_matches(cap, scope)) {
- 		pr_warn("unavailable: %s\n", cap->desc);
- 		return false;
- 	}
-@@ -2519,7 +2520,17 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.capability = ARM64_HAS_NESTED_VIRT,
- 		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
- 		.matches = has_nested_virt_support,
--		ARM64_CPUID_FIELDS(ID_AA64MMFR2_EL1, NV, NV2)
-+		.match_list = (const struct arm64_cpu_capabilities []){
-+			{
-+				.matches = has_cpuid_feature,
-+				ARM64_CPUID_FIELDS(ID_AA64MMFR2_EL1, NV, NV2)
-+			},
-+			{
-+				.matches = has_cpuid_feature,
-+				ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY)
-+			},
-+			{ /* Sentinel */ }
-+		},
- 	},
- 	{
- 		.capability = ARM64_HAS_32BIT_EL0_DO_NOT_USE,
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index ed3add7d32f66..9f140560a6f5d 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1021,10 +1021,11 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
+ 		res0 |= HCR_FIEN;
+ 	if (!kvm_has_feat(kvm, ID_AA64MMFR2_EL1, FWB, IMP))
+ 		res0 |= HCR_FWB;
+-	if (!kvm_has_feat(kvm, ID_AA64MMFR2_EL1, NV, NV2))
+-		res0 |= HCR_NV2;
+-	if (!kvm_has_feat(kvm, ID_AA64MMFR2_EL1, NV, IMP))
+-		res0 |= (HCR_AT | HCR_NV1 | HCR_NV);
++	/* Implementation choice: NV2 is the only supported config */
++	if (!kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
++		res0 |= (HCR_NV2 | HCR_NV | HCR_AT);
++	if (!kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI))
++		res0 |= HCR_NV1;
+ 	if (!(kvm_vcpu_has_feature(kvm, KVM_ARM_VCPU_PTRAUTH_ADDRESS) &&
+ 	      kvm_vcpu_has_feature(kvm, KVM_ARM_VCPU_PTRAUTH_GENERIC)))
+ 		res0 |= (HCR_API | HCR_APK);
 -- 
 2.39.2
 
