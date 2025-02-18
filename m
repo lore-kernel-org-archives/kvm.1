@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707631D90A5
-	for <kvm@vger.kernel.org>; Tue, 18 Feb 2025 22:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15A11DE3A8
+	for <kvm@vger.kernel.org>; Tue, 18 Feb 2025 22:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739917354; cv=none; b=illW0R4r4QlT764cibqtpfaWJJwfS6Rk67R7rNmHgzTHyKeTv5g5CdxFdifGsWM7KbOWjJbjMkvYZpVoJLsToTrlp2PwIHnmF5D6i/CtAAq15agO6RLmGNp3d5iBQXVZ2R3pz6vYsNXx8IPNj7bz3wZa+W//xnIOOD9fvC6vfSU=
+	t=1739917358; cv=none; b=gbHOv2546J2oMZxPUuhXDC10g8rpSUdKEgoWYuCKtr7TwpnDIlTQVeRjlj2lD+sZXeFyprnIKFMHMpOtALtcQ/vhvKvgQGUnlOgqCFfmYU5HIumK/JZ5YMzPuJr19aPLPWZmRWSwm8BREtPJT+banLI1qzyOEJrYKlyMm1ZgS7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739917354; c=relaxed/simple;
-	bh=MZi0G595/r9xUXjZTCGwzF11A8teSxnnD1Og3r0T5v8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KJzeDkwUAVMQ8eGOpIb1wQbghNIrfPBVFpaMnJJfm0QdbIn0qwPILwbeSBGZLiSZwE3oWroaPTxAx3fZYCZj9eXMzRBveU2tBd6eQuWKcRLMjeIWV9YqjlRLJxhg2htpyCc/c/UdxUdcUtpcMeS0Sg6sIaOYc9bXi1K40eb2vJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H7nwf3Uj; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1739917358; c=relaxed/simple;
+	bh=gHCBDboqgHp/mDOI6vbjXgBSoA+DagFAsYJPdvdDxPs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UKmxQl37EEtOLxOgI+ylDUxowxEVH91n52Onr1xqiwNaSu/9YoqL0IQeLC3Pa3z6+9aNdZnfWwQ9XjnDFRITUiQehXFmHzGLz6YbJHPG8p0F93/tQCj9lW86HYk3+ZNZ0g4CW5Ea+td/G//a6ZHY6UuMhgJn2V3/YqvyOpP9/AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NaAfwJnQ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H7nwf3Uj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NaAfwJnQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739917350;
+	s=mimecast20190719; t=1739917356;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=efAXFa+L6vXYh488YwyV1z4UrGp5zEEawYWAKbu8b9w=;
-	b=H7nwf3Uj1PEfII/uvrbQnAeQm/xWR7tUJxQqpWMKDy6lLZdiCrHBiIrTAiHyWRiOTOs3vO
-	CkkW0t9Ddk6Q55KaVYTT/rT2+S69DSB5QwdMSyKEVYLp6PlkI2jGN3T6h2iWLhITTqDumx
-	nx3D1jQ0tjF5ORLPGPWruRb6i2WJMk0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UlUtITEYQJv1hpgGQ8C/UoW2nF0g3ARQ77wXP5+0OfU=;
+	b=NaAfwJnQOVdpmvy8ML667l34bvPZQ84/cqifavRrQBjg6ExFl17saAvvyOudAcWJnbMAQK
+	ub6MWZ6eoNPa9LOrg3r0i5V1V49c0pCg9QB1Qs61CwTNObQF8HfKIb/VyRiaTk0pwJBudU
+	x6fsG7wyK3BEkaf6qzx6FHIC8Rr2urM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-PBxebS9QNbq5q6NhHJoBKQ-1; Tue,
- 18 Feb 2025 17:22:26 -0500
-X-MC-Unique: PBxebS9QNbq5q6NhHJoBKQ-1
-X-Mimecast-MFC-AGG-ID: PBxebS9QNbq5q6NhHJoBKQ_1739917345
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-bV8OMXniNsCt5H9n6wIQ_A-1; Tue,
+ 18 Feb 2025 17:22:34 -0500
+X-MC-Unique: bV8OMXniNsCt5H9n6wIQ_A-1
+X-Mimecast-MFC-AGG-ID: bV8OMXniNsCt5H9n6wIQ_A_1739917353
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D8476180087D;
-	Tue, 18 Feb 2025 22:22:24 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C000180087B;
+	Tue, 18 Feb 2025 22:22:33 +0000 (UTC)
 Received: from omen.home.shazbot.org (unknown [10.22.88.77])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3C482300019F;
-	Tue, 18 Feb 2025 22:22:15 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD75E300019F;
+	Tue, 18 Feb 2025 22:22:30 +0000 (UTC)
 From: Alex Williamson <alex.williamson@redhat.com>
 To: alex.williamson@redhat.com
 Cc: kvm@vger.kernel.org,
@@ -50,11 +52,12 @@ Cc: kvm@vger.kernel.org,
 	jgg@nvidia.com,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
-	david@redhat.com,
-	willy@infradead.org
-Subject: [PATCH v2 0/6] vfio: Improve DMA mapping performance for huge pfnmaps
-Date: Tue, 18 Feb 2025 15:22:00 -0700
-Message-ID: <20250218222209.1382449-1-alex.williamson@redhat.com>
+	david@redhat.com
+Subject: [PATCH v2 5/6] mm: Provide address mask in struct follow_pfnmap_args
+Date: Tue, 18 Feb 2025 15:22:05 -0700
+Message-ID: <20250218222209.1382449-6-alex.williamson@redhat.com>
+In-Reply-To: <20250218222209.1382449-1-alex.williamson@redhat.com>
+References: <20250218222209.1382449-1-alex.williamson@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,59 +67,64 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-v2:
- - Rewrapped comment block in 3/6
- - Added 4/6 to use consistent types (Jason)
- - Renamed s/pgmask/addr_mask/ (David)
- - Updated 6/6 with proposed epfn algorithm (Jason)
- - Applied and retained sign-offs for all but 6/6 where the epfn
-   calculation changed
+follow_pfnmap_start() walks the page table for a given address and
+fills out the struct follow_pfnmap_args in pfnmap_args_setup().
+The address mask of the page table level is already provided to this
+latter function for calculating the pfn.  This address mask can also
+be useful for the caller to determine the extent of the contiguous
+mapping.
 
-v1: https://lore.kernel.org/all/20250205231728.2527186-1-alex.williamson@redhat.com/
+For example, vfio-pci now supports huge_fault for pfnmaps and is able
+to insert pud and pmd mappings.  When we DMA map these pfnmaps, ex.
+PCI MMIO BARs, we iterate follow_pfnmap_start() to get each pfn to test
+for a contiguous pfn range.  Providing the mapping address mask allows
+us to skip the extent of the mapping level.  Assuming a 1GB pud level
+and 4KB page size, iterations are reduced by a factor of 256K.  In wall
+clock time, mapping a 32GB PCI BAR is reduced from ~1s to <1ms.
 
-As GPU BAR sizes increase, the overhead of DMA mapping pfnmap ranges has
-become a significant overhead for VMs making use of device assignment.
-Not only does each mapping require upwards of a few seconds, but BARs
-are mapped in and out of the VM address space multiple times during
-guest boot.  Also factor in that multi-GPU configurations are
-increasingly commonplace and BAR sizes are continuing to increase.
-Configurations today can already be delayed minutes during guest boot.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: linux-mm@kvack.org
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: "Mitchell Augustin" <mitchell.augustin@canonical.com>
+Tested-by: "Mitchell Augustin" <mitchell.augustin@canonical.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+---
+ include/linux/mm.h | 2 ++
+ mm/memory.c        | 1 +
+ 2 files changed, 3 insertions(+)
 
-We've taken steps to make Linux a better guest by batching PCI BAR
-sizing operations[1], but it only provides and incremental improvement.
-
-This series attempts to fully address the issue by leveraging the huge
-pfnmap support added in v6.12.  When we insert pfnmaps using pud and pmd
-mappings, we can later take advantage of the knowledge of the mapping
-level page mask to iterate on the relevant mapping stride.  In the
-commonly achieved optimal case, this results in a reduction of pfn
-lookups by a factor of 256k.  For a local test system, an overhead of
-~1s for DMA mapping a 32GB PCI BAR is reduced to sub-millisecond (8M
-page sized operations reduced to 32 pud sized operations).
-
-Please review, test, and provide feedback.  I hope that mm folks can
-ack the trivial follow_pfnmap_args update to provide the mapping level
-page mask.  Naming is hard, so any preference other than pgmask is
-welcome.  Thanks,
-
-Alex
-
-[1]https://lore.kernel.org/all/20250120182202.1878581-1-alex.williamson@redhat.com/
-
-
-Alex Williamson (6):
-  vfio/type1: Catch zero from pin_user_pages_remote()
-  vfio/type1: Convert all vaddr_get_pfns() callers to use vfio_batch
-  vfio/type1: Use vfio_batch for vaddr_get_pfns()
-  vfio/type1: Use consistent types for page counts
-  mm: Provide address mask in struct follow_pfnmap_args
-  vfio/type1: Use mapping page mask for pfnmaps
-
- drivers/vfio/vfio_iommu_type1.c | 123 ++++++++++++++++++++------------
- include/linux/mm.h              |   2 +
- mm/memory.c                     |   1 +
- 3 files changed, 80 insertions(+), 46 deletions(-)
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7b1068ddcbb7..92b30dba7e38 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2417,11 +2417,13 @@ struct follow_pfnmap_args {
+ 	 * Outputs:
+ 	 *
+ 	 * @pfn: the PFN of the address
++	 * @addr_mask: address mask covering pfn
+ 	 * @pgprot: the pgprot_t of the mapping
+ 	 * @writable: whether the mapping is writable
+ 	 * @special: whether the mapping is a special mapping (real PFN maps)
+ 	 */
+ 	unsigned long pfn;
++	unsigned long addr_mask;
+ 	pgprot_t pgprot;
+ 	bool writable;
+ 	bool special;
+diff --git a/mm/memory.c b/mm/memory.c
+index 539c0f7c6d54..8f0969f132fe 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6477,6 +6477,7 @@ static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
+ 	args->lock = lock;
+ 	args->ptep = ptep;
+ 	args->pfn = pfn_base + ((args->address & ~addr_mask) >> PAGE_SHIFT);
++	args->addr_mask = addr_mask;
+ 	args->pgprot = pgprot;
+ 	args->writable = writable;
+ 	args->special = special;
 -- 
 2.48.1
 
