@@ -1,56 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070D02147F8
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C30214A98
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740071187; cv=none; b=gw9cI2yl+2TjVZyeKQi/cAEB2Dexf3dIkQItH8+DoNAXkAAPqA+S77K38oiHuKwCWSm2bkAzuI6sW7GXj6zwvUYeyXiErCGLic+w/Gik/hzaXNCcWmQHGsCklQqRpe9qSvROkpZ7bvG3UVMKpSoUWvH40FL6NcCo2ZFlJDTtHko=
+	t=1740071189; cv=none; b=Nb4MA3Le7O/8ULjNMQPyuhoQePu2JuMgJWiPOcvXqnE/34ZAG/xCd4hIwJGZiCuOyHWPcy9tfzj2RQssqlMSZ7Kcx+dNs7lT4/TSEgsaAI+Gd5Is5YcU/b8Pchd6mhUIopSFzvRmoSMguQGnYyvkggkwl1oTecUEIGbpj13RP9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740071187; c=relaxed/simple;
-	bh=7o4MI2SWfvup5UD+qqNq6pDUDm+stiy6rOOP3Q809Qc=;
+	s=arc-20240116; t=1740071189; c=relaxed/simple;
+	bh=MM+E2DhB6mP93V6kH9H0BWPQOci1r/gsNuB+UaxbiAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OOj5iSUJ0FTeb6SI8IvQyUA56JOiyv3n8rkpjQJ2J0+2QpP51S2edIXkYXiiV4ZGqv/1Gvpas8pM73VZfsIkUP+3Lq3YJYDVRAq64rCboPqOOW/twHJojc4Rxola23s3+1gY1LYGmkVhAfvk/GA6WXFCDRRv0trkOubAq7KOgrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V3CbTL3K; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=CZlWfGhE5G93xhvyBBYAGJHfRmsb8wLfDhHuMTrmXKsZvIZ1VylDHEIcsAA8+HISsmKQquVevIT4Jb8Zq8O9EHsDYfM2twd1+Rr7XmZet4HjUsaCP3Vsr34OzBKuZZSRzg45sOrs/oImB6niH0nZKfZeZbx2yoe9A/m79XHO+lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cN54JIuJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V3CbTL3K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cN54JIuJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740071185;
+	s=mimecast20190719; t=1740071186;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OKSKOdbW5lvB/N/H9qi5+SwkOKNYt+M8QNhPBs9dcO8=;
-	b=V3CbTL3KEn0xipcA56S3eMDe6p3jBKi3h3alQXwVUd4dWoSvaPKGzLZf0FbR7Rb0nbdv+X
-	ODz2CTVJCw5LLaHzs0P3+LUXP9jSb6s4JU/32mBCAaiKtFQWzSLRsljRaWkks9kGm45O1q
-	WAdkaz10PjccRTORo4QxcPTtY/cLfaE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=Jxlx/bW94Y2mBtTLd29pOhhWxpKoOzPdJnxQh04qFFg=;
+	b=cN54JIuJ4CRIz4jFtVkvCJ4H7S3cfrZTsB3TqhcagcfSD+APMaDP52gemWVH5PqHopIVL0
+	xV0GuyZ5sGKoVf9q41CPrlYXqg/M8MwNOketmcPUsMrHg4dwTxB5WPpnAps8Ng6FqBvHoc
+	VexcDdYz5zgZfHqwfKwgokxZK41sm98=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-T9jSxB5VMDKS2aKHpEQtYw-1; Thu,
- 20 Feb 2025 12:06:19 -0500
-X-MC-Unique: T9jSxB5VMDKS2aKHpEQtYw-1
-X-Mimecast-MFC-AGG-ID: T9jSxB5VMDKS2aKHpEQtYw_1740071178
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-H-g80tNFMUm4AAs_JyMU4A-1; Thu,
+ 20 Feb 2025 12:06:22 -0500
+X-MC-Unique: H-g80tNFMUm4AAs_JyMU4A-1
+X-Mimecast-MFC-AGG-ID: H-g80tNFMUm4AAs_JyMU4A_1740071181
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFEDD19560B9;
-	Thu, 20 Feb 2025 17:06:18 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 318AD1800879;
+	Thu, 20 Feb 2025 17:06:21 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BABE81800D9D;
-	Thu, 20 Feb 2025 17:06:17 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1CD321800D9B;
+	Thu, 20 Feb 2025 17:06:19 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH 07/30] x86/virt/tdx: allocate tdx_sys_info in static memory
-Date: Thu, 20 Feb 2025 12:05:41 -0500
-Message-ID: <20250220170604.2279312-8-pbonzini@redhat.com>
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 09/30] x86/virt/tdx: Add tdx_guest_keyid_alloc/free() to alloc and free TDX guest KeyID
+Date: Thu, 20 Feb 2025 12:05:43 -0500
+Message-ID: <20250220170604.2279312-10-pbonzini@redhat.com>
 In-Reply-To: <20250220170604.2279312-1-pbonzini@redhat.com>
 References: <20250220170604.2279312-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,62 +65,93 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Adding all the information that KVM needs increases the size of struct
-tdx_sys_info, to the point that you can get warnings about the stack
-size of init_tdx_module().  Since KVM also needs to read the TDX metadata
-after init_tdx_module() returns, make the variable a global.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
+Intel TDX protects guest VMs from malicious host and certain physical
+attacks. Pre-TDX Intel hardware has support for a memory encryption
+architecture called MK-TME, which repurposes several high bits of
+physical address as "KeyID". The BIOS reserves a sub-range of MK-TME
+KeyIDs as "TDX private KeyIDs".
+
+Each TDX guest must be assigned with a unique TDX KeyID when it is
+created. The kernel reserves the first TDX private KeyID for
+crypto-protection of specific TDX module data which has a lifecycle that
+exceeds the KeyID reserved for the TD's use. The rest of the KeyIDs are
+left for TDX guests to use.
+
+Create a small KeyID allocator. Export
+tdx_guest_keyid_alloc()/tdx_guest_keyid_free() to allocate and free TDX
+guest KeyID for KVM to use.
+
+Don't provide the stub functions when CONFIG_INTEL_TDX_HOST=n since they
+are not supposed to be called in this case.
+
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Message-ID: <20241030190039.77971-5-rick.p.edgecombe@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/tdx.h  |  3 +++
+ arch/x86/virt/vmx/tdx/tdx.c | 17 +++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 53cdb4896856..26e29a7ba6f8 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -121,6 +121,9 @@ int tdx_cpu_enable(void);
+ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+ 
++int tdx_guest_keyid_alloc(void);
++void tdx_guest_keyid_free(unsigned int keyid);
++
+ struct tdx_td {
+ 	/* TD root structure: */
+ 	struct page *tdr_page;
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 369b264f4d9b..578ad468634b 100644
+index 578ad468634b..0122051af6b3 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -53,6 +53,8 @@ static DEFINE_MUTEX(tdx_module_lock);
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
+@@ -28,6 +28,7 @@
+ #include <linux/log2.h>
+ #include <linux/acpi.h>
+ #include <linux/suspend.h>
++#include <linux/idr.h>
+ #include <asm/page.h>
+ #include <asm/special_insns.h>
+ #include <asm/msr-index.h>
+@@ -43,6 +44,8 @@ static u32 tdx_global_keyid __ro_after_init;
+ static u32 tdx_guest_keyid_start __ro_after_init;
+ static u32 tdx_nr_guest_keyids __ro_after_init;
  
-+static struct tdx_sys_info tdx_sysinfo;
++static DEFINE_IDA(tdx_guest_keyid_pool);
 +
- typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
+ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
  
- static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
-@@ -1061,15 +1063,14 @@ static int init_tdmrs(struct tdmr_info_list *tdmr_list)
+ static struct tdmr_info_list tdx_tdmr_list;
+@@ -1459,6 +1462,20 @@ void __init tdx_init(void)
+ 	check_tdx_erratum();
+ }
  
- static int init_tdx_module(void)
++int tdx_guest_keyid_alloc(void)
++{
++	return ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
++			       tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
++			       GFP_KERNEL);
++}
++EXPORT_SYMBOL_GPL(tdx_guest_keyid_alloc);
++
++void tdx_guest_keyid_free(unsigned int keyid)
++{
++	ida_free(&tdx_guest_keyid_pool, keyid);
++}
++EXPORT_SYMBOL_GPL(tdx_guest_keyid_free);
++
+ static inline u64 tdx_tdr_pa(struct tdx_td *td)
  {
--	struct tdx_sys_info sysinfo;
- 	int ret;
- 
--	ret = get_tdx_sys_info(&sysinfo);
-+	ret = get_tdx_sys_info(&tdx_sysinfo);
- 	if (ret)
- 		return ret;
- 
- 	/* Check whether the kernel can support this module */
--	ret = check_features(&sysinfo);
-+	ret = check_features(&tdx_sysinfo);
- 	if (ret)
- 		return ret;
- 
-@@ -1090,12 +1091,12 @@ static int init_tdx_module(void)
- 		goto out_put_tdxmem;
- 
- 	/* Allocate enough space for constructing TDMRs */
--	ret = alloc_tdmr_list(&tdx_tdmr_list, &sysinfo.tdmr);
-+	ret = alloc_tdmr_list(&tdx_tdmr_list, &tdx_sysinfo.tdmr);
- 	if (ret)
- 		goto err_free_tdxmem;
- 
- 	/* Cover all TDX-usable memory regions in TDMRs */
--	ret = construct_tdmrs(&tdx_memlist, &tdx_tdmr_list, &sysinfo.tdmr);
-+	ret = construct_tdmrs(&tdx_memlist, &tdx_tdmr_list, &tdx_sysinfo.tdmr);
- 	if (ret)
- 		goto err_free_tdmrs;
- 
+ 	return page_to_phys(td->tdr_page);
 -- 
 2.43.5
 
