@@ -1,96 +1,171 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB741F1510
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 11:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2741F1510;
+	Thu, 20 Feb 2025 11:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740051939; cv=none; b=U/2PA7oBwnCWngFmaixUEhcyBDzPkW/y0biLh8bxsAp+P3A7SGwF7ESyHpFcZY3veWMyg0D35CEnp5P1Eq4AizYh5/qDVpgEBZsOAAPotdOHHfyaEsNB45Mtg1rws+no1n1GY7XiqsaVWPg/PvBxRwwJE+m9Qhcc+I3z0u16LeI=
+	t=1740052153; cv=none; b=F33yGrOV43lc6wpZBvzrlym1OlGBYESHE/uvew7jWYEmf6gp6FNQiJdInBli9UTekogQAWaA8EAhv3rALk+kXcM+2jsJMzt8AUqmvUdr5m1zEowhb0U/geS7yVpE18eyZngcgubtCr0IBKU1yRZX9WnMnfs0hlxrKEB2miR6VsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740051939; c=relaxed/simple;
-	bh=Yrzr6RlKTrfVfuylJCFKjN7TwC2IIN9gmHbRTx+OEfk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfBJpmRDRegEvPkqoNdvNLlxVLEYVPTJ2QDFoJ9BPkoK859ifyEPFFn6o3KqVc5ElIwsbtqNO1N13R1NQbFzryp0uEXx2eDpxMljkvYcIQH9R0gj0hK49m3rH1phCRXqgwGxlWhP036OuGnXarIwSfP8FPKsAflynx9X2DT9GLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cdjnj7iA; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740052153; c=relaxed/simple;
+	bh=/wqrT11uk28gB2f6F7P7h24DAJ2UTfq0Tb/FDk+sJtw=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=g854alnbVmJFlgBohPw63pHJVM5Fyj6hNVciowFk2/RPO1C1iJKt7SBgwm4cvofgMguJcsjFZQAH82k97RGMGq3QeWboGLgj7p2OIlU9/FQV/42K0vHNdHWCqViki0Da2odwLo5e4xZ/FNGzxqxcdZJCvy3EzCUIcU787ERkJIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLwi2UjO; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cdjnj7iA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLwi2UjO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740051938; x=1771587938;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Yrzr6RlKTrfVfuylJCFKjN7TwC2IIN9gmHbRTx+OEfk=;
-  b=Cdjnj7iA2cRmiJ+j9zPI40Ez6Cajped6Td4rHmlCKg5KMjNkn9K6vpkD
-   7i/OlDa2Hq6iX6Aet0x3ju80taceiLG0UpmfHV/YyfiA5BpnJS5+bETH3
-   e5cwIaeBJXDuZYYPXSMxhvoLVLHMM9sH2WIja/Y7OW+CtnFE4NoiKzkrD
-   rAbmV+Wie6dUhe8749Gr/fx+OSBkk+NYM6ayg8li5dWtKJvUSrnZLp9um
-   zLo+q3IxP/bV9jWh40QGz2tvX6wvlc/7l94EpqioBv25au+baSxWclIp9
-   kyW8PuUnOTgmh34/qclC1tEmZ2RteQK8tDE1ShZdZMNuXkJY4JMKSStHm
-   w==;
-X-CSE-ConnectionGUID: 7dHBHinDTS+dEePF1NhSyw==
-X-CSE-MsgGUID: eHvyQ1WfTzOEVKLQX6KpTA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="44474594"
+  t=1740052153; x=1771588153;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/wqrT11uk28gB2f6F7P7h24DAJ2UTfq0Tb/FDk+sJtw=;
+  b=PLwi2UjOyH4L3sC1kaKjQPq0kOtzeINBYEvAYZ1AeflO3B51vIWFn/+a
+   5rdcv7NBhdHKQebSzM0nWOPSZ64UeT52LyE3oYYo2biaO59fFgMnlhmBW
+   S2H/t06J1GVr4XxD19CcqKppHjDFjNRgmjQczo9ZVTIGSfG6G46dDGuUD
+   4nhXfeFIgn0BEhPaStAERq/ORdAkJx7csN+tFuM6j6cRIMX+jJIuJjGes
+   iyEcOLc0DBoeQ1+QTJ7psu0P23HtIdVpN9SALv7w75NiLsxeV+8ah9DM9
+   NxQcPdj1Uh0KMPs9MiHgw61HTjjjZCfYUw789gpzwg+TlGHLMezZpnMIN
+   Q==;
+X-CSE-ConnectionGUID: AqtslgcmRJe1lFKZa/FkxA==
+X-CSE-MsgGUID: xCG4tfT6RfWu3FQjw7vsnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40840582"
 X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="44474594"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:45:37 -0800
-X-CSE-ConnectionGUID: sQ5KWKyHSfm7Xasg2I/RmA==
-X-CSE-MsgGUID: 4zLxPxTbTM2sIWbZgSx64w==
+   d="scan'208";a="40840582"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:49:12 -0800
+X-CSE-ConnectionGUID: lBRoIMKBRlCv4wpxJyJpYQ==
+X-CSE-MsgGUID: e1CJ07BvRDSfCLalEtB1Ww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119116496"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Feb 2025 03:45:36 -0800
-Date: Thu, 20 Feb 2025 20:05:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
-	davydov-max@yandex-team.ru
-Subject: Re: [PATCH v5 5/6] target/i386: Update EPYC-Genoa for Cache
- property, perfmon-v2, RAS and SVM feature bits
-Message-ID: <Z7cad1GabzGG1pAp@intel.com>
-References: <cover.1738869208.git.babu.moger@amd.com>
- <ded4e65f9c9109f0863d1a00888b1ba48fab1549.1738869208.git.babu.moger@amd.com>
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="120000397"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.240.48]) ([10.124.240.48])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:49:04 -0800
+Message-ID: <c57977e2-d109-4a38-903e-8af6a7567a60@linux.intel.com>
+Date: Thu, 20 Feb 2025 19:49:01 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ded4e65f9c9109f0863d1a00888b1ba48fab1549.1738869208.git.babu.moger@amd.com>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Zhangfei Gao <zhangfei.gao@linaro.org>,
+ "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ Joerg Roedel <joro@8bytes.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Len Brown <lenb@kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Moore, Robert" <robert.moore@intel.com>, Robin Murphy
+ <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Will Deacon <will@kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
+ Donald Dutile <ddutile@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Hanjun Guo <guohanjun@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ "patches@lists.linux.dev" <patches@lists.linux.dev>,
+ "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Mostafa Saleh <smostafa@google.com>
+Subject: Re: [PATCH v4 00/12] Initial support for SMMUv3 nested translation
+To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20241113164316.GL35230@nvidia.com>
+ <6ed97a10-853f-429e-8506-94b218050ad3@linux.intel.com>
+ <20241115175522.GA35230@nvidia.com> <20250122192622.GA965540@nvidia.com>
+ <284dd081-8d53-45ef-ae18-78b0388c98ca@linux.intel.com>
+ <f7b6c833-b6c1-4154-9b77-13553e501f2b@linux.intel.com>
+ <20250213184317.GB3886819@nvidia.com>
+ <bc9f4477-7976-4955-85dc-3e05ebe95ead@linux.intel.com>
+ <20250214124150.GF3886819@nvidia.com>
+ <58e7fbee-6688-4a49-8b7a-f0e81e6562db@linux.intel.com>
+ <20250218130333.GA4099685@nvidia.com>
+ <f7e30bd8-ae1f-42fe-a8a6-2b448a474044@linux.intel.com>
+ <BN9PR11MB5276EAD07C3B32517D339DF28CC52@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <7027fb3a-dfb4-40ae-ac9c-5ea1dcd57746@linux.intel.com>
+ <BN9PR11MB52764E131435DF44370653CD8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB52764E131435DF44370653CD8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> +static const CPUCaches epyc_genoa_v2_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+On 2025/2/20 14:51, Tian, Kevin wrote:
+>> From: Baolu Lu<baolu.lu@linux.intel.com>
+>> Sent: Thursday, February 20, 2025 10:11 AM
+>>
+>> On 2/19/25 16:34, Tian, Kevin wrote:
+>>>> From: Baolu Lu<baolu.lu@linux.intel.com>
+>>>> Sent: Wednesday, February 19, 2025 10:10 AM
+>>>>
+>>>> On 2/18/25 21:03, Jason Gunthorpe wrote:
+>>>>> On Sat, Feb 15, 2025 at 05:53:13PM +0800, Baolu Lu wrote:
+>>>>>> On 2/14/25 20:41, Jason Gunthorpe wrote:
+>>>>>>> On Fri, Feb 14, 2025 at 01:39:52PM +0800, Baolu Lu wrote:
+>>>>>>>
+>>>>>>>> When the IOMMU is working in scalable mode, PASID and PRI are
+>>>> supported.
+>>>>>>>> ATS will always be enabled, even if the identity domain is attached to
+>>>>>>>> the device, because the PASID might use PRI, which depends on ATS
+>>>>>>>> functionality. This might not be the best choice, but it is the
+>>>>>>>> simplest and functional.
+>>>>>>> The arm driver keeps track of things and enables ATS when PASIDs are
+>>>>>>> present
+>>>>>> I am not aware of any VT-d hardware implementation that supports
+>>>>>> scalable mode but not PASID. If there were one, it would be worthwhile
+>>>>>> to add an optimization to avoid enabling ATS during probe if PASID is
+>>>>>> not supported.
+>>>>> I mean domains attached to PASIDs that need PRI/ATS/etc
+>>>> Yeah, that's a better solution. The PCI PRI/ATS features are only
+>>>> enabled when a domain that requires them is attached to it. I will
+>>>> consider it in the Intel driver later.
+>>>>
+>>> I didn't get the connection here. ATS can run w/o PASID per PCIe
+>>> spec. Why do we want to add a dependency on PASID here?
+>> It's due to PRI, which depends on ATS. The original topic is: when an
+>> identity domain is attached to the device and the device has no PASID
+>> support, then ATS might be disabled because ATS isn't supposed to
+>> provide much benefit in this case.
+> PRI depends on ATS but PASID is optional.
+> 
+> ATS has no benefit (or even more cost) with identity domain but again
+> it has nothing to do with PASID.
+> 
+>> Otherwise, ATS should be enabled because:
+>>
+>> - It benefits performance when the domain is a paging domain.
+>> - A domain attached to a PASID might use PRI, thus requiring ATS to be
+>>     on.
+> Above talks about the domain type. Nothing specific to PASID.
+> 
+>> The proposed solution is to use a reference count for ATS enablement,
+>> similar to how we handle iopf in another series. ATS is enabled as long
+>> as any domain requires it and disabled if no domain requires it.
+>>
+> I'm fine with using reference count for ATS enablement based on
+> the domain type, but just didn't get the role of PASID in this discussion.
 
-true.
+Sorry that I didn't make it clear. Let me try again.
 
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
-> +        .self_init = 1,
+PASID is mentioned in this discussion because it makes things different.
 
-true.
+Without PASID support, only a single domain is attached to the device.
+ATS enablement can then be determined based on the domain type.
+Specifically:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+- For an identity domain, ATS could be disabled.
+- For other domains, ATS is enabled.
 
+With PASID support, multiple domains can be attached to the device, and
+each domain may have different ATS requirements.  Therefore, we cannot
+simply determine the ATS status in the RID domain attach/detach paths. A
+better solution is to use the reference count, as mentioned above.
+
+Thanks,
+baolu
