@@ -1,216 +1,132 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE6F1C831A
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 12:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100CE1F4626
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 12:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740053132; cv=none; b=IHYD3dvoCDM0gN1otAKe44ESQ2vAGoHAAJlgFvTrAeexQOxcsXILlZymIbejuW9ou/YAvnUUbGkRfQykq69OpzJbMulWR8CaS8kgHyAUl5aOvibOF5obaHH//Xwc8u84saHvS6zOryQHHc470UFxvypKC3xLYLRnezqVT1fpdYI=
+	t=1740053678; cv=none; b=Heo3eTUOK3rFYo1N+74ptE1MsYSuwnvLbsafcefv82cIaGhVs54Ke6UETWIlVRSYXXlaXOOCUIXWFCX8To+jUhY/Zf3+b3wWKe0rdjrMKyTyhVGbTn4RlK2m6qqO/57NghjAzcsHaZAYiKRgzqkmsnD9V3c7yY4efKnDv2Xc180=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740053132; c=relaxed/simple;
-	bh=bOLlOqbVArivBWDPBMut57sgRmc/gLlGzUtDxPSmsdI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V0jQKZzUkODkZcIW9747DxpNRyrfD7Rwu7OH/ECla5r3KgKQwfRR/cK2zJ+P2F3eR2gzdxon4ktMaa3QlDTW+L75fU79bI2gZ8thu7XvB8ojgj/4xStxUSWL9rXW9IIrmh7wKI3ajnGq7y4tQSuP9RaugpENBfcC/OWOSt051GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wOLpWDti; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740053678; c=relaxed/simple;
+	bh=ZrSW3WlFsoq4+pWbmw5nXV2YhyzQXMLfxD78lA6xThE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxyP8rzVZNuINLSYtRqShUUbf0EfottG7Pbfr8ZJzsVqn/KDf1e5tOaUkdyKero1LYinKVvahLSuiVGCxNVCI+YVMGrrDHGSUOTY7AbP0yqmr4GZGajBoge3P/+RNh2+6VY4p16/jbTb91uErSW+L1hDtu40Ve5hhENqV229JVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=KGq8p2Sl; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wOLpWDti"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-471fa3b19bcso245681cf.0
-        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 04:05:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="KGq8p2Sl"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38f403edb4eso463695f8f.3
+        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 04:14:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740053129; x=1740657929; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tC6goll+lleAOD0GHwuo3lpYGQVHyXNfS5gixgBS9ZU=;
-        b=wOLpWDtix+ZHl83Jxjd0nqCv8MyOSsc6EaKN0Q7e5i8BO2/nPraWMS9NVpYXnK6hT8
-         eN9CejqFZd+yXDoxidtzrecNxsdwJfzxlUnmvWs7usbNt8jre0TZ5cTVsZJ/icrHhLv3
-         s7MbqQilm4Qw6R/DhtuaoafxFS9iQlQJsEidDfqQda7Ij1fCEeMqZldcGxL5DBnZMtfj
-         WyueDqC9W4cYDkA6P7MDt0Iv0KZ7dV2vxgLPcH5KhXoFVlGgF/vUgbZsp9m6YF9MWEZE
-         1uqGZsY4kCie/JQ0TRwZMYskjmOajODnfLmBvuZtz4FOeZrDsvd1xT7EwICeOoe6ooA5
-         9Iig==
+        d=ventanamicro.com; s=google; t=1740053675; x=1740658475; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hGUCY7fitgab0ytTT0Om1EzRQzqjeCpPDOFA2YcYuWg=;
+        b=KGq8p2SlE9lGyKwo4KR4SRbF18g7v3cAIylOvrFSmGGhiDQdq36duUd0DrqygZxipQ
+         6C2qnAyWlcroug/Mukv4Nz1dJkFyFZs/IMeReYcLpj9zePqAuK84qIIgxaINYmsRTg/s
+         6lGrNZZlzaG1wZHtNVseHA3w5Co6W/POSsYUU9mIsJEdLUlOkXyv4238DhvmNoSzg58X
+         E8WqJH7Po2MjJyBz4pcsq6ldyHb/yV+lrEy/ndDwRJXD4t9qJ8E1TKVOG3SLc90WCu/l
+         a6l/tvoeaeF2JdQl5/XzmnWmOc2w3ewIMN5hk3Emo9jdiCAxSZVU+F0AZThAMtJlWg/G
+         5/DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740053129; x=1740657929;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tC6goll+lleAOD0GHwuo3lpYGQVHyXNfS5gixgBS9ZU=;
-        b=kQyuW4jiWPKCp8Zc26g02spcfimEIsxjthIE9m3BTXy/5MTltkI0WRLUYVqsJ2bA/x
-         bg6uZQgenoN0GA4wF7LDYCkD8po0KBHJjLZfR+chsAUKkBwe/m5uipUJf0ZUDa5AMk7F
-         8e0znJzy3Ojg2ZCo03xYEaBqYHRELOtEYneGGfBA5CYyuYxy/DSTmA9b9DJ8m+gSh/x5
-         MW2RpPVdnXtDrIMaf0l6E6ZKCHLNgwn1zDVN0vgwtY/XvPTNZk3F+FPnSnsCriUpaX8y
-         GKQqXviWHRWWVPGzOrGUzTv3eR676b1aLWsxkeDED6CaF/qmfH/sRHZVD5b4RWJTtiKI
-         Sh2w==
-X-Gm-Message-State: AOJu0YyoWU+nmr2SamEQUJEOvxQaYb15WrKLx2mO57Xp8wiXVQpe3zOp
-	m2obhUHpRz4SLBrLTbw2/ZA5ubi1l3eIHOKCw9CxHtgOaD6oPsD0X8jBD5twWuD62GFzpNZbPAQ
-	Lnv15sJE4jm++A7yFpdMn2gpIl5MYpUX9XLgv
-X-Gm-Gg: ASbGncvPoq4qMhMaB7fk4llYh0daNk06Q74Mz03TLFUFwgWKvASZPfiTn7UADiRsveY
-	3+DCau2D0KDv2N9YlcHBegXdsBY4afnPDkM1D3N0TpR+35EohcTV0xrP7suO1hbMFiL3XsSc=
-X-Google-Smtp-Source: AGHT+IGqv2omEcXYZh+zeMt25c/cWZda38ROllkjZAbPHeeub8AGnjq5z0rnwPwyYbAlyoBizqH1Tq5qnHzxi+9chwQ=
-X-Received: by 2002:ac8:7d4f:0:b0:471:939c:a304 with SMTP id
- d75a77b69052e-47215beb9bcmr3661491cf.8.1740053129093; Thu, 20 Feb 2025
- 04:05:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740053675; x=1740658475;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hGUCY7fitgab0ytTT0Om1EzRQzqjeCpPDOFA2YcYuWg=;
+        b=VBa7lDqLc4yxxwTwzPyRYGdTSE/rNzmWkAPpupPOO3IecF4hnajsFDHMi6VEL8SWOR
+         Yfb+Ab6XjGbm7MMg+mGDhfp9A9H376Io2jzKgQ6GScfhKNem3GaJkQ5U3CCE+kkm+CLV
+         KUW6/UAg9zWyHcOnx/3NvN8yaHFj72iSj0aSXBIAMkOm+7Y/ba8PA54rleD2JFmtgsg+
+         uYAVZzTgLOeJi0XckejArZQBBrvmPlnTJ+Ocgg6023ZflLi0gQVRnYV/2ooN7NTSASyk
+         hqw6VGgQBTod71ZjZgj0DtMRKwIz1owtn1ue0u9T7+EhcvSv0PpUVFXF5kDPGjvcKrbZ
+         U6hg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5HhrwuNr4lIgDhXGP/xQcOm6b5WW84FvzJRT1loccFUTKWVJPatnlHGMItbxUOFSlSlg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRAn47Em2WR8TtoIDkLPC09qQ8qopVuZ7L2wk1+enbd5lsgRSs
+	Ax2jSqHdePDGhsDglwD7eaxYolEaaCxZvdl6NezkHHff88Aml4z0MoXhLeRmOPA=
+X-Gm-Gg: ASbGncvqrCrvUbZnlM/tQ4j2bDAQ/f5ZQjU+ovBpRzQsfq/joS7DzNJ2FoUSDeK509u
+	vcYQ1yjyUvDNgz+zxffhSVjxtdsR1ZZrkKrPXa6RH+Gx6BrrWafIyV3VXFOSQAi0UaF/G2WET25
+	Sgpo9l+XVJWCaXo01IpYr/ehz4PUzKy5YgJ052RGouw9VaXNSpXfL+CfBcVkoqLlF2uVN6Q9LFa
+	28VjPECan8H7ODnTeYETIServddJUxZTZS50Y/VPPmB2uwiJhJU+qD/TTzLXlA1YRWeoqCcoBvq
+	LX8=
+X-Google-Smtp-Source: AGHT+IEmpbegrxw5t/KNdPkGK27oe1/PS+rd7I9A+5GvQsjNYkwQPD+h7mTbFOVdsQ9qj72tvmQ1qQ==
+X-Received: by 2002:a05:6000:188c:b0:38d:d7a4:d447 with SMTP id ffacd0b85a97d-38f33f52ee9mr22748723f8f.34.1740053675184;
+        Thu, 20 Feb 2025 04:14:35 -0800 (PST)
+Received: from localhost ([2a02:8308:a00c:e200::766e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439ac276ef7sm4896085e9.40.2025.02.20.04.14.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 04:14:34 -0800 (PST)
+Date: Thu, 20 Feb 2025 13:14:33 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>
+Cc: xiangwencheng <xiangwencheng@lanxincomputing.com>, anup@brainfault.org, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, atishp@atishpatra.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	linux-riscv <linux-riscv-bounces@lists.infradead.org>
+Subject: Re: [PATCH] riscv: KVM: Remove unnecessary vcpu kick
+Message-ID: <20250220-1581569f8559049399549cae@orel>
+References: <20250219015426.1939-1-xiangwencheng@lanxincomputing.com>
+ <D7WALEFMK28X.13HQ0UL1S3NM5@ventanamicro.com>
+ <38cc241c40a8ef2775e304d366bcd07df733ecf0.f7f1d4c7.545f.42a8.90f5.c5d09b1d32ec@feishu.cn>
+ <20250220-f9c4c4b3792a66999ea5b385@orel>
+ <38cc241c40a8ef2775e304d366bcd07df733ecf0.818d94fe.c229.4f42.a074.e64851f0591b@feishu.cn>
+ <D7X576NHG512.2HBBO3JLIA1JH@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218172500.807733-1-tabba@google.com> <20250218172500.807733-4-tabba@google.com>
- <2cdc5414-a280-4c47-86d5-4261a12deab6@redhat.com>
-In-Reply-To: <2cdc5414-a280-4c47-86d5-4261a12deab6@redhat.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 20 Feb 2025 12:04:52 +0000
-X-Gm-Features: AWEUYZn5G0GFm0jvs3Hnrk6KLDrgXfy_elTFvfFXpStQbGg36tNQypYCQ5puB8s
-Message-ID: <CA+EHjTxh9GB93BHr7ymJ5j8c27Lka2cBjEgfNRXY9pYL25utfg@mail.gmail.com>
-Subject: Re: [PATCH v4 03/10] KVM: guest_memfd: Allow host to map
- guest_memfd() pages
-To: David Hildenbrand <david@redhat.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
-	isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com, 
-	suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com, 
-	quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, 
-	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, qperret@google.com, 
-	keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, 
-	jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, 
-	hughd@google.com, jthoughton@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D7X576NHG512.2HBBO3JLIA1JH@ventanamicro.com>
 
-On Thu, 20 Feb 2025 at 11:58, David Hildenbrand <david@redhat.com> wrote:
->
-> On 18.02.25 18:24, Fuad Tabba wrote:
-> > Add support for mmap() and fault() for guest_memfd backed memory
-> > in the host for VMs that support in-place conversion between
-> > shared and private. To that end, this patch adds the ability to
-> > check whether the VM type supports in-place conversion, and only
-> > allows mapping its memory if that's the case.
+On Thu, Feb 20, 2025 at 09:50:06AM +0100, Radim Krčmář wrote:
+> 2025-02-20T16:17:33+08:00, xiangwencheng <xiangwencheng@lanxincomputing.com>:
+> >> From: "Andrew Jones"<ajones@ventanamicro.com>
+> >> On Thu, Feb 20, 2025 at 03:12:58PM +0800, xiangwencheng wrote:
+> >> > In kvm_arch_vcpu_blocking it will enable guest external interrupt, which
 > >
-> > This behavior is also gated by the configuration option
-> > KVM_GMEM_SHARED_MEM.
+> >> > means wirting to VS_FILE will cause an interrupt. And the interrupt handler
 > >
-> > Signed-off-by: Fuad Tabba <tabba@google.com>
-> > ---
-> >   include/linux/kvm_host.h |  11 +++++
-> >   virt/kvm/guest_memfd.c   | 103 +++++++++++++++++++++++++++++++++++++++
-> >   2 files changed, 114 insertions(+)
+> >> > hgei_interrupt which is setted in aia_hgei_init will finally call kvm_vcpu_kick
 > >
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index 3ad0719bfc4f..f9e8b10a4b09 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -728,6 +728,17 @@ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
-> >   }
-> >   #endif
-> >
-> > +/*
-> > + * Arch code must define kvm_arch_gmem_supports_shared_mem if support for
-> > + * private memory is enabled and it supports in-place shared/private conversion.
-> > + */
-> > +#if !defined(kvm_arch_gmem_supports_shared_mem) && !IS_ENABLED(CONFIG_KVM_PRIVATE_MEM)
-> > +static inline bool kvm_arch_gmem_supports_shared_mem(struct kvm *kvm)
-> > +{
-> > +     return false;
-> > +}
-> > +#endif
-> > +
-> >   #ifndef kvm_arch_has_readonly_mem
-> >   static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
-> >   {
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index c6f6792bec2a..30b47ff0e6d2 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -317,9 +317,112 @@ void kvm_gmem_handle_folio_put(struct folio *folio)
-> >   {
-> >       WARN_ONCE(1, "A placeholder that shouldn't trigger. Work in progress.");
-> >   }
-> > +
-> > +static bool kvm_gmem_offset_is_shared(struct file *file, pgoff_t index)
-> > +{
-> > +     struct kvm_gmem *gmem = file->private_data;
-> > +
-> > +     /* For now, VMs that support shared memory share all their memory. */
-> > +     return kvm_arch_gmem_supports_shared_mem(gmem->kvm);
-> > +}
-> > +
-> > +static vm_fault_t kvm_gmem_fault(struct vm_fault *vmf)
-> > +{
-> > +     struct inode *inode = file_inode(vmf->vma->vm_file);
-> > +     struct folio *folio;
-> > +     vm_fault_t ret = VM_FAULT_LOCKED;
-> > +
-> > +     filemap_invalidate_lock_shared(inode->i_mapping);
-> > +
-> > +     folio = kvm_gmem_get_folio(inode, vmf->pgoff);
-> > +     if (IS_ERR(folio)) {
-> > +             switch (PTR_ERR(folio)) {
-> > +             case -EAGAIN:
-> > +                     ret = VM_FAULT_RETRY;
-> > +                     break;
-> > +             case -ENOMEM:
-> > +                     ret = VM_FAULT_OOM;
-> > +                     break;
-> > +             default:
-> > +                     ret = VM_FAULT_SIGBUS;
-> > +                     break;
-> > +             }
-> > +             goto out_filemap;
-> > +     }
-> > +
-> > +     if (folio_test_hwpoison(folio)) {
-> > +             ret = VM_FAULT_HWPOISON;
-> > +             goto out_folio;
-> > +     }
-> > +
-> > +     /* Must be called with folio lock held, i.e., after kvm_gmem_get_folio() */
-> > +     if (!kvm_gmem_offset_is_shared(vmf->vma->vm_file, vmf->pgoff)) {
-> > +             ret = VM_FAULT_SIGBUS;
-> > +             goto out_folio;
-> > +     }
-> > +
-> > +     /*
-> > +      * Only private folios are marked as "guestmem" so far, and we never
-> > +      * expect private folios at this point.
-> > +      */
-> > +     if (WARN_ON_ONCE(folio_test_guestmem(folio)))  {
-> > +             ret = VM_FAULT_SIGBUS;
-> > +             goto out_folio;
-> > +     }
-> > +
-> > +     /* No support for huge pages. */
-> > +     if (WARN_ON_ONCE(folio_test_large(folio))) {
-> > +             ret = VM_FAULT_SIGBUS;
-> > +             goto out_folio;
-> > +     }
-> > +
-> > +     if (!folio_test_uptodate(folio)) {
-> > +             clear_highpage(folio_page(folio, 0));
-> > +             kvm_gmem_mark_prepared(folio);
-> > +     }
->
-> kvm_gmem_get_pfn()->__kvm_gmem_get_pfn() seems to call
-> kvm_gmem_prepare_folio() instead.
->
-> Could we do the same here?
+> >> > to wake up vCPU.
+> 
+> (Configure your mail client, so it doesn't add a newline between each
+>  quoted line when replying.)
+> 
+> >> > So I still think is not necessary to call another kvm_vcpu_kick after writing to
+> >> > VS_FILE.
+> 
+> So the kick wasn't there to mask some other bug, thanks.
+> 
+> >> Right, we don't need anything since hgei_interrupt() kicks for us, but if
+> >> we do
+> >> 
+> >> @@ -973,8 +973,8 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+> >>         read_lock_irqsave(&imsic->vsfile_lock, flags);
+> >> 
+> >>         if (imsic->vsfile_cpu >= 0) {
+> >> +               kvm_vcpu_wake_up(vcpu);
+> >>                 writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
+> >> -               kvm_vcpu_kick(vcpu);
+> >>         } else {
+> >>                 eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
+> >>                 set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
+> >> 
+> >> then we should be able to avoid taking a host interrupt.
+> 
+> The wakeup is asynchronous, and this would practically never avoid the
+> host interrupt, but we'd do extra pointless work...
+> I think it's much better just with the write.  (The wakeup would again
+> make KVM look like it has a bug elsewhere.)
 
-Will do.
+Ah yes, the wakeup is asynchronous. Just dropping the kick is the right
+way to go then.
 
 Thanks,
-/fuad
-
-> --
-> Cheers,
->
-> David / dhildenb
->
+drew
