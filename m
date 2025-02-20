@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEFD1FAC5E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486AC1FBCA4;
 	Thu, 20 Feb 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059355; cv=none; b=KrggPblzjbPVvFFEZemWUS2rDWZ20WRLqsahW8OHJdLKFXspXgGRqw+SzapQcG1TZRefqtDBJDgMD9CbJb6Pj914sIUFxm7p02k0Ds9tXd25F21jwz7t0fsB9K7lLlxwC7+3s/DS3oYSDh8tNCkrSVZU/AtoXOBxHCcIIjQ07/E=
+	t=1740059355; cv=none; b=RwA9+hHyewjkqGRteMTTVrJfqxYsu6BP5tOTWm45FEBadCyHBlu7fmDK3SFASM3PvnccZUfUH+LhK/jvt04LhkazhBn0A8U9ohAvLRqvNaJUnbdplUmDtPOU1mZq365G33slpnifAxOWWxWzzzYKDo/pdOu5zkd43scXjOwC9EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740059355; c=relaxed/simple;
-	bh=BbvYn+ZZ1IWZiQh4LZNEmsttX+u4/bUxfHPvQig08+k=;
+	bh=+4IhGCZKSDv030X/F7zzYtvjqdN4RzFElZ+QA2y5AmY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mbvWiW99n/AI3xNsThgrGKkqyBcgmW1sHOc1+gvNpYOCvCzUg2F3fof/xWkeUuXENGt4eCUINvFPCVpu3Gu/MNUvm2S5BuSJBOLL7bwGF+GHG6hrB35oAQlJCK2VWcvWU4EGWFXXjVZQ+mfrDpOXmYUZSPsiB6y8oyMvF2icFDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AU18isSq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=myNOnoXnSwNTol3pSQiYJuUtyxTHGmib/EWUkmmuVRSRw8a+sFpzJ5dX0cGWyvLBqsS+GLMI7gwqMM1fWSqpmoFO8x2g/Ejhs93k2OtXN4PUHNppN7Sb4z7ys6JG/dYEMo4zSyb0VqnaQzE3s/aDnsnPwhtgPt6ubQIiLqkgf5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LiPw885a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AU18isSq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EA3C4CEE2;
-	Thu, 20 Feb 2025 13:49:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LiPw885a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A80EC4CED1;
+	Thu, 20 Feb 2025 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740059355;
-	bh=BbvYn+ZZ1IWZiQh4LZNEmsttX+u4/bUxfHPvQig08+k=;
+	bh=+4IhGCZKSDv030X/F7zzYtvjqdN4RzFElZ+QA2y5AmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU18isSqWYLy6+aT9kxnKouS93bJw8eSqe8O4WymKrrJUVwY9JO+Q+o6A2s7iE5Ai
-	 b+0dDiuM5ZBOXmRmVtA/eyA+DOSkOuPUeNPO8D6FXOHZO2cpVY4F8RBpRCaeFfVn2f
-	 io+UoOIWA8sMtq0b/v6Ra3/LmaakEBc5OvxRIPBZbvptngyhNymJ61RS/fUk21bV2B
-	 Z23kO5VVScXkf579l5nnO+nMgKWp/BHTgcRMRWUZfh0eJkQAjXfZcU+EfN3WGJYJaf
-	 o6ITX4xXQ6KvqOj97meFBD80CTFHApu5boQfBuFoXqQ0k74vdpJD2jPptRXoPHFF2o
-	 PP9H3VTg4j17w==
+	b=LiPw885aAEnc8fsWzlHA7cfUsze7JA1k4qJlzkIx+Zk7BplPf/KIcTTIeWv+2RqGl
+	 ypsugHCjdWvrq6VRLQ9hCoYWgd9qa6sqWUeAHj9YdMksI6/hv9JHZXFBOUCrm2IGbN
+	 8nTbvi1rvALDuBmtUSyV2xbxe03foitCwPZZYZfc1YX5dWiokFcrDp2YMD+gFIcG58
+	 id7OHrQy9JHDm5155TmEwpk8Z4DUBRcIg2wH72MZUvNwRyIG/mQVsomvJYkHQ5TPq5
+	 YUWx33wO78vWO0oH5sKJI8R5JLJe4vNsknVj1xP96hIZt9cCL1SbSzq9lVVG5QvN4Z
+	 /1IZqcvB3tfFQ==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tl6vR-006DXp-05;
+	id 1tl6vR-006DXp-CP;
 	Thu, 20 Feb 2025 13:49:13 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	gankulkarni@os.amperecomputing.com
-Subject: [PATCH v2 07/14] KVM: arm64: Make ID_REG_LIMIT_FIELD_ENUM() more widely available
-Date: Thu, 20 Feb 2025 13:49:00 +0000
-Message-Id: <20250220134907.554085-8-maz@kernel.org>
+Subject: [PATCH v2 09/14] KVM: arm64: Move NV-specific capping to idreg sanitisation
+Date: Thu, 20 Feb 2025 13:49:02 +0000
+Message-Id: <20250220134907.554085-10-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250220134907.554085-1-maz@kernel.org>
 References: <20250220134907.554085-1-maz@kernel.org>
@@ -60,56 +60,115 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-ID_REG_LIMIT_FIELD_ENUM() is a useful macro to limit the idreg
-features exposed to guest and userspace, and the NV code can
-make use of it.
+Instead of applying the NV idreg limits at run time, switch to
+doing it at the same time as the reset of the VM initialisation.
+
+This will make things much simpler once we introduce vcpu-driven
+variants of NV.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c | 10 ----------
- arch/arm64/kvm/sys_regs.h | 10 ++++++++++
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/include/asm/kvm_nested.h |  1 +
+ arch/arm64/kvm/nested.c             | 45 +----------------------------
+ arch/arm64/kvm/sys_regs.c           |  3 ++
+ 3 files changed, 5 insertions(+), 44 deletions(-)
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 678213dc15513..d14daadb8a7c0 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1803,16 +1803,6 @@ static u64 sanitise_id_aa64pfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
+diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
+index 56c4bcd35e2e5..692f403c1896e 100644
+--- a/arch/arm64/include/asm/kvm_nested.h
++++ b/arch/arm64/include/asm/kvm_nested.h
+@@ -188,6 +188,7 @@ static inline bool kvm_supported_tlbi_s1e2_op(struct kvm_vcpu *vpcu, u32 instr)
+ }
+ 
+ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu);
++u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val);
+ 
+ #ifdef CONFIG_ARM64_PTR_AUTH
+ bool kvm_auth_eretax(struct kvm_vcpu *vcpu, u64 *elr);
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index 2cc82e69ab523..96d1d300e79f9 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -804,7 +804,7 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+  * This list should get updated as new features get added to the NV
+  * support, and new extension to the architecture.
+  */
+-static u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
++u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
+ {
+ 	switch (reg) {
+ 	case SYS_ID_AA64ISAR0_EL1:
+@@ -929,47 +929,6 @@ static u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
  	return val;
  }
  
--#define ID_REG_LIMIT_FIELD_ENUM(val, reg, field, limit)			       \
--({									       \
--	u64 __f_val = FIELD_GET(reg##_##field##_MASK, val);		       \
--	(val) &= ~reg##_##field##_MASK;					       \
--	(val) |= FIELD_PREP(reg##_##field##_MASK,			       \
--			    min(__f_val,				       \
--				(u64)SYS_FIELD_VALUE(reg, field, limit)));     \
--	(val);								       \
--})
+-static void limit_nv_id_regs(struct kvm *kvm)
+-{
+-	u64 val;
 -
- static u64 sanitise_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64ISAR0_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64ISAR0_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64ISAR0_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64ISAR1_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64ISAR1_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64ISAR1_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64PFR0_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64PFR1_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64PFR1_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64PFR1_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64MMFR0_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64MMFR0_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64MMFR0_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64MMFR1_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64MMFR1_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64MMFR1_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64MMFR2_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64MMFR2_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64MMFR2_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64MMFR4_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64MMFR4_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64MMFR4_EL1, val);
+-
+-	val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64DFR0_EL1);
+-	val = limit_nv_id_reg(kvm, SYS_ID_AA64DFR0_EL1, val);
+-	kvm_set_vm_id_reg(kvm, SYS_ID_AA64DFR0_EL1, val);
+-}
+-
+ u64 kvm_vcpu_apply_reg_masks(const struct kvm_vcpu *vcpu,
+ 			     enum vcpu_sysreg sr, u64 v)
  {
- 	val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64DFR0_EL1, DebugVer, V8P8);
-diff --git a/arch/arm64/kvm/sys_regs.h b/arch/arm64/kvm/sys_regs.h
-index 1d94ed6efad2c..cc6338d387663 100644
---- a/arch/arm64/kvm/sys_regs.h
-+++ b/arch/arm64/kvm/sys_regs.h
-@@ -247,4 +247,14 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu);
- 	CRn(sys_reg_CRn(reg)), CRm(sys_reg_CRm(reg)),	\
- 	Op2(sys_reg_Op2(reg))
+@@ -1014,8 +973,6 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
+ 	if (!kvm->arch.sysreg_masks)
+ 		return -ENOMEM;
  
-+#define ID_REG_LIMIT_FIELD_ENUM(val, reg, field, limit)			       \
-+({									       \
-+	u64 __f_val = FIELD_GET(reg##_##field##_MASK, val);		       \
-+	(val) &= ~reg##_##field##_MASK;					       \
-+	(val) |= FIELD_PREP(reg##_##field##_MASK,			       \
-+			    min(__f_val,				       \
-+				(u64)SYS_FIELD_VALUE(reg, field, limit)));     \
-+	(val);								       \
-+})
+-	limit_nv_id_regs(kvm);
+-
+ 	/* VTTBR_EL2 */
+ 	res0 = res1 = 0;
+ 	if (!kvm_has_feat_enum(kvm, ID_AA64MMFR1_EL1, VMIDBits, 16))
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index d14daadb8a7c0..87f165289fb9f 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1638,6 +1638,9 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
+ 		break;
+ 	}
+ 
++	if (vcpu_has_nv(vcpu))
++		val = limit_nv_id_reg(vcpu->kvm, id, val);
 +
- #endif /* __ARM64_KVM_SYS_REGS_LOCAL_H__ */
+ 	return val;
+ }
+ 
 -- 
 2.39.2
 
