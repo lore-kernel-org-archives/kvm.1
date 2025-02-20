@@ -1,59 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504EE212D69
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB9621325D
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740071227; cv=none; b=qaWU6DdT8IDoF/8PR1IvSVH2K7FTA3aYKojU3za3OPLsVueFxixynqSzLsg9hz8ghszE7HI7k0KfJq07EoEQwRZd5zzjtdzagTo7Je/VD9pBSUmi4unnYjnkh7Eo6CJam4r/RxAFO7FZp8v+cGL4qB9cxEKqngMxxxq6eWCD9Vo=
+	t=1740071425; cv=none; b=p6H1PRAUr62VPRdx8xwsWohlo5WxQ8Szf8jeFyD2OgN8MyyZ8MKl6eRlq+eQ/Ltt+GeNUUYGAaUk5Rr4qM11EwDha2DhexdYvnLnS9l/UV/wphM+qRPh0L8B+t3yHhwNhkeVogpzws2pFYybySS4p1CHP5mibO3cw6IbdDU70iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740071227; c=relaxed/simple;
-	bh=WjyPZsuYt/J1ZXDdahnzCeLRanspFNYQ0w02lSCEdig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dvcWlp0Mcf3Mww9h6cNfAxHj0iHshk1QtHebyLeLSCtJ1tbkqoZjTLyB8MoU0yq86oVEkwmP8jKvr2aj2PKyvtxR9F72Nq6ioJ29zyD+H2tI9EK8VxYgTJPrghUXl4qsF3HEr49FYDEG4B3JERDksK3gaCiz59zGGo7JmkO/QE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eTZp45pS; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1740071425; c=relaxed/simple;
+	bh=kg7PYKt74NmqPx2oKNRGx3rLvGEcdQR61JIV5w6PyfE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ete71UIzIZDMa8THtgDhZ8s0kw2Go3I5ysLVjvB0+/2Of0OyXyzesXb7taRJ5t/guQCTbeFzwsi10YVJq9FFUBu33hP68lIkD2GndhL4DVM8EniTsBxNcYGKh+1sF0rt5BaaGYoFeoSEp2eLqGc9PDmeCXcbb2Gf4XZXuC8tMNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FAYLnv3k; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eTZp45pS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FAYLnv3k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740071225;
+	s=mimecast20190719; t=1740071422;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Yw+GWEMGktTe2EG3idQ1LE3+Xb5+a50/AkTUJ8BT5dQ=;
-	b=eTZp45pSGSWe2V4LESuOVt3ICtQs2zqcRdmXXP4N4lfU94v1D4AHIIABMyiB0CfZ7mpOBg
-	Dxd/5W9kgL1ftnS5pus/yQtZft/F5QvXcamiWPV21tbOqI2GTNtFYf1HbtKpMmM2sQmjV3
-	QBOK/7/tpZnzh8+BbXDdhsBLNy3GYoI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-2GvadszLNS-7OACkx05beA-1; Thu,
- 20 Feb 2025 12:06:50 -0500
-X-MC-Unique: 2GvadszLNS-7OACkx05beA-1
-X-Mimecast-MFC-AGG-ID: 2GvadszLNS-7OACkx05beA_1740071209
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 056B31800872;
-	Thu, 20 Feb 2025 17:06:49 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0AF8819412A4;
-	Thu, 20 Feb 2025 17:06:47 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	Yan Zhao <yan.y.zhao@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 29/30] KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level
-Date: Thu, 20 Feb 2025 12:06:03 -0500
-Message-ID: <20250220170604.2279312-30-pbonzini@redhat.com>
-In-Reply-To: <20250220170604.2279312-1-pbonzini@redhat.com>
-References: <20250220170604.2279312-1-pbonzini@redhat.com>
+	bh=kg7PYKt74NmqPx2oKNRGx3rLvGEcdQR61JIV5w6PyfE=;
+	b=FAYLnv3k01FlIi2F1YeCJ3tXVndpMzOw4X6OofWUa5hN9FcP+Rde/hf1/PPR6K/yuPIuLw
+	ILboncMTc/5qmRsoGpL3alNawfd3guw5PGa3MuCY/GIsjxxCfv1efqf1PChvldWYvAw60k
+	c4VDY1zMQ0KZ0ZU3p2/zzKl3S6PXyJE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-54cBg0lYOZO9UylQNKEYLw-1; Thu, 20 Feb 2025 12:10:21 -0500
+X-MC-Unique: 54cBg0lYOZO9UylQNKEYLw-1
+X-Mimecast-MFC-AGG-ID: 54cBg0lYOZO9UylQNKEYLw_1740071419
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4394c0a58e7so8905115e9.0
+        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 09:10:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740071419; x=1740676219;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kg7PYKt74NmqPx2oKNRGx3rLvGEcdQR61JIV5w6PyfE=;
+        b=r6X3375W4G2KSGgitJyO1H99ffVPwbA8/7cBECxChJ8JcxJ/zkr7Vgxhk6OS/Q4/xx
+         t6pQUSG/YDJrFhTBkhHXlVu0SRa+MTXPWGCTK7z6kNuvdWGSbnyvjAsa22yHMb3NK+8z
+         pPQBrZg+LF+C1IPJ/EAsWNcOjjxRhkQmB7QXGGa4eQg1/OCmvgTDOiJthhjM2wUsMZJj
+         aebuJuk5UQoU1bMT2QjNLpx5dangZ75FWUS8q4cifoQC25wVEY//C5PY2CVM2ni8kCh2
+         KS3qRlPbpGOO+sAPlinoxilhyR+wJoLpLPEwpx4Zkq2OH3t9Hby3ep9dAooH9WTPPu88
+         GQmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUZeoK0nEvpeLX/4M41yCpVgxHKu6SToWc4ci8Xudq54RWSg4e6VKilZM4gOn27eSXmB0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1sMN6lM8rDoTsKp7XbiMetB8THP1FxJfb6lRVVLU5BGugF4L4
+	uP5dsCH+maxMMx78FrWqiofGYfcBb2w2qfKd1jhaHwCLZalNWGjoG1Kbqh1vOdUDaz1gtzGXGgb
+	o0KNRYER9mr68I26NLQ5Lwv7jWsmo8zl0bIfnobr7BmEGSpxRFA==
+X-Gm-Gg: ASbGnctxZqeqPbwy4zVXJHrxNuv1r/57HGElyBax24P21gQXRMNw/GVFzCPjXk+d0Ph
+	cS4TuMtM10E4dwGE8sZtfgEMP6ZEsCaJ3QwyCIv6MLQKmLk8le5XffvMSmGwZpg3Qtngzg6/APC
+	MXhozrmX1OuHBEuIRM8BOHOPOvrLREVDCSdnWU6AqVdBSDRuCKaQVoxzSBorNmZaqrXxwTUQMj8
+	hY6T9XGHYUupu5LVZ9+AAFTYhANbVueHppTU7kJlVjTe4k/GxOcNEHRW2GUcyCGXSZk+4KOdEmT
+	S95RcW7KthPNuozu5XfYcDu/QN8TyjksbW/Ra9GV7G06TCbR718SvaC+HclxOyhlKQ==
+X-Received: by 2002:a05:600c:4fc2:b0:439:985b:17be with SMTP id 5b1f17b1804b1-439ae1eaa78mr176065e9.9.1740071418823;
+        Thu, 20 Feb 2025 09:10:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFqI8Joi794bN8Kdq45efIzQ+6oEZ5Dcj9tQjLghCqHxxqvkD27DzVgOIJ2kmb/SIiCpoKjvg==
+X-Received: by 2002:a05:600c:4fc2:b0:439:985b:17be with SMTP id 5b1f17b1804b1-439ae1eaa78mr175145e9.9.1740071418347;
+        Thu, 20 Feb 2025 09:10:18 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a0558e2sm247191865e9.11.2025.02.20.09.10.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 09:10:17 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Dave Hansen <dave.hansen@intel.com>, Jann Horn <jannh@google.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-perf-users@vger.kernel.org, xen-devel@lists.xenproject.org,
+ kvm@vger.kernel.org, linux-arch@vger.kernel.org, rcu@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, Juergen Gross <jgross@suse.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
+ <alexey.amakhalov@broadcom.com>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan
+ Gupta <pawan.kumar.gupta@linux.intel.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski
+ <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
+ Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang1211@gmail.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Clark Williams <williams@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
+ Tomas Glozar <tglozar@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Kees Cook
+ <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Christoph
+ Hellwig <hch@infradead.org>, Shuah Khan <shuah@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Samuel Holland <samuel.holland@sifive.com>, Rong Xu <xur@google.com>,
+ Nicolas Saenz Julienne <nsaenzju@redhat.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Yosry Ahmed <yosryahmed@google.com>, "Kirill A.
+ Shutemov" <kirill.shutemov@linux.intel.com>, "Masami Hiramatsu (Google)"
+ <mhiramat@kernel.org>, Jinghao Jia <jinghao7@illinois.edu>, Luis
+ Chamberlain <mcgrof@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: Re: [PATCH v4 29/30] x86/mm, mm/vmalloc: Defer
+ flush_tlb_kernel_range() targeting NOHZ_FULL CPUs
+In-Reply-To: <eef09bdc-7546-462b-9ac0-661a44d2ceae@intel.com>
+References: <20250114175143.81438-1-vschneid@redhat.com>
+ <20250114175143.81438-30-vschneid@redhat.com>
+ <CAG48ez1Mh+DOy0ysOo7Qioxh1W7xWQyK9CLGNU9TGOsLXbg=gQ@mail.gmail.com>
+ <xhsmh34hhh37q.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <CAG48ez3H8OVP1GxBLdmFgusvT1gQhwu2SiXbgi8T9uuCYVK52w@mail.gmail.com>
+ <xhsmh5xlhk5p2.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <CAG48ez1EAATYcX520Nnw=P8XtUDSr5pe+qGH1YVNk3xN2LE05g@mail.gmail.com>
+ <xhsmh34gkk3ls.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <352317e3-c7dc-43b4-b4cb-9644489318d0@intel.com>
+ <xhsmhjz9mj2qo.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <d0450bc8-6585-49ca-9cad-49e65934bd5c@intel.com>
+ <xhsmhh64qhssj.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <eef09bdc-7546-462b-9ac0-661a44d2ceae@intel.com>
+Date: Thu, 20 Feb 2025 18:10:15 +0100
+Message-ID: <xhsmhfrk84k5k.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,89 +138,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+On 19/02/25 12:25, Dave Hansen wrote:
+> On 2/19/25 07:13, Valentin Schneider wrote:
+>>> Maybe I missed part of the discussion though. Is VMEMMAP your only
+>>> concern? I would have guessed that the more generic vmalloc()
+>>> functionality would be harder to pin down.
+>> Urgh, that'll teach me to send emails that late - I did indeed mean the
+>> vmalloc() range, not at all VMEMMAP. IIUC *neither* are present in the user
+>> kPTI page table and AFAICT the page table swap is done before the actual vmap'd
+>> stack (CONFIG_VMAP_STACK=y) gets used.
+>
+> OK, so rewriting your question... ;)
+>
+>> So what if the vmalloc() range *isn't* in the CR3 tree when a CPU is
+>> executing in userspace?
+>
+> The LDT and maybe the PEBS buffers are the only implicit supervisor
+> accesses to vmalloc()'d memory that I can think of. But those are both
+> handled specially and shouldn't ever get zapped while in use. The LDT
+> replacement has its own IPIs separate from TLB flushing.
+>
+> But I'm actually not all that worried about accesses while actually
+> running userspace. It's that "danger zone" in the kernel between entry
+> and when the TLB might have dangerous garbage in it.
+>
 
-For TDX, the maxpa (CPUID.0x80000008.EAX[7:0]) is fixed as native and
-the max_gpa (CPUID.0x80000008.EAX[23:16]) is configurable and used
-to configure the EPT level and GPAW.
+So say we have kPTI, thus no vmalloc() mapped in CR3 when running
+userspace, and do a full TLB flush right before switching to userspace -
+could the TLB still end up with vmalloc()-range-related entries when we're
+back in the kernel and going through the danger zone?
 
-Use max_gpa to determine the TDP level.
+> BTW, I hope this whole thing is turned off on 32-bit. There, we can
+> actually take and handle faults on the vmalloc() area. If you get one of
+> those faults in your "danger zone", it'll start running page fault code
+> which will branch out to god-knows-where and certainly isn't noinstr.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/cpuid.c   | 14 ++++++++++++++
- arch/x86/kvm/cpuid.h   |  1 +
- arch/x86/kvm/mmu/mmu.c |  9 ++++++++-
- 3 files changed, 23 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 936c5dd13bd5..7ff84079c1f4 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -494,6 +494,20 @@ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu)
- 	return 36;
- }
- 
-+int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_cpuid_entry2 *best;
-+
-+	best = kvm_find_cpuid_entry(vcpu, 0x80000000);
-+	if (!best || best->eax < 0x80000008)
-+		goto not_found;
-+	best = kvm_find_cpuid_entry(vcpu, 0x80000008);
-+	if (best)
-+		return (best->eax >> 16) & 0xff;
-+not_found:
-+	return 0;
-+}
-+
- /*
-  * This "raw" version returns the reserved GPA bits without any adjustments for
-  * encryption technologies that usurp bits.  The raw mask should be used if and
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 91bde94519f9..46e059b47825 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -37,6 +37,7 @@ void __init kvm_init_xstate_sizes(void);
- u32 xstate_required_size(u64 xstate_bv, bool compacted);
- 
- int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
-+int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
- u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu);
- 
- static inline int cpuid_maxphyaddr(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index d4ac4a1f8b81..c1c54a7a7735 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5416,12 +5416,19 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
- 
- static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
- {
-+	int maxpa;
-+
-+	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM)
-+		maxpa = cpuid_query_maxguestphyaddr(vcpu);
-+	else
-+		maxpa = cpuid_maxphyaddr(vcpu);
-+
- 	/* tdp_root_level is architecture forced level, use it if nonzero */
- 	if (tdp_root_level)
- 		return tdp_root_level;
- 
- 	/* Use 5-level TDP if and only if it's useful/necessary. */
--	if (max_tdp_level == 5 && cpuid_maxphyaddr(vcpu) <= 48)
-+	if (max_tdp_level == 5 && maxpa <= 48)
- 		return 4;
- 
- 	return max_tdp_level;
--- 
-2.43.5
-
+Sounds... Fun. Thanks for pointing out the landmines.
 
