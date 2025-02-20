@@ -1,58 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A892A214A94
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E2E215193
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 17:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740071191; cv=none; b=kj/uOW3j834/3c8QROd6aGbdn430FWHTfJtZ4h+iZADpOc6XbBXPv9zR2QQQdYjTK4cylFkbAY1qLBeNT/HWHvMimKGutUHeYiQpcMqk7oWDzfC6EeWlb+MGmJzVKiUTlEqK61lOHq8W/nPXtQ/7u9WF1FnUrvz/5uOk9Dei/pw=
+	t=1740071192; cv=none; b=HnM15ZWw/uPYSpTo6uyJLwKmzwDfM1NvGzFiiHEHo/G55So6YVIiL6sBAz4KAxxb2Od6nI0daaDZrLEfp0As4snHPl6UN78czAVNnH5LjD0X7IW3xfCGdGOfBqyBfV50LHxx331tsGfZpz2G455Q4u1l4k505TfeIlfSB1Oj70A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740071191; c=relaxed/simple;
-	bh=FlixckBccX6FBZzeGPG8flgsnluZb2qoVWfxMxTS69g=;
+	s=arc-20240116; t=1740071192; c=relaxed/simple;
+	bh=pGjkwu74Qac4zZwnPOH9vIK6+RLhm4IV0FQFk3WoURc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ql3r5EBt38RWgI4qxYTKanun1SHEcuN/jlFxA8daIdJhR1TsEbo3SUTzwzw6xFJREXR/zdSQwIYH8hyDGXooMr2Vcya5su+5ri9EoAeajEOzV3UlWqdEzuMYZtCyCzz+GsQJBwPbEzXkX+uY4nLb5EbC6oK3U+zU/qLHJTAWItE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I81jZ9+g; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=o7Ubvx72hJcoQzNPPXou1gzhZlVk39So7e8dJJoYuse5EZhIE5sae5b6cGJGKhKo//wN/3+dxk53O27UD1FSlP0pkORsT9vBjS4oIo3yXpkZUfFXb25S7bENFW1jdADR9VMUDhVqk+8oHQsIDDxWuIFr/bTAnPTm5Ur+RgaBAQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AD5Jq7vJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I81jZ9+g"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AD5Jq7vJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740071186;
+	s=mimecast20190719; t=1740071190;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=496+NfmReiu1QtRFgMa3QzvQAaca1PTo3KmIjXjJBzw=;
-	b=I81jZ9+gEhfq7fZd5T8FvmNZEcnXHMBVIevCPPlGWV5CeserS13F8Z1iwCgUPOoggZ1VQk
-	Rb62/gEVc76U6WUzh0W1427dWDI4mRAhSeLFcuudf19uzkeHjg3NR02eNhhpFMG3Se7543
-	L2xh74NVc8yWv0/XelwzKQEmWCTsOvU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=8f7EzK9RxrNnHIDCrt2FIGl1J5d6f6j5FQ75ZzYv2x8=;
+	b=AD5Jq7vJKRi0NF0qNiU0s4FstIKc3K6/RerNrCubm8EiZjWVHnnm+sa60IYg14l02MyUdK
+	0lqvBGWMGbeL994U0keAhfDstfY7/k4/i4WmvOpqid88Y95LvmvBJSsxOugTHOPp319KuF
+	i2XU4v65PbQyrO55ZbK5Bs4plSCH/PA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-hEXvNwEDNEeGw98-7oanMA-1; Thu,
- 20 Feb 2025 12:06:21 -0500
-X-MC-Unique: hEXvNwEDNEeGw98-7oanMA-1
-X-Mimecast-MFC-AGG-ID: hEXvNwEDNEeGw98-7oanMA_1740071180
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-23NEXoZHOlSZ-7fkiuoUGA-1; Thu,
+ 20 Feb 2025 12:06:27 -0500
+X-MC-Unique: 23NEXoZHOlSZ-7fkiuoUGA-1
+X-Mimecast-MFC-AGG-ID: 23NEXoZHOlSZ-7fkiuoUGA_1740071186
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC927190308C;
-	Thu, 20 Feb 2025 17:06:19 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 979E81800992;
+	Thu, 20 Feb 2025 17:06:26 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C81711800359;
-	Thu, 20 Feb 2025 17:06:18 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A3D3A1800359;
+	Thu, 20 Feb 2025 17:06:25 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 08/30] x86/virt/tdx: Read essential global metadata for KVM
-Date: Thu, 20 Feb 2025 12:05:42 -0500
-Message-ID: <20250220170604.2279312-9-pbonzini@redhat.com>
+	Kai Huang <kai.huang@intel.com>
+Subject: [PATCH 13/30] KVM: TDX: Get TDX global information
+Date: Thu, 20 Feb 2025 12:05:47 -0500
+Message-ID: <20250220170604.2279312-14-pbonzini@redhat.com>
 In-Reply-To: <20250220170604.2279312-1-pbonzini@redhat.com>
 References: <20250220170604.2279312-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -67,155 +66,51 @@ X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
 From: Kai Huang <kai.huang@intel.com>
 
-KVM needs two classes of global metadata to create and run TDX guests:
+KVM will need to consult some essential TDX global information to create
+and run TDX guests.  Get the global information after initializing TDX.
 
- - "TD Control Structures"
- - "TD Configurability"
-
-The first class contains the sizes of TDX guest per-VM and per-vCPU
-control structures.  KVM will need to use them to allocate enough space
-for those control structures.
-
-The second class contains info which reports things like which features
-are configurable to TDX guest etc.  KVM will need to use them to
-properly configure TDX guests.
-
-Read them for KVM TDX to use.
-
-The code change is auto-generated by re-running the script in [1] after
-uncommenting the "td_conf" and "td_ctrl" part to regenerate the
-tdx_global_metadata.{hc} and update them to the existing ones in the
-kernel.
-
-  #python tdx.py global_metadata.json tdx_global_metadata.h \
-	tdx_global_metadata.c
-
-The 'global_metadata.json' can be fetched from [2].
-
-Note that as of this writing, the JSON file only allows a maximum of 32
-CPUID entries.  While this is enough for current contents of the CPUID
-leaves, there were plans to change the JSON per TDX module release which
-would change the ABI and potentially prevent future versions of the TDX
-module from working with older kernels.
-
-While discussions are ongoing with the TDX module team on what exactly
-constitutes an ABI breakage, in the meantime the TDX module team has
-agreed to not increase the number of CPUID entries beyond 128 without
-an opt in.  Therefore the file was tweaked by hand to change the maximum
-number of CPUID_CONFIGs.
-
-Link: https://lore.kernel.org/kvm/0853b155ec9aac09c594caa60914ed6ea4dc0a71.camel@intel.com/ [1]
-Link: https://cdrdv2.intel.com/v1/dl/getContent/795381 [2]
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Message-ID: <20241030190039.77971-4-rick.p.edgecombe@intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Message-ID: <20241030190039.77971-3-rick.p.edgecombe@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 50 +++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.h | 19 ++++++++
- 2 files changed, 69 insertions(+)
+ arch/x86/kvm/vmx/tdx.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 8027a24d1c6e..13ad2663488b 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -37,12 +37,62 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
- 	return ret;
- }
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 0666dfbe0bc0..761d3a9cd5c5 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -13,6 +13,8 @@ module_param_named(tdx, enable_tdx, bool, 0444);
  
-+static int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
-+{
-+	int ret = 0;
-+	u64 val;
+ static enum cpuhp_state tdx_cpuhp_state;
+ 
++static const struct tdx_sys_info *tdx_sysinfo;
 +
-+	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000000, &val)))
-+		sysinfo_td_ctrl->tdr_base_size = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000100, &val)))
-+		sysinfo_td_ctrl->tdcs_base_size = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x9800000100000200, &val)))
-+		sysinfo_td_ctrl->tdvps_base_size = val;
-+
-+	return ret;
-+}
-+
-+static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
-+{
-+	int ret = 0;
-+	u64 val;
-+	int i, j;
-+
-+	if (!ret && !(ret = read_sys_metadata_field(0x1900000300000000, &val)))
-+		sysinfo_td_conf->attributes_fixed0 = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x1900000300000001, &val)))
-+		sysinfo_td_conf->attributes_fixed1 = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x1900000300000002, &val)))
-+		sysinfo_td_conf->xfam_fixed0 = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x1900000300000003, &val)))
-+		sysinfo_td_conf->xfam_fixed1 = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x9900000100000004, &val)))
-+		sysinfo_td_conf->num_cpuid_config = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x9900000100000008, &val)))
-+		sysinfo_td_conf->max_vcpus_per_td = val;
-+	if (sysinfo_td_conf->num_cpuid_config > ARRAY_SIZE(sysinfo_td_conf->cpuid_config_leaves))
-+		return -EINVAL;
-+	for (i = 0; i < sysinfo_td_conf->num_cpuid_config; i++)
-+		if (!ret && !(ret = read_sys_metadata_field(0x9900000300000400 + i, &val)))
-+			sysinfo_td_conf->cpuid_config_leaves[i] = val;
-+	if (sysinfo_td_conf->num_cpuid_config > ARRAY_SIZE(sysinfo_td_conf->cpuid_config_values))
-+		return -EINVAL;
-+	for (i = 0; i < sysinfo_td_conf->num_cpuid_config; i++)
-+		for (j = 0; j < 2; j++)
-+			if (!ret && !(ret = read_sys_metadata_field(0x9900000300000500 + i * 2 + j, &val)))
-+				sysinfo_td_conf->cpuid_config_values[i][j] = val;
-+
-+	return ret;
-+}
-+
- static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ static int tdx_online_cpu(unsigned int cpu)
  {
- 	int ret = 0;
+ 	unsigned long flags;
+@@ -90,11 +92,20 @@ static int __init __tdx_bringup(void)
+ 	if (r)
+ 		goto tdx_bringup_err;
  
- 	ret = ret ?: get_tdx_sys_info_features(&sysinfo->features);
- 	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
-+	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-+	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
- 
- 	return ret;
- }
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.h b/arch/x86/virt/vmx/tdx/tdx_global_metadata.h
-index 6dd3c9695f59..060a2ad744bf 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.h
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.h
-@@ -17,9 +17,28 @@ struct tdx_sys_info_tdmr {
- 	u16 pamt_1g_entry_size;
- };
- 
-+struct tdx_sys_info_td_ctrl {
-+	u16 tdr_base_size;
-+	u16 tdcs_base_size;
-+	u16 tdvps_base_size;
-+};
++	/* Get TDX global information for later use */
++	tdx_sysinfo = tdx_get_sysinfo();
++	if (WARN_ON_ONCE(!tdx_sysinfo)) {
++		r = -EINVAL;
++		goto get_sysinfo_err;
++	}
 +
-+struct tdx_sys_info_td_conf {
-+	u64 attributes_fixed0;
-+	u64 attributes_fixed1;
-+	u64 xfam_fixed0;
-+	u64 xfam_fixed1;
-+	u16 num_cpuid_config;
-+	u16 max_vcpus_per_td;
-+	u64 cpuid_config_leaves[128];
-+	u64 cpuid_config_values[128][2];
-+};
-+
- struct tdx_sys_info {
- 	struct tdx_sys_info_features features;
- 	struct tdx_sys_info_tdmr tdmr;
-+	struct tdx_sys_info_td_ctrl td_ctrl;
-+	struct tdx_sys_info_td_conf td_conf;
- };
- 
- #endif
+ 	/*
+ 	 * Leave hardware virtualization enabled after TDX is enabled
+ 	 * successfully.  TDX CPU hotplug depends on this.
+ 	 */
+ 	return 0;
++get_sysinfo_err:
++	__do_tdx_cleanup();
+ tdx_bringup_err:
+ 	kvm_disable_virtualization();
+ 	return r;
 -- 
 2.43.5
 
