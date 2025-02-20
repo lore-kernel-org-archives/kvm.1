@@ -1,115 +1,90 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827121F3FC0
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 11:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83081F3D20
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 11:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740051626; cv=none; b=MnAg8Ykxb4Rk3x9qkyXxa/1/OYCloHhyS4hLOFV/6LqWsrX2XAmg2FjldpTr2sfAQHNOZzuuTMdJfyAG/a5+8XmZ2DDO5rfvqe9Z47eXP2cMQD//sSbZWAIigrZN8WjP2A7DNCuxX9Rnjov+WvykJXiUwHT/v12PNbZr/zd6LqQ=
+	t=1740051648; cv=none; b=QiJBk4gdv3GTMIR4bZP+v1UKnl1gFtAfknlxHh6xGXJXtmzWZkJII/7A90Pekmz7Crt1tKVi84kdnQvgxYM3R4S3hs94Afb3zs3i/h0ixcVKWS3UbUHOdtg4PEAlV+kqbHMczktU9zn8NHrdYsWCUm9uSueutDNUcdHoH0jRVbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740051626; c=relaxed/simple;
-	bh=d0U8XoOvA+acBIBzoHF+G0yUNFsQLkpIOuFLs0ject0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NznqVcc/7wMNhh8LItVqOxd8QjDgVP9me1ZpqTPZCxQSCQ5bCIkOSgL0GSauuSNXNxi1BKwGShJPgtwJsKkLPTWcT9Jshg+amwaKjSQmPZaONy4gUJrFdOTdi9BAk2rAOI6Jfwl3bQ7URt3weeIux8FCl4gUOEogcPhN2FwVHx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xphv2V5n; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740051648; c=relaxed/simple;
+	bh=wvVYXdb28yocyBnfn+6sHaNU/1L9E6JEziRM+W82XE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gBcjBtftyIwc1SfAnna+/VTJuU1W0BpjMDsZXYzqnOz/CdhNYRxyYDyrR+ElrPjydk1Q1Y5UfZ6Ry8pBqk6PpHM1lcg5Ylatblakan0x3vH8vAdim0VNTg10LtsF3GIguNkEuPj+qDtf2rYst/7pssIMb2VRKfMxMkpL7WQHjq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGSrEO43; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xphv2V5n"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-471f1dd5b80so144541cf.1
-        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 03:40:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740051623; x=1740656423; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=d0U8XoOvA+acBIBzoHF+G0yUNFsQLkpIOuFLs0ject0=;
-        b=xphv2V5nWTMOUO4H6giPrqrCn2b4fQz9OlmbQDVexlrt9oSVw8rL9VehmNbfhdKwsv
-         ADfgKgVVvZmo47ZGmUgfrmQv42tW5LcjI+puvJwPtyfn1le3nlQOKL6f0kl8exo40+Fm
-         WAOptwO2GIdCsIoV3B1UTOf+4lW5MwvY5N1ssoJzbi2QO3u1SPp3IRNa2eup4mIywtmO
-         dq53otBUwhBoNfu3lx/IGiXPOYJ1ssKULfaH9VZI8RCW9UlnTkiSk4+9qZq8SgWzRnq0
-         /0oKaP5lclfLbyx7MFPMTIJSbWBhir3ryjPUiV2UKDt3euEkHZ5pLLOJEZogeUQwYBdK
-         kpjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740051623; x=1740656423;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d0U8XoOvA+acBIBzoHF+G0yUNFsQLkpIOuFLs0ject0=;
-        b=u39jLOGdzwx2xwROqOUHZQUD13NhmoDT2ggnEBnVyVRcLOULtU1EzNNzXCqv0na4Ql
-         QcpQZejo9CrFW/a+7nYh1cDDGW5OPO3beQ6qvEAtViIhnzbLMVxdZ5KfquTqGQMHVjRy
-         nY8hrREYoSSYDk1dKfYyyfDHoH+A6CdRR0YwXzbxaaYLwNBfCz3i3+4q8QfSGR9M+GjZ
-         iKsjaYn/JpA4AHRty1mmBXJdQLgBFpbPhnH4qJKgAaPpayl0Vku+RvKGZBg5z0kly8Tm
-         rI+fhhxrjthCBnmyVw15/2gdSCU6eeBkpTWp7RiNPizGJcfMFA1xFjWazvEcJeU1fH2f
-         Dhmw==
-X-Gm-Message-State: AOJu0YyeE5V3AYN6h0xSVuiyKA48KgzLohNV8Kmbca0bt2eBp6SElLoW
-	fxlL4AyHB+mmu5NfreSBRtMDJw36tTtPQ51B+yG8nRMOQ632jktJ64dE889/nko07slEWtY/F4N
-	9u88FBWhKDwOCfJrBifpyKcqRiyHSjMdC/pn+
-X-Gm-Gg: ASbGncvHppnI8/6k5mcodAiyu5l7tCW6EPVBpfpM4/fa5eukvOlpvSr0II9/GGTHHUY
-	/bgLxF6+Y+JKh4c5EY3FDjYYvrApy43imPIqJlKj4ORQkIzAhkMXjnchU8LYBCyRv+cYflYo=
-X-Google-Smtp-Source: AGHT+IHVjp4mzaDClwod31WBM2FUbWAgy5/QUs/Ub7sQAFiHuslFBDQqqSMVTxhXABFXwQMa8EyBZi1SpyQD6tKdjag=
-X-Received: by 2002:ac8:7d48:0:b0:466:8c23:823a with SMTP id
- d75a77b69052e-4721710da0bmr2627361cf.17.1740051622999; Thu, 20 Feb 2025
- 03:40:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGSrEO43"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740051647; x=1771587647;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wvVYXdb28yocyBnfn+6sHaNU/1L9E6JEziRM+W82XE0=;
+  b=HGSrEO43gzqRRn+Y8+0UfaRV1StCfemBqBgYMLOKfvMYose6w3GqLYRT
+   fZOjnKa856KIMUwVQfeA2IXjAM1/8hvVlaYy+HTnwmdqGtThbbFmKS4rj
+   dqUajAsH+um5iN/M/am9oQ0VPOI3is1LKkm9UUb0vAUtHe4d3uqkcVJjq
+   3PzfflVVCPj9bNR09YfLg7Q+7hAqXasxnax9kTU7MSNSH9cy+4Avg56Eu
+   byKGJwLIWqNdGa/PTQUHfN1zcHqEQhT77e8dbMf21SGMhKNYRPiMB6KHA
+   l5rNPN57zBJ5L2teBISlDg3FswhCJmEzRDW1mhXjGKwZBhiOMh90nwnnO
+   g==;
+X-CSE-ConnectionGUID: psSCzTsPTHKPOy4H7glJyQ==
+X-CSE-MsgGUID: uES92Ps1Qa+wIR6M5sN+Ww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40946499"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="40946499"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:40:46 -0800
+X-CSE-ConnectionGUID: 6Q9c9oxBQtmES3qrPPeglA==
+X-CSE-MsgGUID: TUTSnQ/5T5iVTVK5IwvYwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="115507424"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa007.jf.intel.com with ESMTP; 20 Feb 2025 03:40:45 -0800
+Date: Thu, 20 Feb 2025 20:00:20 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	davydov-max@yandex-team.ru
+Subject: Re: [PATCH v5 4/6] target/i386: Add feature that indicates WRMSR to
+ BASE reg is non-serializing
+Message-ID: <Z7cZVNsZ/PCXA1+7@intel.com>
+References: <cover.1738869208.git.babu.moger@amd.com>
+ <ad5bf4dde8ab637e9c5c24d7391ad36c7aafd8b7.1738869208.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250211121128.703390-1-tabba@google.com> <20250211121128.703390-5-tabba@google.com>
- <9abf6dd8-919d-44a4-8352-ee350fec8ad3@redhat.com> <9751bcb1-bbbe-4586-b4bc-2b8f2ca98cc8@redhat.com>
-In-Reply-To: <9751bcb1-bbbe-4586-b4bc-2b8f2ca98cc8@redhat.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 20 Feb 2025 11:39:46 +0000
-X-Gm-Features: AWEUYZmeYQEXSt992JFhlio0eX3h96LGKbrmRYJuQPrU7OUEfBrJxrKHgNAJWDw
-Message-ID: <CA+EHjTwFnarOEDBSsZmdt=8yAAQiKp1=2sA-oOKQxLqs0wTGNw@mail.gmail.com>
-Subject: Re: [PATCH v3 04/11] KVM: guest_memfd: Add KVM capability to check if
- guest_memfd is shared
-To: David Hildenbrand <david@redhat.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	yu.c.zhang@linux.intel.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
-	mail@maciej.szmigiero.name, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad5bf4dde8ab637e9c5c24d7391ad36c7aafd8b7.1738869208.git.babu.moger@amd.com>
 
-On Thu, 20 Feb 2025 at 11:39, David Hildenbrand <david@redhat.com> wrote:
->
-> On 20.02.25 12:37, David Hildenbrand wrote:
-> > On 11.02.25 13:11, Fuad Tabba wrote:
-> >> Add the KVM capability KVM_CAP_GMEM_SHARED_MEM, which indicates
-> >> that the VM supports shared memory in guest_memfd, or that the
-> >> host can create VMs that support shared memory. Supporting shared
-> >> memory implies that memory can be mapped when shared with the
-> >> host.
-> >
-> > Was there a good reason to not squash this into the next patch?
->
-> Sorry, I was confused, I meant the previous commit, where we essentially
-> add the mmap option in the first place.
+On Thu, Feb 06, 2025 at 01:28:37PM -0600, Babu Moger wrote:
+> Date: Thu, 6 Feb 2025 13:28:37 -0600
+> From: Babu Moger <babu.moger@amd.com>
+> Subject: [PATCH v5 4/6] target/i386: Add feature that indicates WRMSR to
+>  BASE reg is non-serializing
+> X-Mailer: git-send-email 2.34.1
+> 
+> Add the CPUID bit indicates that a WRMSR to MSR_FS_BASE, MSR_GS_BASE, or
+> MSR_KERNEL_GS_BASE is non-serializing.
+> 
+> CPUID_Fn80000021_EAX
+> Bit    Feature description
+> 1      FsGsKernelGsBaseNonSerializing.
+>        WRMSR to FS_BASE, GS_BASE and KernelGSbase are non-serializing.
+> 
+> Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
+> ---
+>  target/i386/cpu.c | 2 +-
+>  target/i386/cpu.h | 2 ++
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 
-Will do.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Thanks,
-/fuad
-
-> --
-> Cheers,
->
-> David / dhildenb
->
