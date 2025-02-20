@@ -1,113 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438DB1F12E9;
-	Thu, 20 Feb 2025 10:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA271CAA9C
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 10:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740047321; cv=none; b=NC5BNUnjV1moue2Kev5S7xXXsEVy1zUZN2mmdwQs6eEhDLAgQAQdH0ZwtTPKfXVja3Er938PMHVeb5ZKOZTzy/PfVPhjjStbrV4EdTPv4CdQN8YkxcnK8oIOixOeTJFVnrnbzUku67hAoljAhN+Jhf6Z0SfhozmQ3oQBhskGyZQ=
+	t=1740048005; cv=none; b=GaEFpyYBFxjriP5FnYkoylEqQRrxLUgU0wLZSKisgNlJaXpdKmwNnjJizx+KIdT11MIsStjDCH4uoeUn0BbNlWSHAIosZYVVjhcxlGXwezRZqMT/GvRZY9/wzAPtIy6omwOGyi+QSo2THB5cnVHMPby2+v91xAfUIHIlKf9cajw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740047321; c=relaxed/simple;
-	bh=OEt8Aq7BoSOrCA2PCB6GJkHkAIJo0azxBVTNUyBIXSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXcjFawSB/d7a+PEUMYQoicWcQK5wiBNqPcP5ZEc9YvIS4rc5xUoP+ZNty1VAPh7hf3Ta/Md0qIf8xqqFTf5l6lWHLyhH625LCjM3Ikhufz5P44QVclRnVFzVUj0R4cy1J0121h5xTBzrW78CCT1MnF8H8sr2owlid4N/YIsXtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fcbsiCAy; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1740048005; c=relaxed/simple;
+	bh=TdzYaPLHZ16bLzvmwwZ5c+AojcvTSJL6pVcmyKLeuvE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qSeJFLFZA+4t5vP0QP/KHSxh9+buUy/E3jtaPf9g4OJkwr+3yNhNMABYmEqmoIR2bTEcpg75gAzHHJI/xKdnjHNvwWoqe6xHQsPw0Kh5scqBWfYlOhnWSMYUJHfwKiUpYG0kRvmewPyO7KeQrfSTwkr/V8uJzhWkd4IPH3GYQN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QvMnMTO5; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fcbsiCAy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QvMnMTO5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740047320; x=1771583320;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OEt8Aq7BoSOrCA2PCB6GJkHkAIJo0azxBVTNUyBIXSI=;
-  b=fcbsiCAyn/AKdLcwvEkxJy5QlzKKNFVsGATxUVS8Ue4co8fX2635c1UQ
-   4T1rYksBUsYh0W0+bSrwo3jg0g9UE3a8iyoMvj1JV1217IE2K0t4v0wSX
-   6lUBbLGW2pbc/qpLdob+j8FBGAjbdefEPlx+PwXHYE+4q0Vwprxr+wuBm
-   F4OnbMUi2UZmPxnRxuq2A9H5hWfLFyzjeWzU/QaQqpO4jUwg8mU1sKeKT
-   z1j+HhZZ84Lc0k4IPSwDlQlO5juqD7IhZm62nkEe2FFYlif+UAA2MPMfh
-   nofIiMcCpQMy8T4ZvZgz0JAOYYSshVcfhSoS+GZxld7clUCKe85KMx+NV
+  t=1740048004; x=1771584004;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TdzYaPLHZ16bLzvmwwZ5c+AojcvTSJL6pVcmyKLeuvE=;
+  b=QvMnMTO5zBY6w+lryG+S9vwDpuRVqMuAu4t1uNXkBMvOvHjazskMyUyg
+   YQTzG3FnOxNgY9f90fZN8wCYLmwUU28kCb0v7a53eLZD7phNDzaZKPVgr
+   LsQJeIQyrSE4FzGVvICNHhR1f6FGOi2QQpIZJXB6IDA9U6ipuos9mnW4y
+   k36/ALtKSHDUk3O9imji1VtWKIzUvCiqnY2ly2sfVbX+QEHFdoH+NNadH
+   0mhfVcwGRw9Y5TanF3MD1wJDDjKOC38OX5tsLXkgA/fiTXSNb9seF5NFW
+   Jr9oeb8gtBR4ud3aNOSsXxexx/qwhr3r1Q/R2UX9DE8Fhcy/jVh1DSwc3
    g==;
-X-CSE-ConnectionGUID: iL6zt8dFQ5yKgC3BSx+aJg==
-X-CSE-MsgGUID: e1P/q9fVSJWIjTGkmwdkrg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="58362474"
+X-CSE-ConnectionGUID: mVSasrVsQ4mCoUxbfY7BQQ==
+X-CSE-MsgGUID: 8yMfpfIySueG4YqX3w96OA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="41076447"
 X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="58362474"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 02:28:39 -0800
-X-CSE-ConnectionGUID: ekKmtHWgSg63Jla+4MuHNg==
-X-CSE-MsgGUID: zwq9/3W7Rqu/7bQTOGx7zQ==
+   d="scan'208";a="41076447"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 02:40:02 -0800
+X-CSE-ConnectionGUID: 4Io3i1pjTgiuFU3HtpbDOw==
+X-CSE-MsgGUID: Yo7MKmgDTMi9F1FsY5heQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="119624013"
-Received: from yzhao56-desk.sh.intel.com ([10.239.159.62])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 02:28:38 -0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: rick.p.edgecombe@intel.com,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	Yan Zhao <yan.y.zhao@intel.com>
-Subject: [PATCH v2 2/2] KVM: x86/mmu: Bail out kvm_tdp_map_page() when VM dead
-Date: Thu, 20 Feb 2025 18:27:27 +0800
-Message-ID: <20250220102728.24546-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20250220102436.24373-1-yan.y.zhao@intel.com>
-References: <20250220102436.24373-1-yan.y.zhao@intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114856938"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa010.jf.intel.com with ESMTP; 20 Feb 2025 02:40:00 -0800
+Date: Thu, 20 Feb 2025 18:59:34 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	davydov-max@yandex-team.ru
+Subject: Re: [PATCH v5 1/6] target/i386: Update EPYC CPU model for Cache
+ property, RAS, SVM feature bits
+Message-ID: <Z7cLFrIPmrUGuqp4@intel.com>
+References: <cover.1738869208.git.babu.moger@amd.com>
+ <c777bf763a636c8922164a174685b4f03864452f.1738869208.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c777bf763a636c8922164a174685b4f03864452f.1738869208.git.babu.moger@amd.com>
 
-Bail out of the loop in kvm_tdp_map_page() when a VM is dead. Otherwise,
-kvm_tdp_map_page() may get stuck in the kernel loop when there's only one
-vCPU in the VM (or if the other vCPUs are not executing ioctls), even if
-fatal errors have occurred.
+> +static CPUCaches epyc_v5_cache_info = {
+> +    .l1d_cache = &(CPUCacheInfo) {
+> +        .type = DATA_CACHE,
+> +        .level = 1,
+> +        .size = 32 * KiB,
+> +        .line_size = 64,
+> +        .associativity = 8,
+> +        .partitions = 1,
+> +        .sets = 64,
+> +        .lines_per_tag = 1,
+> +        .self_init = 1,
 
-kvm_tdp_map_page() is called by the ioctl KVM_PRE_FAULT_MEMORY or the TDX
-ioctl KVM_TDX_INIT_MEM_REGION. It loops in the kernel whenever RET_PF_RETRY
-is returned. In the TDP MMU, kvm_tdp_mmu_map() always returns RET_PF_RETRY,
-regardless of the specific error code from tdp_mmu_set_spte_atomic(),
-tdp_mmu_link_sp(), or tdp_mmu_split_huge_page(). While this is acceptable
-in general cases where the only possible error code from these functions is
--EBUSY, TDX introduces an additional error code, -EIO, due to SEAMCALL
-errors.
+For consistency as the below parts, it's better to code `true` for all
+boolean types.
 
-Since this -EIO error is also a fatal error, check for VM dead in the
-kvm_tdp_map_page() to avoid unnecessary retries until a signal is pending.
+> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> +    },
+> +    .l1i_cache = &(CPUCacheInfo) {
+> +        .type = INSTRUCTION_CACHE,
+> +        .level = 1,
+> +        .size = 64 * KiB,
+> +        .line_size = 64,
+> +        .associativity = 4,
+> +        .partitions = 1,
+> +        .sets = 256,
+> +        .lines_per_tag = 1,
+> +        .self_init = 1,
 
-The error -EIO is uncommon and has not been observed in real workloads.
-Currently, it is only hypothetically triggered by bypassing the real
-SEAMCALL and faking an error in the SEAMCALL wrapper.
+ditto.
 
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
----
-v2:
-Use kvm_check_request(KVM_REQ_VM_DEAD) over kvm->vm_dead. (Sean)
----
- arch/x86/kvm/mmu/mmu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Others are fine for me, so,
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 378428f4ae63..dd320d4a3b52 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4704,6 +4704,10 @@ int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code, u8 *level
- 	do {
- 		if (signal_pending(current))
- 			return -EINTR;
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+
+And one more thing :-) ...
+
+>  static const CPUCaches epyc_rome_cache_info = {
+>      .l1d_cache = &(CPUCacheInfo) {
+>          .type = DATA_CACHE,
+> @@ -5207,6 +5261,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+>                  },
+>                  .cache_info = &epyc_v4_cache_info
+>              },
+> +            {
+> +                .version = 5,
+> +                .props = (PropValue[]) {
+> +                    { "overflow-recov", "on" },
+> +                    { "succor", "on" },
+
+When I checks the "overflow-recov" and "succor" enabling, I find these 2
+bits are set unconditionally.
+
+I'm not sure if all AMD platforms support both bits, do you think it's
+necessary to check the host support?
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6c749d4ee812..03e463076632 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -555,7 +555,10 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+         cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
+         ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
+     } else if (function == 0x80000007 && reg == R_EBX) {
+-        ret |= CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR;
++        uint32_t ebx;
++        host_cpuid(0x80000007, 0, &unused, &ebx, &unused, &unused);
 +
-+		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-+			return -EIO;
-+
- 		cond_resched();
- 		r = kvm_mmu_do_page_fault(vcpu, gpa, error_code, true, NULL, level);
- 	} while (r == RET_PF_RETRY);
--- 
-2.43.2
++        ret |= ebx & (CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR);
+     } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
+         /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
+          * be enabled without the in-kernel irqchip
+
+Thanks,
+Zhao
+
 
