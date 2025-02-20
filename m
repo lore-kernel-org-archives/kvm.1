@@ -1,107 +1,107 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3FC1FECA7;
-	Thu, 20 Feb 2025 19:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D9E1DE8A8
+	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 19:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740078330; cv=none; b=ko2/tsuqOXwwbkgovPGdIIJMbsmNbBbiR07cQzVlB5r90VIr7E8zQOv8H1wwz7xmb+y26AOtJWmYcIF5tpGqzbxstTM2NhtzHue12BC53lTgEuh5z657aEnJ6hMKp/1O8oSEHMiW13m45q1t6Le0auDoJl2dTOFZufC/YhK9RSA=
+	t=1740078383; cv=none; b=NeWEQ4Q0D5t5KOAMeA6SAmfnLJ56/slP6kqLuIxJaxz6ljMIxNUXffUE+xtDbZnBUUpyVFQ5uTD43Q8B38LbRuLdrPXrlu+MC1YZthhlroDouybRUuqeMNfhFgkrHHnP1vQwfMniVQqqxFFZMI+oIgOchd7zaROevdK0t/6rE+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740078330; c=relaxed/simple;
-	bh=j5gLjXv9KLHl31my8GhJFk830HhR2rfbj+/Hco4Eqc0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=MywcSJ9q5F68PylbwoE52Poohtcfwg7dIcR9T8XxYnp6nnLJtfSXPR6C6h7x689gwuEsBQjo+OiAYqPq4RDJeH5BbXRW8hcKTUzS+V25riReh4+8bwrNedueg2+jSlhzxrx/J8FQmuCgQSKRE7Chcymk8I6/KO53wZZU3X12m3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M+vIwVGw; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1740078383; c=relaxed/simple;
+	bh=Gzbk8oA647+brSEDreQ77ec5kJRmlNAs2vI+Jxn2vig=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=itrurnNhwhBumgAYOZGiDTUZN9QncHWmeUQp6pBdvM7zchEFjP4uE3VeW090R8/Pe4DwENWbiIyzYmla1CL1eJI19YSemYi/r/PMag7fuyjVtU5MaVu11Tphqgus2USuHpBwa685HO9TjQb8NSJHvhg9YpIusbfMOQ9VBdz9NlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lKgC5Z9l; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M+vIwVGw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=HHsmy/T1QOBAiuFCBnIjRk7qQN+0m/qoy0sAIcyf4fY=; b=M+vIwVGwBLuH+/flrSJakib7sd
-	idfsicGX7RCReLdCZgf2tPx9CENBAqsNvYLlRADvFtdcq7ftNAZPs6cIWbe2Sp+ytvVABud8AtEo+
-	03nTM63/P9wOp06eXWbM+Ut5jVMxC+7rXfk3opkgF60x3HbI2zoLhV+nbhKOBJm97S9H0Swivhcre
-	0qS8w2KVK9J6gpxiQW9AkV3p7U8An16SL6fB9A0vQn0UCGP8q+2tnmuBtF0RC/flmiNevtxi7ezLM
-	pmRKwyCb0LnCmCew4nTuVgjh8p/HaxCp+PQxByQrKCsS37ExqK67SVRcHoMBDxpvcb7fOUPQ8f/e/
-	zxtsl5BQ==;
-Received: from [2a01:cb15:834c:4100:a434:bcd6:3fe2:a973] (helo=[IPv6:::1])
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlBr4-00000002V6t-0yxF;
-	Thu, 20 Feb 2025 19:05:22 +0000
-Date: Thu, 20 Feb 2025 20:04:36 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-CC: Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Joao Martins <joao.m.martins@oracle.com>,
- David Woodhouse <dwmw@amazon.co.uk>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/5=5D_KVM=3A_x86/xen=3A_Restrict_?=
- =?US-ASCII?Q?hypercall_MSR_to_unofficial_synthetic_range?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <Z7d2OSNSXIi5PAiR@google.com>
-References: <20250215011437.1203084-1-seanjc@google.com> <20250215011437.1203084-2-seanjc@google.com> <DC438DC0-CC4B-4EE2-ABA8-8E0F9D15DD46@infradead.org> <Z7d2OSNSXIi5PAiR@google.com>
-Message-ID: <3A169373-3F1D-4938-8505-F75D1F5CA726@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lKgC5Z9l"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-220e1593b85so24887945ad.3
+        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 11:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740078381; x=1740683181; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dYhmmzI3Hvwj43jd3AGtSlQATpJIQs77a432LUSyQpc=;
+        b=lKgC5Z9lW258rxnIiKXdfbZjlLCIvEOGld93AW/N80lFn+Mu5/ZnWZowg2N9twcpMu
+         TiMg8u4/Qub1YbDYz5agI5ybinN2USoQuJUp+NVg3HZii7naK9nfrlLSuqcqVNWkElvv
+         INdG1JC7S9ggGw5MbN/LXOElCHFw79S9QkD3XDlyYqeqtgFN2d3E42MbO+HMbCFBZl0m
+         vQvOSzC2GMX2R97zOQgItJSjeshrUEdePzXZ/dQ/YxbJlvUtx3qA4cZ41ic83WVINNwH
+         s/rM5YV0pc/2HZfyCj0SQaBX0hQ3rXq34558RNHCH4d0geOSMVRiqY+l4lZoLTDsVCAZ
+         B/iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740078381; x=1740683181;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dYhmmzI3Hvwj43jd3AGtSlQATpJIQs77a432LUSyQpc=;
+        b=LmzmznplsykWtB3O5E3bRvwBJqGodJZzt44t9xik6KPjWUl6EMuJpO23RWZwEuLuWw
+         5j/FyXdv4QTJDPd6srzHeQRqSsOCTHl7JXGhQ7e0OBKDdtxc0eC6JQ9YDFO/o0yj378l
+         FfOpC/FXcoH/Dsm5wqGvIHHXpg8N026g/5kTiXRcekEe6VhmrU1XpG9m+5QDtwO3PYKB
+         EU9uC/aG+DoKYGpItBctHVp1fFI7qMdrbeFhvlXva4+mRZfhuc53cMOlnY9sTzF8mfqU
+         C9dDSPUjEDjeAe1rNEomOrRqKDXKEYkhk2i8n+kMxI9qg5j5uQtD8mXIwM5ytHHg/jsX
+         CUjg==
+X-Gm-Message-State: AOJu0YxC2+M87HKy2mg9RwPkSrCaiBOWc98aL3RCMAZsRtKojicggYOC
+	uITH7RZ9RQ6Wms5oqBse1DWadBCNcooEC5mXB/BKyi6woJyGwOP05e4iFuYqowmaAqkJuJIRy3M
+	JyQ==
+X-Google-Smtp-Source: AGHT+IFXyWr30olnhXnQKr8gljwMC5dRN1BqTBYjzWrisRg3RUqgnh3sbDODHI0ookMdRiupVLMtBcw5Dmw=
+X-Received: from pgar14.prod.google.com ([2002:a05:6a02:2e8e:b0:ad5:3aad:2e8d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:33a1:b0:1ee:d418:f754
+ with SMTP id adf61e73a8af0-1eef3dda0f6mr493309637.40.1740078381385; Thu, 20
+ Feb 2025 11:06:21 -0800 (PST)
+Date: Thu, 20 Feb 2025 11:06:17 -0800
+In-Reply-To: <CAK51q6WPAWbmqL=qaiPU1cg1rNAehzUpaZS3K-oWmRU+KD5Gug@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+References: <CH3P220MB190880164B32300C91BBA037AAE12@CH3P220MB1908.NAMP220.PROD.OUTLOOK.COM>
+ <CAK51q6WPAWbmqL=qaiPU1cg1rNAehzUpaZS3K-oWmRU+KD5Gug@mail.gmail.com>
+Message-ID: <Z7d9KZWpOpUD6TIc@google.com>
+Subject: Re: Interest in contributing to KVM TODO
+From: Sean Christopherson <seanjc@google.com>
+To: Aaron Ang <a1ang@ucsd.edu>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "jukaufman@ucsd.edu" <jukaufman@ucsd.edu>, 
+	"eth003@ucsd.edu" <eth003@ucsd.edu>, Alex Asch <aasch@ucsd.edu>
+Content-Type: text/plain; charset="us-ascii"
 
-On 20 February 2025 19:36:41 CET, Sean Christopherson <seanjc@google=2Ecom>=
- wrote:
->On Sat, Feb 15, 2025, David Woodhouse wrote:
->> On 15 February 2025 02:14:33 CET, Sean Christopherson <seanjc@google=2E=
-com> wrote:
->> >Reject userspace attempts to set the Xen hypercall page MSR to an inde=
-x
->> >outside of the "standard" virtualization range [0x40000000, 0x4fffffff=
-],
->> >as KVM is not equipped to handle collisions with real MSRs, e=2Eg=2E K=
-VM
->> >doesn't update MSR interception, conflicts with VMCS/VMCB fields, spec=
-ial
->> >case writes in KVM, etc=2E
->> >
->> >While the MSR index isn't strictly ABI, i=2Ee=2E can theoretically flo=
-at to
->> >any value, in practice no known VMM sets the MSR index to anything oth=
-er
->> >than 0x40000000 or 0x40000200=2E
->
->=2E=2E=2E
->
->> This patch should probably have a docs update too=2E
->
->To avoid sending an entirely new version only to discover I suck at writi=
-ng docs,
->how does this look?
->
->diff --git a/Documentation/virt/kvm/api=2Erst b/Documentation/virt/kvm/ap=
-i=2Erst
->index 2b52eb77e29c=2E=2E5fe84f2427b5 100644
->--- a/Documentation/virt/kvm/api=2Erst
->+++ b/Documentation/virt/kvm/api=2Erst
->@@ -1000,6 +1000,10 @@ blobs in userspace=2E  When the guest writes the M=
-SR, kvm copies one
-> page of a blob (32- or 64-bit, depending on the vcpu mode) to guest
-> memory=2E
->=20
->+The MSR index must be in the range [0x40000000, 0x4fffffff], i=2Ee=2E mu=
-st reside
->+in the range that is unofficially reserved for use by hypervisors=2E  Th=
-e min/max
->+values are enumerated via KVM_XEN_MSR_MIN_INDEX and KVM_XEN_MSR_MAX_INDE=
-X=2E
->+
-> ::
->=20
->   struct kvm_xen_hvm_config {
+On Wed, Jan 22, 2025, Aaron Ang wrote:
+> Hi KVM team,
+> 
+> We are a group of graduate students from the University of California,
+> San Diego, interested in contributing to KVM as part of our class
+> project. We have identified a task from the TODO that we would like to
 
-LGTM, thanks 
+Oof, https://www.linux-kvm.org/page/TODO is a "bit" stale.
+
+> tackle: Improve mmu page eviction algorithm (currently FIFO, change to
+> approximate LRU). May I know if there are any updates on this task,
+> and is there room for us to develop in this space?
+
+AFAIK, no one is working on this particular task, but honestly I wouldn't bother.
+There are use cases that still rely on shadow paging[1], but those tend to be
+highly specialized and either ensure there are always "enough" MMU pages available,
+or in the case of PVM, I suspect there are _significant_ out-of-tree changes to
+optimize shadow paging as a whole.
+
+With the TDP MMU, KVM completely ignores the MMU page limit (both KVM's default
+and the limit set by KVM_SET_NR_MMU_PAGES.  With TDP, i.e. without shadow paging,
+the number of possible MMU pages is a direct function of the amount of memory
+exposed to the guest, i.e. there is no danger of KVM accumulating too many page
+tables due shadowing a large number of guest CR3s.
+
+With nested TDP, KVM does employ shadow paging, but the behavior of an L1 hypervisor
+using TDP is wildly different than an L1 kernel managing "legacy" page tables for
+itself and userspace.  If an L1 hypervisor manages to run up against KVM's limit
+on the number of MMU pages, then in all likelihood it deserves to die :-)
+
+What areas are y'all looking to explore?  E.g. KVM/virtualization in general,
+memory management in particular, something else entirely?  And what timeline are
+you operating on, i.e. how big of a problem/project are you looking to tackle?
+
+[1] https://lore.kernel.org/all/20240226143630.33643-1-jiangshanlai@gmail.com
+
+> We also plan to introduce other algorithms and compare their performance
+> across various workloads. We would be happy to talk to the engineers owning
+> the MMU code to see how we can coordinate our efforts. Thank you.
