@@ -1,189 +1,213 @@
-Received: from mx0b-0016e101.pphosted.com (mx0b-0016e101.pphosted.com [148.163.141.31])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2047.outbound.protection.outlook.com [40.107.243.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5177D3595E
-	for <kvm@vger.kernel.org>; Fri, 21 Feb 2025 00:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.141.31
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740098891; cv=none; b=j5cViajrxwn80Nd7JWah1mPMQD0Rcz0N9hmM21aVcBwfV0zHjV0WLC9KttRcKPtqNjq6zact4ieacJ1Jdmb6JCZZ4EnovUiikg9wY/H39ntyG+bEILkCuK1IWsWE5n9CKaWYjT/Y6S+76roSvlRQbeB/3wEbUcT6PrbImMqPab8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740098891; c=relaxed/simple;
-	bh=Rb2hnRoAvBEZP1adk7aCeJEiq64HIBUuQHkJZH32Os0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DoBVG0A/EFh5UuHIqYoMtycd/4IlUQapEzao2C5V8qbHeaI22S2Dvuw5YCERoyHiV4MDkDNKVeQKISFCKR1MNXhEtrInY4k0e4vHsy2IWsNkd6/ltdb+FX9h2WoT+H3sRWWZZ7uCvccDhggaX1M+YHcK0nOObydfZEuJA3oMuMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucsd.edu; spf=pass smtp.mailfrom=ucsd.edu; dkim=pass (2048-bit key) header.d=ucsd.edu header.i=@ucsd.edu header.b=GdL3awb/; dkim=pass (1024-bit key) header.d=ucsd.edu header.i=@ucsd.edu header.b=bnpmtO7p; arc=none smtp.client-ip=148.163.141.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucsd.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucsd.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43786EEC8
+	for <kvm@vger.kernel.org>; Fri, 21 Feb 2025 00:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740098935; cv=fail; b=DXa8orlGg/PJ9mwyY3BUu8tvXKW5eeIQxp/5E7kT9et55lyGhF2Lu4ITvQFm4h+6zwoC8nfpISq0g0rFwhgO7zu9pPmffXmHrM/Lc3aNnnBkdAm3XKT536wFhSTC43hf+GbMacqmnze9wy66U277MXY0Iq2Dz25rQOo9BY+cUTg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740098935; c=relaxed/simple;
+	bh=T6CPmDIRtIaFD3gOnw3vPtxk+21RrP7Ts7TG7AbgD2o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cAlx3/sDYPs4UgicipnBYbxJKmoTCYrAk77sNby27e0wN40CMgxYjbU5s1FTkDUWN2tYuu4aJZf1XNuc8kY+cRQ7gUmRTdafgA4AA9cngubDkuwvJq/35EhEYygFXIBg2/Ds2IKXef/EBJAKvA7a1LA4ruHOPzOHE1AoOxmTnNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=06M6Kfpu; arc=fail smtp.client-ip=40.107.243.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ucsd.edu header.i=@ucsd.edu header.b="GdL3awb/";
-	dkim=pass (1024-bit key) header.d=ucsd.edu header.i=@ucsd.edu header.b="bnpmtO7p"
-Received: from pps.filterd (m0151358.ppops.net [127.0.0.1])
-	by mx0b-0016e101.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51KNTwCV026578
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 15:47:37 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucsd.edu; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=campus;
- bh=RTidP2TmFgjqhsc1g4irQg/mrtI+4iJDGIceeV8Znpk=;
- b=GdL3awb/f+bxPKBT5doM1lO/RoCbruePFwEjYpsmjAHsL4F3duh+0znnaJfn1sERBTUR
- 4yg2SZJUjf9qlLWOwJS8TU2d44l2hJOFdwgluAaVcCcOMJs1XyCL0FieAvpevMOefLMR
- m7XTVGJbrReKJU0F6c4hwuYbrGm8fXh7IJbwl333KfzP5SjyT+mHVNasTiIC4nCn7FDI
- 2ObvVXyRDtojOwwZkGXSPzJ+KSSqf5OiuQqx5201DLQhGDp+xypgr3+kbjyvkr+2mKt9
- etM3fsrvXl+TmI92FN6kfKSRqzlzCGYPgg0m5CVr5ntnqWtd5qxqi3Pq81ig8el9NpX3 Og== 
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0b-0016e101.pphosted.com (PPS) with ESMTPS id 44w019efds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 15:47:36 -0800
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-220c86b3ef3so52898225ad.1
-        for <kvm@vger.kernel.org>; Thu, 20 Feb 2025 15:47:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ucsd.edu; s=google; t=1740095255; x=1740700055; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RTidP2TmFgjqhsc1g4irQg/mrtI+4iJDGIceeV8Znpk=;
-        b=bnpmtO7pzpU0XedY+QaDpXTllegRHGnqOEfJZ7AQt9TQvmcRvqBrW2zjDMYMdC74ky
-         dkTc9y18I+ZwxloFSr3RTmj7RjyZ5JF4chHMYKYPNW6pBtlcxzDB6g7+WNBFAN81W2Bp
-         2lkM2BB97P2W3ylJ7WtPtRNeO4Xt2jrqy4jhs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740095255; x=1740700055;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RTidP2TmFgjqhsc1g4irQg/mrtI+4iJDGIceeV8Znpk=;
-        b=aUo5No3yUp3OEVzeCXvHBYW7j8ZMIeOK5Ac3Ip804XXjz1UBVTMoJvBuzM7owA0Cpv
-         i127GL+Ss1NO3hqo/XcmtJz7tnbxnUxtkCoOBfHT8hmaCWRG6DB/ywoNsc79D8AmynYZ
-         YE7r3edkMOmNTEv+YmKxPFmgP89JyvyBSq5o+QXZ/3RlH0MlHE0z7+dBIWcFcsoiq9le
-         9Gqn/oByQq8VObCkuQ4yRqKeSvITIpmtYm7h+Rxt/KogafjysU0g+B1hBrV/zIqtm/Gr
-         4rCJ53Hed2USjHlAXuebkcjw8TAr02vYKX7BC6jJab3YdDmQMuJTLgZ9B+8p0pF9KIbo
-         Yvwg==
-X-Gm-Message-State: AOJu0YzZzhZ1GmHfKhLeH3ifqNPpmdqZFpfiMe8vcwhSgGVRZ1tNZQYy
-	4ZGbjBkmEwroMzgABg0U+EEpWAGFaZk+zJ6g4r8bv3EboQofFDPLXOHDUVXLEo2TtRyJ+VSdBY4
-	99wqjgyJsUzTFdW24OszI7LMmU599fZcszUm2XojU/MJIZDm+ai/RcpohGQ8VhpynP3aRp7bZpc
-	/N4+6r8sKryjLrU7RfAEb3wlQ=
-X-Gm-Gg: ASbGncuHaMS5FyyttVsUljqAzJy5/dvBRK+Ua5GiC8O+TUJmEXSHMOPBsSq2IUlNhUZ
-	s6n+zaRikB4M0RPQV0tOnQr+wef2NL8qRnXuwBElfsoNbV+3bm4V2ShwbL4Rm
-X-Received: by 2002:a17:902:db0f:b0:21f:3823:482b with SMTP id d9443c01a7336-2218c765821mr90619365ad.25.1740095255179;
-        Thu, 20 Feb 2025 15:47:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8nXYBXBp2u+ydkzGuVzLEwdiiQM0BsRPrzmKD4DMijrqYf2yfFlCxnX6kdZ/yFrrQbdYXb7tYKA/iBJyRWxE=
-X-Received: by 2002:a17:902:db0f:b0:21f:3823:482b with SMTP id
- d9443c01a7336-2218c765821mr90619015ad.25.1740095254735; Thu, 20 Feb 2025
- 15:47:34 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="06M6Kfpu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BXVAvutbuUz22BTWf5dgKrNKBk9aLN7uNKoVFtd3ApR8teMAo58BP7pov8NVYZgmIPIgLA8MgNFQkpeHRjqU+MIpdQIjAWST4VuYIrnflRfr/u570vYPNC8hYarSNY2v40sjyWQi4TV7zXH1tyJahsg0+avBOext0itOApGxKKeDnTyfAXBB+PcuSenyEj5MByQCE8WO/M7y6sLwG8PdFagI6Zq+r/jpp0GZOKYjy0M06MAJPBOx1qVle9M5nFzMJ2377p9fK19JU765aVCI9w/DQvHSu28fgrAZyNtx2qMevVgJPZKZro0ItWF5tWO2xtepxvlV0eOnUjoG0bJkww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cra4AL3++r7JVv7n8iDHZihHtatT3qlI+kGWuOvI+fc=;
+ b=bqCiZOZ11S8O0XUTYUwT3AA9SB6YuzCfnGKPryGTPmNZ0YrM6JSzVhiVpRDIPOnGIC1zgDSpVHCiHoPGT/E71GHJC0kPXbGfSp9hcwH6ZhRxU6SmUqv+JXTkrhW+x0aOWdrJEeguDFDoCnTHLN4k4PuIAYgMJAnqn2niwgvtE8uAnriT0MszUUh/CJN3cWv2CCIB0cH+hDLk3lebA52ODSeh4qGjVEjna8+iuyL/jIcUxD6n7iyAlrGGG23Z0aQiMIK1QL9Rr3gtMyqQtZo3NbRinAzGCWDYHi2HvJvct+MIEJK2OlbVJGg730EW7MEyY2IaQHLG6EgE3FQcZqPCNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cra4AL3++r7JVv7n8iDHZihHtatT3qlI+kGWuOvI+fc=;
+ b=06M6Kfpu8CjENX3FrCkivBQX5XmY5du7Q64/ikXCoymJfd/dAGmbUNkKQOctG6dKiNdZNvtNR/stSpvVmrFFgRiDGSEAoy9x9xo2ivWJctH0YB83+y3DyKO0NLrsjBVPHJCky7G4IfIfEs7ISDkchvESVtjbwvrfDItIfyUsdoI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by PH7PR12MB6612.namprd12.prod.outlook.com (2603:10b6:510:210::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Fri, 21 Feb
+ 2025 00:48:50 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87%4]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
+ 00:48:50 +0000
+Message-ID: <8466a8bd-540f-4f4e-9cdf-6cf233e48363@amd.com>
+Date: Thu, 20 Feb 2025 18:48:47 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/6] target/i386: Add support for EPYC-Turin model
+To: Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ davydov-max@yandex-team.ru
+References: <cover.1738869208.git.babu.moger@amd.com>
+ <3d918a6327885d867f89aa2ae4b4a19f0d5fb074.1738869208.git.babu.moger@amd.com>
+ <Z7ccCtbPPuRRdGUN@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <Z7ccCtbPPuRRdGUN@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR10CA0028.namprd10.prod.outlook.com
+ (2603:10b6:806:a7::33) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CH3P220MB190880164B32300C91BBA037AAE12@CH3P220MB1908.NAMP220.PROD.OUTLOOK.COM>
- <CAK51q6WPAWbmqL=qaiPU1cg1rNAehzUpaZS3K-oWmRU+KD5Gug@mail.gmail.com> <Z7d9KZWpOpUD6TIc@google.com>
-In-Reply-To: <Z7d9KZWpOpUD6TIc@google.com>
-From: Aaron Ang <a1ang@ucsd.edu>
-Date: Thu, 20 Feb 2025 15:47:22 -0800
-X-Gm-Features: AWEUYZlyf7rB6vQ4XqdEkhmVTMBKtVEsRGxXA0Nl3BdiDu-iylUdxQNrFvGZl8g
-Message-ID: <CAK51q6W_7QTgdK-JxkjrLYpHnHZUujQZQ0tXdpLiaBsD5gc25g@mail.gmail.com>
-Subject: Re: Interest in contributing to KVM TODO
-To: Sean Christopherson <seanjc@google.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "jukaufman@ucsd.edu" <jukaufman@ucsd.edu>,
-        "eth003@ucsd.edu" <eth003@ucsd.edu>, Alex Asch <aasch@ucsd.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-campus_gsuite: gsuite_33445511
-X-Proofpoint-GUID: 6hOOAP3AyiRwy7aBvJW4Z1Qy1nAj5ZV_
-X-Proofpoint-ORIG-GUID: 6hOOAP3AyiRwy7aBvJW4Z1Qy1nAj5ZV_
-pp_allow_relay: proofpoint_allowed
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-20_09,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 clxscore=1015 suspectscore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=-50 reason=mlx
- scancount=1 engine=8.12.0-2502100000 definitions=main-2502200158
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|PH7PR12MB6612:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e72dd6e-e292-4768-e0e0-08dd521181ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Q050bjA2REdxWHFRQ1ZobmdraFU4UURMdXlnejU4UmtPeCtOWTVlSVltSlZw?=
+ =?utf-8?B?d1A2d0xISmNYUk9XUGhUbHlWTStEdjJDcUZnRjBydmxKSUpYR1laL1ZFYlBG?=
+ =?utf-8?B?K1QzcW5DSC9nZ3NhVUR3a1ZDZTRPbDR0SFM4L3V2R2xvUURoeTlaOG1IMHVn?=
+ =?utf-8?B?OEpON3UvRTVOT0hNZWkyTWkxZWhTaWVMSVp4NW5ZWUFORm9Vd2FXN0hrVi9P?=
+ =?utf-8?B?SkNhWnJDZWc4V0hjckdjOWVVYkRrZDVmcFhNSk1mNnhyQXBYU1pJclVyZWZp?=
+ =?utf-8?B?YjgxN2JJSDRPbTQ1eWt5aTdGSGJ1QllwcnFjSnhSeFNTTzdud0tzTnQrd2ov?=
+ =?utf-8?B?Smg2RW9JL2trdVRheVQ2MEtGd3RMUmdOLzNNRlU2aFhPK1RRYjQ1YUEyNkR6?=
+ =?utf-8?B?YXdXbS9yK3JEYWRyQjNhTDBQTzFZL3pQb0p3WFB1K2E0Rlhoamd2S0VlNTV1?=
+ =?utf-8?B?ZHpuT0tIUGhNNW1EZC9LeHBBL1R4aFk2aGFOUlJmeThIa2VvL1p5T2JOOGZD?=
+ =?utf-8?B?cjhwMzhUd2x6T2g0aGFuelJ5aGpPOURxZVFwNnZQQ3ptY05IYTdxUHRrZUJy?=
+ =?utf-8?B?U2ExYUhlaWxyV2tYQXRpQTUyQ2NKOHBndkk1UDhtVlJMTkJWWHllV1F4MjhD?=
+ =?utf-8?B?VFpnL2FBOUVFSlNJRU5MaWwyVFVhRlhEN0ZXMDZGZnFncExuNUdoOWJhaTdN?=
+ =?utf-8?B?VDRBeU92VjkrbGk2NmZXdDVSaDVuakE2M2U2MGZlRktQcTFSY2hLRUh4a1lq?=
+ =?utf-8?B?MHQ3ZDVvSGtKK0hMOFFUY1Nvd3JseGQyK1lCQThrUkFZcjFVTyswTjI1SWNH?=
+ =?utf-8?B?UE1ZZmphY2JyZHdORG1yRy9vdSsrQzQ4aFJ1bjJIOEh0RTlqbnF1R05oZUpp?=
+ =?utf-8?B?NnhoUlVwOTVZOGMzdkJYTXN0OFlZSmo5YWRGNGEwSUdJTEtIWE1VSkpRdkc2?=
+ =?utf-8?B?cXpLR3pEV1VRNWlQdG9NMysxSmpLUnpaaHBtT004b1BBK29CcHdmMGdBSzVt?=
+ =?utf-8?B?Z3hoQlNRZG10ZUhETnhTNXVqRER0S3RvdW04NGwrQm1UUlE3My9LR0txak9i?=
+ =?utf-8?B?L2UzblpIelpUZjE3VGZVTUpVRUhBbEdtWkpScDBMd25SMlljM3pidEVwRWRE?=
+ =?utf-8?B?S1lqRFhmUjN0YW5TRktTc1drd1FCK2ZkU3JhcFFqSi82dVZFdUtsOStldmZY?=
+ =?utf-8?B?NDYxcmQ3dUZ3dDVrb2picHdhM3hJb3hvbHgwSE95dTZtL3E1dGFHZTIrY25Z?=
+ =?utf-8?B?N3dhVzNETUN3d0tKeHFKZnVDbUtiQlRMTFdCeCt3dDUrZXpXYU42VG5DdXE4?=
+ =?utf-8?B?L3hCYnk1MDNOS1FzWmpCMGJBSXV4ZzJvM2lrUTZLc0dQcWQrLzducitHTDE0?=
+ =?utf-8?B?cFhBR1BMWUR2UGdQMDR1em45dWs4Q3ZTZFhUbG5hTDMycmRtT1VMYVUxejJZ?=
+ =?utf-8?B?YWwvRHJDVlBBNGhXU0lsL0FzaVNjMElsdE80YlZoZEhJV2lkT1FsZVg3UWd3?=
+ =?utf-8?B?NElSQWxoaWR1VDIxanVTb0hpY2lZQWdvK1h6bnkwSi8yeEwydXc3NTQ3Y3Ra?=
+ =?utf-8?B?bVlnNVBTVk1vYWJQZ2hCMHhYSmNqeVNhNXBVWDIxZkV0ZWVVdGxRdmNUYWpn?=
+ =?utf-8?B?eE9mZ1VSYURnejc5WEhVenZ4K1pvT1YrTFpRZU45VVJkV1ZheE9pcWZuMmNa?=
+ =?utf-8?B?ZWs4RDJxRGJ1ZnZ4TDhaeURhVGdPNjhicDlNR2g3cWt5NlFCdGMvK0czZ2s2?=
+ =?utf-8?B?L3p3ekJaczZpZWxjZklPMTlWaGdxSmlsemxIcElNQ1NBc08wR1F0djU2NEZU?=
+ =?utf-8?B?bnFldnpqemJiQzB0b2wzRy9zckQ2eXdpNkdyd0cwVVlkeko0YzJFck1aVFlG?=
+ =?utf-8?Q?SPAr2/EpGj9ja?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW3PR12MB4553.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OGx1RGx0Tk1rZ3NqdXBROEFobER0QisyM200VVpiNFFjeWRhOC8xN1BGTitx?=
+ =?utf-8?B?aWpJaVlDbzdZS3AvOUFKVDJsMlJZMk9UeDhFNHIvelRHcEIvUzA4bFA0SlBq?=
+ =?utf-8?B?K0VhWWtkRkRhNUFWdExnOGdqcVNXbDROZVg2UTJtT3dlKzNWS1pPM0owQ0h0?=
+ =?utf-8?B?Wnc5Wjl3TlVhUG55Wk5kYmhMTWVLbkl0ZDVteTBtOHFNMmZQNzdrc3dTQi9G?=
+ =?utf-8?B?QStOVWNkZWRSdWhUYkR4eHI4U3pReUx3bkwxMmhyMSsrL0RXRWFvejk1cE1r?=
+ =?utf-8?B?WTV0cjF0ZGh0ZG5PUVhqOXZhNm0rL2IreGFKSkU5T2FFUGliMDJBY3FDelpK?=
+ =?utf-8?B?a0VGYSt5WkU3dmNxdFl3eXJMOWpwME5XUk9rR0NOWHBncERWWjZGQjYyNFJz?=
+ =?utf-8?B?WXVpOFRLNmVRYTN5STZDVi9iSGFGMkowc2JhZUg1ZXFGcVdjM0Q3WURLZmpw?=
+ =?utf-8?B?NUlqeFNsZ1BOSUVaTDdxM3pMSDJSeVc0ekNIazVFejRIUXJNNzRrQ25UMFRD?=
+ =?utf-8?B?TGUwZzZxOXBUYSszTHpuWXE5ZkdScW9DNDJiQU9RaElscW5IeW9YcXZUV1gy?=
+ =?utf-8?B?WnB5Y2diaWlmSU5tUW1uT09WSUpoaVlGNDZZZGZBcExXTXZaMjJMWEc5UlVi?=
+ =?utf-8?B?MCt4VjZwZExoa3ZveHVleFJKRWVJa1gxN2dZb0ZvK1RUWTdiT2hhd0ZkMWU2?=
+ =?utf-8?B?YzUyeVBEVGJkam5qdDErRHZzcXNxc3N1YkliSTlUSkFHamVSd0JEcTByTkQz?=
+ =?utf-8?B?L3M0MmFieElkMjBmMnZ2Q2pTRGxreVRORjJ2cElyY2lJSE1hNlpTTFdzV05M?=
+ =?utf-8?B?TjJzYjZnREtWT1BIME1GbTlDdUlsZTFlYnFWbG00RFl6NiticUFHcy9OQjhQ?=
+ =?utf-8?B?WFF0eStUTzR3dUJISnY2Q2tTcVViVExySDdrUGowbmM1dzZuWVR0dWlvL0w5?=
+ =?utf-8?B?dXIzZEdRQjR6T0I1dmt5Mkd4UE15bnAwalRzVmVmRFFobUdvU1Nha09scUJP?=
+ =?utf-8?B?RTRvL3pIT0R4QzZlS1lud1hxcS9rTXpBTm9LTXJrbW1LblBBOVhnMklrdUh5?=
+ =?utf-8?B?a0w1emtQT3lDR2NDV2RrRzRBTUVHVFdTQXhkSHV1a3dDazRJOWdlQzE2Vm5I?=
+ =?utf-8?B?Zkh4dkFWVytHeE1LdmdyMmk0L1FnbzJrOVAzckV2b1Q1dS9pSHp2RnpzYUhB?=
+ =?utf-8?B?eTFNR2huWkRsTkZUOXlkMnZwOWFKOGRvLzM2eG1Yei9qbVcreml4MTBnYllE?=
+ =?utf-8?B?ajBRQTA4SUdZOGRNWGhHdW5sN3lZZXNLNkUxZnRKNGg2UWdlM245Z0hBUnZH?=
+ =?utf-8?B?VWN3VkpXOWpJeTRNWE1VNjVUYjd3SDR2VHdscCtpYUhsSEk1NHNGa255UDF4?=
+ =?utf-8?B?WWR6MFRXcHI3Tzd1SC9YRHU1Nm1oaDBBU2JBQ3pjYW9tR2xIUWlLK3k0czlz?=
+ =?utf-8?B?Z2hnenJtcUFtWVliYXg0SS9XWGhuSkZMVzVzM0s5bUpFdzR4ZXk1U3lsZHpL?=
+ =?utf-8?B?cTRudzZ2MmZCWGZROTZhMUppejZyQTNyUFNEMWhEWS9NM3hCSUxCOCtqVmVC?=
+ =?utf-8?B?V1hDendnYWZKdDNaYkpIb3o5ZFRxN0pnbW5PSGMxdCtCYWxkaDVieFlVZmZG?=
+ =?utf-8?B?R2tuVEZtRjR3TitnYVI1UTB3aWpWSlhXbnZxRkhpTUk1Z1hHQWRVclBSb3Jv?=
+ =?utf-8?B?bkNnWjBTQnhqZHJ2WU56MG9QWEhTUDFGQ3dwQmgrN2dQcW9CZ0U4bFBsS1hX?=
+ =?utf-8?B?cVVmblp1SWVhcis4REhWRnVFTTJacjZvQU90MEJDdnpLeVFDLzhWdUh5Vy9M?=
+ =?utf-8?B?QlRnRm1uZDB3R2lvV2ZhL3Q0amVBaXArclA4ak1wSTJpRzhxa2pwR3BSc213?=
+ =?utf-8?B?S0pHRVNOSXlNQTZCMDBDRDlWV3FLV2Erakh2ZG1tZG1lK1BLa2g0SE9GanNJ?=
+ =?utf-8?B?c2ZWV1ZsV2QxaG8vakZjOGNSekJWbFUwaC9wK0JWM3hLTHlDSUhvL3ZSUG1P?=
+ =?utf-8?B?NEEyb1RiOURQbkkzK1NiSUpjL2k5bHU3TGgvcUdMVENuckJxeVNyWnlzcXJn?=
+ =?utf-8?B?Y3VIUXFFdVp4VGc0aGZvdTlNeFAxVFVIai9LMlNQbEozSkdQVEw5ZkUybWli?=
+ =?utf-8?Q?AsECMIPZJ4yvi0HgKFJQPtHdb?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e72dd6e-e292-4768-e0e0-08dd521181ab
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 00:48:50.1748
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vH9hzbd44dQgYk9Wb39n8aam5ao0UcSW2NBPi59/XnA78jJ7zZ/0Vs2GIdQ6km2r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6612
 
-Hi Sean,
+Hi Zhao,
 
-Thank you for getting back to us. We are looking at a timeline of
-about 3-4 weeks. We are interested in KVM/virtualization in general
-and memory management. Ideally, we would work on a fairly scoped task
-given our limited experience and timeline. We initially planned to
-change the implementation details in `x86/kvm/mmu/mmu.c` to use
-approximate LRU, then run some performance benchmarks to compare with
-the current FIFO implementation. However, we understand from your
-reply that KVM has defaulted to TDP MMU.
+On 2/20/2025 6:11 AM, Zhao Liu wrote:
+>> +static const CPUCaches epyc_turin_cache_info = {
+>> +    .l1d_cache = &(CPUCacheInfo) {
+>> +        .type = DATA_CACHE,
+>> +        .level = 1,
+>> +        .size = 48 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 12,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+>> +        .self_init = 1,
+> 
+> true.
 
-Are there any backlog tasks that fit our timeline? We are open to
-anything (comparison benchmarks, bug fixes, small features, etc.). Our
-solution will probably not be foolproof, but we hope to produce
-something actionable for future KVM efforts. Happy to discuss further.
+Sure.
 
-Regards,
-Aaron
----------------------------------------------------------------------
-From: Sean Christopherson <seanjc@google.com>
-Date: Thursday, 20 February 2025 at 11:06=E2=80=AFAM
-To: Aaron Ang <a1ang@ucsd.edu>
-Cc: kvm@vger.kernel.org <kvm@vger.kernel.org>, jukaufman@ucsd.edu
-<jukaufman@ucsd.edu>, eth003@ucsd.edu <eth003@ucsd.edu>, Alex Asch
-<aasch@ucsd.edu>
-Subject: Re: Interest in contributing to KVM TODO
+> 
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>> +    },
+>> +    .l1i_cache = &(CPUCacheInfo) {
+>> +        .type = INSTRUCTION_CACHE,
+>> +        .level = 1,
+>> +        .size = 32 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 8,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+>> +        .self_init = 1,
+> 
+> true.
 
-On Wed, Jan 22, 2025, Aaron Ang wrote:
-> Hi KVM team,
->
-> We are a group of graduate students from the University of California,
-> San Diego, interested in contributing to KVM as part of our class
-> project. We have identified a task from the TODO that we would like to
+Sure.
 
-Oof, https://urldefense.com/v3/__https://www.linux-kvm.org/page/TODO__;!!Mi=
-h3wA!GHlu-1K3bzLd-0OuL5LV30AtMELMkt6xiZXu7wenC6b28xauSSG0z0BVnF-9bLDpYHD97a=
-1YrLov9w$
- is a "bit" stale.
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-> tackle: Improve mmu page eviction algorithm (currently FIFO, change to
-> approximate LRU). May I know if there are any updates on this task,
-> and is there room for us to develop in this space?
+thanks
 
-AFAIK, no one is working on this particular task, but honestly I
-wouldn't bother.
-There are use cases that still rely on shadow paging[1], but those tend to =
-be
-highly specialized and either ensure there are always "enough" MMU
-pages available,
-or in the case of PVM, I suspect there are _significant_ out-of-tree change=
-s to
-optimize shadow paging as a whole.
+> 
+> (And it would be better to add a Turin entry in docs/system/cpu-models-x86.rst.inc
+> later :-).)
 
-With the TDP MMU, KVM completely ignores the MMU page limit (both KVM's def=
-ault
-and the limit set by KVM_SET_NR_MMU_PAGES.  With TDP, i.e. without
-shadow paging,
-the number of possible MMU pages is a direct function of the amount of memo=
-ry
-exposed to the guest, i.e. there is no danger of KVM accumulating too many =
-page
-tables due shadowing a large number of guest CR3s.
+Yes. Will add a new patch to update docs/system/cpu-models-x86.rst.inc.
 
-With nested TDP, KVM does employ shadow paging, but the behavior of an
-L1 hypervisor
-using TDP is wildly different than an L1 kernel managing "legacy" page
-tables for
-itself and userspace.  If an L1 hypervisor manages to run up against KVM's =
-limit
-on the number of MMU pages, then in all likelihood it deserves to die :-)
+> 
+> Thanks,
+> Zhao
+> 
+> 
+> 
 
-What areas are y'all looking to explore?  E.g. KVM/virtualization in genera=
-l,
-memory management in particular, something else entirely?  And what timelin=
-e are
-you operating on, i.e. how big of a problem/project are you looking to tack=
-le?
-
-[1] https://urldefense.com/v3/__https://lore.kernel.org/all/20240226143630.=
-33643-1-jiangshanlai@gmail.com__;!!Mih3wA!GHlu-1K3bzLd-0OuL5LV30AtMELMkt6xi=
-ZXu7wenC6b28xauSSG0z0BVnF-9bLDpYHD97a1KsoVHiQ$
-
-> We also plan to introduce other algorithms and compare their performance
-> across various workloads. We would be happy to talk to the engineers owni=
-ng
-> the MMU code to see how we can coordinate our efforts. Thank you.
