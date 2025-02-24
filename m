@@ -1,110 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF54265CA3
-	for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 16:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B7264A71
+	for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 17:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740416277; cv=none; b=inuBPzAwxr3F7rm5O9mzW6IgDKrBKVm9ke0oSZEEHpbkdU9xeyZQFa4nQJJJMdSubPV9k2U/qJKXL3tF5VkB1K/7NZ+KzTzkw5NVq1ErV8PNTyTHAZw4hkz0aln01jdO9KZ3DfASZUgX8xfQhd7Z+N6gIIUy7pFcPZw7UdZCUfI=
+	t=1740417254; cv=none; b=u0fKXq/CdTGw5wU/0yuwIcIMwvg46KGMCIi0fGdlYDR+V7rAJuhJaydJ/8p97kVfiPUmTlnylERAquJ7vOVT5DS30x5a9mYkfpBnb7SBUeVzyL+PqKj6/Fsc7dj0U89umexjeOX2hV/PQe+tCxXihsVv6+TaJVe5ZfkE+Dj39lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740416277; c=relaxed/simple;
-	bh=PbfsQL2sPiow+PCIjz3+Rkn8IIDh6NjOMMFOaOgAruU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MyWOJ55AC9JNS7vNplN3ujQ2Wf5Jh7rD7/u4n86YhMJVep5Qnn8VrtTsYXEapYUuQzvlqRVsDvC4nmkRIdmPsQJGeXi662bv2WqGO2hFikznoT61JiBK0abbdvpCL9lpDLfSCJERSyVG7J5LiWM3ILyMP0occXYWAVzlB4wI5AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNbw0SYm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740417254; c=relaxed/simple;
+	bh=ChHQhpVxYbTXiAeNRbdrJoZgtAU1eO2sEaSStMSNrpA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=c3Vvhji0ZjnQGdr4vbLGaaUpMLr0Awy+c+gdcLw4qcpqBDaatMNctUm7t3HHtUOpkYFJ4ohxkkjrunzdUU1PS1y3BP3d+/2caHKWnBcc4jNIgSTa7hYV+IjROis7OyVrkeoTTRYQuyN8coqjJ2fcRQup5j4uHmbNwFfarheGVZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xx3G0HRK; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNbw0SYm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740416274;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Biw2WTLSjf4saKl00azgbJFpGTFLYZbTKqchEcn3wv8=;
-	b=KNbw0SYmLR8l6kK3g6vNLO5Fvw40Y8YLGzIQ6OzaJ/tgh1BQ47RY7dO7tFwRpfhADmC26C
-	ULlNvJ/iw6GKSyTSSgMEapX51enldW8L3UNt4lEpyHJe50si6JTGvhSIuBXXabbo85tEUI
-	t7yaNlNPcJSI8QQ/SBOuHJ0TlN+d988=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-N-m1kX4OOj6woMwfCZ555A-1; Mon, 24 Feb 2025 11:57:51 -0500
-X-MC-Unique: N-m1kX4OOj6woMwfCZ555A-1
-X-Mimecast-MFC-AGG-ID: N-m1kX4OOj6woMwfCZ555A_1740416270
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38f443b4949so2194860f8f.3
-        for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 08:57:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740416270; x=1741021070;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xx3G0HRK"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fc1e7efe00so9569609a91.2
+        for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 09:14:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740417252; x=1741022052; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Biw2WTLSjf4saKl00azgbJFpGTFLYZbTKqchEcn3wv8=;
-        b=wLcgbNgBjolsrv991WulAntp59JzhCgBldA1hdpWvXJ62uPdCeT3bBoK7OUVgAw3Jr
-         /6z3b3QzqQi7ucKxDthlCbA6IOD8pMZT5munCNVCB7zD4wYZ97D4j/bzgcz7TuAiIAyw
-         85C0WamVrbtFy2YdVnEYKxiXsJ/fpQ46GaotFVa+L2rT/Qx2qepQHuznFOyHjH4MJn7L
-         06VDzbsJm4pYicY43bDGurIr8p/vXDRjaDadTtiQ85L8O6zB6JJX0HfcBaNWHN+jNTb1
-         tCUWmFCHLrdG+c/dBploz5a2UjqG9wDlaedF1h6b/cxQl0ZDF5ccdM2RDGBX6SH9aSTt
-         Zq6Q==
-X-Gm-Message-State: AOJu0YzaWm6hoF7ggDNNoRpsrqnRo+JYIu8SmrOyMJxNcXtN8qYaIXCP
-	jLcfEVJQC1zpDnl3OdnYn69kxW+bzICwD2PNQcEOq2tNpGuvDcMM+r1lfhuIBV3unUdT+fx/DE7
-	u2aAqicG/B7/371dXP+7fctLeDVxDQoqAqEzbp0KxAJSbQHtEBjXv7zeIk7H/C0xlUaANeBwbbx
-	ew5pEB06haoEfX2jMWJA0PY2hzCg1rshbPTBQ=
-X-Gm-Gg: ASbGnctvfD0DNQ6xwh/tPAiHWHB1PxjhMoh3rG10jZchDoEt+4D+Qyuu9qhFCYe5NF6
-	kcCzvoCqHB8+zuN/BI3mFSUAuv1D5JqyHVlnFzYtTnwyWI99Swthp7hF63vlcCdgCLYoWSuubGg
-	==
-X-Received: by 2002:a5d:5350:0:b0:38f:2a84:7542 with SMTP id ffacd0b85a97d-38f6e97af1emr9718372f8f.28.1740416269852;
-        Mon, 24 Feb 2025 08:57:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG5dNRxtSyZLnAiRMZfJOPsJBulsojl4I5P8fndIcW5Ryl+25L4glEbkJHy6mYbN+5z31Sip8Eedjc7ZaCr0pE=
-X-Received: by 2002:a5d:5350:0:b0:38f:2a84:7542 with SMTP id
- ffacd0b85a97d-38f6e97af1emr9718359f8f.28.1740416269554; Mon, 24 Feb 2025
- 08:57:49 -0800 (PST)
+        bh=QPxQY7bRKSrsl0rwMMhqxmRexHRZyDzKPiknNpdHSTs=;
+        b=Xx3G0HRKNKupzo61QrwIJG8ZRVmfV5aGQ1nhcnI2IBMQWhgMswwhzaskWDqkSXzIHa
+         fsqb1v+xmOhcGEZdX+3f2IpEDhHQMjG8Jk74MufYj6Pg1gLUMgEoDq1ayx1F8dKp16TV
+         1fLrT7p5zxVyN/cTjar4n9YTriPuM3w3C8kFYWy6d+KKXH2Q63InRz9ceveXdVNOh4nD
+         vFVGcLX6Io1jiUuAMMrY1PCnFQJpL/g7KtaBNqZWUEp1KmLLYPUmhfYUn2grXzcb+/GO
+         GQ7lIqytHdf6WHbXjjwtGYv8eNldPANl8s7xl7op8RXBxiEDUMTKGTFoL93F54dNBydK
+         dblA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740417252; x=1741022052;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QPxQY7bRKSrsl0rwMMhqxmRexHRZyDzKPiknNpdHSTs=;
+        b=jyCHYNagKrL0K912GzydXSC/7PI2rhzRkaofIDVl20tt3YvDacjXRicDJ6lOtbHWnS
+         s+0D38Btv2r888E8/ucFMjAMS+QM7mxPk0yBGjrHPPVHEv5/kMXIUBCz3Iqk9SjQ6HSg
+         4FAUcMg9014XKFU81Ctlf0/S52E/reilpsX7sCXM5xA+AnxA/i671sOODe2Q9rdhCLvu
+         t1Q7D8FC/cTfMJ5OTFrV5JfwXSH49SDLsfr3iWlLKqLcQKe0VXjI/c6rS+7EFnDdqnHP
+         JJklbIQ6EndTExUmoiaJIgr1Iw3crU9CJDvF85PIYsAgFPYb557MUFVQwzJyR1q9Xpho
+         aBUw==
+X-Gm-Message-State: AOJu0YxW5iZiB7ekMXtauCkalE6oQDGaFjAFydhDRnetprCh+EgabhjZ
+	lVIgT67zYQwnBKcbM88TG9f/HryEZJIBYiDn8lSRqZN637nu67arVXtBi4RgyZmVyeOme1iHX18
+	7EQ==
+X-Google-Smtp-Source: AGHT+IHMxO2jlJB8uB6BmR8LSjz1yPyBddEjKyuuWppjAVjkQ/oZiNhamNiA1F9pN/rnOeUmadjA6AOp/dM=
+X-Received: from pjbdj7.prod.google.com ([2002:a17:90a:d2c7:b0:2fc:2b96:2d4b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7cb:b0:2ee:cd83:8fe7
+ with SMTP id 98e67ed59e1d1-2fce875d6aemr22583311a91.35.1740417251898; Mon, 24
+ Feb 2025 09:14:11 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 24 Feb 2025 09:14:09 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250222014232.2301713-1-seanjc@google.com>
-In-Reply-To: <20250222014232.2301713-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 24 Feb 2025 17:57:38 +0100
-X-Gm-Features: AWEUYZkqvFCDavxVA4pRYu9m38ZLfRG6NWtlLzkMwKjWG0F_dMA0RYDZW7PpZ40
-Message-ID: <CABgObfaUkZxE7g8Qic3oMzHVu1PozT=XixnfNxXLrVdq_wXRww@mail.gmail.com>
-Subject: Re: [kvm-unit-tests GIT PULL] x86: Fixes, new tests, and more!
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250224171409.2348647-1-seanjc@google.com>
+Subject: [PATCH] KVM: VMX: Reject KVM_RUN if userspace forces emulation during
+ nested VM-Enter
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+ac0bc3a70282b4d586cc@syzkaller.appspotmail.com, 
+	James Houghton <jthoughton@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 22, 2025 at 2:42=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Please pull a pile of long-overdue changes.  Note, a few of the new tests
-> fail on AMD CPUs (LAM and  bus lock #DB).  I was hoping to get the KVM
-> fixes posted today, but I kept running into KUT failures (there's still
-> one more failure with apic-split when running on Turin with AVIC enabled,
-> but that one is pre-existing).
->
-> If someone wants a project, SEV-ES, SEV-SNP, and TDX support is still
-> awaiting review+merge.
->
-> The following changes since commit f77fb696cfd0e4a5562cdca189be557946bf52=
-2f:
->
->   arm: pmu: Actually use counter 0 in test_event_counter_config() (2025-0=
-2-04 14:09:20 +0100)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/kvm-unit-tests.git tags/kvm-x86-2025.02.21
->
-> for you to fetch changes up to 8d9218bb6b7ced9e8244250b8f0d8b2090c1042a:
->
->   x86/debug: Add a split-lock #AC / bus-lock #DB testcase (2025-02-21 17:=
-11:29 -0800)
+Extend KVM's restrictions on userspace forcing "emulation required" at odd
+times to cover stuffing invalid guest state while a nested run is pending.
+Clobbering guest state while KVM is in the middle of emulating VM-Enter is
+nonsensical, as it puts the vCPU into an architecturally impossible state,
+and will trip KVM's sanity check that guards against KVM bugs, e.g. helps
+detect missed VMX consistency checks.
 
-Pulled, thanks.
+  WARNING: CPU: 3 PID: 6336 at arch/x86/kvm/vmx/vmx.c:6480 __vmx_handle_exit arch/x86/kvm/vmx/vmx.c:6480 [inline]
+  WARNING: CPU: 3 PID: 6336 at arch/x86/kvm/vmx/vmx.c:6480 vmx_handle_exit+0x40f/0x1f70 arch/x86/kvm/vmx/vmx.c:6637
+  Modules linked in:
+  CPU: 3 UID: 0 PID: 6336 Comm: syz.0.73 Not tainted 6.13.0-rc1-syzkaller-00316-gb5f217084ab3 #0
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+  RIP: 0010:__vmx_handle_exit arch/x86/kvm/vmx/vmx.c:6480 [inline]
+  RIP: 0010:vmx_handle_exit+0x40f/0x1f70 arch/x86/kvm/vmx/vmx.c:6637
+   <TASK>
+   vcpu_enter_guest arch/x86/kvm/x86.c:11081 [inline]
+   vcpu_run+0x3047/0x4f50 arch/x86/kvm/x86.c:11242
+   kvm_arch_vcpu_ioctl_run+0x44a/0x1740 arch/x86/kvm/x86.c:11560
+   kvm_vcpu_ioctl+0x6ce/0x1520 virt/kvm/kvm_main.c:4340
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:906 [inline]
+   __se_sys_ioctl fs/ioctl.c:892 [inline]
+   __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Paolo
+Reported-by: syzbot+ac0bc3a70282b4d586cc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67598fb9.050a0220.17f54a.003b.GAE@google.com
+Debugged-by: James Houghton <jthoughton@google.com>
+Tested-by: James Houghton <jthoughton@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/vmx.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b71392989609..8081efb25d7e 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5875,11 +5875,35 @@ static int handle_nmi_window(struct kvm_vcpu *vcpu)
+ 	return 1;
+ }
+ 
+-static bool vmx_emulation_required_with_pending_exception(struct kvm_vcpu *vcpu)
++/*
++ * Returns true if emulation is required (due to the vCPU having invalid state
++ * with unsrestricted guest mode disabled) and KVM can't faithfully emulate the
++ * current vCPU state.
++ */
++static bool vmx_unhandleable_emulation_required(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+-	return vmx->emulation_required && !vmx->rmode.vm86_active &&
++	if (!vmx->emulation_required)
++		return false;
++
++	/*
++	 * It is architecturally impossible for emulation to be required when a
++	 * nested VM-Enter is pending completion, as VM-Enter will VM-Fail if
++	 * guest state is invalid and unrestricted guest is disabled, i.e. KVM
++	 * should synthesize VM-Fail instead emulation L2 code.  This path is
++	 * only reachable if userspace modifies L2 guest state after KVM has
++	 * performed the nested VM-Enter consistency checks.
++	 */
++	if (vmx->nested.nested_run_pending)
++		return true;
++
++	/*
++	 * KVM only supports emulating exceptions if the vCPU is in Real Mode.
++	 * If emulation is required, KVM can't perform a successful VM-Enter to
++	 * inject the exception.
++	 */
++	return !vmx->rmode.vm86_active &&
+ 	       (kvm_is_exception_pending(vcpu) || vcpu->arch.exception.injected);
+ }
+ 
+@@ -5902,7 +5926,7 @@ static int handle_invalid_guest_state(struct kvm_vcpu *vcpu)
+ 		if (!kvm_emulate_instruction(vcpu, 0))
+ 			return 0;
+ 
+-		if (vmx_emulation_required_with_pending_exception(vcpu)) {
++		if (vmx_unhandleable_emulation_required(vcpu)) {
+ 			kvm_prepare_emulation_failure_exit(vcpu);
+ 			return 0;
+ 		}
+@@ -5926,7 +5950,7 @@ static int handle_invalid_guest_state(struct kvm_vcpu *vcpu)
+ 
+ int vmx_vcpu_pre_run(struct kvm_vcpu *vcpu)
+ {
+-	if (vmx_emulation_required_with_pending_exception(vcpu)) {
++	if (vmx_unhandleable_emulation_required(vcpu)) {
+ 		kvm_prepare_emulation_failure_exit(vcpu);
+ 		return 0;
+ 	}
+
+base-commit: fed48e2967f402f561d80075a20c5c9e16866e53
+-- 
+2.48.1.601.g30ceb7b040-goog
 
