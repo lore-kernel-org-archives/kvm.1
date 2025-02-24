@@ -1,124 +1,114 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3E264FA9
-	for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 17:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978B6264A68
+	for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 17:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740417881; cv=none; b=Hs/3Hw42wJKL+aEXB5cr/DF2M9AmGyBoePcmKxH13YKP59Rec4t0OJdMHCPPYSclkngcyA0vHG5FK+F4RNhS0d37cz/XyrTdRmTiKjQTHzvlZwRGyD8qXDK3FNow1V199nclZM4+mroS8I3sSGcNsWN0E+LjjzqbsEnvrgAVSrE=
+	t=1740417889; cv=none; b=DVXSJH6l/cl65k6xpcWnF0hj1B7MN7T42vnTJLv85lpTih0KxoDbyGMf+ugpkbN3X78IKDVhbZLvfOpG8Mb6EFvjIoFnjMVI0ZtNIjBuFsSHto0+rzCFJlP6W0b6f1QyDhVGwkjDOhgeSZCO5+yPewhgK4mji6PB9DZBsavrGnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740417881; c=relaxed/simple;
-	bh=j8o5OPFQDdp5ed8gL+HidM6ulcc/XNNFd6l4na/fMKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LdZOQLcUNz5Poieku3MdqUuGL+59Z7tDOfcowEiNX7gkzQx+L+MQ9V80bwANof/j/oiVB7P+GwTGtwK5YOf0xL2JbWFTjiiH0kkB6lzELEmWdHb7mLAlwqwShBUcA+X0N6jIqltdGEwx1EqlWZfE/O8o/Z2EtoJym98Syg9Xqww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1sd66+l/; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1740417889; c=relaxed/simple;
+	bh=mxIkEFMa7Lh2eLDp32seXE4ThtxwLLswi19WgwUaLqE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=l/2S9CyrC30gQIugR64yc/J7ZJmX8OFT5btMVE5Pj1FPGpfChBYJptPI4zdUwWoDDbPViaTDvQmTJDqh6Gh0bMFb8BUrsyKU72l0gCuH+DQ6aF3gYnPa/zYbIaqePlnEkXFlMtBDFbfItlLHc87VULSbmmIYvbUjjI/PdVJIhp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rv0NWgtR; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1sd66+l/"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5ded4a3bf0bso17266a12.0
-        for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 09:24:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rv0NWgtR"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fbfa786a1aso15137331a91.3
+        for <kvm@vger.kernel.org>; Mon, 24 Feb 2025 09:24:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740417878; x=1741022678; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kJhGd7GaLmZRvvcyvB5aQANV1c8QojfLDrKr0YA9JN8=;
-        b=1sd66+l/Nt+gNZLkRwiEKHzKayIISadI0kpcqJ//z7R12mcMz6SIFYpgqRHquDssAn
-         AD2DiF1763bTVkjY2uF9llDpXGlYKIV3gvuLgbxpGEj6YV8V39B5P9ARan+rXPpOYBN8
-         BMIkAA73oa4obW4zfDPQasXz9ScChUaZiOf7SzeNaetHGz4Sbx49cm5ewOTDfIeU4Qto
-         agP1LOyU1OSKUYcXHDbYzxTNw1138ALG/gz80CgcNGi73ywACNpUrD130H2GIiFCG97I
-         UzVlESJ6I3CUUM4S5nPlojoqkYz3SovAU3MEz7PRil7I37rk8NR6GM1iKVDwUzCfy+iD
-         mF9g==
+        d=google.com; s=20230601; t=1740417887; x=1741022687; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1PdBfy1XyDty3YK21yWwN0BLsrQjynU6cB5mufmGWBQ=;
+        b=rv0NWgtR3Bn7xIUmy/XZoTTo5AnbCrMcMFYUkrEgIbq0UPpIhEmusmjuAoF9kirGdR
+         dVVCpQ/kvcC0VIwbEx+uFCWQH+XVVc4ggbMMTOxjp7Bzv1UyRcEK+PRFpv2KWaoqeKn+
+         I/2j3Hp4pahqr3PfUmJSBJB7KEsf2AGwXZBUl8+/aGk5pKRGsBDBc7pGs8YaVXRDi+ul
+         9bF1/LkiEA5YGSXHcb1BYBPIsy/irz4KTrNjWPc6eIbhhExZhRcuxAHlHcD2QrzTPWpJ
+         POEo+j5VZyDTKWk7Ire8y/iSunGqb5NNXzgv3l+Qwq0HGPgeR++h0bi93H+I913vy7sn
+         Rq5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740417878; x=1741022678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kJhGd7GaLmZRvvcyvB5aQANV1c8QojfLDrKr0YA9JN8=;
-        b=HJBOUvXTdkw1wzPBDHhwRc/DQE4JenVyQRsBmo30aX/yBe9LvFclkckVXAoM8z1Ytf
-         O1igd49hUmKIKjo/MsAxktd3LRu/C4m5ZkJ90nWLvevjl5YeIUdDrStxtkRfzMbRvW0p
-         2OE1pjET1kS8JtE/XcR+mYWntkpYNdEoYPJvxgWkubWPlKHAZ0t3vaWB06ngmYOfExog
-         hDov49q0FOpbnX9y2O2GN+/T0i44wpK9QiRV0t1NSP8NTzC0E8BCgYqyGx+HXJIeoGbp
-         Rp/FGf3G4MDIeFIkmgZnf3Gqouu2giBXuotpN4tiq8Ch4zCLT4L7KnN8lNla0TFUhvOP
-         RHYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCHzgAWzfF+IGOCNojTtF/dM54mOhIFtcf9YG08lhzvap1FViN7RKuvGGfmeAtH0XGqZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpcHZHbZrtvPxPHEB6sz+qLNWwRsjG6FBqWpyafT+UX/RYzb/W
-	YUy+KNU/vWWHXtUSeS/evHnJsoVz0qHUgw3AkDEm1jlORDLxVaF2i3qsTeiVJLdDr/aEngZGHfU
-	upMgd6F5pCEkJYBw8oJBTAFhksvstZV7wPtv0
-X-Gm-Gg: ASbGnctfshiPxnM0i8yBZYZ0sD7y+ueyyK1reez2e0Pir3nNPyDmJlEwTX7044ib3Dv
-	VVxszpSFqjG5GAkfEazOEfZOLSUH6r6gCt00tigXMTJxsooy7r0l2T2pVXXVjw25rdK6iISR+g2
-	fR8USRTf8=
-X-Google-Smtp-Source: AGHT+IHwP5mLIh5JF9uVa/AqGrOYMKVMNcBxn0db4r4HdhthzzRBzjToV2A2Ak6OXdT6On9YzvaQ/WzXS/ZwnTxH8XQ=
-X-Received: by 2002:aa7:c943:0:b0:5dc:59ca:8f3b with SMTP id
- 4fb4d7f45d1cf-5e407be4a8emr1151a12.3.1740417877968; Mon, 24 Feb 2025 09:24:37
- -0800 (PST)
+        d=1e100.net; s=20230601; t=1740417887; x=1741022687;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1PdBfy1XyDty3YK21yWwN0BLsrQjynU6cB5mufmGWBQ=;
+        b=OAF33Hiuq73fLZaa3c46f4cB0h0SQ8j//9xk4kGKNm5+xRfOv5/MfWyvukuS6BWU9x
+         0aSPxra+8pxQTH1CKynZoXupemjmA2E4mSYOlimlYrdN6NqngqBJsiR+QzDr/tHZrsDG
+         5GxK60/OkMib9ZMg9hgm7Yr3U/vsaoXJBXQZaad4Yiza0tD/RQRBeddUdxR1KV1zr9Ly
+         Vb80wyxey30fWbW/sMdcyD2djlTek6JFb1A4czP7ueWujUQk9Mk7dqvAXTXP8rO0Qilc
+         GV56ATv0HuGPkCnTrBocu7unJ+KHdBBNEgPrMlOrtXt+c8qQbmodAMD8w9HgxIAxYikF
+         5jbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvv2Kc2MOLSXFQ3SGck62IZdbDQhAZuu/ZOTPizA785iwpHkms6sUERC2fak1l5snyKQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2XTGPvZy9/TosvJiIU964zSUmIumaoWjAfDe2yjlNmkOSFugS
+	teQJxMezEAjTuhFAlq/m7l2CuNxgQxoh1JX5cXwLEK2PSaUDC3oUDteIjjct52GkjfqHBHL41gc
+	gnw==
+X-Google-Smtp-Source: AGHT+IEoEh7BeRbfHIon+pkvpiqOG7jp2epNSiEMS5ipwtulGA0I813r9iCbN2uXL5IqoDCP9T+gBT/Vp9E=
+X-Received: from pjbqx7.prod.google.com ([2002:a17:90b:3e47:b0:2d8:8340:8e46])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:da87:b0:2ea:b564:4b31
+ with SMTP id 98e67ed59e1d1-2fce78c7871mr21525247a91.19.1740417886854; Mon, 24
+ Feb 2025 09:24:46 -0800 (PST)
+Date: Mon, 24 Feb 2025 09:23:49 -0800
+In-Reply-To: <20240701073010.91417-1-binbin.wu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250224165442.2338294-1-seanjc@google.com> <20250224165442.2338294-2-seanjc@google.com>
-In-Reply-To: <20250224165442.2338294-2-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 24 Feb 2025 09:24:25 -0800
-X-Gm-Features: AWEUYZl-SRtwzgdVLwsp3huQVpOnyENCsoMsqbLaDuQc7dlYTDuJpWqYE0Iiv_0
-Message-ID: <CALMp9eRfU7b_4080ku-z2w+pQT0dZyenBb=9rM6m2kH-9-5WLA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] KVM: SVM: Set RFLAGS.IF=1 in C code, to get VMRUN
- out of the STI shadow
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Doug Covelli <doug.covelli@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20240701073010.91417-1-binbin.wu@linux.intel.com>
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <174041750505.2351818.7785906527856475366.b4-ty@google.com>
+Subject: Re: [kvm-unit-tests PATCH v7 0/5] x86: Add test cases for LAM
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Cc: pbonzini@redhat.com, chao.gao@intel.com, robert.hu@linux.intel.com, 
+	robert.hoo.linux@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 24, 2025 at 8:55=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Enable/disable local IRQs, i.e. set/clear RFLAGS.IF, in the common
-> svm_vcpu_enter_exit() just after/before guest_state_{enter,exit}_irqoff()
-> so that VMRUN is not executed in an STI shadow.  AMD CPUs have a quirk
-> (some would say "bug"), where the STI shadow bleeds into the guest's
-> intr_state field if a #VMEXIT occurs during injection of an event, i.e. i=
-f
-> the VMRUN doesn't complete before the subsequent #VMEXIT.
->
-> The spurious "interrupts masked" state is relatively benign, as it only
-> occurs during event injection and is transient.  Because KVM is already
-> injecting an event, the guest can't be in HLT, and if KVM is querying IRQ
-> blocking for injection, then KVM would need to force an immediate exit
-> anyways since injecting multiple events is impossible.
->
-> However, because KVM copies int_state verbatim from vmcb02 to vmcb12, the
-> spurious STI shadow is visible to L1 when running a nested VM, which can
-> trip sanity checks, e.g. in VMware's VMM.
->
-> Hoist the STI+CLI all the way to C code, as the aforementioned calls to
-> guest_state_{enter,exit}_irqoff() already inform lockdep that IRQs are
-> enabled/disabled, and taking a fault on VMRUN with RFLAGS.IF=3D1 is alrea=
-dy
-> possible.  I.e. if there's kernel code that is confused by running with
-> RFLAGS.IF=3D1, then it's already a problem.  In practice, since GIF=3D0 a=
-lso
-> blocks NMIs, the only change in exposure to non-KVM code (relative to
-> surrounding VMRUN with STI+CLI) is exception handling code, and except fo=
-r
-> the kvm_rebooting=3D1 case, all exception in the core VM-Enter/VM-Exit pa=
-th
-> are fatal.
->
-> Use the "raw" variants to enable/disable IRQs to avoid tracing in the
-> "no instrumentation" code; the guest state helpers also take care of
-> tracing IRQ state.
->
-> Oppurtunstically document why KVM needs to do STI in the first place.
->
-> Reported-by: Doug Covelli <doug.covelli@broadcom.com>
-> Closes: https://lore.kernel.org/all/CADH9ctBs1YPmE4aCfGPNBwA10cA8RuAk2gO7=
-542DjMZgs4uzJQ@mail.gmail.com
-> Fixes: f14eec0a3203 ("KVM: SVM: move more vmentry code to assembly")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Mon, 01 Jul 2024 15:30:05 +0800, Binbin Wu wrote:
+> Intel Linear-address masking (LAM) [1], modifies the checking that is applied to
+> *64-bit* linear addresses, allowing software to use of the untranslated address
+> bits for metadata.
+> 
+> The patch series add test cases for KVM LAM:
+> 
+> Patch 1 moves struct invpcid_desc to header file for new test cases.
+> Patch 2 makes change to allow setting of CR3 LAM bits in vmlaunch tests.
+> Patch 3~5 add test cases for LAM supervisor mode and user mode, including:
+> - For supervisor mode
+>   CR4.LAM_SUP toggle
+>   Memory/MMIO access with tagged pointer
+>   INVLPG
+>   INVPCID
+>   INVVPID (also used to cover VMX instruction VMExit path)
+> - For user mode
+>   CR3 LAM bits toggle
+>   Memory/MMIO access with tagged pointer
+> 
+> [...]
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Applied to kvm-x86 next (and now pulled by Paolo), except for patch 1, as a
+previous commit from a different series moved the INVPCID helpers to common code.
+
+Note, I deliberately dropped the "packed" addition.  The storage size may be
+implementation specific, but the layout is not.  If the compiler does something
+bizarre, e.g. allocates 32 instead of 16 bytes for the union, INVPCID will still
+work correctly as the CPU won't be aware that the compiler reserved 16 extra
+bytes.
+
+[1/5] x86: Move struct invpcid_desc to processor.h
+      (no commit info)
+[2/5] x86: Allow setting of CR3 LAM bits if LAM supported
+      https://github.com/kvm-x86/kvm-unit-tests/commit/0a6b8b7d601a
+[3/5] x86: Add test case for LAM_SUP
+      https://github.com/kvm-x86/kvm-unit-tests/commit/14520f8e9709
+[4/5] x86: Add test cases for LAM_{U48,U57}
+      https://github.com/kvm-x86/kvm-unit-tests/commit/0164d7595c85
+[5/5] x86: Add test case for INVVPID with LAM
+      https://github.com/kvm-x86/kvm-unit-tests/commit/a33a3ac8db56
+
+--
+https://github.com/kvm-x86/kvm-unit-tests/tree/next
