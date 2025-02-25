@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE8B20D510;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEE820DD74;
 	Tue, 25 Feb 2025 17:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740504587; cv=none; b=tUEOgCtmOWMNgs9ymgPSEmVGrnLM/9+1zRRr0zCGHQFV84jNo6Ys4saYxLxpgtZs6zSWM/ulKZRq5DdfhCU4gjoCt29ksltJGbaqLmuV5pdJahXMk9dgsSTwGEdDx2gxH7ANDM8VY72uzEyLncfUB7tketH4JjvP+YP5cDJ8C00=
+	t=1740504587; cv=none; b=QO/nyu/amtW6pZgWBWfSh3uEHE6myDw2zRJCcFS7G3ukh73a162KFtkfbTnMIDRPTpXp29mHui6hGyvzwFslhq/tj9JJCO1cjz38tjtrYAGJR5UIYwOdfvUPsH4x1HezGBMJexKLsKCrNjTyUUjx6YaEsXcrGY0ShNIPGiS8H4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740504587; c=relaxed/simple;
-	bh=e8LpeF2ClqwJ/XkkP8Drhi20EQrQ3/FY1EIo8+fWROY=;
+	bh=MG6V1iXKlEJKDBccezjHnT48DNrHj/X9BQoNBuoFRAs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o5UsKHBQzJeeCkBCxtUNFS9xJ/m5hcqcpYpEASxm2BVSqH5uKP7fAsQVE60qxDfpuA3+Wy8o7lRHlVaEdVVHR7NzSSUCdxRVANyOZ6maFkqN67id17yDgxexYwDcCtaPDzPd2zVIhjZPhaKOgl8gVED29b2c+CxIFllUAneTWyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rAlW4o2r; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=FNoDvTngzYdRxkuKjQAhpumIZgSlugLssSSiNBxtngKyKXfhOqB6zis66oakNwW0RFFspAFZu1fDvflqETchvWR4uV/rRqK0RTOCkRaMrCVq4IR6waaYZv8mcfMgSNp+a1VfD9IJ7sMdmMBTbD6WRDi1vaqgAdGlkscwSN5aaro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBvWXxdO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rAlW4o2r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA41C4CEDD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBvWXxdO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4867BC4CEE2;
 	Tue, 25 Feb 2025 17:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740504587;
-	bh=e8LpeF2ClqwJ/XkkP8Drhi20EQrQ3/FY1EIo8+fWROY=;
+	bh=MG6V1iXKlEJKDBccezjHnT48DNrHj/X9BQoNBuoFRAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAlW4o2raaxriI+YB9CwkVCitPQrYeKwufttCbnCpIrX6/v/lpIrsqobrp3/2LPCP
-	 tZUhTOo7Vmfhgz5+1vMdZ2Qk6+ErQdI5E36M+9FDG67B4w6yhqG3hu25xMldbnMJam
-	 iKzF/DI/Ddvs1HQCD6Ypq7kEw9g8OrPfJXOICum8O9O0bio+Nc5e1k0APt4teUEcn5
-	 g45S5Y6eQ/29qrrqwxdjqStDczxByz5WgRRyB+t4aSlJqp1pI3Uimm9A331cUz6/4S
-	 o5OuQBZ0QHm2nbOGEkmNY/yGReTlalyNEved9vU5uZClDNswXTFvTd2ck8axaqnFWu
-	 5ox7cbA4i2aKA==
+	b=nBvWXxdOJDKQ1dXAxxvxEqIZbXBSCBYBty/3ModsxG/zPZBzBHLPk03TXEJY486n1
+	 HnDie+KHWqqDilayyBzvbkyOYMWaboEO0CugOpT7NTpsDDhOajGSRpLOujX8XYPKgN
+	 yYX2GvI2Z2jAGd9kTwo6ZXns2GRC/aZJIHCWvwkICgiAW1z2Ll5qREKzmYG1CxpXj0
+	 6yjhAoJLaLNo/oJ9FY5duF76+oijL7zedRUhvmLwt8axF1BI+GODh+SQ9m87hIXV4X
+	 /qrBXTuLtJrZyOBzeBZFT5YsD9O6QrmsAZT9UOw8Wl9wwpSIElQYRF3q26mUxGKGqu
+	 Czi9vNKDqAK6w==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tmykb-007rKs-4t;
+	id 1tmykb-007rKs-IJ;
 	Tue, 25 Feb 2025 17:29:45 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Andre Przywara <andre.przywara@arm.com>,
 	Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v4 07/16] KVM: arm64: nv: Sanitise ICH_HCR_EL2 accesses
-Date: Tue, 25 Feb 2025 17:29:21 +0000
-Message-Id: <20250225172930.1850838-8-maz@kernel.org>
+Subject: [PATCH v4 09/16] KVM: arm64: nv: Handle L2->L1 transition on interrupt injection
+Date: Tue, 25 Feb 2025 17:29:23 +0000
+Message-Id: <20250225172930.1850838-10-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250225172930.1850838-1-maz@kernel.org>
 References: <20250225172930.1850838-1-maz@kernel.org>
@@ -60,37 +60,113 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-As ICH_HCR_EL2 is a VNCR accessor when runnintg NV, add some
-sanitising to what gets written. Crucially, mark TDIR as RES0
-if the HW doesn't support it (unlikely, but hey...), as well
-as anything GICv4 related, since we only expose a GICv3 to the
-uest.
+An interrupt being delivered to L1 while running L2 must result
+in the correct exception being delivered to L1.
+
+This means that if, on entry to L2, we found ourselves with pending
+interrupts in the L1 distributor, we need to take immediate action.
+This is done by posting a request which will prevent the entry in
+L2, and deliver an IRQ exception to L1, forcing the switch.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/nested.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/include/asm/kvm_host.h | 17 +++++++++--------
+ arch/arm64/kvm/arm.c              |  5 +++++
+ arch/arm64/kvm/nested.c           |  4 ++++
+ arch/arm64/kvm/vgic/vgic.c        | 23 +++++++++++++++++++++++
+ 4 files changed, 41 insertions(+), 8 deletions(-)
 
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 7e0dc6b4cb99e..86519a73971ed 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -44,14 +44,15 @@
+ 
+ #define KVM_REQ_SLEEP \
+ 	KVM_ARCH_REQ_FLAGS(0, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+-#define KVM_REQ_IRQ_PENDING	KVM_ARCH_REQ(1)
+-#define KVM_REQ_VCPU_RESET	KVM_ARCH_REQ(2)
+-#define KVM_REQ_RECORD_STEAL	KVM_ARCH_REQ(3)
+-#define KVM_REQ_RELOAD_GICv4	KVM_ARCH_REQ(4)
+-#define KVM_REQ_RELOAD_PMU	KVM_ARCH_REQ(5)
+-#define KVM_REQ_SUSPEND		KVM_ARCH_REQ(6)
+-#define KVM_REQ_RESYNC_PMU_EL0	KVM_ARCH_REQ(7)
+-#define KVM_REQ_NESTED_S2_UNMAP	KVM_ARCH_REQ(8)
++#define KVM_REQ_IRQ_PENDING		KVM_ARCH_REQ(1)
++#define KVM_REQ_VCPU_RESET		KVM_ARCH_REQ(2)
++#define KVM_REQ_RECORD_STEAL		KVM_ARCH_REQ(3)
++#define KVM_REQ_RELOAD_GICv4		KVM_ARCH_REQ(4)
++#define KVM_REQ_RELOAD_PMU		KVM_ARCH_REQ(5)
++#define KVM_REQ_SUSPEND			KVM_ARCH_REQ(6)
++#define KVM_REQ_RESYNC_PMU_EL0		KVM_ARCH_REQ(7)
++#define KVM_REQ_NESTED_S2_UNMAP		KVM_ARCH_REQ(8)
++#define KVM_REQ_GUEST_HYP_IRQ_PENDING	KVM_ARCH_REQ(9)
+ 
+ #define KVM_DIRTY_LOG_MANUAL_CAPS   (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
+ 				     KVM_DIRTY_LOG_INITIALLY_SET)
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index f678a77438cc0..697e8c6596a0f 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1144,6 +1144,11 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 		 * preserved on VMID roll-over if the task was preempted,
+ 		 * making a thread's VMID inactive. So we need to call
+ 		 * kvm_arm_vmid_update() in non-premptible context.
++		 *
++		 * Note that this must happen after the check_vcpu_request()
++		 * call to pick the correct s2_mmu structure, as a pending
++		 * nested exception (IRQ, for example) can trigger a change
++		 * in translation regime.
+ 		 */
+ 		if (kvm_arm_vmid_update(&vcpu->arch.hw_mmu->vmid) &&
+ 		    has_vhe())
 diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 0c9387d2f5070..7c8f39070a503 100644
+index 7c8f39070a503..722e61e410e2e 100644
 --- a/arch/arm64/kvm/nested.c
 +++ b/arch/arm64/kvm/nested.c
-@@ -1290,6 +1290,15 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
- 		res0 |= GENMASK(11, 8);
- 	set_sysreg_masks(kvm, CNTHCTL_EL2, res0, res1);
- 
-+	/* ICH_HCR_EL2 */
-+	res0 = ICH_HCR_EL2_RES0;
-+	res1 = ICH_HCR_EL2_RES1;
-+	if (!(kvm_vgic_global_state.ich_vtr_el2 & ICH_VTR_EL2_TDS))
-+		res0 |= ICH_HCR_EL2_TDIR;
-+	/* No GICv4 is presented to the guest */
-+	res0 |= ICH_HCR_EL2_DVIM | ICH_HCR_EL2_vSGIEOICount;
-+	set_sysreg_masks(kvm, ICH_HCR_EL2, res0, res1);
+@@ -1318,4 +1318,8 @@ void check_nested_vcpu_requests(struct kvm_vcpu *vcpu)
+ 		}
+ 		write_unlock(&vcpu->kvm->mmu_lock);
+ 	}
 +
- out:
- 	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
- 		(void)__vcpu_sys_reg(vcpu, sr);
++	/* Must be last, as may switch context! */
++	if (kvm_check_request(KVM_REQ_GUEST_HYP_IRQ_PENDING, vcpu))
++		kvm_inject_nested_irq(vcpu);
+ }
+diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
+index 324c547e1b4d8..9734a71b85611 100644
+--- a/arch/arm64/kvm/vgic/vgic.c
++++ b/arch/arm64/kvm/vgic/vgic.c
+@@ -906,6 +906,29 @@ static inline void vgic_restore_state(struct kvm_vcpu *vcpu)
+ /* Flush our emulation state into the GIC hardware before entering the guest. */
+ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
+ {
++	/*
++	 * If in a nested state, we must return early. Two possibilities:
++	 *
++	 * - If we have any pending IRQ for the guest and the guest
++	 *   expects IRQs to be handled in its virtual EL2 mode (the
++	 *   virtual IMO bit is set) and it is not already running in
++	 *   virtual EL2 mode, then we have to emulate an IRQ
++	 *   exception to virtual EL2.
++	 *
++	 *   We do that by placing a request to ourselves which will
++	 *   abort the entry procedure and inject the exception at the
++	 *   beginning of the run loop.
++	 *
++	 * - Otherwise, do exactly *NOTHING*. The guest state is
++	 *   already loaded, and we can carry on with running it.
++	 */
++	if (vgic_state_is_nested(vcpu)) {
++		if (kvm_vgic_vcpu_pending_irq(vcpu))
++			kvm_make_request(KVM_REQ_GUEST_HYP_IRQ_PENDING, vcpu);
++
++		return;
++	}
++
+ 	/*
+ 	 * If there are no virtual interrupts active or pending for this
+ 	 * VCPU, then there is no work to do and we can bail out without
 -- 
 2.39.2
 
