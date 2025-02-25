@@ -1,60 +1,71 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4316267AE1;
-	Tue, 25 Feb 2025 12:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDF9268FE9
+	for <kvm@vger.kernel.org>; Tue, 25 Feb 2025 13:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740488189; cv=none; b=Ayq02xfWtmfhCF/Z2SfKW4o942QwUSpxunWLVqGkQufEH/c7CDekM6ztCNw79cibGLYlu2T4VT/dDMAWF97B64lNE97I2BQ/pwFMhkikmBwkoZGlBCjEgpEDd64lWGXQiS4RKUTkDNB0HFGqgKMM7xPi9DtGB9FrTiG5IvctLdQ=
+	t=1740488689; cv=none; b=awDiVOI8BQXEr83vwR2Hr1DpRQFXe6z0rFT291mHrHXStJK0tVYRdxoWATeku8lwv5LaBwvn7zothhUQA53YO8I1HhkNEW1etCWPdDUbZ51+cJH8RIVfc1fIPK6JFOF3wdMsDflXntZ+cwUk7rknv7C4tvc7gPqCRCX+DVWIYGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740488189; c=relaxed/simple;
-	bh=0oT5shLnbtbhNDJ7D3AgCbSwDUFlzk9PgtUkpEfpxPE=;
+	s=arc-20240116; t=1740488689; c=relaxed/simple;
+	bh=PoqjAs48+8ee6d8AS/JvwD5Eq5M+o52O3KMWUPpMR28=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d+GcWjTO5XKFgMbG5HUkoxoh0QgLg1TdnnFHvuKJUzXVEUooecDWvUT9o0hUHvxvTcdUbXHtxfi3CTRjOgRhrwLDUnx+k6mJf1uY96joJF+A9G9nBgiEfQgbTQ4QasA1iX9tAyO5nsYgCJYEz0tCRVDcv/ieKnH+bVuGvRwX5Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=je5JKm3C; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=RkWS9jAU/6mD5KE+IqZ2pgn8S8Mh5BIgY3spl4iAsydDdf2GWI0Lj+5RQLYDsO/pc4m1GBK68V+mSs4YGlaYBh4tDQQl2j2BkC5inXnrmwZaothSWXkINskpr+zxtubd1oU1xchmrkKJCpoaQKDeiWDQkqbdP8lzMEEINOLibqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GaTud2c5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="je5JKm3C"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51PCY3Vn011208;
-	Tue, 25 Feb 2025 12:56:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=piYoMX
-	DdaY+TU9E18vFRAcZoLdOWB0ePhiobWmf10uk=; b=je5JKm3Cvt4SNBH4kt6GCP
-	BCergyn9VoVVqo5edSKmjdIWLh5J9rIrPSSMcAKuo8pM2PGrhiIARIKNEBcIXU5z
-	qBw643xPXKH8jxVRBuCnzUJ/KyOXArBHZY024u0iXMYbTIqpTeWmA9wFEAa5zQ2H
-	9dX1EZvwrI5Py/j6YOx9gjXu0rUVGxvPRw85jXI1AYaCWI/1YTi7M3HEmrb15rrI
-	kFHsIyhD99qQIeErhJnINUqHVPFTX6qijSLqy8a+ivlII1Z5KWIJhnFt2NvVbWgg
-	fzxoL/y+xeYesfNYYNKI4YxZqbtIt5Auy4TPoQp2SJFUENYZaFuxSOnU1FXCQa/A
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4513x9twsy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Feb 2025 12:56:14 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51PBRO59002545;
-	Tue, 25 Feb 2025 12:56:13 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yu4jmn38-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Feb 2025 12:56:13 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51PCuA8i11338002
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Feb 2025 12:56:10 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3CBB020040;
-	Tue, 25 Feb 2025 12:56:10 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C6BC2004B;
-	Tue, 25 Feb 2025 12:56:10 +0000 (GMT)
-Received: from [9.152.224.140] (unknown [9.152.224.140])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Feb 2025 12:56:09 +0000 (GMT)
-Message-ID: <5ac2dda6-a9ac-449a-bb7c-0f9eb90614f5@linux.ibm.com>
-Date: Tue, 25 Feb 2025 13:56:09 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GaTud2c5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740488686;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NEjZiA0tpgBSlB/iySqtUo2D0VDFNUAgdeGczXOHVDE=;
+	b=GaTud2c5HIHMmftprbtdT0xJ1fLU8YLuxXPXiJ8M2CRN67uJmbnS71Dry9JNNpBuaG7cgF
+	+Y10xwcG+sEt9MOjD44Rs12RQcfGcFAgmMjnsuOmJg2K6ohhJO3hyFiLCP5DwoNMGUqxSK
+	RVpFYfMW81yJSF7ttDSWbS5eb4TSsK4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-Q_arqqpBP9Oii06nqHkcSQ-1; Tue, 25 Feb 2025 08:04:45 -0500
+X-MC-Unique: Q_arqqpBP9Oii06nqHkcSQ-1
+X-Mimecast-MFC-AGG-ID: Q_arqqpBP9Oii06nqHkcSQ_1740488684
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38f51a3a833so2210179f8f.2
+        for <kvm@vger.kernel.org>; Tue, 25 Feb 2025 05:04:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740488684; x=1741093484;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NEjZiA0tpgBSlB/iySqtUo2D0VDFNUAgdeGczXOHVDE=;
+        b=ehEr8+tlR+RgNWF8eC+A6xiR+kE7Vt4DYke6PgcYDfEOtp+hVnjy5mlPw7ojm/UGKa
+         TxOniINaavEKxVr7V8eO0UfJ2OeHYUIRry8Q6OgeiFjESCh/i9OGv9uR4WjCaPWHKx3X
+         ov60IudEioZMiTOUUxlfvUH98fFA19qTdWW+MWIDxJUls4XwM8/c44ZXl5myDD1KOfiK
+         s0ZC42L6upjRUI+BeiakKypSw8ensaDNw1X2l+6XpJwg2kJ9MDjpZTOnW/W/jl+2h2ns
+         CjW+X1JFjmDido/wmIIlHPSwZPf+1IW08d9dc2FDBAgCem04B3GZFrCucZd/jQ2DvaGc
+         QG2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUm7I1x0dbQQZ6qMzQwx5NnrIuMrox24RNYAlrTFGPWbSZVfKoSUeXXmUFGAwojHJHqeUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7wgH7ktJq0F3zHDZXDe4nDwJ76mtZW4hkxdL93W6rN6+XT8Iz
+	DklNe5fwTLq7IEm9ajkXbEbuUX1ZbY//xjvkVVtRLCttPwF01IAU769rq7WCZhaKKrh6KckHmI8
+	lQ0/9yOmqp541f0K5HtMi/AjfHVptTmgXUTwGyMQ4FKHbV5MV3A==
+X-Gm-Gg: ASbGncsORxQuL6NQHdYyAENXsPRjJuuGGdqXNOU7a4avhKKFBQ50cgFiQG64aN1jBbS
+	SN5+RUl+HUWYwVA2BiVLLQ8qdA3As7grdmrQ4lOi3APHWlW5R6iGqxGXRAmCT57iaqPzwWQM313
+	E3+K7sRaBtXq41milz51h75Tpmhl9/3VT6zpdBvBBT2SXoR4NYUEWk6aSaa7pHhCsAHBPKJu31o
+	6SJN9ghSWAp6EQBvk/PIIlIY/XTC9N+AEd678Bgh4xHP1WbEBQzo2hRpB5igrwEiL5vlq4kuhSn
+	5mhsnI6evSGAzLz5SR8wFirH+gl1P1Z7RN1R1EfciGU=
+X-Received: by 2002:a05:6000:1a87:b0:38f:3344:361e with SMTP id ffacd0b85a97d-38f7079ec17mr15303948f8f.23.1740488684039;
+        Tue, 25 Feb 2025 05:04:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzXYHaIMYF6GMizRa4fNCOG8+4IpljILlUq8KxSNpA12i9exQXViaMTl+bM5c0ACpAig5+BQ==
+X-Received: by 2002:a05:6000:1a87:b0:38f:3344:361e with SMTP id ffacd0b85a97d-38f7079ec17mr15303910f8f.23.1740488683687;
+        Tue, 25 Feb 2025 05:04:43 -0800 (PST)
+Received: from [192.168.88.253] (146-241-59-53.dyn.eolo.it. [146.241.59.53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab37403cfsm15578055e9.1.2025.02.25.05.04.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Feb 2025 05:04:43 -0800 (PST)
+Message-ID: <a814c41a-40f9-4632-a5bb-ad3da5911fb6@redhat.com>
+Date: Tue, 25 Feb 2025 14:04:40 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,162 +73,100 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] KVM: s390: Don't use %pK through debug printing
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20250217-restricted-pointers-s390-v1-0-0e4ace75d8aa@linutronix.de>
- <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
-From: Michael Mueller <mimu@linux.ibm.com>
-In-Reply-To: <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _mwJdslvPc5QLXsfDPi8-Q7J-DAJwtjM
-X-Proofpoint-GUID: _mwJdslvPc5QLXsfDPi8-Q7J-DAJwtjM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-25_04,2025-02-25_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- suspectscore=0 mlxscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- mlxlogscore=944 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2502250088
+Subject: Re: [PATCH net-next v5 3/9] net: devmem: Implement TX path
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Jeroen de Borst <jeroendb@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn
+ <willemb@google.com>, David Ahern <dsahern@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, sdf@fomichev.me,
+ asml.silence@gmail.com, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
+ <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20250222191517.743530-1-almasrymina@google.com>
+ <20250222191517.743530-4-almasrymina@google.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250222191517.743530-4-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 2/22/25 8:15 PM, Mina Almasry wrote:
+[...]
+> @@ -119,6 +122,13 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+>  	unsigned long xa_idx;
+>  	unsigned int rxq_idx;
+>  
+> +	xa_erase(&net_devmem_dmabuf_bindings, binding->id);
+> +
+> +	/* Ensure no tx net_devmem_lookup_dmabuf() are in flight after the
+> +	 * erase.
+> +	 */
+> +	synchronize_net();
 
+Is the above statement always true? can the dmabuf being stuck in some
+qdisc? or even some local socket due to redirect?
 
-On 17.02.25 14:13, Thomas Weißschuh wrote:
-> Restricted pointers ("%pK") are only meant to be used when directly
-> printing to a file from task context.
-> Otherwise it can unintentionally expose security sensitive,
-> raw pointer values.
-> 
-> Use regular pointer formatting instead.
-> 
-> Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> @@ -252,13 +261,23 @@ net_devmem_bind_dmabuf(struct net_device *dev, unsigned int dmabuf_fd,
+>  	 * binding can be much more flexible than that. We may be able to
+>  	 * allocate MTU sized chunks here. Leave that for future work...
+>  	 */
+> -	binding->chunk_pool =
+> -		gen_pool_create(PAGE_SHIFT, dev_to_node(&dev->dev));
+> +	binding->chunk_pool = gen_pool_create(PAGE_SHIFT,
+> +					      dev_to_node(&dev->dev));
+>  	if (!binding->chunk_pool) {
+>  		err = -ENOMEM;
+>  		goto err_unmap;
+>  	}
+>  
+> +	if (direction == DMA_TO_DEVICE) {
+> +		binding->tx_vec = kvmalloc_array(dmabuf->size / PAGE_SIZE,
+> +						 sizeof(struct net_iov *),
+> +						 GFP_KERNEL);
+> +		if (!binding->tx_vec) {
+> +			err = -ENOMEM;
+> +			goto err_free_chunks;
 
+Possibly my comment on v3 has been lost:
 
-I sucessfully ran our test suite after applying this patch.
+"""
+It looks like the later error paths (in the for_each_sgtable_dma_sg()
+loop) could happen even for 'direction == DMA_TO_DEVICE', so I guess an
+additional error label is needed to clean tx_vec on such paths.
+"""
 
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Tested-by: Michael Mueller <mimu@linux.ibm.com>
+[...]
+> @@ -1071,6 +1072,16 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+>  
+>  	flags = msg->msg_flags;
+>  
+> +	sockc = (struct sockcm_cookie){ .tsflags = READ_ONCE(sk->sk_tsflags),
+> +					.dmabuf_id = 0 };
+> +	if (msg->msg_controllen) {
+> +		err = sock_cmsg_send(sk, msg, &sockc);
+> +		if (unlikely(err)) {
+> +			err = -EINVAL;
+> +			goto out_err;
+> +		}
+> +	}
 
-> ---
->   arch/s390/kvm/intercept.c |  2 +-
->   arch/s390/kvm/interrupt.c |  8 ++++----
->   arch/s390/kvm/kvm-s390.c  | 10 +++++-----
->   3 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-> index 610dd44a948b22945b0a35b760ded64bd44ef7cb..a06a000f196ce0066bfd21b0d914492a1796819a 100644
-> --- a/arch/s390/kvm/intercept.c
-> +++ b/arch/s390/kvm/intercept.c
-> @@ -95,7 +95,7 @@ static int handle_validity(struct kvm_vcpu *vcpu)
->   
->   	vcpu->stat.exit_validity++;
->   	trace_kvm_s390_intercept_validity(vcpu, viwhy);
-> -	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%pK)", viwhy,
-> +	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%p)", viwhy,
->   		  current->pid, vcpu->kvm);
->   
->   	/* do not warn on invalid runtime instrumentation mode */
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 07ff0e10cb7f5c0294bf85f1d65d1eb124698705..c0558f05400732b2fe6911c1ef58f86b62364770 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -3161,7 +3161,7 @@ void kvm_s390_gisa_clear(struct kvm *kvm)
->   	if (!gi->origin)
->   		return;
->   	gisa_clear_ipm(gi->origin);
-> -	VM_EVENT(kvm, 3, "gisa 0x%pK cleared", gi->origin);
-> +	VM_EVENT(kvm, 3, "gisa 0x%p cleared", gi->origin);
->   }
->   
->   void kvm_s390_gisa_init(struct kvm *kvm)
-> @@ -3178,7 +3178,7 @@ void kvm_s390_gisa_init(struct kvm *kvm)
->   	gi->timer.function = gisa_vcpu_kicker;
->   	memset(gi->origin, 0, sizeof(struct kvm_s390_gisa));
->   	gi->origin->next_alert = (u32)virt_to_phys(gi->origin);
-> -	VM_EVENT(kvm, 3, "gisa 0x%pK initialized", gi->origin);
-> +	VM_EVENT(kvm, 3, "gisa 0x%p initialized", gi->origin);
->   }
->   
->   void kvm_s390_gisa_enable(struct kvm *kvm)
-> @@ -3219,7 +3219,7 @@ void kvm_s390_gisa_destroy(struct kvm *kvm)
->   		process_gib_alert_list();
->   	hrtimer_cancel(&gi->timer);
->   	gi->origin = NULL;
-> -	VM_EVENT(kvm, 3, "gisa 0x%pK destroyed", gisa);
-> +	VM_EVENT(kvm, 3, "gisa 0x%p destroyed", gisa);
->   }
->   
->   void kvm_s390_gisa_disable(struct kvm *kvm)
-> @@ -3468,7 +3468,7 @@ int __init kvm_s390_gib_init(u8 nisc)
->   		}
->   	}
->   
-> -	KVM_EVENT(3, "gib 0x%pK (nisc=%d) initialized", gib, gib->nisc);
-> +	KVM_EVENT(3, "gib 0x%p (nisc=%d) initialized", gib, gib->nisc);
->   	goto out;
->   
->   out_unreg_gal:
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index ebecb96bacce7d75563bd3a130a7cc31869dc254..9e427ba3aed42edf617d6625b5bcaba8f43dc464 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -1020,7 +1020,7 @@ static int kvm_s390_set_mem_control(struct kvm *kvm, struct kvm_device_attr *att
->   		}
->   		mutex_unlock(&kvm->lock);
->   		VM_EVENT(kvm, 3, "SET: max guest address: %lu", new_limit);
-> -		VM_EVENT(kvm, 3, "New guest asce: 0x%pK",
-> +		VM_EVENT(kvm, 3, "New guest asce: 0x%p",
->   			 (void *) kvm->arch.gmap->asce);
->   		break;
->   	}
-> @@ -3464,7 +3464,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->   		kvm_s390_gisa_init(kvm);
->   	INIT_LIST_HEAD(&kvm->arch.pv.need_cleanup);
->   	kvm->arch.pv.set_aside = NULL;
-> -	KVM_EVENT(3, "vm 0x%pK created by pid %u", kvm, current->pid);
-> +	KVM_EVENT(3, "vm 0x%p created by pid %u", kvm, current->pid);
->   
->   	return 0;
->   out_err:
-> @@ -3527,7 +3527,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->   	kvm_s390_destroy_adapters(kvm);
->   	kvm_s390_clear_float_irqs(kvm);
->   	kvm_s390_vsie_destroy(kvm);
-> -	KVM_EVENT(3, "vm 0x%pK destroyed", kvm);
-> +	KVM_EVENT(3, "vm 0x%p destroyed", kvm);
->   }
->   
->   /* Section: vcpu related */
-> @@ -3648,7 +3648,7 @@ static int sca_switch_to_extended(struct kvm *kvm)
->   
->   	free_page((unsigned long)old_sca);
->   
-> -	VM_EVENT(kvm, 2, "Switched to ESCA (0x%pK -> 0x%pK)",
-> +	VM_EVENT(kvm, 2, "Switched to ESCA (0x%p -> 0x%p)",
->   		 old_sca, kvm->arch.sca);
->   	return 0;
->   }
-> @@ -4025,7 +4025,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->   			goto out_free_sie_block;
->   	}
->   
-> -	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%pK, sie block at 0x%pK",
-> +	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
->   		 vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
->   	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
->   
-> 
+I'm unsure how much that would be a problem, but it looks like that
+unblocking sendmsg(MSG_FASTOPEN) with bad msg argument will start to
+fail on top of this patch, while they should be successful (EINPROGRESS)
+before.
+
+/P
 
