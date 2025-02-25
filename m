@@ -1,73 +1,86 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE921C8600
-	for <kvm@vger.kernel.org>; Tue, 25 Feb 2025 13:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28842EB1D
+	for <kvm@vger.kernel.org>; Tue, 25 Feb 2025 13:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740490666; cv=none; b=ubDaJgwVmZRmq6SC2DlXhOKmPKUGslmUBmar/SOpVDsk/Uz/tsOpL7J6xsJIO/D/RMVIb55dcDlSip7PCuhM+UT6dIruL8pyg1eCF9ELhWAbSfopNUVFK4x1Wrdj/Qg33JsyAGmnfToNQyqxWBsgzHy2Jl4v2l/CyXblFycXfsk=
+	t=1740491544; cv=none; b=RBr33zSwkRZ8KlhWE5zbc3pI1Eso8W//JUH9ZwAnpfDKrGHAi/QdnUMK1hs+8YkiTYgVQ2PsatSMF97VC9g0UGzR0tL0WHxz/DI9Eec77w2/YiqbjFp5YIAwRXVSjddaEZ6PtJBmYMaeFwT8X0ZX592t0b6+J6/kATR6k11z9rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740490666; c=relaxed/simple;
-	bh=wvvJXRE0O84VRA3zOoy6Pc4KAcKH5gEPxyv2TGshKEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwjvW0NS9NwgHbr8levgpDIrwh3/N4eUV31RwauFYYa1sU+Hz1if/PTJV9r5qb+kDylOEgsQ7KauQ1N5Te5xN1Wv40i6go02jTJNqfCRhPcASA5hTn5a3/O8nt0uD/gO+jUsqox8awrX3LhM2v9r8eNacEpzd3+H2KaUgin5Ofo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wH+xhjsR; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740491544; c=relaxed/simple;
+	bh=JdtgCdRzgUGa5LvjtGaNVDWHm+xAg2yTsDZXi1K2ml4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQKzEEVqFLJj0E6gZ18O/8Lausy5VzGuirffeVym79JCS9Tk4Y/iQcar80nbrfCrGBQ+/zfWYlpW9xe//yl6Ht9mWJ8ktaW8OSUCJ9s/CtZ/MPTGTcykYlpMax/iAKBsR53q5Wncvu6iArMB3D1r7gchX0Nvq9zbf+PexcQK91w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sGsyAtdD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wH+xhjsR"
-Date: Tue, 25 Feb 2025 14:37:37 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740490661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ixqOC12lcUbO8F8o140WgK+Y55hHmyICfLfrpYnuPM=;
-	b=wH+xhjsRmvhrhpxvrfoccwgz9vk4ycI7xJw3NIyc5a0Cnhjg34RUCnfdqBfFCOGenODEy4
-	mNmIL02lvg+cKWngs6CywduekBe+7s9leXhvNgdLmd/IyG5MmwUslcfu2ORydBCklhQp32
-	SvBxreXHRruBA0wHnBtaIVkApGPpBH8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org
-Subject: Re: [RFC kvm-unit-tests PATCH] lib: Use __ASSEMBLER__ instead of
- __ASSEMBLY__
-Message-ID: <20250225-f474d056a12e6b23cc05f9e7@orel>
-References: <20250222014526.2302653-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sGsyAtdD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B95C4CEDD;
+	Tue, 25 Feb 2025 13:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740491544;
+	bh=JdtgCdRzgUGa5LvjtGaNVDWHm+xAg2yTsDZXi1K2ml4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sGsyAtdDag9O0yA3XIbhSyGc7hHpxqDgMOoa0K5LyTQo4O8w1qXEuvAKsQFLM0hRR
+	 1M0cbjAKHMzY+VcAXWJWUDmh0aT1vQNSPOrGKDpCPOrxTyRVZ3YL18/5eIYoeESJaq
+	 LRu9PPa7HpfnkBaUCYGeuEIo3GEf1jZA8NtoVcft1Jr9VCajQ2I3JvMsOI4Ky7R1Fv
+	 5YKO6K+otRseJ9WHDsiLcffO6EKbQ+XgHY28k+mVNF0QLgpHfs9D5NZ/B1VMg/lM1I
+	 8RppIbn+77PpvWNU4h940jW8DVmvuVhFka2MO1CIv1oBzmGfqDlvRTe3Lk9wX5/jkz
+	 uUm1GhfQ/xt1Q==
+From: "Naveen N Rao (AMD)" <naveen@kernel.org>
+To: <kvm@vger.kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: [RFC kvm-unit-tests PATCH 0/4] x86/apic: SVM AVIC tests and some cleanups
+Date: Tue, 25 Feb 2025 16:10:48 +0530
+Message-ID: <cover.1740479886.git.naveen@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250222014526.2302653-1-seanjc@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 21, 2025 at 05:45:26PM -0800, Sean Christopherson wrote:
-> Convert all non-x86 #ifdefs from __ASSEMBLY__ to __ASSEMBLER__, and remove
-> all manual __ASSEMBLY__ #defines.  __ASSEMBLY_ was inherited blindly from
-> the Linux kernel, and must be manually defined, e.g. through build rules
-> or with the aforementioned explicit #defines in assembly code.
-> 
-> __ASSEMBLER__ on the other hand is automatically defined by the compiler
-> when preprocessing assembly, i.e. doesn't require manually #defines for
-> the code to function correctly.
-> 
-> Ignore x86, as x86 doesn't actually rely on __ASSEMBLY__ at the moment,
-> and is undergoing a parallel cleanup.
+The first patch is a small cleanup. The next two patches update tests to 
+disable PIT so that SVM AVIC can be exercized. The last patch adds a 
+test for x1apic-split.
 
-With ignoring x86, I see just one other instance of ASSEMBLY, which is in
-a comment and is mispelled to only have the leading underscores
+The last patch causes aliased apic_id ipi test to fail with older qemu 
+versions. Qemu v6.2 and before used to enable 
+KVM_X2APIC_API_USE_32BIT_IDS KVM quirk in some scenarios, and this was 
+changed in commit dc89f32d92bb ("target/i386: Fix sanity check on max 
+APIC ID / X2APIC enablement") to be enabled only if there are > 255 
+vcpus. The KUT test does talk about this assumption in a comment:
+  /*
+   * By default, KVM doesn't follow the x86 APIC architecture for aliased
+   * APIC IDs if userspace has enabled KVM_X2APIC_API_USE_32BIT_IDS.
+   * If x2APIC is supported, assume the userspace VMM has enabled 32-bit
+   * IDs and thus activated KVM's quirk.  Delete this code to run the
+   * aliasing test on x2APIC CPUs, e.g. to run it on bare metal.
+   */
 
-lib/libfdt/fdt.h:48:#endif /* !__ASSEMBLY */
+That looks to suggest that this is an expected failure, but it would be 
+good to get confirmation on the same.
 
-With that replaced, for riscv and arm
-
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 
 Thanks,
-drew
+Naveen
+
+
+
+Naveen N Rao (AMD) (4):
+  x86/apic: Move ioapic tests together and add them to apic test group
+  x86/apic: Disable PIT for x2apic test to allow SVM AVIC to be tested
+  x86/apic: Disable PIT for ioapic test to allow SVM AVIC to be tested
+  x86/apic: Add test for xapic-split
+
+ x86/unittests.cfg | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
+
+
+base-commit: 699264f5ef8129c60e9db7c281e572016ad41a45
+-- 
+2.48.1
+
