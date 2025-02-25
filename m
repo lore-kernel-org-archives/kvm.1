@@ -1,165 +1,166 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF4A254855;
-	Tue, 25 Feb 2025 06:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9518B19F495;
+	Tue, 25 Feb 2025 07:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740465831; cv=none; b=E3EX5cKm94sH68ofu4uzwLpiC6ZZE7Zv+sC/4KfbyPDeuQKTV7svmytFdw0/i4Cc3ok5BdB5tzs4sLkrDVw7xm2wQWXulS2wCDX4BHGXxGoLURIRsclybMt5B755vGVFl/W1mOB66ygK58Oke+e95CnfZkPWy6h9P4iDwRlhcXY=
+	t=1740466817; cv=none; b=MNt9MXORUs8mkUnq5+0RDv76/WJfRaYMvJzH6MrJ1D4uneqWrCJgsiJARTKGcGmL6fROWpgcxwPO47ugeWblVtIqoDolYwXyTXb35VfijnBPvOcqZIQqL4LC1jtItlqZeWYYrhcETjfwcVDgoHW1r37jzleo1rVzrK2byWLblJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740465831; c=relaxed/simple;
-	bh=PXabjfpfBOXq8tRWvKo6GYiCmy3eNq/J97iav18nkas=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpkkj+wh8A1tPFD6vODXq0yjvTVWAPzSyGqlTn7im/Ua3Rl3AE7FN+52Mp80uO8CdlZJGsQ5pFk0tJccS3hH6dtqN2UUqju3uq0LUzwGApn7jUCv/P3Zk7DP6xPaToWIoD5Nmvcsx+bQPjBG9FMQnOLvTm5HFelbUCGHB/nNvpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nlETZ7mc; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1740466817; c=relaxed/simple;
+	bh=Jm9aY5N8Dq6B/Se5BKvQ1YCroA5kAnewWsbVHEv5BFQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BW4hTlrWSH3UNVleYcxMF3jkPRAwq4PmOh20JLcDCfh2iCpraiVx1m291pfh4oBg8ohUtQZrBmK1jPp46UJXRjpztEw4kSN+Aw4oq+siTdOXw0oiMUQX6Wt4uwb+wcGYp7TjTjvH0D9ClrPFSsseb9s6tSlXpCz8wGftFrurRTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W4iaVXM3; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nlETZ7mc"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1740465824; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=dtWtcCos5TZoKRFTrhJZTu555UIWcx8R/sCLOdoDYxc=;
-	b=nlETZ7mcJkSYR9/YamcGFR+t/ZbRp1eocv7vl7CFkHLhk4sLxN4PGVliUQ7SLWBP3WlHB2/Crxn+i0jZLkg176SIN3tagFuMDjthcHk9nvbFm45Dk/ODeBZCtHlyOxOm+Z1g39DFCwK52OoJ9XqmwFAjdMVqtez8AQKWGXWvitA=
-Received: from localhost(mailfrom:zijie.wei@linux.alibaba.com fp:SMTPD_---0WQDdazp_1740465817 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 25 Feb 2025 14:43:43 +0800
-From: weizijie <zijie.wei@linux.alibaba.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: weizijie <zijie.wei@linux.alibaba.com>,
-	xuyun <xuyun_xy.xy@linux.alibaba.com>
-Subject: [PATCH Resend] KVM: x86: ioapic: Optimize EOI handling to reduce unnecessary VM exits
-Date: Tue, 25 Feb 2025 14:42:53 +0800
-Message-ID: <20250225064253.309334-1-zijie.wei@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <Z6uo24Wf3LoetUMc@google.com>
-References: <Z6uo24Wf3LoetUMc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W4iaVXM3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740466816; x=1772002816;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Jm9aY5N8Dq6B/Se5BKvQ1YCroA5kAnewWsbVHEv5BFQ=;
+  b=W4iaVXM3kIa2Q1Kz8QITLF7kDRIJDa+aTZUUbDdt33hvRqCtIlAARU8/
+   KjCyY/X92nNsG9rZvn9p/vdq5Y5HU46Yni1kN8yna17jM5sXfXX7eztFm
+   8aH9cmtHz5L6HHPD4n1DNUbVk2FW7hniJ1BFHAFA/HFOUeJja/WZWEGwn
+   C/POyYrC8oWh21YJ2oezNeJDVhDwt7h5hxjLbG6Wzxxk30e2hIFz9qWQO
+   9kgtBK4MH6Szg6i1C6sH0XrzmsVEZ9HkVDnSr35aaLBS2xmRJeNNkIcSU
+   1KFEVIfabtl3xXY2Da3sOy5tDg8CwRhI1Etnq3+w4lTJ2Nz6KCFJL9RXG
+   Q==;
+X-CSE-ConnectionGUID: kjaD/FYuTsWUGz2SqNQANw==
+X-CSE-MsgGUID: Epq0gFQgRXSrRVs9qgNydw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41139948"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
+   d="scan'208";a="41139948"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 23:00:13 -0800
+X-CSE-ConnectionGUID: WV/FS0LjRB2TisF+x+zDLg==
+X-CSE-MsgGUID: oJ4khU6BQ8OOcG0mMINBsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
+   d="scan'208";a="121242251"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 23:00:07 -0800
+Message-ID: <84cc95e6-74a5-47b2-9f36-ae33f1e8b5c8@intel.com>
+Date: Tue, 25 Feb 2025 15:00:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 08/12] KVM: x86: Allow to update cached values in
+ kvm_user_return_msrs w/o wrmsr
+To: Adrian Hunter <adrian.hunter@intel.com>, pbonzini@redhat.com,
+ seanjc@google.com
+Cc: kvm@vger.kernel.org, rick.p.edgecombe@intel.com, kai.huang@intel.com,
+ reinette.chatre@intel.com, tony.lindgren@linux.intel.com,
+ binbin.wu@linux.intel.com, dmatlack@google.com, isaku.yamahata@intel.com,
+ nik.borisov@suse.com, linux-kernel@vger.kernel.org, yan.y.zhao@intel.com,
+ chao.gao@intel.com, weijiang.yang@intel.com
+References: <20250129095902.16391-1-adrian.hunter@intel.com>
+ <20250129095902.16391-9-adrian.hunter@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250129095902.16391-9-adrian.hunter@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Address performance issues caused by a vector being reused by a
-non-IOAPIC source.
+On 1/29/2025 5:58 PM, Adrian Hunter wrote:
+> From: Chao Gao <chao.gao@intel.com>
+> 
+> Several MSRs are constant and only used in userspace(ring 3).  But VMs may
+> have different values.  KVM uses kvm_set_user_return_msr() to switch to
+> guest's values and leverages user return notifier to restore them when the
+> kernel is to return to userspace.  To eliminate unnecessary wrmsr, KVM also
+> caches the value it wrote to an MSR last time.
+> 
+> TDX module unconditionally resets some of these MSRs to architectural INIT
+> state on TD exit.  It makes the cached values in kvm_user_return_msrs are
+> inconsistent with values in hardware.  This inconsistency needs to be
+> fixed.  Otherwise, it may mislead kvm_on_user_return() to skip restoring
+> some MSRs to the host's values.  kvm_set_user_return_msr() can help correct
+> this case, but it is not optimal as it always does a wrmsr.  So, introduce
+> a variation of kvm_set_user_return_msr() to update cached values and skip
+> that wrmsr.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Commit 0fc5a36dd6b3
-("KVM: x86: ioapic: Fix level-triggered EOI and IOAPIC reconfigure race")
-addressed the issues related to EOI and IOAPIC reconfiguration races.
-However, it has introduced some performance concerns:
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Configuring IOAPIC interrupts while an interrupt request (IRQ) is
-already in service can unintentionally trigger a VM exit for other
-interrupts that normally do not require one, due to the settings of
-`ioapic_handled_vectors`. If the IOAPIC is not reconfigured during
-runtime, this issue persists, continuing to adversely affect
-performance.
-
-Simple Fix Proposal:
-A straightforward solution is to record highest in-service IRQ that
-is pending at the time of the last scan. Then, upon the next guest
-exit, do a full KVM_REQ_SCAN_IOAPIC. This ensures that a re-scan of
-the ioapic occurs only when the recorded vector is EOI'd, and
-subsequently, the extra bit in the eoi_exit_bitmap are cleared,
-avoiding unnecessary VM exits.
-
-Co-developed-by: xuyun <xuyun_xy.xy@linux.alibaba.com>
-Signed-off-by: xuyun <xuyun_xy.xy@linux.alibaba.com>
-Signed-off-by: weizijie <zijie.wei@linux.alibaba.com>
----
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/ioapic.c           | 10 ++++++++--
- arch/x86/kvm/irq_comm.c         |  9 +++++++--
- arch/x86/kvm/vmx/vmx.c          |  9 +++++++++
- 4 files changed, 25 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0b7af5902ff7..8c50e7b4a96f 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1062,6 +1062,7 @@ struct kvm_vcpu_arch {
- #if IS_ENABLED(CONFIG_HYPERV)
- 	hpa_t hv_root_tdp;
- #endif
-+	u8 last_pending_vector;
- };
- 
- struct kvm_lpage_info {
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 995eb5054360..40252a800897 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -297,10 +297,16 @@ void kvm_ioapic_scan_entry(struct kvm_vcpu *vcpu, ulong *ioapic_handled_vectors)
- 			u16 dm = kvm_lapic_irq_dest_mode(!!e->fields.dest_mode);
- 
- 			if (kvm_apic_match_dest(vcpu, NULL, APIC_DEST_NOSHORT,
--						e->fields.dest_id, dm) ||
--			    kvm_apic_pending_eoi(vcpu, e->fields.vector))
-+						e->fields.dest_id, dm))
- 				__set_bit(e->fields.vector,
- 					  ioapic_handled_vectors);
-+			else if (kvm_apic_pending_eoi(vcpu, e->fields.vector)) {
-+				__set_bit(e->fields.vector,
-+					  ioapic_handled_vectors);
-+				vcpu->arch.last_pending_vector = e->fields.vector >
-+					vcpu->arch.last_pending_vector ? e->fields.vector :
-+					vcpu->arch.last_pending_vector;
-+			}
- 		}
- 	}
- 	spin_unlock(&ioapic->lock);
-diff --git a/arch/x86/kvm/irq_comm.c b/arch/x86/kvm/irq_comm.c
-index 8136695f7b96..1d23c52576e1 100644
---- a/arch/x86/kvm/irq_comm.c
-+++ b/arch/x86/kvm/irq_comm.c
-@@ -426,9 +426,14 @@ void kvm_scan_ioapic_routes(struct kvm_vcpu *vcpu,
- 
- 			if (irq.trig_mode &&
- 			    (kvm_apic_match_dest(vcpu, NULL, APIC_DEST_NOSHORT,
--						 irq.dest_id, irq.dest_mode) ||
--			     kvm_apic_pending_eoi(vcpu, irq.vector)))
-+						 irq.dest_id, irq.dest_mode)))
- 				__set_bit(irq.vector, ioapic_handled_vectors);
-+			else if (kvm_apic_pending_eoi(vcpu, irq.vector)) {
-+				__set_bit(irq.vector, ioapic_handled_vectors);
-+				vcpu->arch.last_pending_vector = irq.vector >
-+					vcpu->arch.last_pending_vector ? irq.vector :
-+					vcpu->arch.last_pending_vector;
-+			}
- 		}
- 	}
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 6c56d5235f0f..047cdd5964e5 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5712,6 +5712,15 @@ static int handle_apic_eoi_induced(struct kvm_vcpu *vcpu)
- 
- 	/* EOI-induced VM exit is trap-like and thus no need to adjust IP */
- 	kvm_apic_set_eoi_accelerated(vcpu, vector);
-+
-+	/* When there are instances where ioapic_handled_vectors is
-+	 * set due to pending interrupts, clean up the record and do
-+	 * a full KVM_REQ_SCAN_IOAPIC.
-+	 */
-+	if (vcpu->arch.last_pending_vector == vector) {
-+		vcpu->arch.last_pending_vector = 0;
-+		kvm_make_request(KVM_REQ_SCAN_IOAPIC, vcpu);
-+	}
- 	return 1;
- }
- 
--- 
-2.43.5
+> ---
+> TD vcpu enter/exit v2:
+>   - No changes
+> 
+> TD vcpu enter/exit v1:
+>   - Rename functions and remove useless comment (Binbin)
+> ---
+>   arch/x86/include/asm/kvm_host.h |  1 +
+>   arch/x86/kvm/x86.c              | 24 +++++++++++++++++++-----
+>   2 files changed, 20 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 6b686d62c735..e557a441fade 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2322,6 +2322,7 @@ int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
+>   int kvm_add_user_return_msr(u32 msr);
+>   int kvm_find_user_return_msr(u32 msr);
+>   int kvm_set_user_return_msr(unsigned index, u64 val, u64 mask);
+> +void kvm_user_return_msr_update_cache(unsigned int index, u64 val);
+>   
+>   static inline bool kvm_is_supported_user_return_msr(u32 msr)
+>   {
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 5cf9f023fd4b..15447fe7687c 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -636,6 +636,15 @@ static void kvm_user_return_msr_cpu_online(void)
+>   	}
+>   }
+>   
+> +static void kvm_user_return_register_notifier(struct kvm_user_return_msrs *msrs)
+> +{
+> +	if (!msrs->registered) {
+> +		msrs->urn.on_user_return = kvm_on_user_return;
+> +		user_return_notifier_register(&msrs->urn);
+> +		msrs->registered = true;
+> +	}
+> +}
+> +
+>   int kvm_set_user_return_msr(unsigned slot, u64 value, u64 mask)
+>   {
+>   	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
+> @@ -649,15 +658,20 @@ int kvm_set_user_return_msr(unsigned slot, u64 value, u64 mask)
+>   		return 1;
+>   
+>   	msrs->values[slot].curr = value;
+> -	if (!msrs->registered) {
+> -		msrs->urn.on_user_return = kvm_on_user_return;
+> -		user_return_notifier_register(&msrs->urn);
+> -		msrs->registered = true;
+> -	}
+> +	kvm_user_return_register_notifier(msrs);
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(kvm_set_user_return_msr);
+>   
+> +void kvm_user_return_msr_update_cache(unsigned int slot, u64 value)
+> +{
+> +	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
+> +
+> +	msrs->values[slot].curr = value;
+> +	kvm_user_return_register_notifier(msrs);
+> +}
+> +EXPORT_SYMBOL_GPL(kvm_user_return_msr_update_cache);
+> +
+>   static void drop_user_return_notifiers(void)
+>   {
+>   	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
 
