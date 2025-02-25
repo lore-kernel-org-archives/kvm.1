@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E013620E317;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A355120DD71;
 	Tue, 25 Feb 2025 17:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740504588; cv=none; b=c/xTilzl7pg5sASEHPab3ohJDf95mLAme3UOHNt33pOzXloc4LMhN+zdljdDPVhfHY7pddTEFifdoS5PBzlIu7WKwfsNlUAbytdMVA7F0MAyhkzk99bkIgnXCBvn5ENjaIL8FvlwIhaIdoaKJOQEGtwuY9eIr0iCPeJlH8exRVA=
+	t=1740504587; cv=none; b=IMvqbCWng9lY5rLnyBlR9XUOFXMiG+mw0WVaLFvGGXjQ5ayE6sIK+ccaqLjyk2IzMcgTuIMoSczh1zi+Yyg0+u7XnmWnY55ywLaktGeuUMr3Whq+cNymC9UGcyNvyL1QWk1hqu2VhjUZdCQXbyviy2czbk2WXenvvJawbj5WaDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740504588; c=relaxed/simple;
-	bh=X1ouQwIM1LuKv3rYNR+JevvdRSlVzOdYhPiP43piFsc=;
+	s=arc-20240116; t=1740504587; c=relaxed/simple;
+	bh=Q9/hatBEdZNHyBSMGkAUQJN0V86qBIcAgfqfwdJE3dY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ua2uF9t+P9EcO4p6dCzyLyfNATIbcJkUxA7PAUBKi2k1NNbxUL25yHpxPQE8ThJcumbBJCP4gUaAWS1HVYGd5BEomPFCOYOoZcglcjrok7NNDP91ejEK/mstRzfIHdWhYBuYJ6Oo/nKOQgXoAGBG3IIPvnplkvO8Bo2Vf5w0heE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qljzcvIE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=GcIymhyzgPGoDj0Mz4nMYEO7nVb/iTnsw67FO1Wk12N4v4iRJjWfHDUnmZaSXxXzaqiIZ7DccfH5fNa5ZC4I9+Lf8WxBCHtcP8Z3KM7asLCHZGqomDl/fqETXqHVj9dbKSbFkouoJXQ7KFqoA/oDw8nhy+qzqYieC/G90Oc71u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4K4JfMp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qljzcvIE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3246C4CEE7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4K4JfMp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A785C4CEEB;
 	Tue, 25 Feb 2025 17:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740504587;
-	bh=X1ouQwIM1LuKv3rYNR+JevvdRSlVzOdYhPiP43piFsc=;
+	bh=Q9/hatBEdZNHyBSMGkAUQJN0V86qBIcAgfqfwdJE3dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qljzcvIEYj9E+SQzDIl6zyMMKnGiBs21m9RFBbrHZ4C2GBJacRvK0lf+ErvcuRtxL
-	 zqMMT3Hse408k1pIqQNbtrxhP5JP+hI49JYlDuKEs7NvxveSZRHW9mBNe+cTBBIwaH
-	 5lNRehd9Q33QTL6/fHHxGVcrVRNHOFC24qg4jzFnenokYUKfuZiviIhSsncFECu8Xp
-	 zudL5O1k+7J9JNzu6EiGXy3eQrfCOhPZ+STNf0QGCqoS2yngYssOehlxWBSsvfLUPf
-	 SRpRcuweIwA5N1kbzWEUM/enz6w59JE3vCWe5zY+7NLnsS2m+2Xqbzo6mteBQckEfI
-	 e91utl4/s/1bQ==
+	b=h4K4JfMpSIhXCctkK3M4TdHJJoIrciXH3KNrrFB+RCy4IK3BOTyaW3XS+jk2bIQ8t
+	 LSUvflBFTKsF8U8w6Jc/Mo4ETOYag4XIf5PZE4v/UoDDFC5mee8gZuqBVoCWQetTUT
+	 OWrwxPfs/OQ3XgpZeVOlL9a6AEtchNvz6HdVtaI/JZJTPk5MMpqWenrgE5IvY20/LP
+	 SDjS7DCnQsRwdRjit86/IzijcwjmUq7UcRHWXa/i5xipUb0eMyFc/+WK75T7e8vlP0
+	 3MiMaUmiQf9Q0CTm6qSvmSfOK6pD51FQP/Ln0FfDTXprzy504x04FdPQo7nugO9bW/
+	 0hiSvKxtdcCqg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1tmykc-007rKs-3s;
-	Tue, 25 Feb 2025 17:29:46 +0000
+	id 1tmykb-007rKs-Nh;
+	Tue, 25 Feb 2025 17:29:45 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Andre Przywara <andre.przywara@arm.com>,
 	Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v4 12/16] KVM: arm64: nv: Request vPE doorbell upon nested ERET to L2
-Date: Tue, 25 Feb 2025 17:29:26 +0000
-Message-Id: <20250225172930.1850838-13-maz@kernel.org>
+Subject: [PATCH v4 10/16] KVM: arm64: nv: Add Maintenance Interrupt emulation
+Date: Tue, 25 Feb 2025 17:29:24 +0000
+Message-Id: <20250225172930.1850838-11-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250225172930.1850838-1-maz@kernel.org>
 References: <20250225172930.1850838-1-maz@kernel.org>
@@ -60,105 +60,228 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Oliver Upton <oliver.upton@linux.dev>
+Emulating the vGIC means emulating the dreaded Maintenance Interrupt.
 
-Running an L2 guest with GICv4 enabled goes absolutely nowhere, and gets
-into a vicious cycle of nested ERET followed by nested exception entry
-into the L1.
+This is a two-pronged problem:
 
-When KVM does a put on a runnable vCPU, it marks the vPE as nonresident
-but does not request a doorbell IRQ. Behind the scenes in the ITS
-driver's view of the vCPU, its_vpe::pending_last gets set to true to
-indicate that context is still runnable.
+- while running L2, getting an MI translates into an MI injected
+  in the L1 based on the state of the HW.
 
-This comes to a head when doing the nested ERET into L2. The vPE doesn't
-get scheduled on the redistributor as it is exclusively part of the L1's
-VGIC context. kvm_vgic_vcpu_pending_irq() returns true because the vPE
-appears runnable, and KVM does a nested exception entry into the L1
-before L2 ever gets off the ground.
+- while running L1, we must accurately reflect the state of the
+  MI line, based on the in-memory state.
 
-This issue can be papered over by requesting a doorbell IRQ when
-descheduling a vPE as part of a nested ERET. KVM needs this anyway to
-kick the vCPU out of the L2 when an IRQ becomes pending for the L1.
+The MI INTID is added to the distributor, as expected on any
+virtualisation-capable implementation, and further patches
+will allow its configuration.
 
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240823212703.3576061-4-oliver.upton@linux.dev
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h |  2 ++
- arch/arm64/kvm/emulate-nested.c   |  2 ++
- arch/arm64/kvm/vgic/vgic-v4.c     | 18 +++++++++++++++++-
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/arm.c                 |  6 ++++
+ arch/arm64/kvm/vgic/vgic-init.c      | 29 ++++++++++++++++++
+ arch/arm64/kvm/vgic/vgic-v3-nested.c | 45 ++++++++++++++++++++++++++++
+ arch/arm64/kvm/vgic/vgic.c           |  9 ++++++
+ arch/arm64/kvm/vgic/vgic.h           |  2 ++
+ include/kvm/arm_vgic.h               |  4 +++
+ 6 files changed, 95 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 86519a73971ed..74be23236aaca 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -946,6 +946,8 @@ struct kvm_vcpu_arch {
- #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(5))
- /* WFI instruction trapped */
- #define IN_WFI			__vcpu_single_flag(sflags, BIT(6))
-+/* KVM is currently emulating a nested ERET */
-+#define IN_NESTED_ERET		__vcpu_single_flag(sflags, BIT(7))
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 697e8c6596a0f..dc27eb66d4e90 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -815,6 +815,12 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+ 	if (ret)
+ 		return ret;
  
- 
- /* Pointer to the vcpu's SVE FFR for sve_{save,load}_state() */
-diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
-index 9986bb88c2597..834c587500699 100644
---- a/arch/arm64/kvm/emulate-nested.c
-+++ b/arch/arm64/kvm/emulate-nested.c
-@@ -2503,6 +2503,7 @@ void kvm_emulate_nested_eret(struct kvm_vcpu *vcpu)
- 	}
- 
- 	preempt_disable();
-+	vcpu_set_flag(vcpu, IN_NESTED_ERET);
- 	kvm_arch_vcpu_put(vcpu);
- 
- 	if (!esr_iss_is_eretax(esr))
-@@ -2514,6 +2515,7 @@ void kvm_emulate_nested_eret(struct kvm_vcpu *vcpu)
- 	*vcpu_cpsr(vcpu) = spsr;
- 
- 	kvm_arch_vcpu_load(vcpu, smp_processor_id());
-+	vcpu_clear_flag(vcpu, IN_NESTED_ERET);
- 	preempt_enable();
- 
- 	kvm_pmu_nested_transition(vcpu);
-diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-index eedecbbbcf31b..0d9fb235c0180 100644
---- a/arch/arm64/kvm/vgic/vgic-v4.c
-+++ b/arch/arm64/kvm/vgic/vgic-v4.c
-@@ -336,6 +336,22 @@ void vgic_v4_teardown(struct kvm *kvm)
- 	its_vm->vpes = NULL;
++	if (vcpu_has_nv(vcpu)) {
++		ret = kvm_vgic_vcpu_nv_init(vcpu);
++		if (ret)
++			return ret;
++	}
++
+ 	/*
+ 	 * This needs to happen after any restriction has been applied
+ 	 * to the feature set.
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index 775461cf2d2db..1f33e71c2a731 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -198,6 +198,27 @@ static int kvm_vgic_dist_init(struct kvm *kvm, unsigned int nr_spis)
+ 	return 0;
  }
  
-+static inline bool vgic_v4_want_doorbell(struct kvm_vcpu *vcpu)
-+{
-+	if (vcpu_get_flag(vcpu, IN_WFI))
-+		return true;
++/* Default GICv3 Maintenance Interrupt INTID, as per SBSA */
++#define DEFAULT_MI_INTID	25
 +
-+	if (likely(!vcpu_has_nv(vcpu)))
-+		return false;
++int kvm_vgic_vcpu_nv_init(struct kvm_vcpu *vcpu)
++{
++	int ret;
++
++	guard(mutex)(&vcpu->kvm->arch.config_lock);
 +
 +	/*
-+	 * GICv4 hardware is only ever used for the L1. Mark the vPE (i.e. the
-+	 * L1 context) nonresident and request a doorbell to kick us out of the
-+	 * L2 when an IRQ becomes pending.
++	 * Matching the tradition established with the timers, provide
++	 * a default PPI for the maintenance interrupt. It makes
++	 * things easier to reason about.
 +	 */
-+	return vcpu_get_flag(vcpu, IN_NESTED_ERET);
++	if (vcpu->kvm->arch.vgic.mi_intid == 0)
++		vcpu->kvm->arch.vgic.mi_intid = DEFAULT_MI_INTID;
++	ret = kvm_vgic_set_owner(vcpu, vcpu->kvm->arch.vgic.mi_intid, vcpu);
++
++	return ret;
 +}
 +
- int vgic_v4_put(struct kvm_vcpu *vcpu)
+ static int vgic_allocate_private_irqs_locked(struct kvm_vcpu *vcpu, u32 type)
  {
- 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
-@@ -343,7 +359,7 @@ int vgic_v4_put(struct kvm_vcpu *vcpu)
- 	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
- 		return 0;
+ 	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
+@@ -588,12 +609,20 @@ void kvm_vgic_cpu_down(void)
  
--	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
-+	return its_make_vpe_non_resident(vpe, vgic_v4_want_doorbell(vcpu));
+ static irqreturn_t vgic_maintenance_handler(int irq, void *data)
+ {
++	struct kvm_vcpu *vcpu = *(struct kvm_vcpu **)data;
++
+ 	/*
+ 	 * We cannot rely on the vgic maintenance interrupt to be
+ 	 * delivered synchronously. This means we can only use it to
+ 	 * exit the VM, and we perform the handling of EOIed
+ 	 * interrupts on the exit path (see vgic_fold_lr_state).
++	 *
++	 * Of course, NV throws a wrench in this plan, and needs
++	 * something special.
+ 	 */
++	if (vcpu && vgic_state_is_nested(vcpu))
++		vgic_v3_handle_nested_maint_irq(vcpu);
++
+ 	return IRQ_HANDLED;
  }
  
- int vgic_v4_load(struct kvm_vcpu *vcpu)
+diff --git a/arch/arm64/kvm/vgic/vgic-v3-nested.c b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+index 3d80bfb37de00..e72be14d99d55 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3-nested.c
++++ b/arch/arm64/kvm/vgic/vgic-v3-nested.c
+@@ -73,6 +73,24 @@ static DEFINE_PER_CPU(struct shadow_if, shadow_if);
+  *   interrupt. The L0 active state will be cleared by the HW if the L1
+  *   interrupt was itself backed by a HW interrupt.
+  *
++ * Maintenance Interrupt (MI) management:
++ *
++ * Since the L2 guest runs the vgic in its full glory, MIs get delivered and
++ * used as a handover point between L2 and L1.
++ *
++ * - on delivery of a MI to L0 while L2 is running: make the L1 MI pending,
++ *   and let it rip. This will initiate a vcpu_put() on L2, and allow L1 to
++ *   run and process the MI.
++ *
++ * - L1 MI is a fully virtual interrupt, not linked to the host's MI. Its
++ *   state must be computed at each entry/exit of the guest, much like we do
++ *   it for the PMU interrupt.
++ *
++ * - because most of the ICH_*_EL2 registers live in the VNCR page, the
++ *   quality of emulation is poor: L1 can setup the vgic so that an MI would
++ *   immediately fire, and not observe anything until the next exit. Trying
++ *   to read ICH_MISR_EL2 would do the trick, for example.
++ *
+  * System register emulation:
+  *
+  * We get two classes of registers:
+@@ -341,3 +359,30 @@ void vgic_v3_put_nested(struct kvm_vcpu *vcpu)
+ 
+ 	shadow_if->lr_map = 0;
+ }
++
++/*
++ * If we exit a L2 VM with a pending maintenance interrupt from the GIC,
++ * then we need to forward this to L1 so that it can re-sync the appropriate
++ * LRs and sample level triggered interrupts again.
++ */
++void vgic_v3_handle_nested_maint_irq(struct kvm_vcpu *vcpu)
++{
++	bool state = read_sysreg_s(SYS_ICH_MISR_EL2);
++
++	/* This will force a switch back to L1 if the level is high */
++	kvm_vgic_inject_irq(vcpu->kvm, vcpu,
++			    vcpu->kvm->arch.vgic.mi_intid, state, vcpu);
++
++	sysreg_clear_set_s(SYS_ICH_HCR_EL2, ICH_HCR_EL2_En, 0);
++}
++
++void vgic_v3_nested_update_mi(struct kvm_vcpu *vcpu)
++{
++	bool level;
++
++	level  = __vcpu_sys_reg(vcpu, ICH_HCR_EL2) & ICH_HCR_EL2_En;
++	if (level)
++		level &= vgic_v3_get_misr(vcpu);
++	kvm_vgic_inject_irq(vcpu->kvm, vcpu,
++			    vcpu->kvm->arch.vgic.mi_intid, level, vcpu);
++}
+diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
+index 9734a71b85611..8f8096d489252 100644
+--- a/arch/arm64/kvm/vgic/vgic.c
++++ b/arch/arm64/kvm/vgic/vgic.c
+@@ -878,6 +878,9 @@ void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu)
+ 		return;
+ 	}
+ 
++	if (vcpu_has_nv(vcpu))
++		vgic_v3_nested_update_mi(vcpu);
++
+ 	/* An empty ap_list_head implies used_lrs == 0 */
+ 	if (list_empty(&vcpu->arch.vgic_cpu.ap_list_head))
+ 		return;
+@@ -921,6 +924,9 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
+ 	 *
+ 	 * - Otherwise, do exactly *NOTHING*. The guest state is
+ 	 *   already loaded, and we can carry on with running it.
++	 *
++	 * If we have NV, but are not in a nested state, compute the
++	 * maintenance interrupt state, as it may fire.
+ 	 */
+ 	if (vgic_state_is_nested(vcpu)) {
+ 		if (kvm_vgic_vcpu_pending_irq(vcpu))
+@@ -929,6 +935,9 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
+ 		return;
+ 	}
+ 
++	if (vcpu_has_nv(vcpu))
++		vgic_v3_nested_update_mi(vcpu);
++
+ 	/*
+ 	 * If there are no virtual interrupts active or pending for this
+ 	 * VCPU, then there is no work to do and we can bail out without
+diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+index cf0c084e5d347..0c5a63712702b 100644
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -356,5 +356,7 @@ static inline bool kvm_has_gicv3(struct kvm *kvm)
+ void vgic_v3_sync_nested(struct kvm_vcpu *vcpu);
+ void vgic_v3_load_nested(struct kvm_vcpu *vcpu);
+ void vgic_v3_put_nested(struct kvm_vcpu *vcpu);
++void vgic_v3_handle_nested_maint_irq(struct kvm_vcpu *vcpu);
++void vgic_v3_nested_update_mi(struct kvm_vcpu *vcpu);
+ 
+ #endif
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index 1b373cb870fe4..714cef854c1c3 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -249,6 +249,9 @@ struct vgic_dist {
+ 
+ 	int			nr_spis;
+ 
++	/* The GIC maintenance IRQ for nested hypervisors. */
++	u32			mi_intid;
++
+ 	/* base addresses in guest physical address space: */
+ 	gpa_t			vgic_dist_base;		/* distributor */
+ 	union {
+@@ -369,6 +372,7 @@ extern struct static_key_false vgic_v3_cpuif_trap;
+ int kvm_set_legacy_vgic_v2_addr(struct kvm *kvm, struct kvm_arm_device_addr *dev_addr);
+ void kvm_vgic_early_init(struct kvm *kvm);
+ int kvm_vgic_vcpu_init(struct kvm_vcpu *vcpu);
++int kvm_vgic_vcpu_nv_init(struct kvm_vcpu *vcpu);
+ int kvm_vgic_create(struct kvm *kvm, u32 type);
+ void kvm_vgic_destroy(struct kvm *kvm);
+ void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu);
 -- 
 2.39.2
 
