@@ -1,99 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463062EB1D
-	for <kvm@vger.kernel.org>; Tue, 25 Feb 2025 13:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F7B2676C8;
+	Tue, 25 Feb 2025 14:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740491562; cv=none; b=TUuZgQy/UWN0XRzvGduYFAexfo8ArHG4hzHfTFZd+04uOLkdQWKprmoP7ouH7N3cNitevE+lG/Pzv5kURsimj7XiJCICUa8h936kKQ9Sr6W88Sf+kzXXuNH5FdLWuOFdUtQPtP8Mg8ApxPY+Ywqd8yeToQAhbCqvJ6pjSzudm8Y=
+	t=1740492765; cv=none; b=qVpADza0rSbZNo+oCiyS3SxEWm7BFguINSlwyybDjXAJpY/PbogaW8WZb9Z67oQMxWfPhRYt21KXtRNIob4mzK+BaEVPqmhCHluqAeV+gnIXS3ztweF2ZkZTT4hMLYmI83HKeHcvGlkwPxS4xuDAspJLa0lcQQkL/Cq6ilGLmcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740491562; c=relaxed/simple;
-	bh=dIXYlNSEMwdsW7HhBFNnyBxdxXgyR4yX5aThGpx/xKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oh5Uz3Isq8D6RtAsITZwtgwLXsb3gQ6m2qUaB2R+foZ8Sbmzy5grzWsWvvScU2zCHHWTHfwaepasYFPsulb53biO0F3rkOksBRMy1FX5h2lwJrWUuBSdcg143/XB+ctkE9M5/3jPQJQ9TFnznDP7KqYCSBZwSNt+7tKfKDlgKiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QnGssGnw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740492765; c=relaxed/simple;
+	bh=VKH1ouIyBgpV+yjjzpH1YAmVGB47UmPki1d/30Utxk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=E/VhelkOWyTWc9L4yDJOPo5YHNvRCRj6RF/FqhSyZPJ0y7I3kkIC5CW267Ece9SffhXiOcJ5bCrNK/0VtxifeuhEmnN1HeCjPACCHymVqI70nLZ7JChW2sG7zzkw4l1+OM5DmPfmU3kXhxvgTnIf3Kb0SBLYl4wuiVIyYEO9gLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=hIYTk2hM; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QnGssGnw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33374C4CEDD;
-	Tue, 25 Feb 2025 13:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740491561;
-	bh=dIXYlNSEMwdsW7HhBFNnyBxdxXgyR4yX5aThGpx/xKs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnGssGnwLab5+GpcNUAoAh4FKNcReblmbn5EVhqqCTx+p1aF/LbQAqTcsi8810heX
-	 8z0vYDUSgMM7ef6qVR3c2VMeKg2clwgHo/0BDLxsdP35Vb4ZIm4YnIPIM7HCwyMhgT
-	 1Bd7n1bXE2F/X82G/Oiax+7QTZf7O6r22oRBKkPxcrg0mJcxzcGHuxFNWzWUm2YIqm
-	 Em0JnfevDwH9ZybgRiOe3sDEqHjnbg9I+go+d5GJg9ne5JH6B/yaJhXxIfG0I3o3do
-	 1NnCbirdGf29c0W7iRAI9Z4Xj77gHPoyz86vBlBEFmuirCnTb6vm2KwALfys7GtuDu
-	 6bq1sUJsNlSrA==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: <kvm@vger.kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: [RFC kvm-unit-tests PATCH 1/4] x86/apic: Move ioapic tests together and add them to apic test group
-Date: Tue, 25 Feb 2025 16:10:49 +0530
-Message-ID: <c0f6648c639b50f9ee6cfaca95d67e97525c37fc.1740479886.git.naveen@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1740479886.git.naveen@kernel.org>
-References: <cover.1740479886.git.naveen@kernel.org>
+	dkim=pass (1024-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="hIYTk2hM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazon201209; t=1740492764; x=1772028764;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wCe9wqGieGFyiUCexYspDQYCKCk1CfumNTmeDIsPvqY=;
+  b=hIYTk2hMUm5BIsJKCZdhucPQ7TRjAUJIW05dqhA7W6wxw2FgA+s1grGV
+   DO1J58NycpW+tCR2VtjaCU1SH/mmNEkq0eh0Wd591J6WTYbIFbfRV+F2g
+   H340M/nQgAqNwvFQqGOIS1iApTVKQKVov1pbjZPMSOFxTWYJbtg54LZFp
+   g=;
+X-IronPort-AV: E=Sophos;i="6.13,314,1732579200"; 
+   d="scan'208";a="274174113"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 14:12:38 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:33203]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.69:2525] with esmtp (Farcaster)
+ id 1760cb76-f2c7-41ad-bce5-bd5d082ea92a; Tue, 25 Feb 2025 14:12:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 1760cb76-f2c7-41ad-bce5-bd5d082ea92a
+Received: from EX19D020UWA003.ant.amazon.com (10.13.138.254) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 25 Feb 2025 14:12:37 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (10.250.64.202) by
+ EX19D020UWA003.ant.amazon.com (10.13.138.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 25 Feb 2025 14:12:36 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-f5cd2367.us-west-2.amazon.com
+ (10.25.36.210) by mail-relay.amazon.com (10.250.64.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1544.14 via Frontend Transport; Tue, 25 Feb 2025 14:12:36 +0000
+Received: from [127.0.0.1] (dev-dsk-roypat-1c-dbe2a224.eu-west-1.amazon.com [172.19.88.180])
+	by email-imr-corp-prod-pdx-all-2b-f5cd2367.us-west-2.amazon.com (Postfix) with ESMTPS id 46E31C7D57;
+	Tue, 25 Feb 2025 14:12:29 +0000 (UTC)
+Message-ID: <9e60449b-0d2f-43ef-a0b0-3cc999fa9d99@amazon.co.uk>
+Date: Tue, 25 Feb 2025 14:12:27 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/12] KVM: selftests: Add guest_memfd based
+ vm_mem_backing_src_types
+To: <rppt@kernel.org>, <david@redhat.com>, <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <corbet@lwn.net>, <willy@infradead.org>,
+	<akpm@linux-foundation.org>, <song@kernel.org>, <jolsa@kernel.org>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
+	<martin.lau@linux.dev>, <eddyz87@gmail.com>, <yonghong.song@linux.dev>,
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>,
+	<haoluo@google.com>, <Liam.Howlett@oracle.com>, <lorenzo.stoakes@oracle.com>,
+	<vbabka@suse.cz>, <jannh@google.com>, <shuah@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <bpf@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <tabba@google.com>, <jgowans@amazon.com>,
+	<graf@amazon.com>, <kalyazin@amazon.com>, <xmarcalx@amazon.com>,
+	<derekmn@amazon.com>, <jthoughton@google.com>
+References: <20250221160728.1584559-1-roypat@amazon.co.uk>
+ <20250221160728.1584559-9-roypat@amazon.co.uk>
+From: Patrick Roy <roypat@amazon.co.uk>
+Content-Language: en-US
+Autocrypt: addr=roypat@amazon.co.uk; keydata=
+ xjMEY0UgYhYJKwYBBAHaRw8BAQdA7lj+ADr5b96qBcdINFVJSOg8RGtKthL5x77F2ABMh4PN
+ NVBhdHJpY2sgUm95IChHaXRodWIga2V5IGFtYXpvbikgPHJveXBhdEBhbWF6b24uY28udWs+
+ wpMEExYKADsWIQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbAwULCQgHAgIiAgYVCgkI
+ CwIEFgIDAQIeBwIXgAAKCRBVg4tqeAbEAmQKAQC1jMl/KT9pQHEdALF7SA1iJ9tpA5ppl1J9
+ AOIP7Nr9SwD/fvIWkq0QDnq69eK7HqW14CA7AToCF6NBqZ8r7ksi+QLOOARjRSBiEgorBgEE
+ AZdVAQUBAQdAqoMhGmiXJ3DMGeXrlaDA+v/aF/ah7ARbFV4ukHyz+CkDAQgHwngEGBYKACAW
+ IQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbDAAKCRBVg4tqeAbEAtjHAQDkh5jZRIsZ
+ 7JMNkPMSCd5PuSy0/Gdx8LGgsxxPMZwePgEAn5Tnh4fVbf00esnoK588bYQgJBioXtuXhtom
+ 8hlxFQM=
+In-Reply-To: <20250221160728.1584559-9-roypat@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-Commit f5cfdd33cb21 ("x86/apic: Add test config to allow running apic
-tests against SVM's AVIC") added most of the APIC tests to the "apic"
-test group, but missed adding ioapic test. Add it.
+On Fri, 2025-02-21 at 16:07 +0000, Patrick Roy wrote:
 
-Also move ioapic-split test next to the regular ioapic test to keep the
-two together.
+...
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- x86/unittests.cfg | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+> @@ -985,10 +1013,13 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+>  	if (alignment > 1)
+>  		region->mmap_size += alignment;
+>  
+> -	region->fd = -1;
+> -	if (backing_src_is_shared(src_type))
+> +	if (backing_src_is_guest_memfd(src_type))
+> +		region->fd = guest_memfd;
+> +	else if (backing_src_is_guest_memfd(src_type))
 
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index 6e69c50b9b0d..8d046e6d7356 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -14,12 +14,6 @@ extra_params = -cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split
- arch = x86_64
- groups = apic
- 
--[ioapic-split]
--file = ioapic.flat
--extra_params = -cpu qemu64 -machine kernel_irqchip=split
--arch = x86_64
--groups = apic
--
- [x2apic]
- file = apic.flat
- smp = 2
-@@ -38,11 +32,18 @@ arch = x86_64
- timeout = 60
- groups = apic
- 
-+[ioapic-split]
-+file = ioapic.flat
-+extra_params = -cpu qemu64 -machine kernel_irqchip=split
-+arch = x86_64
-+groups = apic
-+
- [ioapic]
- file = ioapic.flat
- smp = 4
- extra_params = -cpu qemu64,+x2apic
- arch = x86_64
-+groups = apic
- 
- [cmpxchg8b]
- file = cmpxchg8b.flat
--- 
-2.48.1
+Argh, this is nonsense. Should be 
 
++	else if (backing_src_is_shared(src_type))
+
+instead.
+
+>  		region->fd = kvm_memfd_alloc(region->mmap_size,
+>  					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
+> +	else
+> +		region->fd = -1;
+>  
+>  	region->mmap_start = mmap(NULL, region->mmap_size,
+>  				  PROT_READ | PROT_WRITE,
+
+...
