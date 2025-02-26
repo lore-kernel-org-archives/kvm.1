@@ -1,72 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3808B223333
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 17:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0697E223716;
+	Wed, 26 Feb 2025 17:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740589273; cv=none; b=T8NF3SGtRsqFjCJQiksINctLMXiNw+g9wXkFCYvZdMZdQ2EHlQGOcz5G9tUKTbbwuVwKnXiZmc0vD7s6ceiHXL7ZTzBiFvhjmZxcStVhDeJ6e1AW8+ZIOXQfj2Oe2c7/OyLDjts25fod34TgT6/dT/PjSHOtxYnEvBtFCOu2NYs=
+	t=1740589679; cv=none; b=Yml/XPT2drIyUZvaC7h70FB/I/RTAXukznAmdGpiBNexbLYnGO8T2hHF+tD7SGsFYJ/OSHc+pst/kM4jcO8+OVML3cBb7kYglZeKX1unBZwkf4VXE19N0QpV32wrC33U0CKIYhl8Awu3QhUhig7nzLTAfpj5j9bjKr16TDFL+9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740589273; c=relaxed/simple;
-	bh=ymp2sTDtOywRud1r42LEpIz5/xVLZbwnL8m4bwvq204=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pZ73DiCxx+ztS2CFdB26GNgRl4MoqMN3vOHU5jQWhqov1+CKUnDIq/Zzf271tEvoYkIGODDSYLSfS4Vf5ExGE9MQYsO1BAxDqRwr9lMLYZRtOlTdqbKh9EuPsJyt6J3rcvFsmdAHaIDn3oBhcy+Ks3XK/9HFzdzv5DxHDrzgjUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bZsrg/Iv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740589679; c=relaxed/simple;
+	bh=cBaG+oS7JYdfqzVyKfbb8rgJ131fRZ/Hoj95YqdcdI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YX60Egk4dH2+Sy1PzIB3VWwshdZqZxmz6UHHEU6isriOx/0z/UjpA5u4oVyxN2kyUIgu368x/+YCkW+hCHOP9X9RI6IGeONvAckEKKI3S8rt8zSzlxnNIGFX5l0EScFv3GUqYrU0uWUBCeR1Og/g9i6mIK/fmt5yHm9wVSNsmOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dvHIUUlO; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bZsrg/Iv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740589269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OAYKjSFBIO1FDoSMDm73LcP7EYOw8j6BdDDF1ZgHN6I=;
-	b=bZsrg/IvPjCGNioToKYjO34LPDpkzTP26EG5Zz188CqGW6F1DPlDXGWqBELO6IMUAs4Pck
-	6sOg7q58pl6zTGdkW+7lVcbnx6wr63JtssRiJSQBAFq9vtxhbNGYWlq7SiMScuGx9gPwph
-	tv2v3vNF22WKbaSA9o2vmWIyT5j3JVs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-ZfMdQWt6P0yktaHSE15K_Q-1; Wed, 26 Feb 2025 12:01:08 -0500
-X-MC-Unique: ZfMdQWt6P0yktaHSE15K_Q-1
-X-Mimecast-MFC-AGG-ID: ZfMdQWt6P0yktaHSE15K_Q_1740589267
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4393e89e910so275155e9.0
-        for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 09:01:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740589267; x=1741194067;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OAYKjSFBIO1FDoSMDm73LcP7EYOw8j6BdDDF1ZgHN6I=;
-        b=Lxza8OuiwEXSoktAj/tMiGHjBsLZkzEH8vn5k8uIT7gwmpgeUVJx4hGv88B910728h
-         QWzgF2HsLCeiGH0VJ/hDOIQ+ggooyDD3XiS8bVD4wwoVWL+DLSo+bm6xb1+FUJcgJedE
-         71/TyT4iD9cJg5BFCWwrf7z5C+NF03BVOebHdMfZSp10+ZhhA1sIPRv2Aaak9vFaY3jg
-         ZA3va+0+lTYH46QpLiBZ2XzobR45eoRlhuj8ZQKUFnPk3+sa90CR65pGLZL4QuP2TSHF
-         sfWKvS/Vp4JGcxPfQIWRqLjrGayL+13bZiiRPLZ9yduYuU9K9DbmD0H/dmaS9uVS99Fd
-         tM+g==
-X-Gm-Message-State: AOJu0YzV4PdqUK38/ezpUrnoGnljviM0oiuSDjlAgm/09aMdh0Lcxi9M
-	O1YkCX0TjYPzYtJyMTWUDif9ZncPStkM5vt9pP/OKMS2r7ppClSgZRjjZKVOw5wnnGFy87EeqZo
-	cYbdjiJHW/fxfhGr5oR2mafKQuVzTb4TskfYPPFy9L1txoiomXcPp2FOawwDQ
-X-Gm-Gg: ASbGncvu4D6/DkZEe7A/GuR+iWPwZbDKwtpQ3zImPzw9GCoZCO+kaf6yd/T1jsnw6LP
-	kZj8NTF1BtWqVbpyUFLCnDAjrZ4YCBaITHlBBopcWsEfR5T+if9GeTeYeju43vi3xJGSqOmbsFy
-	HHncWiwU7IZGiIJd1oRAbQ0WuhYti37EsHh4jem3PPVjveYQtU2OsjACC7lsL4tYErKEFfHtJ9g
-	ZXT88WtIpno3AgNnLlEugQMe4NME+am9NPXy0ZvG2vSvPJd2EPMaOiNYan0gqKqIjHsksCdjAzL
-	N5t0rJbDw9a5i04+1QacxZJFhlL+FlN/3OhCMFnl9c/jtmDv2keSGwQnWfkN/uj25H//xMegNUi
-	+T1F/IXX5JjUoR+26Y86JpoKjoqcsjpSlQ3+pZ3gRUCc=
-X-Received: by 2002:a05:600c:35cb:b0:439:942c:c1cd with SMTP id 5b1f17b1804b1-43ab0f41698mr76827475e9.15.1740589266819;
-        Wed, 26 Feb 2025 09:01:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiO2q8A3dUQEgmlrjeCPMR8emhxvzHqcb9TXxKF1sqeUAwSJJ5Q0qd3IdPW2c/7LYLlKc+nQ==
-X-Received: by 2002:a05:600c:35cb:b0:439:942c:c1cd with SMTP id 5b1f17b1804b1-43ab0f41698mr76826655e9.15.1740589266235;
-        Wed, 26 Feb 2025 09:01:06 -0800 (PST)
-Received: from ?IPV6:2003:cb:c747:ff00:9d85:4afb:a7df:6c45? (p200300cbc747ff009d854afba7df6c45.dip0.t-ipconnect.de. [2003:cb:c747:ff00:9d85:4afb:a7df:6c45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba549da9sm27914395e9.38.2025.02.26.09.01.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 09:01:05 -0800 (PST)
-Message-ID: <bab79dbd-64cc-4a58-aba9-bc5fd4d6beca@redhat.com>
-Date: Wed, 26 Feb 2025 18:01:04 +0100
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dvHIUUlO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1740589675; x=1772125675;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=BPwWo87sDuI7usZUdxHnOOz0ofoKPOJ/UoJEVKcIEVA=;
+  b=dvHIUUlOBNo4GgWcl7FyIGPqQDJrgfqHS3tZxYLwuk4fcLq71PdgqETE
+   lprAPuIWnTeZnAwfccI4Dcmb3v87Fq5LU1ueJ8cicRVsF2ru9GlRu5Psg
+   d4WfppAtjGrKsDERCkm+07q3FNvPAqx1hjSoCxOt4+A3lJ3AYjl55Aa4h
+   k=;
+X-IronPort-AV: E=Sophos;i="6.13,317,1732579200"; 
+   d="scan'208";a="176232161"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 17:07:44 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:25271]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.36.78:2525] with esmtp (Farcaster)
+ id 9ef91057-2ea6-4f6a-bc79-4520280e04df; Wed, 26 Feb 2025 17:07:43 +0000 (UTC)
+X-Farcaster-Flow-ID: 9ef91057-2ea6-4f6a-bc79-4520280e04df
+Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 26 Feb 2025 17:07:39 +0000
+Received: from [192.168.22.24] (10.106.83.21) by EX19D022EUC002.ant.amazon.com
+ (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Wed, 26 Feb 2025
+ 17:07:38 +0000
+Message-ID: <946fc0f5-4306-4aa9-9b63-f7ccbaff8003@amazon.com>
+Date: Wed, 26 Feb 2025 17:07:36 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,92 +51,186 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] KVM: s390: pv: fix race when making a page secure
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, frankja@linux.ibm.com, borntraeger@de.ibm.com,
- nrb@linux.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
- schlameuss@linux.ibm.com, hca@linux.ibm.com
-References: <20250226123725.247578-1-imbrenda@linux.ibm.com>
- <20250226123725.247578-2-imbrenda@linux.ibm.com>
- <0dfeabca-5c41-4555-a43b-341a54096036@redhat.com>
- <20250226175833.16a7a970@p-imbrenda>
-From: David Hildenbrand <david@redhat.com>
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [RFC PATCH 0/6] KVM: x86: async PF user
+To: Sean Christopherson <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <corbet@lwn.net>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+	<mathieu.desnoyers@efficios.com>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <jthoughton@google.com>,
+	<david@redhat.com>, <peterx@redhat.com>, <oleg@redhat.com>,
+	<vkuznets@redhat.com>, <gshan@redhat.com>, <graf@amazon.de>,
+	<jgowans@amazon.com>, <roypat@amazon.co.uk>, <derekmn@amazon.com>,
+	<nsaenz@amazon.es>, <xmarcalx@amazon.com>
+References: <20241118123948.4796-1-kalyazin@amazon.com>
+ <Z6u-WdbiW3n7iTjp@google.com>
+ <a7080c07-0fc5-45ce-92f7-5f432a67bc63@amazon.com>
+ <Z7X2EKzgp_iN190P@google.com>
+ <6eddd049-7c7a-406d-b763-78fa1e7d921b@amazon.com>
+ <Z7d5HT7FpE-ZsHQ9@google.com>
+ <f820b630-13c1-4164-baa8-f5e8231612d1@amazon.com>
+ <Z75nRwSBxpeMwbsR@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250226175833.16a7a970@p-imbrenda>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <Z75nRwSBxpeMwbsR@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D006EUC001.ant.amazon.com (10.252.51.203) To
+ EX19D022EUC002.ant.amazon.com (10.252.51.137)
 
-On 26.02.25 17:58, Claudio Imbrenda wrote:
-> On Wed, 26 Feb 2025 16:05:11 +0100
-> David Hildenbrand <david@redhat.com> wrote:
-> 
->>> +int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header *uvcb)
->>> +{
->>> +	struct folio *folio;
->>> +	spinlock_t *ptelock;
->>> +	pte_t *ptep;
->>> +	int rc;
->>> +
->>> +	ptep = get_locked_valid_pte(mm, hva, &ptelock);
->>> +	if (!ptep)
->>> +		return -ENXIO;
+On 26/02/2025 00:58, Sean Christopherson wrote:
+> On Fri, Feb 21, 2025, Nikita Kalyazin wrote:
+>> On 20/02/2025 18:49, Sean Christopherson wrote:
+>>> On Thu, Feb 20, 2025, Nikita Kalyazin wrote:
+>>>> On 19/02/2025 15:17, Sean Christopherson wrote:
+>>>>> On Wed, Feb 12, 2025, Nikita Kalyazin wrote:
+>>>>> The conundrum with userspace async #PF is that if userspace is given only a single
+>>>>> bit per gfn to force an exit, then KVM won't be able to differentiate between
+>>>>> "faults" that will be handled synchronously by the vCPU task, and faults that
+>>>>> usersepace will hand off to an I/O task.  If the fault is handled synchronously,
+>>>>> KVM will needlessly inject a not-present #PF and a present IRQ.
+>>>>
+>>>> Right, but from the guest's point of view, async PF means "it will probably
+>>>> take a while for the host to get the page, so I may consider doing something
+>>>> else in the meantime (ie schedule another process if available)".
+>>>
+>>> Except in this case, the guest never gets a chance to run, i.e. it can't do
+>>> something else.  From the guest point of view, if KVM doesn't inject what is
+>>> effectively a spurious async #PF, the VM-Exiting instruction simply took a (really)
+>>> long time to execute.
 >>
->> You very likely need a pte_write() check we had there before, as you
->> might effectively modify page content by clearing the page.
+>> Sorry, I didn't get that.  If userspace learns from the
+>> kvm_run::memory_fault::flags that the exit is due to an async PF, it should
+>> call kvm run immediately, inject the not-present PF and allow the guest to
+>> reschedule.  What do you mean by "the guest never gets a chance to run"?
 > 
-> it's not really needed, but it doesn't hurt either, I'll add a check
+> What I'm saying is that, as proposed, the API doesn't precisely tell userspace
+> an exit happened due to an "async #PF".  KVM has absolutely zero clue as to
+> whether or not userspace is going to do an async #PF, or if userspace wants to
+> intercept the fault for some entirely different purpose.
 
-Can you elaborate why it is not needed? Would the HW enforce that 
-writability check already?
+Userspace is supposed to know whether the PF is async from the dedicated 
+flag added in the memory_fault structure: 
+KVM_MEMORY_EXIT_FLAG_ASYNC_PF_USER.  It will be set when KVM managed to 
+inject page-not-present.  Are you saying it isn't sufficient?
 
--- 
-Cheers,
+@@ -4396,6 +4412,35 @@ static int __kvm_faultin_pfn(struct kvm_vcpu 
+*vcpu, struct kvm_page_fault *fault
+  {
+  	bool async;
 
-David / dhildenb
++	/* Pre-check for userfault and bail out early. */
++	if (gfn_has_userfault(fault->slot->kvm, fault->gfn)) {
++		bool report_async = false;
++		u32 token = 0;
++
++		if (vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM &&
++			!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
++			trace_kvm_try_async_get_page(fault->addr, fault->gfn, 1);
++			if (kvm_find_async_pf_gfn(vcpu, fault->gfn)) {
++				trace_kvm_async_pf_repeated_fault(fault->addr, fault->gfn, 1);
++				kvm_make_request(KVM_REQ_APF_HALT, vcpu);
++				return RET_PF_RETRY;
++			} else if (kvm_can_deliver_async_pf(vcpu) &&
++				kvm_arch_setup_async_pf_user(vcpu, fault, &token)) {
++				report_async = true;
++			}
++		}
++
++		fault->pfn = KVM_PFN_ERR_USERFAULT;
++		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
++
++		if (report_async) {
++			vcpu->run->memory_fault.flags |= KVM_MEMORY_EXIT_FLAG_ASYNC_PF_USER;
++			vcpu->run->memory_fault.async_pf_user_token = token;
++		}
++
++		return -EFAULT;
++	}
++
+
+>>>> If we are exiting to userspace, it isn't going to be quick anyway, so we can
+>>>> consider all such faults "long" and warranting the execution of the async PF
+>>>> protocol.  So always injecting a not-present #PF and page ready IRQ doesn't
+>>>> look too wrong in that case.
+>>>
+>>> There is no "wrong", it's simply wasteful.  The fact that the userspace exit is
+>>> "long" is completely irrelevant.  Decompressing zswap is also slow, but it is
+>>> done on the current CPU, i.e. is not background I/O, and so doesn't trigger async
+>>> #PFs.
+>>>
+>>> In the guest, if host userspace resolves the fault before redoing KVM_RUN, the
+>>> vCPU will get two events back-to-back: an async #PF, and an IRQ signalling completion
+>>> of that #PF.
+>>
+>> Is this practically likely?
+> 
+> Yes, I think's it's quite possible.
+> 
+>> At least in our scenario (Firecracker snapshot restore) and probably in live
+>> migration postcopy, if a vCPU hits a fault, it's probably because the content
+>> of the page is somewhere remote (eg on the source machine or wherever the
+>> snapshot data is stored) and isn't going to be available quickly.
+> 
+> Unless the remote page was already requested, e.g. by a different vCPU, or by a
+> prefetching algorithim.
+> 
+>> Conversely, if the page content is available, it must have already been
+>> prepopulated into guest memory pagecache, the bit in the bitmap is cleared
+>> and no exit to userspace occurs.
+> 
+> But that doesn't happen instantaneously.  Even if the VMM somehow atomically
+> receives the page and marks it present, it's still possible for marking the page
+> present to race with KVM checking the bitmap.
+
+That looks like a generic problem of the VM-exit fault handling.  Eg 
+when one vCPU exits, userspace handles the fault and races setting the 
+bitmap with another vCPU that is about to fault the same page, which may 
+cause a spurious exit.
+
+On the other hand, is it malignant?  The only downside is additional 
+overhead of the async PF protocol, but if the race occurs infrequently, 
+it shouldn't be a problem.
+
+>>>>>> What advantage can you see in it over exiting to userspace (which already exists
+>>>>>> in James's series)?
+>>>>>
+>>>>> It doesn't exit to userspace :-)
+>>>>>
+>>>>> If userspace simply wakes a different task in response to the exit, then KVM
+>>>>> should be able to wake said task, e.g. by signalling an eventfd, and resume the
+>>>>> guest much faster than if the vCPU task needs to roundtrip to userspace.  Whether
+>>>>> or not such an optimization is worth the complexity is an entirely different
+>>>>> question though.
+>>>>
+>>>> This reminds me of the discussion about VMA-less UFFD that was coming up
+>>>> several times, such as [1], but AFAIK hasn't materialised into something
+>>>> actionable.  I may be wrong, but James was looking into that and couldn't
+>>>> figure out a way to scale it sufficiently for his use case and had to stick
+>>>> with the VM-exit-based approach.  Can you see a world where VM-exit
+>>>> userfaults coexist with no-VM-exit way of handling async PFs?
+>>>
+>>> The issue with UFFD is that it's difficult to provide a generic "point of contact",
+>>> whereas with KVM userfault, signalling can be tied to the vCPU, and KVM can provide
+>>> per-vCPU buffers/structures to aid communication.
+>>>
+>>> That said, supporting "exitless" KVM userfault would most definitely be premature
+>>> optimization without strong evidence it would benefit a real world use case.
+>>
+>> Does that mean that the "exitless" solution for async PF is a long-term one
+>> (if required), while the short-term would still be "exitful" (if we find a
+>> way to do it sensibly)?
+> 
+> My question on exitless support was purely exploratory, just ignore it for now.
 
