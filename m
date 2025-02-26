@@ -1,54 +1,58 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD91922D4DD
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 18:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7CF233145
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740593705; cv=none; b=bmsBa4qY029UmbEcb6M968UOLK8OT9ZFVXcHs6eNeEmWJ/vmN1mgqfyBmH9kqXEEXMGFye3fztfjj3MdvOo8HcLnSauuDTiLRw9RD958uqTIajc9Dr5X4od5UJdXCVgGGeoiwiTE6Ldci9EDo4NMbVCvXEuTsaLIv6gSdUAEumw=
+	t=1740593705; cv=none; b=N4UB7cuHDxxxofr9cWx+1LRNR8vxX3pRRW6d7Yk7D+KYuVq3UiOrqkaPcn4zkD/DfF77ZUvKlgmuLEBp1Pq0ZdK6YvWAGeq1quSFdaah5v1oP+7F5MZQvf8/Phj9F8RN9n1RYf5YLIAGhCYWDzzBZhb7PArkMBAIJS8+KZf9+4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740593705; c=relaxed/simple;
-	bh=0je6xjpQ/sUkUJXE1Wcbc/wTC6LRmY/GtirPAxfiwuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=d4ktoS+1xphTump/Y5P9shoMCXHmL4y/ZGSlKMaHrrUjJkqw7X2xlc7kI0KAKsbhYGHJwIEIS7XcDI4O8c1pdz8KfVRoo5Q0zcO34mkHcvbgpLx1Kjkeqnr9FNm98rzRNdKtHfUYTV+S7Kjyx9cTToC1Pj1wMl1PiCU5ZEE/V40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PY8KKlnR; arc=none smtp.client-ip=170.10.129.124
+	bh=yK3ISj9Lh0799JabXSSEqdIFZ4fH8yM8hkDCGUF86fM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bmTzKNSbH02XHNGtG1F0hZKgmfmsfCSL8GOLcymcpTkIvMAkBjLZaJ1pGY80GZVJqjy2ds7sMAzOKbhreT8zTIz6atlV0ranJk1WsCYTQlwQFCSLhWHKqCtOreXmv/yENAZ05ECss2UQhG+QH8eBPnILwedjYbs0EeE1Nvy7YS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G5ubC/bY; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PY8KKlnR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G5ubC/bY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740593701;
+	s=mimecast20190719; t=1740593702;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XAQLS7DozQHfJNsQvv9I10tSk2kkFQggtGNk9dnteMo=;
-	b=PY8KKlnRo3yoGHjPDFg6kOl2lKOsQe1NgYcPy1nAIisIx5xwc+UsyDwcc+SGifcsQHBQHM
-	cU2C66A8bsvLd5INpbkyhiErad/t36+gIdqr5C/RTwSDJ17OZhKchZPOMS2gBWnFdFBGlN
-	mIYvMTUe5iwphhZayVRZALJg7LLFvq0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/CNuOgHcSv/f8JvXDnI0o+vDFmf7q4logjIKEY454/o=;
+	b=G5ubC/bYbLo6QcaeGkg/aWGJPmWVKZnXrfOoMfByJo6sKFMhi3oeIbE9/VzJAHQFuEsOQL
+	64Q3tpNryQ9WHRZnSfdauFS+7v/kj9+m4dmuSmVc3lXIO18PMFBAfBsgDdoTgxrk2A03AI
+	yxl5uQwhVXjvPb3iGcw4KQ0++IuKXT0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-Tsvy6HPNMlSMuuSVPabTgw-1; Wed,
- 26 Feb 2025 13:14:56 -0500
-X-MC-Unique: Tsvy6HPNMlSMuuSVPabTgw-1
-X-Mimecast-MFC-AGG-ID: Tsvy6HPNMlSMuuSVPabTgw_1740593695
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-iz2hAVNANTCnV0u86SB7VQ-1; Wed,
+ 26 Feb 2025 13:14:59 -0500
+X-MC-Unique: iz2hAVNANTCnV0u86SB7VQ-1
+X-Mimecast-MFC-AGG-ID: iz2hAVNANTCnV0u86SB7VQ_1740593697
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02E78180087A;
-	Wed, 26 Feb 2025 18:14:55 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB99D18D95EE;
+	Wed, 26 Feb 2025 18:14:57 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E3B071944D02;
-	Wed, 26 Feb 2025 18:14:53 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C589A190C544;
+	Wed, 26 Feb 2025 18:14:56 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v4 00/33] TDX initialization + vCPU/VM creation
-Date: Wed, 26 Feb 2025 13:14:19 -0500
-Message-ID: <20250226181453.2311849-1-pbonzini@redhat.com>
+Subject: [PATCH 02/33] KVM: x86: move vm_destroy callback at end of kvm_arch_destroy_vm
+Date: Wed, 26 Feb 2025 13:14:21 -0500
+Message-ID: <20250226181453.2311849-3-pbonzini@redhat.com>
+In-Reply-To: <20250226181453.2311849-1-pbonzini@redhat.com>
+References: <20250226181453.2311849-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,124 +63,40 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi,
+TDX needs to free the TDR control structures last, after all paging structures
+have been torn down; move the vm_destroy callback at a suitable place.
+The new place is also okay for AMD; the main difference is that the
+MMU has been torn down and, if anything, that is better done before
+the SNP ASID is released.
 
-Here is v4 of TDX VM/vCPU creation series.  The main change is to rebase
-on top of Sean's "KVM: x86: Free vCPUs before freeing VM state" which
-will go into v6.14.  Instead of introducing separate vm_destroy and
-vm_free callbacks, vm_destroy is moved at end of kvm_arch_destroy_vm.
+Extracted from a patch by Yan Zhao.
 
-Detailed changelog from v3:
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-KVM: VMX: Refactor VMX module init/exit functions
-- fix modpost issues [Kai]
-
-KVM: VMX: Initialize TDX during KVM module load
-- extract cpus_read_lock() out of __do_tdx_cleanup [Kai, Chao]
-- removed kvm_can_support_tdx()
-
-KVM: TDX: Get system-wide info about TDX module on initialization
-- fix for introduction of __tdx_cleanup
-
-KVM: TDX: create/destroy VM structure
-- included two patches from Sean's "Free vCPUs before freeing VM state" series
-- replace vm_free hook with vm_destroy, introduce new vm_pre_destroy [Sean, Yan]
-- rename tdx_vm_free to tdx_vm_destroy
-- remove TDX_SEAMCALL_RETRIES from __tdx_reclaim_page
-
-KVM: TDX: initialize VM with TDX specific parameters
-- squashed "KVM: TDX: Set arch.has_protected_state to true" [Kai]
-
-Paolo
-
-Isaku Yamahata (13):
-  x86/virt/tdx: Add tdx_guest_keyid_alloc/free() to alloc and free TDX
-    guest KeyID
-  KVM: TDX: Add placeholders for TDX VM/vCPU structures
-  KVM: TDX: Define TDX architectural definitions
-  KVM: TDX: Add helper functions to print TDX SEAMCALL error
-  KVM: TDX: Add place holder for TDX VM specific mem_enc_op ioctl
-  KVM: TDX: Get system-wide info about TDX module on initialization
-  KVM: TDX: create/destroy VM structure
-  KVM: TDX: Support per-VM KVM_CAP_MAX_VCPUS extension check
-  KVM: TDX: add ioctl to initialize VM with TDX specific parameters
-  KVM: TDX: Make pmu_intel.c ignore guest TD case
-  KVM: TDX: Don't offline the last cpu of one package when there's TDX
-    guest
-  KVM: TDX: create/free TDX vcpu structure
-  KVM: TDX: Do TDX specific vcpu initialization
-
-Kai Huang (5):
-  x86/virt/tdx: Read essential global metadata for KVM
-  KVM: Export hardware virtualization enabling/disabling functions
-  KVM: VMX: Refactor VMX module init/exit functions
-  KVM: VMX: Initialize TDX during KVM module load
-  KVM: TDX: Get TDX global information
-
-Paolo Bonzini (3):
-  KVM: x86: move vm_destroy callback at end of kvm_arch_destroy_vm
-  x86/virt/tdx: allocate tdx_sys_info in static memory
-  KVM: x86: expose cpuid_entry2_find for TDX
-
-Rick Edgecombe (6):
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX KeyID management
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX TD creation
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX vCPU creation
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX page cache management
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX VM/vCPU field access
-  x86/virt/tdx: Add SEAMCALL wrappers for TDX flush operations
-
-Sean Christopherson (3):
-  KVM: x86: Free vCPUs before freeing VM state
-  KVM: x86: Don't load/put vCPU when unloading its MMU during teardown
-  KVM: TDX: Add TDX "architectural" error codes
-
-Xiaoyao Li (2):
-  KVM: x86: Introduce KVM_TDX_GET_CPUID
-  KVM: x86/mmu: Taking guest pa into consideration when calculate tdp
-    level
-
-Zhiming Hu (1):
-  KVM: TDX: Register TDX host key IDs to cgroup misc controller
-
- arch/x86/include/asm/kvm-x86-ops.h            |    4 +-
- arch/x86/include/asm/kvm_host.h               |    2 +
- arch/x86/include/asm/shared/tdx.h             |    7 +-
- arch/x86/include/asm/tdx.h                    |   59 +
- .../tdx => include/asm}/tdx_global_metadata.h |   19 +
- arch/x86/include/uapi/asm/kvm.h               |   60 +
- arch/x86/kvm/Kconfig                          |   12 +
- arch/x86/kvm/Makefile                         |    1 +
- arch/x86/kvm/cpuid.c                          |   33 +-
- arch/x86/kvm/cpuid.h                          |    3 +
- arch/x86/kvm/lapic.c                          |    1 +
- arch/x86/kvm/mmu/mmu.c                        |    9 +-
- arch/x86/kvm/vmx/main.c                       |  180 +-
- arch/x86/kvm/vmx/pmu_intel.c                  |   52 +-
- arch/x86/kvm/vmx/pmu_intel.h                  |   28 +
- arch/x86/kvm/vmx/tdx.c                        | 1545 +++++++++++++++++
- arch/x86/kvm/vmx/tdx.h                        |   90 +
- arch/x86/kvm/vmx/tdx_arch.h                   |  130 ++
- arch/x86/kvm/vmx/tdx_errno.h                  |   37 +
- arch/x86/kvm/vmx/vmx.c                        |   23 +-
- arch/x86/kvm/vmx/vmx.h                        |   37 +-
- arch/x86/kvm/vmx/x86_ops.h                    |   22 +
- arch/x86/kvm/x86.c                            |   27 +-
- arch/x86/virt/vmx/tdx/tdx.c                   |  276 ++-
- arch/x86/virt/vmx/tdx/tdx.h                   |   39 +-
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |   50 +
- include/linux/kvm_host.h                      |    9 +
- include/linux/misc_cgroup.h                   |    4 +
- kernel/cgroup/misc.c                          |    4 +
- virt/kvm/kvm_main.c                           |   21 +-
- 30 files changed, 2669 insertions(+), 115 deletions(-)
- rename arch/x86/{virt/vmx/tdx => include/asm}/tdx_global_metadata.h (58%)
- create mode 100644 arch/x86/kvm/vmx/pmu_intel.h
- create mode 100644 arch/x86/kvm/vmx/tdx.c
- create mode 100644 arch/x86/kvm/vmx/tdx.h
- create mode 100644 arch/x86/kvm/vmx/tdx_arch.h
- create mode 100644 arch/x86/kvm/vmx/tdx_errno.h
-
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 6fc4ddc606bd..514fc84efc92 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12878,7 +12878,6 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ 	}
+ 	kvm_unload_vcpu_mmus(kvm);
+ 	kvm_destroy_vcpus(kvm);
+-	kvm_x86_call(vm_destroy)(kvm);
+ 	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+ 	kvm_pic_destroy(kvm);
+ 	kvm_ioapic_destroy(kvm);
+@@ -12888,6 +12887,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ 	kvm_page_track_cleanup(kvm);
+ 	kvm_xen_destroy_vm(kvm);
+ 	kvm_hv_destroy_vm(kvm);
++	kvm_x86_call(vm_destroy)(kvm);
+ }
+ 
+ static void memslot_rmap_free(struct kvm_memory_slot *slot)
 -- 
 2.43.5
+
 
