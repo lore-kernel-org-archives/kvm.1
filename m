@@ -1,195 +1,191 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B834921D580
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 16:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8821D583
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 16:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740585646; cv=none; b=k0L1wLDEQqALwMuYywMM1ge+DVcyZ9T5GvB/Zz16Bra3Mnsi/MoC9M/iv/6qJGIiiVH1IpKKo4+KvZplQ6ULGM0e3qlB1L2ogcAPLoEUrwDQ0Orfqf24XbozAdQGoZY3D/WLI0d8pBlZNiuRE36e36hXGi2r8gls0cQIM2ySvuo=
+	t=1740588779; cv=none; b=f8ZCybtwu5/k1KLBN6Vc4kBGAznDJJjkZg/q0Dr9IpWoqmxiWBW4sEL14wuWA4e8Z+186R7Go1Z/78f7dnM31C9JjOA4otVsLlGR4IRcQWvnnKA4QwZGJd9wJGFfmYkV2YSztgSEJOEEvyfTS6ANh2Pi9E+XtK+gTzx0AH7P0Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740585646; c=relaxed/simple;
-	bh=PzU4b01qO2LwfblWa/oKQuFMDxEUtm45DRVjkCcoteY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j0l4Y0BYMA1Nv2HvTbVl6g4IplhJ2I5uUhI6Qm48/wQa6Z06IIv7F1TJMCxWHkGA2ztqz37AgtCcQ/b84WFUXwhVlEtYWgroYX1jrT4I64FaDpLoh1LAH/b1/crYWwrQGhg1LSStDXjlFjK6yh95g7f1TZZXXCz22IPtVE2wNgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cgAd6pzO; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1740588779; c=relaxed/simple;
+	bh=Qf/Qm0nkzf7U3vlvRsLDs3vQoV9ABJSWnA6WtOiN2ig=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D+58hBp18OmDeZCFEqakEaqutkwmrX8DtPYDjTlAuSdBGYHLKcmxoMv4f1FHlZFRZnLD3kyvCEcIU02GG63pERlP9qjhyrHPTXsajXPXknR9H+qrcI1fmRNELnAAM2JkCZPCqpinD0vVUyLCTArcsMIIJEICihsPdvPczPsdXnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J+gLlw62; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cgAd6pzO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J+gLlw62"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740585643;
+	s=mimecast20190719; t=1740588776;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lqa5gQlqS9US5GtfUQPHzeFlJi9ebohvbqbVThoHRcI=;
-	b=cgAd6pzOEJuz8vcml6ta9hJZw/bV0c+3bDz4HOj465LlP2hPY9LBBuzn8aGiMmwY1UQQ21
-	mb1Coz5rh5vg6BTSUHGpFW5nms4q0FqHqXSvNZh2p+M19dNWvOxpb9ae7LbRe0Z/Py2MjF
-	BqqIEwdQP/vUPHsSvVhvPIvoAlw8mts=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Qf/Qm0nkzf7U3vlvRsLDs3vQoV9ABJSWnA6WtOiN2ig=;
+	b=J+gLlw62K7t4nQLqh/eCztgxf5Fg2RUFnZfalzbLz7G4JkaSaI98fxLoJofLamUdKiq9lF
+	AR5TImaky7EeD9LjA8lc2AfffaIe1F5zPSAVzupIlXI8hJbREi5Xvylty0oavr+Tqbm+xj
+	K1XIY0YigzYySnTUVOWTEqhsAoXWxVI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-j5t9PsNXOkio33uOh44l9w-1; Wed, 26 Feb 2025 11:00:42 -0500
-X-MC-Unique: j5t9PsNXOkio33uOh44l9w-1
-X-Mimecast-MFC-AGG-ID: j5t9PsNXOkio33uOh44l9w_1740585641
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4399a5afcb3so64218935e9.3
-        for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 08:00:41 -0800 (PST)
+ us-mta-221-YtJCUKRZNWWM9Y8wCJxjdA-1; Wed, 26 Feb 2025 11:52:55 -0500
+X-MC-Unique: YtJCUKRZNWWM9Y8wCJxjdA-1
+X-Mimecast-MFC-AGG-ID: YtJCUKRZNWWM9Y8wCJxjdA_1740588774
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4399c32efb4so4856805e9.1
+        for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 08:52:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740585641; x=1741190441;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lqa5gQlqS9US5GtfUQPHzeFlJi9ebohvbqbVThoHRcI=;
-        b=WGxXMMogLiSsVYTq38LoK5zEXrfmlcFuMh0gMy84WgMddoUt5GVvI2xd1AT++p5nef
-         g87ohpUfc4CqvAew/PR60X/q/xUT5wcrGR2LUjvTJUbJJynu9hhoOVMbOu15pAvTWDqA
-         8x9mp5P+eEgFJ6JWuwe1JsSterKKyvtdAondUj5jPX5MDt0dPZB05eBkiEudDrf5CwxP
-         YACxSN9nYOqGcP5/aGLep3eacOWM6q4ryNauX350/xrt5JbQDpFn2rAg19nSfQo8AMCJ
-         5faFGwCKxSbTOBMJnUwhomzonoMAMoztJg0snpyhqfoODZOXXvjQQc7B2FGKEB3wL6WM
-         fEfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWk9hv5z4Id3C+yxOnOQNjEKs6HrqFu+59cwzUJEwfhQUKR/dx2M2tjDWrYYQ45bgyBEpc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQFil5fFD0Ia0/lzX/hksIohmygzW3aNSfQBCNe8qkOxhABW/9
-	o4gcEQBbLCXEDvSV1gMkcc/g321kE5hfyQIVjYW3/CX51vmfCQCHohw46hGf6Fkk7m+asTN5Ebn
-	+NGUebzipVJGunZcaLgnEM3iYmAf1g53VLegJfBklRtG/9jS1oA==
-X-Gm-Gg: ASbGncv6/NjVSXQMMzc7q30WMfvyS321j9JnUhc2SUZMXvIPY0pAe6caHy35MYfqGdo
-	JRva7LjT2VjUdlhBJDjKi6nEzfzxFyPwJK1G2Vh6oNM6XekIdFS8wOjv0Lmsgb3sDeFVfd0wjuQ
-	i1qhevMfF26LqCEoxsw8Lir7sqUeSwRqS1ncu7/mgt85deO6CPC3kulXPHwaqYVHaHe5uAuRiSF
-	2H6jz7WISk0GBusjqbQROaW7vOcz+jlthS2fSppJuQIIgut29yqgy4e7ZFeLtVTdTUE2b+RPW+l
-	jPaSkPxJzfQ8oe79+jycoBW3Dd8w27gKnUEPBAB/hY3RlaMflMMqnSmmcfQRswg=
-X-Received: by 2002:a05:600c:1c86:b0:439:8b05:66a6 with SMTP id 5b1f17b1804b1-43ab0f64425mr75173685e9.22.1740585639387;
-        Wed, 26 Feb 2025 08:00:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEGOJUxfNkJ47dOepAoS3DkNdGuo0CohyHyhD/GA0TMRONmh8zeK9C4FdbnePVZ6SIE8cqCJg==
-X-Received: by 2002:a05:600c:1c86:b0:439:8b05:66a6 with SMTP id 5b1f17b1804b1-43ab0f64425mr75170455e9.22.1740585637323;
-        Wed, 26 Feb 2025 08:00:37 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5393e5sm26113765e9.20.2025.02.26.08.00.36
+        d=1e100.net; s=20230601; t=1740588774; x=1741193574;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qf/Qm0nkzf7U3vlvRsLDs3vQoV9ABJSWnA6WtOiN2ig=;
+        b=OC43SOzGCE32IZnzdshs9EroKPPVr9I7DMtu35lsnxA5T515W4Ah5yzwb7hMNyk9pE
+         UJOWx46259+/s/N1PyplwATJKUh5Z49BUCcQmqEvH5Hh8MEzzgI78FdDAvNwxF9ZYDn/
+         +xn+3c3hbNpYfzdS+/OkCkHHrrmtV7fxKgPkeSXFzfxQxu5krPJW6beS/u1nzNrEOSNg
+         fLJiTgPRN8DkjaaPA/4nfq2cmPq9WQ9+y+gbt9GKRvPxq17pbjD5ncucah17etihEWUm
+         JUew+OwkuurwFq5o3oy9D+HIBOT+ARVF/p8ZADBVlVQE9+zEbJ89lYNMzyJ9MZp/Rr8U
+         +aqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVqesP0sWbnp1NeiWgeckW4cM7vk7Qi1LO3H9h9qHuCu5FDEuIZE5mjR7sU4rKhQcixGL8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxA4TtqWH9U4p811KCkYA14a5jFxiThAOiQUKZoVdsl/O3uwDWf
+	/txOIJZxI0NRPFF8vne7Xw/fNAJ2Fyok0lBMLipsoqY2TBIeYlQ7YzwXX6cN72lPncAtfTQdyl0
+	aqtq4lY85VbXCk5S5Zn7F22MjEzgDCuPVeZr1FBpg89TcfUXNUw==
+X-Gm-Gg: ASbGncsWg56zXGl98TtxAnIGU/p6ztnArUaeG4EUjPcn/Z+QqT6N9YP2kCAOOzZsntD
+	MfqcEgnEN+YeLVjTyPeVxgYH6T+zciAFBW0Lwj91zb30WnfeWYWZ0ZYBUo4Vq9vI/b6W+4RZnSb
+	nU0xbWcejAjEx0KTVHWLgJwQbrIaObiZP4dbvhwe2XxBKAk6yJCCFFfOWc4pmJuWveJN7ECjcfs
+	tMIUjgGgiuycQAfVrjiWqLvT4cG6Dt2WkrErO2faHX7Zx12sGn/OkRrQUTH5tgQHGzXttMsq1gP
+	z1O6oiQof22AK4VOL9/cPtVzkm87H8exxvoyuwgI2LYv47WrW5AjBifEBNkI4AD4MJxW0H/TMa6
+	M
+X-Received: by 2002:a05:600c:ca:b0:439:91c7:895a with SMTP id 5b1f17b1804b1-43afddc6489mr797895e9.7.1740588774312;
+        Wed, 26 Feb 2025 08:52:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGWpDWParbyEFSiQubNArY/pYMHk4T+vY7Yfjqs/xu0tXoSgFv+Leti7F7TfR+hujI+3HmBjw==
+X-Received: by 2002:a05:600c:ca:b0:439:91c7:895a with SMTP id 5b1f17b1804b1-43afddc6489mr797035e9.7.1740588773857;
+        Wed, 26 Feb 2025 08:52:53 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390d98c0642sm2242326f8f.81.2025.02.26.08.52.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 08:00:36 -0800 (PST)
-Date: Wed, 26 Feb 2025 17:00:33 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGll?=
- =?UTF-8?B?dS1EYXVkw6k=?= <philmd@linaro.org>, Ani Sinha
- <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>, Dongjiu Geng
- <gengdongjiu1@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Eric Blake
- <eblake@redhat.com>, John Snow <jsnow@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
- <shannon.zhaosl@gmail.com>, Yanan Wang <wangyanan55@huawei.com>, Zhao Liu
- <zhao1.liu@intel.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 00/14] Change ghes to use HEST-based offsets and add
- support for error inject
-Message-ID: <20250226170033.5c4687dd@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20250226155143.0e4a05f8@imammedo.users.ipa.redhat.com>
-References: <cover.1740148260.git.mchehab+huawei@kernel.org>
-	<20250226151656.10665bc9@imammedo.users.ipa.redhat.com>
-	<20250226153913.27255b1e@sal.lan>
-	<20250226155143.0e4a05f8@imammedo.users.ipa.redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+        Wed, 26 Feb 2025 08:52:53 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Dave Hansen <dave.hansen@intel.com>, Jann Horn <jannh@google.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-perf-users@vger.kernel.org, xen-devel@lists.xenproject.org,
+ kvm@vger.kernel.org, linux-arch@vger.kernel.org, rcu@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, Juergen Gross <jgross@suse.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
+ <alexey.amakhalov@broadcom.com>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan
+ Gupta <pawan.kumar.gupta@linux.intel.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski
+ <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
+ Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang1211@gmail.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Clark Williams <williams@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
+ Tomas Glozar <tglozar@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Kees Cook
+ <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Christoph
+ Hellwig <hch@infradead.org>, Shuah Khan <shuah@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Samuel Holland <samuel.holland@sifive.com>, Rong Xu <xur@google.com>,
+ Nicolas Saenz Julienne <nsaenzju@redhat.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Yosry Ahmed <yosryahmed@google.com>, "Kirill A.
+ Shutemov" <kirill.shutemov@linux.intel.com>, "Masami Hiramatsu (Google)"
+ <mhiramat@kernel.org>, Jinghao Jia <jinghao7@illinois.edu>, Luis
+ Chamberlain <mcgrof@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: Re: [PATCH v4 29/30] x86/mm, mm/vmalloc: Defer
+ flush_tlb_kernel_range() targeting NOHZ_FULL CPUs
+In-Reply-To: <408ebd8b-4bfb-4c4f-b118-7fe853c6e897@intel.com>
+References: <20250114175143.81438-1-vschneid@redhat.com>
+ <20250114175143.81438-30-vschneid@redhat.com>
+ <CAG48ez1Mh+DOy0ysOo7Qioxh1W7xWQyK9CLGNU9TGOsLXbg=gQ@mail.gmail.com>
+ <xhsmh34hhh37q.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <CAG48ez3H8OVP1GxBLdmFgusvT1gQhwu2SiXbgi8T9uuCYVK52w@mail.gmail.com>
+ <xhsmh5xlhk5p2.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <CAG48ez1EAATYcX520Nnw=P8XtUDSr5pe+qGH1YVNk3xN2LE05g@mail.gmail.com>
+ <xhsmh34gkk3ls.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <352317e3-c7dc-43b4-b4cb-9644489318d0@intel.com>
+ <xhsmhjz9mj2qo.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <d0450bc8-6585-49ca-9cad-49e65934bd5c@intel.com>
+ <xhsmhh64qhssj.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <eef09bdc-7546-462b-9ac0-661a44d2ceae@intel.com>
+ <xhsmhfrk84k5k.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <408ebd8b-4bfb-4c4f-b118-7fe853c6e897@intel.com>
+Date: Wed, 26 Feb 2025 17:52:50 +0100
+Message-ID: <xhsmhfrk0lkbh.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Wed, 26 Feb 2025 15:51:43 +0100
-Igor Mammedov <imammedo@redhat.com> wrote:
+On 20/02/25 09:38, Dave Hansen wrote:
+> On 2/20/25 09:10, Valentin Schneider wrote:
+>>> The LDT and maybe the PEBS buffers are the only implicit supervisor
+>>> accesses to vmalloc()'d memory that I can think of. But those are both
+>>> handled specially and shouldn't ever get zapped while in use. The LDT
+>>> replacement has its own IPIs separate from TLB flushing.
+>>>
+>>> But I'm actually not all that worried about accesses while actually
+>>> running userspace. It's that "danger zone" in the kernel between entry
+>>> and when the TLB might have dangerous garbage in it.
+>>>
+>> So say we have kPTI, thus no vmalloc() mapped in CR3 when running
+>> userspace, and do a full TLB flush right before switching to userspace -
+>> could the TLB still end up with vmalloc()-range-related entries when we're
+>> back in the kernel and going through the danger zone?
+>
+> Yes, because the danger zone includes the switch back to the kernel CR3
+> with vmalloc() fully mapped. All bets are off about what's in the TLB
+> the moment that CR3 write occurs.
+>
+> Actually, you could probably use that.
+>
+> If a mapping is in the PTI user page table, you can't defer the flushes
+> for it. Basically the same rule for text poking in the danger zone.
+>
+> If there's a deferred flush pending, make sure that all of the
+> SWITCH_TO_KERNEL_CR3's fully flush the TLB. You'd need something similar
+> to user_pcid_flush_mask.
+>
 
-> On Wed, 26 Feb 2025 15:39:13 +0100
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-[...]
-> 
-> PS: do not respin until I've finish this review.
+Right, that's what I (roughly) had in mind...
 
-finished
+> But, honestly, I'm still not sure this is worth all the trouble. If
+> folks want to avoid IPIs for TLB flushes, there are hardware features
+> that *DO* that. Just get new hardware instead of adding this complicated
+> pile of software that we have to maintain forever. In 10 years, we'll
+> still have this software *and* 95% of our hardware has the hardware
+> feature too.
 
->  
-> > >     
-> > > > 
-> > > > ---
-> > > > v4:
-> > > > - added an extra comment for AcpiGhesState structure;
-> > > > - patches reordered;
-> > > > - no functional changes, just code shift between the patches in this series.
-> > > > 
-> > > > v3:
-> > > > - addressed more nits;
-> > > > - hest_add_le now points to the beginning of HEST table;
-> > > > - removed HEST from tests/data/acpi;
-> > > > - added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
-> > > > 
-> > > > v2: 
-> > > > - address some nits;
-> > > > - improved ags cleanup patch and removed ags.present field;
-> > > > - added some missing le*_to_cpu() calls;
-> > > > - update date at copyright for new files to 2024-2025;
-> > > > - qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
-> > > > - added HEST and DSDT tables after the changes to make check target happy.
-> > > >   (two patches: first one whitelisting such tables; second one removing from
-> > > >    whitelist and updating/adding such tables to tests/data/acpi)
-> > > > 
-> > > > 
-> > > > 
-> > > > Mauro Carvalho Chehab (14):
-> > > >   acpi/ghes: prepare to change the way HEST offsets are calculated
-> > > >   acpi/ghes: add a firmware file with HEST address
-> > > >   acpi/ghes: Use HEST table offsets when preparing GHES records
-> > > >   acpi/ghes: don't hard-code the number of sources for HEST table
-> > > >   acpi/ghes: add a notifier to notify when error data is ready
-> > > >   acpi/ghes: create an ancillary acpi_ghes_get_state() function
-> > > >   acpi/generic_event_device: Update GHES migration to cover hest addr
-> > > >   acpi/generic_event_device: add logic to detect if HEST addr is
-> > > >     available
-> > > >   acpi/generic_event_device: add an APEI error device
-> > > >   tests/acpi: virt: allow acpi table changes for a new table: HEST
-> > > >   arm/virt: Wire up a GED error device for ACPI / GHES
-> > > >   tests/acpi: virt: add a HEST table to aarch64 virt and update DSDT
-> > > >   qapi/acpi-hest: add an interface to do generic CPER error injection
-> > > >   scripts/ghes_inject: add a script to generate GHES error inject
-> > > > 
-> > > >  MAINTAINERS                                   |  10 +
-> > > >  hw/acpi/Kconfig                               |   5 +
-> > > >  hw/acpi/aml-build.c                           |  10 +
-> > > >  hw/acpi/generic_event_device.c                |  43 ++
-> > > >  hw/acpi/ghes-stub.c                           |   7 +-
-> > > >  hw/acpi/ghes.c                                | 231 ++++--
-> > > >  hw/acpi/ghes_cper.c                           |  38 +
-> > > >  hw/acpi/ghes_cper_stub.c                      |  19 +
-> > > >  hw/acpi/meson.build                           |   2 +
-> > > >  hw/arm/virt-acpi-build.c                      |  37 +-
-> > > >  hw/arm/virt.c                                 |  19 +-
-> > > >  hw/core/machine.c                             |   2 +
-> > > >  include/hw/acpi/acpi_dev_interface.h          |   1 +
-> > > >  include/hw/acpi/aml-build.h                   |   2 +
-> > > >  include/hw/acpi/generic_event_device.h        |   1 +
-> > > >  include/hw/acpi/ghes.h                        |  54 +-
-> > > >  include/hw/arm/virt.h                         |   2 +
-> > > >  qapi/acpi-hest.json                           |  35 +
-> > > >  qapi/meson.build                              |   1 +
-> > > >  qapi/qapi-schema.json                         |   1 +
-> > > >  scripts/arm_processor_error.py                | 476 ++++++++++++
-> > > >  scripts/ghes_inject.py                        |  51 ++
-> > > >  scripts/qmp_helper.py                         | 702 ++++++++++++++++++
-> > > >  target/arm/kvm.c                              |   7 +-
-> > > >  tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
-> > > >  .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
-> > > >  tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
-> > > >  tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
-> > > >  tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
-> > > >  29 files changed, 1677 insertions(+), 79 deletions(-)
-> > > >  create mode 100644 hw/acpi/ghes_cper.c
-> > > >  create mode 100644 hw/acpi/ghes_cper_stub.c
-> > > >  create mode 100644 qapi/acpi-hest.json
-> > > >  create mode 100644 scripts/arm_processor_error.py
-> > > >  create mode 100755 scripts/ghes_inject.py
-> > > >  create mode 100755 scripts/qmp_helper.py
-> > > >       
-> > >     
-> >   
-> 
+... But yeah, it pretty much circumvents arch_context_tracking_work, or at
+the very least adds an early(er) flushing of the context tracking
+work... Urgh.
+
+Thank you for grounding my wild ideas into reality. I'll try to think some
+more see if I see any other way out (other than "buy hardware that does
+what you want and ditch the one that doesn't").
 
