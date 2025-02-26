@@ -1,60 +1,57 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6783325E464
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB83426658C
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740599752; cv=none; b=qaOcPN9Fv//c8Xyw7GNwTBInQzXSeTVt95pO0fOL8KvscfqCXxFWaYQOyIb4rn+pAGQ9HinOjB+DQBuCvDZn/bKnBMtAfP9M9d78cBV5mN1/nW1lAxjagJ4+FdMMnOcEyW3RKEmaHG50iNI6bNiVsQM12dII2x4Vnky96oFi1pk=
+	t=1740599754; cv=none; b=eoFDY6sONL6T8aN3PekBFmPg6ghFyQOuNvbGeUSPpEkZnPo69cnif7M8lsNjvm2mzS7tRfdC+8T1XLmJXfOESrNHxJPJ1AZtE9hQudIyZgaeiNtycVkIzpCOlJBM6QMkwvQW27rd0UmiHCN3o96wlvzOzYxhOWKEWVEHD9CZUJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740599752; c=relaxed/simple;
-	bh=SgOv0fw3vHtFfJ2YGZZ6UgQ2qqF9BvchJF3sQC8YzpU=;
+	s=arc-20240116; t=1740599754; c=relaxed/simple;
+	bh=TEgDrXOaGNxLHp+ZMToVC5t81PcFu+i/BL72BOcHPtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thtibgxcf2rzWlZu3gdWG0MfrHvW7unOYBNzqhqNWrLiLZmNEmPMRM7dW8JmHnYUM0l/JNK0wmzxmZpmK6rvfQ1ZN3g6RMoHRE2LpvAfmSTOP9fLAeMtT4kG2xSFtZUCN8mLBKPgELNS1+x2aS/BBBjN4wBow9cn05b8qoLO9pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DqlqGblx; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=feMCCCcAyYH8PQwTWTAERCKH2idFyGkmQC9q3PMq8LxsH2kDcdfHCARVorFi1ZK2j79gj8kfZOn8BiCK4uhiqY/QeJyIZN6/MGvW1X6ebqCrIH6deh5W9WGt/nuajl4gm6PaVN9/j0kuOsxPMbFwPo4womz8geBehIZQYoTjtIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZJuxB8g1; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DqlqGblx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZJuxB8g1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740599746;
+	s=mimecast20190719; t=1740599751;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JHjkXoSefLFcMkYSnNMyUsdXOnSEL8i7jCTLIkwclzg=;
-	b=DqlqGblxdStmz+mNBjT2bMOtDkVfuMEfFzcXjDGd+Zd4lUSgXWY1ikxbT3DfPonp8YhTIA
-	CERCP0PeOL3eKT9ZSH0MkOE2Z4m8wRfLD+lSXzQtshP65trnuj3ByJFTToaXCmlfC8X4zQ
-	XmHF68CU/RSSIFeN2TssZBnuDJLwCug=
+	bh=kl/R+UIdUpUSBZ3NVQghzk/4WCvPdLJyhrreIwmEdRo=;
+	b=ZJuxB8g1lOxdvcWosklAnao9aUbkjwPPY0KPQ48oQH8VHysnUZWx6hV0wkIB2RlxEQ/cpr
+	x0TtyaVcCIHcmAvxknmkrMyGTUoONtG/RuAEb2JqD+EYyyzGNfmKAb5b16dLp4f9ZIRzBk
+	OSnSw+l9I/GrbQiZAPic8HYH0dMt0sY=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-k_iTaRYMNJyuPloGVeYN8Q-1; Wed,
- 26 Feb 2025 14:55:38 -0500
-X-MC-Unique: k_iTaRYMNJyuPloGVeYN8Q-1
-X-Mimecast-MFC-AGG-ID: k_iTaRYMNJyuPloGVeYN8Q_1740599736
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-mz7vUJgDPJ2go8CPe0oxZQ-1; Wed,
+ 26 Feb 2025 14:55:48 -0500
+X-MC-Unique: mz7vUJgDPJ2go8CPe0oxZQ-1
+X-Mimecast-MFC-AGG-ID: mz7vUJgDPJ2go8CPe0oxZQ_1740599747
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 142971800878;
-	Wed, 26 Feb 2025 19:55:36 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 206761800874;
+	Wed, 26 Feb 2025 19:55:47 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C719D1944D02;
-	Wed, 26 Feb 2025 19:55:34 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2BDB4300019E;
+	Wed, 26 Feb 2025 19:55:46 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 03/29] x86/virt/tdx: Add SEAMCALL wrappers to manage TDX TLB tracking
-Date: Wed, 26 Feb 2025 14:55:03 -0500
-Message-ID: <20250226195529.2314580-4-pbonzini@redhat.com>
+	Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PATCH 11/29] KVM: TDX: Add accessors VMX VMCS helpers
+Date: Wed, 26 Feb 2025 14:55:11 -0500
+Message-ID: <20250226195529.2314580-12-pbonzini@redhat.com>
 In-Reply-To: <20250226195529.2314580-1-pbonzini@redhat.com>
 References: <20250226195529.2314580-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -65,161 +62,155 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-TDX module defines a TLB tracking protocol to make sure that no logical
-processor holds any stale Secure EPT (S-EPT or SEPT) TLB translations for a
-given TD private GPA range. After a successful TDH.MEM.RANGE.BLOCK,
-TDH.MEM.TRACK, and kicking off all vCPUs, TDX module ensures that the
-subsequent TDH.VP.ENTER on each vCPU will flush all stale TLB entries for
-the specified GPA ranges in TDH.MEM.RANGE.BLOCK. Wrap the
-TDH.MEM.RANGE.BLOCK with tdh_mem_range_block() and TDH.MEM.TRACK with
-tdh_mem_track() to enable the kernel to assist the TDX module in TLB
-tracking management.
+TDX defines SEAMCALL APIs to access TDX control structures corresponding to
+the VMX VMCS.  Introduce helper accessors to hide its SEAMCALL ABI details.
 
-The caller of tdh_mem_range_block() needs to specify "GPA" and "level" to
-request the TDX module to block the subsequent creation of TLB translation
-for a GPA range. This GPA range can correspond to a SEPT page or a TD
-private page at any level.
-
-Contentions and errors are possible with the SEAMCALL TDH.MEM.RANGE.BLOCK.
-Therefore, the caller of tdh_mem_range_block() needs to check the function
-return value and retrieve extended error info from the function output
-params.
-
-Upon TDH.MEM.RANGE.BLOCK success, no new TLB entries will be created for
-the specified private GPA range, though the existing TLB translations may
-still persist.  TDH.MEM.TRACK will then advance the TD's epoch counter to
-ensure TDX module will flush TLBs in all vCPUs once the vCPUs re-enter
-the TD. TDH.MEM.TRACK will fail to advance TD's epoch counter if there
-are vCPUs still running in non-root mode at the previous TD epoch counter.
-So to ensure private GPA translations are flushed, callers must first call
-tdh_mem_range_block(), then tdh_mem_track(), and lastly send IPIs to kick
-all the vCPUs and force them to re-enter, thus triggering the TLB flush.
-
-Don't export a single operation and instead export functions that just
-expose the block and track operations; this is for a couple reasons:
-
-1. The vCPU kick should use KVM's functionality for doing this, which can better
-target sending IPIs to only the minimum required pCPUs.
-
-2. tdh_mem_track() doesn't need to be executed if a vCPU has not entered a TD,
-which is information only KVM knows.
-
-3. Leaving the operations separate will allow for batching many
-tdh_mem_range_block() calls before a tdh_mem_track(). While this batching will
-not be done initially by KVM, it demonstrates that keeping mem block and track
-as separate operations is a generally good design.
-
-Contentions are also possible in TDH.MEM.TRACK. For example, TDH.MEM.TRACK
-may contend with TDH.VP.ENTER when advancing the TD epoch counter.
-tdh_mem_track() does not provide the retries for the caller. Callers can
-choose to avoid contentions or retry on their own.
-
-[Kai: Switched from generic seamcall export]
-[Yan: Re-wrote the changelog]
-Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Kai Huang <kai.huang@intel.com>
+Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Message-ID: <20241112073648.22143-1-yan.y.zhao@intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Message-ID: <20241112073551.22070-1-yan.y.zhao@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/tdx.h  |  2 ++
- arch/x86/virt/vmx/tdx/tdx.c | 27 +++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  2 ++
- 3 files changed, 31 insertions(+)
+ arch/x86/kvm/vmx/tdx.c | 13 +++++++
+ arch/x86/kvm/vmx/tdx.h | 88 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 101 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 9f978db2560f..cc050cc1367a 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -169,6 +169,7 @@ u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page
- u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page);
- u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
-+u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, int level, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_mng_key_config(struct tdx_td *td);
- u64 tdh_mng_create(struct tdx_td *td, u16 hkid);
- u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp);
-@@ -181,6 +182,7 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid);
- u64 tdh_vp_rd(struct tdx_vp *vp, u64 field, u64 *data);
- u64 tdh_vp_wr(struct tdx_vp *vp, u64 field, u64 data, u64 mask);
- u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64 *tdx_size);
-+u64 tdh_mem_track(struct tdx_td *tdr);
- u64 tdh_phymem_cache_wb(bool resume);
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index d85f74c0a965..3fb5410cecb1 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -36,6 +36,19 @@ static enum cpuhp_state tdx_cpuhp_state;
+ 
+ static const struct tdx_sys_info *tdx_sysinfo;
+ 
++void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
++{
++	KVM_BUG_ON(1, tdx->vcpu.kvm);
++	pr_err("TDH_VP_RD[%s.0x%x] failed 0x%llx\n", uclass, field, err);
++}
++
++void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
++		      u64 val, u64 err)
++{
++	KVM_BUG_ON(1, tdx->vcpu.kvm);
++	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
++}
++
+ #define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
+ 
+ static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index 5fea072b4f56..77d693dfcb08 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -47,6 +47,10 @@ struct vcpu_tdx {
+ 	enum vcpu_tdx_state state;
+ };
+ 
++void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err);
++void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
++		      u64 val, u64 err);
++
+ static inline bool is_td(struct kvm *kvm)
+ {
+ 	return kvm->arch.vm_type == KVM_X86_TDX_VM;
+@@ -68,6 +72,90 @@ static __always_inline u64 td_tdcs_exec_read64(struct kvm_tdx *kvm_tdx, u32 fiel
+ 	}
+ 	return data;
+ }
++
++static __always_inline void tdvps_vmcs_check(u32 field, u8 bits)
++{
++#define VMCS_ENC_ACCESS_TYPE_MASK	0x1UL
++#define VMCS_ENC_ACCESS_TYPE_FULL	0x0UL
++#define VMCS_ENC_ACCESS_TYPE_HIGH	0x1UL
++#define VMCS_ENC_ACCESS_TYPE(field)	((field) & VMCS_ENC_ACCESS_TYPE_MASK)
++
++	/* TDX is 64bit only.  HIGH field isn't supported. */
++	BUILD_BUG_ON_MSG(__builtin_constant_p(field) &&
++			 VMCS_ENC_ACCESS_TYPE(field) == VMCS_ENC_ACCESS_TYPE_HIGH,
++			 "Read/Write to TD VMCS *_HIGH fields not supported");
++
++	BUILD_BUG_ON(bits != 16 && bits != 32 && bits != 64);
++
++#define VMCS_ENC_WIDTH_MASK	GENMASK(14, 13)
++#define VMCS_ENC_WIDTH_16BIT	(0UL << 13)
++#define VMCS_ENC_WIDTH_64BIT	(1UL << 13)
++#define VMCS_ENC_WIDTH_32BIT	(2UL << 13)
++#define VMCS_ENC_WIDTH_NATURAL	(3UL << 13)
++#define VMCS_ENC_WIDTH(field)	((field) & VMCS_ENC_WIDTH_MASK)
++
++	/* TDX is 64bit only.  i.e. natural width = 64bit. */
++	BUILD_BUG_ON_MSG(bits != 64 && __builtin_constant_p(field) &&
++			 (VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_64BIT ||
++			  VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_NATURAL),
++			 "Invalid TD VMCS access for 64-bit field");
++	BUILD_BUG_ON_MSG(bits != 32 && __builtin_constant_p(field) &&
++			 VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_32BIT,
++			 "Invalid TD VMCS access for 32-bit field");
++	BUILD_BUG_ON_MSG(bits != 16 && __builtin_constant_p(field) &&
++			 VMCS_ENC_WIDTH(field) == VMCS_ENC_WIDTH_16BIT,
++			 "Invalid TD VMCS access for 16-bit field");
++}
++
++#define TDX_BUILD_TDVPS_ACCESSORS(bits, uclass, lclass)				\
++static __always_inline u##bits td_##lclass##_read##bits(struct vcpu_tdx *tdx,	\
++							u32 field)		\
++{										\
++	u64 err, data;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_rd(&tdx->vp, TDVPS_##uclass(field), &data);		\
++	if (unlikely(err)) {							\
++		tdh_vp_rd_failed(tdx, #uclass, field, err);			\
++		return 0;							\
++	}									\
++	return (u##bits)data;							\
++}										\
++static __always_inline void td_##lclass##_write##bits(struct vcpu_tdx *tdx,	\
++						      u32 field, u##bits val)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(&tdx->vp, TDVPS_##uclass(field), val,			\
++		      GENMASK_ULL(bits - 1, 0));				\
++	if (unlikely(err))							\
++		tdh_vp_wr_failed(tdx, #uclass, " = ", field, (u64)val, err);	\
++}										\
++static __always_inline void td_##lclass##_setbit##bits(struct vcpu_tdx *tdx,	\
++						       u32 field, u64 bit)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(&tdx->vp, TDVPS_##uclass(field), bit, bit);		\
++	if (unlikely(err))							\
++		tdh_vp_wr_failed(tdx, #uclass, " |= ", field, bit, err);	\
++}										\
++static __always_inline void td_##lclass##_clearbit##bits(struct vcpu_tdx *tdx,	\
++							 u32 field, u64 bit)	\
++{										\
++	u64 err;								\
++										\
++	tdvps_##lclass##_check(field, bits);					\
++	err = tdh_vp_wr(&tdx->vp, TDVPS_##uclass(field), 0, bit);		\
++	if (unlikely(err))							\
++		tdh_vp_wr_failed(tdx, #uclass, " &= ~", field, bit, err);\
++}
++
++TDX_BUILD_TDVPS_ACCESSORS(16, VMCS, vmcs);
++TDX_BUILD_TDVPS_ACCESSORS(32, VMCS, vmcs);
++TDX_BUILD_TDVPS_ACCESSORS(64, VMCS, vmcs);
  #else
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4ae10246260e..f920754bb35e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1599,6 +1599,23 @@ u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u
- }
- EXPORT_SYMBOL_GPL(tdh_mem_page_aug);
- 
-+u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, int level, u64 *ext_err1, u64 *ext_err2)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = gpa | level,
-+		.rdx = tdx_tdr_pa(td),
-+	};
-+	u64 ret;
-+
-+	ret = seamcall_ret(TDH_MEM_RANGE_BLOCK, &args);
-+
-+	*ext_err1 = args.rcx;
-+	*ext_err2 = args.rdx;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(tdh_mem_range_block);
-+
- u64 tdh_mng_key_config(struct tdx_td *td)
- {
- 	struct tdx_module_args args = {
-@@ -1761,6 +1778,16 @@ u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64
- }
- EXPORT_SYMBOL_GPL(tdh_phymem_page_reclaim);
- 
-+u64 tdh_mem_track(struct tdx_td *td)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = tdx_tdr_pa(td),
-+	};
-+
-+	return seamcall(TDH_MEM_TRACK, &args);
-+}
-+EXPORT_SYMBOL_GPL(tdh_mem_track);
-+
- u64 tdh_phymem_cache_wb(bool resume)
- {
- 	struct tdx_module_args args = {
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 5879bdb0045f..104c97abf264 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -19,6 +19,7 @@
- #define TDH_MEM_SEPT_ADD		3
- #define TDH_VP_ADDCX			4
- #define TDH_MEM_PAGE_AUG		6
-+#define TDH_MEM_RANGE_BLOCK		7
- #define TDH_MNG_KEY_CONFIG		8
- #define TDH_MNG_CREATE			9
- #define TDH_MNG_RD			11
-@@ -36,6 +37,7 @@
- #define TDH_SYS_RD			34
- #define TDH_SYS_LP_INIT			35
- #define TDH_SYS_TDMR_INIT		36
-+#define TDH_MEM_TRACK			38
- #define TDH_PHYMEM_CACHE_WB		40
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
+ static inline int tdx_bringup(void) { return 0; }
+ static inline void tdx_cleanup(void) {}
 -- 
 2.43.5
 
