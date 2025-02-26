@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20972271837
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E05127290D
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740599769; cv=none; b=LprOI6ouci34PAV/YQ8ungwGqvrO1aCEqcJt++jKl3Rd+yHdL0dMFqpqCfpkBugmO59PURC8aI+uRvaO70eby781YNuPqBt14mwtdSRzBxWK/PYzGfZqb4by7UlZL4fnWFuAJB40NgvVyNg21Cd672wIXa9WTIk18nP8q2Vr/zA=
+	t=1740599770; cv=none; b=IqxvsLntPU356hqG9JQCV9JY2XC0ZH93Zwt04S0z2P61UWou1xozVeQN5wWeqxiS5y2Dy2VmpfuP3e8hkv62Z/Fut4EC3SBwSBMuXHF/gY/uYElYOggRgVKiDnv72jAsMOxHziNT/wmqcwu8ZbNSxRdXyqA1H1i94UL+i+Zghow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740599769; c=relaxed/simple;
-	bh=ppCWJ8h33hUOdaVp+aso+1+CZYfvrzaXU/GTznrYEoY=;
+	s=arc-20240116; t=1740599770; c=relaxed/simple;
+	bh=hi09F/q6dQPU3N15Qmxhs0cAa0R2AlpWYrnw+O/UxG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c7uHgPY8FufAxSkouEfS1Sn9LckTjrw93sPSx5FbA5q77pQ0O0UBmKSEz2Vw/GBorUjoSoFsVQGf83xKer3j0Ub0DR50i9I2ooBKKSNLGy/b9wF/fG0eEw1QYE6feKU3dRb6LzNGDNEXk/5Qh7IYUy16hjysdODtPhdRKLGdsJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ApKpKka5; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=IriqCNXDGpF5AtSOCyZJYE2mk0nIBsdw8NaSxkeF3haMhtGnqzqO5XCAoI6fXSUyYcV07Wr3nL5lKDTL8GpHmjqgrnWmjK3zGu0baYV8n8UjHoCXMHGqmcC0HCyV7ONMznBMHAVeCSd0bgqMB6cXhXoGoZcJVX/sDwYRavRapbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bN6B+ij8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ApKpKka5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bN6B+ij8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1740599766;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FHJ6Cfru3RiTIXYAD00ZfSJbyQ1Wf9Qe7eITQyPHXlQ=;
-	b=ApKpKka5+UMwGZJ55kw3IPhQ7QIGxhO9XUYd/YHKemBH/AZWF+setK9jrlFa6NSndNlw8h
-	Vws5+EhtvZKEoFx4NsxKfRspt2UI1bfLxIDUZ0BVwrieDu+0eFgb2INs76+0RWTqC/UPw9
-	EOQg2m6Qa3rCtd4M/If03oaK+Uy4yto=
+	bh=4zHNaGhOLIKF1RINghd//1N9mcPIA2fRtWEmdegcDMo=;
+	b=bN6B+ij8QZL50Q14KL3U56Akc75boYyNVHZd46SJvknhIyfC2ZPtJYQ2SXJ4i8qnsalqOL
+	JOEB9fGX2Nu3PNUsu2Qapnn/xkGsVWIVrzOHHWZWbNJ+nvE3UP5d8MmGqmpBSpED9manu2
+	6rGrnpGsExjX56HowYmIS16H4lGC/rI=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460--CODsmDjOJGc0YM_a2s05g-1; Wed,
- 26 Feb 2025 14:56:04 -0500
-X-MC-Unique: -CODsmDjOJGc0YM_a2s05g-1
-X-Mimecast-MFC-AGG-ID: -CODsmDjOJGc0YM_a2s05g_1740599763
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-487-SAvYt6WpNni28lDZfMDuYg-1; Wed,
+ 26 Feb 2025 14:56:02 -0500
+X-MC-Unique: SAvYt6WpNni28lDZfMDuYg-1
+X-Mimecast-MFC-AGG-ID: SAvYt6WpNni28lDZfMDuYg_1740599760
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B6F818EB2CB;
-	Wed, 26 Feb 2025 19:56:03 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95A5B18EAA9A;
+	Wed, 26 Feb 2025 19:56:00 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 72DB51955F0F;
-	Wed, 26 Feb 2025 19:56:02 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9985C19560AE;
+	Wed, 26 Feb 2025 19:55:59 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
 	Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: [PATCH 24/29] KVM: TDX: Handle vCPU dissociation
-Date: Wed, 26 Feb 2025 14:55:24 -0500
-Message-ID: <20250226195529.2314580-25-pbonzini@redhat.com>
+Subject: [PATCH 22/29] KVM: TDX: Add an ioctl to create initial guest memory
+Date: Wed, 26 Feb 2025 14:55:22 -0500
+Message-ID: <20250226195529.2314580-23-pbonzini@redhat.com>
 In-Reply-To: <20250226195529.2314580-1-pbonzini@redhat.com>
 References: <20250226195529.2314580-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -66,383 +66,264 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Handle vCPUs dissociations by invoking SEAMCALL TDH.VP.FLUSH which flushes
-the address translation caches and cached TD VMCS of a TD vCPU in its
-associated pCPU.
+Add a new ioctl for the user space VMM to initialize guest memory with the
+specified memory contents.
 
-In TDX, a vCPUs can only be associated with one pCPU at a time, which is
-done by invoking SEAMCALL TDH.VP.ENTER. For a successful association, the
-vCPU must be dissociated from its previous associated pCPU.
+Because TDX protects the guest's memory, the creation of the initial guest
+memory requires a dedicated TDX module API, TDH.MEM.PAGE.ADD(), instead of
+directly copying the memory contents into the guest's memory in the case of
+the default VM type.
 
-To facilitate vCPU dissociation, introduce a per-pCPU list
-associated_tdvcpus. Add a vCPU into this list when it's loaded into a new
-pCPU (i.e. when a vCPU is loaded for the first time or migrated to a new
-pCPU).
+Define a new subcommand, KVM_TDX_INIT_MEM_REGION, of vCPU-scoped
+KVM_MEMORY_ENCRYPT_OP.  Check if the GFN is already pre-allocated, assign
+the guest page in Secure-EPT, copy the initial memory contents into the
+guest memory, and encrypt the guest memory.  Optionally, extend the memory
+measurement of the TDX guest.
 
-vCPU dissociations can happen under below conditions:
-- On the op hardware_disable is called.
-  This op is called when virtualization is disabled on a given pCPU, e.g.
-  when hot-unplug a pCPU or machine shutdown/suspend.
-  In this case, dissociate all vCPUs from the pCPU by iterating its
-  per-pCPU list associated_tdvcpus.
+The ioctl uses the vCPU file descriptor because of the TDX module's
+requirement that the memory is added to the S-EPT (via TDH.MEM.SEPT.ADD)
+prior to initialization (TDH.MEM.PAGE.ADD).  Accessing the MMU in turn
+requires a vCPU file descriptor, just like for KVM_PRE_FAULT_MEMORY.  In
+fact, the post-populate callback is able to reuse the same logic used by
+KVM_PRE_FAULT_MEMORY, so that userspace can do everything with a single
+ioctl.
 
-- On vCPU migration to a new pCPU.
-  Before adding a vCPU into associated_tdvcpus list of the new pCPU,
-  dissociation from its old pCPU is required, which is performed by issuing
-  an IPI and executing SEAMCALL TDH.VP.FLUSH on the old pCPU.
-  On a successful dissociation, the vCPU will be removed from the
-  associated_tdvcpus list of its previously associated pCPU.
+Note that this is the only way to invoke TDH.MEM.SEPT.ADD before the TD
+in finalized, as userspace cannot use KVM_PRE_FAULT_MEMORY at that
+point.  This ensures that there cannot be pages in the S-EPT awaiting
+TDH.MEM.PAGE.ADD, which would be treated incorrectly as spurious by
+tdp_mmu_map_handle_target_level() (KVM would see the SPTE as PRESENT,
+but the corresponding S-EPT entry will be !PRESENT).
 
-- On tdx_mmu_release_hkid() is called.
-  TDX mandates that all vCPUs must be disassociated prior to the release of
-  an hkid. Therefore, dissociation of all vCPUs is a must before executing
-  the SEAMCALL TDH.MNG.VPFLUSHDONE and subsequently freeing the hkid.
-
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Message-ID: <20241112073858.22312-1-yan.y.zhao@intel.com>
+---
+ - KVM_BUG_ON() for kvm_tdx->nr_premapped (Paolo)
+ - Use tdx_operand_busy()
+ - Merge first patch in SEPT SEAMCALL retry series in to this base
+   (Paolo)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/vmx/main.c    |  22 ++++-
- arch/x86/kvm/vmx/tdx.c     | 159 +++++++++++++++++++++++++++++++++++--
- arch/x86/kvm/vmx/tdx.h     |   2 +
- arch/x86/kvm/vmx/x86_ops.h |   4 +
- 4 files changed, 177 insertions(+), 10 deletions(-)
+ arch/x86/include/uapi/asm/kvm.h |   9 ++
+ arch/x86/kvm/vmx/tdx.c          | 144 ++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c             |   1 +
+ 3 files changed, 154 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 828168e67d4e..abb0fc723a0b 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -10,6 +10,14 @@
- #include "tdx.h"
- #include "tdx_arch.h"
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index cd55484e3f0c..ee1b517351a3 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -932,6 +932,7 @@ enum kvm_tdx_cmd_id {
+ 	KVM_TDX_CAPABILITIES = 0,
+ 	KVM_TDX_INIT_VM,
+ 	KVM_TDX_INIT_VCPU,
++	KVM_TDX_INIT_MEM_REGION,
+ 	KVM_TDX_GET_CPUID,
  
-+static void vt_disable_virtualization_cpu(void)
-+{
-+	/* Note, TDX *and* VMX need to be disabled if TDX is enabled. */
-+	if (enable_tdx)
-+		tdx_disable_virtualization_cpu();
-+	vmx_disable_virtualization_cpu();
-+}
+ 	KVM_TDX_CMD_NR_MAX,
+@@ -987,4 +988,12 @@ struct kvm_tdx_init_vm {
+ 	struct kvm_cpuid2 cpuid;
+ };
+ 
++#define KVM_TDX_MEASURE_MEMORY_REGION   _BITULL(0)
 +
- static __init int vt_hardware_setup(void)
- {
- 	int ret;
-@@ -111,6 +119,16 @@ static void vt_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	vmx_vcpu_reset(vcpu, init_event);
- }
- 
-+static void vt_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-+{
-+	if (is_td_vcpu(vcpu)) {
-+		tdx_vcpu_load(vcpu, cpu);
-+		return;
-+	}
-+
-+	vmx_vcpu_load(vcpu, cpu);
-+}
-+
- static void vt_flush_tlb_all(struct kvm_vcpu *vcpu)
- {
- 	if (is_td_vcpu(vcpu)) {
-@@ -199,7 +217,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.hardware_unsetup = vmx_hardware_unsetup,
- 
- 	.enable_virtualization_cpu = vmx_enable_virtualization_cpu,
--	.disable_virtualization_cpu = vmx_disable_virtualization_cpu,
-+	.disable_virtualization_cpu = vt_disable_virtualization_cpu,
- 	.emergency_disable_virtualization_cpu = vmx_emergency_disable_virtualization_cpu,
- 
- 	.has_emulated_msr = vmx_has_emulated_msr,
-@@ -216,7 +234,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.vcpu_reset = vt_vcpu_reset,
- 
- 	.prepare_switch_to_guest = vmx_prepare_switch_to_guest,
--	.vcpu_load = vmx_vcpu_load,
-+	.vcpu_load = vt_vcpu_load,
- 	.vcpu_put = vmx_vcpu_put,
- 
- 	.update_exception_bitmap = vmx_update_exception_bitmap,
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 246f924ae6f6..a6696448cb53 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -162,6 +162,21 @@ static bool tdx_operand_busy(u64 err)
- }
- 
- 
-+/*
-+ * A per-CPU list of TD vCPUs associated with a given CPU.
-+ * Protected by interrupt mask. Only manipulated by the CPU owning this per-CPU
-+ * list.
-+ * - When a vCPU is loaded onto a CPU, it is removed from the per-CPU list of
-+ *   the old CPU during the IPI callback running on the old CPU, and then added
-+ *   to the per-CPU list of the new CPU.
-+ * - When a TD is tearing down, all vCPUs are disassociated from their current
-+ *   running CPUs and removed from the per-CPU list during the IPI callback
-+ *   running on those CPUs.
-+ * - When a CPU is brought down, traverse the per-CPU list to disassociate all
-+ *   associated TD vCPUs and remove them from the per-CPU list.
-+ */
-+static DEFINE_PER_CPU(struct list_head, associated_tdvcpus);
-+
- static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
- {
- 	tdx_guest_keyid_free(kvm_tdx->hkid);
-@@ -177,6 +192,22 @@ static inline bool is_hkid_assigned(struct kvm_tdx *kvm_tdx)
- 	return kvm_tdx->hkid > 0;
- }
- 
-+static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
-+{
-+	lockdep_assert_irqs_disabled();
-+
-+	list_del(&to_tdx(vcpu)->cpu_list);
-+
-+	/*
-+	 * Ensure tdx->cpu_list is updated before setting vcpu->cpu to -1,
-+	 * otherwise, a different CPU can see vcpu->cpu = -1 and add the vCPU
-+	 * to its list before it's deleted from this CPU's list.
-+	 */
-+	smp_wmb();
-+
-+	vcpu->cpu = -1;
-+}
-+
- static void tdx_clear_page(struct page *page)
- {
- 	const void *zero_page = (const void *) page_to_virt(ZERO_PAGE(0));
-@@ -243,6 +274,83 @@ static void tdx_reclaim_control_page(struct page *ctrl_page)
- 	__free_page(ctrl_page);
- }
- 
-+struct tdx_flush_vp_arg {
-+	struct kvm_vcpu *vcpu;
-+	u64 err;
++struct kvm_tdx_init_mem_region {
++	__u64 source_addr;
++	__u64 gpa;
++	__u64 nr_pages;
 +};
 +
-+static void tdx_flush_vp(void *_arg)
-+{
-+	struct tdx_flush_vp_arg *arg = _arg;
-+	struct kvm_vcpu *vcpu = arg->vcpu;
-+	u64 err;
-+
-+	arg->err = 0;
-+	lockdep_assert_irqs_disabled();
-+
-+	/* Task migration can race with CPU offlining. */
-+	if (unlikely(vcpu->cpu != raw_smp_processor_id()))
-+		return;
-+
-+	/*
-+	 * No need to do TDH_VP_FLUSH if the vCPU hasn't been initialized.  The
-+	 * list tracking still needs to be updated so that it's correct if/when
-+	 * the vCPU does get initialized.
-+	 */
-+	if (to_tdx(vcpu)->state != VCPU_TD_STATE_UNINITIALIZED) {
-+		/*
-+		 * No need to retry.  TDX Resources needed for TDH.VP.FLUSH are:
-+		 * TDVPR as exclusive, TDR as shared, and TDCS as shared.  This
-+		 * vp flush function is called when destructing vCPU/TD or vCPU
-+		 * migration.  No other thread uses TDVPR in those cases.
-+		 */
-+		err = tdh_vp_flush(&to_tdx(vcpu)->vp);
-+		if (unlikely(err && err != TDX_VCPU_NOT_ASSOCIATED)) {
-+			/*
-+			 * This function is called in IPI context. Do not use
-+			 * printk to avoid console semaphore.
-+			 * The caller prints out the error message, instead.
-+			 */
-+			if (err)
-+				arg->err = err;
-+		}
-+	}
-+
-+	tdx_disassociate_vp(vcpu);
-+}
-+
-+static void tdx_flush_vp_on_cpu(struct kvm_vcpu *vcpu)
-+{
-+	struct tdx_flush_vp_arg arg = {
-+		.vcpu = vcpu,
-+	};
-+	int cpu = vcpu->cpu;
-+
-+	if (unlikely(cpu == -1))
-+		return;
-+
-+	smp_call_function_single(cpu, tdx_flush_vp, &arg, 1);
-+	if (KVM_BUG_ON(arg.err, vcpu->kvm))
-+		pr_tdx_error(TDH_VP_FLUSH, arg.err);
-+}
-+
-+void tdx_disable_virtualization_cpu(void)
-+{
-+	int cpu = raw_smp_processor_id();
-+	struct list_head *tdvcpus = &per_cpu(associated_tdvcpus, cpu);
-+	struct tdx_flush_vp_arg arg;
-+	struct vcpu_tdx *tdx, *tmp;
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	/* Safe variant needed as tdx_disassociate_vp() deletes the entry. */
-+	list_for_each_entry_safe(tdx, tmp, tdvcpus, cpu_list) {
-+		arg.vcpu = &tdx->vcpu;
-+		tdx_flush_vp(&arg);
-+	}
-+	local_irq_restore(flags);
-+}
-+
- #define TDX_SEAMCALL_RETRIES 10000
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 989db4887963..12f3433d062d 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include <linux/cleanup.h>
+ #include <linux/cpu.h>
+ #include <asm/cpufeature.h>
+ #include <linux/misc_cgroup.h>
+@@ -10,6 +11,7 @@
+ #include "tdx.h"
+ #include "vmx.h"
+ #include "mmu/spte.h"
++#include "common.h"
  
- static void smp_func_do_phymem_cache_wb(void *unused)
-@@ -281,22 +389,21 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 	bool packages_allocated, targets_allocated;
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	cpumask_var_t packages, targets;
--	u64 err;
-+	struct kvm_vcpu *vcpu;
-+	unsigned long j;
- 	int i;
-+	u64 err;
+ #pragma GCC poison to_vmx
  
- 	if (!is_hkid_assigned(kvm_tdx))
- 		return;
- 
--	/* KeyID has been allocated but guest is not yet configured */
--	if (!kvm_tdx->td.tdr_page) {
--		tdx_hkid_free(kvm_tdx);
--		return;
--	}
--
- 	packages_allocated = zalloc_cpumask_var(&packages, GFP_KERNEL);
- 	targets_allocated = zalloc_cpumask_var(&targets, GFP_KERNEL);
- 	cpus_read_lock();
- 
-+	kvm_for_each_vcpu(j, vcpu, kvm)
-+		tdx_flush_vp_on_cpu(vcpu);
-+
- 	/*
- 	 * TDH.PHYMEM.CACHE.WB tries to acquire the TDX module global lock
- 	 * and can fail with TDX_OPERAND_BUSY when it fails to get the lock.
-@@ -310,6 +417,16 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 	 * After the above flushing vps, there should be no more vCPU
- 	 * associations, as all vCPU fds have been released at this stage.
- 	 */
-+	err = tdh_mng_vpflushdone(&kvm_tdx->td);
-+	if (err == TDX_FLUSHVP_NOT_DONE)
-+		goto out;
-+	if (KVM_BUG_ON(err, kvm)) {
-+		pr_tdx_error(TDH_MNG_VPFLUSHDONE, err);
-+		pr_err("tdh_mng_vpflushdone() failed. HKID %d is leaked.\n",
-+		       kvm_tdx->hkid);
-+		goto out;
-+	}
-+
- 	for_each_online_cpu(i) {
- 		if (packages_allocated &&
- 		    cpumask_test_and_set_cpu(topology_physical_package_id(i),
-@@ -335,6 +452,7 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 		tdx_hkid_free(kvm_tdx);
- 	}
- 
-+out:
- 	mutex_unlock(&tdx_lock);
- 	cpus_read_unlock();
- 	free_cpumask_var(targets);
-@@ -483,6 +601,27 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+@@ -1600,6 +1602,145 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
  	return 0;
  }
  
-+void tdx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
++struct tdx_gmem_post_populate_arg {
++	struct kvm_vcpu *vcpu;
++	__u32 flags;
++};
++
++static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
++				  void __user *src, int order, void *_arg)
 +{
-+	struct vcpu_tdx *tdx = to_tdx(vcpu);
++	u64 error_code = PFERR_GUEST_FINAL_MASK | PFERR_PRIVATE_ACCESS;
++	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	struct tdx_gmem_post_populate_arg *arg = _arg;
++	struct kvm_vcpu *vcpu = arg->vcpu;
++	gpa_t gpa = gfn_to_gpa(gfn);
++	u8 level = PG_LEVEL_4K;
++	struct page *src_page;
++	int ret, i;
++	u64 err, entry, level_state;
 +
-+	if (vcpu->cpu == cpu || !is_hkid_assigned(to_kvm_tdx(vcpu->kvm)))
-+		return;
-+
-+	tdx_flush_vp_on_cpu(vcpu);
-+
-+	KVM_BUG_ON(cpu != raw_smp_processor_id(), vcpu->kvm);
-+	local_irq_disable();
 +	/*
-+	 * Pairs with the smp_wmb() in tdx_disassociate_vp() to ensure
-+	 * vcpu->cpu is read before tdx->cpu_list.
++	 * Get the source page if it has been faulted in. Return failure if the
++	 * source page has been swapped out or unmapped in primary memory.
 +	 */
-+	smp_rmb();
++	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
++	if (ret < 0)
++		return ret;
++	if (ret != 1)
++		return -ENOMEM;
 +
-+	list_add(&tdx->cpu_list, &per_cpu(associated_tdvcpus, cpu));
-+	local_irq_enable();
++	ret = kvm_tdp_map_page(vcpu, gpa, error_code, &level);
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * The private mem cannot be zapped after kvm_tdp_map_page()
++	 * because all paths are covered by slots_lock and the
++	 * filemap invalidate lock.  Check that they are indeed enough.
++	 */
++	if (IS_ENABLED(CONFIG_KVM_PROVE_MMU)) {
++		scoped_guard(read_lock, &kvm->mmu_lock) {
++			if (KVM_BUG_ON(!kvm_tdp_mmu_gpa_is_mapped(vcpu, gpa), kvm)) {
++				ret = -EIO;
++				goto out;
++			}
++		}
++	}
++
++	ret = 0;
++	err = tdh_mem_page_add(&kvm_tdx->td, gpa, pfn_to_page(pfn), src_page,
++			       &entry, &level_state);
++	if (err) {
++		ret = unlikely(tdx_operand_busy(err)) ? -EBUSY : -EIO;
++		goto out;
++	}
++
++	if (arg->flags & KVM_TDX_MEASURE_MEMORY_REGION) {
++		for (i = 0; i < PAGE_SIZE; i += TDX_EXTENDMR_CHUNKSIZE) {
++			err = tdh_mr_extend(&kvm_tdx->td, gpa + i, &entry,
++					    &level_state);
++			if (err) {
++				ret = -EIO;
++				break;
++			}
++		}
++	}
++
++out:
++	put_page(src_page);
++	return ret;
 +}
 +
- void tdx_vcpu_free(struct kvm_vcpu *vcpu)
++static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
++{
++	struct vcpu_tdx *tdx = to_tdx(vcpu);
++	struct kvm *kvm = vcpu->kvm;
++	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	struct kvm_tdx_init_mem_region region;
++	struct tdx_gmem_post_populate_arg arg;
++	long gmem_ret;
++	int ret;
++
++	if (tdx->state != VCPU_TD_STATE_INITIALIZED)
++		return -EINVAL;
++
++	guard(mutex)(&kvm->slots_lock);
++
++	/* Once TD is finalized, the initial guest memory is fixed. */
++	if (kvm_tdx->state == TD_STATE_RUNNABLE)
++		return -EINVAL;
++
++	if (cmd->flags & ~KVM_TDX_MEASURE_MEMORY_REGION)
++		return -EINVAL;
++
++	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
++		return -EFAULT;
++
++	if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
++	    !region.nr_pages ||
++	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
++	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
++	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_SHIFT) - 1))
++		return -EINVAL;
++
++	kvm_mmu_reload(vcpu);
++	ret = 0;
++	while (region.nr_pages) {
++		if (signal_pending(current)) {
++			ret = -EINTR;
++			break;
++		}
++
++		arg = (struct tdx_gmem_post_populate_arg) {
++			.vcpu = vcpu,
++			.flags = cmd->flags,
++		};
++		gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
++					     u64_to_user_ptr(region.source_addr),
++					     1, tdx_gmem_post_populate, &arg);
++		if (gmem_ret < 0) {
++			ret = gmem_ret;
++			break;
++		}
++
++		if (gmem_ret != 1) {
++			ret = -EIO;
++			break;
++		}
++
++		region.source_addr += PAGE_SIZE;
++		region.gpa += PAGE_SIZE;
++		region.nr_pages--;
++
++		cond_resched();
++	}
++
++	if (copy_to_user(u64_to_user_ptr(cmd->data), &region, sizeof(region)))
++		ret = -EFAULT;
++	return ret;
++}
++
+ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
  {
  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
-@@ -2038,7 +2177,11 @@ void tdx_cleanup(void)
+@@ -1619,6 +1760,9 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
+ 	case KVM_TDX_INIT_VCPU:
+ 		ret = tdx_vcpu_init(vcpu, &cmd);
+ 		break;
++	case KVM_TDX_INIT_MEM_REGION:
++		ret = tdx_vcpu_init_mem_region(vcpu, &cmd);
++		break;
+ 	case KVM_TDX_GET_CPUID:
+ 		ret = tdx_vcpu_get_cpuid(vcpu, &cmd);
+ 		break;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 622b5a99078a..c88acfa154e6 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2581,6 +2581,7 @@ struct kvm_memory_slot *kvm_vcpu_gfn_to_memslot(struct kvm_vcpu *vcpu, gfn_t gfn
  
- int __init tdx_bringup(void)
+ 	return NULL;
+ }
++EXPORT_SYMBOL_GPL(kvm_vcpu_gfn_to_memslot);
+ 
+ bool kvm_is_visible_gfn(struct kvm *kvm, gfn_t gfn)
  {
--	int r;
-+	int r, i;
-+
-+	/* tdx_disable_virtualization_cpu() uses associated_tdvcpus. */
-+	for_each_possible_cpu(i)
-+		INIT_LIST_HEAD(&per_cpu(associated_tdvcpus, i));
- 
- 	if (!enable_tdx)
- 		return 0;
-diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
-index b71f8e9643e4..8ed96f980d9a 100644
---- a/arch/x86/kvm/vmx/tdx.h
-+++ b/arch/x86/kvm/vmx/tdx.h
-@@ -47,6 +47,8 @@ struct vcpu_tdx {
- 
- 	struct tdx_vp vp;
- 
-+	struct list_head cpu_list;
-+
- 	enum vcpu_tdx_state state;
- };
- 
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index bc3cf1c1da37..6ab10d3cdb6f 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -122,6 +122,7 @@ void vmx_cancel_hv_timer(struct kvm_vcpu *vcpu);
- void vmx_setup_mce(struct kvm_vcpu *vcpu);
- 
- #ifdef CONFIG_INTEL_TDX_HOST
-+void tdx_disable_virtualization_cpu(void);
- int tdx_vm_init(struct kvm *kvm);
- void tdx_mmu_release_hkid(struct kvm *kvm);
- void tdx_vm_destroy(struct kvm *kvm);
-@@ -129,6 +130,7 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp);
- 
- int tdx_vcpu_create(struct kvm_vcpu *vcpu);
- void tdx_vcpu_free(struct kvm_vcpu *vcpu);
-+void tdx_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
- 
- int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp);
- 
-@@ -146,6 +148,7 @@ void tdx_flush_tlb_all(struct kvm_vcpu *vcpu);
- void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
- int tdx_gmem_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn);
- #else
-+static inline void tdx_disable_virtualization_cpu(void) {}
- static inline int tdx_vm_init(struct kvm *kvm) { return -EOPNOTSUPP; }
- static inline void tdx_mmu_release_hkid(struct kvm *kvm) {}
- static inline void tdx_vm_destroy(struct kvm *kvm) {}
-@@ -153,6 +156,7 @@ static inline int tdx_vm_ioctl(struct kvm *kvm, void __user *argp) { return -EOP
- 
- static inline int tdx_vcpu_create(struct kvm_vcpu *vcpu) { return -EOPNOTSUPP; }
- static inline void tdx_vcpu_free(struct kvm_vcpu *vcpu) {}
-+static inline void tdx_vcpu_load(struct kvm_vcpu *vcpu, int cpu) {}
- 
- static inline int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp) { return -EOPNOTSUPP; }
- 
 -- 
 2.43.5
 
