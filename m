@@ -1,56 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6020D281379
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383BE25BCEE
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740599777; cv=none; b=FkUF3OMRJxKj7ONidsDE4f9YVQyJjAuMt/IoFpNdtSMqHmiigMLcY3xxSa0tAvGCYVObwJ9ioyYgBzM/H+1bFJfuCRsLcR9+gY1vtwqxLhvtW3yJlY0wYjQ1ilgSl0skL2t3oINlTQV9ROJ3z6hpRsYD6U5MozaY30HCl7cmcgU=
+	t=1740599778; cv=none; b=rLEh2WBZlg20Plm+4nxyohOBbkUw+wgEl5CfApznZn+8IHkfWTiqRAY1sODgUWOu+0fQd3d4S0Se5U02jWijxk96bU0fVEi9MbLQIBVWNVOtyiYpmwLCRtssdV1m93C4yzneCYJF95v22Absq9FAFof8lamzhk8m/bknXqGFIDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740599777; c=relaxed/simple;
-	bh=NETAek9P6jFoRao+0v3DspO+//m8Dy5rDDzZs9yl4fk=;
+	s=arc-20240116; t=1740599778; c=relaxed/simple;
+	bh=16Zehdb4AgOjq9bNHlth8krJArW6jp6YJepC5NpyXfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWIaSzFAkdU/7u4zy4TfPcPPLcr19+F4olaclQ8muEPdPrjxHz6LdCUNVgW6Evbc0Dg61NrFigk4xd0mfvoDGZ8OoDrWqEsovSY0EHSbSf2IAHgBfrARTHk5mOe08qCdNL46uxQwZi192tD+gtJtH+TUyB2U6HKAHLIylnUECFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HOYJgp8n; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=IIaEKcIv4LTjT2cz/cRMXcAMm45IkD6eKk1zso56PMjQdRFcxoy3kAVaITDYOfy1sJaYydRahXfJ/6XfTpJ/rjHJwti4lmOduxXtHpO4fysHWa6ckeImgf8haKbbjWPQ0K/kwir+q4hzWnILNp9Lm0TvvjJJVIItTx0FPeFAwNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S6WW3pl6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HOYJgp8n"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S6WW3pl6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740599774;
+	s=mimecast20190719; t=1740599775;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9x3o+9ZxYY1IDIcV6p0SSKe8rNG8+39lVVVMoUGc4IQ=;
-	b=HOYJgp8nFV9soylr8EiBERIiOiWQ/kADhzDTmF/tEZOf9dvZYXxNHKK6bpUsf6Yt4wSzsC
-	+YdLrWXdsi8Byti8MWjUpH9ge9Q3uhybuZneuu7wEniTriqPdOiSYEzE99deohZS4WdbQ5
-	V7/Qdcz1rJlRqV7srbcUm8eeBUdq6VI=
+	bh=SOMXc0XGb9i9NVESNvirv6McCEKwkARDJwtJyCjzRPc=;
+	b=S6WW3pl6OJxSAvLQLD5HFGokbo7YoKhHAGyqt4Rew4eAeoXbW9hcX2uEixzAy2s/HDGJRR
+	FjExmPiphhZaRxqDrs0gpmyBGZZfbef4YjSRmHJsTj2WHXg6OQRXwIQVo5pFjdCf/OTFPj
+	iOUoqo98jK1OZFxgjLkKYDU73D7Ii2A=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-1kRGc817PPy9WEX6XFbSrQ-1; Wed,
- 26 Feb 2025 14:56:12 -0500
-X-MC-Unique: 1kRGc817PPy9WEX6XFbSrQ-1
-X-Mimecast-MFC-AGG-ID: 1kRGc817PPy9WEX6XFbSrQ_1740599771
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-FsHr-p4EMC-5-cbQlFrsMw-1; Wed,
+ 26 Feb 2025 14:56:11 -0500
+X-MC-Unique: FsHr-p4EMC-5-cbQlFrsMw-1
+X-Mimecast-MFC-AGG-ID: FsHr-p4EMC-5-cbQlFrsMw_1740599770
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CCF31800873;
-	Wed, 26 Feb 2025 19:56:09 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3D80E18009AC;
+	Wed, 26 Feb 2025 19:56:07 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8125C1955E79;
-	Wed, 26 Feb 2025 19:56:08 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C15171955F0F;
+	Wed, 26 Feb 2025 19:56:05 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH 29/29] KVM: TDX: Handle SEPT zap error due to page add error in premap
-Date: Wed, 26 Feb 2025 14:55:29 -0500
-Message-ID: <20250226195529.2314580-30-pbonzini@redhat.com>
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	ANAND NARSHINHA PATIL <Anand.N.Patil@ibm.com>,
+	Pedro Principeza <pedro.principeza@canonical.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Kai Huang <kai.huang@intel.com>
+Subject: [PATCH 27/29] KVM: x86: Make cpu_dirty_log_size a per-VM value
+Date: Wed, 26 Feb 2025 14:55:27 -0500
+Message-ID: <20250226195529.2314580-28-pbonzini@redhat.com>
 In-Reply-To: <20250226195529.2314580-1-pbonzini@redhat.com>
 References: <20250226195529.2314580-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -65,163 +69,179 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
 From: Yan Zhao <yan.y.zhao@intel.com>
 
-Move the handling of SEPT zap errors caused by unsuccessful execution of
-tdh_mem_page_add() in KVM_TDX_INIT_MEM_REGION from
-tdx_sept_drop_private_spte() to tdx_sept_zap_private_spte(). Introduce a
-new helper function tdx_is_sept_zap_err_due_to_premap() to detect this
-specific error.
+Make cpu_dirty_log_size (CPU's dirty log buffer size) a per-VM value and
+set the per-VM cpu_dirty_log_size only for normal VMs when PML is enabled.
+Do not set it for TDs.
 
-During the IOCTL KVM_TDX_INIT_MEM_REGION, KVM premaps leaf SPTEs in the
-mirror page table before the corresponding entry in the private page table
-is successfully installed by tdh_mem_page_add(). If an error occurs during
-the invocation of tdh_mem_page_add(), a mismatch between the mirror and
-private page tables results in SEAMCALLs for SEPT zap returning the error
-code TDX_EPT_ENTRY_STATE_INCORRECT.
+Until now, cpu_dirty_log_size was a system-wide value that is used for
+all VMs and is set to the PML buffer size when PML was enabled in VMX.
+However, PML is not currently supported for TDs, though PML remains
+available for normal VMs as long as the feature is supported by hardware
+and enabled in VMX.
 
-The error TDX_EPT_WALK_FAILED is not possible because, during
-KVM_TDX_INIT_MEM_REGION, KVM only premaps leaf SPTEs after successfully
-mapping non-leaf SPTEs. Unlike leaf SPTEs, there is no mismatch in non-leaf
-PTEs between the mirror and private page tables. Therefore, during zap,
-SEAMCALLs should find an empty leaf entry in the private EPT, leading to
-the error TDX_EPT_ENTRY_STATE_INCORRECT instead of TDX_EPT_WALK_FAILED.
+Making cpu_dirty_log_size a per-VM value allows it to be ther PML buffer
+size for normal VMs and 0 for TDs. This allows functions like
+kvm_arch_sync_dirty_log() and kvm_mmu_update_cpu_dirty_logging() to
+determine if PML is supported, in order to kick off vCPUs or request them
+to update CPU dirty logging status (turn on/off PML in VMCS).
 
-Since tdh_mem_range_block() is always invoked before tdh_mem_page_remove(),
-move the handling of SEPT zap errors from tdx_sept_drop_private_spte() to
-tdx_sept_zap_private_spte(). In tdx_sept_zap_private_spte(), return 0 for
-errors due to premap to skip executing other SEAMCALLs for zap, which are
-unnecessary. Return 1 to indicate no other errors, allowing the execution
-of other zap SEAMCALLs to continue.
+This fixes an issue first reported in [1], where QEMU attaches an
+emulated VGA device to a TD; note that KVM_MEM_LOG_DIRTY_PAGES
+still works if the corresponding has no flag KVM_MEM_GUEST_MEMFD.
+KVM then invokes kvm_mmu_update_cpu_dirty_logging() and from there
+vmx_update_cpu_dirty_logging(), which incorrectly accesses a kvm_vmx
+struct for a TDX VM.
 
-The failure of tdh_mem_page_add() is uncommon and has not been observed in
-real workloads. Currently, this failure is only hypothetically triggered by
-skipping the real SEAMCALL and faking the add error in the SEAMCALL
-wrapper. Additionally, without this fix, there will be no host crashes or
-other severe issues.
-
+Reported-by: ANAND NARSHINHA PATIL <Anand.N.Patil@ibm.com>
+Reported-by: Pedro Principeza <pedro.principeza@canonical.com>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://github.com/canonical/tdx/issues/202
+Link: https://github.com/canonical/tdx/issues/202 [1]
+Suggested-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Message-ID: <20250217085642.19696-1-yan.y.zhao@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 66 ++++++++++++++++++++++++++++++------------
- 1 file changed, 47 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 12 +++++++-----
+ arch/x86/kvm/mmu/mmu.c          |  4 ++--
+ arch/x86/kvm/mmu/mmu_internal.h |  2 +-
+ arch/x86/kvm/vmx/main.c         |  1 -
+ arch/x86/kvm/vmx/vmx.c          |  6 +++---
+ arch/x86/kvm/x86.c              |  6 +++---
+ 6 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index a6696448cb53..f2cbd8c440e9 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -775,20 +775,6 @@ static int tdx_sept_drop_private_spte(struct kvm *kvm, gfn_t gfn,
- 					  &level_state);
- 	} while (unlikely(tdx_operand_busy(err)));
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 04f6cc48167a..c89130fda012 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1560,6 +1560,13 @@ struct kvm_arch {
+ 	struct kvm_mmu_memory_cache split_desc_cache;
  
--	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE &&
--		     err == (TDX_EPT_WALK_FAILED | TDX_OPERAND_ID_RCX))) {
--		/*
--		 * Page is mapped by KVM_TDX_INIT_MEM_REGION, but hasn't called
--		 * tdh_mem_page_add().
--		 */
--		if ((!is_last_spte(entry, level) || !(entry & VMX_EPT_RWX_MASK)) &&
--		    !KVM_BUG_ON(!atomic64_read(&kvm_tdx->nr_premapped), kvm)) {
--			atomic64_dec(&kvm_tdx->nr_premapped);
--			tdx_unpin(kvm, page);
--			return 0;
--		}
--	}
--
- 	if (KVM_BUG_ON(err, kvm)) {
- 		pr_tdx_error_2(TDH_MEM_PAGE_REMOVE, err, entry, level_state);
- 		return -EIO;
-@@ -826,8 +812,41 @@ int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+ 	gfn_t gfn_direct_bits;
++
++	/*
++	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer. A Zero
++	 * value indicates CPU dirty logging is unsupported or disabled in
++	 * current VM.
++	 */
++	int cpu_dirty_log_size;
+ };
+ 
+ struct kvm_vm_stat {
+@@ -1813,11 +1820,6 @@ struct kvm_x86_ops {
+ 			       struct x86_exception *exception);
+ 	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
+ 
+-	/*
+-	 * Size of the CPU's dirty log buffer, i.e. VMX's PML buffer.  A zero
+-	 * value indicates CPU dirty logging is unsupported or disabled.
+-	 */
+-	int cpu_dirty_log_size;
+ 	void (*update_cpu_dirty_logging)(struct kvm_vcpu *vcpu);
+ 
+ 	const struct kvm_x86_nested_ops *nested_ops;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 3caeaebda637..e6eb3a262f8d 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -1305,7 +1305,7 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
+ 	 * enabled but it chooses between clearing the Dirty bit and Writeable
+ 	 * bit based on the context.
+ 	 */
+-	if (kvm_x86_ops.cpu_dirty_log_size)
++	if (kvm->arch.cpu_dirty_log_size)
+ 		kvm_mmu_clear_dirty_pt_masked(kvm, slot, gfn_offset, mask);
+ 	else
+ 		kvm_mmu_write_protect_pt_masked(kvm, slot, gfn_offset, mask);
+@@ -1313,7 +1313,7 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
+ 
+ int kvm_cpu_dirty_log_size(struct kvm *kvm)
+ {
+-	return kvm_x86_ops.cpu_dirty_log_size;
++	return kvm->arch.cpu_dirty_log_size;
+ }
+ 
+ bool kvm_mmu_slot_gfn_write_protect(struct kvm *kvm,
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index 86d6d4f82cf4..db8f33e4de62 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -198,7 +198,7 @@ static inline bool kvm_mmu_page_ad_need_write_protect(struct kvm *kvm,
+ 	 * being enabled is mandatory as the bits used to denote WP-only SPTEs
+ 	 * are reserved for PAE paging (32-bit KVM).
+ 	 */
+-	return kvm_x86_ops.cpu_dirty_log_size && sp->role.guest_mode;
++	return kvm->arch.cpu_dirty_log_size && sp->role.guest_mode;
+ }
+ 
+ static inline gfn_t gfn_round_for_level(gfn_t gfn, int level)
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index abb0fc723a0b..ba3a23747bb1 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -322,7 +322,6 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.check_intercept = vmx_check_intercept,
+ 	.handle_exit_irqoff = vmx_handle_exit_irqoff,
+ 
+-	.cpu_dirty_log_size = PML_LOG_NR_ENTRIES,
+ 	.update_cpu_dirty_logging = vmx_update_cpu_dirty_logging,
+ 
+ 	.nested_ops = &vmx_nested_ops,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 18150a38fe09..b71125a1b5cf 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7653,6 +7653,9 @@ int vmx_vm_init(struct kvm *kvm)
+ 			break;
+ 		}
+ 	}
++
++	if (enable_pml)
++		kvm->arch.cpu_dirty_log_size = PML_LOG_NR_ENTRIES;
  	return 0;
  }
  
-+/*
-+ * Check if the error returned from a SEPT zap SEAMCALL is due to that a page is
-+ * mapped by KVM_TDX_INIT_MEM_REGION without tdh_mem_page_add() being called
-+ * successfully.
-+ *
-+ * Since tdh_mem_sept_add() must have been invoked successfully before a
-+ * non-leaf entry present in the mirrored page table, the SEPT ZAP related
-+ * SEAMCALLs should not encounter err TDX_EPT_WALK_FAILED. They should instead
-+ * find TDX_EPT_ENTRY_STATE_INCORRECT due to an empty leaf entry found in the
-+ * SEPT.
-+ *
-+ * Further check if the returned entry from SEPT walking is with RWX permissions
-+ * to filter out anything unexpected.
-+ *
-+ * Note: @level is pg_level, not the tdx_level. The tdx_level extracted from
-+ * level_state returned from a SEAMCALL error is the same as that passed into
-+ * the SEAMCALL.
-+ */
-+static int tdx_is_sept_zap_err_due_to_premap(struct kvm_tdx *kvm_tdx, u64 err,
-+					     u64 entry, int level)
-+{
-+	if (!err || kvm_tdx->state == TD_STATE_RUNNABLE)
-+		return false;
-+
-+	if (err != (TDX_EPT_ENTRY_STATE_INCORRECT | TDX_OPERAND_ID_RCX))
-+		return false;
-+
-+	if ((is_last_spte(entry, level) && (entry & VMX_EPT_RWX_MASK)))
-+		return false;
-+
-+	return true;
-+}
-+
- static int tdx_sept_zap_private_spte(struct kvm *kvm, gfn_t gfn,
--				     enum pg_level level)
-+				     enum pg_level level, struct page *page)
+@@ -8506,9 +8509,6 @@ __init int vmx_hardware_setup(void)
+ 	if (!enable_ept || !enable_ept_ad_bits || !cpu_has_vmx_pml())
+ 		enable_pml = 0;
+ 
+-	if (!enable_pml)
+-		vt_x86_ops.cpu_dirty_log_size = 0;
+-
+ 	if (!cpu_has_vmx_preemption_timer())
+ 		enable_preemption_timer = false;
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e981e24820a0..edf47b8cb949 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6468,7 +6468,7 @@ void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long i;
+ 
+-	if (!kvm_x86_ops.cpu_dirty_log_size)
++	if (!kvm->arch.cpu_dirty_log_size)
+ 		return;
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm)
+@@ -13055,7 +13055,7 @@ static void kvm_mmu_update_cpu_dirty_logging(struct kvm *kvm, bool enable)
  {
- 	int tdx_level = pg_level_to_tdx_sept_level(level);
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-@@ -840,11 +859,19 @@ static int tdx_sept_zap_private_spte(struct kvm *kvm, gfn_t gfn,
- 	err = tdh_mem_range_block(&kvm_tdx->td, gpa, tdx_level, &entry, &level_state);
- 	if (unlikely(tdx_operand_busy(err)))
- 		return -EBUSY;
-+
-+	if (tdx_is_sept_zap_err_due_to_premap(kvm_tdx, err, entry, level) &&
-+	    !KVM_BUG_ON(!atomic64_read(&kvm_tdx->nr_premapped), kvm)) {
-+		atomic64_dec(&kvm_tdx->nr_premapped);
-+		tdx_unpin(kvm, page);
-+		return 0;
-+	}
-+
- 	if (KVM_BUG_ON(err, kvm)) {
- 		pr_tdx_error_2(TDH_MEM_RANGE_BLOCK, err, entry, level_state);
- 		return -EIO;
- 	}
--	return 0;
-+	return 1;
- }
+ 	int nr_slots;
  
- /*
-@@ -918,6 +945,7 @@ int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
- int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 				 enum pg_level level, kvm_pfn_t pfn)
- {
-+	struct page *page = pfn_to_page(pfn);
- 	int ret;
+-	if (!kvm_x86_ops.cpu_dirty_log_size)
++	if (!kvm->arch.cpu_dirty_log_size)
+ 		return;
  
- 	/*
-@@ -928,8 +956,8 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	if (KVM_BUG_ON(!is_hkid_assigned(to_kvm_tdx(kvm)), kvm))
- 		return -EINVAL;
+ 	nr_slots = atomic_read(&kvm->nr_memslots_dirty_logging);
+@@ -13127,7 +13127,7 @@ static void kvm_mmu_slot_apply_flags(struct kvm *kvm,
+ 		if (READ_ONCE(eager_page_split))
+ 			kvm_mmu_slot_try_split_huge_pages(kvm, new, PG_LEVEL_4K);
  
--	ret = tdx_sept_zap_private_spte(kvm, gfn, level);
--	if (ret)
-+	ret = tdx_sept_zap_private_spte(kvm, gfn, level, page);
-+	if (ret <= 0)
- 		return ret;
- 
- 	/*
-@@ -938,7 +966,7 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	 */
- 	tdx_track(kvm);
- 
--	return tdx_sept_drop_private_spte(kvm, gfn, level, pfn_to_page(pfn));
-+	return tdx_sept_drop_private_spte(kvm, gfn, level, page);
- }
- 
- static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
+-		if (kvm_x86_ops.cpu_dirty_log_size) {
++		if (kvm->arch.cpu_dirty_log_size) {
+ 			kvm_mmu_slot_leaf_clear_dirty(kvm, new);
+ 			kvm_mmu_slot_remove_write_access(kvm, new, PG_LEVEL_2M);
+ 		} else {
 -- 
 2.43.5
+
 
