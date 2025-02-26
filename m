@@ -1,152 +1,157 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3F123E23C;
-	Wed, 26 Feb 2025 18:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4447E22E3F1
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 18:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740593178; cv=none; b=HEUzoSs4oAridy7mrtmrKBFH5S6ar2RuJX4sM3Z5l8UwW+LfT2fTG/jXLpAfDMk8MCwZuWoHoYXIE1ZuCL5/cHavUM00oJro28gD7Exh1y232y6pNn+1XffIRofJYHXHKl+2kLubFBSt2NU7cgp6DJVBqXMQCL0W1f3QKnFVtfE=
+	t=1740593705; cv=none; b=OrRXmS3K07haFJe98ULWuhmAZUousoP9lgpXU5P7mZGH7tcnDbb8MNo0ljvTzMYd3Uy5rV/i7cpZ0IpHFwoi8Mm3fE6w12nCqDu1E0PzhHyDQ6wT3rTW32VypcbGljcrtw9VF5gNpNm1GyBRsK9m9yBTR+jikDrM9gFs/4sJjkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740593178; c=relaxed/simple;
-	bh=E8Ecymq8CBrhz4/hOFJWe+WkF4M7ObE/VCe/8ADPU6w=;
+	s=arc-20240116; t=1740593705; c=relaxed/simple;
+	bh=5Kk3y5PCDWPzxrS3m/SQBAQhfMgokgFjRloIXhxSO7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnX7eq7IAno21RF/yfROsXM3I9qAbU21uKrcJRBOciDRR9Xq7kcCTwsz9NOsDnd4AP4opN6Ijh6hKtCZaCq35KL7UJwlepHpcC4fiOxBVv171XAcvEwdyspA83wFxpnVAS+vLLg5LtcT2e8BF4832/UB5OVL3T1gQmOxQoXkYdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dGnsdQaP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 MIME-Version:Content-Type; b=Q7TwltYmkDSJWqT/jQR7E3pTUfekpcC2RuZe8FTDdPNggEdmgTnIqqG0V3dGPQO3gbuUFKrNDyNZrDBiPtq4Y0emdBWrg7m6+4UqIeOlaFJPCj7eWzA4DKifE3BxQtzEOnvKP8AZ3pvkpgDsPN3l9kpzgB9wON9Lng1f+rkBHbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e6oXzmjI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dGnsdQaP"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QBGEuZ027849;
-	Wed, 26 Feb 2025 18:06:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=h6zpg6zC5z/rQVzpN
-	2FehhGN502lUYMO052KpWM4Tjw=; b=dGnsdQaPH2q/esiRJelYW50b2CveRM4d0
-	5ECq6+vtgrHTi8USndDV+Tf4mD1zk97/UumzqqZQQ4Nq+EjhTg+WWZSL/ZyTiOU0
-	WqOmRysuEeUyncMg7wwhCVcY4qPz4avEHlLqD7rslvBnQWJxAI89mxiXxKnQVZ9F
-	o47YguClcXRl8PIZ4PUzVaDtQEQONqv7dp0rqH7A0cUW0mw7CdDT4j37vlyckjv6
-	6paGHCzRi2VSZ/J2PnS7k+i6RD787VcwIVUxhgWDKcs8h+racEBWae4S1mf/Jtc+
-	laCUTbr/Sw7DWW/ZsVeno2v7rzZzA3xtp6Mph+NLSZwni6uDQB2bg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5jcx27-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 18:06:11 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51QFKW6j026269;
-	Wed, 26 Feb 2025 18:06:10 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswnm53f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 18:06:09 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51QI68ae30737044
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Feb 2025 18:06:08 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5CF75805A;
-	Wed, 26 Feb 2025 18:06:08 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA3D258056;
-	Wed, 26 Feb 2025 18:06:07 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.248.9])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 26 Feb 2025 18:06:07 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: hca@linux.ibm.com, borntraeger@de.ibm.com, agordeev@linux.ibm.com,
-        gor@linux.ibm.com, pasic@linux.ibm.com, jjherne@linux.ibm.com,
-        alex.williamson@redhat.com, akrowiak@linux.ibm.com,
-        rreyes@linux.ibm.com
-Subject: [RFC PATCH v3 2/2] s390/vfio-ap: Adding mdev remove notification
-Date: Wed, 26 Feb 2025 13:06:05 -0500
-Message-ID: <20250226180605.15810-3-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250226180605.15810-1-rreyes@linux.ibm.com>
-References: <20250226180605.15810-1-rreyes@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e6oXzmjI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740593702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oWJcvMonOJSpmhcxeUWcddM1INajJ8rhyv2xBoxE7vw=;
+	b=e6oXzmjIFcK0NTg7urS02mtxArBV+XHvhzsMe2aAqayiBWE5M6X9sOsnnzLFefn341sPXs
+	NLr7OzYHHVbtrD6gIUrkfK/DElnitW/3FV+4HjW4pGR/nYhKQcqFTIRrIdLz422NQ7nari
+	hS2/NYwhOHD9A99ofrsoV08LC+IOLKo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-M2oJ8OExPEa7aCgfMqKTiA-1; Wed,
+ 26 Feb 2025 13:14:58 -0500
+X-MC-Unique: M2oJ8OExPEa7aCgfMqKTiA-1
+X-Mimecast-MFC-AGG-ID: M2oJ8OExPEa7aCgfMqKTiA_1740593696
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F863180087C;
+	Wed, 26 Feb 2025 18:14:56 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 374B01944D02;
+	Wed, 26 Feb 2025 18:14:55 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Aaron Lewis <aaronlewis@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PATCH 01/33] KVM: x86: Free vCPUs before freeing VM state
+Date: Wed, 26 Feb 2025 13:14:20 -0500
+Message-ID: <20250226181453.2311849-2-pbonzini@redhat.com>
+In-Reply-To: <20250226181453.2311849-1-pbonzini@redhat.com>
+References: <20250226181453.2311849-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ffL4sV97Vb7PfKd_zhlD1KQ9f-70t_7w
-X-Proofpoint-ORIG-GUID: ffL4sV97Vb7PfKd_zhlD1KQ9f-70t_7w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-26_04,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 adultscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 mlxscore=0 spamscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502260142
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This patch is based on the s390/features branch.
+From: Sean Christopherson <seanjc@google.com>
 
-The first patch, b26ed71f9647, was missing a
-notification based on the process to remove a
-mediated device from the AP configuration. In
-the original patch, b26ed71f9647, the guest is
-notified immediately for any AP configuration
-changes that are queued during the following
-processes:
-- assign/unassign_adapter
-- assign/unassign_domain
-- bind/unbind
+Free vCPUs before freeing any VM state, as both SVM and VMX may access
+VM state when "freeing" a vCPU that is currently "in" L2, i.e. that needs
+to be kicked out of nested guest mode.
 
-However, the original patch, b26ed71f9647, was
-missing a notification for the process to remove
-the entire mediated device.
+Commit 6fcee03df6a1 ("KVM: x86: avoid loading a vCPU after .vm_destroy was
+called") partially fixed the issue, but for unknown reasons only moved the
+MMU unloading before VM destruction.  Complete the change, and free all
+vCPU state prior to destroying VM state, as nVMX accesses even more state
+than nSVM.
 
-This patch addresses the missing notification and
-successfully notifies the guest when a mediated device
-is removed.
+In addition to the AVIC, KVM can hit a use-after-free on MSR filters:
 
-Notes:
-- Removed eventfd from vfio_ap_mdev_unset_kvm
-- Update and release locks along with the eventfd added
-to vfio_ap_mdev_request
+  kvm_msr_allowed+0x4c/0xd0
+  __kvm_set_msr+0x12d/0x1e0
+  kvm_set_msr+0x19/0x40
+  load_vmcs12_host_state+0x2d8/0x6e0 [kvm_intel]
+  nested_vmx_vmexit+0x715/0xbd0 [kvm_intel]
+  nested_vmx_free_vcpu+0x33/0x50 [kvm_intel]
+  vmx_free_vcpu+0x54/0xc0 [kvm_intel]
+  kvm_arch_vcpu_destroy+0x28/0xf0
+  kvm_vcpu_destroy+0x12/0x50
+  kvm_arch_destroy_vm+0x12c/0x1c0
+  kvm_put_kvm+0x263/0x3c0
+  kvm_vm_release+0x21/0x30
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+and an upcoming fix to process injectable interrupts on nested VM-Exit
+will access the PIC:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000090
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  CPU: 23 UID: 1000 PID: 2658 Comm: kvm-nx-lpage-re
+  RIP: 0010:kvm_cpu_has_extint+0x2f/0x60 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_cpu_has_injectable_intr+0xe/0x60 [kvm]
+   nested_vmx_vmexit+0x2d7/0xdf0 [kvm_intel]
+   nested_vmx_free_vcpu+0x40/0x50 [kvm_intel]
+   vmx_vcpu_free+0x2d/0x80 [kvm_intel]
+   kvm_arch_vcpu_destroy+0x2d/0x130 [kvm]
+   kvm_destroy_vcpus+0x8a/0x100 [kvm]
+   kvm_arch_destroy_vm+0xa7/0x1d0 [kvm]
+   kvm_destroy_vm+0x172/0x300 [kvm]
+   kvm_vcpu_release+0x31/0x50 [kvm]
+
+Inarguably, both nSVM and nVMX need to be fixed, but punt on those
+cleanups for the moment.  Conceptually, vCPUs should be freed before VM
+state.  Assets like the I/O APIC and PIC _must_ be allocated before vCPUs
+are created, so it stands to reason that they must be freed _after_ vCPUs
+are destroyed.
+
+Reported-by: Aaron Lewis <aaronlewis@google.com>
+Closes: https://lore.kernel.org/all/20240703175618.2304869-2-aaronlewis@google.com
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250224235542.2562848-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- drivers/s390/crypto/vfio_ap_ops.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 9a6845064ff3..e0237ea27d7e 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -2056,6 +2056,14 @@ static void vfio_ap_mdev_request(struct vfio_device *vdev, unsigned int count)
- 
- 	matrix_mdev = container_of(vdev, struct ap_matrix_mdev, vdev);
- 
-+	if (matrix_mdev->kvm) {
-+		get_update_locks_for_kvm(matrix_mdev->kvm);
-+		kvm_arch_crypto_clear_masks(matrix_mdev->kvm);
-+		signal_guest_ap_cfg_changed(matrix_mdev);
-+	} else {
-+		mutex_lock(&matrix_dev->mdevs_lock);
-+	}
-+
- 	if (matrix_mdev->req_trigger) {
- 		if (!(count % 10))
- 			dev_notice_ratelimited(dev,
-@@ -2067,6 +2075,12 @@ static void vfio_ap_mdev_request(struct vfio_device *vdev, unsigned int count)
- 		dev_notice(dev,
- 			   "No device request registered, blocked until released by user\n");
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 02159c967d29..6fc4ddc606bd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12877,11 +12877,11 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ 		mutex_unlock(&kvm->slots_lock);
  	}
-+
-+	if (matrix_mdev->kvm)
-+		release_update_locks_for_kvm(matrix_mdev->kvm);
-+	else
-+		mutex_unlock(&matrix_dev->mdevs_lock);
-+
- }
- 
- static int vfio_ap_mdev_get_device_info(unsigned long arg)
+ 	kvm_unload_vcpu_mmus(kvm);
++	kvm_destroy_vcpus(kvm);
+ 	kvm_x86_call(vm_destroy)(kvm);
+ 	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+ 	kvm_pic_destroy(kvm);
+ 	kvm_ioapic_destroy(kvm);
+-	kvm_destroy_vcpus(kvm);
+ 	kvfree(rcu_dereference_check(kvm->arch.apic_map, 1));
+ 	kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
+ 	kvm_mmu_uninit_vm(kvm);
 -- 
-2.48.1
+2.43.5
+
 
