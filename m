@@ -1,60 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A82C2566EB
-	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6218625A659
+	for <kvm@vger.kernel.org>; Wed, 26 Feb 2025 19:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740599746; cv=none; b=NJQ+3FxOa/tHRisRztJcv0WeSRuKD+egKoJRP/7MDGFYean5cte4HFr5WIqHkWRZOVKZiNlejVFxs07GMzDfw8UkA1e3hbZYTKg8AYfu5penSJ7GSO3AQ0jtUmsdoAOTX1c0z5yOyxKG7kjm8X1f9DBPGlcxCkY2xFF90SdjosA=
+	t=1740599747; cv=none; b=Vg9QrSD7kGUwE3TA2Yhq+28orfShckypaWiW0aOgHE/o7LTNa7t2brkAY9jZ3YhGv8Q9HKvPGwEv3wtQ4eQfOiJrXoBW3xeScC1N3h2nMa8uLbAxiPBePWwdyjkYlZ/ugsxTPYwviw3UFbAhrS/3jQlIvUXTNQ5LxiENlRadeQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740599746; c=relaxed/simple;
-	bh=u/sdQab8lXWKkMan8BUKA5i227KDtYwYUiBcjZtQ8uw=;
+	s=arc-20240116; t=1740599747; c=relaxed/simple;
+	bh=F/ElMsRyKHW98cCVtsU7nZs3X1Oye+965XrPrtj+S5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pY2ePcG5T2AIzGCVYvtgfrjilIemaBr5nKKU3UInC010AJd2CT2fZ0hsCaujtw98tm2JL+e2gCN3uJVu2h/coGwFA82slC89j956dxaWwPU6eN0Ftj+f1irVCTq8aBah84xqte7ktuS4GsgeUhNPbFEAKDgAZXxcTuaRPlmUHjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ijpD4lXD; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=cGDALYnGYBLhiXEHQesFErlTeRL43nL0B3UmLzZOURUjlQn4a3PRmoUpjlz17E1PC0VtH/F2jKZH5r4ezZLVTwZVt0pHs755hix5sCIb/VKQ1tjm0lY+NDQY3ttQg6ruHbDStP8GxSRoM8231Mel8kCgs18rzelL/UXm+xw7ans=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hZl5Ir4u; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ijpD4lXD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hZl5Ir4u"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740599743;
+	s=mimecast20190719; t=1740599744;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JNiS9NTbnI64NJwk0LUGNPvpim6dJ6JJAvupdTT7DPg=;
-	b=ijpD4lXDDO0mE9SFaX2W4E0jWXgxefPKas3JtUup2Oh1A+pze54UHqRit1xfoBAxmRGKfJ
-	/Xcuk+dKInZht0v8f6rcCpUiYBy14+dx5iPF6EPQpRf9mmBdyw8zQWbfxRRCUAm78wobfk
-	0DbpEOm+kwhR3tJJjGSq5uk1oBeJCGM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=7CVED5K0DPAsIBLFdlZi8ssHHoQwINfn2NzlJIvPUEk=;
+	b=hZl5Ir4uEv8B2TAGSU0uThgqP7rObKLtYYO/u5C0oAuPqqL3S6IRLLwijmfeomh7vkcJfj
+	GFKuKC7METBvUFcRAIqo59BpDC/ePOfvOUONKqJ8Q72ZLzIcv6rXTPN9rn0edYzR3zVX5I
+	yhO8xShv7SsJp1frA9HAyy43u54TuHQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-JvjRQYaaNQaO1Q1icRShmQ-1; Wed,
- 26 Feb 2025 14:55:39 -0500
-X-MC-Unique: JvjRQYaaNQaO1Q1icRShmQ-1
-X-Mimecast-MFC-AGG-ID: JvjRQYaaNQaO1Q1icRShmQ_1740599737
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-ko3nC-gQNFuhUkyjpuplLA-1; Wed,
+ 26 Feb 2025 14:55:42 -0500
+X-MC-Unique: ko3nC-gQNFuhUkyjpuplLA-1
+X-Mimecast-MFC-AGG-ID: ko3nC-gQNFuhUkyjpuplLA_1740599741
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8A1B21903089;
-	Wed, 26 Feb 2025 19:55:37 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C01719783B2;
+	Wed, 26 Feb 2025 19:55:41 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3A579196ADAB;
-	Wed, 26 Feb 2025 19:55:36 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 58AAB196ADAB;
+	Wed, 26 Feb 2025 19:55:40 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Yan Zhao <yan.y.zhao@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 04/29] x86/virt/tdx: Add SEAMCALL wrappers to remove a TD private page
-Date: Wed, 26 Feb 2025 14:55:04 -0500
-Message-ID: <20250226195529.2314580-5-pbonzini@redhat.com>
+	Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PATCH 07/29] KVM: x86/tdp_mmu: Add a helper function to walk down the TDP MMU
+Date: Wed, 26 Feb 2025 14:55:07 -0500
+Message-ID: <20250226195529.2314580-8-pbonzini@redhat.com>
 In-Reply-To: <20250226195529.2314580-1-pbonzini@redhat.com>
 References: <20250226195529.2314580-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -69,127 +66,125 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-TDX architecture introduces the concept of private GPA vs shared GPA,
-depending on the GPA.SHARED bit. The TDX module maintains a single Secure
-EPT (S-EPT or SEPT) tree per TD to translate TD's private memory accessed
-using a private GPA. Wrap the SEAMCALL TDH.MEM.PAGE.REMOVE with
-tdh_mem_page_remove() and TDH_PHYMEM_PAGE_WBINVD with
-tdh_phymem_page_wbinvd_hkid() to unmap a TD private page from the SEPT,
-remove the TD private page from the TDX module and flush cache lines to
-memory after removal of the private page.
+Export a function to walk down the TDP without modifying it and simply
+check if a GPA is mapped.
 
-Callers should specify "GPA" and "level" when calling tdh_mem_page_remove()
-to indicate to the TDX module which TD private page to unmap and remove.
+Future changes will support pre-populating TDX private memory. In order to
+implement this KVM will need to check if a given GFN is already
+pre-populated in the mirrored EPT. [1]
 
-TDH.MEM.PAGE.REMOVE may fail, and the caller of tdh_mem_page_remove() can
-check the function return value and retrieve extended error information
-from the function output parameters. Follow the TLB tracking protocol
-before calling tdh_mem_page_remove() to remove a TD private page to avoid
-SEAMCALL failure.
+There is already a TDP MMU walker, kvm_tdp_mmu_get_walk() for use within
+the KVM MMU that almost does what is required. However, to make sense of
+the results, MMU internal PTE helpers are needed. Refactor the code to
+provide a helper that can be used outside of the KVM MMU code.
 
-After removing a TD's private page, the TDX module does not write back and
-invalidate cache lines associated with the page and the page's keyID (i.e.,
-the TD's guest keyID). Therefore, provide tdh_phymem_page_wbinvd_hkid() to
-allow the caller to pass in the TD's guest keyID and invoke
-TDH_PHYMEM_PAGE_WBINVD to perform this action.
+Refactoring the KVM page fault handler to support this lookup usage was
+also considered, but it was an awkward fit.
 
-Before reusing the page, the host kernel needs to map the page with keyID 0
-and invoke movdir64b() to convert the TD private page to a normal shared
-page.
+kvm_tdp_mmu_gpa_is_mapped() is based on a diff by Paolo Bonzini.
 
-TDH.MEM.PAGE.REMOVE and TDH_PHYMEM_PAGE_WBINVD may meet contentions inside
-the TDX module for TDX's internal resources. To avoid staying in SEAM mode
-for too long, TDX module will return a BUSY error code to the kernel
-instead of spinning on the locks. The caller may need to handle this error
-in specific ways (e.g., retry). The wrappers return the SEAMCALL error code
-directly to the caller. Don't attempt to handle it in the core kernel.
-
-[Kai: Switched from generic seamcall export]
-[Yan: Re-wrote the changelog]
-Co-developed-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Link: https://lore.kernel.org/kvm/ZfBkle1eZFfjPI8l@google.com/ [1]
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Kai Huang <kai.huang@intel.com>
+Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Message-ID: <20241112073658.22157-1-yan.y.zhao@intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241112073457.22011-1-yan.y.zhao@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/tdx.h  |  2 ++
- arch/x86/virt/vmx/tdx/tdx.c | 27 +++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  1 +
- 3 files changed, 30 insertions(+)
+ arch/x86/kvm/mmu.h         |  3 +++
+ arch/x86/kvm/mmu/mmu.c     |  3 +--
+ arch/x86/kvm/mmu/tdp_mmu.c | 37 ++++++++++++++++++++++++++++++++-----
+ 3 files changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index cc050cc1367a..28d25d1bfa96 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -183,8 +183,10 @@ u64 tdh_vp_rd(struct tdx_vp *vp, u64 field, u64 *data);
- u64 tdh_vp_wr(struct tdx_vp *vp, u64 field, u64 data, u64 mask);
- u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64 *tdx_size);
- u64 tdh_mem_track(struct tdx_td *tdr);
-+u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_phymem_cache_wb(bool resume);
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
-+u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_cpu_enable(void) { return -ENODEV; }
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f920754bb35e..ffa0f6b8254d 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1788,6 +1788,23 @@ u64 tdh_mem_track(struct tdx_td *td)
- }
- EXPORT_SYMBOL_GPL(tdh_mem_track);
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 050a0e229a4d..8d0fca4b4a50 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -253,6 +253,9 @@ extern bool tdp_mmu_enabled;
+ #define tdp_mmu_enabled false
+ #endif
  
-+u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u64 *ext_err2)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = gpa | level,
-+		.rdx = tdx_tdr_pa(td),
-+	};
-+	u64 ret;
++bool kvm_tdp_mmu_gpa_is_mapped(struct kvm_vcpu *vcpu, u64 gpa);
++int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code, u8 *level);
 +
-+	ret = seamcall_ret(TDH_MEM_PAGE_REMOVE, &args);
-+
-+	*ext_err1 = args.rcx;
-+	*ext_err2 = args.rdx;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(tdh_mem_page_remove);
-+
- u64 tdh_phymem_cache_wb(bool resume)
+ static inline bool kvm_memslots_have_rmaps(struct kvm *kvm)
  {
- 	struct tdx_module_args args = {
-@@ -1807,3 +1824,13 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+ 	return !tdp_mmu_enabled || kvm_shadow_root_allocated(kvm);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 9d5d50e2464f..800684c3b2c9 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4685,8 +4685,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 	return direct_page_fault(vcpu, fault);
  }
- EXPORT_SYMBOL_GPL(tdh_phymem_page_wbinvd_tdr);
-+
-+u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+ 
+-static int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code,
+-			    u8 *level)
++int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code, u8 *level)
+ {
+ 	int r;
+ 
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 046b6ba31197..22675a5746d0 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1894,16 +1894,13 @@ bool kvm_tdp_mmu_write_protect_gfn(struct kvm *kvm,
+  *
+  * Must be called between kvm_tdp_mmu_walk_lockless_{begin,end}.
+  */
+-int kvm_tdp_mmu_get_walk(struct kvm_vcpu *vcpu, u64 addr, u64 *sptes,
+-			 int *root_level)
++static int __kvm_tdp_mmu_get_walk(struct kvm_vcpu *vcpu, u64 addr, u64 *sptes,
++				  struct kvm_mmu_page *root)
+ {
+-	struct kvm_mmu_page *root = root_to_sp(vcpu->arch.mmu->root.hpa);
+ 	struct tdp_iter iter;
+ 	gfn_t gfn = addr >> PAGE_SHIFT;
+ 	int leaf = -1;
+ 
+-	*root_level = vcpu->arch.mmu->root_role.level;
+-
+ 	tdp_mmu_for_each_pte(iter, vcpu->kvm, root, gfn, gfn + 1) {
+ 		leaf = iter.level;
+ 		sptes[leaf] = iter.old_spte;
+@@ -1912,6 +1909,36 @@ int kvm_tdp_mmu_get_walk(struct kvm_vcpu *vcpu, u64 addr, u64 *sptes,
+ 	return leaf;
+ }
+ 
++int kvm_tdp_mmu_get_walk(struct kvm_vcpu *vcpu, u64 addr, u64 *sptes,
++			 int *root_level)
 +{
-+	struct tdx_module_args args = {};
++	struct kvm_mmu_page *root = root_to_sp(vcpu->arch.mmu->root.hpa);
++	*root_level = vcpu->arch.mmu->root_role.level;
 +
-+	args.rcx = mk_keyed_paddr(hkid, page);
-+
-+	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
++	return __kvm_tdp_mmu_get_walk(vcpu, addr, sptes, root);
 +}
-+EXPORT_SYMBOL_GPL(tdh_phymem_page_wbinvd_hkid);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 104c97abf264..c9bea023f2b4 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -32,6 +32,7 @@
- #define TDH_PHYMEM_PAGE_RDMD		24
- #define TDH_VP_RD			26
- #define TDH_PHYMEM_PAGE_RECLAIM		28
-+#define TDH_MEM_PAGE_REMOVE		29
- #define TDH_SYS_KEY_CONFIG		31
- #define TDH_SYS_INIT			33
- #define TDH_SYS_RD			34
++
++bool kvm_tdp_mmu_gpa_is_mapped(struct kvm_vcpu *vcpu, u64 gpa)
++{
++	struct kvm *kvm = vcpu->kvm;
++	bool is_direct = kvm_is_addr_direct(kvm, gpa);
++	hpa_t root = is_direct ? vcpu->arch.mmu->root.hpa :
++				 vcpu->arch.mmu->mirror_root_hpa;
++	u64 sptes[PT64_ROOT_MAX_LEVEL + 1], spte;
++	int leaf;
++
++	lockdep_assert_held(&kvm->mmu_lock);
++	rcu_read_lock();
++	leaf = __kvm_tdp_mmu_get_walk(vcpu, gpa, sptes, root_to_sp(root));
++	rcu_read_unlock();
++	if (leaf < 0)
++		return false;
++
++	spte = sptes[leaf];
++	return is_shadow_present_pte(spte) && is_last_spte(spte, leaf);
++}
++EXPORT_SYMBOL_GPL(kvm_tdp_mmu_gpa_is_mapped);
++
+ /*
+  * Returns the last level spte pointer of the shadow page walk for the given
+  * gpa, and sets *spte to the spte value. This spte may be non-preset. If no
 -- 
 2.43.5
 
