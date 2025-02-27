@@ -1,150 +1,272 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2066.outbound.protection.outlook.com [40.107.244.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0ED19C57C;
-	Thu, 27 Feb 2025 16:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740672166; cv=none; b=kotlZfeUl12C+/ivOk3dnUamD3vZyH/eiKu7ZFvT21iYHP/QydUuVV5mPLpcCBeKLTDVkiqI7CPCvaD9ZVZV/V/8xSSHUoRwrUE2VdTcLihTH+aRX1D6pexHLF38KDStkaLE8PE2Y/yQKHI5w2Ts15fL6ALf3e3YTaeJ4GfP1Gg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740672166; c=relaxed/simple;
-	bh=RFl2o37WVKCpXjjZioydmxS1a7oCxw26tEAC3SJ6bFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuksfX4ygY6Xf98QM5EWF3fj2I82E6qbtP/UfUgacnPYfAc2Fj9+H080WRwsR/TVWx7wJXfWL+ClSkq7UCELsRBDdY60k3bE+4lrx0mCiud3gVetL82Xamt24ZaxvaA4UyVvpI2ouO/XhumQkQ22UEJMzroVL80e9S6r0PJOgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YDmBIf3V; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5E81B0430;
+	Thu, 27 Feb 2025 16:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740672207; cv=fail; b=iwEzhdU0O/qin1TbIocDH9OJLdYhpSpfzddrqPs9HzFa1BpigAI25liwmcEySAcsLDq+xmZswRH48Iq7MvrvxRTRKWGLR2fUD9PCLGHIgRBSWcxv3JEcB7pZmHU7J2rq5DZmOTlrYnMa0cxBLkVHPtu7LOkMO91vQOSoHQ1o0Go=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740672207; c=relaxed/simple;
+	bh=qbbndpxXfkJ4141yG4/GWQuiik3d+sMCoRefGeNWd2I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qr3Ab6SA1xWYfdgxqIeSJwV7qUfnwuLEE0wE/GNlbwsR37DuBttQrtp4bVWqVH2/lfLvjmn5uJVB3ixew36utD+taGTd/m01/6/yoFVK+U78ntls8+O+o4g7zOVmwKqfNu1YMWLWQkceBhR0fPSlR5w+mp5LCe8H9MrXe5WgnUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AKz/fGqw; arc=fail smtp.client-ip=40.107.244.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YDmBIf3V"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ECDEB40E0202;
-	Thu, 27 Feb 2025 16:02:40 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7vNDSrtYzXsR; Thu, 27 Feb 2025 16:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1740672156; bh=FUZpHDr4StgHr+/B0BvhYI7K2GkGl5sit6N8LUylnSA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YDmBIf3VPJ/AzvjLAt7ulTJSyvWP3TrND3nM3FTp8uM3qLAs2bIl8ejzn5OaWXpxa
-	 YLDt4O4V8ilXogR6DZlzQKbkRCy5OvqRms/DgGRubj3SCIXG+NDrtGjmAdztORJ76o
-	 jnTo3q7a3j+1YsPyAWh396spuDhLMoraz8hICqSiVxpXv//tdyscstmlX4K5ElCyUC
-	 Fo5wXtgzT2Gcogpirx0i6zn+JJ4OVUFCh+xs/ssOG1WmVNaSLEyCw+ukiO7C9BYR/U
-	 k0RNsQy8gzN9FuFb9ogOTLp6XlVDnYTAqTdxD6i2Rcvl7S+ElZ8fnXQpvdHwc8Yuz6
-	 7OhoP5y0nN6SNR4qzLOQgoZO/8da+r6rH02HIj334MvqkfPbIq33QogIrhpX2J2pI+
-	 cBQ0wMg/l3zy6OmK+3fUYri3TpAqGzhksTsprK5NoYgEKfoSzQb2DAa6yjc8sxHN8a
-	 i0cftrHa8BLifDvDIFfSqikRd/4i1DFBqgVM0WmR/Pas6XyYIFd53elX0/WnlrxgPt
-	 jy4H+dAXmy2cJyuCkHjAEfafgAmmJvYCKPqnqd7MjlGbzPJYMcyZ7HqaBsH3YbiCFg
-	 U2PuqxLAkp49Qig8WQuZKqfCLnpFVRLIBRCJK9s8dsnrR/9Qu7ad1uB5gu1MISGABz
-	 Juk4iWe2stm872WWu6WazSDw=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1B97E40E0200;
-	Thu, 27 Feb 2025 16:02:01 +0000 (UTC)
-Date: Thu, 27 Feb 2025 17:01:55 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 20/22] sev-guest: Stop changing encrypted page
- state for TDISP devices
-Message-ID: <20250227160155.GCZ8CMcz5sQnKotIME@fat_crate.local>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-21-aik@amd.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AKz/fGqw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PFVt9jcirP8CngjqV8vRoez/1fwuSggqyGz06+kfAN/5rwKrDyQeA8FLpXNWXjzvby7WT14MgUcVhy8pY6wSzqkv+ZI1Vw2LiSPGhlvuq1crFEne67/bCAA9lUejkj5Ob6ysrHZI9MYEvHzdR7WAwqhKG9fKa+PGhcu+/CKL7W+84FP4Wa56B34qtDfUNGRyBVJjIsiPAo2/Ef359GsQUW+QWfwjdziWA3ZhipkesuYSs8vRNOAnK0FmjhKejZ1HE7Jwf3nP+eDeoxcadi/pTILaGivM4OvQsjSMisyGhFAadgqXi0bnowKpb7GxGXLcpLA1HuBAyWDmmJqt8dHKFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aOkteXLK2hhlx7Kv9qEEKuvHsIlJtTGFOPU1GFa2TSQ=;
+ b=Kf/BaEC8Msh5Te2pAeP9P60WbqhubuUszkyGLW8rgbh7+qF+Zwy9IhxzmZIrE/+i8O1BRNRkrb8KROwHncpfyus9eY0L2J8ySa407m4Us4c3WzuFEiUPnj9bEiBEkPAhLERTICEIVJbM+VJqVIhZ7p/EsPmO7eSspKJGGWN4noCDMahwB/3f4ZYmjnmZqCdnOCQyNx6kLB68U/AUOB2i7GJ010bBLXLdcgKyrBPnaEdpMrKo00rzlxZ6uGiIIxUCCmuvykXe6oJKRTeJoSPAC577pSN8yugqJ5yK98vfgrOE2pqCkMIcjRCZQqzbpxZ3xpUk1Cm3i9qDqEImPLs4yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aOkteXLK2hhlx7Kv9qEEKuvHsIlJtTGFOPU1GFa2TSQ=;
+ b=AKz/fGqwLvOR7qSig2DcplRb0QSALrB1LFe1Fzg0pEnaVrFwiS3uFxvVeR8Lz+2f6wdkEb2HUn8p69RDwKRbkhf9PhVADEQ6z6eitot/Zk62UZlcc0ndmUXJWUk13Ji6wC5g4oj9bcWYZqvHT2ZGGAqLaurZUQVIKIjnvZb49ds=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by PH7PR12MB6834.namprd12.prod.outlook.com (2603:10b6:510:1b4::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Thu, 27 Feb
+ 2025 16:03:20 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8489.021; Thu, 27 Feb 2025
+ 16:03:20 +0000
+Message-ID: <616e0b28-7ca1-a0d6-3e5f-ab4073fd9e7c@amd.com>
+Date: Thu, 27 Feb 2025 10:03:17 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 03/10] KVM: SVM: Refuse to attempt VRMUN if an SEV-ES+
+ guest has an invalid VMSA
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Naveen N Rao <naveen@kernel.org>, Kim Phillips <kim.phillips@amd.com>,
+ Alexey Kardashevskiy <aik@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>
+References: <20250227012541.3234589-1-seanjc@google.com>
+ <20250227012541.3234589-4-seanjc@google.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20250227012541.3234589-4-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0071.namprd04.prod.outlook.com
+ (2603:10b6:806:121::16) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250218111017.491719-21-aik@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|PH7PR12MB6834:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3a04109-da7b-4d5b-20bc-08dd57484100
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aVl4bzQ0bWpTMzdORHJQS0hTU2V0cGZUSm94YW9JWURlRFgxMmI1M3YrUXZV?=
+ =?utf-8?B?VkM3YUtDY3hkNXl5RDV5OXFnVzZqbWZkdXFMaDBYSC9SQ1dibHJUWEROOW9x?=
+ =?utf-8?B?aDZXaE9HK3lBYWVtTTJTSTRSeWtYTlRlcU5iK2lJNEp5dWtVTXJaWTR6ZEdt?=
+ =?utf-8?B?UjZ6QW9UdnFWZUNYRWRSKzJ2TUFzYkRZeEFIc2VnOGNuUFNCMjdlQkZ5RVVN?=
+ =?utf-8?B?OXhsVTUxV0JuREd5VFJkTnVSMWwxUGZpT1BZRndicHpSZE41WDVhd2Ewbm52?=
+ =?utf-8?B?c2ZyaTZyalFqckxob1YyMGRSMzYvbkI1M09FUWFJU2JlN1NYVW1Bb2RnaUVM?=
+ =?utf-8?B?ZVlSdXV6OVYreDBjaWZ4Umx2MzVsdndUL2J1WDRHUm9hT3NLQUpuOWNyYTBB?=
+ =?utf-8?B?REhSWjd5RVVUQ3UzZEoxYURrQThJYkRHMnRBcHQ5b0xhbkc3Mnhxa0w5Y0pV?=
+ =?utf-8?B?RlBFUmx3b1lGT3pNZ3lMZEpWazB3YWlhdmdtayttVUFVTDE5VHVIVWc4MUpI?=
+ =?utf-8?B?dk1zSi95emVtQ3A1Yk95VGR1R2NxUEMwSTM1SUR2TzZQdG9GbU13cC93S2hz?=
+ =?utf-8?B?Uys3eUsxRU5sbXhvUUpCMTFYS3NJcmJJRzBjZVNWZlRZTXJjV2lmbmhvNXor?=
+ =?utf-8?B?dy9VQ21rbWNvaXBzZXZvd3pnTFJaOTJTYjQzc0FJMlZ2MEFMb1ZlOVdCSUhL?=
+ =?utf-8?B?UENTc2FscFN5MDRZeVc4Vy9iRDFGVTBnQ0IrN1RLVDl4Q1VWMFZwTjdmVDZE?=
+ =?utf-8?B?end6UDJwSW1zbWJLaXdaQUlURE1oV0djTDJjMnJaWUdOMTFVakRrZVV4bENh?=
+ =?utf-8?B?VU4xMjQwUk9HNlRlVm5QWGVZRjBzbE1OTjRkQnBkRjVibjYzc0RGUVBZZkZJ?=
+ =?utf-8?B?SDFuWUJvOWNyaVNEV2ZYQy9lUWlsbVRhWXhlK09jNloxMnU3ZkNDbTlnM2VJ?=
+ =?utf-8?B?aDR5QUg4SVJHNmZyV3NHR0hCd3FDL1RLUXg1bWxseUJTN3N0RlgzRFdqM3px?=
+ =?utf-8?B?Sy9mTmZEODBRSWtpUGNZa0gzTHpRZ1ZxYTNROHhSK1hWdjRTaTJ1a2xLQ3VG?=
+ =?utf-8?B?elNNODFEQ3phSENvSWhwNUlSL2s2ejBaVTlpU0ZIRnFOdUdWb05mV3FKZFRI?=
+ =?utf-8?B?VGF6U3VmU0JRaEcvRnRBWEhkK2NYQThZdDR6OGcrcXRPclhFdGVEYUtiRVl5?=
+ =?utf-8?B?KzZkZkswS3BrNHhZTnRMdzN0NGUwdWVpZjExNWtFbkdSeDJSVXVNMUI2V0Zt?=
+ =?utf-8?B?V2xaSTNCTTNsOXhCNHhETStQSmFJdmFRZXZqZ0E4bW1ELzQ5NzJKVzg5TlV6?=
+ =?utf-8?B?SWtHTjd3ZXlZZ0tqa1hPa0Z3Rk5vUmh4S0k4ajR2c3JSSkU1S3B3Ukh6N21o?=
+ =?utf-8?B?NU1lazJrV0pCODZiT1BtMEZPUDUrRjIrUHJ4WGx3K1NwZHVuRGQ1bEtOd0pk?=
+ =?utf-8?B?WGpUM1dKMDJiL3JGL29jZ2g0M0VBYmlUVGwxRE9kSlJMMU9nK2l2a2dCUnEz?=
+ =?utf-8?B?bklIdVdybkU4ajZuQWs1YnJPVDZrUnBjK1grMEhrSVJwTmluZm11NXppQ0Iw?=
+ =?utf-8?B?VjNSWFJ4ZXVYMUlQL1dkUWVKWXQ2TEp4WjJnRXVnM0srZWhwWHRaLzBRR0pB?=
+ =?utf-8?B?ekpZcVQxWG9pUm9tdVlzVmliMFRlbWNyTDBXckxuMjFpMzFCbyt1Q2ZsYVpH?=
+ =?utf-8?B?MHpmbWZNVk1qc2FyRDlhSVJTakk5K1RPN2hCc25QaWx6RlNlaWNQM0NuY3Bk?=
+ =?utf-8?B?L1pOTnh4VWVLb3lmMVlPeVoyanZKQmxJODRkdy9DTVVSTDNab3kzUUFPbXFy?=
+ =?utf-8?B?ZzBmRW5OWVFPdFl1enF6RUhWWDZqQTZsalJJYy9BaXZBVHphbCswelZ2Z1Vq?=
+ =?utf-8?Q?HSkK6qcOD2WLT?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UlUrUkdqZVgvZEdXYXlVMlcvR0IrY2ZIWGg3Q2puaWorWU1oMWtPK3ROUzVP?=
+ =?utf-8?B?Q1NOMG1UOFRNT2lQVXN6bDFlNXZJa0ZINGxXVW9ZaFM3WWxGcFUxdXZFQ1Fy?=
+ =?utf-8?B?RThBOWc0MFlvWGIwSlNrMDllWHFwTWJLazJGaFlhZXFjbGdka1U0SXQ4TThz?=
+ =?utf-8?B?bXpSNjlydDhqZlhBVGVnM2o1WEVhdHlndjdIdXNMWmJsaVpvZ0lQOUI4anNS?=
+ =?utf-8?B?Yy9FenJIZ3djRUx3eWNxVnBodFhSbGJjcm9zK2FNL3FpOW9ibUV4clU5M01G?=
+ =?utf-8?B?anVDRnM4R1hEek4xL0FEYXJYYTNlV0VBRk05WTNSL01nWDRvcTBYS0tvMHhN?=
+ =?utf-8?B?ejRWcmVrRHV6T1dnSCtQazJIaEYzOGVlZjRIT0ZRWFYzbEEySWlvbE5JVm1l?=
+ =?utf-8?B?a0ZhTk9ZbG1XRERDenlEblBwSHJTTUlWMTN1MGY5T3pUTjdJMVA3MTdoUmJS?=
+ =?utf-8?B?d0NMazlXcjI2YWdSRVRLSkhMRWZkb2M2YkFUTWQxcjhhclpxaUEva2tXVEdj?=
+ =?utf-8?B?TUxzR2xBNUlveTlFTmdYWnk3SWF0Qk1FTEdxeHJUOUg2cGJBS3U5SjVQR2gy?=
+ =?utf-8?B?ZUlzM3ZOMGVaWllGSVAvNmlTL3ZLbmhzS3V1ZnVrMnlUMWJTdkFueUlvNlkv?=
+ =?utf-8?B?YS9vTGtIbjhzOGw3NlBJaWN3L0dPZ1VFaE9ZdkkvSG1ESU5zdEZvTEp0QTRR?=
+ =?utf-8?B?OFB5cG5Bd2R1M2dOSlJxenVZNnVWUGF3elBhQTM1RHlCaXNwNFBndVAxalBj?=
+ =?utf-8?B?MnVKUm9EVTh3MTI3R3lleWpGc1daN3lvSGsvZVd0WExSaGdTYWpPdmhIZW9T?=
+ =?utf-8?B?Z2lQSGNQdXdodGVBWmZSUmpVbTNtWUE3OTRmOWN6eDFYd2o4Z1FlNExNWkZs?=
+ =?utf-8?B?SlNNMDVhL0EzbThZWEUwc1lrT1Z5dHE4bjFaUk4zamxjaEpOejB6ZTRscDJ1?=
+ =?utf-8?B?TmViODlSUXlxaUlHaG4rSTlTY0ZqUFVINk5ic3hXcDM3Uy9JcktrdEFET014?=
+ =?utf-8?B?RFk5Wm12djVHTDV4aGtWbm9tZndTenkxc05JR1EyUm91dzF0T3ozbndOSmxw?=
+ =?utf-8?B?L1MyRXBsWDFqWUxxZktYWFRSRkNHZmhwMHUxUCtkdVkxUFVNd2JFR0JUOVlV?=
+ =?utf-8?B?bkIrUzUxTTRpWXJpSWVreG5NRDlVWUNmZHNJSlR1VUFicDZ3dkVqM2ZIZ05t?=
+ =?utf-8?B?K09naXJoQnZ5UjQ4WE5ZTzkwOHc5eFFNQXIvTkdYSUdRUWttM3lIVlR2WGdJ?=
+ =?utf-8?B?N2Fqak1qRzRRSVdveUJCZk8xaWlISzBLTDg1NkxhdmFPd1NtTmVtVnBjTXAy?=
+ =?utf-8?B?cGpveDdMaDYzaThwSWZiS1UxWldVTEpCZ1dkWTI1SkhIU2ordFhZZ3BkSjZF?=
+ =?utf-8?B?QjR6ZkFVOXVwR1VsTHdaMkZYNVJMR3lmclBjM1pUc2FsQ29uODZkMVFDaXNr?=
+ =?utf-8?B?bXJ3SU05UzU2NGN4RXhtckdydnNMUWpZUkhCdXFWZm5mb2M4ZVp4V0FLTkpJ?=
+ =?utf-8?B?aGZpSEwvNXg5Sm1xRFFST056SFp0dHNhQmFKUkplODY5a2U3T0dLdzUvYWZQ?=
+ =?utf-8?B?U0tUT3djZmQ2Ym0zTG53WHVqNXp5SGdhMTU0L3E4bFFSYjU3TTNnLzgvNEts?=
+ =?utf-8?B?MWhiQmxVRzl3alhWaWF2SkF4Z3JZRlZaY2RSbW44K1Y5ZTh5Z2poQTZHRnlt?=
+ =?utf-8?B?aWwra3Qvc3EyVWtrT3FuTHhTaU5yc0ZFMklSNTBvTFdUSXJJK0JFSXpySnBW?=
+ =?utf-8?B?Q1NTOGdtR3lrbENlZ0QzczRXVWw2OUJNNy90VVRsbVVod1pkVGZtZElyVWRx?=
+ =?utf-8?B?YzNKYTY0Y2NObHNTVCs5eGcwRVNhT1RLKzhYWmxJbVV5VnBSV0krak1HYzVN?=
+ =?utf-8?B?QkVEZkdBVVVNOXI4U3prZU1yaXF3UXZxUUNabnlja1NvTERhbGNZTzc5YzBS?=
+ =?utf-8?B?MFdpaEF4Q2R2dWFEeUsrYVBIbFMrajRsSzc0TWtCOFlCam00eXBTazlxUkhZ?=
+ =?utf-8?B?WCs4YkxlRHIvYklDcURUN2J6NXBZZWRwWDlGTnl4S3l0TE5naklRVnd1WUEv?=
+ =?utf-8?B?akxxZ2xwZHZodEtpWmhqSlhVZHE0MmdCQUM4Ui9yUXNIZHp3R2N6bWE4RnhO?=
+ =?utf-8?Q?R5oPblGh7PhbF6j3aGFv2JnpC?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3a04109-da7b-4d5b-20bc-08dd57484100
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 16:03:19.8888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jvGy0+y8StxiQB7p46uybLvxiByLcG32m6QOSmBXnldctbL1rt/K5QV7YaBR9fWyaqxnzrxXZW3DXzZy0OFI7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6834
 
-On Tue, Feb 18, 2025 at 10:10:07PM +1100, Alexey Kardashevskiy wrote:
-> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-> index d7e30d4f7503..3bd533d2e65d 100644
-> --- a/include/linux/dma-direct.h
-> +++ b/include/linux/dma-direct.h
-> @@ -94,6 +94,14 @@ static inline dma_addr_t phys_to_dma_unencrypted(struct device *dev,
->   */
->  static inline dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
->  {
-> +#if defined(CONFIG_TSM_GUEST) || defined(CONFIG_TSM_GUEST_MODULE)
-> +	if (dev->tdi_enabled) {
-> +		dev_warn_once(dev, "(TIO) Disable SME");
-> +		if (!dev->tdi_validated)
-> +			dev_warn(dev, "TDI is not validated, DMA @%llx will fail", paddr);
-> +		return phys_to_dma_unencrypted(dev, paddr);
-> +	}
-> +#endif
->  	return __sme_set(phys_to_dma_unencrypted(dev, paddr));
+On 2/26/25 19:25, Sean Christopherson wrote:
+> Explicitly reject KVM_RUN with KVM_EXIT_FAIL_ENTRY if userspace "coerces"
+> KVM into running an SEV-ES+ guest with an invalid VMSA, e.g. by modifying
+> a vCPU's mp_state to be RUNNABLE after an SNP vCPU has undergone a Destroy
+> event.  On Destroy or failed Create, KVM marks the vCPU HALTED so that
+> *KVM* doesn't run the vCPU, but nothing prevents a misbehaving VMM from
+> manually making the vCPU RUNNABLE via KVM_SET_MP_STATE.
+> 
+> Attempting VMRUN with an invalid VMSA should be harmless, but knowingly
+> executing VMRUN with bad control state is at best dodgy.
+> 
+> Fixes: e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+> ---
+>  arch/x86/kvm/svm/sev.c | 16 +++++++++++++---
+>  arch/x86/kvm/svm/svm.c | 11 +++++++++--
+>  arch/x86/kvm/svm/svm.h |  2 +-
+>  3 files changed, 23 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 719cd48330f1..218738a360ba 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3452,10 +3452,19 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
+>  	svm->sev_es.ghcb = NULL;
 >  }
 >  
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index 3dae0f592063..67bea31fa42a 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -173,6 +173,14 @@ static inline bool is_swiotlb_force_bounce(struct device *dev)
+> -void pre_sev_run(struct vcpu_svm *svm, int cpu)
+> +int pre_sev_run(struct vcpu_svm *svm, int cpu)
 >  {
->  	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+>  	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
+> -	unsigned int asid = sev_get_asid(svm->vcpu.kvm);
+> +	struct kvm *kvm = svm->vcpu.kvm;
+> +	unsigned int asid = sev_get_asid(kvm);
+> +
+> +	/*
+> +	 * Reject KVM_RUN if userspace attempts to run the vCPU with an invalid
+> +	 * VMSA, e.g. if userspace forces the vCPU to be RUNNABLE after an SNP
+> +	 * AP Destroy event.
+> +	 */
+> +	if (sev_es_guest(kvm) && !VALID_PAGE(svm->vmcb->control.vmsa_pa))
+> +		return -EINVAL;
 >  
-> +#if defined(CONFIG_TSM_GUEST) || defined(CONFIG_TSM_GUEST_MODULE)
-> +	if (dev->tdi_enabled) {
-> +		dev_warn_once(dev, "(TIO) Disable SWIOTLB");
-> +		if (!dev->tdi_validated)
-> +			dev_warn(dev, "TDI is not validated");
-> +		return false;
-> +	}
-> +#endif
->  	return mem && mem->force_bounce;
+>  	/* Assign the asid allocated with this SEV guest */
+>  	svm->asid = asid;
+> @@ -3468,11 +3477,12 @@ void pre_sev_run(struct vcpu_svm *svm, int cpu)
+>  	 */
+>  	if (sd->sev_vmcbs[asid] == svm->vmcb &&
+>  	    svm->vcpu.arch.last_vmentry_cpu == cpu)
+> -		return;
+> +		return 0;
+>  
+>  	sd->sev_vmcbs[asid] = svm->vmcb;
+>  	svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
+>  	vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+> +	return 0;
 >  }
 >  
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index 95bae74fdab2..c9c99154bec9 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -19,6 +19,12 @@
->  /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
->  bool force_dma_unencrypted(struct device *dev)
+>  #define GHCB_SCRATCH_AREA_LIMIT		(16ULL * PAGE_SIZE)
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index b8aa0f36850f..f72bcf2e590e 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3587,7 +3587,7 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+>  	return svm_invoke_exit_handler(vcpu, exit_code);
+>  }
+>  
+> -static void pre_svm_run(struct kvm_vcpu *vcpu)
+> +static int pre_svm_run(struct kvm_vcpu *vcpu)
 >  {
-> +#if defined(CONFIG_TSM_GUEST) || defined(CONFIG_TSM_GUEST_MODULE)
-> +	if (dev->tdi_enabled) {
-> +		dev_warn_once(dev, "(TIO) Disable decryption");
-> +		return false;
+>  	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, vcpu->cpu);
+>  	struct vcpu_svm *svm = to_svm(vcpu);
+> @@ -3609,6 +3609,8 @@ static void pre_svm_run(struct kvm_vcpu *vcpu)
+>  	/* FIXME: handle wraparound of asid_generation */
+>  	if (svm->current_vmcb->asid_generation != sd->asid_generation)
+>  		new_asid(svm, sd);
+> +
+> +	return 0;
+>  }
+>  
+>  static void svm_inject_nmi(struct kvm_vcpu *vcpu)
+> @@ -4231,7 +4233,12 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
+>  	if (force_immediate_exit)
+>  		smp_send_reschedule(vcpu->cpu);
+>  
+> -	pre_svm_run(vcpu);
+> +	if (pre_svm_run(vcpu)) {
+> +		vcpu->run->exit_reason = KVM_EXIT_FAIL_ENTRY;
+> +		vcpu->run->fail_entry.hardware_entry_failure_reason = SVM_EXIT_ERR;
+> +		vcpu->run->fail_entry.cpu = vcpu->cpu;
+> +		return EXIT_FASTPATH_EXIT_USERSPACE;
 > +	}
-> +#endif
-
-Duplicated code with ugly ifdeffery. Perhaps do a helper which you call
-everywhere instead?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>  
+>  	sync_lapic_to_cr8(vcpu);
+>  
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 5b159f017055..e51852977b70 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -713,7 +713,7 @@ void avic_refresh_virtual_apic_mode(struct kvm_vcpu *vcpu);
+>  
+>  /* sev.c */
+>  
+> -void pre_sev_run(struct vcpu_svm *svm, int cpu);
+> +int pre_sev_run(struct vcpu_svm *svm, int cpu);
+>  void sev_init_vmcb(struct vcpu_svm *svm);
+>  void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm);
+>  int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in);
