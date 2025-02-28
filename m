@@ -1,73 +1,56 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2068.outbound.protection.outlook.com [40.107.94.68])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54796258CE0;
-	Fri, 28 Feb 2025 09:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740736266; cv=fail; b=e6wU1sYJGBHpWDuu6xiM0tiF/hPI6K0IJitka1AgdEEJ8GVExdvuEVaX17ch0IKa3qQu9uUa7GK0nl+IlVTPuDVU3WrKRTqv5sQkj7pH+deRuHsiQSvMYM5fDOPSL976GM8WF9ytxVFYqvmoFtZlDwShOhlkDs/gVvmzurUShfU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740736266; c=relaxed/simple;
-	bh=QBtNHo/AJUxZvu70ioVNSxJDjpRuUCJ/omCnFfV4XBw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DH6NQ64ABzseAa7uiYHE4/vHWGLoipEuP518XHJRpGx6mjeYJZSw0ZY44148WFxtim9BokLvkPSPDAmUiOQUl92nP7qscoGDccx/ckVs4sTvHnfMt27FKRhhcQoATAV+/LQxfzitYHcteBbQ8JLQcL5fpQoDDWWj8aY/6oKLeYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aw1q50wh; arc=fail smtp.client-ip=40.107.94.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aw1q50wh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p2v4VFxwwnaDxgu08q1+cTIJuoXjdPS+bwha1z3cuGRUdk8wUEsknHdpOl9uuyGLDuKSi/mTryqWpLktXNtjmyQvoyj9oxQM0fXw+5XVWSVDdllA9WCq9T+uBznhCJTdcDDDqxmyB1KaJZI6Oq6qNWvb0ocXrdouZ38ay2GDP2dH7pSp8wFfECQyXNiwyDIzbpOrHX537fBoMtEFIhT7z5dqUw4Uv2sjHbCkkqh0nnT961Lz/eO2+cIKNAjUTYB4xI2l4aXT5dUjKBqmG0Z3xI2qBMGH+OgWHM4ExwoxCscT+OyCfn2u1hANXzDLqApAbHK4lkqD7F82LnyPm8EERA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Ovrz/Y1TMf2j7ub+EyEFa8yzDBCM7g7YBp4FOMhr/4=;
- b=Edrjo/65H3ShV3y10iEoczKkEinCx7BsOWN51oFUQNkSbyzfiqt/juve+TD0PsbBLcVaP9FdoAsSDTTzxe0DKXiwlQ/knFDZIpH4m6I1nQ8ZTm9eBRFanqZQrpjZd0MnlrxcjcC+QbCJnCAG4/dUJ2KK/Pj0v519H2fRmnKkOZg0/XINsf5/OuG5INc/SwMjvhiR/Le2NUBw5pmADAbYN1QizbPwkzjY6rgYby5Od2Bz1RpLZpYMeBdtVmuAz5Rax9/o48kFLU3pbIFdYGzJ4xInilHAoanoWsckjDBZXHf1A4zX/FJbptN/X9SkZup//wcHgRQRa8sD1wp1ZIFjtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Ovrz/Y1TMf2j7ub+EyEFa8yzDBCM7g7YBp4FOMhr/4=;
- b=aw1q50whlt6pRsj2N/yM/de7zKhqVAAN2UZswb8a7roYVVBIyYBcNxJgfyppCm53mSSn2/Qk+bdxpYxlUG/X2J4bNHIMSr7B9YovapE/2ALqHkIxEW918CjIApY3b+ZS4Pvs7cfk2IjDGqu89MZLONbT+DPv3IlNUuWslVF/Ifg=
-Received: from SJ0PR03CA0045.namprd03.prod.outlook.com (2603:10b6:a03:33e::20)
- by DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.26; Fri, 28 Feb
- 2025 09:51:01 +0000
-Received: from BY1PEPF0001AE1B.namprd04.prod.outlook.com
- (2603:10b6:a03:33e:cafe::9b) by SJ0PR03CA0045.outlook.office365.com
- (2603:10b6:a03:33e::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.22 via Frontend Transport; Fri,
- 28 Feb 2025 09:51:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BY1PEPF0001AE1B.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8489.16 via Frontend Transport; Fri, 28 Feb 2025 09:51:01 +0000
-Received: from BLR-L-NUPADHYA.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Feb
- 2025 03:50:56 -0600
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-To: <kvm@vger.kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, <Thomas.Lendacky@amd.com>,
-	<nikunj@amd.com>, <Santosh.Shukla@amd.com>, <Vasant.Hegde@amd.com>,
-	<Suravee.Suthikulpanit@amd.com>, <bp@alien8.de>, <David.Kaplan@amd.com>,
-	<huibo.wang@amd.com>, <naveen.rao@amd.com>, <pgonda@google.com>,
-	<linux-kselftest@vger.kernel.org>, <shuah@kernel.org>
-Subject: [RFC PATCH 17/31] KVM: selftests: Add x2apic mode testing in xapic_ipi_test
-Date: Fri, 28 Feb 2025 15:00:10 +0530
-Message-ID: <20250228093024.114983-18-Neeraj.Upadhyay@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250228093024.114983-1-Neeraj.Upadhyay@amd.com>
-References: <20250228093024.114983-1-Neeraj.Upadhyay@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FF62594AA;
+	Fri, 28 Feb 2025 09:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740736320; cv=none; b=ZL9yFxJ+4H2cgP2x/1Mp65s8mFdouHKQZHoja3S+un0sLtEhUggGDMgUVBzBJinW4yCdxI16gEKyU22KknLdmGOSut1aF5JsQd0VCQP6Cqz6XNhUpeUymKhsDx/8jy94pR7A+jak6dpmbjcAfM6NXQFYPhWMHOAGam65+SfZLW8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740736320; c=relaxed/simple;
+	bh=CFZGYr6wSaFg23H+23+tsMplIUKUtKFYCq+41ItKnfY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ujoe63X8TNgIwwfYJmL/UaRQliYxAYC3L94qdqp6uQYBMSeC45cPOJKEJl6x9IU2mVymwlndluhxZQIGDqA8VbZrkZaWg2Bpa67UPzMTXfvaK1ZmdbS4Oy0/CrNQP0fEMl8DTvyHvZCnh8R6BqHbynmmKZyOspohN0zdlcjHZtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Z43NZ5t4zzVmX2;
+	Fri, 28 Feb 2025 17:50:22 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 737AB1800B3;
+	Fri, 28 Feb 2025 17:51:54 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 28 Feb 2025 17:51:54 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Shameer
+ Kolothum <shameerali.kolothum.thodi@huawei.com>, Kevin Tian
+	<kevin.tian@intel.com>, Alex Williamson <alex.williamson@redhat.com>, Chris
+ Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba
+	<dsterba@suse.com>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Carlos Maiolino <cem@kernel.org>, "Darrick J.
+ Wong" <djwong@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Jesper
+ Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Trond Myklebust
+	<trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever
+	<chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Neil Brown
+	<neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
+	<Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>
+CC: Yunsheng Lin <linyunsheng@huawei.com>, Luiz Capitulino
+	<luizcap@redhat.com>, Mel Gorman <mgorman@techsingularity.net>, Dave Chinner
+	<david@fromorbit.com>, <kvm@vger.kernel.org>,
+	<virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>,
+	<linux-xfs@vger.kernel.org>, <linux-mm@kvack.org>, <netdev@vger.kernel.org>,
+	<linux-nfs@vger.kernel.org>
+Subject: [PATCH v2] mm: alloc_pages_bulk: remove assumption of populating only NULL elements
+Date: Fri, 28 Feb 2025 17:44:20 +0800
+Message-ID: <20250228094424.757465-1-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,214 +59,298 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1B:EE_|DS0PR12MB6413:EE_
-X-MS-Office365-Filtering-Correlation-Id: df880718-8102-435a-c28c-08dd57dd68af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?scH60mIGFPrD4X08jGOlLGTxrotIbrpQ3VLdCB6gxSk+6JYiQiPeHSnS9LYI?=
- =?us-ascii?Q?7+XzR+1G/mY8ul/Tk1mElJPsOgiT1w4VULq3g3fT6wqKLXqwmgzo4aN7hafN?=
- =?us-ascii?Q?gx61OKA3GR0XYrQheztijyOav+ZhjFNraOt79IoNUUdCSDWHaXYUXdgx7QVU?=
- =?us-ascii?Q?8bgGtdbwloIvQM+axmC+ZJrOzCFc0nLX0oBiyhgKucY5tTI09E0xqMoIOtNk?=
- =?us-ascii?Q?JGHylbiatc11efIDeGc2wMxLBHv1knmsD2CN7hwcPJkdZqrNnV9CsKY2PjSO?=
- =?us-ascii?Q?xH6t8ku5g0yGBb17hhWdWmFh9yhDceYB6dMacbl27Se3esR6vPWVqRPmxERm?=
- =?us-ascii?Q?hxKaAHNF1aug9d49/tSNTJoNH5ThRUqfPimkm3hw7DbtcDqW0EDn8k05m073?=
- =?us-ascii?Q?Syrd7ARW3PLwRZJvPo+xZ/hXJky9EJLSZmmU5hXL3voCKNQNZGtVmhtyr2y1?=
- =?us-ascii?Q?SRpX1ic0iw0zca7q103Msx/3d1xR7OnX/O5L+jrpRtAQtreSyNTdeGDT1vFh?=
- =?us-ascii?Q?0tXdSzPyeeHnij5m0LBuFeDiVdSymikgOZ6ElwahK5asMqNbCJT3WxCif4GP?=
- =?us-ascii?Q?IaYXrf3F4qBUUkXm3qjk/P1YMytEWbaqjiIY1LKZQHm83MWpRLOqb/AQVcZq?=
- =?us-ascii?Q?SYszMyeO/XIu2brsc8X+J8rpqq8G/IAzb76scoA7bvrnYdEKWVjq55Pot0pc?=
- =?us-ascii?Q?q4A7BsI09fhK+D+WjzPIPChJUJXOLjYVrQ+x/DVFZ3/4P+JB7xIYVTRtmIf6?=
- =?us-ascii?Q?kCW5Zc5cdSahB0TABDIh0uXZYnB2d3hV6BDhYlu6S05urcNlXltAjMNHisKi?=
- =?us-ascii?Q?PUOR0iQScL7bXdzBItueVmJRPPXDKoLnFfhaIAIxOPVJNG4+RVXyQ3kc2BbC?=
- =?us-ascii?Q?rmtD1n1h2r82Zi4qntNiBuKARMWIgRPTOiQyXwVBKw52ArVnFSmoAvFmxWHY?=
- =?us-ascii?Q?1eCCAWBG8sXLs9J5An/xSBTBNx7qoqGyDF4ZybMm08ntzfyWJao0Fr7xv/ve?=
- =?us-ascii?Q?FrmKnwO2uUZ9QQsFCaR/swqqOKhfyktZVNIn1ScMzvlxcWMZQbB2bRxHWjvq?=
- =?us-ascii?Q?zIthUzzLkdv0qyGspujTsKbKHaOJjrKX6m+HTBhvtMbDe3sE7bMaJ3L66jyN?=
- =?us-ascii?Q?uCi6SX51AbCz8g/VmzNVl4eYrOQWAshA70K/8ITihHNgCOItkU5UL53hJONS?=
- =?us-ascii?Q?qactY2aSBb3Va1oQB0XqhBvavvetsdbvkNPp9aRFnLaQrGo3XmK/AjY1OrmG?=
- =?us-ascii?Q?t4a4fPlZL6ec9VgG1lBNSGpoB4b+cu6Jr99+DQNTIFVTf+tZI/BQR8B0omLj?=
- =?us-ascii?Q?E4t0aUcN7s1u4Im8rKRAGdtaVImT+1Jo3nxFcguV1YxeAkjPZpmzSClJpI3U?=
- =?us-ascii?Q?hxCNMRo9l9aZZEsC+Z8VS6jC+CtOvG8E/MNKdDeqc0INQ5F4B/1+ZM9iSE3M?=
- =?us-ascii?Q?sgZWwhlbQbG4gvVXdh1HoU2ZfLinJjQKf9xdP/PY8Z9fob1Cx6q1Q23ejVOh?=
- =?us-ascii?Q?GBkfvIUz306a/e4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 09:51:01.0497
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: df880718-8102-435a-c28c-08dd57dd68af
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE1B.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6413
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-Add support for testing x2apic mode in xapic_ipi_test. This
-allows extending the test in future to support VMs which
-only work in x2apic mode such as Secure AVIC enabled VMs.
+As mentioned in [1], it seems odd to check NULL elements in
+the middle of page bulk allocating, and it seems caller can
+do a better job of bulk allocating pages into a whole array
+sequentially without checking NULL elements first before
+doing the page bulk allocation for most of existing users.
 
-Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Through analyzing of bulk allocation API used in fs, it
+seems that the callers are depending on the assumption of
+populating only NULL elements in fs/btrfs/extent_io.c and
+net/sunrpc/svc_xprt.c while erofs and btrfs don't, see:
+commit 91d6ac1d62c3 ("btrfs: allocate page arrays using bulk page allocator")
+commit d6db47e571dc ("erofs: do not use pagepool in z_erofs_gbuf_growsize()")
+commit c9fa563072e1 ("xfs: use alloc_pages_bulk_array() for buffers")
+commit f6e70aab9dfe ("SUNRPC: refresh rq_pages using a bulk page allocator")
+
+Change SUNRPC and btrfs to not depend on the assumption.
+Other existing callers seems to be passing all NULL elements
+via memset, kzalloc, etc.
+
+Remove assumption of populating only NULL elements and treat
+page_array as output parameter like kmem_cache_alloc_bulk().
+Remove the above assumption also enable the caller to not
+zero the array before calling the page bulk allocating API,
+which has about 1~2 ns performance improvement for the test
+case of time_bench_page_pool03_slow() for page_pool in a
+x86 vm system, this reduces some performance impact of
+fixing the DMA API misuse problem in [2], performance
+improves from 87.886 ns to 86.429 ns.
+
+1. https://lore.kernel.org/all/bd8c2f5c-464d-44ab-b607-390a87ea4cd5@huawei.com/
+2. https://lore.kernel.org/all/20250212092552.1779679-1-linyunsheng@huawei.com/
+CC: Jesper Dangaard Brouer <hawk@kernel.org>
+CC: Luiz Capitulino <luizcap@redhat.com>
+CC: Mel Gorman <mgorman@techsingularity.net>
+CC: Dave Chinner <david@fromorbit.com>
+CC: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Acked-by: Jeff Layton <jlayton@kernel.org>
 ---
- .../selftests/kvm/x86/xapic_ipi_test.c        | 65 +++++++++++++++----
- 1 file changed, 51 insertions(+), 14 deletions(-)
+V2:
+1. Drop RFC tag and rebased on latest linux-next.
+2. Fix a compile error for xfs.
+3. Defragmemt the page_array for SUNRPC and btrfs.
+---
+ drivers/vfio/pci/virtio/migrate.c |  2 --
+ fs/btrfs/extent_io.c              | 23 +++++++++++++++++-----
+ fs/erofs/zutil.c                  | 12 ++++++------
+ fs/xfs/xfs_buf.c                  |  9 +++++----
+ mm/page_alloc.c                   | 32 +++++--------------------------
+ net/core/page_pool.c              |  3 ---
+ net/sunrpc/svc_xprt.c             | 22 +++++++++++++++++----
+ 7 files changed, 52 insertions(+), 51 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-index a76078a08ff8..024514089766 100644
---- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-+++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-@@ -50,6 +50,29 @@
-  */
- static volatile uint64_t ipis_rcvd;
- 
-+static bool x2apic;
-+
-+static void apic_enable(void)
-+{
-+	if (x2apic)
-+		x2apic_enable();
-+	else
-+		xapic_enable();
-+}
-+
-+static uint32_t apic_read_reg(unsigned int reg)
-+{
-+	return x2apic ? x2apic_read_reg(reg) : xapic_read_reg(reg);
-+}
-+
-+static void apic_write_reg(unsigned int reg, uint64_t val)
-+{
-+	if (x2apic)
-+		x2apic_write_reg(reg, val);
-+	else
-+		xapic_write_reg(reg, (uint32_t)val);
-+}
-+
- /* Data struct shared between host main thread and vCPUs */
- struct test_data_page {
- 	uint32_t halter_apic_id;
-@@ -89,10 +112,10 @@ void verify_apic_base_addr(void)
- static void halter_guest_code(struct test_data_page *data)
+diff --git a/drivers/vfio/pci/virtio/migrate.c b/drivers/vfio/pci/virtio/migrate.c
+index ba92bb4e9af9..9f003a237dec 100644
+--- a/drivers/vfio/pci/virtio/migrate.c
++++ b/drivers/vfio/pci/virtio/migrate.c
+@@ -91,8 +91,6 @@ static int virtiovf_add_migration_pages(struct virtiovf_data_buffer *buf,
+ 		if (ret)
+ 			goto err_append;
+ 		buf->allocated_length += filled * PAGE_SIZE;
+-		/* clean input for another bulk allocation */
+-		memset(page_list, 0, filled * sizeof(*page_list));
+ 		to_fill = min_t(unsigned int, to_alloc,
+ 				PAGE_SIZE / sizeof(*page_list));
+ 	} while (to_alloc > 0);
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index f0a1da40d641..ef52cedd9873 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -623,13 +623,26 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+ 			   bool nofail)
  {
- 	verify_apic_base_addr();
--	xapic_enable();
-+	apic_enable();
+ 	const gfp_t gfp = nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS;
+-	unsigned int allocated;
++	unsigned int allocated, ret;
  
--	data->halter_apic_id = GET_APIC_ID_FIELD(xapic_read_reg(APIC_ID));
--	data->halter_lvr = xapic_read_reg(APIC_LVR);
-+	data->halter_apic_id = GET_APIC_ID_FIELD(apic_read_reg(APIC_ID));
-+	data->halter_lvr = apic_read_reg(APIC_LVR);
+-	for (allocated = 0; allocated < nr_pages;) {
+-		unsigned int last = allocated;
++	/* Defragment page_array so pages can be bulk allocated into remaining
++	 * NULL elements sequentially.
++	 */
++	for (allocated = 0, ret = 0; ret < nr_pages; ret++) {
++		if (page_array[ret]) {
++			page_array[allocated] = page_array[ret];
++			if (ret != allocated)
++				page_array[ret] = NULL;
++
++			allocated++;
++		}
++	}
  
- 	/*
- 	 * Loop forever HLTing and recording halts & wakes. Disable interrupts
-@@ -103,8 +126,8 @@ static void halter_guest_code(struct test_data_page *data)
- 	 * TPR and PPR for diagnostic purposes in case the test fails.
+-		allocated = alloc_pages_bulk(gfp, nr_pages, page_array);
+-		if (unlikely(allocated == last)) {
++	while (allocated < nr_pages) {
++		ret = alloc_pages_bulk(gfp, nr_pages - allocated,
++				       page_array + allocated);
++		allocated += ret;
++		if (unlikely(!ret)) {
+ 			/* No progress, fail and do cleanup. */
+ 			for (int i = 0; i < allocated; i++) {
+ 				__free_page(page_array[i]);
+diff --git a/fs/erofs/zutil.c b/fs/erofs/zutil.c
+index 55ff2ab5128e..1c50b5e27371 100644
+--- a/fs/erofs/zutil.c
++++ b/fs/erofs/zutil.c
+@@ -85,13 +85,13 @@ int z_erofs_gbuf_growsize(unsigned int nrpages)
+ 
+ 		for (j = 0; j < gbuf->nrpages; ++j)
+ 			tmp_pages[j] = gbuf->pages[j];
+-		do {
+-			last = j;
+-			j = alloc_pages_bulk(GFP_KERNEL, nrpages,
+-					     tmp_pages);
+-			if (last == j)
++
++		for (last = j; last < nrpages; last += j) {
++			j = alloc_pages_bulk(GFP_KERNEL, nrpages - last,
++					     tmp_pages + last);
++			if (!j)
+ 				goto out;
+-		} while (j != nrpages);
++		}
+ 
+ 		ptr = vmap(tmp_pages, nrpages, VM_MAP, PAGE_KERNEL);
+ 		if (!ptr)
+diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+index 5d560e9073f4..b4e95b2dd0f0 100644
+--- a/fs/xfs/xfs_buf.c
++++ b/fs/xfs/xfs_buf.c
+@@ -319,16 +319,17 @@ xfs_buf_alloc_pages(
+ 	 * least one extra page.
  	 */
  	for (;;) {
--		data->halter_tpr = xapic_read_reg(APIC_TASKPRI);
--		data->halter_ppr = xapic_read_reg(APIC_PROCPRI);
-+		data->halter_tpr = apic_read_reg(APIC_TASKPRI);
-+		data->halter_ppr = apic_read_reg(APIC_PROCPRI);
- 		data->hlt_count++;
- 		asm volatile("sti; hlt; cli");
- 		data->wake_count++;
-@@ -119,7 +142,7 @@ static void halter_guest_code(struct test_data_page *data)
- static void guest_ipi_handler(struct ex_regs *regs)
- {
- 	ipis_rcvd++;
--	xapic_write_reg(APIC_EOI, 77);
-+	apic_write_reg(APIC_EOI, 77);
- }
+-		long	last = filled;
++		long	alloc;
  
- static void sender_guest_code(struct test_data_page *data)
-@@ -132,7 +155,7 @@ static void sender_guest_code(struct test_data_page *data)
- 	uint64_t tsc_start;
- 
- 	verify_apic_base_addr();
--	xapic_enable();
-+	apic_enable();
- 
- 	/*
- 	 * Init interrupt command register for sending IPIs
-@@ -159,8 +182,12 @@ static void sender_guest_code(struct test_data_page *data)
- 		 * First IPI can be sent unconditionally because halter vCPU
- 		 * starts earlier.
- 		 */
--		xapic_write_reg(APIC_ICR2, icr2_val);
--		xapic_write_reg(APIC_ICR, icr_val);
-+		if (!x2apic) {
-+			apic_write_reg(APIC_ICR2, icr2_val);
-+			apic_write_reg(APIC_ICR, icr_val);
-+		} else {
-+			apic_write_reg(APIC_ICR, (uint64_t)icr2_val << 32 | icr_val);
-+		}
- 		data->ipis_sent++;
- 
- 		/*
-@@ -356,10 +383,10 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- }
- 
- void get_cmdline_args(int argc, char *argv[], int *run_secs,
--		      bool *migrate, int *delay_usecs)
-+		      bool *migrate, int *delay_usecs, bool *x2apic)
- {
- 	for (;;) {
--		int opt = getopt(argc, argv, "s:d:m");
-+		int opt = getopt(argc, argv, "s:d:v:me:");
- 
- 		if (opt == -1)
+-		filled = alloc_pages_bulk(gfp_mask, bp->b_page_count,
+-					  bp->b_pages);
++		alloc = alloc_pages_bulk(gfp_mask, bp->b_page_count - filled,
++					 bp->b_pages + filled);
++		filled += alloc;
+ 		if (filled == bp->b_page_count) {
+ 			XFS_STATS_INC(bp->b_mount, xb_page_found);
  			break;
-@@ -373,13 +400,18 @@ void get_cmdline_args(int argc, char *argv[], int *run_secs,
- 		case 'd':
- 			*delay_usecs = parse_size(optarg);
- 			break;
-+		case 'e':
-+			*x2apic = parse_size(optarg) == 1;
-+			break;
- 		default:
- 			TEST_ASSERT(false,
- 				    "Usage: -s <runtime seconds>. Default is %d seconds.\n"
- 				    "-m adds calls to migrate_pages while vCPUs are running."
- 				    " Default is no migrations.\n"
- 				    "-d <delay microseconds> - delay between migrate_pages() calls."
--				    " Default is %d microseconds.",
-+				    " Default is %d microseconds.\n"
-+				    "-e <apic mode> - APIC mode 0 - xapic , 1 - x2apic"
-+				    " Default is xAPIC.\n",
- 				    DEFAULT_RUN_SECS, DEFAULT_DELAY_USECS);
  		}
+ 
+-		if (filled != last)
++		if (alloc)
+ 			continue;
+ 
+ 		if (flags & XBF_READ_AHEAD) {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f07c95eb5ac1..625d14ee4a41 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4599,9 +4599,6 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+  * This is a batched version of the page allocator that attempts to
+  * allocate nr_pages quickly. Pages are added to the page_array.
+  *
+- * Note that only NULL elements are populated with pages and nr_pages
+- * is the maximum number of pages that will be stored in the array.
+- *
+  * Returns the number of pages in the array.
+  */
+ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+@@ -4617,29 +4614,18 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	struct alloc_context ac;
+ 	gfp_t alloc_gfp;
+ 	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+-	int nr_populated = 0, nr_account = 0;
+-
+-	/*
+-	 * Skip populated array elements to determine if any pages need
+-	 * to be allocated before disabling IRQs.
+-	 */
+-	while (nr_populated < nr_pages && page_array[nr_populated])
+-		nr_populated++;
++	int nr_populated = 0;
+ 
+ 	/* No pages requested? */
+ 	if (unlikely(nr_pages <= 0))
+ 		goto out;
+ 
+-	/* Already populated array? */
+-	if (unlikely(nr_pages - nr_populated == 0))
+-		goto out;
+-
+ 	/* Bulk allocator does not support memcg accounting. */
+ 	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT))
+ 		goto failed;
+ 
+ 	/* Use the single page allocator for one page. */
+-	if (nr_pages - nr_populated == 1)
++	if (nr_pages == 1)
+ 		goto failed;
+ 
+ #ifdef CONFIG_PAGE_OWNER
+@@ -4711,24 +4697,16 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	/* Attempt the batch allocation */
+ 	pcp_list = &pcp->lists[order_to_pindex(ac.migratetype, 0)];
+ 	while (nr_populated < nr_pages) {
+-
+-		/* Skip existing pages */
+-		if (page_array[nr_populated]) {
+-			nr_populated++;
+-			continue;
+-		}
+-
+ 		page = __rmqueue_pcplist(zone, 0, ac.migratetype, alloc_flags,
+ 								pcp, pcp_list);
+ 		if (unlikely(!page)) {
+ 			/* Try and allocate at least one page */
+-			if (!nr_account) {
++			if (!nr_populated) {
+ 				pcp_spin_unlock(pcp);
+ 				goto failed_irq;
+ 			}
+ 			break;
+ 		}
+-		nr_account++;
+ 
+ 		prep_new_page(page, 0, gfp, 0);
+ 		set_page_refcounted(page);
+@@ -4738,8 +4716,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	pcp_spin_unlock(pcp);
+ 	pcp_trylock_finish(UP_flags);
+ 
+-	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_account);
+-	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_account);
++	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_populated);
++	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_populated);
+ 
+ out:
+ 	return nr_populated;
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index acef1fcd8ddc..200b99375cb6 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -544,9 +544,6 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
+ 	if (unlikely(pool->alloc.count > 0))
+ 		return pool->alloc.cache[--pool->alloc.count];
+ 
+-	/* Mark empty alloc.cache slots "empty" for alloc_pages_bulk */
+-	memset(&pool->alloc.cache, 0, sizeof(void *) * bulk);
+-
+ 	nr_pages = alloc_pages_bulk_node(gfp, pool->p.nid, bulk,
+ 					 (struct page **)pool->alloc.cache);
+ 	if (unlikely(!nr_pages))
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index ae25405d8bd2..80fbc4ffef6d 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -663,9 +663,23 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
+ 		pages = RPCSVC_MAXPAGES;
  	}
-@@ -400,7 +432,10 @@ int main(int argc, char *argv[])
- 	struct kvm_vm *vm;
- 	uint64_t *pipis_rcvd;
  
--	get_cmdline_args(argc, argv, &run_secs, &migrate, &delay_usecs);
-+	get_cmdline_args(argc, argv, &run_secs, &migrate, &delay_usecs, &x2apic);
-+	if (x2apic)
-+		migrate = 0;
+-	for (filled = 0; filled < pages; filled = ret) {
+-		ret = alloc_pages_bulk(GFP_KERNEL, pages, rqstp->rq_pages);
+-		if (ret > filled)
++	/* Defragment the rqstp->rq_pages so pages can be bulk allocated into
++	 * remaining NULL elements sequentially.
++	 */
++	for (filled = 0, ret = 0; ret < pages; ret++) {
++		if (rqstp->rq_pages[ret]) {
++			rqstp->rq_pages[filled] = rqstp->rq_pages[ret];
++			if (ret != filled)
++				rqstp->rq_pages[ret] = NULL;
 +
- 	if (run_secs <= 0)
- 		run_secs = DEFAULT_RUN_SECS;
- 	if (delay_usecs <= 0)
-@@ -410,7 +445,9 @@ int main(int argc, char *argv[])
++			filled++;
++		}
++	}
++
++	for (; filled < pages; filled += ret) {
++		ret = alloc_pages_bulk(GFP_KERNEL, pages - filled,
++				       rqstp->rq_pages + filled);
++		if (ret)
+ 			/* Made progress, don't sleep yet */
+ 			continue;
  
- 	vm_install_exception_handler(vm, IPI_VECTOR, guest_ipi_handler);
- 
--	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
-+	sync_global_to_guest(vm, x2apic);
-+	if (!x2apic)
-+		virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
- 
- 	params[1].vcpu = vm_vcpu_add(vm, 1, sender_guest_code);
- 
+@@ -674,7 +688,7 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
+ 			set_current_state(TASK_RUNNING);
+ 			return false;
+ 		}
+-		trace_svc_alloc_arg_err(pages, ret);
++		trace_svc_alloc_arg_err(pages, filled);
+ 		memalloc_retry_wait(GFP_KERNEL);
+ 	}
+ 	rqstp->rq_page_end = &rqstp->rq_pages[pages];
 -- 
-2.34.1
+2.33.0
 
