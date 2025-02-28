@@ -1,199 +1,278 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2066.outbound.protection.outlook.com [40.107.243.66])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2056.outbound.protection.outlook.com [40.107.236.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96708255E3C;
-	Fri, 28 Feb 2025 09:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119A255E54;
+	Fri, 28 Feb 2025 09:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740735121; cv=fail; b=cOXbXQ0rXOOllndn8vLoA8HMcAUu1JHp3yuNlBw5DhLyMDuJMCNHCh9Zk/JRYqn6RGzCdN4+FZBxw8uPQwuco6gwrEU2r4D2fld63MByKNKzHI03CiS/o37+w8g+f5b9kodKXtFVxwX+Qlnqdw0l9GayRN34jb2shHBs6z0YzTU=
+	t=1740735181; cv=fail; b=E/7orB4MXvSsp3eOa08yCh8IpdpcfNeajN5ZoblAXPGOLGM7fdNqiMUwXS1GqSGy8Xfkyl4VT49OAqDUhnJNs3xTJ/VC0v3KqUDUTWOF8qDAsVVKxv/6oawJYl5q3CN8enI8q6e3amaDDN9acMUdxwvcvbPVdpYcBsGJhX93/Zs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740735121; c=relaxed/simple;
-	bh=vnTidWeawQUhv0PcSUUioS7AHKY78nH9thzr6K+/hko=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UqlVmnciEX+H3Ue5KwS7RqQsY7o5lKFzjFDbQ7RpE29KqE9msdtMx+zAx1yW2dEdhRYapEDMCpEuO+qUyF0in0F+rZm6Y/0+n5HhrRf5ZL6saUzcr/0W6isauk+NmBLYhKJBGMJy8V4gxk+tTxgs8i/tAfmX1XE2rmJ9sbbr0TQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Se5RWO3m; arc=fail smtp.client-ip=40.107.243.66
+	s=arc-20240116; t=1740735181; c=relaxed/simple;
+	bh=t0HbtgQtp2sGuQHrq6SnXQhFPbIWZ9LGvtw1jYf/zHI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fSQqlpsp2RmVLi7tqIiOV2NHGGAxMJ+zNea1KLtxSniq884P4Uiv+X0ES4rFphOITLmhZw1eRDmRUhHeZz/KnnTOCZVIE0VO968aFn55qPERFVwLfm8WaDmbasT4/GW/revrFzewAvmV1KXWSaXTXvy/bsW2PEfruZ29jLw96oc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jMhCvcPi; arc=fail smtp.client-ip=40.107.236.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Se5RWO3m"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jMhCvcPi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vnsaQinTccfTme7MRW5MfuEEU5di9nK+aM8S9tY3FFotIq1q1PpjjNszawOGF02Rd3Jqg2HED6sovsHT66m/srCB4JkprQKsg7Na5wl3Qj59URf6IKr7YhFWIMeGAws3yeF7A2nuNhWDncr2o9JxYn+53cfNQcj+DI5tVan1IgcswgDf/bk5Qk7Dl65ot9hEqK0ecUYN2YU0LxEF3zgz6+BI9hax+P2NmUl6GR3B4HQ96FRxXg5jg6aWoOruDP2qHeerq7loM/LvlUg3crDPsm0P9U5Xf4B3WqVWdW/rjMaYl//W/8d9qzVqFvL3/1MbC/PtcL/UKI/0ai3KryQfqw==
+ b=xhgwDsgUmg+C8WFrL7WWv7mXhrIfDJOzaiZwUXpYXnTLzisQQ9u5ju46ZOgd1p02szSJY8Jq41RVrNstNvj+zYE3k/lWjTWPZhKsMP9vGwZgiHUz2h+sfYGMxpFYNPSscFILXVjTa1m87wKkVG9MqwEVhLDzWW+nrSb6mInqlZz2bG5hbHz7r4rIj9HiV4pPb/mk071ta4eirnfpEZ6eZi4JoXso0A/VzeKJ1IgcWJ7o+wnu0KZGhknmk9GCGd6z6Gu5Ltf94CVuU3JLDY5MRpA8Fa70iwZnK41x/jc7MVYNqD7jd/hfpzgyHZYuIfJ5gzDbiQV/mpKRlNJTc2IGPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Oz/DOSdgZlz9uQKdDoIRGWFw0ffZ4QWlpTk7vY2Bffo=;
- b=Y6/Epi7C5V0C6sEX+yG8IBBH9oaNBwbvNrt6p9gr9DiiwrPvVPgUkhHnGWHN34aERK4qVoana86cT6FEDXDcVajQpUexnbZwBEzIYTVCt3/G2BBzijFpydh++9gbv9qv3Arh9wcSlV6NsyPbwML675WThH9t4nFG+YEHCoBhlmOTZtXTa8dLOSO50pdLTJmnMFHIWsSrZZys3KuqQiNtwUXSsVUHavZLjZynFlnk3qIzTSbag9cRNxehO/wk+L9QL9RPFOPW0d1feUL178z9VwfkwGuLTycYdy5LyOqBxixm37RRmA/O7a3EWGpS2P/c33H/Iuzu4ahs6win/UZr8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=hKSgyK3/rVa8a/HUOQyhXrqjKaleFc3EevLQkbq62js=;
+ b=o0XubuSVJPqNgEtEyU6ujvY/s2da9HDHr6dMA6S6kyjAgFXpfwR17Wy4D1BJrxVDDrbjK5MGLaCp7k19AB9gafje2hhUoQ/yCorcf1FqHyIxk2y+yyVl8jOaIjuSa/XMd7sez/vjXDe+yO99sluaG83U3zquXXvQ9rSd0L7/v1if16enQ9ZKFj+OY6MgEgwji9Ka8xYuzk8j6w/HAK/nnNffOGQGDD/BhYu5vAsqNJyufHmE2E0nLx5bZYMsWF8Un307gr1yi0azgK7zp+BkOgTw2p8U9R8YMPJVDhxBw5xZapSe33T1pSed2sMl1iiUbG3jHFUiB4ysX3kYTh3p4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Oz/DOSdgZlz9uQKdDoIRGWFw0ffZ4QWlpTk7vY2Bffo=;
- b=Se5RWO3muKGAn7js0EVorgc6RzI5xn77UqU8RvJZv8zUdnPmi7JWqpc2FQfweU+aKwF7UZG+zZHBv0+ENjj6pyh41EMWeUIV7euNAJr+dX479bqt6d3B9s4WhKjrZVW6PlbrbsgLp3q6D4eeSBkxkwtLaQKpAI7phCibST/99xw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6588.namprd12.prod.outlook.com (2603:10b6:510:210::10)
- by CY5PR12MB6060.namprd12.prod.outlook.com (2603:10b6:930:2f::9) with
+ bh=hKSgyK3/rVa8a/HUOQyhXrqjKaleFc3EevLQkbq62js=;
+ b=jMhCvcPiILw0qIfAbSIE2K1oMScUXpgLJuLvC+X9jthhIxm2MJkdQOoGbKd+RWRnLe4I7A0OsAY/c7ut0Yksiz613J/w5Ad6lkgiODy+UgtNUrK38sE4tCx+Npm0nwmgKvb5hyn4yO8R3IewdJbtf8mXTvMObXlXU5k6PQYouCo=
+Received: from MW3PR05CA0001.namprd05.prod.outlook.com (2603:10b6:303:2b::6)
+ by PH8PR12MB6889.namprd12.prod.outlook.com (2603:10b6:510:1c9::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Fri, 28 Feb
- 2025 09:31:57 +0000
-Received: from PH7PR12MB6588.namprd12.prod.outlook.com
- ([fe80::5e9c:4117:b5e0:cf39]) by PH7PR12MB6588.namprd12.prod.outlook.com
- ([fe80::5e9c:4117:b5e0:cf39%6]) with mapi id 15.20.8489.018; Fri, 28 Feb 2025
- 09:31:56 +0000
-Message-ID: <653c3c6e-bdfc-4604-bda0-3b67970a0c62@amd.com>
-Date: Fri, 28 Feb 2025 15:01:49 +0530
-User-Agent: Mozilla Thunderbird
-From: Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: Re: [PATCH v3 0/6] KVM: SVM: Fix DEBUGCTL bugs
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiaoyao Li <xiaoyao.li@intel.com>, rangemachine@gmail.com,
- whanos@sergal.fun, Ravi Bangoria <ravi.bangoria@amd.com>
-References: <20250227222411.3490595-1-seanjc@google.com>
-Content-Language: en-US
-In-Reply-To: <20250227222411.3490595-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0172.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26::27) To PH7PR12MB6588.namprd12.prod.outlook.com
- (2603:10b6:510:210::10)
+ 2025 09:32:52 +0000
+Received: from SJ1PEPF000023CD.namprd02.prod.outlook.com
+ (2603:10b6:303:2b:cafe::f1) by MW3PR05CA0001.outlook.office365.com
+ (2603:10b6:303:2b::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.10 via Frontend Transport; Fri,
+ 28 Feb 2025 09:32:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000023CD.mail.protection.outlook.com (10.167.244.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8489.16 via Frontend Transport; Fri, 28 Feb 2025 09:32:51 +0000
+Received: from BLR-L-NUPADHYA.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Feb
+ 2025 03:31:18 -0600
+From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+To: <kvm@vger.kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>
+CC: <linux-kernel@vger.kernel.org>, <Thomas.Lendacky@amd.com>,
+	<nikunj@amd.com>, <Santosh.Shukla@amd.com>, <Vasant.Hegde@amd.com>,
+	<Suravee.Suthikulpanit@amd.com>, <bp@alien8.de>, <David.Kaplan@amd.com>,
+	<huibo.wang@amd.com>, <naveen.rao@amd.com>, <pgonda@google.com>,
+	<linux-kselftest@vger.kernel.org>, <shuah@kernel.org>
+Subject: [RFC PATCH 00/31] AMD: Add Secure AVIC KVM selftests
+Date: Fri, 28 Feb 2025 14:59:53 +0530
+Message-ID: <20250228093024.114983-1-Neeraj.Upadhyay@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6588:EE_|CY5PR12MB6060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97eb4c66-38b4-40e9-f1d7-08dd57dabe3d
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CD:EE_|PH8PR12MB6889:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff96724e-daf7-447b-0523-08dd57dadf6a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QVNDTXZJMElzY2s1L0RjMzMyUmQrK3FIb0FpVzlBZkZpcWR4QTRHTUZ4M0ha?=
- =?utf-8?B?SldydkM1UEptQkIzOVErS0pFa1c2eGd4L0owODc3bmRxemw1empKNUYwRkZz?=
- =?utf-8?B?NlFYQmlCbzRKVFRpTmVLTzF2RFd0WGpLTU0zKzlvYmk4MjNYdnRiOGlvdHc0?=
- =?utf-8?B?RnN4b2FmNWlSS1FiNjUvenNDWVcyeUhhdER5V3RPT2k2Tlk1RFoxUi93SWVW?=
- =?utf-8?B?Tk9RRFlveFRZSVRwN0hTUWJlb2J4S25EWmlwUSt6clNWY3E1N04vcmVHbGg1?=
- =?utf-8?B?UHVBa2F2NE9XTmowWEV5VERKZGR0WHpiUXdhbDJTZ1NRUjdBbDZxQWxENnRj?=
- =?utf-8?B?dWptSm5POVJvYVZla0Jqa0RRdklyL0p5T1cvK1RxeGhrckRtbGcyWllhUVo1?=
- =?utf-8?B?VHpGYmluQk0vTFJLMHoxQWRSMFdsczYxQlVxSkM4SmUzZWNSeVNpeWk4RWM0?=
- =?utf-8?B?SlBwZC8reW52RzdYc1JaZEdPWTJqZmJMN2h2eFZkSkEwZkJaKzYvNHUzTWt3?=
- =?utf-8?B?Rm8zYVovZHBOSFpxSE9nZi9GakdvcTZ4VGpscys5aHVIUkl4bHhYTmlmQ2s1?=
- =?utf-8?B?dWRPOUl3U1RKVEM2WWpkMzRpMXZYbmdVbHJuazhUWGtJWkV0dmtmd21IT1dG?=
- =?utf-8?B?ZXkyeklnekpnUHhuV2NSVE1hakZQQ1d6UTdIQnBLVmFrVXg0NTM2U242bG02?=
- =?utf-8?B?dUQxVE0vS1ZDaXB2S3FIQWpNWjFhcDZsTEkwcjUvODZIYlZ3Q2ZrUVBEbEFu?=
- =?utf-8?B?YWgrYXJmbHN3V1VTRTZMdUZHYk5HbEVyZlFueVk4Rm1QNTFsdlI2aEpvVlA2?=
- =?utf-8?B?ZnVUc1hzZDdwcndGS1o0M3FoS1NBdHJWVU13OGdsNnB3eGl2LzcwRHMvaHU5?=
- =?utf-8?B?Q1E4bGdhUjZQYjd0US9odzBYL0p0N0JQSXNLK2EwZWdkSXZVbHZwWWlCZENK?=
- =?utf-8?B?YzQ5MUJuUkZSUFNJeDlSbGVDS1JVeXU4OHFyUUdSdXk4ZmZQcXBsVThNRDJM?=
- =?utf-8?B?anNtT0FKMEUycHBCU3k4T0ZLbFZ5UXNIbUs3MzFnWmFpYjE0TDBWeHV6R1FN?=
- =?utf-8?B?bFlaYmVQNk1WTXY1NytuRGp3Sk1EeWI3ZHE3THgvRlU1ZDdSd0pPWmM5b2hT?=
- =?utf-8?B?UjE2VTBFR2NGVEIzUmFvSmZQb3VhMXRxVVlwd0pkVWV3N3FoZXNiSHVkM0ZS?=
- =?utf-8?B?c2RneHJkOWVEMzhDWkMwcmQ2SStySk4wSVRxQmtTSy80ZkpRcENvSFZqN2pM?=
- =?utf-8?B?NFVGRnFUMnZ3SVErRWkvYXMvNXdyYXhvcDRxQkZPUitHVS91M053TFBINXhl?=
- =?utf-8?B?TWIzMW9ob2dZWG1WTzFrRUVMdVV5aHZwT1dvclB4K09id29mN0dpU3dPaGJ6?=
- =?utf-8?B?TWNlRlJhb3JwdTB0MXhWbCtvV1VIVi9meXVqT1NHKzhheXBQWFF6SVB4NGls?=
- =?utf-8?B?MG5DT0xxdlBoZURxM0VUMEZLQmNKTWdTcGZvUjZWbmhVY2hTSmJPVEtvTVZy?=
- =?utf-8?B?NnVzQWFiL2h0bjQ4aklhRzNvdEV1NFdQQjhJVThBSGg3Tk10ekROUTArdDNL?=
- =?utf-8?B?b0NZbnpHODMxWVpxdjczeHdWdU4rUEJiRnk1SUJ6RVM1V3czU0NXdUpiMHVM?=
- =?utf-8?B?MmhidmZneGUvQjZZNTRRaS9OTlJtRHFtZnhEWVdrS3hLZlJpVklZVXJMSHNE?=
- =?utf-8?B?QTkvaWRXVHV4UG9GQ1hVOGRSdWJVdFhNeXQ0THNjRm1oYk5wS0t0bVJXK1dR?=
- =?utf-8?B?NXd3dU5maVZWL2ZXeUlqd0lqQ1d6SHcwc0JyVWZ5b1ZBOXR6Smd5dmlyWUl2?=
- =?utf-8?B?bnRJUkZVYUtGSFY1ZDdPdWhTNjNldDVXSmVYWm1hbll2ZXNmZW9IYzVFbzFo?=
- =?utf-8?Q?KqW55wCGRz0yU?=
+	=?us-ascii?Q?RoRxdPefP4dM7DHJ9DeJLkxXrNcWsLZxZmD49P2cRwhXBKXexeKyQx8Zn4SE?=
+ =?us-ascii?Q?JYzQ/sfFBGoAGlcsoFeFUcXulAtRuL/kypsolRXNpXhBOyVHy9qMj10udKtW?=
+ =?us-ascii?Q?n40pU7rQimOK1qx+Holl7woOfYY2zRY5su69CL6qbr+iTpvzcb5X57YRW3ll?=
+ =?us-ascii?Q?ejFNZ2bGj5ir8ixM4JkBNvDDqFLUqz6p72G1GvFA6rnoz9+lC8ffesXan4/c?=
+ =?us-ascii?Q?gnf0cwyo7cMEXuBAiBPuuhJKzJsaXoJbbIv9VrtoD9cHWfh7E0TvvMrkUOkp?=
+ =?us-ascii?Q?nckSypRZaU7zsh7AqR2deVgfhqKsZ9fV3f7dDX6om9Qw0wUYY19Y3cN30yQ7?=
+ =?us-ascii?Q?QyRniYsMZE++iMCdAVKa77mpNeuTJ+/eQ8TaxvaDpOcLynuvOobTscnCgMId?=
+ =?us-ascii?Q?Du9NP+GLrBWiwGrHC5Kv5e1umLaqjq9pxmyYneRveuNPC7jRm7ZZB7jEtbJ4?=
+ =?us-ascii?Q?xAtVaqhOHFWTiose3Np4csvaVAskTS/H29IAtbwXjDv9siTACSgoIuuu3SMp?=
+ =?us-ascii?Q?DI5dEG6UaAvJeetZL4MJ4usZPUgGXq5gP4Xy0pLMBMmIwF9gEuR0YiiNiedw?=
+ =?us-ascii?Q?ibroPkPfmGpr1ZMwCyGG2tMzFXcxtu1CFcCdA6othoPDKwzlyIX0fz7nx32T?=
+ =?us-ascii?Q?/41E7mna1Dzh001kji97jOMg+Da9ZJt3PhyU22fMHGCUrfu6dcuElq7XR7LK?=
+ =?us-ascii?Q?LguXUlcwJwHd9kDFps5ZRd6MJxaDYJWDhy+5XikYChYe4+GMg70GekL4bRE9?=
+ =?us-ascii?Q?oTNE0q+qXA5cAAqm/YBMP5/xntID/A0YWSM4/bPgRKVemnC1l9EVB31leSaA?=
+ =?us-ascii?Q?zWhBjpvs8Q4v2I+HQ03jg7MJKDHv29QBsFXB6wC6xWVoRL4+i1ZfmTIX3AAj?=
+ =?us-ascii?Q?Y5t/m4NbafdON6FZkpureCdpnTo7brLvEBVlfTfPopZQa2JqelhJVdPdxNjr?=
+ =?us-ascii?Q?/wTIeOq/tZVr5+WD3pZFF7/ZNV1NAQAoRftjNEKa7xxnH1QLpYuYAa263FGf?=
+ =?us-ascii?Q?MgUDAsJFxYWDnCJ7nh+rLi/W2MN9UYBCOHkGgX2FD9FMUUZ6MraLpFgwxgmj?=
+ =?us-ascii?Q?CZPXYo6vAwXFnhWDH7uZkLhE974jN3Ytpd+iABkeVg1/2eMSeWXETPZ+9lOq?=
+ =?us-ascii?Q?jGtXAjS5XeXTzGEW6//K7cA2yEPASg+nk3rCaB+tBvgRY7yyyCWg3PmM9sEh?=
+ =?us-ascii?Q?CCqNbyukmEcoEUD+CCnQGcjbZIybOvbrkwrgj0cx+0kPhx1dQ1q6Lqr6IGtK?=
+ =?us-ascii?Q?FnKycwdWm+mLixJH6ftRFFrHqlymq02Hw6op9oHywBo5QZipHv+7G5wKTxoC?=
+ =?us-ascii?Q?5GPmP9N2TECCcfVUXvDXbsQ07WM1fW30DbE4ySKO9mY7jI16v1npfsAysRQl?=
+ =?us-ascii?Q?R//OKMIBdbu2nR+ppguHd1FiOlxx0WXZWDkPkVJrB2fSb9obzw6BIe+CRjIa?=
+ =?us-ascii?Q?F+XLHUL5VDV3RNXTNuoUoili+7Wqx83a?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6588.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1h4TFkrWmZYS3hESTcvdkEwblJhdHdnMVZVeStjSTR6WHU2S2s5c2RqV1Mx?=
- =?utf-8?B?Wm9zU2s2L1FZVU5YRC80bVBxT3M0dkZLVTVKVlpzUkhySW1lUlVZUWtKc09j?=
- =?utf-8?B?Q1daYkExUGpYQjJ4OU1HNzAxT2RVeHRiQVg1ODhoU0NYVWo3Ym1YY1lxMXZk?=
- =?utf-8?B?ZkFzYllHMFRXWVdHNkMzcjRxM3JkUnFWL0lTVk5rcTJyOTFpbkxTckI2VDBa?=
- =?utf-8?B?RDlHZDVNdGs1Vm9zVG1oOU1JR0ptQVozN3p6RnczT21Qb2htanVCYnhvUFhB?=
- =?utf-8?B?UlppNnBCbUp6SzcrSVRUc2xyQ053T05WZDI3Q2FiUWtEMVdNaitNc1M3a2RH?=
- =?utf-8?B?eFJtTjBDZkRLSnk2RXlRUSs2WnZCVjRwZUtXOEZzSDgwN0dMaXNFS2JVWWd5?=
- =?utf-8?B?ejZBcHo5Wkt0b085MzhRdHNlOENCdjJITEgva2UvdDhCNDhDQmhlaVBJZ0F4?=
- =?utf-8?B?Z3VzZytJOFJvajkyUFlkbklJVU9SKzJPR1BYNzl1WStaLzZtNU1JVGs5RktM?=
- =?utf-8?B?NGUyWDNGVVJINklUZU5Ram9jUFZFQzJlKzY0TUkwbEdOTlUybnk4MCtkNG4r?=
- =?utf-8?B?Wm9RZnFBMVRlT0ppWWZJTzBSZFVURE1Xa2FFV1M2SXphT3R4dEdLWkZoQjRJ?=
- =?utf-8?B?cHFNNkd6cGdNWEZKaGpxOTNWakxMNnRmcDNab01vM1JMc0dkQWk1SHVuQ21t?=
- =?utf-8?B?WXBjcHN5NVVmNnBaeHZHYXowZTlaYnJtaXlLdllWeUJIWGo5K2hqaUhtVXJU?=
- =?utf-8?B?eGFEdlg1QkZFcmdiWjFXL3J0OHIrM2VvVWc3bkVwTjdSUEFNaS8yeE5RUVFr?=
- =?utf-8?B?Vm9GdXJKV0lJRnAzaWhsWVZTQy91Yk16bVV1TjdxSVd5WU9zYnZ0bDdQRlEx?=
- =?utf-8?B?aVBYUjNDT1FDM3dETXVYcG1TMEIrdE9rYmN4MGhFQ1kzVEFHODZ6dlkyRHRw?=
- =?utf-8?B?eGdqU0dLR2tqdy96VSt3RFdPeGdQRjJ2OUl5anhlUXY4eitjTUVKYjdBYWdR?=
- =?utf-8?B?RDhDN0cxQU5odlQ3aHdNdEtWblVnWHJNbCtCOGRSQkdEUEhya0dQRE1EQ2p2?=
- =?utf-8?B?bmdKSHRGSlRqYUZqMHVvQk1TR24zamFGWGVvR0NKRUpSL1hsMmdCcWNsVG9N?=
- =?utf-8?B?Z3U5eWxOYnNCMmtoa2I4N1J3ZFA5Vm5JUnVqcnh0UDVPU1Q5Y2ZFQVFLZGtQ?=
- =?utf-8?B?S29QODZtVEs2WllRNUtZcXRQZXNrUVNSRU8vdytTZ1J4RmtacnFiTHJrd2la?=
- =?utf-8?B?QnFVbWtwY091S25XSDBrVlc3OVdZQ2FlVkhDMC9CUnh0MTR2V3FCc3hkRHl0?=
- =?utf-8?B?bkJnTXQ2aTY4MEZpQlhndEtHRG11cVRJOVh1b3pFNndtQnNJZXZlTDFzSlMx?=
- =?utf-8?B?OE0zTFh4MUlJWVlVZkRqejlHK2ZqVnYwYnRHUUdiV2RlcE5qR0RqQzZsZ2Zy?=
- =?utf-8?B?V1Zkc2oxQWd6azltVGlJSWd1V2ljaXFQc1VMRlM4bWdibWdLZlZyQ2xiYmJY?=
- =?utf-8?B?UCtXMnpmU3RUbG9vaWtmc0liL2M0L3Z4cXdycEFZT3VEbVdSTHo5ZmxHdEFG?=
- =?utf-8?B?blozYjBTeXVIRno1OFZ3aGo3NmE1U3hyYlMvdjNMWHpGN0JIS2NrUmFrQkZj?=
- =?utf-8?B?VmNaWGowNnAwdldlODVrbXZyL2ZCMXY5a3FoWFh2Tm42VStsTjRFWCtPL3Zy?=
- =?utf-8?B?RGlJb0JzWUZCOCtlR3c4empDNGd3MzJ1allGTnlIeGRvdkpLZERjVUhSSkNE?=
- =?utf-8?B?c1hPbnhxMnl5VWtVUHRRcUJKQUVSYWhEekNjM0UxQ0xBcjNkdUl3Q2dOWFBv?=
- =?utf-8?B?T2dlMEVaNkFkWFlHOHFETGp0QjlCMWxFMllTNmdiN2NiNHgxeDc4cFFvV0NX?=
- =?utf-8?B?RnVabzdkRUl1bFpHSmJpVzNvbEU1eURUYWhTcGJlNm91QzdDYlR3Q3R5R24w?=
- =?utf-8?B?R0pGOEM1M3NPTmRIb2JmdjFEYjI5bXhiaWE2SzhNTUVaTmgyc3VBWWxtOXBW?=
- =?utf-8?B?N3RlSThtTFpkT0FoWXdUcUwxME8wMFNkL1RJRUJmVHdLeUNYbFRXclFHZ21D?=
- =?utf-8?B?dmJKRkNTUTlSY1RsekV6QXRHY3lwRlNOM3YvNG5pcmMzNXNuSkZ2UGdGZjN5?=
- =?utf-8?Q?iBQ2wYgBAOxTIrFKDEErCPVMD?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97eb4c66-38b4-40e9-f1d7-08dd57dabe3d
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6588.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 09:31:56.6307
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 09:32:51.7201
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff96724e-daf7-447b-0523-08dd57dadf6a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mrYtQvCPwrWFEu8sj0vLKNXCeIDcSmum8otmYlxwd/1DheGUZ5TXyVnQtgp3UMGAqmcV1x8VbxBELZOf7yWh4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6060
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023CD.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6889
 
-On 28-Feb-25 3:54 AM, Sean Christopherson wrote:
-> Fix a long-lurking bug in SVM where KVM runs the guest with the host's
-> DEBUGCTL if LBR virtualization is disabled.  AMD CPUs rather stupidly
-> context switch DEBUGCTL if and only if LBR virtualization is enabled (not
-> just supported, but fully enabled).
-> 
-> The bug has gone unnoticed because until recently, the only bits that
-> KVM would leave set were things like BTF, which are guest visible but
-> won't cause functional problems unless guest software is being especially
-> particular about #DBs.
-> 
-> The bug was exposed by the addition of BusLockTrap ("Detect" in the kernel),
-> as the resulting #DBs due to split-lock accesses in guest userspace (lol
-> Steam) get reflected into the guest by KVM.
-> 
-> Note, I don't love suppressing DEBUGCTL.BTF, but practically speaking that's
-> likely the behavior that SVM guests have gotten the vast, vast majority of
-> the time, and given that it's the behavior on Intel, it's (hopefully) a safe
-> option for a fix, e.g. versus trying to add proper BTF virtualization on the
-> fly.
-> 
-> v3:
->  - Suppress BTF, as KVM doesn't actually support it. [Ravi]
->  - Actually load the guest's DEBUGCTL (though amusingly, with BTF squashed,
->    it's guaranteed to be '0' in this scenario). [Ravi]
-> 
-> v2:
->  - Load the guest's DEBUGCTL instead of simply zeroing it on VMRUN.
->  - Drop bits 5:3 from guest DEBUGCTL so that KVM doesn't let the guest
->    unintentionally enable BusLockTrap (AMD repurposed bits). [Ravi]
->  - Collect a review. [Xiaoyao]
->  - Make bits 5:3 fully reserved, in a separate not-for-stable patch.
-> 
-> v1: https://lore.kernel.org/all/20250224181315.2376869-1-seanjc@google.com
+This series adds KVM selftests for Secure AVIC.
 
-For the series,
+The Secure AVIC KVM support patch series is at:
 
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+https://lore.kernel.org/kvm/20250228085115.105648-1-Neeraj.Upadhyay@amd.com/T/#u  
 
-Thanks,
-Ravi
+Git tree is available at:
+
+  https://github.com/AMDESE/linux-kvm/tree/savic-host-latest
+
+This series depends on SNP Smoke tests patch series by Pratik:
+
+https://lore.kernel.org/lkml/20250123220100.339867-1-prsampat@amd.com/
+
+- Patch 1-6 are taken from Peter Gonda's patch series for GHCB support
+  for SEV-ES guests. GHCB support for SNP guests is added to these
+  patches.
+
+  https://lore.kernel.org/lkml/Ziln_Spd6KtgVqkr@google.com/T/#m6c0fc7e2b2e35f71da67402036332afeed8c8021
+
+  Patches 7-8 are fixes on top of Peter's series.
+
+- Patch 9 fixes IDT vector for #VC exception (29) which has a valid
+  error code associated with the exception.
+
+- Patch 10 adds #VC exception handling for rdmsr/wrmsr accesses of
+  SEV-ES guests.
+
+- Patch 11 skips vm_is_gpa_protected() check for APIC MMIO base address
+  in __virt_pg_map() for VMs with protected memory. This is required
+  for xapic tests enablement for SEV VMs.
+
+- Patch 12 and 13 are PoC patches to support MMIO #VC handling for SEV-ES
+  guests. They add x86 instruction decoding support.
+
+- Patch 14 adds #VC handling for MMIO accesses by SEV-ES guests.
+
+- Patch 15 adds movabs instruction decoding for cases where compiler
+  generates movabs for MMIO reads/writes.
+
+- Patch 16 adds SEV guests testing support in xapic_state_test.
+
+- Patch 17 adds x2apic mode support in xapic_ipi_test.
+
+- Patch 18 adds SEV VMs support in xapic_ipi_test.
+
+- Patch 19 adds a library for Secure AVIC backing page initialization
+  and enabling Secure AVIC for a SNP guest.
+
+- Patch 20 adds support for SVM_EXIT_AVIC_UNACCELERATED_ACCESS #VC
+  exception handling for APIC msr reads/writes by Secure AVIC enabled
+  VM.
+
+- Patch 21 adds support for SVM_EXIT_AVIC_INCOMPLETE_IPI #VC error
+  code handling for Secure AVIC enabled VM.
+
+- Patch 22 adds args param to kvm_arch_vm_post_create() to pass
+  vmsa features to KVM_SEV_INIT2 ioctl for SEV VMs.
+
+- Patch 23 adds an api for passing guest APIC page GPA to Hypervisor.
+
+- Patch 24 adds Secure AVIC VM support to xapic_ipi_test test.
+
+- Patch 25 adds a test for verifying APIC regs MMIO/msr accesses
+  for a Secure AVIC VM before it enables x2apic mode, in x2apic mode
+  and after enabling Secure AVIC in the Secure AVIC control msr.
+
+- Patch 26 adds a msr access test to verify accelerated/unaccelerated
+  msr acceses for Secure AVIC enabled VM.
+
+- Patch 27 tests idle hlt for Secure AVIC enabled VM.
+
+- Patch 28 adds IOAPIC tests for Secure AVIC enabled VM.
+
+- Patch 29 adds cross-vCPU IPI testing with various destination
+  shorthands for Secure AVIC enabled VM. 
+
+- Patch 30 adds Hypervisor NMI injection and cross-vCPU ICR based NMI
+  for Secure AVIC enabled VM.
+
+- Patch 31 adds MSI injection test for Secure AVIC enabled VM.
+  
+Neeraj Upadhyay (25):
+  KVM: selftests: Fix ghcb_entry returned in ghcb_alloc()
+  KVM: selftests: Make GHCB entry page size aligned
+  KVM: selftests: Add support for #VC in x86 exception handlers
+  KVM: selftests: Add MSR VC handling support for SEV-ES VMs
+  KVM: selftests: Skip vm_is_gpa_protected() call for APIC MMIO base
+  KVM: selftests: Add instruction decoding support
+  KVM: selftests: Add instruction decoding support
+  KVM: selftests: Add MMIO VC exception handling for SEV-ES guests
+  KVM: selftests: Add instruction decoding for movabs instructions
+  KVM: selftests: Add SEV guests support in xapic_state_test
+  KVM: selftests: Add x2apic mode testing in xapic_ipi_test
+  KVM: selftests: Add SEV VM support in xapic_ipi_test
+  KVM: selftests: Add  Secure AVIC lib
+  KVM: selftests: Add unaccelerated APIC msrs #VC handling
+  KVM: selftests: Add IPI handling support for Secure AVIC
+  KVM: selftests: Add args param to kvm_arch_vm_post_create()
+  KVM: selftests: Add SAVIC GPA notification GHCB call
+  KVM: selftests: Add Secure AVIC mode to xapic_ipi_test
+  KVM: selftests: Add Secure AVIC APIC regs test
+  KVM: selftests: Add test to verify APIC MSR accesses for SAVIC guest
+  KVM: selftests: Extend savic test with idle halt testing
+  KVM: selftests: Add IOAPIC tests for Secure AVIC
+  KVM: selftests: Add cross-vCPU IPI testing for SAVIC guests
+  KVM: selftests: Add NMI test for SAVIC guests
+  KVM: selftests: Add MSI injection test for SAVIC
+
+Peter Gonda (6):
+  Add GHCB with setters and getters
+  Add arch specific additional guest pages
+  Add vm_vaddr_alloc_pages_shared()
+  Add GHCB allocations and helpers
+  Add is_sev_enabled() helpers
+  Add ability for SEV-ES guests to use ucalls via GHCB
+
+ tools/arch/x86/include/asm/msr-index.h        |    4 +-
+ tools/testing/selftests/kvm/.gitignore        |    3 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   16 +-
+ .../testing/selftests/kvm/include/kvm_util.h  |   14 +-
+ .../testing/selftests/kvm/include/x86/apic.h  |   57 +
+ .../selftests/kvm/include/x86/ex_regs.h       |   21 +
+ .../selftests/kvm/include/x86/insn-eval.h     |   48 +
+ .../selftests/kvm/include/x86/processor.h     |   18 +-
+ .../testing/selftests/kvm/include/x86/savic.h |   25 +
+ tools/testing/selftests/kvm/include/x86/sev.h |   15 +
+ tools/testing/selftests/kvm/include/x86/svm.h |  109 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  109 +-
+ .../testing/selftests/kvm/lib/x86/handlers.S  |    4 +-
+ .../testing/selftests/kvm/lib/x86/insn-eval.c | 1726 +++++++++++++++++
+ .../testing/selftests/kvm/lib/x86/processor.c |   24 +-
+ tools/testing/selftests/kvm/lib/x86/savic.c   |  490 +++++
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  598 +++++-
+ tools/testing/selftests/kvm/lib/x86/ucall.c   |   18 +
+ tools/testing/selftests/kvm/s390/cmma_test.c  |    2 +-
+ tools/testing/selftests/kvm/x86/savic_test.c  | 1549 +++++++++++++++
+ .../selftests/kvm/x86/sev_smoke_test.c        |   40 +-
+ .../selftests/kvm/x86/xapic_ipi_test.c        |  183 +-
+ .../selftests/kvm/x86/xapic_state_test.c      |  117 +-
+ 23 files changed, 5084 insertions(+), 106 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/x86/ex_regs.h
+ create mode 100644 tools/testing/selftests/kvm/include/x86/insn-eval.h
+ create mode 100644 tools/testing/selftests/kvm/include/x86/savic.h
+ create mode 100644 tools/testing/selftests/kvm/lib/x86/insn-eval.c
+ create mode 100644 tools/testing/selftests/kvm/lib/x86/savic.c
+ create mode 100644 tools/testing/selftests/kvm/x86/savic_test.c
+
+
+base-commit: f7bafceba76e9ab475b413578c1757ee18c3e44b
+-- 
+2.34.1
+
