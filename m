@@ -1,250 +1,164 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071B11EF08A
-	for <kvm@vger.kernel.org>; Sun,  2 Mar 2025 22:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4618023F396
+	for <kvm@vger.kernel.org>; Sun,  2 Mar 2025 23:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740953071; cv=none; b=YhVPQf2QKKKeQlYbvnB86pIlaxl89CCOadtrfCcQohFLZdWpknpjRxoD5UBV+yDwUCVkRT+mzasRERw6ypVr60ZBtlhBTWfIjEruQMXm9ew5CMnx+04xfD9hdJGCKPxeOE6xuCDCOQh98U5zJ4p8s/CshVEsQwHzbk+1FvmIjC0=
+	t=1740958599; cv=none; b=lt/QeEciFGcNt/Ds8olcBMWJxijD2FqFABqxGqQ/iuW2QjdrQJ0u/MkZo5oQ0ycuYHciCkVzKSGDsHGj0K3qagpJYPwNU+PSpzGFbM7DX7Dt9Z0xw/gikL0YW+DSsR4vn07sc1DzmC0v0nyhXDInlvXCR0WdJkAnV2pJiIl7ffY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740953071; c=relaxed/simple;
-	bh=QS2zNQyfK2odyJBllmgJOCnknKCtNsS9bc03PT2Qgt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mB/dQo/R83bcaSBmjGH7FUMxdFa9qcXXLs9vq7NFbG+hW+VLtkm8fNVtkZ1IpEimKKbpyM+iJ5eotFx53FDPi5tbiZp6iVzUF4ijWXeLmbRRhu/T8s5moP1Nj8RdlqOm9Equffibd9j1QKYcwx8t2WFK/rVPlUWBgtzQYfP/1tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=U1FE8dhF; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1740958599; c=relaxed/simple;
+	bh=elajwP5GiY+wTmstqYMZ4mmIAKlxv9c19P2Zh3OLnNc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MpNKbYvXcfjoXKm21hIj1deFve7X/5phFjGAUR0A4vlsRhOw/p4Dbw2I/eS8lVdPE1UO1AF+XVZm8I2ESinC8kclC5iORNmR/MRK2D1eeupiEsVk0UOcqDYkq2EjL/5GNQtAs7fjnqrLrKui6dhbvNnEGXM4qvgeOxgsF3Ys50E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CgJjAi1S; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="U1FE8dhF"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522GSGvk028599;
-	Sun, 2 Mar 2025 22:03:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=I8NYK
-	4T9yFniWGIt9bnTkOhNwFp/46Xz29dVFOJrqTY=; b=U1FE8dhF1Ie18PIxucLdw
-	9VGV8ICZkFH+wvHsFQyv0dtyE5mBqSmgrLM6eN45ur8+MsIl3ouSEMO3MXKf3ly6
-	zhiMElAM8exwZlaVY9DiOC+IRMeJhoLqZvUZZbL11/fSJJmxVXyCAik8C6jg/jrX
-	u/AjcCijbu/wQQ3Ecw6PM/wq1PVcQxR2oK+OOhwRHP6Hq6DFK72I6Z3iRYZeaeiA
-	bhQi2PA8yKQd5DaKjbzmXXjYU6MW895Rt0o/nDTcvobl03+gJ2bJ3dMkBJ/uo0/a
-	uJ2qetvyhuwp6QFslcoGoZosKn9DUuviqOQlx64V47iFjbe1KvwX19fwKh+3Ctxl
-	A==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u8whkm8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 02 Mar 2025 22:03:30 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 522GTG0Q015691;
-	Sun, 2 Mar 2025 22:03:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 453rp803cd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 02 Mar 2025 22:03:29 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 522M3QoV040088;
-	Sun, 2 Mar 2025 22:03:29 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 453rp80353-4;
-	Sun, 02 Mar 2025 22:03:29 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
-        sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
-        like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
-        khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
-        den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-        dapeng1.mi@linux.intel.com, joe.jin@oracle.com
-Subject: [PATCH v2 03/10] [DO NOT MERGE] kvm: Introduce kvm_arch_pre_create_vcpu()
-Date: Sun,  2 Mar 2025 14:00:11 -0800
-Message-ID: <20250302220112.17653-4-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250302220112.17653-1-dongli.zhang@oracle.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CgJjAi1S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740958597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ejh1GDPAKVllO6gllmhAfMEyCPmPMUvWgSEqENGci+A=;
+	b=CgJjAi1SGcu11WOs5qs8tCssJfuJSnclYAM9vYOTpahG5pUt7PfCNQmV2hxiv4HZIHZKif
+	h7u5AQen+4CEsClydCxPaZnT1svWnlJK8HpTtpORyb6GoygPMIG3Yqg9YlLtZLsaK50djq
+	pO9QZVvuVPHo2Ee51y4/tQib/Ff3CZc=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-jYONQBobNY6Zpv-G_IjJEQ-1; Sun, 02 Mar 2025 18:36:31 -0500
+X-MC-Unique: jYONQBobNY6Zpv-G_IjJEQ-1
+X-Mimecast-MFC-AGG-ID: jYONQBobNY6Zpv-G_IjJEQ_1740958590
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2233b764fc8so67783345ad.3
+        for <kvm@vger.kernel.org>; Sun, 02 Mar 2025 15:36:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740958590; x=1741563390;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ejh1GDPAKVllO6gllmhAfMEyCPmPMUvWgSEqENGci+A=;
+        b=AfyuQOfCMKnllUEYU6u9a9U9AcfD2p0koqQE8MFtLqA2FzwE/vid1RYm3Zj5kQIFM6
+         DxqoTIVe5bjEVfreeIu+GOCiEpPUxsDnMGGDxw8wdX5+qeWwVjMy1TfjR/LOehKgJrAG
+         9p19nAMVO9UYd9yEUIpczZE6722lyctOAin2cqJcLT8iR4rJ61N5wgREu28hpUCUeLJT
+         LKibvc8n2sFijRo++sIziF7J5FsyRmxVFvy5mdD5mCuEGREHzJ+XLpZ+xRTqfYkO6g5T
+         yovmtwwqIHf3DFr6V1hOWqWL+ZCKzD/Trzdt92I3YFjVK5br9HyJJMPvHoF/CGVhklMw
+         eECA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjnPaRIp3W7cypgjgewdTiUumu03dWTY/ef5+xBbEosTlBytE9HxODgJzTY9ZBT75mkWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1yt6KqJTYndtQ2aP6g/cvuIzcMJ9mtDu90kMkpX8V8gF2Eda3
+	jKfxHjMFNW8bRmUTgN4jvWwfiKtbQl/RKAxJzjOhN9zf09Fz473o/qxzzjHsoASdQILo7PPIO3d
+	o7SnfS+zlPbwqBQT9Ycf9fJ6iKKvRKyTQvtSp734sN/aXViNiSg==
+X-Gm-Gg: ASbGncuSxxJt2Mgohaw4KQVul/rlS4CrC5IsMXRIOyPPIx+q2gwTnFodaNa0S2gt2Ga
+	3ezNwDdxwY+qwA7FEu6tsnhVpai3LtOjl8rxbZKeUosCyVjbT4sWqHtg6yCFzBwehecC53iR4YL
+	xWhc4uN13AsZl5KmPH8HPkqmUDYsFgD5ETugsj7goURlXItLWPhBTqG2NWPBxK9dm3eMcCRsV6C
+	UgOHWlVdpSdiNLc+dmZI1cAy9jVYvGg6FYxh+F9PCdzKuMPZOIr65yyYvT0bisdOgVyFLcRvJIi
+	/lFev2DX8WyO5RcnTw==
+X-Received: by 2002:a17:902:d48c:b0:21a:8300:b9ce with SMTP id d9443c01a7336-2236926a62emr202778585ad.49.1740958590125;
+        Sun, 02 Mar 2025 15:36:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEddAUa+nONgsuM9Tynj/Y7d+u/KE8b7znylUvPdW2+N+R2Tk2a3TFLdpAdjVAFLYlLTeS4vg==
+X-Received: by 2002:a17:902:d48c:b0:21a:8300:b9ce with SMTP id d9443c01a7336-2236926a62emr202778335ad.49.1740958589841;
+        Sun, 02 Mar 2025 15:36:29 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501fbd47sm65995365ad.67.2025.03.02.15.36.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Mar 2025 15:36:28 -0800 (PST)
+Message-ID: <8bf9ba6c-a8b2-42aa-9802-8e968bec1cd5@redhat.com>
+Date: Mon, 3 Mar 2025 09:36:20 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-02_06,2025-02-28_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
- definitions=main-2503020180
-X-Proofpoint-ORIG-GUID: HR5R4V33VI4KXAa3yr_JJx9o93vqv5U5
-X-Proofpoint-GUID: HR5R4V33VI4KXAa3yr_JJx9o93vqv5U5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 01/45] KVM: Prepare for handling only shared mappings
+ in mmu_notifier events
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Sean Christopherson <seanjc@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+ <20250213161426.102987-2-steven.price@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250213161426.102987-2-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+On 2/14/25 2:13 AM, Steven Price wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Add flags to "struct kvm_gfn_range" to let notifier events target only
+> shared and only private mappings, and write up the existing mmu_notifier
+> events to be shared-only (private memory is never associated with a
+> userspace virtual address, i.e. can't be reached via mmu_notifiers).
+> 
+> Add two flags so that KVM can handle the three possibilities (shared,
+> private, and shared+private) without needing something like a tri-state
+> enum.
+> 
+> Link: https://lore.kernel.org/all/ZJX0hk+KpQP0KUyB@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   include/linux/kvm_host.h | 2 ++
+>   virt/kvm/kvm_main.c      | 7 +++++++
+>   2 files changed, 9 insertions(+)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3cb9a32a6330..0de1e485452c 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -266,6 +266,8 @@ struct kvm_gfn_range {
+>   	gfn_t end;
+>   	union kvm_mmu_notifier_arg arg;
+>   	enum kvm_gfn_range_filter attr_filter;
+> +	bool only_private;
+> +	bool only_shared;
+>   	bool may_block;
+>   };
 
-Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
-work prior to create any vcpu. This is for i386 TDX because it needs
-call TDX_INIT_VM before creating any vcpu.
+The added members (only_private and only_shared) looks duplicated to the
+member of attr_filter, which can be set to KVM_FILTER_SHARED, KVM_FILTER_PRIVATE,
+or both of them. More details can be found from the following commit where
+attr_filter was by dca6c88532322 ("KVM: Add member to struct kvm_gfn_range
+to indicate private/shared").
 
-The specific implemnet of i386 will be added in the future patch.
+I'm guessing Sean's suggestion was given before dca6c88532322 showed up.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
----
-I used to send a version:
-https://lore.kernel.org/all/20221119122901.2469-2-dongli.zhang@oracle.com/
-Just pick the one from Xiaoyao's patchset as Dapeng may use this version
-as well.
-https://lore.kernel.org/all/20250124132048.3229049-8-xiaoyao.li@intel.com/
+>   bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index faf10671eed2..4f0136094fac 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -593,6 +593,13 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+>   			 * the second or later invocation of the handler).
+>   			 */
+>   			gfn_range.arg = range->arg;
+> +
+> +			/*
+> +			 * HVA-based notifications aren't relevant to private
+> +			 * mappings as they don't have a userspace mapping.
+> +			 */
+> +			gfn_range.only_private = false;
+> +			gfn_range.only_shared = true;
+>   			gfn_range.may_block = range->may_block;
+>   			/*
+>   			 * HVA-based notifications aren't relevant to private
 
- accel/kvm/kvm-all.c        | 5 +++++
- include/system/kvm.h       | 1 +
- target/arm/kvm.c           | 5 +++++
- target/i386/kvm/kvm.c      | 5 +++++
- target/loongarch/kvm/kvm.c | 5 +++++
- target/mips/kvm.c          | 5 +++++
- target/ppc/kvm.c           | 5 +++++
- target/riscv/kvm/kvm-cpu.c | 5 +++++
- target/s390x/kvm/kvm.c     | 5 +++++
- 9 files changed, 41 insertions(+)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f89568bfa3..df9840e53a 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -540,6 +540,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
- 
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
- 
-+    ret = kvm_arch_pre_create_vcpu(cpu, errp);
-+    if (ret < 0) {
-+        goto err;
-+    }
-+
-     ret = kvm_create_vcpu(cpu);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret,
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ab17c09a55..d7dfa25493 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -374,6 +374,7 @@ int kvm_arch_get_default_type(MachineState *ms);
- 
- int kvm_arch_init(MachineState *ms, KVMState *s);
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
- 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index da30bdbb23..93f1a7245b 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1874,6 +1874,11 @@ static int kvm_arm_sve_set_vls(ARMCPU *cpu)
- 
- #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c749d4ee8..f41e190fb8 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2051,6 +2051,11 @@ full:
-     abort();
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     struct {
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index a3f55155b0..91c3c67cdb 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -973,6 +973,11 @@ static int kvm_cpu_check_pmu(CPUState *cs, Error **errp)
-     return 0;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     uint64_t val;
-diff --git a/target/mips/kvm.c b/target/mips/kvm.c
-index d67b7c1a8e..ec53acb51a 100644
---- a/target/mips/kvm.c
-+++ b/target/mips/kvm.c
-@@ -61,6 +61,11 @@ int kvm_arch_irqchip_create(KVMState *s)
-     return 0;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     CPUMIPSState *env = cpu_env(cs);
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 966c2c6572..758298d565 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -477,6 +477,11 @@ static void kvmppc_hw_debug_points_init(CPUPPCState *cenv)
-     }
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 23ce779359..55be7542e7 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1362,6 +1362,11 @@ static int kvm_vcpu_enable_sbi_dbcn(RISCVCPU *cpu, CPUState *cs)
-     return kvm_set_one_reg(cs, kvm_sbi_dbcn.kvm_reg_id, &reg);
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret = 0;
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 4d56e653dd..1f592733f4 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -404,6 +404,11 @@ unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-     return cpu->cpu_index;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     unsigned int max_cpus = MACHINE(qdev_get_machine())->smp.max_cpus;
--- 
-2.43.5
+Thanks,
+Gavin
 
