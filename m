@@ -1,94 +1,190 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1551ADC98
-	for <kvm@vger.kernel.org>; Sun,  2 Mar 2025 18:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C931D5CC5
+	for <kvm@vger.kernel.org>; Sun,  2 Mar 2025 22:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740940372; cv=none; b=TE0hLFlOtY16mR+RBt2ObAX0bpW2lwFnc7vVxpep0R/jQQGnZ+9tqnemE2bbYISrSY60QVpb9hPWZzzdQwCLINOBM8HdeLmUIvO9bbcOeIt5CbnkZBPhiU81b5VMsumgltQ635RGZ0ufUHBsY019hglqrOXnx7sPm2jC45cYsB0=
+	t=1740953046; cv=none; b=TGJvMRM04q1STTZLPCZaonIMPRR+n3tdqL5/9dmzpfeECkId8e+D3T3gHdKLsBPSTwFL5Erj4HVkcxm8AoV7tm52joroZiae2Q9Vu88UkP+BkwCY8I4XRkCVEo+OdOqefnYjqMZzbs2bXpdZVYLSf9IKZ+NFRF/BxAmrVRUyrrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740940372; c=relaxed/simple;
-	bh=L0zY7H39BPgrQsaUTKK99onsMr5XmylhBQKwZxrgLyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=T9MkazkIG/XnCsy7WoxXwhdoshTKUmEIpsv8ZA4p1LQ2KI2I2/KTzjIqGMVtr8YH4cqgOtUrS9xAIFeJaakSqsZ6ARr0g+IpAOsTdhJs7MuCvVCcSjgN4c1EBrVCpepYVlUDlDHYgMiMz/ca14tj7XxRa9B0IR5obBK+D5wNGpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QeSfQLQf; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740953046; c=relaxed/simple;
+	bh=KHsoFw+sooDO1207yyQM1lZ2W8oIkiFqBmdqGDK24Tc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Op3qZe0XkwWBDO/AfPnD37DdSR6XQmIv+2JHnfeSiXMLYIAMyUH6ou24Is3nmEml/lFMU8S7ZtzybWYbxjNY8S3wA9we59M76uwu7u3hN016TzxwiSKsnrQ6lGS2uT9FYTIMgqwU/TqW57I0qDDmNuxRy+0f91cFugqYBj3pxRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NKrDCoyM; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QeSfQLQf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740940369; x=1772476369;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=L0zY7H39BPgrQsaUTKK99onsMr5XmylhBQKwZxrgLyA=;
-  b=QeSfQLQfvpqYAlTV5mlsvHSCUXVX6HnyMkFH1kkSZlW1nXzjzMRHAfPC
-   RrLR+ktGf3gp/iDjcXW4PSfsCeDu401rL7WykRiM6zpf5gqG+qoRK+DIg
-   rMkGeJjia1CNYewnpVeSjdfw1k9JSP6WGHmdinM0rTwqwWLR6cxjX5uVz
-   eSH3Yf6A3EMMMcGR84sUDu4OuGipQfXbBW1NxYPRe+LujilL63FWeR99L
-   7fV6ap74OqX+spxOPPdBBRRcGfVkhd9iFU2gh3wHc713y6cSGC7SYn3SJ
-   fVCBJAjgYznedYF+kdTrA5Yil84SB/yEkznVGfKN1LcwWJcqUeI2PBMoE
-   A==;
-X-CSE-ConnectionGUID: Hk3wDI4IQEKWTktizHc8OQ==
-X-CSE-MsgGUID: QQoZOOlQSdiMiv8/mgUpQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="45467575"
-X-IronPort-AV: E=Sophos;i="6.13,328,1732608000"; 
-   d="scan'208";a="45467575"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2025 10:32:49 -0800
-X-CSE-ConnectionGUID: dVgVgaj2SkCImpXuPyougA==
-X-CSE-MsgGUID: 2dYm69rGRy6e+CqgFZpTqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="123048396"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 02 Mar 2025 10:32:46 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1too7I-000HWn-1I;
-	Sun, 02 Mar 2025 18:32:44 +0000
-Date: Mon, 3 Mar 2025 02:32:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [kvm:kvm-coco-queue 32/127] ERROR: modpost: "tdx_vcpu_create"
- [arch/x86/kvm/kvm-intel.ko] undefined!
-Message-ID: <202503030235.MiYJbBOG-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NKrDCoyM"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522KJkQW012144;
+	Sun, 2 Mar 2025 22:03:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=bgs3j
+	ai9+NPlNJzpDCGpAMzZvPpY1adGOahjFQlKPzU=; b=NKrDCoyM8/FAWJwA34FPp
+	0vVjffOkIWJoblErqqIWrVJotDfEUnrwH3A75riY6jsnh5RmxxlIV4nfR8rAeHE7
+	SJkUneI7n7JoHCRR5BkJJAv/cxUTeMAxFhzHMPL4dbd8xHQW1mFCWoUdsCXaIpkO
+	vjXQWcuP8GBun2WwoiKnXYS4mSo76gT4fI5aLIpNOlclfwNPePo+ergjYzjgdLgN
+	mOETHQiTPJopNnAZfcyRX22djN+M54/+7JvddwujKsBtpmrqOH5h9YOlgqhVugIz
+	6rl+ROfWjgt3fZKaITuV6qvA586mIjXO3tALWSnLnVwuA3I1Mwxrzb5TzxFkGFfQ
+	Q==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u86hm1c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 02 Mar 2025 22:03:32 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 522KP3MA015694;
+	Sun, 2 Mar 2025 22:03:31 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 453rp803d8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 02 Mar 2025 22:03:31 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 522M3QoZ040088;
+	Sun, 2 Mar 2025 22:03:31 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 453rp80353-6;
+	Sun, 02 Mar 2025 22:03:30 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+        sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+        like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
+        khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+        den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+        dapeng1.mi@linux.intel.com, joe.jin@oracle.com
+Subject: [PATCH v2 05/10] target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+Date: Sun,  2 Mar 2025 14:00:13 -0800
+Message-ID: <20250302220112.17653-6-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250302220112.17653-1-dongli.zhang@oracle.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-02_06,2025-02-28_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
+ definitions=main-2503020180
+X-Proofpoint-ORIG-GUID: EN7OEdon9AQ-8ENVWt1FIYTq9TpUxPA4
+X-Proofpoint-GUID: EN7OEdon9AQ-8ENVWt1FIYTq9TpUxPA4
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git kvm-coco-queue
-head:   9fe4541afcfad987d39790f0a40527af190bf0dd
-commit: b6c5df065013b1ccb29a23f59f7ad4e8a366a6fd [32/127] KVM: TDX: create/free TDX vcpu structure
-config: x86_64-randconfig-077-20250302 (https://download.01.org/0day-ci/archive/20250303/202503030235.MiYJbBOG-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250303/202503030235.MiYJbBOG-lkp@intel.com/reproduce)
+The initialization of 'has_architectural_pmu_version',
+'num_architectural_pmu_gp_counters', and
+'num_architectural_pmu_fixed_counters' is unrelated to the process of
+building the CPUID.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503030235.MiYJbBOG-lkp@intel.com/
+Extract them out of kvm_x86_build_cpuid().
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+No functional change.
 
-ERROR: modpost: "tdx_vm_init" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "tdx_vm_destroy" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "tdx_mmu_release_hkid" [arch/x86/kvm/kvm-intel.ko] undefined!
->> ERROR: modpost: "tdx_vcpu_create" [arch/x86/kvm/kvm-intel.ko] undefined!
->> ERROR: modpost: "tdx_vcpu_free" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "tdx_vm_ioctl" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "enable_tdx" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "tdx_cleanup" [arch/x86/kvm/kvm-intel.ko] undefined!
-ERROR: modpost: "tdx_bringup" [arch/x86/kvm/kvm-intel.ko] undefined!
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+---
+Changed since v1:
+  - Still extract the code, but call them for all CPUs.
 
+ target/i386/kvm/kvm.c | 66 +++++++++++++++++++++++++------------------
+ 1 file changed, 39 insertions(+), 27 deletions(-)
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 5c8a852dbd..8f293ffd61 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1959,33 +1959,6 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
+         }
+     }
+ 
+-    if (limit >= 0x0a) {
+-        uint32_t eax, edx;
+-
+-        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
+-
+-        has_architectural_pmu_version = eax & 0xff;
+-        if (has_architectural_pmu_version > 0) {
+-            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
+-
+-            /* Shouldn't be more than 32, since that's the number of bits
+-             * available in EBX to tell us _which_ counters are available.
+-             * Play it safe.
+-             */
+-            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
+-                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
+-            }
+-
+-            if (has_architectural_pmu_version > 1) {
+-                num_architectural_pmu_fixed_counters = edx & 0x1f;
+-
+-                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+-                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+-                }
+-            }
+-        }
+-    }
+-
+     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
+ 
+     for (i = 0x80000000; i <= limit; i++) {
+@@ -2085,6 +2058,43 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+     return 0;
+ }
+ 
++static void kvm_init_pmu_info(CPUX86State *env)
++{
++    uint32_t eax, edx;
++    uint32_t unused;
++    uint32_t limit;
++
++    cpu_x86_cpuid(env, 0, 0, &limit, &unused, &unused, &unused);
++
++    if (limit < 0x0a) {
++        return;
++    }
++
++    cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
++
++    has_architectural_pmu_version = eax & 0xff;
++    if (has_architectural_pmu_version > 0) {
++        num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
++
++        /*
++         * Shouldn't be more than 32, since that's the number of bits
++         * available in EBX to tell us _which_ counters are available.
++         * Play it safe.
++         */
++        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
++            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
++        }
++
++        if (has_architectural_pmu_version > 1) {
++            num_architectural_pmu_fixed_counters = edx & 0x1f;
++
++            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
++                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
++            }
++        }
++    }
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     struct {
+@@ -2267,6 +2277,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
+     cpuid_data.cpuid.nent = cpuid_i;
+ 
++    kvm_init_pmu_info(env);
++
+     if (((env->cpuid_version >> 8)&0xF) >= 6
+         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
+            (CPUID_MCE | CPUID_MCA)) {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.5
+
