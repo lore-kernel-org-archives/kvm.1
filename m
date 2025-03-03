@@ -1,120 +1,215 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC09D1F0E50
-	for <kvm@vger.kernel.org>; Mon,  3 Mar 2025 09:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7631D63F7
+	for <kvm@vger.kernel.org>; Mon,  3 Mar 2025 10:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740994183; cv=none; b=CjEC8W3+dcg9L1ktBzGjX22/dHlyuMdj0mExg/c+jhYN1XaCv12TudHOwsRSDgAc3j8eL/bSFE3nurp4K1ZR4gyr4tkEjVcUF2yaj6Nl8VkPytKNDCZdfrirIrqbUq7MSEYuacpxUUNgI5M78fP2v36GxDqkLXj+wuwYD97k7fY=
+	t=1740997518; cv=none; b=H87OgzttaNYaHZ19ZH5GfDDQIz4n94CR7cKUp8ZHW2Szz8IZkAXeQp9ID/vH+yDpSaVRl6Xr7N9toFpdVb96MQ6zw9rWLz5PGTaqYlgBsgLHUHiS/ttMynPQHUkP0lwJrR3hO6KyzP3qxWzhQ7lyKVMhLB0fTFPDD9kaM6gToDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740994183; c=relaxed/simple;
-	bh=hO/1w0WIreFcCNOGOIiuvQHBGfGmx0RKyWkuiZ5OENQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y1T4zUKAnUI+M/90d1BCmRJ9hnL+UFZ+OIqhIPfipJUqA8Rrs6A8hqY/ktFDxkzHzE4x6mkNUcM2ZGnCQqt6bDu8LLgyw2mFaJ39Dq2ev0G1P4m4kCP9NouVRissaBFuBVnSSv5xVUP4W67/uFTos+GR3//gnRJ8iga0SJnYtxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vnqx3bc1; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1740997518; c=relaxed/simple;
+	bh=/ej80E7fEmOiXCG0edfmWSRHo8xkFIG8fEhkazypN4E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q226EbLhGNbQLoGiGQjaeyqh1j63CIPlPbia+jSOX+5DwD2FmZYwd13Qw3KV7bWUJzHQBXZnhZOf/5SpG8W0tTcC/fTUbBeQxdrnq9z38zQL8j125Xc5pQ1XE4TiMwxVERSz8rd50/1ZoTBGMQAJumHXBKfZU/1GWEFEPMbQHw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RIduwpy3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vnqx3bc1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RIduwpy3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740994179;
+	s=mimecast20190719; t=1740997515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dm+Ad9vtaxKH6b/jFWjk7lOEkc1nxwN4lmuVSAb6Ah0=;
-	b=Vnqx3bc1aNPedPa4JUTrjtarmagh3gGaZ2wZ/LJr2h+eN1Vcri003ozZo1KTVNfkVxxvf2
-	Rx/YeYjmXYYg6SnhFu+5UPZrV67sRi9DfsSi/zA7/OTwKOKMYKbqtiilr19F2DRfwOxjm6
-	P6o0Kwyk60Uc/820ANtGYehq3lIg6/c=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TrKzv35DZjV35KvtzHUKUqHwEc+skHulVpKIiaH0xSg=;
+	b=RIduwpy3Py/1A5LlT1E+WTHYK0B7ghJ4bL3W4qO/CZatDB5O7TfaIW6v8H6pbPii/nGuok
+	wRWggTCSTxBMf/MxkHRWvoG/ll08T5QIyNFAtZg0tQ9Mf9Y2vY1tKfs+FTOJ8SfbtlTzZq
+	bSggX1Es7TxxnFWKLV4v8MQwuOI5JMw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-rnzXVbNIPdqejnvZhekS3A-1; Mon, 03 Mar 2025 04:29:16 -0500
-X-MC-Unique: rnzXVbNIPdqejnvZhekS3A-1
-X-Mimecast-MFC-AGG-ID: rnzXVbNIPdqejnvZhekS3A_1740994155
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-22379af38e0so35617515ad.2
-        for <kvm@vger.kernel.org>; Mon, 03 Mar 2025 01:29:16 -0800 (PST)
+ us-mta-645-L1F3LQcwNHSKX4bWSjhl-Q-1; Mon, 03 Mar 2025 05:25:12 -0500
+X-MC-Unique: L1F3LQcwNHSKX4bWSjhl-Q-1
+X-Mimecast-MFC-AGG-ID: L1F3LQcwNHSKX4bWSjhl-Q_1740997511
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-390e8df7ab6so1411644f8f.3
+        for <kvm@vger.kernel.org>; Mon, 03 Mar 2025 02:25:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740994155; x=1741598955;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dm+Ad9vtaxKH6b/jFWjk7lOEkc1nxwN4lmuVSAb6Ah0=;
-        b=kiUd74LxJhlic9H+EcXL7vo5BnXdiiQmUJZZAtfMpANW08LXYhc0j88uJRMSMvN7rL
-         vCnAMR0WCHzpmAIIi1ozVthjNX0G64jLpQF2/jCqFM1HUJPqBCwixCHCAubDLKHPby8N
-         eDAazTvqJGYcxDm/hw8oMfRLPqGyKLVK23+K6bZGut2tPmoFk69gg58ygxnfO2UGcRst
-         RAZv+O++RDutK5nXHw8o2Ne0mOXjpXGkQL7oSg/ns+I4maxJ3sGY1nT6oY8bslPE/bhl
-         B6oWUhoF23XmMxzUUt3oBTlt6UM7NjZ0Qzi4aHhqJh71lfxqcp+bfNb+HhEpcx2DmgxT
-         +DEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfH5AfrksMqikQs0xsRhDhXYlRFuCEopcaG29i5l1boFmtGk+xQ8Q/PLaRC2i3qcc6xVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV23Yq4OQEE5b+xBfAbmrqVmb/Xz0ScAz6njxMBbftzLp1aEUZ
-	P36iVWS9xzyHzzkZghsYDREHGpZ4Tb9mGv7Yfrx2s3N8y/9zoClXzanwYg4dBHLgqpyMGxxghCU
-	6fRbHannlY+jgOCJArnMqpJ+9z/2GZc5BVgVdcvVuXR63SHS1B7sXp2lqEZzKAVKG18oCpTIhUP
-	UTRWKnMb+v/pua16wMsBPOpsSp
-X-Gm-Gg: ASbGnctK4pV2MGZFSYjQ8Bh/AJCU/s3035NpQiKhn0BV5/0s9HK3YQZA2Db/ntQunpn
-	xjRRhZ0D2HswRsWO9PWlpVNK9MfhOz1RNEfwB9LdW4eU4JNo3gmiBCcO4XawggWQAB/MxDPQ=
-X-Received: by 2002:a17:902:f547:b0:220:f7bb:842 with SMTP id d9443c01a7336-22369255811mr196196115ad.42.1740994154031;
-        Mon, 03 Mar 2025 01:29:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEeh8T/Isef6u47m5QPpp9NHgJMkJl3dnUE8Ylea44Ny6EY1sjUVU9fZMYGnxlnkM9rFe7Jpp6zS4k5VEsVFKw=
-X-Received: by 2002:a17:902:f547:b0:220:f7bb:842 with SMTP id
- d9443c01a7336-22369255811mr196195835ad.42.1740994153774; Mon, 03 Mar 2025
- 01:29:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740997511; x=1741602311;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TrKzv35DZjV35KvtzHUKUqHwEc+skHulVpKIiaH0xSg=;
+        b=ouDRhEbgbJ/ZRwg9f6nQh3qkBUWGszWsUetTZvMrGQVibHPcUV6hifFsYtXLlyV8ET
+         rlOfxq+M3QYj+VSi4S2I/Wk/XVqgq+J75it9WQpVknZn82+VWOW185U13A4rFMzw9VL1
+         4tjJoTysBYwr4ycF/XNEUS7K1Q9Gnm01OPfIczMmWWo98YySuT3Vki8R8eo2yYybMNE7
+         R3iugIUqndQhuC38OsGYZoUG8lgsOjipDj8XaFIrmtkfxsV9R5hlQy2Vo6DXrdIWAnuL
+         6OpNlWZ6/N0joLV+bVJxmmnRklS9noTBhDVr8+CRHTSyXbYt97riCpStRsTxXqCJZuug
+         o9tA==
+X-Forwarded-Encrypted: i=1; AJvYcCUehA6NEOmPysD3QonyyJGwcTE6sNN+iZGdMH1x38oA57CZtaoSAOdoi8UzqqNGDv/Ugx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdFNrGpUTAiD1FqG9j4Pc51jwh9lXlbFTnysLLYzZqoBVqeX1J
+	4gGXdm9QFsUOkpbMCOCbNnaiHfxAMa5qxfmAOa+gCXw+URd0DhDRpJOZHbXk1ZfU6uVXCJod6ZC
+	Vt+7115DRBwkmnlUIJxBkttzAjS9T5DGAE2X/d6gxh6cmvhrsWQ==
+X-Gm-Gg: ASbGnctA+VM1Vqt0+/tZV9sve8adwUMEhCf1S3xkjcNxTbRIOHvosW1Ol47Nzz0lkTj
+	Rk5ACGINbQ+oESxjSKmuuQkCI3yiEMJB7c9cxNAKQk4UcCg64jtzW/jjdKRk5yAPvLQCofqKcAG
+	GWpLhtXRpKc0mbdOXnS90tT/4rQGeWfqL7VplMZ5ySDxDEyCYe6dTgOt/u7HGNv2/tB2QxKYemD
+	HgK4a7oK9GTepgt5tMJyDIhBbUTxBHAQCoM88qE6tF7/DmOSY0zrg8NFWghMh0TEUq7Iz0x+w49
+	XzmyxSlHw+TefPOd6Bk=
+X-Received: by 2002:a5d:5f81:0:b0:390:f607:9656 with SMTP id ffacd0b85a97d-390f60796f9mr8129019f8f.34.1740997511100;
+        Mon, 03 Mar 2025 02:25:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8JPrmyld9of7zduHKshilPng6cArXdQbF0Bz4Ey1KeSVNMKTj1pzN69el5Z/nX9jXjAwrfA==
+X-Received: by 2002:a5d:5f81:0:b0:390:f607:9656 with SMTP id ffacd0b85a97d-390f60796f9mr8128994f8f.34.1740997510738;
+        Mon, 03 Mar 2025 02:25:10 -0800 (PST)
+Received: from [192.168.10.48] ([151.95.119.44])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-390e4796517sm13839957f8f.5.2025.03.03.02.25.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Mar 2025 02:25:10 -0800 (PST)
+Message-ID: <1e077351-6fc4-4106-b4fe-a36b8be75233@redhat.com>
+Date: Mon, 3 Mar 2025 11:25:08 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303085237.19990-1-sgarzare@redhat.com>
-In-Reply-To: <20250303085237.19990-1-sgarzare@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 3 Mar 2025 10:28:37 +0100
-X-Gm-Features: AQ5f1JpYz8RUYj9eXvkfBI5yoVaRYAPygFZFSo69WGk-H92b36v2eBIN9Cg-xmM
-Message-ID: <CAJaqyWfNieVxJu0pGCcjRc++wRnRpyHqfkuYpAqnKCLUjbW6Xw@mail.gmail.com>
-Subject: Re: [PATCH] vhost: fix VHOST_*_OWNER documentation
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] KVM: x86: Introduce quirk
+ KVM_X86_QUIRK_EPT_IGNORE_GUEST_PAT
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: seanjc@google.com, rick.p.edgecombe@intel.com, kevin.tian@intel.com,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20250224070716.31360-1-yan.y.zhao@intel.com>
+ <ecbc1c50-fad2-4346-a440-10fbc328162b@redhat.com>
+ <Z8UBpC76CyxCIRiU@yzhao56-desk.sh.intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <Z8UBpC76CyxCIRiU@yzhao56-desk.sh.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 3, 2025 at 9:52=E2=80=AFAM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->
-> VHOST_OWNER_SET and VHOST_OWNER_RESET are used in the documentation
-> instead of VHOST_SET_OWNER and VHOST_RESET_OWNER respectively.
->
-> To avoid confusion, let's use the right names in the documentation.
-> No change to the API, only the documentation is involved.
->
+On 3/3/25 02:11, Yan Zhao wrote:
+>> the main issue with this series is that the quirk is not disabled only for
+>> TDX VMs, but for *all* VMs if TDX is available.
+> Yes, once TDX is enabled, the quirk is disabled for all VMs.
+> My thought is that on TDX as a new platform, users have the option to update
+> guest software to address bugs caused by incorrect guest PAT settings.
+> 
+> If you think it's a must to support old unmodifiable non-TDX VMs on TDX
+> platforms, then it's indeed an issue of this series.
 
-Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+Yeah, unfortunately I think we need to keep the quirk for old VMs.  But 
+I think the code changes needed to do so are small and good to have anyway.
 
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  include/uapi/linux/vhost.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>> There are two concepts here:
+>>
+>> - which quirks can be disabled
+>>
+>> - which quirks are active
+>>
+>> I agree with making the first vendor-dependent, but for a different reason:
+>> the new KVM_X86_QUIRK_EPT_IGNORE_GUEST_PAT must be hidden if self-snoop is
+>> not present.
 >
-> diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-> index b95dd84eef2d..d4b3e2ae1314 100644
-> --- a/include/uapi/linux/vhost.h
-> +++ b/include/uapi/linux/vhost.h
-> @@ -28,10 +28,10 @@
->
->  /* Set current process as the (exclusive) owner of this file descriptor.=
-  This
->   * must be called before any other vhost command.  Further calls to
-> - * VHOST_OWNER_SET fail until VHOST_OWNER_RESET is called. */
-> + * VHOST_SET_OWNER fail until VHOST_RESET_OWNER is called. */
->  #define VHOST_SET_OWNER _IO(VHOST_VIRTIO, 0x01)
->  /* Give up ownership, and reset the device to default values.
-> - * Allows subsequent call to VHOST_OWNER_SET to succeed. */
-> + * Allows subsequent call to VHOST_SET_OWNER to succeed. */
->  #define VHOST_RESET_OWNER _IO(VHOST_VIRTIO, 0x02)
->
->  /* Set up/modify memory layout */
-> --
-> 2.48.1
->
+> I think it's a good idea to make KVM_X86_QUIRK_EPT_IGNORE_GUEST_PAT out of
+> KVM_CAP_DISABLE_QUIRKS2, so that the quirk is always enabled when self-snoop is
+> not present as userspace has no way to disable this quirk.
+> 
+> However, this seems to contradict your point below, especially since it is even
+> present on AMD platforms.
+> 
+> "we need to expose the quirk anyway in KVM_CAP_DISABLE_QUIRKS2, so that
+> userspace knows that KVM is *aware* of a particular issue",  "even if disabling
+> it has no effect, userspace may want to know that it can rely on the problematic
+> behavior not being present".
+
+There are four cases:
+
+* quirk cannot be disabled: example, "ignore guest PAT" on 
+non-self-snoop machines: the quirk must not be in KVM_CAP_DISABLE_QUIRKS2
+
+* quirk can be disabled: the quirk must be in KVM_CAP_DISABLE_QUIRKS2
+
+* quirk is always disabled: right now we're always exposing those in 
+KVM_CAP_DISABLE_QUIRKS2, so we should keep that behavior.  If desired we 
+could add a capability like KVM_CAP_DISABLED_QUIRKS
+
+* for some VMs, quirk is always disabled: this is the case also for the 
+zap_all quirk that you have previously introduced.  Right now there's no 
+way to query it, but KVM_CAP_DISABLED_QUIRKS would also cover this.  If 
+KVM_CAP_DISABLED_QUIRKS was introduced, zap_all could be added too.
+
+> So, could we also expose KVM_X86_QUIRK_EPT_IGNORE_GUEST_PAT in
+> KVM_CAP_DISABLE_QUIRKS2 on Intel platforms without self-snoop, but ensure that
+> disabling the quirk has no effect?
+
+To keep the API clear, disabling the quirk should *always* have the 
+effect of going to the non-quirky behavior.  Which may be no effect at 
+all if the non-quirky behavior is the only one---but the important thing 
+is that you don't want the quirky/buggy/non-architectural behavior after 
+a successful KVM_ENABLE_CAP(KVM_CAP_DISABLE_QUIRKS2).
+
+There is a pre-existing bug in that I think 
+KVM_ENABLE_CAP(KVM_CAP_DISABLE_QUIRKS2) should be cumulative, i.e. 
+should not allow re-enabling a previously-disabled quirk.  I think we 
+can change that without worrying about breaking userspace there, as the 
+current behavior is the most surprising.
+
+>> As to the second, we already have an example of a quirk that is also active,
+>> though we don't represent that in kvm->arch.disabled_quirks: that's
+>> KVM_X86_QUIRK_CD_NW_CLEARED which is for AMD only and is effectively always
+>> disabled on Intel platforms.  For those cases, we need to expose the quirk
+> I also have a concern about this one. Please find my comments in v2.
+
+Ok, I'll reply there too.
+
+>> anyway in KVM_CAP_DISABLE_QUIRKS2, so that userspace knows that KVM is
+>> *aware* of a particular issue.  In other words, even if disabling it has no
+>> effect, userspace may want to know that it can rely on the problematic
+>> behavior not being present.
+>>
+>> I'm testing an alternative series and will post it shortly.
+>   
+> Thanks a lot for helping with refining the patches!
+
+Thanks to you and sorry that the patches weren't of the best quality - I 
+mostly wanted to start the discussion on the userspace API side before 
+the beginning of the week in your time zone.
+
+Paolo
 
