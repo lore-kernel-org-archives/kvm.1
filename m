@@ -1,114 +1,118 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D67C27FE62;
-	Tue,  4 Mar 2025 18:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F291F5826;
+	Tue,  4 Mar 2025 19:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741112603; cv=none; b=YGzr6+JUXXF7BDWAhMMNsp5U4GHupeYWzI0UTpSRXVxytUtr3CVwvj5CkyoOgO3EDrf/KQlEiYX5TG0fH/TCWG4lBs6HVYUkryASnDDiMOA9weVPlXAJp0oo0Vd2ZD33C0bSy+Vaiqmj3KLOsJJgDdcxhndZ9gpbKCAJA4Ce5iE=
+	t=1741117268; cv=none; b=MZbctmMJ6fJWry54bh2URllId0irT55VSebS/S9leVYsQdbYi6fHnqrjazsJmUd0Ba+MjLS8IXAFnEAmyZ++b9FILJExhfA+R9xngzbrI2jif+Wi/Z9ZClne1OMyWaDM6jvjhij0WTca1YZvSZ6tcRf51lEtFw3leOY0Dft0p8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741112603; c=relaxed/simple;
-	bh=nJxN0OF+NV+pP7a2nHlRBnE7O4eJYLZXYsG9b6RtaTI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sySyiY/8bvypovragC7xFGZMmFqqf8BGR+Ve6UtVfuAtySKZum+EjkRt70vvt7Pb4WQSQoJ0GxTpbJqunSDM2yPxzZBmxUjsmAG3JQKexAX375L9jlSNoi2h3COwfuqvLIE07sU09j76fuVVk5AV+h4aEQfHIFqFAU7/KJNUixE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rWcVsqAv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1741117268; c=relaxed/simple;
+	bh=v/Vr8bPgJVi4b56HsC7uD+j/eXRtL5xKFUSYo3KB2+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JyWAMgzbqiByMtQmoXo/SF++ySUeBColsCbPyxFxtxKDQJSEgCqI/Ixt/6xFhndR1PZuOHvq6gE9BXvcmQTrCu4wHqiExlbeRZv7wc+sGUTnyNFIAHVzTRqPZ67i6c38PoX18nuPqV+Aqk4aElTVywu2bOETbCAUb5xxNZcifxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Ukh/ua5t; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rWcVsqAv"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 524GEPW1023631;
-	Tue, 4 Mar 2025 18:23:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=cHkOY2aFm4MBzD9JOYJEt0kX6l/PwwLDRWhBCbIyP
-	Jw=; b=rWcVsqAvuhYPPQMCtF3PiFidkTRiYPl5mYXOgNZY057CSSHfEVsXEHRgw
-	uQFmGj4XNgckstFTOYiUadjamqmFppjF3UAIuvgyXVwRX3FaE3ZpjpAPL+jxKsAW
-	5h5C10vpMp2NKggGYjOHXDzMWfXL2OLH5co0AYnwZFGu2yF9B/U4Ken4Ml1C4l/M
-	JTtglu/VAmo9WCmBIfuvc8eYFs57RYrAzxsyp4ax93HR/sxyj2wKExcaujUw9ISL
-	yXKHS+5xu7Kxt2Re18RzoCYOSZWsUI0mOy8U00y32h7pi9QEvooZATNvjyJxG71b
-	gWpmDxEkV1MgBrfYYus/mW1PBk83Q==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 455ku55ke7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Mar 2025 18:23:14 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 524GlFiP020800;
-	Tue, 4 Mar 2025 18:23:14 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 454esjxgmj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Mar 2025 18:23:14 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 524INA0q30737108
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Mar 2025 18:23:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 66E8920043;
-	Tue,  4 Mar 2025 18:23:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E5B120040;
-	Tue,  4 Mar 2025 18:23:09 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.171.33.201])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Mar 2025 18:23:09 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        frankja@linux.ibm.com, borntraeger@de.ibm.com, david@redhat.com,
-        nrb@linux.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
-        schlameuss@linux.ibm.com, hca@linux.ibm.com
-Subject: [PATCH v4 0/1] KVM: s390: fix a newly introduced bug
-Date: Tue,  4 Mar 2025 19:23:03 +0100
-Message-ID: <20250304182304.178746-1-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Ukh/ua5t"
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 524JeSPD2519447
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 4 Mar 2025 11:40:29 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 524JeSPD2519447
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741117230;
+	bh=kUcC1ROd6ts2PVfPTnLLJGMF2+Ppt5KyMe8XWtwQebI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ukh/ua5tx+lAUps1FKfHQxEGNqHF0+RzTS8KY7eIR3jxHaCdqYWoMVXhti8QO6c1r
+	 p2rmmuEXtXQDIub60B1mEcLV9MiIfAKh7u0NN2SBh1vzGoDJ2C2PW6cOIs2YGIVW4W
+	 QDoYp3nFUUF/DUaag4joeVoSwM32dXn73y+vwMj7qohWfi4LHHtvCSB/2ecYPWaPoH
+	 yzkYfo0UA/4mqKqmzagbblb4rgFNH6/sx1kn5DV8e4cf0A+4O6cStDd+KdJkDo1SAC
+	 sUBCQLPtpHI2K9v3RcoA5D5c+HV7uoY/2dz/q1C4g5YU3clTChEjzpnl7jZKPiqyDa
+	 beuJ3fgzqKAKg==
+Message-ID: <42035a43-660c-4d38-9369-db824e271671@zytor.com>
+Date: Tue, 4 Mar 2025 11:40:27 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xu9pspZucWmZHK1_7WqZYEpn6K7X8ZOd
-X-Proofpoint-GUID: xu9pspZucWmZHK1_7WqZYEpn6K7X8ZOd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-04_07,2025-03-03_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- clxscore=1015 mlxscore=0 suspectscore=0 impostorscore=0 bulkscore=0
- mlxlogscore=649 lowpriorityscore=0 spamscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503040144
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] Introduce CET supervisor state support
+To: Sean Christopherson <seanjc@google.com>, Chao Gao <chao.gao@intel.com>,
+        Borislav Petkov <bp@alien8.de>
+Cc: tglx@linutronix.de, dave.hansen@intel.com, x86@kernel.org,
+        pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        peterz@infradead.org, rick.p.edgecombe@intel.com, mlevitsk@redhat.com,
+        weijiang.yang@intel.com, john.allen@amd.com
+References: <20241126101710.62492-1-chao.gao@intel.com>
+ <Z0WitW5iFdu6L5IV@intel.com> <Z4HI2EsPwezokhB0@google.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <Z4HI2EsPwezokhB0@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Fix race when making a page secure (hold pte lock again)
+On 1/10/2025 5:26 PM, Sean Christopherson wrote:
+> On Tue, Nov 26, 2024, Chao Gao wrote:
+>> On Tue, Nov 26, 2024 at 06:17:04PM +0800, Chao Gao wrote:
+>>> This v2 is essentially a resend of the v1 series. I took over this work
+>> >from Weijiang, so I added my Signed-off-by and incremented the version
+>>> number. This repost is to seek more feedback on this work, which is a
+>>> dependency for CET KVM support. In turn, CET KVM support is a dependency
+>>> for both FRED KVM support and CET AMD support.
+>>
+>> This series is primarily for the CET KVM series. Merging it through the tip
+>> tree means this code will not have an actual user until the CET KVM series
+>> is merged. A good proposal from Rick is that x86 maintainers can ack this
+>> series, and then it can be picked up by the KVM maintainers along with the
+>> CET KVM series. Dave, Paolo and Sean, are you okay with this approach?
+> 
+> Boris indicated off-list that he would prefer to take this through tip and give
+> KVM an immutable branch.  I'm a-ok with either approach.
+> 
 
-This should fix the issues I have seen, which I think/hope are also the same
-issues that David found.
+Hi Sean and Boris,
 
-v3->v4:
-* move and rename s390_wiggle_split_folio() to fix a compile issue when
-  KVM is not selected
-* removed obsolete reference to __() from comments
+At this point because KVM is the only user of this feature, would it
+make more sense to take this patch set through KVM x86 tree?
 
-v2->v3:
-* added check for pte_write() in make_hva_secure() [thanks David]
-
-v1->v2:
-* major refactoring
-* walk the page tables only once
-* when importing, manually fault in pages if needed
-
-Claudio Imbrenda (1):
-  KVM: s390: pv: fix race when making a page secure
-
- arch/s390/include/asm/gmap.h |   1 -
- arch/s390/include/asm/uv.h   |   3 +-
- arch/s390/kernel/uv.c        | 135 +++++++++++++++++++++++++++++++++--
- arch/s390/kvm/gmap.c         | 101 ++------------------------
- arch/s390/kvm/kvm-s390.c     |  25 ++++---
- arch/s390/mm/gmap.c          |  28 --------
- 6 files changed, 153 insertions(+), 140 deletions(-)
-
--- 
-2.48.1
-
+Thanks!
+     Xin
