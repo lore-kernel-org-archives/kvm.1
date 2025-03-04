@@ -1,90 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62D6156C76;
-	Tue,  4 Mar 2025 14:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6C623A9AE;
+	Tue,  4 Mar 2025 14:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100073; cv=none; b=jAMU6ziyzwTagEvtzqVjJsUmUl6F4ygoPad3md3Ceq9ki6HuxZAlbcMlSbBaN2nnqg8X7i05Qp0S8bbERAu4jOjs6F2DDP4iLwhFXgEsCKiGUqJueqEzW2Nkt1MkcAdZjyHiNP34B39hHm1mXJnllSgGa8Mqmr5ckOePaUB9qFI=
+	t=1741100352; cv=none; b=KXmr+NSAEjfKjmH5P7BtLA34irzhgRrh/SeNnVWIckd8U+kqbKj9Sd9b0aiBQwNfF0VdJCBHGua99XyCe9mUp1f5duQ1QJqXdxKiyTejjG106SOCGXDYJ75+ozpf04mTUGyh4ZBtJiUfbFbJgYzm89BCTCrVmhN5ZY099se9Zgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100073; c=relaxed/simple;
-	bh=6QVcC4GPVMSItVqHqjY2/nKc5H0HnVp+/D7NkRyhohw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D9iI17YMwj4MLx0+ZT72l7zuo8u/Q8ekhXXqDz0A3aKzvrO3ftYSOX24WB/ba94Lm9OWXDZ1JvrRyxylSqkm61qfAt86VOWWT8Uly8qhrvsCUzljnWDHmUV65+pk5mnON3I4ycP1Due02N2q6m6fZf4dTSL5BsNholltZBjfCSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=trU6zHvY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="trU6zHvY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793E0C4CEE7;
-	Tue,  4 Mar 2025 14:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741100073;
-	bh=6QVcC4GPVMSItVqHqjY2/nKc5H0HnVp+/D7NkRyhohw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=trU6zHvYUjZCBj8Ced0tD9DPJmg6FubXk0qnSnB3Kr0MtE0OzU47Sami3rZ+q1eL7
-	 JJhqUbpYYPYAw5GMGVuGX8/z9p9S5okXMhsgtdVK4wxFBLWdQ6Pyg+gMziT00LPfRW
-	 MB6DCpDlfQlpjhNa9JFOUA7XotD78kijgsNnNp+bEvqwfOFPPZuRlA+mLWOjbK0xrd
-	 pXLatuDsXiVGd2vLHKpi3xL4Ea4UnmHaeasSnHHD8kMeXb0+QFK0BpdH4T1/fyEKUQ
-	 bznCslahq2nqmlMavlh2prD6+UjZIQ3udYGsCtYQsMldhZ5sOrHi6cnLZGycFEBs0y
-	 0k8wbdsqtT1jA==
-Date: Tue, 4 Mar 2025 16:54:28 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-	Wei Lin Guay <wguay@meta.com>,
-	"alex.williamson@redhat.com" <alex.williamson@redhat.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	Dag Moxnes <dagmoxnes@meta.com>,
-	"kbusch@kernel.org" <kbusch@kernel.org>,
-	Nicolaas Viljoen <nviljoen@meta.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 0/4] cover-letter: Allow MMIO regions to be exported
- through dmabuf
-Message-ID: <20250304145428.GH1955273@unreal>
-References: <20241216095920.237117-1-wguay@fb.com>
- <IA0PR11MB7185FDD56CFDD0A2B8D21468F83B2@IA0PR11MB7185.namprd11.prod.outlook.com>
- <924671F4-E8B5-4007-BE5D-29ED58B95F46@meta.com>
- <IA0PR11MB71858B2E59D3A9F58CEE83DCF8052@IA0PR11MB7185.namprd11.prod.outlook.com>
- <61DF4F0E-D947-436B-9160-A40079DB9085@meta.com>
- <IA0PR11MB7185E7DBB9E959A2F40D4170F8C22@IA0PR11MB7185.namprd11.prod.outlook.com>
- <20250226133822.GA28425@nvidia.com>
- <0d471fca-b64c-4392-88ee-d26dbfe3cf2d@amd.com>
+	s=arc-20240116; t=1741100352; c=relaxed/simple;
+	bh=UClmafexKg6NNUTLIrpb/B8GK548EN1DK2RtSIjCdMI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K6/VWHMsrV1+C4ae/Etuk5rNW6Zy4MOkmpc5J7gsiMVt8BUXyV2nIxYFWsisn07zUj39usEPIyz/2C+8pfr7mv5xJOAeg6WlfBsYAwoGVFzvKD3iBajqgO+xVWv4GVDs2qPIu8chTUn68gLsSL6abYy88Kf0o2uttxoJco1WNcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1tpSfV-00000000KXK-3XMb;
+	Tue, 04 Mar 2025 14:50:45 +0100
+Message-ID: <2fd13fdb-1d62-4d76-a8a0-c63fb0575fb7@maciej.szmigiero.name>
+Date: Tue, 4 Mar 2025 14:50:40 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d471fca-b64c-4392-88ee-d26dbfe3cf2d@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: QEMU's Hyper-V HV_X64_MSR_EOM is broken with split IRQCHIP
+To: Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
+References: <Z8ZBzEJ7--VWKdWd@google.com> <87ikoposs6.fsf@redhat.com>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
+ 6oJdk+jpvKiyzlbKqlDtw/Y2Ob24tg1g/zvkHn8AVUwX+ZWWewSZ0vcwp7u/LvA+w2nJbIL1
+ N0/QUUdmxfkWTHhNqgkNX5hEmYqhwUPozFR0zblfD/6+XFR7VM9yT0fZPLqYLNOmGfqAXlxY
+ m8nWmi+lxkd/PYqQQwOq6GQwxjRFEvSc09m/YPYo9hxh7a6s8hAP88YOf2PD8oBB1r5E7KGb
+ Fv10Qss4CU/3zaiyRTExWwOJnTQdzSbtnM3S8/ZO/sL0FY/b4VLtlZzERAraxHdnPn8GgxYk
+ oPtAqoyf52RkCabL9dsXPWYQjkwG8WEUPScHDy8Uoo6imQujshG23A99iPuXcWc/5ld9mIo/
+ Ee7kN50MOXwS4vCJSv0cMkVhh77CmGUv5++E/rPcbXPLTPeRVy6SHgdDhIj7elmx2Lgo0cyh
+ uyxyBKSuzPvb61nh5EKAGL7kPqflNw7LJkInzHqKHDNu57rVuCHEx4yxcKNB4pdE2SgyPxs9
+ 9W7Cz0q2Hd7Yu8GOXvMfQfrBiEV4q4PzidUtV6sLqVq0RMK7LEi0RiZpthwxz0IUFwRw2KS/
+ 9Kgs9LmOXYimodrV0pMxpVqcyTepmDSoWzyXNP2NL1+GuQtaTQARAQABzTBNYWNpZWogUy4g
+ U3ptaWdpZXJvIDxtYWlsQG1hY2llai5zem1pZ2llcm8ubmFtZT7CwZQEEwEIAD4CGwMFCwkI
+ BwIGFQoJCAsCBBYCAwECHgECF4AWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxhgUJD0w7
+ wQAKCRCEf143kM4JdwHlD/9Ef793d6Q3WkcapGZLg1hrUg+S3d1brtJSKP6B8Ny0tt/6kjc2
+ M8q4v0pY6rA/tksIbBw6ZVZNCoce0w3/sy358jcDldh/eYotwUCHQzXl2IZwRT2SbmEoJn9J
+ nAOnjMCpMFRyBC1yiWzOR3XonLFNB+kWfTK3fwzKWCmpcUkI5ANrmNiDFPcsn+TzfeMV/CzT
+ FMsqVmr+TCWl29QB3U0eFZP8Y01UiowugS0jW/B/zWYbWo2FvoOqGLRUWgQ20NBXHlV5m0qa
+ wI2Isrbos1kXSl2TDovT0Ppt+66RhV36SGA2qzLs0B9LO7/xqF4/xwmudkpabOoH5g3T20aH
+ xlB0WuTJ7FyxZGnO6NL9QTxx3t86FfkKVfTksKP0FRKujsOxGQ1JpqdazyO6k7yMFfcnxwAb
+ MyLU6ZepXf/6LvcFFe0oXC+ZNqj7kT6+hoTkZJcxynlcxSRzRSpnS41MRHJbyQM7kjpuVdyQ
+ BWPdBnW0bYamlsW00w5XaR+fvNr4fV0vcqB991lxD4ayBbYPz11tnjlOwqnawH1ctCy5rdBY
+ eTC6olpkmyUhrrIpTgEuxNU4GvnBK9oEEtNPC/x58AOxQuf1FhqbHYjz8D2Pyhso8TwS7NTa
+ Z8b8o0vfsuqd3GPJKMiEhLEgu/io2KtLG10ynfh0vDBDQ7bwKoVlqC3It87AzQRaRrwiAQwA
+ xnVmJqeP9VUTISps+WbyYFYlMFfIurl7tzK74bc67KUBp+PHuDP9p4ZcJUGC3UZJP85/GlUV
+ dE1NairYWEJQUB7bpogTuzMI825QXIB9z842HwWfP2RW5eDtJMeujzJeFaUpmeTG9snzaYxY
+ N3r0TDKj5dZwSIThIMQpsmhH2zylkT0jH7kBPxb8IkCQ1c6wgKITwoHFjTIO0B75U7bBNSDp
+ XUaUDvd6T3xd1Fz57ujAvKHrZfWtaNSGwLmUYQAcFvrKDGPB5Z3ggkiTtkmW3OCQbnIxGJJw
+ /+HefYhB5/kCcpKUQ2RYcYgCZ0/WcES1xU5dnNe4i0a5gsOFSOYCpNCfTHttVxKxZZTQ/rxj
+ XwTuToXmTI4Nehn96t25DHZ0t9L9UEJ0yxH2y8Av4rtf75K2yAXFZa8dHnQgCkyjA/gs0ujG
+ wD+Gs7dYQxP4i+rLhwBWD3mawJxLxY0vGwkG7k7npqanlsWlATHpOdqBMUiAR22hs02FikAo
+ iXNgWTy7ABEBAAHCwXwEGAEIACYCGwwWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxrgUJ
+ D0w6ggAKCRCEf143kM4Jd55ED/9M47pnUYDVoaa1Xu4dVHw2h0XhBS/svPqb80YtjcBVgRp0
+ PxLkI6afwteLsjpDgr4QbjoF868ctjqs6p/M7+VkFJNSa4hPmCayU310zEawO4EYm+jPRUIJ
+ i87pEmygoN4ZnXvOYA9lkkbbaJkYB+8rDFSYeeSjuez0qmISbzkRVBwhGXQG5s5Oyij2eJ7f
+ OvtjExsYkLP3NqmsODWj9aXqWGYsHPa7NpcLvHtkhtc5+SjRRLzh/NWJUtgFkqNPfhGMNwE8
+ IsgCYA1B0Wam1zwvVgn6yRcwaCycr/SxHZAR4zZQNGyV1CA+Ph3cMiL8s49RluhiAiDqbJDx
+ voSNR7+hz6CXrAuFnUljMMWiSSeWDF+qSKVmUJIFHWW4s9RQofkF8/Bd6BZxIWQYxMKZm4S7
+ dKo+5COEVOhSyYthhxNMCWDxLDuPoiGUbWBu/+8dXBusBV5fgcZ2SeQYnIvBzMj8NJ2vDU2D
+ m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
+ IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
+ VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
+In-Reply-To: <87ikoposs6.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: mhej@vps-ovh.mhejs.net
 
-On Tue, Mar 04, 2025 at 03:29:42PM +0100, Christian König wrote:
-> Am 26.02.25 um 14:38 schrieb Jason Gunthorpe:
-> > On Wed, Feb 26, 2025 at 07:55:07AM +0000, Kasireddy, Vivek wrote:
-> >
-> >>> Is there any update or ETA for the v3? Are there any ways we can help?
-> >> I believe Leon's series is very close to getting merged. Once it
-> >> lands, this series can be revived.
-> > The recent drama has made what happens next unclear.
-> >
-> > I would like it if interested parties could contribute reviews to
-> > Leon's v7 series to help it along.
+On 4.03.2025 13:59, Vitaly Kuznetsov wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> I think demonstrating how any new interface would work with the existing importers/exporters would help.
+>> FYI, QEMU's Hyper-V emulation of HV_X64_MSR_EOM has been broken since QEMU commit
+>> c82d9d43ed ("KVM: Kick resamplefd for split kernel irqchip"), as nothing in KVM
+>> will forward the EOM notification to userspace.  I have no idea if anything in
+>> QEMU besides hyperv_testdev.c cares.
+> 
+> The only VMBus device in QEMU besides the testdev seems to be Hyper-V
+> ballooning driver, Cc: Maciej to check whether it's a real problem for
+> it or not.
 
-Unfortunately, it is huge waste of time given current situation where
-even basic building blocks are not merged yet [1].
+I just did a quick check on a hv-balloon Windows 2019 setup that I had on hand
+and it seems to work with "kernel-irqchip=split" the same correct way as without
+this option (which AFAIK is kernel-irqchip=on for q35 machine type).
 
-We do see clear path to fix dmabuf, see this roadmap [2].
+So at least this Windows version and its VMBus client driver seem to not be
+affected by this issue.
 
-[1] https://lore.kernel.org/all/20250302085717.GO53094@unreal/
-[2] https://lore.kernel.org/linux-rdma/20250122071600.GC10702@unreal/T/#u
+Will try to look at this deeper in coming time as I am fairly busy right now
+with QEMU live migration stuff before the code freeze soon.
 
-Thanks
+Thanks,
+Maciej
+
