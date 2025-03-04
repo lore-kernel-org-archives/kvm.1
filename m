@@ -1,89 +1,215 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75981FCCF7
-	for <kvm@vger.kernel.org>; Tue,  4 Mar 2025 09:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B951FC7F6
+	for <kvm@vger.kernel.org>; Tue,  4 Mar 2025 09:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741078857; cv=none; b=Dl6vu9GMSn4fn33wB3HaIXBpt2DaKct+vWASuoV+8WNWx+5/mSj05BiaKPWKgRtmXoHHZsF0abvVxZIRIJkg4u6lh9lE0nyU6PV2Y295Xyez6AFQfwEjDsf9oBlgZ5tAti5euTTvjHfDC7I2xNE2jBsY9QQPbR3lTKrEs4rV9v0=
+	t=1741079562; cv=none; b=U1ypvh0MTewT61Xnw1gcM+Hb7OwmCpMyVWYqCrtn5RCfGKmnUVC5IEsR0r/2Pxenvg9s9YYNENmAIUQ47tqXH8ZcqiDhnFF1s4AyDNXSTvbGvW5oNY132U3KAGMZsG7TGfqSfBBFvOi91E7qiyzeoiA9S5BCpubD5gLxihCiAkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741078857; c=relaxed/simple;
-	bh=vWrPEir3bzFlK5oiXQXK/zk+1pANQ7B4tAkQ8xb5AQE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YAMrMD+F/iLi7sfu9vJgl3OIXEB67/O0BkxP7OJIbvgRYmyb69wIUZIeS/G+YKLo+VA7D4+//rD5lIJU0VnHmNf2zlvswDSY5pBGy7EJ+HVv0f0fr3LgC/d7iIpm2qQKwT922xZcLEbJivcfEtOt6uaOro3a5zZotiS1KX8G970=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PysToXcS; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741079562; c=relaxed/simple;
+	bh=XPRBYEJ9HrMmBJW36quaoU86TLjoYLweTXE4Fm9vuwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L9teFWTl5In4KEi/q4wSc2nqeQT6xZ2VHYi+f34/TUax+y3d3496KdM8DsovGT3AsHOZl5l57t/311mbaJOnmeOnw0IbJn26z01SxkUlkXF1UBMn/ejF1d5ji4bVMlZttpYK50qAMRnRQB4NxfRh8Z7PWAR10WK9WluRG9PPMoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sQPkZud9; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PysToXcS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741078856; x=1772614856;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vWrPEir3bzFlK5oiXQXK/zk+1pANQ7B4tAkQ8xb5AQE=;
-  b=PysToXcSdDpqp34sNJAjNb0JqS4jd0o90wZFGaM7gf/0tNAJ6ybHKXwU
-   3uL1nzvvYeZnJhDW+qIwFbLJ+O36l+sCEIgXQgHmLVQlJjRHGIKLreRdq
-   Mlpp9yDnhOCnyamte2T/ICxAPDcviwdZ6avTSCZ0+rZeXkigYuYbaUDxl
-   xNb9iYulmxMovgZXXHgKggtkpbG6kl0FswIb7RX2fQ81AKLFR7fGsDeMP
-   BjCDXvV8H2/KtC43tpK9RvrhAES/fkftfPN3p2fRh/xSIafg8k0IDhECv
-   YaKLf5oBT4fWKC5eZysTYiKjgSZMBNH7kWWpSL0MDAwrPC/NnGRb2sqbf
-   Q==;
-X-CSE-ConnectionGUID: 1BgAK7GdQTmxGaXQ+8mayg==
-X-CSE-MsgGUID: OiQgshzbQ5Km/VJjciUogQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="52631339"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="52631339"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 01:00:55 -0800
-X-CSE-ConnectionGUID: 7k+UiGlETw+SV8RoxTiVAg==
-X-CSE-MsgGUID: w67zPHe+QvuZAtrHUU8HQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="118999231"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
-  by fmviesa009.fm.intel.com with ESMTP; 04 Mar 2025 01:00:54 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org,
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 2/2] KVM: x86: Explicitly set eax and ebx to 0 when X86_FEATURE_PERFMON_V2 cannot be exposed to guest
-Date: Tue,  4 Mar 2025 03:23:14 -0500
-Message-Id: <20250304082314.472202-3-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250304082314.472202-1-xiaoyao.li@intel.com>
-References: <20250304082314.472202-1-xiaoyao.li@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sQPkZud9"
+Date: Tue, 4 Mar 2025 10:12:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1741079558;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yk65YCoknZT+htaDe9nqwacdmrTmjKV45m85/3fsFhE=;
+	b=sQPkZud9kSyo2eP4UHsTl0mo8Gijg6SRFTEvSNzOPWxVZ19igT2P901QlPfY1Uc1Xu/aAm
+	hmLNfw82SZlsDeYmKz/xB1QShkteULXP2sYggBN8gJfbIkYeaNr8A7a7Dv65HmgZ//hHTe
+	8TmwryZlyMbq+tdY/72ICKmL89aUX34=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	kvmarm@lists.linux.dev
+Cc: alexandru.elisei@arm.com, eric.auger@redhat.com, atishp@rivosinc.com, 
+	cleger@rivosinc.com, pbonzini@redhat.com, thuth@redhat.com, 
+	Andrew Jones <ajones@ventanamicro.com>
+Subject: Re: [kvm-unit-tests PATCH 1/2] configure: Allow earlycon for all
+ architectures
+Message-ID: <20250304-4e2ee456d30819f9a38239c8@orel>
+References: <20250221162753.126290-4-andrew.jones@linux.dev>
+ <20250221162753.126290-5-andrew.jones@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221162753.126290-5-andrew.jones@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-It wrongly exposes the host ebx value of leaf 0x80000022 to userspace
-when it's supposed to return 0.
+On Fri, Feb 21, 2025 at 05:27:55PM +0100, Andrew Jones wrote:
+> From: Andrew Jones <ajones@ventanamicro.com>
+> 
+> earlycon could be used by any architecture so check it outside the
+> arm block and apply it to riscv right away.
+> 
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
+>  configure | 88 +++++++++++++++++++++++++++----------------------------
+>  1 file changed, 43 insertions(+), 45 deletions(-)
+> 
+> diff --git a/configure b/configure
+> index 86cf1da36467..7e462aaf1190 100755
+> --- a/configure
+> +++ b/configure
+> @@ -78,10 +78,9 @@ usage() {
+>  	                           4k [default], 16k, 64k for arm64.
+>  	                           4k [default], 64k for ppc64.
+>  	    --earlycon=EARLYCON
+> -	                           Specify the UART name, type and address (optional, arm and
+> -	                           arm64 only). The specified address will overwrite the UART
+> -	                           address set by the --target option. EARLYCON can be one of
+> -	                           (case sensitive):
+> +				   Specify the UART name, type and address (optional).
+> +	                           The specified address will overwrite the UART address set by
+> +	                           the --target option. EARLYCON can be one of (case sensitive):
 
-Fixes: 94cdeebd8211 ("KVM: x86/cpuid: Add AMD CPUID ExtPerfMonAndDbg leaf 0x80000022")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- arch/x86/kvm/cpuid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll add
+                                   (arm/arm64 and riscv32/riscv64 only)
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index f9a9175e3fe8..5e4d4934c0d3 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1767,7 +1767,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
--			entry->eax = entry->ebx;
-+			entry->eax = entry->ebx = 0;
- 			break;
- 		}
- 
--- 
-2.34.1
+since no other architecture is paying attention to the parameter at this
+time.
 
+Thanks,
+drew
+
+>  	               uart[8250],mmio,ADDR
+>  	                           Specify an 8250 compatible UART at address ADDR. Supported
+>  	                           register stride is 8 bit only.
+> @@ -283,6 +282,41 @@ else
+>      fi
+>  fi
+>  
+> +if [ "$earlycon" ]; then
+> +    IFS=, read -r name type_addr addr <<<"$earlycon"
+> +    if [ "$name" != "uart" ] && [ "$name" != "uart8250" ] && [ "$name" != "pl011" ]; then
+> +        echo "unknown earlycon name: $name"
+> +        usage
+> +    fi
+> +
+> +    if [ "$name" = "pl011" ]; then
+> +        if [ -z "$addr" ]; then
+> +            addr=$type_addr
+> +        else
+> +            if [ "$type_addr" != "mmio32" ]; then
+> +                echo "unknown $name earlycon type: $type_addr"
+> +                usage
+> +            fi
+> +        fi
+> +    else
+> +        if [ "$type_addr" != "mmio" ]; then
+> +            echo "unknown $name earlycon type: $type_addr"
+> +            usage
+> +        fi
+> +    fi
+> +
+> +    if [ -z "$addr" ]; then
+> +        echo "missing $name earlycon address"
+> +        usage
+> +    fi
+> +    if [[ $addr =~ ^0(x|X)[0-9a-fA-F]+$ ]] || [[ $addr =~ ^[0-9]+$ ]]; then
+> +        uart_early_addr=$addr
+> +    else
+> +        echo "invalid $name earlycon address: $addr"
+> +        usage
+> +    fi
+> +fi
+> +
+>  [ -z "$processor" ] && processor="$arch"
+>  
+>  if [ "$processor" = "arm64" ]; then
+> @@ -296,51 +330,14 @@ if [ "$arch" = "i386" ] || [ "$arch" = "x86_64" ]; then
+>  elif [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
+>      testdir=arm
+>      if [ "$target" = "qemu" ]; then
+> -        arm_uart_early_addr=0x09000000
+> +        : "${uart_early_addr:=0x9000000}"
+>      elif [ "$target" = "kvmtool" ]; then
+> -        arm_uart_early_addr=0x1000000
+> +        : "${uart_early_addr:=0x1000000}"
+>          errata_force=1
+>      else
+>          echo "--target must be one of 'qemu' or 'kvmtool'!"
+>          usage
+>      fi
+> -
+> -    if [ "$earlycon" ]; then
+> -        IFS=, read -r name type_addr addr <<<"$earlycon"
+> -        if [ "$name" != "uart" ] && [ "$name" != "uart8250" ] &&
+> -                [ "$name" != "pl011" ]; then
+> -            echo "unknown earlycon name: $name"
+> -            usage
+> -        fi
+> -
+> -        if [ "$name" = "pl011" ]; then
+> -            if [ -z "$addr" ]; then
+> -                addr=$type_addr
+> -            else
+> -                if [ "$type_addr" != "mmio32" ]; then
+> -                    echo "unknown $name earlycon type: $type_addr"
+> -                    usage
+> -                fi
+> -            fi
+> -        else
+> -            if [ "$type_addr" != "mmio" ]; then
+> -                echo "unknown $name earlycon type: $type_addr"
+> -                usage
+> -            fi
+> -        fi
+> -
+> -        if [ -z "$addr" ]; then
+> -            echo "missing $name earlycon address"
+> -            usage
+> -        fi
+> -        if [[ $addr =~ ^0(x|X)[0-9a-fA-F]+$ ]] ||
+> -                [[ $addr =~ ^[0-9]+$ ]]; then
+> -            arm_uart_early_addr=$addr
+> -        else
+> -            echo "invalid $name earlycon address: $addr"
+> -            usage
+> -        fi
+> -    fi
+>  elif [ "$arch" = "ppc64" ]; then
+>      testdir=powerpc
+>      firmware="$testdir/boot_rom.bin"
+> @@ -351,6 +348,7 @@ elif [ "$arch" = "ppc64" ]; then
+>  elif [ "$arch" = "riscv32" ] || [ "$arch" = "riscv64" ]; then
+>      testdir=riscv
+>      arch_libdir=riscv
+> +    : "${uart_early_addr:=0x10000000}"
+>  elif [ "$arch" = "s390x" ]; then
+>      testdir=s390x
+>  else
+> @@ -491,7 +489,7 @@ EOF
+>  if [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
+>  cat <<EOF >> lib/config.h
+>  
+> -#define CONFIG_UART_EARLY_BASE ${arm_uart_early_addr}
+> +#define CONFIG_UART_EARLY_BASE ${uart_early_addr}
+>  #define CONFIG_ERRATA_FORCE ${errata_force}
+>  
+>  EOF
+> @@ -506,7 +504,7 @@ EOF
+>  elif [ "$arch" = "riscv32" ] || [ "$arch" = "riscv64" ]; then
+>  cat <<EOF >> lib/config.h
+>  
+> -#define CONFIG_UART_EARLY_BASE 0x10000000
+> +#define CONFIG_UART_EARLY_BASE ${uart_early_addr}
+>  
+>  EOF
+>  fi
+> -- 
+> 2.48.1
+> 
