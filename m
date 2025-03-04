@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B451F4734
-	for <kvm@vger.kernel.org>; Tue,  4 Mar 2025 06:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860ED1F4E49
+	for <kvm@vger.kernel.org>; Tue,  4 Mar 2025 06:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069453; cv=none; b=phUeD/SeDIDp9Xl43HQIUEzJJC/cXiYQY1/ImdGR3piOxZsqe4452rETHC6E9yGSyCmhX7pUkDhiu5o6Erj/duGsN/s5uiI4SPCGkVv+czLmJwPfGrPJUchgfbRxULXfnDqLvFP73s3vZwyQeqdPDa3tE4CgfyAN0UdmwBwCuJI=
+	t=1741069692; cv=none; b=m0ERVdsuemgRAIA53RjX78HtknaqkMtyHVCQZkFTNhFBjosJw3VJOwxxqwUeFGJKCMpu5llBE3z9GLXTX8cGoY9V/aM+jAQGLI+x2rYGKlyU4hqYoViCg3Gwb9HvzqE5z1axhhDWH/qSdMFqcmI9qEeQxTZLQh6DYeAAN0se8cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069453; c=relaxed/simple;
-	bh=0EYT/5igMmD/qVvWdRKvGmdh6E8JzSaWldlA7WO1ROk=;
+	s=arc-20240116; t=1741069692; c=relaxed/simple;
+	bh=sANxphPEpJhSoJRv2v+wz0k0ncvT/idn6pMCGmv7Dyg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TO+/1zdbTmwfA3hwKKKPZ+yLtydRzEVMWGMctZR9YHBELjc76enO/DO1D1+MSQdAfJxvQa5dsACJsWzLMAxF2M4sMlYxrO9fy/Q2gHI7JCh6YDXN3A4gC38FtSTVgmAJG4p7wmyyilBW08laT8QHFjE7pBLv1IHpTGHq++qjMsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M2uVnHFT; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=PAExK9GEGkLime8DL3fgqUvz5VeAHWd+6DY3H0oCWJDToZ62UGnJ4gCtpzERG6vv+76KoRsJMkNf4iFIrcvm4J+FaRCaqjz7tb9VEtZvpttTWZ3wMd5P2YNMXpUvrc9QH737sEi1pwL3Unh300Uzgx85KJ/mP++B7ZxoUErJdn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KkgPXfci; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M2uVnHFT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KkgPXfci"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741069448;
+	s=mimecast20190719; t=1741069689;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UUEeo/X+MxYcAZNwznFspnaWG5EWN4eG0J5QKgSy/vw=;
-	b=M2uVnHFTvF1aXR97Yaqm02RV14jXxWlvZYFUbVL8kZRTzSvAKRHDEu0pmlz402lt8kbbJB
-	Qkyn4kF0tKU4+9eelQw72nYE7X6hTkpQyMf9/hkILdnuDO90T8DjtY9EsOQjLAZ+8qwf5w
-	c/KQiEgvRo0AX3qdSKh9X7cfaQHhv+I=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iAefvd9tbj7LNYMHtdDRot9Yl7dRO2WNDbwoA2ZpIZQ=;
+	b=KkgPXfcit6DXjysEa72fQwOscSGvZHewWFl7gK0oHZ+JvjeXoxoRdorI6vMJ1Vgdz7nju1
+	SM6R+jdptkqWh0I86MpB2rcG314p2TgAhBvlCwADAvrzti9cKafOwuLaGQ6qxErYbsbPde
+	sSg+2Du5xWak3v7gCY7AjTL+gEoOsyQ=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-84DDaKFlPnK8P_CrpZXxCQ-1; Tue, 04 Mar 2025 01:24:02 -0500
-X-MC-Unique: 84DDaKFlPnK8P_CrpZXxCQ-1
-X-Mimecast-MFC-AGG-ID: 84DDaKFlPnK8P_CrpZXxCQ_1741069442
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2235a1f8aadso81096385ad.2
-        for <kvm@vger.kernel.org>; Mon, 03 Mar 2025 22:24:02 -0800 (PST)
+ us-mta-127-e5oC8DimOruHjHsA9K8esw-1; Tue, 04 Mar 2025 01:27:58 -0500
+X-MC-Unique: e5oC8DimOruHjHsA9K8esw-1
+X-Mimecast-MFC-AGG-ID: e5oC8DimOruHjHsA9K8esw_1741069678
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2233b764fc8so94755115ad.3
+        for <kvm@vger.kernel.org>; Mon, 03 Mar 2025 22:27:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741069441; x=1741674241;
+        d=1e100.net; s=20230601; t=1741069677; x=1741674477;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UUEeo/X+MxYcAZNwznFspnaWG5EWN4eG0J5QKgSy/vw=;
-        b=JFnOw5KVuXfDk7MD3Iv+nRWYdMZhXHjLVpC/d6qrXwulMmCpWVcZcULaC+/iyse2qV
-         GX8BF3Aarr0No/2S8WILSYUo0FAIgSd+GajjlSK1YfgkQ1IQOUfuqrk+VfDebtn4GBbo
-         vNZEEZp8Zfn0T5y12erWJXGdn+TeIV/C41ezvb3uOOs0ZKS9KLrsJ4ZmZWCgo9PNXpz2
-         /93pOKacBTb622mrVZUrsmRpAUR5VLoqnyMsL8u1KBoOxnpZlYiPO46cEH/pzXBpMbxm
-         i2V3kq2qWbxt03fW9xbPCfaFq66bkMvlWokCQgF5akfVoOoaDtjvmzZ8r36tHboRlD2I
-         irrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW24qu76B9fpRPttyUDe1rgUFXazLEECFKbyAiCnEtMDnj5R3tH/a7vHV5deuSdCGq7woo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDHxDY8mvhri6s1UCimSw8B+KPXgoMnatsNEfPNRwdqqI2P6rv
-	GPjypZa13vt3Z6A6y5CrglnHOs7f3jziGtCxB3LdLAQ1k0NjiIRzx7TG9yhHmgauqbp1odvVYfp
-	ZmTNEMzsOGyvnHn+GI1E2KiVFQjOx7TrxCMfjdDedXlxF1m++QY+PM+tNxQ==
-X-Gm-Gg: ASbGncslbvG/BDa6/Q6XqAzt1oPweMPK+6V5cco3+Dj9gDk2A6uvuXRrimKgTZMMs0P
-	UQXSeate0dq0RIA+VEoGtRedPh/VgAsbKq0edvz0j/rjSak8LiVB7Oq7mHRbepdGAuFVfuK0mvA
-	3A6YPslp8RgKAVjpRVh1GB8bYZkK163PnE5/qRQ+R/NT/AkvgpqsVoKsxKp35galLrkD/NgfCUW
-	k0UdkkUz9z1nSAvVA1U1yKJmY/guifX2rbrqwqMvMJA+/gg8XwOf0HPfbNbYn3O2MXE8/Dz0Kvv
-	m6z1J3RqUp5YFyI4Kg==
-X-Received: by 2002:a17:902:ec92:b0:21f:6ce6:7243 with SMTP id d9443c01a7336-2236922454fmr215973775ad.51.1741069441084;
-        Mon, 03 Mar 2025 22:24:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGeWcLcszVzswCV3IlHec2C4u9Iv8biEcHW4AvArM9d+exFu3qcTvk3+Js7kBLoNIjChH7Sog==
-X-Received: by 2002:a17:902:ec92:b0:21f:6ce6:7243 with SMTP id d9443c01a7336-2236922454fmr215973585ad.51.1741069440784;
-        Mon, 03 Mar 2025 22:24:00 -0800 (PST)
+        bh=iAefvd9tbj7LNYMHtdDRot9Yl7dRO2WNDbwoA2ZpIZQ=;
+        b=I25IuVgkuAkHtu/qY25LEMKTzwZ31J5vn2ZhzXCFzFuaBhUPseGwmSplDwgIofNHfC
+         pb3o1G4pE7kohGccO5gPWJZIS6dTQvuFs95+AgHDUx3eJloTzXBbUW6P7X0lnuBt8gU3
+         cb8O3oKelxoQRWh0JTt2zhHFAL2ncAxDJ4yJ21GiCfy2LBacsCyA/Wlpn9u/qQtAr2IG
+         dnauQLXfN6wIvqBwxzBdFhFPjJkRDUoc+acr6C31CIcQ6SV3avnUGooXfFyvT9905UqH
+         Ep3bD/yCdGVmp+WBiIQHUWqzUUFZWtU4s0d1YrTHNi7PIa8Hzl15KgmBCh3zyxMXn7X2
+         fbUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjg9HqHzj9DOUjRZz38yBd9Kjwn/jCB4yvVL0R3Z4dkj2lPxwXiX30G12W8kWrZnk5Ds0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSYn5VLelpJ94HdUjkq+Suks6D2Oc6DzyAU2bX/wn1uPIKsoAB
+	XJT780lGdEI9xQY6p1EOVi9Sv1attSf566xs0Oq5R+VzaWQIa+xJttZPllP8cRa5R6UKLMBjinP
+	3e1cwhUL7C5fEqJoEnORakYs63FfETNxG5XNUCxOoR6Ie5f4DYw==
+X-Gm-Gg: ASbGnctgXup9i4O4MEJoa9Jv2tv60mrajCsczi6d7rMfhC3Jov3WNKpNHIKK/BOvEnQ
+	8uUAGUC//7F5eVyvD7OnQ+Hv1fjdTbR8V/ghRNmreFBCEdOA6WYNynZEwS8Q4PWcKqsKC0SCUEV
+	iTYUlmRrC5cEyzyRYfcV+WISExOrNlDJ+VxpA56hwSt3MplMMB+f3RgC/VnvPUEaX7BPCHOq8mR
+	ecg3B+9/USDLF0duR13TVWum+ZlBqYjzPMwt0f8zvfO/ChtIijnCY6/kksaOMRA9F69/HQySev4
+	vIYdhWZSXmvisGZ9Jw==
+X-Received: by 2002:a05:6a00:230c:b0:736:7270:4d18 with SMTP id d2e1a72fcca58-73672704d81mr1945039b3a.14.1741069677577;
+        Mon, 03 Mar 2025 22:27:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGMjQLRj3AUSUbMsClYXUXqxqJWhk5KrbeXBQgXSoViyrHJ8djjcdkYHY0nBVtVH5e57rXWYg==
+X-Received: by 2002:a05:6a00:230c:b0:736:7270:4d18 with SMTP id d2e1a72fcca58-73672704d81mr1945005b3a.14.1741069677191;
+        Mon, 03 Mar 2025 22:27:57 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501d323bsm87972535ad.3.2025.03.03.22.23.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7363986010asm5850843b3a.52.2025.03.03.22.27.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 22:24:00 -0800 (PST)
-Message-ID: <9d32bfed-31f2-49ad-ae43-87e60957ad74@redhat.com>
-Date: Tue, 4 Mar 2025 16:23:52 +1000
+        Mon, 03 Mar 2025 22:27:56 -0800 (PST)
+Message-ID: <780f593c-81cd-495c-8ca6-38ecd64ddb35@redhat.com>
+Date: Tue, 4 Mar 2025 16:27:48 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 30/45] arm64: RME: Always use 4k pages for realms
+Subject: Re: [PATCH v7 31/45] arm64: rme: Prevent Device mappings for Realms
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -89,69 +89,29 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-31-steven.price@arm.com>
+ <20250213161426.102987-32-steven.price@arm.com>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-31-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-32-steven.price@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/14/25 2:14 AM, Steven Price wrote:
-> Always split up huge pages to avoid problems managing huge pages. There
-> are two issues currently:
-> 
-> 1. The uABI for the VMM allows populating memory on 4k boundaries even
->     if the underlying allocator (e.g. hugetlbfs) is using a larger page
->     size. Using a memfd for private allocations will push this issue onto
->     the VMM as it will need to respect the granularity of the allocator.
-> 
-> 2. The guest is able to request arbitrary ranges to be remapped as
->     shared. Again with a memfd approach it will be up to the VMM to deal
->     with the complexity and either overmap (need the huge mapping and add
->     an additional 'overlapping' shared mapping) or reject the request as
->     invalid due to the use of a huge page allocator.
-> 
-> For now just break everything down to 4k pages in the RMM controlled
-> stage 2.
+> Physical device assignment is not yet supported by the RMM, so it
+> doesn't make much sense to allow device mappings within the realm.
+> Prevent them when the guest is a realm.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/kvm/mmu.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> Changes from v6:
+>   * Fix the check in user_mem_abort() to prevent all pages that are not
+>     guest_memfd() from being mapped into the protected half of the IPA.
+> Changes from v5:
+>   * Also prevent accesses in user_mem_abort()
+> ---
+>   arch/arm64/kvm/mmu.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
 > 
 
-The change log looks confusing to me. Currently, there are 3 classes of stage2 faults,
-handled by their corresponding handlers like below.
-
-stage2 fault in the private space: private_memslot_fault()
-stage2 fault in the MMIO space:    io_mem_abort()
-stage2 fault in the shared space:  user_mem_abort()
-
-Only the stage2 fault in the private space needs to allocate a 4KB page from guest-memfd.
-This patch is changing user_mem_abort(), which is all about the stage2 fault in the shared
-space, where a guest-memfd isn't involved. The only intersection between the private/shared
-space is the stage2 page table. I'm guessing we want to have enforced 4KB page is due to
-the shared stage2 page table by the private/shared space, or I'm wrong.
-
-What I'm understanding from the change log: it's something to be improved in future due to
-only 4KB pages can be supported by guest-memfd. Please correct me if I'm wrong.
-
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 994e71cfb358..8c656a0ef4e9 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1641,6 +1641,10 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->   	if (logging_active || is_protected_kvm_enabled()) {
->   		force_pte = true;
->   		vma_shift = PAGE_SHIFT;
-> +	} else if (vcpu_is_rec(vcpu)) {
-> +		// Force PTE level mappings for realms
-> +		force_pte = true;
-> +		vma_shift = PAGE_SHIFT;
->   	} else {
->   		vma_shift = get_vma_page_shift(vma, hva);
->   	}
-
-Thanks,
-Gavin
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
