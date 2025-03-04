@@ -1,91 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618461EEA54;
-	Tue,  4 Mar 2025 08:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C312C1FDE15
+	for <kvm@vger.kernel.org>; Tue,  4 Mar 2025 08:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741077939; cv=none; b=pHcWdunxuFNagTFYsBp7fFw6OWVfjwdebfrryMWiK3I0WxqUKtiiIAJXqNNxhkB97P5Ig3ymkbdAXOJ44etiZTBQ5CpZJWkPDP4VY/Ednu+H8E8e3gvA8hiuvbTsOqDF982M5Zze2XMtWq/rAlFct3unzqi0bQiSZWVbz6YrZKQ=
+	t=1741078700; cv=none; b=KuFHoj2tiIAbEl6tSdE5nZdwlcj+AHPAwBG4FkfA2IWO79R2r2M4F1NXRR8IBggxP2ukX8SmHHGKO3D9QM3fuRQYZAWa+8IZNHFHbj9DSMVfClqpwXeE5dBzQbR6/4fQ5lUX81M2R+1tLa4wEzs78y9uTODB1sOcPaaFFIZFCEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741077939; c=relaxed/simple;
-	bh=/ZT66LxzZws3uPtWH3EfG34DGIlMuHvvJHT8oAY0/8Q=;
+	s=arc-20240116; t=1741078700; c=relaxed/simple;
+	bh=+xt0a9MOKxcngTL6D0NlkBxMF5DrrijsvR0wGk0H/sc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NekdGLwZQP40jLfngOtCqDfYkbIMmOsDPDZTFPPTOFgwiVeeZ46RFHIuJ0CoExxrWSKpJUoKkycPxQGB0pwjljwZ+BGqvIo/1qfvndQRLVHwSu3G5/h84IQd/r3kqYLbujDuNlmDg8+GcDGcn3T9l8QsSwXqC2Dh6byMYuu2Sno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EKknB6l0; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=iJOe2SLtwcmT0JMciWFFd9DIdCfCAk8/sxeHK3TW0c/+ToEDIIRsYW9N5MjJkP04z1zmFOrIQQZCLZmIsxrNpfiPTxhGkFe2knoGSXdzZYV5NGhhRSzds7bwbYMiCClb46XBCXAd4YwM6Jvns/8j1bgnRfifEb1uoPWyn3HGkbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=IEIpI7Mr; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EKknB6l0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741077938; x=1772613938;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/ZT66LxzZws3uPtWH3EfG34DGIlMuHvvJHT8oAY0/8Q=;
-  b=EKknB6l0xWBaqnO3pQo6/GX/oSwRMshaUGptEhQvfM3S/GmE/zM2FJaD
-   AViRGcAWkGqBg2jsDOnE8MYrZnqGmQyQZ2AZkBSypWnHmEfM8WMhJuCOW
-   Z0iskTlOkt1NGW7kLbQhL7EhnEwCWIvVxBPY9uor1ga7NQ7zUALUMifXK
-   45gN4zyAVjqaWqs/9W25Xa7x1dAsECVcXPOmIBOHLzq0XFLryVGmOxAU5
-   XshZ3AFQXA/BKs42Ad3kPDJHRCUL8Bh+hSZ33jnhGHQgAG7Nvxoq62hhl
-   4X06jMyD8FSs2mqhLVPs2MPWnKG9yY0gp45HPdl23QbfpUvqhSBouVNH6
-   g==;
-X-CSE-ConnectionGUID: E4/cYfPHT9i3LvPnITskkg==
-X-CSE-MsgGUID: tFtYd8jRQmaxfMGZ+GPCqQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41162157"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="41162157"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 00:45:37 -0800
-X-CSE-ConnectionGUID: PxBCRQzWQ6e41xrrFlcfdQ==
-X-CSE-MsgGUID: DHG1xNFbTdu4nF5+xP9QmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="118042217"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa009.jf.intel.com with ESMTP; 04 Mar 2025 00:45:34 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 957D118F; Tue, 04 Mar 2025 10:45:32 +0200 (EET)
-Date: Tue, 4 Mar 2025 10:45:32 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
-	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, vannapurve@google.com, 
-	ackerleytng@google.com, mail@maciej.szmigiero.name, david@redhat.com, 
-	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
-	isaku.yamahata@gmail.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, 
-	quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com, 
-	yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, 
-	qperret@google.com, keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, 
-	hch@infradead.org, jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, 
-	fvdl@google.com, hughd@google.com, jthoughton@google.com, peterx@redhat.com
-Subject: Re: [PATCH v5 1/9] mm: Consolidate freeing of typed folios on final
- folio_put()
-Message-ID: <re7ecgfu4x4arh47tjojse33qvc2dt2qrjznemphdwphe2rmzh@2vbm6zto3plc>
-References: <20250303171013.3548775-1-tabba@google.com>
- <20250303171013.3548775-2-tabba@google.com>
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IEIpI7Mr"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43bbd711eedso18204095e9.3
+        for <kvm@vger.kernel.org>; Tue, 04 Mar 2025 00:58:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1741078697; x=1741683497; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+xt0a9MOKxcngTL6D0NlkBxMF5DrrijsvR0wGk0H/sc=;
+        b=IEIpI7Mrji3V5JToFgifBnmPzuPqpxdbGvSG9pgENAij336vUAkJffHrNwUihyARcL
+         0v1PXvSnhe0o1yIziQIpnZKt30TE3D7RJoIgwLK2Z6RUELd6JTt2WWS54GmnIZcE1GUs
+         czZ9fqN1WNmC/KP4yCHQLUuPqdOMofUI+weTDMvATao3TkqiK4XIqq0QEDW98V47lN4+
+         LRNICUzQmM0r/H2cq4USqOTrLdeN5Tp0lox5l7vI5YQvnGJNd2hMw9truppO1QWOXBZ4
+         kVDeb0aRqFUGAKZlMINb3D6kbPTo5b94oiBjGcrLDwJc7yWGzG+F9f7jwmD99kidVLqF
+         CqTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741078697; x=1741683497;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+xt0a9MOKxcngTL6D0NlkBxMF5DrrijsvR0wGk0H/sc=;
+        b=bEDh4j09xWvP94uL1uTRtyFJUaW6FOGG0Ex9cQP2rGkO8D6wXMaJ7J9Ni38uMGEz00
+         wT26TPLy5sPB5MK4xDvhUamBzHNNTKIfE51VIALj3LgBmNISHctY4LVvvroCN/OcjnJP
+         BUg7YyaJfhTpN7xKy4Icev1jpyGusBC72pDUQQahybbFdn7HqfOQHlP5TBboQLGcUoV1
+         rWefMqyMipQ13NFiRS15QfNJUq7cvyqOQTqTOWX82HcvMqOGv9uuhkmgVAfjznFrpdWc
+         vhBjtyCBulEa0tI19UFG9cREVeF8wO3H0tA+AuIw9Hk8KxD0jDgaAY4pAwt+97v5DD8L
+         R6dA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAllPuYa3KBsDtJxrtKFpABKVN1hxenHjMjA+g9Hoz8046EJObfiS5z1VZmUb9977cG/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWEzQ4LzGuCgbGONHL+NDrxI+piuB2IOsO5UQf78KYuv+H+hoo
+	olL0c2FF1+9zB/upJ7RJTj+Tbqtt5nhDVsUOQjVQoHfhaG0qT9uEBEELh0VsKbs=
+X-Gm-Gg: ASbGncsBpwaxAqf35dsHgfzn56le8jRbH+2KRgfM6FxKCmydDHNpU/YvIoYc2O67Chv
+	OYaOWLJ5LGD4P3cUeZKTPt5WJBoh7kd3B++DXTgLW/7I0MUw8dbNQBQ6/yJYSouH87PxtyG8kDk
+	2a/2BpxfTT+hgWdtbBXwPbGgBlQ2HAtDxUGDscSpbDqPhW7ULqEwoMoEHiFUluPbzvGxPQ5hMWM
+	ZVV9uUPt53bISVQqloQmTTa61tTHxPNhmoBdU4rMdpZxskrs/XJpn3mTs5sgdszTJib7Cl4TYGs
+	NCdBp+UGncZeWmayMwRR6+xJJUa/SJYj
+X-Google-Smtp-Source: AGHT+IH6MvxZS60faFjjSE/SOwTs7ArGKMS/DI+pAYNkmL1uwIQZP3dtDN6thfBALwaicYstcm9hQg==
+X-Received: by 2002:a05:600c:5111:b0:43b:ba52:bcaf with SMTP id 5b1f17b1804b1-43bba52c199mr77383595e9.5.1741078697098;
+        Tue, 04 Mar 2025 00:58:17 -0800 (PST)
+Received: from localhost ([2a02:8308:a00c:e200::688c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485e03asm17306599f8f.95.2025.03.04.00.58.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 00:58:16 -0800 (PST)
+Date: Tue, 4 Mar 2025 09:58:15 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Atish Kumar Patra <atishp@rivosinc.com>
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 4/4] KVM: riscv: selftests: Allow number of interrupts to
+ be configurable
+Message-ID: <20250304-5a85b3a246f14f60f61a45e0@orel>
+References: <20250226-kvm_pmu_improve-v1-0-74c058c2bf6d@rivosinc.com>
+ <20250226-kvm_pmu_improve-v1-4-74c058c2bf6d@rivosinc.com>
+ <20250227-f7b303813dab128b5060b0c3@orel>
+ <CAHBxVyGGw6Ur4Kdd8Vvwp6viKWPx64w7gNvNiUzmAGeXF2PGoA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250303171013.3548775-2-tabba@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHBxVyGGw6Ur4Kdd8Vvwp6viKWPx64w7gNvNiUzmAGeXF2PGoA@mail.gmail.com>
 
-On Mon, Mar 03, 2025 at 05:10:05PM +0000, Fuad Tabba wrote:
-> +static inline int page_get_type(const struct page *page)
-> +{
-> +	return page->page_type >> 24;
+On Mon, Mar 03, 2025 at 01:27:47PM -0800, Atish Kumar Patra wrote:
+> On Thu, Feb 27, 2025 at 12:16 AM Andrew Jones <ajones@ventanamicro.com> wrote:
+> >
+> > On Wed, Feb 26, 2025 at 12:25:06PM -0800, Atish Patra wrote:
+...
+> I will change the default value to 0 to avoid ambiguity for now.
+> Please let me know if you strongly think we should support -n 0.
+> We can always support it. I just don't see the point of specifying the
+> test with options to disable it anymore.
+>
 
-This magic number in page_type code asks for a #define.
+I don't mind not supporting '-n 0'.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+drew
