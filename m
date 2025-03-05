@@ -1,177 +1,224 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2048.outbound.protection.outlook.com [40.107.220.48])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8622066C8;
-	Wed,  5 Mar 2025 23:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741215777; cv=fail; b=en27+nFeez4PKZ+5lwKV2VMn+m8uvxMR3UrJB6Gx10nfXtltenLhDB61rAqPt/A32Hk6DROJALM8DCnF4hnz248VjoGSaFP5YYWWyoUjfgOgsY+nF7QyqNUFcIztQUWMEhsgoxVsOrn9b3T2cAhq5EhOj2Zy1sNCshFWuwWY7tA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741215777; c=relaxed/simple;
-	bh=qen85s0LwJUlM5XBA0ntJFYWNvR1Ym8iBLEMugdM78c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WJmcyuSLeLHD148l9BTm7z+tYU+xwMP2UC9weARczF/9SfbQ7vbSQhnQaKZR6NXXdOyzFMI4yEde/H46Gjb9lHGVv4Gam0lxGiFrfSIOA/bi+/Iivoe7+LBxSO2OqL1xmCur87VRkuZYSfGpT/h+nVb/gFMx76mLWUJQTN1JmHI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KHf+sAxf; arc=fail smtp.client-ip=40.107.220.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F973206F2C
+	for <kvm@vger.kernel.org>; Wed,  5 Mar 2025 23:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741217529; cv=none; b=N/kI597y33kufTLIi7LjMm3h9zR1W/UsnS432Uzn2SGEOkArEo0Q+edSl0AZCaJhBsOD0W3ajXG0bV/WN30z5f9VDVboDADXoiPk3S7YHUnGDJEul4DgCLVrpiw2Xs5rzC+/+RMt4WGGr1+k6wY3KALCd+UBiZHpYa7kUWcaELY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741217529; c=relaxed/simple;
+	bh=REQ/IfjD8heLKs2fU0174gHx+56fArKa2gF2nY/f/EM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Keyk0YWpeQh+myyNPoeqrq/Gxc2231SvkMiOWUP5RVi9FzLeZXkES85ogwtNpGajV1O3WwKWyHCROuBnDJ6LAudYOVqhiBvC7IWz8hmrhanAYcNeMTki5Z7iOn9u+AD0S/7MBA/Fe6AtHpLjf7iSqaEtFDSMB5nEhGu1vmHlDOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KwmRMPOZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KHf+sAxf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RMNpB00mTwSBN5CtgE13iXM7mfqi5VHoZ2KBpHlr2RY9LHuaxxdFWFSUUBHctCkf1j6cCO6j4+RnSn3YnNfnSCYs0I9Cv3Oo+gzEGu1t3KMsHnP6m30eWLGJ68X8jfR4O8KcMbSYG6BMisMF1I60v49PyAbWwSIIrbEK5JC+o+suYG4jOgam5i8DWcgBFidZBnIhnwv1aqz8YpdvBrYkWRY8DFN45HmZWH02S8ZWcqHHvLLiqpt42qIE0iEfYuPczH56b86yIWAIdvDOKFP8OuhPHa4eNHtHHFvNbsEJBRK493zNJzfeSC5Hw3kIQeLBICFNO4BXRSaZNC1J2+Z1dQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9baNceY/XMXT8QqzJ8sp90hyfzSXu0IJEsC0zfNT0pw=;
- b=b4CDIBJplt6KszvSjiH4Bdwuz/Z+lHuuroPpn6BkgfuIr+jUNeIN7vyHrVeIB/1qeH9Bh3bq3INZLtTJdEiHgpPO2+VviYdfWPj1B6n/HEhhiyUdSg1EB9A2PAlDxwT2TGmW2kckGj/6sW3X7v2tlcnUjTwumeA7ruvkWkriJYLriaL352TFNHPNOho3tSYAQQnPCFt9m1sLsmuEqWlxymKwywF5PrYvSnQ3yddxIrhUZvYjTo9DCmt5vMoPrRq9YDNCKaY5PKf/aplf9MKzP0VVAiK16ShBQKK2JGocSu7MUtkH5hRoq5R1upRbClRK8Ik11POqcVeWkUlbh6ekkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9baNceY/XMXT8QqzJ8sp90hyfzSXu0IJEsC0zfNT0pw=;
- b=KHf+sAxfA03IDyn2bS1grTswldCDRwabDQMvjOn3RmfdGfiCGyvTvA/5O+3GZtpijfgkjwZieTFmZ8IdFqCwAdq70yXoghXeP+eQUO5Vog6+sPxgE+u1EaoKJHHbc/M4TbnIhu8gdu7MKQSW8q6mue8ej6bVEE2mq+SQ/facsbk=
-Received: from BN8PR07CA0027.namprd07.prod.outlook.com (2603:10b6:408:ac::40)
- by PH0PR12MB5629.namprd12.prod.outlook.com (2603:10b6:510:141::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
- 2025 23:01:35 +0000
-Received: from MN1PEPF0000F0E4.namprd04.prod.outlook.com
- (2603:10b6:408:ac:cafe::fc) by BN8PR07CA0027.outlook.office365.com
- (2603:10b6:408:ac::40) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.29 via Frontend Transport; Wed,
- 5 Mar 2025 23:01:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000F0E4.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8511.15 via Frontend Transport; Wed, 5 Mar 2025 23:01:34 +0000
-Received: from zenon.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 5 Mar
- 2025 17:01:32 -0600
-From: "Pratik R. Sampat" <prsampat@amd.com>
-To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <thomas.lendacky@amd.com>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <shuah@kernel.org>, <pgonda@google.com>,
-	<ashish.kalra@amd.com>, <nikunj@amd.com>, <pankaj.gupta@amd.com>,
-	<michael.roth@amd.com>, <sraithal@amd.com>, <prsampat@amd.com>
-Subject: [PATCH v8 05/10] KVM: selftests: Replace assert() with TEST_ASSERT_EQ()
-Date: Wed, 5 Mar 2025 16:59:55 -0600
-Message-ID: <20250305230000.231025-6-prsampat@amd.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305230000.231025-1-prsampat@amd.com>
-References: <20250305230000.231025-1-prsampat@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KwmRMPOZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741217526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
+	b=KwmRMPOZTSuvqFnSV09SUs794M2/gNQh2iErXElkR64QshcykLT1IeuAgOd5Pt60BEEdgz
+	lZqMpIezXoGCF5Zyb3p6I7bnK/hcd9k118jsUoEuFqC3k0fwxXb7SQ75BUGuL46/FmcREP
+	03PaTge4VkwZI8rxQaCrPgtqZcV4/Bc=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113--Tm7EsBcNMW3khgHZfjVsw-1; Wed, 05 Mar 2025 18:31:54 -0500
+X-MC-Unique: -Tm7EsBcNMW3khgHZfjVsw-1
+X-Mimecast-MFC-AGG-ID: -Tm7EsBcNMW3khgHZfjVsw_1741217513
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2217a4bfcc7so222765ad.3
+        for <kvm@vger.kernel.org>; Wed, 05 Mar 2025 15:31:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741217513; x=1741822313;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
+        b=QQb4oEzfuPe8/0rCrSaYqCKkBT315u6FkabX1ZmRK3LjX5fVbGnkge907V+WJzscss
+         JyEArtp+SvWDQ5lillgjZL7wvcBfg92/1s1Q5krSu4IiRhC/6U3IQxOSHLEnEPJu2Xkq
+         Jt3WtVf+hrmMEQlZEarrbsui4QFGVISeix+lXidm0Qf/gGJLon5ChbETlOOoGqHrxtgV
+         kOn8TXgljukKABoTMwzpChXRfc+ps7tJgulu57DdfpLMYm+gtAC4IulmF3HSeBD/1XfV
+         9ki1QxQpdaSbljc2u+3oo8EKuvfs/8fqCuVgFU5ahSC1o/2Je3Q8cF5I5s0ty+aSm9VC
+         akEA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKKUCQXtSSvJfohWCFiztNDAzKgLZ8m9bpze5zBD6oTSWPSQHvAigyTeml2qlN172AYtE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymNFyQ0veP/uIqqyyaP1JTTeIpVmNFvwIIIYa4D6KgAsT7KKub
+	reywP1gv3FYcN8D/RoENB+bSbPZRSKvAplzNNH4byniGpFfPndw+JMhh67BQSGXmUZvfnnYkmxo
+	TWpEtdftBnv3ct4MRsWmZb9Nc4XiGogsux5ByV54aK4UZmiYvoA==
+X-Gm-Gg: ASbGnct7f5UwRQV/k3qXtQSXtI1vMtnc3tr+E3krVonWRe9Yn63t3n+wBfzosZ+BJZa
+	iUrWdxAIYL+cJ46Lwf1K8NBEZRcXft7Pxhpg3/8J91TUyJ2HY93kB4h/B2gqGYf/jNi5tlepHea
+	FDXyTqf8Ydo+WSQYhl68zrsHxHU8WPi7t0A3wi3EC70dskjjM81BPvPvKqmoM2sTP/bMLZzgsKK
+	0i1aCDCbc7Q3xWYFKTH7ONoA3u0DhcVsoKDEfxWSrX/9ftZEzt2FXdzzvkP9vpFfARJUh6g2IAJ
+	ew2otpjycxAS4f8=
+X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864415b3a.11.1741217512912;
+        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFr5llQOo8uwX2X7Rw/daISqoaMPhAadKna3dfRjuli6+dA3NfteMRLNkx9LXdBAsG0P/3xwA==
+X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864388b3a.11.1741217512567;
+        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00400a0sm13952388b3a.140.2025.03.05.15.31.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 15:31:51 -0800 (PST)
+Message-ID: <3190c4b0-4826-4d9b-9b12-8063acff57fa@redhat.com>
+Date: Thu, 6 Mar 2025 09:31:43 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E4:EE_|PH0PR12MB5629:EE_
-X-MS-Office365-Filtering-Correlation-Id: 641d654a-2d02-4197-fcd5-08dd5c39ad6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?L7trnC3YWnlSBiYeyjdYz8vi8Keb3vIh54005a/tzJAhhJqEj+EcWDqdoaLw?=
- =?us-ascii?Q?Tqj5UjXyoZusJDNtfurTKhQy+/S2PhQ9arn8i92CyeDwV82b58wpfgJEgi82?=
- =?us-ascii?Q?e0Jn5xUROKj43UU8miUKxsAUqF4rZQEmHlCjA61j06H6nNnvI7nL6MIv1egU?=
- =?us-ascii?Q?tXc0Dn+Y5YcGmwCnnQntr2yeb/pMr7+HTRYTTn+izlk3w2dZWVotzyWGUaw/?=
- =?us-ascii?Q?if5SD1FktVy27Pe29bvbC76mDFkdR6HWt7LWHpQUX9TOBoep9XlLb9a/XvDb?=
- =?us-ascii?Q?xxyJ8sfP1bT7baODoQNBB6xS2KhcSYaSBuXzSRQtRChoRdK0xto8rdQQ8HOD?=
- =?us-ascii?Q?QZnid8s+Fa5K/jLfAhva/R06z56ix/JoAXQ3o3GJf4f2PSimXZV3flUjG+kq?=
- =?us-ascii?Q?CHvfl7xOpioMdjjDfJ4qWZqFXJMluN70ls58FnHz3+mr7A4B6hm7YHHL38rE?=
- =?us-ascii?Q?5j25HaXeJXb3WwwBpcE/ka1SOd1wfFwVrxgeR/8/RLt2eYqh+elyEuCSmaUF?=
- =?us-ascii?Q?aUBirCPBzgGLHRoku7fadga7gWT73/WcPQhXlm91diBXJsGf2p2tFacF2qqO?=
- =?us-ascii?Q?XO9+axLR4O19AU7zW53OvifrFj2XPw8GAZ5JyY36B3Zawdpy6RpZaVKL+VKq?=
- =?us-ascii?Q?Sh/aGSmaZCd1DeQBYs+HMAWdC2gqR3S4rC1h7PgeUdyT3dOnYOzFMjCJHLhe?=
- =?us-ascii?Q?gVF2QE+i+WYnIiEq+Kfbvr72+ogkjGo8DcsJWoPtwrSLjI/C4EOhRHqfMhEn?=
- =?us-ascii?Q?AqlO+clXVhRw5Xvwi9nbWbyYky8ZDd5Sy0ek050E1J6PR42i55SPpJvxamyE?=
- =?us-ascii?Q?wOQX4INIEYSzqwaej/hxF9gKYAcqU0NaTyfOLerV6IdchX+dr+Tb1QogChih?=
- =?us-ascii?Q?sSmLgwvTSjqs/8Ev9oQkRckveb6qpuPln6MO++FlnL7jhy/YkLCAnF4e6SLp?=
- =?us-ascii?Q?fv3sfW1qXIzuAd7wEpFC2GJzR0knvky49uf3JMqNY2zsw0d/iM2sNGWVI/TX?=
- =?us-ascii?Q?RwXwEeMjmBKjPOoh09T7ynG1bN1crIFHIiZluVO1eAQqBWZuM7oHHrJC9ykF?=
- =?us-ascii?Q?qUxD6WjkWTHW22XT8N16OeK4eb+L+KzboKS/o7R2reRcWkyIBUIpNpajDyQB?=
- =?us-ascii?Q?crg4M+K/+zBKoXQwLczIuUw7HSWgWwJuiRdsqH4vWkUQygsaOiblbSXRHrxP?=
- =?us-ascii?Q?ZSCMUJgifbcfsPWNcSGRlm/9YXRAwASXKM/kXIUB4xOUBfh9FbnW6E+LDOQ5?=
- =?us-ascii?Q?WLe6u4MgF6Aj3P2FWquXdQNTAv6ArvekMAvgm2IpHhvOuHwf0LTbho/C8Gde?=
- =?us-ascii?Q?BZs+yQ05ANrc9amXJWukOmrJDbJNQ0ZhS36kY0ZpM22zlwYBwJhA/Eq3rdN5?=
- =?us-ascii?Q?pnto8A2SWlKHBD+DUBXt1CJ4SSSKZWwXdhSDhBTdxzuYZZ87opRgiJoMmiaX?=
- =?us-ascii?Q?n1WPGUCgRPtoDV+yBw73g56KRIRH5ITzX4nFfdfI/OQnf7U9qoWjfg6vJUg0?=
- =?us-ascii?Q?W+PzxOUFUXpfYLE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 23:01:34.8501
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 641d654a-2d02-4197-fcd5-08dd5c39ad6c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E4.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5629
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
+ Realm
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+ <20250213161426.102987-10-steven.price@arm.com>
+ <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
+ <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-For SEV tests, assert() failures on VM type or fd do not provide
-sufficient error reporting. Replace assert() with TEST_ASSERT_EQ() to
-obtain more detailed information on the assertion condition failure,
-including the call stack.
+Hi Steven,
 
-Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
----
- tools/testing/selftests/kvm/lib/x86/sev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 3/6/25 2:25 AM, Steven Price wrote:
+> On 03/03/2025 04:48, Gavin Shan wrote:
+>> On 2/14/25 2:13 AM, Steven Price wrote:
+>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> Expose VM specific Debug HW register numbers.
+> 
+> Looking at this now, this patch description is garbage. Probably the
+> patch has changed over time - so I suspect it's my fault not Suzuki's.
+> We're not exposing anything new here. This is purely about telling the
+> VMM that a realm cannot (currently) be debugged. Something like the
+> below would be more accurate:
+> 
+> """
+> kvm: arm64: Don't expose debug capabilities for realm guests
+> 
+> RMM v1.0 provides no mechanism for the host to perform debug operations
+> on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
+> breakpoints and 0 watch points.
+> """
+> 
 
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
-index e9535ee20b7f..60d7a03dc1c2 100644
---- a/tools/testing/selftests/kvm/lib/x86/sev.c
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c
-@@ -37,12 +37,12 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
- void sev_vm_init(struct kvm_vm *vm)
- {
- 	if (vm->type == KVM_X86_DEFAULT_VM) {
--		assert(vm->arch.sev_fd == -1);
-+		TEST_ASSERT_EQ(vm->arch.sev_fd, -1);
- 		vm->arch.sev_fd = open_sev_dev_path_or_exit();
- 		vm_sev_ioctl(vm, KVM_SEV_INIT, NULL);
- 	} else {
- 		struct kvm_sev_init init = { 0 };
--		assert(vm->type == KVM_X86_SEV_VM);
-+		TEST_ASSERT_EQ(vm->type, KVM_X86_SEV_VM);
- 		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
- 	}
- }
-@@ -50,12 +50,12 @@ void sev_vm_init(struct kvm_vm *vm)
- void sev_es_vm_init(struct kvm_vm *vm)
- {
- 	if (vm->type == KVM_X86_DEFAULT_VM) {
--		assert(vm->arch.sev_fd == -1);
-+		TEST_ASSERT_EQ(vm->arch.sev_fd, -1);
- 		vm->arch.sev_fd = open_sev_dev_path_or_exit();
- 		vm_sev_ioctl(vm, KVM_SEV_ES_INIT, NULL);
- 	} else {
- 		struct kvm_sev_init init = { 0 };
--		assert(vm->type == KVM_X86_SEV_ES_VM);
-+		TEST_ASSERT_EQ(vm->type, KVM_X86_SEV_ES_VM);
- 		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
- 	}
- }
--- 
-2.43.0
+Yes, the improved change log looks good to me.
+
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>>    arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
+>>>    1 file changed, 21 insertions(+), 3 deletions(-)
+>>>
+>>
+>> Documentation/virt/kvm/api.rst needs to be updated accordingly.
+> 
+> I don't think (with the above clarification) there's anything to update
+> in the API documentation. There's nothing new being added, just
+> capabilities being hidden where the functionality isn't available.
+> 
+> And eventually we hope to add support for this (in a later RMM spec) - I
+> don't yet know exactly what form this will take, but I hope to keep the
+> interfaces as close as possible to what we already have so that existing
+> tooling can be used.
+> 
+
+Ok.
+
+>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>> index b8fa82be251c..df6eb5e9ca96 100644
+>>> --- a/arch/arm64/kvm/arm.c
+>>> +++ b/arch/arm64/kvm/arm.c
+>>> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
+>>>        return kvm_arm_initialised;
+>>>    }
+>>>    +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
+>>> +{
+>>> +    if (!kvm_is_realm(kvm))
+>>> +        return get_num_brps();
+>>> +    /* Realm guest is not debuggable. */
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
+>>> +{
+>>> +    if (!kvm_is_realm(kvm))
+>>> +        return get_num_wrps();
+>>> +    /* Realm guest is not debuggable. */
+>>> +    return 0;
+>>> +}
+>>> +
+>>
+>> The above two comments "Realm guest is not debuggable." can be dropped
+>> since
+>> the code is self-explanatory, and those two functions are unnecessary to be
+>> kept in that way, for example:
+>>
+>>      case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>>          return kvm_is_realm(kvm) ? 0 : get_num_brps();
+>>      case KVM_CAP_GUEST_DEBUG_HW_WRPS:
+>>          return kvm_is_realm(kvm) ? 0 : get_num_wrps();
+>>
+>>
+>>>    int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+>>>    {
+>>>        return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+>>> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>>> long ext)
+>>>        case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
+>>>        case KVM_CAP_ARM_NISV_TO_USER:
+>>>        case KVM_CAP_ARM_INJECT_EXT_DABT:
+>>> -    case KVM_CAP_SET_GUEST_DEBUG:
+>>>        case KVM_CAP_VCPU_ATTRIBUTES:
+>>>        case KVM_CAP_PTP_KVM:
+>>>        case KVM_CAP_ARM_SYSTEM_SUSPEND:
+>>> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>>> long ext)
+>>>        case KVM_CAP_COUNTER_OFFSET:
+>>>            r = 1;
+>>>            break;
+>>> +    case KVM_CAP_SET_GUEST_DEBUG:
+>>> +        r = !kvm_is_realm(kvm);
+>>> +        break;
+>>>        case KVM_CAP_SET_GUEST_DEBUG2:
+>>>            return KVM_GUESTDBG_VALID_MASK;
+>>>        case KVM_CAP_ARM_SET_DEVICE_ADDR:
+>>> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm
+>>> *kvm, long ext)
+>>>            r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
+>>>            break;
+>>>        case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>>> -        r = get_num_brps();
+>>> +        r = kvm_arm_get_num_brps(kvm);
+>>>            break;
+>>>        case KVM_CAP_GUEST_DEBUG_HW_WPS:
+>>> -        r = get_num_wrps();
+>>> +        r = kvm_arm_get_num_wrps(kvm);
+>>>            break;
+>>>        case KVM_CAP_ARM_PMU_V3:
+>>>            r = kvm_arm_support_pmu_v3();
+>>
+
+Thanks,
+Gavin
 
