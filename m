@@ -1,102 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFFF2139CD
-	for <kvm@vger.kernel.org>; Thu,  6 Mar 2025 16:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C102139B1
+	for <kvm@vger.kernel.org>; Thu,  6 Mar 2025 16:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741278603; cv=none; b=NPKKojgA9o2sp0rMxVYnlEL0eqKRioaerniwjfgkWfatnpD84OM/Aya8NiA11Banei62w42oh3vybqnetQAY8LFu6sYYrYUnp0NcuFfwbJ9qemdJ6PcytGX0+zHhmp29mlppMNWq8mMFHa19Wq/yejBH0P/K//ZahcNw0N0l8Gk=
+	t=1741278916; cv=none; b=j8iX4dEi5ZCkzVq7IGAySzQBIOGjRaNminvkG1FfFRqxkx0qjp223yGGOFWFYrcYYjCe0ipLNEiSNiSOXxsGtYShq55LnPAdbodzyOQOYe1rm7KhJV50Ce74ujsMUFCoyeCMsyEP3ZzAeTsbK6QA1qJMuBIXncG+Wqv2DOe35VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741278603; c=relaxed/simple;
-	bh=9JT6hQcuHPteGjoaNI+sWKgKEc5E/9AZD+AdonkE+gQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+OJ7nWrIqLR0hbRrU/tnsiTXLDc0qHkpBmp2Mx+CRGK7TB8eYu9toxXML2Pv9ByXGsb1r5mdZW+1FUSQ1adiYb5nTYp91WoTlfm7ufvOB9SMz9qcd2eR7vt5Xu+qOxMKLOwfGQOSOBjxHSWes9808OWqWnirdUIX8/UtEMrGqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jFa5ogsH; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741278916; c=relaxed/simple;
+	bh=SzXu68XidFKmUWSScwil/WhCxIASGl9WLj7OPIkOOYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iDV5N/kIUSx43oocS5/qXxdAeV6MVmYabajHPT8QexiVYMvTU/JT36b1/NkuiRx3H72KsdOGD2yV437AiPYDqiPQOy2N5fvyHwwuycThqfaIDiml4aSdYTyyDtutdPBu0qE86qVbM4GzxSI5mZvVNl3PpWcGiv3who9s3C4xQrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VHLuIBES; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jFa5ogsH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741278601; x=1772814601;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9JT6hQcuHPteGjoaNI+sWKgKEc5E/9AZD+AdonkE+gQ=;
-  b=jFa5ogsHCOYSIDkw3SsVCHNqxbpIcuuWZIrj+cnpEjGmZs8IHMjwEfEB
-   mHT68sZQH99yNhGKsqso6e9PuNZPMEpCpGYg80xG8pJhqRr0eJv4OVXRU
-   kbDXAWqGby1JnS41w06OcZ9QHqIJPBRyhApFW5r/mxW+YlPPdRk0NhK63
-   ou2fR4HhGQlIRtTRdxUJMzqOzEKdWKhZZwNWRT63r3Wa16RJ6lJciQzUT
-   aRv8J0w8bbJPlT33uVAMW/KedAqtXDNkPXkdPjTkWcljYHejxpP8bwMlh
-   2FzFWj7wvPH1VNI6NA2zfO/ZVqcKG6h2WP9EG2Q02ikze8gsIh+3JWmBa
-   g==;
-X-CSE-ConnectionGUID: EezagPb2SDyOC035TWrrnA==
-X-CSE-MsgGUID: Dy2Yk5lVTR6zvXb+ccGs+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46069632"
-X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
-   d="scan'208";a="46069632"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 08:30:01 -0800
-X-CSE-ConnectionGUID: 6/o4d1CJRlmH59W6JvCY3g==
-X-CSE-MsgGUID: 9vz7cgYqQKO18CkQEoPjYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119579483"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa007.jf.intel.com with ESMTP; 06 Mar 2025 08:29:57 -0800
-Date: Fri, 7 Mar 2025 00:50:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
-	likexu@tencent.com, like.xu.linux@gmail.com,
-	zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
-	alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
-	davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-	dapeng1.mi@linux.intel.com, joe.jin@oracle.com
-Subject: Re: [PATCH v2 02/10] target/i386: disable PERFCORE when "-pmu" is
- configured
-Message-ID: <Z8nSPf4bUPICgf3g@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-3-dongli.zhang@oracle.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VHLuIBES"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff799d99dcso469877a91.1
+        for <kvm@vger.kernel.org>; Thu, 06 Mar 2025 08:35:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741278914; x=1741883714; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=omg6AjvLFckyUHlNxe3aevARZ7znM3QKeiz1AMsa4Ew=;
+        b=VHLuIBESEFPPuh651C0IHtSDoe8Mr0fIdi+k2clzOqjG9qP60m14eJvege+koaEI+J
+         3CJdknAg2bc1Rc4Pfq6+DDpSFo7/oZaQ8GlRspImpETjeOMfudFFWsQFq9BbmqifGCyt
+         tFrkotMij9bQkOXp5RhQmu/UQfWeNUkO1/g2pD584wff9dBzU2Sz48mOKQQ6i8kKCnCC
+         yNVKF30xGZojFhjuL4jFEfbukhTzULqRqBleKxlCg0L+ezdhhImNW4scaBsil3bD5zFR
+         kGMzfit9tCawRkZ//p2F+4l3h20KKlXIBS6Y8QSNBJh2odX/Mg28Wz7wOtBygnJQfOEV
+         dKSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741278914; x=1741883714;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=omg6AjvLFckyUHlNxe3aevARZ7znM3QKeiz1AMsa4Ew=;
+        b=mp0KRS8Soqk4fGLrfVBgQgIHbyAvm3SXxheh3lZIMPzTe3A9jI9D8ZoOf4zShDjrOh
+         NQkU3tYJ/FyNKdhPPvvXp1nWNi6jWm89qJwgX8oMAN4x8uKVhmYaVOLdzbQuf5a4FBGO
+         IC9AlKoMAhfATC6SO7+1WpPJKYrPmSfrsIYzhBL5b+fOkA6Otlp8V2IOAkEW5KbpmzxK
+         DAnvPzx32hM3iNDRpf7aMwOU3M+UEQ1+WYNSC1GZqtulcU+efmo4Bc2Gn5TNh1kW/0p7
+         DfJ91Sq07v+dZ39rT2Z9zVM8n8403Exi61emjBrPL0mrlCUr4H/IuYBY7doWDHExibD8
+         CAuQ==
+X-Gm-Message-State: AOJu0YzhqGgSO79lpJ+OpJNmfjRq2aDudD4GZzxY8XPSkGQy+mBWyrcU
+	6xSIyG/0jU5UrdrZLHO3f7te7kFDyjnkhkiA6GgTuM9oQ/Ze1PtdSVDQtvx4UxI=
+X-Gm-Gg: ASbGncve8dBZeaGliRbh+VUVwci1as4VOKP+/bwCmbe0EvQ8FYpUaN9uhG62as8He3W
+	h3Y2tl8dvBXmTXb2Ctmy3KJJT0mCjysgc5oMtQq9PdVNvUxDIQ6lZlCBa1xOYkeRyFwOadmfUXF
+	vJ4yvkTFYDdUl3BKaWNPpqu/DGT3Z4VGEQyE8CV+OjMFQBSt4uucc+QiP/L1qnqSQ0fix4/cJTP
+	QLZgHWEEcwWVdXb6Gjn5I2DYb/bHWR90PkDpQmtSgA0ECYpBC5GpZAI1sXYnhgFOgNLZCjTCrWY
+	OjzogQfJliCRmI3HmKLLj4SjkqgHqtO5I35TsDC1BI1qqGI1VPruV3sF7g==
+X-Google-Smtp-Source: AGHT+IGqgyU+nSbO9JD5HQMa4r81ruZjtNfVLorH/amNd+rJA/+OgMQY5I7W07lDvlJwLRGOFlF02A==
+X-Received: by 2002:a05:6a20:7f93:b0:1f0:e84c:866f with SMTP id adf61e73a8af0-1f544b16311mr264503637.21.1741278914529;
+        Thu, 06 Mar 2025 08:35:14 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af2810768a8sm1275071a12.4.2025.03.06.08.35.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Mar 2025 08:35:13 -0800 (PST)
+Message-ID: <badcb867-64db-4b45-93b0-fd4ff203c35a@linaro.org>
+Date: Thu, 6 Mar 2025 08:35:13 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250302220112.17653-3-dongli.zhang@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] hw/hyperv: remove duplication compilation units
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, philmd@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>, manos.pitsidianakis@linaro.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, alex.bennee@linaro.org
+References: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
+ <0226e9d5-edbc-417a-8cf0-8c752f52b7ed@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <0226e9d5-edbc-417a-8cf0-8c752f52b7ed@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Dongli,
+On 3/6/25 08:26, Richard Henderson wrote:
+> On 3/5/25 22:41, Pierrick Bouvier wrote:
+>> Work towards having a single binary, by removing duplicated object files.
+>>
+>> hw/hyperv/hyperv.c was excluded at this time, because it depends on target
+>> dependent symbols:
+>> - from system/kvm.h
+>>       - kvm_check_extension
+>>       - kvm_vm_ioctl
+>> - from exec/cpu-all.h | memory_ldst_phys.h.inc
+>>       - ldq_phys
+>>
+>> Pierrick Bouvier (7):
+>>     hw/hyperv/hv-balloon-stub: common compilation unit
+>>     hw/hyperv/hyperv.h: header cleanup
+>>     hw/hyperv/vmbus: common compilation unit
+>>     hw/hyperv/hyperv-proto: move SYNDBG definition from target/i386
+>>     hw/hyperv/syndbg: common compilation unit
+>>     hw/hyperv/balloon: common balloon compilation units
+>>     hw/hyperv/hyperv_testdev: common compilation unit
+>>
+>>    include/hw/hyperv/hyperv-proto.h | 12 ++++++++
+>>    include/hw/hyperv/hyperv.h       |  4 ++-
+>>    target/i386/kvm/hyperv-proto.h   | 12 --------
+>>    hw/hyperv/syndbg.c               |  7 +++--
+>>    hw/hyperv/vmbus.c                | 50 ++++++++++++++++----------------
+>>    hw/hyperv/meson.build            |  9 +++---
+>>    6 files changed, 49 insertions(+), 45 deletions(-)
+>>
+> 
+> I'm reasonably certain that hyperv is specific to x86.
 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index b6d6167910..61a671028a 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7115,6 +7115,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              !(env->hflags & HF_LMA_MASK)) {
->              *edx &= ~CPUID_EXT2_SYSCALL;
->          }
-> +
-> +        if (kvm_enabled() && IS_AMD_CPU(env) && !cpu->enable_pmu) {
+That's correct.
 
-No need to check "kvm_enabled() && IS_AMD_CPU(env)" because:
+> Are these only "duplicated" because of qemu-system-{i386,x86_64}?
+> 
 
- * "pmu" is a general CPU property option which should cover all PMU
-   related features, and not kvm-specific/vendor-specific.
- * this bit is reserved on Intel. So the following operation doesn't
-   affect Intel.
+Yes. A lot of duplications in hw/ is related to 32/64bits variants.
 
-I think Xiaoyao's idea about checking in x86_cpu_expand_features() is
-good. And I believe it's worth having another cleanup series to revisit
-pmu dependencies. I can help you later to consolidate and move this
-check to x86_cpu_expand_features(), so this patch can focus on correctly
-defining the current dependency relationship.
-
-With the above nit fixed,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-
+> 
+> r~
 
