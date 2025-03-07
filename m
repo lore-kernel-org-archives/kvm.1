@@ -1,123 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B637219E98
-	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 18:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20E121C198;
+	Fri,  7 Mar 2025 19:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741372894; cv=none; b=H5PeI9uR/6nB5mBbp0v2MbesYiR9nOP3JVhqyG1Lnb1sA1JmSJ6R9FBLJe3tt8Iv92b7MG+3tko81OlQYXCNRgjfWS55+ph2YNzdton6HnFC7t7cXP0AGhUzjn9gbbdsFz9yf6suuvV7FtNefil7UUYbpWA5n0UwF/J3ozQF83k=
+	t=1741374561; cv=none; b=a9Jum8lcrizs2hNaFSCMEf6M4+PN5QiRy0SNneUTwCVY0SesqRliFvmX3NOUFZDPf5PUTWCLMyvU/H2vfH5iZf501TvNkd9axj1yOU21DRte/QRzrHej91E2QmoA3L3YeopJKRkMkav5/PsRKqzvQFAgLG+1VgzJd9KIytMgV48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741372894; c=relaxed/simple;
-	bh=UvzmKRZnWS5qe6wJ9VUtUGmpd7ZB6tEvtI1phepadOs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nP/wCweWAOMGDP85nlNEIu97hW8KrlL8CWO389kpQT2kch6PgkznzYrmGU2Eht0IZuE/5owp4r+VJG3ouhg5pM2kIVDGg8Upv7WOMEQKo3elHsviW9J3SWW0IkFJZDp94sQGfReHOx2WNLvHr0hM1GBYXy/awuMq3yugWxlslU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iT8jmdby; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741374561; c=relaxed/simple;
+	bh=7b1yf7yKNPbaNxLB08eC3eXk3nNFfhGnwkF5GV3f3qs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rN5YJ/XYSDUM1PGU+m7MHH90ZgQysY/stWHetGrALJd313G3K8uBtVKGbTbKpYcrZbB7a6upY88kbbUqOE0AEK41a8OQ++SS89dAlzKski8T3UnqFe96ipdEEmLN031hPNjjD9QN2+aGTjIBYTAuepVapOapiUx/N21bXRW8R/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z8qpAKNg; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iT8jmdby"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741372891;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+7l1kWaVWNu6icMwRM4pO8CVq1CxSt3kSWCinAdGCUw=;
-	b=iT8jmdbybTZXnU/4tR8xcKD99meNq7FKcknlN7thY2P84tQRObx69r4ElDh0rYwOsT4Zc0
-	cDqj+2Vhucq3uT5Ki76A7eXxZn59azruri5FXeeVlh3XhXaJMFHswkFe6Ry9XNHMJ49Uad
-	24lu69u6cWMEd6FcPtjs7tFg4TDoLkE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-j1M1fCBeP7yETzgBdqeVyw-1; Fri,
- 07 Mar 2025 13:41:28 -0500
-X-MC-Unique: j1M1fCBeP7yETzgBdqeVyw-1
-X-Mimecast-MFC-AGG-ID: j1M1fCBeP7yETzgBdqeVyw_1741372887
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 403F51955D4B;
-	Fri,  7 Mar 2025 18:41:27 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B461D1956095;
-	Fri,  7 Mar 2025 18:41:26 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH] KVM: x86: Forbid the use of kvm_load_host_xsave_state() with guest_state_protected
-Date: Fri,  7 Mar 2025 13:41:25 -0500
-Message-ID: <20250307184125.2947143-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z8qpAKNg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741374560; x=1772910560;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7b1yf7yKNPbaNxLB08eC3eXk3nNFfhGnwkF5GV3f3qs=;
+  b=Z8qpAKNgHV21JvM89ci3GPsXuGKeJcfv8ahf4tvDEyCt5d0i0nA9a/o4
+   zaL9GcBoptMpY+jLKAYhp4r7WXHd9ZgNx3KWQnKLBW/JGUP+kjplKQKmV
+   769RkpYFbWZbL1lSkYwKHvsPwUjHg7Ww/tVq1SukgoTM4FhRXCFIrW+9f
+   5WVxayzoWx2I67cGTZItBvIMP8HpEuZC8KYYNVGY9wo8chXQKHVmSwA3l
+   uCiWBRO/qlH18zssj3F/RlI1cmFjMZqzzzAlduazkOj81auIqGY62vI5R
+   e6zYnq6aF4fmHNu7X4TbcQqhFJpG6nIxzG8Pi9QK2sUK7tI6sWO9fQOU+
+   g==;
+X-CSE-ConnectionGUID: D5hRxFgoSQy6WG1uEXw1+g==
+X-CSE-MsgGUID: lYFH3SYvQ7SLxxZ/fv4ObQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="42314229"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="42314229"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:09:19 -0800
+X-CSE-ConnectionGUID: hCn3oAx7SByF4Z4ZVqm/Gg==
+X-CSE-MsgGUID: ZB2sL+QMTKStStCuX7FDnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="156619226"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.110.132]) ([10.125.110.132])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 11:09:18 -0800
+Message-ID: <b9389b35-c1ef-4a53-9eb2-051df0aaf33d@intel.com>
+Date: Fri, 7 Mar 2025 11:09:42 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/10] Introduce CET supervisor state support
+To: Chao Gao <chao.gao@intel.com>, tglx@linutronix.de, x86@kernel.org,
+ seanjc@google.com, pbonzini@redhat.com, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: peterz@infradead.org, rick.p.edgecombe@intel.com,
+ weijiang.yang@intel.com, john.allen@amd.com, bp@alien8.de
+References: <20250307164123.1613414-1-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250307164123.1613414-1-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-kvm_load_host_xsave_state() uses guest save state that is not accessible
-when guest_state_protected is true.  Forbid access to it.
+On 3/7/25 08:41, Chao Gao wrote:
+> case |IA32_XSS[12] | Space | RFBM[12] | Drop%	
+> -----+-------------+-------+----------+------
+>   1  |	   0	   | None  |	0     |  0.0%
+>   2  |	   1	   | None  |	0     |  0.2%
+>   3  |	   1	   | 24B?  |	1     |  0.2%
 
-For consistency, do the same for kvm_load_guest_xsave_state().
+So, 0.2% is still, what, dozens of cycles? Are you sure that it really
+takes the CPU dozens of cycles to skip over the feature during XSAVE?
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/svm.c | 7 +++++--
- arch/x86/kvm/x86.c     | 5 ++---
- 2 files changed, 7 insertions(+), 5 deletions(-)
+If it really turns out to be this measurable, we should probably follow
+up with the folks that implement XSAVE and see what's going on under the
+covers.
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 2c291f0e89c7..51cfef44b58d 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4251,7 +4251,9 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
- 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
- 
- 	clgi();
--	kvm_load_guest_xsave_state(vcpu);
-+
-+	if (!vcpu->arch.guest_state_protected)
-+		kvm_load_guest_xsave_state(vcpu);
- 
- 	kvm_wait_lapic_expire(vcpu);
- 
-@@ -4280,7 +4282,8 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
- 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
- 		kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
- 
--	kvm_load_host_xsave_state(vcpu);
-+	if (!vcpu->arch.guest_state_protected)
-+		kvm_load_host_xsave_state(vcpu);
- 	stgi();
- 
- 	/* Any pending NMI will happen here */
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b416eec5c167..03db366e794a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1182,11 +1182,10 @@ EXPORT_SYMBOL_GPL(kvm_lmsw);
- 
- void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
- {
--	if (vcpu->arch.guest_state_protected)
-+	if (WARN_ON_ONCE(vcpu->arch.guest_state_protected))
- 		return;
- 
- 	if (kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE)) {
--
- 		if (vcpu->arch.xcr0 != kvm_host.xcr0)
- 			xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
- 
-@@ -1205,7 +1204,7 @@ EXPORT_SYMBOL_GPL(kvm_load_guest_xsave_state);
- 
- void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
- {
--	if (vcpu->arch.guest_state_protected)
-+	if (WARN_ON_ONCE(vcpu->arch.guest_state_protected))
- 		return;
- 
- 	if (cpu_feature_enabled(X86_FEATURE_PKU) &&
--- 
-2.43.5
-
+On a separate note, I was bugging Thomas a bit on IRC. His memory was
+that the AMX-era FPU rework only expected KVM to support user features.
+You might want to dig through the history a bit and see if _that_ was
+ever properly addressed because that would change the problem you're
+trying to solve.
