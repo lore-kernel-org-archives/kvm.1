@@ -1,62 +1,62 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CC12571AD
-	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 19:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDCF257420
+	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 19:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741376248; cv=none; b=odHkV7moWtX4OsWYQSmIZ9T4FQOD2PtB7XOtwvqXEfkaaaujZJ4MMJ1Qs0MFiNJm7dLGW0EQWK9B25rRdNHtUsP6Ar4uKLBXzz++L8lLlY4X+k+u40pmd3WbvbNtu6PY28ZTVbT1jRzJYO7nEQZsuJzNP7cinz0HGeOp6SIUHJA=
+	t=1741376250; cv=none; b=QKWP2ovvqJsb9hWVLyS9J+RLoZ3aZ1BD0r+564dJ4+XtKG69u8ogxYzoBjKyJWuADG4ZaYEjBV+TMfQlSSLuefoPCP2RnebbgveIKzneRc31xjHo9S6f/ns3U0CcItRe6v4WHtSrCQRwHU1ZKFwmQ2KduXInl9tMM2nEjM2Xyrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741376248; c=relaxed/simple;
-	bh=f6ywhfIHAeGjN6dW94oj9dG+w9FoBwMOqVbaNl3zrqA=;
+	s=arc-20240116; t=1741376250; c=relaxed/simple;
+	bh=yio0TGkUh6/xOEAR0qrHm9LcWB2v70X+5IB7niAjnMc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JIaHsh4dDIWG2RfQob69zX5jSPD+65zgJQRYXFqQmzO0OqUaIJBpOLQFPmOPwoXDlYWO29s9SfvV/SmItHEgA0kF/HzusxC2FClC3l/2wqAIrTSiRyfqS7/YHjwTwVKqFfxH9qV3BGmSbYQUbMQORn6lE/T3xczNuvuiB800UfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iWd0NN6G; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=J8h5von06UBnxbeh0SOJ1FJkNjHxk9ZkpUsENHuupIdC4zDbX7Yc2bO8CAqImMlIAKTVWc8F67ymI5Vcq2M/3hYjUS6DVxq80ytWWemUxsJ7v9NbJ+ewSFAdAM4phfEXpQm1Me8iY40+FfE9/l6CM4wHxshGxYuUT9Oeb9Fxtvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q0vdQz8x; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iWd0NN6G"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f9b9c0088fso4072367a91.0
-        for <kvm@vger.kernel.org>; Fri, 07 Mar 2025 11:37:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q0vdQz8x"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2239c066347so42625535ad.2
+        for <kvm@vger.kernel.org>; Fri, 07 Mar 2025 11:37:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741376246; x=1741981046; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741376248; x=1741981048; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xUvuEjETtAwgjY+HHVzD3fRoYrhNXj1rMDKPunM+tus=;
-        b=iWd0NN6GFqeXFjZvwfJPGgWqnN+ZANjf7BHkWtx/yjQVc49R9SsTf5yfZGbimdCDbb
-         1BVCRlRcb5M0h3wnjTrLM8MOGXSmvQpe3raGRKw1eaL1VBpixE9/2GNSuyIwfW1MOsO4
-         4u3PUybeNXQ+6+ExlLQZKIQAxhWQoKiecZbSwSDeB6V5T7JVj72lzA/v2aoR/A0MBxbe
-         0UJMIelo40e+p7Prav1yReeumHJj+8EyUCZd97rG24cEJ1dFXi+cN9DqkamZOa8P0v5a
-         59Knw0Ux8nbVHaUb++lcHm3cYLMza0OOSpleo/pZDwtzlb7slsVIuCGZdSR2x+ViOZOU
-         2N5g==
+        bh=DWZd7ZFPXeg1oTJFx/lxzeskCkUEMUuswiCEr0poukA=;
+        b=Q0vdQz8xFzdTnxyQtZqgMOme5OqKGF/U29++74Kmloqjy+rjmRlZVmRI4gWypDSrc+
+         6eCD+M8BLzPbWPOa0dhVWDxkQ2AhE58r8dyVZQkd2ZOkX0jNhsZM3TpepXamwBVAJ2KC
+         7sPN/Qya8nPpeFT8UfdfcXdbaAsJG25y0jNtjDlgbRC6G7tdQQUhFXAHVS/LzNBfWb2v
+         QCttEslc1Lz+yDEJLvweiTitCcLKnLfYu3pYIvLkYXhKM262ysbnPB4N7PR0DDPuM0Zz
+         F/Cb+VZ8O+Yqm8uMGBd7g5i3CA0BZP3Rh7/MkmsYar0tqIXg88XW3K96OW3ZSlgA+CQl
+         J+Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741376246; x=1741981046;
+        d=1e100.net; s=20230601; t=1741376248; x=1741981048;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xUvuEjETtAwgjY+HHVzD3fRoYrhNXj1rMDKPunM+tus=;
-        b=f0R/WPL0ilUPedsHE6y4OHCq4I0iPcg43ksunJv9v0nojB/It7jztU/zrhM7CjbrG4
-         DdREfH6o2Es17tRE/P1AUnNcESBMEHINI8LFORZ2ceUwn5R0sP6Lu6I43sd3n4Vn5nNS
-         DNgOiT0hjgBM1oYdc8wEQlfJ6eML0sjsc7AqvA6zoz0B1O3LPvZPr3FSG5Gmk+TYSwO5
-         ouhOsKZpDGZu2go1bzsoxE2llRxcYisJ8b5xZKb0MMknfDFhbGiVdupOKBBR3TgeqVjy
-         lN8bjzp4ZedMXeECtlygQytD9q/3cge57+y0gXSm3sc8igF8vjiypaPgE4rI1t0jCaGm
-         n4IA==
-X-Forwarded-Encrypted: i=1; AJvYcCWh15EFU3bmmrMu7+hkYKW98dTSm+6fFYKBpnbDQMNiFuFFa3SiUgagFi89fiA2zoupEa8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0hauWVoiFqYfZQUM2D8M+hYJyHwsDgaB76dMCdYEScpNwXHNC
-	sgMEmj7olAScLFW+l4Vn8FufRHyG7r/7z8ec6mPhl8av9fpfN089+4hwv9pqFzU=
-X-Gm-Gg: ASbGnctAsA/b3oCsuvqq7k4WC+DZ2dIcrexET6c6ceHsp+jQA+lZPHNPdKKxG0mElaH
-	7r6R/lZROzFSV9uuAF7FXM2d90rs9hfjXmKQvsPmg99ZrYPgTbMxyMsgOAu5mdc7LWJOFDV3g9T
-	n3LTAQpfcKebv4zYv+C8pPV/RbUv+Lbse5HAU0ms81oHsAk/MEt94Vb2pQcnQKatiJRIF4tx1RD
-	iYhFjBUJgq+/iFuYaQNK7AVgKh12QyuIlqxOne/np/flLk2awIrCspazqbo3KUGO7U/JqkuqH2q
-	opaH+5uy3oM5Z8buYasEOD+ncyRFF/ap3eUinJjN5blp
-X-Google-Smtp-Source: AGHT+IHZK5ChSqOaMo09JMNQrhVS25wP/pkCSoEVH4/5AzuwGO5vlGkUiG7MGthTlS3QETr7obULIA==
-X-Received: by 2002:a17:90b:180e:b0:2f9:d0cd:3403 with SMTP id 98e67ed59e1d1-2ffbc1ee5aemr1105732a91.16.1741376246136;
-        Fri, 07 Mar 2025 11:37:26 -0800 (PST)
+        bh=DWZd7ZFPXeg1oTJFx/lxzeskCkUEMUuswiCEr0poukA=;
+        b=w16onlbQZoMFNp+qf7OXCCbXOR6sjVa8CtNtr2VCb6/7aIE1ZVVUa1x65OBeCNSvDJ
+         YyBPwwU9B2ihm+AtxNmh6pVbo6MPr1BLn+5q57o1OMuMmzaKUi5+SGv7PWIhiGpKdXlD
+         /UlgjyY6heP2K5Swc+qOqfdEjA4T0bJyDhwICLpS8FTFXsV1sqdcJg5AUqy0BfFpRnq5
+         5t6Su4mVzMorg+d3VlJMBM0sMYDpI8oumrE0xt4FiC9UNvHtFNT0ytELHpob0CHalXC7
+         OR3ksEq/7jRnCfWdfMxXLndzD7wnSX0UGayQW1NwFbNyjmAok6Uy8f1An2mLuzOEs6S3
+         xC+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXAt+/0WC+Q+7PcpUEMoY5UONyamW656PsEQ1fmfyEWMl6cCFq7HsXpxht5UUSgwhuXNIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg5joujjE8H8vOfZM5QD4eUSZFHqPil8Nd6F+UN+Tnm3ymeMrp
+	8QLyVFNdP9OAfdJqU/AdNPlLXhoQYJNzN//e8sj6MW6JIffBNZyWxjmerX+uYqA=
+X-Gm-Gg: ASbGncs72zv+0YMa8ZC0LuCdcyJRw/b0gDllRCCXAyHqTtngW9ilvjDgHHX9LSfjE9p
+	Mv9yCvdopqLpYTuivt0PB+xthmULx9EJECbuP15s+VLzDjF7dMjzLJWPrmiXQyWxvHPkMjRoGDF
+	ABgAKvbwkCnD/AvonE7M4BVznagY8CuyrY8j0ODlplobL2z8CphUYtfuya7H4q6+Vb71wGldNep
+	JTkyD0Cs80reJk8H4PVc/HhSNn59Llq0LEFkaRhhWUxArje44plRmr83EnIn894yqOQprQ0v+Pc
+	LOPI/MM+/qjADqV6rC5NpJkbOKs5/5qRLDwQjUA0hHk7
+X-Google-Smtp-Source: AGHT+IGKXR+9X4ZONBcHhkFUf7VCkwDzjzA5G8MCEve5FuXHVvZ8UObc/5ZN1Vfg6Uhf+SHMCfpo5w==
+X-Received: by 2002:a17:902:e947:b0:216:6901:d588 with SMTP id d9443c01a7336-22428896951mr76142875ad.15.1741376247903;
+        Fri, 07 Mar 2025 11:37:27 -0800 (PST)
 Received: from pc.. ([38.39.164.180])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff693739ecsm3821757a91.26.2025.03.07.11.37.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff693739ecsm3821757a91.26.2025.03.07.11.37.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 11:37:25 -0800 (PST)
+        Fri, 07 Mar 2025 11:37:27 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org,
@@ -68,9 +68,9 @@ Cc: alex.bennee@linaro.org,
 	manos.pitsidianakis@linaro.org,
 	pierrick.bouvier@linaro.org,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH v3 4/7] hw/hyperv/hyperv-proto: move SYNDBG definition from target/i386
-Date: Fri,  7 Mar 2025 11:37:09 -0800
-Message-Id: <20250307193712.261415-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 6/7] hw/hyperv/balloon: common balloon compilation units
+Date: Fri,  7 Mar 2025 11:37:11 -0800
+Message-Id: <20250307193712.261415-7-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250307193712.261415-1-pierrick.bouvier@linaro.org>
 References: <20250307193712.261415-1-pierrick.bouvier@linaro.org>
@@ -80,64 +80,25 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allows them to be available for common compilation units.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/hw/hyperv/hyperv-proto.h | 12 ++++++++++++
- target/i386/kvm/hyperv-proto.h   | 12 ------------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ hw/hyperv/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/hyperv/hyperv-proto.h b/include/hw/hyperv/hyperv-proto.h
-index 4a2297307b0..fffc5ce342f 100644
---- a/include/hw/hyperv/hyperv-proto.h
-+++ b/include/hw/hyperv/hyperv-proto.h
-@@ -61,6 +61,18 @@
- #define HV_MESSAGE_X64_APIC_EOI               0x80010004
- #define HV_MESSAGE_X64_LEGACY_FP_ERROR        0x80010005
- 
-+/*
-+ * Hyper-V Synthetic debug options MSR
-+ */
-+#define HV_X64_MSR_SYNDBG_CONTROL               0x400000F1
-+#define HV_X64_MSR_SYNDBG_STATUS                0x400000F2
-+#define HV_X64_MSR_SYNDBG_SEND_BUFFER           0x400000F3
-+#define HV_X64_MSR_SYNDBG_RECV_BUFFER           0x400000F4
-+#define HV_X64_MSR_SYNDBG_PENDING_BUFFER        0x400000F5
-+#define HV_X64_MSR_SYNDBG_OPTIONS               0x400000FF
-+
-+#define HV_X64_SYNDBG_OPTION_USE_HCALLS         BIT(2)
-+
- /*
-  * Message flags
-  */
-diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
-index 464fbf09e35..a9f056f2f3e 100644
---- a/target/i386/kvm/hyperv-proto.h
-+++ b/target/i386/kvm/hyperv-proto.h
-@@ -151,18 +151,6 @@
- #define HV_X64_MSR_STIMER3_CONFIG               0x400000B6
- #define HV_X64_MSR_STIMER3_COUNT                0x400000B7
- 
--/*
-- * Hyper-V Synthetic debug options MSR
-- */
--#define HV_X64_MSR_SYNDBG_CONTROL               0x400000F1
--#define HV_X64_MSR_SYNDBG_STATUS                0x400000F2
--#define HV_X64_MSR_SYNDBG_SEND_BUFFER           0x400000F3
--#define HV_X64_MSR_SYNDBG_RECV_BUFFER           0x400000F4
--#define HV_X64_MSR_SYNDBG_PENDING_BUFFER        0x400000F5
--#define HV_X64_MSR_SYNDBG_OPTIONS               0x400000FF
--
--#define HV_X64_SYNDBG_OPTION_USE_HCALLS         BIT(2)
--
- /*
-  * Guest crash notification MSRs
-  */
+diff --git a/hw/hyperv/meson.build b/hw/hyperv/meson.build
+index a9f2045a9af..5acd709bdd5 100644
+--- a/hw/hyperv/meson.build
++++ b/hw/hyperv/meson.build
+@@ -2,5 +2,5 @@ specific_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'))
+ specific_ss.add(when: 'CONFIG_HYPERV_TESTDEV', if_true: files('hyperv_testdev.c'))
+ system_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
+ system_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
+-specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
++system_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
+ system_ss.add(when: 'CONFIG_HV_BALLOON', if_false: files('hv-balloon-stub.c'))
 -- 
 2.39.5
 
