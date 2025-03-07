@@ -1,116 +1,214 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593B7215F49
-	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 19:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D4E250BFB;
+	Fri,  7 Mar 2025 19:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741374891; cv=none; b=PKa3jtnMh3P3qSlAAsjqaGz0Pi+3b5EXbQ7jX7sUUpeuBCXwgeVtzcb15BFQbPkUDb+rAGKnzO+jn94P11JPVUlQWj4Ikj1KGJ4U39wWnSiSPPCaYZ24IwPS+4NQSwCIGSjDtr2p2mLlPAVlG5OafK39tnFpsgzcKtEJYNgS0Fg=
+	t=1741374898; cv=none; b=DMqvgkyABHPtH8VanJog6FgcwVy3/d+HWkL+sTMqk2vZxGSeS6AJvXEbhpKV/nsFJb+CTCUjiIlox4uvdgl2wispW5xJXmUimOcY1pE0d1ibpkJ7KsYvXObeDNaRWrC4nlPovIupNr6VM3d5DQzUZ1oBOBxVQj5OnBKU2Ku8L3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741374891; c=relaxed/simple;
-	bh=xS48sSfR/nqvciBSEcVtX4LFE00mJJmnZli1lqwc2I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JhqH6jCu067g+a193Iaw1L45LAclGV7AfAhgGkURcjmrN4huyeCTpOPCcKNzVkAle9bh2B+khwdLmy2xtqAfQ7ggjIdePplRfXqPMRpKt+VEHRjMLSYKpt7XdlOnDrYJ+UuPQXgEQdHBD5ROi+CfJsWcujeeA7oCvSyfnc8BcN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hdpzEdzC; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741374898; c=relaxed/simple;
+	bh=jvI2n2uO/V++4nHoK7UV7ov9SzCE4x7XfCv+m1FxJ5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iP/+uRGD70rbuLI8eLs9BSrLWfsDDmxS7NXnyWAOwHO8hoP4GMIRdYU2M1RCWfB9OBnUzZljufBD4Uzn1ZHTuGNo0UuE8x/Rucg6tmJKcudFeCsDjRSpUpsg4d6OO62Ol9VKxoVd6pqvEJhC8VZz6NdA5LuZt4SAZvliIvfYxYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItObX/Nc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hdpzEdzC"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2fe9759e5c1so3474722a91.0
-        for <kvm@vger.kernel.org>; Fri, 07 Mar 2025 11:14:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741374889; x=1741979689; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xS48sSfR/nqvciBSEcVtX4LFE00mJJmnZli1lqwc2I8=;
-        b=hdpzEdzCt0Kh5KvMqVHRYfhA452iOWTZd1/N1wc/megfyoqM3p+aLyPXNSwLXvKw+f
-         tf/gjAO26WuHGfAHVp6+3gmqfbFlfi+HFUgz2e9XH7bhs0lAvGLn7rGE6gpdfTMrn8yq
-         151C1rJ70qXAHDH/fMEyMifKiXfwDfXRn9iZaVlVDv0vedoDg11MgK2zMQHHZS6TUn7r
-         YZyukkL5TGNL6yA84deprScUrKbHoskPDrGhmW9CBqgDnavTlmSDfzbjeqeTVWDkl1DS
-         GSJJQYh0cVQ/ANgFlrdikTqNBQV6NQh77jt4MsZwD4l/jx8c0T8hRzTwQISeu+SSyxFK
-         FY2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741374889; x=1741979689;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xS48sSfR/nqvciBSEcVtX4LFE00mJJmnZli1lqwc2I8=;
-        b=h/KIcFhLLN5dUe/JIBPztreBIzIegOPoh8mH772DYNZveQSX+P6/6gRE5oaMz0qF2x
-         z/xhG44By8cbggbCV+gDM4ULRIkwNg5qi0Kr2LpqyxPvxu/LAvQBa5bsQ7PDHRszo3Oa
-         xNasO+J/ssv3EPGRwlkah3pkIH88uw5+cojqwecav/QnGqDHEhsUcPE87k8G3fBk/g+x
-         odn7ZEYDG3nE5nz6cKOIFEeECdPmgXLM8Cakd9jva0FM0he+tF6lm1OB/Dalvf0SydiH
-         3m9/2ohD4L+F/e0jUHQwDbrM855D1JfauYL/o6JR9C4XDsuJjCMFJsVvPK/6r9TU0V2J
-         1WTg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2rgaiYSevKVhoHM5kCD+nb/2/tYQdXGHBOlTfg+7KYy8fCSZnA1cMI7nzmWHut5QKWz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8eQaTdY2nLJ09LMHLShegNhAz/EeRDoUTiljJwVG5brs9kOlt
-	tIaL0mtSDOItrJBZdwF6pMQnl92TMjp2B1EaXTLVkgm4/ZmyFdsUXWKIjRfRGJE=
-X-Gm-Gg: ASbGncvhA/Oew0MzPn2J+V5kncTR76akTsixEVEp6T8SO5noJQN0m/UjcOoQYA4qi9U
-	xU+wN/LYlRITN48gNk1lJ+ySvZNxz3Nq5qyLjlqAG2eO4k5SJi0i7FzBmdmpd1MxFAH/FfvIvpr
-	LVhqG4oThu3tQRvGyIL+l3n4uU4KlPK7lwQt34M+BeyFvWbaqYV6r5hsCM6j7iiiPbqSPq5FY3F
-	KPg78/Wy/4ml2ej2gWFpU9wyc9ScVt09TD5EI9C1uCuBEBOEoJX5Ma0eUElzWgPKR9IeakWTSsi
-	fmKFmTN6YUWg0Zh3yZVgZMzc0Y1r9HbXP7zbV59xZVvc4Szpj2kKPZTC7w==
-X-Google-Smtp-Source: AGHT+IE73Alk6UcBWkg7YWfas3SGCUdlCaGCInmV4gpMnbflJafpM2h5wcqHKXoJ2T/ROUJtTSsGkg==
-X-Received: by 2002:a17:90b:4b11:b0:2fe:994d:613b with SMTP id 98e67ed59e1d1-2ff7cf2b59fmr7212164a91.35.1741374889557;
-        Fri, 07 Mar 2025 11:14:49 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff728a901bsm3014197a91.49.2025.03.07.11.14.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Mar 2025 11:14:49 -0800 (PST)
-Message-ID: <59b3d1a3-541d-47a1-abd0-e649e9007990@linaro.org>
-Date: Fri, 7 Mar 2025 11:14:48 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItObX/Nc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A6CC4CEED;
+	Fri,  7 Mar 2025 19:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741374897;
+	bh=jvI2n2uO/V++4nHoK7UV7ov9SzCE4x7XfCv+m1FxJ5I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ItObX/NcEuNHpAYf0kUdZre/+mYx6LmiLJXGnRR5yjNARoWrl0Wi1dUEo+Y4a+Jg8
+	 vrtUfwvthPRbCdgBSMqrCStaqvOJuX6iJet5thzJtCY3ELAYh8bHtGlRnHXKtcfFQw
+	 NIE02AmCl8MBvaX/N2NzIiV3IpxBuyKK1b7+/qn+Tf/utnGrrl1gt95MoyPFTrN9Ni
+	 97AM9867fq5lnrbXMuBY53IvdZrQRh+78AW1zn2F6gnrDBcD44aY807hUhvEL6KrS+
+	 iCeRkLTmpeumWmjMXC0vuhSP4it84tIR3A6GFw/m2l23pNSwdnIRcXOzS3+2pFAu/g
+	 hFLY9y3Gqyc/A==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.1)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1tqd9r-0000000BQmB-2cHO;
+	Fri, 07 Mar 2025 20:14:55 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Ani Sinha <anisinha@redhat.com>,
+	Cleber Rosa <crosa@redhat.com>,
+	Dongjiu Geng <gengdongjiu1@gmail.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Eric Blake <eblake@redhat.com>,
+	John Snow <jsnow@redhat.com>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Shannon Zhao <shannon.zhaosl@gmail.com>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v8 00/20] Change ghes to use HEST-based offsets and add support for error inject
+Date: Fri,  7 Mar 2025 20:14:29 +0100
+Message-ID: <cover.1741374594.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/14] hw/vfio/common: Include missing 'system/tcg.h'
- header
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- kvm@vger.kernel.org, Yi Liu <yi.l.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, Eric Auger <eric.auger@redhat.com>,
- qemu-s390x@nongnu.org, Jason Herne <jjherne@linux.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- David Hildenbrand <david@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20250307180337.14811-1-philmd@linaro.org>
- <20250307180337.14811-2-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250307180337.14811-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-T24gMy83LzI1IDEwOjAzLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gQWx3
-YXlzIGluY2x1ZGUgbmVjZXNzYXJ5IGhlYWRlcnMgZXhwbGljaXRseSwgdG8gYXZvaWQNCj4g
-d2hlbiByZWZhY3RvcmluZyB1bnJlbGF0ZWQgb25lczoNCj4gDQo+ICAgIGh3L3ZmaW8vY29t
-bW9uLmM6MTE3Njo0NTogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9u
-IOKAmHRjZ19lbmFibGVk4oCZOw0KPiAgICAgMTE3NiB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgdGNnX2VuYWJsZWQoKSA/IERJUlRZX0NMSUVOVFNf
-QUxMIDoNCj4gICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIF5+fn5+fn5+fn5+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBQaGlsaXBwZSBN
-YXRoaWV1LURhdWTDqSA8cGhpbG1kQGxpbmFyby5vcmc+DQo+IC0tLQ0KPiAgIGh3L3ZmaW8v
-Y29tbW9uLmMgfCAxICsNCj4gICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCj4g
-DQo+IGRpZmYgLS1naXQgYS9ody92ZmlvL2NvbW1vbi5jIGIvaHcvdmZpby9jb21tb24uYw0K
-PiBpbmRleCA3YTQwMTBlZjRlZS4uYjE1OTZiNmJmNjQgMTAwNjQ0DQo+IC0tLSBhL2h3L3Zm
-aW8vY29tbW9uLmMNCj4gKysrIGIvaHcvdmZpby9jb21tb24uYw0KPiBAQCAtNDIsNiArNDIs
-NyBAQA0KPiAgICNpbmNsdWRlICJtaWdyYXRpb24vbWlzYy5oIg0KPiAgICNpbmNsdWRlICJt
-aWdyYXRpb24vYmxvY2tlci5oIg0KPiAgICNpbmNsdWRlICJtaWdyYXRpb24vcWVtdS1maWxl
-LmgiDQo+ICsjaW5jbHVkZSAic3lzdGVtL3RjZy5oIg0KPiAgICNpbmNsdWRlICJzeXN0ZW0v
-dHBtLmgiDQo+ICAgDQo+ICAgVkZJT0RldmljZUxpc3QgdmZpb19kZXZpY2VfbGlzdCA9DQoN
-ClJldmlld2VkLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFy
-by5vcmc+DQoNCg==
+Hi Michael,
+
+I'm sending v8 to avoid a merge conflict with v7 due to this
+changeset:
+
+   611f3bdb20f7 ("hw/acpi/ghes: Make  static")
+
+As ghes_record_cper_errors() was written since the beginning
+to be public and used by ghes-cper.c. It ended being meged
+earlier because the error-injection series become too big,
+so it was decided last year to split in two to make easier for
+reviewers and maintainers to discuss.
+
+Anyway, as mentioned on v7, I guess we're ready to merge this
+series, as patches here have been thoughfully reviewed mainly 
+by Igor and Jonathan over the last 5-6 months.
+
+The only change from v7 is a minor editorial change at HEST doc
+spec, and the addition of Igor and Jonathan's A-B/R-B.
+
+This series change the way HEST table offsets are calculated,
+making them identical to what an OSPM would do and allowing
+multiple HEST entries without causing migration issues. It open
+space to add HEST support for non-arm architectures, as now
+the number and type of HEST notification entries are not
+hardcoded at ghes.c. Instead, they're passed as a parameter
+from the arch-dependent init code.
+
+With such issue addressed, it adds a new notification type and
+add support to inject errors via a Python script. The script
+itself is at the final patch.
+
+---
+v8:
+  - added a patch to revert recently-added changeset causing a
+    conflict with these. All remaining patches are identical.
+
+v7:
+  - minor editorial change at the patch updating HEST doc spec
+   with the new workflow
+
+v6:
+- some minor nits addressed:
+   - use GPA instead of offset;
+   - merged two patches;
+   - fixed a couple of long line coding style issues;
+   - the HEST/DSDT diff inside a patch was changed to avoid troubles
+     applying it.
+
+v5:
+- make checkpatch happier;
+- HEST table is now tested;
+- some changes at HEST spec documentation to align with code changes;
+- extra care was taken with regards to git bisectability.
+
+v4:
+- added an extra comment for AcpiGhesState structure;
+- patches reordered;
+- no functional changes, just code shift between the patches in this series.
+
+v3:
+- addressed more nits;
+- hest_add_le now points to the beginning of HEST table;
+- removed HEST from tests/data/acpi;
+- added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
+
+v2: 
+- address some nits;
+- improved ags cleanup patch and removed ags.present field;
+- added some missing le*_to_cpu() calls;
+- update date at copyright for new files to 2024-2025;
+- qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
+- added HEST and DSDT tables after the changes to make check target happy.
+  (two patches: first one whitelisting such tables; second one removing from
+   whitelist and updating/adding such tables to tests/data/acpi)
+
+Mauro Carvalho Chehab (20):
+  tests/acpi: virt: add an empty HEST file
+  tests/qtest/bios-tables-test: extend to also check HEST table
+  tests/acpi: virt: update HEST file with its current data
+  Revert "hw/acpi/ghes: Make ghes_record_cper_errors() static"
+  acpi/ghes: Cleanup the code which gets ghes ged state
+  acpi/ghes: prepare to change the way HEST offsets are calculated
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/ghes: don't hard-code the number of sources for HEST table
+  acpi/ghes: add a notifier to notify when error data is ready
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+  acpi/generic_event_device: add an APEI error device
+  tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
+  arm/virt: Wire up a GED error device for ACPI / GHES
+  qapi/acpi-hest: add an interface to do generic CPER error injection
+  acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
+  tests/acpi: virt: update HEST and DSDT tables
+  docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
+  scripts/ghes_inject: add a script to generate GHES error inject
+
+ MAINTAINERS                                   |  10 +
+ docs/specs/acpi_hest_ghes.rst                 |  28 +-
+ hw/acpi/Kconfig                               |   5 +
+ hw/acpi/aml-build.c                           |  10 +
+ hw/acpi/generic_event_device.c                |  44 ++
+ hw/acpi/ghes-stub.c                           |   7 +-
+ hw/acpi/ghes.c                                | 233 ++++--
+ hw/acpi/ghes_cper.c                           |  38 +
+ hw/acpi/ghes_cper_stub.c                      |  19 +
+ hw/acpi/meson.build                           |   2 +
+ hw/arm/virt-acpi-build.c                      |  35 +-
+ hw/arm/virt.c                                 |  19 +-
+ hw/core/machine.c                             |   2 +
+ include/hw/acpi/acpi_dev_interface.h          |   1 +
+ include/hw/acpi/aml-build.h                   |   2 +
+ include/hw/acpi/generic_event_device.h        |   1 +
+ include/hw/acpi/ghes.h                        |  51 +-
+ include/hw/arm/virt.h                         |   2 +
+ qapi/acpi-hest.json                           |  35 +
+ qapi/meson.build                              |   1 +
+ qapi/qapi-schema.json                         |   1 +
+ scripts/arm_processor_error.py                | 476 ++++++++++++
+ scripts/ghes_inject.py                        |  51 ++
+ scripts/qmp_helper.py                         | 703 ++++++++++++++++++
+ target/arm/kvm.c                              |   7 +-
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
+ tests/data/acpi/aarch64/virt/HEST             | Bin 0 -> 224 bytes
+ tests/qtest/bios-tables-test.c                |   2 +-
+ 32 files changed, 1695 insertions(+), 90 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 hw/acpi/ghes_cper_stub.c
+ create mode 100644 qapi/acpi-hest.json
+ create mode 100644 scripts/arm_processor_error.py
+ create mode 100755 scripts/ghes_inject.py
+ create mode 100755 scripts/qmp_helper.py
+ create mode 100644 tests/data/acpi/aarch64/virt/HEST
+
+-- 
+2.48.1
+
+
