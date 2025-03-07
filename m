@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D742417D3;
-	Fri,  7 Mar 2025 18:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E92219E98;
+	Fri,  7 Mar 2025 18:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741372766; cv=none; b=fI8HQt9Rsd2KXBYqI2Ox30SPY5IEuyOUQye63k1wutQSzTa5i3z8NW9VXJnqvQs2BjfOKQbqlDKpfrkLPbMFOanLeByr/XwSfvlNtgUhsou3DR1m7SBDK67B1ahHETUhYNg05AVjhvB/6gKD3ftxloSdG+HAh4+y3ybk/PkUIjc=
+	t=1741372888; cv=none; b=EYdd4Q0J65zkCibgRIAAkDIHs6ijDSLVehTNYjHl7VMr++V+wg67syUEXblrp8grX8pU1fZnNS46y0AygrJTBsiuiw9ZLvVUj7Lm5ObAs/KLGrHVuwMnfgxPVx5J9AbTKdS3ozQibFm8P7PSxY3rGlhLNVPCDNFIG4BBj0T9DfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741372766; c=relaxed/simple;
-	bh=qU6KijlFXoR98S5pulEIQzkadZEZV8Z0TBnXBxmBuu8=;
+	s=arc-20240116; t=1741372888; c=relaxed/simple;
+	bh=gty8PqZgqe7OpYUmvh89+QW9b9WDHvBIJHRemJ0a4RY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IgV+KN2iAESctAHW+qDFC3Yjr1ZzBDQX6gsTRAVIQX8yXUTRuydljmHJa1j2MmU3v6CQZBZrUyuMDWrUWHysKVAEylb8ZN/BBcqKgPmaVLwwR8CqZRNvuKPgJpygvKg1aqIOndrFPp9uswcQ+a1qtewlYxZDJ6I0tkCLFtwpWfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dNBq7+OZ; arc=none smtp.client-ip=192.198.163.11
+	 In-Reply-To:Content-Type; b=rVOXU3FGVE8cL+ySxsdgy4DT2StbUZoDROjFjcePNffR9aFCrkHDrEUvKZnrkqAMSIwNiVlWqK2ZTnudGf2aaQLM4Jrl3XkFsV8N/CSQF5pIFFc46WUj+vSqZnDcOfyxsbEV7c8/5lPWJTTLUunpQV586aFrQCHaYi03779wiuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mfh2kqgA; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dNBq7+OZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mfh2kqgA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741372765; x=1772908765;
+  t=1741372887; x=1772908887;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=qU6KijlFXoR98S5pulEIQzkadZEZV8Z0TBnXBxmBuu8=;
-  b=dNBq7+OZ/aPY5ZgOnocmF7ofJKWF8u7TmfWH5gF/ISrz/M1mSdwkaQNf
-   oTsAX4VKqUEFF55T5kkpM0lDPRUlOYw9mDVglz9m2CsGJRDp1/1MZMZ53
-   0HezCm0Oql6YUWaIZR0Prdz1zLRKD/PB1QtURBeiFfArR9tDCokpztlVP
-   8QeNLrYuUvfBW3mGJJn6KvPQN84fZsE0/Lci92ebQI7/zMFz3Z2dFtz/g
-   bRKgrIhS8vSAWP6v2Na7RK9MaepPWWG+DzjKt8lDFwp6SyhIgaD879PAo
-   g5+iREEKz9JRRj66rWpI5+f00M2/Q5lvzIAiw2o9aL1J/bbU6mATziE/Z
-   Q==;
-X-CSE-ConnectionGUID: 58uY+RgmSY+3YcsTvpqJbg==
-X-CSE-MsgGUID: NEOs++VwQs2qo0McxQ53UA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53072692"
+  bh=gty8PqZgqe7OpYUmvh89+QW9b9WDHvBIJHRemJ0a4RY=;
+  b=Mfh2kqgABj4RKlTuROa26UpjaAKA2gU0cw9Hm02uFLD08q463ZEeyraS
+   kWJgLiKRirYeWipJGMK+zj1T78A89Ch1ZCIxg0Z/J71B47gfWTL+vDo3N
+   dICvgFJk9zC63/gOOMAf6mRZwxa9cWJf6NRlZcfVbZ2MVjfvVR7BSdMVR
+   yaEyCt6YvmJb3IPrFHNLvY8dw/y+MvvxznVJPidFIS0TC1kEHkzd+ij7O
+   eHhLbNnnB6DBvrdLBvWxH5obrc0I43eEaF7vQTiTQALWJ2KExZ0xI5UJw
+   RKrCaJVEipODswKegHQ8NankfLKXtbNLoaqP1X0JFH9KmXH6yScduFdhT
+   g==;
+X-CSE-ConnectionGUID: fyrqlwKYQ4euidvpoJn7Mg==
+X-CSE-MsgGUID: o3FUuQiITpuHEWUU7vwknQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46357002"
 X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="53072692"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:39:24 -0800
-X-CSE-ConnectionGUID: ru1BalfMQ0ue0IcmsKwSpw==
-X-CSE-MsgGUID: QlkwuRuuT3+yDy+4eLZTEQ==
+   d="scan'208";a="46357002"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:41:26 -0800
+X-CSE-ConnectionGUID: zrwdQHN7Tf+i1POGddtPVw==
+X-CSE-MsgGUID: R/OL9BOmQ4+4JjC8pabv6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="124317362"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="119337812"
 Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.110.132]) ([10.125.110.132])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:39:23 -0800
-Message-ID: <74e49413-dd1a-4577-818f-b5b21b2a2b7e@intel.com>
-Date: Fri, 7 Mar 2025 10:39:47 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 10:41:26 -0800
+Message-ID: <98dda94f-b805-4e0e-871a-085eb2f6ff20@intel.com>
+Date: Fri, 7 Mar 2025 10:41:49 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/10] x86/fpu/xstate: Add CET supervisor xfeature
- support
+Subject: Re: [PATCH v3 07/10] x86/fpu/xstate: Initialize guest fpstate with
+ fpu_guest_config
 To: Chao Gao <chao.gao@intel.com>, tglx@linutronix.de, x86@kernel.org,
  seanjc@google.com, pbonzini@redhat.com, linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org
@@ -61,7 +61,7 @@ Cc: peterz@infradead.org, rick.p.edgecombe@intel.com,
  weijiang.yang@intel.com, john.allen@amd.com, bp@alien8.de,
  Maxim Levitsky <mlevitsk@redhat.com>
 References: <20250307164123.1613414-1-chao.gao@intel.com>
- <20250307164123.1613414-9-chao.gao@intel.com>
+ <20250307164123.1613414-8-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -107,47 +107,55 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250307164123.1613414-9-chao.gao@intel.com>
+In-Reply-To: <20250307164123.1613414-8-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 3/7/25 08:41, Chao Gao wrote:
 > From: Yang Weijiang <weijiang.yang@intel.com>
 > 
-> To support CET virtualization, KVM needs the kernel to save/restore CET
-> supervisor xstate in guest FPUs when switching between guest and host
-> FPUs.
+> Use fpu_guest_cfg to initialize the guest fpstate and the guest FPU pseduo
+> container.
 > 
-> Add CET supervisor xstate (i.e., XFEATURE_CET_KERNEL) support. Both the
-> guest FPU and the kernel FPU will allocate memory for the new xstate.
-> For the guest FPU, the xstate remains unused until the upcoming CET
-> virtualization is added to KVM. For the kernel FPU, the xstate is unused
-> until CET_S is enabled within the kernel.
+> The user_* fields remain unchanged for compatibility with KVM uAPIs.
 > 
-> Note CET_S may or may not be enabled within the kernel, so always
-> allocating memory for XFEATURE_CET_KERNEL could potentially waste some
-> XSAVE buffer space. If necessary, this issue can be addressed by making
-> XFEATURE_CET_KERNEL a guest-only feature.
+> Inline the logic of __fpstate_reset() to directly utilize fpu_guest_cfg.
 
-I feel like these changelogs are long but say very little.
+Why? Seriously, why? Why would you just inline it? Could you please
+revisit the moment when you decided to do this? Please go back to that
+moment and try to unlearn whatever propensity you have for taking this path.
 
-This patch *WASTES* resources. Granted, it's only for a single patch,
-but it's totally not obvious.
+There are two choices: make the existing function work for guests, or
+add a new guest-only reset function.
 
-Could you work on tightening down the changelog, please?
+Just an an example:
 
-> --- a/arch/x86/kernel/fpu/xstate.c
-> +++ b/arch/x86/kernel/fpu/xstate.c
-> @@ -55,7 +55,7 @@ static const char *xfeature_names[] =
->  	"Protection Keys User registers",
->  	"PASID state",
->  	"Control-flow User registers",
-> -	"Control-flow Kernel registers (unused)",
-> +	"Control-flow Kernel registers",
+static void __fpstate_reset(struct fpstate *fpstate,
+			    struct fpu_state_config *kernel_cfg,
+			    u64 xfd)
+{
+        /* Initialize sizes and feature masks */
+        fpstate->size           = kernel_cfg->default_size;
+        fpstate->xfeatures      = kernel_cfg->default_features;
 
-This should probably be:
+	/* Some comment about why user states don't vary */
+        fpstate->user_size      = fpu_user_cfg.default_size;
+        fpstate->user_xfeatures = fpu_user_cfg.default_features;
 
-> +	"Control-flow Kernel registers (KVM only)",
+        fpstate->xfd            = xfd;
+}
 
-or something similar for now. XFEATURE_CET_KERNEL is *VERY* different
-from all of the other features and it's silly to pretend that it's the same.
+Then you have two call sites:
+
+	__fpstate_reset(fpstate, &fpu_guest_cfg, 0);
+and
+	__fpstate_reset(fpu->fpstate, &fpu_kernel_cfg,
+		        init_fpstate.xfd);
+
+What does this tell you?
+
+It clearly lays out that to reset an fpstate, you need a specific kernel
+config. That kernel config is (can be) different for guests.
+
+Refactoring the code as you go along is not optional. It's a requirement.
+
