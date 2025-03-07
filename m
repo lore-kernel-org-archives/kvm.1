@@ -1,16 +1,16 @@
 Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2FD1925AC
-	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBA62153D3
+	for <kvm@vger.kernel.org>; Fri,  7 Mar 2025 11:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741345442; cv=none; b=d5LbgW5Y39335Io63DehFZDSHyN/kIrUSgCS9S/51Py7OMQP9AGRuyBqxbylP3MibnjrIHzOqWYFWmgPzvfVJsp3MMsHrxrPlWpY8XRovc8H63wGREUZ4O3uD7zp1hua7Wk+qNBfWen5SdP2tTgxRIplpD4P7lwKQr4hg5PJWS8=
+	t=1741345655; cv=none; b=e5I+Dz4Faajtg9/76/vHuGTgg0R4RvQ5XC9C3HzqbuS1wtNI5hPzeKdowr2h8cEaU8V1PmsuYr1CM4AuWs61pdERw6+5cvB04PlEXszWcKT8zi0p59SF+fiX83Ywu4bmGzPAfqWRDiufjyiKT0o4M0fSww3Zj362VS3O4GHZ0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741345442; c=relaxed/simple;
-	bh=ym7AQyWsSXIYF70MZecVyVeOKF4z0+8GiYFk8nOGB4M=;
+	s=arc-20240116; t=1741345655; c=relaxed/simple;
+	bh=vOeB1lSXh2Q03TVsBIiJrkOe98Ok826Yhds7mOYT7Pc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c8NdlqrbgZk9h1rxJj+Yx8XT+DUnWeTugG+cRanp9e+hnhf1ud/fNP5dgOLCcf+Ddh4Jyn8ruXu2MgR72dg7n8IVhTpd5kKBd7hyaTaXg5w9KdbazlaznYfPFyYgvkVF/5i6ezJAHqndWWiirr4L+OwJxLFaRovwGDUwOjw51ug=
+	 In-Reply-To:Content-Type; b=lKNfjBlq1aa/1tZ7gmO7QKX9CKnpwdWcI0ir5y6ZxWRj8w76s/7hr8OZeZGYyyNmNQIw9g/Jonk5kMH9CRh3bOhpU3WCgJ3NdKQwEL98biSWzbpEystPAFMRcSmEdFJnu11XLwZFNW6LmxHtNZhO/zxFm9eou8QsqvzBlo72UEw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
@@ -18,10 +18,10 @@ Received: from MUA
 	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
 	(Exim 4.98)
 	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1tqVUh-00000000RND-2ZNg;
-	Fri, 07 Mar 2025 12:03:55 +0100
-Message-ID: <93aa0f81-06c6-4b6b-9d8b-fcae0c17f488@maciej.szmigiero.name>
-Date: Fri, 7 Mar 2025 12:03:49 +0100
+	id 1tqVYB-00000000RNf-2S43;
+	Fri, 07 Mar 2025 12:07:31 +0100
+Message-ID: <95a6f718-8fab-434c-9b02-6812f7afbcc3@maciej.szmigiero.name>
+Date: Fri, 7 Mar 2025 12:07:25 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -29,16 +29,19 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] hw/hyperv/vmbus: common compilation unit
+Subject: Re: [PATCH 5/7] hw/hyperv/syndbg: common compilation unit
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: kvm@vger.kernel.org, philmd@linaro.org, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, manos.pitsidianakis@linaro.org,
- richard.henderson@linaro.org, Marcelo Tosatti <mtosatti@redhat.com>,
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ manos.pitsidianakis@linaro.org, Marcelo Tosatti <mtosatti@redhat.com>,
  alex.bennee@linaro.org
 References: <20250306064118.3879213-1-pierrick.bouvier@linaro.org>
- <20250306064118.3879213-4-pierrick.bouvier@linaro.org>
- <adadeb12-9eb7-4338-828e-62e77034b1dd@maciej.szmigiero.name>
- <9ee1b0aa-27e3-47f9-8276-1158bfa5ad06@linaro.org>
+ <20250306064118.3879213-6-pierrick.bouvier@linaro.org>
+ <353b36fd-2265-43c3-8072-3055e5bd7057@linaro.org>
+ <35c2c7a5-5b12-4c21-a40a-375caae60d0c@linaro.org>
+ <d62743f5-ca79-47c0-a72b-c36308574bdd@linaro.org>
+ <6556fdd8-83ea-4cc6-9a3b-3822fdc8cb5d@linaro.org>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -82,204 +85,83 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
  IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
  VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
-In-Reply-To: <9ee1b0aa-27e3-47f9-8276-1158bfa5ad06@linaro.org>
+In-Reply-To: <6556fdd8-83ea-4cc6-9a3b-3822fdc8cb5d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: mhej@vps-ovh.mhejs.net
 
-Hi Pierrick,
-
-On 6.03.2025 23:59, Pierrick Bouvier wrote:
-> Hi Maciej,
+On 6.03.2025 23:56, Pierrick Bouvier wrote:
+> On 3/6/25 09:58, Philippe Mathieu-Daudé wrote:
+>> On 6/3/25 17:23, Pierrick Bouvier wrote:
+>>> On 3/6/25 08:19, Richard Henderson wrote:
+>>>> On 3/5/25 22:41, Pierrick Bouvier wrote:
+>>>>> Replace TARGET_PAGE.* by runtime calls
+>>>>>
+>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>>> ---
+>>>>>     hw/hyperv/syndbg.c    | 7 ++++---
+>>>>>     hw/hyperv/meson.build | 2 +-
+>>>>>     2 files changed, 5 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
+>>>>> index d3e39170772..f9382202ed3 100644
+>>>>> --- a/hw/hyperv/syndbg.c
+>>>>> +++ b/hw/hyperv/syndbg.c
+>>>>> @@ -14,7 +14,7 @@
+>>>>>     #include "migration/vmstate.h"
+>>>>>     #include "hw/qdev-properties.h"
+>>>>>     #include "hw/loader.h"
+>>>>> -#include "cpu.h"
+>>>>> +#include "exec/target_page.h"
+>>>>>     #include "hw/hyperv/hyperv.h"
+>>>>>     #include "hw/hyperv/vmbus-bridge.h"
+>>>>>     #include "hw/hyperv/hyperv-proto.h"
+>>>>> @@ -188,7 +188,8 @@ static uint16_t handle_recv_msg(HvSynDbg *syndbg,
+>>>>> uint64_t outgpa,
+>>>>>                                     uint64_t timeout, uint32_t
+>>>>> *retrieved_count)
+>>>>>     {
+>>>>>         uint16_t ret;
+>>>>> -    uint8_t data_buf[TARGET_PAGE_SIZE - UDP_PKT_HEADER_SIZE];
+>>>>> +    const size_t buf_size = qemu_target_page_size() -
+>>>>> UDP_PKT_HEADER_SIZE;
+>>>>> +    uint8_t *data_buf = g_alloca(buf_size);
+>>>>>         hwaddr out_len;
+>>>>>         void *out_data;
+>>>>>         ssize_t recv_byte_count;
+>>>>
+>>>> We've purged the code base of VLAs, and those are preferable to alloca.
+>>>> Just use g_malloc and g_autofree.
+>>>>
+>>>
+>>> I hesitated, due to potential performance considerations for people
+>>> reviewing the patch. I'll switch to heap based storage.
+>>
+>> OTOH hyperv is x86-only, so we could do:
+>>
+>> #define BUFSZ (4 * KiB)
+>>
+>> handle_recv_msg()
+>> {
+>>     uint8_t data_buf[BUFSZ - UDP_PKT_HEADER_SIZE];
+>>     ...
+>>
+>> hv_syndbg_class_init()
+>> {
+>>     assert(BUFSZ > qemu_target_page_size());
+>>     ...
+>>
+>> and call it a day.
 > 
-> we are currently working toward building a single QEMU binary able to emulate all architectures, and one prerequisite is to remove duplication of compilation units (some are duplicated per target now, because of compile time defines).
+> Could be possible for now yes.
 > 
-> So the work here is to replace those compile time defines with runtime functions instead, so the same code can be used for various architectures.
+> Any opinion from concerned maintainers?
 
-But this is x86-only where AFAIK page size is always 4k
-so is TARGET_PAGE_SIZE going away eventually or is the
-QEMU policy to get rid of it at the first opportunity?
-  
-> Is it more clear for you?
+I think essentially hardcoding 4k pages in hyperv is okay
+(with an appropriate checking/enforcement asserts() of course),
+since even if this gets ported to ARM64 at some point
+it is going to need *a lot* of changes anyway.
 
 Thanks,
 Maciej
-
-> On 3/6/25 12:29, Maciej S. Szmigiero wrote:
->> On 6.03.2025 07:41, Pierrick Bouvier wrote:
->>> Replace TARGET_PAGE.* by runtime calls.
->>
->> Seems like this patch subject/title is not aligned
->> well with its content, or a least incomplete.
->>
->> Also, could you provide more detailed information
->> why TARGET_PAGE_SIZE is getting replaced by
->> qemu_target_page_size() please?
->>
->> I don't see such information in the cover letter either.
->>
->> Thanks,
->> Maciej
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> ---
->>>    hw/hyperv/vmbus.c     | 50 +++++++++++++++++++++----------------------
->>>    hw/hyperv/meson.build |  2 +-
->>>    2 files changed, 26 insertions(+), 26 deletions(-)
->>>
->>> diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
->>> index 12a7dc43128..109ac319caf 100644
->>> --- a/hw/hyperv/vmbus.c
->>> +++ b/hw/hyperv/vmbus.c
->>> @@ -18,7 +18,7 @@
->>>    #include "hw/hyperv/vmbus.h"
->>>    #include "hw/hyperv/vmbus-bridge.h"
->>>    #include "hw/sysbus.h"
->>> -#include "cpu.h"
->>> +#include "exec/target_page.h"
->>>    #include "trace.h"
->>>    enum {
->>> @@ -309,7 +309,7 @@ void vmbus_put_gpadl(VMBusGpadl *gpadl)
->>>    uint32_t vmbus_gpadl_len(VMBusGpadl *gpadl)
->>>    {
->>> -    return gpadl->num_gfns * TARGET_PAGE_SIZE;
->>> +    return gpadl->num_gfns * qemu_target_page_size();
->>>    }
->>>    static void gpadl_iter_init(GpadlIter *iter, VMBusGpadl *gpadl,
->>> @@ -323,14 +323,14 @@ static void gpadl_iter_init(GpadlIter *iter, VMBusGpadl *gpadl,
->>>    static inline void gpadl_iter_cache_unmap(GpadlIter *iter)
->>>    {
->>> -    uint32_t map_start_in_page = (uintptr_t)iter->map & ~TARGET_PAGE_MASK;
->>> -    uint32_t io_end_in_page = ((iter->last_off - 1) & ~TARGET_PAGE_MASK) + 1;
->>> +    uint32_t map_start_in_page = (uintptr_t)iter->map & ~qemu_target_page_mask();
->>> +    uint32_t io_end_in_page = ((iter->last_off - 1) & ~qemu_target_page_mask()) + 1;
->>>        /* mapping is only done to do non-zero amount of i/o */
->>>        assert(iter->last_off > 0);
->>>        assert(map_start_in_page < io_end_in_page);
->>> -    dma_memory_unmap(iter->as, iter->map, TARGET_PAGE_SIZE - map_start_in_page,
->>> +    dma_memory_unmap(iter->as, iter->map, qemu_target_page_size() - map_start_in_page,
->>>                         iter->dir, io_end_in_page - map_start_in_page);
->>>    }
->>> @@ -348,17 +348,17 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
->>>        assert(iter->active);
->>>        while (len) {
->>> -        uint32_t off_in_page = iter->off & ~TARGET_PAGE_MASK;
->>> -        uint32_t pgleft = TARGET_PAGE_SIZE - off_in_page;
->>> +        uint32_t off_in_page = iter->off & ~qemu_target_page_mask();
->>> +        uint32_t pgleft = qemu_target_page_size() - off_in_page;
->>>            uint32_t cplen = MIN(pgleft, len);
->>>            void *p;
->>>            /* try to reuse the cached mapping */
->>>            if (iter->map) {
->>>                uint32_t map_start_in_page =
->>> -                (uintptr_t)iter->map & ~TARGET_PAGE_MASK;
->>> -            uint32_t off_base = iter->off & ~TARGET_PAGE_MASK;
->>> -            uint32_t mapped_base = (iter->last_off - 1) & ~TARGET_PAGE_MASK;
->>> +                (uintptr_t)iter->map & ~qemu_target_page_mask();
->>> +            uint32_t off_base = iter->off & ~qemu_target_page_mask();
->>> +            uint32_t mapped_base = (iter->last_off - 1) & ~qemu_target_page_mask();
->>>                if (off_base != mapped_base || off_in_page < map_start_in_page) {
->>>                    gpadl_iter_cache_unmap(iter);
->>>                    iter->map = NULL;
->>> @@ -368,10 +368,10 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
->>>            if (!iter->map) {
->>>                dma_addr_t maddr;
->>>                dma_addr_t mlen = pgleft;
->>> -            uint32_t idx = iter->off >> TARGET_PAGE_BITS;
->>> +            uint32_t idx = iter->off >> qemu_target_page_bits();
->>>                assert(idx < iter->gpadl->num_gfns);
->>> -            maddr = (iter->gpadl->gfns[idx] << TARGET_PAGE_BITS) | off_in_page;
->>> +            maddr = (iter->gpadl->gfns[idx] << qemu_target_page_bits()) | off_in_page;
->>>                iter->map = dma_memory_map(iter->as, maddr, &mlen, iter->dir,
->>>                                           MEMTXATTRS_UNSPECIFIED);
->>> @@ -382,7 +382,7 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
->>>                }
->>>            }
->>> -        p = (void *)(uintptr_t)(((uintptr_t)iter->map & TARGET_PAGE_MASK) |
->>> +        p = (void *)(uintptr_t)(((uintptr_t)iter->map & qemu_target_page_mask()) |
->>>                    off_in_page);
->>>            if (iter->dir == DMA_DIRECTION_FROM_DEVICE) {
->>>                memcpy(p, buf, cplen);
->>> @@ -591,9 +591,9 @@ static void ringbuf_init_common(VMBusRingBufCommon *ringbuf, VMBusGpadl *gpadl,
->>>                                    uint32_t begin, uint32_t end)
->>>    {
->>>        ringbuf->as = as;
->>> -    ringbuf->rb_addr = gpadl->gfns[begin] << TARGET_PAGE_BITS;
->>> -    ringbuf->base = (begin + 1) << TARGET_PAGE_BITS;
->>> -    ringbuf->len = (end - begin - 1) << TARGET_PAGE_BITS;
->>> +    ringbuf->rb_addr = gpadl->gfns[begin] << qemu_target_page_bits();
->>> +    ringbuf->base = (begin + 1) << qemu_target_page_bits();
->>> +    ringbuf->len = (end - begin - 1) << qemu_target_page_bits();
->>>        gpadl_iter_init(&ringbuf->iter, gpadl, as, dir);
->>>    }
->>> @@ -734,7 +734,7 @@ static int vmbus_channel_notify_guest(VMBusChannel *chan)
->>>        unsigned long *int_map, mask;
->>>        unsigned idx;
->>>        hwaddr addr = chan->vmbus->int_page_gpa;
->>> -    hwaddr len = TARGET_PAGE_SIZE / 2, dirty = 0;
->>> +    hwaddr len = qemu_target_page_size() / 2, dirty = 0;
->>>        trace_vmbus_channel_notify_guest(chan->id);
->>> @@ -743,7 +743,7 @@ static int vmbus_channel_notify_guest(VMBusChannel *chan)
->>>        }
->>>        int_map = cpu_physical_memory_map(addr, &len, 1);
->>> -    if (len != TARGET_PAGE_SIZE / 2) {
->>> +    if (len != qemu_target_page_size() / 2) {
->>>            res = -ENXIO;
->>>            goto unmap;
->>>        }
->>> @@ -1038,14 +1038,14 @@ static int sgl_from_gpa_ranges(QEMUSGList *sgl, VMBusDevice *dev,
->>>            }
->>>            len -= sizeof(range);
->>> -        if (range.byte_offset & TARGET_PAGE_MASK) {
->>> +        if (range.byte_offset & qemu_target_page_mask()) {
->>>                goto eio;
->>>            }
->>>            for (; range.byte_count; range.byte_offset = 0) {
->>>                uint64_t paddr;
->>>                uint32_t plen = MIN(range.byte_count,
->>> -                                TARGET_PAGE_SIZE - range.byte_offset);
->>> +                                qemu_target_page_size() - range.byte_offset);
->>>                if (len < sizeof(uint64_t)) {
->>>                    goto eio;
->>> @@ -1055,7 +1055,7 @@ static int sgl_from_gpa_ranges(QEMUSGList *sgl, VMBusDevice *dev,
->>>                    goto err;
->>>                }
->>>                len -= sizeof(uint64_t);
->>> -            paddr <<= TARGET_PAGE_BITS;
->>> +            paddr <<= qemu_target_page_bits();
->>>                paddr |= range.byte_offset;
->>>                range.byte_count -= plen;
->>> @@ -1804,7 +1804,7 @@ static void handle_gpadl_header(VMBus *vmbus, vmbus_message_gpadl_header *msg,
->>>         * anything else and simplify things greatly.
->>>         */
->>>        if (msg->rangecount != 1 || msg->range[0].byte_offset ||
->>> -        (msg->range[0].byte_count != (num_gfns << TARGET_PAGE_BITS))) {
->>> +        (msg->range[0].byte_count != (num_gfns << qemu_target_page_bits()))) {
->>>            return;
->>>        }
->>> @@ -2240,10 +2240,10 @@ static void vmbus_signal_event(EventNotifier *e)
->>>            return;
->>>        }
->>> -    addr = vmbus->int_page_gpa + TARGET_PAGE_SIZE / 2;
->>> -    len = TARGET_PAGE_SIZE / 2;
->>> +    addr = vmbus->int_page_gpa + qemu_target_page_size() / 2;
->>> +    len = qemu_target_page_size() / 2;
->>>        int_map = cpu_physical_memory_map(addr, &len, 1);
->>> -    if (len != TARGET_PAGE_SIZE / 2) {
->>> +    if (len != qemu_target_page_size() / 2) {
->>>            goto unmap;
->>>        }
->>> diff --git a/hw/hyperv/meson.build b/hw/hyperv/meson.build
->>> index f4aa0a5ada9..c855fdcf04c 100644
->>> --- a/hw/hyperv/meson.build
->>> +++ b/hw/hyperv/meson.build
->>> @@ -1,6 +1,6 @@
->>>    specific_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'))
->>>    specific_ss.add(when: 'CONFIG_HYPERV_TESTDEV', if_true: files('hyperv_testdev.c'))
->>> -specific_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
->>> +system_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
->>>    specific_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
->>>    specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
->>>    system_ss.add(when: 'CONFIG_HV_BALLOON', if_false: files('hv-balloon-stub.c'))
->>
-> 
 
