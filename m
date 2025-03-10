@@ -1,175 +1,221 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA69635965
-	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96135965
+	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741594802; cv=none; b=bdfoqqBjd2laVNGgQwFN7HTEMQDXdPh1ZHQZ5eeXRssOQFywy6CxO6AuaLihLpfoHK1aSE1OUM9UMpeiLOlg2KXF/EVPQIWJfdTQsCh8Tbh3Em7fNhChBhuSIxEdkY77Y/7NSzy4Stev83QWruMkRyUXPYRZUdbjbZmIRawcYq8=
+	t=1741594819; cv=none; b=VnGFi+JjdnlTdVvb9bNca9XlS71pIrvgNKaA+3QEp+0JipDEHaaIyzElxsYGMTgzRfbnGpVHXVLgxQx8E8pp7uh1WQjlgTMwjRslS7puTZOG1AqjlsAzobLDBLD0E76ipqBxCyKoIwfwo5KpznlazUVzh2ITgdsgFINTeqWpQXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741594802; c=relaxed/simple;
-	bh=1qCIX0TQ5VXGwGb6MIvIi3xBni/hWIDm52W5XN2ckVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cGb06/xUqNHnIMPFvR74Ma4q+YFpZMbewDzTMQNaO+WSeLq84RDZSz0/gG+sui8VcOHokj5IDim5xfdkDrSjug9YahEZxwOOeP2j9rv9ex+NmEp6XGflvgqt7fl/iRVa/Ke+d2kMPPIi9vVbR7dY8kb9HgGBTZ84xC9dMNs4EGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ec92ZRaZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741594819; c=relaxed/simple;
+	bh=LXWNHMvLvXD0VwhJ6IcIyTnGaD9zgRK8HpIgyy3vA6E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IYEG0w5knMwBh2W6ZxL0coaqB2ZeM38ZPMo6iq9OTLR+WFAYXPTBR9HmkONeLSBr9pb0AFBtDC8285d8vkJIAqcJpn2TcI99XfjuuoElKSqP3I5nXmwu1Pfr5oOmf84i5Gdewvj34A6dUFkmjYd4Tm4BARm9XKKG4g5CLeNWfR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ABjhcdoW; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ec92ZRaZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741594799;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N8dh/VhidLhRnAZYmemneE028i0H2G6UoHb9BsguyTc=;
-	b=ec92ZRaZi1ObHosgvfCMLU9A0S3fx1N1DnUdspubrbeE3rlszKHdbpMh2X1g6RDfMqDzt3
-	VWmC8Nzqd/In2rPn4eFMuAvYU3/7/2/4OIwxQ4pBOgJfjOfOX+wyEekxYxLDLdCBmeRvbd
-	7W5mk1jAs7DKF3z2MM4Nly0vICu7j0M=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486--TPRPUtwNZ2CO42miQ0gzQ-1; Mon, 10 Mar 2025 04:19:58 -0400
-X-MC-Unique: -TPRPUtwNZ2CO42miQ0gzQ-1
-X-Mimecast-MFC-AGG-ID: -TPRPUtwNZ2CO42miQ0gzQ_1741594797
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3912539665cso2172630f8f.1
-        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 01:19:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741594797; x=1742199597;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N8dh/VhidLhRnAZYmemneE028i0H2G6UoHb9BsguyTc=;
-        b=UICr0PgtEg0q0rgE5E96U3Q35mtcAVN+p2PpBrGFfAlbcm/ziUYwhOEYj3jsywYG3V
-         ttlYXGIf4xhKBsKbvTkk4hfTsE828aU96KMx4WrcY5sJSWmehVR20nRSuoMTsGNGS4iX
-         3+ej9I5MHmx6cQppGFvy3pRHSOROZ/vgOzZ54y0lq92aooWsvkAoq7sn4ZeiQgL2VUrE
-         KenPeH6RqjaTkj2HlhvhC/vJ5RxPoRn7d/u9hmi+Wc5EXCKlTVLEgV2Kg9RlHDwlNYex
-         tE+iRs9h/L+hRH7fH1vIaUmGrOgAN6DNEPibQXYQ3iuu/c6JxM1vhDY2ddCFB1v762ct
-         GshA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvzifiaA86jVNIZ5XOjWj+wRUQypRopI39Vv2/XUqXErFJgP75Fn2SygaUwN6VEJKNE4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ2x1QFx26UHroCRKZo6D+uUcO+XK71NuUot5m56Ds9K5K2NoF
-	eEg9p8TVWIF4nOTsDcCXeE1lBI3HBuf6eaPQZsmCIZwo8EOvLLrlcfNDUkWI/i83P5ln+DEnvyE
-	Yzmk5Jx+CVQd9CRAc53tuR8jPjhGcW4U7yVgNVNa2D9GsYK7WIQ==
-X-Gm-Gg: ASbGncvBjhC2fN13uUrPKXM1cOBDTEvEV6moZP2cwlxLUPmkBPRjhDoBSCqC7f5mYBv
-	xWpwMWv9ht2jw/s+VG/5STLYkcIW0tNbfvFHEkCNFry8BMhIyt82lbgSLn7/JsLauiNDxt+1rGL
-	4++H+dz3TEzkz2G/GHA1KyFxL/Js1moEOf6RJ4/2ZdCbJjBMPGTDQMQejwQJdIz+FI2D4E7T+Ym
-	1rVCm89sQrabKVNvhj8cUXNBhgR97UAVGtmzrLrsjp4B9EOJiJ8RySLGy7WlXgH+eM/Y40CgF/k
-	sjgAPjKEO5MWAz+czIBZPO32wRuKE3//8x1g5bOaHvU5WQ+PQ2zBugZtpqQgSrU=
-X-Received: by 2002:a05:6000:18a9:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3913af2dcb5mr5699513f8f.22.1741594797255;
-        Mon, 10 Mar 2025 01:19:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJQwUb1052QL6wDZkevtHZEP40DWReuAaQITFm7+tPcB4MO94B9hab5aIHRUEbMoZhyRFO3g==
-X-Received: by 2002:a05:6000:18a9:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3913af2dcb5mr5699488f8f.22.1741594796855;
-        Mon, 10 Mar 2025 01:19:56 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd9470e2sm136236215e9.33.2025.03.10.01.19.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Mar 2025 01:19:55 -0700 (PDT)
-Message-ID: <a7ccab3e-af5b-44d0-a7d0-bfc0e218d532@redhat.com>
-Date: Mon, 10 Mar 2025 09:19:52 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ABjhcdoW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741594817; x=1773130817;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LXWNHMvLvXD0VwhJ6IcIyTnGaD9zgRK8HpIgyy3vA6E=;
+  b=ABjhcdoWEpCTsZaw8XZRA3qr5G81ozn/3uF2LxHW92sqxXi/VJ9aKT0O
+   kfFylQyCASFIibuRwRi1VkmGjUv2vPH+YoOZEbaNHVugY5r8cEFd//Vva
+   3IZoQpRCUdqsz7m5XI7vCS9tdLSJcvY+id5uqDzeUWBnY13Y7ikZxiv8u
+   qlJ5ooxlQqkWs217DsPy+3GoFXdzfpx3trhph4py7BlU3to9b4KvY6SdC
+   6P4jpAtZKclpu+1F6D7qEDfUW6zYxVuFOBdG9GwtKpx1/A8WrsJnzoPTY
+   c6kJXmrA1zqoux+c7pjTQHAn1/ZoHjEeqnGyoXWmPHVsbBVtevuH/0QNf
+   A==;
+X-CSE-ConnectionGUID: MUrml70DQT+dbjnT33bptg==
+X-CSE-MsgGUID: 36UKrJlkR7aaWt3dvie/Yg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42688441"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
+   d="scan'208";a="42688441"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 01:20:16 -0700
+X-CSE-ConnectionGUID: 8jJCGZSLQg+TyO4E3PI0/w==
+X-CSE-MsgGUID: rn7e5Ph6R2+rfXMhZWE4GA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
+   d="scan'208";a="150862776"
+Received: from emr-bkc.sh.intel.com ([10.112.230.82])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 01:20:13 -0700
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+To: David Hildenbrand <david@redhat.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Peter Xu <peterx@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Michael Roth <michael.roth@amd.com>
+Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
+	qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	Williams Dan J <dan.j.williams@intel.com>,
+	Peng Chao P <chao.p.peng@intel.com>,
+	Gao Chao <chao.gao@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Li Xiaoyao <xiaoyao.li@intel.com>
+Subject: [PATCH v3 0/7] Enable shared device assignment
+Date: Mon, 10 Mar 2025 16:18:28 +0800
+Message-ID: <20250310081837.13123-1-chenyi.qiang@intel.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH v2 03/21] hw/vfio: Compile some common objects once
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
- <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-References: <20250308230917.18907-1-philmd@linaro.org>
- <20250308230917.18907-4-philmd@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250308230917.18907-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+This is the v3 series of the shared device assignment support.
 
+The overview of this series:
+- Patch 1-3: preparation patches. The function exposure and some
+  defintion change to return values.
+- Patch 4-5: Introduce a new object to implement RamDiscardManager
+  interface and a callback to notify the shared/private state change.
+- Patch 6: Store the new object including guest_memfd information in
+  RAMBlock. Register the RamDiscardManager instance to the target
+  RAMBlock's MemoryRegion so that the object can notify the page
+  conversion events to other systems.
+- Patch 7: Unlock the coordinate discard so that the shared device
+  assignment (VFIO) can work with guest_memfd.
 
+Compared with v2 series, the main changes are:
 
-On 3/9/25 12:08 AM, Philippe Mathieu-Daudé wrote:
-> Some files don't rely on any target-specific knowledge
-> and can be compiled once:
->
->  - helpers.c
->  - container-base.c
->  - migration.c (removing unnecessary "exec/ram_addr.h")
->  - migration-multifd.c
->  - cpr.c
->
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+- Introduce the new patch 04 to unify the definiton of ReplayRamPopulate()
+  and ReplayRamDiscard().
+- In state_change() callback, fallback to a "1 block at a time" handling in case of
+  mixed state. In addition, change the bitmap before calling the
+  listener so that the listener can do the change according to the
+  latest status.
+- In kvm_convert_memory(), use ReplayPopulated() and ReplayDiscard()
+  interface to trigger set_attribute() and add the undo operation if
+  state_change() failed.
+- v2: https://lore.kernel.org/qemu-devel/20250217081833.21568-1-chenyi.qiang@intel.com/
 
-Eric
-> ---
->  hw/vfio/migration.c |  1 -
->  hw/vfio/meson.build | 13 ++++++++-----
->  2 files changed, 8 insertions(+), 6 deletions(-)
->
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 416643ddd69..fbff46cfc35 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -27,7 +27,6 @@
->  #include "qapi/error.h"
->  #include "qapi/qapi-events-vfio.h"
->  #include "exec/ramlist.h"
-> -#include "exec/ram_addr.h"
->  #include "pci.h"
->  #include "trace.h"
->  #include "hw/hw.h"
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index 260d65febd6..8e376cfcbf8 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -1,12 +1,7 @@
->  vfio_ss = ss.source_set()
->  vfio_ss.add(files(
-> -  'helpers.c',
->    'common.c',
-> -  'container-base.c',
->    'container.c',
-> -  'migration.c',
-> -  'migration-multifd.c',
-> -  'cpr.c',
->  ))
->  vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
->  vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
-> @@ -25,3 +20,11 @@ vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
->  vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
->  
->  specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
-> +
-> +system_ss.add(when: 'CONFIG_VFIO', if_true: files(
-> +  'helpers.c',
-> +  'container-base.c',
-> +  'migration.c',
-> +  'migration-multifd.c',
-> +  'cpr.c',
-> +))
+More small changes or details can be found in the individual patches.
+
+---
+Original cover letter:
+
+Background
+==========
+Confidential VMs have two classes of memory: shared and private memory.
+Shared memory is accessible from the host/VMM while private memory is
+not. Confidential VMs can decide which memory is shared/private and
+convert memory between shared/private at runtime.
+
+"guest_memfd" is a new kind of fd whose primary goal is to serve guest
+private memory. In current implementation, shared memory is allocated
+with normal methods (e.g. mmap or fallocate) while private memory is
+allocated from guest_memfd. When a VM performs memory conversions, QEMU
+frees pages via madvise or via PUNCH_HOLE on memfd or guest_memfd from
+one side, and allocates new pages from the other side. This will cause a
+stale IOMMU mapping issue mentioned in [1] when we try to enable shared
+device assignment in confidential VMs.
+
+Solution
+========
+The key to enable shared device assignment is to update the IOMMU mappings
+on page conversion. RamDiscardManager, an existing interface currently
+utilized by virtio-mem, offers a means to modify IOMMU mappings in
+accordance with VM page assignment. Page conversion is similar to
+hot-removing a page in one mode and adding it back in the other.
+
+This series implements a RamDiscardManager for confidential VMs and
+utilizes its infrastructure to notify VFIO of page conversions.
+
+Relationship with in-place page conversion
+==========================================
+To support 1G page support for guest_memfd [2], the current direction is to
+allow mmap() of guest_memfd to userspace so that both private and shared
+memory can use the same physical pages as the backend. This in-place page
+conversion design eliminates the need to discard pages during shared/private
+conversions. However, device assignment will still be blocked because the
+in-place page conversion will reject the conversion when the page is pinned
+by VFIO.
+
+To address this, the key difference lies in the sequence of VFIO map/unmap
+operations and the page conversion. It can be adjusted to achieve
+unmap-before-conversion-to-private and map-after-conversion-to-shared,
+ensuring compatibility with guest_memfd.
+
+Limitation
+==========
+One limitation is that VFIO expects the DMA mapping for a specific IOVA
+to be mapped and unmapped with the same granularity. The guest may
+perform partial conversions, such as converting a small region within a
+larger region. To prevent such invalid cases, all operations are
+performed with 4K granularity. This could be optimized after the
+cut_mapping operation [3] is introduced in future. We can alway perform a
+split-before-unmap if partial conversions happen. If the split succeeds,
+the unmap will succeed and be atomic. If the split fails, the unmap
+process fails.
+
+Testing
+=======
+This patch series is tested based on TDX patches available at:
+KVM: https://github.com/intel/tdx/tree/kvm-coco-queue-snapshot/kvm-coco-queue-snapshot-20250308
+QEMU: https://github.com/intel-staging/qemu-tdx/tree/tdx-upstream-snapshot-2025-03-10
+
+To facilitate shared device assignment with the NIC, employ the legacy
+type1 VFIO with the QEMU command:
+
+qemu-system-x86_64 [...]
+    -device vfio-pci,host=XX:XX.X
+
+The parameter of dma_entry_limit needs to be adjusted. For example, a
+16GB guest needs to adjust the parameter like
+vfio_iommu_type1.dma_entry_limit=4194304.
+
+If use the iommufd-backed VFIO with the qemu command:
+
+qemu-system-x86_64 [...]
+    -object iommufd,id=iommufd0 \
+    -device vfio-pci,host=XX:XX.X,iommufd=iommufd0
+
+No additional adjustment required.
+
+Following the bootup of the TD guest, the guest's IP address becomes
+visible, and iperf is able to successfully send and receive data.
+
+Related link
+============
+[1] https://lore.kernel.org/qemu-devel/20240423150951.41600-54-pbonzini@redhat.com/
+[2] https://lore.kernel.org/lkml/cover.1726009989.git.ackerleytng@google.com/
+[3] https://lore.kernel.org/linux-iommu/7-v1-01fa10580981+1d-iommu_pt_jgg@nvidia.com/
+
+Chenyi Qiang (7):
+  memory: Export a helper to get intersection of a MemoryRegionSection
+    with a given range
+  memory: Change memory_region_set_ram_discard_manager() to return the
+    result
+  memory: Unify the definiton of ReplayRamPopulate() and
+    ReplayRamDiscard()
+  memory-attribute-manager: Introduce MemoryAttributeManager to manage
+    RAMBLock with guest_memfd
+  memory-attribute-manager: Introduce a callback to notify the
+    shared/private state change
+  memory: Attach MemoryAttributeManager to guest_memfd-backed RAMBlocks
+  RAMBlock: Make guest_memfd require coordinate discard
+
+ accel/kvm/kvm-all.c                       |  50 ++-
+ hw/virtio/virtio-mem.c                    |  81 ++--
+ include/exec/memory.h                     |  64 ++-
+ include/exec/ramblock.h                   |   2 +
+ include/system/memory-attribute-manager.h |  60 +++
+ migration/ram.c                           |   5 +-
+ system/memory-attribute-manager.c         | 471 ++++++++++++++++++++++
+ system/memory.c                           |  22 +-
+ system/meson.build                        |   1 +
+ system/physmem.c                          |  17 +-
+ 10 files changed, 690 insertions(+), 83 deletions(-)
+ create mode 100644 include/system/memory-attribute-manager.h
+ create mode 100644 system/memory-attribute-manager.c
+
+-- 
+2.43.5
 
