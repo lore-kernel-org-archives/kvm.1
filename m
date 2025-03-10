@@ -1,64 +1,73 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26813E41A
-	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA69635965
+	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741594609; cv=none; b=O82OIZGq9+LQ868n/O7HUMuf99Im8W778kg7BSxQgZK+pRlo3jnUM5kwXGBMaOijoVeWousk6aFW0f2QjIghgc3Eoa3CE7E0epnrwD1ryc2z44NAIkDJxR91F2I7mWwNdh4SBG4C34yLzeo9EDZmZoTb2HiOjPaQe/HkV3UQdhY=
+	t=1741594802; cv=none; b=bdfoqqBjd2laVNGgQwFN7HTEMQDXdPh1ZHQZ5eeXRssOQFywy6CxO6AuaLihLpfoHK1aSE1OUM9UMpeiLOlg2KXF/EVPQIWJfdTQsCh8Tbh3Em7fNhChBhuSIxEdkY77Y/7NSzy4Stev83QWruMkRyUXPYRZUdbjbZmIRawcYq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741594609; c=relaxed/simple;
-	bh=bYJgB5J1rWOwdnYTlKo6V+nCLjOSgt8m+waOje7Vwoo=;
+	s=arc-20240116; t=1741594802; c=relaxed/simple;
+	bh=1qCIX0TQ5VXGwGb6MIvIi3xBni/hWIDm52W5XN2ckVU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MxCyc+ekWLHbi0DTMBmeOhJtGhmRoK1DdEsLraMxs/Vl/wBYvvvudmwusdq/erWscFZuoeZuGmt1qwxNyJVwwOk43u+Tgumv7duJKsgC/4OhiuiOvV0dXNglmaH/y4ZGDr2Mn+q6QULd2RnGJ57MSr86WsyQy6/tFWyHaRQcUzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=NBn0+jdL; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	 In-Reply-To:Content-Type; b=cGb06/xUqNHnIMPFvR74Ma4q+YFpZMbewDzTMQNaO+WSeLq84RDZSz0/gG+sui8VcOHokj5IDim5xfdkDrSjug9YahEZxwOOeP2j9rv9ex+NmEp6XGflvgqt7fl/iRVa/Ke+d2kMPPIi9vVbR7dY8kb9HgGBTZ84xC9dMNs4EGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ec92ZRaZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="NBn0+jdL"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2232aead377so3616315ad.0
-        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 01:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741594606; x=1742199406; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmMfWN/YjTztlUTbhbD2bh8ol9HLPI3qHdmgf2q4Pyk=;
-        b=NBn0+jdL7TtqMlPl4/KtYMrMunRagWlS6tO3+ay0X4H+WhhkJwuU7ueUX5D1NIZkas
-         f4mKJHieBq5ypC7rZFa17DbwcsoAZmVGWhBL/rOXx9A23dx2C7BlUkJAh52Hs3XqSLTn
-         P/NdUhRLn1WqIq649kD06QH/sKTYmp6f5xsgAYLb0hbTseeN8/lwpnQz/sTvn6ovc4K/
-         v3HT23f/dOxrK0E5TojvrnqXTL7CF2iQBKuWSD+ipN5FjjJGO/VVyV/Razy7Q9Q4ZORc
-         EZj3GrVfAZOt9kAAjcCD9SBJOObn+r+LQ8H92CSYYwOeefZeTaIAEvC/61vA2CfDGZDM
-         EkLg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ec92ZRaZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741594799;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N8dh/VhidLhRnAZYmemneE028i0H2G6UoHb9BsguyTc=;
+	b=ec92ZRaZi1ObHosgvfCMLU9A0S3fx1N1DnUdspubrbeE3rlszKHdbpMh2X1g6RDfMqDzt3
+	VWmC8Nzqd/In2rPn4eFMuAvYU3/7/2/4OIwxQ4pBOgJfjOfOX+wyEekxYxLDLdCBmeRvbd
+	7W5mk1jAs7DKF3z2MM4Nly0vICu7j0M=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-486--TPRPUtwNZ2CO42miQ0gzQ-1; Mon, 10 Mar 2025 04:19:58 -0400
+X-MC-Unique: -TPRPUtwNZ2CO42miQ0gzQ-1
+X-Mimecast-MFC-AGG-ID: -TPRPUtwNZ2CO42miQ0gzQ_1741594797
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3912539665cso2172630f8f.1
+        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 01:19:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741594606; x=1742199406;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmMfWN/YjTztlUTbhbD2bh8ol9HLPI3qHdmgf2q4Pyk=;
-        b=nKEV0pufZKn8F0B8OtgykIWAHn5giMzF6fyQ8676qQIt6kZcx8jVlRBOuyvh8X2qxp
-         3v6E5gSPPxpUq+SzpOWrenuNdDiYi+hYCmoG6/ks+lR8u28Y+4U94LYe43d6uVqhzJLW
-         8A7CXbkTmUOMFBO5pinsLwuz5Hn2KUmSMiuSPcyBs+o7qsoWW6+OQPOxbXy+Yfe2ErXO
-         rD5Kp6oYgOX0wQIrxczJXuDG3pW7IwwLJc/XDFMu3hJdr1bYMAI+ySYC+ZMObfC3DuUU
-         rjoyxrtQ7yHh4rlI3zaGVS9SQGyD4aZlJNUBWZ3M2Utd0UgVz9Yazu8vcffQhhJDh0am
-         vJ9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXafP9JjPvGrEWYz9I+yRjjtxSvSSdwK22iEaSUSeRYkPiJnXwcpnJcHt088dzB5ZD6X8E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfpHveYWr1nhP3ntF+pbNcI7wYB8Bjusyd4vTIDtgqwK7cLetw
-	4ZifURozoartCkKZ59LunXKd5BLBb5nLuuiBzCMEXjGomoXjqUYaz71LTGuijV0=
-X-Gm-Gg: ASbGncv2R1Vi5saVtPlCCZocCkneF0z5uSE56Q/IJ+FRjWMNbAyHV8yF0pIYq9pXGII
-	pDWf9cCryOYsek50rjZ6y+1SAU0XG1sVNjfGlOE58+2XWpETLFnuyQPOYDFJBiUWYeeJinF8CLV
-	nfNgMG9WexP2zcVAnh4OYaVMa0sIEbAnMdMI7Ta9eirlhYUm+q69Lsn9HwA0xdqEcxYeyHnrlX0
-	fC8QNPDp76iWP8VC8eaj6FDynZrT/VwZnjv54o/LIURM/njxCNw1hqSpK8cq77tb0I3kFiB9/8j
-	ivawUvVUEJrYXWAxKGOkulFILPj/svsTDpvwk9P4ORhA6jlg31CX/ZJQMQ==
-X-Google-Smtp-Source: AGHT+IF0rPYRbicP0/CqimCD18L/ZR4wVPSR4hAOvttkF0NCrjknQOFhZJD3NGgEaMlKRFPN5jMntA==
-X-Received: by 2002:a05:6a00:4f90:b0:736:3d6c:aa64 with SMTP id d2e1a72fcca58-736aab13b03mr19832278b3a.21.1741594606209;
-        Mon, 10 Mar 2025 01:16:46 -0700 (PDT)
-Received: from [157.82.205.237] ([157.82.205.237])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736e085c030sm819390b3a.14.2025.03.10.01.16.41
+        d=1e100.net; s=20230601; t=1741594797; x=1742199597;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N8dh/VhidLhRnAZYmemneE028i0H2G6UoHb9BsguyTc=;
+        b=UICr0PgtEg0q0rgE5E96U3Q35mtcAVN+p2PpBrGFfAlbcm/ziUYwhOEYj3jsywYG3V
+         ttlYXGIf4xhKBsKbvTkk4hfTsE828aU96KMx4WrcY5sJSWmehVR20nRSuoMTsGNGS4iX
+         3+ej9I5MHmx6cQppGFvy3pRHSOROZ/vgOzZ54y0lq92aooWsvkAoq7sn4ZeiQgL2VUrE
+         KenPeH6RqjaTkj2HlhvhC/vJ5RxPoRn7d/u9hmi+Wc5EXCKlTVLEgV2Kg9RlHDwlNYex
+         tE+iRs9h/L+hRH7fH1vIaUmGrOgAN6DNEPibQXYQ3iuu/c6JxM1vhDY2ddCFB1v762ct
+         GshA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvzifiaA86jVNIZ5XOjWj+wRUQypRopI39Vv2/XUqXErFJgP75Fn2SygaUwN6VEJKNE4Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ2x1QFx26UHroCRKZo6D+uUcO+XK71NuUot5m56Ds9K5K2NoF
+	eEg9p8TVWIF4nOTsDcCXeE1lBI3HBuf6eaPQZsmCIZwo8EOvLLrlcfNDUkWI/i83P5ln+DEnvyE
+	Yzmk5Jx+CVQd9CRAc53tuR8jPjhGcW4U7yVgNVNa2D9GsYK7WIQ==
+X-Gm-Gg: ASbGncvBjhC2fN13uUrPKXM1cOBDTEvEV6moZP2cwlxLUPmkBPRjhDoBSCqC7f5mYBv
+	xWpwMWv9ht2jw/s+VG/5STLYkcIW0tNbfvFHEkCNFry8BMhIyt82lbgSLn7/JsLauiNDxt+1rGL
+	4++H+dz3TEzkz2G/GHA1KyFxL/Js1moEOf6RJ4/2ZdCbJjBMPGTDQMQejwQJdIz+FI2D4E7T+Ym
+	1rVCm89sQrabKVNvhj8cUXNBhgR97UAVGtmzrLrsjp4B9EOJiJ8RySLGy7WlXgH+eM/Y40CgF/k
+	sjgAPjKEO5MWAz+czIBZPO32wRuKE3//8x1g5bOaHvU5WQ+PQ2zBugZtpqQgSrU=
+X-Received: by 2002:a05:6000:18a9:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3913af2dcb5mr5699513f8f.22.1741594797255;
+        Mon, 10 Mar 2025 01:19:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJQwUb1052QL6wDZkevtHZEP40DWReuAaQITFm7+tPcB4MO94B9hab5aIHRUEbMoZhyRFO3g==
+X-Received: by 2002:a05:6000:18a9:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3913af2dcb5mr5699488f8f.22.1741594796855;
+        Mon, 10 Mar 2025 01:19:56 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd9470e2sm136236215e9.33.2025.03.10.01.19.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Mar 2025 01:16:45 -0700 (PDT)
-Message-ID: <5cfedd24-de7c-484b-afa7-ddb4828fb9e8@daynix.com>
-Date: Mon, 10 Mar 2025 17:16:41 +0900
+        Mon, 10 Mar 2025 01:19:55 -0700 (PDT)
+Message-ID: <a7ccab3e-af5b-44d0-a7d0-bfc0e218d532@redhat.com>
+Date: Mon, 10 Mar 2025 09:19:52 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,99 +75,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 3/6] tun: Introduce virtio-net hash feature
-To: Jason Wang <jasowang@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com,
- Lei Yang <leiyang@redhat.com>, Simon Horman <horms@kernel.org>
-References: <20250307-rss-v9-0-df76624025eb@daynix.com>
- <20250307-rss-v9-3-df76624025eb@daynix.com>
- <CACGkMEsNHba=PY5UQoH1zdGQRiHC8FugMG1nkXqOj1TBdOQrww@mail.gmail.com>
- <CACGkMEtCEwSB7XvCg7_8ebkcM8o2s8JB2Err2f153L-_i2KtxA@mail.gmail.com>
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v2 03/21] hw/vfio: Compile some common objects once
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEtCEwSB7XvCg7_8ebkcM8o2s8JB2Err2f153L-_i2KtxA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
+ <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
+References: <20250308230917.18907-1-philmd@linaro.org>
+ <20250308230917.18907-4-philmd@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250308230917.18907-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 2025/03/10 13:01, Jason Wang wrote:
-> On Mon, Mar 10, 2025 at 11:55 AM Jason Wang <jasowang@redhat.com> wrote:
->>
->> On Fri, Mar 7, 2025 at 7:01 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>
->>> Hash reporting
->>> ==============
->>>
->>> Allow the guest to reuse the hash value to make receive steering
->>> consistent between the host and guest, and to save hash computation.
->>>
->>> RSS
->>> ===
->>>
->>> RSS is a receive steering algorithm that can be negotiated to use with
->>> virtio_net. Conventionally the hash calculation was done by the VMM.
->>> However, computing the hash after the queue was chosen defeats the
->>> purpose of RSS.
->>>
->>> Another approach is to use eBPF steering program. This approach has
->>> another downside: it cannot report the calculated hash due to the
->>> restrictive nature of eBPF steering program.
->>>
->>> Introduce the code to perform RSS to the kernel in order to overcome
->>> thse challenges. An alternative solution is to extend the eBPF steering
->>> program so that it will be able to report to the userspace, but I didn't
->>> opt for it because extending the current mechanism of eBPF steering
->>> program as is because it relies on legacy context rewriting, and
->>> introducing kfunc-based eBPF will result in non-UAPI dependency while
->>> the other relevant virtualization APIs such as KVM and vhost_net are
->>> UAPIs.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> Tested-by: Lei Yang <leiyang@redhat.com>
->>> ---
->>>   Documentation/networking/tuntap.rst |   7 ++
->>>   drivers/net/Kconfig                 |   1 +
->>>   drivers/net/tap.c                   |  68 ++++++++++++++-
->>>   drivers/net/tun.c                   |  98 +++++++++++++++++-----
->>>   drivers/net/tun_vnet.h              | 159 ++++++++++++++++++++++++++++++++++--
->>>   include/linux/if_tap.h              |   2 +
->>>   include/linux/skbuff.h              |   3 +
->>>   include/uapi/linux/if_tun.h         |  75 +++++++++++++++++
->>>   net/core/skbuff.c                   |   4 +
->>>   9 files changed, 386 insertions(+), 31 deletions(-)
-> 
-> [...]
-> 
->>> + *
->>> + * The %TUN_VNET_HASH_REPORT flag set with this ioctl will be effective only
->>> + * after calling the %TUNSETVNETHDRSZ ioctl with a number greater than or equal
->>> + * to the size of &struct virtio_net_hdr_v1_hash.
->>
->> So you had a dependency check already for vnet hdr len. I'd still
->> suggest to split this into rss and hash as they are separated
->> features. Then we can use separate data structure for them instead of
->> a container struct.
->>
-> 
-> Besides this, I think we still need to add new bits to TUNGETIFF to
-> let userspace know about the new ability.
 
-The userspace can peform TUNGETVNETHASHCAP and see if it results in EINVAL.
 
-Regards,
-Akihiko Odaki
 
-> 
-> Thanks
-> 
+On 3/9/25 12:08 AM, Philippe Mathieu-Daudé wrote:
+> Some files don't rely on any target-specific knowledge
+> and can be compiled once:
+>
+>  - helpers.c
+>  - container-base.c
+>  - migration.c (removing unnecessary "exec/ram_addr.h")
+>  - migration-multifd.c
+>  - cpr.c
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+>  hw/vfio/migration.c |  1 -
+>  hw/vfio/meson.build | 13 ++++++++-----
+>  2 files changed, 8 insertions(+), 6 deletions(-)
+>
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 416643ddd69..fbff46cfc35 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -27,7 +27,6 @@
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-events-vfio.h"
+>  #include "exec/ramlist.h"
+> -#include "exec/ram_addr.h"
+>  #include "pci.h"
+>  #include "trace.h"
+>  #include "hw/hw.h"
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index 260d65febd6..8e376cfcbf8 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -1,12 +1,7 @@
+>  vfio_ss = ss.source_set()
+>  vfio_ss.add(files(
+> -  'helpers.c',
+>    'common.c',
+> -  'container-base.c',
+>    'container.c',
+> -  'migration.c',
+> -  'migration-multifd.c',
+> -  'cpr.c',
+>  ))
+>  vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+>  vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
+> @@ -25,3 +20,11 @@ vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
+>  vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+>  
+>  specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+> +
+> +system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+> +  'helpers.c',
+> +  'container-base.c',
+> +  'migration.c',
+> +  'migration-multifd.c',
+> +  'cpr.c',
+> +))
 
