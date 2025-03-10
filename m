@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE0022B595;
-	Mon, 10 Mar 2025 12:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE7D22B597;
+	Mon, 10 Mar 2025 12:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741609518; cv=none; b=Nmy5pHUM2HQtc2wV8xKgYqYhO6ae76M2sB7ePenLBdX2sdbeObj4HTIcdLX/kVjI3Kv4IawBniQ81aD5rXQ9/qCBjfr0EpByP+vE0czbn/zVs9TOCz94gH+o5uT8bhxGWkwKChfLDBVRbdMCZTJHft3xd58YHDdVfm1ZhRO9GLc=
+	t=1741609518; cv=none; b=Xgrx0peIrJIgOwvgU3SKbT8dpRRMFQz9kXlD35eRxWP1CTH1WpQn6P5VlG1eyUnBjlbVSJV5hLIA2AFkVtVYsj5UDUzV2Bx9sKZtU2qpI57Zkt1dKfhMUm/2Aq+LZAqv5mfFFhyE0sBlhTpsPwbxTHu+DhYfldjMu+W+97iqYFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741609518; c=relaxed/simple;
-	bh=c4i86duoXEmDwXPSOJ2OB2+MENRRYS3JIWDrzcjnE64=;
+	bh=VqanVys6U0Zgtoq6VTrmGdkaMMXAYFhbvoCeIw8qE9Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zce2ejP0qaIpaCVICluLV4rmAzVfF9ZojSGVWSaU7o7oIWuhDbls/+9X7Caa30338DJZfdQ78rA5i2TLg2VxFd+Y+amOpfKr7QG0rd+DaYHqQSm9ydRtjQCoVbVM7OP90KAtVAMKZ+2Ms30PR7mFVmRnsGS7pUU+BI54Q3bzbhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xse3VCZD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=mC6PRvedx9FrCM9pqpnV77KsXcDynkvLeZJ4gondnRRfTd1YPUG9ef3fyrisjUGKQig9I3VNklXdDCOeh0E/VC2as65YsU83yz66Uq08sfGTmJIJX8eFGpuwqaMMrGWLxuTGKu8twAbj7cGx5OH9FWdfNt0j8VQcUCfvD4CxwYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U38UHe9L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xse3VCZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2ADC4CEF0;
-	Mon, 10 Mar 2025 12:25:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U38UHe9L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5240C4CEEF;
+	Mon, 10 Mar 2025 12:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741609517;
-	bh=c4i86duoXEmDwXPSOJ2OB2+MENRRYS3JIWDrzcjnE64=;
+	s=k20201202; t=1741609516;
+	bh=VqanVys6U0Zgtoq6VTrmGdkaMMXAYFhbvoCeIw8qE9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xse3VCZDp/4QeTj9roEwXnXyvPxMGR4YqQZtjRKZUb/hZX8dR111DFEYzsgjsvtvI
-	 QgE05en97Soy+vjp1WWLadzMT93kgPzabZmOLL8S9IlbjazGjyMJDmBv8WXj2T1slp
-	 N2QdFQjusozhnL5U+dCmTt15Yj/HCLw5A5JNioVIk9PznLNAdW3wC6aT4EN5u5HKzY
-	 afnj1ndq58gGwviv0tRJnna7ImmUQjQzfo3YzIgAgbwJCCgoTFqsyHTNZLK6yoYoxL
-	 k20VynlBZDFZuni/wYvicUeWJ8oaRkggzhOTDnM1s+1mMJLpUJide2ManQAPwlet5+
-	 lOq+pfr3yG4lQ==
+	b=U38UHe9LqXiWa99e/lij2DHBiKOWyQ9+X0ZYUnS7TiAO+2AsnXOsU34bcwFYSyQSC
+	 Lf4Lgf8KSuYFs459f5e9DENX3UAfLvnJ1548IjGzBASV8EQSW1d15hPbkxgqnyc4X4
+	 V3shbsBu4lOUj5PhdFFX8kDw8db7AyvuwFZ5Q9Ej28JSGYecsnRB7A6T9BhXfNget2
+	 RffF1noDHR56rbFgUtLrDGNBFctRLkEmejWZuNR3C0efhOAy71igEZxxwZpspcYOIZ
+	 iDjLWfZqJGphTjkqVLdYRoNQE70OmptHKIzZVELtpSDRk0Fr6fngUc3FkXJw1RoyJR
+	 oHwCstJLRtcAw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1trcC3-00CAea-Lm;
+	id 1trcC3-00CAea-2t;
 	Mon, 10 Mar 2025 12:25:15 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH v2 21/23] KVM: arm64: Allow kvm_has_feat() to take variable arguments
-Date: Mon, 10 Mar 2025 12:25:03 +0000
-Message-Id: <20250310122505.2857610-22-maz@kernel.org>
+Subject: [PATCH v2 19/23] KVM: arm64: Validate FGT register descriptions against RES0 masks
+Date: Mon, 10 Mar 2025 12:25:01 +0000
+Message-Id: <20250310122505.2857610-20-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250310122505.2857610-1-maz@kernel.org>
 References: <20250310122505.2857610-1-maz@kernel.org>
@@ -60,45 +60,85 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-In order to be able to write more compact (and easier to read) code,
-let kvm_has_feat() and co take variable arguments. This enables
-constructs such as:
+In order to point out to the unsuspecting KVM hacker that they
+are missing something somewhere, validate that the known FGT bits
+do not intersect with the corresponding RES0 mask, as computed at
+boot time.
 
-	#define FEAT_SME	ID_AA64PFR1_EL1, SME, IMP
-
-	if (kvm_has_feat(kvm, FEAT_SME))
-		[...]
-
-which is admitedly more readable.
+THis check is also performed at boot time, ensuring that there is
+no runtime overhead.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |  1 +
+ arch/arm64/kvm/config.c           | 29 +++++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c         |  2 ++
+ 3 files changed, 32 insertions(+)
 
 diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 9bac3c6800294..89f8415fea063 100644
+index fa046a9ad8264..c98f7eed68142 100644
 --- a/arch/arm64/include/asm/kvm_host.h
 +++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1526,12 +1526,16 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
- 	 kvm_cmp_feat_signed(kvm, id, fld, op, limit) :			\
- 	 kvm_cmp_feat_unsigned(kvm, id, fld, op, limit))
+@@ -1565,5 +1565,6 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
+ 	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
  
--#define kvm_has_feat(kvm, id, fld, limit)				\
-+#define __kvm_has_feat(kvm, id, fld, limit)				\
- 	kvm_cmp_feat(kvm, id, fld, >=, limit)
+ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt);
++void check_feature_map(void);
  
--#define kvm_has_feat_enum(kvm, id, fld, val)				\
-+#define kvm_has_feat(kvm, ...) __kvm_has_feat(kvm, __VA_ARGS__)
+ #endif /* __ARM64_KVM_HOST_H__ */
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index e38da17445926..d39f1f14e3dc4 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -494,6 +494,35 @@ static struct reg_bits_to_feat_map hafgrtr_feat_map[] = {
+ 		   FEAT_AMUv1),
+ };
+ 
++static void __init check_feat_map(struct reg_bits_to_feat_map *map,
++				  int map_size, u64 res0, const char *str)
++{
++	u64 mask = 0;
 +
-+#define __kvm_has_feat_enum(kvm, id, fld, val)				\
- 	kvm_cmp_feat_unsigned(kvm, id, fld, ==, val)
- 
-+#define kvm_has_feat_enum(kvm, ...) __kvm_has_feat_enum(kvm, __VA_ARGS__)
++	for (int i = 0; i < map_size; i++)
++		mask |= map[i].bits;
 +
- #define kvm_has_feat_range(kvm, id, fld, min, max)			\
- 	(kvm_cmp_feat(kvm, id, fld, >=, min) &&				\
- 	kvm_cmp_feat(kvm, id, fld, <=, max))
++	if (mask != ~res0)
++		kvm_err("Undefined %s behaviour, bits %016llx\n",
++			str, mask ^ ~res0);
++}
++
++void __init check_feature_map(void)
++{
++	check_feat_map(hfgrtr_feat_map, ARRAY_SIZE(hfgrtr_feat_map),
++		       hfgrtr_masks.res0, hfgrtr_masks.str);
++	check_feat_map(hfgwtr_feat_map, ARRAY_SIZE(hfgwtr_feat_map),
++		       hfgwtr_masks.res0, hfgwtr_masks.str);
++	check_feat_map(hfgitr_feat_map, ARRAY_SIZE(hfgitr_feat_map),
++		       hfgitr_masks.res0, hfgitr_masks.str);
++	check_feat_map(hdfgrtr_feat_map, ARRAY_SIZE(hdfgrtr_feat_map),
++		       hdfgrtr_masks.res0, hdfgrtr_masks.str);
++	check_feat_map(hdfgwtr_feat_map, ARRAY_SIZE(hdfgwtr_feat_map),
++		       hdfgwtr_masks.res0, hdfgwtr_masks.str);
++	check_feat_map(hafgrtr_feat_map, ARRAY_SIZE(hafgrtr_feat_map),
++		       hafgrtr_masks.res0, hafgrtr_masks.str);
++}
++
+ static bool idreg_feat_match(struct kvm *kvm, struct reg_bits_to_feat_map *map)
+ {
+ 	u64 regval = kvm->arch.id_regs[map->regidx];
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index d3990ceaa59c2..89fc07c57e438 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -5058,6 +5058,8 @@ int __init kvm_sys_reg_table_init(void)
+ 
+ 	ret = populate_nv_trap_config();
+ 
++	check_feature_map();
++
+ 	for (i = 0; !ret && i < ARRAY_SIZE(sys_reg_descs); i++)
+ 		ret = populate_sysreg_config(sys_reg_descs + i, i);
+ 
 -- 
 2.39.2
 
