@@ -1,250 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C722C325;
-	Mon, 10 Mar 2025 12:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2201C224258
+	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 12:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741609519; cv=none; b=YnRRylh6sPH4BMaD0k0DhxwbtVvejgXR8x/RMi/j/fc2FAxXMVvcoKYcJBx3KW64k4Mg4/IqLau+GKwGgKls79rZ2cID+0tRZCRb5MVmW9Jg6kxPqdOai/mDtPDTsHVghP86sCfA+OWYY2FTXzTRPyUcqhZbRq+8nuoU1xFF38E=
+	t=1741609752; cv=none; b=JqP/LeCeK6QdS56Uhp+ZnCFxaHNMdB6AUBybiE/CwsEjxez296ybvjO19REqGx6TA2+dHbt9KTf4m9FRUBJWIMfWjxRwfLhSAoD6n54QPqysQHGdvaQHL5BaEYRG4rOF7fptiAIQuZRo3UEQcLvVGMVuOTctIByUQdJGeWaJr+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741609519; c=relaxed/simple;
-	bh=nS0xm85JaRgg3L1nxfB+IxEH1kFfGIUtGwrvFvcOd0k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BsVWNwSwOczSralNzHGEuqRw6E4nVBVbbE/T7O92gy2PYbTGpO5uXsftDRMHCC0/iaF/EES53WdMIrYypmZ5qyBr6PA1wZHOSFXpZz66lYgrvXFbnWrLg1a5BZ2tE25mgmZ62/1LNhCE1ZQdI1hX5FI2DDMNppDyLNxhbvQVkk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p87juRiW; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p87juRiW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F10C4CEED;
-	Mon, 10 Mar 2025 12:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741609517;
-	bh=nS0xm85JaRgg3L1nxfB+IxEH1kFfGIUtGwrvFvcOd0k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p87juRiWQLzWtkTPJj26LxPgcBtaO2OIDCn0v1N62ba4qDoL9DTjJYQvqMWvPfSyU
-	 GrodmerwDMnxDOMbfdgIcklPkrd1mSH9y94xu/aXWAG1wkq+b9k8nxvgRuCddua6gx
-	 P8++j/8RNTJ5Zi3zb/zDaR0uYg2RLXKMCCTDuot1a0GnwuJ632vfEKKmYqQSJeJ6Ui
-	 2zc3QlYKJsk5g34TBW3adpGUVg/7XEZFtaAmIUtANrDoEJVA7C0zxYnyIy83QoHNm+
-	 5kzWYWp5ztTH8/YzeHPB42+ii6rn2kWWSVjyfD2HlGMXhhBBBttNa2yv/DOKWzavL/
-	 xFAbKEXnsKuPg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1trcC3-00CAea-UF;
-	Mon, 10 Mar 2025 12:25:16 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: [PATCH v2 22/23] KVM: arm64: Use HCRX_EL2 feature map to drive fixed-value bits
-Date: Mon, 10 Mar 2025 12:25:04 +0000
-Message-Id: <20250310122505.2857610-23-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250310122505.2857610-1-maz@kernel.org>
-References: <20250310122505.2857610-1-maz@kernel.org>
+	s=arc-20240116; t=1741609752; c=relaxed/simple;
+	bh=R9ulSbyd37eIR9xBG6V2xkBcJVP+fjD4f+2bh2bCB8k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kLGjcQFnptnqT1CLTyYW4tm6DsVQ8BnwOD9upWEZbwcJf8mEzLAHpoC0rupu42DFGQwOCXHdCCfs7Gxx9U4xDs9Exnu10/WaeFUL8b4DXslZ+oGrXSr8auQPWenXtS1VPE6pJWDBl09BhG5CCR9FKzj4+GQVEuG8ScQUgVXQq5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1trcFg-00000000ZO7-2Pv8;
+	Mon, 10 Mar 2025 13:29:00 +0100
+Message-ID: <6f05eeb5-252b-4dd1-ac7f-5122ea8c4232@maciej.szmigiero.name>
+Date: Mon, 10 Mar 2025 13:28:55 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/7] hw/hyperv: remove duplication compilation units
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ alex.bennee@linaro.org, qemu-devel@nongnu.org,
+ Marcelo Tosatti <mtosatti@redhat.com>, richard.henderson@linaro.org,
+ manos.pitsidianakis@linaro.org
+References: <20250307215623.524987-1-pierrick.bouvier@linaro.org>
+ <8c511d16-05d6-4852-86fc-a3be993557c7@linaro.org>
+ <8d2a19a8-e0a4-4050-8ba5-9baa9b47782f@maciej.szmigiero.name>
+ <91ddf98c-3a5d-404b-9e80-ed4580c1c373@linaro.org>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <91ddf98c-3a5d-404b-9e80-ed4580c1c373@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, mark.rutland@arm.com, tabba@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Sender: mhej@vps-ovh.mhejs.net
 
-Similarly to other registers, describe which HCR_EL2 bit depends
-on which feature, and use this to compute the RES0 status of these
-bits.
+On 10.03.2025 00:33, Pierrick Bouvier wrote:
+> Hi Maciej,
+> 
+> On 3/7/25 14:31, Maciej S. Szmigiero wrote:
+>> Hi Philippe,
+>>
+>> On 7.03.2025 23:25, Philippe Mathieu-Daudé wrote:
+>>> Hi Maciej,
+>>>
+>>> On 7/3/25 22:56, Pierrick Bouvier wrote:
+>>>> Work towards having a single binary, by removing duplicated object files.
+>>>
+>>>> Pierrick Bouvier (7):
+>>>>     hw/hyperv/hv-balloon-stub: common compilation unit
+>>>>     hw/hyperv/hyperv.h: header cleanup
+>>>>     hw/hyperv/vmbus: common compilation unit
+>>>>     hw/hyperv/hyperv-proto: move SYNDBG definition from target/i386
+>>>>     hw/hyperv/syndbg: common compilation unit
+>>>>     hw/hyperv/balloon: common balloon compilation units
+>>>>     hw/hyperv/hyperv_testdev: common compilation unit
+>>>
+>>> If you are happy with this series and provide your Ack-by tag,
+>>> I can take it in my next hw-misc pull request if that helps.
+>>
+>> There's nothing obviously wrong in the patch set,
+>> but if we can defer this to Monday then I could do
+>> a runtime check with a Windows VM too.
+>>
+> 
+> this series needs some fixup after the merge of 58d0053: include/exec: Move TARGET_PAGE_{SIZE,MASK,BITS} to target_page.h.
+> 
+> I'll re-spin it later, so don't waste your time trying it.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/config.c | 78 +++++++++++++++++++++++++++++++++++++++++
- arch/arm64/kvm/nested.c | 40 +--------------------
- 2 files changed, 79 insertions(+), 39 deletions(-)
+Waiting for updated series then.
+  
+> Thanks,
+> Pierrick
+> 
 
-diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-index f88783bd9a2f1..15ec8bdc57055 100644
---- a/arch/arm64/kvm/config.c
-+++ b/arch/arm64/kvm/config.c
-@@ -77,6 +77,8 @@ struct reg_bits_to_feat_map {
- #define FEAT_THE		ID_AA64PFR1_EL1, THE, IMP
- #define FEAT_SME		ID_AA64PFR1_EL1, SME, IMP
- #define FEAT_GCS		ID_AA64PFR1_EL1, GCS, IMP
-+#define FEAT_LS64		ID_AA64ISAR1_EL1, LS64, LS64
-+#define FEAT_LS64_V		ID_AA64ISAR1_EL1, LS64, LS64_V
- #define FEAT_LS64_ACCDATA	ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA
- #define FEAT_RAS		ID_AA64PFR0_EL1, RAS, IMP
- #define FEAT_GICv3		ID_AA64PFR0_EL1, GIC, IMP
-@@ -90,6 +92,16 @@ struct reg_bits_to_feat_map {
- #define FEAT_PAN2		ID_AA64MMFR1_EL1, PAN, PAN2
- #define FEAT_DPB2		ID_AA64ISAR1_EL1, DPB, DPB2
- #define FEAT_AMUv1		ID_AA64PFR0_EL1, AMU, IMP
-+#define FEAT_CMOW		ID_AA64MMFR1_EL1, CMOW, IMP
-+#define FEAT_D128		ID_AA64MMFR3_EL1, D128, IMP
-+#define FEAT_DoubleFault2	ID_AA64PFR1_EL1, DF2, IMP
-+#define FEAT_FPMR		ID_AA64PFR2_EL1, FPMR, IMP
-+#define FEAT_MOPS		ID_AA64ISAR2_EL1, MOPS, IMP
-+#define FEAT_NMI		ID_AA64PFR1_EL1, NMI, IMP
-+#define FEAT_SCTLR2		ID_AA64MMFR3_EL1, SCTLRX, IMP
-+#define FEAT_SYSREG128		ID_AA64ISAR2_EL1, SYSREG_128, IMP
-+#define FEAT_TCR2		ID_AA64MMFR3_EL1, TCRX, IMP
-+#define FEAT_XS			ID_AA64ISAR1_EL1, XS, IMP
- 
- static bool feat_rasv1p1(struct kvm *kvm)
- {
-@@ -110,6 +122,35 @@ static bool feat_pauth(struct kvm *kvm)
- 	return kvm_has_pauth(kvm, PAuth);
- }
- 
-+static bool feat_pauth_lr(struct kvm *kvm)
-+{
-+	return kvm_has_pauth(kvm, PAuth_LR);
-+}
-+
-+static bool feat_aderr(struct kvm *kvm)
-+{
-+	return (kvm_has_feat(kvm, ID_AA64MMFR3_EL1, ADERR, FEAT_ADERR) &&
-+		kvm_has_feat(kvm, ID_AA64MMFR3_EL1, SDERR, FEAT_ADERR));
-+}
-+
-+static bool feat_anerr(struct kvm *kvm)
-+{
-+	return (kvm_has_feat(kvm, ID_AA64MMFR3_EL1, ANERR, FEAT_ANERR) &&
-+		kvm_has_feat(kvm, ID_AA64MMFR3_EL1, SNERR, FEAT_ANERR));
-+}
-+
-+static bool feat_sme_smps(struct kvm *kvm)
-+{
-+	/*
-+	 * Revists this if KVM ever supports SME -- this really should
-+	 * look at the guest's view of SMIDR_EL1. Funnily enough, this
-+	 * is not captured in the JSON file, but only as a note in the
-+	 * ARM ARM.
-+	 */
-+	return (kvm_has_feat(kvm, FEAT_SME) &&
-+		(read_sysreg_s(SYS_SMIDR_EL1) & SMIDR_EL1_SMPS));
-+}
-+
- static struct reg_bits_to_feat_map hfgrtr_feat_map[] = {
- 	NEEDS_FEAT(HFGxTR_EL2_nAMAIR2_EL1	|
- 		   HFGxTR_EL2_nMAIR2_EL1,
-@@ -494,6 +535,35 @@ static struct reg_bits_to_feat_map hafgrtr_feat_map[] = {
- 		   FEAT_AMUv1),
- };
- 
-+static struct reg_bits_to_feat_map hcrx_feat_map[] = {
-+	NEEDS_FEAT(HCRX_EL2_PACMEn, feat_pauth_lr),
-+	NEEDS_FEAT(HCRX_EL2_EnFPM, FEAT_FPMR),
-+	NEEDS_FEAT(HCRX_EL2_GCSEn, FEAT_GCS),
-+	NEEDS_FEAT(HCRX_EL2_EnIDCP128, FEAT_SYSREG128),
-+	NEEDS_FEAT(HCRX_EL2_EnSDERR, feat_aderr),
-+	NEEDS_FEAT(HCRX_EL2_TMEA, FEAT_DoubleFault2),
-+	NEEDS_FEAT(HCRX_EL2_EnSNERR, feat_anerr),
-+	NEEDS_FEAT(HCRX_EL2_D128En, FEAT_D128),
-+	NEEDS_FEAT(HCRX_EL2_PTTWI, FEAT_THE),
-+	NEEDS_FEAT(HCRX_EL2_SCTLR2En, FEAT_SCTLR2),
-+	NEEDS_FEAT(HCRX_EL2_TCR2En, FEAT_TCR2),
-+	NEEDS_FEAT(HCRX_EL2_MSCEn		|
-+		   HCRX_EL2_MCE2,
-+		   FEAT_MOPS),
-+	NEEDS_FEAT(HCRX_EL2_CMOW, FEAT_CMOW),
-+	NEEDS_FEAT(HCRX_EL2_VFNMI		|
-+		   HCRX_EL2_VINMI		|
-+		   HCRX_EL2_TALLINT,
-+		   FEAT_NMI),
-+	NEEDS_FEAT(HCRX_EL2_SMPME, feat_sme_smps),
-+	NEEDS_FEAT(HCRX_EL2_FGTnXS		|
-+		   HCRX_EL2_FnXS,
-+		   FEAT_XS),
-+	NEEDS_FEAT(HCRX_EL2_EnASR, FEAT_LS64_V),
-+	NEEDS_FEAT(HCRX_EL2_EnALS, FEAT_LS64),
-+	NEEDS_FEAT(HCRX_EL2_EnAS0, FEAT_LS64_ACCDATA),
-+};
-+
- static void __init check_feat_map(struct reg_bits_to_feat_map *map,
- 				  int map_size, u64 res0, const char *str)
- {
-@@ -521,6 +591,8 @@ void __init check_feature_map(void)
- 		       hdfgwtr_masks.res0, hdfgwtr_masks.str);
- 	check_feat_map(hafgrtr_feat_map, ARRAY_SIZE(hafgrtr_feat_map),
- 		       hafgrtr_masks.res0, hafgrtr_masks.str);
-+	check_feat_map(hcrx_feat_map, ARRAY_SIZE(hcrx_feat_map),
-+		       __HCRX_EL2_RES0, "HCRX_EL2");
- }
- 
- static bool idreg_feat_match(struct kvm *kvm, struct reg_bits_to_feat_map *map)
-@@ -656,6 +728,12 @@ void get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg, u64 *res0, u64 *r
- 		*res0 |= hafgrtr_masks.res0;
- 		*res1 = HAFGRTR_EL2_RES1;
- 		break;
-+	case HCRX_EL2:
-+		*res0 = compute_res0_bits(kvm, hcrx_feat_map,
-+					  ARRAY_SIZE(hcrx_feat_map), 0, 0);
-+		*res0 |= __HCRX_EL2_RES0;
-+		*res1 = __HCRX_EL2_RES1;
-+		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		*res0 = *res1 = 0;
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 74df066f9ab3f..984940781a4cf 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1039,45 +1039,7 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
- 	set_sysreg_masks(kvm, HCR_EL2, res0, res1);
- 
- 	/* HCRX_EL2 */
--	res0 = __HCRX_EL2_RES0;
--	res1 = __HCRX_EL2_RES1;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR3_EL1, PACM, TRIVIAL_IMP))
--		res0 |= HCRX_EL2_PACMEn;
--	if (!kvm_has_feat(kvm, ID_AA64PFR2_EL1, FPMR, IMP))
--		res0 |= HCRX_EL2_EnFPM;
--	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, GCS, IMP))
--		res0 |= HCRX_EL2_GCSEn;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR2_EL1, SYSREG_128, IMP))
--		res0 |= HCRX_EL2_EnIDCP128;
--	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, ADERR, DEV_ASYNC))
--		res0 |= (HCRX_EL2_EnSDERR | HCRX_EL2_EnSNERR);
--	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, DF2, IMP))
--		res0 |= HCRX_EL2_TMEA;
--	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, D128, IMP))
--		res0 |= HCRX_EL2_D128En;
--	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, THE, IMP))
--		res0 |= HCRX_EL2_PTTWI;
--	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, SCTLRX, IMP))
--		res0 |= HCRX_EL2_SCTLR2En;
--	if (!kvm_has_tcr2(kvm))
--		res0 |= HCRX_EL2_TCR2En;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR2_EL1, MOPS, IMP))
--		res0 |= (HCRX_EL2_MSCEn | HCRX_EL2_MCE2);
--	if (!kvm_has_feat(kvm, ID_AA64MMFR1_EL1, CMOW, IMP))
--		res0 |= HCRX_EL2_CMOW;
--	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, NMI, IMP))
--		res0 |= (HCRX_EL2_VFNMI | HCRX_EL2_VINMI | HCRX_EL2_TALLINT);
--	if (!kvm_has_feat(kvm, ID_AA64PFR1_EL1, SME, IMP) ||
--	    !(read_sysreg_s(SYS_SMIDR_EL1) & SMIDR_EL1_SMPS))
--		res0 |= HCRX_EL2_SMPME;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR1_EL1, XS, IMP))
--		res0 |= (HCRX_EL2_FGTnXS | HCRX_EL2_FnXS);
--	if (!kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_V))
--		res0 |= HCRX_EL2_EnASR;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64))
--		res0 |= HCRX_EL2_EnALS;
--	if (!kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA))
--		res0 |= HCRX_EL2_EnAS0;
-+	get_reg_fixed_bits(kvm, HCRX_EL2, &res0, &res1);
- 	set_sysreg_masks(kvm, HCRX_EL2, res0, res1);
- 
- 	/* HFG[RW]TR_EL2 */
--- 
-2.39.2
+Thanks,
+Maciej
+
 
