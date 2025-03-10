@@ -1,362 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C94223704
-	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A8513C690
+	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 08:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741594835; cv=none; b=RvLoz1ho2C3sdYPnSU3biNyVTloWK59x73LWE4XVAnYHEkdsdUW4yiu4EvsoAFoxhYGm+Ku6Cy7DVp6NGmQu0ObVJ4EoaPkLoxbmqslB+pjLpoKJLRuo81m6cxCAj0HJ9reE8gvHvaePLZDNWCgbOrJ3U1357g5VfgVYDgbBORc=
+	t=1741594839; cv=none; b=J69VOFVN2sIetaio6uCwhNrFDvudzFg079UDpT+o4AZGpjoQ67K/J89MkOnMCYjZdX97SDz3YU4u3fJ374hh8qqqGAjUp6JcRmS6tvyJeqmnlcy7Gymg3cXxjqSwj19Iv7NEMLUdqmJZARMNiCi+vkzglzJOV+nBg+h4O0t1NMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741594835; c=relaxed/simple;
-	bh=b6lchNVADy7xTCAqWEfXhsSnOKmLmxfVx+1juDHu804=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajh9PTnba/3Ysq73WUm+/nftjLHKad/jdG4dgc4jsER/ke8JuWE9dnpxFZgApxWFEhW5+DuEolcUCl9Ab5txcSyq+Czh8n4xVZ3egv5ZQ90PgxZ4eEH8UYT32FnWqFeJfR74XtXEMMYmPMdaEn2mXFuRC4UDDOlxYFS18iXtrTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZGI/iz1d; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741594839; c=relaxed/simple;
+	bh=hSuip1P5EcWNJSJSVFT1tdSSAp8yABjwkuJFHuNrHB8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KB4xQ40PtH7JoOQllZbNaJ4V5AfL0HJzpD39+0TOPaiGnMbwaUQKWeH3R/5YyNCWCjEjMKjBJs5QUI5WS3N3qb9dXATCKidn3ni1q40E5FJzzkeLpstctkZSseyPU8OxrmebFknjOGItNYBgAiXU2Nb8IWFhYSknQ//oY5dcbhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=byGpox+d; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZGI/iz1d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741594833; x=1773130833;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=b6lchNVADy7xTCAqWEfXhsSnOKmLmxfVx+1juDHu804=;
-  b=ZGI/iz1dQzU0XKtUoZTq54uSWidunkaiCKxF1eMqB0M3vv0oeoJBhZKq
-   YN6+wZOzjoAunArrL/nfHNGPlYYsVdBblzLrm5XDC1b1waDyNuNa3O2OY
-   qaqTZiZMIKxoHyXW/DLgSWGgcAF2thGPQugIXtJ5j7ZJAiwZfSzSeN6Gf
-   5HBYV1P4e6HyUf2EyClO6HRuEy2r4ULQn1Lv6Au44GBuoO6174MkNRqZO
-   AAnj497ccgC5BRkPaEQ2aDllNRvFDMcB8v9wJBP2BzdvSADWTO90O4wrm
-   SENBQIpLC5ezQTxAtk9bP/qH204nprfmX+cdduAc8PcgnI5XqE9u9WWQc
-   g==;
-X-CSE-ConnectionGUID: 7unmDtFbSQuVm708gRlq7Q==
-X-CSE-MsgGUID: dHpRa+FpRAOmk1TBv8JbCg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42688493"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="42688493"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 01:20:33 -0700
-X-CSE-ConnectionGUID: whMZImZRRfyA/jFe6PRazw==
-X-CSE-MsgGUID: JoK30sO+ReKoPWf5DZzAdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="150862833"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 01:20:30 -0700
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: David Hildenbrand <david@redhat.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Peter Xu <peterx@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Michael Roth <michael.roth@amd.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
-	qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Williams Dan J <dan.j.williams@intel.com>,
-	Peng Chao P <chao.p.peng@intel.com>,
-	Gao Chao <chao.gao@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v3 5/7] memory-attribute-manager: Introduce a callback to notify the shared/private state change
-Date: Mon, 10 Mar 2025 16:18:33 +0800
-Message-ID: <20250310081837.13123-6-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250310081837.13123-1-chenyi.qiang@intel.com>
-References: <20250310081837.13123-1-chenyi.qiang@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="byGpox+d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741594836;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UCM9dXn15rLwLcvlKZl6PXYwnCCp9W+9SEavEczkTNc=;
+	b=byGpox+dHcGKOrJazYOb1d3MsJBYhqfHiSei1KuKRQqEGaL8bkKaBwTIC/oIvSLTxz3e7j
+	j0eBz5rcbp83zncH8ito+4C0QuwituHTRJM7jy+x3EsoEg1y6DiXiB0+qRY2rSlDMUaS4j
+	3yZo5T++8LnNgdxbDmNCBQIs8gX+r/w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-1-dgkpyVDDNQymM7ICWbcrEQ-1; Mon, 10 Mar 2025 04:20:35 -0400
+X-MC-Unique: dgkpyVDDNQymM7ICWbcrEQ-1
+X-Mimecast-MFC-AGG-ID: dgkpyVDDNQymM7ICWbcrEQ_1741594834
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf446681cso3698485e9.1
+        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 01:20:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741594834; x=1742199634;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UCM9dXn15rLwLcvlKZl6PXYwnCCp9W+9SEavEczkTNc=;
+        b=BYaP0gFHuB93xS9N0zFw3CstO/kYCyViqYaU5ywznUVbwkGDDI70gHSr4IUlMlqbhi
+         jjogHajfof7mQX9SPzkYWrL4HWCnsFojVR3jskAwZ+PShv/KE1zq4ypqPSDEypHyeI4F
+         IRxJX7C42dV9gK5m4slbenmxeyi/r4umR5YuMPTvMfpPbxEduZi+5igGySx1Maxf3f8L
+         W5MneEuQgoGJGBzRsLbgp+EAkdbrQRX5/49DCOWXHH+dpIAGpk9ftTwiAt8bYoHMJcDa
+         7i4iTRYKHMNG52g+JS9u+4NWmb7AxExxaj7Mn/vYItUsoJvzwddMyqp7D2UfIp81AZNb
+         +ZXA==
+X-Forwarded-Encrypted: i=1; AJvYcCViGHlSCR/xlTC70KSwhY3dxI/Fy9FbchBYaYcrEOvl84Xu/nQCTdMnXUe4uw7MB+5TsWY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzOlBTzWwhdY64DqiiqDPPKqMQZySwU39E/FkU8MqDZFNj/dDd
+	5b4qUWzqSrbk3TQVsKZ3VK2FtvbXIuotC4tZRAryMjUHIcuDjP58QcWv4hAeQ434tSBO/5Ir6Sv
+	gjROPadzKVhzx0kKIeHsl90qI2vgvtdhZFW26RANcM6J1fYmpXQ==
+X-Gm-Gg: ASbGncubjamanFLw6TZ2i0PaC4XorlFW7LAgAysyJc3QFyuZi7A68vtShWVhc2HolOa
+	lusfDdsjVLENW6SRPUTcIyHdHzCmLy123I1jOJ5WA0IFg1vERiTqoGAsJarlmZmkT9z7ZnbiFAE
+	h8JOp5/M0E4FayDncDo+6RIsIapY6qCK9E2YU9AZBsXelkrFtYOaJuY7U6GMY5PTAVdCyrSZHzJ
+	sHdI4QgqJjEjPUY44UopD7esl9Sf4nzWqy1wpyjc7BufrLTtFe+2lyCPOA2rK2vJiDEiXilk+FE
+	PUt1Xx1BotqK3/5pvmUKQQCDLQHXxS4qHs0ASDo3a+bRbu4nPj+D7aPSZZ2MbZ8=
+X-Received: by 2002:a05:600c:1c9d:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-43c601d19cbmr82007935e9.30.1741594834150;
+        Mon, 10 Mar 2025 01:20:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWoK4EAIS0nSnutdbr8yrKOmHxyHj64VreYaZSyts7twzU5fEMveCdB0GYj6APXBpf4tzW2g==
+X-Received: by 2002:a05:600c:1c9d:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-43c601d19cbmr82007575e9.30.1741594833763;
+        Mon, 10 Mar 2025 01:20:33 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43cfac24345sm17644355e9.22.2025.03.10.01.20.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 01:20:32 -0700 (PDT)
+Message-ID: <1af5a147-f5ff-48c1-a2d7-ee4d98c12da4@redhat.com>
+Date: Mon, 10 Mar 2025 09:20:30 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v2 04/21] hw/vfio: Compile more objects once
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
+ <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
+References: <20250308230917.18907-1-philmd@linaro.org>
+ <20250308230917.18907-5-philmd@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250308230917.18907-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Introduce a new state_change() callback in MemoryAttributeManagerClass to
-efficiently notify all registered RamDiscardListeners, including VFIO
-listeners about the memory conversion events in guest_memfd. The
-existing VFIO listener can dynamically DMA map/unmap the shared pages
-based on conversion types:
-- For conversions from shared to private, the VFIO system ensures the
-  discarding of shared mapping from the IOMMU.
-- For conversions from private to shared, it triggers the population of
-  the shared mapping into the IOMMU.
 
-Additionally, there could be some special conversion requests:
-- When a conversion request is made for a page already in the desired
-  state, the helper simply returns success.
-- For requests involving a range partially in the desired state, only
-  the necessary segments are converted, ensuring the entire range
-  complies with the request efficiently. In this case, fallback to a "1
-  block at a time" handling.
-- In scenarios where a conversion request is declined by other systems,
-  such as a failure from VFIO during notify_populate(), the helper will
-  roll back the request, maintaining consistency.
 
-Note that the bitmap status is updated before the notifier callbacks so
-that the listener can handle the memory based on the latest status.
 
-Opportunistically introduce a helper to trigger the state_change()
-callback of the class.
+On 3/9/25 12:09 AM, Philippe Mathieu-Daudé wrote:
+> These files depend on the VFIO symbol in their Kconfig
+> definition. They don't rely on target specific definitions,
+> move them to system_ss[] to build them once.
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
----
-Changes in v3:
-    - Move the bitmap update before notifier callbacks.
-    - Call the notifier callbacks directly in notify_discard/populate()
-      with the expectation that the request memory range is in the
-      desired attribute.
-    - For the case that only partial range in the desire status, handle
-      the range with block_size granularity for ease of rollback
-      (https://lore.kernel.org/qemu-devel/812768d7-a02d-4b29-95f3-fb7a125cf54e@redhat.com/)
-
-Changes in v2:
-    - Do the alignment changes due to the rename to MemoryAttributeManager
-    - Move the state_change() helper definition in this patch.
----
- include/system/memory-attribute-manager.h |  18 +++
- system/memory-attribute-manager.c         | 188 ++++++++++++++++++++++
- 2 files changed, 206 insertions(+)
-
-diff --git a/include/system/memory-attribute-manager.h b/include/system/memory-attribute-manager.h
-index 23375a14b8..3d9227d62a 100644
---- a/include/system/memory-attribute-manager.h
-+++ b/include/system/memory-attribute-manager.h
-@@ -34,8 +34,26 @@ struct MemoryAttributeManager {
- 
- struct MemoryAttributeManagerClass {
-     ObjectClass parent_class;
-+
-+    int (*state_change)(MemoryAttributeManager *mgr, uint64_t offset, uint64_t size,
-+                        bool to_private);
- };
- 
-+static inline int memory_attribute_manager_state_change(MemoryAttributeManager *mgr, uint64_t offset,
-+                                                        uint64_t size, bool to_private)
-+{
-+    MemoryAttributeManagerClass *klass;
-+
-+    if (mgr == NULL) {
-+        return 0;
-+    }
-+
-+    klass = MEMORY_ATTRIBUTE_MANAGER_GET_CLASS(mgr);
-+
-+    g_assert(klass->state_change);
-+    return klass->state_change(mgr, offset, size, to_private);
-+}
-+
- int memory_attribute_manager_realize(MemoryAttributeManager *mgr, MemoryRegion *mr);
- void memory_attribute_manager_unrealize(MemoryAttributeManager *mgr);
- 
-diff --git a/system/memory-attribute-manager.c b/system/memory-attribute-manager.c
-index 7c3789cf49..6456babc95 100644
---- a/system/memory-attribute-manager.c
-+++ b/system/memory-attribute-manager.c
-@@ -234,6 +234,191 @@ static int memory_attribute_rdm_replay_discarded(const RamDiscardManager *rdm,
-                                                        memory_attribute_rdm_replay_cb);
- }
- 
-+static bool memory_attribute_is_valid_range(MemoryAttributeManager *mgr,
-+                                            uint64_t offset, uint64_t size)
-+{
-+    MemoryRegion *mr = mgr->mr;
-+
-+    g_assert(mr);
-+
-+    uint64_t region_size = memory_region_size(mr);
-+    int block_size = memory_attribute_manager_get_block_size(mgr);
-+
-+    if (!QEMU_IS_ALIGNED(offset, block_size)) {
-+        return false;
-+    }
-+    if (offset + size < offset || !size) {
-+        return false;
-+    }
-+    if (offset >= region_size || offset + size > region_size) {
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static void memory_attribute_notify_discard(MemoryAttributeManager *mgr,
-+                                            uint64_t offset, uint64_t size)
-+{
-+    RamDiscardListener *rdl;
-+
-+    QLIST_FOREACH(rdl, &mgr->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            continue;
-+        }
-+        rdl->notify_discard(rdl, &tmp);
-+    }
-+}
-+
-+static int memory_attribute_notify_populate(MemoryAttributeManager *mgr,
-+                                            uint64_t offset, uint64_t size)
-+{
-+    RamDiscardListener *rdl, *rdl2;
-+    int ret = 0;
-+
-+    QLIST_FOREACH(rdl, &mgr->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            continue;
-+        }
-+        ret = rdl->notify_populate(rdl, &tmp);
-+        if (ret) {
-+            break;
-+        }
-+    }
-+
-+    if (ret) {
-+        /* Notify all already-notified listeners. */
-+        QLIST_FOREACH(rdl2, &mgr->rdl_list, next) {
-+            MemoryRegionSection tmp = *rdl2->section;
-+
-+            if (rdl2 == rdl) {
-+                break;
-+            }
-+            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+                continue;
-+            }
-+            rdl2->notify_discard(rdl2, &tmp);
-+        }
-+    }
-+    return ret;
-+}
-+
-+static bool memory_attribute_is_range_populated(MemoryAttributeManager *mgr,
-+                                                uint64_t offset, uint64_t size)
-+{
-+    const int block_size = memory_attribute_manager_get_block_size(mgr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long last_bit = first_bit + (size / block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_zero_bit(mgr->shared_bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+static bool memory_attribute_is_range_discarded(MemoryAttributeManager *mgr,
-+                                                uint64_t offset, uint64_t size)
-+{
-+    const int block_size = memory_attribute_manager_get_block_size(mgr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long last_bit = first_bit + (size / block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_bit(mgr->shared_bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+static int memory_attribute_state_change(MemoryAttributeManager *mgr, uint64_t offset,
-+                                         uint64_t size, bool to_private)
-+{
-+    const int block_size = memory_attribute_manager_get_block_size(mgr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long nbits = size / block_size;
-+    const uint64_t end = offset + size;
-+    unsigned long bit;
-+    uint64_t cur;
-+    int ret = 0;
-+
-+    if (!memory_attribute_is_valid_range(mgr, offset, size)) {
-+        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
-+                     __func__, offset, size);
-+        return -1;
-+    }
-+
-+    if (to_private) {
-+        if (memory_attribute_is_range_discarded(mgr, offset, size)) {
-+            /* Already private */
-+        } else if (!memory_attribute_is_range_populated(mgr, offset, size)) {
-+            /* Unexpected mixture: process individual blocks */
-+            for (cur = offset; cur < end; cur += block_size) {
-+                bit = cur / block_size;
-+                if (!test_bit(bit, mgr->shared_bitmap)) {
-+                    continue;
-+                }
-+                clear_bit(bit, mgr->shared_bitmap);
-+                memory_attribute_notify_discard(mgr, cur, block_size);
-+            }
-+        } else {
-+            /* Completely shared */
-+            bitmap_clear(mgr->shared_bitmap, first_bit, nbits);
-+            memory_attribute_notify_discard(mgr, offset, size);
-+        }
-+    } else {
-+        if (memory_attribute_is_range_populated(mgr, offset, size)) {
-+            /* Already shared */
-+        } else if (!memory_attribute_is_range_discarded(mgr, offset, size)) {
-+            /* Unexpected mixture: process individual blocks */
-+            unsigned long *modified_bitmap = bitmap_new(nbits);
-+
-+            for (cur = offset; cur < end; cur += block_size) {
-+                bit = cur / block_size;
-+                if (test_bit(bit, mgr->shared_bitmap)) {
-+                    continue;
-+                }
-+                set_bit(bit, mgr->shared_bitmap);
-+                ret = memory_attribute_notify_populate(mgr, cur, block_size);
-+                if (!ret) {
-+                    set_bit(bit - first_bit, modified_bitmap);
-+                    continue;
-+                }
-+                clear_bit(bit, mgr->shared_bitmap);
-+                break;
-+            }
-+
-+            if (ret) {
-+                /*
-+                 * Very unexpected: something went wrong. Revert to the old
-+                 * state, marking only the blocks as private that we converted
-+                 * to shared.
-+                 */
-+                for (cur = offset; cur < end; cur += block_size) {
-+                    bit = cur / block_size;
-+                    if (!test_bit(bit - first_bit, modified_bitmap)) {
-+                        continue;
-+                    }
-+                    assert(test_bit(bit, mgr->shared_bitmap));
-+                    clear_bit(bit, mgr->shared_bitmap);
-+                    memory_attribute_notify_discard(mgr, cur, block_size);
-+                }
-+            }
-+            g_free(modified_bitmap);
-+        } else {
-+            /* Complete private */
-+            bitmap_set(mgr->shared_bitmap, first_bit, nbits);
-+            ret = memory_attribute_notify_populate(mgr, offset, size);
-+            if (ret) {
-+                bitmap_clear(mgr->shared_bitmap, first_bit, nbits);
-+            }
-+        }
-+    }
-+
-+    return ret;
-+}
-+
- int memory_attribute_manager_realize(MemoryAttributeManager *mgr, MemoryRegion *mr)
- {
-     uint64_t shared_bitmap_size;
-@@ -272,8 +457,11 @@ static void memory_attribute_manager_finalize(Object *obj)
- 
- static void memory_attribute_manager_class_init(ObjectClass *oc, void *data)
- {
-+    MemoryAttributeManagerClass *mamc = MEMORY_ATTRIBUTE_MANAGER_CLASS(oc);
-     RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_CLASS(oc);
- 
-+    mamc->state_change = memory_attribute_state_change;
-+
-     rdmc->get_min_granularity = memory_attribute_rdm_get_min_granularity;
-     rdmc->register_listener = memory_attribute_rdm_register_listener;
-     rdmc->unregister_listener = memory_attribute_rdm_unregister_listener;
--- 
-2.43.5
+Eric
+> ---
+>  hw/vfio/meson.build | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index 8e376cfcbf8..784eae4b559 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -14,13 +14,13 @@ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+>  ))
+>  vfio_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
+>  vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
+> -vfio_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+> -vfio_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+>  vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
+>  vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+>  
+>  specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+>  
+> +system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+> +system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+>  system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+>    'helpers.c',
+>    'container-base.c',
 
