@@ -1,286 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C8C1D6DA1
-	for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 07:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD97347B4;
+	Mon, 10 Mar 2025 07:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741591618; cv=none; b=A75KJ5MfLr27IhRRml7WUmnQCaPyyaksD6lQ6ikdk6tTLZT675kvS8MY7jfExzQaamVFgYYl7Mrzkprp2+Vo2S20XiGG03EdtN7AsXHHpIAicIiQBHBczExgLutU3xWUYIWGQzFGYAaI98PKXPIOaQHlIfYBnmz38UEjKerqUww=
+	t=1741591719; cv=none; b=Cc0cwAK0JDQfAkr4UOH3IFjVPYzhX6ol6PXxS/dHqqxWvUV3gh1GNwbYqcKmDb1SrYIJM4moFEt8gr2CENs2NLXOrhczuNz1m25c+Qi4J0WOzN8etVuZpJm7WyAaqIZO8oOH9Uw1PVyB/R7KroHadwnt03ADTL4Y7oZk+TIvzq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741591618; c=relaxed/simple;
-	bh=dtga0v/Ir792RWLzkgeY1Rc/Z50MXyKQb9VMOzOY2JY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qAqP0q7A8IYMprhIlquzwDtVx5Liq5IrpnaszGDS62GsuBYAa8IXejSOlrXekQTdhySxL8qzWwlaUOTVaghFFTmyu4r+veAb6n6HR+dgWqJYjCtT6Z1K4y8Fmf2Dtt7RIWpJNuYfSS4ZLrmvLrU8PnDwI022ntRm3wT8Tc5td3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X8hfUn64; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1741591719; c=relaxed/simple;
+	bh=1g5F+A1cBRXVc1hiVX4P5/HWsys7JL9H0jyHVwU6T2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qB7z7g9Io08aJlIiLSED9LTjiWCpOv5VDf5W9mcbmBcc0f2CbSyNoKM/Zmxxb7GiXuIlKVx2HSmKk3lkGrsDvNYYeRvzzu1fzIV1xfvKy5LWFExqUn5+vAVLo6qEPgnv3GknhL1mWjaG0McS1y4JQbbtp/oX/OuDBCD2iwqJPKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l4M6tjjF; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X8hfUn64"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4M6tjjF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741591617; x=1773127617;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dtga0v/Ir792RWLzkgeY1Rc/Z50MXyKQb9VMOzOY2JY=;
-  b=X8hfUn64RilfnVBAXHIzgMoHVocg46KhPlJ0iSjt1q2hz+ZxZQ9hAmUA
-   H9/eRRNv8IothPCHOlJRs6f9iEM8g/1eT9LfH7lVrlvDqLRangVmgZLxl
-   jKy6VTSkvbrUHMq6chVISLIfSGt/osO0vzyfTpb13J+xPRcrvTzzeDsqS
-   2iH1xHAnpWoxx2u1YaxGjDwMEovsppB2ar/Y8W5xbsNeHJqY4plzDPfeq
-   rku+YAstRUS75n9MazNyE2hAn0cPHa1YU8y8RBmvrXiuNGQhFjs9eU1tu
-   DKj81XAqQZWL1TuvKOGvEZYgY6/LUoLRz+cnV73YsxzS+XrqdDKPUeMLx
+  t=1741591718; x=1773127718;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1g5F+A1cBRXVc1hiVX4P5/HWsys7JL9H0jyHVwU6T2Q=;
+  b=l4M6tjjFiXCJt7S0t89Khv9kDCKSH8Ijr7y+SLdQkqDbawL+ITs/JnD6
+   ZfZL9NUvoDcE9FMvDoJ5AX2Dl11rQltyfx6oZMJWulpnIbXXVrMY3/YDA
+   4XkaRcXOPPfk/nUXlk/0TLkod+TfWm4vRCpXry2geEExNlMdI501vWPEf
+   NrEjs0BqXbgXUFxxKPV+d3pSQRbHaUKSzd4ivfWiDlAFZfRMus/9SJXYt
+   c1UimNJD5UYEZp8p19mHPYEX8SFrUMzHIb4i9GA/B4fUDI7jIVftDMkew
+   +XCiLfFNlJNFFBWOAA5AXC9N0mSzlsGngJ6TSWm/MguF17qH9wN5XE/Zt
    w==;
-X-CSE-ConnectionGUID: feNdCoJZRuark56jok315g==
-X-CSE-MsgGUID: 8p8OZ5jSR0urOv5a+Sql5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42285202"
+X-CSE-ConnectionGUID: 1V3TB6CQRzaTSeon5MTCEw==
+X-CSE-MsgGUID: 8nQfB0bJQhucJWcSSa0GEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="46219362"
 X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="42285202"
+   d="scan'208";a="46219362"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 00:26:55 -0700
-X-CSE-ConnectionGUID: UW5bvEmlSIKwTZYALKXqew==
-X-CSE-MsgGUID: mf5ohgmBSwKbuNOWYs58tQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 00:28:37 -0700
+X-CSE-ConnectionGUID: RhJG3G7RQdGEhvRarNRaTg==
+X-CSE-MsgGUID: vmNY4aaCRemkotsM1388SA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="124508499"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Mar 2025 00:26:50 -0700
-Date: Mon, 10 Mar 2025 15:47:00 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
-	likexu@tencent.com, like.xu.linux@gmail.com,
-	zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
-	alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
-	davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
-	ewanhai-oc@zhaoxin.com
-Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <Z86Y9BxV6p25A2Wo@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-9-dongli.zhang@oracle.com>
+   d="scan'208";a="124508676"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 00:28:34 -0700
+Message-ID: <85ed4258-6a8e-4820-8627-29fff61572d2@intel.com>
+Date: Mon, 10 Mar 2025 15:28:30 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250302220112.17653-9-dongli.zhang@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/10] KVM: TDX: Save and restore IA32_DEBUGCTL
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: adrian.hunter@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com
+References: <20250307212053.2948340-1-pbonzini@redhat.com>
+ <20250307212053.2948340-10-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250307212053.2948340-10-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-(+EwanHai for zhaoxin case...)
+On 3/8/2025 5:20 AM, Paolo Bonzini wrote:
+> From: Adrian Hunter <adrian.hunter@intel.com>
+> 
+> Save the IA32_DEBUGCTL MSR before entering a TDX VCPU and restore it
+> afterwards.  The TDX Module preserves bits 1, 12, and 14, so if no
+> other bits are set, no restore is done.
 
-...
+Reviewed-by: Xiayao Li <xiaoyao.li@intel.com>
 
-> -static void kvm_init_pmu_info(CPUX86State *env)
-> +static void kvm_init_pmu_info_intel(CPUX86State *env)
->  {
->      uint32_t eax, edx;
->      uint32_t unused;
-> @@ -2106,6 +2106,94 @@ static void kvm_init_pmu_info(CPUX86State *env)
->      }
->  }
->  
-> +static void kvm_init_pmu_info_amd(CPUX86State *env)
-> +{
-> +    uint32_t unused;
-> +    int64_t family;
-> +    uint32_t ecx;
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Message-ID: <20250129095902.16391-12-adrian.hunter@intel.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   arch/x86/kvm/vmx/tdx.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 5625b0801ce8..25972e12504b 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -683,6 +683,8 @@ void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+>   	else
+>   		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
+>   
+> +	vt->host_debugctlmsr = get_debugctlmsr();
 > +
-> +    has_pmu_version = 0;
+>   	vt->guest_state_loaded = true;
+>   }
+>   
+> @@ -826,11 +828,15 @@ static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
+>   	if (kvm_host.xss != (kvm_tdx->xfam & kvm_caps.supported_xss))
+>   		wrmsrl(MSR_IA32_XSS, kvm_host.xss);
+>   }
+> -EXPORT_SYMBOL_GPL(kvm_load_host_xsave_state);
+
+This needs to be cleaned up in patch 05;
+
 > +
-> +    /*
-> +     * To determine the CPU family, the following code is derived from
-> +     * x86_cpuid_version_get_family().
-> +     */
-> +    family = (env->cpuid_version >> 8) & 0xf;
-> +    if (family == 0xf) {
-> +        family += (env->cpuid_version >> 20) & 0xff;
-> +    }
+> +#define TDX_DEBUGCTL_PRESERVED (DEBUGCTLMSR_BTF | \
+> +				DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI | \
+> +				DEBUGCTLMSR_FREEZE_IN_SMM)
+>   
+>   fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
+>   {
+>   	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> +	struct vcpu_vt *vt = to_vt(vcpu);
+>   
+>   	/*
+>   	 * force_immediate_exit requires vCPU entering for events injection with
+> @@ -846,6 +852,9 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
+>   
+>   	tdx_vcpu_enter_exit(vcpu);
+>   
+> +	if (vt->host_debugctlmsr & ~TDX_DEBUGCTL_PRESERVED)
+> +		update_debugctlmsr(vt->host_debugctlmsr);
 > +
-> +    /*
-> +     * Performance-monitoring supported from K7 and later.
-> +     */
-> +    if (family < 6) {
-> +        return;
-> +    }
-
-I understand we can get family by object_property_get_int() helper:
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4902694129f9..ff08c7bfee6c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2106,27 +2106,22 @@ static void kvm_init_pmu_info_intel(CPUX86State *env)
-     }
- }
-
--static void kvm_init_pmu_info_amd(CPUX86State *env)
-+static void kvm_init_pmu_info_amd(X86CPU *cpu)
- {
-+    CPUX86State *env = &cpu->env;
-     uint32_t eax, ebx, ecx;
-     uint32_t unused;
-     int64_t family;
-
-     has_pmu_version = 0;
-
--    /*
--     * To determine the CPU family, the following code is derived from
--     * x86_cpuid_version_get_family().
--     */
--    family = (env->cpuid_version >> 8) & 0xf;
--    if (family == 0xf) {
--        family += (env->cpuid_version >> 20) & 0xff;
-+    family = object_property_get_int(OBJECT(cpu), "family", &error_abort);
-+    if (family < 0) {
-+        return;
-     }
-
--    /*
--     * Performance-monitoring supported from K7 and later.
--     */
-     if (family < 6) {
-+        error_report("AMD performance-monitoring is supported from K7 and later")
-         return;
-     }
-
-@@ -2197,7 +2192,7 @@ static void kvm_init_pmu_info(CPUState *cs)
-     if (IS_INTEL_CPU(env)) {
-         kvm_init_pmu_info_intel(env);
-     } else if (IS_AMD_CPU(env)) {
--        kvm_init_pmu_info_amd(env);
-+        kvm_init_pmu_info_amd(cpu);
-     }
- }
-
----
-Then for consistency, kvm_init_pmu_info_intel() could also accept
-"X86CPU *cpu" as the argument.
-
-> +    has_pmu_version = 1;
-> +
-> +    cpu_x86_cpuid(env, 0x80000001, 0, &unused, &unused, &ecx, &unused);
-> +
-> +    if (!(ecx & CPUID_EXT3_PERFCORE)) {
-> +        num_pmu_gp_counters = AMD64_NUM_COUNTERS;
-> +        return;
-> +    }
-> +
-> +    num_pmu_gp_counters = AMD64_NUM_COUNTERS_CORE;
-> +}
-
-...
-
-> +static void kvm_init_pmu_info(CPUState *cs)
-> +{
-> +    X86CPU *cpu = X86_CPU(cs);
-> +    CPUX86State *env = &cpu->env;
-> +
-> +    /*
-> +     * The PMU virtualization is disabled by kvm.enable_pmu=N.
-> +     */
-> +    if (kvm_pmu_disabled) {
-> +        return;
-> +    }
-
-As I said in patch 7, we could return an error instead.
-
-> +    /*
-> +     * It is not supported to virtualize AMD PMU registers on Intel
-> +     * processors, nor to virtualize Intel PMU registers on AMD processors.
-> +     */
-> +    if (!is_same_vendor(env)) {
-
-Here it deserves a warning like:
-
-error_report("host doesn't support requested feature: vPMU\n");
-
-> +        return;
-> +    }
->
-> +    /*
-> +     * If KVM_CAP_PMU_CAPABILITY is not supported, there is no way to
-> +     * disable the AMD pmu virtualization.
-> +     *
-> +     * If KVM_CAP_PMU_CAPABILITY is supported !cpu->enable_pmu
-> +     * indicates the KVM has already disabled the PMU virtualization.
-> +     */
-> +    if (has_pmu_cap && !cpu->enable_pmu) {
-> +        return;
-> +    }
-
-Could we only check "cpu->enable_pmu" at the beginning of this function?
-then if pmu is already disabled, we don't need to initialize the pmu info.
-
-> +    if (IS_INTEL_CPU(env)) {
-
-Zhaoxin also supports architectural PerfMon in 0xa.
-
-I'm not sure if this check should also involve Zhaoxin CPU, so cc
-zhaoxin guys for double check.
-
-> +        kvm_init_pmu_info_intel(env);
-> +    } else if (IS_AMD_CPU(env)) {
-> +        kvm_init_pmu_info_amd(env);
-> +    }
-> +}
-> +
->  int kvm_arch_init_vcpu(CPUState *cs)
->  {
->      struct {
-> @@ -2288,7 +2376,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
->      cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
->      cpuid_data.cpuid.nent = cpuid_i;
->  
-> -    kvm_init_pmu_info(env);
-> +    kvm_init_pmu_info(cs);
->  
->      if (((env->cpuid_version >> 8)&0xF) >= 6
->          && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
-> @@ -4064,7 +4152,7 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
->              kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
->          }
->  
-> -        if (has_pmu_version > 0) {
-> +        if (IS_INTEL_CPU(env) && has_pmu_version > 0) {
-
-ditto.
-
->              if (has_pmu_version > 1) {
->                  /* Stop the counter.  */
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
-> @@ -4095,6 +4183,38 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
->                                    env->msr_global_ctrl);
->              }
->          }
-> +
-
-...
-
->          /*
->           * Hyper-V partition-wide MSRs: to avoid clearing them on cpu hot-add,
->           * only sync them to KVM on the first cpu
-> @@ -4542,7 +4662,8 @@ static int kvm_get_msrs(X86CPU *cpu)
->      if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
->          kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
->      }
-> -    if (has_pmu_version > 0) {
-> +
-> +    if (IS_INTEL_CPU(env) && has_pmu_version > 0) {
-
-ditto.
-
->          if (has_pmu_version > 1) {
->              kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
->              kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
-> @@ -4558,6 +4679,35 @@ static int kvm_get_msrs(X86CPU *cpu)
->          }
->      }
->
-
-Thanks,
-Zhao
-
+>   	tdx_load_host_xsave_state(vcpu);
+>   	tdx->guest_entered = true;
+>   
 
