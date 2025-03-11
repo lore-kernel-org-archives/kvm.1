@@ -1,62 +1,62 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18EE1EB19B
-	for <kvm@vger.kernel.org>; Tue, 11 Mar 2025 04:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1857E1EB1B2
+	for <kvm@vger.kernel.org>; Tue, 11 Mar 2025 04:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741666148; cv=none; b=LvuWhpWyBKTwxCZcsmBdS3djXpVfa4yZKDnLTciPmana5zqftYfKul4uzaooBMbb5+vnklsqypsddFSrAq1R3tCq9TYYFUjpsUz7YuXIj9ETGulun6sTz5e2YkjZ1D4SU1fPccu7uByn0Efb8vGPn9/MEPqTk9oo7TPUlpvqpVs=
+	t=1741666150; cv=none; b=FPdk/tkWnbp/iZUqUGlR8ggpt95KBP442Qfzk+V3mVH70ApDqfNNnKO/8on0bgqZi212RdA66ae7AjkvJKgVR/8qpkl7rA63xv+6uNDVgv5zrUNX7KGQLaNegYbLVgzfASuXckFdB3VxKLS1ouXK5Ya7QqdBRFEUlfM5DNMd1Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741666148; c=relaxed/simple;
-	bh=nP4hXHDVJqx/oRSSlzZDpBYh7vDF8y+p4rncNlqlHYo=;
+	s=arc-20240116; t=1741666150; c=relaxed/simple;
+	bh=eZxW1HUQDLqOK64QD3ZvyFTEod5DwQVKTFd8dmVQepY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uvgzsPlLUWgX+nmMi9Q3uRU/adU59+nkl4/XFINmPJ1EP0pA8j1lvXLA+CcJTT1dTh+zWubpZJnjtfEHay4NBajq+KdlHL8Y05VM9OmuuW8EcWN1D4IcVQmE/MC1uSzllXAQ/OJ3a0+3reW7lknO+pEq/UDZmpXdzaqT1pgg46k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nHdwx2XS; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=O3P6QEd5mgC9YJ2nsB6zWg/sMsUcw7tIZKXlUbosFqKbqaax/l3xnVrxOfUjguZp3sZVgCRH7w96CMYoIXPT8StGpY26Nh/PoeDhyTMlyXwvo/wHv1P2rp+9kKyW2n5lpgqAfppVDyJcHoPrsuICbJJ5sgTaHeI0c3hE61USqUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WggEpciq; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nHdwx2XS"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2240b4de12bso87519245ad.2
-        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 21:09:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WggEpciq"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22580c9ee0aso23111045ad.2
+        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 21:09:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741666146; x=1742270946; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741666148; x=1742270948; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S847jAMJoPTCQP5Yv6FtgKXIrkXeVt152gZ92AA3GhI=;
-        b=nHdwx2XSWE8qeRfviIJW2cC+lJaNKd+39nvA0pGvhSNSbyj37uGSkcdtodCAUPsdRh
-         jyxw7gmP3wKcPhQq76CnaiLBPcummYL2d6rTfy76uIRFwBHKI/UI9n4oU8WKp9W4vy2V
-         xApIYk10HFCIe01utxFNQv5CjVkUfEMoL8myoymzySmS/CIUP+JKFjpviSNMouSY0b6g
-         YEELjQSfVLnDVzdiXt05Y0bZ/loQsadzOJaHeNzn4d/TmjyD36+5+0vcxC16i0vGN9Tw
-         yAa8V+95Q/9oamLjK1DEFh6QGR8S7X4wArDHrNs8cWz0CGFuW1fO9PHMp103mNHjBdek
-         9vpA==
+        bh=BsftdeZcZ0LsVJ43Vlgc1kB7SrUHDvnjwuIeYSteybs=;
+        b=WggEpciqf1cr78kDPx6R9kzNnuFjPxHh1Xe6qqa3fVmXMtLHXqP2faqHWuslopgBjj
+         0As845ll82F2DkStW1BbBj22GyFxfJuKF5143gc1Cb8pW+ZnP75L7RE5HrE0qY4TyBBd
+         XSXvnXwerXKifpECoY7+tT9TQvQo7vn5QNVMzILGVmnthCikjsCpq+tjui7JsCt/MwS9
+         m5KZDd5vFFGX5dMxNSH96983Omjl7h9zvhufxIP84Dn+b1agiuFTzYOFcNHLIkGtQtDO
+         RqQYHpBywIH44RfLHTAKZuNjsGuFlopBVMrqjE4otkm12+uQgSRYWeknor3zaciOW1uW
+         WRlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741666146; x=1742270946;
+        d=1e100.net; s=20230601; t=1741666148; x=1742270948;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S847jAMJoPTCQP5Yv6FtgKXIrkXeVt152gZ92AA3GhI=;
-        b=kklS6dQwBMCFQbuS1bu1gnYpptI4Kh8/xYFcAbjfAnTYDEcylAQfvM3v4fpkufL3Mc
-         p7PsSyg8d9IGrzsmZqh5h/uMmFHobfKckOhROsvWqK8795CT2Es3rgb0nF0WfncY98B8
-         Zz9g6D8+wLYbUxSVBNPCevhAPgPb3e1wwcW1v9FRgEac/N3qH2dsBrl8iqCdnlByk1yQ
-         vufd6EX7rccwqFi/mlR1ltlDzQdUerFIfpRSByH08xkE5UeeZJyRiuPT/OP9aivsyP1U
-         nIzL97BPanIXJk7MhAyLKmoWHKOqEKS7Fu0YCSrlLp0vCxqudQ8S+yAfU3fW0cJWy6ZZ
-         STnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMRTrHjuuoi9wzUd29U6A2xTGq7seaQ+C4MdPaGBxqHabO2V74DxZlWJUavXGDOoyOw0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxEVuUH7ObUyki0qAs1OozChWPHBPL1bj56SoBpmyS/vWgDp72
-	Tw9l9uLhnF5iOtEP2Nc2BgFLjbgleJGph9JCjWKEUWdYxqashbNcx8l0Rao3g10=
-X-Gm-Gg: ASbGncsLvU5hrMXGQlkTXLI9DJzHkCnN+Mr2juJ8zX1V+2Ho3Q7S6U7VZ8T5cp8Oa4c
-	Q/lo+qQZ4O1SOYAq8piMhjO+GmWwgwxjkusARj5IVvueD2vylPS8E3/I6jl6eVIZhOFYmhg53co
-	qNORelrJKj9M4m+no1rcuST07T80UPA3JqBGx4SLCq21Psg5dx7dk/Xsv/DS4uSGtIFDxBnR65W
-	oBWofmS4IL756/gRNLVpGbor5Ixoidw1WRkWeu5RIAKa+vsHqFhaNyCCCtIFcycsorf+ipTnARj
-	Cj3DLfk67kGqo3uAZiWwnxMm5Q4ZbzejA9A8I1Bai+6r
-X-Google-Smtp-Source: AGHT+IE3Vl9B86Ve/DQiaAua/ITAo7nczT+bEsdawDqXZ5VAclVm0x5zL+4TIfw0f3xRMRf28fdfZw==
-X-Received: by 2002:a05:6a21:516:b0:1f5:709d:e0c6 with SMTP id adf61e73a8af0-1f5709de3e1mr11267027637.42.1741666146178;
-        Mon, 10 Mar 2025 21:09:06 -0700 (PDT)
+        bh=BsftdeZcZ0LsVJ43Vlgc1kB7SrUHDvnjwuIeYSteybs=;
+        b=RtjKmh5GT/DWObEd/lb81rXk/6DrRJYvC0Krzrj9+WMq4nGFUvYpqJbH0hlifHR8f7
+         SPvgGPzqRgH6YikjjzoBv/2ZKyiaQdJbXOznAbsUPTW3tW2apuzvUYIHLAh14Rh1LQkt
+         DMYA/rUz0fscDm7R5wTUjKAlGRtbWbzt8mpHMTzRZdKzyo5Yl+zqx7GHyegErrztgpPN
+         20Of8TVjRyUac+Nj9sEwJFGEJEfY5EVJ0Wl0Nm8Y/DhRuCjnNjI7sKqLU7sYltrVuyby
+         oRJBnQAJrnK/cybxWmth8rhOkwaHOUqBMKWGbWO+OjYaUxK0EbPjsR2g1z398I3ELhUI
+         B8Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1VNdbbyxNdHxLq/sfPHT104zYUZOXEyOcp7FXiVYhJu+E0v0ComQg4+uBEuUAMAYFmYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3xss8cIaNhRQg7i/mjV6WknLaJEV+1FjpMrYEJc7njU6XbrP0
+	zym7mWA+PwSKxBhpmXlK520cJPmp7ozHpCpH3CrVQM+7OXKxuL7ALSVJZSDZ8bc=
+X-Gm-Gg: ASbGncuMFaxC/S6f3syEpoRW4/HBVE+IvVxwGW3e4VucGOEh+5uUzu7tTdBzFbiiaCd
+	Ii50WHfFj15JjczEYRb0NfCeW8N3aa+UWXexBWWxaOcmB1GOR6SSvbCsdYqw6baeAGG/OczWatB
+	hWZuubSNl9yfrsfJpucLEmOK5OFLVVgmUXzKuUVgX2mnmfvEMSvSNwvDlycEH1Pv5uShW61MV/n
+	oc4FaWVWzNOEVYxSKIqMsLNWdXwDdQ3PcVh0OFywACrVgSq2Uyhl0INujzyw7hMDzfLJODGXlnd
+	2NEiC5bAWT4jFLOgTJbRiztPJSR+1QqmrXpa6hE3+NvH
+X-Google-Smtp-Source: AGHT+IHS2PJ+/kxwhPkSsqZSy1Lcoi2dOdo4gLmR9Sx1nH5mZxTPaitClYNterYld+kjauOZ34q9lw==
+X-Received: by 2002:a05:6a21:164a:b0:1f5:60fb:8d9 with SMTP id adf61e73a8af0-1f560fb098fmr15311166637.33.1741666148378;
+        Mon, 10 Mar 2025 21:09:08 -0700 (PDT)
 Received: from pc.. ([38.39.164.180])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.09.05
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.09.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 21:09:05 -0700 (PDT)
+        Mon, 10 Mar 2025 21:09:08 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>,
@@ -83,9 +83,9 @@ Cc: Paul Durrant <paul@xen.org>,
 	Daniel Henrique Barboza <danielhb413@gmail.com>,
 	Anthony PERARD <anthony@xenproject.org>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 08/16] exec/memory-internal: remove dependency on cpu.h
-Date: Mon, 10 Mar 2025 21:08:30 -0700
-Message-Id: <20250311040838.3937136-9-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 10/16] system/kvm: make kvm_flush_coalesced_mmio_buffer() accessible for common code
+Date: Mon, 10 Mar 2025 21:08:32 -0700
+Message-Id: <20250311040838.3937136-11-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
 References: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
@@ -97,25 +97,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+This function is used by system/physmem.c will be turn into common code
+in next commit.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/memory-internal.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/system/kvm.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/exec/memory-internal.h b/include/exec/memory-internal.h
-index 100c1237ac2..b729f3b25ad 100644
---- a/include/exec/memory-internal.h
-+++ b/include/exec/memory-internal.h
-@@ -20,8 +20,6 @@
- #ifndef MEMORY_INTERNAL_H
- #define MEMORY_INTERNAL_H
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index ab17c09a551..21da3b8b052 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -210,11 +210,11 @@ bool kvm_arm_supports_user_irq(void);
+ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
+ int kvm_on_sigbus(int code, void *addr);
  
+-#ifdef COMPILING_PER_TARGET
 -#include "cpu.h"
 -
- #ifndef CONFIG_USER_ONLY
- static inline AddressSpaceDispatch *flatview_to_dispatch(FlatView *fv)
- {
+ void kvm_flush_coalesced_mmio_buffer(void);
+ 
++#ifdef COMPILING_PER_TARGET
++#include "cpu.h"
++
+ /**
+  * kvm_update_guest_debug(): ensure KVM debug structures updated
+  * @cs: the CPUState for this cpu
 -- 
 2.39.5
 
