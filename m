@@ -1,62 +1,62 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AFB1EB1B4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E771F872F
 	for <kvm@vger.kernel.org>; Tue, 11 Mar 2025 04:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741666150; cv=none; b=DSwmcNSBJ31qIgqsSle2Y46xmDt37MdrWMfO3SbW5nNj/1M71X2NXE6bEhyhPz3RNEh8TXXTNV16fxKgPWC9CjN4Oae+jRj0Mr0kWcRKt4HkJ/5oLTWuCj+q6wTmsQSHyskeL13rxJpGZcsfxXAw9CfImxCR6XleMMBJBh0cpsI=
+	t=1741666151; cv=none; b=QZXhHrujC8Ly3ufJiKcgZAaPJJj0SNfde8HKcqkXZ6B6GrSg9gnLlJS/dnIF/Jp0yASp5URKsBBYakE8VD6Kk01C5RJPa3E+fsAWoqGnaQ278vWH/DQC3omJ+TiezeI5tBEI0Z7Dq3v9J2Ui2KtAeXpyLSewh6R47b+f8EXSuH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741666150; c=relaxed/simple;
-	bh=QIQStCNyWEbmJbGI98mgn/wF6l0/5wE9kpHfnd49aRg=;
+	s=arc-20240116; t=1741666151; c=relaxed/simple;
+	bh=2EiUgDnSIr2U0DMUcevHrrz6cNF3hvjf3O5YcIT7Nyc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YX7hsnpQfpGZzMxYUr2uFd4+p+OYuMHztJcpH9pNlncGoCFhHaQDJwLdtf2/tZ27+QGAep33DkH4iFfiGZvCIDivYoghwWanS6syi5pHyU502UfEtnEaYvJdp2KZw77biET4VskO5PMsvIklwNYMgg+1vjEBK8K/Q+D4kgDfkKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pTbD6nMG; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=aMQwDRAId4BQoAgLBtjnCYLwRmpveSNRxNebbFVD47CzpoQvRWCRMNKottyYdymxiXVvj3NI1y0Hxf5hUaNdtbQ7FPOFxy8vTwxGcSN/CH9vI3B/ifnbx8aouC+hp6GrweMq59vgsP7k4E4v0JJjtFqJM95AtkZgujMW2JbOVh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c7eQtko+; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pTbD6nMG"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-225477548e1so45550835ad.0
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c7eQtko+"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-219f8263ae0so94074115ad.0
         for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 21:09:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1741666149; x=1742270949; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lSQnGpOqRDw3w//OvJparnGxlKjvigYzwQgvxmVvIU4=;
-        b=pTbD6nMGyIS8OKs4hgQROjEmkEibEl6sRSdOjTYHydneVe3+kiDaszUnoVJzGy/aRm
-         Qv1Wuz92XSaMVnvAwFHVkmiCC0Nay6bTmOfwM85gjbVVhLAM2AnYV6ENiJkh3FLMMMM7
-         OWH9x4PXrv6v4RlkPKzoSoL3evJVEqYxlMJyTrjuc40u+hd72Mve/g2EKSC+mwUuLV5w
-         qQCmZHlCXYCRyWdPDd02yDmOrrrK9G7mC2IjwJ5qGJBlL5bP3WJe8n5BzrNObdHs1Emv
-         cdbg7LpC+W4ouzeb5PFglK6+4QhslhWKG0Th1xTX1+OAeYjk26mOtX39y6DREApxTWMd
-         QWug==
+        bh=d9PU2mUUZXceFgFF8NURkIZqXSTxuLUTW3yG3F37dHQ=;
+        b=c7eQtko+x00xmt+LfUTmShr1gr7hOCKOyELOOj2xMBIfVRjW5mQmJ1G/uqSaC2D3Ae
+         Wq1Gr6x4joYDCYg7DMkX8sw07AOGLoE1/dwPfm3ykdnmVklYOuJcklhiqJEsXwXfUrC4
+         H0Jc5NZAkqyZGbCatc+eBvhrJljJn9pcyuiw0o9mk/u4iXVxY5iQ0uLc7PcM+xQJMgTk
+         J7kXrolg89663H11bTmWgh11G10P0jAJVWQeIw2697227mpOP+2jQcoafzSJKYOG5wsv
+         6Yb4pFXv8Ze0AAx8av83gjb0efTF21rAWQ+Jr94aX20GdurpetZ4UoWgATK+M3NebZdE
+         R4+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1741666149; x=1742270949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lSQnGpOqRDw3w//OvJparnGxlKjvigYzwQgvxmVvIU4=;
-        b=w/xP8EtI+Fxbx1vHKf9xCXEMCLR3DS1AKs7560fmADnQqeYzBvTVM3DnpSeR8Nc/A+
-         oFIQHEqoQYXdlasBnrmRkYHvlb1N/WNX/i6CR42rigbZx1jADKSGNzdQO7DtJxqTBSZ1
-         Rvxv2aMRuQiNCU2OBv5m6ulmS7raNVrRa4MBQsGZ7TXs5j12PijyZMJudnPe/l3foFun
-         BEpOjL8pwVgcfshh6OUWZYoql0KKFuWgrvnPz1zSm7ct5NG93To0hW6vKZvhNw1Ga5FT
-         aNSrjZXxzeIFgWwIc/9x7sG+G92onyU7hSMXzjIOv9ZjuWW5E7/tAwhzi9yhvMeA4tin
-         bpbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWe4WSscL+uAI3vCHYNHgSQD9kNoSpb76cfUQNxgrSoedmRKgZ4+bJ125YpUsO4FpTJL3Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiXD3FHdY0V79xfW7sG/hYxEBtroD7A68yPEox5rDlXiNPEP6z
-	grwP9r/Uy59oYy8Sk1sOyNs+O1C6pAxUZ/mW8I5VKiuQei/mVITkh+LZAoTr1l8=
-X-Gm-Gg: ASbGncv2k7yLCKCvDke1uQAtUeRz7sO9U5R8WL69bXw22K/ttpvRTv0qhaHTF4ExikW
-	XSYdxAAxSI0eDgj1LMLJ9mxYIPwf0Wa/rvy66iiBOrU5/SPJJ9CfjqOtenJjmlxbYgZpVtqujkw
-	XXDXGfC2fF4dmXPdxuGDxdrlEkMVrR5TXbfY58roq8ZpXxkwNeESuRMt0d5YAE2EU84QANAbNC3
-	4TQ3h5Q5hlnZsrlopMZXt11DUdL27oTn8BDfPEYUU9PGnbqXYVocNgUoeNG4CZE6LLAudYGuokt
-	vg8nG5mZkr8OG2j8DtTyJGvjfqx5AbYm5jmcfNUtlKUI0rXaSlf9aoA=
-X-Google-Smtp-Source: AGHT+IGAtyqJ8JwUWzZUpShXBSvpRNbrwAinE/LFxHiM0RsFVnA1TPY911KWPkY4EkoTDg/0IjRi5A==
-X-Received: by 2002:a05:6a00:23cb:b0:736:55ec:ea8b with SMTP id d2e1a72fcca58-736e1b3e670mr7549220b3a.24.1741666147270;
-        Mon, 10 Mar 2025 21:09:07 -0700 (PDT)
+        bh=d9PU2mUUZXceFgFF8NURkIZqXSTxuLUTW3yG3F37dHQ=;
+        b=H2OA36jvF27VznPtzV5tenKCK+Sur2+eE9QYnOV8/dsnvYpU/xWpUqd6gY9/hrbBUN
+         S3cTljxTLH3v18yaXtO8PyvUc8Z/vlpLqFYvwqBg8WlAayVOi3Es+UkbcY4pocLoA6O1
+         ofNJxZ5Sh6vSZkOqOvai8NO2MnEOTfAC29Sgu1Aj18VoYIRraSJifuO4ci2BDPPJpct4
+         ar0TeIoDH57OKjwQtl+PXriSrvF/XM0LqG4JIcge57V71PmZPdI4ZW3A4W6BjSH0hVkD
+         l8HVoaI/yNwikca+fXT1hG+RUal64+tdopnrn++HL46qUZgxlpBmHGOestYeLG1P41/o
+         reOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVd2v5Ejk6wLqKnbs9paAycWwmuNX3Nc/BeRU4TSZ8SUL/BBuS5vXSWvFh6p/ZcqdeR+nc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbEg4VbarfROkNs27uPtzdJ249HkFbBQ/t1EtmL5BLlgETLzaQ
+	aiOdVR/GsG1680KVS4nofwQBqgjo6CJ/kan6dWJYseAGoFiD2jH/+KjRr8DQDHw=
+X-Gm-Gg: ASbGncsz83ByFGuWQH9BvXxnKnaqJzq7+KP1en31wJZOMwgxvuc58TwqHbDBewVSTZf
+	URsv02o5948Hj6u78sykHCAY3TXXDeLdEkXuq/r8KkDI3yYP8wQlHYkw64QhQTQyX3B7m+M8aUu
+	rXu1HAeGg74ST5cj2sV6ABMOVAy7SWRS39YZHc0en8anxX/Vbz381Oz2iX5qLZrCQUj11JEUEnF
+	nuQpC8rGxceXa9IYd5HNfnDkhNBNv/ujV52uGnUrfYWe1Yly3L56nKEC1juXjsbfINDjEFXYOjv
+	voVQDtnYUquDfal6ymTuaNMDkkuPMwk5YzU5zW20UXWgFtx6GOuraa0=
+X-Google-Smtp-Source: AGHT+IFhjhUd2vTxqYR3Z5nzc5K52WwhbsgB0wgjWXiu+XeofP+aLrA4dkvuyGbgnmdnOjVQzIEANg==
+X-Received: by 2002:a05:6a20:160c:b0:1f5:75a9:5257 with SMTP id adf61e73a8af0-1f58cb1ba63mr3462589637.13.1741666149439;
+        Mon, 10 Mar 2025 21:09:09 -0700 (PDT)
 Received: from pc.. ([38.39.164.180])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.09.06
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.09.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 21:09:06 -0700 (PDT)
+        Mon, 10 Mar 2025 21:09:09 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>,
@@ -83,9 +83,9 @@ Cc: Paul Durrant <paul@xen.org>,
 	Daniel Henrique Barboza <danielhb413@gmail.com>,
 	Anthony PERARD <anthony@xenproject.org>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 09/16] exec/ram_addr: remove dependency on cpu.h
-Date: Mon, 10 Mar 2025 21:08:31 -0700
-Message-Id: <20250311040838.3937136-10-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 11/16] exec/ram_addr: call xen_hvm_modified_memory only if xen is enabled
+Date: Mon, 10 Mar 2025 21:08:33 -0700
+Message-Id: <20250311040838.3937136-12-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
 References: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
@@ -100,29 +100,35 @@ Content-Transfer-Encoding: 8bit
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/ram_addr.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/exec/ram_addr.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index 3d8df4edf15..7c011fadd11 100644
+index 7c011fadd11..098fccb5835 100644
 --- a/include/exec/ram_addr.h
 +++ b/include/exec/ram_addr.h
-@@ -20,13 +20,14 @@
- #define RAM_ADDR_H
+@@ -342,7 +342,9 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+         }
+     }
  
- #ifndef CONFIG_USER_ONLY
--#include "cpu.h"
- #include "system/xen.h"
- #include "system/tcg.h"
- #include "exec/cputlb.h"
- #include "exec/ramlist.h"
- #include "exec/ramblock.h"
- #include "exec/exec-all.h"
-+#include "exec/memory.h"
-+#include "exec/target_page.h"
- #include "qemu/rcu.h"
+-    xen_hvm_modified_memory(start, length);
++    if (xen_enabled()) {
++        xen_hvm_modified_memory(start, length);
++    }
+ }
  
- #include "exec/hwaddr.h"
+ #if !defined(_WIN32)
+@@ -418,7 +420,9 @@ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+             }
+         }
+ 
+-        xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        if (xen_enabled()) {
++            xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        }
+     } else {
+         uint8_t clients = tcg_enabled() ? DIRTY_CLIENTS_ALL : DIRTY_CLIENTS_NOCODE;
+ 
 -- 
 2.39.5
 
