@@ -1,42 +1,94 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1DA1EB184;
-	Tue, 11 Mar 2025 04:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC9D1EB5D8
+	for <kvm@vger.kernel.org>; Tue, 11 Mar 2025 04:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741665827; cv=none; b=DQIsIRVuCTnF4WBnzV+4StQq/BgVrMoO/cTYiLIAdVslcslAG5oA5/Q4esDIdE0wVF4fHYIal8m4Q1Dxutl7JdzWiw4CwVZ8NWya0ZWCqc7Hg9+4wqeUWRIom/XGQHo5gzkruytpY1l2GbQBbp25M5RdWrYDZLzVzX44bd+Lp5s=
+	t=1741666140; cv=none; b=ATL4IpLRk6K7hOLhCVod8NHeNoPX/FrrNBxoOQ8wwxRoSmUSek32Y6wX+pP3/+V8yyppOaGpF190SQ1CH4TLytwZsIqSULCWC4GqfejATdBNYF65akz7WBvutGXLv8w9jqjD1HdgEu4qi1EC9y0q+EbmvWwhsgt0kpwi6joTr3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741665827; c=relaxed/simple;
-	bh=Lx8rVbG+c3mJpvZpfSYYDm25AVJWBrGYoa0uXRnDYNw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BOliGeDpOefVAkN6+6SPsQk0EAmJ0LR8+M1DOTjyKLirrgBhRQ7clTVtAyOdtYMyhTG4vykDO/hQVVeNfKCeFFCVvKkx6Hb8jnhMaAMPK5KlqiZldmO+LSVU88+hkEFExZ7t24/uYXplaa9gwtHftQFDTRgfcNiEtnsX0DwS8uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZBg7h0sg7zqVXC;
-	Tue, 11 Mar 2025 12:02:08 +0800 (CST)
-Received: from kwepemj500003.china.huawei.com (unknown [7.202.194.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9D7351800CD;
-	Tue, 11 Mar 2025 12:03:37 +0800 (CST)
-Received: from DESKTOP-KKJBAGG.huawei.com (10.174.178.32) by
- kwepemj500003.china.huawei.com (7.202.194.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 11 Mar 2025 12:03:36 +0800
-From: Zhenyu Ye <yezhenyu2@huawei.com>
-To: <maz@kernel.org>, <yuzenghui@huawei.com>, <will@kernel.org>,
-	<oliver.upton@linux.dev>, <catalin.marinas@arm.com>, <joey.gouly@arm.com>
-CC: <linux-kernel@vger.kernel.org>, <yezhenyu2@huawei.com>,
-	<xiexiangyou@huawei.com>, <zhengchuan@huawei.com>, <wangzhou1@hisilicon.com>,
-	<linux-arm-kernel@lists.infradead.org>, <kvm@vger.kernel.org>,
-	<kvmarm@lists.linux.dev>
-Subject: [PATCH v1 3/5] arm64/kvm: using ioctl to enable/disable the HDBSS feature
-Date: Tue, 11 Mar 2025 12:03:19 +0800
-Message-ID: <20250311040321.1460-4-yezhenyu2@huawei.com>
-X-Mailer: git-send-email 2.22.0.windows.1
-In-Reply-To: <20250311040321.1460-1-yezhenyu2@huawei.com>
-References: <20250311040321.1460-1-yezhenyu2@huawei.com>
+	s=arc-20240116; t=1741666140; c=relaxed/simple;
+	bh=D7kAKGSn4zAKkiSs1hQlq6vEceALs33too5mFmMr30Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kcB63VMGcHTJhbX/L9A3BtftNqql+Oz5awm+UhhWXwIxVehscCR227+0RaZIXidDlKKWywRlSxKFLMIJgdSQhsSSkMZ7BOAfGeRO1z2ZD3RmkXPb1HAtmjTFX8GytmN/KNJrdJArt9U7f4xLGytwAuQz0nxa22QVxf8sx9+lqOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LwwDaDU/; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LwwDaDU/"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff694d2d4dso7130741a91.0
+        for <kvm@vger.kernel.org>; Mon, 10 Mar 2025 21:08:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741666138; x=1742270938; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=949DeBQijWmgHqYCdDdupcSTn3rDdND8nLqwkILEwEI=;
+        b=LwwDaDU/ePd/7NhfhWIJyqaLQ/s7jFDmNhSWjk4OnsKzScfrusP9VsSqI2iI1cr2gR
+         j5pkKVBZQsRyFc0Kjg4fIbZRXqBUolw8pCGl0X4rKZD+7gBlNuoHDgWs9e7n4HJvRjq9
+         UC2fiTDcn9xrcQlYqttCgx4wMZ9Xsyvh1szVdxw8H9cOU5iq4lYgFb7iUWGCWwpO+aUV
+         qhatBjpv0OYeGX+JlNnXyuHXoqVTmeYE7kA4+G52FHvMax2ySalJ9o90thhJJoz9/0R7
+         FjP0kYqDZOeDK8pveutzGWCgrQApCO+CvS1csekI4NC1xFIPDi/F6h44KTKbvebFefC5
+         4l0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741666138; x=1742270938;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=949DeBQijWmgHqYCdDdupcSTn3rDdND8nLqwkILEwEI=;
+        b=BwWDlHk4gbLCMNFW2fDSYeoQGufEC3XvQqQQapZ0UW+vTCv/rgkL079ZE1/W45JdoO
+         8MI6c9y8/a367Q3vZxzdu7+zsrsDY9ZjLsW4RHGyLYK+bWkolu6PllwZ4zHJHe2mnSUo
+         a7Egs4OEv13UI8HdxUBk+zwCeGZKsSidNCiA1aMZ5XIKWd+3WHNfWgjsRiswlk0VjtHV
+         cAoQIvaxL0xhr1Em+wUA11Qk1w79vhRA3GamXUcyYtLN0kAmMvkskyyvnqifY4NaFTTy
+         FZQzaON92AXLKsuTZ/FmRAJiZyQx9ECSAxKWu8Ybv5alVIRQK9eaSk9Ri6+cF5Ap8WyV
+         zwPA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1YqadGRaV0IhWmBptjB+hJf8MwQJ2unhapyf/9YguSExFvYTi5QuA0zoJmH2pScU8RMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3otXWuIaAG7zKSTI0T2kpLI5Xd9vYLhlDWN7Wp7+taKALLTn1
+	XS+jtoojTS6i8TrDxS/KPCtETTD+MFHP+NTH9O/E60PP3BZXv5nFL1fm4ethYnU=
+X-Gm-Gg: ASbGnct1Qa1TfLI/3UHRXDiVfqouTQ6JbWR+5kFTEjput9hV80WRgD/FhOkeFKt3HkK
+	sb8ULVSlmY0aezcsJmb+5MWp1ktdnANBzb9snu1Quf6OP7TsAkkRg8g0r3tIxt7rstcwfnOH4cu
+	qeYpfqP/j9C1VDa5g0aLMmQkRvbNJrxfcSFewkSwnP6/7Schzl+2V13yGmcYqijkgCJhVIm4OqM
+	HKqt7LvU0F3dN3wIh4mQpCUDcd8yIrhJI9E8y7Sxeu6dH8gFbxqzUZfnRfrGzpEcPOf6RbOelJ9
+	YHPE8R4lN9V5p8tSrTn022gj4W/g3NPXT3usZ/c69ogE
+X-Google-Smtp-Source: AGHT+IEzBJ4Y504tWVEKTLiAl14rUz4i3nUGGoyaKrgK43oaArjDd5np2LA5f1JQHmiuxtYBHKlEDg==
+X-Received: by 2002:a05:6a21:b97:b0:1f5:889c:3cdb with SMTP id adf61e73a8af0-1f5889c6dc7mr5899820637.8.1741666138527;
+        Mon, 10 Mar 2025 21:08:58 -0700 (PDT)
+Received: from pc.. ([38.39.164.180])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.08.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 21:08:58 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paul Durrant <paul@xen.org>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	xen-devel@lists.xenproject.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Peter Xu <peterx@redhat.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	kvm@vger.kernel.org,
+	qemu-ppc@nongnu.org,
+	Alistair Francis <alistair.francis@wdc.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	alex.bennee@linaro.org,
+	qemu-riscv@nongnu.org,
+	manos.pitsidianakis@linaro.org,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Daniel Henrique Barboza <danielhb413@gmail.com>,
+	Anthony PERARD <anthony@xenproject.org>,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 01/16] exec/tswap: target code can use TARGET_BIG_ENDIAN instead of target_words_bigendian()
+Date: Mon, 10 Mar 2025 21:08:23 -0700
+Message-Id: <20250311040838.3937136-2-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
+References: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,304 +96,50 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemj500003.china.huawei.com (7.202.194.33)
 
-From: eillon <yezhenyu2@huawei.com>
-
-In ARM64, the buffer size corresponding to the HDBSS feature is
-configurable. Therefore, we cannot enable the HDBSS feature during
-KVM initialization, but we should enable it when triggering a
-live migration, where the buffer size can be configured by the user.
-
-The KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl is added to enable/disable
-this feature. Users (such as qemu) can invoke the ioctl to enable
-HDBSS at the beginning of the migration and disable the feature by
-invoking the ioctl again at the end of the migration with size set to 0.
-
-Signed-off-by: eillon <yezhenyu2@huawei.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- arch/arm64/include/asm/cpufeature.h | 12 +++++
- arch/arm64/include/asm/kvm_host.h   |  6 +++
- arch/arm64/include/asm/kvm_mmu.h    | 12 +++++
- arch/arm64/include/asm/sysreg.h     | 12 +++++
- arch/arm64/kvm/arm.c                | 70 +++++++++++++++++++++++++++++
- arch/arm64/kvm/hyp/vhe/switch.c     |  1 +
- arch/arm64/kvm/mmu.c                |  3 ++
- arch/arm64/kvm/reset.c              |  7 +++
- include/linux/kvm_host.h            |  1 +
- include/uapi/linux/kvm.h            |  1 +
- tools/include/uapi/linux/kvm.h      |  1 +
- 11 files changed, 126 insertions(+)
+ include/exec/tswap.h | 11 ++++++-----
+ cpu-target.c         |  1 +
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index e0e4478f5fb5..c76d51506562 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -743,6 +743,18 @@ static __always_inline bool system_supports_fpsimd(void)
- 	return alternative_has_cap_likely(ARM64_HAS_FPSIMD);
- }
- 
-+static inline bool system_supports_hdbss(void)
-+{
-+	u64 mmfr1;
-+	u32 val;
-+
-+	mmfr1 =	read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
-+	val = cpuid_feature_extract_unsigned_field(mmfr1,
-+						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
-+
-+	return val == ID_AA64MMFR1_EL1_HAFDBS_HDBSS;
-+}
-+
- static inline bool system_uses_hw_pan(void)
- {
- 	return alternative_has_cap_unlikely(ARM64_HAS_PAN);
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index d919557af5e5..bd73ee92b12c 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -787,6 +787,12 @@ struct kvm_vcpu_arch {
- 
- 	/* Per-vcpu CCSIDR override or NULL */
- 	u32 *ccsidr;
-+
-+	/* HDBSS registers info */
-+	struct {
-+		u64 br_el2;
-+		u64 prod_el2;
-+	} hdbss;
- };
+diff --git a/include/exec/tswap.h b/include/exec/tswap.h
+index ecd4faef015..2683da0adb7 100644
+--- a/include/exec/tswap.h
++++ b/include/exec/tswap.h
+@@ -13,13 +13,14 @@
+ /**
+  * target_words_bigendian:
+  * Returns true if the (default) endianness of the target is big endian,
+- * false otherwise. Note that in target-specific code, you can use
+- * TARGET_BIG_ENDIAN directly instead. On the other hand, common
+- * code should normally never need to know about the endianness of the
+- * target, so please do *not* use this function unless you know very well
+- * what you are doing!
++ * false otherwise. Common code should normally never need to know about the
++ * endianness of the target, so please do *not* use this function unless you
++ * know very well what you are doing!
+  */
+ bool target_words_bigendian(void);
++#ifdef COMPILING_PER_TARGET
++#define target_words_bigendian()  TARGET_BIG_ENDIAN
++#endif
  
  /*
-diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
-index b98ac6aa631f..ed5b68c2085e 100644
---- a/arch/arm64/include/asm/kvm_mmu.h
-+++ b/arch/arm64/include/asm/kvm_mmu.h
-@@ -330,6 +330,18 @@ static __always_inline void __load_stage2(struct kvm_s2_mmu *mmu,
- 	asm(ALTERNATIVE("nop", "isb", ARM64_WORKAROUND_SPECULATIVE_AT));
+  * If we're in target-specific code, we can hard-code the swapping
+diff --git a/cpu-target.c b/cpu-target.c
+index cae77374b38..519b0f89005 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -155,6 +155,7 @@ void cpu_abort(CPUState *cpu, const char *fmt, ...)
+     abort();
  }
  
-+static __always_inline void __load_hdbss(struct kvm_vcpu *vcpu)
-+{
-+	if (!vcpu->kvm->enable_hdbss)
-+		return;
-+
-+	write_sysreg_s(vcpu->arch.hdbss.br_el2, SYS_HDBSSBR_EL2);
-+	write_sysreg_s(vcpu->arch.hdbss.prod_el2, SYS_HDBSSPROD_EL2);
-+
-+	dsb(sy);
-+	isb();
-+}
-+
- static inline struct kvm *kvm_s2_mmu_to_kvm(struct kvm_s2_mmu *mmu)
++#undef target_words_bigendian
+ bool target_words_bigendian(void)
  {
- 	return container_of(mmu->arch, struct kvm, arch);
-diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-index b727772c06fb..3040eac74f8c 100644
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -1105,6 +1105,18 @@
- #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
- 					       GCS_CAP_VALID_TOKEN)
- 
-+/*
-+ * Definitions for the HDBSS feature
-+ */
-+#define HDBSS_MAX_SIZE		HDBSSBR_EL2_SZ_2MB
-+
-+#define HDBSSBR_EL2(baddr, sz)	(((baddr) & GENMASK(55, 12 + sz)) | \
-+				 ((sz) << HDBSSBR_EL2_SZ_SHIFT))
-+#define HDBSSBR_BADDR(br)	((br) & GENMASK(55, (12 + HDBSSBR_SZ(br))))
-+#define HDBSSBR_SZ(br)		(((br) & HDBSSBR_EL2_SZ_MASK) >> HDBSSBR_EL2_SZ_SHIFT)
-+
-+#define HDBSSPROD_IDX(prod)	(((prod) & HDBSSPROD_EL2_INDEX_MASK) >> HDBSSPROD_EL2_INDEX_SHIFT)
-+
- #define ARM64_FEATURE_FIELD_BITS	4
- 
- /* Defined for compatibility only, do not add new users. */
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 0160b4924351..825cfef3b1c2 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -80,6 +80,70 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
- 	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
- }
- 
-+static int kvm_cap_arm_enable_hdbss(struct kvm *kvm,
-+				    struct kvm_enable_cap *cap)
-+{
-+	unsigned long i;
-+	struct kvm_vcpu *vcpu;
-+	struct page *hdbss_pg;
-+	int size = cap->args[0];
-+
-+	if (!system_supports_hdbss()) {
-+		kvm_err("This system does not support HDBSS!\n");
-+		return -EINVAL;
-+	}
-+
-+	if (size < 0 || size > HDBSS_MAX_SIZE) {
-+		kvm_err("Invalid HDBSS buffer size: %d!\n", size);
-+		return -EINVAL;
-+	}
-+
-+	/* Enable the HDBSS feature if size > 0, otherwise disable it. */
-+	if (size) {
-+		kvm->enable_hdbss = true;
-+		kvm->arch.mmu.vtcr |= VTCR_EL2_HD | VTCR_EL2_HDBSS;
-+
-+		kvm_for_each_vcpu(i, vcpu, kvm) {
-+			hdbss_pg = alloc_pages(GFP_KERNEL, size);
-+			if (!hdbss_pg) {
-+				kvm_err("Alloc HDBSS buffer failed!\n");
-+				return -EINVAL;
-+			}
-+
-+			vcpu->arch.hdbss.br_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), size);
-+			vcpu->arch.hdbss.prod_el2 = 0;
-+
-+			/*
-+			 * We should kick vcpus out of guest mode here to
-+			 * load new vtcr value to vtcr_el2 register when
-+			 * re-enter guest mode.
-+			 */
-+			kvm_vcpu_kick(vcpu);
-+		}
-+
-+		kvm_info("Enable HDBSS success, HDBSS buffer size: %d\n", size);
-+	} else if (kvm->enable_hdbss) {
-+		kvm->arch.mmu.vtcr &= ~(VTCR_EL2_HD | VTCR_EL2_HDBSS);
-+
-+		kvm_for_each_vcpu(i, vcpu, kvm) {
-+			/* Kick vcpus to flush hdbss buffer. */
-+			kvm_vcpu_kick(vcpu);
-+
-+			hdbss_pg = phys_to_page(HDBSSBR_BADDR(vcpu->arch.hdbss.br_el2));
-+			if (hdbss_pg)
-+				__free_pages(hdbss_pg, HDBSSBR_SZ(vcpu->arch.hdbss.br_el2));
-+
-+			vcpu->arch.hdbss.br_el2 = 0;
-+			vcpu->arch.hdbss.prod_el2 = 0;
-+		}
-+
-+		kvm->enable_hdbss = false;
-+		kvm_info("Disable HDBSS success\n");
-+	}
-+
-+	return 0;
-+}
-+
- int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 			    struct kvm_enable_cap *cap)
- {
-@@ -125,6 +189,9 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		}
- 		mutex_unlock(&kvm->slots_lock);
- 		break;
-+	case KVM_CAP_ARM_HW_DIRTY_STATE_TRACK:
-+		r = kvm_cap_arm_enable_hdbss(kvm, cap);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -393,6 +460,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES:
- 		r = BIT(0);
- 		break;
-+	case KVM_CAP_ARM_HW_DIRTY_STATE_TRACK:
-+		r = system_supports_hdbss();
-+		break;
- 	default:
- 		r = 0;
- 	}
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 647737d6e8d0..6b633a219e4d 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -256,6 +256,7 @@ void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
- 	__vcpu_load_switch_sysregs(vcpu);
- 	__vcpu_load_activate_traps(vcpu);
- 	__load_stage2(vcpu->arch.hw_mmu, vcpu->arch.hw_mmu->arch);
-+	__load_hdbss(vcpu);
- }
- 
- void kvm_vcpu_put_vhe(struct kvm_vcpu *vcpu)
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 1f55b0c7b11d..9c11e2292b1e 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1703,6 +1703,9 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
- 	if (writable)
- 		prot |= KVM_PGTABLE_PROT_W;
- 
-+	if (kvm->enable_hdbss && logging_active)
-+		prot |= KVM_PGTABLE_PROT_DBM;
-+
- 	if (exec_fault)
- 		prot |= KVM_PGTABLE_PROT_X;
- 
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index 803e11b0dc8f..4e518f9a3df0 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -153,12 +153,19 @@ bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu)
- void kvm_arm_vcpu_destroy(struct kvm_vcpu *vcpu)
- {
- 	void *sve_state = vcpu->arch.sve_state;
-+	struct page *hdbss_pg;
- 
- 	kvm_unshare_hyp(vcpu, vcpu + 1);
- 	if (sve_state)
- 		kvm_unshare_hyp(sve_state, sve_state + vcpu_sve_state_size(vcpu));
- 	kfree(sve_state);
- 	kfree(vcpu->arch.ccsidr);
-+
-+	if (vcpu->arch.hdbss.br_el2) {
-+		hdbss_pg = phys_to_page(HDBSSBR_BADDR(vcpu->arch.hdbss.br_el2));
-+		if (hdbss_pg)
-+			__free_pages(hdbss_pg, HDBSSBR_SZ(vcpu->arch.hdbss.br_el2));
-+	}
- }
- 
- static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f34f4cfaa513..aae37141c4a6 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -862,6 +862,7 @@ struct kvm {
- 	struct xarray mem_attr_array;
- #endif
- 	char stats_id[KVM_STATS_NAME_SIZE];
-+	bool enable_hdbss;
- };
- 
- #define kvm_err(fmt, ...) \
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 45e6d8fca9b9..748891902426 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -929,6 +929,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_PRE_FAULT_MEMORY 236
- #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
- #define KVM_CAP_X86_GUEST_MODE 238
-+#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 239
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-index 502ea63b5d2e..27d58b751e77 100644
---- a/tools/include/uapi/linux/kvm.h
-+++ b/tools/include/uapi/linux/kvm.h
-@@ -933,6 +933,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_PRE_FAULT_MEMORY 236
- #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
- #define KVM_CAP_X86_GUEST_MODE 238
-+#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 239
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
+     return TARGET_BIG_ENDIAN;
 -- 
-2.39.3
+2.39.5
 
