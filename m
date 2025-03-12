@@ -1,119 +1,104 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A7B256C9E;
-	Wed, 12 Mar 2025 18:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29A2D600;
+	Wed, 12 Mar 2025 19:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741805365; cv=none; b=ff11xeAMgg0ljw4g22FhoEbJSl6JMqrSMya/CmH3q79EXz8ZQ7/fLLKuiM+kZuYrg7jrnN/UbG6antFE3MehvowkDEbNuSWVSY9I5eIrv9SkU9KijV+DWsJDIEf5nDpkS1PmYyiUhuu58XLCQkflv2vZ+/lqmAcbxPrup6IZAOw=
+	t=1741807066; cv=none; b=OvpX8bLzJ2tsAt8r9sOXrLXV9be27IwJA4rKhc3u+LZ72Zb4zTR6CKmi10b9eYriRZfCyCg8EjKwQH1+framdOgM2fR3nk6kwkPCIGtfnmsTig0cJ7DKnpi59jHkuz7ASPxIe/13dDsDxcGScDrenvmsjk3exjGIeGPkyGieEuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741805365; c=relaxed/simple;
-	bh=GT7Ur/fHVJ/5kHo1xkE/Nzq5Zr8FHdgFHRbUJ+8Z2S8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VkELIl1U0tMQzMWryYxUBgM5awPpW9ted2nlelXxMWfrM7cTSvEi8O9g7NsCKpP3+GgtxlqM7IQIl4dxLlxQ9GYQCkrON4N7o/u+6joGkD3iYurnxoEBdE6g+KBBD+ZSWDvMM+cn/haSIF2zc3xsYFWcYAuGg9PMxGQd7vzMd3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Iz6+lo7F; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1741807066; c=relaxed/simple;
+	bh=WEKJAekWPjfqo3lfv1Dyzf0uWosAD0YT/LiQziRSKgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bUoewcnncBRn1UYlJbdgV4eP7XgTnbW+Iqi6L6C4MpRpAHal2s2td6z+M2I04cQSyG0iXCVTk9otoREnWnj+OqMbm4kEeaHo8v01xGbdNonT5iM3ZulDlDzFiYzA4oR+aLYKAj6lKXgDoU4OCV9pAA5otYBo+TZsgRIp0S0A24o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ENrH6X+I; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Iz6+lo7F"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CE3Cuo023053;
-	Wed, 12 Mar 2025 18:49:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=eJv6CMZTeAWiqTEj5pHxA1za2DHaIFt/JjPA1zTS0
-	70=; b=Iz6+lo7F7Sbe4x88L2Ha1Rt0tZXjepNmJ26cky38bI+MkMdmJqVcj0SnZ
-	AD7ZkyrlaTc4O5j4K1XPB/X4Kzkigck1uutfBW9+GPh6NkEHAkLL2rH1Z/fB9pS6
-	rrO+Erv7rym9qUdhfsVRFuujTlgm0IxkHu9gkky4lEO2byZUJK3fwfFfYt7fs15k
-	KiQPLI55p7SO/mXrYW/PHVQBFRvuvkgqCGPfbWly31A+G65aMoSmRExptScBsuDy
-	QVDSGkzTXwmpOHwtdz5doRPvDW9LiTzOReUk2vJig8VOvxHCE8nHSwAW6u6uBBaH
-	tU93RJASP1WXg+Cu+k9EkARHjYVxg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bbppshwj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 18:49:18 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52CHR49c012246;
-	Wed, 12 Mar 2025 18:49:17 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsrdpdn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 18:49:17 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52CInD6L44827056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Mar 2025 18:49:13 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C91320043;
-	Wed, 12 Mar 2025 18:49:13 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E4E620040;
-	Wed, 12 Mar 2025 18:49:13 +0000 (GMT)
-Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Mar 2025 18:49:13 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        frankja@linux.ibm.com, borntraeger@de.ibm.com, david@redhat.com,
-        nrb@linux.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
-        schlameuss@linux.ibm.com, hca@linux.ibm.com
-Subject: [PATCH v5 0/1] KVM: s390: fix a newly introduced bug
-Date: Wed, 12 Mar 2025 19:49:11 +0100
-Message-ID: <20250312184912.269414-1-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ENrH6X+I"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E28AC40E022F;
+	Wed, 12 Mar 2025 19:17:40 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jBeu_8bNW2Nt; Wed, 12 Mar 2025 19:17:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741807056; bh=aeg6Jv9b/RYuP9TlI11mhTNvcd7oqMuQcLDmmeS7GDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ENrH6X+IquT7fjOKeplCrFfUc6fiGC10ZAEfbb8HL4xvBWYRDxUx0srOLlSZKt9kF
+	 Ctp9igS8sEeKy8TMgiVZLIwI6Kg6FAfiZLZAs7xLU98RLDCbVgSzmBu9e/ZtCOMXv+
+	 nldHxALGSHc9RWjZG9GKf50PX3FogEu2hlBdqfJf4YRQEUOBDFVl9k/WuRK6SO4Nxe
+	 rESi3jiBTHgtn56wCTBXz8sN++FubqLn+vmyHx8gI0gyLbgr0cuNxGTZiO8ETafo6q
+	 eyUS6gKdColziuFVCm2mCwGAwA97+kNCPKLEfB3jG+gAQVicnr693ioa1ZFatGhaGl
+	 rIe0cKmxSBaZQ8cnpFGidsX6F9+zDHqZqipeTkmTGEKfv6FK+doIaKl7w8LCuEjQ7g
+	 9XjopUA8VscpGE6D18diewnSeyVfW3yl88Ztsm5e/Fb7NDfn3azcDEQumAFpAGsAFb
+	 dxvlz4m3ZnWYv6arW2pZH8wRTZBCvfeEZ3OofPzaTGFP0g7xK7Y8yniz6NlVIV8NY8
+	 tmXHrYixVnNgWqU4Zxqx90gje78hCrHclrASrSuE4JEpRjPJ6SRbPRY0yKSCGvEyga
+	 5ElFVfWK1u3SrWrrqmaGB+HVgN6ieWjts0OsDy8qZJ/aYwyMmxXdb1qyCubU7wW3hX
+	 PIZdRYmMgbw5YBgspaYIUdjw=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 593A840E0219;
+	Wed, 12 Mar 2025 19:17:24 +0000 (UTC)
+Date: Wed, 12 Mar 2025 20:17:17 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Patrick Bellasi <derkling@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Patrick Bellasi <derkling@matbug.net>,
+	David Kaplan <David.Kaplan@amd.com>
+Subject: Re: [PATCH final?] x86/bugs: KVM: Add support for SRSO_MSR_FIX
+Message-ID: <20250312191717.GGZ9Hdvbi_kRZYaaVE@fat_crate.local>
+References: <20250303150557.171528-1-derkling@google.com>
+ <20250311120340.GFZ9AmnAcZg-4pXOBv@fat_crate.local>
+ <Z9A8djMzajTAOawM@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FNJpQTEvTuBVrQ3_EDWFyGoz2BuH3M7q
-X-Proofpoint-GUID: FNJpQTEvTuBVrQ3_EDWFyGoz2BuH3M7q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-12_06,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- adultscore=0 malwarescore=0 bulkscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=632 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503120128
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z9A8djMzajTAOawM@google.com>
 
-Fix race when making a page secure (hold pte lock again)
+On Tue, Mar 11, 2025 at 01:36:54PM +0000, Brendan Jackman wrote:
+> This seems like a good idea to me, assuming we want ASI in the code
+> eventually it seems worthwhile to make visible the places where we
+> know we'll want to update the code when we get it in.
+> 
+> In RFCv2 this would be static_asi_enabled() [1] - I think in the
+> current implementation it would be fine to use it directly, but in
+> general we do need to be aware of initializion order.
 
-This should fix the issues I have seen, which I think/hope are also the same
-issues that David found.
+Right, I'd suggest you whack that thing and use cpu_feature_enabled()
+directly. No need for the indirection.
 
-v4->v5:
-* fixed kerneldoc for s390_wiggle_split_folio()
-* remove get_locked_valid_pte() and replace it with folio_walk_start()
-  [thanks David]
+And I see you're setting X86_FEATURE_ASI in asi_check_boottime_disable() - I'm
+presuming that's early enough so that cpu_select_mitigations() in bugs.c can
+see it so that srso_select_mitigation() can act accordingly...
 
-v3->v4:
-* move and rename s390_wiggle_split_folio() to fix a compile issue when
-  KVM is not selected
-* removed obsolete reference to __() from comments
+> Of course I'm biased here, from my perspective having such mentions of
+> ASI in the code is unambiguously useful. But if others perceived it as
+> useless noise I would understand!
 
-v2->v3:
-* added check for pte_write() in make_hva_secure() [thanks David]
+Yeah, well, it'll be a single feature check in srso_select_mitigation() with
+a big-fat comment in it explaining why so I think that should be ok...
 
-v1->v2:
-* major refactoring
-* walk the page tables only once
-* when importing, manually fault in pages if needed
-
-Claudio Imbrenda (1):
-  KVM: s390: pv: fix race when making a page secure
-
- arch/s390/include/asm/gmap.h |   1 -
- arch/s390/include/asm/uv.h   |   2 +-
- arch/s390/kernel/uv.c        | 136 +++++++++++++++++++++++++++++++++--
- arch/s390/kvm/gmap.c         | 103 ++------------------------
- arch/s390/kvm/kvm-s390.c     |  25 ++++---
- arch/s390/mm/gmap.c          |  28 --------
- 6 files changed, 151 insertions(+), 144 deletions(-)
+Thx.
 
 -- 
-2.48.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
