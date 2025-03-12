@@ -1,328 +1,523 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAD1256C6A
-	for <kvm@vger.kernel.org>; Wed, 12 Mar 2025 18:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E91258CD6;
+	Wed, 12 Mar 2025 18:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741804768; cv=none; b=RRVz37rc0ousEpOCyxlyCDIGB1qovw2Sel+El/tG82pBR9yC6KXbkv+f9wFkVJRlXlo3yEoaV7ATmRY81ArCj87e4OUV9rhFKxLsCBjJsS0L6GXhg0ES7KM11ZDoRcd8jntPXNrgCn2Q4g+Qcc5WZGE0wjAgVrrQvmb3LfDWo3g=
+	t=1741805364; cv=none; b=JfZLNXjwfV/5vlD9NN57AHoP/Ef628IMgiWlDoVXrFblyAChuvQU0t8n47bGw1qTr+TEyNSNB+TY6MAOOwUBIO27JKpjWJOInTG3AxfCWMGWpYUHaftq1H15UN5jteIbqmMxV69qvCdOyipt0xrjFney1Yfi4vxR0cb0m88N5bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741804768; c=relaxed/simple;
-	bh=wVF5UCJq8TwNkOCogaMkn5fk/pOwfq9wFtAG/vz6GOw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kd1JAiFn5kdk3BTToN3cjOqjgZYHTF3FjRAlECS+1yGwPISCbJ3NzwoyXCjH6JDa0G4i2+Nwg88FZbLkbiJd3r8j7lxb3oD0iFJ9a1gR7SmNy5TrlhXlOLjapCF3Dts03++nOjD4HrNsw7BzYpXwzreNTo8dEvHUOC8QILIxOkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WHEtGdiK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741805364; c=relaxed/simple;
+	bh=DmIQBNPxCkSnC+XwfLMKqNbeV1vxdX9Bb1YpACve2rI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q1eZx2z4X0MZap9uSsIOoHEk8fbO+kcd4iETkik1dkXtnnQOMrWTg4HDaK+aEvEAujRB7vVDCOi0V/aUiVHNl/tkbDjnhjKZata59hGrmNs+gDeTz4ZFOWYohL7wB6qxBOT0GEY1qRFpBNmcTMAYM3xxveAo3q29WJqvW3GX7Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=s8ii1kH0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WHEtGdiK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741804765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FpAQlvDURVXWfuuOfiLPpYSES6FxJzxrvh27SN0EPb0=;
-	b=WHEtGdiK4XcW+bsstegrHfOTghhdb+uRFrTctUgC08yzYhXJTLT16Ud9S+FxBgvJes9YJB
-	FBGdH3N/aoS52pZVYypddvw9CMOvXNtBC1OidNB+FegbsoqImoXb4fHuEho9hcc07v5SG6
-	hjSOuh18J0eMKq/QSAqkltmv3pcs7u8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-nUZe4oHnP6-stiuLsWwwvg-1; Wed, 12 Mar 2025 14:39:24 -0400
-X-MC-Unique: nUZe4oHnP6-stiuLsWwwvg-1
-X-Mimecast-MFC-AGG-ID: nUZe4oHnP6-stiuLsWwwvg_1741804763
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf446681cso540175e9.1
-        for <kvm@vger.kernel.org>; Wed, 12 Mar 2025 11:39:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741804763; x=1742409563;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FpAQlvDURVXWfuuOfiLPpYSES6FxJzxrvh27SN0EPb0=;
-        b=J/Ms8qKpzvMwD5mbwEWwoPSAyCKfnc7jTvTinTARAJHxORT9YQImBq5uoknuiWFiOk
-         KDHWokfKcepunxbYApW1hueSytFI3RknfcGNeVc62tt6RzEDnBdB/N9Ddg4sO8g8k6vL
-         1Ls4gEsrGt6ZQs9dtA7koGXfZvyhpzuuaV6vV6ROWp1xqo/v+uMESS+ZkTL2z4OB44Yg
-         pdzsNe8WuZ3WccNFnOsxfg1DSJK6Fx52ainzXVTv4qoalzVKFl4qcnJFretxfg+i8V9u
-         mBi8d0mD6EkdGK1PbCxI7SnPhlpvEZNiAydI17LO6gfyeEsnwBdk72NSsf3420kVp9F6
-         /S6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWCI+7m2ODzl3aO07VOeLGjh4AKPqY/wrnss3LD/keo6OEmNpqDDTeVAGVyHhbmz1O8fm0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvYwhgpv6m0juCxeuo3HUuzmBfzudF37cAeCMYYi8hoeftMs1U
-	aEWI91ceYiEYgiuwHH3KUs9l5ojOqIhBdVlkoDAwt5FmKcKSxfBQaEQZabS2RnalITpjjmfZ+2E
-	q56QFi893gvQ0NrL700je7yNeOlAYcgDqGp9HEy7wEC5oIFwteQ==
-X-Gm-Gg: ASbGncvNHXn6q9mnzAg48nkR6n3qQcnLxA8/GvRpjBBfufKENwGyVtIa42rd1Jc0J2+
-	jSkD64EpVBvTg7QZkb7a16X1v7xa5i58eGHXvEjosoCsyTbjfq9wRLegJYdxjUB+buR5WnEM7o2
-	618iIPDuE1vd3lLVrx2q9gIndgFB0Hru/ml/vcHHbagkw+nIi1qpU+Z3w8LWbrSWmcF5WwLCKZQ
-	YVOBcuZWvZ78Wsh6+5atqi5DQ6NKfaO6LOjLvwBZIDeX5W11pdOMnNHSnFS4/mENBjY6hZL/jM2
-	xU/8f8xw4ZLKwxXwz3WLuw==
-X-Received: by 2002:a05:600c:154d:b0:43d:160:cd97 with SMTP id 5b1f17b1804b1-43d0160cfb3mr81433545e9.25.1741804762795;
-        Wed, 12 Mar 2025 11:39:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8Up0exKa8uUyXSVqc46o/ZF8opDLggJlhh9jMidWnfu/BbBjzmo/eHcQWr0AS31ifbuD0MA==
-X-Received: by 2002:a05:600c:154d:b0:43d:160:cd97 with SMTP id 5b1f17b1804b1-43d0160cfb3mr81433405e9.25.1741804762391;
-        Wed, 12 Mar 2025 11:39:22 -0700 (PDT)
-Received: from [192.168.10.81] ([176.206.122.167])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43d0a8d0ab1sm28753375e9.34.2025.03.12.11.39.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Mar 2025 11:39:21 -0700 (PDT)
-Message-ID: <052c37b5-8deb-413e-b8cf-966e00f608ef@redhat.com>
-Date: Wed, 12 Mar 2025 19:39:20 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="s8ii1kH0"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CE3Dgd023091;
+	Wed, 12 Mar 2025 18:49:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Pf9iND1o9enBdYU7H
+	AxmnncuZjJFOmWp3hST91krQ7Y=; b=s8ii1kH0WAYZx9yrdMvUf8F3O+WYXZ2P6
+	nIJiCicouq5p70na2QPIZl4eCAapb9zCDSPc8NW2cshfz9w14aJTvzEKq5qmsJ5t
+	Jbn/NSXMhK8QlCgap3Qefsgz3AUu9b6BCPMo7F2NPykzeBM1sxCRzRtCN2POpm41
+	rfTU/URqs4cWDWlygSaNGtz62pDYeqprjJanJbKXWxtO0eDiVtvd7xcKku1s7Ako
+	eaZu0um+yKYbGD3hZ1kzhsTP7lJNi4IN6JK0Rp/C6Ya6HaVvDtMhuov5VI4c6HGd
+	9jFnGRtCl78Hft03K81xXjOyGEJ+YVvoxuNzzCvhUSv4+vJ2Sm2eg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bbppshwk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Mar 2025 18:49:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52CH8C5x015405;
+	Wed, 12 Mar 2025 18:49:17 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspdq40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Mar 2025 18:49:17 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52CInEvl36766058
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Mar 2025 18:49:14 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 06F5B20040;
+	Wed, 12 Mar 2025 18:49:14 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 98C692004B;
+	Wed, 12 Mar 2025 18:49:13 +0000 (GMT)
+Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Mar 2025 18:49:13 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        frankja@linux.ibm.com, borntraeger@de.ibm.com, david@redhat.com,
+        nrb@linux.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
+        schlameuss@linux.ibm.com, hca@linux.ibm.com
+Subject: [PATCH v5 1/1] KVM: s390: pv: fix race when making a page secure
+Date: Wed, 12 Mar 2025 19:49:12 +0100
+Message-ID: <20250312184912.269414-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250312184912.269414-1-imbrenda@linux.ibm.com>
+References: <20250312184912.269414-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/16] KVM: VMX: Move posted interrupt delivery code to
- common header
-To: Binbin Wu <binbin.wu@linux.intel.com>, seanjc@google.com,
- kvm@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com,
- reinette.chatre@intel.com, xiaoyao.li@intel.com, tony.lindgren@intel.com,
- isaku.yamahata@intel.com, yan.y.zhao@intel.com, chao.gao@intel.com,
- linux-kernel@vger.kernel.org
-References: <20250222014757.897978-1-binbin.wu@linux.intel.com>
- <20250222014757.897978-4-binbin.wu@linux.intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20250222014757.897978-4-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3Z-r9aPYrh9rK8W_DmpzyGdQWj7qDzQN
+X-Proofpoint-GUID: 3Z-r9aPYrh9rK8W_DmpzyGdQWj7qDzQN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-12_06,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ adultscore=0 malwarescore=0 bulkscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503120128
 
-On 2/22/25 02:47, Binbin Wu wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> Move posted interrupt delivery code to common header so that TDX can
-> leverage it.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> [binbin: split into new patch]
-> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
-> ---
-> TDX interrupts v3:
->   - fixup comment and add Chao's Reviewed-by
->     https://lore.kernel.org/kvm/20250211025828.3072076-2-binbin.wu@linux.intel.com/T/#m990cab2280c2f5fdaffc22575c3e3e3012a691df
-> 
-> TDX interrupts v2:
-> - Rebased due to moving pi_desc to vcpu_vt.
-> 
-> TDX interrupts v1:
-> - This is split out from patch "KVM: TDX: Implement interrupt injection"
-> ---
->   arch/x86/kvm/vmx/common.h | 68 +++++++++++++++++++++++++++++++++++++++
->   arch/x86/kvm/vmx/vmx.c    | 59 +--------------------------------
->   2 files changed, 69 insertions(+), 58 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-> index 9d4982694f06..8b12d8214b6c 100644
-> --- a/arch/x86/kvm/vmx/common.h
-> +++ b/arch/x86/kvm/vmx/common.h
-> @@ -4,6 +4,7 @@
->   
->   #include <linux/kvm_host.h>
->   
-> +#include "posted_intr.h"
+Holding the pte lock for the page that is being converted to secure is
+needed to avoid races. A previous commit removed the locking, which
+caused issues. Fix by locking the pte again.
 
-This include is already needed in "KVM: VMX: Move common fields of 
-struct vcpu_{vmx,tdx} to a struct" due to
+Fixes: 5cbe24350b7d ("KVM: s390: move pv gmap functions into kvm")
+Reported-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Tested-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+[david@redhat.com: replace use of get_locked_pte() with folio_walk_start()]
+---
+ arch/s390/include/asm/gmap.h |   1 -
+ arch/s390/include/asm/uv.h   |   2 +-
+ arch/s390/kernel/uv.c        | 136 +++++++++++++++++++++++++++++++++--
+ arch/s390/kvm/gmap.c         | 103 ++------------------------
+ arch/s390/kvm/kvm-s390.c     |  25 ++++---
+ arch/s390/mm/gmap.c          |  28 --------
+ 6 files changed, 151 insertions(+), 144 deletions(-)
 
-+struct vcpu_vt {
-+	/* Posted interrupt descriptor */
-+	struct pi_desc pi_desc;
-
-I'll fix it up in kvm-coco-queue.
-
-Paolo
-
->   #include "mmu.h"
->   
->   union vmx_exit_reason {
-> @@ -108,4 +109,71 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
->   	return kvm_mmu_page_fault(vcpu, gpa, error_code, NULL, 0);
->   }
->   
-> +static inline void kvm_vcpu_trigger_posted_interrupt(struct kvm_vcpu *vcpu,
-> +						     int pi_vec)
-> +{
-> +#ifdef CONFIG_SMP
-> +	if (vcpu->mode == IN_GUEST_MODE) {
-> +		/*
-> +		 * The vector of the virtual has already been set in the PIR.
-> +		 * Send a notification event to deliver the virtual interrupt
-> +		 * unless the vCPU is the currently running vCPU, i.e. the
-> +		 * event is being sent from a fastpath VM-Exit handler, in
-> +		 * which case the PIR will be synced to the vIRR before
-> +		 * re-entering the guest.
-> +		 *
-> +		 * When the target is not the running vCPU, the following
-> +		 * possibilities emerge:
-> +		 *
-> +		 * Case 1: vCPU stays in non-root mode. Sending a notification
-> +		 * event posts the interrupt to the vCPU.
-> +		 *
-> +		 * Case 2: vCPU exits to root mode and is still runnable. The
-> +		 * PIR will be synced to the vIRR before re-entering the guest.
-> +		 * Sending a notification event is ok as the host IRQ handler
-> +		 * will ignore the spurious event.
-> +		 *
-> +		 * Case 3: vCPU exits to root mode and is blocked. vcpu_block()
-> +		 * has already synced PIR to vIRR and never blocks the vCPU if
-> +		 * the vIRR is not empty. Therefore, a blocked vCPU here does
-> +		 * not wait for any requested interrupts in PIR, and sending a
-> +		 * notification event also results in a benign, spurious event.
-> +		 */
-> +
-> +		if (vcpu != kvm_get_running_vcpu())
-> +			__apic_send_IPI_mask(get_cpu_mask(vcpu->cpu), pi_vec);
-> +		return;
-> +	}
-> +#endif
-> +	/*
-> +	 * The vCPU isn't in the guest; wake the vCPU in case it is blocking,
-> +	 * otherwise do nothing as KVM will grab the highest priority pending
-> +	 * IRQ via ->sync_pir_to_irr() in vcpu_enter_guest().
-> +	 */
-> +	kvm_vcpu_wake_up(vcpu);
-> +}
-> +
-> +/*
-> + * Post an interrupt to a vCPU's PIR and trigger the vCPU to process the
-> + * interrupt if necessary.
-> + */
-> +static inline void __vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu,
-> +						  struct pi_desc *pi_desc, int vector)
-> +{
-> +	if (pi_test_and_set_pir(vector, pi_desc))
-> +		return;
-> +
-> +	/* If a previous notification has sent the IPI, nothing to do.  */
-> +	if (pi_test_and_set_on(pi_desc))
-> +		return;
-> +
-> +	/*
-> +	 * The implied barrier in pi_test_and_set_on() pairs with the smp_mb_*()
-> +	 * after setting vcpu->mode in vcpu_enter_guest(), thus the vCPU is
-> +	 * guaranteed to see PID.ON=1 and sync the PIR to IRR if triggering a
-> +	 * posted interrupt "fails" because vcpu->mode != IN_GUEST_MODE.
-> +	 */
-> +	kvm_vcpu_trigger_posted_interrupt(vcpu, POSTED_INTR_VECTOR);
-> +}
-> +
->   #endif /* __KVM_X86_VMX_COMMON_H */
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 008e558a6f41..2d4185df1581 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -4186,50 +4186,6 @@ void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
->   		pt_update_intercept_for_msr(vcpu);
->   }
->   
-> -static inline void kvm_vcpu_trigger_posted_interrupt(struct kvm_vcpu *vcpu,
-> -						     int pi_vec)
-> -{
-> -#ifdef CONFIG_SMP
-> -	if (vcpu->mode == IN_GUEST_MODE) {
-> -		/*
-> -		 * The vector of the virtual has already been set in the PIR.
-> -		 * Send a notification event to deliver the virtual interrupt
-> -		 * unless the vCPU is the currently running vCPU, i.e. the
-> -		 * event is being sent from a fastpath VM-Exit handler, in
-> -		 * which case the PIR will be synced to the vIRR before
-> -		 * re-entering the guest.
-> -		 *
-> -		 * When the target is not the running vCPU, the following
-> -		 * possibilities emerge:
-> -		 *
-> -		 * Case 1: vCPU stays in non-root mode. Sending a notification
-> -		 * event posts the interrupt to the vCPU.
-> -		 *
-> -		 * Case 2: vCPU exits to root mode and is still runnable. The
-> -		 * PIR will be synced to the vIRR before re-entering the guest.
-> -		 * Sending a notification event is ok as the host IRQ handler
-> -		 * will ignore the spurious event.
-> -		 *
-> -		 * Case 3: vCPU exits to root mode and is blocked. vcpu_block()
-> -		 * has already synced PIR to vIRR and never blocks the vCPU if
-> -		 * the vIRR is not empty. Therefore, a blocked vCPU here does
-> -		 * not wait for any requested interrupts in PIR, and sending a
-> -		 * notification event also results in a benign, spurious event.
-> -		 */
-> -
-> -		if (vcpu != kvm_get_running_vcpu())
-> -			__apic_send_IPI_mask(get_cpu_mask(vcpu->cpu), pi_vec);
-> -		return;
-> -	}
-> -#endif
-> -	/*
-> -	 * The vCPU isn't in the guest; wake the vCPU in case it is blocking,
-> -	 * otherwise do nothing as KVM will grab the highest priority pending
-> -	 * IRQ via ->sync_pir_to_irr() in vcpu_enter_guest().
-> -	 */
-> -	kvm_vcpu_wake_up(vcpu);
-> -}
-> -
->   static int vmx_deliver_nested_posted_interrupt(struct kvm_vcpu *vcpu,
->   						int vector)
->   {
-> @@ -4289,20 +4245,7 @@ static int vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu, int vector)
->   	if (!vcpu->arch.apic->apicv_active)
->   		return -1;
->   
-> -	if (pi_test_and_set_pir(vector, &vt->pi_desc))
-> -		return 0;
-> -
-> -	/* If a previous notification has sent the IPI, nothing to do.  */
-> -	if (pi_test_and_set_on(&vt->pi_desc))
-> -		return 0;
-> -
-> -	/*
-> -	 * The implied barrier in pi_test_and_set_on() pairs with the smp_mb_*()
-> -	 * after setting vcpu->mode in vcpu_enter_guest(), thus the vCPU is
-> -	 * guaranteed to see PID.ON=1 and sync the PIR to IRR if triggering a
-> -	 * posted interrupt "fails" because vcpu->mode != IN_GUEST_MODE.
-> -	 */
-> -	kvm_vcpu_trigger_posted_interrupt(vcpu, POSTED_INTR_VECTOR);
-> +	__vmx_deliver_posted_interrupt(vcpu, &vt->pi_desc, vector);
->   	return 0;
->   }
->   
+diff --git a/arch/s390/include/asm/gmap.h b/arch/s390/include/asm/gmap.h
+index 4e73ef46d4b2..9f2814d0e1e9 100644
+--- a/arch/s390/include/asm/gmap.h
++++ b/arch/s390/include/asm/gmap.h
+@@ -139,7 +139,6 @@ int s390_replace_asce(struct gmap *gmap);
+ void s390_uv_destroy_pfns(unsigned long count, unsigned long *pfns);
+ int __s390_uv_destroy_range(struct mm_struct *mm, unsigned long start,
+ 			    unsigned long end, bool interruptible);
+-int kvm_s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio, bool split);
+ unsigned long *gmap_table_walk(struct gmap *gmap, unsigned long gaddr, int level);
+ 
+ /**
+diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
+index b11f5b6d0bd1..46fb0ef6f984 100644
+--- a/arch/s390/include/asm/uv.h
++++ b/arch/s390/include/asm/uv.h
+@@ -631,7 +631,7 @@ int uv_pin_shared(unsigned long paddr);
+ int uv_destroy_folio(struct folio *folio);
+ int uv_destroy_pte(pte_t pte);
+ int uv_convert_from_secure_pte(pte_t pte);
+-int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb);
++int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header *uvcb);
+ int uv_convert_from_secure(unsigned long paddr);
+ int uv_convert_from_secure_folio(struct folio *folio);
+ 
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 9f05df2da2f7..9a5d5be8acf4 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -206,6 +206,39 @@ int uv_convert_from_secure_pte(pte_t pte)
+ 	return uv_convert_from_secure_folio(pfn_folio(pte_pfn(pte)));
+ }
+ 
++/**
++ * should_export_before_import - Determine whether an export is needed
++ * before an import-like operation
++ * @uvcb: the Ultravisor control block of the UVC to be performed
++ * @mm: the mm of the process
++ *
++ * Returns whether an export is needed before every import-like operation.
++ * This is needed for shared pages, which don't trigger a secure storage
++ * exception when accessed from a different guest.
++ *
++ * Although considered as one, the Unpin Page UVC is not an actual import,
++ * so it is not affected.
++ *
++ * No export is needed also when there is only one protected VM, because the
++ * page cannot belong to the wrong VM in that case (there is no "other VM"
++ * it can belong to).
++ *
++ * Return: true if an export is needed before every import, otherwise false.
++ */
++static bool should_export_before_import(struct uv_cb_header *uvcb, struct mm_struct *mm)
++{
++	/*
++	 * The misc feature indicates, among other things, that importing a
++	 * shared page from a different protected VM will automatically also
++	 * transfer its ownership.
++	 */
++	if (uv_has_feature(BIT_UV_FEAT_MISC))
++		return false;
++	if (uvcb->cmd == UVC_CMD_UNPIN_PAGE_SHARED)
++		return false;
++	return atomic_read(&mm->context.protected_count) > 1;
++}
++
+ /*
+  * Calculate the expected ref_count for a folio that would otherwise have no
+  * further pins. This was cribbed from similar functions in other places in
+@@ -228,7 +261,7 @@ static int expected_folio_refs(struct folio *folio)
+ }
+ 
+ /**
+- * make_folio_secure() - make a folio secure
++ * __make_folio_secure() - make a folio secure
+  * @folio: the folio to make secure
+  * @uvcb: the uvcb that describes the UVC to be used
+  *
+@@ -237,20 +270,18 @@ static int expected_folio_refs(struct folio *folio)
+  *
+  * Return: 0 on success;
+  *         -EBUSY if the folio is in writeback or has too many references;
+- *         -E2BIG if the folio is large;
+  *         -EAGAIN if the UVC needs to be attempted again;
+  *         -ENXIO if the address is not mapped;
+  *         -EINVAL if the UVC failed for other reasons.
+  *
+  * Context: The caller must hold exactly one extra reference on the folio
+- *          (it's the same logic as split_folio())
++ *          (it's the same logic as split_folio()), and the folio must be
++ *          locked.
+  */
+-int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
++static int __make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
+ {
+ 	int expected, cc = 0;
+ 
+-	if (folio_test_large(folio))
+-		return -E2BIG;
+ 	if (folio_test_writeback(folio))
+ 		return -EBUSY;
+ 	expected = expected_folio_refs(folio) + 1;
+@@ -277,7 +308,98 @@ int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
+ 		return -EAGAIN;
+ 	return uvcb->rc == 0x10a ? -ENXIO : -EINVAL;
+ }
+-EXPORT_SYMBOL_GPL(make_folio_secure);
++
++static int make_folio_secure(struct mm_struct *mm, struct folio *folio, struct uv_cb_header *uvcb)
++{
++	int rc;
++
++	if (!folio_trylock(folio))
++		return -EAGAIN;
++	if (should_export_before_import(uvcb, mm))
++		uv_convert_from_secure(folio_to_phys(folio));
++	rc = __make_folio_secure(folio, uvcb);
++	folio_unlock(folio);
++
++	return rc;
++}
++
++/**
++ * s390_wiggle_split_folio() - try to drain extra references to a folio and optionally split.
++ * @mm:    the mm containing the folio to work on
++ * @folio: the folio
++ * @split: whether to split a large folio
++ *
++ * Context: Must be called while holding an extra reference to the folio;
++ *          the mm lock should not be held.
++ * Return: 0 if the folio was split successfully;
++ *         -EAGAIN if the folio was not split successfully but another attempt
++ *                 can be made, or if @split was set to false;
++ *         -EINVAL in case of other errors. See split_folio().
++ */
++static int s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio, bool split)
++{
++	int rc;
++
++	lockdep_assert_not_held(&mm->mmap_lock);
++	folio_wait_writeback(folio);
++	lru_add_drain_all();
++	if (split) {
++		folio_lock(folio);
++		rc = split_folio(folio);
++		folio_unlock(folio);
++
++		if (rc != -EBUSY)
++			return rc;
++	}
++	return -EAGAIN;
++}
++
++int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header *uvcb)
++{
++	struct vm_area_struct *vma;
++	struct folio_walk fw;
++	struct folio *folio;
++	int rc;
++
++	mmap_read_lock(mm);
++	vma = vma_lookup(mm, hva);
++	if (!vma) {
++		mmap_read_unlock(mm);
++		return -EFAULT;
++	}
++	folio = folio_walk_start(&fw, vma, hva, 0);
++	if (!folio) {
++		mmap_read_unlock(mm);
++		return -ENXIO;
++	}
++
++	folio_get(folio);
++	/*
++	 * Secure pages cannot be huge and userspace should not combine both.
++	 * In case userspace does it anyway this will result in an -EFAULT for
++	 * the unpack. The guest is thus never reaching secure mode.
++	 * If userspace plays dirty tricks and decides to map huge pages at a
++	 * later point in time, it will receive a segmentation fault or
++	 * KVM_RUN will return -EFAULT.
++	 */
++	if (folio_test_hugetlb(folio))
++		rc = -EFAULT;
++	else if (folio_test_large(folio))
++		rc = -E2BIG;
++	else if (!pte_write(fw.pte) || (pte_val(fw.pte) & _PAGE_INVALID))
++		rc = -ENXIO;
++	else
++		rc = make_folio_secure(mm, folio, uvcb);
++	folio_walk_end(&fw, vma);
++	mmap_read_unlock(mm);
++
++	if (rc == -E2BIG || rc == -EBUSY)
++		rc = s390_wiggle_split_folio(mm, folio, rc == -E2BIG);
++	folio_put(folio);
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(make_hva_secure);
+ 
+ /*
+  * To be called with the folio locked or with an extra reference! This will
+diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
+index 02adf151d4de..6d8944d1b4a0 100644
+--- a/arch/s390/kvm/gmap.c
++++ b/arch/s390/kvm/gmap.c
+@@ -22,92 +22,6 @@
+ 
+ #include "gmap.h"
+ 
+-/**
+- * should_export_before_import - Determine whether an export is needed
+- * before an import-like operation
+- * @uvcb: the Ultravisor control block of the UVC to be performed
+- * @mm: the mm of the process
+- *
+- * Returns whether an export is needed before every import-like operation.
+- * This is needed for shared pages, which don't trigger a secure storage
+- * exception when accessed from a different guest.
+- *
+- * Although considered as one, the Unpin Page UVC is not an actual import,
+- * so it is not affected.
+- *
+- * No export is needed also when there is only one protected VM, because the
+- * page cannot belong to the wrong VM in that case (there is no "other VM"
+- * it can belong to).
+- *
+- * Return: true if an export is needed before every import, otherwise false.
+- */
+-static bool should_export_before_import(struct uv_cb_header *uvcb, struct mm_struct *mm)
+-{
+-	/*
+-	 * The misc feature indicates, among other things, that importing a
+-	 * shared page from a different protected VM will automatically also
+-	 * transfer its ownership.
+-	 */
+-	if (uv_has_feature(BIT_UV_FEAT_MISC))
+-		return false;
+-	if (uvcb->cmd == UVC_CMD_UNPIN_PAGE_SHARED)
+-		return false;
+-	return atomic_read(&mm->context.protected_count) > 1;
+-}
+-
+-static int __gmap_make_secure(struct gmap *gmap, struct page *page, void *uvcb)
+-{
+-	struct folio *folio = page_folio(page);
+-	int rc;
+-
+-	/*
+-	 * Secure pages cannot be huge and userspace should not combine both.
+-	 * In case userspace does it anyway this will result in an -EFAULT for
+-	 * the unpack. The guest is thus never reaching secure mode.
+-	 * If userspace plays dirty tricks and decides to map huge pages at a
+-	 * later point in time, it will receive a segmentation fault or
+-	 * KVM_RUN will return -EFAULT.
+-	 */
+-	if (folio_test_hugetlb(folio))
+-		return -EFAULT;
+-	if (folio_test_large(folio)) {
+-		mmap_read_unlock(gmap->mm);
+-		rc = kvm_s390_wiggle_split_folio(gmap->mm, folio, true);
+-		mmap_read_lock(gmap->mm);
+-		if (rc)
+-			return rc;
+-		folio = page_folio(page);
+-	}
+-
+-	if (!folio_trylock(folio))
+-		return -EAGAIN;
+-	if (should_export_before_import(uvcb, gmap->mm))
+-		uv_convert_from_secure(folio_to_phys(folio));
+-	rc = make_folio_secure(folio, uvcb);
+-	folio_unlock(folio);
+-
+-	/*
+-	 * In theory a race is possible and the folio might have become
+-	 * large again before the folio_trylock() above. In that case, no
+-	 * action is performed and -EAGAIN is returned; the callers will
+-	 * have to try again later.
+-	 * In most cases this implies running the VM again, getting the same
+-	 * exception again, and make another attempt in this function.
+-	 * This is expected to happen extremely rarely.
+-	 */
+-	if (rc == -E2BIG)
+-		return -EAGAIN;
+-	/* The folio has too many references, try to shake some off */
+-	if (rc == -EBUSY) {
+-		mmap_read_unlock(gmap->mm);
+-		kvm_s390_wiggle_split_folio(gmap->mm, folio, false);
+-		mmap_read_lock(gmap->mm);
+-		return -EAGAIN;
+-	}
+-
+-	return rc;
+-}
+-
+ /**
+  * gmap_make_secure() - make one guest page secure
+  * @gmap: the guest gmap
+@@ -115,24 +29,19 @@ static int __gmap_make_secure(struct gmap *gmap, struct page *page, void *uvcb)
+  * @uvcb: the UVCB specifying which operation needs to be performed
+  *
+  * Context: needs to be called with kvm->srcu held.
+- * Return: 0 on success, < 0 in case of error (see __gmap_make_secure()).
++ * Return: 0 on success, < 0 in case of error.
+  */
+ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ {
+ 	struct kvm *kvm = gmap->private;
+-	struct page *page;
+-	int rc = 0;
++	unsigned long vmaddr;
+ 
+ 	lockdep_assert_held(&kvm->srcu);
+ 
+-	page = gfn_to_page(kvm, gpa_to_gfn(gaddr));
+-	mmap_read_lock(gmap->mm);
+-	if (page)
+-		rc = __gmap_make_secure(gmap, page, uvcb);
+-	kvm_release_page_clean(page);
+-	mmap_read_unlock(gmap->mm);
+-
+-	return rc;
++	vmaddr = gfn_to_hva(kvm, gpa_to_gfn(gaddr));
++	if (kvm_is_error_hva(vmaddr))
++		return -EFAULT;
++	return make_hva_secure(gmap->mm, vmaddr, uvcb);
+ }
+ 
+ int gmap_convert_to_secure(struct gmap *gmap, unsigned long gaddr)
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index ebecb96bacce..020502af7dc9 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -4952,6 +4952,7 @@ static int vcpu_post_run_handle_fault(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned int flags = 0;
+ 	unsigned long gaddr;
++	int rc;
+ 
+ 	gaddr = current->thread.gmap_teid.addr * PAGE_SIZE;
+ 	if (kvm_s390_cur_gmap_fault_is_write())
+@@ -4961,16 +4962,6 @@ static int vcpu_post_run_handle_fault(struct kvm_vcpu *vcpu)
+ 	case 0:
+ 		vcpu->stat.exit_null++;
+ 		break;
+-	case PGM_NON_SECURE_STORAGE_ACCESS:
+-		kvm_s390_assert_primary_as(vcpu);
+-		/*
+-		 * This is normal operation; a page belonging to a protected
+-		 * guest has not been imported yet. Try to import the page into
+-		 * the protected guest.
+-		 */
+-		if (gmap_convert_to_secure(vcpu->arch.gmap, gaddr) == -EINVAL)
+-			send_sig(SIGSEGV, current, 0);
+-		break;
+ 	case PGM_SECURE_STORAGE_ACCESS:
+ 	case PGM_SECURE_STORAGE_VIOLATION:
+ 		kvm_s390_assert_primary_as(vcpu);
+@@ -4995,6 +4986,20 @@ static int vcpu_post_run_handle_fault(struct kvm_vcpu *vcpu)
+ 			send_sig(SIGSEGV, current, 0);
+ 		}
+ 		break;
++	case PGM_NON_SECURE_STORAGE_ACCESS:
++		kvm_s390_assert_primary_as(vcpu);
++		/*
++		 * This is normal operation; a page belonging to a protected
++		 * guest has not been imported yet. Try to import the page into
++		 * the protected guest.
++		 */
++		rc = gmap_convert_to_secure(vcpu->arch.gmap, gaddr);
++		if (rc == -EINVAL)
++			send_sig(SIGSEGV, current, 0);
++		if (rc != -ENXIO)
++			break;
++		flags = FAULT_FLAG_WRITE;
++		fallthrough;
+ 	case PGM_PROTECTION:
+ 	case PGM_SEGMENT_TRANSLATION:
+ 	case PGM_PAGE_TRANSLATION:
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index 94d927785800..d14b488e7a1f 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -2626,31 +2626,3 @@ int s390_replace_asce(struct gmap *gmap)
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(s390_replace_asce);
+-
+-/**
+- * kvm_s390_wiggle_split_folio() - try to drain extra references to a folio and optionally split
+- * @mm:    the mm containing the folio to work on
+- * @folio: the folio
+- * @split: whether to split a large folio
+- *
+- * Context: Must be called while holding an extra reference to the folio;
+- *          the mm lock should not be held.
+- */
+-int kvm_s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio, bool split)
+-{
+-	int rc;
+-
+-	lockdep_assert_not_held(&mm->mmap_lock);
+-	folio_wait_writeback(folio);
+-	lru_add_drain_all();
+-	if (split) {
+-		folio_lock(folio);
+-		rc = split_folio(folio);
+-		folio_unlock(folio);
+-
+-		if (rc != -EBUSY)
+-			return rc;
+-	}
+-	return -EAGAIN;
+-}
+-EXPORT_SYMBOL_GPL(kvm_s390_wiggle_split_folio);
+-- 
+2.48.1
 
