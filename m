@@ -1,256 +1,266 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABCB2676F2
-	for <kvm@vger.kernel.org>; Thu, 13 Mar 2025 12:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DBA2676C0
+	for <kvm@vger.kernel.org>; Thu, 13 Mar 2025 12:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741870081; cv=none; b=Ay6mv3KwQatu3xACSpUNFL75I1qqAQMMC5UEG2YMvjnlC+8oVkKjF6m/a+nvaEbGX9c8BWlvvKqiRyVdgLSx6kZltv+i1xO6PzSysdDTH7ypqZ1oqxjrCc4Km/KgfatJigu0i4/CV5R31797mbj1E3Zu0HCeg29VtIZuwK31vw4=
+	t=1741870384; cv=none; b=UtHRdQ4u1h4MKd+mBaoBeuddIEXPpS98PFyOSJ29sCJqzxTxOwa6wHq1s/2kfGjBFWPrGRzTlqMXEhS6cHV+1yjxFUzeeE77FXbnIvP7pEuVqWhdMaEF5CZpuaKkfEwsfbd1ybE7M9L1/kTdrcxCHgGClpelUN0b4UzHnC3EazM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741870081; c=relaxed/simple;
-	bh=8csem5A7kRdfdWUeU3nWExqMdRsWoGi8C+G2sr7HFJ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=inKJzSV2bPGlT3oF2qm/vMh44fycCcuWd8CZ7fhMzTzm4iNl/n8gdfEnqd1ruxEhgIG8VJGOmkZefXWQ9KCTCTj5y1lXf7FJX2Fn5i8ScMJLQ3FIq3IGTYWUqjgmwwLNcTOEKIQ1OddC+vocPgb5GgLdr0fnSQ+TeOtJyQlEUrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OeJ0QX6k; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741870384; c=relaxed/simple;
+	bh=QIdobgZYkzVhdo1szioagjPNujhQnAnv7YIiKfgqlo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y51gvu5pEpj2+/gA85cDIiyImhfOkt6QlVUVyuRfObKOfjjMxO1ySRq39Gog8LioLOlIe8ceDer+dVHgVWc8xgDfLkCtxUTK94VY9JlUdzSSHJQXfh1RrVMH9K+hfkV0I9T1xfd0vy7Xh3Gw2H0UFDdYpbEGTFffgWl8aTKJ1QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=O6aGSotP; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OeJ0QX6k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741870081; x=1773406081;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8csem5A7kRdfdWUeU3nWExqMdRsWoGi8C+G2sr7HFJ4=;
-  b=OeJ0QX6k1RfZuKyxiuLuvHyekx//CSg6qmBODDsRxz8hSdoSV0DuMD9T
-   0wslkUMBowI3Ip/q0DGlZmFqDBDCx/O9r1UNfNOlmHRg9kKol9+dfNNm2
-   u6H/nW3OWzQBuKrEmC/zrc4rTlk8v+OxjZJLPKeNcBly5qJfmg7g7ApoJ
-   7KQvfvVQdZhOWbMx6CJhTG1ur5AQsuEBwOA3W092ucHMM63lppkdXy8vj
-   DCTW7dn3KH8YWZJPuTGlGPbL4YNu62gf6AjI6/9q4N40BMC+M6qPqW4qG
-   G0ykxfFHgFP3hBDbSuD6zsj1N06dC94IFJKNB2uUe8p4ML1lz/j5CDBA2
-   Q==;
-X-CSE-ConnectionGUID: RA/93YnyROKZnYbeaA1MxA==
-X-CSE-MsgGUID: wu6wsUw4RqOmkcBkev6COA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="60383577"
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="60383577"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 05:47:56 -0700
-X-CSE-ConnectionGUID: apDpraOvSTqKS3UIARZQ4w==
-X-CSE-MsgGUID: vQ0xVvYmTtyZMYxSDvwRXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="158095333"
-Received: from 984fee00a4c6.jf.intel.com ([10.165.58.231])
-  by orviesa001.jf.intel.com with ESMTP; 13 Mar 2025 05:47:55 -0700
-From: Yi Liu <yi.l.liu@intel.com>
-To: alex.williamson@redhat.com,
-	kevin.tian@intel.com
-Cc: jgg@nvidia.com,
-	eric.auger@redhat.com,
-	nicolinc@nvidia.com,
-	kvm@vger.kernel.org,
-	yi.l.liu@intel.com,
-	chao.p.peng@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	willy@infradead.org,
-	zhangfei.gao@linaro.org,
-	vasant.hegde@amd.com
-Subject: [PATCH v8 4/5] iommufd: Extend IOMMU_GET_HW_INFO to report PASID capability
-Date: Thu, 13 Mar 2025 05:47:52 -0700
-Message-Id: <20250313124753.185090-5-yi.l.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250313124753.185090-1-yi.l.liu@intel.com>
-References: <20250313124753.185090-1-yi.l.liu@intel.com>
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="O6aGSotP"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso5971575e9.1
+        for <kvm@vger.kernel.org>; Thu, 13 Mar 2025 05:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1741870380; x=1742475180; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=whJ5WLOnqJqIdekbdowFNyLodSkqgwLzZprjEG6v7KA=;
+        b=O6aGSotPsgOgbS+mhD1ujIONFDWI0Q4Jk7kwb5koFRhss9CEK69UVF4IG/e30xM3Ss
+         ogQqyX1N2/Bah4ztzYxglKLF0n4warGzTQQDd4iogzddoorSSFD4Am15ZyBlZ3igRb5S
+         74kpxZuvadR6yE35UZPvvd8V/hTy3eBafZDlvp2pZCpPtcy7Aa3mul9cJjQL1/tHQnXT
+         ovqWLHACX57VidxJmqZe6t+k5mmV349/7EgA35MwcKdeyuhc25PWoBoibzqxF+DMPxeN
+         /4QOU7h3WVjMKoxT8+7qCbdicqBW7434HLWRjKfWlULV5v2JIuw+fQlHnOTbTpQjRzzG
+         QbkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741870380; x=1742475180;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=whJ5WLOnqJqIdekbdowFNyLodSkqgwLzZprjEG6v7KA=;
+        b=uxEmDuJYoY7tCT6iK1bDV03x3rr6EwiPaMhSYIGLFUJv97Ek+Uswt4MyZorv1HUifa
+         QjWFEDMeDBiUoK1jHlhRuOUtuH++vO7o8CiKDvOv63EdGW5zYPiGSG7WVLy3AgWNb0mI
+         XjLQXQ6/xHwa2Zl40Xck+F29grFYStUvCmvjuYi/cQV6Vq9ImnreiZKIKyJqQiujvDBT
+         FUcH+GbUYQxMAghZC1OiOq+F3uqCsHD2BcOprhPQHOri9EKjxaCBTN0bQkfAsgCXTOYW
+         OjiRJZhsfH01T3PWAFZ05hUo4pzGnGJcY25pKkzPkeaTDvC7tuVg/7W7W17RZDhaJeRd
+         6hzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzLYXyDtGQVTnkOzVtfa/znak/OSCjMVvQ6YpMPyJ4BkNHzvkEVIGlH7zjy0ZefWSHMkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGsCkhSXqnP0BR48OQQLwyLxxQcP8AhdBLKprNGofO3XbHkTLj
+	J0afGC+s1tdSbsg+kQj0r5fOwracIJ2M4L/tpgVBVWWDX0FR6i4ZYsUP25Yjhsg=
+X-Gm-Gg: ASbGnctuVek8rJ0pivDyPYySHtBg+bNuyrvey+il1SHbGCSdTjbZu7WR8rxHLwYIl4I
+	NUw/rzQgPI3kv8PH8ME/toVCvHutig+qj6bxHizmhgV4qSyJElbfx/DRLCPNwRFxl/txzSC+iG8
+	db4jrQ2vB9HE0FAvqqaO2FfSgGVSsRi8fZslPuRwzHM4BTNWYmaH5ZZnYmmP93IS1WDmH2XbH7a
+	KUCWNC/0cLlq7AH+k2owrepetz0qZuGOyoZZUBclXASqZUjFYOEmPxgzyh02EJgn2zJfRaKkxW3
+	UA8rCrKEGVjROLklBfYR2g3/QAfatvbZ
+X-Google-Smtp-Source: AGHT+IG41qlHvVlMBTz+EBNgOBL90SoyA5MRu9vVFfQYuH5YBZLTfvMhSZKO57zcnXjrEIFxRRHKsw==
+X-Received: by 2002:a05:600c:3ba4:b0:43c:fabf:9146 with SMTP id 5b1f17b1804b1-43cfabf940emr138350995e9.17.1741870380371;
+        Thu, 13 Mar 2025 05:53:00 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200::59a5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d186e9639sm20720865e9.0.2025.03.13.05.52.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Mar 2025 05:52:59 -0700 (PDT)
+Date: Thu, 13 Mar 2025 13:52:58 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atishp@atishpatra.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH v3 04/17] riscv: misaligned: request misaligned exception
+ from SBI
+Message-ID: <20250313-28a56381a2c44ebeff100f91@orel>
+References: <20250310151229.2365992-1-cleger@rivosinc.com>
+ <20250310151229.2365992-5-cleger@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250310151229.2365992-5-cleger@rivosinc.com>
 
-PASID usage requires PASID support in both device and IOMMU. Since the
-iommu drivers always enable the PASID capability for the device if it
-is supported, this extends the IOMMU_GET_HW_INFO to report the PASID
-capability to userspace. Also, enhances the selftest accordingly.
+On Mon, Mar 10, 2025 at 04:12:11PM +0100, Clément Léger wrote:
+> Now that the kernel can handle misaligned accesses in S-mode, request
+> misaligned access exception delegation from SBI. This uses the FWFT SBI
+> extension defined in SBI version 3.0.
+> 
+> Signed-off-by: Clément Léger <cleger@rivosinc.com>
+> ---
+>  arch/riscv/include/asm/cpufeature.h        |  3 +-
+>  arch/riscv/kernel/traps_misaligned.c       | 77 +++++++++++++++++++++-
+>  arch/riscv/kernel/unaligned_access_speed.c | 11 +++-
+>  3 files changed, 86 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+> index 569140d6e639..ad7d26788e6a 100644
+> --- a/arch/riscv/include/asm/cpufeature.h
+> +++ b/arch/riscv/include/asm/cpufeature.h
+> @@ -64,8 +64,9 @@ void __init riscv_user_isa_enable(void);
+>  	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), _validate)
+>  
+>  bool check_unaligned_access_emulated_all_cpus(void);
+> +void unaligned_access_init(void);
+> +int cpu_online_unaligned_access_init(unsigned int cpu);
+>  #if defined(CONFIG_RISCV_SCALAR_MISALIGNED)
+> -void check_unaligned_access_emulated(struct work_struct *work __always_unused);
+>  void unaligned_emulation_finish(void);
+>  bool unaligned_ctl_available(void);
+>  DECLARE_PER_CPU(long, misaligned_access_speed);
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+> index 7cc108aed74e..90ac74191357 100644
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -16,6 +16,7 @@
+>  #include <asm/entry-common.h>
+>  #include <asm/hwprobe.h>
+>  #include <asm/cpufeature.h>
+> +#include <asm/sbi.h>
+>  #include <asm/vector.h>
+>  
+>  #define INSN_MATCH_LB			0x3
+> @@ -635,7 +636,7 @@ bool check_vector_unaligned_access_emulated_all_cpus(void)
+>  
+>  static bool unaligned_ctl __read_mostly;
+>  
+> -void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+> +static void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+>  {
+>  	int cpu = smp_processor_id();
+>  	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
+> @@ -646,6 +647,13 @@ void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+>  	__asm__ __volatile__ (
+>  		"       "REG_L" %[tmp], 1(%[ptr])\n"
+>  		: [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
+> +}
+> +
+> +static int cpu_online_check_unaligned_access_emulated(unsigned int cpu)
+> +{
+> +	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
+> +
+> +	check_unaligned_access_emulated(NULL);
+>  
+>  	/*
+>  	 * If unaligned_ctl is already set, this means that we detected that all
+> @@ -654,9 +662,10 @@ void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+>  	 */
+>  	if (unlikely(unaligned_ctl && (*mas_ptr != RISCV_HWPROBE_MISALIGNED_SCALAR_EMULATED))) {
+>  		pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
+> -		while (true)
+> -			cpu_relax();
+> +		return -EINVAL;
+>  	}
+> +
+> +	return 0;
+>  }
+>  
+>  bool check_unaligned_access_emulated_all_cpus(void)
+> @@ -688,4 +697,66 @@ bool check_unaligned_access_emulated_all_cpus(void)
+>  {
+>  	return false;
+>  }
+> +static int cpu_online_check_unaligned_access_emulated(unsigned int cpu)
+> +{
+> +	return 0;
+> +}
+>  #endif
+> +
+> +#ifdef CONFIG_RISCV_SBI
+> +
+> +static bool misaligned_traps_delegated;
+> +
+> +static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
+> +{
+> +	if (sbi_fwft_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 1, 0) &&
+> +	    misaligned_traps_delegated) {
+> +		pr_crit("Misaligned trap delegation non homogeneous (expected delegated)");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void unaligned_sbi_request_delegation(void)
+> +{
+> +	int ret;
+> +
+> +	ret = sbi_fwft_all_cpus_set(SBI_FWFT_MISALIGNED_EXC_DELEG, 1, 0, 0);
+> +	if (ret)
+> +		return;
+> +
+> +	misaligned_traps_delegated = true;
+> +	pr_info("SBI misaligned access exception delegation ok\n");
+> +	/*
+> +	 * Note that we don't have to take any specific action here, if
+> +	 * the delegation is successful, then
+> +	 * check_unaligned_access_emulated() will verify that indeed the
+> +	 * platform traps on misaligned accesses.
+> +	 */
+> +}
+> +
+> +void unaligned_access_init(void)
+> +{
+> +	if (sbi_probe_extension(SBI_EXT_FWFT) > 0)
+> +		unaligned_sbi_request_delegation();
+> +}
+> +#else
+> +void unaligned_access_init(void) {}
+> +
+> +static int cpu_online_sbi_unaligned_setup(unsigned int cpu __always_unused)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+> +int cpu_online_unaligned_access_init(unsigned int cpu)
+> +{
+> +	int ret;
+> +
+> +	ret = cpu_online_sbi_unaligned_setup(cpu);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return cpu_online_check_unaligned_access_emulated(cpu);
+> +}
+> diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+> index 91f189cf1611..2f3aba073297 100644
+> --- a/arch/riscv/kernel/unaligned_access_speed.c
+> +++ b/arch/riscv/kernel/unaligned_access_speed.c
+> @@ -188,13 +188,20 @@ arch_initcall_sync(lock_and_set_unaligned_access_static_branch);
+>  
+>  static int riscv_online_cpu(unsigned int cpu)
+>  {
+> +	int ret;
+>  	static struct page *buf;
+>  
+>  	/* We are already set since the last check */
+>  	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
+>  		goto exit;
+>  
+> -	check_unaligned_access_emulated(NULL);
+> +	ret = cpu_online_unaligned_access_init(cpu);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (per_cpu(misaligned_access_speed, cpu) == RISCV_HWPROBE_MISALIGNED_SCALAR_EMULATED)
+> +		goto exit;
+> +
+>  	buf = alloc_pages(GFP_KERNEL, MISALIGNED_BUFFER_ORDER);
+>  	if (!buf) {
+>  		pr_warn("Allocation failure, not measuring misaligned performance\n");
+> @@ -403,6 +410,8 @@ static int check_unaligned_access_all_cpus(void)
+>  {
+>  	bool all_cpus_emulated, all_cpus_vec_unsupported;
+>  
+> +	unaligned_access_init();
+> +
+>  	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
+>  	all_cpus_vec_unsupported = check_vector_unaligned_access_emulated_all_cpus();
+>  
+> -- 
+> 2.47.2
+>
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org> #aarch64 platform
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
----
- drivers/iommu/iommufd/device.c | 35 +++++++++++++++++++++++++++++++++-
- drivers/pci/ats.c              | 33 ++++++++++++++++++++++++++++++++
- include/linux/pci-ats.h        |  3 +++
- include/uapi/linux/iommufd.h   | 14 +++++++++++++-
- 4 files changed, 83 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index 70da39f5e227..1f3bec61bcf9 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -3,6 +3,8 @@
-  */
- #include <linux/iommu.h>
- #include <linux/iommufd.h>
-+#include <linux/pci.h>
-+#include <linux/pci-ats.h>
- #include <linux/slab.h>
- #include <uapi/linux/iommufd.h>
- #include <linux/msi.h>
-@@ -1535,7 +1537,8 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
- 	void *data;
- 	int rc;
- 
--	if (cmd->flags || cmd->__reserved)
-+	if (cmd->flags || cmd->__reserved[0] || cmd->__reserved[1] ||
-+	    cmd->__reserved[2])
- 		return -EOPNOTSUPP;
- 
- 	idev = iommufd_get_device(ucmd, cmd->dev_id);
-@@ -1592,6 +1595,36 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
- 	if (device_iommu_capable(idev->dev, IOMMU_CAP_DIRTY_TRACKING))
- 		cmd->out_capabilities |= IOMMU_HW_CAP_DIRTY_TRACKING;
- 
-+	cmd->out_max_pasid_log2 = 0;
-+	/*
-+	 * Currently, all iommu drivers enable PASID in the probe_device()
-+	 * op if iommu and device supports it. So the max_pasids stored in
-+	 * dev->iommu indicates both PASID support and enable status. A
-+	 * non-zero dev->iommu->max_pasids means PASID is supported and
-+	 * enabled. The iommufd only reports PASID capability to userspace
-+	 * if it's enabled.
-+	 */
-+	if (idev->dev->iommu->max_pasids) {
-+		cmd->out_max_pasid_log2 = ilog2(idev->dev->iommu->max_pasids);
-+
-+		if (dev_is_pci(idev->dev)) {
-+			struct pci_dev *pdev = to_pci_dev(idev->dev);
-+			int ctrl;
-+
-+			ctrl = pci_pasid_status(pdev);
-+
-+			WARN_ON_ONCE(ctrl < 0 ||
-+				     !(ctrl & PCI_PASID_CTRL_ENABLE));
-+
-+			if (ctrl & PCI_PASID_CTRL_EXEC)
-+				cmd->out_capabilities |=
-+						IOMMU_HW_CAP_PCI_PASID_EXEC;
-+			if (ctrl & PCI_PASID_CTRL_PRIV)
-+				cmd->out_capabilities |=
-+						IOMMU_HW_CAP_PCI_PASID_PRIV;
-+		}
-+	}
-+
- 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
- out_free:
- 	kfree(data);
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index c6b266c772c8..ec6c8dbdc5e9 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -538,4 +538,37 @@ int pci_max_pasids(struct pci_dev *pdev)
- 	return (1 << FIELD_GET(PCI_PASID_CAP_WIDTH, supported));
- }
- EXPORT_SYMBOL_GPL(pci_max_pasids);
-+
-+/**
-+ * pci_pasid_status - Check the PASID status
-+ * @pdev: PCI device structure
-+ *
-+ * Returns a negative value when no PASID capability is present.
-+ * Otherwise the value of the control register is returned.
-+ * Status reported are:
-+ *
-+ * PCI_PASID_CTRL_ENABLE - PASID enabled
-+ * PCI_PASID_CTRL_EXEC - Execute permission enabled
-+ * PCI_PASID_CTRL_PRIV - Privileged mode enabled
-+ */
-+int pci_pasid_status(struct pci_dev *pdev)
-+{
-+	int pasid;
-+	u16 ctrl;
-+
-+	if (pdev->is_virtfn)
-+		pdev = pci_physfn(pdev);
-+
-+	pasid = pdev->pasid_cap;
-+	if (!pasid)
-+		return -EINVAL;
-+
-+	pci_read_config_word(pdev, pasid + PCI_PASID_CTRL, &ctrl);
-+
-+	ctrl &= PCI_PASID_CTRL_ENABLE | PCI_PASID_CTRL_EXEC |
-+		PCI_PASID_CTRL_PRIV;
-+
-+	return ctrl;
-+}
-+EXPORT_SYMBOL_GPL(pci_pasid_status);
- #endif /* CONFIG_PCI_PASID */
-diff --git a/include/linux/pci-ats.h b/include/linux/pci-ats.h
-index 0e8b74e63767..75c6c86cf09d 100644
---- a/include/linux/pci-ats.h
-+++ b/include/linux/pci-ats.h
-@@ -42,6 +42,7 @@ int pci_enable_pasid(struct pci_dev *pdev, int features);
- void pci_disable_pasid(struct pci_dev *pdev);
- int pci_pasid_features(struct pci_dev *pdev);
- int pci_max_pasids(struct pci_dev *pdev);
-+int pci_pasid_status(struct pci_dev *pdev);
- #else /* CONFIG_PCI_PASID */
- static inline int pci_enable_pasid(struct pci_dev *pdev, int features)
- { return -EINVAL; }
-@@ -50,6 +51,8 @@ static inline int pci_pasid_features(struct pci_dev *pdev)
- { return -EINVAL; }
- static inline int pci_max_pasids(struct pci_dev *pdev)
- { return -EINVAL; }
-+static inline int pci_pasid_status(struct pci_dev *pdev)
-+{ return -EINVAL; }
- #endif /* CONFIG_PCI_PASID */
- 
- #endif /* LINUX_PCI_ATS_H */
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 75905f59b87f..ac9469576b51 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -611,9 +611,17 @@ enum iommu_hw_info_type {
-  *                                   IOMMU_HWPT_GET_DIRTY_BITMAP
-  *                                   IOMMU_HWPT_SET_DIRTY_TRACKING
-  *
-+ * @IOMMU_HW_CAP_PASID_EXEC: Execute Permission Supported, user ignores it
-+ *                           when the struct iommu_hw_info::out_max_pasid_log2
-+ *                           is zero.
-+ * @IOMMU_HW_CAP_PASID_PRIV: Privileged Mode Supported, user ignores it
-+ *                           when the struct iommu_hw_info::out_max_pasid_log2
-+ *                           is zero.
-  */
- enum iommufd_hw_capabilities {
- 	IOMMU_HW_CAP_DIRTY_TRACKING = 1 << 0,
-+	IOMMU_HW_CAP_PCI_PASID_EXEC = 1 << 1,
-+	IOMMU_HW_CAP_PCI_PASID_PRIV = 1 << 2,
- };
- 
- /**
-@@ -629,6 +637,9 @@ enum iommufd_hw_capabilities {
-  *                 iommu_hw_info_type.
-  * @out_capabilities: Output the generic iommu capability info type as defined
-  *                    in the enum iommu_hw_capabilities.
-+ * @out_max_pasid_log2: Output the width of PASIDs. 0 means no PASID support.
-+ *                      PCI devices turn to out_capabilities to check if the
-+ *                      specific capabilities is supported or not.
-  * @__reserved: Must be 0
-  *
-  * Query an iommu type specific hardware information data from an iommu behind
-@@ -652,7 +663,8 @@ struct iommu_hw_info {
- 	__u32 data_len;
- 	__aligned_u64 data_uptr;
- 	__u32 out_data_type;
--	__u32 __reserved;
-+	__u8 out_max_pasid_log2;
-+	__u8 __reserved[3];
- 	__aligned_u64 out_capabilities;
- };
- #define IOMMU_GET_HW_INFO _IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_HW_INFO)
--- 
-2.34.1
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
