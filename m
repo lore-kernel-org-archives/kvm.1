@@ -1,134 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19265202C39
-	for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 18:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F41E5B9E
+	for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 18:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741977271; cv=none; b=jwenqxPODvPGUgumhQdwywXynHkDdJs59VdbsbCs9ustT7BhTDgNDUCOr/yM0Ap4hGjJry/V7EI1LrfsQtFyyQlXbuipGMOMGYkgkUY0oFwrH4hEqme2Hl91CWoIFhn7SLchL79dOvNxeyJ8Y3Cp793isKCsCbNkuEZpOdzRR5c=
+	t=1741977577; cv=none; b=QKnY31WnNFN/ZdUW/wkXstNCnjvaBplpazCATbx0cJOqXaJGlsK8VlhjJqZDuIFf2pYj8rtXRw+SfBSMmdLwylt/LuusxzGAKch7etKE6Q3XcZcb5T66eMpisa/lBthb0L/8I8Fqpov79SBCyNchTUcEWLaynskArV6bTQ8A67c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741977271; c=relaxed/simple;
-	bh=Yyru1lxuPxEqpTx3c2grjWb5HFoOXgSzJKknvchVzTo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NT9034mUAsX/hwU82EWOb8wHJNTrLtERtalYTatPnsCWN/2o7zQY6SERsfqhO1Mw1tQxvInXjT3BQqhvHWYdF/dWRfq58OjlQllsVHAjq+Axlt1lesUTzB9F49K6gCdiNRsf6usuJkg/DzZ7mcpXYCBZHYWh2upt5wTV0XxUntY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RMZH+UPU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741977577; c=relaxed/simple;
+	bh=DyyJGHkxJ1e0jJgzN0bsvEcm5LGwn20cHFWh60M8oR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p9br+2m27VEejtq4ZKVcjLGBTZa0hZIGb07cYL6V8kY1caBho+TsJDom/GfhkVTs2e9jnQVCQa28/rVM6a9GjzWTBwszSthdrAadz+OI9/6ajQc0dLIz1goFD0Slte2NlXLZUF8c5hf680i/iExSRzNpkNT6oCF4Q0EikobwBI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H5fdUTqP; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RMZH+UPU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741977269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8XvgvV35Wr19Ks3UpDBxJ+rAUNSoT5OEs8FRVluDVsY=;
-	b=RMZH+UPUpiEOy+LvlGiQduFr/2Zy14/7Ngv9yq6KA47+qG8SNzMj8SHtzywTNkIsNNkV8n
-	a+7d85fp6bsq918knMkxToCZNUNX/RAAIwlMaQvRgNB8WJl3nAB9Ta2YaQAN98SqSczB59
-	uBAbIwnjHrU+Ylco8gfjY4BN7tAOs1Y=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-TyvuKO5OPzGvul78Pru9Yw-1; Fri,
- 14 Mar 2025 14:34:26 -0400
-X-MC-Unique: TyvuKO5OPzGvul78Pru9Yw-1
-X-Mimecast-MFC-AGG-ID: TyvuKO5OPzGvul78Pru9Yw_1741977265
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 23E521800262;
-	Fri, 14 Mar 2025 18:34:25 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 678531801747;
-	Fri, 14 Mar 2025 18:34:24 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	nikunj@amd.com
-Subject: [PATCH v2 1/2] KVM: x86: Push down setting vcpu.arch.user_set_tsc
-Date: Fri, 14 Mar 2025 14:34:21 -0400
-Message-ID: <20250314183422.2990277-2-pbonzini@redhat.com>
-In-Reply-To: <20250314183422.2990277-1-pbonzini@redhat.com>
-References: <20250314183422.2990277-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H5fdUTqP"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223a7065ff8so67374735ad.0
+        for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 11:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741977575; x=1742582375; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fOozeBnii/eu0U/Pc7KwHCWiz8f0qLLsCP/hc4MPynk=;
+        b=H5fdUTqP7OPHwHyB0+YmTx4JbX8wx3scZcGy1pJIwhXedUsp1dG5+kOkWLxmYztTdQ
+         Y8iX1s0Th2ia4BkH+kK5Qon5COuyGp6s2VwpNoPVutRbEqJBOeyGhNTGjHlCUer76sAj
+         MG3roa0Q3+vA+kbSJfusT9J31e3dnBzq3pGcyGehqEKi0A8HQx5l3JmokBE0h8bk34gj
+         QuVXlP7qAUpuvyCdL2Kds0JvrdYNMYmfBCkXZYoqXpJZWOWva4r07GO/FYm3RB/DpSdm
+         eQkoF6Kr09AjL5ctFg4o4WnKCrN722byOkJpoQQMlumcjEAzjxFTc5p3fc0rGYDL0PDp
+         2Tgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741977575; x=1742582375;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fOozeBnii/eu0U/Pc7KwHCWiz8f0qLLsCP/hc4MPynk=;
+        b=IoAik6D+MRtNNf5BpwAoj802ouZCEAEjM05NWYBy71ieP2CoTljYd6mTWrHiorOOpt
+         54NzfMrQ0089EtI+JLvytTQqzVjskyBUiM4ZTH0Iq/9J/yxZYb6VZP2qwQd5ToYctVEc
+         udLwjntd5+eXhPWkw/SUJG/a11FyE/cCIg0QOZZz4JOrCOsqtBL5e/MppLo4rx598k1C
+         NqprlB2aExbMINU+/qNi1TKz60s5pgjZMem2c9wE5TnnpkkX/EcdHSSMTREGhRoobips
+         hG4dasZOMFL3xaeUXkEN9fj0ePztCDlSOaVc1v/HuO0aFbG9s778kD0NLpwym5Jg46ML
+         jmtA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5Yt7y/v3Qanm54m+CSNdMUzPQy6qVMPxw3Hzu99tFVt+xzm2FUddNxfrFX2NOkP6BRUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygV3UIEQ15rZCDl8T6PNzuoSrhLVHnFp/D9jkCdQpmeBoOBpMz
+	IkbTximuRdqDwU0J0vH2D65yzqS6ZLIBcoTNDp5jGcZOSttCoAM3wLUJJecE5AG8qsiDXP9vWkh
+	tz50=
+X-Gm-Gg: ASbGnctPwDKwzRhdCM1mXH5nAgXx7AbVp4Y+5RmaeW7cww4xCCb8J2mYpS4jbbJ3gdp
+	S3NdWjoAuZN0OzobBj+HVDVTBlKG2z+QO7DpwkvzscBlappaDo07CAMKMw/TmfzVEOW5hNNJFSJ
+	ZT9+ooAjU9/GMklsFa21dlFzEIedG9lcCwLOvqYL9+zcG4UBHFe2ccMFTuISz+1EkMOylr69WXr
+	yvROwMENrkc0q7iyKoVRTShwgqFmdLbBR/WEEVgc67OvY1nTbBwzJYSDe1krXiATnqUpXETxy2j
+	CF3xMZ+t5N/5DkXM1K/uE+bVcjm662amIHpBa4zTie/LrY/Ug8KLSTpGHQ==
+X-Google-Smtp-Source: AGHT+IHy4R1pysrhxzZHf8PsIff+cJIi5Kt3lbwGj1TI7jFN2ZmDtBraZqUWWgeIc5QjfTBBwo1w6Q==
+X-Received: by 2002:a05:6a21:6d82:b0:1f5:8eec:e50a with SMTP id adf61e73a8af0-1f5c12c7864mr4910034637.31.1741977574981;
+        Fri, 14 Mar 2025 11:39:34 -0700 (PDT)
+Received: from [192.168.1.67] ([38.39.164.180])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56ea7bd0csm3027381a12.47.2025.03.14.11.39.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Mar 2025 11:39:34 -0700 (PDT)
+Message-ID: <ee814e2f-c461-4cc2-889d-16bb2df44fdf@linaro.org>
+Date: Fri, 14 Mar 2025 11:39:33 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/17] make system memory API available for common code
+Content-Language: en-US
+To: Anthony PERARD <anthony.perard@vates.tech>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Paul Durrant <paul@xen.org>,
+ Peter Xu <peterx@redhat.com>, alex.bennee@linaro.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-riscv@nongnu.org,
+ manos.pitsidianakis@linaro.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liwei1518@gmail.com>
+References: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
+ <5951f731-b936-42eb-b3ff-bc66ef9c9414@linaro.org> <Z9R2mjfaNcsSuQWq@l14>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <Z9R2mjfaNcsSuQWq@l14>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+On 3/14/25 11:34, Anthony PERARD wrote:
+> On Fri, Mar 14, 2025 at 10:33:08AM -0700, Pierrick Bouvier wrote:
+>> Hi,
+>>
+>> one patch is missing review:
+>> [PATCH v5 12/17] hw/xen: add stubs for various functions.
+> 
+> My "Acked-by" wasn't enough? Feel free try change it to "Reviewed-by"
+> instead.
+> 
 
-Push down setting vcpu.arch.user_set_tsc to true from kvm_synchronize_tsc()
-to __kvm_synchronize_tsc() so that the two callers don't have to modify
-user_set_tsc directly as preparation.
+Those are differents. From what I understand, Reviewed implies Acked, 
+but the opposite is not true. If it was, they would be equivalent.
+Thanks.
 
-Later, prohibit changing TSC synchronization for TDX guests to modify
-__kvm_synchornize_tsc() change.  We don't want to touch caller sites not to
-change user_set_tsc.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Message-ID: <62b1a7a35d6961844786b6e47e8ecb774af7a228.1728719037.git.isaku.yamahata@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/x86.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index bd2b71d4e64f..2da75bbf7f94 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2626,12 +2626,15 @@ static inline bool kvm_check_tsc_unstable(void)
-  * participates in.
-  */
- static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
--				  u64 ns, bool matched)
-+				  u64 ns, bool matched, bool user_set_tsc)
- {
- 	struct kvm *kvm = vcpu->kvm;
- 
- 	lockdep_assert_held(&kvm->arch.tsc_write_lock);
- 
-+	if (user_set_tsc)
-+		vcpu->kvm->arch.user_set_tsc = true;
-+
- 	/*
- 	 * We also track th most recent recorded KHZ, write and time to
- 	 * allow the matching interval to be extended at each write.
-@@ -2717,8 +2720,6 @@ static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 		}
- 	}
- 
--	if (user_value)
--		kvm->arch.user_set_tsc = true;
- 
- 	/*
- 	 * For a reliable TSC, we can match TSC offsets, and for an unstable
-@@ -2738,7 +2739,7 @@ static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 		matched = true;
- 	}
- 
--	__kvm_synchronize_tsc(vcpu, offset, data, ns, matched);
-+	__kvm_synchronize_tsc(vcpu, offset, data, ns, matched, !!user_value);
- 	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
- }
- 
-@@ -5725,8 +5726,7 @@ static int kvm_arch_tsc_set_attr(struct kvm_vcpu *vcpu,
- 		tsc = kvm_scale_tsc(rdtsc(), vcpu->arch.l1_tsc_scaling_ratio) + offset;
- 		ns = get_kvmclock_base_ns();
- 
--		kvm->arch.user_set_tsc = true;
--		__kvm_synchronize_tsc(vcpu, offset, tsc, ns, matched);
-+		__kvm_synchronize_tsc(vcpu, offset, tsc, ns, matched, true);
- 		raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
- 
- 		r = 0;
--- 
-2.43.5
-
+> Cheers,
+> 
 
