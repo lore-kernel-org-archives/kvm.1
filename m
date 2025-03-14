@@ -1,73 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C93126BF9
-	for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 09:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959C41EF368
+	for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 09:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741944796; cv=none; b=mg94SkITaqmhhXwGLWi6ErWokIXlLRXZv5WjQ75JO3xRKRNXdj/tP7DHHsxF0dPi1aXTNagRCU4agKNCDbWTjXrszrmODj8XgKdZOO4LqyDx2s0Rd/8mh3vSzUZxIhk4q5uWiHDeW6zxq1FVBLT6LqdcBilL9O/fWeTw8hLzaPA=
+	t=1741945837; cv=none; b=Wfka3hxSDCwa+qOloTXkYR705pHcGc8XybcP1cgcUtgxiVXXGD7jC3OHGWqOHVSjdaRV2G7tuKFFzEcnMXLlHf+Dkm4Ngx0KWlyEiozs13n2vytpVe+NsGmhabLkdx++u2T8AfsyAVRTETr3wRvQUllPROiMJMofFoe535+wepY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741944796; c=relaxed/simple;
-	bh=jRvSQnR5WlpmJDJ5I3vj9NBji+NiyQe734v/9qpFQIA=;
+	s=arc-20240116; t=1741945837; c=relaxed/simple;
+	bh=2YbCjKwn91peoO3lDPuuBejpiPo3S8WBJy+HmUMzmZQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K33ayyg17p6yhxxdN1F/DkxCdtErEmkkNfL/iTeogsj/nZ4KG4xudmXa3tBA0fOoeICUB2r8+2BGItYQ1fYdY+t2iJc5Yq82sojvrtUKyWoCpl8H8VY/XdbwpTW7Zc9qS1T8E+ARSgBeUX8PKeQXLNjkCZsZnV9doDuju+osMOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PWlmhW9N; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=tcnB/ymWVLzcECMo8uwsb5s0WrM2BREPOys4atA8Un8wIC+oKy032n2mOeBbv4Ly8GoBLxKqWGmaeZWl6Vw2V59ZYpU3MhB4adsDOngOEgJr0ju+igJ/K3EJOpik/HHYtCZXYDfcCDdx/sEeAMTVwOCiBUZO7z3ndq3DGwtTFek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QPJ2xHAE; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PWlmhW9N"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QPJ2xHAE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741944793;
+	s=mimecast20190719; t=1741945834;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kr+GM52HOX7QpsfoABLNv8i9AtL+eNgSpKohidSEYe8=;
-	b=PWlmhW9NDh041NZwIHxG54HCHW6yztcEOo8T8fU0YtQ8brCyjhR5ln3zxWGFGtlpG8ztFK
-	8+2i/f3QnKIoJqjjDmKJMamRkW2Q8S884Nb0r13NeBKk2xKU33CrPt9GIu5FvbNkGM87nG
-	LAw4CP5Xp+QIEHyePL7eiWpMhV9rbvw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DO65Jq3ncBMLs59OX/C3EEaa/dJveFjrkwXbuX/qlyg=;
+	b=QPJ2xHAEPGC93kjQJp9GP/UMLo1zVNJds57vrErl0ripfhN8Ku0pe3TwYVBW/zQ5eP8qlO
+	vBUPdhBtJG2sDVmwJbKJ7qjYRcbJtu/OPpI4l8uKpu1CGpcRz7FfkcVolMmMSqgNASq2zs
+	/Kjhiv9C8BoklthDlsAAV0tZxVgckns=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-107-Z42SFHSnPUeb2b8j8fircA-1; Fri, 14 Mar 2025 05:33:11 -0400
-X-MC-Unique: Z42SFHSnPUeb2b8j8fircA-1
-X-Mimecast-MFC-AGG-ID: Z42SFHSnPUeb2b8j8fircA_1741944791
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43ceb011ea5so10987535e9.2
-        for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 02:33:11 -0700 (PDT)
+ us-mta-449-7EzhSKhlNeGP8S1hrhkLYQ-1; Fri, 14 Mar 2025 05:50:32 -0400
+X-MC-Unique: 7EzhSKhlNeGP8S1hrhkLYQ-1
+X-Mimecast-MFC-AGG-ID: 7EzhSKhlNeGP8S1hrhkLYQ_1741945832
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so9954905e9.2
+        for <kvm@vger.kernel.org>; Fri, 14 Mar 2025 02:50:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741944790; x=1742549590;
+        d=1e100.net; s=20230601; t=1741945831; x=1742550631;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=kr+GM52HOX7QpsfoABLNv8i9AtL+eNgSpKohidSEYe8=;
-        b=FWzPoQ5wb0qL3I9GqhczCHHx9u42O2x9aHRvOfu9z5pl6TpNlzUTCsXRTyLnrl1auI
-         hykcMW0IPOAr0PuLCN/5xjOYFb9utLVwgEkHlzN9779LidLjPxD5hYVyFYkoV4ie4QRq
-         IHdtaiWwB4B8BGNOKXfc78bLWg+T8vsVOWmiU3ilq6Mn7jpBwmad2oACLhv1piipnUEf
-         7Ot20GmBsO2OkOA7Qpog00DJkVe0ouAgNc3qtT9yFlWZUpaXYjjsjJg7zpGlZlyOXRwq
-         /KBSd4Y9JEvUVQYRm4Pf248t8W+9BC07YbkL5RRpt+NNz5GUGr9gsP5R3m9mNlrdL2RC
-         TRGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSQuzaHvqu0lBza9Fsw04M9ODEUqirwyCrl5xmgprHr3pwnbTT/DiLQmHZybP9qsfdeR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCNu6HMfk9ZgNZOUtBWnTdOEuxQjK6uBGOSYEfLBDJlzFSw6/1
-	LgPqLV+gu/noEeGQrwkOMlfgToMjoVXeceI5txMce/5qo4PDYxEbrlwtogq863wImBPF8+FxS0m
-	yiTGZBlQq/Cp57Ur99HvkwrAX+Iu/K1rDYjFcm3r1lGBMygZwOw==
-X-Gm-Gg: ASbGncvlnsKxHT58fFvs5+5QYvZK+6OFTIdxKs5RpQe+Z+vvVNNIR6YrPpkdf59p13v
-	8c4ysPaa+BIdg26Wy4/R5CCMU1BThIi+2unZ3FfGxrWf/30RvQCYAcUOB3HCh+/ivK5fGHoYCZ+
-	c5SvkW0VLHFFg6XK8ujcKkZp1O9sAM5tH200h5Alf6MAVVlK3BJHg0Xzrmkd3dzaaj02e7ehkui
-	IxlJHs3f58sHkxnqMVwYKohu/bkbhAJPH1Z1g6MUEduOKRxnCf6yRhC56HFGrKpwUBu8eIGrRlp
-	RpQWBo+ntlWpQNncbDjULaPUsUE9FA0avzAR2MvaMGtQtFcjO3Cdo70R9mjri7TL2VOT9jkEhn5
-	NkgD49e1g5QEoF2/bMhRCrqKdv61iAJLvaLsE7G5XSGA=
-X-Received: by 2002:a05:600c:510c:b0:43a:b8eb:9e5f with SMTP id 5b1f17b1804b1-43d1ec90beamr23184125e9.3.1741944790582;
-        Fri, 14 Mar 2025 02:33:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxZxe66PEHA3sRublZ+jKCA2QM/pZrwH4q+h0r2rqv07VI5Vyt2jEI2LSjNPPj9D5cOHGJUg==
-X-Received: by 2002:a05:600c:510c:b0:43a:b8eb:9e5f with SMTP id 5b1f17b1804b1-43d1ec90beamr23183865e9.3.1741944790191;
-        Fri, 14 Mar 2025 02:33:10 -0700 (PDT)
+        bh=DO65Jq3ncBMLs59OX/C3EEaa/dJveFjrkwXbuX/qlyg=;
+        b=ra1r77LDK6enwKHWoD/NbssMga9anLwrjNSRat8YBuREgqtcI6bEgMYCg1ICpeqQiq
+         nGzZYumr+EbMPT7oOZLPBVW/d8ZfV3aNjJJCi/SZbsygB3U29koUXBdGrAN580Gu4B6G
+         aSwXE/CwuDu/OO1PZaqgSWpHrkR408yf1hapPpvXEWiwkFhD0qNbJuJ0X0Zhot6xGqCT
+         HOEp33SPEFeHtCtVukRfvEvqvs4Ea5AHXD58DizJn3H/orAtfs9RMYIi7oCZieH1t9qy
+         EmNh6Re087KLyMhRcZvB7TQH0a7QsghqIhzaBjk27GxY7+uSaD6H4/QqwAB20qB6Zlhy
+         3uWw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+RmBxEAFahLuOMAkyNwW4u/BSHMSduSHBkw+S6vBt7cpa4QR90F0jk/X25esvL3hK0g4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5LI2r2scpafU4/J2xqHnG3GmRR/BNeDzLclOc0P1f0xGXR8hJ
+	4qfR1rjDCC15iWe8fuDBUinZ+P3VbPaQul7JJ/JWJGLP6h7TN36pjqhHOOzLGG6TCY+38tBxLF3
+	Vvm+5jZkAvq+Ei7xJu3X69pHKO0oSRkmdETWkNquYY+gRir+imw==
+X-Gm-Gg: ASbGncsZwKD+04pGUjHbFEUjaG720selZoiVBJmBO2UONLlarx+gu5cc3mWDeL9kYj8
+	I5OPVqweJItNOWO/e8F0MYJb6omSfCO3WIH13qfrhcKafTlAxsVomsNndGMExJ5QmWZmfjySdOl
+	KJwd4f5F/Hf0sYiI1i6ZcEUElRWz0ZopyCGPHhw51VEnOAtGPKZLy7NTBkO9TZU8l4DRCgo1RGl
+	zA3Nqj+tuL9V/Y3qUgyr1xmOiWBKI0BeZMMWeEnrs0jFtY/Z12yXoexeZFuR9MADqGb0GgsuloE
+	5Ij6TCBZMxkbEOLeGbieiriX/YM+7qUJc5HKl4+gwyTJoX3E3TpMQ1uZ6YBIuWFpvzcEIeNTE5s
+	Xs+OXniWgCQJigYp2dR13dT7I9JK7wNwRcljBszd/VCY=
+X-Received: by 2002:a05:600c:46c5:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-43d1ec7a33dmr23155175e9.10.1741945831592;
+        Fri, 14 Mar 2025 02:50:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2gPuMmeY4FdotxtdtpVaCKUqgzeJYWExaOPB2sEi+uamT07yL2pHWlLokJa8qFuW6IWTGbw==
+X-Received: by 2002:a05:600c:46c5:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-43d1ec7a33dmr23154855e9.10.1741945831131;
+        Fri, 14 Mar 2025 02:50:31 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c745:2000:5e9f:9789:2c3b:8b3d? (p200300cbc74520005e9f97892c3b8b3d.dip0.t-ipconnect.de. [2003:cb:c745:2000:5e9f:9789:2c3b:8b3d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1fe2a2c8sm11664425e9.23.2025.03.14.02.33.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1fd6b2acsm12455885e9.0.2025.03.14.02.50.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Mar 2025 02:33:08 -0700 (PDT)
-Message-ID: <18db10a0-bd40-4c6a-b099-236f4dcaf0cf@redhat.com>
-Date: Fri, 14 Mar 2025 10:33:07 +0100
+        Fri, 14 Mar 2025 02:50:29 -0700 (PDT)
+Message-ID: <af80216e-7a09-48a3-97b8-5b19cc3ded28@redhat.com>
+Date: Fri, 14 Mar 2025 10:50:28 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,29 +75,22 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v1 0/5] KVM: gmem: 2MB THP support and preparedness
- tracking changes
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: "Shah, Amit" <Amit.Shah@amd.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "Roth, Michael" <Michael.Roth@amd.com>,
- "liam.merwick@oracle.com" <liam.merwick@oracle.com>,
- "seanjc@google.com" <seanjc@google.com>, "jroedel@suse.de"
- <jroedel@suse.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "Sampat, Pratik Rajesh" <PratikRajesh.Sampat@amd.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "vbabka@suse.cz"
- <vbabka@suse.cz>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "quic_eberman@quicinc.com" <quic_eberman@quicinc.com>,
- "Kalra, Ashish" <Ashish.Kalra@amd.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "vannapurve@google.com" <vannapurve@google.com>
-References: <20241212063635.712877-1-michael.roth@amd.com>
- <11280705-bcb1-4a5e-a689-b8a5f8a0a9a6@redhat.com>
- <3bd7936624b11f755608b1c51cc1376ebf2c3a4f.camel@amd.com>
- <6e55db63-debf-41e6-941e-04690024d591@redhat.com>
- <Z9PyLE/LCrSr2jCM@yzhao56-desk.sh.intel.com>
+Subject: Re: [PATCH v3 6/7] memory: Attach MemoryAttributeManager to
+ guest_memfd-backed RAMBlocks
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy
+ <aik@amd.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+References: <20250310081837.13123-1-chenyi.qiang@intel.com>
+ <20250310081837.13123-7-chenyi.qiang@intel.com>
+ <8d9ff645-cfc2-4789-9c13-9275103fbd8c@intel.com>
+ <11d40705-60d8-4ad6-8134-86b393bfae8f@redhat.com>
+ <192a8ed9-fecb-4faa-b179-ed6f9ef18ac8@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -145,91 +138,97 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <Z9PyLE/LCrSr2jCM@yzhao56-desk.sh.intel.com>
+In-Reply-To: <192a8ed9-fecb-4faa-b179-ed6f9ef18ac8@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 14.03.25 10:09, Yan Zhao wrote:
-> On Wed, Jan 22, 2025 at 03:25:29PM +0100, David Hildenbrand wrote:
->> (split is possible if there are no unexpected folio references; private
->> pages cannot be GUP'ed, so it is feasible)
-> ...
->>>> Note that I'm not quite sure about the "2MB" interface, should it be
->>>> a
->>>> "PMD-size" interface?
->>>
->>> I think Mike and I touched upon this aspect too - and I may be
->>> misremembering - Mike suggested getting 1M, 2M, and bigger page sizes
->>> in increments -- and then fitting in PMD sizes when we've had enough of
->>> those.  That is to say he didn't want to preclude it, or gate the PMD
->>> work on enabling all sizes first.
+On 14.03.25 10:30, Chenyi Qiang wrote:
+> 
+> 
+> On 3/14/2025 5:00 PM, David Hildenbrand wrote:
+>> On 14.03.25 09:21, Chenyi Qiang wrote:
+>>> Hi David & Alexey,
 >>
->> Starting with 2M is reasonable for now. The real question is how we want to
->> deal with
-> Hi David,
+>> Hi,
+>>
+>>>
+>>> To keep the bitmap aligned, I add the undo operation for
+>>> set_memory_attributes() and use the bitmap + replay callback to do
+>>> set_memory_attributes(). Does this change make sense?
+>>
+>> I assume you mean this hunk:
+>>
+>> +    ret =
+>> memory_attribute_manager_state_change(MEMORY_ATTRIBUTE_MANAGER(mr->rdm),
+>> +                                                offset, size, to_private);
+>> +    if (ret) {
+>> +        warn_report("Failed to notify the listener the state change of "
+>> +                    "(0x%"HWADDR_PRIx" + 0x%"HWADDR_PRIx") to %s",
+>> +                    start, size, to_private ? "private" : "shared");
+>> +        args.to_private = !to_private;
+>> +        if (to_private) {
+>> +            ret = ram_discard_manager_replay_populated(mr->rdm, &section,
+>> +
+>> kvm_set_memory_attributes_cb,
+>> +                                                       &args);
+>> +        } else {
+>> +            ret = ram_discard_manager_replay_discarded(mr->rdm, &section,
+>> +
+>> kvm_set_memory_attributes_cb,
+>> +                                                       &args);
+>> +        }
+>> +        if (ret) {
+>> +            goto out_unref;
+>> +        }
+>>
+
+We should probably document that memory_attribute_state_change() cannot 
+fail with "to_private", so you can simplify it to only handle the "to 
+shared" case.
+
+>>
+>> Why is that undo necessary? The bitmap + listeners should be held in
+>> sync inside of
+>> memory_attribute_manager_state_change(). Handling this in the caller
+>> looks wrong.
 > 
+> state_change() handles the listener, i.e. VFIO/IOMMU. And the caller
+> handles the core mm side (guest_memfd set_attribute()) undo if
+> state_change() failed. Just want to keep the attribute consistent with
+> the bitmap on both side. Do we need this? If not, the bitmap can only
+> represent the status of listeners.
 
-Hi!
+Ah, so you meant that you effectively want to undo the attribute change, 
+because the state effectively cannot change, and we want to revert the 
+attribute change.
 
-> I'm just trying to understand the background of in-place conversion.
-> 
-> Regarding to the two issues you mentioned with THP and non-in-place-conversion,
-> I have some questions (still based on starting with 2M):
-> 
->> (a) Not being able to allocate a 2M folio reliably
-> If we start with fault in private pages from guest_memfd (not in page pool way)
-> and shared pages anonymously, is it correct to say that this is only a concern
-> when memory is under pressure?
+That makes sense when we are converting private->shared.
 
-Usually, fragmentation starts being a problem under memory pressure, and 
-memory pressure can show up simply because the page cache makes us of as 
-much memory as it wants.
 
-As soon as we start allocating a 2 MB page for guest_memfd, to then 
-split it up + free only some parts back to the buddy (on private->shared 
-conversion), we create fragmentation that cannot get resolved as long as 
-the remaining private pages are not freed. A new conversion from 
-shared->private on the previously freed parts will allocate other 
-unmovable pages (not the freed ones) and make fragmentation worse.
+BTW, I'm thinking if the orders should be the following (with in-place 
+conversion in mind where we would mmap guest_memfd for the shared memory 
+parts).
 
-In-place conversion improves that quite a lot, because guest_memfd tself 
-will not cause unmovable fragmentation. Of course, under memory 
-pressure, when and cannot allocate a 2M page for guest_memfd, it's 
-unavoidable. But then, we already had fragmentation (and did not really 
-cause any new one).
+On private -> shared conversion:
 
-We discussed in the upstream call, that if guest_memfd (primarily) only 
-allocates 2M pages and frees 2M pages, it will not cause fragmentation 
-itself, which is pretty nice.
+(1) change_attribute()
+(2) state_change(): IOMMU pins shared memory
+(3) restore_attribute() if it failed
 
-> 
->> (b) Partial discarding
-> For shared pages, page migration and folio split are possible for shared THP?
+On shared -> private conversion
+(1) state_change(): IOMMU unpins shared memory
+(2) change_attribute(): can convert in-place because there are not pins
 
-I assume by "shared" you mean "not guest_memfd, but some other memory we 
-use as an overlay" -- so no in-place conversion.
+I'm wondering if the whole attribute change could actually be a 
+listener, invoked by the memory_attribute_manager_state_change() call 
+itself in the right order.
 
-Yes, that should be possible as long as nothing else prevents 
-migration/split (e.g., longterm pinning)
-
-> 
-> For private pages, as you pointed out earlier, if we can ensure there are no
-> unexpected folio references for private memory, splitting a private huge folio
-> should succeed. 
-
-Yes, and maybe (hopefully) we'll reach a point where private parts will 
-not have a refcount at all (initially, frozen refcount, discussed during 
-the last upstream call).
-
-Are you concerned about the memory fragmentation after repeated
-> partial conversions of private pages to and from shared?
-
-Not only repeated, even just a single partial conversion. But of course, 
-repeated partial conversions will make it worse (e.g., never getting a 
-private huge page back when there was a partial conversion).
+We'd probably need listener priorities, and invoke them in reverse order 
+on shared -> private conversion. Just an idea to get rid of the manual 
+ram_discard_manager_replay_discarded() call in your code.
 
 -- 
 Cheers,
 
-David / dhildenb
+David / dhildenbh
 
