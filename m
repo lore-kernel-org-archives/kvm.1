@@ -1,62 +1,63 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650E338FA6
-	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 04:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA1E1CAA76
+	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 04:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742273501; cv=none; b=AQMo54pVMKpFj1BYKFqfHAaIE8NjcQ6IQC0/dynkwZA+GU5cTEI7dgh37NIGrPG57hWNDNj0KUvRqYVjYUJiWBEywYXP37kZj19SnDwPYxvasv3iseLp3MbhH22F0V6qcRzvxy2c0EXuM5WiJen6x6qV8QKNNGVfTDR8kwaZTdY=
+	t=1742273503; cv=none; b=M1dnB08lY2ETwSA2d5xF5XlvDxinSLsGzzcZNq0S+2YWfVstkhB5ytDaQj9F98AEkMk96Iz6Y5T8y86JRjPFFnNZYU0+wqj7YFfh67JuTGMASzgiK5IGsbjilU0wVMYXD9MSxFpQ435qhgzUHvx0O+l/Yuf3g97v80Q8HBrJ+d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742273501; c=relaxed/simple;
-	bh=ryhhsIWRsF1rCK+2IZXlgCT6qZHTW4T2VnsqiMi7dgA=;
+	s=arc-20240116; t=1742273503; c=relaxed/simple;
+	bh=AlJxJ1V3OIfa8nEd9X/xqX+kJi7u+fJ4wLU1KzyMjYs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m5gMmNqPY/MOgmj+pReq8uORPBPICNUtelKdx5DTXsA6cRU6Dhje3V87IO+MFG2o60VAQKk7CClNz71XUV4biqp01GuFO0njJFaVzszeVUp4PCxm9LK+j4QJEHZsKzeCBwPNJL677jxLwlh9POcZSGrD7wYXi6sXzAHFPvsmx/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aivLWNsO; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=ST/G1Ziz89iyG7cM9iVGNaPalXA377N968rDU3t0AHzPqVq/yJ6HpD6yGdrzKH+9fNgLme4rx2uqTSD5wjEuYP/ldD5oxuP23M0kncGNbyE1R+qlwocU+ztwq0Qx/SoRGaUCH7P1TNF9GjKessemxNjwnMGQIseB6ykIVwMrarU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Mh7t/1+q; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aivLWNsO"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-225df540edcso68626115ad.0
-        for <kvm@vger.kernel.org>; Mon, 17 Mar 2025 21:51:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Mh7t/1+q"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff80290debso4298037a91.3
+        for <kvm@vger.kernel.org>; Mon, 17 Mar 2025 21:51:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742273499; x=1742878299; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1742273501; x=1742878301; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e9rzsv10o1w5kRlHax2UvpGLKsY+tUQFsRxZLLJXZ6E=;
-        b=aivLWNsOKdgTNPsqFqHUON4lqNPi8TdZ5oYJXadbPHXPgMFkt1DkGoNDbdphogviw2
-         kKBii9xyBpwpdpQDMMe+hi1ZInvWvDnTm/IdTvE+sqN7cCpWPISWhutBGiD+NqxHlsY/
-         SWJN8fKOZrFp9eCFWJdW/KZX0QaVO+jdrVckjk99zTnB999sCmELlvRqmLhJHDPwMU1+
-         V/KXDHVIlA4T2QC2loHCCKMNjyL1x7wPboDH29dzhoATxZrdA8eS/2qFbd83/5JoWZ2u
-         CecxhaJWvTiK8lUcEU78awE3gBVsKHF181C5WhekANmpwpQMRZLsqEvPeWjy4W2oE1Cr
-         MV7g==
+        bh=Ovyvu8DCxOT3MJqFMX/qU9iZeR9dz9+LihTzZn+g4uA=;
+        b=Mh7t/1+qipzx0lGSpDzXHI4y2ZGgTa4XcDGK4ITpqw6FtKyUYArF1WfCFiKO654nFE
+         qFbWteMV1HbYOo6lcnzVHTshlz/WW6VUx2v5MAyaFq8NX3VH96I/GaC2tXW+LMT23Jzx
+         Q4sHvfDc7Tjncc1i3nFhRdQT1ujOr5xwh2/H7zqGrKSbxSPk3Z4ZX+y4IrIHLNp8DHLZ
+         Pyapp5SsxVyBmkcXyQ48d2ZY0CCkiuCjYrMhp6Z6WLtvAkdwWULFh02IIJXPDTvLY8w+
+         7IiksNuNcot4uQBBibpt7fZ1UMliFnhBMf3CjWWInjEQg/y6yg9itx7gBFvozMoGQyHQ
+         x3cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742273499; x=1742878299;
+        d=1e100.net; s=20230601; t=1742273501; x=1742878301;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e9rzsv10o1w5kRlHax2UvpGLKsY+tUQFsRxZLLJXZ6E=;
-        b=bCUV5QJGRnjZHJqllvgbKysPQkfIOiJqLBbrscGdAC+FSO9tFOhnat5d2vYJSGNlxo
-         8tVaOGCudpowa3pH4OUyO2TQk1jizDvRWShJKz0q4MFPDjOGbMYFGvajzOKhuORDvMvq
-         Xw59+s6naDBj8FDfFnoeXb4MjUw2leZcLb+fSK7aXDsLyVMX/ZdnEFyLQ6eCv0xazEI7
-         fL83JjRyRjgMKXUC73WKALLLpV7fdDododlnfXdVgu0ClP0cotYraA7zpZ67Cg/JCGb+
-         Ek8oqZ0jaV/+y5zCPxTZQj3huAkiakW7s0m3IEuILYbXdD7bWO+XDE3VFUDLJuyr7lWk
-         0tDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpLmUsPuuDGJpK5AUbt6jkvvF3lA6tl+ss7e6JzcYaBWBGRaFwlIb8R/1A3796LHJ4PDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUrFsUodwFmZQn5XBDa4wJeVwG+5WOIf+Pwh02k2Ka6ont/gGD
-	5Q34tnxunNq17Yk8Mw/QuToh5/6zqGqGE1d9evroW/AX5Xstbs4Raey0O4Yx0rI=
-X-Gm-Gg: ASbGnctERlGUIGcuMXz1n4suc65suRi/mWGmfGUc0HQuc54J2MVpxFD57lKTGUP0Djd
-	AhYjcfAY7WbmJzpfDMJMc79iOtqlNxHlt4vv8M9YTrWm4jPRu0BmQb0TjUX7mwEJhdKX8ENTp6n
-	Ev84onMIXEsPtCVbYWVemdWmZruEw/ayLpu933HjSM0Ue6EL3zzbbXsk+ygc0jc/8j0nIR+BvI2
-	q7LIB41pNR+khoCiEGZA+qcdNPHScCBg6XkRZpSRgkqCcqQkmGU056LQqwrVEMBpmOGT3MBzFwD
-	ZTgB6Um2wFZMXhVpdZEIoXuKedc991L7d0ko0SdEwWIX
-X-Google-Smtp-Source: AGHT+IE8qR7rvWy16B29zqVKeH+5Xs9FEHJRohxtlVk1ha0v5ACDqhpK4pBzwowgaOfPj90X8hPjJA==
-X-Received: by 2002:a05:6a21:27aa:b0:1f3:1ba1:266a with SMTP id adf61e73a8af0-1fa4c6a1afemr2173708637.0.1742273499683;
-        Mon, 17 Mar 2025 21:51:39 -0700 (PDT)
+        bh=Ovyvu8DCxOT3MJqFMX/qU9iZeR9dz9+LihTzZn+g4uA=;
+        b=iEoOI1KrDSYP6RYim5Z5IZFKMEAUaDi2fuLd9z5D839GhNBuEl9bNhppffnl3p30+J
+         Zkh9Peqxg5T5dgHMVIh7l7vUZ4hjqYsaD+CmaoWjGbsxHmkjWSdW0WvNM0RxStQMWkIo
+         BV15GlBp8f5n1hC3bzPh7W3Q2enWHMCE7xdVw51I5ON6bTYNRry+O7GFNthyBsJAt4uE
+         TsNJn3h70Q7QQYvPHMfz5zlAvimdehovZnh+X0GC5QKsQxpBoYiis9THqZeZgWb11phU
+         5Kd+h/dIgZRLBnvRbsemmIx1gDV3ou/jEbVL1joYSgSoTqCBX5We4LlPgEFrhsdKQOkr
+         Z7Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaxhuQ/0W0hvKVO8VJbpyL5Tn5BipwxG5/Ds9TAHIARv1zax9i8TFWD1k4Ivoaq6piKbo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztaRO5cCmtgNA2B2Q532A+FFwk62FfrUxgwL/YAjX+q16UDe5w
+	bKUuvGx+gqhwikwmdY+MfceIlIQ4Y3cusDvuymtwl1Dc2HmCT9MwsMzWsn7E8fiPj8wv0AAA1vJ
+	6
+X-Gm-Gg: ASbGncsuHk8jXeQ8lh/6vpEIDzZ0qOmLT+DYdUq30JVN8tjF/roV6EUtCWl8uQPbJpq
+	N5W8Ab+NnCRn0PW1FHCj0d3AZEgcSr1KRddP1CV2rfhMwsbBUdcJPazm6P8Gk9LoY0FjrMfvj4I
+	sSfkVihJY2/Lu2UakQbqkpbX4zaqyq0rWU+IJvl9RQ2bt14CvcMLEyddT7C2peV1MNzyT1Aj4ZL
+	WloqQaot+l5d3BsjA2H+cdcy1rcn+NLPzxhhHu9IdC3ejQbDRKogCZ7gfS62kRPaR6c4vlBqOon
+	CBOcdc8SDRfshQD2xDN1aQxnaTTzA1FxIvcuIaU9xGDm
+X-Google-Smtp-Source: AGHT+IGpoy0HiXaK4W5rGsoIV6EB7nMCBdVrRX+IRN9Qga4zDbHRqASR/8vpI124f9RU9cNmPTSLpw==
+X-Received: by 2002:a05:6a21:164a:b0:1f5:72eb:8b62 with SMTP id adf61e73a8af0-1f5c118eb0bmr21535312637.20.1742273501600;
+        Mon, 17 Mar 2025 21:51:41 -0700 (PDT)
 Received: from pc.. ([38.39.164.180])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711694b2csm8519195b3a.129.2025.03.17.21.51.38
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711694b2csm8519195b3a.129.2025.03.17.21.51.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 21:51:39 -0700 (PDT)
+        Mon, 17 Mar 2025 21:51:41 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -69,9 +70,9 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 07/13] target/arm/cpu: always define kvm related registers
-Date: Mon, 17 Mar 2025 21:51:19 -0700
-Message-Id: <20250318045125.759259-8-pierrick.bouvier@linaro.org>
+Subject: [PATCH 09/13] target/arm/cpu: define ARM_MAX_VQ once for aarch32 and aarch64
+Date: Mon, 17 Mar 2025 21:51:21 -0700
+Message-Id: <20250318045125.759259-10-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
 References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
@@ -83,33 +84,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This does not hurt, even if they are not used.
+This will affect zregs field for aarch32.
+This field is used for MVE and SVE implementations. MVE implementation
+is clipping index value to 0 or 1 for zregs[*].d[],
+so we should not touch the rest of data in this case anyway.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu.h | 2 --
- 1 file changed, 2 deletions(-)
+ target/arm/cpu.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 23c2293f7d1..96f7801a239 100644
+index 27a0d4550f2..00f78d64bd8 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -971,7 +971,6 @@ struct ArchCPU {
-      */
-     uint32_t kvm_target;
+@@ -169,11 +169,7 @@ typedef struct ARMGenericTimer {
+  * Align the data for use with TCG host vector operations.
+  */
  
--#ifdef CONFIG_KVM
-     /* KVM init features for this CPU */
-     uint32_t kvm_init_features[7];
+-#ifdef TARGET_AARCH64
+-# define ARM_MAX_VQ    16
+-#else
+-# define ARM_MAX_VQ    1
+-#endif
++#define ARM_MAX_VQ    16
  
-@@ -984,7 +983,6 @@ struct ArchCPU {
- 
-     /* KVM steal time */
-     OnOffAuto kvm_steal_time;
--#endif /* CONFIG_KVM */
- 
-     /* Uniprocessor system with MP extensions */
-     bool mp_is_up;
+ typedef struct ARMVectorReg {
+     uint64_t d[2 * ARM_MAX_VQ] QEMU_ALIGNED(16);
 -- 
 2.39.5
 
