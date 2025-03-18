@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05E92139CB
-	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 18:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D5D2147E4
+	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 18:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742321002; cv=none; b=YRzKnJgZ+O2Mah6cNWF6eOqap+FvKBzL1DfpWtneHMA2iMuf+6jYsmMruJm+uqqBlQZ1q09R3X17xig0/xS7cwHu4Yd5o7BkiPW4UYMXgvvoB1FenSus+VroSG2cm2uhdSWdaz88kCBn9cZr42+Waamgc65qOk9e+j3mbZQLMGA=
+	t=1742321003; cv=none; b=KwyvzXP/bcjwg0RMGP12aE3Sw/FHWR/ZLy4fiXHcu03aW92OtljFWVWa4YlCfytllCRzIL2VSaYnd7ju+wh4ojhwaSNbCYeze7lcU1ATilcBt1GmaygivNhYG+JBssL7t8ob2XXfQ6LFl4LCZ19WENaIqCABJ43wkVRbViUJOVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742321002; c=relaxed/simple;
-	bh=t2y7MLSmqBahZlOJbeUcz2phe/8UW6fcn4ArpDITisc=;
+	s=arc-20240116; t=1742321003; c=relaxed/simple;
+	bh=vIjqe14c0RNfUySlFRGhO3NbU8KsbO/xK6TEyVXoxlM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Db6ja5LBDtyGyvDsc1Be1F1sSKST+H2fRZEzcEwLwXxExzQuzLIRxZhV8YTx7wmuY3ikGliBqVnVKEi0BCkg0WWMVln8ZBc5vYXaD2IRG9o58Xao+ON9PN0Wq8T+t98T6k0w9i8Fk/OyJG+X9UcsGPLMkJIW7QmvnlAFgUmG1DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ohGOqbDy; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=F/EimshqyWmXFUIVr5+JB+S7r1mfi1YObmmlf7wxls72FCCjInIa7jaeBEJY6Mlq7Loj8WusH9Wo1JOZEI+DkbVUVShGuyCpSQjkOk06y97akBfGJ83DSgst0nazo+717U5lgFlgJSYHK/Dyd+xU1rc6Y9QE0TDsaqzW/Hlsq/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZT2M8kRa; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ohGOqbDy"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-223d86b4df0so169623295ad.3
-        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 11:03:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZT2M8kRa"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff68033070so5482458a91.2
+        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 11:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742320996; x=1742925796; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742321001; x=1742925801; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bwe5cvflu2orXWbFuKj4RxdZ74SOqyjelcoad5bS8dY=;
-        b=ohGOqbDyvtA1Ey7uZRI9orb1vNOoJpty44O7JNsXIOdSsTdTub6tFEEIWqUoNj4dY9
-         H9AiTXmb//j9UgEUfhzS3/SVQfkaM3mxStAaiBsGJoFvC6FVkb8EYOWNqizb2SNlUGoB
-         eZYrXCkLDjHdnwACvFu/MvzU0+WftPqkjnwSvDoV7HuSdFkObac6fGrJ9mZzSEbFq2HB
-         8p5TwNpg5sB/RaiG2tVO6rYtO52Sg8UXssFLxuvaiUziDO1YtpHy4B1mHFyvsitaugf9
-         k4A6QCecxDYUsLCd1ZAM6GnIrMBaUBQsYdCJmjMQkvQoFloLBIn4FlBPjAVZws63dlIP
-         f//A==
+        bh=IT302M+FVQY9sewvC6bjI5Mn+MvLFGrIcg+szg8Yono=;
+        b=ZT2M8kRabwlk2iEhwXRhS/ppHqgPlmvR/kYjd9Yl0boL3tSWUaaw5FWAuE8gUR734N
+         mF7FZBlECbzEznbxkwnP5KY7+BhoX3LZlJTqzO8ulVVI2FpbGSLpIWjdiKudAFKivuzN
+         4znVISczHY+rqdXaEMyM6qGzVt253O1rlzv4bHbhI7t+V/OAEAuEPpRNWQ/UV8MYgBEw
+         70pQ8hHiW6ugNjdo8z+dcnmoVC1hSx+djUFCQye17EGUneazVMwACnR/7WKpDwQAigDI
+         t4mk81yPwgFF54zaBVkuJ5L5y0rYZd9Cqy90r6MRryBttXiRY2S+6ez2MNrjkLwcBb9m
+         9QYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742320996; x=1742925796;
+        d=1e100.net; s=20230601; t=1742321001; x=1742925801;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Bwe5cvflu2orXWbFuKj4RxdZ74SOqyjelcoad5bS8dY=;
-        b=B6tzk3cEmO7VISR3pE+nQnZE8anXrefay+PlslnqneJBYMcNLQoTW4DhhQ7iVb7lHF
-         nMhN83Q64TOtGWN6HjQrQgtxMaxesnmtMW6IgJbcKIzIOU+aVVKIlLO7CGfp8GMBFuak
-         5tC7x42gXEVn7U77BjgSQb1t2IJWmwmxK0L+0vlcMBHoKmPh8LZc8PLLb3YDcCu8e/7u
-         PmwSUhc2bwye3SFJf0oJX3LeWuWFgjckRtdAjkVvkzjv7+GvSyIgi6e0iskxphBXRVYF
-         Paoxnzzvjy2OA+ma55LrCsbAwKLbIPZxcRu8rF7i0JBvgKo4H88aCzD6ExnrJW28rCB2
-         I7Aw==
-X-Gm-Message-State: AOJu0YwkRAnDX3GnvenOKnO/bqcVqn4YEZVsSB5xtEF9wWtLI31ymXxw
-	uZiR9PB2380oI8YhO/x1Ql8Wo48UAk3fDDVV+h/CfESOMRgR0FmvkFG/rypP0KfPEUEVWzEZxLe
-	SdQ==
-X-Google-Smtp-Source: AGHT+IGfQmVyr1s0/LsJeAHmPIC8elkfAUqC11fu17meo1RTyUGhLrsXe0YGoEmOxAeuJZ1obx5+Hnwd5XI=
-X-Received: from pfef3.prod.google.com ([2002:a05:6a00:2283:b0:736:415f:3d45])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6010:b0:1ee:c390:58ac
- with SMTP id adf61e73a8af0-1fa45a6e710mr9030146637.34.1742320995991; Tue, 18
- Mar 2025 11:03:15 -0700 (PDT)
+        bh=IT302M+FVQY9sewvC6bjI5Mn+MvLFGrIcg+szg8Yono=;
+        b=CbO5HpxUx7wfxYQIXorX/El3i1GNgnnrRV0UR1lROCBs8pdwO+WL82Gikd1KrU0sjO
+         20W7UIoWT8JzmdHzhZqLQH8jvwWlbs4q+fCh1Q6Lnn5CTZOS2C6SvPuDt7c5X3WcHY8+
+         x5vDbSDyx2jOXci6pgSJ6pfoadoE/9HjvmJhOtTXsR+GZgj70fmxls7AsrvGj+f8MBvn
+         /0B/XZlVlHWRgPAq6b6wmzwZAyHNXbAAFEjI9NPm7zY5XgtAfq3lEZiNrLFXn05CGkyK
+         8+emGIjE7SoLmOp4Ckx3ly5OEf5qzItIlKfg/vo0ob3t6Rl/Lhy3aDBl9+mhy9rlx5O2
+         qnwg==
+X-Gm-Message-State: AOJu0YxdXO4XjpAsDztqWDyD8fPwGqaCmxb1P1n9+YXiCyxFe8V7KxXS
+	lLB0HcgLia+DQpTshpnWFnpARA7QUMbtBAeRVfyXcfbXqsrTxoeM+dVUEEZencac6CpZR0gHNp9
+	Jug==
+X-Google-Smtp-Source: AGHT+IGTi12zBNscf00G47hXQDPJPN/IGQpF4zQKmAap+oOue+uk/UXuOBX0o4O/LU5EKKlFNLTOYrGynXY=
+X-Received: from pjbnw1.prod.google.com ([2002:a17:90b:2541:b0:2ff:6132:8710])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3cd0:b0:2f6:dcc9:38e0
+ with SMTP id 98e67ed59e1d1-301a52908d0mr5763909a91.0.1742321001312; Tue, 18
+ Mar 2025 11:03:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 18 Mar 2025 11:03:00 -0700
+Date: Tue, 18 Mar 2025 11:03:03 -0700
 In-Reply-To: <20250318180303.283401-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,75 +60,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250318180303.283401-1-seanjc@google.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
-Message-ID: <20250318180303.283401-6-seanjc@google.com>
-Subject: [GIT PULL] KVM: Selftests changes for 6.15, part 1
+Message-ID: <20250318180303.283401-9-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: Xen changes for 6.15
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-These are the selftests changes that were originally slated for 6.14, but got
-omitted because of the mess with the Intel PMU counters failing due to the test
-trying to validate architectural events on unsupported hardware.
+Harden and optimize KVM's handling of the Xen hypercall MSR; syzkaller discovered
+that setting the userspace-configurable index to collide with XSS could coerce
+KVM into writing guest memory during vCPU creation.
 
-The following changes since commit 10b2c8a67c4b8ec15f9d07d177f63b563418e948:
+The other change is to fix a flaw related to Xen TSC CPUID emulation.
 
-  Merge tag 'kvm-x86-fixes-6.13-rcN' of https://github.com/kvm-x86/linux into HEAD (2024-12-22 12:59:33 -0500)
+The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
+
+  Linux 6.14-rc2 (2025-02-09 12:45:03 -0800)
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests_6.15-1
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-xen-6.15
 
-for you to fetch changes up to 54108e73344480c3e5f3799129970009f52c59f4:
+for you to fetch changes up to a2b00f85d7839d74a2f6fcbf547d4bf2e82c34e5:
 
-  KVM: selftests: Print out the actual Top-Down Slots count on failure (2025-02-12 08:34:56 -0800)
-
-----------------------------------------------------------------
-KVM selftests changes for 6.15, part 1
-
- - Misc cleanups and prep work.
-
- - Annotate _no_printf() with "printf" so that pr_debug() statements are
-   checked by the compiler for default builds (and pr_info() when QUIET).
-
- - Attempt to whack the last LLC references/misses mole in the Intel PMU
-   counters test by adding a data load and doing CLFLUSH{OPT} on the data
-   instead of the code being executed.  The theory is that modern Intel CPUs
-   have learned new code prefetching tricks that bypass the PMU counters.
-
- - Fix a flaw in the Intel PMU counters test where it asserts that an event is
-   counting correctly without actually knowing what the event counts on the
-   underlying hardware.
+  KVM: x86: Update Xen TSC leaves during CPUID emulation (2025-02-25 07:09:55 -0800)
 
 ----------------------------------------------------------------
-Chen Ni (1):
-      KVM: selftests: Remove unneeded semicolon
+KVM Xen changes for 6.15
 
-Colton Lewis (2):
-      KVM: selftests: Fix typos in x86's PMU counter test's macro variable use
-      KVM: selftests: Add defines for AMD PMU CPUID features and properties
+ - Don't write to the Xen hypercall page on MSR writes that are initiated by
+   the host (userspace or KVM) to fix a class of bugs where KVM can write to
+   guest memory at unexpected times, e.g. during vCPU creation if userspace has
+   set the Xen hypercall MSR index to collide with an MSR that KVM emulates.
 
-Isaku Yamahata (1):
-      KVM: selftests: Add printf attribute to _no_printf()
+ - Restrict the Xen hypercall MSR indx to the unofficial synthetic range to
+   reduce the set of possible collisions with MSRs that are emulated by KVM
+   (collisions can still happen as KVM emulates Hyper-V MSRs, which also reside
+   in the synthetic range).
 
-Sean Christopherson (7):
-      KVM: selftests: Use data load to trigger LLC references/misses in Intel PMU
-      KVM: selftests: Add helpers for locally (un)blocking IRQs on x86
-      KVM: selftests: Make Intel arch events globally available in PMU counters test
-      KVM: selftests: Only validate counts for hardware-supported arch events
-      KVM: selftests: Remove dead code in Intel PMU counters test
-      KVM: selftests: Drop the "feature event" param from guest test helpers
-      KVM: selftests: Print out the actual Top-Down Slots count on failure
+ - Clean up and optimize KVM's handling of Xen MSR writes and xen_hvm_config.
 
- .../selftests/kvm/access_tracking_perf_test.c      |   2 +-
- tools/testing/selftests/kvm/include/test_util.h    |   2 +-
- .../testing/selftests/kvm/include/x86/processor.h  |  47 ++++++
- tools/testing/selftests/kvm/x86/hyperv_ipi.c       |   6 +-
- .../testing/selftests/kvm/x86/pmu_counters_test.c  | 158 ++++++++++++---------
- tools/testing/selftests/kvm/x86/svm_int_ctl_test.c |   5 +-
- .../selftests/kvm/x86/ucna_injection_test.c        |   2 +-
- tools/testing/selftests/kvm/x86/xapic_ipi_test.c   |   3 +-
- tools/testing/selftests/kvm/x86/xapic_state_test.c |   4 +-
- tools/testing/selftests/kvm/x86/xen_shinfo_test.c  |   5 +-
- 10 files changed, 151 insertions(+), 83 deletions(-)
+ - Update Xen TSC leaves during CPUID emulation instead of modifying the CPUID
+   entries when updating PV clocks, as there is no guarantee PV clocks will be
+   updated between TSC frequency changes and CPUID emulation, and guest reads
+   of Xen TSC should be rare, i.e. are not a hot path.
+
+----------------------------------------------------------------
+David Woodhouse (1):
+      KVM: x86/xen: Only write Xen hypercall page for guest writes to MSR
+
+Fred Griffoul (1):
+      KVM: x86: Update Xen TSC leaves during CPUID emulation
+
+Sean Christopherson (5):
+      KVM: x86/xen: Restrict hypercall MSR to unofficial synthetic range
+      KVM: x86/xen: Add an #ifdef'd helper to detect writes to Xen MSR
+      KVM: x86/xen: Consult kvm_xen_enabled when checking for Xen MSR writes
+      KVM: x86/xen: Bury xen_hvm_config behind CONFIG_KVM_XEN=y
+      KVM: x86/xen: Move kvm_xen_hvm_config field into kvm_xen
+
+ Documentation/virt/kvm/api.rst  |  4 ++++
+ arch/x86/include/asm/kvm_host.h |  4 ++--
+ arch/x86/include/uapi/asm/kvm.h |  3 +++
+ arch/x86/kvm/cpuid.c            | 16 +++++++++++++
+ arch/x86/kvm/x86.c              | 13 +++++++----
+ arch/x86/kvm/x86.h              |  1 +
+ arch/x86/kvm/xen.c              | 52 +++++++++++++++--------------------------
+ arch/x86/kvm/xen.h              | 30 ++++++++++++++++++++----
+ 8 files changed, 80 insertions(+), 43 deletions(-)
