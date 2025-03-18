@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20599212FA2
-	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 18:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA3121325B
+	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 18:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742320997; cv=none; b=sz5ANffISwk43FZwVoL6VqMHFfPOln66xclkLgyMemqMPfA1+4v1eNgbTmJjrRq5czLM0BzVcmTZWx1QOA3sGiClMX1noYaxueVfCfnhXnn3sYy6jaHoaq3qaHce1ILtSl5WJuAhkq2fffUP/Hgy0sNtGWF3esEmalHUb8bkGos=
+	t=1742320999; cv=none; b=YXDKMRi4TwGXl24hFZzL27fiex4aymPBvlVGTJTmQ9v3Lzs3MJMEKqjxBIjC2gfnfM44OoIxvvu62CWx9YO1Ea2YOFQY7AENWApFcu4cR7a6ePbwE+dYjT19vpSgQrFyjlMlze7xLAWar/T6QJuvjIyiTK7ffXfIZ5i04iJHoCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742320997; c=relaxed/simple;
-	bh=XaNGJLkWPs0Qmbxt043B99FS4bhKF+GrcE4g0MLQJNU=;
+	s=arc-20240116; t=1742320999; c=relaxed/simple;
+	bh=D2Vl0hjvmprdSsP8sLEgp9rXOfSsss492r6Pga44mc8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gt9SLcd84aDM3mfrlgnNgQJb1JRnTNMYIpoNymSPcCOazIY9TM05cChMMqeNv0RPIBIqmW8O8sq6GRwZ2+WwUlEBl0Xs8VXPCAABUcEOjtoDGKRJrSfHRWvXAFJ6CH/Z4tYIDVt6B3bcc7xCOEaEI8EJSNwW342sG0gfOJ+Ha94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nh0/yY3G; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=e5lXs5aWohR/SLtbXpHbfbRFFGmAkWOxXcvw36ORXAplCBPVKxH8r1E3kJX/AuJ9fyKGzPcyUlmDFLgi7Lq61VvYE7iQrwUt9TCsLJS31B0gCPUCgfmx45Z3ELEHyEH+FtZBPROXCJtz2EJ9SD3exwUS0pTSZCYOlHQb+Kv6O8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p0m3NHmU; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nh0/yY3G"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff605a7a43so9293768a91.3
-        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 11:03:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p0m3NHmU"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-224192ff68bso86800085ad.1
+        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 11:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742320989; x=1742925789; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742320992; x=1742925792; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=LnxJk4vBSHp9N1LYFKJLt0e8ikcWRVhvPtecH3/Bee4=;
-        b=Nh0/yY3G5b1sdJkbN58sr2FAcrLAnmUr4RBP5rCe05GR51Sf7urOCTV0E8oPDD2Zlf
-         /Zs7EJ89bBzyvveDqXWTSLfS3EsobAcxAL/5CZIoYOpe47grN9CNzMJJ0WauW+lo1xcF
-         WutNW4IrXFMtu2v/I/Ac5UKyQrmmyjDyGDh/0DpEoEPNkbIrNA5uqSwtmJzae9p/HCuW
-         zryO/1M5FC36DMbKrHT1bNeCgBnFbgH8jIgf7KXYdS70KvdkJGUXj9ByOJwozBfEzkXn
-         EW2qEaNB/LuyvZTkjmhBzAaapNh/CwjVuXdnyXlm/COxyNlojul377gDFUCd/2EcYtxF
-         rORA==
+        bh=B/BIFgYVh0LKqAIlv/WzNNj3QrJU16cGXK8ptGwEd38=;
+        b=p0m3NHmUUis+/95Ku+oHrYD4lWZSSIkOLRHW40dwHyl/bTw559Nn/gTzOLoLFF4znf
+         TTrpv+8T2yhfENjdguivsgDhxXaEBtR4HmpO2zWyb+gbsjivyKY5KM9k76UtO9e94Zmy
+         2UHTY2KsGB/wR6v1AkGdC5NEKgOgu6h10avd92BypeXcAJhGrxRMGLo8WjkeihgvGcoW
+         RJAk6TM9amKOBWm6Svlx3vtAljJpieKjZ+AcaJviInIEINNpZ3ViruICpkOg/piNgqTD
+         sucLX5K5wFyeYgpihXU/c5dh+2DEyr1qtq+M7V1vJf2TWcTVwOwcioSvSwNTCeHktBFa
+         qLXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742320989; x=1742925789;
+        d=1e100.net; s=20230601; t=1742320992; x=1742925792;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LnxJk4vBSHp9N1LYFKJLt0e8ikcWRVhvPtecH3/Bee4=;
-        b=RuHlKTaABtCSheIHIjoita8I7WZZE4OF0Rv+cxqg3QXSoR7/7UhvvqFEfd3ti7qO3t
-         x3muRPDcJ6OqsxgafJ+WV68r+yrm+DJ71E5lEbn9A6w2hy5XzoyO33VeInYtDjDDFq5n
-         RvwP34EuKCk4jiKXRHmITqeTUFRFPckm3odTb3JuiD7aIMIZeGC7HAIC0FOX7gyu9b0U
-         7oya1Eb9DANq94iIzyGSxt+tqrUpM5ksFsyl2INcPXjzfdsXnU+FOj3yfytkkjMkG8wp
-         Tm/b1raI/x72JTbJ1Kn1CqlVSMusfN+ZbmDzfInxbDd5BQzGbtOjJ50mujO+jHwJMP1R
-         79vQ==
-X-Gm-Message-State: AOJu0YxY7UxlQnm8AUoTiMjoZqDLCF2G6aHOQNGneraom3oCGzVQ4TW5
-	XAj++70Il4C8mEac1ojQRTIXo8vPmlyFE5bnO9nRLBVS4kQOpCykXCAe4CUObeo0inJDCmFYcW+
-	AZg==
-X-Google-Smtp-Source: AGHT+IHZwwToMGKFE4smkp6DkYNdKGE/kbs13n/bLX0z07PsjJvXq6Jp/hz8OiDvzRRG1V1mnoUZJJtQRjQ=
-X-Received: from pjbsd13.prod.google.com ([2002:a17:90b:514d:b0:2ea:5084:5297])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388b:b0:2fe:b907:562f
- with SMTP id 98e67ed59e1d1-301a5b0d3fdmr4269014a91.14.1742320989263; Tue, 18
- Mar 2025 11:03:09 -0700 (PDT)
+        bh=B/BIFgYVh0LKqAIlv/WzNNj3QrJU16cGXK8ptGwEd38=;
+        b=QvLXaC5RU+O5f+k/Ea6iOEdiWz9bgFXrkQQEOQ8T/w9z7WR+KmmuMQhFemo5V/S81k
+         hdvXhKsDrGFfzBoOlB6Jjv32KiOwDS50oe2fS/d4Ved9x+F7DkBs+egmud6cxjZKc46h
+         9Jxyucdpm8cjBnr0j41bsRmqAAvCLWfjYslQn2XL4+qOl+Z6G4PWwmb3Q8cM3lYt9ver
+         8u5jVDqesFfVLW9l4YR+XEmOiTdejpSkd+19bHorMmdET2oOCeqRyfX83HG4p7MJnIOd
+         cW0qSJgaUjhEitD8KoKy3NdTJLfRA/AbXbWv6EH7aP0vIsK1yLsb5Yhi2X2Igm/WY7L6
+         a8iw==
+X-Gm-Message-State: AOJu0YzcfPxBbx9WNpwfhsB074pGP/2Z+49ldQM85j7eGIUHGX0g7vrx
+	weDc1SwVCRZB4FDNmDhTTCdMkES0xdalS+SwS/EFx3oquro/Vjopb/WM40TXYyKp2XztwmXNalr
+	j5g==
+X-Google-Smtp-Source: AGHT+IGzOuilgyAVAxs/CJ+xQoOlaZHr1Qi0K1UT//neS2shFy705WLzEyBiiaDpPFP5dCKHstVWSzHEpno=
+X-Received: from plsl17.prod.google.com ([2002:a17:903:2451:b0:223:432c:56d4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:188:b0:224:1d1c:8837
+ with SMTP id d9443c01a7336-2262c554bc8mr61354805ad.19.1742320992644; Tue, 18
+ Mar 2025 11:03:12 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 18 Mar 2025 11:02:56 -0700
+Date: Tue, 18 Mar 2025 11:02:58 -0700
 In-Reply-To: <20250318180303.283401-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,20 +60,20 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250318180303.283401-1-seanjc@google.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
-Message-ID: <20250318180303.283401-2-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: Misc changes for 6.15
+Message-ID: <20250318180303.283401-4-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: PV clock changes for 6.15
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-A variety of cleanups and minor fixes, and improved support (and fixes) for
-honoring L1 intercepts when emulating instructions on behalf of L2.
+Fix a variety of bugs, flaws, and warts related to KVM's handling of PV clocks
+and the associated PVCLOCK_GUEST_STOPPED flag.  Note, there are still a pile of
+issues with KVM's PV clock code; hopefully the next version of those changes[*]
+comes along sooner than later.
 
-FWIW, unless I'm missing something, the severity of the L2 emulation bugs means
-that emulating instructions while L2 is active is _very_ rare for real world
-use cases.  I.e. the fixes are not urgent.
+[*] https://lore.kernel.org/all/20240522001817.619072-1-dwmw2@infradead.org
 
 The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
 
@@ -81,92 +81,47 @@ The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-misc-6.15
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-pvclock-6.15
 
-for you to fetch changes up to e6c8728a8e2d20b262209c70a8ca67719a628833:
+for you to fetch changes up to 1b3c38050b5cc07f6873f244f845fb6c8549ce85:
 
-  KVM: x86: Remove the unreachable case for 0x80000022 leaf in __do_cpuid_func() (2025-03-04 09:19:49 -0800)
-
-----------------------------------------------------------------
-KVM x86 misc changes for 6.15:
-
- - Fix a bug in PIC emulation that caused KVM to emit a spurious KVM_REQ_EVENT.
-
- - Add a helper to consolidate handling of mp_state transitions, and use it to
-   clear pv_unhalted whenever a vCPU is made RUNNABLE.
-
- - Defer runtime CPUID updates until KVM emulates a CPUID instruction, to
-   coalesce updates when multiple pieces of vCPU state are changing, e.g. as
-   part of a nested transition.
-
- - Fix a variety of nested emulation bugs, and add VMX support for synthesizing
-   nested VM-Exit on interception (instead of injecting #UD into L2).
-
- - Drop "support" for PV Async #PF with proctected guests without SEND_ALWAYS,
-   as KVM can't get the current CPL.
-
- - Misc cleanups
+  KVM: x86: Override TSC_STABLE flag for Xen PV clocks in kvm_guest_time_update() (2025-02-12 10:45:55 -0800)
 
 ----------------------------------------------------------------
-Ethan Zhao (1):
-      KVM: x86/cpuid: add type suffix to decimal const 48 fix building warning
+KVM PV clock changes for 6.15:
 
-Jim Mattson (2):
-      KVM: x86: Introduce kvm_set_mp_state()
-      KVM: x86: Clear pv_unhalted on all transitions to KVM_MP_STATE_RUNNABLE
+ - Don't take kvm->lock when iterating over vCPUs in the suspend notifier to
+   fix a largely theoretical deadlock.
 
-Li RongQing (1):
-      KVM: x86: Use kvfree_rcu() to free old optimized APIC map
+ - Use the vCPU's actual Xen PV clock information when starting the Xen timer,
+   as the cached state in arch.hv_clock can be stale/bogus.
 
-Liam Ni (1):
-      KVM: x86: Wake vCPU for PIC interrupt injection iff a valid IRQ was found
+ - Fix a bug where KVM could bleed PVCLOCK_GUEST_STOPPED across different
+   PV clocks.
 
-Sean Christopherson (19):
-      KVM: x86: Use for-loop to iterate over XSTATE size entries
-      KVM: x86: Apply TSX_CTRL_CPUID_CLEAR if and only if the vCPU has RTM or HLE
-      KVM: x86: Query X86_FEATURE_MWAIT iff userspace owns the CPUID feature bit
-      KVM: x86: Defer runtime updates of dynamic CPUID bits until CPUID emulation
-      KVM: nVMX: Check PAUSE_EXITING, not BUS_LOCK_DETECTION, on PAUSE emulation
-      KVM: nSVM: Pass next RIP, not current RIP, for nested VM-Exit on emulation
-      KVM: nVMX: Allow emulating RDPID on behalf of L2
-      KVM: nVMX: Emulate HLT in L2 if it's not intercepted
-      KVM: nVMX: Consolidate missing X86EMUL_INTERCEPTED logic in L2 emulation
-      KVM: x86: Plumb the src/dst operand types through to .check_intercept()
-      KVM: x86: Plumb the emulator's starting RIP into nested intercept checks
-      KVM: x86: Add a #define for the architectural max instruction length
-      KVM: nVMX: Allow the caller to provide instruction length on nested VM-Exit
-      KVM: nVMX: Synthesize nested VM-Exit for supported emulation intercepts
-      KVM: selftests: Add a nested (forced) emulation intercept test for x86
-      KVM: x86: Don't inject PV async #PF if SEND_ALWAYS=0 and guest state is protected
-      KVM: x86: Rename and invert async #PF's send_user_only flag to send_always
-      KVM: x86: Use a dedicated flow for queueing re-injected exceptions
-      KVM: x86: Always set mp_state to RUNNABLE on wakeup from HLT
+ - Restrict PVCLOCK_GUEST_STOPPED to kvmclock, as KVM's suspend notifier only
+   accounts for kvmclock, and there's no evidence that the flag is actually
+   supported by Xen guests.
 
-Ted Chen (1):
-      KVM: x86: Remove unused iommu_domain and iommu_noncoherent from kvm_arch
+ - Clean up the per-vCPU "cache" of its reference pvclock, and instead only
+   track the vCPU's TSC scaling (multipler+shift) metadata (which is moderately
+   expensive to compute, and rarely changes for modern setups).
 
-Xiaoyao Li (1):
-      KVM: x86: Remove the unreachable case for 0x80000022 leaf in __do_cpuid_func()
+----------------------------------------------------------------
+Sean Christopherson (11):
+      KVM: x86: Don't take kvm->lock when iterating over vCPUs in suspend notifier
+      KVM: x86: Eliminate "handling" of impossible errors during SUSPEND
+      KVM: x86: Drop local pvclock_flags variable in kvm_guest_time_update()
+      KVM: x86: Process "guest stopped request" once per guest time update
+      KVM: x86/xen: Use guest's copy of pvclock when starting timer
+      KVM: x86: Don't bleed PVCLOCK_GUEST_STOPPED across PV clocks
+      KVM: x86: Set PVCLOCK_GUEST_STOPPED only for kvmclock, not for Xen PV clock
+      KVM: x86: Pass reference pvclock as a param to kvm_setup_guest_pvclock()
+      KVM: x86: Remove per-vCPU "cache" of its reference pvclock
+      KVM: x86: Setup Hyper-V TSC page before Xen PV clocks (during clock update)
+      KVM: x86: Override TSC_STABLE flag for Xen PV clocks in kvm_guest_time_update()
 
- arch/x86/include/asm/kvm_host.h                    |   9 +-
- arch/x86/kvm/cpuid.c                               |  52 ++++----
- arch/x86/kvm/cpuid.h                               |   9 +-
- arch/x86/kvm/emulate.c                             |   5 +-
- arch/x86/kvm/i8259.c                               |   2 +-
- arch/x86/kvm/kvm_emulate.h                         |   7 +-
- arch/x86/kvm/lapic.c                               |  17 +--
- arch/x86/kvm/smm.c                                 |   2 +-
- arch/x86/kvm/svm/nested.c                          |   2 +-
- arch/x86/kvm/svm/sev.c                             |   7 +-
- arch/x86/kvm/svm/svm.c                             |  17 ++-
- arch/x86/kvm/trace.h                               |  14 +-
- arch/x86/kvm/vmx/nested.c                          |  18 +--
- arch/x86/kvm/vmx/nested.h                          |  22 +++-
- arch/x86/kvm/vmx/vmx.c                             | 120 ++++++++++++-----
- arch/x86/kvm/x86.c                                 | 136 +++++++++----------
- arch/x86/kvm/x86.h                                 |   7 +
- arch/x86/kvm/xen.c                                 |   4 +-
- tools/testing/selftests/kvm/Makefile.kvm           |   1 +
- .../selftests/kvm/x86/nested_emulation_test.c      | 146 +++++++++++++++++++++
- 20 files changed, 416 insertions(+), 181 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/nested_emulation_test.c
+ arch/x86/include/asm/kvm_host.h |   3 +-
+ arch/x86/kvm/x86.c              | 115 ++++++++++++++++++++--------------------
+ arch/x86/kvm/xen.c              |  69 +++++++++++++++++++++---
+ 3 files changed, 121 insertions(+), 66 deletions(-)
