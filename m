@@ -1,57 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9201D3FC2;
-	Tue, 18 Mar 2025 01:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633657DA95;
+	Tue, 18 Mar 2025 01:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742261701; cv=none; b=su3voaj7lV/Tg757FBtgu831Sru5QzyuPy6xpu5Rfoz1cNUFHaCf9cyH8zsa3c4FhqYWhus5bNZbinNZtZnoDyq0yyNXoQYXtytDoNslfWbHXXxB+94RwERXJcyTvNtYDKxzUAy7L6q0rXhD3faU73q7TIkY7aw2thfm+0XibDk=
+	t=1742261728; cv=none; b=u9kBgbbxjwGlcJnHvZowaDQggsRXdLWiUme/BV359tfaGioyByKHcTWsoT0h4CM+soc8hINjE00YOuMM+xaBxx2WQvHa4iLWHQmXogyYBvwlkGVPps/6zziGZPxrhBkebxzv3oKVsBMDHctJeGTJZ7E3yzAzFYbrKjEDMzJCRpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742261701; c=relaxed/simple;
-	bh=pLa7nmBIJgWzueqkPk4AGuMVC9d7jDDRLX/NlIBoDkQ=;
+	s=arc-20240116; t=1742261728; c=relaxed/simple;
+	bh=NwOAx5+dxnQzBsBey2xQSL2X0FYSBltO7FxvfjiIzGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rR8dTBbhycszZCaw83CyIea1BYKJjq+5mOl0fANvEved1s9cKkgtbvCHyOkUi1izdy49LkE06M5g7tKdpZMWOx7S6FjlIXl6PQZPK0/Mz7uY0YtKtCTEL/TGwXvKT9ubM5ZuAE5PJb08tQkSmUlwRKVQs6GWOZc8vguu9zz7Br0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OvVBJbPJ; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=amB4a7V7ODegivhzvLq2OkvGk1oYJnxcOZ1UZdf6qTazbMgRgw3ZFIMQpMi2EpbROMCt4zF0tdzc6V6woykdmlUgA7aqK9kX5NdVF8x7J5UeYoHd/YtB/yGSuZaXokUy2J05ynVMxFG+72RkqdiRCtvEVjUSQOZWoHubMaCJAQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cODzODeD; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OvVBJbPJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cODzODeD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742261699; x=1773797699;
+  t=1742261727; x=1773797727;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pLa7nmBIJgWzueqkPk4AGuMVC9d7jDDRLX/NlIBoDkQ=;
-  b=OvVBJbPJkR/m4ylhBtL2MKFUzIzvhfoN0fqjRwqvXSwb9pe9LIp5BmPE
-   j+uCrXLtKGg4CZPpJ3veK8ytqshoXxZuwywv7o94awrvQr0vOfYIUoIaz
-   z3BVt8SAwj+c0WHXZaH9fb4DT+Npn/jU47z9FQu853rmPsexCUgC1TCTo
-   Zit8fAbZvlaNUFZynDHLH+4DEwdL0374LSLDYOYRkkA9wRTaSLOwme6ZP
-   ywGSa7VbYTrv3yg+4tXfhsn+Hn8neBoajIWLqfh+eb/8NhqedKD/2zlSU
-   E1vzjboSggSA+k2ijgu1Wu8Y7TV0XMW68chqLCG12SzN6Pm4nePz0cUiw
+  bh=NwOAx5+dxnQzBsBey2xQSL2X0FYSBltO7FxvfjiIzGI=;
+  b=cODzODeDdb4JJFbz9uIjAwovKd1P3a9FOIhTLAIt7fbZQdQvB9HSGPQ6
+   vKG6BW/SVXK4jji+KZJno4Rq+MZSMBwZoCus4yb/ie/U+007+6+q52GCR
+   qyxK+vPsALpeWG1UAviE1J4zokxcfBvzEJXKMdBjoSXXQ9PSiHg8rprBR
+   2lLLTVbRDUpshw/i9WGSfzLtir5UjIiFURPS3lZjn43nfxMvwSe0wEWbR
+   Bhk9rZx7prJy9gMUltwxJjPoChpFGKxMSaGaqyu70ORTZBQal2QEXyGDd
+   rxuroRyC5AZdAASeQy9DPk47BgJMTZJZifDRlUxuK0h3R57yqHCJuWlBr
    A==;
-X-CSE-ConnectionGUID: Opk93W7WQmq3+K/FC3CCBw==
-X-CSE-MsgGUID: xRFtpcyeQla3gHhonYOaow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54009598"
+X-CSE-ConnectionGUID: Uay7iiDdRXqOkB5RknVR2A==
+X-CSE-MsgGUID: rlhHD+ehSuKYeVKnQaVFHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="42556046"
 X-IronPort-AV: E=Sophos;i="6.14,255,1736841600"; 
-   d="scan'208";a="54009598"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 18:34:59 -0700
-X-CSE-ConnectionGUID: P78im2mWSXK+g/BfK4CEXA==
-X-CSE-MsgGUID: MOrFEG6sR8iuttfa+EO9kA==
+   d="scan'208";a="42556046"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 18:35:27 -0700
+X-CSE-ConnectionGUID: S/fEzu+6Q+im8JVS/vbgUA==
+X-CSE-MsgGUID: RTb5KkJlSuS1fUqap6gR8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,255,1736841600"; 
-   d="scan'208";a="127284151"
+   d="scan'208";a="122284291"
 Received: from yzhao56-desk.sh.intel.com ([10.239.159.62])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 18:34:57 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 18:33:00 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
 Cc: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	Yan Zhao <yan.y.zhao@intel.com>
-Subject: [PATCH v2 5/5] KVM: x86/mmu: Check and free obsolete roots in kvm_mmu_reload()
-Date: Tue, 18 Mar 2025 09:33:33 +0800
-Message-ID: <20250318013333.5817-1-yan.y.zhao@intel.com>
+Subject: [PATCH v2 1/5] KVM: x86/mmu: Further check old SPTE is leaf for spurious prefetch fault
+Date: Tue, 18 Mar 2025 09:31:11 +0800
+Message-ID: <20250318013111.5648-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20250318013038.5628-1-yan.y.zhao@intel.com>
 References: <20250318013038.5628-1-yan.y.zhao@intel.com>
@@ -63,59 +63,57 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check request KVM_REQ_MMU_FREE_OBSOLETE_ROOTS to free obsolete roots in
-kvm_mmu_reload() to prevent kvm_mmu_reload() from seeing a stale obsolete
-root.
+Instead of simply treating a prefetch fault as spurious when there's a
+shadow-present old SPTE, further check if the old SPTE is leaf to determine
+if a prefetch fault is spurious.
 
-Since kvm_mmu_reload() can be called outside the
-vcpu_enter_guest() path (e.g., kvm_arch_vcpu_pre_fault_memory()), it may be
-invoked after a root has been marked obsolete and before vcpu_enter_guest()
-is invoked to process KVM_REQ_MMU_FREE_OBSOLETE_ROOTS and set root.hpa to
-invalid. This causes kvm_mmu_reload() to fail to load a new root, which
-can lead to kvm_arch_vcpu_pre_fault_memory() being stuck in the while
-loop in kvm_tdp_map_page() since RET_PF_RETRY is always returned due to
-is_page_fault_stale().
+It's not reasonable to treat a prefetch fault as spurious when there's a
+shadow-present non-leaf SPTE without a corresponding shadow-present leaf
+SPTE. e.g., in the following sequence, a prefetch fault should not be
+considered spurious:
+1. add a memslot with size 4K
+2. prefault GPA A in the memslot
+3. delete the memslot (zap all disabled)
+4. re-add the memslot with size 2M
+5. prefault GPA A again.
+In step 5, the prefetch fault attempts to install a 2M huge entry.
+Since step 3 zaps the leaf SPTE for GPA A while keeping the non-leaf SPTE,
+the leaf entry will remain empty after step 5 if the fetch fault is
+regarded as spurious due to a shadow-present non-leaf SPTE.
 
-Keep the existing check of KVM_REQ_MMU_FREE_OBSOLETE_ROOTS in
-vcpu_enter_guest() since the cost of kvm_check_request() is negligible,
-especially a check that's guarded by kvm_request_pending().
-
-Export symbol of kvm_mmu_free_obsolete_roots() as kvm_mmu_reload() is
-inline and may be called outside of kvm.ko.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 ---
- arch/x86/kvm/mmu.h     | 3 +++
- arch/x86/kvm/mmu/mmu.c | 1 +
- 2 files changed, 4 insertions(+)
+ arch/x86/kvm/mmu/mmu.c     | 2 +-
+ arch/x86/kvm/mmu/tdp_mmu.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 050a0e229a4d..f2b36d32ef40 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -104,6 +104,9 @@ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
- 
- static inline int kvm_mmu_reload(struct kvm_vcpu *vcpu)
- {
-+	if (kvm_check_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu))
-+		kvm_mmu_free_obsolete_roots(vcpu);
-+
- 	/*
- 	 * Checking root.hpa is sufficient even when KVM has mirror root.
- 	 * We can have either:
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 607cbb19ea96..15fd4838e4f2 100644
+index 8160870398b9..94c677f8cc05 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5802,6 +5802,7 @@ void kvm_mmu_free_obsolete_roots(struct kvm_vcpu *vcpu)
- 	__kvm_mmu_free_obsolete_roots(vcpu->kvm, &vcpu->arch.root_mmu);
- 	__kvm_mmu_free_obsolete_roots(vcpu->kvm, &vcpu->arch.guest_mmu);
- }
-+EXPORT_SYMBOL_GPL(kvm_mmu_free_obsolete_roots);
+@@ -2846,7 +2846,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 	}
  
- static u64 mmu_pte_write_fetch_gpte(struct kvm_vcpu *vcpu, gpa_t *gpa,
- 				    int *bytes)
+ 	if (is_shadow_present_pte(*sptep)) {
+-		if (prefetch)
++		if (prefetch && is_last_spte(*sptep, level))
+ 			return RET_PF_SPURIOUS;
+ 
+ 		/*
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 046b6ba31197..ab65fd915ef2 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1137,7 +1137,8 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 	if (WARN_ON_ONCE(sp->role.level != fault->goal_level))
+ 		return RET_PF_RETRY;
+ 
+-	if (fault->prefetch && is_shadow_present_pte(iter->old_spte))
++	if (fault->prefetch && is_shadow_present_pte(iter->old_spte) &&
++	    is_last_spte(iter->old_spte, iter->level))
+ 		return RET_PF_SPURIOUS;
+ 
+ 	if (is_shadow_present_pte(iter->old_spte) &&
 -- 
 2.43.2
 
