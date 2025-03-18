@@ -1,55 +1,55 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C002221129A
-	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 16:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F008212B35
+	for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 16:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314856; cv=none; b=Gs7bODP1BVCLRM+T2K77ELGa0S9kDZ4L1vdcEr0iAsBB2P6HDoc4eHI18FYLRzbZ8RQfgvB2n+1+3wUAV/ayiyYVr4lTVzSLXHsAZC/IG2MZuLPvSnpE2gLUuwkb524BuDj6/IBhdIYRoQ8sZ4aHCqbKuizvHE7BBjNqGOYIxiY=
+	t=1742314859; cv=none; b=hM0x0W/ftgLlyjJMGmn47W6ezf+nLvmCgcwReQjlGBksrPG5eSV8RnXn6mUFw7sn8AZsQ0xY+2FCstc53EOjMfSyQ6SdmL9unCCT1deARVSnTW/aYGJFg/QpMw+39SX3BxyHcd9iy60wPTFxKwuUYcWCwpYt5lkm8F5oQwZuhgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314856; c=relaxed/simple;
-	bh=ZUn2qEyVEu13Wirg+1ah/shBPJIBQ0RhDgdACeIp8YM=;
+	s=arc-20240116; t=1742314859; c=relaxed/simple;
+	bh=JUU23I6tKOkKsBHRmuxqzsOtwT9UumaU5EtMA2UgMl4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GdplFvdtvrjxSF6srz2qgL/spJC4nL9i9m6fOQUh+cfAeXGxodk6sSAp6mC0x7ycM6aLTO7N0h7B7bikrJLb8Mye4kvYFfJ8txPNGy8UumcUY2HC2NrxSkVouSrKAcuWVGv+bThMUEL0I75Cte0I2wlbiUvJ2yQzEMDgFYq9ntw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m6NE0H9s; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=WzYfV6dwkePRzm+347fSOkVrwJEdc6Hmebsph77ttrQD53kke6yP8D3AZF1VZw4M2wB5J2xfm9GoYvr3trRO1rjA7shS1rcBWieXvvjO8lVkcqLKGzlvMbq0hz7gBb9efxlK5jpOSYifdMyqjI62sqQGawMYyRZVVyDnQc+NPmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iW45dRvt; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m6NE0H9s"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf327e9a2so28405275e9.3
-        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 09:20:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iW45dRvt"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43bd0586b86so19671145e9.3
+        for <kvm@vger.kernel.org>; Tue, 18 Mar 2025 09:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742314852; x=1742919652; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742314856; x=1742919656; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rIMCAizGZejWtu7P2Nd20c3m6UoVLaxoQ99DBpyfZ/M=;
-        b=m6NE0H9s3btCA0iEmLMmgYJjcpx0wc9mE/rkvXb2GFXtQuD+aytTZPk+n6Fe2xjUBM
-         YoDIqT1aytlHfBcAvd6AtDKrjuFaaj1bmWGYIE7XXEwfqo6zpdfLRWxpGn3TbpIi9tLu
-         dO9dfquCyHzMMY+776HEHPtprUIWPVcBnu1kk04bKgQRyipBlmvsRmC6QQ5icwcALl/6
-         FZ/0U05JUG2wMbxBLbP9lyRfp6W+rnJmAOq5R9AGseYmhWLFzHrDKzfx6QdwDAXBIZBH
-         iJnPOWUJkVWC1jcacJvZzUHnOsDqJpjUEuNGVJMYYTwUXsJU8TecS1Mi0D51exWtWy1r
-         jW9g==
+        bh=0uRqiA5y6bwZJswTBUBVpBBlKkERam5rlpE8w5/s9pQ=;
+        b=iW45dRvtnYA2do8SlL+JYjNAiweGhhBkWOgiWNl/l0vY+DvxNw+r/XsEjtEeuU1ISl
+         yp2xxH25HWsSkTdWLwgJrMLiustEatbyQ6lheczZSwJ7Dr01BSGwoqxPFLyHU+dXqGcd
+         iRpa5J/bymrX9AMWXAPKkPUMQw2zENK24GVuXndJJg6ayjsbKX3JXDMp8+HopbDubU17
+         hmZAuLjB4+An7PmcmaZo6MFfiXMzx3xzgcz+EfBqeZjIEpDCyemYooTI5dddq3OpdTpZ
+         gcUbu1WzpD/07ONZ9dQq66osrpNLU43lY0Un/rzeY+0Xg2M0lyUyd8FtWYOmbgO8iF0t
+         BolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742314852; x=1742919652;
+        d=1e100.net; s=20230601; t=1742314856; x=1742919656;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rIMCAizGZejWtu7P2Nd20c3m6UoVLaxoQ99DBpyfZ/M=;
-        b=wnwo2uCWHLxXzyi61zxuqfb57LNx2l1Lxtj0DS2/+7AeVHmLv/9jsXnjHjgWZ3GBoR
-         OSW16BvxMQZTsV0wCueyshOKcBohNfnZ6P2j+5tw2/jWaPHaCR3XNM04fPnm/5bArefE
-         vMf3B2GWklO3I/MMOgitFNV9zGkyiuaduGdI4m2WjMJ7gRqRJquVw7HQQXGNu+4MCsaE
-         OpC1gF/jg1fP9Rl7u1qe9LV+pwCynMpKjDV119NSMukkcEIrFTIFH6Ir+BYBHMC4T3DO
-         IS3HEPsX+iZs6PhKOaXYxmTm5S51COMoM48B/Zon8Xbaqz3TUdUi99k5wqnVPWmhPL2b
-         ePlQ==
-X-Gm-Message-State: AOJu0Yw32dNRzGXWq5w7vEts92OOjAe1uXs+MXp4KXKYGwyrcYnDn0k1
-	4z2bgq63VWxA81OL+9pbEau/mQhwmMx+B26+buOdk7/uV6qQ6nYnrjjHA3oHU1nzB35kDrnSPQp
-	uHxfqsdAK+94vL8EJxUm40HpD9xXkiEyFvuAdc0vqLdwR/MGc/iXcWn8qYq5AVUZXtba1nSjyt9
-	k0ay4it2TSpaYjVWfFOubJCdE=
-X-Google-Smtp-Source: AGHT+IFmHd9CyHM8TklDJLl/Zwd2hd7SSZMAwOsu5I2BqW7wDeKi1D4jAZf4EsiqIdJLp0CMxLUAq5zQDw==
-X-Received: from wmcn4.prod.google.com ([2002:a05:600c:c0c4:b0:43c:fae1:8125])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:5103:b0:43d:fa:1f9a
- with SMTP id 5b1f17b1804b1-43d3ba2971emr26297695e9.30.1742314852121; Tue, 18
- Mar 2025 09:20:52 -0700 (PDT)
-Date: Tue, 18 Mar 2025 16:20:41 +0000
+        bh=0uRqiA5y6bwZJswTBUBVpBBlKkERam5rlpE8w5/s9pQ=;
+        b=himfgDwASMn3y7uraMcjI6i5iad5jlIQYqYN4xxp1zw86T5N1Zo2kjUKcn/2r/Jqpv
+         /XmF2pSFlqYictPAn+Hw3cM8bYm0gvbLZ8E3E3vWC+ovQXujv+sF+bSznkUyUJacIMod
+         bWkVM51KckR57AmuE6v6zMQ3jl9XfoFa/rX98tCaFNgmfIT0jUXr3YJVJ2SlA0oBFFCO
+         RdU8L68te2wk0XhMGlcjTAoeU7M70qFIb6RlWhtl4iV7LFICJi2X+xrfvvr8gN2CPLol
+         2HGeWWhxCXuxrjLPCebMSVoT497sWJllQUDK5B/+B6E7c7WB0zuEpDTDSS0Ex6gItWNF
+         p8BQ==
+X-Gm-Message-State: AOJu0Yx934q060bsvOgamXc6n/Ig8b8TUMxrKO0eAVDLXJmplxhM2mQ9
+	r4Adv9jYAdmr+SD6BT7FDgK11ofSN/OlJPUU+SQcj9GncwfLlC7W5zSzJXn5GqqlUqZRhWp5sqN
+	k2RpfHlGePtNZu8BhyxDozWO6f+2DAdiq1qtpaHYJl3MUQ2gQUKCrOfoQ2C9Vw2qdJ0JQJ59KOl
+	mu09UaoAXpe4SQ4jPGPcqdr/g=
+X-Google-Smtp-Source: AGHT+IGmIciTBdHZ96gCAdqnT6Aeuf4gTKWQU8tfq92iyygo3HUg48wgjEHxGX/Kbvi4hg2TcPjULeDUFw==
+X-Received: from wmbfl10.prod.google.com ([2002:a05:600c:b8a:b0:43c:f122:1874])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3c9e:b0:43c:f4df:4870
+ with SMTP id 5b1f17b1804b1-43d3ba06316mr23345235e9.25.1742314855816; Tue, 18
+ Mar 2025 09:20:55 -0700 (PDT)
+Date: Tue, 18 Mar 2025 16:20:43 +0000
 In-Reply-To: <20250318162046.4016367-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250318162046.4016367-1-tabba@google.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
-Message-ID: <20250318162046.4016367-3-tabba@google.com>
-Subject: [PATCH v6 2/7] KVM: guest_memfd: Introduce kvm_gmem_get_pfn_locked(),
- which retains the folio lock
+Message-ID: <20250318162046.4016367-5-tabba@google.com>
+Subject: [PATCH v6 4/7] KVM: guest_memfd: Folio sharing states and functions
+ that manage their transition
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
 Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
@@ -85,98 +85,362 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
 	jthoughton@google.com, peterx@redhat.com, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Create a new variant of kvm_gmem_get_pfn(), which retains the folio lock
-if it returns successfully. This is needed in subsequent patches to
-protect against races when checking whether a folio can be shared with
-the host.
+To allow in-place sharing of guest_memfd folios with the host,
+guest_memfd needs to track their sharing state, because mapping of
+shared folios will only be allowed where it safe to access these folios.
+It is safe to map and access these folios when explicitly shared with
+the host, or potentially if not yet exposed to the guest (e.g., at
+initialization).
+
+This patch introduces sharing states for guest_memfd folios as well as
+the functions that manage transitioning between those states.
 
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- include/linux/kvm_host.h | 11 +++++++++++
- virt/kvm/guest_memfd.c   | 27 ++++++++++++++++++++-------
- 2 files changed, 31 insertions(+), 7 deletions(-)
+ include/linux/kvm_host.h |  39 +++++++-
+ virt/kvm/guest_memfd.c   | 188 ++++++++++++++++++++++++++++++++++++---
+ virt/kvm/kvm_main.c      |  62 +++++++++++++
+ 3 files changed, 275 insertions(+), 14 deletions(-)
 
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ec3bedc18eab..bc73d7426363 100644
+index bc73d7426363..bf82faf16c53 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -2535,6 +2535,9 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
- 		     int *max_order);
-+int kvm_gmem_get_pfn_locked(struct kvm *kvm, struct kvm_memory_slot *slot,
-+			    gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-+			    int *max_order);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
-@@ -2544,6 +2547,14 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
- }
-+static inline int kvm_gmem_get_pfn_locked(struct kvm *kvm,
-+					  struct kvm_memory_slot *slot,
-+					  gfn_t gfn, kvm_pfn_t *pfn,
-+					  struct page **page, int *max_order)
-+{
-+	KVM_BUG_ON(1, kvm);
-+	return -EIO;
-+}
- #endif /* CONFIG_KVM_PRIVATE_MEM */
+@@ -2600,7 +2600,44 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ #endif
  
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
+ #ifdef CONFIG_KVM_GMEM_SHARED_MEM
++int kvm_gmem_set_shared(struct kvm *kvm, gfn_t start, gfn_t end);
++int kvm_gmem_clear_shared(struct kvm *kvm, gfn_t start, gfn_t end);
++int kvm_gmem_slot_set_shared(struct kvm_memory_slot *slot, gfn_t start,
++			     gfn_t end);
++int kvm_gmem_slot_clear_shared(struct kvm_memory_slot *slot, gfn_t start,
++			       gfn_t end);
++bool kvm_gmem_slot_is_guest_shared(struct kvm_memory_slot *slot, gfn_t gfn);
+ void kvm_gmem_handle_folio_put(struct folio *folio);
+-#endif
++#else
++static inline int kvm_gmem_set_shared(struct kvm *kvm, gfn_t start, gfn_t end)
++{
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++static inline int kvm_gmem_clear_shared(struct kvm *kvm, gfn_t start,
++					gfn_t end)
++{
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++static inline int kvm_gmem_slot_set_shared(struct kvm_memory_slot *slot,
++					   gfn_t start, gfn_t end)
++{
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++static inline int kvm_gmem_slot_clear_shared(struct kvm_memory_slot *slot,
++					     gfn_t start, gfn_t end)
++{
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++static inline bool kvm_gmem_slot_is_guest_shared(struct kvm_memory_slot *slot,
++						 gfn_t gfn)
++{
++	WARN_ON_ONCE(1);
++	return false;
++}
++#endif /* CONFIG_KVM_GMEM_SHARED_MEM */
+ 
+ #endif
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 844e70c82558..ac6b8853699d 100644
+index a7f7c6eb6b4a..4b857ab421bf 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -802,9 +802,9 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
- 	return folio;
+@@ -28,14 +28,6 @@ static struct kvm_gmem_inode_private *kvm_gmem_private(struct inode *inode)
+ 	return inode->i_mapping->i_private_data;
  }
  
--int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
--		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
--		     int *max_order)
-+int kvm_gmem_get_pfn_locked(struct kvm *kvm, struct kvm_memory_slot *slot,
-+			    gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-+			    int *max_order)
- {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
- 	struct file *file = kvm_gmem_get_file(slot);
-@@ -824,17 +824,30 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (!is_prepared)
- 		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
- 
--	folio_unlock(folio);
+-#ifdef CONFIG_KVM_GMEM_SHARED_MEM
+-void kvm_gmem_handle_folio_put(struct folio *folio)
+-{
+-	WARN_ONCE(1, "A placeholder that shouldn't trigger. Work in progress.");
+-}
+-EXPORT_SYMBOL_GPL(kvm_gmem_handle_folio_put);
+-#endif /* CONFIG_KVM_GMEM_SHARED_MEM */
 -
--	if (!r)
-+	if (!r) {
- 		*page = folio_file_page(folio, index);
--	else
-+	} else {
-+		folio_unlock(folio);
- 		folio_put(folio);
-+	}
- 
- out:
- 	fput(file);
- 	return r;
+ /**
+  * folio_file_pfn - like folio_file_page, but return a pfn.
+  * @folio: The folio which contains this index.
+@@ -388,13 +380,183 @@ static void kvm_gmem_init_mount(void)
  }
-+EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn_locked);
+ 
+ #ifdef CONFIG_KVM_GMEM_SHARED_MEM
+-static bool kvm_gmem_offset_is_shared(struct file *file, pgoff_t index)
++/*
++ * An enum of the valid folio sharing states:
++ * Bit 0: set if not shared with the guest (guest cannot fault it in)
++ * Bit 1: set if not shared with the host (host cannot fault it in)
++ */
++enum folio_shareability {
++	KVM_GMEM_ALL_SHARED	= 0b00,	/* Shared with host and guest. */
++	KVM_GMEM_GUEST_SHARED	= 0b10, /* Shared only with guest. */
++	KVM_GMEM_NONE_SHARED	= 0b11, /* Not shared, transient state. */
++};
 +
-+int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-+		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-+		     int *max_order)
++static int kvm_gmem_offset_set_shared(struct inode *inode, pgoff_t index)
+ {
+-	struct kvm_gmem *gmem = file->private_data;
++	struct xarray *shared_offsets = &kvm_gmem_private(inode)->shared_offsets;
++	void *xval = xa_mk_value(KVM_GMEM_ALL_SHARED);
++
++	rwsem_assert_held_write_nolockdep(&inode->i_mapping->invalidate_lock);
++
++	return xa_err(xa_store(shared_offsets, index, xval, GFP_KERNEL));
++}
++
++/*
++ * Marks the range [start, end) as shared with both the host and the guest.
++ * Called when guest shares memory with the host.
++ */
++static int kvm_gmem_offset_range_set_shared(struct inode *inode,
++					    pgoff_t start, pgoff_t end)
 +{
-+	int r = kvm_gmem_get_pfn_locked(kvm, slot, gfn, pfn, page, max_order);
++	pgoff_t i;
++	int r = 0;
 +
-+	if (!r)
-+		unlock_page(*page);
++	filemap_invalidate_lock(inode->i_mapping);
++	for (i = start; i < end; i++) {
++		r = kvm_gmem_offset_set_shared(inode, i);
++		if (WARN_ON_ONCE(r))
++			break;
++	}
++	filemap_invalidate_unlock(inode->i_mapping);
 +
 +	return r;
 +}
- EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn);
++
++static int kvm_gmem_offset_clear_shared(struct inode *inode, pgoff_t index)
++{
++	struct xarray *shared_offsets = &kvm_gmem_private(inode)->shared_offsets;
++	void *xval_guest = xa_mk_value(KVM_GMEM_GUEST_SHARED);
++	void *xval_none = xa_mk_value(KVM_GMEM_NONE_SHARED);
++	struct folio *folio;
++	int refcount;
++	int r;
++
++	rwsem_assert_held_write_nolockdep(&inode->i_mapping->invalidate_lock);
++
++	folio = filemap_lock_folio(inode->i_mapping, index);
++	if (!IS_ERR(folio)) {
++		/* +1 references are expected because of filemap_lock_folio(). */
++		refcount = folio_nr_pages(folio) + 1;
++	} else {
++		r = PTR_ERR(folio);
++		if (WARN_ON_ONCE(r != -ENOENT))
++			return r;
++
++		folio = NULL;
++	}
++
++	if (!folio || folio_ref_freeze(folio, refcount)) {
++		/*
++		 * No outstanding references: transition to guest shared.
++		 */
++		r = xa_err(xa_store(shared_offsets, index, xval_guest, GFP_KERNEL));
++
++		if (folio)
++			folio_ref_unfreeze(folio, refcount);
++	} else {
++		/*
++		 * Outstanding references: the folio cannot be faulted in by
++		 * anyone until they're dropped.
++		 */
++		r = xa_err(xa_store(shared_offsets, index, xval_none, GFP_KERNEL));
++	}
++
++	if (folio) {
++		folio_unlock(folio);
++		folio_put(folio);
++	}
++
++	return r;
++}
++
++/*
++ * Marks the range [start, end) as not shared with the host. If the host doesn't
++ * have any references to a particular folio, then that folio is marked as
++ * shared with the guest.
++ *
++ * However, if the host still has references to the folio, then the folio is
++ * marked and not shared with anyone. Marking it as not shared allows draining
++ * all references from the host, and ensures that the hypervisor does not
++ * transition the folio to private, since the host still might access it.
++ *
++ * Called when guest unshares memory with the host.
++ */
++static int kvm_gmem_offset_range_clear_shared(struct inode *inode,
++					      pgoff_t start, pgoff_t end)
++{
++	pgoff_t i;
++	int r = 0;
++
++	filemap_invalidate_lock(inode->i_mapping);
++	for (i = start; i < end; i++) {
++		r = kvm_gmem_offset_clear_shared(inode, i);
++		if (WARN_ON_ONCE(r))
++			break;
++	}
++	filemap_invalidate_unlock(inode->i_mapping);
++
++	return r;
++}
++
++void kvm_gmem_handle_folio_put(struct folio *folio)
++{
++	WARN_ONCE(1, "A placeholder that shouldn't trigger. Work in progress.");
++}
++EXPORT_SYMBOL_GPL(kvm_gmem_handle_folio_put);
++
++static bool kvm_gmem_offset_is_shared(struct inode *inode, pgoff_t index)
++{
++	struct xarray *shared_offsets = &kvm_gmem_private(inode)->shared_offsets;
++	unsigned long r;
++
++	rwsem_assert_held_nolockdep(&inode->i_mapping->invalidate_lock);
++
++	r = xa_to_value(xa_load(shared_offsets, index));
++
++	return r == KVM_GMEM_ALL_SHARED;
++}
++
++static bool kvm_gmem_offset_is_guest_shared(struct inode *inode, pgoff_t index)
++{
++	struct xarray *shared_offsets = &kvm_gmem_private(inode)->shared_offsets;
++	unsigned long r;
++
++	rwsem_assert_held_nolockdep(&inode->i_mapping->invalidate_lock);
++
++	r = xa_to_value(xa_load(shared_offsets, index));
++
++	return (r == KVM_GMEM_ALL_SHARED || r == KVM_GMEM_GUEST_SHARED);
++}
++
++int kvm_gmem_slot_set_shared(struct kvm_memory_slot *slot, gfn_t start, gfn_t end)
++{
++	struct inode *inode = file_inode(READ_ONCE(slot->gmem.file));
++	pgoff_t start_off = slot->gmem.pgoff + start - slot->base_gfn;
++	pgoff_t end_off = start_off + end - start;
++
++	return kvm_gmem_offset_range_set_shared(inode, start_off, end_off);
++}
++
++int kvm_gmem_slot_clear_shared(struct kvm_memory_slot *slot, gfn_t start, gfn_t end)
++{
++	struct inode *inode = file_inode(READ_ONCE(slot->gmem.file));
++	pgoff_t start_off = slot->gmem.pgoff + start - slot->base_gfn;
++	pgoff_t end_off = start_off + end - start;
++
++	return kvm_gmem_offset_range_clear_shared(inode, start_off, end_off);
++}
++
++bool kvm_gmem_slot_is_guest_shared(struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	struct inode *inode = file_inode(READ_ONCE(slot->gmem.file));
++	unsigned long pgoff = slot->gmem.pgoff + gfn - slot->base_gfn;
++	bool r;
  
- #ifdef CONFIG_KVM_GENERIC_PRIVATE_MEM
++	filemap_invalidate_lock_shared(inode->i_mapping);
++	r = kvm_gmem_offset_is_guest_shared(inode, pgoff);
++	filemap_invalidate_unlock_shared(inode->i_mapping);
+ 
+-	/* For now, VMs that support shared memory share all their memory. */
+-	return kvm_arch_gmem_supports_shared_mem(gmem->kvm);
++	return r;
+ }
+ 
+ static vm_fault_t kvm_gmem_fault(struct vm_fault *vmf)
+@@ -422,7 +584,7 @@ static vm_fault_t kvm_gmem_fault(struct vm_fault *vmf)
+ 		goto out_folio;
+ 	}
+ 
+-	if (!kvm_gmem_offset_is_shared(vmf->vma->vm_file, vmf->pgoff)) {
++	if (!kvm_gmem_offset_is_shared(inode, vmf->pgoff)) {
+ 		ret = VM_FAULT_SIGBUS;
+ 		goto out_folio;
+ 	}
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 3e40acb9f5c0..90762252381c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3091,6 +3091,68 @@ static int next_segment(unsigned long len, int offset)
+ 		return len;
+ }
+ 
++#ifdef CONFIG_KVM_GMEM_SHARED_MEM
++int kvm_gmem_set_shared(struct kvm *kvm, gfn_t start, gfn_t end)
++{
++	struct kvm_memslot_iter iter;
++	int r = 0;
++
++	mutex_lock(&kvm->slots_lock);
++
++	kvm_for_each_memslot_in_gfn_range(&iter, kvm_memslots(kvm), start, end) {
++		struct kvm_memory_slot *memslot = iter.slot;
++		gfn_t gfn_start, gfn_end;
++
++		if (!kvm_slot_can_be_private(memslot))
++			continue;
++
++		gfn_start = max(start, memslot->base_gfn);
++		gfn_end = min(end, memslot->base_gfn + memslot->npages);
++		if (WARN_ON_ONCE(start >= end))
++			continue;
++
++		r = kvm_gmem_slot_set_shared(memslot, gfn_start, gfn_end);
++		if (WARN_ON_ONCE(r))
++			break;
++	}
++
++	mutex_unlock(&kvm->slots_lock);
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(kvm_gmem_set_shared);
++
++int kvm_gmem_clear_shared(struct kvm *kvm, gfn_t start, gfn_t end)
++{
++	struct kvm_memslot_iter iter;
++	int r = 0;
++
++	mutex_lock(&kvm->slots_lock);
++
++	kvm_for_each_memslot_in_gfn_range(&iter, kvm_memslots(kvm), start, end) {
++		struct kvm_memory_slot *memslot = iter.slot;
++		gfn_t gfn_start, gfn_end;
++
++		if (!kvm_slot_can_be_private(memslot))
++			continue;
++
++		gfn_start = max(start, memslot->base_gfn);
++		gfn_end = min(end, memslot->base_gfn + memslot->npages);
++		if (WARN_ON_ONCE(start >= end))
++			continue;
++
++		r = kvm_gmem_slot_clear_shared(memslot, gfn_start, gfn_end);
++		if (WARN_ON_ONCE(r))
++			break;
++	}
++
++	mutex_unlock(&kvm->slots_lock);
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(kvm_gmem_clear_shared);
++#endif /* CONFIG_KVM_GMEM_SHARED_MEM */
++
+ /* Copy @len bytes from guest memory at '(@gfn * PAGE_SIZE) + @offset' to @data */
+ static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
+ 				 void *data, int offset, int len)
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
