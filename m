@@ -1,67 +1,66 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42505231CB1
-	for <kvm@vger.kernel.org>; Thu, 27 Mar 2025 19:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736CC233733
+	for <kvm@vger.kernel.org>; Thu, 27 Mar 2025 19:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743104201; cv=none; b=VBCWaxwgNpQL1q0DUyJyrmyXHQz7QJgYbk5dz0bPUXvdJ5dLEN7PZY48ZLAgVbMOPgKHHuTpYynozUhnys3JRJ6dEJY0nANOr0k/vB5l5A7DsRA2nLavA9/TF6VikelLNPBB3nO6cRv7J4gjJTRmDmURTHo+Kkxihkczk/3OulI=
+	t=1743104202; cv=none; b=T5E/hAt9fGVt6EQS72Sl8Ej3cMQlihbXyngwtPrk2VhI8Ol+A5vZOTXT5zFrsuyhJwoOy8N7jlMPiIcfHNn5JPqZl+RevptvZd4atnSU1J2bO1pOgK6hTkNBLfVc0UEypRx8swkPO5FxOF7UR+9uL9ZTot1Xd7SDVP7K+8+QaB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743104201; c=relaxed/simple;
-	bh=q46J2sWpYtBWydQrJdezKrDrWVQPLFB+HmLkUTYUTa0=;
+	s=arc-20240116; t=1743104202; c=relaxed/simple;
+	bh=xlYuw0WqXBjwDLdQp7xWvSer8dY7O6gPMvcB2OEu6us=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KsEnuuPrCjIvXMa/lCK9GXN1D2JBRe2hVoX7RoxedaM+ecHYPdYzxA2PqrW9f6WojTbkbrziAxhM0RVur9BCPZXAERBAxZSXqRgqs6bB24jGmIju+pD96i0NIAuxvqGAcfRfdk0bS0/Yf/42g1teRa5RdRm4/f1yhkSTxEM9DUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=chh3c9or; arc=none smtp.client-ip=209.85.216.42
+	 In-Reply-To:To:Cc; b=jRxV4n1Al1Podv+39sSjOZ0utBbQ0yFE0E0eGkKyf8bMG4aGW4QCM57fsSPe5U2tR+WIdJYYpP9Oenlbv9vyUeqjgbL4UYpnKvy3ikkIpSmm/xdFOk9kGawB9raYy2pfoUJ5dJEedllxci39Ldid9FtxpBVDZQtLPdxGTRAxz50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=a9idOOEr; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="chh3c9or"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-300fefb8e06so2284328a91.0
-        for <kvm@vger.kernel.org>; Thu, 27 Mar 2025 12:36:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="a9idOOEr"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-303a66af07eso1936856a91.2
+        for <kvm@vger.kernel.org>; Thu, 27 Mar 2025 12:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1743104196; x=1743708996; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1743104200; x=1743709000; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+j0mOzBIBbWihlBNi7mWaZI+CG3uEBnbuDjvN2IYRxw=;
-        b=chh3c9oregGex1q6jRWSZVlQOmNUAIyBTk4rbAECpry6AX4Yo8rS9ZIA2vvM6EIqzr
-         2xBG++dX8qxB6xmheuNviueJuse9OZQGg6V+5pxcgnNxZ3C5XZXRKzM2wbSh2j1Jg4WU
-         DIShCpek5N1JRpqQvy6G32xJrN9p8KtM6KcXMxb8WRXBwhRfKh7U/bPHb1FtKrDxLfhc
-         hjbcp9H+BkYL0A7tHh+61R9KQ1cSZkUff0e+Vkz8DKB/hvh0U1jUtLt3pqdYfRb6RQRI
-         tnY2YMiZpjh60kMq/u+7h2QM7W/yFfcfZIH30f2M/1Rbhjjl4zMvXWl9lsAIu149GPPv
-         cKeQ==
+        bh=KssINcBHG6V5nsmKK6p0ubimcU1BXEQtWDJ9ECnykV0=;
+        b=a9idOOEr3p8IcGzZW59E+WzhZdg+eU0FPNRbhQvmAVuLjRw4fnMav+K6Y6ysvZZm1T
+         mvxRAcqQDky+erslleQ8Rwo03torKasm/mpaH0nfDJnOqU/GTs+injOFy1N8BOHOzn2x
+         2AFKF1G/jx6GOCn22PPv9Pqr1ZHf/cP19TDuITsoUS1AwgWY7TDA+xklfhY8MVQSMz4I
+         6+CgTH1LH2bFgWJQhiZqXFTmvPp29rrrO540O981em010TQSkM+q9BSwHYl3Ysk6716Q
+         tiTugNKgS3MvOq9MY6y/p811kGMzhcqHs60S6U7nh8OM25JC07Ep13kTsrjimSJ3fEYf
+         sUCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743104196; x=1743708996;
+        d=1e100.net; s=20230601; t=1743104200; x=1743709000;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+j0mOzBIBbWihlBNi7mWaZI+CG3uEBnbuDjvN2IYRxw=;
-        b=nWkJSVp3RiHJQzXoQiGj+3tm6ddacyYYkkCDB2ndLZ0H1gOPmt8pv3YLO/iWA4UHmN
-         CBYXI73dZDf4udYfteB5RukFt0mIeVVSPbbwmZD4xnwKHbp2Pb4CF9dqy+Q95AP3gCyE
-         Lc/0VD1zjC+XvByQMoasXfAHgi3ujTo8bW80x4ktQvU6QiS/SsM1hPrc5AftJneY0dHf
-         7UqgnlA0rgXMuyS9CAX4Mo9KKtwe8K39sr7S5xlc5g0R2cBZ12bxlj9azVs2E78pVXLl
-         pNu88JlJWS3bdW6Gwh5keU7FOpujSTXmam3kkQzBo4tZb9P6rfvGPiKT3txy+eWwvix9
-         5y9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXbHTrjKWUF/8Wp0P0RZQ+TS7gzYmN+gzV+7ZZz35pdi2QlyfgUmld8w+Ov/R5IdBR05MM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2ynmmHUecbtaxxoYWm3FWmqRpNO7UvwuZNf6BBCt/WamqEmb+
-	eIXN/mgAH7EYq7bztWSjeKf3SJgxVf7EE68QpNC2BN4gIjySVS0o3Ng3kMMlfX/2/jqOklcvijf
-	2
-X-Gm-Gg: ASbGnculd/JibvorvhE77A/8NK3eLhxGCi8jVuBV4G8J/X6OsUGoueAQx/KvHiwHmj3
-	ij33f/0vqXpf2Fd9E1pVU9ldFnCrAYf1aYdQTfLaETOYeUSeN1mgxUo1/idf9CXax1bBr4e9JSa
-	RCD68QoE+DvKqfYiDMC6/wvPvVIfeDOjiavuK1mRHy9FUJPWfu3LFhK9qS7JwHmFTlOUeM/Rikw
-	tEUA/0Lz/ru47x5TIAjW0TkgWYUZhYlb8asKKIZo76zYXBLvTUbOI6YPwqkFOvZIaGxvuJf3j1c
-	NFld46NFbhxcMNzK599HyHkluCVQ9eu1nxD2Uk1CdmS9kBeu1H7EYB1TMg==
-X-Google-Smtp-Source: AGHT+IHdjjEQNX6IhpahJsgRaqmFMHO1OoFraaA5RvWPqmrRHezthFdgwqtl7qWclGaf4FKMvnzgWg==
-X-Received: by 2002:a17:90b:2649:b0:2ff:4bac:6fa2 with SMTP id 98e67ed59e1d1-303a7f65282mr7819841a91.16.1743104196370;
-        Thu, 27 Mar 2025 12:36:36 -0700 (PDT)
+        bh=KssINcBHG6V5nsmKK6p0ubimcU1BXEQtWDJ9ECnykV0=;
+        b=a5i95bj1DwJrZbhB+2IbIXxoRfNKfO0UOr6TDRxOojq7j12ARg68YhzFBffAQNy89B
+         HYbtwr4isllJIFfhrwqKGb/nbv140t7ax638ogAvb7lb7gMqbbVQQJkhkbIAA5T7V46i
+         nRvzQ23eK0GmQDywrujJN0f4ic+fsp408/2bRThFl3IEw6r5DIZNp+BJHPi8Bhv5q0Bf
+         SfPlbM8Fu3+cdL686YV3byRfmLvj01MVpYYUo98GSR0Rm2R3p+quSQU/XW3do/ZS5UdE
+         voSqNCBnxV5NfcbrJrW15qOkEy1m4lnkp1eIW1QhGJ0A1kV/Sjm7gtTSTux6MnPaUcOC
+         JwTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQgZceT5C+NUnfjCRaSS5g8oB5ViqcsHP/L54qrKWt0VpvSoAD6uYZidfhgVAUwep8QaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEBv8F+8dhGUAF4XPvtoqW4riuNY7RaS4YJJzh87CBatp1+Tnb
+	2JMLRraRr6WiFbgN+89sGDtRIWAvGjCX4JI8niG0SjsQ46UcgcwopwqbHo5ZX6I=
+X-Gm-Gg: ASbGncspVKQcRYMRK7r6t5q0Me87fNBn0uyacZqvbllCzdSTvpqsYUAI1oMZ/OwZXfO
+	MnYEj2Uyi4bnIT7AgssPBkv7HSw6c4ZNCLiyR1oT77SNxdefny3ygphmo8bpcR5S6fdRwwOl+To
+	WBxLaVZ8bKnLF2h+WwEg+VDsWSbkBtSeBrfzwPm9RDikHnZyJzIpw8l0OVS+Wmy3uq4kG5FTcdG
+	pGibM94usMwgXlIcqoeRfHWC5DOMKTf5yGouu6xFvku9iskPSLnwr87w467S/1NN+BltKpPaYKQ
+	KzLl1k7WkmTiZY5ZTByhyjvEugluJXEtyJ21/vGwXWHO/QDWiILxDBhs+g==
+X-Google-Smtp-Source: AGHT+IE2krN6Iazwz2/u7kYznnPmcB0AT0QBtnSPpGlLXmbNzMbs0M2bltPDrqZDoRjoQ9cuAJeaHg==
+X-Received: by 2002:a17:90b:278c:b0:2fe:b77a:2eab with SMTP id 98e67ed59e1d1-303a8e7653bmr6347831a91.32.1743104199626;
+        Thu, 27 Mar 2025 12:36:39 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3039f6b638csm2624220a91.44.2025.03.27.12.36.34
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3039f6b638csm2624220a91.44.2025.03.27.12.36.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Mar 2025 12:36:36 -0700 (PDT)
+        Thu, 27 Mar 2025 12:36:39 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
-Date: Thu, 27 Mar 2025 12:35:56 -0700
-Subject: [PATCH v5 15/21] RISC-V: perf: Skip PMU SBI extension when not
- implemented
+Date: Thu, 27 Mar 2025 12:35:58 -0700
+Subject: [PATCH v5 17/21] RISC-V: perf: Add legacy event encodings via
+ sysfs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,7 +69,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250327-counter_delegation-v5-15-1ee538468d1b@rivosinc.com>
+Message-Id: <20250327-counter_delegation-v5-17-1ee538468d1b@rivosinc.com>
 References: <20250327-counter_delegation-v5-0-1ee538468d1b@rivosinc.com>
 In-Reply-To: <20250327-counter_delegation-v5-0-1ee538468d1b@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -88,96 +87,71 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Conor Dooley <conor@kernel.org>, devicetree@vger.kernel.org, 
  kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
  linux-arm-kernel@lists.infradead.org, linux-perf-users@vger.kernel.org, 
- Atish Patra <atishp@rivosinc.com>, Charlie Jenkins <charlie@rivosinc.com>
+ Atish Patra <atishp@rivosinc.com>
 X-Mailer: b4 0.15-dev-42535
 
-From: Charlie Jenkins <charlie@rivosinc.com>
-
-When the PMU SBI extension is not implemented, sbi_v2_available should
-not be set to true. The SBI implementation for counter config matching
-and firmware counter read  should also be skipped when the SBI extension
-is not implemented.
+Define sysfs details for the legacy events so that any tool can
+parse these to understand the minimum set of legacy events
+supported by the platform. The sysfs entry will describe both event
+encoding and corresponding counter map so that an perf event can be
+programmed accordingly.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 ---
- drivers/perf/riscv_pmu_dev.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ drivers/perf/riscv_pmu_dev.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/perf/riscv_pmu_dev.c b/drivers/perf/riscv_pmu_dev.c
-index 7c4a1ef15866..d1cc8310423f 100644
+index 92ff42aca44b..8a079949e3a4 100644
 --- a/drivers/perf/riscv_pmu_dev.c
 +++ b/drivers/perf/riscv_pmu_dev.c
-@@ -417,18 +417,22 @@ static void rvpmu_sbi_check_event(struct sbi_pmu_event_data *edata)
- 	}
- }
+@@ -129,7 +129,20 @@ static struct attribute_group riscv_cdeleg_pmu_format_group = {
+ 	.attrs = riscv_cdeleg_pmu_formats_attr,
+ };
  
--static void rvpmu_sbi_check_std_events(struct work_struct *work)
-+static void rvpmu_check_std_events(struct work_struct *work)
- {
--	for (int i = 0; i < ARRAY_SIZE(pmu_hw_event_sbi_map); i++)
--		rvpmu_sbi_check_event(&pmu_hw_event_sbi_map[i]);
--
--	for (int i = 0; i < ARRAY_SIZE(pmu_cache_event_sbi_map); i++)
--		for (int j = 0; j < ARRAY_SIZE(pmu_cache_event_sbi_map[i]); j++)
--			for (int k = 0; k < ARRAY_SIZE(pmu_cache_event_sbi_map[i][j]); k++)
--				rvpmu_sbi_check_event(&pmu_cache_event_sbi_map[i][j][k]);
-+	if (riscv_pmu_sbi_available()) {
-+		for (int i = 0; i < ARRAY_SIZE(pmu_hw_event_sbi_map); i++)
-+			rvpmu_sbi_check_event(&pmu_hw_event_sbi_map[i]);
++#define RVPMU_EVENT_ATTR_RESOLVE(m) #m
++#define RVPMU_EVENT_CMASK_ATTR(_name, _var, config, mask) \
++	PMU_EVENT_ATTR_STRING(_name, rvpmu_event_attr_##_var, \
++			      "event=" RVPMU_EVENT_ATTR_RESOLVE(config) \
++			      ",counterid_mask=" RVPMU_EVENT_ATTR_RESOLVE(mask) "\n")
 +
-+		for (int i = 0; i < ARRAY_SIZE(pmu_cache_event_sbi_map); i++)
-+			for (int j = 0; j < ARRAY_SIZE(pmu_cache_event_sbi_map[i]); j++)
-+				for (int k = 0; k < ARRAY_SIZE(pmu_cache_event_sbi_map[i][j]); k++)
-+					rvpmu_sbi_check_event(&pmu_cache_event_sbi_map[i][j][k]);
-+	} else {
-+		DO_ONCE_LITE_IF(1, pr_err, "Boot time config matching not required for smcdeleg\n");
-+	}
- }
- 
--static DECLARE_WORK(check_std_events_work, rvpmu_sbi_check_std_events);
-+static DECLARE_WORK(check_std_events_work, rvpmu_check_std_events);
- 
- static ssize_t rvpmu_format_show(struct device *dev,
- 				 struct device_attribute *attr, char *buf)
-@@ -556,6 +560,9 @@ static int rvpmu_sbi_ctr_get_idx(struct perf_event *event)
- 
- 	cflags = rvpmu_sbi_get_filter_flags(event);
- 
-+	if (!riscv_pmu_sbi_available())
-+		return -ENOENT;
++#define RVPMU_EVENT_ATTR_PTR(name) (&rvpmu_event_attr_##name.attr.attr)
 +
- 	/*
- 	 * In legacy mode, we have to force the fixed counters for those events
- 	 * but not in the user access mode as we want to use the other counters
-@@ -878,7 +885,7 @@ static u64 rvpmu_ctr_read(struct perf_event *event)
- 		return val;
++static struct attribute_group riscv_cdeleg_pmu_event_group __ro_after_init = {
++	.name = "events",
++};
++
+ static const struct attribute_group *riscv_cdeleg_pmu_attr_groups[] = {
++	&riscv_cdeleg_pmu_event_group,
+ 	&riscv_cdeleg_pmu_format_group,
+ 	NULL,
+ };
+@@ -369,11 +382,14 @@ struct riscv_vendor_pmu_events {
+ 	const struct riscv_pmu_event *hw_event_map;
+ 	const struct riscv_pmu_event (*cache_event_map)[PERF_COUNT_HW_CACHE_OP_MAX]
+ 						       [PERF_COUNT_HW_CACHE_RESULT_MAX];
++	struct attribute **attrs_events;
+ };
+ 
+-#define RISCV_VENDOR_PMU_EVENTS(_vendorid, _archid, _implid, _hw_event_map, _cache_event_map) \
++#define RISCV_VENDOR_PMU_EVENTS(_vendorid, _archid, _implid, _hw_event_map, \
++				_cache_event_map, _attrs) \
+ 	{ .vendorid = _vendorid, .archid = _archid, .implid = _implid, \
+-	  .hw_event_map = _hw_event_map, .cache_event_map = _cache_event_map },
++	  .hw_event_map = _hw_event_map, .cache_event_map = _cache_event_map, \
++	  .attrs_events = _attrs },
+ 
+ static struct riscv_vendor_pmu_events pmu_vendor_events_table[] = {
+ };
+@@ -395,6 +411,8 @@ static void rvpmu_vendor_register_events(void)
+ 		    pmu_vendor_events_table[i].archid == arch_id) {
+ 			current_pmu_hw_event_map = pmu_vendor_events_table[i].hw_event_map;
+ 			current_pmu_cache_event_map = pmu_vendor_events_table[i].cache_event_map;
++			riscv_cdeleg_pmu_event_group.attrs =
++							pmu_vendor_events_table[i].attrs_events;
+ 			break;
+ 		}
  	}
- 
--	if (pmu_sbi_is_fw_event(event)) {
-+	if (pmu_sbi_is_fw_event(event) && riscv_pmu_sbi_available()) {
- 		ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_FW_READ,
- 				hwc->idx, 0, 0, 0, 0, 0);
- 		if (ret.error)
-@@ -1945,12 +1952,13 @@ static int __init rvpmu_devinit(void)
- 	int ret;
- 	struct platform_device *pdev;
- 
--	if (sbi_spec_version >= sbi_mk_version(0, 3) &&
--	    sbi_probe_extension(SBI_EXT_PMU))
--		static_branch_enable(&riscv_pmu_sbi_available);
-+	if (sbi_probe_extension(SBI_EXT_PMU)) {
-+		if (sbi_spec_version >= sbi_mk_version(0, 3))
-+			static_branch_enable(&riscv_pmu_sbi_available);
-+		if (sbi_spec_version >= sbi_mk_version(2, 0))
-+			sbi_v2_available = true;
-+	}
- 
--	if (sbi_spec_version >= sbi_mk_version(2, 0))
--		sbi_v2_available = true;
- 	/*
- 	 * We need all three extensions to be present to access the counters
- 	 * in S-mode via Supervisor Counter delegation.
 
 -- 
 2.43.0
