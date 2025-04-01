@@ -1,433 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531E4224895
-	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515BE20D4F0
+	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523954; cv=none; b=KAFb0MRXYV6bV2Kh63OPUrwHEbwU3VWpreT8k8jxTV1o4YxuUViEE9i9LL2jB+Tt4h0lVcv4owi550XWBd94uuHTPz616NHcKCEKiqRMYYs/TX3Oy5tAb5bIsWFNsUFx4/SflkdFY0XmBNb6qlTuV3WwVfjUNyt7OrIYXdcQ0wU=
+	t=1743523984; cv=none; b=ADXcZirdyYKFk8X97cY0/rBU2tTY3Y611/O1KFshkep4rC73lTcXpv7XRDXVx3R6kj+8IKjueTEpTnP/E8b+txtaWUBjLapoNaJYxEd07hFBzMHHtlR9QmqaBY9mN5wIYLb2p2eg8KfDnlKrf34akq6eOJN07DNfE5tNiTkKki4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523954; c=relaxed/simple;
-	bh=qiOLED8BkRze4KF+KMmrHA+MJ7cag8ndXy7QMTI4Sw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afEhdOCC2dvo0TCxk5xyc4NVAP0mzw5HhgqprbKPJZCEqqKq2lcZEOW7wzxtt9SzrvWNA7ZiyQ5n76fkMEwGtYv0NTPutUa73zCqx3GVh1lzPMzm2RxpTPVCV3LpwBYym4ydMywrsCGd7Lb3q3DXx2P9mr+NZgvSCcgtutMtamA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e8ltetUC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743523984; c=relaxed/simple;
+	bh=jsPocqxTm3Tk/n85dNMIT20KutkK5Grt6C4lCnIAUO4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a49eOB5xPzfMIyseLa3SlJWLaQYj0tA4lZ/ql2Viz4aMIVb3mLfNZBAoRqXc52yF0xGBfvMpXTJy/DPRCPknMmePRO6yKBh7vMUf2JHWciZ9JpDU+rmKxkOcTg5R6/yYrgLIP6P0MLeFbe+B3u/KdI4Z+nXnl/kIWUBAjjsAh6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=OkF337pt; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e8ltetUC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743523951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tPLDTEU28EVlLVRImtt+kppWrpwzBYCScgMp8fqLlvI=;
-	b=e8ltetUCCmMGBy/1mpEaWFftDwNG9z4/kkdfB+8Cv+M8SLU7KESbJFUHmCS6cfg3P4h94Y
-	In4/2KWLQOOCKu2U/p1HRrJqoudu3nduG/jWcU6WGvZj+XLRqzbk5JBk1f6kD3os456DXM
-	LNosIUg9Lp/u8iP5bBfydTso8VShbS8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-6VgV04jHMdaA2dctVKFQPg-1; Tue, 01 Apr 2025 12:12:30 -0400
-X-MC-Unique: 6VgV04jHMdaA2dctVKFQPg-1
-X-Mimecast-MFC-AGG-ID: 6VgV04jHMdaA2dctVKFQPg_1743523949
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so47376495e9.2
-        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:12:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="OkF337pt"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6eeb7589db4so61086066d6.1
+        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1743523982; x=1744128782; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=poENEUfmFrThnex6gEytUaMxRROeOKxTbEdDijAo1Do=;
+        b=OkF337ptmaSGSO/Fb51bNIyjF3oykWekyVj9KV9e4URhEbQhhUxxr4Vvl0fZBY9KBY
+         E/l7XCOzlH3X6+82dkWtPWqYgLfzsya4SYo5QPxtNpas4f8ED7bBW1Q2jKf/u57oOVfi
+         z7xU0v25T1yw/fndHJTu+hIXPIvh5BIAB70ybmGeVoGzpwWa+ZwCGDzjDKr5LYtkexLp
+         ik5AE92RKT0nDjd5RNVX2z3QVMMJsthQBPs66dX9AgM0AkGiMFvzKvb91eila9ujdgyN
+         9tKezltSQS8PXyz3somM3Q7A+Z9uErccCoxsh0PkA3W1+s5eqCOpwOJmDTfDDv47n2+f
+         odFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743523948; x=1744128748;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tPLDTEU28EVlLVRImtt+kppWrpwzBYCScgMp8fqLlvI=;
-        b=lFEHkP/XYb/mnbTYqoOjuzPhtqMV5APJjEgrd2duDDTXvH7kEP56VqSpA5v/zn19vt
-         AZ7w6oMkjIFJNZBuQEPSwehvCI7aMsRizc5K+U8mWMMdHezud34FyTn1+gZL0WSq6Eem
-         k7DN6hyIgR/Oxc6j2WMBtd8Ao40J381lm7TOGqSzNAEJX2QFF7RidvaAzppqNDerqc/k
-         G70xfPAbRiXpRSjvCxlZIsoiaxB0w/x7ujYiR/woWi++3gq1pOmxHKtgyB3uDpot/Uqe
-         IH9qGbGJI/FRRY9fYal1xKQRuBeSb2f9mayrYczdkCeC4/Ff5KaX6k8AsfbyS0piE6To
-         Xj7A==
-X-Forwarded-Encrypted: i=1; AJvYcCULqXrji7NBTTjKmap8ntd7CN3uAQCcvlA+LzACOslwSdcA1LhWxfvr1lKh4w1rWizBvlA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhk1958XolezEGvoiuc/Pk/YJEsHJh3rDgu623qP6gSuNd62aP
-	kHxtLR0QmPV+Bfk7nOCvblO7cdyfCSoxjtPPs2BUWLoqHgDtuhGaZMFuZKLlwxpIMMJpQP2kcT2
-	d53kcL4v+3haa54d2PoqitcvHb98Qnu0YiPfTcuCtVVd3LJ8Jni/Aw2tr7w==
-X-Gm-Gg: ASbGncuTgDF06oBJTYB/f3ddbZ615dLUJINPY02Y1KnRPgX1jm9+3IwRqt5Ljzt3khn
-	2Hy8mHEIeQXJzimvegCjQKIlx9WEW2Ubj3MqoLCMWz1o93ZS2ytOKT/GI9vqcQDor49P1hPa95X
-	Yv2lfUFIC53VL1isRktoVRNquYx24aR1XFb6p1l1HXF5Q9oFpi3P2MLCHYLVY1S06jCjiW5IdRv
-	MX00lpcXMBOEOw9tnWF78GqZxdmD+ntko2euX/TVEbpdmRh+4VmoycBjy01hUwgUfo6Kq/dejo1
-	OSOd1wOWXaDgCalMVVhGYw==
-X-Received: by 2002:a05:6000:2913:b0:391:122c:8b2 with SMTP id ffacd0b85a97d-39c120e1566mr11925035f8f.31.1743523948530;
-        Tue, 01 Apr 2025 09:12:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEasAFSdvxOC3yWEZX6iq1LZ/fATrSFrxZYBcxLlTIQzYSIpNJNzx61Lq79fmq0JTbS0oYjw==
-X-Received: by 2002:a05:6000:2913:b0:391:122c:8b2 with SMTP id ffacd0b85a97d-39c120e1566mr11924994f8f.31.1743523948129;
-        Tue, 01 Apr 2025 09:12:28 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.111.201])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ea8d2bc7fsm13944985e9.0.2025.04.01.09.12.26
+        d=1e100.net; s=20230601; t=1743523982; x=1744128782;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=poENEUfmFrThnex6gEytUaMxRROeOKxTbEdDijAo1Do=;
+        b=wEzG3yb9jyIUEXjxU7rQof4/YtrlVQzyjgmMvp1+NTYwCB9fupoCLzn5V7cS1WGl5P
+         TBRR+eOsUvg5706B7xMMLoaMXrIOLL5LtHJRIU6tcgczwXX9Xdjy9gviN6VgxHmFQTz7
+         HiuU/SORsISTqN7GItqB3LnlGx+3oNnD1Yre2tre1QuBecwq4ljhB7+FMdSCglvr59+r
+         /nRbJ/EX1Wm4XlmJAByTPG86/2huryFi+R6+wFTzzrsLkL2kgT/JvQ27BdxeewhGn0ET
+         66J63/ATvQGIArOe/cSEw3xvefiRLSOYPTEt+R9qNWAWl12a3Gl2IGcADvnwGKniz1RT
+         3DZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpW4CQFJYbptK2JeVQUUabFV2yEThwujyGw5uHninffBjJGwW6fRP3Tj6qpp74/Znuvyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmGZfvbWVa4xHSh7HIW5nqbxQPC+5wudR1Z2Q7Zp6BcOj9ftuK
+	Pq5CFBTPhpIyqY9ACHiXK7kM5XiDwywAIJEUjpvlBfynQTcgogGdb4CNHcdXxLI=
+X-Gm-Gg: ASbGncssVq9hnTm07uvtizur/fetpylOxjD5LZ5FNct1v9mDUlrWgQfxezGj/HA8PEg
+	dLd8/sZud68FDa8kCkBA30E35JKjDQIjSDeEI5VeNQF9UZs8rGHLZQYGC2L5FXbcmaPFQpig14p
+	9RUNmXVEr1BxHFcNxXpEcT4Axq5MLzRMslJqit/OCdMb7W5G7UzPJPZY4uvM1j7jeYkSMy3l0KH
+	ruP95vPFqUv2IldXiBYst/S6Oi/DSTMW+Y6o8hbZ5O8FGFVnVXR4alTjxF5LpANQ2PyJPSXfTsP
+	obc4sPv1E9+EnWOb9P0FFmPpHRHCP7sHBTzxg8pOv1l3i7c86OZW/AM0lDG70hKfMCzUXL2nFN8
+	flsbzBAwnm/8KjOkPyXWTr08=
+X-Google-Smtp-Source: AGHT+IFgqnXSN6fOa8wvReuysgLZpbCK1HhkdqcE+Mm2zYjIPC+dt/OEL3eUy9xyw3HgFZ9lLvi7Ow==
+X-Received: by 2002:a05:6214:226c:b0:6e8:f905:aff0 with SMTP id 6a1803df08f44-6eed62a0be1mr227091686d6.35.1743523980713;
+        Tue, 01 Apr 2025 09:13:00 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eec97718e1sm63039286d6.70.2025.04.01.09.13.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 09:12:26 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: roy.hopkins@suse.com,
-	seanjc@google.com,
-	thomas.lendacky@amd.com,
-	ashish.kalra@amd.com,
-	michael.roth@amd.com,
-	jroedel@suse.de,
-	nsaenz@amazon.com,
-	anelkz@amazon.de,
-	James.Bottomley@HansenPartnership.com
-Subject: [PATCH 29/29] selftests: kvm: add x86-specific plane test
-Date: Tue,  1 Apr 2025 18:11:06 +0200
-Message-ID: <20250401161106.790710-30-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250401161106.790710-1-pbonzini@redhat.com>
-References: <20250401161106.790710-1-pbonzini@redhat.com>
+        Tue, 01 Apr 2025 09:13:00 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tzeEV-00000001MLv-35Gu;
+	Tue, 01 Apr 2025 13:12:59 -0300
+Date: Tue, 1 Apr 2025 13:12:59 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
+Message-ID: <20250401161259.GM186258@ziepe.ca>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-15-aik@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218111017.491719-15-aik@amd.com>
 
-Add a new test for x86-specific behavior such as vCPU state sharing
-and interrupts.
+On Tue, Feb 18, 2025 at 10:10:01PM +1100, Alexey Kardashevskiy wrote:
+> When a TDISP-capable device is passed through, it is configured as
+> a shared device to begin with. Later on when a VM probes the device,
+> detects its TDISP capability (reported via the PCIe ExtCap bit
+> called "TEE-IO"), performs the device attestation and transitions it
+> to a secure state when the device can run encrypted DMA and respond
+> to encrypted MMIO accesses.
+> 
+> Since KVM is out of the TCB, secure enablement is done in the secure
+> firmware. The API requires PCI host/guest BDFns, a KVM id hence such
+> calls are routed via IOMMUFD, primarily because allowing secure DMA
+> is the major performance bottleneck and it is a function of IOMMU.
+> 
+> Add TDI bind to do the initial binding of a passed through PCI
+> function to a VM. Add a forwarder for TIO GUEST REQUEST. These two
+> call into the TSM which forwards the calls to the PSP.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/x86/processor.h     |   1 +
- .../testing/selftests/kvm/lib/x86/processor.c |  15 +
- tools/testing/selftests/kvm/x86/plane_test.c  | 270 ++++++++++++++++++
- 4 files changed, 287 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/plane_test.c
+Can you list here what the basic flow of iommufd calls is to create a
+CC VM, with no vIOMMU, and a CC capable vPCI device?
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index b1d0b410cc03..9d94db9d750f 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -82,6 +82,7 @@ TEST_GEN_PROGS_x86 += x86/kvm_pv_test
- TEST_GEN_PROGS_x86 += x86/monitor_mwait_test
- TEST_GEN_PROGS_x86 += x86/nested_emulation_test
- TEST_GEN_PROGS_x86 += x86/nested_exceptions_test
-+TEST_GEN_PROGS_x86 += x86/plane_test
- TEST_GEN_PROGS_x86 += x86/platform_info_test
- TEST_GEN_PROGS_x86 += x86/pmu_counters_test
- TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 32ab6ca7ec32..cf2095f3a7d5 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1106,6 +1106,7 @@ static inline void vcpu_clear_cpuid_feature(struct kvm_vcpu *vcpu,
- 
- uint64_t vcpu_get_msr(struct kvm_vcpu *vcpu, uint64_t msr_index);
- int _vcpu_set_msr(struct kvm_vcpu *vcpu, uint64_t msr_index, uint64_t msr_value);
-+int _plane_vcpu_set_msr(struct kvm_plane_vcpu *plane_vcpu, uint64_t msr_index, uint64_t msr_value);
- 
- /*
-  * Assert on an MSR access(es) and pretty print the MSR name when possible.
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index bd5a802fa7a5..b4431ca7fbca 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -917,6 +917,21 @@ uint64_t vcpu_get_msr(struct kvm_vcpu *vcpu, uint64_t msr_index)
- 	return buffer.entry.data;
- }
- 
-+int _plane_vcpu_set_msr(struct kvm_plane_vcpu *plane_vcpu, uint64_t msr_index, uint64_t msr_value)
-+{
-+	struct {
-+		struct kvm_msrs header;
-+		struct kvm_msr_entry entry;
-+	} buffer = {};
-+
-+	memset(&buffer, 0, sizeof(buffer));
-+	buffer.header.nmsrs = 1;
-+	buffer.entry.index = msr_index;
-+	buffer.entry.data = msr_value;
-+
-+	return __plane_vcpu_ioctl(plane_vcpu, KVM_SET_MSRS, &buffer.header);
-+}
-+
- int _vcpu_set_msr(struct kvm_vcpu *vcpu, uint64_t msr_index, uint64_t msr_value)
- {
- 	struct {
-diff --git a/tools/testing/selftests/kvm/x86/plane_test.c b/tools/testing/selftests/kvm/x86/plane_test.c
-new file mode 100644
-index 000000000000..0fdd8a066723
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/plane_test.c
-@@ -0,0 +1,270 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Red Hat, Inc.
-+ *
-+ * Test for x86-specific VM plane functionality
-+ */
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+#include "test_util.h"
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "apic.h"
-+#include "asm/kvm.h"
-+#include "linux/kvm.h"
-+
-+static void test_plane_regs(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_plane *plane;
-+	struct kvm_plane_vcpu *plane_vcpu;
-+
-+	struct kvm_regs regs0, regs1;
-+
-+	vm = vm_create_barebones();
-+	vcpu = __vm_vcpu_add(vm, 0);
-+	plane = vm_plane_add(vm, 1);
-+	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
-+
-+	vcpu_ioctl(vcpu, KVM_GET_REGS, &regs0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_REGS, &regs1);
-+	regs0.rax = 0x12345678;
-+	regs1.rax = 0x87654321;
-+
-+	vcpu_ioctl(vcpu, KVM_SET_REGS, &regs0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_SET_REGS, &regs1);
-+
-+	vcpu_ioctl(vcpu, KVM_GET_REGS, &regs0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_REGS, &regs1);
-+	TEST_ASSERT_EQ(regs0.rax, 0x12345678);
-+	TEST_ASSERT_EQ(regs1.rax, 0x87654321);
-+
-+	kvm_vm_free(vm);
-+	ksft_test_result_pass("get/set regs for planes\n");
-+}
-+
-+/* Offset of XMM0 in the legacy XSAVE area.  */
-+#define XSTATE_BV_OFFSET	(0x200/4)
-+#define XMM_OFFSET		(0xa0/4)
-+#define PKRU_OFFSET		(0xa80/4)
-+
-+static void test_plane_fpu_nonshared(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_plane *plane;
-+	struct kvm_plane_vcpu *plane_vcpu;
-+
-+	struct kvm_xsave xsave0, xsave1;
-+
-+	vm = vm_create_barebones();
-+	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), false);
-+
-+	vcpu = __vm_vcpu_add(vm, 0);
-+	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-+	vcpu_set_cpuid(vcpu);
-+
-+	plane = vm_plane_add(vm, 1);
-+	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
-+
-+	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
-+	xsave0.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
-+	xsave0.region[XMM_OFFSET] = 0x12345678;
-+	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
-+
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
-+	xsave1.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
-+	xsave1.region[XMM_OFFSET] = 0x87654321;
-+	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
-+
-+	memset(&xsave0, 0, sizeof(xsave0));
-+	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
-+	TEST_ASSERT_EQ(xsave0.region[XMM_OFFSET], 0x12345678);
-+
-+	memset(&xsave1, 0, sizeof(xsave0));
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
-+	TEST_ASSERT_EQ(xsave1.region[XMM_OFFSET], 0x87654321);
-+
-+	ksft_test_result_pass("get/set FPU not shared across planes\n");
-+}
-+
-+static void test_plane_fpu_shared(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_plane *plane;
-+	struct kvm_plane_vcpu *plane_vcpu;
-+
-+	struct kvm_xsave xsave0, xsave1;
-+
-+	vm = vm_create_barebones();
-+	vm_enable_cap(vm, KVM_CAP_PLANES_FPU, 1ul);
-+	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), true);
-+
-+	vcpu = __vm_vcpu_add(vm, 0);
-+	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-+	vcpu_set_cpuid(vcpu);
-+
-+	plane = vm_plane_add(vm, 1);
-+	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
-+
-+	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
-+
-+	xsave0.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
-+	xsave0.region[XMM_OFFSET] = 0x12345678;
-+	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
-+	TEST_ASSERT_EQ(xsave1.region[XMM_OFFSET], 0x12345678);
-+
-+	xsave1.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
-+	xsave1.region[XMM_OFFSET] = 0x87654321;
-+	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
-+	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
-+	TEST_ASSERT_EQ(xsave0.region[XMM_OFFSET], 0x87654321);
-+
-+	ksft_test_result_pass("get/set FPU shared across planes\n");
-+
-+	if (!this_cpu_has(X86_FEATURE_PKU)) {
-+		ksft_test_result_skip("get/set PKRU with shared FPU\n");
-+		goto exit;
-+	}
-+
-+	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
-+	xsave0.region[PKRU_OFFSET] = 0xffffffff;
-+	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave0);
-+
-+	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
-+	xsave0.region[PKRU_OFFSET] = 0xaaaaaaaa;
-+	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
-+	assert(xsave1.region[PKRU_OFFSET] == 0xffffffff);
-+
-+	xsave1.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
-+	xsave1.region[PKRU_OFFSET] = 0x55555555;
-+	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
-+	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
-+	assert(xsave0.region[PKRU_OFFSET] == 0xaaaaaaaa);
-+
-+	ksft_test_result_pass("get/set PKRU with shared FPU\n");
-+
-+exit:
-+	kvm_vm_free(vm);
-+}
-+
-+#define APIC_SPIV		0xF0
-+#define APIC_IRR		0x200
-+
-+#define MYVEC			192
-+
-+#define MAKE_MSI(cpu, vector) ((struct kvm_msi){		\
-+	.address_lo = APIC_DEFAULT_GPA + (((cpu) & 0xff) << 8),	\
-+	.address_hi = (cpu) & ~0xff,				\
-+	.data = (vector),					\
-+})
-+
-+static bool has_irr(struct kvm_lapic_state *apic, int vector)
-+{
-+	int word = vector >> 5;
-+	int bit_in_word = vector & 31;
-+	int bit = (APIC_IRR + word * 16) * CHAR_BIT + (bit_in_word & 31);
-+
-+	return apic->regs[bit >> 3] & (1 << (bit & 7));
-+}
-+
-+static void do_enable_lapic(struct kvm_lapic_state *apic)
-+{
-+	/* set bit 8 */
-+	apic->regs[APIC_SPIV + 1] |= 1;
-+}
-+
-+static void test_plane_msi(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_plane *plane;
-+	struct kvm_plane_vcpu *plane_vcpu;
-+	int r;
-+
-+	struct kvm_msi msi = MAKE_MSI(0, MYVEC);
-+	struct kvm_lapic_state lapic0, lapic1;
-+
-+	vm = __vm_create(VM_SHAPE_DEFAULT, 1, 0);
-+
-+	vcpu = __vm_vcpu_add(vm, 0);
-+	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-+	vcpu_set_cpuid(vcpu);
-+
-+	plane = vm_plane_add(vm, 1);
-+	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
-+
-+	vcpu_set_msr(vcpu, MSR_IA32_APICBASE,
-+		     APIC_DEFAULT_GPA | MSR_IA32_APICBASE_ENABLE | X2APIC_ENABLE);
-+	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic0);
-+	do_enable_lapic(&lapic0);
-+	vcpu_ioctl(vcpu, KVM_SET_LAPIC, &lapic0);
-+
-+	_plane_vcpu_set_msr(plane_vcpu, MSR_IA32_APICBASE,
-+			    APIC_DEFAULT_GPA | MSR_IA32_APICBASE_ENABLE | X2APIC_ENABLE);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_LAPIC, &lapic1);
-+	do_enable_lapic(&lapic1);
-+	plane_vcpu_ioctl(plane_vcpu, KVM_SET_LAPIC, &lapic1);
-+
-+	r = __plane_ioctl(plane, KVM_SIGNAL_MSI, &msi);
-+	TEST_ASSERT(r == 1,
-+		   "Delivering interrupt to plane 1. ret: %d, errno: %d", r, errno);
-+
-+	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic0);
-+	TEST_ASSERT(!has_irr(&lapic0, MYVEC), "Vector clear in plane 0");
-+	plane_vcpu_ioctl(plane_vcpu, KVM_GET_LAPIC, &lapic1);
-+	TEST_ASSERT(has_irr(&lapic1, MYVEC), "Vector set in plane 1");
-+
-+	/* req_exit_planes always has priority */
-+	vcpu->run->req_exit_planes = (1 << 1);
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 1));
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 1));
-+
-+	r = __vm_ioctl(vm, KVM_SIGNAL_MSI, &msi);
-+	TEST_ASSERT(r == 1,
-+		   "Delivering interrupt to plane 0. ret: %d, errno: %d", r, errno);
-+	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic0);
-+	TEST_ASSERT(has_irr(&lapic0, MYVEC), "Vector set in plane 0");
-+
-+	/* req_exit_planes ignores current plane; current plane is cleared */
-+	vcpu->run->plane = 1;
-+	vcpu->run->req_exit_planes = (1 << 0) | (1 << 1);
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 0));
-+	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 0));
-+
-+	kvm_vm_free(vm);
-+	ksft_test_result_pass("signal MSI for planes\n");
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int cap_planes = kvm_check_cap(KVM_CAP_PLANES);
-+	TEST_REQUIRE(cap_planes && cap_planes > 1);
-+
-+	ksft_print_header();
-+	ksft_set_plan(5);
-+
-+	pr_info("# KVM_CAP_PLANES: %d\n", cap_planes);
-+
-+	test_plane_regs();
-+	test_plane_fpu_nonshared();
-+	test_plane_fpu_shared();
-+	test_plane_msi();
-+
-+	ksft_finished();
-+}
--- 
-2.49.0
+I'd like the other arches to review this list and see how their arches
+fit
 
+Thanks
+Jason
