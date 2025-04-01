@@ -1,39 +1,37 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1AE2AF14;
-	Tue,  1 Apr 2025 05:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3742052
+	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 05:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743485414; cv=none; b=PyhfN+RN6EEXHZc6xvg05kJpMjOIUlySyN0nrdwnXWtsc7fRAS/S/xSJuBpDWqt5Bmg9A3dbcN711psJB8rA8c8zHSysknZj/Y24AqLTS0LbILZ1jZ6sw8Q0682cFEAv4RdX1kdXGyMkotD8MOuuncEXnrwSROx5g5WiLL2ykQA=
+	t=1743486750; cv=none; b=tJx+iRHC1BUo0QtlOKlnvp5cKaZeUeNosqnVe1hj8GTkbXV+U/lwo0Gfln7CELhJZs35pvz/Arvob7ak23ENSfChrZ63x8hsMcbwRMaXBNfCj7z9OGUtC8G1qapR5d6w4S++bX7PEWqmCtObnYEJfSU5JJyRByhC4WdKsLQn0mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743485414; c=relaxed/simple;
-	bh=Y7pIpOOOgYadkjudSTcnTBayny0VQdBZUYXqpf4vEzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oPAAHHeZ+j9m91X8QgobPxsHSP6xw5xq7jSJbvN+Nzp4LOfOTpyKuwcaoX6yvggry1c5ngPrNOgVwLuSXs2BghKAtIZiRMl7Y5/BVKsNo7blmPFt2PXjOdFpxH9zjBSe0MxrUYcyxJL7Szusbzh0TRKeqbIq3bkAsX2gTXV6Tkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PuNRo8V6; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PuNRo8V6"
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5315TLRJ3578162
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 31 Mar 2025 22:29:22 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5315TLRJ3578162
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025032001; t=1743485364;
-	bh=tuYUVWHXKKCOA8JUjduDbXOfJ32573HPzEBPhF28G1U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PuNRo8V6ftJc3Js38Xt4+TPl7kcUwg2H/x5pUpEyYzi5yh4DDLkLlfTh1+cPv15Ju
-	 dWziFt2BjmW6G8CLCEsUhjN9zmSFpxd5hIVv9cdXt52fpANXDQAF4mQigMq0+0E0CE
-	 7/6oUfZw2t3Ler+zOXMQ8swzm01cbejNDrBEd8Q2Z5fBJmEFZL9uYdaS0txe/IvZ/i
-	 e5OGXzLYWtkOw6AtYS5H4IMxdvILUBb9AFccmBXaVWsdDmNMkIr7xMXEIHaglNHoxU
-	 yMzPh3IKZ+Ue5Am3ilhBA2dMtkCPTsFDGLanh6aCEHH/0mNg/Lm28JEuiML1/KzRw6
-	 RrhgzdOxIVCTw==
-Message-ID: <0084e9a9-8247-456f-b1a5-c5cd7bb62710@zytor.com>
-Date: Mon, 31 Mar 2025 22:29:21 -0700
+	s=arc-20240116; t=1743486750; c=relaxed/simple;
+	bh=Adtk5Egb+ncfwAKhW4k5FRqk/wZBry6VEy4VKXX/P4o=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=ZlrIsd9WB+6MRmGi4WAfhvdqoQ6J6Q86yZoLIJJyapO1YbmVgNpbWTDCmx7pD2bsbZsDe2ZjoO1z2An0e1ftgZKCDLXogV4fNl/HiljIgCFpieSz+sOKnrQRBZprD2pYoA2Ds1UgkQt1EcAQLYfCUEri3VhRar+w2LknD3AOVPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1743486736-1eb14e18d900240001-HEqcsx
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id gP0W5X89XsjhBRGA (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 01 Apr 2025 13:52:16 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Tue, 1 Apr
+ 2025 13:52:16 +0800
+Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
+ ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
+ 15.01.2507.044; Tue, 1 Apr 2025 13:52:16 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 1 Apr
+ 2025 11:35:50 +0800
+Message-ID: <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
+Date: Tue, 1 Apr 2025 11:35:49 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,92 +39,133 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 01/15] x86/msr: Replace __wrmsr() with
- native_wrmsrl()
-To: "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-        linux-edac@vger.kernel.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-ide@vger.kernel.org,
-        linux-pm@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, jgross@suse.com,
-        peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-        kan.liang@linux.intel.com, wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        alexey.amakhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com,
-        seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com,
-        kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com
-References: <20250331082251.3171276-1-xin@zytor.com>
- <20250331082251.3171276-2-xin@zytor.com>
- <0da43a86-81b0-4388-b47b-3a76b15f2a4c@citrix.com>
- <03874E9B-FAEB-4ACA-B13D-0BED7D54F443@zytor.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <03874E9B-FAEB-4ACA-B13D-0BED7D54F443@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+To: Dongli Zhang <dongli.zhang@oracle.com>, <qemu-devel@nongnu.org>,
+	<kvm@vger.kernel.org>
+X-ASG-Orig-Subj: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <sandipan.das@amd.com>,
+	<babu.moger@amd.com>, <likexu@tencent.com>, <like.xu.linux@gmail.com>,
+	<zhenyuw@linux.intel.com>, <groug@kaod.org>, <khorenko@virtuozzo.com>,
+	<alexander.ivanov@virtuozzo.com>, <den@virtuozzo.com>,
+	<davydov-max@yandex-team.ru>, <xiaoyao.li@intel.com>,
+	<dapeng1.mi@linux.intel.com>, <joe.jin@oracle.com>, <ewanhai@zhaoxin.com>,
+	<cobechen@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
+	<frankzhu@zhaoxin.com>, <silviazhao@zhaoxin.com>, <zhao1.liu@intel.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-9-dongli.zhang@oracle.com>
+ <8a547bf5-bdd4-4a49-883a-02b4aa0cc92c@zhaoxin.com>
+ <84653627-3a20-44fd-8955-a19264bd2348@oracle.com>
+ <e3a64575-ab1f-4b6f-a91d-37a862715742@zhaoxin.com>
+ <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
+In-Reply-To: <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 4/1/2025 1:52:15 PM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1743486736
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3842
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.01
+X-Barracuda-Spam-Status: No, SCORE=-2.01 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=TRACK_DBX_001
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139319
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 TRACK_DBX_001          Custom rule TRACK_DBX_001
 
-On 3/31/2025 10:13 PM, H. Peter Anvin wrote:
-> On March 31, 2025 2:45:43 PM PDT, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
->> On 31/03/2025 9:22 am, Xin Li (Intel) wrote:
->>> __wrmsr() is the lowest level primitive MSR write API, and its direct
->>> use is NOT preferred.  Use its wrapper function native_wrmsrl() instead.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
->>
->> The critical piece of information you're missing from the commit message
->> is that the MSR_IMM instructions take a single u64.
->>
->> Therefore to use them, you've got to arrange for all callers to provide
->> a single u64, rather than a split u32 pair.
->>
->> ~Andrew
+>> [2] As mentioned in [1], QEMU always sets the vCPU's vendor to match the host's
+>> vendor
+>> when acceleration (KVM or HVF) is enabled. Therefore, if users want to emulate a
+>> Zhaoxin CPU on an Intel host, the vendor must be set manually.Furthermore,
+>> should we display a warning to users who enable both vPMU and KVM acceleration
+>> but do not manually set the guest vendor when it differs from the host vendor?
 > 
-> That being said, there is nothing wrong with having a two-word convenience wrapper.
-> 
+> Maybe not? Sometimes I emulate AMD on Intel host, while vendor is still the
+> default :)
 
-Yes, I ended up keeping the two-word convenience wrapper in this patch
-set, and the wrapper calls a lower level API that takes a u64 argument.
+Okay, handling this situation can be rather complex, so let's keep it simple. I 
+have added a dedicated function to capture the intended behavior for potential 
+future reference.
 
-And yes, as Ingo said, some of the conversion is NOT an improvement.
+Anyway, Thanks for taking Zhaoxin's situation into account, regardless.
 
+
++/*
++ * check_vendor_compatibility_and_warn() returns true if the host and
++ * guest vendors are compatible for vPMU virtualization. In addition, if
++ * the guest vendor is not explicitly set in a cross-vendor emulation
++ * scenario (e.g., a Zhaoxin host emulating an Intel guest or vice versa),
++ * it issues a warning.
++ */
++static bool check_vendor_compatibility_and_warn(CPUX86State *env)
++{
++    char host_vendor[CPUID_VENDOR_SZ + 1];
++    uint32_t host_cpuid_vendor1, host_cpuid_vendor2, host_cpuid_vendor3;
++
++    /* Retrieve host vendor info */
++    host_cpuid(0x0, 0, NULL, &host_cpuid_vendor1, &host_cpuid_vendor3,
++               &host_cpuid_vendor2);
++    x86_cpu_vendor_words2str(host_vendor, host_cpuid_vendor1,
++                             host_cpuid_vendor2, host_cpuid_vendor3);
++
++    /*
++     * Case A:
++     * If the host vendor is Intel or Zhaoxin and the guest CPU type is
++     * either Intel or Zhaoxin, consider them compatible. However, if a
++     * cross-vendor scenario is detected (e.g., host is Zhaoxin but guest is
++     * Intel, or vice versa) and the guest vendor fields have not been
++     * overridden (i.e., they still match the host), then warn the user.
++     */
++    if ((g_str_equal(host_vendor, CPUID_VENDOR_INTEL) ||
++         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN1) ||
++         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN2)) &&
++        (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)))
++    {
++        if ((g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN1) ||
++             g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN2)) &&
++            IS_INTEL_CPU(env) &&
++            (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++             env->cpuid_vendor2 == host_cpuid_vendor2 &&
++             env->cpuid_vendor3 == host_cpuid_vendor3))
++        {
++            warning_report("vPMU emulation will fail because the guest vendor "
++                            "is not explicitly set. Use '-cpu,vendor=Intel' to "
++                            "emulate Intel vPMU on a Zhaoxin host.");
++        }
++        else if (g_str_equal(host_vendor, CPUID_VENDOR_INTEL) &&
++                 IS_ZHAOXIN_CPU(env) &&
++                 (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++                  env->cpuid_vendor2 == host_cpuid_vendor2 &&
++                  env->cpuid_vendor3 == host_cpuid_vendor3))
++        {
++            warning_report("vPMU emulation will fail because the guest vendor"
++                            "is not explicitly set. Use '-cpu,vendor=Zhaoxin' "
++                            "to emulate Zhaoxin vPMU on an Intel host.");
++        }
++        return true;
++    }
++
++    /*
++     * Case B:
++     * For other CPU types, if the guest vendor fields exactly match the host,
++     * consider them compatible.
++     */
++    if (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++        env->cpuid_vendor2 == host_cpuid_vendor2 &&
++        env->cpuid_vendor3 == host_cpuid_vendor3)
++    {
++        return true;
++    }
++
++    return false;
++}
++
