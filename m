@@ -1,369 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B751A2C3A
-	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B58521A440
+	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523899; cv=none; b=bb/Y6L3z09ryh3OxNLXn7OGiCBZFSqxiXryN+EWCCQ/gnZqr2u9JRIDHjhYWKBKu7BNcQIS4AU5robSu17CshXEpNZOalAIS8pNrrGjv1GcMCw+z1U6NlC209ep/chaqeIT7zKAtAy7a/Er+pnVHBcrtGIkSBdNIbAZaeoBZfZg=
+	t=1743523903; cv=none; b=hwSfPMyPmNEo30uNbbUaZQNxF1MfMFepzqw3vOPFD02cr93e62wehtLMXZy9vJALmPUtleEO01Wri1xR7A6WC1eCuheLKX3x/A6I5Dw8NnBeuZc/Xz6nh4QtjmNcOBGd2oCkHtp5zugF2DWQsopYvymoz5k/AM3/HwymRh0u2AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523899; c=relaxed/simple;
-	bh=pIyJCdOg5EfnYtvOavzOlQjVJCjnaMJWsL07IXTnXPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2BJ8ij4aM18ntr0x04FqertmSsX4Tqir/z6bOMTShzMKqvyqXl0Yb1jCpG8HZ7UwjWxQJF5EWvuPXuGgQ1npTdUb0giN4vjVmF++ZFD2w9gO0oJWSJ4bAAPCoaQD75j6b3bxGHJj4hQ6V9tLV7kcWu0txW5FAjXuPbl7MrQs0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DEM2U3/U; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743523903; c=relaxed/simple;
+	bh=0bfnfRwxd83qT6YHXSQ35/Sc5Ii17MOf/lTvNc4Gkxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=usPSkiF9Yj7slfS/BU+IfB+oAxGeu8uDB4wJa6DWY/MqYGUHKqQKad+nIigRed1NtgYbhdaRo74AZH75Ror11vgLo4x3xkmn2CsAYaRVzUpjJxTd31cteZ1aDbOjGTeofwIK/WVe/xeB6eqFmmUffq28Uo9W3axq3/dijkUGYBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lDnUmh5L; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DEM2U3/U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743523896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P25Au7R1dwmJRVWNgpsYsEFXlIeAhOMlbUwIILW5U9Q=;
-	b=DEM2U3/U3eeO8QNjncAjrysgyTNYgHeOrpTGxDqd6pK0BRwng0Rq3n2qsUdUVMtcZKDi0L
-	dhf1iTzfdS9S2x7TlX/+E2CaItBXve0E8ncpQa8uCO33THRiIoRgWFOMElxd+jppAFJe+p
-	paMtNMaeSKTsd+0CALb4j4cnqjK4xTs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-3YZRgz6qNX6hy0r2hEo34A-1; Tue, 01 Apr 2025 12:11:34 -0400
-X-MC-Unique: 3YZRgz6qNX6hy0r2hEo34A-1
-X-Mimecast-MFC-AGG-ID: 3YZRgz6qNX6hy0r2hEo34A_1743523893
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-39c184b20a2so1046255f8f.1
-        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:11:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lDnUmh5L"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-476ac73c76fso62271511cf.0
+        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:11:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1743523900; x=1744128700; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ht+/cjgqGqzgXcB/qQp4vlm60uUPBRIV+JZ12u7d0fU=;
+        b=lDnUmh5L+0rCze4HHaOY0fInhE2/g4OqB70O4lroUA66m4berrddssMHgXIfslNESy
+         C4hfoVX0sS0Ze4HunAg/LvTPqunpMT1UZOLYuOXxRI40B1VjlFIOHheEFEtAtiMQAJY8
+         2jvJlMZ9GF/WJn7VoTDSlhBdM210lL0c2n9LdArDdhYtf48EvNbgvb19vva8SFzBCxOE
+         Iqkd6NI5Ae489ogm6T5ittm5N2Y9bHE+jdnh/7iSPprDhI18kSDd7h/yl2DiOXOYf/GX
+         qy2NlTBZDOzWV1KtmR3NlYhkSac5+1sQsNKsqHMaYb5ADqRT9eb1LH2fFjLywbm+CWhP
+         ipRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743523893; x=1744128693;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P25Au7R1dwmJRVWNgpsYsEFXlIeAhOMlbUwIILW5U9Q=;
-        b=w2xhpC/QCLk1eflAZexnGDUeqh3aY3xO8xSkmjmzlHFoZL6KcxfmRBrOOOcw23pQOw
-         n2+aPPWBZxHOvy15WR6oV5ygSQxX87xxVq9ddQk95qjdc29PSuNimYxZWfGmo9R18kF/
-         tLRGoIjlxn3eOe9u4OKrUdwSLIx+Xg0Vq5Wqp9YvjljVnd5JMJ/gr18rjM8B7kriRQqL
-         XaeZ/qJWej+s77zFFqnQ7B6X5UOMwtrad5LQv/xRYsHw0ESlWWcLaYCRhF4sI0AJyGJ+
-         NOaK0vABiMFnnHW4Ba1XKBADBj4IRR+apTtgOaGYVhyzEN6SfWbyy4XAvBkPsk1twUxv
-         bQ5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/YJG57t/0Sd58LNskPzxsyEs9zYDby07Rt3r9545aLQUn9o8OCDmHws64haYvCY6j8L8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWFlNEsE8nbwcLkWYYutLGgN641NvfrX9vqt5nRCEuFPiymJ+w
-	77/H67aZmD7WJGbCCyr4gtpthLBXJ+4RYSxJd08F9CKJfpJl3gRVBrsWOyo3gCw8K2F0wUBoa8P
-	T6PnYzi0MiAgTPMPD/dBVdPgD/i+hRmOSME55cC3ACTGs7blpAg==
-X-Gm-Gg: ASbGncuJQMj1YrEeApYRZcX5iHpV1jD8JIRjGTRKHhEHt9XPwoTqlMDk01NXU7sSK3V
-	Lmo+iZAOCK1R4bs1681uVTQh0vX+F7c/WMvTvLbchi3iJIaWpB4+6ol1/LpOTJpQvFddPaIw+MO
-	dGD04KiSnVy/ChkfDFxBJP37ZhYnKQb9/psEyg2xX7pD59O8cawxHLRF8+h+ootRn75f1AUrrVq
-	80AkQ3X3ZV+zYGnJLr7W3KhkOQqHTPIVR2iAX0J3nncwi+Ry8AiJRmWH/i7pMrcy+Rip5rrkE9r
-	miNdkraCQ3dP8/4MWwaWlA==
-X-Received: by 2002:a05:6000:2913:b0:391:4ca:490 with SMTP id ffacd0b85a97d-39c120e35d1mr10486559f8f.29.1743523892966;
-        Tue, 01 Apr 2025 09:11:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRUznHPy00F+DVXJZ81FziQ7RotBaykrjs+9d/ucxw73LPo+iiCJX9scu8bMnyNgr21RT/Iw==
-X-Received: by 2002:a05:6000:2913:b0:391:4ca:490 with SMTP id ffacd0b85a97d-39c120e35d1mr10486516f8f.29.1743523892530;
-        Tue, 01 Apr 2025 09:11:32 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.111.201])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d82efeacasm203836695e9.23.2025.04.01.09.11.30
+        d=1e100.net; s=20230601; t=1743523900; x=1744128700;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ht+/cjgqGqzgXcB/qQp4vlm60uUPBRIV+JZ12u7d0fU=;
+        b=QPpmnFkjlMvLfhYyUqiHaUlZl5h5YrCiDbi86ZPCmDwG8VAGrMDOEYrI+8eC6Tmq/A
+         t54GNjOhCBCpcui605eQ3FJq0Dm61DxzlZe0mXIFvBKlV3irLVnmhyp1xYIO/dX+JVzx
+         ocMlvdSsbSGSy06lfPST7Df2S0dUL5Ys938cVqZh8NYDCjz+JyIDgPaHvd75N+ZdduJq
+         zr4d8twGWYIzLRwloovJQPlhXpyq7LepRNQ8wNNGR9L/Ino3pw/lqXyjFDbKIcoKNb55
+         GBTG7GEAqKbjIBoipy9pFRcT31EdKTGwvK3ZuvdOB95Kh2YR5CYyfElNBz5bOwXuyEa6
+         eOoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDYPMzShfeCNaC+bQ5HBAp4KozPv0yCxDU3LDrcm6/zEGrDT7muv0wvT4V7STztRdsMWU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRi5rDYxg6UUaR5bNsnIU7KgI77tITvurhvqLDP0UwKe9u8lV/
+	kD6giNAW7s09xa4btgoqxPqeIIouGgmIEE5MAiM4A3i7hCpX/M0zXUcjhk7t6DM=
+X-Gm-Gg: ASbGncvDwKblSYNWIc1a6+gr20EPmwyZju0VTRIz+mCmlhEaOrk0Eo4Xrj9R1Mu9Ee1
+	gc9RbaOIjPb/vMQWFxv4wbUUbP5AITow1Mn7AwbaMQrAeldlVq0QBxpY+Sb0OM6H2xvNMmX5xCP
+	yrAmWqg6ao93EqaKkf0Wsb7lcKw6fIuSmv+Ns+KtUtwioSLctrnbtowB/FDf5B0ML1LUfJ8Aiov
+	mEOZd0dM+viqJHD5EuFnOGWZyDTR5Lhx7eB5+mhviWav1Ojfu6PAcVQkadDw2KO6iKtc/Oubaag
+	iebVqqTTxBVtBTTl8TCcJ0ZSU3ay4deCLYO9n8p9LltmSJjK5TnUTJZpd+VAcfNko5pw/Fwt2mj
+	dk4J6EkxXGpSJg2wRS3Jf+Ao=
+X-Google-Smtp-Source: AGHT+IGqQTmKBPGxEDnar5cvqd0kVzoGqHi3v/f2hQrPfOnvCsqaEdb1Xw9stjow0mGeS+auqOd8Yw==
+X-Received: by 2002:a05:622a:13d4:b0:476:ae71:eabe with SMTP id d75a77b69052e-477ed779bf5mr236227621cf.50.1743523900002;
+        Tue, 01 Apr 2025 09:11:40 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47790ef0976sm57062041cf.59.2025.04.01.09.11.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 09:11:30 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: roy.hopkins@suse.com,
-	seanjc@google.com,
-	thomas.lendacky@amd.com,
-	ashish.kalra@amd.com,
-	michael.roth@amd.com,
-	jroedel@suse.de,
-	nsaenz@amazon.com,
-	anelkz@amazon.de,
-	James.Bottomley@HansenPartnership.com
-Subject: [PATCH 09/29] KVM: implement plane file descriptors ioctl and creation
-Date: Tue,  1 Apr 2025 18:10:46 +0200
-Message-ID: <20250401161106.790710-10-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250401161106.790710-1-pbonzini@redhat.com>
-References: <20250401161106.790710-1-pbonzini@redhat.com>
+        Tue, 01 Apr 2025 09:11:39 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tzeDC-00000001ML9-3rkm;
+	Tue, 01 Apr 2025 13:11:38 -0300
+Date: Tue, 1 Apr 2025 13:11:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 13/22] iommufd: amd-iommu: Add vdevice support
+Message-ID: <20250401161138.GL186258@ziepe.ca>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-14-aik@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218111017.491719-14-aik@amd.com>
 
-Add the file_operations for planes, the means to create new file
-descriptors for them, and the KVM_CHECK_EXTENSION implementation for
-the two new capabilities.
+On Tue, Feb 18, 2025 at 10:10:00PM +1100, Alexey Kardashevskiy wrote:
+> @@ -939,6 +939,7 @@ struct iommu_fault_alloc {
+>  enum iommu_viommu_type {
+>  	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
+>  	IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
+> +	IOMMU_VIOMMU_TYPE_TSM = 2,
 
-KVM_SIGNAL_MSI and KVM_SET_MEMORY_ATTRIBUTES are now available
-through both vm and plane file descriptors, forward them to the
-same function that is used by the file_operations for planes.
-KVM_CHECK_EXTENSION instead remains separate, because it only
-advertises a very small subset of capabilities when applied to
-plane file descriptors.
+This should probably be some kind of AMD_TSM and the driver data blob
+should carry any additional data needed to create the vIOMMU that is
+visible to the guest.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/linux/kvm_host.h |  19 +++++
- include/uapi/linux/kvm.h |   2 +
- virt/kvm/kvm_main.c      | 154 +++++++++++++++++++++++++++++++++------
- 3 files changed, 154 insertions(+), 21 deletions(-)
+> @@ -2068,7 +2069,18 @@ static void set_dte_entry(struct amd_iommu *iommu,
+>  		new.data[1] |= DTE_FLAG_IOTLB;
+>  
+>  	old_domid = READ_ONCE(dte->data[1]) & DEV_DOMID_MASK;
+> -	new.data[1] |= domid;
+> +
+> +	if (domain->aviommu) {
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 0a91b556767e..dbca418d64f5 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -342,6 +342,8 @@ struct kvm_vcpu {
- 	unsigned long guest_debug;
- 
- 	struct mutex mutex;
-+
-+	/* Shared for all planes */
- 	struct kvm_run *run;
- 
- #ifndef __KVM_HAVE_ARCH_WQP
-@@ -922,6 +924,23 @@ static inline void kvm_vm_bugged(struct kvm *kvm)
- }
- 
- 
-+#if KVM_MAX_VCPU_PLANES == 1
-+static inline int kvm_arch_nr_vcpu_planes(struct kvm *kvm)
-+{
-+	return KVM_MAX_VCPU_PLANES;
-+}
-+
-+static inline struct kvm_plane *vcpu_to_plane(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->kvm->planes[0];
-+}
-+#else
-+static inline struct kvm_plane *vcpu_to_plane(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->kvm->planes[vcpu->plane_id];
-+}
-+#endif
-+
- #define KVM_BUG(cond, kvm, fmt...)				\
- ({								\
- 	bool __ret = !!(cond);					\
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index b0cca93ebcb3..96d25c7fa18f 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1690,4 +1690,6 @@ struct kvm_pre_fault_memory {
- 	__u64 padding[5];
- };
- 
-+#define KVM_CREATE_PLANE	_IO(KVMIO, 0xd6)
-+
- #endif /* __LINUX_KVM_H */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cd4dfc399cad..b08fea91dc74 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4388,6 +4388,80 @@ static int kvm_wait_for_vcpu_online(struct kvm_vcpu *vcpu)
- 	return 0;
- }
- 
-+static int kvm_plane_ioctl_check_extension(struct kvm_plane *plane, long arg)
-+{
-+	switch (arg) {
-+#ifdef CONFIG_HAVE_KVM_MSI
-+	case KVM_CAP_SIGNAL_MSI:
-+#endif
-+	case KVM_CAP_CHECK_EXTENSION_VM:
-+		return 1;
-+#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-+	case KVM_CAP_MEMORY_ATTRIBUTES:
-+		return kvm_supported_mem_attributes(plane);
-+#endif
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl,
-+			      unsigned long arg)
-+{
-+	void __user *argp = (void __user *)arg;
-+
-+	switch (ioctl) {
-+#ifdef CONFIG_HAVE_KVM_MSI
-+	case KVM_SIGNAL_MSI: {
-+		struct kvm_msi msi;
-+
-+		if (copy_from_user(&msi, argp, sizeof(msi)))
-+			return -EFAULT;
-+		return kvm_send_userspace_msi(plane, &msi);
-+	}
-+#endif
-+#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-+	case KVM_SET_MEMORY_ATTRIBUTES: {
-+		struct kvm_memory_attributes attrs;
-+
-+		if (copy_from_user(&attrs, argp, sizeof(attrs)))
-+			return -EFAULT;
-+		return kvm_vm_ioctl_set_mem_attributes(plane, &attrs);
-+	}
-+#endif
-+	case KVM_CHECK_EXTENSION:
-+		return kvm_plane_ioctl_check_extension(plane, arg);
-+	default:
-+		return -ENOTTY;
-+	}
-+}
-+
-+static long kvm_plane_ioctl(struct file *filp, unsigned int ioctl,
-+			     unsigned long arg)
-+{
-+	struct kvm_plane *plane = filp->private_data;
-+
-+	if (plane->kvm->mm != current->mm || plane->kvm->vm_dead)
-+		return -EIO;
-+
-+	return __kvm_plane_ioctl(plane, ioctl, arg);
-+}
-+
-+static int kvm_plane_release(struct inode *inode, struct file *filp)
-+{
-+	struct kvm_plane *plane = filp->private_data;
-+
-+	kvm_put_kvm(plane->kvm);
-+	return 0;
-+}
-+
-+static struct file_operations kvm_plane_fops = {
-+	.unlocked_ioctl = kvm_plane_ioctl,
-+	.release = kvm_plane_release,
-+	KVM_COMPAT(kvm_plane_ioctl),
-+};
-+
-+
- static long kvm_vcpu_ioctl(struct file *filp,
- 			   unsigned int ioctl, unsigned long arg)
- {
-@@ -4878,6 +4952,14 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 		if (kvm)
- 			return kvm_arch_nr_memslot_as_ids(kvm);
- 		return KVM_MAX_NR_ADDRESS_SPACES;
-+#endif
-+#if KVM_MAX_VCPU_PLANES > 1
-+	case KVM_CAP_PLANES:
-+		if (kvm)
-+			return kvm_arch_nr_vcpu_planes(kvm);
-+		return KVM_MAX_PLANES;
-+	case KVM_CAP_PLANES_FPU:
-+		return kvm_arch_planes_share_fpu(kvm);
- #endif
- 	case KVM_CAP_NR_MEMSLOTS:
- 		return KVM_USER_MEM_SLOTS;
-@@ -5112,6 +5194,48 @@ static int kvm_vm_ioctl_get_stats_fd(struct kvm *kvm)
- 	return fd;
- }
- 
-+static int kvm_vm_ioctl_create_plane(struct kvm *kvm, unsigned id)
-+{
-+	struct kvm_plane *plane;
-+	struct file *file;
-+	int r, fd;
-+
-+	if (id >= KVM_MAX_VCPU_PLANES)
-+		return -EINVAL;
-+
-+	guard(mutex)(&kvm->lock);
-+	if (kvm->planes[id])
-+		return -EEXIST;
-+
-+	fd = get_unused_fd_flags(O_CLOEXEC);
-+	if (fd < 0)
-+		return fd;
-+
-+	plane = kvm_create_vm_plane(kvm, id);
-+	if (IS_ERR(plane)) {
-+		r = PTR_ERR(plane);
-+		goto put_fd;
-+	}
-+
-+	kvm_get_kvm(kvm);
-+	file = anon_inode_getfile("kvm-plane", &kvm_plane_fops, plane, O_RDWR);
-+	if (IS_ERR(file)) {
-+		r = PTR_ERR(file);
-+		goto put_kvm;
-+	}
-+
-+	kvm->planes[id] = plane;
-+	fd_install(fd, file);
-+	return fd;
-+
-+put_kvm:
-+	kvm_put_kvm(kvm);
-+	kfree(plane);
-+put_fd:
-+	put_unused_fd(fd);
-+	return r;
-+}
-+
- #define SANITY_CHECK_MEM_REGION_FIELD(field)					\
- do {										\
- 	BUILD_BUG_ON(offsetof(struct kvm_userspace_memory_region, field) !=		\
-@@ -5130,6 +5254,9 @@ static long kvm_vm_ioctl(struct file *filp,
- 	if (kvm->mm != current->mm || kvm->vm_dead)
- 		return -EIO;
- 	switch (ioctl) {
-+	case KVM_CREATE_PLANE:
-+		r = kvm_vm_ioctl_create_plane(kvm, arg);
-+		break;
- 	case KVM_CREATE_VCPU:
- 		r = kvm_vm_ioctl_create_vcpu(kvm, arg);
- 		break;
-@@ -5236,16 +5363,12 @@ static long kvm_vm_ioctl(struct file *filp,
- 		break;
- 	}
- #ifdef CONFIG_HAVE_KVM_MSI
--	case KVM_SIGNAL_MSI: {
--		struct kvm_msi msi;
--
--		r = -EFAULT;
--		if (copy_from_user(&msi, argp, sizeof(msi)))
--			goto out;
--		r = kvm_send_userspace_msi(kvm->planes[0], &msi);
--		break;
--	}
-+	case KVM_SIGNAL_MSI:
- #endif
-+#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-+	case KVM_SET_MEMORY_ATTRIBUTES:
-+#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
-+		return __kvm_plane_ioctl(kvm->planes[0], ioctl, arg);
- #ifdef __KVM_HAVE_IRQ_LINE
- 	case KVM_IRQ_LINE_STATUS:
- 	case KVM_IRQ_LINE: {
-@@ -5301,18 +5424,6 @@ static long kvm_vm_ioctl(struct file *filp,
- 		break;
- 	}
- #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
--#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
--	case KVM_SET_MEMORY_ATTRIBUTES: {
--		struct kvm_memory_attributes attrs;
--
--		r = -EFAULT;
--		if (copy_from_user(&attrs, argp, sizeof(attrs)))
--			goto out;
--
--		r = kvm_vm_ioctl_set_mem_attributes(kvm->planes[0], &attrs);
--		break;
--	}
--#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
- 	case KVM_CREATE_DEVICE: {
- 		struct kvm_create_device cd;
- 
-@@ -6467,6 +6578,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	kvm_chardev_ops.owner = module;
- 	kvm_vm_fops.owner = module;
- 	kvm_vcpu_fops.owner = module;
-+	kvm_plane_fops.owner = module;
- 	kvm_device_fops.owner = module;
- 
- 	kvm_preempt_ops.sched_in = kvm_sched_in;
--- 
-2.49.0
+AMD should be implementing viommu natively without CC as well, try to
+structure things so it fits together better. This should only trigger
+for the CC viommu type..
 
+> +		/*
+> +		 * This runs when VFIO is bound to a device but TDI is not yet.
+> +		 * Ideally TSM should change DTE only when TDI is bound.
+> +		 */
+> +		dev_info(dev_data->dev, "Skip DomainID=%x and set bit96\n", domid);
+> +		new.data[1] |= 1ULL << (96 - 64);
+> +	} else {
+> +		dev_info(dev_data->dev, "Not skip DomainID=%x and not set bit96\n", domid);
+> +		new.data[1] |= domid;
+> +	}
+>  
+>  	/*
+>  	 * Restore cached persistent DTE bits, which can be set by information
+> @@ -2549,12 +2561,15 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
+>  {
+>  	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
+>  	const u32 supported_flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
+> +						IOMMU_HWPT_ALLOC_PASID |
+> +						IOMMU_HWPT_ALLOC_NEST_PARENT;
+> +	const u32 supported_flags2 = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
+>  						IOMMU_HWPT_ALLOC_PASID;
+
+Just ignore NEST_PARENT? That seems wrong, it should force a V1 page
+table??
+
+> +static struct iommufd_viommu *amd_viommu_alloc(struct device *dev,
+> +					       struct iommu_domain *parent,
+> +					       struct iommufd_ctx *ictx,
+> +					       unsigned int viommu_type)
+> +{
+> +	struct amd_viommu *aviommu;
+> +	struct protection_domain *domain = to_pdomain(parent);
+> +
+> +	if (viommu_type != IOMMU_VIOMMU_TYPE_TSM)
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +
+> +	aviommu = iommufd_viommu_alloc(ictx, struct amd_viommu, core, &amd_viommu_ops);
+> +	if (IS_ERR(aviommu))
+> +		return ERR_CAST(aviommu);
+> +
+> +	aviommu->domain = domain;
+
+This is not OK, the parent domain of the viommu can be used with
+multiple viommu objects, it can't just have a naked back reference
+like this.
+
+You can get 1:1 domain objects linked to the viommu by creating the
+'S1' type domains, maybe that is what you want here. A special domain
+type that is TSM that has a special DTE.
+
+Though I'd really rather see the domain attach logic and DTE formation
+in the AMD driver be fixed up before we made it more complex :\
+
+It would be nice to see normal nesting and viommu support first too :\
+
+Jason
