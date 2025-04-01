@@ -1,184 +1,148 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B58521A440
-	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13121B9C1
+	for <kvm@vger.kernel.org>; Tue,  1 Apr 2025 16:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523903; cv=none; b=hwSfPMyPmNEo30uNbbUaZQNxF1MfMFepzqw3vOPFD02cr93e62wehtLMXZy9vJALmPUtleEO01Wri1xR7A6WC1eCuheLKX3x/A6I5Dw8NnBeuZc/Xz6nh4QtjmNcOBGd2oCkHtp5zugF2DWQsopYvymoz5k/AM3/HwymRh0u2AU=
+	t=1743523904; cv=none; b=DgeHT77k6zEvF2KntoID4QvFyyj/q57H1qypAdw2QwlZlREUJyyIooFn3yOoDgo2O+w6PPaR7qE041cfVOjvMFKbl8hcMpdgl2NuVLB5eGVYJ9g5+CyT0KxOoaF/I8xgesEowFDuf5VXQo0gKuzjagaqvYjJ5i8jAm0+tYGankA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523903; c=relaxed/simple;
-	bh=0bfnfRwxd83qT6YHXSQ35/Sc5Ii17MOf/lTvNc4Gkxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usPSkiF9Yj7slfS/BU+IfB+oAxGeu8uDB4wJa6DWY/MqYGUHKqQKad+nIigRed1NtgYbhdaRo74AZH75Ror11vgLo4x3xkmn2CsAYaRVzUpjJxTd31cteZ1aDbOjGTeofwIK/WVe/xeB6eqFmmUffq28Uo9W3axq3/dijkUGYBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lDnUmh5L; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1743523904; c=relaxed/simple;
+	bh=RE4EXCpfxhno9yiUXTtOFR2cTLxZp7UNPnnGbcmpDXs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SurYjOCtbjQ4fngzFO7FlmU6+4aBErxDwmiw/xfEkr8lifMzbpk6P1JTn2MAydydBg9u1eOkkoaJTyeRP83bp6GsB5KEAchJFqhE1BfOKpKE8SlwXFhIXvMKTAorHm6IO9f6bo/qUo2pscLz1LEt6Xjc9hTWAKwzmv8rXjDe76c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A6RlKK3J; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lDnUmh5L"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-476ac73c76fso62271511cf.0
-        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1743523900; x=1744128700; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ht+/cjgqGqzgXcB/qQp4vlm60uUPBRIV+JZ12u7d0fU=;
-        b=lDnUmh5L+0rCze4HHaOY0fInhE2/g4OqB70O4lroUA66m4berrddssMHgXIfslNESy
-         C4hfoVX0sS0Ze4HunAg/LvTPqunpMT1UZOLYuOXxRI40B1VjlFIOHheEFEtAtiMQAJY8
-         2jvJlMZ9GF/WJn7VoTDSlhBdM210lL0c2n9LdArDdhYtf48EvNbgvb19vva8SFzBCxOE
-         Iqkd6NI5Ae489ogm6T5ittm5N2Y9bHE+jdnh/7iSPprDhI18kSDd7h/yl2DiOXOYf/GX
-         qy2NlTBZDOzWV1KtmR3NlYhkSac5+1sQsNKsqHMaYb5ADqRT9eb1LH2fFjLywbm+CWhP
-         ipRA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A6RlKK3J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743523902;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yjR3mqM2w8v8J+UuArqg6Kc21meadYNT6Oek6yPNa0w=;
+	b=A6RlKK3JQHjOlyJ7GGMZsFvrLquE1UJ/mJ74RaA44neiHd5hyzCIOnIMyryBk0LSaKqmyz
+	aHBDI+I5TXDxt8K25jXGCv/XaahqUFNnmyHQ/VLS5KbTgEyGFhGFjDARrSWz5lksgnb9V+
+	SMj89+hCoJF1cvITIrwEbr6pghYoDLU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-UEeKNcuDPp249YFu7k9Y3A-1; Tue, 01 Apr 2025 12:11:38 -0400
+X-MC-Unique: UEeKNcuDPp249YFu7k9Y3A-1
+X-Mimecast-MFC-AGG-ID: UEeKNcuDPp249YFu7k9Y3A_1743523898
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-39c142d4909so1836242f8f.3
+        for <kvm@vger.kernel.org>; Tue, 01 Apr 2025 09:11:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743523900; x=1744128700;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ht+/cjgqGqzgXcB/qQp4vlm60uUPBRIV+JZ12u7d0fU=;
-        b=QPpmnFkjlMvLfhYyUqiHaUlZl5h5YrCiDbi86ZPCmDwG8VAGrMDOEYrI+8eC6Tmq/A
-         t54GNjOhCBCpcui605eQ3FJq0Dm61DxzlZe0mXIFvBKlV3irLVnmhyp1xYIO/dX+JVzx
-         ocMlvdSsbSGSy06lfPST7Df2S0dUL5Ys938cVqZh8NYDCjz+JyIDgPaHvd75N+ZdduJq
-         zr4d8twGWYIzLRwloovJQPlhXpyq7LepRNQ8wNNGR9L/Ino3pw/lqXyjFDbKIcoKNb55
-         GBTG7GEAqKbjIBoipy9pFRcT31EdKTGwvK3ZuvdOB95Kh2YR5CYyfElNBz5bOwXuyEa6
-         eOoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDYPMzShfeCNaC+bQ5HBAp4KozPv0yCxDU3LDrcm6/zEGrDT7muv0wvT4V7STztRdsMWU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRi5rDYxg6UUaR5bNsnIU7KgI77tITvurhvqLDP0UwKe9u8lV/
-	kD6giNAW7s09xa4btgoqxPqeIIouGgmIEE5MAiM4A3i7hCpX/M0zXUcjhk7t6DM=
-X-Gm-Gg: ASbGncvDwKblSYNWIc1a6+gr20EPmwyZju0VTRIz+mCmlhEaOrk0Eo4Xrj9R1Mu9Ee1
-	gc9RbaOIjPb/vMQWFxv4wbUUbP5AITow1Mn7AwbaMQrAeldlVq0QBxpY+Sb0OM6H2xvNMmX5xCP
-	yrAmWqg6ao93EqaKkf0Wsb7lcKw6fIuSmv+Ns+KtUtwioSLctrnbtowB/FDf5B0ML1LUfJ8Aiov
-	mEOZd0dM+viqJHD5EuFnOGWZyDTR5Lhx7eB5+mhviWav1Ojfu6PAcVQkadDw2KO6iKtc/Oubaag
-	iebVqqTTxBVtBTTl8TCcJ0ZSU3ay4deCLYO9n8p9LltmSJjK5TnUTJZpd+VAcfNko5pw/Fwt2mj
-	dk4J6EkxXGpSJg2wRS3Jf+Ao=
-X-Google-Smtp-Source: AGHT+IGqQTmKBPGxEDnar5cvqd0kVzoGqHi3v/f2hQrPfOnvCsqaEdb1Xw9stjow0mGeS+auqOd8Yw==
-X-Received: by 2002:a05:622a:13d4:b0:476:ae71:eabe with SMTP id d75a77b69052e-477ed779bf5mr236227621cf.50.1743523900002;
-        Tue, 01 Apr 2025 09:11:40 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47790ef0976sm57062041cf.59.2025.04.01.09.11.39
+        d=1e100.net; s=20230601; t=1743523897; x=1744128697;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yjR3mqM2w8v8J+UuArqg6Kc21meadYNT6Oek6yPNa0w=;
+        b=VZKV4wceLiepw/MI4xlGbTEpQfU4FolDiKaw5VPmYvjin4ni9xvhg6k1WSABva3jUW
+         Uyp8v20g5hM0Q5t59JgnESE2d7xn+IEWHj9VImzEfVvF9430EwvXBLDvLqpEMa2oorUS
+         YvMlPDjLePHvSX757FqkNFfVPFD3ymf1Fk0mPdG+g4FWaij/oDaF5O37c0yuLL8Hmu84
+         u145P3s6PZGNC3kNdPFy/fiNTP6gnBd6AMjEPH8HaGOcLXp6IapHeaA246u8OHmtH7NJ
+         Y4xogVw4LIgVRtPwEkmxqczrUdH1amTDi6q8h3M0QdmZLGM8r8P19kuNvoRoDyWC/l4k
+         DZIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWzUGQUf8AF8GelVDuq32FYgBoLGATKJzHmHNtYc8PeJSxdFu+yOQ1EMzkiDvzlQiSbO6E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRV/6Nov7YULHtNh2qJl0xr6XqIYo8y06Z86fspArVQctlwMp/
+	D5y6PHO9fEGNXHA+wy5ZbnP/oDJJZGNjRmRE+tgebaiHbUfASB6vNlj2uQ60YC+O8+6YLkJ+dkl
+	Z1P6R0tQeWyZlz+mwP9EubwFJ5KbiLK8JCXIp80hHR7BC1mTGWg==
+X-Gm-Gg: ASbGncuGAwkEYZOpWUjIy7CSedpu8mqsnPNqG6vj2csXOGng1PWUp+r1W+w+9jdYPDL
+	Hh4NboFKSn0RPiJh7dQ7B5CR5Cu+DVlykOGFu4Lx8WcymF4VwsX/LX138fp6g+et9ORj3mXYDbD
+	1CMcyQ6lTLv80/HCwBU0uEIPuE45FTvIeivfXUda/WA76+sHCZu4NW1mdoJFRKGlDCsd8JUAzIw
+	ApQBlyKc65VfnkWgxzrui9V6DP9c1YZKhVOnKQA/b2APBcycPYF3kOJNQXqNiBu3z7CmQ+UXUe3
+	u8CUHi0AMu8eH0VMAgg5Tg==
+X-Received: by 2002:a05:6000:1863:b0:399:6dd9:9f40 with SMTP id ffacd0b85a97d-39c120cc8a1mr11575902f8f.9.1743523897702;
+        Tue, 01 Apr 2025 09:11:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFf14Rq+IqwJ0RMb19wAyhNB4F46l/fAlyv854rgC7681D5ZIz2UVlu3+YdbiTNo+4kZUtxqg==
+X-Received: by 2002:a05:6000:1863:b0:399:6dd9:9f40 with SMTP id ffacd0b85a97d-39c120cc8a1mr11575872f8f.9.1743523897271;
+        Tue, 01 Apr 2025 09:11:37 -0700 (PDT)
+Received: from [192.168.10.48] ([176.206.111.201])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b79e0afsm14662940f8f.65.2025.04.01.09.11.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 09:11:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tzeDC-00000001ML9-3rkm;
-	Tue, 01 Apr 2025 13:11:38 -0300
-Date: Tue, 1 Apr 2025 13:11:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 13/22] iommufd: amd-iommu: Add vdevice support
-Message-ID: <20250401161138.GL186258@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-14-aik@amd.com>
+        Tue, 01 Apr 2025 09:11:36 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: roy.hopkins@suse.com,
+	seanjc@google.com,
+	thomas.lendacky@amd.com,
+	ashish.kalra@amd.com,
+	michael.roth@amd.com,
+	jroedel@suse.de,
+	nsaenz@amazon.com,
+	anelkz@amazon.de,
+	James.Bottomley@HansenPartnership.com
+Subject: [PATCH 11/29] KVM: anticipate allocation of dirty ring
+Date: Tue,  1 Apr 2025 18:10:48 +0200
+Message-ID: <20250401161106.790710-12-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250401161106.790710-1-pbonzini@redhat.com>
+References: <20250401161106.790710-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218111017.491719-14-aik@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 18, 2025 at 10:10:00PM +1100, Alexey Kardashevskiy wrote:
-> @@ -939,6 +939,7 @@ struct iommu_fault_alloc {
->  enum iommu_viommu_type {
->  	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
->  	IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
-> +	IOMMU_VIOMMU_TYPE_TSM = 2,
+Put together code that deals with data that is shared by all planes:
+vcpu->run and dirty ring.
 
-This should probably be some kind of AMD_TSM and the driver data blob
-should carry any additional data needed to create the vIOMMU that is
-visible to the guest.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ virt/kvm/kvm_main.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-> @@ -2068,7 +2069,18 @@ static void set_dte_entry(struct amd_iommu *iommu,
->  		new.data[1] |= DTE_FLAG_IOTLB;
->  
->  	old_domid = READ_ONCE(dte->data[1]) & DEV_DOMID_MASK;
-> -	new.data[1] |= domid;
-> +
-> +	if (domain->aviommu) {
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index dce89a2f0a31..4c7e379fbf7d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4173,20 +4173,20 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	}
+ 	vcpu->run = page_address(page);
+ 
++	if (kvm->dirty_ring_size) {
++		r = kvm_dirty_ring_alloc(kvm, &vcpu->dirty_ring,
++					 id, kvm->dirty_ring_size);
++		if (r)
++			goto vcpu_free_run_page;
++	}
++
+ 	vcpu->plane0 = vcpu;
+ 	vcpu->stat = &vcpu->__stat;
+ 	kvm_vcpu_init(vcpu, kvm, id);
+ 
+ 	r = kvm_arch_vcpu_create(vcpu);
+ 	if (r)
+-		goto vcpu_free_run_page;
+-
+-	if (kvm->dirty_ring_size) {
+-		r = kvm_dirty_ring_alloc(kvm, &vcpu->dirty_ring,
+-					 id, kvm->dirty_ring_size);
+-		if (r)
+-			goto arch_vcpu_destroy;
+-	}
++		goto vcpu_free_dirty_ring;
+ 
+ 	mutex_lock(&kvm->lock);
+ 
+@@ -4240,9 +4240,9 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	xa_erase(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx);
+ unlock_vcpu_destroy:
+ 	mutex_unlock(&kvm->lock);
+-	kvm_dirty_ring_free(&vcpu->dirty_ring);
+-arch_vcpu_destroy:
+ 	kvm_arch_vcpu_destroy(vcpu);
++vcpu_free_dirty_ring:
++	kvm_dirty_ring_free(&vcpu->dirty_ring);
+ vcpu_free_run_page:
+ 	free_page((unsigned long)vcpu->run);
+ vcpu_free:
+-- 
+2.49.0
 
-AMD should be implementing viommu natively without CC as well, try to
-structure things so it fits together better. This should only trigger
-for the CC viommu type..
-
-> +		/*
-> +		 * This runs when VFIO is bound to a device but TDI is not yet.
-> +		 * Ideally TSM should change DTE only when TDI is bound.
-> +		 */
-> +		dev_info(dev_data->dev, "Skip DomainID=%x and set bit96\n", domid);
-> +		new.data[1] |= 1ULL << (96 - 64);
-> +	} else {
-> +		dev_info(dev_data->dev, "Not skip DomainID=%x and not set bit96\n", domid);
-> +		new.data[1] |= domid;
-> +	}
->  
->  	/*
->  	 * Restore cached persistent DTE bits, which can be set by information
-> @@ -2549,12 +2561,15 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
->  {
->  	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
->  	const u32 supported_flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
-> +						IOMMU_HWPT_ALLOC_PASID |
-> +						IOMMU_HWPT_ALLOC_NEST_PARENT;
-> +	const u32 supported_flags2 = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
->  						IOMMU_HWPT_ALLOC_PASID;
-
-Just ignore NEST_PARENT? That seems wrong, it should force a V1 page
-table??
-
-> +static struct iommufd_viommu *amd_viommu_alloc(struct device *dev,
-> +					       struct iommu_domain *parent,
-> +					       struct iommufd_ctx *ictx,
-> +					       unsigned int viommu_type)
-> +{
-> +	struct amd_viommu *aviommu;
-> +	struct protection_domain *domain = to_pdomain(parent);
-> +
-> +	if (viommu_type != IOMMU_VIOMMU_TYPE_TSM)
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +
-> +	aviommu = iommufd_viommu_alloc(ictx, struct amd_viommu, core, &amd_viommu_ops);
-> +	if (IS_ERR(aviommu))
-> +		return ERR_CAST(aviommu);
-> +
-> +	aviommu->domain = domain;
-
-This is not OK, the parent domain of the viommu can be used with
-multiple viommu objects, it can't just have a naked back reference
-like this.
-
-You can get 1:1 domain objects linked to the viommu by creating the
-'S1' type domains, maybe that is what you want here. A special domain
-type that is TSM that has a special DTE.
-
-Though I'd really rather see the domain attach logic and DTE formation
-in the AMD driver be fixed up before we made it more complex :\
-
-It would be nice to see normal nesting and viommu support first too :\
-
-Jason
