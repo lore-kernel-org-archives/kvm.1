@@ -1,72 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2675B25D546
-	for <kvm@vger.kernel.org>; Thu,  3 Apr 2025 20:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B3113B58A
+	for <kvm@vger.kernel.org>; Thu,  3 Apr 2025 20:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743710986; cv=none; b=OYjk5GcNou1Ng83UDPtFenilQw1g46QsDYtS7aAPaYs2PYr18wkj2e+cOdQ63SpGLuMdCXGJadK542QcTPIGSIkULy4O2L95c6l8O2iKg9cWxfQne6RA9iWdZwH53cuwsBf5CO3qwsORVDyPC6FUKVV6+1/2vbMxwpF10InzPe8=
+	t=1743711022; cv=none; b=hwXE4+2q7TBJSgqFz88eGdeUAMEiw0xUt14M0C7lv2MzA8hWAgoGB2o4wF59pG6VQGWHI//zl/p++phFLoXhuTSZJ4LP8B7bKM49Rv7AJyofOvGfL61YK7XVsT/zLAIZvdP57a5zRIMXX1DVirRF9DtRwbTOBsPyNqw2L6HO6j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743710986; c=relaxed/simple;
-	bh=KuAuPC2Kc5A2gf9Br08oeF8OB+Zc9OXztUj1fYLftnc=;
+	s=arc-20240116; t=1743711022; c=relaxed/simple;
+	bh=ARHuqMUFBa6EBIqx3FjwFk0m9wzztwUMkSlCIakG680=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n43TqmPNWm/STNM/zdyYBFDQ1CzUjREn/9c0UVfhgKnAv+aN/QzpVYYKwXAsQ8rfnQ7yyn2InQBDqD2ID8nOVlZ9a9Uyi7mEf9hxqgp+Z32DlFr1zW8rGJ9fVRw0d7aW1Y0EsAab7Y4weradAcMZ13olgUTkWwR/sLUX+hL4NuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CohNH8fu; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:MIME-Version; b=l4eC/fwx/tbFfzZXlv1v8hDjqcXCqQc9v4RAqPg6brNXOmwz5v5kkuNje/Xo99RrntP9wKKruPC8Ff0KHddWwGF5/HfIGZ16Id1FtTqZ6AuHzJQyAcAdt3v252QjYHMPb65k9qQSC3SNOs7O0wP+kYPDMGrylQ2g+HnlNxMeOMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UHVTOpGg; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CohNH8fu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UHVTOpGg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743710984;
+	s=mimecast20190719; t=1743711020;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o38mcyc5s3JRsdW3YB6YPHjbQdyEBV4D3I4i1S6k6to=;
-	b=CohNH8fuakVW+EbFrBHvo1DCFS1RFLgyrHYzbK+Oy/45gI1N0bCkwD18gmQgLVxux0XFn+
-	E33eMwLh/kvoYi+BwVU3J1cdSewYLEwApNY4C+3pqAWpd1R18yf+ogbaI/tOhVWIu2+TFx
-	cfFJ1XpnMyJ0m0EtjlTNSb9HGSsm4Yw=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0BwHIPwV3rI7qIkcJhhOaSvRbMhK1Ui6OQS4Co5poDA=;
+	b=UHVTOpGg46R9zSYveCVLLD8H09N2mJadmQRtu4bylrDwPqxKsD8cbzdprDsJM9d2hb7HML
+	cnemuLwcKapNYflNNoUVppcIFktgUriEr9z0vH8kk35FCR2SzndvyCjidreI8+n3gL7xr1
+	kqQEH930qx/h8eUzhVRYFdGRQw+YqXM=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-WjcU5jb0Pm2CsyxiUwBM3g-1; Thu, 03 Apr 2025 16:09:42 -0400
-X-MC-Unique: WjcU5jb0Pm2CsyxiUwBM3g-1
-X-Mimecast-MFC-AGG-ID: WjcU5jb0Pm2CsyxiUwBM3g_1743710982
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c543ab40d3so197367785a.2
-        for <kvm@vger.kernel.org>; Thu, 03 Apr 2025 13:09:42 -0700 (PDT)
+ us-mta-644-HGhLjpF9MX-QWe8ozAOm_A-1; Thu, 03 Apr 2025 16:10:18 -0400
+X-MC-Unique: HGhLjpF9MX-QWe8ozAOm_A-1
+X-Mimecast-MFC-AGG-ID: HGhLjpF9MX-QWe8ozAOm_A_1743711017
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e8feea216aso46139356d6.0
+        for <kvm@vger.kernel.org>; Thu, 03 Apr 2025 13:10:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743710982; x=1744315782;
+        d=1e100.net; s=20230601; t=1743711017; x=1744315817;
         h=content-transfer-encoding:mime-version:user-agent:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=o38mcyc5s3JRsdW3YB6YPHjbQdyEBV4D3I4i1S6k6to=;
-        b=gh+NdWaIWc7dFM7YQPv2+JJr0CliA5dgl/rsQnPMkZqzBN00s5pjTlCfa7K74rKpMa
-         tMf5L4trSFHqTiavhvD7Wb1GYbUIfugOriEGElYWL0WoUrHKzU9bLCWVqv84h7+IvO8t
-         s2cN9rucfB6AgVJN5iaDHKgevJR3ivrecAyNQHhz//eAMJVjcWVwXfgNihP1cKS3oHhX
-         c4wmahxl1MhV4SEfE3hSBzXykmZA7xo39rtz3jTXQwuk2eFK/ttHwg6z5t2FG8pNyk/W
-         +Pzl2OaVpcn9LRYoZK46y4W5TGBOv4LO0FLQSTE3YdPx8rEFluYxVRXrXX2+ui8Iw8TO
-         +sxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXttELXOj4M+TIhaFy2XMQZAPu5CZXXoHe7ssInAqOPz7+z1JR+g0LLI0dWRkGz6gqlgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPcYVwIB8S3acaAkHzPr/gToB6qgTRM3T1xL4clzhf/pZRbR6o
-	YeTUegHrJEWIFcEY9y7PzNUDZWNb+bxHeuXQm26JF1bPMesgB3iSeQBnJKGCTNtUMhSI2vt7YSe
-	jBPbwnkC3oGmSou7/ySzC3m2caMvbBtaqFHUTLg4CWcodEU/hOllfFic1kA==
-X-Gm-Gg: ASbGncthuvPNc4hKNOtRX1ddzJcXn4E2xn6XinZHWaU5/h1eIl62n1angObU3GoKRi7
-	gRMvr5eBkwxUhc5o1238e8ql3tgn2l9ecU4G3/ppGFf9dxA6fVBcnDJnzi1EbV5dzkWLCX0eMGm
-	Ct9g6tvmz+ilOtjnFPnHllRIVxwC66N/7AYNXRbOpuMl/LhxCTxAN5tyxKoGy5WRLeha6Ijz4Yc
-	c6/4AzSX0RkwzH5XYrrLoaaoegFpMABN502n3fBDECRKJHCoWGXn9cpWPi+93jn/gu7JzrNCXcH
-	baChkmRi4aQLaCw=
-X-Received: by 2002:a05:620a:4625:b0:7c5:4eee:53f8 with SMTP id af79cd13be357-7c774dad123mr90918285a.41.1743710981893;
-        Thu, 03 Apr 2025 13:09:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGp7BcesIEd44ayqQbs+gVIFhGnWkPjIAyem/IbMBRBP4H6O6igve2fPOHCQZcgJGBgM1OgHw==
-X-Received: by 2002:a05:620a:4625:b0:7c5:4eee:53f8 with SMTP id af79cd13be357-7c774dad123mr90915085a.41.1743710981558;
-        Thu, 03 Apr 2025 13:09:41 -0700 (PDT)
+        bh=0BwHIPwV3rI7qIkcJhhOaSvRbMhK1Ui6OQS4Co5poDA=;
+        b=e17Hw1s+XLkvjFmcMuCruzyxa0OxSD/RphpzRwG97df7DN3odeEdvBqg3zMNtvhupF
+         Ov5mMDtTit2logYeugl3bC0uOP5ifVgYcRgMGDrh4CxnOk8s1YKQgCACp2yHNMtvvKdo
+         1DQbO1GwZHwikZMjcpFCM820TpUogIbgV96EUQNqIgAOVyvKkhJXdlvkWFyMrppZbi+v
+         RhqO51WwNVmYKLfLXrddm9D7nfWCHufxLE5/eaZW+j7+hTXLIbrMn6pAa6IiR83i6rkK
+         DVGoE9r9OmXs8cqcVy8nej09qGmkUxUY9R1s0X2vsQIGkhKt2YObFIULZXhUUWh0nu4I
+         wmJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ0C2b8cagoqSUu/I/iiwvWvouZ/b+sdm3cAteePJi+tsWWMcwvaLDsYRCQgX7hW4UbjM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjQAahQ/d4RcYLqZoPvjNp3j9/oRuVYCLvThbDCDSe/y2NorTb
+	ILaN0aKyj11LvB6YOb/o88rXMsRzt1xITE4JdMR0oVdp9xFeG2FIR6EKudksIBu1wsB4Fx7goCb
+	JphV7+LbPO1ph/veyaOPvIDdT7yK8zKkHuVTCySmSv4muSLcQvA==
+X-Gm-Gg: ASbGncsjDheetsCxMsvj8k75R4iab63Oqopzc3CbelousMzShkmvtQPqQgEMxCDNpds
+	p7D11WCgli1m6gRBN1SYJPtmK3IBUc0XV8UEWTtmVCDRRePscFrDJLo3I1KSw6sbciLXN4m2onk
+	OvzcGBq70gM5Xb5GQxljJKDhYRxNNI7Ul+dv1pZY2mnxlQ5U3wWeiWbBA1VcrBlDG0CBJ1qBSuP
+	U+v8/vcLpuZtGOnOZLg1v9evdtvR5mvgm0eoxkVyV0PENOQvD98IJ5P2K8uyFGPuhSlCYI4flzv
+	2vWHOC3/xTwXg/k=
+X-Received: by 2002:ad4:5d63:0:b0:6e4:5317:64a0 with SMTP id 6a1803df08f44-6ef0bec79a6mr76325126d6.13.1743711017644;
+        Thu, 03 Apr 2025 13:10:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/Z3nXXtzkhi6L9ZJ/I+L1ALXbuENimr3h0WF6vMnmAXGGpI7ggBqt/YYh2/kFXiLPUaBJ0Q==
+X-Received: by 2002:ad4:5d63:0:b0:6e4:5317:64a0 with SMTP id 6a1803df08f44-6ef0bec79a6mr76324756d6.13.1743711017338;
+        Thu, 03 Apr 2025 13:10:17 -0700 (PDT)
 Received: from starship ([2607:fea8:fc01:8d8d:6adb:55ff:feaa:b156])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c76e96cf0esm116192785a.53.2025.04.03.13.09.40
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0f1393dcsm11339676d6.78.2025.04.03.13.10.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 13:09:41 -0700 (PDT)
-Message-ID: <e255fa3ee192b136eeef7e9a63e8d1506d5e85a8.camel@redhat.com>
-Subject: Re: [RFC PATCH 12/24] KVM: x86: hyper-v: Pass is_guest_mode to
- kvm_hv_vcpu_purge_flush_tlb()
+        Thu, 03 Apr 2025 13:10:17 -0700 (PDT)
+Message-ID: <616df4f9191cb59af8776775ad2577e412c5f71d.camel@redhat.com>
+Subject: Re: [RFC PATCH 15/24] KVM: x86/mmu: rename
+ __kvm_mmu_invalidate_addr()
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: Yosry Ahmed <yosry.ahmed@linux.dev>, Sean Christopherson
  <seanjc@google.com>
@@ -74,10 +74,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Rik van Riel <riel@surriel.com>,
  Tom Lendacky <thomas.lendacky@amd.com>,  x86@kernel.org,
  kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 03 Apr 2025 16:09:40 -0400
-In-Reply-To: <20250326193619.3714986-13-yosry.ahmed@linux.dev>
+Date: Thu, 03 Apr 2025 16:10:16 -0400
+In-Reply-To: <20250326193619.3714986-16-yosry.ahmed@linux.dev>
 References: <20250326193619.3714986-1-yosry.ahmed@linux.dev>
-	 <20250326193619.3714986-13-yosry.ahmed@linux.dev>
+	 <20250326193619.3714986-16-yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 Precedence: bulk
@@ -89,79 +89,49 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 On Wed, 2025-03-26 at 19:36 +0000, Yosry Ahmed wrote:
-> Instead of calling is_guest_mode() inside kvm_hv_vcpu_purge_flush_tlb()
-> pass the value from the caller. Future changes will pass different
-> values than is_guest_mode(vcpu).
+> In preparation for creating another helper for
+> kvm_mmu_invalidate_addr(), rename __kvm_mmu_invalidate_addr() to
+> kvm_mmu_invalidate_addr_in_root().
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 > ---
->  arch/x86/kvm/hyperv.h  | 8 +++++---
->  arch/x86/kvm/svm/svm.c | 2 +-
->  arch/x86/kvm/x86.c     | 2 +-
->  3 files changed, 7 insertions(+), 5 deletions(-)
+>  arch/x86/kvm/mmu/mmu.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
-> index 913bfc96959cb..be715deaeb003 100644
-> --- a/arch/x86/kvm/hyperv.h
-> +++ b/arch/x86/kvm/hyperv.h
-> @@ -203,14 +203,15 @@ static inline struct kvm_vcpu_hv_tlb_flush_fifo *kvm_hv_get_tlb_flush_fifo(struc
->  	return &hv_vcpu->tlb_flush_fifo[i];
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 63bb77ee1bb16..4a72ada0a7585 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -6317,8 +6317,9 @@ void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg)
 >  }
+>  EXPORT_SYMBOL_GPL(kvm_mmu_print_sptes);
 >  
-> -static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu)
-> +static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu,
-> +					       bool is_guest_mode)
+> -static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> -				      u64 addr, hpa_t root_hpa)
+> +static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
+> +					    struct kvm_mmu *mmu,
+> +					    u64 addr, hpa_t root_hpa)
 >  {
->  	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+>  	struct kvm_shadow_walk_iterator iterator;
 >  
->  	if (!to_hv_vcpu(vcpu) || !kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu))
+> @@ -6374,11 +6375,11 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
 >  		return;
 >  
-> -	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode(vcpu));
-> +	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode);
+>  	if (roots & KVM_MMU_ROOT_CURRENT)
+> -		__kvm_mmu_invalidate_addr(vcpu, mmu, addr, mmu->root.hpa);
+> +		kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->root.hpa);
 >  
->  	kfifo_reset_out(&tlb_flush_fifo->entries);
+>  	for (i = 0; i < KVM_MMU_NUM_PREV_ROOTS; i++) {
+>  		if (roots & KVM_MMU_ROOT_PREVIOUS(i))
+> -			__kvm_mmu_invalidate_addr(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
+> +			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
+>  	}
 >  }
-> @@ -285,7 +286,8 @@ static inline int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  {
->  	return HV_STATUS_ACCESS_DENIED;
->  }
-> -static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu) {}
-> +static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu,
-> +					       bool is_guest_mode) {}
->  static inline bool kvm_hv_synic_has_vector(struct kvm_vcpu *vcpu, int vector)
->  {
->  	return false;
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index e664d8428c792..865c5ce4fa473 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4025,7 +4025,7 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
->  	 * A TLB flush for the current ASID flushes both "host" and "guest" TLB
->  	 * entries, and thus is a superset of Hyper-V's fine grained flushing.
->  	 */
-> -	kvm_hv_vcpu_purge_flush_tlb(vcpu);
-> +	kvm_hv_vcpu_purge_flush_tlb(vcpu, is_guest_mode(vcpu));
->  
->  	/*
->  	 * Flush only the current ASID even if the TLB flush was invoked via
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 182f18ebc62f3..469a8e5526902 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -3615,7 +3615,7 @@ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
->  	 * Flushing all "guest" TLB is always a superset of Hyper-V's fine
->  	 * grained flushing.
->  	 */
-> -	kvm_hv_vcpu_purge_flush_tlb(vcpu);
-> +	kvm_hv_vcpu_purge_flush_tlb(vcpu, is_guest_mode(vcpu));
->  }
->  
->  
+>  EXPORT_SYMBOL_GPL(kvm_mmu_invalidate_addr);
 
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Maxim Levitsky<mlevitsk@redhat.com>
 
 Best regards,
 	Maxim Levitsky
