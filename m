@@ -1,75 +1,75 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC4D1D8DE0
-	for <kvm@vger.kernel.org>; Fri,  4 Apr 2025 10:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DD61DF994
+	for <kvm@vger.kernel.org>; Fri,  4 Apr 2025 10:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743762574; cv=none; b=f3VXu+pvMEHDAyC3fH2oqEkv+kXgfEqA72EsKjmRvbMG27GxQpUUgbDXZOPFvc8HufyPgq0X8buII3vbIp3rnbelB+YSXQDHRUKnrTFr83rY56GXodU98RbnBt9lST13vqWQA6AwBvnXfF6hP5s9jPnP5p05mawynCg3UM3d2bw=
+	t=1743762579; cv=none; b=Bu0Ful979K1EfIrDWGjv5w/z8grr/H7D78coPHVkAHyxMEaEedInXdCQAjfoLe5NLzdWpkgSoOMzUgI5bwsm+99bHE015PVpK3i09SssDUb0imFwIrKgmQrBB9f5OUlwSHy6k7OPBgt5P45YOI0a7PGJejbxuKQcmaZiMncRj6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743762574; c=relaxed/simple;
-	bh=ZXP9PdtNz5G4gmYwe9qut0Sxd9Ty7phi4XqNd27CsSM=;
+	s=arc-20240116; t=1743762579; c=relaxed/simple;
+	bh=5+rhWJ9/AaOnxl4/edvsj3Mhq/NPswu21jjxt69P2kM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXv7WyneGIyNwAMIs6Y5M4x+W4npdgG63L5sx0xCRIXD1CFiy7pFWIITineZCX/Z4mNMC3WiyLQO8bQwCaVLVWD0xTotEKkbDVf4QlN2AlAQZjG5YzjD3tBxuZKNIs2tPD1AyQUloF5v2XWt0r4HbqcQmA21w9K518lWau0/1vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fC/G40EX; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=pwiLWzpbae2X7nwxBQeTU3qZzlKhe5W0d/25EYLMbNlWCflmTqAUZDdiBnvE6GjOKF7lLSVbyOWE0H0fV7gq+MJq9DlWHVuieZvp2gDUVKTpQJ4HXCgR0rQsgeogAcAaTVFqYYwBfVYUlK5t+2VBqaBzce5RLqPSpeIX4I5BBa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IvY6SDnu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fC/G40EX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IvY6SDnu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743762572;
+	s=mimecast20190719; t=1743762576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fh7eVIHVK7DZbml0KKr5DVpGA1dcsH/iEq7JogkgDmY=;
-	b=fC/G40EXrH3amn5X0kRTDKnfgse98NnxzYRpAVu7V2yUa2v4MIBxzPVYno8WohkmAX7xoA
-	yp97eUdDjDCCUJsAsA4nHAkH1mb7kqCMirkcdqxB+xoX+KPPxo+GSYmZOnhiI3R9clp8VK
-	ZW6aHTr25NqfvCNygswfdEVNiF+76HI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iIj6VBKjZOnFTh+4vM6JPksjZGxz/JfbdG4ThPXJ5PM=;
+	b=IvY6SDnuSFXt7su3mg3DKmyWLo6F7h3xR4gjtCFfevLyNgSAqUGtu9/5bKZPMcs3RG5gdF
+	9FLrpBzwxb62+EPQLzTSbJJJLOflaENBPoKePRR6i5Y4OkM2olQa7RlngX0QyB9QnBVPWP
+	zs2BZr2HZtYn82PSy0Bp01b7oYHutBM=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-XdKHzxY5P6-tVBRzbfOOxg-1; Fri, 04 Apr 2025 06:29:30 -0400
-X-MC-Unique: XdKHzxY5P6-tVBRzbfOOxg-1
-X-Mimecast-MFC-AGG-ID: XdKHzxY5P6-tVBRzbfOOxg_1743762570
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5e6c14c0a95so1616118a12.0
-        for <kvm@vger.kernel.org>; Fri, 04 Apr 2025 03:29:30 -0700 (PDT)
+ us-mta-544-5_7Vtur6OpWo78WGkjQEKw-1; Fri, 04 Apr 2025 06:29:35 -0400
+X-MC-Unique: 5_7Vtur6OpWo78WGkjQEKw-1
+X-Mimecast-MFC-AGG-ID: 5_7Vtur6OpWo78WGkjQEKw_1743762574
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ac737973c9bso151018466b.2
+        for <kvm@vger.kernel.org>; Fri, 04 Apr 2025 03:29:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743762569; x=1744367369;
+        d=1e100.net; s=20230601; t=1743762573; x=1744367373;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Fh7eVIHVK7DZbml0KKr5DVpGA1dcsH/iEq7JogkgDmY=;
-        b=FnoDlN9UdCE04XEjMGcD+e/t9+WTTA2B7us9UmLdC82ToOYE+ETLoc5zfiY/UaMJeL
-         L6CSRC+xL6zvQ1gvmoUkjmrx8Dm7DeU7/8Lla8lQbyhdv1SRUeTfBzTl5DEJah96bh7G
-         0CJSqnx1HCi56bVNYaiLJeYeYEALa8PJ9rqCaBBrUvJXas3ELGOvLrun7rlXV9Fjqz8Y
-         24DyIIR2bYv/t+CgWlCJ3FQnwmRPviaRVtz3G7rczRADQteuQx2v4KsGHiqQNKXtFCJ6
-         Lfiurzqt731VQXWYa+BJjTlUJcJNu4/FZWu6ccilXlUwxQWl4zJmSaLHe7GpiKmWfDaU
-         GYaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWn7hsn6gkVhsShnq0wtUHc8fxuyfuapS8v2lkCSLVyIPhZY1QD3hwYT6dEb4I+QBrLjAE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFc8dr8MAeZXamFPHIyuOdtTHa92OoK9S3sjNtcbXXEI/tDgc6
-	oe49cHHxaER2iQCOgGYvVHLYnExrnUcuK/RGACS72pj96OBoo4tYHFLlkj6UFL3HnUBkp3lozBt
-	qy1b8sZTqmMnU9q+OKJ/dlXR2rkuZT0luTEh2oDUx0EwIObFkbWeStFK8oQ==
-X-Gm-Gg: ASbGncsvWfDHH4/6qA61/91Wo+ZP1TzIxTKIxEEkTLAAuoGWoOkrdMwX1fgdth6GE/Z
-	zjEprJQEKQbJKZZJxLBPevWZiHvxpYUc1e7O4QFMhSBcsOkP5bAZ6zjSNEKWpKG0A1yDmbdPEfg
-	TqrxA2JqhVUKizYQgSGreyEVGDElsZgTpSmNGWHnv172dusmzYT702HYM1eORpQBwIBKKvXokiz
-	VOD8K2gn+EpiZmAIVhxExNVKYhPQSRS4tD8FVsn5mmVXFSKX4fONcd4Gba8VnTDR05v3mRbaF0W
-	N2OanCuW+x+UDGq9Z7X/
-X-Received: by 2002:a05:6402:51d2:b0:5e4:92ca:34d0 with SMTP id 4fb4d7f45d1cf-5f0b3bce08cmr1901631a12.20.1743762569370;
-        Fri, 04 Apr 2025 03:29:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8YM5bc59qwjlQ36hgK1HFf0sMPpa9wPrpfputnw4Z5kCzZUI7+et+MKVBd0PZ6GNYMaCHiQ==
-X-Received: by 2002:a05:6402:51d2:b0:5e4:92ca:34d0 with SMTP id 4fb4d7f45d1cf-5f0b3bce08cmr1901617a12.20.1743762569036;
-        Fri, 04 Apr 2025 03:29:29 -0700 (PDT)
+        bh=iIj6VBKjZOnFTh+4vM6JPksjZGxz/JfbdG4ThPXJ5PM=;
+        b=haR2V5ea37JOjRtmsVKnpdRwOw4G73IF++gp5RS3OZL3ZpgwD2WzRwYKHE3atwKQBL
+         rstHegcAi4pULjch9hxTv9qDAYU7t3l1RHQ17stniAYuMp+yJUMXyFYf7WfaLZJzuT3x
+         1FWVW7fst6Dc+6m9B3ovv+bbAfzatRCbQ0txKyQacY7nj+f2E6aeN8oTdSXhHJUJHdT4
+         0+b0Mnmav5B8x40fG4Zcx2dRrhOA+EACgM4mxa6oQLGE8c8yPJ9tADvTqcLgBZ0tCqBh
+         95zGvWYGBJsHpI2Vs3d+j8IdGzgC9lSSfYrtoSA9U1iLmHr2FoqDPURPxybCNYPxWP7p
+         pBMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWEXbciZ6ZS/qBWeFJOSlbW+OHmagU6MyylJ/TGOv/bVckNRrbinUJKc39o10FkIoa03Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRWxfHc1s7V0GrZbE8WeGjiOEp/lFrdbddE+2ZdyxlZemiHVm0
+	6pMe8Zdh7v7Oo3VWkIqcEZXac3Y2DF6lRxJ5BnAj6VmIM4lQx/knsgNRUyNOB2rmzEXtbrjDZde
+	rhcgT4vD/gr0etLY5DutdSNemxW7xj/KXV3l4Ej3ZUM6tUaTQ5BNT6ArHnQ==
+X-Gm-Gg: ASbGncugMieAPgAT4lhhGwW4/qp50o5EyLKxQXztKv2cd72QhCxskaVafUKb03+xmHB
+	d4EEfnFnWlyz/mhylEf3wyJhC/ylZf27OHl1ngKrQlVnPoPKmvrEZj6ByvRPhm4Y0Jp5+9XoZ2+
+	T914N4vsV2NVr+peYR6Jb5ov7l1kY5mbYKtNnVmM6PgKufGBlnLj7TDKfzi71/7TyZl89ZuTEoY
+	u6KKlGCESPAnRx3ZjvRrmSUhH0xhQd/ueW52rCE18wDs/RjHrKICfT0cVdNjrNwqeauZc8k00Go
+	C/WtMJ3WVGkb8sHt+Ij0
+X-Received: by 2002:a17:907:980f:b0:ac7:391b:e685 with SMTP id a640c23a62f3a-ac7d19fe8b9mr265179566b.59.1743762573237;
+        Fri, 04 Apr 2025 03:29:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxQWmbdXNbO0s0OLq5wavir8e/NorfNubB6SFVZLkKltTIV61PUBG1neVaqpwJooF4AHCdPA==
+X-Received: by 2002:a17:907:980f:b0:ac7:391b:e685 with SMTP id a640c23a62f3a-ac7d19fe8b9mr265177866b.59.1743762572908;
+        Fri, 04 Apr 2025 03:29:32 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.230.224])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f088084f17sm2174115a12.61.2025.04.04.03.29.27
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c0184d0dsm227635666b.130.2025.04.04.03.29.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Apr 2025 03:29:28 -0700 (PDT)
+        Fri, 04 Apr 2025 03:29:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 3/5] Documentation: kvm: fix some definition lists
-Date: Fri,  4 Apr 2025 12:29:17 +0200
-Message-ID: <20250404102919.171952-4-pbonzini@redhat.com>
+Subject: [PATCH 5/5] Documentation: kvm: remove KVM_CAP_MIPS_TE
+Date: Fri,  4 Apr 2025 12:29:19 +0200
+Message-ID: <20250404102919.171952-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250404102919.171952-1-pbonzini@redhat.com>
 References: <20250404102919.171952-1-pbonzini@redhat.com>
@@ -81,50 +81,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Ensure that they have a ":" in front of the defined item.
+Trap and emulate virtualization is not available anymore for MIPS.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Documentation/virt/kvm/api.rst | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/virt/kvm/api.rst | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index efca6cc32dd5..e5e7fd42b47c 100644
+index 469b64d229a6..2a63a244e87a 100644
 --- a/Documentation/virt/kvm/api.rst
 +++ b/Documentation/virt/kvm/api.rst
-@@ -7938,10 +7938,10 @@ by POWER10 processor.
- 7.24 KVM_CAP_VM_COPY_ENC_CONTEXT_FROM
- -------------------------------------
+@@ -8578,20 +8578,6 @@ may be incompatible with the MIPS VZ ASE.
+     virtualization, including standard guest virtual memory segments.
+ ==  ==========================================================================
  
--Architectures: x86 SEV enabled
--Type: vm
--Parameters: args[0] is the fd of the source vm
--Returns: 0 on success; ENOTTY on error
-+:Architectures: x86 SEV enabled
-+:Type: vm
-+:Parameters: args[0] is the fd of the source vm
-+:Returns: 0 on success; ENOTTY on error
+-8.6 KVM_CAP_MIPS_TE
+--------------------
+-
+-:Architectures: mips
+-
+-This capability, if KVM_CHECK_EXTENSION on the main kvm handle indicates that
+-it is available, means that the trap & emulate implementation is available to
+-run guest code in user mode, even if KVM_CAP_MIPS_VZ indicates that hardware
+-assisted virtualisation is also available. KVM_VM_MIPS_TE (0) must be passed
+-to KVM_CREATE_VM to create a VM which utilises it.
+-
+-If KVM_CHECK_EXTENSION on a kvm VM handle indicates that this capability is
+-available, it means that the VM is using trap & emulate.
+-
+ 8.7 KVM_CAP_MIPS_64BIT
+ ----------------------
  
- This capability enables userspace to copy encryption context from the vm
- indicated by the fd to the vm this is called on.
-@@ -8662,7 +8662,7 @@ limit the attack surface on KVM's MSR emulation code.
- 8.28 KVM_CAP_ENFORCE_PV_FEATURE_CPUID
- -------------------------------------
- 
--Architectures: x86
-+:Architectures: x86
- 
- When enabled, KVM will disable paravirtual features provided to the
- guest according to the bits in the KVM_CPUID_FEATURES CPUID leaf
-@@ -8896,7 +8896,7 @@ available to the guest on migration.
- 8.33 KVM_CAP_HYPERV_ENFORCE_CPUID
- ---------------------------------
- 
--Architectures: x86
-+:Architectures: x86
- 
- When enabled, KVM will disable emulated Hyper-V features provided to the
- guest according to the bits Hyper-V CPUID feature leaves. Otherwise, all
 -- 
 2.49.0
 
