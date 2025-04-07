@@ -1,107 +1,151 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FEF23ED6E;
-	Mon,  7 Apr 2025 13:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B68117BD3
+	for <kvm@vger.kernel.org>; Mon,  7 Apr 2025 13:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744031871; cv=none; b=i4PYTM7jMFd5UgkAgr24MxKG6q+t79NLo25wBGnWPKH+HPvJhQcZ24QgVIpaTpDOtF60zXsPn7xSV85BMAaLGNZvNQo5CrN+vTKk0CmNVeMTaRPAxgPjePQpJ6E2l90chdwsha1V8/gmjkucj+W+oAd7BmznlRoJSCgf5kVljdU=
+	t=1744032504; cv=none; b=L5ZmY2WCMYmGjflhT4q7ZicUCi8F7u9g5pR+727phFGtBEISL1XUDuOheQSxQBjGCZIt33KRb8LePg32YJdh4hSOLGxskIyutedkm1P9aq2WkkaxOctuBRL5i1q4yrhXZYuUxBC0W7w1is5KCBaE7KycFhIa9U1MeZyb1w/MaIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744031871; c=relaxed/simple;
-	bh=j3ADn87dIPWF3LPVBrrNAXdif+WJGrSNjAcLZdKKQeM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p80f0hgwOuz0NrnnCUs2lZgtZiwu8oBQTIm/+gzwCOCTJAXhCpTRdTDtZY+PlbSD7Up5vAkyLn/YPmeahO3VsebH8o5270AnAkIC1UdTYKLKqLaO3pTDJSWHi2QabvmWqjPI1o44wSrYHjK9Qwl5VrYX/CmKn2KDnpgBhvvg1S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FIZFtSDt; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1744032504; c=relaxed/simple;
+	bh=WBhV0P50uEemvYkCTcchjpLIuIOu7LWYOWRI3TWiHow=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=V1Ehzx90e4IUdOnWGPMc5kPh6GgJoB6R4uP9hMpwNQrXuUJaLjMD7d1zIdPPSGEV15CCsv1yyspmy/J1r/MK06NIHamOaDQrKNhUT6dBRYvlm9uapzWGo4QnvT5zCERvmfYgIrT9kl57iDLw5ng2nqJi2iBK4G62KiyxceOmYIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QFOsvz1D; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FIZFtSDt"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ACC1840E0214;
-	Mon,  7 Apr 2025 13:17:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id U1-CwGR10169; Mon,  7 Apr 2025 13:17:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1744031862; bh=9hSq2gq21alq/FTZf3bAecPFmsh15ve6BUHSwGy1L+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FIZFtSDtEO76M2xlQTcEyk9e1CrKBXIn8vCQtjFF1LZnGuo9HJ/tgjGbJ1z7+O9Ky
-	 O/eSaFka/4B3Nma2jfLSfYfSmE/fx2M8v8pOWSpCgBbQGkklt5rWHNn/iqlO3LjkDT
-	 J3erIiNoj+LHaqJLnW6Sb6Whb8w5beh5wlWXbdv/m4mg8+b97osfh6CmXxKBuY7WoX
-	 xWaX8Ag3OuC6lyNeJqb/3tRpqARu75nFGof1fm/KO51HYM9qMigeEvgCHDcxFZDpLd
-	 1/xbHYVEG+Sqw4pPh4u66iELjqRqeubjj/spxchap2L8aY6QxeQOmf0ohLFrZYv26S
-	 O/TaF9GWgdozW/S05FEomrEzGBE+PeV/El94aWKPKgTPrLTKhmXU7UuONeg29MscVp
-	 6WNGfrGkH2siWuQE22tDFrBmhEmvqqahQqJ8GGMEnnngq822Vg/cLn0LxLDe9knlH4
-	 HzDoeN5S5WOb7HrL+TUrPqTdGyvg48/bhNmDVpR++N/bWraOWNJRs2b9UrHm59aYGk
-	 UkWuTckJqCNOOY4ihapbOOsnNbUrG2SThhYzluLZFORVuiShPB9rYcmQSrBvgAwZx+
-	 wtIrTF0yZKwbgezrIDEYlu/97gmM3gNV1kt/0OCMaSemDa7233S/bNkNi9zlM947t5
-	 jiWXArXVL9hDxs21tUCdqyEE=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QFOsvz1D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744032501;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFoPwO5vUc8+rAcXR9YnRFfcZSPIuCpPg3z/cEeH+VA=;
+	b=QFOsvz1DtQk6dSj7I3TFcBtaH/jyegfUzcty4wZsBXOPFrmuOVAGL0GPcaO3LOM8dWqdhl
+	1kL3Z8R7cW2mhip5V0jFy3S3WYEz23WWXdjD/gNUqaxgh674JBSj3oKOAFXO2SqlD7K8YE
+	Zu/OubdKPc/EmpI9jizW8K3TP+7gLf4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-9rJso_2iP4mEcPXsMMgHMg-1; Mon,
+ 07 Apr 2025 09:28:19 -0400
+X-MC-Unique: 9rJso_2iP4mEcPXsMMgHMg-1
+X-Mimecast-MFC-AGG-ID: 9rJso_2iP4mEcPXsMMgHMg_1744032497
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 28F2E40E0213;
-	Mon,  7 Apr 2025 13:17:22 +0000 (UTC)
-Date: Mon, 7 Apr 2025 15:17:16 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, Thomas.Lendacky@amd.com,
-	nikunj@amd.com, Santosh.Shukla@amd.com, Vasant.Hegde@amd.com,
-	Suravee.Suthikulpanit@amd.com, David.Kaplan@amd.com, x86@kernel.org,
-	hpa@zytor.com, peterz@infradead.org, seanjc@google.com,
-	pbonzini@redhat.com, kvm@vger.kernel.org,
-	kirill.shutemov@linux.intel.com, huibo.wang@amd.com,
-	naveen.rao@amd.com
-Subject: Re: [RFC v2 01/17] x86/apic: Add new driver for Secure AVIC
-Message-ID: <20250407131716.GCZ_PQXC9Gkc-LzS33@fat_crate.local>
-References: <20250226090525.231882-1-Neeraj.Upadhyay@amd.com>
- <20250226090525.231882-2-Neeraj.Upadhyay@amd.com>
- <20250320155150.GNZ9w5lh9ndTenkr_S@fat_crate.local>
- <a7422464-4571-4eb3-b90c-863d8b74adca@amd.com>
- <20250321135540.GCZ91v3N5bYyR59WjK@fat_crate.local>
- <e0362a96-4b3a-44b1-8d54-806a6b045799@amd.com>
- <20250321171138.GDZ92dykj1kOmNrUjZ@fat_crate.local>
- <38edfce2-72c7-44a6-b657-b5ed9c75ed51@amd.com>
- <20250402094736.GAZ-0HuG0uVznq5wX_@fat_crate.local>
- <18538e70-aadf-4891-964e-4f8a06d85e5a@amd.com>
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EBAE0195608A;
+	Mon,  7 Apr 2025 13:28:16 +0000 (UTC)
+Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C48FF1809B6A;
+	Mon,  7 Apr 2025 13:28:15 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org, Chandra Merla
+ <cmerla@redhat.com>, Stable@vger.kernel.org, Thomas Huth
+ <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Wei Wang
+ <wei.w.wang@intel.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+In-Reply-To: <9126bfbf-9461-4959-bd38-1d7bc36d7701@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy
+ Ross"
+References: <20250404063619.0fa60a41.pasic@linux.ibm.com>
+ <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
+ <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
+ <20250404153620.04d2df05.pasic@linux.ibm.com>
+ <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+ <20250404160025.3ab56f60.pasic@linux.ibm.com>
+ <6f548b8b-8c6e-4221-a5d5-8e7a9013f9c3@redhat.com>
+ <20250404173910.6581706a.pasic@linux.ibm.com>
+ <20250407034901-mutt-send-email-mst@kernel.org>
+ <2b187710-329d-4d36-b2e7-158709ea60d6@redhat.com>
+ <20250407042058-mutt-send-email-mst@kernel.org>
+ <20250407151249.7fe1e418.pasic@linux.ibm.com>
+ <9126bfbf-9461-4959-bd38-1d7bc36d7701@redhat.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Mon, 07 Apr 2025 15:28:13 +0200
+Message-ID: <87h6309k42.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <18538e70-aadf-4891-964e-4f8a06d85e5a@amd.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Apr 02, 2025 at 04:04:34PM +0530, Neeraj Upadhyay wrote:
-> - snp_get_unsupported_features() looks like below.
->   It checks that, for the feature bits which are part of SNP_FEATURES_IMPL_REQ,
->   if they are enabled in hypervisor (and so reported in sev_status),
->   guest need to implement/enable those features. SAVIC also falls in that category
->   of SNP features.
-> 
->   So, if CONFIG_AMD_SECURE_AVIC is disabled, guest would run with SAVIC feature
->   disabled in guest. This would cause undefined behavior for that guest if SAVIC
->   feature is active for that guest in hypervisor.
+On Mon, Apr 07 2025, David Hildenbrand <david@redhat.com> wrote:
 
-Ok, so SNP_FEATURES_IMPL_REQ will contain the SAVIC bit (unconditionally,
-without the ifdeffery) and SNP_FEATURES_PRESENT will contain that thing you
-had suggested with the ifdeffery to denote whether SAVIC support has been
-enabled at build time:
+> On 07.04.25 15:12, Halil Pasic wrote:
+>> On Mon, 7 Apr 2025 04:34:29 -0400
+>> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+>> 
+>>> On Mon, Apr 07, 2025 at 10:17:10AM +0200, David Hildenbrand wrote:
+>>>> On 07.04.25 09:52, Michael S. Tsirkin wrote:
+>>>>> On Fri, Apr 04, 2025 at 05:39:10PM +0200, Halil Pasic wrote:
+>>>>>>>
+>>>>>>> Not perfect, but AFAIKS, not horrible.
+>>>>>>
+>>>>>> It is like it is. QEMU does queue exist if the corresponding feature
+>>>>>> is offered by the device, and that is what we have to live with.
+>>>>>
+>>>>> I don't think we can live with this properly though.
+>>>>> It means a guest that does not know about some features
+>>>>> does not know where to find things.
+>>>>
+>>>> Please describe a real scenario, I'm missing the point.
+>>>
+>>>
+>>> OK so.
+>>>
+>>> Device has VIRTIO_BALLOON_F_FREE_PAGE_HINT and VIRTIO_BALLOON_F_REPORTING
+>>> Driver only knows about VIRTIO_BALLOON_F_REPORTING so
+>>> it does not know what does VIRTIO_BALLOON_F_FREE_PAGE_HINT do.
+>>> How does it know which vq to use for reporting?
+>>> It will try to use the free page hint one.
+>> 
+>> First, sorry for not catching up again with the discussion earlier.
+>> 
+>> I think David's point is based on the assumption that by the time feature
+>> with the feature bit N+1 is specified and allocates a queue Q, all
+>> queues with indexes smaller than Q are allocated and possibly associated
+>> with features that were previously specified (and probably have feature
+>> bits smaller than N+1).
+>> 
+>> I.e. that we can mandate, even if you don't want to care about other
+>> optional features, you have to, because we say so, for the matter of
+>> virtqueue existence. And anything in the future, you don't have to care
+>> about because the queue index associated with future features is larger
+>> than Q, so it does not affect our position.
+>> 
+>> I think that argument can fall a part if:
+>> * future features reference optional queues defined in the past
+>> * somebody managed to introduce a limbo where a feature is reserved, and
+>>    they can not decide if they want a queue or not, or make the existence
+>>    of the queue depend on something else than a feature bit.
+>
+> Staring at the cross-vmm, including the adding+removing of features and 
+> queues that are not in the spec, I am wondering if (in a world with 
+> fixed virtqueues)
+>
+> 1) Feature bits must be reserved before used.
+>
+> 2) Queue indices must be reserved before used.
+>
+> It all smells like a problem similar to device IDs ...
 
-https://lore.kernel.org/r/e0362a96-4b3a-44b1-8d54-806a6b045799@amd.com
+Indeed, we need a rule "reserve a feature bit/queue index before using
+it, even if you do not plan to spec it properly".
 
-or not.
-
-Right?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
