@@ -1,73 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8085680
-	for <kvm@vger.kernel.org>; Mon,  7 Apr 2025 13:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF424CEF1
+	for <kvm@vger.kernel.org>; Mon,  7 Apr 2025 13:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744031615; cv=none; b=j6D7jqmaPNfg0xh2ffMqU4nvTgHyqABN9bx+Ime2u2Wbs2/nP60Y6X4C7zFDjivBJMue5YUWPx0QVW+0YHPHlGjJrlISbmQi2ovym5q07/j4/+tTiUJP6hA0U+Dmo7d0SpbWb0asZg0c/1d9672WXabEn28bvJx5xym+srtXoSw=
+	t=1744031871; cv=none; b=jnwiNucC21exiP6K7XLu+D9pOnZ2MTZUWkessY91yQzyu34kOh4DnmvtBZzoguc1yR7qVnd0aHy4d8Lf9VLl93WVwQbXYH6ROAyUQcaeEmNQYTSJGd/8+82BFza1qpI+kXDGNBnbwpX2GSQLHTKLRAVsEFUa+U/6d9OXXWV8ZqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744031615; c=relaxed/simple;
-	bh=iTIUibsvqrbIvBfbLO6yvxipiQgw/mcWSIkoRC1IQ4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Le2jV6dctOIiSOb3kUDe/fd7Jgf6XXwx40/sOBK+eRmjSn6wy4nlLRN8GZ91JeBoZyyQQ3/avUcyTMdy9YPLgL2izOGbwRuWP5QtpZB95jpClZdMiOYyaALmsCNzywMULEnli4sIvTd60rzIlJiW/zuucoPfKsvmi5Ti8Jq3aPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T5aMXL2N; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1744031871; c=relaxed/simple;
+	bh=S4DZHGQjVJb+4A4qFaXbHEcAUW8Cb8hEE4RunNXnZPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ix195Ajd9y/6nK1inmer0tRbemx6OWmcOafzWjXToyrKpFn0Ae+i9oEoHL8ul6M6nzHRkTolEhrAlIfbxzBZuDcTRDcuF071U1ggjx4LEd4sB2iGXQ0fZ4JN2VCOTRBGx4LnI0tzCo23aBdl31o2Cw1tk33OMXy2gZ+Lv3/Qgjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LvSKfWGW; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T5aMXL2N"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LvSKfWGW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744031613;
+	s=mimecast20190719; t=1744031868;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=m51074bO33/w5i/HWCytDEggQdmKPpoPEiX7c7uBltY=;
-	b=T5aMXL2Nxs/wmx9WZQSedbUB/kufgu2RiWyj2wFdFNU5n6e6x1295Pxb1heN/g/pFv1FGV
-	57xng+koGLxwfZzDZZ1glibhSTYR3IP2VbbPvbVPXTfKEZ5s0ipUqPk9ByLeaxSzcJkO57
-	w4re8ULwg0Y4em/Y+USHvfxuUEAE8AY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=BDwPW9pE1ppSBFgbdeMQcAvVIbhGoy40D70IGcXEs5w=;
+	b=LvSKfWGWChZkCfC4i4BQUJH3+XgrjVcGn5Q5+aWsHqEwvwOPCsURfIAVjngRIZptwyzXlN
+	SXTGH1Ri/CSubdQdtheEDlU+Pu9/qsaV5CU4yr8Eu1hUtki9aAewC0erG4YQSZeEYkVw5M
+	3kuZ/Wrn4x8migq/snVHkGr11KebBGc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-XeBnDEjfNfmg03kYyHELIQ-1; Mon, 07 Apr 2025 09:13:32 -0400
-X-MC-Unique: XeBnDEjfNfmg03kYyHELIQ-1
-X-Mimecast-MFC-AGG-ID: XeBnDEjfNfmg03kYyHELIQ_1744031611
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3913d8d7c3eso2356221f8f.0
-        for <kvm@vger.kernel.org>; Mon, 07 Apr 2025 06:13:31 -0700 (PDT)
+ us-mta-280-vQ81MSe1O1ydSO8Hs7RZAg-1; Mon, 07 Apr 2025 09:17:47 -0400
+X-MC-Unique: vQ81MSe1O1ydSO8Hs7RZAg-1
+X-Mimecast-MFC-AGG-ID: vQ81MSe1O1ydSO8Hs7RZAg_1744031866
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d209dc2d3so28842785e9.3
+        for <kvm@vger.kernel.org>; Mon, 07 Apr 2025 06:17:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744031611; x=1744636411;
+        d=1e100.net; s=20230601; t=1744031866; x=1744636666;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
+         :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=m51074bO33/w5i/HWCytDEggQdmKPpoPEiX7c7uBltY=;
-        b=rCC77sWt3JzNRtkr8jM/WJ7yLTOdgYDW96G+hm4PMPuVCMbZgdb93CeU2dMWu6wj31
-         NRgLaVGUCYCXgdhhhhHiqr+5zXaZT3AN6PiV8RM8b00SfuTbLGdBX0cZv4mYSj+02IIU
-         huqnfi4lI9O+CWwuh32/3d7H9YozI1Cwx2oMzuLYM7UNWPMT0reI8fdaNq7EVePfgjPB
-         3WCWPDOl6DRghE6PnMexEaqon9BocC5Yr8R96fcp2icdVSa5m0vCstl0089UvuIhFgsb
-         4TiDXOW8dQXVm+4dQ7jpgZwwkUQw/vVbSI5CVk6luNH/Z8iokBc64TbR9oqIfamnaYV4
-         LXFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQNfSAcfOJulRfasQBMxj47OkBR3QM3pvJ78Hrw8BTvjRYpvakdBJDoa4GCysM9eJHS9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsztmoAcPdZTccge6tSCE90gTAFRdQ2i58z8lSZAlT2g/jmrW5
-	Gv4iN789bHDQsQBiI7RSRJMc3UPPQeu/Ua8yseQfDrH1L77WMEa+FEza8KXKM5psapGx2i8NeDy
-	EsD1sFOpMZ5+ZjY5hHXcxCDWaqRvEHIOktT0kqwnFHUyQ79XjCw==
-X-Gm-Gg: ASbGncs1qYA3kqdXcGwzasBv7TuaN3kSO6FpZRaxCwhKF25Mih8sznxalm7AtsnPVlk
-	8aYm3w5mZdbpaCj3H9onTBIa1/qa9OWlV1X0HwfxRsEbmAeIAejNym/32n2SrOdsohyKvBELtjo
-	z9qU8Bzfjm76iECuPdB/J72M7BcsAmC7zdPGs8YeSe1pngrDqZuqA5Ft8du1WJZbOlnto1WLEVn
-	UNIRMJLtbdmVNSg7SeaC4KjHytEB1lpvQyO9VIlHNLWDcRariPMd2s4dc9PT2MT6N7Gd/dQGmyY
-	DH1VwXRcbCqznI6f/jIq0fFRLj39JPs9OkJLrcQ480qRcGcVvVVzNkB3AG/7agJQk9zu1+/dIJE
-	lU9u3RW42UX8g8yeSJfknkmDVJE8nd3H0z69TxcdrtfI=
-X-Received: by 2002:a05:6000:178c:b0:391:45e9:face with SMTP id ffacd0b85a97d-39d14662fc6mr10986563f8f.54.1744031610689;
-        Mon, 07 Apr 2025 06:13:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCGG2hYSNhURy95k0GMmsGkFNkyW86gLfpLuE4AA8o/qBIso1h35Rid8w+7CgRrN4toqtuKQ==
-X-Received: by 2002:a05:6000:178c:b0:391:45e9:face with SMTP id ffacd0b85a97d-39d14662fc6mr10986518f8f.54.1744031610266;
-        Mon, 07 Apr 2025 06:13:30 -0700 (PDT)
+        bh=BDwPW9pE1ppSBFgbdeMQcAvVIbhGoy40D70IGcXEs5w=;
+        b=QWev+TfYNCOZ5H+OKVfbPN+8al88QTp0EEDqVt3ka2+FvsCLpvC/van3IsVm2a2vzb
+         ZpIID42Pz1j84U0jm4YA9hR7DgbKitN3StYWJc6qOJ9yvre9Pmxes+y72Q2fZYi0U5jV
+         yWLZJEU3PORA2dXmH0D4AjQ9Pa1gTOwvJPvoDgEKRNpUz5mBpVopTjupJ1g3x0AKaiA9
+         c2uEuQVHOjFYL4U02aMi/nBfxRipd3xOr+71MNB/WzgdtTAS103sKykhNiiez0UqtDX2
+         /IYZPEx0z/OFFTlJAzGlI4caz4kJnzCNUrlwWbRsWijlSJXW+g10nQY6AOiaKIs0wbxU
+         hBiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWllmYE7LtT7YY8NMmDL54I0WofB6MN1wxm9W+Qunvcp/qNiKYJRt+tRBjI4WqFWDfLSI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvEz37/LmcCB7HOHH2udmL3JjS6FLIxVdudhF2lmhOk2Nige2E
+	wsPxfV2ZnxCmZ6gFhb7m2GEcTaQt1Y+629X1kSdCm0LaMMXrkMNCtKIyBS3rldW2OHZgdJZSX2N
+	heWKWaGIwl7yigPisAlX3cyP8kuD5yctp3+tA2LV1FVHy4wZbmQ==
+X-Gm-Gg: ASbGncsL3m47w4lyY/5omcTs1yPFE6di4SUc+TMeDc6t+U3Eh2ODjTxrJXAJg48N1Ax
+	Q06Xx/KUEUfImgoOCl3MQXrmoOo/oAJiYo8dXVqDefJDUuCRLcH8RP6NVGsGPugoBAXKJNxMUac
+	uUeoOhD1HNJqWWIde38e6O4+Z7MdzdAGiwAr9VgvWIn375OlcWs2f4Sow/QdM7RvtekXosGWoYy
+	ljBrZ2qCmZs5PI6mQNTjA/xqvxd5Ki6DY0MUjDBDt5mUJxmfCqmdwlibIEDglFgE3Ri7GGQ6zR4
+	v7sYeWLTQUzNW+LjpM3VWy4Cb8aFRrPYHmzXpr+3G2T67QbiFsqYyts3V7SePXZ3XdqzRo0WADK
+	hjEiQ/fAoXMVlVnyqTuvVNmlUY27aqTYrVLzuElSTQuc=
+X-Received: by 2002:a05:600c:1d88:b0:43c:ea40:ae4a with SMTP id 5b1f17b1804b1-43ee0783f84mr91002485e9.31.1744031866258;
+        Mon, 07 Apr 2025 06:17:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJDoHH+S74Q3s4YfYRMtY1QKAiLrupUYEmKs8h7WdQfIUm62OfLdBHe1bCgK7GIfw3yihrvQ==
+X-Received: by 2002:a05:600c:1d88:b0:43c:ea40:ae4a with SMTP id 5b1f17b1804b1-43ee0783f84mr91002085e9.31.1744031865876;
+        Mon, 07 Apr 2025 06:17:45 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c738:3c00:8b01:4fd9:b833:e1e9? (p200300cbc7383c008b014fd9b833e1e9.dip0.t-ipconnect.de. [2003:cb:c738:3c00:8b01:4fd9:b833:e1e9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c301a7064sm12332222f8f.34.2025.04.07.06.13.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec366a88csm127570905e9.37.2025.04.07.06.17.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 06:13:29 -0700 (PDT)
-Message-ID: <88d8f2d2-7b8a-458f-8fc4-c31964996817@redhat.com>
-Date: Mon, 7 Apr 2025 15:13:28 +0200
+        Mon, 07 Apr 2025 06:17:45 -0700 (PDT)
+Message-ID: <9126bfbf-9461-4959-bd38-1d7bc36d7701@redhat.com>
+Date: Mon, 7 Apr 2025 15:17:44 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,31 +77,28 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
  non-existing queues
-From: David Hildenbrand <david@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Halil Pasic <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
- kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
- Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Wei Wang <wei.w.wang@intel.com>,
- Daniel Verkamp <dverkamp@chromium.org>
-References: <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
+To: Halil Pasic <pasic@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ Chandra Merla <cmerla@redhat.com>, Stable@vger.kernel.org,
+ Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Wei Wang <wei.w.wang@intel.com>
+References: <20250404063619.0fa60a41.pasic@linux.ibm.com>
+ <4a33daa3-7415-411e-a491-07635e3cfdc4@redhat.com>
+ <d54fbf56-b462-4eea-a86e-3a0defb6298b@redhat.com>
+ <20250404153620.04d2df05.pasic@linux.ibm.com>
+ <d6f5f854-1294-4afa-b02a-657713435435@redhat.com>
  <20250404160025.3ab56f60.pasic@linux.ibm.com>
  <6f548b8b-8c6e-4221-a5d5-8e7a9013f9c3@redhat.com>
  <20250404173910.6581706a.pasic@linux.ibm.com>
  <20250407034901-mutt-send-email-mst@kernel.org>
  <2b187710-329d-4d36-b2e7-158709ea60d6@redhat.com>
  <20250407042058-mutt-send-email-mst@kernel.org>
- <0c221abf-de20-4ce3-917d-0375c1ec9140@redhat.com>
- <20250407044743-mutt-send-email-mst@kernel.org>
- <b331a780-a9db-4d76-af7c-e9e8e7d1cc10@redhat.com>
- <20250407045456-mutt-send-email-mst@kernel.org>
- <a86240bc-8417-48a6-bf13-01dd7ace5ae9@redhat.com>
- <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
+ <20250407151249.7fe1e418.pasic@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -148,126 +145,67 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
+In-Reply-To: <20250407151249.7fe1e418.pasic@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 07.04.25 11:13, David Hildenbrand wrote:
-> On 07.04.25 11:11, David Hildenbrand wrote:
->> On 07.04.25 10:58, Michael S. Tsirkin wrote:
->>> On Mon, Apr 07, 2025 at 10:54:00AM +0200, David Hildenbrand wrote:
->>>> On 07.04.25 10:49, Michael S. Tsirkin wrote:
->>>>> On Mon, Apr 07, 2025 at 10:44:21AM +0200, David Hildenbrand wrote:
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>>>> Whoever adds new feat_X *must be aware* about all previous features,
->>>>>>>> otherwise we'd be reusing feature bits and everything falls to pieces.
->>>>>>>
->>>>>>>
->>>>>>> The knowledge is supposed be limited to which feature bit to use.
+On 07.04.25 15:12, Halil Pasic wrote:
+> On Mon, 7 Apr 2025 04:34:29 -0400
+> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> 
+>> On Mon, Apr 07, 2025 at 10:17:10AM +0200, David Hildenbrand wrote:
+>>> On 07.04.25 09:52, Michael S. Tsirkin wrote:
+>>>> On Fri, Apr 04, 2025 at 05:39:10PM +0200, Halil Pasic wrote:
 >>>>>>
->>>>>> I think we also have to know which virtqueue bits can be used, right?
->>>>>>
+>>>>>> Not perfect, but AFAIKS, not horrible.
 >>>>>
->>>>> what are virtqueue bits? vq number?
+>>>>> It is like it is. QEMU does queue exist if the corresponding feature
+>>>>> is offered by the device, and that is what we have to live with.
 >>>>
->>>> Yes, sorry.
+>>>> I don't think we can live with this properly though.
+>>>> It means a guest that does not know about some features
+>>>> does not know where to find things.
 >>>
->>> I got confused myself, it's vq index actually now, we made the spec
->>> consistent with that terminology. used to be number/index
->>> interchangeably.
->>>
->>>> Assume cross-vm as an example. It would make use of virtqueue indexes 5+6
->>>> with their VIRTIO_BALLOON_F_WS_REPORTING.
->>>
->>>
->>> crossvm guys really should have reserved the feature bit even if they
->>> did not bother specifying it. Let's reserve it now at least?
+>>> Please describe a real scenario, I'm missing the point.
 >>
->> Along with the virtqueue indices, right?
 >>
->> Note that there was
+>> OK so.
 >>
->> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02503.html
->>
->> and
->>
->> https://groups.oasis-open.org/communities/community-home/digestviewer/viewthread?GroupId=3973&MessageKey=afb07613-f56c-4d40-8981-2fad1c723998&CommunityKey=2f26be99-3aa1-48f6-93a5-018dce262226&hlmlt=VT
->>
->> But it only was RFC, and as the QEMU implementation didn't materialize,
->> nobody seemed to care ...
+>> Device has VIRTIO_BALLOON_F_FREE_PAGE_HINT and VIRTIO_BALLOON_F_REPORTING
+>> Driver only knows about VIRTIO_BALLOON_F_REPORTING so
+>> it does not know what does VIRTIO_BALLOON_F_FREE_PAGE_HINT do.
+>> How does it know which vq to use for reporting?
+>> It will try to use the free page hint one.
 > 
-> Heh, but that one said:
+> First, sorry for not catching up again with the discussion earlier.
 > 
-> +\item[ VIRTIO_BALLOON_F_WS_REPORTING(6) ] The device has support for
-> Working Set
+> I think David's point is based on the assumption that by the time feature
+> with the feature bit N+1 is specified and allocates a queue Q, all
+> queues with indexes smaller than Q are allocated and possibly associated
+> with features that were previously specified (and probably have feature
+> bits smaller than N+1).
 > 
-> Which does not seem to reflect reality ...
+> I.e. that we can mandate, even if you don't want to care about other
+> optional features, you have to, because we say so, for the matter of
+> virtqueue existence. And anything in the future, you don't have to care
+> about because the queue index associated with future features is larger
+> than Q, so it does not affect our position.
 > 
+> I think that argument can fall a part if:
+> * future features reference optional queues defined in the past
+> * somebody managed to introduce a limbo where a feature is reserved, and
+>    they can not decide if they want a queue or not, or make the existence
+>    of the queue depend on something else than a feature bit.
 
-I dug a bit more into cross-vm, because that one seems to be the only
-one out there that does not behave like everybody else I found (maybe good,
-maybe bad :) ).
+Staring at the cross-vmm, including the adding+removing of features and 
+queues that are not in the spec, I am wondering if (in a world with 
+fixed virtqueues)
 
+1) Feature bits must be reserved before used.
 
-1) There was temporarily even another feature (VIRTIO_BALLOON_F_EVENTS_VQ)
-and another queue.
+2) Queue indices must be reserved before used.
 
-It got removed from cross-vm in:
-
-commit 9ba634b82b55ba762dc8724676b2cf9419460145
-Author: Daniel Verkamp <dverkamp@chromium.org>
-Date:   Thu Jul 11 11:29:52 2024 -0700
-
-     devices: virtio-balloon: remove event queue support
-     
-     VIRTIO_BALLOON_F_EVENTS_VQ was part of a proposed virtio spec change.
-     
-     It is not currently supported by upstream Linux, so removing this should
-     have no effect except for guest kernels that had CHROMIUM patches
-     applied.
-     
-     The virtqueue indexes for the ws-related queues are decremented to fill
-     the hole left by the removal of the event VQ; these are non-standard as
-     well, so they do not have virtqueue indexes assigned in the virtio spec,
-     but the proposed spec extension did actually use vq indexes 5 and 6.
-     
-     BUG=b:214864326
-
-
-2) cross-vm is aware of the upstream Linux driver
-
-They thought your fix would go upstream; it didn't.
-
-commit a2fa119e759d0238a42ff15a9aff0dfd122afebd
-Author: Daniel Verkamp <dverkamp@chromium.org>
-Date:   Wed Jul 10 16:16:28 2024 -0700
-
-     devices: virtio-balloon: warn about queue index mismatches
-     
-     The Linux kernel virtio-balloon driver spec non-compliance related to
-     queue numbering is being fixed; add some diagnostics to our device that
-     help to check if everything is working as expected.
-     
-     <https://lore.kernel.org/virtualization/CACGkMEsg0+vpav1Fo8JF1isq4Ef8t4_CFN1scyztDO8bXzRLBQ@mail.gmail.com/T/>
-     
-     Additionally, replace the num_expected_queues() function with per-queue
-     checking to avoid the need for the duplicate feature checks and queue
-     count calculation; each pop_queue() call will be checked using the `?`
-     operator and return a more useful error message if a particular queue is
-     missing.
-     
-     BUG=None
-     TEST=crosvm run --balloon-page-reporting ...
-
-
-IIRC, in that commit they switched to the "spec" behavior.
-
-That's when they started hard-coding the queue indexes.
-
-CCing Daniel. All Linux versions should be incompatible with cross-vmm regarding free page reporting.
-How is that handled?
+It all smells like a problem similar to device IDs ...
 
 -- 
 Cheers,
