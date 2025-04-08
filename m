@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A9326F44A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922A326F468;
 	Tue,  8 Apr 2025 10:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109561; cv=none; b=sfs1SJDxcvRLcX4K7qi14g5u4tQb5EE7I/oizOGTI1R3ez/HDWbPMhEEpyrp3blRn8cEi4QKDzuGZNb3dQI3oxrqLq2F6l+HE3Lt9/qRUMnsDQvfVFKhKQ/HL+LSJL2s0+gT1Q8iOzrL9hgAxZ8qEaDlw4+FBN0FhyMvx47uJ04=
+	t=1744109561; cv=none; b=niPR5gF3iqKEEdE2z0L6xfOEh9JwSK9eFsXufbFaqnnGslRxVEESWGlMsPPGvPpOwQoyLMU1gjepNKYLRjTTEkzPuGd7JHQqT9UYsd4c4MHgKaOrIm9+j9G9nn9uaV2oyxxO9lXQ2l9pa53rUq4fnvsXs7NeH8rNnCPUFHNHlKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744109561; c=relaxed/simple;
-	bh=GZFvuOp7F5b/p4wbdhkNUZbcbM062HzxRDlGZgd/He8=;
+	bh=UVi8agAZ1sB+I6A2ZnkIrJN5dALwNQw2NTXFDupKEJo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OtQKgogJDbLgdQjymBPpFAW9X5EuaVLVNGq8+rii5fZw8wRcjKlRn51Xd4tOiguhieebo6ihYaFQHD0uf4qIdRvMYQARU05OB/TW8FrJ3GSH//3mxk6oMU+chI5TB5ncvwXrS49IP0PnIsY4HirW/C7l/tRlqcIw1wpNLH6t3c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBNlM/Ni; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=jEmtr3/VuqRqN9pRwqTGtU5R8ScbyR5E2QLRLV3KWoNdS/asQcIoIi3UcZwE7lDhNBmg+i/N/FnMzhAYbj/edbTQrzFI7ZtpaKmSfebUKfxfiqmrL6OESFjpGZV1xoikOlAjUBR6yILnM/RPvgvvZTeLa9UdZsNuSETvG7odGAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NdN8pIqI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBNlM/Ni"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCB8C4CEEC;
-	Tue,  8 Apr 2025 10:52:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NdN8pIqI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AA2C4CEEB;
+	Tue,  8 Apr 2025 10:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1744109561;
-	bh=GZFvuOp7F5b/p4wbdhkNUZbcbM062HzxRDlGZgd/He8=;
+	bh=UVi8agAZ1sB+I6A2ZnkIrJN5dALwNQw2NTXFDupKEJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBNlM/NiOZ5oFyi+8pn1ivPQmUIiqH8A9CyiabubLSfl6a/lXiYlNh9YTjG3NyGgi
-	 4RMuHObQeevvfvJ0VulOrNlCoqmh32ocbTPywJBF97cII0jnh9ncLuXItnQjVAbTjU
-	 5Nt6S3D1j0hV6Qty6vhcIFJxfNnjCGBjrxZRwElO1lj4an9qF8UqoVW3YUYSzLL2HG
-	 kz9TmNS/k7Hbk9N3MiUp+sDr5y2hFomESWuFmMaKG3QBhpAnqcaqohrKF48KZOqKKL
-	 tm/8qYelGM5gVBvT+4pwc20OypPLduRb7ise0YXNIYQ6gC+x2adXpo1feA8tqVAEhR
-	 tq9eA0Xl8XxMw==
+	b=NdN8pIqI+1JPDfdui1iwztd08GD6fd3JUPLbhZfFtdHGIdkm5Nfpg7AsGYX19SRQ3
+	 xS/vNejDbth+L/txfNXIKJBLOLEbThcoW0RPHq0f9LphAo0Ook/k89trqiRJa5/87Y
+	 HOCFLPSIoRfce31zRDYQx6wTyj+mYXlsMh/nVkYhpcUkQlb73XFsUl8LmkO5uqLuMD
+	 N1Fq29P6X5fMy2/1n4ac9wzx9U9Inqsjy06GKV9xCpXAodFGZSP9UlUt0RyG/6i0ii
+	 lisREbwnqtquo1D4XmQpatUM7ASHb92B7QRo6OlKS72IjGpk/ulPfeoh6oD+r2DTnh
+	 GopxiV1Rkox3w==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1u26ZL-003QX2-5S;
+	id 1u26ZL-003QX2-Gx;
 	Tue, 08 Apr 2025 11:52:39 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -41,9 +41,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v2 11/17] KVM: arm64: nv: Handle VNCR_EL2 invalidation from MMU notifiers
-Date: Tue,  8 Apr 2025 11:52:19 +0100
-Message-Id: <20250408105225.4002637-12-maz@kernel.org>
+Subject: [PATCH v2 13/17] KVM: arm64: nv: Add S1 TLB invalidation primitive for VNCR_EL2
+Date: Tue,  8 Apr 2025 11:52:21 +0100
+Message-Id: <20250408105225.4002637-14-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250408105225.4002637-1-maz@kernel.org>
 References: <20250408105225.4002637-1-maz@kernel.org>
@@ -59,128 +59,298 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-During an invalidation triggered by an MMU notifier, we need to
-make sure we can drop the *host* mapping that would have been
-translated by the stage-2 mapping being invalidated.
+A TLBI by VA for S1 must take effect on our pseudo-TLB for VNCR
+and potentially knock the fixmap mapping. Even worse, that TLBI
+must be able to work cross-vcpu.
 
-For the moment, the invalidation is pretty brutal, as we nuke
-the full IPA range, and therefore any VNCR_EL2 mapping.
+For that, we track on a per-VM basis if any VNCR is mapped, using
+an atomic counter. Whenever a TLBI S1E2 occurs and that this counter
+is non-zero, we take the long road all the way back to the core code.
 
-At some point, we'll be more light-weight, and the code is able
-to deal with something more targetted.
+There, we iterate over all vcpus and check whether this particular
+invalidation has any damaging effect. If it does, we nuke the pseudo
+TLB and the corresponding fixmap.
+
+Yes, this is costly.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/nested.c | 75 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ arch/arm64/include/asm/kvm_host.h   |   3 +
+ arch/arm64/include/asm/kvm_nested.h |   1 +
+ arch/arm64/kvm/hyp/vhe/switch.c     |   8 ++
+ arch/arm64/kvm/nested.c             | 193 ++++++++++++++++++++++++++++
+ 4 files changed, 205 insertions(+)
 
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index d87fed0b48331..b2c535036a06b 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -390,6 +390,9 @@ struct kvm_arch {
+ 	/* Masks for VNCR-backed and general EL2 sysregs */
+ 	struct kvm_sysreg_masks	*sysreg_masks;
+ 
++	/* Count the number of VNCR_EL2 currently mapped */
++	atomic_t vncr_map_count;
++
+ 	/*
+ 	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+ 	 * the associated pKVM instance in the hypervisor.
+diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
+index ea50cad1a6a29..0bd07ea068a1f 100644
+--- a/arch/arm64/include/asm/kvm_nested.h
++++ b/arch/arm64/include/asm/kvm_nested.h
+@@ -336,6 +336,7 @@ int __kvm_translate_va(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
+ /* VNCR management */
+ int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu);
+ int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu);
++void kvm_handle_s1e2_tlbi(struct kvm_vcpu *vcpu, u32 inst, u64 val);
+ 
+ #define vncr_fixmap(c)						\
+ 	({							\
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index 5eaff1ae32b29..5902e5f15d091 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -484,6 +484,14 @@ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 	if (ret)
+ 		return false;
+ 
++	/*
++	 * If we have to check for any VNCR mapping being invalidated,
++	 * go back to the slow path for further processing.
++	 */
++	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu) &&
++	    atomic_read(&vcpu->kvm->arch.vncr_map_count))
++		return false;
++
+ 	__kvm_skip_instr(vcpu);
+ 
+ 	return true;
 diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 06db2097eae58..c1572fe60555f 100644
+index c1572fe60555f..6bb0b744a8384 100644
 --- a/arch/arm64/kvm/nested.c
 +++ b/arch/arm64/kvm/nested.c
-@@ -433,6 +433,30 @@ static unsigned int ttl_to_size(u8 ttl)
- 	return max_size;
+@@ -47,6 +47,7 @@ void kvm_init_nested(struct kvm *kvm)
+ {
+ 	kvm->arch.nested_mmus = NULL;
+ 	kvm->arch.nested_mmus_size = 0;
++	atomic_set(&kvm->arch.vncr_map_count, 0);
  }
  
-+static u8 pgshift_level_to_ttl(u16 shift, u8 level)
-+{
-+	u8 ttl;
-+
-+	switch(shift) {
-+	case 12:
-+		ttl = TLBI_TTL_TG_4K;
-+		break;
-+	case 14:
-+		ttl = TLBI_TTL_TG_16K;
-+		break;
-+	case 16:
-+		ttl = TLBI_TTL_TG_64K;
-+		break;
-+	default:
-+		BUG();
-+	}
-+
-+	ttl <<= 2;
-+	ttl |= level & 3;
-+
-+	return ttl;
-+}
-+
- /*
-  * Compute the equivalent of the TTL field by parsing the shadow PT.  The
-  * granule size is extracted from the cached VTCR_EL2.TG0 while the level is
-@@ -783,6 +807,53 @@ int kvm_inject_s2_fault(struct kvm_vcpu *vcpu, u64 esr_el2)
- 	return kvm_inject_nested_sync(vcpu, esr_el2);
+ static int init_nested_s2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu)
+@@ -755,6 +756,7 @@ void kvm_vcpu_put_hw_mmu(struct kvm_vcpu *vcpu)
+ 		clear_fixmap(vncr_fixmap(vcpu->arch.vncr_tlb->cpu));
+ 		vcpu->arch.vncr_tlb->cpu = -1;
+ 		host_data_clear_flag(L1_VNCR_MAPPED);
++		atomic_dec(&vcpu->kvm->arch.vncr_map_count);
+ 	}
+ 
+ 	/*
+@@ -854,6 +856,196 @@ static void kvm_invalidate_vncr_ipa(struct kvm *kvm, u64 start, u64 end)
+ 	}
  }
  
-+static void invalidate_vncr(struct vncr_tlb *vt)
-+{
-+	vt->valid = false;
-+	if (vt->cpu != -1)
-+		clear_fixmap(vncr_fixmap(vt->cpu));
-+}
++struct s1e2_tlbi_scope {
++	enum {
++		TLBI_ALL,
++		TLBI_VA,
++		TLBI_VAA,
++		TLBI_ASID,
++	} type;
 +
-+static void kvm_invalidate_vncr_ipa(struct kvm *kvm, u64 start, u64 end)
++	u16 asid;
++	u64 va;
++	u64 size;
++};
++
++static void invalidate_vncr_va(struct kvm *kvm,
++			       struct s1e2_tlbi_scope *scope)
 +{
 +	struct kvm_vcpu *vcpu;
 +	unsigned long i;
 +
 +	lockdep_assert_held_write(&kvm->mmu_lock);
 +
-+	if (!kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
-+		return;
-+
 +	kvm_for_each_vcpu(i, vcpu, kvm) {
 +		struct vncr_tlb *vt = vcpu->arch.vncr_tlb;
-+		u64 ipa_start, ipa_end, ipa_size;
-+
-+		/*
-+		 * Careful here: We end-up here from an MMU notifier,
-+		 * and this can race against a vcpu not being onlined
-+		 * yet, without the pseudo-TLB being allocated.
-+		 *
-+		 * Skip those, as they obviously don't participate in
-+		 * the invalidation at this stage.
-+		 */
-+		if (!vt)
-+			continue;
++		u64 va_start, va_end, va_size;
 +
 +		if (!vt->valid)
 +			continue;
 +
-+		ipa_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
-+							    vt->wr.level));
-+		ipa_start = vt->wr.pa & (ipa_size - 1);
-+		ipa_end = ipa_start + ipa_size;
++		va_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
++							   vt->wr.level));
++		va_start = vt->gva & (va_size - 1);
++		va_end = va_start + va_size;
 +
-+		if (ipa_end <= start || ipa_start >= end)
-+			continue;
++		switch (scope->type) {
++		case TLBI_ALL:
++			break;
++
++		case TLBI_VA:
++			if (va_end <= scope->va ||
++			    va_start >= (scope->va + scope->size))
++				continue;
++			if (vt->wr.nG && vt->wr.asid != scope->asid)
++				continue;
++			break;
++
++		case TLBI_VAA:
++			if (va_end <= scope->va ||
++			    va_start >= (scope->va + scope->size))
++				continue;
++			break;
++
++		case TLBI_ASID:
++			if (!vt->wr.nG || vt->wr.asid != scope->asid)
++				continue;
++			break;
++		}
 +
 +		invalidate_vncr(vt);
 +	}
 +}
 +
++static void compute_s1_tlbi_range(struct kvm_vcpu *vcpu, u32 inst, u64 val,
++				  struct s1e2_tlbi_scope *scope)
++{
++	switch (inst) {
++	case OP_TLBI_ALLE2:
++	case OP_TLBI_ALLE2IS:
++	case OP_TLBI_ALLE2OS:
++	case OP_TLBI_VMALLE1:
++	case OP_TLBI_VMALLE1IS:
++	case OP_TLBI_VMALLE1OS:
++	case OP_TLBI_ALLE2NXS:
++	case OP_TLBI_ALLE2ISNXS:
++	case OP_TLBI_ALLE2OSNXS:
++	case OP_TLBI_VMALLE1NXS:
++	case OP_TLBI_VMALLE1ISNXS:
++	case OP_TLBI_VMALLE1OSNXS:
++		scope->type = TLBI_ALL;
++		break;
++	case OP_TLBI_VAE2:
++	case OP_TLBI_VAE2IS:
++	case OP_TLBI_VAE2OS:
++	case OP_TLBI_VAE1:
++	case OP_TLBI_VAE1IS:
++	case OP_TLBI_VAE1OS:
++	case OP_TLBI_VAE2NXS:
++	case OP_TLBI_VAE2ISNXS:
++	case OP_TLBI_VAE2OSNXS:
++	case OP_TLBI_VAE1NXS:
++	case OP_TLBI_VAE1ISNXS:
++	case OP_TLBI_VAE1OSNXS:
++	case OP_TLBI_VALE2:
++	case OP_TLBI_VALE2IS:
++	case OP_TLBI_VALE2OS:
++	case OP_TLBI_VALE1:
++	case OP_TLBI_VALE1IS:
++	case OP_TLBI_VALE1OS:
++	case OP_TLBI_VALE2NXS:
++	case OP_TLBI_VALE2ISNXS:
++	case OP_TLBI_VALE2OSNXS:
++	case OP_TLBI_VALE1NXS:
++	case OP_TLBI_VALE1ISNXS:
++	case OP_TLBI_VALE1OSNXS:
++		scope->type = TLBI_VA;
++		scope->size = ttl_to_size(FIELD_GET(TLBI_TTL_MASK, val));
++		if (!scope->size)
++			scope->size = SZ_1G;
++		scope->va = (val << 12) & ~(scope->size - 1);
++		scope->asid = FIELD_GET(TLBIR_ASID_MASK, val);
++		break;
++	case OP_TLBI_ASIDE1:
++	case OP_TLBI_ASIDE1IS:
++	case OP_TLBI_ASIDE1OS:
++	case OP_TLBI_ASIDE1NXS:
++	case OP_TLBI_ASIDE1ISNXS:
++	case OP_TLBI_ASIDE1OSNXS:
++		scope->type = TLBI_ASID;
++		scope->asid = FIELD_GET(TLBIR_ASID_MASK, val);
++		break;
++	case OP_TLBI_VAAE1:
++	case OP_TLBI_VAAE1IS:
++	case OP_TLBI_VAAE1OS:
++	case OP_TLBI_VAAE1NXS:
++	case OP_TLBI_VAAE1ISNXS:
++	case OP_TLBI_VAAE1OSNXS:
++	case OP_TLBI_VAALE1:
++	case OP_TLBI_VAALE1IS:
++	case OP_TLBI_VAALE1OS:
++	case OP_TLBI_VAALE1NXS:
++	case OP_TLBI_VAALE1ISNXS:
++	case OP_TLBI_VAALE1OSNXS:
++		scope->type = TLBI_VAA;
++		scope->size = ttl_to_size(FIELD_GET(TLBI_TTL_MASK, val));
++		if (!scope->size)
++			scope->size = SZ_1G;
++		scope->va = (val << 12) & ~(scope->size - 1);
++		break;
++	case OP_TLBI_RVAE2:
++	case OP_TLBI_RVAE2IS:
++	case OP_TLBI_RVAE2OS:
++	case OP_TLBI_RVAE1:
++	case OP_TLBI_RVAE1IS:
++	case OP_TLBI_RVAE1OS:
++	case OP_TLBI_RVAE2NXS:
++	case OP_TLBI_RVAE2ISNXS:
++	case OP_TLBI_RVAE2OSNXS:
++	case OP_TLBI_RVAE1NXS:
++	case OP_TLBI_RVAE1ISNXS:
++	case OP_TLBI_RVAE1OSNXS:
++	case OP_TLBI_RVALE2:
++	case OP_TLBI_RVALE2IS:
++	case OP_TLBI_RVALE2OS:
++	case OP_TLBI_RVALE1:
++	case OP_TLBI_RVALE1IS:
++	case OP_TLBI_RVALE1OS:
++	case OP_TLBI_RVALE2NXS:
++	case OP_TLBI_RVALE2ISNXS:
++	case OP_TLBI_RVALE2OSNXS:
++	case OP_TLBI_RVALE1NXS:
++	case OP_TLBI_RVALE1ISNXS:
++	case OP_TLBI_RVALE1OSNXS:
++		scope->type = TLBI_VA;
++		scope->va = decode_range_tlbi(val, &scope->size, &scope->asid);
++		break;
++	case OP_TLBI_RVAAE1:
++	case OP_TLBI_RVAAE1IS:
++	case OP_TLBI_RVAAE1OS:
++	case OP_TLBI_RVAAE1NXS:
++	case OP_TLBI_RVAAE1ISNXS:
++	case OP_TLBI_RVAAE1OSNXS:
++	case OP_TLBI_RVAALE1:
++	case OP_TLBI_RVAALE1IS:
++	case OP_TLBI_RVAALE1OS:
++	case OP_TLBI_RVAALE1NXS:
++	case OP_TLBI_RVAALE1ISNXS:
++	case OP_TLBI_RVAALE1OSNXS:
++		scope->type = TLBI_VAA;
++		scope->va = decode_range_tlbi(val, &scope->size, NULL);
++		break;
++	}
++}
++
++void kvm_handle_s1e2_tlbi(struct kvm_vcpu *vcpu, u32 inst, u64 val)
++{
++	struct s1e2_tlbi_scope scope = {};
++
++	compute_s1_tlbi_range(vcpu, inst, val, &scope);
++	invalidate_vncr_va(vcpu->kvm, &scope);
++}
++
  void kvm_nested_s2_wp(struct kvm *kvm)
  {
  	int i;
-@@ -795,6 +866,8 @@ void kvm_nested_s2_wp(struct kvm *kvm)
- 		if (kvm_s2_mmu_valid(mmu))
- 			kvm_stage2_wp_range(mmu, 0, kvm_phys_size(mmu));
+@@ -1189,6 +1381,7 @@ static void kvm_map_l1_vncr(struct kvm_vcpu *vcpu)
+ 	if (pgprot_val(prot) != pgprot_val(PAGE_NONE)) {
+ 		__set_fixmap(vncr_fixmap(vt->cpu), vt->hpa, prot);
+ 		host_data_set_flag(L1_VNCR_MAPPED);
++		atomic_inc(&vcpu->kvm->arch.vncr_map_count);
  	}
-+
-+	kvm_invalidate_vncr_ipa(kvm, 0, BIT(kvm->arch.mmu.pgt->ia_bits));
  }
  
- void kvm_nested_s2_unmap(struct kvm *kvm, bool may_block)
-@@ -809,6 +882,8 @@ void kvm_nested_s2_unmap(struct kvm *kvm, bool may_block)
- 		if (kvm_s2_mmu_valid(mmu))
- 			kvm_stage2_unmap_range(mmu, 0, kvm_phys_size(mmu), may_block);
- 	}
-+
-+	kvm_invalidate_vncr_ipa(kvm, 0, BIT(kvm->arch.mmu.pgt->ia_bits));
- }
- 
- void kvm_nested_s2_flush(struct kvm *kvm)
 -- 
 2.39.2
 
