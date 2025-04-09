@@ -1,131 +1,103 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F894213E90
-	for <kvm@vger.kernel.org>; Wed,  9 Apr 2025 19:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CA7214A7F;
+	Wed,  9 Apr 2025 19:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744228431; cv=none; b=K6w610fR584Oa+GBJkkHVzJ6FNuOBy+Vmg5KowUhxdUpcdHVGpLWCc8z8he0avWFhvQEP6rg1Hcsna4EoFD9X1HtepYtxV7abTFkjwQ+KRjB2Pks1oZnkk6mMmOJT3pc5Hkj4RncGFQhJrkfrqKTrNuRM6AytFMXs3ua8zzJW84=
+	t=1744228451; cv=none; b=WYahd8HijWGGgljQZwVoZI2y9iN7Yu25MdRJayLwzDJ0xXYr3kOsrgEFcbp0MEAI9L7VB/hPe03dIH33eeTOFrVLd7+KKMfihkmPm+KNMgUfyHh7OTG6mrgAfzL9H0JbKZhyMRsUyt6UdfJtcNbIv1IDNz2JS+no33SQ5YUsoyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744228431; c=relaxed/simple;
-	bh=rv4mMwuG4jkn773xC8sA0ToKXoLaQgRn7SHaoclVUrY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bLxqrI1vdlQ6rZNLaUgLW8r6NlUfD92DtL+7FEaeSnVOztB9Mwu5ivjgdRO3scMf2jorFovFnbE5mgYVtV8XekzD2CMwO76XRfhV2CNI4mD14Z0PA/RzS60ntXZUTSrnxrzR1U75j/I0yj7mlrKajBnp1Hnf5HPMDh/WqVyy70k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aI9teiPp; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1744228451; c=relaxed/simple;
+	bh=q7KvwDfQqFDNGgQf6PyiHomLFAW6NL2n557EpD26id8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oy1/Yaw991znhwp5goXstaqIx3MSAul68EdkULkv06fub7A452cZfm2d1VFeXm8c1Ih6pxf3fij9Zu0Nk0uXQ8nrabO2A8y3aAJxh0RDq+tamaRNUbCt20kGjzAfweWC6OTatmjxnItm2Iu7FiAA/Sp0NrSMhPH5/3GAfhyiNfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VulSS1Yw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aI9teiPp"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-72f3b4c0305so16825b3a.0
-        for <kvm@vger.kernel.org>; Wed, 09 Apr 2025 12:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744228429; x=1744833229; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B/LBm3aV4zfAmxi92/BK6RmsqnpaBnCdXpzKq52/Foc=;
-        b=aI9teiPp4IOAdU9GBsw2c5UUNtJjfzYDo5oOlVpoK02KZbfJDi4/BUpMOgjUTDDP77
-         Zo1cFX/mi1CVaa7zifjJZefTiSM4bKVOBRbxcHWDsR4ra5zIy6Q8gxph2QBBXdTfWPR0
-         5OQe5GpPbqiVQys+My9WQ6FIq3wGpo5XZ/aX/6wj+SeZn0pkfDwDGx1345vl3dMMVxH9
-         XNN9BcliriZjlo6Nu9bsZMO7F7TC8FUiDzYlGA2mNiW7XM6g2jB0KjlK3q1zQA8WX7QA
-         IvmRm67Z5XfxmOWM6F9ibvqDxN6Uam9M7Va/UcIZ8+KdMP9uVdgncS5xeXVLnTkaWbTL
-         dP/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744228429; x=1744833229;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B/LBm3aV4zfAmxi92/BK6RmsqnpaBnCdXpzKq52/Foc=;
-        b=eDoUqgu64B6RUdkQrPhBs5YQEe+/x41554yPwEgNnBgtloWJ2ehLZMnLVZXAuxM407
-         h6j9cgBcPgobNN5joZ1jBr11wmDBwdoDSkCnTtMXv65QlFt0djbhvvelwBEm63w6hT6g
-         6ElvRqz8Knrsv/tBZIZq1q1mtVflfY4oSqVGtFXMz1OR+et+A+u481uFwHwqCBqMpfEK
-         iFUM1ON6SdGOgQQeEVElDEzeMnOadYkk76HwrTXFYJk7sqVEi9Sq11d6cMQ1FubdyOM8
-         LYpSj3az/6ULX0wnZOFP/Ipy2+Hhx+XEKerB/pOckLhL9mdbtp6cpkJH0URXbR6M9zyo
-         VtvA==
-X-Gm-Message-State: AOJu0YylNxiNmXNOYY2kRpqWs+z9ggiqV3flH/KGLTjAyOIzyRacOiW2
-	c/qVOX6nr1gWcCaj7eeb17WOqmsNMVRJ12OKZ7JhEjTk0Gd0kimEWZgshR/iktvwTCbVQOIeSo9
-	Ycw==
-X-Google-Smtp-Source: AGHT+IEeESm/upruWypiAiAFjj3gqiD2FWPZpn5Oi58JT7YjI+D2LtDvdvxhwdzcKYcXLoDvWUFBt/R8XtU=
-X-Received: from pfkq6.prod.google.com ([2002:a05:6a00:846:b0:737:6e43:8e34])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:130c:b0:736:bfc4:ef2c
- with SMTP id d2e1a72fcca58-73bbec49ac8mr221785b3a.0.1744228428902; Wed, 09
- Apr 2025 12:53:48 -0700 (PDT)
-Date: Wed, 9 Apr 2025 12:53:47 -0700
-In-Reply-To: <20250409014136.2816971-1-mlevitsk@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VulSS1Yw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260C8C4CEE2;
+	Wed,  9 Apr 2025 19:54:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744228450;
+	bh=q7KvwDfQqFDNGgQf6PyiHomLFAW6NL2n557EpD26id8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VulSS1YwlnFjfym00iwjm8nZpYCyp06C0ojMIpSCSHZR4u0kCve/HPOLSpwGvY8u5
+	 pBTjBb/9vduXt1yHmPU9a+E8F7KAYhYpWKQEBBPX+/hfy20lXzFqyHyY8B+HK6sZUf
+	 xN3fYMEJoURP0ouK4XLhP558hxwDPdlv3j55wiCtlhRPkFu/TgXbgsw4c31dujDZWx
+	 WI68CmIsMMEvM72xxyr1xE96ssKn4YT5iCMXcjHWRmRp8UzErdBvMQgGb+caLf69ln
+	 4GvtnHjQrXPK2u6hCjNy/AUsgKBW8iPDB+syZsrtkVGFcuJdzKsEe35yQuSR5M6flU
+	 mNFGcP/z9LOpg==
+Date: Wed, 9 Apr 2025 21:53:59 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Xin Li <xin@zytor.com>,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-edac@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-ide@vger.kernel.org,
+	linux-pm@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, jgross@suse.com,
+	andrew.cooper3@citrix.com, peterz@infradead.org, acme@kernel.org,
+	namhyung@kernel.org, mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, wei.liu@kernel.org,
+	ajay.kaher@broadcom.com, alexey.amakhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+	pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+	luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+	haiyangz@microsoft.com, decui@microsoft.com
+Subject: Re: [RFC PATCH v1 01/15] x86/msr: Replace __wrmsr() with
+ native_wrmsrl()
+Message-ID: <Z_bQV2oOnJlwbxnk@gmail.com>
+References: <20250331082251.3171276-1-xin@zytor.com>
+ <20250331082251.3171276-2-xin@zytor.com>
+ <Z-pruogreCuU66wm@gmail.com>
+ <9D15DE81-2E68-4FCD-A133-4963602E18C9@zytor.com>
+ <a0254e73-bf7c-4876-b64e-b08e96044666@zytor.com>
+ <e5770add-9d18-40e1-929d-df7c40f3c7d1@intel.com>
+ <ADCFB190-A89A-460D-81A6-80E20AEFBFBC@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250409014136.2816971-1-mlevitsk@redhat.com>
-Message-ID: <Z_bQS63A2bd-LzgQ@google.com>
-Subject: Re: [PATCH v2 0/4] KVM: extract lock_all_vcpus/unlock_all_vcpus
-From: Sean Christopherson <seanjc@google.com>
-To: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: kvm@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm-riscv@lists.infradead.org, 
-	Oliver Upton <oliver.upton@linux.dev>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Jing Zhang <jingzhangos@google.com>, Waiman Long <longman@redhat.com>, x86@kernel.org, 
-	Kunkun Jiang <jiangkunkun@huawei.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Zenghui Yu <yuzenghui@huawei.com>, 
-	Borislav Petkov <bp@alien8.de>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>, Sebastian Ott <sebott@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atishp@atishpatra.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Will Deacon <will@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, 
-	Marc Zyngier <maz@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	Joey Gouly <joey.gouly@arm.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Andre Przywara <andre.przywara@arm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ADCFB190-A89A-460D-81A6-80E20AEFBFBC@zytor.com>
 
-+Adrian
 
-On Tue, Apr 08, 2025, Maxim Levitsky wrote:
-> Implement Paolo's suggestion of reusing
+* H. Peter Anvin <hpa@zytor.com> wrote:
 
-Ha!  I *knew* this felt familiar when I suggested extracting (un)lock_all_vcpus()
-to common code in the context of the TDX series.
+> On April 2, 2025 8:41:07 AM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
+> >On 3/31/25 22:53, Xin Li wrote:
+> >> Per "struct msr" defined in arch/x86/include/asm/shared/msr.h:
+> >> 
+> >> struct msr {
+> >>         union {
+> >>                 struct {
+> >>                         u32 l;
+> >>                         u32 h;
+> >>                 };
+> >>                 u64 q;
+> >>         };
+> >> };
+> >> 
+> >> Probably *msrq() is what we want?
+> >
+> > What would folks think about "wrmsr64()"? It's writing a 64-bit 
+> > value to an MSR and there are a lot of functions in the kernel that 
+> > are named with the argument width in bits.
+> 
+> Personally, I hate the extra verbosity, mostly visual, since numerals 
+> are nearly as prominent as capital letters they tend to attract the 
+> eye. There is a reason why they aren't used this way in assembly 
+> languages.
 
-https://lore.kernel.org/all/Z-V0qyTn2bXdrPF7@google.com
+So what's the consensus here? Both work for me, but I have to pick one. :-)
 
-> sev_lock/unlock_vcpus_for_migration in arm and riscv code
-> for the purpose of taking vcpu->mutex of all vcpus of a VM.
-> 
-> Because sev_lock/unlock_vcpus_for_migration already have a workaround
-> for lockdep max lock depth, this fixes the lockdep warnings on arm
-> which were the inspiration for this refactoring.
-> 
-> This patch series was only compile tested on all 3 architectures.
-> 
-> V2: added trylock option to kvm_lock_all_vcpus to be better compatible
-> with the orginal code.
-> 
-> Best regards,
-> 	Maxim Levitsky
-> 
-> Maxim Levitsky (4):
->   locking/mutex: implement mutex_trylock_nested
->   KVM: x86: move sev_lock/unlock_vcpus_for_migration to kvm_main.c
->   KVM: arm64: switch to using kvm_lock/unlock_all_vcpus
->   RISC-V: KVM: switch to kvm_lock/unlock_all_vcpus
-> 
->  arch/arm64/include/asm/kvm_host.h     |  3 --
->  arch/arm64/kvm/arch_timer.c           |  4 +-
->  arch/arm64/kvm/arm.c                  | 43 ----------------
->  arch/arm64/kvm/vgic/vgic-init.c       |  4 +-
->  arch/arm64/kvm/vgic/vgic-its.c        |  8 +--
->  arch/arm64/kvm/vgic/vgic-kvm-device.c | 12 ++---
->  arch/riscv/kvm/aia_device.c           | 34 +------------
->  arch/x86/kvm/svm/sev.c                | 65 ++----------------------
->  include/linux/kvm_host.h              |  6 +++
->  include/linux/mutex.h                 |  8 +++
->  kernel/locking/mutex.c                | 14 ++++--
->  virt/kvm/kvm_main.c                   | 71 +++++++++++++++++++++++++++
->  12 files changed, 116 insertions(+), 156 deletions(-)
-> 
-> -- 
-> 2.26.3
-> 
-> 
+Thanks,
+
+	Ingo
