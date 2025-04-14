@@ -1,39 +1,39 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F34228A1CC;
-	Mon, 14 Apr 2025 17:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC93F1A08AB;
+	Mon, 14 Apr 2025 17:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744652981; cv=none; b=Y61OcmbIIFlS68AJmR490lYlDn6SLm5oCq0VMtlH4/jQdOHcyI7mwS6j0jihBuIGC3nJKIJDzO/Q3WxvIAEEjjU0QIvq47s3f0tN9AMfoXR65SdFcneobc17ksybpDqb83VNfdyh2UiMXidKmWN5QbYXfXCT73ISmFpRN6Fe77k=
+	t=1744653561; cv=none; b=ZzLJtcmRk2+QLVIwhIAQcdJDCnNBNqKS3DW9I71hZCzh/7U63qz0LUmGHGtjheL1zRqspl4yAuax1MKuAxcmnpmMLUEnO0nmrJWeZsRlAuaDlPooKy6RQsZRLXgrTuqHjPaa+epDDAZNLz1A5TKk7haqlX0yrGMauc4FcbOUVJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744652981; c=relaxed/simple;
-	bh=pCf6zl5WWMLk499XrU3ze5XCG4TXFPjHsQDAk9yq3ts=;
+	s=arc-20240116; t=1744653561; c=relaxed/simple;
+	bh=izHoMpjiDMEPcNnJKy/EPdzd29yVBe0tWK63jGCJu1M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eUG3gUgmmVKRdIaXhY7SVMzsoTrHS8Ul+GWVXUcNR2UIKeVM4xeUKY+XNyrtpXVhnNHztj5TTmP8dmj6BvfI1VQQDvMfmgHf2DMA4WKt+Lk1EpbYZs+Yy/sCilIFLX4RM3b3fDA8emKD0Q5ETF1PVC7VLX2m1PX2mz4GEpZ4HPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=OWsAVJsJ; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=RhoXzD10VugpkdXxByy8eoUbuO4tR5Wxf5pRMUGOGazXHJ5/JZfIIDCnsQng0Fg6QSdAhwGte+rHV4Vyjv1MwkL1sO1CeAy038E9OTRZ78ZOJjoG55qtRGVn2P3mKBma8XGMIxA4NKC3n7igkEYd8SlDwA/Gs88lR9ee6aH+SNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=OvSSxGHc; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="OWsAVJsJ"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="OvSSxGHc"
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53EHmldx2305377
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53EHxDr72308244
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 14 Apr 2025 10:48:48 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53EHmldx2305377
+	Mon, 14 Apr 2025 10:59:15 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53EHxDr72308244
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025032001; t=1744652930;
-	bh=pCf6zl5WWMLk499XrU3ze5XCG4TXFPjHsQDAk9yq3ts=;
+	s=2025032001; t=1744653555;
+	bh=p4lhl3SeNve08MUw1GRBS2FETk4fVhCOs/fGiDb9eW4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OWsAVJsJQtReNkvBxn4n90Jw5b4hgpiiMsQMj1kLj82PEd0mx8nuHiF2kM8Mvx3Xw
-	 LqxRXhBr5R0xxDPh57nO2hOouAGBLY3AKdZeqNoPCmA97JPCWtZ0UYmnsK+6p053w2
-	 lqlg5oeia/VCC2I4n1QOzlzq2Q+EByucHb13DRq32ZiCSS+Txt0R8+YpBvAIWB7Gct
-	 FuwsCZqp8vL1531axOppQPBxHdE0eB7iOltYssLVQ7RMeDVsVCMmRKTPxkgHRBImAx
-	 dIJ72y7yKeVu96cbY7s+wNxgXc4DZJO3Heom3U0XoQS1v8gYW+MgQaG/x5uDeQr3y+
-	 wlW0XdVD1zBrA==
-Message-ID: <0cad1e0b-2bfd-4258-90cd-8d319bf0e74a@zytor.com>
-Date: Mon, 14 Apr 2025 10:48:47 -0700
+	b=OvSSxGHc5YBn+D0+RJiBGNfTLRJTg2TxHIAFv7wpUgwlTQf2QC+J5AdRUMEMZxDDG
+	 rmVzV5dgbGeILeguDEe/S6vytJzVDCr3+CuOGbjQ7S73vU60Um+ecZO+zDlw9GrtgN
+	 QqQBkh61qbhhwEf4n0jsrsuliOIPidtxWqJYKarsEN6+8/4rDNMQLjOXiAcLuCnRhd
+	 I7kt2XwCQ017eo6BzYMAK0XJ/2twgpI72QkiU9E/MbFA6zROi42JiZCYMX7Mp3zAO2
+	 I8Zh62sf9bRboagIVItnHBiAxO1IrX7vr36qIRGoU1gk7YGbU2ZM247wV2Wa/d+Tr+
+	 6k7+cojOyyDTQ==
+Message-ID: <ab422dd6-94aa-4da7-9f92-fe358bae8ed5@zytor.com>
+Date: Mon, 14 Apr 2025 10:59:12 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,31 +41,14 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 10/15] KVM: VMX: Use WRMSRNS or its immediate form
- when available
-To: "H. Peter Anvin" <hpa@zytor.com>, Jim Mattson <jmattson@google.com>,
-        Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-        linux-edac@vger.kernel.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-ide@vger.kernel.org,
-        linux-pm@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, jgross@suse.com,
-        andrew.cooper3@citrix.com, peterz@infradead.org, acme@kernel.org,
-        namhyung@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
-        wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org,
-        boris.ostrovsky@oracle.com, kys@microsoft.com, haiyangz@microsoft.com,
-        decui@microsoft.com
-References: <20250331082251.3171276-1-xin@zytor.com>
- <20250331082251.3171276-11-xin@zytor.com> <Z_hTI8ywa3rTxFaz@google.com>
- <CALMp9eRJkzA2YXf1Dfxt3ONP+P9aTA=WPraOPJPJ6C6j677+6Q@mail.gmail.com>
- <fa16949e-7842-45f7-9715-1bdda13b762a@zytor.com>
- <EAB44BB2-99BB-4D4A-8306-0235D2931E72@zytor.com>
+Subject: Re: [PATCH v1 1/1] Documentation: kvm: Fix a section number
+To: Jonathan Corbet <corbet@lwn.net>, kvm@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com
+References: <20250414165146.2279450-1-xin@zytor.com>
+ <87sema8yhy.fsf@trenco.lwn.net>
+ <747d9d7d-c500-46f0-b0f8-a157dc7524ad@zytor.com>
+ <87o6wy8who.fsf@trenco.lwn.net>
 Content-Language: en-US
 From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
@@ -102,12 +85,28 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <EAB44BB2-99BB-4D4A-8306-0235D2931E72@zytor.com>
+In-Reply-To: <87o6wy8who.fsf@trenco.lwn.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/12/2025 4:10 PM, H. Peter Anvin wrote:
-> Also,*in this specific case* IA32_SPEC_CTRL is architecturally nonserializing, i.e. WRMSR executes as WRMSRNS anyway.
+On 4/14/2025 10:48 AM, Jonathan Corbet wrote:
+> Xin Li <xin@zytor.com> writes:
+> 
+>> On 4/14/2025 10:05 AM, Jonathan Corbet wrote:
+>>>> -7.37 KVM_CAP_ARM_WRITABLE_IMP_ID_REGS
+>>>> +7.42 KVM_CAP_ARM_WRITABLE_IMP_ID_REGS
+>>>>    -------------------------------------
+>>> The fix seems fine but ... I have to ask ... do the section numbers buy
+>>> anything here?  We have a documentation system that can do nice
+>>> cross-references when needed, so I'm not sure that these numbers add
+>>> anything other than a bit of manual maintenance hassle.
+>>
+>> So you prefer to get rid of the section numbering?
+>>
+>> Looks it makes it simpler to maintain the documentation.  But that would
+>> anyway be another serial patches, right?
+> 
+> *I* would prefer it, but that call is really up to the KVM folks, not
+> me.  Their preference far outweighs mine on this ... I'm just venting :)
 
-While the immediate form WRMSRNS could be faster because the MSR index
-is available *much* earlier in the pipeline, right?
+/facepalm
