@@ -1,141 +1,160 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295D7289363;
-	Mon, 14 Apr 2025 17:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F31028469A;
+	Mon, 14 Apr 2025 17:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744650796; cv=none; b=Dkha649vSZx6G1cRc0M0j6NZYC6vzqvCmFS+/qaqPhJdHmZEDpITF4rXYsK2XJbAQPH5A7CXYxGN3k6KgDDtIPBX42R4JhLqoFUljSIEJFJ0L8Z/lN2Sc5vbf0lBZY0cCvOAQpLaUna1pOr/nKQfr11S4x5FtDQZmaYnWmYEiFo=
+	t=1744651139; cv=none; b=O53JQ5wbdjhFAy0aNK7Lf6+5jcPx6hLoSWgx7Pfn6e27G3zO2rfWT55jGCStvn/9Z+k6nVW5IgG+GzBGvkVxBn1OL1OlwWCvF2FdWGE5dUWvlgVS8ZeB2QtrPOIBBU5HA3yK1OmfMc5/ZldfwEA1fR5ND1R0BV7CuLpHuh1sV/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744650796; c=relaxed/simple;
-	bh=sFTaMFijVk2HZVriqjm0aoHOUR8tYLFf51KFMR53Zes=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=I1DUy43a2I3NF7bEY88nFzuxIUQN1MlNlc1HE0xkYw9y3O2fCcEH4MER/FE6SwF0eM6mI5BwHfofD0klVjBkrw3aM0p0rfQ6tzb3gu2lNvEsHHZ5Gk+Yox/tO+8IMCYQ8iqu/4EJn7V5tiVNKgBmqEquOrvh0M/lVdjmVfi0MuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nMaOgc3P; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744651139; c=relaxed/simple;
+	bh=G77ROff31km5oic0MrLl+7V+X9eKW5/vOe5Aa4RAjlQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LEDfuewna9zvZstqmaXBHNw/HLrPX7YyPH+GX8+NoBWKilldbWBg+WXwuFeSeNMwkv11xAE1ZgoekwVUP9UMMv+RkZ/8+ro3XF2YIDP6mtZShuW8E+6SSkzlGt3XuWCJ6wgD4t1Zf1rHWKS0rJ9ORz3Lt3yhgpDW8G1SccsIGWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=mC0xs/5P; arc=none smtp.client-ip=178.154.239.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nMaOgc3P"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso31287295e9.3;
-        Mon, 14 Apr 2025 10:13:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744650793; x=1745255593; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AhLhCv09lRa1OLV+bmnI0sicXwTDVpYEF9Itb4YCx/Y=;
-        b=nMaOgc3PiklhM+d9MWiAlZKVIMZQZT6Zuv3q329TyWGFgsneT+xvnkofiFTJbI5eeg
-         WbFwJ5bqjGqXUBEatndpqvdDF3PeMh0NBb4cNdOtjMSysRmHoVNjZPTGZt4obRcpUdrW
-         +zW74MncDa7dt9c8jpr/sCjbKpbc5bnvVkdnWCJumpy1huga5VlkXWm64HEHAwFRIP04
-         EBuy687pnONPg6iMuPe1VKOEBW9TF9akC3F5pTBvKjF9LXXkAQZTdHmbpIl2eQDf5zeq
-         jTrh9ONS58n9lrOpRAohJyqLWOg2Z7xYnHNQqNNF+RYy/sHPstPa44eIrC85b66E6Hi7
-         8RCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744650793; x=1745255593;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AhLhCv09lRa1OLV+bmnI0sicXwTDVpYEF9Itb4YCx/Y=;
-        b=LpgzYMbDctPEELPzy+O3tx50+LBNoSZrM625VXx+i7/sWZawRc3tGe4gLnbbIy1QWJ
-         jPNdudJQeB48aaZ6N4FE2Kp8gI0F/bA7cHgA6S8vyoMvqBjPRUsIeSYxKBHhAjFOm8av
-         IshXuEvQ+17q/ZjJ7SQiQNQU9ho5nro/kkqxIrC/rQuyeDdYQVG3DoRJCpMMSqOckXJS
-         MMOTqpVq+E0eDG5i2h+HabMjtG7FZK9UR42iPr1wx4Kg2fjZ1nxTNjStSxCuEfGJJfd2
-         cv4gMLbwN8BVACe69Ly/ggxE5KSb54kc5cmwlqQV48df9rDKgXw3BUhjlPCZbj3wG2Xa
-         hmsg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2bXY16glnlasVviZBRNs7rhH3BqilJMPBctOkJOqxaxbOGedhiY6lRVz4TeHjNxIqULKcJj1pn4K3Gw==@vger.kernel.org, AJvYcCUJnxaJO405Mmv2grjO3ZNca6FCL81MjvTjrFSRjF6Y364+21+q/avj1sNmdVkcJoXkchbTKp586lrHmGs+@vger.kernel.org, AJvYcCWNuB5d3gRwsGwmOLGIr2NQtOFbwYypozyB5EiuLTfXtDsQ4V5uoLh2l/AErOpOxLQ4goVXRsx93vG/mQizVjnWVg==@vger.kernel.org, AJvYcCX089GhHkpR8DgZ36gCYB7kTm5nFtfWyZxmTRHUyziTT3HXdPaYG57zN2K8v+vXzcT5qH2+qJ5op/hm@vger.kernel.org, AJvYcCXWOCRSq4ayoXe2if1ippPVwtY73gXqF2NeTrTf9l0qAWWxXWQOp6wzEWWCYd+ISR46QdA9@vger.kernel.org, AJvYcCXX8T9cwWgYaF3RUduEGhzVZYayp86CyVE1JdS4IAqQoIM5LEG9dEtZf03MWuq5CcUe2+92y1Qsvvo=@vger.kernel.org, AJvYcCXaUTHpJF+A86OGgtKPZUAm2HWt6yBoWc/6Rx8AoCQgr9FPp8aAJl9OEYb+D28HpahI2AQbPrawTLA3UZCT@vger.kernel.org, AJvYcCXznFYsrzaoQWy6I6/a+Rpe0q04KZOmXudOrcpsOqNBeFmqiTuTmmnsAppNDYXMuQ9VUlY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3agagxpEWagA3o+53FldiLAYBp7FKG848P80I4niseUb5PaP9
-	8UN1UsDs581NeliTqVILmgK8GIcQ8se3wGGrH8qUycjT4ht6FWqK
-X-Gm-Gg: ASbGncvinEuaSivMXvGOZhqNrzCY4jhXYIb2sX26eBBgs9otwWnh5ucjnV10drX4GHs
-	iWOj2kq+1BgL5czuFlPfVam5t9tijcNI258JYyby1z9UnZTQcHxzCTUcZk/QgvwclPhTFUqeZsU
-	pT5YzJIazUIdXNCZlOumNtsqheI28h1n6oIEhQCnmxCbUsga7hp83kKelNE8nUCWtlPDLxXjmcd
-	RZfY1tYR5MHLeVBMJGwFzp03zPbMad+hV/mn80cQgtT0srj0HaAZnSXvR7JtgDa7PkqEO/+wYUs
-	0FBq1pjmq20IWkgNF9FvnejuJqECmL0+lJ8vXJZ2/bJbIusjQWxiJ2c8LTujElfQqXsOWIuZ2AA
-	sEdqKYlzrzE1JXaip9R9MTw==
-X-Google-Smtp-Source: AGHT+IFaPusiZQT0QiFcyLJp0TXK65g3+z16rgMNv9l2dKvCZ0RLPJLCBzoBrYTr6CV/HfnsWx9kLw==
-X-Received: by 2002:a05:600c:8519:b0:43d:300f:fa51 with SMTP id 5b1f17b1804b1-43f3a93ebb3mr115773795e9.9.1744650792986;
-        Mon, 14 Apr 2025 10:13:12 -0700 (PDT)
-Received: from ?IPv6:2001:b07:5d29:f42d:74f6:abb7:53c9:817c? ([2001:b07:5d29:f42d:74f6:abb7:53c9:817c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f204c500bsm191180875e9.0.2025.04.14.10.13.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 10:13:12 -0700 (PDT)
-Message-ID: <0f4f2ed70829fffb2eb816e34e26be22681705a5.camel@gmail.com>
-Subject: Re: [RFC PATCH v1 13/15] x86/msr: Use the alternatives mechanism to
- read MSR
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: xin@zytor.com
-Cc: acme@kernel.org, adrian.hunter@intel.com, ajay.kaher@broadcom.com, 
- alexander.shishkin@linux.intel.com, alexey.amakhalov@broadcom.com, 
- andrew.cooper3@citrix.com, bcm-kernel-feedback-list@broadcom.com, 
- boris.ostrovsky@oracle.com, bp@alien8.de, bpf@vger.kernel.org, 
- dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, 
- hpa@zytor.com, irogers@google.com, jgross@suse.com, jolsa@kernel.org, 
- kan.liang@linux.intel.com, kvm@vger.kernel.org, kys@microsoft.com, 
- linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-pm@vger.kernel.org,
- llvm@lists.linux.dev,  luto@kernel.org, mark.rutland@arm.com,
- mingo@redhat.com, namhyung@kernel.org,  pbonzini@redhat.com,
- peterz@infradead.org, seanjc@google.com, tglx@linutronix.de, 
- tony.luck@intel.com, virtualization@lists.linux.dev, vkuznets@redhat.com, 
- wei.liu@kernel.org, x86@kernel.org, xen-devel@lists.xenproject.org
-Date: Mon, 14 Apr 2025 19:13:09 +0200
-In-Reply-To: <20250331082251.3171276-14-xin@zytor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="mC0xs/5P"
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward205b.mail.yandex.net (Yandex) with ESMTPS id 1DE766522C;
+	Mon, 14 Apr 2025 20:12:38 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:3fa3:0:640:b228:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id A739C609D3;
+	Mon, 14 Apr 2025 20:12:29 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PCKvQd1LmW20-QSrumStn;
+	Mon, 14 Apr 2025 20:12:28 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1744650748; bh=wFx6lLFV+QupO4M4+wLGufqzKiqBmpx6VWXYCXbP+dU=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=mC0xs/5PO+JAudJ+Yfo9WY73Caa8C77wLAUOratA0i1DxX58kUOHYB08BT86W/8rZ
+	 b7Ze9gTt3vwiUaatGbBJEpqutn8ETFPW1/SdRvqgKgS2f3mYtrwLDstFoDcZc266mB
+	 aOTD0DM6Pn8wLoZfUImzgUo2kaBN7i22r5JeJ0Tg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] KVM: SVM: forcibly leave SMM mode on vCPU reset
+Date: Mon, 14 Apr 2025 20:12:06 +0300
+Message-ID: <20250414171207.155121-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On 2025-03-31 at 8:22, Xin Li (Intel) wrote:
-> diff --git a/arch/x86/xen/xen-asm.S b/arch/x86/xen/xen-asm.S
-> index e672632b1cc0..6e7a9daa03d4 100644
-> --- a/arch/x86/xen/xen-asm.S
-> +++ b/arch/x86/xen/xen-asm.S
-> @@ -399,3 +399,37 @@ SYM_CODE_END(xen_entry_SYSCALL_compat)
->  	RET
->  SYM_FUNC_END(asm_xen_write_msr)
->  EXPORT_SYMBOL_GPL(asm_xen_write_msr)
-> +
-> +/*
-> + * The prototype of the Xen C code:
-> + * 	struct { u64 val, bool done } xen_do_read_msr(u32 msr)
-> + */
-> +SYM_FUNC_START(asm_xen_read_msr)
-> +	ENDBR
-> +	FRAME_BEGIN
-> +	XEN_SAVE_CALLEE_REGS_FOR_MSR
-> +	mov %ecx, %edi		/* MSR number */
-> +	call xen_do_read_msr
-> +	test %dl, %dl		/* %dl=3D1, i.e., ZF=3D0, meaning
-> successfully done */
-> +	XEN_RESTORE_CALLEE_REGS_FOR_MSR
-> +	jnz 2f
-> +
-> +1:	rdmsr
-> +	_ASM_EXTABLE_FUNC_REWIND(1b, -5, FRAME_OFFSET /
-> (BITS_PER_LONG / 8))
-> +	shl $0x20, %rdx
-> +	or %rdx, %rax
-> +	/*
-> +	 * The top of the stack points directly at the return
-> address;
-> +	 * back up by 5 bytes from the return address.
-> +	 */
+Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
+on vCPU reset") addressed an issue where a triple fault occurring in
+nested mode could lead to use-after-free scenarios. However, the commit
+did not handle the analogous situation for System Management Mode (SMM).
 
-This works only if this function has been called directly (e.g. via
-`call asm_xen_write_msr`), but doesn't work with alternative call types
-(like indirect calls). Not sure why one might want to use an indirect
-call to invoke asm_xen_write_msr, but this creates a hidden coupling
-between caller and callee.
-I don't have a suggestion on how to get rid of this coupling, other
-than setting ipdelta in _ASM_EXTABLE_FUNC_REWIND() to 0 and adjusting
-the _ASM_EXTABLE_TYPE entries at the call sites to consider the
-instruction that follows the function call (instead of the call
-instruction) as the faulting instruction (which seems pretty ugly, at
-least because what follows the function call could be an instruction
-that might itself fault). But you may want to make this caveat explicit
-in the comment.
+This omission results in triggering a WARN when a vCPU reset occurs
+while still in SMM mode, due to the check in kvm_vcpu_reset(). This
+situation was reprodused using Syzkaller by:
+1) Creating a KVM VM and vCPU
+2) Sending a KVM_SMI ioctl to explicitly enter SMM
+3) Executing invalid instructions causing consecutive exceptions and
+eventually a triple fault
+
+The issue manifests as follows:
+
+WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
+kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+Modules linked in:
+CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
+6.1.130-syzkaller-00157-g164fe5dde9b6 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS 1.12.0-1 04/01/2014
+RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+Call Trace:
+ <TASK>
+ shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
+ svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
+ svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
+ vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
+ vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
+ kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
+ kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Architecturally, hardware CPUs exit SMM upon receiving a triple
+fault as part of a hardware reset. To reflect this behavior and
+avoid triggering the WARN, this patch explicitly calls
+kvm_smm_changed(vcpu, false) in the SVM-specific shutdown_interception()
+handler prior to resetting the vCPU.
+
+The initial version of this patch attempted to address the issue by calling
+kvm_smm_changed() inside kvm_vcpu_reset(). However, this approach was not
+architecturally accurate, as INIT is blocked during SMM and SMM should not
+be exited implicitly during a generic vCPU reset. This version moves the
+fix into shutdown_interception() for SVM, where the triple fault is
+actually handled, and where exiting SMM explicitly is appropriate.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
+Cc: stable@vger.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+---
+v2: Move SMM exit from kvm_vcpu_reset() to SVM's shutdown_interception(), 
+per suggestion from Sean Christopherson <seanjc@google.com>.
+v3: -Export kvm_smm_changed() using EXPORT_SYMBOL_GPL.
+-Wrap the call to kvm_smm_changed() in svm.c with #ifdef CONFIG_KVM_SMM 
+to avoid build errors when SMM support is disabled.
+
+ arch/x86/kvm/smm.c     | 1 +
+ arch/x86/kvm/svm/svm.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
+index 699e551ec93b..9864c057187d 100644
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -131,6 +131,7 @@ void kvm_smm_changed(struct kvm_vcpu *vcpu, bool entering_smm)
+ 
+ 	kvm_mmu_reset_context(vcpu);
+ }
++EXPORT_SYMBOL_GPL(kvm_smm_changed);
+ 
+ void process_smi(struct kvm_vcpu *vcpu)
+ {
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d5d0c5c3300b..c5470d842aed 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2231,6 +2231,10 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+ 	 */
+ 	if (!sev_es_guest(vcpu->kvm)) {
+ 		clear_page(svm->vmcb);
++#ifdef CONFIG_KVM_SMM
++		if (is_smm(vcpu))
++			kvm_smm_changed(vcpu, false);
++#endif
+ 		kvm_vcpu_reset(vcpu, true);
+ 	}
+ 
+-- 
+2.47.2
+
