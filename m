@@ -1,177 +1,92 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B40205AA3;
-	Tue, 15 Apr 2025 09:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B56289372
+	for <kvm@vger.kernel.org>; Tue, 15 Apr 2025 09:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744709115; cv=none; b=N5chTOBx/wCV+hPQpyXcciG+zUSYYEZ+YbC2oRoYVSThYpqBd7JKhhu7NMxc4qpKoIDCu2TTUr3OwSB0BJra+gyHKSl9ClA1Dykiq92CylUojQh1GKXBV5Iq4wEMLVggbY1Qk4JwGVQVxbEVXegQGkdjfteiyn4NDQgKvjWnroE=
+	t=1744709922; cv=none; b=s36RXkr/vJ2QmjDa45n/ZyN5z/t/NI2dGwaO+gjxslI3F31FFD04pm3f1A6zFaajcA8Ttiav7iW42nl6vb4vdCeR7NSb64GUE0rVbhpvYFFg+13yScE9JZcJv8ZL9Eq0Iba2NpKcwvGVE674wbi4gPdy1kBLPAHNKeDjoaR/BPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744709115; c=relaxed/simple;
-	bh=STTgkUZueXTcQfp5TF055dGrFMr6LZZxoaECsIO7+w8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l940ufOKh9pf8ziE+lgf6oGyeE2P4HiXpp/vKgo5btww+oB6hyEtwFeYjoal4Z9ezg5z6nF65+ajvdVVY9zTyUhuf7MvN22fPCZ/vL8ERTFwq42Vcz+sO7XZ9c4SMGUjn8LIaDpGr5aGsF5ZMq1QJy8I7NO0VPfv1DcKY8XOhC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZcJcl5Vhqz6L58S;
-	Tue, 15 Apr 2025 17:23:51 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4098F1407DB;
-	Tue, 15 Apr 2025 17:25:09 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 15 Apr 2025 11:25:08 +0200
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Tue, 15 Apr 2025 11:25:08 +0200
-From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To: liulongfang <liulongfang@huawei.com>, "alex.williamson@redhat.com"
-	<alex.williamson@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "Jonathan
- Cameron" <jonathan.cameron@huawei.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxarm@openeuler.org" <linuxarm@openeuler.org>
-Subject: RE: [PATCH v7 6/6] hisi_acc_vfio_pci: update function return values.
-Thread-Topic: [PATCH v7 6/6] hisi_acc_vfio_pci: update function return values.
-Thread-Index: AQHbqpZ//2t0kcEhp0OCOF/DXXF6prOkeeyQ
-Date: Tue, 15 Apr 2025 09:25:08 +0000
-Message-ID: <ed4f09039ffb45f3a3d5b418c92ae6ad@huawei.com>
-References: <20250411035907.57488-1-liulongfang@huawei.com>
- <20250411035907.57488-7-liulongfang@huawei.com>
-In-Reply-To: <20250411035907.57488-7-liulongfang@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1744709922; c=relaxed/simple;
+	bh=DIFM4eqQu01Zbc5fSSrZIkWVfd0JHiP4PmzdSxbGFGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnlHvI71bunUE+TBRdTTG1jiKJyJf8EETLl0cnp896eieS8zFsHxYLcUiGiDBTbT3ZIQb4IqISI78Dy03in28eVL3q5yYbkC5UhCCBfcZ4Tw3hOqqdxtoS7Dic9sUZxFiBLpF0zWTEO2keQ8hXkZDplchQixj0+VkMoKrvB5hT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lxXKnFwo; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lxXKnFwo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744709920; x=1776245920;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DIFM4eqQu01Zbc5fSSrZIkWVfd0JHiP4PmzdSxbGFGs=;
+  b=lxXKnFwopSQysx3XJaed9bTHxITMWv2NUGFhDSKm+0YATqIqArxSoNoo
+   TNVC3OGLzNyFUjV0uXU/pYbqzwHvsEYIBBTQiMNfux4wF1URHonFpkyKN
+   WRc3IaMQywJ7d/qsLSxrtEf/tGdIIBlbCBVZ7x+CfKX+Y6h0zauxVEqUX
+   mLWuSX6b5uu0o8Z6guUpNW+wkliodnsR6Bm2j1liuUqN8P273jJjpkOFS
+   5JdvCffym8h5t4mRPei/5HznzC0AxNQeOodSRIi464bEWWk8bbbS1w4me
+   kjYTAPk3RzAdYODpFTr2JYCS9pDYJA10Vi7SiwsHm2kB3QlvLrZjVsOtZ
+   w==;
+X-CSE-ConnectionGUID: jLHO18ceQCSrUzTsO3GfSA==
+X-CSE-MsgGUID: 9rgsgpirRFGznEKUFmxzEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56847393"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
+   d="scan'208";a="56847393"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 02:38:39 -0700
+X-CSE-ConnectionGUID: Kqa946dMR6KG/menuDGeCw==
+X-CSE-MsgGUID: Fn+ryVDoRseBGNiN5UVZNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
+   d="scan'208";a="161113285"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Apr 2025 02:38:35 -0700
+Date: Tue, 15 Apr 2025 17:59:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Eric Auger <eauger@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 0/5] accel/kvm: Support KVM PMU filter
+Message-ID: <Z/4t/zxQzp4Wxdm9@intel.com>
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <21f3fedd-274e-4e81-87f8-369deefa8c1a@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21f3fedd-274e-4e81-87f8-369deefa8c1a@redhat.com>
 
+On Tue, Apr 15, 2025 at 03:49:59PM +0800, Shaoqin Huang wrote:
+> Date: Tue, 15 Apr 2025 15:49:59 +0800
+> From: Shaoqin Huang <shahuang@redhat.com>
+> Subject: Re: [PATCH 0/5] accel/kvm: Support KVM PMU filter
+> 
+> Hi Zhao,
+> 
+> I've added some code and test it on ARM64, it works very well.
+> 
+> And after reviewing the code, it looks good to me.
+> 
+> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 
+Thank you Shaoqin for your support!
 
-> -----Original Message-----
-> From: liulongfang <liulongfang@huawei.com>
-> Sent: Friday, April 11, 2025 4:59 AM
-> To: alex.williamson@redhat.com; jgg@nvidia.com; Shameerali Kolothum
-> Thodi <shameerali.kolothum.thodi@huawei.com>; Jonathan Cameron
-> <jonathan.cameron@huawei.com>
-> Cc: kvm@vger.kernel.org; linux-kernel@vger.kernel.org;
-> linuxarm@openeuler.org; liulongfang <liulongfang@huawei.com>
-> Subject: [PATCH v7 6/6] hisi_acc_vfio_pci: update function return values.
->=20
-> In this driver file, many functions call sub-functions and use ret
-> to store the error code of the sub-functions.
-> However, instead of directly returning ret to the caller, they use a
-> converted error code, which prevents the end-user from clearly
-> understanding the root cause of the error.
-> Therefore, the code needs to be modified to directly return the error
-> code from the sub-functions.
->=20
-> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-> ---
->  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index d12a350440d3..c63e302ac092 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -392,7 +392,7 @@ static int vf_qm_check_match(struct
-> hisi_acc_vf_core_device *hisi_acc_vdev,
->  	ret =3D vf_qm_version_check(vf_data, dev);
->  	if (ret) {
->  		dev_err(dev, "failed to match ACC_DEV_MAGIC\n");
-> -		return -EINVAL;
-> +		return ret;
->  	}
->=20
->  	if (vf_data->dev_id !=3D hisi_acc_vdev->vf_dev->device) {
-> @@ -404,7 +404,7 @@ static int vf_qm_check_match(struct
-> hisi_acc_vf_core_device *hisi_acc_vdev,
->  	ret =3D qm_get_vft(vf_qm, &vf_qm->qp_base);
->  	if (ret <=3D 0) {
->  		dev_err(dev, "failed to get vft qp nums\n");
-> -		return -EINVAL;
-> +		return ret;
->  	}
->=20
->  	if (ret !=3D vf_data->qp_num) {
-> @@ -501,7 +501,7 @@ static int vf_qm_load_data(struct
-> hisi_acc_vf_core_device *hisi_acc_vdev,
->  	ret =3D qm_write_regs(qm, QM_VF_STATE, &vf_data->vf_qm_state, 1);
->  	if (ret) {
->  		dev_err(dev, "failed to write QM_VF_STATE\n");
-> -		return -EINVAL;
-> +		return ret;
->  	}
->  	hisi_acc_vdev->vf_qm_state =3D vf_data->vf_qm_state;
->=20
-> @@ -542,7 +542,7 @@ static int vf_qm_read_data(struct hisi_qm *vf_qm,
-> struct acc_vf_data *vf_data)
->=20
->  	ret =3D qm_get_regs(vf_qm, vf_data);
->  	if (ret)
-> -		return -EINVAL;
-> +		return ret;
->=20
->  	/* Every reg is 32 bit, the dma address is 64 bit. */
->  	vf_data->eqe_dma =3D vf_data->qm_eqc_dw[QM_XQC_ADDR_HIGH];
-> @@ -556,13 +556,13 @@ static int vf_qm_read_data(struct hisi_qm
-> *vf_qm, struct acc_vf_data *vf_data)
->  	ret =3D qm_get_sqc(vf_qm, &vf_data->sqc_dma);
->  	if (ret) {
->  		dev_err(dev, "failed to read SQC addr!\n");
-> -		return -EINVAL;
-> +		return ret;
->  	}
->=20
->  	ret =3D qm_get_cqc(vf_qm, &vf_data->cqc_dma);
->  	if (ret) {
->  		dev_err(dev, "failed to read CQC addr!\n");
-> -		return -EINVAL;
-> +		return ret;
->  	}
->=20
->  	return 0;
-> @@ -588,7 +588,7 @@ static int vf_qm_state_save(struct
-> hisi_acc_vf_core_device *hisi_acc_vdev,
->=20
->  	ret =3D vf_qm_read_data(vf_qm, vf_data);
->  	if (ret)
-> -		return -EINVAL;
-> +		return ret;
->=20
->  	migf->total_length =3D sizeof(struct acc_vf_data);
->  	/* Save eqc and aeqc interrupt information */
-> @@ -1379,7 +1379,7 @@ static int hisi_acc_vf_debug_check(struct seq_file
-> *seq, struct vfio_device *vde
->  	ret =3D qm_wait_dev_not_ready(vf_qm);
->  	if (ret) {
->  		seq_puts(seq, "VF device not ready!\n");
-> -		return -EBUSY;
-> +		return ret;
->  	}
->=20
->  	return 0;
-
-Any reason you avoided few other instances here?
-
-1. qemu_set_regs() --> hisi_qm_wait_mb_ready() -->ret -EBUSY;
-2. vf_qm_cache_wb() ret -EINVAL on -ETIMEOUT.
-
-With the above addressed,
-
-Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-
-Thanks,
-Shameer
+Regards,
+Zhao
 
