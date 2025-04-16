@@ -1,110 +1,167 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFAC1FFC59;
-	Wed, 16 Apr 2025 13:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9B41AA1FE;
+	Wed, 16 Apr 2025 13:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744811218; cv=none; b=u5HlRuF06exrlfx5XQ0Tx2PrRNnSmms5p4k+zHdEfPkii8KsD7n9uu5QnAnBxFhAAqZqMXoJb0Crz4RnsGJLahVqVj+caunPrP/gJ0tbHxFZzFbPXZlOYzslTBX1ECDJCuL59YXJIN7MMNhbwNYp6sY9FujFZEhpbpu0VaDDQsk=
+	t=1744811274; cv=none; b=fPtr3cQ6fYYmMrHqHx5r+vwrhsyuSdnS6xixzu8yusE5y9XfeEmwWBLE687tP4b7qGYfSwEKJloYHfStq/HPQFKaKRnEPvgWccI7QnwSqvqyFefGpVg3UF/ganru/b4m+kKgt0NYp/eMphPI9c0MIAKyT/haTCnc1j8atcNdFAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744811218; c=relaxed/simple;
-	bh=KOfvU2Su0/fdRtrQ3pTBzDfBOwszeFW2FEzK40++cfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1cz9ZBkSMOU2GnoX0zQCbJ8yGZpFcmRQ+Oj4rhYZH1tbturUBPxnqAbYLvN56ArfbKw8lYLtIagatUhynvQiQrPQgtuSM74Poded8MJbo28zAxaX2exP0O741Q5swZno/tYTd3B4ixz7RwROAumTxlA/s9H/V3HnpgSnCzG91g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C5B41E7D;
-	Wed, 16 Apr 2025 06:46:54 -0700 (PDT)
-Received: from e122027.arm.com (unknown [10.57.90.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A30423F59E;
-	Wed, 16 Apr 2025 06:46:51 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: [PATCH v8 43/43] KVM: arm64: Allow activating realms
-Date: Wed, 16 Apr 2025 14:42:05 +0100
-Message-ID: <20250416134208.383984-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250416134208.383984-1-steven.price@arm.com>
-References: <20250416134208.383984-1-steven.price@arm.com>
+	s=arc-20240116; t=1744811274; c=relaxed/simple;
+	bh=aZZ8ryF9EMbL1ZSnq1IfvBgrOmIuVFi9WpHYiEmRUoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oHvLLm3fF+XwzBxMErAUMc+psgtG80ZIqVea+t9tmyvlDWKu5zexOVrkEBDghNFWzSYQwAYnJpoVRRnuVLNqTKXyC8EcF37m5tLB2qnI4TBeiA76FvZA1SAuY3z0Urh10DWiPLgO6SDyGy+gLHamWjdGngu/6JHqTizxgNA4LdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KBYClgcI; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KBYClgcI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744811273; x=1776347273;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=aZZ8ryF9EMbL1ZSnq1IfvBgrOmIuVFi9WpHYiEmRUoY=;
+  b=KBYClgcIv+akc+fByVCMRk77KvkxLFVOqkcTXhhubr+S1cZ3Fr4V774J
+   aHG8/r7kJi8PQpPzhL15AazLMF5Z46fmXpLdAkFSFU/y7+PD4BsIZU3Gb
+   ECJ9GVBxXMnDn6aFwFd97ajoIW0x8rWf2hR/iLCN3YYzS7V6p/XlF5it7
+   FXx1BFDjJsVQ8VFnGcC52rqXHqWElO0UBsOMqGHVM7l5P7VEd4h0Qt9X3
+   JEEQhne/PnSMaBx6+uFKatAyEWsGmWFdWFp7Xmfb8Pp9U1yKFWhYgC5Ps
+   b/E+jW6zqxhr5qzzpe7Nmf0l5iGV0R9BNwfSWqISARRyvsgdWJIWD8qY6
+   g==;
+X-CSE-ConnectionGUID: XKmx2O/YSk+eavydhsRqPA==
+X-CSE-MsgGUID: Xn7TpeRHSpWCvNuxsdnJOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46250960"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="46250960"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 06:47:52 -0700
+X-CSE-ConnectionGUID: UTVCo3N7Q+eL8DVLGRAnkQ==
+X-CSE-MsgGUID: asjFQW9UTvK8JR2fUfd/bA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="130245510"
+Received: from aktunmor-mobl1.amr.corp.intel.com (HELO desk) ([10.125.145.226])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 06:47:52 -0700
+Date: Wed, 16 Apr 2025 06:47:51 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Subject: [PATCH v2] x86/bugs/mmio: Rename mmio_stale_data_clear to
+ cpu_buf_vm_clear
+Message-ID: <20250416-mmio-rename-v2-1-ad1f5488767c@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIADK0/2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDE0MD3dzczHzdotS8xNxU3eQ0i8Tk1OQkUzPjVCWgjoKi1LTMCrBp0bG
+ 1tQD45Nh8XQAAAA==
+X-Change-ID: 20250410-mmio-rename-cf8acecb563e
+X-Mailer: b4 0.14.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+The static key mmio_stale_data_clear controls the KVM-only mitigation for
+MMIO Stale Data vulnerability. Rename it to reflect its purpose.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
+No functional change.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+v2:
+- Clarify the case when cpu_buf_vm_clear is used. (Sean)
+---
+ arch/x86/include/asm/nospec-branch.h |  2 +-
+ arch/x86/kernel/cpu/bugs.c           | 16 ++++++++++------
+ arch/x86/kvm/vmx/vmx.c               |  6 +++++-
+ 3 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 978906ff86fa..3f8441bdf293 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1234,6 +1234,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(realm, addr, end);
- }
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 5c43f145454ddda781e21806752737b42789c86d..81c4a13e4c0d4ace02b0948eef79377a68252e63 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -561,7 +561,7 @@ DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
  
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1383,6 +1397,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
+ DECLARE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+ 
+-DECLARE_STATIC_KEY_FALSE(mmio_stale_data_clear);
++DECLARE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
+ 
+ extern u16 mds_verw_sel;
+ 
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 362602b705cc43bd5e9df7c2157f44e7bfb304b9..9131e612de170a6b2bf27c35651f8e824f3d016c 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -127,9 +127,13 @@ EXPORT_SYMBOL_GPL(mds_idle_clear);
+  */
+ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+ 
+-/* Controls CPU Fill buffer clear before KVM guest MMIO accesses */
+-DEFINE_STATIC_KEY_FALSE(mmio_stale_data_clear);
+-EXPORT_SYMBOL_GPL(mmio_stale_data_clear);
++/*
++ * Controls CPU Fill buffer clear before VMenter. This is a subset of
++ * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
++ * mitigation is required.
++ */
++DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
++EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
+ 
+ void __init cpu_select_mitigations(void)
+ {
+@@ -449,9 +453,9 @@ static void __init mmio_select_mitigation(void)
+ 	 * mitigations, disable KVM-only mitigation in that case.
+ 	 */
+ 	if (boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
+-		static_branch_disable(&mmio_stale_data_clear);
++		static_branch_disable(&cpu_buf_vm_clear);
+ 	else
+-		static_branch_enable(&mmio_stale_data_clear);
++		static_branch_enable(&cpu_buf_vm_clear);
+ 
+ 	/*
+ 	 * If Processor-MMIO-Stale-Data bug is present and Fill Buffer data can
+@@ -571,7 +575,7 @@ static void __init md_clear_update_mitigation(void)
+ 		taa_select_mitigation();
  	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1687,5 +1704,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
+ 	/*
+-	 * MMIO_MITIGATION_OFF is not checked here so that mmio_stale_data_clear
++	 * MMIO_MITIGATION_OFF is not checked here so that cpu_buf_vm_clear
+ 	 * gets updated correctly as per X86_FEATURE_CLEAR_CPU_BUF state.
+ 	 */
+ 	if (boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 5c5766467a61d434ba2baa79a5faba99bcbd9997..a1754f7ba889853eca919f090794b0dc54229a1a 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7358,10 +7358,14 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 	 * mitigation for MDS is done late in VMentry and is still
+ 	 * executed in spite of L1D Flush. This is because an extra VERW
+ 	 * should not matter much after the big hammer L1D Flush.
++	 *
++	 * cpu_buf_vm_clear is used when system is not vulnerable to MDS/TAA,
++	 * and is affected by MMIO Stale Data. In such cases mitigation in only
++	 * needed against an MMIO capable guest.
+ 	 */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
++	else if (static_branch_unlikely(&cpu_buf_vm_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		mds_clear_cpu_buffers();
  
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
+
+---
+base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
+change-id: 20250410-mmio-rename-cf8acecb563e
+
+Best regards,
 -- 
-2.43.0
+Pawan
+
 
