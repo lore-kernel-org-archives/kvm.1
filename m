@@ -1,115 +1,132 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3854224B1A
-	for <kvm@vger.kernel.org>; Wed, 16 Apr 2025 19:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28E31DA634
+	for <kvm@vger.kernel.org>; Wed, 16 Apr 2025 21:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744833444; cv=none; b=YaLzNlZ8imSpdLZPb46IBZfjuuBcIoLwme08RR/8MGS9DhxkzdctZrjIZTb4TSbUwefTBSRKdol0hqp1o/omoayfP/aALnlhVKKPW4EoZlyOyIUTbJ2hsC86WMa1f2OMUHBgYMNz8NcCc9O2kbm1iZk5nwrDp7GTjFvJNwnVmBM=
+	t=1744840681; cv=none; b=QSXb70J1tA2qD30KD5LdbKr8ceuhL40se12d5U2QoX96SJ2loKLgMpzWkj9Ilzss6OZNPJCeaD48xzgLw1tHSNu8p6W7mvr+Tdwnt0Qdu7CJvqwCgDyvkFs+UboBClwysTwf9Ma4fcN39mlly92dmNB0MytcKWz11Fv7BV1mUwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744833444; c=relaxed/simple;
-	bh=SPW1MpibPJJPCFn9tndl6Uq+3fkjI2amojgThKHlRQ4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KtK9udka/Zx25+KzJwgspxS5om59I/yDF918Tf646SkpdPGgTbtavv3SJ7bwyuCNDJdTpzN1m1zvREnyh+JjMqzspl9JS6YYDeB3SDe8fypri9Oxtw7rVYdVh/zlTc8+qEQN40QmiPPot5gq58M+RfwmJQVCJn6N1QRaZnp685s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=splbi0Ic; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1744840681; c=relaxed/simple;
+	bh=UMgQy+3HBlfdLG75j46TW7KcGsLuo7MHYBWiaRlDiaw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=emRUIgVpi3fvr97NVQwCg48O6xCumEDBsoip74bHgitEidDq72h/4enrnULVtIGe1K9UM/CmQYXnJiSAuTnPX2eWL1yK0zgxSnXrXuzlQiaezDyhdih9KvZycmQMIdPZN/f12ri7pnOR2nF1mT3+QYbVuycL6H6zmIpIm7KebTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=h57VOqZE; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="splbi0Ic"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22c35bafdbdso1050715ad.1
-        for <kvm@vger.kernel.org>; Wed, 16 Apr 2025 12:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744833442; x=1745438242; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wsr3Sym5EnVlObQ9ms+4mTSeWcKm0cqjA7Xbtohjbg8=;
-        b=splbi0IcfmO8izXhyyQw2FwhMrwJhxw+gBGa2dE/vwZUvlrlsCH8B2s8XrnWo1TaiD
-         NBHQyTiUfAchzvnCC0LQYvK2v4bQSPveJ30WPjo3dqEs7sx5YaKnKm2h/B3Uho9WP7Go
-         bP6DWJ/gQm4n44rfwMi2n6iQz680uxp6eJY5jplI/xjfPKec1+Nnp2/n7D8H0RlJJ3nk
-         Sn5maUDpR26YfBkXNC48vcSVBujPB4Hr8pQEVa3V08yqLBHZIz7yQ4jSCGB7zHxnzRn6
-         CumEE5mjEPxjYSD0zqIcRtH7ewDA54skOhnmEBVGYeaQ6mCWnIjP67P/Pu//ITiv0teA
-         5biA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744833442; x=1745438242;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wsr3Sym5EnVlObQ9ms+4mTSeWcKm0cqjA7Xbtohjbg8=;
-        b=HoyzcK5I6t9q23nGSKM3JTigO2M8QCw99iZPQs/rPdaa2oshp/ctj3m71Ee2NcXT9d
-         rg/6wFQPTzy/FHn5ur98LwOBDcMjnCUVvLlqpBhQmHxjg/zpcoNlT0hkU5S8zhW6qqnj
-         +fJaRUJZ0qKUkcPu+t+Hrf0AvQ4N6sSMr8jHDKkSAbIfF23v5Ak148aVaWYbSDU8eubw
-         9t6neQfxCm6gwBH57jzuAN5FzBaRPuPmi02EQU9Op4gE7VBZx5MF02hjFwOReVHAPm3x
-         6pKbEYX/GQ4upXcwg2crAf4D4/6IJdG4jIN0hja9llC3hu7Mu0fdkAzNSkEk0cywjtWE
-         wV/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUTj/Lb2hhwKuRGU/PncwynWDwHsrfPEIxs3NN+WNFSOdHTBMLvKeTdA3jVvpkxkK4h720=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0R1x7mfLVwvFF9KkvD1obWcQlMY54NaWBrWm8FJJvReVTGYwm
-	67dx08PsGle7qoBE0yjoTl9V/PKnMb0Zzcc0Z3tcs5Pagnay7SkgOynnp3OZYpTWn2yAjcAFyyg
-	yKA==
-X-Google-Smtp-Source: AGHT+IHCGL/TAH+EuKJMST94asqDjCByRtbTL9XrPSBTMvVf0ZDUGZaBF+DRAIr0VkkNGS+oY16r+elfqIg=
-X-Received: from plsc18.prod.google.com ([2002:a17:902:b692:b0:224:cc7:127f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3d05:b0:223:52fc:a15a
- with SMTP id d9443c01a7336-22c35974379mr47512325ad.33.1744833442066; Wed, 16
- Apr 2025 12:57:22 -0700 (PDT)
-Date: Wed, 16 Apr 2025 12:57:20 -0700
-In-Reply-To: <20250416190630.GA1037529.vipinsh@google.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="h57VOqZE"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLN0Vb019730;
+	Wed, 16 Apr 2025 21:57:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=fPfXD
+	rOzaHcHS0nz37sj3IHcdYCKyF/+hei62PcUU+U=; b=h57VOqZEpswlzD4eLB5Q8
+	mibnXcPxzo8xGLDhN9IEh2PQL1B5xzd2U3yfEKRMwBXb1oLVHVBYiyVUVuPJ/vir
+	XnOr7/aszutYpIqr43rJIEsWhFcTfqeBogNb4++ImpqZI+jqcDtsUQxU1o0HSCmn
+	RsWHCPTJj2eeU3SrqiN0+qrzT8i2Sm/wPpgph6niA/qL8/Oi6KW+QNubcpY3RKqc
+	J/dsHdvVz4CTqR3e4eblYtaSKXXuxxChOp+636y0v2I1Qy8spjmbVD87Ml0lZT6g
+	CGlSyltqLmp+GAH2+Xx/YveSyJXsBnnOyWqhbZVJxN96T8hJuideVJD/Pu+JTnBU
+	A==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4619444xq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 21:57:10 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53GKBCRZ005663;
+	Wed, 16 Apr 2025 21:57:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d5xhvhe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 21:57:10 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53GLv1qU036583;
+	Wed, 16 Apr 2025 21:57:08 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 460d5xhvcp-4;
+	Wed, 16 Apr 2025 21:57:08 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+        qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+        sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+        like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+        alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+        davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+        dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+        peter.maydell@linaro.org, gaosong@loongson.cn, chenhuacai@kernel.org,
+        philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
+        arikalo@gmail.com, npiggin@gmail.com, danielhb413@gmail.com,
+        palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+        zhiwei_liu@linux.alibaba.com, pasic@linux.ibm.com,
+        borntraeger@linux.ibm.com, richard.henderson@linaro.org,
+        david@redhat.com, iii@linux.ibm.com, thuth@redhat.com,
+        flavra@baylibre.com, ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com,
+        cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
+        frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
+        berrange@redhat.com
+Subject: [PATCH v4 03/11] target/i386: disable PERFCORE when "-pmu" is configured
+Date: Wed, 16 Apr 2025 14:52:28 -0700
+Message-ID: <20250416215306.32426-4-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250416215306.32426-1-dongli.zhang@oracle.com>
+References: <20250416215306.32426-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250401155714.838398-1-seanjc@google.com> <20250401155714.838398-3-seanjc@google.com>
- <20250416182437.GA963080.vipinsh@google.com> <20250416190630.GA1037529.vipinsh@google.com>
-Message-ID: <aAALoMbz0IZcKZk4@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: x86: Allocate kvm_vmx/kvm_svm structures
- using kzalloc()
-From: Sean Christopherson <seanjc@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_08,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504160177
+X-Proofpoint-GUID: UDmUAOZH8FunUw3yB1NMy4ATAubHi3QS
+X-Proofpoint-ORIG-GUID: UDmUAOZH8FunUw3yB1NMy4ATAubHi3QS
 
-On Wed, Apr 16, 2025, Vipin Sharma wrote:
-> On 2025-04-16 11:24:37, Vipin Sharma wrote:
-> > On 2025-04-01 08:57:13, Sean Christopherson wrote:
-> > >  
-> > > +	BUILD_BUG_ON(get_order(sizeof(struct kvm_svm) != 0));
-> > 
-> > There is a typo here. It is checking sizeof(struct kvm_svm) != 0, instead
-> > of checking get_order(...) != 0.
-> > 
-> > >  	return 0;
-> > >  
-> > >  err_kvm_init:
-> > > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> > > index b70ed72c1783..01264842bf45 100644
-> > > --- a/arch/x86/kvm/vmx/vmx.c
-> > > +++ b/arch/x86/kvm/vmx/vmx.c
-> > > @@ -8755,6 +8755,7 @@ static int __init vmx_init(void)
-> > >  	if (r)
-> > >  		goto err_kvm_init;
-> > >  
-> > > +	BUILD_BUG_ON(get_order(sizeof(struct kvm_vmx) != 0));
-> > 
-> > Same as above.
+Currently, AMD PMU support isn't determined based on CPUID, that is, the
+"-pmu" option does not fully disable KVM AMD PMU virtualization.
 
-Ugh.  That's what I get for violating the kernel's "don't check for '0'" rule
-(I thought it would make the code more understandable).  Bad me.
+To minimize AMD PMU features, remove PERFCORE when "-pmu" is configured.
 
-> After fixing the typo build is failing.
-> 
-> Checked via pahole, sizes of struct have reduced but still not under 4k.
-> After applying the patch:
-> 
-> struct kvm{} - 4104
-> struct kvm_svm{} - 4320
-> struct kvm_vmx{} - 4128
-> 
-> Also, this BUILD_BUG_ON() might not be reliable unless all of the ifdefs
-> under kvm_[vmx|svm] and its children are enabled. Won't that be an
-> issue?
+To completely disable AMD PMU virtualization will be implemented via
+KVM_CAP_PMU_CAPABILITY in upcoming patches.
 
-That's what build bots (and to a lesser extent, maintainers) are for.  An individual
-developer might miss a particular config, but the build bots that run allyesconfig
-will very quickly detect the issue, and then we fix it.
+As a reminder, neither CPUID_EXT3_PERFCORE nor
+CPUID_8000_0022_EAX_PERFMON_V2 is removed from env->features[] when "-pmu"
+is configured. Developers should query whether they are supported via
+cpu_x86_cpuid() rather than relying on env->features[] in future patches.
 
-I also build what is effectively an "allkvmconfig" before officially applying
-anything, so in general things like this shouldn't even make it to the bots.
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+---
+Changed since v2:
+  - No need to check "kvm_enabled() && IS_AMD_CPU(env)".
+
+ target/i386/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 2b87331be5..acbd627f7e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7242,6 +7242,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             !(env->hflags & HF_LMA_MASK)) {
+             *edx &= ~CPUID_EXT2_SYSCALL;
+         }
++
++        if (!cpu->enable_pmu) {
++            *ecx &= ~CPUID_EXT3_PERFCORE;
++        }
+         break;
+     case 0x80000002:
+     case 0x80000003:
+-- 
+2.39.3
+
