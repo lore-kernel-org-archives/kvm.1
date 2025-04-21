@@ -1,106 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470B2BA42
-	for <kvm@vger.kernel.org>; Mon, 21 Apr 2025 03:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BDE1E8329;
+	Mon, 21 Apr 2025 07:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745204908; cv=none; b=ovqvs5F0frnG3vutum7ZaiXa+xa6yuA9p9TvPObXS3zzSl/qpOlRzifP8xS6XNAUTN548uQ7FMD4Fl0/b6JYXRkxjpc8GFy2lXQWsYeGpd23+FbiDfvbRPSOIZchZswym0WU9/ptd66j3Ef/vx0bjocA6pjXeVwFvpzEnUwBSkg=
+	t=1745220684; cv=none; b=l9bJ9HUhymKAN/SUI1Dp48AaOHrxvYr7cN1ZpDQN8iK7+YZ5kCGJW6/jTISy5LpXoXDBLgcPcW+N24ERKdJ4mlTq3b/PH7d1mNj4AVTnYi6wWmoop43bXaUu6zTpv/SXdhI7F+5DSH31KayPQJjK824sH9Z3/+xKn39+hRjqgew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745204908; c=relaxed/simple;
-	bh=8hivAmNLcvTNx0c/bREHx35jQBHl8GSDmzWxh1wjb3U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l5Jtu5uPKt0lRwrxSZZl9S9NOaAOxGZkseW1dA/J7bGiQhey3d6nlXuwIZlpSWOfEy5vX0FSIqGRUfCHosjQ5gFRkXJXq3SZT84bVPe+kbOqbimJKi7Y8ETy/mcwlyy27o9tGnVh1F6a7+plWXxgUOi7D7boNIjPY4la9LpUnmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YT8f8E6q; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YT8f8E6q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745204905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8hivAmNLcvTNx0c/bREHx35jQBHl8GSDmzWxh1wjb3U=;
-	b=YT8f8E6qZwMh3xSTLCPq4AvWpGUyXxTwEULnxpFUQjvHrcC608BJJ7vmuIDlMDXLdXrC39
-	D4Ow+AHjCRimbHQDOx+za+dtMV1bRevXd5F+0InKj1tog4ypcJ4lz2GndjBBiLmwfmFNtX
-	GVqk0rnU+bBaFfCU0q/1ylHygINiupg=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-V_DDEzMXN76YRs0zxYt5NA-1; Sun, 20 Apr 2025 23:08:24 -0400
-X-MC-Unique: V_DDEzMXN76YRs0zxYt5NA-1
-X-Mimecast-MFC-AGG-ID: V_DDEzMXN76YRs0zxYt5NA_1745204903
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3055f2e1486so5317755a91.0
-        for <kvm@vger.kernel.org>; Sun, 20 Apr 2025 20:08:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745204903; x=1745809703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8hivAmNLcvTNx0c/bREHx35jQBHl8GSDmzWxh1wjb3U=;
-        b=hzYxrKIOSkNLNiDtP0EbsWXkccMaFh+jZnmG5vR96RYoraf+TKAJVYHXpklVjvNFZD
-         mtVXfELHr1BJSuyM16iOCgCNWHW3KsLwvOdhpIFdFmRhE50chJyuKYE41Tr8aaT4gOOZ
-         ZFX7M1DRbuxgMmke0tqTeFAf11M31YcHhrqNMLMGvBITIvSjd5OesHipDY6zjStxzAmu
-         s7A6+/ZBlbC+927ELNn6i1uaA4eU2SlA08Ba39s4EuuyIHHabINdCR4AZaknBYDG0dLh
-         0DBaeF/m8tgl38QxS6sWCdlcNGIgKAktnQpyyZN1op7v/hMgpBj0ppdXKXGZ/Auq3bEk
-         jfbw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8Xg/x6r9oEQ12CCMM9Wb9Vu8No0kbJ0zRmEpDaQcTge24pIxYoTBYigBLgcQU6GBgt14=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2csHW9Jdp4qDkEP5xS3RfmSwIDeQOm8tJsEzFd0c/Y5KosaPJ
-	Xlcfxd61V89jIqAej+0rndgFTfcYr9JEGKJHC6W8OIwddw9g/yRTFUDidHxAssFRUAK4CsiooHA
-	ybppv3KgYBW1u4AMAz31tPfLuQm/qfiORIjL13FlC8mbKF8Uu3Za4rakeO4tFvZjlW/Qrdww/dw
-	VgtLNZSKSBI0JremKYToNIkZE0
-X-Gm-Gg: ASbGncuF8QfOiGbRrnTE/2dAGi0mOPdZbATec5RdRctCFg2cyqculcLU3R2Atlggtne
-	SoqtsI2rVutEnpIy5hgdYOaCp9wCjSD739pXR5pjhPCUZ4gGUNVJFOl9oPjIXBdGCU13t3Q==
-X-Received: by 2002:a17:90b:2ec3:b0:2ff:4f04:4261 with SMTP id 98e67ed59e1d1-3087bbc9485mr12662287a91.34.1745204902902;
-        Sun, 20 Apr 2025 20:08:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsGZidodHER7DPx6AJsb5qX7z5X9GlyzJiQZloe3T04D2Jm+L8lzs+jE/AE1c2bmOaTmkFYJEYHB7563A5Hac=
-X-Received: by 2002:a17:90b:2ec3:b0:2ff:4f04:4261 with SMTP id
- 98e67ed59e1d1-3087bbc9485mr12662267a91.34.1745204902583; Sun, 20 Apr 2025
- 20:08:22 -0700 (PDT)
+	s=arc-20240116; t=1745220684; c=relaxed/simple;
+	bh=qFjcpY7G4UvAvpezP2J+wXOuhfZlC9khcrCE9vkGDFE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=s4NnM75TICM4BLSFUf0s6TX+Dv+oHu9Qp7UHeYl4Yy5AGGigmsYXubDOBZZxdI84+SQ8X0IBjCkehpLPKsdd4j6QSSd+q04FO0xNK3HTQZT850LN1vUBPb4O2z2kAtVTcfpykYvIwELX+zRKUDdYSGO58s8tRbtqXjcudhPJNvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8Bx365F9AVoc0nDAA--.42988S3;
+	Mon, 21 Apr 2025 15:31:17 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMBxn8U+9AVopeqNAA--.25751S3;
+	Mon, 21 Apr 2025 15:31:16 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v10 1/5] KVM: selftests: Add VM_MODE_P47V47_16K vm mode
+Date: Mon, 21 Apr 2025 15:31:06 +0800
+Message-Id: <20250421073110.2259397-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250421073110.2259397-1-maobibo@loongson.cn>
+References: <20250421073110.2259397-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250403063028.16045-1-dongli.zhang@oracle.com> <20250403063028.16045-5-dongli.zhang@oracle.com>
-In-Reply-To: <20250403063028.16045-5-dongli.zhang@oracle.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 21 Apr 2025 11:08:10 +0800
-X-Gm-Features: ATxdqUFK2T-i_sGgdtK1QZ96gsa3IRjAzlkSfDUbg2Xu7DWrfBlUunqWMett7BA
-Message-ID: <CACGkMEsU2nnTD7akj8im+UBYMjbyyUSAq7U9+uVS8_USAK81eQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] vhost: modify vhost_log_write() for broader users
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	netdev@vger.kernel.org, mst@redhat.com, michael.christie@oracle.com, 
-	pbonzini@redhat.com, stefanha@redhat.com, eperezma@redhat.com, 
-	joao.m.martins@oracle.com, joe.jin@oracle.com, si-wei.liu@oracle.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxn8U+9AVopeqNAA--.25751S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Thu, Apr 3, 2025 at 2:32=E2=80=AFPM Dongli Zhang <dongli.zhang@oracle.co=
-m> wrote:
->
-> Currently, the only user of vhost_log_write() is vhost-net. The 'len'
-> argument prevents logging of pages that are not tainted by the RX path.
->
-> Adjustments are needed since more drivers (i.e. vhost-scsi) begin using
-> vhost_log_write(). So far vhost-net RX path may only partially use pages
-> shared via the last vring descriptor. Unlike vhost-net, vhost-scsi always
-> logs all pages shared via vring descriptors. To accommodate this,
-> use (len =3D=3D U64_MAX) to indicate whether the driver would log all pag=
-es of
-> vring descriptors, or only pages that are tainted by the driver.
->
-> In addition, removes BUG().
->
-> Suggested-by: Joao Martins <joao.m.martins@oracle.com>
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+On LoongArch system, GVA width is 47 bit and GPA width is 47 bit also,
+here add new vm mode VM_MODE_P47V47_16K.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ tools/testing/selftests/kvm/include/kvm_util.h | 1 +
+ tools/testing/selftests/kvm/lib/kvm_util.c     | 3 +++
+ 2 files changed, 4 insertions(+)
 
-Thanks
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 373912464fb4..f8faed8c8024 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -177,6 +177,7 @@ enum vm_guest_mode {
+ 	VM_MODE_P36V48_4K,
+ 	VM_MODE_P36V48_16K,
+ 	VM_MODE_P36V48_64K,
++	VM_MODE_P47V47_16K,
+ 	VM_MODE_P36V47_16K,
+ 	NUM_VM_MODES,
+ };
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 815bc45dd8dc..5649cf2f40e8 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -222,6 +222,7 @@ const char *vm_guest_mode_string(uint32_t i)
+ 		[VM_MODE_P36V48_4K]	= "PA-bits:36,  VA-bits:48,  4K pages",
+ 		[VM_MODE_P36V48_16K]	= "PA-bits:36,  VA-bits:48, 16K pages",
+ 		[VM_MODE_P36V48_64K]	= "PA-bits:36,  VA-bits:48, 64K pages",
++		[VM_MODE_P47V47_16K]	= "PA-bits:47,  VA-bits:47, 16K pages",
+ 		[VM_MODE_P36V47_16K]	= "PA-bits:36,  VA-bits:47, 16K pages",
+ 	};
+ 	_Static_assert(sizeof(strings)/sizeof(char *) == NUM_VM_MODES,
+@@ -248,6 +249,7 @@ const struct vm_guest_mode_params vm_guest_mode_params[] = {
+ 	[VM_MODE_P36V48_4K]	= { 36, 48,  0x1000, 12 },
+ 	[VM_MODE_P36V48_16K]	= { 36, 48,  0x4000, 14 },
+ 	[VM_MODE_P36V48_64K]	= { 36, 48, 0x10000, 16 },
++	[VM_MODE_P47V47_16K]	= { 47, 47,  0x4000, 14 },
+ 	[VM_MODE_P36V47_16K]	= { 36, 47,  0x4000, 14 },
+ };
+ _Static_assert(sizeof(vm_guest_mode_params)/sizeof(struct vm_guest_mode_params) == NUM_VM_MODES,
+@@ -319,6 +321,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 	case VM_MODE_P36V48_16K:
+ 		vm->pgtable_levels = 4;
+ 		break;
++	case VM_MODE_P47V47_16K:
+ 	case VM_MODE_P36V47_16K:
+ 		vm->pgtable_levels = 3;
+ 		break;
+-- 
+2.39.3
 
