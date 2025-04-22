@@ -1,186 +1,118 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2056.outbound.protection.outlook.com [40.107.100.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2914578F5F;
-	Tue, 22 Apr 2025 00:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745281463; cv=fail; b=Mp6zOQjIHqFgGAukaORP4x0FMZsLFq96YX8sZxtd1nTQcnWtO8D4xqh5pNZ62ypkb3BmN09eUpT5GY6hhQxU+PDqYIIalzscmQPmKOFnwo6amf7PfDtqSos6PnG2n8kV+/5GYn3dFQQ3xQoGdlHFFB8YbBchy9SK4fg+eN7Iva0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745281463; c=relaxed/simple;
-	bh=Z0fveAUtE+wvo7dlJbKAp9Ww90G72z7QgcrKwQQhKQs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oCDi5i+7hJY3dPfmuqm30VhKBS7CcnfWifqNN1I7lmzXFvJ9lSkdEK57l0XMixs7nEaub4v4FU5n0C+giJO3RUvnT/3m71hBNEWrdokHsIOHeVBC1yPhlIiSNlGZYNzP+w82ZsyX/5wdH7Rinw1V5bOkfiYNqooehUwykUtT9u0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RElzo4uH; arc=fail smtp.client-ip=40.107.100.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D246756B81
+	for <kvm@vger.kernel.org>; Tue, 22 Apr 2025 00:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745281472; cv=none; b=Z9X4o4FymKrIofIhAlTv7vgsSZIcneqWx44bHwsZcym/xkTQQpzsPFVrDwGBuHjt5TPXEVjYMtohU2xFsMMmnVozsm46xfp7P7G/ZBYzrhTSipyTpSMViT3uqrglgSlWtVJaK9IMxXF5URaydqt2oXIO9stzmeYyRixONafJE6w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745281472; c=relaxed/simple;
+	bh=seKhfN+lIcgtz1j3ejpF+U+pNMyG75cEZU4MRUl3spk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CgvVFGtH3vSQm4bvE8GRe9YpSMppeyuYJXifiR6OUDkKB+hdumn58i29pJfasvPOFizS+ZKAtQFhelvDP61worYCENTNfZAQUUgen0BwmfVxzkLB+T334HKZ/K2o84LHLptitzxhdTFB8N36Frb+D/4+Qx6IwnFhyVqMwZqwZKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nJtply7p; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RElzo4uH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=avSl/0x4jzqIdk30pVTLrW4SvNwXZL4gK5TtxLayGHunNrhcEFEb0whEePsiwSWDHGLAIuEkBxHqVeDahQOXB4/BTxAecJDhW3XSsO1e8dZdirzzp/ZWe9Bp9r+dtjH9TjOWJLN5jItAVZnB+/kpUXE2pAnRYlRr52oog4KuOEKAyX7IfZju+hRWKNH/bm/NM7vnoMXURTQoIvOM8bTkCMcwtHB7PFNCYp4E9tP2iQpihE2owLLeIvta/L98sBf/yod3PgTzAfLM52+9sM5OAE99aQQ/r+rWdlivf2vHtUe5hH23sDgn+hOVAUwCZS+CXtXIUfukMBoDNEnsmowLcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A5c3jD0089Q2jyh1hb18+K2i5WjzHT3HqYiqbSlfr58=;
- b=ZvJv4N8QaTvbEx8kKnHSFYo9QYgD9kbdhldL9e3BUYBgpljGeVp9/2NIq4w80pEryRzTT5C/GuI7AW3hnjsvThk8hoj+cxEjzXpGvCBARM3ywkOqgZ/BCnF0RAWa1oZ20bRYiCB475EMT4wYMGk9xnoa8JiFJKJgEKDDT9QyjcuInttdgcz9VzuV2ZAT2qbZrg+qgJ7p9f2kMAFRuU4jCZl0d2+rMqt5dqCs9jBQ5l/vWgrTfjO0WfPfjFuuFGere4de6t3oq+WWb01dm5FGOTjUFUmNs0yxeF2Ea6bb6BGe3//gFIDFrRK/AMaV8YrFtDEF4cTcZL5JNkXZRnL9gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A5c3jD0089Q2jyh1hb18+K2i5WjzHT3HqYiqbSlfr58=;
- b=RElzo4uHQNiH2uuPAAPhorscZleDutGFYmPfhnBkDSxIHuv5OJd42Ld/r2PUdrnsVtT1+sUbVnAPCdlrzPkygCxLW61LLn5zLD+jOvRLrlSeiSlz2x4YRLfIS3U+Az6Ezqcgv4OFvbBXD+hlvycl9sR+iHusqo5OU1ATUNJzBUc=
-Received: from MN2PR06CA0007.namprd06.prod.outlook.com (2603:10b6:208:23d::12)
- by CY8PR12MB7196.namprd12.prod.outlook.com (2603:10b6:930:58::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Tue, 22 Apr
- 2025 00:24:15 +0000
-Received: from BN3PEPF0000B06E.namprd21.prod.outlook.com
- (2603:10b6:208:23d:cafe::18) by MN2PR06CA0007.outlook.office365.com
- (2603:10b6:208:23d::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.35 via Frontend Transport; Tue,
- 22 Apr 2025 00:24:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B06E.mail.protection.outlook.com (10.167.243.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.1 via Frontend Transport; Tue, 22 Apr 2025 00:24:14 +0000
-Received: from purico-ed09host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Apr
- 2025 19:24:12 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <herbert@gondor.apana.org.au>
-CC: <x86@kernel.org>, <john.allen@amd.com>, <davem@davemloft.net>,
-	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>
-Subject: [PATCH v3 0/4] Add SEV-SNP CipherTextHiding feature support
-Date: Tue, 22 Apr 2025 00:24:00 +0000
-Message-ID: <cover.1745279916.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nJtply7p"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736cd36189bso6018461b3a.2
+        for <kvm@vger.kernel.org>; Mon, 21 Apr 2025 17:24:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745281470; x=1745886270; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMviy5+kOGRvpsxzIcn2E2CvZk5Y/HComOdf4ewswVQ=;
+        b=nJtply7pLN1Ue7dzgQsIMNiOdxYX3GFthHrIQgExgWVZm4+fUrX6c7+YJ1pCXt3C5+
+         aguLLqa53Fpc0Gewc7/uHf0polbkOImy3hPYTf7qebURLimzssyXJ4uZUy6GFuc8Sa8v
+         r3npMRobu4YLtDhZpEvaYSEC9/6TsjAgEm3Wh93au2uMVx2xPingYb6AWvd8ElVB/HHK
+         Ygr+gDeYaPlQxvtn8HWPBanO05RGKasQz8D/ZKcR/alD8OiuUZqCI/WkPUXU2uJSe8Rt
+         fahi7K8JwO8x4tUQp4DWEZtorLE2ScKmWHo11pl9R4QRDAcl0wWKYoEhpKZqwGG/ckIW
+         iGwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745281470; x=1745886270;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMviy5+kOGRvpsxzIcn2E2CvZk5Y/HComOdf4ewswVQ=;
+        b=ToH5xXSHSLRzikGfQ+4XiNoEqi24ZVbYdGaOTQvGOeMzDfM4ikZCQgIdfvl8Q84KjJ
+         4W2aLnrq9EstJxWUR5Vo/gIcS7/mzT1AIijX6xfQWtImzKpt0KS33iH9DIyeYqvWFT7b
+         avLjp7Pc2PaVPceBeavnswwhOG1VKv7rqwctQ+0t3u/lSIPEdI/8c0EkT4q1VKDqKAXk
+         q4SFWX+FB8IPuaht2UYdyhMe1rTXgo8pzh4tP5InqliMarI25om5Oyl1rtsAKLPmQeWK
+         /22O/bXr61TC7NMYVrgGH3uzETa6BTP1/b9hXyj8dtAboQuEPnuUCEl9PDXhse1i+mwN
+         tRuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjMcsJGK5fAoD2WcbjKNEzE69qpU9bszBI+dF7vP9VG3Jcw14CoxzgJKCE0KGrA9geG88=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHDl459nwkGc/4+foLdFMUwZ42yobY2MMw//5asTm29sYI81wU
+	mfyBWZH/X5jrnTAo6NCsd8zt4Gksv5CeHbs6nRFm577whG7llzHmg4D46tPy38yzUBDHUbu6lWD
+	BpA==
+X-Google-Smtp-Source: AGHT+IE+k74Qv8xNJI5yuUCUNvrDG4g/fwCOOnIFv35QesHxpUhWzYA0SeHmlnpbDxqeT+CNnDn5wg1xEmU=
+X-Received: from pfat15.prod.google.com ([2002:a05:6a00:aa0f:b0:736:415f:3d45])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a81:b0:736:5545:5b84
+ with SMTP id d2e1a72fcca58-73dc14536b9mr18602088b3a.3.1745281470085; Mon, 21
+ Apr 2025 17:24:30 -0700 (PDT)
+Date: Mon, 21 Apr 2025 17:24:28 -0700
+In-Reply-To: <Z_7VKWxfO7n3eG4p@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06E:EE_|CY8PR12MB7196:EE_
-X-MS-Office365-Filtering-Correlation-Id: d167b89c-c221-40b1-0b72-08dd8134031e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ue4O5sI4YkED1biupsrZMbWXlrhicS8mdpyU5gOCf8Pi9pJTZzV5tjouDHiw?=
- =?us-ascii?Q?NiEAEjCpX8ptr+Ls9o5DfVIiTck3jGa2IvCMqWj8hjpcT5FrfcxeqU4TVxJE?=
- =?us-ascii?Q?3h1bhsht9z1OvkBk2Eh60simNgDg7ybRAH9qn0w7ctxadj7RRqBUePAVBV53?=
- =?us-ascii?Q?yPMho6m4h53qN/ctkBXbYe+8+nJ60uTq/4CHBMw0lNWJdw7MpezPRMLrxAYc?=
- =?us-ascii?Q?7P0gmavZAYtRrOhIL+tj5hMQuqeo06i5QPRvIBqBVxQH6Dgc5rFI4E4KOj2/?=
- =?us-ascii?Q?R3RO4OKsUuEeB5+9frHmICMvRULK7cjerE5bBT8L1IoLzUF8AIWXvnfDngdw?=
- =?us-ascii?Q?C2H42SPSvrGD7+FiNhr/J4J1dtA0b0xnm9DMHk2PYOgkJJiv3nJx+PijEsBR?=
- =?us-ascii?Q?hvmjCbkB+BHT9a51eB5F3VSG/YGcdep9OJb3YyVCCFAcUlDA5PLzYHy4UBe6?=
- =?us-ascii?Q?PfVxccFAotn8C/wXeDd73urpM3/JUtj9QMwXWKv9CrMjui2En8Lou3ubrLkO?=
- =?us-ascii?Q?mYR35b7zsyReMKLyfg+QnG0tV33jxXmj+3RnTRc8jPMOy6GbWOWXYn6/XEOX?=
- =?us-ascii?Q?nUHO6TO7AE4KUt0VE0uhVCdjHnvDYJgdoL+ssi711RAm8T4bQmxMIAZ5XLhb?=
- =?us-ascii?Q?bB1okP13QUYeBEgMBnSGyoPtWheiSJ8eHLlrhsx/KS50/Mv+3ekAjZ4q9Khw?=
- =?us-ascii?Q?E7PI6CyaxSQTF5d8XdUqtLx0QTwv+9u3Ra26KdxlzOj1r818YnSk33tXZXIG?=
- =?us-ascii?Q?Q/HL6wV/pFn/++Fn6cXiUN/sHBxSE+/I7NRCD5hCdmqckDwmsNNGgdiIvz6m?=
- =?us-ascii?Q?p6Us8LwZzOePLvCISxZ7KUMGtGADECen8/EzD154lljgizLCU5347WtpGHC0?=
- =?us-ascii?Q?aodFsAWlUFV5HqolXY/XdPbvlF34MifdENqme5KFVllGPwZoToik3J+/rPfA?=
- =?us-ascii?Q?o5/RNBck2M4IWQMLipm1ODjY6m2KZUEIGghVPdotQBXmTbyymhjg8xcHBbI6?=
- =?us-ascii?Q?d1xDAJ5Wu5qObE+9AfzcKBWsDiHeadVNi6M0ddEFnbiY7KDP55nvXCp1WLx3?=
- =?us-ascii?Q?Ltg4F7vjw2tpeYE0cbK4RDgd9bzll396HGiuYy0D085p4TV6znN3eXzxdk9I?=
- =?us-ascii?Q?dnZfWmT0MECI6hY9+l69Blxjzb0jN7NdQ/HWJFxnebaMbf9sVyGg+bMHbQI2?=
- =?us-ascii?Q?2oC6v44blsVuxgakMDthf0R5WaWRmOLy64vmHZqaBzcHwzsHyL1uVh8LTQHV?=
- =?us-ascii?Q?0akZv8O/KRbOpplT3SxNaEXiZ8V6L36tVTcWL88DFiaa9U8PWVxCQSduq7ka?=
- =?us-ascii?Q?v42IliPpBVM77FQwyEv2BdL+SajSr5DT/z5YdQl3vapVMfQjKRHUinHqVm8f?=
- =?us-ascii?Q?eCWxYkYs6cDeCvXcZrtl6+I++9eI7Nl2QuPo2an2ZkZtvYY4wFcwdp4i9mn6?=
- =?us-ascii?Q?uibKuPNi4W8uiAM8XibsOqovq0KVw33BwfQ6ZKPfgGzCYBzA1x77atOzpBo6?=
- =?us-ascii?Q?7gFssWDWMI/APVwnPVE1M6YwQ6Vpd2vtt6R3?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2025 00:24:14.6633
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d167b89c-c221-40b1-0b72-08dd8134031e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B06E.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7196
+Mime-Version: 1.0
+References: <20250401155714.838398-1-seanjc@google.com> <20250401155714.838398-4-seanjc@google.com>
+ <20250415200635.GA210309.vipinsh@google.com> <Z_7VKWxfO7n3eG4p@google.com>
+Message-ID: <aAbhvKa8g973-lV6@google.com>
+Subject: Re: [PATCH v2 3/3] KVM: x86/mmu: Defer allocation of shadow MMU's
+ hashed page list
+From: Sean Christopherson <seanjc@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On Tue, Apr 15, 2025, Sean Christopherson wrote:
+> On Tue, Apr 15, 2025, Vipin Sharma wrote:
+> > On 2025-04-01 08:57:14, Sean Christopherson wrote:
+> > > +static __ro_after_init HLIST_HEAD(empty_page_hash);
+> > > +
+> > > +static struct hlist_head *kvm_get_mmu_page_hash(struct kvm *kvm, gfn_t gfn)
+> > > +{
+> > > +	struct hlist_head *page_hash = READ_ONCE(kvm->arch.mmu_page_hash);
+> > > +
+> > > +	if (!page_hash)
+> > > +		return &empty_page_hash;
+> > > +
+> > > +	return &page_hash[kvm_page_table_hashfn(gfn)];
+> > > +}
+> > > +
+> > >  
+> > > @@ -2357,6 +2368,7 @@ static struct kvm_mmu_page *__kvm_mmu_get_shadow_page(struct kvm *kvm,
+> > >  	struct kvm_mmu_page *sp;
+> > >  	bool created = false;
+> > >  
+> > > +	BUG_ON(!kvm->arch.mmu_page_hash);
+> > >  	sp_list = &kvm->arch.mmu_page_hash[kvm_page_table_hashfn(gfn)];
+> > 
+> > Why do we need READ_ONCE() at kvm_get_mmu_page_hash() but not here?
+> 
+> We don't (need it in kvm_get_mmu_page_hash()).  I suspect past me was thinking
+> it could be accessed without holding mmu_lock, but that's simply not true.  Unless
+> I'm forgetting, something, I'll drop the READ_ONCE() and WRITE_ONCE() in
+> kvm_mmu_alloc_page_hash(), and instead assert that mmu_lock is held for write.
 
-Ciphertext hiding prevents host accesses from reading the ciphertext
-of SNP guest private memory. Instead of reading ciphertext, the host
-will see constant default values (0xff).
+I remembered what I was trying to do.  The _writer_, kvm_mmu_alloc_page_hash(),
+doesn't hold mmu_lock, and so the READ/WRITE_ONCE() is needed.
 
-Ciphertext hiding separates the ASID space into SNP guest ASIDs and 
-host ASIDs. All SNP active guests must have an ASID less than or
-equal to MAX_SNP_ASID provided to the SNP_INIT_EX command.
-All SEV-legacy guests must be greater than MAX_SNP_ASID.
+But looking at this again, there's really no point in such games.  All readers
+hold mmu_lock for write, so kvm_mmu_alloc_page_hash() can take mmu_lock for read
+to ensure correctness.  That's far easier to reason about than taking a dependency
+on shadow_root_allocated.
 
-This patch-set adds two new module parameters to the KVM module
-to enable SNP CipherTextHiding support and user configurable
-MAX_SNP_ASID to define the system-wide maximum SNP ASID value.
-If this value is not set, then the ASID space is equally divided
-between SEV-SNP and SEV-ES guests.
+For performance, taking mmu_lock for read is unlikely to generate contention, as
+this is only reachable at runtime if the TDP MMU is enabled.  And mmu_lock is
+going to be taken for write anyways (to allocate the shadow root).
 
-v3:
-- rebase to linux-next.
-- rebase on top of support to move SEV-SNP initialization to
-KVM module from CCP driver.
-- Split CipherTextHiding support between CCP driver and KVM module
-with KVM module calling into CCP driver to initialize SNP with
-CipherTextHiding enabled and MAX ASID usable for SNP guest if
-KVM is enabling CipherTextHiding feature.
-- Move module parameters to enable CipherTextHiding feature and
-MAX ASID usable for SNP guests from CCP driver to KVM module
-which allows KVM to be responsible for enabling CipherTextHiding
-feature if end-user requests it.
-
-v2:
-- Fix and add more description to commit logs.
-- Rename sev_cache_snp_platform_status_and_discover_features() to 
-snp_get_platform_data().
-- Add check in snp_get_platform_data to guard against being called
-after SNP_INIT_EX.
-- Fix comments for new structure field definitions being added.
-- Fix naming for new structure being added.
-- Add new vm-type parameter to sev_asid_new().
-- Fix identation.
-- Rename CCP module parameters psp_cth_enabled to cipher_text_hiding and 
-psp_max_snp_asid to max_snp_asid.
-- Rename max_snp_asid to snp_max_snp_asid. 
-
-Ashish Kalra (4):
-  crypto: ccp: New bit-field definitions for SNP_PLATFORM_STATUS command
-  crypto: ccp: Add support for SNP_FEATURE_INFO command
-  crypto: ccp: Add support to enable CipherTextHiding on SNP_INIT_EX
-  KVM: SVM: Add SEV-SNP CipherTextHiding support
-
- arch/x86/kvm/svm/sev.c       | 50 ++++++++++++++++++++---
- drivers/crypto/ccp/sev-dev.c | 78 ++++++++++++++++++++++++++++++++++--
- drivers/crypto/ccp/sev-dev.h |  3 ++
- include/linux/psp-sev.h      | 47 +++++++++++++++++++++-
- include/uapi/linux/psp-sev.h | 10 ++++-
- 5 files changed, 177 insertions(+), 11 deletions(-)
-
--- 
-2.34.1
-
+> > My understanding is that it is in kvm_get_mmu_page_hash() to avoid compiler
+> > doing any read tear. If yes, then the same condition is valid here, isn't it?
+> 
+> The intent wasn't to guard against a tear, but to instead ensure mmu_page_hash
+> couldn't be re-read and end up with a NULL pointer deref, e.g. if KVM set
+> mmu_page_hash and then nullfied it because some later step failed.  But if
+> mmu_lock is held for write, that is simply impossible.
