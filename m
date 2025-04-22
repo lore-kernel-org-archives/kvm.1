@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2912626738D;
-	Tue, 22 Apr 2025 08:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D87268684;
+	Tue, 22 Apr 2025 08:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745310242; cv=none; b=FnqSINWqW0kCwbkgt/EEMkleDT+/OOEJVTnRtYj3TPAMovtxiN2BUmbINDrPaGzZP3tI5zSizrMYhFzqi13KKW/hC0a5iNy9HcAZ78TryrC5ajdL9Z8bIU2EsNW+4B08wI+RlYI3zpdVU9tkQXZ/mFh8GWAZqFBja/C6nxNj6Lk=
+	t=1745310243; cv=none; b=rzyNG42neckEQ4mVg/wFzpCEBS8qG5bDvvYRBYx258kvnWNvNlpQz01rgeDITTgRytihMtFqDBymmeNdW42em88cMbybtY3DTaGSLvLaJPlu6YfJjx23mIR07FJKsoV1HCIh4BoOKHtvQF9JwgM+o9xIKPk0zttPIXj8GOpAJgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745310242; c=relaxed/simple;
-	bh=yBGZYj6e60Xkd31sxfmX0SXfJgjyWcQUtEfLxC+yd5s=;
+	s=arc-20240116; t=1745310243; c=relaxed/simple;
+	bh=eCu+m7zBbJAkqm4TZtPyOH/iZjKrV+2z+Fto4mzxhmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7vZAOKpSiFbdQoagPIJfrgtaLH7IBNr3iU/t/KwZMSJ9zhuNoYy6oklTMAeg9sqSBdlmknnxRtnmOfje1f1pG46V7zd2n0C/vq2vS23bC42v4mq4DNHVkjRbcuZq5iqDf53A39wPGLTt73btvW48KWGSseL/poyC/Wg8gfPn1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=OxFRBToW; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=g/KJF3DveTCxHpjLo28F/ZENNZMZ+yg0s/+Wsz39ekwC3ErSLEQFrc2bamV5c0uWK5MXMIM2qkulJxtiOT3aVwoVUtexGyCCBp2aPXTQfjNnwPyV09TxcF05UGfz3kPwOqzwHYBOG7SQ2+vcQM1qsbpVyn53B0MPZEujI4YmblI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=QKcrrs1C; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="OxFRBToW"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="QKcrrs1C"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9b1954391
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9l1954391
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 22 Apr 2025 01:23:07 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9b1954391
+	Tue, 22 Apr 2025 01:23:28 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9l1954391
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745310189;
-	bh=1txH+adcfOwIr5LH/ZlSlDHGsa/VNPa8LSISbt9l4Ro=;
+	s=2025042001; t=1745310210;
+	bh=WuTf4DKpHMtSM1ra3KvkSmb+zvqoPj+dUC25U2G1occ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxFRBToWvEqJ0D8+VHe17wCVzLMgXTwVfmryl84uMGCcCa1OR1gcYgk3F9JimIkEm
-	 Id/7hCRonS1tRSe3XbDtDY2rOOSRAECeUFgk8SnqUTUQVMI7fMsmlmLdA+V1Isnccx
-	 NyOxGoeye8+rFjFY7d/LaanWDAMzgutZnK7I8bQcQOzDgKbXuT2nLEFt3l17FoQjbN
-	 0MBd1FBVWKYzzM4HdY+mKWx4rA3pjbiDgR4YfpiXTsRCo/G4/quQSJEIDnLLYiZ/pn
-	 +gaaR0PJHyRUhR9gBfrfjXO0nxpya9KvdRYx5dSosavK3jrRh2vDAAe1RpFOl3uFKb
-	 EUpT5J98djaIA==
+	b=QKcrrs1CLj1GklRXrRY5aS2PCtwaEhGTlYpiDyTQTjEtLCtpGP6PF4lU6okTlCAxs
+	 YcOPgbljQyNdip4ad/TqaWX7E6oaZNhnbuHaO/9CAxKWtXtH5IcEpsPeCqrhCapA2j
+	 7/sjlQ+echmy0OGy5x+sG8HYkRhBfTDD46yscv1eNtFvuMspT3EJZSfGIsXT9FuHEP
+	 lwGS4cuq9Pl52a1bmYOQrcwDRDzLfN6Hjtx3Y5PSt1EOkUcnE2fwjGxqtkl4sfrZ/e
+	 1E4b3AKvled+9XSPax5BGjZyR4j5ep8Tvn55jTFJhcMHXdiudbJQjCPXUevI1KzTbM
+	 JdJzBLsp4NdOg==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
@@ -50,9 +50,9 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
         luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
         haiyangz@microsoft.com, decui@microsoft.com
-Subject: [RFC PATCH v2 23/34] x86/extable: Remove new dead code in ex_handler_msr()
-Date: Tue, 22 Apr 2025 01:22:04 -0700
-Message-ID: <20250422082216.1954310-24-xin@zytor.com>
+Subject: [RFC PATCH v2 33/34] x86/msr: Move the ARGS macros after the MSR read/write APIs
+Date: Tue, 22 Apr 2025 01:22:14 -0700
+Message-ID: <20250422082216.1954310-34-xin@zytor.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250422082216.1954310-1-xin@zytor.com>
 References: <20250422082216.1954310-1-xin@zytor.com>
@@ -64,68 +64,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MSR read APIs no longer expect RAX or EDX:EAX to be cleared upon
-returning from #GP caused by MSR read instructions.
-
-The MSR safe APIs no longer assume -EIO being returned in a register
-from #GP caused by MSR instructions.
-
-Remove new dead code due to above changes.
+Since the ARGS macros are no longer used in the MSR read/write API
+implementation, move them after their definitions.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 ---
- arch/x86/mm/extable.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ arch/x86/include/asm/msr.h | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/mm/extable.c b/arch/x86/mm/extable.c
-index 6bf4c2a43c2c..ea3fe7f32772 100644
---- a/arch/x86/mm/extable.c
-+++ b/arch/x86/mm/extable.c
-@@ -165,7 +165,7 @@ static bool ex_handler_uaccess(const struct exception_table_entry *fixup,
- }
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index b4447ba4d6c2..be593a15a838 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -38,23 +38,6 @@ struct saved_msrs {
+ 	struct saved_msr *array;
+ };
  
- static bool ex_handler_msr(const struct exception_table_entry *fixup,
--			   struct pt_regs *regs, bool wrmsr, bool safe, int reg)
-+			   struct pt_regs *regs, bool wrmsr, bool safe)
+-/*
+- * both i386 and x86_64 returns 64-bit value in edx:eax, but gcc's "A"
+- * constraint has different meanings. For i386, "A" means exactly
+- * edx:eax, while for x86_64 it doesn't mean rdx:rax or edx:eax. Instead,
+- * it means rax *or* rdx.
+- */
+-#ifdef CONFIG_X86_64
+-/* Using 64-bit values saves one instruction clearing the high half of low */
+-#define DECLARE_ARGS(val, low, high)	unsigned long low, high
+-#define EAX_EDX_VAL(val, low, high)	((low) | (high) << 32)
+-#define EAX_EDX_RET(val, low, high)	"=a" (low), "=d" (high)
+-#else
+-#define DECLARE_ARGS(val, low, high)	u64 val
+-#define EAX_EDX_VAL(val, low, high)	(val)
+-#define EAX_EDX_RET(val, low, high)	"=A" (val)
+-#endif
+-
+ /*
+  * Be very careful with includes. This header is prone to include loops.
+  */
+@@ -559,6 +542,23 @@ static __always_inline int wrmsr_safe(u32 msr, u32 low, u32 high)
+ extern int rdmsr_safe_regs(u32 regs[8]);
+ extern int wrmsr_safe_regs(u32 regs[8]);
+ 
++/*
++ * both i386 and x86_64 returns 64-bit value in edx:eax, but gcc's "A"
++ * constraint has different meanings. For i386, "A" means exactly
++ * edx:eax, while for x86_64 it doesn't mean rdx:rax or edx:eax. Instead,
++ * it means rax *or* rdx.
++ */
++#ifdef CONFIG_X86_64
++/* Using 64-bit values saves one instruction clearing the high half of low */
++#define DECLARE_ARGS(val, low, high)	unsigned long low, high
++#define EAX_EDX_VAL(val, low, high)	((low) | (high) << 32)
++#define EAX_EDX_RET(val, low, high)	"=a" (low), "=d" (high)
++#else
++#define DECLARE_ARGS(val, low, high)	u64 val
++#define EAX_EDX_VAL(val, low, high)	(val)
++#define EAX_EDX_RET(val, low, high)	"=A" (val)
++#endif
++
+ static __always_inline u64 native_rdpmcq(int counter)
  {
- 	bool imm_insn = is_msr_imm_insn((void *)regs->ip);
- 	u32 msr;
-@@ -207,17 +207,6 @@ static bool ex_handler_msr(const struct exception_table_entry *fixup,
- 		show_stack_regs(regs);
- 	}
- 
--	if (!wrmsr) {
--		/* Pretend that the read succeeded and returned 0. */
--		regs->ax = 0;
--
--		if (!imm_insn)
--			regs->dx = 0;
--	}
--
--	if (safe)
--		*pt_regs_nr(regs, reg) = -EIO;
--
- 	return ex_handler_default(fixup, regs);
+ 	DECLARE_ARGS(val, low, high);
+@@ -571,6 +571,10 @@ static __always_inline u64 native_rdpmcq(int counter)
+ 	return EAX_EDX_VAL(val, low, high);
  }
  
-@@ -395,13 +384,13 @@ int fixup_exception(struct pt_regs *regs, int trapnr, unsigned long error_code,
- 		case EX_TYPE_BPF:
- 			return ex_handler_bpf(e, regs);
- 		case EX_TYPE_WRMSR:
--			return ex_handler_msr(e, regs, true, false, reg);
-+			return ex_handler_msr(e, regs, true, false);
- 		case EX_TYPE_RDMSR:
--			return ex_handler_msr(e, regs, false, false, reg);
-+			return ex_handler_msr(e, regs, false, false);
- 		case EX_TYPE_WRMSR_SAFE:
--			return ex_handler_msr(e, regs, true, true, reg);
-+			return ex_handler_msr(e, regs, true, true);
- 		case EX_TYPE_RDMSR_SAFE:
--			return ex_handler_msr(e, regs, false, true, reg);
-+			return ex_handler_msr(e, regs, false, true);
- 		case EX_TYPE_WRMSR_IN_MCE:
- 			ex_handler_msr_mce(regs, true);
- 			break;
++#undef DECLARE_ARGS
++#undef EAX_EDX_VAL
++#undef EAX_EDX_RET
++
+ static __always_inline u64 rdpmcq(int counter)
+ {
+ #ifdef CONFIG_XEN_PV
 -- 
 2.49.0
 
