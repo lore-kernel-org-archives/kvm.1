@@ -1,116 +1,236 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90322F3E;
-	Tue, 22 Apr 2025 08:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714231F0E34;
+	Tue, 22 Apr 2025 08:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745309792; cv=none; b=dHcXZE+G5MWfBGWfcIXcqWtGUmhuz5OI4kXN5pvWRVn6f3h/+VX2zavO/4COdwCjF3pFcGPRApItzphy/tLDlD4P/5oqWY8go83dhlLj5MHTuolk6pCQKpUa3h95Skr9t1Y20q7GdQjr+srg6+4hGksb6VDY9Zx27vQDTlPRJho=
+	t=1745310229; cv=none; b=jjSiJLt6RKWUX9CgGl9r22Bjt6IKz8hcZQlbtbj4N/hPzm5T9PRzClkFFDnoq46OxwyIhCH00HyyBgA+2EoXuflUKLw90epnLmW1PfDA2lke/9dezhQhSx6qNk1CBwIHBLvNLN7IsdE94HExb87AiISFxYFwZK6G4tJLbojmWiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745309792; c=relaxed/simple;
-	bh=IxR9R4dznHC7A3UhAAi8NByT8Ge6lacYIRr4lsdjXE0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OWMzOz7hEA5laGuiV4IF7y48uC/o9n+5VuONFx/tbw0mvDpk4ZcM96Yfi2K0lzogGFanMRnrBqmU1iKTx1xCf3lDsnjr5N7z9/u9pWaIr2sw539fItMYWr2dDf4p1hWEWJ7cHzJKMAsrWqOY5QLJMTN8CaLPkscWXmLkj5py/wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NA+VTaMG; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745310229; c=relaxed/simple;
+	bh=5mnJXQbl6SEJYO4dMb/C/ZhC/prPzA9KgQK92fsGtwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hkUdQ0Y9B+b7/gOSi9OvkpJ40/x+l4npl3M/BMfIo7+t7AmSHo/R7A9pgJ6snEiT7WeI4fuau75S+CNXTakUuWvqWJwPlhqi2aFNqQVdKjFOmQMQ3qrIXK9M4jgUr0QzFJKDl54/XzqBp2USvuo161DQqRRJz/yT+ipWWWOD3a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=hcEX0Oma; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NA+VTaMG"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac339f53df9so828304166b.1;
-        Tue, 22 Apr 2025 01:16:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745309789; x=1745914589; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cOlwuce44vKtv1OuDBF9isVVZKdS5EgivWfm0t2JhLQ=;
-        b=NA+VTaMG5Jd5S6hrAveld3neuGsqIXH/L8IQqWYkNHxVuDghVQekrvl/3qEJojJbrZ
-         XI5m/gGP8j6eKOSG6DFR19G5zKPoHaxWu8be6OT9tMZmjD4BYLDkcN3gb8GhPDDXHuP5
-         lZ8IoqWyl9wCMJYVi1oPKiU/ZNd3J2j2HyWziXSxhnSU0JaLgmTu+lHrbPFnnUYv38qM
-         JoGh7u1W37TaqcywpU66pyb/dApCB5gc5KlFAZB5KPml14sSib+K9rG7CuKXKEZENdbL
-         lp4JW5hz1bm4BrOukiu4VsrKwynJdumNgySHPpmlDU7j4tM02fASaNMFCIO0Rx6oUGmp
-         KcTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745309789; x=1745914589;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cOlwuce44vKtv1OuDBF9isVVZKdS5EgivWfm0t2JhLQ=;
-        b=GlkNBoOMf1eZi46VsEq1+11Ju7yltK7Lj6oCG+0ctnC17ZBOSmzIrQMrBchGnrA7sk
-         lv0jkVYM9y7EoxF9HtGXOcJQHcuQJP2G6XdqjWmuJumOL4TpokSxx1H4a1Zz8rbeDt4v
-         AvdFCQOtT8bJHwOiEKd+8wbLQtUGd3ypQwPh5YL60zCCiKn2NO0sbyhkMIYiN3Cn5PUv
-         Pkk4R0ZeTSLMBa60VkpVYWfHpesywm7LzcVOFoEeoqwY+r/YnRW/qUu+Rt1lvZmfOQek
-         zupT7NPQM6LXj0xxnswzMhW4SIRfVzSLDRgsp4lXUTB/rOQu9DT2dYQ/bUixKwwA1gGO
-         aOxA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ySgTppYCT1s/9mo7lwv7A654rXDrFcVVcEi4k94VC02f7scUUPhl2Ex/yl8XkTAtapRI@vger.kernel.org, AJvYcCVJE+ZeFwSSi7uASHkkMkxF79kLb/PAn4IVnL4Qx4TNX3mcHdIu4BvBub1M3l2Fqebc0qpqIGPQbiav@vger.kernel.org, AJvYcCVivvua8bq+MOaFmJqyF0Ht5ndA9dQ1x1ija//9eGIPNgD3S1hVaftIvqOUC9DKMgsYjuldUemAZNdmNP+rMTBr@vger.kernel.org, AJvYcCVroBig5FWPglu9lbLgg3SbM+Tl0xte7cT6v2hXqs7FJjznoGJ0beFLSZ/exW/cJi/csXdeG0uQSXEYkIyM@vger.kernel.org, AJvYcCWH3Iz6v/EmZuE1nGWFTbsmmeklluFubRdE0JdjuJWADxohQKQKqabLhhtRDhwz2g4/1CIWujH4@vger.kernel.org, AJvYcCX0Q1ok3Y3PwEJT8/KFc0u5ZEHyteMAr9/h8sbvuwT/Z1OdwgnFSBgvKKhl4gnEVbP1qe/B1Asfkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtir3K1vLec5Steeamrmr0/q2eMM009bbMD5ASLgwUbtaia389
-	b7Ryes+DxxOkgjKnLgmvXh7JAGjwXmjo4CBV5tb3M3gkIeWa/xke
-X-Gm-Gg: ASbGncvAbXPaUzb+R9CWOK7VYjHczqcEChuD1fFvRL1klzHAqDdtIy5/imtpfmQSO06
-	z1wGw2iDSoGmfHdhIBsC1C9CS/9/s3dZxqcWJbNXDbbUW8/gjo76JWjXnM9K2YtbpmltdZffnUl
-	I8jZDLMCUnWLIB/B3hzpHyrXn30q4lPj7PA3pobucm3KsodCMRnHeHg2fmTiuEx9aDku9tIZzii
-	X6t8J+MZY6MpP4B8mTtYuj8vFKn2BbpD9CIx1va9+UDwrI1/fUMs06pL+LzSqZ8uQiHK3NDyOdQ
-	tixvJXD7uX8/SObDlTK5J7fUTfL6GvSUZB0abzgP1nig4xTo5lHoRA==
-X-Google-Smtp-Source: AGHT+IEoDhdUk4JqptbNDk1DSYTZqleRkQiE6D7lLk3MmjHoZyxA8pbW4BbGT1g4lHeJT+lVTudacg==
-X-Received: by 2002:a17:907:7f88:b0:acb:5f9a:72f4 with SMTP id a640c23a62f3a-acb74b8368dmr1158109666b.30.1745309788661;
-        Tue, 22 Apr 2025 01:16:28 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325::158? ([2620:10d:c092:600::1:558d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb8cca2323sm471150066b.181.2025.04.22.01.16.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 01:16:27 -0700 (PDT)
-Message-ID: <f7a96367-1bb0-4ed2-8fbf-af7558fccc20@gmail.com>
-Date: Tue, 22 Apr 2025 09:17:43 +0100
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="hcEX0Oma"
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9K1954391
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 22 Apr 2025 01:22:33 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9K1954391
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1745310154;
+	bh=hH40dRMC8icMs0Kq/gRLpfnhusccGZZqYtPjziXUIq0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hcEX0Oma3CVnkwxqS8bKBIm18tqvV7335h9MWMF4E8wAMoT4z1itaFgVa2bu1H7Lv
+	 Ga+u823XXqz9EiWUYA9XlCQeHFfgScC5iggnF6WJwS4CQfGeYOy+x+oIvnckcTBzB6
+	 8V7NP2nGUmfkFx31xOhz6KwJe5WcJid/C9tfwl98yFuEFykSa3egLEr8WStBfP/6oh
+	 K8ADOv9Wdb6X6GRIlWoxPenpyB34mw1V1qvbQ8zIfGnVmMda21cc2+p+ghtOaC0a2V
+	 V8nAVloDomWCJYiVBeBOXpRIQBAsncCQrgBQ+uMQZJ1te/DZTdjVSMkiakmJECg5VO
+	 psDTTjszTfsAw==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
+        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+        wei.liu@kernel.org, ajay.kaher@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+        haiyangz@microsoft.com, decui@microsoft.com
+Subject: [RFC PATCH v2 06/34] x86/msr: Use the alternatives mechanism to read PMC
+Date: Tue, 22 Apr 2025 01:21:47 -0700
+Message-ID: <20250422082216.1954310-7-xin@zytor.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250422082216.1954310-1-xin@zytor.com>
+References: <20250422082216.1954310-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 1/9] netmem: add niov->type attribute to
- distinguish different net_iov types
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- io-uring@vger.kernel.org, virtualization@lists.linux.dev,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Jeroen de Borst <jeroendb@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn
- <willemb@google.com>, Jens Axboe <axboe@kernel.dk>,
- David Ahern <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
- sdf@fomichev.me, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
- Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
- <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>
-References: <20250417231540.2780723-1-almasrymina@google.com>
- <20250417231540.2780723-2-almasrymina@google.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20250417231540.2780723-2-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/18/25 00:15, Mina Almasry wrote:
-> Later patches in the series adds TX net_iovs where there is no pp
-> associated, so we can't rely on niov->pp->mp_ops to tell what is the
-> type of the net_iov.
+To eliminate the indirect call overhead introduced by the pv_ops API,
+use the alternatives mechanism to read PMC:
 
-That's fine, but that needs a NULL pp check in io_uring as well,
-specifically in io_zcrx_recv_frag().
+    1) When built with !CONFIG_XEN_PV, X86_FEATURE_XENPV becomes a
+       disabled feature, preventing the Xen PMC read code from being
+       built and ensuring the native code is executed unconditionally.
 
-You can also move it to struct net_iov_area and check niov->owner->type
-instead. It's a safer choice than aliasing with struct page, there is
-no cost as you're loading ->owner anyway (e.g. for
-net_iov_virtual_addr()), and it's better in terms of normalisation /
-not unnecessary duplicating it, assuming we'll never have niovs of
-different types bound to the same struct net_iov_area.
+    2) When built with CONFIG_XEN_PV:
 
+       2.1) If not running on the Xen hypervisor (!X86_FEATURE_XENPV),
+            the kernel runtime binary is patched to unconditionally
+            jump to the native PMC read code.
+
+       2.2) If running on the Xen hypervisor (X86_FEATURE_XENPV), the
+            kernel runtime binary is patched to unconditionally jump
+            to the Xen PMC read code.
+
+Consequently, remove the pv_ops PMC read API.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+---
+ arch/x86/include/asm/msr.h            | 31 ++++++++++++++++++++-------
+ arch/x86/include/asm/paravirt.h       |  5 -----
+ arch/x86/include/asm/paravirt_types.h |  2 --
+ arch/x86/kernel/paravirt.c            |  1 -
+ arch/x86/xen/enlighten_pv.c           |  2 --
+ drivers/net/vmxnet3/vmxnet3_drv.c     |  2 +-
+ 6 files changed, 24 insertions(+), 19 deletions(-)
+
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index 01dc8e61ef97..33cf506e2fd6 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -8,6 +8,7 @@
+ 
+ #include <asm/asm.h>
+ #include <asm/errno.h>
++#include <asm/cpufeature.h>
+ #include <asm/cpumask.h>
+ #include <uapi/asm/msr.h>
+ #include <asm/shared/msr.h>
+@@ -73,6 +74,10 @@ static inline void do_trace_read_msr(u32 msr, u64 val, int failed) {}
+ static inline void do_trace_rdpmc(u32 msr, u64 val, int failed) {}
+ #endif
+ 
++#ifdef CONFIG_XEN_PV
++extern u64 xen_read_pmc(int counter);
++#endif
++
+ /*
+  * __rdmsr() and __wrmsr() are the two primitives which are the bare minimum MSR
+  * accessors and should not have any tracing or other functionality piggybacking
+@@ -170,16 +175,32 @@ native_write_msr_safe(u32 msr, u32 low, u32 high)
+ extern int rdmsr_safe_regs(u32 regs[8]);
+ extern int wrmsr_safe_regs(u32 regs[8]);
+ 
+-static inline u64 native_read_pmc(int counter)
++static __always_inline u64 native_rdpmcq(int counter)
+ {
+ 	DECLARE_ARGS(val, low, high);
+ 
+-	asm volatile("rdpmc" : EAX_EDX_RET(val, low, high) : "c" (counter));
++	asm_inline volatile("rdpmc" : EAX_EDX_RET(val, low, high) : "c" (counter));
++
+ 	if (tracepoint_enabled(rdpmc))
+ 		do_trace_rdpmc(counter, EAX_EDX_VAL(val, low, high), 0);
++
+ 	return EAX_EDX_VAL(val, low, high);
+ }
+ 
++static __always_inline u64 rdpmcq(int counter)
++{
++#ifdef CONFIG_XEN_PV
++	if (cpu_feature_enabled(X86_FEATURE_XENPV))
++		return xen_read_pmc(counter);
++#endif
++
++	/*
++	 * 1) When built with !CONFIG_XEN_PV.
++	 * 2) When built with CONFIG_XEN_PV but not running on Xen hypervisor.
++	 */
++	return native_rdpmcq(counter);
++}
++
+ #ifdef CONFIG_PARAVIRT_XXL
+ #include <asm/paravirt.h>
+ #else
+@@ -233,12 +254,6 @@ static inline int rdmsrq_safe(u32 msr, u64 *p)
+ 	*p = native_read_msr_safe(msr, &err);
+ 	return err;
+ }
+-
+-static __always_inline u64 rdpmcq(int counter)
+-{
+-	return native_read_pmc(counter);
+-}
+-
+ #endif	/* !CONFIG_PARAVIRT_XXL */
+ 
+ /* Instruction opcode for WRMSRNS supported in binutils >= 2.40 */
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 590824916394..c7689f5f70d6 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -239,11 +239,6 @@ static inline int rdmsrq_safe(unsigned msr, u64 *p)
+ 	return err;
+ }
+ 
+-static __always_inline u64 rdpmcq(int counter)
+-{
+-	return PVOP_CALL1(u64, cpu.read_pmc, counter);
+-}
+-
+ static inline void paravirt_alloc_ldt(struct desc_struct *ldt, unsigned entries)
+ {
+ 	PVOP_VCALL2(cpu.alloc_ldt, ldt, entries);
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 631c306ce1ff..475f508531d6 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -101,8 +101,6 @@ struct pv_cpu_ops {
+ 	u64 (*read_msr_safe)(unsigned int msr, int *err);
+ 	int (*write_msr_safe)(unsigned int msr, unsigned low, unsigned high);
+ 
+-	u64 (*read_pmc)(int counter);
+-
+ 	void (*start_context_switch)(struct task_struct *prev);
+ 	void (*end_context_switch)(struct task_struct *next);
+ #endif
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index 1ccd05d8999f..28d195ad7514 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -132,7 +132,6 @@ struct paravirt_patch_template pv_ops = {
+ 	.cpu.write_msr		= native_write_msr,
+ 	.cpu.read_msr_safe	= native_read_msr_safe,
+ 	.cpu.write_msr_safe	= native_write_msr_safe,
+-	.cpu.read_pmc		= native_read_pmc,
+ 	.cpu.load_tr_desc	= native_load_tr_desc,
+ 	.cpu.set_ldt		= native_set_ldt,
+ 	.cpu.load_gdt		= native_load_gdt,
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 846b5737d320..9fbe187aff00 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1236,8 +1236,6 @@ static const typeof(pv_ops) xen_cpu_ops __initconst = {
+ 		.read_msr_safe = xen_read_msr_safe,
+ 		.write_msr_safe = xen_write_msr_safe,
+ 
+-		.read_pmc = xen_read_pmc,
+-
+ 		.load_tr_desc = paravirt_nop,
+ 		.set_ldt = xen_set_ldt,
+ 		.load_gdt = xen_load_gdt,
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 7edd0b5e0e77..8af3b4d7ef4d 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -151,7 +151,7 @@ static u64
+ vmxnet3_get_cycles(int pmc)
+ {
+ #ifdef CONFIG_X86
+-	return native_read_pmc(pmc);
++	return native_rdpmcq(pmc);
+ #else
+ 	return 0;
+ #endif
 -- 
-Pavel Begunkov
+2.49.0
 
