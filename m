@@ -1,137 +1,113 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B195D1E9B32;
-	Thu, 24 Apr 2025 10:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4071AED5C;
+	Thu, 24 Apr 2025 10:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745489978; cv=none; b=jy+b3tFwtwNI/7vMyiJu1HRfxzTFDZmH4QWJKZja+XS/vyW/5NCrvCTX3tSG2NUl1W4f5+eM8OmtQ5mdfo9KmlmDPCsHOtoP72X6z5OGXIK66HligjG/sCDGy+XtjMRJ4BFGbedxC0+YGoJ2zSY5yeMNYlUjnnrmpQr4uN07IQw=
+	t=1745490287; cv=none; b=oymrijihsY1QTC6WioDggbnFtXR/NfGFO+D78+5UfXLMC6sa9H90yRSgenVElQEO3ck2jyRVQU90q9DNV9qOMJ4KqSNpaGbmczYGsOdc9Lx9iRuLoccKwJF05NfvKSxf/x6N4pvt78zPwkvzLb1C+5M1XGJ0KMdiJGlLF+Vqgek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745489978; c=relaxed/simple;
-	bh=N2s2BcXDjzDVGxuA4kX71UjVh3HFxxJt6DnEPEaPjXA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=cYHjuH+zCSz8n+9NKD1hQGJRHaid+yHHokbRZzbOF6aDhqnbrj+PECbk3zqvD/hydtna4lRJiWtP9dHZy+wxXHh15J3QNfqF+TZ/OwAbbWtRmZe8f17aseyr9Lil8f9KaxysFH5gw3LkTEQs21hDEb2LVn6znHawdBTrFA9bKVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMQjdnnI; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1745490287; c=relaxed/simple;
+	bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=fhNS0nuufWD/2erYPvzrm24NnzJJLljVmz+6E8T028BPLZmaa2M/hSGDzMf6VBJRio/UKyR0afZblPM4H1jbVt+4wZqClYHVIdRiopih2WiNqwpB8w8wZi9IYEAKLpdLj4ThKCkUQfFDb+OhJ5FRn2nYhgCz2S9cXPDkqLMgl/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzgpgHEW; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMQjdnnI"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cf05f0c3eso5261355e9.0;
-        Thu, 24 Apr 2025 03:19:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzgpgHEW"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39129fc51f8so658757f8f.0;
+        Thu, 24 Apr 2025 03:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745489975; x=1746094775; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1tt+JiBvs/QL64nfkQEuwIxILZiVxeis5k9XCW27jc0=;
-        b=PMQjdnnIdX5I+57lGZR6VZ6m57lEkD3N+vOrUcxEmef/AQPBZTt0QEFd7dCuopxx0u
-         ug3l0+TYICsEypAO24y76sT6ir+AoqIm6NRyd/7r3MLM2G/uGeY0XBWSds+gPZ+n6LwP
-         Im+m03ls9EMyKWKETj/HpaA8mv6HRdpnHApGAbkUdpWZMzNZ/4H6RVdhIPKC54ina1aC
-         JowgShiYHpb1F8O6qC4Q5PFl/Arym+vLsDIYYRpjUahA9qsCblC5pcTvCv+zwag5MP7o
-         wnY2MmaN1/zuZ0Yzx83PNDjulMwnDg6JlST1FTMREngxH8F3fxrIIdaKwBBuRMwsMRW9
-         5UOQ==
+        d=gmail.com; s=20230601; t=1745490284; x=1746095084; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+        b=RzgpgHEWA8qQetLQSrwWiOGfWTGwLA6ArjRUvGU7JtwK/q5BjJnXFBF+oGWjVs4oEm
+         e2jLEVgBmaPbZ6slJVBnJZSAJLFcbwhAQOc/CVdvPKvStaI+w0YTe7+sNadU7F4ZkJnH
+         QEcTjyBEjYXjYe+3gN6Kdts5CbohE2Dr1uhjLhKsupBgZkQ9NnwsEpYNE0VML9mUOrmE
+         Qj5a6lii00eg29QxE4dLW4Zuzq1+h3f8OTUyCLCTjWu7oA06t+2P8MiCJ671sP54/rGP
+         iErA5LoSviEovRF4U9OvK+iDscgD9FQ5XWHv0RlxANgrIn+293FosHp9cgH8pvX4XBqB
+         keBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745489975; x=1746094775;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1tt+JiBvs/QL64nfkQEuwIxILZiVxeis5k9XCW27jc0=;
-        b=rvMZhI5kj3JWdx/tf5/Pn+sDvyWRLU+NBuDlCXs+qfSNjE5evsu5l5wyzK2TnOlkCn
-         BCHyRScch2RUg2ye7yhcF4gbCYwJOgHe8muP1XQQoC4420CBYqI1kmlgdDC+rIbWVCk9
-         S0dMv311a44VoTb8im9HBi6riyN6ZLnKBz8xQCWspHCKEL0GUEfA1fOKlOG4wLJKvpKI
-         KjmhCIaMbAOKxb0Mv5PUesOPpSb/cywsXzBaLTsgEX+v9io50fKA0LQztS1PcVrsxQG6
-         BIvq8TiSB83LTVeQFUCe9M5hL4u4cUSkoZ7uqyY28WuqlfVPzLow2/GmG3ZJ0CEe4VK/
-         P+0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWRVz5jY6JtqzQfnhjrMzFPUN0FNBd+jmfKXNyslzBs7YvDFJT/cmPeDRq9kshVgsI3CbF/wWg1w1LAuY19@vger.kernel.org, AJvYcCWv1wEJZnPVE1odUsIuz1QuQdqyd0dLkzQgqDQ4XIHx35RNV9tna4WMCrHUzLiivbCG05I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR0cLDDFWQX2bkEg7Qat2o/G0y4p1hchMPbZviXgN+cpwVlQDV
-	yVhMw73FFu0PaFDSjm87wSQJvPLAOJB4kSfDwEcmShQM8UVKw7ip
-X-Gm-Gg: ASbGncuUx/YaODPunyU9TBudpDFYtSYezclEVEIieig3b8d+88SnEEKdamr5lv0bIxb
-	/ebmVIXuosq37j0rtdezJvPBBMdgZ5bM9ormuZcR96cec36wnU7hxQq0wxT6OUthM4kbx+rWv3p
-	DHklyPtfMwo2Rvpbz1HarCJh5inKmDJTHVcOAiEMsq+i9Hakodn7/T6saEBHVgCrxm7YBhzXVcy
-	QayXoQ5k4/xR9+iF248opK+HTy8JQEzVW9amDTjxIViizBJzZJRtNSeA5fIm2AxsxdffkFhR00X
-	YJ9Vf567PrcgLBsByNd+tfts7ff9EuSN2T93cldC1gDbqtqsVrJOWFFh7ms4j2QJ2BCI9pFy2am
-	FmqNtgb9TseConJo7q46IYg==
-X-Google-Smtp-Source: AGHT+IGU3dE7mOe0k8jag2/WwmwmZW16j8TNvMk1B2MzBanVRVP6xUmi1yhNxAb4AHKWCz0sZxRcYQ==
-X-Received: by 2002:a05:600d:10:b0:43d:683:8caa with SMTP id 5b1f17b1804b1-4409bd22cf7mr18604175e9.15.1745489974655;
-        Thu, 24 Apr 2025 03:19:34 -0700 (PDT)
-Received: from ?IPv6:2001:b07:5d29:f42d:f708:e6f8:ba5c:1977? ([2001:b07:5d29:f42d:f708:e6f8:ba5c:1977])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d29bf8fsm14995935e9.1.2025.04.24.03.19.32
+        d=1e100.net; s=20230601; t=1745490284; x=1746095084;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xRGlQ+YuAfq0yjKo537Wvq+MxdVlDxgBBdCxFEB1sqw=;
+        b=dhnuwwXV83FcCKFW4fmpb4uat7d6QjM5qXl50JWHFvSafXlmwyxzJWZQZxj5aReQpn
+         djsZpfZ8o6yE2DwYswA52TwHFhek2w9USgteCp3iECIhayAqFq+yuAeQZoTAznPbPKKm
+         zZw9tFjEkOM8GLWVe0AahKW1SeYR+nX3VUUhJ4/oYboHiuEBBBKPYTzwZmrkXsQcOEmx
+         wdk4bWVg3EXbwOeyOSJGOk8CBUa18ZP0pQZx8QaCWqVxO2oNovgTXzphM34e3n2DRNWS
+         +KJQ2xDLLm30zHyFKTuFeOHPuaNREzeLgMVXFX+kyDPTbHO3H/eH32ITmrxrNF1K4dN5
+         d/hA==
+X-Forwarded-Encrypted: i=1; AJvYcCURZD/iiSkYM5jq7zc8hPo5yyTEB0bOFOyeF+GArJ3XfBMsqXlcw5HGnFb9twEJvNGPzAdz4XSkZadtkyx2gPrh@vger.kernel.org, AJvYcCVYa8gwn7OLIrf+6fr6XP2fB/sMA8hgSaCvzJ5t1KwjQRcI4Glm4eN1Px378nUk1+zMx7LGtCyNFunVR8FZ@vger.kernel.org, AJvYcCW7cirSayhcy6QbZ15JbSll151ih6Sn5SLwJx6hEWsf3pscj9JIjbeC0knxi7DbHaea0zICVz3uJsf8@vger.kernel.org, AJvYcCWTpl7WibZmDd7mYbOf2Ar9f/KMa+wpGUV1j3YF6/yL2Bh7Mza98yZZeAYmV+zM9Nk3nwNC@vger.kernel.org, AJvYcCXic7Dr+Ubb0rDt9AFxTS54UNA/eXr9Hty6DJA/6WGIPcLaJMQzbQd/b/TFbPplmJW555n+nN6cdQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1PBt0m+5F9XucEx9qyiICPcE2oeBFsXdt035xFCGiFuXlekTt
+	l+EQb4MAktEBfQxFx6Y+h3rrn0Xt1taz9ulGZkipsR7u6GqFniX6
+X-Gm-Gg: ASbGncv8zjOh2Ql26IxT/ZQJ3f+Yhn/1xGKvV0RGbeRSdnfkUqJOhIgT1sZgePInHbO
+	5MPaK9pp+2tq0RjX5cub7RR4cKfJSCl284eVclQ90N3CIBGBU9Z7kFCS6axwVYaF5v+62O4Gvzn
+	jtavxQFkrj+4V0ZTpi3bARrWKcGyoHdKaNbNkUPD8cLDMc6l60pO1V75hcCx8jyOwkiPeoX6PCI
+	KZTKiRnHS+on3Y6AFeDBgBIz+fIj5uFwn+ZiVD3YWUzi8kSPvr3fWqvZ/Sf/xZTa5mDGb8yz41c
+	1iEw74yY2VZUUhP4AHxJ/cxYeBWyPkmwjE9BMbrxr7UbQL7Cb4S1xsmEy2c=
+X-Google-Smtp-Source: AGHT+IHEb3DW07bLAA/VXg08jEDjB059mOzNk65AI9NhSRJOViAxq2muSv9evi1rARkf40X091csiA==
+X-Received: by 2002:a5d:5983:0:b0:39e:e438:8e4b with SMTP id ffacd0b85a97d-3a06cfab546mr1827774f8f.50.1745490283934;
+        Thu, 24 Apr 2025 03:24:43 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:7d34:7f0d:292f:fa10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d569b38sm1578696f8f.100.2025.04.24.03.24.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 03:19:34 -0700 (PDT)
-Message-ID: <a850503bc9bd789d2531fa64c5321d2d9cce5725.camel@gmail.com>
-Subject: Re: [RFC PATCH 19/21] KVM: gmem: Split huge boundary leafs for
- punch hole of private memory
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: yan.y.zhao@intel.com
-Cc: ackerleytng@google.com, binbin.wu@linux.intel.com,
- chao.p.peng@intel.com,  dave.hansen@intel.com, david@redhat.com,
- fan.du@intel.com, ira.weiny@intel.com,  isaku.yamahata@intel.com,
- jroedel@suse.de, jun.miao@intel.com,  kirill.shutemov@intel.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,  michael.roth@amd.com,
- pbonzini@redhat.com, pgonda@google.com,  quic_eberman@quicinc.com,
- rick.p.edgecombe@intel.com, seanjc@google.com,  tabba@google.com,
- thomas.lendacky@amd.com, vannapurve@google.com, vbabka@suse.cz, 
- x86@kernel.org, xiaoyao.li@intel.com, zhiquan1.li@intel.com
-Date: Thu, 24 Apr 2025 12:19:32 +0200
-In-Reply-To: <20250424030858.519-1-yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+        Thu, 24 Apr 2025 03:24:43 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  io-uring@vger.kernel.org,
+  virtualization@lists.linux.dev,  kvm@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,
+  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon Horman
+ <horms@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Andrew Lunn
+ <andrew+netdev@lunn.ch>,  Jeroen de Borst <jeroendb@google.com>,
+  Harshitha Ramamurthy <hramamurthy@google.com>,  Kuniyuki Iwashima
+ <kuniyu@amazon.com>,  Willem de Bruijn <willemb@google.com>,  Jens Axboe
+ <axboe@kernel.dk>,  Pavel Begunkov <asml.silence@gmail.com>,  David Ahern
+ <dsahern@kernel.org>,  Neal Cardwell <ncardwell@google.com>,  Stefan
+ Hajnoczi <stefanha@redhat.com>,  Stefano Garzarella <sgarzare@redhat.com>,
+  "Michael S. Tsirkin" <mst@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+  Xuan Zhuo <xuanzhuo@linux.alibaba.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,  Shuah Khan <shuah@kernel.org>,  sdf@fomichev.me,
+  dw@davidwei.uk,  Jamal Hadi Salim <jhs@mojatatu.com>,  Victor Nogueira
+ <victor@mojatatu.com>,  Pedro Tammela <pctammela@mojatatu.com>,  Samiullah
+ Khawaja <skhawaja@google.com>
+Subject: Re: [PATCH net-next v10 3/9] net: devmem: TCP tx netlink api
+In-Reply-To: <CAHS8izNUOO-X0WHFTMd3_yEjCDu4sPYADE1oDEtWTYFNNMB5wQ@mail.gmail.com>
+	(Mina Almasry's message of "Wed, 23 Apr 2025 10:59:17 -0700")
+Date: Thu, 24 Apr 2025 10:06:42 +0100
+Message-ID: <m21ptiszbx.fsf@gmail.com>
+References: <20250423031117.907681-1-almasrymina@google.com>
+	<20250423031117.907681-4-almasrymina@google.com>
+	<m2y0vrtd5i.fsf@gmail.com>
+	<CAHS8izNUOO-X0WHFTMd3_yEjCDu4sPYADE1oDEtWTYFNNMB5wQ@mail.gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-On 2025-04-24 at 3:08, Yan Zhao wrote:
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 4bb140e7f30d..008061734ac5 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -292,13 +292,14 @@ static struct folio *kvm_gmem_get_folio(struct
-> inode *inode, pgoff_t index, int
->  	return folio;
->  }
-> =20
-> -static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t
-> start,
-> -				      pgoff_t end)
-> +static int kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t
-> start,
-> +				     pgoff_t end, bool need_split)
->  {
->  	bool flush =3D false, found_memslot =3D false;
->  	struct kvm_memory_slot *slot;
->  	struct kvm *kvm =3D gmem->kvm;
->  	unsigned long index;
-> +	int ret =3D 0;
-> =20
->  	xa_for_each_range(&gmem->bindings, index, slot, start, end -
-> 1) {
->  		pgoff_t pgoff =3D slot->gmem.pgoff;
-> @@ -319,14 +320,23 @@ static void kvm_gmem_invalidate_begin(struct
-> kvm_gmem *gmem, pgoff_t start,
->  			kvm_mmu_invalidate_begin(kvm);
->  		}
-> =20
-> +		if (need_split) {
-> +			ret =3D kvm_split_boundary_leafs(kvm,
-> &gfn_range);
-> +			if (ret < 0)
-> +				goto out;
-> +
-> +			flush |=3D ret;
-> +		}
->  		flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
->  	}
-> =20
-> +out:
->  	if (flush)
->  		kvm_flush_remote_tlbs(kvm);
-> =20
->  	if (found_memslot)
->  		KVM_MMU_UNLOCK(kvm);
-> +	return 0;
+Mina Almasry <almasrymina@google.com> writes:
+>>
+>> The bind-rx op has "flags: [ admin-perm ]", should bind-tx also?
+>
+> The omission of admin-perm for tx is intentional.
+>
+> Binding a dmabuf to an rx queue should and is a privileged operation,
+> because basically the application doing the binding is taking
+> ownership of this rx queue. For TX, no such queue ownership is being
+> taken. The TX binding just gives the netdevice access to the dmabuf
+> dma-addresses so the netdevice can send from there. It's very similar
+> to a normal dma-map with normal memory. There is no need for privilege
+> checks.
 
-Should return ret, not 0
+Thanks for the explanation. I couldn't find any mention of ownership in
+the docs.
