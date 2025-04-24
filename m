@@ -1,88 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B6014F9EB
-	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 15:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE1C15AF6
+	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 15:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745507694; cv=none; b=OIU8tpq8xYgDwbrGT2JsbE5n3EhQABXDZqro6eM+aesSrXS+CRHY8yGszDtq/vu/Tsk2JxlkMzmdG8qZ//BQWTxPMMLAxc75cBhNN/PibSORCi2Js2t9Se1Mgo0lwcZI8qQP0lrVWdejG1iMRrxfuJJpFj93i6vfz8bxlmbuszU=
+	t=1745507838; cv=none; b=Uw7eNYrjeBO6Fth+hN3GR6ukPmIkB6vdQNc8C8ZdHO+qlw7RU9zKbH3dFJL8bpoOsnlvh92cJtmHZ7Sj+SkOMV6Wj5gQ/KOw0y4kXz+QOsA6UMmS9Lvx6vqnLTIkv5fRdjZqtUWe4vjZ5mtbiJGiHOx7L7t5EcyUfdGLZ2xFAdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745507694; c=relaxed/simple;
-	bh=NnaqS19Vj5IEgZGuniBgVWHY2Bm3xNzNuM4PHOb+jI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qvQUq910mcz2Yi6EECjJ4vGu9X+cfTRY1jE5G2ZfxOhPTXKnWBDMQZzGpCctqz+Z1ZpqEKSXtjTI0EHPw/rOHS+Qpi5IqPbPX4Z0QCC5VL9G78c7yVoxfJDxM7Z1+qSuQJOKmgRFHOLaN0cMrIxxRNYsba+kxiOkRQedEFw+zgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJmENsSR; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745507838; c=relaxed/simple;
+	bh=tS6s3jdqLfeu/HP/FdG9OAaK5zkeb8OtT1/wlTr2FRw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rIgVpQgvv45J7c+AKlIdHPCb+0psf5dkDhhoZi+4C2v+QcO0NlCdCozBCvHITCjifKQFpLKHGT6BAy3F9TBcBszwpR5BxMkIGjUktbg+tvrCH9v1Zohrxd5Q4gx4EXbtf9cK08uc+2BML8JGfMZUtKvfEHJ2v39UfMwVCR2k0Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=M31jKxjB; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJmENsSR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745507693; x=1777043693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NnaqS19Vj5IEgZGuniBgVWHY2Bm3xNzNuM4PHOb+jI0=;
-  b=GJmENsSRVF6gJsHFFhv3HB9GcLa0BnHPUhhLlRZKGB4LRb109CznPJKF
-   5Ml6GLXTtxImbL/zHXkiDYC33sAB2CMtBn/vIrSOLZsuFxE0Y+aeBQg8Y
-   gEhTHiRioEsAabNZvz/9HqnFq+rmVUBg58BrrT/rPB2CBU6jud3gbLn45
-   6lOCMvyrqZuSZMgwiBU9m5ZRs4BGEEcXSQqhEygTJvyQbOrr31WeiAABa
-   u4tR8g69Lu+RlEkv5XUuHT1cY7sm7VwTD/AMzBFATDc+XCcMfRXP8CJtR
-   sYH893tyFrKfcnQ8rnCJBP4U5zcYUDasBvEFoQJYW+7Rf95A+uxwoDJ2a
-   g==;
-X-CSE-ConnectionGUID: jGnqJW8VTBW9gLanfpdZNg==
-X-CSE-MsgGUID: Ofwl94LiQT+rjnn7uZve4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47035262"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="47035262"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 08:14:52 -0700
-X-CSE-ConnectionGUID: gU9yJX50QmeV2dpOjNeazQ==
-X-CSE-MsgGUID: Oy1pJe+FTEGiowulyfquZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="132637484"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa007.fm.intel.com with ESMTP; 24 Apr 2025 08:14:47 -0700
-Date: Thu, 24 Apr 2025 23:35:43 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
-	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
-	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
-	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 5/5] i386/kvm: Support fixed counter in KVM PMU filter
-Message-ID: <aApaT9Tj4ycdtNLH@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-6-zhao1.liu@intel.com>
- <c800f523-2b1e-4f0a-b553-eb5a717e617b@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="M31jKxjB"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54998f865b8so1148328e87.3
+        for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 08:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1745507835; x=1746112635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bkX8L9FmNiooLHGCaRLkArZ3Rbkys/Ef4Mr2QS/rQm4=;
+        b=M31jKxjB8GaqDMprh8buwrmpi1oNXoA7Y9bZLosY9SWGlzruOPY2RAeo+lvu8KIJAB
+         bGrZTqed4qd4s6MYoHn2iRaKs2PP+oUwKPDrOmeuF2R54RDQRH/4budo7cIclwLaThQJ
+         9ZqXUWegwQZsPunqRX3ukk+s39p5a+Ow2cOUirAwJtrXVfs2BOBUDzy4CRSBRpNd7GD0
+         4WVULLdEGGoBCYtb2FS9iHNKU/FnYnF0vjxGnfrviDBLokX/LWMeE15oMP2yq9GyW91g
+         /dIvhi15ikwNBnLxHo/M7hFtYdtrYj1bZV68L6P5MiX23q4gp6pts7Nld1j+blxEztBK
+         tU7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745507835; x=1746112635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bkX8L9FmNiooLHGCaRLkArZ3Rbkys/Ef4Mr2QS/rQm4=;
+        b=IQsyc6grV4Z9fXmAE7voyOc30RPC8bJOKD6uChEKVEEPwjsAR7fMhbUMLfzj7oeIDT
+         Lo55EC6pxYJzI93j3achzaTgSkbP/2eh+c+QTwQEH3cdjKbFD5kKeOynBxzAO4BNbPLH
+         Iqq/0yYSnhCU+vLda17kQ1ZY4XrxltrJdL4aHaMm99MyVj1e4qOiLnI02FSYEMm57FB3
+         Ov/HA7w2WvGTluHynYbnlNfTYRs4P8UHs0ypz6yeFgyEMLXEBL74nNcG44+fOrKFQTpZ
+         HMLWZm2JJdVQKqSAFb7FdBEe+TtPdJhvdRI5k32LO6ZQ7vFjosAV2sOM/Mecnhy4JlwG
+         pr4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWUFzVLiT6y5TTdmJNBzJEH1S6uv3s1k7cM4dIxcc/CleFOZuhIFOVmc5xHZlyczVZw4Io=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxN4qViUTij3G7R5JT1AD8erkgLQ9KFfiz1CG8ElWZB/Ckqplx
+	MekOkEmdIskm8MX6IqrL+mGogne9s2XrlRASt6xyJzwEcwKaZYZJuhXQn+kOAi8rurWcYroKUN2
+	RJytRSTrlXNyU4V8k/KvDK9o3CG/LLORmMaYPQw==
+X-Gm-Gg: ASbGncuXNSxP0keO3qsbTJet+ihfcO2FaBcs+U8IO7A4S6GeDU/sbshcpjtF0MynjJy
+	Rhfg+ZbAMsvydohn631NT3j0q/jl+ciSNaz49z50leDCRiMevXI77B+2ZnNfysaAGvuoMSlA7xb
+	cYdaq80vb9/OPoEuNU7lW4LlAcMcxDUHcEug==
+X-Google-Smtp-Source: AGHT+IEq2nDdTYCCuLC8CvG8Nu1G2tLTs9KyL8Oc/Ly8gBV/Sos+3gNM1kuYagtuyh2a1lvS7wE4XaXBUz4iSISWl4U=
+X-Received: by 2002:a05:6512:b99:b0:549:6759:3982 with SMTP id
+ 2adb3069b0e04-54e7c44cc36mr1090314e87.37.1745507834576; Thu, 24 Apr 2025
+ 08:17:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c800f523-2b1e-4f0a-b553-eb5a717e617b@linux.intel.com>
+References: <20250326065644.73765-1-apatel@ventanamicro.com>
+ <20250326065644.73765-11-apatel@ventanamicro.com> <20250412-bc81866c2227ed98429f86b5@orel>
+ <CAK9=C2UxikXyX_VEn7txnfXVjCdLE7Awn=yjs_Ye2dc8VP=DRg@mail.gmail.com> <20250424-153e6b09d5f0ccdee057a0d9@orel>
+In-Reply-To: <20250424-153e6b09d5f0ccdee057a0d9@orel>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Thu, 24 Apr 2025 20:47:02 +0530
+X-Gm-Features: ATxdqUEEIROQU0mWFtLvZ77bUroGqt47muzTW4_uxC9olgu_IqcHhHi2hGHp7K0
+Message-ID: <CAK9=C2VCvE34hdTa2h2_Yr78HO-m5fWw-EzM2L9AAgaE9dDs+Q@mail.gmail.com>
+Subject: Re: [kvmtool PATCH 10/10] riscv: Allow including extensions in the
+ min CPU type using command-line
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Will Deacon <will@kernel.org>, julien.thierry.kdev@gmail.com, maz@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atishp@atishpatra.org>, 
+	Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> >  /**
-> >   * KVMPMUFilter:
-> > - * @action: action that KVM PMU filter will take for selected PMU events.
-> > + * @action: action that KVM PMU filter will take for selected PMU events
-> > + *    and counters.
-> 
-> Maybe more accurate "fixed counters".
+On Thu, Apr 24, 2025 at 7:37=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
+om> wrote:
+>
+> On Thu, Apr 24, 2025 at 07:02:18PM +0530, Anup Patel wrote:
+> > On Sat, Apr 12, 2025 at 7:15=E2=80=AFPM Andrew Jones <ajones@ventanamic=
+ro.com> wrote:
+> > > >  bool riscv__isa_extension_disabled(struct kvm *kvm, unsigned long =
+isa_ext_id)
+> > > >  {
+> > > >       struct isa_ext_info *info =3D NULL;
+> > > > @@ -128,16 +142,39 @@ bool riscv__isa_extension_disabled(struct kvm=
+ *kvm, unsigned long isa_ext_id)
+> > > >  int riscv__cpu_type_parser(const struct option *opt, const char *a=
+rg, int unset)
+> > > >  {
+> > > >       struct kvm *kvm =3D opt->ptr;
+> > > > +     const char *str, *nstr;
+> > > > +     int len;
+> > > >
+> > > > -     if ((strncmp(arg, "min", 3) && strncmp(arg, "max", 3)) || str=
+len(arg) !=3D 3)
+> > > > +     if ((strncmp(arg, "min", 3) || strlen(arg) < 3) &&
+> > >
+> > > If arg =3D=3D 'min', then it can't be less than 3 so the '|| strlen(a=
+rg) < 3'
+> > > is dead code.
+> > >
+> > > > +         (strncmp(arg, "max", 3) || strlen(arg) !=3D 3))
+> > >
+> > > I think we want
+> > >
+> > >  if (strlen(arg) < 3 ||
+> > >      (strlen(arg) =3D=3D 3 && strcmp(arg, "min") && strcmp(arg, "max"=
+)) ||
+> > >      strncmp(arg, "min", 3))
+> >
+> > Nope, for cpu-type =3D "min" the strlen(arg) can be greater than 3
+> > because of comma separated extensions provided as part of
+> > cpu-type value.
+>
+> That's what the last condition 'strncmp(arg, "min", 3)' of my proposed
+> compound-condition is confirming. That condition is only checked for
+> strlen(arg) > 3.
+>
 
-Yes, will fix.
+This last condition causes "--cpu-type max" to fail.
 
-Thanks,
-Zhao
-
+Regards,
+Anup
