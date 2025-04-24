@@ -1,63 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1B819CC0C;
-	Thu, 24 Apr 2025 03:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366491A8F8A;
+	Thu, 24 Apr 2025 03:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745463994; cv=none; b=XICG6DMtMBPBrl64csOAB54AixMx0EFaFTOjeGGGwS48OTNChMsMtiLcoo+89p+IRoEbwo1SUPlYEQTcFYuxxJdIVyLPLCukkoScAde5IM2n6Vc+YcQsvtCFNmy1YWLFqcS0L1SpX7fcj4eNTZa3MhdNseLgLq/rUg8beALsw5Y=
+	t=1745464000; cv=none; b=rQ349uMj75sfFMPsR4dL2E/TkowqEuSKDvYKSqQxbf+I2NBemeWj8e1UpdYJyFncMFEAxMbdnxP0gbdSaAD03JqsfL48GIFgdPrdpdGcPxqXWgo6kUG4VctucYdairEzeLVjeOfbTW///1lbKzUP4gifl+CqDpXUQTT9Uv0Ej8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745463994; c=relaxed/simple;
-	bh=uXNOsvCklRAYSqLYu63ifPB0WY2hC7YPSUDJIeIHlu4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xf2JVAjEg3s2jVVFHGYiw+oA7zIQDthsAS+tZ7VvdkG4iooWpQPRBUTMexXfM0zxKO5/m9SvcOdVwcyd35KRf391ILhWVX1rorgNy9bfUE+tN620QhzfjbO83M4scUIHG8qqZjBO2R8ZFTrc8KPd1n5y6Rfjs/sA4z6g6FN79dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Di86I/Ze; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1745464000; c=relaxed/simple;
+	bh=PfVFd7JLz5IXS7WUKb/plfNE0+8ZFcg3O3M4av8SGOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tw7BCfuQQO9zZZ4ddYNeapkHwu/6/HZZyt7eALXmsuo3HjIiOos7/jrGRJQ4664xBZqs+/owEaMTFZhDDebPLQK4DhtScO21QKeT5X+SuqZ/wtmdl4kStLfiLMVaRkHrDZtdDDSDXmdz2zej/TRjIUjAIcEAu1HxH4Nm2NdI99Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JndJfV4K; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Di86I/Ze"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JndJfV4K"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745463993; x=1776999993;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uXNOsvCklRAYSqLYu63ifPB0WY2hC7YPSUDJIeIHlu4=;
-  b=Di86I/ZeAll4wMmIilYKa3sdvEdjxlAUeB1lKAc0sh14YetetNFmliJr
-   fpuSX+gFleWYVaC/rJ6cHluIcbPl1WiX4q6uMfhd8jte5sG+pG5q5ON9W
-   AM4OlJwfBrLqCDKfnxsRX9WDDwv+vw6H7pWo6LwrhoA2w2WP5CnlZSsFQ
-   4MK0SS6VRfSMNHhGLSXUh/C0+6PkhxagdrHcKbruMZw9RaBdl2ePn7f4B
-   aPYb0RJH7TxsNydA7lALNWN1OPnF2x12sPp4LikgeFBrfpvcSAtMGTelw
-   QzxaztiVe/IvOc45aMnTYIgiqS13IYLMKWQkyqihv5KIumaUjsYlzlnmS
+  t=1745463998; x=1776999998;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PfVFd7JLz5IXS7WUKb/plfNE0+8ZFcg3O3M4av8SGOg=;
+  b=JndJfV4KSK+/Kph4o2wGiLuRjZrySVAZPY5x2tl8cFv3v40XSQOuZsKr
+   1K1bR0EdsGArk5oafYhNH7QWaxTDT/jMFmR5RdHVX+uFRNuXT3vyLm1US
+   17trnnRnIbe1mWzEd+3EGXk0aPjKOJZ9H2L3soze0nO2x/k/3cdOrzalv
+   JN8lILBZwteBEPEvU3pTkfSEbHa9LNXqetjDupZ6BfUXpqxIPGsODVrJo
+   +CnbfxduD6xDdMff45DcgjKmmo3HkfdtWZz0Ezyts11S7vY6bTSBjdb2H
+   ONlxfvoHm2kWhgMQDDRbNfevEOKo5IlBBNt4AMFCy5dj3cVXdcwXoWvyP
    Q==;
-X-CSE-ConnectionGUID: BzcasqvRSTqCKJPmJRenbQ==
-X-CSE-MsgGUID: q/Z/UpZ5T4GPp18Yb9czAA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="49744034"
+X-CSE-ConnectionGUID: KwdD0Sn1RTmlKRtyjkFQ5A==
+X-CSE-MsgGUID: PEV58hqBSmWdki16dq+qkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47205567"
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="49744034"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:06:31 -0700
-X-CSE-ConnectionGUID: Hz/IRvLUQWKhWlORvT/9GQ==
-X-CSE-MsgGUID: bH5XwpOcSjyZx51D7iJgOg==
+   d="scan'208";a="47205567"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:06:38 -0700
+X-CSE-ConnectionGUID: vGIPgGa/TgCJjZUv3jDSPA==
+X-CSE-MsgGUID: 4QNwRSLpSqmO/KJE+PsO6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="132374363"
-Received: from emr.sh.intel.com ([10.112.229.56])
-  by orviesa010.jf.intel.com with ESMTP; 23 Apr 2025 20:06:28 -0700
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [PATCH] x86/pmu_pebs: Initalize and enable PMU interrupt (PMI_VECTOR)
-Date: Thu, 24 Apr 2025 05:22:01 +0000
-Message-Id: <20250424052201.7194-1-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
+   d="scan'208";a="133383716"
+Received: from yzhao56-desk.sh.intel.com ([10.239.159.62])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:06:31 -0700
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	rick.p.edgecombe@intel.com,
+	dave.hansen@intel.com,
+	kirill.shutemov@intel.com,
+	tabba@google.com,
+	ackerleytng@google.com,
+	quic_eberman@quicinc.com,
+	michael.roth@amd.com,
+	david@redhat.com,
+	vannapurve@google.com,
+	vbabka@suse.cz,
+	jroedel@suse.de,
+	thomas.lendacky@amd.com,
+	pgonda@google.com,
+	zhiquan1.li@intel.com,
+	fan.du@intel.com,
+	jun.miao@intel.com,
+	ira.weiny@intel.com,
+	isaku.yamahata@intel.com,
+	xiaoyao.li@intel.com,
+	binbin.wu@linux.intel.com,
+	chao.p.peng@intel.com,
+	Yan Zhao <yan.y.zhao@intel.com>
+Subject: [RFC PATCH 03/21] x86/virt/tdx: Add SEAMCALL wrapper tdh_mem_page_demote()
+Date: Thu, 24 Apr 2025 11:04:45 +0800
+Message-ID: <20250424030445.32704-1-yan.y.zhao@intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20250424030033.32635-1-yan.y.zhao@intel.com>
+References: <20250424030033.32635-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,48 +85,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-PMU interrupt is not correctly initialized and enabled in pmu_pebs test.
-It leads to the APIC_LVTPC mask bit is never cleared after first PMI and
-all subsequential PEBS PMIs are suppressed.
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Although it doesn't impact pmu_pebs test results since current pmu_pebs
-test checks PEBS records by polling instead of PMI driving, it's still an
-incorrect behavior and could cause some unexpected false positives.
+Add a wrapper tdh_mem_page_demote() to invoke SEAMCALL TDH_MEM_PAGE_DEMOTE
+to demote a huge leaf entry to a non-leaf entry in S-EPT. Currently, the
+TDX module only supports demotion of a 2M huge leaf entry. After a
+successful demotion, the old 2M huge leaf entry in S-EPT is replaced with a
+non-leaf entry, linking to the newly-added page table page. The newly
+linked page table page then contains 512 leaf entries, pointing to the 2M
+guest private pages.
 
-Thus initialize and enable PMU interrupt and ensure PEBS PMI can be
-generated and correctly processed.
+The "gpa" and "level" direct the TDX module to search and find the old
+huge leaf entry.
 
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+As the new non-leaf entry points to a page table page, callers need to
+pass in the page table page in parameter "page".
+
+In case of S-EPT walk failure, the entry, level and state where the error
+was detected are returned in ext_err1 and ext_err2.
+
+On interrupt pending, SEAMCALL TDH_MEM_PAGE_DEMOTE returns error
+TDX_INTERRUPTED_RESTARTABLE.
+
+[Yan: Rebased and split patch, wrote changelog]
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 ---
- x86/pmu_pebs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/tdx.h  |  2 ++
+ arch/x86/virt/vmx/tdx/tdx.c | 20 ++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h |  1 +
+ 3 files changed, 23 insertions(+)
 
-diff --git a/x86/pmu_pebs.c b/x86/pmu_pebs.c
-index 6396d51c..6e73fc34 100644
---- a/x86/pmu_pebs.c
-+++ b/x86/pmu_pebs.c
-@@ -417,9 +417,11 @@ int main(int ac, char **av)
- 	printf("PEBS Fixed counters: %d\n", pmu.nr_fixed_counters);
- 	printf("PEBS baseline (Adaptive PEBS): %d\n", has_baseline);
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 26ffc792e673..08eff4b2f5e7 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -177,6 +177,8 @@ u64 tdh_mng_key_config(struct tdx_td *td);
+ u64 tdh_mng_create(struct tdx_td *td, u16 hkid);
+ u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp);
+ u64 tdh_mng_rd(struct tdx_td *td, u64 field, u64 *data);
++u64 tdh_mem_page_demote(struct tdx_td *td, u64 gpa, int level, struct page *page,
++			u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_mr_extend(struct tdx_td *td, u64 gpa, u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_mr_finalize(struct tdx_td *td);
+ u64 tdh_vp_flush(struct tdx_vp *vp);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index a66d501b5677..5699dfe500d9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1684,6 +1684,26 @@ u64 tdh_mng_rd(struct tdx_td *td, u64 field, u64 *data)
+ }
+ EXPORT_SYMBOL_GPL(tdh_mng_rd);
  
-+	apic_write(APIC_LVTPC, PMI_VECTOR);
- 	handle_irq(PMI_VECTOR, cnt_overflow);
- 	alloc_buffers();
- 
-+	sti();
- 	for (i = 0; i < ARRAY_SIZE(counter_start_values); i++) {
- 		ctr_start_val = counter_start_values[i];
- 		check_pebs_counters(0, false);
-@@ -441,6 +443,7 @@ int main(int ac, char **av)
- 			report_prefix_pop();
- 		}
- 	}
-+	cli();
- 
- 	free_buffers();
- 
-
-base-commit: abdc5d02a7796a55802509ac9bb704c721f2a5f6
++u64 tdh_mem_page_demote(struct tdx_td *td, u64 gpa, int level, struct page *page,
++			u64 *ext_err1, u64 *ext_err2)
++{
++	struct tdx_module_args args = {
++		.rcx = gpa | level,
++		.rdx = tdx_tdr_pa(td),
++		.r8 = page_to_phys(page),
++	};
++	u64 ret;
++
++	tdx_clflush_page(page);
++	ret = seamcall_ret(TDH_MEM_PAGE_DEMOTE, &args);
++
++	*ext_err1 = args.rcx;
++	*ext_err2 = args.rdx;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(tdh_mem_page_demote);
++
+ u64 tdh_mr_extend(struct tdx_td *td, u64 gpa, u64 *ext_err1, u64 *ext_err2)
+ {
+ 	struct tdx_module_args args = {
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 82bb82be8567..b4dc6b86d40a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -24,6 +24,7 @@
+ #define TDH_MNG_KEY_CONFIG		8
+ #define TDH_MNG_CREATE			9
+ #define TDH_MNG_RD			11
++#define TDH_MEM_PAGE_DEMOTE		15
+ #define TDH_MR_EXTEND			16
+ #define TDH_MR_FINALIZE			17
+ #define TDH_VP_FLUSH			18
 -- 
-2.40.1
+2.43.2
 
