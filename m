@@ -1,300 +1,158 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7C02701B8
-	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 05:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6FD2701B8
+	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 06:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745474387; cv=none; b=fEq4XLuVbXPh3mzXf2XZfyLfD2lbgWl3RLjmAhanl/gKUpKmuH5fgutXpNBsvxLgOsqOxxMsucDkRrRxPQbRzeNe1N8MHiK2/RdKXtqc/GVrJNHwiWZFhKp0n+tzeLjDMSXlka9EufeAQafi4gR9zr7DSnVtDP/XT+cQ4K3ViP0=
+	t=1745475149; cv=none; b=Jngg8srYp13FmfStpDkmLPvN0WQgmdwo95rvtvNejlrwTlz983p7RYVb6VJ2WODRdhO8Adxn1Inwxcpie2DQwRFZwtLfx+IguFJF18XaehX0aIPsvkVoyyP2Z3z+j27wO2d0otwNBSwtuzO8NpDXcPonZD6UK3tXtob8tLZv6q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745474387; c=relaxed/simple;
-	bh=hiPf2uuxKovUAilc6pORWqnZdumqIKqwr6lEQrBemUE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wz+pKBgkUfeJCbSnzrETaNuYbFh4h4bYTifv4rrVFkRyjP12KTKGp/+fWbeomfetXVaRj5GqDjalsrs5v/i/e5BjEIeCwKYrOcPEeTz25XlbSDIARNhKAg8DsM3vr9Y1eHEx+iqphWjsc0q9bW4zf3D810rnabFLUSQMwBTj6dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=GY84tNQ4; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1745475149; c=relaxed/simple;
+	bh=+wR3q3TpP6Sy48Z2TnhaEs8cnjRG2sHsyvRLGH/8NIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BGYrLSXmXNG3buemFgxGFzBH4fFQyGsiyk0oCrw9WcxNg55lKPYwU3lrJV22y65fcvqf7xPG1GGkZuvLcv2uMZoWSZhI0j84Iigjqtb9hRYLVrOByoWitNrX0OSrChkAZEF6kOs+oh1P/SV2yE7uoOXRsFmfPiZUGBLuwFqWWec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IsXJoeod; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="GY84tNQ4"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54addb5a139so621313e87.0
-        for <kvm@vger.kernel.org>; Wed, 23 Apr 2025 22:59:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1745474383; x=1746079183; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l8EjCM2lBy6AuI49OeRHOnLU2LUGHM/myVgsFDXFDU0=;
-        b=GY84tNQ46rbisBCkPykwWTjZKItprMfGflW0+0fvqaVIpu3ql1gV6Vn9o28ndyJAag
-         ACLeuxzJRxW9R9Y3FvndYiVVQK2PzTkDzzW1wc5MoJweci3M7uJRA84GpVlC3Pi/sBIV
-         LOiWCU2stMgfkqHcxPmMse94CgiEpjVEPJFmQZR52hADkBCWm2Ngzeu8Ldn4k+hT0VKw
-         eU8d49nDT+pGyUSknvmVHRim8aERpDUwp8bzBc+EPfRpafUzonaUKJvRCE5A8s+fvnAX
-         TF3EtCoCHnuYR8AS92Eibm+sgDbgjqMlrz1jzi06l7SpX8/yDFHhkIUFZAL4YyM1Vi7i
-         FPtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745474383; x=1746079183;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l8EjCM2lBy6AuI49OeRHOnLU2LUGHM/myVgsFDXFDU0=;
-        b=g+ve6448ESmDzPbO7uVVFOTxSNZKqCeIdNYmlKMKCg90BMEHrdA7LDhLN+yoDEKh7a
-         R3bq+DHsyFZ+XdD3GG4CeJjCYvkZ1eAGX0NfRyy+ZI4sBIJghmVeUQehiGbEzqm2ZUXi
-         OIRdd8J4kEQB6IXPXE2/p3cgGZgDrvVVEnLAYaUTYsm7U3/10qPpPAHN0Q0uj9NTspLG
-         JjwI2Q1b3p3fbAqN3nXk2uVsMWVgTJ/PzU0UBQUD4F8aMVqLs9AtJS6uj/XLtu3F4CvQ
-         yo2bOAyWfFGHKmsQvNxJggVwjR7gBpxOp9bBruWE0BqxyuKxPBw1hLk+smYEJu/cIE5v
-         gpMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWbca3Cii1kWEHyOmpyPaNvbko6XIxlA13E+azyo2DkTh647tDKkqRRitYfKNpjRrqPFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuKv1wIUipFNi6ggzzCx14gzooNE5Yr/zsPZiyXTX5s+7cd7sG
-	eLlyxPLkqlNKBUmtj1SAgP8Nf9ym9VsODekgqg0ZEiKyR46WnQi07mPm2MKtdEyHx/sT142Kq1b
-	pmE7zQvJX7l/sAdYYOdDkNZ8aUG0PEKPuP3Pydg==
-X-Gm-Gg: ASbGnctvNFDW5hjpk+ioIZQFvh3vNbI8aQMT+tWd10KJKVGBH7SSyjj7PiRlla+PdbZ
-	NhBiYzNKZ7/0alz7v0hMfSBVlEPY0GYe2CkOuBs4Gmg657JB+ed14RhR3jbEkCf7O4QqaOe+FCb
-	4j2bLyY62uprMOQtOIDEVkBvQ=
-X-Google-Smtp-Source: AGHT+IEN+MWOjzpH7blf3QMNUgLL+BNvt0FUh2F5EhSBqlgnkvtgg6esyh/FVsX/KnmKuZTBl/+Tzk7X7uOLNmaBFFA=
-X-Received: by 2002:a05:6512:3e1f:b0:549:4e79:dd5f with SMTP id
- 2adb3069b0e04-54e7c41a85bmr544306e87.37.1745474382720; Wed, 23 Apr 2025
- 22:59:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IsXJoeod"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745475147; x=1777011147;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=+wR3q3TpP6Sy48Z2TnhaEs8cnjRG2sHsyvRLGH/8NIU=;
+  b=IsXJoeodYX1LXG8pYhSgXHPWO2aFx2ly/QMxfEIJrYv39lqjvycM81AL
+   sypUpM8ugZ7vom5mMKj8okrtUoYyNQlyI9ZRYmbloeueKajSjs507EBpo
+   saD7gV77fGChCq6hO7n5Q3ln7figOcpqYKdMLjGpAw9lV8VqJq8m5MPo5
+   9AxCKimp7i+hHt+IrbKrnNahsYUk7LjANWd1bhqsLFybA+loKZFoNLKFY
+   cQOadnJRJxM+BISjnxwvDTxAvt+QSiiZqNqq+AhWPEVhoTUtsPvMOmC0m
+   JY+37nOLn0fLCbjRE3nVfFiI5YRq/SHsla+1Tj+vCQiO/95zOpTjYJ008
+   A==;
+X-CSE-ConnectionGUID: WhGTNvhgTxa9jQE0VWH+aQ==
+X-CSE-MsgGUID: Wnso+yyNTlaOiFrNfkmCQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="50915754"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
+   d="scan'208";a="50915754"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:12:26 -0700
+X-CSE-ConnectionGUID: AXBQj+KTTMui2ZOnky74AQ==
+X-CSE-MsgGUID: /zjX24e/S2i0kYYfnU6H3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
+   d="scan'208";a="137696301"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa005.jf.intel.com with ESMTP; 23 Apr 2025 23:12:22 -0700
+Date: Thu, 24 Apr 2025 14:33:18 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+Message-ID: <aAnbLhBXMFAxE2vT@intel.com>
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-2-zhao1.liu@intel.com>
+ <878qo8yu5u.fsf@pond.sub.org>
+ <Z/iUiEXZj52CbduB@intel.com>
+ <87frifxqgk.fsf@pond.sub.org>
+ <Z/i3+l3uQ3dTjnHT@intel.com>
+ <87fri8o70b.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326065644.73765-1-apatel@ventanamicro.com>
- <20250326065644.73765-9-apatel@ventanamicro.com> <20250412-bafd9ea6c4e3314f8da06a26@orel>
-In-Reply-To: <20250412-bafd9ea6c4e3314f8da06a26@orel>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Thu, 24 Apr 2025 11:29:31 +0530
-X-Gm-Features: ATxdqUGQuvaFA4L6h9jicLgVys8uu3ezJCfevD3zpn2O0JMRzdVPUVgq8NsNbJE
-Message-ID: <CAK9=C2XKpf0sgtxfavaagu4S1Y=PzeCGsOYuJRHO_LKgbOfNLA@mail.gmail.com>
-Subject: Re: [kvmtool PATCH 08/10] riscv: Include single-letter extensions in isa_info_arr[]
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Will Deacon <will@kernel.org>, julien.thierry.kdev@gmail.com, maz@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atishp@atishpatra.org>, 
-	Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87fri8o70b.fsf@pond.sub.org>
 
-On Sat, Apr 12, 2025 at 6:06=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
-om> wrote:
->
-> On Wed, Mar 26, 2025 at 12:26:42PM +0530, Anup Patel wrote:
-> > Currently, the isa_info_arr[] only include multi-letter extensions but
-> > the KVM ONE_REG interface covers both single-letter and multi-letter
-> > extensions so extend isa_info_arr[] to include single-letter extensions=
-.
+Hi Markus,
+
+> > This is for security purposes, and can restrict Guest users from
+> > accessing certain sensitive hardware information on the Host via perf or
+> > PMU counter.
 > >
-> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > ---
-> >  riscv/fdt.c | 138 +++++++++++++++++++++++++++++-----------------------
-> >  1 file changed, 76 insertions(+), 62 deletions(-)
+> > When a PMU event is blocked by KVM, Guest users can't get the
+> > corresponding event count via perf/PMU counter.
 > >
-> > diff --git a/riscv/fdt.c b/riscv/fdt.c
-> > index 251821e..46efb47 100644
-> > --- a/riscv/fdt.c
-> > +++ b/riscv/fdt.c
-> > @@ -12,71 +12,81 @@
-> >  struct isa_ext_info {
-> >       const char *name;
-> >       unsigned long ext_id;
-> > +     bool multi_letter;
-> >  };
+> > EMM, if ¡®system¡¯ refers to the QEMU part, then QEMU is responsible
+> > for checking the format and passing the list to KVM.
 > >
-> >  struct isa_ext_info isa_info_arr[] =3D {
-> > -     /* sorted alphabetically */
-> > -     {"smnpm", KVM_RISCV_ISA_EXT_SMNPM},
-> > -     {"smstateen", KVM_RISCV_ISA_EXT_SMSTATEEN},
-> > -     {"ssaia", KVM_RISCV_ISA_EXT_SSAIA},
-> > -     {"sscofpmf", KVM_RISCV_ISA_EXT_SSCOFPMF},
-> > -     {"ssnpm", KVM_RISCV_ISA_EXT_SSNPM},
-> > -     {"sstc", KVM_RISCV_ISA_EXT_SSTC},
-> > -     {"svade", KVM_RISCV_ISA_EXT_SVADE},
-> > -     {"svadu", KVM_RISCV_ISA_EXT_SVADU},
-> > -     {"svinval", KVM_RISCV_ISA_EXT_SVINVAL},
-> > -     {"svnapot", KVM_RISCV_ISA_EXT_SVNAPOT},
-> > -     {"svpbmt", KVM_RISCV_ISA_EXT_SVPBMT},
-> > -     {"svvptc", KVM_RISCV_ISA_EXT_SVVPTC},
-> > -     {"zabha", KVM_RISCV_ISA_EXT_ZABHA},
-> > -     {"zacas", KVM_RISCV_ISA_EXT_ZACAS},
-> > -     {"zawrs", KVM_RISCV_ISA_EXT_ZAWRS},
-> > -     {"zba", KVM_RISCV_ISA_EXT_ZBA},
-> > -     {"zbb", KVM_RISCV_ISA_EXT_ZBB},
-> > -     {"zbc", KVM_RISCV_ISA_EXT_ZBC},
-> > -     {"zbkb", KVM_RISCV_ISA_EXT_ZBKB},
-> > -     {"zbkc", KVM_RISCV_ISA_EXT_ZBKC},
-> > -     {"zbkx", KVM_RISCV_ISA_EXT_ZBKX},
-> > -     {"zbs", KVM_RISCV_ISA_EXT_ZBS},
-> > -     {"zca", KVM_RISCV_ISA_EXT_ZCA},
-> > -     {"zcb", KVM_RISCV_ISA_EXT_ZCB},
-> > -     {"zcd", KVM_RISCV_ISA_EXT_ZCD},
-> > -     {"zcf", KVM_RISCV_ISA_EXT_ZCF},
-> > -     {"zcmop", KVM_RISCV_ISA_EXT_ZCMOP},
-> > -     {"zfa", KVM_RISCV_ISA_EXT_ZFA},
-> > -     {"zfh", KVM_RISCV_ISA_EXT_ZFH},
-> > -     {"zfhmin", KVM_RISCV_ISA_EXT_ZFHMIN},
-> > -     {"zicbom", KVM_RISCV_ISA_EXT_ZICBOM},
-> > -     {"zicboz", KVM_RISCV_ISA_EXT_ZICBOZ},
-> > -     {"ziccrse", KVM_RISCV_ISA_EXT_ZICCRSE},
-> > -     {"zicntr", KVM_RISCV_ISA_EXT_ZICNTR},
-> > -     {"zicond", KVM_RISCV_ISA_EXT_ZICOND},
-> > -     {"zicsr", KVM_RISCV_ISA_EXT_ZICSR},
-> > -     {"zifencei", KVM_RISCV_ISA_EXT_ZIFENCEI},
-> > -     {"zihintntl", KVM_RISCV_ISA_EXT_ZIHINTNTL},
-> > -     {"zihintpause", KVM_RISCV_ISA_EXT_ZIHINTPAUSE},
-> > -     {"zihpm", KVM_RISCV_ISA_EXT_ZIHPM},
-> > -     {"zimop", KVM_RISCV_ISA_EXT_ZIMOP},
-> > -     {"zknd", KVM_RISCV_ISA_EXT_ZKND},
-> > -     {"zkne", KVM_RISCV_ISA_EXT_ZKNE},
-> > -     {"zknh", KVM_RISCV_ISA_EXT_ZKNH},
-> > -     {"zkr", KVM_RISCV_ISA_EXT_ZKR},
-> > -     {"zksed", KVM_RISCV_ISA_EXT_ZKSED},
-> > -     {"zksh", KVM_RISCV_ISA_EXT_ZKSH},
-> > -     {"zkt", KVM_RISCV_ISA_EXT_ZKT},
-> > -     {"ztso", KVM_RISCV_ISA_EXT_ZTSO},
-> > -     {"zvbb", KVM_RISCV_ISA_EXT_ZVBB},
-> > -     {"zvbc", KVM_RISCV_ISA_EXT_ZVBC},
-> > -     {"zvfh", KVM_RISCV_ISA_EXT_ZVFH},
-> > -     {"zvfhmin", KVM_RISCV_ISA_EXT_ZVFHMIN},
-> > -     {"zvkb", KVM_RISCV_ISA_EXT_ZVKB},
-> > -     {"zvkg", KVM_RISCV_ISA_EXT_ZVKG},
-> > -     {"zvkned", KVM_RISCV_ISA_EXT_ZVKNED},
-> > -     {"zvknha", KVM_RISCV_ISA_EXT_ZVKNHA},
-> > -     {"zvknhb", KVM_RISCV_ISA_EXT_ZVKNHB},
-> > -     {"zvksed", KVM_RISCV_ISA_EXT_ZVKSED},
-> > -     {"zvksh", KVM_RISCV_ISA_EXT_ZVKSH},
-> > -     {"zvkt", KVM_RISCV_ISA_EXT_ZVKT},
-> > +     /* single-letter */
-> > +     {"a", KVM_RISCV_ISA_EXT_A, false},
-> > +     {"c", KVM_RISCV_ISA_EXT_C, false},
-> > +     {"d", KVM_RISCV_ISA_EXT_D, false},
-> > +     {"f", KVM_RISCV_ISA_EXT_F, false},
-> > +     {"h", KVM_RISCV_ISA_EXT_H, false},
-> > +     {"i", KVM_RISCV_ISA_EXT_I, false},
-> > +     {"m", KVM_RISCV_ISA_EXT_M, false},
-> > +     {"v", KVM_RISCV_ISA_EXT_V, false},
-> > +     /* multi-letter sorted alphabetically */
-> > +     {"smnpm", KVM_RISCV_ISA_EXT_SMNPM, true},
-> > +     {"smstateen", KVM_RISCV_ISA_EXT_SMSTATEEN, true},
-> > +     {"ssaia", KVM_RISCV_ISA_EXT_SSAIA, true},
-> > +     {"sscofpmf", KVM_RISCV_ISA_EXT_SSCOFPMF, true},
-> > +     {"ssnpm", KVM_RISCV_ISA_EXT_SSNPM, true},
-> > +     {"sstc", KVM_RISCV_ISA_EXT_SSTC, true},
-> > +     {"svade", KVM_RISCV_ISA_EXT_SVADE, true},
-> > +     {"svadu", KVM_RISCV_ISA_EXT_SVADU, true},
-> > +     {"svinval", KVM_RISCV_ISA_EXT_SVINVAL, true},
-> > +     {"svnapot", KVM_RISCV_ISA_EXT_SVNAPOT, true},
-> > +     {"svpbmt", KVM_RISCV_ISA_EXT_SVPBMT, true},
-> > +     {"svvptc", KVM_RISCV_ISA_EXT_SVVPTC, true},
-> > +     {"zabha", KVM_RISCV_ISA_EXT_ZABHA, true},
-> > +     {"zacas", KVM_RISCV_ISA_EXT_ZACAS, true},
-> > +     {"zawrs", KVM_RISCV_ISA_EXT_ZAWRS, true},
-> > +     {"zba", KVM_RISCV_ISA_EXT_ZBA, true},
-> > +     {"zbb", KVM_RISCV_ISA_EXT_ZBB, true},
-> > +     {"zbc", KVM_RISCV_ISA_EXT_ZBC, true},
-> > +     {"zbkb", KVM_RISCV_ISA_EXT_ZBKB, true},
-> > +     {"zbkc", KVM_RISCV_ISA_EXT_ZBKC, true},
-> > +     {"zbkx", KVM_RISCV_ISA_EXT_ZBKX, true},
-> > +     {"zbs", KVM_RISCV_ISA_EXT_ZBS, true},
-> > +     {"zca", KVM_RISCV_ISA_EXT_ZCA, true},
-> > +     {"zcb", KVM_RISCV_ISA_EXT_ZCB, true},
-> > +     {"zcd", KVM_RISCV_ISA_EXT_ZCD, true},
-> > +     {"zcf", KVM_RISCV_ISA_EXT_ZCF, true},
-> > +     {"zcmop", KVM_RISCV_ISA_EXT_ZCMOP, true},
-> > +     {"zfa", KVM_RISCV_ISA_EXT_ZFA, true},
-> > +     {"zfh", KVM_RISCV_ISA_EXT_ZFH, true},
-> > +     {"zfhmin", KVM_RISCV_ISA_EXT_ZFHMIN, true},
-> > +     {"zicbom", KVM_RISCV_ISA_EXT_ZICBOM, true},
-> > +     {"zicboz", KVM_RISCV_ISA_EXT_ZICBOZ, true},
-> > +     {"ziccrse", KVM_RISCV_ISA_EXT_ZICCRSE, true},
-> > +     {"zicntr", KVM_RISCV_ISA_EXT_ZICNTR, true},
-> > +     {"zicond", KVM_RISCV_ISA_EXT_ZICOND, true},
-> > +     {"zicsr", KVM_RISCV_ISA_EXT_ZICSR, true},
-> > +     {"zifencei", KVM_RISCV_ISA_EXT_ZIFENCEI, true},
-> > +     {"zihintntl", KVM_RISCV_ISA_EXT_ZIHINTNTL, true},
-> > +     {"zihintpause", KVM_RISCV_ISA_EXT_ZIHINTPAUSE, true},
-> > +     {"zihpm", KVM_RISCV_ISA_EXT_ZIHPM, true},
-> > +     {"zimop", KVM_RISCV_ISA_EXT_ZIMOP, true},
-> > +     {"zknd", KVM_RISCV_ISA_EXT_ZKND, true},
-> > +     {"zkne", KVM_RISCV_ISA_EXT_ZKNE, true},
-> > +     {"zknh", KVM_RISCV_ISA_EXT_ZKNH, true},
-> > +     {"zkr", KVM_RISCV_ISA_EXT_ZKR, true},
-> > +     {"zksed", KVM_RISCV_ISA_EXT_ZKSED, true},
-> > +     {"zksh", KVM_RISCV_ISA_EXT_ZKSH, true},
-> > +     {"zkt", KVM_RISCV_ISA_EXT_ZKT, true},
-> > +     {"ztso", KVM_RISCV_ISA_EXT_ZTSO, true},
-> > +     {"zvbb", KVM_RISCV_ISA_EXT_ZVBB, true},
-> > +     {"zvbc", KVM_RISCV_ISA_EXT_ZVBC, true},
-> > +     {"zvfh", KVM_RISCV_ISA_EXT_ZVFH, true},
-> > +     {"zvfhmin", KVM_RISCV_ISA_EXT_ZVFHMIN, true},
-> > +     {"zvkb", KVM_RISCV_ISA_EXT_ZVKB, true},
-> > +     {"zvkg", KVM_RISCV_ISA_EXT_ZVKG, true},
-> > +     {"zvkned", KVM_RISCV_ISA_EXT_ZVKNED, true},
-> > +     {"zvknha", KVM_RISCV_ISA_EXT_ZVKNHA, true},
-> > +     {"zvknhb", KVM_RISCV_ISA_EXT_ZVKNHB, true},
-> > +     {"zvksed", KVM_RISCV_ISA_EXT_ZVKSED, true},
-> > +     {"zvksh", KVM_RISCV_ISA_EXT_ZVKSH, true},
-> > +     {"zvkt", KVM_RISCV_ISA_EXT_ZVKT, true},
->
-> nit: I think I would add a 'misa' boolean member instead of 'multi_letter=
-'
-> and then rework this table to look like this
+> > Thanks,
+> > Zhao
+> 
+> This helped some, thanks.  To make sure I got it:
+> 
+> KVM can restrict the guest's access to the PMU.  This is either a
+> whitelist (guest can access exactly what's on this list), or a blacklist
+> (guest can access exactly what's not this list).
 
-"misa" is not appropriate because misa CSR is only available
-in M-mode.
+Yes! The "action" field controls if it's a "whitelist" (allow) or
+"blacklist" (deny).
 
-We do have the notion of "single-letter" extensions
-in RISC-V unpriv ISA conventions chapter so let me
-use that instead.
+And "access" means Guest could get the event count, if "no access", then
+Guest would get nothing.
 
->
->         {"a",           KVM_RISCV_ISA_EXT_A, .misa =3D true       },
->         {"c",           KVM_RISCV_ISA_EXT_C, .misa =3D true       },
->         {"d",           KVM_RISCV_ISA_EXT_D, .misa =3D true       },
->         {"f",           KVM_RISCV_ISA_EXT_F, .misa =3D true       },
->         {"h",           KVM_RISCV_ISA_EXT_H, .misa =3D true       },
->         {"i",           KVM_RISCV_ISA_EXT_I, .misa =3D true       },
->         {"m",           KVM_RISCV_ISA_EXT_M, .misa =3D true       },
->         {"v",           KVM_RISCV_ISA_EXT_V, .misa =3D true       },
->
->         /* multi-letter sorted alphabetically */
->         {"smnpm",       KVM_RISCV_ISA_EXT_SMNPM,                },
->         {"smstateen",   KVM_RISCV_ISA_EXT_SMSTATEEN,            },
->         ...
->
-> The benefit is that only the misa extensions need another field.
+For example, if we set a the whitelist ony for the event (select: 0xc4,
+umask: 0) in QEMU:
 
-See above comment.
+pmu='{"qom-type":"kvm-pmu-filter","id":"f0","action":"allow","events":[{"format":"x86-select-umask","select":196,"umask":0}]}'
 
->
-> >  };
-> >
-> >  static void dump_fdt(const char *dtb_file, void *fdt)
-> > @@ -129,6 +139,10 @@ static void generate_cpu_nodes(void *fdt, struct k=
-vm *kvm)
-> >               }
-> >
-> >               for (i =3D 0; i < arr_sz; i++) {
-> > +                     /* Skip single-letter extensions since these are =
-taken care */
->
-> We should finish the comment with 'of by "whatever takes care of them"'
+then in Guest, this command tries to get count of 2 events:
 
-Okay, I will update.
+perf stat -e cpu/event=0xc4,name=branches/,cpu/event=0xc5,name=branch-misses/ sleep 1
 
->
-> > +                     if (!isa_info_arr[i].multi_letter)
-> > +                             continue;
-> > +
-> >                       reg.id =3D RISCV_ISA_EXT_REG(isa_info_arr[i].ext_=
-id);
-> >                       reg.addr =3D (unsigned long)&isa_ext_out;
-> >                       if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) <=
- 0)
-> > --
-> > 2.43.0
-> >
->
-> Thanks,
-> drew
+Since another event (select: 0xc5, umask: 0) is not on whitelist, its
+"access" is blocked by KVM, so user would get the result like:
 
-Regards,
-Anup
+ Performance counter stats for 'sleep 1':
+
+            348709      branches
+                 0      branch-misses
+
+       1.015962921 seconds time elapsed
+
+       0.000000000 seconds user
+       0.015195000 seconds sys
+
+The "allowed" event has the normal output, and the result of "denied"
+event is zero.
+
+> QEMU's kvm-pmu-filter object provides an interface to this KVM feature.
+
+Yes!
+
+> KVM takes "raw" list entries: an entry is a number, and the number's
+> meaning depends on the architecture. 
+
+Yes, and meaning also depends on format. masked-entry format has special
+meaning (with a flag).
+
+> The kvm-pmu-filter object can take such entries, and passes them to
+> straight to KVM.
+> 
+> On x86, we commonly use two slightly higher level formats: select &
+> umask, and masked.  The kvm-pmu-filter object can take entries in either
+> format, and maps them to "raw".
+>
+> Correct?
+
+Yes, Markus, you're right! (And sorry for late reply.)
+
+And "raw" format as a lower level format can be used for other arches
+(e.g., ARM).
+
+Thanks,
+Zhao
+
