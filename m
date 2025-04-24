@@ -1,152 +1,242 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B92715533F;
-	Thu, 24 Apr 2025 14:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A2614F9EB
+	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 15:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745505544; cv=none; b=aSDK3qrcyFv+Mkp2t0Gs1ty5ICFRARNAFyz6jZRk9Dja3+JK4uYnJyjtOQzoffviE5FXftUqnfJLknRF1DZhSq2smyCu8fNzA4XP2NvKl9hku1oZr1DjhSzw9UfraussVZKbNVOE4+ape82ItuBWhjKc0yyBJJA24wbFhRwgAj0=
+	t=1745507642; cv=none; b=T4ENZ3iHa3jNbkz6Wg4C719g9nHYf5Gok2Dq3NQd54hf4FbXEkcLeiVmckENFFCsgBp0IN3cNrWMEz2vVgZKuw8hJe28tu7e/qhVni5MurVFa5/JMyUHgBRH1LAfhikJ0AeMGdNHXKMEV1RQnHgyNI+BzyEu1moMn4hSGtVpo1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745505544; c=relaxed/simple;
-	bh=TLVz/CTjw1SW9cTVLZDqmNJSZsjwJqxJYyBQRUZ2vG0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=cj0kY4L7SzRr831PXLBzgkgo6k+Oxkx7wATqEFcUZ39f0auYhjM4koCIGimralGmbEc8/QKT4cXhoy9Cg8T1lpUA3UgV+1fw8qxHejbSK9ZmwAm763xJNQUWI1gtN3NFBnEC0ROrJTvJFhSKNMsv90LU4oKjlGuR/DOsg7JMCN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJePo/ng; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745507642; c=relaxed/simple;
+	bh=wVEPg+cfudgIjOoKZg2o4CMPdWU7kLCH8cmSYnxtedE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CxJpBDaUtNxtHXIlpV3yN1B4wDEnURC2lz0PkE9mhgxn/dY0TyNdnNdrIhLTP+QS7wKmZFkA8IMUEcCUoIgnVuBgqTajWwGzRVmUcDdavjNdJYyiLTT+yNGVLBwXB1dU3XYCLmMZrS/uXZknxsl5hdlzg/ZMb0WcLtlKDQvgtSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nyOoccWe; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJePo/ng"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43edecbfb46so8044105e9.0;
-        Thu, 24 Apr 2025 07:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745505540; x=1746110340; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=He1Y9ktqx1lW20BpUlUu2/rAP5XgA+Dn5l+R6PEz93M=;
-        b=OJePo/ng/AqMarQCDSzT6H6ruSuD5KfXshF5MJYSWlcTNSghmBfZxCFHuBfYWkxqCW
-         NlkYoLyK2LghjDA+tTrNRf9Yt5fMQldT6lznNXqmmVSNgvNW9VRD+2ScSbl8CWE30j4k
-         3pZcNKPGyEkf2uopnOSG083znxyJ6WFQ/urkcd021jsFBsoLDBcf1HCU3BeaDKj25B6G
-         8RR77nqAiImCnJgQ1U3f+1dDq4r0Ftto8MG8MW+YBKe8CBwyFsMov6y+E2kJ1Cy/W1GX
-         DTfYY2bGfJlBgIsDvctjnx3TW5YT9GgcF9xvwcl1oYLnSmmJcEjM4H2v49ASs2yqIxDl
-         /FoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745505540; x=1746110340;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=He1Y9ktqx1lW20BpUlUu2/rAP5XgA+Dn5l+R6PEz93M=;
-        b=p2NEwzSoYV5Eh4femfe85x2rJtoxlqnA0pbIQWhjpqpzU8NUY/wG/gjZE86EWN3mhK
-         Xg8RMgNKQpeeDJCv78NrSzXM5ZQkAqKrCYfOWNztoxEWqWfoUUnO4GLOYM02nuSb1Qjz
-         Da7DPY0XepSRwpaR5tf8tGthzZ7AdeB0iQVLfhN3l7JXAw4jQ5owoRiRbsqXmAhU3npv
-         l9q64JFBUseDjDjQYIIiAOS2HOytpc0GdVi5igb0EEPeaQNzg0COOPZto+08S8XuQIKw
-         5x9pppJU/5cI7K1dDfouZaMjgibcgruVeJp3l5VsI8l1OVmSJkFppqIAFVm9dDsW54bz
-         Z3hA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXS1YgAQ/kO5CcscXa6zwpffTd99jglbtlNfyiaXvisZAebjOcQLNfVBqBOAa6SQ3hy/s=@vger.kernel.org, AJvYcCWgPl9t0ZDqjQvhgQHAdDC4DmGzjb+cD18IVtihZL3y8YnI/mARJ2hH/qG7oJwezUsHvuwuYr1/qZO2k2WW@vger.kernel.org, AJvYcCXfanbnSgNKxzSVPhJrB+UEdunIhqOaQ6J4NHjxvstaVrzLv3Xm4kgZIt8pM7jCm9vX7jB2t+eKpyDjeTJJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLJPultxfHt0LklKGiv5iELd2dxHrmkva0zMphRdlA09XJ1727
-	iFMPnvNGdXwI8evIyllX63ENh1NxUAt6IaO2yToUfvKH0qDQZgwX5bXGvsUI
-X-Gm-Gg: ASbGncuIO6Katmrlkjae3hkduehSW8zlrBYl2hkCbNEmGj3RwyCha+DNVmzz9+Eujhu
-	/nsI2j+3PGexwXT6trA2WgN3bfwuKlODrMdE+c90F+xjv3Beh6hlf4Go5wOdpTtG54pmkI+2yJB
-	k6+rT7AE2GITVgZplMWdBytAHlhIiT5gGo9QCv9S0CpKn3j/TGWp9RttlaB4xRmC41CDd+t1TSY
-	Jv7WekhSF9rd2JlSDq4qAbwzHE1Q9DmIfWn2Suk397wXWNjP6DIYqStrLEczJe7jl3CAV/g9wl6
-	MgWGMUAcFxgbD25eKMXoMgVSVY2fXfWWobr9Qw3kpO7KNKOr1HmjawoqMh5cGAk9m0KpUcoQuYe
-	lwF4w9wh17jvAPZ2kQ6GjGQ==
-X-Google-Smtp-Source: AGHT+IHguIgZwJYV78SWBgbaRJqi2L28fF8iAgoCSk/UNtw4z12GqAm7g8nXeMSLOYYgnmRBoYQR5g==
-X-Received: by 2002:a05:600c:1f93:b0:43d:d06:3798 with SMTP id 5b1f17b1804b1-4409bd8cf5amr25620225e9.20.1745505540103;
-        Thu, 24 Apr 2025 07:39:00 -0700 (PDT)
-Received: from ?IPv6:2001:b07:5d29:f42d:16d3:1272:6f9c:e726? ([2001:b07:5d29:f42d:16d3:1272:6f9c:e726])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2b8940sm23938575e9.30.2025.04.24.07.38.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 07:38:59 -0700 (PDT)
-Message-ID: <7da931d3e045aad6349879c16db9a8bf17aa0d60.camel@gmail.com>
-Subject: Re: [PATCH v3 2/4] crypto: ccp: Add support for SNP_FEATURE_INFO
- command
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: ashish.kalra@amd.com
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, davem@davemloft.net, 
- herbert@gondor.apana.org.au, hpa@zytor.com, john.allen@amd.com, 
- kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org,  michael.roth@amd.com, mingo@redhat.com,
- pbonzini@redhat.com, seanjc@google.com,  tglx@linutronix.de,
- thomas.lendacky@amd.com, x86@kernel.org
-Date: Thu, 24 Apr 2025 16:38:58 +0200
-In-Reply-To: <0ec035a24116dce7c8b2a36a29cf5eed96e0eb52.1745279916.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nyOoccWe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745507640; x=1777043640;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wVEPg+cfudgIjOoKZg2o4CMPdWU7kLCH8cmSYnxtedE=;
+  b=nyOoccWeyWL8WRsZ6SmeLDuQZqvqSfixSeX3A2ScPjef2VNihzPsNYnv
+   lyVRG/RcBmvd3cBOQGhODPIewaSF7fK/uBM+9nLkz6uhlq6/1TtwWEATJ
+   b1qX43Ra4v/Fx94ob5qB+dHdyWHi/cDEZyxFWVZBJRePgIlG8VGsytrvy
+   z1RL3rutA/DYUzAkBZjCNYPkbYeRlveAX8EKF2+xe59FANDf4Qw3bcX0o
+   ODCmvQzit9pLKJ0dLWH6zMveT0FBJdNsH0P1Imefx7zFFhuhdSx+eeNQ5
+   DvGmbmyeuKfYly8pTn3M3tSj2iWE6a4xnArqqPp3s3YMz8KW/qPbgvHfA
+   w==;
+X-CSE-ConnectionGUID: O2pw9WcLSCuYMcDjUJfxYQ==
+X-CSE-MsgGUID: Wy0nlCMYR6GX3WlJXnrv+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="46862387"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="46862387"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 08:13:58 -0700
+X-CSE-ConnectionGUID: DtSyRNrSQXisMdzPRaLvTQ==
+X-CSE-MsgGUID: ACKkrOv0RtyU64ls1gCrQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="169860765"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa001.jf.intel.com with ESMTP; 24 Apr 2025 08:13:54 -0700
+Date: Thu, 24 Apr 2025 23:34:49 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+Message-ID: <aApaGdY/kawZIp8N@intel.com>
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-2-zhao1.liu@intel.com>
+ <87tt6d4usx.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tt6d4usx.fsf@pond.sub.org>
 
-On 2025-04-22 at 0:24, Ashish Kalra wrote:
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-
-> dev.c
-> index b08db412f752..f4f8a8905115 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -232,6 +232,7 @@ static int sev_cmd_buffer_len(int cmd)
->  	case SEV_CMD_SNP_GUEST_REQUEST:		return
-> sizeof(struct sev_data_snp_guest_request);
->  	case SEV_CMD_SNP_CONFIG:		return sizeof(struct
-> sev_user_data_snp_config);
->  	case SEV_CMD_SNP_COMMIT:		return sizeof(struct
-> sev_data_snp_commit);
-> +	case SEV_CMD_SNP_FEATURE_INFO:		return sizeof(struct
-> snp_feature_info);
+> > diff --git a/qapi/kvm.json b/qapi/kvm.json
+> > new file mode 100644
+> > index 000000000000..1861d86a9726
+> > --- /dev/null
+> > +++ b/qapi/kvm.json
+> > @@ -0,0 +1,84 @@
+> > +# -*- Mode: Python -*-
+> > +# vim: filetype=python
+> > +#
+> > +# Copyright (C) 2025 Intel Corporation.
+> > +#
+> > +# Author: Zhao Liu <zhao1.liu@intel.com>
+> > +#
+> > +# SPDX-License-Identifier: GPL-2.0-or-later
+> > +
+> > +##
+> > +# == KVM
+> > +##
+> 
+> There's KVM-specific stuff elsewhere in the schema.  Some if of it
+> should probably be moved here.  Can you have a look?  This is not a
+> demand; it's fine if you can't.  If you can: separate patch preceding
+> this one to create kvm.json and move stuff there.
 
-This function is supposed to return the size of the command buffer, so
-for this command it should return sizeof(struct
-sev_data_snp_feature_info).
+Sure! That's what I should have done, and I'll be back to follow up on
+this discussion when I get something new.
 
->  	default:				return 0;
->  	}
-> =20
-> @@ -1072,6 +1073,50 @@ static void snp_set_hsave_pa(void *arg)
->  	wrmsrq(MSR_VM_HSAVE_PA, 0);
->  }
-> =20
-> +static void snp_get_platform_data(void)
-> +{
-> +	struct sev_device *sev =3D psp_master->sev_data;
-> +	struct sev_data_snp_feature_info snp_feat_info;
-> +	struct snp_feature_info *feat_info;
-> +	struct sev_data_snp_addr buf;
-> +	int error =3D 0, rc;
-> +
-> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-> +		return;
-> +
-> +	/*
-> +	 * The output buffer must be firmware page if SEV-SNP is
-> +	 * initialized.
-> +	 */
-> +	if (sev->snp_initialized)
-> +		return;
-> +
-> +	buf.address =3D __psp_pa(&sev->snp_plat_status);
-> +	rc =3D __sev_do_cmd_locked(SEV_CMD_SNP_PLATFORM_STATUS, &buf,
-> &error);
-> +
-> +	/*
-> +	 * Do feature discovery of the currently loaded firmware,
-> +	 * and cache feature information from CPUID 0x8000_0024,
-> +	 * sub-function 0.
-> +	 */
-> +	if (!rc && sev->snp_plat_status.feature_info) {
-> +		/*
-> +		 * Use dynamically allocated structure for the
-> SNP_FEATURE_INFO
-> +		 * command to handle any alignment and page boundary
-> check
-> +		 * requirements.
-> +		 */
-> +		feat_info =3D kzalloc(sizeof(*feat_info), GFP_KERNEL);
+> > +
+> > +##
+> > +# === PMU stuff (KVM related)
+> 
+> The KVM subsection contains just this subsubsection.  Awkward.  Can we
+> do without this subsubsection now?  We can always add it later, when we
+> have enough KVM stuff to warrant structuring it into subsubsections.
 
-The SEV firmware requires the supplied memory range to not cross a page
-boundary, but kzalloc() does not guarantee that the allocated memory
-fits this requirement. You need to allocate a larger chunk of memory (2
-* sizeof(*feat_info) will be enough), and possibly set
-feature_info_paddr to an offset from the start of the allocated memory.
+Thanks! I agree. As I commit to do above, if I find others about KVM,
+we can add this subsection you suggested below :-).
+
+> If we decide we want it:
+> 
+>    # === KVM performance monitor unit (PMU)
+
+Good name.
+
+> > +##
+> > +
+> > +##
+> > +# @KvmPmuFilterAction:
+> > +#
+> > +# Actions that KVM PMU filter supports.
+> > +#
+> > +# @deny: disable the PMU event/counter in KVM PMU filter.
+> > +#
+> > +# @allow: enable the PMU event/counter in KVM PMU filter.
+> > +#
+> > +# Since 10.1
+> > +##
+> > +{ 'enum': 'KvmPmuFilterAction',
+> > +  'data': ['allow', 'deny'] }
+> > +
+> > +##
+> > +# @KvmPmuEventFormat:
+> 
+> Maybe KvmPmuFilterEventFormat?  Or is that too long?
+
+For another 2 formats: 'x86-select-umask' and 'x86-masked-entry', their
+enum value names already have 7 words:
+
+ - KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK
+ - KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY
+
+With "Filter" in name,
+
+ - KVM_PMU_FILTER_EVENT_FORMAT_X86_SELECT_UMASK
+ - KVM_PMU_FILTER_EVENT_FORMAT_X86_MASKED_ENTRY
+
+Look still okay. I'll rename it.
+
+> > +#
+> > +# Encoding formats of PMU event that QEMU/KVM supports.
+> > +#
+> > +# @raw: the encoded event code that KVM can directly consume.
+> 
+> Suggest
+> 
+>    # @raw: raw KVM PMU event code.
+
+Concise. I agree.
+
+> > +#
+> > +# Since 10.1
+> > +##
+> > +{ 'enum': 'KvmPmuEventFormat',
+> > +  'data': ['raw'] }
+> > +
+> > +##
+> > +# @KvmPmuRawEvent:
+> 
+> Maybe KvmPmuFilterEventRaw?  Or is that too long?
+
+KvmPmuFilterEventRaw is fine (not too long).
+
+> > +#
+> > +# Raw PMU event code.
+> > +#
+> > +# @code: the raw value that has been encoded, and QEMU could deliver
+> > +#     to KVM directly.
+> 
+> Suggest
+> 
+>    ##
+>    # @KvmPmuRawEvent
+>    #
+>    # @code: raw KVM PMU event code, to be passed verbatim to KVM.
+
+Thanks for polishing it up, it looks much better.
+
+> > +#
+> > +# Since 10.1
+> > +##
+> > +{ 'struct': 'KvmPmuRawEvent',
+> > +  'data': { 'code': 'uint64' } }
+> > +
+> > +##
+> > +# @KvmPmuFilterEvent:
+> > +#
+> > +# PMU event filtered by KVM.
+> 
+> Suggest
+> 
+>    # A KVM PMU event specification.
+
+Sure.
+
+> > +#
+> > +# @format: PMU event format.
+> > +#
+> > +# Since 10.1
+> > +##
+> > +{ 'union': 'KvmPmuFilterEvent',
+> > +  'base': { 'format': 'KvmPmuEventFormat' },
+> > +  'discriminator': 'format',
+> > +  'data': { 'raw': 'KvmPmuRawEvent' } }
+> > +
+> > +##
+> > +# @KvmPmuFilterProperties:
+> > +#
+> > +# Properties of KVM PMU Filter.
+> > +#
+> > +# @action: action that KVM PMU filter will take for selected PMU events.
+> > +#
+> > +# @events: list of selected PMU events.
+> 
+> Here's my try:
+> 
+>    # Properties of kvm-pmu-filter objects.  A kvm-pmu-filter object
+>    # restricts the guest's access to the PMU with either an allowlist or
+>    # a denylist.
+>    #
+>    # @action: whether @events is an allowlist or a denylist.
+>    #
+>    # @events: list of KVM PMU event specifications.
+
+Thank you very much! Your description is very accurate.
+
+Regards,
+Zhao
+
