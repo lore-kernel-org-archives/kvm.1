@@ -1,212 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3E1DDC21;
-	Thu, 24 Apr 2025 06:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5FA176AC8
+	for <kvm@vger.kernel.org>; Thu, 24 Apr 2025 06:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745475970; cv=none; b=qFzSV8mWf6pXHaxl+6szdoc/RyPCdCAwXAI/iTmxa1HyPaoTsLsh2PuZSBqwtG1X6QzOw0q3edysS61U3+GGhlHWlMsNoLD/Wv9zzOAwZkKaKdULVNwMPZsqyDLunQMb7gPVRshThYfQVEzIydUHRl0iWAVCtE0gSLxFAzJuIQ0=
+	t=1745476372; cv=none; b=SxBlCZ4YeFs+UQhAvX5ZigoJArPojqsX5IJAiroCIIXaLdgwN2v7KvGowey+vU6kds+HhrfW2IsyNNvvzRbvgKXjO6+Rn96L+UKaNS5gcXH/9FGpMxRtGNYSbXJoWMg+nAkksxhTlBo+VtZSpDjSNC7w059GWuBU7tLt3qAlBys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745475970; c=relaxed/simple;
-	bh=r9pnF53EyyaRucMwNVgQLeGE6Ab0R4f4MEaSIMBKOXs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IE2zI/x8j13CcPvtXUwjzDePmkBTb7TjM9rnQOnmIur2rDvdsRBIniA1UgeEM+g2R/sMrElMfkFk9q2R+/KgRnfHzGbSeSyAjynlSKaibPRBgAMaaTmk8QGgiTGzKz4DPkC9eldQmAvl9+FMgkKXNgn7h1D6GG4DxrJ6pGdMJZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=frtjTorX; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1745476372; c=relaxed/simple;
+	bh=crVvmvt20948+XIDqkkeo+K2HiFVUVQubWp6Rvxv3ZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iOkqNV5Z3yRiPpBptruEfVWCKHoAQQnTZNCQ4bE7kvUgYfKXToBiHDkFNh6zk6XCWAaQGKiCiZBEF367VGwLhu2ZDRWTdp+Wxd0w8MnINPRNy+W6Ga5WFl7tCfDmVLl1i0E0rwt0ufhSpuDFp3P6MgmjtrMrfvv6twdc6c+u2w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F2rNqUWO; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="frtjTorX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F2rNqUWO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745475966; x=1777011966;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=r9pnF53EyyaRucMwNVgQLeGE6Ab0R4f4MEaSIMBKOXs=;
-  b=frtjTorXnnyRNojO/uMNvHpfb8o8jg6AILywkYb0KIv7SI4HsdlatWLi
-   4q79+bYdQluLuCFzEC0Y0QYqjp91xKftuKGiJ3Oq6sb9lwO2fs5WMWjbE
-   29PSOIZf4TBuVUGFe9aSM+s6Y41b5BQuDnfB1uMHuXqxt21pny0n2aHFW
-   u50qo8Rqooqz4I8E9ReYRHLeSQOpPnKZwJuQorYio/u64jEaWxNHf4Lwn
-   aTE8ge/fEdVzPOCMoJ6w0TLR6dHMPkMS6HIKD+aND3du8P72ZLecYoUwj
-   LWsW/ZMh0joA7wL60wBWfChehZi8bj+QlrdADgtiBFTXDH0pM9hTE6Vyt
-   g==;
-X-CSE-ConnectionGUID: Z1dpGu+eQHW25lxJoYL7Aw==
-X-CSE-MsgGUID: 9HrqRHW1RMKp0TVWhdoWtw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47187615"
+  t=1745476369; x=1777012369;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=crVvmvt20948+XIDqkkeo+K2HiFVUVQubWp6Rvxv3ZA=;
+  b=F2rNqUWOc0vq1WPGIOswEN3+h9nSXLGvZX1xathQxCYmNl1ImkwBzyAw
+   s0dm77bfKMzcWir6vzTt9kZzM25L7hyWhEkDhSbQfQEu+dU9HuuHBbvsI
+   lYaYjuGrWuyIWk6KikM7KNZhqC77JY7aqYza7pftU7Y5fifhWJwexhMrn
+   /8nhqfWytgJyT7UZjvbVYZsnPUm/w5j2eNTgTjqSeB07YCXXTnPgHPeXA
+   K88lIjuNel1VSB7B17vwynBtZNKYCf+7Xs5eiCmmJ1GoUNUMYk1AQaOom
+   A6KWq8MokOipg8TNFKyCP3TNTYWZQKdxpAAolQOw0nwoQq4bQdg0dKyo7
+   Q==;
+X-CSE-ConnectionGUID: emsnf2b3Q4KhebSpaNtqUQ==
+X-CSE-MsgGUID: x3smqrJfQNaB3kVIgjkC+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47226572"
 X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="47187615"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:26:05 -0700
-X-CSE-ConnectionGUID: Ejvh0aUHTACVpOK/Jqvr7Q==
-X-CSE-MsgGUID: i3jvGnxIQpSi7EjKCit1UA==
+   d="scan'208";a="47226572"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:32:48 -0700
+X-CSE-ConnectionGUID: giu4a9VBT6uyMnrpiLBAeQ==
+X-CSE-MsgGUID: r0QMmQ+gS0CiIRt5Q/1iRg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="132432771"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.245.128]) ([10.124.245.128])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:25:52 -0700
-Message-ID: <20471e53-c228-4cf6-83e6-3ab49f32f19f@linux.intel.com>
-Date: Thu, 24 Apr 2025 14:25:49 +0800
+   d="scan'208";a="163562658"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa001.fm.intel.com with ESMTP; 23 Apr 2025 23:32:45 -0700
+Date: Thu, 24 Apr 2025 14:53:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Tejus GK <tejus.gk@nutanix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Jason Zeng <jason.zeng@intel.com>,
+	Manish Mishra <manish.mishra@nutanix.com>,
+	Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC 05/10] i386/cpu: Introduce cache model for SapphireRapids
+Message-ID: <aAnf9YvevhAo+HJE@intel.com>
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ <20250423114702.1529340-6-zhao1.liu@intel.com>
+ <315d76f0-d81c-43ed-a13e-ef9b8e6a0e75@nutanix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 11/34] x86/msr: Remove calling
- native_{read,write}_msr{,_safe}() in pmu_msr_{read,write}()
-To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
- linux-hwmon@vger.kernel.org, netdev@vger.kernel.org,
- platform-driver-x86@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, acme@kernel.org,
- jgross@suse.com, andrew.cooper3@citrix.com, peterz@infradead.org,
- namhyung@kernel.org, mark.rutland@arm.com,
- alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com,
- adrian.hunter@intel.com, kan.liang@linux.intel.com, wei.liu@kernel.org,
- ajay.kaher@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com,
- seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com,
- kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com
-References: <20250422082216.1954310-1-xin@zytor.com>
- <20250422082216.1954310-12-xin@zytor.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250422082216.1954310-12-xin@zytor.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <315d76f0-d81c-43ed-a13e-ef9b8e6a0e75@nutanix.com>
 
+Hi Tejus,
 
-On 4/22/2025 4:21 PM, Xin Li (Intel) wrote:
-> hpa found that pmu_msr_write() is actually a completely pointless
-> function [1]: all it does is shuffle some arguments, then calls
-> pmu_msr_chk_emulated() and if it returns true AND the emulated flag
-> is clear then does *exactly the same thing* that the calling code
-> would have done if pmu_msr_write() itself had returned true.  And
-> pmu_msr_read() does the equivalent stupidity.
->
-> Remove the calls to native_{read,write}_msr{,_safe}() within
-> pmu_msr_{read,write}().  Instead reuse the existing calling code
-> that decides whether to call native_{read,write}_msr{,_safe}() based
-> on the return value from pmu_msr_{read,write}().  Consequently,
-> eliminate the need to pass an error pointer to pmu_msr_{read,write}().
->
-> While at it, refactor pmu_msr_write() to take the MSR value as a u64
-> argument, replacing the current dual u32 arguments, because the dual
-> u32 arguments were only used to call native_write_msr{,_safe}(), which
-> has now been removed.
->
-> [1]: https://lore.kernel.org/lkml/0ec48b84-d158-47c6-b14c-3563fd14bcc4@zytor.com/
->
-> Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> Sign-off-by: Xin Li (Intel) <xin@zytor.com>
-> ---
->  arch/x86/xen/enlighten_pv.c |  6 +++++-
->  arch/x86/xen/pmu.c          | 27 ++++-----------------------
->  arch/x86/xen/xen-ops.h      |  4 ++--
->  3 files changed, 11 insertions(+), 26 deletions(-)
->
-> diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-> index 9fbe187aff00..1418758b57ff 100644
-> --- a/arch/x86/xen/enlighten_pv.c
-> +++ b/arch/x86/xen/enlighten_pv.c
-> @@ -1132,6 +1132,8 @@ static void set_seg(unsigned int which, unsigned int low, unsigned int high,
->  static void xen_do_write_msr(unsigned int msr, unsigned int low,
->  			     unsigned int high, int *err)
->  {
-> +	u64 val;
-> +
->  	switch (msr) {
->  	case MSR_FS_BASE:
->  		set_seg(SEGBASE_FS, low, high, err);
-> @@ -1158,7 +1160,9 @@ static void xen_do_write_msr(unsigned int msr, unsigned int low,
->  		break;
->  
->  	default:
-> -		if (!pmu_msr_write(msr, low, high, err)) {
-> +		val = (u64)high << 32 | low;
-> +
-> +		if (!pmu_msr_write(msr, val)) {
->  			if (err)
->  				*err = native_write_msr_safe(msr, low, high);
->  			else
-> diff --git a/arch/x86/xen/pmu.c b/arch/x86/xen/pmu.c
-> index 9c1682af620a..95caae97a394 100644
-> --- a/arch/x86/xen/pmu.c
-> +++ b/arch/x86/xen/pmu.c
-> @@ -313,37 +313,18 @@ static bool pmu_msr_chk_emulated(unsigned int msr, uint64_t *val, bool is_read,
->  	return true;
->  }
->  
-> -bool pmu_msr_read(unsigned int msr, uint64_t *val, int *err)
-> +bool pmu_msr_read(u32 msr, u64 *val)
+> Thank you for this improvement! I see that even within the SPR-SP line of
+> Processors, the cache sizes vary across different models. What happens for
+> an instance when a processor only has 37.5 MiB of L3 per socket, but the CPU
+> Model exposes 60 MiB of L3 to the VM?
 
-The function name is some kind of misleading right now. With the change,
-this function only read PMU MSR's value if it's emulated, otherwise it
-won't really read PMU MSR. How about changing the name to
-"pmu_emulated_msr_read" or something similar?
+AFAIK, the Linux scheduler doesn't take cache size into account, so
+generally speaking, I think there's no impat on Linux.
 
+If user space apps don't care about this info, then there's no problem.
 
->  {
->  	bool emulated;
->  
-> -	if (!pmu_msr_chk_emulated(msr, val, true, &emulated))
-> -		return false;
-> -
-> -	if (!emulated) {
-> -		*val = err ? native_read_msr_safe(msr, err)
-> -			   : native_read_msr(msr);
-> -	}
-> -
-> -	return true;
-> +	return pmu_msr_chk_emulated(msr, val, true, &emulated) && emulated;
->  }
->  
-> -bool pmu_msr_write(unsigned int msr, uint32_t low, uint32_t high, int *err)
-> +bool pmu_msr_write(u32 msr, u64 val)
+However, I've met some cases where certain customers prefer that the
+named cpu model also become closer to real silicon (e.g. current cache
+size). The advantage of this is that an app that works fine on real
+silicon is more likely to run normally in a Guest environment...
+Because nobody can ensure that no user space app care about cache
+size at all. And it's also unknown if there will be other OSes that
+depend on the cache size (although I think it should be fine, after
+all, current x86 only supports smp machines).
 
-ditto.
+In contrast, the 0x1f example is more typical. By SDM, 0x1f is only
+optional, and if 0x1f is not available, the one should check 0xb.
+However, in Mishra's case, his windows only relies on 0x1f, so making
+the named CPU model and the real silicon alignable is a better way
+of avoiding all sorts of incompatibilities.
 
+Thanks,
+Zhao
 
->  {
-> -	uint64_t val = ((uint64_t)high << 32) | low;
->  	bool emulated;
->  
-> -	if (!pmu_msr_chk_emulated(msr, &val, false, &emulated))
-> -		return false;
-> -
-> -	if (!emulated) {
-> -		if (err)
-> -			*err = native_write_msr_safe(msr, low, high);
-> -		else
-> -			native_write_msr(msr, low, high);
-> -	}
-> -
-> -	return true;
-> +	return pmu_msr_chk_emulated(msr, &val, false, &emulated) && emulated;
->  }
->  
->  static u64 xen_amd_read_pmc(int counter)
-> diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-> index dc886c3cc24d..a1875e10be31 100644
-> --- a/arch/x86/xen/xen-ops.h
-> +++ b/arch/x86/xen/xen-ops.h
-> @@ -271,8 +271,8 @@ void xen_pmu_finish(int cpu);
->  static inline void xen_pmu_init(int cpu) {}
->  static inline void xen_pmu_finish(int cpu) {}
->  #endif
-> -bool pmu_msr_read(unsigned int msr, uint64_t *val, int *err);
-> -bool pmu_msr_write(unsigned int msr, uint32_t low, uint32_t high, int *err);
-> +bool pmu_msr_read(u32 msr, u64 *val);
-
-The prototype of pmu_msr_read() has been changed, but why there is no
-corresponding change in its caller (xen_do_read_msr())?
-
-
-> +bool pmu_msr_write(u32 msr, u64 val);
->  int pmu_apic_update(uint32_t reg);
->  u64 xen_read_pmc(int counter);
->  
