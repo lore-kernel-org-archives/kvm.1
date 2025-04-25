@@ -1,155 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594D21D59B
-	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 08:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE41F4612
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 09:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745571465; cv=none; b=ibTNU72FH0XJH5TmS62aa9ImyBrRjzuuPsEVVXUi4xf9Cgjg8dRKTfYTpD56ghgpIb8zMmiY7+YXRMJX8e7642mwViObsh//1zTUaa6EWwkJIzeHYOz2pRXX5vNV/hxFMnZ+4UFrYcXV/cPMhwFZVOhKYMJHXy8vXSciAdzgtuU=
+	t=1745572708; cv=none; b=ICIZYwSpUQvrJ25x6yKJymx+/sXLPNA1sz7ePhKWivtD6ih+VOI13RF2Qh5lpzE4AA1sY3fReMbNZHcnDCdM17FuzLXBzCTSZIe1lWWJbGk+2wI6Xzn/8I9/zYqomCHpEpKdrENpAS3xstVOCSjV+XkGQCWGbQ7Oe9sOtbMCmy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745571465; c=relaxed/simple;
-	bh=mcEr0zmSiDOPEt70TYU6E6B7dOkZJjNKNUv16j9oVcE=;
+	s=arc-20240116; t=1745572708; c=relaxed/simple;
+	bh=q8s+GZ7wJiAkeM4rMouGv5MqAa2zRRibXViU1Z94qMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VkrSm0SmBACMK5F63/LRIfILrrr7rGquZpQ6edYHED0F4DseAtiV6K2PRAdpD2BzWz/6ry6Cg8KPFba486YI5Seb15R+qS4dIlWM525Vqbbqezs27HIqis9o3bQACW+JT1a4KjpXSk/XaouTHqSHhKeaPGcm2QoK/suDzqaoWHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nQR6xNWh; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=YBvo/KGjQFLMb4X0UHGDaUOYEKfTYGIY7mzwZ0FbQ397I1AMrEbPDPoZODL4ZhDn8r3O0bqvB1xBS8CJ8S7E7fUVrJrfsVErX1XzQJUfoq4hrscnr0hRssDVrAFSNvDJhQj2KbDL++bOflT2ayl16IltrLIbNjdDmfDtFIngwRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hFsn/Av5; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nQR6xNWh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hFsn/Av5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745571464; x=1777107464;
+  t=1745572706; x=1777108706;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mcEr0zmSiDOPEt70TYU6E6B7dOkZJjNKNUv16j9oVcE=;
-  b=nQR6xNWhSynKbf/DxoyOgKqK45/hX5103mNJ7yb4mX716Ccwx5hNkNph
-   ENt4Zwi32advuRPDD85qwlJC/t/J3BuHKQdLhOjLMalFQMeBMJBplfDUt
-   bR0gkQ0cC+Ak/RNRVElAZUYlSAHwFlwPRziQyQIjKBlLhVaIPcPRyAE5+
-   NAh/TUn3Wp5eg8a8KGHpU78Ra3OFNgyO90TESD7Hvvc5VPZTufHEmJ2AO
-   cmBn8lW4w97PPDdDtWusl87kgNfJvcrHnLy90dluUjLTsvcszg6vWG0Ze
-   f6NnOIXbt9EzCOkD6QivAWTGJiYh/T2nMrfo9mOD4+BDpvwvEacoFXECJ
-   g==;
-X-CSE-ConnectionGUID: 0e0zPWzQQ76Gu0XkGdja6w==
-X-CSE-MsgGUID: qV+csF3ERpaa3tJ79GroaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58598695"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=q8s+GZ7wJiAkeM4rMouGv5MqAa2zRRibXViU1Z94qMQ=;
+  b=hFsn/Av54gbNkgjSAhr1a1YofgjqYqjgRq5lpY6St18Z4jBNfqBHuknu
+   VfEv7v/Jf0m3ZZWofG50SzuZ1Ssw9jMIskgZBiM8z4Nmof2VkIg+S4jFy
+   51+YhOziz5QSbvwImOkTf+tukug1AlFisZLm5+AuT7xHtqj8XicGkw4ye
+   cgCp/VPhTA6f8gl6QRGeKyRAToUoEI+rGqegljGZqCbCQL2J35Dojsc7e
+   sAV6wdMhDeYjohFFFx1Vcqq/oBq+Ju21fim4yTAOTjF1DoTp0NJOGLhbu
+   6j67laenmLkOtDs3ZkKbQOJ1qjuWptO7nQUFdhgJ7J36RXMmf+Z1xuTnS
+   Q==;
+X-CSE-ConnectionGUID: fM0r2uSJRwWPxXUZ04fliQ==
+X-CSE-MsgGUID: CJZutd5LTxO4mfDwsfMJzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47401793"
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="58598695"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 01:57:43 -0700
-X-CSE-ConnectionGUID: GO8FEL63QBeQRXrZ2LqRRQ==
-X-CSE-MsgGUID: gdGUVTFQQaa54FHx4mG1AA==
+   d="scan'208";a="47401793"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 02:18:25 -0700
+X-CSE-ConnectionGUID: lAFKN5hRQHWPCQL8vIwrpA==
+X-CSE-MsgGUID: J/43f1rIQ6+gESFEmGkTow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="132847488"
+   d="scan'208";a="137693367"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Apr 2025 01:57:33 -0700
-Date: Fri, 25 Apr 2025 17:18:28 +0800
+  by orviesa003.jf.intel.com with ESMTP; 25 Apr 2025 02:18:22 -0700
+Date: Fri, 25 Apr 2025 17:39:18 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
-	qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
-	pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
-	babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
-	groug@kaod.org, khorenko@virtuozzo.com,
-	alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
-	davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
-	peter.maydell@linaro.org, gaosong@loongson.cn,
-	chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
-	jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
-	danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
-	liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
-	pasic@linux.ibm.com, borntraeger@linux.ibm.com,
-	richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
-	thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
-	ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
-	liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com,
-	kraxel@redhat.com, berrange@redhat.com
-Subject: Re: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <aAtTZLZR7IRhdOUC@intel.com>
-References: <20250416215306.32426-1-dongli.zhang@oracle.com>
- <20250416215306.32426-10-dongli.zhang@oracle.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+	Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
+	Manish Mishra <manish.mishra@nutanix.com>,
+	Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for
+ Intel
+Message-ID: <aAtYRhLiHoiJ4S1p@intel.com>
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ <20250423114702.1529340-2-zhao1.liu@intel.com>
+ <c522ebb5-04d5-49c6-9ad8-d755b8998988@zhaoxin.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <20250416215306.32426-10-dongli.zhang@oracle.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c522ebb5-04d5-49c6-9ad8-d755b8998988@zhaoxin.com>
 
-On Wed, Apr 16, 2025 at 02:52:34PM -0700, Dongli Zhang wrote:
-> Date: Wed, 16 Apr 2025 14:52:34 -0700
-> From: Dongli Zhang <dongli.zhang@oracle.com>
-> Subject: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
->  VM reset
-> X-Mailer: git-send-email 2.43.5
+> On 4/23/25 7:46 PM, Zhao Liu wrote:
+> > 
+> > Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
+> > "assert" check blocks adding new cache model for non-AMD CPUs.
+> > 
+> > Therefore, check the vendor and encode this leaf as all-0 for Intel
+> > CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
+> > check for Zhaoxin as well.
 > 
-> QEMU uses the kvm_get_msrs() function to save Intel PMU registers from KVM
-> and kvm_put_msrs() to restore them to KVM. However, there is no support for
-> AMD PMU registers. Currently, pmu_version and num_pmu_gp_counters are
-> initialized based on cpuid(0xa), which does not apply to AMD processors.
-> For AMD CPUs, prior to PerfMonV2, the number of general-purpose registers
-> is determined based on the CPU version.
+> Thanks for taking Zhaoxin CPUs into account.
 > 
-> To address this issue, we need to add support for AMD PMU registers.
-> Without this support, the following problems can arise:
-> 
-> 1. If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
-> running "perf top", the PMU registers are not disabled properly.
-> 
-> 2. Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
-> does not handle AMD PMU registers, causing some PMU events to remain
-> enabled in KVM.
-> 
-> 3. The KVM kvm_pmc_speculative_in_use() function consistently returns true,
-> preventing the reclamation of these events. Consequently, the
-> kvm_pmc->perf_event remains active.
-> 
-> 4. After a reboot, the VM kernel may report the following error:
-> 
-> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
-> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
-> 
-> 5. In the worst case, the active kvm_pmc->perf_event may inject unknown
-> NMIs randomly into the VM kernel:
-> 
-> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
-> 
-> To resolve these issues, we propose resetting AMD PMU registers during the
-> VM reset process.
-> 
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> ---
-> Changed since v1:
->   - Modify "MSR_K7_EVNTSEL0 + 3" and "MSR_K7_PERFCTR0 + 3" by using
->     AMD64_NUM_COUNTERS (suggested by Sandipan Das).
->   - Use "AMD64_NUM_COUNTERS_CORE * 2 - 1", not "MSR_F15H_PERF_CTL0 + 0xb".
->     (suggested by Sandipan Das).
->   - Switch back to "-pmu" instead of using a global "pmu-cap-disabled".
->   - Don't initialize PMU info if kvm.enable_pmu=N.
-> Changed since v2:
->   - Remove 'static' from host_cpuid_vendorX.
->   - Change has_pmu_version to pmu_version.
->   - Use object_property_get_int() to get CPU family.
->   - Use cpuid_find_entry() instead of cpu_x86_cpuid().
->   - Send error log when host and guest are from different vendors.
->   - Move "if (!cpu->enable_pmu)" to begin of function. Add comments to
->     reminder developers.
->   - Add support to Zhaoxin. Change is_same_vendor() to
->     is_host_compat_vendor().
->   - Didn't add Reviewed-by from Sandipan because the change isn't minor.
-> Changed since v3:
->   - Use host_cpu_vendor_fms() from Zhao's patch.
->   - Check AMD directly makes the "compat" rule clear.
->   - Add comment to MAX_GP_COUNTERS.
->   - Skip PMU info initialization if !kvm_pmu_disabled.
-> 
->  target/i386/cpu.h     |  12 +++
->  target/i386/kvm/kvm.c | 175 +++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 183 insertions(+), 4 deletions(-)
+> Zhaoxin follows AMD's definition for CPUID leaf 0x80000005, so this leaf is
+> valid on our CPUs rather than reserved. We do, however, follow Intel's
+> definition for leaf 0x80000006.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Thank you! I'll revert the change.
+
+> > Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
+> > information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
+> > For this case, there is no need to tweak for non-AMD CPUs, because
+> > vendor_cpuid_only has been turned on by default since PC machine v6.1.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >   target/i386/cpu.c | 16 ++++++++++++++--
+> >   1 file changed, 14 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 1b64ceaaba46..8fdafa8aedaf 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >           *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
+> >           break;
+> >       case 0x80000005:
+> > -        /* cache info (L1 cache) */
+> > -        if (cpu->cache_info_passthrough) {
+> > +        /*
+> > +         * cache info (L1 cache)
+> > +         *
+> > +         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
+> > +         * information, i.e., get AMD's cache model. It doesn't matter,
+> > +         * vendor_cpuid_only has been turned on by default since
+> > +         * PC machine v6.1.
+> > +         */
+> > +        if (cpu->vendor_cpuid_only &&
+> > +            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
+> 
+> Given that, there is no need to add IS_ZHAOXIN_CPU(env) to the 0x80000005
+> path. Note that the L1 TLB constants for the YongFeng core differ from the
+> current values in target/i386/cpu.c(YongFeng defaults shown in brackets):
+> 
+> #define L1_DTLB_2M_ASSOC       1 (4)
+> #define L1_DTLB_2M_ENTRIES   255 (32)
+> #define L1_DTLB_4K_ASSOC       1 (6)
+> #define L1_DTLB_4K_ENTRIES   255 (96)
+> 
+> #define L1_ITLB_2M_ASSOC       1 (4)
+> #define L1_ITLB_2M_ENTRIES   255 (32)
+> #define L1_ITLB_4K_ASSOC       1 (6)
+> #define L1_ITLB_4K_ENTRIES   255 (96)
+> 
+> I am still reviewing how these constants flow through cpu_x86_cpuid() for
+> leaf 0x80000005, so I'm not yet certain whether they are overridden.
+> 
+> For now, the patchset can ignore Zhaoxin in leaf 0x80000005. Once I have
+> traced the code path, I will send an update if needed. Please include
+> Zhaoxin in the handling for leaf 0x80000006.
+
+Sure! And you can add more comment for the special cases.
+
+If possible, could you please help check if there are any other cases :-)
+without spec reference, it's easy to cause regression when refactor. As
+per Xiaoyao's comment, we would like to further clean up the Intel/AMD
+features by minimizing the ¡°incorrect¡± AMD features in Intel Guests
+when vendor_cpuid_only (or another enhanced compat option) is turned on.
+
+> I should have sent this after completing my review, but I did not want to
+> delay your work. Sorry for the noise.
+
+No problem. And your info really helps me. It will take me a little
+while until the next version. It makes it easier to decouple our work
+and review them separately in the community!
+
+> Thanks again for your work.
+
+You're welcome!
 
