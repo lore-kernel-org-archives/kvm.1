@@ -1,121 +1,107 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE0D22D79B
-	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 07:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8F0232395
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 08:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745567189; cv=none; b=qBCwAN1QVobAsApL0DBweMK451fkMw35DHnEPDXW0IJXANzvRhQ8/b5zvbwCZfJbPkSxy5bl4u6CLA3dvdVgJ14gz3z33B1h8d3CyuzKDfRFDKVjcCj/NHHy26eh173QhUESozqY2y4bZb3EhpxwWlLB6tYoIFUj+znxjEB9mMo=
+	t=1745568492; cv=none; b=NoDTikxD2lkLcAeJOcyv2DQqCe32RzbDUY+XmWfH0VEu9wkW3YcV7iR0cq2ZVMtGfWveA+wTNJGKb7sM/O6z6D61x3g/L95LxAYO0cj4PlMb5bWqWlj5zy8BExqkysl2GCMCbePM7uHbNOh6nnDL5Z1fcCd9z/MLmSKrjAV6NQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745567189; c=relaxed/simple;
-	bh=M2e5e0DbBcCkM53d/193BeEEWoXcJicJMcob4XfVxtg=;
+	s=arc-20240116; t=1745568492; c=relaxed/simple;
+	bh=5KRtg0VP7RhePb2K1+43zCTF9YsbA4O/PrqeshZCb4w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=imYs6Xd+8kiQxTsyE2yxbm0AYQKLIfZBSzW55Pgsj1cm2TM1FrzmAn21P4z6mrg7NBnkwoZ0qXZM+wG7VKf0NFZeqQW4m78sjT2cpGjZ1JnChdq7Y02BXReBc3L0MIbvHhIAUgEnl8EqUsSTFXXkrJLDojxOdyG9Efboe+NfV/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=BONzwATD; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MV5s+stNzWRRG2+YlhbX83kVf+HHOmcUQRivVpzybZW/jEC8TCNqBcE2atHQn80pVa+QD69Ns0ntphJB3w+Ya8wiHleA4rGq1MR/t5oRwjzZi/P/Pxk1Cy1nGihmCnkJ69CC8Fm3diJidzAWNj343ejR3O4lOzo53dDK6OzAgq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kX+f/A0C; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="BONzwATD"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3914aba1ce4so1425152f8f.2
-        for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 00:46:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1745567186; x=1746171986; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yalr6Bu93K2GzLCvN0XHCxzUAzn2mCxagWptxLA843Q=;
-        b=BONzwATDn/a2Jbfl2U/CRNZi6nvEygafRicZHs3E01vwo9Vk0ZH7vrqo9dHe7NAp51
-         gS/di6U0SsI2y61hjPKlZN7hHtXGxxQCTYYAVie4dgOUhY+Q7N3WXWFsB8YN55Q9i2i2
-         JTzQUtB+zF67/ain39qAEr9FBYWqwsQRfg+iIHrIaZ3G2odO5yQCBtr0IUMml9EP1bDq
-         pZpxlieYZmifYhKjSmNVmUmK+dOcxlcC/l6OdbaAssA4ntsgHsMXAk+SWpAskvjBNyul
-         8HHDB+GtNKM9Hs8rpxZeaAHMHyn9jyBJF3Jq+0ww5ss/Yx9ZAH3k/OAESYnYn+todGiu
-         X7UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745567186; x=1746171986;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yalr6Bu93K2GzLCvN0XHCxzUAzn2mCxagWptxLA843Q=;
-        b=kmGZx6VkWoMhkJSJFJ9QjG16Wq6nn4L5wX92sTBgOO3L3lyyV2PQW7I67dz09mSCiK
-         H8LnlZlLJT5By+xzKvgSZ5StWA3hi1cSccYTioOqSNovIm9MIO/Nt+JM1vV5Zk4E1hJM
-         7KyFNiVHzPKsqeE9kmK5O01zvjXBAPpqnKp5gN5FyyfkVhp4Uob13YvoHzdJAeigfGzp
-         V2RIkeNITa6dRw++lgx9DX9BD9WIBbAhaXfXqyTVYW44hwU1bg7RHKVkp4E+UBN/N+tH
-         9ErVhnatee7tqo5fjH+1xr1SbP1WFpnjA7IYKlprTALOBBVMk9+XgOIXim6VM8sH/rAd
-         QW2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVZGaRs4OEz68B1vCz+ZgC1HGMczxL31BCoyhfFR1Ye2NQMbWrOgbUk8MoDHz2WInaqR04=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBLP81xoh7FHLNopJc/xFVLXAClmcH6fBxg1ph255QbWeJwC82
-	cpFhHjDfrsI/3PmmKL/qHuH/oPhnYvREy7a6yK5fKZOZstmIG+bFxBQ5+lxWdtY=
-X-Gm-Gg: ASbGncuoA096cUKYZyLXUvXPcJ+1ATAZ6/X/NJNhScSkkGAyc3uwMb6+vMCFepNeFlS
-	M2pOSyCtPeJea8ZwKNXMHHS3TwEvnEa6nKg+f8rO7do+7wExkvBtFkuQXbhlqq2eu2hNpQHRF5a
-	1dSU/C3MLDfd7iL/ARso8qewiflBGcJlETIb/7bIyKzZNbxuc4YmWwu/PPKC/idMs+PrnOxP9d2
-	rR4vt371FG24NvPlG4BQIXWYRhaJP08CUurqXB+8sD17Ct/gNk3JsZ3GrbMajwYlxxY78gXF0Eo
-	dq7SJfEoO9lDuO+LGuc7LEjSpDM3
-X-Google-Smtp-Source: AGHT+IGuKsjAp/bE7iMICTe5tl7fZLkgjjuJMOyAsBGa6hvpBqMsjN2EfsDi9JbPSKmGTEeYZJEdtA==
-X-Received: by 2002:a05:6000:4212:b0:38f:2ddd:a1bb with SMTP id ffacd0b85a97d-3a074e144a6mr901505f8f.8.1745567185228;
-        Fri, 25 Apr 2025 00:46:25 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200::f716])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e46c23sm1496676f8f.75.2025.04.25.00.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 00:46:24 -0700 (PDT)
-Date: Fri, 25 Apr 2025 09:46:24 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, 
-	Atish Patra <atishp@atishpatra.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
-	Samuel Holland <samuel.holland@sifive.com>, Deepak Gupta <debug@rivosinc.com>
-Subject: Re: [PATCH v6 02/14] riscv: sbi: remove useless parenthesis
-Message-ID: <20250425-00fafd9027c5b1be3dd1d78e@orel>
-References: <20250424173204.1948385-1-cleger@rivosinc.com>
- <20250424173204.1948385-3-cleger@rivosinc.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kX+f/A0C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745568491; x=1777104491;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5KRtg0VP7RhePb2K1+43zCTF9YsbA4O/PrqeshZCb4w=;
+  b=kX+f/A0CrcU1Vn7lZv6RKpZeryfBrRl9vB2OlxEr81j4AFBOB+lFOqIk
+   vkXHZ189+EpWWDNDE+sNVdMSod5BjwQkaYCjmMWFIyX/HxEjWdrayoZhF
+   XVIVb/+Zx1nW5n07Lw8SeB/4oxZLAjjNSk2AueYP5K4BODI/9JzX6Bfcw
+   4kIx8MOGm8J2rKtQQHO8LT0c2pvtL85/zi7JSGXX5mMv22XTrxk0z/e+D
+   zrhu5lroZtCR4J8kmhlZqA2XXDZNN97mLL2boiGKjX8HoCP6b/wDRVbTx
+   Hz35m2DUv7/Q90GOvmNWzaiJxaOrg6hEfe6TGHflTH6YBpm3n3z4eTzeg
+   Q==;
+X-CSE-ConnectionGUID: Hj5m8np+RgSVi7wvTJFBlQ==
+X-CSE-MsgGUID: vYIj4lGxQkuENF7QdXezQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47240131"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
+   d="scan'208";a="47240131"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 01:08:09 -0700
+X-CSE-ConnectionGUID: 2BKS4ujcSP2OGoMmWUBd1w==
+X-CSE-MsgGUID: BElnjdbdSySYVUcokWJU+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
+   d="scan'208";a="163808291"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa002.jf.intel.com with ESMTP; 25 Apr 2025 01:07:59 -0700
+Date: Fri, 25 Apr 2025 16:28:54 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+	pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
+	babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+	groug@kaod.org, khorenko@virtuozzo.com,
+	alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+	davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+	peter.maydell@linaro.org, gaosong@loongson.cn,
+	chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
+	jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
+	danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+	liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+	pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+	richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+	thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
+	ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
+	liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com,
+	kraxel@redhat.com, berrange@redhat.com
+Subject: Re: [PATCH v4 01/11] [DO NOT MERGE] i386/cpu: Consolidate the helper
+ to get Host's vendor
+Message-ID: <aAtHxmpV7ka1lseC@intel.com>
+References: <20250416215306.32426-1-dongli.zhang@oracle.com>
+ <20250416215306.32426-2-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250424173204.1948385-3-cleger@rivosinc.com>
+In-Reply-To: <20250416215306.32426-2-dongli.zhang@oracle.com>
 
-On Thu, Apr 24, 2025 at 07:31:49PM +0200, Clément Léger wrote:
-> A few parenthesis in check for SBI version/extension were useless,
-> remove them.
+On Wed, Apr 16, 2025 at 02:52:26PM -0700, Dongli Zhang wrote:
+> Date: Wed, 16 Apr 2025 14:52:26 -0700
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH v4 01/11] [DO NOT MERGE] i386/cpu: Consolidate the helper
+>  to get Host's vendor
+> X-Mailer: git-send-email 2.43.5
 > 
-> Signed-off-by: Clément Léger <cleger@rivosinc.com>
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Extend host_cpu_vendor_fms() to help more cases to get Host's vendor
+> information.
+> 
+> Cc: Dongli Zhang <dongli.zhang@oracle.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  arch/riscv/kernel/sbi.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> This patch is already queued by Paolo.
+> https://lore.kernel.org/all/20250410075619.145792-1-zhao1.liu@intel.com/
+> I don't need to add my Signed-off-by.
 > 
-> diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
-> index 1989b8cade1b..1d44c35305a9 100644
-> --- a/arch/riscv/kernel/sbi.c
-> +++ b/arch/riscv/kernel/sbi.c
-> @@ -609,7 +609,7 @@ void __init sbi_init(void)
->  		} else {
->  			__sbi_rfence	= __sbi_rfence_v01;
->  		}
-> -		if ((sbi_spec_version >= sbi_mk_version(0, 3)) &&
-> +		if (sbi_spec_version >= sbi_mk_version(0, 3) &&
->  		    sbi_probe_extension(SBI_EXT_SRST)) {
->  			pr_info("SBI SRST extension detected\n");
->  			pm_power_off = sbi_srst_power_off;
-> @@ -617,8 +617,8 @@ void __init sbi_init(void)
->  			sbi_srst_reboot_nb.priority = 192;
->  			register_restart_handler(&sbi_srst_reboot_nb);
->  		}
-> -		if ((sbi_spec_version >= sbi_mk_version(2, 0)) &&
-> -		    (sbi_probe_extension(SBI_EXT_DBCN) > 0)) {
-> +		if (sbi_spec_version >= sbi_mk_version(2, 0) &&
-> +		    sbi_probe_extension(SBI_EXT_DBCN) > 0) {
->  			pr_info("SBI DBCN extension detected\n");
->  			sbi_debug_console_available = true;
->  		}
-> -- 
-> 2.49.0
->
+>  target/i386/host-cpu.c        | 10 ++++++----
+>  target/i386/kvm/vmsr_energy.c |  3 +--
+>  2 files changed, 7 insertions(+), 6 deletions(-)
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Thanks. It has been merged as commit ae39acef49e2916 now.
+
