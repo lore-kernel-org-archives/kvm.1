@@ -1,162 +1,239 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE41F4612
-	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 09:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23B1D63CF
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 09:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745572708; cv=none; b=ICIZYwSpUQvrJ25x6yKJymx+/sXLPNA1sz7ePhKWivtD6ih+VOI13RF2Qh5lpzE4AA1sY3fReMbNZHcnDCdM17FuzLXBzCTSZIe1lWWJbGk+2wI6Xzn/8I9/zYqomCHpEpKdrENpAS3xstVOCSjV+XkGQCWGbQ7Oe9sOtbMCmy4=
+	t=1745572765; cv=none; b=l2KyJNIEx5n19vBMyl0J9rx17GHfyw9I5OzzPOuoICE+vk6HNdp0lXkV2B+6zQJ2LW3GbfJb4IVDtY1hTra5OTIKUOMUr8SruBq/8AkVi2/7f3TvglPZ3soDES4oKMfebyW5ym2YxocFadhGYs++Fem6FGSopgosgJKsysCN06k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745572708; c=relaxed/simple;
-	bh=q8s+GZ7wJiAkeM4rMouGv5MqAa2zRRibXViU1Z94qMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YBvo/KGjQFLMb4X0UHGDaUOYEKfTYGIY7mzwZ0FbQ397I1AMrEbPDPoZODL4ZhDn8r3O0bqvB1xBS8CJ8S7E7fUVrJrfsVErX1XzQJUfoq4hrscnr0hRssDVrAFSNvDJhQj2KbDL++bOflT2ayl16IltrLIbNjdDmfDtFIngwRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hFsn/Av5; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745572765; c=relaxed/simple;
+	bh=+QAp4VYv3fmUaD1XK73SkAR89Qzki7SiKgCZ+0iFM4Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QjnmFRIgrdk8AYBoyxLZ6QH6VW6LI/TN48OAnQOanTD5JJMzQx4KmakjdZWe3tnYZ8qI3h9L0vyxzS0eLylbfdaXYTHiTGiG6QZK0jJRdiZqbCgmWH9CHJpgS+m8NIZ2mpPDbAtorVZfWANqWnmJe+Q/sEcb5jmxbW7XrCU9A6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WrewBO8M; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hFsn/Av5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745572706; x=1777108706;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=q8s+GZ7wJiAkeM4rMouGv5MqAa2zRRibXViU1Z94qMQ=;
-  b=hFsn/Av54gbNkgjSAhr1a1YofgjqYqjgRq5lpY6St18Z4jBNfqBHuknu
-   VfEv7v/Jf0m3ZZWofG50SzuZ1Ssw9jMIskgZBiM8z4Nmof2VkIg+S4jFy
-   51+YhOziz5QSbvwImOkTf+tukug1AlFisZLm5+AuT7xHtqj8XicGkw4ye
-   cgCp/VPhTA6f8gl6QRGeKyRAToUoEI+rGqegljGZqCbCQL2J35Dojsc7e
-   sAV6wdMhDeYjohFFFx1Vcqq/oBq+Ju21fim4yTAOTjF1DoTp0NJOGLhbu
-   6j67laenmLkOtDs3ZkKbQOJ1qjuWptO7nQUFdhgJ7J36RXMmf+Z1xuTnS
-   Q==;
-X-CSE-ConnectionGUID: fM0r2uSJRwWPxXUZ04fliQ==
-X-CSE-MsgGUID: CJZutd5LTxO4mfDwsfMJzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47401793"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="47401793"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 02:18:25 -0700
-X-CSE-ConnectionGUID: lAFKN5hRQHWPCQL8vIwrpA==
-X-CSE-MsgGUID: J/43f1rIQ6+gESFEmGkTow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="137693367"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa003.jf.intel.com with ESMTP; 25 Apr 2025 02:18:22 -0700
-Date: Fri, 25 Apr 2025 17:39:18 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
-	Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
-	Manish Mishra <manish.mishra@nutanix.com>,
-	Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for
- Intel
-Message-ID: <aAtYRhLiHoiJ4S1p@intel.com>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-2-zhao1.liu@intel.com>
- <c522ebb5-04d5-49c6-9ad8-d755b8998988@zhaoxin.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WrewBO8M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745572762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7ZutwbOjXGr5bGwYW46iHYOEUi2TGqqNhr0ZW2OCt4A=;
+	b=WrewBO8MSScKtTMBqK29atTOqFW8iZRFqYSOibHkSoeE+TpGY3Hk5qrNjLajPII3OxbZTu
+	eoq3iD7IFzLGM2ATz97o96m2PgJIQNK9zpWfcZmLHOs4NEW2KuxR0Kyzr2MboWR5H0YZRk
+	k291MaKecg6qGphcBhTybLBog38I9Lo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-LdiWRZCINieW0mfEquIkpQ-1; Fri,
+ 25 Apr 2025 05:19:17 -0400
+X-MC-Unique: LdiWRZCINieW0mfEquIkpQ-1
+X-Mimecast-MFC-AGG-ID: LdiWRZCINieW0mfEquIkpQ_1745572755
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65F7E19560AE;
+	Fri, 25 Apr 2025 09:19:15 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 886F030001AB;
+	Fri, 25 Apr 2025 09:19:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id EB81421E6766; Fri, 25 Apr 2025 11:19:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+  Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+  Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+  Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+  qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+  Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>,
+    =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+In-Reply-To: <20250409082649.14733-2-zhao1.liu@intel.com> (Zhao Liu's message
+	of "Wed, 9 Apr 2025 16:26:45 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+	<20250409082649.14733-2-zhao1.liu@intel.com>
+Date: Fri, 25 Apr 2025 11:19:10 +0200
+Message-ID: <87a584ha41.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c522ebb5-04d5-49c6-9ad8-d755b8998988@zhaoxin.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-> On 4/23/25 7:46 PM, Zhao Liu wrote:
-> > 
-> > Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
-> > "assert" check blocks adding new cache model for non-AMD CPUs.
-> > 
-> > Therefore, check the vendor and encode this leaf as all-0 for Intel
-> > CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
-> > check for Zhaoxin as well.
-> 
-> Thanks for taking Zhaoxin CPUs into account.
-> 
-> Zhaoxin follows AMD's definition for CPUID leaf 0x80000005, so this leaf is
-> valid on our CPUs rather than reserved. We do, however, follow Intel's
-> definition for leaf 0x80000006.
+Philippe, there's a question for you on target-specific QAPI schema.
 
-Thank you! I'll revert the change.
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-> > Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> > information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
-> > For this case, there is no need to tweak for non-AMD CPUs, because
-> > vendor_cpuid_only has been turned on by default since PC machine v6.1.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   target/i386/cpu.c | 16 ++++++++++++++--
-> >   1 file changed, 14 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 1b64ceaaba46..8fdafa8aedaf 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >           *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
-> >           break;
-> >       case 0x80000005:
-> > -        /* cache info (L1 cache) */
-> > -        if (cpu->cache_info_passthrough) {
-> > +        /*
-> > +         * cache info (L1 cache)
-> > +         *
-> > +         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> > +         * information, i.e., get AMD's cache model. It doesn't matter,
-> > +         * vendor_cpuid_only has been turned on by default since
-> > +         * PC machine v6.1.
-> > +         */
-> > +        if (cpu->vendor_cpuid_only &&
-> > +            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-> 
-> Given that, there is no need to add IS_ZHAOXIN_CPU(env) to the 0x80000005
-> path. Note that the L1 TLB constants for the YongFeng core differ from the
-> current values in target/i386/cpu.c(YongFeng defaults shown in brackets):
-> 
-> #define L1_DTLB_2M_ASSOC       1 (4)
-> #define L1_DTLB_2M_ENTRIES   255 (32)
-> #define L1_DTLB_4K_ASSOC       1 (6)
-> #define L1_DTLB_4K_ENTRIES   255 (96)
-> 
-> #define L1_ITLB_2M_ASSOC       1 (4)
-> #define L1_ITLB_2M_ENTRIES   255 (32)
-> #define L1_ITLB_4K_ASSOC       1 (6)
-> #define L1_ITLB_4K_ENTRIES   255 (96)
-> 
-> I am still reviewing how these constants flow through cpu_x86_cpuid() for
-> leaf 0x80000005, so I'm not yet certain whether they are overridden.
-> 
-> For now, the patchset can ignore Zhaoxin in leaf 0x80000005. Once I have
-> traced the code path, I will send an update if needed. Please include
-> Zhaoxin in the handling for leaf 0x80000006.
+> Introduce the kvm-pmu-filter object and support the PMU event with raw
+> format.
+>
+> The raw format, as a native PMU event code representation, can be used
+> for several architectures.
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Yi Lai <yi1.lai@intel.com>
 
-Sure! And you can add more comment for the special cases.
+[...]
 
-If possible, could you please help check if there are any other cases :-)
-without spec reference, it's easy to cause regression when refactor. As
-per Xiaoyao's comment, we would like to further clean up the Intel/AMD
-features by minimizing the ¡°incorrect¡± AMD features in Intel Guests
-when vendor_cpuid_only (or another enhanced compat option) is turned on.
+> diff --git a/accel/kvm/kvm-pmu.c b/accel/kvm/kvm-pmu.c
+> new file mode 100644
+> index 000000000000..22f749bf9183
+> --- /dev/null
+> +++ b/accel/kvm/kvm-pmu.c
 
-> I should have sent this after completing my review, but I did not want to
-> delay your work. Sorry for the noise.
+[...]
 
-No problem. And your info really helps me. It will take me a little
-while until the next version. It makes it easier to decouple our work
-and review them separately in the community!
+> +static const TypeInfo kvm_pmu_filter_info = {
+> +    .parent = TYPE_OBJECT,
+> +    .name = TYPE_KVM_PMU_FILTER,
+> +    .class_init = kvm_pmu_filter_class_init,
+> +    .instance_size = sizeof(KVMPMUFilter),
+> +    .instance_init = kvm_pmu_filter_instance_init,
+> +    .interfaces = (InterfaceInfo[]) {
+> +        { TYPE_USER_CREATABLE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void kvm_pmu_event_register_type(void)
+> +{
+> +    type_register_static(&kvm_pmu_filter_info);
+> +}
+> +
+> +type_init(kvm_pmu_event_register_type);
+> diff --git a/accel/kvm/meson.build b/accel/kvm/meson.build
+> index 397a1fe1fd1e..dfab2854f3a8 100644
+> --- a/accel/kvm/meson.build
+> +++ b/accel/kvm/meson.build
+> @@ -2,6 +2,7 @@ kvm_ss = ss.source_set()
+>  kvm_ss.add(files(
+>    'kvm-all.c',
+>    'kvm-accel-ops.c',
+> +  'kvm-pmu.c',
+>  ))
+>  
+>  specific_ss.add_all(when: 'CONFIG_KVM', if_true: kvm_ss)
 
-> Thanks again for your work.
+The new file is compiled into the binary when CONFIG_KVM.  Therefore,
+object kvm-pmu-filter is available exactly then.  Makes sense.
+However, ...
 
-You're welcome!
+[...]
+
+> diff --git a/qapi/kvm.json b/qapi/kvm.json
+> new file mode 100644
+> index 000000000000..1861d86a9726
+> --- /dev/null
+> +++ b/qapi/kvm.json
+> @@ -0,0 +1,84 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# Copyright (C) 2025 Intel Corporation.
+> +#
+> +# Author: Zhao Liu <zhao1.liu@intel.com>
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +##
+> +# == KVM
+> +##
+> +
+> +##
+> +# === PMU stuff (KVM related)
+> +##
+> +
+> +##
+> +# @KvmPmuFilterAction:
+> +#
+> +# Actions that KVM PMU filter supports.
+> +#
+> +# @deny: disable the PMU event/counter in KVM PMU filter.
+> +#
+> +# @allow: enable the PMU event/counter in KVM PMU filter.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'enum': 'KvmPmuFilterAction',
+> +  'data': ['allow', 'deny'] }
+> +
+> +##
+> +# @KvmPmuEventFormat:
+> +#
+> +# Encoding formats of PMU event that QEMU/KVM supports.
+> +#
+> +# @raw: the encoded event code that KVM can directly consume.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'enum': 'KvmPmuEventFormat',
+> +  'data': ['raw'] }
+> +
+> +##
+> +# @KvmPmuRawEvent:
+> +#
+> +# Raw PMU event code.
+> +#
+> +# @code: the raw value that has been encoded, and QEMU could deliver
+> +#     to KVM directly.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'struct': 'KvmPmuRawEvent',
+> +  'data': { 'code': 'uint64' } }
+> +
+> +##
+> +# @KvmPmuFilterEvent:
+> +#
+> +# PMU event filtered by KVM.
+> +#
+> +# @format: PMU event format.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'union': 'KvmPmuFilterEvent',
+> +  'base': { 'format': 'KvmPmuEventFormat' },
+> +  'discriminator': 'format',
+> +  'data': { 'raw': 'KvmPmuRawEvent' } }
+> +
+> +##
+> +# @KvmPmuFilterProperties:
+> +#
+> +# Properties of KVM PMU Filter.
+> +#
+> +# @action: action that KVM PMU filter will take for selected PMU events.
+> +#
+> +# @events: list of selected PMU events.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'struct': 'KvmPmuFilterProperties',
+> +  'data': { 'action': 'KvmPmuFilterAction',
+> +            '*events': ['KvmPmuFilterEvent'] } }
+
+... the QAPI schema doesn't reflect that.
+
+To make it reflect, we'd have to add 'if': 'CONFIG_KVM'.  Since
+CONFIG_KVM can only be used in target-specific code, we'd have to put
+the definitions in a target-specific schema module kvm-target.json.
+
+This makes the headers generated for the module target-specific, which
+can be inconvenient.  Whether it's inconvenient here, I can't say.
+
+I understand target-specific QAPI modules are problematic for the single
+binary / heterogeneous machine work.  Philippe, thoughts on this one?
+
+[...]
 
