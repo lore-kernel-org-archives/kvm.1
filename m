@@ -1,263 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C573E231C9C;
-	Fri, 25 Apr 2025 08:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594D21D59B
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 08:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745571283; cv=none; b=tTP7t+navtDcnr9eWYqzkzzBoCSKmBIInoKPjuKG9sKCMAEFY1tclNEujkfT9uNyh97i+Ib/7pmrT+i6W01UavngZfuumV2E4xno3tCf1xEScLMk4+lhgwfsXNaV28Z1pCqp8ES4tZRBMWQEXOLNAqNhuXa64YOu0Qvmc2k/iGo=
+	t=1745571465; cv=none; b=ibTNU72FH0XJH5TmS62aa9ImyBrRjzuuPsEVVXUi4xf9Cgjg8dRKTfYTpD56ghgpIb8zMmiY7+YXRMJX8e7642mwViObsh//1zTUaa6EWwkJIzeHYOz2pRXX5vNV/hxFMnZ+4UFrYcXV/cPMhwFZVOhKYMJHXy8vXSciAdzgtuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745571283; c=relaxed/simple;
-	bh=4/Vbs76jppkzyZKMGwoWdOHkArQ62q4Z8iajisepyRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcNM8Fi9li9OKNkLpj+cykSLbGfWrhM21hYe8xXsk8x58CILNCURyfEuIGgwFBigKXYs6MahqZlTPOnVTNDoAorIthjHftXX0gzx1PC3D9E+xf18ZOTYJCdtGgkR2N58JqFwBvdKKWrfRwoGVeHVisxyNzSbWiG8QBlPCqKg+NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hcg4RdST; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1745571465; c=relaxed/simple;
+	bh=mcEr0zmSiDOPEt70TYU6E6B7dOkZJjNKNUv16j9oVcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VkrSm0SmBACMK5F63/LRIfILrrr7rGquZpQ6edYHED0F4DseAtiV6K2PRAdpD2BzWz/6ry6Cg8KPFba486YI5Seb15R+qS4dIlWM525Vqbbqezs27HIqis9o3bQACW+JT1a4KjpXSk/XaouTHqSHhKeaPGcm2QoK/suDzqaoWHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nQR6xNWh; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hcg4RdST"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nQR6xNWh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745571282; x=1777107282;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4/Vbs76jppkzyZKMGwoWdOHkArQ62q4Z8iajisepyRE=;
-  b=Hcg4RdSTiKP+Oq8IZ+9pCCTKaYkS3XRPxlrw+TAOgUQBuGVv6gXOYk2P
-   C6j5A/e5WuPyj0p2GNX8ug1qNlK/ceow1QB5EbPx2kDwG77Ow7lscQXdA
-   cAHbER4JRyNgadWUiNH3vAhMvDS6hjJVfMIQS4sik+o2q/bZAjQgGLXDv
-   AUGALj0ZZ+YwMQBNwmuy41cOhpb8IdouJAEfv6vzko5YNS1ZkW1Y8PFiC
-   JktcbOFgB+skoEsAGoCSFbVN2X68dWLaUp3dB+sgVb8C/p/PpTQor50iI
-   PJUIThNy+LMkdCAgny6mWXVynrZLlcrkeDvi7gcfrwCXrOGvO7H81Hvfr
-   Q==;
-X-CSE-ConnectionGUID: 9a1Do2NbQjuOm+hU2QvQLw==
-X-CSE-MsgGUID: deUgYrZKRACnm6SpKeHD5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47349945"
+  t=1745571464; x=1777107464;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mcEr0zmSiDOPEt70TYU6E6B7dOkZJjNKNUv16j9oVcE=;
+  b=nQR6xNWhSynKbf/DxoyOgKqK45/hX5103mNJ7yb4mX716Ccwx5hNkNph
+   ENt4Zwi32advuRPDD85qwlJC/t/J3BuHKQdLhOjLMalFQMeBMJBplfDUt
+   bR0gkQ0cC+Ak/RNRVElAZUYlSAHwFlwPRziQyQIjKBlLhVaIPcPRyAE5+
+   NAh/TUn3Wp5eg8a8KGHpU78Ra3OFNgyO90TESD7Hvvc5VPZTufHEmJ2AO
+   cmBn8lW4w97PPDdDtWusl87kgNfJvcrHnLy90dluUjLTsvcszg6vWG0Ze
+   f6NnOIXbt9EzCOkD6QivAWTGJiYh/T2nMrfo9mOD4+BDpvwvEacoFXECJ
+   g==;
+X-CSE-ConnectionGUID: 0e0zPWzQQ76Gu0XkGdja6w==
+X-CSE-MsgGUID: qV+csF3ERpaa3tJ79GroaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58598695"
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="47349945"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 00:58:19 -0700
-X-CSE-ConnectionGUID: zj8aPa17QCypdjQC8gKSkQ==
-X-CSE-MsgGUID: bxu6J7G/TAeJIRkGcGOWDw==
+   d="scan'208";a="58598695"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 01:57:43 -0700
+X-CSE-ConnectionGUID: GO8FEL63QBeQRXrZ2LqRRQ==
+X-CSE-MsgGUID: gdGUVTFQQaa54FHx4mG1AA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="133764273"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.ger.corp.intel.com) ([10.245.113.29])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 00:58:13 -0700
-From: Adrian Hunter <adrian.hunter@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: mlevitsk@redhat.com,
-	kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com,
-	kirill.shutemov@linux.intel.com,
-	kai.huang@intel.com,
-	reinette.chatre@intel.com,
-	xiaoyao.li@intel.com,
-	tony.lindgren@linux.intel.com,
-	binbin.wu@linux.intel.com,
-	isaku.yamahata@intel.com,
-	linux-kernel@vger.kernel.org,
-	yan.y.zhao@intel.com,
-	chao.gao@intel.com
-Subject: [PATCH V3 1/1] KVM: TDX: Add sub-ioctl KVM_TDX_TERMINATE_VM
-Date: Fri, 25 Apr 2025 10:57:56 +0300
-Message-ID: <20250425075756.14545-2-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250425075756.14545-1-adrian.hunter@intel.com>
-References: <20250425075756.14545-1-adrian.hunter@intel.com>
+   d="scan'208";a="132847488"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa007.fm.intel.com with ESMTP; 25 Apr 2025 01:57:33 -0700
+Date: Fri, 25 Apr 2025 17:18:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+	pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
+	babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+	groug@kaod.org, khorenko@virtuozzo.com,
+	alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+	davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+	peter.maydell@linaro.org, gaosong@loongson.cn,
+	chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
+	jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
+	danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+	liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+	pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+	richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+	thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
+	ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
+	liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com,
+	kraxel@redhat.com, berrange@redhat.com
+Subject: Re: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+Message-ID: <aAtTZLZR7IRhdOUC@intel.com>
+References: <20250416215306.32426-1-dongli.zhang@oracle.com>
+ <20250416215306.32426-10-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416215306.32426-10-dongli.zhang@oracle.com>
 
-From: Sean Christopherson <seanjc@google.com>
+On Wed, Apr 16, 2025 at 02:52:34PM -0700, Dongli Zhang wrote:
+> Date: Wed, 16 Apr 2025 14:52:34 -0700
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
+>  VM reset
+> X-Mailer: git-send-email 2.43.5
+> 
+> QEMU uses the kvm_get_msrs() function to save Intel PMU registers from KVM
+> and kvm_put_msrs() to restore them to KVM. However, there is no support for
+> AMD PMU registers. Currently, pmu_version and num_pmu_gp_counters are
+> initialized based on cpuid(0xa), which does not apply to AMD processors.
+> For AMD CPUs, prior to PerfMonV2, the number of general-purpose registers
+> is determined based on the CPU version.
+> 
+> To address this issue, we need to add support for AMD PMU registers.
+> Without this support, the following problems can arise:
+> 
+> 1. If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
+> running "perf top", the PMU registers are not disabled properly.
+> 
+> 2. Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
+> does not handle AMD PMU registers, causing some PMU events to remain
+> enabled in KVM.
+> 
+> 3. The KVM kvm_pmc_speculative_in_use() function consistently returns true,
+> preventing the reclamation of these events. Consequently, the
+> kvm_pmc->perf_event remains active.
+> 
+> 4. After a reboot, the VM kernel may report the following error:
+> 
+> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+> 
+> 5. In the worst case, the active kvm_pmc->perf_event may inject unknown
+> NMIs randomly into the VM kernel:
+> 
+> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+> 
+> To resolve these issues, we propose resetting AMD PMU registers during the
+> VM reset process.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> ---
+> Changed since v1:
+>   - Modify "MSR_K7_EVNTSEL0 + 3" and "MSR_K7_PERFCTR0 + 3" by using
+>     AMD64_NUM_COUNTERS (suggested by Sandipan Das).
+>   - Use "AMD64_NUM_COUNTERS_CORE * 2 - 1", not "MSR_F15H_PERF_CTL0 + 0xb".
+>     (suggested by Sandipan Das).
+>   - Switch back to "-pmu" instead of using a global "pmu-cap-disabled".
+>   - Don't initialize PMU info if kvm.enable_pmu=N.
+> Changed since v2:
+>   - Remove 'static' from host_cpuid_vendorX.
+>   - Change has_pmu_version to pmu_version.
+>   - Use object_property_get_int() to get CPU family.
+>   - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+>   - Send error log when host and guest are from different vendors.
+>   - Move "if (!cpu->enable_pmu)" to begin of function. Add comments to
+>     reminder developers.
+>   - Add support to Zhaoxin. Change is_same_vendor() to
+>     is_host_compat_vendor().
+>   - Didn't add Reviewed-by from Sandipan because the change isn't minor.
+> Changed since v3:
+>   - Use host_cpu_vendor_fms() from Zhao's patch.
+>   - Check AMD directly makes the "compat" rule clear.
+>   - Add comment to MAX_GP_COUNTERS.
+>   - Skip PMU info initialization if !kvm_pmu_disabled.
+> 
+>  target/i386/cpu.h     |  12 +++
+>  target/i386/kvm/kvm.c | 175 +++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 183 insertions(+), 4 deletions(-)
 
-Add sub-ioctl KVM_TDX_TERMINATE_VM to release the HKID prior to shutdown,
-which enables more efficient reclaim of private memory.
-
-Private memory is removed from MMU/TDP when guest_memfds are closed. If
-the HKID has not been released, the TDX VM is still in RUNNABLE state,
-so pages must be removed using "Dynamic Page Removal" procedure (refer
-TDX Module Base spec) which involves a number of steps:
-	Block further address translation
-	Exit each VCPU
-	Clear Secure EPT entry
-	Flush/write-back/invalidate relevant caches
-
-However, when the HKID is released, the TDX VM moves to TD_TEARDOWN state
-where all TDX VM pages are effectively unmapped, so pages can be reclaimed
-directly.
-
-Reclaiming TD Pages in TD_TEARDOWN State was seen to decrease the total
-reclaim time.  For example:
-
-	VCPUs	Size (GB)	Before (secs)	After (secs)
-	 4	 18		  72		 24
-	32	107		 517		134
-	64	400		5539		467
-
-Link: https://lore.kernel.org/r/Z-V0qyTn2bXdrPF7@google.com
-Link: https://lore.kernel.org/r/aAL4dT1pWG5dDDeo@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
-
-
-Changes in V3:
-
-	Remove KVM_BUG_ON() from tdx_mmu_release_hkid() because it would
-	trigger on the error path from __tdx_td_init()
-
-	Put cpus_read_lock() handling back into tdx_mmu_release_hkid()
-
-	Handle KVM_TDX_TERMINATE_VM in the switch statement, i.e. let
-	tdx_vm_ioctl() deal with kvm->lock
-
-
- Documentation/virt/kvm/x86/intel-tdx.rst | 16 +++++++++
- arch/x86/include/uapi/asm/kvm.h          |  1 +
- arch/x86/kvm/vmx/tdx.c                   | 41 +++++++++++++++---------
- 3 files changed, 43 insertions(+), 15 deletions(-)
-
-diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-index de41d4c01e5c..e5d4d9cf4cf2 100644
---- a/Documentation/virt/kvm/x86/intel-tdx.rst
-+++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-@@ -38,6 +38,7 @@ ioctl with TDX specific sub-ioctl() commands.
-           KVM_TDX_INIT_MEM_REGION,
-           KVM_TDX_FINALIZE_VM,
-           KVM_TDX_GET_CPUID,
-+          KVM_TDX_TERMINATE_VM,
- 
-           KVM_TDX_CMD_NR_MAX,
-   };
-@@ -214,6 +215,21 @@ struct kvm_cpuid2.
- 	  __u32 padding[3];
-   };
- 
-+KVM_TDX_TERMINATE_VM
-+-------------------
-+:Type: vm ioctl
-+:Returns: 0 on success, <0 on error
-+
-+Release Host Key ID (HKID) to allow more efficient reclaim of private memory.
-+After this, the TD is no longer in a runnable state.
-+
-+Using KVM_TDX_TERMINATE_VM is optional.
-+
-+- id: KVM_TDX_TERMINATE_VM
-+- flags: must be 0
-+- data: must be 0
-+- hw_error: must be 0
-+
- KVM TDX creation flow
- =====================
- In addition to the standard KVM flow, new TDX ioctls need to be called.  The
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 225a12e0d5d6..a2f973e1d75d 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -939,6 +939,7 @@ enum kvm_tdx_cmd_id {
- 	KVM_TDX_INIT_MEM_REGION,
- 	KVM_TDX_FINALIZE_VM,
- 	KVM_TDX_GET_CPUID,
-+	KVM_TDX_TERMINATE_VM,
- 
- 	KVM_TDX_CMD_NR_MAX,
- };
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b952bc673271..5161f6f891d7 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -500,14 +500,7 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 	 */
- 	mutex_lock(&tdx_lock);
- 
--	/*
--	 * Releasing HKID is in vm_destroy().
--	 * After the above flushing vps, there should be no more vCPU
--	 * associations, as all vCPU fds have been released at this stage.
--	 */
- 	err = tdh_mng_vpflushdone(&kvm_tdx->td);
--	if (err == TDX_FLUSHVP_NOT_DONE)
--		goto out;
- 	if (KVM_BUG_ON(err, kvm)) {
- 		pr_tdx_error(TDH_MNG_VPFLUSHDONE, err);
- 		pr_err("tdh_mng_vpflushdone() failed. HKID %d is leaked.\n",
-@@ -515,6 +508,7 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 		goto out;
- 	}
- 
-+	write_lock(&kvm->mmu_lock);
- 	for_each_online_cpu(i) {
- 		if (packages_allocated &&
- 		    cpumask_test_and_set_cpu(topology_physical_package_id(i),
-@@ -539,7 +533,7 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- 	} else {
- 		tdx_hkid_free(kvm_tdx);
- 	}
--
-+	write_unlock(&kvm->mmu_lock);
- out:
- 	mutex_unlock(&tdx_lock);
- 	cpus_read_unlock();
-@@ -1789,13 +1783,13 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	struct page *page = pfn_to_page(pfn);
- 	int ret;
- 
--	/*
--	 * HKID is released after all private pages have been removed, and set
--	 * before any might be populated. Warn if zapping is attempted when
--	 * there can't be anything populated in the private EPT.
--	 */
--	if (KVM_BUG_ON(!is_hkid_assigned(to_kvm_tdx(kvm)), kvm))
--		return -EINVAL;
-+	if (!is_hkid_assigned(to_kvm_tdx(kvm))) {
-+		WARN_ON_ONCE(!kvm->vm_dead);
-+		ret = tdx_reclaim_page(page);
-+		if (!ret)
-+			tdx_unpin(kvm, page);
-+		return ret;
-+	}
- 
- 	ret = tdx_sept_zap_private_spte(kvm, gfn, level, page);
- 	if (ret <= 0)
-@@ -2790,6 +2784,20 @@ static int tdx_td_finalize(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
- 	return 0;
- }
- 
-+static int tdx_terminate_vm(struct kvm *kvm)
-+{
-+	if (!kvm_trylock_all_vcpus(kvm))
-+		return -EBUSY;
-+
-+	kvm_vm_dead(kvm);
-+
-+	kvm_unlock_all_vcpus(kvm);
-+
-+	tdx_mmu_release_hkid(kvm);
-+
-+	return 0;
-+}
-+
- int tdx_vm_ioctl(struct kvm *kvm, void __user *argp)
- {
- 	struct kvm_tdx_cmd tdx_cmd;
-@@ -2817,6 +2825,9 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp)
- 	case KVM_TDX_FINALIZE_VM:
- 		r = tdx_td_finalize(kvm, &tdx_cmd);
- 		break;
-+	case KVM_TDX_TERMINATE_VM:
-+		r = tdx_terminate_vm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		goto out;
--- 
-2.43.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
