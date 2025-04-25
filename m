@@ -1,51 +1,51 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D034221FC4
-	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 21:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0025F21D5BE
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 21:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745616784; cv=none; b=HHRk4/A8Ed+Fin9GCdn1GqmJoVz4Q7tv/cBLfeIqRhaVgiuupCcoKDhUc0QkhPUBwJQCpxOEfLDdinOqUKz5r0HqIt/rgvJsJNnK6Za80wVGMUqs/lgUVBAROizUQr2W5o5vdxq9E0umQyu+JXc4N2g+DZrxeOkrw2b6gXtwO30=
+	t=1745616784; cv=none; b=SoeQ5pLS1MiZ1bktbqvkOQPmsOTk8smQd+xFtAGsbXA59z23sZlCl60br/r/S9QqSfZkm/pEQwL2P6Pt103jtAXSvT5L6AxrIMU6SrQu5LaDc3930yXffHH8xlxbup5DeylvMgZJySQPSIwDFGdrUYb0f4EJAlouGp1qe7bbhkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745616784; c=relaxed/simple;
-	bh=BqXGLVnGyrFOHeTSKqSODQyU/CdRCEW0jVpPOSU0+V8=;
+	bh=s7D3xRq8u8V9EwA4M7E4bfDbzl04rdcGGArlGe7ijxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J/nm4OWYjzdiHziUlKqsHK6q8OkRFUoR/3wgxbfRuXbi68L16fgloe7jzBIbZlIKU+2XnMi0PEa3q9aKlzT9OHPbhn11+H3wbnLxbsaOHQOFZ2PdlVNm8/RVowLcADJQivv++rrEcceg4xSsMVZ/cssTLrv67blzQdU76nv9C0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Pu//aB+U; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=Hfi51lntSeGHoI9Ju81wvZYJdr3jI1jD3eAyiArQCflwC/pb+GstmsjSnwgcWhl5FlIE497DEgFcvyp5AgjtBgl2XoT6ZADmkfykdsX1zNxaKnBAxqETt3GddtKorw/V623bfvALJc/dTNryqgeQIaqapIzF34Pht3srblpdrD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=DagwB70Y; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Pu//aB+U"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PLC3mW003795;
-	Fri, 25 Apr 2025 21:32:02 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="DagwB70Y"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PL22fm005849;
+	Fri, 25 Apr 2025 21:32:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=PxAKD5hMNySQzMooDjeSQTqKahL0Pqv/8JZulcUK5wM=; b=
-	Pu//aB+UB7CxgydyZGF4YmjPPfwNpSe4Ybf3fS2Oq3YCeo1gyVJXplWvUMWli+Ix
-	rReW2ekSjpVHy5uUQeUrWiLI070k7S/C6Ad5P2BTBvIneFmlqjEmd6oEeTtRDEWQ
-	m7MPkMAxMN+z4djmgB1aUto/VGUJ/2BxQplB4abSgBdQXQPkxp+G65c2EYp8pMI/
-	U1d7SzJc3TSNMptjkqpc76FWbc2D2s61EjuB/Q5Y7j3f6IFGow72vBg3ZrF/ySaF
-	08hloSXzwULpeeHHkDSDfapIuaiB+HqJsvmEJVixhOHYsdnE6fSST6bZgcrKGkwg
-	yw98d4C0zn9AH+uxs8CXzw==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=/eU/+
+	VsGBqEXl3ZUvIccSLYDfax4hRd0MF3PiSFfxTQ=; b=DagwB70Y4ifFpPlls2Qan
+	tjFLVVEUfU2BX9tKwc4mk0AUif9LDcqbGgnxwCneAUIZoljBTA2+SW6g8cyBoM5+
+	l7zV1ZbrzMkJ9+tLeLTt9iOLwonppR8HCwatXN+k9dbzRVNXIXu72NsgivtKq9sk
+	v5MKoKpsYV0g7T3fsH28Z0ZSZnzJryHj6lEe3z+WL/7Jd7xBTOwYH8KAxr/ini8V
+	FF7jD+PV1vE5q4WAKyqZLyHu1V/vhWaiKZClOv+rYOGkmMNO93NMhM2S+UcVPAnA
+	vM8pcdM/J1s0/sKqV1Pl/C0nD81GsU/8Lsp/pEflT7DUW8JvvukZqzZkgONOLyyc
+	A==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 468j3hg4g0-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 468hxvg8x9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 21:31:59 +0000 (GMT)
+	Fri, 25 Apr 2025 21:32:00 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53PL0WVr031074;
-	Fri, 25 Apr 2025 21:31:48 GMT
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53PLDxXQ031055;
+	Fri, 25 Apr 2025 21:31:43 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 466k095v6d-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 466k095v4p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 21:31:48 +0000
+	Fri, 25 Apr 2025 21:31:43 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53PLVdAb039597;
-	Fri, 25 Apr 2025 21:31:47 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53PLVdAX039597;
+	Fri, 25 Apr 2025 21:31:42 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 466k095v2d-4;
-	Fri, 25 Apr 2025 21:31:47 +0000
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 466k095v2d-2;
+	Fri, 25 Apr 2025 21:31:42 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
         qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
@@ -66,9 +66,9 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
         cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
         frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
         berrange@redhat.com
-Subject: [PATCH v5 03/10] kvm: Introduce kvm_arch_pre_create_vcpu()
-Date: Fri, 25 Apr 2025 14:30:00 -0700
-Message-ID: <20250425213037.8137-4-dongli.zhang@oracle.com>
+Subject: [PATCH v5 01/10] target/i386: disable PerfMonV2 when PERFCORE unavailable
+Date: Fri, 25 Apr 2025 14:29:58 -0700
+Message-ID: <20250425213037.8137-2-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250425213037.8137-1-dongli.zhang@oracle.com>
 References: <20250425213037.8137-1-dongli.zhang@oracle.com>
@@ -78,7 +78,6 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
@@ -87,184 +86,62 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulk
  spamscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2504250154
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDE1NSBTYWx0ZWRfX3mzYmjMKBEjQ CanfJLEA6CQiNV3QHYoKa8usZzZZwX0Fow7BQprAg9H2doifLNAV0+cGj4dCwQMmsBKEFOJRZCl lxPUabjZ7daObbWntiLXqhiYtnnNjavhi0C+BENBt5P9rWg5QKOXon3hgFh0WrHilimsed4DUPb
- clS6rmEUsz1euENe0KXI8xBk9q2eSd/HTzyG0Tc+lVZMGlehK7UqAAP/WDLqC/U5IYy+m746myK yN+TbtKilclN4uk18XytYtvUi+DoG8kwrGN48kQl01Khu6pX9tDarp2Muym+AfX1N8V6DAoIrEe Ok83w1Pw7RouDvhYZpTe5x9SAg42qJ2e/G7kHrSwaWoU2Wzq2czf8gjPToJbJ7zu3QTxrZm0vLN TDBIrNSH
-X-Proofpoint-ORIG-GUID: dL7z13vLjb6orcDn7R80kKUL18_qEKrz
-X-Proofpoint-GUID: dL7z13vLjb6orcDn7R80kKUL18_qEKrz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDE1NSBTYWx0ZWRfX+KSuKmsdO9GN IRjPPvmvyEnpcCGxqmQF9OZxTAavXu2ovaZOH/O5GnVwQ96HnLoLmtjPFK5G0vNiT9vfxJC4nwD Yfwt2bGZD907C83Ewj9eVIoeDbVDMkhIXWa5wFGpxIMet7A8Cdk7xhKOU5SbHaze09xTLIVeeQb
+ XhFjB+uQ85xIV7B55QOWSya3dYLor9sp9xvp0i7oNqfsqQ7MrnxpgckVEL55WHsecVmj8YnPYKo uNC4hhg/9XDHFEyBMeG56tx/UGaFiHSL8I098ycswn1P8v5g3S3gGMyDXnTYVnbAq5bbT4wFef6 UO4GMmC9SS5yTKGXMI3B8xe29Lw8KfLVY4ckeCv03l9L62k8nvvtBYLdWR4Y2U9hs4xxQpn/hdM 4DnsuCWM
+X-Proofpoint-GUID: aiVz6PodTtNNL_cMF_KT57Kq1_rhu8lk
+X-Proofpoint-ORIG-GUID: aiVz6PodTtNNL_cMF_KT57Kq1_rhu8lk
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
+reflected in in guest dmesg.
 
-Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
-work prior to create any vcpu. This is for i386 TDX because it needs
-call TDX_INIT_VM before creating any vcpu.
+[    0.285136] Performance Events: AMD PMU driver.
 
-The specific implementation of i386 will be added in the future patch.
+However, the guest CPUID indicates the PerfMonV2 is still available.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+CPU:
+   Extended Performance Monitoring and Debugging (0x80000022):
+      AMD performance monitoring V2         = true
+      AMD LBR V2                            = false
+      AMD LBR stack & PMC freezing          = false
+      number of core perf ctrs              = 0x6 (6)
+      number of LBR stack entries           = 0x0 (0)
+      number of avail Northbridge perf ctrs = 0x0 (0)
+      number of available UMC PMCs          = 0x0 (0)
+      active UMCs bitmask                   = 0x0
+
+Disable PerfMonV2 in CPUID when PERFCORE is disabled.
+
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
+Changed since v1:
+  - Use feature_dependencies (suggested by Zhao Liu).
 Changed since v2:
-  - Add my Signed-off-by.
-Changed since v3:
-  - Pick new reviewed version from:
-https://lore.kernel.org/all/20250401130205.2198253-8-xiaoyao.li@intel.com/
-    I have fixed the typo as suggested by Daniel.
-  - Keep Zhao's review.
+  - Nothing. Zhao and Xiaoyao may move it to x86_cpu_expand_features()
+    later.
 
- accel/kvm/kvm-all.c        | 5 +++++
- include/system/kvm.h       | 1 +
- target/arm/kvm.c           | 5 +++++
- target/i386/kvm/kvm.c      | 5 +++++
- target/loongarch/kvm/kvm.c | 4 ++++
- target/mips/kvm.c          | 5 +++++
- target/ppc/kvm.c           | 5 +++++
- target/riscv/kvm/kvm-cpu.c | 5 +++++
- target/s390x/kvm/kvm.c     | 5 +++++
- 9 files changed, 40 insertions(+)
+ target/i386/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index cba9c78d2f..c7f021006f 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -544,6 +544,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1f970aa4da..b4d9ac032b 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1810,6 +1810,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+         .to = { FEAT_24_0_EBX,              ~0ull },
+     },
++    {
++        .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
++        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
++    },
+ };
  
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
- 
-+    ret = kvm_arch_pre_create_vcpu(cpu, errp);
-+    if (ret < 0) {
-+        goto err;
-+    }
-+
-     ret = kvm_create_vcpu(cpu);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret,
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 18811cad6f..b1ec34d765 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -374,6 +374,7 @@ int kvm_arch_get_default_type(MachineState *ms);
- 
- int kvm_arch_init(MachineState *ms, KVMState *s);
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
- 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 97de8c7e93..d53ac64bf1 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1874,6 +1874,11 @@ static int kvm_arm_sve_set_vls(ARMCPU *cpu)
- 
- #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index c9a3c02e3e..7cd418b59d 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2052,6 +2052,11 @@ full:
-     abort();
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     struct {
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 1bda570482..c66bdd5302 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -1071,7 +1071,11 @@ static int kvm_cpu_check_pv_features(CPUState *cs, Error **errp)
-             env->pv_features |= BIT(KVM_FEATURE_VIRT_EXTIOI);
-         }
-     }
-+    return 0;
-+}
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-     return 0;
- }
- 
-diff --git a/target/mips/kvm.c b/target/mips/kvm.c
-index d67b7c1a8e..ec53acb51a 100644
---- a/target/mips/kvm.c
-+++ b/target/mips/kvm.c
-@@ -61,6 +61,11 @@ int kvm_arch_irqchip_create(KVMState *s)
-     return 0;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     CPUMIPSState *env = cpu_env(cs);
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 3fe54798c6..21dec9b4da 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -479,6 +479,11 @@ static void kvmppc_hw_debug_points_init(CPUPPCState *cenv)
-     }
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5315134e08..cdeee58484 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1383,6 +1383,11 @@ static int kvm_vcpu_enable_sbi_dbcn(RISCVCPU *cpu, CPUState *cs)
-     return kvm_set_one_reg(cs, kvm_sbi_dbcn.kvm_reg_id, &reg);
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret = 0;
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index b9f1422197..8946f5a806 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -404,6 +404,11 @@ unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-     return cpu->cpu_index;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     unsigned int max_cpus = MACHINE(qdev_get_machine())->smp.max_cpus;
+ typedef struct X86RegisterInfo32 {
 -- 
 2.39.3
 
