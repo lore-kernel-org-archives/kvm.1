@@ -1,51 +1,51 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15004226D12
-	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 21:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413DF21D5BE
+	for <kvm@vger.kernel.org>; Fri, 25 Apr 2025 21:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745616788; cv=none; b=BDXSSQwmFwA0+P0VHYbhQ8oanvsEec1AQqRz9ZDEig070gqNBF7umhlReGGukdVR5lcjHwfHKsAaoSZ7a1svyNKbgK3ieQjXOh5yZfmfpo4Ma5P0dJNCSgav3qOd5qVwIoLOvjpcfi/BtlDaQbO96S+ywc3YEN5zb/Z5wccopuM=
+	t=1745616793; cv=none; b=lXnPwoox0VgAtoAdbJpPVeSg4+OUCX0mkGtGleyGqeoezx4xvT3zF5wY2ZE8nkc17IULkZ8nR4OxskA3Ho1gFowF6awYsX/0+9c5asUe13CQTQNJTuNKU5eng6kKwUYys7jA9G2BfWUXs1aemMwhy/yucPFPjex4wWiQsYmTaY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745616788; c=relaxed/simple;
-	bh=F9AWp1/bpEPT3Fg9cbTnpsEa6J3kjNPNA7Bk3OczGxI=;
+	s=arc-20240116; t=1745616793; c=relaxed/simple;
+	bh=7rrgt3SPdCyH9gdJzTkHPBpNygOW/EcfDj7V3KRT3K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QE9XpFgz1HYl1e3clO2r95vR0s/FmSSBGDDrs+MPya4v1xbN+DCdcK0lMNkaeRmDbBAouuVf+2NBxdR1/WOElONZcQiAi2y9+8ulFjovhf4LxphuhqHCURD7Eb+Vaydstpk+Uw6T1xx/vLNvlhM44lrxqA3t8akFEKNGcGt+754=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fldlpAZG; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=WH6sujXzh8vSbBpuFeL+EJCqEBKkGtNU6e80vsQmafpB2jz9aMuBewIlWFKx8N7adwS6AAoR2pU0p/FQd3abjllh5H6QM6sMlQvvWiFmb47NFnk1gUlIRUfaDRqjSXSGUKo+oHTjy62th/8wrpE0J3aQy3Rc6P8ZGrb5wv1gm/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aUUUZdGd; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fldlpAZG"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PL20vs004920;
-	Fri, 25 Apr 2025 21:32:23 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aUUUZdGd"
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PLC3Ht003783;
+	Fri, 25 Apr 2025 21:32:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=1JxVQ
-	r7WUXp2G67Y8uavcdPLMJ+NuKPpZMfBNOioP8w=; b=fldlpAZGTNugyuanNvteg
-	JrtRZbRTXZmWsjKOmf1iPze9d1I0s0N/BQ07uuPpW9aUS86stwXEo4Q8+Bz0JaBJ
-	Smrl7iEUMg3GikHe+klZgRySuAhril7RMb5/Ms6KtPPreGVPhP/Jgs1rZgEvV5lC
-	grKEL++V8P/XIglTw1T/Kd4vXHnbOzCyOZRit0gCFK+iZVgA1O3cpKcsKicDWggq
-	1R2g5QXYVgjv0y8y76Yn7P6ik3q4EQreIADelvBHO1h9FJ+5MeY/LUTQd7k7bYc2
-	y7UlORo5xDjb8eS9RigHYljlI5waDw8LFTGtrfAvsoKZXG7pJJeb9vge2/k4XjEz
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=s5E//
+	iB0b4Yapww9C3bE3ogTgsNjZn0ERO1byse93AA=; b=aUUUZdGdbofsm/nQX4V/t
+	/q1N1ua2osWBkDrvq0GZ+uGvBomkwfm9nEnE611ER6AczHNe9gcLY/pD9esxRcEN
+	mVRcj/i1SaYsKm0BlfYharXAHX/CtasCwOQ8MncKtyK45L7qMrjEyNCE65UV6bvr
+	NHBfwfQfwzgDgC4/4sW2Bkj/aDsX8ekax2kiqdn4bR7fUiuHbS8LirFj/+rZaldI
+	YrOI/cyDMkdfGs1v7+e3S5qgVMTVjKc+Of+dpoIIZIw/ca4NjGRfjZcxmneTsOel
+	7NvAQKtSsf9mlSYk0jEr74h7jKDpHY2qx7BuzRx4byIFhI5HssOyN+zGHEU64Zgb
 	A==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 468hxvg95r-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 468j3hg4hu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 21:32:22 +0000 (GMT)
+	Fri, 25 Apr 2025 21:32:28 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53PL37F1030957;
-	Fri, 25 Apr 2025 21:32:03 GMT
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53PLE4Do030989;
+	Fri, 25 Apr 2025 21:31:53 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 466k095vd2-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 466k095v86-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 21:32:03 +0000
+	Fri, 25 Apr 2025 21:31:53 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53PLVdAn039597;
-	Fri, 25 Apr 2025 21:32:02 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53PLVdAf039597;
+	Fri, 25 Apr 2025 21:31:52 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 466k095v2d-10;
-	Fri, 25 Apr 2025 21:32:02 +0000
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 466k095v2d-6;
+	Fri, 25 Apr 2025 21:31:52 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
         qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
@@ -66,9 +66,9 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
         cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
         frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
         berrange@redhat.com
-Subject: [PATCH v5 09/10] target/i386/kvm: support perfmon-v2 for reset
-Date: Fri, 25 Apr 2025 14:30:06 -0700
-Message-ID: <20250425213037.8137-10-dongli.zhang@oracle.com>
+Subject: [PATCH v5 05/10] target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+Date: Fri, 25 Apr 2025 14:30:02 -0700
+Message-ID: <20250425213037.8137-6-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250425213037.8137-1-dongli.zhang@oracle.com>
 References: <20250425213037.8137-1-dongli.zhang@oracle.com>
@@ -86,163 +86,120 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulk
  spamscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2504250154
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDE1NSBTYWx0ZWRfX2CpYrmzq7Phk S2Myj92wYIpvsDVDTZtmt07RIoBEfrF/C1MiH3UtGgCjzGLP2KByuVX32oNbEqN1uNQLvrDywPf huSmNderJUp1BmLHSt8FLUS0F/6uOfVMMOYhQFQgPOTNMZodI2wcXG2I+9Q0kiMciac27Ig6WDA
- 369FZrdomzuOPnrFYojc1SPfyq7jpmRNqUG6v4dT4nMLZPuHzwH/8AcuPuMKRfPlWry6onwfuPt cWYRLvbmUYqWqRLOcRp1h0powVKDqUFmXZaKM/uozIMqJzi5/BdVsrSin3qKzToUHu6nrBpMLM7 nHJEAl1cu3JF2XeZoYxRTDzq71Cas2to9t/oMDhbqmXEXV3cJug8ZO7fR1MGzF2Z/P8KZPMANNA 0DIOt8M1
-X-Proofpoint-GUID: uLwIGuITTaM_LUa_AYSQ02op077IcC1y
-X-Proofpoint-ORIG-GUID: uLwIGuITTaM_LUa_AYSQ02op077IcC1y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDE1NSBTYWx0ZWRfX6szthY6x5CKk t9+dWs4dhwasznKuD9gaoHcJvaDJXGu241ACDaT5ZkiN5zB154NMyJOMTgKHR5//u42wQUhFij4 nyDIhmEPq4vQKK3x5IenTEoS5G03cBv4WjnqezjZsc4io1vERz3/c7s/gBA1rqM3f5XeNAddMh5
+ D5zezizAbJHtr+bZAJEvMECj11S0nLRVRh7wW2fa3kyd+322fbHXzCqVhy6cHVVrV5xrDLC5Q// mzySH2716MsVLOuWRKItWPQ35wnwL7tPlW1yB80bQdaed+17izP1k29ypJW9oAyWTaOaEYq0OAh grHsrx35KqQ0oRzKGtULO+ypKVTtAyy/NgRnU9vD9KXh+6CVS25j9yO2ktzGqMkq0jrF/1XOdp6 eD/nX1DO
+X-Proofpoint-ORIG-GUID: 3v2FkPGWNa-a0hRv7Vjh6Yvgodnv17zp
+X-Proofpoint-GUID: 3v2FkPGWNa-a0hRv7Vjh6Yvgodnv17zp
 
-Since perfmon-v2, the AMD PMU supports additional registers. This update
-includes get/put functionality for these extra registers.
+The initialization of 'has_architectural_pmu_version',
+'num_architectural_pmu_gp_counters', and
+'num_architectural_pmu_fixed_counters' is unrelated to the process of
+building the CPUID.
 
-Similar to the implementation in KVM:
+Extract them out of kvm_x86_build_cpuid().
 
-- MSR_CORE_PERF_GLOBAL_STATUS and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS both
-use env->msr_global_status.
-- MSR_CORE_PERF_GLOBAL_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_CTL both use
-env->msr_global_ctrl.
-- MSR_CORE_PERF_GLOBAL_OVF_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
-both use env->msr_global_ovf_ctrl.
-
-No changes are needed for vmstate_msr_architectural_pmu or
-pmu_enable_needed().
+In addition, use cpuid_find_entry() instead of cpu_x86_cpuid(), because
+CPUID has already been filled at this stage.
 
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
 Changed since v1:
-  - Use "has_pmu_version > 1", not "has_pmu_version == 2".
+  - Still extract the code, but call them for all CPUs.
 Changed since v2:
   - Use cpuid_find_entry() instead of cpu_x86_cpuid().
-  - Change has_pmu_version to pmu_version.
-  - Cap num_pmu_gp_counters with MAX_GP_COUNTERS.
-Changed since v4:
-  - Add Reviewed-by from Sandipan.
+  - Didn't add Reviewed-by from Dapeng as the change isn't minor.
 
- target/i386/cpu.h     |  4 ++++
- target/i386/kvm/kvm.c | 48 +++++++++++++++++++++++++++++++++++--------
- 2 files changed, 43 insertions(+), 9 deletions(-)
+ target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++-------------------
+ 1 file changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e85f43a4b9..7500518227 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -490,6 +490,10 @@ typedef enum X86Seg {
- #define MSR_CORE_PERF_GLOBAL_CTRL       0x38f
- #define MSR_CORE_PERF_GLOBAL_OVF_CTRL   0x390
- 
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS       0xc0000300
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_CTL          0xc0000301
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR   0xc0000302
-+
- #define MSR_K7_EVNTSEL0                 0xc0010000
- #define MSR_K7_PERFCTR0                 0xc0010004
- #define MSR_F15H_PERF_CTL0              0xc0010200
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2c7b0f6717..1670a6a4d7 100644
+index 96d87821a3..bacb1c17f5 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -2139,6 +2139,16 @@ static void kvm_init_pmu_info_amd(struct kvm_cpuid2 *cpuid, X86CPU *cpu)
+@@ -1960,33 +1960,6 @@ static uint32_t kvm_x86_build_cpuid(CPUX86State *env,
+         }
      }
  
-     num_pmu_gp_counters = AMD64_NUM_COUNTERS_CORE;
-+
-+    c = cpuid_find_entry(cpuid, 0x80000022, 0);
-+    if (c && (c->eax & CPUID_8000_0022_EAX_PERFMON_V2)) {
-+        pmu_version = 2;
-+        num_pmu_gp_counters = c->ebx & 0xf;
-+
-+        if (num_pmu_gp_counters > MAX_GP_COUNTERS) {
-+            num_pmu_gp_counters = MAX_GP_COUNTERS;
-+        }
-+    }
+-    if (limit >= 0x0a) {
+-        uint32_t eax, edx;
+-
+-        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
+-
+-        has_architectural_pmu_version = eax & 0xff;
+-        if (has_architectural_pmu_version > 0) {
+-            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
+-
+-            /* Shouldn't be more than 32, since that's the number of bits
+-             * available in EBX to tell us _which_ counters are available.
+-             * Play it safe.
+-             */
+-            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
+-                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
+-            }
+-
+-            if (has_architectural_pmu_version > 1) {
+-                num_architectural_pmu_fixed_counters = edx & 0x1f;
+-
+-                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+-                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+-                }
+-            }
+-        }
+-    }
+-
+     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
+ 
+     for (i = 0x80000000; i <= limit; i++) {
+@@ -2086,6 +2059,39 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+     return 0;
  }
  
- static bool is_host_compat_vendor(CPUX86State *env)
-@@ -4205,13 +4215,14 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-             uint32_t step = 1;
- 
-             /*
--             * When PERFCORE is enabled, AMD PMU uses a separate set of
--             * addresses for the selector and counter registers.
--             * Additionally, the address of the next selector or counter
--             * register is determined by incrementing the address of the
--             * current register by two.
-+             * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a
-+             * separate set of addresses for the selector and counter
-+             * registers. Additionally, the address of the next selector or
-+             * counter register is determined by incrementing the address
-+             * of the current register by two.
-              */
--            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+                pmu_version > 1) {
-                 sel_base = MSR_F15H_PERF_CTL0;
-                 ctr_base = MSR_F15H_PERF_CTR0;
-                 step = 2;
-@@ -4223,6 +4234,15 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-                 kvm_msr_entry_add(cpu, sel_base + i * step,
-                                   env->msr_gp_evtsel[i]);
-             }
++static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
++{
++    struct kvm_cpuid_entry2 *c;
 +
-+            if (pmu_version > 1) {
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
-+                                  env->msr_global_status);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
-+                                  env->msr_global_ovf_ctrl);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
-+                                  env->msr_global_ctrl);
-+            }
-         }
- 
-         /*
-@@ -4700,13 +4720,14 @@ static int kvm_get_msrs(X86CPU *cpu)
-         uint32_t step = 1;
- 
-         /*
--         * When PERFCORE is enabled, AMD PMU uses a separate set of
--         * addresses for the selector and counter registers.
-+         * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a separate
-+         * set of addresses for the selector and counter registers.
-          * Additionally, the address of the next selector or counter
-          * register is determined by incrementing the address of the
-          * current register by two.
-          */
--        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+            pmu_version > 1) {
-             sel_base = MSR_F15H_PERF_CTL0;
-             ctr_base = MSR_F15H_PERF_CTR0;
-             step = 2;
-@@ -4716,6 +4737,12 @@ static int kvm_get_msrs(X86CPU *cpu)
-             kvm_msr_entry_add(cpu, ctr_base + i * step, 0);
-             kvm_msr_entry_add(cpu, sel_base + i * step, 0);
-         }
++    c = cpuid_find_entry(cpuid, 0xa, 0);
 +
-+        if (pmu_version > 1) {
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, 0);
++    if (!c) {
++        return;
++    }
++
++    has_architectural_pmu_version = c->eax & 0xff;
++    if (has_architectural_pmu_version > 0) {
++        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
++
++        /*
++         * Shouldn't be more than 32, since that's the number of bits
++         * available in EBX to tell us _which_ counters are available.
++         * Play it safe.
++         */
++        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
++            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
 +        }
-     }
++
++        if (has_architectural_pmu_version > 1) {
++            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
++
++            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
++                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
++            }
++        }
++    }
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     struct {
+@@ -2268,6 +2274,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
+     cpuid_data.cpuid.nent = cpuid_i;
  
-     if (env->mcg_cap) {
-@@ -5012,12 +5039,15 @@ static int kvm_get_msrs(X86CPU *cpu)
-             env->msr_fixed_ctr_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-             env->msr_global_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_STATUS:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-             env->msr_global_status = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-             env->msr_global_ovf_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_FIXED_CTR0 ... MSR_CORE_PERF_FIXED_CTR0 + MAX_FIXED_COUNTERS - 1:
++    kvm_init_pmu_info(&cpuid_data.cpuid);
++
+     if (((env->cpuid_version >> 8)&0xF) >= 6
+         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
+            (CPUID_MCE | CPUID_MCA)) {
 -- 
 2.39.3
 
