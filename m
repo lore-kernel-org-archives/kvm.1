@@ -1,117 +1,91 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0881AAC4
-	for <kvm@vger.kernel.org>; Sat, 26 Apr 2025 12:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F2D1E50E;
+	Sat, 26 Apr 2025 12:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745668813; cv=none; b=pDD1R6J7azAFUNfrOgLj+LkrjW3Sqv/+4Wi2L5sqEKKE8oWyeiwiEMdLRxNFBpN8mfwILUthBxwaanoTbkEGqoHCoGtTl9ZD5BJtSbB/0+sJXFwahboiqbYVxlR0tSPwJmPMK4f3pRKRHgD1kPv9MBShqaKKvMbBy5ikatXJSdg=
+	t=1745670531; cv=none; b=d+q77jBCeHQp4sYLfStIzTchRTCAF7osh/j4/V7lRpbjs2xzCTLsvbURBr3oKEGAyXR6GWFzSGm/Rv4Fy2FSs6xFwexXrQv3EsK3EUH7Y0WoYLgLXsawm/x9DQi3nOloiBDdVOfUjf0wFdjcNjm1tQwhDqN9/7iO/vsu5gLPR2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745668813; c=relaxed/simple;
-	bh=y2UzcmFgXugz7sN37JRnEYfgybMcwHD39Unx5ijSVAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lmjE5hE6evgUojijEJf5nkvFF2yyL9Rv5qAnnBCnxpXxhYrs+dPPL7nyn+a21+7g2CyD+nU/osOWmvwTYLchEJMJCpF9JqIYtBa9y3QGYQ2duMQ+zrtkl+c54hXsZZx2a4SSl80SHPSddiqzPZ9sT13Vt8GSjknWPUDlfhkoUwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=mAMyN+89; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1745670531; c=relaxed/simple;
+	bh=44gRQXHmjU599W1FzWtYTLfeRPiNOJ8OSvboqazC2Q0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AVK+DGHrsngFZSZucXZAYWoeQF9TYl7HQ/eJ1yukuZtSOqZYhbbZDo1v6bd/9Ml6zvQx/AwlfSuGOquNeBTXIqfQUpaDbGEa4ac4lRBS8n/vUplWt1rbOg47HBDDWpyE/34C2q35H0/6lIXMXvjWh/Kp1LUerMfAulo04vYQg0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbdbB6xg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="mAMyN+89"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5f4d28d9fd8so3890058a12.3
-        for <kvm@vger.kernel.org>; Sat, 26 Apr 2025 05:00:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1745668810; x=1746273610; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RTzu1xS98tjw8hnNc1PSCW4inmOV0Uf2KGI05g8CT5s=;
-        b=mAMyN+89vom/DjtWMzfVy6ca7OGZvXcT+IY6ZW/i2mFg580XPM6Uiku2ipi615/ioh
-         Wr1QMkZG8lT3PrLURa9ENYD3MQ5aiVDAKOPr+oES6wHmebRy2MqlcKpIWbYSCa5l2VVl
-         gr/ELF0Qt0A/WiPyTf2j80TXmvcI0qE14fxdz3OhSAkqWfh5N12mYFqXd5RUGPz7MyoG
-         g2koLOX2XfMd7xPUiw8dIwgxeqN7Z2gEq8ZuI9aqATX6h6aoLei+naTrOIEv6XxJB8DB
-         nxEwHnamYdZMZ63+FD5dWdAxYhz74e7mu0NyHa6V+ep6vlV+RtrV7WHOLfmgysDQY341
-         m6tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745668810; x=1746273610;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RTzu1xS98tjw8hnNc1PSCW4inmOV0Uf2KGI05g8CT5s=;
-        b=ODh5zwa0QF4a2+kZaBjlc/WWOHrDvgOt78kLUJKFl+10iQ0pfSDU+rHXFOnzDX/hyV
-         PZcx5Z4NcrXPL2WdxchPjKhsbqI/ldzEttW7ecOZ7zIToUHHwmftXP4U6IpdCMJI3wzT
-         p4mF3XBFSeYLZDE8r/6nq6iCaaNI4x4d9JPAoZmufb9A0gUDH9D159l7xQFLxogjSMNc
-         RmLsbyz+6QPzD9d8vvuW3fLuZM6dWuPBxBTjHBvlBylxcPKkpKvF1O5RdOaibO1WoHkJ
-         wmMdiJZAI10Ormpev6s6MD7u/flSaINUD5AbJxTYPAaiK8VmgrnOFvyLD7a1UDdbAg58
-         ViNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMDtUvfZMVRgnWJCNyYg8aXfXeBwwClwZi3V7TR2wMsaJvsk77WD4gIPlltxJrCVDj8iI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylE8d/o83gud8qNFSMukFB5+hMufpr7ucPBv/ApXpAXJ3It7y7
-	dx3a44msTHucNfx3KRKxVLJRQGDXwIV21iDvTlzfzu4iNf3l3Xdvw4UUcFXOsjc=
-X-Gm-Gg: ASbGncs9KDHK+6f/QPzIL/qKhmEjeUu7i0QLcONa9C+G5j241X2bJbQSMWIK8VpGCyw
-	2pGCDdn2r9SxnpqO2UxYX1i2LA/q1qNLAqEesvTENXHKbWoldLbp28oWaZ31oCpnK/tOI48BiW3
-	CuZWp+dz6aAwF7SR3MjNlPonua0t6R2U1UFi1rkyOcn9uuIEg8YLFUIoC1JtiGu+S/XM+KGM1gd
-	/1k+Wp79cJcbkGO+N9fh4yLxSS/tZSrDRT7sX9FIowW+jcfAV1unxef2F+qChM9DH+OMWQVl74b
-	a8BG58d58auF1mSZscbYb+oLMflUgevOQdPKyPDw855Vokqt6iEVbThxcDpfMs8bFXCBzw==
-X-Google-Smtp-Source: AGHT+IHECmUh4ym77b/66FP4tRpCNVowAee/FmuOM9vRtlM64uQJIMP3F9x6/UbiyebOtviYFMRgAQ==
-X-Received: by 2002:a17:907:3f14:b0:ace:8144:1649 with SMTP id a640c23a62f3a-ace848f779amr230479966b.20.1745668809520;
-        Sat, 26 Apr 2025 05:00:09 -0700 (PDT)
-Received: from localhost (cst2-173-28.cust.vodafone.cz. [31.30.173.28])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ecf73a2sm275320366b.114.2025.04.26.05.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Apr 2025 05:00:09 -0700 (PDT)
-Date: Sat, 26 Apr 2025 14:00:07 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Huth <thuth@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, 
-	kvm@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH] scripts: Search the entire string for the
- correct accelerator
-Message-ID: <20250426-8f1b81cc50c34db23f34110b@orel>
-References: <20250425220557.989650-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbdbB6xg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E8AC4CEE2;
+	Sat, 26 Apr 2025 12:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745670530;
+	bh=44gRQXHmjU599W1FzWtYTLfeRPiNOJ8OSvboqazC2Q0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QbdbB6xgxessSw9Q5prEE/drdKGxcL6YWXlwkA5c37yzG25/n/Fp2fjx39IbIwRMi
+	 5/nImXAcHxZX+jiDB8ituxHqzpTRSLOlnDEmshuIeTzX5JABfu8wq0AlPyfhR9LG/8
+	 GYWgye2slLBlUD9UoY/2u0vPi+ZvIkhPMnZc34aoIa2PCbhmjV6fh9eJ5X93KgjbqD
+	 +h0q4lUGfBhw6MViJSJV9mK0BwM783IKhIxh/8OwOz5hdM9yMSBuAOkyaMq+f1Z9FL
+	 4gSPn0iivEdjPrKlj+TPF1z5nPstHz9S1C/Iu/k0ryz2ifG2vzZhiusUkt8IsJgwGO
+	 37pCaWDwtIGew==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1u8eeG-0092VH-8J;
+	Sat, 26 Apr 2025 13:28:48 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH v3 01/42] arm64: sysreg: Add ID_AA64ISAR1_EL1.LS64 encoding for FEAT_LS64WB
+Date: Sat, 26 Apr 2025 13:27:55 +0100
+Message-Id: <20250426122836.3341523-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250426122836.3341523-1-maz@kernel.org>
+References: <20250426122836.3341523-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425220557.989650-1-seanjc@google.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, mark.rutland@arm.com, tabba@google.com, will@kernel.org, catalin.marinas@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Apr 25, 2025 at 03:05:57PM -0700, Sean Christopherson wrote:
-> Search the entire ACCEL string for the required accelerator as searching
-> for an exact match incorrectly rejects ACCEL when additional accelerator
-> specific options are provided, e.g.
-> 
->   SKIP pmu (kvm only, but ACCEL=kvm,kernel_irqchip=on)
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  scripts/runtime.bash | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/runtime.bash b/scripts/runtime.bash
-> index 4b9c7d6b..59d1727c 100644
-> --- a/scripts/runtime.bash
-> +++ b/scripts/runtime.bash
-> @@ -126,7 +126,7 @@ function run()
->          machine="$MACHINE"
->      fi
->  
-> -    if [ -n "$accel" ] && [ -n "$ACCEL" ] && [ "$accel" != "$ACCEL" ]; then
-> +    if [ -n "$accel" ] && [ -n "$ACCEL" ] && [[ ! "$ACCEL" =~ $accel ]]; then
+The 2024 extensions are adding yet another variant of LS64
+(aptly named FEAT_LS64WB) supporting LS64 accesses to write-back
+memory, as well as 32 byte single-copy atomic accesses using pairs
+of FP registers.
 
-Let's use
+Add the relevant encoding to ID_AA64ISAR1_EL1.LS64.
 
- [[ ! $ACCEL =~ ^$accel(,.*|$) ]]
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/tools/sysreg | 1 +
+ 1 file changed, 1 insertion(+)
 
-to be a bit more precise.
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index bdf044c5d11b6..e5da8848b66b5 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1466,6 +1466,7 @@ UnsignedEnum	63:60	LS64
+ 	0b0001	LS64
+ 	0b0010	LS64_V
+ 	0b0011	LS64_ACCDATA
++	0b0100	LS64WB
+ EndEnum
+ UnsignedEnum	59:56	XS
+ 	0b0000	NI
+-- 
+2.39.2
 
-Thanks,
-drew
-
->          print_result "SKIP" $testname "" "$accel only, but ACCEL=$ACCEL"
->          return 2
->      elif [ -n "$ACCEL" ]; then
-> 
-> base-commit: 0d3cb7dd56ec255a71af867c2d76c8f4b22cd420
-> -- 
-> 2.49.0.850.g28803427d3-goog
-> 
