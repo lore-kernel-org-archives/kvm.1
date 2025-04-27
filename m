@@ -1,60 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87EA94A
-	for <kvm@vger.kernel.org>; Sun, 27 Apr 2025 06:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92729240611
+	for <kvm@vger.kernel.org>; Sun, 27 Apr 2025 06:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745734520; cv=none; b=pB6te39cBzWy3pAJDHcLZ5gJKbZgG5zB6RZwdCVEVFMkV9REk8CeSIeYMLodS11rrrdlj0xSwq2ij84dhzKCxFr5qqvxtSTlXFOJJrcXt79nXGANyCNKM3AQtWyNEmOPwpVZItmq20w+G/ASTPL4pa7vg3LnUcjKnXKpsEO1DpE=
+	t=1745735319; cv=none; b=eR9LivgPbewaqXu5phJev5uV3V7wH7yMOIM84dyE6HpafzOqu4RKNsJwlyRppcoACJLEAl6cqnNO2ExBXjNBHyrG9IoEbVzF9/MusvS3+YUKxfDaYglHX7XELguZ15lIWuVqj25bUa96OU+YfW+mWNpB8s/95JCcPGdNwU2sW9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745734520; c=relaxed/simple;
-	bh=rxpNcby6Q++OoV5RweTfvn1DH4Lzi1iHyCXm0T+R9I8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=uVMZ9xEw7Fu7EU1j7AnrgW9mqZLN/2NXKFwWm2k4mwWqAch3ZPUFU65TtgtFyRSBN/HsH9NNd4wJ+SnlDi24nruz1J1KABFDiWjxVVeFA0JH9Cuzwekimw9ngSjmngCcVTgZ4b4NGKTdsMTLWu+PuTVw+B2KiG0uHW3HdePZSRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HUmFkslM; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1745735319; c=relaxed/simple;
+	bh=mnGbRICatNcyoPrI5GrAe65yEryXZhpnLlqHMQGHYqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qXJDgnYapMPlfIENlg5isxmNwhrGlHSij0yIFSTTOmxAXdzAoR48ik9uzA2u8Q2svFYuOPkusZttdPC2ZWtVBh6oMbK0euK+mAO/taPOBMzhrW6AMiXVHsJbuMGorrBF+2biE4cz4XMCAK1rlmbYWMzBSnCyDCRo7GPSBfkKaaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDgMCYRm; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HUmFkslM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDgMCYRm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745734518; x=1777270518;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=rxpNcby6Q++OoV5RweTfvn1DH4Lzi1iHyCXm0T+R9I8=;
-  b=HUmFkslM1X0bOoWgBhQCEsHpDZvyd0zM+5nLK8v8wSH5QuhWm1DMfpML
-   GtLNXnjuHRQS3rh2dOdgFHCU0yws0su8mTMBkVy3ATgFUZeEab0aN0Fbh
-   aEwscXUpR8RfbKrHwTakwVzPTt6an8p7nHVGg9Mi36vA4meWbk9fi4SGW
-   ifA9iBYz3aBg2urP5DAmk2bYyGAGeLNf2Z3M/SFx2nGLFFWyi7nLT1/FI
-   RWCcZiciSj8SP0Pg+SF4kWpvspAxLkDORnhtXsjAPNEgUngrDZeldIT86
-   dFuddomEp9hdupZuSrl4j3hjG9XuaBazOAmCcYxMDm1lkIa5IWspaGQki
+  t=1745735317; x=1777271317;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mnGbRICatNcyoPrI5GrAe65yEryXZhpnLlqHMQGHYqQ=;
+  b=PDgMCYRmKryqtmZNasYCwPZ0HGkBZH7mWCK0JPtbVlx+0O2rvj5hPKKL
+   rmO18/DGv/TUT3ssla5LJmWMzOnBUPDwTpMH+FD6KNn19LxsG2tM8foTA
+   lUNAiUZ2vKJJByDnb+c6FQ6piHPCfdd17ylLY5nqiucRgh7BiXDJYqeZv
+   6G54J3j+V4MsWsq6uPOOYvRKk/qSUU8IV233Py7qgSZz2hqw5s6EbSo8j
+   2bEAJfaty+42k0bWAptkKBz/K/gJZzPze3twkslaROkDuf8wOG9SSRMaW
+   lzVwKlvH5HCMtJSzls3Osupwu/N1BMrniL2efjlzDorekhxsn1xfT9Exz
    Q==;
-X-CSE-ConnectionGUID: MAtWbgUuRV6agSUoTD11HQ==
-X-CSE-MsgGUID: 7pZw+x6hRjyO2Or191DmzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="46578504"
+X-CSE-ConnectionGUID: OzoPTJ3+QAeybUltVpFg/w==
+X-CSE-MsgGUID: KKlys74ESD2YHdS6f9vznA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="49995861"
 X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="46578504"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2025 23:15:18 -0700
-X-CSE-ConnectionGUID: vvPqo2DTRG+vmJSc4g3kcA==
-X-CSE-MsgGUID: osdeSxcWSsmSvbH2SRquCw==
+   d="scan'208";a="49995861"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2025 23:28:37 -0700
+X-CSE-ConnectionGUID: iO0zR2YdQPuksNBrc7RPBg==
+X-CSE-MsgGUID: H4em+WpuSHWky0kg4kKVEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="138331909"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 26 Apr 2025 23:15:16 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u8vII-00068z-1k;
-	Sun, 27 Apr 2025 06:15:14 +0000
-Date: Sun, 27 Apr 2025 14:15:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
-	Farrah Chen <farrah.chen@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [kvm:queue 9/13] arch/x86/kvm/svm/avic.c:807: warning: Function
- parameter or struct member 'pi->prev_ga_tag' not described in 'if'
-Message-ID: <202504271426.qgsP6QxR-lkp@intel.com>
+   d="scan'208";a="133216649"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa007.fm.intel.com with ESMTP; 26 Apr 2025 23:28:32 -0700
+Date: Sun, 27 Apr 2025 14:49:29 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 3/5] i386/kvm: Support event with select & umask format
+ in KVM PMU filter
+Message-ID: <aA3TeaYG9mNMdEiW@intel.com>
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-4-zhao1.liu@intel.com>
+ <87frhwfuv1.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,100 +71,166 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <87frhwfuv1.fsf@pond.sub.org>
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-head:   45eb29140e68ffe8e93a5471006858a018480a45
-commit: 268cbfe65bb9096f78f98d1e092b1939d3caa382 [9/13] KVM: SVM: WARN if an invalid posted interrupt IRTE entry is added
-config: x86_64-randconfig-002-20250427 (https://download.01.org/0day-ci/archive/20250427/202504271426.qgsP6QxR-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250427/202504271426.qgsP6QxR-lkp@intel.com/reproduce)
+Hi Markus,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504271426.qgsP6QxR-lkp@intel.com/
+> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
+> > +            if (event->u.x86_select_umask.select > UINT12_MAX) {
+> > +                error_setg(errp,
+> > +                           "Parameter 'select' out of range (%d).",
+> > +                           UINT12_MAX);
+> > +                goto fail;
+> > +            }
+> > +
+> > +            /* No need to check the range of umask since it's uint8_t. */
+> > +            break;
+> > +        }
+> 
+> As we'll see below, the new x86-specific format is defined in the QAPI
+> schema regardless of target.
+> 
+> It is accepted here also regardless of target.  Doesn't matter much
+> right now, as the object is effectively useless for targets other than
+> x86, but I understand that will change.
+> 
+> Should we reject it unless the target is x86?
 
-All warnings (new ones prefixed by >>):
+I previously supposed that different architectures should implement
+their own kvm_arch_check_pmu_filter(), which is the `check` hook of
+object_class_property_add_link():
 
->> arch/x86/kvm/svm/avic.c:807: warning: Function parameter or struct member 'pi->prev_ga_tag' not described in 'if'
-   arch/x86/kvm/svm/avic.c:807: warning: expecting prototype for In some cases, the existing irte is updated and re(). Prototype was for if() instead
-   arch/x86/kvm/svm/avic.c:823: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-            * Allocating new amd_iommu_pi_data, which will get
-   arch/x86/kvm/svm/avic.c:936: warning: Function parameter or struct member 'kvm_vcpu_apicv_active(&svm->vcpu' not described in 'if'
-   arch/x86/kvm/svm/avic.c:936: warning: expecting prototype for Here, we setup with legacy mode in the following cases(). Prototype was for if() instead
-   arch/x86/kvm/svm/avic.c:951: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-                            * Here, we successfully setting up vcpu affinity in
-   arch/x86/kvm/svm/avic.c:983: warning: cannot understand function prototype: 'pi.prev_ga_tag = 0; '
-   arch/x86/kvm/svm/avic.c:988: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-                    * Check if the posted interrupt was previously
-   arch/x86/kvm/svm/avic.c:1128: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-                    * During AVIC temporary deactivation, guest could update
+    object_class_property_add_link(oc, "pmu-filter",
+                                   TYPE_KVM_PMU_FILTER,
+                                   offsetof(KVMState, pmu_filter),
+                                   kvm_arch_check_pmu_filter,
+                                   OBJ_PROP_LINK_STRONG);
 
+For x86, I implemented kvm_arch_check_pmu_filter() in target/i386/kvm/
+kvm.c and checked the supported formats (I also supposed arch-specific
+PMU filter could reject the unsupported format in
+kvm_arch_check_pmu_filter().)
 
-vim +807 arch/x86/kvm/svm/avic.c
+But I think your idea is better, i.e., rejecting unsupported format
+early in pmu-filter parsing.
 
-   791	
-   792	static int svm_ir_list_add(struct vcpu_svm *svm, struct amd_iommu_pi_data *pi)
-   793	{
-   794		int ret = 0;
-   795		unsigned long flags;
-   796		struct amd_svm_iommu_ir *ir;
-   797		u64 entry;
-   798	
-   799		if (WARN_ON_ONCE(!pi->ir_data))
-   800			return -EINVAL;
-   801	
-   802		/**
-   803		 * In some cases, the existing irte is updated and re-set,
-   804		 * so we need to check here if it's already been * added
-   805		 * to the ir_list.
-   806		 */
- > 807		if (pi->prev_ga_tag) {
-   808			struct kvm *kvm = svm->vcpu.kvm;
-   809			u32 vcpu_id = AVIC_GATAG_TO_VCPUID(pi->prev_ga_tag);
-   810			struct kvm_vcpu *prev_vcpu = kvm_get_vcpu_by_id(kvm, vcpu_id);
-   811			struct vcpu_svm *prev_svm;
-   812	
-   813			if (!prev_vcpu) {
-   814				ret = -EINVAL;
-   815				goto out;
-   816			}
-   817	
-   818			prev_svm = to_svm(prev_vcpu);
-   819			svm_ir_list_del(prev_svm, pi);
-   820		}
-   821	
-   822		/**
-   823		 * Allocating new amd_iommu_pi_data, which will get
-   824		 * add to the per-vcpu ir_list.
-   825		 */
-   826		ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
-   827		if (!ir) {
-   828			ret = -ENOMEM;
-   829			goto out;
-   830		}
-   831		ir->data = pi->ir_data;
-   832	
-   833		spin_lock_irqsave(&svm->ir_list_lock, flags);
-   834	
-   835		/*
-   836		 * Update the target pCPU for IOMMU doorbells if the vCPU is running.
-   837		 * If the vCPU is NOT running, i.e. is blocking or scheduled out, KVM
-   838		 * will update the pCPU info when the vCPU awkened and/or scheduled in.
-   839		 * See also avic_vcpu_load().
-   840		 */
-   841		entry = READ_ONCE(*(svm->avic_physical_id_cache));
-   842		if (entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK)
-   843			amd_iommu_update_ga(entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK,
-   844					    true, pi->ir_data);
-   845	
-   846		list_add(&ir->node, &svm->ir_list);
-   847		spin_unlock_irqrestore(&svm->ir_list_lock, flags);
-   848	out:
-   849		return ret;
-   850	}
-   851	
+Well, IIUC, there is no way to specify in QAPI that certain enumerations
+are generic and certain enumerations are arch-specific, so rejecting
+unsupported format can only happen in parsing code. For example, wrap
+the above code in "#if defined(TARGET_I386)":
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+    for (node = head; node; node = node->next) {
+        KvmPmuFilterEvent *event = node->value;
+
+        switch (event->format) {
+        case KVM_PMU_EVENT_FORMAT_RAW:
+            break;
+#if defined(TARGET_I386)
+        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
+            ...
+            break;
+        }
+        case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY: {
+            ...
+	    break;
+        }
+#endif
+        default:
+	    error_setg(errp,
+                       "Unsupported format.");
+            goto fail;
+        }
+
+        ...
+    }
+
+EMM, do you like this idea?
+
+> If not, I feel the behavior should be noted in the commit message.
+
+With the above change, I think it's possible to reject x86-specific
+format on non-x86 arch. And I can also note this behavior in commit
+message.
+
+> >          default:
+> >              g_assert_not_reached();
+> >          }
+> > @@ -67,6 +82,9 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
+> >      filter->events = head;
+> >      qapi_free_KvmPmuFilterEventList(old_head);
+> >      return;
+> > +
+> > +fail:
+> > +    qapi_free_KvmPmuFilterEventList(head);
+> >  }
+> >  
+> >  static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
+
+...
+
+> >  ##
+> >  # @KvmPmuFilterEvent:
+> >  #
+> > @@ -66,7 +82,8 @@
+> >  { 'union': 'KvmPmuFilterEvent',
+> >    'base': { 'format': 'KvmPmuEventFormat' },
+> >    'discriminator': 'format',
+> > -  'data': { 'raw': 'KvmPmuRawEvent' } }
+> > +  'data': { 'raw': 'KvmPmuRawEvent',
+> > +            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent' } }
+> >  
+> >  ##
+> >  # @KvmPmuFilterProperties:
+> 
+> Documentation could perhaps be more explicit about this making sense
+> only for x86.
+
+What about the following doc?
+
+##
+# @KvmPmuFilterProperties:
+#
+# Properties of KVM PMU Filter (only for x86).
+
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index 51a7c61ce0b0..5dcce067d8dd 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -6180,6 +6180,9 @@ SRST
+> >               ((select) & 0xff) | \
+> >               ((umask) & 0xff) << 8)
+> >  
+> > +        ``{"format":"x86-select-umask","select":event_select,"umask":event_umask}``
+> > +            Specify the single x86 PMU event with select and umask fields.
+> > +
+> >          An example KVM PMU filter object would look like:
+> >  
+> >          .. parsed-literal::
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index fa3a696654cb..0d36ccf250ed 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -5974,6 +5974,10 @@ static bool kvm_config_pmu_event(KVMPMUFilter *filter,
+> >          case KVM_PMU_EVENT_FORMAT_RAW:
+> >              code = event->u.raw.code;
+> >              break;
+> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
+> > +            code = X86_PMU_RAW_EVENT(event->u.x86_select_umask.select,
+> > +                                     event->u.x86_select_umask.umask);
+> > +            break;
+> >          default:
+> >              g_assert_not_reached();
+> >          }
+> > @@ -6644,6 +6648,7 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+> >  
+> >          switch (event->format) {
+> >          case KVM_PMU_EVENT_FORMAT_RAW:
+> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
+
+Here's the current format check I mentioned above. But I agree your idea
+and will check in the parsing of pmu-filter object.
+
+> >              break;
+> >          default:
+> >              error_setg(errp,
+> 
