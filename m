@@ -1,76 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0171F4E39
-	for <kvm@vger.kernel.org>; Sun, 27 Apr 2025 07:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F43B173;
+	Sun, 27 Apr 2025 07:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745737530; cv=none; b=hPJJ9IfLGlXR2148NJl64vekTefmqocSUjazvRqOj0IXOwgZ0yTE8RgYri1cR2W/hVQHxHcwAtCBVawfhgQ7LZabWpnlD8a8a1x48oIUJ6fTh6+YSoHIxGYUlvBoQ9izSz1AA8n4pVm8yMLT9N9hMlkk9VZaUQ9kgAEt339NEEY=
+	t=1745737833; cv=none; b=C6j1/ZlAv9na6uhfYAI06H53qIjhyqzh/v0lg4INQRC043yroqIDqHEa6+RRgXGDZ9b6BYY41gwH0MkxzLo8iSuOmtc/CTK7mtiUbQ193yMsFFqpr9kJBqRDQzJMPDBgzyvqvMCz/pgOEDxLOg7zjt2DJgLaPl/hnOZUwWn4nnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745737530; c=relaxed/simple;
-	bh=/VAXcw1oJpNq80iCbs63zP5UG4yX37TNo7LthnbGVBo=;
+	s=arc-20240116; t=1745737833; c=relaxed/simple;
+	bh=CGnsiRcgcTLWNshlRKt3+TY3846/zeQqAZXDX5kQlSo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYkn0JHrJv4qcgFnlbf1YCZmECmzZeTtm/gf8dEF3d259lNkIpT/u3A52cl1t+oLvQU72Rd4o2wz+FFjoH77jIRtLbdYHOQtKm//KunGkZYaufCgQsZcBJmPLyZs9dg0qASQF0DH2XHM0Oam0pIDgsf/AtcgIWUZ9Ia7v6qK/oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e1P+d4Jj; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=LqkWi8+P2ZDAkrg1g3/cQELePi0zNRNAsMgpWyC/+fYJMcSxojzW6zQQueR8s8sTOupZz7FFn3t7G/VbGTFyv0Os2qAP/5aWFDlG0+aA6seBOPhMDYiimwozYy/gYyc8NOn/ACxl7+7NitRrn1i0mRhviqnx5kiQ5mG8+kWPiO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M96skoYC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e1P+d4Jj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745737529; x=1777273529;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/VAXcw1oJpNq80iCbs63zP5UG4yX37TNo7LthnbGVBo=;
-  b=e1P+d4Jji5f9mpQzeKl3575fO364ueL0+bDQhwTj28d9ZI7Ltc0PAim2
-   mVuBlN5DvRgDFG1IQ6lPe/NZ3ozeTpWyLGj4GsJlekbCVzb+b+eF7H1Ad
-   EvbgxH2vk+9j2hith5THLnj0vYhilEr3whgY/7oLDuL6khLNn0P0r+RJl
-   kFwml8UAcWfvhIx1xobyzgkkkTZBgoFEGbAgouQHXDePrg7pgaGb9sw2A
-   cszBqu5m9dnNniiJmbpheixAS6qvfMoiU8OrJsRHHFD9X3qpwIzV96oij
-   5JXl3kcAR2pnaP2qdn4YPrJsNuVSDI62vSaG+WY+VF87FPwWzmGRmFyT2
-   g==;
-X-CSE-ConnectionGUID: 0zvkVwtCT7C/0MRGaZeeAA==
-X-CSE-MsgGUID: IKW5ARPWRKem5jvad5V99Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="47255462"
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="47255462"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2025 00:05:28 -0700
-X-CSE-ConnectionGUID: rVl3Mel3THqiZcQli6WIqg==
-X-CSE-MsgGUID: kb1BB0dSQ0S5A+G0fWVAEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="156475720"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa002.fm.intel.com with ESMTP; 27 Apr 2025 00:05:23 -0700
-Date: Sun, 27 Apr 2025 15:26:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
-	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
-	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
-	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>,
-	Alexander Graf <agraf@csgraf.de>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
-Message-ID: <aA3cHIcKmt3vdkVk@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-2-zhao1.liu@intel.com>
- <878qo8yu5u.fsf@pond.sub.org>
- <Z/iUiEXZj52CbduB@intel.com>
- <87frifxqgk.fsf@pond.sub.org>
- <Z/i3+l3uQ3dTjnHT@intel.com>
- <87fri8o70b.fsf@pond.sub.org>
- <aAnbLhBXMFAxE2vT@intel.com>
- <fa6f20a9-3d7a-4c2d-94e5-c20dbaf4303e@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M96skoYC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7284DC4CEE3;
+	Sun, 27 Apr 2025 07:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745737832;
+	bh=CGnsiRcgcTLWNshlRKt3+TY3846/zeQqAZXDX5kQlSo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M96skoYCIAliV9mE/cHFjQyXeYgIKCso7ocEVoV4QwsavwZFE3rfEM0dziGcjOR6b
+	 7kjkhtEE/0EQdgXtARUS6cI7T75h7ppRVSbbVbM6R6qxPwg9Sg1vSFr6VbnyOZQ57g
+	 o/iTgqG/YLNmmypwMR2+p+Nr3hxoD01W7r5hdZeZwzGeiH97kZ/4Ut5fcVkg1wzjts
+	 hXvK19kK7wEZSW5jdM0EDEgy9k/RevkU6uLUiXDosGVulyNXnwwR8BBoNXzP3d0oXt
+	 HjLpbmZL7Uu8naYplITM7UrID84hix6jY7jTs9NC+PEEEgVOxLpTdYZy8aECiq9kdG
+	 KVcDCKntZyoxA==
+Date: Sun, 27 Apr 2025 10:10:26 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Keith Busch <kbusch@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jens Axboe <axboe@kernel.dk>, Jake Edge <jake@lwn.net>,
+	Jonathan Corbet <corbet@lwn.net>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Zhu Yanjun <zyjzyj2000@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
+	iommu@lists.linux.dev, linux-nvme@lists.infradead.org,
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Nitesh Shetty <nj.shetty@samsung.com>
+Subject: Re: [PATCH v9 23/24] nvme-pci: convert to blk_rq_dma_map
+Message-ID: <20250427071026.GA5848@unreal>
+References: <cover.1745394536.git.leon@kernel.org>
+ <7c5c5267cba2c03f6650444d4879ba0d13004584.1745394536.git.leon@kernel.org>
+ <20250423092437.GA1895@lst.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,72 +69,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fa6f20a9-3d7a-4c2d-94e5-c20dbaf4303e@linaro.org>
+In-Reply-To: <20250423092437.GA1895@lst.de>
 
-Hi Philip and Markus,
+On Wed, Apr 23, 2025 at 11:24:37AM +0200, Christoph Hellwig wrote:
+> I don't think the meta SGL handling is quite right yet, and the
+> single segment data handling also regressed.  
 
-Let's discuss how to handle compilation for different architectures as
-well as different accelerators here.
+If my testing is correct, my dma-split-wip branch passes all tests,
+including single segment.
 
-> > And "raw" format as a lower level format can be used for other arches
-> > (e.g., ARM).
-> 
-> Since you provide the ability to use a raw format, are we sure other
-> accelerators will never be interested in such PMU filtering?
-> 
-> I'm pretty sure HVF could benefit of it (whether we implement it there
-> is another story).
-
-Nice to know it could benefit more cases.
-
-> What do you think about adding this as a generic accelerator feature.
-
-I can implement pmu-filter directly at the "accel" level.
-
-> If a particular accel doesn't support it and we ask to filter, we simply
-> report an error.
-
-One of the main issues is how to organize the QAPI scheme:
-
-First we have a "qapi/accelerator.json" like current implementation to
-provide:
-
-##
-# = Accelerators
-##
-
-Then we should have a "qapi/accelerator-target.json" (which will follows
-qapi/accelerator.json in qapi-schema.json, just like machine.json &
-machine-target.json), and place all pmu-filter related things in this
-file with specify the compilation condition, for example:
-
-{ 'struct': 'KvmPmuFilterProperties',
-  'data': { 'action': 'KvmPmuFilterAction',
-            '*x86-fixed-counter': 'uint32',
-            '*events': ['KvmPmuFilterEvent'] },
-  'if': 'CONFIG_KVM' }
-
-In the future, this could be expanded to: 'if': { 'any': [ 'CONFIG_HVF', 'CONFIG_KVM' ] }.
-
-I understand that there is no way to specify the architecture here,
-because it is not possible to specify a combination case like
-"TARGET_I386 & CONFIG_KVM", "TARGET_ARM & CONFIG_KVM", "TARGET_ARM & CONFIG_HVF"
-(please educate me if such "if" condition be implemented in QAPI :-)).
-
-So, I will put the arch-specific format check in pmu-filter.c by adding
-arch macros as I mentioned in this reply:
-
-https://lore.kernel.org/qemu-devel/aA3TeaYG9mNMdEiW@intel.com/
-
-And there'll need accel-specific format check (for example, maksed-entry
-is KVM specific, and it is not defined in x86 spec). I can check the
-accel-specific format in the `check` hook of
-object_class_property_add_link(), which links the pmu-filter object to
-accelerator.
-
-Do you like this idea?
-
-Thanks,
-Zhao
-
-
+Thanks
