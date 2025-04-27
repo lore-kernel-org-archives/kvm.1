@@ -1,236 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92729240611
-	for <kvm@vger.kernel.org>; Sun, 27 Apr 2025 06:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C441DE3AC;
+	Sun, 27 Apr 2025 06:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745735319; cv=none; b=eR9LivgPbewaqXu5phJev5uV3V7wH7yMOIM84dyE6HpafzOqu4RKNsJwlyRppcoACJLEAl6cqnNO2ExBXjNBHyrG9IoEbVzF9/MusvS3+YUKxfDaYglHX7XELguZ15lIWuVqj25bUa96OU+YfW+mWNpB8s/95JCcPGdNwU2sW9w=
+	t=1745736348; cv=none; b=EA17Nkg5WG7czcBnbJQVg20ZEZ+dOUHqE1L4UX4HWTWfPXnkZ0bU4eXHTbQqR1Gn46NzkJB9ozeJKBP6A5CkOfn+yAoc/wSprjE8T9OVAU7CDx5ZPya0xUpQZMtK3a61tzY0aOSGICtt9VhkPOT1c/Uov4Wfqo2QHRAY8HP14eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745735319; c=relaxed/simple;
-	bh=mnGbRICatNcyoPrI5GrAe65yEryXZhpnLlqHMQGHYqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXJDgnYapMPlfIENlg5isxmNwhrGlHSij0yIFSTTOmxAXdzAoR48ik9uzA2u8Q2svFYuOPkusZttdPC2ZWtVBh6oMbK0euK+mAO/taPOBMzhrW6AMiXVHsJbuMGorrBF+2biE4cz4XMCAK1rlmbYWMzBSnCyDCRo7GPSBfkKaaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDgMCYRm; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDgMCYRm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745735317; x=1777271317;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mnGbRICatNcyoPrI5GrAe65yEryXZhpnLlqHMQGHYqQ=;
-  b=PDgMCYRmKryqtmZNasYCwPZ0HGkBZH7mWCK0JPtbVlx+0O2rvj5hPKKL
-   rmO18/DGv/TUT3ssla5LJmWMzOnBUPDwTpMH+FD6KNn19LxsG2tM8foTA
-   lUNAiUZ2vKJJByDnb+c6FQ6piHPCfdd17ylLY5nqiucRgh7BiXDJYqeZv
-   6G54J3j+V4MsWsq6uPOOYvRKk/qSUU8IV233Py7qgSZz2hqw5s6EbSo8j
-   2bEAJfaty+42k0bWAptkKBz/K/gJZzPze3twkslaROkDuf8wOG9SSRMaW
-   lzVwKlvH5HCMtJSzls3Osupwu/N1BMrniL2efjlzDorekhxsn1xfT9Exz
-   Q==;
-X-CSE-ConnectionGUID: OzoPTJ3+QAeybUltVpFg/w==
-X-CSE-MsgGUID: KKlys74ESD2YHdS6f9vznA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="49995861"
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="49995861"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2025 23:28:37 -0700
-X-CSE-ConnectionGUID: iO0zR2YdQPuksNBrc7RPBg==
-X-CSE-MsgGUID: H4em+WpuSHWky0kg4kKVEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; 
-   d="scan'208";a="133216649"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa007.fm.intel.com with ESMTP; 26 Apr 2025 23:28:32 -0700
-Date: Sun, 27 Apr 2025 14:49:29 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
-	Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
-	qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
-	Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-Message-ID: <aA3TeaYG9mNMdEiW@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-4-zhao1.liu@intel.com>
- <87frhwfuv1.fsf@pond.sub.org>
+	s=arc-20240116; t=1745736348; c=relaxed/simple;
+	bh=Q4Fa58qNeNMb88PphhtZlaG+lZnhEipZ/Kcu1dhmQkg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=K6tiRrvE/Iw47/6GyTXkAh7VfrIsjUcwK4TXsqsqXcp814FVfghnZHBYrGHK3UPf5sSuNW3QRgDNlV4QNUp7UvMTx2qnaQBjHkReYhHnBUT/VLZ/IJIFei+ZMDt43KT3i2OPciZBueC//HvMU39+yx+O4rqj51QIBWe/Wvvb61o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8AxDGuV0g1o8hvHAA--.2015S3;
+	Sun, 27 Apr 2025 14:45:41 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMDxu8SP0g1oAEKYAA--.52357S3;
+	Sun, 27 Apr 2025 14:45:38 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v11 1/5] KVM: selftests: Add VM_MODE_P47V47_16K VM mode
+Date: Sun, 27 Apr 2025 14:45:31 +0800
+Message-Id: <20250427064535.242404-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250427064535.242404-1-maobibo@loongson.cn>
+References: <20250427064535.242404-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frhwfuv1.fsf@pond.sub.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxu8SP0g1oAEKYAA--.52357S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Hi Markus,
+On LoongArch system, 16K page is used in general and GVA width is 47 bit
+and GPA width is 47 bit also, here add new VM mode VM_MODE_P47V47_16K.
 
-> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
-> > +            if (event->u.x86_select_umask.select > UINT12_MAX) {
-> > +                error_setg(errp,
-> > +                           "Parameter 'select' out of range (%d).",
-> > +                           UINT12_MAX);
-> > +                goto fail;
-> > +            }
-> > +
-> > +            /* No need to check the range of umask since it's uint8_t. */
-> > +            break;
-> > +        }
-> 
-> As we'll see below, the new x86-specific format is defined in the QAPI
-> schema regardless of target.
-> 
-> It is accepted here also regardless of target.  Doesn't matter much
-> right now, as the object is effectively useless for targets other than
-> x86, but I understand that will change.
-> 
-> Should we reject it unless the target is x86?
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ tools/testing/selftests/kvm/include/kvm_util.h | 1 +
+ tools/testing/selftests/kvm/lib/kvm_util.c     | 3 +++
+ 2 files changed, 4 insertions(+)
 
-I previously supposed that different architectures should implement
-their own kvm_arch_check_pmu_filter(), which is the `check` hook of
-object_class_property_add_link():
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 373912464fb4..f8faed8c8024 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -177,6 +177,7 @@ enum vm_guest_mode {
+ 	VM_MODE_P36V48_4K,
+ 	VM_MODE_P36V48_16K,
+ 	VM_MODE_P36V48_64K,
++	VM_MODE_P47V47_16K,
+ 	VM_MODE_P36V47_16K,
+ 	NUM_VM_MODES,
+ };
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 815bc45dd8dc..5649cf2f40e8 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -222,6 +222,7 @@ const char *vm_guest_mode_string(uint32_t i)
+ 		[VM_MODE_P36V48_4K]	= "PA-bits:36,  VA-bits:48,  4K pages",
+ 		[VM_MODE_P36V48_16K]	= "PA-bits:36,  VA-bits:48, 16K pages",
+ 		[VM_MODE_P36V48_64K]	= "PA-bits:36,  VA-bits:48, 64K pages",
++		[VM_MODE_P47V47_16K]	= "PA-bits:47,  VA-bits:47, 16K pages",
+ 		[VM_MODE_P36V47_16K]	= "PA-bits:36,  VA-bits:47, 16K pages",
+ 	};
+ 	_Static_assert(sizeof(strings)/sizeof(char *) == NUM_VM_MODES,
+@@ -248,6 +249,7 @@ const struct vm_guest_mode_params vm_guest_mode_params[] = {
+ 	[VM_MODE_P36V48_4K]	= { 36, 48,  0x1000, 12 },
+ 	[VM_MODE_P36V48_16K]	= { 36, 48,  0x4000, 14 },
+ 	[VM_MODE_P36V48_64K]	= { 36, 48, 0x10000, 16 },
++	[VM_MODE_P47V47_16K]	= { 47, 47,  0x4000, 14 },
+ 	[VM_MODE_P36V47_16K]	= { 36, 47,  0x4000, 14 },
+ };
+ _Static_assert(sizeof(vm_guest_mode_params)/sizeof(struct vm_guest_mode_params) == NUM_VM_MODES,
+@@ -319,6 +321,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 	case VM_MODE_P36V48_16K:
+ 		vm->pgtable_levels = 4;
+ 		break;
++	case VM_MODE_P47V47_16K:
+ 	case VM_MODE_P36V47_16K:
+ 		vm->pgtable_levels = 3;
+ 		break;
+-- 
+2.39.3
 
-    object_class_property_add_link(oc, "pmu-filter",
-                                   TYPE_KVM_PMU_FILTER,
-                                   offsetof(KVMState, pmu_filter),
-                                   kvm_arch_check_pmu_filter,
-                                   OBJ_PROP_LINK_STRONG);
-
-For x86, I implemented kvm_arch_check_pmu_filter() in target/i386/kvm/
-kvm.c and checked the supported formats (I also supposed arch-specific
-PMU filter could reject the unsupported format in
-kvm_arch_check_pmu_filter().)
-
-But I think your idea is better, i.e., rejecting unsupported format
-early in pmu-filter parsing.
-
-Well, IIUC, there is no way to specify in QAPI that certain enumerations
-are generic and certain enumerations are arch-specific, so rejecting
-unsupported format can only happen in parsing code. For example, wrap
-the above code in "#if defined(TARGET_I386)":
-
-    for (node = head; node; node = node->next) {
-        KvmPmuFilterEvent *event = node->value;
-
-        switch (event->format) {
-        case KVM_PMU_EVENT_FORMAT_RAW:
-            break;
-#if defined(TARGET_I386)
-        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
-            ...
-            break;
-        }
-        case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY: {
-            ...
-	    break;
-        }
-#endif
-        default:
-	    error_setg(errp,
-                       "Unsupported format.");
-            goto fail;
-        }
-
-        ...
-    }
-
-EMM, do you like this idea?
-
-> If not, I feel the behavior should be noted in the commit message.
-
-With the above change, I think it's possible to reject x86-specific
-format on non-x86 arch. And I can also note this behavior in commit
-message.
-
-> >          default:
-> >              g_assert_not_reached();
-> >          }
-> > @@ -67,6 +82,9 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
-> >      filter->events = head;
-> >      qapi_free_KvmPmuFilterEventList(old_head);
-> >      return;
-> > +
-> > +fail:
-> > +    qapi_free_KvmPmuFilterEventList(head);
-> >  }
-> >  
-> >  static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
-
-...
-
-> >  ##
-> >  # @KvmPmuFilterEvent:
-> >  #
-> > @@ -66,7 +82,8 @@
-> >  { 'union': 'KvmPmuFilterEvent',
-> >    'base': { 'format': 'KvmPmuEventFormat' },
-> >    'discriminator': 'format',
-> > -  'data': { 'raw': 'KvmPmuRawEvent' } }
-> > +  'data': { 'raw': 'KvmPmuRawEvent',
-> > +            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent' } }
-> >  
-> >  ##
-> >  # @KvmPmuFilterProperties:
-> 
-> Documentation could perhaps be more explicit about this making sense
-> only for x86.
-
-What about the following doc?
-
-##
-# @KvmPmuFilterProperties:
-#
-# Properties of KVM PMU Filter (only for x86).
-
-> > diff --git a/qemu-options.hx b/qemu-options.hx
-> > index 51a7c61ce0b0..5dcce067d8dd 100644
-> > --- a/qemu-options.hx
-> > +++ b/qemu-options.hx
-> > @@ -6180,6 +6180,9 @@ SRST
-> >               ((select) & 0xff) | \
-> >               ((umask) & 0xff) << 8)
-> >  
-> > +        ``{"format":"x86-select-umask","select":event_select,"umask":event_umask}``
-> > +            Specify the single x86 PMU event with select and umask fields.
-> > +
-> >          An example KVM PMU filter object would look like:
-> >  
-> >          .. parsed-literal::
-> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> > index fa3a696654cb..0d36ccf250ed 100644
-> > --- a/target/i386/kvm/kvm.c
-> > +++ b/target/i386/kvm/kvm.c
-> > @@ -5974,6 +5974,10 @@ static bool kvm_config_pmu_event(KVMPMUFilter *filter,
-> >          case KVM_PMU_EVENT_FORMAT_RAW:
-> >              code = event->u.raw.code;
-> >              break;
-> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
-> > +            code = X86_PMU_RAW_EVENT(event->u.x86_select_umask.select,
-> > +                                     event->u.x86_select_umask.umask);
-> > +            break;
-> >          default:
-> >              g_assert_not_reached();
-> >          }
-> > @@ -6644,6 +6648,7 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
-> >  
-> >          switch (event->format) {
-> >          case KVM_PMU_EVENT_FORMAT_RAW:
-> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
-
-Here's the current format check I mentioned above. But I agree your idea
-and will check in the parsing of pmu-filter object.
-
-> >              break;
-> >          default:
-> >              error_setg(errp,
-> 
