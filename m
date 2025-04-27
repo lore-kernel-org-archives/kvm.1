@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C622F24E00D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377DC252288;
 	Sun, 27 Apr 2025 09:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745745695; cv=none; b=KpHW05+CngFuwUDsJf/O3HxQrnrw6uLGoQVZt+CpRSiADyGQP2Su6GI4ULUp0hqJFljn/m7ZWJKBycL3F3pu/SeBdfHvic2dla6shWdy3KmCWvqPfBXfj73peuWi6NESm0cOkMa8r/MbZa9Ho8JZqZhwBSiNrLaVOXhwzDc7QVE=
+	t=1745745696; cv=none; b=DI0gz4H2t8y9N9NpOiaQIRleSFy0/KsJu1k1Ite+CW5pLmuwXXoRaFHAwU+sC1GPB1hoGaVqQm/K08I9wQQAqp1a9ta6cA2f9XOXLiFqQ/C+T5msR2RFnEtWn0K8K0T5pMIeELKn8BfCdJ3dyQRku9xNsgXSqJ5hNzTQX4bxAuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745745695; c=relaxed/simple;
-	bh=EsriCpsKs4C13ZOg7qJoihPgi56Qt4OvRfoo0l4T2W8=;
+	s=arc-20240116; t=1745745696; c=relaxed/simple;
+	bh=pW3voMF8Xqx6GB4G/eyK4Dk3grrAReZ5nJVKI31Bgdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ds2cyb8W1l+jY9eEcmaOZ+YrydPqTPoYN6aZD58DDHvEmlrNEXyHhL79hxntrd+5wl1Zlqc/uhX5lcZDHXpidVgGlT6Tc8QiNBqx5JA4PJBc4ZiQjwp0ZmeCoi9uf/m/219OZw2kxe1XyArlTU3o1W4xXBGYPtrSO32enhQ5R8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=bC4rbd7N; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=WA836qL7b/TXZ2qruC7l8G4LlojlcRPsuj5tCydZmV7ht7blfPW1XFHoBVPlOoYflKNgbW86eMThJHIpYFUy6gvteGNLjZg2XoX9z9P12v4W5Udq9m/jw+y6/TqqsLxGi1CbyJAYzhhw0H+xFUZEs8HEoORzBopr1QtYJL3sX+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KWyRQEL6; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="bC4rbd7N"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KWyRQEL6"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53R9KRS51598826
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53R9KRS31598826
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Sun, 27 Apr 2025 02:20:48 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53R9KRS51598826
+	Sun, 27 Apr 2025 02:20:44 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53R9KRS31598826
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745745650;
-	bh=Q9XVA2K/egT5rZBfVl63vVsaOIZf5aipFdvtobDcRfs=;
+	s=2025042001; t=1745745646;
+	bh=ww5dv1kvWZ0hKlTWKo3XMFLAAgaLDk8n8xkXdISYuaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bC4rbd7Npt7uDPmLVAKvBmhK1SCPwNpnLTKiOwjeGhHnyAqix5yVkujXTOYSzhZlP
-	 Qa54MsXV4KcT+UO/N0QhG5hy3b0J5d5R5QxcqjyVwoMDHWtMdQn2ttJP8YmQh7VshF
-	 3oQAKAsKDIXpB7GJMY3+FP9gLC/a19jdYBy79f05LcgZQVAXCGzyH5Yk77DpdlqGsL
-	 nb6GSt5+tZnG8d+dt0dPnh8GenMjTVEwbkSvLAGCB5G2b2WoFkDaOtBhXeHJUKZQX1
-	 305LkAPpecGgDlM537MTZw+9m8iydr1ypLK50jyconDOSeu4PmadoQkIcJl4K7DAJ3
-	 CbtsF1L9GUAFA==
+	b=KWyRQEL66fAHV5eykZ+izg3lbpESUMtd68WZhhJwP14wWG/hgXkgGIvWv0ZXV/gOD
+	 Mw8D+vKdE6Qskwm5qPFDUCPHnQ7ncyfk9wV5UaHbeMBo0b8YJSjBSb5+YWDgidWJb2
+	 bskcxi6K7ytWT3S0BGqcFT7kelRsaDt4wCITFMW8vERo8a0GziQKM7YSO8CbBPc8L3
+	 5eBh5oms9QnwzLqAzEhhBk5fgV1EPx0Frh5WjPHmbdwplf8X4aOym1U3sU58RMmE2E
+	 bDNrkJzlL5ku6Y53PblHMjUL9I7Uskk38Od3ywKhjfyPrR93UZa4n29vPs87Rj31qa
+	 8xhVQE6+v9+HA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
         haiyangz@microsoft.com, decui@microsoft.com,
         dapeng1.mi@linux.intel.com, ilpo.jarvinen@linux.intel.com
-Subject: [PATCH v4 08/15] x86/msr: Add the native_rdmsrq() helper
-Date: Sun, 27 Apr 2025 02:20:20 -0700
-Message-ID: <20250427092027.1598740-9-xin@zytor.com>
+Subject: [PATCH v4 06/15] x86/xen/msr: Return u64 consistently in Xen PMC read functions
+Date: Sun, 27 Apr 2025 02:20:18 -0700
+Message-ID: <20250427092027.1598740-7-xin@zytor.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250427092027.1598740-1-xin@zytor.com>
 References: <20250427092027.1598740-1-xin@zytor.com>
@@ -65,42 +65,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__rdmsr() is the lowest-level primitive MSR read API, implemented in
-assembly code and returning an MSR value in a u64 integer, on top of
-which a convenience wrapper native_rdmsr() is defined to return an MSR
-value in two u32 integers.  For some reason, native_rdmsrq() is not
-defined and __rdmsr() is directly used when it needs to return an MSR
-value in a u64 integer.
+The pv_ops PMC read API is defined as:
+        u64 (*read_pmc)(int counter);
 
-Add the native_rdmsrq() helper, which is simply an alias of __rdmsr(),
-to make native_rdmsr() and native_rdmsrq() a pair of MSR read APIs.
+But Xen PMC read functions return unsigned long long, make them
+return u64 consistently.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
+ arch/x86/xen/pmu.c     | 6 +++---
+ arch/x86/xen/xen-ops.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Change in v2:
-* Split into two changes and add the native_rdmsrl() helper in the
-  first one with a proper explanation (Ingo).
----
- arch/x86/include/asm/msr.h | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index 82a908125b20..7b9713a49d59 100644
---- a/arch/x86/include/asm/msr.h
-+++ b/arch/x86/include/asm/msr.h
-@@ -107,6 +107,11 @@ do {							\
- 	(void)((val2) = (u32)(__val >> 32));		\
- } while (0)
+diff --git a/arch/x86/xen/pmu.c b/arch/x86/xen/pmu.c
+index f06987b0efc3..9c1682af620a 100644
+--- a/arch/x86/xen/pmu.c
++++ b/arch/x86/xen/pmu.c
+@@ -346,7 +346,7 @@ bool pmu_msr_write(unsigned int msr, uint32_t low, uint32_t high, int *err)
+ 	return true;
+ }
  
-+static __always_inline u64 native_rdmsrq(u32 msr)
-+{
-+	return __rdmsr(msr);
-+}
-+
- #define native_wrmsr(msr, low, high)			\
- 	__wrmsr(msr, low, high)
+-static unsigned long long xen_amd_read_pmc(int counter)
++static u64 xen_amd_read_pmc(int counter)
+ {
+ 	struct xen_pmu_amd_ctxt *ctxt;
+ 	uint64_t *counter_regs;
+@@ -366,7 +366,7 @@ static unsigned long long xen_amd_read_pmc(int counter)
+ 	return counter_regs[counter];
+ }
+ 
+-static unsigned long long xen_intel_read_pmc(int counter)
++static u64 xen_intel_read_pmc(int counter)
+ {
+ 	struct xen_pmu_intel_ctxt *ctxt;
+ 	uint64_t *fixed_counters;
+@@ -396,7 +396,7 @@ static unsigned long long xen_intel_read_pmc(int counter)
+ 	return arch_cntr_pair[counter].counter;
+ }
+ 
+-unsigned long long xen_read_pmc(int counter)
++u64 xen_read_pmc(int counter)
+ {
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
+ 		return xen_amd_read_pmc(counter);
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index 63c13a2ccf55..735f58780704 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -277,7 +277,7 @@ static inline void xen_pmu_finish(int cpu) {}
+ bool pmu_msr_read(unsigned int msr, uint64_t *val, int *err);
+ bool pmu_msr_write(unsigned int msr, uint32_t low, uint32_t high, int *err);
+ int pmu_apic_update(uint32_t reg);
+-unsigned long long xen_read_pmc(int counter);
++u64 xen_read_pmc(int counter);
+ 
+ #ifdef CONFIG_SMP
  
 -- 
 2.49.0
