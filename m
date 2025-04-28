@@ -1,80 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93461C1F2F
-	for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 07:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C12815748F
+	for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 07:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745824734; cv=none; b=eIznd8R8bz09Tf8lWmzgufhDvTb4+uk7kq212Dec7tPxo+rXk25CPlg+Af58tW4kdzdgj0CV17ECEN6/s7j/lw6ZQUTlXInopMy83AUARY54sVMLzWN2Uc7TWFEVws1uri2JQP8Bpg0Yoe1RQUwW02HaGdgMBDfAGDetDzqG53w=
+	t=1745825170; cv=none; b=P29y5GbncMHS1kVaCu0CXiDww0v7u3hmo4HvmEq1VpWMDOeK55z6CLCVhLn3uhQb1CzD9GRKUui9BBAt6jQ8naJ2yQvVhro56KeHfMtpyrBpWQtpiMRGADxl8Rj4F6UfypnQ+bOJuUS7Epjybtn5VXbLCDmslmsvXX3F1xgqGx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745824734; c=relaxed/simple;
-	bh=opNqKYVBnijVWLqO9qR3WdgPB8+RebZkzP9BOxxYtjA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cqtajda0Pv82VBRYI68sD0aS858zb3INHdm5wuEi4IOUAPw3ooOh7/A0rUaHZflDmL1+4FEERODVDo7gczoSz/5XcRXjSREBGPehNEHHhKkFhX3GW7knT7YTH/uksJmyth0kKb0qVdpN7gbDFCG05dzzrUwIiDCY0iV6PpBwaj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrlU1Cp0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745825170; c=relaxed/simple;
+	bh=9OTrNH0IAEZQT3hNnhz4blUNkf4mziUyN6+x0CwPtnI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Yba3geFNXDXQo6jwZ9GnZA2yjHjEzf4XJneete4MIoXAAAi7GB9PBPSq27qpXPzXC1psw1vKUYEmXWD9zvCTEWwvlpjlLEYLo3yUMEhEsvSmV7WHlLOqZVYn7nSrDrDRqsdbHyfykMme9dUSFHovDnOAe+qQN8SdrrmAw40pCPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fH7vsYCh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrlU1Cp0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C8B0C4CEEF
-	for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 07:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745824733;
-	bh=opNqKYVBnijVWLqO9qR3WdgPB8+RebZkzP9BOxxYtjA=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=nrlU1Cp0Aiu5nJWr6oGjM86dT6VUlrXFsCUHIlHFpIOebx9s52tTqCBLEOyEu8NiG
-	 ItQlsMUxGAOky1++gT9/gKouxTHq7wfr20Yyhv3pmoMQpNzvLw4udfc7LdbI5REFUl
-	 qHwd5yTakTrYyN3MhXcUljsK6ysiGtSjizPalWKwXokNqz16DqLWlK4lGLs/aji56K
-	 P7CoNT5gX7N20f4YddaN6eg9pYIVSxpR77luDy2aIGYNRBQ831LJhmHvSK6DkE42UD
-	 saLpQULvcHKxJvNVEeipwA98j/VcP0eRasJOJSATEg4otimw4Dml1f5VdgrhyPTYR0
-	 CNiUHMRnXaYbw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 5FD99C4160E; Mon, 28 Apr 2025 07:18:53 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: kvm@vger.kernel.org
-Subject: [Bug 220057] Kernel regression. Linux VMs crashing (I did not test
- Windows guest VMs)
-Date: Mon, 28 Apr 2025 07:18:53 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Product: Virtualization
-X-Bugzilla-Component: kvm
-X-Bugzilla-Version: unspecified
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: blocking
-X-Bugzilla-Who: adolfotregosa@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-220057-28872-9qbPb9eXiw@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-220057-28872@https.bugzilla.kernel.org/>
-References: <bug-220057-28872@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fH7vsYCh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745825167;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CISJnPMfG/uXMv0l6JF9iE0pkiWbduTPqPP8qKQb4lc=;
+	b=fH7vsYChrAznmqO8re0AV1vJzBXPUwOgh3J2XRem4nnupixrRlVA7Qc2NgCTo45yJZhP7V
+	Clfnr7ylddPvPD5c2jQPJu716wxxveSaF4e/P2qVGCdmkgDv3FA05G95nTcHoK6DZ+tYbQ
+	1MxVPV7FS7ODGjIHBMzOucxCZTX74wE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-122-P6WChWBUNwemPEoOA7SP5g-1; Mon,
+ 28 Apr 2025 03:26:04 -0400
+X-MC-Unique: P6WChWBUNwemPEoOA7SP5g-1
+X-Mimecast-MFC-AGG-ID: P6WChWBUNwemPEoOA7SP5g_1745825162
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B09618004A7;
+	Mon, 28 Apr 2025 07:26:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7A6E1800352;
+	Mon, 28 Apr 2025 07:26:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id E6E6821E66C2; Mon, 28 Apr 2025 08:12:09 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+  Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+  Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+  Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+  qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+  Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
+In-Reply-To: <aA3sLRzZj2270cSs@intel.com> (Zhao Liu's message of "Sun, 27 Apr
+	2025 16:34:53 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+	<20250409082649.14733-3-zhao1.liu@intel.com>
+	<878qnoha3j.fsf@pond.sub.org> <aA3sLRzZj2270cSs@intel.com>
+Date: Mon, 28 Apr 2025 08:12:09 +0200
+Message-ID: <87r01c3jd2.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220057
+Zhao Liu <zhao1.liu@intel.com> writes:
 
---- Comment #4 from Adolfo (adolfotregosa@gmail.com) ---
-(In reply to Alex Williamson from comment #3)
-> https://github.com/torvalds/linux/commit/
-> 09dfc8a5f2ce897005a94bf66cca4f91e4e03700
+> ...
+>
+>> > diff --git a/qemu-options.hx b/qemu-options.hx
+>> > index dc694a99a30a..51a7c61ce0b0 100644
+>> > --- a/qemu-options.hx
+>> > +++ b/qemu-options.hx
+>> > @@ -232,7 +232,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+>> >      "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+>> >      "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+>> >      "                thread=single|multi (enable multi-threaded TCG)\n"
+>> > -    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
+>> > +    "                device=path (KVM device path, default /dev/kvm)\n"
+>> > +    "                pmu-filter=id (configure KVM PMU filter)\n", QEMU_ARCH_ALL)
+>> 
+>> As we'll see below, this property is actually available only for i386.
+>> Other target-specific properties document this like "x86 only".  Please
+>> do that for this one, too.
+>
+> Thanks! I'll change QEMU_ARCH_ALL to QEMU_ARCH_I386.
 
-I should have specified that I'm running kernel 6.14.4.=20
+That would be wrong :)
 
-If that helps.
+QEMU_ARCH_ALL is the last argument passed to macro DEF().  It applies to
+the entire option, in this case -accel.
 
---=20
-You may reply to this email to add a comment.
+I'd like you to mark the option parameter as "(x86 only)", like
+notify-vmexit right above, and several more elsewhere.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+>> As far as I can tell, the kvm-pmu-filter object needs to be activated
+>> with -accel pmu-filter=... to do anything.  Correct?
+>
+> Yes,
+>
+>> You can create any number of kvm-pmu-filter objects, but only one of
+>> them can be active.  Correct?
+>
+> Yes! I'll try to report error when user repeats to set this object, or
+> mention this rule in doc.
+
+Creating kvm-pmu-filter objects without using them should be harmless,
+shouldn't it?  I think users can already create other kinds of unused
+objects.
+
+>> > +
+>> > +static int kvm_install_pmu_event_filter(KVMState *s)
+>> > +{
+>> > +    struct kvm_pmu_event_filter *kvm_filter;
+>> > +    KVMPMUFilter *filter = s->pmu_filter;
+>> > +    int ret;
+>> > +
+>> > +    kvm_filter = g_malloc0(sizeof(struct kvm_pmu_event_filter) +
+>> > +                           filter->nevents * sizeof(uint64_t));
+>> 
+>> Should we use sizeof(filter->events[0])?
+>
+> No, here I'm trying to constructing the memory accepted in kvm interface
+> (with the specific layout), which is not the same as the KVMPMUFilter
+> object.
+
+You're right.  What about sizeof(kvm_filter->events[0])?
+
+[...]
+
