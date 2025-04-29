@@ -1,149 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133292BE7CF
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 11:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCA12C1E23;
+	Tue, 29 Apr 2025 11:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745926864; cv=none; b=B2oVWpbJg8+VEVT/A5KZjOJ43UZYVG+LF2msT4kmW5MopX4RTWKf8OOnGjypMcRXejI1TGuaPaV2S1N4YJVllXC0Lg3q0nchZtqZQ0vKmNJCBBkm4TZSfiQim3Pqe8+xGUP1fHdNOzg/fOjGdI2kmLzzu3pwU/arheMoPbN4PRo=
+	t=1745926883; cv=none; b=PkUzO/nmLdjZNp2TfBQEnsiIA3MaiSQZTZxyK/etJzGjybgdD3l9QbY51vWTDSKaRxpmi4NiYISKDWYWO8R4fIXeL3m4YdLgtVW12EDSMuKP5QPofpo3nQKR2z6arhrURngCcPxl9xfLNx2CsUOZ6szLjlquyV1smPb0qFBexN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745926864; c=relaxed/simple;
-	bh=TiVqVGI533f3wzeq8fPqdhy7aRelt+HSo3KwbCrBdsI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kv/tBlv4k4/sBWpFjoYKd/+AsH3XgTHe90ozxAkHix5bLeRJ5Npcz+AqdYgAAeggpRAo9ELc31mVAqrKUep+d/mYuJic4uqEYoM7uXRtT89bWSfNSOQjHmlQ1HAEFB8KRAjCwSzpQMsbpJj5WvBlqqDqnsKS5eEccitg1kibNWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TukiGING; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1745926883; c=relaxed/simple;
+	bh=z7vRY6j0385eKhIiCYAI50mg523Vhh6+q1JFXwnzUdE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iWChlH5YaHwSv0usGsvJspBmMrmI4rYd97Cc3RSex5XRNtqQotjPZiw7gkPMFW7KEznux10fWCbqEEgh97cdE9RV3Rx3fXejUWF8zjR6gb1RgV/oq6OoHGunaimOpEOEooa4fx359w676gbKi++i+DDKhCd18sn5ds3Q07Ljh/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5IDkc9Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TukiGING"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745926862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NdNHT32JgqwYQgk77xX6uNazS4dT4fyVx5jsWgygqLw=;
-	b=TukiGINGn9wTlIkheN1RCZ5LwHRTV3+Zi9z2XU4XxzyRpBc9eYJ48hhlzAgxpqIbsrAiFr
-	9veC8D/9ntmTSpviadcNCEMRS11GYQNjhfW7uGarlsQlMeztPv+fMf7MbozToxuGSeJnqi
-	QV3i9GT1v/WEI6fv6i+KNCDtbmdqNKE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-v0UIYrImOue3gGKMrfhYOA-1; Tue,
- 29 Apr 2025 07:40:58 -0400
-X-MC-Unique: v0UIYrImOue3gGKMrfhYOA-1
-X-Mimecast-MFC-AGG-ID: v0UIYrImOue3gGKMrfhYOA_1745926854
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E204D1955E7A;
-	Tue, 29 Apr 2025 11:40:53 +0000 (UTC)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.225.102])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B817F19560A3;
-	Tue, 29 Apr 2025 11:40:25 +0000 (UTC)
-From: Valentin Schneider <vschneid@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5IDkc9Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB46C4CEEB;
+	Tue, 29 Apr 2025 11:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745926883;
+	bh=z7vRY6j0385eKhIiCYAI50mg523Vhh6+q1JFXwnzUdE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Z5IDkc9QmnF156EVu9ZzmDZrwjdxZ90IGgHdzed+020IwE8u5OLLG3TW2V7tb/xnP
+	 gaFfLfUq66jpo4tw4iXaSyhSluCA6IkVb4v5wfP06p/YqpnzTxnQTQr2vHwbAaT1cl
+	 x3PsCXgMcBmtpwxKIkA7fsIWFYcS2gTuXX2hqJVcsm/prfh5HCCEQt7f5xk+eKiU3F
+	 S0HgXNdI751oc1+EyQvlO0p5pwEY8IbgIZfdvLSFOyAzlILoRKL5GGiY6OTcv3ufyd
+	 sTicQ27SPT+YjWApIXQ4T9inmqW+8dB6HVGklIbyvxMoyNyJ2OaA58bi955nNo/ooD
+	 oaU901VICr6OA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1u9jKz-009t0f-6k;
+	Tue, 29 Apr 2025 12:41:21 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Rong Xu <xur@google.com>,
-	Rafael Aquini <aquini@redhat.com>,
-	Song Liu <song@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH v5 14/25] perf/x86/amd: Mark perf_lopwr_cb static call as __ro_after_init
-Date: Tue, 29 Apr 2025 13:32:31 +0200
-Message-ID: <20250429113242.998312-15-vschneid@redhat.com>
-In-Reply-To: <20250429113242.998312-1-vschneid@redhat.com>
-References: <20250429113242.998312-1-vschneid@redhat.com>
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: [PATCH 0/2] KVM: arm64: Make AArch64 support sticky
+Date: Tue, 29 Apr 2025 12:41:15 +0100
+Message-Id: <20250429114117.3618800-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -151,34 +51,34 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, gankulkarni@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Later commits will cause objtool to warn about static calls being used in
-.noinstr sections in order to safely defer instruction patching IPIs
-targeted at NOHZ_FULL CPUs.
+It's been recently reported[1] that our sorry excuse for a test suite
+is writing a bunch of zeroes to ID_AA64PFR0_EL1.EL{0,1,2,3},
+effectively removing the advertised support for AArch64 to the guest.
 
-perf_lopwr_cb is used in .noinstr code, but is only ever updated in __init
-amd_brs_lopwr_init(), and can thus be marked as __ro_after_init.
+This leads to an interesting interaction with the NV code which reacts
+in a slightly overzealous way and inject an UNDEF at the earliest
+opportunity.
 
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Valentin Schneider <vschneid@redhat.com>
----
- arch/x86/events/amd/brs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This small series fixes KVM by bluntly refusing to disable AArch64,
+and the test to stop being so lame. I'm also fixing the NV code
+separately, since it isn't upstream.
 
-diff --git a/arch/x86/events/amd/brs.c b/arch/x86/events/amd/brs.c
-index ec34274633824..218545ffe3e24 100644
---- a/arch/x86/events/amd/brs.c
-+++ b/arch/x86/events/amd/brs.c
-@@ -423,7 +423,7 @@ void noinstr perf_amd_brs_lopwr_cb(bool lopwr_in)
- 	}
- }
- 
--DEFINE_STATIC_CALL_NULL(perf_lopwr_cb, perf_amd_brs_lopwr_cb);
-+DEFINE_STATIC_CALL_NULL_RO(perf_lopwr_cb, perf_amd_brs_lopwr_cb);
- EXPORT_STATIC_CALL_TRAMP_GPL(perf_lopwr_cb);
- 
- void __init amd_brs_lopwr_init(void)
+[1] https://lore.kernel.org/r/4e63a13f-c5dc-4f97-879a-26b5548da07f@os.amperecomputing.com
+
+Marc Zyngier (2):
+  KVM: arm64: Prevent userspace from disabling AArch64 support at any
+    virtualisable EL
+  KVM: arm64: selftest: Don't try to disable AArch64 support
+
+ arch/arm64/kvm/sys_regs.c                       | 6 ++++++
+ tools/testing/selftests/kvm/arm64/set_id_regs.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
 -- 
-2.49.0
+2.39.2
 
