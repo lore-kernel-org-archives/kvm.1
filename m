@@ -1,62 +1,62 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BE0269D13
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 05:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95C22741C6
+	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 05:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745902820; cv=none; b=Ukn31eXyX9EcMAhin23/MTmSiSNwUmlNBvsIxcNtvIcU0WakgGRyK4W6eAXFOdJ1TsPQe8jW08emZ2m5Z+TXf/fqNUpdaA/tn+BLlukJu4G2IrvR6lHPidC3sjH89eG+NLMzF+M8Pw1kQZ6FWhJei/uEu7D5FEC3Pr/Qx8MSncA=
+	t=1745902822; cv=none; b=GeqQozq+Hqld3J0RTnymRP6Zuw98wEeOpNAVGMvYMQ0BaNRBN7RgHuD1krpRw3OQlzIeqIZjDtkkE8A7ZxefWpxS5DHSq7R4M/v8ixQuyCEvhPQZ5ep5waswvolppzqCR4g0xOmtda1z4bAG2v4elWQRu2IVn5dLNT5uMnxjLXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745902820; c=relaxed/simple;
-	bh=t+WXXRmGx7aPD9jEu9bK1jDI/vcjQD2x35IM2i9mS64=;
+	s=arc-20240116; t=1745902822; c=relaxed/simple;
+	bh=nvf5rOFVtKLON5aqtAenStgatyFtxhl9/xmMJqYNb+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Py+KQLDpVtYyIq7emFQWYVI8YhCKCSVabu5d/0VaqwFK1YLyjBwiY0ZPs5ToQu5Wh+RZmzIJ2m9GbLX6BPPxyyhZyHV36T1RH52dWIkxEWchHxKev66sQ5ZN4Yi+2AXdcjlIlvM3B+w6RlB4n0owo+GadR7yyN/D+4q95i8VTKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T7JqzK2l; arc=none smtp.client-ip=209.85.215.181
+	 MIME-Version; b=dvULysWhNAPKfwxYmJ3Okf6OHUc4aF+OMK+YXE9ulOpyXZBhtXi72tgjrdWsSc5XynaGSgbIH2901HIRzTKRKRbSkqHEUUgzcSbKrFG+632EPOMJa6m9iCAyuBDxH/TOjcU8UFLzknUGhUbI68U5nYOXeG80OK1Tf+B/jJxz1ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Hk2ScMeS; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T7JqzK2l"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b0da25f5216so3518484a12.1
-        for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 22:00:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hk2ScMeS"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227914acd20so55783255ad.1
+        for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 22:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745902818; x=1746507618; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1745902820; x=1746507620; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J1+mpgNwQQblB514w6gW7TOdOsjY6yGJh5E66/u+eSU=;
-        b=T7JqzK2lG0aYlST6Yl+DRa9ISVtZ5JnTpsj1W6Glz0thuai7li5RsNYL7VJmP58vv7
-         1qeDhCGqGai34wsOBVVyhnWIlmdYS8yNIOJ9Jo8Gkzm5QxAythqCI2Etdoj37Wg3apBu
-         k/DniHGJnKkKnngwFATFKm7den+myDwM1rL/76ZqTTOtw1GHjP9DViJ8MNkqg8tHYNqG
-         vMLPInkJiP+2avNd+pKyxV+G89wB90YIksPLljiq5wlAYdIGndCC6+UqDvYUOFEsKNCV
-         PldeNd9hbxA6Pmaqm91hGakRGBTUeSLyZW1bAmxe5Jecm+JSqJBeLauKGGJufdcHkBrd
-         dQWQ==
+        bh=OTaFFMYBVP+QujpvomI3smt+CnB1wh0iLnUK0PT4pEc=;
+        b=Hk2ScMeS56/pY0LsyvDgKdOYvfk78aFZH1IZf42Ivwu1GdwrAfUPgnSlbWTtk5b++Y
+         EGlLa7ca5wb9oyvGYlpt9KbZzsSRv9wcPu//n7QVnKCkTLF7dkCHt63ORy+P77at27ks
+         zo0nnH7QpRpq2Y4mSReZspxFmgk1XKSvhAecP5Hbei3ReCOF7jE5jGepWRcR9CAfMyqe
+         okROjgaC0prU2Sna2ZcUqvbSzDZNhazokJtLWDhytA/hmed1x8VFIloiDWe0kLaHrnTb
+         s0VnAIe7LBDEsuUNV+Huy7+5PmupxLAGlGGx8ZAP/M3BvstFXMxAzrq3W9z0o84mPl4C
+         NG3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745902818; x=1746507618;
+        d=1e100.net; s=20230601; t=1745902820; x=1746507620;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J1+mpgNwQQblB514w6gW7TOdOsjY6yGJh5E66/u+eSU=;
-        b=MEqhbg5uOtjFBZHzM9lMpS1D5JAqTzNLFhwzVOjIg8DaE0HUrd2onRfki/136LGh9N
-         owfVAYuf2Mc2sVm/8GyabUbk32o94JcBUtzhJ+st2zr3nM/SD2sXfMxVnhR9S4Tx0dKe
-         /+j2yBp3xGgErF7xTgIv6bHIl6QCBt7235bGLTmwq5sOmpC4Owxw9i5SkqSRZ8mMYpkD
-         brAQHvLtz/OocIHnp8WJjifhpCtbilMptDoqMrwyxHJIhoxD4TGM2J1r1D8Xrbx9WV3C
-         pRm4g0NAYxY1UD/PNJxCaGhnEIItzwNYG6fjJcJMwtV4yMpCHVnejXU7Vpx2lxgG5kcj
-         N+qg==
-X-Forwarded-Encrypted: i=1; AJvYcCWr3qtyV1+dFyhQBjY9TeEHzWtZY2Tq/GX+Ho7dVCwJtsmpzjftS4dzM+/QQSBJSgYVK/0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcH7PIDcvJvADhCTO2Cu04zdIJZehnGQN6XQMVJorJ17iCfSjb
-	P7svWY68zZxwtM1w2D4zwTNFOjE9O2QAjMZXmC5UMHQ8X3wOdNkLOM4nOLIca4s=
-X-Gm-Gg: ASbGncsBdCz4T5GCZ5hvELRiV/XQ6zpyM05d1VN7U6XlHLxwujjBu8/A3iPJuSxwYxD
-	SJYmo2h0DvjnCSamYHEIKxTNwTmARtGSnE97wXie2DMzc2AeX/sPfYb7pwzuFhPQyn03Ff6Qaxj
-	0Nev5DP1JkslhN0QnmEHvUBwPttq8GU+gkabDR7BUhJUciIHlJD1oQD+wxAOh8ESjngRMGvNbDa
-	gPbrwgcvNF5qBtpB7SV1spkB7fVbmGbusNsgLNORlYJgnlD/+R2K353c+/wrzIKASDDPAGIDZ4N
-	Pqi3tYuySvFZWSDv6dIr1m4zi3hF9t0vnhJldeII
-X-Google-Smtp-Source: AGHT+IERHWhMGoawkxhND2r6sOYx5Beqk5TQos+njQ8aQ63QB1/yRMYJ7tUQDCBZu8a/05Bc1162dQ==
-X-Received: by 2002:a17:902:d4d1:b0:224:76f:9e59 with SMTP id d9443c01a7336-22dc69f3b0fmr169007685ad.10.1745902818246;
-        Mon, 28 Apr 2025 22:00:18 -0700 (PDT)
+        bh=OTaFFMYBVP+QujpvomI3smt+CnB1wh0iLnUK0PT4pEc=;
+        b=PgNFch/0YANji04uyZJ6G7iSp9IiBEsW6Y4mGJCgAMb7sBOt/VzggPGrXW3edFP1vA
+         03mU+OXLAKA+2jNp4pD0SvwZJC22UfGFxhJG63Hm1sgl6uABlVkWflVr6GSmNCukVrj2
+         J7TQZMSegjnbKpnCKM12X9daWZQglTDj87OE3+I7SFeS+kXBwieNBaRbmSlQrn+kIFLZ
+         xB+sg6kqV7/BqRW29V2CgKYuGisWIRlpLUcDHq3rbkz/bQ0YTMwNiGjiKSeQB3Qc3H/I
+         EzXWr5iSBfF44FTdLMm/w+Zhi0D3pi++8xs5k1Plchm+6ejbh7mAdZ5Vdz31R4Gb9FVK
+         f3aA==
+X-Forwarded-Encrypted: i=1; AJvYcCXs06XTj/3uSoBiDtW3xAVaFB6OJxhiEkuv/fzO+mPE3oMG9uTF8iv9SnzDz4bkBgN9ltI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3ZtMGsl0OSw96xTgq936AGSTStjwTj0SW31dqDg+EbooUVVTD
+	0RCPwIwQ+jaOtn5E37pFowv+KyGCSR6hKn2PE2/Cnta+OzrYKMQ1Y3wkPwoiY5w=
+X-Gm-Gg: ASbGncv9fODInqc6PY/HlaoaiUfWibLELQyCYhs4OOAq3Xk9YY0GapDR+EvjjPxWcAW
+	HmCByG/3kkA2WcY3xJdZaV1upVHdEwB1ZwB8COsmhk2AGvnKQ6dnPTRDRFZxyHeOCx5D0lPopYj
+	o8T5BSb9CIpxQva01kDiODpJN30FFv0N+78ThH4iYFZhfzXa6PFnbLG728kXfUT3O1lV7qk1x22
+	RQEpQ/buj0lZvouwHQJNCVss4hhDHBwaumuamX45VS/VrbRyiU4ywHsgJvBUlwx3Bx7z/rjOQij
+	RyHtdx3C0cihEELZlfLgNNJAcwWBKa+iPOReIIjC
+X-Google-Smtp-Source: AGHT+IEx/Jh51iAi9wYCRK0qOdbUNLmln4cWvAe8L1xYO15g0HGBE2gNuockkWPBNYfIVdVxbblv3w==
+X-Received: by 2002:a17:902:d488:b0:215:a56f:1e50 with SMTP id d9443c01a7336-22de6bff536mr25643515ad.8.1745902819983;
+        Mon, 28 Apr 2025 22:00:19 -0700 (PDT)
 Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dbd6f7sm93004015ad.76.2025.04.28.22.00.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dbd6f7sm93004015ad.76.2025.04.28.22.00.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 22:00:17 -0700 (PDT)
+        Mon, 28 Apr 2025 22:00:19 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
 	anjo@rev.ng,
 	richard.henderson@linaro.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 02/13] include/system/hvf: missing vaddr include
-Date: Mon, 28 Apr 2025 21:59:59 -0700
-Message-ID: <20250429050010.971128-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH 04/13] target/arm: move kvm stubs and remove CONFIG_KVM from kvm_arm.h
+Date: Mon, 28 Apr 2025 22:00:01 -0700
+Message-ID: <20250429050010.971128-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250429050010.971128-1-pierrick.bouvier@linaro.org>
 References: <20250429050010.971128-1-pierrick.bouvier@linaro.org>
@@ -82,40 +82,208 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On MacOS x86_64:
-In file included from ../target/i386/hvf/x86_task.c:13:
-/Users/runner/work/qemu/qemu/include/system/hvf.h:42:5: error: unknown type name 'vaddr'
-    vaddr pc;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:43:5: error: unknown type name 'vaddr'
-    vaddr saved_insn;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:5: error: type name requires a specifier or qualifier
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:18: error: a parameter list without types is only allowed in a function definition
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-                 ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:36: error: expected ';' at end of declaration list
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+We have to be careful to expose struct kvm_vcpu_init only when kvm is
+possible, thus the additional CONFIG_KVM_IS_POSSIBLE around
+kvm_arm_create_scratch_host_vcpu.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/system/hvf.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/kvm_arm.h  | 84 ++-----------------------------------------
+ target/arm/kvm-stub.c | 77 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 82 deletions(-)
 
-diff --git a/include/system/hvf.h b/include/system/hvf.h
-index 730f927f034..356fced63e3 100644
---- a/include/system/hvf.h
-+++ b/include/system/hvf.h
-@@ -15,6 +15,7 @@
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 05c3de8cd46..c8ddf8beb2e 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -94,7 +94,7 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu);
+  */
+ void kvm_arm_reset_vcpu(ARMCPU *cpu);
  
- #include "qemu/accel.h"
- #include "qom/object.h"
-+#include "exec/vaddr.h"
+-#ifdef CONFIG_KVM
++#ifdef CONFIG_KVM_IS_POSSIBLE
+ /**
+  * kvm_arm_create_scratch_host_vcpu:
+  * @cpus_to_try: array of QEMU_KVM_ARM_TARGET_* values (terminated with
+@@ -116,6 +116,7 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu);
+ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
+                                       int *fdarray,
+                                       struct kvm_vcpu_init *init);
++#endif /* CONFIG_KVM_IS_POSSIBLE */
  
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
+ /**
+  * kvm_arm_destroy_scratch_host_vcpu:
+@@ -221,85 +222,4 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
+ 
+ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+ 
+-#else
+-
+-/*
+- * It's safe to call these functions without KVM support.
+- * They should either do nothing or return "not supported".
+- */
+-static inline bool kvm_arm_aarch32_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_pmu_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_sve_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_mte_supported(void)
+-{
+-    return false;
+-}
+-
+-/*
+- * These functions should never actually be called without KVM support.
+- */
+-static inline void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline int kvm_arm_vgic_probe(void)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pmu_init(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-
+-#endif
+-
+ #endif
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 965a486b320..2b73d0598c1 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -22,3 +22,80 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+ {
+     g_assert_not_reached();
+ }
++
++/*
++ * It's safe to call these functions without KVM support.
++ * They should either do nothing or return "not supported".
++ */
++bool kvm_arm_aarch32_supported(void)
++{
++    return false;
++}
++
++bool kvm_arm_pmu_supported(void)
++{
++    return false;
++}
++
++bool kvm_arm_sve_supported(void)
++{
++    return false;
++}
++
++bool kvm_arm_mte_supported(void)
++{
++    return false;
++}
++
++/*
++ * These functions should never actually be called without KVM support.
++ */
++void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
++{
++    g_assert_not_reached();
++}
++
++int kvm_arm_vgic_probe(void)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pmu_init(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
++{
++    g_assert_not_reached();
++}
++
++uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
++{
++    g_assert_not_reached();
++}
 -- 
 2.47.2
 
