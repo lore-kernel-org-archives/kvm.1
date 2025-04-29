@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9801327735
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 03:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE56270EA7
+	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 03:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745897860; cv=none; b=CIwAIjIecLh2jjJu2jgP6/CvOAvRfrOJ2PS7ZgVH6YbLeWN2bfx/8FLePW5J8AaSmwJyhZPew0gzKbdWdhkRlMeSaSuc+IWxrIJghqqIzTkhby9bIJMQ/g5Itnu9n/e+uNqzRZaLmAcINLSw4W4d2CErnIoBC6KpvJt7znG32e8=
+	t=1745897870; cv=none; b=HsTMkDfp35djJcl5ydB2U7vmcSEvzqK5O8D27IryntFw0C3FyjiZwmWXL+mun2X7mvDSfXMJAHXbIrMUP5dr6DRzsczS8/sMqL81KkMyK5H6P0/IM/zIqKIksDKuKBaAHHF1o2iJ5ydIYJ1UQ6iH8JTtnYvCJ3DezG3aTk/jeic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745897860; c=relaxed/simple;
-	bh=/dh99NuHQWKdSVFdfmdWdeyGsF4OxWd3FXFH2UZgg/8=;
+	s=arc-20240116; t=1745897870; c=relaxed/simple;
+	bh=o0Bsyt7FrbTQfBgId6i0wm7Wph0D2g6CxMizX1LW4V0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UKc955dtgkqDmn2hfRy6A7TOnEw+eX51gWmEc846cCStNTGn2fPaj3anbonJTkSkYG5NrjIRCYmQHvDeLbOshzZbaGH0XZ3aD3axD503FM/niR89rm+VbtPtY64cml/1Izlolzo9PRxBDAufxx/OeisgdP6/1w6vLn1A/AcK6eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c15ONdA8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ktsbTJhFXmH9Y12gMUw86zOyWnwQ3IJU8OYK4gRgy3ZnRw1JlFfRWGnmxbPuX7QSnUehwuDWvGcccagEteEO5OYsZqtYEO9XrnbRMKbUtcF6swA7OFpkxpLnuuhsZJQS4kG1IUtTskmLq7UijmUbuVeUZZK98ADbehuQE3z+Gr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNH2/yEu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c15ONdA8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29031C4CEE3;
-	Tue, 29 Apr 2025 03:37:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNH2/yEu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654ECC4CEEB;
+	Tue, 29 Apr 2025 03:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745897860;
-	bh=/dh99NuHQWKdSVFdfmdWdeyGsF4OxWd3FXFH2UZgg/8=;
+	s=k20201202; t=1745897869;
+	bh=o0Bsyt7FrbTQfBgId6i0wm7Wph0D2g6CxMizX1LW4V0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=c15ONdA8SZbsSUYcX/D5QnhzZf/F4PCctN0x9R93/TD8zzzUh/p4kz+xGjUO8bdId
-	 fm+PgsXRuhaBPJFjQWoV9EUf3q04CxGqxxOxAFUvBNnqUlXr8FOWIkVlGsSH5V9oxt
-	 fReRefkCUCRHRsHvHiNxkxWfbW7PuawfDwIppsGd7rPFf6AohwHwvswrAE2CQwF0Jn
-	 JKLCTNiCOVHOoRaEgGxUaXbWAQKJOIusfdFym/xYq//YjHqZ9h2xGaXwIPzOcE0mle
-	 3UCm+m5hwpt9Z3WyYb7ebMRRD/cXrKMOQBpeJty4Gz52P5PXju2/Tslx19tIYSBi/+
-	 3U3PFEE4NWOHg==
+	b=FNH2/yEuwhUksTGtHTEl8lZBWxi0kKElKEoJtS5lNF1XiM6YXm6+bpvm4g6ETLRdm
+	 9vOAnmKfZBPjZcJnZV41JT780Buu2/o7GBGlUMnH+YQDCAFKglEYzjSY41Cxc00tuD
+	 HmHKM2ZMNW955iKH3OP48RN2MjUFu4a4eJJjhD8Q8tkIvkfKn5CGA+O5yG8yj5SOK8
+	 B19AQVNwin+EX9HYW0V4IyyBAD9qPbY/aEmEn3uk/QsEeip84+n53o9ufuXagqPs7G
+	 9DRBd2aV9tluav4CpRyV0iCnUze2RV15umtqm11JacPfSNc+vdWpocX7Ar5MHTW0ts
+	 2EVz4F1LJYTEg==
 X-Mailer: emacs 30.1 (via feedmail 11-beta-1 Q)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org
-Cc: Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>,
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: kvm@vger.kernel.org, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Julien Thierry <julien.thierry.kdev@gmail.com>
 Subject: Re: [PATCH kvmtool v3 2/3] cpu: vmexit: Retry KVM_RUN ioctl on
  EINTR and EAGAIN
-In-Reply-To: <9e2fe85c-f3ad-4e13-b635-78a80c115499@arm.com>
+In-Reply-To: <aA+dIAof4faNGjCf@arm.com>
 References: <20250428115745.70832-1-aneesh.kumar@kernel.org>
  <20250428115745.70832-3-aneesh.kumar@kernel.org>
- <9e2fe85c-f3ad-4e13-b635-78a80c115499@arm.com>
-Date: Tue, 29 Apr 2025 09:01:08 +0530
-Message-ID: <yq5aecxbve2r.fsf@kernel.org>
+ <aA+dIAof4faNGjCf@arm.com>
+Date: Tue, 29 Apr 2025 09:07:02 +0530
+Message-ID: <yq5abjsfvdsx.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,99 +49,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+Alexandru Elisei <alexandru.elisei@arm.com> writes:
 
-> Hi Aneesh
+> Hi Aneesh,
 >
-> On 28/04/2025 12:57, Aneesh Kumar K.V (Arm) wrote:
+> Is this to fix Will's report that the series breaks boot on x86?
+>
+
+Yes.
+
+> On Mon, Apr 28, 2025 at 05:27:44PM +0530, Aneesh Kumar K.V (Arm) wrote:
 >> When KVM_RUN fails with EINTR or EAGAIN, we should retry the ioctl
 >> without checking kvm_run->exit_reason. These errors don't indicate a
 >> valid VM exit, hence exit_reason may contain stale or undefined values.
->> 
->> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> ---
->>   include/kvm/kvm-cpu.h |  2 +-
->>   kvm-cpu.c             | 17 ++++++++++++-----
->>   2 files changed, 13 insertions(+), 6 deletions(-)
->> 
->> diff --git a/include/kvm/kvm-cpu.h b/include/kvm/kvm-cpu.h
->> index 8f76f8a1123a..72cbb86e6cef 100644
->> --- a/include/kvm/kvm-cpu.h
->> +++ b/include/kvm/kvm-cpu.h
->> @@ -16,7 +16,7 @@ void kvm_cpu__delete(struct kvm_cpu *vcpu);
->>   void kvm_cpu__reset_vcpu(struct kvm_cpu *vcpu);
->>   void kvm_cpu__setup_cpuid(struct kvm_cpu *vcpu);
->>   void kvm_cpu__enable_singlestep(struct kvm_cpu *vcpu);
->> -void kvm_cpu__run(struct kvm_cpu *vcpu);
->> +int kvm_cpu__run(struct kvm_cpu *vcpu);
->>   int kvm_cpu__start(struct kvm_cpu *cpu);
->>   bool kvm_cpu__handle_exit(struct kvm_cpu *vcpu);
->>   int kvm_cpu__get_endianness(struct kvm_cpu *vcpu);
->> diff --git a/kvm-cpu.c b/kvm-cpu.c
->> index 40041a22b3fe..7abbdcebf075 100644
->> --- a/kvm-cpu.c
->> +++ b/kvm-cpu.c
->> @@ -35,27 +35,32 @@ void kvm_cpu__enable_singlestep(struct kvm_cpu *vcpu)
->>   		pr_warning("KVM_SET_GUEST_DEBUG failed");
->>   }
->>   
->> -void kvm_cpu__run(struct kvm_cpu *vcpu)
->> +/*
->> + * return value -1 if we need to call the kvm_cpu__run again without checking
->> + * exit_reason. return value 0 results in taking action based on exit_reason.
->> + */
 >
-> minor nit: Should we make the return value meaningful, say -EAGAIN 
-> instead of -1 ?
+> EAGAIN is not documented in Documentation/virt/kvm/api.rst. So I'm going to
+> assume it's this code path that is causing the -EAGAIN return value [1].
 >
 
-I was not sure. Having both EINTR and EAGAIN map to just EAGAIN is
-confusing IMHO. Instead having a proper return value (-1) which is
-documented to imply a retry is better?
+IIUC, EAGAIN and EINTR are syscall return errno that indicates a system
+call need to be retried. Documentation/virt/kvm/api.rst do mention that
+exit_reason is value only with return value 0.
 
->> +int kvm_cpu__run(struct kvm_cpu *vcpu)
->>   {
->>   	int err;
->>   
->>   	if (!vcpu->is_running)
->> -		return;
->> +		return -1;
->>   
->>   	err = ioctl(vcpu->vcpu_fd, KVM_RUN, 0);
->>   	if (err < 0) {
->>   		switch (errno) {
->>   		case EINTR:
->>   		case EAGAIN:
->> -			return;
->> +			return -1;
->>   		case EFAULT:
->>   			if (vcpu->kvm_run->exit_reason == KVM_EXIT_MEMORY_FAULT)
->> -				return;
->> +				return 0;
->>   			/* fallthrough */
->>   		default:
->>   			die_perror("KVM_RUN failed");
->>   		}
->>   	}
->> +	return 0;
->>   }
->>   
->>   static void kvm_cpu_signal_handler(int signum)
->> @@ -179,7 +184,9 @@ int kvm_cpu__start(struct kvm_cpu *cpu)
->>   		if (cpu->task)
->>   			kvm_cpu__run_task(cpu);
->>   
->> -		kvm_cpu__run(cpu);
->> +		if (kvm_cpu__run(cpu) == -1)
+	__u32 exit_reason;
+
+When KVM_RUN has returned successfully (return value 0), this informs
+application code why KVM_RUN has returned.
+
 >
-> and this could be :
-> 		if (kvm_cpu__run(cpu) == -EAGAIN)
+> If that's the case, how does retrying KVM_RUN solve the issue? Just trying to
+> get to the bottom of it, because there's not much detail in the docs.
 >
->> +			/* retry without an exit_reason check */
->> +			continue;
->>   
->>   		switch (cpu->kvm_run->exit_reason) {
->>   		case KVM_EXIT_UNKNOWN:
+> [1] https://elixir.bootlin.com/linux/v6.15-rc3/source/arch/x86/kvm/x86.c#L11532
 >
 >
-> Suzuki
+
+So in that code path vcpu will be in kvm_vcpu_block(vcpu) waiting for
+the IPI. On IPI kvm_apic_accept_events() will return 0 after setting the
+vcpu->arch.mp_state. Hence a KVM_RUN ioctl again will find the mp_state
+correctly updated. 
+
+-aneesh
