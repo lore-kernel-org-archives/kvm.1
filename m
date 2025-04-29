@@ -1,149 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4422C2AC3
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 11:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4482C374B;
+	Tue, 29 Apr 2025 11:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745926983; cv=none; b=p9Nis+x7/0OozQ9MNsVOIhSUoDEUG8aG8+o9fsaboctP0M7eFBjd+Jy+Y9oiBofTPrfN/IeIrA7F3/wTxH0ixa+rILErLjrIQdmKvkPrb4BV+HLTBMDj4jkLLjBSIu4CYkaZQ2bY3kU8f23o/sZVgsSRwNgr+vV0k9xsl8BKq3s=
+	t=1745927013; cv=none; b=W8vGelRsGPffuQJGJZtTHwtTQmdsyzUjM6zrhc0ABsHzlAIfKxcG06k1umyabvubPaBh+pjKkyWXug+oRkYJMi04MBOd3wZ8vZjDJ+IvUiR7HYYaFeDcQhR9f4KSk/AW1zAjMOsCnrBHqL7xvtEHPKVCdxlgT1iYekn8/Vc6vpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745926983; c=relaxed/simple;
-	bh=apD04pUdZyMk2ObFIQHJLHKGQEs48DRM9/gA4unUYAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7Oqf4klZ65RgC4jSqyDZ8o9nWNjPUMMh8iRJbJIqyI8CYWq9LUoFlKlnGEuSlL5h95hHHYxpPwu+RWUkE7+hCylPk+JPfBv9SawGxSHBWpFP8q2PnivzdNchjzUTYqM5NyXlgzaPOKcZrFo4+Peo9NLIjJv617cT9qN461AEHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=elhNDUpH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1745927013; c=relaxed/simple;
+	bh=9ZzZ2PUUe62ESKAkB2c5E8q80p5NNCf2tGXDF7sXtlA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u+hQhwTyuyXNm4I6JJg8nmdGAGTtWFx2yX6X1x8UWMCut7QPw7OYdPLmG2EZNkoE0gu2LC0QKfpjkW0iJn6dyBbwSCXGMQ907z++NkwQmbKDgihGz8/bukNDPp+FOV49LhgCN28OjeYIkiLtT67RXU7M6vkdm3eaI7tawHuXaB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eef7Ny0N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="elhNDUpH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745926981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=boHlb9VW5lBF1DESnR599lKlLKrAVEqa90mhXCcqUlU=;
-	b=elhNDUpHaVmxzgzeL92U1lCGkLt5AQ1fpzksiD+rpiAeDAY4RfZxoGP7ZmkX9T3iRwpi+z
-	jvGNo0wKy0+aIat/a9ziXMGtj4zpzZwUsNZ9LGkPa6QbPmNSEUbiSVcSBc5GT9CH/AFURD
-	ZRUgPTwfL1o0wggSEIeowt1G8ep0aQo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-sPKCJ77MPxe-Wi8VmOXKtA-1; Tue,
- 29 Apr 2025 07:42:56 -0400
-X-MC-Unique: sPKCJ77MPxe-Wi8VmOXKtA-1
-X-Mimecast-MFC-AGG-ID: sPKCJ77MPxe-Wi8VmOXKtA_1745926972
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 255621956077;
-	Tue, 29 Apr 2025 11:42:52 +0000 (UTC)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.225.102])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4BE4E19560A3;
-	Tue, 29 Apr 2025 11:42:23 +0000 (UTC)
-From: Valentin Schneider <vschneid@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eef7Ny0N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D4BC4CEE3;
+	Tue, 29 Apr 2025 11:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745927011;
+	bh=9ZzZ2PUUe62ESKAkB2c5E8q80p5NNCf2tGXDF7sXtlA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Eef7Ny0Nw1TSqWdRODz4I099aCTZln80IlK5ML2ODp35P7NV5Z6uBafKBI2BCfT8j
+	 tG2CgqLMZlwc4X0do2X9+RG6vD7NwjCs8tHxqGyLJmWaoigZTlntAaqxKcIH72uG/p
+	 /r3QtlD3RNShyID2I6kIaC2qUhde7kLVU+DQJt6euHZn+r63H0UAi6J24qKhZ5RNOU
+	 95bbx+r3K7t6dbSKnfbZnBrB0DDxybnaSNdCDNDQDNUVmMP2QMS7JHDgBFWFzYqcQG
+	 caEGtoF+F3QvYBbQNKAZz/cwsj+ZuXk7Heayg6DOSjtDUU+hZIWHQSNPVl+HpJ2r5K
+	 zA3PfYHylyxOA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1u9jN3-009t4S-LJ;
+	Tue, 29 Apr 2025 12:43:29 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: Juri Lelli <juri.lelli@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Daniel Wagner <dwagner@suse.de>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Rong Xu <xur@google.com>,
-	Rafael Aquini <aquini@redhat.com>,
-	Song Liu <song@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH v5 18/25] sched/clock, x86: Mark __sched_clock_stable key as allowed in .noinstr
-Date: Tue, 29 Apr 2025 13:32:35 +0200
-Message-ID: <20250429113242.998312-19-vschneid@redhat.com>
-In-Reply-To: <20250429113242.998312-1-vschneid@redhat.com>
-References: <20250429113242.998312-1-vschneid@redhat.com>
+	D Scott Phillips <scott@os.amperecomputing.com>
+Subject: [PATCH v2] KVM: arm64: Force HCR_EL2.xMO to 1 at all times in VHE mode
+Date: Tue, 29 Apr 2025 12:43:26 +0100
+Message-Id: <20250429114326.3618875-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -151,41 +52,117 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, mark.rutland@arm.com, scott@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Later commits will cause objtool to warn about static keys being used in
-.noinstr sections in order to safely defer instruction patching IPIs
-targeted at NOHZ_FULL CPUs.
+We keep setting and clearing these bits depending on the role of
+the host kernel, mimicking what we do for nVHE. But that's actually
+pretty pointless, as we always want physical interrupts to make it
+to the host, at EL2.
 
-__sched_clock_stable is used in .noinstr code, and can be modified at
-runtime (e.g. time_cpufreq_notifier()). Suppressing the text_poke_sync()
-IPI has little benefits for this key, as NOHZ_FULL is incompatible with an
-unstable TSC anyway.
+This has also two problems:
 
-Mark it to let objtool know not to warn about it.
+- it prevents IRQs from being taken when these bits are cleared
+  if the implementation has chosen to implement these bits as
+  masks when HCR_EL2.{TGE,xMO}=={0,0}
 
-Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+- it triggers a bad erratum on the AmpereOne HW, which catches
+  fire on clearing these bits while an interrupt is being taken
+  (AC03_CPU_36).
+
+Let's kill these two birds with a single stone, and permanently
+set the xMO bits when running VHE. This involves a bit of surgery
+on code paths that rely on flipping these bits on and off for
+other purposes.
+
+Note that the earliest setting of hcr_el2 (in the init_hcr_el2
+macro) is left untouched as is runs extremely early, with interrupts
+disabled, and soon enough overwritten with the final value containing
+the xMO bits.
+
+Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- kernel/sched/clock.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/kvm_arm.h |  2 +-
+ arch/arm64/kvm/hyp/vgic-v3-sr.c  | 36 +++++++++++++++++++-------------
+ 2 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
-index 200e5568b9894..e59986bc14a43 100644
---- a/kernel/sched/clock.c
-+++ b/kernel/sched/clock.c
-@@ -75,8 +75,11 @@ static DEFINE_STATIC_KEY_FALSE_RO(sched_clock_running);
-  *
-  * Similarly we start with __sched_clock_stable_early, thereby assuming we
-  * will become stable, such that there's only a single 1 -> 0 transition.
-+ *
-+ * Allowed in .noinstr as an unstable TLC is incompatible with NOHZ_FULL,
-+ * thus the text patching IPI would be the least of our concerns.
-  */
--static DEFINE_STATIC_KEY_FALSE(__sched_clock_stable);
-+static DEFINE_STATIC_KEY_FALSE_NOINSTR(__sched_clock_stable);
- static int __sched_clock_stable_early = 1;
+diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+index 974d72b5905b8..bba4b0e930915 100644
+--- a/arch/arm64/include/asm/kvm_arm.h
++++ b/arch/arm64/include/asm/kvm_arm.h
+@@ -100,7 +100,7 @@
+ 			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
+ #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
+ #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
+-#define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
++#define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H | HCR_AMO | HCR_IMO | HCR_FMO)
  
- /*
+ #define HCRX_HOST_FLAGS (HCRX_EL2_MSCEn | HCRX_EL2_TCR2En | HCRX_EL2_EnFPM)
+ #define MPAMHCR_HOST_FLAGS	0
+diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+index ed363aa3027e5..50aa8dbcae75b 100644
+--- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
++++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+@@ -429,23 +429,27 @@ u64 __vgic_v3_get_gic_config(void)
+ 	/*
+ 	 * To check whether we have a MMIO-based (GICv2 compatible)
+ 	 * CPU interface, we need to disable the system register
+-	 * view. To do that safely, we have to prevent any interrupt
+-	 * from firing (which would be deadly).
++	 * view.
+ 	 *
+-	 * Note that this only makes sense on VHE, as interrupts are
+-	 * already masked for nVHE as part of the exception entry to
+-	 * EL2.
+-	 */
+-	if (has_vhe())
+-		flags = local_daif_save();
+-
+-	/*
+ 	 * Table 11-2 "Permitted ICC_SRE_ELx.SRE settings" indicates
+ 	 * that to be able to set ICC_SRE_EL1.SRE to 0, all the
+ 	 * interrupt overrides must be set. You've got to love this.
++	 *
++	 * As we always run VHE with HCR_xMO set, no extra xMO
++	 * manipulation is required in that case.
++	 *
++	 * To safely disable SRE, we have to prevent any interrupt
++	 * from firing (which would be deadly). This only makes sense
++	 * on VHE, as interrupts are already masked for nVHE as part
++	 * of the exception entry to EL2.
+ 	 */
+-	sysreg_clear_set(hcr_el2, 0, HCR_AMO | HCR_FMO | HCR_IMO);
+-	isb();
++	if (has_vhe()) {
++		flags = local_daif_save();
++	} else {
++		sysreg_clear_set(hcr_el2, 0, HCR_AMO | HCR_FMO | HCR_IMO);
++		isb();
++	}
++
+ 	write_gicreg(0, ICC_SRE_EL1);
+ 	isb();
+ 
+@@ -453,11 +457,13 @@ u64 __vgic_v3_get_gic_config(void)
+ 
+ 	write_gicreg(sre, ICC_SRE_EL1);
+ 	isb();
+-	sysreg_clear_set(hcr_el2, HCR_AMO | HCR_FMO | HCR_IMO, 0);
+-	isb();
+ 
+-	if (has_vhe())
++	if (has_vhe()) {
+ 		local_daif_restore(flags);
++	} else {
++		sysreg_clear_set(hcr_el2, HCR_AMO | HCR_FMO | HCR_IMO, 0);
++		isb();
++	}
+ 
+ 	val  = (val & ICC_SRE_EL1_SRE) ? 0 : (1ULL << 63);
+ 	val |= read_gicreg(ICH_VTR_EL2);
 -- 
-2.49.0
+2.39.2
 
