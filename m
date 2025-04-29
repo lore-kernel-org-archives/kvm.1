@@ -1,240 +1,341 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E11919F40F;
-	Tue, 29 Apr 2025 01:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745889110; cv=fail; b=ALb+2P2UxArgxnBgnbTZydIsmwuSshKIGDku93JNYUWUrPzLES6BBi0WHey+rPpLAlt+8mBWMy5qHC/Rd6RE5PDJSjzCdp8X+GP+pxpZx32GRF6Z00Cw91eMDzOcE39AusAJ/QvoELRPOZrMeNuwcIhOowSb7DVewWDyWJbGgeI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745889110; c=relaxed/simple;
-	bh=+4e24AFNh9DYJy1E/cdu24Xs8QAQCzOKGMZlaF7Qgo8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=m4tKH4wdCNkDfYhuWPu1H/0pDD4M3PqTknHVS3by2HFNGatPJqigYzyrBq755yx5OTcghpKJ43vhRhuuRrLpA8BjuZugP9DSvsKJcpspImrxEzPkrBUN5hzPJmg/71UU7muCrKn0FTHKNZNTXD2I5NdM05bIwFZaMQZfa+7fWrw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aKoKU/Gm; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128BA84A3E
+	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 01:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745889553; cv=none; b=SukO6DOliE5NR46KDJffL3uzPqkyxJ/pTbwVzC/MegiGIYFtR2TjBUCbMN3a2/0RnN8ixtTcEdPGUZmjsPVZZtd+6MUsgq5hV/vRuMR+y6X47q02DWFaJV3AdgBbPrlk3Qy8glFZBCP81br/etFK1f39I+vI/JmTPtWdJq1Y2XU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745889553; c=relaxed/simple;
+	bh=8oSsZIRrhqgjMG9L29Y+UGuvrGWsxwTQz535yyZMwqQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ezAiG1tb4aGvI988jl4Wv2Srrg7yQTHbmjeZ/9wmoG/4LmeGsBd0AZys6WPcI+UtAo1+piyT1gko0YSrfVmSY2B8b3CQiv1vOSx5gUMRppnXyU7Q+CpSOrzApSs6dx6oXpQI4K9kC6f/P/nkuA5nZtm/UuO5qYqdLFiEyv5NRqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=386rQsjO; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aKoKU/Gm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745889108; x=1777425108;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=+4e24AFNh9DYJy1E/cdu24Xs8QAQCzOKGMZlaF7Qgo8=;
-  b=aKoKU/Gm5A3tTGTBHRa3w0TsmnO+sjvW/91O7EgVvUbcNBiXkRELMTn/
-   BBrPHAKfDjCfG/lbJjSqTJPVnGMjKsTIEsvHeUsQeBUtpB+ZalBMi8EgL
-   mHp+cuiJBEHMMaqYg4tns1flm56Tld1tWrwNvh6x2BLUUKHQQGn3ow78V
-   KGtxAFwsiLvHddwI+O8P3Y/Od42KdLbS8dkN0U5jksigGktinls66d+2s
-   ah270M20HG/Jsu8TxKcUgE3TtSb9cN1sE7KXzrWAfiSGRAYSTsCvjHpRB
-   GIH3tsufZPbh4OHhnD97h27XcdmPL1LL+qGRXMigQtTQoth31o5pMpDe4
-   A==;
-X-CSE-ConnectionGUID: 09JvnZw1Quit3ztTOqRYdg==
-X-CSE-MsgGUID: NsDdttpBTxG+yKvrdmjegA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58869181"
-X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
-   d="scan'208";a="58869181"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 18:11:48 -0700
-X-CSE-ConnectionGUID: HwcTHV/eTJuFPDsFwZK4Tg==
-X-CSE-MsgGUID: cUcnvOdZTnami8EVNbO8UA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
-   d="scan'208";a="134636998"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 18:11:47 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 28 Apr 2025 18:11:46 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 28 Apr 2025 18:11:46 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 28 Apr 2025 18:11:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GD+WretoL6yaxPCE+n3vCjq2ijUHKpoiLMuJ7pAAHTA1UIOU/cL2vEMC5Jiilt8AtWOqmlpCFb9jR/ELuYfpldJwqH1QsF0VQy5dTM7Wtip9tr0gEuc8ZMVr6JXmXp63ClzN6JGiH+5gVmdmkZgvunsE3ua11wCyy3j+pXinZ9Coux3U4Fa+PMJSsz66LJ1C3+MQyb0odav57ao5eY7tC/D+znNO46PDHED/Bc5y9wA5j4xahvXjCH/UILuvPDOFPKWu3JrJbtxI1xIKuv5EQqqF41FEpEOzYc7a7utgU+GkuwHFF87F1BU4SDED02TysGxrPiMSP1cwQ+YG4WssOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gNbIoW79XRq6xAJgH0Ia4XgprOCOpe8EK7SeYu/Hf4k=;
- b=fN0sL/r6GIyhL7Lka3JC0FN7FiE0VyYJ/AV9WQzLziKW/uITQV023Lu8hx4GL6cUvlKZ0kFy4kpg9x3yPdoEmejo/8dFcijwKcUokGxN6LRY65QPRk48p5aDeMg6fu4EEelr2VAtOHgGqbpl8ns+fv0spHiKsCzjBh0Yrk3ymg8H0y070t9s4JXh3KeWPO+dvliX30oh2HeVzEeV46FIoR4VIF58tW3NFc45ga+FOqPKESNKGpj+ZqglDIIYgvXESQWdAvkwFCQ4tztKXYBtUE6GBmaYYTOUN32QOFRaE/Pc1ovi1dNHilWhHxwDGN1ntFdaR93u2DcvzIZKZ+16dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- PH3PPF4E874A00C.namprd11.prod.outlook.com (2603:10b6:518:1::d1e) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Tue, 29 Apr
- 2025 01:11:43 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 01:11:42 +0000
-Date: Tue, 29 Apr 2025 09:09:49 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH] KVM: x86/mmu: Prevent installing hugepages when mem
- attributes are changing
-Message-ID: <aBAm3a6ovCQzB/1/@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20250426001056.1025157-1-seanjc@google.com>
- <aA7aozbc1grlevOm@yzhao56-desk.sh.intel.com>
- <aA-VrWyCkFuMWsaN@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aA-VrWyCkFuMWsaN@google.com>
-X-ClientProxiedBy: KU0P306CA0082.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:2b::11) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="386rQsjO"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736c0306242so7201408b3a.1
+        for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 18:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745889551; x=1746494351; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IgdQOgaoElQqRGycTH5PUw+/zFDYClhZUhKSCH+8S4I=;
+        b=386rQsjO+nCy+CItozFbB0WsdccOGWrXAIVTy58x7N661m4alDxE9NZNFpAhPM0omf
+         /062jViU5LyBdR0SxgM+/RIiFjdi9qQdAyLa8mNhbk3C1If6vbt1kTIo5EAB0n8IWGiy
+         OzLU5iYx/KKOPboc3V5vHncbZn1c/59WTkAiowlI4gwZBAnGe6bgoPFPf+kkEaNA4c+E
+         thS1aviAzX7ZWHrVfUuW4++Qad1OBsHsy8ekMKVCgHyfXgFCCnULWSO39iQ1cLxogzl3
+         U2FvMz+O+suEzhRDUVvjfWfHja10tSomQ/RBotIZYUS88J8c3Q4T3iOJ4lWgg0PpYY0M
+         HWlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745889551; x=1746494351;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IgdQOgaoElQqRGycTH5PUw+/zFDYClhZUhKSCH+8S4I=;
+        b=XnimYnWmHSfcjQpy7cuazzonx39RWCPn1+Ng0cbXLhOuhPGZN2cFNpi4pr20mMLS6V
+         Oe6JrktXMrr2actrG1WHPdtWSuOhty1AFvMxZa47x5NqXF+HmtFflf+Oijjr6K2tHv3/
+         7OQImFLI5OsNlFFfUYf05CkwdPYxGe9jTZBBv0+MKGpR4/XqPRhE4kGXm21ZPs71pwdp
+         1domxfhnofVH3RxgcAALMCbjtSlE5Mjcm6rDGKIoRVTG4heVIXZUdtxsp2QOD211JKFZ
+         kp2VDADFE8AqRbZz31CsZXEk5t9OywhqQYDl7Lw7oAg5hf6fjMpMspbZjlP++sbTCk7d
+         yi/g==
+X-Gm-Message-State: AOJu0Yx4MRTyp/jhPBFeD2xVc2NSk80/Yd72wjDE4F1UyUeuzIQoHibo
+	evbon0FKN6mSh5CuXlvca882Nx27PZlsK0w9FCXI4nX58FbPV3diL+e2POUv9tmHhum7e8y6Edf
+	oOA==
+X-Google-Smtp-Source: AGHT+IFMVZIcEoYw8FABuJXXX8OutA5bqS+INEhWMiGnzilKwpVAX2SYR+yiUpwvIN/ITA/l63MsHdptzFA=
+X-Received: from pfgu8.prod.google.com ([2002:a05:6a00:988:b0:737:6b9f:8ab4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:78b:b0:1f5:837b:1868
+ with SMTP id adf61e73a8af0-2046a646b03mr15898790637.29.1745889551303; Mon, 28
+ Apr 2025 18:19:11 -0700 (PDT)
+Date: Mon, 28 Apr 2025 18:19:09 -0700
+In-Reply-To: <20250414200929.3098202-6-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|PH3PPF4E874A00C:EE_
-X-MS-Office365-Filtering-Correlation-Id: e584f2ae-65f9-44f2-e122-08dd86bacd82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ySpqwqUiBtgMJtEHyCZT5sJCWrZ3D9zqt77iNa3irca9w68B/omkKrtSy3L4?=
- =?us-ascii?Q?jwpKrY/c6+TJk8ed11qcs3xBC8QIBd4kOmQiDtf/5/giwpXoJeGh46vELOIm?=
- =?us-ascii?Q?IPBgM0AL7xRnYYTbvgg3XJ1YH+FVRM53gA3kDtNeIukOsRWtyQHtmHE+zafb?=
- =?us-ascii?Q?M8dmj4JjcAZmRD7MpbZyIRypficLWUZku9L3zNtLOGU4GpsRa5o0FIO8ETuj?=
- =?us-ascii?Q?PDa1sdc7q9WyGU6hY/vpPw2wl+oY9wZBHP/uyYIjhaWa54c9hC3taBEycSwq?=
- =?us-ascii?Q?HINm6TNJajZc88alBxtclAjO/ZIebRvokYN8PkUH5KI3mXkBqbY3fGaRiTzz?=
- =?us-ascii?Q?PU9G1AfYPXUQoFTSQeU+yb50TOpE1Yvlfa8fk+woOofYQaX1hnA6+5LxRsQ2?=
- =?us-ascii?Q?YSmCkDMnQop8mN6I9c9AXze1VL9VXTirLRLfK+t2LHJhaO8nUFA/Cg8VW0OQ?=
- =?us-ascii?Q?rGoy9S2jRPgK/fgQKKy8JCLek9q9kczDV68oTft0sL//H+dz6vL2Cl4DdmRg?=
- =?us-ascii?Q?T2KDnjHprKUqaAJK+39lnr0Sd/voCSrpTx61stEVvokhLj9xd1QNNCsjIWQf?=
- =?us-ascii?Q?aVFpQ1YLow/6aUuHIb3lFdlUjNKzwldaG6ONOmiC2I2zfybgD8zips1IIuQm?=
- =?us-ascii?Q?1HqSxjnUb3cZ3ahRQ2EiQSf0nCHfhzVpAJS8hLU3oa8WbUjQnOwLWbh1stRV?=
- =?us-ascii?Q?dKq1iuSvXBpcqN4cuzlw07nUwS01hFmdP+gpkGBLkc+NhqNTFbnVTmq/Gc2c?=
- =?us-ascii?Q?l0UX5Ds03kwa93w7lHfTV0QjjGSnjyn1qvf2Uv3VG293s3Rw0/fr+nJaQD8R?=
- =?us-ascii?Q?tzAeYawCvqH+8a+Uh3V1lwOQEEwc/fCWoYzRwmdemWvVnrVIIFG2Iw+EGeQp?=
- =?us-ascii?Q?z4NAXALf9c6BBDZFT2cIc4yxpvwWSKcobIiXBtWAEqtxrvbLs6/fGcXzWj4s?=
- =?us-ascii?Q?e2TotHvqJB2+ChZzLhOvG1RmjubvVaR7XD08srqXDRX+eeq/X+5HsuOJ/mmg?=
- =?us-ascii?Q?yEaCgeQRNlEJRXwq58+ZPvyFpuYr8VIQlvrb9tJ7Y+2BfIG9Cwpq9lnuD/ou?=
- =?us-ascii?Q?xHwe/6rOYtecmJVLsNh9VlUQtlHvHTcuwG/TFVZDWWZ/QDJD2wzul3E/6uTr?=
- =?us-ascii?Q?WRKQ6YtkBkpfnZvZ4nV3nJlPrFLLrhtU031zku8NCfSTecI7QeRMr2dTchNT?=
- =?us-ascii?Q?2dQ2DwuhXp6TxgdoUvG7urlb4TtUnYOFFHBalrmDltZpyH8+LwU1Ltk2yN7T?=
- =?us-ascii?Q?V4SxzppFpguNlkNlBX89xqWnM+RWckbzG+N/e6uhxZa9D4WXYE+lmJtxWWgb?=
- =?us-ascii?Q?Yfr2TNFoPwtjgQSaqB/rLOvZoVg43afVNRh0ogkyX+B5sVFOHG046bTu98lV?=
- =?us-ascii?Q?l3w+GvV0RFNxwjxkkHI7VU+xaOEzC1VulNIVY3SjGYyk2QVbGQbModlFoUNs?=
- =?us-ascii?Q?UHqh3xr2ULc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cVyKGKEUzPMIkqIBlLdVj6MpMfclbklWco3+RtlhmNN+NMiBje78yElOWBks?=
- =?us-ascii?Q?UANv68Oya2Ql4+LjbTsyymsGiPhP9yzrN+5nSpA1KhGC7WROa4IkI6Ntk4bc?=
- =?us-ascii?Q?L3UWO5vOhhGV/QABBPqZQTlRjJ8NtVoNx7W2EDbkqd/1z8Gg3PCDo42KSjHi?=
- =?us-ascii?Q?2F0SE/gx8AaUOGDzlwnUH2gcucfwU1l0EM4lUX+JQs7cFx0rNLQV+2ldCkbY?=
- =?us-ascii?Q?DMteRpWE+ELzBM6syRkAfSYRL/D+F2zdIe/lzvjjCBofKloTf7b9SIHAkAJh?=
- =?us-ascii?Q?rQxFgVmfEYOBGwYwtVSzfr3shZ6RC/PiLf997rM1B1YB3blC85JYoqkoh0wE?=
- =?us-ascii?Q?CPewvkvP9vNIJFBzVjgyGsaK4fap92AFOQr4AQlphQ4PYIoGMD7p8gSwIeiA?=
- =?us-ascii?Q?Teofkgb5iuZXO4WMNw4EYuuUTEUJkVjVr+iehlIefWRG/qPz+FPnpDdhv8i2?=
- =?us-ascii?Q?QOo+3L8Bae1tcsCI2JLy3gfsgJkYW6JFGej3oGK0AylOpDzMaKhMTYu9qGLY?=
- =?us-ascii?Q?r6AmSH0hfXht+49H5eQMkycRNERXCIbshE7AEevFsWBaFuOOSk+/WKn8AcLM?=
- =?us-ascii?Q?ddZlk+XBLz+VQskUClHbWGj/1mJoiaeKaythv/dw8xrYfhE7dYVgUR8IXSiS?=
- =?us-ascii?Q?PVGpABkqKoSsINqG66r3sI+XaZ2dvZ5cCwYJn9VHqsKaNtsx/ezmHKCY994R?=
- =?us-ascii?Q?7152EhEmIPIViX2ju0yty+fMI7Es9A6vY+82kcAUxleRbHVX50GMncGWq8EK?=
- =?us-ascii?Q?lFVq+yl2wfOFeWvGvzOSApCceYJ7CWt+RPPM9zxMV+TGiDhVxIvplxjlV+XL?=
- =?us-ascii?Q?KCcizWh1DT+HfM8Ae/njBPdXmHJn0mWP5l+21587/4VHr4/Vn4Op1tZP10cW?=
- =?us-ascii?Q?AwYkxCuSdChZUkmu1td9XRaZhlynfR6AP7Hir3MJMqddFvsN1YzoM+B3ReGr?=
- =?us-ascii?Q?V4DeC1fM6JdN+iE5t6xQtdN6coiVm1rCzwqv/0Dy4v1+HErysmx5oaxezcCB?=
- =?us-ascii?Q?tUA6OCHNGv0L5aEcHZ8kg3KyeWEvYDhmZKajwkTVA+tbM2/NzjF9GZ0jjkRO?=
- =?us-ascii?Q?QMw9lqIEq4TZa9nGq+AHNDb9HzdJbiRFF9cy4RHGucSssGi1CzN/ZkhlT4O2?=
- =?us-ascii?Q?mzGDyqVPdrju59W1osQYpJUU3QBe0wawKlml9CsZLkcg4fakVSqTOhCOF3Gi?=
- =?us-ascii?Q?M1u9stsa9+NzvPanpqBhxqdDR0w5NUb5JsJVtIKTLoC6bHksRx1NBc6JSUdY?=
- =?us-ascii?Q?0vcmdwCaGzyIH5gn9QyfFnVzdsrWG0dQ54eNBcLPCbVrLHkT0b0sOPnDlkcF?=
- =?us-ascii?Q?BJXmGJACgADtCjn9ioXlLMu11SzAy/8arGRO/j/wxEfGh5oGOsA7YGn3B4FM?=
- =?us-ascii?Q?U8YUEo7B0YMcXsG66CrdJQBPLjVO8wLG1DQUeP50wHIJVQ1KkHaDJYBcJbFM?=
- =?us-ascii?Q?7IkWSuZtokHH+lmg6d9Uq324l8OY/pQ+weHmkfeyRKgWN1/6uH1tDzjXSL/N?=
- =?us-ascii?Q?oVfYX8i4NRVSA/ATjGtC//U9weLoXPLW/RKlEBal7stzPxKYx8LeEBbH2NzP?=
- =?us-ascii?Q?mWYNhGG45CVeX0pUEpsvAu7+AjwfjtdNfrdbsS/a?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e584f2ae-65f9-44f2-e122-08dd86bacd82
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 01:11:42.8366
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A9pSQ6bFrhJDnlaHyjTVH8iMoPz324Bs5Oubm5yBNrZHH23Ag6X0FgL6LnazMU0u97rtKd1AvMqv4Ajj3mOCXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF4E874A00C
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20250414200929.3098202-1-jthoughton@google.com> <20250414200929.3098202-6-jthoughton@google.com>
+Message-ID: <aBApDSHblacSBaFH@google.com>
+Subject: Re: [PATCH v3 5/5] KVM: selftests: access_tracking_perf_test: Use
+ MGLRU for access tracking
+From: Sean Christopherson <seanjc@google.com>
+To: James Houghton <jthoughton@google.com>
+Cc: kvm@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, mkoutny@suse.com, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Yu Zhao <yuzhao@google.com>, David Matlack <dmatlack@google.com>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Apr 28, 2025 at 07:50:21AM -0700, Sean Christopherson wrote:
-> On Mon, Apr 28, 2025, Yan Zhao wrote:
-> > On Fri, Apr 25, 2025 at 05:10:56PM -0700, Sean Christopherson wrote:
-> > > @@ -7686,6 +7707,37 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> > >  	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
-> > >  		return false;
-> > >  
-> > > +	if (WARN_ON_ONCE(range->end <= range->start))
-> > > +		return false;
-> > > +
-> > > +	/*
-> > > +	 * If the head and tail pages of the range currently allow a hugepage,
-> > > +	 * i.e. reside fully in the slot and don't have mixed attributes, then
-> > > +	 * add each corresponding hugepage range to the ongoing invalidation,
-> > > +	 * e.g. to prevent KVM from creating a hugepage in response to a fault
-> > > +	 * for a gfn whose attributes aren't changing.  Note, only the range
-> > > +	 * of gfns whose attributes are being modified needs to be explicitly
-> > > +	 * unmapped, as that will unmap any existing hugepages.
-> > > +	 */
-> > > +	for (level = PG_LEVEL_2M; level <= KVM_MAX_HUGEPAGE_LEVEL; level++) {
-> > > +		gfn_t start = gfn_round_for_level(range->start, level);
-> > > +		gfn_t end = gfn_round_for_level(range->end - 1, level);
-> > > +		gfn_t nr_pages = KVM_PAGES_PER_HPAGE(level);
-> > > +
-> > > +		if ((start != range->start || start + nr_pages > range->end) &&
-> > > +		    start >= slot->base_gfn &&
-> > > +		    start + nr_pages <= slot->base_gfn + slot->npages &&
-> > > +		    !hugepage_test_mixed(slot, start, level))
-> > Instead of checking mixed flag in disallow_lpage, could we check disallow_lpage
-> > directly?
-> > 
-> > So, if mixed flag is not set but disallow_lpage is 1, there's no need to update
-> > the invalidate range.
-> > 
-> > > +			kvm_mmu_invalidate_range_add(kvm, start, start + nr_pages);
-> > > +
-> > > +		if (end == start)
-> > > +			continue;
-> > > +
-> > > +		if ((end + nr_pages) <= (slot->base_gfn + slot->npages) &&
-> > > +		    !hugepage_test_mixed(slot, end, level))
-> > if ((end + nr_pages > range->end) &&
-> >     ((end + nr_pages) <= (slot->base_gfn + slot->npages)) &&
-> >     !lpage_info_slot(gfn, slot, level)->disallow_lpage)
-> > 
-> > ?
+On Mon, Apr 14, 2025, James Houghton wrote:
+> By using MGLRU's debugfs for invoking test_young() and clear_young(), we
+> avoid page_idle's incompatibility with MGLRU, and we can mark pages as
+> idle (clear_young()) much faster.
 > 
-> No, disallow_lpage is used by write-tracking and shadow paging to prevent creating
-> huge pages for a write-protected gfn.  mmu_lock is dropped after the pre_set_range
-> call to kvm_handle_gfn_range(), and so disallow_lpage could go to zero if the last
-> shadow page for the affected range is zapped.  In practice, KVM isn't going to be
-That's a good point. I missed it.
+> The ability to use page_idle is left in, as it is useful for kernels
+> that do not have MGLRU built in. If MGLRU is enabled but is not usable
+> (e.g. we can't access the debugfs mount), the test will fail, as
+> page_idle is not compatible with MGLRU.
+> 
+> cgroup utility functions have been borrowed so that, when running with
+> MGLRU, we can create a memcg in which to run our test.
+> 
+> Other MGLRU-debugfs-specific parsing code has been added to
+> lru_gen_util.{c,h}.
 
-> doing write-tracking or shadow paging for CoCo VMs, so there's no missed optimization
-> on that front.
->
-> And if disallow_lpage is non-zero due to a misaligned memslot base/size, then the
-> start/end checks will skip this level anyways.
+This is not a proper changelog, at least not by upstream KVM standards.  Please
+rewrite it describe the changes being made, using imperative mood/tone.  From
+Documentation/process/maintainer-kvm-x86.rst:
 
-If the gfn and userspace address are not aligned wrt each other at a certain
-level, the disallow_lpage for that level is set to 1 for the entire slot.
-This is often the case at the 1G level.
+  Changelog
+  ~~~~~~~~~
+  Most importantly, write changelogs using imperative mood and avoid pronouns.
 
-But as kvm_vm_set_mem_attributes() holds write mmu_lock for most of the time,
-preventing fault over a larger range for another short period looks no harm.
+> @@ -354,7 +459,12 @@ static int access_tracking_unreliable(void)
+>  		puts("Skipping idle page count sanity check, because NUMA balancing is enabled");
+>  		return 1;
+>  	}
+> +	return 0;
+> +}
+>  
+> +int run_test_in_cg(const char *cgroup, void *arg)
 
+static
+
+> +{
+> +	for_each_guest_mode(run_test, arg);
+
+Having "separate" flows for MGLRU vs. page_idle is unnecessary.  Give the helper
+a more common name and use it for both:
+
+static int run_test_for_each_guest_mode(const char *cgroup, void *arg)
+{
+	for_each_guest_mode(run_test, arg);
+	return 0;
+}
+
+>  	return 0;
+>  }
+>  
+> @@ -372,7 +482,7 @@ static void help(char *name)
+>  	printf(" -v: specify the number of vCPUs to run.\n");
+>  	printf(" -o: Overlap guest memory accesses instead of partitioning\n"
+>  	       "     them into a separate region of memory for each vCPU.\n");
+> -	printf(" -w: Control whether the test warns or fails if more than 10%\n"
+> +	printf(" -w: Control whether the test warns or fails if more than 10%%\n"
+>  	       "     of pages are still seen as idle/old after accessing guest\n"
+>  	       "     memory.  >0 == warn only, 0 == fail, <0 == auto.  For auto\n"
+>  	       "     mode, the test fails by default, but switches to warn only\n"
+> @@ -383,6 +493,12 @@ static void help(char *name)
+>  	exit(0);
+>  }
+>  
+> +void destroy_cgroup(char *cg)
+
+static.  But this is a pointless wrapper, just delete it.
+
+> +{
+> +	printf("Destroying cgroup: %s\n", cg);
+> +	cg_destroy(cg);
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>  	struct test_params params = {
+> @@ -390,6 +506,7 @@ int main(int argc, char *argv[])
+>  		.vcpu_memory_bytes = DEFAULT_PER_VCPU_MEM_SIZE,
+>  		.nr_vcpus = 1,
+>  	};
+> +	char *new_cg = NULL;
+>  	int page_idle_fd;
+>  	int opt;
+>  
+> @@ -424,15 +541,53 @@ int main(int argc, char *argv[])
+>  		}
+>  	}
+>  
+> -	page_idle_fd = open("/sys/kernel/mm/page_idle/bitmap", O_RDWR);
+> -	__TEST_REQUIRE(page_idle_fd >= 0,
+> -		       "CONFIG_IDLE_PAGE_TRACKING is not enabled");
+> -	close(page_idle_fd);
+> +	if (lru_gen_usable()) {
+
+Using MGLRU on my home box fails.  It's full cgroup v2, and has both
+CONFIG_IDLE_PAGE_TRACKING=y and MGLRU enabled.
+
+==== Test Assertion Failure ====
+  access_tracking_perf_test.c:244: false
+  pid=114670 tid=114670 errno=17 - File exists
+     1	0x00000000004032a9: find_generation at access_tracking_perf_test.c:244
+     2	0x00000000004032da: lru_gen_mark_memory_idle at access_tracking_perf_test.c:272
+     3	0x00000000004034e4: mark_memory_idle at access_tracking_perf_test.c:391
+     4	 (inlined by) run_test at access_tracking_perf_test.c:431
+     5	0x0000000000403d84: for_each_guest_mode at guest_modes.c:96
+     6	0x0000000000402c61: run_test_for_each_guest_mode at access_tracking_perf_test.c:492
+     7	0x000000000041d8e2: cg_run at cgroup_util.c:382
+     8	0x00000000004027fa: main at access_tracking_perf_test.c:572
+     9	0x00007fa1cb629d8f: ?? ??:0
+    10	0x00007fa1cb629e3f: ?? ??:0
+    11	0x00000000004029d4: _start at ??:?
+  Could not find a generation with 90% of guest memory (235929 pages).
+
+Interestingly, if I force the test to use /sys/kernel/mm/page_idle/bitmap, it
+passes.
+
+Please try to reproduce the failure (assuming you haven't already tested that
+exact combination of cgroups v2, MGLRU=y, and CONFIG_IDLE_PAGE_TRACKING=y). I
+don't have bandwidth to dig any further at this time.
+
+> +		if (cg_find_unified_root(cgroup_root, sizeof(cgroup_root), NULL))
+> +			ksft_exit_skip("cgroup v2 isn't mounted\n");
+> +
+> +		new_cg = cg_name(cgroup_root, TEST_MEMCG_NAME);
+> +		printf("Creating cgroup: %s\n", new_cg);
+> +		if (cg_create(new_cg) && errno != EEXIST)
+> +			ksft_exit_skip("could not create new cgroup: %s\n", new_cg);
+> +
+> +		use_lru_gen = true;
+> +	} else {
+> +		page_idle_fd = open("/sys/kernel/mm/page_idle/bitmap", O_RDWR);
+> +		__TEST_REQUIRE(page_idle_fd >= 0,
+> +			       "Couldn't open /sys/kernel/mm/page_idle/bitmap. "
+> +			       "Is CONFIG_IDLE_PAGE_TRACKING enabled?");
+> +
+> +		close(page_idle_fd);
+> +	}
+
+Splitting the "check" and "execute" into separate if-else statements results in
+some compilers complaining about new_cg possibly being unused.  The compiler is
+probably being a bit stupid, but the code is just as must to blame.  There's zero
+reason to split this in two, just do everything after the idle_pages_warn_only
+and total_pages processing.  Code at the bottom (note, you'll have to rebase on
+my not-yet-posted series, or undo the use of __open_path_or_exit()).
+
+>  
+>  	if (idle_pages_warn_only == -1)
+>  		idle_pages_warn_only = access_tracking_unreliable();
+>  
+> -	for_each_guest_mode(run_test, &params);
+> +	/*
+> +	 * If guest_page_size is larger than the host's page size, the
+> +	 * guest (memstress) will only fault in a subset of the host's pages.
+> +	 */
+> +	total_pages = params.nr_vcpus * params.vcpu_memory_bytes /
+> +		      max(memstress_args.guest_page_size,
+> +			  (uint64_t)getpagesize());
+> +
+> +	if (use_lru_gen) {
+> +		int ret;
+> +
+> +		puts("Using lru_gen for aging");
+> +		/*
+> +		 * This will fork off a new process to run the test within
+> +		 * a new memcg, so we need to properly propagate the return
+> +		 * value up.
+> +		 */
+> +		ret = cg_run(new_cg, &run_test_in_cg, &params);
+> +		destroy_cgroup(new_cg);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		puts("Using page_idle for aging");
+> +		for_each_guest_mode(run_test, &params);
+> +	}
+
+static int run_test_for_each_guest_mode(const char *cgroup, void *arg)
+{
+	for_each_guest_mode(run_test, arg);
+	return 0;
+}
+
+int main(int argc, char *argv[])
+{
+	struct test_params params = {
+		.backing_src = DEFAULT_VM_MEM_SRC,
+		.vcpu_memory_bytes = DEFAULT_PER_VCPU_MEM_SIZE,
+		.nr_vcpus = 1,
+	};
+	int page_idle_fd;
+	int opt;
+
+	guest_modes_append_default();
+
+	while ((opt = getopt(argc, argv, "hm:b:v:os:w:")) != -1) {
+		switch (opt) {
+		case 'm':
+			guest_modes_cmdline(optarg);
+			break;
+		case 'b':
+			params.vcpu_memory_bytes = parse_size(optarg);
+			break;
+		case 'v':
+			params.nr_vcpus = atoi_positive("Number of vCPUs", optarg);
+			break;
+		case 'o':
+			overlap_memory_access = true;
+			break;
+		case 's':
+			params.backing_src = parse_backing_src_type(optarg);
+			break;
+		case 'w':
+			idle_pages_warn_only =
+				atoi_non_negative("Idle pages warning",
+						  optarg);
+			break;
+		case 'h':
+		default:
+			help(argv[0]);
+			break;
+		}
+	}
+
+	if (idle_pages_warn_only == -1)
+		idle_pages_warn_only = access_tracking_unreliable();
+
+	/*
+	 * If guest_page_size is larger than the host's page size, the
+	 * guest (memstress) will only fault in a subset of the host's pages.
+	 */
+	total_pages = params.nr_vcpus * params.vcpu_memory_bytes /
+		      max_t(uint64_t, memstress_args.guest_page_size, getpagesize());
+
+	if (lru_gen_usable()) {
+		bool cg_created = true;
+		char *test_cg = NULL;
+		int ret;
+
+		puts("Using lru_gen for aging");
+		use_lru_gen = true;
+
+		if (cg_find_controller_root(cgroup_root, sizeof(cgroup_root), "memory"))
+			ksft_exit_skip("Cannot find memory group controller\n");
+
+		test_cg = cg_name(cgroup_root, TEST_MEMCG_NAME);
+		printf("Creating cgroup: %s\n", test_cg);
+		if (cg_create(test_cg)) {
+			if (errno == EEXIST)
+				cg_created = false;
+			else
+				ksft_exit_skip("could not create new cgroup: %s\n", test_cg);
+		}
+
+		/*
+		 * This will fork off a new process to run the test within
+		 * a new memcg, so we need to properly propagate the return
+		 * value up.
+		 */
+		ret = cg_run(test_cg, &run_test_for_each_guest_mode, &params);
+		if (cg_created)
+			cg_destroy(test_cg);
+		return ret;
+	}
+
+	puts("Using page_idle for aging");
+	page_idle_fd = __open_path_or_exit("/sys/kernel/mm/page_idle/bitmap", O_RDWR,
+					   "Is CONFIG_IDLE_PAGE_TRACKING enabled?");
+	close(page_idle_fd);
+	run_test_for_each_guest_mode(NULL, &params);
+	return 0;
+}
