@@ -1,434 +1,211 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2041.outbound.protection.outlook.com [40.107.93.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708242D29A6
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 11:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745927190; cv=none; b=sdAjO1EBoqpbHVVheR+5N8r5wMko2+9Fp8v9MDE/1m2ynhjQa/Ov9LmNA96hcH6L7yI+VRsgHLA44I4l/r6Ly/jv1C7R1siKb9C86hTleCCJw0Wsx3YQognCNjXfvhsCVJoDhOE1aF3Iy+Rw6DgIqXDsv5BP5QbjX6+NVshsceA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745927190; c=relaxed/simple;
-	bh=//7Q4pa0cyHdD4P62SOM8iLoDYvBplXZ4+xR7j8wswY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ue/1PXbeTM23bp6ryXNPfX6GeN0XqTQwEZtHP3JESPl6TcwtaWPDnI9OAQ+RFbJqu/dEQJ53Vid7HTfb+1BpgdT6eTup/WTJrO4oeo3+HzFIn6O3gNQCedpWR/zYL9T12WGVc8PjjFshbqocyInyalvdb0P4JlPony5cTrhZx/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bpfvjltT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257E20969A;
+	Tue, 29 Apr 2025 11:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745927639; cv=fail; b=oq1hQTdSpBjSKNvmwhLYR99qGHSX9OWjlO+86NvNkCQnSjqaUDrJ84oW1DLfYMvLEgee+lRKC9VW94sKMGdKmXfLfpuyA1fp/BvpAeDxMRu9xkJpiieQpm3IUOV0M4/sUhyPXOLc5QQzvHYThG2Xq8rT+/A55ME90CB65fizeeE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745927639; c=relaxed/simple;
+	bh=e0G3aqGKJS4HJV4ryjQvt216LRtg97h8NnYHn+7NO/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hZqdxcC3yr+/OyyyH5dvVgXspbw5LTwmo+HzEQSlyWOBRgzy5P/8loJO4a6CZe65UJYI0IJwmdry4fCMccZULPGGO/Wlb78MDgKaOloa1V/xdchLYlKFxJks1uXab7FBUYRUxNiE1J0tGmAOwPEagzcG6Git2VoNepEnFv0AbRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BX2BCRWM; arc=fail smtp.client-ip=40.107.93.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bpfvjltT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745927187;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UNP0/g1fsLvLBQS0mp5T4cvzk2DsJdERKWqgqviWFK4=;
-	b=bpfvjltTUW+i2iQ6I6dlm0qUuj3ijOjCw9zy/HKdw0llJxRqEI6WEvfsUpMAoRaLX9CbLO
-	oGNrDv7ba1lUg/1McpFQf7j4c9duXxGxfgJRaFu6h+aKjGLNCVh8OPgTMoyzm+nqN3rLrg
-	RKOQcC6j8l5OVNjiD2GzqPOItKBfSwM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-155-r7bLT26sNc-abpjlyaV0Qg-1; Tue,
- 29 Apr 2025 07:46:25 -0400
-X-MC-Unique: r7bLT26sNc-abpjlyaV0Qg-1
-X-Mimecast-MFC-AGG-ID: r7bLT26sNc-abpjlyaV0Qg_1745927181
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEDBC1800264;
-	Tue, 29 Apr 2025 11:46:21 +0000 (UTC)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.225.102])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C51B19560A3;
-	Tue, 29 Apr 2025 11:45:52 +0000 (UTC)
-From: Valentin Schneider <vschneid@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Daniel Wagner <dwagner@suse.de>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BX2BCRWM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aHkK74+f2TvAAdmxtPjoqPaXr7vSbN7fyEARy8J3Knh0PCjStXQ4RsvpG4mG0PxvJymHZj0RqBwcEDcrPGAqPM/rTMOXdO5Q1MYZpx2VTqpvp/0lcDGPXI3gbZH0OWEhQ2G7Cgt8hGAxuHSiG71OZQZYLduxtogaZUN5OrRGKMPjJtb3NmuaaKr8i9ax8o/K8+vZU6JMuzlTk+FEdKHMXk+2vAlEFS/Ao1YLoZ4QemaUAT/BsMR2YVyTvg/2Vjsl20MRGT46TxNR0OsR6BUlfdvUNiuR5iNRoozllxQUuCGB3jfSAevEuPkvMBbdd3r6CAfa7BLxcyFAkxDbmKFPvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8fEZmgm5M6RSMETKWpbIYtmCdRPp4M+CCmDk7MXSVew=;
+ b=xqcNqovjLqrIWb9viUNxQUqSKzUQAIiLhPpVhS9XlVAqHDOC3k8/r0tmyR6v3B5TEyUE1Oja5N35lwrmLpG1s9P+5XXh9e69UDJKaucDiNr/AiZQhvNTEWj+eWisFHw/b6l4JUf27iUO7CP3dHvDqYJ9lV+3Y7k154YK/o/gl0pKtZ0TPiiZpkWvC7oxX4xcp7YKbHnpTpBJYUo1HyXv4X41Qell4wDXbHfxKhqdd7FUfd2XRimvheWtH8Nxfg8vUUWVRGrrtzrLb0mp4dG5l5OAWDKvPQOxojzMzBZhyDxvhuLNBElOP7KXiTHBl729TP2VE9z6L7FWIEZYW7jzeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8fEZmgm5M6RSMETKWpbIYtmCdRPp4M+CCmDk7MXSVew=;
+ b=BX2BCRWMJwRVmNr31YulOR1zz3zXPrht9kYuzu7vieIGsOBOgZSLuCofUkkxRN0dWNLz/EezF6ohSZh/xN+sNtUVWrhHNUnzI5P7T088RfES/gYwmUbePrKhkHmB+RA4AQmIAWHT5OM/5chpWWNjfh3zrC6pkWPxZJmUE1aYQV9xxABEXIG9Z4nUpSJe322xo4wgb5ZORbRaVfmNE/caZmUYym1ZPiZRJ6+/eoN5XH+DYSuA8kqyxuyT3vJIBj9WSVoG2FEArDPRMdaufNu0u4ZXQvReNowpUiOlxbgbzEzqcTGe+JlkpR5iu/zVosiL64aVk5X5DiYgW6bFv3dfaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by BL4PR12MB9723.namprd12.prod.outlook.com (2603:10b6:208:4ed::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Tue, 29 Apr
+ 2025 11:53:56 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
+ 11:53:55 +0000
+Date: Tue, 29 Apr 2025 08:53:54 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>, Jake Edge <jake@lwn.net>,
+	Jonathan Corbet <corbet@lwn.net>, Zhu Yanjun <zyjzyj2000@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
+	iommu@lists.linux.dev, linux-nvme@lists.infradead.org,
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Rong Xu <xur@google.com>,
-	Rafael Aquini <aquini@redhat.com>,
-	Song Liu <song@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH v5 25/25] context_tracking,x86: Defer kernel text patching IPIs
-Date: Tue, 29 Apr 2025 13:32:42 +0200
-Message-ID: <20250429113242.998312-26-vschneid@redhat.com>
-In-Reply-To: <20250429113242.998312-1-vschneid@redhat.com>
-References: <20250429113242.998312-1-vschneid@redhat.com>
+	Matthew Wilcox <willy@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>
+Subject: Re: [PATCH v10 03/24] iommu: generalize the batched sync after map
+ interface
+Message-ID: <20250429115354.GA2260709@nvidia.com>
+References: <cover.1745831017.git.leon@kernel.org>
+ <69da19d2cc5df0be5112f0cf2365a0337b00d873.1745831017.git.leon@kernel.org>
+ <f8d86cde-d485-4e5a-a693-e9323679474f@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8d86cde-d485-4e5a-a693-e9323679474f@linux.intel.com>
+X-ClientProxiedBy: BN0PR03CA0014.namprd03.prod.outlook.com
+ (2603:10b6:408:e6::19) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|BL4PR12MB9723:EE_
+X-MS-Office365-Filtering-Correlation-Id: aad3d614-0e59-4958-fea9-08dd871484cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xQxr7PbUALSAzpW+8au/fVr2/1eTM4HMKyqQglZ7v+/SpDlzfFhMNvDB8T8+?=
+ =?us-ascii?Q?LsKsaABb2ErClFVxRXrJ6lkA+5USMIhjWD86qBGXEe8qwfyskbVuR9hUoibZ?=
+ =?us-ascii?Q?XnUCwvIiASurfL5IOgjiDOgJrWKRf8qLBbVXH6H90UxXK29/qvjJQWDbqpBK?=
+ =?us-ascii?Q?EURf4LkMk5np9uLm1XqNoRBW/9RvaC9CgzmADgSSFOmB8Q0XNki/VEso1y7H?=
+ =?us-ascii?Q?biG1V2ke0S9r21rfcvPHYYZ8XL/m7i1I+WXJk66V0yJzg8d0dNv5sp++PzCd?=
+ =?us-ascii?Q?6+LIujpX/trAbxYSm7hM/Fcd0SRcHs2ldN7BUClu3BJ3oMJo5G4MaLq2sPau?=
+ =?us-ascii?Q?3KjQcIUN9i55HWHIgBf+cjYG4SSiDy9Po5qQnVosCcJzVZYMU4MjMy4q0hzV?=
+ =?us-ascii?Q?f0xyAOTgEKk+wha0w5hpPQqQp9NFapuo3itqThv7FI4xClmwowIUb0VrX2hw?=
+ =?us-ascii?Q?vTatbUfA4s/wwzsBXGijmEdrYrMzM0Sn+Vb7HMTDp/qUa2UMBYCk92bwp+az?=
+ =?us-ascii?Q?qineCr8ct7FL27Hl8LGptzaxqoOGCqyEQ1Q0w6BjkMrUk+42oK2V2T+by1Gc?=
+ =?us-ascii?Q?XXcHE+NfEpx/8j9IK591sIIZ1NMel2hzW6AvrrJFvGw5E1gdHMEYLlpphtsD?=
+ =?us-ascii?Q?pouGGFMwGicxlBwEPnhQvW9BCtEUf7wiHM0kBYfneSFfJCc18FiTTCBs8an4?=
+ =?us-ascii?Q?XY5ioSSW4QottHkcJjS0hwISb+jqYT9Tj1kdwQZEYxhcoSQhoSu5+rn55VVG?=
+ =?us-ascii?Q?9dRJ+j/uSFmvrfZ4/R8OkkBz5zt9EY2stBUZ0nbSBoLskf+1pmKbFDlpZ/tY?=
+ =?us-ascii?Q?OyKicC8GtkCe9G2a7v7t4T5uPj5BGB0cCh2j8t7LfpvOFiaMcrCAhphNPBJk?=
+ =?us-ascii?Q?UNRUJLFwJGhHcmPJRRUAVHxLUuX4Es6SdxzWkRjswhDqf0mVKlymhpWpM56G?=
+ =?us-ascii?Q?MRkSjmYeuM6+tSHb5Umy1USbXI/wbnfwAV7+D+hmD+MMPNYHhd04OqDKHKPH?=
+ =?us-ascii?Q?04MCFicpUqcObuF5x8GZYoUWicQXYNk40S9BJjrHKosLBAf7yiAE35FjXLU+?=
+ =?us-ascii?Q?iO4bm4XKeFsrbCUu2aCN2UPLXhpvmlnAq+2eNG3At8p4MIbHZ5C8wiIuSF5Q?=
+ =?us-ascii?Q?CYqdcKSTTqgLu5vk0HNVMlpj+cvOwCM6h6RIu8NMaw+KYjuZpCrXSYqz1dRy?=
+ =?us-ascii?Q?kHlnJs4EyYpIwnjQVN8c0TrmdujhWNdiUjA2B9hSEMdUMYXougkBBCNmXnK+?=
+ =?us-ascii?Q?hLNpMgR6SYmfhUA7gOp0NLio+Ir+BORNeKF+RzpEOILOJlzF2xvOAuK/VtFX?=
+ =?us-ascii?Q?mgj67R1glaToAAtBMh4KBuxuSf1EJ7yIxweHItnByjxahj4iyxa4HPl5g+BH?=
+ =?us-ascii?Q?A5fx0kWHp9Ryz17y8h+3ZZFCPfDPBA/6E3ooBPh9Glk5wI+qxREB6C4ZqpxT?=
+ =?us-ascii?Q?Y/o7qM94tlk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wC3FIEAsz2w7nfXfG3Y9QutckGdvDqtgvT10ArxZrnBzJJ7IXU/PzVQsx7JW?=
+ =?us-ascii?Q?fFZeHTa4SHWeclfkOJNBHFM2crgeD2O7RC/HS8YrPYJvGd3Jvxd3NzFdlSSU?=
+ =?us-ascii?Q?s7C7UwSw80lBN9Oq8n/uHwoFMu0afo6BNu8NL/+pAx1hvmGzjhHjLYREZEyU?=
+ =?us-ascii?Q?FebclJ3xXddoe1DAM6FExjVPy7sa5S3mTgsOEOyWF7JPkg6eEASx0cvAp7Fi?=
+ =?us-ascii?Q?+xMaQGNkN3n44Bhv9ziHH0h3mqzxXspNe68TVtUwHw6pSV5Vf58y+fbsLH+e?=
+ =?us-ascii?Q?p9kEtQ4aZhcAR3l81mDzfTwPPgYXYhbe9byQJ+jTJZyI2GftlrhdCqRESZ4r?=
+ =?us-ascii?Q?TkzuzoJd6Fi1zYOkcUJV52K6jhC8x8ndvY7BiWugVGDrkbX9Gj5BSo8JwmN4?=
+ =?us-ascii?Q?C/Emyx+70hhQYTfX3bj+9zs1MleKuaLRP1Ski4eQydIlqQyjb7WGkslDGcXV?=
+ =?us-ascii?Q?E5u+I5ASOTgF2NELBLCP5ZxnrNQzwkViKTsq5IQpIrnGce4vdcyvs10A3e3a?=
+ =?us-ascii?Q?ELxhtFEEIHHl52HeloAMuoxibCP9wccEpWPIQqVpX29i8+TwfmhREmcAmsur?=
+ =?us-ascii?Q?o3FAoIk6fGEJcu1us7+14ObWMmq9vG5JG3yMAxhsuctSbimH8t9fpqZPv91g?=
+ =?us-ascii?Q?XVEcvhOPT6WDZqi+50kU6vLemgqDF3sTOUDTNtJBh2LeeaPpsET586eTlTIt?=
+ =?us-ascii?Q?PhPF9o4oFdPUQpAPxiM3QA/EQNQ7MwSyAeiSJLH/CI9iMoIopNM3uE/+c+mg?=
+ =?us-ascii?Q?/c8Is05w6XIznajchzaLMt45TT+ydBIzjuIHLMSVxKo+WqNSL6JIEpXQm6vb?=
+ =?us-ascii?Q?qLJGalJKUMPqRp9qkq8m2KnbmfIdSABHEKjW5mxDgAAAysIY+zSMHDv5jZ7L?=
+ =?us-ascii?Q?VCyhEghaOhNd4gwzvp2t9XG5EIVUktp3oKDyYjAs5n2j3wLdaf3vt2JTSpDR?=
+ =?us-ascii?Q?rLCGXVqG/eHi3CGhILTYs9wPR7SGXnFAiUMzQHDyfH5Qx6RU1UsI2bO0stwn?=
+ =?us-ascii?Q?EmnX6Xkc0hnJKtNg1Ms9pTYRqZt42Sylijnuj8EmaT0vQhvSeKr1KLEYcJOf?=
+ =?us-ascii?Q?WuMe9G9NNNtXX69mg/Ni7X3DnUdAOhK59421Pnj6+8Y6Pcx/+1rBVOX60uQY?=
+ =?us-ascii?Q?26IWx6ExxXIzKOIQhHBOQaKrGlQnqZf34h/eAFKKKpIYNV+IDn3xhZ/FQVNG?=
+ =?us-ascii?Q?VSoO0/RvoMeYWmybkgofExjLUYxZC43UBhDlOyB5EeAq2BmQfOWKtXiqsVzL?=
+ =?us-ascii?Q?vaHNzKfqWnQ7vhSjTTFikLd9jWwq/Rr5SAw1UijcDgKKBo7geKf+CCGy978T?=
+ =?us-ascii?Q?OtbdJ4xlQU4RNEMS2/FQWW/x+t3ueUyr+q61QrUEUZ7jDac37zWg7jThifjM?=
+ =?us-ascii?Q?6jE23jMlBAUd1frQvffgPu2zWqu2Xe9pSnjea4xrthKtCIQCoPAZG4bKlxR3?=
+ =?us-ascii?Q?aSZ7Ix6UgWF/hpkGlo6CPxWS38DJERZ3eIRFT6O54vZuKiQHUVXjR4GVzRM6?=
+ =?us-ascii?Q?QmGUJgYi86vp5/ZesJFdwTXBUglM+MRZt4lX8nKigd0FvP3oVGw9uXj4sySt?=
+ =?us-ascii?Q?JbTygTkkInjUO1J6SvNd5z+bUy9N4qVr94AP7tlM?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aad3d614-0e59-4958-fea9-08dd871484cd
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 11:53:55.6003
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q0j5hm7cJQm/YijapTFank/q+P2iDLcv55P2edOp/4Y+cgQK4R4AG59xlTVPLS8m
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9723
 
-text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
-them vs the newly patched instruction. CPUs that are executing in userspace
-do not need this synchronization to happen immediately, and this is
-actually harmful interference for NOHZ_FULL CPUs.
+On Tue, Apr 29, 2025 at 10:19:46AM +0800, Baolu Lu wrote:
+> > -int iommu_map(struct iommu_domain *domain, unsigned long iova,
+> > -	      phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+> > +int iommu_sync_map(struct iommu_domain *domain, unsigned long iova, size_t size)
+> >   {
+> >   	const struct iommu_domain_ops *ops = domain->ops;
+> > -	int ret;
+> > -
+> > -	might_sleep_if(gfpflags_allow_blocking(gfp));
+> > -	/* Discourage passing strange GFP flags */
+> > -	if (WARN_ON_ONCE(gfp & (__GFP_COMP | __GFP_DMA | __GFP_DMA32 |
+> > -				__GFP_HIGHMEM)))
+> > -		return -EINVAL;
+> > +	if (!ops->iotlb_sync_map)
+> > +		return 0;
+> > +	return ops->iotlb_sync_map(domain, iova, size);
+> > +}
+> 
+> I am wondering whether iommu_sync_map() needs a return value. The
+> purpose of this callback is just to sync the TLB cache after new
+> mappings are created, which should effectively be a no-fail operation.
 
-As the synchronization IPIs are sent using a blocking call, returning from
-text_poke_bp_batch() implies all CPUs will observe the patched
-instruction(s), and this should be preserved even if the IPI is deferred.
-In other words, to safely defer this synchronization, any kernel
-instruction leading to the execution of the deferred instruction
-sync (ct_work_flush()) must *not* be mutable (patchable) at runtime.
+Yeah, it is pretty much nonsense, the other flushes don't fail:
 
-This means we must pay attention to mutable instructions in the early entry
-code:
-- alternatives
-- static keys
-- static calls
-- all sorts of probes (kprobes/ftrace/bpf/???)
+	void (*flush_iotlb_all)(struct iommu_domain *domain);
+	int (*iotlb_sync_map)(struct iommu_domain *domain, unsigned long iova,
+			      size_t size);
+	void (*iotlb_sync)(struct iommu_domain *domain,
+			   struct iommu_iotlb_gather *iotlb_gather);
 
-The early entry code leading to ct_work_flush() is noinstr, which gets rid
-of the probes.
+> Furthermore, currently no iommu driver implements this callback in a way
+> that returns a failure. 
 
-Alternatives are safe, because it's boot-time patching (before SMP is
-even brought up) which is before any IPI deferral can happen.
+Given s390 does weirdly fail sync_map but not sync this needs a bigger
+touch than just that.
 
-This leaves us with static keys and static calls.
+But what I really want to do is get rid of iotlb_sync_map and replace it
+with iotlb_sync, and feed the gather through the iommu_map path.
 
-Any static key used in early entry code should be only forever-enabled at
-boot time, IOW __ro_after_init (pretty much like alternatives). Exceptions
-are explicitly marked as allowed in .noinstr and will always generate an
-IPI when flipped.
+It doesn't really make sense to have a special interface for this.
 
-The same applies to static calls - they should be only updated at boot
-time, or manually marked as an exception.
+So I think this patch is fine as is..
 
-Objtool is now able to point at static keys/calls that don't respect this,
-and all static keys/calls used in early entry code have now been verified
-as behaving appropriately.
-
-Leverage the new context_tracking infrastructure to defer sync_core() IPIs
-to a target CPU's next kernel entry.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
-Signed-off-by: Valentin Schneider <vschneid@redhat.com>
----
- arch/x86/include/asm/context_tracking_work.h |  6 ++-
- arch/x86/include/asm/text-patching.h         |  1 +
- arch/x86/kernel/alternative.c                | 39 +++++++++++++++++---
- arch/x86/kernel/kprobes/core.c               |  4 +-
- arch/x86/kernel/kprobes/opt.c                |  4 +-
- arch/x86/kernel/module.c                     |  2 +-
- include/asm-generic/sections.h               | 15 ++++++++
- include/linux/context_tracking_work.h        |  4 +-
- 8 files changed, 60 insertions(+), 15 deletions(-)
-
-diff --git a/arch/x86/include/asm/context_tracking_work.h b/arch/x86/include/asm/context_tracking_work.h
-index 5f3b2d0977235..485b32881fde5 100644
---- a/arch/x86/include/asm/context_tracking_work.h
-+++ b/arch/x86/include/asm/context_tracking_work.h
-@@ -2,11 +2,13 @@
- #ifndef _ASM_X86_CONTEXT_TRACKING_WORK_H
- #define _ASM_X86_CONTEXT_TRACKING_WORK_H
- 
-+#include <asm/sync_core.h>
-+
- static __always_inline void arch_context_tracking_work(enum ct_work work)
- {
- 	switch (work) {
--	case CT_WORK_n:
--		// Do work...
-+	case CT_WORK_SYNC:
-+		sync_core();
- 		break;
- 	case CT_WORK_MAX:
- 		WARN_ON_ONCE(true);
-diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
-index ab9e143ec9fea..9dfa46f721c1d 100644
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -33,6 +33,7 @@ extern void apply_relocation(u8 *buf, const u8 * const instr, size_t instrlen, u
-  */
- extern void *text_poke(void *addr, const void *opcode, size_t len);
- extern void text_poke_sync(void);
-+extern void text_poke_sync_deferrable(void);
- extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
- extern void *text_poke_copy(void *addr, const void *opcode, size_t len);
- #define text_poke_copy text_poke_copy
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index bf82c6f7d6905..8c73ac6243809 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -18,6 +18,7 @@
- #include <linux/mmu_context.h>
- #include <linux/bsearch.h>
- #include <linux/sync_core.h>
-+#include <linux/context_tracking.h>
- #include <asm/text-patching.h>
- #include <asm/alternative.h>
- #include <asm/sections.h>
-@@ -2450,9 +2451,24 @@ static void do_sync_core(void *info)
- 	sync_core();
- }
- 
-+static bool do_sync_core_defer_cond(int cpu, void *info)
-+{
-+	return !ct_set_cpu_work(cpu, CT_WORK_SYNC);
-+}
-+
-+static void __text_poke_sync(smp_cond_func_t cond_func)
-+{
-+	on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
-+}
-+
- void text_poke_sync(void)
- {
--	on_each_cpu(do_sync_core, NULL, 1);
-+	__text_poke_sync(NULL);
-+}
-+
-+void text_poke_sync_deferrable(void)
-+{
-+	__text_poke_sync(do_sync_core_defer_cond);
- }
- 
- /*
-@@ -2623,6 +2639,7 @@ static int tp_vec_nr;
-  */
- static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries)
- {
-+	smp_cond_func_t cond = do_sync_core_defer_cond;
- 	unsigned char int3 = INT3_INSN_OPCODE;
- 	unsigned int i;
- 	int do_sync;
-@@ -2658,11 +2675,21 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 	 * First step: add a int3 trap to the address that will be patched.
- 	 */
- 	for (i = 0; i < nr_entries; i++) {
--		tp[i].old = *(u8 *)text_poke_addr(&tp[i]);
--		text_poke(text_poke_addr(&tp[i]), &int3, INT3_INSN_SIZE);
-+		void *addr = text_poke_addr(&tp[i]);
-+
-+		/*
-+		 * There's no safe way to defer IPIs for patching text in
-+		 * .noinstr, record whether there is at least one such poke.
-+		 */
-+		if (is_kernel_noinstr_text((unsigned long)addr) ||
-+		    is_module_noinstr_text_address((unsigned long)addr))
-+			cond = NULL;
-+
-+		tp[i].old = *((u8 *)addr);
-+		text_poke(addr, &int3, INT3_INSN_SIZE);
- 	}
- 
--	text_poke_sync();
-+	__text_poke_sync(cond);
- 
- 	/*
- 	 * Second step: update all but the first byte of the patched range.
-@@ -2724,7 +2751,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 		 * not necessary and we'd be safe even without it. But
- 		 * better safe than sorry (plus there's not only Intel).
- 		 */
--		text_poke_sync();
-+		__text_poke_sync(cond);
- 	}
- 
- 	/*
-@@ -2745,7 +2772,7 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
- 	}
- 
- 	if (do_sync)
--		text_poke_sync();
-+		__text_poke_sync(cond);
- 
- 	/*
- 	 * Remove and wait for refs to be zero.
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index 09608fd936876..687e6805b7511 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -808,7 +808,7 @@ void arch_arm_kprobe(struct kprobe *p)
- 	u8 int3 = INT3_INSN_OPCODE;
- 
- 	text_poke(p->addr, &int3, 1);
--	text_poke_sync();
-+	text_poke_sync_deferrable();
- 	perf_event_text_poke(p->addr, &p->opcode, 1, &int3, 1);
- }
- 
-@@ -818,7 +818,7 @@ void arch_disarm_kprobe(struct kprobe *p)
- 
- 	perf_event_text_poke(p->addr, &int3, 1, &p->opcode, 1);
- 	text_poke(p->addr, &p->opcode, 1);
--	text_poke_sync();
-+	text_poke_sync_deferrable();
- }
- 
- void arch_remove_kprobe(struct kprobe *p)
-diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
-index 36d6809c6c9e1..b2ce4d9c3ba56 100644
---- a/arch/x86/kernel/kprobes/opt.c
-+++ b/arch/x86/kernel/kprobes/opt.c
-@@ -513,11 +513,11 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
- 	       JMP32_INSN_SIZE - INT3_INSN_SIZE);
- 
- 	text_poke(addr, new, INT3_INSN_SIZE);
--	text_poke_sync();
-+	text_poke_sync_deferrable();
- 	text_poke(addr + INT3_INSN_SIZE,
- 		  new + INT3_INSN_SIZE,
- 		  JMP32_INSN_SIZE - INT3_INSN_SIZE);
--	text_poke_sync();
-+	text_poke_sync_deferrable();
- 
- 	perf_event_text_poke(op->kp.addr, old, JMP32_INSN_SIZE, new, JMP32_INSN_SIZE);
- }
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index a7998f3517017..d89c9de0ca9f5 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -206,7 +206,7 @@ static int write_relocate_add(Elf64_Shdr *sechdrs,
- 				   write, apply);
- 
- 	if (!early) {
--		text_poke_sync();
-+		text_poke_sync_deferrable();
- 		mutex_unlock(&text_mutex);
- 	}
- 
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 0755bc39b0d80..7d2403014010e 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -199,6 +199,21 @@ static inline bool is_kernel_inittext(unsigned long addr)
- 	       addr < (unsigned long)_einittext;
- }
- 
-+
-+/**
-+ * is_kernel_noinstr_text - checks if the pointer address is located in the
-+ *                    .noinstr section
-+ *
-+ * @addr: address to check
-+ *
-+ * Returns: true if the address is located in .noinstr, false otherwise.
-+ */
-+static inline bool is_kernel_noinstr_text(unsigned long addr)
-+{
-+	return addr >= (unsigned long)__noinstr_text_start &&
-+	       addr < (unsigned long)__noinstr_text_end;
-+}
-+
- /**
-  * __is_kernel_text - checks if the pointer address is located in the
-  *                    .text section
-diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
-index c68245f8d77c5..2facc621be067 100644
---- a/include/linux/context_tracking_work.h
-+++ b/include/linux/context_tracking_work.h
-@@ -5,12 +5,12 @@
- #include <linux/bitops.h>
- 
- enum {
--	CT_WORK_n_OFFSET,
-+	CT_WORK_SYNC_OFFSET,
- 	CT_WORK_MAX_OFFSET
- };
- 
- enum ct_work {
--	CT_WORK_n        = BIT(CT_WORK_n_OFFSET),
-+	CT_WORK_SYNC     = BIT(CT_WORK_SYNC_OFFSET),
- 	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
- };
- 
--- 
-2.49.0
-
+Jason
