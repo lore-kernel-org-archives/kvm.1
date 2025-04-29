@@ -1,607 +1,247 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4883277805
-	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 03:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745897227; cv=none; b=fi27HlB2hCb7AnXfLuguRHMiypsjO8ugroIMtB0ckKoXFtTAojTput7i4YskLHe96KQu4RoS7qT3iEB4DtN8rI7lLEgIEvippXbwFi7EnwoYSo3q5eCBh17emlpu2+FWD8QwZxom9d/ki33ogu9HJ+kvp9JZHd21o0lcUAuuivc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745897227; c=relaxed/simple;
-	bh=QtSO5nlVXPkCRK88VhahUHwkbHyxPNFISaazexycgu0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=USHlIh+iq6aibknLZmUbooIIcGbNIf92cRDF0jF0FVj3mT5yHyDdlMMxo6A6FekmojsEU9r5QNLGtI95zn6EEr0J+LiOpqWP4mA76ikB18LwfsdiNQzTwb2JM9MX6pnqhxhaBUUKJcykn4zdMnLbxEHiz7e38z1d4mrDqF4z9eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g0/vOse7; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC2A15A858;
+	Tue, 29 Apr 2025 03:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745897839; cv=fail; b=Qpt7qKkioU0FlQsh4VSTBxDcHhyaUJ1G6VWD7aDei/wl/wXD5x0WvxUnnM8qHBUHOewJbXm3Q8nreoS6Ma6p/CU+gLojsVm15RCc1FmDE1nvr0d7mLlRgX61/ixnZKhzAWY9CzXKvsrxQx4uzaG9t4GwOi6GeralnJ7rIQOMX+E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745897839; c=relaxed/simple;
+	bh=wijXpDksk38iZ45GrBuFm83tBgkAbftbAaucZ8Z+Hc4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QmZnZgRxFmTXj1EDb1r5XjD+5B5npqXHVmgUUKA6b0VhJsRYWm/+bZ38keVtaEIKa1ZSDKY71n2mzWRmz3Cr/mnf+f5gOw5M2BHqSjPwq2rNm4EXBKiqCuawFW7/MdL4HM2UGgJkampTufwQ86FNC88aYL2FlCJ9w0q2KXTCPfA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q1z1QXb/; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g0/vOse7"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b00e4358a34so3131423a12.0
-        for <kvm@vger.kernel.org>; Mon, 28 Apr 2025 20:27:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745897224; x=1746502024; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLRFIGt2Ey1m50gqrm2J+sBnLuvF3wbxV6n2FoXWwZk=;
-        b=g0/vOse7Z2AFPLN8PhEG7zUlJZc8+Q8RK+Z+uIh+GikCwXwKuQQ4iqxFyzDyDC7vte
-         XznM22JtOYT5al8aQpw+Gw91z4nq7ci/QYP0NSOcvAyF5N9ymaGBp6MYa4HWEDVvnpS9
-         lpaF3siSzWrz7LSX+Xourh5Zk+WnM8TkQsrAGTybjxCtifT8pa4cctLn8XRifEE5CGfu
-         z1LWL3flbXFnlv7TTQX+JMUSByCdSJ97jIZ1MpZnHPHjGQ0VZqW5k+rt8T+9vukyWmvl
-         E/sHOZtSbcUJ2RkRyWor5YCH4r0bypyvpxb3P9yRGixATIzWpUi3r8V6WAdtrObKdOcX
-         KLRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745897224; x=1746502024;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLRFIGt2Ey1m50gqrm2J+sBnLuvF3wbxV6n2FoXWwZk=;
-        b=T4CjWb1cfNijCgTYHSCTmS0s5Ub0OsdTzdTfQ+7hkV4jARWcSwg37OAF4vjXSNUN2A
-         1f3OQ011xG41Io9QUpcyAdMGc7AM6k8NxGbaN8amk8fx0mODGBvtZ0RO5feK5stb+Oxr
-         VhQOFoe/oq1ymYU+BDVL5WPkQjLj2ajb7SCHP8xIweurOUCNt+p4R8GvzdJTcuvP8w8F
-         k9a+wS7vqqFQ/VTKBmVD9Qwo/qi6QZispF9im4hEdiEeqEx0mxVJ7Xst6a3qEKxovhgH
-         Y41pygbPFyG4+06p5pT5AmUilxteBwRnhTuh+jNlErRZDMIfHI/0yQHeM552wk2n5zIY
-         ibVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcCqQ2G5gvZ+3Q4vAfvX3ecVcx6fNUdAj78lneCPd6k3Kb9rtZiAVGzjr2UJRgB7C6YMU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2H1Ehkon/03fgt/RDlk37v7UBB2CkqN+nHLkUkKhMDqKyyHHv
-	p/Q5+zrGkBo0Ch+eMkVomP3xXH9uDH1cx6KLRd5K4b+PLSjIvXX/9BV6IkEPHn5jSe456r/+Gs1
-	EKWhjUpsJcyg/HhJQabSWOw==
-X-Google-Smtp-Source: AGHT+IExMbhMRAF+/sgY1RYdUT/6sqcYfgIryFakw88y7rmYQ9+58dk1gS5dnNa4851+6m4YzqL48EPK9e4SQX2MNw==
-X-Received: from pgbfq27.prod.google.com ([2002:a05:6a02:299b:b0:af2:357f:4269])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:31c8:b0:1f5:520d:fb93 with SMTP id adf61e73a8af0-2093cb057e0mr2955575637.24.1745897223714;
- Mon, 28 Apr 2025 20:27:03 -0700 (PDT)
-Date: Tue, 29 Apr 2025 03:26:45 +0000
-In-Reply-To: <20250429032645.363766-1-almasrymina@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q1z1QXb/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745897838; x=1777433838;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=wijXpDksk38iZ45GrBuFm83tBgkAbftbAaucZ8Z+Hc4=;
+  b=Q1z1QXb/22mnrcNZ86MMnZB6U4RXfda5hjr5Mz7k+zwTRPEi8iM9VtFj
+   6OrnUoXe+iLsm4tVrO5/B6VmmpXMZFso/RN0bgEJxbkrv3AXZ2sfPuZ3T
+   a3vFhNvSNXsIS0jtCK/KjLYblAB0S5QMJQOBMaac7AZzZ8O0Grf+wJeYu
+   /MWvy85qk4vTgqBLMiH+wURPkE9GKFZFEXt/Flq/rT6uVDZBXXvZn7Vwa
+   2L0bqrzor9Wy3lD/plf3+8gWJ7a6+OcvZwltsT2/rcGpGfTVAZnJLsawO
+   1DWAO6VxqfbebEFDFeqhX6Q/ZCrb+1vmaBppZfW0F6Hn37cQZEHBzWdwl
+   Q==;
+X-CSE-ConnectionGUID: SBOIxH3jS7K1oEYRuXUUvw==
+X-CSE-MsgGUID: 2dgdIyW+QJq2o4h/3cnn/w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58876693"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="58876693"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 20:37:13 -0700
+X-CSE-ConnectionGUID: pE7B7jHeQhWtCRWAchDB7g==
+X-CSE-MsgGUID: yNScOEOcSWG/EajdopidjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="138512275"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 20:37:11 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 28 Apr 2025 20:37:10 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 28 Apr 2025 20:37:10 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 28 Apr 2025 20:37:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rz4rR1htXE4w4Pc3siS8Ke+DfUk4J9DSeeLC41VtsppyOB//8eUb+ricm9AcfsldjlWousByRh36oIJiyZkjLrV7ZP3cKU5CpNtcmba+igmpr85rDexet3ivJev5UkXAZMQ+4LWbWfzGsA08/405AU1SIVZ7gUSvVhARSlrcKurCxQ3pnyh1AsK4CL9oY1sLYkJqAVmsJsCfhR+NPTSiJ8LwwWI0WCQrmP3888kww0IlHF+Oxvg3F1s94kI2BV3jXuYEV1dvgOwwuS1wbBsjOymP+wKmNM9ynAgMFTRLX6+ZlUTvVRFQiei8s+TqfrID+f6pvLzG4Re/voujMqkNTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wijXpDksk38iZ45GrBuFm83tBgkAbftbAaucZ8Z+Hc4=;
+ b=n+nX09dMvh2YkLQrsRebr7S5b+nmATev4p1GYvGvCs/oEQ4ZGhdSx1FdbKl50O37sie4avKCqem+hyy1iK2AesSeDlJ3EeEQbUUMNqimkTQ9R5+WkZK5hmHaUI3eFUHzac5LmHLrXI1mNA/5/jkk7ImJGhg035lYHElYOF03vwJdR69nam1PAuaE+C06uPqNmpNpv3//M8EyZpOBFYkzXXL/RZsp5o+KbqzFIk0a+sKKxaGo+ak4iFN45fAGcHNAn1y7BbkCn8HAo5CdpQ5Z2hyox5Sp1zzjnab5xG2aCXbHFeS02ZZjZTxo5F7K87RT6NfazwJ3J6Dg2FZBbwU4YA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by PH7PR11MB8060.namprd11.prod.outlook.com (2603:10b6:510:24f::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Tue, 29 Apr
+ 2025 03:36:40 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9%4]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
+ 03:36:40 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "Bae, Chang Seok" <chang.seok.bae@intel.com>
+CC: "ebiggers@google.com" <ebiggers@google.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Spassov,
+ Stanislav" <stanspas@amazon.de>, "levymitchell0@gmail.com"
+	<levymitchell0@gmail.com>, "samuel.holland@sifive.com"
+	<samuel.holland@sifive.com>, "Li, Xin3" <xin3.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>, "vigbalas@amd.com" <vigbalas@amd.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "john.allen@amd.com" <john.allen@amd.com>, "Yang,
+ Weijiang" <weijiang.yang@intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "hpa@zytor.com" <hpa@zytor.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "aruna.ramakrishna@oracle.com"
+	<aruna.ramakrishna@oracle.com>, "Gao, Chao" <chao.gao@intel.com>,
+	"bp@alien8.de" <bp@alien8.de>, "seanjc@google.com" <seanjc@google.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v5 3/7] x86/fpu/xstate: Differentiate default features for
+ host and guest FPUs
+Thread-Topic: [PATCH v5 3/7] x86/fpu/xstate: Differentiate default features
+ for host and guest FPUs
+Thread-Index: AQHbqelZqhZU+Oq6j0yiouUZFd9/N7Ozg2wAgACfzYCAAIHMgIAAgC8AgAQvOgCAAJ7/AIAAG5MAgAAJFwCAAAPrgA==
+Date: Tue, 29 Apr 2025 03:36:40 +0000
+Message-ID: <f57c6387bf56cba692005d7274d141e1919d22c0.camel@intel.com>
+References: <20250410072605.2358393-1-chao.gao@intel.com>
+	 <20250410072605.2358393-4-chao.gao@intel.com>
+	 <f53bea9b13bd8351dc9bba5e443d5e4f4934555d.camel@intel.com>
+	 <aAtG13wd35yMNahd@intel.com>
+	 <4a4b1f18d585c7799e5262453e4cfa2cf47c3175.camel@intel.com>
+	 <aAwdQ759Y6V7SGhv@google.com>
+	 <6ca20733644279373227f1f9633527c4a96e30ef.camel@intel.com>
+	 <9925d172-94e1-4e7a-947e-46261ac83864@intel.com>
+	 <bf9c19457081735f3b9be023fc41152d0be69b27.camel@intel.com>
+	 <fbaf2f8e-f907-4b92-83b9-192f20e6ba9c@intel.com>
+In-Reply-To: <fbaf2f8e-f907-4b92-83b9-192f20e6ba9c@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH7PR11MB8060:EE_
+x-ms-office365-filtering-correlation-id: 39831563-4cd1-4eda-f2c1-08dd86cf0dc7
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?azFQaVprOEJXRHZOS29IWXNaenA5TTZ1UWRyWVNmZ1B6VGNOTUJXR0h2YkxL?=
+ =?utf-8?B?ZjNYSFJZOHQyOThtSkFyNGtnY2Uxd3lLMi9VN3JUa1ErR0xTNmxvMU1xN1Jy?=
+ =?utf-8?B?TFZ6ZmJwWWNUcGc5TnNFWnVpVFZSRHBmb3BxT1d6S2grdzV4aDc3OHZ5OXBi?=
+ =?utf-8?B?am5RbitIdVh0TnNzYXVrRUk5aVhFRi9mazJ4a3JIWVlIbjZjZERDb0pDdFJB?=
+ =?utf-8?B?U3JmMlVNUUhqTDdheVZOaERESGp3aTRVeXdnVFBQS2wyQzQwUGlxdXU2ZThj?=
+ =?utf-8?B?M2VuR0xTZ2lQQ05wcHRNTngyUTdpdkNYWGJaMDVNT24xNGhPS1dUQytzOFRQ?=
+ =?utf-8?B?QjhSbS83ZWhkTGlzaHRiOUF2YmppSU5uNFdrVVRKbjNDYllNNjI2M25DKzNV?=
+ =?utf-8?B?M1NodmpXSjlBVWY0UmgrQjlKTVNrSm9ncWJBUzlkMUEyWmYwUE0rdXlpTFg5?=
+ =?utf-8?B?TnB0RlQvMG5tc2Z2Q3Rxb2JTSjV0NkNtR1NydWJMcjB0S2FPeHBYcFdBMWo2?=
+ =?utf-8?B?OU1Zek5kQkRYTURLVnlFYTQxTHplLzlIa0xEUzFxWUk4UG9uZFkwMk1QUm5G?=
+ =?utf-8?B?L212b2xVR3BFeDFFcTR1Y1BDWWFMWFJIR0s2R1BDajBWUTdDQk44MWM0QXdj?=
+ =?utf-8?B?VUxUVGxtbU4zOUpkUTl1bWFTZGVuenluUlQrbVgwc0Zmb3VWaW92d1BqeklI?=
+ =?utf-8?B?dTAwZVI4bnpGZEtmcWtHbFZEOW1paFh2QXllQnA4MzVlUGsxbllNZ1ZaRkYx?=
+ =?utf-8?B?MUxuenRua0ttV2VXSWpvZDl0eEJFYjZlWVYza3piZEc2SFFtKzZqcWkyQnZk?=
+ =?utf-8?B?blVaRTJWQXBvRmRsU21EQ1htaFRKWGJMODdiL2M4SE8vTm12UDNHancvU2Zs?=
+ =?utf-8?B?cEkzbk9oazhvd2MwV2lxMHBlV01WdjZuaHBEZjR5N0hyWlZ0UU4xWFlEODJL?=
+ =?utf-8?B?V3lFa2NXMm1uK3poOGVTOUxiUmg3YWtnc2Y2M1ZnMm1jMThzUjlhRkRTNjMw?=
+ =?utf-8?B?Vkt1ckFYN3lIYWdYY3ErMkdWYTdxUEdlTkY0SGhMaW5jQ3gzM0VKUVMzcTI5?=
+ =?utf-8?B?cTQ5Z1ZWd0orcEpWSm5SSlhCNDNNa0N5eDY4OVloWWpjeXdZSXlPR29sNEdR?=
+ =?utf-8?B?NHdwclBRYVlGYXVUZVljcHV5SFkrMVhQcjVDMlJYWEZKUy9vNGxQb0cyUGNX?=
+ =?utf-8?B?dnBOOHpzNWlFVXNoanJNTVJKd1haK2RacVEvbncrOGxCczBKakFPMGNiUGUy?=
+ =?utf-8?B?Q1VYcWY4aHJCMUVhcFRtWi9LWGxMNEorMWRCK1NTS2QrVVRSR0xpZktoTGZN?=
+ =?utf-8?B?dEgwYzlZMjRxeVFJZWM5Q21OTHhzR285T3poWGtjMExTamVhQ2thT2h5cFRN?=
+ =?utf-8?B?QW9xTFRmRFJtYmFlTTlPbHZhVzlBbGJOSUkzSFhNOUw2N3BMdi9LaC8xSjJP?=
+ =?utf-8?B?bFpYS1Vzdk5NOE9LcnhUTTNENE95dXkrejZQbkQ1bWdSdlpNK09RQ2tHMW4y?=
+ =?utf-8?B?WDZkWXhXWVpyQUQ1M0tVVDh2dG5mTjZOWDFESmNFeWsvTHNnY1VaYU03MVMw?=
+ =?utf-8?B?cVdYWGphb0dzUVVJempDbkdwbzMzWFhtWWh0NTlqNmJhMkY5UGhzZSthdDVC?=
+ =?utf-8?B?UmIrcVAxcUt2WUJWT29abXJXQzAvNVFtWHBqQ1FPbDBVSGRFR0g3dDdQU1ky?=
+ =?utf-8?B?WTdMSWNKZEtSSUJ1ZkN3T1dQNTN0aXlnSmhNcFRuYzFNcWZpWDRZQWp5Uk1C?=
+ =?utf-8?B?YVpndnFHdDkxdXZnV3dlMG5ETXg2M3pNSE9pNkptWFArdVFPd3RUeDM0amlD?=
+ =?utf-8?B?ZUNDdUN4MGVqYS9pekdjaTJvcktGTlZ0eTZmanZEd3dwMGpkM2YvZVIxZ2dN?=
+ =?utf-8?B?eGgwS3E1K3dnb0s0TUU1UUxSSGZsWjc1N2hzVWplK05tOGFYT1VvcWNJOWFs?=
+ =?utf-8?B?S016Q1BGVlpGbTBkbm9yaVEwVXBYL2FKamZxS2prZzZEZjFZT05IOXpvWGFF?=
+ =?utf-8?B?UjZJZUVpL2tRPT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?N3Baa2d0b3BraU5oTC8wQll6Mncyb3hxbUxtZDN6eFRXMHo2bmxyRGFTU3ph?=
+ =?utf-8?B?OGJkWUx4SXRmL2tneXBHY3pib2FTZkFhY1ZCSUYvZVU4S1FSU1lsU1hUcVds?=
+ =?utf-8?B?Wmc3TVpqQzZlRGdKQ05JZjZaUFJOU3BIMU1BS2RtVVJGeWdRUkJNby92VlN6?=
+ =?utf-8?B?QitFWWwrQllablFFWmpPM3RvY3lWN1F0cVJXZnlaSG12dk5GNFF3RjRJRFhx?=
+ =?utf-8?B?OUpRRFNEUVRndEk4UVlPWUs1emo2bWcyOS9yYUlZZ1FjUGI4SFpwVjMwSWt1?=
+ =?utf-8?B?NHdodWM0YWJtUVMrU3VwVmRFQzRUMS9XcTMwNXFFV2xtMW1JNHhwMnR0TTBQ?=
+ =?utf-8?B?VUpycXd6MFRWbkdMaUUwYjVOSVZlZGlFWnQ4L1Vrci9mejk4YkJPYUtCbnM4?=
+ =?utf-8?B?WXZackdYVnVtRmVnTU9IUUN0SGRxdnZEM1BJRGprSEpQZXBZb0VoVjNoSVFl?=
+ =?utf-8?B?SzNacGNHQnQ5MnFUd2crWUw2TkdGMzFqaTgyMjFMTUl2ZzlnY1VNcjZqL21J?=
+ =?utf-8?B?eFV2WUhpWkN2NEZHSkwrNllPUVcrRXBDRG5lVm1KWmg2cDZQZUpuRCtvcGZh?=
+ =?utf-8?B?K2Y0ZDlmNnFEeGpsN3NuOHpMR0tjK1dQV2EyblpoUXEwV3IycURYTnIxMDAr?=
+ =?utf-8?B?MTcxVjJZdDNSMDVxUDRuclg5OEl2VUU4THU5d3ArTkg1N2hSMEpMOENVRFYw?=
+ =?utf-8?B?UHhIK1dyTDBXSzlScUx5M0ZkZVIyVkFtQjgwMWx1Vm1XaE9hTmZjWlZLU1V5?=
+ =?utf-8?B?cmJiR3RmTER2VEtZL2NhZlNocFByOFhpSE5jYmt5Z1pDa3UwQW5nRXdaWENk?=
+ =?utf-8?B?OEFqbkpFbkdTUnQwTXVDWXZLc00ydjBIeDJPbEI1V2h0blYvRDRQUkZ1cTYv?=
+ =?utf-8?B?SlBhK05ya1RXSjgvdDlNVUVuSEdIYUFWVEZ6ZTRwVjduS2FGWCtJNnloNWNx?=
+ =?utf-8?B?VUhkRm9MbnI0cFQ4VGxGVTc0aWg5eitYUkNSS0hCb3FaNStBVURLSXRMZGVK?=
+ =?utf-8?B?UDE0czVJL0lNUG1GZzJRbzhxMlJCTG9vb3RoQTRNYTBaVXpSWVFEbVdXaC9T?=
+ =?utf-8?B?NU9ZTk1xMVlWQkNyaWdlSHNTUGgwWkhrUGd2N1FtKzlqVGY2cjdSV1MxdEND?=
+ =?utf-8?B?bVI4U0hnOXFHLy9qOTNzWncxbVFKUFIzU0ZzTjg1RXZSKzZ4aDVPUmRXKzc4?=
+ =?utf-8?B?QlBKeFZPbThiZnB0c01CNSszQjJRbWNma09EbWZYOThHTmh3VGFSY3ZHK1lt?=
+ =?utf-8?B?allwc2RHL1J1STdiUHg1YWhEcVRYNnNmdXJTM3c2YW5FNDZTa0FUa2NIRUJI?=
+ =?utf-8?B?Z3BUS1VTOUV4cWcvY1JhOEw0aUVBM3JmekpZSm15T3hrWnBkQTBpMEFCeHFW?=
+ =?utf-8?B?N3pnOVBNWWpXQ3NvMUdyRTNteHNGZGdicU1aNmRVMTNEYkNQR1VtTFBlUDZH?=
+ =?utf-8?B?a2pRTmwxRDB4K1RDQ3hXYzVtMjBJOWwyMUxiT0lINU15VUF2Y3l0RkRjTTVB?=
+ =?utf-8?B?RWIzSDhLWGFUbXN6UldMNnlLOVdIOW1WaWVpK2x6a1hTMUZYV0VNeWxkeUJ2?=
+ =?utf-8?B?dUwySzd1dktBTG5yQWxxay80TnhheDFFZmFrTWlsN2tBclVPdnBvbkdvRGFO?=
+ =?utf-8?B?SzdVS1hxUm9GWStzMmFRbm04Qk9YQldiWHJuQUFNcmxHSXFEQ1Q5U2pnZDB4?=
+ =?utf-8?B?MmdBQnUyaHd6dnF2NW1YUU9EU0tyWDhZb05Fb3piYXZ6OWRaSWNkQkFVM0M0?=
+ =?utf-8?B?ZGdMNHVaR3MxUnpwK0NlczhJQ3dxRzl5c20xY2x0MmQ2eCtabGhHUTlObWZj?=
+ =?utf-8?B?QzdBbXQxUTk0MG9QQ2xBaFd4SHJwa1NOTHdwMS8xek95TVU2QnN0Z2YrRERY?=
+ =?utf-8?B?RWI5bGxWYlRvWFN6QTFRdEZJcDFzczVxSFRDSjg1TDRlZnNJVzFZa2tGZytm?=
+ =?utf-8?B?dkJLU29LME9SNWRHbWNXbTdPVUoxTWhRRmwxWnJSOXVjenAwQVpVVm8yV3F1?=
+ =?utf-8?B?azVsTnBNaGRCdWREOVdMN3NMcGdvY1ZZZ0VJNVlZZ2JOa2w5N1g1a3RFVHo3?=
+ =?utf-8?B?ckxBQi9rdkZ1YVpVNDV0Y0VXcjRKb1A1VE1CbTdtQjlHZDFRTW01L0ZiRUFZ?=
+ =?utf-8?B?TzQxekY0ZGpKeG1YR3FYamc5VUFLOG92NkJ0QWFReWdZVUt6TDV4Q3JpMEdE?=
+ =?utf-8?B?S2c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E3D0AA9339A50E4BB7E66E37D94BCDE9@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250429032645.363766-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.49.0.901.g37484f566f-goog
-Message-ID: <20250429032645.363766-10-almasrymina@google.com>
-Subject: [PATCH net-next v13 9/9] selftests: ncdevmem: Implement devmem TCP TX
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, io-uring@vger.kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Jeroen de Borst <jeroendb@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn <willemb@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Ahern <dsahern@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, sdf@fomichev.me, dw@davidwei.uk, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, 
-	Pedro Tammela <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39831563-4cd1-4eda-f2c1-08dd86cf0dc7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2025 03:36:40.3902
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L8oPY6ovUr6Da4drbSrSM0EN3JVijwohbPxh/rqFojEpzbpf76f2OyXgmn0viw8Hr3qiKbgV+vpZXItgqBidygIuDdnGMytY0FRNaRtter0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8060
+X-OriginatorOrg: intel.com
 
-Add support for devmem TX in ncdevmem.
-
-This is a combination of the ncdevmem from the devmem TCP series RFCv1
-which included the TX path, and work by Stan to include the netlink API
-and refactored on top of his generic memory_provider support.
-
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-
----
-
-v5:
-- Remove unnecassyr socat bindings (Stan).
-- Add exit_wait=True (Stan)
-- Remove unnecessary -c arg to ncdevmem in check_tx.
-
-v4:
-- Add TX test to devmem.py (Paolo).
-
-v3:
-- Update ncdevmem docs to run validation with RX-only and RX-with-TX.
-- Fix build warnings (Stan).
-- Make the validation expect new lines in the pattern so we can have the
-  TX path behave like netcat (Stan).
-- Change ret to errno in error() calls (Stan).
-- Handle the case where client_ip is not provided (Stan).
-- Don't assume mid is <= 2000 (Stan).
-
-v2:
-- make errors a static variable so that we catch instances where there
-  are less than 20 errors across different buffers.
-- Fix the issue where the seed is reset to 0 instead of its starting
-  value 1.
-- Use 1000ULL instead of 1000 to guard against overflow (Willem).
-- Do not set POLLERR (Willem).
-- Update the test to use the new interface where iov_base is the
-  dmabuf_offset.
-- Update the test to send 2 iov instead of 1, so we get some test
-  coverage over sending multiple iovs at once.
-- Print the ifindex the test is using, useful for debugging issues where
-  maybe the test may fail because the ifindex of the socket is different
-  from the dmabuf binding.
-
----
- .../selftests/drivers/net/hw/devmem.py        |  26 +-
- .../selftests/drivers/net/hw/ncdevmem.c       | 300 +++++++++++++++++-
- 2 files changed, 311 insertions(+), 15 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/hw/devmem.py b/tools/testing/selftests/drivers/net/hw/devmem.py
-index 3947e91571159..7fc686cf47a2d 100755
---- a/tools/testing/selftests/drivers/net/hw/devmem.py
-+++ b/tools/testing/selftests/drivers/net/hw/devmem.py
-@@ -1,6 +1,7 @@
- #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0
- 
-+from os import path
- from lib.py import ksft_run, ksft_exit
- from lib.py import ksft_eq, KsftSkipEx
- from lib.py import NetDrvEpEnv
-@@ -10,8 +11,7 @@ from lib.py import ksft_disruptive
- 
- def require_devmem(cfg):
-     if not hasattr(cfg, "_devmem_probed"):
--        port = rand_port()
--        probe_command = f"./ncdevmem -f {cfg.ifname}"
-+        probe_command = f"{cfg.bin_local} -f {cfg.ifname}"
-         cfg._devmem_supported = cmd(probe_command, fail=False, shell=True).ret == 0
-         cfg._devmem_probed = True
- 
-@@ -25,7 +25,7 @@ def check_rx(cfg) -> None:
-     require_devmem(cfg)
- 
-     port = rand_port()
--    listen_cmd = f"./ncdevmem -l -f {cfg.ifname} -s {cfg.addr_v['6']} -p {port}"
-+    listen_cmd = f"{cfg.bin_local} -l -f {cfg.ifname} -s {cfg.addr_v['6']} -p {port}"
- 
-     with bkg(listen_cmd) as socat:
-         wait_port_listen(port)
-@@ -34,9 +34,27 @@ def check_rx(cfg) -> None:
-     ksft_eq(socat.stdout.strip(), "hello\nworld")
- 
- 
-+@ksft_disruptive
-+def check_tx(cfg) -> None:
-+    cfg.require_ipver("6")
-+    require_devmem(cfg)
-+
-+    port = rand_port()
-+    listen_cmd = f"socat -U - TCP6-LISTEN:{port}"
-+
-+    with bkg(listen_cmd, exit_wait=True) as socat:
-+        wait_port_listen(port)
-+        cmd(f"echo -e \"hello\\nworld\"| {cfg.bin_remote} -f {cfg.ifname} -s {cfg.addr_v['6']} -p {port}", host=cfg.remote, shell=True)
-+
-+    ksft_eq(socat.stdout.strip(), "hello\nworld")
-+
-+
- def main() -> None:
-     with NetDrvEpEnv(__file__) as cfg:
--        ksft_run([check_rx],
-+        cfg.bin_local = path.abspath(path.dirname(__file__) + "/ncdevmem")
-+        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-+
-+        ksft_run([check_rx, check_tx],
-                  args=(cfg, ))
-     ksft_exit()
- 
-diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-index 2bf14ac2b8c62..f801a1b3545f0 100644
---- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-+++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-@@ -9,22 +9,31 @@
-  *     ncdevmem -s <server IP> [-c <client IP>] -f eth1 -l -p 5201
-  *
-  *     On client:
-- *     echo -n "hello\nworld" | nc -s <server IP> 5201 -p 5201
-+ *     echo -n "hello\nworld" | \
-+ *		ncdevmem -s <server IP> [-c <client IP>] -p 5201 -f eth1
-  *
-- * Test data validation:
-+ * Note this is compatible with regular netcat. i.e. the sender or receiver can
-+ * be replaced with regular netcat to test the RX or TX path in isolation.
-+ *
-+ * Test data validation (devmem TCP on RX only):
-  *
-  *     On server:
-  *     ncdevmem -s <server IP> [-c <client IP>] -f eth1 -l -p 5201 -v 7
-  *
-  *     On client:
-  *     yes $(echo -e \\x01\\x02\\x03\\x04\\x05\\x06) | \
-- *             tr \\n \\0 | \
-- *             head -c 5G | \
-+ *             head -c 1G | \
-  *             nc <server IP> 5201 -p 5201
-  *
-+ * Test data validation (devmem TCP on RX and TX, validation happens on RX):
-  *
-- * Note this is compatible with regular netcat. i.e. the sender or receiver can
-- * be replaced with regular netcat to test the RX or TX path in isolation.
-+ *	On server:
-+ *	ncdevmem -s <server IP> [-c <client IP>] -l -p 5201 -v 8 -f eth1
-+ *
-+ *	On client:
-+ *	yes $(echo -e \\x01\\x02\\x03\\x04\\x05\\x06\\x07) | \
-+ *		head -c 1M | \
-+ *		ncdevmem -s <server IP> [-c <client IP>] -p 5201 -f eth1
-  */
- #define _GNU_SOURCE
- #define __EXPORTED_HEADERS__
-@@ -40,15 +49,18 @@
- #include <fcntl.h>
- #include <malloc.h>
- #include <error.h>
-+#include <poll.h>
- 
- #include <arpa/inet.h>
- #include <sys/socket.h>
- #include <sys/mman.h>
- #include <sys/ioctl.h>
- #include <sys/syscall.h>
-+#include <sys/time.h>
- 
- #include <linux/memfd.h>
- #include <linux/dma-buf.h>
-+#include <linux/errqueue.h>
- #include <linux/udmabuf.h>
- #include <linux/types.h>
- #include <linux/netlink.h>
-@@ -79,6 +91,8 @@ static int num_queues = -1;
- static char *ifname;
- static unsigned int ifindex;
- static unsigned int dmabuf_id;
-+static uint32_t tx_dmabuf_id;
-+static int waittime_ms = 500;
- 
- struct memory_buffer {
- 	int fd;
-@@ -92,6 +106,8 @@ struct memory_buffer {
- struct memory_provider {
- 	struct memory_buffer *(*alloc)(size_t size);
- 	void (*free)(struct memory_buffer *ctx);
-+	void (*memcpy_to_device)(struct memory_buffer *dst, size_t off,
-+				 void *src, int n);
- 	void (*memcpy_from_device)(void *dst, struct memory_buffer *src,
- 				   size_t off, int n);
- };
-@@ -152,6 +168,20 @@ static void udmabuf_free(struct memory_buffer *ctx)
- 	free(ctx);
- }
- 
-+static void udmabuf_memcpy_to_device(struct memory_buffer *dst, size_t off,
-+				     void *src, int n)
-+{
-+	struct dma_buf_sync sync = {};
-+
-+	sync.flags = DMA_BUF_SYNC_START | DMA_BUF_SYNC_WRITE;
-+	ioctl(dst->fd, DMA_BUF_IOCTL_SYNC, &sync);
-+
-+	memcpy(dst->buf_mem + off, src, n);
-+
-+	sync.flags = DMA_BUF_SYNC_END | DMA_BUF_SYNC_WRITE;
-+	ioctl(dst->fd, DMA_BUF_IOCTL_SYNC, &sync);
-+}
-+
- static void udmabuf_memcpy_from_device(void *dst, struct memory_buffer *src,
- 				       size_t off, int n)
- {
-@@ -169,6 +199,7 @@ static void udmabuf_memcpy_from_device(void *dst, struct memory_buffer *src,
- static struct memory_provider udmabuf_memory_provider = {
- 	.alloc = udmabuf_alloc,
- 	.free = udmabuf_free,
-+	.memcpy_to_device = udmabuf_memcpy_to_device,
- 	.memcpy_from_device = udmabuf_memcpy_from_device,
- };
- 
-@@ -187,14 +218,16 @@ void validate_buffer(void *line, size_t size)
- {
- 	static unsigned char seed = 1;
- 	unsigned char *ptr = line;
--	int errors = 0;
-+	unsigned char expected;
-+	static int errors;
- 	size_t i;
- 
- 	for (i = 0; i < size; i++) {
--		if (ptr[i] != seed) {
-+		expected = seed ? seed : '\n';
-+		if (ptr[i] != expected) {
- 			fprintf(stderr,
- 				"Failed validation: expected=%u, actual=%u, index=%lu\n",
--				seed, ptr[i], i);
-+				expected, ptr[i], i);
- 			errors++;
- 			if (errors > 20)
- 				error(1, 0, "validation failed.");
-@@ -393,6 +426,49 @@ static int bind_rx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
- 	return -1;
- }
- 
-+static int bind_tx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
-+			 struct ynl_sock **ys)
-+{
-+	struct netdev_bind_tx_req *req = NULL;
-+	struct netdev_bind_tx_rsp *rsp = NULL;
-+	struct ynl_error yerr;
-+
-+	*ys = ynl_sock_create(&ynl_netdev_family, &yerr);
-+	if (!*ys) {
-+		fprintf(stderr, "YNL: %s\n", yerr.msg);
-+		return -1;
-+	}
-+
-+	req = netdev_bind_tx_req_alloc();
-+	netdev_bind_tx_req_set_ifindex(req, ifindex);
-+	netdev_bind_tx_req_set_fd(req, dmabuf_fd);
-+
-+	rsp = netdev_bind_tx(*ys, req);
-+	if (!rsp) {
-+		perror("netdev_bind_tx");
-+		goto err_close;
-+	}
-+
-+	if (!rsp->_present.id) {
-+		perror("id not present");
-+		goto err_close;
-+	}
-+
-+	fprintf(stderr, "got tx dmabuf id=%d\n", rsp->id);
-+	tx_dmabuf_id = rsp->id;
-+
-+	netdev_bind_tx_req_free(req);
-+	netdev_bind_tx_rsp_free(rsp);
-+
-+	return 0;
-+
-+err_close:
-+	fprintf(stderr, "YNL failed: %s\n", (*ys)->err.msg);
-+	netdev_bind_tx_req_free(req);
-+	ynl_sock_destroy(*ys);
-+	return -1;
-+}
-+
- static void enable_reuseaddr(int fd)
- {
- 	int opt = 1;
-@@ -431,7 +507,7 @@ static int parse_address(const char *str, int port, struct sockaddr_in6 *sin6)
- 	return 0;
- }
- 
--int do_server(struct memory_buffer *mem)
-+static int do_server(struct memory_buffer *mem)
- {
- 	char ctrl_data[sizeof(int) * 20000];
- 	struct netdev_queue_id *queues;
-@@ -685,6 +761,206 @@ void run_devmem_tests(void)
- 	provider->free(mem);
- }
- 
-+static uint64_t gettimeofday_ms(void)
-+{
-+	struct timeval tv;
-+
-+	gettimeofday(&tv, NULL);
-+	return (tv.tv_sec * 1000ULL) + (tv.tv_usec / 1000ULL);
-+}
-+
-+static int do_poll(int fd)
-+{
-+	struct pollfd pfd;
-+	int ret;
-+
-+	pfd.revents = 0;
-+	pfd.fd = fd;
-+
-+	ret = poll(&pfd, 1, waittime_ms);
-+	if (ret == -1)
-+		error(1, errno, "poll");
-+
-+	return ret && (pfd.revents & POLLERR);
-+}
-+
-+static void wait_compl(int fd)
-+{
-+	int64_t tstop = gettimeofday_ms() + waittime_ms;
-+	char control[CMSG_SPACE(100)] = {};
-+	struct sock_extended_err *serr;
-+	struct msghdr msg = {};
-+	struct cmsghdr *cm;
-+	__u32 hi, lo;
-+	int ret;
-+
-+	msg.msg_control = control;
-+	msg.msg_controllen = sizeof(control);
-+
-+	while (gettimeofday_ms() < tstop) {
-+		if (!do_poll(fd))
-+			continue;
-+
-+		ret = recvmsg(fd, &msg, MSG_ERRQUEUE);
-+		if (ret < 0) {
-+			if (errno == EAGAIN)
-+				continue;
-+			error(1, errno, "recvmsg(MSG_ERRQUEUE)");
-+			return;
-+		}
-+		if (msg.msg_flags & MSG_CTRUNC)
-+			error(1, 0, "MSG_CTRUNC\n");
-+
-+		for (cm = CMSG_FIRSTHDR(&msg); cm; cm = CMSG_NXTHDR(&msg, cm)) {
-+			if (cm->cmsg_level != SOL_IP &&
-+			    cm->cmsg_level != SOL_IPV6)
-+				continue;
-+			if (cm->cmsg_level == SOL_IP &&
-+			    cm->cmsg_type != IP_RECVERR)
-+				continue;
-+			if (cm->cmsg_level == SOL_IPV6 &&
-+			    cm->cmsg_type != IPV6_RECVERR)
-+				continue;
-+
-+			serr = (void *)CMSG_DATA(cm);
-+			if (serr->ee_origin != SO_EE_ORIGIN_ZEROCOPY)
-+				error(1, 0, "wrong origin %u", serr->ee_origin);
-+			if (serr->ee_errno != 0)
-+				error(1, 0, "wrong errno %d", serr->ee_errno);
-+
-+			hi = serr->ee_data;
-+			lo = serr->ee_info;
-+
-+			fprintf(stderr, "tx complete [%d,%d]\n", lo, hi);
-+			return;
-+		}
-+	}
-+
-+	error(1, 0, "did not receive tx completion");
-+}
-+
-+static int do_client(struct memory_buffer *mem)
-+{
-+	char ctrl_data[CMSG_SPACE(sizeof(__u32))];
-+	struct sockaddr_in6 server_sin;
-+	struct sockaddr_in6 client_sin;
-+	struct ynl_sock *ys = NULL;
-+	struct msghdr msg = {};
-+	ssize_t line_size = 0;
-+	struct cmsghdr *cmsg;
-+	struct iovec iov[2];
-+	char *line = NULL;
-+	unsigned long mid;
-+	size_t len = 0;
-+	int socket_fd;
-+	__u32 ddmabuf;
-+	int opt = 1;
-+	int ret;
-+
-+	ret = parse_address(server_ip, atoi(port), &server_sin);
-+	if (ret < 0)
-+		error(1, 0, "parse server address");
-+
-+	socket_fd = socket(AF_INET6, SOCK_STREAM, 0);
-+	if (socket_fd < 0)
-+		error(1, socket_fd, "create socket");
-+
-+	enable_reuseaddr(socket_fd);
-+
-+	ret = setsockopt(socket_fd, SOL_SOCKET, SO_BINDTODEVICE, ifname,
-+			 strlen(ifname) + 1);
-+	if (ret)
-+		error(1, errno, "bindtodevice");
-+
-+	if (bind_tx_queue(ifindex, mem->fd, &ys))
-+		error(1, 0, "Failed to bind\n");
-+
-+	if (client_ip) {
-+		ret = parse_address(client_ip, atoi(port), &client_sin);
-+		if (ret < 0)
-+			error(1, 0, "parse client address");
-+
-+		ret = bind(socket_fd, &client_sin, sizeof(client_sin));
-+		if (ret)
-+			error(1, errno, "bind");
-+	}
-+
-+	ret = setsockopt(socket_fd, SOL_SOCKET, SO_ZEROCOPY, &opt, sizeof(opt));
-+	if (ret)
-+		error(1, errno, "set sock opt");
-+
-+	fprintf(stderr, "Connect to %s %d (via %s)\n", server_ip,
-+		ntohs(server_sin.sin6_port), ifname);
-+
-+	ret = connect(socket_fd, &server_sin, sizeof(server_sin));
-+	if (ret)
-+		error(1, errno, "connect");
-+
-+	while (1) {
-+		free(line);
-+		line = NULL;
-+		line_size = getline(&line, &len, stdin);
-+
-+		if (line_size < 0)
-+			break;
-+
-+		mid = (line_size / 2) + 1;
-+
-+		iov[0].iov_base = (void *)1;
-+		iov[0].iov_len = mid;
-+		iov[1].iov_base = (void *)(mid + 2);
-+		iov[1].iov_len = line_size - mid;
-+
-+		provider->memcpy_to_device(mem, (size_t)iov[0].iov_base, line,
-+					   iov[0].iov_len);
-+		provider->memcpy_to_device(mem, (size_t)iov[1].iov_base,
-+					   line + iov[0].iov_len,
-+					   iov[1].iov_len);
-+
-+		fprintf(stderr,
-+			"read line_size=%ld iov[0].iov_base=%lu, iov[0].iov_len=%lu, iov[1].iov_base=%lu, iov[1].iov_len=%lu\n",
-+			line_size, (unsigned long)iov[0].iov_base,
-+			iov[0].iov_len, (unsigned long)iov[1].iov_base,
-+			iov[1].iov_len);
-+
-+		msg.msg_iov = iov;
-+		msg.msg_iovlen = 2;
-+
-+		msg.msg_control = ctrl_data;
-+		msg.msg_controllen = sizeof(ctrl_data);
-+
-+		cmsg = CMSG_FIRSTHDR(&msg);
-+		cmsg->cmsg_level = SOL_SOCKET;
-+		cmsg->cmsg_type = SCM_DEVMEM_DMABUF;
-+		cmsg->cmsg_len = CMSG_LEN(sizeof(__u32));
-+
-+		ddmabuf = tx_dmabuf_id;
-+
-+		*((__u32 *)CMSG_DATA(cmsg)) = ddmabuf;
-+
-+		ret = sendmsg(socket_fd, &msg, MSG_ZEROCOPY);
-+		if (ret < 0)
-+			error(1, errno, "Failed sendmsg");
-+
-+		fprintf(stderr, "sendmsg_ret=%d\n", ret);
-+
-+		if (ret != line_size)
-+			error(1, errno, "Did not send all bytes");
-+
-+		wait_compl(socket_fd);
-+	}
-+
-+	fprintf(stderr, "%s: tx ok\n", TEST_PREFIX);
-+
-+	free(line);
-+	close(socket_fd);
-+
-+	if (ys)
-+		ynl_sock_destroy(ys);
-+
-+	return 0;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	struct memory_buffer *mem;
-@@ -728,6 +1004,8 @@ int main(int argc, char *argv[])
- 
- 	ifindex = if_nametoindex(ifname);
- 
-+	fprintf(stderr, "using ifindex=%u\n", ifindex);
-+
- 	if (!server_ip && !client_ip) {
- 		if (start_queue < 0 && num_queues < 0) {
- 			num_queues = rxq_num(ifindex);
-@@ -778,7 +1056,7 @@ int main(int argc, char *argv[])
- 		error(1, 0, "Missing -p argument\n");
- 
- 	mem = provider->alloc(getpagesize() * NUM_PAGES);
--	ret = is_server ? do_server(mem) : 1;
-+	ret = is_server ? do_server(mem) : do_client(mem);
- 	provider->free(mem);
- 
- 	return ret;
--- 
-2.49.0.901.g37484f566f-goog
-
+T24gTW9uLCAyMDI1LTA0LTI4IGF0IDIwOjIyIC0wNzAwLCBDaGFuZyBTLiBCYWUgd3JvdGU6DQo+
+ID4gDQo+ID4gVGhpcyBwYXRjaCBhZGRzIHN0cnVjdCB2Y3B1X2ZwdV9jb25maWcsIHdpdGggbmV3
+IGZpZWxkcyB1c2VyX3NpemUsDQo+ID4gdXNlcl9mZWF0dXJlcy4gVGhlbiB0aG9zZSBmaWVsZHMg
+YXJlIHVzZWQgdG8gY29uZmlndXJlIHRoZSBndWVzdCBGUFUsIHdoZXJlDQo+ID4gdG9kYXkgaXQg
+anVzdCB1c2VzIGZwdV91c2VyX2NmZy5kZWZhdWx0X2ZlYXR1cmVzLCBldGMuDQo+ID4gDQo+ID4g
+S1ZNIGRvZXNuJ3QgcmVmZXIgdG8gYW55IG9mIHRob3NlIGZpZWxkcyBzcGVjaWZpY2FsbHksIGJ1
+dCBzaW5jZSB0aGV5IGFyZQ0KPiA+IHVzZWQNCj4gPiB0byBjb25maWd1cmUgc3RydWN0IGZwdV9n
+dWVzdCB0aGV5IGJlY29tZSBwYXJ0IG9mIEtWTSdzIHVBQkkuDQo+IA0KPiBUb2RheSwgZnB1X2Fs
+bG9jX2d1ZXN0X2Zwc3RhdGUoKSAtPiBfX2Zwc3RhdGVfcmVzZXQoKSBzZXRzDQo+IHZjcHUtPmFy
+Y2guZ3Vlc3RfZnB1LmZwc3RhdGUtPnVzZXJfeGZlYXR1cmVzIHVzaW5nIA0KPiBmcHVfdXNlcl9j
+ZmcuZGVmYXVsdF9mZWF0dXJlcy4NCj4gDQo+IEFyZSB5b3UgcmVhbGx5IHNheWluZyB0aGF0IHN3
+aXRjaGluZyB0aGlzIHRvIA0KPiBndWVzdF9kZWZhdWx0X2NmZy51c2VyX2ZlYXR1cmVzIHdvdWxk
+IGNvbnN0aXR1dGUgYSB1QUJJIGNoYW5nZT8NCg0KSSdtIG5vdCBzYXlpbmcgdGhlcmUgaXMgYSB1
+QUJJIGNoYW5nZS4uLiBJIGRvbid0IHNlZSBhIGNoYW5nZSBpbiB1QUJJLg0KDQo+ICBEbyB5b3Ug
+DQo+IGNvbnNpZGVyIGZwdV91c2VyX2NmZy5kZWZhdWx0X2ZlYXR1cmVzIHRvIGJlIHBhcnQgb2Yg
+dGhlIHVBQkkgb3IgDQo+IGFueXRoaW5nIGVsc2U/DQoNCktWTV9HRVRfWFNBVkUgaXMgcGFydCBv
+ZiBLVk0ncyBBUEkuIEl0IHVzZXMgZmllbGRzIGNvbmZpZ3VyZWQgaW4gc3RydWN0DQpmcHVfZ3Vl
+c3QuIElmIGZwdV91c2VyX2NmZy5kZWZhdWx0X2ZlYXR1cmVzIGNoYW5nZXMgdmFsdWUgKGluIHRo
+ZSBjdXJyZW50IGNvZGUpDQppdCB3b3VsZCBjaGFuZ2UgS1ZNJ3MgdUFCSS4gQnV0IEknbSBzdGFy
+dGluZyB0byBzdXNwZWN0IHdlIGFyZSB0YWxraW5nIHBhc3QgZWFjaA0Kb3RoZXIuDQoNCkl0IHNo
+b3VsZCBiZSBzaW1wbGUuIFR3byBuZXcgY29uZmlndXJhdGlvbiBmaWVsZHMgYXJlIGFkZGVkIGlu
+IHRoaXMgcGF0Y2ggdGhhdA0KbWF0Y2ggdGhlIGV4aXN0aW5nIGNvbmNlcHQgYW5kIHZhbHVlcyBv
+ZiBleGlzdGluZyBjb25maWd1cmF0aW9ucyBmaWVsZHMuIFBlcg0KU2VhbiwgdGhlcmUgYXJlIG5v
+IHBsYW5zIHRvIGhhdmUgdGhlbSBkaXZlcmdlLiBTbyB3aHkgYWRkIHRoZW0uIElmIGFueW9uZSBm
+ZWVscw0Kc3Ryb25nbHksIEkgd29uJ3QgYXJndWUuIEJ1dCBJIHRoaW5rIHRoZXJlIGlzIGp1c3Qg
+bWlzY29tbXVuaWNhdGlvbi4NCg==
