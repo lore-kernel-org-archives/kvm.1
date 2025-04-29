@@ -1,52 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CC92D0281;
-	Tue, 29 Apr 2025 11:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F27C2C17BA
+	for <kvm@vger.kernel.org>; Tue, 29 Apr 2025 11:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745926884; cv=none; b=e82m3tEWYhu1JAC68FN+7A6eB0tzK0jWtVlGLXIXTyk1Omz4irIMuEcaqMcwCS4CQjI3REtPlPmdiLb9aMtfItthk64Md1FBpCqQUqv1evLGj9jM+i37SM0ZvrmnCuG+jL+CDWQq+IryK4Dk17K2Qs7Y8WYzeM1GKasoWAI6hY0=
+	t=1745926895; cv=none; b=fRw5AuLebQQFfpNlHbOU1KkIt9u5faK8j97YujfVmhaCOJReJEcaJ5ei3MxziuRqRpibT80xC+AbQtLEyfyRlIWGvw9xI5f5cmmF9F6lISt+lZKNzp84GbDStBigdPqZV2y/XAf98SL1Ljf2J1Kt6wJlciWVb3CfsGoYpwngAEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745926884; c=relaxed/simple;
-	bh=2HEnGlPElkgsLKXGKvLy6ekptJpv7P8BwQN9VPBjyxo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oYpE/Xl8fmypntoYpHd2y08gitUDEcJ4HrZB2UrSGPQCDpF5bDrB0E+fQwDb68/KKk7yOmPPfRrwozW05l/ly3DZSVXK1ebSIZVF/89dLaH9csKHsIkdpIDi4ZctYcIVx127+mp9JdyrBE1MQDzMh8EBT55cvqZ9HqXzYeskHwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSFwB/iU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745926895; c=relaxed/simple;
+	bh=FdqjXGxiURxrjRoUqrRU4qBEHU0/AoHGlpqsAnFYzXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OaZwhHFPDp0V2ElQadA9GVRjvoFhDTpXET6zqt1mVORzTl/lJjn8AwO9R5h1q0iz/oYASfToksaOTe7G9nveZDLYmDrryXEpgCEa3Exz5uWJFjzPKxqhe19A8ADIreIbOHeu5qDh82mzdbZEejMyThYcK5pluzybGLY1t+1TMeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CurL3icU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSFwB/iU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF25C4CEEE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CurL3icU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745926893;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0OOf67lYUqPKctKAmCN90TJlQaAL2pWnlF+O50r9JuE=;
+	b=CurL3icUnmX2b2P2oBgombCIXfLDDib2td3wLx+x/FxzKl1ZTZr3MBpB071HekEf6WvsCN
+	HplQC0hm6yhizN1+7qTeb4MiT6Cf82rk929Yvj8cKnenYgWGxK3B/1cVapsJzFFgeglHBT
+	O+MAJW7McQbkt3zUn86UMDiidBQXw88=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248--0ZifB14MF-ROg7gruMmbQ-1; Tue,
+ 29 Apr 2025 07:41:28 -0400
+X-MC-Unique: -0ZifB14MF-ROg7gruMmbQ-1
+X-Mimecast-MFC-AGG-ID: -0ZifB14MF-ROg7gruMmbQ_1745926883
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9D1681800876;
 	Tue, 29 Apr 2025 11:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745926883;
-	bh=2HEnGlPElkgsLKXGKvLy6ekptJpv7P8BwQN9VPBjyxo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSFwB/iU2t2wTHB9C1BvKZIzah5go59h8uDufW/ul/dj1G0HBEMKweAIR1XKlopZR
-	 5idzU1df8gJm3Vhq5XI43eqnWxnlCzh1HMh0wzZjmnY4BNYwnY7QBujGbREvn472MF
-	 Ug6v3u/4kreiFggmAntim3Lrb+ojfxIaXE9ZzQ30er1/5Hap/CqkDE/enrDnQLPfU0
-	 ygfwsl6FoNnTnlsQ6iKELtMTLo8bJwe7pKFFMIz7WxfHmlliQxbviFuYzEWPsCbAtY
-	 9/1cDakFJ/3dAbznOxBCupvjyix7W/DGKzG5xpW2tODVv9h+UgHcStJHiH2zqAOgzG
-	 hOia6t4ArqYUA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1u9jKz-009t0f-F6;
-	Tue, 29 Apr 2025 12:41:21 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.225.102])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8113119560A3;
+	Tue, 29 Apr 2025 11:40:54 +0000 (UTC)
+From: Valentin Schneider <vschneid@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: [PATCH 1/2] KVM: arm64: Prevent userspace from disabling AArch64 support at any virtualisable EL
-Date: Tue, 29 Apr 2025 12:41:16 +0100
-Message-Id: <20250429114117.3618800-2-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250429114117.3618800-1-maz@kernel.org>
-References: <20250429114117.3618800-1-maz@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-perf-users@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Daniel Wagner <dwagner@suse.de>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Kees Cook <kees@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Rong Xu <xur@google.com>,
+	Rafael Aquini <aquini@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	John Stultz <jstultz@google.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: [PATCH v5 15/25] sched/clock: Mark sched_clock_running key as __ro_after_init
+Date: Tue, 29 Apr 2025 13:32:32 +0200
+Message-ID: <20250429113242.998312-16-vschneid@redhat.com>
+In-Reply-To: <20250429113242.998312-1-vschneid@redhat.com>
+References: <20250429113242.998312-1-vschneid@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -54,39 +151,30 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, gankulkarni@os.amperecomputing.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-A sorry excuse for a selftest is trying to disable AArch64 support.
-And yes, this goes as well as you can imagine.
+sched_clock_running is only ever enabled in the __init functions
+sched_clock_init() and sched_clock_init_late(), and is never disabled. Mark
+it __ro_after_init.
 
-Let's forbid this sort of things. Normal userspace shouldn't get
-caught doing that.
-
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/arm64/kvm/sys_regs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/sched/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 157de0ace6e7e..28dc778d0d9bb 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1946,6 +1946,12 @@ static int set_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
- 	if ((hw_val & mpam_mask) == (user_val & mpam_mask))
- 		user_val &= ~ID_AA64PFR0_EL1_MPAM_MASK;
- 
-+	/* Fail the guest's request to disable the AA64 ISA at EL{0,1,2} */
-+	if (!FIELD_GET(ID_AA64PFR0_EL1_EL0, user_val) ||
-+	    !FIELD_GET(ID_AA64PFR0_EL1_EL1, user_val) ||
-+	    (vcpu_has_nv(vcpu) && !FIELD_GET(ID_AA64PFR0_EL1_EL2, user_val)))
-+		return -EINVAL;
-+
- 	return set_id_reg(vcpu, rd, user_val);
+diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
+index a09655b481402..200e5568b9894 100644
+--- a/kernel/sched/clock.c
++++ b/kernel/sched/clock.c
+@@ -66,7 +66,7 @@ notrace unsigned long long __weak sched_clock(void)
  }
+ EXPORT_SYMBOL_GPL(sched_clock);
  
+-static DEFINE_STATIC_KEY_FALSE(sched_clock_running);
++static DEFINE_STATIC_KEY_FALSE_RO(sched_clock_running);
+ 
+ #ifdef CONFIG_HAVE_UNSTABLE_SCHED_CLOCK
+ /*
 -- 
-2.39.2
+2.49.0
 
