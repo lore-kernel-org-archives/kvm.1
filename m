@@ -1,72 +1,101 @@
-Received: from baidu.com (mx22.baidu.com [220.181.50.185])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE342FB2;
-	Tue, 29 Apr 2025 02:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.50.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28EA221DAE;
+	Tue, 29 Apr 2025 02:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745893727; cv=none; b=nnDfBWZa411H0obPndfm5AGW7yH6UC7pZFhai06s5C50MIQnOagxUnmNrCnt2KAJSJtk5WFJR18wU02w9Uu6R6CSiuop0hMuulRtc7ixj6UkQ0PKqXdDK+niUP2fcAzTG3V2faG2eOH/CAnWU/rcw81DAOb1gY37wcY48dtPF4M=
+	t=1745894533; cv=none; b=biTI8FdNhF+b6cbTWcIXQ/76JnRH2iQesHMEOGSsEQmhE0VRe0LmeVHZ6IudWUpMIuHXw//pL7b1kg4QMwq7nzA+aA5ElM3nRDkbvCO00DCb7DXwoqM7Ct95qd7gQDUZlKhk7V3+/kslBpM/hJ5HdIACZFWc/bm1n6ZDwYjyzA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745893727; c=relaxed/simple;
-	bh=/lS51eLH5B2l1r0Sda86Z8wgfaHGDJSQEORw3wgDVZQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QI+YK5jUA3SSj3vansd5xMROxCLaok9ymBvV1Fx8pRqDHMoOQsXH2uE/XBSO//JPZE5n4U5DmKodVu3B4Ex0GgWe5KrZGz1jJDY/PZlM1qtnPA9OXMhH8uTOcvwQITdkA83qJAJ1Aw3se+bXLJcuH228Y3isxTEMJV5wro8pGOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=220.181.50.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: "Li,Rongqing" <lirongqing@baidu.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Li,Zhaoxin(ACG CCN)" <lizhaoxin04@baidu.com>
-Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIEtWTTogVXNlIGNhbGxfcmN1KCkg?=
- =?gb2312?B?aW4ga3ZtX2lvX2J1c19yZWdpc3Rlcl9kZXY=?=
-Thread-Topic: [????] Re: [PATCH] KVM: Use call_rcu() in
- kvm_io_bus_register_dev
-Thread-Index: AQHbtDGgrzSppzuzck+TBQD3uwy4MbOw0jWAgAka1pA=
-Date: Tue, 29 Apr 2025 02:13:17 +0000
-Message-ID: <774b6e32c4674a6a85a7a90aabdc2234@baidu.com>
-References: <20250423092509.3162-1-lirongqing@baidu.com>
- <aAkAY40UbqzQNr8m@google.com>
-In-Reply-To: <aAkAY40UbqzQNr8m@google.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1745894533; c=relaxed/simple;
+	bh=JEB13Q6qCJ3b8dvOA+ykH/XIbk5dBywfURD7c4iY0Ts=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JV676utP/05rf96U8eaJwMyJj/Y09KiwrOWMn34urByEs9GsRCskO71w9yejDz7PllKh46jhOH2bb48rr0ez+ib0ZIqGZA9HKAsjJk80i1ArwPZMChT6+Xs4CyB1Y6yZdOAjDY+dyr2ohMeUXbTzXi8RbrBuJcwMaDYVnnuAnTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q8QhjQYS; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q8QhjQYS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745894532; x=1777430532;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JEB13Q6qCJ3b8dvOA+ykH/XIbk5dBywfURD7c4iY0Ts=;
+  b=Q8QhjQYS24waaN/SWgpvOP0bm6SkSh6m9QIOTyXOwxAQkSGvaaUNhlE2
+   xIc2K0zbFWQxC9e89+wglhnGRCLjOvftQjBzZnn+CSXhK0WagBOyjdkF7
+   9iByWTKjuTeahNIZjEl5u7SBlXW4IyQ0Bfr3YzM6tz7oha6GA+tso3Kyd
+   4pwc359bRKvoTOpG7QiYLnzZ7+5knPWlYrZaSoByyZDqYOTIVfrwVW+Mp
+   oIIjfiopIKBUGtRqaSkc+o82ZsVJh9UzPfVujcwv5dS9zjEb0k0OYysbv
+   kUJ+oinmQWgpgOtkxMi9X2SSJ3Ug1ngND9aJxCYFfwGjQCSqubNqcOzgz
+   Q==;
+X-CSE-ConnectionGUID: qQW6BDQsQmOKHlwQN4Sovg==
+X-CSE-MsgGUID: RakiDtEjTd23kC1p+81D6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58492526"
+X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
+   d="scan'208";a="58492526"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 19:42:11 -0700
+X-CSE-ConnectionGUID: cHWLk+ReRtiizI2k9hpzsQ==
+X-CSE-MsgGUID: QL4CnKgYSfSVf8FrilpuPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
+   d="scan'208";a="134208058"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 19:42:03 -0700
+Message-ID: <73184520-4853-49cb-a3e2-8bb7311c91e1@linux.intel.com>
+Date: Tue, 29 Apr 2025 10:37:50 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-Client-IP: 172.31.50.17
-X-FE-Last-Public-Client-IP: 100.100.100.38
-X-FE-Policy-ID: 52:10:53:SYSTEM
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 04/24] iommu: add kernel-doc for iommu_unmap_fast
+To: Leon Romanovsky <leon@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>, Jake Edge <jake@lwn.net>,
+ Jonathan Corbet <corbet@lwn.net>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Zhu Yanjun <zyjzyj2000@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Sagi Grimberg <sagi@grimberg.me>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-rdma@vger.kernel.org, iommu@lists.linux.dev,
+ linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+ kvm@vger.kernel.org, linux-mm@kvack.org,
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Chuck Lever <chuck.lever@oracle.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Dan Williams
+ <dan.j.williams@intel.com>, Kanchan Joshi <joshi.k@samsung.com>,
+ Chaitanya Kulkarni <kch@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <cover.1745831017.git.leon@kernel.org>
+ <6c4bbb539bec7b827b9e9cc24779c9e9c43fc3ed.1745831017.git.leon@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <6c4bbb539bec7b827b9e9cc24779c9e9c43fc3ed.1745831017.git.leon@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-PiA+ICAJcmN1X2Fzc2lnbl9wb2ludGVyKGt2bS0+YnVzZXNbYnVzX2lkeF0sIG5ld19idXMpOw0K
-PiA+IC0Jc3luY2hyb25pemVfc3JjdV9leHBlZGl0ZWQoJmt2bS0+c3JjdSk7DQo+ID4gLQlrZnJl
-ZShidXMpOw0KPiA+ICsNCj4gPiArCWNhbGxfc3JjdSgma3ZtLT5zcmN1LCAmYnVzLT5yY3UsIGZy
-ZWVfa3ZtX2lvX2J1cyk7DQo+IA0KPiBJIGRvbid0IHRoaW5rIHRoaXMgaXMgc2FmZSBmcm9tIGEg
-ZnVuY3Rpb25hbCBjb3JyZWN0bmVzcyBwZXJzcGVjdGl2ZSwgYXMgS1ZNIG11c3QNCj4gZ3VhcmFu
-dGVlIGFsbCByZWFkZXJzIHNlZSB0aGUgbmV3IGRldmljZSBiZWZvcmUgS1ZNIHJldHVybnMgY29u
-dHJvbCB0bw0KPiB1c2Vyc3BhY2UuDQo+IEUuZy4gSSdtIHByZXR0eSBzdXJlIEtWTV9SRUdJU1RF
-Ul9DT0FMRVNDRURfTU1JTyBpcyB1c2VkIHdoaWxlIHZDUFVzIGFyZQ0KPiBhY3RpdmUuDQo+IA0K
-PiBIb3dldmVyLCBJJ20gcHJldHR5IHN1cmUgdGhlIG9ubHkgcmVhZGVycyB0aGF0IGFjdHVhbGx5
-IHJlbHkgb24gU1JDVSBhcmUgdkNQVXMsDQo+IHNvIEkgX3RoaW5rXyB0aGUgc3luY2hyb25pemVf
-c3JjdV9leHBlZGl0ZWQoKSBpcyBuZWNlc3NhcnkgaWYgYW5kIG9ubHkgaWYgdkNQVXMNCj4gaGF2
-ZSBiZWVuIGNyZWF0ZWQuDQo+IA0KDQpUaGlzIHBhdGNoIGRvZXMgbm90IGNoYW5nZSByY3VfYXNz
-aWduX3BvaW50ZXIoKSwgYW5kIHNyY3VfZGVyZWZlcmVuY2Ugd2lsbCBiZSB1c2VkIHdoZW4gdkNQ
-VSByZWFkIHRoaXMgYnVzZXMsIHNvIEkgdGhpbmsgc3luY2hyb25pemVfc3JjdV9leHBlZGl0ZWQg
-aXMgbm90IGEgbXVzdD8gDQoNCg0KDQo+IFRoYXQgY291bGQgcmFjZSB3aXRoIGNvbmN1cnJlbnQg
-dkNQVSBjcmVhdGlvbiBpbiBhIGZldyBmbG93cyB0aGF0IGRvbid0IHRha2UNCj4ga3ZtLT5sb2Nr
-LCBidXQgdGhhdCBzaG91bGQgYmUgb2sgZnJvbSBhbiBBQkkgcGVyc3BlY3RpdmUuICBGYWxzZQ0K
-PiBrdm0tPnBvc2l0aXZlcyAodkNQVQ0KPiBjcmVhdGlvbiBmYWlscykgYXJlIGJlbmlnbiwgYW5k
-IGZhbHNlIG5lZ2F0aXZlcyAodkNQVSBjcmVhdGVkIGFmdGVyIHRoZSBjaGVjaykgYXJlDQo+IGlu
-aGVyZW50bHkgcmFjeSwgaS5lLiB1c2Vyc3BhY2UgY2FuJ3QgZ3VhcmFudGVlIHRoZSB2Q1BVIHNl
-ZXMgYW55IHBhcnRpY3VsYXINCj4gb3JkZXJpbmcuDQo+IA0KPiBTbyB0aGlzPw0KPiANCj4gCWlm
-IChSRUFEX09OQ0Uoa3ZtLT5jcmVhdGVkX3ZjcHVzKSkgew0KPiAJCXN5bmNocm9uaXplX3NyY3Vf
-ZXhwZWRpdGVkKCZrdm0tPnNyY3UpOw0KPiAJCWtmcmVlKGJ1cyk7DQo+IAl9IGVsc2Ugew0KPiAJ
-CWNhbGxfc3JjdSgma3ZtLT5zcmN1LCAmYnVzLT5yY3UsIGZyZWVfa3ZtX2lvX2J1cyk7DQo+IAl9
-DQo=
+On 4/28/25 17:22, Leon Romanovsky wrote:
+> From: Leon Romanovsky<leonro@nvidia.com>
+> 
+> Add kernel-doc section for iommu_unmap_fast to document existing
+> limitation of underlying functions which can't split individual ranges.
+> 
+> Suggested-by: Jason Gunthorpe<jgg@nvidia.com>
+> Acked-by: Will Deacon<will@kernel.org>
+> Reviewed-by: Christoph Hellwig<hch@lst.de>
+> Tested-by: Jens Axboe<axboe@kernel.dk>
+> Reviewed-by: Jason Gunthorpe<jgg@nvidia.com>
+> Reviewed-by: Luis Chamberlain<mcgrof@kernel.org>
+> Signed-off-by: Leon Romanovsky<leonro@nvidia.com>
+
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
