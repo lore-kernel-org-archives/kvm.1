@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928B22951C8
-	for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 20:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905212C257C
+	for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 20:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746044622; cv=none; b=IL59j6wChHip6iWZUH3G8sQPwxLaRiMjOCywDIPQsiBJANiOGAQNCKjmNEzLgZ8IHQQu3JYkwfZZZR2pyYXDOlbpKGgIhdRg91RKfFjKZiIA39POQew9zlg0qiJ896GnVWFRophUqA+zcNSKSrj99i6eiv2WV6z6dEaR/lxIIGc=
+	t=1746044628; cv=none; b=LIxh17658lsfheuu223692XBPbQmBNsQDtIDUOdX+gQED0RiitC3dzznFy9NGA7zEpl/zAuZmloj8SqnbJVPw1l9R0Wa+jI9sQK+iQxOwD0DdldbL9WAMeJUjxdQWKWoiLuBE8Yjd/DAu4pOI+8bl94x0lWYA/UTV5Kzv1P/BPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746044622; c=relaxed/simple;
-	bh=CdhBGec2WacXI1FF8HyKMPzr03Go/Q3Bl2bylUjDVSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tIRTSDEdGGDig0knRgZp3+b+jmWiCcVNn/GPYC8oY9rFPx6yfDAuRT9IUruOraYYLqyEwJvUY4WdWlTHiMR02cFdgBSUcZ18OPfPs/dQq/6VDrpu42IkuXu5dZM9JrEtG+8PuoRQber0fDbDquyjBwhzmX6bGoVJ1KkfRlXoB/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e7rcmfj7; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1746044628; c=relaxed/simple;
+	bh=cubt+u761kYfcrYBnlZ4wLGM2xQWNDlyKLPgCM32FkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W4NUjhyPiH5lRrvmYg/yeOP16+w+5kIiR/bHZeqSWl2+US8mlrUoNu1Z/XBLmsx4auEaWsy/3obiejYfuuIwAcbzHTyucKjchzAcNRxeDEFmHi2lG0EBvzrATxCyTWiEBJqR/nwYJwpXivU1kmj1hK90LDWz9YW9zPuJ3o0wENU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IcN7RMt/; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e7rcmfj7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IcN7RMt/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746044619;
+	s=mimecast20190719; t=1746044625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ueORBRSdk8dfevMNCiszlxJFROHE0iUZRTzx7EwVQFc=;
-	b=e7rcmfj71/05qamlZb1tz8MT60ZonDe2jGQn6uf4CKE2uwPIZnWH1Oy3wOwkLkY9biJgKM
-	0aXy1ZO97qDMXJnXPJL4m9t0Qe6fg1px8L/las9456AMzS/tYxOUhl2KFN1gtmxWBX7Brb
-	YLX2yf43t2KpKa2BDT+zkLkHf8EFPQg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BS8KXzrmvGXfGPLTK0QPoSu9Lo1T2ypTVK/CISvD5is=;
+	b=IcN7RMt/JbPgiyckKSK8W1RbkcTDM0MlYmhLJsxab/J6IpnHWOjzRszK6u/wkSqbSNElbb
+	IfWHAvjUVXnMC720FdP6XplD4J+5GovI2uXuKSJZE6eRHRC60kjEXBiqOX1Wndyud4oqUf
+	pv+Pbby1enkadYrgH/lkpzz6wfXmgv8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-343-Y91AxpyiOD2kIYc-u3Pg8Q-1; Wed,
- 30 Apr 2025 16:23:34 -0400
-X-MC-Unique: Y91AxpyiOD2kIYc-u3Pg8Q-1
-X-Mimecast-MFC-AGG-ID: Y91AxpyiOD2kIYc-u3Pg8Q_1746044610
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-KSV1yo6aOLK_dziPEOyoDQ-1; Wed,
+ 30 Apr 2025 16:23:42 -0400
+X-MC-Unique: KSV1yo6aOLK_dziPEOyoDQ-1
+X-Mimecast-MFC-AGG-ID: KSV1yo6aOLK_dziPEOyoDQ_1746044617
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5EAD11955D77;
-	Wed, 30 Apr 2025 20:23:22 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65AB71800368;
+	Wed, 30 Apr 2025 20:23:36 +0000 (UTC)
 Received: from intellaptop.lan (unknown [10.22.80.5])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E1C381800365;
-	Wed, 30 Apr 2025 20:23:11 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 10DA51800878;
+	Wed, 30 Apr 2025 20:23:29 +0000 (UTC)
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: kvm@vger.kernel.org
 Cc: "H. Peter Anvin" <hpa@zytor.com>,
@@ -81,61 +83,91 @@ Cc: "H. Peter Anvin" <hpa@zytor.com>,
 	linux-riscv@lists.infradead.org,
 	Shusen Li <lishusen2@huawei.com>,
 	kvm-riscv@lists.infradead.org
-Subject: [PATCH v3 0/4] KVM: lockdep improvements
-Date: Wed, 30 Apr 2025 16:23:07 -0400
-Message-ID: <20250430202311.364641-1-mlevitsk@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v3 2/4] RISC-V: KVM: switch to kvm_lock/unlock_all_vcpus
+Date: Wed, 30 Apr 2025 16:23:09 -0400
+Message-ID: <20250430202311.364641-3-mlevitsk@redhat.com>
+In-Reply-To: <20250430202311.364641-1-mlevitsk@redhat.com>
+References: <20250430202311.364641-1-mlevitsk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This is	a continuation of my 'extract lock_all_vcpus/unlock_all_vcpus'=0D
-patch series.=0D
-=0D
-Implement the suggestion of using lockdep's "nest_lock" feature=0D
-when locking all KVM vCPUs by adding mutex_trylock_nest_lock() and=0D
-mutex_lock_killable_nest_lock() and use these functions	in the=0D
-implementation of the=0D
-kvm_trylock_all_vcpus()/kvm_lock_all_vcpus()/kvm_unlock_all_vcpus().=0D
-=0D
-Those changes allow removal of a custom workaround that was needed to=0D
-silence the lockdep warning in the SEV code and also stop lockdep from=0D
-complaining in case of ARM and RISC-V code which doesn't include the above=
-=0D
-mentioned workaround.=0D
-=0D
-Finally, it's worth noting that this patch series removes a fair=0D
-amount of duplicate code by implementing the logic in one place.=0D
-=0D
-Best regards,=0D
-	Maxim Levitsky=0D
-=0D
-Maxim Levitsky (4):=0D
-  arm64: KVM: use mutex_trylock_nest_lock when locking all vCPUs=0D
-  RISC-V: KVM: switch to kvm_lock/unlock_all_vcpus=0D
-  locking/mutex: implement mutex_lock_killable_nest_lock=0D
-  x86: KVM: SEV: implement kvm_lock_all_vcpus and use it=0D
-=0D
- arch/arm64/include/asm/kvm_host.h     |  3 --=0D
- arch/arm64/kvm/arch_timer.c           |  4 +-=0D
- arch/arm64/kvm/arm.c                  | 43 ----------------=0D
- arch/arm64/kvm/vgic/vgic-init.c       |  4 +-=0D
- arch/arm64/kvm/vgic/vgic-its.c        |  8 +--=0D
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 12 ++---=0D
- arch/riscv/kvm/aia_device.c           | 34 +------------=0D
- arch/x86/kvm/svm/sev.c                | 72 ++-------------------------=0D
- include/linux/kvm_host.h              |  4 ++=0D
- include/linux/mutex.h                 | 17 +++++--=0D
- kernel/locking/mutex.c                |  7 +--=0D
- virt/kvm/kvm_main.c                   | 59 ++++++++++++++++++++++=0D
- 12 files changed, 100 insertions(+), 167 deletions(-)=0D
-=0D
--- =0D
-2.46.0=0D
-=0D
+Use the kvm_trylock_all_vcpus()/unlock_all_vcpus() instead of riscv's own
+implementation, to avoid triggering a lockdep warning,
+if the VM is configured to have more than MAX_LOCK_DEPTH vCPUs.
+
+Compile tested only.
+
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+---
+ arch/riscv/kvm/aia_device.c | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
+
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index 39cd26af5a69..6315821f0d69 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -12,36 +12,6 @@
+ #include <linux/kvm_host.h>
+ #include <linux/uaccess.h>
+ 
+-static void unlock_vcpus(struct kvm *kvm, int vcpu_lock_idx)
+-{
+-	struct kvm_vcpu *tmp_vcpu;
+-
+-	for (; vcpu_lock_idx >= 0; vcpu_lock_idx--) {
+-		tmp_vcpu = kvm_get_vcpu(kvm, vcpu_lock_idx);
+-		mutex_unlock(&tmp_vcpu->mutex);
+-	}
+-}
+-
+-static void unlock_all_vcpus(struct kvm *kvm)
+-{
+-	unlock_vcpus(kvm, atomic_read(&kvm->online_vcpus) - 1);
+-}
+-
+-static bool lock_all_vcpus(struct kvm *kvm)
+-{
+-	struct kvm_vcpu *tmp_vcpu;
+-	unsigned long c;
+-
+-	kvm_for_each_vcpu(c, tmp_vcpu, kvm) {
+-		if (!mutex_trylock(&tmp_vcpu->mutex)) {
+-			unlock_vcpus(kvm, c - 1);
+-			return false;
+-		}
+-	}
+-
+-	return true;
+-}
+-
+ static int aia_create(struct kvm_device *dev, u32 type)
+ {
+ 	int ret;
+@@ -53,7 +23,7 @@ static int aia_create(struct kvm_device *dev, u32 type)
+ 		return -EEXIST;
+ 
+ 	ret = -EBUSY;
+-	if (!lock_all_vcpus(kvm))
++	if (kvm_trylock_all_vcpus(kvm))
+ 		return ret;
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+@@ -65,7 +35,7 @@ static int aia_create(struct kvm_device *dev, u32 type)
+ 	kvm->arch.aia.in_kernel = true;
+ 
+ out_unlock:
+-	unlock_all_vcpus(kvm);
++	kvm_unlock_all_vcpus(kvm);
+ 	return ret;
+ }
+ 
+-- 
+2.46.0
 
