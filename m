@@ -1,365 +1,406 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A043C2882D0
-	for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 20:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDDF280331
+	for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 20:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746043777; cv=none; b=TNghKSK0SVBa5JmFQzFCB4RuMCXGVz4ec5umbBoPsG5UgCsZt4vaIskPgJgWeY3ip6gXFrcNELhXDM0txJPw7HB8SalepEwRmfcmT3eJ++Sa94sNiLJN+Apa5cDIUta+iTuqVGfF8TsIXhEv5r7seHTRp2bYXOkMnj0hFv06xlc=
+	t=1746044620; cv=none; b=Y+xFNvm1yrjNWbNqBjMnzij5wspdJyx8m1V+qOxbfk9KaVSukJIV+LYJvGOMaqGgEaUlJ870xUk68rYweXQQ9wm2g4PQ2p2UK6FnYvnd3yz/KNTZhYYuBdnz9gXMDR5L/Rnq69903CnmpuUTJdQjN3OCcW4b8zpeggpOb9Z3bzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746043777; c=relaxed/simple;
-	bh=CthprGmrXS/ON0Pq0rm8yyd9RyM7waXfOJ/Qs2aNTbI=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=rcmt1bOiuUm0EDLl9xH8pdetr8ZR5B6hBB17vslNrigp2Lb0oDcOHo3T8xalcJPs4UTwNzdWXHzpGNkyC4MIHWQlT1Jgd5kRYOh9VnhIanlLZZlMFghQNJcHATXjEvzTAue8XzQshBunyLNGNJYZePYYQHWH/buG/09AqBxAmNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m8SX3GzO; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1746044620; c=relaxed/simple;
+	bh=8LOVouw/uXiAyDHqo28yXBTFK41O/HPRr3Q48Y2c4NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UZf6FHtwcdp2Gf5UZupWJtVwPE9mXRynn5hYAzvzZtjw159ZQVCLAuPvihOYVYgz/9vOprb7DR0oNxvK9Toa2qnO9l4LhVsvlplPHQ0wQ5owaKcxVU5GJIO6COMVGfxwxZ+hmG4oS+BpzVw1aG8jLowMQvBrP02+jjL60ZzYOZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gj/R0ntK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m8SX3GzO"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-736cd36189bso370271b3a.2
-        for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 13:09:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746043775; x=1746648575; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=roo9VbEUeuTY1fPaSMGBkZlZZtsYBcMbMprjUdRSI8w=;
-        b=m8SX3GzOKDw8pEyl6NqsAO/yG/qoAqI8XzEIYOwBncOGkyO6J0N7K6C1HscJNLjqII
-         wGgTP907TOdnLiAn55B6fFksdkJS28TWJuEnFaUQXoFEULERDx2wEwrnyPntYnkStVAT
-         9s79m1/6bR2INMDGwGGpvb8KYWzKyeoRt5tpUqp0XRYi2v1cZygzl7AJTvK96IGCkK3O
-         Q7Cmz/iouECf+qwttnQ5mzvwwj8GieMa/5QjMav232oV8Xf54GrLl+JXSPOQZkkHT1wP
-         uC8zeF4ACxnemyZaRqG73NzFmVRUjYA+fTfs6uMHJ9lRFm+Gulz91a4c0ppZV0z0DdIY
-         sW+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746043775; x=1746648575;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=roo9VbEUeuTY1fPaSMGBkZlZZtsYBcMbMprjUdRSI8w=;
-        b=INV2wJO/DJakk8t0jU2hzuMfUJtLW58joV+/sYZbHRPj/Pav9mN2XZxktlBGyS89ag
-         VUtNPles7dtJBrLw87Hd0betuw6GmPCZaUd+k1KYsK/nZmevb25TdK3K/iTG2sDPgqvU
-         Kg5pqMYfgzHyGF3iHr5OVAV7TbNN7q4/+P6PJU13anbpnvCs05ulzJkLFgZbr1cGCQPv
-         tOl33Ydk3ZOYDsVkRZNumuAP1QpTs+nDyviaqr5O6a5wCiifHQBFtyDaSLyM/3zuKtgd
-         siL4mAhMTrRyllEzR7ob+De07tUQBIZtKOs78dsgAzpKE8mN49ZsMC3wtZUf7+0eLB+I
-         5R3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQzEO3idByygVOFxl119yvroWzN592RTlQH9sSYBSqq/+uWq/gGmT5U86EbIuUW3TaVJQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIvnlhPHh/cEsneblBAy1uMhm8zB/AWyaGHSPeyTKaEl/10xK9
-	g85O1Q9dVFbAY0Ac+Yqf1MklzTn9SW8m4DWsGPuQyZzIkmbye0C45br42U+EoDjzvSuX3JS5VSc
-	GcNlzwPktq0DEpfygeFMYcg==
-X-Google-Smtp-Source: AGHT+IFBFEey+jz79g0x/N2Y9iwsRGWFSszUVDcZKaPJ2VRwyywiCnN6mK3lLG1CvDJudH65ioUy3VFbaqS30NNXvw==
-X-Received: from pfjq6.prod.google.com ([2002:a05:6a00:886:b0:736:aaee:120e])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:3a44:b0:1fe:90c5:7cee with SMTP id adf61e73a8af0-20aa438094emr6214425637.28.1746043774762;
- Wed, 30 Apr 2025 13:09:34 -0700 (PDT)
-Date: Wed, 30 Apr 2025 13:09:33 -0700
-In-Reply-To: <aA7UXI0NB7oQQrL2@yzhao56-desk.sh.intel.com> (message from Yan
- Zhao on Mon, 28 Apr 2025 09:05:32 +0800)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gj/R0ntK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746044617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eSDMr6CrswXgqByQYff1QxuCHlV9bXTUySTX4ETsg9o=;
+	b=gj/R0ntKpTgaCwk8VYAfwMjw8BLXsq/hygQ9ddRB70mvCwPCMiIxuSMdpa5stbvssVoj9G
+	ZrtpbVCDeMAj2c7Q/1GQn9JbdfkkSEPJGMjey0OZAxOjifTTwIJ51FtqUHhkgPDQyNuoYy
+	aCpBK4h+xa/U9A+Grm6rAXegRqBRLGw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-311-Ajtwh_PZMfWmHP00FkIbkg-1; Wed,
+ 30 Apr 2025 16:23:35 -0400
+X-MC-Unique: Ajtwh_PZMfWmHP00FkIbkg-1
+X-Mimecast-MFC-AGG-ID: Ajtwh_PZMfWmHP00FkIbkg_1746044611
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C079F18001D5;
+	Wed, 30 Apr 2025 20:23:29 +0000 (UTC)
+Received: from intellaptop.lan (unknown [10.22.80.5])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9BF0218001EF;
+	Wed, 30 Apr 2025 20:23:22 +0000 (UTC)
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: kvm@vger.kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Anup Patel <anup@brainfault.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Atish Patra <atishp@atishpatra.org>,
+	kvmarm@lists.linux.dev,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Shusen Li <lishusen2@huawei.com>,
+	kvm-riscv@lists.infradead.org
+Subject: [PATCH v3 1/4] arm64: KVM: use mutex_trylock_nest_lock when locking all vCPUs
+Date: Wed, 30 Apr 2025 16:23:08 -0400
+Message-ID: <20250430202311.364641-2-mlevitsk@redhat.com>
+In-Reply-To: <20250430202311.364641-1-mlevitsk@redhat.com>
+References: <20250430202311.364641-1-mlevitsk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <diqz4iy5xvgi.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [RFC PATCH 39/39] KVM: guest_memfd: Dynamically split/reconstruct
- HugeTLB page
-From: Ackerley Tng <ackerleytng@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: vannapurve@google.com, chenyi.qiang@intel.com, tabba@google.com, 
-	quic_eberman@quicinc.com, roypat@amazon.co.uk, jgg@nvidia.com, 
-	peterx@redhat.com, david@redhat.com, rientjes@google.com, fvdl@google.com, 
-	jthoughton@google.com, seanjc@google.com, pbonzini@redhat.com, 
-	zhiquan1.li@intel.com, fan.du@intel.com, jun.miao@intel.com, 
-	isaku.yamahata@intel.com, muchun.song@linux.dev, erdemaktas@google.com, 
-	qperret@google.com, jhubbard@nvidia.com, willy@infradead.org, 
-	shuah@kernel.org, brauner@kernel.org, bfoster@redhat.com, 
-	kent.overstreet@linux.dev, pvorel@suse.cz, rppt@kernel.org, 
-	richard.weiyang@gmail.com, anup@brainfault.org, haibo1.xu@intel.com, 
-	ajones@ventanamicro.com, vkuznets@redhat.com, maciej.wieczor-retman@intel.com, 
-	pgonda@google.com, oliver.upton@linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Yan Zhao <yan.y.zhao@intel.com> writes:
+Use mutex_trylock_nest_lock instead of mutex_trylock when locking all vCPUs
+of a VM, to avoid triggering a lockdep warning, if the VM is configured to
+have more than MAX_LOCK_DEPTH vCPUs.
 
-> On Fri, Apr 25, 2025 at 03:45:20PM -0700, Ackerley Tng wrote:
->> Yan Zhao <yan.y.zhao@intel.com> writes:
->>=20
->> > On Thu, Apr 24, 2025 at 11:15:11AM -0700, Ackerley Tng wrote:
->> >> Vishal Annapurve <vannapurve@google.com> writes:
->> >>=20
->> >> > On Thu, Apr 24, 2025 at 1:15=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.=
-com> wrote:
->> >> >>
->> >> >> On Thu, Apr 24, 2025 at 01:55:51PM +0800, Chenyi Qiang wrote:
->> >> >> >
->> >> >> >
->> >> >> > On 4/24/2025 12:25 PM, Yan Zhao wrote:
->> >> >> > > On Thu, Apr 24, 2025 at 09:09:22AM +0800, Yan Zhao wrote:
->> >> >> > >> On Wed, Apr 23, 2025 at 03:02:02PM -0700, Ackerley Tng wrote:
->> >> >> > >>> Yan Zhao <yan.y.zhao@intel.com> writes:
->> >> >> > >>>
->> >> >> > >>>> On Tue, Sep 10, 2024 at 11:44:10PM +0000, Ackerley Tng wrot=
-e:
->> >> >> > >>>>> +/*
->> >> >> > >>>>> + * Allocates and then caches a folio in the filemap. Retu=
-rns a folio with
->> >> >> > >>>>> + * refcount of 2: 1 after allocation, and 1 taken by the =
-filemap.
->> >> >> > >>>>> + */
->> >> >> > >>>>> +static struct folio *kvm_gmem_hugetlb_alloc_and_cache_fol=
-io(struct inode *inode,
->> >> >> > >>>>> +                                                         =
-  pgoff_t index)
->> >> >> > >>>>> +{
->> >> >> > >>>>> +       struct kvm_gmem_hugetlb *hgmem;
->> >> >> > >>>>> +       pgoff_t aligned_index;
->> >> >> > >>>>> +       struct folio *folio;
->> >> >> > >>>>> +       int nr_pages;
->> >> >> > >>>>> +       int ret;
->> >> >> > >>>>> +
->> >> >> > >>>>> +       hgmem =3D kvm_gmem_hgmem(inode);
->> >> >> > >>>>> +       folio =3D kvm_gmem_hugetlb_alloc_folio(hgmem->h, h=
-gmem->spool);
->> >> >> > >>>>> +       if (IS_ERR(folio))
->> >> >> > >>>>> +               return folio;
->> >> >> > >>>>> +
->> >> >> > >>>>> +       nr_pages =3D 1UL << huge_page_order(hgmem->h);
->> >> >> > >>>>> +       aligned_index =3D round_down(index, nr_pages);
->> >> >> > >>>> Maybe a gap here.
->> >> >> > >>>>
->> >> >> > >>>> When a guest_memfd is bound to a slot where slot->base_gfn =
-is not aligned to
->> >> >> > >>>> 2M/1G and slot->gmem.pgoff is 0, even if an index is 2M/1G =
-aligned, the
->> >> >> > >>>> corresponding GFN is not 2M/1G aligned.
->> >> >> > >>>
->> >> >> > >>> Thanks for looking into this.
->> >> >> > >>>
->> >> >> > >>> In 1G page support for guest_memfd, the offset and size are =
-always
->> >> >> > >>> hugepage aligned to the hugepage size requested at guest_mem=
-fd creation
->> >> >> > >>> time, and it is true that when binding to a memslot, slot->b=
-ase_gfn and
->> >> >> > >>> slot->npages may not be hugepage aligned.
->> >> >> > >>>
->> >> >> > >>>>
->> >> >> > >>>> However, TDX requires that private huge pages be 2M aligned=
- in GFN.
->> >> >> > >>>>
->> >> >> > >>>
->> >> >> > >>> IIUC other factors also contribute to determining the mappin=
-g level in
->> >> >> > >>> the guest page tables, like lpage_info and .private_max_mapp=
-ing_level()
->> >> >> > >>> in kvm_x86_ops.
->> >> >> > >>>
->> >> >> > >>> If slot->base_gfn and slot->npages are not hugepage aligned,=
- lpage_info
->> >> >> > >>> will track that and not allow faulting into guest page table=
-s at higher
->> >> >> > >>> granularity.
->> >> >> > >>
->> >> >> > >> lpage_info only checks the alignments of slot->base_gfn and
->> >> >> > >> slot->base_gfn + npages. e.g.,
->> >> >> > >>
->> >> >> > >> if slot->base_gfn is 8K, npages is 8M, then for this slot,
->> >> >> > >> lpage_info[2M][0].disallow_lpage =3D 1, which is for GFN [4K,=
- 2M+8K);
->> >> >> > >> lpage_info[2M][1].disallow_lpage =3D 0, which is for GFN [2M+=
-8K, 4M+8K);
->> >> >> > >> lpage_info[2M][2].disallow_lpage =3D 0, which is for GFN [4M+=
-8K, 6M+8K);
->> >> >> > >> lpage_info[2M][3].disallow_lpage =3D 1, which is for GFN [6M+=
-8K, 8M+8K);
->> >> >> >
->> >> >> > Should it be?
->> >> >> > lpage_info[2M][0].disallow_lpage =3D 1, which is for GFN [8K, 2M=
-);
->> >> >> > lpage_info[2M][1].disallow_lpage =3D 0, which is for GFN [2M, 4M=
-);
->> >> >> > lpage_info[2M][2].disallow_lpage =3D 0, which is for GFN [4M, 6M=
-);
->> >> >> > lpage_info[2M][3].disallow_lpage =3D 0, which is for GFN [6M, 8M=
-);
->> >> >> > lpage_info[2M][4].disallow_lpage =3D 1, which is for GFN [8M, 8M=
-+8K);
->> >> >> Right. Good catch. Thanks!
->> >> >>
->> >> >> Let me update the example as below:
->> >> >> slot->base_gfn is 2 (for GPA 8KB), npages 2000 (for a 8MB range)
->> >> >>
->> >> >> lpage_info[2M][0].disallow_lpage =3D 1, which is for GPA [8KB, 2MB=
-);
->> >> >> lpage_info[2M][1].disallow_lpage =3D 0, which is for GPA [2MB, 4MB=
-);
->> >> >> lpage_info[2M][2].disallow_lpage =3D 0, which is for GPA [4MB, 6MB=
-);
->> >> >> lpage_info[2M][3].disallow_lpage =3D 0, which is for GPA [6MB, 8MB=
-);
->> >> >> lpage_info[2M][4].disallow_lpage =3D 1, which is for GPA [8MB, 8MB=
-+8KB);
->> >> >>
->> >> >> lpage_info indicates that a 2MB mapping is alllowed to cover GPA 4=
-MB and GPA
->> >> >> 4MB+16KB. However, their aligned_index values lead guest_memfd to =
-allocate two
->> >> >> 2MB folios, whose physical addresses may not be contiguous.
->> >> >>
->> >> >> Additionally, if the guest accesses two GPAs, e.g., GPA 2MB+8KB an=
-d GPA 4MB,
->> >> >> KVM could create two 2MB mappings to cover GPA ranges [2MB, 4MB), =
-[4MB, 6MB).
->> >> >> However, guest_memfd just allocates the same 2MB folio for both fa=
-ults.
->> >> >>
->> >> >>
->> >> >> >
->> >> >> > >>
->> >> >> > >>   ---------------------------------------------------------
->> >> >> > >>   |          |  |          |  |          |  |          |  |
->> >> >> > >>   8K        2M 2M+8K      4M  4M+8K     6M  6M+8K     8M  8M+=
-8K
->> >> >> > >>
->> >> >> > >> For GFN 6M and GFN 6M+4K, as they both belong to lpage_info[2=
-M][2], huge
->> >> >> > >> page is allowed. Also, they have the same aligned_index 2 in =
-guest_memfd.
->> >> >> > >> So, guest_memfd allocates the same huge folio of 2M order for=
- them.
->> >> >> > > Sorry, sent too fast this morning. The example is not right. T=
-he correct
->> >> >> > > one is:
->> >> >> > >
->> >> >> > > For GFN 4M and GFN 4M+16K, lpage_info indicates that 2M is all=
-owed. So,
->> >> >> > > KVM will create a 2M mapping for them.
->> >> >> > >
->> >> >> > > However, in guest_memfd, GFN 4M and GFN 4M+16K do not correspo=
-nd to the
->> >> >> > > same 2M folio and physical addresses may not be contiguous.
->> >> >
->> >> > Then during binding, guest memfd offset misalignment with hugepage
->> >> > should be same as gfn misalignment. i.e.
->> >> >
->> >> > (offset & ~huge_page_mask(h)) =3D=3D ((slot->base_gfn << PAGE_SHIFT=
-) &
->> >> > ~huge_page_mask(h));
->> >> >
->> >> > For non guest_memfd backed scenarios, KVM allows slot gfn ranges th=
-at
->> >> > are not hugepage aligned, so guest_memfd should also be able to
->> >> > support non-hugepage aligned memslots.
->> >> >
->> >>=20
->> >> I drew up a picture [1] which hopefully clarifies this.
->> >>=20
->> >> Thanks for pointing this out, I understand better now and we will add=
- an
->> >> extra constraint during memslot binding of guest_memfd to check that =
-gfn
->> >> offsets within a hugepage must be guest_memfd offsets.
->> > I'm a bit confused.
->> >
->> > As "index =3D gfn - slot->base_gfn + slot->gmem.pgoff", do you mean yo=
-u are going
->> > to force "slot->base_gfn =3D=3D slot->gmem.pgoff" ?
->> >
->> > For some memory region, e.g., "pc.ram", it's divided into 2 parts:
->> > - one with offset 0, size 0x80000000(2G),
->> >   positioned at GPA 0, which is below GPA 4G;
->> > - one with offset 0x80000000(2G), size 0x80000000(2G),
->> >   positioned at GPA 0x100000000(4G), which is above GPA 4G.
->> >
->> > For the second part, its slot->base_gfn is 0x100000000, while slot->gm=
-em.pgoff
->> > is 0x80000000.
->> >
->>=20
->> Nope I don't mean to enforce that they are equal, we just need the
->> offsets within the page to be equal.
->>=20
->> I edited Vishal's code snippet, perhaps it would help explain better:
->>=20
->> page_size is the size of the hugepage, so in our example,
->>=20
->>   page_size =3D SZ_2M;
->>   page_mask =3D ~(page_size - 1);
-> page_mask =3D page_size - 1  ?
->
+This fixes the following false lockdep warning:
 
-Yes, thank you!
+[  328.171264] BUG: MAX_LOCK_DEPTH too low!
+[  328.175227] turning off the locking correctness validator.
+[  328.180726] Please attach the output of /proc/lock_stat to the bug report
+[  328.187531] depth: 48  max: 48!
+[  328.190678] 48 locks held by qemu-kvm/11664:
+[  328.194957]  #0: ffff800086de5ba0 (&kvm->lock){+.+.}-{3:3}, at: kvm_ioctl_create_device+0x174/0x5b0
+[  328.204048]  #1: ffff0800e78800b8 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
+[  328.212521]  #2: ffff07ffeee51e98 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
+[  328.220991]  #3: ffff0800dc7d80b8 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
+[  328.229463]  #4: ffff07ffe0c980b8 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
+[  328.237934]  #5: ffff0800a3883c78 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
+[  328.246405]  #6: ffff07fffbe480b8 (&vcpu->mutex){+.+.}-{3:3}, at: lock_all_vcpus+0x16c/0x2a0
 
->>   offset_within_page =3D slot->gmem.pgoff & page_mask;
->>   gfn_within_page =3D (slot->base_gfn << PAGE_SHIFT) & page_mask;
->>=20
->> We will enforce that
->>=20
->>   offset_within_page =3D=3D gfn_within_page;
-> For "pc.ram", if it has 2.5G below 4G, it would be configured as follows
-> - slot 1: slot->gmem.pgoff=3D0, base GPA 0, size=3D2.5G
-> - slot 2: slot->gmem.pgoff=3D2.5G, base GPA 4G, size=3D1.5G
->
-> When binding these two slots to the same guest_memfd created with flag
-> KVM_GUEST_MEMFD_HUGE_1GB:=20
-> - binding the 1st slot will succeed;
-> - binding the 2nd slot will fail.
->
-> What options does userspace have in this scenario?
-> It can't reduce the flag to KVM_GUEST_MEMFD_HUGE_2MB. Adjusting the gmem.=
-pgoff
-> isn't ideal either.
->
-> What about something similar as below?
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index d2feacd14786..87c33704a748 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1842,8 +1842,16 @@ __kvm_gmem_get_pfn(struct file *file, struct kvm_m=
-emory_slot *slot,
->         }
->
->         *pfn =3D folio_file_pfn(folio, index);
-> -       if (max_order)
-> -               *max_order =3D folio_order(folio);
-> +       if (max_order) {
-> +               int order;
-> +
-> +               order =3D folio_order(folio);
-> +
-> +               while (order > 0 && ((slot->base_gfn ^ slot->gmem.pgoff) =
-& ((1 << order) - 1)))
-> +                       order--;
-> +
-> +               *max_order =3D order;
-> +       }
->
->         *is_prepared =3D folio_test_uptodate(folio);
->         return folio;
->
+Since the locking of all vCPUs is a primitive that can be useful in other
+architectures that are supported by KVM, also move the code to kvm_main.c
 
-Vishal was wondering how this is working before guest_memfd was
-introduced, for other backing memory like HugeTLB.
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+---
+ arch/arm64/include/asm/kvm_host.h     |  3 --
+ arch/arm64/kvm/arch_timer.c           |  4 +--
+ arch/arm64/kvm/arm.c                  | 43 ---------------------------
+ arch/arm64/kvm/vgic/vgic-init.c       |  4 +--
+ arch/arm64/kvm/vgic/vgic-its.c        |  8 ++---
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 12 ++++----
+ include/linux/kvm_host.h              |  3 ++
+ virt/kvm/kvm_main.c                   | 34 +++++++++++++++++++++
+ 8 files changed, 51 insertions(+), 60 deletions(-)
 
-I then poked around and found this [1]. I will be adding a similar check
-for any slot where kvm_slot_can_be_private(slot).
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index e98cfe7855a6..96ce0b01a61e 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1263,9 +1263,6 @@ int __init populate_sysreg_config(const struct sys_reg_desc *sr,
+ 				  unsigned int idx);
+ int __init populate_nv_trap_config(void);
+ 
+-bool lock_all_vcpus(struct kvm *kvm);
+-void unlock_all_vcpus(struct kvm *kvm);
+-
+ void kvm_calculate_traps(struct kvm_vcpu *vcpu);
+ 
+ /* MMIO helpers */
+diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+index 5133dcbfe9f7..fdbc8beec930 100644
+--- a/arch/arm64/kvm/arch_timer.c
++++ b/arch/arm64/kvm/arch_timer.c
+@@ -1766,7 +1766,7 @@ int kvm_vm_ioctl_set_counter_offset(struct kvm *kvm,
+ 
+ 	mutex_lock(&kvm->lock);
+ 
+-	if (lock_all_vcpus(kvm)) {
++	if (!kvm_trylock_all_vcpus(kvm)) {
+ 		set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
+ 
+ 		/*
+@@ -1778,7 +1778,7 @@ int kvm_vm_ioctl_set_counter_offset(struct kvm *kvm,
+ 		kvm->arch.timer_data.voffset = offset->counter_offset;
+ 		kvm->arch.timer_data.poffset = offset->counter_offset;
+ 
+-		unlock_all_vcpus(kvm);
++		kvm_unlock_all_vcpus(kvm);
+ 	} else {
+ 		ret = -EBUSY;
+ 	}
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 68fec8c95fee..d31f42a71bdc 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1914,49 +1914,6 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 	}
+ }
+ 
+-/* unlocks vcpus from @vcpu_lock_idx and smaller */
+-static void unlock_vcpus(struct kvm *kvm, int vcpu_lock_idx)
+-{
+-	struct kvm_vcpu *tmp_vcpu;
+-
+-	for (; vcpu_lock_idx >= 0; vcpu_lock_idx--) {
+-		tmp_vcpu = kvm_get_vcpu(kvm, vcpu_lock_idx);
+-		mutex_unlock(&tmp_vcpu->mutex);
+-	}
+-}
+-
+-void unlock_all_vcpus(struct kvm *kvm)
+-{
+-	lockdep_assert_held(&kvm->lock);
+-
+-	unlock_vcpus(kvm, atomic_read(&kvm->online_vcpus) - 1);
+-}
+-
+-/* Returns true if all vcpus were locked, false otherwise */
+-bool lock_all_vcpus(struct kvm *kvm)
+-{
+-	struct kvm_vcpu *tmp_vcpu;
+-	unsigned long c;
+-
+-	lockdep_assert_held(&kvm->lock);
+-
+-	/*
+-	 * Any time a vcpu is in an ioctl (including running), the
+-	 * core KVM code tries to grab the vcpu->mutex.
+-	 *
+-	 * By grabbing the vcpu->mutex of all VCPUs we ensure that no
+-	 * other VCPUs can fiddle with the state while we access it.
+-	 */
+-	kvm_for_each_vcpu(c, tmp_vcpu, kvm) {
+-		if (!mutex_trylock(&tmp_vcpu->mutex)) {
+-			unlock_vcpus(kvm, c - 1);
+-			return false;
+-		}
+-	}
+-
+-	return true;
+-}
+-
+ static unsigned long nvhe_percpu_size(void)
+ {
+ 	return (unsigned long)CHOOSE_NVHE_SYM(__per_cpu_end) -
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index 1f33e71c2a73..6a426d403a6b 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -88,7 +88,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+ 	lockdep_assert_held(&kvm->lock);
+ 
+ 	ret = -EBUSY;
+-	if (!lock_all_vcpus(kvm))
++	if (kvm_trylock_all_vcpus(kvm))
+ 		return ret;
+ 
+ 	mutex_lock(&kvm->arch.config_lock);
+@@ -142,7 +142,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+ 
+ out_unlock:
+ 	mutex_unlock(&kvm->arch.config_lock);
+-	unlock_all_vcpus(kvm);
++	kvm_unlock_all_vcpus(kvm);
+ 	return ret;
+ }
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index fb96802799c6..7454388e3646 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1999,7 +1999,7 @@ static int vgic_its_attr_regs_access(struct kvm_device *dev,
+ 
+ 	mutex_lock(&dev->kvm->lock);
+ 
+-	if (!lock_all_vcpus(dev->kvm)) {
++	if (kvm_trylock_all_vcpus(dev->kvm)) {
+ 		mutex_unlock(&dev->kvm->lock);
+ 		return -EBUSY;
+ 	}
+@@ -2034,7 +2034,7 @@ static int vgic_its_attr_regs_access(struct kvm_device *dev,
+ 	}
+ out:
+ 	mutex_unlock(&dev->kvm->arch.config_lock);
+-	unlock_all_vcpus(dev->kvm);
++	kvm_unlock_all_vcpus(dev->kvm);
+ 	mutex_unlock(&dev->kvm->lock);
+ 	return ret;
+ }
+@@ -2704,7 +2704,7 @@ static int vgic_its_ctrl(struct kvm *kvm, struct vgic_its *its, u64 attr)
+ 
+ 	mutex_lock(&kvm->lock);
+ 
+-	if (!lock_all_vcpus(kvm)) {
++	if (kvm_trylock_all_vcpus(kvm)) {
+ 		mutex_unlock(&kvm->lock);
+ 		return -EBUSY;
+ 	}
+@@ -2726,7 +2726,7 @@ static int vgic_its_ctrl(struct kvm *kvm, struct vgic_its *its, u64 attr)
+ 
+ 	mutex_unlock(&its->its_lock);
+ 	mutex_unlock(&kvm->arch.config_lock);
+-	unlock_all_vcpus(kvm);
++	kvm_unlock_all_vcpus(kvm);
+ 	mutex_unlock(&kvm->lock);
+ 	return ret;
+ }
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index 359094f68c23..f9ae790163fb 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -268,7 +268,7 @@ static int vgic_set_common_attr(struct kvm_device *dev,
+ 				return -ENXIO;
+ 			mutex_lock(&dev->kvm->lock);
+ 
+-			if (!lock_all_vcpus(dev->kvm)) {
++			if (kvm_trylock_all_vcpus(dev->kvm)) {
+ 				mutex_unlock(&dev->kvm->lock);
+ 				return -EBUSY;
+ 			}
+@@ -276,7 +276,7 @@ static int vgic_set_common_attr(struct kvm_device *dev,
+ 			mutex_lock(&dev->kvm->arch.config_lock);
+ 			r = vgic_v3_save_pending_tables(dev->kvm);
+ 			mutex_unlock(&dev->kvm->arch.config_lock);
+-			unlock_all_vcpus(dev->kvm);
++			kvm_unlock_all_vcpus(dev->kvm);
+ 			mutex_unlock(&dev->kvm->lock);
+ 			return r;
+ 		}
+@@ -390,7 +390,7 @@ static int vgic_v2_attr_regs_access(struct kvm_device *dev,
+ 
+ 	mutex_lock(&dev->kvm->lock);
+ 
+-	if (!lock_all_vcpus(dev->kvm)) {
++	if (kvm_trylock_all_vcpus(dev->kvm)) {
+ 		mutex_unlock(&dev->kvm->lock);
+ 		return -EBUSY;
+ 	}
+@@ -415,7 +415,7 @@ static int vgic_v2_attr_regs_access(struct kvm_device *dev,
+ 
+ out:
+ 	mutex_unlock(&dev->kvm->arch.config_lock);
+-	unlock_all_vcpus(dev->kvm);
++	kvm_unlock_all_vcpus(dev->kvm);
+ 	mutex_unlock(&dev->kvm->lock);
+ 
+ 	if (!ret && !is_write)
+@@ -554,7 +554,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 
+ 	mutex_lock(&dev->kvm->lock);
+ 
+-	if (!lock_all_vcpus(dev->kvm)) {
++	if (kvm_trylock_all_vcpus(dev->kvm)) {
+ 		mutex_unlock(&dev->kvm->lock);
+ 		return -EBUSY;
+ 	}
+@@ -611,7 +611,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 
+ out:
+ 	mutex_unlock(&dev->kvm->arch.config_lock);
+-	unlock_all_vcpus(dev->kvm);
++	kvm_unlock_all_vcpus(dev->kvm);
+ 	mutex_unlock(&dev->kvm->lock);
+ 
+ 	if (!ret && uaccess && !is_write) {
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 1dedc421b3e3..10d6652c7aa0 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1015,6 +1015,9 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
+ 
+ void kvm_destroy_vcpus(struct kvm *kvm);
+ 
++int kvm_trylock_all_vcpus(struct kvm *kvm);
++void kvm_unlock_all_vcpus(struct kvm *kvm);
++
+ void vcpu_load(struct kvm_vcpu *vcpu);
+ void vcpu_put(struct kvm_vcpu *vcpu);
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 69782df3617f..834f08dfa24c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1368,6 +1368,40 @@ static int kvm_vm_release(struct inode *inode, struct file *filp)
+ 	return 0;
+ }
+ 
++/*
++ * Try to lock all of the VM's vCPUs.
++ * Assumes that the kvm->lock is held.
++ */
++int kvm_trylock_all_vcpus(struct kvm *kvm)
++{
++	struct kvm_vcpu *vcpu;
++	unsigned long i, j;
++
++	kvm_for_each_vcpu(i, vcpu, kvm)
++		if (!mutex_trylock_nest_lock(&vcpu->mutex, &kvm->lock))
++			goto out_unlock;
++	return 0;
++
++out_unlock:
++	kvm_for_each_vcpu(j, vcpu, kvm) {
++		if (i == j)
++			break;
++		mutex_unlock(&vcpu->mutex);
++	}
++	return -EINTR;
++}
++EXPORT_SYMBOL_GPL(kvm_trylock_all_vcpus);
++
++void kvm_unlock_all_vcpus(struct kvm *kvm)
++{
++	struct kvm_vcpu *vcpu;
++	unsigned long i;
++
++	kvm_for_each_vcpu(i, vcpu, kvm)
++		mutex_unlock(&vcpu->mutex);
++}
++EXPORT_SYMBOL_GPL(kvm_unlock_all_vcpus);
++
+ /*
+  * Allocation size is twice as large as the actual dirty bitmap size.
+  * See kvm_vm_ioctl_get_dirty_log() why this is needed.
+-- 
+2.46.0
 
-Yan, that should work, right?
-
-[1] https://github.com/torvalds/linux/blob/b6ea1680d0ac0e45157a819c41b46565=
-f4616186/arch/x86/kvm/x86.c#L12996
-
->> >> Adding checks at binding time will allow hugepage-unaligned offsets (=
-to
->> >> be at parity with non-guest_memfd backing memory) but still fix this
->> >> issue.
->> >>=20
->> >> lpage_info will make sure that ranges near the bounds will be
->> >> fragmented, but the hugepages in the middle will still be mappable as
->> >> hugepages.
->> >>=20
->> >> [1] https://lpc.events/event/18/contributions/1764/attachments/1409/3=
-706/binding-must-have-same-alignment.svg
