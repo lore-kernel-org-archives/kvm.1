@@ -1,40 +1,40 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F0225333E;
-	Wed, 30 Apr 2025 11:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B32214A69;
+	Wed, 30 Apr 2025 11:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746012411; cv=none; b=mfVuhVwXaD6UrwHvfWhLcKFwMNiQ6t0AfTUI18ITX50urWUUsJG8SybyekAu3wXYYwkhEs9cGwe1xnutViml6zsnzvhLy3VSG+8EIRFtRATAcy2Vfh+GNQf7pn/TKpEy5gW7dcaRb8ApfxxUqaGvPrz2nVsrsHJemaBYAaSRyCU=
+	t=1746012411; cv=none; b=sbVf1cl81ig4Vk3zKxwnj9KiaGR5JlQis49nqznB1cbt8CGKcgKY8LIn3UxtQ0+z3FCExos7jd2G9tT/7QqVm3Am9QE1GuzndrNsmn1hPZiqJmFrn/BsKdpD5ehY82CfPONCr7Nb/wi5Fb4RvZVjkpDh+2vXoFhKyR29lZ8+jC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746012411; c=relaxed/simple;
-	bh=PWxeJw7JX/cCrAKNbgSe7RGslQYLclCWSz18auxBU0c=;
+	bh=qO+daH7K0+EbHMG1EBSRjZ1DCQklvHH8L11hAYggMz4=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=RD6IObziCEQFMxlrbK+oFN2tjO1mOfTgPX9X3Py4RxrCyHswSugZH3GtIw3UPj3jJFCGd4q/piitGFPi+XBi77jmf8el/xeOcnO1WqtDeqUE3+KtUi6B4ARbHRBifq1nZmvyegFv/bdczDHqCb6+U1h7uRgddLYdCkbpbgXerv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mFZuaM5r; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type; b=CgE7+ufsbfUEIjtoFEf8Ub304SVwF6YGKVWFTjJBCGejh+5C/bCW4iSjt1cNlYLV1/dxa+f1JFNuJD+RoSIgnUmMhgJK1gKMNMmNjsoxWlBpCA4731+Nop+963D77mKp/ZI+IYCc7oVIYwRY29hPwBDs+d0TAoilF7dhPOHW7vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=fBHp9OSz; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mFZuaM5r"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fBHp9OSz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=DrCeATcJD9NVn1UQf4+qjGtuQpGFm0cVOCX9YPFGKbs=; b=mFZuaM5r/wYFRqIx2Ge1lfSvg0
-	e2vDTxyucqxXlGodFKoqkwn7jZlg97tKQasYEDx18rg+CxpiiMCCS+TwQj16rk1bQYrTPO6YNHwRe
-	J+giptLSshsx89+3to12i6aloYCjj5ogHEg9QaJhibtRuWrV7zpldk/HeliExNvLzGCUeZAuix2P4
-	sgyRKpDn4L3JSpqA70BeBs6F4HpzKphFzDt1KEmOyQRQI9Er/zshh4AeJVF72CB/sng+nEdpeDrTY
-	4mQn4npZwdsunUhOf7GHtMK3EJGzG0nDH2CFqDF/SCwqWcYIHutPGA0FenGc3EohvXZnYOfusLca2
-	2M5KaaxA==;
+	bh=ONWXz7W+JVAmB/DU8qyxuEQHV8WCN6yeJIfEzdykSxI=; b=fBHp9OSzJFKle+0Fypl5yCvmW7
+	K9eiM9ogIubzUOmPR3VUIK7Ze555za3Hhi1bB+2+jKW2IBZ0kyCKNgr8nKaqtrNeXmJgjLHp0vNsO
+	SKPUg8Te+otzZ0e3l8S9dLuJnA61WZogLecJN9xrA4JUo8+jL3mBcsWSDSeemFvgVTNhEJ/XTRVT9
+	o5duKkZvSujZNE89a4WxBO4W6Juhsk6LnVq2lcxnkj5GRluObytGBhoYKOfszEXYk5P3oy2S6u7S+
+	3sgCTeQoNm1d6H+nT+48DNM+TzWailmVxDmh9Wnf6Cryp24I09hNBE8d4jaCFNWocRu8Oh2AgURQE
+	J3aNm0mg==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1uA5aG-0000000Dm7o-144D;
-	Wed, 30 Apr 2025 11:26:36 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uA5aH-0000000C6a9-0ELt;
+	Wed, 30 Apr 2025 11:26:37 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id D259F300F1D; Wed, 30 Apr 2025 13:26:35 +0200 (CEST)
-Message-ID: <20250430112349.315832833@infradead.org>
+	id F2A2C3085D1; Wed, 30 Apr 2025 13:26:35 +0200 (CEST)
+Message-ID: <20250430112350.335273952@infradead.org>
 User-Agent: quilt/0.66
-Date: Wed, 30 Apr 2025 13:07:37 +0200
+Date: Wed, 30 Apr 2025 13:07:46 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: x86@kernel.org
 Cc: kys@microsoft.com,
@@ -60,7 +60,7 @@ Cc: kys@microsoft.com,
  linux-efi@vger.kernel.org,
  samitolvanen@google.com,
  ojeda@kernel.org
-Subject: [PATCH v2 03/13] x86/kvm/emulate: Introduce COP2
+Subject: [PATCH v2 12/13] x86_64,hyperv: Use direct call to hypercall-page
 References: <20250430110734.392235199@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -70,221 +70,123 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Replace the FASTOP2 instructions.
+Instead of using an indirect call to the hypercall page, use a direct
+call instead. This avoids all CFI problems, including the one where
+the hypercall page doesn't have IBT on.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kvm/emulate.c |   87 +++++++++++++++++++++++++++----------------------
- 1 file changed, 48 insertions(+), 39 deletions(-)
+ arch/x86/hyperv/hv_init.c |   60 +++++++++++++++++++++++-----------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -300,7 +300,7 @@ static int em_##op(struct x86_emulate_ct
- 			_ASM_EXTABLE_TYPE_REG(10b, 11f, EX_TYPE_ZERO_REG, %%esi))
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -37,23 +37,41 @@
+ void *hv_hypercall_pg;
  
- #define COP_ASM2(op, dst, src) \
--		COP_ASM(#op " %" #src ", %" #dst " \n\t")
-+		COP_ASM(#op " %%" #src ", %%" #dst " \n\t")
- 
- #define COP_END \
- 	} \
-@@ -317,6 +317,15 @@ static int em_##op(struct x86_emulate_ct
- 	ON64(case 8: COP_ASM1(op##q, rax); break;) \
- 	COP_END
- 
-+/* 2-operand, using "a" (dst), "d" (src) */
-+#define COP2(op) \
-+	COP_START(op) \
-+	case 1: COP_ASM2(op##b, al, dl); break; \
-+	case 2: COP_ASM2(op##w, ax, dx); break; \
-+	case 4: COP_ASM2(op##l, eax, edx); break; \
-+	ON64(case 8: COP_ASM2(op##q, rax, rdx); break;) \
-+	COP_END
+ #ifdef CONFIG_X86_64
++static u64 __hv_hyperfail(u64 control, u64 param1, u64 param2)
++{
++	return U64_MAX;
++}
 +
- /*
-  * fastop functions have a special calling convention:
-  *
-@@ -1027,15 +1036,16 @@ static int read_descriptor(struct x86_em
- 	return rc;
++DEFINE_STATIC_CALL(__hv_hypercall, __hv_hyperfail);
++
+ u64 hv_std_hypercall(u64 control, u64 param1, u64 param2)
+ {
+ 	u64 hv_status;
+ 
+-	if (!hv_hypercall_pg)
+-		return U64_MAX;
+-
+ 	register u64 __r8 asm("r8") = param2;
+-	asm volatile (CALL_NOSPEC
++	asm volatile ("call " STATIC_CALL_TRAMP_STR(__hv_hypercall)
+ 		      : "=a" (hv_status), ASM_CALL_CONSTRAINT,
+ 		        "+c" (control), "+d" (param1), "+r" (__r8)
+-		      : THUNK_TARGET(hv_hypercall_pg)
+-		      : "cc", "memory", "r9", "r10", "r11");
++		      : : "cc", "memory", "r9", "r10", "r11");
+ 
+ 	return hv_status;
  }
++
++typedef u64 (*hv_hypercall_f)(u64 control, u64 param1, u64 param2);
++
++static inline void hv_set_hypercall_pg(void *ptr)
++{
++	hv_hypercall_pg = ptr;
++
++	if (!ptr)
++		ptr = &__hv_hyperfail;
++	static_call_update(__hv_hypercall, (hv_hypercall_f)ptr);
++}
+ #else
++static inline void hv_set_hypercall_pg(void *ptr)
++{
++	hv_hypercall_pg = ptr;
++}
+ EXPORT_SYMBOL_GPL(hv_hypercall_pg);
+ #endif
  
--FASTOP2(add);
--FASTOP2(or);
--FASTOP2(adc);
--FASTOP2(sbb);
--FASTOP2(and);
--FASTOP2(sub);
--FASTOP2(xor);
--FASTOP2(cmp);
--FASTOP2(test);
-+COP2(add);
-+COP2(or);
-+COP2(adc);
-+COP2(sbb);
-+COP2(and);
-+COP2(sub);
-+COP2(xor);
-+COP2(cmp);
-+COP2(test);
-+COP2(xadd);
+@@ -348,7 +366,7 @@ static int hv_suspend(void)
+ 	 * pointer is restored on resume.
+ 	 */
+ 	hv_hypercall_pg_saved = hv_hypercall_pg;
+-	hv_hypercall_pg = NULL;
++	hv_set_hypercall_pg(NULL);
  
- FASTOP1SRC2(mul, mul_ex);
- FASTOP1SRC2(imul, imul_ex);
-@@ -1067,7 +1077,6 @@ FASTOP2W(bts);
- FASTOP2W(btr);
- FASTOP2W(btc);
+ 	/* Disable the hypercall page in the hypervisor */
+ 	rdmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
+@@ -374,7 +392,7 @@ static void hv_resume(void)
+ 		vmalloc_to_pfn(hv_hypercall_pg_saved);
+ 	wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
  
--FASTOP2(xadd);
+-	hv_hypercall_pg = hv_hypercall_pg_saved;
++	hv_set_hypercall_pg(hv_hypercall_pg_saved);
+ 	hv_hypercall_pg_saved = NULL;
  
- FASTOP2R(cmp, cmp_r);
+ 	/*
+@@ -528,8 +546,8 @@ void __init hyperv_init(void)
+ 	if (hv_isolation_type_tdx() && !ms_hyperv.paravisor_present)
+ 		goto skip_hypercall_pg_init;
  
-@@ -2304,7 +2313,7 @@ static int em_cmpxchg(struct x86_emulate
- 	ctxt->dst.val = reg_read(ctxt, VCPU_REGS_RAX);
- 	ctxt->src.orig_val = ctxt->src.val;
- 	ctxt->src.val = ctxt->dst.orig_val;
--	fastop(ctxt, em_cmp);
-+	em_cmp(ctxt);
+-	hv_hypercall_pg = __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START,
+-			VMALLOC_END, GFP_KERNEL, PAGE_KERNEL_ROX,
++	hv_hypercall_pg = __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR,
++			MODULES_END, GFP_KERNEL, PAGE_KERNEL_ROX,
+ 			VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+ 			__builtin_return_address(0));
+ 	if (hv_hypercall_pg == NULL)
+@@ -567,27 +585,9 @@ void __init hyperv_init(void)
+ 		wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
+ 	}
  
- 	if (ctxt->eflags & X86_EFLAGS_ZF) {
- 		/* Success: write back to memory; no update of EAX */
-@@ -3069,7 +3078,7 @@ static int em_das(struct x86_emulate_ctx
- 	ctxt->src.type = OP_IMM;
- 	ctxt->src.val = 0;
- 	ctxt->src.bytes = 1;
--	fastop(ctxt, em_or);
-+	em_or(ctxt);
- 	ctxt->eflags &= ~(X86_EFLAGS_AF | X86_EFLAGS_CF);
- 	if (cf)
- 		ctxt->eflags |= X86_EFLAGS_CF;
-@@ -3095,7 +3104,7 @@ static int em_aam(struct x86_emulate_ctx
- 	ctxt->src.type = OP_IMM;
- 	ctxt->src.val = 0;
- 	ctxt->src.bytes = 1;
--	fastop(ctxt, em_or);
-+	em_or(ctxt);
+-skip_hypercall_pg_init:
+-	/*
+-	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
+-	 * in that there's no ENDBR64 instruction at the entry to the
+-	 * hypercall page. Because hypercalls are invoked via an indirect call
+-	 * to the hypercall page, all hypercall attempts fail when IBT is
+-	 * enabled, and Linux panics. For such buggy versions, disable IBT.
+-	 *
+-	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
+-	 * page, so if future Linux kernel versions enable IBT for 32-bit
+-	 * builds, additional hypercall page hackery will be required here
+-	 * to provide an ENDBR32.
+-	 */
+-#ifdef CONFIG_X86_KERNEL_IBT
+-	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
+-	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
+-		setup_clear_cpu_cap(X86_FEATURE_IBT);
+-		pr_warn("Disabling IBT because of Hyper-V bug\n");
+-	}
+-#endif
++	hv_set_hypercall_pg(hv_hypercall_pg);
  
- 	return X86EMUL_CONTINUE;
- }
-@@ -3113,7 +3122,7 @@ static int em_aad(struct x86_emulate_ctx
- 	ctxt->src.type = OP_IMM;
- 	ctxt->src.val = 0;
- 	ctxt->src.bytes = 1;
--	fastop(ctxt, em_or);
-+	em_or(ctxt);
- 
- 	return X86EMUL_CONTINUE;
- }
-@@ -3998,9 +4007,9 @@ static int check_perm_out(struct x86_emu
- #define I2bvIP(_f, _e, _i, _p) \
- 	IIP((_f) | ByteOp, _e, _i, _p), IIP(_f, _e, _i, _p)
- 
--#define F6ALU(_f, _e) F2bv((_f) | DstMem | SrcReg | ModRM, _e),		\
--		F2bv(((_f) | DstReg | SrcMem | ModRM) & ~Lock, _e),	\
--		F2bv(((_f) & ~Lock) | DstAcc | SrcImm, _e)
-+#define I6ALU(_f, _e) I2bv((_f) | DstMem | SrcReg | ModRM, _e),		\
-+		I2bv(((_f) | DstReg | SrcMem | ModRM) & ~Lock, _e),	\
-+		I2bv(((_f) & ~Lock) | DstAcc | SrcImm, _e)
- 
- static const struct opcode group7_rm0[] = {
- 	N,
-@@ -4038,14 +4047,14 @@ static const struct opcode group7_rm7[]
- };
- 
- static const struct opcode group1[] = {
--	F(Lock, em_add),
--	F(Lock | PageTable, em_or),
--	F(Lock, em_adc),
--	F(Lock, em_sbb),
--	F(Lock | PageTable, em_and),
--	F(Lock, em_sub),
--	F(Lock, em_xor),
--	F(NoWrite, em_cmp),
-+	I(Lock, em_add),
-+	I(Lock | PageTable, em_or),
-+	I(Lock, em_adc),
-+	I(Lock, em_sbb),
-+	I(Lock | PageTable, em_and),
-+	I(Lock, em_sub),
-+	I(Lock, em_xor),
-+	I(NoWrite, em_cmp),
- };
- 
- static const struct opcode group1A[] = {
-@@ -4064,8 +4073,8 @@ static const struct opcode group2[] = {
- };
- 
- static const struct opcode group3[] = {
--	F(DstMem | SrcImm | NoWrite, em_test),
--	F(DstMem | SrcImm | NoWrite, em_test),
-+	I(DstMem | SrcImm | NoWrite, em_test),
-+	I(DstMem | SrcImm | NoWrite, em_test),
- 	I(DstMem | SrcNone | Lock, em_not),
- 	I(DstMem | SrcNone | Lock, em_neg),
- 	F(DstXacc | Src2Mem, em_mul_ex),
-@@ -4258,29 +4267,29 @@ static const struct instr_dual instr_dua
- 
- static const struct opcode opcode_table[256] = {
- 	/* 0x00 - 0x07 */
--	F6ALU(Lock, em_add),
-+	I6ALU(Lock, em_add),
- 	I(ImplicitOps | Stack | No64 | Src2ES, em_push_sreg),
- 	I(ImplicitOps | Stack | No64 | Src2ES, em_pop_sreg),
- 	/* 0x08 - 0x0F */
--	F6ALU(Lock | PageTable, em_or),
-+	I6ALU(Lock | PageTable, em_or),
- 	I(ImplicitOps | Stack | No64 | Src2CS, em_push_sreg),
- 	N,
- 	/* 0x10 - 0x17 */
--	F6ALU(Lock, em_adc),
-+	I6ALU(Lock, em_adc),
- 	I(ImplicitOps | Stack | No64 | Src2SS, em_push_sreg),
- 	I(ImplicitOps | Stack | No64 | Src2SS, em_pop_sreg),
- 	/* 0x18 - 0x1F */
--	F6ALU(Lock, em_sbb),
-+	I6ALU(Lock, em_sbb),
- 	I(ImplicitOps | Stack | No64 | Src2DS, em_push_sreg),
- 	I(ImplicitOps | Stack | No64 | Src2DS, em_pop_sreg),
- 	/* 0x20 - 0x27 */
--	F6ALU(Lock | PageTable, em_and), N, N,
-+	I6ALU(Lock | PageTable, em_and), N, N,
- 	/* 0x28 - 0x2F */
--	F6ALU(Lock, em_sub), N, I(ByteOp | DstAcc | No64, em_das),
-+	I6ALU(Lock, em_sub), N, I(ByteOp | DstAcc | No64, em_das),
- 	/* 0x30 - 0x37 */
--	F6ALU(Lock, em_xor), N, N,
-+	I6ALU(Lock, em_xor), N, N,
- 	/* 0x38 - 0x3F */
--	F6ALU(NoWrite, em_cmp), N, N,
-+	I6ALU(NoWrite, em_cmp), N, N,
- 	/* 0x40 - 0x4F */
- 	X8(I(DstReg, em_inc)), X8(I(DstReg, em_dec)),
- 	/* 0x50 - 0x57 */
-@@ -4306,7 +4315,7 @@ static const struct opcode opcode_table[
- 	G(DstMem | SrcImm, group1),
- 	G(ByteOp | DstMem | SrcImm | No64, group1),
- 	G(DstMem | SrcImmByte, group1),
--	F2bv(DstMem | SrcReg | ModRM | NoWrite, em_test),
-+	I2bv(DstMem | SrcReg | ModRM | NoWrite, em_test),
- 	I2bv(DstMem | SrcReg | ModRM | Lock | PageTable, em_xchg),
- 	/* 0x88 - 0x8F */
- 	I2bv(DstMem | SrcReg | ModRM | Mov | PageTable, em_mov),
-@@ -4329,7 +4338,7 @@ static const struct opcode opcode_table[
- 	I2bv(SrcSI | DstDI | Mov | String | TwoMemOp, em_mov),
- 	F2bv(SrcSI | DstDI | String | NoWrite | TwoMemOp, em_cmp_r),
- 	/* 0xA8 - 0xAF */
--	F2bv(DstAcc | SrcImm | NoWrite, em_test),
-+	I2bv(DstAcc | SrcImm | NoWrite, em_test),
- 	I2bv(SrcAcc | DstDI | Mov | String, em_mov),
- 	I2bv(SrcSI | DstAcc | Mov | String, em_mov),
- 	F2bv(SrcAcc | DstDI | String | NoWrite, em_cmp_r),
-@@ -4467,7 +4476,7 @@ static const struct opcode twobyte_table
- 	I(DstReg | SrcMem | ModRM, em_bsr_c),
- 	D(DstReg | SrcMem8 | ModRM | Mov), D(DstReg | SrcMem16 | ModRM | Mov),
- 	/* 0xC0 - 0xC7 */
--	F2bv(DstMem | SrcReg | ModRM | SrcWrite | Lock, em_xadd),
-+	I2bv(DstMem | SrcReg | ModRM | SrcWrite | Lock, em_xadd),
- 	N, ID(0, &instr_dual_0f_c3),
- 	N, N, N, GD(0, &group9),
- 	/* 0xC8 - 0xCF */
++skip_hypercall_pg_init:
+ 	/*
+ 	 * hyperv_init() is called before LAPIC is initialized: see
+ 	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
 
 
