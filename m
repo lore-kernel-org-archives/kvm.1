@@ -1,62 +1,62 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F4525EFBC
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 06:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3627268FF1
+	for <kvm@vger.kernel.org>; Thu,  1 May 2025 06:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746080635; cv=none; b=lYrWQMVehgBjxAD57HWb6rKVG0+Ut82Bc9hx9ewGa1QxeEdjduyFAg8Nxk25nMchTxtYvmVx9AZABgn4wF3EGhU6SsQmTEDlkF0140KckO6asBpXLlkpuiLGsf5li4z/Qy+8MK7T+wbKRKKW/6Vib3sQ052/04TDKMNXEPpf7nA=
+	t=1746080636; cv=none; b=J11Tp1APzIDeyyLK4QMI6P9Nj+W+ha536YqyxAoLu23cUdW1O5B9TEySi1Py3ZjSavfePwUvkTq5ROTq372h5ZAL1BOWHM+5Ck8Jhem31ahrvyqM6vK4KoYdggswfB/6S3z1ZprVNDYdfSpPQQTMbaRY/zE1+RTTkYPWiYDD9gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746080635; c=relaxed/simple;
-	bh=EYKn7getbKo/8tVh550xVwP7v6hjfYifE0NUaw2ZmfM=;
+	s=arc-20240116; t=1746080636; c=relaxed/simple;
+	bh=CU4h1uCEJVcOpx1eBC5/bWxXgC4OWAabA9+JMuwWEto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qG5BM1y6IgUHkVduF+XzUAmCPZFTSMONYElWf4n8rzv0Md8FBNcXESJdY1k+GGy+ygJ6WIzNV8VknDA9FxtIFMxtruAtzRHVKwBq65f+Kr40idSjG1hl/N2YRfaCvD8Kzg2XGPNRDZmrgjSZXBvD8I2Szt13tDQscwV0RpXdfy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dzWvuiZZ; arc=none smtp.client-ip=209.85.215.176
+	 MIME-Version; b=X9dv9qv/ewNieU65cZfzXGxWvwnY1iIFfk7/42DB5qkBhc5PSTnxS79bfipiT92bajcPuf3kOKN6fcwAyn7nHjsXrPoeBixB+uijjcbymuoiWHYMAQAVC3XG7QGqKreeUC/dsVi41BTryY/27lariK6yGg4U5AYNaDNfDYa1Eas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YMaR7MJ4; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dzWvuiZZ"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b041afe0ee1so600813a12.1
-        for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 23:23:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YMaR7MJ4"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso987631b3a.2
+        for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 23:23:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746080632; x=1746685432; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1746080634; x=1746685434; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v1JmSJqnxYquNU/v4UOEtwOcqbxnEb6aDiKyyBWqJ6s=;
-        b=dzWvuiZZGNieuCWrewnPSeTzmCIId/uTIDjaum4W2i91dEGT9nKDHuI+SwJxIZgcDo
-         qFavsWcr/iUmJ0HtwxyueYemsmmPY61ernWGdmt1sw+F1nHDXytGXzc6ebbUcxHxf/jn
-         bMVFcAC9spqZ0gZjm+LDWhrQoPYFGRFdKYnmPIw9i8rAXfNHc0KZVg1Frd7WWOZSwlkA
-         L7wKV/4T9Jh0wm15bPmH6k+fns6LK25/nuMLyPhx6Iiu2Q0f8dybqbnEA7iyjCyKWIMZ
-         lww6enMU3QqFUj3fmouO9GXoOvpGrxWsY1pECYNe/v//7tsAV2RWgtsrMR56a2GkIcNL
-         njhA==
+        bh=wRQcX2zj5rKRmJl38W94XdQVe0UW4OEH2J5EM4DWdNo=;
+        b=YMaR7MJ4ycrnoXRkWXqRrZmVLBHz3xfhSt/Ekt80YEx3D6PiaysImqttrYZQ1DMXvJ
+         wWE9PhjV8kZpK1NjGiGa5bE4nKWu5GqxBQxexLoPffinfs9yY3ajhE3z1WiuJECZpqRq
+         KCCLP0LX9agHMMsfiyPUkpAVjfIW8sT0R58bcoRI4B1iFxHw2SUIz+BJwnrIX4c31VNG
+         49E9PCgC2klXerZu8LMrMw2ef1jZtngitVLL+YJJD+PJIGfW5JhfZfkUuzxbmZR0+m0C
+         eugj8KOO5vlHZDHzjXAGrW1qI64IHH5z1iikmFev7eXWAm5XthkGK+izSeb21U+CtMhU
+         BMuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746080632; x=1746685432;
+        d=1e100.net; s=20230601; t=1746080634; x=1746685434;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v1JmSJqnxYquNU/v4UOEtwOcqbxnEb6aDiKyyBWqJ6s=;
-        b=IKzfjolIK+4OpQHWjLNMHME90YKU7rkJnjJ1659/ssTy9UBsVQ+ym/w1tUxkbVtHhH
-         pnFp4KUUQoU6WUYkLLyVCJGidFMHcMpjQjem1KBP/3we9kj8XjGIBc21oNIHE9kDf302
-         F5Be4O2jgSPEIE5kyooWOT7k73PaXkXFiOIyfv4BUbj+Xl2d9L3BAls+fOm4nWEHisvr
-         EunlmBuVteCH0hBjnCvy2Lz3ae0V+dq6NSVFFu5joluXT2dS+DGVOV5hlxBWPyt+USKA
-         xYZOezfZ5D1EHOig95XKnwHJKul8yD96aLH7tNGf8MQfa0xJeVB5/A5FZd5MX7I7tPz7
-         peyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSwiZj9weFUFrwewfShJ9o/agXg3xK6/s/CKAePyChlrCOpM6MUvaAWItcyRzjKPK8CnE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/b/ecSVo+E3PwHST0TwKEREqnkrh1jw46IP4C5pPeihyA1/u9
-	c5u71VHS1930pf3ET7xygD+ghDdWZWdsUo2+TDLXhWnhMBULLPTev3dKCufNJgQ=
-X-Gm-Gg: ASbGnctEkXor+19cpyN5wObPWnHgaJnJ11idBavCc8QXlhQFGMvrZvCgjVjpce6GSXZ
-	aTrPqN1PCTfnoTsIuGxwQD6XWq2yQDuQDWVqf7mUuzIjnq4kQDHloXLeTmAX5tf9l9eoglXyL1D
-	xFGSDKS0lvujcBPycF4Wf6t3ofZlvw2RPb9OL6HxCWrhByDrwO5LOhc8jeIo9PiX/ehjhbXD5Eb
-	kz54WIW8hhKlIJOXz2fn62IBf40h5FzZNTbn+YtN7iQRqovEl7+DnvNbLjF96ICNHJ/j4ZD3lK1
-	NnnQKXw9vjDKt/k724DAaAuY2TjTSsh7iT0iLn4dqRRwuFLsc/w=
-X-Google-Smtp-Source: AGHT+IFOfDiSKDNI2z7vj3bMYhWzkjC1FmgVSWCJcnFqyW6oYKX9smD6/m/Yr79c3SgHzyGvhdUaQw==
-X-Received: by 2002:a05:6a20:7d9b:b0:1f5:79c4:5da6 with SMTP id adf61e73a8af0-20ba6a181acmr2684589637.5.1746080632405;
-        Wed, 30 Apr 2025 23:23:52 -0700 (PDT)
+        bh=wRQcX2zj5rKRmJl38W94XdQVe0UW4OEH2J5EM4DWdNo=;
+        b=HwTsx+m0LGCVQFBNezv19TvyB3/QWoU3Hlp6+Hob08/2RTXhQq/9q0zFyVCPMDfPKR
+         wItdrIwi0nBbPxdZ4HhPJkTXtIBBWfd6g4HhC6T0ai/1evSzcIjArmj9hT/3d/bY8wCY
+         nP0lJEjSkib5DEH/Efum+lcWcmdMcP2fP/Y17ZA/vg3BUgGIGlwyoi2Jsj8nBby99G1t
+         bQSQxTbEr4BO6kDjYexFdYi3mNUWSHEpzY+LzFa9dkNmOEH90sBq69dKeJyXjfFPhQAQ
+         6VqxLpHSTGbrNea8M4CVtGLKr9jUvfu3x1LkTDr6ZgtYoQYXEaDQNcowB862PjES6wN8
+         NBBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAhG8kle4D17hdQGmYmpNh8L1cI5JQ2x/0utvKQyl1VV8ZOWQmcLArtib/9mtuj1uuy7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm8bX/xy/QwBuw3uVqu1KA+DkmlAqJClBb448ep3uCUkCCvAlx
+	z18jxekYSASixuQG2TaAxCpZOxJR/14OdE+iHEymaUlm/jihUlCHX41uaTU5PcM=
+X-Gm-Gg: ASbGncskzSnKLG5hUqL2AMKfa/kb4faqPHIhCJQZgzXkzA2Oz9U5ZBiKvnfs+YklbuU
+	liA8M5xLht+I2TeEGQGq0VFSxRR4dNUIPmbqmxV0Gme9INe9kGrwctwqVeyEB5ivM15KTpUg3H0
+	Atd41n07qpKWZvFI6uGajuRBHHeh1G/fGS/9F2uAfps30Nk204EJCFuvR9O9iHNMuqQUKXpgChg
+	H9kLAJkvbkDYt6Yw68hI95uLR+yBFqn3ztxnpJ3tdhVSkuP9owLEumlSPfYQy/W+zCHqKhxw30C
+	VMWAwcnBBjg+u801zQhTH9c5y3GVAO4AOtdYaAFX
+X-Google-Smtp-Source: AGHT+IHKWHJJEyntNtUOURmqxwObv8CnYTNyX1sITXamA4/jKCZTWAekB5bBp7ZEISulZ7JhHIow3Q==
+X-Received: by 2002:a05:6a21:1788:b0:1f5:837b:1868 with SMTP id adf61e73a8af0-20aa4380499mr9068562637.29.1746080634113;
+        Wed, 30 Apr 2025 23:23:54 -0700 (PDT)
 Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7404f9fed21sm108134b3a.93.2025.04.30.23.23.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7404f9fed21sm108134b3a.93.2025.04.30.23.23.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 23:23:52 -0700 (PDT)
+        Wed, 30 Apr 2025 23:23:53 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	kvm@vger.kernel.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 01/33] target/arm: Replace target_ulong -> uint64_t for HWBreakpoint
-Date: Wed, 30 Apr 2025 23:23:12 -0700
-Message-ID: <20250501062344.2526061-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 03/33] meson: add common libs for target and target_system
+Date: Wed, 30 Apr 2025 23:23:14 -0700
+Message-ID: <20250501062344.2526061-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
 References: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
@@ -80,70 +80,136 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Following what we did for hw/, we need target specific common libraries
+for target. We need 2 different libraries:
+- code common to a base architecture
+- system code common to a base architecture
 
-CPUARMState::pc is of type uint64_t.
+For user code, it can stay compiled per target for now.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/internals.h   | 6 +++---
- target/arm/hyp_gdbstub.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ meson.build | 78 +++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 61 insertions(+), 17 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 4d3d84ffebd..c30689c9fcd 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1949,9 +1949,9 @@ extern GArray *hw_breakpoints, *hw_watchpoints;
- #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
- #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
+diff --git a/meson.build b/meson.build
+index 68d36ac140f..7b2cf3cd7d1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3684,6 +3684,8 @@ target_arch = {}
+ target_system_arch = {}
+ target_user_arch = {}
+ hw_common_arch = {}
++target_common_arch = {}
++target_common_system_arch = {}
  
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc);
--int insert_hw_breakpoint(target_ulong pc);
--int delete_hw_breakpoint(target_ulong pc);
-+bool find_hw_breakpoint(CPUState *cpu, uint64_t pc);
-+int insert_hw_breakpoint(uint64_t pc);
-+int delete_hw_breakpoint(uint64_t pc);
+ # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
+ # that is filled in by qapi/.
+@@ -4087,29 +4089,59 @@ common_all = static_library('common',
  
- bool check_watchpoint_in_range(int i, vaddr addr);
- CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr);
-diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
-index 0512d67f8cf..4d8fd933868 100644
---- a/target/arm/hyp_gdbstub.c
-+++ b/target/arm/hyp_gdbstub.c
-@@ -54,7 +54,7 @@ GArray *hw_breakpoints, *hw_watchpoints;
-  * here so future PC comparisons will work properly.
-  */
+ # construct common libraries per base architecture
+ hw_common_arch_libs = {}
++target_common_arch_libs = {}
++target_common_system_arch_libs = {}
+ foreach target : target_dirs
+   config_target = config_target_mak[target]
+   target_base_arch = config_target['TARGET_BASE_ARCH']
++  target_inc = [include_directories('target' / target_base_arch)]
++  inc = [common_user_inc + target_inc]
  
--int insert_hw_breakpoint(target_ulong addr)
-+int insert_hw_breakpoint(uint64_t addr)
- {
-     HWBreakpoint brk = {
-         .bcr = 0x1,                             /* BCR E=1, enable */
-@@ -80,7 +80,7 @@ int insert_hw_breakpoint(target_ulong addr)
-  * Delete a breakpoint and shuffle any above down
-  */
+-  # check if already generated
+-  if target_base_arch in hw_common_arch_libs
+-    continue
+-  endif
++  # prevent common code to access cpu compile time definition,
++  # but still allow access to cpu.h
++  target_c_args = ['-DCPU_DEFS_H']
++  target_system_c_args = target_c_args + ['-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU']
  
--int delete_hw_breakpoint(target_ulong pc)
-+int delete_hw_breakpoint(uint64_t pc)
- {
-     int i;
-     for (i = 0; i < hw_breakpoints->len; i++) {
-@@ -226,7 +226,7 @@ int delete_hw_watchpoint(vaddr addr, vaddr len, int type)
-     return -ENOENT;
- }
+   if target_base_arch in hw_common_arch
+-    target_inc = [include_directories('target' / target_base_arch)]
+-    src = hw_common_arch[target_base_arch]
+-    lib = static_library(
+-      'hw_' + target_base_arch,
+-      build_by_default: false,
+-      sources: src.all_sources() + genh,
+-      include_directories: common_user_inc + target_inc,
+-      implicit_include_directories: false,
+-      # prevent common code to access cpu compile time
+-      # definition, but still allow access to cpu.h
+-      c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
+-      dependencies: src.all_dependencies())
+-    hw_common_arch_libs += {target_base_arch: lib}
++    if target_base_arch not in hw_common_arch_libs
++      src = hw_common_arch[target_base_arch]
++      lib = static_library(
++        'hw_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_system_c_args,
++        dependencies: src.all_dependencies())
++      hw_common_arch_libs += {target_base_arch: lib}
++    endif
++  endif
++
++  if target_base_arch in target_common_arch
++    if target_base_arch not in target_common_arch_libs
++      src = target_common_arch[target_base_arch]
++      lib = static_library(
++        'target_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_c_args,
++        dependencies: src.all_dependencies())
++      target_common_arch_libs += {target_base_arch: lib}
++    endif
++  endif
++
++  if target_base_arch in target_common_system_arch
++    if target_base_arch not in target_common_system_arch_libs
++      src = target_common_system_arch[target_base_arch]
++      lib = static_library(
++        'target_system_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_system_c_args,
++        dependencies: src.all_dependencies())
++      target_common_system_arch_libs += {target_base_arch: lib}
++    endif
+   endif
+ endforeach
  
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc)
-+bool find_hw_breakpoint(CPUState *cpu, uint64_t pc)
- {
-     int i;
+@@ -4282,12 +4314,24 @@ foreach target : target_dirs
+   target_common = common_ss.apply(config_target, strict: false)
+   objects = [common_all.extract_objects(target_common.sources())]
+   arch_deps += target_common.dependencies()
++  if target_base_arch in target_common_arch_libs
++    src = target_common_arch[target_base_arch].apply(config_target, strict: false)
++    lib = target_common_arch_libs[target_base_arch]
++    objects += lib.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
+   if target_type == 'system' and target_base_arch in hw_common_arch_libs
+     src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
+     lib = hw_common_arch_libs[target_base_arch]
+     objects += lib.extract_objects(src.sources())
+     arch_deps += src.dependencies()
+   endif
++  if target_type == 'system' and target_base_arch in target_common_system_arch_libs
++    src = target_common_system_arch[target_base_arch].apply(config_target, strict: false)
++    lib = target_common_system_arch_libs[target_base_arch]
++    objects += lib.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
  
+   target_specific = specific_ss.apply(config_target, strict: false)
+   arch_srcs += target_specific.sources()
 -- 
 2.47.2
 
