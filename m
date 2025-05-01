@@ -1,183 +1,125 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0A1EF393
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 08:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EFD1EB1BC
+	for <kvm@vger.kernel.org>; Thu,  1 May 2025 08:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746086755; cv=none; b=Q43Avg38H5nM5Tc1UyEeEX7NuqLj1FddlGF7wLHbefMxdJ6LZifXni5T/SylFo2cAme1zN3OPS9yCkhZqkTk0Y92V6dDu4ShlWpLqB4WVcmLmyXzBHxrgbGNLhwGd+FCTdetYtJvZXwwDQDohVVIPGjYmUkqv6KgPOfyuVB02Es=
+	t=1746086871; cv=none; b=WklvA53Z09DA49mhEeS9sljSevR5ZKOXwqQpGJkKBxVSOrQMiXmXYNnlFEAAcXRZqENf3FdWT70A8tE3lb0VCC6SEqS4QsR1swfzNA5ZeWK+KxJZpoCFbdNTrQranW9wJWVL3TevvNKblF1bjWzmb6sWQeN5dCPnSEMCywLSKiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746086755; c=relaxed/simple;
-	bh=sG2QEyQbrobbnyUhVWEtJMUwJvJ74lxMh2X+TVU/j8Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sw2JHQKfRn86xDNLPHe+0rE/1hXglm8FvV/2h5ZXIm8t5OFqafl2Jn5rcxecdSrtHo82o5bqB78EMeqxStkkz69AHsdyH52sTS96dmB0xRBH5GFHb4q/1a6rqhd6eyg27gbfdv/3Wh7Um/wlK6EX4VDPBQkayQus4ysjlm5u0BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=G751hQCu; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1746086871; c=relaxed/simple;
+	bh=vREGJGFXVuSGRww/ba3HQasR34sYytL5jH4hZO8ytUA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GJ1C+ZkjzANmlHpK27jC0mPXwZGGqbm0MVrQtkBrjgJ5hOzoTnEGBCHPiRDXc6yuf1AE1E4xYqBA1qc2V23kfhYujOfMICDsZJXlUc9JgUQsOobWbndzCd9Cyx2zFCAKAPhlUtDKzYmLIQNZTOoyqgUpP3FChBh80mFPGsKenJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3X29Hz+I; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="G751hQCu"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1uAOvU-00BnGy-IG; Thu, 01 May 2025 10:05:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=2+Pq8Xix56XtZggy9D9QenLSKFUy39lDf1vpQzvRUiU=; b=G751hQCu0JZMaPkaorZdkE1h9o
-	i9d0NdWrxcOy8IhaePt6pvZN+zX5OWaDJ1qz709RzRp7uXe9FEwlE2Z1kAQ8VsOiQ1W0v73eupzx2
-	vn4KbyUfOZ4u+kSqBdAa6zXHj1aEdNMEYcia0haFA+44wex6TCyjMLXsSA7UyrO8h/YJMPFcfk77V
-	3qaWTUMVixpxefpue4SnBiFxfhHs/jUCKuFjLo1pXqzffCsGuZ49hW4I6s+dECB4obvVZV/S3sFMc
-	Z/0UTI8c5ogXFsohW7Hiz/iSDgc4Dv5ijVO2AZpJLiTznNLc+/KZfgpN40sANqEuJQXTDxUk5Ybxh
-	7Py8fQig==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1uAOvU-0001EA-8b; Thu, 01 May 2025 10:05:48 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1uAOvJ-005lsv-Oq; Thu, 01 May 2025 10:05:37 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Thu, 01 May 2025 10:05:23 +0200
-Subject: [PATCH net-next v4 2/3] vsock: Move lingering logic to af_vsock
- core
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3X29Hz+I"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-47e9fea29easo103031cf.1
+        for <kvm@vger.kernel.org>; Thu, 01 May 2025 01:07:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746086868; x=1746691668; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vREGJGFXVuSGRww/ba3HQasR34sYytL5jH4hZO8ytUA=;
+        b=3X29Hz+IRNkUN+JxN7pAbUmQgq72Fxmz1BZN/6WScz4xzwF8R9sBMmA67MlSaHttpR
+         RLaCtb7sKZ9t40nA3TAU16DiFAEw74hCR5voVMLzDScUs72ucCSi2/4XYXMhwohhTlnb
+         byhs25oZ6vMhPbt1xUEmrKhs16aF2j1q5V8FLbKONQayYsG5VJdz4WXA6FNQCw+FfyaO
+         03Z1JLro0mSL/3EAIaKmNgpG+375BDnxKD1fqM3YBGpjoGVUfhdjVtPcmSoXR6wUTWP3
+         5V+9H8xbRj6EIgQwmxlOj0SH0C3pSpnbzA9WA4wOsz/vjC22+weWiHAezONY7pZKh25P
+         TNHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746086868; x=1746691668;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vREGJGFXVuSGRww/ba3HQasR34sYytL5jH4hZO8ytUA=;
+        b=WhQblSSiHoN5KKSNlSTwg2K3XDL9oGWN2Zzd/ZOKoeI/sBMBMQqkLRDfBzt6dicrhA
+         qDDG6MTci8M9FUwtFQFjWF+Ju9IYRRX24Fnib6vkAMi3ZvUI3gdsHKd/02QUNAY/JlNe
+         MOwevwJvpLIovgBGpU+9MVxOXrjCFd/WhO0MUblxA4FczAQYZ/aNhyMZym3aDw7U+XqQ
+         azDkhd/hSdEjRsMxEYlmwIG06T/4mUaleOoYitrbJE2xZwSRY4Mz2KFSoh/zODmQyIxI
+         X3NkD/MHWpwNcxZ9frfULLHluFFmu6n3SlUDwRPFOSFnYNMyIFZKfbR2/7FaX06RI0z4
+         dwtQ==
+X-Gm-Message-State: AOJu0Yxp1+zkGqHR+9FpIwHatEwJ50KSEFvXJOBD1h4YIlJAE96ng/ky
+	tyr4BFezy9nu3ejFOMcU59t7ZjXemNp/JvnXPplrKGruZgnjDT11On43J8YplaO7Nk+bbvsR8On
+	ImJw2QHPLEYo5mjIKxr7yveGZq6Xo72KKsv4M
+X-Gm-Gg: ASbGnct7Uzu1LAGukUCGtwRFyj8aiqlVFBLuaTehBTaC7IHvijSh3p+TxIvVa3FYOFV
+	BVw5mmsQtnfWo1cU+JLbwJ2ghfb+4RJCu2+VHciWep5O0u7Gq17dCOCtd1um/oykNiDnnBKzxdd
+	sHazdQyhYAp/LJQMpVQm/chcQ=
+X-Google-Smtp-Source: AGHT+IHQC8o0TPGWFiSlPjgZkK3iMg9wSyQqLwuv70JGSX9kuQCkQXw8IAZ3tYTW5FsT0ee0ahy75qXucdeg1pEym08=
+X-Received: by 2002:ac8:5f50:0:b0:47d:c9f0:da47 with SMTP id
+ d75a77b69052e-48b0dfd9ab8mr2036221cf.19.1746086868392; Thu, 01 May 2025
+ 01:07:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250501-vsock-linger-v4-2-beabbd8a0847@rbox.co>
-References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
-In-Reply-To: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+References: <20250430165655.605595-1-tabba@google.com> <20250430165655.605595-9-tabba@google.com>
+ <2b1bf120-99b3-46cd-83bd-b021743540d0@redhat.com>
+In-Reply-To: <2b1bf120-99b3-46cd-83bd-b021743540d0@redhat.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 1 May 2025 09:07:11 +0100
+X-Gm-Features: ATxdqUFLmJfHkI366mwtWMl0YiqPlB-kJX_OyskRiHGx2Beoxdp5LbxHctZZjVM
+Message-ID: <CA+EHjTy-csS3tNcgE81=QSeETZQxEVTENCYK71zbCQBZ313WxA@mail.gmail.com>
+Subject: Re: [PATCH v8 08/13] KVM: guest_memfd: Allow host to map
+ guest_memfd() pages
+To: David Hildenbrand <david@redhat.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
+	isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com, 
+	suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com, 
+	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com, 
+	quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
+	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, 
+	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, qperret@google.com, 
+	keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, 
+	jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, 
+	hughd@google.com, jthoughton@google.com, peterx@redhat.com, 
+	pankaj.gupta@amd.com
+Content-Type: text/plain; charset="UTF-8"
 
-Lingering should be transport-independent in the long run. In preparation
-for supporting other transports, as well the linger on shutdown(), move
-code to core.
+On Wed, 30 Apr 2025 at 22:33, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 30.04.25 18:56, Fuad Tabba wrote:
+> > Add support for mmap() and fault() for guest_memfd backed memory
+> > in the host for VMs that support in-place conversion between
+> > shared and private. To that end, this patch adds the ability to
+> > check whether the VM type supports in-place conversion, and only
+> > allows mapping its memory if that's the case.
+> >
+> > This patch introduces the configuration option KVM_GMEM_SHARED_MEM,
+> > which enables support for in-place shared memory.
+> >
+> > It also introduces the KVM capability KVM_CAP_GMEM_SHARED_MEM, which
+> > indicates that the host can create VMs that support shared memory.
+> > Supporting shared memory implies that memory can be mapped when shared
+> > with the host.
+>
+> I think you should clarify here that it's not about "supports in-place
+> conversion" in the context of this series.
+>
+> It's about mapping shared pages only; initially, we'll introduce the
+> option to only have shared memory in guest memfd, and later we'll
+> introduce the option for in-place conversion.
 
-Generalize by querying vsock_transport::unsent_bytes(), guard against the
-callback being unimplemented. Do not pass sk_lingertime explicitly. Pull
-SOCK_LINGER check into vsock_linger().
+That's right. I'll fix this.
 
-Flatten the function. Remove the nested block by inverting the condition:
-return early on !timeout.
+Thanks,
+/fuad
 
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- include/net/af_vsock.h                  |  1 +
- net/vmw_vsock/af_vsock.c                | 30 ++++++++++++++++++++++++++++++
- net/vmw_vsock/virtio_transport_common.c | 23 ++---------------------
- 3 files changed, 33 insertions(+), 21 deletions(-)
-
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9e85424c834353d016a527070dd62e15ff3bfce1..d56e6e135158939087d060dfcf65d3fdaea53bf3 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -221,6 +221,7 @@ void vsock_for_each_connected_socket(struct vsock_transport *transport,
- 				     void (*fn)(struct sock *sk));
- int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
- bool vsock_find_cid(unsigned int cid);
-+void vsock_linger(struct sock *sk);
- 
- /**** TAP ****/
- 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fc6afbc8d6806a4d98c66abc3af4bd139c583b08..a31ad6b141cd38d1806df4b5d417924bb8607e32 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1013,6 +1013,36 @@ static int vsock_getname(struct socket *sock,
- 	return err;
- }
- 
-+void vsock_linger(struct sock *sk)
-+{
-+	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+	ssize_t (*unsent)(struct vsock_sock *vsk);
-+	struct vsock_sock *vsk = vsock_sk(sk);
-+	long timeout;
-+
-+	if (!sock_flag(sk, SOCK_LINGER))
-+		return;
-+
-+	timeout = sk->sk_lingertime;
-+	if (!timeout)
-+		return;
-+
-+	/* unsent_bytes() may be unimplemented. */
-+	unsent = vsk->transport->unsent_bytes;
-+	if (!unsent)
-+		return;
-+
-+	add_wait_queue(sk_sleep(sk), &wait);
-+
-+	do {
-+		if (sk_wait_event(sk, &timeout, unsent(vsk) == 0, &wait))
-+			break;
-+	} while (!signal_pending(current) && timeout);
-+
-+	remove_wait_queue(sk_sleep(sk), &wait);
-+}
-+EXPORT_SYMBOL_GPL(vsock_linger);
-+
- static int vsock_shutdown(struct socket *sock, int mode)
- {
- 	int err;
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 045ac53f69735e1979162aea8c9ab5961407640c..aa308f285bf1bcf4c689407033de854c6f85a639 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1192,25 +1192,6 @@ static void virtio_transport_remove_sock(struct vsock_sock *vsk)
- 	vsock_remove_sock(vsk);
- }
- 
--static void virtio_transport_wait_close(struct sock *sk, long timeout)
--{
--	if (timeout) {
--		DEFINE_WAIT_FUNC(wait, woken_wake_function);
--		struct vsock_sock *vsk = vsock_sk(sk);
--
--		add_wait_queue(sk_sleep(sk), &wait);
--
--		do {
--			if (sk_wait_event(sk, &timeout,
--					  virtio_transport_unsent_bytes(vsk) == 0,
--					  &wait))
--				break;
--		} while (!signal_pending(current) && timeout);
--
--		remove_wait_queue(sk_sleep(sk), &wait);
--	}
--}
--
- static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
- 					       bool cancel_timeout)
- {
-@@ -1280,8 +1261,8 @@ static bool virtio_transport_close(struct vsock_sock *vsk)
- 	if ((sk->sk_shutdown & SHUTDOWN_MASK) != SHUTDOWN_MASK)
- 		(void)virtio_transport_shutdown(vsk, SHUTDOWN_MASK);
- 
--	if (sock_flag(sk, SOCK_LINGER) && !(current->flags & PF_EXITING))
--		virtio_transport_wait_close(sk, sk->sk_lingertime);
-+	if (!(current->flags & PF_EXITING))
-+		vsock_linger(sk);
- 
- 	if (sock_flag(sk, SOCK_DONE)) {
- 		return true;
-
--- 
-2.49.0
-
+> --
+> Cheers,
+>
+> David / dhildenb
+>
