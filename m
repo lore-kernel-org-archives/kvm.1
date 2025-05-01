@@ -1,99 +1,94 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E73F1BE871
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 15:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEEB6FB9
+	for <kvm@vger.kernel.org>; Thu,  1 May 2025 15:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746111817; cv=none; b=ji9SCzUuhpwuM92lANRjlL2pKnVjuRIBubgZ9nZBcqBK9Rk12nNOEYvz0qgzJ3UczuWCDb5gYePF3XctGqTaq4yopRo60/JnUxqz3UdSWwTLfSFw851VnxWkCw2ChVHHkxouUlT5gXBg81tbCO6g+y8GMLiDbOAyY4z2nlAYNUE=
+	t=1746111987; cv=none; b=PE6Lj5/tHkj7Blwc/Vnm9sjKKVBlxe/FWE0vYOlFS9gOkKcQ0kYSvb8+4qG7xRremugKgpusWWyBQsM0AuK/NQCrW5Z+TSLNKzR7/ImAVVV94YpDMAgjfz+3W2XOiOqgG3iBCscwhu2GKHFFWShYwN6I+y30wkU139y9L0woHFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746111817; c=relaxed/simple;
-	bh=5I05M87lMsen1AVruQRQa7haeFtJa3I9f6fonpf0LFM=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=XMcXKpdTd0ToQSNB20hyRkaGQ8jCIo7EdtEVYFOn/+3pkVdXM8DkqP8yUaA8PyLVxDZTCaqnMvql+ysRFVNQUhINW/6Ajd4hWR5XofW9BRxjB5tZyHxsKOXCV0SE3lfGz8VrUDITwVKE7A1N/T0E+K9nNhQ7m2knubucos2pxYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--derkling.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yYexDwAq; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--derkling.bounces.google.com
+	s=arc-20240116; t=1746111987; c=relaxed/simple;
+	bh=S8v7+c8C6WggcnK3Aht4xRlF4y8+GbtuoPyu9JtJZlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BxYUDz1pdRzJRW9I5wvYplccQuoKTnolxPxd6ZhVYly22kWlou4818aG783TfEFkTxP8zU6rP0Z902rbEcYES2AN7KsDFRAGOxQjBgtw82Giv5tMVtvnP19Sf5aNU2dBvS4zUcN8B8Lj8fAytqvcRBB/l8Z7RRYTPEEkLZNCE8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aHkEDcXN; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yYexDwAq"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf327e9a2so7395945e9.3
-        for <kvm@vger.kernel.org>; Thu, 01 May 2025 08:03:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aHkEDcXN"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-afc857702d1so1118616a12.3
+        for <kvm@vger.kernel.org>; Thu, 01 May 2025 08:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746111813; x=1746716613; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cH0TZFJk2T1RX75J4QRephYBY3SFDgf8QsJqbeDrxmg=;
-        b=yYexDwAqVIR7AZzE/cHQHeSNuozGHjrmXX6/MV9A5p6GpuqXVR9QCN91efOsHeF4gv
-         G98Ji9hiNsJcK3i5YCBtbmZSdoBIL+sS0cxiQcY5WqNN3JPIHqX3L1MTmgvFQFLO/sdz
-         hgEWlHG2jPHwaF0br1gefCAupeXR5HAn6ac592VfGg2DK2gzQXbDp/NoQQeI2DrXHRzX
-         hf2u1+ITOjtE8EbDfUSjqjVXx4srSV0yAUQ5AwTRK+JTkdsQUT/OignoVd7utyCJ84D4
-         ahsVvLPAKWB2hjJVYJdzbnMDlYQ42Qcu/wKGpf4RC/0TPzTzqtiwiPTAxmypI0ufOool
-         iZFA==
+        d=linaro.org; s=google; t=1746111985; x=1746716785; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iZWcy/gQwmgZzW18F5hJaXUmKEUe5Bw5th9wm/LSgKg=;
+        b=aHkEDcXN+nJwtPJlYq8wEAtgUB37zejs9zCOxrEIITf3AsqZWnAbBxx+4HzPuE8Gaq
+         cQvdENB+1fX4xMZSB2MI4kAvhJdiqfJJkCXN4RhpTfl+ESgZmKgG2sXx5hV3g27GDEZr
+         D5W58v94JxMr84hbxFHWHNuh5sCO6urqHZf9EfukiCsUyxhlUl5CfLE5O0Fra8SVCfZ/
+         w4VGrh9sEuQ3vK63TZ7bhxHmyIycApjrK0yL2KylZxItTfHmfsffeC0l0XJATpbJVqFP
+         yVV97yWQNo3pGomLDfRfFWfTbuM0JVy12PzjX8oJpJdVQiGFng2C4I9N+ZAjJ+S7jrbu
+         2Cuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746111813; x=1746716613;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+        d=1e100.net; s=20230601; t=1746111985; x=1746716785;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cH0TZFJk2T1RX75J4QRephYBY3SFDgf8QsJqbeDrxmg=;
-        b=JObf7dJwGrHalIPuko7Bsxrmy/kKcvaD18KBvj6SpfF8dnGRHYoTVY1e4wm8OaIGkY
-         b3gZgrzW9fyKaLL5mVITjq21WGv+isZQp7TbUCEfhGlWXES0GStG7G0Nqm72QOzoaiLe
-         xSVtrcb/PxLnIcA/azJowo40vo395ABMYIpRSRwq9aOG5m4Bvg6HbaAt0Dyj4VYfAkk4
-         XXr9ZWvFFks229427wsEVkeks7FNSlFzAt2uiOya8siCShcMxYYqeJuHsNeR2jhzBfAd
-         bqK4EfqNxGW+IqPLiIT0s9bBqH8mOTWto/aQr2gCW9F4YRXZdnnnTCobHcnTG9r1jGZ8
-         pEQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWLKSDNzk66ApdlEbjMjERCuP0FP9Urmh/Y14FX3zAtmFwntRcQV0SqqT2L6jEOdS948oE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAjD9nvLGcMoxxTVZELTMYU4dGnCY22hV5uUbceLdE94IrqWX8
-	BWhUsdFxPMpjyqyW4WoKRhpHGNwed5Q1DOnIocQtjsqilZegLkBA3yddQMQog1F7ntfq7KMj30v
-	gIOiHRBoclA==
-X-Google-Smtp-Source: AGHT+IEoHar4kKZLCcwzgzPXKYmS3cfrlnjEoUXh4L1DN3kWbEUElUFiikgocxBnbt6mXNBc7VuzqYOZJrp/fw==
-X-Received: from wmbhj22.prod.google.com ([2002:a05:600c:5296:b0:43d:5828:13ee])
- (user=derkling job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d28:b0:43c:ec0a:ddfd with SMTP id 5b1f17b1804b1-441b1f2f093mr47352155e9.6.1746111813739;
- Thu, 01 May 2025 08:03:33 -0700 (PDT)
-Date: Thu,  1 May 2025 15:03:23 +0000
-In-Reply-To: 20250501081918.GAaBMuhq6Qaa0C_xk_@fat_crate.local
+        bh=iZWcy/gQwmgZzW18F5hJaXUmKEUe5Bw5th9wm/LSgKg=;
+        b=Aw+8CG+0JVSHCcmCJpyV8uDGrtNLTt5ZCHrwGhLR/knTh1EkUghNdroD9qUAPgz3Fi
+         rkbcyORFMcjbjdcbq23yIeIwT8Zd1jYlFXhC5LuNK8ai+3WEvHuHVJDsLlJIH3O7v3GD
+         0UEO1y2jDjdWMShnT89c1w3LNvRqo9wlgSmwZDMxd5OstxsylWyXbeSlI4Ye874VDDK9
+         4+opVCUMj4sU1VWwH+0jXYzTNz3bjf7CghZ96m6gbX60aj2gHG9u9lAL6ePIzdhPrMqh
+         6S53YWa8rwVkF4zrP0OEPwKiM4GX2E+yY2Q1KrYQTu2z9u012lGv6wTR6RdZgThSv1En
+         9aeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZoXJSpwAjv4eu8UG+ttoKzcf9aUICF0aFUvwqFfkgCTHADynBHlubZ+0OAijVyRJ1um8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlfJ0zoTtSZgOMBkAuWSbdSYvAlbe3h0WiBjupfMvsop0YSVN6
+	MJG810UxfIPi0IR0cTilRxJFn+BSgj4rm9InLz5kZ/32P4muDJwHBerMNO29E+0=
+X-Gm-Gg: ASbGncsOSpVLYtG8ud8DeF9ipoIppiy/d4fYxgxDcIVDnlw5y6n3nUYq9TUEbeycgZw
+	t+o4CMJqFB1RlqAGCpZyVVmxSV1lI7FT9Kk0dFtRv9QTugcFmmy5Nh2D5lQZg90duUHTWak4wNi
+	BbMhOCOOxLpdHVZVaisU/H+zEUtLvhgkBqSBCSnzVxLs4xAZ1Q72DCgLxrVRwnHPNDgcbJEq3zs
+	wWj42HJiPSSM4QyQEZuikR+qrMiz2oa1GHbQ4RrnfzOz1Qocb9phT1f8TN6PXErV+OhP53gDdCF
+	i7sa1IkXNYtSBJWARuXkrL93XHtzk0P5djm0F1IL/+ws86F3iKYxbvdhKq1mxce/Bxw4xJ2QW/m
+	/q3DyWSQ=
+X-Google-Smtp-Source: AGHT+IEYYi57/VU7OygPpKRkUXmhr7nlLM7U1UenGjpFwEyAsZYWV7KSkhl1VmFWd5WF1whtavzxLA==
+X-Received: by 2002:a05:6a21:1788:b0:1f5:730b:e09a with SMTP id adf61e73a8af0-20ba73fbe81mr4682296637.20.1746111984650;
+        Thu, 01 May 2025 08:06:24 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7404ef18c61sm933502b3a.62.2025.05.01.08.06.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 May 2025 08:06:24 -0700 (PDT)
+Message-ID: <8f480fa1-609f-4b90-b6e7-02a76d2767d2@linaro.org>
+Date: Thu, 1 May 2025 08:06:22 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.967.g6a0df3ecc3-goog
-Message-ID: <20250501150323.2242232-1-derkling@google.com>
-Subject: Re: x86/bugs: KVM: Add support for SRSO_MSR_FIX, back for moar
-From: Patrick Bellasi <derkling@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Patrick Bellasi <derkling@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Josh Poimboeuf <jpoimboe@redhat.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Patrick Bellasi <derkling@matbug.net>, Brendan Jackman <jackmanb@google.com>, 
-	David Kaplan <David.Kaplan@amd.com>, Michael Larabel <Michael@michaellarabel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/33] target/arm/helper: extract common helpers
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>, anjo@rev.ng,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ kvm@vger.kernel.org
+References: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
+ <20250501062344.2526061-16-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250501062344.2526061-16-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> On Wed, Apr 30, 2025 at 04:33:19PM -0700, Sean Christopherson wrote:
-> > Eww.  That's quite painful, and completely disallowing enable_virt_on_load is
-> > undesirable, e.g. for use cases where the host is (almost) exclusively running
-> > VMs.
-> 
-> I wanted to stay generic... :-)
-> 
-> > Best idea I have is to throw in the towel on getting fancy, and just maintain a
-> > dedicated count in SVM.
-> > 
-> > Alternatively, we could plumb an arch hook into kvm_create_vm() and kvm_destroy_vm()
-> > that's called when KVM adds/deletes a VM from vm_list, and key off vm_list being
-> > empty.  But that adds a lot of boilerplate just to avoid a mutex+count.
-> 
-> FWIW, that was Tom's idea.
+On 4/30/25 23:23, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+> ---
+>   target/arm/helper.h     | 1152 +-------------------------------------
+>   target/arm/tcg/helper.h | 1153 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 1155 insertions(+), 1150 deletions(-)
+>   create mode 100644 target/arm/tcg/helper.h
 
-FWIW, this could be helpful for ASI as well going forward, i.e. the set of ASI
-driven mitigations could be different whether there are VMs on a system or not,
-because the attack vectors are different.
+Why?
 
-So, having a first class and properly defined mechanisms to know if there are
-effectively VMs running on a system would be generically convenient.
-
-But maybe that's something we can work on later on?
-
-Best,
-Patrick
+r~
