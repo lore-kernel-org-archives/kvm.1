@@ -1,118 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFAD33F7
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 14:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07BF201033
+	for <kvm@vger.kernel.org>; Thu,  1 May 2025 15:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746110528; cv=none; b=U3P9AvO3lYSpMQc84zChet93Ywcryl2mF/how1mG96PZRE1LQWG90FardyP9+tSt+++34CrgO0STY09eukbYVGKMYBQ+F7TVGK1i2by50YKDoO9lgDjRT6/On35mPw3gMj1RNCAEZTgKFy1g380CjyG3deOzT+FVC2KOUx1cWzA=
+	t=1746111782; cv=none; b=ClWXAM6bluNpEGkyMJ9qw+qjEVMtJGV2wXJtKu43Y3C8DHLAuUd2xsjKwsJRs0O05Aubz+yoBKZCTCr681BYFpWYukt+dgKXKFQW0FGCsq0EPIaJJW7nqahZ7fepDJNtfyX9jxQOk61gSCiwY6g8ITtGhkP8CKm6t0H9DCh4IlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746110528; c=relaxed/simple;
-	bh=CKKVWAVOpdkXV9xBdNek9Smi17tNvKo45omjuBNSNxo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t4vEUww+VD0DSaqv+XI0qpeITlFeOAAGcMhvJXYGiQ+GJ2OiQXxz8QN84T68gMg7YjyMBxExr8WIzMGqw0iBo7XC2vzoS+gON3nwLA35u5ctqNZwbXm+oJ/weyFwWNyROmZzoPFNmPyvXt0/KkLwVmMZVrN3VFV6sQZMJktXaQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHpvrZUg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746111782; c=relaxed/simple;
+	bh=ChhYFXHG+mLnhJ/0qrPdGyDw3G+wslc1EN5nj5VMuCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qy8kLrqKZMzg2SSjQ+A6QVA4PwlaHG6ViSEJ8tsRLkOw7VS26r96JOU3gPZ5HCbB/KmUFzyZMOgaXa4hMx+CsnYMRDVvfVdH5MGO7SSV3LPpmLK37f3r7Yc7fM6Ke6wSOFuUQql94mFuFuogNpt20u0OXCpNU1HjN5MJZkSV61w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nPhmgSoF; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHpvrZUg"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AC5BFC4CEED
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 14:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746110527;
-	bh=CKKVWAVOpdkXV9xBdNek9Smi17tNvKo45omjuBNSNxo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=FHpvrZUgTdeHmSedjQ5SFnw68sc/wnERdDRtMW+4y/rpt3N9Rvll4RhMEpHGgF8kn
-	 rX1EfH9GoknjqbJshmOvLSSi+EbTnMdlaN60qE5wrTtk2OxNns3j4tbeGyE72wIl2s
-	 /1sPWS5uEE+6QkrvGwPXgT8dET0lfGEup+xXOfWNsn7VTivUdH5xQ8L2QktavqmqcF
-	 pv6DG3QVrPWbPE0aZ9CmNFRF5CVMp9VgJ0HvE+dy4/Ze3re7KBhPz1n4y01fehCjch
-	 55HKQnFqhyHzL+t6rCd5ZpSdmycIU3NAgoRpe+kezsoqejwwuPQkf6TVBiCGL9gfiP
-	 ctCgT/9MHmX8Q==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id A6076C3279F; Thu,  1 May 2025 14:42:07 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: kvm@vger.kernel.org
-Subject: [Bug 220057] Kernel regression. Linux VMs crashing (I did not test
- Windows guest VMs)
-Date: Thu, 01 May 2025 14:42:07 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Product: Virtualization
-X-Bugzilla-Component: kvm
-X-Bugzilla-Version: unspecified
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: blocking
-X-Bugzilla-Who: alex.williamson@redhat.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-220057-28872-SKb2todkZo@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-220057-28872@https.bugzilla.kernel.org/>
-References: <bug-220057-28872@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nPhmgSoF"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7370a2d1981so969855b3a.2
+        for <kvm@vger.kernel.org>; Thu, 01 May 2025 08:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746111780; x=1746716580; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wkq/VdLFYJfyJvgcdgfMRsRb6Gxm8UUMs/yuzG02xU4=;
+        b=nPhmgSoFKlm4ZOoOmWTgRPvwEgHmreRgxjshw1nPx6UD0kmmJaAcDVEcSl9pkiCnQU
+         dmds1BtPufU3KKo11pdS0ZkgrVZQ2R/4qDNgb/1ssIcAtmawz7yL2x02E5I/MtdmMRz6
+         kslscDlwVckoaMH/wrWSF6wClvOwY9JveeeCzs7IDNLFr4WAFQnHYCZR6XxQrQEpXd0R
+         TGPcPo8TzjTlOZSS8T7Lv55P4ge3UCsUgAkPLeV329c62DPkvczZenAyi2Y7PM95bExq
+         6TvGXBMNcaYNHhKfDme8O9iy2vaxjDW3CDP9hgUaxG/9KoyIOdQITi7h1emYeH+WATHX
+         xYGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746111780; x=1746716580;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wkq/VdLFYJfyJvgcdgfMRsRb6Gxm8UUMs/yuzG02xU4=;
+        b=bBryzbgoB9z2KhixvQlwYgOBAwFmLAJSaSVUaALQ+BhphAvwiRL0+R4KNjSFPBl9cN
+         ZhYGRAEK0Ay37m/LDo4t4yypzFI2c9ZxMeSsXlJ5PVKbQW5mz+y+eiJXPWOXHjytmKXW
+         2dan1NrhvT6zgsSYK4GhKjPLkZbEjye+ZuHy32q3bkd0ReWPw7MrzY9OTEpuv8C3qW0P
+         7JFUU3MKt2W3bIGCImzkDHw02XDzW1TBg9VSI9ymXzPiU/E85PBcmL4vgfvJ7SceRo7N
+         ZL2igEXAbO7vDaJJCTHNArpkCvvPhbCZFdsF3aMJuBqKusyD5KO0Bclw7FROqaLlaEMJ
+         FGpw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0VX/GSp4iuvB48sjQKQWbgL+U3bvSuUC9Ij9JlvMN6BGLaIZrKYdVzsBf8dksy0BZhIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuxCjobO1+GMqMSHAFv7avgqYoWNzyQ15FnWeAUowXYB2Kr65A
+	nS2iCKyWxO1Jdivdciu3XMniXqwTNGyC2Cbcc4lgoduRsOZ/D5Db3A//Ox1azpU=
+X-Gm-Gg: ASbGncsjzM9Cfpn32jyPnXqshjahGz/hbUW93/YH7nfViZM+9R2EenKBGL1lXlVyYiM
+	YcEUlaeIHpavr3M2O984tNc7BjrZ8FJUqd8xLUU7j8KnYeIrT00RtoAAZkYddwMDgiGcVJK58S2
+	vLsmOFvObkQVO9iw9aeO2W8UaNDHPK5aPVVe0N1Ef0CG6bANTXP0CNgScV9qqWJCnyOpiRLMM75
+	x+x304ll6/KXBwcJ8qJOta4Qk1ODjKq6vNbitMy4bCU4C0bFerYZA8bg5tedFY81G71F8sxFxme
+	hLN/gCG2LYWfWs5NFF0o4dglQTGxqgYUpjBNaCoICd6iPRz8l13B6u8XCdb4Bxf/8oob9Yz7USd
+	16Ru/Yh8=
+X-Google-Smtp-Source: AGHT+IFpQDWzZkr7SDEpQqkD/ISUrJM6vDV/PLa2LIk+1brnq5oSIluMSLUP33z0eD1oTrBqKei8Ew==
+X-Received: by 2002:a05:6a00:1311:b0:740:3830:4119 with SMTP id d2e1a72fcca58-7404790521fmr4868652b3a.18.1746111779927;
+        Thu, 01 May 2025 08:02:59 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7404eeb1935sm938020b3a.18.2025.05.01.08.02.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 May 2025 08:02:59 -0700 (PDT)
+Message-ID: <8fdaed14-d2a1-4939-9b9b-5cf388e20ea8@linaro.org>
+Date: Thu, 1 May 2025 08:02:57 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/33] target/arm/helper: use i64 for
+ exception_pc_alignment
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>, anjo@rev.ng,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ kvm@vger.kernel.org
+References: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
+ <20250501062344.2526061-14-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250501062344.2526061-14-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220057
+On 4/30/25 23:23, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+> ---
+>   target/arm/helper.h            | 2 +-
+>   target/arm/tcg/tlb_helper.c    | 2 +-
+>   target/arm/tcg/translate-a64.c | 2 +-
+>   target/arm/tcg/translate.c     | 2 +-
+>   4 files changed, 4 insertions(+), 4 deletions(-)
 
---- Comment #40 from Alex Williamson (alex.williamson@redhat.com) ---
-The vfio_pci_mmap_huge_fault logs with order >0 and ending in 0x800 are nor=
-mal,
-they're indicating we can't create the huge page mapping due to alignment
-requirements, 0x800 is VM_FAULT_FALLBACK (ie. fallback to a smaller mapping=
-).
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-However, there are three instances of:
-
-May 01 10:01:37 pve QEMU[1972]: error: kvm run failed Bad address
-May 01 10:01:37 pve QEMU[1972]: error: kvm run failed Bad address
-May 01 10:01:37 pve QEMU[1972]: error: kvm run failed Bad address
-
-And three instances of:
-
-May 01 10:01:37 pve kernel: vfio-pci 0000:01:00.0:
-vfio_pci_mmap_huge_fault(,order =3D 0) BAR 1 page offset 0x3798: 0x1
-May 01 10:01:37 pve kernel: vfio-pci 0000:01:00.0:
-vfio_pci_mmap_huge_fault(,order =3D 0) BAR 1 page offset 0x3710: 0x1
-May 01 10:01:37 pve kernel: vfio-pci 0000:01:00.0:
-vfio_pci_mmap_huge_fault(,order =3D 0) BAR 1 page offset 0x3688: 0x1
-
-0x1 is VM_FAULT_OOM, so likely at some point in trying to insert the pte, we
-got an -ENOMEM.
-
-The system has 128GB of RAM, 98GB of which is dedicated to 1G hugepages.  T=
-his
-VM is configured for 32GB.  What happens if fewer hugepages are reserved?
-
-Also note that if we were able to populate the MMIO mappings using huge pag=
-es,
-which would occur if the VM BIOS had placed the mappings within the DMA
-mappable range of the IOMMU (ie. the VFIO_MAP_DMA failures), we'd be using
-fewer page table entries than even the previous code (ie. less memory).  The
-issue might simply come down to the fact that previously we attempted to fa=
-ult
-in the entire MMIO mapping on the first fault, at that time memory was
-available, but now we fault on access with the expectation that we're fault=
-ing
-less due to huge pages, but the latter is not coming to fruition due to the=
- bad
-VM configuration.
-
-I think we're going to need to figure out if/how Proxmox enables setting
-guest-phys-bits=3D39 or the host needs to free up some memory from hugepage=
-s.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+r~
