@@ -1,112 +1,112 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6DC27E7C3
-	for <kvm@vger.kernel.org>; Thu,  1 May 2025 06:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706B352F99;
+	Thu,  1 May 2025 08:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746080663; cv=none; b=QFUkzPpGHeFO6GusqtlYZkwXuOEZ8L8SLVF8bRZVnyz93ajGTgPnv1BLSsxSKzA5ZM8r495PrgaNkrOXr6WJ8mXLPDe03fKjC2up55DcsT/uIraajXgCH1LbbFYcRhrtzoX7wLI6RfI00UCBHbxYZuTzkOMyRN0q0ZwiyadMinc=
+	t=1746086753; cv=none; b=tRQ7qb024DOVZ9S3qhlvR5wbTFm4quKIJ4cOZQaq+IAfRFBDsQOEPi7q9EGE2ZXTcsdI3kNx6EUAMDfhyfC75QIzJ+2cZ0oW8bUowiE5/RNnFKe0iFtw4lI4WcIBpdt7YcE4gwaf8F6sk5prCk1eI4/v9Tsx77+PxTtch5hvcug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746080663; c=relaxed/simple;
-	bh=3YQ7dLFAB1979xjcLHSB2qfhbh04ZFQmKX819koZ1jY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD0hT+oiFu3t9pafDL4kXEpd0Q3ejqExWAbsxZRSNXZ/sHBaJQYtgyT6hZHYRL+lPdy5STcnd16TAl7K6Mfs2QyQpNTcflCm5qlP1rrF5QuTfu6MXbEBJLF6BMhGUwjXUkq0DMbBdqif6cAzK2r1qkKf0GtxW39JtjJUIUGHT3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uPzS6jHx; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1746086753; c=relaxed/simple;
+	bh=ccMcuDXcJUUiFHGfdCsCuXcBJFwK42HgB+FyX3k8HAk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YLgVZGot43kE+/I+t0AspGj3LJkFmhVmzHlcBG1qnZU+ceBzXXmJsaS8r/idcRygYstB4SCA/KALJbwmT19TeMQxVmC+q8agObIoy1Zgp7wibzDVPe3CX6cnwJccTxXA0GYiPP/HOlvsL/3goHhTi/aj7hkGvUcMIfKRQoYRiZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=X11sVjtD; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uPzS6jHx"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-739be717eddso551118b3a.2
-        for <kvm@vger.kernel.org>; Wed, 30 Apr 2025 23:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746080659; x=1746685459; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=smxeq8t77rmr1khTGCWgeqn2IHOGcCtHx62ulud5haY=;
-        b=uPzS6jHxqRe5FeB/m2p5QEe1FyouiWBkqsEDuEhcjXzyDiPn9odMOKVWbyQCwurGag
-         3JP54+OAl9qGfCossEzTnGHwRehTNn+zpN3Wloqn7fXhPd4sWZr3o4T4zMwqfaOu12Za
-         R3CaRI3EsHjpST4BH8x2yFvou1ENz88UbogTJboQskdLq+AETOOsFui0Ct4UJY9W4wxd
-         AlOKLQPxPS+ig/V/islyrpYZjWC+aVoyUHMf5o6wnJNKYleIzflcyCLkzZ8eduCWHSEC
-         KMOcS9TvWSxXs0vAR4ZEi7gVS9TsWaRwVJvuKiKiph/lFgZX0pd/9wMxgBHpYggjtCWA
-         oxcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746080659; x=1746685459;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=smxeq8t77rmr1khTGCWgeqn2IHOGcCtHx62ulud5haY=;
-        b=OIr/dECTl7ksea13yXK71uE0qaaXliYAS4D2rxZUAI/vwXLGlqYgj+lBAx0YftcX+P
-         VUpaaM62C1Oin+rPWBpQeZ4cIwFtAe6FkuQHw3AkUC6N8/Sq6xhHtse8Sk6Qsgm2gb8Z
-         8RfUIfSUOtT7E+lf2iszYb8+zlNK8tqKWrAKn1zkpRLDP0m+ydfTeaX376N5HFgX2/Jq
-         LvPgesoHGSeeN5rrXyoq2y30TIdASWRRZh6uRtfRXS8PyGR6G3UeUajrzRMDNuo+/EZy
-         EbeQMpbGMVdQFoyyrFqH9gOnxntYc17JJQtiQ6r8EVMf5BGDST2kvoO5goT6Uiocoq5Q
-         EKJg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdFJ/ZDXfHpmy0pC9QtLRS2fg+eNGCT8t2YEBoD6b/tKAQiRYLSRvKF/48+TeY8Yl3iBU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcxEE7LvfDhVWNJ+DJ11Gsl7BlbSu3tQq6g0l9Q9V2eeKNHAXS
-	eyA3mYaQI136YjJ/KjKTswA+pN/RYkbHuvm8dF0VXy4B1qQsCPY7tnA8fJCIrbM=
-X-Gm-Gg: ASbGncvnsKNJKv3+04Zhp+Q6PeQ1TfhQwm53DYw08EwkTOhVFmbDnKuZqKoBCX40KXf
-	K30W016J3TJhZZJcckADoXC3tMvUtM6QL9ckNUBkusR+JOl/aljBsSIbTWRuJKwowkfq+SsA1hv
-	jeqxweS0/8Fv9+HcEzCCF3arTzf+FstvX1W0M8PF/q6ypRLzUlwXbAlPCZC97pgW/X18UitYKld
-	6DQ121FAAL2rBelyxeZp9f5A47j+acjcQvkbrAfnZJxOBxeafo3Aikydyv1Hx5QDg5O8sIDQu3T
-	h3ka8Zhc9umi2VK83l2xmrw8XFLtCrqf4rcfk0Ct
-X-Google-Smtp-Source: AGHT+IHG4UGGkkz608m5AZZyK3bj7kb6xgjT5nZou0FUnCfiy2hpqLLhUwXRyD5HV3onb5k4znr43Q==
-X-Received: by 2002:a05:6a00:1942:b0:73e:2d7a:8fc0 with SMTP id d2e1a72fcca58-74038959453mr7648202b3a.1.1746080659119;
-        Wed, 30 Apr 2025 23:24:19 -0700 (PDT)
-Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7404f9fed21sm108134b3a.93.2025.04.30.23.24.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 23:24:18 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-arm@nongnu.org,
-	richard.henderson@linaro.org,
-	alex.bennee@linaro.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	anjo@rev.ng,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	kvm@vger.kernel.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 31/33] target/arm/ptw: compile file once (system)
-Date: Wed, 30 Apr 2025 23:23:42 -0700
-Message-ID: <20250501062344.2526061-32-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
-References: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="X11sVjtD"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uAOvT-00BnGr-0j; Thu, 01 May 2025 10:05:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=sJUhKrCcta0cCKfNjfc+tCMkcd0YHLjBP3lnJByQx5E=
+	; b=X11sVjtDFm8yEoNaMhpaLlXQ5Gdp5LwHcvuzebpXnDjfB7AV4Efk7x1QxEy4RRol1i9j0WIT7
+	/VvEWY/SZm7IUGiF3ycw6qozv0morKNS//I6HBI/VdAMSoIAkv/CVkIUbvcOmsSxR/rb5ObZv4ks2
+	ufbvGcgMnYvYUfYO8Xusgh54BpFsSR+Cb89aJpjz6b1eIvuP3FTRuHepZI65bv2NAuPZNKxOVtCYZ
+	6kloxVzc0a9jNrHWX/xn40UIqD3MOAaTfbX6QWC5KI11FwkEsx1ferPNNHYKDQM1TyZJLlZFzEz16
+	M1ET2wVBpwgh4Qo/VPWXGgyEUj/7SyuP+Zm5pg==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uAOvS-0007wp-N3; Thu, 01 May 2025 10:05:46 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uAOvH-005lsv-Rc; Thu, 01 May 2025 10:05:36 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Subject: [PATCH net-next v4 0/3] vsock: SOCK_LINGER rework
+Date: Thu, 01 May 2025 10:05:21 +0200
+Message-Id: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEErE2gC/13NTQ6CMBCG4auQrq0Z+kfrynsYFwJTaTTUtKTBE
+ O5u043AcvLleWchEYPDSC7VQgImF50f8yFOFemGx/hE6vp8EwZMAgdBU/Tdi75dngI1wBRKa4x
+ WHcnkE9C6ueRuZMSJjjhP5J6XwcXJh2/5k+qyl6SAZp9MNQVaC6mBa+TCsGto/XzufMkktqGsP
+ lCWqUVjse2VUErvKd9QDgfKM+37FhveSi5k86fruv4AbNsNOyYBAAA=
+X-Change-ID: 20250304-vsock-linger-9026e5f9986c
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Change vsock's lingerning to wait on close() until all data is sent, i.e.
+until workers picked all the packets for processing.
+
+Changes in v4:
+- While in virtio, stick to virtio_transport_unsent_bytes() [Stefano]
+- Squash the indentation reduction [Stefano]
+- Pull SOCK_LINGER check into vsock_linger() [Stefano]
+- Don't explicitly pass sk->sk_lingertime [Stefano]
+- Link to v3: https://lore.kernel.org/r/20250430-vsock-linger-v3-0-ddbe73b53457@rbox.co
+
+Changes in v3:
+- Set "vsock/virtio" topic where appropriate
+- Do not claim that Hyper-V and VMCI ever lingered [Stefano]
+- Move lingering to af_vsock core [Stefano] 
+- Link to v2: https://lore.kernel.org/r/20250421-vsock-linger-v2-0-fe9febd64668@rbox.co
+
+Changes in v2:
+- Comment that some transports do not implement unsent_bytes [Stefano]
+- Reduce the indentation of virtio_transport_wait_close() [Stefano] 
+- Do not linger on shutdown(), expand the commit messages [Paolo]
+- Link to v1: https://lore.kernel.org/r/20250407-vsock-linger-v1-0-1458038e3492@rbox.co
+
+Changes in v1:
+- Do not assume `unsent_bytes()` is implemented by all transports [Stefano]
+- Link to v0: https://lore.kernel.org/netdev/df2d51fd-03e7-477f-8aea-938446f47864@rbox.co/
+
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- target/arm/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Michal Luczaj (3):
+      vsock/virtio: Linger on unsent data
+      vsock: Move lingering logic to af_vsock core
+      vsock/test: Expand linger test to ensure close() does not misbehave
 
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 6e0327b6f5b..151184da71c 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -17,7 +17,6 @@ arm_common_system_ss = ss.source_set()
- arm_system_ss.add(files(
-   'arm-qmp-cmds.c',
-   'machine.c',
--  'ptw.c',
- ))
- 
- arm_user_ss = ss.source_set()
-@@ -40,6 +39,7 @@ arm_common_system_ss.add(files(
-   'cortex-regs.c',
-   'debug_helper.c',
-   'helper.c',
-+  'ptw.c',
-   'vfp_fpscr.c',
- ))
- 
+ include/net/af_vsock.h                  |  1 +
+ net/vmw_vsock/af_vsock.c                | 30 ++++++++++++++++++++++++++++++
+ net/vmw_vsock/virtio_transport_common.c | 21 ++-------------------
+ tools/testing/vsock/vsock_test.c        | 30 +++++++++++++++++++++++++++---
+ 4 files changed, 60 insertions(+), 22 deletions(-)
+---
+base-commit: deeed351e982ac4d521598375b34b071304533b0
+change-id: 20250304-vsock-linger-9026e5f9986c
+
+Best regards,
 -- 
-2.47.2
+Michal Luczaj <mhal@rbox.co>
 
