@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CD02566D4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928A42566E3;
 	Fri,  2 May 2025 13:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191329; cv=none; b=KwUUHhaq/OJaA0DrC8r0HjC0q3KDYAJIDkpmyXyqDjtpQvbHdULHMzyQIHGr1qNGLIdNFYa8Es1ew3qxYf7BpBdliCVAJC0OHSUVDOWSjE3FQeq3X0qjUU7JeyWbSQvuDBQ5V6WRHgIxbPZucbPzjyLOMtvVcNC5MJWcnuxQMcM=
+	t=1746191329; cv=none; b=uZPy254i3uIfKhD8i4rKU032ronlIoYLnVvmPXXgvE+GEb3gRe3qjUcL8e8mD+hkoSp8MVAEDBq6aPekLtBFvjks7itn4nReSs38rxLRVEyHOVHZL5liRuMmgcxO67yAOpfrtd1aJUYJnzMu+qQsU5NxrNg7Po9MXMPgmBIT0T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746191329; c=relaxed/simple;
-	bh=m2m5QyspU/4UyDV/0jL1rXptk37jp9pz/ghUzoVVwFo=;
+	bh=EA7G0eYYU+Fzt6HFAAauj8vAuuhBCOFdQK2LisRs3Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QctJOk40ws/iPnxXepfdhmZmdroAWSRMPolnR2N7+47Lt+M6rHyEzSQzhYalXek+ni5cvhTT4Mu9W1jdNE/cKzSOhGcOqCapiG5n/fpn2RGa7uMeB0RvOF+YhgWezZcbIj17iH7b+8I3JbXP7/0gMV3DnDYFzhZl56E6c+Ugp8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YMNO7feR; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=FZwXJjqCJgukuDnveaF4yyPp6uR1xkNj9rueuZoJRVcyQd4Vt6jU+T4K4Zi21wjuBWMTBVlYyEw+WDwMbNR4ZeZFbgxE9P7SVfGzmvx4SuLx9GAXd8MXny0Bfj7tsM85yncmWlmwwbnLgO89HEBp9Y9Q0R3v06nTw8c9zoQumZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mVsLqJH4; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YMNO7feR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mVsLqJH4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1746191327; x=1777727327;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=m2m5QyspU/4UyDV/0jL1rXptk37jp9pz/ghUzoVVwFo=;
-  b=YMNO7feRkltCs9GArrga/LzvpSstpMfJ5ztb+L0XKCc8W/WPVY/h6JgO
-   /hljyOHvpE37zeNjdjrPvbFUrSdpgO3/qhT7+fO/5qWBLceuAjrfge5Id
-   RprSpeBjqwMMDapuB4bD+486OJMJaiQxNxH4fcTzr1AjB98kPBMoaJwDy
-   ulBoxCYZzHHNCRoACdCMqF56IDA3I/bqotC7SfvGl5Ksa5nIT1RFF1Gcw
-   fmmV3NkY7Tuehz4b8HpXjEA+77ZJlpXT7gNuJmNBqT8Qlo6j3iwRZHWEZ
-   t4thfOLLBuEXvXmJ/62lTrZAUUObyNtWr0E0YWeWoL5F5PCLKPj/2eRQ7
-   Q==;
-X-CSE-ConnectionGUID: lCF/6zVVS+aoYhqbHdEllg==
-X-CSE-MsgGUID: JFmFK1pHQqGRJmYVf+Nk3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012989"
+  bh=EA7G0eYYU+Fzt6HFAAauj8vAuuhBCOFdQK2LisRs3Ro=;
+  b=mVsLqJH42TMHW0e96BlpoN7tBYLWI3OBtSp3A83IBUw944VHjaBkqZSN
+   7kmOFvV1XxooctEYfHdfLOCV6DS1eZXNjr8GhqftaWvBXJA6ZHKWxL/TH
+   IvdK0yo7VqXCF2YMOw2zu+jKftXfB/slrrDwQZgqHQ1EHbT57b01LDsgU
+   IXhPUSiUFX7Vqn+THS41aIv7jEumc91nWP7KlWv1zHdZUty76fr3duFvL
+   n3QuxB9bH93xvLbAI6Vb6fWpirQyq+lwFBSGyjHfGYQLTR2cGKuB/SwTc
+   XHbip9Obq/Yu5ZzVobPjBlM/NtUIPjvoDGIOyx2swX9RsL3I5eiQjMxG4
+   g==;
+X-CSE-ConnectionGUID: RHT6O2fBQt2be54mHDDREw==
+X-CSE-MsgGUID: 0tERy6K8SlOdD0Yms5fLkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48013003"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48012989"
+   d="scan'208";a="48013003"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:45 -0700
-X-CSE-ConnectionGUID: LfwDnBDURhq5OyBvLXjxmw==
-X-CSE-MsgGUID: zQqhLQYdSiKeYfAeNjyBVw==
+X-CSE-ConnectionGUID: JDHTPLdtRNylud+KIJttpg==
+X-CSE-MsgGUID: EBR059RXSo2bT5ZO4EBvmg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="157871093"
+   d="scan'208";a="157871092"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa002.fm.intel.com with ESMTP; 02 May 2025 06:08:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 86CB636F; Fri, 02 May 2025 16:08:36 +0300 (EEST)
+	id 7235735D; Fri, 02 May 2025 16:08:36 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -61,9 +61,9 @@ Cc: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC, PATCH 10/12] KVM: TDX: Hookup phys_prepare() and phys_cleanup() kvm_x86_ops
-Date: Fri,  2 May 2025 16:08:26 +0300
-Message-ID: <20250502130828.4071412-11-kirill.shutemov@linux.intel.com>
+Subject: [RFC, PATCH 08/12] KVM: x86/tdp_mmu: Add phys_prepare() and phys_cleanup() to kvm_x86_ops
+Date: Fri,  2 May 2025 16:08:24 +0300
+Message-ID: <20250502130828.4071412-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
 References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
@@ -75,112 +75,150 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allocate PAMT memory from a per-VCPU pool in kvm_x86_ops::phys_prepare()
-and release memory in kvm_x86_ops::phys_cleanup().
+The functions kvm_x86_ops::link_external_spt() and
+kvm_x86_ops::set_external_spte() are used to assign new memory to a VM.
+When using TDX with Dynamic PAMT enabled, the assigned memory must be
+covered by PAMT.
 
-The TDP code invokes these callbacks to handle PAMT memory management.
+The new function kvm_x86_ops::phys_prepare() is called before
+link_external_spt() and set_external_spte() to ensure that the memory is
+ready to be assigned to the virtual machine. In the case of TDX, it
+makes sure that the memory is covered by PAMT.
+
+kvm_x86_ops::phys_prepare() is called in a context where struct kvm_vcpu
+is available, allowing the implementation to allocate memory from a
+per-VCPU pool.
+
+The function kvm_x86_ops::phys_cleanup() frees PAMT memory in case of
+failure.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kvm/vmx/main.c    |  2 ++
- arch/x86/kvm/vmx/tdx.c     | 30 ++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/x86_ops.h |  9 +++++++++
- virt/kvm/kvm_main.c        |  1 +
- 4 files changed, 42 insertions(+)
+ arch/x86/include/asm/kvm-x86-ops.h |  2 ++
+ arch/x86/include/asm/kvm_host.h    |  3 ++
+ arch/x86/kvm/mmu/tdp_mmu.c         | 47 +++++++++++++++++++++++++++---
+ 3 files changed, 48 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 94d5d907d37b..665a3dbd4ba5 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -63,6 +63,8 @@ static __init int vt_hardware_setup(void)
- 		vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
- 		vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
- 		vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
-+		vt_x86_ops.phys_prepare = tdx_phys_prepare;
-+		vt_x86_ops.phys_cleanup = tdx_phys_cleanup;
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 79406bf07a1c..37081d04e82f 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -99,6 +99,8 @@ KVM_X86_OP_OPTIONAL(link_external_spt)
+ KVM_X86_OP_OPTIONAL(set_external_spte)
+ KVM_X86_OP_OPTIONAL(free_external_spt)
+ KVM_X86_OP_OPTIONAL(remove_external_spte)
++KVM_X86_OP_OPTIONAL(phys_prepare)
++KVM_X86_OP_OPTIONAL(phys_cleanup)
+ KVM_X86_OP(has_wbinvd_exit)
+ KVM_X86_OP(get_l2_tsc_offset)
+ KVM_X86_OP(get_l2_tsc_multiplier)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 6c06f3d6e081..91958c55f918 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1813,6 +1813,9 @@ struct kvm_x86_ops {
+ 	int (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 				    kvm_pfn_t pfn_for_gfn);
+ 
++	int (*phys_prepare)(struct kvm_vcpu *vcpu, kvm_pfn_t pfn);
++	void (*phys_cleanup)(kvm_pfn_t pfn);
++
+ 	bool (*has_wbinvd_exit)(void);
+ 
+ 	u64 (*get_l2_tsc_offset)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 405874f4d088..f6c836b2e6fc 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1137,6 +1137,26 @@ void kvm_tdp_mmu_invalidate_roots(struct kvm *kvm,
  	}
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 18c4ae00cd8d..0f06ae7ff6b9 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1958,6 +1958,36 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	return tdx_sept_drop_private_spte(kvm, gfn, level, page);
  }
  
-+int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn)
++static int tdp_mmu_install_spte(struct kvm_vcpu *vcpu,
++				struct tdp_iter *iter,
++				u64 spte)
 +{
-+	unsigned long hpa = pfn << PAGE_SHIFT;
-+	atomic_t *pamt_refcount;
-+	LIST_HEAD(pamt_pages);
++	kvm_pfn_t pfn = 0;
++	int ret = 0;
 +
-+	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
-+		return 0;
-+
-+	pamt_refcount = tdx_get_pamt_refcount(hpa);
-+	if (atomic_inc_not_zero(pamt_refcount))
-+		return 0;
-+
-+	for (int i = 0; i < tdx_nr_pamt_pages(tdx_sysinfo); i++) {
-+		struct page *page;
-+		void *p;
-+
-+		p = kvm_mmu_memory_cache_alloc(&vcpu->arch.pamt_page_cache);
-+		page = virt_to_page(p);
-+		list_add(&page->lru, &pamt_pages);
++	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(spte)) {
++		pfn = spte_to_pfn(spte);
++		ret = static_call(kvm_x86_phys_prepare)(vcpu, pfn);
 +	}
++	if (ret)
++		return ret;
++	ret = tdp_mmu_set_spte_atomic(vcpu->kvm, iter, spte);
++	if (pfn && ret)
++		static_call(kvm_x86_phys_cleanup)(pfn);
 +
-+	return tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
++	return ret;
 +}
 +
-+void tdx_phys_cleanup(kvm_pfn_t pfn)
-+{
-+	tdx_pamt_put(pfn_to_page(pfn));
-+}
-+
- void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
- 			   int trig_mode, int vector)
+ /*
+  * Installs a last-level SPTE to handle a TDP page fault.
+  * (NPT/EPT violation/misconfiguration)
+@@ -1170,7 +1190,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 
+ 	if (new_spte == iter->old_spte)
+ 		ret = RET_PF_SPURIOUS;
+-	else if (tdp_mmu_set_spte_atomic(vcpu->kvm, iter, new_spte))
++	else if (tdp_mmu_install_spte(vcpu, iter, new_spte))
+ 		return RET_PF_RETRY;
+ 	else if (is_shadow_present_pte(iter->old_spte) &&
+ 		 (!is_last_spte(iter->old_spte, iter->level) ||
+@@ -1211,7 +1231,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+  * Returns: 0 if the new page table was installed. Non-0 if the page table
+  *          could not be installed (e.g. the atomic compare-exchange failed).
+  */
+-static int tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
++static int __tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
+ 			   struct kvm_mmu_page *sp, bool shared)
  {
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 6bf8be570b2e..111f16c3039f 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -158,6 +158,8 @@ int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- 			      enum pg_level level, kvm_pfn_t pfn);
- int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 				 enum pg_level level, kvm_pfn_t pfn);
-+int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn);
-+void tdx_phys_cleanup(kvm_pfn_t pfn);
- 
- void tdx_flush_tlb_current(struct kvm_vcpu *vcpu);
- void tdx_flush_tlb_all(struct kvm_vcpu *vcpu);
-@@ -224,6 +226,13 @@ static inline int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	return -EOPNOTSUPP;
+ 	u64 spte = make_nonleaf_spte(sp->spt, !kvm_ad_enabled);
+@@ -1230,6 +1250,25 @@ static int tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
+ 	return 0;
  }
  
-+static inline int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn)
++static int tdp_mmu_link_sp(struct kvm_vcpu *vcpu, struct tdp_iter *iter,
++			   struct kvm_mmu_page *sp, bool shared)
 +{
-+	return -EOPNOTSUPP;
++	kvm_pfn_t pfn = 0;
++	int ret = 0;
++
++	if (sp->external_spt) {
++		pfn = __pa(sp->external_spt) >> PAGE_SHIFT;
++		ret = static_call(kvm_x86_phys_prepare)(vcpu, pfn);
++		if (ret)
++			return ret;
++	}
++	ret = __tdp_mmu_link_sp(vcpu->kvm, iter, sp, shared);
++	if (pfn && ret)
++		static_call(kvm_x86_phys_cleanup)(pfn);
++
++	return ret;
 +}
 +
-+static inline void tdx_phys_cleanup(kvm_pfn_t pfn) {}
-+
- static inline void tdx_flush_tlb_current(struct kvm_vcpu *vcpu) {}
- static inline void tdx_flush_tlb_all(struct kvm_vcpu *vcpu) {}
- static inline void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level) {}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 69782df3617f..c3ba3ca37940 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -436,6 +436,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
- 	BUG_ON(!p);
- 	return p;
- }
-+EXPORT_SYMBOL_GPL(kvm_mmu_memory_cache_alloc);
- #endif
+ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
+ 				   struct kvm_mmu_page *sp, bool shared);
  
- static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+@@ -1288,7 +1327,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 			KVM_BUG_ON(is_mirror_sptep(iter.sptep), vcpu->kvm);
+ 			r = tdp_mmu_split_huge_page(kvm, &iter, sp, true);
+ 		} else {
+-			r = tdp_mmu_link_sp(kvm, &iter, sp, true);
++			r = tdp_mmu_link_sp(vcpu, &iter, sp, true);
+ 		}
+ 
+ 		/*
+@@ -1514,7 +1553,7 @@ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
+ 	 * correctness standpoint since the translation will be the same either
+ 	 * way.
+ 	 */
+-	ret = tdp_mmu_link_sp(kvm, iter, sp, shared);
++	ret = __tdp_mmu_link_sp(kvm, iter, sp, shared);
+ 	if (ret)
+ 		goto out;
+ 
 -- 
 2.47.2
 
