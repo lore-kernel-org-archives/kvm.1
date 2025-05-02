@@ -1,443 +1,163 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2078.outbound.protection.outlook.com [40.107.243.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D321BE46
-	for <kvm@vger.kernel.org>; Fri,  2 May 2025 01:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746148655; cv=none; b=YRdPwplxdzzNT72+wYW54ntX3TPvrlIuG8Bu3zM9oPePKrFlxu83upra5nbrTwNnBGqS4r2bCjkZG0HSP54dgwr8dRQ8BQrjay0q7AWeqnIm2uwRLD2xGwseyVM2nrMgtVobaPf4WWsP2GdQBpg93rIrnuiXwkhQ0aojhFiIzt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746148655; c=relaxed/simple;
-	bh=B1q2+ap++zLLjLUs9XEejRcMx0T6fUfUTcIS4OOKWk0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LqLF1DmydNraqf0wR8BuL0kwHhZVo6TYbXx06l+mpInxRaSgU7qmvv3a4gBeDZpq/afO/VSgObS/lLes7sA+lz0qh9llmPYrtZEV06BKD/x5DZzUyZ/RIHqk2bFpWf43yfVXQeAwVhC81hr8yu7Ng0nQP4co400gx1wTTE9D6AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j+Xc9vHd; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D976815DBB3;
+	Fri,  2 May 2025 05:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746162266; cv=fail; b=YdPdiKJc0NnTSPlpeulbHycrGqvyL2aYUMRaKWDXMY89F4+OJIRSZESoMte26jxhsWSRz9SN+FHigeRFucjrtg4r86nKaQDybbj8qh3hj5dSITVvmt06dbD3BPiKk3RNwo9cY5mJ+UanVwLyZRwdQHBfR/p4Nto9eEyzo8BPsms=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746162266; c=relaxed/simple;
+	bh=lGjVjQJRXXr0fUsJnM3rbo3lTAvg8HsCwhBjGxOIluM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gD3aMBG/92XXNyTMrfqq52ypwojnX1DEfnFkCbihCTZ4iBbDowu3iWDtRUNl7Xtf085wTCoMN/Mu79fFpa8Ts72WHR99BSKR8FkRIdtZEN8FORoAVurcPBmjWrUtMjV3yEQR3Czsvr9xxs65c+RrVyXiTIqFUxdQ2hJNbs6yxaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XFkRz32v; arc=fail smtp.client-ip=40.107.243.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j+Xc9vHd"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3055f2e1486so2330741a91.0
-        for <kvm@vger.kernel.org>; Thu, 01 May 2025 18:17:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746148653; x=1746753453; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzlnFCXfXy0GJ6wWugPL3V4XJdypnCJtArpXO+wkfcw=;
-        b=j+Xc9vHdZWLIclD8rcikMtauMi5nbbJSOeQVyaaH4D2bxDun++Ri5r+dOtNLXs/5VQ
-         tK+Jcje4vDx/Vl8Aj6bvlfHKgVvPUqPKmCHgRO8Z/hA73ZPUp4rd2K+cgYPeG0wbc/Qa
-         KaBUnsZ9SnPHrnxN665O0lyWS+CEIeW5cPNLFBi78sZmIlth/VgM2YXcta5rws2mWPfz
-         03zNFi3qEi2/uCAxVdWrydUGUhRYv7d/jhXswKD8eoRVYE97NyUJtROIgXW39E097Jjf
-         95+7DaBkElQyGMPupCQsylR+tICSe+jEzIxg9E4yDCftk0GlDug8r2oyNPRpifRg/43n
-         dPgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746148653; x=1746753453;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzlnFCXfXy0GJ6wWugPL3V4XJdypnCJtArpXO+wkfcw=;
-        b=P+z+AlRZsF72+P+kFKQ1pt3Vu76nFun/v80JheQnQtroTbOj0e3Hw8R9FpP/Wn3k2s
-         gMFfDuXM0AySE1H/G6xJkB5D5GjaT6JoAuPBQ52OrtuQrQ7VKis3XI/2vsIjkqND/wD7
-         D96+Mwu7xhTf+OheoXZ+pr0AhMFH25Pv9d/ZPHa2ElaEdQV98TqPMl9AAot/8KmzUOja
-         QHT9e+xLfTbapfa7z/8lPpI4UabDQH/Sgz7PUynzkxoXGw+7jwWh95jA0WgErtMZCusY
-         mN69mbNSN1ztG0jzMvFWeraPxGP0npkbeLTw/X43bg1J+fDa76WERx2CbMVxr5KHjAOD
-         0r7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWl08oUSZibkTvRKkChT4GsA8qXF2ZCtX85SZZt2CxZPEXXbkBeseQW8dH4yFoMGZtV94Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqRCwOgUcBnfisfdmZuR+E6iHasIKGHoNwKi4VhH7InvICZcrl
-	nshdcKt4JB6c+nUjz4bVy17VUzMmQaUqoZ7RXfnS1ZIJI/iCEIUx2+RsY1NakM6ux+RFKWLooVX
-	jIQ==
-X-Google-Smtp-Source: AGHT+IHiQxgcwgBaqEXKgthWbvh8SOb1o3D2BTYBYuxwdC+Nqxt8hZmjd1LtLB9rP0PHnhyFcz4d60Uxj9g=
-X-Received: from pjbsi3.prod.google.com ([2002:a17:90b:5283:b0:2ee:4a90:3d06])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:7788:b0:30a:4f0d:a6e7
- with SMTP id 98e67ed59e1d1-30a4f0dad3cmr1182831a91.14.1746148652869; Thu, 01
- May 2025 18:17:32 -0700 (PDT)
-Date: Thu, 1 May 2025 18:17:31 -0700
-In-Reply-To: <20250325041350.1728373-3-suleiman@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XFkRz32v"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NRm3PQ3xlZ/5Wydu0X4fmn4WF1UNrimMC5T+wsB7Xs17kOSOsqYDDEnRdgLIsWXsXWF0VVRyQxlFAU1jg0/jlP42U7KuwhcgK5X3iUlTmhbSAx+67rpMtflH4k/NLxiv7/2PcvLlxvBh7Mz9ESfwrPtNwE6dibl9gBPr8UfI3aHf4egCDgphEbXkmjJinC7AaLiqXTb6vfCk5R3kbd5XYgaTDxjN38jFeaNgijpOC3CZS5MqY8o94/61osrCZBfxZ/+FVEUCmMoPA1nrifHvPKrCvBpXVvqcxTh+pP6Mgat8hqeKjTfkIxO9pXb4xYt6sh0LGXU4JK8d38pFRHyAPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4wv8pNiPKbZ/C8A6AHVM3VE+kSkuEsELhEg0MpJeTQc=;
+ b=u4E4z//v9Atx7l9LO9zDv0ByUIEHa9UVCE+AAjpXVOBLtFD8aq+vAOSBSjfZMgS6Cbf41pIKEQ/67iBo6WiEicxieZZLDzooajm613VRBEaIJ6BkPVd00EQDQp6DY0iYxd0OlhZhIT7LIfpMzmr3qvtJpzqRb2rtWyiw3Sb/FYD+4niqEotoTBnut4M4e0lKpwEf4/CFL479i3psGj7mK98W+UyKlDounA/uvJa+a6e9vNjTP5EuSxClDJPcZ2NlrrZc0ZetCgSGxvPwJc/7IyYHCQ4VzyXTKXskE2AfTClcShXLjI7/fCjbEg7biL2obNCVmxfR3t9LWYt7RyRjrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4wv8pNiPKbZ/C8A6AHVM3VE+kSkuEsELhEg0MpJeTQc=;
+ b=XFkRz32vlHj4fSr8GUtgi6TEglonqKuxjH6dBL6KJ6qkXe/Lh8UHRaUnlWocq8VNaHDKqRPn0Omm7Ada4ZhEZfSXAcERA9FAUgS6enozlHr5LYp1NhpD7lYtcVBDgqMMWjqHZOawOUGBXFysx8GEJsq1ijQgr+tEglG6ereI9zk=
+Received: from BL6PEPF00013DF6.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1001:0:a) by MN0PR12MB6176.namprd12.prod.outlook.com
+ (2603:10b6:208:3c3::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Fri, 2 May
+ 2025 05:04:20 +0000
+Received: from BL02EPF0001A106.namprd05.prod.outlook.com
+ (2a01:111:f403:c922::3) by BL6PEPF00013DF6.outlook.office365.com
+ (2603:1036:903:4::4) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.42 via Frontend Transport; Fri,
+ 2 May 2025 05:04:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A106.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8699.20 via Frontend Transport; Fri, 2 May 2025 05:04:20 +0000
+Received: from brahmaputra.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
+ 2025 00:04:16 -0500
+From: Manali Shukla <manali.shukla@amd.com>
+To: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <nikunj@amd.com>,
+	<manali.shukla@amd.com>, <bp@alien8.de>
+Subject: [PATCH v5 2/5] x86/cpufeatures: Add CPUID feature bit for the Bus Lock Threshold
+Date: Fri, 2 May 2025 05:03:43 +0000
+Message-ID: <20250502050346.14274-3-manali.shukla@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250502050346.14274-1-manali.shukla@amd.com>
+References: <20250502050346.14274-1-manali.shukla@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250325041350.1728373-1-suleiman@google.com> <20250325041350.1728373-3-suleiman@google.com>
-Message-ID: <aBQdKyCI0fC5T8U-@google.com>
-Subject: Re: [PATCH v5 2/2] KVM: x86: Include host suspended time in steal time
-From: Sean Christopherson <seanjc@google.com>
-To: Suleiman Souhlal <suleiman@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chao Gao <chao.gao@intel.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ssouhlal@freebsd.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A106:EE_|MN0PR12MB6176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40752ba8-8098-4a84-ec9d-08dd8936cc4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?R0yEs6ppwAGLde3s+OU/yiTbhovv7SKXgb9PToGw+xX0JFL0ScRYKeFO5HF4?=
+ =?us-ascii?Q?yWC1eo3W4yCfSWbYZuL+yM+mSJ3/HBHo9iqysHLBvPi1GPwb/uuafYyb2d9o?=
+ =?us-ascii?Q?HZIJ2Ss5O8zspseWnKWn0IoEYxaOmq1piei91iiS+Sg5dtI82pcot9Wvkzv3?=
+ =?us-ascii?Q?40oIUsCnc56zNFdZitJamQ3BIm+VlewKK/nI2Pq35QHq64/ldjR+kr8zJkLP?=
+ =?us-ascii?Q?2RS512AAcMHB+qK3Ou25i5eYwfISXj+OlfzxyrHUkaZVyQMZFAOQd2prnBMu?=
+ =?us-ascii?Q?R+LfNcX4bkKYBv4jyzwcZD8vQM67vWKXRDIiEthQQ3iTU7sGjaez1a+5J1Qq?=
+ =?us-ascii?Q?csMl/Jht/hNt5UsDW8aFwFhS/xlpq3xdlx+qCyYNZrwml/1ygqvr4USNq44B?=
+ =?us-ascii?Q?Eih2XULH0/mn4kEr6qnF50oz8noNEb5Ls6Tcn5aSJ/rLaPThfu0rVUBdPFkV?=
+ =?us-ascii?Q?XP91A0X0lCV+x9UanHcyKtU5/M0n8o+zg6WlezSWlEK9HrQIqeugx6XlUH82?=
+ =?us-ascii?Q?1yjZwPIYmJ98cUhw+YGJGA5UQYnONNaqIfpo3qVQWHMhLwd26tt0pIc03J/f?=
+ =?us-ascii?Q?qnKaRaPll8OAvyfv1rHSi3TR/rgp7y+vEimdOHWHLukbe8iBXJv1cijLtEMt?=
+ =?us-ascii?Q?btciJLSYeoKWqgvE4x/P7qRLZisU7bjr62msL0+DTAP0Gp+gYZ4zkrvw/iZn?=
+ =?us-ascii?Q?FGTHamov/j8jqcufqpRQcR+DDDdtCXGO896P8nEmxz3yr/zTQb7hjWZS4W8h?=
+ =?us-ascii?Q?L9NX0b6Z2aVV0p+qnnXNNRo820hJP9Mn2HsTzka9HgZrSLx4k3wx67UAdVAg?=
+ =?us-ascii?Q?3dReeLjG+glkM8KSDK6/FsWlijLFBD7m5Jy+duREUuyKsalq09yKkGm+tBTs?=
+ =?us-ascii?Q?oEKd345RVe/K722461PwDQ14mcF5WhmrSDxTtUMtM5Fv9fpOToFoeAAI2r45?=
+ =?us-ascii?Q?tZTbpetggHQFcyi2upvYNvDShCRBG8uTzZe/+x4A18d+5H6+0enyPtb0fCUe?=
+ =?us-ascii?Q?xqIoH/MeHddQkZuaYsHKt6+56tAXVrxp27qcwhpfXqf+vZXOSCoXZmippRGA?=
+ =?us-ascii?Q?MrP15/9OCm1waLyOaDjDPel6CeVAkTBaDfijJltop0z5uHds0s2bAtI30KKJ?=
+ =?us-ascii?Q?416TaTC2FKJ1jW6Brh/ettwBZjU9uFJEopeqcCsU+0OGZdriJeqV5A+usNPw?=
+ =?us-ascii?Q?ucAcP97LrAn3HY/pB8WMrJdrNWRLMbEPBSGLohLoVvW7LkGpyQlL1UxpVZ+Y?=
+ =?us-ascii?Q?vDnpLXgwQtaTQd5GtxlmGh8oPggoDyRaLD9+NYiYP0HWxGdZ8d/vScnwPGar?=
+ =?us-ascii?Q?wTCVZbSW9ArM3fEuk15Pcpe9f1VK/qQAYzRJKcbwHG3b4NQNRILm20o1K+u1?=
+ =?us-ascii?Q?fIb9QoIs7EqFrzSnoOvmr8YiuyDD8tbt6T35aoNjCQbqjqIQ2/dUECa8wsk6?=
+ =?us-ascii?Q?BJhlNwsq4FqMLcWp/90Zm5ju/AHF41QdYZcze0XRZEgROcDktjgKpNLnDnly?=
+ =?us-ascii?Q?pjr3MpqZGPxlkLGAXwuykT3RiUSne1CNGX9q?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2025 05:04:20.4729
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40752ba8-8098-4a84-ec9d-08dd8936cc4a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A106.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6176
 
-On Tue, Mar 25, 2025, Suleiman Souhlal wrote:
-> When the host resumes from a suspend, the guest thinks any task
-> that was running during the suspend ran for a long time, even though
-> the effective run time was much shorter, which can end up having
-> negative effects with scheduling.
-> 
-> To mitigate this issue, the time that the host was suspended is included
-> in steal time, which lets the guest subtract the duration from the
-> tasks' runtime.
-> 
-> In order to implement this behavior, once the suspend notifier fires,
-> vCPUs trying to run will block until the resume notifier finishes. This is
-> because the freezing of userspace tasks happens between these two points.
-> It means that vCPUs could otherwise run and get their suspend steal
-> time misaccounted, particularly if a vCPU would run after resume before
-> the resume notifier fires.
-> Incidentally, doing this also addresses a potential race with the
-> suspend notifier setting PVCLOCK_GUEST_STOPPED, which could then get
-> cleared before the suspend actually happened.
-> 
-> One potential caveat is that in the case of a suspend happening during
-> a VM migration, the suspend time might not be accounted for.
-> A workaround would be for the VMM to ensure that the guest is entered
-> with KVM_RUN after resuming from suspend.
+Misbehaving guests can cause bus locks to degrade the performance of
+the system. The Bus Lock Threshold feature can be used to address this
+issue by providing capability to the hypervisor to limit guest's
+ability to generate bus lock, thereby preventing system slowdown due
+to performance penalities.
 
-Please rewrite this to state what changes are being made in impreative mood, as
-commands.  Describing the _effects_ of a change makes it extremely difficult to
-understand whether the behavior is pre-patch or post-patch.
+When the Bus Lock Threshold feature is enabled, the processor checks
+the bus lock threshold count before executing the buslock and decides
+whether to trigger bus lock exit or not.
 
-E.g. for this
+The value of the bus lock threshold count '0' generates bus lock
+exits, and if the value is greater than '0', the bus lock is executed
+successfully and the bus lock threshold count is decremented.
 
-  vCPUs trying to run will block until the resume notifier finishes
+Presence of the Bus Lock threshold feature is indicated via CPUID
+function 0x8000000A_EDX[29].
 
-I had to look at the code to understand what this was saying, which largely
-defeats the purpose of the changelog.
-
-> Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-> ---
->  Documentation/virt/kvm/x86/msr.rst | 10 ++++--
->  arch/x86/include/asm/kvm_host.h    |  6 ++++
->  arch/x86/kvm/x86.c                 | 51 ++++++++++++++++++++++++++++++
->  3 files changed, 65 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/x86/msr.rst b/Documentation/virt/kvm/x86/msr.rst
-> index 3aecf2a70e7b43..48f2a8ca519548 100644
-> --- a/Documentation/virt/kvm/x86/msr.rst
-> +++ b/Documentation/virt/kvm/x86/msr.rst
-> @@ -294,8 +294,14 @@ data:
->  
->  	steal:
->  		the amount of time in which this vCPU did not run, in
-> -		nanoseconds. Time during which the vcpu is idle, will not be
-> -		reported as steal time.
-> +		nanoseconds. This includes the time during which the host is
-> +		suspended. Time during which the vcpu is idle, might not be
-> +		reported as steal time. The case where the host suspends
-> +		during a VM migration might not be accounted if VCPUs aren't
-> +		entered post-resume, because KVM does not currently support
-> +		suspend/resuming the associated metadata. A workaround would
-> +		be for the VMM to ensure that the guest is entered with
-> +		KVM_RUN after resuming from suspend.
-
-Coming back to this with fresh eyes, I kinda feel like this needs an opt-in
-somewhere.  E.g. a KVM capability, or maybe a guest-side steal-time feature?  Or
-maybe we can squeak by with a module param based on your use case?
-
-IIRC, there is a guest-side fix that is needed to not go completely off the rails
-for large steal-time values.  I.e. enabling this blindly could negatively effect
-existings guests.
-
-The forced wait behavior introduced in v4 also gives me pause, but that should
-really just be about getting the code right, i.e. shouldn't go sideways as long
-as the host kernel is bug free.
-
-Ugh, actually, yeah, that part needs a guard.  At the very least, it needs to be
-conditional on steal-time being enabled.  KVM most definitely should not block
-vCPUs that aren't using steal-time, as that's a complete waste and will only make
-the effects of suspend worse for the guest.  At that point, having the guest
-opt-in to the behavior is a pretty minor change, and it gives users a way to
-opt-out if this is causing pain.
-
->  	preempted:
->  		indicate the vCPU who owns this struct is running or
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index f5ce2c2782142b..10634bbf2f5d21 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -124,6 +124,7 @@
->  #define KVM_REQ_HV_TLB_FLUSH \
->  	KVM_ARCH_REQ_FLAGS(32, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
->  #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE	KVM_ARCH_REQ(34)
-> +#define KVM_REQ_WAIT_FOR_RESUME		KVM_ARCH_REQ(35)
->  
->  #define CR0_RESERVED_BITS                                               \
->  	(~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_TS \
-> @@ -917,8 +918,13 @@ struct kvm_vcpu_arch {
->  
->  	struct {
->  		u8 preempted;
-> +		bool host_suspended;
->  		u64 msr_val;
->  		u64 last_steal;
-> +		u64 last_suspend;
-> +		u64 suspend_ns;
-> +		u64 last_suspend_ns;
-> +		wait_queue_head_t resume_waitq;
->  		struct gfn_to_hva_cache cache;
->  	} st;
->  
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 6b4ea3be66e814..327d1831dc0746 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -3717,6 +3717,8 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
->  	steal += current->sched_info.run_delay -
->  		vcpu->arch.st.last_steal;
->  	vcpu->arch.st.last_steal = current->sched_info.run_delay;
-> +	steal += vcpu->arch.st.suspend_ns - vcpu->arch.st.last_suspend_ns;
-> +	vcpu->arch.st.last_suspend_ns = vcpu->arch.st.suspend_ns;
-
-Isn't this just:
-
-	steal += vcpu->arch.st.suspend_ns;
-	vcpu->arch.st.suspend_ns = 0;
-
-or am I missing something?  I suspect you implemented the code this way to avoid
-writing vcpu->arch.st.suspend_ns in this context, because you discovered that
-record_steal_time() can run concurrently with kvm_arch_suspend_notifier(), i.e.
-because vcpu->arch.st.suspend_ns was getting corrupted.
-
-The above doesn't fully solve the problem, it just makes the badness less bad
-and/or much less likely to be hit.  E.g. if vcpu->arch.st.suspend_ns is advanced
-between the first and second loads, KVM would fail to account the delta between
-the two loads.
-
-Unless I'm missing something, the obvious/easy thing is to make arch.st.suspend_ns
-and atomic64_t, e.g.
-
-	if (unlikely(atomic64_read(&vcpu->arch.st.suspend_ns)))
-		steal += atomic64_xchg(&vcpu->arch.st.suspend_ns, 0);
-
-and then on the resume side:
-
-	atomic64_add(suspend_ns, &vcpu->arch.st.suspend_ns);
-	kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
-
-
->  	unsafe_put_user(steal, &st->steal, out);
->  
->  	version += 1;
-> @@ -6930,6 +6932,19 @@ long kvm_arch_vm_compat_ioctl(struct file *filp, unsigned int ioctl,
->  }
->  #endif
->  
-> +static void wait_for_resume(struct kvm_vcpu *vcpu)
-> +{
-> +	wait_event_interruptible(vcpu->arch.st.resume_waitq,
-> +	    vcpu->arch.st.host_suspended == 0);
-> +
-> +	/*
-> +	 * This might happen if we blocked here before the freezing of tasks
-> +	 * and we get woken up by the freezer.
-> +	 */
-> +	if (vcpu->arch.st.host_suspended)
-> +		kvm_make_request(KVM_REQ_WAIT_FOR_RESUME, vcpu);
-
-I most definitely don't want to add custom waiting behavior for this.  As this
-code shows, ensuring a wakeup doesn't race with blocking isn't the easiest thing
-in the world.
-
-Off the top of my head, I can't think of any reason why we can't simply send the
-vCPU into kvm_vcpu_block(), by treating the vCPU as completely non-runnable while
-it is suspended.
-
->  #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
->  static int kvm_arch_suspend_notifier(struct kvm *kvm)
->  {
-> @@ -6939,6 +6954,19 @@ static int kvm_arch_suspend_notifier(struct kvm *kvm)
->  
->  	mutex_lock(&kvm->lock);
->  	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		vcpu->arch.st.last_suspend = ktime_get_boottime_ns();
-> +		/*
-> +		 * Tasks get thawed before the resume notifier has been called
-> +		 * so we need to block vCPUs until the resume notifier has run.
-> +		 * Otherwise, suspend steal time might get applied too late,
-> +		 * and get accounted to the wrong guest task.
-> +		 * This also ensures that the guest paused bit set below
-> +		 * doesn't get checked and cleared before the host actually
-> +		 * suspends.
-> +		 */
-> +		vcpu->arch.st.host_suspended = 1;
-
-We can definitely avoid this flag, e.g. by zeroing last_suspend in the resume
-notified, and using that to detect "host suspended".
-
-> +		kvm_make_request(KVM_REQ_WAIT_FOR_RESUME, vcpu);
-> +
->  		if (!vcpu->arch.pv_time.active)
->  			continue;
->  
-> @@ -6954,12 +6982,32 @@ static int kvm_arch_suspend_notifier(struct kvm *kvm)
->  	return ret ? NOTIFY_BAD : NOTIFY_DONE;
->  }
->  
-> +static int kvm_arch_resume_notifier(struct kvm *kvm)
-> +{
-> +	struct kvm_vcpu *vcpu;
-> +	unsigned long i;
-> +
-> +	mutex_lock(&kvm->lock);
-
-No need for this, it provides zero protection and can (very, very theoretically)
-trigger deadlock.  The lock has already been dropped from the suspend notifier.
-
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		vcpu->arch.st.host_suspended = 0;
-> +		vcpu->arch.st.suspend_ns += ktime_get_boottime_ns() -
-> +		    vcpu->arch.st.last_suspend;
-> +		wake_up_interruptible(&vcpu->arch.st.resume_waitq);
-
-This needs a
-
-	kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
-
-to ensure the suspend_ns time is accounted.  kvm_arch_vcpu_load() probably
-guarantees KVM_REQ_STEAL_UPDATE is set, but KVM shouldn't rely on that.
-
-Completely untested, and I didn't add any new ABI, but something like this?
-
+Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 ---
- Documentation/virt/kvm/x86/msr.rst | 10 ++++--
- arch/x86/include/asm/kvm_host.h    |  2 ++
- arch/x86/kvm/x86.c                 | 56 +++++++++++++++++++++++++++++-
- 3 files changed, 65 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/virt/kvm/x86/msr.rst b/Documentation/virt/kvm/x86/msr.rst
-index 3aecf2a70e7b..48f2a8ca5195 100644
---- a/Documentation/virt/kvm/x86/msr.rst
-+++ b/Documentation/virt/kvm/x86/msr.rst
-@@ -294,8 +294,14 @@ data:
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index e95a8e9ef22b..b51f3ce84032 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -378,6 +378,7 @@
+ #define X86_FEATURE_V_SPEC_CTRL		(15*32+20) /* "v_spec_ctrl" Virtual SPEC_CTRL */
+ #define X86_FEATURE_VNMI		(15*32+25) /* "vnmi" Virtual NMI */
+ #define X86_FEATURE_SVME_ADDR_CHK	(15*32+28) /* SVME addr check */
++#define X86_FEATURE_BUS_LOCK_THRESHOLD	(15*32+29) /* Bus lock threshold */
+ #define X86_FEATURE_IDLE_HLT		(15*32+30) /* IDLE HLT intercept */
  
- 	steal:
- 		the amount of time in which this vCPU did not run, in
--		nanoseconds. Time during which the vcpu is idle, will not be
--		reported as steal time.
-+		nanoseconds. This includes the time during which the host is
-+		suspended. Time during which the vcpu is idle, might not be
-+		reported as steal time. The case where the host suspends
-+		during a VM migration might not be accounted if VCPUs aren't
-+		entered post-resume, because KVM does not currently support
-+		suspend/resuming the associated metadata. A workaround would
-+		be for the VMM to ensure that the guest is entered with
-+		KVM_RUN after resuming from suspend.
- 
- 	preempted:
- 		indicate the vCPU who owns this struct is running or
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 8becf50d9ade..8a5ff888037a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -931,6 +931,8 @@ struct kvm_vcpu_arch {
- 		u8 preempted;
- 		u64 msr_val;
- 		u64 last_steal;
-+		atomic64_t suspend_ns;
-+		u64 suspend_ts;
- 		struct gfn_to_hva_cache cache;
- 	} st;
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 73f4a85c72aa..b6120ebbb8fa 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3751,6 +3751,10 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 	steal += current->sched_info.run_delay -
- 		vcpu->arch.st.last_steal;
- 	vcpu->arch.st.last_steal = current->sched_info.run_delay;
-+
-+	if (unlikely(atomic64_read(&vcpu->arch.st.suspend_ns)))
-+		steal += atomic64_xchg(&vcpu->arch.st.suspend_ns, 0);
-+
- 	unsafe_put_user(steal, &st->steal, out);
- 
- 	version += 1;
-@@ -6992,6 +6996,7 @@ long kvm_arch_vm_compat_ioctl(struct file *filp, unsigned int ioctl,
- #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
- static int kvm_arch_suspend_notifier(struct kvm *kvm)
- {
-+	bool kick_vcpus = false;
- 	struct kvm_vcpu *vcpu;
- 	unsigned long i;
- 
-@@ -6999,9 +7004,45 @@ static int kvm_arch_suspend_notifier(struct kvm *kvm)
- 	 * Ignore the return, marking the guest paused only "fails" if the vCPU
- 	 * isn't using kvmclock; continuing on is correct and desirable.
- 	 */
--	kvm_for_each_vcpu(i, vcpu, kvm)
-+	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		(void)kvm_set_guest_paused(vcpu);
- 
-+		if (vcpu->arch.st.msr_val & KVM_MSR_ENABLED) {
-+			kick_vcpus = true;
-+			WRITE_ONCE(vcpu->arch.st.suspend_ts,
-+				   ktime_get_boottime_ns());
-+		}
-+	}
-+
-+	if (kick_vcpus)
-+		kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int kvm_arch_resume_notifier(struct kvm *kvm)
-+{
-+	struct kvm_vcpu *vcpu;
-+	unsigned long i;
-+
-+	kvm_for_each_vcpu(i, vcpu, kvm) {
-+		u64 suspend_ns  = ktime_get_boottime_ns() -
-+				  vcpu->arch.st.suspend_ts;
-+
-+		WRITE_ONCE(vcpu->arch.st.suspend_ts, 0);
-+
-+		/*
-+		 * Only accumulate the suspend time if steal-time is enabled,
-+		 * but always clear suspend_ts and kick the vCPU as the vCPU
-+		 * could have disabled steal-time after the suspend notifier
-+		 * grabbed suspend_ts.
-+		 */
-+		if (vcpu->arch.st.msr_val & KVM_MSR_ENABLED)
-+			atomic64_add(suspend_ns, &vcpu->arch.st.suspend_ns);
-+
-+		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
-+	}
-+
- 	return NOTIFY_DONE;
- }
- 
-@@ -7011,6 +7052,9 @@ int kvm_arch_pm_notifier(struct kvm *kvm, unsigned long state)
- 	case PM_HIBERNATION_PREPARE:
- 	case PM_SUSPEND_PREPARE:
- 		return kvm_arch_suspend_notifier(kvm);
-+	case PM_POST_HIBERNATION:
-+	case PM_POST_SUSPEND:
-+		return kvm_arch_resume_notifier(kvm);
- 	}
- 
- 	return NOTIFY_DONE;
-@@ -11251,6 +11295,16 @@ EXPORT_SYMBOL_GPL(kvm_vcpu_has_events);
- 
- int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu)
- {
-+	/*
-+	 * During host SUSPEND/RESUME tasks get frozen after SUSPEND notifiers
-+	 * run, and thawed before RESUME notifiers, i.e. vCPUs can be actively
-+	 * running when KVM sees the system as suspended.  Block the vCPU if
-+	 * KVM sees the vCPU as suspended to ensure the suspend steal time is
-+	 * accounted before the guest can run, and to the correct guest task.
-+	 */
-+	if (READ_ONCE(vcpu->arch.st.suspend_ts))
-+		return false;
-+
- 	return kvm_vcpu_running(vcpu) || vcpu->arch.pv.pv_unhalted ||
- 	       kvm_vcpu_has_events(vcpu);
- }
-
-base-commit: 17cfb61855eafd72fd6a22d713a39be0d74660e1
+ /* Intel-defined CPU features, CPUID level 0x00000007:0 (ECX), word 16 */
 -- 
+2.34.1
+
