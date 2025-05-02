@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B36254876;
-	Fri,  2 May 2025 13:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3F1254869;
+	Fri,  2 May 2025 13:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191324; cv=none; b=lF0ABKiZbP8MJfFphSU7X7xTtlX5eNsCimBc8KSDjlPkc/QsBuVigCwDpJa8FXXhEKWtOcSkqER24pP24u112JyP0Ucm8vn0n5RmNciWLPwWTGpS55W5dk13d96vQYkBAflY2VMQIhDSgiIezaeOjT8n8X/Ra9ty+XDyCEXwiDI=
+	t=1746191324; cv=none; b=tQ7U8heDc/tYq2gvOxSbgNYM7vjLIo/o4BoJZ/0iKGyLfTCqCa47u2DonzOjwHjql2H9d3PO9z7gJ5va0NPe1Al2J87GBInbYT89ppEaQ3TW15MwqtmV9DDW/SRvRdYpXkDHmeIdDs1GwGGFJJAJIFuUph9hvb/x1yCltymv2ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746191324; c=relaxed/simple;
-	bh=Mxg5gZR5NtpEeMPs/+XTRuULzQ14JvabH1BZykostAY=;
+	bh=C9kO+sFs+Azqq39AMtBkkj6l8k1vV7yvPw74WxauvEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrSn4d7vNFKjyuGLKq27MCcMRfqAhPhduSxFdsumtch1M/1gbjpW0G7/+KCNOfCoBGzb09W24AM0KL132JE8LsI82ybWY0TvQ334bjSR2li74uRyaVoaZEJnM1oGCWU/97ChvGzfxq/tLR7N2Y9zofBiHENSlTPfpubdauo1NRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZV6fTgoc; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=SBiVc8AiBppe6SkfikGB4b+Ov7EKJpDXxxdff3/6HfHcH9+6MkiqIOcOVFNW37PGsVxTbssRDauQiW8kYnyhui2l425W903tG+ocfRDpx9ao1U/fgKSMLDIEcnm/9eDaeIsW7biapQf64yhFH1MXqdavFr4o/xinlFaSd9Kg+t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aKivw+jW; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZV6fTgoc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aKivw+jW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746191322; x=1777727322;
+  t=1746191323; x=1777727323;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Mxg5gZR5NtpEeMPs/+XTRuULzQ14JvabH1BZykostAY=;
-  b=ZV6fTgocLjTo74Yq+G7gyPNOB/s8awKiJTqiyT2OqquHRlCkHnOHbuTx
-   BUtdxSTxhgCG31krLS8aOLFHpmVNuu1RfkYWTKKUFePHBggCXgMHJLlof
-   t/3qcGrIOrwsatuPeIwNvxXfwCwlApYzl9g35zsLEeKsbGhJ0+F+ZsS0Y
-   XRuA8q55SLf9mc6mpvUCDg9rOojCvLjeuhOY/OGwF9/r2+5gGv1vkvdAj
-   O1LHZMCrCKUxaaC5znfM/r0CW9AllkiGAh1/bX+f0qF9Gi/Hz8oFfbAiF
-   kgL1FqCipUSzM2YjysPHwp8Plqr+iGe73iq6Umnohnhf5Xl+kZKWq4D2W
-   Q==;
-X-CSE-ConnectionGUID: lK0rZVdHT1Wt0o08ZGtiTA==
-X-CSE-MsgGUID: M3KAOI5hRjOTOI3dzHybSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012952"
+  bh=C9kO+sFs+Azqq39AMtBkkj6l8k1vV7yvPw74WxauvEg=;
+  b=aKivw+jW++XQodfH2R/kFVrrAn8tp6F94uZQPAlon3RMIEq78YT6Zykl
+   Yqwnems8cQvEzmmqxr41+tyLITOWennJ1lnmGeQwULfZEZP6GK2PLBtJY
+   i777EI6VX9dNrX3sbgBIRwutnAVDq9O2kU4QHgk7bbLlnl6ed83wh4IBa
+   PiO7G85jJ/pFGbDvGUWVZnCKhS7gXvy18BVfNe6abkpXXGXOg7XXgp7qI
+   jLpiXalQwaeRMzghNmdK/Z9siNZXfxOqRX+PKCKAKrupBFlj3+lGuWG4Z
+   47gx1zK13Ep8+1E6YNQk78iptNn5ipLUqbcFTXRcyJ8GPU6Z9azLLfzFm
+   w==;
+X-CSE-ConnectionGUID: VBE3TFEvQb6wQ5nHj2brxg==
+X-CSE-MsgGUID: m7dDWvx1REavZRfwjYB7rw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="58495260"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48012952"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:40 -0700
-X-CSE-ConnectionGUID: bKCrRft4Td2TwOs2mpn5LQ==
-X-CSE-MsgGUID: G6KG1unLTdKZdFp4ECvWwg==
+   d="scan'208";a="58495260"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:41 -0700
+X-CSE-ConnectionGUID: A3EKNsEKT5qkuyTiGC645w==
+X-CSE-MsgGUID: fMDb+YDqRMO63jByr9l2rw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="157871062"
+   d="scan'208";a="138657776"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa002.fm.intel.com with ESMTP; 02 May 2025 06:08:37 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 02 May 2025 06:08:37 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2A6241AE; Fri, 02 May 2025 16:08:36 +0300 (EEST)
+	id 0E6DA9F; Fri, 02 May 2025 16:08:36 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -61,9 +61,9 @@ Cc: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC, PATCH 03/12] x86/virt/tdx: Add wrappers for TDH.PHYMEM.PAMT.ADD/REMOVE
-Date: Fri,  2 May 2025 16:08:19 +0300
-Message-ID: <20250502130828.4071412-4-kirill.shutemov@linux.intel.com>
+Subject: [RFC, PATCH 01/12] x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+Date: Fri,  2 May 2025 16:08:17 +0300
+Message-ID: <20250502130828.4071412-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
 References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
@@ -75,131 +75,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On a system with Dynamic PAMT enabled, the kernel must allocate memory
-for PAMT_4K as needed and reclaim it when it is no longer in use.
+The Physical Address Metadata Table (PAMT) holds TDX metadata for
+physical memory and must be allocated by the kernel during TDX module
+initialization.
 
-The TDX module requires space to store 16 bytes of metadata per page or
-8k for every 2M range of physical memory. The TDX module takes this 8k
-of memory as a pair of 4k pages. These pages do not need to be contiguous.
+The exact size of the required PAMT memory is determined by the TDX
+module and may vary between TDX module versions, but currently it is
+approximately 0.4% of the system memory. This is a significant
+commitment, especially if it is not known upfront whether the machine
+will run any TDX guests.
 
-The number of pages needed to cover 2M range can grow if size of PAMT
-entry increases. tdx_nr_pamt_pages() reports needed number of pages.
+The Dynamic PAMT feature reduces static PAMT allocations. PAMT_1G and
+PAMT_2M levels are still allocated on TDX module initialization, but the
+PAMT_4K level is allocated dynamically, reducing static allocations to
+approximately 0.004% of the system memory.
 
-TDH.PHYMEM.PAMT.ADD populates PAMT_4K for a given HPA. The kernel must
-provide addresses for two pages, covering a 2M range starting from HPA.
+With Dynamic PAMT, the kernel no longer needs to allocate PAMT_4K on
+boot, but instead must allocate a page bitmap. The TDX module determines
+how many bits per page need to be allocated (currently it is 1).
 
-TDH.PHYMEM.PAMT.REMOVE withdraws PAMT_4K memory for a given HPA,
-returning the addresses of the pages used for PAMT_4K before the call.
-
-Add wrappers for these SEAMCALLs.
+Allocate the bitmap if the kernel boots on a machine with Dynamic PAMT.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/tdx.h  |  9 ++++++++
- arch/x86/virt/vmx/tdx/tdx.c | 45 +++++++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  2 ++
- 3 files changed, 56 insertions(+)
+ arch/x86/include/asm/tdx.h                  |  5 +++++
+ arch/x86/include/asm/tdx_global_metadata.h  |  1 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 23 ++++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  3 +++
+ 4 files changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 9701876d4e16..a134cf3ecd17 100644
+index 26ffc792e673..9701876d4e16 100644
 --- a/arch/x86/include/asm/tdx.h
 +++ b/arch/x86/include/asm/tdx.h
-@@ -130,6 +130,11 @@ static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- 	return false; /* To be enabled when kernel is ready */
- }
+@@ -125,6 +125,11 @@ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+ const struct tdx_sys_info *tdx_get_sysinfo(void);
  
-+static inline int tdx_nr_pamt_pages(const struct tdx_sys_info *sysinfo)
++static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
 +{
-+	return sysinfo->tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
++	return false; /* To be enabled when kernel is ready */
 +}
 +
  int tdx_guest_keyid_alloc(void);
  u32 tdx_get_nr_guest_keyids(void);
  void tdx_guest_keyid_free(unsigned int keyid);
-@@ -197,6 +202,9 @@ u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u6
- u64 tdh_phymem_cache_wb(bool resume);
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
-+u64 tdh_phymem_pamt_add(unsigned long hpa, struct list_head *pamt_pages);
-+u64 tdh_phymem_pamt_remove(unsigned long hpa, struct list_head *pamt_pages);
-+
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_cpu_enable(void) { return -ENODEV; }
-@@ -204,6 +212,7 @@ static inline int tdx_enable(void)  { return -ENODEV; }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-+static inline int tdx_nr_pamt_pages(const struct tdx_sys_info *sysinfo) { return 0; }
- #endif	/* CONFIG_INTEL_TDX_HOST */
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 060a2ad744bf..5eb808b23997 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -15,6 +15,7 @@ struct tdx_sys_info_tdmr {
+ 	u16 pamt_4k_entry_size;
+ 	u16 pamt_2m_entry_size;
+ 	u16 pamt_1g_entry_size;
++	u8  pamt_page_bitmap_entry_bits;
+ };
  
- #endif /* !__ASSEMBLER__ */
+ struct tdx_sys_info_td_ctrl {
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 00e07a0c908a..29defdb7f6bc 100644
+index f5e2a937c1e7..c8bfd765e451 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1999,3 +1999,48 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+@@ -470,6 +470,18 @@ static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+ 	return pamt_sz;
  }
- EXPORT_SYMBOL_GPL(tdh_phymem_page_wbinvd_hkid);
-+
-+u64 tdh_phymem_pamt_add(unsigned long hpa, struct list_head *pamt_pages)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = hpa,
-+	};
-+	struct page *page;
-+	u64 *p;
-+
-+	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
-+
-+	p = &args.rdx;
-+	list_for_each_entry(page, pamt_pages, lru) {
-+		*p = page_to_phys(page);
-+		p++;
-+	}
-+
-+	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
-+}
-+EXPORT_SYMBOL_GPL(tdh_phymem_pamt_add);
-+
-+u64 tdh_phymem_pamt_remove(unsigned long hpa, struct list_head *pamt_pages)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = hpa,
-+	};
-+	struct page *page;
-+	u64 *p, ret;
-+
-+	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
-+
-+	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
-+	if (ret)
-+		return ret;
-+
-+	p = &args.rdx;
-+	for (int i = 0; i < tdx_nr_pamt_pages(&tdx_sysinfo); i++) {
-+		page = phys_to_page(*p);
-+		list_add(&page->lru, pamt_pages);
-+		p++;
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(tdh_phymem_pamt_remove);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 82bb82be8567..46c4214b79fb 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -46,6 +46,8 @@
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
-+#define TDH_PHYMEM_PAMT_ADD		58
-+#define TDH_PHYMEM_PAMT_REMOVE		59
  
++static unsigned long tdmr_get_pamt_bitmap_sz(struct tdmr_info *tdmr)
++{
++	unsigned long pamt_sz, nr_pamt_entries;
++	int bits_per_entry;
++
++	bits_per_entry = tdx_sysinfo.tdmr.pamt_page_bitmap_entry_bits;
++	nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
++	pamt_sz = DIV_ROUND_UP(nr_pamt_entries * bits_per_entry, BITS_PER_BYTE);
++
++	return ALIGN(pamt_sz, PAGE_SIZE);
++}
++
  /*
-  * SEAMCALL leaf:
+  * Locate a NUMA node which should hold the allocation of the @tdmr
+  * PAMT.  This node will have some memory covered by the TDMR.  The
+@@ -522,7 +534,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 * and the total PAMT size.
+ 	 */
+ 	tdmr_pamt_size = 0;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
++	pgsz = TDX_PS_4K;
++
++	/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
++	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
++		pamt_size[pgsz] = tdmr_get_pamt_bitmap_sz(tdmr);
++		tdmr_pamt_size += pamt_size[pgsz];
++		pgsz++;
++	}
++
++	for (; pgsz < TDX_PS_NR; pgsz++) {
+ 		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+ 					pamt_entry_size[pgsz]);
+ 		tdmr_pamt_size += pamt_size[pgsz];
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 13ad2663488b..683925bcc9eb 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -33,6 +33,9 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+ 		sysinfo_tdmr->pamt_2m_entry_size = val;
+ 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+ 		sysinfo_tdmr->pamt_1g_entry_size = val;
++	if (!ret && tdx_supports_dynamic_pamt(&tdx_sysinfo) &&
++	    !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
++		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+ 
+ 	return ret;
+ }
 -- 
 2.47.2
 
