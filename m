@@ -1,130 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC0F28D8CF;
-	Mon,  5 May 2025 22:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD0D33AAD3
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 22:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484058; cv=none; b=CfUEwGVJBTLT9J3pHORDnnnDBNhTdlg1FJiHsAwPyEgSUtF6kqQvtqoP3s0fhJoh8pnNeJZxewjnErptPzehoX20MAhoQUW1c0HQ4mrYinziZ2Q41UeYr3cdutH6xJ/neJFd7uU9BAczvq+sqgpMYaQAA+yZ6bDLQ2LofRfuaj8=
+	t=1746484642; cv=none; b=mJKLoQ2Ivp8gSvRalGJwweuHrquA0XaEy4LonHdhAeftzn4qY9MA6TWprmBqa8Ur/FyPjUQ9cGP4fvmPb+6m/2ZN9OIXdOWgKxiokzsdx/APqiodfkwOB4vATwys9vo0RGPxzZ0PSsrsVGdEF66pNT9qr15YbvINV6zBZajPkeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484058; c=relaxed/simple;
-	bh=Me0u92KtWJbVatZweqiucn310jO79Ids9W1Hom/IDw8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TB3j/4lDqTUcAW1HmSXuY7A35ZftVjbu9vVbHTs3jpBV8QEbA/x+BM8+rSb/t8E2wLbQcUcK5aHl2EJs0hxIE5vZKimf+8c1l+3u+sQSO2qjkXdq1kku8hiJhMaes5z33lF6z44K0Fva7eD2lxt398eXYLKhv8bNRm9FvbMRL4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUxUXOPe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746484642; c=relaxed/simple;
+	bh=/qnphOBltVIWlURouKPWX5W5cAXR4gvjzHWr9irA4Ek=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Zkyjmf8G2RQgc3Zq7ajYR8zankm4VAfl09ZfrxaDZvkH7Dx3IgZLOn8a+JF7DuLruKl8eGfdHjwOlbxhL2sv+gLIMjlbik65ifFjLP9Op7Nqz/TH7P7pvbjaLfnRVbj7uW8zUyOXsGbjmZJ6VMKlfaNVlk2mmVSwsfMbosqeJaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mSQ1Jmp2; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUxUXOPe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BA3C4CEEF;
-	Mon,  5 May 2025 22:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484058;
-	bh=Me0u92KtWJbVatZweqiucn310jO79Ids9W1Hom/IDw8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUxUXOPejkVJb/F4vxrJmrsWFQ6ns2Xa/SO9fdMEnmMJ74ydfAvA9uk3TuiUSApAv
-	 5UXjZ83QsX7hy3rXLGvjoxJkotRFV98MiTCFS6V3/ij9C1G8t0aMaRUBEF/EoY1zKM
-	 BXFFC1XBkDQiW3O21qERw+iSR33svmiR/06LIgXgRKWSUCCOpSCOU4XOaV14hLdfUy
-	 2lwk53blAoSDAQAvXbdajPArhgxmY+XLQkAJNKaqyPeD0sK1Kzxfly1hM7ZIgCQ4qi
-	 TxLSv6EDr8xHbxTZdbvQ5N9riKEuf1tdO4PQLY2Vn119UPNgPOw7nGLePT6z3UWxS9
-	 ENy7sk1++w/vg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Mike Christie <michael.christie@oracle.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 330/642] vhost-scsi: Return queue full for page alloc failures during copy
-Date: Mon,  5 May 2025 18:09:06 -0400
-Message-Id: <20250505221419.2672473-330-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
-References: <20250505221419.2672473-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mSQ1Jmp2"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22e327ff362so2985215ad.3
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 15:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746484639; x=1747089439; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RFJXsNyYfzZ7+lko8SxLtTDp0cHIk0LkJmukv/W5L18=;
+        b=mSQ1Jmp2rgrE5W2OkOthgNRIML4koPjGLgQd+nowIF6/q6bOiL8EAMT+WtQAC92mdG
+         41Uqk04TV+rqjL3JKZLFQ/Z7fTe7ShX5JUANwHwfhBTXJFr0y/jppy7NXhSMqVTDRMar
+         oDQtMIVu4a3n9JWLSXmv70N8fAz/GuVtzaUkbvTgT6NelRf32KDNtfF30q6qo9NshDmR
+         f/jnZpPWUH9+EPQmz5e1c9vWiDVEM25hrSTTxt1DO8Hec50WuyBX75Y8SCch5VdGd1BN
+         WUV77HBJVYxZc/Dw6x8g0sf/zWvnbHJoBZ0jKbbsEwWbyeJ4Rjs92Jcw29Mm4ukQd9XH
+         FEbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746484639; x=1747089439;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RFJXsNyYfzZ7+lko8SxLtTDp0cHIk0LkJmukv/W5L18=;
+        b=IK1HLPRTuUZ1bCoSa9QEJV/aYx1M5Z2PAOu7UJJ9cbtl/pBdEfqts60t2+RlIQFsei
+         rjWyzKAU/swRCwXQ6+Tg4l26G680kV68mODnky2/ZvKTgLm8qbDd+nys3Q6ruE7UNf1+
+         nFwuWbGAhUzjxlxTqeDk+DNkDWuKiOdidsDB+7dFFznUDZ4/JmJBx2VDuGmnNS3ch6fP
+         kE84ZxuT8El4cP+ynb3q892R4gvL23COs0vfdoqDXMKtE7aGoPrgcJjvI1m4qjLSJoVA
+         iwRl6i5YqgFKxmolSlB5wIVVr/OEDxehwd3O4pH1Yir6WIElvONo0uaZE6jajyLTlHxA
+         cHwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEj/rlWBTUYlqg+GyXCZ5W6DcPTCvPfhDNPPxZ2KJuiH70kwMf/N7X8yg/xfJqOHbiZJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvgJq1S81RcSyCSs4/Y+zowJi/fiewYEr19QQPVjRFudGf2Tf4
+	UTh+snVDWgQXVZ50zdHJwY9V/BRT754aV5cQtOkqEcoDMHkN1ZkFIYrTWBr56IVdkOz4F6zub+e
+	CSA==
+X-Google-Smtp-Source: AGHT+IF7FvBz2XtjdY1Gwm2snh7AYTh3FwqQtsFxghocXrvK4VvzfqD2ppJPcFtt7H5IcBLLk5+tAerZoio=
+X-Received: from plrs9.prod.google.com ([2002:a17:902:b189:b0:223:5416:c809])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f543:b0:224:2a6d:55ae
+ with SMTP id d9443c01a7336-22e1eac1872mr163309125ad.48.1746484638786; Mon, 05
+ May 2025 15:37:18 -0700 (PDT)
+Date: Mon, 5 May 2025 15:37:17 -0700
+In-Reply-To: <20250505221419.2672473-317-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.5
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250505221419.2672473-1-sashal@kernel.org> <20250505221419.2672473-317-sashal@kernel.org>
+Message-ID: <aBk9nVsmHObvxU7o@google.com>
+Subject: Re: [PATCH AUTOSEL 6.14 317/642] x86/bugs: KVM: Add support for SRSO_MSR_FIX
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Borislav Petkov <bp@alien8.de>, tglx@linutronix.de, peterz@infradead.org, 
+	jpoimboe@kernel.org, corbet@lwn.net, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, x86@kernel.org, pbonzini@redhat.com, 
+	thomas.lendacky@amd.com, mario.limonciello@amd.com, perry.yuan@amd.com, 
+	kai.huang@intel.com, xiaoyao.li@intel.com, tony.luck@intel.com, 
+	xin3.li@intel.com, kan.liang@linux.intel.com, linux-doc@vger.kernel.org, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Mike Christie <michael.christie@oracle.com>
+On Mon, May 05, 2025, Sasha Levin wrote:
+> From: Borislav Petkov <bp@alien8.de>
+> 
+> [ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
+> 
+> Add support for
+> 
+>   CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
+>   indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
+>   SRSO.
+> 
+> Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
+> 
+> Switch back to enabling the bit when virtualization is enabled and to
+> clear the bit when virtualization is disabled because using a MSR slot
+> would clear the bit when the guest is exited and any training the guest
+> has done, would potentially influence the host kernel when execution
+> enters the kernel and hasn't VMRUN the guest yet.
+> 
+> More detail on the public thread in Link below.
+> 
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-[ Upstream commit 891b99eab0f89dbe08d216f4ab71acbeaf7a3102 ]
+Can we please hold off on this until the fix lands[1]?  This version introduces
+a very measurable performance regression[2] for non-KVM use cases.
 
-This has us return queue full if we can't allocate a page during the
-copy operation so the initiator can retry.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20241203191705.19431-5-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/vhost/scsi.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 35a03306d1345..f9a106bbe8ee1 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -757,7 +757,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	size_t len = iov_iter_count(iter);
- 	unsigned int nbytes = 0;
- 	struct page *page;
--	int i;
-+	int i, ret;
- 
- 	if (cmd->tvc_data_direction == DMA_FROM_DEVICE) {
- 		cmd->saved_iter_addr = dup_iter(&cmd->saved_iter, iter,
-@@ -770,6 +770,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		page = alloc_page(GFP_KERNEL);
- 		if (!page) {
- 			i--;
-+			ret = -ENOMEM;
- 			goto err;
- 		}
- 
-@@ -777,8 +778,10 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		sg_set_page(&sg[i], page, nbytes, 0);
- 
- 		if (cmd->tvc_data_direction == DMA_TO_DEVICE &&
--		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes)
-+		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes) {
-+			ret = -EFAULT;
- 			goto err;
-+		}
- 
- 		len -= nbytes;
- 	}
-@@ -793,7 +796,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	for (; i >= 0; i--)
- 		__free_page(sg_page(&sg[i]));
- 	kfree(cmd->saved_iter_addr);
--	return -ENOMEM;
-+	return ret;
- }
- 
- static int
-@@ -1277,9 +1280,9 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 			 " %d\n", cmd, exp_data_len, prot_bytes, data_direction);
- 
- 		if (data_direction != DMA_NONE) {
--			if (unlikely(vhost_scsi_mapal(cmd, prot_bytes,
--						      &prot_iter, exp_data_len,
--						      &data_iter))) {
-+			ret = vhost_scsi_mapal(cmd, prot_bytes, &prot_iter,
-+					       exp_data_len, &data_iter);
-+			if (unlikely(ret)) {
- 				vq_err(vq, "Failed to map iov to sgl\n");
- 				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
- 				goto err;
--- 
-2.39.5
-
+[1] https://lore.kernel.org/all/20250502223456.887618-1-seanjc@google.com
+[2] https://www.phoronix.com/review/linux-615-amd-regression
