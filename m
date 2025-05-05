@@ -1,110 +1,147 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC22F663E
-	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AA828B3E1
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487082; cv=none; b=tpXbkCLFtubaHGqvQSG7CXx6/wI4FKw9QmOaI71VUsd9rwH47CL9hpjwwoJOH9491h7ry9l++YklcYsTdRG2aVT2wB5dXQW2WnMczTrrB3xdGB8K/Dt6EV4sztc46xxoFsh4bb4gVSDGxmMJGcI0mUnUEOqX8rT+5lziCgTFTsw=
+	t=1746487225; cv=none; b=SEo69NaG5mJzY+QX3AKIkTHJ2po67rMuG2QE8rFRxxGdG17xjwednydhxOJ6qgDnaf9bT8ta1recV67srIBcpNfJRvzE/qdpwXvvWN4wQr3SxqtuXfS0TyrPrxJWQQ1EJNj/CGuvI6j4KYMtBX3TSyD/jHByAkzHLTxJ0Y439Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487082; c=relaxed/simple;
-	bh=8ZrLOI3/k1STjvSE8FjnfiooIAW0suwqXfzGYLc3uAw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jK5eiD8LPdDPGefAxtucieJqaQN4POd2WMCH7NZ8qPEmsvL6x/1bGDVA51WNf2MYO6jveX6thKcM20RwhyyG7ciNEBpS23r4wnp6It7g8YD9FPvip8d0eQNmTbWYzYQr58x7X5x4SwXRr2dnHu2VzRXviyUs5TWmcoHgQQdteTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nSbfkM6J; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1746487225; c=relaxed/simple;
+	bh=GHQSRfTZut4cMFa1b0PIQYfUMpKuaypMKuod6WBId3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bC56/MMz0sZFrxQz394p4I0bwb7ssK6JXif57Sg61syXRljhPm1tuefuGvv8DTpbKxz8f/PxeMrYKro05TeTw8ln8+09YevhQQtwdiv4pL6yMhXphQ6+jc9IFrbCt6FhWXBdi9urkL3dNECxSkOT9SxOl1BBZ0vcaYJD/HYHTXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k+wDqH4X; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nSbfkM6J"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-225505d1ca5so45674755ad.2
-        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:17:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k+wDqH4X"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-30a452d3b38so4219397a91.3
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746487079; x=1747091879; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tp3hEaccs5KLjus+u7lZyGvplQzD1hJyVDYNNOcIobc=;
-        b=nSbfkM6JLSISQKjDshCg9pN8pIzihq0mRaYyGffl36JcLy8OXR/MdPoCxr9yUQUVFG
-         wppT7mBxe5o6cetBcYxvQ8S7XkXQ1qsHNwbWAi0M5WZK210SVqMdpa75IK58bbCMDJ9B
-         50UkSHCmt1k3HrGxWzgdozyMwZGxDwnbfhwihvpE5ylzicGebvK0PBmrFit+HUzTLU/8
-         UwwGhIqtNTDXaxkpVbKQTImpRO1B0CdwA0fYB1hTRLkGXgUFSsKzMdLVL3dXAVibp4qH
-         rtGZmJ5s1qBk2ryGo6/K58np5H+gQD7rUvVq4YD76gPru4FZvfpnq63gvn0P+iaKOmkw
-         xUvg==
+        d=linaro.org; s=google; t=1746487221; x=1747092021; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hghY4IeLObm8ysFk0eCwCGh3lWvsG0krLPTha8KLWmo=;
+        b=k+wDqH4X+ZXBA0BZX3xwNirtAIgOvjNQxAWgVdiRHwTmr3KjaWAfYS8z1EbOdKSRnK
+         31M82Mz/7hHjfHEvk0PcrpYxQ8x7G1TkYWJHnm59UndR5xLylxBp1JxABQCZOAUCGkSU
+         ZVHvUbCq5/VpSdW0WT9e4XT/JUyHet9R7p6QeW+gPPCy48nn2hdJOB2EqYWCPHy0mKw7
+         uTnZ5dFxUY7A0qaVKC8NBu/gw8WXi/LyDrqUIgA+WX1ZjciDF+ViyqLXKOuelkcKmdnA
+         XJtUEnBhHByoKT1lH3YdVHnMIYU8BP8dNKq8AdjvjsBqphHBNgBHkmX4KaPpRuqxIVrD
+         ucuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746487079; x=1747091879;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tp3hEaccs5KLjus+u7lZyGvplQzD1hJyVDYNNOcIobc=;
-        b=K0T/aZD+JIHf9J9FkrrzwVEBAK4b6iITvJyDAhsL1sBP7mbcsrsXCKCE0c1vYIES1n
-         8Z2nMuJTDa23pN5s6kzX0N50RcGiD1OnDjwTjoUqajItl3AD6pS+v2O1On3BVyztMJlj
-         QnvykRFs4ujGyMsZvsC3H8iuhRIcnR5wt74+yDMPrEeV8YVIC/7Ht3+tG9Ahw8pvDUC1
-         +BHRoYUEHWXykj1fJnnKg5bsQZIuY+Lw7hQP2J5KcqjJSlbhf8yLTpd94tZYG/Sy3AFx
-         IgyVby2wcx4dRXoTB4zgMeYxaHGDYM3fPVrMCuCCWlK0iqouk0k20VtlSHo8l0o0a3GD
-         Ik9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVCMsfGR+5faqJaxkqDty1QPBBLjsXzxb/uytJWJWb93VbHzQhc4yXdQBY5gCIfzq/5jF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYiqnqrEOJ09PJeAfMGJSv1ZmTfkOr74TaN1xxgCoyL6miBoPF
-	+gCq2WXeXtpPsNGzIO6cOBfPBCv4Hais5ZnBwRS5svaX/UlKCaRD8nl6SmxM+ArrTIhJYqPyEFF
-	9Pg==
-X-Google-Smtp-Source: AGHT+IGhrX1MtCaIusgQgNQRAcx+0E6rNYmRwUcmQ9PrQBY1+RE7Ktib/G6MWTeo5oHjCygbMWb2/Z516S8=
-X-Received: from plv19.prod.google.com ([2002:a17:903:bd3:b0:220:cd24:457])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e18b:b0:22e:39f8:61fa
- with SMTP id d9443c01a7336-22e39f864c8mr6120915ad.34.1746487079377; Mon, 05
- May 2025 16:17:59 -0700 (PDT)
-Date: Mon, 5 May 2025 16:17:58 -0700
-In-Reply-To: <diqzfrhik62h.fsf@ackerleytng-ctop.c.googlers.com>
+        d=1e100.net; s=20230601; t=1746487221; x=1747092021;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hghY4IeLObm8ysFk0eCwCGh3lWvsG0krLPTha8KLWmo=;
+        b=gWJCE71EetnlbwHcx6crUV0rg8oANurdoF2SsdSJ5nx65YYRK3S6kS/H40j6GwtEwP
+         l/nM/C71fTiAfFpc9ftKjfaXVCPhlzM4/lw1g7WMwbMKiNLMc7l65gXg2HJENyYpxwOD
+         kS3rqiQA1uPRE96I+AW6BJUGXehgWYoqjdgKoCBzmn+oP5LUJJnoBZMu1pbXYHzYBF1y
+         9xP3ah4VyHLIGjEWnUwPW7zdwSQVAJLzh206HjoTU1ph3xKTvlKvAvz2S2A+Rrzu7VFu
+         MAKKOdpXQmTzAQj9QSGhRJiSSdSp5oyRje3LZ5GYH0J6rG/KbsH0C1HScXpjWzk6mSjS
+         hWgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXU/Kyig1jnIj+5Rytn3+pAex+HinRCBGiWsYA3MUHZEbhF1pIIVsVjWFo4p92ajHitRg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKR59JLhDe7ZlhOQcEOnT1z9rK5t5ZNdWjQhH5GkZgLgTxa58X
+	y6HbNpCPmy2m6nELQM1U7MPFM9o8fR9Ss9mP3F9MJhzr5vhieveD1jPYrZHGDPM=
+X-Gm-Gg: ASbGncvYyZ+tc1nmhhYw08Av35Oii1EnXUTZ8nKVO0PGToMF/bb74zFDcXzOBrmuDVr
+	5WNt5wQAxtzD8Cx56UELiC53ApNCp/+dGgYbzLwmigk9kYs6W1/S/S82BEmE+CvTfrpZYSNYtds
+	mb/h9QHqawajwVRmkahNeTshj9k8gDU3PKt+sOt7A7qdN8KJQbS07u/yqlCp1OGJ4mseUIpRu0j
+	7g9FRxGjdwkrSzUbB8aXlHt19BdRAgHWnoMrwxKGi9IjEkBYwIDFrNs3DQGS5z1hbLX9J9CEkLA
+	Ye/GIzo5xXl7Ih0aET2bEhMkBvKoqRUnfJJdrPQ5
+X-Google-Smtp-Source: AGHT+IGyW/h0d+P++2N9HLg6A6FxaGbouVs5I8Cg2OUIrJYht0qMsNp9z55lD9B0AK5WzHNucV8FRQ==
+X-Received: by 2002:a17:90b:5824:b0:309:eb44:2a58 with SMTP id 98e67ed59e1d1-30a4e623cb7mr18849133a91.22.1746487221594;
+        Mon, 05 May 2025 16:20:21 -0700 (PDT)
+Received: from pc.. ([38.41.223.211])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 16:20:21 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	anjo@rev.ng,
+	Peter Maydell <peter.maydell@linaro.org>,
+	alex.bennee@linaro.org,
+	kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	qemu-arm@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 01/50] target/arm: Replace target_ulong -> vaddr for HWBreakpoint
+Date: Mon,  5 May 2025 16:19:26 -0700
+Message-ID: <20250505232015.130990-2-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
+References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <diqz7c31xyqs.fsf@ackerleytng-ctop.c.googlers.com>
- <386c1169-8292-43d1-846b-c50cbdc1bc65@redhat.com> <aBTxJvew1GvSczKY@google.com>
- <diqzjz6ypt9y.fsf@ackerleytng-ctop.c.googlers.com> <7e32aabe-c170-4cfc-99aa-f257d2a69364@redhat.com>
- <diqzfrhik62h.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <aBlHJvfnV1VPKQzW@google.com>
-Subject: Re: [PATCH v8 06/13] KVM: x86: Generalize private fault lookups to
- guest_memfd fault lookups
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, 
-	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
-	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
-	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, vannapurve@google.com, mail@maciej.szmigiero.name, 
-	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
-	isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com, 
-	suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com, 
-	quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, 
-	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, qperret@google.com, 
-	keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, 
-	jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, 
-	hughd@google.com, jthoughton@google.com, peterx@redhat.com, 
-	pankaj.gupta@amd.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 05, 2025, Ackerley Tng wrote:
-> > On 03.05.25 00:00, Ackerley Tng wrote:
-> > We want to disable large pages if (using 2M region as example)
-> >
-> > (a) Mixed memory attributes. If a PFN falls into a 2M region, and parts
-> >      of that region are shared vs. private (mixed memory attributes ->
-> >      KVM_LPAGE_MIXED_FLAG)
-> >
-> >   -> With gmem-shared we could have mixed memory attributes, not a PFN
-> >      fracturing. (PFNs don't depend on memory attributes)
-> >
-> > (b) page track: intercepting (mostly write) access to GFNs
-> >
-> 
-> Could you explain more about page track case? 
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-KVM disallows hugepages when shadowing a gfn, because write-protecting a 2MiB
-(let alone a 1GiB) page would be insanely expensive, as KVM would need to intercept
-and emulate an absurd number of instructions that have nothing to do with the
-guest's page tables.
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ target/arm/internals.h   | 6 +++---
+ target/arm/hyp_gdbstub.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 4d3d84ffebd..79a7449041c 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1949,9 +1949,9 @@ extern GArray *hw_breakpoints, *hw_watchpoints;
+ #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
+ #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
+ 
+-bool find_hw_breakpoint(CPUState *cpu, target_ulong pc);
+-int insert_hw_breakpoint(target_ulong pc);
+-int delete_hw_breakpoint(target_ulong pc);
++bool find_hw_breakpoint(CPUState *cpu, vaddr pc);
++int insert_hw_breakpoint(vaddr pc);
++int delete_hw_breakpoint(vaddr pc);
+ 
+ bool check_watchpoint_in_range(int i, vaddr addr);
+ CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr);
+diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
+index 0512d67f8cf..bb5969720ce 100644
+--- a/target/arm/hyp_gdbstub.c
++++ b/target/arm/hyp_gdbstub.c
+@@ -54,7 +54,7 @@ GArray *hw_breakpoints, *hw_watchpoints;
+  * here so future PC comparisons will work properly.
+  */
+ 
+-int insert_hw_breakpoint(target_ulong addr)
++int insert_hw_breakpoint(vaddr addr)
+ {
+     HWBreakpoint brk = {
+         .bcr = 0x1,                             /* BCR E=1, enable */
+@@ -80,7 +80,7 @@ int insert_hw_breakpoint(target_ulong addr)
+  * Delete a breakpoint and shuffle any above down
+  */
+ 
+-int delete_hw_breakpoint(target_ulong pc)
++int delete_hw_breakpoint(vaddr pc)
+ {
+     int i;
+     for (i = 0; i < hw_breakpoints->len; i++) {
+@@ -226,7 +226,7 @@ int delete_hw_watchpoint(vaddr addr, vaddr len, int type)
+     return -ENOENT;
+ }
+ 
+-bool find_hw_breakpoint(CPUState *cpu, target_ulong pc)
++bool find_hw_breakpoint(CPUState *cpu, vaddr pc)
+ {
+     int i;
+ 
+-- 
+2.47.2
+
