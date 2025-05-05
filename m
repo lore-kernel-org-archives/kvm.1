@@ -1,48 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412E36E099;
-	Mon,  5 May 2025 23:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44B2F3781;
+	Mon,  5 May 2025 23:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486117; cv=none; b=eN9FE3VYhTufET/RDNDzmB91Wv3Z510Kv7LAp2YXDDEpxEZHZFW/nmmUL1q1r8lJIb258F15EuT0uIuZQcBX04yHmMwZtGUh6QNma+XmPJA8MyUXIV3jMN2Qx2U1K4jp2EpN9tOQI0rYuviZ4eavq+76shaF75Dbv/ZSDC0gcd0=
+	t=1746486875; cv=none; b=XpA7cBlDGP7N74f/Br17mPMNkyrJjviZqHrs+f0LXdKtWkDWC19Vn+M9xE0aj2BegIiPqEFZFRvLtbDBShggNVfI4j4MXqR/LuRSZY1bbbLC/QQWoRP2Eya4uFEALitWQ90Sx63YJT9UnLBmumxb0vTXgbPdUpCWSTDNR4S3pyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486117; c=relaxed/simple;
-	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
+	s=arc-20240116; t=1746486875; c=relaxed/simple;
+	bh=ykJqWTmi2l+7UFccg3wX3A1rlSlzWOulEI6BSMi5yNY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p4BBcLfXiFBvYkl5XFuF7HJwXFcR66QmVRSU0bdXxyGwfQLmP46YFqihESFNfUuAc9FdEmxRzpYy639KSdkB0kTxp00jJDuv3YaNPXeewL8qIfqHK+hVYztXM1xfmnnLQZh1I/1rvRXE7fRqunE1UxWTObS16/FF6Xba1NxyFpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUrgY/at; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=AQ9e6Jbmug1B1KxwNY52nhUveYF9tbWOylmginVlufzDFyH1fkoPreIsshscmeEo0qngUL8AFz695F4ibcrsjXJ7Ir8bZgevRoqEYOAEyRx2Bzbc9VsrN10Gybu3L69/zpVGKeLavRQLQq28rQYv4f/Iz2A0NdFl44vlKYY/34Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYvUpXYu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUrgY/at"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E78C4CEF2;
-	Mon,  5 May 2025 23:01:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYvUpXYu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31D7C4CEE4;
+	Mon,  5 May 2025 23:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486116;
-	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
+	s=k20201202; t=1746486874;
+	bh=ykJqWTmi2l+7UFccg3wX3A1rlSlzWOulEI6BSMi5yNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUrgY/at7dgk0SfpA+WFXOR8anyvfrpIPQrqniYEwHMlvUmm9QffwmPk1LqEr4NHJ
-	 VHI8dRY5SF0MWLxY8t646Zjt5v/Dq/BDNkVDCaspY7PIdNaW6JhzykC2RLK1B/JVsy
-	 rO/rEWx3Oe0FbAZu7Xa9tUf4Jsr7b36h089z2NrdAhnkZ1ZtnZnZnq/BxqCdAZOEfS
-	 NkoKalXOXK+41jt1AJL2tc/cfBMRtwhvYYSlv8gAYUndFJ0u4zuH6O+9TXmV47Uyk5
-	 /LbOeurpxPChb6WoKDINNPDS4e/elA++6dOjRnhAxiQD38IJL5MVtKddM15Yckci5z
-	 MIvlqRuKSs8Fw==
+	b=NYvUpXYuqMD95X9Ha6/K3il+BD+NIkJNWcti44VMFRkTTS5cOlrqsFpGjDtsvXeA6
+	 QnCN/NJmcXZoeOHHn08wAxXJegor5bUGYs7/+HSb20cstx12OJNn8W8i3VmwnRIpw3
+	 X+83DBRcJXLUl6PyZfY7yNKS80bSUZcnjdnSQn5CrStmU/UOP8KqN/i5VIpqJvabqG
+	 UVxpLKg7Nxv6UTnE9q4wQDU2VEweRqgKO7Nz8gKCcnphfZ5EPpiYdaJw2anU7khUB8
+	 HxSexJ/JBoiZlDKtJjGWfemMUelf8Si08ZgVdS0v5qOVDyzZLO8sFgDMCIQgqU6Xug
+	 yQ7lvn+MN4MDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Christie <michael.christie@oracle.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 160/294] vhost-scsi: Return queue full for page alloc failures during copy
-Date: Mon,  5 May 2025 18:54:20 -0400
-Message-Id: <20250505225634.2688578-160-sashal@kernel.org>
+	Yunxiang.Li@amd.com,
+	zhangdongdong@eswincomputing.com,
+	bhelgaas@google.com,
+	avihaih@nvidia.com,
+	jgg@ziepe.ca,
+	yi.l.liu@intel.com,
+	pstanner@redhat.com,
+	linux@treblig.org,
+	pabeni@redhat.com,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 036/153] vfio/pci: Handle INTx IRQ_NOTCONNECTED
+Date: Mon,  5 May 2025 19:11:23 -0400
+Message-Id: <20250505231320.2695319-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
-References: <20250505225634.2688578-1-sashal@kernel.org>
+In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
+References: <20250505231320.2695319-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,80 +56,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.89
+X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 891b99eab0f89dbe08d216f4ab71acbeaf7a3102 ]
+[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
 
-This has us return queue full if we can't allocate a page during the
-copy operation so the initiator can retry.
+Some systems report INTx as not routed by setting pdev->irq to
+IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
+setup eventfd signaling.  Include this in the set of conditions
+for which the PIN register is virtualized to zero.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20241203191705.19431-5-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Additionally consolidate vfio_pci_get_irq_count() to use this
+virtualized value in reporting INTx support via ioctl and sanity
+checking ioctl paths since pdev->irq is re-used when the device
+is in MSI mode.
+
+The combination of these results in both the config space of the
+device and the ioctl interface behaving as if the device does not
+support INTx.
+
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/vfio/pci/vfio_pci_config.c |  3 ++-
+ drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
+ drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 8d8a22504d71f..9a62372bdac32 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -746,7 +746,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	size_t len = iov_iter_count(iter);
- 	unsigned int nbytes = 0;
- 	struct page *page;
--	int i;
-+	int i, ret;
- 
- 	if (cmd->tvc_data_direction == DMA_FROM_DEVICE) {
- 		cmd->saved_iter_addr = dup_iter(&cmd->saved_iter, iter,
-@@ -759,6 +759,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		page = alloc_page(GFP_KERNEL);
- 		if (!page) {
- 			i--;
-+			ret = -ENOMEM;
- 			goto err;
- 		}
- 
-@@ -766,8 +767,10 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		sg_set_page(&sg[i], page, nbytes, 0);
- 
- 		if (cmd->tvc_data_direction == DMA_TO_DEVICE &&
--		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes)
-+		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes) {
-+			ret = -EFAULT;
- 			goto err;
-+		}
- 
- 		len -= nbytes;
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index 63f6308b0f8c9..fdff3359849c1 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1756,7 +1756,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
+ 					cpu_to_le16(PCI_COMMAND_MEMORY);
  	}
-@@ -782,7 +785,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	for (; i >= 0; i--)
- 		__free_page(sg_page(&sg[i]));
- 	kfree(cmd->saved_iter_addr);
--	return -ENOMEM;
-+	return ret;
- }
  
- static int
-@@ -1221,9 +1224,9 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 			 " %d\n", cmd, exp_data_len, prot_bytes, data_direction);
+-	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
++	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
++	    vdev->pdev->irq == IRQ_NOTCONNECTED)
+ 		vconfig[PCI_INTERRUPT_PIN] = 0;
  
- 		if (data_direction != DMA_NONE) {
--			if (unlikely(vhost_scsi_mapal(cmd, prot_bytes,
--						      &prot_iter, exp_data_len,
--						      &data_iter))) {
-+			ret = vhost_scsi_mapal(cmd, prot_bytes, &prot_iter,
-+					       exp_data_len, &data_iter);
-+			if (unlikely(ret)) {
- 				vq_err(vq, "Failed to map iov to sgl\n");
- 				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
- 				goto err;
+ 	ret = vfio_cap_init(vdev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index f3916e6b16b9d..ea4e75be1884f 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -481,15 +481,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
+ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
+ {
+ 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
+-		u8 pin;
+-
+-		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
+-		    vdev->nointx || vdev->pdev->is_virtfn)
+-			return 0;
+-
+-		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+-
+-		return pin ? 1 : 0;
++		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
+ 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+ 		u8 pos;
+ 		u16 flags;
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index f20512c413f76..5ade5b81a0ffb 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -173,7 +173,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	if (!pdev->irq)
++	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
+ 		return -ENODEV;
+ 
+ 	name = kasprintf(GFP_KERNEL, "vfio-intx(%s)", pci_name(pdev));
 -- 
 2.39.5
 
