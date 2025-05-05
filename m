@@ -1,208 +1,162 @@
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9152EEBC4
-	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49B32F47BA
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486603; cv=none; b=LMrmeU5oN0b8TGCrgN1N++H5qjIoybSud7HaukY9DqNIKgFuVV2AMcb8LtBVphjeKc1TMOEHgHUa2XFTCom1PcVrcpc3nA6jLnjj0GAwJ8uoUiR5/omJTj6ijm+leiDucNAvlYSXuOTAXOAbSadKgEmGa27s3+7fAbY9KuvWK0g=
+	t=1746486956; cv=none; b=vBQgw9vMbl/We9CWqVavSEuez+sIW0roeDQ/kwloRH4PtcYroZVt18yZk+sCIIQLtfBVIL83FVoz6sGL7ojj6LvUYcDpIMcjKZk7cWkszzKkmE6kOsmAUXT5Gx9WgKnSfYKQXJyGw2mPi0NLXFZe5xklJCzQSnSj7qxfcNK9AWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486603; c=relaxed/simple;
-	bh=RONzCBKEJXsibO821H3QXKTMTcGq3jA6Qh5Dz6t2q8I=;
+	s=arc-20240116; t=1746486956; c=relaxed/simple;
+	bh=FOf0phkAo0jTZUx4cTd2EAquLqa9kmlIuubRcG1DIvA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MvOp4OcBv9isDPbWwnQv0Ffa36bJ0FsGbmrKNzDCtNUunYF85vtm9Vr8p6ABG4i/jqNn9W/kVf0xfnfkKZEmcHre1mi2sUWqx6Cj6monYIYNuk7q6pKihtT+Kw5W4TBJq6k7iDbreTJK23p2jXzTC7tkhfq4avl8U6AbW56HH3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4HkJgdo6; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=EaTOYhu9Cmh09tOSQbwEXr5/oogcD/hVcWQZz7BFy4+MNzwgRWbxvsodDgtsrlLliohmAazZp61HrfeLTHXjs6KwPkAulekIi5mB2nmDLMsEqvvKraRvpRAmflZZQBmwm8ttKkUQNU5kJZp3SffZJbZSciPS1ANEnChKYVyT9FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BRYIDiiS; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4HkJgdo6"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736b5f9279cso4114802b3a.2
-        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:10:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BRYIDiiS"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736c0306242so6636240b3a.1
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:15:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746486600; x=1747091400; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKDIrUmShBenn7oyPXZBGKMvZgIcDdiYuAx6vvvr0uk=;
-        b=4HkJgdo6PWxRFgvN0l4WFIYrioMyTEmY1wu//CCKR89dF9kQy3PuV1F/2plvvBnsY8
-         4rccS2r0eV+Mz3B2G4FGmT470NUpUXrXE4Fj1iisnoTSieFibeH9e5MN+H8NhVxeVB6v
-         0qv2O2d0f3GBipYkwK8nyZB3C2EjugohWzB+wmma/ByDg6eYEJxisw7ebc1ZjNxMQ8yz
-         KbtvR+bha/yWUuue0UaGM6VlzgXsgWnyjHzoFNL/X0a3XnnzFh+ypvFRmD6/VQuWhC2e
-         51nFUIYCgpTkkj0CQ/FXSernmJn+MjPYt4QL9JJlJFojEqtNxdMc9USrrwsuO8MmRtcz
-         iw1g==
+        d=google.com; s=20230601; t=1746486953; x=1747091753; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rzmWvtp9U4UZ+ZB+aWa866i4TSOZqljMe82DBGfpzvc=;
+        b=BRYIDiiSMISLAFnT9Hqm3UjlZMNW89iG6gN2iTNoVNJ5azPXbx9+aOwJC/wvKKGzL2
+         GAlMja3u1UwRmTYwMGDYKJZREDXfpLxhg4OTktoVGsViHt37+Tn0LF3ElFM0/JXCh1UJ
+         DHvm6E8Fki039PPVGRysyCtv2+3PMb+LurHRWyN5S5lnLk12rZWfV4yrQYLCCqjQ+CJe
+         AgDpwJIqLLZlomCTbZrBuPaKH0BlFOkSX5coTOhf8T5ytgYtiWBcjCN2+WK/+paw7LjU
+         o9XD8P6kA4L1xUS9g0MfNbzV9lf9We8O2NX7x2aYUvdQE6Rjk4le7R9uF+UGgS5/VRV6
+         fIew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746486600; x=1747091400;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKDIrUmShBenn7oyPXZBGKMvZgIcDdiYuAx6vvvr0uk=;
-        b=gukrpEOSLwplkek51069YcCccyiNQh9Z5KKggVKQ8+BJ8Ce3Ni/5ElnPzeDTWA+ge7
-         6IG3nq03HdaRWnTjiAl5SO27p4Uy4m5UZOXqSoYoHnhmz+kQ104QwS5E3hFcsY/ZdtCp
-         1pAhavrf6bpVLq+zrj8FiCMHZLNcIT0oF/+uMt+7mgs4rpxDlzcGEF+bjIdvqOxV8X/S
-         sMIJW5QYwCtMLEtbTLQ/gD0jFZpM2l+dz646iLGoWBMqxZXuHmVuH4Ifc0zvwocPAkwz
-         O/MsNc/MnEGasEdmRe2dt15xAa8RXCMVNrAfvlV/fWRPABscySVxOTb+UeoprHojgMI2
-         k8LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/IzjBH6CQhxU+Ajk4Jb0Op9a2F+Z/oXLF6J+VqDRxZWFjB87h0LcewjZ1gRCHoyIIRFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5eEy5Mri39+nSG9ZbaOwQJU/hCf16Io2tGzQfIQg3IJTIxUt1
-	a2fQ/Ld23UoA+n/LPiaLA7YsLhiqwo9HERuS/IYXtgnl7wIwxHmv5fvVwiLBvsHVTpBTvKrZiMr
-	TqRFO3rVAcyhAlhg+s2+glQ==
-X-Google-Smtp-Source: AGHT+IH8nRtKZdcXRNW5pHePDqwjVYLFx8dauinck+p9OIy/5vnrG+4KpoUHfGGyuxJRstUfMIhSpCGvhSjtLgsvJw==
-X-Received: from pfst35.prod.google.com ([2002:aa7:8fa3:0:b0:736:86e0:8dee])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:aa8d:b0:73e:1e24:5a4e with SMTP id d2e1a72fcca58-74091a963c7mr1411673b3a.24.1746486600519;
- Mon, 05 May 2025 16:10:00 -0700 (PDT)
-Date: Mon, 05 May 2025 16:09:58 -0700
-In-Reply-To: <7e32aabe-c170-4cfc-99aa-f257d2a69364@redhat.com>
+        d=1e100.net; s=20230601; t=1746486953; x=1747091753;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rzmWvtp9U4UZ+ZB+aWa866i4TSOZqljMe82DBGfpzvc=;
+        b=sqCoWwFPHrioI/+rTiqND8QVx+O3pQtL+yVfNm9Ga5kgRZYZfv3mPqWJKQtrTubCL3
+         fH99uRZlyN0xr0N9Rq3wsf2EQrPiMHVYY6iAkOmxaFBplh/fHuCLY45aBuMRsr3cvIpT
+         9te20Ar2OANpOYPc2yXkO4Ietws9NvcrSwX9ymg3P2y/nhwAIkpeUlmj0GMvEgRC+0ov
+         HhX81fxhE9MyTWpyghL912/7YN3bdpP+RYwP+SQUOo4w2CDbTrLmYCUnRIFrhn5at9bF
+         QADr7L8kqK3MSvCggLrJLqwWNvL+oID9bI7DHD8TAa/fJGl2NAT7N6amBMu9tXxRyUSK
+         MxOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUqcxVzVObW5DXg5xV9jGB3M0lHe2AZ3c4UmB2TugKHLNLum7bZ3QFmcgypPoVJ+vmfvDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGvrOIY7bpL0zvhKUXuSFG1UUECcuWkosbyExrRoorDJqYJoJl
+	5H4y1YuFCJZMQ1fWq44vSO7aEyfArO+cRQgHuwvFG5hmFx6qgfECB+Oi6wb589YoyxI3PHyiov6
+	vdQ==
+X-Google-Smtp-Source: AGHT+IHeMOXp2eUqIo91Z2v4BMrNwcYqIw4g1PHvTLgYii5R2aPOJF8QNAZePSzs6Tddg5PSxQIyvzZa0UY=
+X-Received: from pfbde4.prod.google.com ([2002:a05:6a00:4684:b0:740:41eb:5856])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2793:b0:736:5c8e:baaa
+ with SMTP id d2e1a72fcca58-740919b43a1mr1231292b3a.2.1746486952976; Mon, 05
+ May 2025 16:15:52 -0700 (PDT)
+Date: Mon, 5 May 2025 16:15:51 -0700
+In-Reply-To: <b1cc7366-bd30-46ee-ac6e-35c2b08ffdb5@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <diqz7c31xyqs.fsf@ackerleytng-ctop.c.googlers.com>
- <386c1169-8292-43d1-846b-c50cbdc1bc65@redhat.com> <aBTxJvew1GvSczKY@google.com>
- <diqzjz6ypt9y.fsf@ackerleytng-ctop.c.googlers.com> <7e32aabe-c170-4cfc-99aa-f257d2a69364@redhat.com>
-Message-ID: <diqzfrhik62h.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH v8 06/13] KVM: x86: Generalize private fault lookups to
- guest_memfd fault lookups
-From: Ackerley Tng <ackerleytng@google.com>
-To: David Hildenbrand <david@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mm@kvack.org, pbonzini@redhat.com, chenhuacai@kernel.org, 
-	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, mail@maciej.szmigiero.name, michael.roth@amd.com, 
-	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com
-Content-Type: text/plain; charset="UTF-8"
+References: <20250305230000.231025-1-prsampat@amd.com> <174622216534.881262.8086472919667553138.b4-ty@google.com>
+ <b1cc7366-bd30-46ee-ac6e-35c2b08ffdb5@amd.com>
+Message-ID: <aBlGp8i_zzGgKeIl@google.com>
+Subject: Re: [PATCH v8 00/10] Basic SEV-SNP Selftests
+From: Sean Christopherson <seanjc@google.com>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, pbonzini@redhat.com, thomas.lendacky@amd.com, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, shuah@kernel.org, pgonda@google.com, 
+	ashish.kalra@amd.com, nikunj@amd.com, pankaj.gupta@amd.com, 
+	michael.roth@amd.com, sraithal@amd.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-David Hildenbrand <david@redhat.com> writes:
+On Mon, May 05, 2025, Pratik R. Sampat wrote:
+> Hi Sean,
+>=20
+> On 5/2/25 4:50 PM, Sean Christopherson wrote:
+> > On Wed, 05 Mar 2025 16:59:50 -0600, Pratik R. Sampat wrote:
+> >> This patch series extends the sev_init2 and the sev_smoke test to
+> >> exercise the SEV-SNP VM launch workflow.
+> >>
+> >> Primarily, it introduces the architectural defines, its support in the
+> >> SEV library and extends the tests to interact with the SEV-SNP ioctl()
+> >> wrappers.
+> >>
+> >> [...]
+> >=20
+> > Applied 2-9 to kvm-x86 selftests.  AIUI, the KVM side of things should =
+already
+> > be fixed.  If KVM isn't fixed, I want to take that discussion/patch to =
+a
+> > separate thread.
+> >=20
+>=20
+> Thanks for pulling these patches in.
+>=20
+> For 1 - Ashish's commit now returns failure for this case [1].
+> Although, it appears that the return code isn't checked within
+> sev_platform_init()[2], so it shouldn't change existing behavior. In the
+> kselftest case, if platform init fails, the selftest will also fail =E2=
+=80=94 just as
+> it does currently too.
 
-> On 03.05.25 00:00, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->>> On Fri, May 02, 2025, David Hildenbrand wrote:
->>>> On 30.04.25 20:58, Ackerley Tng wrote:
->>>>>> -	if (is_private)
->>>>>> +	if (is_gmem)
->>>>>>    		return max_level;
->>>>>
->>>>> I think this renaming isn't quite accurate.
->>>>
->>>> After our discussion yesterday, does that still hold true?
->>>
->>> No.
->>>
->>>>> IIUC in __kvm_mmu_max_mapping_level(), we skip considering
->>>>> host_pfn_mapping_level() if the gfn is private because private memory
->>>>> will not be mapped to userspace, so there's no need to query userspace
->>>>> page tables in host_pfn_mapping_level().
->>>>
->>>> I think the reason was that: for private we won't be walking the user space
->>>> pages tables.
->>>>
->>>> Once guest_memfd is also responsible for the shared part, why should this
->>>> here still be private-only, and why should we consider querying a user space
->>>> mapping that might not even exist?
->>>
->>> +1, one of the big selling points for guest_memfd beyond CoCo is that it provides
->>> guest-first memory.  It is very explicitly an intended feature that the guest
->>> mappings KVM creates can be a superset of the host userspace mappings.  E.g. the
->>> guest can use larger page sizes, have RW while the host has RO, etc.
->> 
->> Do you mean that __kvm_mmu_max_mapping_level() should, in addition to
->> the parameter renaming from is_private to is_gmem, do something like
->> 
->> if (is_gmem)
->> 	return kvm_gmem_get_max_mapping_level(slot, gfn);
->
-> I assume you mean, not looking at lpage_info at all?
->
+Argh, now I remember the issue.  But _sev_platform_init_locked() returns '0=
+' if
+psp_init_on_probe is true, and I don't see how deferring __sev_snp_init_loc=
+ked()
+will magically make it succeed the second time around.
 
-My bad. I actually meant just to take input from guest_memfd and stop
-there without checking with host page tables, perhaps something like
-min(kvm_gmem_get_max_mapping_level(slot, gfn), max_level);
+So shouldn't the KVM code be this?
 
-> I have limited understanding what lpage_info is or what it does. I 
-> believe all it adds is a mechanism to *disable* large page mappings.
->
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index e0f446922a6e..dd04f979357d 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3038,6 +3038,14 @@ void __init sev_hardware_setup(void)
+        sev_snp_supported =3D sev_snp_enabled && cc_platform_has(CC_ATTR_HO=
+ST_SEV_SNP);
+=20
+ out:
++       if (sev_enabled) {
++               init_args.probe =3D true;
++               if (sev_platform_init(&init_args))
++                       sev_supported =3D sev_es_supported =3D sev_snp_supp=
+orted =3D false;
++               else
++                       sev_snp_supported &=3D sev_is_snp_initialized();
++       }
++
+        if (boot_cpu_has(X86_FEATURE_SEV))
+                pr_info("SEV %s (ASIDs %u - %u)\n",
+                        sev_supported ? min_sev_asid <=3D max_sev_asid ? "e=
+nabled" :
+@@ -3067,12 +3075,6 @@ void __init sev_hardware_setup(void)
+=20
+        if (!sev_enabled)
+                return;
+-
+-       /*
+-        * Do both SNP and SEV initialization at KVM module load.
+-        */
+-       init_args.probe =3D true;
+-       sev_platform_init(&init_args);
+ }
+=20
+ void sev_hardware_unsetup(void)
+--
 
-This is my understanding too.
+Ashish, what am I missing?
 
-> We want to disable large pages if (using 2M region as example)
->
-> (a) Mixed memory attributes. If a PFN falls into a 2M region, and parts
->      of that region are shared vs. private (mixed memory attributes ->
->      KVM_LPAGE_MIXED_FLAG)
->
->   -> With gmem-shared we could have mixed memory attributes, not a PFN
->      fracturing. (PFNs don't depend on memory attributes)
->
-> (b) page track: intercepting (mostly write) access to GFNs
->
+> Regardless of what we decide on what the right behavior is, fail vs skip =
+(I
+> don't mind the former) we can certainly do that over new patches rebased =
+over
+> the new series.
 
-Could you explain more about page track case? 
-
->
-> So, I wonder if we still have to take care of lpage_info, at least for
-> handling (b) correctly [I assume so]. Regarding (a) I am not sure: once 
-> memory attributes are handled by gmem in the gmem-shared case. IIRC, 
-> with AMD SEV we might still have to honor it? But gmem itself could 
-> handle that.
->
-
-For AMD SEV, I believe kvm_max_private_mapping_level() already takes
-care of that, at least for the MMU faulting path [1], where guest_memfd
-gives input using max_order, then arch-specific callback contributes input.
-
->
-> What we could definitely do here for now is:
->
-> if (is_gmem)
-> 	/* gmem only supports 4k pages for now. */
-> 	return PG_LEVEL_4K;
->
-> And not worry about lpage_infor for the time being, until we actually do 
-> support larger pages.
->
->
-
-Perhaps this is better explained as an RFC in code. I'll put in a patch
-as part of Fuad's series if Fuad doesn't mind.
-
->> 
->> and basically defer to gmem as long as gmem should be used for this gfn?
->> 
->> There is another call to __kvm_mmu_max_mapping_level() via
->> kvm_mmu_max_mapping_level() beginning from recover_huge_pages_range(),
->> and IIUC that doesn't go through guest_memfd.
->> 
->> Hence, unlike the call to __kvm_mmu_max_mapping_level() from the KVM x86
->> MMU fault path, guest_memfd didn't get a chance to provide its input in
->> the form of returning max_order from kvm_gmem_get_pfn().
->
-> Right, we essentially say that "this is a private fault", likely 
-> assuming that we already verified earlier that the memory is also private.
->
-> [I can see that happening when the function is called through 
-> direct_page_fault()]
->
-> We could simply call kvm_mmu_max_mapping_level() from 
-> kvm_mmu_hugepage_adjust() I guess. (could possibly be optimized later)
->
-> -- 
-> Cheers,
->
-> David / dhildenb
-
-[1] https://github.com/torvalds/linux/blob/01f95500a162fca88cefab9ed64ceded5afabc12/arch/x86/kvm/mmu/mmu.c#L4480
+FAIL, for sure.  Unless someone else pipes up with a good reason why they n=
+eed
+to defer INIT_EX, that's Google's problem to solve.
