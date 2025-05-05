@@ -1,62 +1,62 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEA7397A64
-	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1AA3B0A14
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487239; cv=none; b=cNtsn4ag++q3OVShfY//kzG6PjIyHKsWP7ZFVJd3HSGAtM0E0REeRG9CqtXoZBqSbYCYyl+i401ym5bL87cs/og8Vx36Xi0qvTK5NS0Efzd1hEAfeU6BBrYEFkbmH41Qb4hB/ucWgIRybyzyxFpjH6DWL9d3D5iUfjNvYx5I8dY=
+	t=1746487227; cv=none; b=T5RFOfOziU62NRtWXLow5CvcdvqJKIAzHoQboWIti1KAwctmvwUOIALF+bFDm3OgNGO3Shw4EO43SZ9haSK/SvzsKmSFcVywKLTdETqE8HH3f2EpIjNTHXoTNI+Tcg6Zgml4XU8QnBbEnU7nMof01KvumVbwltKnY//HcXXRFQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487239; c=relaxed/simple;
-	bh=ml2TA0vrP9neaHTahuIEL5NgcIVEpZ1CGdXaGOWH+oU=;
+	s=arc-20240116; t=1746487227; c=relaxed/simple;
+	bh=znCq36hlXSwrJ49LjZDZum6F/G7FLis5lycOLVMlAUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UiaFmNnEMjvHfpCpYPOl26aRgnH3fqZenFj+sHbyAU8K2Wum3CAUGGuQEX+ktwBr/Horok9+86ZQ+x6rdPUxwX56dAI3+jqF3pLoiY+QXIB3X5BAGifcebEWOa6sNY6rH2o01TdwjXHNjcELCxcSQzvqjrCyChc0U0yEt4u+BPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P5rQyBxa; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=VcsQ6TkHGi26G2Kvf6SSPbatx4OWiJ8QLAhbMFH9EsGzFpBJesmtrbPk2wejnpdqT1E3VYqFDXXtIbvX1UsCUvQbhlmXRHCkj9zwh2iGIRZ/vw7LTLZWdW+wVf1i+FlpikIOxH9slKbJq9m3E8O1NYL6cbn+++MLJVquQdU0MnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vVA+4uFB; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P5rQyBxa"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22e15aea506so42635705ad.1
-        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vVA+4uFB"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b1f7f239b31so5126579a12.0
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746487237; x=1747092037; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1746487224; x=1747092024; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=92Ra51BscJ7plqFLljDp4Imt4ck5QTPqHgH4Y/GteZ4=;
-        b=P5rQyBxaHNchdPpLqUuXEcHaBJeKrjypAvXoYJETVElqFVkRniI+kESCeCmGRhnrBP
-         Aj5nTPTkumMZ9bQUNkOBFd+XIyRB33Jw+suooj3SCuOj/FaRLTdxIeY7uyYNxzBQu+ma
-         QD5/ygDllTJf7+D+ooQDI/LEIGcyDAbLvP6svO23lpU7sHeVC/y7bojBdfIFNg8CQMzr
-         E3Wiwj5yQGNMFC9z6WR8eDuMRZexBoXmWth0mjviZhZjlFUY3+IWFuDXBAD9UPmdOHhS
-         DBu3GP3SgsOD/+A+Sdrk4X6nHGJ0aVESzmEOKT/TCiyVy2096fBgkfdI36NgtSUqUGHa
-         ZjlQ==
+        bh=oMNeg3Y4FuUndpYOZQCJwSPCGo/Nsl7SC/sGcqIL57A=;
+        b=vVA+4uFBMaSoSx5g8csXJGvLNwDb7eb6IZV0/CZQpNHP1CcQ/+Dgj2m7yQPkatZKzk
+         BvI3e0HFcW4lv5R4VjQMD9K+8V/qNbhValArxu4cuqoZrSqhdWe3FMPEOkUpNY5mEN7f
+         19xh3Bnv8658Jgn/6qw3uyhEDn/OUiBrrBWowxDYyHf/rsbk+6J2fq2hp1FBmpksC+M6
+         vvxIhsgdFoVxt0mgdZW6zRzPjT+3JjR1FHHSr3vj9VPMqyve4ZfIWMj9UmU3n7+T+Y7G
+         cVtUl12v4zwqn6HK0j6g+k14d5I58z6MK6IJIfLpsLzKFtdmnT04Xd6a2bYWOWJHxc9J
+         SsHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746487237; x=1747092037;
+        d=1e100.net; s=20230601; t=1746487224; x=1747092024;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=92Ra51BscJ7plqFLljDp4Imt4ck5QTPqHgH4Y/GteZ4=;
-        b=RoTfKZ9rPcJGu9vhXmiZm88HeOknd4Zc4VMTkjzcQmmznAgQ05RrvRPww9GRNT7VSW
-         31FswSsMTAru6SOLpkxhDM9l5SKqp9UB9VlNFmeKyQSNXX4yPXoaec2HHbCPJBvkrYXI
-         NNP/p+OOWdLQ/jQeVCUKHtKvltTha+sSbg1NqGHExlMpuCwoyeT2pq0Ey+WmIvAPr3X0
-         bTCJ9krjDdeXhWUAzIlZj8YqohJjciO7yEpWnuBuPWjW4lcfbXDYRpOhAgEm0NFvXE2u
-         Io5+UEBFBjAGbuHwQDqLmbdAtGriePQ5+MBaGYriZ2MujTRzLBcwyLiK4zWco55GP97w
-         09zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbkI4wq019iXDoOVAuuA+AYSeJCnYKL02uqkxGhf7DpaNtOhNt6XxuJskwsWPxwHXGSVo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsCttMtxjjat3N1EH+fyMOW6JWD2tt1C+jAs045ifSYq8v+orU
-	ysshqTTnZjJpBLq7T1QNX6C4e/+yf1Qzw4ySTKMD6Hgm5eV01+D4PKj8rXNPPJE=
-X-Gm-Gg: ASbGncvVd/Rz8VHhuM1dHuYkxCtwS76ygPvpbI6YS5rxZLBBnPWnufMZoE3SRBZRkFT
-	sxXhLdJTtvoSRtZJLIgRIoXla6K1RJTDVeUZRft3gWoqlH6jey41cyvCo/QsXiO8KoG+5O7e+EI
-	AibnY7fbFf5TuNo9hIb3BQuzR/b4SqfsjuF08hEU+ijhGbXdKHAzsYBY9ILgNTd/d/ij0EbLxo1
-	k/ta31QMZKBs5XrplCgmmkOJWwdzYVy7KZBRLGHkBONVKlBirYmlqQrnS8YnfWsDQvb0O0qohZi
-	Oyo1RtWNhCb12Udn3a0hsTOTsascFK4wQnDKcXJs
-X-Google-Smtp-Source: AGHT+IFM1gtQ3Hr3DrzoVupUyM2ejLDN/ZtwY19Upapy3xbv6kMXCNmsmDwbwB0aXMOyoEqCYaGquQ==
-X-Received: by 2002:a17:902:d2c1:b0:224:179a:3b8f with SMTP id d9443c01a7336-22e1ea583d3mr125469395ad.23.1746487236721;
-        Mon, 05 May 2025 16:20:36 -0700 (PDT)
+        bh=oMNeg3Y4FuUndpYOZQCJwSPCGo/Nsl7SC/sGcqIL57A=;
+        b=tltkDs0smhY6bXFa0DiXW2B13b82nLH/7PwZFAGhz2jlXgjJJhssBzGUrw4ghpaqK5
+         kbzppIv5SfS5kCMlziMz3MAGN1so2CW25c3zr5TAIbtKAPDBnB16u0oNnXrFp3jm95De
+         u8P0p2RqrZUB+QpabTox2JzfFdMpFUaQwfLCJ2KxA8c6H6HYGe9JIFz50QSjiJfxIRFp
+         ADLUTbky06xAJyBrlw8CSoL7v5S1TT2J82vRJWkT8LlvpOTFg8Gh2/sQrCpZTlrjXHpS
+         lk814Csf2uW/aols4QZSlqcJJQJK2iamUpXFo/acKO7qMCnaAbsnBjqtAyYi+3Qr/Ksa
+         0EeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHsh9CYEOZ3o0sI6Ew4u8ctC/7t/z6BU89ygG1tvyWG3cO6WB3Hj/z5186Vl/50XE2FII=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt4uGIe7nbajbqZA35Q95iQ9XSwyqQycir0d8lifIi/tGT7V5C
+	LNcQjaa63UETAV2s8pYtfYqzTRjmirPuI6Pk4v0iSXdflA9cuhzTwx/gGLmnW8Y=
+X-Gm-Gg: ASbGncvO9QlJjF6PqT0f+p314OY0wB/gDSs1WMq9ZLvIfQm1CrdWC/8RflITwGhcH7c
+	4DWmd+nx7qWFDp1Vvy+27mPuZUPmnLsxWmm86E6DPjbjLDW94eVlqacakDaS3lj+DZEkK+otpZX
+	Orm4gp73S2/eWB0KQ6bMA8m6IXXba96XKDeK0ur9gxG2EY3e5/vWLcSSf6mHvI0+7HL1NZE2YRv
+	LmP80ieYMVfEPopfQFjZHOQyAtdDLnk/0v5oS/PfdK8PoLCQ+o/iQeDEIloQClh2BWN0MzKf85W
+	scQ4MByA80GR9Fl8myzIQLvSCc8VPkxqFv8OrNbV
+X-Google-Smtp-Source: AGHT+IHoFN+rr8Lwq19Sx2mB1Yb2Gf6GH5Yb4OTaXFvREpHxBgl5rUjVxpoL1Lsyqn6N2c59nXy8cg==
+X-Received: by 2002:a17:902:daca:b0:224:3d:2ffd with SMTP id d9443c01a7336-22e3285f134mr16144225ad.17.1746487224186;
+        Mon, 05 May 2025 16:20:24 -0700 (PDT)
 Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 16:20:36 -0700 (PDT)
+        Mon, 05 May 2025 16:20:23 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
@@ -68,9 +68,9 @@ Cc: richard.henderson@linaro.org,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 18/50] target/arm/debug_helper: only include common helpers
-Date: Mon,  5 May 2025 16:19:43 -0700
-Message-ID: <20250505232015.130990-19-pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 04/50] meson: apply target config for picking files from libsystem and libuser
+Date: Mon,  5 May 2025 16:19:29 -0700
+Message-ID: <20250505232015.130990-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
@@ -82,32 +82,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Avoid pulling helper.h which contains TARGET_AARCH64.
+semihosting code needs to be included only if CONFIG_SEMIHOSTING is set.
+However, this is a target configuration, so we need to apply it to the
+libsystem libuser source sets.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/debug_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ meson.build | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index 473ee2af38e..357bc2141ae 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -12,10 +12,12 @@
- #include "cpu-features.h"
- #include "cpregs.h"
- #include "exec/exec-all.h"
--#include "exec/helper-proto.h"
- #include "exec/watchpoint.h"
- #include "system/tcg.h"
+diff --git a/meson.build b/meson.build
+index b2c79a7a928..1b365dcae17 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4049,27 +4049,19 @@ common_ss.add(qom, qemuutil)
+ common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
+ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
  
-+#define HELPER_H "tcg/helper.h"
-+#include "exec/helper-proto.h.inc"
-+
- #ifdef CONFIG_TCG
- /* Return the Exception Level targeted by debug exceptions. */
- static int arm_debug_target_el(CPUARMState *env)
+-libuser_ss = libuser_ss.apply({})
+ libuser = static_library('user',
+-                         libuser_ss.sources() + genh,
++                         libuser_ss.all_sources() + genh,
+                          c_args: ['-DCONFIG_USER_ONLY',
+                                   '-DCOMPILING_SYSTEM_VS_USER'],
+-                         dependencies: libuser_ss.dependencies(),
++                         dependencies: libuser_ss.all_dependencies(),
+                          build_by_default: false)
+-libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
+-                             dependencies: libuser_ss.dependencies())
+-common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
+ 
+-libsystem_ss = libsystem_ss.apply({})
+ libsystem = static_library('system',
+-                           libsystem_ss.sources() + genh,
++                           libsystem_ss.all_sources() + genh,
+                            c_args: ['-DCONFIG_SOFTMMU',
+                                     '-DCOMPILING_SYSTEM_VS_USER'],
+-                           dependencies: libsystem_ss.dependencies(),
++                           dependencies: libsystem_ss.all_dependencies(),
+                            build_by_default: false)
+-libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
+-                               dependencies: libsystem_ss.dependencies())
+-common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
+ 
+ # Note that this library is never used directly (only through extract_objects)
+ # and is not built by default; therefore, source files not used by the build
+@@ -4308,6 +4300,16 @@ foreach target : target_dirs
+   target_common = common_ss.apply(config_target, strict: false)
+   objects = [common_all.extract_objects(target_common.sources())]
+   arch_deps += target_common.dependencies()
++  if target_type == 'system'
++    src = libsystem_ss.apply(config_target, strict: false)
++    objects += libsystem.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
++  if target_type == 'user'
++    src = libuser_ss.apply(config_target, strict: false)
++    objects += libuser.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
+   if target_base_arch in target_common_arch_libs
+     src = target_common_arch[target_base_arch].apply(config_target, strict: false)
+     lib = target_common_arch_libs[target_base_arch]
 -- 
 2.47.2
 
