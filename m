@@ -1,162 +1,215 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49B32F47BA
-	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA633B0A06
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486956; cv=none; b=vBQgw9vMbl/We9CWqVavSEuez+sIW0roeDQ/kwloRH4PtcYroZVt18yZk+sCIIQLtfBVIL83FVoz6sGL7ojj6LvUYcDpIMcjKZk7cWkszzKkmE6kOsmAUXT5Gx9WgKnSfYKQXJyGw2mPi0NLXFZe5xklJCzQSnSj7qxfcNK9AWs=
+	t=1746487227; cv=none; b=QKln+AKFTI1lRlClqmgbtIfwCp5HviTxIgKViLc4rofbzMKF4Sp2J0iGcTS0VqDZbpYSSR1MXBEyeG11uDE/GgSFoczOqCCUKTxGlRGHU4KJM4IZhU1oxGj6q+pvG+QAlSjoBNKHr/moMBgiOxntQz4ZjQ+Xt14JKvFpu1rhxjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486956; c=relaxed/simple;
-	bh=FOf0phkAo0jTZUx4cTd2EAquLqa9kmlIuubRcG1DIvA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EaTOYhu9Cmh09tOSQbwEXr5/oogcD/hVcWQZz7BFy4+MNzwgRWbxvsodDgtsrlLliohmAazZp61HrfeLTHXjs6KwPkAulekIi5mB2nmDLMsEqvvKraRvpRAmflZZQBmwm8ttKkUQNU5kJZp3SffZJbZSciPS1ANEnChKYVyT9FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BRYIDiiS; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1746487227; c=relaxed/simple;
+	bh=P7cs44e7lLPix//xHmErLxf48gRN9ICukIqVyQB2TCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SC0AojWaX0qTGvbZtSyEUAsgaVgraHYBOURwRyx67SMH3Oog/KBgGIyazjNZe+2Sn2GgPLmxY5+D0shdWg7DNTXi1pfbYBaahhMvVSKU8uIsGeg0NY34iym0vtTnQm58rfR3pLEMZj2lJ4QDezSYicGcVGOOmof/32ZPU8OFWnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GUZxx6mI; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BRYIDiiS"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736c0306242so6636240b3a.1
-        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:15:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GUZxx6mI"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-309d2e8c20cso6538669a91.0
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746486953; x=1747091753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rzmWvtp9U4UZ+ZB+aWa866i4TSOZqljMe82DBGfpzvc=;
-        b=BRYIDiiSMISLAFnT9Hqm3UjlZMNW89iG6gN2iTNoVNJ5azPXbx9+aOwJC/wvKKGzL2
-         GAlMja3u1UwRmTYwMGDYKJZREDXfpLxhg4OTktoVGsViHt37+Tn0LF3ElFM0/JXCh1UJ
-         DHvm6E8Fki039PPVGRysyCtv2+3PMb+LurHRWyN5S5lnLk12rZWfV4yrQYLCCqjQ+CJe
-         AgDpwJIqLLZlomCTbZrBuPaKH0BlFOkSX5coTOhf8T5ytgYtiWBcjCN2+WK/+paw7LjU
-         o9XD8P6kA4L1xUS9g0MfNbzV9lf9We8O2NX7x2aYUvdQE6Rjk4le7R9uF+UGgS5/VRV6
-         fIew==
+        d=linaro.org; s=google; t=1746487223; x=1747092023; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1mHjwLOmCSZb7+SiNUT87VRUe5PiKHdCHDdwE+42+GQ=;
+        b=GUZxx6mIsJQnwOlUR9UvCVZ3BcMMCoXt87Pf4pI2KtsTfto/56Q4x+acPqIUv7YI8Z
+         K/C19ylhs29o/4PIrrjJncDLoqnRutIjWMeK6eNivfBG75R0ydKsdtnDQx2CUA7nYykU
+         qEadTZadDVRbF4y1t5MzWgvoCnPpi++Ts5HBe5IJEH7BWa0l0ADrt0RQX71FGWDQo5Um
+         V9H0vxAuJ8hYdYz4kyjwqdowxv+I1jwg5ltlJNjsss6X9QY3NSadoH6KCYlrwG5eJ1pj
+         tZFqkoQ5RmMzC/FTnX5KIo14NCt8CCbN9nfvEm78Op+ctW6CbEGHSG18Le8Y4114/HEi
+         waZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746486953; x=1747091753;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rzmWvtp9U4UZ+ZB+aWa866i4TSOZqljMe82DBGfpzvc=;
-        b=sqCoWwFPHrioI/+rTiqND8QVx+O3pQtL+yVfNm9Ga5kgRZYZfv3mPqWJKQtrTubCL3
-         fH99uRZlyN0xr0N9Rq3wsf2EQrPiMHVYY6iAkOmxaFBplh/fHuCLY45aBuMRsr3cvIpT
-         9te20Ar2OANpOYPc2yXkO4Ietws9NvcrSwX9ymg3P2y/nhwAIkpeUlmj0GMvEgRC+0ov
-         HhX81fxhE9MyTWpyghL912/7YN3bdpP+RYwP+SQUOo4w2CDbTrLmYCUnRIFrhn5at9bF
-         QADr7L8kqK3MSvCggLrJLqwWNvL+oID9bI7DHD8TAa/fJGl2NAT7N6amBMu9tXxRyUSK
-         MxOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqcxVzVObW5DXg5xV9jGB3M0lHe2AZ3c4UmB2TugKHLNLum7bZ3QFmcgypPoVJ+vmfvDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGvrOIY7bpL0zvhKUXuSFG1UUECcuWkosbyExrRoorDJqYJoJl
-	5H4y1YuFCJZMQ1fWq44vSO7aEyfArO+cRQgHuwvFG5hmFx6qgfECB+Oi6wb589YoyxI3PHyiov6
-	vdQ==
-X-Google-Smtp-Source: AGHT+IHeMOXp2eUqIo91Z2v4BMrNwcYqIw4g1PHvTLgYii5R2aPOJF8QNAZePSzs6Tddg5PSxQIyvzZa0UY=
-X-Received: from pfbde4.prod.google.com ([2002:a05:6a00:4684:b0:740:41eb:5856])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2793:b0:736:5c8e:baaa
- with SMTP id d2e1a72fcca58-740919b43a1mr1231292b3a.2.1746486952976; Mon, 05
- May 2025 16:15:52 -0700 (PDT)
-Date: Mon, 5 May 2025 16:15:51 -0700
-In-Reply-To: <b1cc7366-bd30-46ee-ac6e-35c2b08ffdb5@amd.com>
+        d=1e100.net; s=20230601; t=1746487223; x=1747092023;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1mHjwLOmCSZb7+SiNUT87VRUe5PiKHdCHDdwE+42+GQ=;
+        b=B/4bV9Ab4nGvtdRqT4e9ImH2TvLNN+/4F+73+LGbV5WJjFOtGztGKl0u2hfldXHMW8
+         HVYlDnsxpacrLTUQVmAwaBPeAnme7UECM1b0WhspdO7M7A0FIR6Q01UnX7DjQ+Ft67Ap
+         lJ/canpNYLGBcmRuutVU1Hk1fXawhSORh7ZGVkIojU/WrADAA0iGjuD+aTzNhMFOyf75
+         w6OpANzsX0WHx7Yw8q3Am3SB7INXITsmIxNKkW7lLVZ1Cg+ISA7JxuUTv8KN6w9K+V6A
+         anifsRmVTm5iY70Knd/DeZOP/iSkEFQC7BqteSlIjx3/oQ6uOskcrAgs6pBvCYohS64e
+         NYpA==
+X-Forwarded-Encrypted: i=1; AJvYcCUO/zhnrLnWJcygQPs2Nl+EK0L2sr1qESoysPM5b3Qbx/EIeUWcFfJbj0LubneWR3bXr74=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+2ebg+48Ihbex9d2Jt6b7LNqNnmgu430ooyfVz1b+LPBCprMf
+	BpRv5BfwLcE643UTqU9kMtspsp1hhHs1vDzngR6e2YSa4azj4yt1j9gS/K95k4o=
+X-Gm-Gg: ASbGncsc+s1jmDSXAGHySUDnMauYN7HzBXaTXQ6JtnFCFXNCVpySvUowWOFw/plnRB7
+	lKP9EhRM0nrGO0WHQfFlrbnYX8K5OehNjTyEa8bI9zEYyQP8GhWx9ECvv5IW9qz/LhU0C4xba72
+	n7EKaa6fMuZI13tK7WU0Nz1bUrnQHcnPXwGVPtatZ75o+lMD/W8dOcRU31N/k4jQyQ+ACP0uHCM
+	2rsQ/g4oGYHmzrPWHeFDm3VZL6WOSGlwg19e4htu6McZ6Rh7eFWEHKkXU7Gh92v8KLt7B+IXznS
+	ywISeBG1nfe4P90oOem1aZ+aS9fFuAddEkevW1bJ
+X-Google-Smtp-Source: AGHT+IEtE934oujmV2pKBRwhDluY2PMtTrYzh17Tl99vZJ7tWXNrTSDKs/LD7LR96GjhlWfhH+B8Zg==
+X-Received: by 2002:a17:90b:3e45:b0:301:98fc:9b5a with SMTP id 98e67ed59e1d1-30a7dac8b0dmr876783a91.6.1746487223333;
+        Mon, 05 May 2025 16:20:23 -0700 (PDT)
+Received: from pc.. ([38.41.223.211])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 16:20:22 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	anjo@rev.ng,
+	Peter Maydell <peter.maydell@linaro.org>,
+	alex.bennee@linaro.org,
+	kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	qemu-arm@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 03/50] meson: add common libs for target and target_system
+Date: Mon,  5 May 2025 16:19:28 -0700
+Message-ID: <20250505232015.130990-4-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
+References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250305230000.231025-1-prsampat@amd.com> <174622216534.881262.8086472919667553138.b4-ty@google.com>
- <b1cc7366-bd30-46ee-ac6e-35c2b08ffdb5@amd.com>
-Message-ID: <aBlGp8i_zzGgKeIl@google.com>
-Subject: Re: [PATCH v8 00/10] Basic SEV-SNP Selftests
-From: Sean Christopherson <seanjc@google.com>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, pbonzini@redhat.com, thomas.lendacky@amd.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, shuah@kernel.org, pgonda@google.com, 
-	ashish.kalra@amd.com, nikunj@amd.com, pankaj.gupta@amd.com, 
-	michael.roth@amd.com, sraithal@amd.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 05, 2025, Pratik R. Sampat wrote:
-> Hi Sean,
->=20
-> On 5/2/25 4:50 PM, Sean Christopherson wrote:
-> > On Wed, 05 Mar 2025 16:59:50 -0600, Pratik R. Sampat wrote:
-> >> This patch series extends the sev_init2 and the sev_smoke test to
-> >> exercise the SEV-SNP VM launch workflow.
-> >>
-> >> Primarily, it introduces the architectural defines, its support in the
-> >> SEV library and extends the tests to interact with the SEV-SNP ioctl()
-> >> wrappers.
-> >>
-> >> [...]
-> >=20
-> > Applied 2-9 to kvm-x86 selftests.  AIUI, the KVM side of things should =
-already
-> > be fixed.  If KVM isn't fixed, I want to take that discussion/patch to =
-a
-> > separate thread.
-> >=20
->=20
-> Thanks for pulling these patches in.
->=20
-> For 1 - Ashish's commit now returns failure for this case [1].
-> Although, it appears that the return code isn't checked within
-> sev_platform_init()[2], so it shouldn't change existing behavior. In the
-> kselftest case, if platform init fails, the selftest will also fail =E2=
-=80=94 just as
-> it does currently too.
+Following what we did for hw/, we need target specific common libraries
+for target. We need 2 different libraries:
+- code common to a base architecture
+- system code common to a base architecture
 
-Argh, now I remember the issue.  But _sev_platform_init_locked() returns '0=
-' if
-psp_init_on_probe is true, and I don't see how deferring __sev_snp_init_loc=
-ked()
-will magically make it succeed the second time around.
+For user code, it can stay compiled per target for now.
 
-So shouldn't the KVM code be this?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ meson.build | 78 +++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 61 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index e0f446922a6e..dd04f979357d 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3038,6 +3038,14 @@ void __init sev_hardware_setup(void)
-        sev_snp_supported =3D sev_snp_enabled && cc_platform_has(CC_ATTR_HO=
-ST_SEV_SNP);
-=20
- out:
-+       if (sev_enabled) {
-+               init_args.probe =3D true;
-+               if (sev_platform_init(&init_args))
-+                       sev_supported =3D sev_es_supported =3D sev_snp_supp=
-orted =3D false;
-+               else
-+                       sev_snp_supported &=3D sev_is_snp_initialized();
-+       }
+diff --git a/meson.build b/meson.build
+index abdb2cc33ea..b2c79a7a928 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3678,6 +3678,8 @@ target_arch = {}
+ target_system_arch = {}
+ target_user_arch = {}
+ hw_common_arch = {}
++target_common_arch = {}
++target_common_system_arch = {}
+ 
+ # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
+ # that is filled in by qapi/.
+@@ -4081,29 +4083,59 @@ common_all = static_library('common',
+ 
+ # construct common libraries per base architecture
+ hw_common_arch_libs = {}
++target_common_arch_libs = {}
++target_common_system_arch_libs = {}
+ foreach target : target_dirs
+   config_target = config_target_mak[target]
+   target_base_arch = config_target['TARGET_BASE_ARCH']
++  target_inc = [include_directories('target' / target_base_arch)]
++  inc = [common_user_inc + target_inc]
+ 
+-  # check if already generated
+-  if target_base_arch in hw_common_arch_libs
+-    continue
+-  endif
++  # prevent common code to access cpu compile time definition,
++  # but still allow access to cpu.h
++  target_c_args = ['-DCPU_DEFS_H']
++  target_system_c_args = target_c_args + ['-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU']
+ 
+   if target_base_arch in hw_common_arch
+-    target_inc = [include_directories('target' / target_base_arch)]
+-    src = hw_common_arch[target_base_arch]
+-    lib = static_library(
+-      'hw_' + target_base_arch,
+-      build_by_default: false,
+-      sources: src.all_sources() + genh,
+-      include_directories: common_user_inc + target_inc,
+-      implicit_include_directories: false,
+-      # prevent common code to access cpu compile time
+-      # definition, but still allow access to cpu.h
+-      c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
+-      dependencies: src.all_dependencies())
+-    hw_common_arch_libs += {target_base_arch: lib}
++    if target_base_arch not in hw_common_arch_libs
++      src = hw_common_arch[target_base_arch]
++      lib = static_library(
++        'hw_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_system_c_args,
++        dependencies: src.all_dependencies())
++      hw_common_arch_libs += {target_base_arch: lib}
++    endif
++  endif
 +
-        if (boot_cpu_has(X86_FEATURE_SEV))
-                pr_info("SEV %s (ASIDs %u - %u)\n",
-                        sev_supported ? min_sev_asid <=3D max_sev_asid ? "e=
-nabled" :
-@@ -3067,12 +3075,6 @@ void __init sev_hardware_setup(void)
-=20
-        if (!sev_enabled)
-                return;
--
--       /*
--        * Do both SNP and SEV initialization at KVM module load.
--        */
--       init_args.probe =3D true;
--       sev_platform_init(&init_args);
- }
-=20
- void sev_hardware_unsetup(void)
---
++  if target_base_arch in target_common_arch
++    if target_base_arch not in target_common_arch_libs
++      src = target_common_arch[target_base_arch]
++      lib = static_library(
++        'target_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_c_args,
++        dependencies: src.all_dependencies())
++      target_common_arch_libs += {target_base_arch: lib}
++    endif
++  endif
++
++  if target_base_arch in target_common_system_arch
++    if target_base_arch not in target_common_system_arch_libs
++      src = target_common_system_arch[target_base_arch]
++      lib = static_library(
++        'target_system_' + target_base_arch,
++        build_by_default: false,
++        sources: src.all_sources() + genh,
++        include_directories: inc,
++        c_args: target_system_c_args,
++        dependencies: src.all_dependencies())
++      target_common_system_arch_libs += {target_base_arch: lib}
++    endif
+   endif
+ endforeach
+ 
+@@ -4276,12 +4308,24 @@ foreach target : target_dirs
+   target_common = common_ss.apply(config_target, strict: false)
+   objects = [common_all.extract_objects(target_common.sources())]
+   arch_deps += target_common.dependencies()
++  if target_base_arch in target_common_arch_libs
++    src = target_common_arch[target_base_arch].apply(config_target, strict: false)
++    lib = target_common_arch_libs[target_base_arch]
++    objects += lib.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
+   if target_type == 'system' and target_base_arch in hw_common_arch_libs
+     src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
+     lib = hw_common_arch_libs[target_base_arch]
+     objects += lib.extract_objects(src.sources())
+     arch_deps += src.dependencies()
+   endif
++  if target_type == 'system' and target_base_arch in target_common_system_arch_libs
++    src = target_common_system_arch[target_base_arch].apply(config_target, strict: false)
++    lib = target_common_system_arch_libs[target_base_arch]
++    objects += lib.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
+ 
+   target_specific = specific_ss.apply(config_target, strict: false)
+   arch_srcs += target_specific.sources()
+-- 
+2.47.2
 
-Ashish, what am I missing?
-
-> Regardless of what we decide on what the right behavior is, fail vs skip =
-(I
-> don't mind the former) we can certainly do that over new patches rebased =
-over
-> the new series.
-
-FAIL, for sure.  Unless someone else pipes up with a good reason why they n=
-eed
-to defer INIT_EX, that's Google's problem to solve.
