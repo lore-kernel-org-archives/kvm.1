@@ -1,62 +1,62 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C7528B3F2
-	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956793B0A23
+	for <kvm@vger.kernel.org>; Mon,  5 May 2025 23:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487226; cv=none; b=Y4BSU+8DX5u1phl/2txoIBRwg9jhZWY77JJ/A/mSBauIpJSwYZzE5gOt7pwdeZmY81Np/VOq/PWCaPZ156bPxb0BkwQ3Xf8Xi8LAyQN/hR0VqP5PeXysdO+FdubTHiIdfIgbMX3i+zQe4onRnE5XjymLqADtV6JlBOojTfAqqvo=
+	t=1746487229; cv=none; b=VsQlFp74n49B4y/uUaec6WXy/hk5WwkSysGwJuB9xGaPquaSB8RxO8Zzvm5MoXloekLS+6m6cWdxIL+0wZVBe7/4c8ds6XWdbUksI5hrQoXGExTpwtOnn9kf8XIeSOnGJBygZnRSATMAYAj6qlgQa0npL8o3eAuM6JmrhKZnooI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487226; c=relaxed/simple;
-	bh=vpF3aqJ8G1Nzy1z4/D/QO4/GNb59/siAKHys0N7ei/M=;
+	s=arc-20240116; t=1746487229; c=relaxed/simple;
+	bh=pLhVywQOsnQQXulAr9P+c2k7oCnBigTaDPegpWLj1Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bpUvc3LzIJvIdRFrMKO3yH4zeO5yhuiRKux4ZPdh5WoIunZTmwi9VkrEszLm1hVdLy4ZZeO9x1o0/YGrBDlA5GqJXHt8VW9T807B8SWa/ziRbWPYx/V2QMrJEm6OcFinyhxtLSytAk2mSpHBkdVwMFqPAsFsVRVL/pKubVtgrEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y8ncsjCD; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version:Content-Type; b=gAHZqnOcL6qB7rEgeYhRekmggRFhu398tXqCYl+vB7hReNaQtdAT+cWocSg926K5LAz6/OuOBuJMG9q4/fDYcolDFKbPQI3SkBlltTueRfBKL3gacddZ/cViRD4rlQQe0xJAHjezs3b6g2HcFShzGG8R26uuphfE/JR3IVaVZiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X94NpKGq; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y8ncsjCD"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22c33e5013aso53522765ad.0
-        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X94NpKGq"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e09f57ed4so46777345ad.0
+        for <kvm@vger.kernel.org>; Mon, 05 May 2025 16:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746487222; x=1747092022; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1746487227; x=1747092027; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PFP3MpqDIAT/Xkpc6JOppR3V5lexoIXt45Qw9vGPUlk=;
-        b=Y8ncsjCD6xXDpEPhewtI3DBmMn9ACp33WO0ackJjhvFPxJJqHaKjEFWNOj+dxOB8GR
-         1PUKuyOQeBAUq7MyTQjbRhkNnhvqF9ouDk53UnoKQTz1pkL8XNH4IMio5dRSCmaGDEE4
-         85qMNgNZ8YfRs4UKL4GWssNX/VZCUTyZQmvQ4KNfDoMG/7vxWrikKwIf84PvM671mFRX
-         jPyJPBgsYL6LS55asevK7rct6x0nO8Hy6VKEbOFNVUgAl90U8b8H8MomZuYg56+WcSPE
-         MnI0oe2rjewQ6UZu2MgICjrR6vXJwLW3wWJN/ki/1hIq5Ob8xROYpOkE6SnlETzp5TF0
-         2jIg==
+        bh=48VeJmtQLPOhxBVuGtRwfY5ps2vP+Hg73z2yA0rcj8A=;
+        b=X94NpKGqbMgbUz3+1oCVRNbtvlnAuq0qxO/z9HkVJZcIlS7OafK9qQkBwdWFR4Waut
+         nyJHs2L8FONEfuMiusP4AD33HCof2iMQuGNJy/hi0S+NdYT4AAAgz6CAbJqTVyJPDltG
+         8OgQk29tp9NxNR7UqzzKFhDeZ5OzUN6g/4htKecsqayjSIK1kvvOin9bEgjXLc5MM4qM
+         qC2zW7SDPN1W4rXbSqOEmG9L2CI67lfcVENMKtM3TmSBrNiOiHnaF/Xthf4zpgo25Z4j
+         g8ViA18izNH4TKFAkgDgiN7uezp8uiie3YoZCzrVR9WsjgR1eOaEAW6HMlnUG/mMOw0s
+         cahA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746487222; x=1747092022;
+        d=1e100.net; s=20230601; t=1746487227; x=1747092027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PFP3MpqDIAT/Xkpc6JOppR3V5lexoIXt45Qw9vGPUlk=;
-        b=pBQwUP4KuCfsH3/8UpLYP0EiVe7c+5D4GrwrFigF79ps55N8sNp82ZrReimt4a2huk
-         a4w5NXOd/OHB03vg0lYGY7SfyXkaOBkHY87pimn7P1B4YKtdpcvPorrQpmmkjH+wj6dm
-         Yha7ZmwFHtl+3gVOYgGt/nKY8ExZBwG588bXVeOYCKAz81q8UxObkgdPuAKljewcaxE2
-         PE8XuWpePU1S9oO55k76Kvu7Zilt3XAQBxlzimFanSjTpSvRqH4GPpARSMCp2Nrxj+1q
-         gjGgcQmWx6gN1oeCA2GIGQUX+letwwf/qdHfNIyYOHA0C895VulEtXpoxwrJHupKC6ZT
-         uGrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUShsygT+FbCgxjbbdWN2w7c8bruzPMZ0KZDpHaDVx+vqbVWtrl7N57CF4urjnxRN+Ep4A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbuchZo7Jc1TaWrhqNFdkckFzu3WtPsnjgkmzltVoTSCPkR8Tp
-	jMoUVqqqXMAD5BSvzdbu9dQZX+y+1Z9LBh9h3MXSqhXuLI80tSLPXCPhz663rEc=
-X-Gm-Gg: ASbGncsEF4EeSO9zLTjg0ApREdephSwae0z6TLI0o6SluPZklgpvwcA1HepvkU15nwu
-	siD7GJdoA2BjpvXhKpmOEKCF9/4YVHXZxvc9kwPrhvtl1Rv2zCgLmmHfdsB28rjhQIgCd9VdorW
-	aZlEHhXDUc8e910P2+b/RWPgJjja1v4pKLiyE63lqHTaGmnUvcOrmvLjaVb86kLlLfn16vp2WXH
-	viCqGJU9EGwVCF9jZ9//9AMXjyU6OFuRJKmqksYRIopiR6VmZ2qh4N7dI93pyhX0DaOHK1tzlYe
-	Rf1Vy40XzYDI/7fNgxLYvOL1ej46YwgioPbCzUdN
-X-Google-Smtp-Source: AGHT+IEkGA7F23dh8r0tL3IOEwmD1EC+JY8O4ZS7CbJfLPw/hDppOvggFCwGVG9SRLWdvxy/22v8Xg==
-X-Received: by 2002:a17:902:ce12:b0:224:2717:7992 with SMTP id d9443c01a7336-22e1eae4d3emr132746025ad.33.1746487222470;
-        Mon, 05 May 2025 16:20:22 -0700 (PDT)
+        bh=48VeJmtQLPOhxBVuGtRwfY5ps2vP+Hg73z2yA0rcj8A=;
+        b=c/2H1oXkQ1/5GpE8w53OpskPKNHOYDU27b9urLZ7aOgpdNDJGBtHsP1aBTJJRgExCm
+         qI+OCJfPC+r4JukxEdc7QnPbmNPsAQkW8wM+2Z9XrbOznk4Cgrj7GDvGX+uzV1AePa3M
+         Zkg4TLLfRGk+NaC8+V7bTzSLtfHfudjfhOAPVyUB+VTpXq1BTezawz9CrkRs0n6eMAwf
+         NgEwAYzSfZ6YwSVx1Z4No7C42okNO/Qz1OtNmrtOrN5ua1XDLR/AhmL/KTRLA6LpU0eK
+         eA4y+QmleRjqBw5auTGxX/023g8Owic6gAKKliO9MBHdn+tGIWxli0UfH9RirMI7rbvV
+         iiCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUcmkJHYS7R4PlSkDFLWhy2wo8gRTKHa/WV+8HNOFE0cTmoO+Yd9S51yxN09LkhnBjqlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxchqXQeUud/6fkyB57t+0nPHyic8rdZABJM+avmzEycSRHvIf3
+	lVz5Cjj9ZfgBj/Y56meFwvqZwcHdJyMmvZF4EnsB0k6CsDkv4Ij0p1Q5wmvni6w=
+X-Gm-Gg: ASbGncsaSe7Mp7eqB+yACxyo5MR5Zck3RGBZWvOD4Ad8UtA8PnDuyBhB2SI1HhnVC67
+	KPzXlhvl3aQoFXwfcBo+CGdqfURDNcWcYJYmp2Q6nYgm2DQs9Fw1sdCLvTO7Al+LGl7kur0a596
+	iNwhECAkaVX048gjS2X6CxB3mH42ETgqoA1JIShvj7rMD2tHnBfaSO73ERdr7Yubz5RAgaXYjBm
+	G+0aOF4G0v/0OVhwEm/O6hWlLhN8ObW72YKHb40w+sOXkbpo8MvrbDYkJL9cLPFqCRoD7jtMyyh
+	xggO7esCHZ0w2Hxmysz7GvZ6pwUJj8FCEoBJbx4T
+X-Google-Smtp-Source: AGHT+IG7ArAq090ldoo+ZdQVBej7m6q6ZuRLjsuSHiLmFUTOGIKSXlNLu8HuIseupKBtlS+wsj+7ew==
+X-Received: by 2002:a17:902:d486:b0:215:58be:334e with SMTP id d9443c01a7336-22e32776bf1mr17875875ad.10.1746487226858;
+        Mon, 05 May 2025 16:20:26 -0700 (PDT)
 Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 16:20:22 -0700 (PDT)
+        Mon, 05 May 2025 16:20:26 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
@@ -68,9 +68,9 @@ Cc: richard.henderson@linaro.org,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 02/50] include/system/hvf: missing vaddr include
-Date: Mon,  5 May 2025 16:19:27 -0700
-Message-ID: <20250505232015.130990-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 07/50] target/arm/cpu: move arm_cpu_kvm_set_irq to kvm.c
+Date: Mon,  5 May 2025 16:19:32 -0700
+Message-ID: <20250505232015.130990-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
@@ -83,42 +83,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On MacOS x86_64:
-In file included from ../target/i386/hvf/x86_task.c:13:
-/Users/runner/work/qemu/qemu/include/system/hvf.h:42:5: error: unknown type name 'vaddr'
-    vaddr pc;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:43:5: error: unknown type name 'vaddr'
-    vaddr saved_insn;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:5: error: type name requires a specifier or qualifier
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-    ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:18: error: a parameter list without types is only allowed in a function definition
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-                 ^
-/Users/runner/work/qemu/qemu/include/system/hvf.h:45:36: error: expected ';' at end of declaration list
-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+Allow to get rid of CONFIG_KVM in target/arm/cpu.c
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/system/hvf.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/kvm_arm.h  |  2 ++
+ target/arm/cpu.c      | 31 -------------------------------
+ target/arm/kvm-stub.c |  5 +++++
+ target/arm/kvm.c      | 29 +++++++++++++++++++++++++++++
+ 4 files changed, 36 insertions(+), 31 deletions(-)
 
-diff --git a/include/system/hvf.h b/include/system/hvf.h
-index 730f927f034..356fced63e3 100644
---- a/include/system/hvf.h
-+++ b/include/system/hvf.h
-@@ -15,6 +15,7 @@
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 7b9c7c4a148..d156c790b66 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -221,4 +221,6 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
  
- #include "qemu/accel.h"
- #include "qom/object.h"
-+#include "exec/vaddr.h"
+ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
  
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level);
++
+ #endif
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 5e951675c60..07f279fec8c 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1099,37 +1099,6 @@ static void arm_cpu_set_irq(void *opaque, int irq, int level)
+     }
+ }
+ 
+-static void arm_cpu_kvm_set_irq(void *opaque, int irq, int level)
+-{
+-#ifdef CONFIG_KVM
+-    ARMCPU *cpu = opaque;
+-    CPUARMState *env = &cpu->env;
+-    CPUState *cs = CPU(cpu);
+-    uint32_t linestate_bit;
+-    int irq_id;
+-
+-    switch (irq) {
+-    case ARM_CPU_IRQ:
+-        irq_id = KVM_ARM_IRQ_CPU_IRQ;
+-        linestate_bit = CPU_INTERRUPT_HARD;
+-        break;
+-    case ARM_CPU_FIQ:
+-        irq_id = KVM_ARM_IRQ_CPU_FIQ;
+-        linestate_bit = CPU_INTERRUPT_FIQ;
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-
+-    if (level) {
+-        env->irq_line_state |= linestate_bit;
+-    } else {
+-        env->irq_line_state &= ~linestate_bit;
+-    }
+-    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
+-#endif
+-}
+-
+ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index e34d3f5e6b4..4806365cdc5 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -104,3 +104,8 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+ {
+     g_assert_not_reached();
+ }
++
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 97de8c7e939..8f68aa10298 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2468,3 +2468,32 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+         cpu->kvm_mte = true;
+     }
+ }
++
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
++{
++    ARMCPU *cpu = arm_cpu;
++    CPUARMState *env = &cpu->env;
++    CPUState *cs = CPU(cpu);
++    uint32_t linestate_bit;
++    int irq_id;
++
++    switch (irq) {
++    case ARM_CPU_IRQ:
++        irq_id = KVM_ARM_IRQ_CPU_IRQ;
++        linestate_bit = CPU_INTERRUPT_HARD;
++        break;
++    case ARM_CPU_FIQ:
++        irq_id = KVM_ARM_IRQ_CPU_FIQ;
++        linestate_bit = CPU_INTERRUPT_FIQ;
++        break;
++    default:
++        g_assert_not_reached();
++    }
++
++    if (level) {
++        env->irq_line_state |= linestate_bit;
++    } else {
++        env->irq_line_state &= ~linestate_bit;
++    }
++    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
++}
 -- 
 2.47.2
 
