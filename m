@@ -1,102 +1,93 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB98E25CC41;
-	Tue,  6 May 2025 16:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AFE2836AB;
+	Tue,  6 May 2025 16:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746549040; cv=none; b=YSiyU9G1TeHxwbQRPcMF7/ELzBFqo+f0hgGzqf/EnRcVhn+e9VeGn/hY/7mYTiRYvx/Va7lsz4k/Q3ZfKNz5AHb1EbeB9eknNp4oCTCcYYjH3fkFI/6hgOc/P3A6MiCv47FIYKU30hz/2Kk2quu1ZmuCx7gO7m7j5Zd5jEH4Wv8=
+	t=1746549848; cv=none; b=petXYwrKfDNUHRA5BwHQARuUAdTy0xDdgWnoMbualhgSRcJhjqTmtzPYdFOJkCTugRlk8oCro7tqdb7kF/QpZHQI2X1sqT7RRHEvVt9UQIrpPSPmsCTdtO1BPlRM49bLw7UmHGzd4ZjjzRqpoBwlPPYMKqpWhZoqAvBwCiJv/Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746549040; c=relaxed/simple;
-	bh=sy5+FLBt8V254FwUykIHfEDCfE4L9U2Cpnole7yVjV8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=NFTrV2ct9HZFjrA9ZJ2NupWi0f44t+QLN+tdLoaeF6+YQHUo13X2TZd++NPXlJQ31qS6QKLTM5yLXSjGB5Ki2iPf8OlOq41iOSPaW+HfttA+w+eERTY1oAOc13l45LgknDV6CMUkWRv9jgfEx37IFBux8ux2VMoJiZwabZBjP9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=MIzuHMAp; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1746549848; c=relaxed/simple;
+	bh=MHvuOT6C0ia328VkKKv4Vm4MTXejzHrdQukEmp8yJpg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rqcJM/oF26CsjiGNfF+8TQGYUDdytZfSq6NmGAr+DrZNbATCgqqRJHN2KU36zi0Meuf1PD4HL3Vgqi2cdeU3dSgoIoQ3DzkQCiy2/JRiyO5svAN5IJ8CtDDvHFCzqp1i+IKZ4xygdirufC/Zl9Ah+vPyZ6umRRvC+kjMCsLMl+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mhR83HF+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="MIzuHMAp"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 546GThAV971224
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 6 May 2025 09:29:43 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 546GThAV971224
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1746548984;
-	bh=v6XPEFSGKokl1nFOIN3pFv6ErpYGqIeLKYtQQ53aKkA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=MIzuHMApNdjpQ5ZILL8ZOPep8vI7WxRjiUiWPmXLr7AzDzOJeAGF2Mg3Bs+LAbbwx
-	 607Qn0HNOUl8WsbZ4SrOxTt3IdOUq3CoaVSLbP4fgukVo/lHgJX/w60kJhrOIv+Eo3
-	 EtnpOGnOuJCfsrahyDVkm/2FpCQnFbwHzfvd5yf9xafnZ8uVrGGS9Q/Iu79cmfdGtZ
-	 Vz83BgaoYBBM4TWQhw4lZtxPxUN5TrlgmjN4OPVBEOoz3Qn0dlROG0rcLV017k47bh
-	 Gp+ab6aHjmc5mWQcCMrcJK6tZAPb5n/0ZJvsLL+Sxd7HRUAbVbByKg3hbRG9U84j1x
-	 uAAqsuKmpoD0A==
-Date: Tue, 06 May 2025 09:29:40 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Ingo Molnar <mingo@kernel.org>, Sean Christopherson <seanjc@google.com>
-CC: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, kvm@vger.kernel.org, xin@zytor.com,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 2/6] x86/kvm: Rename the KVM private read_msr() function
-User-Agent: K-9 Mail for Android
-In-Reply-To: <aBo1w0tRoM2JUtW_@gmail.com>
-References: <20250506092015.1849-1-jgross@suse.com> <20250506092015.1849-3-jgross@suse.com> <aBoUdApwSgnr3r9V@google.com> <aBo1w0tRoM2JUtW_@gmail.com>
-Message-ID: <55944DEC-0129-4052-BBA4-7298B16326BD@zytor.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mhR83HF+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF76C4CEEB;
+	Tue,  6 May 2025 16:44:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746549848;
+	bh=MHvuOT6C0ia328VkKKv4Vm4MTXejzHrdQukEmp8yJpg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mhR83HF+ZDQMU0w0J7ovUEUH6M/eqrNA+eOUT7e16TaQiNQO0IlUJWfQE3KfAmrqc
+	 qGRkzoKNH/cEwG3bT/kh/gtF7DrzSHDWvSGpbMF6JYyuEyaTEJzMd5Uo9yfCBoy58g
+	 /r+oCHMP2vSkFpMPHEEKmq8OXQRcubeKvGx3v87VAgR+qDworN1IhO1qISNtdSBY5L
+	 kkQWI7GBob/FBkos//nF54v2PdlSJzQoOuIiyrDKYbXgE96FSB5V245XPyXnC72MHF
+	 f22/xkJAGbVlWs8PmIvYczmMK04Pjx1Rt2Wjq4sjnFsD1oqkyk5tahSZFz86RlfZCG
+	 BK+bDBl6CQthw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1uCLOo-00CJkN-4I;
+	Tue, 06 May 2025 17:44:06 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>
+Subject: [PATCH v4 01/43] arm64: sysreg: Add ID_AA64ISAR1_EL1.LS64 encoding for FEAT_LS64WB
+Date: Tue,  6 May 2025 17:43:06 +0100
+Message-Id: <20250506164348.346001-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250506164348.346001-1-maz@kernel.org>
+References: <20250506164348.346001-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, mark.rutland@arm.com, tabba@google.com, will@kernel.org, catalin.marinas@arm.com, ben.horgan@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On May 6, 2025 9:16:03 AM PDT, Ingo Molnar <mingo@kernel=2Eorg> wrote:
->
->* Sean Christopherson <seanjc@google=2Ecom> wrote:
->
->> On Tue, May 06, 2025, Juergen Gross wrote:
->> > Avoid a name clash with a new general MSR access helper after a futur=
-e
->> > MSR infrastructure rework by renaming the KVM specific read_msr() to
->> > kvm_read_msr()=2E
->> >=20
->> > Signed-off-by: Juergen Gross <jgross@suse=2Ecom>
->> > ---
->> >  arch/x86/include/asm/kvm_host=2Eh | 2 +-
->> >  arch/x86/kvm/vmx/vmx=2Ec          | 4 ++--
->> >  2 files changed, 3 insertions(+), 3 deletions(-)
->> >=20
->> > diff --git a/arch/x86/include/asm/kvm_host=2Eh b/arch/x86/include/asm=
-/kvm_host=2Eh
->> > index 9c971f846108=2E=2E308f7020dc9d 100644
->> > --- a/arch/x86/include/asm/kvm_host=2Eh
->> > +++ b/arch/x86/include/asm/kvm_host=2Eh
->> > @@ -2275,7 +2275,7 @@ static inline void kvm_load_ldt(u16 sel)
->> >  }
->> > =20
->> >  #ifdef CONFIG_X86_64
->> > -static inline unsigned long read_msr(unsigned long msr)
->>=20
->> Ewwww=2E  Eww, eww, eww=2E  I forgot this thing existed=2E
->>=20
->> Please just delete this and use rdmsrq() directly (or is it still rdmsr=
-l()? at
->> this point?)=2E
->
->Both will work, so code-in-transition isn't build-broken unnecessarily:
->
->  arch/x86/include/asm/msr=2Eh:#define rdmsrl(msr, val) rdmsrq(msr, val)
->
->:-)
->
->Thanks,
->
->	Ingo
+The 2024 extensions are adding yet another variant of LS64
+(aptly named FEAT_LS64WB) supporting LS64 accesses to write-back
+memory, as well as 32 byte single-copy atomic accesses using pairs
+of FP registers.
 
-But for forward-looking code, rdmsrq()=2E
+Add the relevant encoding to ID_AA64ISAR1_EL1.LS64.
+
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/tools/sysreg | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index bdf044c5d11b6..e5da8848b66b5 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1466,6 +1466,7 @@ UnsignedEnum	63:60	LS64
+ 	0b0001	LS64
+ 	0b0010	LS64_V
+ 	0b0011	LS64_ACCDATA
++	0b0100	LS64WB
+ EndEnum
+ UnsignedEnum	59:56	XS
+ 	0b0000	NI
+-- 
+2.39.2
+
