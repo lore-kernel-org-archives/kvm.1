@@ -1,137 +1,116 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7861A23A9;
-	Tue,  6 May 2025 23:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA19D217716
+	for <kvm@vger.kernel.org>; Tue,  6 May 2025 23:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746573301; cv=none; b=T1mCsE+Qa/z+TCenTXvzWP+Loe/6WSEgpyYF+UBqt7kC5hRYY5ioV2gjVNnmnXLZJleRdqelr57S4Nb6/JPSNe4p6PFgUV2e5wONmFcDsLtvGhWRbklU5h3qpP+F3el53ywTSx9Y7NVXNa6Lr3NRMznCpjalkL3jvRuTPolir2k=
+	t=1746575284; cv=none; b=LSeT24gSrxzEHLq2kj8Zw9e7Y7K+tCp47bVm9YHC0mFyUBfuHNdKCdxtmp/t2jAFs/DuHRl25zkKhQEQ3hkdI+bd/A1xikQDoJy7A6HgVPFg9bWXmGeu1MFpmlhHTkSY+mmY4Gp9g4PQh8AVhmgm4zQQP94EXEJDwIPl94HxG4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746573301; c=relaxed/simple;
-	bh=0APPBYsT8cIqi0gvG0DV20fanKAT7WzukD/B32mb0z4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=S+AHn8t7C4HHYeskUjmhPV0fCWdXzVeik+biZw8jv1tdeUx2GOMrfphXlLr509v2fsmeSd+ZWc3q51p8LcyncL7OEAZQ1eeJmK+5nDf5AR/OpjRbqv3RpENEdT4WfS10EXN9Bd9ETLecynY9v6Iyr8RmYVr5CbuVmdyCDw/wzDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=QfaO9SCT; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1746575284; c=relaxed/simple;
+	bh=NzEAJGMGj67aqLOqPzD1WsJBqcysNCKrFhpDypZk/yY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bPdqlmPoWRFsHyF4Ev+F5cqMTElxq50yDTlDp9UQnJvDrL+t5TMG5gWrXuCry/d3L+qA883SDosJubpwrLpK+kT9vmw9eY5HWVHgc+BjLXk2aMBK/Tk5gpaNFKk8MCkDtlbg9e3wYTOWfHzReS0TSUNMMDDPxtdu8MU/Ul8Oe5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Za8CfsZr; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="QfaO9SCT"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1uCR4T-007tJK-2w; Wed, 07 May 2025 00:47:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=BMq0rqR/Z/Nu+2i3yDlis9NI97iG+saHQkwWMHw8sw0=; b=QfaO9SCT4A3ryrokVq0tNv2Ie2
-	Jb8lnps96YvimNQOJvx9Nl8/eT8AFAFTYBlN95CQfx3p2oG4EvTHjvie1JPaOplGPfmetkwP2ZWvy
-	3d13IpFuEusdcv35+zYSAaB2J+429FqjE5otK1KCXupg5PqLIRfqSs5buokqa4Y8kNRY6tTSF9lcj
-	rKBFnADYjurMWzlu2WpsrxiTy4+jSDEWlazkUiuM29/h1wHoWAe5GPdzrDlA3Y07fNeLmb2s4KEzP
-	3F5mk8nExShIi/bWKum/TISh5BngU6aXcSKaz4tCIdl+545PBUGAFykCSPdREnA8oxFr6WiziKbu/
-	SI72Cj5Q==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1uCR4R-0006Gd-Rg; Wed, 07 May 2025 00:47:28 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1uCR4A-00FMcb-5o; Wed, 07 May 2025 00:47:10 +0200
-Message-ID: <6a818cc6-f26c-417b-ad06-0686b698b2fe@rbox.co>
-Date: Wed, 7 May 2025 00:47:08 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Za8CfsZr"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff8119b436so4869433a91.0
+        for <kvm@vger.kernel.org>; Tue, 06 May 2025 16:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746575282; x=1747180082; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iGR21MUMyA/Iej7QErtZc8eyio+Dks1zWhBSbKI/rik=;
+        b=Za8CfsZrFcgK0Rp4CNNAVfSUxYYEE/Wt7aMcL6js20F5xXUGr5JlQ1/RtrSJyNW4wc
+         E/+4xYFvTt2AIWRXWXxPWCqybvqSNXvW5Agc36mshnx1p/jgcrP2S9vxTpr9Maa47J1E
+         ybqmhw/+k8gHxNTGN6Hq5Lw0FIvgoghQ7EU9g2tpDTlK8biiq1rVwgidd10J2TRoBuws
+         WRl1mQHkrTDNBwfuE1rT8cUYOy7viUZpobKKMXeri1IOO7VuNszR8Z4R9JKMvdiwSUd6
+         61H2rPUOo3y/rw7xly5MqzS16a/ce81A2M2PrybpASUaMeF56dXGx6elQ1Wz4DpEncC/
+         5Ang==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746575282; x=1747180082;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iGR21MUMyA/Iej7QErtZc8eyio+Dks1zWhBSbKI/rik=;
+        b=GmqcgNf8yXWvBJJPPIzWB8gzswXtuTj/pVLw9GRHij7WaS5qI5iNI17ntOfJ7t0Hsd
+         i8RBfJOrs+/C2RxdbL9Bz+K2RUDXd9Tk9Fdcv0l6gBFEM/mtcGqqfxlOSQcsusiE3Ew0
+         mE8GtpsOFS9Dya/T/2hv3jAczk95PILHpm5DfBWqhKfZWgsp3JNN+IpMhABpaDGkTnqy
+         lffxQ0xZfqw9rKZ4twJ7JGdYlyCx2js6KfII6z+myO138oAR4OxK2PK7JH3gg1uGHbKi
+         ixBKE0OFvDmGv87jt65VeGbo24Q+F7jYFsMo9eri2hroPhSEk/DBLyAb9vn+8vuCpTsv
+         gKkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP9lsOGCsQulTvPtfy3oQB8ZWOTwiQKGiKdfAThbOkjPylRKvP8eA5C6EsdACEoNom7V0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFG56ioJJ7iBGMIhXygsr3zC/md45MZ/If2UXR+eR1c4SGKrAZ
+	UpMAoi+Y999CsAmzqYd1ZTT38uLU3iWfxtEHQLlHqg3MDm8BHsiS9lNuodY/OCiUd6Qtr0tDbIl
+	Zxw==
+X-Google-Smtp-Source: AGHT+IEI4VPbZHYscktwEOVP6g5TZOKepWU/P1YF6Ndm56diDY5BXYXdB3X0UtnsxrDOZgtWBFkyQyHQxS4=
+X-Received: from pjbsr12.prod.google.com ([2002:a17:90b:4e8c:b0:30a:2095:204b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e84:b0:2ff:5357:1c7f
+ with SMTP id 98e67ed59e1d1-30aac28b3bcmr1863522a91.30.1746575282052; Tue, 06
+ May 2025 16:48:02 -0700 (PDT)
+Date: Tue, 6 May 2025 16:48:00 -0700
+In-Reply-To: <20250109204929.1106563-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net-next v4 2/3] vsock: Move lingering logic to af_vsock
- core
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-References: <20250501-vsock-linger-v4-0-beabbd8a0847@rbox.co>
- <20250501-vsock-linger-v4-2-beabbd8a0847@rbox.co>
- <hcme242wm3h33zvbo6g6xinhbsjkeaawhsjjutxrhkjoh6xhin@gm5yvzv4ao7k>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <hcme242wm3h33zvbo6g6xinhbsjkeaawhsjjutxrhkjoh6xhin@gm5yvzv4ao7k>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250109204929.1106563-1-jthoughton@google.com>
+Message-ID: <aBqfsGtUjBUJudFB@google.com>
+Subject: Re: [PATCH v2 00/13] KVM: Introduce KVM Userfault
+From: Sean Christopherson <seanjc@google.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Nikita Kalyazin <kalyazin@amazon.com>, Anish Moorthy <amoorthy@google.com>, 
+	Peter Gonda <pgonda@google.com>, Peter Xu <peterx@redhat.com>, 
+	David Matlack <dmatlack@google.com>, wei.w.wang@intel.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/6/25 11:53, Stefano Garzarella wrote:
-> On Thu, May 01, 2025 at 10:05:23AM +0200, Michal Luczaj wrote:
->> Lingering should be transport-independent in the long run. In preparation
->> for supporting other transports, as well the linger on shutdown(), move
->> code to core.
->>
->> Generalize by querying vsock_transport::unsent_bytes(), guard against the
->> callback being unimplemented. Do not pass sk_lingertime explicitly. Pull
->> SOCK_LINGER check into vsock_linger().
->>
->> Flatten the function. Remove the nested block by inverting the condition:
->> return early on !timeout.
->>
->> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->> Signed-off-by: Michal Luczaj <mhal@rbox.co>
->> ---
->> include/net/af_vsock.h                  |  1 +
->> net/vmw_vsock/af_vsock.c                | 30 ++++++++++++++++++++++++++++++
->> net/vmw_vsock/virtio_transport_common.c | 23 ++---------------------
->> 3 files changed, 33 insertions(+), 21 deletions(-)
->>
->> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->> index 9e85424c834353d016a527070dd62e15ff3bfce1..d56e6e135158939087d060dfcf65d3fdaea53bf3 100644
->> --- a/include/net/af_vsock.h
->> +++ b/include/net/af_vsock.h
->> @@ -221,6 +221,7 @@ void vsock_for_each_connected_socket(struct vsock_transport *transport,
->> 				     void (*fn)(struct sock *sk));
->> int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock 
->> *psk);
->> bool vsock_find_cid(unsigned int cid);
->> +void vsock_linger(struct sock *sk);
->>
->> /**** TAP ****/
->>
->> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->> index fc6afbc8d6806a4d98c66abc3af4bd139c583b08..a31ad6b141cd38d1806df4b5d417924bb8607e32 100644
->> --- a/net/vmw_vsock/af_vsock.c
->> +++ b/net/vmw_vsock/af_vsock.c
->> @@ -1013,6 +1013,36 @@ static int vsock_getname(struct socket *sock,
->> 	return err;
->> }
->>
->> +void vsock_linger(struct sock *sk)
->> +{
->> +	DEFINE_WAIT_FUNC(wait, woken_wake_function);
->> +	ssize_t (*unsent)(struct vsock_sock *vsk);
->> +	struct vsock_sock *vsk = vsock_sk(sk);
->> +	long timeout;
->> +
->> +	if (!sock_flag(sk, SOCK_LINGER))
->> +		return;
->> +
->> +	timeout = sk->sk_lingertime;
->> +	if (!timeout)
->> +		return;
->> +
->> +	/* unsent_bytes() may be unimplemented. */
-> 
-> This comment IMO should be enriched, as it is now it doesn't add much to 
-> the code. I'm thinking on something like this:
->      Transports must implement `unsent_bytes` if they want to support
->      SOCK_LINGER through `vsock_linger()` since we use it to check when
->      the socket can be closed.
+On Thu, Jan 09, 2025, James Houghton wrote:
+> James Houghton (13):
+>   KVM: Add KVM_MEM_USERFAULT memslot flag and bitmap
+>   KVM: Add KVM_MEMORY_EXIT_FLAG_USERFAULT
+>   KVM: Allow late setting of KVM_MEM_USERFAULT on guest_memfd memslot
+>   KVM: Advertise KVM_CAP_USERFAULT in KVM_CHECK_EXTENSION
 
-OK, will do.
+Starting with some series-wide feedback, the granularity of these first few
+patches is too fine.  I normally like to split things up, but honestly, this is
+such a small feature that I don't see much point in separating the uAPI from the
+infrastructure.
 
-Thanks,
-Michal
+To avoid cyclical dependencies between common KVM and arch code, we can do all
+the prep, but not fully enable+advertise support on any architecture until all
+targeted architectures are fully ready.
 
+In other words, I think we should squish these into one patch, minus this bit at
+the very end of the series (spoiler alert):
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index ce7bf5de6d72..0106d6d461a3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1545,6 +1545,9 @@ static int check_memory_region_flags(struct kvm *kvm,
+            !(mem->flags & KVM_MEM_GUEST_MEMFD))
+                valid_flags |= KVM_MEM_READONLY;
+ 
++       if (IS_ENABLED(CONFIG_KVM_GENERIC_PAGE_FAULT))
++               valid_flags |= KVM_MEM_USERFAULT;
++
+        if (mem->flags & ~valid_flags)
+                return -EINVAL;
+ 
+@@ -4824,6 +4827,9 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+        case KVM_CAP_CHECK_EXTENSION_VM:
+        case KVM_CAP_ENABLE_CAP_VM:
+        case KVM_CAP_HALT_POLL:
++#ifdef CONFIG_KVM_GENERIC_PAGE_FAULT
++       case KVM_CAP_USERFAULT:
++#endif
+                return 1;
+ #ifdef CONFIG_KVM_MMIO
+        case KVM_CAP_COALESCED_MMIO:
