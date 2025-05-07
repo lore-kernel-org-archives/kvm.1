@@ -1,73 +1,70 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EAC1C6FF3
-	for <kvm@vger.kernel.org>; Wed,  7 May 2025 07:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2B821147F;
+	Wed,  7 May 2025 08:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746604632; cv=none; b=ruBYTTPoDui5X052YGjZgJZblA1gA+vXtYgAibYNZGqZOt4/ukzGFyuM9s7rRmis1t1GL+mV7dh8KQi5GH71m5OGKFB/L8QwnYzCspJRsvtPfC5xVgRnxfVLuel1QvgA7m+IhySMJXOnZ76xAv9HCGL28v8ArnDesX1vwZQeRDE=
+	t=1746605334; cv=none; b=HQy5a+aVngF9QwTlbbinTMd2v9vmzqO6DRiGXeVIFg5c4EF5eXCv4GQDifSRJI5SLolJbzOff7grETroLWORQDem1guCwprIe9p4RCpZum14mpVNoY1Iez5pyDBLQ63e6QPFLdiv83Dml6Ec8Mx4bPHUi8kysr9TPgkMzeMbZ/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746604632; c=relaxed/simple;
-	bh=A4KqFUfiMWSBY37pZWbrLNHyowfIzlyC7+VB02RvYZo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOl7a+PUWacOIdZlqciRMUjN/83r4nd1vd+2G2aFp/4JjSdo91duNl+HEHv9KurjAfo/+4brYA7KLfujAvwjcjUycCK3i7B6UN0Nv1ENqoKxJ++zpqJ99PQNx9qat7qNWNpDZBwgipatzwhr+/dLDK4kMOPuzwEEjEEbs52smtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=azLg/sI8; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1746605334; c=relaxed/simple;
+	bh=DJOvH8mDWrpwPpnJ49SB0pWorTULYK1h+RYw8ATbCk0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sMB95DroPexRqeEQo82T6WFIwlz/8dpAGl3yHJT+Adlfgb4vYWyKzB9rYyHjWRBo1eIOQdlX/bkbxLpCwAw/J0H9xzmLksDDf2w5SBY2yjzajaJXOxyFd983tMIJHRDoORW5e19UXJr64wASHGmLaIDzGj4D2RqXyHa5KaJAYQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U9OJdnun; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2mJssq9n; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="azLg/sI8"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746604628;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U9OJdnun";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2mJssq9n"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746605331;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x/jWrb5ObufWdp/TqLTqFq4iyOq4wwysHakUs6xba8E=;
-	b=azLg/sI8sSK0Zi6OEV5H7j14UusXX4bvQhsXMag0nu0Hvv+9jCRS1yP9o2QRAxkPvc0fyX
-	hChtum8TT4F7JzgcLJGFAyGeYiGvkWQtVM1QZNiAh/nUo5yKRThfJvX0UlpV8y+oGbIzV7
-	/8a3yOvmr2ixCv/CLkcPNlNCCpYPqHE=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	D Scott Phillips <scott@os.amperecomputing.com>
-Subject: Re: [PATCH v2] KVM: arm64: Force HCR_EL2.xMO to 1 at all times in VHE mode
-Date: Wed,  7 May 2025 00:56:50 -0700
-Message-Id: <174660459087.2542293.11599535036974656323.b4-ty@linux.dev>
-In-Reply-To: <20250429114326.3618875-1-maz@kernel.org>
-References: <20250429114326.3618875-1-maz@kernel.org>
+	bh=DJOvH8mDWrpwPpnJ49SB0pWorTULYK1h+RYw8ATbCk0=;
+	b=U9OJdnunMdz1+EI/1y8j9I1Jx+Y3/gfks0KmWt+U22PsHeNsUM6qkIQaHAPZ1KLAM6Ywdr
+	uQ+9Nhr/tErKIW1mqmNSgUJoCnrM3lPLXtTRIIUbsYu1hSneVo/8sps7pAroFsaAQpUA8Q
+	ur72fL/sWsWzuOXC/9yiWIPQ013MR4kvcv/LOcUNBYwZ+iPWYe5dgtR/lJ3vgMPs20e4ZC
+	USavLlpCm/CYNusrMVkypR0+ZmQWB9p81rHIVdcGyfNGW6F0M6N68sDp1vo9LDWmAA1JzK
+	tVuqqzBchveuSKHz9Xu6XyVf5jcqMV9xu8MgYw+U28B/ZgSf9ICzHEjXMcGCqg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746605331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DJOvH8mDWrpwPpnJ49SB0pWorTULYK1h+RYw8ATbCk0=;
+	b=2mJssq9nO/iunEuhDHcY5B91/WvQI4fJ38yBn2SyFZS7A1bcin2QdJERIQNgixfs1iwm/u
+	p0R51ADOwYQiPhBA==
+To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, linux-kernel@vger.kernel.org
+Cc: bp@alien8.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ Thomas.Lendacky@amd.com, nikunj@amd.com, Santosh.Shukla@amd.com,
+ Vasant.Hegde@amd.com, Suravee.Suthikulpanit@amd.com, David.Kaplan@amd.com,
+ x86@kernel.org, hpa@zytor.com, peterz@infradead.org, seanjc@google.com,
+ pbonzini@redhat.com, kvm@vger.kernel.org, kirill.shutemov@linux.intel.com,
+ huibo.wang@amd.com, naveen.rao@amd.com, francescolavra.fl@gmail.com
+Subject: Re: [PATCH v5 02/20] x86: apic: Move apic_update_irq_cfg() calls to
+ apic_update_vector()
+In-Reply-To: <20250429061004.205839-3-Neeraj.Upadhyay@amd.com>
+References: <20250429061004.205839-1-Neeraj.Upadhyay@amd.com>
+ <20250429061004.205839-3-Neeraj.Upadhyay@amd.com>
+Date: Wed, 07 May 2025 10:08:50 +0200
+Message-ID: <87r010n8q5.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-On Tue, 29 Apr 2025 12:43:26 +0100, Marc Zyngier wrote:
-> We keep setting and clearing these bits depending on the role of
-> the host kernel, mimicking what we do for nVHE. But that's actually
-> pretty pointless, as we always want physical interrupts to make it
-> to the host, at EL2.
-> 
-> This has also two problems:
-> 
-> [...]
+On Tue, Apr 29 2025 at 11:39, Neeraj Upadhyay wrote:
 
-Applied to fixes, thanks!
+$Subject: x86/apic: .....
 
-[1/1] KVM: arm64: Force HCR_EL2.xMO to 1 at all times in VHE mode
-      https://git.kernel.org/kvmarm/kvmarm/c/859c60276e12
+> All callers of apic_update_vector() also call apic_update_irq_cfg()
+> after it. So, simplify code by moving all such apic_update_irq_cfg()
 
---
-Best,
-Oliver
+..simplify the code...
+
