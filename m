@@ -1,221 +1,289 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3DE23CB
-	for <kvm@vger.kernel.org>; Wed,  7 May 2025 07:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746601544; cv=none; b=EwUQrgXrBvkp7aiqBzGNE5zgMPO/jCiPo94oXdspChLHt1SEZqOKFSv3vTjFhZ4wsgvUyLVYuLEIyWErCKJrJtdUUD6QOryYrqFp/CS8Y82aCuEv8zDyrAUI/ajLBnyoqONru3UyGEnIDM1fhZuIhfa7otSTFX+kcCECL+4rHRc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746601544; c=relaxed/simple;
-	bh=8sMgZtsBofGRCONLWZxr2nzcXo6BzCtS54/Y9ejsotw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PnGsr1pS9angyGYZKYHP3+LKc+nb51BJm5xSaATa9iQGEM3AWcD40Z2+dn3H+zeJx9CIik8n8yne2uqcisWoOYauw64bfPodF2ZMXARaoDRdqdkS3A+04RXXO5dwzSSNK6c3l3WbmfbS8dGvLpaR+0JYVZAZ3tAraVwsH66CXK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sfvm9Ag1; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448A37E1;
+	Wed,  7 May 2025 07:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746603529; cv=fail; b=iq67BxS3kFMQkSd0O5mjjDixU+T/0TlbtummBpG+JnV0iaAg2gfG4jqMzpajQjtSjXfq5GR5Op0nyKM5IZFIibOjkibE13oq/p2BfzpkHTD3aHdB5dGskchpPkWdxyUp+uT1KjnIVtq9ytiWe3Yeh6+nulSBemihTQpvu83jHIg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746603529; c=relaxed/simple;
+	bh=h/TGEiRYbhhrJ78tnDGOG0UV93TbZPy3gXVNx2MZckc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dkaPPyk5QY7Kw8aDRCe0U6S2yquCgr9p6GlCejhx+8BOIO01H9arIQ60TnkrAIoLxxFujtrlcFhpleyDRVYirt640POmt+gbhJvZauE4AnGjOl8SQ56+rYHZbwrjvShnCfitzxpnwCOXmU/NKn/u/sT7f8N1Dgy/AvzIa2xLBP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fxZEZCGY; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sfvm9Ag1"
-Date: Wed, 7 May 2025 07:05:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746601529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pwXGCKLUvkR+CK7jeYzmYMDP45CQNCvobFgoMRwBGTY=;
-	b=Sfvm9Ag1gvu4eaQispHxszQc1k0aFmgSsKhOuzGRj4+ojyC8VWG78k3LY/Fim5JlSJweSn
-	E0zJ4c86cf4FbTOOlxt1Z4RY2pm2cmrihgPCIgNs+g9rLaPdAXTr8r1kC7qVD9p3OpswBG
-	ch8BiT6SGDRiTUFbgtUIdYNPXsju/jk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fxZEZCGY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746603527; x=1778139527;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=h/TGEiRYbhhrJ78tnDGOG0UV93TbZPy3gXVNx2MZckc=;
+  b=fxZEZCGYog74QoM85kAmEppGdjAFzsS1eNn1NuTigXerTDbd8HSxMYZx
+   rzEzCjwh7agYLEpJGAR64XzOoIu7qkIMJwMpXjNXBKo7uY9akDFIPhNoi
+   LS+d1cc2RrTsYKnftNhNIyxT2SG+pmSc/KZyrganr+nPRO8Mwn9gRipIY
+   kxEjYUaIahE8Z1k9W5ns900Gk8WaPqk0Fb2c3OdeFyqg4+ppTiIkK5FsN
+   zfTZsJU1UNNhwR9RqauAN0om5wYPro0n09DZMtaS6V4snHtJKXGrvGMB9
+   a4NYMKHp5X8lrswngus/Do7b5jqm1cR5TwS4XDC0cbYte+cbLpsjZO6CF
+   w==;
+X-CSE-ConnectionGUID: padOcJBqTcyjmIDsmH/BUQ==
+X-CSE-MsgGUID: FJDJhAgAT7qMRYqkR5YQmA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="52132164"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
+   d="scan'208";a="52132164"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 00:38:46 -0700
+X-CSE-ConnectionGUID: 2LcGFmiLS8qNUhxAowEetA==
+X-CSE-MsgGUID: 5ITNLyHLRAiEsZIEWea6Pg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
+   d="scan'208";a="135872267"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 00:38:45 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 7 May 2025 00:38:43 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 7 May 2025 00:38:43 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 7 May 2025 00:38:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xeLLh89i+M1M1WZhHh/sFOohKeyHGMrAM389hvcOQyPvvKOK9pBv1HHxaYhU5Ka6thMi3Y5O7OAhKshXQQTk0zQ1FwVpp3mndiZAt7lC9Ll+5g9lOGOqQt0h5Ev8xakUMP6m1tn8D1RfDNNlYxAIX+O08mtIpCgMo5Va+NFalrH531AAWAvqPx5PyC+2mChddmmFkavS2Vp1q6oqk4SJLSYWMfV/qGB2j2Ko/ijlHJU77/YBxNb1qktfIcWoI4SqJwE1mY/yokRZg8uyEK0O+nI6KhRpk98zTuNjoKbE+4hTaTO4ZRBraqqub1EoryeNlygO0h0zREQSTkLHSF6EpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hj8eR8gupDjuy8V66Vw/nQbkANSP5Y/oblQVJa+Xcmc=;
+ b=PWQZXNfq3uUKqeR7TTRCVv0JgcNYsGD1ksr+rubPDHOUtV58in+M+7YwPdzyOaEtt08JPaZU7V4XgbtNq2WEEm0Yb6CobaIa12s7kz0bOYAT7y3DmY/9BZtlgOWUhRm4xznnupT/pn2tlamyt7hsJQWNscEomwVn8zXWxJwIfhfsi6t2ncWnRPnTjNVIXbAisZDW7LDuJI8v7z6g+hOYPCMKBjanfwm9lZeL56JJIYVU9fMhj8IDa3gjGFejLOVK/zq3d3viRgDAc7oFR34uU4kjly+cxrIZERN0vrf7mOrGxYgR2vhzjdjvMlUo9Ocp+guDyyvicAJsRFF0HzIOHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by CY8PR11MB7748.namprd11.prod.outlook.com (2603:10b6:930:87::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
+ 2025 07:37:55 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b%4]) with mapi id 15.20.8699.019; Wed, 7 May 2025
+ 07:37:55 +0000
+Date: Wed, 7 May 2025 15:37:42 +0800
+From: Chao Gao <chao.gao@intel.com>
 To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Larabel <Michael@michaellarabel.com>,
-	Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v2] KVM: SVM: Set/clear SRSO's BP_SPEC_REDUCE on 0 <=> 1
- VM count transitions
-Message-ID: <aBsGNPvG75KspVmp@google.com>
-References: <20250505180300.973137-1-seanjc@google.com>
- <aBnbBL8Db0rHXxFX@google.com>
- <aBoZpr2HNPysavjd@google.com>
- <aBoc0MhlvO4hR03u@google.com>
- <aBoxcOPWRWyFIgVE@google.com>
+CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<tglx@linutronix.de>, <dave.hansen@intel.com>, <pbonzini@redhat.com>,
+	<peterz@infradead.org>, <rick.p.edgecombe@intel.com>,
+	<weijiang.yang@intel.com>, <john.allen@amd.com>, <bp@alien8.de>,
+	<chang.seok.bae@intel.com>, <xin3.li@intel.com>, Ingo Molnar
+	<mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Oleg Nesterov <oleg@redhat.com>, Eric Biggers
+	<ebiggers@google.com>, Stanislav Spassov <stanspas@amazon.de>, Kees Cook
+	<kees@kernel.org>
+Subject: Re: [PATCH v6 5/7] x86/fpu: Initialize guest fpstate and FPU pseudo
+ container from guest defaults
+Message-ID: <aBsNxmHE7UO03iCs@intel.com>
+References: <20250506093740.2864458-1-chao.gao@intel.com>
+ <20250506093740.2864458-6-chao.gao@intel.com>
+ <aBpFvyITMc0WhlX4@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aBpFvyITMc0WhlX4@google.com>
+X-ClientProxiedBy: SI2PR06CA0007.apcprd06.prod.outlook.com
+ (2603:1096:4:186::9) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBoxcOPWRWyFIgVE@google.com>
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CY8PR11MB7748:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c967c29-4182-4c2d-5806-08dd8d3a14a3
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?kRZMabdkS5wEYixjg912mFeHrw6Z2a+WTxuBSbFx33cvDMMMxgUgvNKjRo4V?=
+ =?us-ascii?Q?XlHpcyRyHyaTPibP9l0wXxEQriSiGNTjNazIUSFNSlaQzKpHnJNyPMFkVHpw?=
+ =?us-ascii?Q?3UYlaWWeuiwn0MZdF/aVQj94Z6QqRUMeUzwUGeS1iUgY/Z+2YFiuIscGTtTW?=
+ =?us-ascii?Q?HMNy/1ljUGQC4omCwb+z92vH9XV46IFPMoNjeDohsM7Ykn3FzBRFqIRJoHVB?=
+ =?us-ascii?Q?bltOls7DLFLUzVAAZdjYh6ofmj7TfVSMxoQeQrv/jK+HpldV8mpoxeY7U8b6?=
+ =?us-ascii?Q?2xVIWF+aGnQnWdgWWggP7KkTA39BmCSz20sAJZcMBA2E57ahtffuakyZkA4e?=
+ =?us-ascii?Q?YjfT2/THg9IdNf1TGd8EfZnUS0AE6rGZnuFYauwkDooEdKjchAt6gBazhdi6?=
+ =?us-ascii?Q?ZHHwQnxgrwUYSSBsBL9Rr8q8PPzCcJGKQu8CgGKb5ZRCdRv60vcqW7tom5+g?=
+ =?us-ascii?Q?VnT0uE5VK/OdRL1cJuMPyyNh8uT4fIAZN4858T3ZwdX7rAHx4iORRMeG81cz?=
+ =?us-ascii?Q?3Q1M6/Y249GpAqRPKqpUZzsdrERyzBZQNjbsmtPKThZQN69HmA1PYGUtbwBU?=
+ =?us-ascii?Q?XnZ1K4O+z/oozLeYbHUiWHvE27iyocwMLPg+nsSx11uG7ybPI+Y7U2LLy5Gj?=
+ =?us-ascii?Q?d3PpQ9vOpZftj8LJt++KuN7PeHLy85XijcrY7P1UUaaKmnaXVbvPOmIRCTpd?=
+ =?us-ascii?Q?VUrsY+lkCAAPWfhgmCvBMuflmp5XDPnJvUtPfcA/Ww/Fd3nRtANBsAz9CGxj?=
+ =?us-ascii?Q?yi7FbI13P1qLCW98HQCsGZ//Hd8cSobVYpUsn37m0jnsktGDiJSa9mEB9kwK?=
+ =?us-ascii?Q?EnLWZn846e0SsaUQav3nhaIvyfacZ4YWklBUJiTt/bkxjZxRg1ZcKS0uQjKv?=
+ =?us-ascii?Q?RM/jYd5anCB3sjiHnWAL07IIdVI3ElTehof7gsRK5MmGiDwXdSJueNryXTKa?=
+ =?us-ascii?Q?l9dvcSJP2AH2VPRv0nPkj/AhxsACVpT61EXEtCWYx+SYRMCGTV+ZNIr+dPB/?=
+ =?us-ascii?Q?6zRDOHNbqPPAgkJuMyUq/JfNv8o/O5Y64/7XaMidESDXYGiXZZQizb0+pzYt?=
+ =?us-ascii?Q?0ywqSLr9eGUdYFrQfQ/8uPmkgmxlbC5OuiuBdPTa65Vb0eEoQl/AAe8/Z4Q5?=
+ =?us-ascii?Q?iYkZc4JfwDWMoG9ZTWMOGckG3+lvuD6YNuaBs1+SM1a9BI+1f44rMlc3KtyJ?=
+ =?us-ascii?Q?ezrZRUBJkg8jqNexsdKd5SyXr741PsL9P2wK7twK9ouKszrJj3DMXsjyKvwR?=
+ =?us-ascii?Q?5C0bMpmEn8lfMq6oRnn2D5+Q8J59iU7MyEA7vIr3CfHCIPavQo/w5lBf6eDA?=
+ =?us-ascii?Q?EbsPD0Ie64m1N2+TdVN4CnhAcaTwU5poKq2jv481PfFFBz636uvBJmdVaIIP?=
+ =?us-ascii?Q?HJDTJhm9AR86EV4xV2cdAGOcdhuDrShtvhuYsAPCO3ERV3bBzleR0gGu+ny6?=
+ =?us-ascii?Q?TW9GAL+xPsQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9/GfSxqP4U/YkJz9Q5D39JnPH7vt7Eu8fMidMMuLCQHWfumRN7cLmkbrtGrI?=
+ =?us-ascii?Q?pvkPjpTh33k08iP+SC9253zexNkSsQJuzHNmE9AFvsapj7eRIrVBg2HVdDkr?=
+ =?us-ascii?Q?mb8/ujArtrkcd8+NHVKIPg54OMnvvEVYWc4JUUL0oVP+siqI5KnOarGnx6d8?=
+ =?us-ascii?Q?22/speGbsZU45OoCoHPlQGrGpHhwZJ5slMrH8UfuJGMqzValn/XI58UIErIJ?=
+ =?us-ascii?Q?MwWwTjeBf2r3yYP1jkYsWzzfDla3RvRpgHgCR0NbJJM4NWqZ7ZjmjZKeYJ6s?=
+ =?us-ascii?Q?YTqCORyhbh2evWH5DNfzZOlUF6VVG+AY/1MhtSKAYA//ADrxFyGrurJj/at5?=
+ =?us-ascii?Q?PR7xBpRnEvgpML526DPSivQiu0DpXGYa4ZOvVJcMe5UeivtXEJu3Y+/E04m1?=
+ =?us-ascii?Q?Nz2f8JQdOyiwqkU6RnV5WkkKQe5cngXy/0drRHAhqLm54Pa2SAKT2clSBRXO?=
+ =?us-ascii?Q?D46JAI646CIUE088MPN3Moguf12wBgxQKiVFTm/jdzYNSJpU7dTCxUpsrlRR?=
+ =?us-ascii?Q?VNqKnjWbYZalNlXIzuXc9Q+Yje1yHS6zEmn0mzJAS7BFYOpRxSwPVHfFTRHB?=
+ =?us-ascii?Q?1ULQ4vQXxsf3qZMShGlR24t5LjBMVdvAyzdGJxPLlS1FO0ZVNLGiy5rdOPfV?=
+ =?us-ascii?Q?dEfoWiw6J7C2utj4Zrs97+Do+nJoGMh4UrXeEMsPxqo0g0fL3/jE7JMWiheS?=
+ =?us-ascii?Q?LYqOZHu0oJ8lVAIl9eEAr0c4lWyUB9nJbnzvsaRvSYWxjdi+KtN0XBRCmsTP?=
+ =?us-ascii?Q?VHhKh8CL16fXwfGPe3vAdLdXXXBUvcLKOyT927P3TcRKXCvLGlfA+LjoygrX?=
+ =?us-ascii?Q?MkUVMJGHpDl3pXWrI+wLQ+ifqc+kvqKYBGzvUbRO2MNfO9pNGu2yb9Qi9pDe?=
+ =?us-ascii?Q?XZOlvWdSMgg/AmFqah2p1SWmLdSFPpba+r98lDYoGcD5kmP4wII0tdXSKQji?=
+ =?us-ascii?Q?eG2vGL0kUb0ywX7sgBDOXHDfsydOxplyDlB9m1GRiSCgND4k9n0gTNhotCXZ?=
+ =?us-ascii?Q?05CNYPFxKCXtLSY/ciIl5M4dWJgOG5K62y4cPiHcqm0HDhDnnyC/zrUMnCQd?=
+ =?us-ascii?Q?DweDx38DQXg5HIUSKS7w49oUOnOKyJUOplLNFBGpqv3anebAUcPufUrk4OQi?=
+ =?us-ascii?Q?Q7lg9IXY3VVDvAEzhprT0ta2f1ddHkqa6Usbr4f58+jznlzDPAtS4+2LwTt+?=
+ =?us-ascii?Q?gnZNEafHFOVLhufHdXDst6+cMulWr4B6iQ7i/ax+H0NVzFMG/Htvo7sE9aQB?=
+ =?us-ascii?Q?gGmypKgRU2ophfLWjxko+2WR7T9AD3+CcttmdAY2G+J1psyQeHQTLY1ce+fD?=
+ =?us-ascii?Q?BDYOLt+ipvKKh432zRajykllSLp/NRtmLER9VO4MkFvf1XgqMVPWmonrdi8E?=
+ =?us-ascii?Q?VHWrzHVOax2MR1CmaZ+8NnR7dWeyD57zJ3+vMk+2P+AOPbiZ72qhqwOfGOdw?=
+ =?us-ascii?Q?UjwV3k5tXnbMOxiFSo4JyyikhI6aS+ZCGmBvKTaMHT69HVYgLVbJSdnvYm/4?=
+ =?us-ascii?Q?nfeVcIc4WjlOjGHgzmY2yE1PGnnrcHU+KMxnT/J79SxBoPPRvF+1CnVe2xqX?=
+ =?us-ascii?Q?FKXIaId9QfOw0iOJ3EeM0DlgK5oDt/xVp2MJdsd+?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c967c29-4182-4c2d-5806-08dd8d3a14a3
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 07:37:55.1954
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 20AFozTEFgezesM7ZurvmKG/OC4JcpD4bAPeijWB+o0LKDWrkTcqCbph9lf6Xogie6QjxQiuMgWAT8ZLwmOvYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7748
+X-OriginatorOrg: intel.com
 
-On Tue, May 06, 2025 at 08:57:36AM -0700, Sean Christopherson wrote:
-> On Tue, May 06, 2025, Yosry Ahmed wrote:
-> > On Tue, May 06, 2025 at 07:16:06AM -0700, Sean Christopherson wrote:
-> > > On Tue, May 06, 2025, Yosry Ahmed wrote:
-> > > > On Mon, May 05, 2025 at 11:03:00AM -0700, Sean Christopherson wrote:
-> > > > > +static void svm_srso_vm_destroy(void)
-> > > > > +{
-> > > > > +	if (!cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-> > > > > +		return;
-> > > > > +
-> > > > > +	if (atomic_dec_return(&srso_nr_vms))
-> > > > > +		return;
-> > > > > +
-> > > > > +	guard(spinlock)(&srso_lock);
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * Verify a new VM didn't come along, acquire the lock, and increment
-> > > > > +	 * the count before this task acquired the lock.
-> > > > > +	 */
-> > > > > +	if (atomic_read(&srso_nr_vms))
-> > > > > +		return;
-> > > > > +
-> > > > > +	on_each_cpu(svm_srso_clear_bp_spec_reduce, NULL, 1);
-> > > > 
-> > > > Just a passing-by comment. I get worried about sending IPIs while
-> > > > holding a spinlock because if someone ever tries to hold that spinlock
-> > > > with IRQs disabled, it may cause a deadlock.
-> > > > 
-> > > > This is not the case for this lock, but it's not obvious (at least to
-> > > > me) that holding it in a different code path that doesn't send IPIs with
-> > > > IRQs disabled could cause a problem.
-> > > > 
-> > > > You could add a comment, convert it to a mutex to make this scenario
-> > > > impossible,
-> > > 
-> > > Using a mutex doesn't make deadlock impossible, it's still perfectly legal to
-> > > disable IRQs while holding a mutex.
-> > 
-> > Right, but it's illegal to hold a mutex while disabling IRQs.
-> 
-> Nit on the wording: it's illegal to take a mutex while IRQs are disabled.  Disabling
-> IRQs while already holding a mutex is fine.
+>>  static void fpu_lock_guest_permissions(void)
+>>  {
+>> @@ -236,19 +253,18 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+>>  	struct fpstate *fpstate;
+>>  	unsigned int size;
+>>  
+>> -	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
+>> +	size = guest_default_cfg.size + ALIGN(offsetof(struct fpstate, regs), 64);
+>> +
+>>  	fpstate = vzalloc(size);
+>>  	if (!fpstate)
+>>  		return false;
+>>  
+>>  	/* Leave xfd to 0 (the reset value defined by spec) */
+>> -	__fpstate_reset(fpstate, 0);
+>> +	__guest_fpstate_reset(fpstate, 0);
+>
+>Given that there is a single caller for each of __fpstate_reset() and
+>__guest_fpstate_reset(), keeping the helpers does more harm than good IMO.
 
-Yes :)
+Seems Dave strongly dislikes inlining the helpers
 
-> 
-> And it's also illegal to take a spinlock while IRQs are disabled, becauase spinlocks
-> become sleepable mutexes with PREEMPT_RT=y.  While PREEMPT_RT=y isn't super common,
-> people do run KVM with PREEMPT_RT=y, and I'm guessing bots/CI would trip any such
-> violation quite quickly.
+https://lore.kernel.org/kvm/98dda94f-b805-4e0e-871a-085eb2f6ff20@intel.com/
 
-But I think spin_lock_irq() and friends aren't a violation with
-PREEMPT_RT=y, so these wouldn't trip bots/CI AFAICT.
+>Passing in '0' and setting xfd in __guest_fpstate_reset() is especially pointless.
 
-> 
-> E.g. with IRQs disabled around the guard(spinlock)(&srso_lock):
-> 
->  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
->  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 2799, name: qemu
->  preempt_count: 0, expected: 0
->  RCU nest depth: 0, expected: 0
->  1 lock held by qemu/2799:
->   #0: ffffffff8263f898 (srso_lock){....}-{3:3}, at: svm_vm_destroy+0x47/0xa0
->  irq event stamp: 9090
->  hardirqs last  enabled at (9089): [<ffffffff81414087>] vprintk_store+0x467/0x4d0
->  hardirqs last disabled at (9090): [<ffffffff812fd1ce>] svm_vm_destroy+0x5e/0xa0
->  softirqs last  enabled at (0): [<ffffffff8137585c>] copy_process+0xa1c/0x29f0
->  softirqs last disabled at (0): [<0000000000000000>] 0x0
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x57/0x80
->   __might_resched.cold+0xcc/0xde
->   rt_spin_lock+0x5b/0x170
->   svm_vm_destroy+0x47/0xa0
->   kvm_destroy_vm+0x180/0x310
->   kvm_vm_release+0x1d/0x30
->   __fput+0x10d/0x2f0
->   task_work_run+0x58/0x90
->   do_exit+0x325/0xa80
->   do_group_exit+0x32/0xa0
->   get_signal+0xb5b/0xbb0
->   arch_do_signal_or_restart+0x29/0x230
->   syscall_exit_to_user_mode+0xea/0x180
->   do_syscall_64+0x7a/0x220
->   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->  RIP: 0033:0x7fb50ae7fc4e
->   </TASK>
-> 
-> > In this case, if the other CPU is already holding the lock then there's no
-> > risk of deadlock, right?
-> 
-> Not on srso_lock, but there's still deadlock potential on the locks used to protect
-> the call_function_data structure.
-> 
-> > > Similarly, I don't want to add a comment, because there is absolutely nothing
-> > > special/unique about this situation/lock.  E.g. KVM has tens of calls to
-> > > smp_call_function_many_cond() while holding a spinlock equivalent, in the form
-> > > of kvm_make_all_cpus_request() while holding mmu_lock.
-> > 
-> > Agreed that it's not a unique situation at all. Ideally we'd have some
-> > debugging (lockdep?) magic that identifies that an IPI is being sent
-> > while a lock is held, and that this specific lock is never spinned on
-> > with IRQs disabled.
-> 
-> Sleepable spinlocks aside, the lockdep_assert_irqs_enabled() in
-> smp_call_function_many_cond() already provides sufficient of coverage for that
-> case.  And if code is using some other form of IPI communication *and* taking raw
-> spinlocks, then I think it goes without saying that developers would need to be
-> very, very careful.
+Agreed.
 
-I think we are not talking about the same thing, or I am
-misunderstanding you. The lockdep_assert_irqs_enabled() assertion in
-smp_call_function_many_cond() does not protect against this case AFAICT.
+Giving Dave's feedback, how about tweaking __fpstate_reset() for guest FPUs:
 
-Basically imagine that a new code path is added that does:
+From 13eddc8a0ecbd9e2a59dc1caacc7dbf198277a24 Mon Sep 17 00:00:00 2001
+From: Chao Gao <chao.gao@intel.com>
+Date: Fri, 31 May 2024 02:03:30 -0700
+Subject: [PATCH] x86/fpu: Initialize guest fpstate and FPU pseudo container
+ from guest defaults
 
-	spin_lock_irq(&srso_lock);
-	/* Some trivial logic, no IPI sending */
-	spin_unlock_irq(&srso_lock);
+fpu_alloc_guest_fpstate() currently uses host defaults to initialize guest
+fpstate and pseudo containers. Guest defaults were introduced to
+differentiate the features and sizes of host and guest FPUs. Switch to
+using guest defaults instead.
 
-I believe spin_lock_irq() will disable IRQs (at least on some setups)
-then spin on the lock.
+Adjust __fpstate_reset() to handle different defaults for host and guest
+FPUs. And to distinguish between the types of FPUs, move the initialization
+of indicators (is_guest and is_valloc) before the reset.
 
-Now imagine svm_srso_vm_destroy() is already holding the lock and sends
-the IPI from CPU 1, while CPU 2 is executing the above code with IRQs
-already disabled and spinning on the lock.
+Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+ arch/x86/kernel/fpu/core.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-This is the deadlock scenario I am talking about. The lockdep assertion
-in smp_call_function_many_cond() doesn't help because IRQs are enabled
-on CPU 1, the problem is that they are disabled on CPU 2.
-
-Lockdep can detect this by keeping track of the fact that some code
-paths acquire the lock with IRQs off while some code paths acquire the
-lock and send IPIs, I think.
-
-> 
-> > > smp_call_function_many_cond() already asserts that IRQs are disabled, so I have
-> > > zero concerns about this flow breaking in the future.
-> > 
-> > That doesn't really help tho, the problem is if another CPU spins on the
-> > lock with IRQs disabled, regardless of whether or not it. Basically if
-> > CPU 1 acquires the lock and sends an IPI while CPU 2 disables IRQs and
-> > spins on the lock.
-> 
-> Given that svm_srso_vm_destroy() is guaranteed to call on_each_cpu() with the
-> lock held at some point, I'm completely comfortable relying on its lockdep
-> assertion.
-> 
-> > > > or dismiss my comment as being too paranoid/ridiculous :)
-> > > 
-> > > I wouldn't say your thought process is too paranoid; when writing the code, I had
-> > > to pause and think to remember whether or not using on_each_cpu() while holding a
-> > > spinlock is allowed.  But I do think the conclusion is wrong :-)
-> > 
-> > That's fair. I think protection against this should be done more generically
-> > as I mentioned earlier, but it felt like it would be easy-ish to side-step it
-> > in this case.
-> 
-> Eh, modifying this code in such a way that it could deadlock without lockdep
-> noticing would likely send up a comincal number of red flags during code review.
-
-It just takes another code path using spin_lock_irq() or friends to
-deadlock AFAICT.
-
-Anyway, this has side tracked and I am probably taking more of your time
-that I originally wanted, I was just making an observation more-or-less
-:)
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 444e517a8648..0d501bd25d79 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -236,19 +236,22 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	struct fpstate *fpstate;
+ 	unsigned int size;
+ 
+-	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
++	size = guest_default_cfg.size + ALIGN(offsetof(struct fpstate, regs), 64);
++
+ 	fpstate = vzalloc(size);
+ 	if (!fpstate)
+ 		return false;
+ 
++	/* Initialize indicators to reflect properties of the fpstate */
++	fpstate->is_valloc	= true;
++	fpstate->is_guest	= true;
++
+ 	/* Leave xfd to 0 (the reset value defined by spec) */
+ 	__fpstate_reset(fpstate, 0);
+ 	fpstate_init_user(fpstate);
+-	fpstate->is_valloc	= true;
+-	fpstate->is_guest	= true;
+ 
+ 	gfpu->fpstate		= fpstate;
+-	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
++	gfpu->xfeatures		= guest_default_cfg.features;
+ 
+ 	/*
+ 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
+@@ -535,10 +538,20 @@ void fpstate_init_user(struct fpstate *fpstate)
+ 
+ static void __fpstate_reset(struct fpstate *fpstate, u64 xfd)
+ {
+-	/* Initialize sizes and feature masks */
+-	fpstate->size		= fpu_kernel_cfg.default_size;
++	/*
++	 * Initialize sizes and feature masks. Supervisor features and
++	 * sizes may diverge between guest FPUs and host FPUs, whereas
++	 * user features and sizes are always identical the same.
++	 */
++	if (fpstate->is_guest) {
++		fpstate->size		= guest_default_cfg.size;
++		fpstate->xfeatures	= guest_default_cfg.features;
++	} else {
++		fpstate->size		= fpu_kernel_cfg.default_size;
++		fpstate->xfeatures	= fpu_kernel_cfg.default_features;
++	}
++
+ 	fpstate->user_size	= fpu_user_cfg.default_size;
+-	fpstate->xfeatures	= fpu_kernel_cfg.default_features;
+ 	fpstate->user_xfeatures	= fpu_user_cfg.default_features;
+ 	fpstate->xfd		= xfd;
+ }
+-- 
+2.47.1
