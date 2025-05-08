@@ -1,248 +1,138 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207C022C35E
-	for <kvm@vger.kernel.org>; Thu,  8 May 2025 13:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2CA1553AA
+	for <kvm@vger.kernel.org>; Thu,  8 May 2025 13:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746711902; cv=none; b=sl20Vt8RHY7l76XIPgxflDp0HUqMBytgzrM9G9J4Q0FWNXuxzFnRS7Z3v+gXVd1x8dBEg5gj3kwEI8/NvNMK+C/g6d/sOrzdSqMElJCcWBcMr0Ccte9PyYcDmZuut0B/rwrTDFvaCnDhNr4dIgf8J/D5ByvmtO+Rh17FZBo681k=
+	t=1746711909; cv=none; b=JA6pq2zBbdZi4DSiBMXw38Y2eHgF/jOzhmQlwAIkkyWGuBEHaUL/BsLWkrOh6t3F9uZ4rRKNQno093AAHTrgOCG71f2K4NE21frlqZejFGzXIPcPp/QJ/bJ1hSLRP1X3mEhdDDwNjpxUS1djXC9L8baF5IkjqKPSuevrGucchas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746711902; c=relaxed/simple;
-	bh=i0KUlS9RDzenIxObbPgpaNO8jkvSgpXNWIr54ve6bBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M87ytAkS2ZNmvxJ3NuytJXgeVoJ9mKqTLdHEl2j1zzg6nwsgPYWh6Mo0R+s6Za7Z2s7lzVb6oguPeCZYh59jPitUvfrJOMO2n9uIi3i4AwAE89sQYesNXxGW5ZpmRUipRYdQnTKproTrjG6sEPHRn4YqINJ2fJzw4M4pr+62Iuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g5KWfTrY; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1746711909; c=relaxed/simple;
+	bh=cKhpRuz/zY+9ViDO4LOnidnYyRBeKNH9aRjFZDkFw4Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qDCMTegHSjefqgvwPoCx3tRiyOeCt5eM85q9ISK9xXEk4HohBEYqUKzarmrp+KHfzV5uwGcCL4A1r2tC0iJ9meQCTnI4Y/KPWo1QqQ7C11oNUzykTS9gOV+EJY/TorpI3bEWRvASZ+dTuF2aZ7xfHeLY56FqBWgcXKhCng4MV68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=cQW7GM1Q; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g5KWfTrY"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-739525d4e12so961167b3a.3
-        for <kvm@vger.kernel.org>; Thu, 08 May 2025 06:45:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="cQW7GM1Q"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a0b28d9251so154522f8f.0
+        for <kvm@vger.kernel.org>; Thu, 08 May 2025 06:45:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746711900; x=1747316700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=ventanamicro.com; s=google; t=1746711905; x=1747316705; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J0A/U1sPooJ/zOn+77YMR3kP+UO0nbbTuEYORNZS6uE=;
-        b=g5KWfTrYEuwBcTV/3xuOuszqBujPb32sMJkgwoipSWLatmAwIbGx+UrbkV+XTXDs+Q
-         lJ+Xl7Pm90pvP267IIk4SPe6RZLcVxeZqvXJyp2m9nzcHAUPnwZO8+X7HOQDq6cJmlqb
-         pKT3KSCMHknW8BaxXcoPW1xgGUSNdPvdrXEOhlBPWFlis0PjMscLI2rMbnIOE0y1BJeT
-         6EfjcE++YwKFKw1MYsAWjA44tPC6jvvx8O803bTQW2sTJRnrTPKuCes3u+FTKuurShVp
-         11Nf79caXQSLWKJ3v3FeUlxhN0xuSx7YDRTlDxuMBMZzmTT6QcSZu2lxxb6K7fy41ozH
-         bQFw==
+        bh=ddvWwlvmJ56gF3G0LSGRAILthDv6fgZpldIeC6gbgK4=;
+        b=cQW7GM1Q1aLe9GFL/jvzN8UjzwtNrxFbWiRuNkeZgtYsISYnFMiXgL9bhL0zlTR+9+
+         WR5RoL/uIeDYoFbZamLlHsFVCtHx1IbJ5GvF78YAr6iA7jsD8CMY6md99og6KD2fl7Ro
+         uDCr5FDIfmsNk6rut4sqMW4LhPNLYl0P3/rToa9L//0Z1v2a/X9coj8j1f6lvCIvftMG
+         J1Jx4b0SW92ZZEMpfkf70NwCyr4gLZeCQS4Wb9x88hmpvjlgHgg3ZpOg7TF4d3vN65RH
+         7d4zgkanVSOUqgCvd/+jox8ygS6BDEdfLVNUd2rfRQpKPLaNRcKxzRPILPILTR+JSGtq
+         Fm3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746711900; x=1747316700;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J0A/U1sPooJ/zOn+77YMR3kP+UO0nbbTuEYORNZS6uE=;
-        b=nH61sLsFhZEGKsgBADl5OqHllgpm7lpFQfgwM65hWA8Q+D1J0TYIUflLkQXInx0oxS
-         +wwa6mV9b9Ka8+ICLiP0GUGXkYMs+7zH6Jn4xLw8uASaFimcRpSNSb/yOuY7x5lDUUYU
-         MyRIPCXJ4TWpSxpdxOFrksk16sI3Nps+2tRsgCQsjN8FIqrrLhKHxEvNh1thrrgwi9Pc
-         mzWIQBt2hdymqRzPXVn/UVOIJ/90tAy9vIjVNLfEbsNDKRqN8X7bVXZos9x6jihnbznE
-         0CBn9DGY8po10BrPTRHjtlr5Qj9L+nErRkAlV2Moxfs+Bs2F2MYHJT+FVtATXfJ9lPo5
-         tKCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvkCR3/pCo6/YpugIDXn8PBneQLaR9nhQb04wvvHx18R+xaD8NTEASjGW1QljuqZYyLN4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybKaDq2eRwIU7yCifCLnv9GirYOrMULhewVmTCRznd5yGrexX6
-	ieZB9NTCkomuutAuRTjcD3cVAmKLSC5qShIsFYovd+/xT6NFnFFNufKac4aRINI=
-X-Gm-Gg: ASbGnctO13Twpi1hSVWYDORptkXvEUqzL2JKCr0oHy87XnIXLj4cv/8LUDTjdfdhdT6
-	LJD9IyRWRB/sKOaleZ7Eei8UEnr2GxkGzGQuKwpv9anCo+ab1uWzvgwKChTlTVlr7/kUR0LKVOy
-	1kJRmw/JL9R9dOXCO3IeSSI+AbvcdQo8b/rzs90qRMhqLf577wDihMgXo3CrH57STYwH5O9F+BF
-	x9n0qFj9n2aAtkCoG7/roSeWVIalofVRbpGlUX5O4sx6HQ4IiT3XR9cxOMwHRF1MpypkBK1h5W4
-	LhfKw13aqUorGoN1xQGRV6NdLNlSClgcK+d6PSbqxa06eGyLK0bNsTTbjg3qYEa6WFHhfAUUAqa
-	UDgL0ZiArmmvheU4=
-X-Google-Smtp-Source: AGHT+IFHbTrvwax7UWwh9Y73Xs5DKNO90bnJgGgnaR0eEfKH1whXMeCWqTRwEn5UTKj7+iIdniqr0Q==
-X-Received: by 2002:a05:6a00:2791:b0:730:927c:d451 with SMTP id d2e1a72fcca58-7409cfd813dmr10943548b3a.20.1746711900247;
-        Thu, 08 May 2025 06:45:00 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-740590a489asm13619132b3a.170.2025.05.08.06.44.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 May 2025 06:44:59 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-	kvm@vger.kernel.org,
-	Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	qemu-riscv@nongnu.org,
-	Weiwei Li <liwei1518@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-	qemu-arm@nongnu.org,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v4 24/27] hw/intc/ioapic: Remove IOAPICCommonState::version field
-Date: Thu,  8 May 2025 15:35:47 +0200
-Message-ID: <20250508133550.81391-25-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250508133550.81391-1-philmd@linaro.org>
-References: <20250508133550.81391-1-philmd@linaro.org>
+        d=1e100.net; s=20230601; t=1746711905; x=1747316705;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ddvWwlvmJ56gF3G0LSGRAILthDv6fgZpldIeC6gbgK4=;
+        b=u1HmN1YW11GkuMkUFd78bB+F6nMf+ZEr7JzFIZn3Y1/JI+w8IG4IfryipOAPPx7Y6C
+         i1i6WJb5J6hXvStrOzjYsTG6Ptd58dq8RxFXkjAC6grANSXCy58x34s61/cKMasXj/C0
+         x/NGRexy3qOhZnnru/AZV2TaBJj0FNFVkP3/C9ws6v9Gn0C59ulFSlEQ+ZzG1GvBu3EY
+         KvaolK9sxSojByLCI+37FDO1o2R8F08ZXXw4h4mYZsGI8lnvaOMyNm/4BiaxTgKDsTSh
+         VM4Mm2YVmK+lEhWRFbT4WnbuQOg4Ebl2+m7YxvmDatoTjyFXZAdlkkhLTelv1fE4QWyK
+         6h0g==
+X-Gm-Message-State: AOJu0YwS1OfvKaA2og5/BzCPXE4fxQqvY6BbIKak4SMdoPrO9fXGqesC
+	ByQUzsIjCweDtTj/iyxMaG/tsAXk/61y9jOF65vPfK/2BPp+XAZKuCIaQAP/foQ=
+X-Gm-Gg: ASbGnctmUIyWIH/88Q7Xej/V/xD31ACJ10OLpTV+VaYna5tD9ugnsz810rWEouVmmwO
+	O+l8ezyhXDlyzUQUPZeInz96gGZCuPVMfoFpNsaWnBEuuMECQbcQ3NwiY7o1X8P6ZcIdFfbJCti
+	O4fVjRpQEzFMt876vgwCUBvpf84+Iu/3Ox5BflgrHPsz+YRA1irF7IwZ6b1EPQDjkseWhBO3JuI
+	8Zw6oi8E8nME15FL+xgICbOp5B1KpzWTCDUWm4qIk3TRLlD2TtS8tPLgTfbRXRsxB2O56J2e4Oo
+	u6fyqcJugPI2eSSd5AkHRFBRJQcY6aYHHs4RlbaJfdaOt+8P69fgzaKwrxg=
+X-Google-Smtp-Source: AGHT+IFF1lCrGjkOjvYLS8FuS71T+NJYPZUDl1ROqgtA2qAAckMb6oaYDMoD6JX8fEG+cSaT0+BVjg==
+X-Received: by 2002:a05:6000:178e:b0:3a1:3543:a74a with SMTP id ffacd0b85a97d-3a13543abcdmr434102f8f.7.1746711905310;
+        Thu, 08 May 2025 06:45:05 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:a451:a252:64ea:9a0e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ebe00sm26063f8f.38.2025.05.08.06.45.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 06:45:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 08 May 2025 15:45:03 +0200
+Message-Id: <D9QTOYMN362W.398FE9SQB0S4X@ventanamicro.com>
+Subject: Re: [PATCH 0/5] Enable hstateen bits lazily for the KVM RISC-V
+ Guests
+Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+ <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+To: "Atish Patra" <atish.patra@linux.dev>, "Anup Patel"
+ <anup@brainfault.org>, "Atish Patra" <atishp@atishpatra.org>, "Paul
+ Walmsley" <paul.walmsley@sifive.com>, "Palmer Dabbelt"
+ <palmer@dabbelt.com>, "Alexandre Ghiti" <alex@ghiti.fr>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+References: <20250505-kvm_lazy_enable_stateen-v1-0-3bfc4008373c@rivosinc.com> <D9OYWFEXSA55.OUUXFPIGGBZV@ventanamicro.com> <bc0f1273-d596-47dd-bcc6-be9894157828@linux.dev> <D9Q05T702L8Y.3UTLG7VXIFXOK@ventanamicro.com> <ec73105c-f359-4156-8285-b471e3521378@linux.dev>
+In-Reply-To: <ec73105c-f359-4156-8285-b471e3521378@linux.dev>
 
-The IOAPICCommonState::version integer was only set
-in the hw_compat_2_7[] array, via the 'version=0x11'
-property. We removed all machines using that array,
-lets remove that property, simplify by only using the
-default version (defined as IOAPIC_VER_DEF).
+2025-05-07T17:34:38-07:00, Atish Patra <atish.patra@linux.dev>:
+> On 5/7/25 7:36 AM, Radim Kr=C4=8Dm=C3=A1=C5=99 wrote:
+>> 2025-05-06T11:24:41-07:00, Atish Patra <atish.patra@linux.dev>:
+>>> On 5/6/25 2:24 AM, Radim Kr=C4=8Dm=C3=A1=C5=99 wrote:
+>>>> 2025-05-05T14:39:25-07:00, Atish Patra <atishp@rivosinc.com>:
+>>>>>                                                      This series exte=
+nds
+>>>>> those to enable to correpsonding hstateen bits in PATCH1. The remaini=
+ng
+>>>>> patches adds lazy enabling support of the other bits.
+>>>> The ISA has a peculiar design for hstateen/sstateen interaction:
+>>>>
+>>>>     For every bit in an hstateen CSR that is zero (whether read-only z=
+ero
+>>>>     or set to zero), the same bit appears as read-only zero in sstatee=
+n
+>>>>     when accessed in VS-mode.
+>>> Correct.
+>>>
+>>>> This means we must clear bit 63 in hstateen and trap on sstateen
+>>>> accesses if any of the sstateen bits are not supposed to be read-only =
+0
+>>>> to the guest while the hypervisor wants to have them as 0.
+>>> Currently, there are two bits in sstateen. FCSR and ZVT which are not
+>>> used anywhere in opensbi/Linux/KVM stack.
+>> True, I guess we can just make sure the current code can't by mistake
+>> lazily enable any of the bottom 32 hstateen bits and handle the case
+>> properly later.
+>
+> I can update the cover letter and leave a comment about that.
+>
+> Do you want a additional check in sstateen=20
+> trap(kvm_riscv_vcpu_hstateen_enable_stateen)
+> to make sure that the new value doesn't have any bits set that is not=20
+> permitted by the hypervisor ?
 
-For the record, this field was introduced in commit
-20fd4b7b6d9 ("x86: ioapic: add support for explicit EOI"):
+I wanted to prevent kvm_riscv_vcpu_hstateen_lazy_enable() from being
+able to modify the bottom 32 bits, because they are guest-visible and
+KVM does not handle them correctly -- it's an internal KVM error that
+should be made obvious to future programmers.
 
- >   Some old Linux kernels (upstream before v4.0), or any released RHEL
- >   kernels has problem in sending APIC EOI when IR is enabled.
- >   Meanwhile, many of them only support explicit EOI for IOAPIC, which
- >   is only introduced in IOAPIC version 0x20. This patch provide a way
- >   to boost QEMU IOAPIC to version 0x20, in order for QEMU to correctly
- >   receive EOI messages.
- >
- >   Without boosting IOAPIC version to 0x20, kernels before commit
- >   d32932d ("x86/irq: Convert IOAPIC to use hierarchical irqdomain
- >   interfaces") will have trouble enabling both IR and level-triggered
- >   interrupt devices (like e1000).
- >
- >   To upgrade IOAPIC to version 0x20, we need to specify:
- >
- >     -global ioapic.version=0x20
- >
- >   To be compatible with old systems, 0x11 will still be the default
- >   IOAPIC version. Here 0x11 and 0x20 are the only versions to be
- >   supported.
- >
- >   One thing to mention: this patch only applies to emulated IOAPIC. It
- >   does not affect kernel IOAPIC behavior.
+>>> In case, we need to enable one of the bits in the future, does hypeviso=
+r
+>>> need to trap every sstateen access ?
+>> We need to trap sstateen accesses if the guest is supposed to be able to
+>> control a bit in sstateen, but the hypervisor wants to lazily enable
+>> that feature and sets 0 in hstateen until the first trap.
+> Yes. That's what PATCH 4 in this series does.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
----
- hw/intc/ioapic_internal.h |  3 +--
- hw/intc/ioapic.c          | 18 ++----------------
- hw/intc/ioapic_common.c   |  2 +-
- 3 files changed, 4 insertions(+), 19 deletions(-)
+I was thinking about the correct emulation.
 
-diff --git a/hw/intc/ioapic_internal.h b/hw/intc/ioapic_internal.h
-index 51205767f44..330ce195222 100644
---- a/hw/intc/ioapic_internal.h
-+++ b/hw/intc/ioapic_internal.h
-@@ -82,7 +82,7 @@
- #define IOAPIC_ID_MASK                  0xf
- 
- #define IOAPIC_VER_ENTRIES_SHIFT        16
--
-+#define IOAPIC_VER_DEF                  0x20
- 
- #define TYPE_IOAPIC_COMMON "ioapic-common"
- OBJECT_DECLARE_TYPE(IOAPICCommonState, IOAPICCommonClass, IOAPIC_COMMON)
-@@ -104,7 +104,6 @@ struct IOAPICCommonState {
-     uint32_t irr;
-     uint64_t ioredtbl[IOAPIC_NUM_PINS];
-     Notifier machine_done;
--    uint8_t version;
-     uint64_t irq_count[IOAPIC_NUM_PINS];
-     int irq_level[IOAPIC_NUM_PINS];
-     int irq_eoi[IOAPIC_NUM_PINS];
-diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
-index 133bef852d1..5cc97767d9d 100644
---- a/hw/intc/ioapic.c
-+++ b/hw/intc/ioapic.c
-@@ -315,7 +315,7 @@ ioapic_mem_read(void *opaque, hwaddr addr, unsigned int size)
-             val = s->id << IOAPIC_ID_SHIFT;
-             break;
-         case IOAPIC_REG_VER:
--            val = s->version |
-+            val = IOAPIC_VER_DEF |
-                 ((IOAPIC_NUM_PINS - 1) << IOAPIC_VER_ENTRIES_SHIFT);
-             break;
-         default:
-@@ -411,8 +411,7 @@ ioapic_mem_write(void *opaque, hwaddr addr, uint64_t val,
-         }
-         break;
-     case IOAPIC_EOI:
--        /* Explicit EOI is only supported for IOAPIC version 0x20 */
--        if (size != 4 || s->version != 0x20) {
-+        if (size != 4) {
-             break;
-         }
-         ioapic_eoi_broadcast(val);
-@@ -444,18 +443,10 @@ static void ioapic_machine_done_notify(Notifier *notifier, void *data)
- #endif
- }
- 
--#define IOAPIC_VER_DEF 0x20
--
- static void ioapic_realize(DeviceState *dev, Error **errp)
- {
-     IOAPICCommonState *s = IOAPIC_COMMON(dev);
- 
--    if (s->version != 0x11 && s->version != 0x20) {
--        error_setg(errp, "IOAPIC only supports version 0x11 or 0x20 "
--                   "(default: 0x%x).", IOAPIC_VER_DEF);
--        return;
--    }
--
-     memory_region_init_io(&s->io_memory, OBJECT(s), &ioapic_io_ops, s,
-                           "ioapic", 0x1000);
- 
-@@ -476,10 +467,6 @@ static void ioapic_unrealize(DeviceState *dev)
-     timer_free(s->delayed_ioapic_service_timer);
- }
- 
--static const Property ioapic_properties[] = {
--    DEFINE_PROP_UINT8("version", IOAPICCommonState, version, IOAPIC_VER_DEF),
--};
--
- static void ioapic_class_init(ObjectClass *klass, const void *data)
- {
-     IOAPICCommonClass *k = IOAPIC_COMMON_CLASS(klass);
-@@ -493,7 +480,6 @@ static void ioapic_class_init(ObjectClass *klass, const void *data)
-      */
-     k->post_load = ioapic_update_kvm_routes;
-     device_class_set_legacy_reset(dc, ioapic_reset_common);
--    device_class_set_props(dc, ioapic_properties);
- }
- 
- static const TypeInfo ioapic_info = {
-diff --git a/hw/intc/ioapic_common.c b/hw/intc/ioapic_common.c
-index fce3486e519..8b3e2ba9384 100644
---- a/hw/intc/ioapic_common.c
-+++ b/hw/intc/ioapic_common.c
-@@ -83,7 +83,7 @@ static void ioapic_print_redtbl(GString *buf, IOAPICCommonState *s)
-     int i;
- 
-     g_string_append_printf(buf, "ioapic0: ver=0x%x id=0x%02x sel=0x%02x",
--                           s->version, s->id, s->ioregsel);
-+                           IOAPIC_VER_DEF, s->id, s->ioregsel);
-     if (s->ioregsel) {
-         g_string_append_printf(buf, " (redir[%u])\n",
-                                (s->ioregsel - IOAPIC_REG_REDTBL_BASE) >> 1);
--- 
-2.47.1
-
+e.g. guest sets sstateen bit X to 1, but KVM wants to handle the feature
+X lazily, which means that hstateen bit X is 0.
+hstateen bit SE0 must be 0 in that case, because KVM must trap the guest
+access to bit X and properly emulate it.
+When the guest accesses a feature controlled by sstateen bit X, KVM will
+lazily enable the feature and then set sstateen and hstateen bit X.
