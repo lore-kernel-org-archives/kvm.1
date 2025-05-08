@@ -1,187 +1,139 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC3719309C
-	for <kvm@vger.kernel.org>; Thu,  8 May 2025 13:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2153819309C
+	for <kvm@vger.kernel.org>; Thu,  8 May 2025 13:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746711974; cv=none; b=kOEGw0Ac7aY3Ez+t95wwdiuEFVW5DQecOabc9NLRDi9srpjZKaXvkXaBHYTi5DvTtHj8Oho7WPBXjRYJRBbF4fkwyz+pEiuzzO3IWQ8DP+DT7rCnDkC04gKkTwLUqEQ8YD1VV/ctSQgwJO1TqhGcKoZ2f5Tg9kTTA1LejK+Pfjo=
+	t=1746712198; cv=none; b=fyVfqqp/zdfx1g2LRlMTf35WXlUP5UO38DlEZQePjoEwK7Loeh8omZ+t0p8UR8ONicizhztAJpJgrIadVMhjv2pFaDE5OfyZewdGmg633TUS3hkpexNZCb03HXQhB6OYGozDq1K/38oXIbe0No321c+VicO6dyxvCK3gp81VqpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746711974; c=relaxed/simple;
-	bh=Ex2GpTr6GoUbDVEbeTQuvclJK0ug9LhPdAET+OSeF9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j/b7b4m8QyLHLB5YDLNN8k1CegSbn0sxWjIvLgzZM6T+KPU2jzKj0xDnvaX8j9HNddwstMn6wYqLhWp71BESeP0zDHFnQqgW47k0RfG+E5tttQZ599kAfWlxGGEnqU/UVInAdO7V1MINXN+eEQinlGtOjjkgLMxNud4woRMR/xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EmmrF1sJ; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EmmrF1sJ"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-736ad42dfd6so788477b3a.3
-        for <kvm@vger.kernel.org>; Thu, 08 May 2025 06:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746711972; x=1747316772; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dAEnpROpQK6DxM6uJJQ1bpWzbrmSzQalAkAVB3r0tgU=;
-        b=EmmrF1sJ08H7xxF5OcamGdHBn3q78Doo/E+vgGa1uNZAiHQ0SfMjbqWE/q/qU+lyQN
-         hiFbZGsBsEzVVCJx28+DlbnZhbt3GWzTf4fKLe6W2ELOxB682YH48NCNQwHzXmnB1L++
-         u87V7MwmLS/wUlPqu4ZdTMTY1WCA6sHsX85OZE9P3DA0NRah9IM4IyAzfJB4C7m1fCXx
-         X2NEacj6+fv2QsIVIkQzaxHAoVkeRSgQpH7CNxiKV1ZwK+QlSvuWj5xjXgrA+5BIpT2b
-         PDB13SRVmri8w1erV8xKtfX7ICmLGnmk4FfNIxVscsWtUO99rulIwDeFlLcDCckLgDoK
-         sDiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746711972; x=1747316772;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dAEnpROpQK6DxM6uJJQ1bpWzbrmSzQalAkAVB3r0tgU=;
-        b=HjBff35Wlkxi4KFLtoiGKFwEEtG0g5vj3V0jm3bLiKQpxM7ZQyrcAAWV32XwL4TPq7
-         tgHWIaogoi931EA7WIU0SKJgoKWwm6frHLDNAhnrLWxGHR4lvuGj8ChtGjZSxwqBgTpL
-         ToCEVECEbl2UBWOhbzJOyLefQHtckpdjzHT7PemR6oQM+clg+YazKG1YEZ4Q5Y/M4B6g
-         ELybK+CmgYk+ugRf+9S95gpmeSkVCDRWwMZSkJ946FQZ/fhot9cwBFWdI/o0E4KpjAm6
-         ewURbbigVumMyXwMs7/SdptEubtfZeFAX5FEuC9PY5kWeSIlBBxtHpJdt9ju6o66Je7H
-         7CmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVA0oBclScB4FXIQqFD7tGMZIBD6nwN7mazmgdHTl9DWOd8osf9JjAt28OGgSQI7Bwwji8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIJ5fUhVd7/Hj8eMdoBTfaD7ojuHmVQyo2nqHZpChOut1HFhun
-	V5j2SKHC5x4A2ofTLZ5NHYmLKhyWl5KjfODNhdCHITLYHjaELTVZaOBIjNjjvLQ=
-X-Gm-Gg: ASbGncvbnS0wvMjtZ07z3ORkDwHvsHCvUTKSpdoL9eo6m3lt+fxLmQmd+/fUDmqYurX
-	dDZ8tvLA9LycUemNgQYptxvh7AZv6M+1fqhTWyqCnBDUBRLO8G0NUqZ5Z41ePVKYKRpXas+j1No
-	W5lH/t9un0aYJIHUVovkPCgJOMuYto47sJQqZVYYxktF6GYcC74lHZsH8MuH9w7pssRCqx1njGO
-	otxjGl258ZT+VO4P5pcPrRNadGngFTrnVJ65rDIVbMKlC9/ejCeHFyjpvYJIQmU82apoZzckcti
-	i+aDlyJfr2Loiar150h3oAX3zSiP6wai8J8oFHAqi9/bGw7luI68YPQ5QEr/TXf9l1tahbbG+/P
-	6brOfheV+WTc+VH0=
-X-Google-Smtp-Source: AGHT+IG9WzoCZnHzGx/rhe5MQGTbfwj2jk9eAlMQ107yUfErvTrwEaQ0R1H/OfqPr8whvcSNPiejCQ==
-X-Received: by 2002:a05:6a20:9f8f:b0:1f5:5ca4:2744 with SMTP id adf61e73a8af0-2148ba256e3mr9499152637.17.1746711972638;
-        Thu, 08 May 2025 06:46:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058d7a397sm13221110b3a.28.2025.05.08.06.45.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 May 2025 06:46:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-	kvm@vger.kernel.org,
-	Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	qemu-riscv@nongnu.org,
-	Weiwei Li <liwei1518@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-	qemu-arm@nongnu.org,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v4 27/27] hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_PAGE_PER_VQ definition
-Date: Thu,  8 May 2025 15:35:50 +0200
-Message-ID: <20250508133550.81391-28-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250508133550.81391-1-philmd@linaro.org>
-References: <20250508133550.81391-1-philmd@linaro.org>
+	s=arc-20240116; t=1746712198; c=relaxed/simple;
+	bh=uBC2Ihdt2rDNkt4rQMMXMF3OAN4i06Q6AEeMdRZfFL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W8lAAf0yhQhOhaQ1LSpDWQPdzdyl1np+pC/0+Yh93HNMaDdy88Ql0Y4JbY4ZgreNQsJqvo3vo2zoerxO+fex0jHS0UwxNLGAE836oueIXHFku2DAEL9VJuEv0PmEhWlNE2lCfQwfHdaQtNG0qx43OxhX1tbA06bFe7bFsw0twa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC540106F;
+	Thu,  8 May 2025 06:49:45 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4038E3F58B;
+	Thu,  8 May 2025 06:49:54 -0700 (PDT)
+Date: Thu, 8 May 2025 14:49:48 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <tabba@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>
+Subject: Re: [PATCH v4 27/43] KVM: arm64: Use computed FGT masks to setup FGT
+ registers
+Message-ID: <20250508134948.GA3256485@e124191.cambridge.arm.com>
+References: <20250506164348.346001-1-maz@kernel.org>
+ <20250506164348.346001-28-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250506164348.346001-28-maz@kernel.org>
 
-VIRTIO_PCI_FLAG_PAGE_PER_VQ was only used by the hw_compat_2_7[]
-array, via the 'page-per-vq=on' property. We removed all
-machines using that array, lets remove all the code around
-VIRTIO_PCI_FLAG_PAGE_PER_VQ (see commit 9a4c0e220d8 for similar
-VIRTIO_PCI_FLAG_* enum removal).
+On Tue, May 06, 2025 at 05:43:32PM +0100, Marc Zyngier wrote:
+> Flip the hyervisor FGT configuration over to the computed FGT
+> masks.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
----
- include/hw/virtio/virtio-pci.h |  1 -
- hw/display/virtio-vga.c        | 10 ----------
- hw/virtio/virtio-pci.c         |  7 +------
- 3 files changed, 1 insertion(+), 17 deletions(-)
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 9838e8650a6..8abc5f8f20d 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -33,7 +33,6 @@ enum {
-     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
-     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
-     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
--    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
-     VIRTIO_PCI_FLAG_ATS_BIT,
-     VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
-     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT,
-diff --git a/hw/display/virtio-vga.c b/hw/display/virtio-vga.c
-index 40e60f70fcd..83d01f089b5 100644
---- a/hw/display/virtio-vga.c
-+++ b/hw/display/virtio-vga.c
-@@ -141,16 +141,6 @@ static void virtio_vga_base_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-                                VIRTIO_GPU_SHM_ID_HOST_VISIBLE);
-     }
- 
--    if (!(vpci_dev->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ)) {
--        /*
--         * with page-per-vq=off there is no padding space we can use
--         * for the stdvga registers.  Make the common and isr regions
--         * smaller then.
--         */
--        vpci_dev->common.size /= 2;
--        vpci_dev->isr.size /= 2;
--    }
--
-     offset = memory_region_size(&vpci_dev->modern_bar);
-     offset -= vpci_dev->notify.size;
-     vpci_dev->notify.offset = offset;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 7c965771907..4e0d4bda6ed 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -314,12 +314,9 @@ static bool virtio_pci_ioeventfd_enabled(DeviceState *d)
-     return (proxy->flags & VIRTIO_PCI_FLAG_USE_IOEVENTFD) != 0;
- }
- 
--#define QEMU_VIRTIO_PCI_QUEUE_MEM_MULT 0x1000
--
- static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy *proxy)
- {
--    return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
--        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
-+    return 4;
- }
- 
- static int virtio_pci_ioeventfd_assign(DeviceState *d, EventNotifier *notifier,
-@@ -2348,8 +2345,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT, false),
-     DEFINE_PROP_BIT("modern-pio-notify", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
--    DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
--                    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
-     DEFINE_PROP_BIT("ats", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
--- 
-2.47.1
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 45 +++++++++++++++++++++----
+>  1 file changed, 38 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> index 925a3288bd5be..e8645375499df 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> @@ -65,12 +65,41 @@ static inline void __activate_traps_fpsimd32(struct kvm_vcpu *vcpu)
+>  	}
+>  }
+>  
+> +#define reg_to_fgt_masks(reg)						\
+> +	({								\
+> +		struct fgt_masks *m;					\
+> +		switch(reg) {						\
+> +		case HFGRTR_EL2:					\
+> +			m = &hfgrtr_masks;				\
+> +			break;						\
+> +		case HFGWTR_EL2:					\
+> +			m = &hfgwtr_masks;				\
+> +			break;						\
+> +		case HFGITR_EL2:					\
+> +			m = &hfgitr_masks;				\
+> +			break;						\
+> +		case HDFGRTR_EL2:					\
+> +			m = &hdfgrtr_masks;				\
+> +			break;						\
+> +		case HDFGWTR_EL2:					\
+> +			m = &hdfgwtr_masks;				\
+> +			break;						\
+> +		case HAFGRTR_EL2:					\
+> +			m = &hafgrtr_masks;				\
+> +			break;						\
+> +		default:						\
+> +			BUILD_BUG_ON(1);				\
+> +		}							\
+> +									\
+> +		m;							\
+> +	})
+> +
+>  #define compute_clr_set(vcpu, reg, clr, set)				\
+>  	do {								\
+> -		u64 hfg;						\
+> -		hfg = __vcpu_sys_reg(vcpu, reg) & ~__ ## reg ## _RES0;	\
 
+__vcpu_sys_reg() has done the ~RES0 part since 888f0880702 ("KVM: arm64: nv: Add sanitising to VNCR-backed sysregs"),
+in case anyone else wondered where that part went!
+
+> -		set |= hfg & __ ## reg ## _MASK; 			\
+> -		clr |= ~hfg & __ ## reg ## _nMASK; 			\
+> +		u64 hfg = __vcpu_sys_reg(vcpu, reg);			\
+> +		struct fgt_masks *m = reg_to_fgt_masks(reg);		\
+> +		set |= hfg & m->mask;					\
+> +		clr |= ~hfg & m->nmask;					\
+>  	} while(0)
+>  
+>  #define reg_to_fgt_group_id(reg)					\
+> @@ -101,12 +130,14 @@ static inline void __activate_traps_fpsimd32(struct kvm_vcpu *vcpu)
+>  #define compute_undef_clr_set(vcpu, kvm, reg, clr, set)			\
+>  	do {								\
+>  		u64 hfg = kvm->arch.fgu[reg_to_fgt_group_id(reg)];	\
+> -		set |= hfg & __ ## reg ## _MASK;			\
+> -		clr |= hfg & __ ## reg ## _nMASK; 			\
+> +		struct fgt_masks *m = reg_to_fgt_masks(reg);		\
+> +		set |= hfg & m->mask;					\
+> +		clr |= hfg & m->nmask;					\
+>  	} while(0)
+>  
+>  #define update_fgt_traps_cs(hctxt, vcpu, kvm, reg, clr, set)		\
+>  	do {								\
+> +		struct fgt_masks *m = reg_to_fgt_masks(reg);		\
+>  		u64 c = clr, s = set;					\
+>  		u64 val;						\
+>  									\
+> @@ -116,7 +147,7 @@ static inline void __activate_traps_fpsimd32(struct kvm_vcpu *vcpu)
+>  									\
+>  		compute_undef_clr_set(vcpu, kvm, reg, c, s);		\
+>  									\
+> -		val = __ ## reg ## _nMASK;				\
+> +		val = m->nmask;						\
+>  		val |= s;						\
+>  		val &= ~c;						\
+>  		write_sysreg_s(val, SYS_ ## reg);			\
