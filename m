@@ -1,139 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9310028E5E3
-	for <kvm@vger.kernel.org>; Fri,  9 May 2025 10:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C4728DF5F
+	for <kvm@vger.kernel.org>; Fri,  9 May 2025 10:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746785473; cv=none; b=efviuX09fxCiar9OgS+a5PNkHasOnsRhWarlV1oq/Llrf7dv8Y8DFHHucb7pZ2VyYP9+xyAVhZOu+8xbx0LXNIKwjAFEnbna1rAhs6c//gDQCuIpg0TtoObi3dhWTpT3r2WKm02GYG1ZruA5mSTo8CNcIG+dgfaVMr8DTbqgF74=
+	t=1746785490; cv=none; b=qvpAxTz/bX/tOZe8qPmpL1IYXA/6nBHALGhg7y5vkoQM0Eohgpl8zazAWo/y41ndeBgAMSiozJy2V6S8+Y8Op39b01ks2v5Fuuy3Su9KrD3ATfV/085ZvhAsmwIlVoPnQ+kFrZCi2H83nrwEPGuaRYYwxu/0G0QgD8+n0/kucvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746785473; c=relaxed/simple;
-	bh=DYzgfmr2nHUFnRtfKx2VUV7W2FkMFo4CpLIHKoL2k0I=;
+	s=arc-20240116; t=1746785490; c=relaxed/simple;
+	bh=Ar0OFSFbAZYi+/eYa8H5g+BNAP9J4sNaDYBUw0iwgo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mHLDO5o6R786b6AbAPqkEpDuNGQOizF0DWAJ9EGQcUWenfFv93YDDGzrNMVDxXo8ZKyBRpsp2TqpBr0stvUYUQvyhHigPThFlghaCrYlSxEfGMzKhtlrMCEYKVKYyB1wd4ePDR9FGv1YGommxDr2RT8I1zbEsIZz7q6kiT1zJ1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HLQeEdYs; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=aNWZZJQL52/YMweuzq5+o8j0OeQtCr3sNcG9EL913OyAeJiodUpRkrxetfoEze6OxHkllXXeZlEunspY/yfFHcdpy8kzLKU2oD3zvfEalpU7Mnb9eneYwOhjR04AgyVOIzQf0+cN8bxyhY/DP8W+d0CYz1Po7cXs8++T+JTZDCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oeJVqoXz; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HLQeEdYs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746785471; x=1778321471;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=DYzgfmr2nHUFnRtfKx2VUV7W2FkMFo4CpLIHKoL2k0I=;
-  b=HLQeEdYseJ2qq3XsUXd+M6kSGEvOTEmXD4E6m1c+02SGPv6R7t+ciVFR
-   UB1BK8lOSZvXRijYIkNpTalTCQy9seK0Jh00hi8oF6HYDUt9ZJnIUznrq
-   kbPvjhUM+fpsQll+SD+bjLihAH95tbvTUWebMk9zitgcKbFoG121ynExK
-   D6ET+n+aMFNWZYJWLWur3l0xLi2xCWKx96BGg9sKydK7c8ASlaogn4KGz
-   9XW0LhXu5gdBD0m0OZUcZbfNoSIC8qcOl2TLDQ3RotFsfoQGTOscjfk75
-   7NsuG0WSdhDuq+Q4akLCp6kF6Hm/dIrGcdoj2ebzHubupRppUaPzeemXT
-   g==;
-X-CSE-ConnectionGUID: l1sGLwSJQaCMxsupBKJQlQ==
-X-CSE-MsgGUID: n/IlRBxGSYOlJbhljiMsdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66013416"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="66013416"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 03:11:10 -0700
-X-CSE-ConnectionGUID: HKEkuJfoTV22rXlvJht/zw==
-X-CSE-MsgGUID: 34wmXNVFQ0SpQaxijdq0mQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="137577882"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa009.fm.intel.com with ESMTP; 09 May 2025 03:11:02 -0700
-Date: Fri, 9 May 2025 18:32:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
-	kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
-	Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
-	Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
-	qemu-arm@nongnu.org,
-	=?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: Re: [PATCH v4 24/27] hw/intc/ioapic: Remove
- IOAPICCommonState::version field
-Message-ID: <aB3Zpc45+/OZ7hq2@intel.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-25-philmd@linaro.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oeJVqoXz"
+Date: Fri, 9 May 2025 03:11:16 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1746785486;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gADP7rDY+Aim+5KEmwjyMEJOxyUwFF8/OBHyG20/FUA=;
+	b=oeJVqoXzqvHiRN3YALK3a5w3UYfGRpQO+N4t0GHjMe0EjZ8C4TJwY+s8DH22NNVQbEqZ8D
+	aFg0CxBak1q68+mfPJhXLlnm9PjE5BKbYIdKEt06F6WG2iv2sCE7rXB00plRCQgSBWwnat
+	7I8cKYIOA5Tub8dbHiaHpQnAqV0baRA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v3 02/17] KVM: arm64: nv: Allocate VNCR page when required
+Message-ID: <aB3UxDxwXhz5iY9J@linux.dev>
+References: <20250423151508.2961768-1-maz@kernel.org>
+ <20250423151508.2961768-3-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250508133550.81391-25-philmd@linaro.org>
+In-Reply-To: <20250423151508.2961768-3-maz@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, May 08, 2025 at 03:35:47PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  8 May 2025 15:35:47 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 24/27] hw/intc/ioapic: Remove IOAPICCommonState::version
->  field
-> X-Mailer: git-send-email 2.47.1
+On Wed, Apr 23, 2025 at 04:14:53PM +0100, Marc Zyngier wrote:
+> If running a NV guest on an ARMv8.4-NV capable system, let's
+> allocate an additional page that will be used by the hypervisor
+> to fulfill system register accesses.
 > 
-> The IOAPICCommonState::version integer was only set
-> in the hw_compat_2_7[] array, via the 'version=0x11'
-> property. We removed all machines using that array,
-> lets remove that property, simplify by only using the
-> default version (defined as IOAPIC_VER_DEF).
-> 
-> For the record, this field was introduced in commit
-> 20fd4b7b6d9 ("x86: ioapic: add support for explicit EOI"):
-> 
->  >   Some old Linux kernels (upstream before v4.0), or any released RHEL
->  >   kernels has problem in sending APIC EOI when IR is enabled.
->  >   Meanwhile, many of them only support explicit EOI for IOAPIC, which
->  >   is only introduced in IOAPIC version 0x20. This patch provide a way
->  >   to boost QEMU IOAPIC to version 0x20, in order for QEMU to correctly
->  >   receive EOI messages.
->  >
->  >   Without boosting IOAPIC version to 0x20, kernels before commit
->  >   d32932d ("x86/irq: Convert IOAPIC to use hierarchical irqdomain
->  >   interfaces") will have trouble enabling both IR and level-triggered
->  >   interrupt devices (like e1000).
->  >
->  >   To upgrade IOAPIC to version 0x20, we need to specify:
->  >
->  >     -global ioapic.version=0x20
->  >
->  >   To be compatible with old systems, 0x11 will still be the default
->  >   IOAPIC version. Here 0x11 and 0x20 are the only versions to be
->  >   supported.
->  >
->  >   One thing to mention: this patch only applies to emulated IOAPIC. It
->  >   does not affect kernel IOAPIC behavior.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> Reviewed-by: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 > ---
->  hw/intc/ioapic_internal.h |  3 +--
->  hw/intc/ioapic.c          | 18 ++----------------
->  hw/intc/ioapic_common.c   |  2 +-
->  3 files changed, 4 insertions(+), 19 deletions(-)
+>  arch/arm64/kvm/nested.c | 9 +++++++++
+>  arch/arm64/kvm/reset.c  | 1 +
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 4a3fc11f7ecf3..884b3e25795c4 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -55,6 +55,12 @@ int kvm_vcpu_init_nested(struct kvm_vcpu *vcpu)
+>  	    !cpus_have_final_cap(ARM64_HAS_HCR_NV1))
+>  		return -EINVAL;
+>  
+> +	if (!vcpu->arch.ctxt.vncr_array)
+> +		vcpu->arch.ctxt.vncr_array = (u64 *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Think you want GFP_KERNEL_ACCOUNT here.
 
+Thanks,
+Oliver
