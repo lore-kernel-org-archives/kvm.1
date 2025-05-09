@@ -1,77 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C405D2749DA
-	for <kvm@vger.kernel.org>; Fri,  9 May 2025 08:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4568027057A
+	for <kvm@vger.kernel.org>; Fri,  9 May 2025 08:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746780537; cv=none; b=Yx0ynwj6WfkMvQLhGfJ8dO3sADAwt8olVzOtM9fe9XT9UeZqKsrbWqRQlvN3klDLxFGzgsF4XOmgU+/YOGg7NUK0r47TZOn1HG+aI9cxjoebZXDSFlfO0XdCu57XpmpxHUsB3lGTZT+1Rnii8LcYmGetQUrqQpWf+LARc/Ql37c=
+	t=1746780623; cv=none; b=KMHDJEv/O+MkrZKCUOtfdBBh1Oe9Z8fDsRkDkTQngIwXvi1eGd9UaHC/Lw464ZGAiRDpix7hBQQxnd+2WqQ0P527Zx4K3wgXDx+hOAxuUWuEMkSQmY4QEVoDlqhidqNUE3wFeCOSSWWVecEj32FHuwnEs6/FEJP4cHp9lsNarTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746780537; c=relaxed/simple;
-	bh=4h8yW3D8RfZkwJwxL7/ITZyfT1u/UGlN/tQNSazro1A=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tNLsYrJXFHt6rISz/8wnz/MvARt/xVxrN1kQR8NRhkbORgbGvYWueiIiBmYNJcCG5nxnfB/7wzBxqoorsWo9XT8Wjc4hlzZWwCmk98CPyyMNSe1D5dDZaS5ia6uZhz0/14SZbbVLzqVIpzGyi/eRZn1nkegJe83mX9fMGk5EE7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdzTT6Y4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746780623; c=relaxed/simple;
+	bh=frJ8xDYf5dCgwXDohsd3IDh9hXwJr3cVlXyTzjKPOJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OpxtPo6a61kxswPTEVzb35KfBSY4zWqSSi/vopT+SZjX0qBRzrBsxN73zb0xxrcUCuK3vm4reAE/c7Y60rdD3rHbnc5iUaInWTTF0EcHIpdHYjBuUoN7ACOy9IJ3nzCzWgR7Z9UM+G/ztEA+avBjFCqh7+6eIk0Ced4YwUbYNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSk+RrOR; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdzTT6Y4"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F3A5C4CEE9
-	for <kvm@vger.kernel.org>; Fri,  9 May 2025 08:48:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746780537;
-	bh=4h8yW3D8RfZkwJwxL7/ITZyfT1u/UGlN/tQNSazro1A=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=jdzTT6Y4A7M/k0025r7i2FDdQKTCFDzhASJhCrUYCNZeMYP7L0uebuBx6FO+ibZZm
-	 3kN2vBuXeqMFXUmgqocW2HBB8EYR0/sLejw8nTaSUQ2i/zC8TSTndHspynGZAeIOel
-	 ZA4mdbd6PdYH4CaqwAeaHiwDyQzH1wrTtkMiFyETlHNuclC4ovhtbF2jVj6SYCF58z
-	 kTrorIW3CJblr5Sp8WSTSrnQLBDfjSE1cqyldwfEb4nXgxCT3XvtzjhhN5ZECdOTaf
-	 sHhZb2J38yB7bp28U4yW1nWz/1KuqKLOFxHMBfsSNxQkco1WHCjXx28Y9EkCI2thQ2
-	 u9Z/7J7ZZkaFw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 36CE1C41616; Fri,  9 May 2025 08:48:57 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: kvm@vger.kernel.org
-Subject: [Bug 199727] CPU freezes in KVM guests during high IO load on host
-Date: Fri, 09 May 2025 08:48:56 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Product: Virtualization
-X-Bugzilla-Component: kvm
-X-Bugzilla-Version: unspecified
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: high
-X-Bugzilla-Who: devzero@web.de
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-199727-28872-2dP4GgR0b1@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-199727-28872@https.bugzilla.kernel.org/>
-References: <bug-199727-28872@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSk+RrOR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746780622; x=1778316622;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=frJ8xDYf5dCgwXDohsd3IDh9hXwJr3cVlXyTzjKPOJA=;
+  b=MSk+RrORrvYC7pC0gDM+eye4CxxqEG+7i3w4zWg83VFmxWRsNeFrrR5e
+   N7+D88iUNFaxgwR4YwNtistsPGlieRdyuv4DRkU3sprjXKsBQ1Ivr7FYc
+   kI/FDXUAm5OkTfoSiGSwVpBlff/1wyPTztLSTeQfv1PJSNqE3q2n/q7+L
+   fXDj5YxDKIhz5hMOeMBc4OcDPyqYYJZm1KnapT2T0pdZPEvCKkJjGw4Vu
+   blNZaoamaQmIFfhx7EXsy+ikPAqacDd+rBpOUvHmunOtBx6iksf1702Fo
+   x9aLhM29eZEHPeYTPIelKGTNghJ6BDwUeln/PSRTFZakmWGsED+BdUOco
+   g==;
+X-CSE-ConnectionGUID: aIQ4YU5FTSeB4T4hmZAQLg==
+X-CSE-MsgGUID: Amfmf1WuTQ2yg4q0BjfIcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66005251"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="66005251"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:50:19 -0700
+X-CSE-ConnectionGUID: OMtp7xesTVq/J5C7ScuQFg==
+X-CSE-MsgGUID: 4CmTpZuORRSlXGdxVuxfhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="159855159"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa002.fm.intel.com with ESMTP; 09 May 2025 01:50:11 -0700
+Date: Fri, 9 May 2025 17:11:13 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+	kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Laurent Vivier <lvivier@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+	Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+	Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Ani Sinha <anisinha@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	=?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+	qemu-arm@nongnu.org,
+	=?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH v4 20/27] target/i386/cpu: Remove
+ CPUX86State::enable_l3_cache field
+Message-ID: <aB3GsY71YH4usdSi@intel.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-21-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250508133550.81391-21-philmd@linaro.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D199727
+On Thu, May 08, 2025 at 03:35:43PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  8 May 2025 15:35:43 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v4 20/27] target/i386/cpu: Remove
+>  CPUX86State::enable_l3_cache field
+> X-Mailer: git-send-email 2.47.1
+> 
+> The CPUX86State::enable_l3_cache boolean was only disabled
+> for the pc-q35-2.7 and pc-i440fx-2.7 machines, which got
+> removed.  Being now always %true, we can remove it and simplify
+> cpu_x86_cpuid() and encode_cache_cpuid80000006().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  target/i386/cpu.h |  6 ------
+>  target/i386/cpu.c | 39 +++++++++++++--------------------------
+>  2 files changed, 13 insertions(+), 32 deletions(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index b5cbd91c156..62239b0a562 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -2219,12 +2219,6 @@ struct ArchCPU {
+>       */
+>      bool enable_lmce;
+>  
+> -    /* Compatibility bits for old machine types.
+> -     * If true present virtual l3 cache for VM, the vcpus in the same virtual
+> -     * socket share an virtual l3 cache.
+> -     */
+> -    bool enable_l3_cache;
+> -
+>      /* Compatibility bits for old machine types.
+>       * If true present L1 cache as per-thread, not per-core.
+>       */
 
---- Comment #29 from Roland Kletzing (devzero@web.de) ---
-can anybody reproduce this in an environemnt without qemu ?
+I realize this is another special case.
 
-if that is not the case, maybe it would be better to file a bug report at
-https://gitlab.com/qemu-project/qemu/-/issues , as nobody seems to care here
-anyway.
+There is no support for hybrid x86 CPUs in QEMU, but it's also true that
+there are some actual modern x86 Client CPUs without l3 cache, such as
+Intel MTL's low power E core (and it has vmx support, i.e., support KVM).
 
---=20
-You may reply to this email to add a comment.
+So I think we can keep this property as well, to have some more
+configuration options for users' emulation.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+
