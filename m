@@ -1,111 +1,152 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E551E1DEF
-	for <kvm@vger.kernel.org>; Fri,  9 May 2025 09:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1FC2741A2
+	for <kvm@vger.kernel.org>; Fri,  9 May 2025 09:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746782549; cv=none; b=sLg6Phe4A/Yt/Q6Vt6H5dW9M+2LDdyD8FbCEuQljJseLxM0o9z0VI85+zxfkdS/4GpGSJpP+A65bCBrdmx0t4yF9cVJfcdwfad9l5VLgJXK2Igu4AuRoA1duvpNYaEr1e0mB20+9fmKVKihZaDLyPcVf6EHyo7VY1JbZh773pJo=
+	t=1746782608; cv=none; b=RacXTfGlNtzCf9fFmTrX2anXTEDJ9t+aX/VC8YPcqhrtN2asHwxyR2lMnSD11JLoeCJOBkgbvpDOm9GT/itxh6EOW+JwLcwqLVhpXESr2756FoxgRSRX1X5OOmxE9J80n5+p8NIsWcsZ+vJsH1yFgLUjQshVHC0nWDKVgNZv5y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746782549; c=relaxed/simple;
-	bh=pK0MRCpboYH5wkNukEQTQmvUhKc3QXbmX6Rg6q2PgnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OGeg2CeQFbarlSHbuHo1euQNKYcVI9sfaCyz20Q3t8+elA6sbFqMQDNy1Hug6fb8chYgu8VjjHYIUVEXoLlDLA5rckTRS0mjktfMCX4sH4tcxINuOzbx3dtXDtj0XxSNo17oO1Q2XFCB2p79sdmj+EYhj0YHCW8xw1my8jz4e88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DDfTGuVn; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1746782608; c=relaxed/simple;
+	bh=iFMZIw+14kY1d7IgnZ74KIDB4WWlMeVYLeVjbCOX2dM=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Tdu4R7cYCa51jIupAOb3BpXDFAGPJbztYci63JrRynN+jMZ89Cpc3pXJZdRe5ZgP9mWCcShaIRHYp11jkrKxFp48UN/8ld748RZ1xFtER1YdnZs210YooPHnQVo7bZ07q11rnRwX1zzQ+OXv4SHf6qka3drMC7w4M1uKYTtRrtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QBo+mYrU; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DDfTGuVn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QBo+mYrU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746782547; x=1778318547;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=pK0MRCpboYH5wkNukEQTQmvUhKc3QXbmX6Rg6q2PgnY=;
-  b=DDfTGuVn5wjfStvBamCM5lwILGXUTJo0qiYvpW5BIsYLre7TYuhiZdU+
-   InYKB85cLIvlR2YKRH+LXYdpmBlV4pykMgOJp+/I4pS0mXRs9QmtXftNd
-   rLN2eHusTkfVsR9HnesYyKJSQGok4Uk8yWr215IsWWnQlwFT+UMpyYdyW
-   K811mw8WUD6voRm1ZRWHYBw4nsfkPNJKUll8Li8yteWoR6eIw5vmF2Qe7
-   TxcE1cJgRmO8Op6vxL7EVAw1e9d/SWzARRxkjKORaaBoo5f7dg+++appq
-   4Z5A7YuiUVvea4lDEFr2QnyKAQhNo5QO3zeLAO8rTHcv1o9r/JalTFJ9a
+  t=1746782607; x=1778318607;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iFMZIw+14kY1d7IgnZ74KIDB4WWlMeVYLeVjbCOX2dM=;
+  b=QBo+mYrU7mv5RRwFGFqFX20jCAC62PvWzNIdXTpYEgjEOeQnuJQkli+V
+   zrGanTJt2M+C/TbyJpYzGVZl792HQqEgaiU1KLxIX7CULHmm7clh9f8i2
+   gVv7JSCNXuj4eKFiS4pfYsh77R+r2DuT6I4ai+v8iKYk1H0Wj7Kn0ZXN0
+   dpLCHn6RrhILagdbkVFZz+H4qSd3kGTko6FRWeriiI0bt6jl3JlNnlZO/
+   znqafLb6hlRrN7EtEFXlg4EulWZHthGClmWmK3/FJqZr9kTRjZvUbMtSz
+   GsMXbyYL7ZqQKxyDXN1p8BsOkNWLtgL18W/kHoLBlbIh0QKy+ZUS2lZe+
    A==;
-X-CSE-ConnectionGUID: oOFmRF6SQm6zbGPIvHuHmg==
-X-CSE-MsgGUID: 98ygbn47S5SMzwnI46Srag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52412005"
+X-CSE-ConnectionGUID: UE8yqVyxSgCsXuUsG8XKhQ==
+X-CSE-MsgGUID: a0GdWT96R0KavrDANhP6fg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48609170"
 X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="52412005"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:22:26 -0700
-X-CSE-ConnectionGUID: oujKs89KQHyOonwfNYOIAw==
-X-CSE-MsgGUID: S11cSzFJSrWGygNDjVH6hA==
+   d="scan'208";a="48609170"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:23:27 -0700
+X-CSE-ConnectionGUID: HBHVEMxFRIKC7P0+mu0rog==
+X-CSE-MsgGUID: EjiDTsgnRJqTNFKFc6Id4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="137498001"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa008.jf.intel.com with ESMTP; 09 May 2025 02:22:20 -0700
-Date: Fri, 9 May 2025 17:43:21 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
-	kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
-	Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
-	Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
-	qemu-arm@nongnu.org,
-	=?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: Re: [PATCH v4 25/27] hw/virtio/virtio-pci: Remove
- VirtIOPCIProxy::ignore_backend_features field
-Message-ID: <aB3OOSI/NGUARoMZ@intel.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-26-philmd@linaro.org>
+   d="scan'208";a="141474549"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.240.236]) ([10.124.240.236])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:23:23 -0700
+Message-ID: <e089f11a-da4c-44c9-8553-3492e236d4aa@linux.intel.com>
+Date: Fri, 9 May 2025 17:23:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250508133550.81391-26-philmd@linaro.org>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v4 12/13] ram-block-attribute: Add priority listener
+ support for PrivateSharedListener
+To: Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+References: <20250407074939.18657-1-chenyi.qiang@intel.com>
+ <20250407074939.18657-13-chenyi.qiang@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250407074939.18657-13-chenyi.qiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 08, 2025 at 03:35:48PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  8 May 2025 15:35:48 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 25/27] hw/virtio/virtio-pci: Remove
->  VirtIOPCIProxy::ignore_backend_features field
-> X-Mailer: git-send-email 2.47.1
+On 4/7/2025 3:49 PM, Chenyi Qiang wrote:
+> In-place page conversion requires operations to follow a specific
+> sequence: unmap-before-conversion-to-private and
+> map-after-conversion-to-shared. Currently, both attribute changes and
+> VFIO DMA map/unmap operations are handled by PrivateSharedListeners,
+> they need to be invoked in a specific order.
 > 
-> The VirtIOPCIProxy::ignore_backend_features boolean was only set
-> in the hw_compat_2_7[] array, via the 'x-ignore-backend-features=on'
-> property. We removed all machines using that array, lets remove
-> that property, simplify by only using the default version.
+> For private to shared conversion:
+> - Change attribute to shared.
+> - VFIO populates the shared mappings into the IOMMU.
+> - Restore attribute if the operation fails.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> For shared to private conversion:
+> - VFIO discards shared mapping from the IOMMU.
+> - Change attribute to private.
+> 
+> To faciliate this sequence, priority support is added to
+> PrivateSharedListener so that listeners are stored in a determined
+> order based on priority. A tail queue is used to store listeners,
+> allowing traversal in either direction.
+> 
+> Signed-off-by: Chenyi Qiang<chenyi.qiang@intel.com>
 > ---
->  include/hw/virtio/virtio-pci.h | 1 -
->  hw/virtio/virtio-pci.c         | 5 +----
->  2 files changed, 1 insertion(+), 5 deletions(-)
+> Changes in v4:
+>      - Newly added.
+> ---
+>   accel/kvm/kvm-all.c          |  3 ++-
+>   hw/vfio/common.c             |  3 ++-
+>   include/exec/memory.h        | 19 +++++++++++++++++--
+>   include/exec/ramblock.h      |  2 +-
+>   system/ram-block-attribute.c | 23 +++++++++++++++++------
+>   5 files changed, 39 insertions(+), 11 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index aec64d559b..879c61b391 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -1745,7 +1745,8 @@ static void kvm_region_add(MemoryListener *listener,
+>       psl = &cpsl->listener;
+>       QLIST_INSERT_HEAD(&cgs->cvm_private_shared_list, cpsl, next);
+>       private_shared_listener_init(psl, kvm_private_shared_notify_to_shared,
+> -                                 kvm_private_shared_notify_to_private);
+> +                                 kvm_private_shared_notify_to_private,
+> +                                 PRIVATE_SHARED_LISTENER_PRIORITY_MIN);
+>       generic_state_manager_register_listener(gsm, &psl->scl, section);
+>   }
+>   
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 6e49ae597d..a8aacae26c 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -515,7 +515,8 @@ static void vfio_register_private_shared_listener(VFIOContainerBase *bcontainer,
+>   
+>       psl = &vpsl->listener;
+>       private_shared_listener_init(psl, vfio_private_shared_notify_to_shared,
+> -                                 vfio_private_shared_notify_to_private);
+> +                                 vfio_private_shared_notify_to_private,
+> +                                 PRIVATE_SHARED_LISTENER_PRIORITY_COMMON);
+>       generic_state_manager_register_listener(gsm, &psl->scl, section);
+>       QLIST_INSERT_HEAD(&bcontainer->vpsl_list, vpsl, next);
+>   }
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 9472d9e9b4..3d06cc04a0 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -770,11 +770,24 @@ struct RamDiscardManagerClass {
+>       GenericStateManagerClass parent_class;
+>   };
+>   
+> +#define PRIVATE_SHARED_LISTENER_PRIORITY_MIN       0
+> +#define PRIVATE_SHARED_LISTENER_PRIORITY_COMMON    10
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+For the current implementation with primarily KVM and VFIO needing
+ordered execution, the two priority levels are likely sufficient. Not
+sure whether it needs more priority levels for future development.
 
+Thanks,
+baolu
