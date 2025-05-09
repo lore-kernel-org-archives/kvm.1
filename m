@@ -1,171 +1,185 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C100270579;
-	Fri,  9 May 2025 08:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216F276033
+	for <kvm@vger.kernel.org>; Fri,  9 May 2025 08:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746779518; cv=none; b=FcYJRol4Ml/CPvqKguKaTEUYjfmSl//RaiifXr0McthAC0Tg0YhfZLQ2Ov0h9vXY0R5IKzrhqCBpC8POsJyDQcE2h3KLC4GM0gQQBoFjQL6eSQnntaXOAFiHGBJ0/90t/wnLPgM1XOaxkNWW2Zr6j46TiNirjgeXYiVqU8VFdhU=
+	t=1746780370; cv=none; b=VBwymfMh4iFAWbzaMh9LnB8szsE9vB59ziSwb6g3oRaZpC8LXv/kBPDxeiaihqM2fBmM4A6GBVguazPxTdprnMVetGtaJo4Qbkoyl1W/T8Biv6cqzVQPukbEUixbx1YOqzUtnL6DxRvp5kF+6bwA4OB1fUr1aTPANjivpp2djIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746779518; c=relaxed/simple;
-	bh=gsoVVqQmM9OvLNkpR6lzFSQD4KysSKLNzbTXMNg3T5M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jZWQJ/NKzVkDNwO5vyFyeIp8fNr8AeUhaEHogx3+RI8ZP3Spn8vGBjKUCvVL2YpzeJ46rLvTdyFIgzaCqfMuMCu/3CC+NjJdHoDBo0jCgUbzPTE1JupHnRHEfFR63T9NBGoAr90x/NJSGVl8Uf17e5YbCjqDjGw4+15X9dSvVSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Zv2F56sdPzQkPv;
-	Fri,  9 May 2025 16:27:53 +0800 (CST)
-Received: from kwepemg500010.china.huawei.com (unknown [7.202.181.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 65C861402CF;
-	Fri,  9 May 2025 16:31:52 +0800 (CST)
-Received: from huawei.com (10.67.174.76) by kwepemg500010.china.huawei.com
- (7.202.181.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 9 May
- 2025 16:31:51 +0800
-From: Yuntao Liu <liuyuntao12@huawei.com>
-To: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <liuyuntao12@huawei.com>
-Subject: [PATCH -next] kvm: x86: fix infinite loop in kvm_guest_time_update when tsc is 0
-Date: Fri, 9 May 2025 08:19:34 +0000
-Message-ID: <20250509081934.33874-1-liuyuntao12@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1746780370; c=relaxed/simple;
+	bh=Hd8W86XpSOoLd0GepwRihQjFEF41vT6S64z6qugV81E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=qyBFbNZJ5XoAAfwbb1tHHCnjV+6RLNfwlZSuWR4zEVA1u7TS5kuG1itgwY38bEtV2C8dtqit2i6EyPS0X1o3ukqHj6pWkUw9a/ckzpnmJuUod9NJpWN+NY0q43uc+M3i2X4Q2QVcNUb3LgokCOVZl+qmkVKuLp8tWzO1eeVIixs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CXcxcedS; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CXcxcedS"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab7098af6fdso26937966b.2
+        for <kvm@vger.kernel.org>; Fri, 09 May 2025 01:46:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1746780367; x=1747385167; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:from:to:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NGiJMRlH7N8wVvTRH9S0DCs9CUNhc8t6xLRe72oOUGs=;
+        b=CXcxcedSkeUijGPctEMJ3D/qIaLgNd72v8mQQXSLaknTS4swjT4y8m2GUD5uGv2Qur
+         2Y1QqVyHHatCKdemVtRF/WgZhw83Ze+aVxcAwfu8UFRwKpMnc4hmo0S7uwvErQIIv6JA
+         r0lBlBYb+WxydP9ku+hmEHm+kN0oCAbTKsGDzC9ZeBzY6IhAswiQAnSHy8IBP5QUE39P
+         H0n4pXmaaNA/rgytgZUjo/9XCuhkDsrfiq/aklJvWX/HoTazkZ16QbOa5OLtEYWCVMmn
+         oXqbJzjfFT7dq6N02Eka35WtXjhYyySj5PJaCX227XeDRh1R9t580RWnoPUpJDxDT9QM
+         Zn3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746780367; x=1747385167;
+        h=in-reply-to:references:subject:from:to:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NGiJMRlH7N8wVvTRH9S0DCs9CUNhc8t6xLRe72oOUGs=;
+        b=LyuRurq8atYhWdKDcszLJxiqWrFEUItq9kdhwn/hO0f9gCNOFpWEjQSG+gZJRbGmm0
+         qS0KBbMOh1g8/CwNLFMkMZ+aieKVWrlJ3v62eBogbzUnnHmPBxXvTPzkZcn24NmeyyCB
+         5lDqg+KkDdXCrMsg++vGQWfd+p9qXg64F8a3jsDsXfXnRyklZSln8r270faHEaVRN51T
+         NpEPd/Mc7Oc/FKjqgJ6TOX7HdGhCC/i1EyzeemKm41rbjipZ7GQXtBCf1ddxxKF8+pzy
+         NFoKWojqI8yFA+s9XQg2VAbFCWi9xCXx4fDhILvzpOY+gwAM7V2uayZlsI3vupifkGds
+         Lklw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOGNyQjhCj9mLEG6gu2IqaPSLBYQUahGyiPdIGQ04hnwPSW20N2OjNjklp/MhAtGdfJbQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDYdyAcOBa86DpwNclXM6NtoWfdoQJ6D3mmGuklAgSlTOomhiS
+	Qqz5TjuSfjtYUeqGBsPrURmWRmzUiXlzuiemeBgO/DLVLwqDihh35uTDaaMJu2Q=
+X-Gm-Gg: ASbGncstbmNtD7xHewHRl9ZOP430dzxqCFRB20KkIFQoX5xbzzE1jBu2aUDod6BZUs8
+	rs9QQ2sewnAgwZUlMBt7rILDm4mMANaXt4gB1riytNN74JefLE6cJnCCH03XXeY5pkr5yYBZ5ho
+	Ndo85SOlA4XKkJb3zwxJmE5EYEibk5YzqrUgN1CDNH7ZgY0LsqKnEEY6NstqI8sXlFCE7qFwvAP
+	fXpP8+bKmXSXZsEtxACbEAwrAw/sl+MaOIe04N355Djhg4dzQAgAzyyWZ0QVo1pJoZke23Lmc6z
+	Ce7vnCFzcXfLXUa2ypYNhVuBcL8zeG+tD2do/11liix2nxceNmE9XYiJpiy9at4kZ/bMIFjPKnq
+	K
+X-Google-Smtp-Source: AGHT+IGAYEclMsV5S50C0hAJ9Rssz25VsqYW3XofjFIyQasz4bI9bHUIYQ48ZI6cYslINiw1CF431Q==
+X-Received: by 2002:a17:907:2e19:b0:acb:1d24:a9e0 with SMTP id a640c23a62f3a-ad219ac5111mr79947866b.11.1746780366510;
+        Fri, 09 May 2025 01:46:06 -0700 (PDT)
+Received: from localhost (ip-89-103-73-235.bb.vodafone.cz. [89.103.73.235])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad2192c93d3sm118978066b.16.2025.05.09.01.46.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 01:46:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemg500010.china.huawei.com (7.202.181.71)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 May 2025 10:46:05 +0200
+Message-Id: <D9RHYLQHCFP1.24E5305A5VDZH@ventanamicro.com>
+Cc: <kvm-riscv@lists.infradead.org>, <kvm@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>, "Atish
+ Patra" <atishp@atishpatra.org>, "Paul Walmsley" <paul.walmsley@sifive.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Alexandre Ghiti" <alex@ghiti.fr>, "Andrew Jones" <ajones@ventanamicro.com>
+To: "Anup Patel" <anup@brainfault.org>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+Subject: Re: [PATCH v2 2/2] RISC-V: KVM: add KVM_CAP_RISCV_MP_STATE_RESET
+References: <20250508142842.1496099-2-rkrcmar@ventanamicro.com>
+ <20250508142842.1496099-4-rkrcmar@ventanamicro.com>
+ <CAAhSdy2nOBndtJ46yHbdjc2f0cNoPV3kjXth-q57cXt8jZA6bQ@mail.gmail.com>
+In-Reply-To: <CAAhSdy2nOBndtJ46yHbdjc2f0cNoPV3kjXth-q57cXt8jZA6bQ@mail.gmail.com>
 
-Syzkaller testing detected a soft lockup.
+2025-05-09T12:25:24+05:30, Anup Patel <anup@brainfault.org>:
+> On Thu, May 8, 2025 at 8:01=E2=80=AFPM Radim Kr=C4=8Dm=C3=A1=C5=99 <rkrcm=
+ar@ventanamicro.com> wrote:
+>>
+>> Add a toggleable VM capability to modify several reset related code
+>> paths.  The goals are to
+>>  1) Allow userspace to reset any VCPU.
+>>  2) Allow userspace to provide the initial VCPU state.
+>>
+>> (Right now, the boot VCPU isn't reset by KVM and KVM sets the state for
+>>  VCPUs brought up by sbi_hart_start while userspace for all others.)
+>>
+>> The goals are achieved with the following changes:
+>>  * Reset the VCPU when setting MP_STATE_INIT_RECEIVED through IOCTL.
+>
+> Rather than using separate MP_STATE_INIT_RECEIVED ioctl(), we can
+> define a capability which when set, the set_mpstate ioctl() will reset th=
+e
+> VCPU upon changing VCPU state from RUNNABLE to STOPPED state.
 
-watchdog: BUG: soft lockup - CPU#3 stuck for 127s! [syz.1.2088:9817]
-Modules linked in:
-CPU: 3 PID: 9817 Comm: syz.1.2088 Tainted: G S                 6.6.0+
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-RIP: 0010:__sanitizer_cov_trace_const_cmp4+0x8/0x20 kernel/kcov.c:313
-Code: bf 03 00 00 00 e9 48 fe ff ff 0f 1f 84 00 00 00 00 00 90 90 90 90
-90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 48 8b 0c 24 <89> f2 89
-   fe bf 05 00 00 00 e9 1a fe ff ff 66 2e 0f 1f 84 00 00 00
-RSP: 0018:ffff888016d8fad8 EFLAGS: 00000206
-RAX: 0000000000080000 RBX: ffff88810e242540 RCX: ffffffff901150d6
-RDX: 0000000000080000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff888016d8fb50 R08: 0000000000000001 R09: ffffed1021c484af
-R10: 0000000000000000 R11: 0000000000000277 R12: 0000000000000000
-R13: fffffed357281918 R14: 0000000000000000 R15: 0000000000000001
-FS:  00007f2a8f6ea6c0(0000) GS:ffff888119780000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000012c56c0 CR3: 000000000dce8001 CR4: 0000000000772ee0
-DR0: 0000000000000000 DR1: 0000000000d3eb1c DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-PKRU: 80000000
-Call Trace:
- <TASK>
- kvm_get_time_scale arch/x86/kvm/x86.c:2458 [inline]
- kvm_guest_time_update+0x926/0xb00 arch/x86/kvm/x86.c:3268
- vcpu_enter_guest.constprop.0+0x1e70/0x3cf0 arch/x86/kvm/x86.c:10678
- vcpu_run+0x129/0x8d0 arch/x86/kvm/x86.c:11126
- kvm_arch_vcpu_ioctl_run+0x37a/0x13d0 arch/x86/kvm/x86.c:11352
- kvm_vcpu_ioctl+0x56b/0xe60 virt/kvm/kvm_main.c:4188
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x12d/0x190 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
+Yeah, I started with that and then realized it has two drawbacks:
 
-test case:
-18.689865147s ago: executing program 1 (id=2088):
-r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000002080), 0x0, 0x0)
-r1 = ioctl$KVM_CREATE_VM(r0, 0xae01, 0x0)
-r2 = ioctl$KVM_CREATE_VCPU(r1, 0xae41, 0x0)
-ioctl$KVM_RUN(r2, 0xae80, 0x0)
-ioctl$KVM_SET_TSC_KHZ(r2, 0xaea2, 0x1)
-socket$nl_route(0x10, 0x3, 0x0)
-r3 = socket$igmp(0x2, 0x3, 0x2)
-ioctl$sock_SIOCGIFINDEX(r3, 0x8933, &(0x7f00000001c0)={'netdevsim0\x00',
-<r4=>0x0})
-r5 = bpf$MAP_CREATE(0x0, &(0x7f0000000140)=@base={0x1, 0x4, 0x8000, 0x2,
-0x0, 0xffffffffffffffff, 0x0, '\x00', r4, 0xffffffffffffffff, 0x0, 0x0,
-0x0, 0x0, @void, @value, @void, @value}, 0x50)
-bpf$MAP_UPDATE_CONST_STR(0x2, &(0x7f0000000100)={{r5},
-&(0x7f0000000000), &(0x7f0000000040)='%ps    \x00'}, 0x20)
-bpf$MAP_DELETE_ELEM(0x3, &(0x7f00000000c0)={r5, &(0x7f0000001480)},
-0x20)
-ioctl$KVM_SET_USER_MEMORY_REGION(r1, 0x4020ae46,
-&(0x7f0000000000)={0x1ff, 0x3, 0x3000, 0x1000,
-&(0x7f0000fec000/0x1000)=nil})
-syz_kvm_setup_cpu$x86(r1, 0xffffffffffffffff,
-&(0x7f0000fe8000/0x18000)=nil, &(0x7f0000000100)=[@textreal={0x8, 0x0}],
-0x1, 0x0, 0x0, 0x0)
-ioctl$KVM_SET_USER_MEMORY_REGION(0xffffffffffffffff, 0x4020ae46, 0x0)
-openat$ipvs(0xffffffffffffff9c, 0x0, 0x2, 0x0)
-syz_kvm_setup_cpu$x86(0xffffffffffffffff, r2,
-&(0x7f0000fe8000/0x18000)=nil, &(0x7f00000000c0)=[@text64={0x40,
-&(0x7f0000000040)="26f2a70f3548b807000000000000000f23c00f21f835020008000f23f80fc73eb9330800000f326666470f3880be6cc468550f01cf360f01f80f30450f01c9",
-0x3f}], 0x1, 0x0, 0x0, 0x0)
-ioctl$KVM_RUN(r2, 0xae80, 0x0)
+ * It will require larger changes in userspaces, because for
+   example QEMU now first loads the initial state and then toggles the
+   mp_state, which would incorrectly reset the state.
 
-ioctl$KVM_SET_TSC_KHZ(r2, 0xaea2, 0x1)
-user_tsc_khz = 0x1
-	|
-kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
-	|
-	ioctl$KVM_RUN(r2, 0xae80, 0x0)
-		|
-		...
-	kvm_guest_time_update(struct kvm_vcpu *v)
-		|
-		if (kvm_caps.has_tsc_control)
-			tgt_tsc_khz = kvm_scale_tsc(tgt_tsc_khz,
-					    v->arch.l1_tsc_scaling_ratio);
-			|
-			kvm_scale_tsc(u64 tsc, u64 ratio)
-			|
-			__scale_tsc(u64 ratio, u64 tsc)
-			ratio=122380531, tsc=2299998, N=48
-			ratio*tsc >> N = 0.999... -> 0
-			|
-		kvm_get_time_scale
+ * It will also require an extra IOCTL if a stopped VCPU should be
+   reset
+    1) STOPPED -> RUNNING (=3D reset)
+    2) RUNNING -> STOPPED (VCPU should be stopped)
+   or if the current state of a VCPU is not known.
+    1) ???     -> STOPPED
+    2) STOPPED -> RUNNING
+    3) RUNNING -> STOPPED
 
-In function __scale_tsc, it uses fixed point number to calculate
-tsc, therefore, a certain degree of precision is lost, the actual tsc
-value of 0.999... would be 0. In function kvm_get_time_scale
-tps32=tps64=base_hz=0, would lead second while_loop infinite. when
-CONFIG_PREEMPT is n, it causes a soft lockup issue.
+I can do that for v3 if you think it's better.
 
-Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
----
- arch/x86/kvm/x86.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+>>  * Preserve the userspace initialized VCPU state on sbi_hart_start.
+>>  * Return to userspace on sbi_hart_stop.
+>
+> There is no userspace involvement required when a Guest VCPU
+> stops itself using SBI HSM stop() call so STRONG NO to this change.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b011a9d0c82d..7a3633c069f0 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2531,10 +2531,12 @@ static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool new_generation)
-  * point number (mult + frac * 2^(-N)).
-  *
-  * N equals to kvm_caps.tsc_scaling_ratio_frac_bits.
-+ *
-+ * add 1 to compensate for precision loss.
-  */
- static inline u64 __scale_tsc(u64 ratio, u64 tsc)
- {
--	return mul_u64_u64_shr(tsc, ratio, kvm_caps.tsc_scaling_ratio_frac_bits);
-+	return mul_u64_u64_shr(tsc, ratio, kvm_caps.tsc_scaling_ratio_frac_bits) + 1;
- }
- 
- u64 kvm_scale_tsc(u64 tsc, u64 ratio)
--- 
-2.34.1
+Ok, I'll drop it from v3 -- it can be handled by future patches that
+trap SBI calls to userspace.
 
+The lack of userspace involvement is the issue.  KVM doesn't know what
+the initial state should be.
+
+>>  * Don't make VCPU reset request on sbi_system_suspend.
+>
+> The entry state of initiating VCPU is already available on SBI system
+> suspend call. The initiating VCPU must be resetted and entry state of
+> initiating VCPU must be setup.
+
+Userspace would simply call the VCPU reset and set the complete state,
+because the userspace exit already provides all the sbi information.
+
+I'll drop this change.  It doesn't make much sense if we aren't fixing
+the sbi_hart_start reset.
+
+>> The patch is reusing MP_STATE_INIT_RECEIVED, because we didn't want to
+>> add a new IOCTL, sorry. :)
+>>
+>> Signed-off-by: Radim Kr=C4=8Dm=C3=A1=C5=99 <rkrcmar@ventanamicro.com>
+>> ---
+>> If you search for cap 7.42 in api.rst, you'll see that it has a wrong
+>> number, which is why we're 7.43, in case someone bothers to fix ARM.
+>>
+>> I was also strongly considering creating all VCPUs in RUNNABLE state --
+>> do you know of any similar quirks that aren't important, but could be
+>> fixed with the new userspace toggle?
+>
+> Upon creating a VM, only one VCPU should be RUNNABLE and all
+> other VCPUs must remain in OFF state. This is intentional because
+> imagine a large number of VCPUs entering Guest OS at the same
+> time. We have spent a lot of effort in the past to get away from this
+> situation even in the host boot flow. We can't expect user space to
+> correctly set the initial MP_STATE of all VCPUs. We can certainly
+> think of some mechanism using which user space can specify
+> which VCPU should be runnable upon VM creation.
+
+We already do have the mechanism -- the userspace will set MP_STATE of
+VCPU 0 to STOPPED and whatever VCPUs it wants as boot with to RUNNABLE
+before running all the VCPUs for the first time.
+
+The userspace must correctly set the initial MP state anyway, because a
+resume will want a mp_state that a fresh boot.
+
+> The current approach is to do HSM state management in kernel
+> space itself and not rely on user space. Allowing userspace to
+> resetting any VCPU is fine but this should not affect the flow for
+> SBI HSM, SBI System Reset, and SBI System Suspend.
+
+Yes, that is the design I was trying to change.  I think userspace
+should have control over all aspects of the guest it executes in KVM.
+
+Accelerating SBI in KVM is good, but userspace should be able to say how
+the unspecified parts are implemented.  Trapping to userspace is the
+simplest option.  (And sufficient for ecalls that are not a hot path.)
+
+Thanks.
