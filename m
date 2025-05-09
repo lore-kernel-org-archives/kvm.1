@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC74C26A0A8
-	for <kvm@vger.kernel.org>; Fri,  9 May 2025 05:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4A326A09A
+	for <kvm@vger.kernel.org>; Fri,  9 May 2025 06:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746769824; cv=none; b=ZUu1yrJCO1da+inGJMXrIrEOvGftyDWvjTFidhCCiw/+y886mi/qYmnLscosfEE9mm79bpz9HYxsIH0X5NPJDWdU9Oci4V6gnlEMDQOCfvzIQWcf3+qf9sAM70IchCVOrwCvtszo7T0AWjlp98PH4f9qx/2h3CSxshzcHKFZ/uo=
+	t=1746771383; cv=none; b=LfQd4+GA6HFKAZCVu5ialw+wxy0V6Zq+S2TkHwghDlMXGig9ebYVl/cwvY6vxCEmHumuDSdLabmaRR5Jy1Dj+p946eZyZY0xXkouhqJy3ghRIBRXZadXunpIcl2rnfbBdzC4H1SUZimz5d7my8bMW0pev67WmcL+4O3I2Mk4gmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746769824; c=relaxed/simple;
-	bh=Qp3EPRPo70sgN1uj4hzL+wEQ51l0JjZrt2iWIfrv9rg=;
+	s=arc-20240116; t=1746771383; c=relaxed/simple;
+	bh=ggqJ1IiHFWvnWutr4RX9vZ4PtcAAvKkNUvCBk+pjK5I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HzswwKQ0GHzf9i8Lrhiy1++m98PVQY09zt+MPKEJ12QTEdBHiNuos5GLX2AwqE4vOzGtr21SEpamd5HiIJuZoQr1vUCpI/ZgeUuZ3DPx6OBLj1NirG8ww7W+WouFSJCq/u1vV3lDIGfYWD8ACmyOU7zZ1fHBul88Pag/TbBwi9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uyol+scD; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=MxsaHjCQ+KsbH5BMendEqB57RMrj2Xf1SlwkNTJOP2VJFdRKL0hFCZa5sQnyOEUwXiz11D/uc7S1NBPJmYJod2TcsJ4LhSaYCTXd7YgNg5rHqvnCyrTii9LOiB0c+eciKUJzsvcIp3mxLY1g0LYPSpXUeRr7IkHZSbWAXzjfLuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NsIkG/V5; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uyol+scD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NsIkG/V5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746769822; x=1778305822;
+  t=1746771382; x=1778307382;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=Qp3EPRPo70sgN1uj4hzL+wEQ51l0JjZrt2iWIfrv9rg=;
-  b=Uyol+scDBLOURDCGFiPFXOVfloArOo6vl7xDwJ4w9PBwL+sU2pH7ZNmq
-   vBHtGPFkcnU+HvveZ4/eOKIHmzXujEe/1QWOavIglhYsW3y/OzLerR00g
-   qvzgejSZ+fXFfABU4nuh5Y0FXvkVC8tFgNTDsu3RIBtdl7msRQVAJRsuY
-   MN3ZBzZTsH2OPMIybNEDmR/LNmgnsW3PoLSKC4/xEYI+2Jh2dTPQHxp70
-   5aI/5nOwGBmrR+RogK54mD+G3aRRglVvJO/T6eUNcIwc9Xl8DTbz3g6jC
-   Qa0YoVMVRUwZFOxH18p+bYljsgHqjjADEZcv39lS1RujP84XcKb3D90ud
+  bh=ggqJ1IiHFWvnWutr4RX9vZ4PtcAAvKkNUvCBk+pjK5I=;
+  b=NsIkG/V5I6mqbpDQnvasYozaIcdUaVaX4KjyI0ZdGID8bEr1DSkVIbP8
+   yv9np0kLPXNi7XWlhSxID/VweeNKXmIIKuWaFTkBbZpG3Of3dNZlRRnmA
+   bO4j3ZfGPK4CKwtflkuGXrYqdAfYMAyPdzxvlQUyERcvL1OV9Uu9kSSDY
+   2zxpUCgGI6ADX8dXzZw0ICQEc4yAQT5y7Gq7kMuMlghPtSJhUAL4aDtwS
+   wrOAvr186ar3Vi7YmpSq6XTQ6SFqvogtHD26m23IwJzilLmvLGtNq+f5r
+   cvV2KwiKiQtJezW5ERAIw0X1KhjTGtPDhSOsM9j+kuj9t7VzYn7Wd7k45
    Q==;
-X-CSE-ConnectionGUID: ieXU+wuIR1m+ZOTeGzFtDA==
-X-CSE-MsgGUID: s7bgqpTWSwayZaPFkbvArg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58800376"
+X-CSE-ConnectionGUID: Z7JX5FOGRtWM2PraEMf8FQ==
+X-CSE-MsgGUID: 36WhjvCQTsSIqhbwfpHYFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66119790"
 X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="58800376"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 22:50:21 -0700
-X-CSE-ConnectionGUID: I+FTBT90SwOiAl9LEgJUUg==
-X-CSE-MsgGUID: IySnxT85QRubxpZ9cXnaAg==
+   d="scan'208";a="66119790"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 23:16:20 -0700
+X-CSE-ConnectionGUID: EShOvyRJSeCCU7P6Wp2LEQ==
+X-CSE-MsgGUID: a3tZ14YNSzus0U3OwlV/+g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="136525784"
+   d="scan'208";a="137043614"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa007.fm.intel.com with ESMTP; 08 May 2025 22:50:14 -0700
-Date: Fri, 9 May 2025 14:11:15 +0800
+  by orviesa007.jf.intel.com with ESMTP; 08 May 2025 23:16:13 -0700
+Date: Fri, 9 May 2025 14:37:15 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -70,11 +70,12 @@ Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
 	qemu-arm@nongnu.org,
 	=?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
 	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v4 08/27] hw/i386/pc: Remove multiboot.bin
-Message-ID: <aB2cgzGANdpFfEBd@intel.com>
+	Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH v4 09/27] hw/nvram/fw_cfg: Remove
+ fw_cfg_io_properties::dma_enabled
+Message-ID: <aB2imx1sp9sgMs3c@intel.com>
 References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-9-philmd@linaro.org>
+ <20250508133550.81391-10-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -84,52 +85,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250508133550.81391-9-philmd@linaro.org>
+In-Reply-To: <20250508133550.81391-10-philmd@linaro.org>
 
-On Thu, May 08, 2025 at 03:35:31PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  8 May 2025 15:35:31 +0200
+On Thu, May 08, 2025 at 03:35:32PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  8 May 2025 15:35:32 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 08/27] hw/i386/pc: Remove multiboot.bin
+> Subject: [PATCH v4 09/27] hw/nvram/fw_cfg: Remove
+>  fw_cfg_io_properties::dma_enabled
 > X-Mailer: git-send-email 2.47.1
 > 
-> All PC machines now use the multiboot_dma.bin binary,
-> we can remove the non-DMA version (multiboot.bin).
+> Now than all calls to fw_cfg_init_io_dma() pass DMA arguments,
+> the 'dma_enabled' of the TYPE_FW_CFG_IO type is not used anymore.
+> Remove it, simplifying fw_cfg_init_io_dma() and fw_cfg_io_realize().
 > 
-> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Note, we can not remove the equivalent in fw_cfg_mem_properties[]
+> because it is still used in HPPA and MIPS Loongson3 machines:
+> 
+>   $ git grep -w fw_cfg_init_mem_nodma
+>   hw/hppa/machine.c:204:    fw_cfg = fw_cfg_init_mem_nodma(addr, addr + 4, 1);
+>   hw/mips/loongson3_virt.c:289:    fw_cfg = fw_cfg_init_mem_nodma(cfg_addr, cfg_addr + 8, 8);
+> 
+> 'linuxboot.bin' isn't used anymore, we'll remove it in the
+> next commit.
+> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  pc-bios/optionrom/optionrom.h     |   4 -
->  hw/i386/pc.c                      |   1 -
->  pc-bios/meson.build               |   1 -
->  pc-bios/multiboot.bin             | Bin 1024 -> 0 bytes
->  pc-bios/optionrom/Makefile        |   2 +-
->  pc-bios/optionrom/multiboot.S     | 232 -----------------------------
->  pc-bios/optionrom/multiboot_dma.S | 234 +++++++++++++++++++++++++++++-
->  7 files changed, 233 insertions(+), 241 deletions(-)
->  delete mode 100644 pc-bios/multiboot.bin
->  delete mode 100644 pc-bios/optionrom/multiboot.S
+>  hw/i386/fw_cfg.c     |  5 +----
+>  hw/i386/x86-common.c |  5 +----
+>  hw/nvram/fw_cfg.c    | 26 ++++++++------------------
+>  3 files changed, 10 insertions(+), 26 deletions(-)
 > 
-> diff --git a/pc-bios/optionrom/optionrom.h b/pc-bios/optionrom/optionrom.h
-> index 7bcdf0eeb24..2e6e2493f83 100644
-> --- a/pc-bios/optionrom/optionrom.h
-> +++ b/pc-bios/optionrom/optionrom.h
-> @@ -117,16 +117,12 @@
->   *
->   * Clobbers: %eax, %edx, %es, %ecx, %edi and adresses %esp-20 to %esp
->   */
-> -#ifdef USE_FW_CFG_DMA
->  #define read_fw_blob_dma(var)                           \
->          read_fw         var ## _SIZE;                   \
->          mov             %eax, %ecx;                     \
->          read_fw         var ## _ADDR;                   \
->          mov             %eax, %edi ;                    \
->          read_fw_dma     var ## _DATA, %ecx, %edi
-> -#else
-> -#define read_fw_blob_dma(var) read_fw_blob(var)
-> -#endif
+> diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+> index 5c0bcd5f8a9..1fe084fd720 100644
+> --- a/hw/i386/fw_cfg.c
+> +++ b/hw/i386/fw_cfg.c
+> @@ -221,10 +221,7 @@ void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg)
+>       * of the i/o region used is FW_CFG_CTL_SIZE; when using DMA, the
+>       * DMA control register is located at FW_CFG_DMA_IO_BASE + 4
+>       */
+> -    Object *obj = OBJECT(fw_cfg);
+> -    uint8_t io_size = object_property_get_bool(obj, "dma_enabled", NULL) ?
+> -        ROUND_UP(FW_CFG_CTL_SIZE, 4) + sizeof(dma_addr_t) :
+> -        FW_CFG_CTL_SIZE;
+> +    uint8_t io_size = ROUND_UP(FW_CFG_CTL_SIZE, 4) + sizeof(dma_addr_t);
+>      Aml *dev = aml_device("FWCF");
+>      Aml *crs = aml_resource_template();
+>  
+> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+> index 27254a0e9f1..ee594364415 100644
+> --- a/hw/i386/x86-common.c
+> +++ b/hw/i386/x86-common.c
+> @@ -991,10 +991,7 @@ void x86_load_linux(X86MachineState *x86ms,
+>      }
+>  
+>      option_rom[nb_option_roms].bootindex = 0;
+> -    option_rom[nb_option_roms].name = "linuxboot.bin";
+> -    if (fw_cfg_dma_enabled(fw_cfg)) {
+> -        option_rom[nb_option_roms].name = "linuxboot_dma.bin";
+> -    }
+> +    option_rom[nb_option_roms].name = "linuxboot_dma.bin";
+>      nb_option_roms++;
+>  }
+>  
+> diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+> index 51b028b5d0a..ef976a4bce2 100644
+> --- a/hw/nvram/fw_cfg.c
+> +++ b/hw/nvram/fw_cfg.c
+> @@ -1026,12 +1026,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+>      FWCfgIoState *ios;
+>      FWCfgState *s;
+>      MemoryRegion *iomem = get_system_io();
+> -    bool dma_requested = dma_iobase && dma_as;
+>  
+> +    assert(dma_iobase);
 
-It seems read_fw_blob() could be dropped as well and this is not a big
-deal. So,
+Maybe a rebase nit? In v3, it is:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+assert(dma_iobase && dma_as);
+
+Others are fine for me.
 
