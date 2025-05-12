@@ -1,158 +1,222 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA155186A;
-	Mon, 12 May 2025 07:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539492566D4
+	for <kvm@vger.kernel.org>; Mon, 12 May 2025 07:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747035983; cv=none; b=P2sOhiCR4MANOoB2e8zaD7UBDu0KYpBIFNcXwymJEEoSLHXj/Cb2X+7luU8MqTGMOk9LM/Jv0IEp2mFEJz0xtZ/GSIcXgeAzqj+/+5UMGUVMfrbLYmxzr0WuSLEBfkrOjfV8RNdljPwt4xMb8o2HkfafAd/3uCSyV6Ra4z0Vti0=
+	t=1747035989; cv=none; b=R81TVUKwu7Y64rrDbAi9IQpkFZvtZOF/p1/4QGtbsMhzK9ghWnrR+j7FJBQtoHbvTa663nG1G7U8Ela7sK3lf+aYT0KL9g61cSHijm2V+6EI7BLQ6cXAaEnUOo0E8TqfxCE/4zYysefofk2mc+Ez1R++XJaTckUTOKZMpre9aa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747035983; c=relaxed/simple;
-	bh=0RT5pR3zu8s4u/ve/UmtKxEnYyePlnDmI1fmyK7EEu4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FlR4ZYv7zoXTkqg4mCbjynF8ylxH0XjyI9ZZteI4EK04M8dhKSi9xkpGBDIGEkh+aP56Gmw8JVeXnnYg27BPUIz13bjq8dgiUJDQ+36kOBANlC9Nb1GwJGd8RPiO0X58+1Biy+v0jnK+pdskNxc7YhkkQfV184sP05eM679PC+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=Ky9NTgh/; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1747035989; c=relaxed/simple;
+	bh=iBK0lK8aZNneNniNfW/LpU9WpjK3D8Ahrjop4/GkZK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lkg9s8YokU/Pjs4EVN7DHSlyUJVwmUJOnx4u3rRyYKYxN/P2KrH0AbJJLUSnH07LIQ0FX3qfrjHOMTnwgtP536KQGZh9IwiTHBjlKyuRTsJrqhjHSHuayKet5a8hh6MFZbTBg+X0Msz43FvQ1cgg19tPLyWQ/7ayi0HRb4N6gJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G07hTV/O; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="Ky9NTgh/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1747035983; x=1778571983;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=UFHX9bhgLQx+UYifQKLj+r4SVr4Xj6mwpCPoMq7PFqQ=;
-  b=Ky9NTgh/kirHEfchj3SZlw5XbWbYdjEhkC3iU1ehMnhMDxWX6+mgPEWF
-   w4ilAP6ooybz5IH4WuWZ4oDAbpIX9ugKD/jcamQBvjuCmR+nHjYXNVnwz
-   iu2mSBCByRHBNzwCuOltRe+31xuDy/PXUCu7foZEn5Hr/BwZnrbqHlmGS
-   0Zikquj+fFGXjfrQGRUnBq/AwzLoZYg2wWtNszP6E/XsLtRl3KT5UFPhl
-   Auy1LMTw5nMrwiJFeHNfp+2SMRz5DfLrzkoWDGCqwEJFyUnvs79wstYn0
-   51BURJZyuqtYM/Uj1wLfQ7I5X+hl+SbOyUQtRboXPlHyr/BlSVPXtp7V2
-   A==;
-X-IronPort-AV: E=Sophos;i="6.15,281,1739836800"; 
-   d="scan'208";a="491223325"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 07:46:19 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.17.79:57683]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.1.36:2525] with esmtp (Farcaster)
- id 2a2a5210-3103-4885-a716-a4de45963b83; Mon, 12 May 2025 07:46:18 +0000 (UTC)
-X-Farcaster-Flow-ID: 2a2a5210-3103-4885-a716-a4de45963b83
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 12 May 2025 07:46:17 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 12 May 2025 07:46:17 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.1544.014; Mon, 12 May 2025 07:46:17 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "david@redhat.com" <david@redhat.com>
-CC: "ackerleytng@google.com" <ackerleytng@google.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"amoorthy@google.com" <amoorthy@google.com>, "anup@brainfault.org"
-	<anup@brainfault.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"brauner@kernel.org" <brauner@kernel.org>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "chao.p.peng@linux.intel.com"
-	<chao.p.peng@linux.intel.com>, "chenhuacai@kernel.org"
-	<chenhuacai@kernel.org>, "dmatlack@google.com" <dmatlack@google.com>,
-	"fvdl@google.com" <fvdl@google.com>, "hch@infradead.org" <hch@infradead.org>,
-	"hughd@google.com" <hughd@google.com>, "isaku.yamahata@gmail.com"
-	<isaku.yamahata@gmail.com>, "isaku.yamahata@intel.com"
-	<isaku.yamahata@intel.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>, "jgg@nvidia.com" <jgg@nvidia.com>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "jthoughton@google.com"
-	<jthoughton@google.com>, "keirf@google.com" <keirf@google.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "liam.merwick@oracle.com"
-	<liam.merwick@oracle.com>, "linux-arm-msm@vger.kernel.org"
-	<linux-arm-msm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"mail@maciej.szmigiero.name" <mail@maciej.szmigiero.name>, "maz@kernel.org"
-	<maz@kernel.org>, "mic@digikod.net" <mic@digikod.net>, "michael.roth@amd.com"
-	<michael.roth@amd.com>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "palmer@dabbelt.com"
-	<palmer@dabbelt.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>,
-	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
-	"qperret@google.com" <qperret@google.com>, "quic_cvanscha@quicinc.com"
-	<quic_cvanscha@quicinc.com>, "quic_eberman@quicinc.com"
-	<quic_eberman@quicinc.com>, "quic_mnalajal@quicinc.com"
-	<quic_mnalajal@quicinc.com>, "quic_pderrin@quicinc.com"
-	<quic_pderrin@quicinc.com>, "quic_pheragu@quicinc.com"
-	<quic_pheragu@quicinc.com>, "quic_svaddagi@quicinc.com"
-	<quic_svaddagi@quicinc.com>, "quic_tsoni@quicinc.com"
-	<quic_tsoni@quicinc.com>, "rientjes@google.com" <rientjes@google.com>, "Roy,
- Patrick" <roypat@amazon.co.uk>, "seanjc@google.com" <seanjc@google.com>,
-	"shuah@kernel.org" <shuah@kernel.org>, "steven.price@arm.com"
-	<steven.price@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"tabba@google.com" <tabba@google.com>, "vannapurve@google.com"
-	<vannapurve@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "wei.w.wang@intel.com"
-	<wei.w.wang@intel.com>, "will@kernel.org" <will@kernel.org>,
-	"willy@infradead.org" <willy@infradead.org>, "xiaoyao.li@intel.com"
-	<xiaoyao.li@intel.com>, "yilun.xu@intel.com" <yilun.xu@intel.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 08/13] KVM: guest_memfd: Allow host to map
- guest_memfd() pages
-Thread-Topic: [PATCH v8 08/13] KVM: guest_memfd: Allow host to map
- guest_memfd() pages
-Thread-Index: AQHbwxHxVdW3j+H8JUSlmMeNB3J9nA==
-Date: Mon, 12 May 2025 07:46:16 +0000
-Message-ID: <20250512074615.27394-1-roypat@amazon.co.uk>
-References: <702d9951-ac26-4ee4-8a78-d5104141c2e4@redhat.com>
-In-Reply-To: <702d9951-ac26-4ee4-8a78-d5104141c2e4@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G07hTV/O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747035987; x=1778571987;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iBK0lK8aZNneNniNfW/LpU9WpjK3D8Ahrjop4/GkZK0=;
+  b=G07hTV/O2znOw0CElnNwwynmop7FyLhnb+LMYeXn1wjF+1MSypbR2vjM
+   4DyICq0yZTidP1Z1WoWlsCnNQQduPYEOxl6ONUzelBqFN7WeKKHRcJl00
+   B5AsiTr5MvDq4sJBCiZaOVOH+btVr7IaAqefCGwX1k0F4M/nbjsREDFa7
+   ZqMxpj/9gXBxbBfES/KRVJ3WSCDmk8nO2s50NT91oIRki7zy0k4VZ+o7A
+   3NKi7jAvGbSagX6bWxuhTp1VUgAitBzCN+CaVDvgDRDORas6kRMWGRUqk
+   vFL0+/iKIE28SCqbycJKzckqlQcvZ8E1ri5qsqc8zE9SDdNdnUWMnQiWV
+   w==;
+X-CSE-ConnectionGUID: irN4O8dERPiI/vZVp4Qyhg==
+X-CSE-MsgGUID: ifSciN7jTKKDAOkysNA0Wg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="48744428"
+X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
+   d="scan'208";a="48744428"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 00:46:27 -0700
+X-CSE-ConnectionGUID: j59mCUCoTHuhaqL6Sbi2vg==
+X-CSE-MsgGUID: EHcgkk8oR/SiWI3IT1I5ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
+   d="scan'208";a="142250312"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa004.jf.intel.com with ESMTP; 12 May 2025 00:46:23 -0700
+Date: Mon, 12 May 2025 16:07:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Alexey Kardashevskiy <aik@amd.com>, Peter Xu <peterx@redhat.com>,
+	Gupta Pankaj <pankaj.gupta@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v4 07/13] ram-block-attribute: Introduce
+ RamBlockAttribute to manage RAMBLock with guest_memfd
+Message-ID: <aCGsPh/A3sh0dDlI@intel.com>
+References: <20250407074939.18657-1-chenyi.qiang@intel.com>
+ <20250407074939.18657-8-chenyi.qiang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407074939.18657-8-chenyi.qiang@intel.com>
 
-On Sun, 2025-05-11 at 09:03 +0100, David Hildenbrand wrote:=0A=
->>>                return -ENODEV;=0A=
->>> +=0A=
->>> +       if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=3D=0A=
->>> +           (VM_SHARED | VM_MAYSHARE)) {=0A=
->>> +               return -EINVAL;=0A=
->>> +       }=0A=
->>> +=0A=
->>> +       vm_flags_set(vma, VM_DONTDUMP);=0A=
->>=0A=
->> Hi Fuad,=0A=
->>=0A=
->> Sorry if I missed this, but why exactly do we set VM_DONTDUMP here?=0A=
->> Could you leave a small comment? (I see that it seems to have=0A=
->> originally come from Patrick? [1]) I get that guest memory VMAs=0A=
->> generally should have VM_DONTDUMP; is there a bigger reason?=0A=
-=0A=
-Iirc, I essentially copied my mmap handler from secretmem for that RFC. But=
-=0A=
-even for direct map removal, it seems this is not needed, because get_dump_=
-page=0A=
-goes via GUP, which errors out for direct map removed VMAs. So what David i=
-s=0A=
-saying below also applies in that case.=0A=
- =0A=
-> (David replying)=0A=
-> =0A=
-> I assume because we might have inaccessible parts in there that SIGBUS=0A=
-> on access.=0A=
-> =0A=
-> get_dump_page() does ignore any errors, though (returning NULL), so=0A=
-> likely we don't need VM_DONTDUMP.=0A=
-> =0A=
-> -- =0A=
-> Cheers,=0A=
-> =0A=
-> David / dhildenb=0A=
-=0A=
-Best,=0A=
-Patrick=0A=
+[snip]
+
+> ---
+>  include/exec/ramblock.h      |  24 +++
+>  system/meson.build           |   1 +
+>  system/ram-block-attribute.c | 282 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 307 insertions(+)
+>  create mode 100644 system/ram-block-attribute.c
+
+checkpatch.pl complains a lot about code line length:
+
+total: 5 errors, 34 warnings, 324 lines checked
+
+> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+> index 0babd105c0..b8b5469db9 100644
+> --- a/include/exec/ramblock.h
+> +++ b/include/exec/ramblock.h
+> @@ -23,6 +23,10 @@
+>  #include "cpu-common.h"
+>  #include "qemu/rcu.h"
+>  #include "exec/ramlist.h"
+> +#include "system/hostmem.h"
+> +
+> +#define TYPE_RAM_BLOCK_ATTRIBUTE "ram-block-attribute"
+> +OBJECT_DECLARE_TYPE(RamBlockAttribute, RamBlockAttributeClass, RAM_BLOCK_ATTRIBUTE)
+
+Could we use "OBJECT_DECLARE_SIMPLE_TYPE" here? Since I find class
+doesn't have any virtual method.
+
+>  struct RAMBlock {
+>      struct rcu_head rcu;
+> @@ -90,5 +94,25 @@ struct RAMBlock {
+>       */
+>      ram_addr_t postcopy_length;
+>  };
+> +
+> +struct RamBlockAttribute {
+> +    Object parent;
+> +
+> +    MemoryRegion *mr;
+> +
+> +    /* 1-setting of the bit represents the memory is populated (shared) */
+> +    unsigned shared_bitmap_size;
+> +    unsigned long *shared_bitmap;
+> +
+> +    QLIST_HEAD(, PrivateSharedListener) psl_list;
+> +};
+> +
+> +struct RamBlockAttributeClass {
+> +    ObjectClass parent_class;
+> +};
+
+With OBJECT_DECLARE_SIMPLE_TYPE, this class definition is not needed.
+
+> +int ram_block_attribute_realize(RamBlockAttribute *attr, MemoryRegion *mr);
+> +void ram_block_attribute_unrealize(RamBlockAttribute *attr);
+> +
+>  #endif
+>  #endif
+> diff --git a/system/meson.build b/system/meson.build
+> index 4952f4b2c7..50a5a64f1c 100644
+> --- a/system/meson.build
+> +++ b/system/meson.build
+> @@ -15,6 +15,7 @@ system_ss.add(files(
+>    'dirtylimit.c',
+>    'dma-helpers.c',
+>    'globals.c',
+> +  'ram-block-attribute.c',
+
+This new file is missing a MAINTAINERS entry.
+
+>    'memory_mapping.c',
+>    'qdev-monitor.c',
+>    'qtest.c',
+
+[snip]
+
+> +static size_t ram_block_attribute_get_block_size(const RamBlockAttribute *attr)
+> +{
+> +    /*
+> +     * Because page conversion could be manipulated in the size of at least 4K or 4K aligned,
+> +     * Use the host page size as the granularity to track the memory attribute.
+> +     */
+> +    g_assert(attr && attr->mr && attr->mr->ram_block);
+> +    g_assert(attr->mr->ram_block->page_size == qemu_real_host_page_size());
+> +    return attr->mr->ram_block->page_size;
+
+What about using qemu_ram_pagesize() instead of accessing
+ram_block->page_size directly?
+
+Additionally, maybe we can add a simple helper to get page size from
+RamBlockAttribute.
+
+> +}
+> +
+
+[snip]
+
+> +static void ram_block_attribute_psm_register_listener(GenericStateManager *gsm,
+> +                                                      StateChangeListener *scl,
+> +                                                      MemoryRegionSection *section)
+> +{
+> +    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(gsm);
+> +    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
+> +    int ret;
+> +
+> +    g_assert(section->mr == attr->mr);
+> +    scl->section = memory_region_section_new_copy(section);
+> +
+> +    QLIST_INSERT_HEAD(&attr->psl_list, psl, next);
+> +
+> +    ret = ram_block_attribute_for_each_shared_section(attr, section, scl,
+> +                                                      ram_block_attribute_notify_shared_cb);
+> +    if (ret) {
+> +        error_report("%s: Failed to register RAM discard listener: %s", __func__,
+> +                     strerror(-ret));
+
+There will be 2 error messages: one is the above, and another is from
+ram_block_attribute_for_each_shared_section().
+
+Could we just exit to handle this error?
+
+> +    }
+> +}
+> +
+> +static void ram_block_attribute_psm_unregister_listener(GenericStateManager *gsm,
+> +                                                        StateChangeListener *scl)
+> +{
+> +    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(gsm);
+> +    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
+> +    int ret;
+> +
+> +    g_assert(scl->section);
+> +    g_assert(scl->section->mr == attr->mr);
+> +
+> +    ret = ram_block_attribute_for_each_shared_section(attr, scl->section, scl,
+> +                                                      ram_block_attribute_notify_private_cb);
+> +    if (ret) {
+> +        error_report("%s: Failed to unregister RAM discard listener: %s", __func__,
+> +                     strerror(-ret));
+
+Ditto.
+
+> +    }
+> +
+> +    memory_region_section_free_copy(scl->section);
+> +    scl->section = NULL;
+> +    QLIST_REMOVE(psl, next);
+> +}
+> +
