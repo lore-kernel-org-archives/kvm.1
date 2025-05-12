@@ -1,108 +1,102 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45234297B8B
-	for <kvm@vger.kernel.org>; Mon, 12 May 2025 18:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB002989B0
+	for <kvm@vger.kernel.org>; Mon, 12 May 2025 18:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073148; cv=none; b=d24ZWu10TqTtjf4QC/LbAbZ+YVE/mJquVE1GJxh+GCN2m8/4L81UdJivenKFe3wNxCrI6oTEBcDti4e+iVxG92/jCgocz5x6B8tF10O41uLeYKmWaIJGEXqPZFnoxPYTxoxTxauq3zjAazw7tPGhcWcX/VDh1MGDaGM7PnKIno8=
+	t=1747073291; cv=none; b=aW+wNWjVT7TI848ULoV4BAstJvlTDZtpYPYZCbgW2Oadc5XqRY07U+SgmxXf1X8fhZ0SjNnINZ3/Lxm7cD+1Ly6AAbBvir51SOsODOcrtCezrVU2MuTOjLf/WDLQ2xk9IQzM5tfOjWJc2zg23GUOivite6ifAmA5vjnfLhRMpQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073148; c=relaxed/simple;
-	bh=+GsKxGDFi9LdBjiYYl4g3upDO0FWMo1rCOOSDcsVo1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tb40F5iu5UPTA+ky5MDNJEJOCvZh0jh7RheAfwQAoj8U/WO0CZwcRrWFnDLI5Bin0G1GZZu1D9SZIOEN+fMWzO7/ToGzGcqG3sVqAeJhUpcXXVVf0mdTg9yZ3g1YhwpQYQN90M9258lhMZ7+Q1/WeCe9JAewzgBU8l1iXnGqzQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GRIBy7X0; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747073291; c=relaxed/simple;
+	bh=ejLKkLFYtUMpXHdsOTHtW0v9ZW+VQmKQChOCq21oL40=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=G2jLSTGAuqhHwYlOZmpmeckyw6GSrawvGacSlTXuqBOzr5IMFlI4WR6MD/UBit8qi6xByQ5HjjBuBjIn4p2m2nvWBudXYo1s+5w6/MEEGERWXEmnsr+vXzSRouHyiEqbsd/mkJpAyxb/8hDStwN3tpE8cXJZzDRL21KrFDFg82k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q6oHlQ66; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GRIBy7X0"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22d95f0dda4so55844365ad.2
-        for <kvm@vger.kernel.org>; Mon, 12 May 2025 11:05:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q6oHlQ66"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22fd4e7ea48so28703185ad.3
+        for <kvm@vger.kernel.org>; Mon, 12 May 2025 11:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747073146; x=1747677946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IO5E5SNmIeDx8PW0b+RfMLgVUuAcPfL8utSgWSmdyqA=;
-        b=GRIBy7X02Zupv0suWnlhkP1g4e91Hljj1P57DdpHxUw0wHIlY/0O+0TTsbUk4zaFjz
-         vGeq2DNCG/Yx1KeDK88QfDy89OBpCiJ5OYUuJKPCLzLacuBRnD0z38OH2vDQaJl/4sPT
-         wDoOfKzI9cImhCVCvmzt/mAJccO/jx07ECrL3PdJfTeZ1qQdV/lId1CcDgDOsa1XKxxX
-         Efq/z/CAe2zITWZjMyJaLZK9wlvMPZfgVzDcO4xCiFlNm89ssDlvITrWVc4Taa/gczfX
-         JpmWjk/yD63Z/AE9+t4w/xvT+BOyFgcP/J/zCPSVzsmwWTKy6vNlpyYIarMoYVrhK0bI
-         74Uw==
+        d=google.com; s=20230601; t=1747073289; x=1747678089; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwuOPvPojv1l0TmDPTQsLIJwuOHkezsc7kTLGMrlcwg=;
+        b=q6oHlQ66UIxXEUT5MyNWohZB8oRwTGbtFztjts23W0DqCHyagoa6TnPUd7z5SI8Ph+
+         aA1UQTYf9xGfQQJSD1ywzN10ht0Qgh14zIRRQgb81Umsy0CyW+RixsQYF3bKQGeXRfDS
+         tfn9EUYDueEzlBdsEV1lhNGafBiB4NNGY6ouKVwm6Xorbga5R47KLl1iNx2FHIK3ToOb
+         56cD2Pll/5wyUGuWwkOWJiaW3pDcpqv/QW6RPHmDcnOX18QdZp2EUMIHjMR/9xtuY6+v
+         jcI/4Qm0Gd6tkEg9MMDW5jWJkEvKwtC0O7gzwmoEd6CIztkFEfaMHe8JbUbZgiChCA3p
+         Yw+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747073146; x=1747677946;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IO5E5SNmIeDx8PW0b+RfMLgVUuAcPfL8utSgWSmdyqA=;
-        b=Ut4f7vGuL85Z83d4QezcYlBkiUO5MIk3RvntRXGRhYtf441Af4t6IbWskvhw+LQUcH
-         23HgKwNKTsuLpvAWu9eZfWKYg9vC3g47c+S/N8Ot87zdhvcKTs+SMVbwBBNMA5YzxvfH
-         WYxH4AkO4dEVxxzzwzwAbvnblo9FIFAL/x94oAjNOBiywkdL079roJ/3szXtce4GHBoX
-         ZAm+7NpPKYiOEkZN+9k7akVf/iqzxOGtF5y44mZDbNMjQ8A+DwW6fTk38zh7xm3gf1WH
-         Uissuv9vSeq/WuUZvyiWOqLnOfZxocnbSbQkL0Zc9NNLO/tFZrb9scvqd+iy4TzRAQWh
-         Kilw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNiFkMj++hD4uouzIGFKOWkRxGCjEPZnfTncT2953D4vybexwBS2XN0F7U2EM0NPhBxOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjnxOpkfUcFSgU8tW3A9cGnnMYP+v6rLSLKnq484eVnEEn+QVG
-	yogFFKmi7sp8Url+DAyEnPOHlOXztvLgGrTYs9txa/2JF2GlAyzHqNXkPs3JaFs=
-X-Gm-Gg: ASbGnctEEqjAZV/ysQu5FnFj2C5W35dS/J+WXAAMHrvoG2CFPXHKxGN3WIoj3ZLBj/V
-	5+QLMSpyV9l0QPQF1QI3gDhGQoi60q/TzY3A9GSm/A9H8sGEf+cFOKLvrXks9N+9O77cNU1k3Cw
-	ZcDZM+pBvMTRz/MwpcK//6CjkNuyDMQh7PJSMw15brkaac5py/jRs+PqjQgFvHZ5v5FDOIxcVWl
-	SxHK6nSDNNtvLF1CY4Q6JlREM1ZFvJIf9M8m9oVc32efZYn3MBalOzZW5DepeV4Dy3u+m3o1PWt
-	W5/fX5TDenx9/t3MM2nCcHDjY7t5kWzOS/UW06P3mCPTTTJFXpU=
-X-Google-Smtp-Source: AGHT+IHj+ksKGYhPnHifXirA+gi4i431YFqKs1JUn41Q6PWik4/CLP03qf1Wl3GK9Z24iyTARgkJLg==
-X-Received: by 2002:a17:903:2443:b0:22f:b6cc:421e with SMTP id d9443c01a7336-22fc8b592bamr200772745ad.26.1747073146460;
-        Mon, 12 May 2025 11:05:46 -0700 (PDT)
-Received: from pc.. ([38.41.223.211])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc82a2e4fsm65792005ad.232.2025.05.12.11.05.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 11:05:46 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	kvm@vger.kernel.org,
-	alex.bennee@linaro.org,
-	anjo@rev.ng,
-	qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v8 39/48] target/arm/tcg/vec_internal: use forward declaration for CPUARMState
-Date: Mon, 12 May 2025 11:04:53 -0700
-Message-ID: <20250512180502.2395029-40-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
-References: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
+        d=1e100.net; s=20230601; t=1747073289; x=1747678089;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwuOPvPojv1l0TmDPTQsLIJwuOHkezsc7kTLGMrlcwg=;
+        b=fRBvqtMs/pWMuDStsWemt/kRFxrMJz+tSv+nO9pGonMeUZMnUW1ypJJ0YBpxAEmKzU
+         cnkegzKLoFYlSWt4rFXE1JDJiAQANjPu4XB4Hsj+wtj+P0CxYBFikwNvbhVq7OqBeK1u
+         0H2gINOfUZY2awUFbmqtSaaO3M5Hf81UBjK2DDUXZ3Y3sEUmaMklz5mvC0W2Vowe/Iuh
+         b5WFnxcoeikkkpdT2PBpxgHtGqL441eac+W/P+hxUNGddyuW3+dswOb0JkG8eh9edM0f
+         5A0xaxTogNeF32ri262w8E+P7r/RQJGkCkK3QEza2u3dhr6F7XO9xrAsXi6WMzNDsDOK
+         iHsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVzPogg1YNa6rZ07fw/hmAmu2NDliXgeYwgmJto8D7ELZ0Taa1rvfdS4BdEzZFYYqysplM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxprhJS3i8R/qwkYJcJYI76O3ehUkUAIYV5N506n5D/3RrF45RC
+	59GcUK7a/pPWz2Jbtthi2r7jOKcIMN6cIC97x6GzFaXb2MPraDImB51DvspEUKRbPnuv6CRLzqW
+	FZw==
+X-Google-Smtp-Source: AGHT+IH71D2UI9Ksbkvxo8YwHen4FAYZY6ws0smj3LEwh8OXjODVe85IC+hix2m/Z6IzhlrHe5bvJpSOD5Y=
+X-Received: from plil3.prod.google.com ([2002:a17:903:17c3:b0:223:4c5f:3494])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:988:b0:22e:5abd:7133
+ with SMTP id d9443c01a7336-22fc917f836mr180576485ad.45.1747073288984; Mon, 12
+ May 2025 11:08:08 -0700 (PDT)
+Date: Mon, 12 May 2025 11:08:07 -0700
+In-Reply-To: <20250313203702.575156-4-jon@nutanix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250313203702.575156-1-jon@nutanix.com> <20250313203702.575156-4-jon@nutanix.com>
+Message-ID: <aCI5B7Mz8mgP-V2o@google.com>
+Subject: Re: [RFC PATCH 03/18] KVM: x86: Add module parameter for Intel MBEC
+From: Sean Christopherson <seanjc@google.com>
+To: Jon Kohler <jon@nutanix.com>
+Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Needed so this header can be included without requiring cpu.h.
+On Thu, Mar 13, 2025, Jon Kohler wrote:
+> Add 'enable_pt_guest_exec_control' module parameter to x86 code, with
+> default value false.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- target/arm/tcg/vec_internal.h | 2 ++
- 1 file changed, 2 insertions(+)
+...
 
-diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
-index 6b93b5aeb94..c02f9c37f83 100644
---- a/target/arm/tcg/vec_internal.h
-+++ b/target/arm/tcg/vec_internal.h
-@@ -22,6 +22,8 @@
- 
- #include "fpu/softfloat.h"
- 
-+typedef struct CPUArchState CPUARMState;
-+
- /*
-  * Note that vector data is stored in host-endian 64-bit chunks,
-  * so addressing units smaller than that needs a host-endian fixup.
--- 
-2.47.2
+> +bool __read_mostly enable_pt_guest_exec_control;
+> +EXPORT_SYMBOL_GPL(enable_pt_guest_exec_control);
+> +module_param(enable_pt_guest_exec_control, bool, 0444);
 
+The default value of a parameter doesn't prevent userspace from enabled the param.
+I.e. the instant this patch lands, userspace can enable enable_pt_guest_exec_control,
+which means MBEC needs to be 100% functional before this can be exposed to userspace.
+
+The right way to do this is to simply omit the module param until KVM is ready to
+let userspace enable the feature.
+
+All that said, I don't see any reason to add a module param for this.  *KVM* isn't
+using MBEC, the guest is using MBEC.  And unless host userspace is being extremely
+careless with VMX MSRs, exposing MBEC to the guest will require additional VMM
+enabling and/or user opt-in.
+
+KVM provides module params to control features that KVM is using, generally when
+there is no sane alternative to tell KVM not to use a particular feature, i.e.
+when there is way for the user to disable a feature for testing/debug purposes.
+
+Furthermore, how this series keys off the module param throughout KVM is completely
+wrong.  The *only* input that ultimately matters is the control bit in vmcs12.
+Whether or not KVM allows that bit to be set could be controlled by a module param,
+but KVM shouldn't be looking at the module param outside of that particular check.
+
+TL;DR: advertising and enabling MBEC should come along when KVM allows the bit to
+       be set in vmcs12.
