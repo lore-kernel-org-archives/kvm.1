@@ -1,118 +1,307 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75F11E32DB
-	for <kvm@vger.kernel.org>; Mon, 12 May 2025 14:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49F51E3DD6;
+	Mon, 12 May 2025 14:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747059193; cv=none; b=UBYX7/V0lyEVYJ4vg+Y5y+4F5GlURYMiUl8Ak9mj5dUmXc+G/odAfq+sFUpBHfKduAj7wtph88jKdOxiAj+kZ/xiAcBcx2ETosKKNyFeYkdXciP1JDr8Ti9PiBHU1K3Zowz6GtGJbTvKF4UL8KYHot+6d405NoJ9TVgKUR2PyPo=
+	t=1747061102; cv=none; b=Cg8aP7qUbuIjRwr4QNAUY+mhcXKGqAWeg2I/cDGNiNns9FNES/OUKRxQvBXKepW/hfHkTGH/Ny0Dfedo7rHThq8czlnGIEN9TgD/uBsc61IfQpSfv+j9MQQj7Nw0DSKgY4JCXwU7Ro+ICvZpKVewh5yrTfyM1nXemDNSCTuDUSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747059193; c=relaxed/simple;
-	bh=SKnN1ncZSJj/MEbr0gfzXGZNfOFzaykDF0R1s1+8CYk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GmJFAk8hjH/Slt1eG7b682VjqX1q8rHblma7/1rJuqjB89B+V0CzYN3QnkqyZQaHnUw6O2lcGvyKh8DOZ5C6+CrVqAGRPjBWSheXYEZGTl95cMCaFR2ACBb4zy7BFtri83mi25/elsirGZhthm60wbHNZYvUPCrYQu6OSH/lXco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0cIyOtr9; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0cIyOtr9"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-30a80fe759bso6103698a91.1
-        for <kvm@vger.kernel.org>; Mon, 12 May 2025 07:13:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747059191; x=1747663991; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+Bh7c4UsvgqnjXtLXLGDW84tHDJYaJRZGq7z5u1X5E=;
-        b=0cIyOtr98HT2Cj8JWQt81Sc9cdhJ9UkWO/ZiuJ/t8K3Gy3jCVJv5zQSI4oeujDYUp1
-         97XgxPKzLFR6GD9pJzo7msdo5YdDF5fuglOkKf6fHeObk14AgpyYtXbzBOHxn8jdG64x
-         11GXIig6NgYuitexBSsZQvG0W+goRzI0XMy0K6MjzyN2G7gJKpV27T3PST97pcX7Tu0a
-         AJKZA2x0bu/RmMzvLWJcdCWALIUtywSCQc76eVeVW/mSz/gPI4fdPuaFvNYC4lTE5RhI
-         BNPB73eNGkxff/1jN88Q+lshlCnzPoyBLBMuFzPf8ukIxkv+5w2R+jVI7+ZstDLJKGbt
-         LyvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747059191; x=1747663991;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+Bh7c4UsvgqnjXtLXLGDW84tHDJYaJRZGq7z5u1X5E=;
-        b=jB1/w3aKJC3UwSoF1ZogPj0k7TRr5P7mXyNe8Rea+lVcqJcEf/0on9xwns/lbYDln+
-         bpGZZlphApWw0cnZ9D4wsRMsjKjit1XRG8ZWV7xcMBuFPdIciAfWZeir8cFTc18GqsrB
-         1BI94CKdLTIQ/LMrLDn7Hrkl7rXZoG3WG+R1gypRLeFi33ZlndYFA+C/RhXV88mwbNnE
-         vmFQ2O90rDLf9cZmgekS1YZIIta1RWTBtX+dou+yGyIP96n6YdmdXNdPiFp8t85drnDI
-         /d3HnOTSttXgQz3jHKxKk75MZwkXFUJAwFyIGc1iN3O4j+f4FZFrFt8nvdy6rhWsDoCw
-         jqGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJcEwreOi8qjZBCGNPJTpE4mic03tnOaJrlkDQmv75Ahd4XHn9MEf60d4OMH27QUlhAXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6q6LfuJZsgqgJmOWpU9EYYaykTjz0FmMdZQr+lkkcf+RLDasQ
-	zctmCf/Ltzrwoc97LgNtrNLlOUlYq6a0Xn489RfJ/fREbDy5tdq+0dIhFpxZggsekavXE/+wF6O
-	GQw==
-X-Google-Smtp-Source: AGHT+IFQm5taTcpUiAapk9Ux8rFT+sINfQek692ts0xWXhUSaKE8lGTK0QG66OYMwFe+55PbQ2ArW2nFZqY=
-X-Received: from pjj12.prod.google.com ([2002:a17:90b:554c:b0:30a:2020:e2bd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52cf:b0:2ff:52e1:c49f
- with SMTP id 98e67ed59e1d1-30c3d62e58dmr16671203a91.26.1747059191196; Mon, 12
- May 2025 07:13:11 -0700 (PDT)
-Date: Mon, 12 May 2025 07:13:08 -0700
-In-Reply-To: <20250512085735.564475-4-chao.gao@intel.com>
+	s=arc-20240116; t=1747061102; c=relaxed/simple;
+	bh=XAITQ9gGYPlNcp5g5iWOivskIm4vLmuGTyg7TfZHkIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RAiMJAnhZGEwFV3HWtVVBpZ+QZBmRnuJ2D5rfs6uyogNlli0JZahyrlXvlR1dQ/O+7ixmB3L3YcJQ6Z49rZBBQPSFABlC7IJ03AwEbAyPCz2zGuzSJrvTEW2ya6AupaXgACcUCYzl27Bi4W57dBIVIOSYkgPQw9+8J1EVcVY2fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39CAC14BF;
+	Mon, 12 May 2025 07:44:47 -0700 (PDT)
+Received: from [10.57.21.218] (unknown [10.57.21.218])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A08D3F673;
+	Mon, 12 May 2025 07:44:53 -0700 (PDT)
+Message-ID: <8f7ab79a-6d9e-4b66-a74e-5fb1dd2beecd@arm.com>
+Date: Mon, 12 May 2025 15:44:51 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250512085735.564475-1-chao.gao@intel.com> <20250512085735.564475-4-chao.gao@intel.com>
-Message-ID: <aCIB3nZSUTBXr80O@google.com>
-Subject: Re: [PATCH v7 3/6] x86/fpu: Initialize guest fpstate and FPU pseudo
- container from guest defaults
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	tglx@linutronix.de, dave.hansen@intel.com, pbonzini@redhat.com, 
-	peterz@infradead.org, rick.p.edgecombe@intel.com, weijiang.yang@intel.com, 
-	john.allen@amd.com, bp@alien8.de, chang.seok.bae@intel.com, xin3.li@intel.com, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Eric Biggers <ebiggers@google.com>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 13/43] arm64: RME: Support for the VGIC in realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-14-steven.price@arm.com>
+ <bf0b9232-36b0-41c5-89a5-6639719cd09e@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <bf0b9232-36b0-41c5-89a5-6639719cd09e@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 12, 2025, Chao Gao wrote:
-> @@ -535,10 +538,20 @@ void fpstate_init_user(struct fpstate *fpstate)
->  
->  static void __fpstate_reset(struct fpstate *fpstate, u64 xfd)
->  {
-> -	/* Initialize sizes and feature masks */
-> -	fpstate->size		= fpu_kernel_cfg.default_size;
-> +	/*
-> +	 * Initialize sizes and feature masks. Supervisor features and
-> +	 * sizes may diverge between guest FPUs and host FPUs, whereas
-> +	 * user features and sizes are always identical the same.
-
-Pick of of "identical" or "the same" :-)
-
-And maybe explain why supervisor features can diverge, while the kernel ensures
-user features are identical?  Ditto for the XFD divergence.  E.g. I think this
-would be accurate (though I may be reading too much into user features):
-
-	/*
-	 * Supervisor features (and thus sizes) may diverge between guest FPUs
-	 * and host FPUs, as some supervisor features are supported for guests
-	 * despite not being utilized by the host.  User features and sizes are
-	 * always identical, which allows for common guest and userspace ABI.
-	 *
-	 * For the host, set XFD to the kernel's desired initialization value.
-	 * For guests, set XFD to its architectural RESET value.
-	 */
-
-> +	 */
-> +	if (fpstate->is_guest) {
-> +		fpstate->size		= guest_default_cfg.size;
-> +		fpstate->xfeatures	= guest_default_cfg.features;
-> +	} else {
-> +		fpstate->size		= fpu_kernel_cfg.default_size;
-> +		fpstate->xfeatures	= fpu_kernel_cfg.default_features;
-> +	}
-> +
->  	fpstate->user_size	= fpu_user_cfg.default_size;
-> -	fpstate->xfeatures	= fpu_kernel_cfg.default_features;
->  	fpstate->user_xfeatures	= fpu_user_cfg.default_features;
->  	fpstate->xfd		= xfd;
->  }
-> -- 
-> 2.47.1
+On 02/05/2025 12:04, Suzuki K Poulose wrote:
+> On 16/04/2025 14:41, Steven Price wrote:
+>> The RMM provides emulation of a VGIC to the realm guest but delegates
+>> much of the handling to the host. Implement support in KVM for
+>> saving/restoring state to/from the REC structure.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes from v5:
+>>   * Handle RMM providing fewer GIC LRs than the hardware supports.
+>> ---
+>>   arch/arm64/include/asm/kvm_rme.h |  1 +
+>>   arch/arm64/kvm/arm.c             | 16 +++++++++---
+>>   arch/arm64/kvm/rme.c             |  5 ++++
+>>   arch/arm64/kvm/vgic/vgic-init.c  |  2 +-
+>>   arch/arm64/kvm/vgic/vgic-v3.c    |  6 ++++-
+>>   arch/arm64/kvm/vgic/vgic.c       | 43 ++++++++++++++++++++++++++++++--
+>>   6 files changed, 66 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
+>> asm/kvm_rme.h
+>> index f716b890e484..9bcad6ec5dbb 100644
+>> --- a/arch/arm64/include/asm/kvm_rme.h
+>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>> @@ -92,6 +92,7 @@ struct realm_rec {
+>>     void kvm_init_rme(void);
+>>   u32 kvm_realm_ipa_limit(void);
+>> +u32 kvm_realm_vgic_nr_lr(void);
+>>     int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap
+>> *cap);
+>>   int kvm_init_realm_vm(struct kvm *kvm);
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index fd83efb667cc..808d7e479571 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -683,19 +683,24 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>>           kvm_call_hyp_nvhe(__pkvm_vcpu_put);
+>>       }
+>>   +    kvm_timer_vcpu_put(vcpu);
+>> +    kvm_vgic_put(vcpu);
+>> +
+>> +    vcpu->cpu = -1;
+>> +
+>> +    if (vcpu_is_rec(vcpu))
+>> +        return;
+>> +
+>>       kvm_vcpu_put_debug(vcpu);
+>>       kvm_arch_vcpu_put_fp(vcpu);
+>>       if (has_vhe())
+>>           kvm_vcpu_put_vhe(vcpu);
+>> -    kvm_timer_vcpu_put(vcpu);
+>> -    kvm_vgic_put(vcpu);
+>>       kvm_vcpu_pmu_restore_host(vcpu);
+>>       if (vcpu_has_nv(vcpu))
+>>           kvm_vcpu_put_hw_mmu(vcpu);
+>>       kvm_arm_vmid_clear_active();
+>>         vcpu_clear_on_unsupported_cpu(vcpu);
+>> -    vcpu->cpu = -1;
+>>   }
+>>     static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+>> @@ -912,6 +917,11 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu
+>> *vcpu)
+>>               return ret;
+>>       }
+>>   +    if (!irqchip_in_kernel(kvm) && kvm_is_realm(vcpu->kvm)) {
+>> +        /* Userspace irqchip not yet supported with Realms */
+>> +        return -EOPNOTSUPP;
+>> +    }
+>> +
+>>       mutex_lock(&kvm->arch.config_lock);
+>>       set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+>>       mutex_unlock(&kvm->arch.config_lock);
+>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+>> index f4923fc3b34e..1239eb07aca6 100644
+>> --- a/arch/arm64/kvm/rme.c
+>> +++ b/arch/arm64/kvm/rme.c
+>> @@ -77,6 +77,11 @@ u32 kvm_realm_ipa_limit(void)
+>>       return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
+>>   }
+>>   +u32 kvm_realm_vgic_nr_lr(void)
+>> +{
+>> +    return u64_get_bits(rmm_feat_reg0,
+>> RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
+>> +}
+>> +
+>>   static int get_start_level(struct realm *realm)
+>>   {
+>>       return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
+>> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/
+>> vgic-init.c
+>> index 1f33e71c2a73..a81c7f3d1d42 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-init.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-init.c
+>> @@ -81,7 +81,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+>>        * the proper checks already.
+>>        */
+>>       if (type == KVM_DEV_TYPE_ARM_VGIC_V2 &&
+>> -        !kvm_vgic_global_state.can_emulate_gicv2)
+>> +        (!kvm_vgic_global_state.can_emulate_gicv2 || kvm_is_realm(kvm)))
+>>           return -ENODEV;
+>>         /* Must be held to avoid race with vCPU creation */
+>> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-
+>> v3.c
+>> index b9ad7c42c5b0..c10ad817030d 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-v3.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
+>> @@ -8,9 +8,11 @@
+>>   #include <linux/kvm_host.h>
+>>   #include <linux/string_choices.h>
+>>   #include <kvm/arm_vgic.h>
+>> +#include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>>   #include <asm/kvm_mmu.h>
+>>   #include <asm/kvm_asm.h>
+>> +#include <asm/rmi_smc.h>
+>>     #include "vgic.h"
+>>   @@ -758,7 +760,9 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+>>           return;
+>>       }
+>>   -    if (likely(!is_protected_kvm_enabled()))
+>> +    if (vcpu_is_rec(vcpu))
+>> +        cpu_if->vgic_vmcr = vcpu->arch.rec.run->exit.gicv3_vmcr;
+>> +    else if (likely(!is_protected_kvm_enabled()))
+>>           kvm_call_hyp(__vgic_v3_save_vmcr_aprs, cpu_if);
+>>       WARN_ON(vgic_v4_put(vcpu));
+>>   diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
+>> index 8d189ce18ea0..c68a41a29917 100644
+>> --- a/arch/arm64/kvm/vgic/vgic.c
+>> +++ b/arch/arm64/kvm/vgic/vgic.c
+>> @@ -10,7 +10,9 @@
+>>   #include <linux/list_sort.h>
+>>   #include <linux/nospec.h>
+>>   +#include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>> +#include <asm/kvm_rme.h>
+>>     #include "vgic.h"
+>>   @@ -23,6 +25,8 @@ struct vgic_global kvm_vgic_global_state
+>> __ro_after_init = {
+>>     static inline int kvm_vcpu_vgic_nr_lr(struct kvm_vcpu *vcpu)
+>>   {
+>> +    if (unlikely(vcpu_is_rec(vcpu)))
+>> +        return kvm_realm_vgic_nr_lr();
+>>       return kvm_vgic_global_state.nr_lr;
+>>   }
+>>   @@ -864,10 +868,23 @@ static inline bool
+>> can_access_vgic_from_kernel(void)
+>>       return !
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) || has_vhe();
+>>   }
+>>   +static inline void vgic_rmm_save_state(struct kvm_vcpu *vcpu)
+>> +{
+>> +    struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < kvm_vcpu_vgic_nr_lr(vcpu); i++) {
+>> +        cpu_if->vgic_lr[i] = vcpu->arch.rec.run->exit.gicv3_lrs[i];
+>> +        vcpu->arch.rec.run->enter.gicv3_lrs[i] = 0;
+>> +    }
+>> +}
 > 
+> We also need to save/restore gicv3_hcr/cpuif->vgic_hcr.
+
+I'm not sure how I missed that. Note that the RMM spec restricts the
+fields that the normal world is allowed to set. So I'll also add a new
+define to rmi_smc.h to provide the bitmask:
+
+#define RMI_PERMITTED_GICV3_HCR_BITS   (ICH_HCR_EL2_UIE |              \
+                                        ICH_HCR_EL2_LRENPIE |          \
+                                        ICH_HCR_EL2_NPIE |             \
+                                        ICH_HCR_EL2_VGrp0EIE |         \
+                                        ICH_HCR_EL2_VGrp0DIE |         \
+                                        ICH_HCR_EL2_VGrp1EIE |         \
+                                        ICH_HCR_EL2_VGrp1DIE |         \
+                                        ICH_HCR_EL2_TDIR)
+
+>> +
+>>   static inline void vgic_save_state(struct kvm_vcpu *vcpu)
+>>   {
+>>       if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>           vgic_v2_save_state(vcpu);
+>> +    else if (vcpu_is_rec(vcpu))
+>> +        vgic_rmm_save_state(vcpu);
+>>       else
+>>           __vgic_v3_save_state(&vcpu->arch.vgic_cpu.vgic_v3);
+>>   }
+>> @@ -903,10 +920,28 @@ void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu)
+>>       vgic_prune_ap_list(vcpu);
+>>   }
+>>   +static inline void vgic_rmm_restore_state(struct kvm_vcpu *vcpu)
+>> +{
+>> +    struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < kvm_vcpu_vgic_nr_lr(vcpu); i++) {
+>> +        vcpu->arch.rec.run->enter.gicv3_lrs[i] = cpu_if->vgic_lr[i];
+>> +        /*
+>> +         * Also populate the rec.run->exit copies so that a late
+>> +         * decision to back out from entering the realm doesn't cause
+>> +         * the state to be lost
+>> +         */
+>> +        vcpu->arch.rec.run->exit.gicv3_lrs[i] = cpu_if->vgic_lr[i];
+>> +    }
+>> +}
+>> +
+>>   static inline void vgic_restore_state(struct kvm_vcpu *vcpu)
+>>   {
+>>       if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>           vgic_v2_restore_state(vcpu);
+>> +    else if (vcpu_is_rec(vcpu))
+>> +        vgic_rmm_restore_state(vcpu);
+>>       else
+>>           __vgic_v3_restore_state(&vcpu->arch.vgic_cpu.vgic_v3);
+>>   }
+>> @@ -976,7 +1011,9 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
+>>     void kvm_vgic_load(struct kvm_vcpu *vcpu)
+>>   {
+>> -    if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !
+>> vgic_initialized(vcpu->kvm))) {
+>> +    if (unlikely(!irqchip_in_kernel(vcpu->kvm) ||
+>> +             !vgic_initialized(vcpu->kvm) ||
+>> +             vcpu_is_rec(vcpu))) {
+> 
+> 
+>>           if (has_vhe() &&
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>               __vgic_v3_activate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
+>>           return;
+>> @@ -990,7 +1027,9 @@ void kvm_vgic_load(struct kvm_vcpu *vcpu)
+>>     void kvm_vgic_put(struct kvm_vcpu *vcpu)
+>>   {
+>> -    if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !
+>> vgic_initialized(vcpu->kvm))) {
+>> +    if (unlikely(!irqchip_in_kernel(vcpu->kvm) ||
+>> +             !vgic_initialized(vcpu->kvm) ||
+>> +             vcpu_is_rec(vcpu))) {
+>>           if (has_vhe() &&
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>               __vgic_v3_deactivate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
+> 
+> We could return early here for rec, and skip the unnecessary trap steps.
+> Similar for the vgic_load case.
+
+Ack. I think this was me getting confused during a rebase ;) I'll pull
+out the "if (unlikely(vcpu_is_rec())" and return early.
+
+Steve
+
+> Rest looks good to me.
+> 
+> Suzuki
+> 
+> 
+>>           return;
+> 
+
