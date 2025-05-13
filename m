@@ -1,192 +1,178 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B34A93D
-	for <kvm@vger.kernel.org>; Tue, 13 May 2025 08:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050EF1F1908
+	for <kvm@vger.kernel.org>; Tue, 13 May 2025 08:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747123804; cv=none; b=PUWb7pnDJFT8PUYSj++Fpt3i/GmJGVg+MbAWmHU9H8SGhhtvXrbIWIB043cQpSef0sAFb/nY5TUjIVjsLluIbfhbE4Yb5GgWcMjYAwPzZg88bTT4M7ZF6pxEJ0ns7uuHxKqpv9xJjub1tTkluuFs4JZWlOL5+CagxNUNuPOxX70=
+	t=1747124225; cv=none; b=h1Grls30Zbr9Hmv2OWzam9JyJuqRhKPAUTnwTkHHsgixyT8ALaOf/sAI6Fk7wyvKbSitKLdJaV22d6Y7L4r8mVbwCGc378c/vi6C0cy/ukRleMoOTBojF2NBHFbIrFxWCeVXwZbafFA710TPIq5KV6g/hB0HeANuX/FyYv3Jclw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747123804; c=relaxed/simple;
-	bh=ToqcWH2DwjjzvKTkbb1scAhC6W2tO35kLWOPSwlRmpE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U8mrxCqLTNaj8H+NUC2sWr98lfPXr+jCVfZfkws31YvZKeNPN3r7GVXaNk27WREoGPmAVtD9KLKu2g3OnSZ3BiscTlOTuiKVI2Sf+aQsUtnQR2H6N0Qy5X1gjePTy4ec2noqAlPlYNJ6QX9Zv1HemDBi1DxkD5DMLKLUFVDC8f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CwbhUhAf; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1747124225; c=relaxed/simple;
+	bh=XSDohxmXGW1A0ucXCeFWinwHu31WVxdeQUdpLHShoNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c57JuuoXo2spD2OSEvG3quHH9OLdYWIY41jg1gT79x1ILW0tC1KP+dfF5IhKb/zJQ25tBPGdDW1pAeYlx5w6TKh3veCpj25XDvo2+nLX5ybEQfEeHAe9HOFUvDsAuUBQMYXKJBsRZTddeAsmE5L49bMnnEvV3ej3GAE9O59JBNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AKJnTuZ2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CwbhUhAf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747123803; x=1778659803;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ToqcWH2DwjjzvKTkbb1scAhC6W2tO35kLWOPSwlRmpE=;
-  b=CwbhUhAfLOo5uXNcPyKoC3L7o4ZFD6Km3+0dtCTasgbCckfaZzOuuggD
-   tMXuoHAU2sNYUpI/gNqR7axGalGN8UxIOEXNrDM+IBIT7ORyWow26klj2
-   PrwYSTbrd+mL1LGmqO6XpizJ2p/sCuXi+jYDqIH6HgbIohKdrq6EKuhO6
-   ykLutZhXNDMxCWype5TyX+TyNiOfySXtBO4qA7ezl4Z2XrjqSY3nag3mX
-   WXFJZYs83rz5btlqvlaIsnir72qRnzE+NN+xD2WlxMbQAn2Z975TNE4u2
-   dfPbGGyyVgKJF8FBLdBRUFp5BTb8og6rqmnReaNmJqITIfgW+akQBKMqA
-   g==;
-X-CSE-ConnectionGUID: mZEGIJ/XTFu1zb6ugSn7Jg==
-X-CSE-MsgGUID: V187OjwwQkiFv4ZUjFQMzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="49034923"
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="49034923"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 01:10:03 -0700
-X-CSE-ConnectionGUID: MUpUFQM5THe9jefW5Bax/A==
-X-CSE-MsgGUID: VbGTNf04T8mj1oFR5jCDlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="160900961"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa002.fm.intel.com with ESMTP; 13 May 2025 01:09:58 -0700
-Date: Tue, 13 May 2025 16:31:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Alexey Kardashevskiy <aik@amd.com>, Peter Xu <peterx@redhat.com>,
-	Gupta Pankaj <pankaj.gupta@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-	Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
-	kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
-	Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v4 07/13] ram-block-attribute: Introduce
- RamBlockAttribute to manage RAMBLock with guest_memfd
-Message-ID: <aCMDRoHcoV2PM34W@intel.com>
-References: <20250407074939.18657-1-chenyi.qiang@intel.com>
- <20250407074939.18657-8-chenyi.qiang@intel.com>
- <aCGsPh/A3sh0dDlI@intel.com>
- <3c4405f4-8d2a-48aa-b92a-f8fee223f1cb@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AKJnTuZ2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747124222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TtiueEWiZviwIh7GeF47XQVseYGD54OAElPbnCaybHs=;
+	b=AKJnTuZ2Ol+sh+zfPLalhh2XcQqEipELM2YsJKtD3JkRmqWB6g0XQJw58jCLKhaG4kK/zi
+	/47nPhOytJOMc4CvdIOvXswASsXYzWzUwkGILWQYkbGluJlfLnIxRViYQH7q0eWwA3YJtg
+	SOjgukjHPL6eqAz+4SNf36pyQkczOKQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-7bSvCSJGMSuiBuKo9eEgsQ-1; Tue, 13 May 2025 04:16:58 -0400
+X-MC-Unique: 7bSvCSJGMSuiBuKo9eEgsQ-1
+X-Mimecast-MFC-AGG-ID: 7bSvCSJGMSuiBuKo9eEgsQ_1747124217
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43d5ca7c86aso25380275e9.0
+        for <kvm@vger.kernel.org>; Tue, 13 May 2025 01:16:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747124217; x=1747729017;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TtiueEWiZviwIh7GeF47XQVseYGD54OAElPbnCaybHs=;
+        b=cCladUY/oKi7ErmrisOLv+8B64CrxGAh9TjLCROhomvwEgY2SQMcEtZxO1LAcrV7jO
+         8IzE196JTxolxcONZk9W7i8tLMV4psVZ15cFrjlJsXqrWCSwDZaazGj2282M43+lcvYD
+         rlsW2u0OZBCTzv2afl9JqBFBFR0Pkjt6s0+l8OGv/GA3xJVtFSt5BPLyxIKf/NZLavsr
+         qrJwuaRAFgRD+bHOvyctOwQ7Wx+qVpHtRWfPZzngfjZHAcm3NtTJIeAVNps6bI5vzZy9
+         ULHG/j8YL4x6hSuRbHvguSWhz00hMuWaWyJW3/Rh/1a30vSCXwFdQ4HWZEjqlRRjSCyb
+         Yknw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvLvO5AQLBkGdzY6muW+m3t4fY500eq0VfOx43fF28rH0/7PKT4TuNiERXlEkoS5/yK3I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9QVytuek25WpSZJYcsUtkELFQtq7MX3tWLZThDy+/xvW1avls
+	uDBawQpucbO6iF+CbemCm2UVllQqlFJxkUHlSJq84qWkGir7RmZ1RuCOJWXhSeU3ohOKBeDIeeE
+	/YbUW54cPykOfUXB31ByWClC7fUrqPdXdokMCGgknOT86oBKHRA==
+X-Gm-Gg: ASbGncuNhwhpc/D1rAYWbfK+HNAhMNuZMGlC2zgmj7YgIDJeddE6/3lXTJ4ruLmNdBa
+	nwzn6w1USjozb9/DUly+RBdqvSFx0YFnNg5MNAQ/ZwDmqEIUKTF/GMS562W+gOMketjnqiuNrCb
+	da+D3/MX6Fe/T9WQ9AOkVpEOCWFfhub5aGXR/sgeX4ip0PvED+6Br+1ie34KE0Sm6zJhOHUCRNJ
+	GFZenUROXGlJQ55eEOFj6yREPrkj6KutN9ZQoTYdRwqoeQ0NHHbjfIx/Mnb7+htzhTq1tAHenaA
+	llyn47jWKh9qynBHDrrz21HwRmGLhi3ggq+fs34AZNw=
+X-Received: by 2002:a05:6000:1a87:b0:3a2:6b2:e558 with SMTP id ffacd0b85a97d-3a206b2e7cbmr5897792f8f.28.1747124217064;
+        Tue, 13 May 2025 01:16:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfPswOblyV4cGUNvCcq/Q0I9l2BJEKA8SVRI8+dxfH2dwpsY8l/tUTVbBanGOyi9wgYHInKA==
+X-Received: by 2002:a05:6000:1a87:b0:3a2:6b2:e558 with SMTP id ffacd0b85a97d-3a206b2e7cbmr5897756f8f.28.1747124216678;
+        Tue, 13 May 2025 01:16:56 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-42-48-129.web.vodafone.de. [109.42.48.129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f2ab2sm15094625f8f.46.2025.05.13.01.16.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 01:16:56 -0700 (PDT)
+Message-ID: <fee40b62-a98c-46d4-baf1-d108da775c9c@redhat.com>
+Date: Tue, 13 May 2025 10:16:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c4405f4-8d2a-48aa-b92a-f8fee223f1cb@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: How to mark internal properties
+To: BALATON Zoltan <balaton@eik.bme.hu>, Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
+ Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Jason Wang <jasowang@redhat.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-13-philmd@linaro.org>
+ <23260c74-01ba-45bc-bf2f-b3e19c28ec8a@intel.com> <aB2vjuT07EuO6JSQ@intel.com>
+ <2f526570-7ab0-479c-967c-b3f95f9f19e3@redhat.com>
+ <CAFEAcA-kuHvxjuV_cMh-Px3C-k2Gd51jFqhwndO52vm++M_jAA@mail.gmail.com>
+ <aCG6MuDLrQpoTqpg@redhat.com> <87jz6mqeu5.fsf@pond.sub.org>
+ <e5a305cc-4c8b-48df-99fe-539ebd9b72f9@intel.com>
+ <f342557b-e589-f51d-cfd8-04f97e9c5efd@eik.bme.hu>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <f342557b-e589-f51d-cfd8-04f97e9c5efd@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> >> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-> >> index 0babd105c0..b8b5469db9 100644
-> >> --- a/include/exec/ramblock.h
-> >> +++ b/include/exec/ramblock.h
-> >> @@ -23,6 +23,10 @@
-> >>  #include "cpu-common.h"
-> >>  #include "qemu/rcu.h"
-> >>  #include "exec/ramlist.h"
-> >> +#include "system/hostmem.h"
-> >> +
-> >> +#define TYPE_RAM_BLOCK_ATTRIBUTE "ram-block-attribute"
-> >> +OBJECT_DECLARE_TYPE(RamBlockAttribute, RamBlockAttributeClass, RAM_BLOCK_ATTRIBUTE)
-> > 
-> > Could we use "OBJECT_DECLARE_SIMPLE_TYPE" here? Since I find class
-> > doesn't have any virtual method.
+On 12/05/2025 16.41, BALATON Zoltan wrote:
+> On Mon, 12 May 2025, Xiaoyao Li wrote:
+...
+>> We need something in code to restrict the *internal* property really 
+>> internal, i.e., not user settable. What the name of the property is 
+>> doesn't matter.
 > 
-> Yes, we can. Previously, I defined the state_change() method for the
-> class (MemoryAttributeManagerClass) [1] instead of parent
-> PrivateSharedManagerClass. And leave it unchanged in this version.
-> 
-> In next version, I will drop PrivateShareManager and revert to use
-> RamDiscardManager. Then, maybe I should also use
-> OBJECT_DECLARE_SIMPLE_TYPE and make state_change() an exported function
-> instead of a virtual method since no derived class for RamBlockAttribute.
+> What's an internal property? Properties are there to make some field of an 
+> object introspectable and settable from command line and QEMU monitor or 
+> other external interfaces. If that's not needed for something why is it 
+> defined as a property in the first place and not just e.g. C accessor 
+> functions as part of the device's interface instead? I think this may be 
+> overusing QOM for things that may not need it and adding complexity where 
+> not needed.
 
-Thank you! I see. I don't have an opinion on whether to add virtual
-method or not, if you feel it's appropriate then adding class is fine.
-(My comment may be outdated, it's just for the fact that there is no
-need to add class in this patch.) Looking forward to your next version.
+Maybe some things could easily be simplified indeed, but for some others, 
+it's currently the way it's deeply rooted in the logic of QEMU. Have a look 
+at the hw_compat arrays in hw/core/machine.c ... it all goes via properties, 
+so there is certainly no easy and quick solution for this.
 
-> [1]
-> https://lore.kernel.org/qemu-devel/20250310081837.13123-6-chenyi.qiang@intel.com/
-> 
-> > 
-> >>  struct RAMBlock {
-> >>      struct rcu_head rcu;
-> >> @@ -90,5 +94,25 @@ struct RAMBlock {
-> >>       */
-> >>      ram_addr_t postcopy_length;
-> >>  };
-> >> +
+  Thomas
 
-[snip]
-
-> >> +static size_t ram_block_attribute_get_block_size(const RamBlockAttribute *attr)
-> >> +{
-> >> +    /*
-> >> +     * Because page conversion could be manipulated in the size of at least 4K or 4K aligned,
-> >> +     * Use the host page size as the granularity to track the memory attribute.
-> >> +     */
-> >> +    g_assert(attr && attr->mr && attr->mr->ram_block);
-> >> +    g_assert(attr->mr->ram_block->page_size == qemu_real_host_page_size());
-> >> +    return attr->mr->ram_block->page_size;
-> > 
-> > What about using qemu_ram_pagesize() instead of accessing
-> > ram_block->page_size directly?
-> 
-> Make sense!
-> 
-> > 
-> > Additionally, maybe we can add a simple helper to get page size from
-> > RamBlockAttribute.
-> 
-> Do you mean introduce a new field page_size and related helper? That was
-> my first version and but suggested with current implementation
-> (https://lore.kernel.org/qemu-devel/b55047fd-7b73-4669-b6d2-31653064f27f@intel.com/)
-
-Yes, that's exactly my point. It's up to you if it's really necessary :-).
-
-> > 
-> >> +}
-> >> +
-> > 
-> > [snip]
-> > 
-> >> +static void ram_block_attribute_psm_register_listener(GenericStateManager *gsm,
-> >> +                                                      StateChangeListener *scl,
-> >> +                                                      MemoryRegionSection *section)
-> >> +{
-> >> +    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(gsm);
-> >> +    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
-> >> +    int ret;
-> >> +
-> >> +    g_assert(section->mr == attr->mr);
-> >> +    scl->section = memory_region_section_new_copy(section);
-> >> +
-> >> +    QLIST_INSERT_HEAD(&attr->psl_list, psl, next);
-> >> +
-> >> +    ret = ram_block_attribute_for_each_shared_section(attr, section, scl,
-> >> +                                                      ram_block_attribute_notify_shared_cb);
-> >> +    if (ret) {
-> >> +        error_report("%s: Failed to register RAM discard listener: %s", __func__,
-> >> +                     strerror(-ret));
-> > 
-> > There will be 2 error messages: one is the above, and another is from
-> > ram_block_attribute_for_each_shared_section().
-> > 
-> > Could we just exit to handle this error?
-> 
-> Sure, will remove this message as well as the below one.
-
-   if (ret) {
-       error_report("%s: Failed to register RAM discard listener: %s", __func__,
-                    strerror(-ret);
-       exit(1);
-   }
-
-I mean adding a exit() here. When there's the error, if we expect it not to
-break the QEMU, then perhaps warning is better. Otherwise, it's better to
-handle this error. Direct exit() feels like an option.
-
-Thanks,
-Zhao
-
-> > 
-> >> +    }
-> >> +}
-> >> +
