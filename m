@@ -1,46 +1,45 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D971F0E2E
-	for <kvm@vger.kernel.org>; Tue, 13 May 2025 07:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3290E1F0E39
+	for <kvm@vger.kernel.org>; Tue, 13 May 2025 07:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747120990; cv=none; b=QNegrmBhsTadLAenlX1ThfjXaMODjS7SEiGZ0s7rCDw9SwoqdOGaU0n+3N3wbjKLCbLCRqbZ7YpOKJyHqmIPjpfWccBx8k9pz41DUy/gFYaNl5oLwBxthRhVkLAMzV1YQjrEXBg2wpup1cbJm0bzn8pOnhzBgCKrt04QeoQ/q8g=
+	t=1747120990; cv=none; b=HvSeM640snmtQJIb5e/vQwFCa3swMOvaohgS0OwZ+cRw/202w/3P20EObtSaiBLkUrpSkoI9Lsu7e6gGBSYGvmeHkMW7foI2BiE+QgEF4Cjy/Pr3dllsOUmGUC8Pi8AWRxXPf6th1MkkABuNOWGHBwJiBD8GPaQUtwWHMPWdngs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747120990; c=relaxed/simple;
-	bh=eGnYDbhBUisymaSoZMIhyXW5ObY7LnOpLPnRVnrDrgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO4sDSWZFkcywGSpAalRG9fwjbyGJ8U7iqbznPbcrrVlxsTG3zpDOvGIYFmVdYH7vX/at8ADghzql/LkjZkgYtTJqJhLyYXQYsii4QMHhhuzWqLSp0WmxszmzpvqmKeRRk4hUVzsDgjLDhQV45E9g9jAeYdQA19uKDgnjP8OOvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cQ8uamRv; arc=none smtp.client-ip=198.175.65.17
+	bh=iYNVoA1qR2nbztl9UDMv7iyeoXuMieRddKLZwHw4Gsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NKjWXIeNxWxgehoGVa3O/RUETOLi9ta6LCvHczGkajsTgmNLDDaPmjnAXvUH0rR38WZOHO0fWjF9HHJQgwVRCnnO6me21LpN1z6DR01Ti6TeRGcHZLpOT8Mx/b1JZlnK/aoRsmrZ/kKpzzuXF2gkrcXA4tlmAgBR23+qcSWruOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nhfHmXDp; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cQ8uamRv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nhfHmXDp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1747120989; x=1778656989;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eGnYDbhBUisymaSoZMIhyXW5ObY7LnOpLPnRVnrDrgs=;
-  b=cQ8uamRv+wz61xkDGwBs0FkBGRJ6jp6ni8483FolQIhsZLSB7BIemN/l
-   KgeCbsbrWYNFXb2NjTD5pvQURYBeEmCxVhorD35yelbNJ9Ietk2Cgdgx5
-   wmYgDvg7Bu7X5/N0WmEUagn64BFqQ7qLa99CNwgQb/jeq44OOgS9S+TC0
-   +ahZRvXZPJAG4YheVBmoDuCh1h/dlbiFA9btXZyfRpZQK2DDk/CXxoqGU
-   XNSfZP5m8JJ/46A3p3Uev+PT3jMeQZMh3/jh/ngmetU3rgI8rQaGL77fo
-   8JDWVT9q5gKxpJymJJ7iAnOWaCKsZ/KRlNbBOd0lzJkXPPBzuRwEHXgow
-   A==;
-X-CSE-ConnectionGUID: k5ycCrBsToyIWQvdrPGi6Q==
-X-CSE-MsgGUID: l0FM7vhPRgyDp+9WsbmP5A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48941017"
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iYNVoA1qR2nbztl9UDMv7iyeoXuMieRddKLZwHw4Gsc=;
+  b=nhfHmXDpA9XdJQoExv2AxWOChlXe7mZHDbzYf6HOGPsYFj1y2aVYVulV
+   /+RiX+bcTfxjYkj2WEiLk5IdRMFuYSh8mC1Pi+r5XqQzCjUnKCqMafpO+
+   uHdXy0egMOwggrGTV2IHDd62W34lKUNIWPDTVsuDdq6rSmsrd5djjXW07
+   MxK0oxaqj+b22/7Ky+tgJHto39ys68/TMVaahlM1E3oXmdT6W1ghwqw5N
+   Kx1pleHmN7YoKbIJ6T/z3XIrcivbrIK5cjmm0CWWM+QJnTfRONKsOLaui
+   10qGsrRUMJUg7zSE2teD8WxpNA97JwM5r4dZ7f9SuVuXcU9VIGyWZucHl
+   Q==;
+X-CSE-ConnectionGUID: pVgGIjlaQByxnU+Nx+mJPA==
+X-CSE-MsgGUID: xkiAnIttRO+SvG19HyZkvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48940997"
 X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="48941017"
+   d="scan'208";a="48940997"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 00:23:04 -0700
-X-CSE-ConnectionGUID: FaPKYe4EQNKsik/PsxLeEQ==
-X-CSE-MsgGUID: jOhB4xgJTbenmzgaufgwww==
+X-CSE-ConnectionGUID: braFi5zqRJqcSxRVYXf11w==
+X-CSE-MsgGUID: jG5sY8dXR0SdNIDI+15gPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="142740616"
+   d="scan'208";a="142740598"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
   by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 00:23:03 -0700
 From: Chao Gao <chao.gao@intel.com>
@@ -48,12 +47,10 @@ To: kvm@vger.kernel.org
 Cc: pbonzini@redhat.com,
 	seanjc@google.com,
 	Chao Gao <chao.gao@intel.com>
-Subject: [kvm-unit-tests PATCH v1 6/8] x86: cet: Drop unnecessary casting
-Date: Tue, 13 May 2025 00:22:48 -0700
-Message-ID: <20250513072250.568180-7-chao.gao@intel.com>
+Subject: [kvm-unit-tests PATCH v1 0/8] Improve CET tests
+Date: Tue, 13 May 2025 00:22:42 -0700
+Message-ID: <20250513072250.568180-1-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250513072250.568180-1-chao.gao@intel.com>
-References: <20250513072250.568180-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,34 +59,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cet_shstk_func() and cet_ibt_func() have the same type as usermode_func.
-So, remove the unnecessary casting.
+Fix a bug in the current CET tests (the first patch) and do some cleanups
+and add more tests for CET nested support.
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- x86/cet.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+New CET tests reveal that consistency checks are missing for CET states
+during nested VM-entry [*]
 
-diff --git a/x86/cet.c b/x86/cet.c
-index 5b7d311b..9802e2e6 100644
---- a/x86/cet.c
-+++ b/x86/cet.c
-@@ -91,13 +91,13 @@ int main(int ac, char **av)
- 	write_cr4(read_cr4() | X86_CR4_CET);
- 
- 	printf("Unit test for CET user mode...\n");
--	run_in_user((usermode_func)cet_shstk_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
-+	run_in_user(cet_shstk_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
- 	report(rvc && exception_error_code() == 1, "Shadow-stack protection test.");
- 
- 	/* Enable indirect-branch tracking */
- 	wrmsr(MSR_IA32_U_CET, ENABLE_IBT_BIT);
- 
--	run_in_user((usermode_func)cet_ibt_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
-+	run_in_user(cet_ibt_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
- 	report(rvc && exception_error_code() == 3, "Indirect-branch tracking test.");
- 
- 	write_cr4(read_cr4() & ~X86_CR4_CET);
+*: https://lore.kernel.org/kvm/20240219074733.122080-27-weijiang.yang@intel.com/
+
+Chao Gao (7):
+  x86: cet: Remove unnecessary memory zeroing for shadow stack
+  x86: cet: Directly check for #CP exception in run_in_user()
+  x86: cet: Validate #CP error code
+  x86: cet: Use report_skip()
+  x86: cet: Drop unnecessary casting
+  x86: cet: Validate writing unaligned values to SSP MSR causes #GP
+  x86: cet: Validate CET states during VMX transitions
+
+Yang Weijiang (1):
+  x86: cet: Fix parameter issue when flush TLBs for shadow stack
+
+ lib/x86/msr.h      |  1 +
+ lib/x86/usermode.c |  4 +++
+ x86/cet.c          | 43 ++++++++----------------
+ x86/unittests.cfg  |  7 ++++
+ x86/vmx.h          |  8 +++--
+ x86/vmx_tests.c    | 81 ++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 112 insertions(+), 32 deletions(-)
+
+
+base-commit: 695740795adee59b48599e2f1a6bf19866a77779
 -- 
 2.47.1
 
