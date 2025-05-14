@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D96270EAE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CC32741A0;
 	Wed, 14 May 2025 10:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747218907; cv=none; b=bqHFN2SaVSDPCAO6OXPAm5R8PWVRn3SvOJBYHUq3J9/Oc4LWuZtKqoD+ebUUvPwn0J4TwPO6ITnsy+cGlvLoY9WGY1gJ3P1kJmY/TIPqqpimpGivitRHZN9Ml9KEHwQ26PMZRmITetddjodVHK+siLMg0uquW3ahtPVvl6+J/eI=
+	t=1747218908; cv=none; b=aH4hXRPL2VOogxfI/G7nt3AD4gccGdEYznrx7DfA4lWrYjO3IKLLvv1wYE94Mne9sRb0xBudXvdtJP4fCoo5NxKKj86ZaRvEngqeAkZtdKKXV47ejCmwkjnIxXFtRXp26TVTcm5UsnvkQSKb9Kxhxdl1uUU6NkA1IKf2uwVjY8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747218907; c=relaxed/simple;
-	bh=3qbUHNjVeE1aIlxcMRPnT2/3KD3ydEWgG5AMl0skQMo=;
+	s=arc-20240116; t=1747218908; c=relaxed/simple;
+	bh=bpPQ+zBhwRDzt3LBMXgmgyLTiv/fCrkank4nbp6VcVo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mmhlAnVij7guBGkWbf7pnuL8Gbv4NISZrd4qZsnsUgE2e6oOoSmcyelwXjbrEt/wu4bbJVH4LfCVv80d8dQYssNiIfb+f6p3fVEI/g/LUxKmFS960q3NCFvdjCyc2NxJU2E4tfpLjNS1WeaqDUdtpVjQ4y2kH6l10ujrEcsNpNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKWUziTf; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Lp3qzf85nrOmFHdg1f2IdPfuQYIg7GMrqSrkzyIb22+ZIqizF89UMeWGDvA7muy7aiH17WJ4NEcJFan6ESRNwJ8L369E9KI6fvAnNR+4OTtlCQ9851ox2bplywSmpajdVrjwa6A2H/872CnQdiF2D+00jVk7s74n9or7oGBHujM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMQFKDwC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKWUziTf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07D3C4CEE9;
-	Wed, 14 May 2025 10:35:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMQFKDwC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2233C4CEE9;
+	Wed, 14 May 2025 10:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1747218907;
-	bh=3qbUHNjVeE1aIlxcMRPnT2/3KD3ydEWgG5AMl0skQMo=;
+	bh=bpPQ+zBhwRDzt3LBMXgmgyLTiv/fCrkank4nbp6VcVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKWUziTfEuYEVBFzFf96LnHNPUVW5ePJDDmZIl/QEvWjaEuHjbFoTQ0x4uXmVVnI4
-	 Zg7BM9deSvgu80DVGEQg7PZFoBpUhnmpCopFU0lyLIF3Rqo/ojGRP+xLuWMOE9n+4Y
-	 RXelUl4A9E8BPbzlC0kKcuVysTdwPU2NsY7g9rJjc3Mk6XFqkAeCFYLbis8S6VBR1t
-	 8UW61B723we2UjdOMDlAKVk6ZW+qjuN4PTHGr9Lw+2rT2tpUvGGEQhi/ROAPy4JfOJ
-	 kourDYI6egFIlMWpUv0+2nuOtCrTR9fwmu6rQmfwlW6nj65jdZXS+FRswafy9Tgjju
-	 PdrepNVW3YPGQ==
+	b=vMQFKDwCXKzAXa6EBD34osbvddNb3xOAj5XbQfwZw2ZC4aKJTaztRNz+tqer8HcIK
+	 v+3xmizmh1F9/+wQ6htLRsI5Qf7DarX7nfnKfMp32vzMKZJHXJIGI7ImeS6qUvx3VZ
+	 /bUn8k+B/fwCWWgccyIntqZQsa6D5FGJzPKhNv5wZjmxWsEMIVWRsRMfNNp6hZ+5Jw
+	 1AGNmy1LUAITOo8kM7bhc/UW3dzfarnxXVA1HKx8PRz/+WqJ7DYGo7U5BCU+J4Y34X
+	 n3HsSpelwvsNOvjYwtqtxbNoNwodmDdqXRMtlMgdHXc7rpFKAGEefihogpxniHlj3R
+	 ai7x47EOoHH2A==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1uF9S5-00Eos3-0z;
+	id 1uF9S5-00Eos3-Rq;
 	Wed, 14 May 2025 11:35:05 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: [PATCH v4 04/17] KVM: arm64: nv: Snapshot S1 ASID tagging information during walk
-Date: Wed, 14 May 2025 11:34:47 +0100
-Message-Id: <20250514103501.2225951-5-maz@kernel.org>
+Subject: [PATCH v4 08/17] KVM: arm64: nv: Add userspace and guest handling of VNCR_EL2
+Date: Wed, 14 May 2025 11:34:51 +0100
+Message-Id: <20250514103501.2225951-9-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250514103501.2225951-1-maz@kernel.org>
 References: <20250514103501.2225951-1-maz@kernel.org>
@@ -60,72 +60,100 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-We currently completely ignore any sort of ASID tagging during a S1
-walk, as AT doesn't care about it.
-
-However, such information is required if we are going to create
-anything that looks like a TLB from this walk.
-
-Let's capture it both the nG and ASID information while walking
-the page tables.
+Plug VNCR_EL2 in the vcpu_sysreg enum, define its RES0/RES1 bits,
+and make it accessible to userspace when the VM is configured to
+support FEAT_NV2.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_nested.h |  2 ++
- arch/arm64/kvm/at.c                 | 27 +++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ arch/arm64/include/asm/kvm_host.h |  2 ++
+ arch/arm64/kvm/nested.c           |  3 +++
+ arch/arm64/kvm/sys_regs.c         | 24 +++++++++++++++---------
+ 3 files changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
-index c8a779b393c28..4ba3780cb7806 100644
---- a/arch/arm64/include/asm/kvm_nested.h
-+++ b/arch/arm64/include/asm/kvm_nested.h
-@@ -274,6 +274,8 @@ struct s1_walk_result {
- 			u64	pa;
- 			s8	level;
- 			u8	APTable;
-+			bool	nG;
-+			u16	asid;
- 			bool	UXNTable;
- 			bool	PXNTable;
- 			bool	uwxn;
-diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-index 71406908d4f44..da5359668b9c9 100644
---- a/arch/arm64/kvm/at.c
-+++ b/arch/arm64/kvm/at.c
-@@ -414,6 +414,33 @@ static int walk_s1(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
- 	wr->pa = desc & GENMASK(47, va_bottom);
- 	wr->pa |= va & GENMASK_ULL(va_bottom - 1, 0);
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index c762919a2072d..f5ac454dcf66a 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -562,6 +562,8 @@ enum vcpu_sysreg {
+ 	VNCR(HDFGWTR_EL2),
+ 	VNCR(HAFGRTR_EL2),
  
-+	wr->nG = (wi->regime != TR_EL2) && (desc & PTE_NG);
-+	if (wr->nG) {
-+		u64 asid_ttbr, tcr;
++	VNCR(VNCR_EL2),
 +
-+		switch (wi->regime) {
-+		case TR_EL10:
-+			tcr = vcpu_read_sys_reg(vcpu, TCR_EL1);
-+			asid_ttbr = ((tcr & TCR_A1) ?
-+				     vcpu_read_sys_reg(vcpu, TTBR1_EL1) :
-+				     vcpu_read_sys_reg(vcpu, TTBR0_EL1));
-+			break;
-+		case TR_EL20:
-+			tcr = vcpu_read_sys_reg(vcpu, TCR_EL2);
-+			asid_ttbr = ((tcr & TCR_A1) ?
-+				     vcpu_read_sys_reg(vcpu, TTBR1_EL2) :
-+				     vcpu_read_sys_reg(vcpu, TTBR0_EL2));
-+			break;
-+		default:
-+			BUG();
-+		}
-+
-+		wr->asid = FIELD_GET(TTBR_ASID_MASK, asid_ttbr);
-+		if (!kvm_has_feat_enum(vcpu->kvm, ID_AA64MMFR0_EL1, ASIDBITS, 16) ||
-+		    !(tcr & TCR_ASID16))
-+			wr->asid &= GENMASK(7, 0);
-+	}
-+
- 	return 0;
+ 	VNCR(CNTVOFF_EL2),
+ 	VNCR(CNTV_CVAL_EL0),
+ 	VNCR(CNTV_CTL_EL0),
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index 806e9cf6049a6..32ea6e362bab1 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1400,6 +1400,9 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
+ 	res0 |= ICH_HCR_EL2_DVIM | ICH_HCR_EL2_vSGIEOICount;
+ 	set_sysreg_masks(kvm, ICH_HCR_EL2, res0, res1);
  
- addrsz:
++	/* VNCR_EL2 */
++	set_sysreg_masks(kvm, VNCR_EL2, VNCR_EL2_RES0, VNCR_EL2_RES1);
++
+ out:
+ 	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
+ 		(void)__vcpu_sys_reg(vcpu, sr);
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 26e02e1723911..204470283ccc3 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2281,15 +2281,6 @@ static bool bad_redir_trap(struct kvm_vcpu *vcpu,
+ 			"trap of EL2 register redirected to EL1");
+ }
+ 
+-#define EL2_REG(name, acc, rst, v) {		\
+-	SYS_DESC(SYS_##name),			\
+-	.access = acc,				\
+-	.reset = rst,				\
+-	.reg = name,				\
+-	.visibility = el2_visibility,		\
+-	.val = v,				\
+-}
+-
+ #define EL2_REG_FILTERED(name, acc, rst, v, filter) {	\
+ 	SYS_DESC(SYS_##name),			\
+ 	.access = acc,				\
+@@ -2299,6 +2290,9 @@ static bool bad_redir_trap(struct kvm_vcpu *vcpu,
+ 	.val = v,				\
+ }
+ 
++#define EL2_REG(name, acc, rst, v)			\
++	EL2_REG_FILTERED(name, acc, rst, v, el2_visibility)
++
+ #define EL2_REG_VNCR(name, rst, v)	EL2_REG(name, bad_vncr_trap, rst, v)
+ #define EL2_REG_REDIR(name, rst, v)	EL2_REG(name, bad_redir_trap, rst, v)
+ 
+@@ -2446,6 +2440,16 @@ static unsigned int sve_el2_visibility(const struct kvm_vcpu *vcpu,
+ 	return __el2_visibility(vcpu, rd, sve_visibility);
+ }
+ 
++static unsigned int vncr_el2_visibility(const struct kvm_vcpu *vcpu,
++					const struct sys_reg_desc *rd)
++{
++	if (el2_visibility(vcpu, rd) == 0 &&
++	    kvm_has_feat(vcpu->kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
++		return 0;
++
++	return REG_HIDDEN;
++}
++
+ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
+ 			   struct sys_reg_params *p,
+ 			   const struct sys_reg_desc *r)
+@@ -3263,6 +3267,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 			 tcr2_el2_visibility),
+ 	EL2_REG_VNCR(VTTBR_EL2, reset_val, 0),
+ 	EL2_REG_VNCR(VTCR_EL2, reset_val, 0),
++	EL2_REG_FILTERED(VNCR_EL2, bad_vncr_trap, reset_val, 0,
++			 vncr_el2_visibility),
+ 
+ 	{ SYS_DESC(SYS_DACR32_EL2), undef_access, reset_unknown, DACR32_EL2 },
+ 	EL2_REG_VNCR(HDFGRTR_EL2, reset_val, 0),
 -- 
 2.39.2
 
