@@ -1,373 +1,326 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2065.outbound.protection.outlook.com [40.107.236.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A24D21128D
-	for <kvm@vger.kernel.org>; Wed, 14 May 2025 07:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747207482; cv=none; b=M6dgHSi/p3byF8sA0TaAB3e+PwFNuqwGoPuTSpdLxXhMpuTIvfa88WbCRBGPLrUuh9rnABf0cXO7HjqJMFRyQvUFH5/q/tdppq7qui1E5ir9MopNgoLHEJn8eQK4IEoQ3G+pAhgwM0/2XOdaxo1JY0XJKsc5gMtcm2ldOmkLDmc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747207482; c=relaxed/simple;
-	bh=6uP9Y1WkFCIidgPy85S0jVj8vcdurA95cSfBco8pnHI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DXWKAnS8hWEjALRcA7GQ26jRH3SUVlki22pZKvBp+OKjJfEfdnDsTDt7M04tLvYfqa5HKoz/HjW6JxWoJeMMtOS2W+UHmCPEtXIZPnaHHykj+DVZ1VxJtliuFdFO1Vp0IPdoH2UjflZ8B1Aja5TotfWlXg+BkWROBk+uBcirLx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nqoNyYTk; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDE4205501;
+	Wed, 14 May 2025 07:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747207502; cv=fail; b=LoG0fPluJsGbno3lq70RrVVNSv7tzwIjKUYgSb3GTWekt9lxB/s1Z7N4Y2SnYW3C9CB5/fxrA/aUApgmgvWIKZicjqdANWibkcqrfGlkaPSCP3Do6NyeFR85WPatTXqxG28tbGfJCr6I98hDsGl4QNuCZETCVCdk430erIfugFY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747207502; c=relaxed/simple;
+	bh=Q3UWE+ApeBO8lXF4JSaOp2L5CT093Zt2+TQG8JX0gmo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L5RZ2C+u7P01PUcSsyJT8YYHNWGBpRVMGL8eI6flu8d/WnNhsGGEMPLKz7ghtg7/MuaEIAoEa4V7OSqjrQsL5UyrW7LX9kfsBaSblvbt9umIK8B4ThkaOCpa01wgsVW1MWs/0Hm8QU8dY9b0LYMdx5q1bpIDWxzSp54/qT55g2s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FqhjMcrt; arc=fail smtp.client-ip=40.107.236.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nqoNyYTk"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4774611d40bso214901cf.0
-        for <kvm@vger.kernel.org>; Wed, 14 May 2025 00:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747207479; x=1747812279; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bN3Eodoo37ShWz602VRjXde2B/Ybw21z1k3P5mHUYPI=;
-        b=nqoNyYTkMat1k53114B4w8FRf0KaE7BifhaK99ckwG91OM/pUW1wcgxIUFVzjFFyNw
-         QnvDTH0+sAMQt6Dmsj5MeKK0gBEl4hjNR8RvpmTxoOOX4v6TVSVHxZv3JRSW5mAcPsE9
-         S/kVRapPN1WGbNiPwPxYtPa7iD+HkJT88kQh2a1B1t4WJX2mDCeJTD/cLFJGqyqaOY1C
-         GtPyq6mpBKpI4k3l3xBF/Y7lPmEIDfS+ni4Grr+X9xuqpGDrGT66z1WKSWbymqkoRheD
-         WRhHwCnftV43KGXQ4v5gBLW4a1v4w5rNVxxGLwougq7UFFfNOm2XjEKuYhKkcUamBKRv
-         QNYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747207479; x=1747812279;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bN3Eodoo37ShWz602VRjXde2B/Ybw21z1k3P5mHUYPI=;
-        b=pmljSbgn5FNd7YJv2HmkdSz+oaUN3sTUfpsOizc/DZuQWb0juZ+1oV39EeBL4yh3Ji
-         1Ncb+Z4agIJJB2ht/c81qSVQ3ALqGy40bfna8wj/MJpuQbbmdWz5N0k6/txqozohiXrS
-         2Zf5tUL8d0JpudIeb8zJtCTRCAdkizf67oC0UsIo5f8tCtQy1FeOnl+P/tKCe9m3WjX2
-         JYl4iGH4tnz9U8vE4O1EgRk2koegHdfdqbASArBr1KcOmKac8YPXyXyOH1UuxOEGV4Q9
-         OeQOlYI93hNaIFB8ijYrPWkNj3eCK2VKHheB/yu5LtZXKjgSku84pNWD03+yUwki4/TK
-         VbLw==
-X-Gm-Message-State: AOJu0YyIbIeSSOAkEqt7ednpJIYwJlTjQzf3g66vV4kgvI40y4MP7mN6
-	+987fKwiAkxfRWEp91lNrv3F+a2FXCUkkWdiLrXaceLoUlMCwRZGuWWG0D6/hfzsEv0cSnzZgQk
-	/AbB9AToXTbHTN20wRae+K/yqxw6P8SC1oKmbwD6x
-X-Gm-Gg: ASbGncvczr9Ht1mPsfmoirjcxPZKjRvORbIVvVSciBrKprd1bh/cRxd8L7nx2S3lYQY
-	TwQ1UmScaJR6GxOv32Kwj8Wqo5IxD5CX4gG24ssWdO1IRvBFfnwlB43UmyOd/VQpPIqJUIz60hV
-	H0fLQY4hS2a67Yy0Zk7lLdYU6d99t8ShrG83dOqNaX6lW4
-X-Google-Smtp-Source: AGHT+IFSsKgCXRHVTQLY8MCZjK1IHQy5+L1VXEWxUrH8Ed9FEGdOVIVsU1XNqaM8wxkdXQMIAtP0/QQ+yQvSp05EMz8=
-X-Received: by 2002:a05:622a:181f:b0:47d:4e8a:97ef with SMTP id
- d75a77b69052e-49496cddc53mr1688181cf.1.1747207478417; Wed, 14 May 2025
- 00:24:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FqhjMcrt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AQkA8kBN2aS0gU72SPIlT9KV/NHf1eZiVild3SSfgcigd4qCHFyVSxIDsUoRCDza4IRZwPfR1XMBO8Rahnoe9CT1J4eZ4EqD3G0lo4r5vSWl+8ALiDCBD5MLJs0z17oGIl5eYpnnf12tWsOEERPdnv+kK5MVYux2HnuAZtZMNfPNrQqaGnkHOzjfCem51y6FTvlGhKUKtHlCZmhSvtAx/Bv9hvhujmqNCG8RSOaKYz4Iz2DejrX1P4wMJtt+PA+Sqw5fMWLkmbiZCEawBVE8pq3eDhIWkzN3CSG9HtU+FgQVuv9Sb+IxkqRcX2hc6XUdmtOkjlueza+MDbwrflN+lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+v2d0nuV/9zEt1cQCXk2Y2itlvJT5MXO0o2UjXZAC5M=;
+ b=Ob8OAVkzPNF20qAdxsE/D9ChB064i8+0ZpWVL08t8DEhxg2FT1cVG79EFuEX0Sn1KUmulDXmLJE3GvFF6oXFU8IfIYcegFBRoD5l5fmeANuoMWY9uNdHexArcVex3FbDhLyjIjljX0Bs6xRNjYIFD8oiTvKp+5kdX7k8qWItLGCs/fj3dhDTX0TTjYTMXyj0aiQLncd5QY31UQuRBiXwFpZCbV5H5K5sOJHfcTnI3wvY3Gk70XIHSKTi1QQIMyDlptQo0MZYWhCepr+tu8EkCinceK0C3QLdGwd+k0kUmRe6nnNEXWB3wHQeDi6SdeViR4pE5NQ28x4xBv3wn+MT/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+v2d0nuV/9zEt1cQCXk2Y2itlvJT5MXO0o2UjXZAC5M=;
+ b=FqhjMcrtWQoPXAPXquxTfWaxJKqx2dv1oH716j8KRQIW7fNUo+GIXO0dK5a7H6ybrAz7/h4SAdKQx6eX2oLq+h3uSKBh5wJwtgUvlXw74zAGAnDN9klzs4HhlK1gT+RZprXILVkvfO416+UYl3jlDjgJYc3TngjoNCbSMHFBiRY=
+Received: from MN2PR20CA0039.namprd20.prod.outlook.com (2603:10b6:208:235::8)
+ by IA0PR12MB7529.namprd12.prod.outlook.com (2603:10b6:208:431::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Wed, 14 May
+ 2025 07:24:53 +0000
+Received: from BN3PEPF0000B076.namprd04.prod.outlook.com
+ (2603:10b6:208:235:cafe::5a) by MN2PR20CA0039.outlook.office365.com
+ (2603:10b6:208:235::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.25 via Frontend Transport; Wed,
+ 14 May 2025 07:24:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B076.mail.protection.outlook.com (10.167.243.121) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Wed, 14 May 2025 07:24:53 +0000
+Received: from BLR-L-NUPADHYA.xilinx.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 14 May 2025 02:24:43 -0500
+From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+To: <linux-kernel@vger.kernel.org>
+CC: <bp@alien8.de>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<dave.hansen@linux.intel.com>, <Thomas.Lendacky@amd.com>, <nikunj@amd.com>,
+	<Santosh.Shukla@amd.com>, <Vasant.Hegde@amd.com>,
+	<Suravee.Suthikulpanit@amd.com>, <David.Kaplan@amd.com>, <x86@kernel.org>,
+	<hpa@zytor.com>, <peterz@infradead.org>, <seanjc@google.com>,
+	<pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<kirill.shutemov@linux.intel.com>, <huibo.wang@amd.com>,
+	<naveen.rao@amd.com>, <francescolavra.fl@gmail.com>, <tiala@microsoft.com>
+Subject: [RFC PATCH v6 16/32] x86/apic: Initialize Secure AVIC APIC backing page
+Date: Wed, 14 May 2025 12:47:47 +0530
+Message-ID: <20250514071803.209166-17-Neeraj.Upadhyay@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250514071803.209166-1-Neeraj.Upadhyay@amd.com>
+References: <20250514071803.209166-1-Neeraj.Upadhyay@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250513163438.3942405-1-tabba@google.com> <20250513163438.3942405-11-tabba@google.com>
- <55215c60-f071-474b-a0d5-06f27bc97d32@amd.com>
-In-Reply-To: <55215c60-f071-474b-a0d5-06f27bc97d32@amd.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 14 May 2025 08:24:01 +0100
-X-Gm-Features: AX0GCFs_MeHq9AaII05Iub_BF1mqk5thKbzo61ouX2u1qDGHF-RKWUHX1ULEcOk
-Message-ID: <CA+EHjTwc9d6QJykgp5CuBga7JMzzTpaJOhB+5RoqvrRg2kgbbA@mail.gmail.com>
-Subject: Re: [PATCH v9 10/17] KVM: x86: Compute max_mapping_level with input
- from guest_memfd
-To: Shivank Garg <shivankg@amd.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B076:EE_|IA0PR12MB7529:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ca488ee-d098-4412-b72f-08dd92b86ba5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|7416014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qQKKdb1ueT10NhTc12qooaWeklD+QEoaXP+NuLk4TaDAZ+Oz1onXE3g+uJMd?=
+ =?us-ascii?Q?BB/fkwPG4XPs+7rzyK90nL1EEjNl5phwB/glm3dheDDyao8jVLvWsKSs4Z6X?=
+ =?us-ascii?Q?58uWDi1xwsP/LecfiYtNxRWYWlKL+gADTVfuvshNCimSqO8Z4swcNkSr9CY4?=
+ =?us-ascii?Q?em+1R/OvGZMS9uoShXgy0qV39h+wxdVAejkUhzcmG4KzsHDWGgSUrmU7tqyR?=
+ =?us-ascii?Q?r38QrPf9WLgXJu2c89umb6H3wdFt6oUXgMTxSNbrVHUYdvrcgl/FtwHjMtzH?=
+ =?us-ascii?Q?CkZcEflEfE9c8qpuRq09EecBMv/EMNrxbJyTHFnjoRAFNKsHp5WwV2fm8e8S?=
+ =?us-ascii?Q?NuTWROVIivqRrGL1z4Z/DEhMuFVVi9lo467AbR+I60VSJB1PYviURYN+g90n?=
+ =?us-ascii?Q?ONMshQI5HwqbmF8h8NMJaMmOp/ZpNlFHYCjKm78ltuUN0cAoPJrrR4a/zPPm?=
+ =?us-ascii?Q?DIZvkFRqDOgD8MBpVI8THvEC//I4SPexa/Nd8dC6LwAmsBf6s+GdEljjDFNl?=
+ =?us-ascii?Q?f4UcIjMXPc0bykwvb3d3x+O3ctMGI2/k5znfMjINXlBpbtH+Ob8f/WYTPe59?=
+ =?us-ascii?Q?PY2rKZkakEhbYQFcSSrv2+c9w3yNkkoziGVNOPn5Y2Zd69R60GvhFRcbZ8P0?=
+ =?us-ascii?Q?u7CqcqoveG6uJsvmPqAB95mEnAEvA3ELWlfdrp9dAi1btjXmUzrKOp18ygbf?=
+ =?us-ascii?Q?QaPLe3n1DAyymr6cCDlA8iHIA7fvaR3SL6fxwEpmRFfBpkuu1Q3Rn4ji2yVh?=
+ =?us-ascii?Q?sXzLkT6PpGOK60JlQbi09a5kNCPq/rMKX1STyLLkK/8DBPxY35ZUCHkg3RKa?=
+ =?us-ascii?Q?4PSSv+df+zUBaJnzkluIdRSk1UYA7w6JyiM7bObdhQppZ6fFefhkrNz1DdQo?=
+ =?us-ascii?Q?yS68P3SpTPO6hKlSi35T7Y7rKDXt3eaG0+stHLAN/E+1VzrAfqunxtSVkIlW?=
+ =?us-ascii?Q?S/GNXPT+Dx/z/IAyW7yZ7Pmf8zC4Gfc84dIuDZXSy7PHvD5fgBqtp37qIgvo?=
+ =?us-ascii?Q?+K48uzIPdS2E0Ij8y/a/934lj7vUaZCvhYkDZDTiZX7r2zwr7a/QWwkzGjLN?=
+ =?us-ascii?Q?5lVN0krDLyAQWJUnv5ZSAX/fKkF1qsGuXl93zzkE451q3+QnGnPmGOE/fRHb?=
+ =?us-ascii?Q?EZlmh5zDBzKmme5wbNGHZI3l1CTuX6lKyM8AIR9nrBU/lqqB2WdDu5bMbfK2?=
+ =?us-ascii?Q?Eq8fyCB1HMXYfk+oIJlw3GAND7Tge3lrZG0DX9o1Id803SRJP9oJ5Lh5cihQ?=
+ =?us-ascii?Q?iRFM1GAGSBs36zOGLsy14Ho27Jqoe1Yodf7fP0tgsuwwivxuuh+mrT415XUj?=
+ =?us-ascii?Q?fgo1TqIMNFFpTjJhm4Q8wvX8p84f+NYjfUhU1DTayGxEjp1jLjR253DX7KyZ?=
+ =?us-ascii?Q?mfe/C7GLe7WWKm+KzjIrNq/48LMLaI2BCVNoxmRqNy79HUS+ZN8BxSRgjynK?=
+ =?us-ascii?Q?HjRV06gTfQR6agEAYFyFXJZ08gW0Ukj1mgLryHoHRrb3PrTSn/PfxmWkFnZB?=
+ =?us-ascii?Q?mCcMymKLX43F67mLzR3clwrRU9xuCW1hTUY2?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(7416014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2025 07:24:53.3718
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ca488ee-d098-4412-b72f-08dd92b86ba5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B076.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7529
 
-On Wed, 14 May 2025 at 08:14, Shivank Garg <shivankg@amd.com> wrote:
->
-> On 5/13/2025 10:04 PM, Fuad Tabba wrote:
-> > From: Ackerley Tng <ackerleytng@google.com>
-> >
-> > This patch adds kvm_gmem_max_mapping_level(), which always returns
-> > PG_LEVEL_4K since guest_memfd only supports 4K pages for now.
-> >
-> > When guest_memfd supports shared memory, max_mapping_level (especially
-> > when recovering huge pages - see call to __kvm_mmu_max_mapping_level()
-> > from recover_huge_pages_range()) should take input from
-> > guest_memfd.
-> >
-> > Input from guest_memfd should be taken in these cases:
-> >
-> > + if the memslot supports shared memory (guest_memfd is used for
-> >   shared memory, or in future both shared and private memory) or
-> > + if the memslot is only used for private memory and that gfn is
-> >   private.
-> >
-> > If the memslot doesn't use guest_memfd, figure out the
-> > max_mapping_level using the host page tables like before.
-> >
-> > This patch also refactors and inlines the other call to
-> > __kvm_mmu_max_mapping_level().
-> >
-> > In kvm_mmu_hugepage_adjust(), guest_memfd's input is already
-> > provided (if applicable) in fault->max_level. Hence, there is no need
-> > to query guest_memfd.
-> >
-> > lpage_info is queried like before, and then if the fault is not from
-> > guest_memfd, adjust fault->req_level based on input from host page
-> > tables.
-> >
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> > Signed-off-by: Fuad Tabba <tabba@google.com>
-> > ---
-> >  arch/x86/kvm/mmu/mmu.c   | 92 ++++++++++++++++++++++++++--------------
-> >  include/linux/kvm_host.h |  7 +++
-> >  virt/kvm/guest_memfd.c   | 12 ++++++
-> >  3 files changed, 79 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index cfbb471f7c70..9e0bc8114859 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -3256,12 +3256,11 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
-> >       return level;
-> >  }
-> >
-> > -static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
-> > -                                    const struct kvm_memory_slot *slot,
-> > -                                    gfn_t gfn, int max_level, bool is_private)
-> > +static int kvm_lpage_info_max_mapping_level(struct kvm *kvm,
-> > +                                         const struct kvm_memory_slot *slot,
-> > +                                         gfn_t gfn, int max_level)
-> >  {
-> >       struct kvm_lpage_info *linfo;
-> > -     int host_level;
-> >
-> >       max_level = min(max_level, max_huge_page_level);
-> >       for ( ; max_level > PG_LEVEL_4K; max_level--) {
-> > @@ -3270,23 +3269,61 @@ static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
-> >                       break;
-> >       }
-> >
-> > -     if (is_private)
-> > -             return max_level;
-> > +     return max_level;
-> > +}
-> > +
-> > +static inline u8 kvm_max_level_for_order(int order)
-> > +{
-> > +     BUILD_BUG_ON(KVM_MAX_HUGEPAGE_LEVEL > PG_LEVEL_1G);
-> > +
-> > +     KVM_MMU_WARN_ON(order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G) &&
-> > +                     order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M) &&
-> > +                     order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_4K));
-> > +
-> > +     if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G))
-> > +             return PG_LEVEL_1G;
-> > +
-> > +     if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
-> > +             return PG_LEVEL_2M;
-> > +
-> > +     return PG_LEVEL_4K;
-> > +}
-> > +
-> > +static inline int kvm_gmem_max_mapping_level(const struct kvm_memory_slot *slot,
-> > +                                          gfn_t gfn, int max_level)
-> > +{
-> > +     int max_order;
-> >
-> >       if (max_level == PG_LEVEL_4K)
-> >               return PG_LEVEL_4K;
-> >
-> > -     host_level = host_pfn_mapping_level(kvm, gfn, slot);
-> > -     return min(host_level, max_level);
-> > +     max_order = kvm_gmem_mapping_order(slot, gfn);
-> > +     return min(max_level, kvm_max_level_for_order(max_order));
-> >  }
-> >
-> >  int kvm_mmu_max_mapping_level(struct kvm *kvm,
-> >                             const struct kvm_memory_slot *slot, gfn_t gfn)
-> >  {
-> > -     bool is_private = kvm_slot_has_gmem(slot) &&
-> > -                       kvm_mem_is_private(kvm, gfn);
-> > +     int max_level;
-> > +
-> > +     max_level = kvm_lpage_info_max_mapping_level(kvm, slot, gfn, PG_LEVEL_NUM);
-> > +     if (max_level == PG_LEVEL_4K)
-> > +             return PG_LEVEL_4K;
-> >
-> > -     return __kvm_mmu_max_mapping_level(kvm, slot, gfn, PG_LEVEL_NUM, is_private);
-> > +     if (kvm_slot_has_gmem(slot) &&
-> > +         (kvm_gmem_memslot_supports_shared(slot) ||
-> > +          kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-> > +             return kvm_gmem_max_mapping_level(slot, gfn, max_level);
-> > +     }
-> > +
-> > +     return min(max_level, host_pfn_mapping_level(kvm, gfn, slot));
-> > +}
-> > +
-> > +static inline bool fault_from_gmem(struct kvm_page_fault *fault)
-> > +{
-> > +     return fault->is_private ||
-> > +            (kvm_slot_has_gmem(fault->slot) &&
-> > +             kvm_gmem_memslot_supports_shared(fault->slot));
-> >  }
-> >
-> >  void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> > @@ -3309,12 +3346,20 @@ void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
-> >        * Enforce the iTLB multihit workaround after capturing the requested
-> >        * level, which will be used to do precise, accurate accounting.
-> >        */
-> > -     fault->req_level = __kvm_mmu_max_mapping_level(vcpu->kvm, slot,
-> > -                                                    fault->gfn, fault->max_level,
-> > -                                                    fault->is_private);
-> > +     fault->req_level = kvm_lpage_info_max_mapping_level(vcpu->kvm, slot,
-> > +                                                         fault->gfn, fault->max_level);
-> >       if (fault->req_level == PG_LEVEL_4K || fault->huge_page_disallowed)
-> >               return;
-> >
-> > +     if (!fault_from_gmem(fault)) {
-> > +             int host_level;
-> > +
-> > +             host_level = host_pfn_mapping_level(vcpu->kvm, fault->gfn, slot);
-> > +             fault->req_level = min(fault->req_level, host_level);
-> > +             if (fault->req_level == PG_LEVEL_4K)
-> > +                     return;
-> > +     }
-> > +
-> >       /*
-> >        * mmu_invalidate_retry() was successful and mmu_lock is held, so
-> >        * the pmd can't be split from under us.
-> > @@ -4448,23 +4493,6 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
-> >               vcpu->stat.pf_fixed++;
-> >  }
-> >
-> > -static inline u8 kvm_max_level_for_order(int order)
-> > -{
-> > -     BUILD_BUG_ON(KVM_MAX_HUGEPAGE_LEVEL > PG_LEVEL_1G);
-> > -
-> > -     KVM_MMU_WARN_ON(order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G) &&
-> > -                     order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M) &&
-> > -                     order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_4K));
-> > -
-> > -     if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G))
-> > -             return PG_LEVEL_1G;
-> > -
-> > -     if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
-> > -             return PG_LEVEL_2M;
-> > -
-> > -     return PG_LEVEL_4K;
-> > -}
-> > -
-> >  static u8 kvm_max_level_for_fault_and_order(struct kvm *kvm,
-> >                                           struct kvm_page_fault *fault,
-> >                                           int order)
-> > @@ -4523,7 +4551,7 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
-> >  {
-> >       unsigned int foll = fault->write ? FOLL_WRITE : 0;
-> >
-> > -     if (fault->is_private || kvm_gmem_memslot_supports_shared(fault->slot))
-> > +     if (fault_from_gmem(fault))
-> >               return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
-> >
-> >       foll |= FOLL_NOWAIT;
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index de7b46ee1762..f9bb025327c3 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -2560,6 +2560,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> >  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >                    gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-> >                    int *max_order);
-> > +int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot, gfn_t gfn);
-> >  #else
-> >  static inline int kvm_gmem_get_pfn(struct kvm *kvm,
-> >                                  struct kvm_memory_slot *slot, gfn_t gfn,
-> > @@ -2569,6 +2570,12 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
-> >       KVM_BUG_ON(1, kvm);
-> >       return -EIO;
-> >  }
-> > +static inline int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot,
-> > +                                      gfn_t gfn)
-> > +{
-> > +     BUG();
-> > +     return 0;
-> > +}
-> >  #endif /* CONFIG_KVM_GMEM */
-> >
-> >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index fe0245335c96..b8e247063b20 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -774,6 +774,18 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >  }
-> >  EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn);
-> >
-> > +/**
-> > + * Returns the mapping order for this @gfn in @slot.
-> > + *
-> > + * This is equal to max_order that would be returned if kvm_gmem_get_pfn() were
-> > + * called now.
-> > + */
-> make W=1 ./ -s generates following warnings-
->
-> warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
->  * Returns the mapping order for this @gfn in @slot
->
-> This will fix it.
+With Secure AVIC, the APIC backing page is owned and managed by guest.
+Allocate and initialize APIC backing page for all guest CPUs.
 
-Thank you!
-/fuad
+The NPT entry for a vCPU's APIC backing page must always be present
+when the vCPU is running, in order for Secure AVIC to function. A
+VMEXIT_BUSY is returned on VMRUN and the vCPU cannot be resumed if
+the NPT entry for the APIC backing page is not present. To handle this,
+notify GPA of the vCPU's APIC backing page to the hypervisor by using the
+SVM_VMGEXIT_SECURE_AVIC GHCB protocol event. Before executing VMRUN,
+the hypervisor makes use of this information to make sure the APIC backing
+page is mapped in NPT.
 
-> Subject: [PATCH] tmp
->
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b8e247063b20..d880b9098cc0 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -775,10 +775,12 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn);
->
->  /**
-> - * Returns the mapping order for this @gfn in @slot.
-> + * kvm_gmem_mapping_order - Get the mapping order for a GFN.
-> + * @slot: The KVM memory slot containing the @gfn.
-> + * @gfn: The guest frame number to check.
->   *
-> - * This is equal to max_order that would be returned if kvm_gmem_get_pfn() were
-> - * called now.
-> + * Returns: The mapping order for a @gfn in @slot. This is equal to max_order
-> + *          that kvm_gmem_get_pfn() would return for this @gfn.
->   */
->  int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot, gfn_t gfn)
->  {
-> --
-> 2.34.1
->
-> Thanks,
-> Shivank
->
->
-> > +int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot, gfn_t gfn)
-> > +{
-> > +     return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(kvm_gmem_mapping_order);
-> > +
-> >  #ifdef CONFIG_KVM_GENERIC_GMEM_POPULATE
-> >  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
-> >                      kvm_gmem_populate_cb post_populate, void *opaque)
->
+Co-developed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+---
+Changes since v5:
+
+ - Minor refactoring to remove the struct apic_page definition which
+   is moved to asm/apic.h in previous patch in the series.
+
+ arch/x86/coco/sev/core.c            | 22 ++++++++++++++++++++
+ arch/x86/include/asm/apic.h         |  1 +
+ arch/x86/include/asm/sev.h          |  2 ++
+ arch/x86/include/uapi/asm/svm.h     |  4 ++++
+ arch/x86/kernel/apic/apic.c         |  3 +++
+ arch/x86/kernel/apic/x2apic_savic.c | 32 +++++++++++++++++++++++++++++
+ 6 files changed, 64 insertions(+)
+
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 2a604b24a02e..c8093a47296d 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1006,6 +1006,28 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+ 	return 0;
+ }
+ 
++enum es_result savic_register_gpa(u64 gpa)
++{
++	struct ghcb_state state;
++	struct es_em_ctxt ctxt;
++	enum es_result res;
++	struct ghcb *ghcb;
++
++	guard(irqsave)();
++
++	ghcb = __sev_get_ghcb(&state);
++	vc_ghcb_invalidate(ghcb);
++
++	ghcb_set_rax(ghcb, SVM_VMGEXIT_SAVIC_SELF_GPA);
++	ghcb_set_rbx(ghcb, gpa);
++	res = sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_SAVIC,
++				  SVM_VMGEXIT_SAVIC_REGISTER_GPA, 0);
++
++	__sev_put_ghcb(&state);
++
++	return res;
++}
++
+ static void snp_register_per_cpu_ghcb(void)
+ {
+ 	struct sev_es_runtime_data *data;
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index eddcd3c31fef..926cd2c1e203 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -305,6 +305,7 @@ struct apic {
+ 
+ 	/* Probe, setup and smpboot functions */
+ 	int	(*probe)(void);
++	void	(*setup)(void);
+ 	int	(*acpi_madt_oem_check)(char *oem_id, char *oem_table_id);
+ 
+ 	void	(*init_apic_ldr)(void);
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 58e028d42e41..12bf2988ea19 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -520,6 +520,7 @@ int snp_svsm_vtpm_send_command(u8 *buffer);
+ 
+ void __init snp_secure_tsc_prepare(void);
+ void __init snp_secure_tsc_init(void);
++enum es_result savic_register_gpa(u64 gpa);
+ 
+ static __always_inline void vc_ghcb_invalidate(struct ghcb *ghcb)
+ {
+@@ -592,6 +593,7 @@ static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_
+ static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
+ static inline void __init snp_secure_tsc_prepare(void) { }
+ static inline void __init snp_secure_tsc_init(void) { }
++static inline enum es_result savic_register_gpa(u64 gpa) { return ES_UNSUPPORTED; }
+ 
+ #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+ 
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index ec1321248dac..436266183413 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -117,6 +117,10 @@
+ #define SVM_VMGEXIT_AP_CREATE			1
+ #define SVM_VMGEXIT_AP_DESTROY			2
+ #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018
++#define SVM_VMGEXIT_SAVIC			0x8000001a
++#define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
++#define SVM_VMGEXIT_SAVIC_UNREGISTER_GPA	1
++#define SVM_VMGEXIT_SAVIC_SELF_GPA		~0ULL
+ #define SVM_VMGEXIT_HV_FEATURES			0x8000fffd
+ #define SVM_VMGEXIT_TERM_REQUEST		0x8000fffe
+ #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)	\
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index d73ba5a7b623..36f1326fea2e 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1503,6 +1503,9 @@ static void setup_local_APIC(void)
+ 		return;
+ 	}
+ 
++	if (apic->setup)
++		apic->setup();
++
+ 	/*
+ 	 * If this comes from kexec/kcrash the APIC might be enabled in
+ 	 * SPIV. Soft disable it before doing further initialization.
+diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
+index bea844f28192..a2747ab9200a 100644
+--- a/arch/x86/kernel/apic/x2apic_savic.c
++++ b/arch/x86/kernel/apic/x2apic_savic.c
+@@ -8,17 +8,44 @@
+  */
+ 
+ #include <linux/cc_platform.h>
++#include <linux/percpu-defs.h>
+ 
+ #include <asm/apic.h>
+ #include <asm/sev.h>
+ 
+ #include "local.h"
+ 
++static struct apic_page __percpu *apic_page __ro_after_init;
++
+ static int savic_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+ {
+ 	return x2apic_enabled() && cc_platform_has(CC_ATTR_SNP_SECURE_AVIC);
+ }
+ 
++static void savic_setup(void)
++{
++	void *backing_page;
++	enum es_result res;
++	unsigned long gpa;
++
++	backing_page = this_cpu_ptr(apic_page);
++	gpa = __pa(backing_page);
++
++	/*
++	 * The NPT entry for a vCPU's APIC backing page must always be
++	 * present when the vCPU is running in order for Secure AVIC to
++	 * function. A VMEXIT_BUSY is returned on VMRUN and the vCPU cannot
++	 * be resumed if the NPT entry for the APIC backing page is not
++	 * present. Notify GPA of the vCPU's APIC backing page to the
++	 * hypervisor by calling savic_register_gpa(). Before executing
++	 * VMRUN, the hypervisor makes use of this information to make sure
++	 * the APIC backing page is mapped in NPT.
++	 */
++	res = savic_register_gpa(gpa);
++	if (res != ES_OK)
++		snp_abort();
++}
++
+ static int savic_probe(void)
+ {
+ 	if (!cc_platform_has(CC_ATTR_SNP_SECURE_AVIC))
+@@ -30,6 +57,10 @@ static int savic_probe(void)
+ 		/* unreachable */
+ 	}
+ 
++	apic_page = alloc_percpu(struct apic_page);
++	if (!apic_page)
++		snp_abort();
++
+ 	return 1;
+ }
+ 
+@@ -38,6 +69,7 @@ static struct apic apic_x2apic_savic __ro_after_init = {
+ 	.name				= "secure avic x2apic",
+ 	.probe				= savic_probe,
+ 	.acpi_madt_oem_check		= savic_acpi_madt_oem_check,
++	.setup				= savic_setup,
+ 
+ 	.dest_mode_logical		= false,
+ 
+-- 
+2.34.1
+
