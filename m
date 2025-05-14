@@ -1,176 +1,201 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2066.outbound.protection.outlook.com [40.107.244.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A592040B0;
-	Wed, 14 May 2025 07:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747207891; cv=fail; b=fQ2QINys3yXRPRpRMk9zeBd+RVvEv/IDxdtYVNgrEKmVpC5WbuyanPJHZDYyntbRQRpBhU4XpOnZhR+deYe0ckp93ok42VfbjuWIjICpsV+FmGnvH0L5CSp5w/tImjnxbNxzP2NOgRR2Y32Ey8vAZlHZYFvuLgBkARCMmfc+HVU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747207891; c=relaxed/simple;
-	bh=rJewQjmD1CKrI9gWu8x72T0uwscdolZLJvEFsl70no8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cmC5Es5LSD3549juyys4mooUC9blg4RxY4gap+WPn2WYKZ9cOr7Xuv/ppHx53pA5CVhkIQ2bLWaNzU94x+DuWMbJgg8LuzzQKNMx+wCeej1/0vQ75GqWx38vw/4zGdRh6RvXVdfzJTpBd+8udL36euC+pAo+j80xjhUQ36L9Vsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Waa5jtq6; arc=fail smtp.client-ip=40.107.244.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0B01C28E
+	for <kvm@vger.kernel.org>; Wed, 14 May 2025 07:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747208059; cv=none; b=f4CUpfd/b2vygJKBgUNLuBGPEzLhDEk0iU/gqtwjCx8F3dnX5HqXi1Y41TlsefXxLZI4RSl/N8ehiYWXncK0OZekaiTVXSQCz430rpXbm1fUchHACDx8GWHAuvv8uxkik05zDN1XaoEgYL1ryIsEU/7piBKkvofzA25IcdNzphk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747208059; c=relaxed/simple;
+	bh=Zk8AYXc+N9zzRDvLpBlVY2w1heLxebTxSA5YZ2AGjxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H30u4/IY85nj4LdXLciDT8vbAbm/f+XxGXhW7KEz5Q+dlh022qWK9qQ17n2l/3hXLekhVOHvJYexUSIy/V7t6zgWc/3/qfKlSKZO7obtTHvMQCddVZrCNmYQUirKntZnVUfPhRlOnEGMSKlf1H87tM/m8qZYeXMlQBc/WBXKHqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hdroa7zU; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Waa5jtq6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ccFxomiUej0FibGxxA7VyQvjXTTWxIy7eDk9+UEoXlmB5xzl4FR461VjFogUo8KAVQ/6DXWO6ZAk0ErYEpAZIHMdrwv8bEz6MeYHlUn1ZVIiiCBz/9u4TImsThChhLqaBOQWxiILhv4WmAqc2OlromB4d6KFEa4bV1hpVeb8b70B9Ut24vC/PQS9S1fNRp0uJ2403Mn+dbjWQXQzHQA7kS7Nq5FK9JeKDTL6/nPm/hwZ8UqF/ZsJyRo3wyxvf/feCdnFuuHo16pg8TrVM3iHbYMm99tZetRXOuuP4Tg6d5qzGq0gDUsXdpho8kJiHJ1soE3xX/Hlu500wDBlE49qlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pK3+m1EcTzUu/U2IMOd+Lo8AG4ZRj/SeqHTzSFuJjeo=;
- b=Dgrrd3MnEE4dhIeEJS2PP8Wh7wmiQj3wm0NfQTrGo79aBraXjdH22mTxTr5maVakQGfgB7qpV9pb2CR6WZaNQQDTHH9/e3AWQPMJ1wqQP7hOrLJBYg+v6crMfX3cuoRPzdimn+Vk0xGdQ1rQfKZtfJhx6250sYCBivZWbMf1amCv+9AQLYE0MlxnrmCLUSEYMezagKRJ1/9XYY0LKhSHx83r1e6oHZdNQuOzClIwl4weBvxbjw6HqN2/nFWrhku+UQ6kjgq/Hfd+PzfM7W2qt3ldpcQOKgvp9DA5U9kOLRA01T7lDyFfZ3kyyjDreTu1aa1wHdnF37Yf5hlXCv/8uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pK3+m1EcTzUu/U2IMOd+Lo8AG4ZRj/SeqHTzSFuJjeo=;
- b=Waa5jtq6zCjBuo3qBuRCQce47//SHdiKSK531X400SRXeY9IUdK41ihmV0oVLffCwyzWZKhbkfN/x/kwdRD1pgulnavdRjIwGi/nPxoTLTx/Pm3+VpA+aDmbZ0qPve4y4+1HhkUjQOfUr4SV/FzBRZMHi2+gGnBZv054kobQfps=
-Received: from CH0PR04CA0084.namprd04.prod.outlook.com (2603:10b6:610:74::29)
- by IA0PR12MB8086.namprd12.prod.outlook.com (2603:10b6:208:403::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 14 May
- 2025 07:31:26 +0000
-Received: from CH1PEPF0000AD77.namprd04.prod.outlook.com
- (2603:10b6:610:74:cafe::88) by CH0PR04CA0084.outlook.office365.com
- (2603:10b6:610:74::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.16 via Frontend Transport; Wed,
- 14 May 2025 07:31:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH1PEPF0000AD77.mail.protection.outlook.com (10.167.244.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Wed, 14 May 2025 07:31:25 +0000
-Received: from BLR-L-NUPADHYA.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 14 May 2025 02:31:16 -0500
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-To: <linux-kernel@vger.kernel.org>
-CC: <bp@alien8.de>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<dave.hansen@linux.intel.com>, <Thomas.Lendacky@amd.com>, <nikunj@amd.com>,
-	<Santosh.Shukla@amd.com>, <Vasant.Hegde@amd.com>,
-	<Suravee.Suthikulpanit@amd.com>, <David.Kaplan@amd.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <peterz@infradead.org>, <seanjc@google.com>,
-	<pbonzini@redhat.com>, <kvm@vger.kernel.org>,
-	<kirill.shutemov@linux.intel.com>, <huibo.wang@amd.com>,
-	<naveen.rao@amd.com>, <francescolavra.fl@gmail.com>, <tiala@microsoft.com>
-Subject: [RFC PATCH v6 32/32] x86/sev: Indicate SEV-SNP guest supports Secure AVIC
-Date: Wed, 14 May 2025 12:48:03 +0530
-Message-ID: <20250514071803.209166-33-Neeraj.Upadhyay@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250514071803.209166-1-Neeraj.Upadhyay@amd.com>
-References: <20250514071803.209166-1-Neeraj.Upadhyay@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hdroa7zU"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-48b7747f881so172421cf.1
+        for <kvm@vger.kernel.org>; Wed, 14 May 2025 00:34:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747208055; x=1747812855; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+K04p3I7lu9J1Ks0C4ES0/2cH0wDYip+VLHtbctoxbA=;
+        b=Hdroa7zUN4jPhx/Q/Vn7CmDCVrY6kIB2AvlKzXmD+27FKQh5rxWxKkqn7PXBzAy05y
+         uQ2IhNPfsTmwZKk5vXuFYYNbHutdkgVeuSUPM3jxl+Af+ng9immRUvjWm2cxJa7YG0yB
+         BJr2oGFD3Za03sY0lBk1OR2//ZsjrojZs4/mqR7Jk78R6ocDhXanjfpUuvWxXqv68N1O
+         L3SDR5cPxeVhvCa5w7h4ItMhRfVqn1VzvCDyrxARndXdZvfifnPtAQGoikWTBgqG/b9l
+         2P7ew/QlYS75SChVvA4Kqz3vW803OfqfTVwNn8I/8slB1MMeR7xH07GqbDPDWOXwSMvi
+         u0Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747208055; x=1747812855;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+K04p3I7lu9J1Ks0C4ES0/2cH0wDYip+VLHtbctoxbA=;
+        b=d5VIXJbfLg29iJtES8onUabFxUAx+yxpRpzkZDJIZzylkxq5tz3MjROqBLz+rsNDM2
+         omqFBqFAMivwkBRR5cE83fajRp2CDzVa1tnWzgEPEI5inUD5i8lMIVEdbIrbPlCbRH6a
+         GQf3cGaAPD5XhBwSq2Fp2p8XkVbsPbJ8zeSTrKv7l/LCCtRg1XpWTI6gSaNVxAWc/YIE
+         htE8f2FcuSQ8AeToIyOReu08MgmcUPU3eR1hYGKJVhOSrY7rcL3Dozbrt9H11zPCvWPW
+         pMViBUwSHjtt/l8QvBpPno8A7yKtlAHWINvpEyKY2KpNdXgcR3gNOUACHQoKIKCzLsq+
+         TNLw==
+X-Gm-Message-State: AOJu0Yx2cz+zc6A91tmRPBi6lfSyXm8Hm9sjh615suumd3pKTwFQpL9U
+	jeHYPmc0W9dgl9iJXuOEWSc/4ZZlXFOT2mgy52LKg6CdvRuhYYlws61q6FVTQeSaBTNGiMsCkg2
+	rxxExKWGK95SbCxfPn5VcmWcktq0WinkKscxz7Axn
+X-Gm-Gg: ASbGncsL+w2WAzxUp9Gb8CmZ0yLXYRJW5ZmC1uDCDvu9dZtv7hwjwtAdf7/lS/y+oQs
+	ZhNt+BdQV7PjMS6S6UzqKHN9j7D/IyYC9Iadjk2OCpmfWxwWMeWyEsPEvgzGUiyDyuO7H8Oc//A
+	1yG8PL8BgPdS4M9pIDSaPFdWvvcbXNlQqz7w==
+X-Google-Smtp-Source: AGHT+IFSOID1ICFA/5WT/TzMHfPgJnDU6FMA0qEBlUg4UzroG9ERy4wAxu21kXkOFoFF7O5R0YHNgip2tFvVC5FLwQQ=
+X-Received: by 2002:a05:622a:10a:b0:477:1f86:178c with SMTP id
+ d75a77b69052e-49496168dcdmr3009381cf.26.1747208055027; Wed, 14 May 2025
+ 00:34:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD77:EE_|IA0PR12MB8086:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cd7a7dc-f335-4a6a-09ec-08dd92b95594
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?V3QAFfLZ38F2Tk4x/l/tAyceJSaDSWrIj/FCda2ApjWPxcxTNhmvz3rhhNTl?=
- =?us-ascii?Q?TX1d/RUgQS8VNJS+PGrOcufnFC+ONIGXHCG0FBwEJQiqmGQm9llZ0XkqE34o?=
- =?us-ascii?Q?eNf4tU34+0PfuUcBWsdZvSyrERbkCVfWG8X3kw1ws5vf5WGv2LzU0cEdw+yZ?=
- =?us-ascii?Q?VsF0LwCwBb4+mrnjPLNTa84JeteKxmq5J6p3OgWU2Z+cmJfA11XsF5XsqWE4?=
- =?us-ascii?Q?KOqZDgT0cgTquZ5qXAzCYiT25anew8FYqwKxf1N5uIgmoYhbyTiMDNBL50JD?=
- =?us-ascii?Q?ORJypCpk0JVvJKf8CGdKovDf0pBiTN8EMHGaUXScJ3CyFxZZWQ/IYBuwXGIu?=
- =?us-ascii?Q?TKkdsUjw/kkP+2RZBnNo0j0GqhypV6/nud0dZbcGYjK653TbXuKugUriRXL0?=
- =?us-ascii?Q?rT9BG3lNbuKk6lJzzGGHyLQNDOJjHeXfp9DUkJLpdRwzbDLNBIsfZUezoYKf?=
- =?us-ascii?Q?prBnMei688n30sKmWc0Kv+Q/ap3wOol3Vb66teGX67mvFO6voWdZnWid/nSL?=
- =?us-ascii?Q?hV3rrWIxujPFcVpMxF3w60lN0114oNTU3+Ik/Hreuj7TvSj0aL6JQrz4Hey1?=
- =?us-ascii?Q?uErHEr5RaFzPRej5hW/Qw1Mx1PZrQcnZ5ePXAFjYo70hYicbGJIpYBnz94Dh?=
- =?us-ascii?Q?cqYD+T/GZ0z7S7QH5l34E5w2eDyQisZXyHKwOsRz6BfWaH/5tmH9lCK3FX0G?=
- =?us-ascii?Q?YEDi+oylBMseJTrTAFG59bCdBCM38NUspbkPa1KfweSXa5oQmqsIgCZIQ+Qh?=
- =?us-ascii?Q?xkF+GYqi2njKsQlR+r9WWRpUZXLmIqYuZuMVdTNyNipK7PEYexcNsq8OAHhV?=
- =?us-ascii?Q?ztHFV94KQTwSNoi6oexsyFxiO5wu9lFIvuowfc2Ru1LjOKD3xRLp4GpJW/ZS?=
- =?us-ascii?Q?IH9Z5LremXGkKRoNF8uL00YSrLNwTDoU6wisnxz+CMdqhDt9NW1a2D6Fl545?=
- =?us-ascii?Q?HOq/ER4l8EmsL0U3fWhrLvqNoDqeWSoJRSxJ/dHc6AbzYHoxY36iR6+O3v4n?=
- =?us-ascii?Q?kc5SVCpIkNYLbfwFlYyXaNDyM7VxqnptRhK6jBEvDxQoRJFkRrMvtVu0lvcS?=
- =?us-ascii?Q?ADDhmuk6/RR2Sc9MxvsWH2InYADYgrzxVOyRLKqKod9a8mUx/em4xRG1jAu4?=
- =?us-ascii?Q?tNoQ6boArpeSnVY+Ax+8zRPL/YND708X1vBJlVLOajfd8LaKaxOT7Cnst2mP?=
- =?us-ascii?Q?MLc+ja47DIwUMG6ZkDcjSulRKQaytyTqgpmtEribE/76TBaycKWoQ/vkXMzO?=
- =?us-ascii?Q?1QU/QPam4PbqceQIgqP3apVHoiIikSbqLifS6lGCKVFyd3fg8mxNpR/0o74a?=
- =?us-ascii?Q?lp3TLIZdxfKWfUDjgxEJ6KZYFUms/mYjD7MkV6lp9AZycbv9HJyFGgZFpaCO?=
- =?us-ascii?Q?PRM0CqkPxKxH/RKhaEceqYY8QJOpr2PBFkyNtguOC/RALCskMFTgyqpx32Y6?=
- =?us-ascii?Q?1YbXepnWDQicXlRjnfk55jJXJcnd0NE7HZFQsHkad/CgY1IH/MMTDCBS5z8d?=
- =?us-ascii?Q?b2IBccaXoXCMcQOvPmp7QRC5EQZFirHai+1Y?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2025 07:31:25.8282
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cd7a7dc-f335-4a6a-09ec-08dd92b95594
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000AD77.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8086
+References: <20250513163438.3942405-1-tabba@google.com> <20250513163438.3942405-9-tabba@google.com>
+ <CADrL8HVikf9OK_j4aUk2NZ-BB2sTdavGnDza9244TMeDWjxbCQ@mail.gmail.com>
+In-Reply-To: <CADrL8HVikf9OK_j4aUk2NZ-BB2sTdavGnDza9244TMeDWjxbCQ@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 14 May 2025 08:33:38 +0100
+X-Gm-Features: AX0GCFtAIOxW0CKUqlf7YJqpRk8IDw3vPXES_-izSP0Sdin8tzyjcQYf2tlC9j4
+Message-ID: <CA+EHjTyWOJA8u3iXS9txF8oDKF-soykjJm8HPPEW+6VpM+uvtg@mail.gmail.com>
+Subject: Re: [PATCH v9 08/17] KVM: guest_memfd: Check that userspace_addr and
+ fd+offset refer to same range
+To: James Houghton <jthoughton@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	peterx@redhat.com, pankaj.gupta@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that Secure AVIC support is added in the guest, indicate SEV-SNP
-guest supports Secure AVIC feature if AMD_SECURE_AVIC config is
-enabled.
+Hi James,
 
-Co-developed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
----
-Changes since v5:
+On Tue, 13 May 2025 at 21:31, James Houghton <jthoughton@google.com> wrote:
+>
+> On Tue, May 13, 2025 at 9:34=E2=80=AFAM Fuad Tabba <tabba@google.com> wro=
+te:
+> >
+> > From: Ackerley Tng <ackerleytng@google.com>
+> >
+> > On binding of a guest_memfd with a memslot, check that the slot's
+> > userspace_addr and the requested fd and offset refer to the same memory
+> > range.
+> >
+> > This check is best-effort: nothing prevents userspace from later mappin=
+g
+> > other memory to the same provided in slot->userspace_addr and breaking
+> > guest operation.
+> >
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Suggested-by: Yan Zhao <yan.y.zhao@intel.com>
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Fuad Tabba <tabba@google.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 37 ++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 34 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 8e6d1866b55e..2f499021df66 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -556,6 +556,32 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_cr=
+eate_guest_memfd *args)
+> >         return __kvm_gmem_create(kvm, size, flags);
+> >  }
+> >
+> > +static bool kvm_gmem_is_same_range(struct kvm *kvm,
+> > +                                  struct kvm_memory_slot *slot,
+> > +                                  struct file *file, loff_t offset)
+> > +{
+> > +       struct mm_struct *mm =3D kvm->mm;
+> > +       loff_t userspace_addr_offset;
+> > +       struct vm_area_struct *vma;
+> > +       bool ret =3D false;
+> > +
+> > +       mmap_read_lock(mm);
+> > +
+> > +       vma =3D vma_lookup(mm, slot->userspace_addr);
+> > +       if (!vma)
+> > +               goto out;
+> > +
+> > +       if (vma->vm_file !=3D file)
+> > +               goto out;
+> > +
+> > +       userspace_addr_offset =3D slot->userspace_addr - vma->vm_start;
+> > +       ret =3D userspace_addr_offset + (vma->vm_pgoff << PAGE_SHIFT) =
+=3D=3D offset;
+> > +out:
+> > +       mmap_read_unlock(mm);
+> > +
+> > +       return ret;
+> > +}
+> > +
+> >  int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >                   unsigned int fd, loff_t offset)
+> >  {
+> > @@ -585,9 +611,14 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memo=
+ry_slot *slot,
+> >             offset + size > i_size_read(inode))
+> >                 goto err;
+> >
+> > -       if (kvm_gmem_supports_shared(inode) &&
+> > -           !kvm_arch_vm_supports_gmem_shared_mem(kvm))
+> > -               goto err;
+> > +       if (kvm_gmem_supports_shared(inode)) {
+> > +               if (!kvm_arch_vm_supports_gmem_shared_mem(kvm))
+> > +                       goto err;
+> > +
+> > +               if (slot->userspace_addr &&
+> > +                   !kvm_gmem_is_same_range(kvm, slot, file, offset))
+> > +                       goto err;
+>
+> This is very nit-picky, but I would rather this not be -EINVAL, maybe
+> -EIO instead? Or maybe a pr_warn_once() and let the call proceed?
+>
+> The userspace_addr we got isn't invalid per se, we're just trying to
+> give a hint to the user that their VMAs (or the userspace address they
+> gave us) are messed up. I don't really like lumping this in with truly
+> invalid arguments.
 
- No change.
+I don't mind changing the return error, but I don't think that we
+should have a kernel warning (pr_warn_once) for something userspace
+can trigger.
 
- arch/x86/boot/compressed/sev.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+It's not an IO error either. I think that this is an invalid argument
+(EINVAL). That said, other than opposing the idea of pr_warn, I am
+happy to change it.
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 31287003a249..af03dc1190e0 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -238,13 +238,20 @@ bool sev_es_check_ghcb_fault(unsigned long address)
- 				 MSR_AMD64_SNP_SECURE_AVIC |		\
- 				 MSR_AMD64_SNP_RESERVED_MASK)
- 
-+#ifdef CONFIG_AMD_SECURE_AVIC
-+#define SNP_FEATURE_SECURE_AVIC		MSR_AMD64_SNP_SECURE_AVIC
-+#else
-+#define SNP_FEATURE_SECURE_AVIC		0
-+#endif
-+
- /*
-  * SNP_FEATURES_PRESENT is the mask of SNP features that are implemented
-  * by the guest kernel. As and when a new feature is implemented in the
-  * guest kernel, a corresponding bit should be added to the mask.
-  */
- #define SNP_FEATURES_PRESENT	(MSR_AMD64_SNP_DEBUG_SWAP |	\
--				 MSR_AMD64_SNP_SECURE_TSC)
-+				 MSR_AMD64_SNP_SECURE_TSC |	\
-+				 SNP_FEATURE_SECURE_AVIC)
- 
- u64 snp_get_unsupported_features(u64 status)
- {
--- 
-2.34.1
+Cheers,
+/fuad
 
+> > +       }
+> >
+> >         filemap_invalidate_lock(inode->i_mapping);
+> >
+> > --
+> > 2.49.0.1045.g170613ef41-goog
+> >
