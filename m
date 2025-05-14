@@ -1,63 +1,66 @@
-Received: from mail-il1-f201.google.com (mail-il1-f201.google.com [209.85.166.201])
+Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9428E28E576
-	for <kvm@vger.kernel.org>; Wed, 14 May 2025 19:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0CC2951BE
+	for <kvm@vger.kernel.org>; Wed, 14 May 2025 19:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747250530; cv=none; b=jqAkXRpF45XKqToRpUB2YZGrTfvOukg6VnF+PlEudWSZkXa6UAjDpd/yJGLbwtLqFmPirix7t1wCcIC+bkMs24ZEod+pBLWE5zabf9//RwVNiiZEZ9HyOCIXsyKd+R/TIIu5Z1fyolwlvQK0FNh66+6aX+PUNd+xknuhu3Vc2CM=
+	t=1747250533; cv=none; b=utfja5lqhVNONWzjPPgUCTqSmzqcXFLoA7H06hUZlBfRu9CHy/Y3YYSmG514CrLJzD5PW/C9qvHqEy02a0rUCzjMux49A2k3nG1ao9EQQPoIVhjsXpCxe4OdS6p7Tq+BKtFqZZAS9pss9w/EOemg89E2xGww040DUPI5miclF8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747250530; c=relaxed/simple;
-	bh=6GLh2vAUb131giOvQk8M/um3okSJGroCjyJghDkewc8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mrUyHUGykjrttZOTuZlJaLhVo8Nm4xIpd9OcKSZ6Llztn+1Uud4x3QLYpN+Ns0WA6e6QPfxwe+bl6Pd+TqtEEBYC4oHJslDfZNHERjEuLPrn3Akn+WZUPMuOfvrQoOL5j7bXEiSk40efTyD0/JVDOwW48kGC5e4frzkTjaMLq9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UJ+nSYMP; arc=none smtp.client-ip=209.85.166.201
+	s=arc-20240116; t=1747250533; c=relaxed/simple;
+	bh=YOzE7iJKn1cKrVnHeYmsANZJwRedYEE2+tWwGO6R4Sg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uyYBE+jQ6F/+R/VeF0eqnVAuYlFMHfmaQlOUREVbVDTwmqHKspXhnXfm6Fl/aJ3EA5m1gbdzaXpvU9sv/VA/vScCBxU/UEiqKrPN85TuGUNNfjqLquu+9mQyxcDrVs3DeYjJbwyTPZrEaNO7H24DH8zIN6nQ1KK0FRReWF4J4c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dikJrf5+; arc=none smtp.client-ip=209.85.166.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UJ+nSYMP"
-Received: by mail-il1-f201.google.com with SMTP id e9e14a558f8ab-3da6f284ca5so2501525ab.1
-        for <kvm@vger.kernel.org>; Wed, 14 May 2025 12:22:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dikJrf5+"
+Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-85b3a6c37e2so17012739f.0
+        for <kvm@vger.kernel.org>; Wed, 14 May 2025 12:22:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747250525; x=1747855325; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=c8ePtC5HFZo+bckSClZmheBHRBfYWwooCNAcmQiJQhY=;
-        b=UJ+nSYMPX7xyaXdluGbrLXYlIgkX+ncmsGE1ZoopKj/U8aYSeceM5ClmY34DUvOXyf
-         Jdf7ptUaJ8+ePDlJy+UNpxwSWbaxdASi+u0gYEZevbJVahqMlHbPtNGIvyJyiJ1zIBw1
-         dSbtIkKdfB49tj3Ew57ph7EyrrnZONv2FtVwdAWuNMFOkjTnhFxbKILXFkgPl289t+Ph
-         zYaKmTnc008o8tVFgk/ZMhj2Pyo869S3kj8OB1ownMrUBq+8X9XZwWSrcXNRaHaTmH1l
-         RIxJqTomrn1FuuB8GOENr6Jg68fjGwAiBToF29W0+JKRn2cvte4X5j3kCg4VhJYheNei
-         XTug==
+        d=google.com; s=20230601; t=1747250530; x=1747855330; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=s3CSQ6PBMOqGVYj+xqhMBfKnGOIDEpoWfmf6grdNY9M=;
+        b=dikJrf5+joAOhXTosvS3NsOY/z+tSo4by/LgKMISPQSvAo/98Nx319OVZk9YWOXqy7
+         wSqYeMbL9ytLGGTmyII2Dqqkuf4UQMt81cL3JO+yVo01vKEnVends0qUNGGNGtqgIwwO
+         0bFEuOrPTdful96Gu/WK2Mw+TZwUyo61WvWztJKWM1O2GkgUPtbVNUMSvW3Ki5BProV+
+         XpNb3K3PEAa0HHzQAymIKnmGTuaJkfClcl+dIO7LdndigYoH4p+fAp8Tf44GLRkFNGyJ
+         PK1Uq60hfI8uHPjfBZj+FP8CgbIuApC8lDNYPOA6THNw6Cb60XGqpAjeEtgBa0bgu87q
+         J+LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747250525; x=1747855325;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c8ePtC5HFZo+bckSClZmheBHRBfYWwooCNAcmQiJQhY=;
-        b=nfDrgdvjj7M2fU5DS7FYm18SG8/aUVDD1/demOlygdHWZckbIKOTNecxfVm+G9Xuwn
-         rfnemwCh5rm38G9Klq6IQDI6UJENEFtFgCz4VEKzPyqEI70VmQAhvn/7RVU8amd6ObGr
-         9Iy5cZ+XpgqhvoFGQlpRDRk7pzyjDlbhnbFSvpq7M6emOARBd2i6sNt4V0QdEVxIAAXY
-         GzgDykbEuj7KecMWldhh8CZ5F6hL6mxMBlrH/iUDv3S8Gc6Jz3LfJ2dbRAl0b3nEUakG
-         mDzt/UC68obK7X6jAOcfuSrCSuIhcO96aArASBdf8AlMBj2gULA40wSEt2EiuJS6bPHQ
-         yJZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkhIe9Krvb5Q0qyu+hc1dJxhZbeW6tzRl1ljC0hgysgjfHd1ebITYDSd3pDWejeySNmVw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXSnG84bU05kor5Sn1PFABjpWQ9EQQIL2jqh0MGXtj53cQFdCE
-	wBKQY+kYwwOL+yGnlW3UbBV7rFUomO3iuSzl5skAMwT4KiejuGVTxjjW2OXq8vzngbE1oefjKzJ
-	tqNPniQ==
-X-Google-Smtp-Source: AGHT+IF1ogsTmn2Q4LFsh6tOmFxWnhQ3nGtiA78U3XsyCpRhWXAptzz3zxmhkhTqbmqZ1kXN3wTOk6bikL9+
-X-Received: from ilbbt9.prod.google.com ([2002:a05:6e02:2489:b0:3d9:37ff:afd7])
- (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6e02:178f:b0:3d6:cbad:235c
- with SMTP id e9e14a558f8ab-3db6f7ad141mr53575415ab.6.1747250525722; Wed, 14
- May 2025 12:22:05 -0700 (PDT)
-Date: Wed, 14 May 2025 19:21:56 +0000
+        d=1e100.net; s=20230601; t=1747250530; x=1747855330;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s3CSQ6PBMOqGVYj+xqhMBfKnGOIDEpoWfmf6grdNY9M=;
+        b=cV3wPrA3xhaBUucXsYOIx6yvaCJ9z2xf3elWSgYhiXWRuwAzp31APaux+wlayFDibH
+         aiNUuyufuh+DCqDeCRvBPd2NBFWhrjZjGk1FCNt6n1wJqdg2TvO949kVH/u31OkIV5CQ
+         7/NOwf9HAAQhh0hEhhooXPt4BlOeLwy/B/Pl9WN7pKw5kQNuzXk6XAbimxXZJpoU+8qk
+         8FFZkIH2Qrymb/E2TX5tGtJsurU/U19gOa2fSfWBdisGFgkY4K5E+YZi32GOW3DOWOez
+         y5Wqja/Z3gbloMYtm2i/VLzmW2jD2uD+aG/6JxQSZ/+nalk+FJfv4zwV6EV/6MVaRIge
+         KqCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUI6SSmsX3UhyeK1tMTjmfPhEO9zgLLzMZuwMUGjFbBSgb//4pGTXds79qW4ldPcARWDWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi3Ii6KCtOvBouUEqWGGfRQN4SbLxbZBjvjvUgq9YtL32WngK2
+	gPHjtGIjQFw3TgR+IWLEdJHekjLyWbO/vJXw4MoeNEFTZmTvGVk7Haad/g+bAD948gfMM0rEMDk
+	HenYZTA==
+X-Google-Smtp-Source: AGHT+IGg18AnCuBF63uwtJjiLbr7/IX5pN6tnMFQzW8sojexBjp+3ynRNR8yhYl88WVyZs8zmM6M9UEXqLY6
+X-Received: from ilbby14.prod.google.com ([2002:a05:6e02:260e:b0:3d8:1a1e:8c05])
+ (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6602:36c8:b0:85b:3791:b2ed
+ with SMTP id ca18e2360f4ac-86a08ded21cmr611062639f.8.1747250528149; Wed, 14
+ May 2025 12:22:08 -0700 (PDT)
+Date: Wed, 14 May 2025 19:21:59 +0000
+In-Reply-To: <20250514192159.1751538-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20250514192159.1751538-1-rananta@google.com>
 X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250514192159.1751538-1-rananta@google.com>
-Subject: [PATCH 0/3] KVM: arm64: Allow vGICv4 configuration per VM
+Message-ID: <20250514192159.1751538-4-rananta@google.com>
+Subject: [PATCH 3/3] KVM: selftests: Extend vgic_init to test GICv4 config attr
 From: Raghavendra Rao Ananta <rananta@google.com>
 To: Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
 Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.com>, 
@@ -65,62 +68,92 @@ Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.co
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Extend the arm64 vgic_init test to check KVM_DEV_ARM_VGIC_CONFIG_GICV4
+attribute. This includes testing the interface with various
+configurations when KVM has vGICv4 enabled (kvm-arm.vgic_v4_enable=1
+cmdline) and disabled.
 
-When kvm-arm.vgic_v4_enable=1, KVM adds support for direct interrupt
-injection by default to all the VMs in the system, aka GICv4. A
-shortcoming of the GIC architecture is that there's an absolute limit on
-the number of vPEs that can be tracked by the ITS. It is possible that
-an operator is running a mix of VMs on a system, only wanting to provide
-a specific class of VMs with hardware interrupt injection support.
-
-To support this, introduce a GIC attribute, KVM_DEV_ARM_VGIC_CONFIG_GICV4,
-for the userspace to enable or disable vGICv4 for a given VM.
-
-The attribute allows the configuration only when vGICv4 is enabled in KVM,
-else it acts a read-only attribute returning
-KVM_DEV_ARM_VGIC_CONFIG_GICV4_UNAVAILABLE as the value.
-
-On the other hand, if KVM has the vGICv4 enabled via the cmdline, the
-VM absorbs this configuration by default to maintain the backward
-compatibility. Userspace can get the attribute's value to check if the VM
-has vGICv4 support if it sees KVM_DEV_ARM_VGIC_CONFIG_GICV4_ENABLE as the
-value. As required, it can disable vGICv4 by setting
-KVM_DEV_ARM_VGIC_CONFIG_GICV4_DISABLE as the value.
-
-The patches are distrubuted as:
-
-Patch-1 contains the KVM code that introduces the
-KVM_DEV_ARM_VGIC_CONFIG_GICV4 attr, and adds all the support around it.
-
-Patch-2 adds the documentation for the said attribute.
-
-Patch-3 extends the vgic_init kvm/arm64 selftest that tests the get and
-set of this attribute in various configurations.
-
-Thank you.
-Raghavendra
-
-Raghavendra Rao Ananta (3):
-  kvm: arm64: Add support for KVM_DEV_ARM_VGIC_CONFIG_GICV4 attr
-  docs: kvm: devices/arm-vgic-v3: Document KVM_DEV_ARM_VGIC_CONFIG_GICV4
-    attr
-  KVM: selftests: Extend vgic_init to test GICv4 config attr
-
- .../virt/kvm/devices/arm-vgic-v3.rst          | 24 ++++++--
- arch/arm64/include/uapi/asm/kvm.h             |  7 +++
- arch/arm64/kvm/vgic/vgic-init.c               |  3 +
- arch/arm64/kvm/vgic/vgic-its.c                |  2 +-
- arch/arm64/kvm/vgic/vgic-kvm-device.c         | 39 +++++++++++++
- arch/arm64/kvm/vgic/vgic-mmio-v3.c            | 12 ++--
- arch/arm64/kvm/vgic/vgic-v3.c                 | 16 ++++-
- arch/arm64/kvm/vgic/vgic-v4.c                 |  8 +--
- include/kvm/arm_vgic.h                        |  5 ++
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+---
  tools/testing/selftests/kvm/arm64/vgic_init.c | 58 +++++++++++++++++++
- 10 files changed, 157 insertions(+), 17 deletions(-)
+ 1 file changed, 58 insertions(+)
 
-
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
---
+diff --git a/tools/testing/selftests/kvm/arm64/vgic_init.c b/tools/testing/selftests/kvm/arm64/vgic_init.c
+index b3b5fb0ff0a9..adcfaf461b2b 100644
+--- a/tools/testing/selftests/kvm/arm64/vgic_init.c
++++ b/tools/testing/selftests/kvm/arm64/vgic_init.c
+@@ -675,6 +675,63 @@ static void test_v3_its_region(void)
+ 	vm_gic_destroy(&v);
+ }
+ 
++static void test_v3_vgicv4_config(void)
++{
++	struct kvm_vcpu *vcpus[NR_VCPUS];
++	uint8_t gicv4_config;
++	struct vm_gic v;
++	int ret;
++
++	v = vm_gic_create_with_vcpus(KVM_DEV_TYPE_ARM_VGIC_V3, NR_VCPUS, vcpus);
++	if (__kvm_has_device_attr(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++					KVM_DEV_ARM_VGIC_CONFIG_GICV4))
++		return;
++
++	kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++				KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++
++	if (gicv4_config == KVM_DEV_ARM_VGIC_CONFIG_GICV4_UNAVAILABLE) {
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_DISABLE;
++		ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++				KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++		TEST_ASSERT(ret && errno == ENXIO,
++			"vGICv4 allowed to be disabled even though it's unavailable");
++
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_ENABLE;
++		ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++				KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++		TEST_ASSERT(ret && errno == ENXIO,
++			"vGICv4 allowed to be enabled even though it's unavailable");
++	} else { /* kvm-arm.vgic_v4_enable=1 */
++		TEST_ASSERT(gicv4_config == KVM_DEV_ARM_VGIC_CONFIG_GICV4_ENABLE,
++				"Expected vGICv4 to be enabled by default");
++
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_DISABLE;
++		kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++				KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_ENABLE;
++		kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++				KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_ENABLE + 1;
++		ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++			KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++		TEST_ASSERT(ret && errno == EINVAL,
++			"vGICv4 allowed to be configured with unknown value");
++
++		kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++					KVM_DEV_ARM_VGIC_CTRL_INIT, NULL);
++		gicv4_config = KVM_DEV_ARM_VGIC_CONFIG_GICV4_DISABLE;
++		ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++			KVM_DEV_ARM_VGIC_CONFIG_GICV4, &gicv4_config);
++		TEST_ASSERT(ret && errno == EBUSY,
++			"Changing vGICv4 config allowed after vGIC initialization");
++	}
++
++	vm_gic_destroy(&v);
++}
++
+ /*
+  * Returns 0 if it's possible to create GIC device of a given type (V2 or V3).
+  */
+@@ -730,6 +787,7 @@ void run_tests(uint32_t gic_dev_type)
+ 		test_v3_last_bit_single_rdist();
+ 		test_v3_redist_ipa_range_check_at_vcpu_run();
+ 		test_v3_its_region();
++		test_v3_vgicv4_config();
+ 	}
+ }
+ 
+-- 
 2.49.0.1101.gccaa498523-goog
 
