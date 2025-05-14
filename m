@@ -1,113 +1,131 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9DC8488
-	for <kvm@vger.kernel.org>; Wed, 14 May 2025 15:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D02D1C84BD;
+	Wed, 14 May 2025 15:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747236106; cv=none; b=NaBo+B19aYhGkWo3+vXqfS5EuzMK/jKl0syxVHtER/543kRIvOgxmwg3nHd/IEe9hhQaCTKPR/amQAIyl+SJesxfGfjw1xWWM7MX2jFfA1ytIO3dj6nIniH98CsucrLwo8nHrs8uKteeL7pywN/NMFnnYend6qkxKEamG1FAQYQ=
+	t=1747236469; cv=none; b=XyYF+/XcGkTKYXiaNYjCR8TJUF6Z2t/MlxKTfW+zIaa3+L/qEF0K8p1iTuE7DDHAofSBXElLiKBcR3u46gsdaRI/iabB3Q1vNbC0FSPFgq3a97hVYJFsvR9kCuUPbfrweXNU0RY0grz5cGsMA8fRigjwquTTBc+MOPpJMKUsvrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747236106; c=relaxed/simple;
-	bh=aqm8chgeUHE9w7V6OzdaFcFnAZV9Anw5fN17DWsCSJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S4kw+TU6UGaN3573TCnM9LICOPPvOxKT8w1QJrX7PEieUMamYfX0n6pjPyQGzRoHT9oz8g/nN7rx3vdZ9bZvT0TAsH2MjWaiXkV4O96rJH7OAE6wtF8LlxSHeTN5npjK+IYVueND2heS03bhmR2JSt7si3nSMHDP7SXNAVMtm1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JsRIRuio; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1747236469; c=relaxed/simple;
+	bh=P4BH575FBKSRRUHOEBLubn9LCIJLPGRG4oWLRNDGjY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dAv4G6kMhzKik7D754iQJ40/hzP/WU9qQdEz4r6GI4OE05vjRkx2yTwfM++SAuKESA7NHviHSNSMVWmvwGWDGP37UVlOvt8shq2ifhuJLR44qpA2GzECUh3voROTXG9UjMkMEcUfJAKchPZDcBwcg+Qq7EMOlHIVZxdxL3210YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dTuLbvpK; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JsRIRuio"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-231a2d139bfso114975ad.0
-        for <kvm@vger.kernel.org>; Wed, 14 May 2025 08:21:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747236104; x=1747840904; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A5kkfSfbrLWrkERpgfX2DFIg4PKuqh/HkLXjbsJIBtM=;
-        b=JsRIRuioQ495Qd3nepF0Bc6CIfxhBkn/YI223RIzJqB+OX2sfcvKoAI/h5xqQbIeZU
-         SISxBCVYFlkkLbLEpdXlcIcMVfix7EM+mbEop1GW0rr/E97ygGVqz/w7GiisNeMFkuGg
-         fCK+3YEAjeRsts/RAuQ42lfuLqECNb92h9nbTOJUh62xBPClcLk8HeSgXo9wNvbl1e6h
-         DIGHXL1v5SJ/Lnt/hCbL1oFBIVU99MYy0m6Lf4BNErcIfln2ACDwPcWSRxEHkf0IMX7n
-         1eREBE253YnGHO9PQsmSc8t7eCrMRUQioLhyiQS68cpCN4VNTjZTk7kFpzBXXd1NP8yM
-         8lzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747236104; x=1747840904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A5kkfSfbrLWrkERpgfX2DFIg4PKuqh/HkLXjbsJIBtM=;
-        b=GXOSacgukk/di8HIptlxglD2FCeogv7/7t53BXBRTRhuIMWBJSZRMTlb1um5kqxZnV
-         rCnGnTt9sqFDDoGaJz/57tNmxd4KoDjUPHRNaQYp6i2W3Ab8yaJMqBBMxdb3cGaozbFT
-         MW1BaHmRq8ipVQikdeUpp3ED2qFFHej8AJ8pEzgbsJpI+MmbRthTPzDf20B5gYFQp7O4
-         tisfCRFlPHDIXN+W3AOU1NJapTFw6NSW5f+YgL62pUjl6Tw/YBPovO/CisEgybSYRVzF
-         VQCdZ2apQtl2pk446z9EXQ+BDTqtqQRhyqPOodGhoOAw16hPxrV5G32xnhnr9zey0FxA
-         DMwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUi07LkT74CRNzP6t/UjevIVNvbqcMSexUn1PoPWd3YnQ7jhd8t/WKmgiKBlBWzntRtKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzdb4prqRmi+tkz5JsbQIW1pSMFp2GkCjKP6hvsPKQRPMoT/0Qn
-	f/66NBnIS71H2qJeCcx+iVt38ktgrHuN4UxBSIOOnmT1HoaF2XgPxQes8g8mHq96gXS4EHKcO18
-	5D83sWFzfVTiADfYP7WpuPvx8RLbZkTwZNRspk7Fv
-X-Gm-Gg: ASbGncsiO4TVtiecYfqqvZ/98f0BjlQaovdlD2SEcqyjRnJE5b2YbqldIymtzKv/qek
-	I5cNbG8SIfO5Eeg2XhNFnb7C6PS5QD8zYwHTKs2bA0SKue7CUXp0IlOKijadCN7gc/noN19JvYu
-	fTYusfv7F8gtqK61Hr9yxRLUcgB/Sr2KvmPlDLNldfu4zXoHIhjBCtK6s4xbD3A5zJhA==
-X-Google-Smtp-Source: AGHT+IEDFjAEViaETl+HXGG3nCMSzRvQ2B8Cbr4reJBBfbEw48+Tr0BGQ9AFALmBDU3tuYflnPtNSELVDngmLibLraQ=
-X-Received: by 2002:a17:903:1109:b0:215:f0c6:4dbf with SMTP id
- d9443c01a7336-2319909c216mr3419965ad.14.1747236104067; Wed, 14 May 2025
- 08:21:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dTuLbvpK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747236468; x=1778772468;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P4BH575FBKSRRUHOEBLubn9LCIJLPGRG4oWLRNDGjY8=;
+  b=dTuLbvpKOoJkIusofNu6VRmTzQ9/6ot3/cke8bdygyRaEcuFy50twmSj
+   drCzaLsSydIyfpvK4QHQobScfUUbFudbzpouvdx8wgwqt4rQaEQb5p9/U
+   /+o9r/9x/lPM2GIq8cT9bxlIT5EyHg01An7zwazb1BaaAqK2U67EzyuN3
+   95F737bQRvKB7m2Lg76tGLWDK+8BH0Y0taWXe+6mQY0u23iIrlQhlWnsW
+   dO1q93E3ZQ3FPWvhspQ0WsTmp1Ripz7r6kkQ4aFDf5JVz+xO48XgmV0Iz
+   d0SODeSGmEwuIINIo80l5aZoRBkDcv/l9+BvURL1s2hGG2pTpSS1pbbwY
+   A==;
+X-CSE-ConnectionGUID: ay4aNdGVRrePCMylWM5Wzg==
+X-CSE-MsgGUID: NQ+bFWnrQk23H5at9mO0cA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49011867"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="49011867"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 08:27:47 -0700
+X-CSE-ConnectionGUID: 6M0mFNVXS1WQNOpaUjmxFA==
+X-CSE-MsgGUID: r0hgZytISMGBd7h96K6ctA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="138597901"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 14 May 2025 08:27:40 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uFE1C-000HHD-0g;
+	Wed, 14 May 2025 15:27:38 +0000
+Date: Wed, 14 May 2025 23:27:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com,
+	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	seanjc@google.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+	willy@infradead.org, akpm@linux-foundation.org,
+	xiaoyao.li@intel.com, yilun.xu@intel.com,
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com,
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net,
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com,
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com,
+	wei.w.wang@intel.com
+Subject: Re: [PATCH v9 10/17] KVM: x86: Compute max_mapping_level with input
+ from guest_memfd
+Message-ID: <202505142334.6dQb5Sei-lkp@intel.com>
+References: <20250513163438.3942405-11-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
- <20250502130828.4071412-12-kirill.shutemov@linux.intel.com> <6a7f0639-78fc-4721-8d84-6224c83c07d2@intel.com>
-In-Reply-To: <6a7f0639-78fc-4721-8d84-6224c83c07d2@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Wed, 14 May 2025 08:21:32 -0700
-X-Gm-Features: AX0GCFscmcl35uOjE18U2ra8ong5Qbdrs0qjWEtEJdayACylFUy94ngUS-DfONY
-Message-ID: <CAGtprH--e6i6b9grOLTUwYXKSNb=Ws5sNPniY+oJpyctM1cdTA@mail.gmail.com>
-Subject: Re: [RFC, PATCH 11/12] KVM: TDX: Reclaim PAMT memory
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, pbonzini@redhat.com, seanjc@google.com, 
-	rick.p.edgecombe@intel.com, isaku.yamahata@intel.com, yan.y.zhao@intel.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513163438.3942405-11-tabba@google.com>
 
-On Tue, May 13, 2025 at 6:12=E2=80=AFPM Huang, Kai <kai.huang@intel.com> wr=
-ote:
->
->
->
-> On 3/05/2025 1:08 am, Kirill A. Shutemov wrote:
-> > The PAMT memory holds metadata for TDX-protected memory. With Dynamic
-> > PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX modul=
-e
-> > with a few pages that cover 2M of host physical memory.
-> >
-> > PAMT memory can be reclaimed when the last user is gone. It can happen
-> > in a few code paths:
-> >
-> > - On TDH.PHYMEM.PAGE.RECLAIM in tdx_reclaim_td_control_pages() and
-> >    tdx_reclaim_page().
-> >
-> > - On TDH.MEM.PAGE.REMOVE in tdx_sept_drop_private_spte().
-> >
-> > - In tdx_sept_zap_private_spte() for pages that were in the queue to be
-> >    added with TDH.MEM.PAGE.ADD, but it never happened due to an error.
-> >
-> > Add tdx_pamt_put() in these code paths.
->
-> IMHO, instead of explicitly hooking tdx_pamt_put() to various places, we
-> should just do tdx_free_page() for the pages that were allocated by
-> tdx_alloc_page() (i.e., control pages, SEPT pages).
->
-> That means, IMHO, we should do PAMT allocation/free when we actually
-> *allocate* and *free* the target TDX private page(s).  I.e., we should:
+Hi Fuad,
 
-I think it's important to ensure that PAMT pages are *only* allocated
-for a 2M range if it's getting mapped in EPT at 4K granularity.
-Physical memory allocation order can be different from the EPT mapping
-granularity.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Fuad-Tabba/KVM-Rename-CONFIG_KVM_PRIVATE_MEM-to-CONFIG_KVM_GMEM/20250514-003900
+base:   82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+patch link:    https://lore.kernel.org/r/20250513163438.3942405-11-tabba%40google.com
+patch subject: [PATCH v9 10/17] KVM: x86: Compute max_mapping_level with input from guest_memfd
+config: x86_64-buildonly-randconfig-002-20250514 (https://download.01.org/0day-ci/archive/20250514/202505142334.6dQb5Sei-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250514/202505142334.6dQb5Sei-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505142334.6dQb5Sei-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/x86/kvm/mmu/mmu.c: In function 'kvm_mmu_max_mapping_level':
+>> arch/x86/kvm/mmu/mmu.c:3315:14: error: implicit declaration of function 'kvm_get_memory_attributes' [-Werror=implicit-function-declaration]
+    3315 |              kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+         |              ^~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/kvm_get_memory_attributes +3315 arch/x86/kvm/mmu/mmu.c
+
+  3303	
+  3304	int kvm_mmu_max_mapping_level(struct kvm *kvm,
+  3305				      const struct kvm_memory_slot *slot, gfn_t gfn)
+  3306	{
+  3307		int max_level;
+  3308	
+  3309		max_level = kvm_lpage_info_max_mapping_level(kvm, slot, gfn, PG_LEVEL_NUM);
+  3310		if (max_level == PG_LEVEL_4K)
+  3311			return PG_LEVEL_4K;
+  3312	
+  3313		if (kvm_slot_has_gmem(slot) &&
+  3314		    (kvm_gmem_memslot_supports_shared(slot) ||
+> 3315		     kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+  3316			return kvm_gmem_max_mapping_level(slot, gfn, max_level);
+  3317		}
+  3318	
+  3319		return min(max_level, host_pfn_mapping_level(kvm, gfn, slot));
+  3320	}
+  3321	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
