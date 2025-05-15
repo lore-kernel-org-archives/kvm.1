@@ -1,255 +1,136 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC4428DB69
-	for <kvm@vger.kernel.org>; Thu, 15 May 2025 22:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2448221D3CD
+	for <kvm@vger.kernel.org>; Thu, 15 May 2025 22:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747346661; cv=none; b=tjki8NTldXGajkob/D3gZtPZiS+xTnmmytL+3iWx1TpwLiw7hLwTzqSYq7Q10+kF9orS5skJe23j4AbIlHQKjxvFQtg7ULOzAHUwMq1MCppy3oOWsWZZYInfPGtegYJ+yL9jPXE/1l9uBwg9IgKOn75tMzk5/bDDj1/aMhFiILE=
+	t=1747346745; cv=none; b=L6lLyTeNmPM6OCrnMAwnxcHiAI7UfRgtKgdJhL10gPOVkiinQOJwzuw6jDU3yw/+lRU7OFIBlj8IlX2ejLSf7i07A/AFcXmiUD6WOw6nXQcBtxwG3Nqe0IqphvNaHdPQiH6dwz0jrKomvI2Fk0LzYLS5yA4VjAUFSe1ui3UGExg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747346661; c=relaxed/simple;
-	bh=6eVULcLPVdzazGE/wg9Pf+TgKc9aOyrX0eUUEgwYzJU=;
+	s=arc-20240116; t=1747346745; c=relaxed/simple;
+	bh=R04t5OP7VoRR7an/K/mH1NZqJb80IHwLckbbrUiaTWY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S5meRohIKGujtfvslMkztNLiyv9n4xnl02xqcWfOCpbLG6xanD8FPrOfgn3l8gC+l2DhNrntn7xiQRn1Wfw3JIw9xeYSiYnuQpjguweQLyUvMyhEe2meZPrK56WPvdgDNusuQbg//NJvOaRKDCthVs5Xju/AmZ8sI9QnGSkATKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IfTiBaJP; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=oF8xnGlg2wtDBqjFYuCCli0hrioVv2CQkNWFwzD4qXlmyXoV84W6OyHyGjC03BjTpomQuGL6oXO2UN5Nf7e7oxQjY1ADoBC1suRHx3qJjf95lcP4tepLwUD+EtFDTN/JxyRJsUs+sGw5deSUp2vP4Ogc3svT9WwfJRfplr+FJzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xru8s1gV; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IfTiBaJP"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-22fafbbe51fso20014045ad.0
-        for <kvm@vger.kernel.org>; Thu, 15 May 2025 15:04:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xru8s1gV"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30aab0f21a3so1610141a91.3
+        for <kvm@vger.kernel.org>; Thu, 15 May 2025 15:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747346657; x=1747951457; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747346743; x=1747951543; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/61l/GG8ceY1HQ/1Mbz9W8+Z6NMWlwdTU/z1QWzDW24=;
-        b=IfTiBaJP3o9wJ19dNr8ddF9fWihDsU31Lr1QB/1+vtwdoH0PPCoJ6r2I7//b1xQqJN
-         Y/4JQRxnSM+UWvzEgxDF3te2DMIKMWSUT7TFJA2WRCWqpXvShDwzMXyqyGXkI6tcK02l
-         6smFp/5AxXwILffQXqzl223sz4ryqk9hFmH8aoH4T3CHXyCIRuVl/DV+rCZX0SUv1HMj
-         quyNefiPPzqg8TkS7xUpYunH2BuoOATtZFbnOqRwFIn6QWaeKD6tDOdcaVC0DWr0RkL+
-         rtKVKPcu0os/JMpweGw0u74us2Fh35e2CPcOh8c7t3e8gC1ac+vs91O2Gp3ZHc507AnT
-         n5Dg==
+        bh=Oi7sS9/hL2apZcsFxNVWjiM0xG6d7sH4nOsxyAerdW0=;
+        b=Xru8s1gV9rTttrOCEX454kSAt6Z/XcJLtgwZZVSRIho1K0AdR3xDFulZlIfeL9NAUO
+         nsCEaHUXj3pBGi/UBNg9JD1tMvpXrxK5THx+A8iniTuqQfFAaE8lPWGPwmoBeQQsmlcg
+         RFYo+X7oThXS0X3zjX4Zha6JPli4exBIAQMoZbRR6zArhr2KjTF7ROpFu5UBocz6GmMv
+         TpU1uOuE/bFmdpteQphfquHLDQ4JFL2UK0Q/ujWx/7odLtbHffW7d2+o+ZBtuPTZLMXF
+         h7h8G1TFobXE+gsxiVVkIfrEH23lgAPRIj7LviOvMFzxVjWuV0u/rWiRcl1Iu2V5XH3N
+         y5fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747346657; x=1747951457;
+        d=1e100.net; s=20230601; t=1747346743; x=1747951543;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/61l/GG8ceY1HQ/1Mbz9W8+Z6NMWlwdTU/z1QWzDW24=;
-        b=TXdF3RlMPD25I5sHfKZWvWMs/2sn1KGJYnfl9lN2O+jHoMjbofGwAAw0tT78Si/SGz
-         MukUHQDQtCDMVZqdi6B9fmr2jG2rEG0MUhvrhL2IM6/wjfnokmnmeZiFfxFQGNRTC8a4
-         TE6AMJk3a3NzgEW530vDQP9vFiWEXMTNSdNxpgD5WgjUByfztout209lw3IbpMC8W7KY
-         89ZDz3iVPmc63PvL6Szh5Sc35GTOg4rSUQWcGV0RR0W0UATUQgX5V+RBWOwnoBnQAALa
-         +5tFQXrjGxOyCBWHX1ADS5I4QzkWdp7rGqUUzLDBdpQzEedRXeM4gXcB1nmcjPNLjbpA
-         vTrg==
-X-Gm-Message-State: AOJu0YzwyHVW4mB6BmzUyuZkjx25l16eaTzqBNOfEPa0PKPJ7WBvz7yj
-	xpY+kSI69opBdc0CMVk7FanfJu7vS/kmylgOyvktWt2RzS8JfPnMel9f9CTvi5jbC0kc+S3i346
-	WxnkKVr6suRKNb7NYAjnyPTqHbLsUfZFml6GF1/UOO7FlbWH2VZAScjakG3raKn4zHe7P0GXp4u
-	fzJTy8NYEWVsyTy1KOuVyrmz6cfZ8zLDGGPUsh4wdOAnMlNA3+2yZ++pp2+1k=
-X-Google-Smtp-Source: AGHT+IEIogqWVI3jhvBuBHzH/RVC4nU9qls/xo8WHotmwx8ma/XGj5KxgExpQP3h4WgyLHLR1u3cujYZAXUA4Janbg==
-X-Received: from plge2.prod.google.com ([2002:a17:902:cf42:b0:226:453a:f2db])
- (user=dionnaglaze job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:19c4:b0:220:e655:d77 with SMTP id d9443c01a7336-231d452d0e3mr12729205ad.36.1747346657095;
- Thu, 15 May 2025 15:04:17 -0700 (PDT)
-Date: Thu, 15 May 2025 22:03:59 +0000
-In-Reply-To: <20250515220400.1096945-1-dionnaglaze@google.com>
+        bh=Oi7sS9/hL2apZcsFxNVWjiM0xG6d7sH4nOsxyAerdW0=;
+        b=mA37bvS6XBDi0C1nQTvCecp4Qekce0dteA9cijYnnk0Rfrq54w/oSxbPc/Tw1xh+6B
+         VYsgyiYBJoFBRma9Sn4TE28UtqBXAqpuhni0zBAgQrfY4640SVTgFp6fdf80Ez2Nz3gg
+         6Th6vKJ3ZmWIthzuVdoPkiI+BEOvlsdq/nhpu4MVHxVMKI9WQaI8UrwNIN6sVPSeo3PH
+         oi8rlAoSLTk0DUYp+hHwXNXtRXiWFTe8uSmiH5tLYsYq9t1eW8NNPlRQZDahyY0psjJp
+         B275Y0H6BHDbPASxdqFRXTjZImfcuoeCR8a5zxaewY/brme6Fp0t4z8kk/HsGnjGrFg9
+         dImQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX+qVb7LY0DoinQW6DSExZfQpszGkKo9cf7qRY8/uvjWhlZYn/BOq2md0OYQqRTgcB/aiU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4LRD0ahTTFi7OdTxQwDkM7WNzFkEZWtqraOfjVDQUAT9eKVjX
+	wdxRkrdY2TTY0/N82jH9R5n5wb809tWnFgi884JKDoafmWNu58c4MDIsKLSoukGF8fFcVBaI1mU
+	b4OgTFA==
+X-Google-Smtp-Source: AGHT+IFsAyQHkBD9JIcdxXmgn3lyYCeVd2u7vwK18dv1Rs4/Dq4Q7I3Qiz7gFrycKUxrAq6vHuxsB5iwTcg=
+X-Received: from pjbqc9.prod.google.com ([2002:a17:90b:2889:b0:2f9:e05f:187f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dd1:b0:2ff:784b:ffe
+ with SMTP id 98e67ed59e1d1-30e7d522171mr1418806a91.11.1747346743464; Thu, 15
+ May 2025 15:05:43 -0700 (PDT)
+Date: Thu, 15 May 2025 15:05:41 -0700
+In-Reply-To: <20250515120804.32131-1-sarunkod@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250515220400.1096945-1-dionnaglaze@google.com>
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250515220400.1096945-2-dionnaglaze@google.com>
-Subject: [PATCH v5 1/2] kvm: sev: Add SEV-SNP guest request throttling
-From: Dionna Glaze <dionnaglaze@google.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Dionna Glaze <dionnaglaze@google.com>, Thomas Lendacky <Thomas.Lendacky@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20250404193923.1413163-1-seanjc@google.com> <20250515120804.32131-1-sarunkod@amd.com>
+Message-ID: <aCZlNYlhSKXRFvnc@google.com>
+Subject: Re: [PATCH 00/67] KVM: iommu: Overhaul device posted IRQs support
+From: Sean Christopherson <seanjc@google.com>
+To: Sairaj Kodilkar <sarunkod@amd.com>
+Cc: baolu.lu@linux.intel.com, dmatlack@google.com, dwmw2@infradead.org, 
+	iommu@lists.linux.dev, joao.m.martins@oracle.com, joro@8bytes.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mlevitsk@redhat.com, 
+	pbonzini@redhat.com, vasant.hegde@amd.com, suravee.suthikulpanit@amd.com, 
+	naveen.rao@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-The AMD-SP is a precious resource that doesn't have a scheduler other
-than a mutex lock queue. To avoid customers from causing a DoS, a
-mem_enc_ioctl command for rate limiting guest requests is added.
+On Thu, May 15, 2025, Sairaj Kodilkar wrote:
+> Hi Sean,
+> 
+> We ran few tests with following setup
 
-Recommended values are {.interval_ms = 1000, .burst = 1} or
-{.interval_ms = 2000, .burst = 2} to average 1 request every second.
-You may need to allow 2 requests back to back to allow for the guest
-to query the certificate length in an extended guest request without
-a pause. The 1 second average is our target for quality of service
-since empirical tests show that 64 VMs can concurrently request an
-attestation report with a maximum latency of 1 second. We don't
-anticipate more concurrency than that for a seldom used request for
-a majority well-behaved set of VMs. The majority point is decided as
->64 VMs given the assumed 128 VM count for "extreme load".
+A few!!?!?  This is awesome!  Thank you, I greatly appreciate the testing!
 
-Cc: Thomas Lendacky <Thomas.Lendacky@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Joerg Roedel <jroedel@suse.de>
-Cc: Peter Gonda <pgonda@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Sean Christopherson <seanjc@google.com>
-
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
----
- .../virt/kvm/x86/amd-memory-encryption.rst    | 23 +++++++++++++
- arch/x86/include/uapi/asm/kvm.h               |  7 ++++
- arch/x86/kvm/svm/sev.c                        | 33 +++++++++++++++++++
- arch/x86/kvm/svm/svm.h                        |  3 ++
- 4 files changed, 66 insertions(+)
-
-diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-index 1ddb6a86ce7f..1b5b4fc35aac 100644
---- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-+++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-@@ -572,6 +572,29 @@ Returns: 0 on success, -negative on error
- See SNP_LAUNCH_FINISH in the SEV-SNP specification [snp-fw-abi]_ for further
- details on the input parameters in ``struct kvm_sev_snp_launch_finish``.
- 
-+21. KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE
-+-----------------------------------------
-+
-+The KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE command is used to set a per-VM rate
-+limit on responding to requests for AMD-SP to process a guest request.
-+The AMD-SP is a global resource with limited capacity, so to avoid noisy
-+neighbor effects, the host may set a request rate for guests.
-+
-+Parameters (in): struct kvm_sev_snp_set_request_throttle_rate
-+
-+Returns: 0 on success, -negative on error
-+
-+::
-+
-+	struct kvm_sev_snp_set_request_throttle_rate {
-+		__u32 interval_ms;
-+		__u32 burst;
-+	};
-+
-+The interval will be translated into jiffies, so if it after transformation
-+the interval is 0, the command will return ``-EINVAL``. The ``burst`` value
-+must be greater than 0.
-+
- Device attribute API
- ====================
- 
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 460306b35a4b..d92242d9b9af 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -708,6 +708,8 @@ enum sev_cmd_id {
- 	KVM_SEV_SNP_LAUNCH_UPDATE,
- 	KVM_SEV_SNP_LAUNCH_FINISH,
- 
-+	KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE,
-+
- 	KVM_SEV_NR_MAX,
- };
- 
-@@ -877,6 +879,11 @@ struct kvm_sev_snp_launch_finish {
- 	__u64 pad1[4];
- };
- 
-+struct kvm_sev_snp_set_request_throttle_rate {
-+	__u32 interval_ms;
-+	__u32 burst;
-+};
-+
- #define KVM_X2APIC_API_USE_32BIT_IDS            (1ULL << 0)
- #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK  (1ULL << 1)
- 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a7a7dc507336..35b04a10ed73 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -12,12 +12,14 @@
- #include <linux/kvm_host.h>
- #include <linux/kernel.h>
- #include <linux/highmem.h>
-+#include <linux/limits.h>
- #include <linux/psp.h>
- #include <linux/psp-sev.h>
- #include <linux/pagemap.h>
- #include <linux/swap.h>
- #include <linux/misc_cgroup.h>
- #include <linux/processor.h>
-+#include <linux/ratelimit.h>
- #include <linux/trace_events.h>
- #include <uapi/linux/sev-guest.h>
- 
-@@ -2535,6 +2537,28 @@ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	return ret;
- }
- 
-+static int snp_set_request_throttle_ms(struct kvm *kvm, struct kvm_sev_cmd *argp)
-+{
-+	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-+	struct kvm_sev_snp_set_request_throttle_rate params;
-+	u64 jiffies;
-+
-+	if (!sev_snp_guest(kvm))
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
-+		return -EFAULT;
-+
-+	jiffies = ((u64)params.interval_ms * HZ) / 1000;
-+
-+	if (!jiffies || !params.burst || params.burst > S32_MAX || jiffies > S32_MAX)
-+		return -EINVAL;
-+
-+	ratelimit_state_init(&sev->snp_guest_msg_rs, jiffies, params.burst);
-+
-+	return 0;
-+}
-+
- int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
- {
- 	struct kvm_sev_cmd sev_cmd;
-@@ -2640,6 +2664,9 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
- 	case KVM_SEV_SNP_LAUNCH_FINISH:
- 		r = snp_launch_finish(kvm, &sev_cmd);
- 		break;
-+	case KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE_MS:
-+		r = snp_set_request_throttle_ms(kvm, &sev_cmd);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		goto out;
-@@ -4015,6 +4042,12 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
- 
- 	mutex_lock(&sev->guest_req_mutex);
- 
-+	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-+		svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
-+		ret = 1;
-+		goto out_unlock;
-+	}
-+
- 	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE)) {
- 		ret = -EIO;
- 		goto out_unlock;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index f16b068c4228..2643c940d054 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -18,6 +18,7 @@
- #include <linux/kvm_types.h>
- #include <linux/kvm_host.h>
- #include <linux/bits.h>
-+#include <linux/ratelimit.h>
- 
- #include <asm/svm.h>
- #include <asm/sev-common.h>
-@@ -112,6 +113,8 @@ struct kvm_sev_info {
- 	void *guest_req_buf;    /* Bounce buffer for SNP Guest Request input */
- 	void *guest_resp_buf;   /* Bounce buffer for SNP Guest Request output */
- 	struct mutex guest_req_mutex; /* Must acquire before using bounce buffers */
-+
-+	struct ratelimit_state snp_guest_msg_rs; /* Limit guest requests */
- };
- 
- struct kvm_svm {
--- 
-2.49.0.1101.gccaa498523-goog
-
+> * Turin system with 2P, 192 cores each (SMT enabled, Total 768)
+> * 4 NVMEs of size 1.7 attached to a single IOMMU
+> * Total RAM 247 GiB
+> * Qemu version : 9.1.93
+> * Guest kernel : 6.14-rc7
+> * FIO random reads with 4K blocksize and libai
+> 
+> With above setup we measured the Guest nvme interrupts, IOPS, GALOG interrupts
+> and GALOG entries for 60 seconds with and without your changes.
+> 
+> Here are the results,
+> 
+>                           VCPUS = 32, Jobs per NVME = 8
+> ==============================================================================================
+>                              w/o Sean's patches           w/ Sean's patches     Percent change
+> ----------------------------------------------------------------------------------------------
+> Guest Nvme interrupts               123,922,860                 124,559,110              0.51%
+> IOPS (in kilo)                            4,795                       4,796              0.04%
+> GALOG Interrupts                         40,245                         164            -99.59%
+> GALOG entries                            42,040                         169            -99.60%
+> ----------------------------------------------------------------------------------------------
+> 
+> 
+>                 VCPUS = 64, Jobs per NVME = 16
+> ==============================================================================================
+>                              w/o Sean's patches           w/ Sean's patches     Percent change
+> ----------------------------------------------------------------------------------------------
+> Guest Nvme interrupts               99,483,339                   99,800,056             0.32% 
+> IOPS (in kilo)                           4,791                        4,798             0.15% 
+> GALOG Interrupts                        47,599                       11,634           -75.56% 
+> GALOG entries                           48,899                       11,923           -75.62%
+> ----------------------------------------------------------------------------------------------
+> 
+> 
+>                 VCPUS = 192, Jobs per NVME = 48
+> ==============================================================================================
+>                              w/o Sean's patches          w/ Sean's patches      Percent change
+> ----------------------------------------------------------------------------------------------
+> Guest Nvme interrupts               76,750,310                  78,066,512               1.71%
+> IOPS (in kilo)                           4,751                       4,749              -0.04%
+> GALOG Interrupts                        56,621                      54,732              -3.34%
+> GALOG entries                           59,579                      56,215              -5.65%
+> ----------------------------------------------------------------------------------------------
+>  
+> 
+> The results show that patches have significant impact on the number of posted
+> interrupts at lower vCPU count (32 and 64) while providing similar IOPS and
+> Guest NVME interrupt rate (i.e. patches do not regress).
+> 
+> Along with the performance evaluation, we did sanity tests such with AVIC,
+> x2AVIC and kernel selftest.  All tests look good.
+> 
+> For AVIC related patches:
+> Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
+> 
+> Regards
+> Sairaj Kodilkar
+> 
