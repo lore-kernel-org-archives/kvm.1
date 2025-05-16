@@ -1,324 +1,223 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4D440C;
-	Fri, 16 May 2025 04:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747368216; cv=fail; b=Jms4yUKOn5zSS+mju0SLzYCpK1BBPJHWVRX8noUXZScy7SyMYLJ3YXdBUS+evutWis4qDf5PMsr95bUDiOBan6y4k1T/tra5pnqlu2HJvGC3e33AxqGAOgABUuOMBc1qrhsVG+R4ADvLbQf7ZOBFKO4IVSSMXAt4iOAbYus1MJ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747368216; c=relaxed/simple;
-	bh=lzODdpDrMzqceFWxQPc7A9Q8LOeLVAUVhDbT4tus5fA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mSszy17AEf8xi9aqEKZm5L9NcHdnW9f9LTjGlDToRXRvGKmzi20Rlw1L4vzDpFg9xWIxRo3yQReL+DtFc/lMj1PdwixLIRmQBJENtXFBPeXlqDRg9/yyadefQ1pKeTrE6MXP3RaO0bTDCOC8Ejytx+iv5IbOJoDqvRM12LS+Wk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aV75NRJr; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582CE13790B
+	for <kvm@vger.kernel.org>; Fri, 16 May 2025 06:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747375767; cv=none; b=rrgEk+Yxc82zoPpxKHWyiVQgCs3vLYJ3qGzqK4sGvHyPFmgNxMbxIGTdPxxkoidq5EC/diNQs4PCL8QXctqLAGaTCvLowCEb7oEFfBN2+x6DbYg7APMkF+u5FA766UXAJuKFaIuqHKY6tpM+oOq4eV8f2ubLs8A7narFYpZe1IY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747375767; c=relaxed/simple;
+	bh=EkONSVFSNf6RbN/OEtrBrRqcdGVQNNZthV9GRn3rF54=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JFnP95NwRaVsm8YJr8i+sEkSaW8qctzzcBy97hmCzWIgVRXbqtIFC0pFj6syie09Bqhnkk3GvFWIQpIJ/h9TImyEZYe9aeV8VM+f+hJoove+DqGU53PBxFzy3lHoZLp3ZY8GVHE5MBA/w6EIRCIZWKAVX1vKrhHF9y5IukqWnYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JbdE3s+U; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aV75NRJr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747368214; x=1778904214;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=lzODdpDrMzqceFWxQPc7A9Q8LOeLVAUVhDbT4tus5fA=;
-  b=aV75NRJrPFYoNURKCVYr/V9KBQ6s+XWF9m3BsYFYuQFEQjkPV4/1t9GS
-   636yteStMvVrtXwbNCjcHSqREgvZl859YIUxc7sxxLjcD1m1Bn3GtovRY
-   Bf+cD2rmj4aIA2o3h2WdoDhEHx0GNAwtvyKTu/7ZtAzwdn5VaEV7qpps5
-   UIBqDghtoIgMKl+ajiSR6d4x9IaJMnf7209QiRRzbLX+txntWFEjpvvJH
-   hWgSBRUDO6BRnoa6cGPlNZn92nFuZh2gAms/ggrM3XUl60qBHEyhHbbuO
-   DJEKrpxaU+tnWQUhxl92iyA34q7/M0GWamjb7mXbPN04BJONEKDQSZMU7
-   Q==;
-X-CSE-ConnectionGUID: nFk8krb3T9OVweX+dl9vdg==
-X-CSE-MsgGUID: itimsI9ZT166+WqDmeBd+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49024950"
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
-   d="scan'208";a="49024950"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 21:03:33 -0700
-X-CSE-ConnectionGUID: tXTBmqj2QzOX0sO1VSjR+w==
-X-CSE-MsgGUID: qml4ywlWRmmsoipWouOg0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
-   d="scan'208";a="139453912"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 21:03:33 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 15 May 2025 21:03:32 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 15 May 2025 21:03:32 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.40) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 15 May 2025 21:03:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S9MRDzvOQCcHxVH8XlKO0MnSgThjJekUlvBlDG7D/3vGHqUzXeci2g3TCKyFFlQ9qQrHDAty7wgmvW6hmxMC4i4UR/5P0foAz0Gg+r4xM6pjs1du9NT6UgcNoMQrW9YjRbvp8QkT9mtl71YfYnn6WwBqeuHD0d7vlYk//Clv0RFNDiB+XCBqzwE8eF/HSvJX+/hhkYH2gyMLI/M7upPh1sVwlHQENNjhApLpYr/ZIGg3RbrBfVyLAMaFpFzfSyzqKj5DzD6gzKQrZ2sf2ZFJiGQMITp3hDoZIqW4kHMx+VvVkVaj+uQatthuvH1kmEBb7DOoOfmqADW7sauRwXdXAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SN5A+OtWesqNq0D6Orxq/xmzbbkYcSeKnt/YBsXSFNM=;
- b=V/NQRjQasFUSdwBdrGBKiI+DPF5KEozTKDjzQnvL8TYH7xr01xIBVGcoh+JEz9n6C8RgIH+YlS7fByo4JJxQ+Yi9+l1okXSzPk7YHUZMVacs1DHAcW8JGmnyZYbdYv7EtmEPl6NOcktxH/bnj/UVLLHLe6al5L+8ffbcahoNtNh+ug+m9MnYg92k4gnQvhc3Njix4IxNovirvhKeZFTYPwOX6YT5tOOtnOKreT7G0KmScL6ldJ+RmlqpR/Sh5SAYQkuf8r1T4OUbN+KJZbjJZMUJmsF7oAOkRffYizr4RkwT+nnSkShh82FWOicoMNK8wluo31+mFmCMbt5Z8BGJlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- PH8PR11MB7023.namprd11.prod.outlook.com (2603:10b6:510:221::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Fri, 16 May
- 2025 04:03:29 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.8722.031; Fri, 16 May 2025
- 04:03:29 +0000
-Date: Fri, 16 May 2025 12:01:19 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "seanjc@google.com"
-	<seanjc@google.com>, "Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"quic_eberman@quicinc.com" <quic_eberman@quicinc.com>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Hansen,
- Dave" <dave.hansen@intel.com>, "david@redhat.com" <david@redhat.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tabba@google.com"
-	<tabba@google.com>, "Li, Zhiquan1" <zhiquan1.li@intel.com>, "Du, Fan"
-	<fan.du@intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "michael.roth@amd.com"
-	<michael.roth@amd.com>, "Weiny, Ira" <ira.weiny@intel.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "Yamahata, Isaku"
-	<isaku.yamahata@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "jroedel@suse.de"
-	<jroedel@suse.de>, "Miao, Jun" <jun.miao@intel.com>, "pgonda@google.com"
-	<pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [RFC PATCH 10/21] KVM: x86/mmu: Disallow page merging (huge page
- adjustment) for mirror root
-Message-ID: <aCa4jyAeZ9gFQUUQ@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20250424030033.32635-1-yan.y.zhao@intel.com>
- <20250424030634.369-1-yan.y.zhao@intel.com>
- <9d18a0edab6e25bf785fd3132bc5f345493a6649.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <9d18a0edab6e25bf785fd3132bc5f345493a6649.camel@intel.com>
-X-ClientProxiedBy: SG3P274CA0005.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::17)
- To DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JbdE3s+U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747375764;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oPcG3FsFOiRXpv1XjAvU2NgERd/jyk19PD8+swcCIJ4=;
+	b=JbdE3s+UTokjoqMXw02pgY8Cs0Ejaa3FWJgsEZk0GdEdfDFZEmxzExM49R8KciNd0NaAtf
+	ixbBKcXVYFvXgShTxFr93fqsl5CD/jeX2ZcrZ73ErFLcTLvDd89OzcBMROP9tqOD4I/Rad
+	KzDl/LnqlPEWMWoR9N/4C+cLtXleeWE=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262--jhIDR9cPZa__oe3tK3flg-1; Fri, 16 May 2025 02:09:22 -0400
+X-MC-Unique: -jhIDR9cPZa__oe3tK3flg-1
+X-Mimecast-MFC-AGG-ID: -jhIDR9cPZa__oe3tK3flg_1747375762
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-30ab4d56096so2141207a91.0
+        for <kvm@vger.kernel.org>; Thu, 15 May 2025 23:09:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747375762; x=1747980562;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPcG3FsFOiRXpv1XjAvU2NgERd/jyk19PD8+swcCIJ4=;
+        b=r1ZoCBljfM0O9YFyUmaYkGcHckR+Vdlhq3P1+0vdSVg7YltrtjIbO/fZ3v9JcmkrHh
+         SrsPgpfL/WI3sd/G1Ei9Sm1k8n8kcRCo5/wEVb8hMK3KsOjY4oU3TE2Ra1oqjn+AImnB
+         50NXsU+0VGVd/6EX21qSTWykRw9HCaqXGdEMeXL2cLwikd42kprgvUK/LQpC8h/N/F+3
+         nTVfrqYSK5tFT0ecXU0WAPORUzuv7fKoJiPaAt7HJ0exe88csGM71wHnBa1wLMHZ4m6b
+         9oqR3ULxg1b8lxLjCcJlXqzyJCWJdAvaSREUel35p2G2N9RV1euHQ+a+VqNXz/exTvNv
+         smOg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2m4V8FYZMZcgaSiVKNX2h+sb10E+XWGBotiR5wrj1FNOwhwByk1mFr9WW5WmJnpHM3gY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3EcrqxqdX6PWgGzCt98IgD8Y/B2ZcbRYg3yhthpLD+lwISvnG
+	0w4mtKjAIE+LQyfbxRFFTsZz9ygK10gQxP+DYZ82wbkSZ0r8Feqgivq6bSF6QvTxIwCvYsALCoJ
+	ekDx7D60EyfKsamtJyQ41JgrXLvd0glYSnW7ahST+ITb5am05gWFf7g==
+X-Gm-Gg: ASbGncuzZZRyIm4l17A6wE1W/gp5XrFoZkIkcXPaOuOURdRo4G8R7lOdqYZBhC5OQAH
+	nDo6p9F3QOk0PmQiivazjB+0HBj/diTzmOq+wmUgZBlqip+BNVoI5hBBcCx/CfAC3yzMaMxmyWE
+	lbvRtR8D09SnM2dLeQnmYs0mS4xPJDl/tCGOzC23Qg441IxjGqUOYypy/oVowCfRwK0kBV+k0Cv
+	kYFZDlxNoZYuKT+Xz+zK9bIFKuf1tNaQ2dydVvSIN/EW0JU1OJdANJ2uFE5hKsZR0/9XaZ/4O2Y
+	+LVp8v2xafFo
+X-Received: by 2002:a17:90b:33c2:b0:2fe:afa7:eaf8 with SMTP id 98e67ed59e1d1-30e7d50b040mr2667259a91.13.1747375761703;
+        Thu, 15 May 2025 23:09:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEH5a8qqAjTmy08j8thqP+B00LVXrWtv611P5leiCrTuccrUC6wK6bUstDZ0smUsTwppAcRCA==
+X-Received: by 2002:a17:90b:33c2:b0:2fe:afa7:eaf8 with SMTP id 98e67ed59e1d1-30e7d50b040mr2667176a91.13.1747375761099;
+        Thu, 15 May 2025 23:09:21 -0700 (PDT)
+Received: from [192.168.68.51] ([180.233.125.65])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e7d4892c3sm825602a91.12.2025.05.15.23.09.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 23:09:20 -0700 (PDT)
+Message-ID: <c48843fb-c492-44d4-8000-705413aa9f08@redhat.com>
+Date: Fri, 16 May 2025 16:08:59 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|PH8PR11MB7023:EE_
-X-MS-Office365-Filtering-Correlation-Id: 192b985e-7dfc-43ee-c2dc-08dd942e9dc8
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pD0FEed0QTXellz34OKt9zbWaqu4+fRlFHYO5PRKnkGMBaCTIR+N+VBMNweP?=
- =?us-ascii?Q?lJ7Fk49saUYCkWISWmkrPaobfDjJcWR81MdaLt7Dz+ZzAfR6JKQ+/h+bgaUD?=
- =?us-ascii?Q?9jXOW/9Uhv/6AWphUjntaZip3Qc3I8Y38s3IjjooqlxF/DD2Ll1A/9+UTYK8?=
- =?us-ascii?Q?yvSOrWEVD/kcgAwr1DLdK/L5ExjQIpqHbNyezRj1HKr9JnrTUKqpSxZGfDG4?=
- =?us-ascii?Q?tDyIT5knjD4QSs/dnIOBrzRhkQiRFhwE9QtPs1VgBU8ggF0vExAV1tBtV7cP?=
- =?us-ascii?Q?b3r5pNNii0Yhy9/0CEvE1LU2dzn0VEOL3iAyYaRqpe1sum09wN9iT+Vi6DIL?=
- =?us-ascii?Q?rbfI9i56LquNmGFeSkkvFxWQQQ6935kiwPbQgVefkpX9k3dXDv47ozwp1Sby?=
- =?us-ascii?Q?fSQX3W/BDzxBJ4WTVDygEtQogA6ZkCrWfiZr+yDQy1OVOXKlARFgtvhLYfQc?=
- =?us-ascii?Q?IfTzoRdKpHOQp6fWAbKmombWrBVeMP45oTsouTEGd9Dao/j/Xr7tFrTnKQJf?=
- =?us-ascii?Q?1BIHmLBK3H3sggUqRg1Z2WsDoB8bNg++gj1lz2nplzdnwGqhezXN2d0WIZL8?=
- =?us-ascii?Q?joZhnf5gyXphBQWyuUcmx226kMg+gSg+54z0tJqfH/jNQF39pZvhhApJMXPN?=
- =?us-ascii?Q?JVAfU9QlpuvhYt/JnlUfMOhlCmneQ6iVgbssgFX/IKO8BbL5iKzejObE5qCm?=
- =?us-ascii?Q?BjdjG+62Wa08hnch2oM2A4qc0aRFTnror6Z+PeEyiS3a0qBFYnLa1K80oshs?=
- =?us-ascii?Q?jf2nRHxZcyOdFY+3OfmjGyL+70MhyN055aFU4uh1f8ewdMTBYtjisL13vAeL?=
- =?us-ascii?Q?Zw4PNfSZ5NKvtTPYS+758khQ2HzDqwGnesY+qYXXKMvg4XzrHOIAXmNoVlik?=
- =?us-ascii?Q?eArsXgizI+wfd+/jrMaRn/uzbHfU1AZP+HCYH9QI8FMVHc+qof1GaIahNcGA?=
- =?us-ascii?Q?MaGVz6LoMwoyVRORLFpmUIJX/jpkfTJk715+zdT9MLIO3PNws9FuQ6toCz74?=
- =?us-ascii?Q?fTjxaKRM2CQx4VHm/LQEYDyWJqEXk6cNYoqg9hsPgYH+ZfLO9n0m+Wuh7A9t?=
- =?us-ascii?Q?u3C3y3VlfHklrEbHaOBmT9gCgCABHrH2yJK6BkyPoF0FokHgIlWaou2QsEbw?=
- =?us-ascii?Q?0jjAN3oobgTMvjaode7lS+daO132fud9/BSZNo1fYS8pVK30tJxBba7/1STS?=
- =?us-ascii?Q?f2e/XQ1FJPFWiVeHY1r1UyZk+LniBRLroYB8ig5eti4E6lP61Sg+20lJUA3X?=
- =?us-ascii?Q?1nKfgcf5iWSA66MPHgwd0RU+v2prRJL18iIacdjMINl3bsW82aU3Dx9tlqOE?=
- =?us-ascii?Q?bWw0VLOc3Y+9PNOkkGPw8NP6uhK4ywJo6+PrWLFO69SdlNdNy+wIBR1K7Qut?=
- =?us-ascii?Q?MgFD1SNu4L5NmHmCU1q0wao+vm/hDVposJwtofJMGoUUKLkNgA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PYQGkk0w5V+SWdXpLEUCZhandSngJZKQtO/xqByPyeaFexGAbEX30SKK8H1O?=
- =?us-ascii?Q?PTYdd8uarFEi0qLGu3L7+sewPgtORdZniooRkO4A8eHluJVaqM66HmOor7hl?=
- =?us-ascii?Q?ANCxQLiB98OQ7HK8COlHcC2WbLUt767xIMzXL5JwKngj9B/+aIhqvdTbRgaO?=
- =?us-ascii?Q?G3a9nV/OTNVvT2PLxs4vjIFDtLoSuDo5vTwkRPC20jYR6Z6fhemQ6H23R7BV?=
- =?us-ascii?Q?54ieYriQgdTFN4HTh3kWWXr/1q7htGRPMyZxOc0BiyE3ZLxgEsWFWkpW7b+V?=
- =?us-ascii?Q?aWb+XclPYM79NjDin2jOlT3b30BSUdSWbA3siGpsNoHo2Kj7cs+WPb9RIVl+?=
- =?us-ascii?Q?391V84yySkT7Rmz5h2Ju+gy1GOqMmiNnhjXANKrk6lQ6mqdWhgXsB988/yir?=
- =?us-ascii?Q?+TE+iBs9YwwW0Yx8xqs9Uv2uhNk1b5o912NVvtJcFbD0X9cldkpJrX5+2YcJ?=
- =?us-ascii?Q?OsOg74fE6qpiYSqc8e6UO1om5lwPCKb1+r5XwfJ6M6Xvy4DQLr759g7iHvEK?=
- =?us-ascii?Q?LfiP5wsjGoOUeDmbPawTgAjONwf6x+w5+uRIjZ/HjsbKmPKiUUZOfdMpIwxQ?=
- =?us-ascii?Q?6BPoa56+SjEGqZt0jw7hI07UwRJqFkN9ZshhnBfsZZ4yRbZnOrGLNBwxCy1u?=
- =?us-ascii?Q?64xoaePU4zqwJHqY1kUK8/CmYNeTI4EP7OVaBcXgOuA06lczbCo/CW8c2geC?=
- =?us-ascii?Q?vHPZxMfB437ydQwbImezQsAlTyb9LGF6kmK3XADtP1H1Ks7js2bnvJ6ykCOT?=
- =?us-ascii?Q?A52QdqxERkWeI1PL8kKHjrrqjFyXTWHiF+7oriHk78uv56C4yj94Lcc7TXQA?=
- =?us-ascii?Q?zwXNsdapGHha9DbE7Er3II2MV31UVqnbZh0K9c2H4XUlZspiArppN1IxHOe3?=
- =?us-ascii?Q?crnElVCMAyfef96huYCWXlj3Dw8SN+xoVaQqpXRImuAWKeOiKoKkDvw/yxvD?=
- =?us-ascii?Q?ScUmgt1R0OL348NPSjX7kzP3T1KQe9iizdUWJi5ol1x3K6jk8J0XOsUPtW7g?=
- =?us-ascii?Q?AVRWBN/ClVSbURTjFvvNb6MCvLeN9hagCwWu54pGhoMQlplL5Wi75cmDfecf?=
- =?us-ascii?Q?b9dWvoF9wgmt5INzCVvNgKdcRYBbh6ztYCcuWLiLu7FHzLOHtz5uh7awrmB1?=
- =?us-ascii?Q?T7OK6VNOKXLxZBIC08VCQJ7cMYnCuQuqTxE6geE9y9Wtc2LmQgp0YRT3+zln?=
- =?us-ascii?Q?tNfUdob1OcpIOfjagJ+cb+54tBVQ2Weyj+qJsH9HahFnZAJEXpXLjstU3OWs?=
- =?us-ascii?Q?2VX0ZLUrQBViTFValWettaKBv7MSH4qiiy+12LPUabOJbkZLzFSQNXoOpgpi?=
- =?us-ascii?Q?CnhPlJ/qkKgZ4XDAPwRH1CKkN9ZCT3tc9AI2st2E/aQAcdtTVlDXm57pCc/J?=
- =?us-ascii?Q?8hgoyPCreVsfC4Oj/oWft6r1JHGjvyxaO1tLQsi7bruhhJpUKI4FbUNLLURk?=
- =?us-ascii?Q?j72MnaX9BQtuZCiJvefVl+0PGehpQn2TkqksUe++moVAx6lFcKMI4v7p3S+Z?=
- =?us-ascii?Q?cDUniwW2bVFls0FxsOsi1DdVTNMeQygogCs15a5B/RsaSoLrOdzj8f2oHjTN?=
- =?us-ascii?Q?pWue05WWJ5zjfCxK8i7Mu48Sl5pF3td4NiyeldmVf5XE98OeGmnKlzP4FH5v?=
- =?us-ascii?Q?xA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 192b985e-7dfc-43ee-c2dc-08dd942e9dc8
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 04:03:29.4793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3efC/Kf2pA8fhFT5aia2acD2sZ4XYml59udSQpAOsXKBrAD7L9p3sLkx3o+78UvqOLYuhRgLcYqSnCF3NQyvVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7023
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 07/17] KVM: guest_memfd: Allow host to map
+ guest_memfd() pages
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
+ vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
+ liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com
+References: <20250513163438.3942405-1-tabba@google.com>
+ <20250513163438.3942405-8-tabba@google.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250513163438.3942405-8-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 14, 2025 at 04:15:14AM +0800, Edgecombe, Rick P wrote:
-> On Thu, 2025-04-24 at 11:06 +0800, Yan Zhao wrote:
-> > From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-> > 
-> > Disallow page merging (huge page adjustment) for mirror root by leveraging
-> > the disallowed_hugepage_adjust().
-> > 
-> > [Yan: Passing is_mirror to disallowed_hugepage_adjust()]
-> > 
-> > Signed-off-by: Edgecombe, Rick P <rick.p.edgecombe@intel.com>
-> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> > ---
-> >  arch/x86/kvm/mmu/mmu.c          | 6 +++---
-> >  arch/x86/kvm/mmu/mmu_internal.h | 2 +-
-> >  arch/x86/kvm/mmu/paging_tmpl.h  | 2 +-
-> >  arch/x86/kvm/mmu/tdp_mmu.c      | 7 ++++---
-> >  4 files changed, 9 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index a284dce227a0..b923deeeb62e 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -3326,13 +3326,13 @@ void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
-> >  	fault->pfn &= ~mask;
-> >  }
-> >  
-> > -void disallowed_hugepage_adjust(struct kvm_page_fault *fault, u64 spte, int cur_level)
-> > +void disallowed_hugepage_adjust(struct kvm_page_fault *fault, u64 spte, int cur_level, bool is_mirror)
-> >  {
-> >  	if (cur_level > PG_LEVEL_4K &&
-> >  	    cur_level == fault->goal_level &&
-> >  	    is_shadow_present_pte(spte) &&
-> >  	    !is_large_pte(spte) &&
-> > -	    spte_to_child_sp(spte)->nx_huge_page_disallowed) {
-> > +	    (spte_to_child_sp(spte)->nx_huge_page_disallowed || is_mirror)) {
-> >  		/*
-> >  		 * A small SPTE exists for this pfn, but FNAME(fetch),
-> >  		 * direct_map(), or kvm_tdp_mmu_map() would like to create a
-> > @@ -3363,7 +3363,7 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> >  		 * large page, as the leaf could be executable.
-> >  		 */
-> >  		if (fault->nx_huge_page_workaround_enabled)
-> > -			disallowed_hugepage_adjust(fault, *it.sptep, it.level);
-> > +			disallowed_hugepage_adjust(fault, *it.sptep, it.level, false);
-> >  
-> >  		base_gfn = gfn_round_for_level(fault->gfn, it.level);
-> >  		if (it.level == fault->goal_level)
-> > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-> > index db8f33e4de62..1c1764f46e66 100644
-> > --- a/arch/x86/kvm/mmu/mmu_internal.h
-> > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> > @@ -411,7 +411,7 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
-> >  int kvm_mmu_max_mapping_level(struct kvm *kvm,
-> >  			      const struct kvm_memory_slot *slot, gfn_t gfn);
-> >  void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
-> > -void disallowed_hugepage_adjust(struct kvm_page_fault *fault, u64 spte, int cur_level);
-> > +void disallowed_hugepage_adjust(struct kvm_page_fault *fault, u64 spte, int cur_level, bool is_mirror);
-> >  
-> >  void track_possible_nx_huge_page(struct kvm *kvm, struct kvm_mmu_page *sp);
-> >  void untrack_possible_nx_huge_page(struct kvm *kvm, struct kvm_mmu_page *sp);
-> > diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-> > index 68e323568e95..1559182038e3 100644
-> > --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> > +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> > @@ -717,7 +717,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
-> >  		 * large page, as the leaf could be executable.
-> >  		 */
-> >  		if (fault->nx_huge_page_workaround_enabled)
-> > -			disallowed_hugepage_adjust(fault, *it.sptep, it.level);
-> > +			disallowed_hugepage_adjust(fault, *it.sptep, it.level, false);
-> >  
-> >  		base_gfn = gfn_round_for_level(fault->gfn, it.level);
-> >  		if (it.level == fault->goal_level)
-> > diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> > index 405874f4d088..8ee01277cc07 100644
-> > --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> > +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> > @@ -1244,6 +1244,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> >  	struct tdp_iter iter;
-> >  	struct kvm_mmu_page *sp;
-> >  	int ret = RET_PF_RETRY;
-> > +	bool is_mirror = is_mirror_sp(root);
-> >  
-> >  	kvm_mmu_hugepage_adjust(vcpu, fault);
-> >  
-> > @@ -1254,8 +1255,8 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> >  	for_each_tdp_pte(iter, kvm, root, fault->gfn, fault->gfn + 1) {
-> >  		int r;
-> >  
-> > -		if (fault->nx_huge_page_workaround_enabled)
-> > -			disallowed_hugepage_adjust(fault, iter.old_spte, iter.level);
-> > +		if (fault->nx_huge_page_workaround_enabled || is_mirror)
+Hi Fuad,
+
+On 5/14/25 2:34 AM, Fuad Tabba wrote:
+> This patch enables support for shared memory in guest_memfd, including
+> mapping that memory at the host userspace. This support is gated by the
+> configuration option KVM_GMEM_SHARED_MEM, and toggled by the guest_memfd
+> flag GUEST_MEMFD_FLAG_SUPPORT_SHARED, which can be set when creating a
+> guest_memfd instance.
 > 
-> Maybe we should rename nx_huge_page_workaround_enabled to something more generic
-> and do the is_mirror logic in kvm_mmu_do_page_fault() when setting it. It should
-> shrink the diff and centralize the logic.
-Hmm, I'm reluctant to rename nx_huge_page_workaround_enabled, because
-
-(1) Invoking disallowed_hugepage_adjust() for mirror root is to disable page
-    promotion for TDX private memory, so is only applied to TDP MMU.
-(2) nx_huge_page_workaround_enabled is used specifically for nx huge pages.
-    fault->huge_page_disallowed = fault->exec && fault->nx_huge_page_workaround_enabled;
-
-    if (fault->huge_page_disallowed)
-        account_nx_huge_page(vcpu->kvm, sp,
-                             fault->req_level >= it.level);
-    
-    sp->nx_huge_page_disallowed = fault->huge_page_disallowed.
-
-    Affecting fault->huge_page_disallowed would impact
-    sp->nx_huge_page_disallowed as well and would disable huge pages entirely.
-
-    So, we still need to keep nx_huge_page_workaround_enabled.
-
-If we introduce a new flag fault->disable_hugepage_adjust, and set it in
-kvm_mmu_do_page_fault(), we would also need to invoke
-tdp_mmu_get_root_for_fault() there as well.
-
-Checking for mirror root for non-TDX VMs is not necessary, and the invocation of
-tdp_mmu_get_root_for_fault() seems redundant with the one in kvm_tdp_mmu_map().
-
-
-> > +			disallowed_hugepage_adjust(fault, iter.old_spte, iter.level, is_mirror);
-> >  
-> >  		/*
-> >  		 * If SPTE has been frozen by another thread, just give up and
-> > @@ -1278,7 +1279,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> >  		 */
-> >  		sp = tdp_mmu_alloc_sp(vcpu);
-> >  		tdp_mmu_init_child_sp(sp, &iter);
-> > -		if (is_mirror_sp(sp))
-> > +		if (is_mirror)
-> >  			kvm_mmu_alloc_external_spt(vcpu, sp);
-> >  
-> >  		sp->nx_huge_page_disallowed = fault->huge_page_disallowed;
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>   arch/x86/include/asm/kvm_host.h | 10 ++++
+>   include/linux/kvm_host.h        | 13 +++++
+>   include/uapi/linux/kvm.h        |  1 +
+>   virt/kvm/Kconfig                |  5 ++
+>   virt/kvm/guest_memfd.c          | 88 +++++++++++++++++++++++++++++++++
+>   5 files changed, 117 insertions(+)
 > 
+
+[...]
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 6db515833f61..8e6d1866b55e 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -312,7 +312,88 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>   	return gfn - slot->base_gfn + slot->gmem.pgoff;
+>   }
+>   
+> +#ifdef CONFIG_KVM_GMEM_SHARED_MEM
+> +
+> +static bool kvm_gmem_supports_shared(struct inode *inode)
+> +{
+> +	uint64_t flags = (uint64_t)inode->i_private;
+> +
+> +	return flags & GUEST_MEMFD_FLAG_SUPPORT_SHARED;
+> +}
+> +
+> +static vm_fault_t kvm_gmem_fault_shared(struct vm_fault *vmf)
+> +{
+> +	struct inode *inode = file_inode(vmf->vma->vm_file);
+> +	struct folio *folio;
+> +	vm_fault_t ret = VM_FAULT_LOCKED;
+> +
+> +	filemap_invalidate_lock_shared(inode->i_mapping);
+> +
+> +	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+> +	if (IS_ERR(folio)) {
+> +		int err = PTR_ERR(folio);
+> +
+> +		if (err == -EAGAIN)
+> +			ret = VM_FAULT_RETRY;
+> +		else
+> +			ret = vmf_error(err);
+> +
+> +		goto out_filemap;
+> +	}
+> +
+> +	if (folio_test_hwpoison(folio)) {
+> +		ret = VM_FAULT_HWPOISON;
+> +		goto out_folio;
+> +	}
+> +
+> +	if (WARN_ON_ONCE(folio_test_large(folio))) {
+> +		ret = VM_FAULT_SIGBUS;
+> +		goto out_folio;
+> +	}
+> +
+
+I don't think there is a large folio involved since the max/min folio order
+(stored in struct address_space::flags) should have been set to 0, meaning
+only order-0 is possible when the folio (page) is allocated and added to the
+page-cache. More details can be referred to AS_FOLIO_ORDER_MASK. It's unnecessary
+check but not harmful. Maybe a comment is needed to mention large folio isn't
+around yet, but double confirm.
+
+
+> +	if (!folio_test_uptodate(folio)) {
+> +		clear_highpage(folio_page(folio, 0));
+> +		kvm_gmem_mark_prepared(folio);
+> +	}
+> +
+
+I must be missing some thing here. This chunk of code is out of sync to kvm_gmem_get_pfn(),
+where kvm_gmem_prepare_folio() and kvm_arch_gmem_prepare() are executed, and then
+PG_uptodate is set after that. In the latest ARM CCA series, kvm_arch_gmem_prepare()
+isn't used, but it would delegate the folio (page) with the prerequisite that
+the folio belongs to the private address space.
+
+I guess that kvm_arch_gmem_prepare() is skipped here because we have the assumption that
+the folio belongs to the shared address space? However, this assumption isn't always
+true. We probably need to ensure the folio range is really belonging to the shared
+address space by poking kvm->mem_attr_array, which can be modified by VMM through
+ioctl KVM_SET_MEMORY_ATTRIBUTES.
+
+> +	vmf->page = folio_file_page(folio, vmf->pgoff);
+> +
+> +out_folio:
+> +	if (ret != VM_FAULT_LOCKED) {
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	}
+> +
+> +out_filemap:
+> +	filemap_invalidate_unlock_shared(inode->i_mapping);
+> +
+> +	return ret;
+> +}
+> +
+
+Thanks,
+Gavin
+
