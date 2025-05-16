@@ -1,87 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD6824291B
-	for <kvm@vger.kernel.org>; Fri, 16 May 2025 12:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C48239E69;
+	Fri, 16 May 2025 12:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747399203; cv=none; b=hx3Wp9eaCUorhFd7UWpk082c2lkviMAwS3g5mXXbbAdi0nw/KHCzRq0hEBQoJ32sKj43sy5S00dJxnflQBXcM9xzc8g2R3eu8OSreprTG8i5omUJcTnrmnZiFddSsgyuzSPUJLiKx+30mQedK6A7g1a7l7NZD1EegR+KY88AF04=
+	t=1747399252; cv=none; b=sfEBUmD5vrUIIOpLrW9724oO5LZUK6/MiqCWDrcHSyhQOJAD1/1EpCJ1Onx/ajPAeTKnzzhWqdAA5+GAx2cjXNHHjS3o/p+2OuWuK4TDJv59Vh+7YEWdu52DPDVRyLm5ne5IOoA/OoI58exjHp1/XMmkqx9+GwIRF7qqc6i3qM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747399203; c=relaxed/simple;
-	bh=bmgaT7YD2EJBkYL7K7imFqPWf1lV68fhOx0CtwG7grA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uzhLdOUx7W5+K7IHy4kAoXU0ygOAA2Rmn3zvdvW5ZZyNNc9gCmEFOZ3T07kRpfBzNNkWWDRB3FTD/spY7gKJK2pzbhnDkAA9RQyM5BotaYQBvsvzEsoZXB47bJd6pKW4ONV6po9sZOKJtrKJ5wotGV9/HAez6Kvt6LaJp+niJas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZcAU6l9D; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747399252; c=relaxed/simple;
+	bh=En/Vw9wTnrV0iiGoqqr5ARsm07NVhMnseucljR4/vtE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EhrOnfwRqrtQbcEkR9vitsSGFaFAPAYh2Bz3+kZCUVA45nkFY/7qiZGHfFN8ssvjj3lBmxfYmEeRpq148Eo6MFBfapv5SOz3IDo4IltoFhoYb+iQt2DAIEy0VkU4GC8gu7JET/3q8FfEqCCg1RzjYWHcUxdPiohJJYFKfCUC9Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aQbwLBBd; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZcAU6l9D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747399197;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uhz3U140ohpt6ccWc+FSce3umZsRmkKP4Ya4jbqjSpE=;
-	b=ZcAU6l9DPNixTTyS990GRXSnuzumZv/RuYyuMcaQJc8MPcVBBZCvG1pzk7Qm8Ft7+d360I
-	Kjq5oGFZ3+x4IeufI/Pt46FNft6UdB6lJd6ApazMrLU35LmUA+zeFf1QlWj1nzAoB314sy
-	EiPCKyNFdT0qT8lIU1qOV8T8mcF5ZIM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-Nj-lUfHUPWChCtR4-bMBuw-1; Fri, 16 May 2025 08:39:51 -0400
-X-MC-Unique: Nj-lUfHUPWChCtR4-bMBuw-1
-X-Mimecast-MFC-AGG-ID: Nj-lUfHUPWChCtR4-bMBuw_1747399189
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso10933235e9.0
-        for <kvm@vger.kernel.org>; Fri, 16 May 2025 05:39:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747399188; x=1748003988;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uhz3U140ohpt6ccWc+FSce3umZsRmkKP4Ya4jbqjSpE=;
-        b=nQgCnmtZqa7X637D8YGM2CGbskC0CbzeGpCd8QgBk5dq8z1L5GjACyfIHiR/8W5e88
-         9WGjwlkF8eR46QgSSjB1MvGOjJNGIViEssy8L5gGkU0PJR1fIHdG7ee7K3W5bO80p1R4
-         sZUHa67qBR1RqaMvlBUwRfpzUGGMdpwxrJw9lWgo3VpwesYKAuRzYJnwKr66/owv17bf
-         I6daOI5Xe69Kf+xvJN8LU8grdkRJYh4LHcJ7lgnOv173m0ZB+1ipHWFfYIVtgMYkoUsO
-         AxBtontg+aM1coYdJTFEREawYX7yIHJi8q0gGyABOv02b6D7V3kTAP65NhIe3d2noXFe
-         0i9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXa72o6G3JwXP4BTnxF47jDhVKN16+uY6Q7rY9f6sSCIzc5BGMdxGDw3xTQBzcDXpBu/ek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJfMG9pVxPbBhE9nw/VW7VAaaN0mLYzr6aP9DD3zWuXR8ZGqSY
-	V8GWYUmCOxg07HpPi72TYTVMJZgONuydbovJwMlZo9rV/KsW7R/EKwPbwuyTp4/PFmxIYYpbn3j
-	dUkkiHASOji4PpcANnhXczNQ1kstKrKRSuJbnBOxy+VapDqtKr3SJGw==
-X-Gm-Gg: ASbGncsDdQU+ygWz6FU343Z6iora4Lf8gfcss8hO1GpTjg902Xn/fhRD2buQqKZX3YX
-	3htlubALlE0C88sOr4SFQLzw/iYrFnRf1YCprViZELrz0s7FEEhhr5ZceYUbtHtNEKyBzMmoS76
-	fGcdoSmhkXyF3YNZFGGN48uQsslUxkxqRFQnhxQUEhJyqkXPpTva3iFvmLtp4URybYC/Ft2ky9Q
-	c4zb7Ma5UTsSn4C74UisGSEqC7LkPVzq2oP0KgmDNASye41axJRfqBxZAedgyPxsJFGmryDPAAB
-	oF0v3oet7oYG4/n9AEAQtSm1Afhx+C1Vzm4KqrXdZg07qgXbuQlRLzIxTE1qxaO3EWfDvEAf
-X-Received: by 2002:a05:600c:154c:b0:43b:c857:e9d7 with SMTP id 5b1f17b1804b1-442fd93d4fcmr26794445e9.5.1747399188628;
-        Fri, 16 May 2025 05:39:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG02eCs69TcqCLt8j2+2wKH4FlJPCCyiADW1BjCbtX8Ej+iIBeRfP51iBLLuyg6K1U4dIYtGg==
-X-Received: by 2002:a05:600c:154c:b0:43b:c857:e9d7 with SMTP id 5b1f17b1804b1-442fd93d4fcmr26794325e9.5.1747399188282;
-        Fri, 16 May 2025 05:39:48 -0700 (PDT)
-Received: from localhost (p200300d82f474700e6f9f4539ece7602.dip0.t-ipconnect.de. [2003:d8:2f47:4700:e6f9:f453:9ece:7602])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-442fd50b30csm31929825e9.9.2025.05.16.05.39.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 May 2025 05:39:47 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-s390@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Sebastian Mitterle <smitterl@redhat.com>
-Subject: [PATCH v1 0/3] s390/uv: handle folios that cannot be split while dirty
-Date: Fri, 16 May 2025 14:39:43 +0200
-Message-ID: <20250516123946.1648026-1-david@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aQbwLBBd"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G5unPW012663;
+	Fri, 16 May 2025 12:40:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=gjvxHPL1janfCdvLnHMKKrb2pt2ZDhhBF4Dw2m5P8
+	08=; b=aQbwLBBdvoLAyQApqMLM5JpkZUAjMxnRbYFqFVX4sWinkw/LvZkSGc1Q4
+	QK6YyQr132zU/eNgp1owWpQN20bL3a+MMSPBAfddTpu+Zi21qX0icwIMWheQ3wPP
+	vfMCEVzAPGoJw+qOoLQ/L1R03soUa+xT/42GD8f+oqk2KRcDe8224M2PQTbWd/yd
+	J8r+Uj6L2Bg23bLJi+U3j9mdM5WezY9xdTFVElmbXWVjiH21FoCDDX6hsYkxqMWi
+	lMrRsqJ2IvpTGZRu7KNl52yIu7sYnK61Pl7DwYKtPTppYrkBwKoZz4bFfqb/MWzT
+	7pMnRahrGckA9Xhvg+sOJa0+QU5rA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nnw943sv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 12:40:36 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54GCFiIg024904;
+	Fri, 16 May 2025 12:40:35 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nnw943st-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 12:40:35 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54GA5Iwk024273;
+	Fri, 16 May 2025 12:40:34 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfsfgjr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 12:40:34 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54GCeTgU46203192
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 May 2025 12:40:29 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F25A20166;
+	Fri, 16 May 2025 12:12:32 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10B312015F;
+	Fri, 16 May 2025 12:12:30 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com.com (unknown [9.39.30.87])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 16 May 2025 12:12:29 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        christophe.leroy@csgroup.eu
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Add H_VIRT mapping for tracing exits
+Date: Fri, 16 May 2025 17:42:24 +0530
+Message-ID: <20250516121225.276466-1-gautam@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -90,61 +74,45 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDEyMSBTYWx0ZWRfX6Fsbe83ZOFiw s5CTWwsRlm27GUpEoBM0SEvM9NqO+gOHMvAkeDwYpHmh/I+c906Mh6aRdxiiDxYBLhu9xgN3sIy Aovr1iRe9HekIfP53wyQkk/YR4c2NPPKpoU24yLmiyvq2WPeioyJJHBLCWmqW20kGpbhNoIVGb2
+ OIfu0SAiN/dkMq1/cpAXpAUhn28F7rkjNSDbXVUmXf+CrKkaH6RhSM8pQNH2QjR80ltii/O2+DH OkRDOs+uaK26gpH2CAhTyV9GyJiCQN7mycTAfLvUxkoS5zj9qOUBfopiLyQlykb352+W3z57Hxd pABWmNMTuaaH9hH2tWPIzXQpS9GBROakkMQqUWmWSOBVVgZMVHSg3MTYkjoVIDyPDaU5rFFyiug
+ IlTJfTMgdDTVQEXHHwVk+4dQ3OU527lWpvHMHaN8lExjLuUoJTUzW0CcxZ8/QshXuvxWP6CN
+X-Authority-Analysis: v=2.4 cv=b8Ky4sGx c=1 sm=1 tr=0 ts=68273244 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=q7Y8yhldYiaEvS2G40IA:9
+X-Proofpoint-GUID: OivNb5j-I5ywfp3i_xhTq_WXGpHLiA0M
+X-Proofpoint-ORIG-GUID: 7wjkZDfhubc31Ctd_5x_AnMhT8BqEQDA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-16_05,2025-05-16_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
+ spamscore=0 mlxscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ adultscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505160121
 
-From patch #3:
+The macro kvm_trace_symbol_exit is used for providing the mappings
+for the trap vectors and their names. Add mapping for H_VIRT so that
+trap reason is displayed as string instead of a vector number when using
+the kvm_guest_exit tracepoint.
 
-"
-Currently, starting a PV VM on an iomap-based filesystem with large
-folio support, such as XFS, will not work. We'll be stuck in
-unpack_one()->gmap_make_secure(), because we can't seem to make progress
-splitting the large folio.
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+ arch/powerpc/kvm/trace_book3s.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-The problem is that we require a writable PTE but a writable PTE under such
-filesystems will imply a dirty folio.
-
-So whenever we have a writable PTE, we'll have a dirty folio, and dirty
-iomap folios cannot currently get split, because
-split_folio()->split_huge_page_to_list_to_order()->filemap_release_folio()
-will fail in iomap_release_folio().
-
-So we will not make any progress splitting such large folios.
-"
-
-Let's fix one related problem during unpack first, to then handle such
-folios by triggering writeback before immediately trying to split them
-again.
-
-This makes it work on XFS with large folios again.
-
-Long-term, we should cleanly supporting splitting such folios even
-without writeback, but that's a bit harder to implement and not a quick
-fix.
-
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Sebastian Mitterle <smitterl@redhat.com>
-
-David Hildenbrand (3):
-  s390/uv: don't return 0 from make_hva_secure() if the operation was
-    not successful
-  s390/uv: always return 0 from s390_wiggle_split_folio() if successful
-  s390/uv: improve splitting of large folios that cannot be split while
-    dirty
-
- arch/s390/kernel/uv.c | 85 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 72 insertions(+), 13 deletions(-)
-
-
-base-commit: 088d13246a4672bc03aec664675138e3f5bff68c
+diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+index 372a82fa2de3..9260ddbd557f 100644
+--- a/arch/powerpc/kvm/trace_book3s.h
++++ b/arch/powerpc/kvm/trace_book3s.h
+@@ -25,6 +25,7 @@
+ 	{0xe00, "H_DATA_STORAGE"}, \
+ 	{0xe20, "H_INST_STORAGE"}, \
+ 	{0xe40, "H_EMUL_ASSIST"}, \
++	{0xea0, "H_VIRT"}, \
+ 	{0xf00, "PERFMON"}, \
+ 	{0xf20, "ALTIVEC"}, \
+ 	{0xf40, "VSX"}
 -- 
 2.49.0
 
