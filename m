@@ -1,190 +1,141 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390C723E34F
-	for <kvm@vger.kernel.org>; Fri, 16 May 2025 12:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B4B23F42A
+	for <kvm@vger.kernel.org>; Fri, 16 May 2025 12:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747399154; cv=none; b=doitYY7Zc/8zdLNray7TGwJ587hp4MFIXn+qezo33XOAef/fT87eIalF076daWAZZvW2k4U5MBvY9qkOqmajI94G7srgueLAK0GZABX1Hpi6sp60l6G2HcFi5BctdfKd8rjqX+CqWc+CUhmzk4hEkmFA6icObt/H1ow1mXNSg1s=
+	t=1747399196; cv=none; b=lUdwZCvUC673ihqFBE4g580gRSq3iS3k1x7DOIEuDJ0nVkq+1zQvMcyDMgfvq6+1eZ7BEX4FAFEMW8MyTTJmQw2xq8216/qyhNlETE8CYbjyR1XPbqOxlm5B3e45qzzblwINT+NDHHNjMqvysOGkcZlh/VxPwxv+92vBr/FfGOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747399154; c=relaxed/simple;
-	bh=EJwk/S74Tk8TsCRaHdTbe0SsIDSdi41vlf8wb2CeuBA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ffj4sYHN272B20TZk3OYqUOZwbLg5lKFjDM1MKzoJkt/kSrWeiMBJQ9M3cqrVHvEj9wnEsvY1UXmUzkt2O7Hquhgn3b25jtrIbYZ/hgkGX4Iy8QKhBq3i7xnbOTJwpZqoMQFkJyE9IqiapuUMk0Py09lgjvHUvsTF7sjT6SJrSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Qt/ouTEV; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1747399196; c=relaxed/simple;
+	bh=NmMEnvYRjcgEyI5M5m7hBi79ExciAcqQbeWQvpSCOTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=upqWUTfZQxmfJJ6ExiFwtPFBAm9tAQXqGmf59X4rXdGFAutM5vbfwbu+nrBx0pXHdtQQ6R1KlY7W8FirZNSL6TSMEtAiZU5i4F2LMQm4nopwJpG+9hO49b3CvUoOaVQklNsnh8I9WwYTGLXSOfFZGQzUZ1cdy4NYf0VN5SO4lXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HJp0rFIw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Qt/ouTEV"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad21a5466f6so617622266b.1
-        for <kvm@vger.kernel.org>; Fri, 16 May 2025 05:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1747399150; x=1748003950; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b7oP/zLljTZnogybPTM7wMGdNzWkdEVn7QUgHEuDqyw=;
-        b=Qt/ouTEVLJDsHQ9aQJ3monBHWNLyVJTQHLcYS8FPvlnRdtdrRNNo/lUwrHdLggSrkW
-         MJ+b94Ly1n5d7TWn8Wzr3L5ZhLA0XeNEWdRe6tWUVg7Evr8EMFTKBi1ZXxerUHQJJJrL
-         xe/exjxZsZTSuYzosqot1huz+xrqUIgoZjV1A89+/a93ScE9jFeyI3P1GedxjcNTvN5t
-         px+4yOWUzff90Pm8XJlrTV9NSZjVCT1ZAAUzc0/Nhq65efj9q3JUMX8qYrklmXNjn15J
-         +6AtTKSBaViyM5F1+71Q8GrPve6d3rVOjHz2ZQiVjWCLRbCHh5UMSSDGQvHG8n+IPi0w
-         auqA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HJp0rFIw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747399193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dD4s5BjWgdY0XRygYfoiKVTZtRM5PGr6HfbLhrnOYkc=;
+	b=HJp0rFIw/4KdU2ihKrOou43c+zZzN7YDSXQDamf+9ua5o9nNNUdgsvpNMCYApv9L5CTZX/
+	+j4rCu135M0zHuLoaf3zVfzAhvneh33tmQNXeDPXs2dkjppDAiH9cqMiLaojI5xu+bakeR
+	HpLYbheRVNvFZNK1rcrQV+hl0QcPSH8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-bei4xsEbNB61ei_E8D4W1Q-1; Fri, 16 May 2025 08:39:52 -0400
+X-MC-Unique: bei4xsEbNB61ei_E8D4W1Q-1
+X-Mimecast-MFC-AGG-ID: bei4xsEbNB61ei_E8D4W1Q_1747399191
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a20257c758so1410336f8f.0
+        for <kvm@vger.kernel.org>; Fri, 16 May 2025 05:39:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747399150; x=1748003950;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1747399191; x=1748003991;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b7oP/zLljTZnogybPTM7wMGdNzWkdEVn7QUgHEuDqyw=;
-        b=Dl4IOeeXAaykBAqlorxZMf7oehrYi79m5OZTj3LSTUaQ5nwGiH/uWvz2k/nh9C45bW
-         6jAkKC4E1B2i23AsVT5+hUcpexbeMRWzRAJFs+MbNZZEKIyBhHp6hoOTj/1dCZKjlC3Y
-         5kJJ4fyx3Le4e86Yw/XwNzjUjhmLSJPpJUbQzNhQFqWhNkRliFHC/bT7z4ALNSPeWFWo
-         YIGNcTvoTG8CIKxWccHEr6oqEPLZpsxGmfhSKY8HoIeyXPwYc6FZ5VkTjxtMtaRJ3iMU
-         jaqLvrb1ppkPrKfmlLAZJYsb9auE6nFTMq+4eqkDeEzBZQWZRdVx8a1wegTUxoAWkrA0
-         mbQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUd626RoLZZgXygXNPidSqUIbC+2LIbefMrjFOwJXaGWG6HfSnvfdFKvqvcQDeAJDnMGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0PdO3fZwhRna8aIaOs94kSdcnBrRgpAlKQ170Z2MiRhfkwKyF
-	JM2gm2atex61ht1+zayRW7PLcREgZCaEdD0//u75aQ5ksXsQzSXVoLPBBnGD0fwHtpU=
-X-Gm-Gg: ASbGncsW/ohch9Q1l+DDpOZWRh2bLPGjaXWtTxx0ucZU72hLO7TKQ575sIv7NHTOoeg
-	K6qwzI9ycF0qOmu++4tmn97vSv90Dywp0pQqElJ7Qw0Jc6u6jvG6a0uNeo1e8yLblwvd6JAlSVR
-	hkoO25JbD4PCQjftCo5AQYT51SjRQtx9GiaYMF3ZDLzrOQ/t0ZMvydae/Al8AjH7G2zC2PlpidX
-	LA/joBsCg/C+q0tOA7akSLDqn86j08lwgScLQZcCMDTATHfSfl36xFsKiPqddwy1VwfdWNwa55b
-	7H39hnmZ7ozW2y8jx8/HSaGD0WfEcNUwetc6UUEzStFtQvUjWqQKy7mIZg==
-X-Google-Smtp-Source: AGHT+IEIP3JUo4/gXsU3fbvKdiE+stLoARyyOdwaLPtOpDK0xW0RFEgVI9pNgG5UTxsDu4I2grbQIg==
-X-Received: by 2002:a17:907:3fa0:b0:ad4:f5f1:28cf with SMTP id a640c23a62f3a-ad50f82067fmr632543466b.25.1747399150339;
-        Fri, 16 May 2025 05:39:10 -0700 (PDT)
-Received: from ?IPv6:::1? ([2a00:11b1:101e:447e:2959:9e3d:ac05:c19d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d4383a6sm153554466b.120.2025.05.16.05.39.09
+        bh=dD4s5BjWgdY0XRygYfoiKVTZtRM5PGr6HfbLhrnOYkc=;
+        b=uNbCLWFEgvksCdgfgCzW0QAB1asjlNKgydOlPpmE4TlRl1iU2cXYdk4f7r4uZsXmsb
+         CgYBUGFGKtVIMgLDix5h8icYhsZMxT0laxecd1kUgRJb6Itg91RzqzQSTdTLz27HIJ/a
+         jV+opAPbAGajYTIcqbfBOBic14vxFbVW2TITdmgnp65WmJ0wL0edxCnakSIN3VrHG+2C
+         zPM6DUtVmVD9KMr6GbDe+bvGGUBJCAPk8Jp86iWFdvn7ZLsf+5Z75rbACM1WLOs60uZk
+         sm4wkjH3+beR8xJWCA4YJ82USJ8as2m7XWjNshWZDMyHKoDL/poowz2p3QcSRm8veuDJ
+         qeNw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Ngmcj1ukRVG86JNFI0i/0/vVbyiA9W16Fbq5sASpZ72fU5v1hV0vud11Zrt8UJxXHg0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywksvr+2jyzwGtk5j+M1J870F0XXGOU/9S6TXrZvDv5WDwJNG5Q
+	MKghGwut2D78lBc/7bVFyGF+bDv0ak0mtgeZZG/qiAybAPJk8TPmI8kUypLVyFMfK0mONOhJgED
+	DY22sHWFr1kANzyxSSdpyf/KsGQIxov2xp7ZhNT+yBNrLYO3abm+8qw==
+X-Gm-Gg: ASbGnctcBvLGklF1QzVQjmsw2JvMusVw80BAB16HmgiUfhtsSwWHIKixQnWdiQnZKH4
+	XcygtubxtxcSG+QwFQCWGz3N4UDikv3XkGxIIYjwVs7gL1xYbHkuDnr1wN9Q1MW1CLnAuEWVsif
+	wntpbqhsRenEN+BT/1XLO0RIKMXIbH8iNIOnssLOl77r7FomiK0xYitNmJ5y/tSF3prLRI/RYzv
+	1vTwGODK9ULMAhzlEfxDSPHIH7tgBKJixLB5hqW9bIjLn/LvdtqwDmPnAIt6TGk3vgVzOZ6IurE
+	cPKT4aooV+t055I/EV0HnZl0a7h7S53FmgQOA4ajVLpcBArABG3Hdgxu9kPRVjQysVvgXDEh
+X-Received: by 2002:a05:6000:2305:b0:3a0:7f9c:189a with SMTP id ffacd0b85a97d-3a35c7dd97fmr3453600f8f.0.1747399191337;
+        Fri, 16 May 2025 05:39:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHv93D7EpnmZ+BrL8Zcx6nM5iZBOF7WC9roZjSuYlsEHMwzBOdkSWq8EgsH051sEEAROR2png==
+X-Received: by 2002:a05:6000:2305:b0:3a0:7f9c:189a with SMTP id ffacd0b85a97d-3a35c7dd97fmr3453568f8f.0.1747399190948;
+        Fri, 16 May 2025 05:39:50 -0700 (PDT)
+Received: from localhost (p200300d82f474700e6f9f4539ece7602.dip0.t-ipconnect.de. [2003:d8:2f47:4700:e6f9:f453:9ece:7602])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a35ca62c70sm2792386f8f.54.2025.05.16.05.39.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 May 2025 05:39:09 -0700 (PDT)
-Date: Fri, 16 May 2025 14:39:06 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>,
- Atish Patra <atishp@rivosinc.com>
-CC: Atish Patra <atishp@atishpatra.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>,
- kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] RISC-V: KVM: Remove scounteren initialization
-In-Reply-To: <CAAhSdy38s0WWc7Cv4KF+0_pGC3xKU3_PLgeedz7Pu04-xKm4jw@mail.gmail.com>
-References: <20250515-fix_scounteren_vs-v3-1-729dc088943e@rivosinc.com> <CAAhSdy38s0WWc7Cv4KF+0_pGC3xKU3_PLgeedz7Pu04-xKm4jw@mail.gmail.com>
-Message-ID: <70DD7215-76A0-493C-87CA-60A605842B44@ventanamicro.com>
+        Fri, 16 May 2025 05:39:49 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Sebastian Mitterle <smitterl@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/3] s390/uv: don't return 0 from make_hva_secure() if the operation was not successful
+Date: Fri, 16 May 2025 14:39:44 +0200
+Message-ID: <20250516123946.1648026-2-david@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250516123946.1648026-1-david@redhat.com>
+References: <20250516123946.1648026-1-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On May 16, 2025 2:18:18 PM GMT+02:00, Anup Patel <anup@brainfault=2Eorg> wr=
-ote:
->On Fri, May 16, 2025 at 4:41=E2=80=AFAM Atish Patra <atishp@rivosinc=2Eco=
-m> wrote:
->>
->> Scounteren CSR controls the direct access the hpmcounters and cycle/
->> instret/time from the userspace=2E It's the supervisor's responsibility
->> to set it up correctly for it's user space=2E They hypervisor doesn't
->> need to decide the policy on behalf of the supervisor=2E
->>
->> Signed-off-by: Atish Patra <atishp@rivosinc=2Ecom>
->> ---
->> Changes in v3:
->> - Removed the redundant declaration
->> - Link to v2: https://lore=2Ekernel=2Eorg/r/20250515-fix_scounteren_vs-=
-v2-1-1fd8dc0693e8@rivosinc=2Ecom
->>
->> Changes in v2:
->> - Remove the scounteren initialization instead of just setting the TM b=
-it=2E
->> - Link to v1: https://lore=2Ekernel=2Eorg/r/20250513-fix_scounteren_vs-=
-v1-1-c1f52af93c79@rivosinc=2Ecom
->> ---
->>  arch/riscv/kvm/vcpu=2Ec | 4 ----
->>  1 file changed, 4 deletions(-)
->>
->> diff --git a/arch/riscv/kvm/vcpu=2Ec b/arch/riscv/kvm/vcpu=2Ec
->> index 60d684c76c58=2E=2E9bfaae9a11ea 100644
->> --- a/arch/riscv/kvm/vcpu=2Ec
->> +++ b/arch/riscv/kvm/vcpu=2Ec
->> @@ -111,7 +111,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->>  {
->>         int rc;
->>         struct kvm_cpu_context *cntx;
->> -       struct kvm_vcpu_csr *reset_csr =3D &vcpu->arch=2Eguest_reset_cs=
-r;
->>
->>         spin_lock_init(&vcpu->arch=2Emp_state_lock);
->>
->> @@ -146,9 +145,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->>         if (kvm_riscv_vcpu_alloc_vector_context(vcpu, cntx))
->>                 return -ENOMEM;
->>
->> -       /* By default, make CY, TM, and IR counters accessible in VU mo=
-de */
->> -       reset_csr->scounteren =3D 0x7;
->> -
->>         /* Setup VCPU timer */
->>         kvm_riscv_vcpu_timer_init(vcpu);
->>
->>
->> ---
->> base-commit: 01f95500a162fca88cefab9ed64ceded5afabc12
->> change-id: 20250513-fix_scounteren_vs-fdd86255c7b7
->> --
->
->Overall, this looks good=2E
->
->Reviewed-by: Anup Patel <anup@brainfault=2Eorg>
->
->Currently, the scounteren=2ETM bit is only set by the Linux SBI PMU
->driver but KVM RISC-V only provides SBI PMU for guest when
->Sscofpmf is available in host so we need the below hunk to
->completely get rid-off scounteren initialization in KVM RISC-V=2E
->
->diff --git a/arch/riscv/kernel/head=2ES b/arch/riscv/kernel/head=2ES
->index 356d5397b2a2=2E=2Ebdf3352acf4c 100644
->--- a/arch/riscv/kernel/head=2ES
->+++ b/arch/riscv/kernel/head=2ES
->@@ -131,6 +131,12 @@ secondary_start_sbi:
->     csrw CSR_IE, zero
->     csrw CSR_IP, zero
->
->+#ifndef CONFIG_RISCV_M_MODE
->+    /* Enable time CSR */
->+    li t0, 0x2
->+    csrw CSR_SCOUNTEREN, t0
->+#endif
->+
->     /* Load the global pointer */
->     load_global_pointer
->
->@@ -226,6 +232,10 @@ SYM_CODE_START(_start_kernel)
->      * to hand it to us=2E
->      */
->     csrr a0, CSR_MHARTID
->+#else
->+    /* Enable time CSR */
->+    li t0, 0x2
->+    csrw CSR_SCOUNTEREN, t0
-> #endif /* CONFIG_RISCV_M_MODE */
->
->     /* Load the global pointer */
->
->I have queued this patch for Linux-6=2E16 with the above hunk squashed=2E
->
->Thanks,
->Anup
->
->--=20
->kvm-riscv mailing list
->kvm-riscv@lists=2Einfradead=2Eorg
->http://lists=2Einfradead=2Eorg/mailman/listinfo/kvm-riscv
+If s390_wiggle_split_folio() returns 0 because splitting a large folio
+succeeded, we will return 0 from make_hva_secure() even though a retry
+is required. Return -EAGAIN in that case.
 
-Yup, I had planned to post something like that too, but didn't get to it=
-=2E
+Otherwise, we'll return 0 from gmap_make_secure(), and consequently from
+unpack_one(). In kvm_s390_pv_unpack(), we assume that unpacking
+succeeded and skip unpacking this page. Later on, we run into issues
+and fail booting the VM.
 
-Thanks,
-drew
+So far, this issue was only observed with follow-up patches where we
+split large pagecache XFS folios. Maybe it can also be triggered with
+shmem?
+
+We'll cleanup s390_wiggle_split_folio() a bit next, to also return 0
+if no split was required.
+
+Fixes: d8dfda5af0be ("KVM: s390: pv: fix race when making a page secure")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ arch/s390/kernel/uv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 9a5d5be8acf41..2cc3b599c7fe3 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -393,8 +393,11 @@ int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header
+ 	folio_walk_end(&fw, vma);
+ 	mmap_read_unlock(mm);
+ 
+-	if (rc == -E2BIG || rc == -EBUSY)
++	if (rc == -E2BIG || rc == -EBUSY) {
+ 		rc = s390_wiggle_split_folio(mm, folio, rc == -E2BIG);
++		if (!rc)
++			rc = -EAGAIN;
++	}
+ 	folio_put(folio);
+ 
+ 	return rc;
+-- 
+2.49.0
+
