@@ -1,215 +1,170 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD4626E145;
-	Mon, 19 May 2025 09:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2F126FA6A;
+	Mon, 19 May 2025 11:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747647840; cv=none; b=e4lIGkX/4I9eyY/D+PtAlRfZEA3Lr1r7R5IF88F82Jx0qD7UTA5imz5GepbR4bq7hP5X7atZ1EBKXtWHfnoRFvjAKUv/HRYrWOImlH0ZV+ciso2s9QHNrU/OXF8b4R7GAsB+RQncYBcwv2rSITZVAbBkNU4aE/OG5EkkrJHzcpw=
+	t=1747654645; cv=none; b=J2YRWoBi3lavhXa5HObw47J87zOS11ElrY83aqu9wzggrOVtl4tAw0/3e/m1IcUTrXfDlr0EJSgVfqpWQZkZ24uDtrB8EW+1xz2lChEpeflsHcOaiPPzhAJB4twu9yQ3nniFh333q0AtVp56prJSeNUSVnKTb4MXmcoBfD46URM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747647840; c=relaxed/simple;
-	bh=AvqDbO+/B/tISbPAGjzmpBR9SBGm2kzK0G1DQEkpAJE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=PJr+uvii2B8V069HXZaOOLVLfCshOm+vR3ILogt738g7v1FLrDDR7LmilD/FH/TKkkdq0FQaCT5b1oeXGg7mmwdjujHQA8yhSpLcP3DGzCrk+bQ1TMHKHiSh5jveIUMfHx+SbP+qVGW5d6FMa0cCc7GtNShWNST3XGKDp6dBPgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Axx2lY_SpoC+_xAA--.29221S3;
-	Mon, 19 May 2025 17:43:52 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMCx_cZV_SpoxvjgAA--.55634S3;
-	Mon, 19 May 2025 17:43:51 +0800 (CST)
-Subject: Re: [PATCH v11 0/5] KVM: selftests: Add LoongArch support
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20250427064535.242404-1-maobibo@loongson.cn>
- <CAAhV-H7XmHcvea-8NvgnSzfg6dVt5wATyDKmDYp31ThYZa+Fgw@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <2a0f6edc-533f-9384-bd1e-e811310dbf2b@loongson.cn>
-Date: Mon, 19 May 2025 17:42:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1747654645; c=relaxed/simple;
+	bh=O6opUvNK95laGKROpxPTDqp7VEpA9UpaVaHT4c/Ueak=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=pxJaizXoqnEmnC3Kb0pBFvBLIzO3tGojkGNHGKiaocXbx2bmIlaENS3tLcmCiJT2cEv0DXnL3JEqbXobaLgGivuZczSCl9+u0S/L/TmwkAwbrHf1tGwnpcV/RXEmDeKXpiAas0P+u/l8nKn9TEluvnhEVlReJ3Yu2QkuNKfKPJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KMZQTWNO; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KMZQTWNO"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54JAwCNv027411;
+	Mon, 19 May 2025 11:37:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EnJ0TX
+	RpxtpHwBKCQvFjAJ2lCWG9WF6tNtjFMmClok4=; b=KMZQTWNOQZ6rUfarhOjuND
+	vMVhg1CJZP2vNGP2Wj2l6icvYQiDldfeQFMYbrndBZ09ccPME4+nAMrnl6P3n8OY
+	T9MTi6l15gc0btkwYpWP7H0qVRN+mM83r/Rx6+VoFZLD6R1fbkf4KBsSMn9/qIx3
+	Jo9p0MUCS+LlXp9yDZx6UcwY84fG1laU6iGU+gBxHP16BYJP72wvByc7Vfu/CIc7
+	CTVa1BJ6PeqtFelC4iiy1xeEgesxWpWPYSG+PzB7lMi8aH0SM/WcfZE1tdeQPGW+
+	stIkIIuB+CRwIfuEaNlhE4qufMjjFvJzj19t0KfYxB+yABk9DlvB6B75F2GkO5dQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46qgs2v3rf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 May 2025 11:37:21 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54JBLMjp007216;
+	Mon, 19 May 2025 11:37:20 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46q70k66nw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 May 2025 11:37:20 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54JBbGHi57540958
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 May 2025 11:37:16 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84129204BB;
+	Mon, 19 May 2025 11:37:16 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 07E5E204C0;
+	Mon, 19 May 2025 11:37:16 +0000 (GMT)
+Received: from [192.168.88.52] (unknown [9.111.40.56])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 May 2025 11:37:15 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Date: Mon, 19 May 2025 13:36:09 +0200
+Subject: [PATCH v2 1/3] KVM: s390: Set KVM_MAX_VCPUS to 256
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H7XmHcvea-8NvgnSzfg6dVt5wATyDKmDYp31ThYZa+Fgw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCx_cZV_SpoxvjgAA--.55634S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKr18ur15WFyrAF4fJF1xCrX_yoW7uFyxpa
-	yI9Fn8Kr4xGF1xA3Z7K34kZFyFyan3Kr4xur13tryUuw1qyry8J3yxKFs0kas3Z398X3WF
-	v3WxtF13W3WUtagCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
-	wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
-	CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JV
-	WxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcVc_
-	UUUUU
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250519-rm-bsca-v2-1-e3ea53dd0394@linux.ibm.com>
+References: <20250519-rm-bsca-v2-0-e3ea53dd0394@linux.ibm.com>
+In-Reply-To: <20250519-rm-bsca-v2-0-e3ea53dd0394@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2221;
+ i=schlameuss@linux.ibm.com; h=from:subject:message-id;
+ bh=O6opUvNK95laGKROpxPTDqp7VEpA9UpaVaHT4c/Ueak=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDBna4q8jV/CeTSx5ErOeb4bs5pmc7RV1FTc/7jmkpjN/F
+ ue0pKkPOkpZGMS4GGTFFFmqxa3zqvpal845aHkNZg4rE8gQBi5OAZjIVxlGhtPvNm9LfmshoM95
+ 48uV46+971+ISfO+rD/V/JT6nRMLeXYwMjxbzPn6k/vJ/mf191+9nDyX0ehn79nd7vnyqWtslbr
+ 77rABAA==
+X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
+ fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Z/fsHGRA c=1 sm=1 tr=0 ts=682b17f1 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=wggSNQFzZ8jKG0l6iRoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDEwOSBTYWx0ZWRfX8WeOy6OtuyoY TxF0Db270Um2OwN4DP9NIoB0joBuwgz8hQL4choTQIUq8hre5QvkSj73edlIUYU04jGlh6ZABp4 oimYbRxHj4B3RyHk2vjAhgxvXoyB4qNIMam+GkUrMBdpO4tFsaHwW6HJJenfBMyH5u+3E5OK/82
+ Yey5hxhETWWnFbPdzsZIapXELRYDPLYWAgql2zckR/8rPssdIPRxF2MloZKzAyQXlZsn4zEz+mh F98L1QsSDtSSWCSHiN3lFSDM4cjtAIWaZRFSudbFql8JTE41RExTuoJzw06i+VGmpo3OFYZ9aaT n9vGU275wchfV6F5ECB7fKu6h1KmM9DlQ8WmW8/RCnt8o3dlpxfnDBsagcBW7QPlmRHKytUE0kF
+ lKeiG9aKd92JDQCioBhaNy0KZumZdsipIrIYjfI91kumFtuMzplXJaAS9wsOJ+QJL5vz/atg
+X-Proofpoint-ORIG-GUID: WrnGl9IgAv7aGgrY_QjNpiYm-e7ZdNV4
+X-Proofpoint-GUID: WrnGl9IgAv7aGgrY_QjNpiYm-e7ZdNV4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-19_05,2025-05-16_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=552
+ suspectscore=0 phishscore=0 mlxscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505190109
 
+The s390x architecture allows for 256 vCPUs with a max CPUID of 255.
+The current KVM implementation limits this to 248 when using the
+extended system control area (ESCA). So this correction should not cause
+any real world problems but actually correct the values returned by the
+ioctls:
 
+* KVM_CAP_NR_VCPUS
+* KVM_CAP_MAX_VCPUS
+* KVM_CAP_MAX_VCPU_ID
 
-On 2025/5/12 下午2:53, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> On Sun, Apr 27, 2025 at 2:45 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> This patchset adds KVM selftests for LoongArch system, currently only
->> some common test cases are supported and pass to run. These test cases
->> are listed as following:
->>      coalesced_io_test
->>      demand_paging_test
->>      dirty_log_perf_test
->>      dirty_log_test
->>      guest_print_test
->>      hardware_disable_test
->>      kvm_binary_stats_test
->>      kvm_create_max_vcpus
->>      kvm_page_table_test
->>      memslot_modification_stress_test
->>      memslot_perf_test
->>      set_memory_region_test
-> I have applied this series [1] but with some modifications (see
-> comments in other patches). You can test it to see if everything is
-> OK.
-> 
-> And if it's OK, it is better to fetch the patches from [1] and then send V12.
-There is error reporting with checkpatch as followings:
-ERROR: trailing statements should be on next line
-#281: FILE: tools/testing/selftests/kvm/lib/loongarch/processor.c:192:
-+       while (1) ;
+KVM_MAX_VCPUS is also moved to kvm_host_types to allow using this in
+future type definitions.
 
-This is already solved in V9, which patch does [1] come from?
-+void route_exception(struct ex_regs *regs)
-+{
-+       unsigned long pc, estat, badv;
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+---
+ arch/s390/include/asm/kvm_host.h       | 2 --
+ arch/s390/include/asm/kvm_host_types.h | 2 ++
+ arch/s390/kvm/kvm-s390.c               | 2 ++
+ 3 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+index cb89e54ada257eb4fdfe840ff37b2ea639c2d1cb..f51bac835260f562eaf4bbfd373a24bfdbc43834 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -27,8 +27,6 @@
+ #include <asm/isc.h>
+ #include <asm/guarded_storage.h>
+ 
+-#define KVM_MAX_VCPUS 255
+-
+ #define KVM_INTERNAL_MEM_SLOTS 1
+ 
+ /*
+diff --git a/arch/s390/include/asm/kvm_host_types.h b/arch/s390/include/asm/kvm_host_types.h
+index 1394d3fb648f1e46dba2c513ed26e5dfd275fad4..9697db9576f6c39a6689251f85b4b974c344769a 100644
+--- a/arch/s390/include/asm/kvm_host_types.h
++++ b/arch/s390/include/asm/kvm_host_types.h
+@@ -6,6 +6,8 @@
+ #include <linux/atomic.h>
+ #include <linux/types.h>
+ 
++#define KVM_MAX_VCPUS 256
 +
-+       pc = regs->pc;
-+       estat = regs->estat;
-+       badv  = regs->badv;
-+       ucall(UCALL_UNHANDLED, 3, pc, estat, badv);
-+       while (1)
-+               ;
-+}
+ #define KVM_S390_BSCA_CPU_SLOTS 64
+ #define KVM_S390_ESCA_CPU_SLOTS 248
+ 
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 3f3175193fd7a7a26658eb2e2533d8037447a0b4..b65e4cbe67cf70a7d614607ebdd679060e7d31f4 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -638,6 +638,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 			r = KVM_S390_ESCA_CPU_SLOTS;
+ 		if (ext == KVM_CAP_NR_VCPUS)
+ 			r = min_t(unsigned int, num_online_cpus(), r);
++		else if (ext == KVM_CAP_MAX_VCPU_ID)
++			r -= 1;
+ 		break;
+ 	case KVM_CAP_S390_COW:
+ 		r = machine_has_esop();
 
-Regards
-Bibo Mao
-> 
-> [1] https://github.com/chenhuacai/linux/commits/loongarch-next
-> 
-> 
-> 
-> Huacai
-> 
->>
->> ---
->> Changes in v11:
->> 1. Fix a typo issue in notes of patch 2, it is kvm_util_arch.h rather than
->>     kvm_util_base.h
->>
->> Changes in v10:
->> 1. Add PS_64K and remove PS_8K in file include/loongarch/processor.h
->> 2. Fix a typo issue in file lib/loongarch/processor.c
->> 3. Update file MAINTAINERS about LoongArch KVM selftests
->>
->> Changes in v9:
->> 1. Add vm mode VM_MODE_P47V47_16K, LoongArch VM uses this mode by
->>     default, rather than VM_MODE_P36V47_16K.
->> 2. Refresh some spelling issues in changelog.
->>
->> Changes in v8:
->> 1. Porting patch based on the latest version.
->> 2. For macro PC_OFFSET_EXREGS, offsetof() method is used for C header file,
->>     still hardcoded definition for assemble language.
->>
->> Changes in v7:
->> 1. Refine code to add LoongArch support in test case
->> set_memory_region_test.
->>
->> Changes in v6:
->> 1. Refresh the patch based on latest kernel 6.8-rc1, add LoongArch
->> support about testcase set_memory_region_test.
->> 2. Add hardware_disable_test test case.
->> 3. Drop modification about macro DEFAULT_GUEST_TEST_MEM, it is problem
->> of LoongArch binutils, this issue is raised to LoongArch binutils owners.
->>
->> Changes in v5:
->> 1. In LoongArch kvm self tests, the DEFAULT_GUEST_TEST_MEM could be
->> 0x130000000, it is different from the default value in memstress.h.
->> So we Move the definition of DEFAULT_GUEST_TEST_MEM into LoongArch
->> ucall.h, and add 'ifndef' condition for DEFAULT_GUEST_TEST_MEM
->> in memstress.h.
->>
->> Changes in v4:
->> 1. Remove the based-on flag, as the LoongArch KVM patch series
->> have been accepted by Linux kernel, so this can be applied directly
->> in kernel.
->>
->> Changes in v3:
->> 1. Improve implementation of LoongArch VM page walk.
->> 2. Add exception handler for LoongArch.
->> 3. Add dirty_log_test, dirty_log_perf_test, guest_print_test
->> test cases for LoongArch.
->> 4. Add __ASSEMBLER__ macro to distinguish asm file and c file.
->> 5. Move ucall_arch_do_ucall to the header file and make it as
->> static inline to avoid function calls.
->> 6. Change the DEFAULT_GUEST_TEST_MEM base addr for LoongArch.
->>
->> Changes in v2:
->> 1. We should use ".balign 4096" to align the assemble code with 4K in
->> exception.S instead of "align 12".
->> 2. LoongArch only supports 3 or 4 levels page tables, so we remove the
->> hanlders for 2-levels page table.
->> 3. Remove the DEFAULT_LOONGARCH_GUEST_STACK_VADDR_MIN and use the common
->> DEFAULT_GUEST_STACK_VADDR_MIN to allocate stack memory in guest.
->> 4. Reorganize the test cases supported by LoongArch.
->> 5. Fix some code comments.
->> 6. Add kvm_binary_stats_test test case into LoongArch KVM selftests.
->> ---
->> Bibo Mao (5):
->>    KVM: selftests: Add VM_MODE_P47V47_16K VM mode
->>    KVM: selftests: Add KVM selftests header files for LoongArch
->>    KVM: selftests: Add core KVM selftests support for LoongArch
->>    KVM: selftests: Add ucall test support for LoongArch
->>    KVM: selftests: Add test cases for LoongArch
->>
->>   MAINTAINERS                                   |   2 +
->>   tools/testing/selftests/kvm/Makefile          |   2 +-
->>   tools/testing/selftests/kvm/Makefile.kvm      |  18 +
->>   .../testing/selftests/kvm/include/kvm_util.h  |   6 +
->>   .../kvm/include/loongarch/kvm_util_arch.h     |   7 +
->>   .../kvm/include/loongarch/processor.h         | 141 ++++++++
->>   .../selftests/kvm/include/loongarch/ucall.h   |  20 +
->>   tools/testing/selftests/kvm/lib/kvm_util.c    |   3 +
->>   .../selftests/kvm/lib/loongarch/exception.S   |  59 +++
->>   .../selftests/kvm/lib/loongarch/processor.c   | 342 ++++++++++++++++++
->>   .../selftests/kvm/lib/loongarch/ucall.c       |  38 ++
->>   .../selftests/kvm/set_memory_region_test.c    |   2 +-
->>   12 files changed, 638 insertions(+), 2 deletions(-)
->>   create mode 100644 tools/testing/selftests/kvm/include/loongarch/kvm_util_arch.h
->>   create mode 100644 tools/testing/selftests/kvm/include/loongarch/processor.h
->>   create mode 100644 tools/testing/selftests/kvm/include/loongarch/ucall.h
->>   create mode 100644 tools/testing/selftests/kvm/lib/loongarch/exception.S
->>   create mode 100644 tools/testing/selftests/kvm/lib/loongarch/processor.c
->>   create mode 100644 tools/testing/selftests/kvm/lib/loongarch/ucall.c
->>
->>
->> base-commit: 5bc1018675ec28a8a60d83b378d8c3991faa5a27
->> --
->> 2.39.3
->>
+-- 
+2.49.0
 
