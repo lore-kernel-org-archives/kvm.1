@@ -1,75 +1,56 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E8213C3CD
-	for <kvm@vger.kernel.org>; Tue, 20 May 2025 06:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9890E25D1FD;
+	Tue, 20 May 2025 06:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747722041; cv=none; b=XA2ocnvpOtOz3jbMtkqBk9AkMNoGqPU8/qDz25fMonPVl7NmnfXBmvHSERKSjk8zxF5HMrItHcAGWNlOWalrflX6Cs3QEMdwenTsUERz79UZVzsWKQN8SfXC2s9SUSud/ET1XQHtnXuMZtHcNCLM1EorJKMsVBOeKxUGj0v5R1I=
+	t=1747723316; cv=none; b=lUfEQcTHKkeb6D4lKxC5mhwc/t8Yh4ogqJxEGK1Y1d2SCMoOpTFRA0WI1qgQo+Zh9tI4oFl/zbNswtxw/kK9+UTrsiCAi6Nc19stLBPe3Al2s8r++KAXnK9zGLx8fQBOX2mHTrk5+7mLQbWGBKNbcuaIvfaNRY0e97L/iy9T1zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747722041; c=relaxed/simple;
-	bh=fnO117JPO5Ovmm08Gq4uGbtkp3RU3N4PkTIM6qeBaR8=;
+	s=arc-20240116; t=1747723316; c=relaxed/simple;
+	bh=VEbPj3SbeTd3iX9UTiIVEwPYpnuBVqVj3poaUrdMWTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/y0GC5Lcqg8/9C9SDfKi4flrIsmtL9tqY1jb8xvXOheadF6ws5F5mTtoxJp63pcoijIgbLJds1NUdbcfGtbBTcjMx1Kft5OrlEevJHGuWRNfVgHDVIoOWOm+ptN0qbNjzpRM9OHD2ZfOAw9kKCTxblYcdSSgruQO2rUktgOjlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=atBvTXRq; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	 MIME-Version; b=l/whRDK+EaJ+0JsAl/MsOH7J06E6HrSryhQVfPI4ecQ/2gNkCM8Ehie3iXyBSe5wdwt5oT1i11jGgTtD2OUNHJgDKHjSkBCLQoOMy42SfrJpg4B7/3GSFIJmUQhb/CN+o/xhgqFzq+szF3uBoehW4Si4VCjyI4KzQjhQ61ZNsyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eX2un05U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="atBvTXRq"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b1f7357b5b6so3515934a12.0
-        for <kvm@vger.kernel.org>; Mon, 19 May 2025 23:20:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1747722038; x=1748326838; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MN1daik4SPrO/LXhkvtoUfhBhzWkiMoNJcsHxqO1LD8=;
-        b=atBvTXRqgqCbURF28TQjbvQzwBrFqM8dK9M7P8APWh4riKF2q5JdgE5uj0pX4y/tLJ
-         r99mdkGcs/Xkw1n5M8NwdUsTjwy1JU9M3uxnY299o5zAMAsxUfjidVKNZ5bXsz/QAxyb
-         GI6VNhJPPYhM1WovNzl2cm5FJqPcz1z1tHmogNwtaKWDr2RM7zOzDzcfvFb06RpDFdRK
-         CnF9yEUpQacZSHfNi3+AQfVt0QD+IqA+qW3YTL+aJ4fs9QXh/cnnkHFBX7+hR5a4EbCS
-         kZKblKYHv1svUaDKHjCm033i0q7Unx4mCAep5dRkqT0w5PVlD6Z2FVw8OqbeyTA604HX
-         awuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747722038; x=1748326838;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MN1daik4SPrO/LXhkvtoUfhBhzWkiMoNJcsHxqO1LD8=;
-        b=aJ3er4hoStjm4wfDFIlpi1+uVhm6387B+/8GfHBD9lWnYrr2wf9MrfRbr9CoRMN4gN
-         i7cJfunFTG3EERIvEb3jrHGYJ1wd6ogAjcxvEcBxpdWCefptmX7sBc/VgZIbOgKV2bnW
-         iiEXfZpqsQQBS+H40CAgnBpoUM574cGQNxZP6tAX0MG7JwGT8B9kue2C1Otx8BREYGvB
-         U0ILpEZgx1P2nYf3PWcSP8SgDuPs6SuMBaV7cHE79mabdJPlrSgVMbsvHeLYSqOWUR9N
-         S1tov2+e/zT5u/1xKj9kqaNo1tmoMqeZF8VQAkz6+FE1CXiszixL19fpOAlDlI3OSyvO
-         hIig==
-X-Gm-Message-State: AOJu0Yz63Rae6RlJf6skwPdRHcpuHYGNRftdAjam+7aQGJCcd2kNZz+Q
-	+QXmnnaWJB/VfhqScTMejPrwuXs8GipBZvKMH/lMUjQgpPgZCRRHc9fcet/p02HVD3U=
-X-Gm-Gg: ASbGncsv82oQ9XodglD7BLJDd3OKPUKSuX8cLsw3duTjAQx3etlAAS5HT/9J00rKLfP
-	ajVHUPrv5PVsNxK664N/lB+jqF98DAZtN44lr9Sv8daM4QuMWitP6V/YqkvrsY2AxVWngJs3Wyf
-	Sd+q+bZZMXjgbljs0dzojINZ5WDhtwKOhFGtjIiZ1s433BZw9iHTHltckORjTn9iukzDvmbTwGG
-	u04Xa2kOOS9myadfCfpsWWIHN2TrWMAkjXUQYusVVi8IgZkqYASkppO7ABoEliwflmx5Ro1FFbz
-	pCzSuQRWSOmE5t2JKZx+Il0ShvnHv6G8o4Qo/aqWQqRiL89zYQSGBlB/kLwe6Ds5mgvfrDAYeD4
-	8ypc=
-X-Google-Smtp-Source: AGHT+IEt/08SvJhgzov4+pV4DqatdXF+Gh5UCHJPwmhb/xclldIzUixkeTG8fgB09jR/93ACDRKnqQ==
-X-Received: by 2002:a17:903:1ace:b0:231:c90e:292d with SMTP id d9443c01a7336-231d45af19fmr245770045ad.44.1747722037924;
-        Mon, 19 May 2025 23:20:37 -0700 (PDT)
-Received: from localhost.localdomain ([203.208.189.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4e98009sm69694575ad.152.2025.05.19.23.20.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 19 May 2025 23:20:37 -0700 (PDT)
-From: lizhe.67@bytedance.com
-To: alex.williamson@redhat.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lizhe.67@bytedance.com,
-	muchun.song@linux.dev,
-	peterx@redhat.com
-Subject: Re: [PATCH v2] vfio/type1: optimize vfio_pin_pages_remote() for hugetlbfs folio
-Date: Tue, 20 May 2025 14:20:31 +0800
-Message-ID: <20250520062031.3023-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250519100724.7fd6cc1e.alex.williamson@redhat.com>
-References: <20250519100724.7fd6cc1e.alex.williamson@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eX2un05U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0957C4CEF2;
+	Tue, 20 May 2025 06:41:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747723316;
+	bh=VEbPj3SbeTd3iX9UTiIVEwPYpnuBVqVj3poaUrdMWTw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eX2un05UOGpwco/IrSqeVAtEIkekR62rn5Q3LH4f0ReVucmLbiFOhgivWIifqMX/T
+	 d45LXc8pOhC96nO8uYz4/yd0hYLrLvpAQ5FGiMitKStBrv6YSswei6VaAdnkmOeP++
+	 Ml5Y7uFy8lXXwbkNkZmKpeojAP+6eNjzvyiVngK/Vbe2Jk9xAyLUvKn88J676cKlhi
+	 Us6YlnRcdX89SmtEHJJcqDTOk6V4PXbcJJTmUtT3Srw2TgNwmfsItH8qKAI6jhVWm3
+	 VROPSfmimjiXSshiVtK4B++7VcpHNhjzNiy0NaYCRqzw8qVieEutG/BaLt1UoKz+0n
+	 o3syluaakU71A==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uHGfh-00000005qtY-3kQF;
+	Tue, 20 May 2025 08:41:53 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Ani Sinha <anisinha@redhat.com>,
+	Dongjiu Geng <gengdongjiu1@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Shannon Zhao <shannon.zhaosl@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v9 09/20] acpi/ghes: don't hard-code the number of sources for HEST table
+Date: Tue, 20 May 2025 08:41:28 +0200
+Message-ID: <9404b305e0fefdb14dce4839c3d96ccedf0533e0.1747722973.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1747722973.git.mchehab+huawei@kernel.org>
+References: <cover.1747722973.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,200 +58,223 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Mon, 19 May 2025 10:07:24 -0600, alex.williamson@redhat.com wrote:
+The current code is actually dependent on having just one error
+structure with a single source, as any change there would cause
+migration issues.
 
->>  /*
->> - * Helper Functions for host iova-pfn list
->> + * Find the first vfio_pfn that overlapping the range
->> + * [iova, iova + PAGE_SIZE * npage) in rb tree
->>   */
->> -static struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_addr_t iova)
->> +static struct vfio_pfn *vfio_find_vpfn_range(struct vfio_dma *dma,
->> +		dma_addr_t iova, unsigned long npage)
->>  {
->>  	struct vfio_pfn *vpfn;
->>  	struct rb_node *node = dma->pfn_list.rb_node;
->> +	dma_addr_t end_iova = iova + PAGE_SIZE * npage;
->>  
->>  	while (node) {
->>  		vpfn = rb_entry(node, struct vfio_pfn, node);
->>  
->> -		if (iova < vpfn->iova)
->> +		if (end_iova <= vpfn->iova)
->>  			node = node->rb_left;
->>  		else if (iova > vpfn->iova)
->>  			node = node->rb_right;
->> @@ -337,6 +340,14 @@ static struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_addr_t iova)
->>  	return NULL;
->>  }
->>  
->> +/*
->> + * Helper Functions for host iova-pfn list
->> + */
->
->This comment should still precede the renamed function above, it's in
->reference to this section of code related to searching, inserting, and
->removing entries from the pfn list.
+As the number of sources should be arch-dependent, as it will depend on
+what kind of notifications will exist, and how many errors can be
+reported at the same time, change the logic to be more flexible,
+allowing the number of sources to be defined when building the
+HEST table by the caller.
 
-Thanks!
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+---
+ hw/acpi/ghes.c           | 39 +++++++++++++++++++++------------------
+ hw/arm/virt-acpi-build.c |  8 +++++++-
+ include/hw/acpi/ghes.h   | 17 ++++++++++++-----
+ target/arm/kvm.c         |  2 +-
+ 4 files changed, 41 insertions(+), 25 deletions(-)
 
-I will place it in the comments before the function vfio_find_vpfn_range()
-in v3 patch.
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 668ca72587c7..f49d0d628fc4 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -238,17 +238,17 @@ ghes_gen_err_data_uncorrectable_recoverable(GArray *block,
+  * See docs/specs/acpi_hest_ghes.rst for blobs format.
+  */
+ static void build_ghes_error_table(AcpiGhesState *ags, GArray *hardware_errors,
+-                                   BIOSLinker *linker)
++                                   BIOSLinker *linker, int num_sources)
+ {
+     int i, error_status_block_offset;
+ 
+     /* Build error_block_address */
+-    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
++    for (i = 0; i < num_sources; i++) {
+         build_append_int_noprefix(hardware_errors, 0, sizeof(uint64_t));
+     }
+ 
+     /* Build read_ack_register */
+-    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
++    for (i = 0; i < num_sources; i++) {
+         /*
+          * Initialize the value of read_ack_register to 1, so GHES can be
+          * writable after (re)boot.
+@@ -263,13 +263,13 @@ static void build_ghes_error_table(AcpiGhesState *ags, GArray *hardware_errors,
+ 
+     /* Reserve space for Error Status Data Block */
+     acpi_data_push(hardware_errors,
+-        ACPI_GHES_MAX_RAW_DATA_LENGTH * ACPI_GHES_ERROR_SOURCE_COUNT);
++        ACPI_GHES_MAX_RAW_DATA_LENGTH * num_sources);
+ 
+     /* Tell guest firmware to place hardware_errors blob into RAM */
+     bios_linker_loader_alloc(linker, ACPI_HW_ERROR_FW_CFG_FILE,
+                              hardware_errors, sizeof(uint64_t), false);
+ 
+-    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
++    for (i = 0; i < num_sources; i++) {
+         /*
+          * Tell firmware to patch error_block_address entries to point to
+          * corresponding "Generic Error Status Block"
+@@ -295,12 +295,14 @@ static void build_ghes_error_table(AcpiGhesState *ags, GArray *hardware_errors,
+ }
+ 
+ /* Build Generic Hardware Error Source version 2 (GHESv2) */
+-static void build_ghes_v2(GArray *table_data,
+-                          BIOSLinker *linker,
+-                          enum AcpiGhesNotifyType notify,
+-                          uint16_t source_id)
++static void build_ghes_v2_entry(GArray *table_data,
++                                BIOSLinker *linker,
++                                const AcpiNotificationSourceId *notif_src,
++                                uint16_t index, int num_sources)
+ {
+     uint64_t address_offset;
++    const uint16_t notify = notif_src->notify;
++    const uint16_t source_id = notif_src->source_id;
+ 
+     /*
+      * Type:
+@@ -331,7 +333,7 @@ static void build_ghes_v2(GArray *table_data,
+                                    address_offset + GAS_ADDR_OFFSET,
+                                    sizeof(uint64_t),
+                                    ACPI_HW_ERROR_FW_CFG_FILE,
+-                                   source_id * sizeof(uint64_t));
++                                   index * sizeof(uint64_t));
+ 
+     /* Notification Structure */
+     build_ghes_hw_error_notification(table_data, notify);
+@@ -351,8 +353,7 @@ static void build_ghes_v2(GArray *table_data,
+                                    address_offset + GAS_ADDR_OFFSET,
+                                    sizeof(uint64_t),
+                                    ACPI_HW_ERROR_FW_CFG_FILE,
+-                                   (ACPI_GHES_ERROR_SOURCE_COUNT + source_id)
+-                                   * sizeof(uint64_t));
++                                   (num_sources + index) * sizeof(uint64_t));
+ 
+     /*
+      * Read Ack Preserve field
+@@ -368,22 +369,26 @@ static void build_ghes_v2(GArray *table_data,
+ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
+                      GArray *hardware_errors,
+                      BIOSLinker *linker,
++                     const AcpiNotificationSourceId *notif_source,
++                     int num_sources,
+                      const char *oem_id, const char *oem_table_id)
+ {
+     AcpiTable table = { .sig = "HEST", .rev = 1,
+                         .oem_id = oem_id, .oem_table_id = oem_table_id };
+     uint32_t hest_offset;
++    int i;
+ 
+     hest_offset = table_data->len;
+ 
+-    build_ghes_error_table(ags, hardware_errors, linker);
++    build_ghes_error_table(ags, hardware_errors, linker, num_sources);
+ 
+     acpi_table_begin(&table, table_data);
+ 
+     /* Error Source Count */
+-    build_append_int_noprefix(table_data, ACPI_GHES_ERROR_SOURCE_COUNT, 4);
+-    build_ghes_v2(table_data, linker,
+-                  ACPI_GHES_NOTIFY_SEA, ACPI_HEST_SRC_ID_SEA);
++    build_append_int_noprefix(table_data, num_sources, 4);
++    for (i = 0; i < num_sources; i++) {
++        build_ghes_v2_entry(table_data, linker, &notif_source[i], i, num_sources);
++    }
+ 
+     acpi_table_end(linker, &table);
+ 
+@@ -515,8 +520,6 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
+         return;
+     }
+ 
+-    assert(ACPI_GHES_ERROR_SOURCE_COUNT == 1);
+-
+     if (!ags->use_hest_addr) {
+         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
+                              &cper_addr, &read_ack_register_addr);
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index b57f1256c30f..da3ebf403ef9 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -889,6 +889,10 @@ static void acpi_align_size(GArray *blob, unsigned align)
+     g_array_set_size(blob, ROUND_UP(acpi_data_len(blob), align));
+ }
+ 
++static const AcpiNotificationSourceId hest_ghes_notify[] = {
++    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
++};
++
+ static
+ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ {
+@@ -950,7 +954,9 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+         if (ags) {
+             acpi_add_table(table_offsets, tables_blob);
+             acpi_build_hest(ags, tables_blob, tables->hardware_errors,
+-                            tables->linker, vms->oem_id, vms->oem_table_id);
++                            tables->linker, hest_ghes_notify,
++                            ARRAY_SIZE(hest_ghes_notify),
++                            vms->oem_id, vms->oem_table_id);
+         }
+     }
+ 
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index 5265102ba51f..8c4b08433760 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -57,13 +57,18 @@ enum AcpiGhesNotifyType {
+     ACPI_GHES_NOTIFY_RESERVED = 12
+ };
+ 
+-enum {
+-    ACPI_HEST_SRC_ID_SEA = 0,
+-    /* future ids go here */
+-
+-    ACPI_GHES_ERROR_SOURCE_COUNT
++/*
++ * ID numbers used to fill HEST source ID field
++ */
++enum AcpiGhesSourceID {
++    ACPI_HEST_SRC_ID_SYNC,
+ };
+ 
++typedef struct AcpiNotificationSourceId {
++    enum AcpiGhesSourceID source_id;
++    enum AcpiGhesNotifyType notify;
++} AcpiNotificationSourceId;
++
+ /*
+  * AcpiGhesState stores GPA values that will be used to fill HEST entries.
+  *
+@@ -84,6 +89,8 @@ typedef struct AcpiGhesState {
+ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
+                      GArray *hardware_errors,
+                      BIOSLinker *linker,
++                     const AcpiNotificationSourceId * const notif_source,
++                     int num_sources,
+                      const char *oem_id, const char *oem_table_id);
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+                           GArray *hardware_errors);
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index a256f9d817cd..a1492bcaeb8d 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2360,7 +2360,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+              */
+             if (code == BUS_MCEERR_AR) {
+                 kvm_cpu_synchronize_state(c);
+-                if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SEA,
++                if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
+                                              paddr)) {
+                     kvm_inject_arm_sea(c);
+                 } else {
+-- 
+2.49.0
 
->> @@ -681,32 +692,67 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
->>  		 * and rsvd here, and therefore continues to use the batch.
->>  		 */
->>  		while (true) {
->> +			int page_step = 1;
->> +			long lock_acct_step = 1;
->> +			struct folio *folio = page_folio(batch->pages[batch->offset]);
->> +			bool found_vpfn;
->> +
->>  			if (pfn != *pfn_base + pinned ||
->>  			    rsvd != is_invalid_reserved_pfn(pfn))
->>  				goto out;
->>  
->> +			/* Handle hugetlbfs page */
->> +			if (folio_test_hugetlb(folio)) {
->
->Why do we care to specifically test for hugetlb vs
->folio_large_nr_pages(), at which point we can just use folio_nr_pages()
->directly here.
->
->> +				unsigned long start_pfn = PHYS_PFN(vaddr);
->
->Using this macro on a vaddr looks wrong.
->
->> +
->> +				/*
->> +				 * Note: The current page_step does not achieve the optimal
->> +				 * performance in scenarios where folio_nr_pages() exceeds
->> +				 * batch->capacity. It is anticipated that future enhancements
->> +				 * will address this limitation.
->> +				 */
->> +				page_step = min(batch->size,
->> +					ALIGN(start_pfn + 1, folio_nr_pages(folio)) - start_pfn);
->
->Why do we assume start_pfn is the beginning of the folio?
->
->> +				found_vpfn = !!vfio_find_vpfn_range(dma, iova, page_step);
->> +				if (rsvd || !found_vpfn) {
->> +					lock_acct_step = page_step;
->> +				} else {
->> +					dma_addr_t tmp_iova = iova;
->> +					int i;
->> +
->> +					lock_acct_step = 0;
->> +					for (i = 0; i < page_step; ++i, tmp_iova += PAGE_SIZE)
->> +						if (!vfio_find_vpfn(dma, tmp_iova))
->> +							lock_acct_step++;
->> +					if (lock_acct_step)
->> +						found_vpfn = false;
->
->Why are we making this so complicated versus falling back to iterating
->at page per page?
->
->> +				}
->> +			} else {
->> +				found_vpfn = vfio_find_vpfn(dma, iova);
->> +			}
->> +
->>  			/*
->>  			 * Reserved pages aren't counted against the user,
->>  			 * externally pinned pages are already counted against
->>  			 * the user.
->>  			 */
->> -			if (!rsvd && !vfio_find_vpfn(dma, iova)) {
->> +			if (!rsvd && !found_vpfn) {
->>  				if (!dma->lock_cap &&
->> -				    mm->locked_vm + lock_acct + 1 > limit) {
->> +				    mm->locked_vm + lock_acct + lock_acct_step > limit) {
->>  					pr_warn("%s: RLIMIT_MEMLOCK (%ld) exceeded\n",
->>  						__func__, limit << PAGE_SHIFT);
->>  					ret = -ENOMEM;
->>  					goto unpin_out;
->>  				}
->> -				lock_acct++;
->> +				lock_acct += lock_acct_step;
->>  			}
->>  
->> -			pinned++;
->> -			npage--;
->> -			vaddr += PAGE_SIZE;
->> -			iova += PAGE_SIZE;
->> -			batch->offset++;
->> -			batch->size--;
->> +			pinned += page_step;
->> +			npage -= page_step;
->> +			vaddr += PAGE_SIZE * page_step;
->> +			iova += PAGE_SIZE * page_step;
->> +			batch->offset += page_step;
->> +			batch->size -= page_step;
->>  
->>  			if (!batch->size)
->>  				break;
->
->Why is something like below (untested) not sufficient?
->
->NB. (vaddr - folio_address()) still needs some scrutiny to determine if
->it's valid.
->
->@@ -681,32 +692,40 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
-> 		 * and rsvd here, and therefore continues to use the batch.
-> 		 */
-> 		while (true) {
->+			struct folio *folio = page_folio(batch->pages[batch->offset]);
->+			long nr_pages;
->+
-> 			if (pfn != *pfn_base + pinned ||
-> 			    rsvd != is_invalid_reserved_pfn(pfn))
-> 				goto out;
-> 
->+			nr_pages = min(batch->size, folio_nr_pages(folio) -
->+						folio_page_idx(folio, batch->pages[batch->offset]);
->+			if (nr_pages > 1 && vfio_find_vpfn_range(dma, iova, nr_pages))
->+				nr_pages = 1;
->+
-> 			/*
-> 			 * Reserved pages aren't counted against the user,
-> 			 * externally pinned pages are already counted against
-> 			 * the user.
-> 			 */
->-			if (!rsvd && !vfio_find_vpfn(dma, iova)) {
->+			if (!rsvd && (nr_pages > 1 || !vfio_find_vpfn(dma, iova))) {
-> 				if (!dma->lock_cap &&
->-				    mm->locked_vm + lock_acct + 1 > limit) {
->+				    mm->locked_vm + lock_acct + nr_pages > limit) {
-> 					pr_warn("%s: RLIMIT_MEMLOCK (%ld) exceeded\n",
-> 						__func__, limit << PAGE_SHIFT);
-> 					ret = -ENOMEM;
-> 					goto unpin_out;
-> 				}
->-				lock_acct++;
->+				lock_acct += nr_pages;
-> 			}
-> 
->-			pinned++;
->-			npage--;
->-			vaddr += PAGE_SIZE;
->-			iova += PAGE_SIZE;
->-			batch->offset++;
->-			batch->size--;
->+			pinned += nr_pages;
->+			npage -= nr_pages;
->+			vaddr += PAGE_SIZE * nr_pages;
->+			iova += PAGE_SIZE * nr_pages;
->+			batch->offset += nr_pages;
->+			batch->size -= nr_pages;
-> 
-> 			if (!batch->size)
-> 				break;
-
-The input parameter vaddr is a user-space address, while folio_address()
-returns a kernel space address. I agree that using folio_page_idx() is
-the best approach.
-
-This approach indeed simplifies things a lot. I have conducted basic
-functionality tests on it and have not found any issues. Please allow me
-to integrate it into the v3 patch. Thanks!
