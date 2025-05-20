@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D7B1A8F6D;
-	Tue, 20 May 2025 12:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB0319E971;
+	Tue, 20 May 2025 12:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747745436; cv=none; b=mkVDqam9jZT3KxxV61KuPrQW9dftSrwKxliTjjZSEojy4CYhcHVHaEkI6qSafbe1VUfarES58w4zF+C6jAtD0FKpscA105cxsO/dyHzSJCVV7fluIoNlGS8e47FXYNSZ6SEDB3rgxgR43nDUwNJJpzi+izBIQEMvCDe2bEKIfRU=
+	t=1747745535; cv=none; b=hIseuWSiEPmxg+pnuteacGe36B3uge+ePiHkugKA7MHeaXzx9x+2ZAYE7gTkthfxDLQGtzJn28cNXQiMzj9NUhGWgb/8mApaNLteo5QfC0Yc3XzbioX3r1N54k9Cu78FDYYWd2fAUxElPyMaAGsl9gbjyxSW+Xr0/6UqVNtQsZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747745436; c=relaxed/simple;
-	bh=by1pqkERQFJkQ/qYm8eJb4kDVaODxlwfBojf6AMYC/Q=;
+	s=arc-20240116; t=1747745535; c=relaxed/simple;
+	bh=cndGM1XkNtcIDNZXZKNsY1qesIcrcvdhU2CzwqJpH3M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TyQWLJhmX4wN51+kGVF9kma8/YgtZOntbgLwLbm+JhhixVsEqumocz7wlzw87LihjXaLFQ1PhDAeDrfDsa56MnN2uCG954njRIY3q6Q89l2Wa4KpJl9/N58S+NMLgxdgqGsxP+7iT11wfEVEZ0TdH8El9bjUgdBFg2IbZwj9DxM=
+	 In-Reply-To:Content-Type; b=J6RmxYREI+PHAjYrw1WWnWh2nfdW24eiU3OFyg+Hq0RdKypkLzzl43YOefX0MVmtwLVVHhymlB4NOexvBvTW3o0njVSBkqfRe7uvRx8NgeBOx3m4j4AV9vU7h91Mse7TIVHV8Kp/dPN67ags2RZ+YgVk0wtdkhJJQg/LC9FHJxA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C9A151516;
-	Tue, 20 May 2025 05:50:20 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA8D81516;
+	Tue, 20 May 2025 05:51:59 -0700 (PDT)
 Received: from [10.1.36.74] (Suzukis-MBP.cambridge.arm.com [10.1.36.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BFAD73F5A1;
-	Tue, 20 May 2025 05:50:30 -0700 (PDT)
-Message-ID: <5cf972df-c589-4f5d-82a5-74dd49676687@arm.com>
-Date: Tue, 20 May 2025 13:50:29 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BADF53F5A1;
+	Tue, 20 May 2025 05:52:09 -0700 (PDT)
+Message-ID: <4f1d5bd0-f06a-408a-9468-307a83d05b7d@arm.com>
+Date: Tue, 20 May 2025 13:52:08 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -27,8 +27,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 37/43] arm64: RME: Propagate max SVE vector length from
- RMM
+Subject: Re: [PATCH v8 38/43] arm64: RME: Configure max SVE vector length for
+ a Realm
 Content-Language: en-GB
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
@@ -45,18 +45,19 @@ Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
  <aneesh.kumar@kernel.org>
 References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-38-steven.price@arm.com>
+ <20250416134208.383984-39-steven.price@arm.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20250416134208.383984-38-steven.price@arm.com>
+In-Reply-To: <20250416134208.383984-39-steven.price@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 16/04/2025 14:41, Steven Price wrote:
+On 16/04/2025 14:42, Steven Price wrote:
 > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> RMM provides the maximum vector length it supports for a guest in its
-> feature register. Make it visible to the rest of KVM and to userspace
-> via KVM_REG_ARM64_SVE_VLS.
+> Obtain the max vector length configured by userspace on the vCPUs, and
+> write it into the Realm parameters. By default the vCPU is configured
+> with the max vector length reported by RMM, and userspace can reduce it
+> with a write to KVM_REG_ARM64_SVE_VLS.
 > 
 > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > Signed-off-by: Steven Price <steven.price@arm.com>
