@@ -1,408 +1,202 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E85221734;
-	Wed, 21 May 2025 14:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB261DEFFC
+	for <kvm@vger.kernel.org>; Wed, 21 May 2025 14:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747839329; cv=none; b=hyBse/gw1cX4CxjbJXBke2yovChnAFzNEAYLOkuLveHSyy6NDukjJxp7xr84oqDDhXkfFXZutNZNRYN6kw5jMvhbspqCkkfPdqDhLSvrjpyLgiZiaTJY6C5TBD8R3NuTQipnDtPkX9bN3NA5/UZvz6ZdXgazZXGNz8nA+HiefUE=
+	t=1747839380; cv=none; b=cDKEMMtryKqJO64gx62lZl7s0NDY4A/pTxoQe2PFN5/K/3O4IyXfRP/KkUUH31zFTAhLWf73D8HETLsxadgEOEIAfYYAnWpAweXFFxIU3Eg+IJVoaqQZH7i1XpS83kUKO6oySJuYrHcKl/JBkGtuI05quLDE2Km23UctO/NVYEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747839329; c=relaxed/simple;
-	bh=I/MbCTbkbOoeh3ZgLHf2kJdKEHxW9kO4btHqWJEZ5Z8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lqAsscAJpG23B0LXLi/8Q3mR1+WXPNfbe18/J+4va9DWhetgqdo1rIsDokBIbAZpdM/ujeLHDYVB/oLf/MQGftj8KnsEaZ5vRIlWPLEC0FUMFdITavdBEUf/1YCHN7ZFmoKM1sRUcT+6wKsBnDUyifStPH35B/BTNrirxLHbBZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tFNsh+Jz; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1747839380; c=relaxed/simple;
+	bh=4+Wj4hxdaXN96SjUIAfwiVesd+p9hyy1LELAnrGN8UM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dgvE4mXkho49wAU0SsvxcPqxaabDevZj03vVUR7PGeNfUi70BYukYj3wC8SzPhxH6baglccHB0tFTP2/IUApy0xrCImrD9IsJ0eQsv8gLCmsccYJlBoj509I6xmsGgIjkxZvhNFuw0UHbjuwCTYjLnIuUE4ay4oSzg9b+mnTnqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z4ok8kMb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tFNsh+Jz"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LAmYj6030456;
-	Wed, 21 May 2025 14:55:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0EYJU7
-	pVSfDrMJSR7hg7/MazzigvOtwGVR7mI5/4+/M=; b=tFNsh+JzQdUNPPc2UB78Gy
-	T6iXu8Mw3ATIt7zChaAhe8dFt5dZN6a3aEDII0zlLjzhuLfgRO5OHFQOTbNDHF7E
-	lLFgnrTqSsyiKqEMwKBDUBzcyALGpsI4aBXssml4Kj6tHUbQ20KFlAoSFmNWedkE
-	0aBY8td6v/NPF/I+//SXLHdpO84JKq1U5Rte+2E2U1zs0npps4s4JrxRFwJ7HhH6
-	jlfttA3redBuo3XvWfCmLoo5osxvelp0mLojmgsqP8EVYNtMHevlSHoWEcBHrfYy
-	RmqiX7JxHNs8ufsvg6YrpXSE3UQ/zNk9X+DQpSN2dTwS+GzrMFFUobi+M7RLa7RA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46s3d5kv7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 14:55:24 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54LDp9ZK032066;
-	Wed, 21 May 2025 14:55:22 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46rwmq4pd9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 14:55:22 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54LEtIFm39780636
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 May 2025 14:55:18 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0DC020040;
-	Wed, 21 May 2025 14:55:18 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 521642004B;
-	Wed, 21 May 2025 14:55:18 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown [9.152.224.80])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 21 May 2025 14:55:18 +0000 (GMT)
-Message-ID: <277aa125e8edaf55e82ca66a15b26eee6ba3320b.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 4/5] KVM: s390: refactor and split some gmap helpers
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        borntraeger@de.ibm.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        david@redhat.com, hca@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, gor@linux.ibm.com
-Date: Wed, 21 May 2025 16:55:18 +0200
-In-Reply-To: <20250514163855.124471-5-imbrenda@linux.ibm.com>
-References: <20250514163855.124471-1-imbrenda@linux.ibm.com>
-		 <20250514163855.124471-5-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z4ok8kMb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747839377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JSCBFcNuY0Goh2S9d5LToDFwcxHuL80JaO8Gh+v1hTQ=;
+	b=Z4ok8kMbqYfNmgLVlMcdUXsC841s18DPkXoA7VRrwciooIk81EgWrz0dH+Hf3lzsHGtF+/
+	Zf9kxXZclokOxjhNqyGkaskSirtsTPct0JRKK+e4Nbp9WUjOF2u5/w+kcd90uzfMDNHmhf
+	HQV58JAxbf+t0zD0I+wC9NpEddY8adI=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-574-gCVVEw-1NAiyiPlkjE9zSA-1; Wed, 21 May 2025 10:56:15 -0400
+X-MC-Unique: gCVVEw-1NAiyiPlkjE9zSA-1
+X-Mimecast-MFC-AGG-ID: gCVVEw-1NAiyiPlkjE9zSA_1747839374
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ad56222a1easo329036466b.1
+        for <kvm@vger.kernel.org>; Wed, 21 May 2025 07:56:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747839374; x=1748444174;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JSCBFcNuY0Goh2S9d5LToDFwcxHuL80JaO8Gh+v1hTQ=;
+        b=s99SGOASBZkcKcM/AQbunlrUHyLs+K7T5fEIw/gDsI+AAZQ/ivP02/EHA97EZSglxB
+         xZ+qHx141Ze7NjmrKq76pazQa1Pe+5SwT+EiyIb95mNcuD1A/O6GwOZ6ufb1R6Oub2pi
+         kvOM5sp2fT+OhBsH9+iz4eaNan8ejAIUULNzUpAQ+7Eoor3QnSs0m3vgz9CbE1ENIYMl
+         d2vSM8Apd8taNpjHVRcnaLXhWcM+u48khaIuGgbMG7ElJi/3NaikHhyFctHFd9unEqUL
+         2m6tJfT2/EVY6dGqK52ZrMOeCwVPP9O7Ix2JHkl2DKJhf1jypvl3vJeJA8EIv8rn6rCn
+         d1gA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmd+Hb57MO8qQBs5yXdv0bgy4ygu9//jCqhPUkYc5F71It5hENCOjhfxoQaxVxXidfKWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgALHjO0BAGLPnT9eQjbaXwUDdCxDwCQ16LfbMwVS/hOZ2uPJl
+	oIjtNHVgdQlJZspTRHcKURztM6hkpo6yCxT4fM1xQLkAAPNatjZa3jidvoNqWAO3QCgA529p49J
+	/s1+7w/Co0O1GF3yvWLQQ2Ho+4E+jhhFz/vMK+p+ukWrroLGxDfreaA==
+X-Gm-Gg: ASbGncsLhgUZHuHC0RZlrrZryY11Qo9QwK5nYhKfiId/fpzypBtZyGNPHvfL413lyWF
+	UM3ULEMsvjPCQy+2n+iyFCUF+3u/Sz3IWc+3t7HpE77VvJZGRtO7wtHThmoHGudEeCnHrGjcrsZ
+	NPBvVFTLdA2YdOkxriTYD9D3/9/woqBHStBt/ZuMZROCRTn/GI8eKjeVw3YWdIQb/NR+vgIVdCO
+	4jynHUcYAC4Sf8NKtlOrHQ+9yXzQv0rlZ/mQ3IME5KukXopVbkZv/8nJh5JMgEB66hx+2sRo5aS
+	NXv+L4Lfi+cNrAp3hXWwa7lIZvNhaogOU6sqyVwAaQA841vt9TeQKlKPW2Sm
+X-Received: by 2002:a17:907:9495:b0:ace:d710:a8d1 with SMTP id a640c23a62f3a-ad52d4dae84mr1752075366b.24.1747839374465;
+        Wed, 21 May 2025 07:56:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGpoMMbzNscVWDbJ9f7DsJa/QwbA0pdV/T5aW3r3Yle27irZapU6e/PHt7khHjWn7nACqdpnQ==
+X-Received: by 2002:a17:907:9495:b0:ace:d710:a8d1 with SMTP id a640c23a62f3a-ad52d4dae84mr1752071266b.24.1747839373682;
+        Wed, 21 May 2025 07:56:13 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-134-35.retail.telecomitalia.it. [82.53.134.35])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d278290sm905573266b.78.2025.05.21.07.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 07:56:13 -0700 (PDT)
+Date: Wed, 21 May 2025 16:56:10 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [PATCH net-next v5 5/5] vsock/test: Add test for an unexpectedly
+ lingering close()
+Message-ID: <edtepfqev6exbkfdnyzgkdkczif5wnn4oz4t5sxkl6sz64kcaf@f6yztxryvmlq>
+References: <20250521-vsock-linger-v5-0-94827860d1d6@rbox.co>
+ <20250521-vsock-linger-v5-5-94827860d1d6@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2nwI7Xt83lcagCoJITqrHqtm6yGnjYcS
-X-Proofpoint-ORIG-GUID: 2nwI7Xt83lcagCoJITqrHqtm6yGnjYcS
-X-Authority-Analysis: v=2.4 cv=cM/gskeN c=1 sm=1 tr=0 ts=682de95c cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=JooEMsx-TsJ-eZTz-D8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDE0MiBTYWx0ZWRfXysPpKCaw3Ewu XxFAuvo3+ql69Bm4Z0pKpTlrn6mX0b8aoSZa7DyfOymji3WPlx29IOojkWKHVRGM7YhaC+jjooG /u2eBYhO7H6XTE39FLGnmTt+Byr+q26TpZl17ZK90cnRpqEVUldrYMIr0LJtL4Q5t9e+iAS6CII
- H6Pp4jd52YbQSBp7NZVSOmJn5/WJpqfX8eUN4mfE+yuhYrHtcsjcZPoqfu21pCFC0L+pWg82v3R /oaq059zwldFTqncW5EBgFdf2Nr81ysu875kR1sLDyHXRx4qz709otZg02xu1+A4aD+IUirnMzH SLXoFeZwICVEFExhg8kk6/xSiqhLLj3CsV46SpvEUjF+6nKtpx3qMq3ZHbnrylC/l7D5qBqwEi7
- 9SSJPNClchsC8la11fBrFzprY23Jr6hOYdguXTA4y7CukFhpjv7gu6uCacp15ZfIYC/cKB9Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-21_04,2025-05-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0
- priorityscore=1501 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505160000 definitions=main-2505210142
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250521-vsock-linger-v5-5-94827860d1d6@rbox.co>
 
-On Wed, 2025-05-14 at 18:38 +0200, Claudio Imbrenda wrote:
-> Refactor some gmap functions; move the implementation into a separate
-> file with only helper functions. The new helper functions work on vm
-> addresses, leaving all gmap logic in the gmap functions, which mostly
-> become just wrappers.
->=20
-> The whole gmap handling is going to be moved inside KVM soon, but the
-> helper functions need to touch core mm functions, and thus need to
-> stay in the core of kernel.
->=20
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->  MAINTAINERS                          |   2 +
->  arch/s390/include/asm/gmap_helpers.h |  18 ++
->  arch/s390/kvm/diag.c                 |  11 +-
->  arch/s390/kvm/kvm-s390.c             |   3 +-
->  arch/s390/mm/Makefile                |   2 +
->  arch/s390/mm/gmap.c                  |  46 ++---
->  arch/s390/mm/gmap_helpers.c          | 266 +++++++++++++++++++++++++++
->  7 files changed, 307 insertions(+), 41 deletions(-)
->  create mode 100644 arch/s390/include/asm/gmap_helpers.h
->  create mode 100644 arch/s390/mm/gmap_helpers.c
->=20
-[...]
+On Wed, May 21, 2025 at 12:55:23AM +0200, Michal Luczaj wrote:
+>There was an issue with SO_LINGER: instead of blocking until all queued
+>messages for the socket have been successfully sent (or the linger timeout
+>has been reached), close() would block until packets were handled by the
+>peer.
+>
+>Add a test to alert on close() lingering when it should not.
+>
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> tools/testing/vsock/vsock_test.c | 49 ++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 49 insertions(+)
+>
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index f401c6a79495bc7fda97012e5bfeabec7dbfb60a..1040503333cf315e52592c876f2c1809b36fdfdb 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -1839,6 +1839,50 @@ static void test_stream_linger_server(const struct test_opts *opts)
+> 	close(fd);
+> }
+>
+>+static void test_stream_nolinger_client(const struct test_opts *opts)
+>+{
+>+	bool nowait;
+>+	time_t ns;
+>+	int fd;
+>+
+>+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+>+	if (fd < 0) {
+>+		perror("connect");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	enable_so_linger(fd);
 
-> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> index 4869555ff403..17a2a57de3a2 100644
-> --- a/arch/s390/mm/gmap.c
-> +++ b/arch/s390/mm/gmap.c
->=20
-[...]
+If we use a parameter for the linger timeout, IMO will be easy to 
+understand this test, defining the timeout in this test, set it and 
+check the value, without defining LINGER_TIMEOUT in util.h.
 
->  void gmap_discard(struct gmap *gmap, unsigned long from, unsigned long t=
-o)
->  {
-> -	unsigned long gaddr, vmaddr, size;
-> -	struct vm_area_struct *vma;
-> +	unsigned long vmaddr, next, start, end;
-> =20
->  	mmap_read_lock(gmap->mm);
-> -	for (gaddr =3D from; gaddr < to;
-> -	     gaddr =3D (gaddr + PMD_SIZE) & PMD_MASK) {
-> -		/* Find the vm address for the guest address */
-> -		vmaddr =3D (unsigned long)
-> -			radix_tree_lookup(&gmap->guest_to_host,
-> -					  gaddr >> PMD_SHIFT);
-> +	for ( ; from < to; from =3D next) {
-> +		next =3D ALIGN(from + 1, PMD_SIZE);
+>+	send_byte(fd, 1, 0); /* Left unread to expose incorrect behaviour. */
+>+	nowait = vsock_wait_sent(fd);
+>+
+>+	ns = current_nsec();
+>+	close(fd);
+>+	ns = current_nsec() - ns;
+>+
+>+	if (nowait) {
+>+		fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
+>+	} else if ((ns + NSEC_PER_SEC - 1) / NSEC_PER_SEC >= LINGER_TIMEOUT) {
 
-I think you can use pmd_addr_end(from, to) here...
+Should we define a macro for this conversion?
 
-> +		vmaddr =3D (unsigned long)radix_tree_lookup(&gmap->guest_to_host, from=
- >> PMD_SHIFT);
->  		if (!vmaddr)
->  			continue;
-> -		vmaddr |=3D gaddr & ~PMD_MASK;
-> -		/* Find vma in the parent mm */
-> -		vma =3D find_vma(gmap->mm, vmaddr);
-> -		if (!vma)
-> -			continue;
-> -		/*
-> -		 * We do not discard pages that are backed by
-> -		 * hugetlbfs, so we don't have to refault them.
-> -		 */
-> -		if (is_vm_hugetlb_page(vma))
-> -			continue;
-> -		size =3D min(to - gaddr, PMD_SIZE - (gaddr & ~PMD_MASK));
-> -		zap_page_range_single(vma, vmaddr, size, NULL);
-> +		start =3D vmaddr | (from & ~PMD_MASK);
-> +		end =3D (vmaddr | (min(to - 1, next - 1) & ~PMD_MASK)) + 1;
+Or just use DIV_ROUND_UP:
 
-... then simply do:
-		end =3D vmaddr + (next - from);
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1831,7 +1831,7 @@ static void test_stream_nolinger_client(const struct test_opts *opts)
 
-> +		__gmap_helper_discard(gmap->mm, start, end);
->  	}
->  	mmap_read_unlock(gmap->mm);
->  }
-> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-> new file mode 100644
-> index 000000000000..8e66586718f6
-> --- /dev/null
-> +++ b/arch/s390/mm/gmap_helpers.c
-> @@ -0,0 +1,266 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + *  Helper functions for KVM guest address space mapping code
-> + *
-> + *    Copyright IBM Corp. 2007, 2025
-> + *    Author(s): Claudio Imbrenda <imbrenda@linux.ibm.com>
-> + *               Martin Schwidefsky <schwidefsky@de.ibm.com>
-> + *               David Hildenbrand <david@redhat.com>
-> + *               Janosch Frank <frankja@linux.vnet.ibm.com>
-> + */
-> +#include <linux/mm_types.h>
-> +#include <linux/mmap_lock.h>
-> +#include <linux/mm.h>
-> +#include <linux/hugetlb.h>
-> +#include <linux/pagewalk.h>
-> +#include <linux/ksm.h>
-> +#include <asm/gmap_helpers.h>
+         if (nowait) {
+                 fprintf(stderr, "Test skipped, SIOCOUTQ not supported.\n");
+-       } else if ((ns + NSEC_PER_SEC - 1) / NSEC_PER_SEC >= LINGER_TIMEOUT) {
++       } else if (DIV_ROUND_UP(ns, NSEC_PER_SEC) >= LINGER_TIMEOUT) {
+                 fprintf(stderr, "Unexpected lingering\n");
+                 exit(EXIT_FAILURE);
+         }
 
-Please add documentation to all these functions for those of us that
-don't live and breath mm code :)
+The rest LGTM.
 
-> +
-> +static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
-> +{
-> +	if (!non_swap_entry(entry))
-> +		dec_mm_counter(mm, MM_SWAPENTS);
-> +	else if (is_migration_entry(entry))
-> +		dec_mm_counter(mm, mm_counter(pfn_swap_entry_folio(entry)));
-> +	free_swap_and_cache(entry);
-> +}
-> +
-> +void __gmap_helper_zap_one(struct mm_struct *mm, unsigned long vmaddr)
+Thanks,
+Stefano
 
-__gmap_helper_zap_mapping_pte ?
+>+		fprintf(stderr, "Unexpected lingering\n");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	control_writeln("DONE");
+>+}
+>+
+>+static void test_stream_nolinger_server(const struct test_opts *opts)
+>+{
+>+	int fd;
+>+
+>+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
+>+	if (fd < 0) {
+>+		perror("accept");
+>+		exit(EXIT_FAILURE);
+>+	}
+>+
+>+	control_expectln("DONE");
+>+	close(fd);
+>+}
+>+
+> static struct test_case test_cases[] = {
+> 	{
+> 		.name = "SOCK_STREAM connection reset",
+>@@ -1999,6 +2043,11 @@ static struct test_case test_cases[] = {
+> 		.run_client = test_stream_linger_client,
+> 		.run_server = test_stream_linger_server,
+> 	},
+>+	{
+>+		.name = "SOCK_STREAM SO_LINGER close() on unread",
+>+		.run_client = test_stream_nolinger_client,
+>+		.run_server = test_stream_nolinger_server,
+>+	},
+> 	{},
+> };
+>
+>
+>-- 
+>2.49.0
+>
 
-> +{
-> +	struct vm_area_struct *vma;
-> +	spinlock_t *ptl;
-> +	pte_t *ptep;
-> +
-> +	mmap_assert_locked(mm);
-> +
-> +	/* Find the vm address for the guest address */
-> +	vma =3D vma_lookup(mm, vmaddr);
-> +	if (!vma || is_vm_hugetlb_page(vma))
-> +		return;
-> +
-> +	/* Get pointer to the page table entry */
-> +	ptep =3D get_locked_pte(mm, vmaddr, &ptl);
-> +	if (!likely(ptep))
-
-if (unlikely(!ptep)) reads nicer to me.
-
-> +		return;
-> +	if (pte_swap(*ptep))
-> +		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
-> +	pte_unmap_unlock(ptep, ptl);
-> +}
-> +EXPORT_SYMBOL_GPL(__gmap_helper_zap_one);
-
-Looks reasonable, but I'm not well versed enough in mm code to evaluate
-that with confidence.
-
-> +
-> +void __gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, u=
-nsigned long end)
-
-Maybe call this gmap_helper_discard_nolock or something.
-
-> +{
-> +	struct vm_area_struct *vma;
-> +	unsigned long next;
-> +
-> +	mmap_assert_locked(mm);
-> +
-> +	while (vmaddr < end) {
-> +		vma =3D find_vma_intersection(mm, vmaddr, end);
-> +		if (!vma)
-> +			break;
-> +		vmaddr =3D max(vmaddr, vma->vm_start);
-> +		next =3D min(end, vma->vm_end);
-> +		if (!is_vm_hugetlb_page(vma))
-> +			zap_page_range_single(vma, vmaddr, next - vmaddr, NULL);
-> +		vmaddr =3D next;
-> +	}
-> +}
-> +
-> +void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, uns=
-igned long end)
-> +{
-> +	mmap_read_lock(mm);
-> +	__gmap_helper_discard(mm, vmaddr, end);
-> +	mmap_read_unlock(mm);
-> +}
-> +EXPORT_SYMBOL_GPL(gmap_helper_discard);
-> +
-> +static int pmd_lookup(struct mm_struct *mm, unsigned long addr, pmd_t **=
-pmdp)
-> +{
-> +	struct vm_area_struct *vma;
-> +	pgd_t *pgd;
-> +	p4d_t *p4d;
-> +	pud_t *pud;
-> +
-> +	/* We need a valid VMA, otherwise this is clearly a fault. */
-> +	vma =3D vma_lookup(mm, addr);
-> +	if (!vma)
-> +		return -EFAULT;
-> +
-> +	pgd =3D pgd_offset(mm, addr);
-> +	if (!pgd_present(*pgd))
-> +		return -ENOENT;
-
-What about pgd_bad?
-
-> +
-> +	p4d =3D p4d_offset(pgd, addr);
-> +	if (!p4d_present(*p4d))
-> +		return -ENOENT;
-> +
-> +	pud =3D pud_offset(p4d, addr);
-> +	if (!pud_present(*pud))
-> +		return -ENOENT;
-> +
-> +	/* Large PUDs are not supported yet. */
-> +	if (pud_leaf(*pud))
-> +		return -EFAULT;
-> +
-> +	*pmdp =3D pmd_offset(pud, addr);
-> +	return 0;
-> +}
-> +
-> +void __gmap_helper_set_unused(struct mm_struct *mm, unsigned long vmaddr=
-)
-
-What is this function for? Why do you introduce it now?
-
-> +{
-> +	spinlock_t *ptl;
-> +	pmd_t *pmdp;
-> +	pte_t *ptep;
-> +
-> +	mmap_assert_locked(mm);
-> +
-> +	if (pmd_lookup(mm, vmaddr, &pmdp))
-> +		return;
-> +	ptl =3D pmd_lock(mm, pmdp);
-> +	if (!pmd_present(*pmdp) || pmd_leaf(*pmdp)) {
-> +		spin_unlock(ptl);
-> +		return;
-> +	}
-> +	spin_unlock(ptl);
-> +
-> +	ptep =3D pte_offset_map_lock(mm, pmdp, vmaddr, &ptl);
-> +	if (!ptep)
-> +		return;
-> +	/* The last byte of a pte can be changed freely without ipte */
-> +	__atomic64_or(_PAGE_UNUSED, (long *)ptep);
-> +	pte_unmap_unlock(ptep, ptl);
-> +}
-> +EXPORT_SYMBOL_GPL(__gmap_helper_set_unused);
-
-The stuff below is from arch/s390/mm/gmap.c right?
-Are you going to delete it from there?
-
-> +static int find_zeropage_pte_entry(pte_t *pte, unsigned long addr,
-> +				   unsigned long end, struct mm_walk *walk)
-> +{
-
-[...]
-
-> +}
-> +
-> +static const struct mm_walk_ops find_zeropage_ops =3D {
-> +	.pte_entry      =3D find_zeropage_pte_entry,
-> +	.walk_lock      =3D PGWALK_WRLOCK,
-> +};
-> +
-> +/*
-> + * Unshare all shared zeropages, replacing them by anonymous pages. Note=
- that
-> + * we cannot simply zap all shared zeropages, because this could later
-> + * trigger unexpected userfaultfd missing events.
-> + *
-> + * This must be called after mm->context.allow_cow_sharing was
-> + * set to 0, to avoid future mappings of shared zeropages.
-> + *
-> + * mm contracts with s390, that even if mm were to remove a page table,
-> + * and racing with walk_page_range_vma() calling pte_offset_map_lock()
-> + * would fail, it will never insert a page table containing empty zero
-> + * pages once mm_forbids_zeropage(mm) i.e.
-> + * mm->context.allow_cow_sharing is set to 0.
-> + */
-> +static int __gmap_helper_unshare_zeropages(struct mm_struct *mm)
-> +{
-
-[...]
-
-> +}
-> +
-> +static int __gmap_helper_disable_cow_sharing(struct mm_struct *mm)
-> +{
-
-[...]
-
-> +}
-> +
-> +/*
-> + * Disable most COW-sharing of memory pages for the whole process:
-> + * (1) Disable KSM and unmerge/unshare any KSM pages.
-> + * (2) Disallow shared zeropages and unshare any zerpages that are mappe=
-d.
-> + *
-> + * Not that we currently don't bother with COW-shared pages that are sha=
-red
-> + * with parent/child processes due to fork().
-> + */
-> +int gmap_helper_disable_cow_sharing(void)
-> +{
-
-[...]
-
-> +}
-> +EXPORT_SYMBOL_GPL(gmap_helper_disable_cow_sharing);
-
---=20
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Wolfgang Wendt
-Gesch=C3=A4ftsf=C3=BChrung: David Faller
-Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
-art, HRB 243294
