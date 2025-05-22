@@ -1,171 +1,216 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D172FCA52;
-	Thu, 22 May 2025 09:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0EC21ADA0
+	for <kvm@vger.kernel.org>; Thu, 22 May 2025 09:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747906399; cv=none; b=tRA/j4V9Le//Hiu8LcyiwS5Cvo+1wgHrwPMMgyI0TknA3jGOhqEGESAnmSGOpkhC8CGbP73aDwYPJ9wH/lMew3SKMQXI+CuyP6XEeSWMuZp38LMhiWQaa3vPoWn9jlIG/Gk2h02bAghz2ZgSUQiBvRZwS0HRA6pg/U4bVE2l6P0=
+	t=1747906502; cv=none; b=bOGUQxeN+QFjbBjrPUg1rryM8ZDNk42Onyl4zoltnes84f4ulMoKB78ROSyPKV0sTtjW65HLqmnVJyUtehpSZ9pt15E5H+AiTXcAQLPXRA9qqK0BdZ9QSaJtG/+9mi5uYUfQoAB2Py0rQo5pFcDPAYZ+XcGN3SMRMYHpKnqkVm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747906399; c=relaxed/simple;
-	bh=v9bMSSXzzTP52MAIXi1/0iB4UvcEDNmTPLpAeI6+lTg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ByjsIrTKg9oBn/GhhZk199IEUGvQNwZgBYNV99mJo23Shn2NAfo/xYJltu9HCXSNxM3m0PKCdaaANg9NAqyiLJIUypvbbCjVPQ/qR1G7azwv767sI5bIFT3PKbQAMe+xUmAwyqCRJtth9NKxYU6TxfXmqewPVihBKw1Po3CWjh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mK0+Kk5E; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1747906502; c=relaxed/simple;
+	bh=58P1KmovK8E0jT7GX7NXpA6gJreewwgB0cFZyH3Y3/A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=epQuKx6bNWJEGZ9kiZtWjtkwHVimZtltYfK2cEFscZOhZkPTSOQMNpPg/7Ow0WQBCQNzst0INgFZeMwhZX8Zstr/KOucrVzrOvEJCPLnJN55A9/Sd7rxxwDREF+LuVtK5KwG5K3UClBUWQ046LgPOIbZckiiXxfUiTqIkI+Esvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L45BUgfx; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mK0+Kk5E"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M6l5QB006476;
-	Thu, 22 May 2025 09:33:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IJPqZ/
-	BxLDNz2+2Ti32s+FYQCU3m7M8uuaeBLdePDnU=; b=mK0+Kk5EzHH0yDEtItDawR
-	RSoF+mGASoGGSjMqG2ZBahvQH2FdwHNFcvQKwOXS87WlAqcjYO+GqUP7r/62U2y4
-	Z8SsNUQP5H36C3DMq4eIOqWUd6Ajo+ivb5Vp7MSQ92ZS0Jmx1r2HY1P5yFo3PkYo
-	jfjrdFVgm9R7b4hQltXoJTm/NmV60MVD17wGpp2qQuq24rKiEVXSb6HBiirdxyb0
-	aJcD5U1vj3IvhqetgGuLX8ZXTc9dKbECf5o3nPeBwTh+OjnEv/Ulm/z4t2sn1s31
-	X7Jb4I74UTgM1oaKvOv+ws8qmc48HEk4LIwYaZrGuBQDTx0afYfp9O37DMsCfRTA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46smf9bdys-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 09:33:12 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54M5TjFx032084;
-	Thu, 22 May 2025 09:33:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46rwnmgs3c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 09:33:11 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54M9X7l350921758
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 May 2025 09:33:07 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 802FA2004B;
-	Thu, 22 May 2025 09:33:07 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 313D52004F;
-	Thu, 22 May 2025 09:33:07 +0000 (GMT)
-Received: from [9.155.210.150] (unknown [9.155.210.150])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 May 2025 09:33:07 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Thu, 22 May 2025 11:31:57 +0200
-Subject: [PATCH v3 1/3] KVM: s390: Set KVM_MAX_VCPUS to 256
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L45BUgfx"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4774611d40bso1419681cf.0
+        for <kvm@vger.kernel.org>; Thu, 22 May 2025 02:35:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747906499; x=1748511299; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jy79b00HYU3PgVrvLmPpXmz4H8JXcASWwXNlNoTyvAg=;
+        b=L45BUgfxERcNkbDdEQ8k2mBUZMKnG5y+/R7owbqbaWXmJiOhMHPgvJzLUavv1aPLIu
+         JcfxVdaxerVczHYFDYtMV96zyIQ5F1Xf38LMJaTQ607amH4PdrdAuDAVOxdPFi3WINt6
+         uFKuToSsVZawYl5iwUSKBiBHCRewpRmEEslipVPVfsFTqlJxSC2kdU9NarL9T8eQht+D
+         r7N9VNWx2T6oA1LMoIBjnXNCwdt8F4o4A6klc7qCh3WYZsTCdb5YpRbumAJ+qMrKtNEp
+         HHT6sZypiZ9Q8khB09172MmXPvKJ2A/EaYnBaBx/HynSIFJawt5hG8RQOFfHw5wooyPK
+         mSxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747906499; x=1748511299;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jy79b00HYU3PgVrvLmPpXmz4H8JXcASWwXNlNoTyvAg=;
+        b=ULwQtSvWJKxIBH1eONdTVWY9Ynof2zZ+Q7FQLsOfi7yOkiV0eeOlaZFRLSI0i49b5H
+         q7ku/ZHdnCCpe5hxj3yJ3GZH+HTDKoMnQuT2WwxFgOlGtgbRrdajuzqYNjaxWYQZ1vIB
+         V55MsIZu2iY45WVs2qJoD7ECnP6tQZ1E1djb8sq5QQ836KIHhi7/nM0K2bMQV5N2NRRC
+         m7+3emOOlaMDhNZna0h/tpKiDYEu5QiToHDR5rU3IsTBP5rMg1N6wR3Hp7lBFLtOW0Qx
+         AqZOTMtBdEWOijuHSHT/8lhndxDtoNfiswmEYyY4oANl12+424Uz6BkHLoBKRw3YrgCf
+         1oZQ==
+X-Gm-Message-State: AOJu0YwHlJZmDC8k8tAfPWf60/VQ695k+OP5e85eAQA9V/ZzjY/9Sul8
+	nN8tXLRaB0pVmWRuG4Kc6HTui5g9BEma376ap94FqbDNLTCdbRdkHI+E76kJ7OESNZddN+77abN
+	En6we6ZfbWC1SnH9q7kpu3MomQnm4afZ4+Z2cc7bK
+X-Gm-Gg: ASbGncuJuN1QjgN516pQD1aLNbH2uMGHluJGueHDzKB+TR+IhofEp4ClQAnoXfZ7wxJ
+	52oImUOHmLbXtFkpS9HB8KoIBdSTxnM2ZnHtwTGpRGaYh1Dxsx+SrIISNqxJcbYmg6ANSrFUmkO
+	ulGngwqBBttgPCJrP5j10zdVzT65J5yUIr8pWXmNisqMXIK2GQEdQh+A==
+X-Google-Smtp-Source: AGHT+IHkrB0CTaEIuNQ7Dtb6ZGwkgF2U8LyJwoedpdOy6ZMdbF4DAs4s8wGA3z/M3baeoC2jvhF3ZXjjXGuLzYaFc0U=
+X-Received: by 2002:a05:622a:1491:b0:494:763e:d971 with SMTP id
+ d75a77b69052e-49cf199560emr2054371cf.23.1747906499041; Thu, 22 May 2025
+ 02:34:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-rm-bsca-v3-1-51d169738fcf@linux.ibm.com>
-References: <20250522-rm-bsca-v3-0-51d169738fcf@linux.ibm.com>
-In-Reply-To: <20250522-rm-bsca-v3-0-51d169738fcf@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2266;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=v9bMSSXzzTP52MAIXi1/0iB4UvcEDNmTPLpAeI6+lTg=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDBl674NeL/92qr2iNrcg7m9Zcv9VnXU7JSQe211xS+1qv
- hu8QMq9o5SFQYyLQVZMkaVa3Dqvqq916ZyDltdg5rAygQxh4OIUgImszWZkWFXzcWWB3OkHM9ru
- vfz/M21dytwvC45NcD6h/2xaOX/Q8UUM/ywudLsGHLav/f5hi8wJk/zCpKSs2/sEshjm34k9Lm3
- TyAkA
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ds5e8uAMs9i32HMyGIQP8iY8XoXwDVVq
-X-Proofpoint-ORIG-GUID: ds5e8uAMs9i32HMyGIQP8iY8XoXwDVVq
-X-Authority-Analysis: v=2.4 cv=TbqWtQQh c=1 sm=1 tr=0 ts=682eef58 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=wggSNQFzZ8jKG0l6iRoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDA4NiBTYWx0ZWRfX/hSwYN1vxF0I Ji1/ParHOX536r544j1qeBCYsOAM86TFe/0K9e9dKQsWtQjFGnVsecz0tPUC5+7QbIIXrvtHYui Zkc1MNRjbmsPa756fQwH/UUi3IALcti85BdzS+EGIoW9jP8tWFNXXO3yXZ+UzLxBVskYfXuydR6
- ZWZGQy5AdsoABowC7MVWtEETSzGAzA8YngaPP5gasPBStLYPwayzvNXE5jfEWkDu4gXssV+pp93 DDyJuBSECZ3DtlI7pGGIwptjj/c4UJYus1Bk9m4bAPlGkKzAj4CCXBfGJDi4CE9wrWcba1wWwYH bMiUUFt5HONwFZkvglntTdkWz2PPZUMxbJC2Nw+IlZs4Wl/9WaBvdGruVFNobFCofCtCd8XtXYi
- TFpNj99FCjmVfHzycrWTjpVWOJ2lHpaXYVBy42j+5LIRYHoetFIB4cS8uEfY/X9JpAr381Ak
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-22_04,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- phishscore=0 adultscore=0 spamscore=0 mlxlogscore=589 malwarescore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505220086
+References: <20250513163438.3942405-1-tabba@google.com> <20250513163438.3942405-11-tabba@google.com>
+ <5ace54d1-800b-4122-8c05-041aa0ee12a1@redhat.com> <CA+EHjTyiiA84spuKqr-2ioiVjEHrcksENLR5uGhY-Avke28-2w@mail.gmail.com>
+ <396dce13-dd72-4efc-9b8e-5b19c1b06386@redhat.com>
+In-Reply-To: <396dce13-dd72-4efc-9b8e-5b19c1b06386@redhat.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 22 May 2025 10:34:22 +0100
+X-Gm-Features: AX0GCFtiRA83JePbGS8oYvnrZc8qR-vDopez1aCFD727cyCPFwE77yoD1LOwOUo
+Message-ID: <CA+EHjTyT-5bhStuO_3UFdUTMNtA6_7eDd7zXQwdDR4PuwHC=8A@mail.gmail.com>
+Subject: Re: [PATCH v9 10/17] KVM: x86: Compute max_mapping_level with input
+ from guest_memfd
+To: David Hildenbrand <david@redhat.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
+	isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com, 
+	suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com, 
+	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com, 
+	quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
+	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, 
+	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, qperret@google.com, 
+	keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, 
+	jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, 
+	hughd@google.com, jthoughton@google.com, peterx@redhat.com, 
+	pankaj.gupta@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-The s390x architecture allows for 256 vCPUs with a max CPUID of 255.
-The current KVM implementation limits this to 248 when using the
-extended system control area (ESCA). So this correction should not cause
-any real world problems but actually correct the values returned by the
-ioctls:
+On Thu, 22 May 2025 at 09:56, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 22.05.25 09:22, Fuad Tabba wrote:
+> > Hi David,
+> >
+> > On Wed, 21 May 2025 at 09:01, David Hildenbrand <david@redhat.com> wrote:
+> >>
+> >> On 13.05.25 18:34, Fuad Tabba wrote:
+> >>> From: Ackerley Tng <ackerleytng@google.com>
+> >>>
+> >>> This patch adds kvm_gmem_max_mapping_level(), which always returns
+> >>> PG_LEVEL_4K since guest_memfd only supports 4K pages for now.
+> >>>
+> >>> When guest_memfd supports shared memory, max_mapping_level (especially
+> >>> when recovering huge pages - see call to __kvm_mmu_max_mapping_level()
+> >>> from recover_huge_pages_range()) should take input from
+> >>> guest_memfd.
+> >>>
+> >>> Input from guest_memfd should be taken in these cases:
+> >>>
+> >>> + if the memslot supports shared memory (guest_memfd is used for
+> >>>     shared memory, or in future both shared and private memory) or
+> >>> + if the memslot is only used for private memory and that gfn is
+> >>>     private.
+> >>>
+> >>> If the memslot doesn't use guest_memfd, figure out the
+> >>> max_mapping_level using the host page tables like before.
+> >>>
+> >>> This patch also refactors and inlines the other call to
+> >>> __kvm_mmu_max_mapping_level().
+> >>>
+> >>> In kvm_mmu_hugepage_adjust(), guest_memfd's input is already
+> >>> provided (if applicable) in fault->max_level. Hence, there is no need
+> >>> to query guest_memfd.
+> >>>
+> >>> lpage_info is queried like before, and then if the fault is not from
+> >>> guest_memfd, adjust fault->req_level based on input from host page
+> >>> tables.
+> >>>
+> >>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> >>> Signed-off-by: Fuad Tabba <tabba@google.com>
+> >>> ---
+> >>>    arch/x86/kvm/mmu/mmu.c   | 92 ++++++++++++++++++++++++++--------------
+> >>>    include/linux/kvm_host.h |  7 +++
+> >>>    virt/kvm/guest_memfd.c   | 12 ++++++
+> >>>    3 files changed, 79 insertions(+), 32 deletions(-)
+> >>>
+> >>> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> >>> index cfbb471f7c70..9e0bc8114859 100644
+> >>> --- a/arch/x86/kvm/mmu/mmu.c
+> >>> +++ b/arch/x86/kvm/mmu/mmu.c
+> >>> @@ -3256,12 +3256,11 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
+> >>>        return level;
+> >>>    }
+> >> [...]
+> >>
+> >>>    static u8 kvm_max_level_for_fault_and_order(struct kvm *kvm,
+> >>>                                            struct kvm_page_fault *fault,
+> >>>                                            int order)
+> >>> @@ -4523,7 +4551,7 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+> >>>    {
+> >>>        unsigned int foll = fault->write ? FOLL_WRITE : 0;
+> >>>
+> >>> -     if (fault->is_private || kvm_gmem_memslot_supports_shared(fault->slot))
+> >>> +     if (fault_from_gmem(fault))
+> >>
+> >> Should this change rather have been done in the previous patch?
+> >>
+> >> (then only adjust fault_from_gmem() in this function as required)
+> >>
+> >>>                return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
+> >>>
+> >>>        foll |= FOLL_NOWAIT;
+> >>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> >>> index de7b46ee1762..f9bb025327c3 100644
+> >>> --- a/include/linux/kvm_host.h
+> >>> +++ b/include/linux/kvm_host.h
+> >>> @@ -2560,6 +2560,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> >>>    int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >>>                     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+> >>>                     int *max_order);
+> >>> +int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot, gfn_t gfn);
+> >>>    #else
+> >>>    static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+> >>>                                   struct kvm_memory_slot *slot, gfn_t gfn,
+> >>> @@ -2569,6 +2570,12 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+> >>>        KVM_BUG_ON(1, kvm);
+> >>>        return -EIO;
+> >>>    }
+> >>> +static inline int kvm_gmem_mapping_order(const struct kvm_memory_slot *slot,
+> >>> +                                      gfn_t gfn)
+> >>
+> >> Probably should indent with two tabs here.
+> >
+> > (I'm fixing the patch before respinning, hence it's me asking)
+> >
+> > Not sure I understand. Indentation here matches the same style as that
+> > for kvm_gmem_get_pfn() right above it in the alignment of the
+> > parameters, i.e., the parameter `gfn_t gfn` is aligned with the
+> > parameter `const struct kvm_memory_slot *slot` (four tabs and a
+> > space).
+>
+> Yeah, that way of indenting is rather bad practice. Especially for new
+> code we're adding or when we touch existing code, we should just use two
+> tabs.
+>
+> That way, we can fit more stuff into a single line, and when doing
+> simple changes, such as renaming the function or changing the return
+> type, we won't have to touch all the parameters.
+>
+> Maybe KVM has its own rules on that ... that's why I said "probably" :)
 
-* KVM_CAP_NR_VCPUS
-* KVM_CAP_MAX_VCPUS
-* KVM_CAP_MAX_VCPU_ID
+:)
 
-KVM_MAX_VCPUS is also moved to kvm_host_types to allow using this in
-future type definitions.
+I see, although I agree with you, I'd rather that indentation be
+consistent within the same file.
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
- arch/s390/include/asm/kvm_host.h       | 2 --
- arch/s390/include/asm/kvm_host_types.h | 2 ++
- arch/s390/kvm/kvm-s390.c               | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index cb89e54ada257eb4fdfe840ff37b2ea639c2d1cb..f51bac835260f562eaf4bbfd373a24bfdbc43834 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -27,8 +27,6 @@
- #include <asm/isc.h>
- #include <asm/guarded_storage.h>
- 
--#define KVM_MAX_VCPUS 255
--
- #define KVM_INTERNAL_MEM_SLOTS 1
- 
- /*
-diff --git a/arch/s390/include/asm/kvm_host_types.h b/arch/s390/include/asm/kvm_host_types.h
-index 1394d3fb648f1e46dba2c513ed26e5dfd275fad4..9697db9576f6c39a6689251f85b4b974c344769a 100644
---- a/arch/s390/include/asm/kvm_host_types.h
-+++ b/arch/s390/include/asm/kvm_host_types.h
-@@ -6,6 +6,8 @@
- #include <linux/atomic.h>
- #include <linux/types.h>
- 
-+#define KVM_MAX_VCPUS 256
-+
- #define KVM_S390_BSCA_CPU_SLOTS 64
- #define KVM_S390_ESCA_CPU_SLOTS 248
- 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 3f3175193fd7a7a26658eb2e2533d8037447a0b4..b65e4cbe67cf70a7d614607ebdd679060e7d31f4 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -638,6 +638,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 			r = KVM_S390_ESCA_CPU_SLOTS;
- 		if (ext == KVM_CAP_NR_VCPUS)
- 			r = min_t(unsigned int, num_online_cpus(), r);
-+		else if (ext == KVM_CAP_MAX_VCPU_ID)
-+			r -= 1;
- 		break;
- 	case KVM_CAP_S390_COW:
- 		r = machine_has_esop();
-
--- 
-2.49.0
-
+Thanks,
+/fuad
+> --
+> Cheers,
+>
+> David / dhildenb
+>
