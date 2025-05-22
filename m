@@ -1,73 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8C52CCA5
-	for <kvm@vger.kernel.org>; Thu, 22 May 2025 07:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA68B320F
+	for <kvm@vger.kernel.org>; Thu, 22 May 2025 07:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747898214; cv=none; b=JvekOpywylQjV20plLYL8QFKNJBQxIcodHkXBq26cLI1TRgPSM4FBqhzF8VYGks+lQSt+VCI7KDuQQ9BUwndYvVftr67su3f0t+P8AF8hMXEng94zZhcFNWB4Ty6oemj78zt9xZfFKFJjX9Ghav14LbCyLDPWH5BHhLoEIMCZeo=
+	t=1747898579; cv=none; b=U50lIKCxLpPZ0mlHVrWhagVCV86Fv6wWC2izK+cb3FdiDInuHzdoz0aR+BGR4Azp7xt9vRWQPlGpULcX3Stw5agIyffnqKXhj0CMcF3xUYgFlC1AovLecvrMEQCbE38eI9bKO6GVWFJcQtVUHs7Ua9vhCmkcvrdthayQa3lwhRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747898214; c=relaxed/simple;
-	bh=Dd3DbyBoUBtX+alT+PnASUiEyMpPfJwmsEuFbZmBDW8=;
+	s=arc-20240116; t=1747898579; c=relaxed/simple;
+	bh=mEpY3U9+KI8mwW2+YUrBfvjd3uYgW5Is2q3Rts4wZTc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=THfXdcxWWNsyyxUzOs8Qu+Wy9wZmpdZO33I4OihjANVlwfnZjyoN+TxOwob6VYxzmi4tFFsPDVWmxwOnii2/4r3aQEjWa1I1+cllZoNENOZ8ncwQ3VYQ+MLWvmBMwzGOxAX029mof7wsgJlU79qyUUvN00AThn/8EkzIcIKMA6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hY37rOfe; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=GV7N4m+doyvZe7wKw31zr3ZsoM69j0J1TZe4QMKdOUFsZHroveRIBIf+eRziAeU/2WFFvaTc4cV7I7cFAAt/DE6Zf91F9YCBR4wCrS9DsbJkSO3pmHZGIrLv5XoDI+aPwaqNqh7V1tfq7NxV1djB18lZExJ1CopkdzwgEbQ7VRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VLgMrpju; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hY37rOfe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VLgMrpju"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747898212;
+	s=mimecast20190719; t=1747898576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BH+e353hd9ecWEwiDlpqwL0IFGKEl/jOjgPJnF+I8Kk=;
-	b=hY37rOfeEM+d5/YxFCEgksbeA9bXrmhnJi+/1wbM6j8Pa+ITeXEc8/jZDhbAO+sotqXwr6
-	0/o4IbNtrs57NVijqszojc0zBv6P2Afvg/yF4HUOQZnECPNRNngAtl/OTDhLyFzO+tw1Dk
-	aQfCHLhnqPcnb3TWKVs2EzwYzttN3NE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8T6rEFv8aGk2Q7ci/r9ch5/2otyWxKEcaT8dQ33zf/U=;
+	b=VLgMrpjumFYNYnolCNl8qldY9To7fGv40uJdNuafWAuHsaKrH2mikervqz5mSXDgEzg5aQ
+	0T2fbwczTE1N7IaK4kmhF8Y+XYfelqnwoYJgrlk+XeYrKI2cmGstICG0+DAvLCmMKgWf/d
+	7gfdmhkid4H46MuTl9NyXkwwfSJ16EY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-mkfcsQ2GMO6a9hBx5hfcgg-1; Thu, 22 May 2025 03:16:50 -0400
-X-MC-Unique: mkfcsQ2GMO6a9hBx5hfcgg-1
-X-Mimecast-MFC-AGG-ID: mkfcsQ2GMO6a9hBx5hfcgg_1747898209
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-442cdf07ad9so42921545e9.2
-        for <kvm@vger.kernel.org>; Thu, 22 May 2025 00:16:50 -0700 (PDT)
+ us-mta-626-YaV92b28PRuxqRUdqQhpoQ-1; Thu, 22 May 2025 03:22:53 -0400
+X-MC-Unique: YaV92b28PRuxqRUdqQhpoQ-1
+X-Mimecast-MFC-AGG-ID: YaV92b28PRuxqRUdqQhpoQ_1747898572
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a36bbfbd96so2203367f8f.0
+        for <kvm@vger.kernel.org>; Thu, 22 May 2025 00:22:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747898209; x=1748503009;
+        d=1e100.net; s=20230601; t=1747898572; x=1748503372;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=BH+e353hd9ecWEwiDlpqwL0IFGKEl/jOjgPJnF+I8Kk=;
-        b=OSas87yx3Ol6Xu26TqKXSH66hh4SYZxOMbfiPoyQdgoioyt3vZ1O2CHrtvWAMOG3y3
-         TX72jzCycN0HqMdmh0CeWm8vxzs2Zt1iRpuc36wrgjtbX5C+RNV1s2cTV+2qspNEEHtm
-         P+uPvPqqxbf7VShc5+vSRN4sq+PKqICHW396ed98lFFdQ91nOECYvplEQyvgR0wjJQIt
-         oMh/jvFfDoOVA9Kcg7RsrAWM3xZJfeglzW2nBEvVWdUp08cm1CkvnP27WEOfotOGAHKW
-         hFQgxRr48EPyarha6SxsFyOQ8hBO9goCqBE1PF+HqOUS+qYOg4j5b8Tot2Fp3aWOLpYs
-         xjKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYXfpbqcOCUjt5BDHCdNekPUWcIt0E1lJxHJtyhJLkMbeyOBQD6QP4eut1quzWZk/CqSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycyXS+wreK/qiK+oZIsE0MHufYBILcYyUL/oeN35g3qFsOpaKc
-	wXkBsXZJ/Iz/mrXx53E3ONjlPMr/5zvreTErMXYqE4/SGvH6DdEBpYVJNQN5Ma15ft2zqfxstQZ
-	LI5ZW4ZuMHER5srK3w5jR9VwjoHuxoICgPp+2s51lhmG7yNicGQ2GiA==
-X-Gm-Gg: ASbGncufzxCVXzsRcf/uUsAlc2SCHeqRv8wJxI8gUjpfUsc/yO4/0KNtwx74SpBR40P
-	zDjxsUXqsmttBNmvREkoathSQnmOpO5gc919KkhAAxdaOtoEn0ig8V4aK5EkccbY7TzR4dZn+2m
-	Rhd8itXUwX2IQyqyPX4Bv+Hm/ORrZqWCRSFm8mAcwRs3m0XALaGO4o92MXhcUfoh/Toog8yPL12
-	b7NiwNLNGQVU5fh6QDlq6HCnfeKMcAAAaCS0MYJ1XA8TwAeZndwdUSuiEdceKUyoq1PElZ4VyQK
-	aY+Y87/D09bbgpRIDYqeYb/8yD3eS8jDHOiPGaRSXMF9hfj0A2DgAa3f32Yoy0aOw75s27dOEDv
-	yfVTjW7BGUmvbEyB8DmGiRQxDr9GQTMi1co8wW1k=
-X-Received: by 2002:a05:600c:468a:b0:43d:47e:3205 with SMTP id 5b1f17b1804b1-442fefee29dmr207377815e9.11.1747898209325;
-        Thu, 22 May 2025 00:16:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERsnp5vdfOsS6mxmuIJhy4WAK73gHgEMsN+dQIzRCBXHLhRJwj8waV3OBrGIlt2Y9USPyTuQ==
-X-Received: by 2002:a05:600c:468a:b0:43d:47e:3205 with SMTP id 5b1f17b1804b1-442fefee29dmr207377475e9.11.1747898208875;
-        Thu, 22 May 2025 00:16:48 -0700 (PDT)
+        bh=8T6rEFv8aGk2Q7ci/r9ch5/2otyWxKEcaT8dQ33zf/U=;
+        b=FzB/fZBQmN6cMpmKXdpJ/j8FndulZhJMMLQwOMW82CN8yZ0N1RtAJSRbBUM+060NQb
+         bFcaBnwkVM+A+RGR7Y79zdCQ+/e/2taQnefPVCyT+xZRXqz46P56HMwT4kWivn/pW6iI
+         2xjjVZP6feZHImxH/ym1vtGvnb6GhWQNlvKLhtxjCRQ3T7Dj1DCpYrAL6A3p7j81ald1
+         aooeTCw2FHS5DvqrO3dV/X5JgcV67E898724gEy5WCPlESXer9nF7KMczzIH3O98cAwC
+         eH4hCaqAhbcSai0rRQHsMNcWZDeNZ8cBxlrH4hHA9lSUp3BjQYcQ5IjiTdHn3c4j9BAw
+         HkTQ==
+X-Gm-Message-State: AOJu0YzA+TKLMu6o1S8cCUP7Smy6nzSQE7+Qh9e/A7WJWq+hkGQHu1eU
+	CCqWP3RLUz5w5n4TgHN0pYqfFvvK/NCkgufTSrZgt+u+R+NZQ7t+gSs5RjSO9xWHhcpMYgZsDoo
+	bQA5bEtq/QcbryVAlLteETJOkkh1FjAZuib1ivpWaBcFjPC6SMDQU3ZwPepqanQ==
+X-Gm-Gg: ASbGncsKprvZwDMmI0/yDxm4gP/HOi6BOQ2FwnNCRKrF2XaJ+K3qS9iNf4aaFbHJBZ6
+	ofhnASz8wTX9tdnmMapQ+AA4ccNekG7kaC9nDLRcrTsKmlveUkR/guB6GVNskljx7DF7UbypXZd
+	GGR53ZUFpdyjGejBpoz9ozXafHkbZy/qwefh0eWq4F1+OxXaeanLXysyKXBhoFloJCuitVa/TO9
+	aX6gcxFc+tub2ziIDj1mDBj5cvfiv6YRAGq+mQ80dKeQqrf7ifoSaLqgj5y8PwDSrzkhtSzKRxk
+	PNMiF7NrDyOp2IeN0KdSpWpX4wXZ6CLJoWVItk9gxdODn4yE0x0Lo4K92YGTPvMPomQvJyQWwlT
+	oayzq0n5W7tS6447FrDbsj0cVgiUOCGETts7zz3I=
+X-Received: by 2002:a05:6000:2405:b0:3a0:b8b0:4407 with SMTP id ffacd0b85a97d-3a35fe961demr20203791f8f.33.1747898572029;
+        Thu, 22 May 2025 00:22:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtO0x7LuetOYm1J9m1Rnt1VlZw5L3WrRT7l9tP5nHoiPlIlBPxhglJ5kk6LpY+1lGxZry0MQ==
+X-Received: by 2002:a05:6000:2405:b0:3a0:b8b0:4407 with SMTP id ffacd0b85a97d-3a35fe961demr20203765f8f.33.1747898571700;
+        Thu, 22 May 2025 00:22:51 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f22:2e00:6e71:238a:de9f:e396? (p200300d82f222e006e71238ade9fe396.dip0.t-ipconnect.de. [2003:d8:2f22:2e00:6e71:238a:de9f:e396])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca889a7sm22248682f8f.72.2025.05.22.00.16.45
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca4d224sm22776583f8f.12.2025.05.22.00.22.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 May 2025 00:16:48 -0700 (PDT)
-Message-ID: <56e17793-efa2-44ea-9491-3217a059d3f3@redhat.com>
-Date: Thu, 22 May 2025 09:16:45 +0200
+        Thu, 22 May 2025 00:22:51 -0700 (PDT)
+Message-ID: <81d73c4c-28c4-4fa0-bc71-aef6429e2c31@redhat.com>
+Date: Thu, 22 May 2025 09:22:50 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,31 +74,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/17] KVM: x86/mmu: Handle guest page faults for
- guest_memfd with shared memory
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: tabba@google.com, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-mm@kvack.org, pbonzini@redhat.com, chenhuacai@kernel.org,
- mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com,
- viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org,
- akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com,
- chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com,
- dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net,
- vbabka@suse.cz, vannapurve@google.com, mail@maciej.szmigiero.name,
- michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
- isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
- suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
- quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
- quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com,
- james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev,
- maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com,
- roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com,
- rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <diqzfrgx8olt.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH v4] vfio/type1: optimize vfio_pin_pages_remote() for large
+ folio
+To: lizhe.67@bytedance.com, alex.williamson@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+ peterx@redhat.com
+References: <20250521131711.4e0d3f2f.alex.williamson@redhat.com>
+ <20250522034956.56617-1-lizhe.67@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -147,107 +128,91 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <diqzfrgx8olt.fsf@ackerleytng-ctop.c.googlers.com>
+In-Reply-To: <20250522034956.56617-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
->>> + * shared (i.e., non-CoCo VMs).
->>> + */
->>>    static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>    {
->>> -	return IS_ENABLED(CONFIG_KVM_GMEM) &&
->>> -	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>> +	struct kvm_memory_slot *slot;
->>> +
->>> +	if (!IS_ENABLED(CONFIG_KVM_GMEM))
->>> +		return false;
->>> +
->>> +	slot = gfn_to_memslot(kvm, gfn);
->>> +	if (kvm_slot_has_gmem(slot) && kvm_gmem_memslot_supports_shared(slot)) {
->>> +		/*
->>> +		 * For now, memslots only support in-place shared memory if the
->>> +		 * host is allowed to mmap memory (i.e., non-Coco VMs).
->>> +		 */
->>
->> Not accurate: there is no in-place conversion support in this series,
->> because there is no such itnerface. So the reason is that all memory is
->> shared for there VM types?
->>
+On 22.05.25 05:49, lizhe.67@bytedance.com wrote:
+> On Wed, 21 May 2025 13:17:11 -0600, alex.williamson@redhat.com wrote:
 > 
-> True that there's no in-place conversion yet.
-> 
-> In this patch series, guest_memfd memslots support shared memory only
-> for specific VM types (on x86, that would be KVM_X86_DEFAULT_VM and
-> KVM_X86_SW_PROTECTED_VMs).
-> 
-> How about this wording:
-> 
-> Without conversion support, if the guest_memfd memslot supports shared
-> memory, all memory must be used as not private (implicitly shared).
-> 
-
-LGTM
-
->>> +		return false;
->>> +	}
->>> +
->>> +	return kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>>    }
->>>    #else
->>>    static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>> index 2f499021df66..fe0245335c96 100644
->>> --- a/virt/kvm/guest_memfd.c
->>> +++ b/virt/kvm/guest_memfd.c
->>> @@ -388,6 +388,23 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>>> From: Li Zhe <lizhe.67@bytedance.com>
 >>>
->>>    	return 0;
->>>    }
->>> +
->>> +bool kvm_gmem_memslot_supports_shared(const struct kvm_memory_slot *slot)
->>> +{
->>> +	struct file *file;
->>> +	bool ret;
->>> +
->>> +	file = kvm_gmem_get_file((struct kvm_memory_slot *)slot);
->>> +	if (!file)
->>> +		return false;
->>> +
->>> +	ret = kvm_gmem_supports_shared(file_inode(file));
->>> +
->>> +	fput(file);
->>> +	return ret;
+>>> When vfio_pin_pages_remote() is called with a range of addresses that
+>>> includes large folios, the function currently performs individual
+>>> statistics counting operations for each page. This can lead to significant
+>>> performance overheads, especially when dealing with large ranges of pages.
+>>>
+>>> This patch optimize this process by batching the statistics counting
+>>> operations.
+>>>
+>>> The performance test results for completing the 8G VFIO IOMMU DMA mapping,
+>>> obtained through trace-cmd, are as follows. In this case, the 8G virtual
+>>> address space has been mapped to physical memory using hugetlbfs with
+>>> pagesize=2M.
+>>>
+>>> Before this patch:
+>>> funcgraph_entry:      # 33813.703 us |  vfio_pin_map_dma();
+>>>
+>>> After this patch:
+>>> funcgraph_entry:      # 16071.378 us |  vfio_pin_map_dma();
+>>>
+>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>> Co-developed-by: Alex Williamson <alex.williamson@redhat.com>
+>>> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+>>> ---
 >>
->> Would it make sense to cache that information in the memslot, to avoid
->> the get/put?
->>
->> We could simply cache when creating the memslot I guess.
->>
+>> Given the discussion on v3, this is currently a Nak.  Follow-up in that
+>> thread if there are further ideas how to salvage this.  Thanks,
 > 
-> When I wrote it I was assuming that to ensure correctness we should
-> check with guest memfd, like what if someone closed the gmem file in the
-> middle of the fault path?
+> How about considering the solution David mentioned to check whether the
+> pages or PFNs are actually consecutive?
 > 
-> But I guess after the discussion at the last call, since the faulting
-> process is long and racy, if this check passed and we go to guest memfd
-> and the file was closed, it would just fail so I guess caching is fine.
-
-Yes, that would be my assumption. I mean, we also msut make sure that if 
-the user does something stupid like that, that we won't trigger other 
-undesired code paths (like, suddenly the guest_memfd being !shared).
-
+> I have conducted a preliminary attempt, and the performance testing
+> revealed that the time consumption is approximately 18,000 microseconds.
+> Compared to the previous 33,000 microseconds, this also represents a
+> significant improvement.
 > 
->> As an alternative ... could we simple get/put when managing the memslot?
+> The modification is quite straightforward. The code below reflects the
+> changes I have made based on this patch.
 > 
-> What does a simple get/put mean here?
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index bd46ed9361fe..1cc1f76d4020 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -627,6 +627,19 @@ static long vaddr_get_pfns(struct mm_struct *mm, unsigned long vaddr,
+>          return ret;
+>   }
+>   
+> +static inline long continuous_page_num(struct vfio_batch *batch, long npage)
+> +{
+> +       long i;
+> +       unsigned long next_pfn = page_to_pfn(batch->pages[batch->offset]) + 1;
+> +
+> +       for (i = 1; i < npage; ++i) {
+> +               if (page_to_pfn(batch->pages[batch->offset + i]) != next_pfn)
+> +                       break;
+> +               next_pfn++;
+> +       }
+> +       return i;
+> +}
 
-s/simple/simply/
 
-So when we create the memslot, we'd perform the get, and when we destroy 
-the memslot, we'd do the put.
+What might be faster is obtaining the folio, and then calculating the 
+next expected page pointer, comparing whether the page pointers match.
 
-Just an idea.
+Essentially, using folio_page() to calculate the expected next page.
+
+nth_page() is a simple pointer arithmetic with CONFIG_SPARSEMEM_VMEMMAP, 
+so that might be rather fast.
+
+
+So we'd obtain
+
+start_idx = folio_idx(folio, batch->pages[batch->offset]);
+
+and then check for
+
+batch->pages[batch->offset + i] == folio_page(folio, start_idx + i)
 
 -- 
 Cheers,
