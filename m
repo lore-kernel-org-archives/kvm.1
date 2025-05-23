@@ -1,140 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2349914885B;
-	Fri, 23 May 2025 13:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085DA29291E
+	for <kvm@vger.kernel.org>; Fri, 23 May 2025 13:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748005960; cv=none; b=tlNLByJ7L34/8fWljh6dDetkFkoMGPYEiyAB242WaY9gVWb+NBAQe7IVDs0dpxCqXHwztpddvhqRKS1b07zSrBxB8EATEtSs4QQoHX2nTHioBGFw4zkBVp6a/dy2qrgbZoOlN6ChrDtfpAfZl7tfquWwSpbr+y1+oID0AwxirIA=
+	t=1748007097; cv=none; b=sFYNbxOgf2RS/G63dNwch0M5jvTOB7+QGx5wfXq7qBVbqRN8c8e/2avYNOeoxwurTkZVMwPDyL74CTLi3GbNsZ3UH78GyMI3f1a7JWZjkjCEkz2FcNylVkGlHU1fTMrYqVsRxhUHcFYc3mAj88zFUI61epCzDja/zGgxQEtO/jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748005960; c=relaxed/simple;
-	bh=9SugXRrE9PpqZwWLIG/qzbGhzadN0J1Xh2e9tSKDdFQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jOZVbtVoC/0jWkieM5vPeDRUrnbP3CLzZqMAnfNTwyy0ec4sjKQ04RyELlLeDScIF5AJdF5sbyOy28rRM/AQHuWb0Ec7aU/ic2ECKyqLN3xn1y0VqU74d3ZIWcJsbPSM4J5P2LdpRKgkVe8V67i+J69BebGMbck/3zIM1LttqOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MPxVG9Do; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1748007097; c=relaxed/simple;
+	bh=sE7NSB29qsmfs0sI4wgf6B6ZQGe4IKQtX92E6yxep1o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=PC4ND8w08i7XO1GBm4DHWydUHXsoSkFiiBx44uEJbUH/D8iJmRwDmeaHySArYy6FrS0rvkWq7Vyr97+ue2wvJGxL9ec5Pet4tpesHvVYp50G46XH/IbxYGElkua7buO44gGsPhSRvQh8lk2iu36E4OMgBGWiqUmGpMdT/6adiGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ZK7h21AF; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MPxVG9Do"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748005958; x=1779541958;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9SugXRrE9PpqZwWLIG/qzbGhzadN0J1Xh2e9tSKDdFQ=;
-  b=MPxVG9Dob5fYGZ0t77KCD8ESDvuZSr5wo0sBlfgWBr64GZ11OYWc/6/q
-   ngAzCK0gMIyq+WxuywE1lUftOxUyMIgJpmV1j9pjMhKMfndT0ZoAfnPQf
-   ciKJ9WcEupDda5awZoNUaRCVHayB7ImsVyNfMfmh4VdMsNeHiZ5OxUJdg
-   OUWgZ2sRwxGeH2zMvy2UXLN2IoWFQFkwkhE8k2Yjpc1O813sZ/nbE6MH6
-   YJBFchX2+KHcpupIANmg4JYbQgehpGSyFj3hB4erblDjgTT2//g9YYMTS
-   UVybV33I2jkxUWZ0aImCBfXqAnh5wNnNRqZlSSef4iIVkKRj5zZXbxPSp
-   Q==;
-X-CSE-ConnectionGUID: bSSJGygTTreFkJfZrwL4fw==
-X-CSE-MsgGUID: EuaUNaTWTMS48SiYhvJZaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49766784"
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="49766784"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 06:12:37 -0700
-X-CSE-ConnectionGUID: FS7zd6hQRtaKz/WmDWSIhw==
-X-CSE-MsgGUID: Zxpj9SUSS+SuYp4TB3pPog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="146126629"
-Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.109.147]) ([10.125.109.147])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 06:12:36 -0700
-Message-ID: <509a5751-f2a4-45af-8bfb-1058dae549fb@intel.com>
-Date: Fri, 16 May 2025 08:19:18 -0700
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ZK7h21AF"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a368259589so1005436f8f.3
+        for <kvm@vger.kernel.org>; Fri, 23 May 2025 06:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1748007094; x=1748611894; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sE7NSB29qsmfs0sI4wgf6B6ZQGe4IKQtX92E6yxep1o=;
+        b=ZK7h21AFzO78aJkYSkcthA2284pP35VOKEzL669JZMfZVh40cPSxwUqJhG5ck1/pYK
+         QAOcm25tG82u/QQJn6TVErx1VF5wGzJELP3jhgbBK3BpqwavTWdATz9HZK+vsnbhfD5X
+         NJkooyefkoA626z+ANYuH7WRO3uWWUNIjZVrCbvrvO57IMd25yzB8oElvUCqaeWqrE0Z
+         sanPDBaP781coJeu2sQqWBHvP+qtl3cgfjnxWWU7mvHu6CaShC0571ZbtYdp74Clu8BN
+         7/ZaJnjjJOFTxMMzy9v13Uv3YdQI9syuTOyh1+nUqbiBjhJsLBruTMHGkS3ewVSPQLwu
+         QN6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748007094; x=1748611894;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sE7NSB29qsmfs0sI4wgf6B6ZQGe4IKQtX92E6yxep1o=;
+        b=GaCpJ7/iyvJy8Mwp3BU+MSEaYsXJUiflnm74IwMBkG4J/2vhBW1H3n8az03uHwIGvV
+         350Jf6bIS3s5dZ5MfEoKWSr8J0pr+PvO+Twqrbxj5elQhFAXAAv/80wY3h9w3kLXRgiP
+         XZ8W8rxBP7SUozGCJdWpgcftgBhD7rVsDs8qoXhmGNqyHmpglRC5mQLd4Y34bc3Ws84+
+         sjakZC63AVJSN235LIS4ooJ1oNp8QPmRfBh4McFE91MuxTmdpBx0A4zs75ZNgi8ya28r
+         1gb6Y1lnWCexsZ8uFH3uI+T2X9N7rYVp2ySj3q9XiOfvEpUd5X8D7dgOSoKD41kBd7SU
+         +ayQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX77jVy0nLgAfX7l3Vb92CV6PmsIpBMv0h8Vv+O4FP8ngW3GbzTrY42Wxdete+lpC0RsG8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCG+KAaBb9CzP93MGA9SB9y6uszh5KZxyJHQiwQxRp55qHQL1V
+	W6Zr6NqN627nze3Xg+azv9cR/7s2J1kzAEh7HjyH6wfDY/+R0EZvNfBcRc8dzcOeMnI=
+X-Gm-Gg: ASbGncutTH/y+utm4eZlPUGg40V+EA6/9ta2kI64PKTKW5EEnSMikuzGSPmKL6rdwck
+	lurbyAsOEhDNJ2hmb0O/gaG1ETT2d/++QsjDxi9LTQQRtkgB3SyYOvRCDaVTtSGAo6bH+dlc/Kl
+	GmBhhTBkzwoydAfohx8ZLxYzcjc74okSC1WpkBV+3tIGUz9zn3ghe1Xhzh+JREqR2arAam95t7o
+	jS2wcFegbsjnQ/Is8BVA2eBtumJ/PeGjOHGdOTs/B5PpvCSrHObcneQf8y9fvFKcFIIbz1HzpeJ
+	ljWIotW5SWzYaljShe5qJAZWIMYTpLjLPqZL0FxY3ZWzTfgsLeTpmsHTiTg=
+X-Google-Smtp-Source: AGHT+IH4B5YjATsLpzFQConVuBPC8YzXe6dS/7DO0gd92eFJugpX4BslSSwZcD/zqo2WMw5EUo7NzA==
+X-Received: by 2002:a05:6000:400f:b0:39c:1401:6ede with SMTP id ffacd0b85a97d-3a4c2b3a659mr992493f8f.3.1748007094151;
+        Fri, 23 May 2025 06:31:34 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:be84:d9ad:e5e6:f60b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca8d005sm27248141f8f.90.2025.05.23.06.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 May 2025 06:31:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] Introduce CET supervisor state support
-To: Ingo Molnar <mingo@kernel.org>, Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- tglx@linutronix.de, seanjc@google.com, pbonzini@redhat.com,
- peterz@infradead.org, rick.p.edgecombe@intel.com, weijiang.yang@intel.com,
- john.allen@amd.com, bp@alien8.de, chang.seok.bae@intel.com,
- xin3.li@intel.com, Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Eric Biggers
- <ebiggers@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Kees Cook <kees@kernel.org>,
- Maxim Levitsky <mlevitsk@redhat.com>, Mitchell Levy
- <levymitchell0@gmail.com>, Nikolay Borisov <nik.borisov@suse.com>,
- Oleg Nesterov <oleg@redhat.com>, Samuel Holland <samuel.holland@sifive.com>,
- Sohil Mehta <sohil.mehta@intel.com>, Stanislav Spassov <stanspas@amazon.de>,
- Uros Bizjak <ubizjak@gmail.com>, Vignesh Balasubramanian <vigbalas@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>
-References: <20250512085735.564475-1-chao.gao@intel.com>
- <aCYLMY00dKbiIfsB@gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aCYLMY00dKbiIfsB@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 23 May 2025 15:31:32 +0200
+Message-Id: <DA3KSSN3MJW5.2CM40VEWBWDHQ@ventanamicro.com>
+Subject: Re: [PATCH v3 9/9] RISC-V: KVM: Upgrade the supported SBI version
+ to 3.0
+Cc: <linux-riscv@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ "Palmer Dabbelt" <palmer@rivosinc.com>, <kvm@vger.kernel.org>,
+ <kvm-riscv@lists.infradead.org>, "linux-riscv"
+ <linux-riscv-bounces@lists.infradead.org>
+To: "Atish Patra" <atishp@rivosinc.com>, "Anup Patel" <anup@brainfault.org>,
+ "Will Deacon" <will@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ "Paul Walmsley" <paul.walmsley@sifive.com>, "Palmer Dabbelt"
+ <palmer@dabbelt.com>, "Mayuresh Chitale" <mchitale@ventanamicro.com>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+References: <20250522-pmu_event_info-v3-0-f7bba7fd9cfe@rivosinc.com>
+ <20250522-pmu_event_info-v3-9-f7bba7fd9cfe@rivosinc.com>
+In-Reply-To: <20250522-pmu_event_info-v3-9-f7bba7fd9cfe@rivosinc.com>
 
-On 5/15/25 08:41, Ingo Molnar wrote:
-> * Chao Gao <chao.gao@intel.com> wrote:
->> I kindly request your consideration for merging this series. Most of 
->> patches have received Reviewed-by/Acked-by tags.
-> I don't see anything objectionable in this series.
-> 
-> The upcoming v6.16 merge window is already quite crowded in terms of 
-> FPU changes, so I think at this point we are looking at a v6.17 merge, 
-> done shortly after v6.16-rc1 if everything goes well. Dave, what do you 
-> think?
+2025-05-22T12:03:43-07:00, Atish Patra <atishp@rivosinc.com>:
+> Upgrade the SBI version to v3.0 so that corresponding features
+> can be enabled in the guest.
+>
+> Signed-off-by: Atish Patra <atishp@rivosinc.com>
+> ---
+> diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/a=
+sm/kvm_vcpu_sbi.h
+> -#define KVM_SBI_VERSION_MAJOR 2
+> +#define KVM_SBI_VERSION_MAJOR 3
 
-It's getting into shape, but it has a slight shortage of reviews. For
-now, it's an all-Intel patch even though I _thought_ AMD had this
-feature too. It's also purely for KVM and has some suggested-by's from
-Sean, but no KVM acks on it.
+I think it's time to add versioning to KVM SBI implementation.
+Userspace should be able to select the desired SBI version and KVM would
+tell the guest that newer features are not supported.
 
-I have the feeling Sean would speak up if this was going in a bad
-direction for KVM, but I do love to see acks accompanying suggested-by's
-to indicate that the suggestion was interpreted properly.
+We could somewhat get away with the userspace_sbi patch I posted,
+because userspace would at least be in control of the SBI version, but
+it would still be incorrect without a KVM enforcement, because a
+misbehaving guest could use features that should not be supported.
