@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98DC23E336;
-	Fri, 23 May 2025 09:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BA1241665;
+	Fri, 23 May 2025 09:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747994037; cv=none; b=kepybZZgh8ifUir3bqFjd5rP/Wg/BpLtm2ZAtqRgoYl1xNYiPciypt5OLJKUFUCVGoTByLHAiRNbSOIrZ0GOqmg3WDTKXVhDjStBTLNH+ddTsMZOsCGxicSp45ThZloFa0ncnfCoTlLpv8IntMcPaBkjmi1sOcsdQSNhwAUM4f0=
+	t=1747994038; cv=none; b=bR/jloo06sxMjUjmfuL4y015h58eXnIWkgPN5CLyCQlhoLBwWdjM096oH0tqizqz4x9IPFaL6+SpMx0dLOFo3uWDiZm7559/tZeyQgiwcjcGXiV9zu7ZHAnKaNflC224alVCSNj+Hmo8x2R5Tv7rcIdYoPEfV6V9L/t1Djp2mmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747994037; c=relaxed/simple;
-	bh=PuirriKIku0f37Y1z7AzxJVhYOd56gcoD/kA14CytQQ=;
+	s=arc-20240116; t=1747994038; c=relaxed/simple;
+	bh=MHYI6BG+L0TzNrsOZ1WeYjrr84DT6xKaIAXH83HbkR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHYalM/ptj0izUmgFh0sUTLgfITV7O5marejK+2zc6UMXlZDOuWV4HH4+dt48/BtqJnZA8sZ6MeeR/+ZVhHZRl9lQRg/xvEflscIJ/chRvRepq8JrNUAmfnFzvnjnn0kif/5a1cPbY2w0HGclPETZVj01gK8dieLleUtlG/tn9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HMy6Dre8; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=jHc3sHdEWeIQWA6h66bsSbnbrJsW0ZxkhZeBPKVUKgTQ0VI7MulnGydvS1YOZBWk9lmX9c4gPQyR/1eca5FpLh6mI5NqTrduD/umfC9pQLQw4Xh903QxLKxkmtm7AA3uv8y5B9tIF7lg2X14X2v++lFj7ZJLF4PDmv+KEQVVH7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ts7g1Rsw; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HMy6Dre8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ts7g1Rsw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747994036; x=1779530036;
+  t=1747994037; x=1779530037;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PuirriKIku0f37Y1z7AzxJVhYOd56gcoD/kA14CytQQ=;
-  b=HMy6Dre8HvH/2CXtFeG5vzm/4g90OAFUHfl2Th0QCN/HABcnqWhAKttY
-   vv66CKVdNKm+H82zGraniHlv0XcJu4uHi1ipiqTDUoLfQidMXtfBTIJ9Z
-   0h5mXa23xK3J4t1qwb2VMhqw+fiaOUfCPXfAElAQdPuecKG7dnWsSZxPF
-   nkI23cW+7r9nirzoUK1bp9H2l6bkRlTfJPz+oeG4HJrtmvyhB1Z3Ssrpy
-   QGYVxLL83/ZKcTM2JG38lnRnxDIKIXWBMRz35hcLhyDOuX8vvhh5sQ89o
-   OOFiDOSIG4hTxTUUL0fpt6CxTsy1VKzLqQHYjki2dmqb3bSaT0YYHZMta
-   A==;
-X-CSE-ConnectionGUID: M9XXAFz1S7SgncVoc7w5FA==
-X-CSE-MsgGUID: n+vjz/xLQrS5ubXNQfCK0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444227"
+  bh=MHYI6BG+L0TzNrsOZ1WeYjrr84DT6xKaIAXH83HbkR8=;
+  b=Ts7g1RswhkzqtXJ5OCVlE6Ebf/JXq3i1PV9EmcDt3SnuVqYdIiWXr1b8
+   G0QfRrCUOLAWVDjYr3Vsn5JQG+b8xbnZDUp44FIk0ohyMl3h8OLbBAkGx
+   Ws+OnMJLI1wSNL+5unj2gOGttDB/1rWq65JCB4xxkFGalsCzKYrb9W5C4
+   Rt5aNBGdCh0ev3kDfwSSVF8MuZaTgjGbQCqVAqa3DI1VB59/nXNQQmo+c
+   tG1rAzyuMBXjJm2iUuWUC4P79+pOgTrKiGNGXr6kLIqKDXIMFiWQkzVcu
+   u259YWZqNOP6d6925stPyXLo7jWiA3ggb24erU+w/cRP3CDTXSyFiNXXa
+   g==;
+X-CSE-ConnectionGUID: eVF2TLUvQpGNKLIs9ihCoQ==
+X-CSE-MsgGUID: 3B2QM1U/TQauvINc9+7xiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444243"
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="75444227"
+   d="scan'208";a="75444243"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:55 -0700
-X-CSE-ConnectionGUID: +//3taRjQD+Z0DCRSYG1ig==
-X-CSE-MsgGUID: 5vL9xZxlQiywW2E/+v2/iA==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:56 -0700
+X-CSE-ConnectionGUID: pWgkUhH1SnGujQhMaoDXKg==
+X-CSE-MsgGUID: t2+7IjtaTu+hILJ8cKt8pg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="164315084"
+   d="scan'208";a="164315091"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:54 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:56 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	x86@kernel.org,
@@ -66,9 +66,9 @@ Cc: seanjc@google.com,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 15/20] x86/virt/seamldr: Handle TD-Preserving update failures
-Date: Fri, 23 May 2025 02:52:38 -0700
-Message-ID: <20250523095322.88774-16-chao.gao@intel.com>
+Subject: [RFC PATCH 17/20] x86/virt/tdx: Establish contexts for the new module
+Date: Fri, 23 May 2025 02:52:40 -0700
+Message-ID: <20250523095322.88774-18-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250523095322.88774-1-chao.gao@intel.com>
 References: <20250523095322.88774-1-chao.gao@intel.com>
@@ -80,94 +80,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Failure encounterred after the module shutdown are unrecoverable. All
-subsequent SEAMCALLs will fail and TDs will be killed.
+TD-Preserving doesn't need to re-configure the global HKID, TDMRs or PAMTs.
+The new module can import the handoff data created by the old module to
+establish all necessary contexts. The TDH.SYS.UPDATE API is introduced for
+the import process
 
-Report the error through sysfs attributes and log a message to clarify that
-SEAMCALL errors are expected in this situation.
+Once the import is done, the module update is complete, and the new module
+is ready to handle requests from the VMM and guests.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 15 ++++++++++++++-
- arch/x86/virt/vmx/tdx/tdx.c     | 13 +++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h     |  1 +
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ arch/x86/virt/vmx/tdx/seamldr.c |  7 +++++++
+ arch/x86/virt/vmx/tdx/tdx.c     | 16 ++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h     |  2 ++
+ 3 files changed, 25 insertions(+)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 1ecb5d3088af..a18df08a5528 100644
+index c4e1b7540a43..168fd2afd0c9 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -278,6 +278,14 @@ static void ack_state(void)
- 	}
- }
+@@ -246,6 +246,7 @@ enum tdp_state {
+ 	TDP_SHUTDOWN,
+ 	TDP_CPU_INSTALL,
+ 	TDP_CPU_INIT,
++	TDP_RUN_UPDATE,
+ 	TDP_DONE,
+ };
  
-+static void print_update_failure_message(void)
-+{
-+	static atomic_t printed = ATOMIC_INIT(0);
+@@ -322,6 +323,12 @@ static int do_seamldr_install_module(void *params)
+ 			case TDP_CPU_INIT:
+ 				ret = tdx_cpu_enable();
+ 				break;
++			case TDP_RUN_UPDATE:
++				if (!primary)
++					break;
 +
-+	if (atomic_inc_return(&printed) == 1)
-+		pr_err("update failed, SEAMCALLs will report failure until TDs killed\n");
-+}
-+
- /*
-  * See multi_cpu_stop() from where this multi-cpu state-machine was
-  * adopted, and the rationale for touch_nmi_watchdog()
-@@ -314,8 +322,13 @@ static int do_seamldr_install_module(void *params)
++				ret = tdx_module_run_update();
++				break;
+ 			default:
  				break;
  			}
- 
--			if (ret)
-+			if (ret) {
- 				atomic_inc(&tdp_data.failed);
-+				if (curstate >= TDP_CPU_INSTALL) {
-+					tdx_module_set_error();
-+					print_update_failure_message();
-+				}
-+			}
- 			ack_state();
- 		} else {
- 			touch_nmi_watchdog();
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4cdeec0a4128..331c86eeddcf 100644
+index 331c86eeddcf..5f678c9da4ee 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1102,6 +1102,13 @@ static ssize_t version_show(struct device *dev, struct device_attribute *attr,
- {
- 	const struct tdx_sys_info_versions *v = &tdx_sysinfo.versions;
- 
-+	/*
-+	 * Inform userspace that the TDX module isn't in a usable state,
-+	 * possibly due to a failed update.
-+	 */
-+	if (tdx_module_status != TDX_MODULE_INITIALIZED)
-+		return -ENXIO;
-+
- 	return sysfs_emit(buf, "%u.%u.%u\n", v->major_version,
- 					     v->minor_version,
- 					     v->update_version);
-@@ -1377,6 +1384,12 @@ int tdx_module_shutdown(void)
- 	return ret;
+@@ -1390,6 +1390,22 @@ void tdx_module_set_error(void)
+ 	tdx_module_status = TDX_MODULE_ERROR;
  }
  
-+void tdx_module_set_error(void)
++int tdx_module_run_update(void)
 +{
-+	/* Called from stop_machine(). no need to hold tdx_module_lock */
-+	tdx_module_status = TDX_MODULE_ERROR;
++	struct tdx_module_args args = {};
++	int ret;
++
++	ret = seamcall(TDH_SYS_UPDATE, &args);
++	if (ret) {
++		tdx_module_status = TDX_MODULE_ERROR;
++		pr_info("module update failed: %d\n", ret);
++		return ret;
++	}
++
++	tdx_module_status = TDX_MODULE_INITIALIZED;
++	return ret;
 +}
 +
  static bool is_pamt_page(unsigned long phys)
  {
  	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 3830dee4da91..ed3d74c991f6 100644
+index ed3d74c991f6..a05e3c21e7f5 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -125,5 +125,6 @@ struct tdmr_info_list {
- int seamldr_prerr(u64 fn, struct tdx_module_args *args);
+@@ -49,6 +49,7 @@
+ #define TDH_VP_WR			43
+ #define TDH_SYS_CONFIG			45
+ #define TDH_SYS_SHUTDOWN		52
++#define TDH_SYS_UPDATE		53
+ 
+ /*
+  * SEAMCALL leaf:
+@@ -126,5 +127,6 @@ int seamldr_prerr(u64 fn, struct tdx_module_args *args);
  
  int tdx_module_shutdown(void);
-+void tdx_module_set_error(void);
+ void tdx_module_set_error(void);
++int tdx_module_run_update(void);
  
  #endif
 -- 
