@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEC9220F33
-	for <kvm@vger.kernel.org>; Fri, 23 May 2025 23:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61F22127A
+	for <kvm@vger.kernel.org>; Fri, 23 May 2025 23:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748043052; cv=none; b=bMtOf751CiR8NCxzqP1uB+zD65wGLGXS0jcXBzVvGtO9spkwVfbMBVTs1mvFdlr45feZR/+zIDXi0LrIBwx7xZdgPlCDKWzvxtQof6UKfieD1sxsLSGCykbJVzs9UeS/u7f68VEcTpkeOhJgqjvAr2AddgvQl9awoDedPDyaJAc=
+	t=1748043055; cv=none; b=UoYdqQMW9iVgpExEPfGNryjjVbVPu5mCy7M7X3ndyl1AX6YVuJuGeYrAuwu9ElawX9T1JxlgjFMTxGJpGoBD0uIOIzgltwmFiei/j8tZK/JmC52JNjNFT5VZbrB/c4XiE3fsmTe8q2FkDnvMvi/O4NsdJy8znxgL4ZLEgA7k/R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748043052; c=relaxed/simple;
-	bh=km0htpuAkJUV0zuVrkGxs+M34Ahf+Loi9SWQ3zbCDtQ=;
+	s=arc-20240116; t=1748043055; c=relaxed/simple;
+	bh=XFB76NABZviJPfOlyXNkP6l4hBM90VO+xbJxdLOUzbU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t1JLIb5YrKGhIfo/caD0hUGDhRbpP3PSWvg3VAocSY4qCADudznCwDwtYeTJ/j0cxXyVXHCql9JnLZUrYcr9l8lXlO9fCBuOaG5NP+kc93Y5SpQI5sm1hqEwKb5K4QpTnt/dmRMtnx/Q+1ciRcXsmF0th1yAkogQK4SJzruTd3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mwrA6RSG; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=km7JmibUJJR7mpCQ651ImU9yclC9yAeugbtIyp7UJfTzkiQzbq9bsfBpd4pQ0LgAo+CxPpbqaxnfbbIBKCrxmyP+FGCJtrVjKMm7sDlxUicN/EhNWNBVtbjKgIAOuMlPYGr8EflBdMZujL9mcNy/jysMh5j9pl5GFVjnwHqwh80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hYoTrvGE; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mwrA6RSG"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b1fa2cad5c9so176217a12.2
-        for <kvm@vger.kernel.org>; Fri, 23 May 2025 16:30:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hYoTrvGE"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-311158ce5afso243609a91.2
+        for <kvm@vger.kernel.org>; Fri, 23 May 2025 16:30:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748043050; x=1748647850; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748043053; x=1748647853; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ytBIFo98xFNB1MVt6EkCempGxNhbLpE0MPkhz750Fyc=;
-        b=mwrA6RSGTpGNEETylLkNABsB0mmC9tHxAuZH++uv193bpAJoxmquBp8aKYJ0CgB4iF
-         dp3peziSyrcwVrJWqpzhU0tHPZyk8MKXm4aqRDYoQM1pJOWXcjbW/fc81ATd5PFv9Qik
-         tkCYJZzYl+S5xr2jVen1MMr34wWM7C8TiX+LG9FkX94BbbyP1d3pfafPe+vBHQCMTIbW
-         ZLWS6K91EEmAY11dnCQYIWQrbxD6ViLUkFEprjA1+j47N84r18chxw+8JBmjrrx8hOpc
-         4QkDHqVMbNIPqs1g4Qhf49V0SB1hJOJI2LLrZxAw8HWtRe4m6EHw9zPFff6/HpbLQO2T
-         GxhA==
+        bh=Dbvndy14WLmrVseBPD+aXtR7LiVhb8OaSDQ9DBClagk=;
+        b=hYoTrvGEn8nib21IojOd8y9qs/KE5gJV6veJXehtxkSI8iOE2+jon5ODo78MF/vZ5k
+         oodTJt58gGnq+0h+h2fXlepndIZJoF6LMNr2Bno0Q53SdPoTL94QzsRSw//pOj+a45sV
+         7BVEnPfQpXR+DmX39vx3YhWt1zRLJ11mfjOYQgRbFUF5KBk4hCdiL9mhfhJpDpEEflq7
+         WipNnxjSGJS2IM9v/zms0DdNW1xOlZNctGwRs5SsRvVrHrIjJQl8E15jf3fZLmLmC8uu
+         tpl9AOx45KjzRJGwW/q3oU0yv3zCDhvrz0yxCkHCWvur1p46oPrIh6KbdLgdY7zSu687
+         CMBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748043050; x=1748647850;
+        d=1e100.net; s=20230601; t=1748043053; x=1748647853;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ytBIFo98xFNB1MVt6EkCempGxNhbLpE0MPkhz750Fyc=;
-        b=NgA/Js58rcMucQuGk1eueRibhkUw6pCWCMnhNSUXS2fjxYdtSGC36jk7XnIUfMI+sg
-         gEWZRM/dFQgQR34gNO4TVPP4nmuremP2bwIeFjk9akw4pX/UEtub58MzJDLeA1/3cLFx
-         dtWJBA8Ncb8gNajxARRygo+zozYpkla8RBrvw9cYkxFjRUgh1ZGVgupONM9URK69hswk
-         dLW95y62WED/tHvCD50LAuQZXpAtTZSlR39JV4Y4GhZhQmbv+XEr7XMxQI+EerqWZ8sf
-         2N/Wd4YNNrWwdRXY7RqddKblyDT9QzBd6PO9XV7QesWbJvqF2Tz2Ao8FE2NLIDz/LRee
-         VaoA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKDdzNPbaNPSEEneru0jY6A3RWSlEYYCZopKG69m2sPyv1jXYzSWcO45ZhNXt8m2Kt86Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpveCHXFlvsIlvm9+fSq3+z5U6UcYFVMGb4UEjej9vZUG6KdHl
-	YqMvdkPojRfi1TdNaz5KON7Mxz2eQXlQbFe+BlmyicWUJU48GMR52xsj8HwbDbkodJU0dpPgrTx
-	vgLTMpFB0XLMeaQ==
-X-Google-Smtp-Source: AGHT+IGITjGEmjYwA0OzIiOuTLVVQ30T9NDX5D0e99YXFv1OioDrXF13PWhstptBBVs3gyOR+z4+EVpkYcPkCg==
+        bh=Dbvndy14WLmrVseBPD+aXtR7LiVhb8OaSDQ9DBClagk=;
+        b=CP2zRTFzpDHAxLHKx2tlgw/ghd3suRn7WaatEWTAfts58vXatKfoSgNsiC0gvrjGZA
+         2kYwM+7EHxmXm12q4KmJ9zR6CjJn3/fXnz4JJZeKxpKNQ+zhfM7i+hTqElzBOHmZEhL4
+         oQ1nREP8TTBPqi4tyXeHwszp4XxueshgeTIlrPOR0PtOayKaerCKseqMms9C+rRzInuJ
+         tBTxAlGE/4cwATEEGsRjNsWi0VMhpiYolfQ2cNlsrxSX4BtuUcWiItIZU0PABanjPpWa
+         B1KG4k2RjEQ8vjWmQI4BWzoLRoHn5JuBREfKCYcGk7qVolizZsZBKjpjHjQOou7jwaBD
+         5r6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUOfCgq8doaGl9fTJRPRfoHO2xpX5CulBV4PUtlFrMLCwBSL3I2MJt2MRMKdG4ZqxknVvY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj14L7fRHqbhWcBF1YFd1He03QGKxzyQd+v0hnGrUGWkRH/l6e
+	tSqlPHZyNGIy/EY93i9Z7sayzS1sbNdPOLdhc6aekNi88J3fB5/g5wnPnzqfHz/vX4qNfYBBt0T
+	aaMnQNk2oeVoArA==
+X-Google-Smtp-Source: AGHT+IFUSbonvQZln+YG7RceYz32gE4GYfwdc7NjF3dvllXwjI/qhzRNNASumvsr8n9B7Vf69CI/WX+p7Y9BAA==
 X-Received: from pjf6.prod.google.com ([2002:a17:90b:3f06:b0:2ea:9d23:79a0])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6da1:b0:215:f6ab:cf78 with SMTP id adf61e73a8af0-2188c34da5cmr1689283637.28.1748043050085;
- Fri, 23 May 2025 16:30:50 -0700 (PDT)
-Date: Fri, 23 May 2025 23:29:59 +0000
+ 2002:a17:90b:2e0e:b0:2ee:8ea0:6b9c with SMTP id 98e67ed59e1d1-3110f30d550mr1964569a91.12.1748043053008;
+ Fri, 23 May 2025 16:30:53 -0700 (PDT)
+Date: Fri, 23 May 2025 23:30:01 +0000
 In-Reply-To: <20250523233018.1702151-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250523233018.1702151-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.49.0.1151.ga128411c76-goog
-Message-ID: <20250523233018.1702151-15-dmatlack@google.com>
-Subject: [RFC PATCH 14/33] tools headers: Import drivers/dma/idxd/registers.h
+Message-ID: <20250523233018.1702151-17-dmatlack@google.com>
+Subject: [RFC PATCH 16/33] vfio: selftests: Keep track of DMA regions mapped
+ into the device
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Shuah Khan <shuah@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -83,628 +84,207 @@ Cc: Shuah Khan <shuah@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
 	Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Import drivers/dma/idxd/registers.h into tools/include/ so that it can
-be used in VFIO selftests to interact with Intel DSA devices.
+Keep track of the list of DMA regions that are mapped into the device
+using a linked list and a new struct vfio_dma_region and use that to add
+{__,}to_iova() for converting host virtual addresses into IOVAs.
 
-Changes made when importing:
- - Drop macro definitions that access struct idxd_device (e.g.
-   WQCFG_OFFSET()).
+This will be used in a subsequent commit to map multiple DMA regions
+into a device that are then used by drivers.
 
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/include/drivers/dma/idxd/registers.h | 601 +++++++++++++++++++++
- 1 file changed, 601 insertions(+)
- create mode 100644 tools/include/drivers/dma/idxd/registers.h
+ .../selftests/vfio/lib/include/vfio_util.h    | 23 +++++++--
+ .../selftests/vfio/lib/vfio_pci_device.c      | 49 ++++++++++++++++---
+ .../selftests/vfio/vfio_dma_mapping_test.c    | 20 +++++---
+ 3 files changed, 75 insertions(+), 17 deletions(-)
 
-diff --git a/tools/include/drivers/dma/idxd/registers.h b/tools/include/drivers/dma/idxd/registers.h
-new file mode 100644
-index 000000000000..7f4699e6a5c3
---- /dev/null
-+++ b/tools/include/drivers/dma/idxd/registers.h
-@@ -0,0 +1,601 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright(c) 2019 Intel Corporation. All rights rsvd. */
-+#ifndef _IDXD_REGISTERS_H_
-+#define _IDXD_REGISTERS_H_
+diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+index 4e5c6d395a12..ab96a6628f0e 100644
+--- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
++++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+@@ -51,6 +51,17 @@ struct vfio_pci_bar {
+ 	void *vaddr;
+ };
+ 
++typedef u64 iova_t;
 +
-+#include <linux/compiler.h>
-+#include <linux/types.h>
-+#include <linux/idxd.h>
++#define INVALID_IOVA UINT64_MAX
 +
-+/* PCI Config */
-+#define PCI_DEVICE_ID_INTEL_DSA_SPR0	0x0b25
-+#define PCI_DEVICE_ID_INTEL_IAX_SPR0	0x0cfe
-+
-+#define DEVICE_VERSION_1		0x100
-+#define DEVICE_VERSION_2		0x200
-+
-+#define IDXD_MMIO_BAR		0
-+#define IDXD_WQ_BAR		2
-+#define IDXD_PORTAL_SIZE	PAGE_SIZE
-+
-+/* MMIO Device BAR0 Registers */
-+#define IDXD_VER_OFFSET			0x00
-+#define IDXD_VER_MAJOR_MASK		0xf0
-+#define IDXD_VER_MINOR_MASK		0x0f
-+#define GET_IDXD_VER_MAJOR(x)		(((x) & IDXD_VER_MAJOR_MASK) >> 4)
-+#define GET_IDXD_VER_MINOR(x)		((x) & IDXD_VER_MINOR_MASK)
-+
-+union gen_cap_reg {
-+	struct {
-+		u64 block_on_fault:1;
-+		u64 overlap_copy:1;
-+		u64 cache_control_mem:1;
-+		u64 cache_control_cache:1;
-+		u64 cmd_cap:1;
-+		u64 rsvd:3;
-+		u64 dest_readback:1;
-+		u64 drain_readback:1;
-+		u64 rsvd2:3;
-+		u64 evl_support:2;
-+		u64 batch_continuation:1;
-+		u64 max_xfer_shift:5;
-+		u64 max_batch_shift:4;
-+		u64 max_ims_mult:6;
-+		u64 config_en:1;
-+		u64 rsvd3:32;
-+	};
-+	u64 bits;
-+} __packed;
-+#define IDXD_GENCAP_OFFSET		0x10
-+
-+union wq_cap_reg {
-+	struct {
-+		u64 total_wq_size:16;
-+		u64 num_wqs:8;
-+		u64 wqcfg_size:4;
-+		u64 rsvd:20;
-+		u64 shared_mode:1;
-+		u64 dedicated_mode:1;
-+		u64 wq_ats_support:1;
-+		u64 priority:1;
-+		u64 occupancy:1;
-+		u64 occupancy_int:1;
-+		u64 op_config:1;
-+		u64 wq_prs_support:1;
-+		u64 rsvd4:8;
-+	};
-+	u64 bits;
-+} __packed;
-+#define IDXD_WQCAP_OFFSET		0x20
-+#define IDXD_WQCFG_MIN			5
-+
-+union group_cap_reg {
-+	struct {
-+		u64 num_groups:8;
-+		u64 total_rdbufs:8;	/* formerly total_tokens */
-+		u64 rdbuf_ctrl:1;	/* formerly token_en */
-+		u64 rdbuf_limit:1;	/* formerly token_limit */
-+		u64 progress_limit:1;	/* descriptor and batch descriptor */
-+		u64 rsvd:45;
-+	};
-+	u64 bits;
-+} __packed;
-+#define IDXD_GRPCAP_OFFSET		0x30
-+
-+union engine_cap_reg {
-+	struct {
-+		u64 num_engines:8;
-+		u64 rsvd:56;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+#define IDXD_ENGCAP_OFFSET		0x38
-+
-+#define IDXD_OPCAP_NOOP			0x0001
-+#define IDXD_OPCAP_BATCH			0x0002
-+#define IDXD_OPCAP_MEMMOVE		0x0008
-+struct opcap {
-+	u64 bits[4];
++struct vfio_dma_region {
++	struct list_head link;
++	void *vaddr;
++	iova_t iova;
++	u64 size;
 +};
 +
-+#define IDXD_MAX_OPCAP_BITS		256U
+ struct vfio_pci_device {
+ 	int fd;
+ 	int group_fd;
+@@ -63,6 +74,8 @@ struct vfio_pci_device {
+ 	struct vfio_irq_info msi_info;
+ 	struct vfio_irq_info msix_info;
+ 
++	struct list_head dma_regions;
 +
-+#define IDXD_OPCAP_OFFSET		0x40
+ 	/* eventfds for MSI and MSI-x interrupts */
+ 	int msi_eventfds[PCI_MSIX_FLAGS_QSIZE + 1];
+ };
+@@ -71,9 +84,10 @@ struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type);
+ void vfio_pci_device_cleanup(struct vfio_pci_device *device);
+ void vfio_pci_device_reset(struct vfio_pci_device *device);
+ 
+-void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size,
+-		      void *vaddr);
+-void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size);
++void vfio_pci_dma_map(struct vfio_pci_device *device,
++		      struct vfio_dma_region *region);
++void vfio_pci_dma_unmap(struct vfio_pci_device *device,
++			struct vfio_dma_region *region);
+ 
+ void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
+ 			    size_t config, size_t size, void *data);
+@@ -124,4 +138,7 @@ static inline void vfio_pci_msix_disable(struct vfio_pci_device *device)
+ 	vfio_pci_irq_disable(device, VFIO_PCI_MSIX_IRQ_INDEX);
+ }
+ 
++iova_t __to_iova(struct vfio_pci_device *device, void *vaddr);
++iova_t to_iova(struct vfio_pci_device *device, void *vaddr);
 +
-+#define IDXD_TABLE_OFFSET		0x60
-+union offsets_reg {
-+	struct {
-+		u64 grpcfg:16;
-+		u64 wqcfg:16;
-+		u64 msix_perm:16;
-+		u64 ims:16;
-+		u64 perfmon:16;
-+		u64 rsvd:48;
+ #endif /* SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H */
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index a2747de9ad69..e823d3ff7f45 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -27,6 +27,33 @@
+ 		    "ioctl(%s, %s, %s) returned %d\n", #_fd, #_op, #_arg, __ret); \
+ } while (0)
+ 
++iova_t __to_iova(struct vfio_pci_device *device, void *vaddr)
++{
++	struct vfio_dma_region *region;
++
++	list_for_each_entry(region, &device->dma_regions, link) {
++		if (vaddr < region->vaddr)
++			continue;
++
++		if (vaddr >= region->vaddr + region->size)
++			continue;
++
++		return region->iova + (vaddr - region->vaddr);
++	}
++
++	return INVALID_IOVA;
++}
++
++iova_t to_iova(struct vfio_pci_device *device, void *vaddr)
++{
++	iova_t iova;
++
++	iova = __to_iova(device, vaddr);
++	VFIO_ASSERT_NE(iova, INVALID_IOVA, "%p is not mapped into device.\n", vaddr);
++
++	return iova;
++}
++
+ static void vfio_pci_irq_set(struct vfio_pci_device *device,
+ 			     u32 index, u32 vector, u32 count, int *fds)
+ {
+@@ -113,28 +140,34 @@ static void vfio_pci_irq_get(struct vfio_pci_device *device, u32 index,
+ 	ioctl_assert(device->fd, VFIO_DEVICE_GET_IRQ_INFO, irq_info);
+ }
+ 
+-void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size, void *vaddr)
++void vfio_pci_dma_map(struct vfio_pci_device *device,
++		      struct vfio_dma_region *region)
+ {
+ 	struct vfio_iommu_type1_dma_map map = {
+ 		.argsz = sizeof(map),
+ 		.flags = VFIO_DMA_MAP_FLAG_READ | VFIO_DMA_MAP_FLAG_WRITE,
+-		.vaddr = (u64)vaddr,
+-		.iova = iova,
+-		.size = size,
++		.vaddr = (u64)region->vaddr,
++		.iova = region->iova,
++		.size = region->size,
+ 	};
+ 
+ 	ioctl_assert(device->container_fd, VFIO_IOMMU_MAP_DMA, &map);
++
++	list_add(&region->link, &device->dma_regions);
+ }
+ 
+-void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size)
++void vfio_pci_dma_unmap(struct vfio_pci_device *device,
++			struct vfio_dma_region *region)
+ {
+ 	struct vfio_iommu_type1_dma_unmap unmap = {
+ 		.argsz = sizeof(unmap),
+-		.iova = iova,
+-		.size = size,
++		.iova = region->iova,
++		.size = region->size,
+ 	};
+ 
+ 	ioctl_assert(device->container_fd, VFIO_IOMMU_UNMAP_DMA, &unmap);
++
++	list_del(&region->link);
+ }
+ 
+ static void vfio_pci_region_get(struct vfio_pci_device *device, int index,
+@@ -256,6 +289,8 @@ static void vfio_pci_iommu_setup(struct vfio_pci_device *device, unsigned long i
+ {
+ 	int ret;
+ 
++	INIT_LIST_HEAD(&device->dma_regions);
++
+ 	ret = ioctl(device->container_fd, VFIO_CHECK_EXTENSION, iommu_type);
+ 	VFIO_ASSERT_GT(ret, 0, "VFIO IOMMU type %lu not supported\n", iommu_type);
+ 
+diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+index c4920267ae42..d85621d165d9 100644
+--- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
++++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+@@ -117,15 +117,20 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
+ 	const int prot = PROT_READ | PROT_WRITE;
+ 	const u64 iova = test_config.iova;
+ 	const u64 size = test_config.size;
++	struct vfio_dma_region region = {
++		.iova = iova,
++		.size = size,
 +	};
-+	u64 bits[2];
-+} __packed;
+ 	struct iommu_mapping mapping;
+-	void *mem;
+ 	int rc;
+ 
+-	mem = mmap(NULL, size, prot, test_config.mmap_flags, -1, 0);
+-	ASSERT_NE(mem, MAP_FAILED);
++	region.vaddr = mmap(NULL, size, prot, test_config.mmap_flags, -1, 0);
++	ASSERT_NE(region.vaddr, MAP_FAILED);
+ 
+-	vfio_pci_dma_map(self->device, iova, size, mem);
+-	printf("Mapped HVA %p (size 0x%lx) at IOVA 0x%lx\n", mem, size, iova);
++	vfio_pci_dma_map(self->device, &region);
++	printf("Mapped HVA %p (size 0x%lx) at IOVA 0x%lx\n", region.vaddr, size, iova);
 +
-+#define IDXD_TABLE_MULT			0x100
-+
-+#define IDXD_GENCFG_OFFSET		0x80
-+union gencfg_reg {
-+	struct {
-+		u32 rdbuf_limit:8;
-+		u32 rsvd:4;
-+		u32 user_int_en:1;
-+		u32 evl_en:1;
-+		u32 rsvd2:18;
-+	};
-+	u32 bits;
-+} __packed;
-+
-+#define IDXD_GENCTRL_OFFSET		0x88
-+union genctrl_reg {
-+	struct {
-+		u32 softerr_int_en:1;
-+		u32 halt_int_en:1;
-+		u32 evl_int_en:1;
-+		u32 rsvd:29;
-+	};
-+	u32 bits;
-+} __packed;
-+
-+#define IDXD_GENSTATS_OFFSET		0x90
-+union gensts_reg {
-+	struct {
-+		u32 state:2;
-+		u32 reset_type:2;
-+		u32 rsvd:28;
-+	};
-+	u32 bits;
-+} __packed;
-+
-+enum idxd_device_status_state {
-+	IDXD_DEVICE_STATE_DISABLED = 0,
-+	IDXD_DEVICE_STATE_ENABLED,
-+	IDXD_DEVICE_STATE_DRAIN,
-+	IDXD_DEVICE_STATE_HALT,
-+};
-+
-+enum idxd_device_reset_type {
-+	IDXD_DEVICE_RESET_SOFTWARE = 0,
-+	IDXD_DEVICE_RESET_FLR,
-+	IDXD_DEVICE_RESET_WARM,
-+	IDXD_DEVICE_RESET_COLD,
-+};
-+
-+#define IDXD_INTCAUSE_OFFSET		0x98
-+#define IDXD_INTC_ERR			0x01
-+#define IDXD_INTC_CMD			0x02
-+#define IDXD_INTC_OCCUPY			0x04
-+#define IDXD_INTC_PERFMON_OVFL		0x08
-+#define IDXD_INTC_HALT_STATE		0x10
-+#define IDXD_INTC_EVL			0x20
-+#define IDXD_INTC_INT_HANDLE_REVOKED	0x80000000
-+
-+#define IDXD_CMD_OFFSET			0xa0
-+union idxd_command_reg {
-+	struct {
-+		u32 operand:20;
-+		u32 cmd:5;
-+		u32 rsvd:6;
-+		u32 int_req:1;
-+	};
-+	u32 bits;
-+} __packed;
-+
-+enum idxd_cmd {
-+	IDXD_CMD_ENABLE_DEVICE = 1,
-+	IDXD_CMD_DISABLE_DEVICE,
-+	IDXD_CMD_DRAIN_ALL,
-+	IDXD_CMD_ABORT_ALL,
-+	IDXD_CMD_RESET_DEVICE,
-+	IDXD_CMD_ENABLE_WQ,
-+	IDXD_CMD_DISABLE_WQ,
-+	IDXD_CMD_DRAIN_WQ,
-+	IDXD_CMD_ABORT_WQ,
-+	IDXD_CMD_RESET_WQ,
-+	IDXD_CMD_DRAIN_PASID,
-+	IDXD_CMD_ABORT_PASID,
-+	IDXD_CMD_REQUEST_INT_HANDLE,
-+	IDXD_CMD_RELEASE_INT_HANDLE,
-+};
-+
-+#define CMD_INT_HANDLE_IMS		0x10000
-+
-+#define IDXD_CMDSTS_OFFSET		0xa8
-+union cmdsts_reg {
-+	struct {
-+		u8 err;
-+		u16 result;
-+		u8 rsvd:7;
-+		u8 active:1;
-+	};
-+	u32 bits;
-+} __packed;
-+#define IDXD_CMDSTS_ACTIVE		0x80000000
-+#define IDXD_CMDSTS_ERR_MASK		0xff
-+#define IDXD_CMDSTS_RES_SHIFT		8
-+
-+enum idxd_cmdsts_err {
-+	IDXD_CMDSTS_SUCCESS = 0,
-+	IDXD_CMDSTS_INVAL_CMD,
-+	IDXD_CMDSTS_INVAL_WQIDX,
-+	IDXD_CMDSTS_HW_ERR,
-+	/* enable device errors */
-+	IDXD_CMDSTS_ERR_DEV_ENABLED = 0x10,
-+	IDXD_CMDSTS_ERR_CONFIG,
-+	IDXD_CMDSTS_ERR_BUSMASTER_EN,
-+	IDXD_CMDSTS_ERR_PASID_INVAL,
-+	IDXD_CMDSTS_ERR_WQ_SIZE_ERANGE,
-+	IDXD_CMDSTS_ERR_GRP_CONFIG,
-+	IDXD_CMDSTS_ERR_GRP_CONFIG2,
-+	IDXD_CMDSTS_ERR_GRP_CONFIG3,
-+	IDXD_CMDSTS_ERR_GRP_CONFIG4,
-+	/* enable wq errors */
-+	IDXD_CMDSTS_ERR_DEV_NOTEN = 0x20,
-+	IDXD_CMDSTS_ERR_WQ_ENABLED,
-+	IDXD_CMDSTS_ERR_WQ_SIZE,
-+	IDXD_CMDSTS_ERR_WQ_PRIOR,
-+	IDXD_CMDSTS_ERR_WQ_MODE,
-+	IDXD_CMDSTS_ERR_BOF_EN,
-+	IDXD_CMDSTS_ERR_PASID_EN,
-+	IDXD_CMDSTS_ERR_MAX_BATCH_SIZE,
-+	IDXD_CMDSTS_ERR_MAX_XFER_SIZE,
-+	/* disable device errors */
-+	IDXD_CMDSTS_ERR_DIS_DEV_EN = 0x31,
-+	/* disable WQ, drain WQ, abort WQ, reset WQ */
-+	IDXD_CMDSTS_ERR_DEV_NOT_EN,
-+	/* request interrupt handle */
-+	IDXD_CMDSTS_ERR_INVAL_INT_IDX = 0x41,
-+	IDXD_CMDSTS_ERR_NO_HANDLE,
-+};
-+
-+#define IDXD_CMDCAP_OFFSET		0xb0
-+
-+#define IDXD_SWERR_OFFSET		0xc0
-+#define IDXD_SWERR_VALID		0x00000001
-+#define IDXD_SWERR_OVERFLOW		0x00000002
-+#define IDXD_SWERR_ACK			(IDXD_SWERR_VALID | IDXD_SWERR_OVERFLOW)
-+union sw_err_reg {
-+	struct {
-+		u64 valid:1;
-+		u64 overflow:1;
-+		u64 desc_valid:1;
-+		u64 wq_idx_valid:1;
-+		u64 batch:1;
-+		u64 fault_rw:1;
-+		u64 priv:1;
-+		u64 rsvd:1;
-+		u64 error:8;
-+		u64 wq_idx:8;
-+		u64 rsvd2:8;
-+		u64 operation:8;
-+		u64 pasid:20;
-+		u64 rsvd3:4;
-+
-+		u64 batch_idx:16;
-+		u64 rsvd4:16;
-+		u64 invalid_flags:32;
-+
-+		u64 fault_addr;
-+
-+		u64 rsvd5;
-+	};
-+	u64 bits[4];
-+} __packed;
-+
-+union iaa_cap_reg {
-+	struct {
-+		u64 dec_aecs_format_ver:1;
-+		u64 drop_init_bits:1;
-+		u64 chaining:1;
-+		u64 force_array_output_mod:1;
-+		u64 load_part_aecs:1;
-+		u64 comp_early_abort:1;
-+		u64 nested_comp:1;
-+		u64 diction_comp:1;
-+		u64 header_gen:1;
-+		u64 crypto_gcm:1;
-+		u64 crypto_cfb:1;
-+		u64 crypto_xts:1;
-+		u64 rsvd:52;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+#define IDXD_IAACAP_OFFSET	0x180
-+
-+#define IDXD_EVLCFG_OFFSET	0xe0
-+union evlcfg_reg {
-+	struct {
-+		u64 pasid_en:1;
-+		u64 priv:1;
-+		u64 rsvd:10;
-+		u64 base_addr:52;
-+
-+		u64 size:16;
-+		u64 pasid:20;
-+		u64 rsvd2:28;
-+	};
-+	u64 bits[2];
-+} __packed;
-+
-+#define IDXD_EVL_SIZE_MIN	0x0040
-+#define IDXD_EVL_SIZE_MAX	0xffff
-+
-+union msix_perm {
-+	struct {
-+		u32 rsvd:2;
-+		u32 ignore:1;
-+		u32 pasid_en:1;
-+		u32 rsvd2:8;
-+		u32 pasid:20;
-+	};
-+	u32 bits;
-+} __packed;
-+
-+union group_flags {
-+	struct {
-+		u64 tc_a:3;
-+		u64 tc_b:3;
-+		u64 rsvd:1;
-+		u64 use_rdbuf_limit:1;
-+		u64 rdbufs_reserved:8;
-+		u64 rsvd2:4;
-+		u64 rdbufs_allowed:8;
-+		u64 rsvd3:4;
-+		u64 desc_progress_limit:2;
-+		u64 rsvd4:2;
-+		u64 batch_progress_limit:2;
-+		u64 rsvd5:26;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+struct grpcfg {
-+	u64 wqs[4];
-+	u64 engines;
-+	union group_flags flags;
-+} __packed;
-+
-+union wqcfg {
-+	struct {
-+		/* bytes 0-3 */
-+		u16 wq_size;
-+		u16 rsvd;
-+
-+		/* bytes 4-7 */
-+		u16 wq_thresh;
-+		u16 rsvd1;
-+
-+		/* bytes 8-11 */
-+		u32 mode:1;	/* shared or dedicated */
-+		u32 bof:1;	/* block on fault */
-+		u32 wq_ats_disable:1;
-+		u32 wq_prs_disable:1;
-+		u32 priority:4;
-+		u32 pasid:20;
-+		u32 pasid_en:1;
-+		u32 priv:1;
-+		u32 rsvd3:2;
-+
-+		/* bytes 12-15 */
-+		u32 max_xfer_shift:5;
-+		u32 max_batch_shift:4;
-+		u32 rsvd4:23;
-+
-+		/* bytes 16-19 */
-+		u16 occupancy_inth;
-+		u16 occupancy_table_sel:1;
-+		u16 rsvd5:15;
-+
-+		/* bytes 20-23 */
-+		u16 occupancy_limit;
-+		u16 occupancy_int_en:1;
-+		u16 rsvd6:15;
-+
-+		/* bytes 24-27 */
-+		u16 occupancy;
-+		u16 occupancy_int:1;
-+		u16 rsvd7:12;
-+		u16 mode_support:1;
-+		u16 wq_state:2;
-+
-+		/* bytes 28-31 */
-+		u32 rsvd8;
-+
-+		/* bytes 32-63 */
-+		u64 op_config[4];
-+	};
-+	u32 bits[16];
-+} __packed;
-+
-+#define WQCFG_PASID_IDX                2
-+#define WQCFG_PRIVL_IDX		2
-+#define WQCFG_OCCUP_IDX		6
-+
-+#define WQCFG_OCCUP_MASK	0xffff
-+
-+#define GRPCFG_SIZE		64
-+#define GRPWQCFG_STRIDES	4
-+
-+/* Following is performance monitor registers */
-+#define IDXD_PERFCAP_OFFSET		0x0
-+union idxd_perfcap {
-+	struct {
-+		u64 num_perf_counter:6;
-+		u64 rsvd1:2;
-+		u64 counter_width:8;
-+		u64 num_event_category:4;
-+		u64 global_event_category:16;
-+		u64 filter:8;
-+		u64 rsvd2:8;
-+		u64 cap_per_counter:1;
-+		u64 writeable_counter:1;
-+		u64 counter_freeze:1;
-+		u64 overflow_interrupt:1;
-+		u64 rsvd3:8;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+#define IDXD_EVNTCAP_OFFSET		0x80
-+union idxd_evntcap {
-+	struct {
-+		u64 events:28;
-+		u64 rsvd:36;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+struct idxd_event {
-+	union {
-+		struct {
-+			u32 event_category:4;
-+			u32 events:28;
-+		};
-+		u32 val;
-+	};
-+} __packed;
-+
-+#define IDXD_CNTRCAP_OFFSET		0x800
-+struct idxd_cntrcap {
-+	union {
-+		struct {
-+			u32 counter_width:8;
-+			u32 rsvd:20;
-+			u32 num_events:4;
-+		};
-+		u32 val;
-+	};
-+	struct idxd_event events[];
-+} __packed;
-+
-+#define IDXD_PERFRST_OFFSET		0x10
-+union idxd_perfrst {
-+	struct {
-+		u32 perfrst_config:1;
-+		u32 perfrst_counter:1;
-+		u32 rsvd:30;
-+	};
-+	u32 val;
-+} __packed;
-+
-+#define IDXD_OVFSTATUS_OFFSET		0x30
-+#define IDXD_PERFFRZ_OFFSET		0x20
-+#define IDXD_CNTRCFG_OFFSET		0x100
-+union idxd_cntrcfg {
-+	struct {
-+		u64 enable:1;
-+		u64 interrupt_ovf:1;
-+		u64 global_freeze_ovf:1;
-+		u64 rsvd1:5;
-+		u64 event_category:4;
-+		u64 rsvd2:20;
-+		u64 events:28;
-+		u64 rsvd3:4;
-+	};
-+	u64 val;
-+} __packed;
-+
-+#define IDXD_FLTCFG_OFFSET		0x300
-+
-+#define IDXD_CNTRDATA_OFFSET		0x200
-+union idxd_cntrdata {
-+	struct {
-+		u64 event_count_value;
-+	};
-+	u64 val;
-+} __packed;
-+
-+union event_cfg {
-+	struct {
-+		u64 event_cat:4;
-+		u64 event_enc:28;
-+	};
-+	u64 val;
-+} __packed;
-+
-+union filter_cfg {
-+	struct {
-+		u64 wq:32;
-+		u64 tc:8;
-+		u64 pg_sz:4;
-+		u64 xfer_sz:8;
-+		u64 eng:8;
-+	};
-+	u64 val;
-+} __packed;
-+
-+#define IDXD_EVLSTATUS_OFFSET		0xf0
-+
-+union evl_status_reg {
-+	struct {
-+		u32 head:16;
-+		u32 rsvd:16;
-+		u32 tail:16;
-+		u32 rsvd2:14;
-+		u32 int_pending:1;
-+		u32 rsvd3:1;
-+	};
-+	struct {
-+		u32 bits_lower32;
-+		u32 bits_upper32;
-+	};
-+	u64 bits;
-+} __packed;
-+
-+#define IDXD_MAX_BATCH_IDENT	256
-+
-+struct __evl_entry {
-+	u64 rsvd:2;
-+	u64 desc_valid:1;
-+	u64 wq_idx_valid:1;
-+	u64 batch:1;
-+	u64 fault_rw:1;
-+	u64 priv:1;
-+	u64 err_info_valid:1;
-+	u64 error:8;
-+	u64 wq_idx:8;
-+	u64 batch_id:8;
-+	u64 operation:8;
-+	u64 pasid:20;
-+	u64 rsvd2:4;
-+
-+	u16 batch_idx;
-+	u16 rsvd3;
-+	union {
-+		/* Invalid Flags 0x11 */
-+		u32 invalid_flags;
-+		/* Invalid Int Handle 0x19 */
-+		/* Page fault 0x1a */
-+		/* Page fault 0x06, 0x1f, only operand_id */
-+		/* Page fault before drain or in batch, 0x26, 0x27 */
-+		struct {
-+			u16 int_handle;
-+			u16 rci:1;
-+			u16 ims:1;
-+			u16 rcr:1;
-+			u16 first_err_in_batch:1;
-+			u16 rsvd4_2:9;
-+			u16 operand_id:3;
-+		};
-+	};
-+	u64 fault_addr;
-+	u64 rsvd5;
-+} __packed;
-+
-+struct dsa_evl_entry {
-+	struct __evl_entry e;
-+	struct dsa_completion_record cr;
-+} __packed;
-+
-+struct iax_evl_entry {
-+	struct __evl_entry e;
-+	u64 rsvd[4];
-+	struct iax_completion_record cr;
-+} __packed;
-+
-+#endif
++	ASSERT_EQ(iova, to_iova(self->device, region.vaddr));
+ 
+ 	rc = iommu_mapping_get(test_config.bdf, iova, &mapping);
+ 	if (rc == -EOPNOTSUPP)
+@@ -157,11 +162,12 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
+ 	}
+ 
+ unmap:
+-	vfio_pci_dma_unmap(self->device, iova, size);
++	vfio_pci_dma_unmap(self->device, &region);
+ 	printf("Unmapped IOVA 0x%lx\n", iova);
++	ASSERT_EQ(INVALID_IOVA, __to_iova(self->device, region.vaddr));
+ 	ASSERT_NE(0, iommu_mapping_get(test_config.bdf, iova, &mapping));
+ 
+-	ASSERT_TRUE(!munmap(mem, size));
++	ASSERT_TRUE(!munmap(region.vaddr, size));
+ }
+ 
+ static void help(const char *name)
 -- 
 2.49.0.1151.ga128411c76-goog
 
