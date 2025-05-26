@@ -1,121 +1,165 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C421198E81;
-	Mon, 26 May 2025 08:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219991DFDB9
+	for <kvm@vger.kernel.org>; Mon, 26 May 2025 08:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748248131; cv=none; b=QFPdvUx7Ax71zHJQLjWcF7Yhg7ib8zQOEGbGHL737DGoGe3p5hHMqfLKyxTfHOy6uqKUSZMWh8Mv0o/idkJ+JpG8a2esYrSt3NZqudnYrHJTv5uKpmgV8BHsWlmecUWOynqLkZVLe8hz9RQFRO+S+3PQX8KvV6y44OYpPKbCxz0=
+	t=1748248867; cv=none; b=oS+ArBiZ67iGeg8JagcvhQ4mnN7Ea3/+13DpuoZsMJImFuq1OfomJxBGqRdt/z3waUUYTuQHO97m6l7QLTM/72aylY1o/ECubAUlAmGOKEsGVU2tIRzdUOdxvU8TOuNieQIsbWzhyFwjbq1E7RvWTAkcsDqpKETlBNLxJbPW+b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748248131; c=relaxed/simple;
-	bh=R/mh6Zul9ir7yyGc3dY7ZlTq7zWtuvIib1tyCskeWX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlkdPPqFhkSdF1tmOzyWC+6Yv7XKQxY4R+rsNN5mr4y24huPQtBNsAbBD+6D1LQp3BFOWnEIPvWsRtJBIggonzzLqHFeZii9KRZ8giDOHyIqeURAb69ZbX/robQHMk5EKtesRnjLZJxwQr7OxFV52SFzRSlZ4rcYuGF1drlytRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dP0lau5M; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1748248867; c=relaxed/simple;
+	bh=RM9w2GB5PustMhTtUEFtQgzDYegYWrx4oF+aPu3tkrk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hN3ZFBTde8cRYM4OMPGWWYfpSby1YUzfy/XyBmp7ZxmSCr4RuUv1NXYbpgpXDH39i+1X3jpptCEklD1Zt38ccPqHWUPdt2oZN5YxloVlPezMz1wWLb2B4u4y5ieykQ/qC4lGA3jfpJPz6ZG079TnO8LKlpvD/PLyXhT6P6Tj+sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UC1TkN0/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dP0lau5M"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54PNIw2x004992;
-	Mon, 26 May 2025 08:28:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=UfGDp6cM5QSoaUR5RyKlw8Qo+AeCPo
-	zfCu0VyqhsXJk=; b=dP0lau5MFoIUozB3UZt+1X04xRY1KNVTsk2+C6lK0zeoSL
-	F4HgzxG2izg1J2KtxapEX2cufdKwJC9AZqpNZOzYix2r+fefcSHhSRa9k9rA5pmV
-	oCGUxba/KkMGTUILea//yA2v/bLjTnDQpemfHDULgFXWYpfTNqumgOXNzD0m4Cqo
-	hUKAg/f85841UHbYMSfVN5cLgQ7ysYbnNW6DxaPOXIJ+4NkIVCmN4ltEg6ryiF18
-	KKqiIHl1i8KquF2f4uyFPrmkuc8ZKg6KLm8LeHnqv0hD9jVjznYO5tT32aHviDHP
-	no5ue3ZiKrFcJ8K7p8P3wUG6AAxnTfs7ToM5xvEQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46u5t0g3pj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 08:28:47 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54Q7lwZV010712;
-	Mon, 26 May 2025 08:28:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46uru0den1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 08:28:45 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54Q8Sfp639452968
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 May 2025 08:28:42 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7C5820049;
-	Mon, 26 May 2025 08:28:41 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 28DAB20040;
-	Mon, 26 May 2025 08:28:41 +0000 (GMT)
-Received: from osiris (unknown [9.111.60.222])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 26 May 2025 08:28:41 +0000 (GMT)
-Date: Mon, 26 May 2025 10:28:39 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        borntraeger@de.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
-        nrb@linux.ibm.com, david@redhat.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, gor@linux.ibm.com, schlameuss@linux.ibm.com
-Subject: Re: [PATCH v4 1/4] s390: remove unneeded includes
-Message-ID: <20250526082839.13937B8b-hca@linux.ibm.com>
-References: <20250523130348.247446-1-imbrenda@linux.ibm.com>
- <20250523130348.247446-2-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UC1TkN0/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748248863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZpcUBhTst15dsBOEnXLvH1gi6TvxGnz3SV2jdOZSxv0=;
+	b=UC1TkN0/qCRm6/dHWW278fFQRYLNc3L3HGpymtXvjhpUEcBqSntf4HjV5UXgYeNzFXgc0r
+	edCIpPHR+HNWbF+yIIoW0whKKh0T9vTMzrCoFkj+zxjkkD0u7SC66wCYpvyXik/y6jnD5F
+	H8MOCsFtwq6HO3Q4rCMuOK8km/viRS4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-P2AKRccOM0qAfNlXHeMTgA-1; Mon, 26 May 2025 04:41:01 -0400
+X-MC-Unique: P2AKRccOM0qAfNlXHeMTgA-1
+X-Mimecast-MFC-AGG-ID: P2AKRccOM0qAfNlXHeMTgA_1748248860
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d734da1a3so11771415e9.0
+        for <kvm@vger.kernel.org>; Mon, 26 May 2025 01:41:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748248860; x=1748853660;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZpcUBhTst15dsBOEnXLvH1gi6TvxGnz3SV2jdOZSxv0=;
+        b=BO18hkE47FPfYIOIHzHZulQAg4vetayidtbaQIKnuwQPEwokQIBwcI7vBVroT6MW4q
+         ms1jl/2GZNGE2Ns+cLJcrx+bCq5DM4CDvliOj+aG+03Gm8JTTDSKGQDGXoIaI3vMkR74
+         nJERJT3ZSHsPbA70SO8Gs4XW9G2BbQsGbSXeOuADV83+wtX0CrJzrGgXUn8l2ueAbh19
+         /40ovvhgvoapSqDxY8eceh8nxN3bgP2UJXKVam4qBu/GkLJB6J9TBKlB7nt6TrbINBx9
+         8ToLrS4X4YA9MI0ERH3jn/CQcs+ovutIMZy/kMpxOuHzIm9I3lVWMGW5klBENAN0sRDR
+         C6Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAl9trY8ukrQ3diIeKs6qVoP2N01gncAm+FtGK/UR+A9a3suSYQ3lvE2TQWFbi8UGXjc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7ELmT80h5aHIukNnrhXqLv3bO8Edb4CDZIWBRQ/brTPsXR+2q
+	zLzAaQtC0cmrltiYxHwnAoqtLVc/EJTb8xO+VSmGOrvybedZ/b7UOudKT3TlXYBi2Yo+fVZcT1I
+	4hakQ+/y0IpKQp+lAxQEdK4hn3svYCIrzQXzXiv7waTOXiBDYp1fXow==
+X-Gm-Gg: ASbGncsmFVuvSg2uLrZBdgmQ0aJMTsQToKx/wsEe64/2+IK0HjCyQnrNN5hBxqa4ZsZ
+	hjFm8EzmyzvQ5SnYwEqUyTOWuOJHqGrRdLbDAnmRbcw6afovA18SWmCyWGZM92niPBA1oEZDZEa
+	Q4i2tEyusjWeY+0xfIIBpFlehd5JlovOBC5ceB68iNcuKYM8Ez1J3fA3uKQL1xtmMCBQRfPRyJf
+	AwcKUuHMbQZe+kOcGyIfwEvsMRBc+VMQYVkk+RqTotFvQnNT2ExmBXxscM/R1cYXKSL9bggwi5L
+	O+g2+wco9vwSkRD6kEWMy3YJVMHG9k1RAZKUxEENuTbNSqhOhK3yqyLOuVt9vrT6FY/d1qjQ/lL
+	L22viVvaK31I5CymyPOKMtVtFhqr4c9sJTvYLp+I=
+X-Received: by 2002:a05:6000:430c:b0:3a4:de13:2a25 with SMTP id ffacd0b85a97d-3a4de132a86mr410806f8f.45.1748248860485;
+        Mon, 26 May 2025 01:41:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOT0PRDQkw2BbtqS6ln5FEsK4w1cAtNG/jx5p3gGTCCdC12E+iPVZbLd1eljg2uUrCLTNfHg==
+X-Received: by 2002:a05:6000:430c:b0:3a4:de13:2a25 with SMTP id ffacd0b85a97d-3a4de132a86mr410776f8f.45.1748248860127;
+        Mon, 26 May 2025 01:41:00 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f19:6500:e1c1:8216:4c25:efe4? (p200300d82f196500e1c182164c25efe4.dip0.t-ipconnect.de. [2003:d8:2f19:6500:e1c1:8216:4c25:efe4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4d7a5d224sm2962324f8f.41.2025.05.26.01.40.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 May 2025 01:40:59 -0700 (PDT)
+Message-ID: <87d5e6c8-01c8-4981-98e5-f92e29157240@redhat.com>
+Date: Mon, 26 May 2025 10:40:58 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523130348.247446-2-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDA2MiBTYWx0ZWRfX5RLdyH5SEKvp 6UVaPuqxdpG+j92dOLnaHsGk1ZcyEVKpH8L0IDYZMlCejwdZq9780syCEqXE0xOwDKzvy1XqJIL 1SQW86scc62OKci4P3ku1SCeD/1u8vouIGOK+UD09n08iRBNYKwfARRB68JUfGc5pD0LTwzvfWN
- rKu9CC5S8y+IxBBYfceDf3j8Hp0Xzt01XWpKLC+CvENaBMnoni9Gj8Fn7dFDnoDpKAOUfBdNEAT 4Wv0WsQavA51G4KQRTp8t/h8MpZ8BsFsXhgivlp4KCSVbnn2Oi5fA97R/GQM9qSCFNgsmt8HSoM tDQ9VXZ7a+CUOAcpUf6yjBPa9lEbpEkpNGpdPqereJfli0sJGp5ozZw8CpubHOLvyBoESkt1VJe
- IrOiDRHF7NiL581n9yZ/tEecOJPPNbbvFKGystaYnacpFLSqhjuFU0IMx0dwXW6xNKqBQZ2r
-X-Authority-Analysis: v=2.4 cv=INACChvG c=1 sm=1 tr=0 ts=6834263f cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=BorKYyAo29sJGMwN-gMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: Hk57UNPgzIm7SiruqINlBRreqaQVUxcc
-X-Proofpoint-GUID: Hk57UNPgzIm7SiruqINlBRreqaQVUxcc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-26_04,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- clxscore=1015 phishscore=0 mlxscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 adultscore=0 mlxlogscore=637 priorityscore=1501
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505260062
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/10] memory: Change
+ memory_region_set_ram_discard_manager() to return the result
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy
+ <aik@amd.com>, Peter Xu <peterx@redhat.com>,
+ Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Baolu Lu <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+References: <20250520102856.132417-1-chenyi.qiang@intel.com>
+ <20250520102856.132417-3-chenyi.qiang@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250520102856.132417-3-chenyi.qiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 23, 2025 at 03:03:45PM +0200, Claudio Imbrenda wrote:
-> Many files don't need to include asm/tlb.h or asm/gmap.h.
-> On the other hand, asm/tlb.h does need to include asm/gmap.h.
+On 20.05.25 12:28, Chenyi Qiang wrote:
+> Modify memory_region_set_ram_discard_manager() to return -EBUSY if a
+> RamDiscardManager is already set in the MemoryRegion. The caller must
+> handle this failure, such as having virtio-mem undo its actions and fail
+> the realize() process. Opportunistically move the call earlier to avoid
+> complex error handling.
 > 
-> Remove all unneeded includes so that asm/tlb.h is not directly used by
-> s390 arch code anymore. Remove asm/gmap.h from a few other files as
-> well, so that now only KVM code, mm/gmap.c, and asm/tlb.h include it.
+> This change is beneficial when introducing a new RamDiscardManager
+> instance besides virtio-mem. After
+> ram_block_coordinated_discard_require(true) unlocks all
+> RamDiscardManager instances, only one instance is allowed to be set for
+> one MemoryRegion at present.
 > 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 > ---
->  arch/s390/include/asm/tlb.h | 1 +
->  arch/s390/include/asm/uv.h  | 1 -
->  arch/s390/kvm/intercept.c   | 1 +
->  arch/s390/mm/fault.c        | 1 -
->  arch/s390/mm/gmap.c         | 1 -
->  arch/s390/mm/init.c         | 1 -
->  arch/s390/mm/pgalloc.c      | 2 --
->  arch/s390/mm/pgtable.c      | 1 -
->  8 files changed, 2 insertions(+), 7 deletions(-)
 
-Please change the subject so the first character after "s390: " is an
-upper case character, like it is supposed to be the case for all s390
-related patches. For "KVM: s390:" there seems to be no consistent
-rule, but that's your playground.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Anyway:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+-- 
+Cheers,
+
+David / dhildenb
+
