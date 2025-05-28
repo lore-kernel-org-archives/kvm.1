@@ -1,141 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9652C28C011
-	for <kvm@vger.kernel.org>; Wed, 28 May 2025 16:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2602874E0;
+	Wed, 28 May 2025 16:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748448510; cv=none; b=YD0w7FO960JQN4avh7zsdSyP+UA97bbuEBPN4bXkLZKt5kCJt2gexivGTgOYZfjJEDLal31Bh8r8ytig9GTS4mSNut6CrMxo+eIg9RNbEb7fSdThzsTZU4Sgx0LSEU2gZ2oat4jhtYiXMfKGxBaQYKev6/Fs3CPtVDRUPElX3qQ=
+	t=1748449014; cv=none; b=F/yo3bbyxPdA3BpUVvCUoLhiJ4xnsdhWIUVCHWxrHt5GzXMjzXEw7fUd1sJvvFgtviym4zzlYD6FhFMtqm2GFNQezXfQc45XE6/V8JApUzUqQQU9r+NVA7hdCWOU0DFCD+Y6MdNO9mbWTHRT0tX7SfitgQkcwYxhiKgBnWNwsDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748448510; c=relaxed/simple;
-	bh=LibnRIxltzpbANK+z/ZCNtTGSZsFrtMBHyUPR93lW28=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZaAfV1OTAu1hQmyQI2BhwFRoHF21fYoT4f//JCx33En1Up744HVVqnPAmdvHSfJb8i4fGTKPbS3LgzguMgmvvDrXswPIo8YR9ZZacuOYAiGYnkAJ92QvXWxc2TcmCBuWfTVixoie0YWPjCzPgSkfphOZ11GZ/qnCRRlPLdJ4Oz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DTP6sStv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748449014; c=relaxed/simple;
+	bh=qqwoqiY+PkmxZAOOT5oERTLVKSgjAD1ubBoDHdJMh3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BiyJ4PoZS517SDeeNXOK7STf4sIbENwPeb/WeoWohOMiyqpayULPCjm2aHOu3Ayp3KYfRot99wSns+kNbeGhEukyO/DEktssO0lPAnvglt7rgF08hVgwp96nMVK/mva/5qltEY3pFkFF0jvdky16nMHXz60xkTS7CVkLPjDyOUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oNq48NfY; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DTP6sStv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748448507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ELCjKD+gxUuR3aRJg9A9JbOeDRYY9q3dgElqJB30ab4=;
-	b=DTP6sStvhnHjYESwgyTmF0GG2suoJ3+RMxOQTNERnl+bzK/BONvH4ML3HpR7zqu4b//hBx
-	zTmYt095F80Ywm+X7wjc7dnjJpssjlgmzjxCIKPSLNY/a9dHs2SQUDBxW2w2MuihwzATSD
-	rlVx9I046oTc+bGKVqmpa0OHWW0Z5eg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-344-h2QocfjOMWaOdEvQjPydwg-1; Wed, 28 May 2025 12:08:26 -0400
-X-MC-Unique: h2QocfjOMWaOdEvQjPydwg-1
-X-Mimecast-MFC-AGG-ID: h2QocfjOMWaOdEvQjPydwg_1748448506
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7c5f876bfe0so756570585a.3
-        for <kvm@vger.kernel.org>; Wed, 28 May 2025 09:08:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748448505; x=1749053305;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ELCjKD+gxUuR3aRJg9A9JbOeDRYY9q3dgElqJB30ab4=;
-        b=te+6DApL7wrV1gpDyC/aSDVKdzEksY50K1xmznji0FJ5Lz8VZH/8H4kY7ZhyKDhNIR
-         0nVQ0PhNhItJyRqa4eWeeXYLvIRcw4sIfhzEPWc5mp9snFoi7wwxcHsFRJShl6S8Q+l4
-         kRTbaN1HdeT5EUYcu5hZyBbCzOV4zswC8TIv0isZwRfuajTwpa693pvFL2xCN8o5/sYL
-         vJYnL2o7oRXBaSnKpObHeRchVXTJ6vHoBsU8vaZfYA2uv2uIg36iv8i/J3ILB93hFfEE
-         9Z7Wll07ODCVMCtXYvYr5NAQ5HTLLADT2BQ3JvBJFe5bbP0ESRtsF22VPdTl2+UemQ4H
-         Lvjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUH1ck2Y7m7kNo5HzDNRaK2ogtMT9u9JXSf+1xi0n+belyapulGXqru9yQNQJWvHBOL4Sw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAK4N103D4cFCAd+pbp1pvb9YXgwV/g5jR9XuAFC4h1BKlVJHB
-	KFpSdVUVr6nTs7jvSBGp0EADjR7PDZTPcsPqTp9B3KM5tCuwFEsuZyIe2XW54uVGtFlmYMw+DHJ
-	wugIuNl0Cw/907qouNZ1M7XwX1Tm31ETHJCdD+qrID67KpbD1JqXfgA==
-X-Gm-Gg: ASbGncuhw93qbZY7o7t3CSffFICwfYGs3mHlymIP2a6hR/NyfgNJgtC7pys0Tx6pFih
-	IZFBb1PzGRm0CE6IoAEZXPrzg/8Aa1fnyi6UQmaPcY3tsWp2ikngoqk0dnsnT1NxdpD6q0NYtIn
-	bAeOe6OpW6j4DHX/mGHMhlEjpMk2mQ3Q2DRNZ7H1VQRfko1w0P1QZnxWKnOHRauaHH9muCB0YWX
-	MszCSncb3/zKSNgRcOauNT1JHMbbw5v1c74PsE7xIZmQ+i/+TyUbgMtOM2A8V0/y4iWCRvdQGcL
-	qAysrVOynu5u+jglZ9+Bjw2EVOhDmugzMh1+Yo8rJYiPbhTkjJ3bFvxxZ6s=
-X-Received: by 2002:a05:620a:424d:b0:7c5:962b:e87c with SMTP id af79cd13be357-7ceecc296f9mr2823529485a.44.1748448505401;
-        Wed, 28 May 2025 09:08:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwBg64uo0z4Bgibxmg+9R08YonGSy0ylNwRuFxVQIAkQT9OnjwXxcnU1GDcfo/I0jNy+NrwQ==
-X-Received: by 2002:a05:620a:424d:b0:7c5:962b:e87c with SMTP id af79cd13be357-7ceecc296f9mr2823520385a.44.1748448504590;
-        Wed, 28 May 2025 09:08:24 -0700 (PDT)
-Received: from ?IPv6:2607:fea8:fc01:8d8d:5c3d:ce6:f389:cd38? ([2607:fea8:fc01:8d8d:5c3d:ce6:f389:cd38])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cfb8210270sm87017585a.31.2025.05.28.09.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 09:08:24 -0700 (PDT)
-Message-ID: <fadc8e044c3b18984b0ca4a88ef214feb779034d.camel@redhat.com>
-Subject: Re: [PATCH] rust: add helper for mutex_trylock
-From: mlevitsk@redhat.com
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, Stephen Rothwell
-	 <sfr@canb.auug.org.au>
-Date: Wed, 28 May 2025 12:08:23 -0400
-In-Reply-To: <20250528083431.1875345-1-pbonzini@redhat.com>
-References: <20250528083431.1875345-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oNq48NfY"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SE9lZm018466;
+	Wed, 28 May 2025 16:16:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=9rbmBX28N8S1GsFFI
+	k0mSVvSli42qcynagHl94Uh1wE=; b=oNq48NfY4AyEmqduwl+/iqDDWbCuuKQJT
+	8NjuAQxDjtXAiVomwprgIvIxWTYcKCD8y/GcB+J0lqhUWpfDKvLttB+DuYKOO2CK
+	PhN/En/2NUxdhgmxCKqtC5YzZBJYXZWxsrApeBHzO3wnTxP9SJFielpGEpnftLEi
+	oNjU1msk7lKJBIgj0glYC9cAD/jP66fgWxLEKRyU89Dg8pKaB0TzPvo1h+ggoz9L
+	NuQasaIRrK0IjP22mV8EQMR9qeG10ZiLBiHqkxiGOsPFs+yIIMhXqSoFNPCbtZRi
+	FqUVU12hv3+ZlqakxXfnPUEUknyUUHPPioIUKX1QBsClB/m4YXueg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40hgpyj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 16:16:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54SEq9d9021346;
+	Wed, 28 May 2025 16:16:49 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46utnmr2g5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 16:16:49 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54SGGjve55443916
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 May 2025 16:16:45 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8ADF220049;
+	Wed, 28 May 2025 16:16:45 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 372E520040;
+	Wed, 28 May 2025 16:16:45 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.111.56.81])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 28 May 2025 16:16:45 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com, david@redhat.com
+Subject: [GIT PULL v1 1/7] s390/uv: Don't return 0 from make_hva_secure() if the operation was not successful
+Date: Wed, 28 May 2025 18:16:30 +0200
+Message-ID: <20250528161636.280717-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250528161636.280717-1-imbrenda@linux.ibm.com>
+References: <20250528161636.280717-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDEzNCBTYWx0ZWRfX1+GNHBUppdwp SUFCAPGlWEA902CjvU0FQvusY7sLzVMR3ivbjTOfnskxKgeRRr+dYJIcQtoQoQ7NQGPtCCMyqGK HhO+j07NkjYukBEU2mHJBYiOaXy3/MMb44GdfFKlnNYgPEfPTHROHlOOroE9+03eJAWBsR60Rq2
+ XID+xN5pQ192Z/V+fwUHix0iu/tTSp2iOQnfMaphtzuFuMjiC+oNRvoXzT9fCAWOfhsO6/jtrsQ ChvlwUdv5+fyo5SDVbcq/WKO8SYCH9sbmNI+8Md2h3oz6gItiuOk9q4DngEA6HHV16TtTOZBJlT oojXcuO1pUzLXJ9fkORM0y0A07mJNems5zwH9l1MFhzX3Oma0fSnQwZZf10G4qJoOHH7453iu66
+ 7Lw6ciR/5cESMUqZAKkMp4vmgC7JEsfgxNpIHBkzO4riqvAOVeCDe6YCuNYGb6njX7hOAq+U
+X-Proofpoint-GUID: HNW834naVDyBENZrwviYekHpuNygMLea
+X-Authority-Analysis: v=2.4 cv=WOd/XmsR c=1 sm=1 tr=0 ts=683736f2 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=07g3GG6zAUHADp5N:21 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=aOG7VxYrwdY-fDjLD2EA:9
+X-Proofpoint-ORIG-GUID: HNW834naVDyBENZrwviYekHpuNygMLea
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-28_07,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999
+ impostorscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
+ adultscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505280134
 
-On Wed, 2025-05-28 at 10:34 +0200, Paolo Bonzini wrote:
-> After commit c5b6ababd21a ("locking/mutex: implement mutex_trylock_nested=
-",
-> currently in the KVM tree) mutex_trylock() will be a macro when lockdep i=
-s
-> enabled.=C2=A0 Rust therefore needs the corresponding helper.=C2=A0 Just =
-add it and
-> the rust/bindings/bindings_helpers_generated.rs Makefile rules will do
-> their thing.
->=20
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+From: David Hildenbrand <david@redhat.com>
 
+If s390_wiggle_split_folio() returns 0 because splitting a large folio
+succeeded, we will return 0 from make_hva_secure() even though a retry
+is required. Return -EAGAIN in that case.
 
-Hi,
-Sorry for that.=C2=A0
+Otherwise, we'll return 0 from gmap_make_secure(), and consequently from
+unpack_one(). In kvm_s390_pv_unpack(), we assume that unpacking
+succeeded and skip unpacking this page. Later on, we run into issues
+and fail booting the VM.
 
-Next time I'll check rust bindings as well, I never had to deal with them b=
-efore.
+So far, this issue was only observed with follow-up patches where we
+split large pagecache XFS folios. Maybe it can also be triggered with
+shmem?
 
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+We'll cleanup s390_wiggle_split_folio() a bit next, to also return 0
+if no split was required.
 
-Best regards,
-	Maxim Levitsky
+Fixes: d8dfda5af0be ("KVM: s390: pv: fix race when making a page secure")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20250516123946.1648026-2-david@redhat.com
+Message-ID: <20250516123946.1648026-2-david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+---
+ arch/s390/kernel/uv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-
-> ---
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok to apply to the KVM tree?
->=20
-> =C2=A0rust/helpers/mutex.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 =
-5 +++++
-> =C2=A01 files changed, 5 insertions(+)
->=20
-> diff a/rust/helpers/mutex.c b/rust/helpers/mutex.c
-> index 06575553eda5,06575553eda5..9ab29104bee1
-> --- a/rust/helpers/mutex.c
-> +++ b/rust/helpers/mutex.c
-> @@ -7,6 +7,11 @@ void rust_helper_mutex_lock(struct mute
-> =C2=A0	mutex_lock(lock);
-> =C2=A0}
-> =C2=A0
-> +int rust_helper_mutex_trylock(struct mutex *lock)
-> +{
-> +	return mutex_trylock(lock);
-> +}
-> +
-> =C2=A0void rust_helper___mutex_init(struct mutex *mutex, const char *name=
-,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct lock_class_key *key)
-> =C2=A0{
->=20
->=20
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 9a5d5be8acf4..2cc3b599c7fe 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -393,8 +393,11 @@ int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header
+ 	folio_walk_end(&fw, vma);
+ 	mmap_read_unlock(mm);
+ 
+-	if (rc == -E2BIG || rc == -EBUSY)
++	if (rc == -E2BIG || rc == -EBUSY) {
+ 		rc = s390_wiggle_split_folio(mm, folio, rc == -E2BIG);
++		if (!rc)
++			rc = -EAGAIN;
++	}
+ 	folio_put(folio);
+ 
+ 	return rc;
+-- 
+2.49.0
 
