@@ -1,166 +1,124 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098EB21B9C3
-	for <kvm@vger.kernel.org>; Thu, 29 May 2025 22:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D4721CC79
+	for <kvm@vger.kernel.org>; Thu, 29 May 2025 22:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748557167; cv=none; b=ogDkDRHsrorFoH7IxAmtSe0rRwOWgTPqA6bl9kSSNGqflX1gSvYO3l7akD/ZDwSrMu10B1NWgsREx1siDLU80ELjha00eKKGpGO8BTHLEN43oxXUZ3x5dB/nLDGYdWR7z8yvyupZCplhGKR9vv+cL67DVg1Oo4Kb7Ma2cK4YCko=
+	t=1748557182; cv=none; b=tmW0/0u7gL1Zu+ZbrD4GZRfsUg6zqrkbkaPqX+Q8Fw9e8Wx82lMQ0eN6IZsCQBgd7Sph9mcDYz+OxOUu1XxqyvJFfEV02VVzOFT7AwuoubEHrT27D8qme3mFavVDsLg0UbJbQWIJ7N75qB7dAqTXrc7eKVzFCpCKWzNP4xpiHSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748557167; c=relaxed/simple;
-	bh=/axPWx9pFiZ88xSg3GvujPUpn0OIAQd+muRjqg6LQbU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GFU6bGuyRxFWweNMVXOZl2PkDtNNPXZp1j4M2Py53K098dh5RaAYcgFkOyo+aIrwT9hFuadOoNNjsk9uuUYRk4wmtcuXT8ecXf+N0bNOGNkHg7YfncMhsB4HeDh163YWgcsNgZuZPTASMd7K+CSz2KsDnMDqRNBfGA08gMAdtBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g2HJI3+e; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1748557182; c=relaxed/simple;
+	bh=KbEcLrZyNHW1ZbQGmI3ZdoR7aGESto+rOYcZmQV/p0Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=V/OgvD/CtQ5C5pp1rjfhRpn7mKuZ8YqbTvJqflvcMFjw3gqbEnR14TEBxr4/e8MYYAEXaaggmyzhlX2fL+1jTyHdyqHSNmE4vyusMHkeBEax2U1BQSdO3aF1CTArPPdJGXmu85Ep8LWl6iKCwUqiimY0BpZG2lrbxWGUXrDDINg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cHf1GyFw; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g2HJI3+e"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b0e0c573531so892735a12.3
-        for <kvm@vger.kernel.org>; Thu, 29 May 2025 15:19:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cHf1GyFw"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-22c31b55ac6so20000005ad.0
+        for <kvm@vger.kernel.org>; Thu, 29 May 2025 15:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748557164; x=1749161964; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n+PW3r+/BVI5LEotwQK4/wqYAkrq0SQ+HqmcFVNfHnQ=;
-        b=g2HJI3+e+JIxJkSFNERGzufhNxVOpPsLEY+ftZZGlBONpCD3VXCq+Hy58niPMbMAg9
-         7xR4or5WQeJuxHiMCEoUetJMGcf4eE9zRX73aRPoYrZh25KPLAYdxnI+Ie0qDscUce9c
-         x6Rr8hr8N+m1Jvu4MiEJwI9tovcJ7RrF98m20j0U+g30DOS9ymeHtNpRKSq8001SFCbl
-         GPnmXY81nd+P+gdIIv5UKuSXXuBADNKgdHRGLOtreo08OmQfLFc+Lb3iHmLvoJsHxDAm
-         Eb0HQ3IA8tDRVg4JN6rfIoj+HOxfNQ/QRZeFnmQA7FcknKlx3scUfmMZ7M5gZZXTrwxc
-         sMFw==
+        d=google.com; s=20230601; t=1748557180; x=1749161980; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2WiZvL65gJWBhQxETywMJkkZAmvBLGCJuVJmqPemzNU=;
+        b=cHf1GyFwbCd5C9NXoLSQgJ/4YjvMkijMTzk6+b4gDCRwaoNT8cb2P0LoMyILiyfpB/
+         DQxAUKVX6dubTGXlCu0o14T5X11EqbwPXxRSDiIK5AxOU/Y0cDB9qxZ08bXM/lR2r0dy
+         1qvxXe4+kUCI1RJ7EcwKRKTrv81NqGXnE1zHbZQUNVcIhk9UYgsWntcZC1UPk/13sxvb
+         GAArsjiGvqKMflFZDoQ5EV0FzdC7vckKYJykLZrarUWHR3eW6CLieP+/NCiqRiWRHyW2
+         m/6RIN4Gm9S7M/o156MhipBwyQuzxBKL8FI6rXQFKBs2Y6DdLjz1XjWlb/nC0PPq05Fr
+         VwGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748557164; x=1749161964;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n+PW3r+/BVI5LEotwQK4/wqYAkrq0SQ+HqmcFVNfHnQ=;
-        b=XGN7+7k0RDe11qWLXtlFHIzeHzXXlY7kjIeeKOSiFUr6CYYhUzbfqJyMc+QwnSMkNd
-         Qm/Q2X5vRFM3sypcQzoeG2c64qOgS4mJPV1mn55agqAg+9gCIQR5RAqYkhzivc8/nBj7
-         3WmVkalsV6WaSMq2HCH3VwJIogw9yqz4fZaqYF4+ZZSpgrTMcmmz7+k8+0Dpm89X+zCm
-         wJbphHbk4dCHqlNPKSYGLzKlom4j02kWvGBb2RU95BLRpGYj8/jfRRsr8N9NcG/14X9o
-         oYVJwnEyXVMWaKBKtjZ6LSfw12h6Mzg7m59kP/VOyD3az1lZGJ4jmtmbzXE8i4Hn7wG5
-         Rx5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUapY5OLQMSueL+t7fGvluxgXmUM0FskJlLApwnfHvdiOhumf7RdFhEPY/N2BSLsmMcmEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvpQyNtax0vcHOYjWkQbLcguYS6Nk5oydP7KPfo37xXmwJDVDa
-	OF8Q3quFT58otSDJfz7D2+SnznLxeeBna4qLzp/c/n3u3c3Ylm5f/X5UJJouiBWg35iDFVrkjrI
-	DzvhAcQ==
-X-Google-Smtp-Source: AGHT+IEUE7BQQdmGE1MoMD1DBcEUe9iBvKfMPZydDvm6S7w80UfsVuDxXmeHBia3lTenxO64ia7iv33wXmA=
-X-Received: from pjbse6.prod.google.com ([2002:a17:90b:5186:b0:30a:7da4:f075])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b90:b0:311:eb85:96df
- with SMTP id 98e67ed59e1d1-31241531935mr1811010a91.17.1748557164266; Thu, 29
- May 2025 15:19:24 -0700 (PDT)
-Date: Thu, 29 May 2025 15:19:22 -0700
-In-Reply-To: <20250529042710.crjcc76dqpiak4pn@desk>
+        d=1e100.net; s=20230601; t=1748557180; x=1749161980;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2WiZvL65gJWBhQxETywMJkkZAmvBLGCJuVJmqPemzNU=;
+        b=IsXPIWE+2XIhXjpMvoHJ0Cue923dzfHfCHltAePmdrWoRP8vw6ZEenR/pile+zAJc+
+         eSzQBNaRqRen6So7nJO9l4yxQFBLEQyIPgwpDFT9tkRkHAxrqGSBsLAw5xrVQ1wyLyG8
+         BsDUNBrgVPmgRw5DUdjhBKvih3AXF6yOOtCoYfENeS8XTzd+Vkj8+Fk1obBM4MVhtEZI
+         2eMd7BkR2APygXvbTV5/dUgPya2AmhJnyc3ohssEinL3gGPci3XgE3Cy2HTeNL6mdyIx
+         02hIuEnqqSRHI15sLU2yITz3vXQkGDKpwZ+nAzxnL4YRFUR+fIvdfKdsxWAAmW6Ltd65
+         OzFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs1mDH+MQlm583DMsCt1nwzpW7KE8gEDj6f67v8MoQ98XUGFAuEyqm5p2CADxtNcei/v8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxziIgqWUkMFC4fyaq/Z4ctTkkyQtoc5i/4SrhUcjusFriiX83j
+	JBQGffuudLeA54ufTKeoFxt6JAc2YysNjfiTbJ0bPyEdEAv/OuXelC3RDEj48LCzovZhlAckObv
+	+m1YwnQ==
+X-Google-Smtp-Source: AGHT+IE/KnIFPcTR33Ni+A0ag2QlB6J3OqTksKtrH9lZLuske3p06HrhdBLvdwE6B6sOh/7FJilM1pbp4Qk=
+X-Received: from plhc1.prod.google.com ([2002:a17:903:2341:b0:234:d7c5:a0e3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19cb:b0:234:f1ac:c036
+ with SMTP id d9443c01a7336-23529a1357amr17181895ad.50.1748557180372; Thu, 29
+ May 2025 15:19:40 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 29 May 2025 15:19:13 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250523011756.3243624-1-seanjc@google.com> <20250523011756.3243624-4-seanjc@google.com>
- <20250529042710.crjcc76dqpiak4pn@desk>
-Message-ID: <aDjdagbqcesTcnhc@google.com>
-Subject: Re: [PATCH 3/5] KVM: VMX: Apply MMIO Stale Data mitigation if KVM
- maps MMIO into the guest
+X-Mailer: git-send-email 2.49.0.1204.g71687c7c1d-goog
+Message-ID: <20250529221929.3807680-1-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH 00/16] x86: Add CPUID properties, clean up
+ related code
 From: Sean Christopherson <seanjc@google.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Borislav Petkov <bp@alien8.de>, Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Andrew Jones <andrew.jones@linux.dev>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, "=?UTF-8?q?Nico=20B=C3=B6hr?=" <nrb@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 28, 2025, Pawan Gupta wrote:
-> On Thu, May 22, 2025 at 06:17:54PM -0700, Sean Christopherson wrote:
-> > @@ -7282,7 +7288,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
-> >  	if (static_branch_unlikely(&vmx_l1d_should_flush))
-> >  		vmx_l1d_flush(vcpu);
-> >  	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
-> > -		 kvm_arch_has_assigned_device(vcpu->kvm))
-> > +		 (flags & VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO))
-> >  		mds_clear_cpu_buffers();
-> 
-> I think this also paves way for buffer clear for MDS and MMIO to be done at
-> a single place. Please let me know if below is feasible:
+Copy KVM selftests' X86_PROPERTY_* infrastructure (multi-bit CPUID
+fields), and use the properties to clean up various warts.  The SEV code
+is particular makes things much harder than they need to be (I went down
+this rabbit hole purely because the stupid MSR_SEV_STATUS definition was
+buried behind CONFIG_EFI=y, *sigh*).
 
-It's definitely feasible (this thought crossed my mind as well), but because
-CLEAR_CPU_BUFFERS emits VERW iff X86_FEATURE_CLEAR_CPU_BUF is enabled, the below
-would do nothing for the MMIO case (either that, or I'm missing something).
+The first patch is a common change to add static_assert() as a wrapper
+to _Static_assert().  Forcing code to provide an error message just leads
+to useless error messages.
 
-We could obviously rework CLEAR_CPU_BUFFERS, I'm just not sure that's worth the
-effort at this point.  I'm definitely not opposed to it though.
+Compile tested on arm64, riscv64, and s390x.
 
-> diff --git a/arch/x86/kvm/vmx/run_flags.h b/arch/x86/kvm/vmx/run_flags.h
-> index 2f20fb170def..004fe1ca89f0 100644
-> --- a/arch/x86/kvm/vmx/run_flags.h
-> +++ b/arch/x86/kvm/vmx/run_flags.h
-> @@ -2,12 +2,12 @@
->  #ifndef __KVM_X86_VMX_RUN_FLAGS_H
->  #define __KVM_X86_VMX_RUN_FLAGS_H
->  
-> -#define VMX_RUN_VMRESUME_SHIFT				0
-> -#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT			1
-> -#define VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO_SHIFT	2
-> +#define VMX_RUN_VMRESUME_SHIFT			0
-> +#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT		1
-> +#define VMX_RUN_CLEAR_CPU_BUFFERS_SHIFT		2
->  
-> -#define VMX_RUN_VMRESUME			BIT(VMX_RUN_VMRESUME_SHIFT)
-> -#define VMX_RUN_SAVE_SPEC_CTRL			BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
-> -#define VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO	BIT(VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO_SHIFT)
-> +#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
-> +#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
-> +#define VMX_RUN_CLEAR_CPU_BUFFERS	BIT(VMX_RUN_CLEAR_CPU_BUFFERS_SHIFT)
->  
->  #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
-> diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-> index f6986dee6f8c..ab602ce4967e 100644
-> --- a/arch/x86/kvm/vmx/vmenter.S
-> +++ b/arch/x86/kvm/vmx/vmenter.S
-> @@ -141,6 +141,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
->  	/* Check if vmlaunch or vmresume is needed */
->  	bt   $VMX_RUN_VMRESUME_SHIFT, %ebx
->  
-> +	test $VMX_RUN_CLEAR_CPU_BUFFERS, %ebx
-> +
->  	/* Load guest registers.  Don't clobber flags. */
->  	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
->  	mov VCPU_RDX(%_ASM_AX), %_ASM_DX
-> @@ -161,8 +163,11 @@ SYM_FUNC_START(__vmx_vcpu_run)
->  	/* Load guest RAX.  This kills the @regs pointer! */
->  	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
->  
-> +	/* Check EFLAGS.ZF from the VMX_RUN_CLEAR_CPU_BUFFERS bit test above */
-> +	jz .Lskip_clear_cpu_buffers
->  	/* Clobbers EFLAGS.ZF */
->  	CLEAR_CPU_BUFFERS
-> +.Lskip_clear_cpu_buffers:
->  
->  	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
->  	jnc .Lvmlaunch
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 1e4790c8993a..1415aeea35f7 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -958,9 +958,10 @@ unsigned int __vmx_vcpu_run_flags(struct vcpu_vmx *vmx)
->  	if (!msr_write_intercepted(vmx, MSR_IA32_SPEC_CTRL))
->  		flags |= VMX_RUN_SAVE_SPEC_CTRL;
->  
-> -	if (static_branch_unlikely(&mmio_stale_data_clear) &&
-> -	    kvm_vcpu_can_access_host_mmio(&vmx->vcpu))
-> -		flags |= VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO;
-> +	if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) ||
-> +	    (static_branch_unlikely(&mmio_stale_data_clear) &&
-> +	     kvm_vcpu_can_access_host_mmio(&vmx->vcpu)))
-> +		flags |= VMX_RUN_CLEAR_CPU_BUFFERS;
->  
->  	return flags;
->  }
-> @@ -7296,9 +7297,6 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
->  	 */
->  	if (static_branch_unlikely(&vmx_l1d_should_flush))
->  		vmx_l1d_flush(vcpu);
-> -	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
-> -		 (flags & VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO))
-> -		mds_clear_cpu_buffers();
->  
->  	vmx_disable_fb_clear(vmx);
->  
+Sean Christopherson (16):
+  lib: Add and use static_assert() convenience wrappers
+  x86: Encode X86_FEATURE_* definitions using a structure
+  x86: Add X86_PROPERTY_* framework to retrieve CPUID values
+  x86: Use X86_PROPERTY_MAX_VIRT_ADDR in is_canonical()
+  x86: Implement get_supported_xcr0() using
+    X86_PROPERTY_SUPPORTED_XCR0_{LO,HI}
+  x86: Add and use X86_PROPERTY_INTEL_PT_NR_RANGES
+  x86/pmu: Rename pmu_gp_counter_is_available() to
+    pmu_arch_event_is_available()
+  x86/pmu: Rename gp_counter_mask_length to arch_event_mask_length
+  x86/pmu: Mark all arch events as available on AMD
+  x86/pmu: Use X86_PROPERTY_PMU_* macros to retrieve PMU information
+  x86/sev: Use VC_VECTOR from processor.h
+  x86/sev: Skip the AMD SEV test if SEV is unsupported/disabled
+  x86/sev: Define and use X86_FEATURE_* flags for CPUID 0x8000001F
+  x86/sev: Use X86_PROPERTY_SEV_C_BIT to get the AMD SEV C-bit location
+  x86/sev: Use amd_sev_es_enabled() to detect if SEV-ES is enabled
+  x86: Move SEV MSR definitions to msr.h
+
+ lib/riscv/asm/isa.h      |   4 +-
+ lib/s390x/asm/arch_def.h |   6 +-
+ lib/s390x/fault.c        |   3 +-
+ lib/util.h               |   3 +
+ lib/x86/amd_sev.c        |  48 ++----
+ lib/x86/amd_sev.h        |  29 ----
+ lib/x86/msr.h            |   6 +
+ lib/x86/pmu.c            |  22 ++-
+ lib/x86/pmu.h            |   8 +-
+ lib/x86/processor.h      | 312 ++++++++++++++++++++++++++++-----------
+ x86/amd_sev.c            |  63 ++------
+ x86/la57.c               |   2 +-
+ x86/lam.c                |   4 +-
+ x86/pmu.c                |   8 +-
+ x86/xsave.c              |  11 +-
+ 15 files changed, 284 insertions(+), 245 deletions(-)
+
+
+base-commit: 72d110d8286baf1b355301cc8c8bdb42be2663fb
+-- 
+2.49.0.1204.g71687c7c1d-goog
+
