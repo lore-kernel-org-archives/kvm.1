@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718562116F4
-	for <kvm@vger.kernel.org>; Fri, 30 May 2025 08:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BD021882B
+	for <kvm@vger.kernel.org>; Fri, 30 May 2025 08:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748594062; cv=none; b=o3ZrxJdS9unE78vc/G6na/f2WmUpY1a+Z5dnMEPi75DZMNkcLLQafnueHeNNKRFMXKL/hq8xH6XKQeZuxQpx0A4D/OyoRhFxKoNTiFqJdUw8l+DLxvJo7xccN4mVvoOUdWnacJvn23k3/SEbSNnJlUHGS3QOaaNX+HgbSCGkC3Y=
+	t=1748594064; cv=none; b=rBUX55lF7QWdSSwtRFRQaMoVi+bai9ozOYEk+j2LGy5Xwa5ln+5cX1vDMziboLyr+xvt7wTX1mbYwLmu4nT8sNdOBkRfuPRHR2eWnHbI+GejqwusWdTa9dbfQTnQy50rpAD5g1NeYpQIOMrN3agMBR/QpY3k9j1+Q24I2yesRAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748594062; c=relaxed/simple;
-	bh=XatKS558Mh6syXhI1KMlrAGiYwh56ZXPM1XSqMYJ8dk=;
+	s=arc-20240116; t=1748594064; c=relaxed/simple;
+	bh=GrMUBFtn4Dj0h+vdvqfh8N4b0D8OE9P2jqndkfBDheM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDJJlH2z4qjiGIau6aEljz51d4EcpFcuQj+dfUc32Uxf5WhW59oo+I5RIqlu5EQ1vlfb6BT7EWMZ3rRGBW/kcktrOw4PzkJQvxgNkc/x0DebD80RUjOyLiNtJ4fjja9Z7zH6enxVqkx/LFq1ReUs/Ic09cdWV292dp5uzABoxJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DfgGD0lz; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=PwcK2+KmQ05vHZclmWQ+opHi29a/zFXoHWTp1gWlZnh+Iv+TrX9H9C+dxZ3yei0EscBDeOIsm2gxfguqsXQjjtIVz/SVykK4aGYyWykaMajiTETngrOtVF51qgBWQgizwX2SwGfwV6KyDUDfX5xzA5oSoUI+KDcyqfAWx+BkLpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YhwX70xi; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DfgGD0lz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YhwX70xi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748594060; x=1780130060;
+  t=1748594062; x=1780130062;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XatKS558Mh6syXhI1KMlrAGiYwh56ZXPM1XSqMYJ8dk=;
-  b=DfgGD0lzH4WFYrSQ2WWoeuEz/ThZ/SclFmF13VvHZDD3QqcauMK8019E
-   iiuTeLLeFp62jVV8q74ibifjNwFrX0k8SuotyoHMJG/cTjq4AWXa4ktR0
-   Xnw3Qp4gcWS9pg1FO/U7RQWJ65reu+wb3aXzGzGDwoDULTq6MQIdyBg9O
-   ouXaEIFBh191q7fI30gwJQOOr8DjwfLanatjmD2tFoKnsFtJ8QBMQ4DyA
-   8j6OEdcynDRB5kBTQ4xfS1mO6pDAqrjXrMe4X05631md5djjgWto74OmO
-   6gRRdj9x0MrmvBmkGeMGLAfVQi5WKzosUXHqUvMFmwojMvOXHEULMlQqW
-   Q==;
-X-CSE-ConnectionGUID: p5wpc9b1RJS9zSJr23a0/Q==
-X-CSE-MsgGUID: FWZiw2M1TK6XA7TnBbwfSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="62081528"
+  bh=GrMUBFtn4Dj0h+vdvqfh8N4b0D8OE9P2jqndkfBDheM=;
+  b=YhwX70xibfsIWpPKFJpWI2qqySupc3pL4DP8EpXd3BiMHsjbkJydkV5J
+   O8zWWk2yNR6NWrAJOgVXTSNt5J/ttXFjtU8IOKvOybzsayla5SpTqw5Mb
+   boYZzMkiJZ1qnO5wVng4tcrgjDeoyXIilocFp2Lad7I1o+SCQbnKOTBJB
+   0xtQUzsv2WebLMzRDoKtNh2eND0ArC2kl/bBwwcE9DMwyk2QGmJ1eoG3x
+   7txK8TigHtWmLQG+ItmRsACX9IGisPI94BHP4Y/5aDCU0bgRXpbbVUWDb
+   8t5YEk0JBJt0JoL9kfFmzcnZw2IMvQ5FhsVxe5V+16vNt+nND/p31pUpN
+   w==;
+X-CSE-ConnectionGUID: Ob19TFdRQ0O7lS+NIBqRDg==
+X-CSE-MsgGUID: 8ieQgiJ0Qz+tMcdtcRERWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="62081560"
 X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="62081528"
+   d="scan'208";a="62081560"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 01:34:11 -0700
-X-CSE-ConnectionGUID: k2XMCxBnRXK7gfmR6ASyJA==
-X-CSE-MsgGUID: elzbCLiIQvihOcqx2LA1Fw==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 01:34:19 -0700
+X-CSE-ConnectionGUID: Re9g73xaSBWt9qMaEXbiKQ==
+X-CSE-MsgGUID: 74+hMB1AQIqNLDnEk4JeOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="144453778"
+   d="scan'208";a="144453800"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 01:34:06 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 01:34:15 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>,
 	Alexey Kardashevskiy <aik@amd.com>,
@@ -62,9 +62,9 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
 	Li Xiaoyao <xiaoyao.li@intel.com>,
 	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
 	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH v6 3/5] memory: Unify the definiton of ReplayRamPopulate() and ReplayRamDiscard()
-Date: Fri, 30 May 2025 16:32:52 +0800
-Message-ID: <20250530083256.105186-4-chenyi.qiang@intel.com>
+Subject: [PATCH v6 5/5] physmem: Support coordinated discarding of RAM with guest_memfd
+Date: Fri, 30 May 2025 16:32:54 +0800
+Message-ID: <20250530083256.105186-6-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250530083256.105186-1-chenyi.qiang@intel.com>
 References: <20250530083256.105186-1-chenyi.qiang@intel.com>
@@ -76,263 +76,127 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update ReplayRamDiscard() function to return the result and unify the
-ReplayRamPopulate() and ReplayRamDiscard() to ReplayRamDiscardState() at
-the same time due to their identical definitions. This unification
-simplifies related structures, such as VirtIOMEMReplayData, which makes
-it cleaner.
+A new field, attributes, was introduced in RAMBlock to link to a
+RamBlockAttributes object, which centralizes all guest_memfd related
+information (such as fd and shared bitmap) within a RAMBlock.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Create and initialize the RamBlockAttributes object upon ram_block_add().
+Meanwhile, register the object in the target RAMBlock's MemoryRegion.
+After that, guest_memfd-backed RAMBlock is associated with the
+RamDiscardManager interface, and the users can execute RamDiscardManager
+specific handling. For example, VFIO will register the
+RamDiscardListener and get notifications when the state_change() helper
+invokes.
+
+As coordinate discarding of RAM with guest_memfd is now supported, only
+block uncoordinated discard.
+
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
 Changes in v6:
-    - Add Reviewed-by from David
-    - Add a documentation comment for the prototype change
+    - Squash the unblocking of cooridnate discard into this commit.
+    - Remove the checks in migration path.
 
 Changes in v5:
-    - Rename ReplayRamStateChange to ReplayRamDiscardState (David)
-    - return data->fn(s, data->opaque) instead of 0 in
-      virtio_mem_rdm_replay_discarded_cb(). (Alexey)
+    - Revert to use RamDiscardManager interface.
+    - Move the object_new() into the ram_block_attribute_create()
+      helper.
+    - Add some check in migration path.
 
 Changes in v4:
-    - Modify the commit message. We won't use Replay() operation when
-      doing the attribute change like v3.
----
- hw/virtio/virtio-mem.c  | 21 +++++++-------
- include/system/memory.h | 64 ++++++++++++++++++++++++++++++-----------
- migration/ram.c         |  5 ++--
- system/memory.c         | 12 ++++----
- 4 files changed, 66 insertions(+), 36 deletions(-)
+    - Remove the replay operations for attribute changes which will be
+      handled in a listener in following patches.
+    - Add some comment in the error path of realize() to remind the
+      future development of the unified error path.
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 2e491e8c44..c46f6f9c3e 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -1732,7 +1732,7 @@ static bool virtio_mem_rdm_is_populated(const RamDiscardManager *rdm,
- }
+Changes in v3:
+    - Use ram_discard_manager_reply_populated/discarded() to set the
+      memory attribute and add the undo support if state_change()
+      failed.
+    - Didn't add Reviewed-by from Alexey due to the new changes in this
+      commit.
+---
+ accel/kvm/kvm-all.c       |  9 +++++++++
+ include/system/ramblock.h |  1 +
+ system/physmem.c          | 18 ++++++++++++++++--
+ 3 files changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 51526d301b..3b390bbb09 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3089,6 +3089,15 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+     addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
+     rb = qemu_ram_block_from_host(addr, false, &offset);
  
- struct VirtIOMEMReplayData {
--    void *fn;
-+    ReplayRamDiscardState fn;
-     void *opaque;
- };
++    ret = ram_block_attributes_state_change(RAM_BLOCK_ATTRIBUTES(mr->rdm),
++                                            offset, size, to_private);
++    if (ret) {
++        error_report("Failed to notify the listener the state change of "
++                     "(0x%"HWADDR_PRIx" + 0x%"HWADDR_PRIx") to %s",
++                     start, size, to_private ? "private" : "shared");
++        goto out_unref;
++    }
++
+     if (to_private) {
+         if (rb->page_size != qemu_real_host_page_size()) {
+             /*
+diff --git a/include/system/ramblock.h b/include/system/ramblock.h
+index 1bab9e2dac..87e847e184 100644
+--- a/include/system/ramblock.h
++++ b/include/system/ramblock.h
+@@ -46,6 +46,7 @@ struct RAMBlock {
+     int fd;
+     uint64_t fd_offset;
+     int guest_memfd;
++    RamBlockAttributes *attributes;
+     size_t page_size;
+     /* dirty bitmap used during migration */
+     unsigned long *bmap;
+diff --git a/system/physmem.c b/system/physmem.c
+index a8a9ca309e..1f1217fa0a 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1916,7 +1916,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+         }
+         assert(new_block->guest_memfd < 0);
  
-@@ -1740,12 +1740,12 @@ static int virtio_mem_rdm_replay_populated_cb(MemoryRegionSection *s, void *arg)
- {
-     struct VirtIOMEMReplayData *data = arg;
+-        ret = ram_block_discard_require(true);
++        ret = ram_block_coordinated_discard_require(true);
+         if (ret < 0) {
+             error_setg_errno(errp, -ret,
+                              "cannot set up private guest memory: discard currently blocked");
+@@ -1931,6 +1931,19 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+             goto out_free;
+         }
  
--    return ((ReplayRamPopulate)data->fn)(s, data->opaque);
-+    return data->fn(s, data->opaque);
- }
- 
- static int virtio_mem_rdm_replay_populated(const RamDiscardManager *rdm,
-                                            MemoryRegionSection *s,
--                                           ReplayRamPopulate replay_fn,
-+                                           ReplayRamDiscardState replay_fn,
-                                            void *opaque)
- {
-     const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
-@@ -1764,14 +1764,13 @@ static int virtio_mem_rdm_replay_discarded_cb(MemoryRegionSection *s,
- {
-     struct VirtIOMEMReplayData *data = arg;
- 
--    ((ReplayRamDiscard)data->fn)(s, data->opaque);
--    return 0;
-+    return data->fn(s, data->opaque);
- }
- 
--static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
--                                            MemoryRegionSection *s,
--                                            ReplayRamDiscard replay_fn,
--                                            void *opaque)
-+static int virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
-+                                           MemoryRegionSection *s,
-+                                           ReplayRamDiscardState replay_fn,
-+                                           void *opaque)
- {
-     const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
-     struct VirtIOMEMReplayData data = {
-@@ -1780,8 +1779,8 @@ static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
-     };
- 
-     g_assert(s->mr == &vmem->memdev->mr);
--    virtio_mem_for_each_unplugged_section(vmem, s, &data,
--                                          virtio_mem_rdm_replay_discarded_cb);
-+    return virtio_mem_for_each_unplugged_section(vmem, s, &data,
-+                                                 virtio_mem_rdm_replay_discarded_cb);
- }
- 
- static void virtio_mem_rdm_register_listener(RamDiscardManager *rdm,
-diff --git a/include/system/memory.h b/include/system/memory.h
-index 896948deb1..4f45a187d6 100644
---- a/include/system/memory.h
-+++ b/include/system/memory.h
-@@ -575,8 +575,20 @@ static inline void ram_discard_listener_init(RamDiscardListener *rdl,
-     rdl->double_discard_supported = double_discard_supported;
- }
- 
--typedef int (*ReplayRamPopulate)(MemoryRegionSection *section, void *opaque);
--typedef void (*ReplayRamDiscard)(MemoryRegionSection *section, void *opaque);
-+/**
-+ * ReplayRamDiscardState:
-+ *
-+ * The callback handler for #RamDiscardManagerClass.replay_populated/
-+ * #RamDiscardManagerClass.replay_discarded to invoke on populated/discarded
-+ * parts.
-+ *
-+ * @section: the #MemoryRegionSection of populated/discarded part
-+ * @opaque: pointer to forward to the callback
-+ *
-+ * Returns 0 on success, or a negative error if failed.
-+ */
-+typedef int (*ReplayRamDiscardState)(MemoryRegionSection *section,
-+                                     void *opaque);
- 
- /*
-  * RamDiscardManagerClass:
-@@ -650,36 +662,38 @@ struct RamDiscardManagerClass {
-     /**
-      * @replay_populated:
-      *
--     * Call the #ReplayRamPopulate callback for all populated parts within the
--     * #MemoryRegionSection via the #RamDiscardManager.
-+     * Call the #ReplayRamDiscardState callback for all populated parts within
-+     * the #MemoryRegionSection via the #RamDiscardManager.
-      *
-      * In case any call fails, no further calls are made.
-      *
-      * @rdm: the #RamDiscardManager
-      * @section: the #MemoryRegionSection
--     * @replay_fn: the #ReplayRamPopulate callback
-+     * @replay_fn: the #ReplayRamDiscardState callback
-      * @opaque: pointer to forward to the callback
-      *
-      * Returns 0 on success, or a negative error if any notification failed.
-      */
-     int (*replay_populated)(const RamDiscardManager *rdm,
-                             MemoryRegionSection *section,
--                            ReplayRamPopulate replay_fn, void *opaque);
-+                            ReplayRamDiscardState replay_fn, void *opaque);
- 
-     /**
-      * @replay_discarded:
-      *
--     * Call the #ReplayRamDiscard callback for all discarded parts within the
--     * #MemoryRegionSection via the #RamDiscardManager.
-+     * Call the #ReplayRamDiscardState callback for all discarded parts within
-+     * the #MemoryRegionSection via the #RamDiscardManager.
-      *
-      * @rdm: the #RamDiscardManager
-      * @section: the #MemoryRegionSection
--     * @replay_fn: the #ReplayRamDiscard callback
-+     * @replay_fn: the #ReplayRamDiscardState callback
-      * @opaque: pointer to forward to the callback
-+     *
-+     * Returns 0 on success, or a negative error if any notification failed.
-      */
--    void (*replay_discarded)(const RamDiscardManager *rdm,
--                             MemoryRegionSection *section,
--                             ReplayRamDiscard replay_fn, void *opaque);
-+    int (*replay_discarded)(const RamDiscardManager *rdm,
-+                            MemoryRegionSection *section,
-+                            ReplayRamDiscardState replay_fn, void *opaque);
- 
-     /**
-      * @register_listener:
-@@ -720,15 +734,31 @@ uint64_t ram_discard_manager_get_min_granularity(const RamDiscardManager *rdm,
- bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
-                                       const MemoryRegionSection *section);
- 
-+/**
-+ * ram_discard_manager_replay_populated:
-+ *
-+ * A wrapper to call the #RamDiscardManagerClass.replay_populated callback
-+ * of the #RamDiscardManager.
-+ *
-+ * Returns 0 on success, or a negative error if any notification failed.
-+ */
- int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
-                                          MemoryRegionSection *section,
--                                         ReplayRamPopulate replay_fn,
-+                                         ReplayRamDiscardState replay_fn,
-                                          void *opaque);
- 
--void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
--                                          MemoryRegionSection *section,
--                                          ReplayRamDiscard replay_fn,
--                                          void *opaque);
-+/**
-+ * ram_discard_manager_replay_discarded:
-+ *
-+ * A wrapper to call the #RamDiscardManagerClass.replay_discarded callback
-+ * of the #RamDiscardManager.
-+ *
-+ * Returns 0 on success, or a negative error if any notification failed.
-+ */
-+int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
-+                                         MemoryRegionSection *section,
-+                                         ReplayRamDiscardState replay_fn,
-+                                         void *opaque);
- 
- void ram_discard_manager_register_listener(RamDiscardManager *rdm,
-                                            RamDiscardListener *rdl,
-diff --git a/migration/ram.c b/migration/ram.c
-index e12913b43e..c004f37060 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -848,8 +848,8 @@ static inline bool migration_bitmap_clear_dirty(RAMState *rs,
-     return ret;
- }
- 
--static void dirty_bitmap_clear_section(MemoryRegionSection *section,
--                                       void *opaque)
-+static int dirty_bitmap_clear_section(MemoryRegionSection *section,
-+                                      void *opaque)
- {
-     const hwaddr offset = section->offset_within_region;
-     const hwaddr size = int128_get64(section->size);
-@@ -868,6 +868,7 @@ static void dirty_bitmap_clear_section(MemoryRegionSection *section,
++        new_block->attributes = ram_block_attributes_create(new_block);
++        if (!new_block->attributes) {
++            error_setg(errp, "Failed to create ram block attribute");
++            /*
++             * The error path could be unified if the rest of ram_block_add()
++             * ever develops a need to check for errors.
++             */
++            close(new_block->guest_memfd);
++            ram_block_coordinated_discard_require(false);
++            qemu_mutex_unlock_ramlist();
++            goto out_free;
++        }
++
+         /*
+          * Add a specific guest_memfd blocker if a generic one would not be
+          * added by ram_block_add_cpr_blocker.
+@@ -2287,8 +2300,9 @@ static void reclaim_ramblock(RAMBlock *block)
      }
-     *cleared_bits += bitmap_count_one_with_offset(rb->bmap, start, npages);
-     bitmap_clear(rb->bmap, start, npages);
-+    return 0;
- }
  
- /*
-diff --git a/system/memory.c b/system/memory.c
-index b45b508dce..de45fbdd3f 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2138,7 +2138,7 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
+     if (block->guest_memfd >= 0) {
++        ram_block_attributes_destroy(block->attributes);
+         close(block->guest_memfd);
+-        ram_block_discard_require(false);
++        ram_block_coordinated_discard_require(false);
+     }
  
- int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
-                                          MemoryRegionSection *section,
--                                         ReplayRamPopulate replay_fn,
-+                                         ReplayRamDiscardState replay_fn,
-                                          void *opaque)
- {
-     RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
-@@ -2147,15 +2147,15 @@ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
-     return rdmc->replay_populated(rdm, section, replay_fn, opaque);
- }
- 
--void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
--                                          MemoryRegionSection *section,
--                                          ReplayRamDiscard replay_fn,
--                                          void *opaque)
-+int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
-+                                         MemoryRegionSection *section,
-+                                         ReplayRamDiscardState replay_fn,
-+                                         void *opaque)
- {
-     RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
- 
-     g_assert(rdmc->replay_discarded);
--    rdmc->replay_discarded(rdm, section, replay_fn, opaque);
-+    return rdmc->replay_discarded(rdm, section, replay_fn, opaque);
- }
- 
- void ram_discard_manager_register_listener(RamDiscardManager *rdm,
+     g_free(block);
 -- 
 2.43.5
 
