@@ -1,124 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3300A247296;
-	Wed,  4 Jun 2025 09:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4618C03F
+	for <kvm@vger.kernel.org>; Wed,  4 Jun 2025 09:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749027609; cv=none; b=kzJnhu96Ual3fFRk8OmzEgOs5p+5E2k0gWXxz+JY0EGZld+Oys32PRbTkkb+q7sV1QLtE12xVKMtVTXj90/MfM/HzPUfZ+mLOEJ2+4jUU5GmAd2nMD0uSehIyvnOgILdoKnzeu0Ee1K7d+R145YRjSbublToOxfY3jAcMX1y7UI=
+	t=1749027646; cv=none; b=gAnYe0oPH7gFkUWqJwhvcdW8LeEzNaijiNIr96+6tC+jHYO/yrbXPyqw2X0lv4oEwT62Byu6VsV5KInNMNyniZ72sFGguM82nBQoAs8hsZ/jVcNCefpkQkoMULzK44GBowZom+AWQJmSdd9t9LA4RAPAw/kJIpei59AGsWwFZhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749027609; c=relaxed/simple;
-	bh=JHeR87LeBvTOD+NcJ7rkJFug+cKe5v03755b/Yn77RY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lz/eGM2TwjyWWDbV6xTtZmVpGcl+Ru5AsbNtPLW+ggOtnNpF6njm8yCHBRVn+d4gWcCer6270B69fVNHk7ALS4MnN8b05UWQkAd+3NyvJ7jBV1u/6/KEHFSXmNA+2N1l5y5mPMKf5zrPFNvgvuhshHyPnFIeT6SnDqp6dE7MwvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNMi0PRV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749027646; c=relaxed/simple;
+	bh=sFDPx9PnIyChyotF3uSxA9GPbPhQSr+kEJuQAkIqOL8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tyFnIap8KrHKxKh1vst2NGQ79qf3KIsxAv4tMyyzmFzkQHErf3wicf7+bGODTMskxWkAnX7OK0NTLqXNC39x3EZHgnxcptWJ3kv97LRVCQ7uw8UlUczdVHnh4o6oZB2pFEm2SX7z+pEQKACFEX/37knxIqZnl91IABoYlAk5oGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QC3n0Khp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNMi0PRV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67319C4CEE7;
-	Wed,  4 Jun 2025 08:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749027608;
-	bh=JHeR87LeBvTOD+NcJ7rkJFug+cKe5v03755b/Yn77RY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YNMi0PRVBrQL7TUZfEAggFUQ4cYerIUDHHQvXVQ4Ql7w6vrNZ2Q+4XcAYwCt1QDYw
-	 1eJo1GcCdFQI/aDuDsgi7yZqP3ooz5vQOCtHW2UFhSnYtVDbartpf//xtFic2nNvGc
-	 7Hy3/KWhXsNA3huwmTLjAG9GPwRMsIkjND6zyKaDnmxnpA0YbF6/XoFTSudZgMh/HG
-	 7r/WM6InNriNEyLQ6Ll4pfLVhKjCZfNR0v2Z968XGgwjSPXzMonP2yIIVDKKgMSkRr
-	 nRkrE+KcTPlA2UsqKlOe4qOUYuQLLwY4Z5+bEf2vVmovEaqg8begmD8Ec3aY3eqyF5
-	 K39U0EXJ7q5Gg==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 Q)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
-	yilun.xu@intel.com, linux-kernel@vger.kernel.org, lukas@wunner.de,
-	yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com,
-	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com,
-	iommu@lists.linux.dev, kevin.tian@intel.com
-Subject: Re: [RFC PATCH 17/30] iommufd/device: Add TSM Bind/Unbind for TIO
- support
-In-Reply-To: <20250603122149.GH376789@nvidia.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-18-yilun.xu@linux.intel.com>
- <yq5awm9ujouz.fsf@kernel.org> <aD6UQy4KwKcdSvVE@yilunxu-OptiPlex-7050>
- <20250603122149.GH376789@nvidia.com>
-Date: Wed, 04 Jun 2025 14:10:43 +0530
-Message-ID: <yq5aplfj99x0.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QC3n0Khp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749027643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1MGX4dUL85emYMb1ED5ErxsocvR1puK9Nem0HjGHKw=;
+	b=QC3n0Khp1OAHeIzBdLl3hlsALPgyXz/mWbdha8e8nUwjY7gZplo2jjZQpweHnfWp8gCdnQ
+	rEaKVCKd9p67gErHpErDQ3OPfH4hc6c/7upr8ekj/tKLB9IWCMDFgf/QsnuuhOMt7hxtST
+	dgYaosxv2GMauh0KlRWK/fkzz9q0uV8=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-395-LM8nxwlOMVaGhPLKYX9Ahw-1; Wed, 04 Jun 2025 05:00:41 -0400
+X-MC-Unique: LM8nxwlOMVaGhPLKYX9Ahw-1
+X-Mimecast-MFC-AGG-ID: LM8nxwlOMVaGhPLKYX9Ahw_1749027641
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b26e0fee459so558767a12.1
+        for <kvm@vger.kernel.org>; Wed, 04 Jun 2025 02:00:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749027641; x=1749632441;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I1MGX4dUL85emYMb1ED5ErxsocvR1puK9Nem0HjGHKw=;
+        b=Kad1ia6j9IgABxpZ6MhWhJXWdU44gFGo/EHOSAjp/jIgFRdDTUzG89G+3yl6iwXg48
+         LxCYbIb5rWJoqEmTem0dCLXrqQe9+YKz9BQhkHqq3aGi9sCY33q6KfLpnBFU3IPGU3A+
+         7UhPo3jpe0oSLNOZmfYptvQWi9E4aUWGhKYVy0VsSjQqtABAjD29kYxWIT1wD6gKEyT3
+         +L3mxF4+zDlpfNMCK4v86t8GKHwFec6rGsGFdH+78Ghi3iMJcgvsrRWFIVlz/DrEvBHS
+         XGLrFdcpRf36svi6+7fPaHCPPAKwQ8H5N/4wuuheH4BueOGReDHtHYcJKp3dorjdoN9o
+         RGKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmMecDwGUgz/pXLlIU0llMH1m4+dulTmGCznDRRrbwlhJEte/rZDO4Qzc/JUADh5Ffe0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbF7RL4U+4tb8fP0IVCG7HJPR5tJbJLGB1UFhNnLINAQJtB77L
+	+X+YVV0neUF9MgbocEG+Q3roWdngRkuVetdrp0afsffmZsAsI/pv2mj9j/2qWSGbH/DK7Y4viAT
+	J3PKlyKHDn7gTg/6IK4U/n+Trv3/okv5xfiAum/GpysdKXwVSGae6uw==
+X-Gm-Gg: ASbGnctuZLHRMGT5jN3q83kp+H5ajZ7YsKO6JUwcDNewJeJ89SRLWGktPKExKWojdHK
+	f4XHLLQMoxoNsob+v6+arTACldI40obsV7GVFP0O7MjFgBui4h8OeLC8UWUg+vIS0c5xy3mr8D8
+	bthPAmQXJG9Btd8fzTV8ds/Z03jaD0wEclXJ3o+piuXn1iuwjXK9Ra4jHKG3ppbn9ryuFmC7YXZ
+	7nKjhTybSnGRbhmWzHAXuYYvZSUWAxbxj2CiX2rF/5659FbGjuAfuX6RzPPBXBerkxl6llzIpGF
+	NevzHa31JXX95F+UqkV8Upf2Qo7JCu1OpeGpB3i84PcEZERAT9Y=
+X-Received: by 2002:a05:6a21:a4c9:b0:1f3:26ae:7792 with SMTP id adf61e73a8af0-21d2275affamr3281370637.18.1749027640787;
+        Wed, 04 Jun 2025 02:00:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtTWWeA9jam1fT8PmW5xs6BajYthggeHnemnm+gzA3QybPaPwl9UDtfWtk6pB2dDDU19J7fA==
+X-Received: by 2002:a05:6a21:a4c9:b0:1f3:26ae:7792 with SMTP id adf61e73a8af0-21d2275affamr3281298637.18.1749027640329;
+        Wed, 04 Jun 2025 02:00:40 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747afe9670bsm10688114b3a.30.2025.06.04.02.00.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 02:00:39 -0700 (PDT)
+Message-ID: <56a7b265-a863-43cb-b119-372673bb0e26@redhat.com>
+Date: Wed, 4 Jun 2025 19:00:18 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 07/16] KVM: Fix comment that refers to kvm uapi header
+ path
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
+ vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
+ liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com
+References: <20250527180245.1413463-1-tabba@google.com>
+ <20250527180245.1413463-8-tabba@google.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250527180245.1413463-8-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 5/28/25 4:02 AM, Fuad Tabba wrote:
+> The comment that refers to the path where the user-visible memslot flags
+> are refers to an outdated path and has a typo. Make it refer to the
+> correct path.
+> 
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>   include/linux/kvm_host.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-> On Tue, Jun 03, 2025 at 02:20:51PM +0800, Xu Yilun wrote:
->> > Wouldn=E2=80=99t it be simpler to skip the reference count increment a=
-ltogether
->> > and just call tsm_unbind in the virtual device=E2=80=99s destroy callb=
-ack?
->> > (iommufd_vdevice_destroy())
->>=20
->> The vdevice refcount is the main concern, there is also an IOMMU_DESTROY
->> ioctl. User could just free the vdevice instance if no refcount, while V=
-FIO
->> is still in bound state. That seems not the correct free order.
->
-> Freeing the vdevice should automatically unbind it..
->
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-One challenge I ran into during implementation was the dependency of
-vfio on iommufd_device. When vfio needs to perform a tsm_unbind,
-it only has access to an iommufd_device.
-
-However, TSM operations like binding and unbinding are handled at the
-iommufd_vdevice level. The issue? There=E2=80=99s no direct link from
-iommufd_device back to iommufd_vdevice.
-
-To address this, I modified the following structures:
-
-modified   drivers/iommu/iommufd/iommufd_private.h
-@@ -428,6 +428,7 @@ struct iommufd_device {
- 	/* protect iopf_enabled counter */
- 	struct mutex iopf_lock;
- 	unsigned int iopf_enabled;
-+	struct iommufd_vdevice *vdev;
- };
-=20
- static inline struct iommufd_device *
-@@ -613,6 +614,7 @@ struct iommufd_vdevice {
- 	struct iommufd_object obj;
- 	struct iommufd_ctx *ictx;
- 	struct iommufd_viommu *viommu;
-+	struct iommufd_device *idev;
- 	struct device *dev;
- 	struct mutex	mutex;	/* mutex to synchronize updates to tsm_bound */
- 	u64 id; /* per-vIOMMU virtual ID */
-
-These fields are updated during tsm_bind and tsm_unbind, so they must be
-protected by the appropriate locks:
-
-Updating vdevice->idev requires holding vdev->mutex (vdev_lock).
-Updating device->vdev requires idev->igroup->lock (idev_lock).
-
-tsm_unbind in vdevice_destroy:
-
-vdevice_destroy() ends up calling tsm_unbind() while holding only the
-vdev_lock. At first glance, this seems unsafe. But in practice, it's
-fine because the corresponding iommufd_device has already been destroyed
-when the VFIO device file descriptor was closed=E2=80=94triggering
-vfio_df_iommufd_unbind().
-
-I=E2=80=99ve added an in-code comment to explain why tsm_unbind() is safe h=
-ere
-without acquiring the idev_lock. Hope that is ok.
-
--aneesh
