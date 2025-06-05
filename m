@@ -1,58 +1,62 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90DE198A2F
-	for <kvm@vger.kernel.org>; Thu,  5 Jun 2025 15:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80381BD9D0
+	for <kvm@vger.kernel.org>; Thu,  5 Jun 2025 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749137113; cv=none; b=KSV18yJu/HQ7K5JiYKn5s7d7MGSSGWZtO96KShBUcGzW7QNHuXwdkC0D7P00BJE/clqjq3ijemlKJxc8h8YzFQoFfr7NmOEzUcNETWu8B+tO2ml+24IGS7U5DbdEX0C+7jigNbAJMozukZ7Z+Ik5djilA+SahStLMnTjWACVDzg=
+	t=1749137115; cv=none; b=UGcp0KMk1gPWfQ/Zf1MNYLnYB13jlt5W0OBRDoANnrhtKA6NCZa6sGF07YNXJtcAH7zmMQ4TnOkDvTCrhMOKqFK6Soi1M0s1gdGgXoIHEV6OEUs5g7dXW9mRDbymNM9l8fc3MiL1TzI/6tIt7qg9RllLd6D99OHnGR5MrqPChm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749137113; c=relaxed/simple;
-	bh=s8j3KrbHnhPOaTY8IAydz5/vIdM8uAGt1B3a+oScVr0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DPsZQCAuhMd+nfLpe15PhmpcmyJmrEomghm+bEudAgT4Vr+8QDf89svN6mi5bz+2IQpJcePetHApiAGm5NevkNosLx81NaZa2HE4qDnt75HRZGoeU1TISmehUgBVKuSKnT65WAIqbJC3pOlymlnXLWuTzNbtWr68ZoBy7rCX4Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=oMMo+i+e; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1749137115; c=relaxed/simple;
+	bh=m4iz7jRUWrMlw8duduSxoawfe8EC0jbEDxSYVQuZ87o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZA+sNKs/LB3xLjdwYnIwWsB8yb5x78jXElIrbKRN0PtAWvciMnrz24TThCgRg775fPedCw0WdTgR89eNbUCp3RxGGcNj10oSdRipwYqsxLOH71bUa6bXNY0mXuexNy2llZTwv+7CqXVGi2xgonGQ/8mfmbj8Pui4UxaWTQWtgf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=YJpChBzE; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="oMMo+i+e"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555AtW6x001121;
-	Thu, 5 Jun 2025 15:25:06 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="YJpChBzE"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555AtVkk032029;
+	Thu, 5 Jun 2025 15:25:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=q81kYix3nk6+D3y4tI333zhfbik3B
-	U0UxC/k7QO0HSY=; b=oMMo+i+eEls4TrE8mGW7pyPdnc6TLuF12A4/Gy3/2pXvX
-	dvNjXW8rAasCGFcB+RBH9Bo1WSKBaKW+fld+w2oqd2QvzN6YnD321GAnnapcsUXA
-	wQIkFzoxG177zcfmCBtk3DMC/6KoCn0Up2iYhDLVRea6Bz86WD26d1EtXX2vz3vS
-	uL7als0IUriFrip2t4r2Dt3KKbKJZFmgy22TNybvFGbBWlWvVDrcJawOnViWzn3t
-	RxmU9tnvS4cQsXyBh02YdwxArNbzG9L+O4CRQVCk2JGeAfdeVzqQPHfzP9C3FSQd
-	vt10U/YSzRyJoMUDpYhGygsvbnPY1MbKCsoc9cT/A==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=SDTiE
+	Rnc0Auu9HXB5u1EVour+XQZeV+2kZRosebJjm8=; b=YJpChBzElE0xv1RUKjWFl
+	/X9PsfmQ+ThgFGk3wcTmSKah9rHSltXIggL1wDwJK5buth/UZACOmLl7yIiIfYk2
+	Yq0gXlvrpG+rmquNH2czvfDVuQhazB6SVh4qtFnpdllg52ycCukOE/rH+3GQ3+zx
+	ACx8AG9+vrR18ow5xf8K9jGGs16dMxH7M5RybYZEQcOYEcyTXW+0O6ku11PQQY9J
+	dP6FDLjXPjKyAT9oWG/Aft2bk5eBcVu5Ea/G0isxuHtWRhJzXz+n32xSTspCrWJI
+	4dSLsrQp6zit5T+0iNQlvzJqE4dqSlfGnTwuGHbvElbmbXkrYSMkBA8+FoDQGu7p
+	w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 471g8dxdq6-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 471g8geajb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Jun 2025 15:25:06 +0000 (GMT)
+	Thu, 05 Jun 2025 15:25:09 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 555DoImj038511;
-	Thu, 5 Jun 2025 15:25:05 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 555DpTZJ039442;
+	Thu, 5 Jun 2025 15:25:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 46yr7c8buk-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 46yr7c8bx9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Jun 2025 15:25:05 +0000
+	Thu, 05 Jun 2025 15:25:08 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 555FP4ls016227;
-	Thu, 5 Jun 2025 15:25:04 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 555FP4lw016227;
+	Thu, 5 Jun 2025 15:25:07 GMT
 Received: from lmerwick-vm-ol8.osdevelopmeniad.oraclevcn.com (lmerwick-vm-ol8.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.255.219])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 46yr7c8bt3-1;
-	Thu, 05 Jun 2025 15:25:04 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 46yr7c8bt3-3;
+	Thu, 05 Jun 2025 15:25:07 +0000
 From: Liam Merwick <liam.merwick@oracle.com>
 To: kvm@vger.kernel.org
 Cc: liam.merwick@oracle.com, pbonzini@redhat.com, seanjc@google.com,
         thomas.lendacky@amd.com, michael.roth@amd.com, tabba@google.com,
         ackerleytng@google.com
-Subject: [PATCH 0/3] SEV-SNP fix for cpu soft lockup on 1TB+ guests
-Date: Thu,  5 Jun 2025 15:24:59 +0000
-Message-ID: <20250605152502.919385-1-liam.merwick@oracle.com>
+Subject: [PATCH 2/3] KVM: Add trace_kvm_vm_set_mem_attributes()
+Date: Thu,  5 Jun 2025 15:25:01 +0000
+Message-ID: <20250605152502.919385-3-liam.merwick@oracle.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250605152502.919385-1-liam.merwick@oracle.com>
+References: <20250605152502.919385-1-liam.merwick@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,57 +68,103 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-05_03,2025-06-05_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=831 adultscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2506050134
-X-Authority-Analysis: v=2.4 cv=Va/3PEp9 c=1 sm=1 tr=0 ts=6841b6d2 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=zd2uoN0lAAAA:8 a=1JC5xqyqxMlxYnEJmzwA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDEzNCBTYWx0ZWRfX0LCX58lXGhlN kqVyeHb7ee1y8V5Na1nbAE7IOWnSLliyJ2xk0z9FsHXCVnVl+t2o/Zh/iHf9xsMLRfaO9h2BS+7 TkSXSFxcyds0A4mzvyJfgz0MJGGObIrkMPYVK1BxocJ4m45+zeVg8LHOlIL7CgKkcILpXCyyS7/
- x41bYk97XfIK/k0QOXkL9J8wTmROzq1sPjrGy9GQMi/kLpvVHL/B3qWjEj9+zzVmHgsGTkgdH5I JWqXryGXJykaTGmRlUkxhL1TtWeTCbznVF4gSIcacPSfXaunL4WOKVmGwXqUQawoQ4wTDlXH0si Lz3xiw3e7uVI/a6TqHJb9DuIor7debGtA4L0oZo5W0w1TTACjDuNOg/7gl3dTA85vz1lZXgDi1v
- RCBfBRfH2CANkOg1JyG7lhpu6pHq20KddoezeuA70bAyFL56jTHbrek5nW3OaDC/Hdrl1Zf0
-X-Proofpoint-ORIG-GUID: LRbpDSobsmBJKaZk-3JGKGTdY8NUeiJs
-X-Proofpoint-GUID: LRbpDSobsmBJKaZk-3JGKGTdY8NUeiJs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDEzNCBTYWx0ZWRfX7Zifs0xLVipE pxU4u74y87p3FfnCU5LyYtL/y0FdPCtvH/0BVTZZvkDK/kL1I5N1rPLRwztk9z/1+lQFmS9QGji GY3tfwgSlzcLzlBPN8kjm+mAY90WCQVRjCSb4L611u8Zcajoq/N4U1i9wRWrS1AhQmdrkqONbe0
+ JQjrVSmwGoHaB+/+WJzjgZpChJYwP1NbFtWnywVNZibPvJH+ObQGYp+sG/7+syqqC/wAE/BVeFW luM7GRsxz9SBJdlxQrOQeKqQDaMENbKQTpv5vWWdkD2VQljFtIoJdDQUTtNPDssZ256Lo6wDtnD k6dswuBkwBesU21TVOjGGLwUkUJxtET7pWEhpKZQU+JXX7s718VjQzq57X1uIPDTObpfdbRsVkZ
+ nwa57yvPbCXnkMQbZYEls+nt9GW/YOwqEEb9QdpKMDgWG6VxkVuIWvKBqrRZidzAlrrgOnaJ
+X-Proofpoint-GUID: 60KlyE_s3pb8bDhiKmuCwoBCbDv-LPMa
+X-Proofpoint-ORIG-GUID: 60KlyE_s3pb8bDhiKmuCwoBCbDv-LPMa
+X-Authority-Analysis: v=2.4 cv=H5Tbw/Yi c=1 sm=1 tr=0 ts=6841b6d5 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=xXynH1Qyzpsyf0xykmMA:9
 
-When creating SEV-SNP guests with a large amount of memory (940GB or greater)
-the host experiences a soft cpu lockup while setting the per-page memory
-attributes on the whole range of memory in the guest.
+Add a tracing function to display the attribules being set for
+a range of guest memory.
 
-The underlying issue is that the implementation of setting the
-memory attributes using an Xarray implementation is a time-consuming
-operation (e.g. a 1.9TB guest takes over 30 seconds to set the attributes)
+Sample output:
 
-Fix the lockup by modifying kvm_vm_ioctl_set_mem_attributes() so that it
-sets the attributes on, at most, a range of 512GB at a time and avoids
-holding kvm->slot_lock for too long.
+   <...>-12693   [059] .....  1342.536361: kvm_vm_set_mem_attributes:  0x00000000000000 -- 0x00000000080000 [0x8]
+qemu-kvm-12693   [187] .....  1342.747651: kvm_vm_set_mem_attributes:  . 0x00000010000000 -- 0x00000018000000 [0x8]
+qemu-kvm-12693   [040] .N...  1366.473790: kvm_vm_set_mem_attributes:  . 0x00000018000000 -- 0x00000020000000 [0x8]
+qemu-kvm-12693   [009] .N...  1390.350362: kvm_vm_set_mem_attributes:  . 0x00000020000000 -- 0x00000028000000 [0x8]
+qemu-kvm-12693   [008] .N...  1414.154231: kvm_vm_set_mem_attributes:  0x00000028000000 -- 0x0000002da80000 [0x8]
+qemu-kvm-12693   [136] .....  1430.988101: kvm_vm_set_mem_attributes:  0x000000000ffc00 -- 0x00000000100000 [0x8]
+qemu-kvm-12693   [024] .....  1431.029798: kvm_vm_set_mem_attributes:  0x00000000000000 -- 0x000000000000c0 [0x8]
 
-Apart from the lockup, the implementation to set memory attributes via Xarray
-also results in a delay early in the boot of SEV-SNP/TDX guests - this fix
-does not address that.  As it happens, the slowness of setting the attributes
-was brought up by Michael Roth in the review of Ackerley Tng's series to add
-1G page support for guest_memfd [1] where using a Maple Tree implementation
-is being proposed to track shareability and Michael suggested that doing it
-for KVM mem attributes would be useful also (it should avoid the SLU while
-also taking less CPU time in general to populate). If that was implemented
-in the future, it should address this lockup but I think there's benefit
-in fixing the lockup issue now with a targeted fix.
+The '.' before the addresses above signifies that the initial request
+was split into multiple operations. Originally it was requested to
+set the attributes on 0x00000010000000 to 0x0000002da80000
 
-[1] https://lore.kernel.org/all/20250529054227.hh2f4jmyqf6igd3i@amd.com 
+Signed-off-by: Liam Merwick <liam.merwick@oracle.com>
+---
+ include/trace/events/kvm.h | 33 +++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c        |  4 ++++
+ 2 files changed, 37 insertions(+)
 
-Tested with VMs up to 1900GB in size (the limit of hardware available to me)
-
-The functionality was introduced in v6.8 but I tagged as just needing
-backporting as far as linux-6.12.y (applies cleanly)
-
-Based on tag: kvm-6.16-1
-
-Liam Merwick (3):
-  KVM: Batch setting of per-page memory attributes to avoid soft lockup
-  KVM: Add trace_kvm_vm_set_mem_attributes()
-  KVM: fix typo in kvm_vm_set_mem_attributes() comment
-
- include/trace/events/kvm.h | 33 +++++++++++++++++++++++++++++
- virt/kvm/kvm_main.c        | 43 ++++++++++++++++++++++++++++++++------
- 2 files changed, 70 insertions(+), 6 deletions(-)
-
+diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
+index fc7d0f8ff078..701bf1f88850 100644
+--- a/include/trace/events/kvm.h
++++ b/include/trace/events/kvm.h
+@@ -473,6 +473,39 @@ TRACE_EVENT(kvm_dirty_ring_exit,
+ 	TP_printk("vcpu %d", __entry->vcpu_id)
+ );
+ 
++#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++/*
++ * @start:	Starting address of guest memory range
++ * @end:	End address of guest memory range
++ * @attr:	The value of the attribute being set.
++ * @indent:	If true, indent output displayed (printing '.' is used to
++ *		indicate that the transaction was split into multiple
++ *		operations and more are to follow).
++ */
++TRACE_EVENT(kvm_vm_set_mem_attributes,
++	TP_PROTO(gfn_t start, gfn_t end, unsigned long attr, bool indent),
++	TP_ARGS(start, end, attr, indent),
++
++	TP_STRUCT__entry(
++		__field(gfn_t,		start)
++		__field(gfn_t,		end)
++		__field(unsigned long,	attr)
++		__field(bool,		indent)
++	),
++
++	TP_fast_assign(
++		__entry->start		= start;
++		__entry->end		= end;
++		__entry->attr		= attr;
++		__entry->indent		= indent;
++	),
++
++	TP_printk("%s %#016llx -- %#016llx [0x%lx]",
++		  __entry->indent ? " ." : "",
++		  __entry->start, __entry->end, __entry->attr)
++);
++#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++
+ TRACE_EVENT(kvm_unmap_hva_range,
+ 	TP_PROTO(unsigned long start, unsigned long end),
+ 	TP_ARGS(start, end),
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 6e6d404a7d7a..464357ea638c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2568,11 +2568,15 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 			size = SZ_512G;
+ 			size_remaining -= size;
+ 			section_end = section_start + (size >> PAGE_SHIFT);
++			trace_kvm_vm_set_mem_attributes(section_start, section_end,
++							attrs->attributes, true);
+ 		} else {
+ 			size = size_remaining;
+ 			size_remaining = 0;
+ 			section_end = end;
+ 			WARN_ON_ONCE(section_end != (section_start + (size >> PAGE_SHIFT)));
++			trace_kvm_vm_set_mem_attributes(section_start, section_end,
++							attrs->attributes, false);
+ 		}
+ 
+ 		ret = kvm_vm_set_mem_attributes(kvm, section_start, section_end, attrs->attributes);
 -- 
 2.47.1
 
