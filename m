@@ -1,129 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2278120B218
-	for <kvm@vger.kernel.org>; Thu,  5 Jun 2025 09:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4C81F8733
+	for <kvm@vger.kernel.org>; Thu,  5 Jun 2025 10:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749117566; cv=none; b=IT0LVRfMqgsps0AFv8OLZKquPEhhvl6TFgRtCftCoLzQSF9bW7bLfLLl/WnsvaktOVVYy4vvDJL4AdAHaa6rv69b5uHLxjcmgg/uOjMRLKk7TmmsanfNTeXEbwKdJUBp9mVltyb0tlUUu8SzaarS3pW69W0UpP54k5W+7zbH2Gg=
+	t=1749117635; cv=none; b=uKx0htREriNPiTjoo6wObq6N7BZZ5hc6Pb6ZvI6Rhl4i5jEPnSNTob4hg5yml3yQF6lOV72VL0F/FdBsa4gp9HLcGlVPIVXduhozz83R/DAq95dMvYKrKQA/JPvDB2LCXsMoOvUaxiVNVtBC5l6uCxluMz8Rm70lJdp155FXrK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749117566; c=relaxed/simple;
-	bh=qWbpizDlWV+4rfjwxkDCtQHGIV13qSmCC/6p3Vf8Rmk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z+RGtppKEGBauadsDRtPwZcPqrFiHG+90OwlnOTw9I08lNiiJ+ZyZEgUybDXByAiGRlnfBxUhHIjTn3dsfDbPF+bxnL4rlf2IHM4EkMbngwkb6PcS90EDUhRdwRr+A8YfS1utP3cg3XSGCfs+rm0KaOdFkpkxrWRNId8aAq+5RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RAk2DVu4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RAk2DVu4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749117564;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CvrMDhlWszi0keWJlBW0yQr44STIzAIf2eScUi0AOJs=;
-	b=RAk2DVu4Cu3+FsIstNIQz5NxfU53XZzX76DPTeMRpRmQig91K730EbgMDI9dEfT0wS+/f+
-	wy4gJmZEhLFMw63QdSkh0h91nnyYWpa7oXfmi9+YO3RvB5qi3ise390+ZTdEOAYyaukk6t
-	4x4LyDydn6sNCNrGkePxwlqvvArChs8=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-IDf-HFlMOTKxzXfl4ld1Vw-1; Thu, 05 Jun 2025 05:59:22 -0400
-X-MC-Unique: IDf-HFlMOTKxzXfl4ld1Vw-1
-X-Mimecast-MFC-AGG-ID: IDf-HFlMOTKxzXfl4ld1Vw_1749117562
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-235089528a0so16865015ad.1
-        for <kvm@vger.kernel.org>; Thu, 05 Jun 2025 02:59:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749117562; x=1749722362;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CvrMDhlWszi0keWJlBW0yQr44STIzAIf2eScUi0AOJs=;
-        b=LZAPfsHLocKReo2b03Yvp29xAcarHIVahpROg1Nl4RNvuZBpZNkocUXub6u9TlVlpu
-         1R9Z9aaTRsSbTrIYhaS56AnCcZ1aMuoxRAKQaKtWfJGU2c/Q7GYeqehcEfqm5UtjQsBF
-         4WrJUJhvmgmzptGo3nZ4UNVKAQuhax9tT6c1fravxTHmD3Ptgv0Jn2V/qbGLq81edNPL
-         P041Zh1vS5BI7Si9UpFNTLoox553lHOvvCAMdt2NKnB33ReQ9geZ7yOgM/Ij3y6A08Hi
-         FNqqfEgnuKnDpUeDO/uu7JvPPvVo8ta0vaCAKBfbKPCqgNJAHHERhV/jVkUACXKGZh8l
-         PA0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUE6BNW89EbfAsn6b7nxSR8Zey7zIHbmOqjrtXPV1pK69PyZ24sgw8+1BaQVOp8ZQiQNCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAdtmXen94kgh7IoRALwfUVwcraOpMwLkUjhLHMvFoXg8wloXj
-	YOkjHU858nnaBsL4mNbTL2URz/KBoPPbv365MqloL+Skhybekb46lLE5qMy8uHY5S9pILcPGTac
-	/Iy5Z5ZitFQ6TsJjbvbksZFIYbo5B5xy9oI3ciTJK83zfyJCnststcQ==
-X-Gm-Gg: ASbGnctDV6zfmV60IkWNU/GOF0qgcnKNAjuAxRDMrCJU/AeIC5ITFQWRGh4+NPzUibP
-	IeZYpNB1JvKA1uH0WNFric9HSbH1CgU41GGt3Naphfl0+i7iBS2OQl0K+i36YlLLK8xob/xq0X7
-	gcSnMg+lStSO8WnAxRgMxSFVj6c01p8+0d8GwBVya+PM3oYPWRyznX3bizVb5fNGCjbH3XThhIC
-	mMGQBhaUZ0DVqjChmEwqerFg1LNHZ5mhIcu5H+1aRjS8ABy7QOtZ+kosydQSO4CF/cFZ+/rZBS9
-	hBU+/two1ktg8bzD81+vDqvFbYZjuK0hYWI2c5fPpn9j8BW8BLs=
-X-Received: by 2002:a17:902:d4c2:b0:215:6c5f:d142 with SMTP id d9443c01a7336-235f168bf97mr42628195ad.20.1749117561835;
-        Thu, 05 Jun 2025 02:59:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9cjR2JYFAnN2N4gG1ebHDB79lgrRQXScktsAHkDD1ZcOUnhM4BJ6wXqjCQ6YZbZqsfs0/kA==
-X-Received: by 2002:a17:902:d4c2:b0:215:6c5f:d142 with SMTP id d9443c01a7336-235f168bf97mr42627905ad.20.1749117561444;
-        Thu, 05 Jun 2025 02:59:21 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506bd8e2dsm116565275ad.56.2025.06.05.02.59.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Jun 2025 02:59:20 -0700 (PDT)
-Message-ID: <0b329f63-dbb6-4652-b598-2b07bd4f5e67@redhat.com>
-Date: Thu, 5 Jun 2025 19:59:00 +1000
+	s=arc-20240116; t=1749117635; c=relaxed/simple;
+	bh=AW/Fm4gDHi5a8LvfdLep9p+3ikZqonTMmbO8kZqwNRA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NwkiriL8vgrPFUneyDZZYwbFvgg1w4wu/SWICG1esEdqtz40wtBt/iabtTtMUxvqBFldbm9ssyPhu+Fo/MDsxDQbxfl92R4iigA77CO/RgbtOy1yqB6yQCSEGSN9m+tc5SaZ5HSoyeE/8SKx1BaUWtoIx+szWo9EDSjPPCM1ugI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1749116660-086e2326981c040001-HEqcsx
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id CBxyUvbUTMPhyFEl (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 05 Jun 2025 17:44:20 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 5 Jun
+ 2025 17:44:20 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
+ ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Thu, 5 Jun 2025
+ 17:44:20 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ewan-server.lan (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 5 Jun
+ 2025 14:54:45 +0800
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+To: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <zhao1.liu@intel.com>
+CC: <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
+	EwanHai <ewanhai-oc@zhaoxin.com>
+Subject: [PATCH v3 RESEND] target/i386/kvm: Refine VMX controls setting for backward compatibility
+Date: Thu, 5 Jun 2025 02:54:45 -0400
+X-ASG-Orig-Subj: [PATCH v3 RESEND] target/i386/kvm: Refine VMX controls setting for backward compatibility
+Message-ID: <20250605065445.30090-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 15/16] KVM: Introduce the KVM capability
- KVM_CAP_GMEM_SHARED_MEM
-To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
-Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
- anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
- jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
- isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
- vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
- david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
- liam.merwick@oracle.com, isaku.yamahata@gmail.com,
- kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
- steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
- quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
- quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
- quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
- yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
- will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
- shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
- jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <20250527180245.1413463-1-tabba@google.com>
- <20250527180245.1413463-16-tabba@google.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250527180245.1413463-16-tabba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 6/5/2025 5:44:18 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1749116660
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2924
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.142416
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 
-On 5/28/25 4:02 AM, Fuad Tabba wrote:
-> This patch introduces the KVM capability KVM_CAP_GMEM_SHARED_MEM, which
-> indicates that guest_memfd supports shared memory (when enabled by the
-> flag). This support is limited to certain VM types, determined per
-> architecture.
-> 
-> This patch also updates the KVM documentation with details on the new
-> capability, flag, and other information about support for shared memory
-> in guest_memfd.
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->   Documentation/virt/kvm/api.rst | 9 +++++++++
->   include/uapi/linux/kvm.h       | 1 +
->   virt/kvm/kvm_main.c            | 4 ++++
->   3 files changed, 14 insertions(+)
-> 
+From: EwanHai <ewanhai-oc@zhaoxin.com>
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+execution controls") implemented a workaround for hosts that have
+specific CPUID features but do not support the corresponding VMX
+controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+
+In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+use KVM's settings, avoiding any modifications to this MSR.
+
+However, this commit (4a910e1) didn't account for cases in older Linux
+kernels(4.17~5.2) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+`kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+on `kvm_msr_list` alone, even though KVM does maintain the value of
+this MSR.
+
+This patch supplements the above logic, ensuring that
+`has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+lists, thus maintaining compatibility with older kernels.
+
+Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+---
+Changes in v3:
+- Use a more precise version range in the comment, specifically "4.17~5.2"
+instead of "<5.3".
+
+Changes in v2:
+- Adjusted some punctuation in the commit message as per suggestions.
+- Added comments to the newly added code to indicate that it is a compatibi=
+lity fix.
+
+v1 link:
+https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/
+
+v2 link:
+https://lore.kernel.org/all/20231127034326.257596-1-ewanhai-oc@zhaoxin.com/
+
+---
+ target/i386/kvm/kvm.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a6bc089d02..4ff9b5995c 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2466,6 +2466,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+ static int kvm_get_supported_feature_msrs(KVMState *s)
+ {
+     int ret =3D 0;
++    int i;
+=20
+     if (kvm_feature_msrs !=3D NULL) {
+         return 0;
+@@ -2500,6 +2501,20 @@ static int kvm_get_supported_feature_msrs(KVMState *=
+s)
+         return ret;
+     }
+=20
++   /*
++    * Compatibility fix:
++    * Older Linux kernels (4.17~5.2) report MSR_IA32_VMX_PROCBASED_CTLS2
++    * in KVM_GET_MSR_FEATURE_INDEX_LIST but not in KVM_GET_MSR_INDEX_LIST.
++    * This leads to an issue in older kernel versions where QEMU,
++    * through the KVM_GET_MSR_INDEX_LIST check, assumes the kernel
++    * doesn't maintain MSR_IA32_VMX_PROCBASED_CTLS2, resulting in
++    * incorrect settings by QEMU for this MSR.
++    */
++    for (i =3D 0; i < kvm_feature_msrs->nmsrs; i++) {
++        if (kvm_feature_msrs->indices[i] =3D=3D MSR_IA32_VMX_PROCBASED_CTL=
+S2) {
++            has_msr_vmx_procbased_ctls2 =3D true;
++        }
++    }
+     return 0;
+ }
+=20
+--=20
+2.34.1
 
