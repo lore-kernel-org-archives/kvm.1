@@ -1,182 +1,290 @@
-Received: from va-1-17.ptr.blmpb.com (va-1-17.ptr.blmpb.com [209.127.230.17])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E92E7FD
-	for <kvm@vger.kernel.org>; Fri,  6 Jun 2025 04:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0254117E4
+	for <kvm@vger.kernel.org>; Fri,  6 Jun 2025 07:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749184696; cv=none; b=qrPVqVbAgLyCe8/ewcST2b1vhBl+vnKY5aJvnM/kvkgfBllRXGIUp+i7Fjs9xFmdq539oU1aTXI8ZSnTUvi1ZqdeInQ4SPKx7cEnxUo9hrWI0VoYe/fcljMVveDKGG0AlClraQNyvEJgJggvIzAxvarDy6NPRZmRtGzMa7D1Myk=
+	t=1749195150; cv=none; b=uI5zyDlRbnRAsS976F7tKSfk4kA0C1tA2XVv2TCuCgT4m0J/qNxq1qdi7dRp2MOk2hrkAKcf8TFg6cOIRx/k1jq58SBp/85hBDuVuoAZEORJWlFpSmCwl5/B3GUtnVbLgdNLSHG98NyypTrNtOkAB87cUcYfr0N16RtpTN34Qr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749184696; c=relaxed/simple;
-	bh=Am7HXR3Njlqss4G5BEuoNyLPBqJ+LbLJG8/4zJZ6BHI=;
-	h=Content-Type:To:Subject:Date:Message-Id:Mime-Version:In-Reply-To:
-	 References:Cc:From; b=alB9hd15hoC0ccNQLNvaKuJeEpXhapX3YTw3nZH9+kBav4WGZZl6bYPzyYTvF7DoCcuHT8BZySQhTRDL01mrDmNjFfiLpYRt0gwQdCl0VIj6yO4n4ypR1tDx6m3xHhR+fY5WYoySYjmS5Dk7O3PMFmYokzqVuk2kmEQk8Cyp2t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com; spf=pass smtp.mailfrom=lanxincomputing.com; dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b=2k8niFS8; arc=none smtp.client-ip=209.127.230.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
+	s=arc-20240116; t=1749195150; c=relaxed/simple;
+	bh=OU19RnKagnqkf8XnYXLJNZp/nY3+adAcR/V1vK/aJwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nMmgRDp2SKnNIz7iu7mG9FKJTCorg3JBaBJ/wAY9m4mO/lgWlIwO5yzdNNM6e/Qq6YJ2YzT7MqXpYaWlyRZQrk5bDui/Gkmi+8rWntNnBGTTmV46XRtIEDfeGS16vz8YS58AgvKxmv5bkkVat4rgAbxMjPAnRD5ICIomyP9G9pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ENZ3u1KR; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b="2k8niFS8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1749183964;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=k4UTS9zfNjzXfbqFSh5F0rYTKZrQ+NdfqBJ4iEJ2ZhY=;
- b=2k8niFS88KxGFPALcAa38Jw7sjrdwkPfFMEAG4B+kHpqVcQaqxkmiSconxOGziNmUoQHty
- e0a7hSMCrinssRtK8F49jZJ9RdIH5pNsIymNZjv5B/WdMk/sLmxDwwLhbfqAU1LpwFu6Mg
- C9WYcOHcDNOLVqrlYTJ2tUf9Q+s5DcpNiKBdFneD39adoT7UDg5kA6+BMYkLwGp6s9/Alu
- gRwQXR5jb8QhOFJXHVD+vx/6YYkDYbPkDDnJrOyMOSzLj3s5s112GRPpjpRQL1BAuSELwZ
- /mFoiXwcOkfdWcw/8vIiXsksp+i8EzNL49xfCKxqOFxFr6NPkaIXuOkb9y9CIw==
-Content-Type: text/plain; charset=UTF-8
-To: "Anup Patel" <apatel@ventanamicro.com>, 
-	"Atish Patra" <atish.patra@linux.dev>
-Subject: Re: [PATCH 05/13] RISC-V: KVM: Rename and move kvm_riscv_local_tlb_sanitize()
-Date: Fri, 6 Jun 2025 12:25:59 +0800
-Message-Id: <321c0f23-9e9f-4626-8b0d-b805c7cdf5ad@lanxincomputing.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENZ3u1KR"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47e9fea29easo250661cf.1
+        for <kvm@vger.kernel.org>; Fri, 06 Jun 2025 00:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749195148; x=1749799948; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d7kvMY5ZW2Vp5tdjNn8It/0HBAvvjd3PqQU3fhP/KrU=;
+        b=ENZ3u1KRCEr+DctmNBqUUYrmC8Rnu7mtyKtmPb+O9cU1AEPW0RCUVyhPMXUByR7NI8
+         TWd7+bGW+Fh9uJFFrrfQ/0H5kwdSfUTHbM0FIsc6AislLBONfIilwSCTIlMNZ/LYeNbw
+         +Ux67NoIAmi/JnUF1ZhTMVxhjGqAbknPmQZpog8/y/tOdB8b9xmsbeft9ij6ad8vBn5E
+         Pd0PZtpse3MMfUaCKTJ4kx9KBuedGit8ytejhb44KGpbE7BAFIAIYXe2fcvlaAzqdtDB
+         Kt0O8Ms+HcdxCGUePM++g+2V0cijyFrEqcmLhwnuDeDh2urbztSnR6WM47bhyTR3I0VH
+         bt3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749195148; x=1749799948;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d7kvMY5ZW2Vp5tdjNn8It/0HBAvvjd3PqQU3fhP/KrU=;
+        b=kkU5vMPr70zbh75nkDyC32khAkNAIqEMYPfaOz1n1KpJuzhzUu8bHv1CbQq+1X/Fkr
+         VyX7hhQIP3n+Tfya8dr1hTvzlPzdh8uQGv1HB1iZU6bDLAwSNeDRb/WK8oO9EzqiEby2
+         iNzWFpq6Hd031n8zrCmaWIiKX8A5KX+umpI7mQqFCVAjoHToScoNXYupcP3DOivpqVI9
+         8DmhnsZIetgTpwRwG8QQoXeGub3KvZroyPdaKmaaU1oSjcf6hUyyaNF0URYd8d7kIcca
+         hZASAk/s0XqBrVT9vIBau5GbRhw0+J6UBRcqFo6258gnuyYwTjVM+cpMsWhvvD442IpA
+         SjcQ==
+X-Gm-Message-State: AOJu0YyZv11GfZRVKGFkLs2roiE8XUS5jvZQbW1issCDuVUwXpAQMugW
+	SWnXW1b+oGNZkx+DhU7cZuFXyhwC/5uYm2H8D8QupGRccsVjXMhgTPgS/+Og6ULzX8zAof/9GlS
+	DeZO5IjTEDeOGLTru7sx4/+8qBgPac856vip0g2xT
+X-Gm-Gg: ASbGncvL6DgoW7tc+SsVKMK9Q72KtjSzFSvLTMH8B2OwczSVzJncYI5ct/YcyTsMsSq
+	CefjOekyTE/+iIqFK2UnwqceR2fHuX+741RcPDdrBkCMMz2lqFrFXgX/b8od5+ywaDUDmk7DgkX
+	SES54x4tigkJoySn8SCkITpu2vz9MTTUAqHb2JrM4VujM=
+X-Google-Smtp-Source: AGHT+IERI6/rZZc+T/Y/BCqimMsrHrMBugbnphXsLYAS4v8oVORX4EwdR5wAo6IhPMIeThscJU2dXoYklEdFCyQufTc=
+X-Received: by 2002:a05:622a:2517:b0:480:dde:aa4c with SMTP id
+ d75a77b69052e-4a5baa657e2mr2990431cf.4.1749195147273; Fri, 06 Jun 2025
+ 00:32:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Nutty Liu <liujingqi@lanxincomputing.com>
-Content-Transfer-Encoding: 7bit
-Received: from [127.0.0.1] ([180.165.23.184]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 12:26:01 +0800
-In-Reply-To: <20250605061458.196003-6-apatel@ventanamicro.com>
-Content-Language: en-US
-X-Lms-Return-Path: <lba+268426dda+015927+vger.kernel.org+liujingqi@lanxincomputing.com>
-References: <20250605061458.196003-1-apatel@ventanamicro.com> <20250605061458.196003-6-apatel@ventanamicro.com>
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, 
-	"Paul Walmsley" <paul.walmsley@sifive.com>, 
-	"Alexandre Ghiti" <alex@ghiti.fr>, 
-	"Andrew Jones" <ajones@ventanamicro.com>, 
-	"Anup Patel" <anup@brainfault.org>, <kvm@vger.kernel.org>, 
-	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>, 
-	<linux-kernel@vger.kernel.org>
-From: "Nutty Liu" <liujingqi@lanxincomputing.com>
-User-Agent: Mozilla Thunderbird
+MIME-Version: 1.0
+References: <20250605153800.557144-1-tabba@google.com> <20250605153800.557144-15-tabba@google.com>
+ <CADrL8HVtsJugNRgzgyiOwpOtSAi4iz3LNcjt8kDinUp99jWyYw@mail.gmail.com>
+In-Reply-To: <CADrL8HVtsJugNRgzgyiOwpOtSAi4iz3LNcjt8kDinUp99jWyYw@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 6 Jun 2025 08:31:50 +0100
+X-Gm-Features: AX0GCFt0ub1lyERvNyPbCD_BOwFtXCNX4pHBzmnsUAgp6hMKn_u9cHKW_CPEy3g
+Message-ID: <CA+EHjTx-RKrn5Bwi9daTx-VAHLLxPpjo+wYMhi9MysWtvsM97w@mail.gmail.com>
+Subject: Re: [PATCH v11 14/18] KVM: arm64: Handle guest_memfd-backed guest
+ page faults
+To: James Houghton <jthoughton@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
+	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	peterx@redhat.com, pankaj.gupta@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/5/2025 2:14 PM, Anup Patel wrote:
-> The kvm_riscv_local_tlb_sanitize() deals with sanitizing current
-> VMID related TLB mappings when a VCPU is moved from one host CPU
-> to another.
->
-> Let's move kvm_riscv_local_tlb_sanitize() to VMID management
-> sources and rename it to kvm_riscv_gstage_vmid_sanitize().
->
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> ---
->   arch/riscv/include/asm/kvm_host.h |  3 +--
->   arch/riscv/kvm/tlb.c              | 23 -----------------------
->   arch/riscv/kvm/vcpu.c             |  4 ++--
->   arch/riscv/kvm/vmid.c             | 23 +++++++++++++++++++++++
->   4 files changed, 26 insertions(+), 27 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-> index 85cfebc32e4c..134adc30af52 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
-> @@ -327,8 +327,6 @@ void kvm_riscv_local_hfence_vvma_gva(unsigned long vmid,
->   				     unsigned long order);
->   void kvm_riscv_local_hfence_vvma_all(unsigned long vmid);
->   
-> -void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu);
-> -
->   void kvm_riscv_fence_i_process(struct kvm_vcpu *vcpu);
->   void kvm_riscv_hfence_gvma_vmid_all_process(struct kvm_vcpu *vcpu);
->   void kvm_riscv_hfence_vvma_all_process(struct kvm_vcpu *vcpu);
-> @@ -376,6 +374,7 @@ unsigned long kvm_riscv_gstage_vmid_bits(void);
->   int kvm_riscv_gstage_vmid_init(struct kvm *kvm);
->   bool kvm_riscv_gstage_vmid_ver_changed(struct kvm_vmid *vmid);
->   void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *vcpu);
-> +void kvm_riscv_gstage_vmid_sanitize(struct kvm_vcpu *vcpu);
->   
->   int kvm_riscv_setup_default_irq_routing(struct kvm *kvm, u32 lines);
->   
-> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> index 2f91ea5f8493..b3461bfd9756 100644
-> --- a/arch/riscv/kvm/tlb.c
-> +++ b/arch/riscv/kvm/tlb.c
-> @@ -156,29 +156,6 @@ void kvm_riscv_local_hfence_vvma_all(unsigned long vmid)
->   	csr_write(CSR_HGATP, hgatp);
->   }
->   
-> -void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
-> -{
-> -	unsigned long vmid;
-> -
-> -	if (!kvm_riscv_gstage_vmid_bits() ||
-> -	    vcpu->arch.last_exit_cpu == vcpu->cpu)
-> -		return;
-> -
-> -	/*
-> -	 * On RISC-V platforms with hardware VMID support, we share same
-> -	 * VMID for all VCPUs of a particular Guest/VM. This means we might
-> -	 * have stale G-stage TLB entries on the current Host CPU due to
-> -	 * some other VCPU of the same Guest which ran previously on the
-> -	 * current Host CPU.
-> -	 *
-> -	 * To cleanup stale TLB entries, we simply flush all G-stage TLB
-> -	 * entries by VMID whenever underlying Host CPU changes for a VCPU.
-> -	 */
-> -
-> -	vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
-> -	kvm_riscv_local_hfence_gvma_vmid_all(vmid);
-> -}
-> -
->   void kvm_riscv_fence_i_process(struct kvm_vcpu *vcpu)
->   {
->   	kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_FENCE_I_RCVD);
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index f98a1894d55b..cc7d00bcf345 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -961,12 +961,12 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   		}
->   
->   		/*
-> -		 * Cleanup stale TLB enteries
-> +		 * Sanitize VMID mappings cached (TLB) on current CPU
->   		 *
->   		 * Note: This should be done after G-stage VMID has been
->   		 * updated using kvm_riscv_gstage_vmid_ver_changed()
->   		 */
-> -		kvm_riscv_local_tlb_sanitize(vcpu);
-> +		kvm_riscv_gstage_vmid_sanitize(vcpu);
->   
->   		trace_kvm_entry(vcpu);
->   
-> diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
-> index ddc98714ce8e..92c01255f86f 100644
-> --- a/arch/riscv/kvm/vmid.c
-> +++ b/arch/riscv/kvm/vmid.c
-> @@ -122,3 +122,26 @@ void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *vcpu)
->   	kvm_for_each_vcpu(i, v, vcpu->kvm)
->   		kvm_make_request(KVM_REQ_UPDATE_HGATP, v);
->   }
-> +
-> +void kvm_riscv_gstage_vmid_sanitize(struct kvm_vcpu *vcpu)
-> +{
-> +	unsigned long vmid;
-> +
-> +	if (!kvm_riscv_gstage_vmid_bits() ||
-> +	    vcpu->arch.last_exit_cpu == vcpu->cpu)
-> +		return;
-> +
-> +	/*
-> +	 * On RISC-V platforms with hardware VMID support, we share same
-> +	 * VMID for all VCPUs of a particular Guest/VM. This means we might
-> +	 * have stale G-stage TLB entries on the current Host CPU due to
-> +	 * some other VCPU of the same Guest which ran previously on the
-> +	 * current Host CPU.
-> +	 *
-> +	 * To cleanup stale TLB entries, we simply flush all G-stage TLB
-> +	 * entries by VMID whenever underlying Host CPU changes for a VCPU.
-> +	 */
-> +
-> +	vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
-> +	kvm_riscv_local_hfence_gvma_vmid_all(vmid);
-> +}
+Hi James,
 
-Thanks.
+On Thu, 5 Jun 2025 at 18:21, James Houghton <jthoughton@google.com> wrote:
+>
+> On Thu, Jun 5, 2025 at 8:38=E2=80=AFAM Fuad Tabba <tabba@google.com> wrot=
+e:
+> >
+> > Add arm64 support for handling guest page faults on guest_memfd backed
+> > memslots. Until guest_memfd supports huge pages, the fault granule is
+> > restricted to PAGE_SIZE.
+> >
+> > Signed-off-by: Fuad Tabba <tabba@google.com>
+>
+> Hi Fuad, sorry for not getting back to you on v10. I like this patch
+> much better than the v9 version, thank you! Some small notes below.
+>
+> > ---
+> >  arch/arm64/kvm/mmu.c | 93 ++++++++++++++++++++++++++++++++++++++++++--
+> >  1 file changed, 90 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index ce80be116a30..f14925fe6144 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -1508,6 +1508,89 @@ static void adjust_nested_fault_perms(struct kvm=
+_s2_trans *nested,
+> >         *prot |=3D kvm_encode_nested_level(nested);
+> >  }
+> >
+> > +#define KVM_PGTABLE_WALK_MEMABORT_FLAGS (KVM_PGTABLE_WALK_HANDLE_FAULT=
+ | KVM_PGTABLE_WALK_SHARED)
+> > +
+> > +static int gmem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+> > +                     struct kvm_s2_trans *nested,
+> > +                     struct kvm_memory_slot *memslot, bool is_perm)
+> > +{
+> > +       bool logging, write_fault, exec_fault, writable;
+> > +       enum kvm_pgtable_walk_flags flags =3D KVM_PGTABLE_WALK_MEMABORT=
+_FLAGS;
+> > +       enum kvm_pgtable_prot prot =3D KVM_PGTABLE_PROT_R;
+> > +       struct kvm_pgtable *pgt =3D vcpu->arch.hw_mmu->pgt;
+> > +       struct page *page;
+> > +       struct kvm *kvm =3D vcpu->kvm;
+> > +       void *memcache;
+> > +       kvm_pfn_t pfn;
+> > +       gfn_t gfn;
+> > +       int ret;
+> > +
+> > +       ret =3D prepare_mmu_memcache(vcpu, !is_perm, &memcache);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       if (nested)
+> > +               gfn =3D kvm_s2_trans_output(nested) >> PAGE_SHIFT;
+> > +       else
+> > +               gfn =3D fault_ipa >> PAGE_SHIFT;
+> > +
+> > +       logging =3D memslot_is_logging(memslot);
+>
+> AFAICT, `logging` will always be `false` for now, so we can simplify
+> this function quite a bit. And IMHO, it *should* be simplified, as it
+> cannot be tested.
 
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
+Ack.
+
+> > +       write_fault =3D kvm_is_write_fault(vcpu);
+> > +       exec_fault =3D kvm_vcpu_trap_is_exec_fault(vcpu);
+> > +
+> > +       if (write_fault && exec_fault) {
+> > +               kvm_err("Simultaneous write and execution fault\n");
+> > +               return -EFAULT;
+> > +       }
+> > +
+> > +       if (is_perm && !write_fault && !exec_fault) {
+> > +               kvm_err("Unexpected L2 read permission error\n");
+> > +               return -EFAULT;
+> > +       }
+>
+> I think, ideally, these above checks should be put into a separate
+> function and shared with user_mem_abort(). (The VM_BUG_ON(write_fault
+> && exec_fault) that user_mem_abort() does seems fine to me, I don't see a
+> real need to change it to -EFAULT.)
+
+I would like to do that, however, I didn't want to change
+user_mem_abort(), and regarding the VM_BUG_ON, see David's feedback to
+V10:
+
+https://lore.kernel.org/all/ed1928ce-fc6f-4aaa-9f54-126a8af12240@redhat.com=
+/
+
+
+
+> > +
+> > +       ret =3D kvm_gmem_get_pfn(kvm, memslot, gfn, &pfn, &page, NULL);
+> > +       if (ret) {
+> > +               kvm_prepare_memory_fault_exit(vcpu, fault_ipa, PAGE_SIZ=
+E,
+> > +                                             write_fault, exec_fault, =
+false);
+> > +               return ret;
+> > +       }
+> > +
+> > +       writable =3D !(memslot->flags & KVM_MEM_READONLY) &&
+> > +                  (!logging || write_fault);
+> > +
+> > +       if (nested)
+> > +               adjust_nested_fault_perms(nested, &prot, &writable);
+> > +
+> > +       if (writable)
+> > +               prot |=3D KVM_PGTABLE_PROT_W;
+> > +
+> > +       if (exec_fault ||
+> > +           (cpus_have_final_cap(ARM64_HAS_CACHE_DIC) &&
+> > +            (!nested || kvm_s2_trans_executable(nested))))
+> > +               prot |=3D KVM_PGTABLE_PROT_X;
+> > +
+> > +       kvm_fault_lock(kvm);
+> > +       if (is_perm) {
+> > +               /*
+> > +                * Drop the SW bits in favour of those stored in the
+> > +                * PTE, which will be preserved.
+> > +                */
+> > +               prot &=3D ~KVM_NV_GUEST_MAP_SZ;
+> > +               ret =3D KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt,=
+ fault_ipa, prot, flags);
+>
+> I think you should drop this `is_perm` path, as it is an optimization
+> for dirty logging, which we don't currently do. :)
+>
+> When we want to add dirty logging support, we probably ought to move
+> this mapping code (the lines kvm_fault_lock() and kvm_fault_unlock())
+> into its own function and share it with user_mem_abort().
+
+Ack.
+
+> > +       } else {
+> > +               ret =3D KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_i=
+pa, PAGE_SIZE,
+> > +                                            __pfn_to_phys(pfn), prot,
+> > +                                            memcache, flags);
+> > +       }
+> > +       kvm_release_faultin_page(kvm, page, !!ret, writable);
+> > +       kvm_fault_unlock(kvm);
+> > +
+> > +       if (writable && !ret)
+> > +               mark_page_dirty_in_slot(kvm, memslot, gfn);
+> > +
+> > +       return ret !=3D -EAGAIN ? ret : 0;
+> > +}
+> > +
+> >  static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa=
+,
+> >                           struct kvm_s2_trans *nested,
+> >                           struct kvm_memory_slot *memslot, unsigned lon=
+g hva,
+> > @@ -1532,7 +1615,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, =
+phys_addr_t fault_ipa,
+> >         enum kvm_pgtable_prot prot =3D KVM_PGTABLE_PROT_R;
+> >         struct kvm_pgtable *pgt;
+> >         struct page *page;
+> > -       enum kvm_pgtable_walk_flags flags =3D KVM_PGTABLE_WALK_HANDLE_F=
+AULT | KVM_PGTABLE_WALK_SHARED;
+> > +       enum kvm_pgtable_walk_flags flags =3D KVM_PGTABLE_WALK_MEMABORT=
+_FLAGS;
+> >
+> >         if (fault_is_perm)
+> >                 fault_granule =3D kvm_vcpu_trap_get_perm_fault_granule(=
+vcpu);
+> > @@ -1959,8 +2042,12 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu=
+)
+> >                 goto out_unlock;
+> >         }
+> >
+> > -       ret =3D user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
+> > -                            esr_fsc_is_permission_fault(esr));
+> > +       if (kvm_slot_has_gmem(memslot))
+> > +               ret =3D gmem_abort(vcpu, fault_ipa, nested, memslot,
+> > +                                esr_fsc_is_permission_fault(esr));
+> > +       else
+> > +               ret =3D user_mem_abort(vcpu, fault_ipa, nested, memslot=
+, hva,
+> > +                                    esr_fsc_is_permission_fault(esr));
+>
+> I like this split! Thank you!
+
+Thank you for your reviews!
+
+Cheers,
+/fuad
+
+>
+> >         if (ret =3D=3D 0)
+> >                 ret =3D 1;
+> >  out:
+> > --
+> > 2.49.0.1266.g31b7d2e469-goog
+> >
