@@ -1,156 +1,454 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E5A1DE4D2;
-	Fri,  6 Jun 2025 08:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046B284B53
+	for <kvm@vger.kernel.org>; Fri,  6 Jun 2025 08:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749197690; cv=none; b=QPPZz14KRyjXvE4GSOtl9bXygPKR3G5/MS77TeLOH3XTdWmJxX30albQE2Ds1J9PmRXc/ZwBu5Hb1cV9cCnfpaRcIFUba0MxL6tzJmMZGTJsh+TBmdl4N3f4/eP93qgR5bDFDWw7iLtw4AshqxyyQc1FowDEx2KglzJE7MmKh4A=
+	t=1749197700; cv=none; b=q4IM4Yj5bXoYW0OBH3TVAVRVmZ4E+K2tN+kJgr2N0vPVgtpdqYXQ8DVnw4c8snANh/UnAeUuR50k8udVlCKQm3C0+d58Z+RE/VWad9JfZ56MqoQPKjzbFacw4pbEi6JvBXFzF4/RosKGoYRGeohzIFR2m1PHfUjy6IMDauzYt3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749197690; c=relaxed/simple;
-	bh=CkicJVr3VcBEo4d33EQ624R7/K8eyQeLxSO15zo7U/4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q7Hc9w1pRR3XyMJMICU1rYAH4F4vvnKaV78X693SkmZWN9w9iefXe6JWGi08snN+5fAwAshIsKWK4XCrFBiPtAJcTt2F3iM5FAam33J+UlQPxv30eFAqGMCz32XIkhJFLfeQe5KZos6qZldXxXKi3KGy5D5thVyacgvqRFaTCPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sdmhdwq1; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1749197700; c=relaxed/simple;
+	bh=Sx2kRoA6540IBjmVa8iRjeggrCjDOHKI0hKp9zXnYLs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DXflVOezDOEJ1KSK7CCGEWu1G71s3Ouhhblbwx9ExbG8C9slpPv2SrfxeVOtQrNdBL9Pk20c24myQeB3MMk2fMV64X0bgfL2VEz4oiGEi59SjqkyvH81A6C6QCyNaTCjxRilf13KC+l7m0S1R9zYc3tYBbJg2aI2nHRG6oZCNZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CoUgvKLv; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sdmhdwq1"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5563ijVB022445;
-	Fri, 6 Jun 2025 08:14:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NDxv8Q
-	4eajqGHzpsUjmoC1HVJbAFojGreCUjwFxAJVk=; b=sdmhdwq13mxHbLIfuVAVkM
-	rKeofhY9NeKBwPgI4o/fcpFMwN2iLrASmkxcKkD5aZ88YVOaYhI+4IIxM7/VfBUE
-	fKUK6D6no3EgUB/VwpBvgUYfOI/UMGqGBRo2lw05ODs5ZgD2KO0llXXYUCVol6wd
-	0U+4qyuuGwu3n5tl8SPWR/K/mfEJc4nt6YWYYfWay7XCcOauuaCrmUEJ4NMD/Be+
-	5VPoIz/kUDOnLZ0e3OJUcx0fqZCbKTo173Q3PWUAEOCCpf0vTyy2FXYeOlBrmzyv
-	t7WIv4LNjXf0TGU6wAcF4XwCt0aMqU59KlDkvqpkidQqn1g1ys/VbyqHW+caxnvg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gf059ya-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Jun 2025 08:14:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55671BYM012569;
-	Fri, 6 Jun 2025 08:14:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 470et2r7hy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Jun 2025 08:14:45 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5568EeVK55640508
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Jun 2025 08:14:41 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F4AF2004D;
-	Fri,  6 Jun 2025 08:14:40 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8DE7620040;
-	Fri,  6 Jun 2025 08:14:39 +0000 (GMT)
-Received: from [9.111.36.233] (unknown [9.111.36.233])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Jun 2025 08:14:39 +0000 (GMT)
-Message-ID: <c024e066-0565-4af3-ae61-bfb995eeea19@linux.ibm.com>
-Date: Fri, 6 Jun 2025 10:14:39 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CoUgvKLv"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a5ac8fae12so317451cf.0
+        for <kvm@vger.kernel.org>; Fri, 06 Jun 2025 01:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749197696; x=1749802496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vZ2a17s14DiwVXH5n9E8Jz+5/4EfpoYvUq0sk56Onz0=;
+        b=CoUgvKLvaJDrid4hzcog15Inv6dR4KKgbchVav54QH5alXYY2JFP7QDbpoX0NG2CDC
+         Efe18gUfqagOo/09sz3XHIniWWPi+BXTv020NrMLwdMSG77ZKJwdnNZz0XN0Ys/PLrcU
+         kGD2zNsWMyDFYj9arGbVBLAO14b77YD/GfEL2lpDmfi56Jsqh/63dPyhqfEHnNEw+Qp1
+         yyFLDwvFBFWi5Vka8yRARIfd4udNaHlUGfaFNkyeHaGqzlrkhWSMg0ZQfymWC3hT2lru
+         dXbggYAu2wqcXnq28nOnfc3qlZSOxc+khHkJmXIebCvVQIZYLFGePK73cZ9Y36wIUjsh
+         e6IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749197696; x=1749802496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vZ2a17s14DiwVXH5n9E8Jz+5/4EfpoYvUq0sk56Onz0=;
+        b=nI/axOW5uNrviKWhdvFLZUhfsefoT51k7/v7/EhcTaR1dthMPN+LGBJoMiUl6g2yQ3
+         FtfDuMHEGdxjoSelfFmN8p99TKTE+lsxxjo4ldFLS67g2ROxfxhdR4pE0e7EUevtnt/v
+         a0H7MC37SUG6+VQ988VBfR+1KjJt7EeSWCJqncXFAaGSYC8A/wDzgcQzreMz+ins3PQQ
+         dtcaXMMxTCHgTAW5S0zMwjfX04f48Liz98QnGR8bUO5OPoQOvDex86Exfxky1NVvRTJY
+         N8DR95Q9Jm0djIdXJLEFgxovOyft52TH3QsWU73aX7Mx4vrlu0H39AcFOgB527PloPV5
+         o14A==
+X-Gm-Message-State: AOJu0Yyi5a5ncg64uIXR7aRWImSCy7tJPgTsDbHKgpT3zJm7kzJ57Hrh
+	PNoDF6zX5xp5SZBtsMTCv4Tqot36/5LVbdREX8ljhkLhHF208lG7PzLQn0p2c2jnzQFm61Cmc5P
+	+DZLrBL4d7k2uYZ83C14VecnSbQJMRWe9GocC7erCyCpgZ0DmU8Bu0npXKzdn+g==
+X-Gm-Gg: ASbGnct6K++ocHmTEQMN58At7m98Ht9Oa5Ib6ljR4O/cXfzGXY7vu3wTjHN/PCQcytD
+	J6pJQkyCwisuyjYf9o3/fzdXQSfLEUe/Ti1qGVfUueV8evTl6N57FPTfG+ij1DG7IkCXy1pZG7r
+	zbv3moJlhdR3HYKwt1ZIyDZ60KfXtTvchIGHMWdPj2lB0=
+X-Google-Smtp-Source: AGHT+IHO3XbI99LEJ3DkrIqbK0UHqQBaguugDetIvvefVbiU0bjl6q1UARSnYMvGmv4Bofkpu6UiMgfxhbQchzD7XrI=
+X-Received: by 2002:a05:622a:4d4e:b0:480:1561:837f with SMTP id
+ d75a77b69052e-4a5baa64ae4mr3422191cf.8.1749197695571; Fri, 06 Jun 2025
+ 01:14:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: S390: Remove sca_lock
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-References: <20250605-rm-sca-lock-v2-1-74922f4f946e@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
- qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
- 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
- zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
- lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
- Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
- 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
- cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
- Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
- HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
- YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
- CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
- AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
- bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
- eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
- CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
- EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
- rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
- UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
- RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
- dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
- jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
- cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
- JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
- iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
- tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
- 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
- v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
- HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
- 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
- gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
- BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
- 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
- jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
- IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
- katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
- dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
- FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
- DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
- Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
- phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
-In-Reply-To: <20250605-rm-sca-lock-v2-1-74922f4f946e@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _N-WemKHjXnHk4LbSXdp8ko24tDgUw8v
-X-Authority-Analysis: v=2.4 cv=DYMXqutW c=1 sm=1 tr=0 ts=6842a376 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=e5B2sN9BInOlokM3_1MA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: _N-WemKHjXnHk4LbSXdp8ko24tDgUw8v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA2MDA3NCBTYWx0ZWRfX2w5rEg+Mbw7F pFJqS7geJzObKbiI4VjTZ/5QvJ/XmtVex9dOmlL4c3vU+UFrXaTd6eYyZTPv2JRtWz4iUrncDBy bmRTll5HXoXf5nqFI/eYcfp4hH1u/1xj5FhlI7+1MLoloC7WLeKbsuAcf/QlcSk38gDguEb5QKN
- /qXqgm0tH7deDB5S5K7Sm7MfAZ9wwCKxIMUZZRIavKEG3ckWWW++g0ygBz0ZLPG6aIv3dSX0EiL 1HozDQ1NiHBuVKtL+JRAbQYunC2VMd96rEbTQtSqQBRCjNgO40FeS1Ky0pffJl3wbTUPBylCrrt wsjLt+OHCLfUZbnH91SthjG/i44/8BVzTFSpU4D+sJwbl2r7f+7GFG3UflKtWP08ld8MHKvGcQv
- kIb9dqzkRx1b6X1LnmNxb70aOQhY9CCHwG5A0Agx3uCKa1CtPnw47sKE0WG8etgLKXdTAx+3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-06_02,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=833 adultscore=0
- malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506060074
+References: <20250605153800.557144-1-tabba@google.com> <20250605153800.557144-19-tabba@google.com>
+ <CADrL8HVn_qswsZgWwXcBa-oP61nbWExWSQAKeSSKn2ffMTNtcg@mail.gmail.com>
+In-Reply-To: <CADrL8HVn_qswsZgWwXcBa-oP61nbWExWSQAKeSSKn2ffMTNtcg@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 6 Jun 2025 09:14:18 +0100
+X-Gm-Features: AX0GCFsF3bQ5ds5aybr1LYz7ilc6jmBKMPt-OX1Muc1KZq58VsL5O8r4L0rcIBQ
+Message-ID: <CA+EHjTwHgAoGos+ZBzEPdkNPzLpX9t8nJLQ89YALPUw4LK4QTA@mail.gmail.com>
+Subject: Re: [PATCH v11 18/18] KVM: selftests: guest_memfd mmap() test when
+ mapping is allowed
+To: James Houghton <jthoughton@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
+	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	peterx@redhat.com, pankaj.gupta@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/5/25 6:14 PM, Christoph Schlameuss wrote:
-> Since we are no longer switching from a BSCA to a ESCA we can completely
-> get rid of the sca_lock. The write lock was only taken for that
-> conversion.
-> 
-> After removal of the lock some local code cleanups are possible.
-> 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> ---
-> The patch depends on "KVM: s390: Use ESCA instead of BSCA at VM init"
-> 
-> Link: https://lore.kernel.org/r/20250603-rm-bsca-v5-1-f691288ada5c@linux.ibm.com
+Hi James,
 
-I'm throwing this into the CI.
+On Thu, 5 Jun 2025 at 23:07, James Houghton <jthoughton@google.com> wrote:
+>
+> On Thu, Jun 5, 2025 at 8:38=E2=80=AFAM Fuad Tabba <tabba@google.com> wrot=
+e:
+> >
+> > Expand the guest_memfd selftests to include testing mapping guest
+> > memory for VM types that support it.
+> >
+> > Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Fuad Tabba <tabba@google.com>
+>
+> Feel free to add:
+>
+> Reviewed-by: James Houghton <jthoughton@google.com>
 
-If people suggest something, *cough* me for instance *cough*, it doesn't 
-hurt to add a suggested-by tag.
+Thanks!
+
+> > ---
+> >  .../testing/selftests/kvm/guest_memfd_test.c  | 201 ++++++++++++++++--
+> >  1 file changed, 180 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/tes=
+ting/selftests/kvm/guest_memfd_test.c
+> > index 341ba616cf55..1612d3adcd0d 100644
+> > --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> > +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> > @@ -13,6 +13,8 @@
+> >
+> >  #include <linux/bitmap.h>
+> >  #include <linux/falloc.h>
+> > +#include <setjmp.h>
+> > +#include <signal.h>
+> >  #include <sys/mman.h>
+> >  #include <sys/types.h>
+> >  #include <sys/stat.h>
+> > @@ -34,12 +36,83 @@ static void test_file_read_write(int fd)
+> >                     "pwrite on a guest_mem fd should fail");
+> >  }
+> >
+> > -static void test_mmap(int fd, size_t page_size)
+> > +static void test_mmap_supported(int fd, size_t page_size, size_t total=
+_size)
+> > +{
+> > +       const char val =3D 0xaa;
+> > +       char *mem;
+>
+> This must be `volatile char *` to ensure that the compiler doesn't
+> elide the accesses you have written.
+>
+> > +       size_t i;
+> > +       int ret;
+> > +
+> > +       mem =3D mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_PRIV=
+ATE, fd, 0);
+> > +       TEST_ASSERT(mem =3D=3D MAP_FAILED, "Copy-on-write not allowed b=
+y guest_memfd.");
+> > +
+> > +       mem =3D mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHAR=
+ED, fd, 0);
+> > +       TEST_ASSERT(mem !=3D MAP_FAILED, "mmap() for shared guest memor=
+y should succeed.");
+> > +
+> > +       memset(mem, val, total_size);
+>
+> Now unfortunately, `memset` and `munmap` will complain about the
+> volatile qualification. So...
+>
+> memset((char *)mem, val, total_size);
+>
+> Eh... wish they just wouldn't complain, but this is a small price to
+> pay for correctness. :)
+>
+> > +       for (i =3D 0; i < total_size; i++)
+> > +               TEST_ASSERT_EQ(mem[i], val);
+>
+> The compiler is allowed to[1] elide the read of `mem[i]` and just
+> assume that it is `val`.
+>
+> [1]: https://godbolt.org/z/Wora54bP6
+>
+> Feel free to add `volatile` to that snippet to see how the code changes.
+
+Having tried that and Sean's READ_ONCE() suggestion, I went with the
+latter. Like Sean said, they're not optimised out, and avoid the need
+to cast.
+
+> > +
+> > +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOL=
+E, 0,
+> > +                       page_size);
+> > +       TEST_ASSERT(!ret, "fallocate the first page should succeed.");
+> > +
+> > +       for (i =3D 0; i < page_size; i++)
+> > +               TEST_ASSERT_EQ(mem[i], 0x00);
+> > +       for (; i < total_size; i++)
+> > +               TEST_ASSERT_EQ(mem[i], val);
+> > +
+> > +       memset(mem, val, page_size);
+> > +       for (i =3D 0; i < total_size; i++)
+> > +               TEST_ASSERT_EQ(mem[i], val);
+> > +
+> > +       ret =3D munmap(mem, total_size);
+> > +       TEST_ASSERT(!ret, "munmap() should succeed.");
+> > +}
+> > +
+> > +static sigjmp_buf jmpbuf;
+> > +void fault_sigbus_handler(int signum)
+> > +{
+> > +       siglongjmp(jmpbuf, 1);
+> > +}
+> > +
+> > +static void test_fault_overflow(int fd, size_t page_size, size_t total=
+_size)
+> > +{
+> > +       struct sigaction sa_old, sa_new =3D {
+> > +               .sa_handler =3D fault_sigbus_handler,
+> > +       };
+> > +       size_t map_size =3D total_size * 4;
+> > +       const char val =3D 0xaa;
+> > +       char *mem;
+>
+> `volatile` here as well.
+>
+> > +       size_t i;
+> > +       int ret;
+> > +
+> > +       mem =3D mmap(NULL, map_size, PROT_READ | PROT_WRITE, MAP_SHARED=
+, fd, 0);
+> > +       TEST_ASSERT(mem !=3D MAP_FAILED, "mmap() for shared guest memor=
+y should succeed.");
+> > +
+> > +       sigaction(SIGBUS, &sa_new, &sa_old);
+> > +       if (sigsetjmp(jmpbuf, 1) =3D=3D 0) {
+> > +               memset(mem, 0xaa, map_size);
+> > +               TEST_ASSERT(false, "memset() should have triggered SIGB=
+US.");
+> > +       }
+> > +       sigaction(SIGBUS, &sa_old, NULL);
+> > +
+> > +       for (i =3D 0; i < total_size; i++)
+> > +               TEST_ASSERT_EQ(mem[i], val);
+> > +
+> > +       ret =3D munmap(mem, map_size);
+> > +       TEST_ASSERT(!ret, "munmap() should succeed.");
+> > +}
+> > +
+> > +static void test_mmap_not_supported(int fd, size_t page_size, size_t t=
+otal_size)
+> >  {
+> >         char *mem;
+> >
+> >         mem =3D mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARE=
+D, fd, 0);
+> >         TEST_ASSERT_EQ(mem, MAP_FAILED);
+> > +
+> > +       mem =3D mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHAR=
+ED, fd, 0);
+> > +       TEST_ASSERT_EQ(mem, MAP_FAILED);
+> >  }
+> >
+> >  static void test_file_size(int fd, size_t page_size, size_t total_size=
+)
+> > @@ -120,26 +193,19 @@ static void test_invalid_punch_hole(int fd, size_=
+t page_size, size_t total_size)
+> >         }
+> >  }
+> >
+> > -static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
+> > +static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
+> > +                                                 uint64_t guest_memfd_=
+flags,
+> > +                                                 size_t page_size)
+> >  {
+> > -       size_t page_size =3D getpagesize();
+> > -       uint64_t flag;
+> >         size_t size;
+> >         int fd;
+> >
+> >         for (size =3D 1; size < page_size; size++) {
+> > -               fd =3D __vm_create_guest_memfd(vm, size, 0);
+> > -               TEST_ASSERT(fd =3D=3D -1 && errno =3D=3D EINVAL,
+> > +               fd =3D __vm_create_guest_memfd(vm, size, guest_memfd_fl=
+ags);
+> > +               TEST_ASSERT(fd < 0 && errno =3D=3D EINVAL,
+> >                             "guest_memfd() with non-page-aligned page s=
+ize '0x%lx' should fail with EINVAL",
+> >                             size);
+> >         }
+> > -
+> > -       for (flag =3D BIT(0); flag; flag <<=3D 1) {
+> > -               fd =3D __vm_create_guest_memfd(vm, page_size, flag);
+> > -               TEST_ASSERT(fd =3D=3D -1 && errno =3D=3D EINVAL,
+> > -                           "guest_memfd() with flag '0x%lx' should fai=
+l with EINVAL",
+> > -                           flag);
+> > -       }
+> >  }
+> >
+> >  static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+> > @@ -171,30 +237,123 @@ static void test_create_guest_memfd_multiple(str=
+uct kvm_vm *vm)
+> >         close(fd1);
+> >  }
+> >
+> > -int main(int argc, char *argv[])
+> > +static bool check_vm_type(unsigned long vm_type)
+> >  {
+> > -       size_t page_size;
+> > +       /*
+> > +        * Not all architectures support KVM_CAP_VM_TYPES. However, tho=
+se that
+> > +        * support guest_memfd have that support for the default VM typ=
+e.
+> > +        */
+> > +       if (vm_type =3D=3D VM_TYPE_DEFAULT)
+> > +               return true;
+> > +
+> > +       return kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(vm_type);
+> > +}
+> > +
+> > +static void test_with_type(unsigned long vm_type, uint64_t guest_memfd=
+_flags,
+> > +                          bool expect_mmap_allowed)
+> > +{
+> > +       struct kvm_vm *vm;
+> >         size_t total_size;
+> > +       size_t page_size;
+> >         int fd;
+> > -       struct kvm_vm *vm;
+> >
+> > -       TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
+> > +       if (!check_vm_type(vm_type))
+> > +               return;
+> >
+> >         page_size =3D getpagesize();
+> >         total_size =3D page_size * 4;
+> >
+> > -       vm =3D vm_create_barebones();
+> > +       vm =3D vm_create_barebones_type(vm_type);
+> >
+> > -       test_create_guest_memfd_invalid(vm);
+> >         test_create_guest_memfd_multiple(vm);
+> > +       test_create_guest_memfd_invalid_sizes(vm, guest_memfd_flags, pa=
+ge_size);
+> >
+> > -       fd =3D vm_create_guest_memfd(vm, total_size, 0);
+> > +       fd =3D vm_create_guest_memfd(vm, total_size, guest_memfd_flags)=
+;
+> >
+> >         test_file_read_write(fd);
+> > -       test_mmap(fd, page_size);
+> > +
+> > +       if (expect_mmap_allowed) {
+> > +               test_mmap_supported(fd, page_size, total_size);
+> > +               test_fault_overflow(fd, page_size, total_size);
+> > +
+> > +       } else {
+> > +               test_mmap_not_supported(fd, page_size, total_size);
+> > +       }
+> > +
+> >         test_file_size(fd, page_size, total_size);
+> >         test_fallocate(fd, page_size, total_size);
+> >         test_invalid_punch_hole(fd, page_size, total_size);
+> >
+> >         close(fd);
+> > +       kvm_vm_release(vm);
+>
+> I think kvm_vm_free() is probably more appropriate?
+
+Ack (for both).
+
+Cheers,
+/fuad
+
+> > +}
+> > +
+> > +static void test_vm_type_gmem_flag_validity(unsigned long vm_type,
+> > +                                           uint64_t expected_valid_fla=
+gs)
+> > +{
+> > +       size_t page_size =3D getpagesize();
+> > +       struct kvm_vm *vm;
+> > +       uint64_t flag =3D 0;
+> > +       int fd;
+> > +
+> > +       if (!check_vm_type(vm_type))
+> > +               return;
+> > +
+> > +       vm =3D vm_create_barebones_type(vm_type);
+> > +
+> > +       for (flag =3D BIT(0); flag; flag <<=3D 1) {
+> > +               fd =3D __vm_create_guest_memfd(vm, page_size, flag);
+> > +
+> > +               if (flag & expected_valid_flags) {
+> > +                       TEST_ASSERT(fd >=3D 0,
+> > +                                   "guest_memfd() with flag '0x%lx' sh=
+ould be valid",
+> > +                                   flag);
+> > +                       close(fd);
+> > +               } else {
+> > +                       TEST_ASSERT(fd < 0 && errno =3D=3D EINVAL,
+> > +                                   "guest_memfd() with flag '0x%lx' sh=
+ould fail with EINVAL",
+> > +                                   flag);
+> > +               }
+> > +       }
+> > +
+> > +       kvm_vm_release(vm);
+>
+> Same here.
+>
+> > +}
+> > +
+> > +static void test_gmem_flag_validity(void)
+> > +{
+> > +       uint64_t non_coco_vm_valid_flags =3D 0;
+> > +
+> > +       if (kvm_has_cap(KVM_CAP_GMEM_SHARED_MEM))
+> > +               non_coco_vm_valid_flags =3D GUEST_MEMFD_FLAG_SUPPORT_SH=
+ARED;
+> > +
+> > +       test_vm_type_gmem_flag_validity(VM_TYPE_DEFAULT, non_coco_vm_va=
+lid_flags);
+> > +
+> > +#ifdef __x86_64__
+> > +       test_vm_type_gmem_flag_validity(KVM_X86_SW_PROTECTED_VM, non_co=
+co_vm_valid_flags);
+> > +       test_vm_type_gmem_flag_validity(KVM_X86_SEV_VM, 0);
+> > +       test_vm_type_gmem_flag_validity(KVM_X86_SEV_ES_VM, 0);
+> > +       test_vm_type_gmem_flag_validity(KVM_X86_SNP_VM, 0);
+> > +       test_vm_type_gmem_flag_validity(KVM_X86_TDX_VM, 0);
+> > +#endif
+> > +}
+> > +
+> > +int main(int argc, char *argv[])
+> > +{
+> > +       TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
+> > +
+> > +       test_gmem_flag_validity();
+> > +
+> > +       test_with_type(VM_TYPE_DEFAULT, 0, false);
+> > +       if (kvm_has_cap(KVM_CAP_GMEM_SHARED_MEM)) {
+> > +               test_with_type(VM_TYPE_DEFAULT, GUEST_MEMFD_FLAG_SUPPOR=
+T_SHARED,
+> > +                              true);
+> > +       }
+> > +
+> > +#ifdef __x86_64__
+> > +       test_with_type(KVM_X86_SW_PROTECTED_VM, 0, false);
+> > +       if (kvm_has_cap(KVM_CAP_GMEM_SHARED_MEM)) {
+> > +               test_with_type(KVM_X86_SW_PROTECTED_VM,
+> > +                              GUEST_MEMFD_FLAG_SUPPORT_SHARED, true);
+> > +       }
+> > +#endif
+> >  }
+> > --
+> > 2.49.0.1266.g31b7d2e469-goog
+> >
