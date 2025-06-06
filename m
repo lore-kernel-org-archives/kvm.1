@@ -1,131 +1,147 @@
-Received: from sg-1-30.ptr.blmpb.com (sg-1-30.ptr.blmpb.com [118.26.132.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7514C9F
-	for <kvm@vger.kernel.org>; Fri,  6 Jun 2025 04:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71D67FD;
+	Fri,  6 Jun 2025 04:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749183300; cv=none; b=eDdzCMYbkoBj/NW4CFrNHs99sUDe/Bo1lwfHuGz6XaZ+YQasb0GiesgeFR0lgpc5O7mb9GAKSTCE2keKD7Buy1LSkJLu150KzANiHhHD4evwbBBZE4v6uzL7TIisVdCP6+jeV/hudxAGIJuZAMBsFIoI8ycrgLx+7Q2Gzx6WBZQ=
+	t=1749184376; cv=none; b=DQAGNm13t+mlUJEIWdvLLh0mzQzxByXTCGbGlV1PS5oeQ+qX2DTNMZO17mPtYSI2Q32bOvTJ8V8EFp1WdG+ykb9gxFhLHwbECYJhR6KJ1FzVmKefzONVzyqOJVXP6geSQEh3lCo5PIkWS2oKGSH85Fv3L5/yacnJTX2iS7gG4Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749183300; c=relaxed/simple;
-	bh=IdexLD3eLQvA1s6fHt6lYm6nLYATX2RacfQTFZ/sCXs=;
-	h=To:Content-Type:In-Reply-To:Cc:Message-Id:References:Date:From:
-	 Subject:Mime-Version; b=NT6wmLwD2u3QO8y2dKrvH5fdf19Ie0RkM/YhbPDDUeMdMorUIQgBJslhi1iZjU5/v5BKUcSfbtZOpPWErp17tpMEyK49+8nsIefYO9o2zMOGcgBVkYfTetcc7ZJQNr0Z+mApSUKwBt1WsnMsDJK6YA4Xix+cH5wEcGDFpeic5lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com; spf=pass smtp.mailfrom=lanxincomputing.com; dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b=tiKxe8Tl; arc=none smtp.client-ip=118.26.132.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
+	s=arc-20240116; t=1749184376; c=relaxed/simple;
+	bh=yLDNyNn/xDL5lmtA4zeU4VCRJdc6yerfu8f1Dqe1TBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vFpyq/rMXw3mV3EWuZdcJHKJUmhwZPecr0drCWeA50PKE0w6Nbmz3qxcEH0ue81ueNgwDYMkFdoFzqikvWvmG9ANUYJY1z683+u/LXK2b2CwWaGSUQ54iRAFqXuCgZb4/287u7zXFdXS+Cl7XMbcwZ99DfFBTRJojhPPdZRduzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YQZP8hn+; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b="tiKxe8Tl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1749183289;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=bxW97WAtWMI/gihYEj6Ht7PAyVXQrYH3mCMOcOfQ04s=;
- b=tiKxe8TlLzaSpftlkKEpF8OWyyY6pKZ27yIdGyAK+Kbd6dB0QZNd5FxI6mAWs79O7n92/p
- IYsmuk7woUc/zMnRRRaAsh6vISLeElv+E+ct5C0DbxK087f70FtCmY5YUPEl+IL1e8jpjh
- 27r/sNpvVacdHzVbRvb6fduyZRP8OCe/2eadEC7muBnieLplfYDUpAQY0nZLL5WOv5B10L
- lky+mWeHC2NzSpe0HxbSYQBia0v3fo2urov21PrA+IbZmlDZZM1Bez4q8gBgZXunYmbdVw
- G+TE4jiIp9vVneN9+4wetUjpAXuuPQHeKRdKRg0cXNkhJ3AElqSLQkWAmTh5jA==
-To: "Anup Patel" <apatel@ventanamicro.com>, 
-	"Atish Patra" <atish.patra@linux.dev>
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <20250605061458.196003-5-apatel@ventanamicro.com>
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, 
-	"Paul Walmsley" <paul.walmsley@sifive.com>, 
-	"Alexandre Ghiti" <alex@ghiti.fr>, 
-	"Andrew Jones" <ajones@ventanamicro.com>, 
-	"Anup Patel" <anup@brainfault.org>, <kvm@vger.kernel.org>, 
-	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>, 
-	<linux-kernel@vger.kernel.org>
-Message-Id: <670cf57f-775e-43e1-abc3-189f3e0dc35c@lanxincomputing.com>
-References: <20250605061458.196003-1-apatel@ventanamicro.com> <20250605061458.196003-5-apatel@ventanamicro.com>
-Date: Fri, 6 Jun 2025 12:14:43 +0800
-Content-Language: en-US
-Received: from [127.0.0.1] ([180.165.23.184]) by smtp.feishu.cn with ESMTPS; Fri, 06 Jun 2025 12:14:45 +0800
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+268426b37+26deb6+vger.kernel.org+liujingqi@lanxincomputing.com>
-X-Original-From: Nutty Liu <liujingqi@lanxincomputing.com>
-From: "Nutty Liu" <liujingqi@lanxincomputing.com>
-Subject: Re: [PATCH 04/13] RISC-V: KVM: Drop the return value of kvm_riscv_vcpu_aia_init()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YQZP8hn+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749184375; x=1780720375;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=yLDNyNn/xDL5lmtA4zeU4VCRJdc6yerfu8f1Dqe1TBs=;
+  b=YQZP8hn+SOUfzKbwhx47ZKLENBZNgsFZubTErvJES9pTsRuolVvCshsW
+   UNELI6UU2wV1yrWw0LAk2gLe5/48qDFbZ7koz7y2SVxrbZY+4xG0Y+xKz
+   eaReq9JKvBGgynwp55+hjEb2rpxYHi50aYU9yeiyFMxeuvigosyUY+Dc+
+   Myejwa/wFPBS3Zw35w3GVRWCKE6aXpLHLKKQE5+wMITyl9D4+k27pLynb
+   4eg8aM/etT2Igig8URPNs470V+3v+4/IqxJKkoK4beJumRoatH5lF+96j
+   vVwpmvxHy9szYcIwoghKIu99UxsNwiDUrbEw/r5UM7kxhExZoXtJhqH5O
+   A==;
+X-CSE-ConnectionGUID: gaYWy8jGSbeNnIz5MTldLQ==
+X-CSE-MsgGUID: 7rnkmtpFS7C1QBh9/XMEfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="51468937"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; 
+   d="scan'208";a="51468937"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 21:32:54 -0700
+X-CSE-ConnectionGUID: a2NVxN3HTFG+xIUIK89PUA==
+X-CSE-MsgGUID: 8D/PmArNSKGGUGligSxiFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; 
+   d="scan'208";a="182904220"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa001.jf.intel.com with ESMTP; 05 Jun 2025 21:32:47 -0700
+Date: Fri, 6 Jun 2025 12:26:07 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, kvm@vger.kernel.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
+	yilun.xu@intel.com, linux-kernel@vger.kernel.org, lukas@wunner.de,
+	yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com,
+	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com,
+	iommu@lists.linux.dev, kevin.tian@intel.com
+Subject: Re: [RFC PATCH 19/30] vfio/pci: Add TSM TDI bind/unbind IOCTLs for
+ TEE-IO support
+Message-ID: <aEJt39oExEUDg/Dh@yilunxu-OptiPlex-7050>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-20-yilun.xu@linux.intel.com>
+ <yq5ah60u8kev.fsf@kernel.org>
+ <20250605151029.GC19710@nvidia.com>
+ <yq5a7c1q88oy.fsf@kernel.org>
+ <20250605163339.GE19710@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250605163339.GE19710@nvidia.com>
 
-On 6/5/2025 2:14 PM, Anup Patel wrote:
-> The kvm_riscv_vcpu_aia_init() does not return any failure so drop
-> the return value which is always zero.
->
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> ---
->   arch/riscv/include/asm/kvm_aia.h | 2 +-
->   arch/riscv/kvm/aia_device.c      | 6 ++----
->   arch/riscv/kvm/vcpu.c            | 4 +---
->   3 files changed, 4 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
-> index 3b643b9efc07..0a0f12496f00 100644
-> --- a/arch/riscv/include/asm/kvm_aia.h
-> +++ b/arch/riscv/include/asm/kvm_aia.h
-> @@ -147,7 +147,7 @@ int kvm_riscv_vcpu_aia_rmw_ireg(struct kvm_vcpu *vcpu, unsigned int csr_num,
->   
->   int kvm_riscv_vcpu_aia_update(struct kvm_vcpu *vcpu);
->   void kvm_riscv_vcpu_aia_reset(struct kvm_vcpu *vcpu);
-> -int kvm_riscv_vcpu_aia_init(struct kvm_vcpu *vcpu);
-> +void kvm_riscv_vcpu_aia_init(struct kvm_vcpu *vcpu);
->   void kvm_riscv_vcpu_aia_deinit(struct kvm_vcpu *vcpu);
->   
->   int kvm_riscv_aia_inject_msi_by_id(struct kvm *kvm, u32 hart_index,
-> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-> index 43e472ff3e1a..5b7ed2d987db 100644
-> --- a/arch/riscv/kvm/aia_device.c
-> +++ b/arch/riscv/kvm/aia_device.c
-> @@ -539,12 +539,12 @@ void kvm_riscv_vcpu_aia_reset(struct kvm_vcpu *vcpu)
->   	kvm_riscv_vcpu_aia_imsic_reset(vcpu);
->   }
->   
-> -int kvm_riscv_vcpu_aia_init(struct kvm_vcpu *vcpu)
-> +void kvm_riscv_vcpu_aia_init(struct kvm_vcpu *vcpu)
->   {
->   	struct kvm_vcpu_aia *vaia = &vcpu->arch.aia_context;
->   
->   	if (!kvm_riscv_aia_available())
-> -		return 0;
-> +		return;
->   
->   	/*
->   	 * We don't do any memory allocations over here because these
-> @@ -556,8 +556,6 @@ int kvm_riscv_vcpu_aia_init(struct kvm_vcpu *vcpu)
->   	/* Initialize default values in AIA vcpu context */
->   	vaia->imsic_addr = KVM_RISCV_AIA_UNDEF_ADDR;
->   	vaia->hart_index = vcpu->vcpu_idx;
-> -
-> -	return 0;
->   }
->   
->   void kvm_riscv_vcpu_aia_deinit(struct kvm_vcpu *vcpu)
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index 6a1914b21ec3..f98a1894d55b 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -160,9 +160,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->   	kvm_riscv_vcpu_pmu_init(vcpu);
->   
->   	/* Setup VCPU AIA */
-> -	rc = kvm_riscv_vcpu_aia_init(vcpu);
-> -	if (rc)
-> -		return rc;
-> +	kvm_riscv_vcpu_aia_init(vcpu);
->   
+On Thu, Jun 05, 2025 at 01:33:39PM -0300, Jason Gunthorpe wrote:
+> On Thu, Jun 05, 2025 at 09:47:01PM +0530, Aneesh Kumar K.V wrote:
+> > Jason Gunthorpe <jgg@nvidia.com> writes:
+> > 
+> > > On Thu, Jun 05, 2025 at 05:33:52PM +0530, Aneesh Kumar K.V wrote:
+> > >
+> > >> > +
+> > >> > +	/* To ensure no host side MMIO access is possible */
+> > >> > +	ret = pci_request_regions_exclusive(pdev, "vfio-pci-tsm");
+> > >> > +	if (ret)
+> > >> > +		goto out_unlock;
+> > >> > +
+> > >> >
+> > >> 
+> > >> I am hitting failures here with similar changes. Can you share the Qemu
+> > >> changes needed to make this pci_request_regions_exclusive successful.
 
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
+Jason has described the suggested static lockdown flow and we could
+try on that.  I just wanna help position your immediate failure.
 
-This seems more reasonable.
+Maybe you still have QEMU mmapped the MMIO region.
+
+int vfio_pci_core_mmap()
+{
+...
+
+	if (!vdev->barmap[index]) {
+		ret = pci_request_selected_regions(pdev,
+						   1 << index, "vfio-pci");
+...
+}
+
+Even for static lockdown, userspace should not mmap the MMIOs anymore.
+
 Thanks,
-Nutty
+Yilun
 
->   	/*
->   	 * Setup SBI extensions
+> > >> Also after the TDI is unbound, we want the region ownership backto
+> > >> "vfio-pci" so that things continue to work as non-secure device. I don't
+> > >> see we doing that. I could add a pci_bar_deactivate/pci_bar_activate in
+> > >> userspace which will result in vfio_unmap()/vfio_map(). But that doesn't
+> > >> release the region ownership.
+> > >
+> > > Again, IMHO, we should not be doing this dynamically. VFIO should do
+> > > pci_request_regions_exclusive() once at the very start and it should
+> > > stay that way.
+> > >
+> > > There is no reason to change it dynamically.
+> > >
+> > > The only decision to make is if all vfio should switch to exclusive
+> > > mode or if we need to make it optional for userspace.
+> > 
+> > We only need the exclusive mode when the device is operating in secure
+> > mode, correct? That suggests we’ll need to dynamically toggle this
+> > setting based on the device’s security state.
+> 
+> No, if the decision is that VFIO should allow this to be controlled by
+> userspace then userspace will tell iommufd to run in regions_exclusive
+> mode prior to opening the vfio cdev and VFIO will still do it once at
+> open time and never change it.
+> 
+> The only thing request_regions does is block other drivers outside
+> vfio from using this memory space. There is no reason at all to change
+> this dynamically. A CC VMM using VFIO will never use a driver outside
+> VFIO to touch the VFIO controlled memory.
+> 
+> Jason
