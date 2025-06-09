@@ -1,97 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0927718
-	for <kvm@vger.kernel.org>; Mon,  9 Jun 2025 18:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F37121CC4A;
+	Mon,  9 Jun 2025 19:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749493650; cv=none; b=fdwKzfJkJoLnLyX06f8p3gnoVKCVSiN6H8h5qJA1PA2R1XAB/jPZun6J35jGqRiARcwN+WNoHod4brGbxU1Q2Z/lAkN2zHWz4bPPtBMHrHromb8iEq4Qtu4O4N0JuBD+g3X/BLSTuYkws7oTtvV2QtoRZPg1r2RPevrKZnDbVFQ=
+	t=1749496436; cv=none; b=ti590ZBRvl9bkykpXWnM2wU931d+9nBfjGxwXJs+ZSLiBXJlUpaE6xl50y7LtkbL5vw/zZ56BlOD6ssqh631qXzcjysSRl6zfFRzbBYphrA/e5Ntxh7qkXHT0rPtW+cAW4Kn8swZQKHI3GRxyTc6WQ33FmC5sGVb/xwW59lBIL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749493650; c=relaxed/simple;
-	bh=xxyZAdOTMsvcG7qSAfDJeFKOJ423QBPTf4734rfg0Xo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gfRm+Ynj0nvy7ihGxR+pdV9L+C3eLrOd61SNjP1QXnGuuiLmOdkwV99HGpvubuqi9Rr/JpJg7U418KcN26gMN6uQkiuHGsUE6p4AQta019nd3b9hcNwZzZ9osUKJPcrAEG/0DblcOItwi+FYd8R8cvfa+rVvjgaFfkykpmlLFwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NfDTl6Qr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749496436; c=relaxed/simple;
+	bh=qfB8VMSGySBtQwc24w5kS+61cOYDH+0r3VJ7G+xrbns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jfbx5zM0yYupd/ZDcNnYC/2anckOcDWy+fTTklGvPXltFtex80vvBwebV9zteHhnvkAjem00UOhQM5tGfOYH6Sm0DW+DSNGuhd1igPg1uy6tJGkIN1YLpW9NMIQNjRs9FH3iGgHmZ/IxESWag+rkme5PzYXcAlXXCthIYAcDDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRcGCzSR; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NfDTl6Qr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72CEAC4CEF0
-	for <kvm@vger.kernel.org>; Mon,  9 Jun 2025 18:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749493649;
-	bh=xxyZAdOTMsvcG7qSAfDJeFKOJ423QBPTf4734rfg0Xo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=NfDTl6Qr4qULza0gbwdd6k8AJ0Gkn3LhsFh6U42LC1PeVhnnDA1ot6Q6Z3+jCFiE4
-	 dERXv1YuYzdvGy1VsyMNNIpnXNfhI4tP3jKXB2kJ94qli2Qd6+xaxOjOBg75A9dY/L
-	 p7BSy1lLCJJkPBN1koGA2HEWHvo4tSLf9vRMWSdOiRLIoYV7YIUxTBYZwLezXn/hVw
-	 w8T/vtjZXqjAu/uCHppY+7uPJFLpSB2PLQHrvBAh3SlAysm0KG4vzzd6OtLlkllbh/
-	 hv7jAi5UUJUjWwl+ZqVaY0ZzmKoUZU2B1hNKP7776eSGPoiDhPhRF3KCu86cOjr12j
-	 wMxgxtWXUQAFQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 693DFC4160E; Mon,  9 Jun 2025 18:27:29 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: kvm@vger.kernel.org
-Subject: [Bug 220200] Kernel crash with WARNING: CPU: 17 PID: 4510 at
- lib/refcount.c:28 refcount_warn_saturate+0xd8/0xe0
-Date: Mon, 09 Jun 2025 18:27:29 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Product: Virtualization
-X-Bugzilla-Component: kvm
-X-Bugzilla-Version: unspecified
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: high
-X-Bugzilla-Who: gs.thiruus@gmail.com
-X-Bugzilla-Status: REOPENED
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-220200-28872-gtRVfqlbey@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-220200-28872@https.bugzilla.kernel.org/>
-References: <bug-220200-28872@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRcGCzSR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749496435; x=1781032435;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qfB8VMSGySBtQwc24w5kS+61cOYDH+0r3VJ7G+xrbns=;
+  b=cRcGCzSR163+wR7LZztxFsKYLdB+9mwLIf+p4IRS/KGWAppcYiZ7cLJx
+   Uls/gvafrKRJPGIXeRfZkT/WGiSRQ++xmFGYEWFtZXLpPKo9QM6E+0Hfk
+   ry/Omr4ljxDTtv1FI8aLmGP0fpu42iXPfQXRPB+BDKclCSJuF8nhdj0mb
+   063G4Iufvy8k5XHWHz0yV6DnJRbpqEOrhVm0+vxtshJHImYe/5Tyqgxc1
+   Rcp/mtY8yJferThr03IiLvrc6lTIp2sPgzfE1YZA/0JboHpRKNiiwaXeF
+   tZ7QXpdQmhop8plWB1XENFvaepmWzSer6C9VaB/009HzOpVCajCfu02OQ
+   Q==;
+X-CSE-ConnectionGUID: 1qzGlIQWRRim4+Q/Fpx9Sg==
+X-CSE-MsgGUID: hj8FW4tHTe+cY/TXquQPRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51681740"
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="51681740"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 12:13:54 -0700
+X-CSE-ConnectionGUID: B8SZt3eeQKKg6gaHNVT4ag==
+X-CSE-MsgGUID: YlEQp6tfSA22ulyBZtOKGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="147174157"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa007.jf.intel.com with ESMTP; 09 Jun 2025 12:13:51 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 0F88E290; Mon, 09 Jun 2025 22:13:49 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com,
+	dave.hansen@linux.intel.com
+Cc: rick.p.edgecombe@intel.com,
+	isaku.yamahata@intel.com,
+	kai.huang@intel.com,
+	yan.y.zhao@intel.com,
+	chao.gao@intel.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 02/12] x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+Date: Mon,  9 Jun 2025 22:13:30 +0300
+Message-ID: <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220200
+The Physical Address Metadata Table (PAMT) holds TDX metadata for
+physical memory and must be allocated by the kernel during TDX module
+initialization.
 
-gs.thiruus@gmail.com changed:
+The exact size of the required PAMT memory is determined by the TDX
+module and may vary between TDX module versions, but currently it is
+approximately 0.4% of the system memory. This is a significant
+commitment, especially if it is not known upfront whether the machine
+will run any TDX guests.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|RESOLVED                    |REOPENED
-         Resolution|ANSWERED                    |---
+The Dynamic PAMT feature reduces static PAMT allocations. PAMT_1G and
+PAMT_2M levels are still allocated on TDX module initialization, but the
+PAMT_4K level is allocated dynamically, reducing static allocations to
+approximately 0.004% of the system memory.
 
---- Comment #2 from gs.thiruus@gmail.com ---
-Thanks for your response.=20
+With Dynamic PAMT, the kernel no longer needs to allocate PAMT_4K on
+boot, but instead must allocate a page bitmap. The TDX module determines
+how many bits per page need to be allocated (currently it is 1).
 
-Though the warning and RIP info matching with the one shared in the thread
-(https://github.com/flatcar/Flatcar/issues/427) which you shared,=20
-WARNING: CPU: 10 PID: 13791 at lib/refcount.c:28
-refcount_warn_saturate+0xa6/0xf0=20
-RIP: 0010:refcount_warn_saturate+0xa6/0xf0
+Allocate the bitmap if the kernel boots on a machine with Dynamic PAMT.
 
-I see the call trace observed in our setup, not matching.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/include/asm/tdx.h                  |  5 +++++
+ arch/x86/include/asm/tdx_global_metadata.h  |  1 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 23 ++++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  3 +++
+ 4 files changed, 31 insertions(+), 1 deletion(-)
 
-as per the link shared, fix provided in netfilter module.=20
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 9649308bd9c0..583d6fe66821 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -106,6 +106,11 @@ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+ const struct tdx_sys_info *tdx_get_sysinfo(void);
+ 
++static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
++{
++	return false; /* To be enabled when kernel is ready */
++}
++
+ int tdx_guest_keyid_alloc(void);
+ u32 tdx_get_nr_guest_keyids(void);
+ void tdx_guest_keyid_free(unsigned int keyid);
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 060a2ad744bf..5eb808b23997 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -15,6 +15,7 @@ struct tdx_sys_info_tdmr {
+ 	u16 pamt_4k_entry_size;
+ 	u16 pamt_2m_entry_size;
+ 	u16 pamt_1g_entry_size;
++	u8  pamt_page_bitmap_entry_bits;
+ };
+ 
+ struct tdx_sys_info_td_ctrl {
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 2457d13c3f9e..18179eb26eb9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -470,6 +470,18 @@ static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+ 	return pamt_sz;
+ }
+ 
++static unsigned long tdmr_get_pamt_bitmap_sz(struct tdmr_info *tdmr)
++{
++	unsigned long pamt_sz, nr_pamt_entries;
++	int bits_per_entry;
++
++	bits_per_entry = tdx_sysinfo.tdmr.pamt_page_bitmap_entry_bits;
++	nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
++	pamt_sz = DIV_ROUND_UP(nr_pamt_entries * bits_per_entry, BITS_PER_BYTE);
++
++	return ALIGN(pamt_sz, PAGE_SIZE);
++}
++
+ /*
+  * Locate a NUMA node which should hold the allocation of the @tdmr
+  * PAMT.  This node will have some memory covered by the TDMR.  The
+@@ -522,7 +534,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 * and the total PAMT size.
+ 	 */
+ 	tdmr_pamt_size = 0;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
++	pgsz = TDX_PS_4K;
++
++	/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
++	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
++		pamt_size[pgsz] = tdmr_get_pamt_bitmap_sz(tdmr);
++		tdmr_pamt_size += pamt_size[pgsz];
++		pgsz++;
++	}
++
++	for (; pgsz < TDX_PS_NR; pgsz++) {
+ 		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+ 					pamt_entry_size[pgsz]);
+ 		tdmr_pamt_size += pamt_size[pgsz];
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 13ad2663488b..683925bcc9eb 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -33,6 +33,9 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+ 		sysinfo_tdmr->pamt_2m_entry_size = val;
+ 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+ 		sysinfo_tdmr->pamt_1g_entry_size = val;
++	if (!ret && tdx_supports_dynamic_pamt(&tdx_sysinfo) &&
++	    !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
++		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+ 
+ 	return ret;
+ }
+-- 
+2.47.2
 
-Could you please share more details how will it help to fix the trace obser=
-ved
-in our setup?
-
-Thanks
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
