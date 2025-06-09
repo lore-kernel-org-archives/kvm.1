@@ -1,170 +1,118 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2079.outbound.protection.outlook.com [40.107.244.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6665F7FD;
-	Mon,  9 Jun 2025 12:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749471676; cv=fail; b=bxN98qGlI47DY2iDUsdzQK5dMpLd+puJjewiW1e/3Zj+GLkJQVYt22dc5VXqTKdUqQEZol4+ZndGQJmW0N3wXJPwxglX5FmGRaCr46prHWtqxQ6JRqiO+yk25gkNv8eYl7SXCxDYbNhpfECltdRm1LvG6R0XBarWw28nbaz72GM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749471676; c=relaxed/simple;
-	bh=AvkYcloWMSnNO+GXlJeZASS8aPlGiVr/y/GLqswHrBg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tDZtIX3ib+9YCxOdaSqD6RpN9vLHEXTba5BcqyPedagFquBYrwBOeO3pHfWFlqW7/QtDfvlI6Dw0PxIHN+w8sFPGaK0ELC0nTcb/E/70b7gHfoMNu4WEBUktkxwrxhbhCJSVeGvD256DSFrCv4djgMSW40XComDSTj1R64pCL6I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FfqKaodg; arc=fail smtp.client-ip=40.107.244.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D35117A2EF
+	for <kvm@vger.kernel.org>; Mon,  9 Jun 2025 12:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749473672; cv=none; b=CQltJFbOkpMiN6Hw0KUndtwhjmyPqPp3oCre+yJKRAcTlk5zCK5oVP2nnCLcQ0pE3wDO2iEAIuCEXeW16yNLXQKuYj2TCzSbeea/7XkI2/oqEvKKLtRoh1Fulv0jFJ+uA+fFcIk2RajhzfoyxtdgRVyuoAwa/58gVTyJjHDa32I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749473672; c=relaxed/simple;
+	bh=g0lqbFBPc8O9RqKPPbnkwDW7qPXz8SjHCy9PsChiGDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rRUEviP2LZXg0Bd77yIOvhZIfbls4NFMt6mbaH8mAc5cAESAeLwDej8Dzf1pXaUjN7C7YgPCPUV+5jpXRNTpuNFnsu3k8kB7fXooeuiSk8ZqKiSRA5CSpSbQIyzkTmOBNqnDreovu9jvpV9AYeuIglJcRmDTh1ptg8acghn6MMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=dje3YdAg; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FfqKaodg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=beI1RJocirv/hfuKOlpVTQFTKX8ieyIRnSRna4Hz9MpvJAJ/W9ivSeKWxLjTZckAYLyQ5TTw3U67mU215yARF0sQkN8PIaAd8Crwnw1YoaYnV5ualH5PJAgcErcSxTADg9Qyv5Loo1bLe6ipv7L5pO97eIt9/ZIcErvN4KZvZdD/Yt6As1uOes7pcy7sNtvnDiSX6k1S+iu2T7/WXthXR13DMtDTcyn8oVhMo7Lsp8v1ah56BVelbGW/GHKtXmLJmc0Zt5IRdq98YluFB865uMJ7LVfIPYv8QcHf2rYJZ2gz8Awz8NSZbmnzQkr3CV9TtcT6VlNK1jU4ndOsY+iBxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7z1iDID1a6Qs4yJ3gZd6GcK43HtJ7WanN8DBoFodzkM=;
- b=KFzxg8nLnW+k2cI8F5wrmEWysy7KH2MNuEqb0yTJI74w9YTbbrd6IE3KJyAfcx1n0Cb1wXTj1hd72GlsnVxnJTVYjfuoM1btoSXS7TMF8r0QzJimGwtZ1jxHlSaqs1BPATxR0ERxbO8xoteKobReEDuCc6Nz33JuGqgPZKJwdWGCBNJzVv6n6qQcstSuaBAzpD3Y1qHZxnbU5V4q5MwuOeDypMUOVk4IR6QZ4gouizGbLOtjMAEvc3ENCEK/CFUVJWdhRneZRDtHTJc9+P/EPYfRAZfVzdFB/RaidFbpUga8R32nTdrHFEHawt2qyd7BVQLH1buN4y4AIE+p6aRYgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7z1iDID1a6Qs4yJ3gZd6GcK43HtJ7WanN8DBoFodzkM=;
- b=FfqKaodg4ryrq4RD58J8Kzw0rBB+UbXd1CTFbp/97rt5XV68vJeVYNDXaRMCFzvKQqwSPlIOu67dNfQD9QmSEaa5Fp9s1o3NFCpdR1/9tqddHAra8Dlo6x5Aa29WTArUdcKqKlj6fBlln7Yzf/S6IG0jkNmnJTnT/XjKYxkovUw=
-Received: from BY5PR03CA0012.namprd03.prod.outlook.com (2603:10b6:a03:1e0::22)
- by DS0PR12MB8219.namprd12.prod.outlook.com (2603:10b6:8:de::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.38; Mon, 9 Jun
- 2025 12:21:13 +0000
-Received: from MWH0EPF000971E4.namprd02.prod.outlook.com
- (2603:10b6:a03:1e0:cafe::aa) by BY5PR03CA0012.outlook.office365.com
- (2603:10b6:a03:1e0::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.32 via Frontend Transport; Mon,
- 9 Jun 2025 12:21:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000971E4.mail.protection.outlook.com (10.167.243.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8835.15 via Frontend Transport; Mon, 9 Jun 2025 12:21:12 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Jun
- 2025 07:21:07 -0500
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: <seanjc@google.com>
-CC: <baolu.lu@linux.intel.com>, <dmatlack@google.com>, <dwmw2@infradead.org>,
-	<francescolavra.fl@gmail.com>, <iommu@lists.linux.dev>,
-	<joao.m.martins@oracle.com>, <joro@8bytes.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <mlevitsk@redhat.com>, <pbonzini@redhat.com>,
-	<sarunkod@amd.com>, <vasant.hegde@amd.com>
-Subject: Re:[PATCH v2 00/59] KVM: iommu: Overhaul device posted IRQs support
-Date: Mon, 9 Jun 2025 17:50:50 +0530
-Message-ID: <20250609122050.28499-1-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250523010004.3240643-1-seanjc@google.com>
-References: <20250523010004.3240643-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="dje3YdAg"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a522224582so2617574f8f.3
+        for <kvm@vger.kernel.org>; Mon, 09 Jun 2025 05:54:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1749473669; x=1750078469; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xB2zG2k1G4WQxpgsH4LuYksFLvv8C8C4QIYaKBnq/b4=;
+        b=dje3YdAgeZofprh9qQtGlBBz4ngPEfjGxbbvPTW86jsGgFurm3gfc8IxzTGHImdnWs
+         i7F4GWIUUsn4kZP/bbZjqb7L3lutsIlHLojHhAL82Kqkir/wjeI4qOwmSDvTYCV74cAh
+         0xbUqZJiXYVFnFQwKw37HEekYScbOr1Ei8UNPpzhVm7ESnalpdGuKhBFBHPB8foP9jNX
+         iat7r8gXOZ8lwJUFS5VeKrVkwfIFosgvtvrNHPl5uNUev92s05+Fd7ea8JFfbqhv2FZ/
+         Mieim2xg9uQ98Rz4G4ZWIg6edC5BXkfHqHxIc+5RxorWB/O0RdPaLZ5XY2msQbT951w6
+         YOJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749473669; x=1750078469;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xB2zG2k1G4WQxpgsH4LuYksFLvv8C8C4QIYaKBnq/b4=;
+        b=ePDsv3226tZTFAFPT8RsY0kWhh0+WFNjHmlTzJrt/1dL+g/290cg0yzFQ4ytQJQX9k
+         MiLGiSx52AS9B4HE4dgsz0Qbt8dMlb87ghu4iB9Jvj1lSF1hLgoz5VIBEpHkuQb31HHI
+         iiS2R/s02iNrQdz7Nbig2qgiLhmciiPVKYXhHG1CqZ3pGdlJx9K9sgJVsp6kNQ5pfL2I
+         y7ZlAos9ColS54HAbC5ScTcOOY4drjqD5FaPJKqqVt2tnqWM44mPSWi6YZTh9LP1uJiD
+         nEgBqb7n4aHveqxH++PCYrGm3GWGczZ8B1n+63OdrZ7l0gOyw+EfgblRPO1Wi4ZSd8Nh
+         Ufag==
+X-Gm-Message-State: AOJu0YyOwij+mstjWkyEA5bw1UZ9aXNk+dENHKUiTluD/w03AjLtY13+
+	9Uf+Bp04PIYk3as5NS9fU+PWfsqrherVf8HUzI39MRzTv8fGlPyZJeriqXMptrYOzGE=
+X-Gm-Gg: ASbGncvPBMSAk0TTgMur1EPDfY/z2sEgW0zNs9dgwt2GiknyQnWnf0ssbOPNNT5y+cp
+	KfUNxsU8m+pmCpWJyfPBJkzJKVldYgTI8zULEo9eJcSF09748DsNg7ZNK+6t+vYneE07on4rw/S
+	4/cl1ke+somMg+UgQVbjRQqepkr4k/7LUNIqR6MCAge/wz+pro6UnjXHwEZ36AYNdca7JYmPS1m
+	jr2Jese9KKM89JK7alNWC3CvSE3D450oN5lRDn2UMgu9B46SX5d0fePFCdo9flUpcM61gHkPTP8
+	zoKiISXxj6A0LOkOzdMLXQa/D56RE7m4Z9cGcrbY2ke8PUuArA==
+X-Google-Smtp-Source: AGHT+IEC/1dBxgIFgGAmnWpdiKwEZouvKkkuBZf9Ps4mzSz9CyCY930v5yHNcYS1Azk34Z4raHel5g==
+X-Received: by 2002:a5d:5f94:0:b0:3a4:eecf:b8cb with SMTP id ffacd0b85a97d-3a5318a7648mr10575693f8f.28.1749473668526;
+        Mon, 09 Jun 2025 05:54:28 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200::2f2d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4530748870bsm62109445e9.33.2025.06.09.05.54.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 05:54:28 -0700 (PDT)
+Date: Mon, 9 Jun 2025 14:54:27 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, seanjc@google.com, 
+	pbonzini@redhat.com, anup@brainfault.org, borntraeger@linux.ibm.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, maz@kernel.org, oliver.upton@linux.dev, 
+	dmatlack@google.com
+Subject: Re: [PATCH v2 15/15] KVM: selftests: Add riscv auto generated test
+ files for KVM Selftests Runner
+Message-ID: <20250609-cb3c80fbe1fe702668830b1b@orel>
+References: <20250606235619.1841595-1-vipinsh@google.com>
+ <20250606235619.1841595-16-vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E4:EE_|DS0PR12MB8219:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f93b16f-abe3-4415-5971-08dda7501f6b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PyTcCbqcjwIhyEVMoDa48GkO9JnuH9pRvl1Rzthd523UNkObXy1TNignEd7T?=
- =?us-ascii?Q?DFzfrsQ1BIXVYpTBTW74kVZfJiq1URggin0mKk++Gab4W7WzE/NYoPdKDMbT?=
- =?us-ascii?Q?pp9F3dnj16tFzGtX3d0efC2IXPANk7PI7gclYImiJD30D9Y6si7X81hO+9h6?=
- =?us-ascii?Q?43Z9mQsPQaKe4+RjUPKR1Iiwt5qn09Kfm29N0Z35NBti4UdlsbPU09pqNZ5E?=
- =?us-ascii?Q?ROIFP+eftGO7J1RKwMe4JhukCYXj5N4YtLRFHfcsVVDLATIanJG09CqOz+He?=
- =?us-ascii?Q?OufQBSXck9J6JBTrC0IikMfAfAsQDvDlYaBpqdUmjrC/ni6K5NDSb8i8uYEh?=
- =?us-ascii?Q?lmpqw5mauX7Eo8ynyu5zdd0tCiQ7dW4AaEvN66huMTBj8wIYE5QKY65SZMVE?=
- =?us-ascii?Q?ojoI9RFuRA/KdA6bPTyPlQ7ymsKL+FJfa5oArQT3vBm9OxDj237A/J6aj1HU?=
- =?us-ascii?Q?LuQX35SmUamF5RyeI5Y2RrBxlObLEnLcU1PVcYbt49ZluDvfpS65Ek0MIWvC?=
- =?us-ascii?Q?zV4iW0PeIYLZUrcOJYyBDaqpt8POpFwFGUljNxkZBc9ptZ06C60Tmapq8KQE?=
- =?us-ascii?Q?Iy8oWb1Y+ywbNqux3qqkEptN7MqlRauEoSMhOIUNUCdKIJh0rocFlBpUdZ03?=
- =?us-ascii?Q?BYHu662pHekdU/RZQFV/HjHQhjw1uPhwHZ4EfBq+oVRXIcxRx2O7Nwir2eag?=
- =?us-ascii?Q?D+NkZjaCnI/0Kh60tKtxmaGJZgF3fbeGhkho63bsWep0UFKDAAoWjOy3wi4Z?=
- =?us-ascii?Q?N/uUDTbiNsSF0oyRcS5O/BmwbVuSNIAoA+/eU7ELjEbD91J+YoPrxS1T1B/S?=
- =?us-ascii?Q?qRC5jLNMd//vRDy3mIS7KQ6ayzU1vKMKd9lgdYgnZNiGPcl65FCG4GJVfuUg?=
- =?us-ascii?Q?NGa9bLuFdy+GodSMN24raIM5JcuGdacke6YtuyOJ4tYteP+eiLyC7Jm+1K9U?=
- =?us-ascii?Q?h5sGOe1NU0rgK5PXyvBZN6ZW9C0bAG9BMQIOeGvk1QRapr794eNAcYJzncfi?=
- =?us-ascii?Q?zBD0RJ8bBG8ncLxMBZJxAtemqINNVy4msuGJYRRM0Ai695RzgmQkalGgJ3Z3?=
- =?us-ascii?Q?0jXkHID3MZKhSe1+7aZGLfDy6TdVJBBP8Bn0Ys1MQTkjaiE6EHZGV0jToEAB?=
- =?us-ascii?Q?Ab8yMSgXwDlF1R6kF66sunbkIIhybmeTKHOTnpir5n9bQmiAlugwEQ/FZ8lJ?=
- =?us-ascii?Q?9U7L5hFe0aQwNK6YZkrimUvtwgPWieluNqXnFzICd5SdKbgiHPui89QCxxcC?=
- =?us-ascii?Q?hLeietiSfIxoFYWSPziCHJwPG7PSop/4p2YuGTzC5LAB6mrakUydAGyYkJHp?=
- =?us-ascii?Q?S8P5qmeEu0DUE3qeoIj7WuvWf97c++lWFEjHt/GbewCq4lqyIJ9tVqYifpNP?=
- =?us-ascii?Q?bQ32eHnCAoBtRyyatFPX5ky8VKLPiGt0cFdNEaFoUQdeCEtvwU5ecMy5XKqn?=
- =?us-ascii?Q?P+o0WW08d0HKE3KGHr92NZxOBtBBL3iwML0uXw4FTHfmnaAgk97/NHN+Vq1r?=
- =?us-ascii?Q?wPYHHrXmA5O+FDhBawm7ED8g346UUZ3z1cDY?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(7416014)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 12:21:12.1372
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f93b16f-abe3-4415-5971-08dda7501f6b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E4.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8219
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250606235619.1841595-16-vipinsh@google.com>
 
-Hi Sean,
+On Fri, Jun 06, 2025 at 04:56:19PM -0700, Vipin Sharma wrote:
+> Add auto generated test files for s390 platforms.
+                                    ^ riscv
 
-Sorry for the delay in testing. All sanity tests are OK. I reran the performance 
-test on the V2 and noticed that V2 has significantly more GALOG entries than V1
-for all three cases. I also noticed that the Guest Nvme interrupt rate has
-dropped for the 192 VCPUS.
+Thanks,
+drew
 
-I haven't figured out what is causing this. I will continue my investigation
-further.
-
-                          VCPUS = 32, Jobs per NVME = 8
-==============================================================================================
-                                         V2                         V1          Percent change
-----------------------------------------------------------------------------------------------
-Guest Nvme interrupts               124,260,796                 124,559,110             -0.20%
-IOPS (in kilo)                            4,790                       4,796             -0.01%
-GALOG entries                              8117                         169              4702%
-----------------------------------------------------------------------------------------------
-
-
-                          VCPUS = 64, Jobs per NVME = 16
-==============================================================================================
-                                         V2                         V1          Percent change
-----------------------------------------------------------------------------------------------
-Guest Nvme interrupts              102,394,358                   99,800,056             2.00% 
-IOPS (in kilo)                           4,796                        4,798            -0.04% 
-GALOG entries                           19,057                       11,923            59.83%
-----------------------------------------------------------------------------------------------
-
-
-                         VCPUS = 192, Jobs per NVME = 48
-==============================================================================================
-                                         V2                         V1          Percent change
-----------------------------------------------------------------------------------------------
-Guest Nvme interrupts               68,363,232                  78,066,512             -12.42%
-IOPS (in kilo)                           4,751                       4,749              -0.04%
-GALOG entries                           62,768                      56,215              11.66%
-----------------------------------------------------------------------------------------------
-
-Thanks
-Sairaj
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> ---
+>  tools/testing/selftests/kvm/tests/riscv/ebreak_test/default.test | 1 +
+>  .../testing/selftests/kvm/tests/riscv/sbi_pmu_test/default.test  | 1 +
+>  2 files changed, 2 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/tests/riscv/ebreak_test/default.test
+>  create mode 100644 tools/testing/selftests/kvm/tests/riscv/sbi_pmu_test/default.test
+> 
+> diff --git a/tools/testing/selftests/kvm/tests/riscv/ebreak_test/default.test b/tools/testing/selftests/kvm/tests/riscv/ebreak_test/default.test
+> new file mode 100644
+> index 000000000000..d34b4b9b77ae
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/tests/riscv/ebreak_test/default.test
+> @@ -0,0 +1 @@
+> +riscv/ebreak_test
+> diff --git a/tools/testing/selftests/kvm/tests/riscv/sbi_pmu_test/default.test b/tools/testing/selftests/kvm/tests/riscv/sbi_pmu_test/default.test
+> new file mode 100644
+> index 000000000000..5abb62c51097
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/tests/riscv/sbi_pmu_test/default.test
+> @@ -0,0 +1 @@
+> +riscv/sbi_pmu_test
+> -- 
+> 2.50.0.rc0.604.gd4ff7b7c86-goog
+> 
+> 
+> -- 
+> kvm-riscv mailing list
+> kvm-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kvm-riscv
