@@ -1,156 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F21328BA9F;
-	Tue, 10 Jun 2025 09:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A03D28DF43
+	for <kvm@vger.kernel.org>; Tue, 10 Jun 2025 13:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749547025; cv=none; b=aehsKOuMETsbQbA94Nnr6Z6eCY4Qgfjulh6TPO/K5V3bVTpcRurRhWyeH04lKxjc9hjcuTcJOj+ZPpKaJj8eHAQI+X4T73vZMiTOoayKvjE9cd9zniND9d413LnPisBx6JyUroAr5VcWPEBp+Mlj8u95F4SQD+G7ZCrc46D0QNQ=
+	t=1749563767; cv=none; b=BMgdokKGoydHCsrVEWK0dgFmKEpuxq8ecr2waNW8Zfa+v1zTMmTOOK6pCTaHMh1fW1KkEZLIJxcdDxIm0TzBsnV3hj1y8arCDLfKXvQtv1s/ikMW0GXFO7B56dacFkJwyvXw4iGQKZ4lURR9MSjMuYxqOtvjGGkZ6SGdzVuTA6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749547025; c=relaxed/simple;
-	bh=249R4dJADIaUMyPZ3qKvhEDG6b1yvOvVFSz48IQOzks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TBmMjovCYR+RPe8W8JJHIOlpziOkdOGWCz02SMxGlqCd/cVnrhEPLML8SHTvbJsqPJUjAcf7vD42KU9fBtBfBj6If5e5+Bg8iDi7rnbPwpD/SiwPCu797+gelQ9ZM8oFg76U8O+5BfAJHhAJ2nPlUeA3IvYeMxmWinQl6RQBzyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IovoCQVQ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749563767; c=relaxed/simple;
+	bh=JKwJX9Zf9neB3fBz9oZayEpOcOA5ARWO67UpRj6yp5A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FRDtvgjTanwgUnc17wPFJ/Jw0rKvSRcY6bKrkPujyNqhW1dXd5YdZAB5P+8T0HIrFymCJnkeSRDIbeWwZ3nksGvW4nrrdNkyBRJFqyj0LrZxSLkUracUtbtmSLz6g0nC9qI9UdrqDEFg1Ags4IMEviKxzQ0GzAZMJa8fAdgnAIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZAqHms4w; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IovoCQVQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749547022; x=1781083022;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=249R4dJADIaUMyPZ3qKvhEDG6b1yvOvVFSz48IQOzks=;
-  b=IovoCQVQgUy+ujJFk7uAYFXvxQho/8vICRknpJwPAOZ3yH7Iej47iy4X
-   xxr432E3jDWg32LxC9tOyu7MHRD2pPVGEBgz+P4apbHt9qCi185QHelLu
-   2bCjhPZmahXmeYVpDW6qlfAwsTFz0GYzJdURdI1DcZLjF8BhEfablyEC5
-   PwOGGp/Ln6J81Jz5cJ1oc1Svnq2IJrs7vvurXrMNYVU4wNQB/zPtUv/AE
-   +ktkX6xnZgNhNvrTeWld4A3r9qMiA0xm8JUi54z1Lfopn2Y8ux2wsZuna
-   3UTvJw2jQ/k6HiySLuhZixHEy5z7sY+SH6bGEmHdOjoTsOgfvHvaT6HUf
-   A==;
-X-CSE-ConnectionGUID: dGANX6tFSoyqhp6ngKJe6A==
-X-CSE-MsgGUID: p1ayBTWVT3i+AIzElfQ/Ow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="77049058"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="77049058"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 02:17:00 -0700
-X-CSE-ConnectionGUID: o331yDGbQVKFkpaXpOoFog==
-X-CSE-MsgGUID: SKV6ptgcT6OMnG3O8o8JHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="151926606"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 02:16:56 -0700
-Message-ID: <ff5fd57a-9522-448c-9ab6-e0006cb6b2ee@intel.com>
-Date: Tue, 10 Jun 2025 17:16:53 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZAqHms4w"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2355651d204so51244395ad.2
+        for <kvm@vger.kernel.org>; Tue, 10 Jun 2025 06:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749563765; x=1750168565; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x3KVVoKoPgb7czEnOr1ErvqynWAnhwXrGnn4+KyAYR4=;
+        b=ZAqHms4wnyqX99ecUjs96ygSAUKnnphdx3P5nIcDcfXIh6TfU0SOExlDZHQWwW2kS+
+         9mYTi8mkS8qt7Xkm96tOXU2iJY2Gmnqx+yyJ2SpLTU6Wjuw9ciWzjFesYwzd/BGYC7zG
+         zpD3zcePeY7yUQm+MKZB2bL7gyPQWpeD7unScO9V10BweZuOuwfDb3Rl7v4ksCvtb4rB
+         Vb1NPmwL1brz+Kykw9ZQlRRldxo/MQ1TanjDTNEKvbvKdMPeruBCOT1ugzsweyRIUBm/
+         c8/5DvLAt1vjbO/mjliAEVzW30r1ouV2ehhBPe2HQtywnD+2Cqu0AY2HaB4bP/Ty1A6W
+         KG3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749563765; x=1750168565;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x3KVVoKoPgb7czEnOr1ErvqynWAnhwXrGnn4+KyAYR4=;
+        b=NElnn0iUYVv1on9X7vvHlmwYdGDUzN9czNZ4RfVOEbS9bEM6+LCk06cwgVbot5Aq/h
+         aq49szPpWpoQTpLe4yQ6bpaam72f3MpFKL2ALRw1nAUQ+G6H++l7ByTKdXwsJxHDsmFJ
+         XQygMsKXfXPCkDHxKslCIocqUZfALCApQj39NAWiG+aXnoGu+NI+fOrSigToa31qr/+f
+         0LiXVopjxjv+1p+9iDawMvTfJBMvFODj77zNMA0z/rCpEU43HCXxigoPRzF9tg1reANn
+         xPPVBXtHZbVh0OyVc04W6Fx0OgYj7oo9aTAfxi58cuD0Yk+dW1bcjX6o46Es7+2OvAtE
+         Lwkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxyl+Fs6Rbr4u+l4mBuVBX8s9/hwxpCzrpxoGkVTeJBXgGupzJMXWrgIr+QZxAfXtzqLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaBL+7CRFpibSF7w+X92k8M4MTMTlk0JWrtPYyvRoAq2ImgrhF
+	El+8Ou6ujSmxPu0xQi1QgpIrcTxM+JP19SE614JtShZpLqWo7HxiYgAK7hiv2d1d8d92Ag92eze
+	pVKdV7g==
+X-Google-Smtp-Source: AGHT+IF5iWO+Sp3cyEnRYuhYT7CW/Xfid4XVEYLemf3GthWwx71VVskqhGeToz1gNCmRF8eGLZ45Y+Wg+lg=
+X-Received: from plbmo12.prod.google.com ([2002:a17:903:a8c:b0:235:895:2564])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c952:b0:22e:421b:49b1
+ with SMTP id d9443c01a7336-236383b08f1mr41011285ad.48.1749563764685; Tue, 10
+ Jun 2025 06:56:04 -0700 (PDT)
+Date: Tue, 10 Jun 2025 06:56:02 -0700
+In-Reply-To: <27a6c2fe-8bdf-414f-a49c-19ad626cd131@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/4] KVM: TDX: Exit to userspace for GetTdVmCallInfo
-To: Binbin Wu <binbin.wu@linux.intel.com>, pbonzini@redhat.com,
- seanjc@google.com, kvm@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com, kai.huang@intel.com, adrian.hunter@intel.com,
- reinette.chatre@intel.com, tony.lindgren@intel.com,
- isaku.yamahata@intel.com, yan.y.zhao@intel.com,
- mikko.ylinen@linux.intel.com, linux-kernel@vger.kernel.org,
- kirill.shutemov@intel.com, jiewen.yao@intel.com
-References: <20250610021422.1214715-1-binbin.wu@linux.intel.com>
- <20250610021422.1214715-4-binbin.wu@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250610021422.1214715-4-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250529221929.3807680-1-seanjc@google.com> <20250529221929.3807680-3-seanjc@google.com>
+ <27a6c2fe-8bdf-414f-a49c-19ad626cd131@linux.intel.com>
+Message-ID: <aEg5ckEXzQnF8PkH@google.com>
+Subject: Re: [kvm-unit-tests PATCH 02/16] x86: Encode X86_FEATURE_*
+ definitions using a structure
+From: Sean Christopherson <seanjc@google.com>
+To: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, "Nico =?utf-8?B?QsO2aHI=?=" <nrb@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/10/2025 10:14 AM, Binbin Wu wrote:
-> Exit to userspace for TDG.VP.VMCALL<GetTdVmCallInfo> via a new KVM exit
-> reason to allow userspace to provide information about the support of
-> TDVMCALLs when r12 is 1 for the TDVMCALLs beyond the GHCI base API.
+On Tue, Jun 10, 2025, Dapeng Mi wrote:
+> On 5/30/2025 6:19 AM, Sean Christopherson wrote:
+> > +#define	X86_FEATURE_SVM			X86_CPU_FEATURE(0x80000001, 0, ECX, 2)
+> > +#define	X86_FEATURE_PERFCTR_CORE	X86_CPU_FEATURE(0x80000001, 0, ECX, 23)
+> > +#define	X86_FEATURE_NX			X86_CPU_FEATURE(0x80000001, 0, EDX, 20)
+> > +#define	X86_FEATURE_GBPAGES		X86_CPU_FEATURE(0x80000001, 0, EDX, 26)
+> > +#define	X86_FEATURE_RDTSCP		X86_CPU_FEATURE(0x80000001, 0, EDX, 27)
+> > +#define	X86_FEATURE_LM			X86_CPU_FEATURE(0x80000001, 0, EDX, 29)
+> > +#define	X86_FEATURE_RDPRU		X86_CPU_FEATURE(0x80000008, 0, EBX, 4)
+> > +#define	X86_FEATURE_AMD_IBPB		X86_CPU_FEATURE(0x80000008, 0, EBX, 12)
+> > +#define	X86_FEATURE_NPT			X86_CPU_FEATURE(0x8000000A, 0, EDX, 0)
+> > +#define	X86_FEATURE_LBRV		X86_CPU_FEATURE(0x8000000A, 0, EDX, 1)
+> > +#define	X86_FEATURE_NRIPS		X86_CPU_FEATURE(0x8000000A, 0, EDX, 3)
+> > +#define X86_FEATURE_TSCRATEMSR		X86_CPU_FEATURE(0x8000000A, 0, EDX, 4)
+> > +#define X86_FEATURE_PAUSEFILTER		X86_CPU_FEATURE(0x8000000A, 0, EDX, 10)
+> > +#define X86_FEATURE_PFTHRESHOLD		X86_CPU_FEATURE(0x8000000A, 0, EDX, 12)
+> > +#define	X86_FEATURE_VGIF		X86_CPU_FEATURE(0x8000000A, 0, EDX, 16)
+> > +#define X86_FEATURE_VNMI		X86_CPU_FEATURE(0x8000000A, 0, EDX, 25)
 > 
-> GHCI spec defines the GHCI base TDVMCALLs: <GetTdVmCallInfo>, <MapGPA>,
-> <ReportFatalError>, <Instruction.CPUID>, <#VE.RequestMMIO>,
-> <Instruction.HLT>, <Instruction.IO>, <Instruction.RDMSR> and
-> <Instruction.WRMSR>. They must be supported by VMM to support TDX guests.
-> 
-> For GetTdVmCallInfo
-> - When leaf (r12) to enumerate TDVMCALL functionality is set to 0,
->    successful execution indicates all GHCI base TDVMCALLs listed above are
->    supported.
-> 
->    Update the KVM TDX document with the set of the GHCI base APIs.
-> 
-> - When leaf (r12) to enumerate TDVMCALL functionality is set to 1, it
->    indicates the TDX guest is querying the supported TDVMCALLs beyond
->    the GHCI base TDVMCALLs.
->    Exit to userspace to let userspace set the TDVMCALL sub-function bit(s)
->    accordingly to the leaf outputs.  KVM could set the TDVMCALL bit(s)
->    supported by itself when the TDVMCALLs don't need support from userspace
->    after returning from userspace and before entering guest. Currently, no
->    such TDVMCALLs implemented, KVM just sets the values returned from
->    userspace.
-> 
->    A new KVM exit reason KVM_EXIT_TDX_GET_TDVMCALL_INFO and its structure
->    are added. Userspace is required to handle the exit reason as the initial
->    support for TDX.
+> The code looks good to me except the indent style (mixed tab and space).
+> Although it's not introduced by this patch, we'd better make them identical
+> by this chance.
 
-It doesn't look like a good and correct design.
-
-Consider the case that userspace supports SetupEventNotifyInterrupt and 
-returns bit 1 of leaf_output[0] as 1 to KVM, and KVM returns it to TD 
-guest for TDVMCALL_GET_TD_VM_CALL_INFO. So TD guest treats it as 
-SetupEventNotifyInterrupt is support. But when TD guest issues this 
-TDVMCALL, KVM doesn't support the exit to userspace for this specific 
-leaf and userspace doesn't have chance to handle it.
-
-I have a proposal:
-
-Implement KVM_CAP_TDX_USER_EXIT_TDVMCALL
-
-- on check of this cap, KVM returns the bitmap of TDVMCALL leafs that
-   allows userspace to opt-in the user exit; e.g.,
-
-#define TDX_USER_EXIT_TDVMCALL_GETQUOTE 		 BIT_ULL(0)
-#define TDX_USER_EXIT_TDVMCALL_SetupEventNotifyInterrupt BIT_ULL(1)
-...
-
-- on enable of this cap, KVM allows userspace to opt-in which leaf will
-   exit to usersapce for handling;
-
-- KVM returns the result for leaf(r12)==1 of <GetTdVmCallInfo> based on
-   the KVM_CAP_TDX_USER_EXIT_TDVMCALL enabled by userspace and its own
-   capability;
-
-If a non-base GHCI TDVMCALL is supported by KVM itself and no need exit 
-to userspace, it's not reported in KVM_CAP_TDX_USER_EXIT_TDVMCALL so 
-that usersapce cannot enable the user exit of this leaf. But KVM will 
-still return the corresponding bit of this leaf as 1 for leaf(r12)==1 of 
-<GetTdVmCallInfo> since it's supported by KVM itself.
-
-If a non-base GHCI TDVMCALL is not supported by KVM itself but KVM 
-allows/supports userspace to opt-in the user exit. e.g., <Getquote>. 
-check of KVM_CAP_TDX_USER_EXIT_TDVMCALL will have the bit of this leaf set.
-
-  - only when usersapce enable the corresponding bit by calling
-    enable_cap(KVM_CAP_TDX_USER_EXIT_TDVMCALL), will KVM return the
-    corresponding bit of this leaf as 1 for leaf(r12)==1 of
-    <GetTdVmCallInfo> and exit to userspace for such leaf.
-
-  - if userspace doesn't enable the corresponding bit with
-    enable_cap(KVM_CAP_TDX_USER_EXIT_TDVMCALL). KVM will return 0 for
-    the corresponding bit of this leaf for leaf(r12)==1 of
-    <GetTdVmCallInfo> and return TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED when
-    TDX guest issues such leaf;
-
-If a non-base GHCI TDVMCALL is not supported by KVM and KVM doesn't 
-allow/support userspace to opt-in the user exit. e.g., 
-<SetupEventNotifyInterrupt>. check of KVM_CAP_TDX_USER_EXIT_TDVMCALL 
-will not have the bit of this leaf set, so that userspace cannot opt-in 
-the user exit of such leaf. leaf(r12)==1 of <GetTdVmCallInfo> return the 
-bit of such leaf as 0 and TDX guest request of such leaf gets 
-TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED.
+Agreed, that is weird.  I didn't notice it in the code, but looking at this diff
+again, it really stands out.
