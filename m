@@ -1,134 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177DEBE;
-	Wed, 11 Jun 2025 00:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4D32D5400;
+	Wed, 11 Jun 2025 00:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749601010; cv=none; b=aQ5CoipfZWbhHFoxtWDqvs+RaS1H5jbvgHQu6GUExEveMFrptYTfgu9MtRwpNWnIaAzQ/9rtKPuJR7vgaNBAeolwnMk4KrL5m9HRw5UHLVy1DiAP4abQThWB0ss3EbvZ56ZRWF6C8LgdwotVU/HJjzwidOGBczvsdAUh/GhONfs=
+	t=1749602471; cv=none; b=uZhXpUblRVpjdEcRoNvOVew1e6q5H9a+D8NTQCjyfwdXC0/eC4GfAbbC8CLWT0RqNmFeN7uaDftG0+S7mV2OHaLt1GU/YqwAqCaZ5a/dNpcl8g1xFTvoQvZO5lTDfdJYfBg7D+GB2P19w6JS+X1zNxFjkAjdz98dQvZr72qYaQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749601010; c=relaxed/simple;
-	bh=S40pI5W06xk884q2HvExFYi8n68iIjm/9A9TA1JDBk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JHTeFkpt/a2yY2IgAuimPYXghvWqkkQw9uAHjaP+CDdyDHCy655gHtmw+01DOSuqNS8zuAooR1Q8dxRGr+2rhiGdifqhwgE2W+v99gWc7lJH1vADZFv1IqM14oOLIP2I2H4Wqn1/ue8J6Xl+JAND7O4jdX05BBTn8lZ1/fnp2HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dByUjmHo; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749602471; c=relaxed/simple;
+	bh=wv69m7y3xJ8R+WjJkkxUqUFXthhnGnUkVzQhoJmrwhQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nseg6npIFTQpOi3xSnq2XT8fOeqgmmyCqhrPJ1aCDypuHrsYnKertQsz3DZ9fh9dOKoNAoXHIPJo1jbLYCdfggrP8+LxAUCxIwf59jaMp2SHdAYOfLg8SfMWDKiJe0g/ZN+usINQHIO4JLuvRz9Gq8L9guSRmaaLMiGhOdH8sL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cK5FL11X; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dByUjmHo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cK5FL11X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749601009; x=1781137009;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=S40pI5W06xk884q2HvExFYi8n68iIjm/9A9TA1JDBk0=;
-  b=dByUjmHogDiQp0Q/3gFOh2kCGuuX5hP1PInYiRP2HhvwR8pZqw5TxHMg
-   76gwTVr3Hiqt31L63UKU+KyHAEOHcA0NqIovr6KsXjtcB8Gy72Wde5/hw
-   vljD7USx6S/jzahq/Pfm7ILnFxD1az/xmyLTBwKzkDDHhhKupmBoLMFoQ
-   6ebPKgTVo1s9/zPolZVfJRboqECuWMe+oiEbDyYdwNk1tnWyVwl32/Ht1
-   UBFDg3WIrkpRzvYOWkkOGHNBmipIQv+YnpvIVGUHFXNq+lTThzQ3j3MER
-   rreqqsU49U4821zBdRDeDCE+saQT1z/IFSdnu2hPvsUT/7vG6RSFEETms
-   Q==;
-X-CSE-ConnectionGUID: OLX097SLSnORjO9sYMJvcQ==
-X-CSE-MsgGUID: PZjoSyywT/qWH0a8Y5CHJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51644542"
+  t=1749602470; x=1781138470;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wv69m7y3xJ8R+WjJkkxUqUFXthhnGnUkVzQhoJmrwhQ=;
+  b=cK5FL11XM5olRLCDO0WINS95j2X9m0sT6annQP3+PH3zJah85XcVMhwE
+   NVrYCirAGfLR6MS3DcAnzJ6Eyiky6KPPuKat+cCd4ZneNcvO0qatg6Ya8
+   xPz8QY1qlg2WlXwU4Cg4ao3BzOlQNkxki46naTyk0uW3TKfJPCe765LAg
+   xlLsJeTw5TPHPwqP+/rRzpbuSUHlwf5Z8rLBjpuhAFz28lQvC8YIdjCvG
+   bLCWIqK2s3jtkqm01ZiNltn1irT5o/fR48A5revOZiDIxGKJ5RvksNKdG
+   aMZfr4u0WoAVodbIUEzcRNGE73stbemlLtjnBJsucf2+bRP9M3icYPmLE
+   w==;
+X-CSE-ConnectionGUID: aOeSHgh8R9+rwMIgQ1IGeQ==
+X-CSE-MsgGUID: tjAcDx9nQOK4KiKEhM0EOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="50957705"
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="51644542"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 17:16:48 -0700
-X-CSE-ConnectionGUID: 0s0PpqsrRIeorsymB8zcIw==
-X-CSE-MsgGUID: P+ZmXgcDRYm0AIQrnw8Jng==
+   d="scan'208";a="50957705"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 17:41:09 -0700
+X-CSE-ConnectionGUID: +3sEoNirRQWj7lm2LYpISg==
+X-CSE-MsgGUID: IkS75glYQImOsEKmFYhVBw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="151808058"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
-  by orviesa003.jf.intel.com with ESMTP; 10 Jun 2025 17:16:45 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	rick.p.edgecombe@intel.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yan.y.zhao@intel.com,
-	reinette.chatre@intel.com,
-	kai.huang@intel.com,
-	adrian.hunter@intel.com,
-	isaku.yamahata@intel.com,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	tony.lindgren@linux.intel.com,
-	xiaoyao.li@intel.com
-Subject: [PATCH] KVM: x86/mmu: Embed direct bits into gpa for KVM_PRE_FAULT_MEMORY
-Date: Tue, 10 Jun 2025 20:10:18 -0400
-Message-ID: <20250611001018.2179964-1-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
+   d="scan'208";a="184176087"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.245.144]) ([10.124.245.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 17:41:06 -0700
+Message-ID: <e6d1f2de-125e-4741-8f50-eebd42c3474c@linux.intel.com>
+Date: Wed, 11 Jun 2025 08:41:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH 07/16] x86/pmu: Rename
+ pmu_gp_counter_is_available() to pmu_arch_event_is_available()
+To: Sean Christopherson <seanjc@google.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, =?UTF-8?Q?Nico_B=C3=B6hr?=
+ <nrb@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <20250529221929.3807680-1-seanjc@google.com>
+ <20250529221929.3807680-8-seanjc@google.com>
+ <ffb5e853-dedc-45bb-acd8-c58ff2fc0b71@linux.intel.com>
+ <aEhaQITromUV7lIO@google.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <aEhaQITromUV7lIO@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Paolo Bonzini <pbonzini@redhat.com>
 
-Bug[*] reported for TDX case when enabling KVM_PRE_FAULT_MEMORY in QEMU.
+On 6/11/2025 12:16 AM, Sean Christopherson wrote:
+> On Tue, Jun 10, 2025, Dapeng Mi wrote:
+>> On 5/30/2025 6:19 AM, Sean Christopherson wrote:
+>>> @@ -51,7 +51,7 @@ void pmu_init(void)
+>>>  		}
+>>>  		pmu.gp_counter_width = PMC_DEFAULT_WIDTH;
+>>>  		pmu.gp_counter_mask_length = pmu.nr_gp_counters;
+>>> -		pmu.gp_counter_available = (1u << pmu.nr_gp_counters) - 1;
+>>> +		pmu.arch_event_available = (1u << pmu.nr_gp_counters) - 1;
+>> "available architectural events" and "available GP counters" are two
+>> different things. I know this would be changed in later patch 09/16, but
+>> it's really confusing. Could we merge the later patch 09/16 into this patch?
+> Ya.  I was trying to not mix too many things in one patch, but looking at this
+> again, I 100% agree that squashing 7-9 into one patch is better overall.
+>
+>>> @@ -463,7 +463,7 @@ static void check_counters_many(void)
+>>>  	int i, n;
+>>>  
+>>>  	for (i = 0, n = 0; n < pmu.nr_gp_counters; i++) {
+>>> -		if (!pmu_gp_counter_is_available(i))
+>>> +		if (!pmu_arch_event_is_available(i))
+>>>  			continue;
+>> The intent of check_counters_many() is to verify all available GP and fixed
+>> counters can count correctly at the same time. So we should select another
+>> available event to verify the counter instead of skipping the counter if an
+>> event is not available.
+> Agreed, but I'm going to defer that for now, this series already wanders in too
+> many directions.  Definitely feel free to post a patch.
 
-It turns out that @gpa passed to kvm_mmu_do_page_fault() doesn't have
-shared bit set when the memory attribute of it is shared, and it leads
-to wrong root in tdp_mmu_get_root_for_fault().
+Sure. Thanks.
 
-Fix it by embedding the direct bits in the gpa that is passed to
-kvm_tdp_map_page(), when the memory of the gpa is not private.
-
-[*] https://lore.kernel.org/qemu-devel/4a757796-11c2-47f1-ae0d-335626e818fd@intel.com/
-
-Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Closes: https://lore.kernel.org/qemu-devel/4a757796-11c2-47f1-ae0d-335626e818fd@intel.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
-we have selftests enhancement for TDX case of KVM_PRE_FAULT_MEMORY, but
-the plan is to post them on top of the TDX selftests [1] when they get
-upstream.
-
-[1] https://lore.kernel.org/all/20250414214801.2693294-1-sagis@google.com/
----
- arch/x86/kvm/mmu/mmu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index cbc84c6abc2e..a4040578b537 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4896,6 +4896,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- {
- 	u64 error_code = PFERR_GUEST_FINAL_MASK;
- 	u8 level = PG_LEVEL_4K;
-+	u64 direct_bits;
- 	u64 end;
- 	int r;
- 
-@@ -4910,15 +4911,18 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- 	if (r)
- 		return r;
- 
-+	direct_bits = 0;
- 	if (kvm_arch_has_private_mem(vcpu->kvm) &&
- 	    kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(range->gpa)))
- 		error_code |= PFERR_PRIVATE_ACCESS;
-+	else
-+		direct_bits = gfn_to_gpa(kvm_gfn_direct_bits(vcpu->kvm));
- 
- 	/*
- 	 * Shadow paging uses GVA for kvm page fault, so restrict to
- 	 * two-dimensional paging.
- 	 */
--	r = kvm_tdp_map_page(vcpu, range->gpa, error_code, &level);
-+	r = kvm_tdp_map_page(vcpu, range->gpa | direct_bits, error_code, &level);
- 	if (r < 0)
- 		return r;
- 
-
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
--- 
-2.43.0
 
