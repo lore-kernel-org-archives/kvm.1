@@ -1,93 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7330190696;
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88E4191F95;
 	Wed, 11 Jun 2025 01:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749606430; cv=none; b=OTUlcPL9WVZxV3gESmiVLzBnIQ0Tgxp/KWmDyFyC1raNoNUdTjO5rh6Sn+ePqZCdXsnqPRVVgxCpeJyrTkqcoeQWeAiq2wMdhEXnXOlL9of2itCfe+A8/4LhVH6dWycMvoKLUlDSu3z5AZiqk0FFPCxfRYtvuC/NaitK3xNYBrI=
+	t=1749606431; cv=none; b=j1AIYk0MlS3UV/3sbv0JAncrjIQUyAjPRbMz+3iP6RA32NJ9epN6HZ8bU2PxLwtf+tjAckso8Ttx86anDTUcxp9sJbx//gViiftQhW4JXRhMP+ggBhPpS8FX4nVZNMNPOyFWsG6NkK/pjgFunzAoc9/o7UzkpgL/U6opR1/8WVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749606430; c=relaxed/simple;
-	bh=Vz3tyYbLL715NajQX5ascY0JphbQ9TleSKtDEjg0kIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgT6bdBEOIb5KjbHKJtjqenykiUaNt2DsCi0ZIk6uMialc+XSNnKFRWDNlYZep+S43aSlI6NIYVRNgwL3bLbhVBhR6KmruscwEf4EH+VwUkSHkIU05sALts1XoJu5iTnOzxiV+YNdRVWWiJ0DZFO9OVa4ct2H1EJ3EYU2juI7AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=axUAmMAk; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="axUAmMAk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749606429; x=1781142429;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Vz3tyYbLL715NajQX5ascY0JphbQ9TleSKtDEjg0kIE=;
-  b=axUAmMAkbMKs4VW7nZVrjFmXRm57yXfGAwUTb93WfU0GOzRR+sLdcfQx
-   dBadiQil8S7kunDcS2LV/vMMR1/7WNhEdS6B0e8LyXJyv8SnkXt9WGY0p
-   FTZBhtmX9Wo3cWIEj34/YwKtOqkfJCn2lhSsOfgKT6i44nlr5Bme/Hjht
-   rkBqmDLFU73R6J7jZ03A0RAhjPyt4WO8t8DiAIuFjZPG0hm6R7A/vCW5J
-   W23UJ/o5B5oCliXktDZWGQxiJ90h+uoTEXw6WyFsk+KWZA7BMLpr2rSYW
-   X89Fu6QmpQPtV5GXKi7WKHbMznOqlI2GBAc16Wp6p8TG39/cwLFZ3fiIj
-   g==;
-X-CSE-ConnectionGUID: S59wtTKNS2OsaPQNJtKn5A==
-X-CSE-MsgGUID: mys51MRNR8qVSlOxUFN3HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62389632"
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="62389632"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 18:47:08 -0700
-X-CSE-ConnectionGUID: 6gwus4kvSGacmOojacMNRw==
-X-CSE-MsgGUID: VU9FL7jQRqS5iyaLT+Db2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="177952016"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.245.144]) ([10.124.245.144])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 18:47:06 -0700
-Message-ID: <2e32978a-25c4-45a9-bdff-3097bb3abcdd@linux.intel.com>
-Date: Wed, 11 Jun 2025 09:47:04 +0800
+	s=arc-20240116; t=1749606431; c=relaxed/simple;
+	bh=uD27TLOkmLE97SKX+m1nAjFPEUD7oQ+EyEzUgNGPZHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=l9YBYNoSj00xQuUi4fesUCE+DKFEJbkHtEFTnfUh6hBhyp/O2ndG2X3C2yoqSi/pqlb6uf4OOUxviM4aQftvwyXdVWyaoTcj+PVPpBP2gT4Mzi4EnnkXqqKQCR7YcLArbvyoEckf4cLqI+hrs8VAgUrZ1JZ8Azb2rZ0ebbl4CDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8BxYa8a4EhoqUITAQ--.7282S3;
+	Wed, 11 Jun 2025 09:47:06 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMCx7MQL4Eho0EoVAQ--.65102S5;
+	Wed, 11 Jun 2025 09:47:05 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Xianglai Li <lixianglai@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 3/9] LoongArch: KVM: INTC: Disable update property num_cpu and feature
+Date: Wed, 11 Jun 2025 09:46:45 +0800
+Message-Id: <20250611014651.3042734-4-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250611014651.3042734-1-maobibo@loongson.cn>
+References: <20250611014651.3042734-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] KVM: selftests: Test behavior of
- KVM_X86_DISABLE_EXITS_APERFMPERF
-To: Jim Mattson <jmattson@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250530185239.2335185-1-jmattson@google.com>
- <20250530185239.2335185-4-jmattson@google.com>
- <574f8adc-6aea-4460-9211-685091a30f5e@linux.intel.com>
- <CALMp9eSS09bzdUs2JPnaQKM6ALWjxJNqWTsNYM5LOnSJjyRanQ@mail.gmail.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <CALMp9eSS09bzdUs2JPnaQKM6ALWjxJNqWTsNYM5LOnSJjyRanQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMCx7MQL4Eho0EoVAQ--.65102S5
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
+Property num_cpu and feature is read-only once eiointc is created, which
+is set with KVM_DEV_LOONGARCH_EXTIOI_GRP_CTRL attr group before device
+creation.
 
-On 6/11/2025 12:59 AM, Jim Mattson wrote:
-> On Tue, Jun 10, 2025 at 1:42 AM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>
->> On 5/31/2025 2:52 AM, Jim Mattson wrote:
->>> For a VCPU thread pinned to a single LPU, verify that interleaved host
->>> and guest reads of IA32_[AM]PERF return strictly increasing values when
->>> APERFMPERF exiting is disabled.
->> Should we consider the possible overflow case of these 2 MSRs although it
->> could be extremely rare? Thanks.
-> Unless someone moves the MSRs forward, at current frequencies, the
-> machine will have to be up for more than 100 years. I'll be long dead
-> by then.
+Attr group KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS is to update register
+and software state for migration and reset usage, property num_cpu and
+feature can not be update again if it is created already.
 
-😂
+Here discard write operation with property num_cpu and feature in attr
+group KVM_DEV_LOONGARCH_EXTIOI_GRP_CTRL.
 
+Cc: stable@vger.kernel.org
+Fixes: 1ad7efa552fd ("LoongArch: KVM: Add EIOINTC user mode read and write functions")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ arch/loongarch/kvm/intc/eiointc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
->
-> Note that frequency invariant scheduling doesn't accommodate overflow
-> either. If the MSRs overflow, frequency invariant scheduling is
-> disabled.
-Agree.
-
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index 0b648c56b0c3..b48511f903b5 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -910,9 +910,22 @@ static int kvm_eiointc_sw_status_access(struct kvm_device *dev,
+ 	data = (void __user *)attr->addr;
+ 	switch (addr) {
+ 	case KVM_DEV_LOONGARCH_EXTIOI_SW_STATUS_NUM_CPU:
++		/*
++		 * Property num_cpu and feature is read-only once eiointc is
++		 * created with KVM_DEV_LOONGARCH_EXTIOI_GRP_CTRL group API
++		 *
++		 * Disable writing with KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS
++		 * group API
++		 */
++		if (is_write)
++			return ret;
++
+ 		p = &s->num_cpu;
+ 		break;
+ 	case KVM_DEV_LOONGARCH_EXTIOI_SW_STATUS_FEATURE:
++		if (is_write)
++			return ret;
++
+ 		p = &s->features;
+ 		break;
+ 	case KVM_DEV_LOONGARCH_EXTIOI_SW_STATUS_STATE:
+-- 
+2.39.3
 
