@@ -1,34 +1,33 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972E819924E;
-	Wed, 11 Jun 2025 01:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65031B4254;
+	Wed, 11 Jun 2025 01:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749606431; cv=none; b=T6fwTGFJv/C0tZtWa+WoFwJVZVTt+Z9O9JL+sLwFODyvcaKfKBnrHkPSTyW54g4LYQC+cUZPe7lTEl1q+fuGnecG/HRdYa0K3TuvBSG32D1rR+Az7EDVFaMZkQ7MCVEawcFtvP0YPTaYWX52vgY+BEMZIrIgkb1g9SFwWrRfz24=
+	t=1749606434; cv=none; b=nlPq6adojlLR/HKiCW3pAF6OABRKYMVRdkwvMQYO5d2Ahm9drgC1sNp08Anjc/fQNRANenGkfUA0FtZFAL2GQLTwAoEQa3wDXkjP6PxseFlMnTHFVTz1o51i4qxuY5zMCnYoGmiTXRtUzn85PnuoDNCgCrK3P4xSA3KgMADQn0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749606431; c=relaxed/simple;
-	bh=4dgF6RJ7bI5hBN44C1WIAmrE0lxo5AKxgJ+qtTI3OIw=;
+	s=arc-20240116; t=1749606434; c=relaxed/simple;
+	bh=SNB7/uo+BEtvvj2zMKE1kZhoT92jnXSU2Wqs2dvqsOQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZNma1mr7s2HwRNir6ofxMR+LCe2xfZQg754VA5kf+iPePy5dg7chQWejZHj7n6hj3c2KqtiLD+rmHj3HR3oSzsrAtnFLNcb98fsFwxaGvKHoVwKy0hEtLazMiRTLEQN45RVtV3zhDiyR6jCe4R/Sk7grGIibnEsOJ1F+IFBoIJg=
+	 MIME-Version; b=QHb46PfGlGv3vwa0XlE7H9UoO3BZy7PmOl4T7zl/j4OBEGXkP7AZYxzP8AEjt0NBmsTuTJn8maudl3EHrKnW/XrM3kIAsY803hCAahzBmb3oFSuF7WbkhG9Ag1CzUTGeuQ5+UvNwJUdjY5xjDhxaWlkbryD8uvkjNQWpPiKvaw8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxOGob4EhorUITAQ--.50548S3;
-	Wed, 11 Jun 2025 09:47:07 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxLHIf4EhoskITAQ--.12461S3;
+	Wed, 11 Jun 2025 09:47:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowMCx7MQL4Eho0EoVAQ--.65102S6;
-	Wed, 11 Jun 2025 09:47:07 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMCx7MQL4Eho0EoVAQ--.65102S8;
+	Wed, 11 Jun 2025 09:47:10 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Tianrui Zhao <zhaotianrui@loongson.cn>,
 	Huacai Chen <chenhuacai@kernel.org>,
 	Xianglai Li <lixianglai@loongson.cn>
 Cc: kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 4/9] LoongArch: KVM: INTC: Check validation of num_cpu from user space
-Date: Wed, 11 Jun 2025 09:46:46 +0800
-Message-Id: <20250611014651.3042734-5-maobibo@loongson.cn>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 6/9] LoongArch: KVM: INTC: Use standard bitops API with eiointc
+Date: Wed, 11 Jun 2025 09:46:48 +0800
+Message-Id: <20250611014651.3042734-7-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250611014651.3042734-1-maobibo@loongson.cn>
 References: <20250611014651.3042734-1-maobibo@loongson.cn>
@@ -39,81 +38,100 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCx7MQL4Eho0EoVAQ--.65102S6
+X-CM-TRANSID:qMiowMCx7MQL4Eho0EoVAQ--.65102S8
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-The maximum supported cpu number is EIOINTC_ROUTE_MAX_VCPUS about
-irqchip eiointc, here add validation about cpu number to avoid array
-pointer overflow.
+Standard bitops APIs such test_bit() is used here, rather than manually
+calculate the offset and mask. Also use non-atomic API __set_bit()
+and __clear_bit() rather than set_bit() and clear_bit(), since global
+spinlock is held already.
 
-Cc: stable@vger.kernel.org
-Fixes: 1ad7efa552fd ("LoongArch: KVM: Add EIOINTC user mode read and write functions")
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- arch/loongarch/kvm/intc/eiointc.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/loongarch/kvm/intc/eiointc.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
 diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index b48511f903b5..ed80bf290755 100644
+index 0bc870796f56..0a3c5cd0993a 100644
 --- a/arch/loongarch/kvm/intc/eiointc.c
 +++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -798,7 +798,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
- 	int ret = 0;
- 	unsigned long flags;
- 	unsigned long type = (unsigned long)attr->attr;
--	u32 i, start_irq;
-+	u32 i, start_irq, val;
- 	void __user *data;
- 	struct loongarch_eiointc *s = dev->kvm->arch.eiointc;
+@@ -9,7 +9,7 @@
  
-@@ -806,7 +806,12 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
- 	spin_lock_irqsave(&s->lock, flags);
- 	switch (type) {
- 	case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
--		if (copy_from_user(&s->num_cpu, data, 4))
-+		if (copy_from_user(&val, data, 4) == 0) {
-+			if (val < EIOINTC_ROUTE_MAX_VCPUS)
-+				s->num_cpu = val;
-+			else
-+				ret = -EINVAL;
-+		} else
- 			ret = -EFAULT;
- 		break;
- 	case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_FEATURE:
-@@ -835,7 +840,7 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
- 					struct kvm_device_attr *attr,
- 					bool is_write)
+ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
  {
--	int addr, cpuid, offset, ret = 0;
-+	int addr, cpu, offset, ret = 0;
- 	unsigned long flags;
- 	void *p = NULL;
- 	void __user *data;
-@@ -843,7 +848,7 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
+-	int ipnum, cpu, irq_index, irq_mask, irq, cpuid;
++	int ipnum, cpu, irq, cpuid;
+ 	struct kvm_vcpu *vcpu;
  
- 	s = dev->kvm->arch.eiointc;
- 	addr = attr->attr;
--	cpuid = addr >> 16;
-+	cpu = addr >> 16;
- 	addr &= 0xffff;
- 	data = (void __user *)attr->addr;
- 	switch (addr) {
-@@ -868,8 +873,11 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
- 		p = &s->isr.reg_u32[offset];
- 		break;
- 	case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
-+		if (cpu >= s->num_cpu)
-+			return -EINVAL;
-+
- 		offset = (addr - EIOINTC_COREISR_START) / 4;
--		p = &s->coreisr.reg_u32[cpuid][offset];
-+		p = &s->coreisr.reg_u32[cpu][offset];
- 		break;
- 	case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
- 		offset = (addr - EIOINTC_COREMAP_START) / 4;
+ 	for (irq = 0; irq < EIOINTC_IRQS; irq++) {
+@@ -18,8 +18,6 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
+ 			ipnum = count_trailing_zeros(ipnum);
+ 			ipnum = (ipnum >= 0 && ipnum < 4) ? ipnum : 0;
+ 		}
+-		irq_index = irq / 32;
+-		irq_mask = BIT(irq & 0x1f);
+ 
+ 		cpuid = s->coremap.reg_u8[irq];
+ 		vcpu = kvm_get_vcpu_by_cpuid(s->kvm, cpuid);
+@@ -27,16 +25,16 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
+ 			continue;
+ 
+ 		cpu = vcpu->vcpu_id;
+-		if (!!(s->coreisr.reg_u32[cpu][irq_index] & irq_mask))
+-			set_bit(irq, s->sw_coreisr[cpu][ipnum]);
++		if (test_bit(irq, (unsigned long *)s->coreisr.reg_u32[cpu]))
++			__set_bit(irq, s->sw_coreisr[cpu][ipnum]);
+ 		else
+-			clear_bit(irq, s->sw_coreisr[cpu][ipnum]);
++			__clear_bit(irq, s->sw_coreisr[cpu][ipnum]);
+ 	}
+ }
+ 
+ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ {
+-	int ipnum, cpu, found, irq_index, irq_mask;
++	int ipnum, cpu, found;
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_interrupt vcpu_irq;
+ 
+@@ -48,19 +46,16 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ 
+ 	cpu = s->sw_coremap[irq];
+ 	vcpu = kvm_get_vcpu(s->kvm, cpu);
+-	irq_index = irq / 32;
+-	irq_mask = BIT(irq & 0x1f);
+-
+ 	if (level) {
+ 		/* if not enable return false */
+-		if (((s->enable.reg_u32[irq_index]) & irq_mask) == 0)
++		if (!test_bit(irq, (unsigned long *)s->enable.reg_u32))
+ 			return;
+-		s->coreisr.reg_u32[cpu][irq_index] |= irq_mask;
++		__set_bit(irq, (unsigned long *)s->coreisr.reg_u32[cpu]);
+ 		found = find_first_bit(s->sw_coreisr[cpu][ipnum], EIOINTC_IRQS);
+-		set_bit(irq, s->sw_coreisr[cpu][ipnum]);
++		__set_bit(irq, s->sw_coreisr[cpu][ipnum]);
+ 	} else {
+-		s->coreisr.reg_u32[cpu][irq_index] &= ~irq_mask;
+-		clear_bit(irq, s->sw_coreisr[cpu][ipnum]);
++		__clear_bit(irq, (unsigned long *)s->coreisr.reg_u32[cpu]);
++		__clear_bit(irq, s->sw_coreisr[cpu][ipnum]);
+ 		found = find_first_bit(s->sw_coreisr[cpu][ipnum], EIOINTC_IRQS);
+ 	}
+ 
+@@ -110,8 +105,8 @@ void eiointc_set_irq(struct loongarch_eiointc *s, int irq, int level)
+ 	unsigned long flags;
+ 	unsigned long *isr = (unsigned long *)s->isr.reg_u8;
+ 
+-	level ? set_bit(irq, isr) : clear_bit(irq, isr);
+ 	spin_lock_irqsave(&s->lock, flags);
++	level ? __set_bit(irq, isr) : __clear_bit(irq, isr);
+ 	eiointc_update_irq(s, irq, level);
+ 	spin_unlock_irqrestore(&s->lock, flags);
+ }
 -- 
 2.39.3
 
