@@ -1,75 +1,36 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE42269B07;
-	Wed, 11 Jun 2025 10:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6E4263C68;
+	Wed, 11 Jun 2025 10:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749636369; cv=none; b=WlVL0U1xS1gBlI/IR1FnECCBZYenXG+7YmUk8oB4TA1NK4XPZHjb50YYFBy5FsuBxGeSBluoOXOtiR+psDsWEtYv1dPIqj5VNIZ314SJLBM3G+cMKV8lBpaKRjRXUWbLwk6OO4FMuRV7NbyvttOrFh6pgnlhJ6oEfJ+COUtOpK0=
+	t=1749636499; cv=none; b=bAbQh9NCK8CsBHLx05+B+oyde/aRuUP6YXxZzbv/8tY97vuHwL8obSo7QTCQ0LUbzoQzuCy85r/xyEWmEScojLmOb57VT9uwNbtMt20+yF/3A0ZC3/y5Xbua4w6yZ3WBnBXAYXSA31HgtBKHTLTxcV9L6AUNxHfy2zsbzqnCIKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749636369; c=relaxed/simple;
-	bh=VPToYgHTheKgSk91dnwnpEWxu/iIsLz1NQjpp/HoK9w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T51hUPL3JQRGSiAq1WSG2PQssSJYdNg0VO9cwVR5N/dEinW6iIG603bA6Das66aq3Z1wJiadJGJxPCk9a+il/33gVGQrfyorK1emZM+Ue5+cDnCQtmHATdxQ6lMxJ0ZSAIh6nG6eglEZgeNmorWEtjMzOt1Cq0VUDsE5a6w/wUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PHHyZWPV; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PHHyZWPV"
-Received: from DESKTOP-RSFL4TU.corp.microsoft.com (unknown [167.220.238.139])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 39C1C2115195;
-	Wed, 11 Jun 2025 03:05:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 39C1C2115195
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1749636368;
-	bh=l9DJH+HH91jPT4Tylpz4H2GjnE02AKAT2ubUE2pzEro=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHHyZWPVtEmfXi5vOF5F/eDDCnYGlmDYvN+YWlxT44TjhYZYGjibB/xPd/AxQy/gZ
-	 7ued2Ffk4pZ7jRhTeZ3Cx1mY3bNmcTNh04KOwmlKSbYDve8rHliQ1INHILM79AaJDZ
-	 mwaExEMIafpFxHeCbw1w2uxSdPURtYOmR5S6JimA=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Long Li <longli@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1749636499; c=relaxed/simple;
+	bh=RLqB1iQ7SrII3N8HkkeOdj1kfx6TbSgG6AN9Zp7FTB4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qIuS5vi8DwjwcdMBJslzKcXIOoZbtKpmZCmrvMRLgtttUdfmYl4GP41XldEGmjd1G4Bmp0+VL3cXNl9kHrReRrQVNpVVucIyJxIczWJV/yDF/C4hcLKxMToclsMG92Tt1t9GyHBvGn1LziXRXmKREQ4kfYno3Rns3QFSMQaKX+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from zq-Legion-Y7000.smartont.net (unknown [180.110.114.155])
+	by APP-01 (Coremail) with SMTP id qwCowADHPdy2U0lo4lS+BQ--.28065S2;
+	Wed, 11 Jun 2025 18:00:22 +0800 (CST)
+From: zhouquan@iscas.ac.cn
+To: anup@brainfault.org,
+	ajones@ventanamicro.com,
+	atishp@atishpatra.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
 	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH 6/6] net: mana: Fix warnings for missing export.h header inclusion
-Date: Wed, 11 Jun 2025 15:34:59 +0530
-Message-Id: <20250611100459.92900-7-namjain@linux.microsoft.com>
+	kvm-riscv@lists.infradead.org,
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: [PATCH] RISC-V: KVM: Avoid re-acquiring memslot in kvm_riscv_gstage_map()
+Date: Wed, 11 Jun 2025 17:51:40 +0800
+Message-Id: <50989f0a02790f9d7dc804c2ade6387c4e7fbdbc.1749634392.git.zhouquan@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250611100459.92900-1-namjain@linux.microsoft.com>
-References: <20250611100459.92900-1-namjain@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,42 +38,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHPdy2U0lo4lS+BQ--.28065S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrW3trWfAFyrArWUXrW3GFg_yoW8JF43pF
+	4xCF1DCr4Fg3ZI9ry2k3Wv9a9xCa95W3Z7Cr4UGrWYqrsxtrySqws5W397ZF13Jr48XFWx
+	ZFn8XFWUZr4rGw7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUBSoAUUUUU=
+X-CM-SenderInfo: 52kr31xxdqqxpvfd2hldfou0/1tbiBgwKBmhJLhCtlQAAsh
 
-Fix below warning in Hyper-V's MANA drivers that comes when kernel is
-compiled with W=1 option. Include export.h in driver files to fix it.
-* warning: EXPORT_SYMBOL() is used, but #include <linux/export.h>
-is missing
+From: Quan Zhou <zhouquan@iscas.ac.cn>
 
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+The caller has already passed in the memslot, and there are
+two instances `{kvm_faultin_pfn/mark_page_dirty}` of retrieving
+the memslot again in `kvm_riscv_gstage_map`, we can replace them
+with `{__kvm_faultin_pfn/mark_page_dirty_in_slot}`.
+
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 1 +
- drivers/net/ethernet/microsoft/mana/mana_en.c   | 1 +
- 2 files changed, 2 insertions(+)
+ arch/riscv/kvm/mmu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 3504507477c6..019e32b60043 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -6,6 +6,7 @@
- #include <linux/pci.h>
- #include <linux/utsname.h>
- #include <linux/version.h>
-+#include <linux/export.h>
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 1087ea74567b..f9059dac3ba3 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -648,7 +648,8 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 		return -EFAULT;
+ 	}
  
- #include <net/mana/mana.h>
+-	hfn = kvm_faultin_pfn(vcpu, gfn, is_write, &writable, &page);
++	hfn = __kvm_faultin_pfn(memslot, gfn, is_write ? FOLL_WRITE : 0,
++				&writable, &page);
+ 	if (hfn == KVM_PFN_ERR_HWPOISON) {
+ 		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
+ 				vma_pageshift, current);
+@@ -670,7 +671,7 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 		goto out_unlock;
  
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index ccd2885c939e..faad1cb880f8 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -10,6 +10,7 @@
- #include <linux/filter.h>
- #include <linux/mm.h>
- #include <linux/pci.h>
-+#include <linux/export.h>
- 
- #include <net/checksum.h>
- #include <net/ip6_checksum.h>
+ 	if (writable) {
+-		mark_page_dirty(kvm, gfn);
++		mark_page_dirty_in_slot(kvm, memslot, gfn);
+ 		ret = gstage_map_page(kvm, pcache, gpa, hfn << PAGE_SHIFT,
+ 				      vma_pagesize, false, true);
+ 	} else {
 -- 
 2.34.1
 
