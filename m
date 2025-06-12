@@ -1,151 +1,91 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2B426FA69;
-	Thu, 12 Jun 2025 15:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD17B2F433B;
+	Thu, 12 Jun 2025 15:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749741280; cv=none; b=DOXBhK5lARP7VcGMu0//6bioxMWgogDApNFKr0zhzlZhaatAdG2sPPOuXs1DqTTMLHOFeoqZx5UhLZQVeh7OLAbA8WvCIDcBYMZ66Kpj/s9C/J1iaAIcKCzjRzuRUE38zCEBxrT6bFcjcVghdDyNI8PvwFKYgsyuRqQGCDElSvM=
+	t=1749741468; cv=none; b=NBcuUHyQXKRaCkkRKdIzsqmZT467FuW8TwHAyZ+O+ELDm7WoVAwx0uDZCKaMFppHNArXwV/QbrMWBgmC7Psmo9h2aLkRR9dADPN/3Yf2SzuyTwgCToc7KHJTmloB50WN5++Eq0QMHOtECFnSfAAUIkJ9Xz+i9bIcUWXV4gILSNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749741280; c=relaxed/simple;
-	bh=XipgtzNNDlXpQtTflFkk/N7lOsqTfvwkLoXG2kqL59E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKXyjOqYMwkOZbbmar/FYKF435d7xrWk/WMdtZhG0rTh++dHw1pwp1ZQLvgo8ZOQ4hORl9rCDwfC+mC7pHkUqWT7P34jMXjteQf8u1uzbPE1qWDXisRB838ns7wPYV7xbu40PSJpIelNNl3X8ZYoA093TRMl+GokmKXaa4eTj7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A5D0153B;
-	Thu, 12 Jun 2025 08:14:16 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 223A43F66E;
-	Thu, 12 Jun 2025 08:14:32 -0700 (PDT)
-Date: Thu, 12 Jun 2025 16:14:27 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>
-Subject: Re: [PATCH v9 41/43] KVM: arm64: Expose support for private memory
-Message-ID: <20250612151427.GA1913753@e124191.cambridge.arm.com>
-References: <20250611104844.245235-1-steven.price@arm.com>
- <20250611104844.245235-42-steven.price@arm.com>
+	s=arc-20240116; t=1749741468; c=relaxed/simple;
+	bh=aK27Gkfn9OFGufJJSptOJpvTy7cfsAOawnwDMBApJqU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bjMcNugAtf5rZvSKmZ+cbZV1OSzoRCuvV8hKBXnhydHesCX99FSPKsuY3pj7CrkRzhvcoG7b4upFPIm3lWbFhafsR34dlPIqp4wrbY0kUc0WqF8PMyLyl7Pc6svpAS8BGWG18ZFk4RbHFUhHold5PtStG0rn92NxXHc0VipkVp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs1Hwq5N; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs1Hwq5N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89846C4CEEA;
+	Thu, 12 Jun 2025 15:17:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749741468;
+	bh=aK27Gkfn9OFGufJJSptOJpvTy7cfsAOawnwDMBApJqU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Gs1Hwq5NSDfoLIYcEa245EJoIE9CRxRryCKssZbbBk9FMO6AF55JdHxnzEL2coZTd
+	 bAAxu2xlm3WeF5A7yyvT3t0CaCTzsTthrfR7dH2AiPThXLG8JGjFX4hZzbH4I0gL7r
+	 df8+bDPrsPB6WcSdvTROHogi1ZmV7iZkgHXYjDaM7bgMP/mSbSMkdhSy0rNbI6VAhV
+	 mckL4Kfl9lJxLh9/2I8PHi/PJX2yXsrPQ8atWGYMr7Kkp0JNUE66Fpx5DeoqeNEaDC
+	 mLUf5ZMy+Ms9e0CUDanc6dWVFlvN9j2N4iRPBagcCUatr/7nUfGWqjiQabPB0ZbA3o
+	 5CzGwiuadzkhA==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uPjgY-00000005EvG-36qt;
+	Thu, 12 Jun 2025 17:17:46 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Ani Sinha" <anisinha@redhat.com>,
+	"Dongjiu Geng" <gengdongjiu1@gmail.com>,
+	"Paolo Bonzini" <pbonzini@redhat.com>,
+	"Peter Maydell" <peter.maydell@linaro.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	"Shannon Zhao" <shannon.zhaosl@gmail.com>,
+	"Yanan Wang" <wangyanan55@huawei.com>,
+	"Zhao Liu" <zhao1.liu@intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v10 (RESEND) 02/20] tests/qtest/bios-tables-test: extend to also check HEST table
+Date: Thu, 12 Jun 2025 17:17:26 +0200
+Message-ID: <9ce77140500ef68cc939d63952c25579f711ea52.1749741085.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1749741085.git.mchehab+huawei@kernel.org>
+References: <cover.1749741085.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611104844.245235-42-steven.price@arm.com>
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Hi Steven,
+Currently, aarch64 can generate a HEST table when loaded with
+-machine ras=on. Add support for it.
 
-On Wed, Jun 11, 2025 at 11:48:38AM +0100, Steven Price wrote:
-> Select KVM_GENERIC_PRIVATE_MEM and provide the necessary support
-> functions.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
-> Changes since v2:
->  * Switch kvm_arch_has_private_mem() to a macro to avoid overhead of a
->    function call.
->  * Guard definitions of kvm_arch_{pre,post}_set_memory_attributes() with
->    #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES.
->  * Early out in kvm_arch_post_set_memory_attributes() if the WARN_ON
->    should trigger.
-> ---
->  arch/arm64/include/asm/kvm_host.h |  6 ++++++
->  arch/arm64/kvm/Kconfig            |  1 +
->  arch/arm64/kvm/mmu.c              | 24 ++++++++++++++++++++++++
->  3 files changed, 31 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index a1857802db64..9903b0e8ef3f 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -1514,6 +1514,12 @@ struct kvm *kvm_arch_alloc_vm(void);
->  
->  #define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
->  
-> +#ifdef CONFIG_KVM_PRIVATE_MEM
-> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.is_realm)
-> +#else
-> +#define kvm_arch_has_private_mem(kvm) false
-> +#endif
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ tests/qtest/bios-tables-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I don't understand the ifdef here (or below). In the Kconfig you 'select
-KVM_GENERIC_PRIVATE_MEM', so it will always be on/defined? Unless I'm
-misunderstanding something.
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 0b2bdf9d0d4c..61cddfa837b2 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2122,7 +2122,7 @@ static void test_acpi_aarch64_virt_tcg(void)
+ 
+     data.smbios_cpu_max_speed = 2900;
+     data.smbios_cpu_curr_speed = 2700;
+-    test_acpi_one("-cpu cortex-a57 "
++    test_acpi_one("-cpu cortex-a57 -machine ras=on "
+                   "-smbios type=4,max-speed=2900,current-speed=2700", &data);
+     free_test_data(&data);
+ }
+-- 
+2.49.0
 
-> +
->  int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->  bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
->  
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 713248f240e0..3a04b040869d 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -37,6 +37,7 @@ menuconfig KVM
->  	select HAVE_KVM_VCPU_RUN_PID_CHANGE
->  	select SCHED_INFO
->  	select GUEST_PERF_EVENTS if PERF_EVENTS
-> +	select KVM_GENERIC_PRIVATE_MEM
->  	help
->  	  Support hosting virtualized guest machines.
->  
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 580ed362833c..c866891fd8f9 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2384,6 +2384,30 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->  	return ret;
->  }
->  
-> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> +bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> +					struct kvm_gfn_range *range)
-> +{
-> +	WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm));
-> +	return false;
-> +}
-> +
-> +bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-> +					 struct kvm_gfn_range *range)
-> +{
-> +	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
-> +		return false;
-> +
-> +	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> +		range->attr_filter = KVM_FILTER_SHARED;
-> +	else
-> +		range->attr_filter = KVM_FILTER_PRIVATE;
-> +	kvm_unmap_gfn_range(kvm, range);
-> +
-> +	return false;
-> +}
-> +#endif
-> +
->  void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
->  {
->  }
-> -- 
-> 2.43.0
-> 
-
-Thanks,
-Joey
