@@ -1,274 +1,243 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D66742A82;
-	Thu, 12 Jun 2025 08:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9064C15573F;
+	Thu, 12 Jun 2025 08:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749716267; cv=none; b=MxqnFRG+o2J8OaMaLlz76KmYdMaL7UCWbLkta1AelV+55ZOQnG3ipBy61RNd3tli/L99K1jX5nA7HKFTs1Rv1QE2vcffr2mpe8B/ipzFc196Nnwnw9P9C+ygURnJciweeIS9x/OHuh1OMD2i9g5W8Mkh1ZivP/PMI0/Bwt/ksRA=
+	t=1749716392; cv=none; b=BiJ1xAVcrDKeb4LFdcfJzf5hPjGR6h0DRxV4IZm5UjdxSDGlCEErxWM0ozNuT5nUpaYhFjuNyaTUPFIXZyypbKIgaJl+205GRI/Ix5qVeRtEWbxdvw2tqhvB5P/hp97+jT5b7q47qmFpai7Vuz+uWG9lDukL7ZTTd4+PngyA8pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749716267; c=relaxed/simple;
-	bh=6LPy8p3Y+iUc3nCkDhjgrYNBYaIU9bUllH3YQM3T+tQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q+jQYe8dvVBnbj19fe4lqngGb9tkVk/hfiJkDJmqnAOxud+fQJ/BC5ejFFSwGuNCK1LKlE/e8Wx30LlEwG92hTgCYHWX877YEHTmRggMYEsDrPgTaK2YQdA/Gnedply/yIDEkHOnKO/iuqa/IansQbdc6gaXaDJFY8N4hHttgaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkOTsJzf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749716392; c=relaxed/simple;
+	bh=SYXMvbToRweHKkEdcDdTpmD0lk4fIWIET91tfrPxn0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=psFg7jopOxKkZnTPgOyejZf71fu83t4sGnmWO0Pil05WrTPZw3RU7Dh7M/JWYtkBKRl+HtEUCVEYhWQB5RLbI9suEZDoK+MrFkA5rkKPBOEHJA7xvyyhbFaTxLqM3lu2WiO2j0CO7v+rex+s2Kio3beP+gYokouIGLuIsaH8yZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kxWpBcHD; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkOTsJzf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E380AC4CEEA;
-	Thu, 12 Jun 2025 08:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749716266;
-	bh=6LPy8p3Y+iUc3nCkDhjgrYNBYaIU9bUllH3YQM3T+tQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lkOTsJzfXKFHp1ZUHQMlqTHjTYpYDytqifyK0eUCzag8Hmc95o6S89pxFNIIupYGq
-	 cuep+kRQ/PUphaNcNjVWdy0wNmY8olLrnTceb879AKgqjB+2nX+suKuzF2/T3TK0p0
-	 7+kYs2j8K24Jl5S9Mc1WPDG98oVGiliAKQOJGKeQg+y7I8XU9AkKDzQ3fABhni/e4/
-	 o5ktc8gGOdO17/hmiXZnSsFWAmiHLzAmjPqS5cJX5gU6zrc51DWhlGWWCdHHdubOVZ
-	 3tR4Rl0YmrO2m86hsQAPBZjCKYSmrlatMIpRojxSmpxiOcLCy5jUfinoZEB8Vn/2Ml
-	 +JX51oE/0Kl9w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1uPd83-006A0a-HM;
-	Thu, 12 Jun 2025 09:17:43 +0100
-Date: Thu, 12 Jun 2025 09:17:43 +0100
-Message-ID: <86wm9hcr14.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kxWpBcHD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749716391; x=1781252391;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SYXMvbToRweHKkEdcDdTpmD0lk4fIWIET91tfrPxn0g=;
+  b=kxWpBcHDoDigiBE8pSNH1tKuhJYXm/hUxK4rpaUA6J/SIuIVBAmPnN/r
+   Q6G9h5XJGOmguA1jedkjj/+3KezOeMon8a8p2PAfm6ItfxBzlX86YGy/v
+   qy586XEPk9zY70K/Yycm/kRk/NArk/wDU+TOVqijLnvQdCJPdzmtZ6Zsa
+   zJ7fVdMqAA8uut3NV3sbbwN5dIPO+9fvUb5uTK/3fJrwFuFhb7+PFGxSQ
+   rGBXR8O5tNn9ovfhLf3EtXn1dKaY5FvRcAbO/xQVAjtCzSs/nzZqdGkpg
+   028RKwG86CPk0CZrPMHF01LJ1RsdUaNNFTFJBLHmO4PYxRCUlLmYCZt5L
+   g==;
+X-CSE-ConnectionGUID: KHqkoJWOQQqDczg9BqGaRg==
+X-CSE-MsgGUID: htZkr1wgThWVBJsYSGEO3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51759991"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="51759991"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 01:19:50 -0700
+X-CSE-ConnectionGUID: q94ITojUTHWQGBgPzi8UFA==
+X-CSE-MsgGUID: gfK92fZrRBCeFGcHeKhl9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="147322373"
+Received: from 984fee019967.jf.intel.com ([10.165.54.94])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 01:19:50 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: Re: [PATCH V4 1/2] arm64/debug: Drop redundant DBG_MDSCR_* macros
-In-Reply-To: <20250612033547.480952-2-anshuman.khandual@arm.com>
-References: <20250612033547.480952-1-anshuman.khandual@arm.com>
-	<20250612033547.480952-2-anshuman.khandual@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	dapeng1.mi@linux.intel.com,
+	Chao Gao <chao.gao@intel.com>
+Subject: [PATCH 1/2] KVM: x86: Deduplicate MSR interception enabling and disabling
+Date: Thu, 12 Jun 2025 01:19:46 -0700
+Message-ID: <20250612081947.94081-2-chao.gao@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250612081947.94081-1-chao.gao@intel.com>
+References: <20250612081947.94081-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: anshuman.khandual@arm.com, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com, oliver.upton@linux.dev, joey.gouly@arm.com, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 12 Jun 2025 04:35:46 +0100,
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
->=20
-> MDSCR_EL1 has already been defined in tools sysreg format and hence can be
-> used in all debug monitor related call paths. But using generated sysreg
-> definitions causes build warnings because there is a mismatch between mds=
-cr
-> variable (u32) and GENMASK() based masks (long unsigned int). Convert all
-> variables handling MDSCR_EL1 register as u64 which also reflects its true
-> width as well.
->=20
-> --------------------------------------------------------------------------
-> arch/arm64/kernel/debug-monitors.c: In function =E2=80=98disable_debug_mo=
-nitors=E2=80=99:
-> arch/arm64/kernel/debug-monitors.c:108:13: warning: conversion from =E2=
-=80=98long
-> unsigned int=E2=80=99 to =E2=80=98u32=E2=80=99 {aka =E2=80=98unsigned int=
-=E2=80=99} changes value from
-> =E2=80=9818446744073709518847=E2=80=99 to =E2=80=984294934527=E2=80=99 [-=
-Woverflow]
->   108 |   disable =3D ~MDSCR_EL1_MDE;
->       |             ^
-> --------------------------------------------------------------------------
->=20
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/arm64/include/asm/assembler.h      |  4 ++--
->  arch/arm64/include/asm/debug-monitors.h |  6 ------
->  arch/arm64/kernel/debug-monitors.c      | 22 +++++++++++-----------
->  arch/arm64/kernel/entry-common.c        |  4 ++--
->  4 files changed, 15 insertions(+), 21 deletions(-)
->=20
-> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/=
-assembler.h
-> index ad63457a05c5..f229d96616e5 100644
-> --- a/arch/arm64/include/asm/assembler.h
-> +++ b/arch/arm64/include/asm/assembler.h
-> @@ -53,7 +53,7 @@
->  	.macro	disable_step_tsk, flgs, tmp
->  	tbz	\flgs, #TIF_SINGLESTEP, 9990f
->  	mrs	\tmp, mdscr_el1
-> -	bic	\tmp, \tmp, #DBG_MDSCR_SS
-> +	bic	\tmp, \tmp, #MDSCR_EL1_SS
->  	msr	mdscr_el1, \tmp
->  	isb	// Take effect before a subsequent clear of DAIF.D
->  9990:
-> @@ -63,7 +63,7 @@
->  	.macro	enable_step_tsk, flgs, tmp
->  	tbz	\flgs, #TIF_SINGLESTEP, 9990f
->  	mrs	\tmp, mdscr_el1
-> -	orr	\tmp, \tmp, #DBG_MDSCR_SS
-> +	orr	\tmp, \tmp, #MDSCR_EL1_SS
->  	msr	mdscr_el1, \tmp
->  9990:
->  	.endm
-> diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include=
-/asm/debug-monitors.h
-> index 8f6ba31b8658..1f37dd01482b 100644
-> --- a/arch/arm64/include/asm/debug-monitors.h
-> +++ b/arch/arm64/include/asm/debug-monitors.h
-> @@ -13,14 +13,8 @@
->  #include <asm/ptrace.h>
-> =20
->  /* Low-level stepping controls. */
-> -#define DBG_MDSCR_SS		(1 << 0)
->  #define DBG_SPSR_SS		(1 << 21)
-> =20
-> -/* MDSCR_EL1 enabling bits */
-> -#define DBG_MDSCR_KDE		(1 << 13)
-> -#define DBG_MDSCR_MDE		(1 << 15)
-> -#define DBG_MDSCR_MASK		~(DBG_MDSCR_KDE | DBG_MDSCR_MDE)
-> -
->  #define	DBG_ESR_EVT(x)		(((x) >> 27) & 0x7)
-> =20
->  /* AArch64 */
-> diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug=
--monitors.c
-> index 58f047de3e1c..08f1d02507cd 100644
-> --- a/arch/arm64/kernel/debug-monitors.c
-> +++ b/arch/arm64/kernel/debug-monitors.c
-> @@ -34,7 +34,7 @@ u8 debug_monitors_arch(void)
->  /*
->   * MDSCR access routines.
->   */
-> -static void mdscr_write(u32 mdscr)
-> +static void mdscr_write(u64 mdscr)
->  {
->  	unsigned long flags;
->  	flags =3D local_daif_save();
-> @@ -43,7 +43,7 @@ static void mdscr_write(u32 mdscr)
->  }
->  NOKPROBE_SYMBOL(mdscr_write);
-> =20
-> -static u32 mdscr_read(void)
-> +static u64 mdscr_read(void)
->  {
->  	return read_sysreg(mdscr_el1);
->  }
-> @@ -79,16 +79,16 @@ static DEFINE_PER_CPU(int, kde_ref_count);
-> =20
->  void enable_debug_monitors(enum dbg_active_el el)
->  {
-> -	u32 mdscr, enable =3D 0;
-> +	u64 mdscr, enable =3D 0;
-> =20
->  	WARN_ON(preemptible());
-> =20
->  	if (this_cpu_inc_return(mde_ref_count) =3D=3D 1)
-> -		enable =3D DBG_MDSCR_MDE;
-> +		enable =3D MDSCR_EL1_MDE;
-> =20
->  	if (el =3D=3D DBG_ACTIVE_EL1 &&
->  	    this_cpu_inc_return(kde_ref_count) =3D=3D 1)
-> -		enable |=3D DBG_MDSCR_KDE;
-> +		enable |=3D MDSCR_EL1_KDE;
-> =20
->  	if (enable && debug_enabled) {
->  		mdscr =3D mdscr_read();
-> @@ -100,16 +100,16 @@ NOKPROBE_SYMBOL(enable_debug_monitors);
-> =20
->  void disable_debug_monitors(enum dbg_active_el el)
->  {
-> -	u32 mdscr, disable =3D 0;
-> +	u64 mdscr, disable =3D 0;
-> =20
->  	WARN_ON(preemptible());
-> =20
->  	if (this_cpu_dec_return(mde_ref_count) =3D=3D 0)
-> -		disable =3D ~DBG_MDSCR_MDE;
-> +		disable =3D ~MDSCR_EL1_MDE;
-> =20
->  	if (el =3D=3D DBG_ACTIVE_EL1 &&
->  	    this_cpu_dec_return(kde_ref_count) =3D=3D 0)
-> -		disable &=3D ~DBG_MDSCR_KDE;
-> +		disable &=3D ~MDSCR_EL1_KDE;
-> =20
->  	if (disable) {
->  		mdscr =3D mdscr_read();
-> @@ -415,7 +415,7 @@ void kernel_enable_single_step(struct pt_regs *regs)
->  {
->  	WARN_ON(!irqs_disabled());
->  	set_regs_spsr_ss(regs);
-> -	mdscr_write(mdscr_read() | DBG_MDSCR_SS);
-> +	mdscr_write(mdscr_read() | MDSCR_EL1_SS);
->  	enable_debug_monitors(DBG_ACTIVE_EL1);
->  }
->  NOKPROBE_SYMBOL(kernel_enable_single_step);
-> @@ -423,7 +423,7 @@ NOKPROBE_SYMBOL(kernel_enable_single_step);
->  void kernel_disable_single_step(void)
->  {
->  	WARN_ON(!irqs_disabled());
-> -	mdscr_write(mdscr_read() & ~DBG_MDSCR_SS);
-> +	mdscr_write(mdscr_read() & ~MDSCR_EL1_SS);
->  	disable_debug_monitors(DBG_ACTIVE_EL1);
->  }
->  NOKPROBE_SYMBOL(kernel_disable_single_step);
-> @@ -431,7 +431,7 @@ NOKPROBE_SYMBOL(kernel_disable_single_step);
->  int kernel_active_single_step(void)
->  {
->  	WARN_ON(!irqs_disabled());
-> -	return mdscr_read() & DBG_MDSCR_SS;
-> +	return mdscr_read() & MDSCR_EL1_SS;
->  }
->  NOKPROBE_SYMBOL(kernel_active_single_step);
-> =20
-> diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-c=
-ommon.c
-> index 7c1970b341b8..171f93f2494b 100644
-> --- a/arch/arm64/kernel/entry-common.c
-> +++ b/arch/arm64/kernel/entry-common.c
-> @@ -344,7 +344,7 @@ static DEFINE_PER_CPU(int, __in_cortex_a76_erratum_14=
-63225_wa);
-> =20
->  static void cortex_a76_erratum_1463225_svc_handler(void)
->  {
-> -	u32 reg, val;
-> +	u64 reg, val;
-> =20
->  	if (!unlikely(test_thread_flag(TIF_SINGLESTEP)))
->  		return;
-> @@ -354,7 +354,7 @@ static void cortex_a76_erratum_1463225_svc_handler(vo=
-id)
-> =20
->  	__this_cpu_write(__in_cortex_a76_erratum_1463225_wa, 1);
->  	reg =3D read_sysreg(mdscr_el1);
-> -	val =3D reg | DBG_MDSCR_SS | DBG_MDSCR_KDE;
-> +	val =3D reg | MDSCR_EL1_SS | MDSCR_EL1_KDE;
->  	write_sysreg(val, mdscr_el1);
->  	asm volatile("msr daifclr, #8");
->  	isb();
+Extract a common function from MSR interception disabling logic and create
+disabling and enabling functions based on it. This removes most of the
+duplicated code for MSR interception disabling/enabling.
 
-Whilst you're at it, please also change the open-coded constant in
-__cpu_setup to MDSCR_EL1_TDCC.
+No functional change intended.
 
-Thanks,
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+ arch/x86/kvm/svm/svm.c | 23 +++++++++--------------
+ arch/x86/kvm/svm/svm.h | 10 +---------
+ arch/x86/kvm/vmx/vmx.c | 25 +++++++++----------------
+ arch/x86/kvm/vmx/vmx.h | 10 +---------
+ 4 files changed, 20 insertions(+), 48 deletions(-)
 
-	M.
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5453478d1ca3..cc5f81afd8af 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -685,21 +685,21 @@ static bool msr_write_intercepted(struct kvm_vcpu *vcpu, u32 msr)
+ 	return svm_test_msr_bitmap_write(msrpm, msr);
+ }
+ 
+-void svm_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++void svm_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool enable)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	void *msrpm = svm->msrpm;
+ 
+ 	/* Don't disable interception for MSRs userspace wants to handle. */
+ 	if (type & MSR_TYPE_R) {
+-		if (kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_READ))
++		if (!enable && kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_READ))
+ 			svm_clear_msr_bitmap_read(msrpm, msr);
+ 		else
+ 			svm_set_msr_bitmap_read(msrpm, msr);
+ 	}
+ 
+ 	if (type & MSR_TYPE_W) {
+-		if (kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_WRITE))
++		if (!enable && kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_WRITE))
+ 			svm_clear_msr_bitmap_write(msrpm, msr);
+ 		else
+ 			svm_set_msr_bitmap_write(msrpm, msr);
+@@ -709,19 +709,14 @@ void svm_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
+ 	svm->nested.force_msr_bitmap_recalc = true;
+ }
+ 
+-void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++void svm_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
+ {
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-	void *msrpm = svm->msrpm;
+-
+-	if (type & MSR_TYPE_R)
+-		svm_set_msr_bitmap_read(msrpm, msr);
+-
+-	if (type & MSR_TYPE_W)
+-		svm_set_msr_bitmap_write(msrpm, msr);
++	svm_set_intercept_for_msr(vcpu, msr, type, false);
++}
+ 
+-	svm_hv_vmcb_dirty_nested_enlightenments(vcpu);
+-	svm->nested.force_msr_bitmap_recalc = true;
++void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++{
++	svm_set_intercept_for_msr(vcpu, msr, type, true);
+ }
+ 
+ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 8d3279563261..faa478d9fc62 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -696,15 +696,7 @@ void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
+ 
+ void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type);
+ void svm_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type);
+-
+-static inline void svm_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr,
+-					     int type, bool enable_intercept)
+-{
+-	if (enable_intercept)
+-		svm_enable_intercept_for_msr(vcpu, msr, type);
+-	else
+-		svm_disable_intercept_for_msr(vcpu, msr, type);
+-}
++void svm_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool enable);
+ 
+ /* nested.c */
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 277c6b5b5d5f..559261b18512 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -3952,7 +3952,7 @@ static void vmx_msr_bitmap_l01_changed(struct vcpu_vmx *vmx)
+ 	vmx->nested.force_msr_bitmap_recalc = true;
+ }
+ 
+-void vmx_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool enable)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long *msr_bitmap = vmx->vmcs01.msr_bitmap;
+@@ -3963,35 +3963,28 @@ void vmx_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
+ 	vmx_msr_bitmap_l01_changed(vmx);
+ 
+ 	if (type & MSR_TYPE_R) {
+-		if (kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_READ))
++		if (!enable && kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_READ))
+ 			vmx_clear_msr_bitmap_read(msr_bitmap, msr);
+ 		else
+ 			vmx_set_msr_bitmap_read(msr_bitmap, msr);
+ 	}
+ 
+ 	if (type & MSR_TYPE_W) {
+-		if (kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_WRITE))
++		if (!enable && kvm_msr_allowed(vcpu, msr, KVM_MSR_FILTER_WRITE))
+ 			vmx_clear_msr_bitmap_write(msr_bitmap, msr);
+ 		else
+ 			vmx_set_msr_bitmap_write(msr_bitmap, msr);
+ 	}
+ }
+ 
+-void vmx_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++void vmx_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
+ {
+-	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-	unsigned long *msr_bitmap = vmx->vmcs01.msr_bitmap;
+-
+-	if (!cpu_has_vmx_msr_bitmap())
+-		return;
+-
+-	vmx_msr_bitmap_l01_changed(vmx);
+-
+-	if (type & MSR_TYPE_R)
+-		vmx_set_msr_bitmap_read(msr_bitmap, msr);
++	vmx_set_intercept_for_msr(vcpu, msr, type, false);
++}
+ 
+-	if (type & MSR_TYPE_W)
+-		vmx_set_msr_bitmap_write(msr_bitmap, msr);
++void vmx_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type)
++{
++	vmx_set_intercept_for_msr(vcpu, msr, type, true);
+ }
+ 
+ static void vmx_update_msr_bitmap_x2apic(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index a26fe3d9e1d2..31acd8c726e3 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -388,21 +388,13 @@ void vmx_ept_load_pdptrs(struct kvm_vcpu *vcpu);
+ 
+ void vmx_disable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type);
+ void vmx_enable_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type);
++void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr, int type, bool enable);
+ 
+ u64 vmx_get_l2_tsc_offset(struct kvm_vcpu *vcpu);
+ u64 vmx_get_l2_tsc_multiplier(struct kvm_vcpu *vcpu);
+ 
+ gva_t vmx_get_untagged_addr(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+ 
+-static inline void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr,
+-					     int type, bool value)
+-{
+-	if (value)
+-		vmx_enable_intercept_for_msr(vcpu, msr, type);
+-	else
+-		vmx_disable_intercept_for_msr(vcpu, msr, type);
+-}
+-
+ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
+ 
+ /*
+-- 
+2.47.1
 
---=20
-Without deviation from the norm, progress is not possible.
