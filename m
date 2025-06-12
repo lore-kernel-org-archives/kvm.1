@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D624F29C328
-	for <kvm@vger.kernel.org>; Thu, 12 Jun 2025 20:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CAA29C328
+	for <kvm@vger.kernel.org>; Thu, 12 Jun 2025 20:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749761884; cv=none; b=Bu1OcbEPP8vp71FpYvl0wgU6YrRdDJYeQHhqTpWg3AM+GfYDB/UqVCLY1HBpwHbIzo+0Fj04ERmGw/3Xeo3PBtgKuCoAIjbQjm9i4mk2rxjEi522jxFBuroVxLxm+J41tQ3ofJ8SSH6CtUmjKRQ9bZGOVj2vgkJ90bBwbYVVkvI=
+	t=1749761920; cv=none; b=BwlHU4+UTlA8ur8sgDqwPn2ClwqSUhyGGQrulQz6Pf0tOpV77OUTby8xIHjooEnldJONDnkcu8r3VKUR7oyP2IBsrVVbI78OZKz/j+NeQgggHE/oGKK0J7U4BsK2ID+tYKpAKooscL5Oj529p4GI/N+as+DjdhAVxmP/qsL8DYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749761884; c=relaxed/simple;
-	bh=5XVBARhRzVi1bdo+JulRx53FAbaSBtn9bNRpcvpMyJ4=;
+	s=arc-20240116; t=1749761920; c=relaxed/simple;
+	bh=K8PjyPI5eTpdgcsVHw/Ec1RhRH68bnuAEQZL53oemYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q76E8q3pxMKC7MdEgMY+u48GwYoY+wtcgKKSlc6T1EVDsQuLuAOVv2znKvdDmkddQ8jZtwp1aX1VvkYDK7b2nexLdXAFNV0QBG5dS1224MicsYdK+eVQLJjz3kZQaFJ4GMrVRjv8xFiYGPZ4f5SI6cYb2/0SGh8ErpkgEOpuhSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hvm2616d; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=mQTbtUan4VqB38Si9iHAYGL8e5bF2DYtoAOQf/3udxVw3+juyp3ht2TaHqb4cnLl/0UxtbM0Igeg1t5O8qn7Ge5t/IA82+uwbItaewy3gT0uPo+XODhGNyOnO8vuCMTLYxKCxyyRMZH262VnhD7mhmxsFtpU/xJWWJXi7oVCvSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C18O4jxS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hvm2616d"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C18O4jxS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749761881;
+	s=mimecast20190719; t=1749761917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UMyq4IM8orE552UKyUH3BKbgGyjRLLE1wmihoPQ7GH0=;
-	b=Hvm2616dyYhi+hNR2ZHiz8mwd9l1r/a9l5IbgBT4YyeCfQWJ7YNxjdh5rnPb2YfAXbtDHF
-	GwzPFhl5iDgI+wIbnZW+JFqBLPcaGLCAZFWkQmXsVtUcWpgnRmVDOhkiMbWtwSZdCQP6ct
-	G8WhcA9/Tr/M12C4Elu8tMMUW1Rq8lk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=uCM/Luch++bkeRG2d0E9z2F9L/FoZdsWLzzalPuqzaM=;
+	b=C18O4jxS+a3VO+eL6OAYC65PgdXTXQEQsfvjkHxQIUyheVO4gNG48kYVfldOqjzmiBRTJ5
+	3EnrpIigESmP9Xr7KRuiFW2C99s5QURiGPyXD4D/wl6RfPDUZk4pm51eBee7Qf1usqzXOP
+	W2nE9cFoRJLvsNg+Dl6gMwpH3IVcVjM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-PKTUzVbfM6eijA0y1ZoMeA-1; Thu,
- 12 Jun 2025 16:57:57 -0400
-X-MC-Unique: PKTUzVbfM6eijA0y1ZoMeA-1
-X-Mimecast-MFC-AGG-ID: PKTUzVbfM6eijA0y1ZoMeA_1749761871
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-JE3lZeGoPGWbpbmm6pLJqg-1; Thu,
+ 12 Jun 2025 16:58:32 -0400
+X-MC-Unique: JE3lZeGoPGWbpbmm6pLJqg-1
+X-Mimecast-MFC-AGG-ID: JE3lZeGoPGWbpbmm6pLJqg_1749761907
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 023B119560BF;
-	Thu, 12 Jun 2025 20:57:51 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4C4F195608C;
+	Thu, 12 Jun 2025 20:58:26 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.54])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B5BBB1955F57;
-	Thu, 12 Jun 2025 20:57:18 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 709B21956050;
+	Thu, 12 Jun 2025 20:57:51 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>,
@@ -154,9 +154,9 @@ Cc: Joel Stanley <joel@jms.id.au>,
 	Huacai Chen <chenhuacai@kernel.org>,
 	Mahmoud Mandour <ma.mandourr@gmail.com>,
 	Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 04/12] python: update shebangs to standard, using /usr/bin/env
-Date: Thu, 12 Jun 2025 16:54:42 -0400
-Message-ID: <20250612205451.1177751-5-jsnow@redhat.com>
+Subject: [PATCH v2 05/12] python: fix illegal escape sequences
+Date: Thu, 12 Jun 2025 16:54:43 -0400
+Message-ID: <20250612205451.1177751-6-jsnow@redhat.com>
 In-Reply-To: <20250612205451.1177751-1-jsnow@redhat.com>
 References: <20250612205451.1177751-1-jsnow@redhat.com>
 Precedence: bulk
@@ -168,50 +168,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This is the standard shebang we should always be using, as it plays
-nicely with virtual environments and our desire to always be using a
-specific python interpreter in our environments.
+\{ is an illegal escape sequence, to get a literal backslash we need to
+use \\.
 
-(It also makes sure I can find all of the python scripts in our tree
-easily.)
+This is being fixed because of an issue spotted when attempting to use
+the pyupgrade script.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- roms/edk2-build.py           | 2 +-
- scripts/cpu-x86-uarch-abi.py | 2 +-
- scripts/userfaultfd-wrlat.py | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ scripts/feature_to_c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/roms/edk2-build.py b/roms/edk2-build.py
-index e564765aaa7..8dc38700394 100755
---- a/roms/edk2-build.py
-+++ b/roms/edk2-build.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- """
- build helper script for edk2, see
- https://gitlab.com/kraxel/edk2-build-config
-diff --git a/scripts/cpu-x86-uarch-abi.py b/scripts/cpu-x86-uarch-abi.py
-index 7360e55c6e0..5a052083eea 100644
---- a/scripts/cpu-x86-uarch-abi.py
-+++ b/scripts/cpu-x86-uarch-abi.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
-diff --git a/scripts/userfaultfd-wrlat.py b/scripts/userfaultfd-wrlat.py
-index 0684be4e044..5f36c7af565 100755
---- a/scripts/userfaultfd-wrlat.py
-+++ b/scripts/userfaultfd-wrlat.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- #
- # userfaultfd-wrlat Summarize userfaultfd write fault latencies.
- #                   Events are continuously accumulated for the
+diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
+index 807af0e685c..5f8fa8ad5c6 100644
+--- a/scripts/feature_to_c.py
++++ b/scripts/feature_to_c.py
+@@ -25,7 +25,7 @@ def writeliteral(indent, bytes):
+         elif c >= 32 and c < 127:
+             sys.stdout.write(c.to_bytes(1, 'big').decode())
+         else:
+-            sys.stdout.write(f'\{c:03o}')
++            sys.stdout.write(f'\\{c:03o}')
+ 
+     if quoted:
+         sys.stdout.write('"')
 -- 
 2.48.1
 
