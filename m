@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9545D299A81;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A378E299A8A;
 	Thu, 12 Jun 2025 15:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749741469; cv=none; b=MXdBFpNvtlsfvGeaOGvrDA7nuomBygU5mQYkrnBdbRxEY8nl2nJect0aQPgKq2ldtbx/k2bzHSQf/e9IpZAaWMephdUIKjoGEI3N+hN+NNVG2rNHxjCGtrXRD5w8MgvknkDgBwMfRHh9DykvQDlx28rsZ+K87nljEba6A4INfL8=
+	t=1749741469; cv=none; b=EUbv141SJGsSoLhQbHxAUuaxI2jN701e1v2zgozuO+qBvhhxUdMr5NJrsyrwpiYieK7U8rs/b1wWo72EnDPe7bpKyUQxX61A0kSnbC/uhRDgn7+a1/vGlpiGi2j5/pUcBj5zlGUSWu83wD3sj4pVpM/HxdCzbI5c6IvMe/o9B3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749741469; c=relaxed/simple;
-	bh=XDJZhmjHPDXPg7og3rQDpluO+ZElZEtkFB7TOHBZ6B8=;
+	bh=5800+9pcKbpwq9CBW/e+YLPVT84qYs9jAiAX5nQsi/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZNOyYE6EiXiXns4NXSVvap6Xh0ZPTewnglbwN2wtHnyxzNaVEfATUgVjtoiCC0ZBBPzoXdXX8NDKN7mdd1L3y2wB/0bJTQuhVjgvAcNkKQy6mM0JT/OGaMLduxDHQ3Zqbsqsxbol2cVm/t9Spl3cS7cl7tfKeOZuiHR646+ALc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0XzS4Ss; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=d/zBdMtxf6xQcuzSW+F3Tl0Vva+F5C2XBj2dnr8gM+SEZ+D4jtZUAZ9LaNnCuG6byXkrCnIdaZ9oytBX2jc1eicYXwGDXm0+0wEhAqLn1Y/BRiFb2lapwGAgYcG83ZigQttzvzdedE3qeSt611zLTQXT5ZF8IAhh2l1QVRIcFOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqkhG5J4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0XzS4Ss"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693B1C19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqkhG5J4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38507C116D0;
 	Thu, 12 Jun 2025 15:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749741469;
-	bh=XDJZhmjHPDXPg7og3rQDpluO+ZElZEtkFB7TOHBZ6B8=;
+	bh=5800+9pcKbpwq9CBW/e+YLPVT84qYs9jAiAX5nQsi/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0XzS4Ss2eW7Ykyf+R9NN1+Wd7takcs7fLioxh5YnuBURZSy6NpMjPzMXIevf/s7E
-	 82WxLzAtxGHbm0Vq5p0e7J7hGOUZipnFUVE4m+zaeVVhjTBVPhXV2I5bLkM3pfUUSe
-	 bt9LP4dUmbc0fUT9Blqf1Cz5VOakW427iRs5wgGo0rlvaxeyjBkK0rwzHNqB0TWqi2
-	 5TCa0/EsoaiKs2cgcQgBDAhBxSuinKqL3DmkREcfrsJLxk16X2VhptFzBWO+keFnGD
-	 VtWLv0uRpZA2QCF7AdlAaPldounV3XuvUncXSsBjW5Zs/hkuLLTmydIjMppuINM1jQ
-	 j7MuiSjP5BvxQ==
+	b=HqkhG5J41imjPv1R5ZtN4zLsGMd+SJAwp0efcggHaslrKnhroV7BfEfNm3q56lo4j
+	 cizltsctWOzDiCKJ1h8ilyTVdeLebnqHebKBOb50a7MO80nVJKPiGf35HBDxxxuJ63
+	 nGSoGoFwAqXYfzAilMQalDmYibTW/GJ9cVeLeEr46s3nfBonaNI/3YHlMTZG1c1+lD
+	 H0U1SAuLWp+Uc06m7u1/t1R1rk6V2LXEZf5AW/ELS7zh1CnZSWwWLpNSw2gjWe7rrG
+	 DtXra/v2IuqDFB8pwhac8I2lrTtKagU8IWe5P+5LMXwi5iRXsyAh187Ezbo4hImRbt
+	 wryGJdo+gN31Q==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uPjgZ-00000005EwE-2cjy;
+	id 1uPjgZ-00000005Ew2-1rj9;
 	Thu, 12 Jun 2025 17:17:47 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>,
@@ -48,9 +48,9 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	"Zhao Liu" <zhao1.liu@intel.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v10 (RESEND) 17/20] acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
-Date: Thu, 12 Jun 2025 17:17:41 +0200
-Message-ID: <9431b499f5902343652fea59c8612740eb41884c.1749741085.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v10 (RESEND) 14/20] tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
+Date: Thu, 12 Jun 2025 17:17:38 +0200
+Message-ID: <c3d68c081655d471f6d9ab4fb24191b33137ff5e.1749741085.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749741085.git.mchehab+huawei@kernel.org>
 References: <cover.1749741085.git.mchehab+huawei@kernel.org>
@@ -63,29 +63,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Now that we have everything in place, enable using HEST GPA
-instead of etc/hardware_errors GPA.
+We'll be adding a new GED device for HEST GPIO notification and
+increasing the number of entries at the HEST table.
+
+Blocklist testing HEST and DSDT tables until such changes
+are completed.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/generic_event_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 620a1e0d6b01..e9b344ef3e15 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -332,7 +332,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
- static const Property acpi_ged_properties[] = {
-     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
-     DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState,
--                     ghes_state.use_hest_addr, false),
-+                     ghes_state.use_hest_addr, true),
- };
- 
- static const VMStateDescription vmstate_memhp_state = {
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8bf4..0a1a26543ba2 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,7 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/HEST",
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
 -- 
 2.49.0
 
