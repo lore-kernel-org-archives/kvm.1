@@ -1,67 +1,66 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAE5143895
-	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 00:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141FB191F8C
+	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 00:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749775932; cv=none; b=HkyANzAZz+oY2RA8V2zBaecIitIhf+kzlxURF9OWGvWBNGy3T+9pwjWk2lZReZxGr1QyzteWCnPcnmS8ovbDM2CFQMunAEM1bRGmD7/jInfkoqsmq6EnBmovGeiMJyd9AMmuX2Ml/7k+BR3O8Mxf7VVQWyws1da/TtuNKnwbUuo=
+	t=1749776040; cv=none; b=utJP63q+S1ajNpK9khcptpCzccjTQqobjIc2FpX1ywmpYkmCWdtR69biGVU7i72lTlhk6o920mR+hH8e5nna9BoFK2VunS6XL2oWXz6RK1qFLBrn+iH0Tseu5UGS5NSWoQ8UnT+qqXt5gdgNlvLHdgSG+J/RA0V6lzPS/GrITRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749775932; c=relaxed/simple;
-	bh=Y9fqouMbWC/u7E8qeV6xHLgjMBcplZOEarKz0u0J7p4=;
+	s=arc-20240116; t=1749776040; c=relaxed/simple;
+	bh=/Q9h3H5ufPDxJ9IRGHfHjeJSiedw9DUTIyBbkfL9iQQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oGxuhH4yoYLQFvChgXxxG3ImNPNYN0zYunPW3TlY7pUqfJ7/JmsOUKyUk/f15C/UVhpD410j7UNpD8/5k/66kzAHrPUYrpHktRStWLzF5L/sBTytuITJupZ2sw6hQnZ7ykYSy5MYV8E6rYhkiJQxt7QP797m+AfXukiVKkaLEqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nJN1GafN; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=ciKBDo42b+d6ypzMhqzdQX1tKUjn8n6EpmgI6SfahqNvrzijqoKDawNMD9fzIi2YJ36TlRtJTg12ZzRSMJ7Ybnls8jLao6I7OVtHKqTE2REwbcq1Xlyyw1yxiLw3L4wTlS+J0CqZ5JBTIAq0Yv/gcBPfZZrey5l78E8cPZ08Gkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HeNZTI3F; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nJN1GafN"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3138f5e8ff5so1759670a91.3
-        for <kvm@vger.kernel.org>; Thu, 12 Jun 2025 17:52:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HeNZTI3F"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b2fa1a84565so980793a12.1
+        for <kvm@vger.kernel.org>; Thu, 12 Jun 2025 17:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749775930; x=1750380730; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749776038; x=1750380838; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PDC3Bp47VQywmziigkfie6PRv+RxREIJYB54etTSg38=;
-        b=nJN1GafNcYIIYHCylTtQsiickAZj/+ObplQp9+olRdXE48HZFo/neusYMT2v+Gg6GX
-         ncKHPNTQ5UB146VlB2quRvLaAo8Fugob8acu5XdVoccCLSdeXs3WG/aR3V3e6J6GO1JK
-         eN1Ji8Z7ku9H2bIPv15U5k8rUYaRC3HRYozOZzMqxTm9/8PBOPBcGYf1Zx8vTgxDEJbE
-         q9sdDIhm8R55zPc33o9JBDv8OXuZlWBOkv1VW3nJKM0e+1TehQiGtnBpBeUkxnzOLugo
-         QQG43AAVnCXQ+DBYZXkc0iFiW8mq43yUK8YAawfol71wRxjifFk+IOv+Z53uD+459EZO
-         li3w==
+        bh=7w4k58YWznvMshNuutdWHXlSrz7i5+GgLwpYq+uVRJo=;
+        b=HeNZTI3FcRNUggEROCoJD2Ij1bCtKcisgBtlzLuxm7H4vhGAzsP4QYZ0q0m092mfkw
+         +dZqPXWDnrips37yld2Xqob1iLgRZ3u2oC23/r1oeGtXwZ0sQEJeUkW6fKOQrJIWiSdL
+         rOSO4QV6izfBc54AieeJ6KYRNcZx1Mivh/6dgl11Vywfx/DQxeucbEdwsNS8Ls2o53WU
+         wbkbENxf3o6kY/BzpPb6cciBQROAow0X4UVnCNuSuGPDAS9Quek7t7dir0HnQLaM0VNG
+         OTlWpgUperaDud2UHdGfI0TGmjgd2n8L8yCIms/QTul6wCW2aBiw8e3jZ0FoJPBLauQU
+         a7hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749775930; x=1750380730;
+        d=1e100.net; s=20230601; t=1749776038; x=1750380838;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PDC3Bp47VQywmziigkfie6PRv+RxREIJYB54etTSg38=;
-        b=JakpqkAQ3bV1SYsDdFar7OR5Xt5rkJStnHHHPtrsoM/+3PQNYRNnNI6yJDgjGza/iu
-         mEchvBkg7bVLMYcKBfeKquM5djekjuScL5p8OSakvzDc/eiG9eY5BujvuqgyFW/aI/kD
-         +2Y4Zco+a3FP0OW4csldDPlaSlePnjXBNtVaGFEZkkxOoY8C+U66jMFXoGf6KrxjDAer
-         NyiJ1keThmevu1hToBGC+ZqEAT6zCMDYby+YVUD2AKxWAxWIeCo2wZ9lnO8/Gg3TwUOL
-         5TQ9+Gv8UWKs66O7A/S2hj6iRA+jzuirweM6qsjb0PPcqZzR4F8W5uKUqYBvHQGZz2HL
-         ZgxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzY3hLVRhuFdru4eJnhzaqKu5JCEkQWR8xYsMl/8TMqkHdO0qk/A/Es1cGai9GHMsHX+0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCSQzu/CHjuImeD/U0AbwQuskfHx5cwFGgeEUi5aOpEd0YpzkO
-	ObHEfomKl6RBdnwYVvMAJxtFo1ysrSCN0jg+Ut5XXywH6edhKOns4fWx0hroP95sozUUtB11h1B
-	sJp9z5g==
-X-Google-Smtp-Source: AGHT+IE30h8WRYs3H2+xmcIORsn3vKqEjAqKMkjQebOpzu1U+lCJn7zscxn66JCbNPDKoCUmHkAqtEgJO8c=
-X-Received: from pjbqi16.prod.google.com ([2002:a17:90b:2750:b0:312:f650:c7aa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c0f:b0:311:b0ec:1360
- with SMTP id 98e67ed59e1d1-313d9ede996mr1653895a91.29.1749775930174; Thu, 12
- Jun 2025 17:52:10 -0700 (PDT)
-Date: Thu, 12 Jun 2025 17:52:08 -0700
-In-Reply-To: <ec9cf2ed3f2db01fccf9a01e2739623297b3ca9d.camel@intel.com>
+        bh=7w4k58YWznvMshNuutdWHXlSrz7i5+GgLwpYq+uVRJo=;
+        b=FY1QhQjx+qM8eXuDgqLVkCWX97m/G6oldrPUlDiKCAT8sr3WAKe9L42MyACWUzNWXC
+         L94oDkyu9wHc8H+C3ImFMG4ig2Xc5BpJG8FpfuzCr7vhPzqWAJKpLM317aGv378ppxmZ
+         BjDUINtFFVDZPl0MRr8Jg7GTAbgyPHFBRY7IqGlN5Nr6q1zQoIUKVly27af2SATxBVkq
+         EycEAzqirCVUQnwaB0aVstxGGn6KUZ/gMmUXQzcUVkcHAXOPEoY/pWShi2xD4NH4U4Ck
+         w355/Oj47XXZ7msFkgcu9n8bfmbfLJf97mAkmQXNDYK1m3KChqS8G1cFZvBehqnsll2M
+         88Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXkF3Vo5bLluTn02EFHAMPYu5iROjqr8uIViARiBtE3cwX82z3n2e+ONeop04xfT8c+lxg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuziPkJU1GLDdtKpDd8peoFpc4OEkJMBrZzOA9Ne3wwlAjr5r/
+	JnEFYxqrRUgnaSNlpnxT70X92QhpUFjx4UFH9n/mJdQ6C5LHbKuozNtRQ4jydGNfo7XO7ZQrxb0
+	GB4rIOg==
+X-Google-Smtp-Source: AGHT+IF8Mo8opBC+4oS6SvfRC+Uv35PNMIQW6VHTy6RRYqEJO0V9Hwf1DFEODNFIFbIkKRwUONFfUilYd+w=
+X-Received: from pgar23.prod.google.com ([2002:a05:6a02:2e97:b0:b2c:4a89:4b36])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:8093:b0:21a:e091:ac25
+ with SMTP id adf61e73a8af0-21fac8e62b3mr995660637.6.1749776038391; Thu, 12
+ Jun 2025 17:53:58 -0700 (PDT)
+Date: Thu, 12 Jun 2025 17:53:56 -0700
+In-Reply-To: <dd5fbd5bcc0e7ae9ac60a39a93ca8b747e5daeac.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250611213557.294358-1-seanjc@google.com> <20250611213557.294358-7-seanjc@google.com>
- <ec9cf2ed3f2db01fccf9a01e2739623297b3ca9d.camel@intel.com>
-Message-ID: <aEt2OOQgj2yaW9lo@google.com>
-Subject: Re: [PATCH v2 06/18] KVM: x86: Move KVM_{GET,SET}_IRQCHIP ioctl
- helpers to irq.c
+References: <20250611213557.294358-1-seanjc@google.com> <20250611213557.294358-8-seanjc@google.com>
+ <dd5fbd5bcc0e7ae9ac60a39a93ca8b747e5daeac.camel@intel.com>
+Message-ID: <aEt2pLgmIUuRJvDa@google.com>
+Subject: Re: [PATCH v2 07/18] KVM: x86: Rename irqchip_kernel() to irqchip_full()
 From: Sean Christopherson <seanjc@google.com>
 To: Kai Huang <kai.huang@intel.com>
 Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
@@ -71,35 +70,15 @@ Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Jun 12, 2025, Kai Huang wrote:
 > On Wed, 2025-06-11 at 14:35 -0700, Sean Christopherson wrote:
-> > Move the ioctl helpers for getting/setting fully in-kernel IRQ chip state
-> > to irq.c, partly to trim down x86.c, but mostly in preparation for adding
-> > a Kconfig to control support for in-kernel I/O APIC, PIC, and PIT
-> > emulation.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
+> > Rename irqchip_kernel() to irqchip_full(), as "kernel" is very ambiguous
+> > due to the existence of split IRQ chip support, where only some of the
+> > "irqchip" is in emulated by the kernel/KVM.  E.g. irqchip_kernel() often
 > 
-> Acked-by: Kai Huang <kai.huang@intel.com>
+> "is in emulated" -> "is emulated".
 > 
-> [...]
+> Or did you mean:
 > 
-> > --- a/arch/x86/kvm/irq.h
-> > +++ b/arch/x86/kvm/irq.h
-> > @@ -66,6 +66,9 @@ void kvm_pic_update_irq(struct kvm_pic *s);
-> >  int kvm_pic_set_irq(struct kvm_kernel_irq_routing_entry *e, struct kvm *kvm,
-> >  		    int irq_source_id, int level, bool line_status);
-> >  
-> > +int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struct kvm_irqchip *chip);
-> > +int kvm_vm_ioctl_set_irqchip(struct kvm *kvm, struct kvm_irqchip *chip);
-> > +
-> 
-> I think we need to include <uapi/linux/kvm.h> for 'struct kvm_irqchip', just
-> like you did for "i8254.h" in previous patch?
+> "is emulated in the kernel/KVM"?
 
-It gets pulled in by linux/kvm_host.h.  i8254.h didn't have that one (though
-amusingly, later on it does get kvm_host.h indirectly via ioapic.h).
-
-> I checked the "irq.h" and it doesn't seem to be obvious that we don't need
-> it.
+Heh, both?  I'll go with "is emulated".  IIRC, I was trying to choose between
+the two options you listed, and didn't quite get the cleanup right.
