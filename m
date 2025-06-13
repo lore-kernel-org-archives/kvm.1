@@ -1,63 +1,48 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2671EE7C6;
-	Fri, 13 Jun 2025 07:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2372C3250;
+	Fri, 13 Jun 2025 07:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749798398; cv=none; b=g9IdsBEvnWDNOpfEZI1OraYDjB6MuIyQTe52MRrL+CFMCXL+2obR+JEmatf0dG+JuawlO3SPF8oMMKOjZ+5sVMF3SvXW9b0TjLX6cLinAArPtdQNuTk4mK2sKZEUVf4qt3vo6ylFiM9Hs/4F0wfCVGIYaqnjGRZwLKB+nkZaABc=
+	t=1749799133; cv=none; b=eOMZUOGWkxRFPhUyp4c3H1bpjcng8P8/mw9i80jVcVDxFd4i/FMiNhye7jWbLrl+PnEg6uTewldcGWcgr8y+Y2JthDrLVEgaO+pLF4w8EEGOa6ig3UwkNjUawOlsxEUBfP8Ddv5WKJ6V/rDsWnrLO/5+6QdNA7wUIpnCpPTfLws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749798398; c=relaxed/simple;
-	bh=IHAV7nN6wCNIFQtTRtd4JrisWL7tQ9SP/C8Yiz9z6NE=;
+	s=arc-20240116; t=1749799133; c=relaxed/simple;
+	bh=M7EkRO7IVX8UmYnG8NR5ldDY2OALH+ByUr7WbfjmLEg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4CyhQMgyUQr776wjy6rB6kFoEtQAUG2Bd2HOCxpkUwtxsBxYErGGWEEaKI7WQ/4eaRylHnO8yJkeC7B2QsbAuiV76HZjWw2iQT86ESweclL/Rq5pMrTzMKwYNwGB4mPuk6uu5ElAnx6tBqsR83U6pYzaUuZbbOCElNIFD1DgZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XpRr+gSf; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfnkkXL5Vic/mjP/4N8Wf2CoEAyhwS7Qsv7Thc8bCvLoiVd+q9ba8ljhchfSK+OI5GXbQtyIxD1lZknxTGnsz/R+DqKlzfkH5sg9kMWAb/0Sxsd+jo6YTGOpVD23OB8SKUL+Qa7ljeIpJDANutZerUlV6JB44vaEEtztYlrnXd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FE9BNqw8; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XpRr+gSf"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FE9BNqw8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UgEEh5fEgXDb+CnFS0SJsFPqsYxRiY/6CHzoXKuVSq0=; b=XpRr+gSf7eHZm/SvMSk2BRK55i
-	zvnTYKkkC7UhTM8baykOP0fG89XftqUEIJloIJ4aaUPnObzFpe+DTVSsj82sLbztMVoAFD5qBCgQF
-	Coeq/L+duldKcBhXbKAgQPbwU3W4mbxU0zzEA7iPmRuFo0eD53oqnXwF53Yr8hRVHfGIwVaef8NKy
-	dmh3P4kPB3j0WtLBnRvPaOgEt1jeA3hQkwcPQ93IMlD2GylVDpKMNKiSPc50+OyjGUGF/oMspCSBp
-	uwzdSgTgti/cYWtaAx352O5rqlxqRBzcKA5i/GLYcmTQbhLRj6KRpTkz6hv08xFllPEFop+1e8Tk0
-	4Ey7LRQA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	bh=V7JkxG9Vy1kJOBwLEP7Ot+HWce3fGBM19nyA8Vb3JDQ=; b=FE9BNqw8CyaElbDtdH5KyL32Ph
+	rBhR75TipRafHBAo5oPFRWkCMU5upIY+Ce9wsDDsnaWnYvlQBfg3j76zTksl8kPGJZuKqtzjXP0uM
+	XfwyLE2MyQzGOi9cIcpkWOm9e8oSEfO0bSnLv3QEwKXMk160uGy648pUInVZ+Bq5tkIQDLZrticpk
+	EVSjaNp/F54OcmmhLVW8exVmoMJxpJLs1fcKBV/QiFrwJdIKqkcryPHREmJxtqPcvoMHj6E+DleGn
+	v1xfwtzc5hckcwlJ89HKleZlKgvHoco8F58tcRddx8+/Th4BGfWmuLzu6ygfR/1CupuMlECbTUD/9
+	gI8My4pg==;
+Received: from 2001-1c00-8d82-d000-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d82:d000:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uPyUZ-00000002sn4-1cF9;
-	Fri, 13 Jun 2025 07:06:23 +0000
+	id 1uPygX-00000002tHy-2jwr;
+	Fri, 13 Jun 2025 07:18:45 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 273C530BC56; Fri, 13 Jun 2025 09:06:19 +0200 (CEST)
-Date: Fri, 13 Jun 2025 09:06:19 +0200
+	id 087FE30BC46; Fri, 13 Jun 2025 09:18:43 +0200 (CEST)
+Date: Fri, 13 Jun 2025 09:18:42 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, Xin Li <xin@zytor.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>, Zhang Rui <rui.zhang@intel.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Andi Kleen <ak@linux.intel.com>, Kai Huang <kai.huang@intel.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	linux-perf-users@vger.kernel.org, linux-edac@vger.kernel.org,
-	kvm@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 00/10] x86: Add support for NMI-source reporting with
- FRED
-Message-ID: <20250613070619.GF2273038@noisy.programming.kicks-ass.net>
-References: <20250612214849.3950094-1-sohil.mehta@intel.com>
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	pbonzini@redhat.com, brgerst@gmail.com, tony.luck@intel.com,
+	fenghuay@nvidia.com
+Subject: Re: [PATCH v1 0/3] x86/traps: Fix DR6/DR7 inintialization
+Message-ID: <20250613071842.GH2273038@noisy.programming.kicks-ass.net>
+References: <20250613070118.3694407-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,26 +51,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250612214849.3950094-1-sohil.mehta@intel.com>
+In-Reply-To: <20250613070118.3694407-1-xin@zytor.com>
 
-On Thu, Jun 12, 2025 at 02:48:39PM -0700, Sohil Mehta wrote:
-
-> Jacob Pan (1):
->   perf/x86: Enable NMI-source reporting for perfmon
+On Fri, Jun 13, 2025 at 12:01:14AM -0700, Xin Li (Intel) wrote:
+> Sohil reported seeing a split lock warning when running a test that
+> generates userspace #DB:
 > 
-> Sean Christopherson (1):
->   x86/fred: Provide separate IRQ vs. NMI wrappers for entry from KVM
+>   x86/split lock detection: #DB: sigtrap_loop_64/4614 took a bus_lock trap at address: 0x4011ae
 > 
-> Sohil Mehta (8):
->   x86/fred: Pass event data to the NMI entry point from KVM
->   x86/cpufeatures: Add the CPUID feature bit for NMI-source reporting
->   x86/nmi: Extend the registration interface to include the NMI-source
->     vector
->   x86/nmi: Assign and register NMI-source vectors
->   x86/nmi: Add support to handle NMIs with source information
->   x86/nmi: Prepare for the new NMI-source vector encoding
->   x86/nmi: Enable NMI-source for IPIs delivered as NMIs
->   x86/nmi: Print source information with the unknown NMI console message
+> 
+> We investigated the issue and identified how the false bus lock detected
+> warning is generated under certain test conditions:
+> 
+>   1) The warning is a false positive.
+> 
+>   2) It is not caused by the test itself.
+> 
+>   3) It occurs even when Bus Lock Detection (BLD) is disabled.
+> 
+>   4) It only happens on the first #DB on a CPU.
+> 
+> 
+> And the root cause is, at boot time, Linux zeros DR6.  This leads to
+> different DR6 values depending on whether the CPU supports BLD:
+> 
+>   1) On CPUs with BLD support, DR6 becomes 0xFFFF07F0 (bit 11, DR6.BLD,
+>      is cleared).
+> 
+>   2) On CPUs without BLD, DR6 becomes 0xFFFF0FF0.
+> 
+> Since only BLD-induced #DB exceptions clear DR6.BLD and other debug
+> exceptions leave it unchanged, even if the first #DB is unrelated to
+> BLD, DR6.BLD is still cleared.  As a result, such a first #DB is
+> misinterpreted as a BLD #DB, and a false warning is triggerred.
+> 
+> 
+> Fix the bug by initializing DR6 by writing its architectural reset
+> value at boot time.
+> 
+> 
+> DR7 suffers from a similar issue.  We apply the same fix.
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
+Bah, this DR6 polarity is a pain in the behind for sure. Patches look
+good, except I'm really not a fan of using those 'names'. But I'll not
+object too much of others like it.
