@@ -1,175 +1,348 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2081.outbound.protection.outlook.com [40.107.102.81])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D942E11A2;
-	Fri, 13 Jun 2025 14:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749823983; cv=fail; b=qOGbovwtP2+MB5UEIH3yNhPxPPTLU0SNZbnTDPRaKQ50WpijW+HiS42TbA+CcjfLRseNu8Jaq22gaai8T9hKd7MRuHbYFuZQfK8jpJ+2VxWlue5Bl9s2Pee+Ey3NzIT1H+TeX6NTpqlFMd1H3dfMIk+1TBX3Xn4IJJv7fBJpeeQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749823983; c=relaxed/simple;
-	bh=qoyuljyFOhG78ZCJtMBCDYziR7pP2FTRxKz/LMQUaHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=d2gYoU6tjGocF6bLV5cuFn4KvrgecCJ9OGa+5TvSVS/Yfo/0aok6WZW0/slTRs2aqxx2WdG3PAE9NsLVaZfGQ5D65mE3vgKlH5wEEaT9X6IT3GuG97WkSdU/dk1WPzGB/QZ6Oh6DSmOpWJnRYgitIBAt2PpQ8ABzK/aqNfHfSso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XkEuHb3Z; arc=fail smtp.client-ip=40.107.102.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596D82E11DD
+	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 14:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749824185; cv=none; b=gy5CVEz7tLPQn/3iNI+R2ICEj9srmWsJGiZ+YtbbHm76VBV9e8cfF2YWdponNCiuc8hN7w8qtje3nEobnNR8cxEIFtGzsKfTvI2ILwjnRLicfwALWjsxIdwnz3Wu6UNfW2/w1U1ulVMWcwK8IkZhusYY/oNqOc2j667w0GZeudQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749824185; c=relaxed/simple;
+	bh=QGww1yzEb8QJqnEjlKVo1G7xRfOl8BeipDqARiECuYA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B3mNHgmy9HRt4dnUUdZB8RIN2P8GEDiH1l3IteNt8Jq5UICHLt1Hep7xTCSQslXWOrcCiMdkAByXZRbfiEEqVhvSUGdv4salKIk+CZml0bdodpk9QLbhRn6NlhTgk4nG5GrzWJWbXYSmBfiRcFHffQ8vmLR+I9ba3YYJOtWPbyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cDpZQ3lV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XkEuHb3Z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bKIQ6sw0YefHns5avtj4t0a/PAkkASwVmhGQfL5vG2LePHCYXgYPFLrhbw7LUTZHxdpGZeY2CX3/lEuOTkiRkgD2ELI4jV2Ejit33Ro4QWoGKmC+fBc239m16UEZZ2zji0rum6iz6t54AlB7uM3srwCF4cBTu8QT82xgPuK6zMBA0peKiPwI9ZK0qqM77ACOWV9VjbZ+9SbOrS2NA4nj3i7ZbCjcMhMFWY90CLs8GRYzGJT7SesSf+B4dWOS/rjw5fitMMc9oQOV/Kai8BXKrVN6xrLVXd7whlFRO/wTuAtQ5e+m0jY6gN/9J/1ogSTwFQ9qPFvPGBX3qwQJWbaiQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MeWsCKYpdCBi2C5td4fUcHqGaRalI75VmSK8PVmjuoQ=;
- b=sBjJuQiXHKHpMQGdApqELE2RLHMStF/omTnAIv+/ZUyok/wCPU/Ai3VSYezUXFm7Jzj8lS+4vW0aWsrMJNwkRzZusXkpQPOOArDaeE/jWtvFjzIZ+uYq+VH0tVzttm7bnjAjCIj6G/ZD+RanbCugYOFPlhsAgGjJcL5xom9Tapd9M4oMCzqjiWbYNs8tjqcGc6HfhwwptDU+TaqFa6uFpuDJWUfxaeVrcs8LYAxm3JPWoVWNcGduLVh365K6unPiQGmovs7AKDDBEc9kgG6JNXUVJY2I5IlRd97cfh5I3u5HaHqcocUUFtYv+QVyM5cK2Sj+uol1g3kUCpus637REQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MeWsCKYpdCBi2C5td4fUcHqGaRalI75VmSK8PVmjuoQ=;
- b=XkEuHb3ZFFbRjOqlFdXJx3vADYGni/pN/ebUEC2dXQZlMg4MQZ3V5WW6P8ROJ5CJRugyK4oAVBvAd6xa59EGqlyYSFAzNZwWilzP8NY7lQ7LlXEfonnFVJcbsQ9jrLjUvuczdgK6O/zNO1sqWZTlziq+2RvRUpMcuPqq0b2bQ5/aF2CZLWSs1bCLFdf9AjQHbh9cvuFyJ77fwgiCrlfFli6RkVIdBuXrZk2X5GBNQPZAI/R5rIHfK9piEHgDkFS+SvQV+yyrbJyZHf1FPZxIoLsoWzLEer+gta9nUEJVvOL7oFn8ZQmiz+ehSKNCsCYOSO627N/nhBqj+Ara3oqKWg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DM4PR12MB5939.namprd12.prod.outlook.com (2603:10b6:8:6a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.23; Fri, 13 Jun
- 2025 14:12:59 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8835.023; Fri, 13 Jun 2025
- 14:12:59 +0000
-Date: Fri, 13 Jun 2025 11:12:57 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Zi Yan <ziy@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	David Hildenbrand <david@redhat.com>,
-	Nico Pache <npache@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH 2/5] mm/hugetlb: Remove prepare_hugepage_range()
-Message-ID: <20250613141257.GI1174925@nvidia.com>
-References: <20250613134111.469884-1-peterx@redhat.com>
- <20250613134111.469884-3-peterx@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613134111.469884-3-peterx@redhat.com>
-X-ClientProxiedBy: YT4PR01CA0032.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:fe::24) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cDpZQ3lV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749824182;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H1vYPJOLaWcT2RxqTFWat03C15+kdrCA8LnBY4Rc0gQ=;
+	b=cDpZQ3lVrVbWS62EX7Ka75waUyTDTGnWjvNG22PH7txEoq1HoCBB5PlJjIFeB9/kwXwqL9
+	S+JsA039GpOYmhw3HeIr3SF3dYdkUPhJ+qGf6tFetyG89/0qqvzL3Fs8WmeBIoOWKL7nv1
+	v01Ien59S2yVYJTVF4yIAzKX0r5tTYo=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-IRTebrKuNQ-VHG29LrplvA-1; Fri, 13 Jun 2025 10:16:20 -0400
+X-MC-Unique: IRTebrKuNQ-VHG29LrplvA-1
+X-Mimecast-MFC-AGG-ID: IRTebrKuNQ-VHG29LrplvA_1749824180
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-60bdf0ca712so545319eaf.1
+        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 07:16:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749824180; x=1750428980;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H1vYPJOLaWcT2RxqTFWat03C15+kdrCA8LnBY4Rc0gQ=;
+        b=n97Jkyz2FByisY4xoQlhE8Qsbl4PDHnl7GuQYzjaQZLefvpAlBRX/tS2QuocvfdGOJ
+         jB04z4CUkDBx/L4Au5s7UlRj3Yu9EfEbcrhiqIfOIbN5mayAuaeKXvqpnLKxezROWyxJ
+         ADT7/JkCkBGd6Y9mTeheoB1lhXuaFjanVcbOZbsdBCPd7tnVwHaJ64p7TVWcCovV6pI8
+         KlxiYB8Gc4eWVTO7KX/6oXNVFuHaEzR1WaH7waLzDUd/+VWDvw6+zJIi3a5vXc7Y5S5M
+         ilBokfsteQ28SzyQBXMZb+ntv3c808w2HYT/ukzgg04oihdy8UmjDJYLJI28JTWMD22a
+         C17Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVKWB0TBXpXU6CFBK+QpSBUCuSgO3zDtqPLysHd8Pv+FjGsuczXUKMF3E2PSigEB79b13U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKjvGQB23hD+tWi6s98WIyBOzsNRLv5bRnaPhB/sSDpW7aWnmn
+	o8z8W7XBLBJLn9kFdzVClPYw0tHnUw4FpxttMUR9qqazMwlqitr30PxfmpJDiyM/qoFAtV1yRXd
+	TqpWUTNEJmVXWn3YllSjN74u5GAy5QETWSpZJJ4iBaH+2Cs6lKEgAfQ==
+X-Gm-Gg: ASbGncuMF2nIGaOrAIV+587UixdICLvjy4kVOqnIKip2Pum7FEXFXvzsh55jmkSG2Jf
+	OuPmkEhR+b1bWcUb+J0dpYhTe5Ji/IYxNuso9SuQlHR2tDLXbnuFz3L1EIN5ev4AC27eaQ0r1DJ
+	iYvqzVTSgVnTjev5QojmmS6ax9ZHqfOL4qvPRymzws7LS2RD5enJvhQ1QsFkXXm6ytENCTVHO1c
+	s7uHnMDdYnNLsqwnUBIaOg0LiAyfBOZUANo0ZeZ36RETF+k/SNdNubbWReTbe2lcsLpVxxIBTTm
+	en8un/vz6XYJsU6fLkKbx3Gvjg==
+X-Received: by 2002:a05:6820:238a:b0:60b:6a75:20fa with SMTP id 006d021491bc7-61107a59ae1mr518667eaf.1.1749824179973;
+        Fri, 13 Jun 2025 07:16:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlNDjXpDPxHORL4vi+7JkH6YzMJLMzE3hmQ5A+JlZVig9Fx8fisVIEPdgFb2PehmYr4p7MXQ==
+X-Received: by 2002:a05:6820:238a:b0:60b:6a75:20fa with SMTP id 006d021491bc7-61107a59ae1mr518653eaf.1.1749824179480;
+        Fri, 13 Jun 2025 07:16:19 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61108d7cb51sm186420eaf.6.2025.06.13.07.16.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 07:16:17 -0700 (PDT)
+Date: Fri, 13 Jun 2025 08:16:13 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: lizhe.67@bytedance.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, peterx@redhat.com
+Subject: Re: [RFC v2] vfio/type1: optimize vfio_unpin_pages_remote() for
+ large folio
+Message-ID: <20250613081613.0bef3d39.alex.williamson@redhat.com>
+In-Reply-To: <69f5e1f5-5910-4c45-9106-b362e300da8e@redhat.com>
+References: <20250612163239.5e45afc6.alex.williamson@redhat.com>
+	<20250613062920.68801-1-lizhe.67@bytedance.com>
+	<69f5e1f5-5910-4c45-9106-b362e300da8e@redhat.com>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM4PR12MB5939:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd53e9a4-9264-4b21-cf24-08ddaa846688
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cL5u3fNug6tdyhrHRH3rH5eq+ecUUT4KJCVxXycNeSg9ig44bai+oujIlpsr?=
- =?us-ascii?Q?aCHt9rRi29F4aA2RVGY8eolmVBO4IvxLAI0+lqUlkt8ebzCKAI9PMoWc3yI7?=
- =?us-ascii?Q?wz3CPUXdV0TqML5n8gcWOQf1wa0A7GYOOxIBymC/lI/+SWpWGjwpNWRZTFXr?=
- =?us-ascii?Q?7il9nPUUUkdNi764PSFxgs1WMHRk2ucl+siS9gaTvJNgK7/Wzw7ru4Gu4UQy?=
- =?us-ascii?Q?Ih7C1WiDxsa1Xn27r3eVvWRzWxmiqYC58v/0T/kRsBzS4ewRZXArM+U/ePR+?=
- =?us-ascii?Q?bZaH07HGpiGFivprPzuFShfoa6S9dWGY20WsuWmkKKxiqE5djDnXL+3wu6lR?=
- =?us-ascii?Q?atSDrBCjfqoGZoDEoM1VoQOicU3keu0CZ5LYeHfDEIrrtBsl+LFiO7axGDgi?=
- =?us-ascii?Q?uAq84pkittxWAM/DiSfeNt0pXsfSAbWoa+N6lY5x/mI5bNqvs+5m6VULdhjk?=
- =?us-ascii?Q?UtL7pSaW1zijJ7VUh1CY4jkRUWAaKwCUXGHCYkGyvCMOm4COOFSuOZsmf9c0?=
- =?us-ascii?Q?kQsTzCUrioYnw5d4Yp0fZvXqywpqoU7eGXFoTEit+2q7DRLSEG/enqKoy/wf?=
- =?us-ascii?Q?hkS/1vRG5M5mQB2aCFAp2TcY+zWg4RkvMXUiwIm3yGH5HFkcKGka3MOVRLy3?=
- =?us-ascii?Q?ykh7YDNqwuFsUjvSBE+JUQ9EQweRriqBxuj2YCS4omYSY4+O1O05S67Z+15w?=
- =?us-ascii?Q?AR6/2kaUSAPAiSfMhJO8ezNXqlcRjJ92FlRo6EVjyh+8kDp3nW3tJNeKol/w?=
- =?us-ascii?Q?aUsjepW3CVeAhhOE1cRHetJBAZaoUJgflYhNlRrvR1ApjIdtSsFNU0wag/lH?=
- =?us-ascii?Q?uVgXNcAckEIWL1SZ8nngbDvpj32tx1scTO8SrZVaEdWVlbSm1krzAKG8B4uD?=
- =?us-ascii?Q?ieSsBvj/klmeSEGhd34HjLvETGGok5QcGcS8j9NvtFMqtUDFQa0mFmKAN6a2?=
- =?us-ascii?Q?sadTrrN+QTeTAd+zuJOAfaqFsaxSdIC5+Aq6SiE0kBDQLVQxAA15qz7SlrYU?=
- =?us-ascii?Q?7SM+4gyaAKv8keXwzKYXcu0PYmCd/Zm8cwETygzUVzDdAeZtetT9H6jk9SBt?=
- =?us-ascii?Q?VZlAZrVDyOjn602nDQ1ibcCc5MtOcP2AX81e2QrGaYozQNIJg2CcL5Hd5Av6?=
- =?us-ascii?Q?mftQQujUaRUlOEHICBK+k2gYXbylSaiVRM+NViUpDKB/23QEUdkJOtXASlxf?=
- =?us-ascii?Q?iMbgGJhhNXgeYMotHiCIbykUKnLcvfv7zN3cH5qWlqkGCwJqpxJjUtSq1ZFG?=
- =?us-ascii?Q?CpLqu6sdNuzyab61uLa9dVw8vSY8NJnpyH55rz7VfTQ1TxQzmQ6c8XNvkNSB?=
- =?us-ascii?Q?07AXzsR1JD1d/lwmUvYzx7uWhbU0dG8jLcTgWPe3FZHlzYy5K+k5XiMeS+ZF?=
- =?us-ascii?Q?R7QClTTBUlmBKzI+lM8Ilo0+CD0j6uB0srUtUnGbbkanbj5Gaw+/wHiOwfFS?=
- =?us-ascii?Q?k/w09K54kAs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gG3ugECSVEndciSREFpzIZwY6MIPQhDpa/t02ocUNY7mrXpUw5QPaJLFMF0p?=
- =?us-ascii?Q?0WKABWLn1ZZEECplRL09DP3Nm0lS3KYh3ILurWXkoxzz2tQ/1HMCoO+c1PdI?=
- =?us-ascii?Q?LMrkMm9CM+17rMsgyXQThDo9I4ep58CWD5N2moSgGrdJyVz/GhzwLzmSLj49?=
- =?us-ascii?Q?59C1vbtIQ6Lg76SIGValfusWxn5+HgncEKcCmp02nxbHxJ8PEJM7HKBe8yL3?=
- =?us-ascii?Q?w46AzvjXdGKJKlTEEeoArglak9hrH56RWt4BKhOlhCNao5WxGUDFaWN8ytUJ?=
- =?us-ascii?Q?o/lmTic1d344qMLw/2EdaZupDc9wr35g0r8L9KOyecbLMdhbEyxmwLV0Rw+2?=
- =?us-ascii?Q?mxjjX0iEWx4q7wEHUVXWM/V0E5bEnJY42+kh+jqfC3/44GTU+KS2f5wckb7W?=
- =?us-ascii?Q?NDf7qhM2MvBd06SNmbaVgw9+Jvsx6Eh54cPFtpQVlStzQZf1QLZzbxawsGxZ?=
- =?us-ascii?Q?esmrNijn2iWqtkQIvCcTnFVYThfmDT9mvBVpBJl+ua1O1Z2itGTHRFN15Cfn?=
- =?us-ascii?Q?yzNO0u5cvo6FS88jHOPkGyHMzrOgY79Ff3iC3+RPm4pkbWX2p19KWDDV8azM?=
- =?us-ascii?Q?TyHULwHUqYefPeDdoPmaKL+V2t9hKTPhhh4KeHvR0butHvWq4qkjqypGLPyA?=
- =?us-ascii?Q?1ZbMIvHpUNxLtB3sE1nlGgj8X2Metb2ScJ4tLooGmm7Fc0jyMrvWaNfpbBtA?=
- =?us-ascii?Q?BixEckf2fAqGeT04QLaXFxgUS9noSd9/96+6pIBh6uI8dG7VAdFgpP7F/uk4?=
- =?us-ascii?Q?GVFb2fuYHmJBPeJpIOtTS8fb3hJm620d5pBouLHjv1/ICWPKz3Bl92R/zhdf?=
- =?us-ascii?Q?OUYQndiDTP340JZaElBr1Y5ycx5HWSGXTr3L1qB9tdnIs/hhkeeGH7y5OHVw?=
- =?us-ascii?Q?6xNSmBJZXZHYV7qBx1l1/qNowsaedAAy+lrS7MpVrD8d7uwu2KIHNnmyzbEo?=
- =?us-ascii?Q?mRNHsY2F40jBFAnXVaK0fjRXv864uZ/Jspvn97JlCkXCb6/epCAOQBPsTzu4?=
- =?us-ascii?Q?sNp1qKZvISaL5jmruu7TXVBxZqAKm1V2FKw9EIDJq1odKmk7jB6tX9UnvdD0?=
- =?us-ascii?Q?/Ps148OHmd4MfKuHabIHFgPovpEVsHHQ66+XqeiahiTgMWd71jS5DF+Pu1YK?=
- =?us-ascii?Q?kBdCMiri3wd5kUb+J912KBqKzZElHiwZJtFIW2epPaEAdHBj84QVcY7GH4rZ?=
- =?us-ascii?Q?lSEBp5WyxgLxf7H4S69/e+1CI1ADGcFFocQJfM+2T30Rvkj/yxUMvsSZob3m?=
- =?us-ascii?Q?IVxu5rYIL15140ZN3zWeTFz7dTEaffmXiS2ZFff7aPt03m9cg3FU2w9bOKzH?=
- =?us-ascii?Q?AosZh2PRJm0pZcjK7+xO20O3ZXe9VIj79oL4AbnVTpUGmUsqHm8O1+4zVwVQ?=
- =?us-ascii?Q?lJettG0qPqLzKP4G7DEKjlPHbXFliHXNww3eto3KryNB8DbjDZNFGAHLnNLX?=
- =?us-ascii?Q?BaDMe/OLTWWS37q9r9bMd+tVjIlZTNfgQHpsnnyg2hkz2F3NTe1myokCVdkW?=
- =?us-ascii?Q?YuBOvN5pgbe0FQASciHR/3RpM5txkqpIOdUuxcwXgHAgVk8NV+GqY7dF+PP/?=
- =?us-ascii?Q?i2aDs8wr3fOPDFVCPt+JRFvl5DV5B0RhZIWZ5fyr?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd53e9a4-9264-4b21-cf24-08ddaa846688
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 14:12:59.2339
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eNT2f1hSFShGxZflLGr3eOX1unM2SlPxj1JVlI6XcqlKGy6UZQB0uDe8TM8a71+h
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5939
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 13, 2025 at 09:41:08AM -0400, Peter Xu wrote:
-> Only mips and loongarch implemented this API, however what it does was
-> checking against stack overflow for either len or addr.  That's already
-> done in arch's arch_get_unmapped_area*() functions, hence not needed.
+On Fri, 13 Jun 2025 15:37:40 +0200
+David Hildenbrand <david@redhat.com> wrote:
+
+> On 13.06.25 08:29, lizhe.67@bytedance.com wrote:
+> > On Thu, 12 Jun 2025 16:32:39 -0600, alex.williamson@redhat.com wrote:
+> >   
+> >>>   drivers/vfio/vfio_iommu_type1.c | 53 +++++++++++++++++++++++++--------
+> >>>   1 file changed, 41 insertions(+), 12 deletions(-)
+> >>>
+> >>> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> >>> index 28ee4b8d39ae..2f6c0074d7b3 100644
+> >>> --- a/drivers/vfio/vfio_iommu_type1.c
+> >>> +++ b/drivers/vfio/vfio_iommu_type1.c
+> >>> @@ -469,17 +469,28 @@ static bool is_invalid_reserved_pfn(unsigned long pfn)
+> >>>   	return true;
+> >>>   }
+> >>>   
+> >>> -static int put_pfn(unsigned long pfn, int prot)
+> >>> +static inline void _put_pfns(struct page *page, int npages, int prot)
+> >>>   {
+> >>> -	if (!is_invalid_reserved_pfn(pfn)) {
+> >>> -		struct page *page = pfn_to_page(pfn);
+> >>> +	unpin_user_page_range_dirty_lock(page, npages, prot & IOMMU_WRITE);
+> >>> +}
+> >>>   
+> >>> -		unpin_user_pages_dirty_lock(&page, 1, prot & IOMMU_WRITE);
+> >>> -		return 1;
+> >>> +/*
+> >>> + * The caller must ensure that these npages PFNs belong to the same folio.
+> >>> + */
+> >>> +static inline int put_pfns(unsigned long pfn, int npages, int prot)
+> >>> +{
+> >>> +	if (!is_invalid_reserved_pfn(pfn)) {
+> >>> +		_put_pfns(pfn_to_page(pfn), npages, prot);
+> >>> +		return npages;
+> >>>   	}
+> >>>   	return 0;
+> >>>   }
+> >>>   
+> >>> +static inline int put_pfn(unsigned long pfn, int prot)
+> >>> +{
+> >>> +	return put_pfns(pfn, 1, prot);
+> >>> +}
+> >>> +
+> >>>   #define VFIO_BATCH_MAX_CAPACITY (PAGE_SIZE / sizeof(struct page *))
+> >>>   
+> >>>   static void __vfio_batch_init(struct vfio_batch *batch, bool single)
+> >>> @@ -805,15 +816,33 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+> >>>   				    unsigned long pfn, unsigned long npage,
+> >>>   				    bool do_accounting)
+> >>>   {
+> >>> -	long unlocked = 0, locked = 0;
+> >>> -	long i;
+> >>> +	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
+> >>>   
+> >>> -	for (i = 0; i < npage; i++, iova += PAGE_SIZE) {
+> >>> -		if (put_pfn(pfn++, dma->prot)) {
+> >>> -			unlocked++;
+> >>> -			if (vfio_find_vpfn(dma, iova))
+> >>> -				locked++;
+> >>> +	while (npage) {
+> >>> +		struct folio *folio;
+> >>> +		struct page *page;
+> >>> +		long step = 1;
+> >>> +
+> >>> +		if (is_invalid_reserved_pfn(pfn))
+> >>> +			goto next;
+> >>> +
+> >>> +		page = pfn_to_page(pfn);
+> >>> +		folio = page_folio(page);
+> >>> +
+> >>> +		if (!folio_test_large(folio)) {
+> >>> +			_put_pfns(page, 1, dma->prot);
+> >>> +		} else {
+> >>> +			step = min_t(long, npage,
+> >>> +				folio_nr_pages(folio) -
+> >>> +				folio_page_idx(folio, page));
+> >>> +			_put_pfns(page, step, dma->prot);
+> >>>   		}
+> >>> +
+> >>> +		unlocked += step;
+> >>> +next:  
+> >>
+> >> Usage of @step is inconsistent, goto isn't really necessary either, how
+> >> about:
+> >>
+> >> 	while (npage) {
+> >> 		unsigned long step = 1;
+> >>
+> >> 		if (!is_invalid_reserved_pfn(pfn)) {
+> >> 			struct page *page = pfn_to_page(pfn);
+> >> 			struct folio *folio = page_folio(page);
+> >> 			long nr_pages = folio_nr_pages(folio);
+> >>
+> >> 			if (nr_pages > 1)
+> >> 				step = min_t(long, npage,
+> >> 					nr_pages -
+> >> 					folio_page_idx(folio, page));
+> >>
+> >> 			_put_pfns(page, step, dma->prot);
+> >> 			unlocked += step;
+> >> 		}
+> >>  
+> > 
+> > That's great. This implementation is much better.
+> > 
+> > I'm a bit uncertain about the best type to use for the 'step'
+> > variable here. I've been trying to keep things consistent with the
+> > put_pfn() function, so I set the type of the second parameter in
+> > _put_pfns() to 'int'(we pass 'step' as the second argument to
+> > _put_pfns()).
+> > 
+> > Using unsigned long for 'step' should definitely work here, as the
+> > number of pages in a large folio currently falls within the range
+> > that can be represented by an int. However, there is still a
+> > potential risk of truncation that we need to be mindful of.
+> >   
+> >>> +		pfn += step;
+> >>> +		iova += PAGE_SIZE * step;
+> >>> +		npage -= step;
+> >>>   	}
+> >>>   
+> >>>   	if (do_accounting)  
+> >>
+> >> AIUI, the idea is that we know we have npage contiguous pfns and we
+> >> currently test invalid/reserved, call pfn_to_page(), call
+> >> unpin_user_pages_dirty_lock(), and test vpfn for each individually.
+> >>
+> >> This instead wants to batch the vpfn accounted pfns using the range
+> >> helper added for the mapping patch,  
+> > 
+> > Yes. We use vpfn_pages() just to track the locked pages.
+> >   
+> >> infer that continuous pfns have the
+> >> same invalid/reserved state, the pages are sequential, and that we can
+> >> use the end of the folio to mark any inflections in those assumptions
+> >> otherwise.  Do I have that correct?  
+> > 
+> > Yes. I think we're definitely on the same page here.
+> >   
+> >> I think this could be split into two patches, one simply batching the
+> >> vpfn accounting and the next introducing the folio dependency.  The
+> >> contributions of each to the overall performance improvement would be
+> >> interesting.  
+> > 
+> > I've made an initial attempt, and here are the two patches after
+> > splitting them up.
+> > 
+> > 1. batch-vpfn-accounting-patch:
+> > 
+> > diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> > index 28ee4b8d39ae..c8ddcee5aa68 100644
+> > --- a/drivers/vfio/vfio_iommu_type1.c
+> > +++ b/drivers/vfio/vfio_iommu_type1.c
+> > @@ -805,16 +805,12 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+> >   				    unsigned long pfn, unsigned long npage,
+> >   				    bool do_accounting)
+> >   {
+> > -	long unlocked = 0, locked = 0;
+> > +	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
+> >   	long i;
+> >   
+> > -	for (i = 0; i < npage; i++, iova += PAGE_SIZE) {
+> > -		if (put_pfn(pfn++, dma->prot)) {
+> > +	for (i = 0; i < npage; i++, iova += PAGE_SIZE)
+> > +		if (put_pfn(pfn++, dma->prot))
+> >   			unlocked++;
+> > -			if (vfio_find_vpfn(dma, iova))
+> > -				locked++;
+> > -		}
+> > -	}
+> >   
+> >   	if (do_accounting)
+> >   		vfio_lock_acct(dma, locked - unlocked, true);
+> > -----------------
+> > 
+> > 2. large-folio-optimization-patch:
+> > 
+> > diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> > index c8ddcee5aa68..48c2ba4ba4eb 100644
+> > --- a/drivers/vfio/vfio_iommu_type1.c
+> > +++ b/drivers/vfio/vfio_iommu_type1.c
+> > @@ -469,17 +469,28 @@ static bool is_invalid_reserved_pfn(unsigned long pfn)
+> >   	return true;
+> >   }
+> >   
+> > -static int put_pfn(unsigned long pfn, int prot)
+> > +static inline void _put_pfns(struct page *page, int npages, int prot)
+> >   {
+> > -	if (!is_invalid_reserved_pfn(pfn)) {
+> > -		struct page *page = pfn_to_page(pfn);
+> > +	unpin_user_page_range_dirty_lock(page, npages, prot & IOMMU_WRITE);
+> > +}
+> >   
+> > -		unpin_user_pages_dirty_lock(&page, 1, prot & IOMMU_WRITE);
+> > -		return 1;
+> > +/*
+> > + * The caller must ensure that these npages PFNs belong to the same folio.
+> > + */
+> > +static inline int put_pfns(unsigned long pfn, int npages, int prot)
+> > +{
+> > +	if (!is_invalid_reserved_pfn(pfn)) {
+> > +		_put_pfns(pfn_to_page(pfn), npages, prot);
+> > +		return npages;
+> >   	}
+> >   	return 0;
+> >   }
+> >   
+> > +static inline int put_pfn(unsigned long pfn, int prot)
+> > +{
+> > +	return put_pfns(pfn, 1, prot);
+> > +}
+> > +
+> >   #define VFIO_BATCH_MAX_CAPACITY (PAGE_SIZE / sizeof(struct page *))
+> >   
+> >   static void __vfio_batch_init(struct vfio_batch *batch, bool single)
+> > @@ -806,11 +817,28 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+> >   				    bool do_accounting)
+> >   {
+> >   	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
+> > -	long i;
+> >   
+> > -	for (i = 0; i < npage; i++, iova += PAGE_SIZE)
+> > -		if (put_pfn(pfn++, dma->prot))
+> > -			unlocked++;
+> > +	while (npage) {
+> > +		long step = 1;
+> > +
+> > +		if (!is_invalid_reserved_pfn(pfn)) {
+> > +			struct page *page = pfn_to_page(pfn);
+> > +			struct folio *folio = page_folio(page);
+> > +			long nr_pages = folio_nr_pages(folio);
+> > +
+> > +			if (nr_pages > 1)
+> > +				step = min_t(long, npage,
+> > +					nr_pages -
+> > +					folio_page_idx(folio, page));
+> > +
+> > +			_put_pfns(page, step, dma->prot);  
 > 
-> It means the whole API is pretty much obsolete at least now, remove it
-> completely.
+> I'm confused, why do we batch pages by looking at the folio, to then 
+> pass the pages into unpin_user_page_range_dirty_lock?
 > 
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: loongarch@lists.linux.dev
-> Cc: linux-mips@vger.kernel.org
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  arch/loongarch/include/asm/hugetlb.h | 14 --------------
->  arch/mips/include/asm/hugetlb.h      | 14 --------------
->  fs/hugetlbfs/inode.c                 |  8 ++------
->  include/asm-generic/hugetlb.h        |  8 --------
->  include/linux/hugetlb.h              |  6 ------
->  5 files changed, 2 insertions(+), 48 deletions(-)
+> Why does the folio relationship matter at all here?
+> 
+> Aren't we making the same mistake that we are jumping over pages we 
+> shouldn't be jumping over, because we assume they belong to that folio?
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+That's my concern as well.  On the mapping side we had an array of
+pages from gup and we tested each page in the gup array relative to the
+folio pages.  I think that's because the gup array could have
+non-sequential pages, but aiui the folio should have sequential
+pages(?).  Here I think we're trying to assume that sequential pfns
+results in sequential pages and folios should have sequential pages, so
+the folio just gives us a point to look for changes in invalid/reserved.
 
-Jason
+Is that valid?  Thanks,
+
+Alex
+
