@@ -1,185 +1,129 @@
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
+Received: from mail-vs1-f74.google.com (mail-vs1-f74.google.com [209.85.217.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6275F18A6DF
-	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 20:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C32E2475E8
+	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 20:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749846200; cv=none; b=Vz4fXyiXWRbml33ODWrr5NG1f5L93E6sN9DBd74hwZ2RinRPVpHsSFTmfO22/04t6SpQdqjoLdm9hUSOiFAJ3ctHQHVWO11Zp5aTXQUyj2/oZZI0Gm9ATmV23d8a++Cz+Lx2fovxSmsHNX7u67ErbAtWucbrs+p61Anc4ECogiU=
+	t=1749846201; cv=none; b=H9Vp5+Ac70vk1nuehpG7RRQrrNrGT9oj4uYYDmzaq65cOUbFmiy4vVr8U+zqDzRr8PK9NL8q6cxctrsccRsp3Uu/gc97gXaEOrZK1qC72Ca4CgHyXLJGVASGQijRfqNZ8270YYAwh5X5oFPe9Jek6fMEbetJ3cVcCDwadkqcOIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749846200; c=relaxed/simple;
-	bh=8gmILVzYXPmjjGUIsH9eWGR9Rra1qOYhb4nQNPz0gc4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=N4Yv6C24oIj0FCYIo5hsdlI8MxlJ1mUlanCjXOwc7HyHFK9UByr8j3EjSRhYqd88Jd2/23jAJ/KO6MWCsJcxFre7KIcciEGrkhXZ06AdXGosUWtOYJG6K6NidSU9z7pUrOJCVww48HO82aPyb//QtX0HPW7EIDGsruXK6lgokh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sCpkmZ51; arc=none smtp.client-ip=209.85.219.73
+	s=arc-20240116; t=1749846201; c=relaxed/simple;
+	bh=/C++yCmsyoQoAQ/JFzedGKuseM7Tk6mR7YxlYpQd9Z4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=E85Npf2VBF2hYqguBmHn6NN7IzI6Oy5JhaVa8ZDClDxCJorxaqqCJD4d7UTJ1HqXgr8qK/IyVOfpGjRqLa+80vqB4+QovioNtd7ngPdfZfVkQYxZiCHy1zsYtJzvjp/qjI1x76GIcLE73tXJMwWJM3tEs5iGycYguW6qdvO7pbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DI7O/op7; arc=none smtp.client-ip=209.85.217.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sCpkmZ51"
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-6fad5f1e70fso48875286d6.0
-        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 13:23:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DI7O/op7"
+Received: by mail-vs1-f74.google.com with SMTP id ada2fe7eead31-4e7037aeccbso298674137.0
+        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 13:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749846197; x=1750450997; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DX/xHz+tMRHmnLBdQrk8X6gYCRIzZ4iFb/dOIXUWY1s=;
-        b=sCpkmZ51YQUmA7hCWuiTLTZpm7VwgS/G1bhJlh4SyhljRF8hUiiJqq3KN4+tnTruTu
-         qZC8az7MCHBSbuPfbvHOoYeDhXkbhs2bzYkaFe1p7vBPYAioWjIgwJC7mWc5cODtgPPO
-         nLnSytTgumt5PGdhTz8bLSQBk4NX32z3hu+ii/JDZwbfP5DSoQqbVk6XEn0vOts3bljg
-         hSWp/7lqjgZS4inp5lh2NWL7dIB3e4km5ojbIkQgBt/spQMVXG3eBhJzxwkCVyWD/vis
-         znrf/SXsGouSAHGbU/vx/0gqAPWl7fJ7sa+HgvPpyg8CSrRQakzBwsK1XU7jJZefaiAw
-         ig8w==
+        d=google.com; s=20230601; t=1749846199; x=1750450999; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3qYYxlJUSy6v2zDI8TzsrBHHnn7rC00X6zn+VLpi9Eg=;
+        b=DI7O/op7sJjmj4UgMKY+hqp50fD6y+yELUDSegFrlN9qVyfEZfmdCL6hYrQfz8Sed2
+         fmwULYVQvcIKMQTUHzjWNgBe2s1rlSyx3TthyGsZJpADqtS9epQMkfSacSDCUjqM83CY
+         Ag+JBDnBnuaFCBpGXZPpQkEaDOLvr8OkPxdF+wS6nOxvd5DRvsqBZyRW71DkjJX04sE2
+         ZKEw24bsj3fKmXTvE/Iglv6uzQ85LOtYYwXek8uuc/T4XySMDbCdfyIuQD/D/aGd5yoc
+         /Je0VXioyz1csfrJlJ5dycq2+c/dfU7xhrWK3Z8PFO3pCgIMCmuxwyHVxTr4OQyfryIb
+         RroQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749846197; x=1750450997;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DX/xHz+tMRHmnLBdQrk8X6gYCRIzZ4iFb/dOIXUWY1s=;
-        b=N6MrLHktD8Z6ShkNH2/4xLTqpFHMv7gosPvSgE7Y912NVv8yOtRsrwl4I8BgJOTDhv
-         TVU3F5yIyasTzSgmGIY/6zgWXVPxCbLYmbweFx12W+49SzpUlQTPu9MCIW02Aw+ZNyfP
-         FtRs/fRORYTrShOQpd3GqvJCKZm5wprQmeXIOjsd0Ii9gm20/lS26z4rua4jFR1AFvjV
-         0sISbS+wLLWwkko1JBSFqIhZ/dMV95QyqlqDzZTTlKNGXYojSZPSUlZPO0Ta4F6tBX1a
-         o3M+is2uLBIBdz0GDlh99IEyZj873H0Wkyffcme1ZA8G+grUoUiisyW4/j6CY9s+WOdE
-         7osw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzjjQLJLQirCER1kta/jzwutd8Q0gzlJI3FV2t2/0HgEVm/Sln1ZVI79f9BeclDBcIZRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4Or4eJn2R+rOtUCCOZO75ICZf4KanaA+wAH/cjAL17zMQy+nC
-	md0qHKDQE9n5mgCwweCY+0KNKhgAOjG9C5Fpz03wfyjUO8vpu+1ODWLmm/Y+2xCyxTpARbZ8CFq
-	BUQ2IyTYJqQTQtvCkDrzIlg==
-X-Google-Smtp-Source: AGHT+IHyGNtB7NefXVdv8iF+PBR2LESsvOZ54jrXgI5FfNPmf14/uKsjZFUZ5pZQkvN595I2eUBiQ9ycClKVNbdl
-X-Received: from qvbqm17.prod.google.com ([2002:a05:6214:5691:b0:6fa:ffa2:11b6])
+        d=1e100.net; s=20230601; t=1749846199; x=1750450999;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3qYYxlJUSy6v2zDI8TzsrBHHnn7rC00X6zn+VLpi9Eg=;
+        b=AtSfBYUgiTdM1V38V1oTKG4u6IO8/OKDf7ZvcirDx0qtV20nXt9FsPq73QNRgCv+uY
+         oRmNER4/WBa4J8a2Fydt1upKkzO6oOZb+0WqZ3jpW1n3YSeD1bMqPvhdnD2+lE+82wgg
+         qaNlThFNLpsCmQNLEOlEFzoKFvDOs8LnlAj6UnyRPWdIhqJpZ/283DY/OzDKF4QyELyx
+         GWpbuSaJLMcHX9oULTezri9Oymu/ujE9NmR02L/CLJon/JhZYXrcC6R5zdHN5OA1HCEg
+         1aSXiJ3YeyFojdiY50IARxw5q6A4br53qNoVR5tn4uUaAaC/fO94DQHSQB7naRFQv3cS
+         JhwA==
+X-Forwarded-Encrypted: i=1; AJvYcCVUwz+m07eLcAmL2FiBFEADSUbo6PaB6YTFEFSEQ4l/lSWd/zJZc2UuIvEQ6RgE0eaYLoo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9OrixWfunNpxDDcL0q3StWxT1XlfPQyMgh527Z1/+sj7CynmT
+	f+jGVitn2k02HqThtInTnz6hR5PCMXmWR0BxhsQ4sag6MO1FEvr8xek9H7oyuWZutgm2HEZP1Df
+	VKyl89+XWoyAwpAVpJaFXMQ==
+X-Google-Smtp-Source: AGHT+IFVJjORcfffmUQKREgb2IlI7UakEaV5K18PSnlHkSke00VMT7vSvDgcnELg5b1l3wOKG9x8pR03ScjPXHET
+X-Received: from vsbia14.prod.google.com ([2002:a05:6102:4b0e:b0:4e7:edf6:29b2])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:434a:b0:6fa:c653:5da8 with SMTP id 6a1803df08f44-6fb473f343dmr14454936d6.0.1749846197151;
- Fri, 13 Jun 2025 13:23:17 -0700 (PDT)
-Date: Fri, 13 Jun 2025 20:23:07 +0000
+ 2002:a05:6102:370c:b0:4df:8259:eab with SMTP id ada2fe7eead31-4e7f63c60ebmr1243215137.19.1749846199123;
+ Fri, 13 Jun 2025 13:23:19 -0700 (PDT)
+Date: Fri, 13 Jun 2025 20:23:09 +0000
+In-Reply-To: <20250613202315.2790592-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20250613202315.2790592-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.692.g299adb8693-goog
-Message-ID: <20250613202315.2790592-1-jthoughton@google.com>
-Subject: [PATCH v4 0/7] KVM: x86/mmu: Run TDP MMU NX huge page recovery under
- MMU read lock
+Message-ID: <20250613202315.2790592-3-jthoughton@google.com>
+Subject: [PATCH v4 2/7] KVM: x86/mmu: Rename kvm_tdp_mmu_zap_sp() to better
+ indicate its purpose
 From: James Houghton <jthoughton@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: Vipin Sharma <vipinsh@google.com>, David Matlack <dmatlack@google.com>, 
 	James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Sean/Paolo,
+From: Vipin Sharma <vipinsh@google.com>
 
-I'm finishing off Vipin's NX huge page recovery optimization for the TDP
-MMU from last year.
+kvm_tdp_mmu_zap_sp() is only used for NX huge page recovery, so rename
+it to kvm_tdp_mmu_zap_possible_nx_huge_page(). In a future commit, this
+function will be changed to include logic specific to NX huge page
+recovery.
 
-NX huge page recovery can cause guest performance jitter, originally
-noticed with network tests in Windows guests. Please see Vipin's earlier
-performance results[1]. Below is some new data I have collected with the
-nx_huge_pages_perf_test that I've included with this series.
+Signed-off-by: Vipin Sharma <vipinsh@google.com>
+Signed-off-by: James Houghton <jthoughton@google.com>
+---
+ arch/x86/kvm/mmu/mmu.c     | 2 +-
+ arch/x86/kvm/mmu/tdp_mmu.c | 3 ++-
+ arch/x86/kvm/mmu/tdp_mmu.h | 3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-The NX huge page recovery for the shadow MMU is still done under the MMU
-write lock, but with the TDP MMU, we can instead do it under the MMU
-read lock by:
-
-1. Tracking the possible NX huge pages for the two MMUs separately
-   (patch 1).
-2. Updating the NX huge page recovery routine for the TDP MMU to
-    - zap SPTEs atomically, and
-    - grab tdp_mmu_pages_lock to iterate over the NX huge page list
-   (patch 3).
-
-I threw in patch 4 because it seems harmless and closer to the "right"
-thing to do. Feel free to drop it if you don't agree with me. :)
-
-I'm also grabbing David's execute_perf_test[3] while I'm at it. It was
-dropped before simply because it didn't apply at the time. David's test
-works well as a stress test for NX huge page recovery when NX huge page
-recovery is tuned to be very aggressive.
-
-Changes since v3[2]:
-- Dropped the move of the `sp->nx_huge_page_disallowed` check to outside
-  of the tdp_mmu_pages_lock.
-- Implemented Sean's array suggestion for `possible_nx_huge_pages`.
-- Implemented some other cleanup suggestions from Sean.
-- Made shadow MMU not take the RCU lock in NX huge page recovery.
-- Added a selftest for measuring jitter.
-- Added David's execute_perf_test[3].
-
--- Results
-$ cat /sys/module/kvm/parameters/nx_huge_pages_recovery_period_ms
-100
-$ cat /sys/module/kvm/parameters/nx_huge_pages_recovery_ratio
-4
-
-$ ./nx_huge_pages_perf_test -b 16G -s anonymous_hugetlb_1gb
-[Unpatched] Max fault latency: 8496724 cycles
-[Unpatched] Max fault latency: 8404426 cycles
-[ Patched ] Max fault latency: 49418 cycles
-[ Patched ] Max fault latency: 51948 cycles
-
-$ ./nx_huge_pages_perf_test -b 16G -s anonymous_hugetlb_2mb
-[Unpatched] Max fault latency: 5320740 cycles
-[Unpatched] Max fault latency: 5384554 cycles
-[ Patched ] Max fault latency: 50052 cycles
-[ Patched ] Max fault latency: 103774 cycles
-
-$ ./nx_huge_pages_perf_test -b 16G -s anonymous_thp
-[Unpatched] Max fault latency: 7625022 cycles
-[Unpatched] Max fault latency: 6339934 cycles
-[ Patched ] Max fault latency: 107976 cycles
-[ Patched ] Max fault latency: 108386 cycles
-
-$ ./nx_huge_pages_perf_test -b 16G -s anonymous
-[Unpatched] Max fault latency: 143036 cycles
-[Unpatched] Max fault latency: 287444 cycles
-[ Patched ] Max fault latency: 274626 cycles
-[ Patched ] Max fault latency: 303984 cycles
-
-We can see about a 100x decrease in maximum fault latency for both
-2M pages and 1G pages. This test is only timing writes to unmapped
-pages that are not themselves currently undergoing NX huge page
-recovery. The test only produces interesting results when NX huge page
-recovery is actually occurring, so the parameters are tuned to make it
-very likely for NX huge page recovery to occur in the middle of the
-test.
-
-Based on latest kvm/next.
-
-[1]: https://lore.kernel.org/kvm/20240906204515.3276696-3-vipinsh@google.com/
-[2]: https://lore.kernel.org/kvm/20240906204515.3276696-1-vipinsh@google.com/
-[3]: https://lore.kernel.org/kvm/20221109185905.486172-2-dmatlack@google.com/
-
-David Matlack (1):
-  KVM: selftests: Introduce a selftest to measure execution performance
-
-James Houghton (3):
-  KVM: x86/mmu: Only grab RCU lock for nx hugepage recovery for TDP MMU
-  KVM: selftests: Provide extra mmap flags in vm_mem_add()
-  KVM: selftests: Add an NX huge pages jitter test
-
-Vipin Sharma (3):
-  KVM: x86/mmu: Track TDP MMU NX huge pages separately
-  KVM: x86/mmu: Rename kvm_tdp_mmu_zap_sp() to better indicate its
-    purpose
-  KVM: x86/mmu: Recover TDP MMU NX huge pages using MMU read lock
-
- arch/x86/include/asm/kvm_host.h               |  39 ++-
- arch/x86/kvm/mmu/mmu.c                        | 175 +++++++++-----
- arch/x86/kvm/mmu/mmu_internal.h               |   7 +-
- arch/x86/kvm/mmu/tdp_mmu.c                    |  49 +++-
- arch/x86/kvm/mmu/tdp_mmu.h                    |   3 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   2 +
- .../testing/selftests/kvm/execute_perf_test.c | 199 ++++++++++++++++
- .../testing/selftests/kvm/include/kvm_util.h  |   3 +-
- .../testing/selftests/kvm/include/memstress.h |   4 +
- tools/testing/selftests/kvm/lib/kvm_util.c    |  15 +-
- tools/testing/selftests/kvm/lib/memstress.c   |  25 +-
- .../kvm/x86/nx_huge_pages_perf_test.c         | 223 ++++++++++++++++++
- .../kvm/x86/private_mem_conversions_test.c    |   2 +-
- 13 files changed, 646 insertions(+), 100 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/execute_perf_test.c
- create mode 100644 tools/testing/selftests/kvm/x86/nx_huge_pages_perf_test.c
-
-
-base-commit: 8046d29dde17002523f94d3e6e0ebe486ce52166
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index f44d7f3acc179..b074f7bb5cc58 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7607,7 +7607,7 @@ static void kvm_recover_nx_huge_pages(struct kvm *kvm,
+ 		if (slot && kvm_slot_dirty_track_enabled(slot))
+ 			unaccount_nx_huge_page(kvm, sp);
+ 		else if (mmu_type == KVM_TDP_MMU)
+-			flush |= kvm_tdp_mmu_zap_sp(kvm, sp);
++			flush |= kvm_tdp_mmu_zap_possible_nx_huge_page(kvm, sp);
+ 		else
+ 			kvm_mmu_prepare_zap_page(kvm, sp, &invalid_list);
+ 		WARN_ON_ONCE(sp->nx_huge_page_disallowed);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 48b070f9f4e13..19907eb04a9c4 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -925,7 +925,8 @@ static void tdp_mmu_zap_root(struct kvm *kvm, struct kvm_mmu_page *root,
+ 	rcu_read_unlock();
+ }
+ 
+-bool kvm_tdp_mmu_zap_sp(struct kvm *kvm, struct kvm_mmu_page *sp)
++bool kvm_tdp_mmu_zap_possible_nx_huge_page(struct kvm *kvm,
++					   struct kvm_mmu_page *sp)
+ {
+ 	u64 old_spte;
+ 
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
+index 52acf99d40a00..bd62977c9199e 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -64,7 +64,8 @@ static inline struct kvm_mmu_page *tdp_mmu_get_root(struct kvm_vcpu *vcpu,
+ }
+ 
+ bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush);
+-bool kvm_tdp_mmu_zap_sp(struct kvm *kvm, struct kvm_mmu_page *sp);
++bool kvm_tdp_mmu_zap_possible_nx_huge_page(struct kvm *kvm,
++					   struct kvm_mmu_page *sp);
+ void kvm_tdp_mmu_zap_all(struct kvm *kvm);
+ void kvm_tdp_mmu_invalidate_roots(struct kvm *kvm,
+ 				  enum kvm_tdp_mmu_root_types root_types);
 -- 
 2.50.0.rc2.692.g299adb8693-goog
 
