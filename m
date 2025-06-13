@@ -1,55 +1,55 @@
-Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
+Received: from mail-il1-f202.google.com (mail-il1-f202.google.com [209.85.166.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79469213E7D
-	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 15:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD691E3DCF
+	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 15:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829969; cv=none; b=c9oNrFPQ1lwMJeV9kc79CnZW/stKRrcYafxWxk9Jb3PdVDtZv1xstWpZXqoWAgKHaCo8Q3/5jJ4psUTXuEqO59DV8KXpvtb7lIjp3/O/dwFSwQOGvaWenaeQiOG2dxUR3vwFiDg1pjCw5PqLmmdqXHgzyXnsPuK3OVaJ/rGrTm4=
+	t=1749829978; cv=none; b=q7OIy8hiQx16RYXBuN9WnWQ+cvjHO9WE0tnMpOqA2w01JQQaK5EVmp+rPggJO/xzPP4DpxIdIEI3jv3uzLCIZ+7lzZQuXTQmUwHp6Nkec2kVvfuHyTTOxu5mktgM+p1zRDgCSe4dyFYA2E30IycVptLfq0Yttz+Yvv4h0ZjrBJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829969; c=relaxed/simple;
-	bh=eXRtX/UUgQvo3bBh+4EiHeDAuA119SvPlV2LgJLgsjg=;
+	s=arc-20240116; t=1749829978; c=relaxed/simple;
+	bh=vxkacs+qUolHE8ofOSXElM6uFZzrXDwx3yDd3lw+TdE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nZTzi9EUlaws/Fw/HhaGu0TfoykTtpK3s8rwjn3E1bokws9wgsRBK+6I9PWnrCn00WnRlJ16gAeMdcptFofG2P8fLmn/E6C9yeIMCl1x55wxFJ/sm/Y2Umj2D5QZ1oNVYPeQJbHYwoxYob3bX/V9VR+4OQ9Uzq4+XaYQkenUCtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YPQISV+l; arc=none smtp.client-ip=209.85.210.74
+	 To:Cc:Content-Type; b=oTe8Wm9LKWzDToF0m4+vMuVeKH+a+qouPqTwM3YfBizduRqcF1Q5uV1sYy7mtGkMig/vK9zNkZb90pnxwysiGThFacUaI/IaUvnZSyJfDbb4Itiw0y2yNEQvn7sq+mxJQeyXNrR28dwWF76WXcXs+c/U5PGDc9il+YIj0Hi0Rc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kg645UMD; arc=none smtp.client-ip=209.85.166.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YPQISV+l"
-Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-72bc82106cbso1876730a34.0
-        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 08:52:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kg645UMD"
+Received: by mail-il1-f202.google.com with SMTP id e9e14a558f8ab-3ddf66427f8so39296035ab.2
+        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 08:52:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749829966; x=1750434766; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749829976; x=1750434776; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1K2XaU3tNN3z0G/Brd+aKIcwvKoH6QYgKOpK8mTmcUQ=;
-        b=YPQISV+lMf46y5Yq0z476aTT2q6PqOxH5jStvfs11XErOdi3staJ7lc1GS1sKJAX1d
-         dj9Y7vnjmiHnAPZcHGjFGTc//XhMmy/y5qiWqoRKhHlYx6lzS/cE/tsQ+WyRE05rLKxU
-         J028scfHNl1Vun/uySVEhxTfGwxYRXj3xUiGtJF+FTHIyB+QWwtAq4J/ORwcWLQYUHLR
-         qzbpBdDDmCgVBkLZvboK33ZBdZomnM2MgxB1Yksv24UjQb9E8z8ayQxMBYvmZi5I1Pur
-         JSzp+wAu85VIfgUyjxI25kGgrRYgGcj924MjsGS6OQh//wGtq27ncoIkHQe5Vm2Qwynu
-         xB2Q==
+        bh=OFF6SOp13MfI+rKYc7dCezNEaDk/WUOkhnG6IJMmr80=;
+        b=Kg645UMD5Al2JdimJtX+fWBrF7WLVF+k6Od+MRlWVrWRXRUlFv6/C0HbftavRly7TP
+         pt28jSaVtEWQWSKk6ewNBj0x8k7a41xeak2cP5QSfOs+NyLUiFkKE0la80pIH7SoEplI
+         TcwHC4J4iKb0Hkj8ZcKH3t/l8WnIcqCQ4LXJVcmIIPUf9bhbuLAp7SLxNrq31qwvnTW7
+         ZM4DVDgbTTdt53eu5XGNMd8scqs7QKeDnnemLXVa+N2ntPNTSrpTjXWa2BklvzMTerHF
+         UYvkjuwM7ZMgD2651kDfj2+Am6yDuFX6120bgaCnyQvvqyTHC/dTtpXtMralEAPy/xP4
+         GGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749829966; x=1750434766;
+        d=1e100.net; s=20230601; t=1749829976; x=1750434776;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1K2XaU3tNN3z0G/Brd+aKIcwvKoH6QYgKOpK8mTmcUQ=;
-        b=pDL45UDHpoVH5nNta1wXqLCc3f789yUrTImqtlyTUcfgSGt2j4FyK+JbcdBfeX502z
-         rSKNpXya0/o+SUVuheVJEZUiGWZMA4UhNmAxuP1Bnz1JoBgD48pdgbmuRUjwsu2nwXbt
-         m3nRaB1dqsdwUkod3pUyrnB80vd/Rw99NE/XvzSaeewBy2BMGyn+HCqPI6G9fMdpD5JM
-         /uIGb5jIDJhiW30IoVHgaeqIXLjn3pSDsXr5jl2FqVqBfMLmq9txjAyc466nSf+i9rQq
-         woL4hE3r0Pa9QLlg2t6Cnhh70cYmaiiV3u/Vk16WaGsow2KDp1dbG80fvNbuq/PT3aSC
-         wcCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKWu3jvfn0wjTtaxnE7aAbstT+FixI3gcfNhpMHdxpom1drWMzodVHvqAklUdwjETHY6A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNOMTE+P9/EepXRm9tGRbmxdjwt1BcD9OJPlaKSID0D1pUqaX9
-	nzUF2yKJTuRr7U6NFpjgNfWKftlZcybUzef3KqJgp35kxWCx9K0vIrVYg4thi5kmvj1vE0yD3XK
-	I/GLX+CpZIg==
-X-Google-Smtp-Source: AGHT+IHFbGJBseK+0NlITWxhqlLkXWlDYICLQM+zu92+pohfxizATwmXWeCDlmWgZ4GDVI5eahezZ/DYLRTe
-X-Received: from otbbu4.prod.google.com ([2002:a05:6830:d04:b0:72b:8185:e90e])
- (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6830:210d:b0:72b:9d5e:9456
- with SMTP id 46e09a7af769-73a36367352mr186163a34.13.1749829966723; Fri, 13
- Jun 2025 08:52:46 -0700 (PDT)
-Date: Fri, 13 Jun 2025 15:52:38 +0000
+        bh=OFF6SOp13MfI+rKYc7dCezNEaDk/WUOkhnG6IJMmr80=;
+        b=TG+x1g/ut0iudRbW7UinD8YduNdr5z5ELAmT77KXfvTLSH0jNkmpmd0PrpB482wbLQ
+         mhQ4/LwvnMj7JylaMaC1FPXZ2aQPdWNmpAypOgPA6HfSk7bI4aSpnrC+bqAV8VAidV37
+         Hoja6HXA8xTn1Zus8bBSIQxW42UOyDBUovtZ+z9ncYy/eAtgouOCVOvWlQgIMb5VRfcM
+         U41vIbjcLfzeEUCsr8oskCSEMqv8dwUwCyqzTnJawS/jdth2A9TYuwOljTa9/FekNd7W
+         J+hKyhFRWSRQqTrNbjjaKQcUIK0BGMso2kzJTpE/oC/LbZkg2im2XSNdSPRMIPzA7x0k
+         SjNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiv04QjaRXvRvEP7Myv05LZviiUnOV+P4kUEjRuL4hckm6RhqRQWQRFreM3LL9C3XK4lY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF5Xqly32p/0PDV89aLCQhPppQKw+EKPb7w/PDXeKIOMQXkUG5
+	b96pBb73Ge9kVIG8aiKpMOFTmyFczmcRUGLlWHArQGps0JdSHjJ7Tsc3b1oYlQgcyaMhNgiZxqB
+	WnCxLuIP29A==
+X-Google-Smtp-Source: AGHT+IG8T3q/TFMjMeVIYD6samTw89/uinTNnuWwzxHnuwndVMxgoAdLhGBoyVqCfis1o5KW9rTeoIB0iQbo
+X-Received: from oabkz22.prod.google.com ([2002:a05:6871:4096:b0:2bc:69a2:7ea5])
+ (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6870:a3c6:b0:2d6:667c:511f
+ with SMTP id 586e51a60fabf-2eaf05ca75amr171809fac.9.1749829964975; Fri, 13
+ Jun 2025 08:52:44 -0700 (PDT)
+Date: Fri, 13 Jun 2025 15:52:36 +0000
 In-Reply-To: <20250613155239.2029059-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250613155239.2029059-1-rananta@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.692.g299adb8693-goog
-Message-ID: <20250613155239.2029059-5-rananta@google.com>
-Subject: [PATCH v3 4/4] KVM: arm64: selftests: Add test for nASSGIcap attribute
+Message-ID: <20250613155239.2029059-3-rananta@google.com>
+Subject: [PATCH v3 2/4] KVM: arm64: vgic-v3: Consolidate MAINT_IRQ handling
 From: Raghavendra Rao Ananta <rananta@google.com>
 To: Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
 Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.com>, 
@@ -68,76 +68,123 @@ Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.co
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Extend vgic_init to test the nASSGIcap attribute, asserting that it is
-configurable (within reason) prior to initializing the VGIC.
-Additionally, check that userspace cannot set the attribute after the
-VGIC has been initialized.
+From: Oliver Upton <oliver.upton@linux.dev>
 
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+Consolidate the duplicated handling of the VGICv3 maintenance IRQ
+attribute as a regular GICv3 attribute, as it is neither a register nor
+a common attribute.
+
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
- tools/testing/selftests/kvm/arm64/vgic_init.c | 41 +++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 51 +++++++++++++--------------
+ 1 file changed, 25 insertions(+), 26 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/vgic_init.c b/tools/testing/selftests/kvm/arm64/vgic_init.c
-index b3b5fb0ff0a9..aaecba432dbc 100644
---- a/tools/testing/selftests/kvm/arm64/vgic_init.c
-+++ b/tools/testing/selftests/kvm/arm64/vgic_init.c
-@@ -675,6 +675,46 @@ static void test_v3_its_region(void)
- 	vm_gic_destroy(&v);
- }
- 
-+static void test_v3_nassgicap(void)
-+{
-+	struct kvm_vcpu *vcpus[NR_VCPUS];
-+	struct vm_gic vm;
-+	__u8 nassgicap;
-+	int ret;
-+
-+	vm = vm_gic_create_with_vcpus(KVM_DEV_TYPE_ARM_VGIC_V3, NR_VCPUS, vcpus);
-+	TEST_REQUIRE(!__kvm_has_device_attr(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+					    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap));
-+
-+	kvm_device_attr_get(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+			    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
-+	if (!nassgicap) {
-+		nassgicap = true;
-+		ret = __kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+					    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
-+		TEST_ASSERT(ret && errno == EINVAL,
-+			    "Enabled nASSGIcap even though it's unavailable");
-+	} else {
-+		nassgicap = false;
-+		kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
-+
-+		nassgicap = true;
-+		kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
-+	}
-+
-+	kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
-+			    KVM_DEV_ARM_VGIC_CTRL_INIT, NULL);
-+
-+	ret = __kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
-+				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
-+	TEST_ASSERT(ret && errno == EBUSY,
-+		    "Configured nASSGIcap after initializing the VGIC");
-+
-+	vm_gic_destroy(&vm);
-+}
-+
- /*
-  * Returns 0 if it's possible to create GIC device of a given type (V2 or V3).
-  */
-@@ -730,6 +770,7 @@ void run_tests(uint32_t gic_dev_type)
- 		test_v3_last_bit_single_rdist();
- 		test_v3_redist_ipa_range_check_at_vcpu_run();
- 		test_v3_its_region();
-+		test_v3_nassgicap();
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index f9ae790163fb..e28cf68a49c3 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -303,12 +303,6 @@ static int vgic_get_common_attr(struct kvm_device *dev,
+ 			     VGIC_NR_PRIVATE_IRQS, uaddr);
+ 		break;
  	}
- }
+-	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ: {
+-		u32 __user *uaddr = (u32 __user *)(long)attr->addr;
+-
+-		r = put_user(dev->kvm->arch.vgic.mi_intid, uaddr);
+-		break;
+-	}
+ 	}
  
+ 	return r;
+@@ -523,7 +517,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 	struct vgic_reg_attr reg_attr;
+ 	gpa_t addr;
+ 	struct kvm_vcpu *vcpu;
+-	bool uaccess, post_init = true;
++	bool uaccess;
+ 	u32 val;
+ 	int ret;
+ 
+@@ -539,9 +533,6 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 		/* Sysregs uaccess is performed by the sysreg handling code */
+ 		uaccess = false;
+ 		break;
+-	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ:
+-		post_init = false;
+-		fallthrough;
+ 	default:
+ 		uaccess = true;
+ 	}
+@@ -561,7 +552,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 
+ 	mutex_lock(&dev->kvm->arch.config_lock);
+ 
+-	if (post_init != vgic_initialized(dev->kvm)) {
++	if (!vgic_initialized(dev->kvm)) {
+ 		ret = -EBUSY;
+ 		goto out;
+ 	}
+@@ -591,19 +582,6 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+ 		}
+ 		break;
+ 	}
+-	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ:
+-		if (!is_write) {
+-			val = dev->kvm->arch.vgic.mi_intid;
+-			ret = 0;
+-			break;
+-		}
+-
+-		ret = -EINVAL;
+-		if ((val < VGIC_NR_PRIVATE_IRQS) && (val >= VGIC_NR_SGIS)) {
+-			dev->kvm->arch.vgic.mi_intid = val;
+-			ret = 0;
+-		}
+-		break;
+ 	default:
+ 		ret = -EINVAL;
+ 		break;
+@@ -630,8 +608,24 @@ static int vgic_v3_set_attr(struct kvm_device *dev,
+ 	case KVM_DEV_ARM_VGIC_GRP_REDIST_REGS:
+ 	case KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS:
+ 	case KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO:
+-	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ:
+ 		return vgic_v3_attr_regs_access(dev, attr, true);
++	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ: {
++		u32 __user *uaddr = (u32 __user *)attr->addr;
++		u32 val;
++
++		if (get_user(val, uaddr))
++			return -EFAULT;
++
++		guard(mutex)(&dev->kvm->arch.config_lock);
++		if (vgic_initialized(dev->kvm))
++			return -EBUSY;
++
++		if ((val < VGIC_NR_SGIS) || (val >= VGIC_NR_PRIVATE_IRQS))
++			return -EINVAL;
++
++		dev->kvm->arch.vgic.mi_intid = val;
++		return 0;
++	}
+ 	default:
+ 		return vgic_set_common_attr(dev, attr);
+ 	}
+@@ -645,8 +639,13 @@ static int vgic_v3_get_attr(struct kvm_device *dev,
+ 	case KVM_DEV_ARM_VGIC_GRP_REDIST_REGS:
+ 	case KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS:
+ 	case KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO:
+-	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ:
+ 		return vgic_v3_attr_regs_access(dev, attr, false);
++	case KVM_DEV_ARM_VGIC_GRP_MAINT_IRQ: {
++		u32 __user *uaddr = (u32 __user *)(long)attr->addr;
++
++		guard(mutex)(&dev->kvm->arch.config_lock);
++		return put_user(dev->kvm->arch.vgic.mi_intid, uaddr);
++	}
+ 	default:
+ 		return vgic_get_common_attr(dev, attr);
+ 	}
 -- 
 2.50.0.rc2.692.g299adb8693-goog
 
