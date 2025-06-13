@@ -1,55 +1,55 @@
-Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
+Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B4020F06A
-	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 15:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79469213E7D
+	for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 15:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829966; cv=none; b=qjnzbdn0fnK3pGTlqeouEtpBV7PiQPeEFEnRiN8KxEtlGzTk/w4Wn04VbgL0hk6UTko8TANefL22ffpfWndYNCBmcq0eX0Z2yM63klfrx2FqIyeaZMyMaegle4wbezuUJYAVS4l4BU5dRx5XWU7yYr/G1qI8gAZIN5F0cAMu6RA=
+	t=1749829969; cv=none; b=c9oNrFPQ1lwMJeV9kc79CnZW/stKRrcYafxWxk9Jb3PdVDtZv1xstWpZXqoWAgKHaCo8Q3/5jJ4psUTXuEqO59DV8KXpvtb7lIjp3/O/dwFSwQOGvaWenaeQiOG2dxUR3vwFiDg1pjCw5PqLmmdqXHgzyXnsPuK3OVaJ/rGrTm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829966; c=relaxed/simple;
-	bh=Ci1/ilbhd8VIC+oxHWhP8i2cQbOsisZvulH3qn/eMlw=;
+	s=arc-20240116; t=1749829969; c=relaxed/simple;
+	bh=eXRtX/UUgQvo3bBh+4EiHeDAuA119SvPlV2LgJLgsjg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=juQ4Uu1th76exhKiOWQAMwPCk8bUtZIEnGdDFgQW0HN6n+/5zKgJzNvaEmO1JUIO/a2y63LInXseLH5JjKI9u2IB4JkW9gSZgOrViVkMH6fWKTav6A0wS/d5n5NZMs3Ifwbs5jk6PP97Issy3C8ZRPjnJYnyZEm//2psFH9G2CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YQZ6wGNI; arc=none smtp.client-ip=209.85.166.74
+	 To:Cc:Content-Type; b=nZTzi9EUlaws/Fw/HhaGu0TfoykTtpK3s8rwjn3E1bokws9wgsRBK+6I9PWnrCn00WnRlJ16gAeMdcptFofG2P8fLmn/E6C9yeIMCl1x55wxFJ/sm/Y2Umj2D5QZ1oNVYPeQJbHYwoxYob3bX/V9VR+4OQ9Uzq4+XaYQkenUCtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YPQISV+l; arc=none smtp.client-ip=209.85.210.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YQZ6wGNI"
-Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-875bd5522e9so234036539f.2
-        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 08:52:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YPQISV+l"
+Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-72bc82106cbso1876730a34.0
+        for <kvm@vger.kernel.org>; Fri, 13 Jun 2025 08:52:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749829964; x=1750434764; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749829966; x=1750434766; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oeEVYUZ5YyS7Po4kQ9W2WYTxXWOxgfNLZlSZcUsGw0o=;
-        b=YQZ6wGNIXeW2/Nlanw70aG8mRTW090hfY1ouit3nTVAJfMt3n3N3bySphy1+uE2Qfw
-         86hnPRpSjvrrHUk/sLdFPipYminFedCVqDS/7rhcFIGJKvng1NFK+b8AO4smE7N08Qje
-         I2VL0hiwYTYYkxnyZT8h+fF7jcbOyk46XWyXH6CcVsPsOlOkVmSZz0nlHvczuokZ9L1s
-         1baCS4tTqWteNwzKYQHfYyDiy9aqNFv3MegoeuWuKoopLgLzq8NNSKM+C7ez+5SUVvtG
-         zYA0RgBFxSdB/C7kJ1mt2s3rms1CAlZVxbGCt493FKmpvH+ffmhFFokZmiLpMYFDFQUq
-         Sw0w==
+        bh=1K2XaU3tNN3z0G/Brd+aKIcwvKoH6QYgKOpK8mTmcUQ=;
+        b=YPQISV+lMf46y5Yq0z476aTT2q6PqOxH5jStvfs11XErOdi3staJ7lc1GS1sKJAX1d
+         dj9Y7vnjmiHnAPZcHGjFGTc//XhMmy/y5qiWqoRKhHlYx6lzS/cE/tsQ+WyRE05rLKxU
+         J028scfHNl1Vun/uySVEhxTfGwxYRXj3xUiGtJF+FTHIyB+QWwtAq4J/ORwcWLQYUHLR
+         qzbpBdDDmCgVBkLZvboK33ZBdZomnM2MgxB1Yksv24UjQb9E8z8ayQxMBYvmZi5I1Pur
+         JSzp+wAu85VIfgUyjxI25kGgrRYgGcj924MjsGS6OQh//wGtq27ncoIkHQe5Vm2Qwynu
+         xB2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749829964; x=1750434764;
+        d=1e100.net; s=20230601; t=1749829966; x=1750434766;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oeEVYUZ5YyS7Po4kQ9W2WYTxXWOxgfNLZlSZcUsGw0o=;
-        b=SpcvYjU2NbtQR67VelwRIcktKTNSYHKnNiQ3urDRIQKHsG/JFCwyVKibV8slpCZU80
-         A9l17lyjSytzx2ENwsMAhR2R9mrZy8yZkErmHHS8Yrwm8/j8R5cYtRuVtnLCLTGzkTaI
-         cJ6HijvKOtiGqF8sJDX4/njbvLgCbpRDSZ9IlBLyjN/e1My8kltMaEvXXsBlxIcXaqle
-         f/K9JWLzUDgIYWayP7geUXB8jcn5BY+kYDkMcP2H9lunX92eJR/gXITr9hVdgRtjPAQ2
-         mo3w9tnJXcx7JobArrcQ4Yn11i4eP/mYaYlW+MwqMQ0xYPqnY6a1ZDJoobBFR/vCnlHN
-         d4lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgeySIIuvG50TAs6Mwzh+u5wtxWphtFT2c0CL8sb6Kxw66z53Lg1hWfVFoUTS9ypDDrhw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPl+oBgbxwL83uZaJkx94WHexGNJYXmesxsuDDN75JQ56xsdKJ
-	2WGtWesSMPC0i+/vfNRSw7wZbX3xr2LNPrxTm5LeGTTBm3fFdku0uHg1AUK64t08FIqsN4tcrYR
-	2eaqh8Vm/9A==
-X-Google-Smtp-Source: AGHT+IFunbFJhKmi5ZFShXe5exfB3EJuEIksn0wi7XdmxJ1Imwtlw1UTfq/1Z4OxBS2uV1KpJFLBY6hAS3Gk
-X-Received: from iobel14.prod.google.com ([2002:a05:6602:3e8e:b0:86c:fede:130b])
- (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6602:7504:b0:873:f22:92fb
- with SMTP id ca18e2360f4ac-875d3bf0780mr439553039f.1.1749829963955; Fri, 13
- Jun 2025 08:52:43 -0700 (PDT)
-Date: Fri, 13 Jun 2025 15:52:35 +0000
+        bh=1K2XaU3tNN3z0G/Brd+aKIcwvKoH6QYgKOpK8mTmcUQ=;
+        b=pDL45UDHpoVH5nNta1wXqLCc3f789yUrTImqtlyTUcfgSGt2j4FyK+JbcdBfeX502z
+         rSKNpXya0/o+SUVuheVJEZUiGWZMA4UhNmAxuP1Bnz1JoBgD48pdgbmuRUjwsu2nwXbt
+         m3nRaB1dqsdwUkod3pUyrnB80vd/Rw99NE/XvzSaeewBy2BMGyn+HCqPI6G9fMdpD5JM
+         /uIGb5jIDJhiW30IoVHgaeqIXLjn3pSDsXr5jl2FqVqBfMLmq9txjAyc466nSf+i9rQq
+         woL4hE3r0Pa9QLlg2t6Cnhh70cYmaiiV3u/Vk16WaGsow2KDp1dbG80fvNbuq/PT3aSC
+         wcCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKWu3jvfn0wjTtaxnE7aAbstT+FixI3gcfNhpMHdxpom1drWMzodVHvqAklUdwjETHY6A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNOMTE+P9/EepXRm9tGRbmxdjwt1BcD9OJPlaKSID0D1pUqaX9
+	nzUF2yKJTuRr7U6NFpjgNfWKftlZcybUzef3KqJgp35kxWCx9K0vIrVYg4thi5kmvj1vE0yD3XK
+	I/GLX+CpZIg==
+X-Google-Smtp-Source: AGHT+IHFbGJBseK+0NlITWxhqlLkXWlDYICLQM+zu92+pohfxizATwmXWeCDlmWgZ4GDVI5eahezZ/DYLRTe
+X-Received: from otbbu4.prod.google.com ([2002:a05:6830:d04:b0:72b:8185:e90e])
+ (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6830:210d:b0:72b:9d5e:9456
+ with SMTP id 46e09a7af769-73a36367352mr186163a34.13.1749829966723; Fri, 13
+ Jun 2025 08:52:46 -0700 (PDT)
+Date: Fri, 13 Jun 2025 15:52:38 +0000
 In-Reply-To: <20250613155239.2029059-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250613155239.2029059-1-rananta@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.692.g299adb8693-goog
-Message-ID: <20250613155239.2029059-2-rananta@google.com>
-Subject: [PATCH v3 1/4] KVM: arm64: Disambiguate support for vSGIs v. vLPIs
+Message-ID: <20250613155239.2029059-5-rananta@google.com>
+Subject: [PATCH v3 4/4] KVM: arm64: selftests: Add test for nASSGIcap attribute
 From: Raghavendra Rao Ananta <rananta@google.com>
 To: Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
 Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.com>, 
@@ -68,160 +68,76 @@ Cc: Raghavendra Rao Anata <rananta@google.com>, Mingwei Zhang <mizhang@google.co
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-From: Oliver Upton <oliver.upton@linux.dev>
+Extend vgic_init to test the nASSGIcap attribute, asserting that it is
+configurable (within reason) prior to initializing the VGIC.
+Additionally, check that userspace cannot set the attribute after the
+VGIC has been initialized.
 
-vgic_supports_direct_msis() is a bit of a misnomer, as it returns true
-if either vSGIs or vLPIs are supported. Pick it apart into a few
-predicates and replace some open-coded checks for vSGIs.
-
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
- arch/arm64/kvm/vgic/vgic-init.c    |  4 ++--
- arch/arm64/kvm/vgic/vgic-mmio-v3.c | 16 ++++++++++------
- arch/arm64/kvm/vgic/vgic-v4.c      |  4 ++--
- arch/arm64/kvm/vgic/vgic.c         |  4 ++--
- arch/arm64/kvm/vgic/vgic.h         |  7 +++++++
- 5 files changed, 23 insertions(+), 12 deletions(-)
+ tools/testing/selftests/kvm/arm64/vgic_init.c | 41 +++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index eb1205654ac8..5e0e4559004b 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -395,7 +395,7 @@ int vgic_init(struct kvm *kvm)
- 	 * v4 support so that we get HW-accelerated vSGIs. Otherwise, only
- 	 * enable it if we present a virtual ITS to the guest.
- 	 */
--	if (vgic_supports_direct_msis(kvm)) {
-+	if (vgic_supports_direct_irqs(kvm)) {
- 		ret = vgic_v4_init(kvm);
- 		if (ret)
- 			goto out;
-@@ -443,7 +443,7 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
- 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
- 	}
- 
--	if (vgic_supports_direct_msis(kvm))
-+	if (vgic_supports_direct_irqs(kvm))
- 		vgic_v4_teardown(kvm);
- 
- 	xa_destroy(&dist->lpi_xa);
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index ae4c0593d114..1a9c5b4418b2 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -50,8 +50,12 @@ bool vgic_has_its(struct kvm *kvm)
- 
- bool vgic_supports_direct_msis(struct kvm *kvm)
- {
--	return (kvm_vgic_global_state.has_gicv4_1 ||
--		(kvm_vgic_global_state.has_gicv4 && vgic_has_its(kvm)));
-+	return kvm_vgic_global_state.has_gicv4 && vgic_has_its(kvm);
-+}
-+
-+bool vgic_supports_direct_sgis(struct kvm *kvm)
-+{
-+	return kvm_vgic_global_state.has_gicv4_1 && gic_cpuif_has_vsgi();
+diff --git a/tools/testing/selftests/kvm/arm64/vgic_init.c b/tools/testing/selftests/kvm/arm64/vgic_init.c
+index b3b5fb0ff0a9..aaecba432dbc 100644
+--- a/tools/testing/selftests/kvm/arm64/vgic_init.c
++++ b/tools/testing/selftests/kvm/arm64/vgic_init.c
+@@ -675,6 +675,46 @@ static void test_v3_its_region(void)
+ 	vm_gic_destroy(&v);
  }
  
++static void test_v3_nassgicap(void)
++{
++	struct kvm_vcpu *vcpus[NR_VCPUS];
++	struct vm_gic vm;
++	__u8 nassgicap;
++	int ret;
++
++	vm = vm_gic_create_with_vcpus(KVM_DEV_TYPE_ARM_VGIC_V3, NR_VCPUS, vcpus);
++	TEST_REQUIRE(!__kvm_has_device_attr(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++					    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap));
++
++	kvm_device_attr_get(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++			    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
++	if (!nassgicap) {
++		nassgicap = true;
++		ret = __kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++					    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
++		TEST_ASSERT(ret && errno == EINVAL,
++			    "Enabled nASSGIcap even though it's unavailable");
++	} else {
++		nassgicap = false;
++		kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
++
++		nassgicap = true;
++		kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
++	}
++
++	kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++			    KVM_DEV_ARM_VGIC_CTRL_INIT, NULL);
++
++	ret = __kvm_device_attr_set(vm.gic_fd, KVM_DEV_ARM_VGIC_GRP_FEATURES,
++				    KVM_DEV_ARM_VGIC_FEATURE_nASSGIcap, &nassgicap);
++	TEST_ASSERT(ret && errno == EBUSY,
++		    "Configured nASSGIcap after initializing the VGIC");
++
++	vm_gic_destroy(&vm);
++}
++
  /*
-@@ -86,7 +90,7 @@ static unsigned long vgic_mmio_read_v3_misc(struct kvm_vcpu *vcpu,
- 		}
- 		break;
- 	case GICD_TYPER2:
--		if (kvm_vgic_global_state.has_gicv4_1 && gic_cpuif_has_vsgi())
-+		if (vgic_supports_direct_sgis(vcpu->kvm))
- 			value = GICD_TYPER2_nASSGIcap;
- 		break;
- 	case GICD_IIDR:
-@@ -119,7 +123,7 @@ static void vgic_mmio_write_v3_misc(struct kvm_vcpu *vcpu,
- 		dist->enabled = val & GICD_CTLR_ENABLE_SS_G1;
- 
- 		/* Not a GICv4.1? No HW SGIs */
--		if (!kvm_vgic_global_state.has_gicv4_1 || !gic_cpuif_has_vsgi())
-+		if (!vgic_supports_direct_sgis(vcpu->kvm))
- 			val &= ~GICD_CTLR_nASSGIreq;
- 
- 		/* Dist stays enabled? nASSGIreq is RO */
-@@ -133,7 +137,7 @@ static void vgic_mmio_write_v3_misc(struct kvm_vcpu *vcpu,
- 		if (is_hwsgi != dist->nassgireq)
- 			vgic_v4_configure_vsgis(vcpu->kvm);
- 
--		if (kvm_vgic_global_state.has_gicv4_1 &&
-+		if (vgic_supports_direct_sgis(vcpu->kvm) &&
- 		    was_enabled != dist->enabled)
- 			kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_RELOAD_GICv4);
- 		else if (!was_enabled && dist->enabled)
-@@ -178,7 +182,7 @@ static int vgic_mmio_uaccess_write_v3_misc(struct kvm_vcpu *vcpu,
- 		}
- 	case GICD_CTLR:
- 		/* Not a GICv4.1? No HW SGIs */
--		if (!kvm_vgic_global_state.has_gicv4_1)
-+		if (vgic_supports_direct_sgis(vcpu->kvm))
- 			val &= ~GICD_CTLR_nASSGIreq;
- 
- 		dist->enabled = val & GICD_CTLR_ENABLE_SS_G1;
-diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-index 193946108192..e7e284d47a77 100644
---- a/arch/arm64/kvm/vgic/vgic-v4.c
-+++ b/arch/arm64/kvm/vgic/vgic-v4.c
-@@ -356,7 +356,7 @@ int vgic_v4_put(struct kvm_vcpu *vcpu)
- {
- 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
- 
--	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
-+	if (!vgic_supports_direct_irqs(vcpu->kvm) || !vpe->resident)
- 		return 0;
- 
- 	return its_make_vpe_non_resident(vpe, vgic_v4_want_doorbell(vcpu));
-@@ -367,7 +367,7 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
- 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
- 	int err;
- 
--	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
-+	if (!vgic_supports_direct_irqs(vcpu->kvm) || vpe->resident)
- 		return 0;
- 
- 	if (vcpu_get_flag(vcpu, IN_WFI))
-diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
-index 8f8096d48925..f5148b38120a 100644
---- a/arch/arm64/kvm/vgic/vgic.c
-+++ b/arch/arm64/kvm/vgic/vgic.c
-@@ -951,7 +951,7 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
- 	 * can be directly injected (GICv4).
- 	 */
- 	if (list_empty(&vcpu->arch.vgic_cpu.ap_list_head) &&
--	    !vgic_supports_direct_msis(vcpu->kvm))
-+	    !vgic_supports_direct_irqs(vcpu->kvm))
- 		return;
- 
- 	DEBUG_SPINLOCK_BUG_ON(!irqs_disabled());
-@@ -965,7 +965,7 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
- 	if (can_access_vgic_from_kernel())
- 		vgic_restore_state(vcpu);
- 
--	if (vgic_supports_direct_msis(vcpu->kvm))
-+	if (vgic_supports_direct_irqs(vcpu->kvm))
- 		vgic_v4_commit(vcpu);
+  * Returns 0 if it's possible to create GIC device of a given type (V2 or V3).
+  */
+@@ -730,6 +770,7 @@ void run_tests(uint32_t gic_dev_type)
+ 		test_v3_last_bit_single_rdist();
+ 		test_v3_redist_ipa_range_check_at_vcpu_run();
+ 		test_v3_its_region();
++		test_v3_nassgicap();
+ 	}
  }
  
-diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-index 4349084cb9a6..ebf9ed6adeac 100644
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -370,6 +370,13 @@ int vgic_its_inv_lpi(struct kvm *kvm, struct vgic_irq *irq);
- int vgic_its_invall(struct kvm_vcpu *vcpu);
- 
- bool vgic_supports_direct_msis(struct kvm *kvm);
-+bool vgic_supports_direct_sgis(struct kvm *kvm);
-+
-+static inline bool vgic_supports_direct_irqs(struct kvm *kvm)
-+{
-+	return vgic_supports_direct_msis(kvm) || vgic_supports_direct_sgis(kvm);
-+}
-+
- int vgic_v4_init(struct kvm *kvm);
- void vgic_v4_teardown(struct kvm *kvm);
- void vgic_v4_configure_vsgis(struct kvm *kvm);
 -- 
 2.50.0.rc2.692.g299adb8693-goog
 
