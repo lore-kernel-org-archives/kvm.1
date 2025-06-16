@@ -1,39 +1,39 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D6B800
-	for <kvm@vger.kernel.org>; Mon, 16 Jun 2025 12:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96361800
+	for <kvm@vger.kernel.org>; Mon, 16 Jun 2025 12:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750076389; cv=none; b=WxVgyXaX2hsokWbJ74yCOn5myfbB87cNA+dAr5iMwzgp0LSJ9fnu+08EcGR/jg2LSXA5VRXkZ0RH0RnS6AEE5tGn4dBcjH3i/0M+U7VmjTxQk8GvJ2aNWd2uqLz1/166tuxHqCaZFqxT35mNblM5TFUwl3KWqsr3tVuB22B6oHg=
+	t=1750076396; cv=none; b=KILFrs7zBDLbhXhCDQqps3P0+aH7eA7vcvcAGE1G5BRRWubROIKR6OQp8ixbFTqrbOvL9bl+7GNOvoNrg38wU4nTuemDq/ZEjlqBBn7R+FyW29Lv6Mk0MOZLIebogfdJbcm19Dq//uH914GIzduL7fM/h424f9DRgXKAuxDttz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750076389; c=relaxed/simple;
-	bh=kLwETw261Rioaahl/JGM88BIEMBq8/p3prhpFtAnciI=;
+	s=arc-20240116; t=1750076396; c=relaxed/simple;
+	bh=nPznTVjVWy5ZMevRHKaO2CpJSeecBZlWb5QhXTfYWaA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C8l55TS/W2zmU/HsXD1/ZWiFg6FhcKpbUGzgpdV8dtAxwFVgPyN7dGACaAC5do5nHR9osPA5Jfij0EcPogqAcJZLL8sh8hsU5AeOx+tsk0rhaWTJDAoFgG3WajjAj0dk3pcIDdUGzya9L63dnxihyAxmSTNlBBLciQGH9YJD5HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=mZqaBz0o reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:Content-Type; b=I1sC3DYq3GIOey/QzwgH58Xamp8OEZ3sDflKcXTLPyDYPEv74Od5gLV2gaJJD5LrW7fzWDgqc5SBps1UdumwvnLFgEIcLQZXx8slTWCByUYNIwbWpyUX703Nbg+EewMRYK2DrFHt0EWoDzeSxC8cVqhmyPY1phFr+gqTJ7eXLxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=VPH1kh91 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="mZqaBz0o"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="VPH1kh91"
 Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 55GCCXHI047420
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 55GCCw8j047515
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 16 Jun 2025 21:12:33 +0900 (JST)
+	Mon, 16 Jun 2025 21:12:58 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=Jns4YUkWleKTus56PdGOGCjWkNbvBqyrqgM+AwVIKyk=;
+DKIM-Signature: a=rsa-sha256; bh=4JSHX6X6s+w1UYxLKUROnDTVSl6teX25I2C+LjCWQpE=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=Message-ID:Date:Subject:To:From;
-        s=rs20250326; t=1750075955; v=1;
-        b=mZqaBz0oU0offbwtymE8Sm//X09ELO0dFO0tfbHgApWLR9Q4Bknj/QaUyYiuJydA
-         yyJYNJ+VCOp90XsEUDR0yGsVHlYEMqJ0RZmCQh0nzWDw3F4Y8e7zHygfqO9slX9w
-         dx+0envOgqaHrRtWY9squzB2pe8ehuUitPIaaDlhK9IUdWnQkwiu57scCt9m8zKf
-         WxmP6PJz17dN1WkFyyavtGgaKiu5DwiETb5RmsOffPpvrzv4Um1YCsypFoXUiRU0
-         9Pa7pLZ/B0IfZ7Wv3l1YGEJhpzuwTOfrodCMZfU5KaBz2QcSCMYkYr5HAhG7dtt7
-         4kAKq7hnUOMzcum+Ld6hLg==
-Message-ID: <f943a1b0-3da5-49d4-948d-fd3863c69ff0@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 16 Jun 2025 21:12:33 +0900
+        s=rs20250326; t=1750075980; v=1;
+        b=VPH1kh91xsU4KYEmFTpfwP/D+AZzIwCs40gBdNlxOoWfXZv1L0PUrW5tSwSdfLsS
+         fN2bLWTG/atuD6c/gWQ+ujbBiUnJ0oCsG0hV6aqYDCEUZoi4+DwdrRTCOIubbeB6
+         g5qExqA5Y+6maQTTffkKeGa6UOTusx7tEPnUHqU1qJ8dmEdQDnXbVAMJcIZuJm5Y
+         Z9lZg9EvURWFzmpyNI8QJ17K17bfxNWx0tjhM2gGB+5Sv6Pa2qyCVo12FjdPePcm
+         iFQPDsr8hlHZUjEnTXeLC15qmVJhENJYrNFHQQ/c8T1VqJuphu5zUex8WCJfHBQH
+         VXUeVy6t93xuvn/pUEHB4Q==
+Message-ID: <3c349b4d-1cb5-41f3-a64d-e8455b4c88b5@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 16 Jun 2025 21:12:58 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/12] python: sync changes from external qemu.qmp
- package
+Subject: Re: [PATCH v2 04/12] python: update shebangs to standard, using
+ /usr/bin/env
 To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
         =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -132,25 +132,20 @@ Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
  <ma.mandourr@gmail.com>,
         Harsh Prateek Bora <harshpb@linux.ibm.com>
 References: <20250612205451.1177751-1-jsnow@redhat.com>
- <20250612205451.1177751-4-jsnow@redhat.com>
+ <20250612205451.1177751-5-jsnow@redhat.com>
 Content-Language: en-US
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250612205451.1177751-4-jsnow@redhat.com>
+In-Reply-To: <20250612205451.1177751-5-jsnow@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2025/06/13 5:54, John Snow wrote:
-> Synchronize changes from the standalone python-qemu-qmp repository for
-> the primary purpose of removing some pre-3.9 compatibility crud that we
-> no longer need or want.
+> This is the standard shebang we should always be using, as it plays
+> nicely with virtual environments and our desire to always be using a
+> specific python interpreter in our environments.
 > 
-> My plan for this release cycle is to finally eliminate this duplication
-> so this type of patch will no longer be necessary -- but for now, it is.
-> 
-> NB: A few changes are not synchronized; mostly license and documentation
-> strings. Everything functional is fully copied verbatim. The license
-> strings are not sync'd only because they point to different LICENSE
-> filenames for the different repositories.
+> (It also makes sure I can find all of the python scripts in our tree
+> easily.)
 > 
 > Signed-off-by: John Snow <jsnow@redhat.com>
 
