@@ -1,66 +1,65 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702B02EA745
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EBA2EA751
 	for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 16:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178042; cv=none; b=PO70UAGJRzE07+2ebvn3BCiFdr8ftraU6dz/93xuUbJ7ACoq5p+RvEWnZdhv0enj9mhF09eW2spL96WciAqon6ACxuWU8/JOOSUr+YaLpktBl/NNOUVe9xXyTg+YKhRoLMN7rNpQvPVuUSPIsU58e5ax+G443diUY7n/+aRB73I=
+	t=1750178042; cv=none; b=QJBQnbXXHH2ZS3ezDTzmTpzcB2AuB2ublinGMEak1td/1LgjljX6YL+nxg5RRbG/BlBmWbcgNcTwfofbjtL6AI7RQ6VhoiyLAEhflCPid2OuG7SlAfTTMaAQ1qK1rjq9q6nEON+N2/mJQbPw5jOXMccNUWwdPt/Dlj6cW/HlieU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750178042; c=relaxed/simple;
-	bh=RCEZwtAHcfW1GxuAPgC52UEcCAk/Ta75fPcYz87A0t4=;
+	bh=KDxsVP69tGp7xtGYwPP0tQZjd1rakZ12nrPME0E9lgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pzxs/SEhfjUkvLGJ9v8GVLnB5odsvsEXqD5xqwlWKzwf8sPs9/pyEy371EIPIuXlODaR34XpPQUEftOc9tpF84SALH143MzM4z7ChD0Z1aLx7CPAk9FlPFAbuKrdY3uDPEHFL22uFP+OusZh2iT8qnoh7/pNrlGcKbVHH7CKlck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tVp1Kfo0; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version:Content-Type; b=boFiLasHNx1QxFrt8gYH0QfYUOOLkZ2JYYaXY7ivvUqaN33MnswYqbkMldz7iMKmRlEwgvemtJU/QtjGzx5m/bqsscsXDET/eTC94MD5+YtfBYEz4F8gxOvyfvhOFQBGhr80vdoevfoItIjgLE5MXlIUZ2KbqVgg38j6TOLZEKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RZ0i31DD; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tVp1Kfo0"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43edecbfb94so66986385e9.1
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RZ0i31DD"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a4ef2c2ef3so4913275f8f.2
         for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 09:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1750178039; x=1750782839; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n0sO4FG8MJlTgihEHf66llt9xMF7CLK1g/3AupI01Bo=;
-        b=tVp1Kfo0R68R7khx2cSixr+Dt7RvQd7sUXJKoms7rZOhCAxPPo5Q1bVGw0P4TGuma2
-         vt67/+xe3GseDzsedkLDojPeARnjXid0vIWfatbFN4NYlGAvFsberAlEXw2x0nxty60j
-         0QmNEB1me0rsPxADGnuzU1GtG6DjTvs27MHPCzGVN29II6Zg6zyO8+fJAgVYbTiDGh9F
-         gl34ycMVgCVsZ00AuCSOvPonhOwNXgabzzKbRSIUdPEXpjynyilIwKa6Zphv9vZNdLEr
-         6hKbFqy1raIHweqHIzMEQIzcS0OemHpJ508SDMwo7DYAokhiqcPAFUuDIcpLBiqKthf0
-         aS+w==
+        bh=GncEdQO/d7gOZ9LM+QxKenzRx6813cX2TxyJIAl7x3Y=;
+        b=RZ0i31DDUNIv7/Rden3K7UUpskY3LIWNuOtNxl610XMIhsfoEZfL/jUqxSxQOIwJ4R
+         Gor0o6jNs/dIKIB1VHTUpVSUUBF/UvxRq2o7J8x0osdytGC5UGrUdtUnEe8p30eDSvIl
+         9UbpccyLar7BXH4xTimetj5VnKmCE5fUWvr+mx+eD4TfN6McE4rMzmpVQ0Csq1xSBoDX
+         pmEcxHzO3cKIjBPQ2U82/2jEUfwAd6lfoS0/4QWusFx7hbQ6QUkjxkPVP4pgRD50bGTc
+         9iOiDoNum/09kAD7+2dXRhr+rrLUmXqYJNbL7Dih8+XWYD4kbjg5jY+gKOlsbg0fxpFD
+         0wDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1750178039; x=1750782839;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n0sO4FG8MJlTgihEHf66llt9xMF7CLK1g/3AupI01Bo=;
-        b=JdEocSE25Tx73J8ANlyO3dIhw3LtLxjBzZmGcic3Wg7ui51bUFLt0S1ib0r6YBw8QG
-         bL/KM3nvM813z3i1k5p7UfBNBrmPPMQ/h1+v1Nd5ue7wZEqH9hhNCM74kfVsd6I5nFkk
-         rwG8XZSURrN6S252qYoQInNtymC6I4tp2XsVJ+adbDinEcdp7QNrQWplI55mSpu3vR7s
-         eS9b/sAdXRCCQ2o/HINEWSChBaMEnYRUrhofkYq+NLvkkyecIDbHzDUdMj2FOcasOj9y
-         bjWQG9ySW3PquCJ65YHZm6wnThuuR1OAUr6/zgnrvJcINgEfemJ6NpdQX2YCAks/ErZe
-         M4pA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGZoTi6B7nFrWu2qDEOf/5zqNz19+KTNr6Si+9OryQ03FgKbkEZk/eE+RhWYJS3mGJs1o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwziaobTmBfTHFshomJfJCh6FNfIcX6fConBB8GhFiJfCw6fy87
-	7LotUuDM+UMPHk5OidWGx7zPUufvtHnuvZ29l6J3YWcQacImR9UUs8ZpF/pzhEpgNzY=
-X-Gm-Gg: ASbGncu5b0vZ6FwgXnULjg3ypHEYYO9YM2CW54RT8tfHl9JiBNAKwIQkYOx62j1KAmx
-	mXYa/uc+W9UgekpUEx6yRgbkM4eUAPdoLPNNTMdXTXfBqziWY/7fTfNxTFhgGO8uy3Uo1SyqWKO
-	EzVDu9tKENBsw7n7d+J0iCfHS/puNnSw0TBO3z/coAF1Vi1hKWjoGT3ztDvku/t63gOd+vd6kBm
-	1h0VX2Z3K6PeK17MenmMPWuriDGHQJRUrUxUQdnC2dMtPOBS625YoOsat9/DuANpTh1VYF8zXp0
-	PDEAwa4L7761buatv5tzsqzGpcXMgKi9bltYM5AcpEv6SmwoMLNVSD4R8IbYQupMARfvE7gIPQ=
-	=
-X-Google-Smtp-Source: AGHT+IHtPPp86JB1WL2NUMpWWPzLqOSjoM5yKoDid7gycB2n4vWQmDxDEGw2087UlKh+t1YO5wHSuA==
-X-Received: by 2002:a05:600c:3b92:b0:43d:2230:300f with SMTP id 5b1f17b1804b1-4533c9c6e8fmr147105255e9.0.1750178038731;
-        Tue, 17 Jun 2025 09:33:58 -0700 (PDT)
+        bh=GncEdQO/d7gOZ9LM+QxKenzRx6813cX2TxyJIAl7x3Y=;
+        b=XBI5sROYbh/F8GQGRTUh0cCgJB3Q9zfotCUFd/x2eSymuzmK493HL0CMSnP32tx0ZC
+         MsOPVIkzYxEs4oN/y2ddelAEA1bC3VqyO+O9wUVYMmusxvWN8R5LjvrekwdncDWcW0lX
+         95biYFl57/+aja9SeQ2QGKxNjDrt3twBQ0754M2aKBSVnk+Dx0vAxfneZb+uryAT5u8/
+         A9vYdsRv3s4cFmgK9QhysmvOAEtDf0marU/nLNxJb000m5d7INtUoTyRPRNli75M2ESx
+         g3/mgYz3+u6F6gKd19zj2sv5GdF7KPONLGWgbe4vuIr2ClPCsUF5wTnbEYh5xCTJEap6
+         xmrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVT6tsVn9BYImDqcfy9jwjhZucta32MZjk98phSL09cABj9xe/TUybkT3dk/FGH4UnyieQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3+NgmDvA0QcASYzdiiIBZRMOW4PecorW+9rPmlUUX1RDb2frX
+	Z17G07/oM8cRA7O78tF3A6IOPjSN2YrdMxsY/eHX044ChnDWyRW8SZmNcZn98bKLvCw=
+X-Gm-Gg: ASbGncvgmpPASTY65fPLNKaqrqF1dRLA7mjG7lMbeMrZv2bR7pTQ0NqjtgqMq9Ha23l
+	GCrBccLMstnUaPm8+fo4ox4ZgfwAysFkoxipSPq+MnGwbi7xrzABlW191WdH0WJNU8HN+5NygX0
+	2GxUTaglVPK3jySeGPD987O670K/d+SQT6PUPCJAGevGLmpZTPY4gRL6vMQw6O73heneiQ6cMp4
+	XnygMRwPlUWpdkBAF46WZAytLMfF/Q748j8Tm2JftNYDAmVfOld2ika+CjYzIfv+/Zp+bI5y6OH
+	0Yl6EhFCo8fQsvZ4vU/2J8DWSWWcXC0+Wo7wyWwzRlaHM1B+WNfGNJhSVLDl9MY=
+X-Google-Smtp-Source: AGHT+IEzrNJfJxccfvZ1/Dv81sv9ibMeIsZbIicjBJbFPPlnMb0UfYqycjSiQbPuRMjeJfXuxbG2YQ==
+X-Received: by 2002:a05:6000:400b:b0:3a4:f2ed:217e with SMTP id ffacd0b85a97d-3a5723af786mr11907985f8f.42.1750178039291;
+        Tue, 17 Jun 2025 09:33:59 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a73845sm14651906f8f.35.2025.06.17.09.33.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b090b0sm14359958f8f.46.2025.06.17.09.33.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 09:33:55 -0700 (PDT)
+        Tue, 17 Jun 2025 09:33:58 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id C30215F91D;
-	Tue, 17 Jun 2025 17:33:52 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 01A2B5F929;
+	Tue, 17 Jun 2025 17:33:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -73,9 +72,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 09/11] kvm/arm: implement sysreg trap handler
-Date: Tue, 17 Jun 2025 17:33:49 +0100
-Message-ID: <20250617163351.2640572-10-alex.bennee@linaro.org>
+Subject: [RFC PATCH 11/11] kvm/arm: implement WFx traps for KVM
+Date: Tue, 17 Jun 2025 17:33:51 +0100
+Message-ID: <20250617163351.2640572-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250617163351.2640572-1-alex.bennee@linaro.org>
 References: <20250617163351.2640572-1-alex.bennee@linaro.org>
@@ -88,148 +87,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fortunately all the information about which sysreg is being accessed
-should be in the ISS field of the ESR. Once we process that we can
-figure out what we need to do.
-
-[AJB: the read/write stuff should probably go into a shared helper].
+This allows the vCPU guest core to go to sleep on a WFx instruction.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/kvm.c        | 95 +++++++++++++++++++++++++++++++++++++++++
- target/arm/trace-events |  2 +
- 2 files changed, 97 insertions(+)
+ target/arm/kvm.c        | 28 ++++++++++++++++++++++++++++
+ target/arm/trace-events |  1 +
+ 2 files changed, 29 insertions(+)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index f2255cfdc8..0a852af126 100644
+index 1280e2c1e8..63ba8573a2 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -24,6 +24,7 @@
- #include "system/runstate.h"
- #include "system/kvm.h"
- #include "system/kvm_int.h"
-+#include "cpregs.h"
- #include "kvm_arm.h"
- #include "cpu.h"
- #include "trace.h"
-@@ -1414,6 +1415,98 @@ static bool kvm_arm_handle_debug(ARMCPU *cpu,
-     return false;
+@@ -1544,6 +1544,32 @@ static int kvm_arm_handle_hypercall(ARMCPU *cpu,
+     return 0;
  }
  
 +/*
-+ * To handle system register traps we should be able to extract the
-+ * encoding from the ISS encoding and go from there.
++ * It would be perfectly fine to immediately return from any WFE/WFI
++ * trap however that would mean we spend a lot of time bouncing
++ * between the hypervisor and QEMU when things are idle.
 + */
-+static int kvm_arm_handle_sysreg_trap(ARMCPU *cpu,
-+                                      uint64_t esr_iss,
-+                                      uint64_t elr)
++
++static const char * wfx_insn[] = {
++    "WFI",
++    "WFE",
++    "WFIT",
++    "WFET"
++};
++
++static int kvm_arm_handle_wfx(CPUState *cs, int esr_iss)
 +{
-+    int op0 = extract32(esr_iss, 20, 2);
-+    int op2 = extract32(esr_iss, 17, 3);
-+    int op1 = extract32(esr_iss, 14, 3);
-+    int crn = extract32(esr_iss, 10, 4);
-+    int rt = extract32(esr_iss, 5, 5);
-+    int crm = extract32(esr_iss, 1, 4);
-+    bool is_read = extract32(esr_iss, 0, 1);
++    int ti = extract32(esr_iss, 0, 2);
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
 +
-+    uint32_t key = ENCODE_AA64_CP_REG(CP_REG_ARM64_SYSREG_CP, crn, crm, op0, op1, op2);
-+    const ARMCPRegInfo *ri = get_arm_cp_reginfo(cpu->cp_regs, key);
++    trace_kvm_wfx_trap(cs->cpu_index, wfx_insn[ti], env->pc);
 +
-+    if (ri) {
-+        CPUARMState *env = &cpu->env;
-+        uint64_t val = 0;
-+        bool take_bql = ri->type & ARM_CP_IO;
-+
-+        if (ri->accessfn) {
-+            if (ri->accessfn(env, ri, true) != CP_ACCESS_OK) {
-+                g_assert_not_reached();
-+            }
-+        }
-+
-+        if (take_bql) {
-+            bql_lock();
-+        }
-+
-+        if (is_read) {
-+            if (ri->type & ARM_CP_CONST) {
-+                val = ri->resetvalue;
-+            } else if (ri->readfn) {
-+                val = ri->readfn(env, ri);
-+            } else {
-+                val = CPREG_FIELD64(env, ri);
-+            }
-+            trace_kvm_sysreg_read(ri->name, val);
-+
-+            if (rt < 31) {
-+                env->xregs[rt] = val;
-+            } else {
-+                /* this would be deeply weird */
-+                g_assert_not_reached();
-+            }
-+        } else {
-+            /* x31 == zero reg */
-+            if (rt < 31) {
-+                val = env->xregs[rt];
-+            }
-+
-+            if (ri->writefn) {
-+                ri->writefn(env, ri, val);
-+            } else {
-+                CPREG_FIELD64(env, ri) = val;
-+            }
-+            trace_kvm_sysreg_write(ri->name, val);
-+        }
-+
-+        if (take_bql) {
-+            bql_unlock();
-+        }
-+
-+        /*
-+         * Set PC to return.
-+         *
-+         * Note we elr_el2 doesn't seem to be what we need so lets
-+         * rely on env->pc being correct.
-+         *
-+         * TODO We currently skip to the next instruction
-+         * unconditionally but that is at odds with the kernels code
-+         * which only does that conditionally (see kvm_handle_sys_reg
-+         * -> perform_access):
-+         *
-+         *    if (likely(r->access(vcpu, params, r)))
-+         *        kvm_incr_pc(vcpu);
-+         *
-+         */
-+        env->pc = env->pc + 4;
-+        return 0;
-+    }
-+
-+    fprintf(stderr, "%s: @ %" PRIx64 " failed to find sysreg crn:%d crm:%d op0:%d op1:%d op2:%d\n",
-+            __func__, elr, crn, crm, op0, op1, op2);
-+    return -1;
++    /* stop the CPU, return to the top of the loop */
++    cs->stop = true;
++    return EXCP_YIELD;
 +}
 +
  /**
   * kvm_arm_handle_hard_trap:
   * @cpu: ARMCPU
-@@ -1443,6 +1536,8 @@ static int kvm_arm_handle_hard_trap(ARMCPU *cpu,
-     kvm_cpu_synchronize_state(cs);
- 
-     switch (esr_ec) {
-+    case EC_SYSTEMREGISTERTRAP:
-+        return kvm_arm_handle_sysreg_trap(cpu, esr_iss, elr);
+@@ -1582,6 +1608,8 @@ static int kvm_arm_handle_hard_trap(ARMCPU *cpu,
+     case EC_AA64_HVC:
+     case EC_AA64_SMC:
+         return kvm_arm_handle_hypercall(cpu, esr_ec);
++    case EC_WFX_TRAP:
++        return kvm_arm_handle_wfx(cs, esr_iss);
      default:
          qemu_log_mask(LOG_UNIMP, "%s: unhandled EC: %x/%x/%x/%d\n",
                  __func__, esr_ec, esr_iss, esr_iss2, esr_il);
 diff --git a/target/arm/trace-events b/target/arm/trace-events
-index 4438dce7be..69bb4d370d 100644
+index 10cdba92a3..bb02da12ab 100644
 --- a/target/arm/trace-events
 +++ b/target/arm/trace-events
-@@ -13,3 +13,5 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- 
- # kvm.c
- kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
-+kvm_sysreg_read(const char *name, uint64_t val) "%s => 0x%" PRIx64
-+kvm_sysreg_write(const char *name, uint64_t val) "%s <=  0x%" PRIx64
+@@ -16,3 +16,4 @@ kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is
+ kvm_sysreg_read(const char *name, uint64_t val) "%s => 0x%" PRIx64
+ kvm_sysreg_write(const char *name, uint64_t val) "%s <=  0x%" PRIx64
+ kvm_hypercall(int ec, uint64_t arg0) "%d: %"PRIx64
++kvm_wfx_trap(int vcpu, const char *insn, uint64_t vaddr) "%d: %s @ 0x%" PRIx64
 -- 
 2.47.2
 
