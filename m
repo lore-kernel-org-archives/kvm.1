@@ -1,64 +1,64 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C5A2F94A2
-	for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 16:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02822F94B3
+	for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 16:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178040; cv=none; b=jxtofT/UWgCgZajTWIulUr1eyQRXLpV+msr5ozTP5Da4QCNCK4MPdLw03xF1mD78bwtkn1XF0mj5XOEOf7Rfoc7BvgxladB+1/M97KARpD6ZVgIsYrXOxLIJNTyRIIvjzqn9QCSBEEaC6rKb8Xi/6Ub/2y6coJlV7eCFL6OH0xY=
+	t=1750178040; cv=none; b=npqAqDjzmzbt6EJbCsdSTeuFtiqks6vPjmfqjcSmY3wxp1XOL7j7Ax+fowZ7b0I39s8DVXPrh+xxnVUZ8Hde8V+Co/b5voHfvZvsPOSD5nzJC7u5j60AERIXi2bdS9h3eaQFxqWIzBR+htN+F93inDNGYZ/jLb1YtHBwjuYZ54w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750178040; c=relaxed/simple;
-	bh=urgUQGW6SsLAoKzARg1S7NcAXebgTbf199FvKgJwGcI=;
+	bh=TBdiCdDqA4EB9Ivecqd5vC8Pw/FYB3hTQSvbbs9O174=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kjuYLq7ezI2tDeD9l64Cnd03QQmDaNW8eoFaKei38An3DF1ZajyrPb/IyA9y20js1BIkMrlu8pDHdoCcZOITmI1e9FZgK6HE9mRAFbHCoXtAfHSejgzkzX5JTvGXntnfDtJrYvnXs2Y0STiA+8MyzKai+8z6CCliMrXMPIxYiQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uHxVAb8V; arc=none smtp.client-ip=209.85.221.50
+	 MIME-Version:Content-Type; b=CF6JnfpB6VXM78tt/YYUCAwy0DrlNgymMJdFos9oC1d2WCkOocFyXBzbXLBu+kZRRLr/ebqOdVzahHVhTinNxNrv0ehlzHix4yo866VSgQDOuglNGLnGEIRlD6YX45SNPwJ+Wy7eXMQBfWKewRGNOs2T7dHlx5bTFRvATD7iRdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WUywVdJD; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uHxVAb8V"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso2554245f8f.1
-        for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 09:33:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WUywVdJD"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso3505494f8f.0
+        for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 09:33:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750178036; x=1750782836; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1750178037; x=1750782837; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rbBMXE6agkH4y/ezmub6pqd0ynNZ26J7iJ0lGND0r7M=;
-        b=uHxVAb8VepNVCM2kbrMoPZ8y57rOsFvv5zagc97Gi2bkravDXPPXrtxMrqMQPzH+GN
-         z8xULS+HMuxhdCMKsTSeZtKoL0OHu04+jmFRXIz+V474VnLr8ERtK81fkvcWXH2QQin3
-         yh3xCuYzE1G1PJG/DzvBqClWOu7QS/LtyE/c89TR9LXqJPakj+uVtSP5YSy1DbF0/quw
-         KZh07ZCx4vzPxwir9tgx1dahTD1i7/c+s4dpk0V4GNsqHCpMa1OyKE3CKrTsc68tx+xd
-         mToWDm1h4fq0/nIgt0k1G0zWzRdkGbXcp6V8RNK+3TzyyeFthSMuMg9sjoGl7rKpEhQy
-         AiuA==
+        bh=08AiNc4t9QnXpXVjsIzl22ewoa/Tdv5ZaJHW+qjaXxo=;
+        b=WUywVdJDdWb+nLOfx4xzfzqk370cTbLInZBDSmB4JunUWBjb+/gkR8/PiPhpKzPuN1
+         l9R12lDtgbSejJQPdVuBEUNgBDcFxCUv3L2TzUYHbaZNYx2nfSjGM48FePhtM9DmK8cE
+         MCz14cGTOvlcXNQk0EOGYVXM+CEJkTVh6B+TQ5WCOkVX2D54unPG72R0IMM2VTIc+jED
+         xC3HPwcVrWFkSoQAYciMqVwdYzOymh7eRD9pE79K+9cf3wtoE/JlXESRanuLfR21vH0Q
+         DIG/XGBVYawszsmccUkN2EJ9UerFkx5kYnwvf3lA+vnA5NF6PIi5z4GvuHx+JojCizmp
+         S6Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750178036; x=1750782836;
+        d=1e100.net; s=20230601; t=1750178037; x=1750782837;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rbBMXE6agkH4y/ezmub6pqd0ynNZ26J7iJ0lGND0r7M=;
-        b=VARLIhG5jCu7uoC8VDS62Lw491hHu4l6L/Mg3lU8DY1fSiucMoSjOqGrDc1WoYwCzg
-         9NRBvtIIpviIbUmcZNSqti92e473mFsiCCXVPir+6beRjfZwfu3L2ceJbNGjxRvWc66J
-         fqjFEc3AdzZfjCL/UNAVYRq6kO4u6UlYIrec8v+a+rSfO0n2tVf7CoktUXBfqZR+olAY
-         uCOcZfRqVRcOBitF6fodXiLUjvw6znqOp6jr1t8iY96zz26Sfps6FlNgV2K1gyNpbIqZ
-         GoRJQPnwicpFxzwGBYrg2ITGwkmbPbmE87XiN3XxmkrB4p66oCNyx/tJeMdXSGk0nan7
-         SpmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFVMqd6AVmQ5Bovf7nohHtz9nkPem5IlG4WMJonwtQqGFtpjUMYtaoQZ8d5gkx1DcDvrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1zhjXc0YC0Y85XydVvcCVIZVgCY3FIwB8KyGcRzHpgQyoXQME
-	L9nmkNJo/7324fjY53BvHRJvObEzDpVmxLQr65HrJJO/B6iRmCuv/ITR5LuPs7GzeLQ=
-X-Gm-Gg: ASbGncsP/8YJatDQ44Tyl3XtRDpi+kqZk8Ts4tz1B58FNldWbOgJdZktTlgpX5AO3SH
-	zybIK3Pq3N0ajkBBFRhgvGb9lBYMUjfM1jA91yGiCVz3GgwkRML3vokPFZlKYW+Uc0i3FABrIz1
-	Bhw9QLMTTQi0unDbMgmAVWUUovA3qkf5smNJyvrfxJx+U7/PjGrJzlQixb27vnjMK5w99oEEcl8
-	BF19qv9/WE9L265g1phPuzrGyqe8SLy9VskIT6TYgY5Ed10AqiFu3HSuZhShjXsquob2VZpMcrZ
-	VQXSaYzUUOoUEfRa5SvrNF/4/+Pt0CGxana1w4wDFtumb/6lHTz77d97OZO+hFU=
-X-Google-Smtp-Source: AGHT+IHa+tTRhzZC5JgvxX7eaDorwkAI71UFHvcJbR60AGJdJK9kAKmeytdmd5ysTcE1li+eFVBMhw==
-X-Received: by 2002:a05:6000:2507:b0:3a4:efc0:c90b with SMTP id ffacd0b85a97d-3a5723974e2mr12693214f8f.15.1750178036481;
-        Tue, 17 Jun 2025 09:33:56 -0700 (PDT)
+        bh=08AiNc4t9QnXpXVjsIzl22ewoa/Tdv5ZaJHW+qjaXxo=;
+        b=NkdygZG4ePRe2KD6KLDZwFbOHRyg4sduhLLR8I3L35BrCAFnvt1wy2uTLMW6fih4rb
+         h3BEQ+PVQ08TJMr5xVMNg2oQbVgAD1vMcoaORjNQPTKXhknh6nV7VIIslCMBiFXK9+Td
+         MWhXFzDYu594EDb5tuYWNNrAYvvvUHzmUzG3fl1qD9HUPeL+shRpZRJ48mnvOgIla8CY
+         rppsPnk+KK2oXZlOkbafMkId1OqgAH4fJfjF+M2xiFFdnDB0yZhQEG2pZjnc2rtcs1CQ
+         VytDUxItxoY9Z4agArSTQe2ZClCrcdaCY6Ibwdyv5hmFYdUZYMAybql0ZcJR8HeHJL2K
+         IZ9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWs4g+qesULYd7diSiEGjh7p9c4hcyhtF1wMtANJLrirb2f84ddH/AXTYZT6Pm4dIlF59w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynwCLV3C1/KfZIX3DeCoz6WmfWng9kyFe4ZtSmJsjIDovhCBAb
+	gS9xU0i9nMvb5i0ExwpqJhATOyfIRGi6nSTssfxAhCPjyFtwuLY465V7NJBNpG/Ithw=
+X-Gm-Gg: ASbGnctmR/gg/e6U5PYPKAzMpdNxCYiWC0E8LVXUwQNIc7yMSmBQBFWgWELLfeDbAMw
+	AuVb4Yvq8mXZBvmQhWj0s1gfz9P09TJuQjrLhfXDVO1iIsqGEVa6YOu32e5WcMa04mt4JjCjCwP
+	mqsTxCy1PpqYX1qXdIBndLmkblE57/rHD1tKkP9ox7DPPbxSUeM2xkk/AtGtQNk02iW/NCtkBZ5
+	bcB41JQ4yqjapFzk6LIYaYFbk0n4n0jkwg3oLbvuAtPSOfskozvVE9QrKGfmzPkqtYtjuvFkj4K
+	tsTj0krF2o5YZgL3q5Nurjr3cMdCTxkNJtsYsbFaTeMemczuAR0blpk01Ah9Ilc=
+X-Google-Smtp-Source: AGHT+IEN9d1okWsq/8zsxuLsJHKVkJr9o41irpI2tw2DJJ8y8sNzt8REZAmA1XvhJWVvCccTBndiHg==
+X-Received: by 2002:a05:6000:708:b0:3a5:5278:e635 with SMTP id ffacd0b85a97d-3a572367577mr10901001f8f.3.1750178037072;
+        Tue, 17 Jun 2025 09:33:57 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a54d1fsm14265133f8f.2.2025.06.17.09.33.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a68b0esm14233217f8f.29.2025.06.17.09.33.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 09:33:54 -0700 (PDT)
+        Tue, 17 Jun 2025 09:33:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 77B535F90B;
+	by draig.lan (Postfix) with ESMTP id A920F5F914;
 	Tue, 17 Jun 2025 17:33:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 06/11] kvm/arm: allow out-of kernel GICv3 to work with KVM
-Date: Tue, 17 Jun 2025 17:33:46 +0100
-Message-ID: <20250617163351.2640572-7-alex.bennee@linaro.org>
+Subject: [RFC PATCH 08/11] kvm/arm: plumb in a basic trap harder handler
+Date: Tue, 17 Jun 2025 17:33:48 +0100
+Message-ID: <20250617163351.2640572-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250617163351.2640572-1-alex.bennee@linaro.org>
 References: <20250617163351.2640572-1-alex.bennee@linaro.org>
@@ -87,121 +87,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Previously we suppressed this option as KVM would get confused if it
-started trapping GIC system registers without a GIC configured.
-However if we know we are trapping harder we can allow it much like we
-do for HVF.
+Currently we do nothing but report we don't handle anything and let
+KVM come to a halt.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/kvm_arm.h       |  8 ++++++++
- hw/arm/virt.c              | 11 +++++++++--
- hw/intc/arm_gicv3_common.c |  4 ----
- target/arm/cpu.c           |  2 +-
- target/arm/kvm.c           |  6 ++++++
- hw/intc/Kconfig            |  2 +-
- 6 files changed, 25 insertions(+), 8 deletions(-)
+ target/arm/syndrome.h |  4 ++++
+ target/arm/kvm-stub.c |  5 +++++
+ target/arm/kvm.c      | 44 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 53 insertions(+)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index a4f68e14cb..008a72ccd4 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -200,6 +200,14 @@ bool kvm_arm_mte_supported(void);
-  */
- int kvm_arm_get_type(MachineState *ms);
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index 3244e0740d..29b95bdd36 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -88,6 +88,10 @@ typedef enum {
+ #define ARM_EL_ISV_SHIFT 24
+ #define ARM_EL_IL (1 << ARM_EL_IL_SHIFT)
+ #define ARM_EL_ISV (1 << ARM_EL_ISV_SHIFT)
++#define ARM_EL_ISS_SHIFT 0
++#define ARM_EL_ISS_LENGTH 25
++#define ARM_EL_ISS2_SHIFT 32
++#define ARM_EL_ISS2_LENGTH 24
  
-+/**
-+ * kvm_arm_is_trapping_harder: return true if trapping harder
-+ * @ms: Machine state handle
-+ *
-+ * return true if trapping harder
-+ */
-+bool kvm_arm_is_trapping_harder(MachineState *ms);
-+
- /**
-  * kvm_arm_get_max_vm_ipa_size:
-  * @ms: Machine state handle
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 55433f8fce..e117433cc7 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1998,9 +1998,16 @@ static void finalize_gic_version(VirtMachineState *vms)
-             gics_supported |= VIRT_GIC_VERSION_3_MASK;
-         }
-     } else if (kvm_enabled() && !kvm_irqchip_in_kernel()) {
--        /* KVM w/o kernel irqchip can only deal with GICv2 */
-+        MachineState *ms = MACHINE(vms);
-         gics_supported |= VIRT_GIC_VERSION_2_MASK;
--        accel_name = "KVM with kernel-irqchip=off";
-+        if (kvm_arm_is_trapping_harder(ms) &&
-+            module_object_class_by_name("arm-gicv3")) {
-+            gics_supported |= VIRT_GIC_VERSION_3_MASK;
-+            accel_name = "TMH KVM with kernel-irqchip=off";
-+        } else {
-+            /* KVM w/o kernel irqchip can only deal with GICv2 */
-+            accel_name = "KVM with kernel-irqchip=off";
-+        }
-     } else if (tcg_enabled() || hvf_enabled() || qtest_enabled())  {
-         gics_supported |= VIRT_GIC_VERSION_2_MASK;
-         if (module_object_class_by_name("arm-gicv3")) {
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index 1cee68193c..9a46afaa0d 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -662,10 +662,6 @@ const char *gicv3_class_name(void)
-     if (kvm_irqchip_in_kernel()) {
-         return "kvm-arm-gicv3";
-     } else {
--        if (kvm_enabled()) {
--            error_report("Userspace GICv3 is not supported with KVM");
--            exit(1);
--        }
-         return "arm-gicv3";
-     }
- }
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index e025e241ed..f7618a3038 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1463,7 +1463,7 @@ static void arm_cpu_initfn(Object *obj)
- # endif
- #else
-     /* Our inbound IRQ and FIQ lines */
--    if (kvm_enabled()) {
-+    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-         /*
-          * VIRQ, VFIQ, NMI, VINMI are unused with KVM but we add
-          * them to maintain the same interface as non-KVM CPUs.
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index ed0f6024d6..c5374d12cf 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -522,6 +522,12 @@ int kvm_arm_get_type(MachineState *ms)
-     return s->trap_harder ? KVM_VM_TYPE_ARM_TRAP_ALL : 0;
+ /* In the Data Abort syndrome */
+ #define ARM_EL_VNCR (1 << 13)
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 34e57fab01..765efb1848 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -60,6 +60,11 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
+     g_assert_not_reached();
  }
  
-+bool kvm_arm_is_trapping_harder(MachineState *ms)
++int kvm_arm_get_type(MachineState *ms)
 +{
-+    KVMState *s = KVM_STATE(ms->accelerator);
-+    return s->trap_harder;
++    g_assert_not_reached();
 +}
 +
- int kvm_arch_get_default_type(MachineState *ms)
+ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
  {
-     bool fixed_ipa;
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 7547528f2c..0eb37364a7 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -23,7 +23,7 @@ config APIC
+     g_assert_not_reached();
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index c5374d12cf..f2255cfdc8 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1414,6 +1414,43 @@ static bool kvm_arm_handle_debug(ARMCPU *cpu,
+     return false;
+ }
  
- config ARM_GIC
-     bool
--    select ARM_GICV3 if TCG
-+    select ARM_GICV3 # can be used by TCG, HVF or KVM
-     select ARM_GIC_KVM if KVM
-     select MSI_NONBROKEN
- 
++/**
++ * kvm_arm_handle_hard_trap:
++ * @cpu: ARMCPU
++ * @esr: full exception state register
++ * @elr: exception link return address
++ * @far: fault address (if used)
++ *
++ * Returns: 0 if the exception has been handled, < 0 otherwise
++ */
++static int kvm_arm_handle_hard_trap(ARMCPU *cpu,
++                                    uint64_t esr,
++                                    uint64_t elr,
++                                    uint64_t far)
++{
++    CPUState *cs = CPU(cpu);
++    int esr_ec = extract64(esr, ARM_EL_EC_SHIFT, ARM_EL_EC_LENGTH);
++    int esr_iss = extract64(esr, ARM_EL_ISS_SHIFT, ARM_EL_ISS_LENGTH);
++    int esr_iss2 = extract64(esr, ARM_EL_ISS2_SHIFT, ARM_EL_ISS2_LENGTH);
++    int esr_il = extract64(esr, ARM_EL_IL_SHIFT, 1);
++
++    /*
++     * Ensure register state is synchronised
++     *
++     * This sets vcpu->vcpu_dirty which should ensure the registers
++     * are synced back to KVM before we restart.
++     */
++    kvm_cpu_synchronize_state(cs);
++
++    switch (esr_ec) {
++    default:
++        qemu_log_mask(LOG_UNIMP, "%s: unhandled EC: %x/%x/%x/%d\n",
++                __func__, esr_ec, esr_iss, esr_iss2, esr_il);
++        return -1;
++    }
++}
++
++
+ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -1430,9 +1467,16 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+         ret = kvm_arm_handle_dabt_nisv(cpu, run->arm_nisv.esr_iss,
+                                        run->arm_nisv.fault_ipa);
+         break;
++    case KVM_EXIT_ARM_TRAP_HARDER:
++        ret = kvm_arm_handle_hard_trap(cpu,
++                                       run->arm_trap_harder.esr,
++                                       run->arm_trap_harder.elr,
++                                       run->arm_trap_harder.far);
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: un-handled exit reason %d\n",
+                       __func__, run->exit_reason);
++        ret = -1;
+         break;
+     }
+     return ret;
 -- 
 2.47.2
 
