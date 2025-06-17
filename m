@@ -1,36 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77655288C06;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DA1E22FC;
 	Tue, 17 Jun 2025 07:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750145628; cv=none; b=GO+b0YuqA4MWYU/mPrqsM1Nn8lxrY4AXXplk3zsi9JLODTuePWl7QNALIOR/hkPpy08GiN0rE1Yf2Gg4jEecNehSgoKEgcCbCAD1ojCjKD9XAfwJ+hgZwrz4PJt7z3I1gn33GwreeXPts6S0rZoochFEFUU0LX5tdZy/HJMBWac=
+	t=1750145628; cv=none; b=kr+Atp71xZyPLRMeCWRHPKoE2f2xpHTF344bqXFzUlkTy7pyztdon4MtyvaO6Vm4i3y3vvalo2ufffHzPkIflYYDnntvvljmQ0DJeGcFyMzLPpBN/HLNsHLbZ5DgP3qnhkuLEtNTFxmLQNZXLpMPoUYSutj0xYmnv2TYgdvXHiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750145628; c=relaxed/simple;
-	bh=xW1VUV8oxY/+eJvfTBIXObAU4Xts/nmDnxOFIFFOuas=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DiJef3kHmY91VJ5BMf5EAwmGQwLdUDFqS4rtjuvIt7O/WHx7adme9JjqGLNiS9ze7VzIR5Bw1S/ek0iANcOqRcbwzKb3g1VoSWtggarIgShiKnRUXAFbfKmGroI8vyvhDNASugw4KJb3DUl2NEsywa/VIs//um/iCJ6CynWDdxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=vi8K0/Rg; arc=none smtp.client-ip=198.137.202.136
+	bh=SjPjqhJUo5tnTLAx9gehS2WYxidqB/n4ashPnn4A23c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FzfZ5bAOh9PHsGzTviyr2UwsKpOptVJgtHvfZFU9XxwN2eDbawliRYsIqtPOIiVIqI3XkZgLOgQCvdD360hmablHNlUMuYgEignEWKh4iP4wK8pJMU4fbNoniERmqkBX1hHrUi82xk10olUOh0T++De4u+qJnakSBvu4A/PpVag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=xf9Ma34l; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="vi8K0/Rg"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="xf9Ma34l"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55H7WY8w1020658
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55H7WY901020658
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 17 Jun 2025 00:32:37 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55H7WY8w1020658
+	Tue, 17 Jun 2025 00:32:39 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55H7WY901020658
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025052101; t=1750145558;
-	bh=b1wnFPUhDY9iKxorOahzeOJ8uRrpy2/oLWDc7uprxlo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vi8K0/Rg19FFPpdmvoUdsRjwt4k8IzzdSie1RDC3TZKZYovSE9lPCbtxWwkpfvD7I
-	 Ek6QZWWOpqGC3HxtqJU0WBpXg9zS8BSkevz6RJ9B9Amafp5V1HVgY08vgmIfDa6h3s
-	 kH1ZKQ7zQ15AH0Tl8ooe46OFX4e6w6ylE5V69IraXRd+3YJdVqT1lIeJgVr80QIWHe
-	 TNlnwGfJgfJUtheXc1sYaRTAyLlNAArp1qzSdLcw6vpzYYkB6IBbDxotrdS5j/x1SO
-	 gXbBk3lZqW0MVqQHpaUajQxoSyVXwp92IU7v3p1/j13hv+SXYIQAd9aUg+hbPm/BZS
-	 5A63bbLDYuHNw==
+	s=2025052101; t=1750145560;
+	bh=qaHWaR3qS+VvBjhBQiLm25PU4KqdjLMxlrG3QnDM/6c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=xf9Ma34lhmlCiTJKHLkI2fxVy55T2Igy/PPE/WbwHAr/rq+yB/pJzd8Nd3AwM8y3R
+	 Ns6u5aWKbEXTaoLzNF1AvwJ1gKAe+uIO5arCwuwQdOapjaLANj3elfLlQUanGoo+QA
+	 /AxKqiuEN6fUIxrtBmCUekBTvoSCEuElM2hy6g9vlUewNq97ms7N7jQRRMIcKfhBH0
+	 SgnwjL5L9ysquzN8N7co0xljDm8ekkE76UfSNHUKklIVlcCyULxljIAWOHGKXSri8/
+	 edrI+W1Fs26lV8UTISLoYR+DDCYbgN0Hfpr7wT5zyP3jFQmdhpctp9CnDcmcl4haER
+	 JPEdn29h/AHAA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
@@ -38,10 +39,12 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         seanjc@google.com, pbonzini@redhat.com, peterz@infradead.org,
         sohil.mehta@intel.com, brgerst@gmail.com, tony.luck@intel.com,
         fenghuay@nvidia.com
-Subject: [PATCH v2 0/2] x86/traps: Fix DR6/DR7 initialization
-Date: Tue, 17 Jun 2025 00:32:32 -0700
-Message-ID: <20250617073234.1020644-1-xin@zytor.com>
+Subject: [PATCH v2 2/2] x86/traps: Initialize DR7 by writing its architectural reset value
+Date: Tue, 17 Jun 2025 00:32:34 -0700
+Message-ID: <20250617073234.1020644-3-xin@zytor.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250617073234.1020644-1-xin@zytor.com>
+References: <20250617073234.1020644-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,70 +53,160 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Sohil reported seeing a split lock warning when running a test that
-generates userspace #DB:
+Initialize DR7 by writing its architectural reset value to ensure
+compliance with the specification.
 
-  x86/split lock detection: #DB: sigtrap_loop_64/4614 took a bus_lock trap at address: 0x4011ae
-
-
-We investigated the issue and figured out:
-
-  1) The warning is a false positive.
-
-  2) It is not caused by the test itself.
-
-  3) It occurs even when Bus Lock Detection (BLD) is disabled.
-
-  4) It only happens on the first #DB on a CPU.
-
-
-And the root cause is, at boot time, Linux zeros DR6.  This leads to
-different DR6 values depending on whether the CPU supports BLD:
-
-  1) On CPUs with BLD support, DR6 becomes 0xFFFF07F0 (bit 11, DR6.BLD,
-     is cleared).
-
-  2) On CPUs without BLD, DR6 becomes 0xFFFF0FF0.
-
-Since only BLD-induced #DB exceptions clear DR6.BLD and other debug
-exceptions leave it unchanged, even if the first #DB is unrelated to
-BLD, DR6.BLD is still cleared.  As a result, such a first #DB is
-misinterpreted as a BLD #DB, and a false warning is triggerred.
-
-
-Fix the bug by initializing DR6 by writing its architectural reset
-value at boot time.
-
-
-DR7 suffers from a similar issue.  We apply the same fix.
-
-
-This patch set is based on tip/x86/urgent branch as of today.
-
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+---
 
 Changes in v2:
-*) Use debug register indexes rather than DR_* macros (PeterZ and Sean).
+*) Use debug register index 7 rather than DR_CONTROL (PeterZ and Sean).
 *) Use DR7_FIXED_1 as the architectural reset value of DR7 (Sean).
-*) Move the DR6 fix patch to the first of the patch set to ease backporting.
+---
+ arch/x86/include/asm/debugreg.h | 14 ++++++++++----
+ arch/x86/include/asm/kvm_host.h |  2 +-
+ arch/x86/kernel/cpu/common.c    |  2 +-
+ arch/x86/kernel/kgdb.c          |  2 +-
+ arch/x86/kernel/process_32.c    |  2 +-
+ arch/x86/kernel/process_64.c    |  2 +-
+ arch/x86/kvm/x86.c              |  4 ++--
+ 7 files changed, 17 insertions(+), 11 deletions(-)
 
-
-Xin Li (Intel) (2):
-  x86/traps: Initialize DR6 by writing its architectural reset value
-  x86/traps: Initialize DR7 by writing its architectural reset value
-
- arch/x86/include/asm/debugreg.h      | 14 ++++++++----
- arch/x86/include/asm/kvm_host.h      |  2 +-
- arch/x86/include/uapi/asm/debugreg.h |  7 +++++-
- arch/x86/kernel/cpu/common.c         | 17 ++++++--------
- arch/x86/kernel/kgdb.c               |  2 +-
- arch/x86/kernel/process_32.c         |  2 +-
- arch/x86/kernel/process_64.c         |  2 +-
- arch/x86/kernel/traps.c              | 34 +++++++++++++++++-----------
- arch/x86/kvm/x86.c                   |  4 ++--
- 9 files changed, 50 insertions(+), 34 deletions(-)
-
-
-base-commit: 594902c986e269660302f09df9ec4bf1cf017b77
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index 363110e6b2e3..3acb85850c19 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -9,6 +9,9 @@
+ #include <asm/cpufeature.h>
+ #include <asm/msr.h>
+ 
++/* DR7_FIXED_1 is also used as the init/reset value for DR7 */
++#define DR7_FIXED_1	0x00000400
++
+ DECLARE_PER_CPU(unsigned long, cpu_dr7);
+ 
+ #ifndef CONFIG_PARAVIRT_XXL
+@@ -100,8 +103,8 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
+ 
+ static inline void hw_breakpoint_disable(void)
+ {
+-	/* Zero the control register for HW Breakpoint */
+-	set_debugreg(0UL, 7);
++	/* Reset the control register for HW Breakpoint */
++	set_debugreg(DR7_FIXED_1, 7);
+ 
+ 	/* Zero-out the individual HW breakpoint address registers */
+ 	set_debugreg(0UL, 0);
+@@ -125,9 +128,12 @@ static __always_inline unsigned long local_db_save(void)
+ 		return 0;
+ 
+ 	get_debugreg(dr7, 7);
+-	dr7 &= ~0x400; /* architecturally set bit */
++
++	/* Architecturally set bit */
++	dr7 &= ~DR7_FIXED_1;
+ 	if (dr7)
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
++
+ 	/*
+ 	 * Ensure the compiler doesn't lower the above statements into
+ 	 * the critical section; disabling breakpoints late would not
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b4a391929cdb..639d9bcee842 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -31,6 +31,7 @@
+ 
+ #include <asm/apic.h>
+ #include <asm/pvclock-abi.h>
++#include <asm/debugreg.h>
+ #include <asm/desc.h>
+ #include <asm/mtrr.h>
+ #include <asm/msr-index.h>
+@@ -249,7 +250,6 @@ enum x86_intercept_stage;
+ #define DR7_BP_EN_MASK	0x000000ff
+ #define DR7_GE		(1 << 9)
+ #define DR7_GD		(1 << 13)
+-#define DR7_FIXED_1	0x00000400
+ #define DR7_VOLATILE	0xffff2bff
+ 
+ #define KVM_GUESTDBG_VALID_MASK \
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 3bd7c9ac7576..183765fdb56b 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2248,7 +2248,7 @@ static void initialize_debug_regs(void)
+ 	int i;
+ 
+ 	/* Control register first */
+-	set_debugreg(0, 7);
++	set_debugreg(DR7_FIXED_1, 7);
+ 	set_debugreg(DR6_RESERVED, 6);
+ 
+ 	/* Ignore db4, db5 */
+diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
+index 102641fd2172..8b1a9733d13e 100644
+--- a/arch/x86/kernel/kgdb.c
++++ b/arch/x86/kernel/kgdb.c
+@@ -385,7 +385,7 @@ static void kgdb_disable_hw_debug(struct pt_regs *regs)
+ 	struct perf_event *bp;
+ 
+ 	/* Disable hardware debugging while we are in kgdb: */
+-	set_debugreg(0UL, 7);
++	set_debugreg(DR7_FIXED_1, 7);
+ 	for (i = 0; i < HBP_NUM; i++) {
+ 		if (!breakinfo[i].enabled)
+ 			continue;
+diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+index a10e180cbf23..3ef15c2f152f 100644
+--- a/arch/x86/kernel/process_32.c
++++ b/arch/x86/kernel/process_32.c
+@@ -93,7 +93,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+ 
+ 	/* Only print out debug registers if they are in their non-default state. */
+ 	if ((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+-	    (d6 == DR6_RESERVED) && (d7 == 0x400))
++	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))
+ 		return;
+ 
+ 	printk("%sDR0: %08lx DR1: %08lx DR2: %08lx DR3: %08lx\n",
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index 8d6cf25127aa..b972bf72fb8b 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -133,7 +133,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+ 
+ 	/* Only print out debug registers if they are in their non-default state. */
+ 	if (!((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+-	    (d6 == DR6_RESERVED) && (d7 == 0x400))) {
++	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))) {
+ 		printk("%sDR0: %016lx DR1: %016lx DR2: %016lx\n",
+ 		       log_lvl, d0, d1, d2);
+ 		printk("%sDR3: %016lx DR6: %016lx DR7: %016lx\n",
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b58a74c1722d..a9d992d5652f 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11035,7 +11035,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 
+ 	if (unlikely(vcpu->arch.switch_db_regs &&
+ 		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
+ 		set_debugreg(vcpu->arch.eff_db[0], 0);
+ 		set_debugreg(vcpu->arch.eff_db[1], 1);
+ 		set_debugreg(vcpu->arch.eff_db[2], 2);
+@@ -11044,7 +11044,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+ 			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
+ 	} else if (unlikely(hw_breakpoint_active())) {
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
+ 	}
+ 
+ 	vcpu->arch.host_debugctl = get_debugctlmsr();
 -- 
 2.49.0
 
