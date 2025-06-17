@@ -1,244 +1,214 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775783C2F;
-	Tue, 17 Jun 2025 07:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1954D28ECCB
+	for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 07:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750145629; cv=none; b=sd0CLevUo3GOs3NB8xxtOuTPgEqZ+dHbuVpqzfY6jQJiZxe4TXnI8K5SW6fDWbzBo5eCOxKaIsa2QoXxGSsO3aFcoBxjAGQFRHsepkRMZWtTbrZsY14BlgYWAfxVmoR6aaEuHu/KJUna89QdXlTPt4ioy9fyEzmtJQ65GD8Uc2o=
+	t=1750145708; cv=none; b=XJXCLxKTetN7kQQXq6HQBWkZgtsd+emZCeQgn73gvtwCWvsaNjbV0xzhvPRbjh8KQSdUpp6cBrHgpk9+SlmPdK+rWLMno2prVL/9dol7pyWDn8svL1yKzfeGAA6wGnLzxDWpjZGfqYgC2ZpBayHw/XlDOnANwOo0MG6iV4dNN4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750145629; c=relaxed/simple;
-	bh=r2hXSsjEbQxu0mOvM191VLjPAl5LgTFDXv+l4XfTIJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvCiJMGbiO4MyX6lln30vvRS4oC8Lmhj9Ao3oMz4xFoRfXI2xSaX0Wfq1+ru4PDzLK187WRA6qH9moBMeVHlebz7rnyx8t+JI5uoLzPtLSSbmunsrTwnTl5hJWYURCQjRzx7VGz0B7nPhF3YoFsHVcKKxbKn9qqk61MHamL/NqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=iCMGcPJW; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1750145708; c=relaxed/simple;
+	bh=WTQn1jvIcuYuUMmkktU+F6VAMUzXWNxHnSm8UZakJ78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yiibv36Zur/n3wU2V3FchxM0hnT4R+io0RQ6QWwUyB9jBl1fjBEpQud8rZBVxvxAs4CDO1rKLFbHpa4vo4F6l1FPYZyBu3y7YLq4Aw3i1euJ2NQWOuntSw5A9XG9dSLYm74sSBxOQFP2178NSWZSuSUAm30wQ1pfZTTaoTCKNgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UBI8ijCY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="iCMGcPJW"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55H7WY8x1020658
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 17 Jun 2025 00:32:38 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55H7WY8x1020658
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025052101; t=1750145559;
-	bh=M0DKhA38fEw6Bm/3Z+zol8C78ucdC08/MmuvHH4gP5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCMGcPJWNrjKttAGX2SFY0d7+3klYcr5d/LKLeAAoPd4ZvIOMSke8zdJqd/BHnl46
-	 x5rbdYIXpQaC4fdTQFDUFqLoHU0wnvzLixKayRGJOoxHCCEfzXzwgnFADxIBPeTcIy
-	 p0mMfJCtFhWOPVHXYdMAlBhxvuRHlYOIY0J1hjO0+0t4qTY0IgAsgstjRGSlgzXAhe
-	 r1jzoCnAIxycfQqb06iqNFhz8jbzyPUuL5NdtU95ur+v3E24eu4kOO+jgTxZ8OemdZ
-	 /Peu/ItwJWejYVDcFp8kbRFXJtdlPhpLlsa4C+9vVTkUcuBoDKeXdCKlq6jRiHAK+5
-	 q/MrFIg8uUb9w==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        seanjc@google.com, pbonzini@redhat.com, peterz@infradead.org,
-        sohil.mehta@intel.com, brgerst@gmail.com, tony.luck@intel.com,
-        fenghuay@nvidia.com
-Subject: [PATCH v2 1/2] x86/traps: Initialize DR6 by writing its architectural reset value
-Date: Tue, 17 Jun 2025 00:32:33 -0700
-Message-ID: <20250617073234.1020644-2-xin@zytor.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617073234.1020644-1-xin@zytor.com>
-References: <20250617073234.1020644-1-xin@zytor.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UBI8ijCY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750145705;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qr7YDLYZeKL5nI6aE6TfY01hQ51/nxfWCDQx9DxnXBs=;
+	b=UBI8ijCYZKZJGAIGhdlq1aiJEuYWnbOiskq9US/BjwY5k6L3/v2BJv6W8zvCwt50wOVaRQ
+	Zy2S6zJvI8DhPP7D53xovho31CfNHFfE2+luo3dJAkokyZMdl01k1JVjXQGPvDzdFUcR1d
+	zJUzrQUCF7ktrE5o2aEqNMY9qZ77pys=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-38-pla8H9n6Nf6UOZOZFrMNuQ-1; Tue, 17 Jun 2025 03:35:03 -0400
+X-MC-Unique: pla8H9n6Nf6UOZOZFrMNuQ-1
+X-Mimecast-MFC-AGG-ID: pla8H9n6Nf6UOZOZFrMNuQ_1750145702
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a4e9252ba0so2679716f8f.0
+        for <kvm@vger.kernel.org>; Tue, 17 Jun 2025 00:35:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750145702; x=1750750502;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Qr7YDLYZeKL5nI6aE6TfY01hQ51/nxfWCDQx9DxnXBs=;
+        b=ftHeoY8h4OdJJ/7fQjLGiwStUp4vxt512LGIH04HkrhhW9SC8jIUXuFWYrFhsGUzS5
+         83vcrxHXn3aAgQPwPUQdKWPij1Zz5ugvRTtqGSfq2ieeI38GGIvVXM8wRIXD0KZ8At3C
+         sllfo2mGzVoHgb2pTiF7urngYWvLdvP+u3YxERN2AF/+c+ZrXPmuFbdNd/oodXxkjNUG
+         Bgdhzei7O38lAgyGeD19BzIAIqiLg7UDB9bE59oGp9KJu4Lwc6RGa4kRrcl1+gNlk+EK
+         kPEfPzKgPHMYC/eRueP4HPbhdBCAMZX3qco+8XTTSnqD/8mdJXU9+ZN61iiaJfv86mG3
+         vbrQ==
+X-Gm-Message-State: AOJu0Yw/zcrTqj5ORpN9RxjE5u40ldSWL0vxJqW3yFc23sFxDMZTHa2D
+	B7I4lkjBoa2ikewSHK/TTEb4DqZq/s8O2lGPBqmy6YZLFrhWiyDfbN3yK2CYt7nXVH1BP60R+eH
+	BA7qAjpT3iagfmVhXSZv6fWnRKfGi2weConiXoQ5PgB5Av/rmEmBUKg==
+X-Gm-Gg: ASbGnctCa6dl3DYmxRQb0a+fpuMx11uu+d1s0vhgEsgRGva8MYeDudLREIyU3+cfjB5
+	/YAtANAA2caJvhszscMzGuqDKWBnmLdWaRdor3+UOcx8GJKEfMu7ymMP1Dh8m0GExL2+Mj+hE0N
+	jzmwTFqc91apmlECGhVGECxiFqHlWafYrGOtFl9237Uk5vhFuFT6ybHLFW3R4gscCYY7J5JbTNA
+	iqDWGkTHbrTpSEiOjtYrZ/WrIvxZXHabX8JSzfxeqpLOZ9Fv97xhyQ018bpBfum5wr3hHZeJZLo
+	drKqSBEFN1m/7OGtpPGFQ/GagOii4OcErwniroK5Agzscmej8/F4iduoO1t8p2ah9idu2lK6ppc
+	HOeQtJx+AgTlrP/eODth1s+GFzorVu5ToflluHWk8O9UKrsA=
+X-Received: by 2002:adf:b64d:0:b0:3a5:75a6:73b9 with SMTP id ffacd0b85a97d-3a575a6776bmr5519733f8f.11.1750145701974;
+        Tue, 17 Jun 2025 00:35:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHj5SVN8X/GgRvKQRhQLvWOYL4dcmdIN/phPnUQUy6L/lFKmUG1JqHAavYuw0IUsXgdRRaM+w==
+X-Received: by 2002:adf:b64d:0:b0:3a5:75a6:73b9 with SMTP id ffacd0b85a97d-3a575a6776bmr5519713f8f.11.1750145701594;
+        Tue, 17 Jun 2025 00:35:01 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f31:700:3851:c66a:b6b9:3490? (p200300d82f3107003851c66ab6b93490.dip0.t-ipconnect.de. [2003:d8:2f31:700:3851:c66a:b6b9:3490])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e241b70sm164337975e9.18.2025.06.17.00.35.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 00:35:01 -0700 (PDT)
+Message-ID: <e09ed520-6b52-4b53-b6bb-dfee8f34be5b@redhat.com>
+Date: Tue, 17 Jun 2025 09:35:00 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] gup: introduce unpin_user_folio_dirty_locked()
+To: lizhe.67@bytedance.com, alex.williamson@redhat.com,
+ akpm@linux-foundation.org, peterx@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20250617041821.85555-1-lizhe.67@bytedance.com>
+ <20250617041821.85555-3-lizhe.67@bytedance.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250617041821.85555-3-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Initialize DR6 by writing its architectural reset value to ensure
-compliance with the specification.  This avoids incorrectly zeroing
-DR6 to clear DR6.BLD at boot time, which leads to a false bus lock
-detected warning.
+On 17.06.25 06:18, lizhe.67@bytedance.com wrote:
+> From: Li Zhe <lizhe.67@bytedance.com>
+> 
+> Introduce a new interface, unpin_user_folio_dirty_locked(). This
+> interface is similar to unpin_user_folio(), but it adds the
+> capability to conditionally mark a folio as dirty. VFIO will utilize
+> this interface to accelerate the VFIO DMA unmap process.
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>   include/linux/mm.h |  2 ++
+>   mm/gup.c           | 27 +++++++++++++++++++++------
+>   2 files changed, 23 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index fdda6b16263b..242b05671502 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1689,6 +1689,8 @@ void unpin_user_page_range_dirty_lock(struct page *page, unsigned long npages,
+>   				      bool make_dirty);
+>   void unpin_user_pages(struct page **pages, unsigned long npages);
+>   void unpin_user_folio(struct folio *folio, unsigned long npages);
+> +void unpin_user_folio_dirty_locked(struct folio *folio,
+> +		unsigned long npins, bool make_dirty);
+>   void unpin_folios(struct folio **folios, unsigned long nfolios);
+>   
+>   static inline bool is_cow_mapping(vm_flags_t flags)
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 84461d384ae2..15debead5f5b 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -360,12 +360,7 @@ void unpin_user_page_range_dirty_lock(struct page *page, unsigned long npages,
+>   
+>   	for (i = 0; i < npages; i += nr) {
+>   		folio = gup_folio_range_next(page, npages, i, &nr);
+> -		if (make_dirty && !folio_test_dirty(folio)) {
+> -			folio_lock(folio);
+> -			folio_mark_dirty(folio);
+> -			folio_unlock(folio);
+> -		}
+> -		gup_put_folio(folio, nr, FOLL_PIN);
+> +		unpin_user_folio_dirty_locked(folio, nr, make_dirty);
+>   	}
+>   }
+>   EXPORT_SYMBOL(unpin_user_page_range_dirty_lock);
+> @@ -435,6 +430,26 @@ void unpin_user_folio(struct folio *folio, unsigned long npages)
+>   }
+>   EXPORT_SYMBOL(unpin_user_folio);
+>   
+> +/**
+> + * unpin_user_folio_dirty_locked() - conditionally mark a folio
+> + * dirty and unpin it
+> + *
+> + * @folio:  pointer to folio to be released
+> + * @npins:  number of pins
+> + * @make_dirty: whether to mark the folio dirty
+> + *
+> + * Mark the folio as being modified if @make_dirty is true. Then
+> + * release npins of the folio.
+> + */
+> +void unpin_user_folio_dirty_locked(struct folio *folio,
+> +		unsigned long npins, bool make_dirty)
+> +{
+> +	if (make_dirty && !folio_test_dirty(folio))
+> +		folio_mark_dirty_lock(folio);
+> +	gup_put_folio(folio, npins, FOLL_PIN);
+> +}
+> +EXPORT_SYMBOL_GPL(unpin_user_folio_dirty_locked);
+> +
+>   /**
+>    * unpin_folios() - release an array of gup-pinned folios.
+>    * @folios:  array of folios to be marked dirty and released.
 
-The Intel SDM says:
+Acked-by: David Hildenbrand <david@redhat.com>
 
-  1) Certain debug exceptions may clear bits 0-3 of DR6.
-
-  2) BLD induced #DB clears DR6.BLD and any other debug exception
-     doesn't modify DR6.BLD.
-
-  3) RTM induced #DB clears DR6.RTM and any other debug exception
-     sets DR6.RTM.
-
-  To avoid confusion in identifying debug exceptions, debug handlers
-  should set DR6.BLD and DR6.RTM, and clear other DR6 bits before
-  returning.
-
-The DR6 architectural reset value 0xFFFF0FF0, already defined as
-macro DR6_RESERVED, satisfies these requirements, so just use it to
-reinitialize DR6 whenever needed.
-
-Since clear_all_debug_regs() no longer zeros all debug registers,
-rename it to initialize_debug_regs() to better reflect its current
-behavior.
-
-Since debug_read_clear_dr6() no longer clears DR6, rename it to
-debug_read_reset_dr6() to better reflect its current behavior.
-
-Reported-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/lkml/06e68373-a92b-472e-8fd9-ba548119770c@intel.com/
-Fixes: ebb1064e7c2e9 ("x86/traps: Handle #DB for bus lock")
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Cc: stable@vger.kernel.org
----
-
-Changes in v2:
-*) Use debug register index 6 rather than DR_STATUS (PeterZ and Sean).
-*) Move this patch the first of the patch set to ease backporting.
----
- arch/x86/include/uapi/asm/debugreg.h |  7 +++++-
- arch/x86/kernel/cpu/common.c         | 17 ++++++--------
- arch/x86/kernel/traps.c              | 34 +++++++++++++++++-----------
- 3 files changed, 34 insertions(+), 24 deletions(-)
-
-diff --git a/arch/x86/include/uapi/asm/debugreg.h b/arch/x86/include/uapi/asm/debugreg.h
-index 0007ba077c0c..8f335b9fa892 100644
---- a/arch/x86/include/uapi/asm/debugreg.h
-+++ b/arch/x86/include/uapi/asm/debugreg.h
-@@ -15,7 +15,12 @@
-    which debugging register was responsible for the trap.  The other bits
-    are either reserved or not of interest to us. */
- 
--/* Define reserved bits in DR6 which are always set to 1 */
-+/*
-+ * Define reserved bits in DR6 which are set to 1 by default.
-+ *
-+ * This is also the DR6 architectural value following Power-up, Reset or INIT.
-+ * Some of these reserved bits can be set to 0 by hardware or software.
-+ */
- #define DR6_RESERVED	(0xFFFF0FF0)
- 
- #define DR_TRAP0	(0x1)		/* db0 */
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8feb8fd2957a..3bd7c9ac7576 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2243,20 +2243,17 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- #endif
- #endif
- 
--/*
-- * Clear all 6 debug registers:
-- */
--static void clear_all_debug_regs(void)
-+static void initialize_debug_regs(void)
- {
- 	int i;
- 
--	for (i = 0; i < 8; i++) {
--		/* Ignore db4, db5 */
--		if ((i == 4) || (i == 5))
--			continue;
-+	/* Control register first */
-+	set_debugreg(0, 7);
-+	set_debugreg(DR6_RESERVED, 6);
- 
-+	/* Ignore db4, db5 */
-+	for (i = 0; i < 4; i++)
- 		set_debugreg(0, i);
--	}
- }
- 
- #ifdef CONFIG_KGDB
-@@ -2417,7 +2414,7 @@ void cpu_init(void)
- 
- 	load_mm_ldt(&init_mm);
- 
--	clear_all_debug_regs();
-+	initialize_debug_regs();
- 	dbg_restore_debug_regs();
- 
- 	doublefault_init_cpu_tss();
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index c5c897a86418..36354b470590 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1022,24 +1022,32 @@ static bool is_sysenter_singlestep(struct pt_regs *regs)
- #endif
- }
- 
--static __always_inline unsigned long debug_read_clear_dr6(void)
-+static __always_inline unsigned long debug_read_reset_dr6(void)
- {
- 	unsigned long dr6;
- 
-+	get_debugreg(dr6, 6);
-+	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
-+
- 	/*
- 	 * The Intel SDM says:
- 	 *
--	 *   Certain debug exceptions may clear bits 0-3. The remaining
--	 *   contents of the DR6 register are never cleared by the
--	 *   processor. To avoid confusion in identifying debug
--	 *   exceptions, debug handlers should clear the register before
--	 *   returning to the interrupted task.
-+	 *   Certain debug exceptions may clear bits 0-3 of DR6.
-+	 *
-+	 *   BLD induced #DB clears DR6.BLD and any other debug
-+	 *   exception doesn't modify DR6.BLD.
- 	 *
--	 * Keep it simple: clear DR6 immediately.
-+	 *   RTM induced #DB clears DR6.RTM and any other debug
-+	 *   exception sets DR6.RTM.
-+	 *
-+	 *   To avoid confusion in identifying debug exceptions,
-+	 *   debug handlers should set DR6.BLD and DR6.RTM, and
-+	 *   clear other DR6 bits before returning.
-+	 *
-+	 * Keep it simple: write DR6 with its architectural reset
-+	 * value 0xFFFF0FF0, defined as DR6_RESERVED, immediately.
- 	 */
--	get_debugreg(dr6, 6);
- 	set_debugreg(DR6_RESERVED, 6);
--	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
- 
- 	return dr6;
- }
-@@ -1239,13 +1247,13 @@ static noinstr void exc_debug_user(struct pt_regs *regs, unsigned long dr6)
- /* IST stack entry */
- DEFINE_IDTENTRY_DEBUG(exc_debug)
- {
--	exc_debug_kernel(regs, debug_read_clear_dr6());
-+	exc_debug_kernel(regs, debug_read_reset_dr6());
- }
- 
- /* User entry, runs on regular task stack */
- DEFINE_IDTENTRY_DEBUG_USER(exc_debug)
- {
--	exc_debug_user(regs, debug_read_clear_dr6());
-+	exc_debug_user(regs, debug_read_reset_dr6());
- }
- 
- #ifdef CONFIG_X86_FRED
-@@ -1264,7 +1272,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
- {
- 	/*
- 	 * FRED #DB stores DR6 on the stack in the format which
--	 * debug_read_clear_dr6() returns for the IDT entry points.
-+	 * debug_read_reset_dr6() returns for the IDT entry points.
- 	 */
- 	unsigned long dr6 = fred_event_data(regs);
- 
-@@ -1279,7 +1287,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
- /* 32 bit does not have separate entry points. */
- DEFINE_IDTENTRY_RAW(exc_debug)
- {
--	unsigned long dr6 = debug_read_clear_dr6();
-+	unsigned long dr6 = debug_read_reset_dr6();
- 
- 	if (user_mode(regs))
- 		exc_debug_user(regs, dr6);
 -- 
-2.49.0
+Cheers,
+
+David / dhildenb
 
