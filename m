@@ -1,124 +1,304 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7390B2E8DFF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9D02E8E02
 	for <kvm@vger.kernel.org>; Wed, 18 Jun 2025 11:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750246592; cv=none; b=jH8vCw8fVVpgey7bHDqsUTLyxG27hlJpxUvKEYG1nlT3Gagati5reNq3G0brtLwyTrs9FUR5Sf6brT0q+5HvQ78CZkGjsRloac81zgx03RwqqC4jpXZ3Oq7gXk4ffvk/Oufc7bByNTVERYXw4IT/pef0C2WdaURMA+ecPOn3W0A=
+	t=1750246592; cv=none; b=bjS3k99/GXbSQFBHQhBtILN/rf3l5Ph/kqMcUb08c+5IHQly3azalpWgPYqsAyjc3T63NGiaFKeppZIdyIjnnqTqGDcqLQi/CjcyOGsMxjAx4fwZEknGyEqLK8zXE4Zm979WP+M2EU6wGnBzscCioG6Jp/WwVJFqEIZ84JVJi4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750246592; c=relaxed/simple;
-	bh=LmzNlGu33bNvUvS1lMtzXBfA59WCOHBjyR8h3AOZEfM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KPdAJE/cSfu/5cR3YPpkQHUnpJ3vF/O/DRxraWM0rycN8zbnsV9XEx4d6Vwl1t3Sdip2ggeOG92uigF0prTxOCnbLfHU7XZhqNltwV+1U+iDzRTSUPGQF44Acl8Vfm3SCdQPHtJXxlUuR+4HWfBsG1T+TX2Y7BRZcX1OqL4EhkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BxnDea7R; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	bh=P4lZ2mtLaeQ3GLE74/sFfvJ7vB7exgTSt9fB9Qi+RZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qNJIIXM6vQeQmxBi8dl2Zn4D8IJ0ktzfPAhM+p32hlMffMKrLqEsw2FKyIVCHWmKTVMc6JbRmA0LcrZloIrFUtElCcUAnW9d4lUA/kBD9y7UWtkE0RRfR5WOh3unfar0sQMA552qaiDSD5RCN2s22vIRqAf3rc6N3hxv53iXvCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=GF+tXaFh; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BxnDea7R"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4a58d95ea53so6392641cf.0
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="GF+tXaFh"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-234d366e5f2so90111005ad.1
         for <kvm@vger.kernel.org>; Wed, 18 Jun 2025 04:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1750246589; x=1750851389; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hyfMiE8uuz+y/z3NeyrsTyIcYJmihmEztguDbit+cGo=;
-        b=BxnDea7Rgq4GnG37EHz65hjhQ13D4C8Ljb5jahM3HO/PSYiCuezjje71Gff2uP2p8z
-         jhKQt81KcCxORwf0FWgFEvBZvQKoZpLOx82m5WlP8SKT+XeiDJJWJzOBRS41st4f0ZS6
-         WBo0EeQRhDzguqg8voA1m1JlrQCZL0CI5ngCIehLpHdfk+Ge+Lh/WFo++1gX20u0MtJ9
-         yWnhWEfYmjWJTiksqISLNsknpQRsrR30/OTSdT2awUCDLCNvb0gWTI5oFdUIYOKud01P
-         qHiHx37KcN1bwYm9CHk/EyZiwUpaFpG0TuCAn6+GNhPfR25LL7D85t+Ztr9eK8AQL3oq
-         SvVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750246589; x=1750851389;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=ventanamicro.com; s=google; t=1750246590; x=1750851390; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hyfMiE8uuz+y/z3NeyrsTyIcYJmihmEztguDbit+cGo=;
-        b=ikX/p2B0yKehlowod6Rgirc4WurNZ+pul9v3Ur93WWzNLQ6s/IodMv18ML0jewbXGY
-         paykfXzKuOOVyvO8KJxHXWdbgSNig5evmaD3SNWMOB7bRC9yWWJxJOaqucDzjqD+DIGV
-         lYGsQLhD79n7qzd5wZnj6eRyGI33RZQptBjc8yehlbT0vgC/kv06ae+IqYzGu7byvP8b
-         JhQ6uN3hRYCdqZ3qnPp1gqDVm1fC+v1HlxBZ9CUtbxpyPy86MxkFcYQzpQt0XZ+Z7bz/
-         oix8IDYhPLkMGRVcHupYrSDEUZWzBqAx3b/uevcGv/ffs5t4EW0VkAdJS2fnVNMlqXuj
-         sC2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXRJnTPzvvYc/gGPGObCWjrd+vezl1y2FH9LPpMH43QoNHy7hTbr1SwZkzWYUjw11RBqck=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy88/sxMZ/qvdO7mcc8zWb/7vqM/u7j/Jvo7Jzkygu4PBawS1eY
-	kYqibRf1UhHNL5HfNtCUczB0ldYYKGXNMBC/5mCzblhV3y04MRGIyAUOz5AjqYIrEZw=
-X-Gm-Gg: ASbGncteg7/31g4XkzZY/0oLZLjUCS0Q74CqjhIm6Rj0zPLGwXqUBRR0174LcWo3tL/
-	eus3Wg1iUceLHxV7CubiN6m5nGrZQe3W2i7BioXAUSTol9Ld+Sl1Q2JaNiuxaWCK1AvVLZep10+
-	04QuEFv9m3jnyYworH6ibpTwXFFG/UaWhjZc/wz4444BiJqGbmjPPExRwTuHhsLAVns9kWRVMIP
-	2CZ6+2dLgLQhELwZHJG8kafc12jlQz39k1YxRO+EhtGxrV5/AGwrttVnIZkeNtYiGzD24Zy7TnD
-	s4A8XeGIkhHDEazXnDy0RypuWQmDJUO+3azYKrlbadkP/afLnHx0ckEvIThTYFj6NuWH6t+R6wr
-	OQNRkf94ME0rgI2VdGFztGPfBjfyPi5GZ0BdbhA==
-X-Google-Smtp-Source: AGHT+IHq1OscbF4KPU5hFbTgPYNzkYK0Dn5e3x8Z/FwfkjMj5kOX5Qmi2rHItfOgV2BwPSbzTJ1zqQ==
-X-Received: by 2002:a05:622a:1b8d:b0:4a5:9993:ede8 with SMTP id d75a77b69052e-4a7645b600bmr34414011cf.15.1750246589268;
+        bh=2p5mv+mJk3QRDyfTxwUw01alJmtpxQQyJ0sOt3jdEOc=;
+        b=GF+tXaFhakXOdhsAFQrrqYPhqQ35qrL5DYaXsx06tmyOm0S9izxP4FIeHbo2nZjOPW
+         JorUkMAU9ALSlmTuqbWcDebLssHbhbGLDxST35ZVO8bwmUhpMbmKAVfKxiDNydHyEdrd
+         LjO+1b87vE50Z9RjhlXMZlZNqMfvq6tDCXmD5ALJck107tCA/mK+MK5R02RJPijC15oo
+         aLujM9+TQjB1gfanrMVMRmVXn7js/RQwOPE7q2khJUObgQc/cRgbF19gEcLOiMRCCbcj
+         BkZnJAl2atY72DD/atSi0XGwgAQNIBFv+JNy4OZZy4IkY9NFX43RS3xfiAMn4gq8I+WR
+         wjJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750246590; x=1750851390;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2p5mv+mJk3QRDyfTxwUw01alJmtpxQQyJ0sOt3jdEOc=;
+        b=vjhGgdksTpA5MATHKpepmIl0xqKQdIJmIXiFR+t0nBPj8/NYnp+0rPeHo5LuDadrAT
+         8QEvvTLa/Z2iC3UkrQPzkBzbZiaF5x+veTXTmzc5NEHFgLYah2aFLg9NZUEEueyF9RC0
+         7yhx4hHEgKe8Zq5rN1xaKEaZY9UsU9f1XuAYqLkTcfL3Ci3rIPdHOJ3YVWBQqwhZKcI8
+         NNh6s/uOofqbwq5fnozrVzV1kARtzdHzj3d2Mr542aCmSv93eyiu7vQhv4/yKstd/02O
+         U2LdiG02LaIdzHkuIM/D6vq2bSdtzYhY1VWj2gHs9PMrb+FJdPX/1sHoMrj4WW4nzzTy
+         3izg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQWYa9/n7Mx8jb2fqiK9L779cXwFbY9BZVrMB1Eg6eJDMrgB9dc2UMx6Kdq9tss37dsRs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8NDemY8sHft5QNAcMPTcURaE+dJ6/K3q9pA/w7sTY3HMSfWr/
+	odW2HJXRo7FAyo20VoTAc+abprBJnKxY/kJV6d9Ty244NP73vnyis8NBbFJB+bG940g=
+X-Gm-Gg: ASbGncsc30HHs14grhdBnW0T++yYHUz2Kmhvy7XF9O8qU38/BWh0pokKNf4dPr5pw3x
+	bRCo3H9M/q19iKXMbfNpFN3EMlUSHP4K/dPC3E2Ronm7MA5/bfcZZSkaFYn5Nf7I6dR7wq+5yRb
+	X6kQUcVkhytCJPtfibiwZ6P/DuZTLzp8E80CrHzmlcWTt0Fb/mKwCr2JzRxYm3w7tke6BLnrRZI
+	58IxNfIk4AvI+/BoIwY83vlAQPj6Qdw5Hr4AB6unneFIErSP67yIDpDZjziuX1MJPz9sM0KyIhy
+	xRJyKhs+lA8c6MEapcIF4uKuNqo++Gf83ka6nKcQYbm0fQKrOEHRfkWwc1MJ5eECUrMyyhyBVTv
+	IAoOKHVs3PPol9yh/Zpgt8JODlizb
+X-Google-Smtp-Source: AGHT+IEBquBrf2XB4FByIM0NjX1oGNwUDdFIttWNjoo91vzWLERz/6T2M0LEaAO4ssBEon09H6iLyQ==
+X-Received: by 2002:a17:903:74f:b0:234:b422:7120 with SMTP id d9443c01a7336-2366b3137c0mr188903225ad.9.1750246589968;
         Wed, 18 Jun 2025 04:36:29 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a72a315c58sm70481041cf.36.2025.06.18.04.36.27
+Received: from localhost.localdomain ([122.171.23.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237c57c63efsm9112475ad.172.2025.06.18.04.36.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jun 2025 04:36:27 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uRr5e-00000006kyd-3HZk;
-	Wed, 18 Jun 2025 08:36:26 -0300
-Date: Wed, 18 Jun 2025 08:36:26 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: lizhe.67@bytedance.com
-Cc: david@redhat.com, akpm@linux-foundation.org, alex.williamson@redhat.com,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, peterx@redhat.com
-Subject: Re: [PATCH v4 2/3] gup: introduce unpin_user_folio_dirty_locked()
-Message-ID: <20250618113626.GK1376515@ziepe.ca>
-References: <20250617152210.GA1552699@ziepe.ca>
- <20250618062820.8477-1-lizhe.67@bytedance.com>
+        Wed, 18 Jun 2025 04:36:29 -0700 (PDT)
+From: Anup Patel <apatel@ventanamicro.com>
+To: Atish Patra <atish.patra@linux.dev>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Anup Patel <apatel@ventanamicro.com>,
+	Atish Patra <atishp@rivosinc.com>
+Subject: [PATCH v3 09/12] RISC-V: KVM: Introduce struct kvm_gstage_mapping
+Date: Wed, 18 Jun 2025 17:05:29 +0530
+Message-ID: <20250618113532.471448-10-apatel@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250618113532.471448-1-apatel@ventanamicro.com>
+References: <20250618113532.471448-1-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618062820.8477-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 18, 2025 at 02:28:20PM +0800, lizhe.67@bytedance.com wrote:
-> On Tue, 17 Jun 2025 12:22:10 -0300, jgg@ziepe.ca wrote:
-> > +	while (npage) {
-> > +		long nr_pages = 1;
-> > +
-> > +		if (!is_invalid_reserved_pfn(pfn)) {
-> > +			struct page *page = pfn_to_page(pfn);
-> > +			struct folio *folio = page_folio(page);
-> > +			long folio_pages_num = folio_nr_pages(folio);
-> > +
-> > +			/*
-> > +			 * For a folio, it represents a physically
-> > +			 * contiguous set of bytes, and all of its pages
-> > +			 * share the same invalid/reserved state.
-> > +			 *
-> > +			 * Here, our PFNs are contiguous. Therefore, if we
-> > +			 * detect that the current PFN belongs to a large
-> > +			 * folio, we can batch the operations for the next
-> > +			 * nr_pages PFNs.
-> > +			 */
-> > +			if (folio_pages_num > 1)
-> > +				nr_pages = min_t(long, npage,
-> > +					folio_pages_num -
-> > +					folio_page_idx(folio, page));
-> > +
-> > +			unpin_user_folio_dirty_locked(folio, nr_pages,
-> > +					dma->prot & IOMMU_WRITE);
-> 
-> Are you suggesting that we should directly call
-> unpin_user_page_range_dirty_lock() here (patch 3/3) instead?
+Introduce struct kvm_gstage_mapping which represents a g-stage
+mapping at a particular g-stage page table level. Also, update
+the kvm_riscv_gstage_map() to return the g-stage mapping upon
+success.
 
-I'm saying you should not have the word 'folio' inside the VFIO. You
-accumulate a contiguous range of pfns, by only checking the pfn, and
-then call 
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+---
+ arch/riscv/include/asm/kvm_mmu.h |  9 ++++-
+ arch/riscv/kvm/mmu.c             | 58 ++++++++++++++++++--------------
+ arch/riscv/kvm/vcpu_exit.c       |  3 +-
+ 3 files changed, 43 insertions(+), 27 deletions(-)
 
-unpin_user_page_range_dirty_lock(pfn_to_page(first_pfn)...);
+diff --git a/arch/riscv/include/asm/kvm_mmu.h b/arch/riscv/include/asm/kvm_mmu.h
+index 4e1654282ee4..91c11e692dc7 100644
+--- a/arch/riscv/include/asm/kvm_mmu.h
++++ b/arch/riscv/include/asm/kvm_mmu.h
+@@ -8,6 +8,12 @@
+ 
+ #include <linux/kvm_types.h>
+ 
++struct kvm_gstage_mapping {
++	gpa_t addr;
++	pte_t pte;
++	u32 level;
++};
++
+ int kvm_riscv_gstage_ioremap(struct kvm *kvm, gpa_t gpa,
+ 			     phys_addr_t hpa, unsigned long size,
+ 			     bool writable, bool in_atomic);
+@@ -15,7 +21,8 @@ void kvm_riscv_gstage_iounmap(struct kvm *kvm, gpa_t gpa,
+ 			      unsigned long size);
+ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 			 struct kvm_memory_slot *memslot,
+-			 gpa_t gpa, unsigned long hva, bool is_write);
++			 gpa_t gpa, unsigned long hva, bool is_write,
++			 struct kvm_gstage_mapping *out_map);
+ int kvm_riscv_gstage_alloc_pgd(struct kvm *kvm);
+ void kvm_riscv_gstage_free_pgd(struct kvm *kvm);
+ void kvm_riscv_gstage_update_hgatp(struct kvm_vcpu *vcpu);
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index c1a3eb076df3..806614b3e46d 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -135,18 +135,18 @@ static void gstage_remote_tlb_flush(struct kvm *kvm, u32 level, gpa_t addr)
+ 	kvm_riscv_hfence_gvma_vmid_gpa(kvm, -1UL, 0, addr, BIT(order), order);
+ }
+ 
+-static int gstage_set_pte(struct kvm *kvm, u32 level,
+-			   struct kvm_mmu_memory_cache *pcache,
+-			   gpa_t addr, const pte_t *new_pte)
++static int gstage_set_pte(struct kvm *kvm,
++			  struct kvm_mmu_memory_cache *pcache,
++			  const struct kvm_gstage_mapping *map)
+ {
+ 	u32 current_level = gstage_pgd_levels - 1;
+ 	pte_t *next_ptep = (pte_t *)kvm->arch.pgd;
+-	pte_t *ptep = &next_ptep[gstage_pte_index(addr, current_level)];
++	pte_t *ptep = &next_ptep[gstage_pte_index(map->addr, current_level)];
+ 
+-	if (current_level < level)
++	if (current_level < map->level)
+ 		return -EINVAL;
+ 
+-	while (current_level != level) {
++	while (current_level != map->level) {
+ 		if (gstage_pte_leaf(ptep))
+ 			return -EEXIST;
+ 
+@@ -165,13 +165,13 @@ static int gstage_set_pte(struct kvm *kvm, u32 level,
+ 		}
+ 
+ 		current_level--;
+-		ptep = &next_ptep[gstage_pte_index(addr, current_level)];
++		ptep = &next_ptep[gstage_pte_index(map->addr, current_level)];
+ 	}
+ 
+-	if (pte_val(*ptep) != pte_val(*new_pte)) {
+-		set_pte(ptep, *new_pte);
++	if (pte_val(*ptep) != pte_val(map->pte)) {
++		set_pte(ptep, map->pte);
+ 		if (gstage_pte_leaf(ptep))
+-			gstage_remote_tlb_flush(kvm, current_level, addr);
++			gstage_remote_tlb_flush(kvm, current_level, map->addr);
+ 	}
+ 
+ 	return 0;
+@@ -181,14 +181,16 @@ static int gstage_map_page(struct kvm *kvm,
+ 			   struct kvm_mmu_memory_cache *pcache,
+ 			   gpa_t gpa, phys_addr_t hpa,
+ 			   unsigned long page_size,
+-			   bool page_rdonly, bool page_exec)
++			   bool page_rdonly, bool page_exec,
++			   struct kvm_gstage_mapping *out_map)
+ {
+-	int ret;
+-	u32 level = 0;
+-	pte_t new_pte;
+ 	pgprot_t prot;
++	int ret;
+ 
+-	ret = gstage_page_size_to_level(page_size, &level);
++	out_map->addr = gpa;
++	out_map->level = 0;
++
++	ret = gstage_page_size_to_level(page_size, &out_map->level);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -216,10 +218,10 @@ static int gstage_map_page(struct kvm *kvm,
+ 		else
+ 			prot = PAGE_WRITE;
+ 	}
+-	new_pte = pfn_pte(PFN_DOWN(hpa), prot);
+-	new_pte = pte_mkdirty(new_pte);
++	out_map->pte = pfn_pte(PFN_DOWN(hpa), prot);
++	out_map->pte = pte_mkdirty(out_map->pte);
+ 
+-	return gstage_set_pte(kvm, level, pcache, gpa, &new_pte);
++	return gstage_set_pte(kvm, pcache, out_map);
+ }
+ 
+ enum gstage_op {
+@@ -352,7 +354,6 @@ int kvm_riscv_gstage_ioremap(struct kvm *kvm, gpa_t gpa,
+ 			     phys_addr_t hpa, unsigned long size,
+ 			     bool writable, bool in_atomic)
+ {
+-	pte_t pte;
+ 	int ret = 0;
+ 	unsigned long pfn;
+ 	phys_addr_t addr, end;
+@@ -360,22 +361,25 @@ int kvm_riscv_gstage_ioremap(struct kvm *kvm, gpa_t gpa,
+ 		.gfp_custom = (in_atomic) ? GFP_ATOMIC | __GFP_ACCOUNT : 0,
+ 		.gfp_zero = __GFP_ZERO,
+ 	};
++	struct kvm_gstage_mapping map;
+ 
+ 	end = (gpa + size + PAGE_SIZE - 1) & PAGE_MASK;
+ 	pfn = __phys_to_pfn(hpa);
+ 
+ 	for (addr = gpa; addr < end; addr += PAGE_SIZE) {
+-		pte = pfn_pte(pfn, PAGE_KERNEL_IO);
++		map.addr = addr;
++		map.pte = pfn_pte(pfn, PAGE_KERNEL_IO);
++		map.level = 0;
+ 
+ 		if (!writable)
+-			pte = pte_wrprotect(pte);
++			map.pte = pte_wrprotect(map.pte);
+ 
+ 		ret = kvm_mmu_topup_memory_cache(&pcache, gstage_pgd_levels);
+ 		if (ret)
+ 			goto out;
+ 
+ 		spin_lock(&kvm->mmu_lock);
+-		ret = gstage_set_pte(kvm, 0, &pcache, addr, &pte);
++		ret = gstage_set_pte(kvm, &pcache, &map);
+ 		spin_unlock(&kvm->mmu_lock);
+ 		if (ret)
+ 			goto out;
+@@ -593,7 +597,8 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ 
+ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 			 struct kvm_memory_slot *memslot,
+-			 gpa_t gpa, unsigned long hva, bool is_write)
++			 gpa_t gpa, unsigned long hva, bool is_write,
++			 struct kvm_gstage_mapping *out_map)
+ {
+ 	int ret;
+ 	kvm_pfn_t hfn;
+@@ -608,6 +613,9 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 	unsigned long vma_pagesize, mmu_seq;
+ 	struct page *page;
+ 
++	/* Setup initial state of output mapping */
++	memset(out_map, 0, sizeof(*out_map));
++
+ 	/* We need minimum second+third level pages */
+ 	ret = kvm_mmu_topup_memory_cache(pcache, gstage_pgd_levels);
+ 	if (ret) {
+@@ -677,10 +685,10 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+ 	if (writable) {
+ 		mark_page_dirty(kvm, gfn);
+ 		ret = gstage_map_page(kvm, pcache, gpa, hfn << PAGE_SHIFT,
+-				      vma_pagesize, false, true);
++				      vma_pagesize, false, true, out_map);
+ 	} else {
+ 		ret = gstage_map_page(kvm, pcache, gpa, hfn << PAGE_SHIFT,
+-				      vma_pagesize, true, true);
++				      vma_pagesize, true, true, out_map);
+ 	}
+ 
+ 	if (ret)
+diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+index 965df528de90..6b4694bc07ea 100644
+--- a/arch/riscv/kvm/vcpu_exit.c
++++ b/arch/riscv/kvm/vcpu_exit.c
+@@ -15,6 +15,7 @@
+ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			     struct kvm_cpu_trap *trap)
+ {
++	struct kvm_gstage_mapping host_map;
+ 	struct kvm_memory_slot *memslot;
+ 	unsigned long hva, fault_addr;
+ 	bool writable;
+@@ -43,7 +44,7 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	}
+ 
+ 	ret = kvm_riscv_gstage_map(vcpu, memslot, fault_addr, hva,
+-		(trap->scause == EXC_STORE_GUEST_PAGE_FAULT) ? true : false);
++		(trap->scause == EXC_STORE_GUEST_PAGE_FAULT) ? true : false, &host_map);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.43.0
 
-No need for any of this. vfio should never look at the struct page
-except as the last moment to pass the range.
-
-Jason
