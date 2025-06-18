@@ -1,103 +1,132 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463512F533F
-	for <kvm@vger.kernel.org>; Wed, 18 Jun 2025 11:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEDE3F9C5;
+	Wed, 18 Jun 2025 12:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750247785; cv=none; b=paJe9yxZlNzHt8iSBMQgMRJfhDPNWT+xHxgLA1BcI3/u7xNSXCqm336Hd4yIQLyR6xO72nVcWbXyrqL1xhhduHoISAkVbd17V+hNb8R5Pp2KCg5qbCsHIFBMbn/NxV+YTTHdPSWnR13XTJhuZBiN75ft2t3OC60/nWLc4qsoTwY=
+	t=1750248529; cv=none; b=qIpEUoadphjd1X15yirXrReayVcpE7CJ+7RWRLtinmWfIJ2EL/CSLvV2GzqfIAjrs3zhRorVj6F7o7FOgP+E3THc2UNk/PYi4jK1yEXPrF/h4Z31W0oEeJgioev27alLouuwhjq9+N50o+x3tc1YVrwlXyBWtp0nzAF9sJJUiMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750247785; c=relaxed/simple;
-	bh=eOLPsPcgBQpr9WRtPyiXFyxl6s0ASLsL9YN12T1AgKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcwKO+rkLbMeVhuic4bW/djOstqe5Z5Iq1FPIcTcJnekjFBqf3Cn4uej09SzfpBcrZbb5CJF4l8UBCR/lp42ipMaIgxLen/cfK+ooyzjkVI7JncwZhVznKSuiq0y1u7PJSY+JdC4eacJSILjZSg1aEDOJ6DQjF+P1STFco2Au2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BBXh0cuK; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1750248529; c=relaxed/simple;
+	bh=9PvWQIN2DOiS+eGDpdKz3WgqnQceFcRO174Ih2hRwLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uOvy3u1D6sdn6H4N9Xq6Fvo7x/kR03ngykLg9BV3luZfqgvf6Akn56TVC4qA4YTGB9pWFJ5vnu9sbFxtPRlHF1espGMiWTIRbs6oWS52OI11f3gkbPLDiM4cR2TiMttPBpwq6jiDhw+175Op0vlGcHNPIpqMsJeflZfr4r69ct4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fdxKBZ1v; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BBXh0cuK"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d09f11657cso691459285a.0
-        for <kvm@vger.kernel.org>; Wed, 18 Jun 2025 04:56:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1750247783; x=1750852583; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eOLPsPcgBQpr9WRtPyiXFyxl6s0ASLsL9YN12T1AgKg=;
-        b=BBXh0cuKC09VWRRVdBr2rUPTicDCGcEZhmTbwDjWsqaRBs7XQtqQSR+vrGUJEocIBC
-         murMuHWIGO4fJgRdKYCn4Nce/ES7cMZCJ7cDTQgq5icJJnKK2PRfLCNhmfnJ4/EWeC+j
-         /JPMSmLv6CkkU3HZ0F6iZJDNhExMt2KyHyzleW6jbuZfPEk8owFXi3bxXhkBSa/C/oao
-         JMHeAKdOEh6yKR3dlXm65sU4PHPJxBh8WI7yrZ8EDDk0EVQ1mruN0VJKWYQ1ikWtsy+x
-         UJqihGcwrM4KuPxbD7IdPsECMkQLE2Vp9q8ux9OOUU9nsZ4NqAVYPl9IjwOY+r+ExQwr
-         SsLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750247783; x=1750852583;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eOLPsPcgBQpr9WRtPyiXFyxl6s0ASLsL9YN12T1AgKg=;
-        b=H2jGyR8jJ86kpPDZCiGrZYNClukKTnoWnOjem3f32Qmsm7nIyKJy78XZbsz5w8U8FC
-         XfNk+nfv1f0hb125bEkSZjQBDIYl6EOmm2/FS4RWt5DdQ5Uui8qSIVAnidUdAec55Xow
-         JSH+IyEwevp6MBA6Qh6VPO4rUv7UZjRgMsofZI8zv+hocujZWDmxIpYpv5mVOCjplIJ0
-         UK2RmU+kPNimKci0leRULmyKQWbYZsS4ZT7c3AUabf8zGrvKcuZcS7PrQuXoofJWcCpo
-         tD4qjWRIUYaPadsuUilB12NVWamed1B1GBFT8EEaPkAg1VEtQ58DkO94fWWNJBO/po++
-         ibLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlRQTam9On6BGATDpFd8h2Pnb2tFO0uTCERZgMh2MXgWltwuWLETEy7MyhBCYG+1xHq84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykRUdgLUZSVo8QYIb2IqH0fQBDfXi1NzdytCVmL20NlbDMPX0B
-	MD8hnd0wyZ9GZzN5spkzIT3gG8LPgZmbIW+NjcjfiuGj3mTV0EccG3o/FOqJYcO+tAGlnVCgbB4
-	YFxWb
-X-Gm-Gg: ASbGncs7ut5mJuAcMgQLRPXt0JNhVv539H76M2a1uyuO359jvUMXwEwoWoynpBywYt4
-	lBWlfW6vSTzS1bDtARDxWpg/4kKR8ijIDBa6BzZbo0V1xCw6Jz00noyLPBITKCD8YBr+dj3+GHL
-	db/ktSwJG1icidT7Nusxb17Y8odn82JUazsxmiOiCSgdwbJHzaB22xkeNDu1+ObGdXyIJoAbOQM
-	+Zy3gW/dPVIBvpi8x9rsa9sKj49iBlCpwFYv+i1fB2qFEesxWmdzutQG+UrsVx/+1x9tDOFYOn3
-	mtw4HMYIVxVwIaZ2HNgic07ZTo9PRCAaI/l9O8f39d/5kttF63qdvBllQ3b6x6xqMH0VglTKN6T
-	JVgxtidV5Ly5Jg1whEk6F+vYuCryb5yFz/1vXhg==
-X-Google-Smtp-Source: AGHT+IFK5sEY0xKiG/3LSQ/e2KNGGOzNmfpbdDjrbjeKIyXRBISXKdZ2vU04k+YsgVsnDuL9/XDSDA==
-X-Received: by 2002:a05:6214:570d:b0:6f8:bfbf:5d29 with SMTP id 6a1803df08f44-6fb476297damr257611906d6.5.1750247783171;
-        Wed, 18 Jun 2025 04:56:23 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35c841d0sm71929076d6.111.2025.06.18.04.56.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jun 2025 04:56:22 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uRrOw-00000006lbV-0sBw;
-	Wed, 18 Jun 2025 08:56:22 -0300
-Date: Wed, 18 Jun 2025 08:56:22 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Hildenbrand <david@redhat.com>
-Cc: lizhe.67@bytedance.com, akpm@linux-foundation.org,
-	alex.williamson@redhat.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com
-Subject: Re: [PATCH v4 2/3] gup: introduce unpin_user_folio_dirty_locked()
-Message-ID: <20250618115622.GM1376515@ziepe.ca>
-References: <20250617152210.GA1552699@ziepe.ca>
- <20250618062820.8477-1-lizhe.67@bytedance.com>
- <20250618113626.GK1376515@ziepe.ca>
- <9c31da33-8579-414a-9b2a-21d7d8049050@redhat.com>
- <a1d62bf1-59e5-4dd5-926a-d6cdddf3deb5@redhat.com>
- <20250618114629.GL1376515@ziepe.ca>
- <cb926401-6bfd-44cc-b126-28204225b820@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fdxKBZ1v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750248527; x=1781784527;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9PvWQIN2DOiS+eGDpdKz3WgqnQceFcRO174Ih2hRwLI=;
+  b=fdxKBZ1vEtPU149VgO+pr2p0Z20FozbKZ2v9uF4dvWkRxotbYsRIpc5M
+   WLaoZG2iLFiofj1VAwttblw5YMJeMmciGmJPcIPUvcqmjGFyZjckVBNFQ
+   gBSfyWAOhixKswoBMi24MBBEnU/Rkoem1PtRWg5MKVp8BVc9CVzP9Y5Ka
+   2/F0N63poVP3sZA+Q1wQzmFIuBV1sF6dhGxMflqXU3yuIQEaBEwkqFXVd
+   TMHc46rlUBmyrIEAG2J8t+xUjVCJu8230nZMIzkmMOgY1IrBMm65BDCQP
+   7W7z1LzdbT471+zasY+/OsBOhIUiNCNUbjhnUA1/vYBP/Pb17kY+oFCUm
+   g==;
+X-CSE-ConnectionGUID: 51U2Xs1xSFawIURNWLH/Aw==
+X-CSE-MsgGUID: 13aPbU5ZRi2P5DrfRxJk7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="77869043"
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
+   d="scan'208";a="77869043"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 05:08:46 -0700
+X-CSE-ConnectionGUID: 8svx1IzZSXisrWdvIDRz7A==
+X-CSE-MsgGUID: HxAOmSDzQhC4iTG0+KT5Uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
+   d="scan'208";a="154213206"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.245.234])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 05:08:39 -0700
+From: Adrian Hunter <adrian.hunter@intel.com>
+To: Tony Luck <tony.luck@intel.com>,
+	pbonzini@redhat.com,
+	seanjc@google.com
+Cc: vannapurve@google.com,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	H Peter Anvin <hpa@zytor.com>,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com,
+	kirill.shutemov@linux.intel.com,
+	kai.huang@intel.com,
+	reinette.chatre@intel.com,
+	xiaoyao.li@intel.com,
+	tony.lindgren@linux.intel.com,
+	binbin.wu@linux.intel.com,
+	isaku.yamahata@intel.com,
+	yan.y.zhao@intel.com,
+	chao.gao@intel.com
+Subject: [PATCH 2/2] KVM: TDX: Do not clear poisoned pages
+Date: Wed, 18 Jun 2025 15:08:06 +0300
+Message-ID: <20250618120806.113884-3-adrian.hunter@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250618120806.113884-1-adrian.hunter@intel.com>
+References: <20250618120806.113884-1-adrian.hunter@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb926401-6bfd-44cc-b126-28204225b820@redhat.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 18, 2025 at 01:52:37PM +0200, David Hildenbrand wrote:
+Skip clearing a private page if it is marked as poisoned.
 
-> I thought we also wanted to optimize out the
-> is_invalid_reserved_pfn() check for each subpage of a folio.
+The machine check architecture may have the capability to recover from
+memory corruption in SEAM non-root (i.e. TDX VM guest) mode.  In that
+case the page is marked as poisoned, and the TDX Module puts the TDX VM
+into a FATAL error state where the only operation permitted is to tear it
+down.
 
-VFIO keeps a tracking structure for the ranges, you can record there
-if a reserved PFN was ever placed into this range and skip the check
-entirely.
+During tear down, reclaimed pages are cleared which, in some cases,  helps
+to avoid integrity violation or TD bit mismatch detection when later being
+read using a shared HKID.
 
-It would be very rare for reserved PFNs and non reserved will to be
-mixed within the same range, userspace could cause this but nothing
-should.
+However a poisoned page will never be allocated again, so clearing is not
+necessary, and in any case poisoned pages should not be touched.
 
-Jason
+Note that while it is possible that memory corruption arises from integrity
+violation which could be cleared by MOVDIR64B, that is not necessarily the
+cause of the machine check.
+
+Suggested-by: Kai Huang <kai.huang@intel.com>
+Fixes: 8d032b683c299 ("KVM: TDX: create/destroy VM structure")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+---
+ arch/x86/kvm/vmx/tdx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 457f91b95147..f4263f7a3924 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -282,10 +282,10 @@ static void tdx_clear_page(struct page *page)
+ 	void *dest = page_to_virt(page);
+ 	unsigned long i;
+ 
+-	/*
+-	 * The page could have been poisoned.  MOVDIR64B also clears
+-	 * the poison bit so the kernel can safely use the page again.
+-	 */
++	/* Machine check handler may have poisoned the page */
++	if (PageHWPoison(page))
++		return;
++
+ 	for (i = 0; i < PAGE_SIZE; i += 64)
+ 		movdir64b(dest + i, zero_page);
+ 	/*
+-- 
+2.48.1
+
