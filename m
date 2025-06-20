@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A22825486D
-	for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 23:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD15D254874
+	for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 23:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750461701; cv=none; b=PCSNCkZqj4dr/m4fjrmeZ2MOsMAhaeawSe324BQrOjbo2CfJClRMZYgvb0FZUd+7nylGSoI///MaCzyULmkwwzm/O7182AfNzvSSAGAJ+PncQ8GjqpkU3Go4vErv946GQur3bl8pV5bxPJFrGAsfbLhZg7BxqPV8jWfxf+WdTDE=
+	t=1750461702; cv=none; b=GFCETPdQBFLp8JHqn9l/quvdm5dTzXcoTGfns2K3dSTeO8AjN68iFOY0zgGGI3voKO92bC9k8gbfHiv8BhQ9VsljTNhSmsDfUhBEe+sja/CJkyidFHVF4mv3GGhyZsG7+diQ2Xq64Uym0GQpMBPvD2AJrstKiGGBxNhWVkc1brQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750461701; c=relaxed/simple;
-	bh=VgUzUA87V9iGPM4JzN6sxW6caKGlhyFE3Jg63H7+SSw=;
+	s=arc-20240116; t=1750461702; c=relaxed/simple;
+	bh=EJEoicR7ZRTfhc2FzkLsgUasN/F0+D9IbQGE+fpMjiY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NGkZnDRPl3RVbIgmnrg5MoUo4vjoLrPToWbyy+ZxlsRKannMtNNrEAERRTOBe21ibHk5/I+yTx5dZ+mCQkbgEIN5kJrcD3GwjCC/NdNCmbI9HE8adpw2iCMNCKg8CpHiLkJgXyrtH+hx2WZpHK+Bh63YBMMaXutGgaeVZGRrD+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nUigECvl; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=D41/1Pdg2Qosmxb+wIwzk12YmAQuuJpE0GSmkdm+7JeB2xXTua4Sp96ER3xY3asj2HSxtRg6IZu5agh5O99mQ9ace3d0H6227jV7/q1DPCwN3/CXDjNyDwwfCV52syAAzsCtZ5+kDQmlBohkqFOjmLLZ+Te8J0PL12oF2BhP9Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xC9RJOxd; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nUigECvl"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2369dd58602so21170795ad.1
-        for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 16:21:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xC9RJOxd"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-315af08594fso29381a91.2
+        for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 16:21:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750461697; x=1751066497; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750461700; x=1751066500; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMZ83Hi7G7KaLtPIuaXRZZpxtrxYuH9dxkh3pjVWSes=;
-        b=nUigECvltckacgo4vdiR1ddsk0F8f44vSE6MWjyT+HjvsCNuktHV91tJeMgYcNQ5y3
-         e3yC7pb/rZqFjoBhdjNXD3LU5vxkYyInA8uj0ShrL178oxAC8gZM4eae/aYbJ6xQVL30
-         JYT1pbYrCroJtjJ7XXb+NwEtZxGJ6eYMSzdDFihe13SRkOUK8TXJibTNRqKhJFrf3Ode
-         IUppVa0XoE5vuFsBqTstDPIExli3wtqxilsdRB36ovFdN/wMZlZ4+hFA4OHY+DYJQCOW
-         Jr2y9Oubf7pqwdQhMCxG4aAXOoMHy7f/zCdmvKJGRTP+uVqptVzXbiHRkKFqwsgEtMYy
-         QU+A==
+        bh=8spHqWWjJrvVXtdk2p7ir7JoyaVn+ZgWX4oYiM6SqEk=;
+        b=xC9RJOxdXjwVSbrPI1zNBz7JgAZZqhjMpkZ8OCHDTgQ/Tncdfr7vZxVhJEHMsAkWqb
+         RvmhIOx7YZqwSDnt362N82HOK/92HKZG4FT1BVCa01ivC2Ay7qS+HarNbHqr4aRH0RFB
+         EYGw5JMCYxnoNNXo72T5WANGRf+QsFk1Oz8xZLpTuh1ESUXsYZar6DIL5QI9rYCVByU/
+         HuuxFz552NKtgAB2tYfo9cdGgnSixCBpsc5pr7dT0oHjQrWVum4CkuiyUFOlApjQ+8Cq
+         bDK3WTW/A5X3ejNLGNFuHVNIlPvLtvT1Ao3s9q/OcfWMWyb7rcwZtE/YjwCIYt48KMQ+
+         SyOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750461697; x=1751066497;
+        d=1e100.net; s=20230601; t=1750461700; x=1751066500;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMZ83Hi7G7KaLtPIuaXRZZpxtrxYuH9dxkh3pjVWSes=;
-        b=AbFby2f5imDJ3ZZQkG8EiW5YpURlGVWyLeVGDklCOl+CSjTOxAIn3VpsoLiTnPWNRv
-         LNppw3n94Rey/f5LCHfckdZshKPvfFoPNGKVPsUjYj7Xecsk8cDRaA/PHGcjiXMmUdI3
-         uBVi7ruAPL4deM16uITQt5x6aDCAdhZuAPpdMtPKO/7vJsLHZIoC1BjWKwVM4Yqd4mHf
-         GiSe/DUIRPi6Qe00+Zc56QjQbz38euZz929rVbidM2aLRkeARysX+7Db8iKDVOqqLtzv
-         iYUixc+P/w6TrX/xgkCfDvXeHR4ClJVdp63fCWn6noiWHuCXBEFHuO2L/AluVcPajcgx
-         /TjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXR2Txi/chZVbRSkvNh1SyE5QwUoELXyXEjYIDOVOl8VgjXo5G7kl7H8L6CDF4k8bpxg1Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjyKoqpskGZhN5QPYATBDLmes69jk0YyekJLcz/Cb1ZlFvRr0+
-	vfWb46epUop0KFv5m/nnwTkAp4jQdSho9wxdP5t97zz8gijaTndxQLfTgG8Rd2IG1R8VMNNmKVA
-	YhnLSoUz9UzO/Ew==
-X-Google-Smtp-Source: AGHT+IE8YwbzxdzhmhCAr711LK1aIYxsvfRO/y3cHPfx6n48pQwPqmz4AJ0U1iM9sqk78kLZc8JtL03gOmtihQ==
-X-Received: from plev19.prod.google.com ([2002:a17:903:31d3:b0:234:952b:35a2])
+        bh=8spHqWWjJrvVXtdk2p7ir7JoyaVn+ZgWX4oYiM6SqEk=;
+        b=MkT/ETuhuWEImUJIfHaG6eyta2SW1xKgSh66NdPGRt+4TkO8XKYzQpjYqJvIrvquEN
+         99lnu3gz8IRfkBke6YsHwrPeKY0ps6tCVW7lfvpF9TFRQi+eVfvtIKJbQhz2cn+6bTQ7
+         Sp+d6zt77FL7B7C1Wweiq7/oIdvRsi5MZ+70X70xif1Qz82QZMPm7cijpuTe8s5GKPTy
+         lUiWrzSfKXmbWSFs/272uGwVoYKbrqK3lACB+H+H8x/ZNYjWRflzbY/fyosbmE+dNnT5
+         G/yUFB2laCeh1IG1bPPFk+GBMK+/MI1mkHiom/Mt7SZmIL2bHhnpxBuYUT5Ox6M0Nu53
+         7otw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5/kxdiD0pEYhp0XZv9k4LdhQRtPe+YO0B+s9QWKQakAlWlNbTsW29TzuwIQO5YMy11E4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+ztntg7wFf+NYs7ipcgi03KnOlot3WUP/YeKMOX+ZV1HP3wQx
+	2JRouA0JJH6R8o8DnDpEDIQ+OTn4MjnXGknEAEwxq/NYFSkgzHTCUN85HcvYI1hTH3XmO2Gp7zu
+	doDXGT0nXZWZ/lw==
+X-Google-Smtp-Source: AGHT+IF427Dl9OA6t8/lF9pLvYo+LFpSunJ+d/1PfRXmHiTVeWDHd4qzfn7BvfvIkdYlSYuPoYCiVytu3aibXQ==
+X-Received: from pjee7.prod.google.com ([2002:a17:90b:5787:b0:311:b3fb:9f74])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:db02:b0:236:94ac:cc11 with SMTP id d9443c01a7336-237d987d810mr71222585ad.7.1750461697299;
- Fri, 20 Jun 2025 16:21:37 -0700 (PDT)
-Date: Fri, 20 Jun 2025 23:20:21 +0000
+ 2002:a17:90a:dfcd:b0:313:fab4:1df6 with SMTP id 98e67ed59e1d1-3159d8f8fedmr6524988a91.32.1750461700091;
+ Fri, 20 Jun 2025 16:21:40 -0700 (PDT)
+Date: Fri, 20 Jun 2025 23:20:23 +0000
 In-Reply-To: <20250620232031.2705638-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250620232031.2705638-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.701.gf1e915cc24-goog
-Message-ID: <20250620232031.2705638-24-dmatlack@google.com>
-Subject: [PATCH 23/33] vfio: selftests: Move helper to get cdev path to libvfio
+Message-ID: <20250620232031.2705638-26-dmatlack@google.com>
+Subject: [PATCH 25/33] vfio: selftests: Replicate tests across all iommu_modes
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Aaron Lewis <aaronlewis@google.com>, 
@@ -80,141 +80,121 @@ Cc: Aaron Lewis <aaronlewis@google.com>,
 	Wei Yang <richard.weiyang@gmail.com>, "Yury Norov [NVIDIA]" <yury.norov@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the helper function to get the VFIO cdev path to libvfio so that it
-can be used in libvfio in a subsequent commit.
-
-No functional change intended.
+Automatically replicate vfio_dma_mapping_test and vfio_pci_driver_test
+across all supported IOMMU modes using fixture variants. Both of these
+tests exercise DMA mapping to some degree so having automatic coverage
+across all IOMMU modes will help catch bugs.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../selftests/vfio/lib/include/vfio_util.h    |  1 +
- .../selftests/vfio/lib/vfio_pci_device.c      | 31 +++++++++++++++++
- .../selftests/vfio/vfio_iommufd_setup_test.c  | 34 ++-----------------
- 3 files changed, 34 insertions(+), 32 deletions(-)
+ .../selftests/vfio/lib/include/vfio_util.h    |  8 +++++++
+ .../selftests/vfio/lib/vfio_pci_device.c      |  1 +
+ .../selftests/vfio/vfio_dma_mapping_test.c    | 24 +++++++++----------
+ .../selftests/vfio/vfio_pci_driver_test.c     | 13 +++++++++-
+ 4 files changed, 32 insertions(+), 14 deletions(-)
 
 diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-index a7d05a4299a1..05a10417e0d7 100644
+index d50debd84813..bf0b636a9c0c 100644
 --- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
 +++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-@@ -175,6 +175,7 @@ struct vfio_pci_device {
-  * If BDF cannot be determined then the test will exit with KSFT_SKIP.
-  */
- const char *vfio_selftests_get_bdf(int *argc, char *argv[]);
-+const char *vfio_pci_get_cdev_path(const char *bdf);
+@@ -53,6 +53,14 @@ struct vfio_iommu_mode {
+ 	unsigned long iommu_type;
+ };
  
- struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type);
- void vfio_pci_device_cleanup(struct vfio_pci_device *device);
++/*
++ * Generator for VFIO selftests fixture variants that replicate across all
++ * possible IOMMU modes. Tests must define FIXTURE_VARIANT_ADD_IOMMU_MODE()
++ * which should then use FIXTURE_VARIANT_ADD() to create the variant.
++ */
++#define FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(...) \
++FIXTURE_VARIANT_ADD_IOMMU_MODE(vfio_type1_iommu, ##__VA_ARGS__)
++
+ struct vfio_pci_bar {
+ 	struct vfio_region_info info;
+ 	void *vaddr;
 diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index d8bb227e869d..d53e2d682c7e 100644
+index 15e5adb770c3..5c4d008f2a25 100644
 --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
 +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+#include <dirent.h>
- #include <fcntl.h>
- #include <libgen.h>
- #include <stdlib.h>
-@@ -332,6 +333,36 @@ static void vfio_pci_device_setup(struct vfio_pci_device *device, const char *bd
- 		device->msi_eventfds[i] = -1;
+@@ -364,6 +364,7 @@ const char *vfio_pci_get_cdev_path(const char *bdf)
+ 	return cdev_path;
  }
  
-+const char *vfio_pci_get_cdev_path(const char *bdf)
-+{
-+	char dir_path[PATH_MAX];
-+	struct dirent *entry;
-+	char *cdev_path;
-+	DIR *dir;
++/* Reminder: Keep in sync with FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(). */
+ static const struct vfio_iommu_mode iommu_modes[] = {
+ 	{
+ 		.name = "vfio_type1_iommu",
+diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+index dfc14c40bcf6..ffaf941ede39 100644
+--- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
++++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+@@ -96,27 +96,25 @@ FIXTURE(vfio_dma_mapping_test) {
+ };
+ 
+ FIXTURE_VARIANT(vfio_dma_mapping_test) {
++	const char *iommu_mode;
+ 	u64 size;
+ 	int mmap_flags;
+ };
+ 
+-FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous) {
+-	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE,
+-};
+-
+-FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous_hugetlb_2mb) {
+-	.size = SZ_2M,
+-	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB | MAP_HUGE_2MB,
+-};
++#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _size, _mmap_flags) \
++FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, _iommu_mode ## _ ## _name) {	       \
++	.iommu_mode = #_iommu_mode,					       \
++	.size = (_size),						       \
++	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | (_mmap_flags),	       \
++}
+ 
+-FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous_hugetlb_1gb) {
+-	.size = SZ_1G,
+-	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB | MAP_HUGE_1GB,
+-};
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous, 0, 0);
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_2mb, SZ_2M, MAP_HUGETLB | MAP_HUGE_2MB);
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, SZ_1G, MAP_HUGETLB | MAP_HUGE_1GB);
+ 
+ FIXTURE_SETUP(vfio_dma_mapping_test)
+ {
+-	self->device = vfio_pci_device_init(device_bdf, default_iommu_mode);
++	self->device = vfio_pci_device_init(device_bdf, variant->iommu_mode);
+ }
+ 
+ FIXTURE_TEARDOWN(vfio_dma_mapping_test)
+diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+index 30cbfbb9225f..cfe3b9608cc7 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+@@ -59,11 +59,22 @@ FIXTURE(vfio_pci_driver_test) {
+ 	iova_t unmapped_iova;
+ };
+ 
++FIXTURE_VARIANT(vfio_pci_driver_test) {
++	const char *iommu_mode;
++};
 +
-+	cdev_path = calloc(PATH_MAX, 1);
-+	VFIO_ASSERT_NOT_NULL(cdev_path);
-+
-+	snprintf(dir_path, sizeof(dir_path), "/sys/bus/pci/devices/%s/vfio-dev/", bdf);
-+
-+	dir = opendir(dir_path);
-+	VFIO_ASSERT_NOT_NULL(dir, "Failed to open directory %s\n", dir_path);
-+
-+	while ((entry = readdir(dir)) != NULL) {
-+		/* Find the file that starts with "vfio" */
-+		if (strncmp("vfio", entry->d_name, 4))
-+			continue;
-+
-+		snprintf(cdev_path, PATH_MAX, "/dev/vfio/devices/%s", entry->d_name);
-+		break;
-+	}
-+
-+	VFIO_ASSERT_NE(cdev_path[0], 0, "Failed to find vfio cdev file.\n");
-+	VFIO_ASSERT_EQ(closedir(dir), 0);
-+
-+	return cdev_path;
++#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode)		\
++FIXTURE_VARIANT_ADD(vfio_pci_driver_test, _iommu_mode) {	\
++	.iommu_mode = #_iommu_mode,				\
 +}
 +
- struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type)
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
++
+ FIXTURE_SETUP(vfio_pci_driver_test)
  {
- 	struct vfio_pci_device *device;
-diff --git a/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c b/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-index f45335d9260f..3655106b912d 100644
---- a/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-+++ b/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-@@ -1,8 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <assert.h>
--#include <dirent.h>
--#include <fcntl.h>
--
- #include <uapi/linux/types.h>
- #include <linux/limits.h>
- #include <linux/sizes.h>
-@@ -11,7 +7,6 @@
+ 	struct vfio_pci_driver *driver;
  
- #include <stdint.h>
- #include <stdio.h>
--#include <string.h>
- #include <sys/ioctl.h>
- #include <unistd.h>
+-	self->device = vfio_pci_device_init(device_bdf, default_iommu_mode);
++	self->device = vfio_pci_device_init(device_bdf, variant->iommu_mode);
  
-@@ -19,32 +14,7 @@
- #include "../kselftest_harness.h"
+ 	driver = &self->device->driver;
  
- static const char iommu_dev_path[] = "/dev/iommu";
--static char cdev_path[PATH_MAX] = { '\0' };
--
--static void set_cdev_path(const char *bdf)
--{
--	char dir_path[PATH_MAX];
--	DIR *dir;
--	struct dirent *entry;
--
--	snprintf(dir_path, sizeof(dir_path), "/sys/bus/pci/devices/%s/vfio-dev/", bdf);
--
--	dir = opendir(dir_path);
--	assert(dir);
--
--	/* Find the file named "vfio<number>" */
--	while ((entry = readdir(dir)) != NULL) {
--		if (!strncmp("vfio", entry->d_name, 4)) {
--			snprintf(cdev_path, sizeof(cdev_path), "/dev/vfio/devices/%s",
--				 entry->d_name);
--			break;
--		}
--	}
--
--	assert(strlen(cdev_path) > 0);
--
--	closedir(dir);
--}
-+static const char *cdev_path;
- 
- static int vfio_device_bind_iommufd_ioctl(int cdev_fd, int iommufd)
- {
-@@ -150,7 +120,7 @@ int main(int argc, char *argv[])
- {
- 	const char *device_bdf = vfio_selftests_get_bdf(&argc, argv);
- 
--	set_cdev_path(device_bdf);
-+	cdev_path = vfio_pci_get_cdev_path(device_bdf);
- 	printf("Using cdev device %s\n", cdev_path);
- 
- 	return test_harness_run(argc, argv);
 -- 
 2.50.0.rc2.701.gf1e915cc24-goog
 
