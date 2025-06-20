@@ -1,135 +1,79 @@
-Received: from lf-1-17.ptr.blmpb.com (lf-1-17.ptr.blmpb.com [103.149.242.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE89280A27
-	for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 09:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.149.242.17
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D809265CDF
+	for <kvm@vger.kernel.org>; Fri, 20 Jun 2025 10:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750413557; cv=none; b=hIpk2HKiUn6N87miAiLusqizd2kjdVdAYkCkfHtJAEUiIj+C/I+4p2y+aXA3kDLWTkzK4hVM+y8NgAQg7dkHn0rx4t2kptufxqjmGaqOXVW3rNJfs2QZFLF/g2+d6HVH6UVTm5Fm7ufHzaZ0M+hQ38MhgIlsoTGH+ultKT+0QpU=
+	t=1750416301; cv=none; b=jS1h8fKQywAaD4XhYG9m1EvlcwRioJiDm018J3Jilo9Czs1gfs1g9JyoLLCHSUvFcF+9B1G8CqYTKb+vvw2xcgDUU7F1+kK5jaTELRJMXddeRneKlS9K6XWzlVEzb9pC4JJq0r7fSrKrSRTuYiu2+/0qPC9XvffniGH/jlzPWgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750413557; c=relaxed/simple;
-	bh=behs4AX21Izj48SjT6T4oG3pPpVVpt1LKhlwYqGqHbE=;
-	h=In-Reply-To:To:From:Mime-Version:Subject:Message-Id:Cc:References:
-	 Date:Content-Type; b=ujPSR3CXgIDqpB5VJD/FkCA6xs6E4d+IAlmZYJqqzmfPEovXw6raSH2Y0wQQEQrFEQMtGy8Zh0Iwn7Xpkz1y6f9DOvFQ68z4EhCF2QY/eg6oJkAIL9LYzSmbipFExjtV+j9FEYLBxdu5WVtQ+OS8+qMw56KBZNT6QVBqa7IdQ40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com; spf=pass smtp.mailfrom=lanxincomputing.com; dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b=Km4FNtyV; arc=none smtp.client-ip=103.149.242.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b="Km4FNtyV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1750413498;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=FVhWcbFwI9NYT8NXzHPcEd8gEtJB2JUO9bsshkN9xEc=;
- b=Km4FNtyVFfhKs2cnZKAq8JiccVO1YIzAr6CensXwObqAJYs27KLkXKu4J9fFX2Nq8UXuRr
- SscAwL6yrbl7vdo/9Q9+p6cKnTBIYdxVKStFP22WAQEPCyVPESFsncrfQ1JGi/usqoslbN
- 9/DUAblAB9wsTBJeGRNLNwxLtowjgPgLyQ1WZIAhncOTzmKlZVm1/RXbwfKJx3CvON+KR+
- +BlKOmgtuAJH/uoBoPbxC7TkrtD1rgYipyu3Rwwh7+yZjgMjmXb6+hzs2jngQd9qpUXlQc
- ubNCar8kPU5uWBjxWEQjecC7VV4xFjhSLTRl7nUSNSZlr8QUl0ZmxmEFRAkBIQ==
-X-Lms-Return-Path: <lba+2685530b8+2b57de+vger.kernel.org+liujingqi@lanxincomputing.com>
-Content-Language: en-US
-In-Reply-To: <3591f5aed544f9026d8375651936e006b57defdb.1750164414.git.zhouquan@iscas.ac.cn>
-To: <zhouquan@iscas.ac.cn>, <anup@brainfault.org>, <ajones@ventanamicro.com>, 
-	<atishp@atishpatra.org>, <paul.walmsley@sifive.com>, 
-	<palmer@dabbelt.com>
-From: "Nutty Liu" <liujingqi@lanxincomputing.com>
+	s=arc-20240116; t=1750416301; c=relaxed/simple;
+	bh=LqmboNW/v2AzG/6r2y+pR2hwLNoIYYKvvog7utCxnP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zf7lUMbhsvUt7VJsOWKoFf2KAaGdHxlff8WK5pXbWfNB32f7h+j725/22h2Yfi0gfWJKZIDPcOjgNV3gyJXWOvCwdh1YhfjJFApWtcwzXK3oN7gWsPd8e/rb9I0jtbz2aIETEl0kc56N8WeQ7fSCOkLuAk4TV6CloF1GIAydmHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01FE4176A;
+	Fri, 20 Jun 2025 03:44:40 -0700 (PDT)
+Received: from donnerap.arm.com (donnerap.manchester.arm.com [10.32.101.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D7503F58B;
+	Fri, 20 Jun 2025 03:44:58 -0700 (PDT)
+From: Andre Przywara <andre.przywara@arm.com>
+To: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>,
+	Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Subject: [PATCH kvmtool 0/3] arm64: Nested virtualization support
+Date: Fri, 20 Jun 2025 11:44:51 +0100
+Message-Id: <20250620104454.1384132-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Subject: Re: [PATCH 4/5] KVM: riscv: selftests: Add Zicbop extension to get-reg-list test
-Message-Id: <ad888bc6-33c7-42d3-b5d1-be191dcded0e@lanxincomputing.com>
-X-Original-From: Nutty Liu <liujingqi@lanxincomputing.com>
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>, 
-	<kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>
-References: <cover.1750164414.git.zhouquan@iscas.ac.cn> <3591f5aed544f9026d8375651936e006b57defdb.1750164414.git.zhouquan@iscas.ac.cn>
-User-Agent: Mozilla Thunderbird
-Date: Fri, 20 Jun 2025 17:58:13 +0800
-Content-Type: text/plain; charset=UTF-8
-Received: from [127.0.0.1] ([180.165.3.105]) by smtp.feishu.cn with ESMTPS; Fri, 20 Jun 2025 17:58:15 +0800
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On 6/17/2025 9:10 PM, zhouquan@iscas.ac.cn wrote:
-> From: Quan Zhou <zhouquan@iscas.ac.cn>
->
-> The KVM RISC-V allows Zicbop extension for Guest/VM
-> so add them to get-reg-list test.
->
-> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> ---
->   tools/testing/selftests/kvm/riscv/get-reg-list.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> index a0b7dabb5040..ebdc34b58bad 100644
-> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> @@ -83,6 +83,7 @@ bool filter_reg(__u64 reg)
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZFH:
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZFHMIN:
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOM:
-> +	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOP:
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOZ:
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICCRSE:
->   	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICNTR:
-> @@ -253,6 +254,8 @@ static const char *config_id_to_str(const char *prefix, __u64 id)
->   		return "KVM_REG_RISCV_CONFIG_REG(isa)";
->   	case KVM_REG_RISCV_CONFIG_REG(zicbom_block_size):
->   		return "KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)";
-> +	case KVM_REG_RISCV_CONFIG_REG(zicbop_block_size):
-> +		return "KVM_REG_RISCV_CONFIG_REG(zicbop_block_size)";
->   	case KVM_REG_RISCV_CONFIG_REG(zicboz_block_size):
->   		return "KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)";
->   	case KVM_REG_RISCV_CONFIG_REG(mvendorid):
-> @@ -535,6 +538,7 @@ static const char *isa_ext_single_id_to_str(__u64 reg_off)
->   		KVM_ISA_EXT_ARR(ZFH),
->   		KVM_ISA_EXT_ARR(ZFHMIN),
->   		KVM_ISA_EXT_ARR(ZICBOM),
-> +		KVM_ISA_EXT_ARR(ZICBOP),
->   		KVM_ISA_EXT_ARR(ZICBOZ),
->   		KVM_ISA_EXT_ARR(ZICCRSE),
->   		KVM_ISA_EXT_ARR(ZICNTR),
-> @@ -864,6 +868,11 @@ static __u64 zicbom_regs[] = {
->   	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOM,
->   };
->   
-> +static __u64 zicbop_regs[] = {
-> +	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_CONFIG | KVM_REG_RISCV_CONFIG_REG(zicbop_block_size),
-> +	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOP,
-> +};
-> +
->   static __u64 zicboz_regs[] = {
->   	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_CONFIG | KVM_REG_RISCV_CONFIG_REG(zicboz_block_size),
->   	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOZ,
-> @@ -1012,6 +1021,8 @@ static __u64 vector_regs[] = {
->   	 .regs = sbi_sta_regs, .regs_n = ARRAY_SIZE(sbi_sta_regs),}
->   #define SUBLIST_ZICBOM \
->   	{"zicbom", .feature = KVM_RISCV_ISA_EXT_ZICBOM, .regs = zicbom_regs, .regs_n = ARRAY_SIZE(zicbom_regs),}
-> +#define SUBLIST_ZICBOP \
-> +	{"zicbop", .feature = KVM_RISCV_ISA_EXT_ZICBOP, .regs = zicbop_regs, .regs_n = ARRAY_SIZE(zicbop_regs),}
->   #define SUBLIST_ZICBOZ \
->   	{"zicboz", .feature = KVM_RISCV_ISA_EXT_ZICBOZ, .regs = zicboz_regs, .regs_n = ARRAY_SIZE(zicboz_regs),}
->   #define SUBLIST_AIA \
-> @@ -1130,6 +1141,7 @@ KVM_ISA_EXT_SIMPLE_CONFIG(zfa, ZFA);
->   KVM_ISA_EXT_SIMPLE_CONFIG(zfh, ZFH);
->   KVM_ISA_EXT_SIMPLE_CONFIG(zfhmin, ZFHMIN);
->   KVM_ISA_EXT_SUBLIST_CONFIG(zicbom, ZICBOM);
-> +KVM_ISA_EXT_SUBLIST_CONFIG(zicbop, ZICBOP);
->   KVM_ISA_EXT_SUBLIST_CONFIG(zicboz, ZICBOZ);
->   KVM_ISA_EXT_SIMPLE_CONFIG(ziccrse, ZICCRSE);
->   KVM_ISA_EXT_SIMPLE_CONFIG(zicntr, ZICNTR);
-> @@ -1204,6 +1216,7 @@ struct vcpu_reg_list *vcpu_configs[] = {
->   	&config_zfh,
->   	&config_zfhmin,
->   	&config_zicbom,
-> +	&config_zicbop,
->   	&config_zicboz,
->   	&config_ziccrse,
->   	&config_zicntr,
+Thanks to the imperturbable efforts from Marc, arm64 support for nested
+virtualization has now reached the mainline kernel, which means the
+respective kvmtool support should now be ready as well.
 
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
+Patch 1 updates the kernel headers, to get the new EL2 capability, and
+the VGIC device control to setup the maintenance IRQ.
+Patch 2 introduces the new "--nested" command line option, to let the
+VCPUs start in EL2. To allow KVM guests running in such a guest, we also
+need VGIC support, which patch 3 allows by setting the maintenance IRQ.
 
-Thanks,
-Nutty
+Tested on the FVP (with some good deal of patience), and some commercial
+(non-fruity) hardware, down to a guest's guest's guest.
+
+Cheers,
+Andre
+
+P.S.: Marc: I saw the other patches in your kernel.org repo, do we need any
+of them - HYP timer IRQ, E2H0, counter offset? I guess E2H0 for fruity
+hardware, what about the others?
+
+Andre Przywara (3):
+  Sync kernel UAPI headers with v6.16-rc1
+  arm64: Initial nested virt support
+  arm64: nested: add support for setting maintenance IRQ
+
+ arm64/arm-cpu.c                     |  3 +-
+ arm64/fdt.c                         |  5 +-
+ arm64/gic.c                         | 21 +++++++-
+ arm64/include/asm/kvm.h             | 23 +++++++--
+ arm64/include/kvm/gic.h             |  2 +-
+ arm64/include/kvm/kvm-config-arch.h |  5 +-
+ arm64/kvm-cpu.c                     | 12 ++++-
+ include/linux/kvm.h                 |  5 ++
+ include/linux/virtio_net.h          | 13 +++++
+ include/linux/virtio_pci.h          |  1 +
+ riscv/include/asm/kvm.h             |  2 +
+ x86/include/asm/kvm.h               | 75 +++++++++++++++++++++++++++++
+ 12 files changed, 157 insertions(+), 10 deletions(-)
+
+-- 
+2.25.1
+
