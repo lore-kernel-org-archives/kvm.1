@@ -1,219 +1,122 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2071.outbound.protection.outlook.com [40.107.236.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD2E2550AD;
-	Mon, 23 Jun 2025 13:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750687050; cv=fail; b=RnYcLFzDTQYxA8d0MJDMhy8MdiFO3REonKqDPuU8HRjowC7SrcT/rA4aVo+JxjeW2wK2bPJ5S00watgAY2/lqff+OXXfYujXpNX++ZWF+doABksOcgzNC4OOsOmnwh3H7sqN8JN2kxIAupndHubWYeBWCx5gOhgLQgAHEJcrWpE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750687050; c=relaxed/simple;
-	bh=K+9y9GpMvYWqrqkfzDQGI8+jLI65eMA3LvioAQBOU8E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DqGQ0NejHcxexexNlSPLo5gaH/vHToTRFN8dwUK2AGhbgH9BCB74D139UWTzdPTm31SKegPzHqyavzTWl3Lds/eD2uCUmPlnEKTmuYt0Aos98vGdBUSolkZ9CE40/2KRP/XDo+cxKRbOgJgJx+9preNEOwk7rWf40TwvoofZ1bI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Q3fRIa5Y; arc=fail smtp.client-ip=40.107.236.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2F078F5E;
+	Mon, 23 Jun 2025 14:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750687745; cv=none; b=KfhX2yV/R2RffX0OOKbs/BXbyVpm24m5FBn3FdYEPyCitlBbvNSA9mXE2EVpxU9exY6HS0ijMlFtR5r4jUnEAv5kwdhAuxiocsFaPA+HdzbtOgpyiA3JTULtAcGaRDkm3tOg5Nf//87V/uhrkksmso+ozzKQn6BeeeXsa9ozon4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750687745; c=relaxed/simple;
+	bh=sIqaqHwoR/cVtxIhgcxx2ZVcUkiubyrehXo3GcWtKOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a54f/YTdWB2sid64AGzDYpyRwNPl84i52Rq2NKJK7iDDe/Gv6t7/kAPZuA87AT7Fqvx4lfjmjqx4sO5hvaY1wcZPJ4rr+fvs7qIZT8lj23T3G8MvokgeX9vsS7237mYuufnLW/l4sPfKldD4aEBRmKvJ0RggPquky1j+J2QKfK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHdsPhym; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Q3fRIa5Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M/qfwkctofS3SncJT9Zkrz1tuisHhYnpkL0HIpI/T22XxD4zxTBX1FU9O5lyey6BPAzChjvKjfad5DjjXLiFPdhjg+y31USWS0Eh+ppjYdx1s5qv2Ii+E8RnnRCpIK6YuSTF7hPwDBpLo6o+j5Pmvlw8TXLUE9CTLcHg463qZBcqFProvWDEpBIZ5bMknflYsD7TNa2L28NBB4tQYS4AiBw871X2GZZOBcx7oHCDSeFlECesWuoUjp4SN/mePgN5sStgUWdJcg4i46J9YDX70/R8YNPOTH5MDLeEsa3YbP9yJNa+BnzTG7TpwiBeP+fTYh1G79FUSj3OTgpVYJlUVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zeB6mpFid533ECQOom40pUkdHDPKCX8f/T8OJyvTQ/0=;
- b=Db4cAgkl7Rku5vl6wNlWSKQw+LkVasZRO+9iGKnQPmy18dmJdbd52JTQD5CjS09nAHCpGDzJCNIwGDKCTOrDlXfj+zASKoAbooIryD3A/Vz0H13iFkp3wpd3TGSVu/7/7BrF0+AGlutbwRu1N2JfPbhReiMl7cAmwhLsZjhH62dMOe9DAw/DuXoez6IBW1idrfOvoWnWsYQX5RE+4xn8oSIwt61SooreRAKlGKHZHxfg5bOPco5WTrrFmCxPHyVNtoZdj23grVfuD7PEIKeaRHh6RDfKszKTLdMiVLFQf3b2CBkCnHlm1A2ROKPls5xJoapxyAi39DBpYc0QzBqNxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zeB6mpFid533ECQOom40pUkdHDPKCX8f/T8OJyvTQ/0=;
- b=Q3fRIa5YvCA2AbhPzd3KEOXSUwbUGLRkKHGgdNqvSNNwaWDkxZlJ0a7GvXEKnPhMD/FQC3T8rlq0EF9cpG0+3Xfot96dFBQI44IxA8fB3A+EOIi7mrs5vlxS/Rf8bM8SZZHsoehmQKSbRJ0YB/ir1+Ig1dPzZbKlRd1bvbjzYm8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by SJ2PR12MB8181.namprd12.prod.outlook.com (2603:10b6:a03:4f6::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Mon, 23 Jun
- 2025 13:57:23 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8857.019; Mon, 23 Jun 2025
- 13:57:23 +0000
-Message-ID: <6b4b8924-c0a7-58ab-f282-93d019cd0b96@amd.com>
-Date: Mon, 23 Jun 2025 08:57:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] x86/sev/vc: fix efi runtime instruction emulation
-To: Gerd Hoffmann <kraxel@redhat.com>, linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>
-References: <20250602105050.1535272-1-kraxel@redhat.com>
- <20250602105050.1535272-2-kraxel@redhat.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20250602105050.1535272-2-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0084.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:35e::25) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHdsPhym"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9D1C4CEEA;
+	Mon, 23 Jun 2025 14:08:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750687744;
+	bh=sIqaqHwoR/cVtxIhgcxx2ZVcUkiubyrehXo3GcWtKOc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dHdsPhymHpCpP1L1rpiiuVh9anWKDbUGp+dOsOPmO4OQHE+kU+Zi18fE4bLaexYrK
+	 gUoN90qEMebw6mZqVEPlvabq2eThh8jpVLRCedMrM9eSnmX3GOFuVtEOseL+YdN3wn
+	 X8qzapUuQcmNdjX6GIaf4OcqNHI+q8NPq1HMYd9eexsJ6bIMOSDISjUzkr6ThA2YxS
+	 ISPmeyDa0Yn46UlCpcxQuo8fPxQ1748dOTKvenwn7VFifTenNUleH0JxjjCZ6KgFWh
+	 1JCXZsmFMs7pcYZDFQqjcAOKf3JPAOwPWPTW1qjaoHn3i8f4SdJWqCkjKdFaxTYuQu
+	 SKrtpjjYZZkKA==
+Date: Mon, 23 Jun 2025 19:35:32 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <joro@8bytes.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, Sairaj Kodilkar <sarunkod@amd.com>, 
+	Vasant Hegde <vasant.hegde@amd.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
+	Joao Martins <joao.m.martins@oracle.com>, Francesco Lavra <francescolavra.fl@gmail.com>, 
+	David Matlack <dmatlack@google.com>
+Subject: Re: [PATCH v3 18/62] KVM: SVM: Disable (x2)AVIC IPI virtualization
+ if CPU has erratum #1235
+Message-ID: <jskiyda3defofthrtniugcdbcoftx4o5yvgt47koswq64qf7d7@2pzrr5v5yssy>
+References: <20250611224604.313496-2-seanjc@google.com>
+ <20250611224604.313496-20-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SJ2PR12MB8181:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5acff83d-4a9b-49e0-1132-08ddb25de0e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SzdTVHFKL3MrYmRGMXc5ZjBCcXpnRThzd2ZLREJrMk5RQUJvRlBsZWZGNHJD?=
- =?utf-8?B?ZUZhN0YyVjRNbXZLOEhxVm85cXIwcGpRL3ZoL2ZjeExtSWN2ZWFQd0hFUWE1?=
- =?utf-8?B?a0RQdlNxUHNXVHVIQkxBa3plZUEzelhCc3dRS1k0THczd3FtTEx2QktTK1Bh?=
- =?utf-8?B?djM5cUgwRW9TWUVQb1dLSS9CalVhK3kyWFY1dW9OV3laWWdwenZjSkFURTJT?=
- =?utf-8?B?a0ptajE3aUI2c2gxWHNDR1hUemdmU1VDNjBYT0VvWE5tNytGbStLeHlGb2s4?=
- =?utf-8?B?TGdZejFmZjkzTmhzb01Pb1NlS1I5VThucVBleDFZU2RxUWo5V08rcFg0ZnJZ?=
- =?utf-8?B?TEQzSzlBdVZ0MlY5aUgzeTlMVUJFSE1WQjBxZmY5b0pKVEhhWE5DeUdUdUNL?=
- =?utf-8?B?RWNkeW5rajY0dG50bDJWazQ3eVc4QjlmMjBrYWE0dkpoTTNIMU9OZDlTb05R?=
- =?utf-8?B?Q1NaNVNMWmVJTUhNYTNnM2pWV3gxOVIyZXN1RlV0cy9ybkdwcWZqQ29ZQ1JV?=
- =?utf-8?B?STEvUDdDcTFRc0JFRDRTMnJqZ3NQdFhtQ0xvTWc2NyttalBIMTdyWkdqYWV3?=
- =?utf-8?B?NEEwQVY0VitIRjZhSUZBL29vRkFJdE9hdWFKMFMreUJuY2ZmSnZHOXNxT2Iw?=
- =?utf-8?B?ZTFwU3p0WG5RamM0MDAyN2Rma2R4M3hZWjc5N0xzbVRQT2JBYkdTN2tVS1lD?=
- =?utf-8?B?OFhTNEd2OFhGRTZkdTFmQjFLM0VTV0kvUFRURVBhUTVMaTNJaW9sNXVjeElO?=
- =?utf-8?B?M1BtZXhPeWErRmVvUGQwcERhbE9HZVVVMytNeHBINmVpN3Bxd3d4Qll0cUly?=
- =?utf-8?B?MzhMc2xkTWd2OGtJVU1YaDZaWWVBYmQ0Z2NuOHhBWWJKWWJRZnZVaUpCQXhN?=
- =?utf-8?B?SXd1c2NWbm90MGEwV3JFMGo2YnRuRlB3bFNXRlRJdHl6Mm9uNHM5U0JGT0s1?=
- =?utf-8?B?TlpaVDFFOGVFRE5qci9admpXNUJHVFlRcU1oUkhRb0dDSkFXNG12TXJDc1ZK?=
- =?utf-8?B?a2FzV1g4cUcxZ2g4Z2JPMklqdWxnUkRVWTJWQ3VaRmlnV1JoWjlGYjFKaW92?=
- =?utf-8?B?N2pQSnU5UktXRTRSSnRQcFV6Q2lHY0RmcUtpREZSNEZhYnlnc0ZCY1VDT0sw?=
- =?utf-8?B?QkJqaUxkaCt4K3pTa0tZM0h6eTVQdXhhTWZFTEJtQkMwSVdRMTdZdlZBWTVU?=
- =?utf-8?B?ZlBHVWZlU01VbHJGV2RxRFlFMUNnQS9nSG5QWWZjNGdUd1lhdFN1bWFOVUYr?=
- =?utf-8?B?eDBzUWpGZm5KN3ZZQWgzQUdFOUFwcW5nelBKWitxQm54UThCQitLQk1oY29D?=
- =?utf-8?B?dUJTSnA3ZFp5U01HTFhWU084ZHVWaVRCU2lIYWNBZXN3d2Z4a3VXQS9FdkVK?=
- =?utf-8?B?TEdvUVJoaHdGNGVjQ2JIT08xSExzNnRJdEZQTDkyaHVuanFGMVRxU1BYTEZa?=
- =?utf-8?B?Vm9ZWjM1NlRlOVlmcXpBYy9BeFFaVU1mRXMrakNzKzdTWmFweFRqN3gwK3Ay?=
- =?utf-8?B?aWd6YzV4d1F4Mndra0QyLzZaekxWWXo0WEFURjZ2REVsdFkzRzlkck8xZVlJ?=
- =?utf-8?B?Q2NYRTdmWXNTUXJwU1pPc0szSG5nZDNwc1pTM1RMWVRpTVk4SjdkS0phdkhv?=
- =?utf-8?B?ckl3SWV5K3g5UUZVWVBQejEzeUM3MWhxeTlyaUxpN2Z6aXphWklYMzY4RUwz?=
- =?utf-8?B?UmR0Vjh3ZnlzNWtZNlNNcE5FZCtVbDRRNXRVZ25vYTVmZGJlRzMzUG83OVlI?=
- =?utf-8?B?VDIvV1RBeTVOSDlzVkk0N0xlaHp3YzI4MTdVT0VrWkxwZ21TT0g4TUJxQWdG?=
- =?utf-8?B?ampkOVp5My9VZmRjQlVCRThsZkpQMTFKOHp5NFdXTXRBaVJPWldTS0tLM0dm?=
- =?utf-8?B?dy9SMTdzMkZIcHRHUUdvSGZIc3NWMnlaUmlaK1cvMkpOL1ZqcHpWc2Yxak5w?=
- =?utf-8?Q?9TXWyP4pvS4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q2dzUi9jNyt5K29ibSt5c2Q5YTJJQUo0RlZ3b0RIQlFINzBXZXpzRnVVYW1W?=
- =?utf-8?B?S1o1QlhyRDBYRERENHJIUkhCZ0s4SWFFbnIzaHVtWXQ4bGhpN21jSHVFUGxv?=
- =?utf-8?B?Q1NQUDZlbytYOENvMHZuTEY0Z0RDQ1VrbFRsTjdHQlBFWmJUVjlLdXkxamw3?=
- =?utf-8?B?S3AyOW5hMFJQQVlJZFFUT1JrSGc5bnNGSkw2bllWUjlua0oxMWx1U1pzOWxz?=
- =?utf-8?B?NGVGNHQ2MjRlV3lOYzJ4Z2FIanN1SFN1SjlxK3ZIUTFtOUFNTDNNajQxVnpT?=
- =?utf-8?B?S0pYc3BzZGhHVFJUSnpQMERNcEwxM1B5Zk01MElGU2hiUERSZm1OV0tRREw1?=
- =?utf-8?B?aVQ3WXp5VHI2cEhzbDF1bWZuTENKMGVNS3lLYjlMTTFYUkxSQUlBRGZZM05D?=
- =?utf-8?B?aTYvTTdia2czOTFtYXJrUUFkZnNpNDdISDh1Y2IxZmUzSVVwK3czd1M0ckNi?=
- =?utf-8?B?NEpxQXE2dWd0ZWxZWDlLK0RkT3ZzVFhxaFo1ZEY5L1Q5V2c2MnJmckpRajRE?=
- =?utf-8?B?NjBIZ3B0SFJveTJBMkk0V3NVVEJrem5SZGorRDJvZmFaRTZ4eWwxeGlCYXNa?=
- =?utf-8?B?eStPMi9UK3BTaXMwbkYzeEVJeHRZc1d3a0o1SERpSWxEZDhuVnRITmpWOGVz?=
- =?utf-8?B?NUVzRWs1TEYxSjMvdWowS2tOam1IWmFlRXQvTzFRVnA5SVdhWnRQMlVaYlE3?=
- =?utf-8?B?am5tWDRIeWFMMFg3NXlwOEppWC9PMjlLclBUckpDWG45VVdPY3laMFU1MzNR?=
- =?utf-8?B?dXk0S3lsZEhzTUNRU0hkamlOc3RLYkZYRGhJMXRwNzZEb2xDSk0vNmlGRVJ2?=
- =?utf-8?B?K2t6emJRR2s5a1dqTXErZUUyNHBwb3JYTnlkOW5lanZRMDBDV3hmLzFHVXNT?=
- =?utf-8?B?QXpDaHh0MmRIRGJ3QVFHU3FsNmMrTFJRVmdFZ3h0UUgyQUJLdDhOWXhTd2Fq?=
- =?utf-8?B?T1ZZYk0yOEprcEM0RkJFRnNDOVJYSnpxZUlGNnIvZ3FmdFVJaHRlN3l4SC9U?=
- =?utf-8?B?RC9Yd0xQSnNYSWlUSjZGMG5yQTZOZ3RvVW9KNjVhTnh2MGN1Ky9mZFg5bllL?=
- =?utf-8?B?Z1VRZ09hMGM1dUh6Q2R6TmRFTHBTWWowckw2NVNJcUh2Sm9yU2plcCtiNHJa?=
- =?utf-8?B?aWhBZ0Rpbk9BeGFyNkR0VDQ2RFVPQ2N5NFlIM0FYVHNFcllmUXA5OHBkRDIv?=
- =?utf-8?B?TkFxRXJRbXFCVUZNNXhNNmhmTkowTTUySkk1S2U3WnR0aHBidkVTTGVwdUJE?=
- =?utf-8?B?OFhpNFJWaFh2cWp6aGpQTmdscGpUMDlxdUxqWCtUOW5EVDRES09HbUdab2hL?=
- =?utf-8?B?UEg1QXROVlIvYWNvdHJoQkdqS043eWpEakRVQk5oblVlRDdSSUN3ODdiNVVt?=
- =?utf-8?B?NkswVWdicFJ1TWMvclpOc3JoQ25ET2pYK28wQzFPbWRYdVJTM2hhOHJwVUFB?=
- =?utf-8?B?Y25Tc1NTeGN6cVlqUWdJcjFLaUNCWFEzS1ZoWWJTWk5WS2hDdWFQWk9iQTNk?=
- =?utf-8?B?elJNSm1oYkE0Q1I5cFF0UUIvVEx5TnlxNzhKWmNUV21lR3dMODdoaFhlVFE2?=
- =?utf-8?B?MXc4Rlh4bytkVUdOa1VwRkhJZDNkV2lZSmxsMlZXL09wcDNuOWJUNWRGY1Y0?=
- =?utf-8?B?ZHpQbVg5dFlFWnpaWG9GNHRNd2daWXhCa2dqVlh6Y1BSV2ZaNFlIY3NGaFhj?=
- =?utf-8?B?KzVFNUV5WE10RktnTGJTTnRJeGdUNXNLZEZKbkFubE1SSEE2N0ZMb3FPYzRj?=
- =?utf-8?B?V25BMzNzMjZCbVdSWE9EWnAvS1JzQnVlWDJTbVdvVTkxSHFTZVdhYkFTY2Jv?=
- =?utf-8?B?dWFMVDBhWE5zb2xhVHFQamNmNm4vcGtEOUV2SWpYWmlKc1pTQlFZT1UvVW8w?=
- =?utf-8?B?MzRvUURkMlcrSHpnS2ZpTGp2eDZXVlROTVBycGVwUk8yamdPWXcwSFNmTVVy?=
- =?utf-8?B?cnp5UlBNdVhaRTNXSVhkQ0Q2cVFSVzB2S2ZFNU5YcU1ub05tZGs1SHBENUc2?=
- =?utf-8?B?SkdFZjA4UW9ZTzJpWEJ0djBDR3ZRZTROcHg4bUxwOUx3U1RVSWMvYkRNb3Iy?=
- =?utf-8?B?ZEY4YmF5R2RTcmRXRHNXemlpbHVab0FTZThUemIyYjlCcHhDU0dLalREdU1Z?=
- =?utf-8?Q?+3dO5IR8Bh7l9PkdCrvjVxHpL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5acff83d-4a9b-49e0-1132-08ddb25de0e7
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 13:57:23.6318
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g5JS8PBEqEsiDtRsO2ltUqwr2gmzM8bvY+ySaNb7sogRGqdH67usg8icF0jjiJfaAjqdg9G+Pkh2idxW+wTMgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8181
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250611224604.313496-20-seanjc@google.com>
 
-On 6/2/25 05:50, Gerd Hoffmann wrote:
-> In case efi_mm is active go use the userspace instruction decoder which
-> supports fetching instructions from active_mm.  This is needed to make
-> instruction emulation work for EFI runtime code, so it can use cpuid
-> and rdmsr.
+On Wed, Jun 11, 2025 at 03:45:21PM -0700, Sean Christopherson wrote:
+> From: Maxim Levitsky <mlevitsk@redhat.com>
 > 
-> EFI runtime code uses the cpuid instruction to gather information about
-> the environment it is running in, such as SEV being enabled or not, and
-> choose (if needed) the SEV code path for ioport access.
+> Disable IPI virtualization on AMD Family 17h CPUs (Zen2 and Zen1), as
+> hardware doesn't reliably detect changes to the 'IsRunning' bit during ICR
+> write emulation, and might fail to VM-Exit on the sending vCPU, if
+> IsRunning was recently cleared.
 > 
-> EFI runtime code uses the rdmsr instruction to get the location of the
-> CAA page (see SVSM spec, section 4.2 - "Post Boot").
+> The absence of the VM-Exit leads to KVM not waking (or triggering nested
+> VM-Exit) of the target vCPU(s) of the IPI, which can lead to hung vCPUs,
+  ^^^^^^^^^^^
+  VM-Exit of)
+
+> unbounded delays in L2 execution, etc.
 > 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> To workaround the erratum, simply disable IPI virtualization, which
+> prevents KVM from setting IsRunning and thus eliminates the race where
+> hardware sees a stale IsRunning=1.  As a result, all ICR writes (except
+> when "Self" shorthand is used) will VM-Exit and therefore be correctly
+> emulated by KVM.
+> 
+> Disabling IPI virtualization does carry a performance penalty, but
+> benchmarkng shows that enabling AVIC without IPI virtualization is still
+> much better than not using AVIC at all, because AVIC still accelerates
+> posted interrupts and the receiving end of the IPIs.
+> 
+> Note, when virtualizaing Self-IPIs, the CPU skips reading the physical ID
+	     ^^^^^^^^^^^^^
+	     virtualizing
+
+> table and updates the vIRR directly (because the vCPU is by definition
+> actively running), i.e. Self-IPI isn't susceptible to the erratum *and*
+> is still accelerated by hardware.
+> 
+> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+> [sean: rebase, massage changelog, disallow user override]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  arch/x86/coco/sev/vc-handle.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  arch/x86/kvm/svm/avic.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-> index 0989d98da130..01c78182da88 100644
-> --- a/arch/x86/coco/sev/vc-handle.c
-> +++ b/arch/x86/coco/sev/vc-handle.c
-> @@ -17,6 +17,7 @@
->  #include <linux/mm.h>
->  #include <linux/io.h>
->  #include <linux/psp-sev.h>
-> +#include <linux/efi.h>
->  #include <uapi/linux/sev-guest.h>
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index 48c737e1200a..bf8b59556373 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -1187,6 +1187,14 @@ bool avic_hardware_setup(void)
+>  	if (x2avic_enabled)
+>  		pr_info("x2AVIC enabled\n");
 >  
->  #include <asm/init.h>
-> @@ -180,7 +181,7 @@ static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
->  
->  static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
->  {
-> -	if (user_mode(ctxt->regs))
-> +	if (user_mode(ctxt->regs) || current->active_mm == &efi_mm)
+> +	/*
+> +	 * Disable IPI virtualization for AMD Family 17h CPUs (Zen1 and Zen2)
+> +	 * due to erratum 1235, which results in missed GA log events and thus
+							^^^^^^^^^^^^^
+Not sure I understand the reference to GA log events here -- those are 
+only for device interrupts and not IPIs.
 
-A comment before this would be good. Something like:
+> +	 * missed wake events for blocking vCPUs due to the CPU failing to see
+> +	 * a software update to clear IsRunning.
+> +	 */
+> +	enable_ipiv = enable_ipiv && boot_cpu_data.x86 != 0x17;
+> +
 
-/*
- * User instruction decoding is also required for the EFI runtime. Even
- * though EFI runtime is running in kernel mode, it uses special EFI
- * virtual address mappings that require the use of efi_mm to properly
- * address and decode.
- */
+Apart from the above, this LGTM.
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
 
-Might be too verbose, but that's the general idea.
 
-Thanks,
-Tom
+- Naveen
 
->  		return __vc_decode_user_insn(ctxt);
->  	else
->  		return __vc_decode_kern_insn(ctxt);
