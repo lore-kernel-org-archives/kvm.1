@@ -1,219 +1,321 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965A2231855
-	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 14:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361F02D5C7C
+	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 14:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750774254; cv=none; b=Xtw2qXwilZSgTXM3u4DKaJ1qXT/OmSLLr0GVDDYPK12IwR8Ijg+9GkAUGR02tiWfd/dQ+YnYWkNok9o1P0KXUH7DC2vTKhgDTCSSOML89vJkn26ZRGswlCHGfSGFxKqLYUDjVBC84P0jG6LIxg/pW80NbVz6DNW9BYBtBdbYAOI=
+	t=1750774258; cv=none; b=LkxCvF1SzqGZKU1AQ8m8cVFD8gHt7ITnMZhOqjBB2btpbnFHAxL4vniT/gJ94sRY9iKjIDg2z8RKOWICQQMqT5XISvyUjlgH4TRwMruSWF8JeIlNvf3M3d+6rID3mDwzzdsBuV0zjsH7fvhGzSUPN4OG5OQvthcJlzcDuuwtlSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750774254; c=relaxed/simple;
-	bh=R6OWWnQ7Ism47qN12eO+TDSgprr7hgpEagXqOhThZVg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W4qjBxuxGUxlI9IaNMZ+XJZGqoQT4tixtYTpVUAcLHW7eJN6fyhAIdeC7JljCll4AUcI/MBhxjk9Bmcfpx95UkIt6YNFkFaHMjNqVrTu7Xq47ac4y+TL6rdBpC/bWtBP3ULGqbdxCH0pKcBXVdYlEKLwjiIygC50YxAJLEKRttY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NUrPa04b; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750774258; c=relaxed/simple;
+	bh=UJHi09MPL3kIZKOseAwotCZyseJCyzbsUABYX0rCz9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iv8S2OsYFtYQ5/bGXQRrPN9jIzGkdG8llv4/vRCXMrpEF4j/52weRrp2HAk607nkyoCqdTe/0HIcCDnCf0ed+dl15ysflxt7nmS1TP6D0U1QbgePx7EodlCYVFnr02BFZLrQYN2YpioNRRMR7Mb9CLAv3GUQSVxzkkAIS+7hKrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HdHQrZYY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NUrPa04b"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2357c61cda7so121725ad.1
-        for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 07:10:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750774252; x=1751379052; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SPXG9NMXD6nYMUFeG+o56gXIEmWIJJ0n8imu3rUl/a8=;
-        b=NUrPa04bJW5wf6OUbZGfVQNZAcNA6z0HsETw61Vv1IyqPlcqpmFJkSFrGR8pLQuN3M
-         VnSp5BhE8+ZHHzS4+YPdJLgO9FL4tzrmu6bIHdI3yvzU5VHQmp5y31NOLu/ipzqPAIbk
-         tCNyc2ctYL/5a+9fv+eykaUYqV8BCH5yGe3NF8K2iNY5RpBTIWD+p8ZWD4YJCefJyFyB
-         Ujd5F4hyUpoi1is+YykEP6tpSsEuSTOyai5PDVMgsf2vFwpStoFbSg8r8+KcryJNY76n
-         8h6pRz9vVg4+NDMGpIXqzPDj7iH7dXBQVKHQ2b5lNhHjawaijksvAHUd+1YcoI2hToXh
-         E1vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750774252; x=1751379052;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SPXG9NMXD6nYMUFeG+o56gXIEmWIJJ0n8imu3rUl/a8=;
-        b=BcqEYvQyip258/dgwGVp55gjR/Qvw+xfBjqhUIx+ZjNNRmSIWKMPcy2fnZVP3lztT2
-         s9FP6srx1BStQeiANF3agpzVB4L6t+OEkWke9pduRj++MZmyFXEr/tbppEvxv59c2KON
-         JGtGvsh5rmuKg5hRIxhgc5uKP6zKzsQencW8GOlYdI8Vv6u/+2YbN/pAvtBRJ+HwZzDB
-         9w/3B+I6/ajido/Ci4BTzNyQH1641UXiUWOlJgXnOypVHLU2v8pXbHL56S4Vm9JYgdne
-         vSvMBPqNymwiTjxUsVOftPAYumsGtBK9V4kgWItWLLEFxIiItncZqJjjFPimm0KClIBr
-         o9IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVoqGEz1/jI+CE6NUcDLeFAeAGM/0RaD5yRBOyfz8n8gQWZaINJ5yxJiNwS2ELLopnBJWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze6bqFXpJI9mXYufzis3HyEJAevMTj11Wj7N9E7o3C549LRSpI
-	LbHdyGK3RQMam6wZKcrlC5YDziOeZkBY1/1bxr25ty/di1JyNaRdhMcbV7KU4cvhrySg70ZBoqF
-	P3NC1uMfjgKtzfw5GYPXkLy5ryEgqZC96I1h4zEDK
-X-Gm-Gg: ASbGncuRyJlS7DkIPihPn0hZkWkqP5F6Na08YPy9aSjaGDgXGAYY4sFKLz1V/Jo6wTL
-	SM5oveIhh5VJlLAlrk9O6IXcVDzcFEiMESvNclSMCin9BTEe3Ag+jCKq6WF97Ztx49hCVgR4VIV
-	a1RfyFF0J4ehemJvTzZnrE4LtHM7KejFj9ttKAz6jS5+yCk6iFG35ICCg9K3Ti++ssimZcL7Aln
-	1Vm
-X-Google-Smtp-Source: AGHT+IHm+0I51ZMCSpB9nsIXuoBv9SIjg9zSCmS8/Wkboc9UHu1UJHMZwYpWKTst/fkr9jbiULJlSRshQWeZUERJRQM=
-X-Received: by 2002:a17:902:e80c:b0:234:afcf:d9e2 with SMTP id
- d9443c01a7336-23803f4d9a2mr2639155ad.17.1750774250932; Tue, 24 Jun 2025
- 07:10:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HdHQrZYY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750774253;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kNRM/ceMqfAIhZa/7YlKPMiXxg4kVTH+tlmxEWddQvU=;
+	b=HdHQrZYYY3sMX6KbYBX6/CmsyqzIBJa7RWkSBNtGIZjFOtm2e924HeU5zkhIL1KWyXA0dv
+	cVZHr66w0WXiJI1ngxKOG+WD/k4JGoMA8eP3zlotOQfv9o6ExYzo9BMMjI+GRLcIfetOsg
+	CvyBcKwYjbpzq2q1YOksOr1nqXYEhPA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-Xz1la0OgOOqXv0KbKc4aqQ-1; Tue,
+ 24 Jun 2025 10:10:51 -0400
+X-MC-Unique: Xz1la0OgOOqXv0KbKc4aqQ-1
+X-Mimecast-MFC-AGG-ID: Xz1la0OgOOqXv0KbKc4aqQ_1750774241
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 92C8F1956086;
+	Tue, 24 Jun 2025 14:10:41 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.45.224.193])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 26FAE195608D;
+	Tue, 24 Jun 2025 14:10:35 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Yuri Benditovich <yuri.benditovich@daynix.com>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH v6 net-next 3/9] virtio_pci_modern: allow configuring extended features
+Date: Tue, 24 Jun 2025 16:09:45 +0200
+Message-ID: <1bd289016fa735ee94a6bde672190cadc8a60c95.1750753211.git.pabeni@redhat.com>
+In-Reply-To: <cover.1750753211.git.pabeni@redhat.com>
+References: <cover.1750753211.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1747264138.git.ackerleytng@google.com> <d3832fd95a03aad562705872cbda5b3d248ca321.1747264138.git.ackerleytng@google.com>
- <CA+EHjTxtHOgichL=UvAzczoqS1608RSUNn5HbmBw2NceO941ng@mail.gmail.com>
- <CAGtprH8eR_S50xDnnMLHNCuXrN2Lv_0mBRzA_pcTtNbnVvdv2A@mail.gmail.com>
- <CA+EHjTwjKVkw2_AK0Y0-eth1dVW7ZW2Sk=73LL9NeQYAPpxPiw@mail.gmail.com>
- <CAGtprH_Evyc7tLhDB0t0fN+BUx5qeqWq8A2yZ5-ijbJ5UJ5f-g@mail.gmail.com>
- <9502503f-e0c2-489e-99b0-94146f9b6f85@amd.com> <20250624130811.GB72557@ziepe.ca>
-In-Reply-To: <20250624130811.GB72557@ziepe.ca>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 24 Jun 2025 07:10:38 -0700
-X-Gm-Features: AX0GCFsRD1vv1pnJnJAHQ3_lVm2iqeW9vp-TueZFlNIyuARuSWfPMw0I71gJhzE
-Message-ID: <CAGtprH_qh8sEY3s-JucW3n1Wvoq7jdVZDDokvG5HzPf0HV2=pg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 04/51] KVM: guest_memfd: Introduce
- KVM_GMEM_CONVERT_SHARED/PRIVATE ioctls
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-fsdevel@vger.kernel.org, ajones@ventanamicro.com, 
-	akpm@linux-foundation.org, amoorthy@google.com, anthony.yznaga@oracle.com, 
-	anup@brainfault.org, aou@eecs.berkeley.edu, bfoster@redhat.com, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, catalin.marinas@arm.com, 
-	chao.p.peng@intel.com, chenhuacai@kernel.org, dave.hansen@intel.com, 
-	david@redhat.com, dmatlack@google.com, dwmw@amazon.co.uk, 
-	erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, graf@amazon.com, 
-	haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
-	jarkko@kernel.org, jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de, 
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com, 
-	keirf@google.com, kent.overstreet@linux.dev, kirill.shutemov@intel.com, 
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
-	mail@maciej.szmigiero.name, maz@kernel.org, mic@digikod.net, 
-	michael.roth@amd.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	pdurrant@amazon.co.uk, peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, 
-	qperret@google.com, quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, thomas.lendacky@amd.com, 
-	usama.arif@bytedance.com, vbabka@suse.cz, viro@zeniv.linux.org.uk, 
-	vkuznets@redhat.com, wei.w.wang@intel.com, will@kernel.org, 
-	willy@infradead.org, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Tue, Jun 24, 2025 at 6:08=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> On Tue, Jun 24, 2025 at 06:23:54PM +1000, Alexey Kardashevskiy wrote:
->
-> > Now, I am rebasing my RFC on top of this patchset and it fails in
-> > kvm_gmem_has_safe_refcount() as IOMMU holds references to all these
-> > folios in my RFC.
-> >
-> > So what is the expected sequence here? The userspace unmaps a DMA
-> > page and maps it back right away, all from the userspace? The end
-> > result will be the exactly same which seems useless. And IOMMU TLB
+The virtio specifications allows for up to 128 bits for the
+device features. Soon we are going to use some of the 'extended'
+bits features (above 64) for the virtio_net driver.
 
- As Jason described, ideally IOMMU just like KVM, should just:
-1) Directly rely on guest_memfd for pinning -> no page refcounts taken
-by IOMMU stack
-2) Directly query pfns from guest_memfd for both shared/private ranges
-3) Implement an invalidation callback that guest_memfd can invoke on
-conversions.
+Extend the virtio pci modern driver to support configuring the full
+virtio features range, replacing the unrolled loops reading and
+writing the features space with explicit one bounded to the actual
+features space size in word and implementing the get_extended_features
+callback.
 
-Current flow:
-Private to Shared conversion via kvm_gmem_convert_range() -
-    1) guest_memfd invokes kvm_gmem_invalidate_begin() for the ranges
-on each bound memslot overlapping with the range
-         -> KVM has the concept of invalidation_begin() and end(),
-which effectively ensures that between these function calls, no new
-EPT/NPT entries can be added for the range.
-     2) guest_memfd invokes kvm_gmem_convert_should_proceed() which
-actually unmaps the KVM SEPT/NPT entries.
-     3) guest_memfd invokes kvm_gmem_execute_work() which updates the
-shareability and then splits the folios if needed
+Note that in vp_finalize_features() we only need to cache the lower
+64 features bits, to process the transport features.
 
-Shared to private conversion via kvm_gmem_convert_range() -
-    1) guest_memfd invokes kvm_gmem_invalidate_begin() for the ranges
-on each bound memslot overlapping with the range
-     2) guest_memfd invokes kvm_gmem_convert_should_proceed() which
-actually unmaps the host mappings which will unmap the KVM non-seucure
-EPT/NPT entries.
-     3) guest_memfd invokes kvm_gmem_execute_work() which updates the
-shareability and then merges the folios if needed.
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+v3 -> v4:
+  - dropped unneeded check in vp_modern_get_features()
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+v2 -> v3:
+  - virtio_features_t -> u64 *
 
-For IOMMU, could something like below work?
+v1 -> v2:
+  - use get_extended_features
+---
+ drivers/virtio/virtio_pci_modern.c     | 10 ++--
+ drivers/virtio/virtio_pci_modern_dev.c | 69 +++++++++++++++-----------
+ include/linux/virtio_pci_modern.h      | 43 ++++++++++++++--
+ 3 files changed, 84 insertions(+), 38 deletions(-)
 
-* A new UAPI to bind IOMMU FDs with guest_memfd ranges
-* VFIO_DMA_MAP/UNMAP operations modified to directly fetch pfns from
-guest_memfd ranges using kvm_gmem_get_pfn()
-    -> kvm invokes kvm_gmem_is_private() to check for the range
-shareability, IOMMU could use the same or we could add an API in gmem
-that takes in access type and checks the shareability before returning
-the pfn.
-* IOMMU stack exposes an invalidation callback that can be invoked by
-guest_memfd.
+diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+index 7182f43ed055..dd0e65f71d41 100644
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -22,11 +22,11 @@
+ 
+ #define VIRTIO_AVQ_SGS_MAX	4
+ 
+-static u64 vp_get_features(struct virtio_device *vdev)
++static void vp_get_features(struct virtio_device *vdev, u64 *features)
+ {
+ 	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
+ 
+-	return vp_modern_get_features(&vp_dev->mdev);
++	vp_modern_get_extended_features(&vp_dev->mdev, features);
+ }
+ 
+ static int vp_avq_index(struct virtio_device *vdev, u16 *index, u16 *num)
+@@ -437,7 +437,7 @@ static int vp_finalize_features(struct virtio_device *vdev)
+ 	if (vp_check_common_size(vdev))
+ 		return -EINVAL;
+ 
+-	vp_modern_set_features(&vp_dev->mdev, vdev->features);
++	vp_modern_set_extended_features(&vp_dev->mdev, vdev->features_array);
+ 
+ 	return 0;
+ }
+@@ -1234,7 +1234,7 @@ static const struct virtio_config_ops virtio_pci_config_nodev_ops = {
+ 	.find_vqs	= vp_modern_find_vqs,
+ 	.del_vqs	= vp_del_vqs,
+ 	.synchronize_cbs = vp_synchronize_vectors,
+-	.get_features	= vp_get_features,
++	.get_extended_features = vp_get_features,
+ 	.finalize_features = vp_finalize_features,
+ 	.bus_name	= vp_bus_name,
+ 	.set_vq_affinity = vp_set_vq_affinity,
+@@ -1254,7 +1254,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+ 	.find_vqs	= vp_modern_find_vqs,
+ 	.del_vqs	= vp_del_vqs,
+ 	.synchronize_cbs = vp_synchronize_vectors,
+-	.get_features	= vp_get_features,
++	.get_extended_features = vp_get_features,
+ 	.finalize_features = vp_finalize_features,
+ 	.bus_name	= vp_bus_name,
+ 	.set_vq_affinity = vp_set_vq_affinity,
+diff --git a/drivers/virtio/virtio_pci_modern_dev.c b/drivers/virtio/virtio_pci_modern_dev.c
+index 0d3dbfaf4b23..d665f8f73ea8 100644
+--- a/drivers/virtio/virtio_pci_modern_dev.c
++++ b/drivers/virtio/virtio_pci_modern_dev.c
+@@ -388,63 +388,74 @@ void vp_modern_remove(struct virtio_pci_modern_device *mdev)
+ EXPORT_SYMBOL_GPL(vp_modern_remove);
+ 
+ /*
+- * vp_modern_get_features - get features from device
++ * vp_modern_get_extended_features - get features from device
+  * @mdev: the modern virtio-pci device
++ * @features: the features array to be filled
+  *
+- * Returns the features read from the device
++ * Fill the specified features array with the features read from the device
+  */
+-u64 vp_modern_get_features(struct virtio_pci_modern_device *mdev)
++void vp_modern_get_extended_features(struct virtio_pci_modern_device *mdev,
++				     u64 *features)
+ {
+ 	struct virtio_pci_common_cfg __iomem *cfg = mdev->common;
++	int i;
+ 
+-	u64 features;
++	virtio_features_zero(features);
++	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
++		u64 cur;
+ 
+-	vp_iowrite32(0, &cfg->device_feature_select);
+-	features = vp_ioread32(&cfg->device_feature);
+-	vp_iowrite32(1, &cfg->device_feature_select);
+-	features |= ((u64)vp_ioread32(&cfg->device_feature) << 32);
+-
+-	return features;
++		vp_iowrite32(i, &cfg->device_feature_select);
++		cur = vp_ioread32(&cfg->device_feature);
++		features[i >> 1] |= cur << (32 * (i & 1));
++	}
+ }
+-EXPORT_SYMBOL_GPL(vp_modern_get_features);
++EXPORT_SYMBOL_GPL(vp_modern_get_extended_features);
+ 
+ /*
+  * vp_modern_get_driver_features - get driver features from device
+  * @mdev: the modern virtio-pci device
++ * @features: the features array to be filled
+  *
+- * Returns the driver features read from the device
++ * Fill the specified features array with the driver features read from the
++ * device
+  */
+-u64 vp_modern_get_driver_features(struct virtio_pci_modern_device *mdev)
++void
++vp_modern_get_driver_extended_features(struct virtio_pci_modern_device *mdev,
++				       u64 *features)
+ {
+ 	struct virtio_pci_common_cfg __iomem *cfg = mdev->common;
++	int i;
+ 
+-	u64 features;
+-
+-	vp_iowrite32(0, &cfg->guest_feature_select);
+-	features = vp_ioread32(&cfg->guest_feature);
+-	vp_iowrite32(1, &cfg->guest_feature_select);
+-	features |= ((u64)vp_ioread32(&cfg->guest_feature) << 32);
++	virtio_features_zero(features);
++	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
++		u64 cur;
+ 
+-	return features;
++		vp_iowrite32(i, &cfg->guest_feature_select);
++		cur = vp_ioread32(&cfg->guest_feature);
++		features[i >> 1] |= cur << (32 * (i & 1));
++	}
+ }
+-EXPORT_SYMBOL_GPL(vp_modern_get_driver_features);
++EXPORT_SYMBOL_GPL(vp_modern_get_driver_extended_features);
+ 
+ /*
+- * vp_modern_set_features - set features to device
++ * vp_modern_set_extended_features - set features to device
+  * @mdev: the modern virtio-pci device
+  * @features: the features set to device
+  */
+-void vp_modern_set_features(struct virtio_pci_modern_device *mdev,
+-			    u64 features)
++void vp_modern_set_extended_features(struct virtio_pci_modern_device *mdev,
++				     const u64 *features)
+ {
+ 	struct virtio_pci_common_cfg __iomem *cfg = mdev->common;
++	int i;
++
++	for (i = 0; i < VIRTIO_FEATURES_WORDS; i++) {
++		u32 cur = features[i >> 1] >> (32 * (i & 1));
+ 
+-	vp_iowrite32(0, &cfg->guest_feature_select);
+-	vp_iowrite32((u32)features, &cfg->guest_feature);
+-	vp_iowrite32(1, &cfg->guest_feature_select);
+-	vp_iowrite32(features >> 32, &cfg->guest_feature);
++		vp_iowrite32(i, &cfg->guest_feature_select);
++		vp_iowrite32(cur, &cfg->guest_feature);
++	}
+ }
+-EXPORT_SYMBOL_GPL(vp_modern_set_features);
++EXPORT_SYMBOL_GPL(vp_modern_set_extended_features);
+ 
+ /*
+  * vp_modern_generation - get the device genreation
+diff --git a/include/linux/virtio_pci_modern.h b/include/linux/virtio_pci_modern.h
+index c0b1b1ca1163..48bc12d1045b 100644
+--- a/include/linux/virtio_pci_modern.h
++++ b/include/linux/virtio_pci_modern.h
+@@ -3,6 +3,7 @@
+ #define _LINUX_VIRTIO_PCI_MODERN_H
+ 
+ #include <linux/pci.h>
++#include <linux/virtio_config.h>
+ #include <linux/virtio_pci.h>
+ 
+ /**
+@@ -95,10 +96,44 @@ static inline void vp_iowrite64_twopart(u64 val,
+ 	vp_iowrite32(val >> 32, hi);
+ }
+ 
+-u64 vp_modern_get_features(struct virtio_pci_modern_device *mdev);
+-u64 vp_modern_get_driver_features(struct virtio_pci_modern_device *mdev);
+-void vp_modern_set_features(struct virtio_pci_modern_device *mdev,
+-		     u64 features);
++void
++vp_modern_get_driver_extended_features(struct virtio_pci_modern_device *mdev,
++				       u64 *features);
++void vp_modern_get_extended_features(struct virtio_pci_modern_device *mdev,
++				     u64 *features);
++void vp_modern_set_extended_features(struct virtio_pci_modern_device *mdev,
++				     const u64 *features);
++
++static inline u64
++vp_modern_get_features(struct virtio_pci_modern_device *mdev)
++{
++	u64 features_array[VIRTIO_FEATURES_DWORDS];
++
++	vp_modern_get_extended_features(mdev, features_array);
++	return features_array[0];
++}
++
++static inline u64
++vp_modern_get_driver_features(struct virtio_pci_modern_device *mdev)
++{
++	u64 features_array[VIRTIO_FEATURES_DWORDS];
++	int i;
++
++	vp_modern_get_driver_extended_features(mdev, features_array);
++	for (i = 1; i < VIRTIO_FEATURES_DWORDS; ++i)
++		WARN_ON_ONCE(features_array[i]);
++	return features_array[0];
++}
++
++static inline void
++vp_modern_set_features(struct virtio_pci_modern_device *mdev, u64 features)
++{
++	u64 features_array[VIRTIO_FEATURES_DWORDS];
++
++	virtio_features_from_u64(features_array, features);
++	vp_modern_set_extended_features(mdev, features_array);
++}
++
+ u32 vp_modern_generation(struct virtio_pci_modern_device *mdev);
+ u8 vp_modern_get_status(struct virtio_pci_modern_device *mdev);
+ void vp_modern_set_status(struct virtio_pci_modern_device *mdev,
+-- 
+2.49.0
 
-Private to Shared conversion via kvm_gmem_convert_range() -
-    1) guest_memfd invokes kvm_gmem_invalidate_begin() for the ranges
-on each bound memslot overlapping with the range
-     2) guest_memfd invokes kvm_gmem_convert_should_proceed() which
-actually unmaps the KVM SEPT/NPT entries.
-           -> guest_memfd invokes IOMMU invalidation callback to zap
-the secure IOMMU entries.
-     3) guest_memfd invokes kvm_gmem_execute_work() which updates the
-shareability and then splits the folios if needed
-     4) Userspace invokes IOMMU map operation to map the ranges in
-non-secure IOMMU.
-
-Shared to private conversion via kvm_gmem_convert_range() -
-    1) guest_memfd invokes kvm_gmem_invalidate_begin() for the ranges
-on each bound memslot overlapping with the range
-     2) guest_memfd invokes kvm_gmem_convert_should_proceed() which
-actually unmaps the host mappings which will unmap the KVM non-seucure
-EPT/NPT entries.
-         -> guest_memfd invokes IOMMU invalidation callback to zap the
-non-secure IOMMU entries.
-     3) guest_memfd invokes kvm_gmem_execute_work() which updates the
-shareability and then merges the folios if needed.
-     4) Userspace invokes IOMMU map operation to map the ranges in secure I=
-OMMU.
-
-There should be a way to block external IOMMU pagetable updates while
-guest_memfd is performing conversion e.g. something like
-kvm_invalidate_begin()/end().
-
-> > is going to be flushed on a page conversion anyway (the RMPUPDATE
-> > instruction does that). All this is about AMD's x86 though.
->
-> The iommu should not be using the VMA to manage the mapping. It should
-
-+1.
-
-> be directly linked to the guestmemfd in some way that does not disturb
-> its operations. I imagine there would be some kind of invalidation
-> callback directly to the iommu.
->
-> Presumably that invalidation call back can include a reason for the
-> invalidation (addr change, shared/private conversion, etc)
->
-> I'm not sure how we will figure out which case is which but guestmemfd
-> should allow the iommu to plug in either invalidation scheme..
->
-> Probably invalidation should be a global to the FD thing, I imagine
-> that once invalidation is established the iommu will not be
-> incrementing page refcounts.
-
-+1.
-
->
-> Jason
