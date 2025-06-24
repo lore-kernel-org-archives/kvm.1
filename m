@@ -1,170 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1260F27C179
-	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 14:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F9F296147
+	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 14:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750773953; cv=none; b=UYrozZB1YmChV3/8wA1/mN4L3fLw1Yj+OCQ3ffun+NB1O1L4g9GOcAtMC3Pmt1FMYrzoAXYW3WaqjZ2PoYIC9Jt4WrCMneQAG4FXeSQEefcsrbCscGRZhE49e9XucH+6cBjU9kbxzITQ9UdY1RVm3RvHvJ8OFNIvW6o0H6O/Neg=
+	t=1750774210; cv=none; b=jXHGnAbzhMQ+ZI4CiGtSfH2OTnR+BlwgWpNkfRwdg2vqc5J3gUi42P7TLEb8L3d60ZUvdYKyfqk2tx1RV55tPHTzVsYJEqgeu908XLsTfXrjeoahFDx5mTTBCkmnLdATpSHRgYUo79/OuNcHwnK7czUv0QnBysWQNVhChdIk3w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750773953; c=relaxed/simple;
-	bh=ShTqc7z0FpK2/U8YVqk2gMmafxHT4PEfEtsONZW/Zjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sQ5NuLOaUlihmr6yr9mByjILbbmRqYoRA2PRXzFETdgMtdt1Dwe/2MlxlLkSBLXvwUFwinyhbB70nBoHkQAkKBSxZZKMEao2poCVICigU9znec2twlGT3otg72KLIs+A0epTwqJiP1RRfdWiy9EbqpB3dkMZAZRgfLx90eVP3Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hhr4Jl20; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750774210; c=relaxed/simple;
+	bh=qj/CWqHLyhMEEnGdAVi2FKgDX7NQhEFCDAoqdAeRp2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T7IlbxcRN1b7PuuOB1Zq640D2bjNJf6IMntBZqnmvqiBWs+qdFti3bShMQlXIiRKnyr5cSGnBBNi9PsrThbqY/BXFOp0VbVNzzzvo20k7Y+vKkqFkUSLfUsGUCt7DnFOlIUhvKfeOUuN0DdqHbVj1Qi21r1fpIn1W3YZ6iHD4a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Xi27Plsy; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hhr4Jl20"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750773951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D+TKbeGRcKoBZxXH6jFI/Y3rhb44odXuWUwrtNDdL2o=;
-	b=hhr4Jl20Npy3QnyPdb8t3exYHPyyyFJlAWiI9vsTPAhPetHw7sMi8Ng03ovtGWJ/M6iTKd
-	gw6yKhHtWxJxcjg3+D/G1KyPtLWfGNx5vHieiZrco8yAPh5158keadVBqL1U5cuGlop8PE
-	gaSakWC99tLEDGRKdhzo27NZlgkJJRo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-Uc6lp7XtO-q-0iV72qyRPg-1; Tue, 24 Jun 2025 10:05:49 -0400
-X-MC-Unique: Uc6lp7XtO-q-0iV72qyRPg-1
-X-Mimecast-MFC-AGG-ID: Uc6lp7XtO-q-0iV72qyRPg_1750773948
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a50816cc58so246264f8f.3
-        for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 07:05:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Xi27Plsy"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-450cfb79177so3088135e9.0
+        for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 07:10:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1750774207; x=1751379007; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MQ7CvyZIlkZs87gjY0NM1qz59baVwPwR/W8k37uo164=;
+        b=Xi27PlsyZzSlZ1Hm5UeBtd4XfHF2eUXlrtvOhE/GTof2j8pvV7qU+ulra0manN8uhx
+         SxgEXA1rUtksBTYFws/XJZxJ77ccb0I5fFvOxi7DJLciG6036XIpeYiO0FoSc3W04W6j
+         BgXwyal62Tkb2ouuNDFpJAh2omVWlBw2iLk/7qa/fna46KUZm1t5l0UqvUsPuSL2Gzrf
+         ltiTPj4uRrkL3DABeWm7whb2Sztia4kDmPPZwj6/sbnQbv6cU/2qcJ4QXoRz/Qc/fC5R
+         QgzEfVymKOklYE1rPbn9ynPS7g7Xg6ID6NnCLAuC7oM7q69Wei256jJuOe6Ugr5OEZMB
+         UUAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750773948; x=1751378748;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+TKbeGRcKoBZxXH6jFI/Y3rhb44odXuWUwrtNDdL2o=;
-        b=jlgrB/PGSJpmrIQtfeOLbEVraKw6+39tE1gdE+juC1y73sioxravNf8tB2hL9R8Z2F
-         dNIfa1lx/olYimwjLxYm3vsT+hdktOoYtxF/YRGJXnmsc1EePotTv3a49x6FacuaY8um
-         RY+XmIejAW5UvOOyXjY7830v9jKoUZPKhSmoxpZS2IfePMAv7Mpmdu8iGOIc+owuQ3yT
-         sViZ+u/KBYpMbBf+cfFV06nVhAS26Caoh6GXgalN7PGeMtRd3fDvBokorEHnbud855c0
-         Y2HKZ5qIw6vjoc4cbmIYmev1sd3JaMsVRRjyPBxRumLucrROjAf7EpyHTR1vv/N5ll5U
-         Y5PA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlkDkT0Qh7j2ZtoX4Fg43mTTPp/Df/iG2EXPOUi6vU8MSiUKTBR+qM+K3OWvajX/7XUBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaMR6RlIcJja1cSXR98ENsSdd7xcEPCsQ84jxA2xc+a4Q9iCE4
-	60FbovTmmPGxyjYLzNd4Hrve7XbctvxbzDnvH4s2rM+Mk9UrSCxVTztEU2L6gacmewQmKKGhdTK
-	LEIl9BqV94/LJmpB0z1luoHKpbcp3em1VijxoOoJSzOwID5TiW5gT0A==
-X-Gm-Gg: ASbGncuKpKTqyGDX5J9AXaCnSJQ5FnZPfduQQ/9kLpmtEs12+lG1VstO5XVK/ZiRmn5
-	njy9sy1Z1uuX4wgSbVArfDZVN7lIWoK8iTQZq1P8JSkOJOC+q6VJ0EesXe0JsesZRnavCPwDMD6
-	Agu8A6dzDpH/4W9K4uP0R3s8kIgsbkHsTHYodNK3qQxDfqV0NnXIZKkDQzPZ4idIltb/bWN+Ywt
-	7Z5PVVxPj+/QKq+iiqDjK3LVx5uYB0BOX0ivSIVWvqCsR9qwDSpPC/EK2Lqvhu7ctHSOX0FSJAp
-	8T8houh5vUtGvDWdrm++JrnUfbRG5Q==
-X-Received: by 2002:a05:6000:144e:b0:3a4:f520:8bfc with SMTP id ffacd0b85a97d-3a6d1322c05mr14142475f8f.36.1750773945773;
-        Tue, 24 Jun 2025 07:05:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErDuslqfWPmZ/xGGypV3ktOS9Nn3dYluWljaHpFoweUHaB+FTxcneVu21gRhwulUWipnA3OA==
-X-Received: by 2002:a05:6000:144e:b0:3a4:f520:8bfc with SMTP id ffacd0b85a97d-3a6d1322c05mr14142006f8f.36.1750773940575;
-        Tue, 24 Jun 2025 07:05:40 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2445:d510::f39? ([2a0d:3344:2445:d510::f39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8106a69sm2015375f8f.79.2025.06.24.07.05.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 07:05:40 -0700 (PDT)
-Message-ID: <6ebf5a0a-f13a-43c4-8e42-ba4743e7e417@redhat.com>
-Date: Tue, 24 Jun 2025 16:05:38 +0200
+        d=1e100.net; s=20230601; t=1750774207; x=1751379007;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MQ7CvyZIlkZs87gjY0NM1qz59baVwPwR/W8k37uo164=;
+        b=a9tnNtptiZw6Ek2ImGW1se+dg9iZsAnztFm2EhfQjQhCE9vtvQnJpq0XJVn2vBacf0
+         qLgFZWix/lhmqErq6uvjbd71GLdC4Ra8iPyuvUx3G7TE3yn9YQYgs+Gh0yY+XfWPc1mM
+         gr+tJbZ+801RDXbnZUiWx70ZyDsrYPOKHCAmPJnR0ZjqIyug069/Od/8UVTe6CSxEzP1
+         l1QuHozsVFBQt25YI/BJVXVe5AWuOM1YtwOlAqYQU4F7OBU3rtJoUIIFtG9WCqAf0/5t
+         k5KMVYXTjsgHh9giwUrvGrlJmQlU4SE3Z0Cs4kcKB26HRPM60JNwfiHnW2Ga1UT/KdEh
+         MP1A==
+X-Forwarded-Encrypted: i=1; AJvYcCWbuyzKj4ubDroMX0zG2jMpJXOBV+x4atu85C3bLiIeFXAOYoS20NS2cn5pCFoUlv6Mook=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3IsGd6F31JuJaThTu0zkuOXrN9ZPwDYqZNzogKz3tBDJs40Zt
+	N6gH7gyh9fUyCmhSQ7mXtYPJ1IGGj5LNhSWJyAMtC1GyjxcOAHUEFlnVmnaUveE8N8E=
+X-Gm-Gg: ASbGncuvYx9h+iJDv6R8BAMAhrKp41XHv2MsZFwMAvimQjB+8//+07embwO++F/ZilM
+	G8LLMZ+T3dikVP719cHF8ZTJKGC2hn8D0nCw/PeN0x37a4/jdSxp+oe4rqxpy+dRuLW4MGsMS6Z
+	OtZvDFRKevQD3v9V1tsgCErEDGJYMUCLe9pAifqlxu+X0N3SGBDYoKAjbNY8vaIIBevyuYVkc1y
+	jZAC3165b6R3MtigdW2wnHxp5GhhjsJ6PMSU1TMnd7ELUn7rhysFPGXwMcn8zlplbctsZz/LMaj
+	+9CNqNuVXu9eCp2lXbL4KxvkSey571D5kqBYPhOdx1ikhlxJHQ==
+X-Google-Smtp-Source: AGHT+IEJeX4diRkZ29kEnrmPsfhU9TcNr2AZ9X1Thlmc1YkCR6UEhFhLrNxHaOV0+h9u10fRDQFJlw==
+X-Received: by 2002:a05:600c:3b24:b0:453:c39:d0a7 with SMTP id 5b1f17b1804b1-453653cf416mr150568745e9.5.1750774206936;
+        Tue, 24 Jun 2025 07:10:06 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200::5485])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e81106b8sm2090841f8f.91.2025.06.24.07.10.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 07:10:05 -0700 (PDT)
+Date: Tue, 24 Jun 2025 16:10:04 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: zhouquan@iscas.ac.cn
+Cc: anup@brainfault.org, atishp@atishpatra.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
+Subject: Re: [PATCH 2/2] KVM: riscv: selftests: Add common supported test
+ cases
+Message-ID: <20250624-d7b4b9ba702fcaf2f42695b1@orel>
+References: <cover.1749810735.git.zhouquan@iscas.ac.cn>
+ <7e8f1272337e8d03851fd3bb7f6fc739e604309e.1749810736.git.zhouquan@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] vhost-net: reduce one userspace copy when
- building XDP buff
-To: Jason Wang <jasowang@redhat.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: mst@redhat.com, eperezma@redhat.com, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, davem@davemloft.net,
- andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org
-References: <20250612083213.2704-1-jasowang@redhat.com>
- <20250612083213.2704-2-jasowang@redhat.com>
- <684b89de38e3_dcc452944e@willemb.c.googlers.com.notmuch>
- <CACGkMEsKTLfD1nz-CQdn5+ZmxyWdVDwhBOAcB9fO4TUcwzuLPA@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CACGkMEsKTLfD1nz-CQdn5+ZmxyWdVDwhBOAcB9fO4TUcwzuLPA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e8f1272337e8d03851fd3bb7f6fc739e604309e.1749810736.git.zhouquan@iscas.ac.cn>
 
-On 6/16/25 5:01 AM, Jason Wang wrote:
-> On Fri, Jun 13, 2025 at 10:16 AM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
->>
->> Jason Wang wrote:
->>> We used to do twice copy_from_iter() to copy virtio-net and packet
->>> separately. This introduce overheads for userspace access hardening as
->>> well as SMAP (for x86 it's stac/clac). So this patch tries to use one
->>> copy_from_iter() to copy them once and move the virtio-net header
->>> afterwards to reduce overheads.
->>>
->>> Testpmd + vhost_net shows 10% improvement from 5.45Mpps to 6.0Mpps.
->>>
->>> Signed-off-by: Jason Wang <jasowang@redhat.com>
->>
->> Acked-by: Willem de Bruijn <willemb@google.com>
->>
->>> ---
->>>  drivers/vhost/net.c | 13 ++++---------
->>>  1 file changed, 4 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
->>> index 777eb6193985..2845e0a473ea 100644
->>> --- a/drivers/vhost/net.c
->>> +++ b/drivers/vhost/net.c
->>> @@ -690,13 +690,13 @@ static int vhost_net_build_xdp(struct vhost_net_virtqueue *nvq,
->>>       if (unlikely(!buf))
->>>               return -ENOMEM;
->>>
->>> -     copied = copy_from_iter(buf, sock_hlen, from);
->>> -     if (copied != sock_hlen) {
->>> +     copied = copy_from_iter(buf + pad - sock_hlen, len, from);
->>> +     if (copied != len) {
->>>               ret = -EFAULT;
->>>               goto err;
->>>       }
->>>
->>> -     gso = buf;
->>> +     gso = buf + pad - sock_hlen;
->>>
->>>       if (!sock_hlen)
->>>               memset(buf, 0, pad);
->>> @@ -715,12 +715,7 @@ static int vhost_net_build_xdp(struct vhost_net_virtqueue *nvq,
->>>               }
->>>       }
->>>
->>> -     len -= sock_hlen;
->>> -     copied = copy_from_iter(buf + pad, len, from);
->>> -     if (copied != len) {
->>> -             ret = -EFAULT;
->>> -             goto err;
->>> -     }
->>> +     memcpy(buf, buf + pad - sock_hlen, sock_hlen);
->>
->> It's not trivial to see that the dst and src do not overlap, and does
->> does not need memmove.
->>
->> Minimal pad that I can find is 32B and and maximal sock_hlen is 12B.
->>
->> So this is safe. But not obviously so. Unfortunately, these offsets
->> are not all known at compile time, so a BUILD_BUG_ON is not possible.
+On Fri, Jun 13, 2025 at 07:30:13PM +0800, zhouquan@iscas.ac.cn wrote:
+> From: Quan Zhou <zhouquan@iscas.ac.cn>
 > 
-> We had this:
+> Some common KVM test cases are supported on riscv now as following:
 > 
-> int pad = SKB_DATA_ALIGN(VHOST_NET_RX_PAD + headroom + nvq->sock_hlen);
-> int sock_hlen = nvq->sock_hlen;
-> 
-> So pad - sock_len is guaranteed to be greater than zero.
-> 
-> If this is not obvious, I can add a comment in the next version.
+>     access_tracking_perf_test
+>     demand_paging_test
+>     dirty_log_perf_test
+>     dirty_log_test
+>     guest_print_test
+>     kvm_binary_stats_test
+>     kvm_create_max_vcpus
+>     kvm_page_table_test
+>     memslot_modification_stress_test
+>     memslot_perf_test
+>     rseq_test
+>     set_memory_region_test
 
-The relevant initializations are not visible in the patch itself, so I
-think either a comment in the code or in the commit message would be useful.
+Half this list is already build for riscv since they're common. See
+TEST_GEN_PROGS_COMMON. If the other half can be built and run then
+please send a separate patch, not something tacked onto this series,
+since they're all unrelated to the series.
+
+> 
+> Add missing headers for tests and fix RISCV_FENCE redefinition
+> in `rseq-riscv.h` by using the existing macro from <asm/fence.h>.
+> 
+> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm             | 12 ++++++++++++
+>  .../testing/selftests/kvm/include/riscv/processor.h  |  2 ++
+>  tools/testing/selftests/rseq/rseq-riscv.h            |  3 +--
+>  3 files changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 38b95998e1e6..565e191e99c8 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -197,6 +197,18 @@ TEST_GEN_PROGS_riscv += arch_timer
+>  TEST_GEN_PROGS_riscv += coalesced_io_test
+>  TEST_GEN_PROGS_riscv += get-reg-list
+>  TEST_GEN_PROGS_riscv += steal_time
+> +TEST_GEN_PROGS_riscv += access_tracking_perf_test
+> +TEST_GEN_PROGS_riscv += demand_paging_test
+> +TEST_GEN_PROGS_riscv += dirty_log_perf_test
+> +TEST_GEN_PROGS_riscv += dirty_log_test
+> +TEST_GEN_PROGS_riscv += guest_print_test
+> +TEST_GEN_PROGS_riscv += kvm_binary_stats_test
+> +TEST_GEN_PROGS_riscv += kvm_create_max_vcpus
+> +TEST_GEN_PROGS_riscv += kvm_page_table_test
+> +TEST_GEN_PROGS_riscv += memslot_modification_stress_test
+> +TEST_GEN_PROGS_riscv += memslot_perf_test
+> +TEST_GEN_PROGS_riscv += rseq_test
+> +TEST_GEN_PROGS_riscv += set_memory_region_test
+>  
+>  TEST_GEN_PROGS_loongarch += coalesced_io_test
+>  TEST_GEN_PROGS_loongarch += demand_paging_test
+> diff --git a/tools/testing/selftests/kvm/include/riscv/processor.h b/tools/testing/selftests/kvm/include/riscv/processor.h
+> index 162f303d9daa..4cf5ae11760f 100644
+> --- a/tools/testing/selftests/kvm/include/riscv/processor.h
+> +++ b/tools/testing/selftests/kvm/include/riscv/processor.h
+> @@ -9,7 +9,9 @@
+>  
+>  #include <linux/stringify.h>
+>  #include <asm/csr.h>
+> +#include <asm/vdso/processor.h>
+>  #include "kvm_util.h"
+> +#include "ucall_common.h"
+
+These should be included directly from the tests that need them.
+
+>  
+>  #define INSN_OPCODE_MASK	0x007c
+>  #define INSN_OPCODE_SHIFT	2
+> diff --git a/tools/testing/selftests/rseq/rseq-riscv.h b/tools/testing/selftests/rseq/rseq-riscv.h
+> index 67d544aaa9a3..06c840e81c8b 100644
+> --- a/tools/testing/selftests/rseq/rseq-riscv.h
+> +++ b/tools/testing/selftests/rseq/rseq-riscv.h
+> @@ -8,6 +8,7 @@
+>   * exception when executed in all modes.
+>   */
+>  #include <endian.h>
+> +#include <asm/fence.h>
+>  
+>  #if defined(__BYTE_ORDER) ? (__BYTE_ORDER == __LITTLE_ENDIAN) : defined(__LITTLE_ENDIAN)
+>  #define RSEQ_SIG   0xf1401073  /* csrr mhartid, x0 */
+> @@ -24,8 +25,6 @@
+>  #define REG_L	__REG_SEL("ld ", "lw ")
+>  #define REG_S	__REG_SEL("sd ", "sw ")
+>  
+> -#define RISCV_FENCE(p, s) \
+> -	__asm__ __volatile__ ("fence " #p "," #s : : : "memory")
+>  #define rseq_smp_mb()	RISCV_FENCE(rw, rw)
+>  #define rseq_smp_rmb()	RISCV_FENCE(r, r)
+>  #define rseq_smp_wmb()	RISCV_FENCE(w, w)
+> -- 
+> 2.34.1
+
+tools/testing/selftests/rseq isn't under KVM's purview, so this should be
+a separate patch CC'ing the appropriate people and lists.
 
 Thanks,
-
-Paolo
-
+drew
