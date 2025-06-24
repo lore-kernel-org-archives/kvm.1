@@ -1,197 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46142571C9
-	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 07:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086D2228CB0
+	for <kvm@vger.kernel.org>; Tue, 24 Jun 2025 07:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750750468; cv=none; b=u4Jl/j6hJxOACELkMX1cQu8joL9TORHoq3HQLMeZGRCGwRP74Jh95g5er7RrOq4Rpq7AuVmec80kTOAxu/9OQkrG+g7UGcJDyTjK29QvSE0syrGGm3X+8IO/bvM9j/jCInKSjlOighw/TcEFXtsohK4+PAO9yvuAdTCC+MycLtc=
+	t=1750751372; cv=none; b=NhuurWvyQr80EWk/rnSzYdP8wTfaQwrw3MST88M6WQR83JVcHeKn6WogduxDgH6xNs+ivU4CDKQGQn5EP4B/jOs3cY941C0FVQQIaur9A/5uthxL7j1VtsVc9B1YMbZA83jugToLF1EeDwLMuM5mswKGLtZD/xTrhKFV0ps3SqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750750468; c=relaxed/simple;
-	bh=YqKZw4Ebrp3MLO+bGU7c8B/JeRJmWmXKN1/YLd/asMM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IoEKgt9Av0PR0+9BPmj7ljo+Z0WCPj+1zOYYbLyrKxzv2a+de+flWLItIPE7HloHeAeafIxG2xTyHLEB15yhdCcIblYPptTYPKEyqfTaY6BiYlysS5L2KoVUpO6X8gEkFH1remEz6MYMJ8C5s6FJb6ePWUM9jAcDGZ9RdLL9yZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhsY6Hd5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750751372; c=relaxed/simple;
+	bh=9maWEE47B197uv1k1HJu+jqWWJd+8HkNZKvM/C2tqHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fViuaV+w+EpAWBD/tf4455fFNBB33hU02DhXAIas+5NEfjFCIUfOPUmwGxn+wY5ejw6LrwSiocERxeSOjHck7N2EGi+WHwb1oVCwihF/1BlJEq4MGiZvjBXuOe2xlheuLqLiOsTqsdxMTr6FiNNWAE8S2j/HtVnmOUMvV2Vn/f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Fc9SHOOo; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhsY6Hd5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750750465;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jq44Z2zwbgcBqtfTirT5nLheLYiyc6cOV9sFWrSjdZA=;
-	b=bhsY6Hd5q1W3/HjbTuh0zmmBH7kGtChRfzLRUPDTKK1jEtNTu2SmW5RIbnsWz7XJmb5CEq
-	2xE0VCPEHE1J9mE6ZuMgY1xOl1SJv5tCBRUn+dm8eh/Lo2EGII/qre4nyfhJW7/805Fy/G
-	bHXUNXEtQjindRQNJ1k9egFYwSrSm/0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-hNeMNkewOqm9aLZiD0mV1g-1; Tue,
- 24 Jun 2025 03:34:21 -0400
-X-MC-Unique: hNeMNkewOqm9aLZiD0mV1g-1
-X-Mimecast-MFC-AGG-ID: hNeMNkewOqm9aLZiD0mV1g_1750750457
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8193E19560B2;
-	Tue, 24 Jun 2025 07:34:14 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1F2B1956096;
-	Tue, 24 Jun 2025 07:34:09 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 4E5A821E6A27; Tue, 24 Jun 2025 09:34:07 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Joel Stanley <joel@jms.id.au>,  Yi Liu
- <yi.l.liu@intel.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Helge Deller
- <deller@gmx.de>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Andrew
- Jeffery <andrew@codeconstruct.com.au>,  Fabiano Rosas <farosas@suse.de>,
-  Alexander Bulekov <alxndr@bu.edu>,  Darren Kenny
- <darren.kenny@oracle.com>,  Leif Lindholm
- <leif.lindholm@oss.qualcomm.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>,  Ed
- Maste <emaste@freebsd.org>,  Gerd Hoffmann <kraxel@redhat.com>,  Warner
- Losh <imp@bsdimp.com>,  Kevin Wolf <kwolf@redhat.com>,  Tyrone Ting
- <kfting@nuvoton.com>,  Eric Blake <eblake@redhat.com>,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Yoshinori Sato <ysato@users.sourceforge.jp>,  Troy
- Lee <leetroy@gmail.com>,  Halil Pasic <pasic@linux.ibm.com>,  Akihiko
- Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Michael Roth
- <michael.roth@amd.com>,  Laurent Vivier <laurent@vivier.eu>,  Ani Sinha
- <anisinha@redhat.com>,  Weiwei Li <liwei1518@gmail.com>,  Eric Farman
- <farman@linux.ibm.com>,  Steven Lee <steven_lee@aspeedtech.com>,  Brian
- Cain <brian.cain@oss.qualcomm.com>,  Li-Wen Hsu <lwhsu@freebsd.org>,
-  Jamin Lin <jamin_lin@aspeedtech.com>,  qemu-s390x@nongnu.org,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  qemu-block@nongnu.org,
-  Bernhard Beschow <shentey@gmail.com>,  =?utf-8?Q?Cl=C3=A9ment?=
- Mathieu--Drif
- <clement.mathieu--drif@eviden.com>,  Maksim Davydov
- <davydov-max@yandex-team.ru>,  Niek Linnenbank <nieklinnenbank@gmail.com>,
-  =?utf-8?Q?Herv=C3=A9?= Poussineau <hpoussin@reactos.org>,  Christian
- Borntraeger
- <borntraeger@linux.ibm.com>,  Paul Durrant <paul@xen.org>,  Manos
- Pitsidianakis <manos.pitsidianakis@linaro.org>,  Jagannathan Raman
- <jag.raman@oracle.com>,  Igor Mitsyanko <i.mitsyanko@gmail.com>,  Max
- Filippov <jcmvbkbc@gmail.com>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
-  Anton Johansson <anjo@rev.ng>,  Peter Maydell <peter.maydell@linaro.org>,
-  Cleber Rosa <crosa@redhat.com>,  Eric Auger <eric.auger@redhat.com>,
-  Yanan Wang <wangyanan55@huawei.com>,  qemu-arm@nongnu.org,  Hao Wu
- <wuhaotsh@google.com>,  Mads Ynddal <mads@ynddal.dk>,  Sriram Yagnaraman
- <sriram.yagnaraman@ericsson.com>,  qemu-riscv@nongnu.org,  Paolo Bonzini
- <pbonzini@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Nicholas Piggin
- <npiggin@gmail.com>,  Michael Rolnik <mrolnik@gmail.com>,  Zhao Liu
- <zhao1.liu@intel.com>,  Alessandro Di Federico <ale@rev.ng>,  Thomas Huth
- <thuth@redhat.com>,  Antony Pavlov <antonynpavlov@gmail.com>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Hanna Reitz <hreitz@redhat.com>,  Ilya
- Leoshkevich <iii@linux.ibm.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
-  Nina Schoetterl-Glausch <nsg@linux.ibm.com>,  Daniel Henrique Barboza
- <danielhb413@gmail.com>,  Qiuhao Li <Qiuhao.Li@outlook.com>,  Hyman Huang
- <yong.huang@smartx.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
-  Magnus Damm <magnus.damm@gmail.com>,  qemu-rust@nongnu.org,  Bandan Das
- <bsd@redhat.com>,  Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
-  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Philippe =?utf-8?Q?Ma?=
- =?utf-8?Q?thieu-Daud=C3=A9?=
- <philmd@linaro.org>,  kvm@vger.kernel.org,  Fam Zheng <fam@euphon.net>,
-  Jia Liu <proljc@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Alistair Francis <alistair@alistair23.me>,
-  Subbaraya Sundeep <sundeep.lkml@gmail.com>,  Kyle Evans
- <kevans@freebsd.org>,  Song Gao <gaosong@loongson.cn>,  Alexandre Iooss
- <erdnaxe@crans.org>,  Aurelien Jarno <aurelien@aurel32.net>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Peter Xu <peterx@redhat.com>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  BALATON Zoltan <balaton@eik.bme.hu>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>,  =?utf-8?B?RnLDqWTDqXJpYw==?= Barrat
- <fbarrat@linux.ibm.com>,
-  qemu-ppc@nongnu.org,  Radoslaw Biernacki <rad@semihalf.com>,  Beniamino
- Galvani <b.galvani@gmail.com>,  David Hildenbrand <david@redhat.com>,
-  Richard Henderson <richard.henderson@linaro.org>,  David Woodhouse
- <dwmw2@infradead.org>,  Eduardo Habkost <eduardo@habkost.net>,  Ahmed
- Karaman <ahmedkhaledkaraman@gmail.com>,  Huacai Chen
- <chenhuacai@kernel.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Harsh
- Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v2 06/12] python: upgrade to python3.9+ syntax
-In-Reply-To: <20250612205451.1177751-7-jsnow@redhat.com> (John Snow's message
-	of "Thu, 12 Jun 2025 16:54:44 -0400")
-References: <20250612205451.1177751-1-jsnow@redhat.com>
-	<20250612205451.1177751-7-jsnow@redhat.com>
-Date: Tue, 24 Jun 2025 09:34:07 +0200
-Message-ID: <87cyatmw40.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Fc9SHOOo"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55O7faOw012638;
+	Tue, 24 Jun 2025 07:49:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=TdOFz
+	eg03yh7RYA0ahddfwHEDYxsvqDbPFgmikDSa7w=; b=Fc9SHOOotl7reGW/PwNgf
+	FdEg9FxxlIU9RegMA0saSrYnzmUR7qqCMVXhluYCb5DVIm/YSUN1csaKY5u1qaKl
+	JxI4RFNzxB6mfbRjUClahsxqA2V46N3ls8QnkXBkwvzsYij8feixFZ0ZTf5ji3+M
+	gj8lxbCeLocwGe5obhp8DGq+qzNx2HyDGCmVR249RRs8nC5w+t/tEWcgSSNThVCv
+	FUFjYUw5DNtgeHk19W6SFVp43RxwEWT9u97xJLEbFFzp4M1Ae1l49soYHoa8pnJ6
+	tybEF++0KuNKAA2Bb5WACayahnGh0ipDeZacDi0Yo9YY3bVqEbAhn3WfRH2tGr7I
+	w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47egumkerj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Jun 2025 07:49:10 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55O62kZK005022;
+	Tue, 24 Jun 2025 07:49:09 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ehq3ar3q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Jun 2025 07:49:09 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55O7n5Xm006279;
+	Tue, 24 Jun 2025 07:49:08 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47ehq3ar1g-4;
+	Tue, 24 Jun 2025 07:49:08 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+        sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+        like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+        alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+        davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+        dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+        ewanhai@zhaoxin.com
+Subject: [PATCH v6 3/9] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+Date: Tue, 24 Jun 2025 00:43:22 -0700
+Message-ID: <20250624074421.40429-4-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250624074421.40429-1-dongli.zhang@oracle.com>
+References: <20250624074421.40429-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-24_02,2025-06-23_07,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ spamscore=0 malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506240066
+X-Proofpoint-ORIG-GUID: 6Q-B-AnECegMEeBTIztdGgyKPrEoTSF7
+X-Proofpoint-GUID: 6Q-B-AnECegMEeBTIztdGgyKPrEoTSF7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI0MDA2NiBTYWx0ZWRfX04ka/NQyy1UV isRy754fGEX03I3EXW8wGoM61wqGpqQxFAgo8r8DJFilxojED6IgVvO4+nbJGKIgsV1hf9SfUDU BdxyHUR6u7xzOppFiy2HyuDYF/K1tfU16dKTc6G0k846dX/X9PNxulkGvIL4UJ/HHPUbt338yrs
+ RSefLVZnSP8dD4J73FNepGClB1aXZIFBo3IekBDnao+10dN/+dmUW4z8JwCqTPE1aKEC2IfWph1 lWZtGcwpeCWbuc0sePO7S5ojcyb7ChFR1BDtbmEBze1J+zq/WaRtNfuhS0ZytnYThY5bguwYwaI YLd1cMJRGPkJ+bcLjpBwaVJDbQY4576uatkySezAcMRgATzxmoUJkbF/q/PNV4NsX1R2Fe+kTDT
+ 1as/1ECpl/g9Br+39y6go/W6S1d2v6GsLocdufVKrepiFpapp9d1PcWKefHyqLAl1ivvRXz0
+X-Authority-Analysis: v=2.4 cv=S5rZwJsP c=1 sm=1 tr=0 ts=685a5876 cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=I5TUGnRYk-IH75UTjikA:9
 
-John Snow <jsnow@redhat.com> writes:
+Although AMD PERFCORE and PerfMonV2 are removed when "-pmu" is configured,
+there is no way to fully disable KVM AMD PMU virtualization. Neither
+"-cpu host,-pmu" nor "-cpu EPYC" achieves this.
 
-> This patch is fully automated, using pymagic, isort and autoflake.
->
-> Create a script named pymagic.sh:
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
-> pyupgrade --exit-zero-even-if-changed --keep-percent-format \
->           --py39-plus "$@"
->
-> autoflake -i "$@"
->
-> isort --settings-file python/setup.cfg \
->       -p compat -p qapidoc_legacy -p iotests -o qemu "$@"
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
-> Then, from qemu.git root:
->
->> find . -type f -name '*.py' | xargs pymagic
->> git grep --name-only "#!/usr/bin/env python" | xargs pymagic
->
-> This changes a lot of old Pythonisms, but in particular it upgrades the
-> old Python type hint paradigm to the new 3.9+ paradigm wherein you no
-> longer need to import List, Dict, Tuple, Set, etc from the Typing module
-> and instead directly subscript the built-in types list, dict, tuple,
-> set, etc. The old-style annotations are deprecated as of 3.9 and are
-> eligible for removal starting in Python 3.14, though the exact date of
-> their removal is not yet known.
->
-> pyupgrade updates the imports and type hint paradigms (as well as
-> updating other old 'isms, such as removing the unicode string
-> prefix). autoflake in turn then removes any unused import statements,
-> possibly left behind by pyupgrade. Lastly, isort fixes the import order
-> and formatting to the standard we use in qemu.git/python and
-> scripts/qapi in particular.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
+As a result, the following message still appears in the VM dmesg:
 
-[...]
+[    0.263615] Performance Events: AMD PMU driver.
 
->  448 files changed, 1959 insertions(+), 1631 deletions(-)
+However, the expected output should be:
 
-*=C3=84chz*
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
 
-I hate it when people ask me to split up my mechanical patches...
+This occurs because AMD does not use any CPUID bit to indicate PMU
+availability.
 
-One split is by subsystem / maintainer.  I've done this a few times, and
-it's quite a bother.  Questionable use of your time if you ask me.
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
 
-There's another split here...  Your pymagic.sh runs three tools.  If you
-commit after each one, the patch splits into three.
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+---
+Changed since v1:
+  - Switch back to the initial implementation with "-pmu".
+https://lore.kernel.org/all/20221119122901.2469-3-dongli.zhang@oracle.com
+  - Mention that "KVM_PMU_CAP_DISABLE doesn't change the PMU behavior on
+    Intel platform because current "pmu" property works as expected."
+Changed since v2:
+  - Change has_pmu_cap to pmu_cap.
+  - Use (pmu_cap & KVM_PMU_CAP_DISABLE) instead of only pmu_cap in if
+    statement.
+  - Add Reviewed-by from Xiaoyao and Zhao as the change is minor.
+Changed since v5:
+  - Re-base on top of most recent mainline QEMU.
+  - To resolve conflicts, move the PMU related code before the
+    call site of is_tdx_vm().
 
-I understand you pass --py39-plus to pyupgrade to get the type hints
-modernized.  If you run it without --py39-plus for all the miscellaneous
-upgrades, commit, then run it with --py39-plus for just the type hint
-upgrades, commit, the last patch splits again.
+ target/i386/kvm/kvm.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Thoughts?
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 234878c613..15155b79b5 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -178,6 +178,8 @@ static int has_triple_fault_event;
+ 
+ static bool has_msr_mcg_ext_ctl;
+ 
++static int pmu_cap;
++
+ static struct kvm_cpuid2 *cpuid_cache;
+ static struct kvm_cpuid2 *hv_cpuid_cache;
+ static struct kvm_msr_list *kvm_feature_msrs;
+@@ -2062,6 +2064,33 @@ full:
+ 
+ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+ {
++    static bool first = true;
++    int ret;
++
++    if (first) {
++        first = false;
++
++        /*
++         * Since Linux v5.18, KVM provides a VM-level capability to easily
++         * disable PMUs; however, QEMU has been providing PMU property per
++         * CPU since v1.6. In order to accommodate both, have to configure
++         * the VM-level capability here.
++         *
++         * KVM_PMU_CAP_DISABLE doesn't change the PMU
++         * behavior on Intel platform because current "pmu" property works
++         * as expected.
++         */
++        if ((pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu) {
++            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
++                                    KVM_PMU_CAP_DISABLE);
++            if (ret < 0) {
++                error_setg_errno(errp, -ret,
++                                 "Failed to set KVM_PMU_CAP_DISABLE");
++                return ret;
++            }
++        }
++    }
++
+     if (is_tdx_vm()) {
+         return tdx_pre_create_vcpu(cpu, errp);
+     }
+@@ -3363,6 +3392,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
+ 
++    pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
++
+     return 0;
+ }
+ 
+-- 
+2.43.5
 
