@@ -1,84 +1,136 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [129.187.255.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DD125C837
-	for <kvm@vger.kernel.org>; Wed, 25 Jun 2025 13:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7CD25C81F;
+	Wed, 25 Jun 2025 14:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.187.255.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750859951; cv=none; b=rZqKYm9grZLvn1w6USRvjTWxHYRTi1oAQznvHBHT9Lxg8j9vL/S+GPePMYMFqxTJRUin0voiiIVz7JypqOyo3j5FfXA7/ZC3fpL2cc40Lzetp/+fYFmVFOFUObfEMRz80HfgWvNaWxPXvEKTjUGjvivGZ12h8QdRkn9DC7JymuQ=
+	t=1750860027; cv=none; b=jHHpwou7XP5exHxVvFrm+vZcDRL5H79qwMWzFzBfV2qyQxpfrcykcXJW02QdozM3Nyl+XTOBR3VXZoBKUIjBkppAERLKm9TwZdr6QsX8xtXy1auZi9S4YU+/HMOEKmOo1WZQiHj8X8ry8LVZKvViagszUN+ntDUFIundjd0wQbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750859951; c=relaxed/simple;
-	bh=wpziqr1yl0gTdvL6UwsuV5sbAVaoiPzYbMOhqZJwCD0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZUg80tQiWunSDFhDDrLQ+hWc7FjuTvMB0pzf5FPGE4SveF94wlT/NqH1QdymaH5jWDQxldOKfj4WgMQsD5CUG3ZlOyRYIoNPWGEBVleN/TRkunW4MMvDgSbHx8uxW8W5GoOZp3r0L/Mf4ii2QnMDhkm7anPaqIhQul5OggUf2i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3K/bL6kQ; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1750860027; c=relaxed/simple;
+	bh=PbYvShW9eZXDl9zcQylaxIY7W2/bTDgB+NiFXYT8H9Q=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=uS0vLwiJeHSgbiIxb/EOTG1CVVqrrH3qk9FoWC6Ezudj+dhFDEL1A4iMbmXYBI0D9yktgqm8iOdX+EaSKMP+o4R1ysq/2wgBuVx3TNbHq8c09J0iHR1p6MiF1/FQSbfXppcjtC8kw+1syXu15y4OJnpBUGQfBqbP6ftnAC0IIHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tum.de; spf=pass smtp.mailfrom=tum.de; dkim=pass (2048-bit key) header.d=tum.de header.i=@tum.de header.b=PrMP3WDv; arc=none smtp.client-ip=129.187.255.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tum.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tum.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3K/bL6kQ"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-23692793178so15566075ad.0
-        for <kvm@vger.kernel.org>; Wed, 25 Jun 2025 06:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750859950; x=1751464750; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DTZm9QvxflsIUmAFZMEHRbPEwz6ipU1FHjjce2WDMM=;
-        b=3K/bL6kQxJfM8VcTk4dzOGChiAontMiFFgFsxEcEc42KCr4ZnBcM0s8B3BQkAPNo5a
-         4YLbNg0X7bWKYSu/7LKax/mtktaScnwF4u1mVKWsoNZgUZ3ADL436KAtTQO950a4jX5S
-         k/L+AsfccQ20N7sBru5p1z+AwpRVwr1hRU4fTdpl+9D+aJjGxAhFFK/O2W96QK3xrB1C
-         fztagvHM/ePl+0KqkQgE3HhB5QIgOcbaQAJyUkh3CvcirW3XKfcC5E2h2e9beMSc1kV7
-         jVU9pgdVo9l1Ta4Y7zLeC7PV55rx97K1wiCtQ8vkN+wZxcLqjfkcVWoy0fOhmeY7357P
-         E0xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750859950; x=1751464750;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DTZm9QvxflsIUmAFZMEHRbPEwz6ipU1FHjjce2WDMM=;
-        b=Djy2CZejEOEVPP+/dWUa03vK1y2youZOJeD2z6gYNGU37SdrNp3YRMak3lAK6L0PdX
-         p3spw++vKx+//WhoZle6mkmvpW4+sJemxjUqHP53+wqIyDFpEESe1Gz3FNiWrflp9SnV
-         y2+VPIVHUdVvW27iXf6zXtAcnwRYwdmNjYTmVMOITR8EtljIkwqcUH0dcrVW0cQTL8oh
-         2Kx/+4BNY3dtV0Oh3t7ZqB+J1QFALLsKaULk8cF7xsouRm7AZX/jHy/Wccln8EgdUOEy
-         nMUj4b72cTqCM4rVSP2oylbK8V2jkqUP9Jj1nNwmbAw9lzuTkGJB7wtRqyWjxiDi2xxm
-         xagQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXo+HpPYBHy8hZJ9lyuNoCaSGa6jQNpbcwGuWQr0ibou8el9mhQID6v4tS+QT5esEB/P+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6A7S+CKipib4mMOfW5/zOT9ZSiz+piThqx4RabtjQFu7WNkWV
-	hsaoWVQHsoW6RZu4HUHa+q3f/2+4dJ97QXd+vJ7pfc29LnnsisG3sqM6pEzPMYJ9fCDRBPTVVIy
-	S5wZkhQ==
-X-Google-Smtp-Source: AGHT+IGQe92huN8leXfbzYtwrE0iqie4lMiaTPyOttTMTlmm3UfkdJB79ObQOs2LE/JzEH9q+NLF70FDwf4=
-X-Received: from plev19.prod.google.com ([2002:a17:903:31d3:b0:234:952b:35a2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e888:b0:235:2375:7ead
- with SMTP id d9443c01a7336-2382424b99fmr55012525ad.28.1750859949699; Wed, 25
- Jun 2025 06:59:09 -0700 (PDT)
-Date: Wed, 25 Jun 2025 06:59:08 -0700
-In-Reply-To: <20250610175424.209796-12-Neeraj.Upadhyay@amd.com>
+	dkim=pass (2048-bit key) header.d=tum.de header.i=@tum.de header.b="PrMP3WDv"
+Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
+	by postout2.mail.lrz.de (Postfix) with ESMTP id 4bS3F04cZlzySN;
+	Wed, 25 Jun 2025 15:53:24 +0200 (CEST)
+Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tum.de; h=
+	content-transfer-encoding:content-type:content-type:subject
+	:subject:from:from:content-language:user-agent:mime-version:date
+	:date:message-id:received:received; s=tu-postout21; t=
+	1750859604; bh=rHOUNQI/LUioMhdXul5khE5zg/7fobUm4oyuXtkvfFY=; b=P
+	rMP3WDvOz2bs/NhDHERQrdbx8jkAi+shyvqENWwuEUgeD6HcG0RRzN9UPe4Eyb21
+	qp7+QZEDvkyayR0dga3iMmVEjYK6gqafT4uOc9husp76RHdy63zC4ihiYXexLbJf
+	DzRG1toRdO5PEva79PoFT3fa2fpQ7oN92G4Ly3szq4RZZbrZ+fYJ/Vwf+vo0Qh8i
+	8bFgBCmHE29PffajGBO+fsH8gHeIcYeauafQ1uz39rz06R/dFK4+WzInJ+Jc7euu
+	uQzCETp0jeri+dtJe1oQDIdmU/8VIY68MTRPrXVEOQcymIPR/4mdBjQhRMd80c/9
+	MLhW4/HMurMLOxMQxnVHA==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.873
+X-Spam-Level:
+Received: from postout2.mail.lrz.de ([127.0.0.1])
+ by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id hxZpH3LrEP1h; Wed, 25 Jun 2025 15:53:24 +0200 (CEST)
+Received: from [IPV6:2a09:80c0:192:0:1a32:faf8:4a92:5176] (unknown [IPv6:2a09:80c0:192:0:1a32:faf8:4a92:5176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4bS3Dz67mZzyRN;
+	Wed, 25 Jun 2025 15:53:23 +0200 (CEST)
+Message-ID: <c090efb3-ef82-499f-a5e0-360fc8420fb7@tum.de>
+Date: Wed, 25 Jun 2025 15:53:19 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250610175424.209796-1-Neeraj.Upadhyay@amd.com> <20250610175424.209796-12-Neeraj.Upadhyay@amd.com>
-Message-ID: <aFwArAOF3e2hhEAn@google.com>
-Subject: Re: [RFC PATCH v7 11/37] x86/apic: KVM: Move apic_find_highest_vector()
- to a common header
-From: Sean Christopherson <seanjc@google.com>
-To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Cc: linux-kernel@vger.kernel.org, bp@alien8.de, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, Thomas.Lendacky@amd.com, 
-	nikunj@amd.com, Santosh.Shukla@amd.com, Vasant.Hegde@amd.com, 
-	Suravee.Suthikulpanit@amd.com, David.Kaplan@amd.com, x86@kernel.org, 
-	hpa@zytor.com, peterz@infradead.org, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	kirill.shutemov@linux.intel.com, huibo.wang@amd.com, naveen.rao@amd.com, 
-	francescolavra.fl@gmail.com, tiala@microsoft.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Manuel Andreas <manuel.andreas@tum.de>
+Subject: [PATCH] x86/hyper-v: Filter non-canonical addresses passed via
+ HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST(_EX)
+Autocrypt: addr=manuel.andreas@tum.de; keydata=
+ xjMEY9Zx/RYJKwYBBAHaRw8BAQdALWzRzW9a74DX4l6i8VzXGvv72Vz0qfvj9s7bjBD905nN
+ Jk1hbnVlbCBBbmRyZWFzIDxtYW51ZWwuYW5kcmVhc0B0dW0uZGU+wokEExYIADEWIQQuSfNX
+ 11QV6exAUmOqZGwY4LuingUCY9Zx/QIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEKpkbBjgu6Ke
+ McQBAPyP530S365I50I5rM2XjH5Hr9YcUQATD5dusZJMDgejAP9T/wUurwQSuRfm1rK8cNcf
+ w4wP3+PLvL+J+kuVku93CM44BGPWcf0SCisGAQQBl1UBBQEBB0AmCAf31tLBD5tvtdZ0XX1B
+ yGLUAxhgmFskGyPhY8wOKQMBCAfCeAQYFggAIBYhBC5J81fXVBXp7EBSY6pkbBjgu6KeBQJj
+ 1nH9AhsMAAoJEKpkbBjgu6Kej6YA/RvJdXMjsD5csifolLw53KX0/ElM22SvaGym1+KiiVND
+ AQDy+y+bCXI+J713/AwLBsDxTEXmP7Cp49ZqbAu83NnpBQ==
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 10, 2025, Neeraj Upadhyay wrote:
-> In preparation for using apic_find_highest_vector() in Secure AVIC
-> guest APIC driver, move it and associated macros to apic.h.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-> ---
+In KVM guests with Hyper-V hypercalls enabled, the hypercalls 
+HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST and HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX 
+allow a guest to request invalidation of portions of a virtual TLB.
+For this, the hypercall parameter includes a list of GVAs that are supposed 
+to be invalidated.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+However, when non-canonical GVAs are passed, there is currently no 
+filtering in place and they are eventually passed to checked invocations of 
+INVVPID on Intel / INVLPGA on AMD.
+While the AMD variant (INVLPGA) will silently ignore the non-canonical 
+address and perform a no-op, the Intel variant (INVVPID) will fail and end 
+up in invvpid_error, where a WARN_ONCE is triggered:
+
+invvpid failed: ext=0x0 vpid=1 gva=0xaaaaaaaaaaaaa000
+WARNING: CPU: 6 PID: 326 at arch/x86/kvm/vmx/vmx.c:482 
+invvpid_error+0x91/0xa0 [kvm_intel]
+Modules linked in: kvm_intel kvm 9pnet_virtio irqbypass fuse
+CPU: 6 UID: 0 PID: 326 Comm: kvm-vm Not tainted 6.15.0 #14 PREEMPT(voluntary)
+RIP: 0010:invvpid_error+0x91/0xa0 [kvm_intel]
+Call Trace:
+  <TASK>
+  vmx_flush_tlb_gva+0x320/0x490 [kvm_intel]
+  ? __pfx_vmx_flush_tlb_gva+0x10/0x10 [kvm_intel]
+  ? kfifo_copy_out+0xcf/0x120
+  kvm_hv_vcpu_flush_tlb+0x24f/0x4f0 [kvm]
+  ? __pfx_kvm_hv_vcpu_flush_tlb+0x10/0x10 [kvm]
+  ? kvm_pmu_is_valid_msr+0x6e/0x80 [kvm]
+  ? kvm_get_msr_common+0x219/0x20f0 [kvm]
+  kvm_arch_vcpu_ioctl_run+0x3013/0x5810 [kvm]
+  /* ... */
+
+Hyper-V documents that invalid GVAs (those that are beyond a partition's 
+GVA space) are to be ignored. While not completely clear whether this 
+ruling also applies to non-canonical GVAs, it is likely fine to make that 
+assumption.
+
+The following patch addresses the issue by skipping non-canonical GVAs 
+before calling the architecture-specific invalidation primitive.
+I've validated it against a PoC and the issue seems to be fixed.
+
+Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
+Suggested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+  arch/x86/kvm/hyperv.c | 3 +++
+  1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 24f0318c50d7..644a7aae6dab 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1979,6 +1979,9 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+  		if (entries[i] == KVM_HV_TLB_FLUSHALL_ENTRY)
+  			goto out_flush_all;
+
++                if (is_noncanonical_invlpg_address(entries[i], vcpu))
++                        continue;
++
+  		/*
+  		 * Lower 12 bits of 'address' encode the number of additional
+  		 * pages to flush.
+-- 
+2.50.0
