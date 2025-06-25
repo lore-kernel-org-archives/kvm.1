@@ -1,157 +1,199 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AE919343B
-	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DCB139579
+	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750896759; cv=none; b=gjhKvPZeVeWV0vI3F5+gM0xiOeIQervw9Z0E6qjfNzST1dnpt1OdfbS2Fq48e3PE2Z+WqC96rsUSPTHg91i/MT3FJsXAVKJab6y+F89kLnF4TZv+5MVwvjtkqm7yP+mY0DbOJswDKiDfZelbO+j0tJ9E33qpfEdOftj0QYWkMj8=
+	t=1750897527; cv=none; b=sBTqDPVcOjFfu+Rysf9yUi/yKvGsAcrQBa8ZtSdJWcNuRbCi5DjMg+LhTFKVV8iU/TMNqJozh64Xq4r1iAb6B49kS7/tlrajMH/sh8gBQHc8hB2qsLWsPX1hH0wZhbl/ZfFcuZo4hFHFRWpCmy+7FufbGoNsvvIpZwyMhSMNI/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750896759; c=relaxed/simple;
-	bh=YYqdIgfs7prMRCqGJLkiae8o8yLiIzZye7Nt81y7N1s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i5v+UG0pYaetMdK9RZuboLKNew71Qdaz8jsmjcrGJcQFexQZqeCrXRRlZ3RF3N6xILMV4MlrHVVaKcoSLVggfOiiQ1DEZxBABnY8VHcbrtxI1QRXiWdcXT3LaVr32A4K50Jtrx6FA12gO1RBm7g+UhYoRgmwf2Si9toulNcJtA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RvJjAi32; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RvJjAi32"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3121cffd7e8so280224a91.0
-        for <kvm@vger.kernel.org>; Wed, 25 Jun 2025 17:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750896757; x=1751501557; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=TejvodaYmBPMcebcEQjSEKnmOuBSBKtSthLIMV0TmZs=;
-        b=RvJjAi32HmWeZn8O8UTTG69t+NRplPkjjtN4hDaqzO4Z8AU8lvQV7+tft/dI24gavj
-         QnF6yAeJgURax/+qb2tiRpKDW74cMSMNCEBLlKBqugut0ynsVKS64Ch8PUEPRcRylZfb
-         3V29/q8J/Qf3TKdT4uioOJ+XKXcJa7qzssYwE/UdYPXXLfK6N3Bfl+f8qXhHfmTJEEiV
-         osxG1oyZSWbMoazAAunz/Buba6hV70/Jw37BB8u6c2Yi5ORFKQLAXuslFvBPC0x+1Rtj
-         wSLCkjJi8BXp0UcYlmmEQprMhgx3Owa/ow0sgYge6iFLgiId1/93D7PWuEPltWhCKtMv
-         JghA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750896757; x=1751501557;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TejvodaYmBPMcebcEQjSEKnmOuBSBKtSthLIMV0TmZs=;
-        b=nzI/txvBV1aQcYKre6MH5Lo5SXbdeT2Gn8n883pMCGltoDoWu3jN/TbAgkl9Nv9AT3
-         JbdmaxJ+j7nO8TZl+nZ2KnatVSg1P3cCdb87GSLDCHmdmhshphQm5uJldBHmtxecNUVG
-         +qaTjSVH/fryydUCqlI7+YW6jwIFUfJUtbzifSKIbDHyTHIg8L2wncJVKaTzFXKY5kCL
-         bul6LErzzpClJFWhYaBGzKbkpbm4LVy6WFQhe37OPyhqGpFixhKqvcn+l/aGObD4+Wdr
-         MjQ41YVlHsVbJFMQd8jguPfUTW8J+RVe8GIWQjuAKlXDewtcGuYcgcCVUQTRu2UU928S
-         S7XA==
-X-Gm-Message-State: AOJu0YxyTSWo+b4v/qea0Nm1yxQO32YhZH2BKuVET0Bdc9i8M1bK8odL
-	BrQJ20MgAE/CjM9ECChZs8Wq6vwsXCiTPHHy/Fj2CFuflWYILU0a6g5Hm9Ap7CxzGPPxVT6Kosm
-	gzymWdw==
-X-Google-Smtp-Source: AGHT+IG+NlZ+68CsdHzgcIfwCRnU1b472g9YpYS5EpkOr0QdzQPPYC4WRVn9r71YvhtQ94AlekS4VDTCDtU=
-X-Received: from pjbqo12.prod.google.com ([2002:a17:90b:3dcc:b0:311:f699:df0a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f90:b0:311:ea13:2e61
- with SMTP id 98e67ed59e1d1-315f26c1b74mr6093342a91.34.1750896757146; Wed, 25
- Jun 2025 17:12:37 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 25 Jun 2025 17:12:25 -0700
-In-Reply-To: <20250626001225.744268-1-seanjc@google.com>
+	s=arc-20240116; t=1750897527; c=relaxed/simple;
+	bh=5glaJYClkEJRDJXNd36NlkI3O4vAJGqaeXBSMvXyj/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lh6fE7LbiUdp+TFEC0BhjFlM8v4pIoPJYMs8ZZQakLdOrBLZAYvkOJ5tiXDJQhdD3bcE5LQKMvsnt0cWr6ljsr+zZ6W93DdrC3XukJ9xuqVFrWqSkaZnrMfgVTT9xEHCxN7johedtlrU1k0G4JHUVbqQspHCdz+xJmqRcUoxu1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1750897517-1eb14e1c381a7c0001-HEqcsx
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id f3HA5r8FA8vqbh79 (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 26 Jun 2025 08:25:17 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 26 Jun
+ 2025 08:25:17 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
+ ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Thu, 26 Jun 2025
+ 08:25:17 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Wed, 25 Jun
+ 2025 18:05:46 +0800
+Message-ID: <4833e1be-b38d-4f80-abb7-aff2782efcfb@zhaoxin.com>
+Date: Wed, 25 Jun 2025 18:05:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250626001225.744268-1-seanjc@google.com>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250626001225.744268-6-seanjc@google.com>
-Subject: [PATCH v5 5/5] KVM: selftests: Convert arch_timer tests to common
- helpers to pin task
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for
+ Intel
+To: Zhao Liu <zhao1.liu@intel.com>
+X-ASG-Orig-Subj: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for
+ Intel
+CC: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+	<mtosatti@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+	<berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Babu Moger
+	<babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Tejus GK
+	<tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>, Manish Mishra
+	<manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
+	<qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <cobechen@zhaoxin.com>,
+	<yeeli@zhaoxin.com>, <MaryFeng@zhaoxin.com>, <Runaguo@zhaoxin.com>,
+	<Xanderchen@zhaoxin.com>
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ <20250423114702.1529340-2-zhao1.liu@intel.com>
+ <fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com>
+ <aFu/EED7BNJgIXqH@intel.com>
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+In-Reply-To: <aFu/EED7BNJgIXqH@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 6/26/2025 8:25:15 AM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1750897517
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3356
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -0.81
+X-Barracuda-Spam-Status: No, SCORE=-0.81 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA085b, DATE_IN_PAST_12_24, DATE_IN_PAST_12_24_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.143396
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 DATE_IN_PAST_12_24     Date: is 12 to 24 hours before Received: date
+	0.40 BSF_SC0_SA085b         Custom Rule SA085b
+	0.80 DATE_IN_PAST_12_24_2   DATE_IN_PAST_12_24_2
 
-Convert the arch timer tests to use __pin_task_to_cpu() and
-pin_self_to_cpu().
 
-No functional change intended.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/arch_timer.c      |  7 +-----
- .../kvm/arm64/arch_timer_edge_cases.c         | 23 ++-----------------
- 2 files changed, 3 insertions(+), 27 deletions(-)
+On 6/25/25 5:19 PM, Zhao Liu wrote:
+> 
+> 
+> Just want to confirm with the "lines_per_tag" field, which is related
+> about how to handle current "assert(lines_per_tag > 0)":
+> 
+>> --- patch prototype start ---
+>>
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index 7b223642ba..8a17e5ffe9 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -2726,6 +2726,66 @@ static const CPUCaches xeon_srf_cache_info = {
+>>       },
+>>   };
+>>
+>> +static const CPUCaches yongfeng_cache_info = {
+>> +    .l1d_cache = &(CPUCacheInfo) {
+>> +        .type = DATA_CACHE,
+>> +        .level = 1,
+>> +        .size = 32 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 8,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+> 
+> This fits AMD APM, and is fine.
+> 
+>> +        .inclusive = false,
+>> +        .self_init = true,
+>> +        .no_invd_sharing = false,
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>> +    },
+>> +    .l1i_cache = &(CPUCacheInfo) {
+>> +        .type = INSTRUCTION_CACHE,
+>> +        .level = 1,
+>> +        .size = 64 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 16,
+>> +        .partitions = 1,
+>> +        .sets = 64,
+>> +        .lines_per_tag = 1,
+> 
+> Fine, too.
+> 
+>> +        .inclusive = false,
+>> +        .self_init = true,
+>> +        .no_invd_sharing = false,
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>> +    },
+>> +    .l2_cache = &(CPUCacheInfo) {
+>> +        .type = UNIFIED_CACHE,
+>> +        .level = 2,
+>> +        .size = 256 * KiB,
+>> +        .line_size = 64,
+>> +        .associativity = 8,
+>> +        .partitions = 1,
+>> +        .sets = 512,
+>> +        .lines_per_tag = 1,
+> 
+> SDM reserves this field:
+> 
+> For 0x80000006 ECX:
+> 
+> Bits 11-08: Reserved.
+> 
+> So I think this field should be 0, to align with "Reserved".
 
-diff --git a/tools/testing/selftests/kvm/arch_timer.c b/tools/testing/selftests/kvm/arch_timer.c
-index acb2cb596332..cf8fb67104f1 100644
---- a/tools/testing/selftests/kvm/arch_timer.c
-+++ b/tools/testing/selftests/kvm/arch_timer.c
-@@ -98,16 +98,11 @@ static uint32_t test_get_pcpu(void)
- static int test_migrate_vcpu(unsigned int vcpu_idx)
- {
- 	int ret;
--	cpu_set_t cpuset;
- 	uint32_t new_pcpu = test_get_pcpu();
- 
--	CPU_ZERO(&cpuset);
--	CPU_SET(new_pcpu, &cpuset);
--
- 	pr_debug("Migrating vCPU: %u to pCPU: %u\n", vcpu_idx, new_pcpu);
- 
--	ret = pthread_setaffinity_np(pt_vcpu_run[vcpu_idx],
--				     sizeof(cpuset), &cpuset);
-+	ret = __pin_task_to_cpu(pt_vcpu_run[vcpu_idx], new_pcpu);
- 
- 	/* Allow the error where the vCPU thread is already finished */
- 	TEST_ASSERT(ret == 0 || ret == ESRCH,
-diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-index 4e71740a098b..ce74d069cb7b 100644
---- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-+++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-@@ -862,25 +862,6 @@ static uint32_t next_pcpu(void)
- 	return next;
- }
- 
--static void migrate_self(uint32_t new_pcpu)
--{
--	int ret;
--	cpu_set_t cpuset;
--	pthread_t thread;
--
--	thread = pthread_self();
--
--	CPU_ZERO(&cpuset);
--	CPU_SET(new_pcpu, &cpuset);
--
--	pr_debug("Migrating from %u to %u\n", sched_getcpu(), new_pcpu);
--
--	ret = pthread_setaffinity_np(thread, sizeof(cpuset), &cpuset);
--
--	TEST_ASSERT(ret == 0, "Failed to migrate to pCPU: %u; ret: %d\n",
--		    new_pcpu, ret);
--}
--
- static void kvm_set_cntxct(struct kvm_vcpu *vcpu, uint64_t cnt,
- 			   enum arch_timer timer)
- {
-@@ -907,7 +888,7 @@ static void handle_sync(struct kvm_vcpu *vcpu, struct ucall *uc)
- 		sched_yield();
- 		break;
- 	case USERSPACE_MIGRATE_SELF:
--		migrate_self(next_pcpu());
-+		pin_self_to_cpu(next_pcpu());
- 		break;
- 	default:
- 		break;
-@@ -919,7 +900,7 @@ static void test_run(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
- 	struct ucall uc;
- 
- 	/* Start on CPU 0 */
--	migrate_self(0);
-+	pin_self_to_cpu(0);
- 
- 	while (true) {
- 		vcpu_run(vcpu);
--- 
-2.50.0.727.gbf7dc18ff4-goog
+I agree. For Zhaoxin, the "lines-per-tag" field appears only in CPUID leaf 
+0x80000005. Because Zhaoxin follows AMD behavior on this leaf, and the AMD 
+manual states that it reports L1 cache/TLB information, so any "lines-per-tag" 
+value for levels other than L1 should be omitted or set to zero.
+
+> 
+> In this patch:
+> 
+> https://lore.kernel.org/qemu-devel/20250620092734.1576677-9-zhao1.liu@intel.com/
+> 
+> I add an argument (lines_per_tag_supported) in encode_cache_cpuid80000006(),
+> and for the case that lines_per_tag_supported=false, I assert
+> "lines_per_tag == 0" to align with "Reserved".
+> 
+>> +        .inclusive = true,
+>> +        .self_init = true,
+>> +        .no_invd_sharing = false,
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>> +    },
+>> +    .l3_cache = &(CPUCacheInfo) {
+>> +        .type = UNIFIED_CACHE,
+>> +        .level = 3,
+>> +        .size = 8 * MiB,
+>> +        .line_size = 64,
+>> +        .associativity = 16,
+>> +        .partitions = 1,
+>> +        .sets = 8192,
+>> +        .lines_per_tag = 1,
+> 
+> The 0x80000006 EDX is also reserved in SDM. So I think this field should
+> be 0, too.
+> 
+> Do you agree?
+
+Ditto.>
+>> +        .self_init = true,
+>> +        .inclusive = true,
+>> +        .no_invd_sharing = true,
+>> +        .complex_indexing = false,
+>> +        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
+>> +    },
+>> +};
+>> +
 
