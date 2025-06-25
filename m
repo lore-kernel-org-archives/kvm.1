@@ -1,146 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF1C2D6626;
-	Wed, 25 Jun 2025 11:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B917C8EB
+	for <kvm@vger.kernel.org>; Wed, 25 Jun 2025 11:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750850790; cv=none; b=rLYdPqpk8aO3QBiO/Ok5r8IYB+sCH9OBKwnq0easTxMigtgvrR1U1X9m1o6ojEXnOSyAGUTyuPociOHKJFEjT1NDTq66SBXUITo1Z0cneD2dQ1FvDyCkpizUXIpIMlzq3fQ780t9QvSwpdizcLKMOSLbfHHBAB8teJBWyZM3nLw=
+	t=1750852390; cv=none; b=GqV/nmFZxkkMkZHOV3IeJ98DRoFY83d0UlAZDp6kge0VKnxDuD9smDaw9hG43PNA65XhJ0TM8Ql0HSOVuXGzenLrWvpisbDlsD0U4Rz+sw/U3UAlxHJjgBivEncBNS9U3T5H9BiLCb++jkrponKd0ws81baA+QbkZF/WYZIgVyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750850790; c=relaxed/simple;
-	bh=/AEnPXo1dA8qwf5CIu0xk7I0CHglYXCtZ9CYRjry6l8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bM71cLpXArBVW0iou1IM8hJjKAhnddu9gHaqaiBvLG4/64H8S10Y2hblgpErE5wwtQ1IiJfzhYMPpfxJOAp7i0RvyNjLDArZ3A3Qj2WPQTp600U7UNjODRN04Crh9n/bKESmX0Miri8rJdcm1M6qq07aiqm7VWudQGB174tDbNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1VhB4oC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750852390; c=relaxed/simple;
+	bh=wHC06+XDQXM2g63t+meeqhE3uQJP0n7nF2pLYZwxmUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jk2TPNptegypDRU+0dLcckgwJzgGkr9iJoMP0BWVObQPX5QoqU0ct7Ips9rAtKJAzc8hsNA3+fGDC5emwNR8RiFkbdFNl7A3Rwz26t8uIfqp19BuRVdAv0Q5agC/IGBxlaj7XX0fuWxFYSciYHnKd+SvidARMfIzHUWT7VdZzAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MBZy8yaj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1VhB4oC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87511C4CEEA;
-	Wed, 25 Jun 2025 11:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750850789;
-	bh=/AEnPXo1dA8qwf5CIu0xk7I0CHglYXCtZ9CYRjry6l8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=S1VhB4oCwFp56rekUgYKd6f+8Wpmbr1vhPQmFkmjzZWBo9cfOlamDTba3WcN1HzF8
-	 KyIrkF3AdsMCAFP0CeMnAAeR4YtgqgAS8be615FtRpYgL4if3hzsfIySkCvAi6jQDB
-	 p5JhLn9bMlCuAz1kbk+DrJSgfvlaZrY3QMlmFFI/81Go2iJ5/O+VRES/Zo85m54t5a
-	 exDhD/l/CHYWuofJTk20OFqeRyuqrOF2nQzhFCsIlOye0erW6/vLyHrWjB2NCIWrwW
-	 oODvwyoRBIG818bZKoFEeet6vU25aCj7Nw0GFaw0H+IRy3jYxh0WLbqqFbJSwW+CBS
-	 Rfh3xkZuV2VNA==
-From: Mark Brown <broonie@kernel.org>
-Date: Wed, 25 Jun 2025 11:48:19 +0100
-Subject: [PATCH v6 28/28] KVM: arm64: selftests: Add SME to set_id_regs
- test
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MBZy8yaj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750852387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t4Xv+4iFOSQyhQxAlU+cPqAXaAkqD/p8+Wz48p9hJkc=;
+	b=MBZy8yaj6XYsJwotG0qJF7CbAPd/e1XLSmQf0oMy5upRSCxx5CXSYeT6+fcR+KYRULaz1s
+	eEyHNrfqYATVlhD1mI5Zgmpz7fevaSi52OBOImvcB0acWFms/ijpCMZJCVRXTp9UbwhGQT
+	oHyRK5XeROlzsuH6vnGogxSaPwTLluw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-LiX6dINzM5GzkvZKRixnUg-1; Wed,
+ 25 Jun 2025 07:53:04 -0400
+X-MC-Unique: LiX6dINzM5GzkvZKRixnUg-1
+X-Mimecast-MFC-AGG-ID: LiX6dINzM5GzkvZKRixnUg_1750852382
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 610CC195608C;
+	Wed, 25 Jun 2025 11:53:02 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47272180035C;
+	Wed, 25 Jun 2025 11:53:01 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id AF16D18000A3; Wed, 25 Jun 2025 13:52:58 +0200 (CEST)
+Date: Wed, 25 Jun 2025 13:52:58 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, 
+	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa
+ pages too
+Message-ID: <rite3te5udzekwbbujmga5kyyjjm5gfphhqoxlhtsncgckq6rm@7m7owl5jgubz>
+References: <20250602105050.1535272-1-kraxel@redhat.com>
+ <20250602105050.1535272-3-kraxel@redhat.com>
+ <20250624130158.GIaFqhxjE8-lQqq7mt@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250625-kvm-arm64-sme-v6-28-114cff4ffe04@kernel.org>
-References: <20250625-kvm-arm64-sme-v6-0-114cff4ffe04@kernel.org>
-In-Reply-To: <20250625-kvm-arm64-sme-v6-0-114cff4ffe04@kernel.org>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
- Joey Gouly <joey.gouly@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <shuah@kernel.org>
-Cc: Dave Martin <Dave.Martin@arm.com>, Fuad Tabba <tabba@google.com>, 
- Mark Rutland <mark.rutland@arm.com>, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.15-dev-08c49
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3742; i=broonie@kernel.org;
- h=from:subject:message-id; bh=/AEnPXo1dA8qwf5CIu0xk7I0CHglYXCtZ9CYRjry6l8=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBoW9x6rNqzz5sGrNiRrIXrOWy+bwyOVKM58C21N
- 8UQF1abh0qJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaFvcegAKCRAk1otyXVSH
- 0N0DB/9C9EuLoP1QX+nQpinl3+RPQkVA/LC6ibKQ/ADrljxkUPGGGzPd1i6TvLlJknrU6Vc4Nax
- WDtdGQKNgnTPy3sCEyI4C3+FgSGlHdBbbkgADugt9SKjXOL10CHbhQf+JMHP21/CLhiM70rXc1k
- zcC+isN7mi3oeWRgEXnU3koSXtr0NEPvmPdvraSFOd0YEvH9BdMPw5ucfSK+PBIXLcIGPng/i4A
- 5eWSFYfsbv8Dgk61y2B/4VJqJPcuIvTihfFprFmrQovxnackxM2n4xpiD64Ufm59EZEYbJBIzuO
- jVunrH2tpAizaubCJdtSHop4CQE7fKYbG96ae0Xij6ouEAoH
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624130158.GIaFqhxjE8-lQqq7mt@fat_crate.local>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Add coverage of the SME ID registers to set_id_regs, ID_AA64PFR1_EL1.SME
-becomes writable and we add ID_AA64SMFR_EL1 and it's subfields.
+>  	for_each_possible_cpu(cpu) {
+>  		data = per_cpu(runtime_data, cpu);
+> @@ -1066,6 +1069,14 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+>  
+>  		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
+>  			return 1;
+> +
+> +		address = per_cpu(svsm_caa_pa, cpu);
+> +		if (!address)
+> +			return 1;
+> +
+> +		pfn = address >> PAGE_SHIFT;
+> +		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
+> +			return 1;
+>  	}
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 29 +++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+The kernel allocates the caa page(s) only when running under svsm, see
+alloc_runtime_data(), so this is not correct.  I think we either have to
+return to the original behavior of only doing something in case address
+is not NULL, or wrap the caa code block into a 'if (snp_vmpl) { ... }',
+following what alloc_runtime_data() is doing.
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 8f422bfdfcb9..f41c4e7da3e8 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -140,6 +140,7 @@ static const struct reg_ftr_bits ftr_id_aa64pfr0_el1[] = {
- 
- static const struct reg_ftr_bits ftr_id_aa64pfr1_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, CSV2_frac, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SME, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SSBS, ID_AA64PFR1_EL1_SSBS_NI),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, BT, 0),
- 	REG_FTR_END,
-@@ -187,6 +188,28 @@ static const struct reg_ftr_bits ftr_id_aa64mmfr2_el1[] = {
- 	REG_FTR_END,
- };
- 
-+static const struct reg_ftr_bits ftr_id_aa64smfr0_el1[] = {
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, FA64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, LUTv2, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SMEver, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F64F64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16B16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I8I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, BI32I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F32F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8FMA, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP4, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP2, 0),
-+	REG_FTR_END,
-+};
-+
- static const struct reg_ftr_bits ftr_id_aa64zfr0_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F64MM, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F32MM, 0),
-@@ -217,6 +240,7 @@ static struct test_feature_reg test_regs[] = {
- 	TEST_REG(SYS_ID_AA64MMFR0_EL1, ftr_id_aa64mmfr0_el1),
- 	TEST_REG(SYS_ID_AA64MMFR1_EL1, ftr_id_aa64mmfr1_el1),
- 	TEST_REG(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2_el1),
-+	TEST_REG(SYS_ID_AA64SMFR0_EL1, ftr_id_aa64smfr0_el1),
- 	TEST_REG(SYS_ID_AA64ZFR0_EL1, ftr_id_aa64zfr0_el1),
- };
- 
-@@ -233,6 +257,7 @@ static void guest_code(void)
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR0_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR1_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR2_EL1);
-+	GUEST_REG_SYNC(SYS_ID_AA64SMFR0_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64ZFR0_EL1);
- 	GUEST_REG_SYNC(SYS_CTR_EL0);
- 	GUEST_REG_SYNC(SYS_MIDR_EL1);
-@@ -774,8 +799,8 @@ int main(void)
- 		   ARRAY_SIZE(ftr_id_aa64isar2_el1) + ARRAY_SIZE(ftr_id_aa64pfr0_el1) +
- 		   ARRAY_SIZE(ftr_id_aa64pfr1_el1) + ARRAY_SIZE(ftr_id_aa64mmfr0_el1) +
- 		   ARRAY_SIZE(ftr_id_aa64mmfr1_el1) + ARRAY_SIZE(ftr_id_aa64mmfr2_el1) +
--		   ARRAY_SIZE(ftr_id_aa64zfr0_el1) - ARRAY_SIZE(test_regs) + 3 +
--		   MPAM_IDREG_TEST + MTE_IDREG_TEST;
-+		   ARRAY_SIZE(ftr_id_aa64zfr0_el1) + ARRAY_SIZE(ftr_id_aa64smfr0_el1) -
-+		   ARRAY_SIZE(test_regs) + 3 + MPAM_IDREG_TEST + MTE_IDREG_TEST;
- 
- 	ksft_set_plan(test_cnt);
- 
-
--- 
-2.39.5
+take care,
+  Gerd
 
