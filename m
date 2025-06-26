@@ -1,137 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4083B274FED;
-	Thu, 26 Jun 2025 15:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD372EB5C0;
+	Thu, 26 Jun 2025 15:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750950020; cv=none; b=ddyGLdgX3kqmRZzsA3Z3JG4maTucAhjcOS3JHaqCdJtNPgkCDH1SYdmMew5ya6bnOCpHM3N/X//AkcTX5Dowp9xEk3Lom3UyCqLmi4ged1Zo1VNbcXZah+FRdgkMyO6ZwbBKLJPsyVqloIEr/npbNT8kYDmml5leK0y59FET6zs=
+	t=1750950983; cv=none; b=gCXjbyFib2ViJIy1KsyaU8EEuj/JU11m/+dcBKUsAauZcQ7kY8+3zsQe4N0WP5c7QmRrtBlGRJ/rJ8B/V/H3HM9rbFulX6RTw7GuBoAKlqXNd57wTVYLHSiEPOX+A7CIkdonvBG2y7sy2r0u5ibGz/32VEBtoNesorov1gWMyqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750950020; c=relaxed/simple;
-	bh=NCW1/aOIcerxFsXM9RKk0cIz5hyj78/lxy0fK07wt7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DKwpARzI708w2fMw469If5hQZ1BhqoDUgmLAZdjUXxnE0NVoRtVqkWsI/pvzFZxEHQkP/BpsaEVPWt54GKHcNiO7iK8ja+8/DX3eA4V3za7hQJEjfpkdT1j1QX4Pf1ltwOpdFam0ZQa9WaHZLKAfTnxGFdrcZbldIerPmzZMP6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jY6WFcOd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750950983; c=relaxed/simple;
+	bh=lqI8pD0+c/MWdmXxoqGaSXV4hXF1azOl9AOSOyUxWwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nvbDxY3PNtABnV3gTDtIxz5HSJ2rwdFLI7n9NLn5krtXSHS0Je/Zkc5qkogr7TT/+snMbALPktKON6rHNV0lMTKlYudFThEFQeYRofCGJOAnlJeKUfhko2tIVTG0lilUPBchPD8drvl7RZwOO55GOWquWfcwB5a8zVNJGrW1DSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kPpnDvKy; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jY6WFcOd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6497BC4CEEB;
-	Thu, 26 Jun 2025 15:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750950019;
-	bh=NCW1/aOIcerxFsXM9RKk0cIz5hyj78/lxy0fK07wt7U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jY6WFcOd1SGKGpGDrERjXC29gPUIPrTazpGKNCvI1U2hS6aC6UCUWA4CHC4AUp/K0
-	 cb/rAlF5yM0g7vlYXFrQfkrVnTz0ZfuKZH5eUcnTisj1nTuDU4ZNq8jM8K7UrFc+D8
-	 omjNMO0uJTdIJzDNPshyXS3AwgYRhXSGAYUSctH+0ncoS5EIsmcED122FfdUd4rf2u
-	 KN2QZTQghyPHBhwVcfTKWU4JLRgzXgM8wHbU6jySSpe7x/elurMAd474kJziO/rPp1
-	 6weQwqZwzYO7ApU/aGQaHb/24sRQxNHeqgMvDzGOLTq4LBsjFSqpQ1YOmpdKs84I1S
-	 MPtVLzhyi//9w==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>
-Cc: <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: [EARLY RFC] KVM: SVM: Enable AVIC by default from Zen 4
-Date: Thu, 26 Jun 2025 20:21:22 +0530
-Message-ID: <20250626145122.2228258-1-naveen@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kPpnDvKy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750950982; x=1782486982;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lqI8pD0+c/MWdmXxoqGaSXV4hXF1azOl9AOSOyUxWwg=;
+  b=kPpnDvKyO9H6K4RShJo0OPc0AeLSJ5vH92ADSn+58ieNRFHggD1ylvw3
+   dO27ZvfMhGg2t+8kV/1TGiDTCz2Wl9u9RMdN1eg+6+BQanXusqcKblaCZ
+   CvReZcFpVDHJc6knkRAuoIvGNQZYv1xrTFFBw43WfTdOHyhOHLxlT+ffz
+   GEfIWAyLXhb/Ruwsw5uMrouqq9UJBIAHgY8LH7Edgx5pifrO23CV5z207
+   YgGbW2H7tK9YjvReQt0WZDzxo4WXRk1QKd2eN/xhXUxsKrvinR/0CNxEn
+   Y5w58fcFdfJYgyujpUNA+eK8pyT++EiIUI6R3eLsb0IU+WFQ2v9Y6HAKo
+   w==;
+X-CSE-ConnectionGUID: QowX8NwpQkCmJ9w3gz371w==
+X-CSE-MsgGUID: LGkTOnJbTWq0lnZWI1pAIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="63941012"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="63941012"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 08:16:21 -0700
+X-CSE-ConnectionGUID: SCa4oxn5S2S4n7Q6JQlhBw==
+X-CSE-MsgGUID: KJHAXsf4QcObKmd0B9hfMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="152299473"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 26 Jun 2025 08:16:15 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 3D25C2E2; Thu, 26 Jun 2025 18:16:14 +0300 (EEST)
+Date: Thu, 26 Jun 2025 18:16:14 +0300
+From: "Shutemov, Kirill" <kirill.shutemov@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "ackerleytng@google.com" <ackerleytng@google.com>, 
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "quic_eberman@quicinc.com" <quic_eberman@quicinc.com>, 
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "Du, Fan" <fan.du@intel.com>, 
+	"Hansen, Dave" <dave.hansen@intel.com>, "david@redhat.com" <david@redhat.com>, 
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tabba@google.com" <tabba@google.com>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "michael.roth@amd.com" <michael.roth@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"Peng, Chao P" <chao.p.peng@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"Weiny, Ira" <ira.weiny@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"Annapurve, Vishal" <vannapurve@google.com>, "jroedel@suse.de" <jroedel@suse.de>, 
+	"Miao, Jun" <jun.miao@intel.com>, "Li, Zhiquan1" <zhiquan1.li@intel.com>, 
+	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [RFC PATCH 08/21] KVM: TDX: Increase/decrease folio ref for huge
+ pages
+Message-ID: <zlxgzuoqwrbuf54wfqycnuxzxz2yduqtsjinr5uq4ss7iuk2rt@qaaolzwsy6ki>
+References: <aFIGFesluhuh2xAS@yzhao56-desk.sh.intel.com>
+ <0072a5c0cf289b3ba4d209c9c36f54728041e12d.camel@intel.com>
+ <aFkeBtuNBN1RrDAJ@yzhao56-desk.sh.intel.com>
+ <draft-diqzh606mcz0.fsf@ackerleytng-ctop.c.googlers.com>
+ <diqzy0tikran.fsf@ackerleytng-ctop.c.googlers.com>
+ <c69ed125c25cd3b7f7400ed3ef9206cd56ebe3c9.camel@intel.com>
+ <diqz34bolnta.fsf@ackerleytng-ctop.c.googlers.com>
+ <a3cace55ee878fefc50c68bb2b1fa38851a67dd8.camel@intel.com>
+ <diqzms9vju5j.fsf@ackerleytng-ctop.c.googlers.com>
+ <447bae3b7f5f2439b0cb4eb77976d9be843f689b.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <447bae3b7f5f2439b0cb4eb77976d9be843f689b.camel@intel.com>
 
-This is early RFC to understand if there are any concerns with enabling
-AVIC by default from Zen 4. There are a few issues related to irq window
-inhibits (*) that will need to be addressed before we can enable AVIC,
-but I wanted to understand if there are other issues that I may not be
-aware of. I will split up the changes and turn this into a proper patch
-series once there is agreement on how to proceed.
+On Thu, Jun 26, 2025 at 02:19:36AM +0300, Edgecombe, Rick P wrote:
+> On Wed, 2025-06-25 at 16:09 -0700, Ackerley Tng wrote:
+> > > I do think that these threads have gone on far too long. It's probably about
+> > > time to move forward with something even if it's just to have something to
+> > > discuss that doesn't require footnoting so many lore links. So how about we
+> > > move
+> > > forward with option e as a next step. Does that sound good Yan?
+> > > 
+> > 
+> > Please see my reply to Yan, I'm hoping y'all will agree to something
+> > between option f/g instead.
+> 
+> I'm not sure about the HWPoison approach, but I'm not totally against it. My
+> bias is that all the MM concepts are tightly interlinked. If may fit perfectly,
+> but every new use needs to be checked for how fits in with the other MM users of
+> it. Every time I've decided a page flag was the perfect solution to my problem,
+> I got informed otherwise. Let me try to flag Kirill to this discussion. He might
+> have some insights.
 
-AVIC (and x2AVIC) is fully functional since Zen 4, and has so far been
-working well in our tests across various workloads. So, enable AVIC by
-default from Zen 4.
+We chatted with Rick about this.
 
-CPUs prior to Zen 4 are affected by hardware errata related to AVIC and
-workaround for those (erratum #1235) is only just landing upstream. So,
-it is unlikely that anyone was using AVIC on those CPUs. Start requiring
-users on those CPUs to pass force_avic=1 to explicitly enable AVIC going
-forward. This helps convey that AVIC isn't fully enabled (so users are
-aware of what they are signing up for), while allowing us to make
-kvm_amd module parameter 'avic' as an alias for 'enable_apicv'
-simplifying the code.  The only downside is that force_avic taints the
-kernel, but if this is otherwise agreeable, the taint can be restricted
-to the AVIC feature bit not being enabled.
+If I understand correctly, we are discussing the situation where the TDX
+module failed to return a page to the kernel.
 
-Finally, stop complaining that x2AVIC CPUID feature bit is present
-without basic AVIC feature bit, since that looks to be the way AVIC is
-being disabled on certain systems and enabling AVIC by default will
-start printing this warning on systems that have AVIC disabled.
+I think it is reasonable to use HWPoison for this case. We cannot
+guarantee that we will read back whatever we write to the page. TDX module
+has creative ways to corrupt it. 
 
-(*) http://lkml.kernel.org/r/Z6JoInXNntIoHLQ8@google.com
+The memory is no longer functioning as memory. It matches the definition
+of HWPoison quite closely.
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- arch/x86/kvm/svm/avic.c | 11 +++++------
- arch/x86/kvm/svm/svm.c  | 10 +++-------
- 2 files changed, 8 insertions(+), 13 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index a34c5c3b164e..bf7f91f41a6e 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -1101,12 +1101,11 @@ bool avic_hardware_setup(void)
- 	if (!npt_enabled)
- 		return false;
- 
--	/* AVIC is a prerequisite for x2AVIC. */
--	if (!boot_cpu_has(X86_FEATURE_AVIC) && !force_avic) {
--		if (boot_cpu_has(X86_FEATURE_X2AVIC)) {
--			pr_warn(FW_BUG "Cannot support x2AVIC due to AVIC is disabled");
--			pr_warn(FW_BUG "Try enable AVIC using force_avic option");
--		}
-+	if (!boot_cpu_has(X86_FEATURE_AVIC) && !force_avic)
-+		return false;
-+
-+	if (!force_avic && (boot_cpu_data.x86 < 0x19 || boot_cpu_has(X86_FEATURE_ZEN3))) {
-+		pr_warn("AVIC disabled due to hardware errata. Use force_avic=1 if you really want to enable AVIC.\n");
- 		return false;
- 	}
- 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ab11d1d0ec51..9b5356e74384 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -158,12 +158,7 @@ module_param(lbrv, int, 0444);
- static int tsc_scaling = true;
- module_param(tsc_scaling, int, 0444);
- 
--/*
-- * enable / disable AVIC.  Because the defaults differ for APICv
-- * support between VMX and SVM we cannot use module_param_named.
-- */
--static bool avic;
--module_param(avic, bool, 0444);
-+module_param_named(avic, enable_apicv, bool, 0444);
- module_param(enable_ipiv, bool, 0444);
- 
- module_param(enable_device_posted_irqs, bool, 0444);
-@@ -5404,7 +5399,8 @@ static __init int svm_hardware_setup(void)
- 			goto err;
- 	}
- 
--	enable_apicv = avic = avic && avic_hardware_setup();
-+	if (enable_apicv)
-+		enable_apicv = avic_hardware_setup();
- 
- 	if (!enable_apicv) {
- 		enable_ipiv = false;
-
-base-commit: 7ee45fdd644b138e7a213c6936474161b28d0e1a
 -- 
-2.49.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
