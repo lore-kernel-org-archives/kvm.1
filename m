@@ -1,71 +1,75 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76092264B3
-	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 07:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688216A94A
+	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 07:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750923306; cv=none; b=TwtHUOeKYiEa8UIsVuVHBuwdlsRQN/cgUKQz/1Wxw6pw0Gi3Vwgx9Sk0DE11eugSwP4Fqi9IGiC7mzJd9cNDG8ifnkjWAtDdpAr9jaCb+9qcQ/GCmUWcQ4mOB/9UPqOHkMInoh+j52CQXlSj5mdUjrhxQBeO9yIiB3vgD91v9cc=
+	t=1750923308; cv=none; b=JChEKTO5kW6OjenCVOfsTknwg3yGgNyVuaHX328zViOQBPCm5dSRXfo1y2a9QV0uiX1DhWEtKadJsb37/68aNQNL9J1MXJpFmOfkW2J2T+vtBIgyMOruPle8G4aYbaKA9mgjXTuJazo2UBXPNCt7X9cgorpk/C6ChP16lYriiIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750923306; c=relaxed/simple;
-	bh=j6Opc35X7leVU0nN3C3XsQlOnL1x7ewbkhtYcLhuFgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cvRx1nR3d+5Z2u3dTzkdbQuhoetDH0Oq32xifeZIMtTLJENXzAeDPQPRxhcuW4VWKYcg97nyWa+FY08hxWkLjxH42E6oL40jEPiWMhfZcxMbQ4WOcHsn8WjZZYW05wAVzeNcEoJVwUc0J/Hh/5nLCjaiKFMYikvddn97ufmDobo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=M4J4w3vt; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1750923308; c=relaxed/simple;
+	bh=BjZ2DoFppAmM6F1SuH+Pn79IKaBzkBJtdhrnEOC0T9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G0NhvjjorSHA7fMYr2y+RiEiJI+F2Xc2QI4Eki8+UdQL50HYhdRP7YyUPOXt9v9SUC60NcaEJwCQpGze8BSS9CElVW4zqoSLEjaAruZYixU2JIHjUayJmKxmFCx5V1bxodt7sKBWv0HVnQwTf95T3iRHjx5kRZqv7/Rj5Sx+EUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=Dlrmj4L0; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensrcsec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="M4J4w3vt"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4531e146a24so2943835e9.0
-        for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:35:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="Dlrmj4L0"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4537fdec33bso3414475e9.1
+        for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1750923303; x=1751528103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ii+zWZS3RNOqzq3CZGEODgqk1meUnRXZz1gnHNAPn40=;
-        b=M4J4w3vtaEXLT3Lx8wCXc0ULGWYiD8dLN3gfPKQfhl2TBg71cr1ntWK3hui1IF63S7
-         PQ0Ro6IF6EZXk63zlFjQc1AqlSjvvEK452eS3Xb//cyFh47WLywBVGnw5DvVqSyt6jjb
-         B0zJ35vCxri7YExHtAayNwWetmiIAH6VU1eBk2CvVT1glrGWoNBQZNTchAIKd9hw/4K9
-         9FaAeyGjCsKN2L9Zcscbk+lfeVhWQaz76oicr1fGqTrO6uvk0BHF9KgzqiL0qZibrXDR
-         SOvMdA0a44BYHwHBIXBg6lBqUCjuU61gfsjXgKJllwTUdOJ4VWk4nzaw/9J7uQ9tkGUL
-         Uscw==
+        d=grsecurity.net; s=grsec; t=1750923305; x=1751528105; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O5XPh45yd+Nk6SuA5lhfFS0Jt1da9i/6L9WmurJtxcs=;
+        b=Dlrmj4L0LDcdgKPt/MKaBGC8IO2mfN0ZGcf+ZaW6ubLsZTEavf35amuhvf088dNdt9
+         w5MZCplg27eokfaQO85Et7kfDNaBR2KCfCpywD8NfQP6DZ25q1bdw1TG2WNpjPe80QKT
+         qGZztFOBMMbtMfadbXEmR6rQUK7VI1awilJ3P2MI7HDhHcY6Z3v/9cKSrkHz9YyGmH9l
+         dNfRjvrjCElYPlDZvbRPBjshlsGrPHCMMcuTTOQI5/gke3Vj3Y9KD7hMVaCotK7ByXQ5
+         RmWfR+fab4oBlECk4S60PE4O1m3Op0HzDFwaL6IbC9fGH/FaURSWQjvgwHXe9CjQOJDq
+         FoXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750923303; x=1751528103;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ii+zWZS3RNOqzq3CZGEODgqk1meUnRXZz1gnHNAPn40=;
-        b=O61y8JV5x2diYmwtq8xzHfvepCOSnTD9OYzirxWJMQ/c/NmNVQISdlgWp48ah3wNNu
-         4Sfsxt5B/MY9ztDFC+NC6GI9DKRbVbdwhDPWvToGynDd1w4ejA+FE1pyK7D3eLsRXY7A
-         i4gzIdRzixnUtojZ0WhpoqOWPQeOHk/6e7ASdAVZKTTvmnfDDeE5KNp7dNS/bVH/czFz
-         cLRQTFLzneOLrjvCtHhqFjBBbvp9BqxEGXS42CVsdFEzj+UOD+7u/TWwOszsgyIFIaBp
-         uC9uUjyf/8nfqF+TPd6B2N76P8+SIPubLW2ey4lmzBiUe5rDL/vQIvC7oOBZTp+lfeB6
-         PNaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWn8Zd23/nvuB3WLo/XffjcNT/j9e9Qs5z58+G+GMceg53oLRFX0qhfuEjNUCIoeT4nBc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz17o7FDFkLyR7NO3uN23X1X1zhEZ4Sa+qBqlmLO59l7Mr56YrI
-	61F5x7GDT61+YiH4P4JLxu2O8mIYvU2SJkBN7d1czwq9LZk8XaR/tCof3O151og/5qM=
-X-Gm-Gg: ASbGncsi/c8pYG836xeSxcs0XhhgNzHUIiQnqu1yXS5GdRfa5Kiv4/XKc3SqMSnw7T4
-	WSa3A7VfQf14wUDINEtYU2nW5HnqxQi+UmM0i8lpHFNBpY/m20kUFndPwPij2lzNznfXkz8pwfY
-	GKdOb+b+s8M8TAt+y3+pzbZdpACx18XVoXbY5giIGuXjPFgDyvTebanC8j49ph+x7R7Z9jwOveF
-	+C3Bu3Mqpouz/tFe8scbW4+9/2wxFgSfojM8oz8LYScnIMcK7H1AShOPpfVHWEXatXrAIM5YSQw
-	EESx2lv+WiTD+R9VIgxoLQ66+1VnlH+pN8GDMqt+v288Tv5bl9j9977q8H6GWAeZ82vwta/Gwgv
-	H4y5PrRG7JPwsBP7XzP58o4UwX5mu+JVL3N0t42Zq10ZLyicgtmZ0Erg=
-X-Google-Smtp-Source: AGHT+IHIdelXM/juBeZdBT2mpMG9IEAeg6WqVFuLaLCqevoOdj7pu44PT6QaSAm6TwE764TKwiDEHw==
-X-Received: by 2002:a05:600c:348f:b0:450:cabd:160 with SMTP id 5b1f17b1804b1-4538b24401fmr9526295e9.3.1750923302924;
-        Thu, 26 Jun 2025 00:35:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750923305; x=1751528105;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O5XPh45yd+Nk6SuA5lhfFS0Jt1da9i/6L9WmurJtxcs=;
+        b=UNUr2lhywPwuUMgpOpC2BNn87RevR8vKOsA8uJbtilV103KnZGNl0OgR74Gn9XR0HX
+         81GSCstikRmq3E6GRTk0zHyZy4TrPBI+re7dq1kE0MRxfxXh78bloUVdiY9D8dYrAxPD
+         OMjPJqWve3jZn8swZBYC1UjQsiq64Igu6t57wyOhTTx0QVInDSRBFaTBc2TEacn0uCRS
+         hM4i7Il7LxfPd/Hcnf5/z+77MOvrWrAvZAFEalJhLkMm/85poUGBUCcG8gFLGPo+nSDb
+         cfe0kVTMznwIWIwlHu+hZPXw2emvv6V7Tzebbwl9tw/UltjZ76Tp6ePI0FUIQv3fgCW3
+         4E8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXIh/k3+5ImsEUmwWa9Ed91Ysf6cdJ/yZPRpeFTLqHyiaJLmcF8Br/BD0CKwmmf1JQNrqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfcqKFKRp6k6CI+WTwPNP7MTzEmVXGDDgLBaDV8GHMbaRy3RRJ
+	2QRmriQvzy+SSRFD9+ARUx1ahD5NR94Q9VzDJ0BovwcIBYFd1mGXG07duMiVIs7iPFU=
+X-Gm-Gg: ASbGncs+cYd5qmLNx57hMtsB/WI13YNlsx+5YmNaYKx5bTTwn6ZQZH1ZdunzQDHaw1z
+	VXlwAnh9Qz/4dJzZ7zRx7obxSVJo/dv0GGMFM3eLGNy7Xi9IaqNXb31ZqUEREaC35W2QJiNxjCN
+	nEyrbZltsdVpnKaWO4cRReao5Ht8BcqyGkDIUWBPKVM4g2l1DmuzQXBYK8/ujWani14CoBT6fcd
+	RL/HDaC+bIxULaXOzPsgCkUZBHfAdl9gx/wJGDRMcOXTnZtV/u4KQ2l4z4QxpvKmPg6oQZ2BNpU
+	66J8Z2CZOszkts9XQW0gjYFG51FWn/dXTk2l7AFR/CtCXmC1EkilkjawyOE3zNm8aTxeCiV8meO
+	Ha0nwlgZmujwVjnBERH+cNoxgSyhrHqhS4UgsEum28Ra/YVczVkIUjP+MTwgu7k+3cQ==
+X-Google-Smtp-Source: AGHT+IEBrOs73t67jM5D59x0wRbutccRfF6WPF3sqzOkzosTDmoiWkTFVdPobFltUV6X43uEwQGgxA==
+X-Received: by 2002:a05:600c:4594:b0:450:c20d:64c3 with SMTP id 5b1f17b1804b1-45381ae454fmr61492025e9.18.1750923304562;
+        Thu, 26 Jun 2025 00:35:04 -0700 (PDT)
 Received: from nuc.fritz.box (p200300faaf22cf00fd30bd6f0b166cc4.dip0.t-ipconnect.de. [2003:fa:af22:cf00:fd30:bd6f:b16:6cc4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f259dsm6692451f8f.50.2025.06.26.00.35.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f259dsm6692451f8f.50.2025.06.26.00.35.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 00:35:02 -0700 (PDT)
+        Thu, 26 Jun 2025 00:35:04 -0700 (PDT)
 From: Mathias Krause <minipli@grsecurity.net>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Sean Christopherson <seanjc@google.com>,
 	Chao Gao <chao.gao@intel.com>,
 	kvm@vger.kernel.org,
 	Mathias Krause <minipli@grsecurity.net>
-Subject: [kvm-unit-tests PATCH v2 00/13] Improve CET tests
-Date: Thu, 26 Jun 2025 09:34:46 +0200
-Message-ID: <20250626073459.12990-1-minipli@grsecurity.net>
+Subject: [kvm-unit-tests PATCH v2 02/13] x86: cet: Remove unnecessary memory zeroing for shadow stack
+Date: Thu, 26 Jun 2025 09:34:48 +0200
+Message-ID: <20250626073459.12990-3-minipli@grsecurity.net>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250626073459.12990-1-minipli@grsecurity.net>
+References: <20250626073459.12990-1-minipli@grsecurity.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,49 +78,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chao Gao <chao.gao@intel.com>
 
-this is a v2 of [1] and [2]. It's merging the two series as well as
-integrating feedback and minor fixes.
+Skip mapping the shadow stack as a writable page and the redundant memory
+zeroing.
 
-[1] https://lore.kernel.org/kvm/20250513072250.568180-1-chao.gao@intel.com/
-[2] https://lore.kernel.org/kvm/20250620153912.214600-1-minipli@grsecurity.net/
+Currently, the shadow stack is allocated using alloc_page(), then mapped as
+a writable page, zeroed, and finally mapped as a shadow stack page. The
+memory zeroing is redundant as alloc_page() already does that.
 
-Please apply!
+This also eliminates the need for invlpg, as the shadow stack is no
+longer mapped writable.
 
-Thanks,
-Mathias
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+[mks: drop invlpg() as it's no longer needed, adapted changelog accordingly]
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+---
+v2:
+- dropped invlpg(), no longer needed
 
+ x86/cet.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-Chao Gao (7):
-  x86: cet: Remove unnecessary memory zeroing for shadow stack
-  x86: cet: Directly check for #CP exception in run_in_user()
-  x86: cet: Validate #CP error code
-  x86: cet: Use report_skip()
-  x86: cet: Drop unnecessary casting
-  x86: cet: Validate writing unaligned values to SSP MSR causes #GP
-  x86: cet: Validate CET states during VMX transitions
-
-Mathias Krause (5):
-  x86: cet: Make shadow stack less fragile
-  x86: cet: Simplify IBT test
-  x86: cet: Use symbolic values for the #CP error codes
-  x86: cet: Test far returns too
-  x86: Avoid top-most page for vmalloc on x86-64
-
-Yang Weijiang (1):
-  x86: cet: Pass virtual addresses to invlpg
-
- lib/x86/msr.h      |   1 +
- lib/x86/usermode.c |   4 ++
- lib/x86/vm.c       |   2 +
- x86/vmx.h          |   8 +++-
- x86/cet.c          | 110 ++++++++++++++++++++++++++-------------------
- x86/lam.c          |  10 ++---
- x86/vmx_tests.c    |  81 +++++++++++++++++++++++++++++++++
- x86/unittests.cfg  |   7 +++
- 8 files changed, 171 insertions(+), 52 deletions(-)
-
+diff --git a/x86/cet.c b/x86/cet.c
+index 51a54a509a47..ce4de5e44c35 100644
+--- a/x86/cet.c
++++ b/x86/cet.c
+@@ -67,7 +67,6 @@ int main(int ac, char **av)
+ {
+ 	char *shstk_virt;
+ 	unsigned long shstk_phys;
+-	unsigned long *ptep;
+ 	pteval_t pte = 0;
+ 	bool rvc;
+ 
+@@ -90,17 +89,8 @@ int main(int ac, char **av)
+ 	shstk_phys = (unsigned long)virt_to_phys(alloc_page());
+ 
+ 	/* Install the new page. */
+-	pte = shstk_phys | PT_PRESENT_MASK | PT_WRITABLE_MASK | PT_USER_MASK;
++	pte = shstk_phys | PT_PRESENT_MASK | PT_USER_MASK | PT_DIRTY_MASK;
+ 	install_pte(current_page_table(), 1, shstk_virt, pte, 0);
+-	memset(shstk_virt, 0x0, PAGE_SIZE);
+-
+-	/* Mark it as shadow-stack page. */
+-	ptep = get_pte_level(current_page_table(), shstk_virt, 1);
+-	*ptep &= ~PT_WRITABLE_MASK;
+-	*ptep |= PT_DIRTY_MASK;
+-
+-	/* Flush the paging cache. */
+-	invlpg((void *)shstk_virt);
+ 
+ 	/* Enable shadow-stack protection */
+ 	wrmsr(MSR_IA32_U_CET, ENABLE_SHSTK_BIT);
 -- 
 2.47.2
 
