@@ -1,73 +1,72 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D6A23B634
-	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 07:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E88123B63A
+	for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 07:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750923308; cv=none; b=sfbEt60tC+2iKqBiPhJlEHPm/7uu2npunzqME4hHY14Zr2UKVi17RMYKMRHFBAP9aLNC2FslTflwV65SNuy5F0y348KqjarCrHX48ci4DL3EFdiDpjxI3ZP/rfQOx2KM6DQ3RmwGbAsMz+eOKQHOsHUkdCa9W6/0VqlSj+6fLWc=
+	t=1750923309; cv=none; b=mnpPnD0+zButMreHmi/nj2Sv3bIXNJ0anU3+WjQ5SwuuIEHv8tjZC0Ng5HeyghU4dSo8yPyhV52Nw5Iwk4d1FVVzeqZBd16rXhMfVKuO0KdMK5ah7PHlnL0DxniGaJ4uVaGxzcDQrywOQsfwVmUt7nJ2PoFnD9gUknaMcXSVf9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750923308; c=relaxed/simple;
-	bh=V0t40/cDarifkRk2kNKvj8xTlqukAfLR+XcsTBAmKOc=;
+	s=arc-20240116; t=1750923309; c=relaxed/simple;
+	bh=M97TO5Rpeah+bdVcKAXb5RZ1MLF072JfUVD3Xsg0O7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsglrNioy0BI109z/vn30ZRONCauXjuMXNBIONryuUmcIWPDj4uGUtZ9OCFyPCB8mscQs/cedl/tpukYj9oF3r6P2eg2I8QC6Yym70xKGCpa2xlwi+sM4fm2+Pm9n/IBam52EJJwflvGRM5vodJgXWdvaCRqM4DDErNzzB/in8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=kngJ9mEN; arc=none smtp.client-ip=209.85.221.50
+	 MIME-Version; b=f4ijIya9WaVlDdgdsRmez77pM6ppdhD2J3ly2qgK/0vvVvpgCnhD1rWD/dd0dAm00hyHgK9TlIvRzGz4Lrhl+Lysr34SCPUI5UPWMRHz8KLXXIInmw5Bfzg+48QPCzP6eFs7B8h+kHLkKfXaiEU4nd2kJEUgoY2QCHlWSpPe+XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=vtzlSpvk; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensrcsec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="kngJ9mEN"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a6d77b43c9so610902f8f.3
-        for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:35:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="vtzlSpvk"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-453426170b6so10287855e9.1
+        for <kvm@vger.kernel.org>; Thu, 26 Jun 2025 00:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1750923304; x=1751528104; darn=vger.kernel.org;
+        d=grsecurity.net; s=grsec; t=1750923305; x=1751528105; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F/uuUvpHNAh5eceFxSujhVaziUUgi2G09SfMmIp8+2c=;
-        b=kngJ9mENRfTcDWqK4udcpiDhc0TK9s0ItOdMTRQ5zrBRDxyr8DUoFH+JKExcoPwcn+
-         /okJlyAzlApJAH+8E8cteiUxJRadVcwhvywHRut11+VuWVaXJwc8u1ZwgPdMe+5XmCkz
-         kjlbvnCQmSse3VNw5JSSMTIkntVMbUuyi0Lmz2Vx1pv41PXWjxEwifiL3d+6REp52lXX
-         4ui6TPTrkxbS7CFkJUCWH5f8+WHfTv3WuZo7DBQ7/fPTTdVsm58XwP2i1vNfgagasoR8
-         eX/EfPqY/z4WThdAmEB5rFwwENMdlJG+yOrSACMSCSPKvC9Ea392A1Jtj+U1UNT/vs1Z
-         aqYQ==
+        bh=O8lrMYcoX38iZDH1n4L5EtRy/RdAZQsPsDhovmot7DA=;
+        b=vtzlSpvk7WaRpi9y2PeoACAE2PsmAPfbBH7HCEBJXIoL5L3cwlDYllS6gFsW0GCyCA
+         9ghg8IIc8y41vo8+9RUNm4pL6aCQmhqyrXJSUNtAhgJWVDnuLwSWVygWa5coDOXE9XW2
+         HhDc43T51TgE4pk9MUnBIihwqNqTXf39z2MUcriwORjyDEFqOYaHM1nRRmuYqUu2zVbW
+         AMhbhWFvbW3hUHX+LEHRllly5y4w4QzwLtPAbq8X6n2G67MV0McIysCGazYGVd8daURp
+         WixSv57w3BNUmFtMvdkpzTs2Nurnrdklr1/hBnEyD0hwLv56Ik2gBIIuII9MKSJYUkgN
+         1Wlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750923304; x=1751528104;
+        d=1e100.net; s=20230601; t=1750923305; x=1751528105;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F/uuUvpHNAh5eceFxSujhVaziUUgi2G09SfMmIp8+2c=;
-        b=rj1SoqHJ3VZzWGsvR0Uqq0GeDt4ixlhE3ru7r1OSdX3Qh858tK6fmQPi41rdJVLBFR
-         RByBcv1prHnykztTE8HAHqYEoFVuV4nsjjahsxkv7tbLcm/OMbhpUG4j+yo/z96ytm46
-         +zL+KQociSV1mqXyeOZ8hh9DRIEz9BxyLC4mkTITdYKFu1I/0lVTu8o6yh9DdHYgFewR
-         VCaFUbiM1wyXutTOZJVp1O5JMSDeioDdkDLMXZ+H69YE5OOReI5kKfy/7E0EN8IbCPI6
-         0WSqJysWZjQFwcCVyGWzPLLh8hlBGSgsQRMVuseN55nySfAygXsPM8fctL/pdTwnRz8B
-         UjfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrclHEupSKdjFozLSAOEdpCz3epUl98XCpP5wpKjJlkP5Ty4CenHteft2qZyeggmXTx0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvVoGyZU4qk7s+OkgcvbkN3ALx44w39ReyV+PN26WGUNNt6Tfc
-	u3wJft3oHHDjcnSf/ffGEz/NpejGW2lmXC6DV5mc2gmLQPPpyJ665DbL5UznAu23cWs=
-X-Gm-Gg: ASbGncsJfKuNtl/Pvc6MG+OPD5P7O4kxY2rNlvlx9/DULTsNdkSVNckOUz4hlVwbKKP
-	IPWPpy1ngsCDPIjqXkunZ78+rw84N/4B/QbpEkz6YZSwNqHUMgPjFSn28UcnpXjl+t0yIwAwYa/
-	ObUBW3OLY3BzIJ9yRkR7YgMVkaak2U5VGCICLKPzx3S2GjQ9lQUX+pslU/wq/bs3z45yXRyNdTV
-	YemMpghmVjCb488TDB0lXrD/V92HQSufkQKHFVsojZpPB0pKNHYmvza93kVezci2+rjeT77qbAp
-	+CgPIM2//HMO7kdcOtT7jPrao66WSaEBAU+IPeBzW4VO9dwzmnegWu8NSEcNEj3RnEYlmF5YJyC
-	w4h9JR/R3FHA7ge1qkbwN3LPx/QCiErqZrPPc0iBBlumYCHakcVF7cVM=
-X-Google-Smtp-Source: AGHT+IH3HYX1US0UcqGP9fmbnL/NFruUf1VpoJ8DZk4odvZXBFjMICzZc2sI/P3s8TfkF+VbmMsDdg==
-X-Received: by 2002:a05:6000:178e:b0:3a5:3e47:8af5 with SMTP id ffacd0b85a97d-3a6ed637801mr5372513f8f.27.1750923303730;
-        Thu, 26 Jun 2025 00:35:03 -0700 (PDT)
+        bh=O8lrMYcoX38iZDH1n4L5EtRy/RdAZQsPsDhovmot7DA=;
+        b=wQQ6cSM9F2Q4RqShYFBeovnOQ/rFiu6RkM4LVkeErfmNO7n4dcd5K1iOwFgNunNSCS
+         cAlWJe5h/CjROZzEv3v7KzLrZEV+bghzg+naelp5vht1YhJyVFiM0OZLoI6ZVfRYBKgN
+         pFhMdeWG13rnq0ouaQgYMtGQJ9YtomApz/+dtzkPdezolhCjaQfss/7R5WBmx3uhVIOd
+         ns8UrlKl7jl+3twf3+B6Yk7NjZN38dVb1kXjgGIMZNnyRgn7n7iuLQhbCfDaCTNA+vIj
+         N7mv0iNHgraqLt2OCfif5w/asj+3TN5hsNKxfPLQTQG+/V7Xg+lGLe7U/5Tq/wwRb4tj
+         B2rg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkmI4vSgVuvjDATYpdcbkxWm8bD0yCE8BnOAY0wjGvv+iu9ASLKn3UgBOtZSW+WtkgTUA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdmjSHT+hBEm77og9u06BkOLM2HT5EWesSjnP2tvQyhbN8TRW6
+	99xyZsAS+oZdm4KAZA3ahRPzibUuId+4bLzy8hy+I0k0VGMhpBv3kVJK2+rAuwLhiHw=
+X-Gm-Gg: ASbGnctm18djOYylMyDGnyTNVKLjg9g8wzAIuH2+46yEfvwRjqjEIfCusZ9mWNxF3Vm
+	Jz25r7uIg6oWNXnQxyzBYrPucTdQOdXU41wKJa1fVaZQ7EDGpgplH+x0zD4uE1fn77gmZmULMYd
+	ecLYqY4MZz96shS977f84dH4qgloR9QSF2vtgoBpCQlggVhHiZ7YKjNUJiPfJgC0zV95IzIvl8U
+	J6PJzQjyyDOC+ukV4BjNuW62JfI/cm0wvdjHve6k0U3EODj4PNlwjNX52k07HLA0XZUtmahS2yL
+	HBG5jnlK6lUkmI+52wJqWbb+PsYUI8Z9mdmDUvVeV6NCfyedYbTRFS95w5fMVxvw9TqDmqRVxgS
+	mLBuvoMrzYDp5Iag3y1FhUgy+uMcRH14CkvJkI2R+7gNqWPipCKtYuLxSk6Z9H52Xug==
+X-Google-Smtp-Source: AGHT+IHktlAz6STrnbCoI9kVgVywiHmCSr5Ebz/C8ieoIiftLwyK6v5M2EAD45uNGvyh8JsDilO+Mw==
+X-Received: by 2002:a05:600c:a086:b0:43b:c857:e9d7 with SMTP id 5b1f17b1804b1-453889874a3mr21964175e9.5.1750923305474;
+        Thu, 26 Jun 2025 00:35:05 -0700 (PDT)
 Received: from nuc.fritz.box (p200300faaf22cf00fd30bd6f0b166cc4.dip0.t-ipconnect.de. [2003:fa:af22:cf00:fd30:bd6f:b16:6cc4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f259dsm6692451f8f.50.2025.06.26.00.35.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f259dsm6692451f8f.50.2025.06.26.00.35.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 00:35:03 -0700 (PDT)
+        Thu, 26 Jun 2025 00:35:05 -0700 (PDT)
 From: Mathias Krause <minipli@grsecurity.net>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Sean Christopherson <seanjc@google.com>,
 	Chao Gao <chao.gao@intel.com>,
 	kvm@vger.kernel.org,
-	Mathias Krause <minipli@grsecurity.net>,
-	Yang Weijiang <weijiang.yang@intel.com>
-Subject: [kvm-unit-tests PATCH v2 01/13] x86: cet: Pass virtual addresses to invlpg
-Date: Thu, 26 Jun 2025 09:34:47 +0200
-Message-ID: <20250626073459.12990-2-minipli@grsecurity.net>
+	Mathias Krause <minipli@grsecurity.net>
+Subject: [kvm-unit-tests PATCH v2 03/13] x86: cet: Directly check for #CP exception in run_in_user()
+Date: Thu, 26 Jun 2025 09:34:49 +0200
+Message-ID: <20250626073459.12990-4-minipli@grsecurity.net>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250626073459.12990-1-minipli@grsecurity.net>
 References: <20250626073459.12990-1-minipli@grsecurity.net>
@@ -79,37 +78,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yang Weijiang <weijiang.yang@intel.com>
+From: Chao Gao <chao.gao@intel.com>
 
-Correct the parameter passed to invlpg.
+Current CET tests validate if a #CP exception is raised by registering
+a #CP handler. This handler counts the #CP exceptions and raises a #GP
+exception, which is then caught by the run_in_user() infrastructure to
+switch back to the kernel. This is convoluted.
 
-The invlpg instruction should take a virtual address instead of a physical
-address when flushing TLBs. Using shstk_phys results in TLBs associated
-with the virtual address (shstk_virt) not being flushed, and the virtual
-address may not be treated as a shadow stack address if there is a stale
-TLB. So, subsequent shadow stack accesses to shstk_virt may cause a #PF,
-which terminates the test unexpectedly.
+Catch the #CP exception directly by run_in_user() to avoid the manual
+counting of #CP exceptions and the #CP->#GP dance.
 
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Mathias Krause <minipli@grsecurity.net>
 ---
- x86/cet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ x86/cet.c | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
 diff --git a/x86/cet.c b/x86/cet.c
-index 42d2b1fc043f..51a54a509a47 100644
+index ce4de5e44c35..1ce576fe0291 100644
 --- a/x86/cet.c
 +++ b/x86/cet.c
-@@ -100,7 +100,7 @@ int main(int ac, char **av)
- 	*ptep |= PT_DIRTY_MASK;
+@@ -8,9 +8,6 @@
+ #include "alloc_page.h"
+ #include "fault_test.h"
  
- 	/* Flush the paging cache. */
--	invlpg((void *)shstk_phys);
-+	invlpg((void *)shstk_virt);
+-static int cp_count;
+-static unsigned long invalid_offset = 0xffffffffffffff;
+-
+ static u64 cet_shstk_func(void)
+ {
+ 	unsigned long *ret_addr, *ssp;
+@@ -54,15 +51,6 @@ static u64 cet_ibt_func(void)
+ #define ENABLE_SHSTK_BIT 0x1
+ #define ENABLE_IBT_BIT   0x4
  
- 	/* Enable shadow-stack protection */
- 	wrmsr(MSR_IA32_U_CET, ENABLE_SHSTK_BIT);
+-static void handle_cp(struct ex_regs *regs)
+-{
+-	cp_count++;
+-	printf("In #CP exception handler, error_code = 0x%lx\n",
+-		regs->error_code);
+-	/* Below jmp is expected to trigger #GP */
+-	asm("jmpq *%0": :"m"(invalid_offset));
+-}
+-
+ int main(int ac, char **av)
+ {
+ 	char *shstk_virt;
+@@ -70,7 +58,6 @@ int main(int ac, char **av)
+ 	pteval_t pte = 0;
+ 	bool rvc;
+ 
+-	cp_count = 0;
+ 	if (!this_cpu_has(X86_FEATURE_SHSTK)) {
+ 		printf("SHSTK not enabled\n");
+ 		return report_summary();
+@@ -82,7 +69,6 @@ int main(int ac, char **av)
+ 	}
+ 
+ 	setup_vm();
+-	handle_exception(CP_VECTOR, handle_cp);
+ 
+ 	/* Allocate one page for shadow-stack. */
+ 	shstk_virt = alloc_vpage();
+@@ -102,15 +88,14 @@ int main(int ac, char **av)
+ 	write_cr4(read_cr4() | X86_CR4_CET);
+ 
+ 	printf("Unit test for CET user mode...\n");
+-	run_in_user((usermode_func)cet_shstk_func, GP_VECTOR, 0, 0, 0, 0, &rvc);
+-	report(cp_count == 1, "Completed shadow-stack protection test successfully.");
+-	cp_count = 0;
++	run_in_user((usermode_func)cet_shstk_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
++	report(rvc, "Shadow-stack protection test.");
+ 
+ 	/* Enable indirect-branch tracking */
+ 	wrmsr(MSR_IA32_U_CET, ENABLE_IBT_BIT);
+ 
+-	run_in_user((usermode_func)cet_ibt_func, GP_VECTOR, 0, 0, 0, 0, &rvc);
+-	report(cp_count == 1, "Completed Indirect-branch tracking test successfully.");
++	run_in_user((usermode_func)cet_ibt_func, CP_VECTOR, 0, 0, 0, 0, &rvc);
++	report(rvc, "Indirect-branch tracking test.");
+ 
+ 	write_cr4(read_cr4() & ~X86_CR4_CET);
+ 	wrmsr(MSR_IA32_U_CET, 0);
 -- 
 2.47.2
 
