@@ -1,113 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61C52356C0;
-	Thu, 26 Jun 2025 08:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390902957AD;
+	Thu, 26 Jun 2025 08:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750926079; cv=none; b=mnqtx0y6nBPdNupfIBACbYxSBmKNBpRiKoQDvQOdpId9aBctv1imXG+utSauoUiSb09jcoukEn7aeU1aypNZmnEtfR9lxn+MlzBUl1PT5pYKTe4NWHlwb9rBU0UEhyc+UAhyu63xAZitp/G3Tdis+PfJYAu+13LbwVSOo/FLSIg=
+	t=1750928017; cv=none; b=kRkfonT56/Cl5terZPhhZ+tHPkajajxw7vUl4kBXIdAmmvjpb7pH0vdCWkQd/Pjdz+LqWaoZgWOJZcVDU6XAnA+Ynl3iqsXfFOLB4ztGaiRGRHN5F4E0BrFCDaWIXSN9Ul+zaDQRaDGjcASIcJJLwF+IU1a8gdtSZN7Bn2VDgyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750926079; c=relaxed/simple;
-	bh=mS2rnH3fTEDroz6sbYHUy5zTCOw1PaG3HCJiJL66aVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EsnRm268kqN1aGzoCz5KKJKonI7Z+wmYqhDMKXLbuv38L+9j3dGvj1FYLYcfwWSjL2a8llXpUsMStDKbnFW2s/W9WmZbTReStQ4uqszG4uYoDN0NqPoyp/3dMtvJnELacsid5xovHGsoIqRlQuevIvZT6jV5nyFbR5NyommLgSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVFekQ6f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750928017; c=relaxed/simple;
+	bh=qjCW5fANYpBxZMos/0B9Lmzp0fOKP2cSn0Aj7JueaHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RACe5dYR/wJRZDiMA2E61BPitoBAgc/VFvRhDfairzO3p/n9Gdzk8ixHeKlcHtZjZDjlMm7hLnt3b1HY+Jz8Ly4QbE2CAnOmd0BRHbHuiBRjPmb3M/JqLEIQYuvvb+0tUwhB/KxK8XUh1pk5///lQxU7GSdqLi/fLY5wVZWFQVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FXYpPg1/; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVFekQ6f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F93AC4CEEB;
-	Thu, 26 Jun 2025 08:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750926079;
-	bh=mS2rnH3fTEDroz6sbYHUy5zTCOw1PaG3HCJiJL66aVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GVFekQ6fGGRKvBKRNsCKK583D6A4cf6LjZ/xjYdaItUFnpA582ppkz2/t01OkedVy
-	 tVdFBeAQztmQVF8mPZf0gCA7u6opaErBo20kT0U7jqIq/XloOVLX7gcraZYP/0Jvfk
-	 WN0kqb8tc9LmceFmCTmvKi+xA86EOlePwQHMiIXveQsMI2ZkJuZszm4leFofSj1SE7
-	 FGi3Cg96HpNGuHle8as1DK2ACot4PzZ6i93DRK1YZX0038nuBhCeNaStOdtxKnBWqs
-	 Cs0r4fzPkrPpzJlBKYDxC3T3Boeo+flJc85jq8h/9Ir2IuvSOj1sErud6wwjrnbPK2
-	 GcyMCr/PZz8yg==
-Date: Thu, 26 Jun 2025 10:21:15 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] x86/sev/vc: fix efi runtime instruction emulation
-Message-ID: <aF0C-wVwXWxFjgud@gmail.com>
-References: <20250626074236.307848-1-kraxel@redhat.com>
- <20250626074236.307848-2-kraxel@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FXYpPg1/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750928017; x=1782464017;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qjCW5fANYpBxZMos/0B9Lmzp0fOKP2cSn0Aj7JueaHQ=;
+  b=FXYpPg1/PSsqmk0t1D/Mf3cvkSEpESTu+RD8JpnFIgPMbLrxA4eHJNc7
+   mOtrhTF5gf4zC3s/8mMGPk7FlCbgCZW6YSp9pzWSyqjrtEkwLNqpM4kDJ
+   vUDSiIkmFWtJAJ1CY1UfN6F8e9jc0xUnpqenb8V8iOTVaYkCadLau6NGu
+   beXOqcRsUzr7l2SJd4umKDF86+QeYJxF7tzkbCfrFrEIwrcuBX8MJbOsX
+   5D/Q/pjjfs0h5wfQmhfThKAI4dLAAoVQZp6AIwBz5MwJ+ultxgj90+GlM
+   s/9f/WhKdgADOpaLwnsx3oCJEf524pqWpyR3Y+Xl+BFIVQd3+f0WjJPKr
+   Q==;
+X-CSE-ConnectionGUID: ORqFRwSGTTiqXZEmKGgQRw==
+X-CSE-MsgGUID: gTcqmOXgR0mXFHK+505ulw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64649479"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="64649479"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 01:53:36 -0700
+X-CSE-ConnectionGUID: MYHDrDs1T4GgRk7RUyBgsQ==
+X-CSE-MsgGUID: BuxoA7uNSmmxTflue01UJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="151975111"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 01:53:33 -0700
+Message-ID: <b8b3f43d-5e02-4072-8954-1f0c6f80eaae@intel.com>
+Date: Thu, 26 Jun 2025 16:53:28 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250626074236.307848-2-kraxel@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/5] KVM: x86: Replace growing set of *_in_guest bools
+ with a u64
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>
+Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Jim Mattson <jmattson@google.com>
+References: <20250626001225.744268-1-seanjc@google.com>
+ <20250626001225.744268-2-seanjc@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250626001225.744268-2-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-* Gerd Hoffmann <kraxel@redhat.com> wrote:
-
-> In case efi_mm is active go use the userspace instruction decoder which
-> supports fetching instructions from active_mm.  This is needed to make
-> instruction emulation work for EFI runtime code, so it can use cpuid
-> and rdmsr.
+On 6/26/2025 8:12 AM, Sean Christopherson wrote:
+> From: Jim Mattson <jmattson@google.com>
 > 
-> EFI runtime code uses the cpuid instruction to gather information about
-> the environment it is running in, such as SEV being enabled or not, and
-> choose (if needed) the SEV code path for ioport access.
+> Store each "disabled exit" boolean in a single bit rather than a byte.
 > 
-> EFI runtime code uses the rdmsr instruction to get the location of the
-> CAA page (see SVSM spec, section 4.2 - "Post Boot").
-> 
-> The big picture behind this is that the kernel needs to be able to
-> properly handle #VC exceptions that come from EFI runtime services.
-> Since EFI runtime services have a special page table mapping for the EFI
-> virtual address space, the efi_mm context must be used when decoding
-> instructions during #VC handling.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  arch/x86/coco/sev/vc-handle.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-> index 0989d98da130..e498a8965939 100644
-> --- a/arch/x86/coco/sev/vc-handle.c
-> +++ b/arch/x86/coco/sev/vc-handle.c
-> @@ -17,6 +17,7 @@
->  #include <linux/mm.h>
->  #include <linux/io.h>
->  #include <linux/psp-sev.h>
-> +#include <linux/efi.h>
->  #include <uapi/linux/sev-guest.h>
->  
->  #include <asm/init.h>
-> @@ -178,9 +179,14 @@ static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
->  		return ES_OK;
->  }
->  
-> +/*
-> + * User instruction decoding is also required for the EFI runtime. Even though
-> + * EFI runtime is running in kernel mode, it uses special EFI virtual address
+> No functional change intended.
 
-s/Even though EFI runtime
- /Even though the EFI runtime
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-> + * mappings that require the use of efi_mm to properly address and decode.
-> + */
->  static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
->  {
-> -	if (user_mode(ctxt->regs))
-> +	if (user_mode(ctxt->regs) || current->active_mm == &efi_mm)
-
-Instead of open-coding that condition, we have mm_is_efi() for that.
-
-Thanks,
-
-	Ingo
