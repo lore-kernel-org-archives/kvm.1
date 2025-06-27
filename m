@@ -1,115 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74E326B2A9;
-	Fri, 27 Jun 2025 08:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E586293C48;
+	Fri, 27 Jun 2025 09:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751014526; cv=none; b=WCVHABLMtPHl25cCJpjZisjvHE3MzPnQpaGqwOFZMa0TbJFMusJJgNy8t1MMLquLPwuZzYaSTZsIOxyLUrTh93HGRcA5X5iWfgeKwy7+huC15vQFX/RBGxRex+/k0Vn/y5r4XSASCx+gGQ6U787ly3p1bCj60/4aq28pA7kq4Gs=
+	t=1751015069; cv=none; b=bkbJb3V4wbvE7lpLAz+TaxvOH9tiUC7LDEA4zZ9tJRpJumqF2w7agpXoW8FkRPv28zNDMtIpHKEdpKMReF43Ccr00lJaT4v6nXN9msCTLgTH0LWUVEZOmnhCNTsyE4m2hJHi34Vi4R0lX2GDIudq1hFRXNcsIqweNkVUS8QTPqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751014526; c=relaxed/simple;
-	bh=z+tpwjWBjnR0vETOhJx8rBu966vEEey3sKuCSDd+jvo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u8opd1awqrMlAPT3/gVifdkJw+cm92Ls8KjtR7kpSecQl8UTjCTIBUJN8HB8XriKufctD9oS8WZF3M4+XEUdLliLe/Estb2HvAsbXTxuxOOZcwF1KSmbQKVeka57hO6qeBwqHGqBTaLeZFZkPg79hWQZ0rb/7GnJg/EmR+wYxzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSqynEiO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSqynEiO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21A5C4CEE3;
-	Fri, 27 Jun 2025 08:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751014526;
-	bh=z+tpwjWBjnR0vETOhJx8rBu966vEEey3sKuCSDd+jvo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NSqynEiO4z/hGE+4PNsPRMBOUqJcpG+Wp9qIT7MXKkFpPf4B+j/JnZapFo6x7q8R4
-	 PZqLPPv+7dij67bid1Po7dyBPG6KDp6oqKWDMAb8XgxUvA0GHdXzCdt7ugae2EsSLW
-	 nyvhdxKu+/d/UAk/JfulwmXOiqtssrlfoIvOx7EKoMQ43UgfHre5Ut6ewqukZpVUHB
-	 Cu4ZQionjKLU8+L5DwU+nyaZufrvkLuauL+EFoyf7d99d9MgoDIaljCvOPjOxbwoXH
-	 feclRwz8wMafmWorbQuSsS6Wkkkz1Imn7d9dMczvDC9/bI3fUcclN4iJcAtseClQmp
-	 IGwvCC+Zk9dvA==
-Date: Fri, 27 Jun 2025 13:55:53 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: mlevitsk@redhat.com
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vasant Hegde <vasant.hegde@amd.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: Re: [EARLY RFC] KVM: SVM: Enable AVIC by default from Zen 4
-Message-ID: <bp7gjrbq2xzgirehv6emtst2kywjgmcee5ktvpiooffhl36stx@bemru6qqrnsf>
-References: <20250626145122.2228258-1-naveen@kernel.org>
- <66bab47847aa378216c39f46e072d1b2039c3e0e.camel@redhat.com>
- <aF2VCQyeXULVEl7b@google.com>
- <4ae9c25e0ef8ce3fdd993a9b396183f3953c3de7.camel@redhat.com>
+	s=arc-20240116; t=1751015069; c=relaxed/simple;
+	bh=WK6qQPO9YtNDQ0NAVtBK294K4n0DYb70ujFjHoVezxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UbR/J9kUcr9s9gRLw2+N7Q21tyey5mdZur2MevJDKQvvDBCTAvt3pNQeshLmAbfNU7g3sz85RbE3t7xvmAzcNk8XGelFjXC77651N8GHG0+O8kWgeiJCo6aKDLl6Cei55cV6tTxxyGN+FToDQ7KPMZBQeIIpYRxJAQiQM//ZIsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1FDAA1A00;
+	Fri, 27 Jun 2025 02:04:09 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F7633F762;
+	Fri, 27 Jun 2025 02:04:23 -0700 (PDT)
+Message-ID: <603eb4c7-5570-438c-b747-cdcc67b09ea6@arm.com>
+Date: Fri, 27 Jun 2025 10:04:21 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4ae9c25e0ef8ce3fdd993a9b396183f3953c3de7.camel@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/22] arm64: Generate sign macro for sysreg Enums
+To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
+ Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20250626200459.1153955-1-coltonlewis@google.com>
+ <20250626200459.1153955-3-coltonlewis@google.com>
+Content-Language: en-US
+From: Ben Horgan <ben.horgan@arm.com>
+In-Reply-To: <20250626200459.1153955-3-coltonlewis@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Maxim, Sean,
-Thanks for the feedback!
+Hi Colton,
 
-On Thu, Jun 26, 2025 at 03:14:42PM -0400, mlevitsk@redhat.com wrote:
-> On Thu, 2025-06-26 at 11:44 -0700, Sean Christopherson wrote:
-> > On Thu, Jun 26, 2025, mlevitsk@redhat.com wrote:
-> > > On Thu, 2025-06-26 at 20:21 +0530, Naveen N Rao (AMD) wrote:
-> > > IMHO the cleanest way is probably:
-> > > 
-> > > On Zen2 - enable_apicv off by default, when forced to 1, activate
-> > > the workaround for it. AFAIK with my workaround, there really should
-> > > not be any issues, but since hardware is quite old, I am OK to keep it disabled.
-> > > 
-> > > On Zen3, AFAIK the errata #1235 is not present, so its likely that AVIC is
-> > > fully functional as well, except that it is also disabled in IOMMU,
-> > > and that one AFAIK can't be force-enabled.
-> > > 
-> > > I won't object if we remove force_avic altogether and just let the user also explicitly 
-> > > enable avic with enable_apicv=1 on Zen3 as well.
-> > 
-> > I'm not comfortable ignoring lack of enumerated support without tainting the
-> > kernel.
+On 6/26/25 21:04, Colton Lewis wrote:
+> There's no reason Enums shouldn't be equivalent to UnsignedEnums and
+> explicitly specify they are unsigned. This will avoid the annoyance I
+> had with HPMN0.
+An Enum can be annotated with the field's sign by updating it to 
+UnsignedEnum or SignedEnum. This is explained in [1].
+
+With this change ID_AA64PFR1_EL1.MTE_frac would be marked as unsigned 
+when it should really be considered signed.
+
+Enum	43:40	MTE_frac
+	0b0000	ASYNC
+	0b1111	NI
+EndEnum
+
+
 > 
-> The kernel can still be tainted in this case, just that it is technically possible to drop 
-> force_avic, and instead just allow user to pass avic=1 instead, since it is
-> not on by default and KVM can still print the same warning and taint the kernel
-> when user passes avic=1 on Zen3.
-
-This will be a problem in scenarios where it is desirable to enable AVIC 
-only if it is enabled on the system, but not otherwise. As an example, 
-there are deployments where the 'avic' kernel module parameter is 
-enabled fleet-wide (across Zen3/Zen4/Zen5), and it is expected that it 
-be only enabled when supported on the system.
-
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+>   arch/arm64/tools/gen-sysreg.awk | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Back when I implemented this, I just wanted to be a bit safer, a bit more explicit that
-> this uses an undocumented feature.
-> 
-> It doesn't matter much though.
-> 
-> > 
-> > I don't see any reason to do major surgery, just give "avic" auto -1/0/1 behavior:
-
-I am wary of breaking existing users/deployments on Zen4/Zen5 enabling 
-AVIC by specifying avic=on, or avic=true today. That's primarily the 
-reason I chose not to change 'avic' into an integer. Also, post module 
-load, sysfs reports the value for 'avic' as a 'Y' or 'N' today. So if 
-there are scripts relying on that, those will break if we change 'avic' 
-into an integer.
-
-For Zen1/Zen2, as I mentioned, it is unlikely that anyone today is 
-enabling AVIC and expecting it to work since the workaround is only just 
-hitting upstream. So, I'm hoping requiring force_avic=1 should be ok 
-with the taint removed.
-
-Longer term, once we get wider testing with the workaround on Zen1/Zen2, 
-we can consider relaxing the need for force_avic, at which point AVIC 
-can be default enabled and force_avic can be limited to scenarios where 
-AVIC support is not advertised.
-
+> diff --git a/arch/arm64/tools/gen-sysreg.awk b/arch/arm64/tools/gen-sysreg.awk
+> index f2a1732cb1f6..fa21a632d9b7 100755
+> --- a/arch/arm64/tools/gen-sysreg.awk
+> +++ b/arch/arm64/tools/gen-sysreg.awk
+> @@ -308,6 +308,7 @@ $1 == "Enum" && (block_current() == "Sysreg" || block_current() == "SysregFields
+>   	parse_bitdef(reg, field, $2)
+>   
+>   	define_field(reg, field, msb, lsb)
+> +	define_field_sign(reg, field, "false")
+>   
+>   	next
+>   }
 
 Thanks,
-Naveen
+
+Ben
+
+[1] 
+https://lore.kernel.org/all/20221207-arm64-sysreg-helpers-v4-1-25b6b3fb9d18@kernel.org/
 
