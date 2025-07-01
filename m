@@ -1,153 +1,111 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED58272E7E;
-	Tue,  1 Jul 2025 12:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8364F273808
+	for <kvm@vger.kernel.org>; Tue,  1 Jul 2025 12:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751371975; cv=none; b=Yz3p44LARh0HsxsJG+vgsV9mWfhla6GsKq0Nk34pX6zDNEII4p/ChI7Dp9vbk81TkpJo+BRIvArGmPBdXZiEzvoWVRneugisUMES8+ZehkdbVxATfr8kcP+aH9DQY/gDfTJRIFtRsES8umejPJXSn8V80b2SexPJo+9p6e0C8SQ=
+	t=1751372123; cv=none; b=qCw3eu5UnE18d0YVDnQ1emYN6LZoCrTKkseCvBYrLzfjMnMgrfzQkvhX/pfbIKeTiB0fyR5ofeiJa/vyOwujMuoMJxWEfDxRnA2oda9DI2EShlOPfVlCVUbEfWm28JV0ELPkxwzTIr+3WQYizGMpIMyKrmJUpg9eHbdRj4EwuZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751371975; c=relaxed/simple;
-	bh=3wnoHoKhyAyG96eGcEYegIFhqP678K43NhXgCAcN7m8=;
+	s=arc-20240116; t=1751372123; c=relaxed/simple;
+	bh=+8OWmjwP/2bYJlYBUultibyNB+P9/EIDBMLVEEFej3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ls1LBecAyEMkhnQm9TEyCzKMsUKhRBawpRj6TdnQpj2TMGKsi/Y1FTxLNvWPChnIvlyZar7pehGwW2MHSI+0GsB71DXc15hPVSiQVcgKb608urmHsJcURKj1EqwMZrjyfZA01YlLA1h04DEJ5LM/KY/YJ30DQ5QCC6FTUu1h+2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=P+tiwVbj reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=HehdETcMxLERhXSX98mv08eA087NZ30M7cVsx4QPpR2foVOeXjGhZQN/R8qzy73KtrJz/vpF/uwtO6FZpbJmlqL3YA1nEbbB5Z1gApvYlTZhQUlud5YSEATH+PaHvbPyXb0scYk7RJcJ7dudBOGNhSsB/OC7T4rX0ySqFzMww2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LZwod6IY; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="P+tiwVbj"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 560E640E0213;
-	Tue,  1 Jul 2025 12:12:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SVdnG-6_SDU9; Tue,  1 Jul 2025 12:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1751371964; bh=3jvGCEtZYunx69KW5dVUx7Rc541oTHidTbbd0WAhMQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P+tiwVbjhDOXk/b+xVCCbcXS8uvF7/6zEEXC5h6VEtMkZfBYVoaS7uydtOYQSvagy
-	 ccbigF0AW9DTEYlNww0+3VRX++bfFbv6yCK8j2mPisuzWGQgnUaT0LfdFKs4SLkISe
-	 7yQHWuC1tIyG0W9EytouWOHU4ed2RQeb0d/f5nhCRoh86ZJYoIpDdCop5i2lYYU6ow
-	 9xLXd5tVH1pPyFWj+Zxg9shiidOCgtFL1IpCFpBmN5Ws3dHEp53fRhYkCjZi4MsTpu
-	 WzBD++Ii9vUWoG+MNPkXdZlNhhltfjFZ76lDpbVacKHUp+mZd3z+k9o6gt+R60ue6F
-	 O/TL/0O3PX1RvWJaoVw23Q0eCzstCuUE2t2Zf0n8iczuUmrgyXapaNp0+TPPRQga3Z
-	 +n+v8slwpr9I+sxT+1ZcA0e3QD2it++gpiTjiuDDjqPDW+tsmEc+2SGo3iMa3aUOlu
-	 latvAcGMSS9Z3SthI9jth4ldaO+iSeUKng0DaG1GsoKtdzJ+oZYEGkYQbZaFkUfoE4
-	 ijwA+T0CjWbdvZoVsVHKPfk4/6k95mjLlSI1fj6fbKvzO4aWSPxQwuFudd0rJFAtFg
-	 6OhnJe787YH0ta78SAhITF4ph6nrccMXThmYjZCZ2/k1HCfg4MCykt3HU5chPDXGGO
-	 V1KTJDKuMo5uoEPR4hduzcfs=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 776F640E0200;
-	Tue,  1 Jul 2025 12:12:24 +0000 (UTC)
-Date: Tue, 1 Jul 2025 14:12:18 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"Chatre, Reinette" <reinette.chatre@intel.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"sagis@google.com" <sagis@google.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3 1/6] x86/sme: Use percpu boolean to control wbinvd
- during kexec
-Message-ID: <20250701121218.GBaGPQold6Kw2M-nuc@fat_crate.local>
-References: <cover.1750934177.git.kai.huang@intel.com>
- <b963fcd60abe26c7ec5dc20b42f1a2ebbcc72397.1750934177.git.kai.huang@intel.com>
- <20250628125001.GDaF_k-e2KTo4QlKjl@fat_crate.local>
- <e7d539757247e603e0e5511d1e26bfcd58d308d1.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LZwod6IY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751372122; x=1782908122;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+8OWmjwP/2bYJlYBUultibyNB+P9/EIDBMLVEEFej3o=;
+  b=LZwod6IY+irj9fLefzG0pIwdypvHIwlPTSlJaA9pDJ9OvM26Wf+iSFwa
+   tfZqa+0Ji6qY/tmOZkMp+7oJfunmAno3QOWMsdmcG180E3Uu58YLT/8Ko
+   Q6tXCdppWtGUkTmszVwb0UAbZk/+cVvQiluznvdOjdd2T7pmm8H7eCLeU
+   jFZKYZwBjsHJcDxKVY3c7G0C+NiVzWB42DOPFstIKeGnb+oKnBjliKRyk
+   vSb4vcX/u68M06TdUZzlNhKxLOEBaNDkSLeck0fRN0F4S2wk3WvSUQD+V
+   TVW5ErmPpaCAKjAh8SLaGhclVT6m+zWQY1fszwTve7xiKYEY09sqgr+JZ
+   A==;
+X-CSE-ConnectionGUID: We9ES9uDSNe6fqa8NqnSSg==
+X-CSE-MsgGUID: iF6Kd8YCT4yBEvhx1Q9YGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="57314835"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="57314835"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 05:15:21 -0700
+X-CSE-ConnectionGUID: RPuwhi74RuaLHkGVvKCWPA==
+X-CSE-MsgGUID: t/tWrUs9ThG5f4jyYfWgZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="153530875"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa009.jf.intel.com with ESMTP; 01 Jul 2025 05:15:18 -0700
+Date: Tue, 1 Jul 2025 20:36:43 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Alexandre Chartre <alexandre.chartre@oracle.com>, qemu-devel@nongnu.org,
+	pbonzini@redhat.com, qemu-stable@nongnu.org, konrad.wilk@oracle.com,
+	boris.ostrovsky@oracle.com, maciej.szmigiero@oracle.com,
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on
+ AMD
+Message-ID: <aGPWW/joFfohy05y@intel.com>
+References: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
+ <aGO3vOfHUfjgvBQ9@intel.com>
+ <c6a79077-024f-4d2f-897c-118ac8bb9b58@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e7d539757247e603e0e5511d1e26bfcd58d308d1.camel@intel.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c6a79077-024f-4d2f-897c-118ac8bb9b58@intel.com>
 
-On Mon, Jun 30, 2025 at 11:34:34AM +0000, Huang, Kai wrote:
-> Yeah I agree the text can be improved.  I tried to run AI to simplify b=
-ut so
-> far I am not quite happy about the result yet.  I'll try more.
+On Tue, Jul 01, 2025 at 07:12:44PM +0800, Xiaoyao Li wrote:
+> Date: Tue, 1 Jul 2025 19:12:44 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised
+>  on AMD
+> 
+> On 7/1/2025 6:26 PM, Zhao Liu wrote:
+> > > unless it was explicitly requested by the user.
+> > But this could still break Windows, just like issue #3001, which enables
+> > arch-capabilities for EPYC-Genoa. This fact shows that even explicitly
+> > turning on arch-capabilities in AMD Guest and utilizing KVM's emulated
+> > value would even break something.
+> > 
+> > So even for named CPUs, arch-capabilities=on doesn't reflect the fact
+> > that it is purely emulated, and is (maybe?) harmful.
+> 
+> It is because Windows adds wrong code. So it breaks itself and it's just the
+> regression of Windows.
 
-Ask it to simplify it. I get it that you want to be exhaustive in your co=
-mmit
-message but there really is such thing as too much text.
+Could you please tell me what the Windows's wrong code is? And what's
+wrong when someone is following the hardware spec?
 
-Think of it this way: is the text I'm writing optimal when anyone needs t=
-o
-read it in the future to know why a change has been done. If not, try to =
-make
-it so.
+Do you expect software developers to make special modifications for QEMU
+after following the hardware spec? Or do you categorize this behavior as
+paravirtualization?
 
-> Yeah I agree a single u32 + flags is better.  However this is the probl=
-em in
-> the existing code (this patch only does renaming).
->=20
-> I think I can come up with a patch to clean this up and put it as the f=
-irst
-> patch of this series, or I can do a patch to clean this up after this s=
-eries
-> (either together with this series, or separately at a later time).  Whi=
-ch
-> way do you prefer?
+Resolving this issue within QEMU is already a win-win approach. I don't
+understand why you're shifting the blame onto Windows.
 
-Clean ups go first, so yeah, please do a cleanup pre-patch.
+> KVM and QEMU are not supposed to be blamed.
 
->   /*
->    * The cache may be in an incoherent state (e.g., due to memory=C2=A0
->    * encryption) and needs flushing during kexec.
->    */
+I do not think I'm blaming anything. So many people report
+this bug issue in QEMU community, and maintainer suggested a solution.
 
-Better than nothing. I'd try to explain with 1-2 sentences what can happe=
-n due
-to memory encryption and why cache invalidation is required. So that the
-comment is standalone and is not sending you on a wild goose chasing ride=
-.
+I totally agree on this way, and provide feedback to help thoroughly
+resolve the issue and prevent similar situations from happening again.
 
-> IIUC the X86_FEATURE_SME could be cleared via 'clearcpuid' kernel cmdli=
-ne.
->=20
-> Please also see my reply to Tom.
+That's all.
 
-I know but we have never said that clearcpuid=3D should be used in produc=
-tion.
-If you break the kernel using it, you get to keep the pieces. clearcpuid=3D
-taints the kernel and screams bloody murder. So I'm not too worried about
-that.
+Thanks,
+Zhao
 
-What is more relevant is this:
 
-"I did verify that booting with mem_encrypt=3Doff will start with
-X86_FEATURE_SME set, the BSP will clear it and then all APs will not see
-it set after that."
-
-which should be put there in the comment.
-
-Thx.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
