@@ -1,105 +1,273 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCE325EFBD
-	for <kvm@vger.kernel.org>; Tue,  1 Jul 2025 09:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD9A27147F
+	for <kvm@vger.kernel.org>; Tue,  1 Jul 2025 10:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751363759; cv=none; b=dCEe3qeHTM12XfyU+HBDBjOdPgGUleFcI/Bipb5xQY878RGfk2TswFlxehrxZdbFoL0KfdFbal2eD1r9Twsf2RsXuxUSZRl646HweXDQY5wRTAXi+2tojLwtJOIadmnB9tR8Fz9qU0l0a7qR32WonQkqEpmqIMGuSILdh8SeCxo=
+	t=1751364286; cv=none; b=QzqG8i18VRK61h1Dm6uzJskmVjL3DBxRH7rm2uO6XK1b/OEhrfWxS+t5hegDp/2rAZBt9UHijFU35ZIYdUVUIDgIV4R34bXNOEKPNP+B2SuruPwKsgjzUa4nPjnWeBt6vQlSr33+JcEzUWg3qDu3vJfBfII76NSoM6PIpce296k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751363759; c=relaxed/simple;
-	bh=afv89fmUIRlZo0BHE9yAFjMvJAu0qxRKCIl7b8dX23U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZntTuQDE6HxzXJKf5g+2yZzJBGPmwNBr1YxRfdS3oHwhxUaxXl+WGU833XbuaKSQ9eDLgAOeSKGONimevd+MzpteKS78PntUxIP7hJeARHkuJT3PEdSzIoLRjDAPfFUL1hxt3OiBcdjIWYx2ddoa4tqZ4nZ3CvMSmY3CZCFC6KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D0NzyV9r; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751364286; c=relaxed/simple;
+	bh=qa/gTL1PQFxXSd62WV3+sQtGyHAeVwwkiNFkufFufVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QSMFrtcc39NKsXq2ZzCXAbI+IP979BHnar9paVjr8xMASpTYuLjNoUVPmosQxjRzRtUp92A56gKxsomIXv7JQuBAcdmHPqn9U+0HsQbUj7Ai8snjjuTO9NaTB8+9MCHnfduiafxXxv4EYwfFS4KJhIben80zC/9LPDFM8YRgDqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QXjEFzEG; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D0NzyV9r"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-708d90aa8f9so55525607b3.3
-        for <kvm@vger.kernel.org>; Tue, 01 Jul 2025 02:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751363757; x=1751968557; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8z0G846kkv98HmmpTnG8gyqbySyckwlmkhjrgs/A22U=;
-        b=D0NzyV9rUjrFiK3Dd6yqcg2GoCv7XUDu0Ksa2Q6lHQEsYsSVK/gPyHS3+xEgXAzb02
-         Z9yL12iZ44R3Y1e8Vd8A1q/tPLnz4GTYmdwOdjK2vQ/d8yA7XbPyGGOvHSfQE1jz8eV9
-         mk2DGshBDAfJaRszv8HNcUakPnyM0gWxoinajlrbk/nNfPnN3eekR35db0IcVK+OZHcO
-         /c4YktJi6aF9ZtIcnM3pM9FG5wSbOGf2ULCiyavzxxSrJbsyL/mTnH4JbKNE+3a0Psya
-         61U+aXyqH/Tb/0iDfEQ+IMfU6ye2uSZaHn7l637vc3+mTKAWKVLgtHIenJDWL9kBxxg+
-         E2AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751363757; x=1751968557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8z0G846kkv98HmmpTnG8gyqbySyckwlmkhjrgs/A22U=;
-        b=tLqhpqu3fx5e0qH0HDD1kFD8e9hg/UCffKVhl4q5aWKG5qT8Ty7F+xHUcMHv54o7rf
-         +gQzkn7GADsT6Z/zvreqrnBj382/VzI4ObuHbWULjE+/RHhwCnqhPgVQlEb+GZmpL5vU
-         7nuyA3BPWiMqWzIlTU6k+2xR1oT89s9iK1m/BnSGoTFYgjATTWaGMro1RayJWy7FUk6R
-         3qOMjGhnX0FJIM95tQv+0ItJAgiDvKwmx1xtYz9IVYXwnt4APbF668mBcLejM3QKVE2J
-         w3dQYdTgqH6BflBJCu9RMYBz4Pcn+D2wLColENyXQ/lyUNH6+l06MeOvWKglzr5sNLy2
-         k5EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtB/F65cx4DbWfocXoTxNB7jr3ozW3uuxK0kfvuYUcQeQ3BpBTOfW/izx+/X3cVvjOqXc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznMp68xmaqARpSspsBIJbNCBgCAbzhEifbNNgONDVwgC2pp4lV
-	PoLaJq1Co6FuS3lOPFq6m60oyw4l+pB+3k3uQCk8WLpnfhS49A+MdkZez86uyn0SknsfSY3/QCp
-	eM0Z4W/3mQ5aP2o5b1zW7ioSEQqhIUnqKxA+GureXSA==
-X-Gm-Gg: ASbGncvRtKpaYnJdEwyN8/GyM8VseAbYvsEMPCeolYp7mZtm7BLugTcjCrlP+JSOjs9
-	yFxXyBeBpwDDAHvAXNFQqN+yiae9p94qPEjV89YGJtXJdYpbSuaYa0b6FDkBWdM1hvZXcQzOLRP
-	KDGtFfVAydIsoupcCSP/izPtzZQNrGjfAFUP5miYfeym8Y
-X-Google-Smtp-Source: AGHT+IEhKDbR82dp5Cfu/vp4vMY89S4AyhtdRYjU0RTVi8X7AVMwT9nqLWzOCbUd1tBRmTqUP3fTj9xQpyq+Su3kito=
-X-Received: by 2002:a05:690c:7401:b0:712:e22d:a235 with SMTP id
- 00721157ae682-715171af91amr251415377b3.17.1751363757070; Tue, 01 Jul 2025
- 02:55:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QXjEFzEG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751364284; x=1782900284;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qa/gTL1PQFxXSd62WV3+sQtGyHAeVwwkiNFkufFufVY=;
+  b=QXjEFzEGZPLYz9e2+msZ4NnHk5b7+/RBzOtORArTx9hrg2jLulJnCExB
+   zwl4Z2wxR8Sf0k+jt2V7Mf0IY4BZQGhTCHZG2UTfN4D+s6rdEZuN81hQV
+   EqfWJSyJz8iI+bTys+XxBVJov+K0yVjBrwvn7T5C1LndVgOckvngnJx0A
+   Th/on0ZQwKq9INtPzSAygMYulJrEra4i5gLu8ffCkoNs4DlXTZrDLNZ/O
+   Xj+gHi1g16dBYPW4K5l2a7kCBnMnvhUhF5kv9bDH1/5RNI0DwnlPi5skf
+   EgcAIvBdfseRu865rPYbX/uBr78t1Upnm5HmAO3EqzjK2TAkqYZF/G9of
+   Q==;
+X-CSE-ConnectionGUID: PI4xWwJcQqmQjuS+1Qn6aA==
+X-CSE-MsgGUID: sKOXhEKTS2mzCtoB5IvQkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="52853445"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="52853445"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 03:04:42 -0700
+X-CSE-ConnectionGUID: AHLNij5AT6m7xTsFjx/rXg==
+X-CSE-MsgGUID: lw37YHnxS7qnP7Mv7ZXzrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="153505377"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa009.jf.intel.com with ESMTP; 01 Jul 2025 03:04:40 -0700
+Date: Tue, 1 Jul 2025 18:26:04 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Alexandre Chartre <alexandre.chartre@oracle.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
+	qemu-stable@nongnu.org, konrad.wilk@oracle.com,
+	boris.ostrovsky@oracle.com, maciej.szmigiero@oracle.com,
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on
+ AMD
+Message-ID: <aGO3vOfHUfjgvBQ9@intel.com>
+References: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623121845.7214-1-philmd@linaro.org> <20250623121845.7214-13-philmd@linaro.org>
-In-Reply-To: <20250623121845.7214-13-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Jul 2025 10:55:44 +0100
-X-Gm-Features: Ac12FXxZuvpkYlYeLubDALCRe9b49Ny7Qj6d2gQPpOSrpzaCFQmZmZpMM8bnYto
-Message-ID: <CAFEAcA87+SMWdSOGBaGuNDzynaLzoFMKv3PJmbfTyd3mN_TwzQ@mail.gmail.com>
-Subject: Re: [PATCH v3 12/26] target/arm: Restrict system register properties
- to system binary
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
-	qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
-	Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alexander Graf <agraf@csgraf.de>, Bernhard Beschow <shentey@gmail.com>, John Snow <jsnow@redhat.com>, 
-	Thomas Huth <thuth@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>, 
-	Cameron Esfahani <dirty@apple.com>, Cleber Rosa <crosa@redhat.com>, 
-	Radoslaw Biernacki <rad@semihalf.com>, Phil Dennis-Jordan <phil@philjordan.eu>, 
-	Richard Henderson <richard.henderson@linaro.org>, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
 
-On Mon, 23 Jun 2025 at 13:19, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+(I'd like to CC Sean again to discuss the possibility of user space
+ removing arch-capabilities completely for AMD)
+
+On Mon, Jun 30, 2025 at 03:30:25PM +0200, Alexandre Chartre wrote:
+> Date: Mon, 30 Jun 2025 15:30:25 +0200
+> From: Alexandre Chartre <alexandre.chartre@oracle.com>
+> Subject: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on AMD
+> X-Mailer: git-send-email 2.43.5
+> 
+> KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
+> cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
+> MSR and it makes no sense to emulate it on AMD.
+> 
+> As a consequence, VMs created on AMD with qemu -cpu host and using
+> KVM will advertise the ARCH_CAPABILITIES feature and provide the
+> IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
+> as the guest OS might not expect this MSR to exist on such cpus (the
+> AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
+> are not defined on the AMD architecture).
+
+This issue looks very similar to this one that others in the community
+reported:
+
+https://gitlab.com/qemu-project/qemu/-/issues/3001
+
+But there's a little difference, pls see the below comment...
+
+> A fix was proposed in KVM code, however KVM maintainers don't want to
+> change this behavior that exists for 6+ years and suggest changes to be
+> done in qemu instead.
 >
-> Do not expose the following system-specific properties on user-mode
-> binaries:
->
->  - psci-conduit
->  - cntfrq (ARM_FEATURE_GENERIC_TIMER)
->  - rvbar (ARM_FEATURE_V8)
->  - has-mpu (ARM_FEATURE_PMSA)
->  - pmsav7-dregion (ARM_FEATURE_PMSA)
->  - reset-cbar (ARM_FEATURE_CBAR)
->  - reset-hivecs (ARM_FEATURE_M)
->  - init-nsvtor (ARM_FEATURE_M)
->  - init-svtor (ARM_FEATURE_M_SECURITY)
->  - idau (ARM_FEATURE_M_SECURITY)
+> So this commit changes the behavior in qemu so that ARCH_CAPABILITIES
+> is not provided by default on AMD cpus when the hypervisor emulates it,
+> but it can still be provided by explicitly setting arch-capabilities=on.
+> 
+> Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+> ---
+>  target/i386/cpu.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 0d35e95430..7e136c48df 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -8324,6 +8324,20 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+>          }
+>      }
+>  
+> +    /*
+> +     * For years, KVM has inadvertently emulated the ARCH_CAPABILITIES
+> +     * MSR on AMD although this is an Intel-specific MSR; and KVM will
+> +     * continue doing so to not change its ABI for existing setups.
+> +     *
+> +     * So ensure that the ARCH_CAPABILITIES MSR is disabled on AMD cpus
+> +     * to prevent providing a cpu with an MSR which is not supposed to
+> +     * be there,
 
-I guess these are user-accessible via "qemu-arm -cpu max,cntfrq=3D ..."
-syntax? Makes sense to not expose them, they won't do anything
-sensible.
+Yes, disabling this feature bit makes sense on AMD platform. It's fine
+for -cpu host.
 
-thanks
--- PMM
+> unless it was explicitly requested by the user.
+
+But this could still break Windows, just like issue #3001, which enables
+arch-capabilities for EPYC-Genoa. This fact shows that even explicitly
+turning on arch-capabilities in AMD Guest and utilizing KVM's emulated
+value would even break something.
+
+So even for named CPUs, arch-capabilities=on doesn't reflect the fact
+that it is purely emulated, and is (maybe?) harmful.
+
+> +     */
+> +    if (IS_AMD_CPU(env) &&
+> +        !(env->user_features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
+> +        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+> +    }
+> +
+
+I was considering whether we should tweak it in kvm_arch_get_supported_cpuid()
+until I saw this:
+
+else if (function == 7 && index == 0 && reg == R_EDX) {
+        /* Not new instructions, just an optimization.  */
+        uint32_t edx;
+        host_cpuid(7, 0, &unused, &unused, &unused, &edx);
+        ret |= edx & CPUID_7_0_EDX_FSRM;
+
+        /*
+         * Linux v4.17-v4.20 incorrectly return ARCH_CAPABILITIES on SVM hosts.
+         * We can detect the bug by checking if MSR_IA32_ARCH_CAPABILITIES is
+         * returned by KVM_GET_MSR_INDEX_LIST.
+         */
+        if (!has_msr_arch_capabs) {
+            ret &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+        }
+}
+
+What a pity! QEMU had previously workedaround CPUID_7_0_EDX_ARCH_CAPABILITIES
+correctly, but since then kvm's commit 0cf9135b773b("KVM: x86: Emulate
+MSR_IA32_ARCH_CAPABILITIES on AMD hosts") breaks the balance once again. 
+I understand the commit, and it makes up for the mismatch between the
+emulated feature bit and the MSR. Now the Windows exposes the problem of
+such emulation.
+
+So, to avoid endless workaround thereafter, I think it's time to just
+disable arch-capabilities for AMD Guest (after all, closer to the real
+hardware environment is better).
+
+Further, it helps to eliminate kernel/kvm concerns when user space resolves
+the legacy issues first. At least, IMO, pushing ABI changes in kernel/kvm
+needs to show that there is no destruction of pre-existing user space, so
+I believe a complete cleanup of QEMU is the appropriate approach.
+
+The attached code is just some simple example to show what I think:
+Starting with QEMU v10.1 for AMD Guest, to disable arch-capabilties
+feature bit and MSR.
+
+I don't have an AMD CPU, so it's untested. You can feel free to squash
+it in your patch. If so, it's better to add a "Resolves" tag in your
+commit message:
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3001
+
+Thanks,
+Zhao
+---
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index b2116335752d..c175e7d9e7b8 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -81,7 +81,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+
+-GlobalProperty pc_compat_10_0[] = {};
++GlobalProperty pc_compat_10_0[] = {
++    { TYPE_X86_CPU, "x-amd-disable-arch-capabs", "false" },
++};
+ const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
+
+ GlobalProperty pc_compat_9_2[] = {};
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9aa0ea447860..a8e83efd83f6 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8336,10 +8336,12 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+      *
+      * So ensure that the ARCH_CAPABILITIES MSR is disabled on AMD cpus
+      * to prevent providing a cpu with an MSR which is not supposed to
+-     * be there, unless it was explicitly requested by the user.
++     * be there.
+      */
+-    if (IS_AMD_CPU(env) &&
+-        !(env->user_features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++    if (cpu->amd_disable_arch_capabs && IS_AMD_CPU(env)) {
++        mark_unavailable_features(cpu, FEAT_7_0_EDX,
++            env->user_features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES,
++            "This feature is not available for AMD Guest");
+         env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
+     }
+
+@@ -9414,6 +9416,8 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+                      true),
+     DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
++    DEFINE_PROP_BOOL("x-amd-disable-arch-capabs", X86CPU, amd_disable_arch_capabs,
++                     true),
+ };
+
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 51e10139dfdf..a3fc80de3a75 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2306,6 +2306,13 @@ struct ArchCPU {
+      */
+     uint32_t guest_phys_bits;
+
++    /*
++     * Compatibility bits for old machine types.
++     * If true disable CPUID_7_0_EDX_ARCH_CAPABILITIES and
++     * MSR_IA32_ARCH_CAPABILITIES for AMD Guest.
++     */
++    bool amd_disable_arch_capabs;
++
+     /* in order to simplify APIC support, we leave this pointer to the
+        user */
+     struct DeviceState *apic_state;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 234878c613f6..40a50ae193c7 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2368,6 +2368,11 @@ int kvm_arch_init_vcpu(CPUState *cs)
+
+     cpu->kvm_msr_buf = g_malloc0(MSR_BUF_SIZE);
+
++    if (cpu->amd_disable_arch_capabs &&
++        !(env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++        has_msr_arch_capabs = false;
++    }
++
+     if (!(env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_RDTSCP)) {
+         has_msr_tsc_aux = false;
+     }
+
+
+
+
