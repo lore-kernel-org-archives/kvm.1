@@ -1,77 +1,74 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2082.outbound.protection.outlook.com [40.107.101.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E6578F5D
-	for <kvm@vger.kernel.org>; Tue,  1 Jul 2025 20:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751400057; cv=none; b=u7DZf7C4GkvEEU7GwefWbbtNmP5NMe0vbyxbe75HEBPXwTWpeTI+BoTnrWFAFTdMsPf3vG4v3EU4t2jmhMrWKubkIv1Plq0NQ0IZveJCXq5MGtnoZnx2+8PWE0dBgMj9UTTp6G5O5F8fjeLcp0vTKoFn5Yh8jkSK04H+fEL62KU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751400057; c=relaxed/simple;
-	bh=WcVFOiELnw+PnEd91G3I1oqBykOfj/UPfk3tS8mhf3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uin4j1ZuBcfUOf4zkH0x26q2G4uSxPgTRaDLhMi2ZDcSOFQWXMSXN53C8K8VIdrmYdhTGVnv9U0TH8oW8a8/GunqHVVtDycsYTd9KGz+dYIDFqssDHj6W71X6lPjFt9rCYjY9G8jWfmS/pCCWas97i4mLgdDa+8eOnDkIc5n2ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=LZWuBh/W; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B77823B60B;
+	Tue,  1 Jul 2025 20:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751400888; cv=fail; b=MeJdiiX2DCL1skYTZCnhgUEoDj9tueddw9ZyQJGYdSOuqpJor1Z81fI3UEh1rycTTUBlSveVSPm59QFPJI+gu9AlytqCsyDFJLEiu73b8h9hU4GKRvsvgZrjDTbcIBPQsSW1cKLUyyhhAlqrTYd5mD68Kh2n0j+jWSsNVKdFT5s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751400888; c=relaxed/simple;
+	bh=yCEw89DFwh3GyOrT4icPgJ1Y/1MpNaCEoB2ZiEtshRw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FKZoTwjZPABlg5uFcV268/pal9mALqrzkbT0eF6X0s/3AR2pMRHV5WGRsdT69jwG5b5cVcGE8mkMdbyTMmj217kGM3CEc9KViyEce5HG6f3OYUQNyKgu/N4Ceruml/VgC68M3UUmI9ymkRHMX0wNtpx9WFpGWb85fAsj0nmpmR0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kkvu88fu; arc=fail smtp.client-ip=40.107.101.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="LZWuBh/W"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6fada2dd785so47545896d6.2
-        for <kvm@vger.kernel.org>; Tue, 01 Jul 2025 13:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1751400054; x=1752004854; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7gT9KU2DHUO6wiBS867W/RUbF9POiOZDT89LSKeAocM=;
-        b=LZWuBh/WbrBY6Kg1kj3qz0hyq7Dd5qGRsMFQ6uc8d9zJo/ETIreWs8dncA0PO6lNWT
-         I5krCSivjIthlsaGcJ2FwINf25wHedcxck6o75kQ5MjC3H+Ae3/5jqJkOEyNIja60eUe
-         F8O3VEilkIaWfgpV3XaIozSDlXXwlqyvNoKojU6jfuaWhqokvIhi49STrxHDwLhl6GbT
-         Pj0xBWa0Ze1jgDYm6Rv4rnxkaav1RO66PsvS1QKANGk/jnyQsst51wkYZMmzAMf0Zygn
-         t11iv3P77Cl3QmXyaCMj1Hzr1MRP18bfPwV2jRwAa07hO0hIJUd8md81gpwYtT7RDjtU
-         jSjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751400054; x=1752004854;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7gT9KU2DHUO6wiBS867W/RUbF9POiOZDT89LSKeAocM=;
-        b=LOycRgdLFbWyhW3lXwnP4+cJziZdGpiJaxvH5hJf2GV3HadHvHjWyM8XtIrRVNKXCI
-         W6cP3EFjcbWTM9pC1PEyTgSwGM7peRdnyZoGMS6acU8KTJnXfboE4Nm/qn/qWVhn8S/+
-         Jezjj2MlRgMWdUsmlMvBJW7KGh/sPUSQAGe33of6Xhh/4jCDxjfixXfKOBhU5OhVUFa/
-         PmrhCv2TRt+v0dnBph0cCUSZ9JXlDWzDLGU9UdWhdvV17zHT3ZifvsSVfrmmAxy6fdrd
-         7mM/cr566AeYNHKJtbpe7dw6Ib5LKRvg4uktxGdgmA7ZCP4TArE5c+W4lFRHEfG9dvhZ
-         vmCQ==
-X-Gm-Message-State: AOJu0Yy04cyh2TmYCJlfIuobXveEgax2iaPfqaIl9CLVsZSisKz7EC1N
-	7LTiNgqVmpaWIZuk0+a+avSQwicO8ix9mdWjb4iNlMfC6xQXRX70PTfo/UDyl/vK+Z1+N/F93JG
-	onJfw
-X-Gm-Gg: ASbGncsO4gGo3QLndUX/vFIjm1RsrXgnlIpvCfU7ajwsln1kYsCTOA6RK+sFml88ThX
-	ZVVtMRDpZUj7cszQ8Ly3iVkAi5lKxwqlB/logHekB/UzMqRzUSiiWXEU0oe/ryslZT3MKiwvEOO
-	L9UuucQ/KZ5Jgqm5TmCDC1nj1UdO88Yo/Y0gLHVtgwIGynjeivKWg/snmRKXRv7H5gRikL8S7NI
-	Z99Hh6ye2VLilug82iuN9KKv3O4Laf36/66ZC0VO3mUEtH+Or0gMqObClqNExuMKziAOuMO920h
-	qPnfzP2bhYM+oIHeU/2UUzaavD3fu2pPRNEYedDXH0HLVsJC47OOMwe9TaqB4gKrl17bXVmfvzo
-	=
-X-Google-Smtp-Source: AGHT+IEp4tCCTAHKP7uN0eNNNAIstlCM+dsjw2VFF/VJEG98xLU4caRT8sIiJfsWLQ5cP1SsouYB9g==
-X-Received: by 2002:a05:6214:5a08:b0:6ed:19d1:212f with SMTP id 6a1803df08f44-6ffed7a5801mr318145296d6.5.1751400048671;
-        Tue, 01 Jul 2025 13:00:48 -0700 (PDT)
-Received: from jesse-lt.ba.rivosinc.com ([96.224.57.66])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd772e4305sm89176786d6.66.2025.07.01.13.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 13:00:48 -0700 (PDT)
-From: Jesse Taube <jesse@rivosinc.com>
-To: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-kselftest@vger.kernel.org
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Anup Patel <anup@brainfault.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Himanshu Chauhan <hchauhan@ventanamicro.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Andrew Jones <andrew.jones@linux.dev>
-Subject: [kvm-unit-tests PATCH v8] riscv: sbi: Add SBI Debug Triggers Extension tests
-Date: Tue,  1 Jul 2025 13:00:47 -0700
-Message-ID: <20250701200047.1367077-1-jesse@rivosinc.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kkvu88fu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XmzzOokgfxIh+bVPNUGEMElHBcZIsgVhXa4EdaaXmBTnUT5F0IneN9IOZHRQOOeHPGo/6ncaQkCvSUVJEcyqtp5g4+426OXlejp9swkTkh5CCltjDJdlJ469lk9NxXVgUpAkjyhudbl9tWiYb5mcTrBgisx4tXR/HdEmrM+/1R2y8W7XJ71vA44K8UBRQ8kla8y2lBlkqHYnDI1OKKn+DnpWw8xcA77DJeF1I3kn6CUpsIv3H+vAGOcp7wlxx9bWxh+wvMjl2cuM1n08uu116719AwPf91jw4gMxw8I3bxMyfPO1duGFyFQV2LilNfuhowTig/DR6/FAka9E5eoKzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7dD2hRDA6Jz2yUi0F1VuTG9ingGTJo0Kq3jKl+pEb5c=;
+ b=lNdMohPquhRepWSTtaO3lkT+ZN+AbvOSWOPQko7lncCn/Y0jfppUFparQ1wV6t5NjReKxdlVJm6/PL4Rnb1KA1uWBw6emmI4Pr3YNbehObiFjvg+tqM/BUu3X4djJbhndTbLsWwZJ8Hns18EMmHHoflRLCMoWh41mEFZK9EBQZe3ZgIKt1TMkwcbe/L7SMr9IJgCvN0wGOJVzQ6O9gUCyen6W2h3qv/X3Gd25W9K5tuScp54BwwdgqlNQ6F6QwcEQcUS/CT5a8zt+MLgfSYSia7zBGdlp+1rzoSWeXsvYNa8O7WPxBLMbh+F0mXMORXxmAAe/77m+G59/zyiTB/Ueg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7dD2hRDA6Jz2yUi0F1VuTG9ingGTJo0Kq3jKl+pEb5c=;
+ b=kkvu88fuH19rHrTPEVSVe2ZIDe1LVbWQVdEliKvzwlTk54gn0asYdtasf+UXt18qfFFFOfcI/Yeknouf4+CxQKKjkcHjHa6fJSSKp5J62IYC+xsROlwU1oeQUfuqYfvHzc8GKYiXfcVR1xl0pdzIwxeT60KNfuJABzNUpxcOaaM=
+Received: from MW4PR03CA0177.namprd03.prod.outlook.com (2603:10b6:303:8d::32)
+ by DS7PR12MB6143.namprd12.prod.outlook.com (2603:10b6:8:99::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.32; Tue, 1 Jul
+ 2025 20:14:42 +0000
+Received: from BY1PEPF0001AE16.namprd04.prod.outlook.com
+ (2603:10b6:303:8d:cafe::e0) by MW4PR03CA0177.outlook.office365.com
+ (2603:10b6:303:8d::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.32 via Frontend Transport; Tue,
+ 1 Jul 2025 20:14:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BY1PEPF0001AE16.mail.protection.outlook.com (10.167.242.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8901.15 via Frontend Transport; Tue, 1 Jul 2025 20:14:41 +0000
+Received: from purico-ed09host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 1 Jul
+ 2025 15:14:38 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <corbet@lwn.net>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<thomas.lendacky@amd.com>, <john.allen@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<akpm@linux-foundation.org>, <rostedt@goodmis.org>, <paulmck@kernel.org>
+CC: <nikunj@amd.com>, <Neeraj.Upadhyay@amd.com>, <aik@amd.com>,
+	<ardb@kernel.org>, <michael.roth@amd.com>, <arnd@arndb.de>,
+	<linux-doc@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
+Subject: [PATCH v5 0/7] Add SEV-SNP CipherTextHiding feature support
+Date: Tue, 1 Jul 2025 20:14:28 +0000
+Message-ID: <cover.1751397223.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,1013 +76,157 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE16:EE_|DS7PR12MB6143:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfba663a-ff65-4a8a-547c-08ddb8dbe9d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8X5FdhsfWysR84ZmOMEnauOUkDeD3OwP+XIq0QqYXu6TFXSpY14N/6LPVOlu?=
+ =?us-ascii?Q?ehlfabkFhzIr6v84hFOF9CvGMPwrOmYMc4suIU06HpZXnQmlPT4vQTsHnR5a?=
+ =?us-ascii?Q?WlurwT5QXe6crcX/qBxV/y9GDVU+qPieGpIjtFbKGZYyjWlfxwiik5lkFXyB?=
+ =?us-ascii?Q?DkL6Aku0XwbCRcErLC6loExWaZ/EB3W6t9TEUw3QrwYIdq2k0uNsK+SPIgU8?=
+ =?us-ascii?Q?O0QbHwyUFx1Q8T3YHgRiK5FsGyjLlBsfvHhwT74nt8YSbK6+b9/ISKdktEqd?=
+ =?us-ascii?Q?XBvZnK/iE0D2r2pOs3yiXBRLT/Al0QBUMRAnGHq7SrueLGE1F6wY+xWcIgTI?=
+ =?us-ascii?Q?iswGp23bXjurk5aZHzU0c55fVWJQjXkrpLv0tQniH4VQE98mSI42iirCCx7C?=
+ =?us-ascii?Q?VqG+mXxX2Td9sMlrjaQpBNR8LJv05B8/g9f3DNyRhq4nPHpJnIfzc1GJ5ltN?=
+ =?us-ascii?Q?Tm66XdiT1U/Zaqiqm5mbM1CNsAAPLYBovZ/Bhfv1NJABM764YX0oV1q9sK0b?=
+ =?us-ascii?Q?F6y0PTiWcj0tjQxhH4e2pWU7meNSOSuMcXiUC48Z5MwPXB5rEYL4l/0/Olj7?=
+ =?us-ascii?Q?mhxSUjahpdWK8S8QmGoUa2+PtV3GGueaRL8kcuUDjvCYs1/1aABalZvlS8Gh?=
+ =?us-ascii?Q?d6VszkowSbc4ye3To2auyb47YI1KHTU25DTecx8AJb5ICkuK77A0OWg+adrK?=
+ =?us-ascii?Q?YHVtW3KwZAo4qqoYgBQG2jQjNk8K/BKCtcoPgWkplr7DWbxXRt/W8ZqifkYe?=
+ =?us-ascii?Q?SH/QEDWHlPZuXdy6bjZ0nHlZ1Qkarrp3jpmSV9pwYvKsBM1O0BgQsdf1g7bi?=
+ =?us-ascii?Q?LhOgsCnuF8e2CQxTnbnHpysSZlKPzWkHk1U+NZygmuf5wxeSXy5F+/kvZu6e?=
+ =?us-ascii?Q?BxJJla6PRKpkxQgW9bz3XrF70s4QwC213mb80QqtI2w3GocHu/xFoY0gYurw?=
+ =?us-ascii?Q?/hx83UWDVgt8h5qSCYFnI+JFvZH0khpkrLI/9lY87EP+NfTHvkJ6xH4WoVwV?=
+ =?us-ascii?Q?QS4n4xQ8kR3TytlfXOSDQ9c4KTT7XF5sFKlDSXNZtiQmIkD2pLzmRDTHCWx2?=
+ =?us-ascii?Q?QKDFuYB0/3k/1yz2FcEvzgz8EcJMPEo431Ly6p3LcHY6esHaj+RYjuaHBLJu?=
+ =?us-ascii?Q?kadf3OH4gubrQc0Ad9z9wkF1mq06x97FtxGwCNCxGd7SWAcXNuKIduNwmIiB?=
+ =?us-ascii?Q?tznURMxv2pF+11h89uX+VQNhjVfJhJFl56yN7emfE3cpyXjpeDrWbjTq5mtn?=
+ =?us-ascii?Q?+X+zLFzGoiQftAUy4QIYdHpVhNPBBmZbx6Tv0pfCzKhkXDBuRiBJZnAHkgbc?=
+ =?us-ascii?Q?5Z5sXj+4UTgF6+XsttB0KdU717XEjuDH9Zgh2ocwCcKnr/7vAFhbg3iYSP+h?=
+ =?us-ascii?Q?oNsv/SkURUZTjZEE9v2DQfeurBlvQ+mYI8CJiO7uUpZ+L6ICH8Jixd69bO9B?=
+ =?us-ascii?Q?ltc6wJlQNojuNZxEcB7QQGUZ1yMypmKLSZOCmodpAK8hQWVOcfFVa0+VflVJ?=
+ =?us-ascii?Q?tf3wSxuU827ggjAqJtT2/yyEDC/Zcsw19rPBXfFqR8QY+njKVVgQ0qoZwA?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 20:14:41.5621
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfba663a-ff65-4a8a-547c-08ddb8dbe9d6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE16.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6143
 
-Add tests for the DBTR SBI extension.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
----
-V1 -> V2:
- - Call report_prefix_pop before returning
- - Disable compressed instructions in exec_call, update related comment
- - Remove extra "| 1" in dbtr_test_load
- - Remove extra newlines
- - Remove extra tabs in check_exec
- - Remove typedefs from enums
- - Return when dbtr_install_trigger fails
- - s/avalible/available/g
- - s/unistall/uninstall/g
-V2 -> V3:
- - Change SBI_DBTR_SHMEM_INVALID_ADDR to -1UL
- - Move all dbtr functions to sbi-dbtr.c
- - Move INSN_LEN to processor.h
- - Update include list
- - Use C-style comments
-V3 -> V4:
- - Include libcflat.h
- - Remove #define SBI_DBTR_SHMEM_INVALID_ADDR
-V4 -> V5:
- - Sort includes
- - Add kfail for update triggers
-V5 -> V6:
- - Add assert in gen_tdata1
- - Add prefix to dbtr_test_type
- - Add TRIG_STATE_DMODE
- - Add TRIG_STATE_RESERVED
- - Align function paramaters with opening parenthesis
- - Change OpenSBI < v1.7 to < v1.5
- - Constantly use spaces in prefix rather than _
- - Export split_phys_addr
- - Fix MCONTROL_U and MCONTROL_M mix up
- - Fix swapped VU and VS
- - Move /* to own line
- - Print type in dbtr_test_type
- - Remove _BIT suffix from macros
- - Remove duplicate MODE_S
- - Remove spaces before include
- - Rename tdata1,2 to trigger and control in dbtr_install_trigger
- - Report skip in dbtr_test_multiple
- - Report variables in info not pass or fail
- - s/save/store/g
- - sbi_debug_set_shmem use split_phys_addr
- - Use if (!report(... in dbtr_test_disable_enable
-V6 -> V7:
- - Alphabetize Makefile
- - Only print read info on failure
- - Remove return after assert
- - Remove unnecessary OpenSBI version check
- - Rename error to exit_test in check_dbtr
- - Use prefix in dbtr_test_num_triggers and dbtr_test_type
-V7 -> V8:
- - Add mcontrol_size mcontrol6_size
- - Cast McontrolType to int for assert
- - Set trigger size to 32BIT using mcontrol_size
-Debug triggers allow traps on different access sizes, which was set to
-any. QEMU was triggering on a 32BIT access next to the trigger address
-causing an erroneous trap. Set the size to 32BITs to avoid this.
----
- lib/riscv/asm/sbi.h |   1 +
- riscv/Makefile      |   1 +
- riscv/sbi-dbtr.c    | 867 ++++++++++++++++++++++++++++++++++++++++++++
- riscv/sbi-tests.h   |   2 +
- riscv/sbi.c         |   3 +-
- 5 files changed, 873 insertions(+), 1 deletion(-)
- create mode 100644 riscv/sbi-dbtr.c
+Ciphertext hiding prevents host accesses from reading the ciphertext
+of SNP guest private memory. Instead of reading ciphertext, the host
+will see constant default values (0xff).
 
-diff --git a/lib/riscv/asm/sbi.h b/lib/riscv/asm/sbi.h
-index a5738a5c..78fd6e2a 100644
---- a/lib/riscv/asm/sbi.h
-+++ b/lib/riscv/asm/sbi.h
-@@ -51,6 +51,7 @@ enum sbi_ext_id {
- 	SBI_EXT_SUSP = 0x53555350,
- 	SBI_EXT_FWFT = 0x46574654,
- 	SBI_EXT_SSE = 0x535345,
-+	SBI_EXT_DBTR = 0x44425452,
- };
- 
- enum sbi_ext_base_fid {
-diff --git a/riscv/Makefile b/riscv/Makefile
-index 11e68eae..9309ac12 100644
---- a/riscv/Makefile
-+++ b/riscv/Makefile
-@@ -18,6 +18,7 @@ tests += $(TEST_DIR)/sieve.$(exe)
- all: $(tests)
- 
- $(TEST_DIR)/sbi-deps += $(TEST_DIR)/sbi-asm.o
-+$(TEST_DIR)/sbi-deps += $(TEST_DIR)/sbi-dbtr.o
- $(TEST_DIR)/sbi-deps += $(TEST_DIR)/sbi-fwft.o
- $(TEST_DIR)/sbi-deps += $(TEST_DIR)/sbi-sse.o
- 
-diff --git a/riscv/sbi-dbtr.c b/riscv/sbi-dbtr.c
-new file mode 100644
-index 00000000..13f64015
---- /dev/null
-+++ b/riscv/sbi-dbtr.c
-@@ -0,0 +1,867 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * SBI DBTR testsuite
-+ *
-+ * Copyright (C) 2025, Rivos Inc., Jesse Taube <jesse@rivosinc.com>
-+ */
-+
-+#include <libcflat.h>
-+#include <bitops.h>
-+
-+#include <asm/io.h>
-+#include <asm/processor.h>
-+
-+#include "sbi-tests.h"
-+
-+#define RV_MAX_TRIGGERS			32
-+
-+#define SBI_DBTR_TRIG_STATE_MAPPED		BIT(0)
-+#define SBI_DBTR_TRIG_STATE_U			BIT(1)
-+#define SBI_DBTR_TRIG_STATE_S			BIT(2)
-+#define SBI_DBTR_TRIG_STATE_VU			BIT(3)
-+#define SBI_DBTR_TRIG_STATE_VS			BIT(4)
-+#define SBI_DBTR_TRIG_STATE_HAVE_HW_TRIG	BIT(5)
-+#define SBI_DBTR_TRIG_STATE_RESERVED		GENMASK(7, 6)
-+
-+#define SBI_DBTR_TRIG_STATE_HW_TRIG_IDX_SHIFT		8
-+#define SBI_DBTR_TRIG_STATE_HW_TRIG_IDX(trig_state)	(trig_state >> SBI_DBTR_TRIG_STATE_HW_TRIG_IDX_SHIFT)
-+
-+#define SBI_DBTR_TDATA1_TYPE_SHIFT		(__riscv_xlen - 4)
-+#define SBI_DBTR_TDATA1_DMODE			BIT_UL(__riscv_xlen - 5)
-+
-+#define SBI_DBTR_TDATA1_MCONTROL6_LOAD		BIT(0)
-+#define SBI_DBTR_TDATA1_MCONTROL6_STORE		BIT(1)
-+#define SBI_DBTR_TDATA1_MCONTROL6_EXECUTE	BIT(2)
-+#define SBI_DBTR_TDATA1_MCONTROL6_U		BIT(3)
-+#define SBI_DBTR_TDATA1_MCONTROL6_S		BIT(4)
-+#define SBI_DBTR_TDATA1_MCONTROL6_M		BIT(6)
-+#define SBI_DBTR_TDATA1_MCONTROL6_SIZE_SHIFT	16
-+#define SBI_DBTR_TDATA1_MCONTROL6_SIZE_MASK	0x7
-+#define SBI_DBTR_TDATA1_MCONTROL6_SELECT	BIT(21)
-+#define SBI_DBTR_TDATA1_MCONTROL6_VU		BIT(23)
-+#define SBI_DBTR_TDATA1_MCONTROL6_VS		BIT(24)
-+
-+#define SBI_DBTR_TDATA1_MCONTROL_LOAD		BIT(0)
-+#define SBI_DBTR_TDATA1_MCONTROL_STORE		BIT(1)
-+#define SBI_DBTR_TDATA1_MCONTROL_EXECUTE	BIT(2)
-+#define SBI_DBTR_TDATA1_MCONTROL_U		BIT(3)
-+#define SBI_DBTR_TDATA1_MCONTROL_S		BIT(4)
-+#define SBI_DBTR_TDATA1_MCONTROL_M		BIT(6)
-+#define SBI_DBTR_TDATA1_MCONTROL_SIZELO_SHIFT	16
-+#define SBI_DBTR_TDATA1_MCONTROL_SIZELO_MASK	0x3
-+#define SBI_DBTR_TDATA1_MCONTROL_SELECT		BIT(19)
-+#define SBI_DBTR_TDATA1_MCONTROL_SIZEHI_SHIFT	21
-+#define SBI_DBTR_TDATA1_MCONTROL_SIZEHI_MASK	0x3
-+
-+enum McontrolType {
-+	SBI_DBTR_TDATA1_TYPE_NONE =		(0UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_LEGACY =		(1UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_MCONTROL =		(2UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_ICOUNT =		(3UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_ITRIGGER =		(4UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_ETRIGGER =		(5UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_MCONTROL6 =	(6UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_TMEXTTRIGGER =	(7UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_RESERVED0 =	(8UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_RESERVED1 =	(9UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_RESERVED2 =	(10UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_RESERVED3 =	(11UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_CUSTOM0 =		(12UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_CUSTOM1 =		(13UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_CUSTOM2 =		(14UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+	SBI_DBTR_TDATA1_TYPE_DISABLED =		(15UL << SBI_DBTR_TDATA1_TYPE_SHIFT),
-+};
-+
-+enum Tdata1Size {
-+	SIZE_ANY = 0,
-+	SIZE_8BIT,
-+	SIZE_16BIT,
-+	SIZE_32BIT,
-+	SIZE_48BIT,
-+	SIZE_64BIT,
-+};
-+
-+enum Tdata1Value {
-+	VALUE_NONE =	0,
-+	VALUE_LOAD =	BIT(0),
-+	VALUE_STORE =	BIT(1),
-+	VALUE_EXECUTE =	BIT(2),
-+};
-+
-+enum Tdata1Mode {
-+	MODE_NONE =	0,
-+	MODE_M =	BIT(0),
-+	MODE_U =	BIT(1),
-+	MODE_S =	BIT(2),
-+	MODE_VU =	BIT(3),
-+	MODE_VS =	BIT(4),
-+};
-+
-+enum sbi_ext_dbtr_fid {
-+	SBI_EXT_DBTR_NUM_TRIGGERS = 0,
-+	SBI_EXT_DBTR_SETUP_SHMEM,
-+	SBI_EXT_DBTR_TRIGGER_READ,
-+	SBI_EXT_DBTR_TRIGGER_INSTALL,
-+	SBI_EXT_DBTR_TRIGGER_UPDATE,
-+	SBI_EXT_DBTR_TRIGGER_UNINSTALL,
-+	SBI_EXT_DBTR_TRIGGER_ENABLE,
-+	SBI_EXT_DBTR_TRIGGER_DISABLE,
-+};
-+
-+struct sbi_dbtr_data_msg {
-+	unsigned long tstate;
-+	unsigned long tdata1;
-+	unsigned long tdata2;
-+	unsigned long tdata3;
-+};
-+
-+struct sbi_dbtr_id_msg {
-+	unsigned long idx;
-+};
-+
-+/* SBI shared mem messages layout */
-+struct sbi_dbtr_shmem_entry {
-+	union {
-+		struct sbi_dbtr_data_msg data;
-+		struct sbi_dbtr_id_msg id;
-+	};
-+};
-+
-+static bool dbtr_handled;
-+
-+/* Expected to be leaf function as not to disrupt frame-pointer */
-+static __attribute__((naked)) void exec_call(void)
-+{
-+	/* skip over nop when triggered instead of ret. */
-+	asm volatile (".option push\n"
-+		      ".option arch, -c\n"
-+		      "nop\n"
-+		      "ret\n"
-+		      ".option pop\n");
-+}
-+
-+static void dbtr_exception_handler(struct pt_regs *regs)
-+{
-+	dbtr_handled = true;
-+
-+	/* Reading *epc may cause a fault, skip over nop */
-+	if ((void *)regs->epc == exec_call) {
-+		regs->epc += 4;
-+		return;
-+	}
-+
-+	/* WARNING: Skips over the trapped intruction */
-+	regs->epc += RV_INSN_LEN(readw((void *)regs->epc));
-+}
-+
-+static bool do_store(void *tdata2)
-+{
-+	bool ret;
-+
-+	writel(0, tdata2);
-+
-+	ret = dbtr_handled;
-+	dbtr_handled = false;
-+
-+	return ret;
-+}
-+
-+static bool do_load(void *tdata2)
-+{
-+	bool ret;
-+
-+	readl(tdata2);
-+
-+	ret = dbtr_handled;
-+	dbtr_handled = false;
-+
-+	return ret;
-+}
-+
-+static bool do_exec(void)
-+{
-+	bool ret;
-+
-+	exec_call();
-+
-+	ret = dbtr_handled;
-+	dbtr_handled = false;
-+
-+	return ret;
-+}
-+
-+static unsigned long mcontrol_size(enum Tdata1Size mode)
-+{
-+	unsigned long ret = 0;
-+
-+	ret |= ((mode >> 2) & SBI_DBTR_TDATA1_MCONTROL_SIZEHI_MASK)
-+		<< SBI_DBTR_TDATA1_MCONTROL_SIZEHI_SHIFT;
-+	ret |= (mode & SBI_DBTR_TDATA1_MCONTROL_SIZELO_MASK)
-+		<< SBI_DBTR_TDATA1_MCONTROL_SIZELO_SHIFT;
-+
-+	return ret;
-+}
-+
-+static unsigned long mcontrol6_size(enum Tdata1Size mode)
-+{
-+	return (mode & SBI_DBTR_TDATA1_MCONTROL6_SIZE_MASK)
-+		<< SBI_DBTR_TDATA1_MCONTROL6_SIZE_SHIFT;
-+}
-+
-+static unsigned long gen_tdata1_mcontrol(enum Tdata1Mode mode, enum Tdata1Value value)
-+{
-+	unsigned long tdata1 = SBI_DBTR_TDATA1_TYPE_MCONTROL;
-+
-+	if (value & VALUE_LOAD)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_LOAD;
-+
-+	if (value & VALUE_STORE)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_STORE;
-+
-+	if (value & VALUE_EXECUTE)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_EXECUTE;
-+
-+	if (mode & MODE_M)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_M;
-+
-+	if (mode & MODE_U)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_U;
-+
-+	if (mode & MODE_S)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL_S;
-+
-+	return tdata1;
-+}
-+
-+static unsigned long gen_tdata1_mcontrol6(enum Tdata1Mode mode, enum Tdata1Value value)
-+{
-+	unsigned long tdata1 = SBI_DBTR_TDATA1_TYPE_MCONTROL6;
-+
-+	if (value & VALUE_LOAD)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_LOAD;
-+
-+	if (value & VALUE_STORE)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_STORE;
-+
-+	if (value & VALUE_EXECUTE)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_EXECUTE;
-+
-+	if (mode & MODE_M)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_M;
-+
-+	if (mode & MODE_U)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_U;
-+
-+	if (mode & MODE_S)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_S;
-+
-+	if (mode & MODE_VU)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_VU;
-+
-+	if (mode & MODE_VS)
-+		tdata1 |= SBI_DBTR_TDATA1_MCONTROL6_VS;
-+
-+	return tdata1;
-+}
-+
-+static unsigned long gen_tdata1(enum McontrolType type, enum Tdata1Value value, enum Tdata1Mode mode)
-+{
-+	switch (type) {
-+	case SBI_DBTR_TDATA1_TYPE_MCONTROL:
-+		return gen_tdata1_mcontrol(mode, value) | mcontrol_size(SIZE_32BIT);
-+	case SBI_DBTR_TDATA1_TYPE_MCONTROL6:
-+		return gen_tdata1_mcontrol6(mode, value) | mcontrol6_size(SIZE_32BIT);
-+	default:
-+		assert_msg(false, "Invalid mcontrol type: %u", (int)type);
-+	}
-+}
-+
-+static struct sbiret sbi_debug_num_triggers(unsigned long trig_tdata1)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_NUM_TRIGGERS, trig_tdata1, 0, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_set_shmem_raw(unsigned long shmem_phys_lo,
-+					     unsigned long shmem_phys_hi,
-+					     unsigned long flags)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_SETUP_SHMEM, shmem_phys_lo,
-+			 shmem_phys_hi, flags, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_set_shmem(void *shmem)
-+{
-+	unsigned long base_addr_lo, base_addr_hi;
-+
-+	split_phys_addr(virt_to_phys(shmem), &base_addr_hi, &base_addr_lo);
-+	return sbi_debug_set_shmem_raw(base_addr_lo, base_addr_hi, 0);
-+}
-+
-+static struct sbiret sbi_debug_read_triggers(unsigned long trig_idx_base,
-+					     unsigned long trig_count)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_READ, trig_idx_base,
-+			 trig_count, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_install_triggers(unsigned long trig_count)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_INSTALL, trig_count, 0, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_update_triggers(unsigned long trig_count)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_UPDATE, trig_count, 0, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_uninstall_triggers(unsigned long trig_idx_base,
-+						  unsigned long trig_idx_mask)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_UNINSTALL, trig_idx_base,
-+			 trig_idx_mask, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_enable_triggers(unsigned long trig_idx_base,
-+					       unsigned long trig_idx_mask)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_ENABLE, trig_idx_base,
-+			 trig_idx_mask, 0, 0, 0, 0);
-+}
-+
-+static struct sbiret sbi_debug_disable_triggers(unsigned long trig_idx_base,
-+						unsigned long trig_idx_mask)
-+{
-+	return sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIGGER_DISABLE, trig_idx_base,
-+			 trig_idx_mask, 0, 0, 0, 0);
-+}
-+
-+static bool dbtr_install_trigger(struct sbi_dbtr_shmem_entry *shmem, void *trigger,
-+				 unsigned long control)
-+{
-+	struct sbiret sbi_ret;
-+	bool ret;
-+
-+	shmem->data.tdata1 = control;
-+	shmem->data.tdata2 = (unsigned long)trigger;
-+
-+	sbi_ret = sbi_debug_install_triggers(1);
-+	ret = sbiret_report_error(&sbi_ret, SBI_SUCCESS, "sbi_debug_install_triggers");
-+	if (ret)
-+		install_exception_handler(EXC_BREAKPOINT, dbtr_exception_handler);
-+
-+	return ret;
-+}
-+
-+static bool dbtr_uninstall_trigger(void)
-+{
-+	struct sbiret ret;
-+
-+	install_exception_handler(EXC_BREAKPOINT, NULL);
-+
-+	ret = sbi_debug_uninstall_triggers(0, 1);
-+	return sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+}
-+
-+static unsigned long dbtr_test_num_triggers(void)
-+{
-+	struct sbiret ret;
-+	unsigned long tdata1 = 0;
-+	/* sbi_debug_num_triggers will return trig_max in sbiret.value when trig_tdata1 == 0 */
-+
-+	report_prefix_push("available triggers");
-+
-+	/* should be at least one trigger. */
-+	ret = sbi_debug_num_triggers(tdata1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_num_triggers");
-+
-+	if (ret.value == 0) {
-+		report_fail("Returned 0 triggers available");
-+	} else {
-+		report_pass("Returned triggers available");
-+		report_info("Returned %lu triggers available", ret.value);
-+	}
-+
-+	report_prefix_pop();
-+	return ret.value;
-+}
-+
-+static enum McontrolType dbtr_test_type(unsigned long *num_trig)
-+{
-+	struct sbiret ret;
-+	unsigned long tdata1 = SBI_DBTR_TDATA1_TYPE_MCONTROL6;
-+
-+	report_prefix_push("test type");
-+	report_prefix_push("sbi_debug_num_triggers");
-+
-+	ret = sbi_debug_num_triggers(tdata1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "mcontrol6");
-+	*num_trig = ret.value;
-+	if (ret.value > 0) {
-+		report_pass("Returned mcontrol6 triggers available");
-+		report_info("Returned %lu mcontrol6 triggers available",
-+			    ret.value);
-+		report_prefix_popn(2);
-+		return tdata1;
-+	}
-+
-+	tdata1 = SBI_DBTR_TDATA1_TYPE_MCONTROL;
-+
-+	ret = sbi_debug_num_triggers(tdata1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "mcontrol");
-+	*num_trig = ret.value;
-+	if (ret.value > 0) {
-+		report_pass("Returned mcontrol triggers available");
-+		report_info("Returned %lu mcontrol triggers available",
-+			    ret.value);
-+		report_prefix_popn(2);
-+		return tdata1;
-+	}
-+
-+	report_fail("Returned 0 mcontrol(6) triggers available");
-+	report_prefix_popn(2);
-+
-+	return SBI_DBTR_TDATA1_TYPE_NONE;
-+}
-+
-+static struct sbiret dbtr_test_store_install_uninstall(struct sbi_dbtr_shmem_entry *shmem,
-+						      enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("store trigger");
-+
-+	shmem->data.tdata1 = gen_tdata1(type, VALUE_STORE, MODE_S);
-+	shmem->data.tdata2 = (unsigned long)&test;
-+
-+	ret = sbi_debug_install_triggers(1);
-+	if (!sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_install_triggers")) {
-+		report_prefix_pop();
-+		return ret;
-+	}
-+
-+	install_exception_handler(EXC_BREAKPOINT, dbtr_exception_handler);
-+
-+	report(do_store(&test), "triggered");
-+
-+	if (do_load(&test))
-+		report_fail("triggered by load");
-+
-+	ret = sbi_debug_uninstall_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+
-+	if (do_store(&test))
-+		report_fail("triggered after uninstall");
-+
-+	install_exception_handler(EXC_BREAKPOINT, NULL);
-+	report_prefix_pop();
-+
-+	return ret;
-+}
-+
-+static void dbtr_test_update(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+	bool kfail;
-+
-+	report_prefix_push("update trigger");
-+
-+	if (!dbtr_install_trigger(shmem, NULL, gen_tdata1(type, VALUE_NONE, MODE_NONE))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	shmem->id.idx = 0;
-+	shmem->data.tdata1 = gen_tdata1(type, VALUE_STORE, MODE_S);
-+	shmem->data.tdata2 = (unsigned long)&test;
-+
-+	ret = sbi_debug_update_triggers(1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_update_triggers");
-+
-+	/*
-+	 * Known broken update_triggers.
-+	 * https://lore.kernel.org/opensbi/aDdp1UeUh7GugeHp@ghost/T/#t
-+	 */
-+	kfail = __sbi_get_imp_id() == SBI_IMPL_OPENSBI &&
-+		__sbi_get_imp_version() < sbi_impl_opensbi_mk_version(1, 7);
-+	report_kfail(kfail, do_store(&test), "triggered");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_load(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+
-+	report_prefix_push("load trigger");
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_LOAD, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	report(do_load(&test), "triggered");
-+
-+	if (do_store(&test))
-+		report_fail("triggered by store");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_disable_enable(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("disable trigger");
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	ret = sbi_debug_disable_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_disable_triggers");
-+
-+	if (!report(!do_store(&test), "should not trigger")) {
-+		dbtr_uninstall_trigger();
-+		report_prefix_pop();
-+		report_skip("enable trigger: no disable");
-+
-+		return;
-+	}
-+
-+	report_prefix_pop();
-+	report_prefix_push("enable trigger");
-+
-+	ret = sbi_debug_enable_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_enable_triggers");
-+
-+	report(do_store(&test), "triggered");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_exec(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+
-+	report_prefix_push("exec trigger");
-+	/* check if loads and stores trigger exec */
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_EXECUTE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	if (do_load(&test))
-+		report_fail("triggered by load");
-+
-+	if (do_store(&test))
-+		report_fail("triggered by store");
-+
-+	dbtr_uninstall_trigger();
-+
-+	/* Check if exec works */
-+	if (!dbtr_install_trigger(shmem, exec_call, gen_tdata1(type, VALUE_EXECUTE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+	report(do_exec(), "triggered");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_read(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	const unsigned long tstatus_expected = SBI_DBTR_TRIG_STATE_S | SBI_DBTR_TRIG_STATE_MAPPED;
-+	const unsigned long tdata1 = gen_tdata1(type, VALUE_STORE, MODE_S);
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("read trigger");
-+	if (!dbtr_install_trigger(shmem, &test, tdata1)) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	ret = sbi_debug_read_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_read_triggers");
-+
-+	if (!report(shmem->data.tdata1 == tdata1, "tdata1 expected: 0x%016lx", tdata1))
-+		report_info("tdata1 found: 0x%016lx", shmem->data.tdata1);
-+	if (!report(shmem->data.tdata2 == ((unsigned long)&test), "tdata2 expected: 0x%016lx",
-+		    (unsigned long)&test))
-+		report_info("tdata2 found: 0x%016lx", shmem->data.tdata2);
-+	if (!report(shmem->data.tstate == tstatus_expected, "tstate expected: 0x%016lx", tstatus_expected))
-+		report_info("tstate found: 0x%016lx", shmem->data.tstate);
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void check_exec(unsigned long base)
-+{
-+	struct sbiret ret;
-+
-+	report(do_exec(), "exec triggered");
-+
-+	ret = sbi_debug_uninstall_triggers(base, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+}
-+
-+static void dbtr_test_multiple(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type,
-+			       unsigned long num_trigs)
-+{
-+	static unsigned long test[2];
-+	struct sbiret ret;
-+	bool have_three = num_trigs > 2;
-+
-+	if (num_trigs < 2) {
-+		report_skip("test multiple");
-+		return;
-+	}
-+
-+	report_prefix_push("test multiple");
-+
-+	if (!dbtr_install_trigger(shmem, &test[0], gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+	if (!dbtr_install_trigger(shmem, &test[1], gen_tdata1(type, VALUE_LOAD, MODE_S)))
-+		goto error;
-+	if (have_three &&
-+	    !dbtr_install_trigger(shmem, exec_call, gen_tdata1(type, VALUE_EXECUTE, MODE_S))) {
-+		ret = sbi_debug_uninstall_triggers(1, 1);
-+		sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+		goto error;
-+	}
-+
-+	report(do_store(&test[0]), "store triggered");
-+
-+	if (do_load(&test[0]))
-+		report_fail("store triggered by load");
-+
-+	report(do_load(&test[1]), "load triggered");
-+
-+	if (do_store(&test[1]))
-+		report_fail("load triggered by store");
-+
-+	if (have_three)
-+		check_exec(2);
-+
-+	ret = sbi_debug_uninstall_triggers(1, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+
-+	if (do_load(&test[1]))
-+		report_fail("load triggered after uninstall");
-+
-+	report(do_store(&test[0]), "store triggered");
-+
-+	if (!have_three &&
-+	    dbtr_install_trigger(shmem, exec_call, gen_tdata1(type, VALUE_EXECUTE, MODE_S)))
-+		check_exec(1);
-+
-+error:
-+	ret = sbi_debug_uninstall_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_uninstall_triggers");
-+
-+	install_exception_handler(EXC_BREAKPOINT, NULL);
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_multiple_types(struct sbi_dbtr_shmem_entry *shmem, unsigned long type)
-+{
-+	static unsigned long test;
-+
-+	report_prefix_push("test multiple types");
-+
-+	/* check if loads and stores trigger exec */
-+	if (!dbtr_install_trigger(shmem, &test,
-+			     gen_tdata1(type, VALUE_EXECUTE | VALUE_LOAD | VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	report(do_load(&test), "load triggered");
-+
-+	report(do_store(&test), "store triggered");
-+
-+	dbtr_uninstall_trigger();
-+
-+	/* Check if exec works */
-+	if (!dbtr_install_trigger(shmem, exec_call,
-+			     gen_tdata1(type, VALUE_EXECUTE | VALUE_LOAD | VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	report(do_exec(), "exec triggered");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_disable_uninstall(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("disable uninstall");
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	ret = sbi_debug_disable_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_disable_triggers");
-+
-+	dbtr_uninstall_trigger();
-+
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	report(do_store(&test), "triggered");
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_uninstall_enable(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("uninstall enable");
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+	dbtr_uninstall_trigger();
-+
-+	ret = sbi_debug_enable_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_enable_triggers");
-+
-+	install_exception_handler(EXC_BREAKPOINT, dbtr_exception_handler);
-+
-+	report(!do_store(&test), "should not trigger");
-+
-+	install_exception_handler(EXC_BREAKPOINT, NULL);
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_uninstall_update(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	static unsigned long test;
-+	struct sbiret ret;
-+	bool kfail;
-+
-+	report_prefix_push("uninstall update");
-+	if (!dbtr_install_trigger(shmem, NULL, gen_tdata1(type, VALUE_NONE, MODE_NONE))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	dbtr_uninstall_trigger();
-+
-+	shmem->id.idx = 0;
-+	shmem->data.tdata1 = gen_tdata1(type, VALUE_STORE, MODE_S);
-+	shmem->data.tdata2 = (unsigned long)&test;
-+
-+	/*
-+	 * Known broken update_triggers.
-+	 * https://lore.kernel.org/opensbi/aDdp1UeUh7GugeHp@ghost/T/#t
-+	 */
-+	kfail = __sbi_get_imp_id() == SBI_IMPL_OPENSBI &&
-+		__sbi_get_imp_version() < sbi_impl_opensbi_mk_version(1, 7);
-+	ret = sbi_debug_update_triggers(1);
-+	sbiret_kfail_error(kfail, &ret, SBI_ERR_FAILURE, "sbi_debug_update_triggers");
-+
-+	install_exception_handler(EXC_BREAKPOINT, dbtr_exception_handler);
-+
-+	report(!do_store(&test), "should not trigger");
-+
-+	install_exception_handler(EXC_BREAKPOINT, NULL);
-+	report_prefix_pop();
-+}
-+
-+static void dbtr_test_disable_read(struct sbi_dbtr_shmem_entry *shmem, enum McontrolType type)
-+{
-+	const unsigned long tstatus_expected = SBI_DBTR_TRIG_STATE_S | SBI_DBTR_TRIG_STATE_MAPPED;
-+	const unsigned long tdata1 = gen_tdata1(type, VALUE_STORE, MODE_NONE);
-+	static unsigned long test;
-+	struct sbiret ret;
-+
-+	report_prefix_push("disable read");
-+	if (!dbtr_install_trigger(shmem, &test, gen_tdata1(type, VALUE_STORE, MODE_S))) {
-+		report_prefix_pop();
-+		return;
-+	}
-+
-+	ret = sbi_debug_disable_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_disable_triggers");
-+
-+	ret = sbi_debug_read_triggers(0, 1);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_read_triggers");
-+
-+	if (!report(shmem->data.tdata1 == tdata1, "tdata1 expected: 0x%016lx", tdata1))
-+		report_info("tdata1 found: 0x%016lx", shmem->data.tdata1);
-+	if (!report(shmem->data.tdata2 == ((unsigned long)&test), "tdata2 expected: 0x%016lx",
-+		    (unsigned long)&test))
-+		report_info("tdata2 found: 0x%016lx", shmem->data.tdata2);
-+	if (!report(shmem->data.tstate == tstatus_expected, "tstate expected: 0x%016lx", tstatus_expected))
-+		report_info("tstate found: 0x%016lx", shmem->data.tstate);
-+
-+	dbtr_uninstall_trigger();
-+	report_prefix_pop();
-+}
-+
-+void check_dbtr(void)
-+{
-+	static struct sbi_dbtr_shmem_entry shmem[RV_MAX_TRIGGERS] = {};
-+	unsigned long num_trigs;
-+	enum McontrolType trig_type;
-+	struct sbiret ret;
-+
-+	report_prefix_push("dbtr");
-+
-+	if (!sbi_probe(SBI_EXT_DBTR)) {
-+		report_skip("extension not available");
-+		goto exit_test;
-+	}
-+
-+	num_trigs = dbtr_test_num_triggers();
-+	if (!num_trigs)
-+		goto exit_test;
-+
-+	trig_type = dbtr_test_type(&num_trigs);
-+	if (trig_type == SBI_DBTR_TDATA1_TYPE_NONE)
-+		goto exit_test;
-+
-+	ret = sbi_debug_set_shmem(shmem);
-+	sbiret_report_error(&ret, SBI_SUCCESS, "sbi_debug_set_shmem");
-+
-+	ret = dbtr_test_store_install_uninstall(&shmem[0], trig_type);
-+	/* install or uninstall failed */
-+	if (ret.error != SBI_SUCCESS)
-+		goto exit_test;
-+
-+	dbtr_test_load(&shmem[0], trig_type);
-+	dbtr_test_exec(&shmem[0], trig_type);
-+	dbtr_test_read(&shmem[0], trig_type);
-+	dbtr_test_disable_enable(&shmem[0], trig_type);
-+	dbtr_test_update(&shmem[0], trig_type);
-+	dbtr_test_multiple_types(&shmem[0], trig_type);
-+	dbtr_test_multiple(shmem, trig_type, num_trigs);
-+	dbtr_test_disable_uninstall(&shmem[0], trig_type);
-+	dbtr_test_uninstall_enable(&shmem[0], trig_type);
-+	dbtr_test_uninstall_update(&shmem[0], trig_type);
-+	dbtr_test_disable_read(&shmem[0], trig_type);
-+
-+exit_test:
-+	report_prefix_pop();
-+}
-diff --git a/riscv/sbi-tests.h b/riscv/sbi-tests.h
-index d5c4ae70..c1ebf016 100644
---- a/riscv/sbi-tests.h
-+++ b/riscv/sbi-tests.h
-@@ -97,8 +97,10 @@ static inline bool env_enabled(const char *env)
- 	return s && (*s == '1' || *s == 'y' || *s == 'Y');
- }
- 
-+void split_phys_addr(phys_addr_t paddr, unsigned long *hi, unsigned long *lo);
- void sbi_bad_fid(int ext);
- void check_sse(void);
-+void check_dbtr(void);
- 
- #endif /* __ASSEMBLER__ */
- #endif /* _RISCV_SBI_TESTS_H_ */
-diff --git a/riscv/sbi.c b/riscv/sbi.c
-index edb1a6be..3b8aadce 100644
---- a/riscv/sbi.c
-+++ b/riscv/sbi.c
-@@ -105,7 +105,7 @@ static int rand_online_cpu(prng_state *ps)
- 	return cpu;
- }
- 
--static void split_phys_addr(phys_addr_t paddr, unsigned long *hi, unsigned long *lo)
-+void split_phys_addr(phys_addr_t paddr, unsigned long *hi, unsigned long *lo)
- {
- 	*lo = (unsigned long)paddr;
- 	*hi = 0;
-@@ -1561,6 +1561,7 @@ int main(int argc, char **argv)
- 	check_susp();
- 	check_sse();
- 	check_fwft();
-+	check_dbtr();
- 
- 	return report_summary();
- }
+The SEV ASID space is basically split into legacy SEV and SEV-ES+.
+CipherTextHiding further partitions the SEV-ES+ ASID space into SEV-ES
+and SEV-SNP.
+
+Add new module parameter to the KVM module to enable CipherTextHiding
+support and a user configurable system-wide maximum SNP ASID value. If
+the module parameter value is "max" then the complete SEV-ES+ ASID
+space is allocated to SEV-SNP guests.
+
+v5:
+- Add pre-patch to cache SEV platform status and use this cached
+information to set api_major/api_minor/build.
+- Since the SEV platform status and SNP platform status differ, 
+remove the state field from sev_device structure and instead track
+SEV platform state from cached SEV platform status.
+- If SNP is enabled then cached SNP platform status is used for 
+api_major/api_minor/build.
+- Fix using sev_do_cmd() instead of __sev_do_cmd_locked().
+- Fix commit logs.
+- Fix kernel-parameters documentation. 
+- Modify KVM module parameter to enable CipherTextHiding to support
+"max" option to allow complete SEV-ES+ ASID space to be allocated
+to SEV-SNP guests.
+- Do not enable ciphertext hiding if module parameter to specify
+maximum SNP ASID is invalid.
+
+v4:
+- Fix buffer allocation for SNP_FEATURE_INFO command to correctly
+handle page boundary check requirements.
+- Return correct length for SNP_FEATURE_INFO command from
+sev_cmd_buffer_len().
+- Switch to using SNP platform status instead of SEV platform status if
+SNP is enabled and cache SNP platform status and feature information.
+Modify sev_get_api_version() accordingly.
+- Fix commit logs.
+- Expand the comments on why both the feature info and the platform
+status fields have to be checked for CipherTextHiding feature 
+detection and enablement.
+- Add new preperation patch for CipherTextHiding feature which
+introduces new {min,max}_{sev_es,snp}_asid variables along with
+existing {min,max}_sev_asid variable to simplify partitioning of the
+SEV and SEV-ES+ ASID space.
+- Switch to single KVM module parameter to enable CipherTextHiding
+feature and the maximum SNP ASID usable for SNP guests when 
+CipherTextHiding feature is enabled.
+
+v3:
+- rebase to linux-next.
+- rebase on top of support to move SEV-SNP initialization to
+KVM module from CCP driver.
+- Split CipherTextHiding support between CCP driver and KVM module
+with KVM module calling into CCP driver to initialize SNP with
+CipherTextHiding enabled and MAX ASID usable for SNP guest if
+KVM is enabling CipherTextHiding feature.
+- Move module parameters to enable CipherTextHiding feature and
+MAX ASID usable for SNP guests from CCP driver to KVM module
+which allows KVM to be responsible for enabling CipherTextHiding
+feature if end-user requests it.
+
+v2:
+- Fix and add more description to commit logs.
+- Rename sev_cache_snp_platform_status_and_discover_features() to 
+snp_get_platform_data().
+- Add check in snp_get_platform_data to guard against being called
+after SNP_INIT_EX.
+- Fix comments for new structure field definitions being added.
+- Fix naming for new structure being added.
+- Add new vm-type parameter to sev_asid_new().
+- Fix identation.
+- Rename CCP module parameters psp_cth_enabled to cipher_text_hiding and 
+psp_max_snp_asid to max_snp_asid.
+- Rename max_snp_asid to snp_max_snp_asid. 
+
+Ashish Kalra (7):
+  crypto: ccp - New bit-field definitions for SNP_PLATFORM_STATUS
+    command
+  crypto: ccp - Cache SEV platform status and platform state
+  crypto: ccp - Add support for SNP_FEATURE_INFO command
+  crypto: ccp - Introduce new API interface to indicate SEV-SNP
+    Ciphertext hiding feature
+  crypto: ccp - Add support to enable CipherTextHiding on SNP_INIT_EX
+  KVM: SEV: Introduce new min,max sev_es and sev_snp asid variables
+  KVM: SEV: Add SEV-SNP CipherTextHiding support
+
+ .../admin-guide/kernel-parameters.txt         |  19 +++
+ arch/x86/kvm/svm/sev.c                        |  94 +++++++++++--
+ drivers/crypto/ccp/sev-dev.c                  | 127 ++++++++++++++++--
+ drivers/crypto/ccp/sev-dev.h                  |   6 +-
+ include/linux/psp-sev.h                       |  44 +++++-
+ include/uapi/linux/psp-sev.h                  |  10 +-
+ 6 files changed, 273 insertions(+), 27 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
