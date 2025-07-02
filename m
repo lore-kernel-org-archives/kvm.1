@@ -1,91 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A006C219A86
-	for <kvm@vger.kernel.org>; Wed,  2 Jul 2025 06:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415621F4179
+	for <kvm@vger.kernel.org>; Wed,  2 Jul 2025 06:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751436212; cv=none; b=XSwcKRb5Su8ZsrypF36Di6pHk1c5FbWmbEyCP0tLXoPYzDV+v7tlO2CI+ooP5i1TDzr6iwZ+GxR9l7nZRtUBYFtqss4KmkDF24481n8XHdI1rV72zlOmviR74RTwUWtMdvQWn3dZOvsk1hXXRarqIgd14AgZNVtsbVnkktHFzAk=
+	t=1751437273; cv=none; b=hdG0/0/xh2/XfOAZDy7+sgpNuYUAcsHIyrcW0F6M7ezicNOSqCOINr29NCWcpJ3lpQCa3x7oo6mxS0X5bT/wmSvuXr+MVqKEgItWEgChioGnnp4jcN2c6qL2nXWQ2fU2G2Wy4pf8zl4xFJUwwpYzRjtVcf1i6NRfPVeNDLinqjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751436212; c=relaxed/simple;
-	bh=2xBaIOFPWQc9LYdkz/z5VV41m28n/9SuTEsMYuArsEs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JLLE8cv4Fb9gAViN9cOqyB2wCQcaVuSG8a0jIyOTE5zG1poAb6+uGPkZk5lHW8a6B+szcJHTr/a25BOZDD+k7HUYyHMFDyc5d2C3LoqCE9O1kzGlMUv5ecR68SGH/9X5e1tiQLy5WmD9AFoz7L2eopN9Py8Q9rMtpqF5NrpJ86E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AT7zKBtU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751437273; c=relaxed/simple;
+	bh=KDE7bcX47aDBLE8+1wi3xHJx7irP5QBRBP1cPyNpGEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AYOlV5f3MRCHdBepHMBn/eu1b1FirBJIbThieT1DiuC0dZYtKV3lFUi+AOZHZbuJGmrBPGGKF6mtDPoyFChFfYnGehB+FvZhkniOP5WMZba3zqjVqoSUcYfwcPyf6uKHeqO51rW24rp3hPppcOavC71ysQ+YoJRMj8zT60eDfos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQoAh2OM; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AT7zKBtU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751436209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BL4N4vQUHRolZ4DvmG3fojJiew3wsR9YAjpgmgCVCXk=;
-	b=AT7zKBtUyZNGfzpP3wKMtvUCSo7yLBioykbod0XnTW+UCqRHweHoWzVaFi7fQ0d2JwAR0n
-	1/jdPyBQ+UILgBkSy5oOTpOV75LNcmP7lYOEFR0LVtSEYymUA2M9z+N3QbG+sJpBITAa8m
-	+G2xmVn2zsw7NUGt2iE46Zw+/kh9o7w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-WQ_eRFWENs2ee4mZhZ6sXw-1; Wed,
- 02 Jul 2025 02:03:26 -0400
-X-MC-Unique: WQ_eRFWENs2ee4mZhZ6sXw-1
-X-Mimecast-MFC-AGG-ID: WQ_eRFWENs2ee4mZhZ6sXw_1751436205
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 779421955D4E;
-	Wed,  2 Jul 2025 06:03:25 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.120])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 24BAB18003FC;
-	Wed,  2 Jul 2025 06:03:21 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org,
-	qemu-stable@nongnu.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQoAh2OM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751437271; x=1782973271;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KDE7bcX47aDBLE8+1wi3xHJx7irP5QBRBP1cPyNpGEo=;
+  b=OQoAh2OMmM5B6JV/P/lnbQOICqmETVP66OM/2GLGncypQ9n20T/AFpFx
+   Qcj2Zyyrxb/voaVPA1/kBu4lHd3Onk5/6ZHshxvUxNi21UTdMDGXorK60
+   r89hsNsMdeX+mut//rJ4Q5QL6FPeKu1gYLCd10wAt6EwYUKKAUpoe0hjm
+   ZnM3WPUk4uoSo699NfahHzwGwe586u9u7Fg7aXOlT9G3pvNJE/QMnWvzN
+   EHkRrHNbG4GK2OA/q2qMlTDV/LcNglYZnjjh2dUpogutUwDOhdHea7W4Z
+   39k2/v+T2HwyetSWLhKnPr+CE7E+Wt9OjPw8epz05Q392b0F/WTOBeulw
+   A==;
+X-CSE-ConnectionGUID: fMVjpHgUTv+EG9+T2X+qSw==
+X-CSE-MsgGUID: 6o1fPV04QeeiiXwir5Yehg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="65069879"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="65069879"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 23:21:10 -0700
+X-CSE-ConnectionGUID: 2DOTjRfKRXCZODe51K6jvQ==
+X-CSE-MsgGUID: hIXI8E1kSa2EoaubLjUqNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="191160559"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa001.jf.intel.com with ESMTP; 01 Jul 2025 23:21:09 -0700
+Date: Wed, 2 Jul 2025 14:42:33 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, qemu-stable@nongnu.org,
 	qemu-trivial@nongnu.org
-Subject: [PATCH] accel/kvm: Adjust the note about the minimum required kernel version
-Date: Wed,  2 Jul 2025 08:03:19 +0200
-Message-ID: <20250702060319.13091-1-thuth@redhat.com>
+Subject: Re: [PATCH] accel/kvm: Adjust the note about the minimum required
+ kernel version
+Message-ID: <aGTU2enBBQj7lu3E@intel.com>
+References: <20250702060319.13091-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702060319.13091-1-thuth@redhat.com>
 
-From: Thomas Huth <thuth@redhat.com>
+On Wed, Jul 02, 2025 at 08:03:19AM +0200, Thomas Huth wrote:
+> Date: Wed,  2 Jul 2025 08:03:19 +0200
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: [PATCH] accel/kvm: Adjust the note about the minimum required
+>  kernel version
+> 
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> Since commit 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and
+> KVM_CAP_IOEVENTFD_ANY_LENGTH") we require at least kernel 4.4 to
+> be able to use KVM. Adjust the upgrade_note accordingly.
+> While we're at it, remove the text about kvm-kmod and the
+> SourceForge URL since this is not actively maintained anymore.
+> 
+> Fixes: 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  accel/kvm/kvm-all.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Since commit 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and
-KVM_CAP_IOEVENTFD_ANY_LENGTH") we require at least kernel 4.4 to
-be able to use KVM. Adjust the upgrade_note accordingly.
-While we're at it, remove the text about kvm-kmod and the
-SourceForge URL since this is not actively maintained anymore.
+I just mentioned the kernel version in another patch thread. I found
+x86 doc said it requires v4.5 or newer ("OS requirements" section in
+docs/system/target-i386.rst).
 
-Fixes: 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- accel/kvm/kvm-all.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index d095d1b98f8..e3302b087f4 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2571,8 +2571,7 @@ static int kvm_init(MachineState *ms)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-     static const char upgrade_note[] =
--        "Please upgrade to at least kernel 2.6.29 or recent kvm-kmod\n"
--        "(see http://sourceforge.net/projects/kvm).\n";
-+        "Please upgrade to at least kernel 4.4.\n";
-     const struct {
-         const char *name;
-         int num;
--- 
-2.50.0
-
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index d095d1b98f8..e3302b087f4 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2571,8 +2571,7 @@ static int kvm_init(MachineState *ms)
+>  {
+>      MachineClass *mc = MACHINE_GET_CLASS(ms);
+>      static const char upgrade_note[] =
+> -        "Please upgrade to at least kernel 2.6.29 or recent kvm-kmod\n"
+> -        "(see http://sourceforge.net/projects/kvm).\n";
+> +        "Please upgrade to at least kernel 4.4.\n";
+>      const struct {
+>          const char *name;
+>          int num;
+> -- 
+> 2.50.0
+> 
+> 
