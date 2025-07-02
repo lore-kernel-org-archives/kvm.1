@@ -1,121 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022123.outbound.protection.outlook.com [40.107.75.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47331E555;
-	Wed,  2 Jul 2025 01:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A584D134CB;
+	Wed,  2 Jul 2025 01:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.123
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751418593; cv=fail; b=PLCMEixXow4iLr7exrg+lZUdQfJQ7daacsVHZpe/HPcoZBF4TXL9Ez5RTNxuQwqi32DLlkaLpb9sg9AsSplj2o77gOJemHHwbO+L+HIDKem+kUBgTokW+YMTFzoh5mjxEpcCVeymTSmSD1ncz25cw7VdO4ONuVBnFZvX9RuYqlg=
+	t=1751420511; cv=fail; b=e1Q32SGVblPEVu7bGz1D02yIDJvVSmR+3qVQjRCDZ2w/X44IaNkWkmUM8Vz0370MYBLtS2Lio7vYT6Uk07ZE7O/cljAbptYFTyP4jCO2StdpWBicxAa8J7cGoRmk8OOf/nZPgzidfEf3R0OOQHZZhtCKQ3JfAqhdHufKU/skUiA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751418593; c=relaxed/simple;
-	bh=/bzRwo33zQDVv5Hf46iyQFXOFdWiPsib6jvER4v/s4k=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GzTQ7qWDp6r5uGhT3aphilWxcKtV+8bOX0USUshDiYKD2eucS8Mb+1XJQUgDoPcKkop3Gt3Y06czQt7sU3kTvhUq7m5VKwhGNwk30DiLharDP3TnJP9gImHVvMpyYDCCUR+VL3TIMzIABn462OyC36AgDsNtENZvC09gTpiQpeQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q2TkgGWF; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751420511; c=relaxed/simple;
+	bh=AIzfzcVKGOnAW0Nzltwd9gM3GyivVQunp7CYq94VOfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PmoqoMqAxEyQsLzYtHa8BJdk7OUUT+aSFhl0vi+ulLch9u0fAa8NlcLa6k8EKlYb7XGd+kXVhaXVKwVOo6SpmDpljZPKqoab+pXf/U+xkHN72OpfAZVTuzdJWoUEh5mLnFpeBrg70sJYZCNbxb1GK+z5Le6/vJY0xjOmVCIfgpw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaguarmicro.com; spf=pass smtp.mailfrom=jaguarmicro.com; dkim=pass (2048-bit key) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.b=q4mTX8ly; arc=fail smtp.client-ip=40.107.75.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaguarmicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jaguarmicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q2TkgGWF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751418591; x=1782954591;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=/bzRwo33zQDVv5Hf46iyQFXOFdWiPsib6jvER4v/s4k=;
-  b=Q2TkgGWFF25ZKf/twKgUa9l64fmJ37zW7H5OEML0MJ46fSUvjMIwNKYe
-   tb9MwmWiCsy5NB1y2nT6lwpaQKNQiuhcfkPpREkl7EWT2QI6axeazZf0U
-   nWQHFEX3fQcKS1nE2FlexEUbCih2U8VGr1gUfPPkNG5PvG7C7e81818gF
-   l13KaPu0KiZjrRtAKEVRlv3pbbKzGa/YS3N+CItxW1cH4Q1n85dY/oTyF
-   5JSuxmbO3HywwKWyaHgss7lvfeeoXDZlc8RxSAYmzNEDAevJCbWlHKQBB
-   L+wazTrv5iy4/LMbMeWeU9deykB7kvo/jCNrbUhzUJvSf43G/rbYePoH2
-   g==;
-X-CSE-ConnectionGUID: 0/pDFqdBSSev+pJddZNPUg==
-X-CSE-MsgGUID: Y/KuZPzER2C//HPAvXWA0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="71267478"
-X-IronPort-AV: E=Sophos;i="6.16,280,1744095600"; 
-   d="scan'208";a="71267478"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 18:09:50 -0700
-X-CSE-ConnectionGUID: XIKPUngRQGKR7csKzzwO6Q==
-X-CSE-MsgGUID: /am4QdEGReSqT2oRYcQszw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,280,1744095600"; 
-   d="scan'208";a="154083502"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 18:09:51 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Jul 2025 18:09:50 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 1 Jul 2025 18:09:50 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.79)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Jul 2025 18:09:49 -0700
+	dkim=pass (2048-bit key) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.b="q4mTX8ly"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AjJVkrnZGbpGfxYFd8Z1fqO6gwFaoKA948Ua4L00ftbIs70LpDgRR+5YsbQ2AxmyXEp3OZyiYj37olUMlr5LDmp9vOMWT1xt9BcVYWk5rVx2KvYH48Ju7pnScA1Bm+nEa3JU1TUOhJruFqiZYah844XrPbtL0wFdwue4752Zcjlvwsy8bRW+hZlvzTfJj6RJqGLbgVwDL3dr+G6Lf4LsDIX6QiL6d+nbssxofZadh3qpwpa00amSrqUXYP0Ya9zwVncGOM/HBmb6U/lSAz8IorpAA/C54X7ERb56uBlfUiVOdL7iPxW6BZsAAob/TFP9njdpvY/3SuI5T2FZWjt0Lg==
+ b=C19ktOOE5nVAEP9oy5yuUxGAb0ZYyZ1MYbChXdpQQG8172d1ilY2iIWD4Wf8SNOrouemK57BkWand2UIOiRjzkYXClsgcGcLrTDV2bpfLWF3E6QXMrRR76v0N+bEHCN6dKuVNK5enTuNpHrU7EFJTNgLcVLcOMvraZlywKnG+sm0XVNa6VUQTqUiE2uDrlkWK6ttEFP1hL8BCdClxPp1Y/BjXQMx2hEbHP5vnAGlLRnN3luMcQ+L2k9QUVnH6pEb1ax96pHOCoa9snrLSOpqeXMQfe7HlF76cnHpsQfN6RAoCWBGTWVaGa0E3mLceUxwMOyIoozzpTWLQG2I9Bx6rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KhYUjsx72X3KrOzvAiJPcCDiT9IS9UjD//2VB7cSTnM=;
- b=CnMxbqTv4pqlGS7h6ociVWvimCJgsjJ4j3g01RV37lHy3dgi3/E75lNCbmQgiYeBvFhJ/IzcgRVE5NsUY1tb0ptPGPFJ3z9o0M1dR2n9H9ERQkg1X8XfqIZ64EhLOQ+LeX0uPUQihNuWSfa0e9VzOuAdVfGGlOx+BRa123Nc/DqjI9358XkLPfjzbBcQEUqSYdU62GkCyqHcT3i2DTBvnnC8eIIyJ3k8C7NzpU4asPzR55BOQuIMtiuI53mHU+qB4BIrDC4ygtOAORvYLTHSpXjwOg2vL/eRo5kgXzUai1vwoaNntcDi5hUI362vbalewA3j2hb1y8j49J/na4HjTQ==
+ bh=UBUh2HsGey91x4EekImtKLc6Qx+qit68hRcBI278qaM=;
+ b=Q7qlsFnKz9lfm8G4NLyUnsXqPL/n4HYbPcndIQtYGvVZBnIatzyjy/aqWe5rW3tLbBOMNQ4n/67+21KR0hwJ6Pv20XWE+Zeb1iW7aCWEIH7F77APzc/te1yV8VvuVmGzzXEVq/H9LcxhZw1OufxvdpWfvEj5LIgXom6ydGZNPmrfg9yD7K4arN2r0e5i2iVdsNMw30JksROzuppIsLOALgKkXxEjLNCsBuKE3KNsGQ0asWtq/R9bQ9rThGTqqOsOOSHYeiHiHMrXB5HIWGCbqXfBsgyK59Y8PXDBdjPsNpgVl1HZlULoZR9VPL9GtCIKi08VFXRKvnb8ahlQ56xjtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
+ header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UBUh2HsGey91x4EekImtKLc6Qx+qit68hRcBI278qaM=;
+ b=q4mTX8lyrjMqW1JrMthQ7PjX+eKhUOLtoG6cbtb+DTWCRgdEQjUCsyAzZ1vFACq+bUCRTdJOKriXw5KOtWiYKHZDos+1fNcR+oZu+vtc6D84y+yBYw9RaqxDDgqnYgH7mwH/PLCpx2pz2AS1cCjBrmtmMJ5X0K7arjFkQvyloqKU8t2UfKF55mTIqBzFrQEMgGJIGzo4ZtRL3Qct24CrRN6misgvaooFCtzLz7xA3RNA8J7R+StPhep8jMVUwY+HsVM8C/R7zDcQB/++gbxTwSKWhSp18qEFK2o7ChKqKftje6Fs9djZdYrOwx78MHvVPKu+aVAbTLouEuVd4iE2Uw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- MW6PR11MB8312.namprd11.prod.outlook.com (2603:10b6:303:242::10) with
+ header.d=none;dmarc=none action=none header.from=jaguarmicro.com;
+Received: from PSAPR06MB3942.apcprd06.prod.outlook.com (2603:1096:301:2b::5)
+ by TYUPR06MB6077.apcprd06.prod.outlook.com (2603:1096:400:353::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.20; Wed, 2 Jul
- 2025 01:09:47 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%5]) with mapi id 15.20.8901.018; Wed, 2 Jul 2025
- 01:09:47 +0000
-Date: Wed, 2 Jul 2025 09:07:09 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "quic_eberman@quicinc.com" <quic_eberman@quicinc.com>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>, "Du, Fan"
-	<fan.du@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "Li, Zhiquan1"
-	<zhiquan1.li@intel.com>, "Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"michael.roth@amd.com" <michael.roth@amd.com>, "seanjc@google.com"
-	<seanjc@google.com>, "Weiny, Ira" <ira.weiny@intel.com>, "Peng, Chao P"
-	<chao.p.peng@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "ackerleytng@google.com"
-	<ackerleytng@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "tabba@google.com"
-	<tabba@google.com>, "jroedel@suse.de" <jroedel@suse.de>, "Miao, Jun"
-	<jun.miao@intel.com>, "pgonda@google.com" <pgonda@google.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [RFC PATCH 09/21] KVM: TDX: Enable 2MB mapping size after TD is
- RUNNABLE
-Message-ID: <aGSGPc+aovhd/SsN@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <aFp2iPsShmw3rYYs@yzhao56-desk.sh.intel.com>
- <a6ffe23fb97e64109f512fa43e9f6405236ed40a.camel@intel.com>
- <aFvBNromdrkEtPp6@yzhao56-desk.sh.intel.com>
- <0930ae315759558c52fd6afb837e6a8b9acc1cc3.camel@intel.com>
- <aF0Kg8FcHVMvsqSo@yzhao56-desk.sh.intel.com>
- <dab82e2c91c8ad019cda835ef8d528a7101509fa.camel@intel.com>
- <aGNK2tO2W6+GWtt3@yzhao56-desk.sh.intel.com>
- <908a8abdf0544d4fba23d3667651c4cfcafa9c4f.camel@intel.com>
- <aGR5ZYpn3xyfOZhS@yzhao56-desk.sh.intel.com>
- <f13239faa54062feb9937fe9fc6d087ffcca7ac6.camel@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Wed, 2 Jul
+ 2025 01:41:39 +0000
+Received: from PSAPR06MB3942.apcprd06.prod.outlook.com
+ ([fe80::9b95:32e5:8e63:7881]) by PSAPR06MB3942.apcprd06.prod.outlook.com
+ ([fe80::9b95:32e5:8e63:7881%3]) with mapi id 15.20.8901.018; Wed, 2 Jul 2025
+ 01:41:39 +0000
+From: liming.wu@jaguarmicro.com
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	angus.chen@jaguarmicro.com,
+	Liming Wu <liming.wu@jaguarmicro.com>
+Subject: [PATCH] virtio_net: simplify tx queue wake condition check
+Date: Wed,  2 Jul 2025 09:41:39 +0800
+Message-ID: <20250702014139.721-1-liming.wu@jaguarmicro.com>
+X-Mailer: git-send-email 2.49.0.windows.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f13239faa54062feb9937fe9fc6d087ffcca7ac6.camel@intel.com>
-X-ClientProxiedBy: SG2PR04CA0165.apcprd04.prod.outlook.com (2603:1096:4::27)
- To DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6)
+Content-Type: text/plain
+X-ClientProxiedBy: TPYP295CA0044.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:7::18) To PSAPR06MB3942.apcprd06.prod.outlook.com
+ (2603:1096:301:2b::5)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -123,194 +66,134 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|MW6PR11MB8312:EE_
-X-MS-Office365-Filtering-Correlation-Id: 319cfe28-7c80-4f98-974f-08ddb905230a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: PSAPR06MB3942:EE_|TYUPR06MB6077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c806100-5476-4b89-8748-08ddb90996cc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?g3YJtLtk/PyfUZxxn5Ff1AvXG+KqZBeNoLb/iMqYYAqYwcOJ9OTHuku3oW?=
- =?iso-8859-1?Q?uaNBxlyf5riDdyajKXP+jsMvY7YsCNNxeCI/MXHybyiAXz/EZdDxK+2DOQ?=
- =?iso-8859-1?Q?pYAqVeWVHxGNdgoLm43+FTDteEBwttG84OOv366uJPJuQSGBiFGHwZN2FC?=
- =?iso-8859-1?Q?B0FPGkV6jiKuuL7MwdTXWc9vBuCamWDRRHhjNl/YpzUUdSFXV8po6uEbgF?=
- =?iso-8859-1?Q?2cdreZ2HfJIKZ5/bib5yxVY9VQ6Z1X42z0d4INf4TBBL+M6dCnQ21dUoNS?=
- =?iso-8859-1?Q?5T2w3kYPahWoBImECbWzGnss38gfunRKxOnr/f3mZ7OD2o1ipozc6W3hMU?=
- =?iso-8859-1?Q?fdf9HizkcrDdVCrH66kSMH9XNDYUGm+37UbPpIL7qaRrX78hVkuGFxNzWs?=
- =?iso-8859-1?Q?n0Ggh4WGJWSy6zFN2shvCwHwk72syrpGs4WugRoKzi1uAuaKmsdzEmTpz8?=
- =?iso-8859-1?Q?oXjZE29S59fPs3c7rqbX4z10Udc6lwklRikEIBZpVfvgvMGL1OQ/CqZbyy?=
- =?iso-8859-1?Q?pnVK3y0hh4egj6GJKwL5y3FS6ithkW47tBjkHOz4iZk70AMu++0y+2pg5M?=
- =?iso-8859-1?Q?hUGPeQah4umgon90VY3eBIS6SEFFjA7+tjBlvPLtcuad3MjB1Bsb0qkSBz?=
- =?iso-8859-1?Q?VCEO0yVlng9TEAaIPrbkPIlvnkxRaPyo1obArJ8TgrFGP2bLGfpK0De6xo?=
- =?iso-8859-1?Q?r2zdo5iHanYCBwlpKAZqQ5nLOhXNYIi2zZtvm60/UsatXVs+obcGCq5WmU?=
- =?iso-8859-1?Q?6ef5+OOVjhov+mtw6EdoqyNsjMuECxgfto+d8eS164jIz2Zj003kD8FJRR?=
- =?iso-8859-1?Q?Inl9FtZsCW9F99kOLJM2VxxrjH77txEuTlIL+LyDSKlruCz1DlbfVCRLcK?=
- =?iso-8859-1?Q?UY3fJF5Ruyb4aYMiVuiTMrWJ7zAezSAO7CrVrQYNHCL4uMtYI/5g6hcddd?=
- =?iso-8859-1?Q?X9DcqRKJLNFsDZu6iCjIHSYGIzknC0aYC1ErHXwAs4BxebJ/Z7C43rTe/0?=
- =?iso-8859-1?Q?RnWk04zt/gAQ8x99SdU6ENhnPLa/xso2TShnZoxARVJhlxXRwpG7MmFJaE?=
- =?iso-8859-1?Q?Kgd83Vck4acbuVkxxKZGXpBwNOvgzLUqSIQVfRgSjdfpkCCcgH2JqRjGA5?=
- =?iso-8859-1?Q?Q9E5vYdVb23zpFXmj7RZEQA92WFtd3maGfArIIj1G72/SuKAbwRPYaSsK8?=
- =?iso-8859-1?Q?r76WlJdZEChWOwj3iRNxghXr0vV/lEfATxL/1vlOJPqrbe47ThudSDEWRq?=
- =?iso-8859-1?Q?VhAKJl+p51slBr0MHnlXwTojQ2ARbu1bWnHc34dhL+Enaz28laNNHNf7F3?=
- =?iso-8859-1?Q?s0zP/LKmUBKQfONwdQ9cp92xX+DZeKNfoUQu1jIQCYUJrScHMBBZk5GYG0?=
- =?iso-8859-1?Q?WrfUVvjeaNOfYHzsa5YlJ4QaR38ffoZOtWErT1jnS+4b/PWb4KNBMkJ9Gb?=
- =?iso-8859-1?Q?d5wByJZJN+XUuXd44eXujK3/4c4hvGCIlrzKLzEI0BVft6rS8joGLge0n0?=
- =?iso-8859-1?Q?4=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eIdiwgFjv8Vf/ZMpT+1x993lKGa5vDDwuHZa3AKUfhjIyrEnSZKmj4cVX9ag?=
+ =?us-ascii?Q?zr+Xf+mUIO/bOmH/Mhr1w6tn3NLLSW7AT9vGtdy9XkrlwqRWUpDhhSg4+hHp?=
+ =?us-ascii?Q?zUht4nFjC7mJiM8rUQvtveQAxCEIk0ay0/y6Z70fp1aGUzSXOncfuVZhgpln?=
+ =?us-ascii?Q?3aSPLHanhMdXa038z6ZZ4BEcfK0E/gu+chjWCF0npbXLaF/mpKo+ZC/TXn/H?=
+ =?us-ascii?Q?Lr01R28vzIOzMqfxOxkXEe67MxgoBIMwwws3lgJ5nL/Q9/4MHgFAgg6dXkuP?=
+ =?us-ascii?Q?pLO4AX2ZVcoMf7qCzOpr3dG4QxI0zoNwlqpalBvSLFetDQwt0y0P1XNNXj+Z?=
+ =?us-ascii?Q?ufmu3tANGh6BGqJtXN3JVNfDZlFD+bZBppKN65Q2BLmJipDXyOyoiLLLDnas?=
+ =?us-ascii?Q?vJ71NsTLjbGb//RRPd3RZSZyzIgR4xsRn8XUKP3tMAcoe8qLK1fbB0lM1z8Z?=
+ =?us-ascii?Q?HmGS4R3/UZL8YIv0jF2t3gBR/sJs/NHuXYn+BXO6imEvSVt3J316+YfKcULd?=
+ =?us-ascii?Q?GjfxSPTVjs63ZvSs/ydK06n2azjdfYpFj/o8jzRsNchKkdT8mBLQP/Fmgoq4?=
+ =?us-ascii?Q?CBVzS0u+OR7W1gEVdTn5SrSOjBEat9hDEN0zibnSuplZYu2DgfxUwp+okFhh?=
+ =?us-ascii?Q?ZFxEgGyTc9m0cBchVHoN+pqoMlbD6fPGhhSyXeoyv4HGiqZQTBbXQez0sp2z?=
+ =?us-ascii?Q?Wd+tNjohjnx8iFtR7vh1K9/NbYGQkZG+MKvsnpUor/CYt/MuUGhNmN0i/910?=
+ =?us-ascii?Q?rnZXei0ytYVw3L2jnhY3IDsIFHsJ7BUw/mTlcAnEAcJ9EV1QvZVvEjy32JeL?=
+ =?us-ascii?Q?lMH/o6S8nDBGXgx2KZT8OIKjz6sKzqYDH+10AmQVYrEtO1sStuVaqo1+DEvR?=
+ =?us-ascii?Q?TAoGBYovo9tPfwV+xU3GFJRXil8Nwb/yP37GdK3c/deyVWtqC5XbPG1VH3dh?=
+ =?us-ascii?Q?DKQb1sLkeVL0UXfWoXx9+0QLfLn1RmhxxFcXq9SLTKIgQGRfwiDMJGRIiWAg?=
+ =?us-ascii?Q?Mzbp3+v3k+ZFgZkybsT+ZPe/vr634zkxlIkAMZo4+xSl50PrSm+1/TW8x8y5?=
+ =?us-ascii?Q?bZcfN1qbT7eELNNmQCyumJOtWHIjAqQ63xhFWeaOdnl2XNmoPik/LZpm8Uy5?=
+ =?us-ascii?Q?1OtOSiWJ9LE3UN/bqkt1xILjYm0HvWoxzhF1cWpFpmH2P2tKlYh74ScwKFNU?=
+ =?us-ascii?Q?L43Y5q0KrWxVqCWTTebpwwUWzRbu6QLQITAvHqazu5LdxbOe6Juk39iFhiLU?=
+ =?us-ascii?Q?k0j+PcLS5VydfJXuzx18uhYwloYvyqYoa3VGYHqLXErtydfvnKc755i28QyX?=
+ =?us-ascii?Q?2VeexG8veOwLwFThwrrikV9xkiSbM4re7XKlYbJuDYEZThuNL65VRGaYojQg?=
+ =?us-ascii?Q?2PUiFLnuOL3YD/uzV/bb1mr48055FRQfntbbc6mzYO/3hNIH9L54WxL40LGG?=
+ =?us-ascii?Q?TMc48R3At6Cfru0KHRhf+0aVf0PdOptMHZf+14p8Krpw0RMTHPuUAw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR06MB3942.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?ax0Q5CV1OqearR2ZpKRlHV2NCog3SEiF/ZEluEgBOVaY8rFZoEBs853l+B?=
- =?iso-8859-1?Q?ZoToao4Q71Dr+a0KCaIXFd8OZKREP5Jr+PM4XCtenKE0XRrFGOPceeIUyK?=
- =?iso-8859-1?Q?Q3HWKVu5u4PzpThTszP0iT0buJA58fg/MtKIfrraF76sqOOHJwg6ztgDPI?=
- =?iso-8859-1?Q?iTXt64pA52Fgu/OJboaw18ibcQ/zS+2XHv5KK9Zo231mwHRzPxO96ttniE?=
- =?iso-8859-1?Q?1FXYA062GdUK+aXqhb8FZgF7vX/a0v2Y6aqxWuf7tDFq9C6y0+jPBn/Yxw?=
- =?iso-8859-1?Q?C4wGC36oprzvZXPilvXGJc+X3S7TwCY6hn8a7EgqWKnMsEKcR3JUxL0KKG?=
- =?iso-8859-1?Q?54/8t7sK1iibZlQ0mPajz/Di/NTqKk/31AXhLbypPfrGOwPV2R+qlsnxcI?=
- =?iso-8859-1?Q?vPkSBDN2F+BsGBfPMi5lrkMk/C+4qaQiGZzFLjaTYNSCpqDos2XzXjPDTA?=
- =?iso-8859-1?Q?S7NmESKrTbBK2HfJeXvXQW990lclJj7gySJV4V5KjrUVUBy+4rYN/MfcC2?=
- =?iso-8859-1?Q?BsEBgIPFt1vFpddyjBpHZ8+1RG8+mtwtNKKpzeHqvg0cPr5+/+D3wQnWjT?=
- =?iso-8859-1?Q?2Y7phVMMHT2VqynC1h2u/UJ1sphjC+ST53kEmrjGbE2ZQNzcpl6mnOEWDN?=
- =?iso-8859-1?Q?r/cZE5z99ZiTIAxKWzKui5bh9nHZ8m/bcc93iK/CDtlBfaEwlqm37aDpqP?=
- =?iso-8859-1?Q?A7EARUJn35QJZClNX9JLPnNWYcua2kEqjTipgsUBZYPL0ApryVrnbgfl5i?=
- =?iso-8859-1?Q?MqBzirOrvw7wxFArjsztlQDwMU78GnAqGtcxdQ0YeeQILYKRVu3+UaMWWd?=
- =?iso-8859-1?Q?nzdvdGg5jk7nOEOSZybQFOtUtcde1Zxe5vVbGqlHkBHeT7LYSDxdT1pYv0?=
- =?iso-8859-1?Q?ufxwqBWH2HpFCXld5xS01pjEH1avif+c9Rp5atATRTNqjuY6rUJiF+Nve5?=
- =?iso-8859-1?Q?Sq7D76IcqUojBGcKPQ+nCoyasRm229bubKAKeCM5hBFF7eCClaqe7Ua2Sp?=
- =?iso-8859-1?Q?jotbJsKCnXcLwKI6i75J7QtU+0Bn2cTDdPCG7ci2HdEqu5+0N997K2pFNi?=
- =?iso-8859-1?Q?WScVjMZ0asc0vTYdeRYOBeAUfN0baPVMc2+QzozToWwR74NVaKIAsjk2Ht?=
- =?iso-8859-1?Q?xTMSzgLkdSXd5N0SoAhpz65UFvWvaPvWFf98nfIWChNoKE3U82hnPulukN?=
- =?iso-8859-1?Q?trrAZKVHbKrwcV7U29DwYCzPJOy/4LAVnnhfD5PRvdXp+Dxb3IO8iVyZsi?=
- =?iso-8859-1?Q?7o/LBFGWdZhV4e5FI8HWmG9qxtfJPZz64S+8iejMVFVbyuuENwZVNQtnZ+?=
- =?iso-8859-1?Q?VzId1u2cE/w2N12sBq+7rzf5q6caLJ14JmTyWigd2qXfdXj7k7tVMVGOIn?=
- =?iso-8859-1?Q?HSrmZ0+xY3FB61uLTgF7N0v87L1u3ZnZFrON27R5H28+RGsnOiGDMkpyPy?=
- =?iso-8859-1?Q?1dKbPFecrZ6Vwbe31mR4nx/TuH+kzuxj1n9xw1miWsxQBAsuX9vBQAElY3?=
- =?iso-8859-1?Q?QJzmlvgd3m72t3Y6/RYXmhb6cQKQc7zaqkjKbtw10KUZO0yng/xa7qvQzJ?=
- =?iso-8859-1?Q?2UIfIrQCI07xy5JT3dnxyy3neH/zdbw0EagyyL+ZJKJ7eRRxOf/6UAp4zQ?=
- =?iso-8859-1?Q?NSxZVbX7SMZ6Kv7rGEYmEKIaOc0modS/7m?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 319cfe28-7c80-4f98-974f-08ddb905230a
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BDDNgadBZwxx998xyAsIOZo8f/4eRblsCgTMJPsUVRHFG0JgNGZe4xMLwegj?=
+ =?us-ascii?Q?YueQM16jBvVZEUu38BlW505ZK2TxlTDaI9Pi1gx0kJ4l/c1xe8yzMDRk9CJa?=
+ =?us-ascii?Q?DpuFlKvYKTI8dZhfQY30W+FRZg+gdRFxOBkZeOlAfNW/45Gw6pg++/TDgLH+?=
+ =?us-ascii?Q?uuUhhXpzX5nL/3QxagzrLwXZXQXnqjf+2BwWVDJ0EpUNcvuy1DVn3zYI40li?=
+ =?us-ascii?Q?YcN3E2AV07VI+UNpNEZcJkUUkxKEbk6j5lwrty8DTckEOLKpWDwspq0ZzHja?=
+ =?us-ascii?Q?mw4lsQqJvHlV1qNbXfCCPfL4NgOz48ACdv4hgJAKQNg2K5ysGDp+kyFUSboa?=
+ =?us-ascii?Q?Nw8sz8tsxfnnd6JB7TqGehrPvy7GgSMUlryV8zqvXch1SfNqR5qbRp4rh9gl?=
+ =?us-ascii?Q?68ZE5FRXGFcVrNl6oA+R9gJ8SG4jAF5hg45lsePxgSyXUUjwNkJ3oL5Y8XTq?=
+ =?us-ascii?Q?WQFfggHXSdTbR49UGWK2kjfnths9hs/IVxDa5yH4u0NDhbsDgyxUFfFeWe4q?=
+ =?us-ascii?Q?uJ8e+MjDBsJROfP2DNMQaJ0aNbVTdW2T+7B19WOqI8aiERUpVHgGNmPAN62A?=
+ =?us-ascii?Q?1eZKe37NwjsCDcYH9J8jHIEWdMT4OzkH/F1AC/XvimTkiSm59u0JC6vsOq3T?=
+ =?us-ascii?Q?BjsH/gGNe/IDAnO+gPJctuYs191jzbE+AISw7R7pCpwsiPs3Cc9zxjui/jeN?=
+ =?us-ascii?Q?NCk424St7njNCYAueuceMxPWv2bkfXzYWhn+JLTLNRpMMSaxdZDdmJyNMwmP?=
+ =?us-ascii?Q?5dyLOv5xPssjCaNr4SghEtSOC/UdqPv4Rqp9Pr1snWw2PSAGjQOJD5K7Fqna?=
+ =?us-ascii?Q?zb0iRU8KHZUsPGlHtA9iAVYCzHv7gPL4PUrEm3tQkZUnfwHEUySyyzHBMJ70?=
+ =?us-ascii?Q?jDznQ99iFc/+peHpmTN599n/jDQqoS1hXRCCnmIny91y9CBYlIETkxSLgotr?=
+ =?us-ascii?Q?JNFggmNpiNwCj6mDRTvHBd2SGrGLYd77+/1KbKECSF4gkMQ1W8+v30pcsVNt?=
+ =?us-ascii?Q?Sig3dyuH6ywMyS+BAmbWAxndTLX+4G1AvprDRIlSKqi363wRu5D7Wum1+8d2?=
+ =?us-ascii?Q?32cE8p/eEv1vItZQtZmu+2rCeRwj4KPvUFhYUXwQbwwgRpiGUaZNPElWV8OF?=
+ =?us-ascii?Q?CKrtQP000ehqfXg3XGXwo1Bs0QRjxzMUiEZBkwGynZLnXf5idMcAiXTsh/WP?=
+ =?us-ascii?Q?AzGmyvNNRxOPp09+RjFBTzSbkKUvkPRMwJ9ibNYZU04HIqsI8RIifQGyJ9rh?=
+ =?us-ascii?Q?L1EOFBTUqz8eMfjIx+yMyo/XJvuAViKeu1n9CRGGbD7OPdFI5QhGFNFIuSZb?=
+ =?us-ascii?Q?M6+KMEmqagMAa9RDzV5iUO/TM+ZxIEcZ68AVWNXprnTonBavyfxHUEKLger2?=
+ =?us-ascii?Q?UpV9VEid+UmGXEducjSfnxsiPayBSPD2LK9869tBZgfDiN59z4YeHnPGPYEw?=
+ =?us-ascii?Q?lK9ckceGwjR/B9x4QXzd7an6v7OPxOPzbm3DkyAvg9ATER4Bq0m6dT/ktCw6?=
+ =?us-ascii?Q?1fzUdKXkgo3HCxUcoJH7UFtriT7h6DdV997a7BHa1HAZgGSlcg7zjYm6kjG2?=
+ =?us-ascii?Q?KRpZQ+MjQmne76AVoeYB7RMXbrh/IHmwcSotcraQmBzxv+XP+fjoBHxASEfn?=
+ =?us-ascii?Q?vg=3D=3D?=
+X-OriginatorOrg: jaguarmicro.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c806100-5476-4b89-8748-08ddb90996cc
+X-MS-Exchange-CrossTenant-AuthSource: PSAPR06MB3942.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2025 01:09:47.2425
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2025 01:41:39.4514
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O1/sB95p6VXZGTMUpDY4WJKoSPlfgABTOzYlBDE8DIGVvfghU9KTL6fdVVkpPrH1sTVqiTj/FV0+gvC+FfVc2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8312
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: V7rizxYHPmJwUfn1wusl2WCtO4I+S3ZbqEzmdAGhK6I/U2twUjCbf11s3c4c0ld0yvX3PUdLPWPL2JskP4YFpvNGFPS50oj3gubDOLqLILs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYUPR06MB6077
 
-On Wed, Jul 02, 2025 at 08:18:48AM +0800, Edgecombe, Rick P wrote:
-> On Wed, 2025-07-02 at 08:12 +0800, Yan Zhao wrote:
-> > > Then (3) could be skipped in the case of ability to demote under read lock?
-> > > 
-> > > I noticed that the other lpage_info updaters took mmu write lock, and I
-> > > wasn't
-> > > sure why. We shouldn't take a lock that we don't actually need just for
-> > > safety
-> > > margin or to copy other code.
-> > Use write mmu_lock is of reason.
-> > 
-> > In the 3 steps, 
-> > 1. set lpage_info
-> > 2. demote if needed
-> > 3. go to fault handler
-> > 
-> > Step 2 requires holding write mmu_lock before invoking
-> > kvm_split_boundary_leafs().
-> > The write mmu_lock is also possible to get dropped and re-acquired in
-> > kvm_split_boundary_leafs() for purpose like memory allocation.
-> > 
-> > If 1 is with read mmu_lock, the other vCPUs is still possible to fault in at
-> > 2MB
-> > level after the demote in step 2.
-> > Luckily, current TDX doesn't support promotion now.
-> > But we can avoid wading into this complex situation by holding write mmu_lock
-> > in 1.
-> 
-> I don't think because some code might race in the future is a good reason to
-> take the write lock.
+From: Liming Wu <liming.wu@jaguarmicro.com>
 
-I still prefer to hold write mmu_lock right now.
+Consolidate the two nested if conditions for checking tx queue wake
+conditions into a single combined condition. This improves code
+readability without changing functionality. And move netif_tx_wake_queue
+into if condition to reduce unnecessary checks for queue stops.
 
-Otherwise, we at least need to convert disallow_lpage to atomic variable and
-updating it via an atomic way, e.g. cmpxchg. 
+Signed-off-by: Liming Wu <liming.wu@jaguarmicro.com>
+---
+ drivers/net/virtio_net.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-struct kvm_lpage_info {
-        int disallow_lpage;
-};
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index e53ba600605a..6f3d69feb427 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2998,12 +2998,11 @@ static void virtnet_poll_cleantx(struct receive_queue *rq, int budget)
+ 			free_old_xmit(sq, txq, !!budget);
+ 		} while (unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
+ 
+-		if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS) {
+-			if (netif_tx_queue_stopped(txq)) {
+-				u64_stats_update_begin(&sq->stats.syncp);
+-				u64_stats_inc(&sq->stats.wake);
+-				u64_stats_update_end(&sq->stats.syncp);
+-			}
++		if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS &&
++		    netif_tx_queue_stopped(txq)) {
++			u64_stats_update_begin(&sq->stats.syncp);
++			u64_stats_inc(&sq->stats.wake);
++			u64_stats_update_end(&sq->stats.syncp);
+ 			netif_tx_wake_queue(txq);
+ 		}
+ 
+@@ -3195,12 +3194,11 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
+ 	else
+ 		free_old_xmit(sq, txq, !!budget);
+ 
+-	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS) {
+-		if (netif_tx_queue_stopped(txq)) {
+-			u64_stats_update_begin(&sq->stats.syncp);
+-			u64_stats_inc(&sq->stats.wake);
+-			u64_stats_update_end(&sq->stats.syncp);
+-		}
++	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS &&
++	    netif_tx_queue_stopped(txq)) {
++		u64_stats_update_begin(&sq->stats.syncp);
++		u64_stats_inc(&sq->stats.wake);
++		u64_stats_update_end(&sq->stats.syncp);
+ 		netif_tx_wake_queue(txq);
+ 	}
+ 
+-- 
+2.34.1
 
-
-> > > > > For most accept
-> > > > > cases, we could fault in the PTE's on the read lock. And in the future
-> > > > > we
-> > > > > could
-> > > > 
-> > > > The actual mapping at 4KB level is still with read mmu_lock in
-> > > > __vmx_handle_ept_violation().
-> > > > 
-> > > > > have a demote that could work under read lock, as we talked. So
-> > > > > kvm_split_boundary_leafs() often or could be unneeded or work under read
-> > > > > lock
-> > > > > when needed.
-> > > > Could we leave the "demote under read lock" as a future optimization? 
-> > > 
-> > > We could add it to the list. If we have a TDX module that supports demote
-> > > with a
-> > > single SEAMCALL then we don't have the rollback problem. The optimization
-> > > could
-> > > utilize that. That said, we should focus on the optimizations that make the
-> > > biggest difference to real TDs. Your data suggests this might not be the
-> > > case
-> > > today. 
-> > Ok. 
-> >  
-> > > > > What is the problem in hugepage_set_guest_inhibit() that requires the
-> > > > > write
-> > > > > lock?
-> > > > As above, to avoid the other vCPUs reading stale mapping level and
-> > > > splitting
-> > > > under read mmu_lock.
-> > > 
-> > > We need mmu write lock for demote, but as long as the order is:
-> > > 1. set lpage_info
-> > > 2. demote if needed
-> > > 3. go to fault handler
-> > > 
-> > > Then (3) should have what it needs even if another fault races (1).
-> > See the above comment for why we need to hold write mmu_lock for 1.
-> > 
-> > Besides, as we need write mmu_lock anyway for 2 (i.e. hold write mmu_lock
-> > before
-> > walking the SPTEs to check if there's any existing mapping), I don't see any
-> > performance impact by holding write mmu_lock for 1.
-> 
-> It's maintainability problem too. Someday someone may want to remove it and
-> scratch their head for what race they are missing.
-I don't get why holding write mmu_lock will cause maintainability problem.
-In contrast, if we want to use read mmu_lock in future, we need to carefully
-check if there's any potential risk.
-
-> > > > As guest_inhibit is set one-way, we could test it using
-> > > > hugepage_test_guest_inhibit() without holding the lock. The chance to hold
-> > > > write
-> > > > mmu_lock for hugepage_set_guest_inhibit() is then greatly reduced.
-> > > > (in my testing, 11 during VM boot).
-> > > >  
-> > > > > But in any case, it seems like we have *a* solution here. It doesn't
-> > > > > seem
-> > > > > like
-> > > > > there are any big downsides. Should we close it?
-> > > > I think it's good, as long as Sean doesn't disagree :)
-> > > 
-> > > He seemed onboard. Let's close it. We can even discuss lpage_info update
-> > > locking
-> > > on v2.
-> > Ok. I'll use write mmu_lock for updating lpage_info in v2 first.
-> 
-> Specifically, why do the other lpage_info updating functions take mmu write
-> lock. Are you sure there is no other reason?
-1. The read mmu_lock can't prevent the other vCPUs from reading stale lpage_info.
-2. Shadow code in KVM MMU only holds write mmu_lock, so it updates lpage_info
-   with write mmu_lock.
-3. lpage_info is not updated atomically. If there're two vCPUs updating
-   lpage_info concurrently, lpage_info may hold an invalid value.
-4. lpage_info is not updated in performance critical paths. No need to hold
-   read mmu_lock.
