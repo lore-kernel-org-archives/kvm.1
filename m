@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D10C2C375F
-	for <kvm@vger.kernel.org>; Thu,  3 Jul 2025 08:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035FF2DE6E8
+	for <kvm@vger.kernel.org>; Thu,  3 Jul 2025 08:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751531265; cv=none; b=MpTNPgvI6z5Sx5Wth6D4JkLOp4TYK4vqpuvJP6AYesMImc9MRJJcqyyA92y0pRV1LJjHYKb1n2VkIy/2kZJ+u7n6+4ps9XJdvY0kXPYDnyplsc+FgnMhOtGxGryML9Us3+poqlZB5DJmtW0mfTeYshN5FaHHJTWz9omUswZBuiY=
+	t=1751531512; cv=none; b=il75CsAntoNHIQeGK1oRYixcveaC8v2Pj7Wnkd947Ui3ugGSD3q/CA/yzCHa+gPKPm7z8m+ijxNDGR2+5xPX8/Tf+BOyfKAMyw86oUKntBDC+5B2eowHSvHVltIWeA4cAtb6EDQsLThJL8nluf8CbUgA1P0D8xllQ0Sm5RzThzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751531265; c=relaxed/simple;
-	bh=kk77vUBEkSjmsCyANUUqBAMo+dxlEAVvzPvouifbixc=;
+	s=arc-20240116; t=1751531512; c=relaxed/simple;
+	bh=ByU4hpYzsvjOd9VZE1TBCs8POchjSwZa0YYeiaUeNw0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZkaanpplBILdalRLn+Rg6HxBqj4/w42PaB7EzgNktSuI+5tfnmBPY3XJ6yYSsA/HB5yVLMXRBJE4p86c8Q95FGC4M4dF15/VXeq+Qt797PgdinSu9P9Ad/S4sGzBTngy4Kx6xWNih3ocK0XXd2qzAGpVsxz7HSqb6+GTvJachTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HQw3j3De; arc=none smtp.client-ip=198.175.65.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=HNCZJZg8NFnvFGcY0VJn+EnHydVJyYwLeQWFJzhonAFxccJf67MIl/rRv6OujJYfwSdcaYzg9CfITnuuDLgyOX/P+HAu7B4a2wB1RmINKJ666MAdHxqWTcICyQH67b+//VseBsztePd5118mGt3J+7trB3a4t3VygoMqlIF31AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XTYcTqy6; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HQw3j3De"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XTYcTqy6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751531264; x=1783067264;
+  t=1751531512; x=1783067512;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=kk77vUBEkSjmsCyANUUqBAMo+dxlEAVvzPvouifbixc=;
-  b=HQw3j3DebrZ1TLiG9bcbI6orHRfsHXJErVJD4PZoevyXWXIMJAkB1S0d
-   yCQLCZ3+1hG4dt2zbcpCiziCxgfGxHtuAODQj4rmxrthB7HTMibYCI/Vp
-   fD4hJeenomVyqrcjzDXYY/EAKPjJcMwmMNBf604fyrq0cru60YkzJj5AR
-   Zzcj/Du+YQKWkUeQHZpsyldCQqW/xQxl8jjo/XQaEP+Yyp+koH/oXqTn4
-   NHNONK3SuauQIkVQBY2zA83XIJIYfbCjHaL4f0MRS+Vf9YHAW/sYcGJk8
-   4C47k8JnFYujzy3lWzfQj/4Ui+Ay0ebkzOubanhbq235PKe4NUtK6drpf
+  bh=ByU4hpYzsvjOd9VZE1TBCs8POchjSwZa0YYeiaUeNw0=;
+  b=XTYcTqy6ODehrgY7gYPVFdp96L16hLa6BDCtDY4h/FxReuidkdn7LY6U
+   odECRVB96W/pRWnOKfT9Bdx5oknO0yaib+B6BUgO0mk65dBTqDdBM7rlT
+   5frdmMA1VBTyupyeMcY7xBb6cIZcVHWdilk/gPJsTfxrDSifhvoRVYG6z
+   o+JLiL5jfDgf88tBgPe0Dzz5LF7voOIFrxw3Uewvl5HIvDfiQTikbhlkM
+   SlAJhtec8yTAkghWR+Vf9lnpVRW9zCsxjYyfEnH9hdultc2AYPNMIWtqX
+   IauX5DzqOwV0xzP7vdRDN0WlMLggWuwnDQXaOTHplik4Dx006+a44lvlO
    g==;
-X-CSE-ConnectionGUID: kpOqfcSgRci3cMVIK3j8Gw==
-X-CSE-MsgGUID: kJ5O9CR/RCSehLNsi1xkbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53816281"
+X-CSE-ConnectionGUID: n48a2iJeSa2N4BzvA0bXDg==
+X-CSE-MsgGUID: GJ4YQrzkRXu7o+V3aWFaaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53960994"
 X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; 
-   d="scan'208";a="53816281"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 01:27:44 -0700
-X-CSE-ConnectionGUID: Hyj8XmZIREGYlp0Fp6jlOQ==
-X-CSE-MsgGUID: oA/EviQmTmWFP/GcZLUptQ==
+   d="scan'208";a="53960994"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 01:31:44 -0700
+X-CSE-ConnectionGUID: AuvEBSWtSWyGr0z8bLAlKw==
+X-CSE-MsgGUID: HlkdXOsfS96ROan7iqiTJg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; 
-   d="scan'208";a="153737688"
+   d="scan'208";a="154797421"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa006.jf.intel.com with ESMTP; 03 Jul 2025 01:27:39 -0700
-Date: Thu, 3 Jul 2025 16:49:03 +0800
+  by orviesa008.jf.intel.com with ESMTP; 03 Jul 2025 01:31:39 -0700
+Date: Thu, 3 Jul 2025 16:53:04 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org,
@@ -54,7 +54,8 @@ Cc: qemu-devel@nongnu.org,
 	Cameron Esfahani <dirty@apple.com>,
 	Roman Bolshakov <rbolshakov@ddn.com>,
 	Phil Dennis-Jordan <phil@philjordan.eu>,
-	Mads Ynddal <mads@ynddal.dk>,
+	Mads Ynddal <mads@ynddal.dk>, Fabiano Rosas <farosas@suse.de>,
+	Laurent Vivier <lvivier@redhat.com>,
 	Stefano Stabellini <sstabellini@kernel.org>,
 	Anthony PERARD <anthony@xenproject.org>,
 	Paul Durrant <paul@xen.org>,
@@ -62,11 +63,11 @@ Cc: qemu-devel@nongnu.org,
 	Reinoud Zandijk <reinoud@netbsd.org>,
 	Sunil Muthuswamy <sunilmut@microsoft.com>, kvm@vger.kernel.org,
 	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 59/65] accel: Always register
- AccelOpsClass::get_virtual_clock() handler
-Message-ID: <aGZD/1EXudZKwJXB@intel.com>
+Subject: Re: [PATCH v4 56/65] accel: Expose and register
+ generic_handle_interrupt()
+Message-ID: <aGZE8PkdEEVxU+Gm@intel.com>
 References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-60-philmd@linaro.org>
+ <20250702185332.43650-57-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,31 +77,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250702185332.43650-60-philmd@linaro.org>
+In-Reply-To: <20250702185332.43650-57-philmd@linaro.org>
 
-On Wed, Jul 02, 2025 at 08:53:21PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Wed,  2 Jul 2025 20:53:21 +0200
+On Wed, Jul 02, 2025 at 08:53:18PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Wed,  2 Jul 2025 20:53:18 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 59/65] accel: Always register
->  AccelOpsClass::get_virtual_clock() handler
+> Subject: [PATCH v4 56/65] accel: Expose and register
+>  generic_handle_interrupt()
 > X-Mailer: git-send-email 2.49.0
 > 
-> In order to dispatch over AccelOpsClass::get_virtual_clock(),
+> In order to dispatch over AccelOpsClass::handle_interrupt(),
 > we need it always defined, not calling a hidden handler under
-> the hood. Make AccelOpsClass::get_virtual_clock() mandatory.
-> Register the default cpus_kick_thread() for each accelerator.
+> the hood. Make AccelOpsClass::handle_interrupt() mandatory.
+> Expose generic_handle_interrupt() prototype and register it
+> for each accelerator.
 > 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  include/system/accel-ops.h        | 2 ++
+>  include/system/accel-ops.h        | 3 +++
 >  accel/hvf/hvf-accel-ops.c         | 1 +
 >  accel/kvm/kvm-accel-ops.c         | 1 +
->  accel/tcg/tcg-accel-ops.c         | 2 ++
+>  accel/qtest/qtest.c               | 1 +
 >  accel/xen/xen-all.c               | 1 +
->  system/cpus.c                     | 7 ++++---
+>  system/cpus.c                     | 9 +++------
 >  target/i386/nvmm/nvmm-accel-ops.c | 1 +
 >  target/i386/whpx/whpx-accel-ops.c | 1 +
->  8 files changed, 13 insertions(+), 3 deletions(-)
+>  8 files changed, 12 insertions(+), 6 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
