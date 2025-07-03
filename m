@@ -1,65 +1,65 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A99B244667
-	for <kvm@vger.kernel.org>; Thu,  3 Jul 2025 11:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF22A246798
+	for <kvm@vger.kernel.org>; Thu,  3 Jul 2025 11:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751540553; cv=none; b=J8mKQGVMjCPZJOLvNlHpz1Wdg2l8BLJk3o+ys7gOYamgVq9ZTPXcTnYJ27xvSzj72vdVEwXCQvWP8BB2/WyVvY6YFRC5MnLAbWBp65CF4YHaLYxVyur+Couo7b6CcbI8C7j9GAtKa4ppV2pHEYt5jdXdJtZq0iurp1B6B7GPPC0=
+	t=1751540810; cv=none; b=lEE+CVXVpOW3A/C9x3+BU72fkz5RfUOqE/EaSY8yI45myVz7qClNLxi8zkZCNLOEQ00VZs/ybcYCAMNTA0ABM0cpXq1uhnVPPyL6r2t7VlQfRe1h4X/FttmgbiVjBpqCdwimPwvC5CMlh9Yo3MPXSx5Wm71vKEhEkzvFAJCrtGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751540553; c=relaxed/simple;
-	bh=Tpn3mMzalzsnjsHS8oQuDxx0AgctHiaZH25gJbw6XN8=;
+	s=arc-20240116; t=1751540810; c=relaxed/simple;
+	bh=j0xn+hMMzuwzIxDYA8R3Julms3gcOCroj61y1cJcCno=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WZga2+l25zDpRXVmtUA1e2wH0cSD8M3hB78936+z9qKTd8WCze5xszJJseDiqyNAKRLNQyN5myvk1O7+P5Nx+y7egf594+R7mlKgSe2uw0H3SQL69cpL/CsK2Ce4NgiX+zFKqqtBvz/620W2KNJ3mUS4JWwg2rYkC2Xg7QIMuVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O4jjMGCo; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:Content-Type; b=mnaGDEX5ZwAZKxH5ZUETr2zebN4IPVZD+GtySyiqpLrCoi19VfonPJtTJUTW+OLOfse6ovbaa5GQgqkYexqWFS47KLh2jOOS83P1Qx1rVY+x/cvf9IIVm1RTv22Ptjm8Mpsivtde39v8gPiQqLebSuezG/i3h4txAKly8dG04Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ypKv4c1s; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O4jjMGCo"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-450ce3a2dd5so43432885e9.3
-        for <kvm@vger.kernel.org>; Thu, 03 Jul 2025 04:02:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ypKv4c1s"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-450ce671a08so36108455e9.3
+        for <kvm@vger.kernel.org>; Thu, 03 Jul 2025 04:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751540550; x=1752145350; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1751540807; x=1752145607; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=meZf1hVHaaxBu1fyzABE7Mgyq70ajpFE8FzWCylSOKM=;
-        b=O4jjMGCo6mnhFvCaJntQjv/Ppl9npbuwNgDI1AYP0XZoynSJBNuBYJgH6RxH4tsFVV
-         8w9cIao0fZ67A15vxmF9NnhGThMNyGu87E8fbg++RwRTLrTFo+hJIX/011OTZpXIUvqY
-         PMhs5DW4Nw4FmP7D0kMT/8wzd8R1c3RqYMZd+mKf64zMuPSpvZrp17c3Augpt5QEZExy
-         oFud46yVwDv2rxQ2C6RU3XX2YKLF8+vfm1WNJODNibUQ+tejnNKM4b2yOKv1kgbhByzn
-         vBd3UPaX0Csbe2uY+IgB0AS5x6Sq9s5t3ejez98z3aYNLfIMVT2xERyk2DvoEMoNqKAh
-         VfFQ==
+        bh=SY3bbRxwwhqkW5iC4r3Kz/+8BMlWUXcP8I5mFKx4az8=;
+        b=ypKv4c1snUHD4IyuwNtoCAYBy6csq5ADdnRsNH4THF9KejomR3taOrbpuAUPM+rBDT
+         oAoTCTUCpNybLavzvNYFxR9vUd1iSnkFqb8Goo/P90dHY7Z6QKFsW7F3YYyr0yO89XI6
+         ZliuZSHLzLnCfRdEFQ0g3L/LVBKPAD3zpxEKwfiz4o/TN4rZmO8aS5V+Ki2uaUXrUS5F
+         IP2ScGcCmY9XEaJL9B6RUf7SGcgiWPK87HUhy1egzzdGhu8gK19Tst+FafB7dOh+4tI2
+         WG/uO/8oqmCOjv3SxRcGNV1zERzVUhtwLJCgNCM3InPW9xJ3mUebw+FeQuBVATbDLJ7P
+         wg5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751540550; x=1752145350;
+        d=1e100.net; s=20230601; t=1751540807; x=1752145607;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=meZf1hVHaaxBu1fyzABE7Mgyq70ajpFE8FzWCylSOKM=;
-        b=wyAXc0zDXYZl4Z3SUvlPerlWhnKi5nifTchBbY8s9ULhyVqpmy7PuoQKSL8UFRtwq9
-         cS/ZI5fks88FCdTlXugFRXbHVebScSPFJAbYZjI/06LJAvwZyI/kE1fqUZd2JUa7PgpY
-         vEoK3trB7WXMFV+XtJevr3t45ClSon2wOU/KPPtwDcGt0xeZPzYyE6ChMFltg5qV0fte
-         ulgSDzG2yHLxAlSYWwgU5asokDgA6FYb/0kSU8CLCrBgonDjALwCnnAYyfCb/HfDAGgo
-         j0XhBRvHXlGUs+OhdqowiD76bM7/aF9LpG5wIQvSpslWc/4mgUAuJ/ziMOYMjG4GLYzO
-         ebkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrA0lQGtM7ic7fXtnvb1EVwKJQUYvqmSeRukAyAArEmQsRJfxy5m2cgQ/7hg96OBVX+ug=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo7sXfH/zvhO3O7MSbzxVrlyTY6jexwU0vatNFfECKjR04+/XF
-	2dZiSI9WoVWTDn72zuZZW1qDJr5NykPGevw12OP3Hm3xU/CEU2qZJ5D9T7K301sHtcQ=
-X-Gm-Gg: ASbGnctZWQ0LmoFSy8yu8U+H0RMzb38EwoIsz4w1l2D35uGsfgHt3Ob0ta+fzdb2gD9
-	aRIJkR244Bc3ngcetmvdIYoIrPqUymQCkqQl95m3TqY5MeRA3YPQXrY6juiaPdXCIO6KygVODa/
-	DlLC47kEmdsJBcGJI21rHaj5pLrtd7rPYfRldoueW6gJhf5yJ8qQDZv0QrZFu/nWHJm2jqAWhET
-	pcZx3Y/9igMNVP3DgClPVEgGpTyuSfkcyneRpMjMs+Qyh79GkrzcYIBoIZl97DttR4YW3ENxR80
-	jls5DC5CBhcv4MOsaARhSCTbeURuoFpEZI8sv0zQ6a0EWtNuxL7dVW0/PvAb5vqGK/PLjV0FxJx
-	T
-X-Google-Smtp-Source: AGHT+IGOA9Ob4y6TwQ5oCy+TIN5OtIeanArU9CkD0fKkQN/9Okrbch/1y9NMbm9E19Sa1W0uY1YE2g==
-X-Received: by 2002:a05:600c:4688:b0:453:81a:2f3f with SMTP id 5b1f17b1804b1-454a372df70mr75702425e9.30.1751540550215;
-        Thu, 03 Jul 2025 04:02:30 -0700 (PDT)
+        bh=SY3bbRxwwhqkW5iC4r3Kz/+8BMlWUXcP8I5mFKx4az8=;
+        b=slzD7d0yZwcEdy2kIeTYzWFc/H1Gukz4RFGK9qi3j4Cucnx3y8Riumae0p1zQZL/Ku
+         DDpopwwjkqc+9+thWhg5CujcXlvI7Gf/44XagcuNER+r3DmJbptMYyiAYGm8Mzm45tTG
+         IcKeHz08HDifcSmO4iHH2qmPnnSbieM+fheYUzNYwlbNPTNU/N77Z7D7SDxhWOLveHhi
+         pPWK23oLYaa/BK+gAVOp+oMFlp8Jb/ugok0og1WTWSJlKuXOTpxB4fQ9odtbhtFL7sJG
+         Xp7FmQ63t0gKW8GVSqvG5WuqnbdvXlMNpH/tvN7r7IWtIIg1bpCDldP4ut/kI9XVv1Pa
+         DS7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXBslPpP66M0CHeXKZdMLer8rKgIvIzWdWRTBWaecOTlORFACLc0uD2afSnrpFp6cHd1VU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4nCPY2wg+nyrm+fMaMpwkti/V3Y4SCsvnGEjtPbIh+JHQDvcY
+	CGtCXDBsUBO/Q/gUh8EJMC5jlKK8k6us+O7HqKEd3isKnIBsaARc0uRnopG6XP7StkY=
+X-Gm-Gg: ASbGncs5ZxLQo/4e7TaBmZIt9pzr9DcLg6mQ/e/YfM5qGzMgKnY7iU0cLKf1TPOdpTL
+	owVN974tpiY/r6/7iSiuAU5uqhegJDBKoAPlFx3941IZ+SpsPsGunwYHPZbzL+PpiHR/uXRwlM8
+	dZ3PH9w/hsmDMG49cjL+Sas3UZPEnYrtHSJiTsGX3A2AGi7IKZbvWjTMWSaOYV+6vDqR2099pta
+	Xa+kM6ZveIusy1iydKKCZOOT/XnoUz1SOOWjH32+Mbn2X+fyHtwSzjSxzAtfoOD0c/pPDvlor64
+	stRS53aPgKsRmKqieIiBJG9v66r6A51WFBlqJROINsAGl5A+JQ5SgU1xnOsyDYsoK+JC6bSOvDV
+	U
+X-Google-Smtp-Source: AGHT+IHjgZAPP08KCJfBUi9HGXkOD5sakqCz6orLObgGHxB3KaUuSEYVzqSR4uUZvniC5txn6nd8BQ==
+X-Received: by 2002:a05:600c:3504:b0:442:f4a3:8c5c with SMTP id 5b1f17b1804b1-454a36e483bmr72402135e9.10.1751540806936;
+        Thu, 03 Jul 2025 04:06:46 -0700 (PDT)
 Received: from [10.79.43.25] ([83.247.137.20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a99a35f9sm23430675e9.27.2025.07.03.04.02.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a99a35f9sm23533485e9.27.2025.07.03.04.06.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 04:02:29 -0700 (PDT)
-Message-ID: <1ede3bf9-4afe-4616-8a2b-ec3a4087f941@linaro.org>
-Date: Thu, 3 Jul 2025 13:02:28 +0200
+        Thu, 03 Jul 2025 04:06:46 -0700 (PDT)
+Message-ID: <deacf2fe-a84f-44aa-a612-7985ea9339ba@linaro.org>
+Date: Thu, 3 Jul 2025 13:06:45 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,100 +67,40 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 45/69] accel/whpx: Expose whpx_enabled() to common code
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
+Subject: Re: [PATCH v5 00/69] accel: Preparatory cleanups for split-accel
+To: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>
+ Richard Henderson <richard.henderson@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
- <20250703105540.67664-46-philmd@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250703105540.67664-46-philmd@linaro.org>
+In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 3/7/25 12:55, Philippe Mathieu-Daudé wrote:
-> Currently whpx_enabled() is restricted to target-specific code.
-> By defining CONFIG_WHPX_IS_POSSIBLE we allow its use anywhere.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/system/whpx.h       | 27 ++++++++++++++-------------
->   accel/stubs/whpx-stub.c     | 12 ++++++++++++
->   target/i386/whpx/whpx-all.c |  5 -----
->   accel/stubs/meson.build     |  1 +
->   4 files changed, 27 insertions(+), 18 deletions(-)
->   create mode 100644 accel/stubs/whpx-stub.c
-> 
-> diff --git a/include/system/whpx.h b/include/system/whpx.h
-> index 00ff409b682..00f6a3e5236 100644
-> --- a/include/system/whpx.h
-> +++ b/include/system/whpx.h
-> @@ -16,19 +16,20 @@
->   #define QEMU_WHPX_H
->   
->   #ifdef COMPILING_PER_TARGET
-> -
-> -#ifdef CONFIG_WHPX
-> -
-> -int whpx_enabled(void);
-> -bool whpx_apic_in_platform(void);
-> -
-> -#else /* CONFIG_WHPX */
-> -
-> -#define whpx_enabled() (0)
-> -#define whpx_apic_in_platform() (0)
-> -
-> -#endif /* CONFIG_WHPX */
-> -
-> +# ifdef CONFIG_WHPX
-> +#  define CONFIG_WHPX_IS_POSSIBLE
-> +# endif /* !CONFIG_WHPX */
-> +#else
-> +# define CONFIG_WHPX_IS_POSSIBLE
->   #endif /* COMPILING_PER_TARGET */
->   
-> +#ifdef CONFIG_WHPX_IS_POSSIBLE
-> +extern bool whpx_allowed;
-> +#define whpx_enabled() (whpx_allowed)
-> +bool whpx_apic_in_platform(void);
-> +#else /* !CONFIG_WHPX_IS_POSSIBLE */
-> +#define whpx_enabled() 0
-> +#define whpx_apic_in_platform() (0)
-> +#endif /* !CONFIG_WHPX_IS_POSSIBLE */
-> +
->   #endif /* QEMU_WHPX_H */
-> diff --git a/accel/stubs/whpx-stub.c b/accel/stubs/whpx-stub.c
-> new file mode 100644
-> index 00000000000..c564c89fd0b
-> --- /dev/null
-> +++ b/accel/stubs/whpx-stub.c
-> @@ -0,0 +1,12 @@
-> +/*
-> + * WHPX stubs for QEMU
-> + *
-> + *  Copyright (c) Linaro
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "system/whpx.h"
-> +
-> +bool whpx_allowed;
+On 3/7/25 12:54, Philippe Mathieu-Daudé wrote:
+> Missing review: 23-24, 27
 
-Consider this missing hunk squashed:
+> Few changes needed before being able to add the
+> split acceleration:
+> 
+> - few method docstring added
+> - remove pointless stubs
+> - propagate soon required AccelState argument
+> - try to reduce current_accel() uses
+> - move declarations AccelClass <-> AccelOpsClass
+> - display model name in 'info cpus'
+> - add 'info accel' command to QMP/HMP
+> - make accel_create_vcpu_thread() more generic
+> - introduce hwaccel_enabled()
+> 
+> I plan to send a PR once fully reviewed (v5 likely final, 69 is a good number).
+> 
+> Regards,
+> 
+> Phil.
 
--- >8 --
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index 1732d108105..faf56e19722 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -245 +245 @@ struct AccelCPUState {
--static bool whpx_allowed;
-+bool whpx_allowed;
----
+Series also pushed as the following tag:
+https://gitlab.com/philmd/qemu/-/tags/20250703105540.67664-1-philmd@linaro.org
