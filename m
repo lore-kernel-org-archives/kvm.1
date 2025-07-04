@@ -1,188 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from outbound.qs.icloud.com (p-east3-cluster6-host2-snip4-10.eps.apple.com [57.103.85.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927BB2F546D;
-	Fri,  4 Jul 2025 08:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A695A2EBDF6
+	for <kvm@vger.kernel.org>; Fri,  4 Jul 2025 09:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.85.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751619056; cv=none; b=F6r66b2ySPo7PsN7ZKzhNuNUK4fuo3YSpOVhTQa/b3yo7GAUhHhlncx8B8YS2GO4TTbSFOcC8DmI7z1jD77aCEXwvmI2xOOkfVnr+WuY23Y7rleH3WGJNifnZU3sRwd1KM/vUPFugMxlcsvL+Ey3p+AypneOg5zaZxY8x6kPGgI=
+	t=1751620541; cv=none; b=s/ymDdbaRJ/83zZkoyh/P2FiXz1Nps+rGLFRswIPl2xud+hdAdgRyf2u4YMZUr9dL5rxUOipctGrd0kJoN5n7OpFVmCbjOP758In1Px/jJ6PhXSQSgy1gPr0pl9u9FO8OyTbE316nhzIXlDJiK2O3GiSbgyVxHvfpCBLvXjaE4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751619056; c=relaxed/simple;
-	bh=9ZQhnOZauBSt7UZD9IRuNYyyzL9Xt5RBe0hhjhp3+H0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBtATE4OM1yaqzi/prvbEVLK3ipeuiUe25m8TpKAWQOAnhqib4+KUkVGeH/cmwwOR7wtlmq00ELBXig1htWmkJx6yQSyO5UwkcIsygh1S62g1NjYmTuO/2clSkm2ecNqKOFwX3vg0qdCWaHo11PMD3RTpHYPjFshftiDVESMqG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ajCsPtFk; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751620541; c=relaxed/simple;
+	bh=Kjv69prOm8o+3r+NqxkFDhjMCJxoTAlRl95Ze5nfxEA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mog8Qg2Lur9SnqvjMz5EX9hdyekFvVDGEZu1vt4msF4A+S9DF8b4oBrKWE+w6WXqVgudWxXzvjFMdJ7hUdbQjbkPrRVBcKpk6umu+k6ww1tN4A5q6+6fpZ+smxEQZakZaowE/xrqPS6DpnF9flNJsSNVP2LDtIhe4LxjwW0ky0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ynddal.dk; spf=pass smtp.mailfrom=ynddal.dk; dkim=pass (2048-bit key) header.d=ynddal.dk header.i=@ynddal.dk header.b=xS2goS7W; arc=none smtp.client-ip=57.103.85.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ynddal.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ynddal.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ajCsPtFk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751619054; x=1783155054;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9ZQhnOZauBSt7UZD9IRuNYyyzL9Xt5RBe0hhjhp3+H0=;
-  b=ajCsPtFkcXLgWUmj+RZshEHQhhp6E/AdJROBrvOXLOWF7/r8C7w/yKAi
-   PVPn9F7yylcuAxm9rHz0ic95Q0bEwEcAmkLdO6wpV6rp7cGDaybAUDprW
-   BKemuVRxzlPEDsSb3HnWm0e/UDjrcArFkrMsXk5+EXB8c6MVbwk19s2OG
-   BbS1uC6xNAvuAK4OsDuZp3TduGQC1SU0Ey2gSB2ple3XXz/PX3078Ubuc
-   QD1SdIULwpBlCdgldPC8mpS/nyDBOGyt6Fxd1jlgRGFNhJZeKpCOqEzbO
-   IitgzDnzYWRJdjkm1uq8NqrV5Vf8BB/GcRD8A6usBBubnbfXIEazLrwLh
-   w==;
-X-CSE-ConnectionGUID: GGIonwDXQCmhYIcvaODq9A==
-X-CSE-MsgGUID: piuxvDTkQgK00ZoqZ64r9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79391795"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="79391795"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:46 -0700
-X-CSE-ConnectionGUID: t9txymC3QMOMfe7iQZEZ3g==
-X-CSE-MsgGUID: Rw0YyGbOTqOmbpPjvc0d5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="154722029"
-Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:47 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	dave.hansen@intel.com
-Cc: rick.p.edgecombe@intel.com,
-	mlevitsk@redhat.com,
-	john.allen@amd.com,
-	weijiang.yang@intel.com,
-	minipli@grsecurity.net,
-	xin@zytor.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v11 23/23] KVM: nVMX: Add consistency checks for CET states
-Date: Fri,  4 Jul 2025 01:49:54 -0700
-Message-ID: <20250704085027.182163-24-chao.gao@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250704085027.182163-1-chao.gao@intel.com>
-References: <20250704085027.182163-1-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=ynddal.dk header.i=@ynddal.dk header.b="xS2goS7W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+	bh=Kjv69prOm8o+3r+NqxkFDhjMCJxoTAlRl95Ze5nfxEA=;
+	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+	b=xS2goS7WwTuKPCViMH0migXPvotSjFTOMJX4WC0myqeknuiudpPLpXVjjaPz8TfbG
+	 4jZ5Q3HdXfudLhiiDVKU/ZoIkH0tRRGG1mZxxWlLjXQ3mJjHlU7f9sHbeWoQ28gQWu
+	 9zOY1LH+5lDvA0il/64Nuf455dokswvcb1NBJlvg5W3TS3qnjl9BFIV3ytE/dXbDp/
+	 7eARKqxG23myt22CRu9kgHKlkB5Fqwy2DsGg1h2RJ25f43ZIptPZPrPlQ3gJtDFxEh
+	 WLFttmK9kFM9Dax6r7+hR4xH0K1V1+GCt8Ec2GEmEBP2Km2FjfJj3nxnaljhM++V6b
+	 LbEIlaGpoJCcw==
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by outbound.qs.icloud.com (Postfix) with ESMTPS id 4B5291807C1F;
+	Fri,  4 Jul 2025 09:15:35 +0000 (UTC)
+Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com [17.57.155.37])
+	by outbound.qs.icloud.com (Postfix) with ESMTPSA id 6B5D81800367;
+	Fri,  4 Jul 2025 09:15:34 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v4 51/65] accel/kvm: Convert to
+ AccelOpsClass::cpu_thread_routine
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250702185332.43650-52-philmd@linaro.org>
+Date: Fri, 4 Jul 2025 11:15:22 +0200
+Cc: qemu-devel@nongnu.org,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ kvm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C6FE1389-E113-4794-9700-0D7F206C2704@ynddal.dk>
+References: <20250702185332.43650-1-philmd@linaro.org>
+ <20250702185332.43650-52-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-Proofpoint-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
+X-Proofpoint-ORIG-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MSBTYWx0ZWRfX8f4Kk4QdcsHq
+ iuqkwrfRcCsFTockm9f4Gd1uhET6aMtPDjIxk2/Rdvz64WLQsoivDlHxmvy3VxKPaPfjmdFVqRK
+ 2dzyM8aUToEiFy+ltDmB4zK3dP7GfLlFrU+EO0TB4UjjE2Oe4IwPsNITB07ycP8e0ClpUN439hn
+ OAzjYINiE47597ZxO7WVrBZ2s7xMcBd8XlD3NRPGIQcJFTZ+T3D4XpnErCFFbAg83mi4AdBpDcn
+ //8gGA8ko0rdqqU8+TWuviVbzwVRyIiCHZgxuWkumOZe7Wa/TOeKUexPY359KF0ivbQlhmdzo=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-04_03,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxscore=0 clxscore=1030 malwarescore=0 bulkscore=0 mlxlogscore=865
+ adultscore=0 suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506060001 definitions=main-2507040071
 
-Introduce consistency checks for CET states during nested VM-entry.
 
-A VMCS contains both guest and host CET states, each comprising the
-IA32_S_CET MSR, SSP, and IA32_INTERRUPT_SSP_TABLE_ADDR MSR. Various
-checks are applied to CET states during VM-entry as documented in SDM
-Vol3 Chapter "VM ENTRIES". Implement all these checks during nested
-VM-entry to emulate the architectural behavior.
+> On 2 Jul 2025, at 20.53, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> By converting to AccelOpsClass::cpu_thread_routine we can
+> let the common accel_create_vcpu_thread() create the thread.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> accel/kvm/kvm-accel-ops.c | 12 +-----------
+> 1 file changed, 1 insertion(+), 11 deletions(-)
+>=20
 
-In summary, there are three kinds of checks on guest/host CET states
-during VM-entry:
-
-A. Checks applied to both guest states and host states:
-
- * The IA32_S_CET field must not set any reserved bits; bits 10 (SUPPRESS)
-   and 11 (TRACKER) cannot both be set.
- * SSP should not have bits 1:0 set.
- * The IA32_INTERRUPT_SSP_TABLE_ADDR field must be canonical.
-
-B. Checks applied to host states only
-
- * IA32_S_CET MSR and SSP must be canonical if the CPU enters 64-bit mode
-   after VM-exit. Otherwise, IA32_S_CET and SSP must have their higher 32
-   bits cleared.
-
-C. Checks applied to guest states only:
-
- * IA32_S_CET MSR and SSP are not required to be canonical (i.e., 63:N-1
-   are identical, where N is the CPU's maximum linear-address width). But,
-   bits 63:N of SSP must be identical.
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- arch/x86/kvm/vmx/nested.c | 47 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 362e241a2cbb..3d16d97d8dc7 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3098,6 +3098,17 @@ static bool is_l1_noncanonical_address_on_vmexit(u64 la, struct vmcs12 *vmcs12)
- 	return !__is_canonical_address(la, l1_address_bits_on_exit);
- }
- 
-+static bool is_valid_cet_state(struct kvm_vcpu *vcpu, u64 s_cet, u64 ssp, u64 ssp_tbl)
-+{
-+	if (!is_cet_msr_valid(vcpu, s_cet) || !IS_ALIGNED(ssp, 4))
-+		return false;
-+
-+	if (is_noncanonical_msr_address(ssp_tbl, vcpu))
-+		return false;
-+
-+	return true;
-+}
-+
- static int nested_vmx_check_host_state(struct kvm_vcpu *vcpu,
- 				       struct vmcs12 *vmcs12)
- {
-@@ -3167,6 +3178,26 @@ static int nested_vmx_check_host_state(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 	}
- 
-+	if (vmcs12->vm_exit_controls & VM_EXIT_LOAD_CET_STATE) {
-+		if (CC(!is_valid_cet_state(vcpu, vmcs12->host_s_cet, vmcs12->host_ssp,
-+					   vmcs12->host_ssp_tbl)))
-+			return -EINVAL;
-+
-+		/*
-+		 * IA32_S_CET and SSP must be canonical if the host will
-+		 * enter 64-bit mode after VM-exit; otherwise, higher
-+		 * 32-bits must be all 0s.
-+		 */
-+		if (ia32e) {
-+			if (CC(is_noncanonical_msr_address(vmcs12->host_s_cet, vcpu)) ||
-+			    CC(is_noncanonical_msr_address(vmcs12->host_ssp, vcpu)))
-+				return -EINVAL;
-+		} else {
-+			if (CC(vmcs12->host_s_cet >> 32) || CC(vmcs12->host_ssp >> 32))
-+				return -EINVAL;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -3277,6 +3308,22 @@ static int nested_vmx_check_guest_state(struct kvm_vcpu *vcpu,
- 	     CC((vmcs12->guest_bndcfgs & MSR_IA32_BNDCFGS_RSVD))))
- 		return -EINVAL;
- 
-+	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE) {
-+		if (CC(!is_valid_cet_state(vcpu, vmcs12->guest_s_cet, vmcs12->guest_ssp,
-+					   vmcs12->guest_ssp_tbl)))
-+			return -EINVAL;
-+
-+		/*
-+		 * Guest SSP must have 63:N bits identical, rather than
-+		 * be canonical (i.e., 63:N-1 bits identical), where N is
-+		 * the CPU's maximum linear-address width. Similar to
-+		 * is_noncanonical_msr_address(), use the host's
-+		 * linear-address width.
-+		 */
-+		if (CC(!__is_canonical_address(vmcs12->guest_ssp, max_host_virt_addr_bits() + 1)))
-+			return -EINVAL;
-+	}
-+
- 	if (nested_check_guest_non_reg_state(vmcs12))
- 		return -EINVAL;
- 
--- 
-2.47.1
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>
 
