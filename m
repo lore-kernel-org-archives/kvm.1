@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440622868A9;
-	Fri,  4 Jul 2025 08:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2652EF665;
+	Fri,  4 Jul 2025 08:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751619048; cv=none; b=S6dbL/+VHjDlty0pgsONJRuAmgpYOfibugSC/Sw71JkxAW6xtxjJ8yFVn7Ugo0ZtznZ4LHZfM9IMkzNl8RvhP0jgtr/vytpKZwk35+ctru9KlFIo+IkURJWL38npjEQvkX7FppmNRPzX2+ixZq40ahzXliwwJPz0awj76s0vuvM=
+	t=1751619048; cv=none; b=OOFKl1uk78P7uVxQ5ToSG4AUyqkUAyPHB0AMQaSbg3EptjUOKMPHegni4yfRj/FtDMG5/ZQotcxDyKJJTc+dH21T5KXCgrxp65sXYaECQaxZMn6+KxfIu1ZyF4v2GxxDOUlHcK/1fTKZe1H4KzniAjAy0YEuxA1wX4Hexwt/W80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751619048; c=relaxed/simple;
-	bh=b2I7a1FRbvWHUGUH0GBOzQ8oZAF81PLR0jtnelp/+yg=;
+	bh=WrIErqpAsLYYcuED0WnH89yjpjhV9lt00b3Cnw3x7v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5wb2fKyFUblkQa7GMzce8XJ8/oi6VCBHh9ir35eBWhb0rtHpntg4tO+O0zQ/Hv09cJgfwQ3xPk7vs8Pgj/PPM1CPvGC6exNFcxpMwg3UivusCkQ3osFLDV7MR3mdJIW7RcMTylMrvtY2sZ/G35dZy7vQm40DoPH+psrBvWEutU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OV0a5m8F; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=GZfuQvWfmcpz8AUQFotIXAcVzxsmI+23ahmkwMauT094p7wAmut/k5V5aHBnR5hx5OuF2PRvPpEJXcsFtIMbNjCNVoRWOCrtiJxwax1MUF+83cGckX/qm+kBdlPAG8r7/HGzfToiJvnxk1I/9Qj18P51VBxErl+Rnqhg6uf+JQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WkxCfwCB; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OV0a5m8F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WkxCfwCB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751619046; x=1783155046;
+  t=1751619047; x=1783155047;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=b2I7a1FRbvWHUGUH0GBOzQ8oZAF81PLR0jtnelp/+yg=;
-  b=OV0a5m8FlHg+Mfwi5N/omNht6489OqA36S9pl2CYyrsUY7zain/66Rnz
-   oGfeGozft9pzf83kqzBkUAV4MPSA1LAHJ2EAeAgcaOuOELJ0EpTRg/hyU
-   TpsH1GgnHiJPGtolJyGL2vnGs2njWijqd/iGNAuocFjvcQOVLSUQBVQwd
-   T/l0hSME+xdBrKAhZWe7bxq29q5u5MpKruP9Plj/f6XKq2/2ohROamK3g
-   7E6gftsOhVomNlqqe1ydnw4errLfZnkxV0uncv2WzAGSxn43M3TIF5vs+
-   mnILUybEA/Mo4+LTIjC1wXlHLnJ9vuOTE9XsSnBSqcoZBXFfZidTU8/yf
-   g==;
-X-CSE-ConnectionGUID: e6J/lDVPR4uRHYW+lR8ZTQ==
-X-CSE-MsgGUID: oPmF/kwOQLWntMOWtbXHfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79391669"
+  bh=WrIErqpAsLYYcuED0WnH89yjpjhV9lt00b3Cnw3x7v4=;
+  b=WkxCfwCBubsK8HXaQke8yMhFzhy2dEADL4ll5KW5mN2cDbWyAW1I7Nax
+   kxmpsHgLC5DMfeGjwrIp01CQo6m34G7225i5EqBS6QE2x3Otas2pSi3Bz
+   VPvUeHCQEdXqzhv2nCYV/j7lxZP54jDfvIfGkjm5PgKMV1DiqvqjejgLm
+   uRTBJXUJ+Y5saTKk9buDcM5v2ATk23QWv4ZItIkfEy8H+ZUSnC82IfemJ
+   l1+nCjWCfnhO0iF9VjLh1OKTSk1I6+gAdVbxhS8MeqhV7yF/jJrr8BrKx
+   ygIFeRFNcunOqc/qFk/AsPakCn09pASZQFJl0lMHuvUp4g8C9AdNi5qXd
+   w==;
+X-CSE-ConnectionGUID: BrOYzSWITb+AFfrmdWlZ/Q==
+X-CSE-MsgGUID: iALvERIvSHWf/wFZ8fbrzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79391690"
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="79391669"
+   d="scan'208";a="79391690"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:40 -0700
-X-CSE-ConnectionGUID: f6++7z7NR7qVZhnqGbWDIw==
-X-CSE-MsgGUID: RHECQlxkSI+fMz+oTD/yeA==
+X-CSE-ConnectionGUID: KXGYiM98SnSFxwMV5CV1XQ==
+X-CSE-MsgGUID: jCFfnOosSD+lEZGGHB7log==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="154721980"
+   d="scan'208";a="154721989"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:40 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:41 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: rick.p.edgecombe@intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v11 11/23] KVM: x86: Report KVM supported CET MSRs as to-be-saved
-Date: Fri,  4 Jul 2025 01:49:42 -0700
-Message-ID: <20250704085027.182163-12-chao.gao@intel.com>
+Subject: [PATCH v11 13/23] KVM: x86: Enable guest SSP read/write interface with new uAPIs
+Date: Fri,  4 Jul 2025 01:49:44 -0700
+Message-ID: <20250704085027.182163-14-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250704085027.182163-1-chao.gao@intel.com>
 References: <20250704085027.182163-1-chao.gao@intel.com>
@@ -78,52 +78,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Yang Weijiang <weijiang.yang@intel.com>
 
-Add CET MSRs to the list of MSRs reported to userspace if the feature,
-i.e. IBT or SHSTK, associated with the MSRs is supported by KVM.
+Enable guest shadow stack pointer(SSP) access interface with new uAPIs.
+CET guest SSP is HW register which has corresponding VMCS field to save
+/restore guest values when VM-{Exit,Entry} happens. KVM handles SSP as
+a synthetic MSR for userspace access.
 
-Suggested-by: Chao Gao <chao.gao@intel.com>
+Use a translation helper to set up mapping for SSP synthetic index and
+KVM-internal MSR index so that userspace doesn't need to take care of
+KVM's management for synthetic MSRs and avoid conflicts.
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/kvm/x86.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/include/uapi/asm/kvm.h |  3 +++
+ arch/x86/kvm/x86.c              | 10 +++++++++-
+ arch/x86/kvm/x86.h              | 10 ++++++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 260368ba3134..f6cf371ee16a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -338,6 +338,10 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_UMWAIT_CONTROL,
- 
- 	MSR_IA32_XFD, MSR_IA32_XFD_ERR, MSR_IA32_XSS,
-+
-+	MSR_IA32_U_CET, MSR_IA32_S_CET,
-+	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
-+	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index e72d9e6c1739..a4870d9c9279 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -421,6 +421,9 @@ struct kvm_x86_reg_id {
+ 	__u16 rsvd16;
  };
  
- static const u32 msrs_to_save_pmu[] = {
-@@ -7619,6 +7623,20 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 		if (!kvm_caps.supported_xss)
- 			return;
- 		break;
-+	case MSR_IA32_U_CET:
-+	case MSR_IA32_S_CET:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK) &&
-+		    !kvm_cpu_cap_has(X86_FEATURE_IBT))
-+			return;
++/* KVM synthetic MSR index staring from 0 */
++#define KVM_SYNTHETIC_GUEST_SSP 0
++
+ #define KVM_SYNC_X86_REGS      (1UL << 0)
+ #define KVM_SYNC_X86_SREGS     (1UL << 1)
+ #define KVM_SYNC_X86_EVENTS    (1UL << 2)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f6cf371ee16a..2373968ea7fd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5969,7 +5969,15 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
+ 
+ static int kvm_translate_synthetic_msr(struct kvm_x86_reg_id *reg)
+ {
+-	return -EINVAL;
++	switch (reg->index) {
++	case KVM_SYNTHETIC_GUEST_SSP:
++		reg->type = KVM_X86_REG_MSR;
++		reg->index = MSR_KVM_INTERNAL_GUEST_SSP;
 +		break;
-+	case MSR_IA32_INT_SSP_TAB:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_LM))
-+			return;
-+		fallthrough;
-+	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK))
-+			return;
-+		break;
- 	default:
- 		break;
- 	}
++	default:
++		return -EINVAL;
++	}
++	return 0;
+ }
+ 
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 2914e99059c9..17b1485fa2f4 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -79,6 +79,16 @@ void kvm_spurious_fault(void);
+ #define KVM_SVM_DEFAULT_PLE_WINDOW_MAX	USHRT_MAX
+ #define KVM_SVM_DEFAULT_PLE_WINDOW	3000
+ 
++/*
++ * KVM's internal, non-ABI indices for synthetic MSRs. The values themselves
++ * are arbitrary and have no meaning, the only requirement is that they don't
++ * conflict with "real" MSRs that KVM supports. Use values at the upper end
++ * of KVM's reserved paravirtual MSR range to minimize churn, i.e. these values
++ * will be usable until KVM exhausts its supply of paravirtual MSR indices.
++ */
++
++#define MSR_KVM_INTERNAL_GUEST_SSP	0x4b564dff
++
+ static inline unsigned int __grow_ple_window(unsigned int val,
+ 		unsigned int base, unsigned int modifier, unsigned int max)
+ {
 -- 
 2.47.1
 
