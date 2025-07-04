@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1342868A9;
-	Fri,  4 Jul 2025 08:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF36128A3E2;
+	Fri,  4 Jul 2025 08:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751619040; cv=none; b=Gc6e8nKGfe3CqUp+0syy8yU2PdniidC0Jp1kzII/tybsPu9fuDd70b/XwLcOYYiyR+CW9TA2ynzDKda6lyKh08ebyzum+9XUQkLymzrTKn2a10B/N/8HXRhKeKumET3rBU7TWkh4Y740ne4gbENg5WxlMJUrwVUCVlhzeRjFCLk=
+	t=1751619041; cv=none; b=YqelkdVU3z6PnBVo1nngt9t3J2V2Q88Q2O7dQ5+F+orpuXHlw4Zjry6zoFugwcPzpF6Vn499n+MH/YAxJg8kFHVFLg7IhwBf2O3IxTuebkYwQF237zq31HbwfjLE0HkzX0IOZRihBNT7RBfwbFvi37t8a60BmOBETFXZmWgE39A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751619040; c=relaxed/simple;
-	bh=EmKOsrNzZJJcXfGM/ESPYCS66R+7WBgMhtsNsYmE5/g=;
+	s=arc-20240116; t=1751619041; c=relaxed/simple;
+	bh=DrjhtQTH+Cyf9KhD0UkQrnxsuV2+za6u42Op3QD6mDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FUMutHcu0nzwk90f0H7iUnCh098r3lQPW+9xWXRxUPi8UM0OhGn1SGFR5WXCpUyR4m09vL59vYEf1++eGqpQYV7WS5yoh+AjadMQNlD+WUop7glmpJYnvAeyYGCVOPAo8O9Mxm+Wc2P3J6t3l85ezJ7R8v4Ctfe96Sbe0/65D6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UwQfjbz6; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=OsD2o45rL10Pc5NAFi7UdRhRo9jBYsPuvj302CJY0Ap6eTEcEGZmGh2N7d5/AEiJ9xfRCBkEl2s3jUvKY/qv9SWfg560yxDmj/T/d5R+toKhOrbtpRNEyJkxWtvwhKq2Z7517zJo+Cs2Bg4wt+gUzRSMLULt58qPcuALBajzIpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R4qLDPdQ; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UwQfjbz6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R4qLDPdQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751619039; x=1783155039;
+  t=1751619040; x=1783155040;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EmKOsrNzZJJcXfGM/ESPYCS66R+7WBgMhtsNsYmE5/g=;
-  b=UwQfjbz6h6lbBn5JF56nUoTA1kY/Z5O5yuh5CUKwZu7uvNgAt6SRKttr
-   b31ZlTcEGf22NkonjhqtWpd0IGIA8xh1H7pwWrU549u61BszyXwUwQLat
-   e3KGTYiEx+1irE7hLWCZZLzbuXVJY0Xsrhc8zm/GQhsNw1OCDenmPQ4qA
-   K2rwaRrIwR04m9zdpdnp4U9qdA25seqIWrcRU7VzfbV9vyTssJvX2l9s8
-   bdL0MSAEDAns2IsDA2GVCELphITjlc81Z/SkxC+h3cWxgRIEclTp2LMRA
-   GkNd8IhQYuxjBf5jGexdEr58QSTJgI2xNVdfn/zZzEJwjTWd9xggWcIv6
-   w==;
-X-CSE-ConnectionGUID: m7WhYJ/IRCSqGJHDYlyhHA==
-X-CSE-MsgGUID: MzIq46PeTaWpu7fCHQ3NLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79391596"
+  bh=DrjhtQTH+Cyf9KhD0UkQrnxsuV2+za6u42Op3QD6mDw=;
+  b=R4qLDPdQAy4jOq/SaL+Upg8NaqCxcahLRwectKJKpbut5+jilSmCnVgB
+   PYXRCxEmfSHc4chWnT/4eXreucFNoAjLXzKUFmLPBM/9ugaPjjb+NupLV
+   awYAcOfcoLjXesyeTyQM/ZpRDLLXHy82SAuS4R3XsOG5OFnItRgbruFqE
+   /6zbZMbPbsbaRLvTqhTFCYdAQmtyBTmCXaBu/CUMFnj4gzmbQz0RJFbG9
+   0DVhc1n9paRTZ2U6Db563vTkO3J93HwOIsnkfvDceqgtwzWZcFKonPJ5D
+   2hRspx0tY6hGmXIQ7u9yoV3+TPc4etbBhLo+7bN6EZPWIeQU2nx9gdeHA
+   Q==;
+X-CSE-ConnectionGUID: wbEaTB0WRwOa+0LP4pQVbg==
+X-CSE-MsgGUID: sxCEynoKTG+eKF9sUiLyGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79391578"
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="79391596"
+   d="scan'208";a="79391578"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:36 -0700
-X-CSE-ConnectionGUID: d2pwx/CoRyuKh3aTpQqRaw==
-X-CSE-MsgGUID: jFGbck20RN+mvw7wFDUNEw==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:35 -0700
+X-CSE-ConnectionGUID: hh6ecGcMQcazWc49C1ZNWg==
+X-CSE-MsgGUID: mLcMTZbhQZOMEA1rnnULZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="154721955"
+   d="scan'208";a="154721949"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:36 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:50:35 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: rick.p.edgecombe@intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v11 04/23] KVM: x86: Zero XSTATE components on INIT by iterating over supported features
-Date: Fri,  4 Jul 2025 01:49:35 -0700
-Message-ID: <20250704085027.182163-5-chao.gao@intel.com>
+Subject: [PATCH v11 02/23] KVM: x86: Add kvm_msr_{read,write}() helpers
+Date: Fri,  4 Jul 2025 01:49:33 -0700
+Message-ID: <20250704085027.182163-3-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250704085027.182163-1-chao.gao@intel.com>
 References: <20250704085027.182163-1-chao.gao@intel.com>
@@ -76,54 +76,94 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Tweak the code a bit to facilitate resetting more xstate components in
-the future, e.g., CET's xstate-managed MSRs.
+From: Yang Weijiang <weijiang.yang@intel.com>
 
-No functional change intended.
+Wrap __kvm_{get,set}_msr() into two new helpers for KVM usage and use the
+helpers to replace existing usage of the raw functions.
+kvm_msr_{read,write}() are KVM-internal helpers, i.e. used when KVM needs
+to get/set a MSR value for emulating CPU behavior, i.e., host_initiated ==
+%true in the helpers.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
- arch/x86/kvm/x86.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 ++-
+ arch/x86/kvm/cpuid.c            |  2 +-
+ arch/x86/kvm/x86.c              | 16 +++++++++++++---
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 1f3f8601747f..e07a03dbce6a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2152,9 +2152,10 @@ void kvm_enable_efer_bits(u64);
+ bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer);
+ int kvm_emulate_msr_read_with_filter(struct kvm_vcpu *vcpu, u32 index, u64 *data);
+ int kvm_emulate_msr_write_with_filter(struct kvm_vcpu *vcpu, u32 index, u64 data);
+-int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data, bool host_initiated);
+ int kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
+ int kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
++int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
++int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
+ int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
+ int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
+ int kvm_emulate_as_nop(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index b2d006756e02..9db246671885 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1992,7 +1992,7 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 		if (function == 7 && index == 0) {
+ 			u64 data;
+ 			if ((*ebx & (feature_bit(RTM) | feature_bit(HLE))) &&
+-			    !__kvm_get_msr(vcpu, MSR_IA32_TSX_CTRL, &data, true) &&
++			    !kvm_msr_read(vcpu, MSR_IA32_TSX_CTRL, &data) &&
+ 			    (data & TSX_CTRL_CPUID_CLEAR))
+ 				*ebx &= ~(feature_bit(RTM) | feature_bit(HLE));
+ 		} else if (function == 0x80000007) {
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c956b36314fb..b9d1c84f0794 100644
+index 11d84075cd14..51b37492142c 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -12520,6 +12520,8 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- static void kvm_xstate_reset(struct kvm_vcpu *vcpu, bool init_event)
+@@ -1895,8 +1895,8 @@ static int kvm_set_msr_ignored_check(struct kvm_vcpu *vcpu,
+  * Returns 0 on success, non-0 otherwise.
+  * Assumes vcpu_load() was already called.
+  */
+-int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
+-		  bool host_initiated)
++static int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
++			 bool host_initiated)
  {
- 	struct fpstate *fpstate = vcpu->arch.guest_fpu.fpstate;
-+	u64 xfeatures_mask;
-+	int i;
- 
- 	/*
- 	 * Guest FPU state is zero allocated and so doesn't need to be manually
-@@ -12533,16 +12535,20 @@ static void kvm_xstate_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	 * are unchanged.  Currently, the only components that are zeroed and
- 	 * supported by KVM are MPX related.
- 	 */
--	if (!kvm_mpx_supported())
-+	xfeatures_mask = (kvm_caps.supported_xcr0 | kvm_caps.supported_xss) &
-+			 (XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
-+	if (!xfeatures_mask)
- 		return;
- 
-+	BUILD_BUG_ON(sizeof(xfeatures_mask) * BITS_PER_BYTE <= XFEATURE_MAX);
-+
- 	/*
- 	 * All paths that lead to INIT are required to load the guest's FPU
- 	 * state (because most paths are buried in KVM_RUN).
- 	 */
- 	kvm_put_guest_fpu(vcpu);
--	fpstate_clear_xstate_component(fpstate, XFEATURE_BNDREGS);
--	fpstate_clear_xstate_component(fpstate, XFEATURE_BNDCSR);
-+	for_each_set_bit(i, (unsigned long *)&xfeatures_mask, XFEATURE_MAX)
-+		fpstate_clear_xstate_component(fpstate, i);
- 	kvm_load_guest_fpu(vcpu);
+ 	struct msr_data msr;
+ 	int ret;
+@@ -1922,6 +1922,16 @@ int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
+ 	return ret;
  }
  
++int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data)
++{
++	return __kvm_set_msr(vcpu, index, data, true);
++}
++
++int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data)
++{
++	return __kvm_get_msr(vcpu, index, data, true);
++}
++
+ static int kvm_get_msr_ignored_check(struct kvm_vcpu *vcpu,
+ 				     u32 index, u64 *data, bool host_initiated)
+ {
+@@ -12591,7 +12601,7 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 						  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL;
+ 
+ 		__kvm_set_xcr(vcpu, 0, XFEATURE_MASK_FP);
+-		__kvm_set_msr(vcpu, MSR_IA32_XSS, 0, true);
++		kvm_msr_write(vcpu, MSR_IA32_XSS, 0);
+ 	}
+ 
+ 	/* All GPRs except RDX (handled below) are zeroed on RESET/INIT. */
 -- 
 2.47.1
 
