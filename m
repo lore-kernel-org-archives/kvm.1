@@ -1,161 +1,142 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB847F510
-	for <kvm@vger.kernel.org>; Mon,  7 Jul 2025 03:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FC51373;
+	Mon,  7 Jul 2025 03:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751860389; cv=none; b=fp8RHWl2DkDZWk9eWcTdk6pejDqXMN+3wt1k/m9tEqBClyaUBJijOFURKI6cZJio4NBslnJd1wrLKciQhS+AmeMHVsxWMwq66cSIeRg9Gh7nRFB95Zrj0rXhUEnjT827eqoINOF1uGBTZx4m0Zi34J6vLxwwk8izpcQjnp1Q4O4=
+	t=1751860409; cv=none; b=aC4n29DIII4pNy5MWpPyxWAHnDTWdJfH4leTgo6VVZH9JLCrcFPKznmfZIgPtQdkjOdZT1xCfNASSBHMGSQWEI2LIJLRUCZwCTO4lNw/rPdKC/NVV/V0rE3nBEosKoTDc/dF5Fi7zMEsbhp9HE1dhSGYJq4in/BGUitpQgPWz+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751860389; c=relaxed/simple;
-	bh=/fve97GTd9bXitqStqnzD3wq1Emy4aKwuUyvzEethf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyY+1TgxgD0lSw0ET4SrbPxg4UJSNWNQhJE2MRSYf6j9mOLpUH64qQUQIXQE3+M1BUCAGqd59ln0S55MKFm6PRHK9inWQo0VoUWBnNC3DAZPYde7ZzcRpyYplmkCOKq81LxCv3KVpdfYPxKoUQGtfagiKtsB5WYjkEqIaGU8t9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=M85gggbz; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="M85gggbz"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b3507b63c6fso2803499a12.2
-        for <kvm@vger.kernel.org>; Sun, 06 Jul 2025 20:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1751860387; x=1752465187; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mub7PjK+ZQMm18cy8qNtEOXQgRqk+RrTOpKNrinRMis=;
-        b=M85gggbzleyl75AKcW75Gr+fuPYxB3zn8bnX3qIGBLkv9LG8oewUWUfCFns/SZFqP+
-         ZHipB8vpt8/6TrgOmIF/4+R3m/1M6uhLUmXb3GlY64fG/Ttf3kaUlQ0OYZu6PsHP/tPv
-         WWt2Jg1OiS6yTlUYN6OO4zaC/Ofrnqc+iEKetJvVbGYJfMHJrSDgH+ywo+Y86RPk2G6i
-         RKNj3kY0CMZm481x66rqyXoqOfIGRdcMe8hwjjztBUzmMnGZsMpoQzPf5g105pYR7Goc
-         msHLyKrGvglB5pvrpcVbEJ5NQZFQLwKSne3SRK94zoEfYdELnd2ktZrspdqpj7hT7ohQ
-         3NrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751860387; x=1752465187;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mub7PjK+ZQMm18cy8qNtEOXQgRqk+RrTOpKNrinRMis=;
-        b=LNV4aCLPbwzt/M5VLjuVZQatikR51XtpvLW80DxXaMSczSWmTayb1rVyXjpJ7TLPjk
-         UVezd2QU5zAfDhRuQyGp2KuSrpDCWllLJpa1b/kJAcadt6neJgV2jNEVMZvu09xedMsO
-         /tx/31eVMZAYdVMYabVXngaS4kI6zw95tf0HvpBdu0aRYp4WqyXVI5aQemGCEs+mIFz/
-         VYEg23MohA2biEzY+EkHPfzO4NbLuQtLDCOwOZ73Bs5s9CJEIbrziFvRIctXy7KPIgJ+
-         rfS46rWR8+6JrUdR/uzMeJlegxWi8fFWCFMjJunES6QnVp2Zmm/ACl7jrE5ARJrBi4Cb
-         EgBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+Aw2v8rFQ8W/NIvnpbmvn0pIyFR6+k+r+a88G2sGB8IH5g4aACD4+qHX0QUBlMpoFQqc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv8TP+sOhFQSI/BE+NOWdBR1rfKMESfx0wZSSO3dOq5z5CqWyp
-	rRzsvuUYG05x6yRBj8dCBNXSu5jGj63Jp7vWAXn2/5Cxk6b9s4PZC5gvD2ko+s9RVzs=
-X-Gm-Gg: ASbGnct3U4NH1g3bPToZwo1RFc/YkSzaC4Z81zJhcCBQj7vjz2BRDe1wnjtC3JJxkgm
-	QlyFbRnNacXoE0l5pTJ1q/Ok93Ak4Fx2ABmUrjQgrwJI1pvWDzBg+9Ii6mfl+UGoPyht9zb395z
-	EG0GVgTU8aoZslnV0c3o/sS+zFhgNWKW9lfjg/BkNngvm45/YVeSw5hngZDBodsdTCWPyz/gseO
-	23Z4mqANsUCB+5U75x5yvBmfv6xuckjRebJesC9PBPmE6+BXH6WkDu4BoYCLL6pYlcuGaZUKnAQ
-	iImkbFiT20IeLFJXhV4s79TOJraHyQXJxycm/yph4SVZ76z/26rzzlfu2/ZO5M0gDxigNdiY2Vw
-	L2shLtSAAHiX/w3UHV/0ebcc=
-X-Google-Smtp-Source: AGHT+IFtHyTBc6qEYu6hdCH6cigb35sVn8qLgWaMfVrg0MupVPG7/z/yW4uRvdyfX28do9yc+RvdzQ==
-X-Received: by 2002:a05:6a20:6a0d:b0:225:defd:26f0 with SMTP id adf61e73a8af0-2260c92da99mr18422851637.32.1751860387103;
-        Sun, 06 Jul 2025 20:53:07 -0700 (PDT)
-Received: from localhost.localdomain ([203.208.189.6])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38ee74cf48sm7538658a12.77.2025.07.06.20.53.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 06 Jul 2025 20:53:06 -0700 (PDT)
-From: lizhe.67@bytedance.com
-To: lkp@intel.com
-Cc: akpm@linux-foundation.org,
-	alex.williamson@redhat.com,
-	david@redhat.com,
-	jgg@ziepe.ca,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lizhe.67@bytedance.com,
-	oe-kbuild-all@lists.linux.dev,
-	peterx@redhat.com
-Subject: Re: [PATCH v2 1/5] mm: introduce num_pages_contiguous()
-Date: Mon,  7 Jul 2025 11:52:59 +0800
-Message-ID: <20250707035259.61640-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <202507050529.EoMuEtd8-lkp@intel.com>
-References: <202507050529.EoMuEtd8-lkp@intel.com>
+	s=arc-20240116; t=1751860409; c=relaxed/simple;
+	bh=VjKOmdNW8ives2UOA8eIRLWsGujxivGZIYKGG8g6MFQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=h7bJZP4RB2F9RKQoZxeHdrwlkIJTgnjHoLk9NXf1BBlnkKyz4JkbVbJsHpSFumtLRew0ZKLIcSVNXgWIrx0h474JYStRQbvYkmGDWjJNPbj9Hp8BCje8K5FMTk/gYAy9aK6MOtwJdUsTNOMzhc6cbnI9+MUD+UABwqWpnPK9nVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Bxnmu1RGtoqUkjAQ--.35471S3;
+	Mon, 07 Jul 2025 11:53:25 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxT+ayRGtomlsMAA--.6415S3;
+	Mon, 07 Jul 2025 11:53:24 +0800 (CST)
+Subject: Re: [PATCH v5 00/13] LoongArch: KVM: Enhancement with eiointc
+ emulation
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Xianglai Li <lixianglai@loongson.cn>, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250701030842.1136519-1-maobibo@loongson.cn>
+ <CAAhV-H6pt74LDg0idJ=71RG9MDh2KkMxE-Fao-qCFexyd8fz4A@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <f71ceea8-e690-19cc-95a5-3f4ad25b3223@loongson.cn>
+Date: Mon, 7 Jul 2025 11:51:49 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <CAAhV-H6pt74LDg0idJ=71RG9MDh2KkMxE-Fao-qCFexyd8fz4A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxT+ayRGtomlsMAA--.6415S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAw1fGryrAryktry5uw4ftFc_yoW5WFW5pF
+	Wfu3ZxCFs8Krs7JFy2ga47WFy8ZF12gry7tr45KF4SgFyDZr1Sv3yrXwn7CFyDC395Gr1I
+	qF40qr1kZF1UAacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Ek
+	sDUUUUU==
 
-On Sat, 5 Jul 2025 05:19:34 +0800, lkp@intel.com wrote:
- 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from arch/sh/include/asm/page.h:160,
->                     from arch/sh/include/asm/thread_info.h:13,
->                     from include/linux/thread_info.h:60,
->                     from include/asm-generic/preempt.h:5,
->                     from ./arch/sh/include/generated/asm/preempt.h:1,
->                     from include/linux/preempt.h:79,
->                     from include/linux/spinlock.h:56,
->                     from include/linux/mmzone.h:8,
->                     from include/linux/gfp.h:7,
->                     from include/linux/mm.h:7,
->                     from arch/sh/kernel/asm-offsets.c:14:
->    include/linux/mm.h: In function 'num_pages_contiguous':
-> >> include/asm-generic/memory_model.h:48:21: error: implicit declaration of function 'page_to_section'; did you mean 'present_section'? [-Wimplicit-function-declaration]
->       48 |         int __sec = page_to_section(__pg);                      \
->          |                     ^~~~~~~~~~~~~~~
->    include/asm-generic/memory_model.h:53:32: note: in definition of macro '__pfn_to_page'
->       53 | ({      unsigned long __pfn = (pfn);                    \
->          |                                ^~~
->    include/asm-generic/memory_model.h:65:21: note: in expansion of macro '__page_to_pfn'
->       65 | #define page_to_pfn __page_to_pfn
->          |                     ^~~~~~~~~~~~~
->    include/linux/mm.h:200:38: note: in expansion of macro 'page_to_pfn'
->      200 | #define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
->          |                                      ^~~~~~~~~~~
->    include/linux/mm.h:221:33: note: in expansion of macro 'nth_page'
->      221 |                 if (pages[i] != nth_page(first_page, i))
->          |                                 ^~~~~~~~
->    include/linux/mm.h: At top level:
-> >> include/linux/mm.h:2002:29: error: conflicting types for 'page_to_section'; have 'long unsigned int(const struct page *)'
->     2002 | static inline unsigned long page_to_section(const struct page *page)
->          |                             ^~~~~~~~~~~~~~~
->    include/asm-generic/memory_model.h:48:21: note: previous implicit declaration of 'page_to_section' with type 'int()'
->       48 |         int __sec = page_to_section(__pg);                      \
->          |                     ^~~~~~~~~~~~~~~
->    include/asm-generic/memory_model.h:53:32: note: in definition of macro '__pfn_to_page'
->       53 | ({      unsigned long __pfn = (pfn);                    \
->          |                                ^~~
->    include/asm-generic/memory_model.h:65:21: note: in expansion of macro '__page_to_pfn'
->       65 | #define page_to_pfn __page_to_pfn
->          |                     ^~~~~~~~~~~~~
->    include/linux/mm.h:200:38: note: in expansion of macro 'page_to_pfn'
->      200 | #define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
->          |                                      ^~~~~~~~~~~
->    include/linux/mm.h:221:33: note: in expansion of macro 'nth_page'
->      221 |                 if (pages[i] != nth_page(first_page, i))
->          |                                 ^~~~~~~~
->    make[3]: *** [scripts/Makefile.build:98: arch/sh/kernel/asm-offsets.s] Error 1
->    make[3]: Target 'prepare' not remade because of errors.
->    make[2]: *** [Makefile:1274: prepare0] Error 2
->    make[2]: Target 'prepare' not remade because of errors.
->    make[1]: *** [Makefile:248: __sub-make] Error 2
->    make[1]: Target 'prepare' not remade because of errors.
->    make: *** [Makefile:248: __sub-make] Error 2
->    make: Target 'prepare' not remade because of errors.
-> 
-> 
-> vim +2002 include/linux/mm.h
-> 
-> bf4e8902ee5080 Daniel Kiper      2011-05-24  2001  
-> aa462abe8aaf21 Ian Campbell      2011-08-17 @2002  static inline unsigned long page_to_section(const struct page *page)
-> d41dee369bff3b Andy Whitcroft    2005-06-23  2003  {
-> d41dee369bff3b Andy Whitcroft    2005-06-23  2004  	return (page->flags >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
-> d41dee369bff3b Andy Whitcroft    2005-06-23  2005  }
-> 308c05e35e3517 Christoph Lameter 2008-04-28  2006  #endif
-> d41dee369bff3b Andy Whitcroft    2005-06-23  2007  
 
-Thank you. Let's move function num_pages_contiguous() below the
-definition of page_to_section() to resolve this compilation error.
 
-Thanks,
-Zhe
+On 2025/7/1 下午6:48, Huacai Chen wrote:
+> Hi, Bibo,
+> 
+> On Tue, Jul 1, 2025 at 11:08 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> This series add generic eiointc 8 bytes access interface, so that 1/2/4/8
+>> bytes access can use the generic 8 bytes access interface. It reduce
+>> about 300 lines redundant code and make eiointc emulation driver simple
+>> than ever.
+>>
+>> ---
+>> v4 ... v5
+>>    1. Rebase patch on latest kernel where bugfix of eiointc has been
+>>       merged.
+>>    2. Add generic eiointc 8 bytes access interface, 1/2/4/8 bytes access
+>>       uses generic 8 bytes access interface.
+>>
+>> v3 ... v4:
+>>    1. Remove patch about enhancement and only keep bugfix relative
+>>       patches.
+>>    2. Remove INTC indication in the patch title.
+>>    3. With access size, keep default case unchanged besides 1/2/4/8 since
+>>       here all patches are bugfix
+>>    4. Firstly check return value of copy_from_user() with error path,
+>>       keep the same order with old patch in patch 4.
+>>
+>> v2 ... v3:
+>>    1. Add prefix INTC: in title of every patch.
+>>    2. Fix array index overflow when emulate register EIOINTC_ENABLE
+>>       writing operation.
+>>    3. Add address alignment check with eiointc register access operation.
+>>
+>> v1 ... v2:
+>>    1. Add extra fix in patch 3 and patch 4, add num_cpu validation check
+>>    2. Name of stat information keeps unchanged, only move it from VM stat
+>>       to vCPU stat.
+>> ---
+>> Bibo Mao (13):
+>>    LoongArch: KVM: Use standard bitops API with eiointc
+>>    LoongArch: KVM: Remove unused parameter len
+>>    LoongArch: KVM: Add stat information with kernel irqchip
+>>    LoongArch: KVM: Remove never called default case statement
+>>    LoongArch: KVM: Rename loongarch_eiointc_readq with
+>>      loongarch_eiointc_read
+>>    LoongArch: KVM: Use generic read function loongarch_eiointc_read
+>>    LoongArch: KVM: Remove some unnecessary local variables
+>>    LoongArch: KVM: Use concise api __ffs()
+>>    LoongArch: KVM: Replace eiointc_enable_irq() with eiointc_update_irq()
+>>    LoongArch: KVM: Remove local variable offset
+>>    LoongArch: KVM: Rename old_data with old
+>>    LoongArch: KVM: Add generic function loongarch_eiointc_write()
+>>    LoongArch: KVM: Use generic interface loongarch_eiointc_write()
+> Patch5 and Patch6 can be squashed, Patch7 and Patch10 can be squashed,
+> Patch8 and Patch9 can be squshed, Patch12 and Patch13 can be squashed,
+> Patch11 is useless so can be removed.
+Thanks for reviewing, will do in this way.
+
+Regards
+Bibo Mao
+> 
+> 
+> Huacai
+> 
+>>
+>>   arch/loongarch/include/asm/kvm_host.h |  12 +-
+>>   arch/loongarch/kvm/intc/eiointc.c     | 557 ++++----------------------
+>>   arch/loongarch/kvm/intc/ipi.c         |  28 +-
+>>   arch/loongarch/kvm/intc/pch_pic.c     |   4 +-
+>>   arch/loongarch/kvm/vcpu.c             |   8 +-
+>>   5 files changed, 102 insertions(+), 507 deletions(-)
+>>
+>>
+>> base-commit: d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af
+>> --
+>> 2.39.3
+>>
+
