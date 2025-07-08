@@ -1,49 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63586267B19;
-	Tue,  8 Jul 2025 10:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC9256C8D;
+	Tue,  8 Jul 2025 10:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751969975; cv=none; b=jchrhzLqOBXYDb1jBjxVYEHGkzKnmif/wGsXtC8PmXMxlZUeBACmMIc6UFyvpMDFtYoB3dOq29qSc3wVnd57F7klzSb1KTn2J59fvpiTzmfDFJg33fkXX4yguY/cqsh7Z5vaGzc8ttN/ZF72ou7d6CrLBUMTa7nWSACQ171qEQM=
+	t=1751969975; cv=none; b=ofwIK+ZYPSW/i7lIF34SGJ44oLT/FqDwq5YpDDx2OXifkeVsMPFPTjMWvjpxFxMjoPWsiBuSI4CG65Sexse2wKuAxZBLNIPCJ3/U1ArZBfRH/pEpLa1scd9uSlTdrhziP/rr7fhBiSImrMeKiQ51byiZVafJcs9OZx3gN5Oxb2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751969975; c=relaxed/simple;
-	bh=RqH3W+vAv3syVjj6kukRERKu2daJsd+9JEUGyf1KgII=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hx9tcTnMVvjfP2RjJ9nuaKPzu8HiA7oZbd3hzlv4VVM9/R6xBDxUHuHzsMo8cw0N5H5Lm0EUboNGqYMZ8uUrur0X4GtFPvIrckI5vJsF9EBt4olqsAAHgke9+r7sZ1cJ6QrOn8RGUvn+pvKn9wgsxs8qUz7f477ImZMrPy99p30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iS5kUD4y; arc=none smtp.client-ip=192.198.163.7
+	bh=wvJMYsc9yWz2URT+SK4ZAszSqtGgIMpsnmycjhsLP10=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dvUP2/wh/A0+m4tXct8fcILbtkO8e5RsXMBS4qNzZ1ZscgPgJMfKUwXlfCG8GFSskGfTEa2vVOKpyEW/u385+Uit6wcX9VbcH6ARUUFDShR12TNKpaBB0Su/OJnaIcAZE1zYsj/F8I3bNpqydLQhsroQQi5+XplrVTplOnJ9xbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJ4Z77Hq; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iS5kUD4y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJ4Z77Hq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751969974; x=1783505974;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RqH3W+vAv3syVjj6kukRERKu2daJsd+9JEUGyf1KgII=;
-  b=iS5kUD4yw8SZeDF30alMNavu9JEoTVtu3SI/jVN+MaT47On6x4zjyRpy
-   kd+TB6ZX/hhisY8ru43OtHvWtghvXOWIhtiFEOG+YIcv058J7UVQt/qD4
-   +NKWF+bmvZ41nlVqYswjiDVJJ2vNvoQ8fnfs4cT6MdMeawfdSpOGTBdNQ
-   AoVWsM5D9J40SaqT/UU6osL9Qw6UZncIH+bHPz9h091JWAu+Y7iptQ7x8
-   XPLml7d4HICTPxu/Hrfi0zu+A8FO1Jaau1LoLG2noVktS/l2EH7r6+552
-   2u2DJ93QBggUZKZkVRAsJqrojqaK5vxlsjJm0VY5/Dv5IOu8E1+VYQQRt
-   Q==;
-X-CSE-ConnectionGUID: 7cNWI8j9Reyky/OxtarbvQ==
-X-CSE-MsgGUID: Nfd6Gm/NSw+Md8Ff+nQMkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79632825"
+  t=1751969975; x=1783505975;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wvJMYsc9yWz2URT+SK4ZAszSqtGgIMpsnmycjhsLP10=;
+  b=ZJ4Z77Hqk8PGSZ73TlH+PNvnDiLofw23OnszGwlppVKhefmDXsYfWxqc
+   WA0I/tGUSXgmBl1Q3yoVDL9bZotOrphItryR5M1ru0zJhNe0wZUZkNSqX
+   ImyIgpUHmLTaBxiS03cJhwOkuh+3vH5eSofzgqCtClxm6BmsAgRozE45B
+   57clgib8FdI+T8o2XEkr6jZGREkRL9m86F8C80T0AyyuEcmtT79QySOKv
+   6JkTLwfEhB49O6X2TKP3H1qSha2lTMJ2VZIqmMqyJVtKYU8+MQVdd3le6
+   sLAbEWUhufalBwMy5gw0ut90KRkk9aZmDlQHOGDukiToij/N4+sOv2Di3
+   g==;
+X-CSE-ConnectionGUID: WQf8ui9vS0uyQMRaQZOjdg==
+X-CSE-MsgGUID: 4utsMFzoQQi1tkkq7OraFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76751336"
 X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="79632825"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 03:19:33 -0700
-X-CSE-ConnectionGUID: u51uWat7TsCTYuPwysrZqw==
-X-CSE-MsgGUID: 9Hgg5xOhQo6lu8+uAdXpdA==
+   d="scan'208";a="76751336"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 03:19:33 -0700
+X-CSE-ConnectionGUID: TVh3WA+aQ0qfksSH3ynRVA==
+X-CSE-MsgGUID: 1kOjowWnSzC9c4OYM785lQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="155952280"
+   d="scan'208";a="155196381"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 08 Jul 2025 03:19:29 -0700
+  by orviesa009.jf.intel.com with ESMTP; 08 Jul 2025 03:19:28 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8AFAE157; Tue, 08 Jul 2025 13:19:27 +0300 (EEST)
+	id A0F741B5; Tue, 08 Jul 2025 13:19:27 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -59,10 +60,12 @@ Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 0/3] MAINTAINERS: Update TDX entry
-Date: Tue,  8 Jul 2025 13:19:19 +0300
-Message-ID: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 2/3] MAINTAINERS: Add Rick Edgecombe as a TDX reviewer
+Date: Tue,  8 Jul 2025 13:19:21 +0300
+Message-ID: <20250708101922.50560-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
+References: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,26 +74,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patchset updates the TDX entry in MAINTAINERS:
+Rick worked extensively to enable TDX in KVM. He will continue to work
+on TDX and should be involved in discussions regarding TDX.
 
-  - Add missing TDX files to the list, including KVM enabling;
-  - Add Rick Edgecombe as a reviewer;
-  - Update my email address.
+Add Rick as a TDX reviewer.
 
-Paolo, Sean, are you okay for TDX KVM stuff to be covered by the same
-MAINTAINERS entry?
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-I don't see a reason why not, but I want to double-check.
-
-Kirill A. Shutemov (3):
-  MAINTAINERS: Update the file list in the TDX entry.
-  MAINTAINERS: Add Rick Edgecombe as a TDX reviewer
-  MAINTAINERS: Update Kirill Shutemov's email address
-
- .mailmap    |  1 +
- MAINTAINERS | 15 +++++++++++----
- 2 files changed, 12 insertions(+), 4 deletions(-)
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8071871ea59c..b0363770450f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26947,6 +26947,7 @@ F:	arch/x86/kernel/unwind_*.c
+ X86 TRUST DOMAIN EXTENSIONS (TDX)
+ M:	Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+ R:	Dave Hansen <dave.hansen@linux.intel.com>
++R:	Rick Edgecombe <rick.p.edgecombe@intel.com>
+ L:	x86@kernel.org
+ L:	linux-coco@lists.linux.dev
+ S:	Supported
 -- 
 2.47.2
 
