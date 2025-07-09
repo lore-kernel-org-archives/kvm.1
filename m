@@ -1,23 +1,22 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D2321ADAE;
-	Wed,  9 Jul 2025 08:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045A92222D0;
+	Wed,  9 Jul 2025 08:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752048162; cv=none; b=kxBEZSSylhjpT7il5joX7jCO9B99fbFHl9G88nj3tA1E7NvZE7ifSGw0IO2D65FdC9o7+d/y94ALL4lUHJkO4jrpaZ0VybB5U19BcDWF5zZsRFgltsXz2oKEi3aEgh/wWYvTXgv9wVOwbL+HwWJlJeh9fJHFdo5HVsOey8gjFE0=
+	t=1752048162; cv=none; b=RSiWBhTh1zhmJy3VpRIIkN2QdH1olFX8jdSzf2zhDuuaaqt4dHcWqMr49Mcc3JLYTf9ac9btvUhbfwFpc9c7OsSknN9YPBVP3VOLB7l+i2G6f9DAnJhR3gtH5Xelzc641Ng9aK2eHLqOAHDXVa+ROiJnt0kmKGhr84IYoJWDlyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752048162; c=relaxed/simple;
-	bh=ZozhxM42GWK0QwVZ3q7SmgDYN6haL4E4J7xu4mbH4O4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oknVmOjRsGAKZlJ2hFEMQc4uXjnhBtjyOOHXXaElNwPZxQMl9N08779MiH0B6QbhPqUleO2utUmL6Rcc4x6CB/qHAk/pDiJZZoRGY4rKTWnJBpgmTqhGRnnwiLJva/do21gN3OtknJw69AkGSl1axylyND6fH6wtlcaYcn8P30I=
+	bh=BUgPGjWpn/5cTFdXjgeSnXucpvBBjqJ1G3jY8tlkWnc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qFdOjUL+4lYYh4y53/riKQYgWoIH8qd6YAe8cTKlk0vKaZkwBHhxnxiFAK1xvrYENoNosz/uImdgWSZkPfYvvFWjcaHYYFvABxgfc5ynFQqcF4oBjHc0E26xKgl44LPW/C3xzgQ+xJSSM840emP0jLK9J3zG8oF3EkP+gXbGSag=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxzOIcIm5oXyklAQ--.13338S3;
-	Wed, 09 Jul 2025 16:02:36 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8Axx2kaIm5oTyklAQ--.44988S3;
+	Wed, 09 Jul 2025 16:02:34 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxpeQZIm5oS6cPAA--.24964S7;
-	Wed, 09 Jul 2025 16:02:36 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJBxpeQZIm5oS6cPAA--.24964S2;
+	Wed, 09 Jul 2025 16:02:34 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Tianrui Zhao <zhaotianrui@loongson.cn>,
 	Huacai Chen <chenhuacai@kernel.org>,
@@ -25,12 +24,10 @@ To: Tianrui Zhao <zhaotianrui@loongson.cn>,
 Cc: kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 5/8] LoongArch: KVM: Use generic function loongarch_eiointc_read()
-Date: Wed,  9 Jul 2025 16:02:30 +0800
-Message-Id: <20250709080233.3948503-6-maobibo@loongson.cn>
+Subject: [PATCH v6 0/8] LoongArch: KVM: Enhancement with eiointc emulation
+Date: Wed,  9 Jul 2025 16:02:25 +0800
+Message-Id: <20250709080233.3948503-1-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250709080233.3948503-1-maobibo@loongson.cn>
-References: <20250709080233.3948503-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,221 +35,69 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxpeQZIm5oS6cPAA--.24964S7
+X-CM-TRANSID:qMiowJBxpeQZIm5oS6cPAA--.24964S2
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Generic read function loongarch_eiointc_read() is used for 1/2/4/8
-bytes read access. It reads 8 bytes from emulated software state
-and shift right from address offset.
+This series add generic eiointc 8 bytes access interface, so that 1/2/4/8
+bytes access can use the generic 8 bytes access interface. It reduce
+about 500 lines redundant code and make eiointc emulation driver
+simpler than ever.
 
-Also the similar with kvm_complete_iocsr_read(), destination register
-of IOCSRRD.{B/H/W} is sign extension from byte/half word/word.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- arch/loongarch/kvm/intc/eiointc.c | 153 ++++--------------------------
- 1 file changed, 17 insertions(+), 136 deletions(-)
+v5 ... v6:
+  1. Merge previous patch 5 & 6 into one, patch 7 & 10 into into one and
+     patch 12 and patch 13 into one.
+  2. Use sign extension with destination register for IOCSRRD.{B/H/W}
+     kernel emulation.
 
-diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index 137cd3adca80..3e8dc844be76 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -130,134 +130,8 @@ static inline void eiointc_enable_irq(struct kvm_vcpu *vcpu,
- 	}
- }
- 
--static int loongarch_eiointc_readb(struct kvm_vcpu *vcpu, struct loongarch_eiointc *s,
--				gpa_t addr, void *val)
--{
--	int index, ret = 0;
--	u8 data = 0;
--	gpa_t offset;
--
--	offset = addr - EIOINTC_BASE;
--	switch (offset) {
--	case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
--		index = offset - EIOINTC_NODETYPE_START;
--		data = s->nodetype.reg_u8[index];
--		break;
--	case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
--		index = offset - EIOINTC_IPMAP_START;
--		data = s->ipmap.reg_u8[index];
--		break;
--	case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
--		index = offset - EIOINTC_ENABLE_START;
--		data = s->enable.reg_u8[index];
--		break;
--	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
--		index = offset - EIOINTC_BOUNCE_START;
--		data = s->bounce.reg_u8[index];
--		break;
--	case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
--		index = offset - EIOINTC_COREISR_START;
--		data = s->coreisr.reg_u8[vcpu->vcpu_id][index];
--		break;
--	case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
--		index = offset - EIOINTC_COREMAP_START;
--		data = s->coremap.reg_u8[index];
--		break;
--	default:
--		ret = -EINVAL;
--		break;
--	}
--	*(u8 *)val = data;
--
--	return ret;
--}
--
--static int loongarch_eiointc_readw(struct kvm_vcpu *vcpu, struct loongarch_eiointc *s,
--				gpa_t addr, void *val)
--{
--	int index, ret = 0;
--	u16 data = 0;
--	gpa_t offset;
--
--	offset = addr - EIOINTC_BASE;
--	switch (offset) {
--	case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
--		index = (offset - EIOINTC_NODETYPE_START) >> 1;
--		data = s->nodetype.reg_u16[index];
--		break;
--	case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
--		index = (offset - EIOINTC_IPMAP_START) >> 1;
--		data = s->ipmap.reg_u16[index];
--		break;
--	case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
--		index = (offset - EIOINTC_ENABLE_START) >> 1;
--		data = s->enable.reg_u16[index];
--		break;
--	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
--		index = (offset - EIOINTC_BOUNCE_START) >> 1;
--		data = s->bounce.reg_u16[index];
--		break;
--	case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
--		index = (offset - EIOINTC_COREISR_START) >> 1;
--		data = s->coreisr.reg_u16[vcpu->vcpu_id][index];
--		break;
--	case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
--		index = (offset - EIOINTC_COREMAP_START) >> 1;
--		data = s->coremap.reg_u16[index];
--		break;
--	default:
--		ret = -EINVAL;
--		break;
--	}
--	*(u16 *)val = data;
--
--	return ret;
--}
--
--static int loongarch_eiointc_readl(struct kvm_vcpu *vcpu, struct loongarch_eiointc *s,
--				gpa_t addr, void *val)
--{
--	int index, ret = 0;
--	u32 data = 0;
--	gpa_t offset;
--
--	offset = addr - EIOINTC_BASE;
--	switch (offset) {
--	case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
--		index = (offset - EIOINTC_NODETYPE_START) >> 2;
--		data = s->nodetype.reg_u32[index];
--		break;
--	case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
--		index = (offset - EIOINTC_IPMAP_START) >> 2;
--		data = s->ipmap.reg_u32[index];
--		break;
--	case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
--		index = (offset - EIOINTC_ENABLE_START) >> 2;
--		data = s->enable.reg_u32[index];
--		break;
--	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
--		index = (offset - EIOINTC_BOUNCE_START) >> 2;
--		data = s->bounce.reg_u32[index];
--		break;
--	case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
--		index = (offset - EIOINTC_COREISR_START) >> 2;
--		data = s->coreisr.reg_u32[vcpu->vcpu_id][index];
--		break;
--	case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
--		index = (offset - EIOINTC_COREMAP_START) >> 2;
--		data = s->coremap.reg_u32[index];
--		break;
--	default:
--		ret = -EINVAL;
--		break;
--	}
--	*(u32 *)val = data;
--
--	return ret;
--}
--
--static int loongarch_eiointc_readq(struct kvm_vcpu *vcpu, struct loongarch_eiointc *s,
--				gpa_t addr, void *val)
-+static int loongarch_eiointc_read(struct kvm_vcpu *vcpu, struct loongarch_eiointc *s,
-+				gpa_t addr, unsigned long *val)
- {
- 	int index, ret = 0;
- 	u64 data = 0;
-@@ -293,7 +167,7 @@ static int loongarch_eiointc_readq(struct kvm_vcpu *vcpu, struct loongarch_eioin
- 		ret = -EINVAL;
- 		break;
- 	}
--	*(u64 *)val = data;
-+	*val = data;
- 
- 	return ret;
- }
-@@ -303,7 +177,7 @@ static int kvm_eiointc_read(struct kvm_vcpu *vcpu,
- 			gpa_t addr, int len, void *val)
- {
- 	int ret = -EINVAL;
--	unsigned long flags;
-+	unsigned long flags, data, offset;
- 	struct loongarch_eiointc *eiointc = vcpu->kvm->arch.eiointc;
- 
- 	if (!eiointc) {
-@@ -317,24 +191,31 @@ static int kvm_eiointc_read(struct kvm_vcpu *vcpu,
- 	}
- 
- 	vcpu->stat.eiointc_read_exits++;
-+	offset = addr & 0x7;
-+	addr -= offset;
- 	spin_lock_irqsave(&eiointc->lock, flags);
-+	ret = loongarch_eiointc_read(vcpu, eiointc, addr, &data);
-+	spin_unlock_irqrestore(&eiointc->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	data = data >> (offset * 8);
- 	switch (len) {
- 	case 1:
--		ret = loongarch_eiointc_readb(vcpu, eiointc, addr, val);
-+		*(long *)val = (s8)data;
- 		break;
- 	case 2:
--		ret = loongarch_eiointc_readw(vcpu, eiointc, addr, val);
-+		*(long *)val = (s16)data;
- 		break;
- 	case 4:
--		ret = loongarch_eiointc_readl(vcpu, eiointc, addr, val);
-+		*(long *)val = (s32)data;
- 		break;
- 	default:
--		ret = loongarch_eiointc_readq(vcpu, eiointc, addr, val);
-+		*(long *)val = (long)data;
- 		break;
- 	}
--	spin_unlock_irqrestore(&eiointc->lock, flags);
- 
--	return ret;
-+	return 0;
- }
- 
- static int loongarch_eiointc_writeb(struct kvm_vcpu *vcpu,
+v4 ... v5
+  1. Rebase patch on latest kernel where bugfix of eiointc has been
+     merged.
+  2. Add generic eiointc 8 bytes access interface, 1/2/4/8 bytes access
+     uses generic 8 bytes access interface.
+
+v3 ... v4:
+  1. Remove patch about enhancement and only keep bugfix relative
+     patches.
+  2. Remove INTC indication in the patch title.
+  3. With access size, keep default case unchanged besides 1/2/4/8 since
+     here all patches are bugfix
+  4. Firstly check return value of copy_from_user() with error path,
+     keep the same order with old patch in patch 4.
+
+v2 ... v3:
+  1. Add prefix INTC: in title of every patch.
+  2. Fix array index overflow when emulate register EIOINTC_ENABLE
+     writing operation.
+  3. Add address alignment check with eiointc register access operation.
+
+v1 ... v2:
+  1. Add extra fix in patch 3 and patch 4, add num_cpu validation check
+  2. Name of stat information keeps unchanged, only move it from VM stat
+     to vCPU stat.
+---
+Bibo Mao (8):
+  LoongArch: KVM: Use standard bitops API with eiointc
+  LoongArch: KVM: Remove unused parameter len
+  LoongArch: KVM: Add stat information with kernel irqchip
+  LoongArch: KVM: Remove never called default case statement
+  LoongArch: KVM: Use generic function loongarch_eiointc_read()
+  LoongArch: KVM: Remove some unnecessary local variables
+  LoongArch: KVM: Replace eiointc_enable_irq() with eiointc_update_irq()
+  LoongArch: KVM: Add generic function loongarch_eiointc_write()
+
+ arch/loongarch/include/asm/kvm_host.h |  12 +-
+ arch/loongarch/kvm/intc/eiointc.c     | 558 ++++----------------------
+ arch/loongarch/kvm/intc/ipi.c         |  28 +-
+ arch/loongarch/kvm/intc/pch_pic.c     |   4 +-
+ arch/loongarch/kvm/vcpu.c             |   8 +-
+ 5 files changed, 102 insertions(+), 508 deletions(-)
+
+
+base-commit: 733923397fd95405a48f165c9b1fbc8c4b0a4681
 -- 
 2.39.3
 
