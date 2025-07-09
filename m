@@ -1,137 +1,201 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6402B273D8B
-	for <kvm@vger.kernel.org>; Wed,  9 Jul 2025 07:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840652192F1;
+	Wed,  9 Jul 2025 08:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752044708; cv=none; b=RJce0rOyM37R1sWoilaup8quL3NU3q9cGnnI5obJPxxtAP5Yi/s/Bypl/8mrYW6OotpBABmXZeBb8ww7yAbIz6lRlBHPo69oOToCbglt2SOjH2lta+mQ24b7mqgt56moTWI0CBqgfRcGVHPIVdm9ilTot9kO3eXtpNshTjhNVRM=
+	t=1752048161; cv=none; b=YCUWSE9sewWXGZYi0r0LS6lbIfFKCXYbyuWOrhQkzvKRZIk/3las8ROk9uIbHR34OMvJwxk/WjtC3scyLbAVIv29dBMg/pDEcPriVUQ55/KampLI2ZM7ukXmmmDTDJHm00lIewYNBqZz/1grYlrtOuH9N8wk1tgvkXS7qAr6sQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752044708; c=relaxed/simple;
-	bh=bqDfiVKFuR+e8N7emCK6GdbPPlTbsBsyYl3PH3KjyJw=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=lW//EAhFeRQ+q4AfHV9L6FmC7+uS7251jvfS/WEqaPQO6s7QhCKwJXITWWE30vRfz/iWOV8iGEXskLFPY7swHih/QPRDdCxfjjTAGJmgTGrlvVBw2zn7f/B4ycWpzygKuE3kuJgCP4G5x+bYl8j33016V/5MBppXRabLGqIzqVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lGa5dMb4; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lGa5dMb4"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e81b3e168a6so5692020276.1
-        for <kvm@vger.kernel.org>; Wed, 09 Jul 2025 00:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752044706; x=1752649506; darn=vger.kernel.org;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HaDQLHJuamQG+Oz/rXsc1nJQc3j6887WnfJ3FWY6wPY=;
-        b=lGa5dMb4/QCskSc/99m9viQEHFXRqBqRbuSxe8xbbz1YtNKIQIHcB3SWi2d6gc03NM
-         yjMjJYjLpL0efYbj12ikl3F9Vt1vpd40ZbT4SQEUyFezNUsZuxbxOO4foCxR9M6eeRDJ
-         0ddqiQYvYZsttyrpxusJBc1Lk8t31SSk11tb7LaEAQGqTgEeEUdjrQKl2FmJjeFNYvlx
-         ZQx3s3C0sOEOxfUt+NQeDSIvkXR1lQGvJs7RuI4fVOKa7zt/5mQkLHPa+eI0mAKQuPkm
-         PC5ZUj4H62nz3hRyxxrxayLIkoMo8SV9au9VXzGrTmwxQGpk0vde0OVl5yOU90R5uDLE
-         Q7pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752044706; x=1752649506;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HaDQLHJuamQG+Oz/rXsc1nJQc3j6887WnfJ3FWY6wPY=;
-        b=SOUbDdHVp4imwzIdYrQgiAIrzoae8y70ZN7tM1KseYdv/ax5KDcsfdEiCeTuuc9zcp
-         9vr1u6ua4fsYmByB1w4EEyWWIcec1oe5RtyCO9/5hMnVw/hzR42IQylJYhhOcdSgkhZd
-         I1ruU/wFs9xlDM0NlSYa0dSBqnGGXQKOTlFrjCE2pTaPJanY/ii6bxPeVNC1ni0fJnTZ
-         KxSvMY83wxeeOZ/5EQz8HBFXs2zTdwkoc6neM6+t9k3P+ccQpkV9wnNG1KIa7+KNVQxk
-         93vhBOCBAz7UxQaDPa363BeeYo8c5OjQsZ2vL4Z8VQcPKGLdt8XQxsUodEwXSDgtuseA
-         tfPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBXZuecxZkfpBPkUbvBkEK9X7OJu8dhc/siD/Rg8fJf4pBdRaNiDmBVLYr+2N81gvFOY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywcw+RL9ktsM4wsFFPA7zv2/7usKEK7myPMZlI2ozURXcEWFwXw
-	n8MdYOq+ND/54wvbUu68aNQB/M1nle2kIuBaLXpoBNtrrzEvuMS5iw1cX59g51VuY6s2nseSwEy
-	Syjf1iPoFmaYYgQ==
-X-Google-Smtp-Source: AGHT+IE5ZkJJrfChwxmjelv9TbY/xNBu5uRt03nGE+i4WAPwg6JLhbF8sllzldrGvtvYqXjNVHB2+Nx7G6uM6w==
-X-Received: from suleiman1.tok.corp.google.com ([2401:fa00:8f:203:a92c:694f:82fe:62a])
- (user=suleiman job=sendgmr) by 2002:a05:6902:6c0e:b0:e89:883d:dd33 with SMTP
- id 3f1490d57ef6-e8b6e19fdcamr688276.5.1752044706399; Wed, 09 Jul 2025
- 00:05:06 -0700 (PDT)
-Date: Wed,  9 Jul 2025 16:04:50 +0900
-In-Reply-To: <20250709070450.473297-1-suleiman@google.com>
-Message-Id: <20250709070450.473297-4-suleiman@google.com>
+	s=arc-20240116; t=1752048161; c=relaxed/simple;
+	bh=VoX4NNMccBafWip0zU0/JvQMhjTkDtj5xWm4SjZPkBc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CrGiuglxH5ysQNZoPJ6rO3xKwhpTYmVifvW0xVZVOl7mhNHHl3//YRdE3ZB1rIdiEa3YpuDD0duuY87q6a1EvKoe/FU3CdEUNzXrfzFP6ybSUABr+fc9Hy6ZorerFVWd1Y7tAsfDTgQWK20vFD+k1AZRuW6idQAJxQzKEjod7rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8AxHHIcIm5oWSklAQ--.13802S3;
+	Wed, 09 Jul 2025 16:02:36 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJBxpeQZIm5oS6cPAA--.24964S5;
+	Wed, 09 Jul 2025 16:02:35 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Xianglai Li <lixianglai@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 3/8] LoongArch: KVM: Add stat information with kernel irqchip
+Date: Wed,  9 Jul 2025 16:02:28 +0800
+Message-Id: <20250709080233.3948503-4-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250709080233.3948503-1-maobibo@loongson.cn>
+References: <20250709080233.3948503-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250709070450.473297-1-suleiman@google.com>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Subject: [PATCH v6 3/3] KVM: x86: Add "suspendsteal" cmdline to request host
- to add suspend duration in steal time
-From: Suleiman Souhlal <suleiman@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chao Gao <chao.gao@intel.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	John Stultz <jstultz@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ssouhlal@freebsd.org, Suleiman Souhlal <suleiman@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxpeQZIm5oS6cPAA--.24964S5
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Introduce a new command line parameter, "suspendsteal", enabling the
-guest to use MSR_KVM_SUSPEND_STEAL, which tells the host that it would
-like host suspend duration to be included in steal time.
+Move stat information about kernel irqchip from VM to vCPU, since
+all vm exiting events should be vCPU relative. And also add entry
+with structure kvm_vcpu_stats_desc[], so that it can display with
+directory /sys/kernel/debug/kvm.
 
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  5 +++++
- arch/x86/kernel/kvm.c                           | 15 +++++++++++++++
- 2 files changed, 20 insertions(+)
+ arch/loongarch/include/asm/kvm_host.h | 12 ++++++------
+ arch/loongarch/kvm/intc/eiointc.c     |  4 ++--
+ arch/loongarch/kvm/intc/ipi.c         | 28 ++++-----------------------
+ arch/loongarch/kvm/intc/pch_pic.c     |  4 ++--
+ arch/loongarch/kvm/vcpu.c             |  8 +++++++-
+ 5 files changed, 21 insertions(+), 35 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index f1f2c0874da9dd..9f5758ca8fadd5 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7074,6 +7074,11 @@
- 			improve throughput, but will also increase the
- 			amount of memory reserved for use by the client.
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index a3c4cc46c892..0cecbd038bb3 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -50,12 +50,6 @@ struct kvm_vm_stat {
+ 	struct kvm_vm_stat_generic generic;
+ 	u64 pages;
+ 	u64 hugepages;
+-	u64 ipi_read_exits;
+-	u64 ipi_write_exits;
+-	u64 eiointc_read_exits;
+-	u64 eiointc_write_exits;
+-	u64 pch_pic_read_exits;
+-	u64 pch_pic_write_exits;
+ };
  
-+	suspendsteal
-+			[X86,PV_OPS]
-+			Enable requesting the host to include the duration the
-+			host was suspended in steal time. Disabled by default.
-+
- 	suspend.pm_test_delay=
- 			[SUSPEND]
- 			Sets the number of seconds to remain in a suspend test
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 921c1c783bc187..35d1bb2283c2c0 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -320,6 +320,18 @@ static void __init paravirt_ops_setup(void)
- #endif
- }
+ struct kvm_vcpu_stat {
+@@ -65,6 +59,12 @@ struct kvm_vcpu_stat {
+ 	u64 cpucfg_exits;
+ 	u64 signal_exits;
+ 	u64 hypercall_exits;
++	u64 ipi_read_exits;
++	u64 ipi_write_exits;
++	u64 eiointc_read_exits;
++	u64 eiointc_write_exits;
++	u64 pch_pic_read_exits;
++	u64 pch_pic_write_exits;
+ };
  
-+static bool suspend_steal;
-+
-+static int __init suspendsteal_setup(char *s)
-+{
-+	if (kvm_para_has_feature(KVM_FEATURE_SUSPEND_STEAL))
-+		suspend_steal = true;
-+
-+	return 0;
-+}
-+
-+early_param("suspendsteal", suspendsteal_setup);
-+
- static void kvm_register_steal_time(void)
+ #define KVM_MEM_HUGEPAGE_CAPABLE	(1UL << 0)
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index acd975ce9608..92bae1dea8eb 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -316,7 +316,7 @@ static int kvm_eiointc_read(struct kvm_vcpu *vcpu,
+ 		return -EINVAL;
+ 	}
+ 
+-	vcpu->kvm->stat.eiointc_read_exits++;
++	vcpu->stat.eiointc_read_exits++;
+ 	spin_lock_irqsave(&eiointc->lock, flags);
+ 	switch (len) {
+ 	case 1:
+@@ -692,7 +692,7 @@ static int kvm_eiointc_write(struct kvm_vcpu *vcpu,
+ 		return -EINVAL;
+ 	}
+ 
+-	vcpu->kvm->stat.eiointc_write_exits++;
++	vcpu->stat.eiointc_write_exits++;
+ 	spin_lock_irqsave(&eiointc->lock, flags);
+ 	switch (len) {
+ 	case 1:
+diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+index fe734dc062ed..e658d5b37c04 100644
+--- a/arch/loongarch/kvm/intc/ipi.c
++++ b/arch/loongarch/kvm/intc/ipi.c
+@@ -268,36 +268,16 @@ static int kvm_ipi_read(struct kvm_vcpu *vcpu,
+ 			struct kvm_io_device *dev,
+ 			gpa_t addr, int len, void *val)
  {
- 	int cpu = smp_processor_id();
-@@ -331,6 +343,9 @@ static void kvm_register_steal_time(void)
- 	wrmsrq(MSR_KVM_STEAL_TIME, (slow_virt_to_phys(st) | KVM_MSR_ENABLED));
- 	pr_debug("stealtime: cpu %d, msr %llx\n", cpu,
- 		(unsigned long long) slow_virt_to_phys(st));
-+
-+	if (suspend_steal)
-+		wrmsrl(MSR_KVM_SUSPEND_STEAL, KVM_MSR_ENABLED);
+-	int ret;
+-	struct loongarch_ipi *ipi;
+-
+-	ipi = vcpu->kvm->arch.ipi;
+-	if (!ipi) {
+-		kvm_err("%s: ipi irqchip not valid!\n", __func__);
+-		return -EINVAL;
+-	}
+-	ipi->kvm->stat.ipi_read_exits++;
+-	ret = loongarch_ipi_readl(vcpu, addr, len, val);
+-
+-	return ret;
++	vcpu->stat.ipi_read_exits++;
++	return loongarch_ipi_readl(vcpu, addr, len, val);
  }
  
- static DEFINE_PER_CPU_DECRYPTED(unsigned long, kvm_apic_eoi) = KVM_PV_EOI_DISABLED;
+ static int kvm_ipi_write(struct kvm_vcpu *vcpu,
+ 			struct kvm_io_device *dev,
+ 			gpa_t addr, int len, const void *val)
+ {
+-	int ret;
+-	struct loongarch_ipi *ipi;
+-
+-	ipi = vcpu->kvm->arch.ipi;
+-	if (!ipi) {
+-		kvm_err("%s: ipi irqchip not valid!\n", __func__);
+-		return -EINVAL;
+-	}
+-	ipi->kvm->stat.ipi_write_exits++;
+-	ret = loongarch_ipi_writel(vcpu, addr, len, val);
+-
+-	return ret;
++	vcpu->stat.ipi_write_exits++;
++	return loongarch_ipi_writel(vcpu, addr, len, val);
+ }
+ 
+ static const struct kvm_io_device_ops kvm_ipi_ops = {
+diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+index 08fce845f668..6f00ffe05c54 100644
+--- a/arch/loongarch/kvm/intc/pch_pic.c
++++ b/arch/loongarch/kvm/intc/pch_pic.c
+@@ -196,7 +196,7 @@ static int kvm_pch_pic_read(struct kvm_vcpu *vcpu,
+ 	}
+ 
+ 	/* statistics of pch pic reading */
+-	vcpu->kvm->stat.pch_pic_read_exits++;
++	vcpu->stat.pch_pic_read_exits++;
+ 	ret = loongarch_pch_pic_read(s, addr, len, val);
+ 
+ 	return ret;
+@@ -303,7 +303,7 @@ static int kvm_pch_pic_write(struct kvm_vcpu *vcpu,
+ 	}
+ 
+ 	/* statistics of pch pic writing */
+-	vcpu->kvm->stat.pch_pic_write_exits++;
++	vcpu->stat.pch_pic_write_exits++;
+ 	ret = loongarch_pch_pic_write(s, addr, len, val);
+ 
+ 	return ret;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 5af32ec62cb1..d1b8c50941ca 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -20,7 +20,13 @@ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	STATS_DESC_COUNTER(VCPU, idle_exits),
+ 	STATS_DESC_COUNTER(VCPU, cpucfg_exits),
+ 	STATS_DESC_COUNTER(VCPU, signal_exits),
+-	STATS_DESC_COUNTER(VCPU, hypercall_exits)
++	STATS_DESC_COUNTER(VCPU, hypercall_exits),
++	STATS_DESC_COUNTER(VCPU, ipi_read_exits),
++	STATS_DESC_COUNTER(VCPU, ipi_write_exits),
++	STATS_DESC_COUNTER(VCPU, eiointc_read_exits),
++	STATS_DESC_COUNTER(VCPU, eiointc_write_exits),
++	STATS_DESC_COUNTER(VCPU, pch_pic_read_exits),
++	STATS_DESC_COUNTER(VCPU, pch_pic_write_exits)
+ };
+ 
+ const struct kvm_stats_header kvm_vcpu_stats_header = {
 -- 
-2.50.0.727.gbf7dc18ff4-goog
+2.39.3
 
