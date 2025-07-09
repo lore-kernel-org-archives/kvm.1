@@ -1,66 +1,65 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC1F2E7F39
-	for <kvm@vger.kernel.org>; Wed,  9 Jul 2025 14:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5972E3B1E
+	for <kvm@vger.kernel.org>; Wed,  9 Jul 2025 14:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752070037; cv=none; b=dwUjZxWpCviGAv3L2qRzZUYETYNz3vKbYr/5Fq5/nFrchku1rXUhPaEP7TRv2DKI9K58SMfGOcGQTK7InBL/6ksvmP1OexMn7WNJ+wZ9CGbAEUlpu5OKZquJOx9RA8CGmoeiOV4qst/uczit3e0OOJCM8wPCzyoZy/mAQyBasr4=
+	t=1752070155; cv=none; b=HOmh5inTaY2oVzCIdabfAhBXHYI2+Hiw30V1dtaWoN72P0UDzuR//X8Fd36yW6VxrZdgItMZ+rTJqIRrsQ+JqOUIbl4mnQLZeG4MAIo0+v8QkMEEgbrXzlDFJAY0auOLFFQEAd2fQ7YMY2GMFSBoQS5yczyKEDSRsDGl3nv6Mh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752070037; c=relaxed/simple;
-	bh=wPv9CU2zeuEb1myHv5loO7O5iv2t1aD8aURMiOBzn+g=;
+	s=arc-20240116; t=1752070155; c=relaxed/simple;
+	bh=u9ZCL26Udw7csZPMMP8KEX8jrLO4XNBGOHz68QbHy+I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FrcZNjqYNPsZ8QUCG35ctnMx0Wh20qqVCfwLAYca1lGDSTl+q+39GfJ9ru9+Mqu0s6Gy6N/xTgV+a2ffxbg0mmhCq125OVdKzMYtmiqpzI1ROXo8zzBrd6fwHWTQt2A/SZzk7p/jTOygKAlxC8BnXMYTfDn4D+56N9eE2S+Owvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=049eQRP5; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=OWCa4fjR9z+Zltd4xvKw09BA2W/mC8RF89v364TiGV/cjNGVazY6RXmhcdClbNOKGWbKjeIq0uQxemu7sFkARIEFmjEOz1QD9JDMkCuofG+Ic9TdBlr3gf0uvBt3iMkAGaDvXTlbBB3vN0Ng48zxsj6D4nKh+zGp7YgI6LokO5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hvw/csdQ; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="049eQRP5"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-311d670ad35so5142753a91.3
-        for <kvm@vger.kernel.org>; Wed, 09 Jul 2025 07:07:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hvw/csdQ"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-74b185fba41so4559111b3a.1
+        for <kvm@vger.kernel.org>; Wed, 09 Jul 2025 07:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752070035; x=1752674835; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752070153; x=1752674953; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mH6+wRQc6/x9U67SE9dbsf8SKx9qr1rE+pQ3r2Tg9Zc=;
-        b=049eQRP5PxQBAMp0gi+4vrvqZ9WZXvFAuQ/CkfScUmvvPKRQ/lIDp1k0kMdos6MS05
-         kkmUmkc9Y5yrwVS/JoSLi6aAmXJmeo0MIY0ftYpdDXOmp7fyJa07Y/YlKpnA2t62f3P0
-         Uo1/2mr0G3HG76PxYwwYoQWzPcqQ3v3rz9Kw2lhO+ceO4LUmzXve4amMPOVuvS5IIfKL
-         wQHBk9esUxADcGyOdqnjAoSoD5A0IOzP6Qd4SRTplmOz5E7qFnB3OKo5dqoYqyKUsDdf
-         c0OFdb8C+NgChevn3jerSrfY88sAXJK8L28PN6fnZ152fPIPhByL8NjGfFU/eWQegSb0
-         wTfw==
+        bh=t5tpTrrg2hny9/I7I2qzQrheZCqRZ5KWbbmlizq7TnU=;
+        b=hvw/csdQcOW2edZ1v/B1i0Xk30K7Ks+5iCIa3+u/MpiwN++sSvnsE8TnSeBARb+r6k
+         8CUe12Kp9H0yvK6RsSh1gL9GgQiMUQq5gSrt29+t6s8GW3AJbDmYvi63zL3Zzdk1PkfM
+         +x1CdfYk0/oNraFjxdzx7Y19pnc66hA05dyjMO4wIG3+u6I5A1cukNXaOfvlTJfCypbc
+         JFlwdCgNlp7owLrBMXbBGK56/uFg8lXP4qauNHYv9Q1IfsLMFBQC6IRi/JRItxD9dmjq
+         VVDWdhGhZiEf1hEaYsuqLdbs3EmwiKZgDCi/olH+gFpyI8rCX6Qr44Iy1NQ9Jr46zE0e
+         ttcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752070035; x=1752674835;
+        d=1e100.net; s=20230601; t=1752070153; x=1752674953;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mH6+wRQc6/x9U67SE9dbsf8SKx9qr1rE+pQ3r2Tg9Zc=;
-        b=s2fwL7QDhfPlS1Mv9xk0pfSTpajHEkhoqE2mL5czBroX8X4Mx6bXDxFrZvIDd0r2V3
-         r1ZOdc7fw3qjQPMDgpKhh9HjKjQ9GgiSQjATBs3QLu12PWebm3L3p1TapP3i7s/oX79G
-         f3nr2MgpvSmk2W/xcf6NvyYqX8KHham21UxXc76EU8Mqk7dWi6EfBgyxKE9X7Al8P4b2
-         gu1Z/3w+KTaHNOAHFjLSHeS03slxYi0cGKcD8TAMQ4vheh5E9chTdHn/BoAbQhHuUtb/
-         5NpPuYbHsQyYWZd6toYELTtnR6W18L6yGwoolosA5AAsPK7MftUMVnD0MqMdVeBpxEGz
-         CTQA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5ufV0xwmguVSOU5p44dobNiNIpwehJuTQntjG8DMVGmwUlJ5T2WcCf3TH64tIBgdXI0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAkANvG65dG76e0TWQ6+ZI3lcBweDk9E/gNMFMiKD6F5Zy8T8o
-	DB45K5nD5IhH6eyaecrgN0D1weUATbnmh3fSsNvdO8XTulEekGegxZ+BQgQkH5v3BVfKwKkQvYD
-	PhR4j/Q==
-X-Google-Smtp-Source: AGHT+IE8JFRsysw8nP5Xtj4iPUoHYgNgZEhlop9LjO/MxRQiwvx5s9x0fMXiFzQg6vRl2H+bb/+6YfNBABk=
-X-Received: from pji6.prod.google.com ([2002:a17:90b:3fc6:b0:311:462d:cb60])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f86:b0:311:ea13:2e6d
- with SMTP id 98e67ed59e1d1-31c2fe31041mr4208350a91.29.1752070034793; Wed, 09
- Jul 2025 07:07:14 -0700 (PDT)
-Date: Wed, 9 Jul 2025 07:07:13 -0700
-In-Reply-To: <20250709033242.267892-14-Neeraj.Upadhyay@amd.com>
+        bh=t5tpTrrg2hny9/I7I2qzQrheZCqRZ5KWbbmlizq7TnU=;
+        b=maqdPzM1G9I2xTWx9KFpMwYB7qUtC4OtrDyYgrzSVIrXC8mT89DjeHEID7Xe9VbuMT
+         ApRk+DR1E+ReLgM7fvNWchCKL+22f0oWd4ziLVAXV/9QFtJqHPo/0crzC6n3e8KFIEYQ
+         QWqDLTSl5l2sNwkbzSSD8pwsU7ugbXiHjqWhsuHzmBkx5Qmv4D+pVywgsvmYUEZIzOX6
+         etc2Qo0r4gTVspOQFw4pVwWknx7e9g5LJByn5h158v23wKYBqffaXja3H/xRhY68hgUI
+         GVFrqU2CDOyvDvcOWO6o2kckkWf3Lj0Y6Zh46mkC+VDpjIhWosCgdSlo4vrxuhRDBtmt
+         V1VA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHZNJPmGR8lY2wVXDC408QhenMLrmCC2cdWzPaGiPVNdAe9OtJIRP8zhUrIHYrrK1Bozk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOhQfo/EJBHXxlq404v5jsw9/kaHPhTfGASX7bCiObSo/+Ng8y
+	kYma3fe3+pAN6BngFIZCh0+hdW3HlXGxduoLaa0N8r9+grrzS24JDIYbqwPEJdiQ0rBhKAlzJVP
+	dJtIoTA==
+X-Google-Smtp-Source: AGHT+IHDb9Dv+1va9PvqDCQHLOYKAmeY56qPvJ4RxAeantsKZ8J12hViLyDpj1gcR3GtO9OpwmQWTNCFJms=
+X-Received: from pfbcp14.prod.google.com ([2002:a05:6a00:348e:b0:746:279c:7298])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14d6:b0:746:298e:4ed0
+ with SMTP id d2e1a72fcca58-74ea6641bd6mr4374759b3a.13.1752070153115; Wed, 09
+ Jul 2025 07:09:13 -0700 (PDT)
+Date: Wed, 9 Jul 2025 07:09:11 -0700
+In-Reply-To: <20250709033242.267892-5-Neeraj.Upadhyay@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250709033242.267892-1-Neeraj.Upadhyay@amd.com> <20250709033242.267892-14-Neeraj.Upadhyay@amd.com>
-Message-ID: <aG53kUYo9CY1fxcj@google.com>
-Subject: Re: [RFC PATCH v8 13/35] x86/apic: KVM: Move apic_test)vector() to
- common code
+References: <20250709033242.267892-1-Neeraj.Upadhyay@amd.com> <20250709033242.267892-5-Neeraj.Upadhyay@amd.com>
+Message-ID: <aG54B8frrerb0pn4@google.com>
+Subject: Re: [RFC PATCH v8 04/35] KVM: x86: Rename VEC_POS/REG_POS macro usages
 From: Sean Christopherson <seanjc@google.com>
 To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 Cc: linux-kernel@vger.kernel.org, bp@alien8.de, tglx@linutronix.de, 
@@ -73,13 +72,39 @@ Cc: linux-kernel@vger.kernel.org, bp@alien8.de, tglx@linutronix.de,
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, Jul 09, 2025, Neeraj Upadhyay wrote:
-> Move apic_test_vector() to apic.h in order to reuse it in the Secure AVIC
-> guest APIC driver in later patches to test vector state in the APIC
-> backing page.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-> ---
+> @@ -736,12 +735,12 @@ EXPORT_SYMBOL_GPL(kvm_apic_clear_irr);
+>  
+>  static void *apic_vector_to_isr(int vec, struct kvm_lapic *apic)
+>  {
+> -	return apic->regs + APIC_ISR + REG_POS(vec);
+> +	return apic->regs + APIC_ISR + APIC_VECTOR_TO_REG_OFFSET(vec);
+>  }
+>  
+>  static inline void apic_set_isr(int vec, struct kvm_lapic *apic)
+>  {
+> -	if (__test_and_set_bit(VEC_POS(vec), apic_vector_to_isr(vec, apic)))
+> +	if (__test_and_set_bit(APIC_VECTOR_TO_BIT_NUMBER(vec), apic_vector_to_isr(vec, apic)))
+>  		return;
+>  
+>  	/*
+> @@ -784,7 +783,7 @@ static inline int apic_find_highest_isr(struct kvm_lapic *apic)
+>  
+>  static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+>  {
+> -	if (!__test_and_clear_bit(VEC_POS(vec), apic_vector_to_isr(vec, apic)))
+> +	if (!__test_and_clear_bit(APIC_VECTOR_TO_BIT_NUMBER(vec), apic_vector_to_isr(vec, apic)))
+>  		return;
+>  
+>  	/*
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Almost forgot.  I'd prefer to wrap these two, i.e.
+
+	if (__test_and_set_bit(APIC_VECTOR_TO_BIT_NUMBER(vec),
+			       apic_vector_to_isr(vec, apic)))
+		return;
+
+and
+
+	if (!__test_and_clear_bit(APIC_VECTOR_TO_BIT_NUMBER(vec),
+				  apic_vector_to_isr(vec, apic)))
+		return;
