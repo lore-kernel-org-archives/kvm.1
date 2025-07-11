@@ -1,66 +1,65 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702341F8722
-	for <kvm@vger.kernel.org>; Fri, 11 Jul 2025 08:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7701018DF6E
+	for <kvm@vger.kernel.org>; Fri, 11 Jul 2025 08:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752223873; cv=none; b=UA864qBsg/oH3+S1SUhGso+HB6RNhjoW3xYhsPdUX6lfL9bR5KXp2O2RRzqtTKe2/JVVwjMi9OpNPddH90QOC0tHCJvMMlNt4lQpYxCy9PvHno1VT5Tfs7OC/1/WGtHhu/8XQR4bvgOd0nRRG6GxhXYW2dx6JjAQo8SciM5tNyE=
+	t=1752223943; cv=none; b=fMm+RplecvZY3BlCQ+Aral5bI0SJF/x8mV+/agIXx4VnpxuY0uVkG+FvogMQCz2Nob4WO7GLlKgstWK0johPhTRfHl+ZbqFYhBYFKhKHGqLXtqin8j0lmUgLmLXCJfFc7O6yn23oj1sWDsz2wQ1DblNIklL9f/05yOCZmJub7zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752223873; c=relaxed/simple;
-	bh=z8h37/P+/Go2N/WRw7N3Bh2YW9ttrIhdTMNeQsayI1w=;
+	s=arc-20240116; t=1752223943; c=relaxed/simple;
+	bh=vA5QebrlQcJNv1a91wNZgep7yhevRHrP9idpLiS40Xo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s1XtkfS7T95PqIFka+xwvY805UetJl1wi4wepdKZlmBJ+kdSLCMhClaSppZ7K9xCI5rG6rx0s82QG0MilYlzAsCLssTHfERP0jr+bNb/o8eQO3xLQecLMudvdCv4+wXMJ5qYrD0xhyK60ZAWJKhdpVHaMlgP1nGZQ2pJop/eZ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=K4OQB0am; arc=none smtp.client-ip=209.85.221.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=BBnej/Hm2t4jdZ0TiSde0R1XSvr0nL8qfhvMWAU/e2ED/BqgJvsyQw8gWwvy4NJzpMH3qrwEzef0Ebve0WgohEkAQr1BNl+jAWrEfv6hE90zxSxy5+zArRHMg7FCa1OZnlSTsDUGU2EbOz1Z4KuKFUOxt2tiWdn9FoG0To85GdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=WayrNgeu; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="K4OQB0am"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b49ffbb31bso1121615f8f.3
-        for <kvm@vger.kernel.org>; Fri, 11 Jul 2025 01:51:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="WayrNgeu"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-454ac069223so15646035e9.1
+        for <kvm@vger.kernel.org>; Fri, 11 Jul 2025 01:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1752223869; x=1752828669; darn=vger.kernel.org;
+        d=ffwll.ch; s=google; t=1752223940; x=1752828740; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wLc+yAyLpgSsVL0DY27MbVKG7PMR2I1NMPg5UEUaSYE=;
-        b=K4OQB0amdd4XDc0xIgjIUKIA7KOpnYL9ZnXtzWEcHVqy40zZ1qwYMH+78nAFS36fgP
-         ZKN3ucEg2YGZAcesweH3KkV5sh4kDxbi7HcWjq5ZBVXTZOgPU8OULctVcQNksPgazee9
-         AkahTFw+vforK/0KBuWkEC3gd2rycTIcQ2+lg=
+        bh=8derBKGkrTEyUk4H7Vgf14bpDSTC61VSwEgs7ngR2I8=;
+        b=WayrNgeuzVnNtLgoFyk68AfB/mWNap7Paw0374Cm3++7WYeX4EPQYhdnR496eBmDiX
+         SSkBmSmcLpxomzISkEVzpjVGZUmxfsRGWghL6GBSxl5+wyKczrjxAxF/uOOrqfZuWZcm
+         hkJOeOqTQlfrJsIs4acWlMqb2eSdrRykMmF2k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752223869; x=1752828669;
+        d=1e100.net; s=20230601; t=1752223940; x=1752828740;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wLc+yAyLpgSsVL0DY27MbVKG7PMR2I1NMPg5UEUaSYE=;
-        b=o+SxCixhi+sDQq1tBYWX4/V2GXEi8gErzFCUyy2ERiQ0EHkp+HWE6/Sob+UvUatHuP
-         xy18AnJg5aWRuqzCq2EluVaszPbuwd2qXVGl0A817LvwIZ8E8+liDOXEPvMOTY0NMxGU
-         G3v2pJ83NJfRWw9FG3/UNPvpJiuBe3Y/YungevGS4vyKv67ci9PVCpZ14oZh4SJRWoJ6
-         GYH1VT00XNh8MA0Lnt011YWkjSFErb+n+lpyh0tCN3nxV3y1F6W4oYn6b0zpUp0MfEiM
-         pQFpMkLS0C3YBSFy76bP6pWynx20QwxzE7xTrm/rd0lCJbiRSM9rv0t2a5D5/3X8Ik10
-         jcjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfgId+2kzSb45aEoloHJoNUMdsWU0PMK3lVLfR9Ah7+Us4auDT/7z1U9ntCtNAEFldAO8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqKO1XB+T7pHiz5nFc0av2dZzg6h3DWkhdaiwteA7rqsOpNEbq
-	6uYpU4Ly8AvgvKnN+mXvgnHcrcudusKksMvsEIf8hV8fZThOZF/eHIg4MUxS4QuvpZc=
-X-Gm-Gg: ASbGnctdQjkrJRT8CHw1msq8XbIQlm5Mkv+nhFhj9Iiyz27ov73f4vygkdWjzLE18M5
-	aakAYstu5QrN4kekRAkLcAV4lGO2zX1F7onhd9nj5NdT3arEIBfe7SK1pMfx28ZDcgYp0NoqKGF
-	ha4CoTGac4Bc7dhMEDwOr1aFNo18zFqHOHkUjK5dEAhs71nCFVsIOeh/jii9H5tYrg8Cb3HNo0s
-	OhGXMgbkan5OtPCRtkMVj7hV3Z000IE0aUAqstuwX3XXHqH3FQL59w5sYNCbn3BPdcDs8VfbJFV
-	J386sme4sBxb8/L2VB+DdAVzg90jLyrpedhWSkOa2ba3BzMhFlMn9h6FHoNJl4Szg72C4mqf0Ou
-	J6TmejcvwQZKai3SUOdm+DbWqgG+SOBNQCg==
-X-Google-Smtp-Source: AGHT+IF/p5JseJYyVQuyUwqnGmfxYrQbso5K+hNI8FrIUfZsi1LkIHNT8yNbMfG/FKzdOjwH5E48Pg==
-X-Received: by 2002:adf:9c84:0:b0:3a5:1f2:68f3 with SMTP id ffacd0b85a97d-3b5f18d2e76mr2229476f8f.46.1752223868625;
-        Fri, 11 Jul 2025 01:51:08 -0700 (PDT)
+        bh=8derBKGkrTEyUk4H7Vgf14bpDSTC61VSwEgs7ngR2I8=;
+        b=jZW4j07TuWIYK8aN2JXyMoec0z6XHUXHKEaq4QZqFE1MNlzwh6t7eAwF4NrwkuXVzo
+         zBlXHxvOAj5uk+oHjRxQ04scWjjX2uLJNK8l5/aR738CWDOK2crdKo1ExBkFIplPX6PI
+         Jdjh4Zw49gY0UhDCFggUf4Lxffgx8opW3MAeoRJqu5Pa7gQRzFHeQSNy+02tNjIaAeZs
+         QqFD1sCllMwlRHSHLi2LI2TesUcg8aLUHPJHLKS1LV4LO+TkqSSr78aEZjJVr4wtNqrb
+         PlXnyEVB6s24yJ1cn9wjRKbVKwwJYv2A0lQYHWac+EnR67eAEiH/1aAUwmfQxQukXkcK
+         rXgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWzhW3v0/0AVrwlzxbU9t7Sa+lRoPHfEhGeVmdJoNWMpYu2cCCr/ebHN4a7pnG2KTNqgcc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfoR4f1veXPh7AHJI8cWNCuJFbY2GZ7PdrFpqBKz+XkOnN4XiZ
+	KBOvu02bB8THpkijFEm6BKWn2T4UhTjA8oG3Y8HvdbhwwZhpkAQtK8sqrpPDNxFcQ7M=
+X-Gm-Gg: ASbGncs/vgNfWPmQBXlTwRea6tN50STbJ+8DI1mlr3Ylzy4s/X6lM1wI5qnAUCZyMER
+	2a+KzTJxPN5j8M9vc3A0KoVGpnKMLInlGUYN4QAakYahoOFcdia9B7ioAAtqPvtj/k1DTwNyb2y
+	z3odc5A7lN8mmyQ5+o/d33Uu70t1JcCdyHwwASkXYsF0y/CsK/QT08TYKfrGGGiKBgXa87ovhIk
+	fMlQGO6kzXrOiMqJ6AYUIh+jSPBYuDxS1kISOXYHF43+eW+0RxPFWaG2nh+rSBi8f2sgJ/NBDQP
+	DIhCnsRDBd9At0nuRgusmy7ZwlSA/G2WjOEIe8VScUSSz4Hcm+jLnh+N6nlOKK1wjmIieuLfqBR
+	biJ53tm2izozW+ie5jxFXQ84rKMuoE1xgKvsaa8WwduE8
+X-Google-Smtp-Source: AGHT+IHb717NClqAG1xifIUSeLJK08Q/iqQmZrgvVQp+OyvdWt/usHRp8NPbh9G8VPNNxhojCPLDSQ==
+X-Received: by 2002:a05:600c:8207:b0:43b:c857:e9d7 with SMTP id 5b1f17b1804b1-454e2addac7mr22372895e9.5.1752223939638;
+        Fri, 11 Jul 2025 01:52:19 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc2087sm3957272f8f.30.2025.07.11.01.51.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454dd540b52sm40898565e9.28.2025.07.11.01.52.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jul 2025 01:51:08 -0700 (PDT)
-Date: Fri, 11 Jul 2025 10:51:06 +0200
+        Fri, 11 Jul 2025 01:52:19 -0700 (PDT)
+Date: Fri, 11 Jul 2025 10:52:17 +0200
 From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>, Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
+To: Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -75,13 +74,12 @@ Cc: Borislav Petkov <bp@alien8.de>, Sean Christopherson <seanjc@google.com>,
 	Zheyun Shen <szy0127@sjtu.edu.cn>,
 	Mingwei Zhang <mizhang@google.com>,
 	Francesco Lavra <francescolavra.fl@gmail.com>
-Subject: Re: [PATCH v3 3/8] x86, lib: Add WBNOINVD helper functions
-Message-ID: <aHDQersZPA9D8fJb@phenom.ffwll.local>
-Mail-Followup-To: Peter Zijlstra <peterz@infradead.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>,
+Subject: Re: [PATCH v3 1/8] drm/gpu: Remove dead checks on
+ wbinvd_on_all_cpus()'s return value
+Message-ID: <aHDQwa8FnZ33Rj8u@phenom.ffwll.local>
+Mail-Followup-To: Sean Christopherson <seanjc@google.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -97,10 +95,7 @@ Mail-Followup-To: Peter Zijlstra <peterz@infradead.org>,
 	Mingwei Zhang <mizhang@google.com>,
 	Francesco Lavra <francescolavra.fl@gmail.com>
 References: <20250522233733.3176144-1-seanjc@google.com>
- <20250522233733.3176144-4-seanjc@google.com>
- <20250710112902.GCaG-j_l-K6LYRzZsb@fat_crate.local>
- <20250710143729.GL1613200@noisy.programming.kicks-ass.net>
- <20250710154704.GJ1613633@noisy.programming.kicks-ass.net>
+ <20250522233733.3176144-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -109,100 +104,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710154704.GJ1613633@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250522233733.3176144-2-seanjc@google.com>
 X-Operating-System: Linux phenom 6.12.30-amd64 
 
-On Thu, Jul 10, 2025 at 05:47:04PM +0200, Peter Zijlstra wrote:
-> On Thu, Jul 10, 2025 at 04:37:29PM +0200, Peter Zijlstra wrote:
-> > On Thu, Jul 10, 2025 at 01:29:02PM +0200, Borislav Petkov wrote:
-> > > On Thu, May 22, 2025 at 04:37:27PM -0700, Sean Christopherson wrote:
-> > > > diff --git a/arch/x86/lib/cache-smp.c b/arch/x86/lib/cache-smp.c
-> > > > index 079c3f3cd32c..1789db5d8825 100644
-> > > > --- a/arch/x86/lib/cache-smp.c
-> > > > +++ b/arch/x86/lib/cache-smp.c
-> > > > @@ -19,3 +19,14 @@ void wbinvd_on_all_cpus(void)
-> > > >  	on_each_cpu(__wbinvd, NULL, 1);
-> > > >  }
-> > > >  EXPORT_SYMBOL(wbinvd_on_all_cpus);
-> > > > +
-> > > > +static void __wbnoinvd(void *dummy)
-> > > > +{
-> > > > +	wbnoinvd();
-> > > > +}
-> > > > +
-> > > > +void wbnoinvd_on_all_cpus(void)
-> > > > +{
-> > > > +	on_each_cpu(__wbnoinvd, NULL, 1);
-> > > > +}
-> > > > +EXPORT_SYMBOL(wbnoinvd_on_all_cpus);
-> > > 
-> > > If there's no particular reason for the non-GPL export besides being
-> > > consistent with the rest - yes, I did the change for wbinvd_on_all_cpus() but
-> > > that was loooong time ago - I'd simply make this export _GPL.
-> > 
-> > Uhhhh, how about we use this fancy export to known modules only thing
-> > for this?
-> > 
-> > These are typical things we do *NOT* want people to actually use.
+On Thu, May 22, 2025 at 04:37:25PM -0700, Sean Christopherson wrote:
+> Remove the checks and associated pr_err() on wbinvd_on_all_cpus() failure,
+> as the helper has unconditionally returned 0/success since commit
+> caa759323c73 ("smp: Remove smp_call_function() and on_each_cpu() return
+> values").
 > 
-> So kvm-amd is the SEV stuff, AGPGART is the ancient crap nobody cares
-> about, CCP is more SEV stuff, DRM actually does CLFLUSH loops, but has a
-> WBINVD fallback. i915 is rude and actually does WBINVD. Could they
-> pretty please also do CLFLUSH loops?
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-There's some ancient pentium M where clflush is a no-op (or at least not
-getting stuff flushed enough for the gpu to see it), but we still need to
-ensure cache coherency with the non-coherent gpu, and wbinvd does the job.
-I figured this out with sheer desperation over a decade ago myself,
-it's pain.
+I guess this'll all land through x86 trees, for that on this and the patch
+from Peter to adjust the module exports to include drm and i915:
 
-There shouldn't be any other reason for i915 to wbinvd.
--Sima
+Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
 
-> 
-> Anyway, the below seems to survive an allmodconfig.
-> 
+Cheers, Sima
 > ---
-> diff --git a/arch/x86/lib/cache-smp.c b/arch/x86/lib/cache-smp.c
-> index c5c60d07308c..ac3cc32a4054 100644
-> --- a/arch/x86/lib/cache-smp.c
-> +++ b/arch/x86/lib/cache-smp.c
-> @@ -12,19 +12,19 @@ void wbinvd_on_cpu(int cpu)
->  {
->  	smp_call_function_single(cpu, __wbinvd, NULL, 1);
->  }
-> -EXPORT_SYMBOL(wbinvd_on_cpu);
-> +EXPORT_SYMBOL_GPL_FOR_MODULES(wbinvd_on_cpu, "kvm-amd,agpgart,ccp,drm,i915");
+>  drivers/gpu/drm/drm_cache.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_cache.c b/drivers/gpu/drm/drm_cache.c
+> index 7051c9c909c2..ea1d2d5d2c66 100644
+> --- a/drivers/gpu/drm/drm_cache.c
+> +++ b/drivers/gpu/drm/drm_cache.c
+> @@ -93,8 +93,7 @@ drm_clflush_pages(struct page *pages[], unsigned long num_pages)
+>  		return;
+>  	}
 >  
->  void wbinvd_on_all_cpus(void)
->  {
->  	on_each_cpu(__wbinvd, NULL, 1);
->  }
-> -EXPORT_SYMBOL(wbinvd_on_all_cpus);
-> +EXPORT_SYMBOL_GPL_FOR_MODULES(wbinvd_on_all_cpus, "kvm-amd,agpgart,ccp,drm,i915,intel-gtt");
+> -	if (wbinvd_on_all_cpus())
+> -		pr_err("Timed out waiting for cache flush\n");
+> +	wbinvd_on_all_cpus();
 >  
->  void wbinvd_on_cpus_mask(struct cpumask *cpus)
->  {
->  	on_each_cpu_mask(cpus, __wbinvd, NULL, 1);
->  }
-> -EXPORT_SYMBOL_GPL(wbinvd_on_cpus_mask);
-> +EXPORT_SYMBOL_GPL_FOR_MODULES(wbinvd_on_cpus_mask, "kvm,kvm-amd,agpgart,ccp,drm,i915");
+>  #elif defined(__powerpc__)
+>  	unsigned long i;
+> @@ -139,8 +138,7 @@ drm_clflush_sg(struct sg_table *st)
+>  		return;
+>  	}
 >  
->  static void __wbnoinvd(void *dummy)
->  {
-> @@ -35,10 +35,10 @@ void wbnoinvd_on_all_cpus(void)
->  {
->  	on_each_cpu(__wbnoinvd, NULL, 1);
->  }
-> -EXPORT_SYMBOL_GPL(wbnoinvd_on_all_cpus);
-> +EXPORT_SYMBOL_GPL_FOR_MODULES(wbnoinvd_on_all_cpus, "kvm-amd,agpgart,ccp,drm,i915");
+> -	if (wbinvd_on_all_cpus())
+> -		pr_err("Timed out waiting for cache flush\n");
+> +	wbinvd_on_all_cpus();
+>  #else
+>  	WARN_ONCE(1, "Architecture has no drm_cache.c support\n");
+>  #endif
+> @@ -172,8 +170,7 @@ drm_clflush_virt_range(void *addr, unsigned long length)
+>  		return;
+>  	}
 >  
->  void wbnoinvd_on_cpus_mask(struct cpumask *cpus)
->  {
->  	on_each_cpu_mask(cpus, __wbnoinvd, NULL, 1);
->  }
-> -EXPORT_SYMBOL_GPL(wbnoinvd_on_cpus_mask);
-> +EXPORT_SYMBOL_GPL_FOR_MODULES(wbnoinvd_on_cpus_mask, "kvm-amd,agpgart,ccp,drm,i915");
+> -	if (wbinvd_on_all_cpus())
+> -		pr_err("Timed out waiting for cache flush\n");
+> +	wbinvd_on_all_cpus();
+>  #else
+>  	WARN_ONCE(1, "Architecture has no drm_cache.c support\n");
+>  #endif
+> -- 
+> 2.49.0.1151.ga128411c76-goog
+> 
 
 -- 
 Simona Vetter
