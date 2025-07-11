@@ -1,209 +1,157 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969AA2110E;
-	Fri, 11 Jul 2025 04:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752208841; cv=none; b=ES5wgPZkTvs+DRWCf3wTlfZWLPGIbQ3sj0O4O3nB6Fenv/RjK9+rw88NFSfutr/70Bojp12o6UsiaZni/6TwoMWRt+ZSeHUnDIb/ui2CV8BKLqzNn+wW1XR9XXLfM209tyElNOxRI/Y3Z+SEx8mfc62krwMQs0QpGFt5lS9jx38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752208841; c=relaxed/simple;
-	bh=R0JRR0jPdWQFsnHeDQicLF6rapHJfa6O3V7xWIsXrEc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Udax6gMvKaOzPyFZyNq+FKz86YXA/mlsrlStnbExoffT7z3ccjfYbbe1n9sVpeU+jRzw5q96WVPbuDCQgUTPDt5wo75tqWyJxqiib7LYKdN16iB78rgvCQf1hEWMzN77shzuiVC7ik7YQErTCbwQSUhVF3q6z669rYS23+pH0ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K85h6idU; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ABB3FFD;
+	Fri, 11 Jul 2025 04:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752209675; cv=fail; b=Le6byTseNphj/j+yVL3UKjMtlGIykuTr3R+xocgjevaSHbMLvGrhxTeWyKtPNA8deU6G/JhNVPYBn7HUDyl6FbYCWPOoVpqzczvQQ9FGRWWrFhTD8vdDI5gpJZlC5Kd7N9Xl9Ezx5/K80hBBsH2UE8uXOObrXcQ3cjMCMh5Wvxg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752209675; c=relaxed/simple;
+	bh=4AtJGXqLIO3mY+9CWB0P0qivU7rPzPBq7r071da2frI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VtnjGzFkFpShf60dJBYgbzKrdrFu2IanEGoGy5PT059RF8X/ROdPFTdl7hNcnhq08j5acDEnxkx/BMWFzHvirWMObmiWrGbOUyljT4Xo1xzMHT8teC/ydpOjFuJOb/qwZmybxKQxj3ZN2IpOIUjOhopC/Dp0KE23fiQYfNzWSME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RsudcVgY; arc=fail smtp.client-ip=40.107.223.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K85h6idU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752208839; x=1783744839;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=R0JRR0jPdWQFsnHeDQicLF6rapHJfa6O3V7xWIsXrEc=;
-  b=K85h6idUoBtLsGi5lSWunJa0dJvcpH9JYg+dKP8+tBTdpb8h2tpTFxPz
-   +snXLecMl10+glYDwvnba07lRSnoWl+SF8YFIqJbRGZotKwgOoR2a8fVl
-   IzXAMJl3z2VfaFpKLkMb7/QKyR2lByrXJBLPEM6UMtM6ajf1F60xdMdSG
-   Wc9Kr0WIbxjZglYvIBbG8WYGu7w7yBmdWWLJ9drHWJF9UGGVt8UFdGP4h
-   FyvwAsB1qhtVYWVejZT/FcwNPreSiaPQqaahsKm28i3MxPYncwI4lHuR5
-   SeYBBiYn8K3VvECw1s/frY2NoPj/C1+1mg6MHG/Br+58bXmzv/c0LV2tg
-   w==;
-X-CSE-ConnectionGUID: m9Fs2OH/S5a2uC2hAIa5wg==
-X-CSE-MsgGUID: //vb/Z5rR0GOLIrBNVKXRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="79934940"
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; 
-   d="scan'208";a="79934940"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 21:40:38 -0700
-X-CSE-ConnectionGUID: klaS2TZATH+2blf4tv6DUQ==
-X-CSE-MsgGUID: uYwPD74pRiG2cr/33/gDWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; 
-   d="scan'208";a="155685771"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 10 Jul 2025 21:40:19 -0700
-Date: Fri, 11 Jul 2025 12:31:56 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Vishal Annapurve <vannapurve@google.com>,
-	Yan Zhao <yan.y.zhao@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	Fuad Tabba <tabba@google.com>,
-	Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-fsdevel@vger.kernel.org, ajones@ventanamicro.com,
-	akpm@linux-foundation.org, amoorthy@google.com,
-	anthony.yznaga@oracle.com, anup@brainfault.org,
-	aou@eecs.berkeley.edu, bfoster@redhat.com,
-	binbin.wu@linux.intel.com, brauner@kernel.org,
-	catalin.marinas@arm.com, chao.p.peng@intel.com,
-	chenhuacai@kernel.org, dave.hansen@intel.com, david@redhat.com,
-	dmatlack@google.com, dwmw@amazon.co.uk, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, graf@amazon.com,
-	haibo1.xu@intel.com, hch@infradead.org, hughd@google.com,
-	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz,
-	james.morse@arm.com, jarkko@kernel.org, jgowans@amazon.com,
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com,
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com,
-	kent.overstreet@linux.dev, kirill.shutemov@intel.com,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maz@kernel.org, mic@digikod.net,
-	michael.roth@amd.com, mpe@ellerman.id.au, muchun.song@linux.dev,
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
-	palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
-	pbonzini@redhat.com, pdurrant@amazon.co.uk, peterx@redhat.com,
-	pgonda@google.com, pvorel@suse.cz, qperret@google.com,
-	quic_cvanscha@quicinc.com, quic_eberman@quicinc.com,
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com,
-	quic_pheragu@quicinc.com, quic_svaddagi@quicinc.com,
-	quic_tsoni@quicinc.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
-	shuah@kernel.org, steven.price@arm.com, steven.sistare@oracle.com,
-	suzuki.poulose@arm.com, thomas.lendacky@amd.com,
-	usama.arif@bytedance.com, vbabka@suse.cz, viro@zeniv.linux.org.uk,
-	vkuznets@redhat.com, wei.w.wang@intel.com, will@kernel.org,
-	willy@infradead.org, xiaoyao.li@intel.com, yilun.xu@intel.com,
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v2 04/51] KVM: guest_memfd: Introduce
- KVM_GMEM_CONVERT_SHARED/PRIVATE ioctls
-Message-ID: <aHCTvAAtvE4Mofy2@yilunxu-OptiPlex-7050>
-References: <CAGtprH_Evyc7tLhDB0t0fN+BUx5qeqWq8A2yZ5-ijbJ5UJ5f-g@mail.gmail.com>
- <9502503f-e0c2-489e-99b0-94146f9b6f85@amd.com>
- <20250624130811.GB72557@ziepe.ca>
- <CAGtprH_qh8sEY3s-JucW3n1Wvoq7jdVZDDokvG5HzPf0HV2=pg@mail.gmail.com>
- <aGTvTbPHuXbvj59t@yzhao56-desk.sh.intel.com>
- <CAGtprH9-njcgQjGZvGbbVX+i8D-qPUOkKFHbOWA20962niLTcw@mail.gmail.com>
- <20250702141321.GC904431@ziepe.ca>
- <CAGtprH948W=5fHSB1UnE_DbB0L=C7LTC+a7P=g-uP0nZwY6fxg@mail.gmail.com>
- <aG+a4XRRc2fMrEZc@yilunxu-OptiPlex-7050>
- <20250710175449.GA1870174@ziepe.ca>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RsudcVgY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B8p2LA595+QJXFd9Mj2LE944RCITRUZ1yHhnI6e4WUESWqYo1o8YvUxuGcnGF/tx9nde1WJXxQZGxLsMnEzVCfr6p3K72iUaEdmZQm09aPpo7Gb06O+B0h14HucSHYMd0AJoGprmsqdr9vX9K3I58b4e2NSTv78rE0GFADN8VK0WJEOEdDt6n9oH5HiDDS0KIC9SYX+AgE3qv/k+6hy1ZjIt+uWgtTjNwY1GI8Q3hDBilQxNyJN/smxCepcZuk3+KDYPsybaGHfx/s+mZIGUcrMDMJscANiZEPAQf14K8Lpgt3KtKODsKxeVKBq4uez6je1M0LyVTGXVdgX7trgRhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qqntcgKxsBeD8myYTppR9261b5UQE3Sxe8rcv11WMys=;
+ b=LoBSdwL66XQKv0kF6KJNSzJfOj9+VhW87DT/JAW3CpdUQPHfoo+sdPQhc5lNPSH2RGnbHtxUMiBcAacTrpJO1TBHEPhypjilodVJ/MAj1IYfR6YA7FxQv/3vu1mXePJk/gMgHWqU6fM1gbOl9aZ3BhYk8s+mE3d/GF9Zuzar75a3v8sQTQ8998j7Xuarq6lGTERK4wFuZzAmxfaW71Zg330G3IHXWCDsFSUPSBPgjT3FHNtqXngzp9gB33BW6wQD+nTnaG3NSyK2MMUNRaj1uQgUuF3QVgXnD2jR5/JKp27ZHB+cAO+qspuGSI2Q5W47uvRVIhTedlZX/GsMs+3Sag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qqntcgKxsBeD8myYTppR9261b5UQE3Sxe8rcv11WMys=;
+ b=RsudcVgYlqWUH283/aPfl2YBzP/n4TInhvFWMyMNmu/WxMvP7auBa51vtN8ZlDUColRmmqMVo1W2Nd4Ovdd0ZQ+mRxPnh78sR2QpmCJrROV253UDg3DgHqmkaBtvhx0fAy0QOc4cMy8FuPg5EkqftGuP5hfue17T7x59eZKg1FA=
+Received: from BY5PR13CA0010.namprd13.prod.outlook.com (2603:10b6:a03:180::23)
+ by DM4PR12MB6038.namprd12.prod.outlook.com (2603:10b6:8:ab::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Fri, 11 Jul
+ 2025 04:54:28 +0000
+Received: from CO1PEPF000075F4.namprd03.prod.outlook.com
+ (2603:10b6:a03:180:cafe::94) by BY5PR13CA0010.outlook.office365.com
+ (2603:10b6:a03:180::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.7 via Frontend Transport; Fri,
+ 11 Jul 2025 04:54:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000075F4.mail.protection.outlook.com (10.167.249.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 04:54:27 +0000
+Received: from gomati.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 10 Jul
+ 2025 23:54:24 -0500
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>
+CC: <thomas.lendacky@amd.com>, <santosh.shukla@amd.com>, <bp@alien8.de>,
+	<nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for SEV-SNP guests
+Date: Fri, 11 Jul 2025 10:24:08 +0530
+Message-ID: <20250711045408.95129-1-nikunj@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250710175449.GA1870174@ziepe.ca>
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075F4:EE_|DM4PR12MB6038:EE_
+X-MS-Office365-Filtering-Correlation-Id: 756b7eee-2daf-4e88-954d-08ddc0370414
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JX46vfEP1T4YR2ScBEoybdb6G94hKORJTydYkIpzxOQfgRVZSk+BYg0vz2Pr?=
+ =?us-ascii?Q?tVEYhvJAq6FNwLT8ap5zKTzXWBECFy83cEoKnJWOzaNig19e2hFrAMVoDPel?=
+ =?us-ascii?Q?n6TXeDz96BYv4TjzYn/5CYF+umI813ZJasqLJBsfdTxP/x9CBlhauQ+Oqx72?=
+ =?us-ascii?Q?z0ni1/83lyMebqTBlJkBUGIElSHOa5ucvNuSzVb4ix08SMKngDw+Vza7nun1?=
+ =?us-ascii?Q?JMZchxR2Aqhro08yrxd3zNYNp95ImuKyLp+OzC3mcaRLTvSCKtNeS8gdxMbT?=
+ =?us-ascii?Q?TaEESaP7mPWdoTqZjGO582s2ZK4GzSpU5I9SRB2HTtCyq0rt6B/tdtCXIZEA?=
+ =?us-ascii?Q?SNRHKRZd3tqpfQz2uTKiYCn4CgnpDvPv8Zmy1JukhWQ0IHtcyFadg+uAy2v3?=
+ =?us-ascii?Q?uUf8effOvPuE4AijdaObj1/KC31gpCX99KaMQrsincrjlA0W2qsnza5yZvD6?=
+ =?us-ascii?Q?yAHXZNsrtE6A7DIZJvTFg4Iq8MVwRfzSWakAs41Q6+huotRNJkBv5ZihwP1l?=
+ =?us-ascii?Q?tkU6neXJobnnQJ8AX2dhiO6WfMEyZUXuKu7pIGXxO9+tZBZ+KnlacpbPJv/d?=
+ =?us-ascii?Q?A+K8go/3EgCSoiWiSEo4Ne0ekjCiw8WFgf5GPhLwH3Z8e5qVAfVEGuOpWvxw?=
+ =?us-ascii?Q?VhOjB16d5GDdYA012nKn30eiAeML6VKWwoi6J5IzblZYSvt8zUQCG6jh4vuP?=
+ =?us-ascii?Q?gWmTSD1Fz4iQfeQuQMCdQaHwE30t1jJI8cG2UpLNO9qSxZqfS7n1ihK2OYRv?=
+ =?us-ascii?Q?UezBq9iUsQjhN+6FItIBcJkLrE7dAC9Tejb7WjfCxrlzGPtA6yj+bgow10ki?=
+ =?us-ascii?Q?YYfXYFPXG9mRfNK1iWLEbk/L+dOc8UCLm2FWW6KBq6QdTkvlXkCCoIsasNx6?=
+ =?us-ascii?Q?rxPoB9vCjchD0+zRysRPBcV/kYBzs7bc5eqLN6Fkcf+tIuv3B7cvJCJT1XZz?=
+ =?us-ascii?Q?OfEwKZslDu/b8lL5ascfhHQMGX7KEqgTbZClR3VqoulJatvdJtMNjoVx0bEL?=
+ =?us-ascii?Q?dGhYUaagger9WAYAzSLRAFlqf52AR55KD3gaW3ye1dstznzZGImXn+V3RPJD?=
+ =?us-ascii?Q?36B7Jx/zhC700ADKGYeVh9W7C5VKZas7VjPivmVYEGcPPZkQvNNFAcJ6+owP?=
+ =?us-ascii?Q?G7Kgv5bEDFci0YRZR4a4PZrLfgg9QcnUnacZvBtIBiAmi+i3u9tyW2SC3SmS?=
+ =?us-ascii?Q?G/29Ja8S5/iRKwIAvs/bUp4E4Hr8uZwM0eXhmIVVwrSaNJh7JUhUknZ/FEX8?=
+ =?us-ascii?Q?2S89hdRFdfQtzvhydBaPY5tbqtCrMATQBax2JQTZiCLXaf/40urHg2g599hj?=
+ =?us-ascii?Q?Huz0Xr+4auUrJw2SZ7JFw6uMQC2UxQisf37vPhLPJJT7r2HaiQMikA9c0ARQ?=
+ =?us-ascii?Q?34wnZYizTrxBFbAylVOkNUqxFl1wQzvig6Pdh+YsR5QyERCwJANd3NLMFGLP?=
+ =?us-ascii?Q?/IKJILY+lwfP4SXEe10s8iIde+JPH5OInXB1DZOF20h28jYpM9oIiDXgjQeO?=
+ =?us-ascii?Q?7nY82FVyyWl0VzJDbQStmV/MgKwiM0JTwt7a?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 04:54:27.9329
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 756b7eee-2daf-4e88-954d-08ddc0370414
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000075F4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6038
 
-On Thu, Jul 10, 2025 at 02:54:49PM -0300, Jason Gunthorpe wrote:
-> On Thu, Jul 10, 2025 at 06:50:09PM +0800, Xu Yilun wrote:
-> > On Wed, Jul 02, 2025 at 07:32:36AM -0700, Vishal Annapurve wrote:
-> > > On Wed, Jul 2, 2025 at 7:13 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > > >
-> > > > On Wed, Jul 02, 2025 at 06:54:10AM -0700, Vishal Annapurve wrote:
-> > > > > On Wed, Jul 2, 2025 at 1:38 AM Yan Zhao <yan.y.zhao@intel.com> wrote:
-> > > > > >
-> > > > > > On Tue, Jun 24, 2025 at 07:10:38AM -0700, Vishal Annapurve wrote:
-> > > > > > > On Tue, Jun 24, 2025 at 6:08 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > > > > > > >
-> > > > > > > > On Tue, Jun 24, 2025 at 06:23:54PM +1000, Alexey Kardashevskiy wrote:
-> > > > > > > >
-> > > > > > > > > Now, I am rebasing my RFC on top of this patchset and it fails in
-> > > > > > > > > kvm_gmem_has_safe_refcount() as IOMMU holds references to all these
-> > > > > > > > > folios in my RFC.
-> > > > > > > > >
-> > > > > > > > > So what is the expected sequence here? The userspace unmaps a DMA
-> > > > > > > > > page and maps it back right away, all from the userspace? The end
-> > > > > > > > > result will be the exactly same which seems useless. And IOMMU TLB
-> > > > > > >
-> > > > > > >  As Jason described, ideally IOMMU just like KVM, should just:
-> > > > > > > 1) Directly rely on guest_memfd for pinning -> no page refcounts taken
-> > > > > > > by IOMMU stack
-> > > > > > In TDX connect, TDX module and TDs do not trust VMM. So, it's the TDs to inform
-> > > > > > TDX module about which pages are used by it for DMAs purposes.
-> > > > > > So, if a page is regarded as pinned by TDs for DMA, the TDX module will fail the
-> > > > > > unmap of the pages from S-EPT.
-> > > >
-> > > > I don't see this as having much to do with iommufd.
-> > > >
-> > > > iommufd will somehow support the T=1 iommu inside the TDX module but
-> > > > it won't have an IOAS for it since the VMM does not control the
-> > > > translation.
-> > 
-> > I partially agree with this.
-> > 
-> > This is still the DMA Silent drop issue for security.  The HW (Also
-> > applicable to AMD/ARM) screams out if the trusted DMA path (IOMMU
-> > mapping, or access control table like RMP) is changed out of TD's
-> > expectation. So from HW POV, it is the iommu problem.
-> 
-> I thought the basic idea was that the secure world would sanity check
-> what the insecure is doing and if it is not OK then it blows up. So if
+Require a minimum GHCB version of 2 when starting SEV-SNP guests through
+KVM_SEV_INIT2. When a VMM attempts to start an SEV-SNP guest with an
+incompatible GHCB version (less than 2), reject the request early rather
+than allowing the guest to start with an incorrect protocol version and
+fail later.
 
-Yes. The secure world checks. But it let alone the unexpected change on
-CPU path cause CPU is synchronous and VM just pends on the fault, no
-security concern. While DMA is asynchronous and the secure world must
-blow up.
+Fixes: 4af663c2f64a ("KVM: SEV: Allow per-guest configuration of GHCB protocol version")
+Cc: Thomas Lendacky <thomas.lendacky@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> the DMA fails because the untrusted world revoked sharability when it
-> should not have then this is correct and expected?
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index a12e78b67466..91d06fb91ba2 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -435,6 +435,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+ 	if (unlikely(sev->active))
+ 		return -EINVAL;
+ 
++	if (snp_active && data->ghcb_version && data->ghcb_version < 2)
++		return -EINVAL;
++
+ 	sev->active = true;
+ 	sev->es_active = es_active;
+ 	sev->vmsa_features = data->vmsa_features;
+-- 
+2.43.0
 
-OK. From secure world POV the failing is correct & expected.
-
-> 
-> > For SW, if we don't blame iommu, maybe we rephrase as gmemfd can't
-> > invalidate private pages unless TD agrees.
-> 
-> I think you mean guestmemfd in the kernel cannot autonomously change
-> 'something' unless instructed to explicitly by userspace.
-> 
-> The expectation is the userspace will only give such instructions
-> based on the VM telling it to do a shared/private change.
-> 
-> If userspace gives an instruction that was not agreed with the guest
-> then the secure world can police the error and blow up.
-
-Yes.
-
->  
-> > Just to be clear. With In-place conversion, it is not KVM gives pages
-> > to become secure, it is gmemfd. Or maybe you mean gmemfd is part of KVM.
-> 
-> Yeah, I mean part of.
-> 
-> > > > Obviously in a mode where there is a vPCI device we will need all the
-> > > > pages to be pinned in the guestmemfd to prevent any kind of
-> > > > migrations. Only shared/private conversions should change the page
-> > > > around.
-> > 
-> > Only *guest permitted* conversion should change the page. I.e only when
-> > VMM is dealing with the KVM_HC_MAP_GPA_RANGE hypercall. Not sure if we
-> > could just let QEMU ensure this or KVM/guestmemfd should ensure this.
-> 
-> I think it should not be part of the kernel, no need. From a kernel
-> perspective userspace has requested a shared/private conversion and if
-> it wasn't agreed with the VM then it will explode.
-
-I'm OK with it now. It's simple if we don't try to recover from the
-explosion. Although I see the after explosion processing in kernel is
-complex and not sure how it will advance.
-
-Thanks,
-Yilun
-
-> 
-> Jason
