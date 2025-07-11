@@ -1,115 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE532E7BDD;
-	Fri, 11 Jul 2025 13:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CB12D23A8;
+	Fri, 11 Jul 2025 13:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752240876; cv=none; b=TVioNaOFok5qYmta9d2Xy2kmc2D4MUJ+PpFhcD5ANpv2krz6BYYZS7i9vUT4z8fCMwv7Oo3Unm7MuSPh3/M1AXxWUdyz/9w+JjQhhCq7yntdUnQotgjj/H1jsqS4USglVQb1M0JOS4O+XUG/k1lQmtnGQmEVwe1TTbSo2HrHONc=
+	t=1752241243; cv=none; b=AjW6qRMAVy/6IqntZ0pFZs053JkzJbA57OeSZ+NL4RRQb8RjXjIg+V04I8UUTDJHwp46PPTJSS400oYl4kB3S+uRH0ysa1TP8G8m4ZaTZ2aFuO7lYdti+QBg1c6qgXkefoV6ee/HP5nIwT1+fxV2mjI6BIRZo1XQXIu/WXR/KzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752240876; c=relaxed/simple;
-	bh=HDcMtsioNj2DN5BBI17IRgOgyQAk23BUXHWEVTiKBdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5gW/2kuytnPpOYeiVt4ifSIVcyBIlp7LzKB62f6GR/XUpms2RGMNgqdwL9pYf1VMr0v99PjjNqrdScsSrggOBtZBfPrrXp4jnng3q0xgFS4ilbLuznAkmQkN/1hW4I728R3OvA+UVoFVNMq+WgEsvGivI9urISs3yUk9kNircA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQBCYmXf; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1752241243; c=relaxed/simple;
+	bh=EBt9gGW1TAOYC9qx6L/o8/rbeB4z1Wz05fhzW4EdrBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qEt5UXMrPf6ZCF4t4EtML9NtVcBUskxgphe7SaTA16k3ureT6bN6ciogBv3yfoXuzO6bSwA+en5QeKS3WUKq8rfJ493rdqMN5NlGb6f3oRVOWzknA/2iK3YD9orY5K0wJcbPSwRoM+wit40LO+mZt3Q/JDbvDfsIScsIpEI3v6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KrExhKKa; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQBCYmXf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KrExhKKa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752240875; x=1783776875;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HDcMtsioNj2DN5BBI17IRgOgyQAk23BUXHWEVTiKBdg=;
-  b=FQBCYmXfetID03qBmeGq1mw/8pDePcT/hwbsXOMLw/xj8EQPJzbubwVE
-   EZAINe4yxRBkzGbIiDXg8ouhGHzTVY0IpzGVLCPzY5PPVDYTeMJ7IKini
-   EhKIhhkaiULbVmsO6ZCD/b3WHszrIAmVKUCCI3PmmlexAw9BFvE+HnB+6
-   n9ws/muwlyhw1pz5xjObWNR22MzBzKaeYp/obGCYPwLZCFv6aiYM/wt2s
-   hEy4RN2goOv9Nn34+xtgAotUKuQnivNxeIL23X2fusl6xNWdYzrTd3Y3Z
-   aeCQIggMf3XMM1x6/Uw3psb1h3i9NwXl1E1EJnICxD5gWezvHpMi0BVFr
-   g==;
-X-CSE-ConnectionGUID: 3m4fDKbwThmR/m82IZxKSg==
-X-CSE-MsgGUID: SFtxa8AeTVqKO49ZKJsTsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65603423"
+  t=1752241242; x=1783777242;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EBt9gGW1TAOYC9qx6L/o8/rbeB4z1Wz05fhzW4EdrBM=;
+  b=KrExhKKa7xHN+lhTATRdDH5oF3alucgPTUSoVPYeDCABTMhEsY86Ywsc
+   F5oaWIpdK5pXOYUW7E4rd/+mQXjD/VVA17rHv4Yy3sh/dA0wfhUIjxEbu
+   d0trJIS+vkL8Tr3gHpuZQDaFx88ZtiB+X9D2K+s8832754ZNOFIHUpcx3
+   q3DyvRe/gSOzF1ufzHZr70aPGwb0lBopTAlcGMnkPz2PwBJJSPrHVzmBI
+   ymlIx0M+nOZVuqv3pnkPIz47BdZijwEFX8+hyRYrN+GUiMwXx7c5S6imD
+   FS97WUZuXTZWmRugA1mfKLupCflviGOyRVEae3l0xKqaj7Ul7oSC2qDql
+   A==;
+X-CSE-ConnectionGUID: 1XEH+H8GTbyFGOBc5dZGZg==
+X-CSE-MsgGUID: zc7xtv6MSZODzZ3LP5Ubkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54476939"
 X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="65603423"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 06:34:35 -0700
-X-CSE-ConnectionGUID: bA05kdQlRteTitz8uDNnLg==
-X-CSE-MsgGUID: AU+qYP0dTtaExVjqZTvQeg==
+   d="scan'208";a="54476939"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 06:40:41 -0700
+X-CSE-ConnectionGUID: /BPaOl2BRyKfPAOcE4Ov4w==
+X-CSE-MsgGUID: 7yPTvQdtRaeGVbVl6EVhKg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="187349239"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
-  by fmviesa001.fm.intel.com with ESMTP; 11 Jul 2025 06:34:31 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	Kai Huang <kai.huang@intel.com>,
-	binbin.wu@linux.intel.com,
-	yan.y.zhao@intel.com,
-	reinette.chatre@intel.com,
-	isaku.yamahata@intel.com,
-	adrian.hunter@intel.com,
-	tony.lindgren@intel.com,
-	xiaoyao.li@intel.com,
-	rick.p.edgecombe@intel.com
-Subject: [PATCH v2 3/3] KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
-Date: Fri, 11 Jul 2025 21:26:20 +0800
-Message-ID: <20250711132620.262334-4-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250711132620.262334-1-xiaoyao.li@intel.com>
-References: <20250711132620.262334-1-xiaoyao.li@intel.com>
+   d="scan'208";a="180067842"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 06:40:36 -0700
+Message-ID: <3989f123-6888-459b-bb65-4571f5cad8ce@intel.com>
+Date: Fri, 11 Jul 2025 21:40:31 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 0/1] KVM: TDX: Decrease TDX VM shutdown time
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, Adrian Hunter <adrian.hunter@intel.com>,
+ kvm@vger.kernel.org, rick.p.edgecombe@intel.com,
+ kirill.shutemov@linux.intel.com, kai.huang@intel.com,
+ reinette.chatre@intel.com, tony.lindgren@linux.intel.com,
+ binbin.wu@linux.intel.com, isaku.yamahata@intel.com,
+ linux-kernel@vger.kernel.org, yan.y.zhao@intel.com, chao.gao@intel.com
+References: <20250611095158.19398-1-adrian.hunter@intel.com>
+ <175088949072.720373.4112758062004721516.b4-ty@google.com>
+ <aF1uNonhK1rQ8ViZ@google.com>
+ <7103b312-b02d-440e-9fa6-ba219a510c2d@intel.com>
+ <aHEMBuVieGioMVaT@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aHEMBuVieGioMVaT@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS to include
-"TDX" in the name, making it clear that it pertains to TDX.
+On 7/11/2025 9:05 PM, Sean Christopherson wrote:
+> On Fri, Jul 11, 2025, Xiaoyao Li wrote:
+>> On 6/26/2025 11:58 PM, Sean Christopherson wrote:
+>>> On Wed, Jun 25, 2025, Sean Christopherson wrote:
+>>>> On Wed, 11 Jun 2025 12:51:57 +0300, Adrian Hunter wrote:
+>>>>> Changes in V4:
+>>>>>
+>>>>> 	Drop TDX_FLUSHVP_NOT_DONE change.  It will be done separately.
+>>>>> 	Use KVM_BUG_ON() instead of WARN_ON().
+>>>>> 	Correct kvm_trylock_all_vcpus() return value.
+>>>>>
+>>>>> Changes in V3:
+>>>>> 	Refer:
+>>>>>               https://lore.kernel.org/r/aAL4dT1pWG5dDDeo@google.com
+>>>>>
+>>>>> [...]
+>>>>
+>>>> Applied to kvm-x86 vmx, thanks!
+>>>>
+>>>> [1/1] KVM: TDX: Add sub-ioctl KVM_TDX_TERMINATE_VM
+>>>>         https://github.com/kvm-x86/linux/commit/111a7311a016
+>>>
+>>> Fixed up to address a docs goof[*], new hash:
+>>>
+>>>         https://github.com/kvm-x86/linux/commit/e4775f57ad51
+>>>
+>>> [*] https://lore.kernel.org/all/20250626171004.7a1a024b@canb.auug.org.au
+>>
+>> Hi Sean,
+>>
+>> I think it's targeted for v6.17, right?
+>>
+>> If so, do we need the enumeration for the new TDX ioctl? Yes, the userspace
+>> could always try and ignore the failure. But since the ship has not sailed,
+>> I would like to report it and hear your opinion.
+> 
+> Bugger, you're right.  It's sitting at the top of 'kvm-x86 vmx', so it should be
+> easy enough to tack on a capability.
+> 
+> This?
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- arch/x86/kvm/vmx/tdx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm wondering if we need a TDX centralized enumeration interface, e.g., 
+new field in struct kvm_tdx_capabilities. I believe there will be more 
+and more TDX new features, and assigning each a KVM_CAP seems wasteful.
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index efb7d589b672..90fb6ba245dd 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -62,7 +62,7 @@ void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
- 	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
- }
- 
--#define KVM_SUPPORTED_TD_ATTRS (TDX_ATTR_SEPT_VE_DISABLE)
-+#define KVM_SUPPORTED_TDX_TD_ATTRS (TDX_ATTR_SEPT_VE_DISABLE)
- 
- static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
- {
-@@ -76,7 +76,7 @@ static __always_inline struct vcpu_tdx *to_tdx(struct kvm_vcpu *vcpu)
- 
- static u64 tdx_get_supported_attrs(const struct tdx_sys_info_td_conf *td_conf)
- {
--	u64 val = KVM_SUPPORTED_TD_ATTRS;
-+	u64 val = KVM_SUPPORTED_TDX_TD_ATTRS;
- 
- 	if ((val & td_conf->attributes_fixed1) != td_conf->attributes_fixed1)
- 		return 0;
--- 
-2.43.0
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index f0d961436d0f..dcb879897cab 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -9147,6 +9147,13 @@ KVM exits with the register state of either the L1 or L2 guest
+>   depending on which executed at the time of an exit. Userspace must
+>   take care to differentiate between these cases.
+>   
+> +8.46 KVM_CAP_TDX_TERMINATE_VM
+> +-----------------------------
+> +
+> +:Architectures: x86
+> +
+> +This capability indicates that KVM supports the KVM_TDX_TERMINATE_VM sub-ioctl.
+> +
+>   9. Known KVM API problems
+>   =========================
+>   
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index b58a74c1722d..e437a50429d3 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -4823,6 +4823,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>          case KVM_CAP_READONLY_MEM:
+>                  r = kvm ? kvm_arch_has_readonly_mem(kvm) : 1;
+>                  break;
+> +       case KVM_CAP_TDX_TERMINATE_VM:
+> +               r = !!(kvm_caps.supported_vm_types & BIT(KVM_X86_TDX_VM));
+> +               break;
+>          default:
+>                  break;
+>          }
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 7a4c35ff03fe..54293df4a342 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -960,6 +960,7 @@ struct kvm_enable_cap {
+>   #define KVM_CAP_ARM_EL2 240
+>   #define KVM_CAP_ARM_EL2_E2H0 241
+>   #define KVM_CAP_RISCV_MP_STATE_RESET 242
+> +#define KVM_CAP_TDX_TERMINATE_VM 243
+>   
+>   struct kvm_irq_routing_irqchip {
+>          __u32 irqchip;
 
