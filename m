@@ -1,194 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060671D5ABA;
-	Tue, 15 Jul 2025 08:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D4218AAD;
+	Tue, 15 Jul 2025 08:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752568282; cv=none; b=u8SR3XxCSa8wI3xSW3RqfsdydfawdCwdPJ0vHQuRPiVFQSZemSRYpJ/mbsvWXH2dMR+/emEynpOnr0AM3Tnx4D9uX6ca+DkVnuBeQ69liK3MZGeLqzHIRMhK8y275Ds2AumYoiL2g2kcG3odNin+HFPLcP41B0dv6IjdiaTJEaw=
+	t=1752568301; cv=none; b=lbcs7BsHXU1aDv5Mh2R5KVi5KFUSqzxx3+LkClR63S2PDFPWezWC40BKHfP2ivfItQZ7lE9UQAclEDfBM/NP62pLO/o38zcOHBJgfyuclFJQkflS8Y4y8XStgl827/KANhGiNZ7F2b73OD7brgierQvgsHq3GH7IuyBRfqqrdXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752568282; c=relaxed/simple;
-	bh=vc8sRdp2JkS0f6MKjzIVxwH/P9BFLMdE+QPnjQlwYQI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kiAzgo9VlsuAL7xvw52fDaRjjWcfKS2XOR67QmG+pyE+c0inFb5phMcFYS3V/jNsz04HPSzbGQTjrQNuWRDeM2ZvnLs/MoPo2/ieatIgBF1/Zydpq/2tfph5npuEgJlDaHSXP3SCPzuDKHOnubyE6ADVM6PM0Ocpaj4M8dWwn8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlNIijNk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752568301; c=relaxed/simple;
+	bh=GmF9A0uu3R9vARY/nDJM60P6Cx1d4Wo0ZlBrgNqfd84=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XlcUOSVqc5CBnX6uzy+iN+5YUTytH1k5sLP2h7PGiCIDKKrhejZ8Az5RdphwThN+hN1x0TarYX2uWwMu0kpBUI4M4CA00TB6TC3VY5YYNjFvJISEghKcNw/s5Lt5ugkYdivSX6PovIE4q2N3If/eWGbHwF+BCFQ9yykdlnz3i/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=biITL8wI; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlNIijNk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3FCC4CEE3;
-	Tue, 15 Jul 2025 08:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752568281;
-	bh=vc8sRdp2JkS0f6MKjzIVxwH/P9BFLMdE+QPnjQlwYQI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LlNIijNklPQOePOENYJKmMSyRYEpLVgmZUM+p2trP4XEl+EVWsWzniSK914ybz6Nq
-	 Kndd87u/GPxZMCK7WuuBwYoQrdwOPrFPUML6HFiUF4+is3D/ZJJF4wXUgGx/Si4DL5
-	 /RUg6+TYDFsEDievEqzV1QD6KK6WFMXGvzAoICOrl7tBLpxzexv0vx0eDFbk+LWzsQ
-	 nURsAZx2+jLx7hWOKZ4vU+Qkh8zpyelO/M+3Kt3xcJGXmY833vC4p7+T6WhmNMIa1Q
-	 GJNmYJpk4A7p6L7iOJWUIk1T2Pi4FcXwUVw5+EQfV7g0fUd5wCJQm1e47XHvt4S87z
-	 VEJjqpPrdWBkQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1ubb4I-00Fndi-N4;
-	Tue, 15 Jul 2025 09:31:18 +0100
-Date: Tue, 15 Jul 2025 09:31:18 +0100
-Message-ID: <86zfd597op.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	syzbot+4e09b1432de3774b86ae@syzkaller.appspotmail.com
-Subject: Re: [PATCH] KVM: arm64: Clear pending exception state before injecting a new one
-In-Reply-To: <aHX6XXhSSnHL_T1d@linux.dev>
-References: <20250714144636.3569479-1-maz@kernel.org>
-	<aHX6XXhSSnHL_T1d@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="biITL8wI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752568300; x=1784104300;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GmF9A0uu3R9vARY/nDJM60P6Cx1d4Wo0ZlBrgNqfd84=;
+  b=biITL8wIY9WngxTeQ4D1A5Bfb18u5TZ4hm2T6A1jumE6pSBZOeEPrtGc
+   q8xG4SFM1imcoKmopxXVQCqH0gSZjtFd3QQnM6Irtid4I8fFP28Ni38/L
+   vcYSOjReb5lfaaRvr2NNSDM6cZhb8BaMaaeT4M40X6NocDNm4yVleobye
+   9368iyQ7rq/1X6xidGXdg1OyhAeX+8SKJtr5xhVO9IouCQ68hpBsMWUTV
+   a94ZvMDKyATWiRourURSDyUvlJi0c01sKOn7U8GSf4C0jbgUdZ4+geK+b
+   2JVE4D8ceGzAsHNECEQX7xFf6poL6X7QZMerI8gX7f0Hy+NRPKE5EPdhQ
+   g==;
+X-CSE-ConnectionGUID: LdIaf76DTMiDvwvoNAugDw==
+X-CSE-MsgGUID: gKf4W8etSzKP0GJOPY0LIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54632066"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
+   d="scan'208";a="54632066"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 01:31:40 -0700
+X-CSE-ConnectionGUID: 4dAzZFJxT2mI/S/bqqC+yA==
+X-CSE-MsgGUID: BeFlch+ITxKNun+ncE9GMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
+   d="scan'208";a="156572560"
+Received: from emr.sh.intel.com ([10.112.229.56])
+  by orviesa010.jf.intel.com with ESMTP; 15 Jul 2025 01:31:36 -0700
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Das Sandipan <Sandipan.Das@amd.com>,
+	Shukla Manali <Manali.Shukla@amd.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Dapeng Mi <dapeng1.mi@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>
+Subject: [kvm-unit-tests patch 0/5] Fix pmu test errors on SRF/CWF
+Date: Sat, 12 Jul 2025 17:49:10 +0000
+Message-ID: <20250712174915.196103-1-dapeng1.mi@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, syzbot+4e09b1432de3774b86ae@syzkaller.appspotmail.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 15 Jul 2025 07:51:09 +0100,
-Oliver Upton <oliver.upton@linux.dev> wrote:
-> 
-> Hey,
-> 
-> On Mon, Jul 14, 2025 at 03:46:36PM +0100, Marc Zyngier wrote:
-> > Repeatedly injecting an exception from userspace without running
-> > the vcpu between calls results in a nasty warning, as we're not
-> > really keen on losing already pending exceptions.
-> > 
-> > But this precaution doesn't really apply to userspace, who can
-> > do whatever it wants (within reason). So let's simply clear any
-> > previous exception state before injecting a new one.
-> > 
-> > Note that this is done unconditionally, even if the injection
-> > ultimately fails.
-> > 
-> > Reported-by: syzbot+4e09b1432de3774b86ae@syzkaller.appspotmail.com
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> 
-> Thanks for taking a look at this. I think the correct fix is a bit more
-> involved, as:
-> 
->  - ABI prior to my patches allowed dumb things like injecting both an
->    SEA and SError from the same ioctl. With your patch I think you could
->    still get the warning to fire with serror_pending && ext_dabt_pending
-> 
->  - KVM_GET_VCPU_EVENTS is broken for 'pending' SEAs, as we assume
->    they're committed in the vCPU state immediately when they're actually
->    deferred to the next KVM_RUN.
-> 
-> I thoroughly hate the fix I have but it should address both of these
-> issues. Although the pending PC adjustment flags seem more like a
-> liability than anything else if ioctls need to flush them before
-> returning to userspace. Might look at a larger cleanup down the road.
-> 
-> Thanks,
-> Oliver
-> 
-> From 149262689dfe881542f5c5b60f9ee308a00f0596 Mon Sep 17 00:00:00 2001
-> From: Oliver Upton <oliver.upton@linux.dev>
-> Date: Mon, 14 Jul 2025 23:25:07 -0700
-> Subject: [PATCH] KVM: arm64: Commit exceptions from KVM_SET_VCPU_EVENTS
->  immediately
-> 
-> syzkaller has found that it can trip a warning in KVM's exception
-> emulation infrastructure by repeatedly injecting exceptions into the
-> guest.
-> 
-> While it's unlikely that a reasonable VMM will do this, further
-> investigation of the issue reveals that KVM can potentially discard the
-> "pending" SEA state. While the handling of KVM_GET_VCPU_EVENTS presumes
-> that userspace-injected SEAs are realized immediately, in reality the
-> emulated exception entry is deferred until the next call to KVM_RUN.
-> 
-> Hack-a-fix the immediate issues by committing the pending exceptions to
-> the vCPU's architectural state immediately in KVM_SET_VCPU_EVENTS. This
-> is no different to the way KVM-injected exceptions are handled in
-> KVM_RUN where we potentially call __kvm_adjust_pc() before returning to
-> userspace.
-> 
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> ---
->  arch/arm64/kvm/guest.c | 28 +++++++++++++++++++++++++++-
->  1 file changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index e2702718d56d..16ba5e9ac86c 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -834,6 +834,19 @@ int __kvm_arm_vcpu_get_events(struct kvm_vcpu *vcpu,
->  	return 0;
->  }
->  
-> +static void commit_pending_events(struct kvm_vcpu *vcpu)
-> +{
-> +	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
-> +		return;
-> +
-> +	/*
-> +	 * Reset the MMIO emulation state to avoid stepping PC after emulating
-> +	 * the exception entry.
-> +	 */
-> +	vcpu->mmio_needed = false;
-> +	kvm_call_hyp(__kvm_adjust_pc, vcpu);
-> +}
-> +
->  int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
->  			      struct kvm_vcpu_events *events)
->  {
-> @@ -843,8 +856,15 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
->  	u64 esr = events->exception.serror_esr;
->  	int ret = 0;
->  
-> -	if (ext_dabt_pending)
-> +	/*
-> +	 * Immediately commit the pending SEA to the vCPU's architectural
-> +	 * state which is necessary since we do not return a pending SEA
-> +	 * to userspace via KVM_GET_VCPU_EVENTS.
-> +	 */
-> +	if (ext_dabt_pending) {
->  		ret = kvm_inject_sea_dabt(vcpu, kvm_vcpu_get_hfar(vcpu));
-> +		commit_pending_events(vcpu);
-> +	}
->  
->  	if (ret < 0)
->  		return ret;
-> @@ -863,6 +883,12 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
->  	else
->  		ret = kvm_inject_serror(vcpu);
->  
-> +	/*
-> +	 * We could've decided that the SError is due for immediate software
-> +	 * injection; commit the exception in case userspace decides it wants
-> +	 * to inject more exceptions for some strange reason.
-> +	 */
-> +	commit_pending_events(vcpu);
->  	return (ret < 0) ? ret : 0;
->  }
+This patchset fixes the pmu test errors on Atom server like Sierra
+Forest (SRF) and Clearwater Forest (CWF).
 
-Yup, this seems looks reasonable. I would have liked the commit helper
-to be used just before vcpu_put(), but obviously, that's not the right
-thing to do because of the mmio_needed field.
+On Intel Atom platforms, the PMU events "Instruction Retired" or
+"Branch Instruction Retired" may be overcounted for some certain
+instructions, like FAR CALL/JMP, RETF, IRET, VMENTRY/VMEXIT/VMPTRLD
+and complex SGX/SMX/CSTATE instructions/flows[1].
 
-Reviewed-by: Marc Zyngier <maz@kernel.org>
+In details, for the Atom platforms before Sierra Forest (including
+Sierra Forest), Both 2 events "Instruction Retired" and
+"Branch Instruction Retired" would be overcounted on these certain
+instructions, but for Clearwater Forest only "Instruction Retired" event
+is overcounted on these instructions.
 
-	M.
+As the overcount issue, pmu test would fail to validate the precise
+count for these 2 events on SRF and CWF. Patches 1-3/5 detects if the
+platform has this overcount issue, if so relax the precise count
+validation for these 2 events.
 
+Besides it looks more LLC references are needed on SRF/CWF, so adjust
+the "LLC references" event count range.
+
+Tests:
+  * pmu test passes on Intel GNR/SRF/CWF platforms.
+
+Ref:
+  [1]https://edc.intel.com/content/www/us/en/design/products-and-solutions/processors-and-chipsets/sierra-forest/xeon-6700-series-processor-with-e-cores-specification-update/errata-details
+
+dongsheng (5):
+  x86/pmu: Add helper to detect Intel overcount issues
+  x86/pmu: Relax precise count validation for Intel overcounted
+    platforms
+  x86/pmu: Fix incorrect masking of fixed counters
+  x86/pmu: Handle instruction overcount issue in overflow test
+  x86/pmu: Expand "llc references" upper limit for broader compatibility
+
+ lib/x86/processor.h | 17 +++++++++
+ x86/pmu.c           | 93 +++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 98 insertions(+), 12 deletions(-)
+
+
+base-commit: 525bdb5d65d51a367341f471eb1bcd505d73c51f
 -- 
-Without deviation from the norm, progress is not possible.
+2.43.0
+
