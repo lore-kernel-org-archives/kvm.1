@@ -1,115 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17759BE4A;
-	Mon, 14 Jul 2025 03:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033491F130A
+	for <kvm@vger.kernel.org>; Mon, 14 Jul 2025 03:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752463214; cv=none; b=T+5TakWEtYDgO5pcUBNh8XstbGQyEPvkL9IJKmo0ToHn1l5HDcE4QC1wf68h8efm1m6b4DZkgfQvXMEcmApjtfSFivWlwOM5eWJ1lt18UndlonvLgJn12se3IVWQsxJU1KaPGrjl4ZbEgCrsW7RmQ9tyiTvPbZrV1ab3vHZOuFY=
+	t=1752464233; cv=none; b=dqwR0RXqHv7i0U1uHz1qGXBH+6Q+uqDsifWuQuA/lTJTw0ptZ6OGJh76/4Xw5ZUE7gPDd7S/SWFCMxgw8jd+gakZV6HIcBe900UOwjzOPXI91/cuOhKL6GKoGRIryx1aJ5ygCWyYsLHKtNqh9ZW0heESESOibdax8P8CSBKIDFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752463214; c=relaxed/simple;
-	bh=tcn1GO9tcnkz5xuh+C1NWSfQ89jGjB/xyI/3lDc+SsA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YAvGbpfaF01WKdTHI5GBwOjKgZ49IZIU2OL1aKtPF0Zk90J1LkQWcyqVP861aPqewBfS5P0ofkM+TxKe1n2CeirIBK6AWnEbosO1Eu0cyCDli723RctErUpCEt01O8klsU0Bjkrxa6YALMgUdrpLw1ANtAuyiYSJJ9BxRgQJ+3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U5gw4PFN; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752464233; c=relaxed/simple;
+	bh=OfpS65Wq2l4GZk7q+sltE7YIrOp6kC70YtIkuTw8Aj4=;
+	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=PEbENxn2YVZ9mbnaKXR+CXFXtZ0bVij2/IjXJJgi7HxOSTTXAXHIvm1bCCGetPfldZ3XEOAck4HqNCSlQ5ZD56pu+mhJzTZcwVS63X0OIrofCHGBkW1mHisJHrwgQFEqoERguMzBRIqQuowr/ySh6/YyDsuhQcxlSQTXZOjUHZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q9tB4nOY; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U5gw4PFN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752463212; x=1783999212;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tcn1GO9tcnkz5xuh+C1NWSfQ89jGjB/xyI/3lDc+SsA=;
-  b=U5gw4PFNIfbBA2WusrE8sFlDGJGzKhPgl6pbKit8u1AAlZnXAKYzaNk5
-   YsadZFlkLqW+8eJMSZDXH7InPWk9DnfeSHzbmz15kVXEhilIPBj7eu3de
-   X/nG+EBvFUpYAVz2KbiSg3NUO0TB0kkslsgZ9weGpjAuSrKHlgBx+2iNF
-   Jbnoiykk3AX8ciU9EgYvA7+ffZ5vQ1OTeiAeXnWqCfmTjj/fSixJP6qee
-   UW6e6EaKr+5prs8YR1Ns29xh2O55KLCQjk4gw3A1kpd5zFmREMqE6KtZs
-   //46xXrd0ZOe3E8ZPkVYvZOnFv3kFGKSp07D1jFUI1hlzU5mf2FFsvSJA
-   w==;
-X-CSE-ConnectionGUID: jgzObkzbQwWwqz7Y28H6og==
-X-CSE-MsgGUID: q6VNLVDSTQede8VWszpVHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54618422"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
-   d="scan'208";a="54618422"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 20:20:12 -0700
-X-CSE-ConnectionGUID: 9VMJp6EYRK6Ki/tWNX+Stg==
-X-CSE-MsgGUID: p4PkuAAfQm2kCmoCIpy2Cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
-   d="scan'208";a="157312424"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 20:20:08 -0700
-Message-ID: <3ef581f1-1ff1-4b99-b216-b316f6415318@intel.com>
-Date: Mon, 14 Jul 2025 11:20:05 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q9tB4nOY"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-70e7f66cd58so56125567b3.1
+        for <kvm@vger.kernel.org>; Sun, 13 Jul 2025 20:37:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752464231; x=1753069031; darn=vger.kernel.org;
+        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=su7BCsoBhxlfoX9vtVyWNsaDnFW5ssEpsTKkRCgbFY4=;
+        b=Q9tB4nOYAW8TgKr3ktqgqNLOt3pEtK1Ynq2Qqmj8lzM1UO+ivZZNWRZOQJJbDOV6Ni
+         QvmL/rDUfYwklEAqHp1NfBCUPA3r+9JEcTS8oaeVEJ6omRq0+tEaVREENK92EAP158z5
+         ZQgk6kK2DO2ggVqn5/BwZfQtkYuxmO+5OYwX3Kuqa9naUI+7WCkBkcwSdKxKVDmY+SGp
+         Vi6TLVmL1TGtFoxKPINCofCglDNZFpGYB1YAQRrOQAMihVZ0DbJlPPKoAzSDs06vPQ55
+         JFjd8Xlg3wyYXPTCS34D42Xr28BPailkq7YUvcgdZAmT22uowMzH7kUzlN+D0gWXm8iD
+         e6Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752464231; x=1753069031;
+        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=su7BCsoBhxlfoX9vtVyWNsaDnFW5ssEpsTKkRCgbFY4=;
+        b=PD3KLnotXPIpeFOM0vtmGBE5MJR4Qq70SNL0m1JnMEQP5X91lDqkUI3VcfFtom3M+N
+         UK6OOnox4FTeysbkTFwXup1x2CPYzIA3uC+CBoEQ/O0wYumBJT8sDTzHCajfUuvCoyyZ
+         vlu7S+pdwwPvKl209U8tokBuRhGq8bhcbW1N7wBm9T6UAxP1u0xYuF1yEik6w43LgpHn
+         YESwAf4JZUQGl//Aur1Apsynuz57HPSyFp51n3o/z7svu6MrSRXSFUsHvTA8zF3+aG4C
+         HJ38brvEQNjWlsqdQm455As2I+rbV71Eldiji+hN/Km+vWnVMfXnjSzGDbREIC3uHQbZ
+         3vlw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSvrfwgfbkSbGHuxoCPGqw4mervHq0onlJtMPjlpGiFrSwwVSeVXzX94HiEM7okdX8omw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhYj9jzrBrvCojDcRYeNaplPZgz9P4vyToE+eegJYWwZhjy77w
+	AZAvsfRnZIvT60CytkEj2wRvFmqrQQlN6qSpVcVcEz/0jueAGNlPt6zYVwVOk9N7Owwm7OKatxC
+	rFQIOla3/klc9ww==
+X-Google-Smtp-Source: AGHT+IGnQksW0zPWdjhkjwOREfIiyIqVZ2bVZfTEIzZnRt/TAh/MLlgY8SmTZvmAkNa4/iIaySpxP5ExwXSsmw==
+X-Received: from suleiman1.tok.corp.google.com ([2401:fa00:8f:203:4f90:1ee3:198b:1fe4])
+ (user=suleiman job=sendgmr) by 2002:a05:690c:8682:20b0:712:c55c:4e6e with
+ SMTP id 00721157ae682-717d5925b6bmr20447b3.0.1752464230093; Sun, 13 Jul 2025
+ 20:37:10 -0700 (PDT)
+Date: Mon, 14 Jul 2025 12:36:46 +0900
+Message-Id: <20250714033649.4024311-1-suleiman@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 0/1] KVM: TDX: Decrease TDX VM shutdown time
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "seanjc@google.com" <seanjc@google.com>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Hunter, Adrian" <adrian.hunter@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>
-References: <20250611095158.19398-1-adrian.hunter@intel.com>
- <175088949072.720373.4112758062004721516.b4-ty@google.com>
- <aF1uNonhK1rQ8ViZ@google.com>
- <7103b312-b02d-440e-9fa6-ba219a510c2d@intel.com>
- <aHEMBuVieGioMVaT@google.com>
- <3989f123-6888-459b-bb65-4571f5cad8ce@intel.com>
- <aHEdg0jQp7xkOJp5@google.com>
- <b5df4f84b473524fc3abc33f9c263372d0424372.camel@intel.com>
- <aHGYvrdX4biqKYih@google.com>
- <a29d4a7f319f95a45f775270c75ccf136645fad4.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <a29d4a7f319f95a45f775270c75ccf136645fad4.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Subject: [PATCH v7 0/3] KVM: x86: Include host suspended time in steal time
+From: Suleiman Souhlal <suleiman@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chao Gao <chao.gao@intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	John Stultz <jstultz@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ssouhlal@freebsd.org, Suleiman Souhlal <suleiman@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/12/2025 7:17 AM, Edgecombe, Rick P wrote:
-> On Fri, 2025-07-11 at 16:05 -0700, Sean Christopherson wrote:
->>> Zero the reserved area in struct kvm_tdx_capabilities so that fields added
->>> in
->>> the reserved area won't disturb any userspace that previously had garbage
->>> there.
->>
->> It's not only about disturbing userspace, it's also about actually being able
->> to repurpose the reserved fields in the future without needing *another* flag
->> to tell userspace that it's ok to read the previously-reserved fields.  I care
->> about this much more than I care about userspace using reserved fields as
->> scratch space.
-> 
-> If, before calling KVM_TDX_CAPABILITIES, userspace zeros the new field that it
-> knows about, but isn't sure if the kernel does, it's the same no?
-> 
-> Did you see that the way KVM_TDX_CAPABILITIES is implemented today is a little
-> weird? It actually copies the whole struct kvm_tdx_capabilities from userspace
-> and then sets some fields (not reserved) and then copies it back. So userspace
-> can zero any fields it wants to know about before calling KVM_TDX_CAPABILITIES.
-> Then it could know the same things as if the kernel zeroed it.
-> 
-> I was actually wondering if we want to change the kernel to zero reserved, if it
-> might make more sense to just copy caps->cpuid.nent field from userspace, and
-> then populate the whole thing starting from a zero'd buffer in the kernel.
+This series makes it so that the time that the host is suspended is
+included in guests' steal time.
 
-+1 to zero the whole buffer of *caps in the kernel.
+When the host resumes from a suspend, the guest thinks any task
+that was running during the suspend ran for a long time, even though
+the effective run time was much shorter, which can end up having
+negative effects with scheduling.
 
-current code seems to have issue on the 
-caps->kernel_tdvmcallinfo_1_r11/kernel_tdvmcallinfo_1_r12/user_tdvmcallinfo_1_r12, 
-as KVM cannot guarantee zero'ed value are returned to userspace.
+To mitigate this issue, include the time that the host was
+suspended in steal time, if the guest requests it, which lets the
+guest subtract the duration from the tasks' runtime. Add new ABI 
+to make this behavior opt-in per-guest.
+
+In addition, make the guest TSC behavior consistent whether the
+host TSC went backwards or not.
+
+v7:
+- Fix build.
+- Make advancing TSC dependent on X86_64.
+
+v6: https://lore.kernel.org/kvm/20250709070450.473297-1-suleiman@google.com/
+- Use true/false for bools.
+- Indentation.
+- Remove superfluous flag. 
+- Use atomic operations for accumulating suspend duration.
+- Reuse generic vcpu block/kick infrastructure instead of rolling our own.
+- Add ABI to make the behavior opt-in per-guest.
+- Add command line parameter to make guest use this.
+- Reword commit messages in imperative mood.
+
+v5: https://lore.kernel.org/kvm/20250325041350.1728373-1-suleiman@google.com/
+- Fix grammar mistakes in commit message.
+
+v4: https://lore.kernel.org/kvm/20250221053927.486476-1-suleiman@google.com/
+- Advance guest TSC on suspends where host TSC goes backwards.
+- Block vCPUs from running until resume notifier.
+- Move suspend duration accounting out of machine-independent kvm to
+  x86.
+- Merge code and documentation patches.
+- Reworded documentation.
+
+v3: https://lore.kernel.org/kvm/20250107042202.2554063-1-suleiman@google.com/
+- Use PM notifier instead of syscore ops (kvm_suspend()/kvm_resume()),
+  because the latter doesn't get called on shallow suspend.
+- Don't call function under UACCESS.
+- Whitespace.
+
+v2: https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
+- Accumulate suspend time at machine-independent kvm layer and track per-VCPU
+  instead of per-VM.
+- Document changes.
+
+v1: https://lore.kernel.org/kvm/20240710074410.770409-1-suleiman@google.com/
+
+Suleiman Souhlal (3):
+  KVM: x86: Advance guest TSC after deep suspend.
+  KVM: x86: Include host suspended duration in steal time
+  KVM: x86: Add "suspendsteal" cmdline to request host to add suspend
+    duration in steal time
+
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/virt/kvm/x86/cpuid.rst          |   4 +
+ Documentation/virt/kvm/x86/msr.rst            |  14 +++
+ arch/x86/include/asm/kvm_host.h               |   6 +
+ arch/x86/include/uapi/asm/kvm_para.h          |   2 +
+ arch/x86/kernel/kvm.c                         |  15 +++
+ arch/x86/kvm/cpuid.c                          |   4 +-
+ arch/x86/kvm/x86.c                            | 112 +++++++++++++++++-
+ 8 files changed, 156 insertions(+), 6 deletions(-)
+
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
