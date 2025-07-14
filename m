@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326EF247290;
-	Mon, 14 Jul 2025 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD022472B0;
+	Mon, 14 Jul 2025 12:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496004; cv=none; b=BCeZbiFEYR7MQgJUCmsKVxdq/J6xnQYp3cxFQ3Ltfy0rof15aXdy0Wqiq14dFJm+31/cfPs9heBS18r6KtLi1UcZ1Nm/owya6mFyQqlxlsv+TV3GnFY0AAoUMwLP04AwJsj925OK/gmVXxUVKAnzCfhfM6BXkcuVYv+O+EZ1vHM=
+	t=1752496004; cv=none; b=XDwnL153kTbH5J/5ae2zjDWEeIiVy+7EtOltIdOKWmMX+X7sWKpi38pxVTHqMC7LFfOW/53iK0wE3WSOmO7x46k1aKyl36/X6e4VAoPzH/uXg/gPxM5qMzedW4pGf68XjAV+xM/JLMV+niqWVdGeFogyair0yJW99kmNFeiSPb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752496004; c=relaxed/simple;
-	bh=XJ3TrLkRrj+mRM4a05rezAW0AfRDUsAnmqyYGIp/zo4=;
+	bh=/vMk69jugUdux6Iyc4dtdLKZPTxMcIyoAC9mmbKItVQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PRRrvdyBOVQK9SbAijzv8m8Rzrbe1/cMGWWJKBY9sBK0hBtWPzOT/aUb+Oz/cRYEh/DUeA00/nmse7zcvlHnD/HSrTE4utQshLK0CxGRfr8ZUuNUoHKhH7ajU2F+AzkAM+SzfbkIWFI6WWgxLZ1dlBP0MqWzNp3sPoBoE/DAtzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGf8nvMI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=gVmZXKE/MtmggHIlnvui07D7tqd3WUpVa0LuYjx/JaBjThphwb1iUkiZC0hlS9F+4QXQdD1pnviVkBbvA1GuKvv8dm1rwru2IcOydllUDQtX5LoxC3U4rxY7VDzEW4OQeVHyWi3vp3J8Os3rn32no6lb8qWVwFLxHWSxisd9LL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hT19ib0g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGf8nvMI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B829CC4CEF4;
-	Mon, 14 Jul 2025 12:26:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hT19ib0g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058B8C4CEF7;
+	Mon, 14 Jul 2025 12:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752496003;
-	bh=XJ3TrLkRrj+mRM4a05rezAW0AfRDUsAnmqyYGIp/zo4=;
+	s=k20201202; t=1752496004;
+	bh=/vMk69jugUdux6Iyc4dtdLKZPTxMcIyoAC9mmbKItVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGf8nvMIT1Y+ULXRFOQtOVCAZOMDYpRBBzwunh1brBIxQr77cyJ4kREqBg7KuS6wu
-	 539OvS8hhG5l95dNZrOSg3lOfITd/XOmbkcmwGe/Do30+83JWcYJsHdXe3luBFxoUm
-	 MarVEmngnl9xHyuaATBqH2wUvjq5nujk0rxU4QcpCD4CW4sBeKi9CQg0c79P5Mf03z
-	 puoFhUXFbnKn13feK61ypmFBF4pgTB+ST8X13RBA8t8P+DNZpbnJPNanSqhgpHOMun
-	 LSVnWKUlbL+2R8utE1JiQ1aGf8g52kjey7wWD9BcNrc7ZiRhAoPudw4z761nH8k+9L
-	 BEtTiFkx0GdZw==
+	b=hT19ib0gB87CTcvOTQ4J+9fgrUgk+vestQGaCqyq/xZZYAR4lwnYqUB2IFqSMv24L
+	 li3/fefTutw4HDawhjeZ8UOD6rIOHv/aHqpBwXjc00h8CoJGIFa1RlKf4zjT+pw4vr
+	 0drrzucrITtmTWMtIH2E6WWa7YKZRCGe26zMle03PpeBKtHQala/PBxU0FTH2Q/rKa
+	 RES+P1rBUubCQIv4Y3Dl63/d1jvNgMuvzgomg6IAxymdfRAAgyqlL0q40uVPxAipKj
+	 I7zqvYQPtGTDckqC21QoiC+WUkmVVEMf84+cOn2NYLe1KI326hiYGqEIw+MxY0MFbE
+	 s61ZSssSzqGcg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1ubIGX-00FW7V-Qh;
-	Mon, 14 Jul 2025 13:26:41 +0100
+	id 1ubIGY-00FW7V-6t;
+	Mon, 14 Jul 2025 13:26:42 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 01/11] KVM: arm64: Make RVBAR_EL2 accesses UNDEF
-Date: Mon, 14 Jul 2025 13:26:24 +0100
-Message-Id: <20250714122634.3334816-2-maz@kernel.org>
+Subject: [PATCH 03/11] KVM: arm64: Define constant value for ICC_SRE_EL2
+Date: Mon, 14 Jul 2025 13:26:26 +0100
+Message-Id: <20250714122634.3334816-4-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250714122634.3334816-1-maz@kernel.org>
 References: <20250714122634.3334816-1-maz@kernel.org>
@@ -60,41 +60,43 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-We always expose a virtual CPU that has EL3 when NV is enabled,
-irrespective of EL3 being actually implemented in HW.
-
-Therefore, as per the architecture, RVBAR_EL2 must UNDEF, since
-EL2 is not the highest implemented exception level. This is
-consistent with RMR_EL2 also triggering an UNDEF.
-
-Adjust the handling of RVBAR_EL2 accordingly.
+Move the bag of bits defining the value of ICC_SRE_EL2 to a common
+spot so that it can be reused by the save/restore code.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/kvm/sys_regs.c  | 3 +--
+ arch/arm64/kvm/vgic/vgic.h | 3 +++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 76c2f0da821f8..3f226cd5b502e 100644
+index dceb4f8f242a7..6981c1b34c2c4 100644
 --- a/arch/arm64/kvm/sys_regs.c
 +++ b/arch/arm64/kvm/sys_regs.c
-@@ -108,7 +108,6 @@ static bool get_el2_to_el1_mapping(unsigned int reg,
- 		PURE_EL2_SYSREG(  HACR_EL2	);
- 		PURE_EL2_SYSREG(  VTTBR_EL2	);
- 		PURE_EL2_SYSREG(  VTCR_EL2	);
--		PURE_EL2_SYSREG(  RVBAR_EL2	);
- 		PURE_EL2_SYSREG(  TPIDR_EL2	);
- 		PURE_EL2_SYSREG(  HPFAR_EL2	);
- 		PURE_EL2_SYSREG(  HCRX_EL2	);
-@@ -3370,7 +3369,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	{ SYS_DESC(SYS_MPAMVPM7_EL2), undef_access },
+@@ -532,8 +532,7 @@ static bool access_gic_sre(struct kvm_vcpu *vcpu,
+ 		return ignore_write(vcpu, p);
  
- 	EL2_REG(VBAR_EL2, access_rw, reset_val, 0),
--	EL2_REG(RVBAR_EL2, access_rw, reset_val, 0),
-+	{ SYS_DESC(SYS_RVBAR_EL2), undef_access },
- 	{ SYS_DESC(SYS_RMR_EL2), undef_access },
+ 	if (p->Op1 == 4) {	/* ICC_SRE_EL2 */
+-		p->regval = (ICC_SRE_EL2_ENABLE | ICC_SRE_EL2_SRE |
+-			     ICC_SRE_EL1_DIB | ICC_SRE_EL1_DFB);
++		p->regval = KVM_ICC_SRE_EL2;
+ 	} else {		/* ICC_SRE_EL1 */
+ 		p->regval = vcpu->arch.vgic_cpu.vgic_v3.vgic_sre;
+ 	}
+diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+index 4349084cb9a6c..af4bf80b785c3 100644
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -64,6 +64,9 @@
+ 				      KVM_REG_ARM_VGIC_SYSREG_CRM_MASK | \
+ 				      KVM_REG_ARM_VGIC_SYSREG_OP2_MASK)
  
- 	EL2_REG_VNCR(ICH_AP0R0_EL2, reset_val, 0),
++#define KVM_ICC_SRE_EL2		(ICC_SRE_EL2_ENABLE | ICC_SRE_EL2_SRE |	\
++				 ICC_SRE_EL1_DIB | ICC_SRE_EL1_DFB)
++
+ /*
+  * As per Documentation/virt/kvm/devices/arm-vgic-its.rst,
+  * below macros are defined for ITS table entry encoding.
 -- 
 2.39.2
 
