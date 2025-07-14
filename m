@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14513248F4C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77C524A06A;
 	Mon, 14 Jul 2025 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496005; cv=none; b=r1Dg/8tYRgwKmoBy351g9oEb+PViPRsGh9nk8S6rYuQBAWT/J20E7catgK7OaNyhyMm5T0dsvOppbj5LusfMyR5rGeaRxRbxe3oAeaCRSbcqg2xkvoRlrOaKQKFTsJqXyAVMb58g3O3NaoGO1C7EYzYqVGMrotZpyHkFELnTb34=
+	t=1752496005; cv=none; b=ZrZugnvuIaE6bxEGc9Zx1103GSl0AONvBGyLx7tqU+D2SYjeVyoPJMpgNVdrhFTWfU/zzHibJ5hmQMME4W4qpqGk/NIvat1kOLTDfn052byGW4M22JDhL1IZfBfr69bFPSIx8D1txXAKvZbkZbMqvpqH5b3kC5rVSVmcB/nGRdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752496005; c=relaxed/simple;
-	bh=wtfqoXcRMslLsoh24WJYRV7azLDNEc1yXs96hSCaaMo=;
+	bh=ohZn44PSpHhjy22MVVFNDs8gJ+JZo37seGeIAxH6Suw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fe77KOa2Z32IdxgUWok/f15VUTu4DtK5YXcE9Ypr0D2vLVgt9eIZyq2EAquCBJ2WPO/WRy7exVR9jvAYGo0wl32Zw78dXfzyUZYpgmC2kNdk9mThsj1i2ucnT5O13HlR5yd1M9eodgr7EWijy0+kA4D7jnfXNm59ghtkZ3RabFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKTTrUJj; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ieEK6iAopSXB+Stg6nNKtUK3JkpxCAjNHxZWSSkd90/7M9eAhiXpHlOao5NZbhl6/EgCZDZFSTF5Bk7lHuATMtYnWr31B6pU8qdAbL4tUdD73qN8LkX2k2K++p1s1gAup1q+3faZuenC65JN90+YhY/ld0yWoA6XfeAlNTCKf+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1kyruLS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKTTrUJj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A49C4CEF6;
-	Mon, 14 Jul 2025 12:26:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1kyruLS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DA8C4CEFA;
+	Mon, 14 Jul 2025 12:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752496005;
-	bh=wtfqoXcRMslLsoh24WJYRV7azLDNEc1yXs96hSCaaMo=;
+	bh=ohZn44PSpHhjy22MVVFNDs8gJ+JZo37seGeIAxH6Suw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKTTrUJjleWuCKQxhY82WEA2H3wk5XYt0Tn5lCHiNnl6tNaqGsbKYgthYg73lnn4c
-	 JjJ5EiNpgpAg7fgQpaIUsxVdhyU/4ldbaPdPPcaLor54c30YWPwAHivlZlskopTBJn
-	 TcfNE7IwSrBTT9Ag52uX953KiRKekS3eaGnGQN7FoCsc4yJs/lxQPBU4eTa9041k69
-	 /T9Yir8HncyhvmX/ZSEo9jPqrMDyKB6VNnV+qVIN8AqRnuXNsi0oiNGYghdA+Xwxds
-	 Bfj7Y2F6ryqEr1lkrdoDjwrUF+R+WZ+rrPOX+T/0mx/VeqWHegQ8pMy0pwMsa1IYO9
-	 LPVg5TB0WJ1WA==
+	b=Y1kyruLSLvQJSc9QcVCC/2AJB4FNzqcthxJfyjM9SeMVWkFZqGaRzKbMwvXFRn1+V
+	 g/TGBEbmHVTVvlw9h7wXomNQoqxEOI7HlxSSK3yM4mNDWzTHMI0rJeK2C8e3ZXeKk3
+	 K5QFQiFPK4UYarwrY5DA2vnHYHNFICUgMXbEpW/ELjWtlrNQ2o1UXwP5UuWjhwHL63
+	 QszGpJ7gG4mt+jGIeelstRTQFI/BjSp0ZR3+bq89FMXQtyE/87q/+meH7TblzSn8bZ
+	 5U+dRXtIkYraZ9VEz4FRlhZT8Xdpa9QXs7rm7bbsyOItrUZGdIO3gjfZZTgvyUXF/O
+	 mw9lCNq1CHXng==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1ubIGZ-00FW7V-6A;
+	id 1ubIGZ-00FW7V-QV;
 	Mon, 14 Jul 2025 13:26:43 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 08/11] KVM: arm64: Advertise FGT2 registers to userspace
-Date: Mon, 14 Jul 2025 13:26:31 +0100
-Message-Id: <20250714122634.3334816-9-maz@kernel.org>
+Subject: [PATCH 11/11] KVM: arm64: Document registers exposed via KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
+Date: Mon, 14 Jul 2025 13:26:34 +0100
+Message-Id: <20250714122634.3334816-12-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250714122634.3334816-1-maz@kernel.org>
 References: <20250714122634.3334816-1-maz@kernel.org>
@@ -60,50 +60,96 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-While a guest is able to use the FEAT_FGT2 registers, we're missing
-them being exposed to userspace. Add them to the (very long) list.
+We never documented which GICv3 registers are available for save/restore
+via the KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS interface.
+
+Let's take the opportunity of adding the EL2 registers to document the whole
+thing in one go.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../virt/kvm/devices/arm-vgic-v3.rst          | 63 +++++++++++++++++--
+ 1 file changed, 58 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index b441049368c7e..554c7145ec1cd 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2592,6 +2592,16 @@ static unsigned int tcr2_el2_visibility(const struct kvm_vcpu *vcpu,
- 	return __el2_visibility(vcpu, rd, tcr2_visibility);
- }
+diff --git a/Documentation/virt/kvm/devices/arm-vgic-v3.rst b/Documentation/virt/kvm/devices/arm-vgic-v3.rst
+index e860498b1e359..66794e1c858e8 100644
+--- a/Documentation/virt/kvm/devices/arm-vgic-v3.rst
++++ b/Documentation/virt/kvm/devices/arm-vgic-v3.rst
+@@ -202,16 +202,69 @@ Groups:
+     KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS accesses the CPU interface registers for the
+     CPU specified by the mpidr field.
  
-+static unsigned int fgt2_visibility(const struct kvm_vcpu *vcpu,
-+				    const struct sys_reg_desc *rd)
-+{
-+	if (el2_visibility(vcpu, rd) == 0 &&
-+	    kvm_has_feat(vcpu->kvm, ID_AA64MMFR0_EL1, FGT, FGT2))
-+		return 0;
+-    CPU interface registers access is not implemented for AArch32 mode.
+-    Error -ENXIO is returned when accessed in AArch32 mode.
++    The available registers are:
 +
-+	return REG_HIDDEN;
-+}
++    ===============  ====================================================
++    ICC_PMR_EL1
++    ICC_BPR0_EL1
++    ICC_AP0R0_EL1
++    ICC_AP0R1_EL1    when the host implements at least 6 bits of priority
++    ICC_AP0R2_EL1    when the host implements 7 bits of priority
++    ICC_AP0R3_EL1    when the host implements 7 bits of priority
++    ICC_AP1R0_EL1
++    ICC_AP1R1_EL1    when the host implements at least 6 bits of priority
++    ICC_AP1R2_EL1    when the host implements 7 bits of priority
++    ICC_AP1R3_EL1    when the host implements 7 bits of priority
++    ICC_BPR1_EL1
++    ICC_CTLR_EL1
++    ICC_SRE_EL1
++    ICC_IGRPEN0_EL1
++    ICC_IGRPEN1_EL1
++    ===============  ====================================================
++    
++    When EL2 is available for the guest, these registers are also available:
 +
- static unsigned int fgt_visibility(const struct kvm_vcpu *vcpu,
- 				   const struct sys_reg_desc *rd)
- {
-@@ -3341,9 +3351,14 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 			 vncr_el2_visibility),
++    =============  ====================================================
++    ICH_AP0R0_EL2
++    ICH_AP0R1_EL2  when the host implements at least 6 bits of priority
++    ICH_AP0R2_EL2  when the host implements 7 bits of priority
++    ICH_AP0R3_EL2  when the host implements 7 bits of priority
++    ICH_AP1R0_EL2
++    ICH_AP1R1_EL2  when the host implements at least 6 bits of priority
++    ICH_AP1R2_EL2  when the host implements 7 bits of priority
++    ICH_AP1R3_EL2  when the host implements 7 bits of priority
++    ICH_HCR_EL2
++    ICC_SRE_EL2
++    ICH_VTR_EL2
++    ICH_VMCR_EL2
++    ICH_LR0_EL2
++    ICH_LR1_EL2
++    ICH_LR2_EL2
++    ICH_LR3_EL2
++    ICH_LR4_EL2
++    ICH_LR5_EL2
++    ICH_LR6_EL2
++    ICH_LR7_EL2
++    ICH_LR8_EL2
++    ICH_LR9_EL2
++    ICH_LR10_EL2
++    ICH_LR11_EL2
++    ICH_LR12_EL2
++    ICH_LR13_EL2
++    ICH_LR14_EL2
++    ICH_LR15_EL2
++    =============  ====================================================
++
++    CPU interface registers are only described using the AArch64
++    encoding.
  
- 	{ SYS_DESC(SYS_DACR32_EL2), undef_access, reset_unknown, DACR32_EL2 },
-+	EL2_REG_VNCR_FILT(HDFGRTR2_EL2, fgt2_visibility),
-+	EL2_REG_VNCR_FILT(HDFGWTR2_EL2, fgt2_visibility),
-+	EL2_REG_VNCR_FILT(HFGRTR2_EL2, fgt2_visibility),
-+	EL2_REG_VNCR_FILT(HFGWTR2_EL2, fgt2_visibility),
- 	EL2_REG_VNCR_FILT(HDFGRTR_EL2, fgt_visibility),
- 	EL2_REG_VNCR_FILT(HDFGWTR_EL2, fgt_visibility),
- 	EL2_REG_VNCR_FILT(HAFGRTR_EL2, fgt_visibility),
-+	EL2_REG_VNCR_FILT(HFGITR2_EL2, fgt2_visibility),
- 	EL2_REG_REDIR(SPSR_EL2, reset_val, 0),
- 	EL2_REG_REDIR(ELR_EL2, reset_val, 0),
- 	{ SYS_DESC(SYS_SP_EL1), access_sp_el1},
+   Errors:
+ 
+-    =======  =====================================================
+-    -ENXIO   Getting or setting this register is not yet supported
++    =======  =================================================
++    -ENXIO   Getting or setting this register is not supported
+     -EBUSY   VCPU is running
+     -EINVAL  Invalid mpidr or register value supplied
+-    =======  =====================================================
++    =======  =================================================
+ 
+ 
+   KVM_DEV_ARM_VGIC_GRP_NR_IRQS
 -- 
 2.39.2
 
