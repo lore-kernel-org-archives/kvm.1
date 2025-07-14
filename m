@@ -1,40 +1,40 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B813E1FDA94;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E853246332;
 	Mon, 14 Jul 2025 10:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752489907; cv=none; b=ekIyuIJK+CpSxuVJQL50Q6IiMcG9B5MgDObz0lRbCsgMY7Ejgwe2ljIgpVJop+jV0mMC24h80pJ8buNMGFbld6uvHAT8rMFWP2/NHK3D7YaAA/Z1FQ1Ewo3CnU7Jy/C5Np5+Rv9lO646Q1jdhznI9Mj64iyFHkPx2KwLA99sxHI=
+	t=1752489907; cv=none; b=WS5JCpt2IMaoex0ypeFfYO5WsiNK+ZYNc08XycW53TXxgWvXePoyxnSnzqyoNOsy9tBn+7Ab+46hNzjFck6Is3T+Oke6pbyKIOjjHjKPVLhXa/ufmPH5A0AFsyosuREJxazUUgPqRQ4/99yBzk5/GmWDVA6HI/NDx5HcjhuOQ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752489907; c=relaxed/simple;
-	bh=laH8zvY2NdqgddV1uxCUdzQgi9ZK8xvb1p3SXlHj50A=;
+	bh=Lm1PsQZFxdoWNTI1Q+RNhnY7JtPtzUkiyH/xNwDExCs=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=ii7Q7Q8aXUIOClMhppq/bJUX2hE45XM86TkXt8UXxteSdnlvwnF7+ur81HsH8aByvrPrhetl/b1+LPLmdTJzGIFIiPGJoQLxb4EDWZ/h5PX1AbpcjBpTVE9ubuxPjmNwNvxANw8qI/3kBlpWv26BesblrdRnPUbggbVMKhBU/Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=I3ByvgNl; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type; b=dU5twFUkBys3wfmb8cfN6Lu6Bb/t49QL/QoU8BK9kKoRaUV5IwkgzOelU7dHVz6q9oUtvE1CfJ4QNuthesIcUxzNp4/Nd4OGNUw5oM8DDGLJVuKVWrL2PI38mO2TzvTuIEGK4kB9YX0IRrRbeUknbS/fiepPe5DcnjyOZPBCaec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=SC/GCyQG; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="I3ByvgNl"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="SC/GCyQG"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=ewom6iS5EFylqeechOg2mSSAJjmRRMGPDBC4yQb3ICA=; b=I3ByvgNlQB8b9X1OcxuTh/ldip
-	iqAFgQ1nHpABs/r9QProbboIHdgRWlAmk7uEyA6ZaV465SWovxk+vJhs/+6ZykwDm3C3WL4rEdEdE
-	rXiR7exX0XoRUqL5WyRPS58q64mC37SssiuJ5gqYSur2ISIMDzo2hlYDVjc+pikxRpDJSUf3GX/Cs
-	KtdRB5uhH10lNtDc2Y3puNdkh1DI/9jPwIrwn10GevDi2WhMAjMQxzZlecpsvNNW/kIZ7kM2OPV39
-	G5UXw1uSS3s22EMpcPbe5L09ryZkBH5Jqhi6IB3i2vmqtgF1CeKIeah/apYAAue5aCII6wJJuS92i
-	UBl+PKCw==;
+	bh=jotUtNQIA7oK1p4O3nX4QCvhhLgXNFqkMI8Hz+9cSMI=; b=SC/GCyQG0qK7KE5IvGLrynl9+3
+	utORzdyH2kgzEngucxQgV/d99JsjzqxS4cYYtI++lcN4FjPwAVxBF8ukjS20zTIgA3K1I9EXVIO7e
+	03CtxqKK+mJktahq0cpVCcfWALBFzVtaGvokkjeHfgAoRQMgDeri3dQMsCsyhK8IwDbbOl69Ef/by
+	Gt21kvqNv32miMf2+0Wyl9N+OvQDtlbfrL3Hcqv+CwJQPxhBdBy3270pbWkbFVDvXJXUvILdSIk/A
+	5Lu/MXqPzp8fEHgW+/q7GgmfyJ/Li1nK2zRa7Im/41upaKNWhD+G4S1Rgn1I088zgGZoW07QL23+g
+	Ri84vr5g==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubGg1-00000009kcq-15Ba;
-	Mon, 14 Jul 2025 10:44:53 +0000
+	id 1ubGg0-00000009kch-29AW;
+	Mon, 14 Jul 2025 10:44:52 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id 2D485302DA9; Mon, 14 Jul 2025 12:44:51 +0200 (CEST)
-Message-ID: <20250714103441.381946911@infradead.org>
+	id E2076301142; Mon, 14 Jul 2025 12:44:50 +0200 (CEST)
+Message-ID: <20250714103440.251039692@infradead.org>
 User-Agent: quilt/0.68
-Date: Mon, 14 Jul 2025 12:20:26 +0200
+Date: Mon, 14 Jul 2025 12:20:17 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: x86@kernel.org
 Cc: kys@microsoft.com,
@@ -60,7 +60,7 @@ Cc: kys@microsoft.com,
  linux-efi@vger.kernel.org,
  samitolvanen@google.com,
  ojeda@kernel.org
-Subject: [PATCH v3 15/16] x86/fred: KVM: VMX: Always use FRED for IRQs when CONFIG_X86_FRED=y
+Subject: [PATCH v3 06/16] x86/kvm/emulate: Introduce EM_ASM_2CL
 References: <20250714102011.758008629@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -70,62 +70,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Sean Christopherson <seanjc@google.com>
+Replace the FASTOP2CL instructions.
 
-Now that FRED provides C-code entry points for handling IRQs, use the
-FRED infrastructure for forwarding IRQs even if FRED is fully
-disabled, e.g. isn't supported in hardware. Avoiding the non-FRED
-assembly trampolines into the IDT handlers for IRQs eliminates the
-associated non-CFI indirect call (KVM performs a CALL by doing a
-lookup on the IDT using the IRQ vector).
-
-Keep NMIs on the legacy IDT path, as the FRED NMI entry code relies on
-FRED's architectural behavior with respect to NMI blocking, i.e. doesn't
-jump through the myriad hoops needed to deal with IRET "unexpectedly"
-unmasking NMIs.  KVM's NMI path already makes a direct CALL to C-code,
-i.e. isn't problematic for CFI.  KVM does make a short detour through
-assembly code to build the stack frame, but the "FRED entry from KVM"
-path does the same.
-
-Force FRED for 64-bit kernels if KVM_INTEL is enabled, as the benefits of
-eliminating the IRQ trampoline usage far outwieghts the code overhead for
-FRED.
-
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kvm/Kconfig   |    1 +
- arch/x86/kvm/vmx/vmx.c |    8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c |   39 ++++++++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -97,6 +97,7 @@ config KVM_INTEL
- 	depends on KVM && IA32_FEAT_CTL
- 	select KVM_GENERIC_PRIVATE_MEM if INTEL_TDX_HOST
- 	select KVM_GENERIC_MEMORY_ATTRIBUTES if INTEL_TDX_HOST
-+	select X86_FRED if X86_64
- 	help
- 	  Provides support for KVM on processors equipped with Intel's VT
- 	  extensions, a.k.a. Virtual Machine Extensions (VMX).
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6989,8 +6989,14 @@ static void handle_external_interrupt_ir
- 	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
- 		return;
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -344,6 +344,15 @@ static int em_##op(struct x86_emulate_ct
+ 	ON64(case 8: __EM_ASM_2(op##q, rax, rdx); break;) \
+ 	EM_ASM_END
  
-+	/*
-+	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
-+	 * when it's available even if FRED isn't fully enabled, e.g. even if
-+	 * FRED isn't supported in hardware, in order to avoid the indirect
-+	 * CALL in the non-FRED path.
-+	 */
- 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
--	if (cpu_feature_enabled(X86_FEATURE_FRED))
-+	if (IS_ENABLED(CONFIG_X86_FRED))
- 		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
- 	else
- 		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
++/* 2-operand, using "a" (dst) and CL (src2) */
++#define EM_ASM_2CL(op) \
++	EM_ASM_START(op) \
++	case 1: __EM_ASM_2(op##b, al, cl); break; \
++	case 2: __EM_ASM_2(op##w, ax, cl); break; \
++	case 4: __EM_ASM_2(op##l, eax, cl); break; \
++	ON64(case 8: __EM_ASM_2(op##q, rax, cl); break;) \
++	EM_ASM_END
++
+ /*
+  * fastop functions have a special calling convention:
+  *
+@@ -1080,13 +1089,13 @@ EM_ASM_1(neg);
+ EM_ASM_1(inc);
+ EM_ASM_1(dec);
+ 
+-FASTOP2CL(rol);
+-FASTOP2CL(ror);
+-FASTOP2CL(rcl);
+-FASTOP2CL(rcr);
+-FASTOP2CL(shl);
+-FASTOP2CL(shr);
+-FASTOP2CL(sar);
++EM_ASM_2CL(rol);
++EM_ASM_2CL(ror);
++EM_ASM_2CL(rcl);
++EM_ASM_2CL(rcr);
++EM_ASM_2CL(shl);
++EM_ASM_2CL(shr);
++EM_ASM_2CL(sar);
+ 
+ EM_ASM_2W(bsf);
+ EM_ASM_2W(bsr);
+@@ -4079,14 +4088,14 @@ static const struct opcode group1A[] = {
+ };
+ 
+ static const struct opcode group2[] = {
+-	F(DstMem | ModRM, em_rol),
+-	F(DstMem | ModRM, em_ror),
+-	F(DstMem | ModRM, em_rcl),
+-	F(DstMem | ModRM, em_rcr),
+-	F(DstMem | ModRM, em_shl),
+-	F(DstMem | ModRM, em_shr),
+-	F(DstMem | ModRM, em_shl),
+-	F(DstMem | ModRM, em_sar),
++	I(DstMem | ModRM, em_rol),
++	I(DstMem | ModRM, em_ror),
++	I(DstMem | ModRM, em_rcl),
++	I(DstMem | ModRM, em_rcr),
++	I(DstMem | ModRM, em_shl),
++	I(DstMem | ModRM, em_shr),
++	I(DstMem | ModRM, em_shl),
++	I(DstMem | ModRM, em_sar),
+ };
+ 
+ static const struct opcode group3[] = {
 
 
