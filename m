@@ -1,163 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85212E630;
-	Mon, 14 Jul 2025 15:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C56246BB6
+	for <kvm@vger.kernel.org>; Mon, 14 Jul 2025 15:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752505603; cv=none; b=WIslCaqRiK94oX8t4vtwTlT5e0Zl0r4BQnkuTzivW26YdZ0QFJlXN1b08MxQx2bU1rRabweBtwS1ppT8tXUujNz79CnW851PWYnYAXstcJUW76u/DW9WnIpZzDrpKjHEGMYGiOr/+Awc2/R6ChE4KLSnM1VvpmXBd4ahyjobutA=
+	t=1752505982; cv=none; b=XCG5e/liEeUSYpGEfbRfn4xbgkI2zk8j7TzQ6MwfsSv3sCOcLt2YR7uZEigvupanK/VSGd4NKpz20uagX/zlmLTyzDFxXSYoSROGKkarKjEBbWxc/wpHCLEDDgWMNsnLeQknnIXtos5IrLA+XaaECnF7nxIwVICSRKNZLQFiii4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752505603; c=relaxed/simple;
-	bh=i4jwoQP0/RIhlR6TJLl5Ajz5CQOFMYIW0zuR6sjVikM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C4sO4noI/8Qx8po47heU39L42q2ZJa0IE3Knc2o3nxa/913dxHFeh6d8WPey0j6Hez+km/iSqzUVOuCTUYKp9Y2XbXXIn6wUcxWKsKKTwYciJwPGvOBEF9QiQBJPA0VYBYxhWQNpPKp8pkcol0aoVepBQt9nAeOYrC/wCWKlTSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DMoNOnfC; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752505982; c=relaxed/simple;
+	bh=wq3jkDXmL2kbDR8yLPZKxT4RkHzlMSQh4F6k/stG0gE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cUZenHhvDUpJP6FlmL+j5rGUkpBBy7vOEFGyQTDxxng6PsOREJA6hsfIGStqozqcACcqQaYjEOWPyA26IOE+c7i7yW8035jQ11SpUack/Jhvw26MohB67WenWNt8EpphAfoCY72pZ84x5Nwed7/b+IX3luDSsL/Wz+EspH8dBXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e1XPcjUy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DMoNOnfC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752505601; x=1784041601;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=i4jwoQP0/RIhlR6TJLl5Ajz5CQOFMYIW0zuR6sjVikM=;
-  b=DMoNOnfCf5KwUBU6u9T8W9eYLm++39Ks1W//b3iA33UoDINnp4ieOTnn
-   SBCjYbEPp+AZdki/wHrA9+tLbbC7bBnnUUjM+4Le8Y1l9jV/2fxt9HXWc
-   TeWVMTrXUP5pgXA2969iF2ENvXARmmhFBjZq9Kt7PcIHvArgcXfLnpo/N
-   7IUnzBUdreXwPvbh2UHgwluZsosgCymGSh2+xNwEIV4+fxV2H4HOP+H8e
-   wsFCNvC1VBKexAjHSbv+c9mcetdy+gjAGv9LNWrL9IdzuZQu2ikRV/ssW
-   IEPYM5cfzBlXhdBtMj6ZFtX1gCdR99HSOGxqNGqtjj7bVGyzsnSB1yagA
-   A==;
-X-CSE-ConnectionGUID: igbzh/BSSO+ZLHNRixbC+g==
-X-CSE-MsgGUID: 4IbZvekgSXyJwYJMXvVLqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72148166"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
-   d="scan'208";a="72148166"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 08:06:41 -0700
-X-CSE-ConnectionGUID: jD/NGjtxQfmbeS4epycsAA==
-X-CSE-MsgGUID: GWcYVzotSNOmpy4dCaijWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
-   d="scan'208";a="157049798"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 08:06:37 -0700
-Message-ID: <5a8a4804-ee15-42dd-90e0-360000ef661a@intel.com>
-Date: Mon, 14 Jul 2025 23:06:33 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e1XPcjUy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752505979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UAuWLDvGONYS4aGI3o9+xx7hOflsVGv3mSCNJ1rkux4=;
+	b=e1XPcjUycwHqcVBnMuTCDORZnjuUpcE24raCFN8dV9cDQfyaFobcxGNRYnenyw2QHF+0C+
+	nHnJhXWCmz53EpluEOMk7PDjvCSyi5sPF27fL+M1wdDHfk3U2RqBiyS0ambjDWhngb8ezj
+	DS2zBMUQ8qMw4rgfaitLhuATIQ2NBtk=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-boog__mpMcq9rkb9Pp3YTw-1; Mon, 14 Jul 2025 11:12:58 -0400
+X-MC-Unique: boog__mpMcq9rkb9Pp3YTw-1
+X-Mimecast-MFC-AGG-ID: boog__mpMcq9rkb9Pp3YTw_1752505977
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3df359a108bso7869275ab.3
+        for <kvm@vger.kernel.org>; Mon, 14 Jul 2025 08:12:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752505976; x=1753110776;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UAuWLDvGONYS4aGI3o9+xx7hOflsVGv3mSCNJ1rkux4=;
+        b=mx0LC6OTxaHQaPaCz/HT5S03MYTGGRUwnDgTIQBjwMm5zwEjmUV69/RShBKUOSGwPX
+         1UQ/qk/VLqjCBHyhW7OWtN2DJZmZK4dpGM1duHULnnfkCrqX1I9uAszAKg9yR9Stk6lO
+         IeKb97NLwNFqOQ+ECQQ9hhyPd1EdM9DMeKq7WyOglZrs4vN5aYDUe3lqvMVkQOTQaWuX
+         7a7cxxoTFA32XRkSvV32KtV9jmzAHGxArcBukQpw2eD7V47HWgFb9jk3gtetq2HvrA+6
+         q0avQG8mAKkhuk/aMA0zI7eG6hcaCsghhOp3i5vyr+Dhb3GigbwfaDQV04RfFPWfbQo3
+         t6sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZsE7wAW9Id2I+Ec4bPrzPaciUBdBgICrmi+dglHsOOEWmN7YiL9mQq+PU1oph4P1gWC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy76uca8XnFfVknkm+UFzYauq6pIfWycvVnPJvVYbuHrVpdNOoJ
+	3KIgbUEarabfOfNqpUG/XOPF1WpjnRyUns0WkAPWGOWwF6o+KVonXhDdJdt15noSTxVF5+h//Hu
+	o6vAoGNs7lXwC7mc4ydDxTXkarZ81La5gepCCvABMvIqNSNIxkKe7iUgVfP/5xg==
+X-Gm-Gg: ASbGncuWbukGIGAK6NrZVHTzPPj2zSHXp/1X3tcrNC/UtRdxEKASkTsKbFa7D/QVP1t
+	vir0OJswGjZOS8PUP9sZNKGq4HlSRwW84CXc3fKHCs3hduKTllAlvMZzRNjmnfKkjQY58ANneC8
+	VOpo8HOCQepWzAbuDqaEUxSmalSu7HCanWSnspmQADxXeluqdC+hswXa/ieBnGhhGC110RlDs48
+	wFnZDHqdWb7BbYkXLACC+ScBUoK49+YqSjt2tBWwrlE25eyOkLZGaBV0UogprLjswBGpPxb8AYg
+	zyb7136tINcrKQRbsK9HBMxVwiQSDz5s1eOh8PqcHWk=
+X-Received: by 2002:a05:6e02:3083:b0:3d4:6d6f:6e1f with SMTP id e9e14a558f8ab-3e2543f45a2mr42634965ab.6.1752505976225;
+        Mon, 14 Jul 2025 08:12:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQWWnsQP46KCBBDLLmrvxRjBMZE+wrW8uiPq3ltdhzNoM6uXIgiwf7w6/nI+O/Wf1S85BaBQ==
+X-Received: by 2002:a05:6e02:3083:b0:3d4:6d6f:6e1f with SMTP id e9e14a558f8ab-3e2543f45a2mr42634705ab.6.1752505975706;
+        Mon, 14 Jul 2025 08:12:55 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50556970df3sm2049358173.90.2025.07.14.08.12.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 08:12:54 -0700 (PDT)
+Date: Mon, 14 Jul 2025 09:12:52 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Brett
+ Creeley <brett.creeley@amd.com>, Giovanni Cabiddu
+ <giovanni.cabiddu@intel.com>, Kevin Tian <kevin.tian@intel.com>,
+ kvm@vger.kernel.org, Longfang Liu <liulongfang@huawei.com>,
+ qat-linux@intel.com, virtualization@lists.linux.dev, Xin Zeng
+ <xin.zeng@intel.com>, Yishai Hadas <yishaih@nvidia.com>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ patches@lists.linux.dev, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Terrence Xu
+ <terrence.xu@intel.com>, Yanting Jiang <yanting.jiang@intel.com>, Zhenzhong
+ Duan <zhenzhong.duan@intel.com>
+Subject: Re: [PATCH v2] vfio/pci: Do vf_token checks for
+ VFIO_DEVICE_BIND_IOMMUFD
+Message-ID: <20250714091252.118a4638.alex.williamson@redhat.com>
+In-Reply-To: <20250714142904.GA2059966@nvidia.com>
+References: <0-v2-470f044801ef+a887e-vfio_token_jgg@nvidia.com>
+	<a8484641-34d9-40bf-af8a-e472afdab0cc@intel.com>
+	<20250714142904.GA2059966@nvidia.com>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 0/1] KVM: TDX: Decrease TDX VM shutdown time
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Chao Gao <chao.gao@intel.com>, Kai Huang <kai.huang@intel.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Yan Y Zhao
- <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>
-References: <175088949072.720373.4112758062004721516.b4-ty@google.com>
- <aF1uNonhK1rQ8ViZ@google.com>
- <7103b312-b02d-440e-9fa6-ba219a510c2d@intel.com>
- <aHEMBuVieGioMVaT@google.com>
- <3989f123-6888-459b-bb65-4571f5cad8ce@intel.com>
- <aHEdg0jQp7xkOJp5@google.com>
- <b5df4f84b473524fc3abc33f9c263372d0424372.camel@intel.com>
- <aHGYvrdX4biqKYih@google.com>
- <a29d4a7f319f95a45f775270c75ccf136645fad4.camel@intel.com>
- <3ef581f1-1ff1-4b99-b216-b316f6415318@intel.com>
- <aHUMcdJ9Khh2Yeox@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aHUMcdJ9Khh2Yeox@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 7/14/2025 9:56 PM, Sean Christopherson wrote:
-> On Mon, Jul 14, 2025, Xiaoyao Li wrote:
->> On 7/12/2025 7:17 AM, Edgecombe, Rick P wrote:
->>> On Fri, 2025-07-11 at 16:05 -0700, Sean Christopherson wrote:
->>>>> Zero the reserved area in struct kvm_tdx_capabilities so that fields added
->>>>> in
->>>>> the reserved area won't disturb any userspace that previously had garbage
->>>>> there.
->>>>
->>>> It's not only about disturbing userspace, it's also about actually being able
->>>> to repurpose the reserved fields in the future without needing *another* flag
->>>> to tell userspace that it's ok to read the previously-reserved fields.  I care
->>>> about this much more than I care about userspace using reserved fields as
->>>> scratch space.
->>>
->>> If, before calling KVM_TDX_CAPABILITIES, userspace zeros the new field that it
->>> knows about, but isn't sure if the kernel does, it's the same no?
-> 
-> Heh, yeah, this crossed my mind about 5 minutes after I logged off :-)
-> 
->>> Did you see that the way KVM_TDX_CAPABILITIES is implemented today is a little
->>> weird? It actually copies the whole struct kvm_tdx_capabilities from userspace
->>> and then sets some fields (not reserved) and then copies it back. So userspace
->>> can zero any fields it wants to know about before calling KVM_TDX_CAPABILITIES.
->>> Then it could know the same things as if the kernel zeroed it.
->>>
->>> I was actually wondering if we want to change the kernel to zero reserved, if it
->>> might make more sense to just copy caps->cpuid.nent field from userspace, and
->>> then populate the whole thing starting from a zero'd buffer in the kernel.
->>
->> +1 to zero the whole buffer of *caps in the kernel.
-> 
-> Ya, I almost suggested that, but assumed there was a reason for copying the entire
-> structure.
-> 
->> current code seems to have issue on the caps->kernel_tdvmcallinfo_1_r11/kernel_tdvmcallinfo_1_r12/user_tdvmcallinfo_1_r12,
->> as KVM cannot guarantee zero'ed value are returned to userspace.
-> 
-> This?  (untested)
+On Mon, 14 Jul 2025 11:29:04 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Tested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> On Mon, Jul 14, 2025 at 09:12:30PM +0800, Yi Liu wrote:
+> > On 2025/7/10 23:30, Jason Gunthorpe wrote:  
+> > > This was missed during the initial implementation. The VFIO PCI encodes
+> > > the vf_token inside the device name when opening the device from the group
+> > > FD, something like:
+> > > 
+> > >    "0000:04:10.0 vf_token=bd8d9d2b-5a5f-4f5a-a211-f591514ba1f3"
+> > > 
+> > > This is used to control access to a VF unless there is co-ordination with
+> > > the owner of the PF.
+> > > 
+> > > Since we no longer have a device name, pass the token directly through
+> > > VFIO_DEVICE_BIND_IOMMUFD using an optional field indicated by
+> > > VFIO_DEVICE_BIND_TOKEN.  
+> > 
+> > two nits though I think the code is clear enough :)
+> > 
+> > s/Since we no longer have a device name/Since we no longer have a device
+> > name in the device cdev path/
+> > 
+> > s/VFIO_DEVICE_BIND_TOKEN/VFIO_DEVICE_BIND_FLAG_TOKEN/  
+> 
+> Alex, can you fix this when applying the v3 version?
 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index f4d4fd5cc6e8..42cb328d8a7d 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2270,25 +2270,26 @@ static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
->          const struct tdx_sys_info_td_conf *td_conf = &tdx_sysinfo->td_conf;
->          struct kvm_tdx_capabilities __user *user_caps;
->          struct kvm_tdx_capabilities *caps = NULL;
-> +       u32 nr_user_entries;
->          int ret = 0;
->   
->          /* flags is reserved for future use */
->          if (cmd->flags)
->                  return -EINVAL;
->   
-> -       caps = kmalloc(sizeof(*caps) +
-> +       caps = kzalloc(sizeof(*caps) +
->                         sizeof(struct kvm_cpuid_entry2) * td_conf->num_cpuid_config,
->                         GFP_KERNEL);
->          if (!caps)
->                  return -ENOMEM;
->   
->          user_caps = u64_to_user_ptr(cmd->data);
-> -       if (copy_from_user(caps, user_caps, sizeof(*caps))) {
-> +       if (get_user(nr_user_entries, &user_caps->cpuid.nent)) {
->                  ret = -EFAULT;
->                  goto out;
->          }
->   
-> -       if (caps->cpuid.nent < td_conf->num_cpuid_config) {
-> +       if (nr_user_entries < td_conf->num_cpuid_config) {
->                  ret = -E2BIG;
->                  goto out;
->          }
+Hmm, where's this v3 version?  Did you already send a version with
+Shameer's fix (s/bind.argsz/user_size)?  Lore can't find it.  Thanks,
+
+Alex
 
