@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327F224729A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32797247294;
 	Mon, 14 Jul 2025 12:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496004; cv=none; b=QFhzuhYlFFxR4GswJhzADmbqNhYfKAWXbRXi9fnejuQ6dHZ0G69xyww5prl/0sXW5gxjnqjMs6E3EqZYR3YFRmNZgSIQ75menPQMuQMEY9MleXm4GiX/FI68sipI4YKYCzbhix8YHITB8CDqKEjf/4vuLDvTV77Urw334EPywjE=
+	t=1752496004; cv=none; b=i3RL2eOHAa5bGpgfIP/E01gJbPXNEqCah4pvIzXGTJXrHVaHDO4qXjMVIUciejIeAvX92dJBx29Xspm+OJsrrSDoTvkBw899YcUfDU3yODPA2MAMRxxzxK/8kpkDEwMvHmtWOrFqwldKRjSK6jcx0YncSZ1yZq4tKW2KAWqPv2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752496004; c=relaxed/simple;
-	bh=ewJOgRj9eRRY+naXw54wKcAU6+y3/kMWLXLEIv8d//M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bK/z85b3OSjgh1kr7BoLkNOMZN+4m3W0iAq3hasff8Xlais5HYvwo05xLmL+4qlRxpx3zRip5AoZ+ozhCYtEd3R6PP9lCitSH/lc1tvwjRsKsZgMgs4o5g5Tb0Vi8Ic7DpGp6Yaqtp5C578dV4M/wf0/y/PMJKgS1SdZJ1e4m6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YV8VUAEE; arc=none smtp.client-ip=10.30.226.201
+	bh=yiBRnZF8C0L+8x0bFktDQLA16K927PmzOB5cfTo+bDc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GLnmX5q+jn0OglIHKgefB7+oz7JTt4hV3z15vXnz6t0q/kJXdOx8VK+b09577oHUba/tI6LJ+N2RTcMFnBVi5mAGsNN7HapAQVADqkYWMTjiwN+cVGmYGJXcH/MjRpYdclCceD+zzgRhg5zcU6VxtER4Zu+y+mNrb8ydu1p6zmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLUPtta3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YV8VUAEE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A652C4CEED;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLUPtta3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC0EC4CEF6;
 	Mon, 14 Jul 2025 12:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752496003;
-	bh=ewJOgRj9eRRY+naXw54wKcAU6+y3/kMWLXLEIv8d//M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YV8VUAEEvUHnI4f8WE/EcPpt+WMASmIMFPkeRf44ltsof5XqXSEOUT8RxEE2bBp+p
-	 CYyEhYdA5NMZRyqY44H3DKKbW2Jv/nrgTvRF2YvAgsOU/vBcSEcRJjpnvrN6nSjIIq
-	 GbNE6codrQ1XNxtzO6t77JwXsEXcAo3d2Zs+mqLVw2I1nBhErusJXfXFSCXUZXUWHV
-	 G1KfGCl/7s8G1APlejBO7N9osBKUC9TbvVeET5mTs26Aj00PjQ0DkltoC0eYNUke0g
-	 27anZPIvVgnxaONb4gGZvIiuXlwb8pC21eZvrx/9sZLQu6nMCvGlQRz3Ad/G+4CU8o
-	 Ai3BFuEahadyw==
+	bh=yiBRnZF8C0L+8x0bFktDQLA16K927PmzOB5cfTo+bDc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jLUPtta3XYsfcmUjFlYXz/3u7AmtUGY/pQX9L0B50qG1hobRkf/kS4vn0kjK5YSp+
+	 gtOVhhRbswJ1/jghJ5ATvFweu2MCtw7y1K6IqsPnvFx2tyQK3lVW33ylqoVjlJxXze
+	 H5zHQUK9/H+nq04YQ/m3esgO6MkjNt/pWxvr6shOVSOAOKlwsTrfsKqP3yJA0YynDu
+	 bzZk0KUyq0Uil0FHQBTekrhx15OcLTyqtZrUl2/HWm+lfuvGUZVtka1ZJPq2M2ymAY
+	 6aVhTSX96TWYSjOKHrQL5Fkld4DgtdY818DzQQq7UzsEDSJ+GbQR0SZDuoMEStmy+v
+	 AdP+xaVaugCaQ==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1ubIGX-00FW7V-Jv;
-	Mon, 14 Jul 2025 13:26:41 +0100
+	id 1ubIGY-00FW7V-0f;
+	Mon, 14 Jul 2025 13:26:42 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -41,10 +42,12 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 00/11] KVM: arm64: nv: Userspace register visibility fixes
-Date: Mon, 14 Jul 2025 13:26:23 +0100
-Message-Id: <20250714122634.3334816-1-maz@kernel.org>
+Subject: [PATCH 02/11] KVM: arm64: Don't advertise ICH_*_EL2 registers through GET_ONE_REG
+Date: Mon, 14 Jul 2025 13:26:25 +0100
+Message-Id: <20250714122634.3334816-3-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250714122634.3334816-1-maz@kernel.org>
+References: <20250714122634.3334816-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,55 +60,116 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Peter recently pointed out that we don't expose the EL2 GICv3
-registers in a consistent manner, as they are presented through the
-ONE_REG interface instead of KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS, despite
-the latter already exposing the EL1 GICv3 regs.
+It appears that exposing the GICv3 EL2 registers through the usual
+sysreg interface is not consistent with the way we expose the EL1
+registers. The latter are exposed via the GICv3 device interface
+instead, and there is no reason why the EL2 registers should get
+a different treatement.
 
-While I was looking at this, I ended up finding a small number of
-equally small problems:
+Hide the registers from userspace until the GICv3 code grows the
+required infrastructure.
 
-- RVBAR_EL2 shouldn't be a thing at all
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/sys_regs.c | 64 ++++++++++++++++++++++-----------------
+ 1 file changed, 37 insertions(+), 27 deletions(-)
 
-- FEAT_FGT registers should only be exposed to userspace if the
-  feature is presented to the guest (and actually exists)
-
-- FEAT_FGT2 registers are not exposed at all, and that's bad (though
-  the machine that has FGT2 hasn't been built yet)
-
-- Nothing documents which registers are exposed by
-  KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
-
-So I cooked up a handful of fixes for those. And because I was feeling
-generous, I hacked the get-reg-list test to check for the EL2
-registers reported via ONE_REG /mindblown/.
-
-Eric, I'd really appreciate if you could give this a go with QEMU to
-check that you can now correctly get to the GIC El2 registers via the
-expected interface.
-
-Marc Zyngier (11):
-  KVM: arm64: Make RVBAR_EL2 accesses UNDEF
-  KVM: arm64: Don't advertise ICH_*_EL2 registers through GET_ONE_REG
-  KVM: arm64: Define constant value for ICC_SRE_EL2
-  KVM: arm64: Define helper for ICH_VTR_EL2
-  KVM: arm64: Let GICv3 save/restore honor visibility attribute
-  KVM: arm64: Expose GICv3 EL2 registers via
-    KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
-  KVM: arm64: Condition FGT registers on feature availability
-  KVM: arm64: Advertise FGT2 registers to userspace
-  KVM: arm64: selftests: get-reg-list: Simplify feature dependency
-  KVM: arm64: selftests: get-reg-list: Add base EL2 registers
-  KVM: arm64: Document registers exposed via
-    KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
-
- .../virt/kvm/devices/arm-vgic-v3.rst          |  63 +++++-
- arch/arm64/kvm/sys_regs.c                     | 111 ++++++----
- arch/arm64/kvm/vgic-sys-reg-v3.c              | 121 ++++++++++-
- arch/arm64/kvm/vgic/vgic.h                    |  18 ++
- .../selftests/kvm/arm64/get-reg-list.c        | 197 +++++++++++++++---
- 5 files changed, 432 insertions(+), 78 deletions(-)
-
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 3f226cd5b502e..dceb4f8f242a7 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -772,6 +772,12 @@ static u64 reset_mpidr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
+ 	return mpidr;
+ }
+ 
++static unsigned int hidden_visibility(const struct kvm_vcpu *vcpu,
++				      const struct sys_reg_desc *r)
++{
++	return REG_HIDDEN;
++}
++
+ static unsigned int pmu_visibility(const struct kvm_vcpu *vcpu,
+ 				   const struct sys_reg_desc *r)
+ {
+@@ -2324,6 +2330,10 @@ static bool bad_redir_trap(struct kvm_vcpu *vcpu,
+ 	EL2_REG_FILTERED(name, acc, rst, v, el2_visibility)
+ 
+ #define EL2_REG_VNCR(name, rst, v)	EL2_REG(name, bad_vncr_trap, rst, v)
++#define EL2_REG_VNCR_FILT(name, vis)			\
++	EL2_REG_FILTERED(name, bad_vncr_trap, reset_val, 0, vis)
++#define EL2_REG_VNCR_GICv3(name)			\
++	EL2_REG_VNCR_FILT(name, hidden_visibility)
+ #define EL2_REG_REDIR(name, rst, v)	EL2_REG(name, bad_redir_trap, rst, v)
+ 
+ /*
+@@ -3372,40 +3382,40 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 	{ SYS_DESC(SYS_RVBAR_EL2), undef_access },
+ 	{ SYS_DESC(SYS_RMR_EL2), undef_access },
+ 
+-	EL2_REG_VNCR(ICH_AP0R0_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP0R1_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP0R2_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP0R3_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP1R0_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP1R1_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP1R2_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_AP1R3_EL2, reset_val, 0),
++	EL2_REG_VNCR_GICv3(ICH_AP0R0_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP0R1_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP0R2_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP0R3_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP1R0_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP1R1_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP1R2_EL2),
++	EL2_REG_VNCR_GICv3(ICH_AP1R3_EL2),
+ 
+ 	{ SYS_DESC(SYS_ICC_SRE_EL2), access_gic_sre },
+ 
+-	EL2_REG_VNCR(ICH_HCR_EL2, reset_val, 0),
++	EL2_REG_VNCR_GICv3(ICH_HCR_EL2),
+ 	{ SYS_DESC(SYS_ICH_VTR_EL2), access_gic_vtr },
+ 	{ SYS_DESC(SYS_ICH_MISR_EL2), access_gic_misr },
+ 	{ SYS_DESC(SYS_ICH_EISR_EL2), access_gic_eisr },
+ 	{ SYS_DESC(SYS_ICH_ELRSR_EL2), access_gic_elrsr },
+-	EL2_REG_VNCR(ICH_VMCR_EL2, reset_val, 0),
+-
+-	EL2_REG_VNCR(ICH_LR0_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR1_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR2_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR3_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR4_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR5_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR6_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR7_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR8_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR9_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR10_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR11_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR12_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR13_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR14_EL2, reset_val, 0),
+-	EL2_REG_VNCR(ICH_LR15_EL2, reset_val, 0),
++	EL2_REG_VNCR_GICv3(ICH_VMCR_EL2),
++
++	EL2_REG_VNCR_GICv3(ICH_LR0_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR1_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR2_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR3_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR4_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR5_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR6_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR7_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR8_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR9_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR10_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR11_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR12_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR13_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR14_EL2),
++	EL2_REG_VNCR_GICv3(ICH_LR15_EL2),
+ 
+ 	EL2_REG(CONTEXTIDR_EL2, access_rw, reset_val, 0),
+ 	EL2_REG(TPIDR_EL2, access_rw, reset_val, 0),
 -- 
 2.39.2
 
