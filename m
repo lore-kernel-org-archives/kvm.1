@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0722475E3;
-	Mon, 14 Jul 2025 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BCF2494FE;
+	Mon, 14 Jul 2025 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496004; cv=none; b=rA4typlThfkEyW/ucs0qOYOkRs6oCBR26uk7jCr0AOELtdvy4qP7NpEdJfgmUkRLYqJ7GLPAwKH08LiQZpa4+5i3d1NyXJajdddbztf24yO6QgNk6tpy8AerYrXfRk/UrSRJtUCx5IndrGybRWN8WGYjD/OipuzNg93M5xzVXeY=
+	t=1752496005; cv=none; b=URhClRZThwgPq42+EE2myJGyHhBBt5a3STneCAADdF++xLdsaSQ/xff2fQm77rSZaQpFZa0Wsy6mLCUfSbx9iMkp8aLMtXV+WGj+pUv1t8iuU/hN48Y+dXuO44b3YXM6Wdlyxfcq3H40fRGXT1At7qW217pYsf3O/veQgKRy91k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752496004; c=relaxed/simple;
-	bh=ncwASAA1qi99xaHllmrz6NR9vRZXa0OXO/G8CF9AaoA=;
+	s=arc-20240116; t=1752496005; c=relaxed/simple;
+	bh=TyCnvvi1aCzaI2Wx0/CEwTJPmVkxLKFgX0BffGlLxoI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XjcWPTn9rdhTnmpJ2iyAlsKWUC9Q7fBTxmhVaTYPwPDT5VyIZGhjKN9SefUHI8/IyKh/Cui7w10rOuTuoYdMqBXxTmU9DzzBNITgrVXjwpAHG/tUJV+sTECTg58szN/EsfEWxUKhgYccBFUWbbShbEEROk9l4sz9EdH760dVl50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkjN7X8l; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=lYe1E/zSN/OUzynCpwTnDVJv87NKjwDWZeZFOxfxb+YzjvFcmqD4KzPht8j9rNDq7Fy7P+CY69uXVUFTc7w06Jiv0eV4FP1SxYFfaR9O3bigs5YhNwLLivN53rzkC579VkwA7wnOe+RhQOdaiagbGON5gN2/NW1vSifQXsFCcx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGa2snzq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkjN7X8l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3A2C4CEED;
-	Mon, 14 Jul 2025 12:26:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGa2snzq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569D3C4CEFC;
+	Mon, 14 Jul 2025 12:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752496004;
-	bh=ncwASAA1qi99xaHllmrz6NR9vRZXa0OXO/G8CF9AaoA=;
+	s=k20201202; t=1752496005;
+	bh=TyCnvvi1aCzaI2Wx0/CEwTJPmVkxLKFgX0BffGlLxoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkjN7X8lo/gUYjopp59OGVBV5OTYpP6g/nojuQ/EmEgJOt5mwhl+qccDIrpWMqo4L
-	 bobBG+h4fu7rVhecD+De3hwcF31M2VRVGoAlNNOwtiR3V/vGmXm/WjQ1IPpxyilevm
-	 y5Z4dInppH7HI8yR/2nCMlv7+GzrC06E7+ufXeaHo52yNrzLPXAsKy+Mr1HIQ1sZB+
-	 0kQkVtGVBzrPIuolUax1AlVbr5V4/uVRzMsqK+x7oxyxj+l+E5mYXuyh1dUwyFW4rx
-	 R/GHkKM5ACGJ93H18ZP/lMHAv4jU/vJlPIeR7zlKyrILcp4ZFWrX0hLq7HMQMZ0BLb
-	 JxO8kCVm8pJDg==
+	b=kGa2snzqIJ4Ja04oGtPodZTrcIiPXzUY/vnYuQ4WJqbZuwzd3VIqcpmi2+tQ12qVU
+	 C9u2bm0VLj9w3bJcAWPG3CPh5wdEyjn29Hl+Q9Opm/yAVtD6wL1majajeKgWhbTt3j
+	 in3fiuWkpayRkcEhxiLsHJb7pcdAnAmsd/Q0yX+GU/rFavre/GC51ydJK+9MzgYFj6
+	 TjQ2zODlbIX6VdN3h0X/qQIjyq5HeZRLFG1pYCvFWIjkrW7LufIKqmAPUsgTuMnSy2
+	 88QIajkcM3wxhnOy+hFe+7+aURnnL1TigZ/vSKhOxqzHsrjqHqjUr/JNDMBRkAlObC
+	 X4imkkca8klGA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1ubIGY-00FW7V-JG;
-	Mon, 14 Jul 2025 13:26:42 +0100
+	id 1ubIGZ-00FW7V-Iy;
+	Mon, 14 Jul 2025 13:26:43 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Eric Auger <eric.auger@redhat.com>,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 05/11] KVM: arm64: Let GICv3 save/restore honor visibility attribute
-Date: Mon, 14 Jul 2025 13:26:28 +0100
-Message-Id: <20250714122634.3334816-6-maz@kernel.org>
+Subject: [PATCH 10/11] KVM: arm64: selftests: get-reg-list: Add base EL2 registers
+Date: Mon, 14 Jul 2025 13:26:33 +0100
+Message-Id: <20250714122634.3334816-11-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250714122634.3334816-1-maz@kernel.org>
 References: <20250714122634.3334816-1-maz@kernel.org>
@@ -60,34 +60,201 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The GICv3 save/restore code never needed any visibility attribute,
-but that's about to change. Make vgic_v3_has_cpu_sysregs_attr()
-check the visibility in case a register is hidden.
+Add the EL2 registers and the eventual dependencies, effectively
+doubling the number of test vectors. Oh well.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic-sys-reg-v3.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../selftests/kvm/arm64/get-reg-list.c        | 145 ++++++++++++++++++
+ 1 file changed, 145 insertions(+)
 
-diff --git a/arch/arm64/kvm/vgic-sys-reg-v3.c b/arch/arm64/kvm/vgic-sys-reg-v3.c
-index 5eacb4b3250a1..6f40225c4a3ff 100644
---- a/arch/arm64/kvm/vgic-sys-reg-v3.c
-+++ b/arch/arm64/kvm/vgic-sys-reg-v3.c
-@@ -341,8 +341,12 @@ static u64 attr_to_id(u64 attr)
+diff --git a/tools/testing/selftests/kvm/arm64/get-reg-list.c b/tools/testing/selftests/kvm/arm64/get-reg-list.c
+index a35b01d08cc63..996d78ee35487 100644
+--- a/tools/testing/selftests/kvm/arm64/get-reg-list.c
++++ b/tools/testing/selftests/kvm/arm64/get-reg-list.c
+@@ -41,10 +41,27 @@ struct feature_id_reg {
  
- int vgic_v3_has_cpu_sysregs_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
- {
--	if (get_reg_by_id(attr_to_id(attr->attr), gic_v3_icc_reg_descs,
--			  ARRAY_SIZE(gic_v3_icc_reg_descs)))
-+	const struct sys_reg_desc *r;
-+
-+	r = get_reg_by_id(attr_to_id(attr->attr), gic_v3_icc_reg_descs,
-+			  ARRAY_SIZE(gic_v3_icc_reg_descs));
-+
-+	if (r && !sysreg_hidden(vcpu, r))
- 		return 0;
+ static struct feature_id_reg feat_id_regs[] = {
+ 	REG_FEAT(TCR2_EL1,	ID_AA64MMFR3_EL1, TCRX, IMP),
++	REG_FEAT(TCR2_EL2,	ID_AA64MMFR3_EL1, TCRX, IMP),
+ 	REG_FEAT(PIRE0_EL1,	ID_AA64MMFR3_EL1, S1PIE, IMP),
++	REG_FEAT(PIRE0_EL2,	ID_AA64MMFR3_EL1, S1PIE, IMP),
+ 	REG_FEAT(PIR_EL1,	ID_AA64MMFR3_EL1, S1PIE, IMP),
++	REG_FEAT(PIR_EL2,	ID_AA64MMFR3_EL1, S1PIE, IMP),
+ 	REG_FEAT(POR_EL1,	ID_AA64MMFR3_EL1, S1POE, IMP),
+ 	REG_FEAT(POR_EL0,	ID_AA64MMFR3_EL1, S1POE, IMP),
++	REG_FEAT(POR_EL2,	ID_AA64MMFR3_EL1, S1POE, IMP),
++	REG_FEAT(HCRX_EL2,	ID_AA64MMFR1_EL1, HCX, IMP),
++	REG_FEAT(HFGRTR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HFGWTR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HFGITR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HDFGRTR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HDFGWTR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HAFGRTR_EL2,	ID_AA64MMFR0_EL1, FGT, IMP),
++	REG_FEAT(HFGRTR2_EL2,	ID_AA64MMFR0_EL1, FGT, FGT2),
++	REG_FEAT(HFGWTR2_EL2,	ID_AA64MMFR0_EL1, FGT, FGT2),
++	REG_FEAT(HFGITR2_EL2,	ID_AA64MMFR0_EL1, FGT, FGT2),
++	REG_FEAT(HDFGRTR2_EL2,	ID_AA64MMFR0_EL1, FGT, FGT2),
++	REG_FEAT(HDFGWTR2_EL2,	ID_AA64MMFR0_EL1, FGT, FGT2),
++	REG_FEAT(ZCR_EL2,	ID_AA64PFR0_EL1, SVE, IMP),
+ };
  
- 	return -ENXIO;
+ bool filter_reg(__u64 reg)
+@@ -678,6 +695,60 @@ static __u64 pauth_generic_regs[] = {
+ 	ARM64_SYS_REG(3, 0, 2, 3, 1),	/* APGAKEYHI_EL1 */
+ };
+ 
++static __u64 el2_regs[] = {
++	SYS_REG(VPIDR_EL2),
++	SYS_REG(VMPIDR_EL2),
++	SYS_REG(SCTLR_EL2),
++	SYS_REG(ACTLR_EL2),
++	SYS_REG(HCR_EL2),
++	SYS_REG(MDCR_EL2),
++	SYS_REG(CPTR_EL2),
++	SYS_REG(HSTR_EL2),
++	SYS_REG(HFGRTR_EL2),
++	SYS_REG(HFGWTR_EL2),
++	SYS_REG(HFGITR_EL2),
++	SYS_REG(HACR_EL2),
++	SYS_REG(ZCR_EL2),
++	SYS_REG(HCRX_EL2),
++	SYS_REG(TTBR0_EL2),
++	SYS_REG(TTBR1_EL2),
++	SYS_REG(TCR_EL2),
++	SYS_REG(TCR2_EL2),
++	SYS_REG(VTTBR_EL2),
++	SYS_REG(VTCR_EL2),
++	SYS_REG(VNCR_EL2),
++	SYS_REG(HDFGRTR2_EL2),
++	SYS_REG(HDFGWTR2_EL2),
++	SYS_REG(HFGRTR2_EL2),
++	SYS_REG(HFGWTR2_EL2),
++	SYS_REG(HDFGRTR_EL2),
++	SYS_REG(HDFGWTR_EL2),
++	SYS_REG(HAFGRTR_EL2),
++	SYS_REG(HFGITR2_EL2),
++	SYS_REG(SPSR_EL2),
++	SYS_REG(ELR_EL2),
++	SYS_REG(AFSR0_EL2),
++	SYS_REG(AFSR1_EL2),
++	SYS_REG(ESR_EL2),
++	SYS_REG(FAR_EL2),
++	SYS_REG(HPFAR_EL2),
++	SYS_REG(MAIR_EL2),
++	SYS_REG(PIRE0_EL2),
++	SYS_REG(PIR_EL2),
++	SYS_REG(POR_EL2),
++	SYS_REG(AMAIR_EL2),
++	SYS_REG(VBAR_EL2),
++	SYS_REG(CONTEXTIDR_EL2),
++	SYS_REG(TPIDR_EL2),
++	SYS_REG(CNTVOFF_EL2),
++	SYS_REG(CNTHCTL_EL2),
++	SYS_REG(CNTHP_CTL_EL2),
++	SYS_REG(CNTHP_CVAL_EL2),
++	SYS_REG(CNTHV_CTL_EL2),
++	SYS_REG(CNTHV_CVAL_EL2),
++	SYS_REG(SP_EL2),
++};
++
+ #define BASE_SUBLIST \
+ 	{ "base", .regs = base_regs, .regs_n = ARRAY_SIZE(base_regs), }
+ #define VREGS_SUBLIST \
+@@ -704,6 +775,14 @@ static __u64 pauth_generic_regs[] = {
+ 		.regs		= pauth_generic_regs,			\
+ 		.regs_n		= ARRAY_SIZE(pauth_generic_regs),	\
+ 	}
++#define EL2_SUBLIST						\
++	{							\
++		.name 		= "EL2",			\
++		.capability	= KVM_CAP_ARM_EL2,		\
++		.feature	= KVM_ARM_VCPU_HAS_EL2,		\
++		.regs		= el2_regs,			\
++		.regs_n		= ARRAY_SIZE(el2_regs),		\
++	}
+ 
+ static struct vcpu_reg_list vregs_config = {
+ 	.sublists = {
+@@ -753,6 +832,65 @@ static struct vcpu_reg_list pauth_pmu_config = {
+ 	},
+ };
+ 
++static struct vcpu_reg_list el2_vregs_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	VREGS_SUBLIST,
++	{0},
++	},
++};
++
++static struct vcpu_reg_list el2_vregs_pmu_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	VREGS_SUBLIST,
++	PMU_SUBLIST,
++	{0},
++	},
++};
++
++static struct vcpu_reg_list el2_sve_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	SVE_SUBLIST,
++	{0},
++	},
++};
++
++static struct vcpu_reg_list el2_sve_pmu_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	SVE_SUBLIST,
++	PMU_SUBLIST,
++	{0},
++	},
++};
++
++static struct vcpu_reg_list el2_pauth_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	VREGS_SUBLIST,
++	PAUTH_SUBLIST,
++	{0},
++	},
++};
++
++static struct vcpu_reg_list el2_pauth_pmu_config = {
++	.sublists = {
++	BASE_SUBLIST,
++	EL2_SUBLIST,
++	VREGS_SUBLIST,
++	PAUTH_SUBLIST,
++	PMU_SUBLIST,
++	{0},
++	},
++};
++
+ struct vcpu_reg_list *vcpu_configs[] = {
+ 	&vregs_config,
+ 	&vregs_pmu_config,
+@@ -760,5 +898,12 @@ struct vcpu_reg_list *vcpu_configs[] = {
+ 	&sve_pmu_config,
+ 	&pauth_config,
+ 	&pauth_pmu_config,
++
++	&el2_vregs_config,
++	&el2_vregs_pmu_config,
++	&el2_sve_config,
++	&el2_sve_pmu_config,
++	&el2_pauth_config,
++	&el2_pauth_pmu_config,
+ };
+ int vcpu_configs_n = ARRAY_SIZE(vcpu_configs);
 -- 
 2.39.2
 
