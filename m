@@ -1,55 +1,55 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03A22DE70E
-	for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 09:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339542DEA61
+	for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 09:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752572081; cv=none; b=eCwi5eYjMgLiwdRTRPpugt4gA1Ci9p3OqGEA0/PffoTP+TtuBgsSJVdCBpRn3mtc4qVMV3SL0ygVuBDkLIFk5B8eQ3y/SBhzclXCwDg3btEb2beTQgg93LKGBqpK0gamUHpuL0Ud/eRbxFuY8qHxuqmsykYshQUVGRzGhK7Mp7Q=
+	t=1752572082; cv=none; b=FGpfiQSxrgtujdQM6iemUTMBMiEppj/oWSLLR0nn65JJx0e0xOdrdNLFphFJ1e+KZn1CFo8bKqYPZ/mH7KgzCQfXEPQhgNHcL6tW0iPKXD7nT0LQrbCQCvfOeqz4CssPXWzngTm+FJ5SekQNqMnZLMl+dksqXAWsC4iJw0fLxUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752572081; c=relaxed/simple;
-	bh=s81rdo6xJig6RnBs9z2MASUF9cmSxvjSWz88FGej91E=;
+	s=arc-20240116; t=1752572082; c=relaxed/simple;
+	bh=ieE9uakSkbHoNeSHVGqSyQEMtw9HWe5ggnyvIaywshE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UAXiu9RmWWb8ErAxF13Opn78RdlH05EajaQP2DCFeq8Bvp3E37QA3tNQghwQtFgUb49UKKEEK/N5Wo+gJNi238YBki4S9N6cMVPk0zRINhdtnPicC0fb5kPp36CeMjBNFEkN1jsH85+6tSbafCQo/i3mv7rHWoJniF64BRNcQBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ukx/raeD; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=sHWF/JbhFlICuKwjCBTcogKnv9laDlJzuiTandfQQWqbvFQoXoZimMQDPCMIW7sctXUPB78X3LtKDdi8WA/MQCPh+bXfMcnVTYd2bDLR7bTigHES3WX00DzpPFVroQ1zNAK3UIH77MVDGWfY7ipyjVLuusvlq5iy/PZj9WIEt6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=34QH70q0; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ukx/raeD"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45624f0be48so4830795e9.3
-        for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 02:34:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="34QH70q0"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-455ea9cb0beso30146955e9.0
+        for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 02:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752572074; x=1753176874; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752572078; x=1753176878; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9qSAaCs5u3stWdE7jpelRBQbwP+260qm4giQezY97SA=;
-        b=Ukx/raeDFM+0wyBFaYfUpoQW9GZTYAhZ4C24CobkQk/aircFqyHigW7KHTeKXtA1c/
-         438cNTNBNcIJRKEiP+GUFVcaeWQpbuc4DSrH2xrVlVH5D1cFllgZ+lI3SI0dTUge+L4Q
-         R064R0AlrqyvOumKkyaJM0+kwj4d7IH92IvbzS1MRY4bfRWc8mY1cB8CKUjOHi5tc0X2
-         xFNccUpGP5QQw7t3tZQfeUHqxex7UtvVMwzLlGYyGa8W65/NcFHu3t9JE6x/xgeHnH/g
-         QcogCub19nNTVWa+W9yxfh+hzsjqg8OM3K5+cnHIqJrfKmjm4l63l5FAhyl29MceRKiv
-         vWmQ==
+        bh=thCPZ9YOQBveI+hJX+S0duGcG+bqAQLlDkhewk99Mu4=;
+        b=34QH70q0nmLqezvDipXOKa0MpL3pk0PWU3KzCuxxwkqH6E4R7U/rvkYg/uoIjLWar+
+         a2E41G4io7jXbbTL6p15jIaHLF6e+DMgfsAEY5vGFSkMot4PAhWiKSDP4rkvLhR8Dtq6
+         9n/sswxjV0AQe0ebWFv73GDImuPcnQn3m9LHmJSl2+e+K8xDha5GLtHY96ADYVrHiAAC
+         v4WR7kDwZM/MC5ZawvFRq+Kx8mVwcxtKJldavN3vqe6xlC71CI1FDS6gLaJLHDyTEnU1
+         Q+s5mC89nJwfPSqhBdhz13OFdcPA0u764lbfiL7K1TYQJC2RFC/b3+fYoiNlZLWv7ho6
+         thGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752572074; x=1753176874;
+        d=1e100.net; s=20230601; t=1752572078; x=1753176878;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9qSAaCs5u3stWdE7jpelRBQbwP+260qm4giQezY97SA=;
-        b=e1ZVDAgIRT6Kh2EWQqZp/tkPGe2P3N/YXb0gsrDtFtNYETBgUvgsYQi0W9eur/hhrn
-         K+qjr/RKJ67kdXrLRqijuFeI+X5B7b2LDy62ztEznuAcT9OC78CuI6h+kH3nFm7Yttsp
-         HzM708s+B0tOigKmPsozaRmKEA/oo5S60mtnRCyC/WFArhbM3CPEPn0NVUeemqTrjgHA
-         k8LgV5WYvyN3cX1Cu5n6C9w+74mSBm7TOJRwfP0pDbv5Y3SMQOnuCBv5DX8qev2i8hrF
-         fT9q/5JLV0DTxE8SYLAA0LFGvbLc2KXr+rxhnAP4XVWuMgn73/uNbzsG1dTrKqdLA4/2
-         EKZA==
-X-Gm-Message-State: AOJu0YxzggpTVSUmCG5+BxB+4XRW3hayNp+vkAOFx5/wCluwuw5FsmO2
-	K8RkTNVv3J32mSI5cFTnj5TnQLlR2aeGkJCvtIedqJNGL8qonVyxQ9dhXG7Y0pYCuz7p/Tb70uC
-	Od4/GLNp8WnlbkEdpsmrsifOkI3z00lvWW0RS/C1jRpwvEBgeRn1KFvb2hA0aoHvgW2HjW3E/o+
-	S9KCUeX9tJNpFGW6xzuvK8v6/vMew=
-X-Google-Smtp-Source: AGHT+IGOJuaP0WOYc4NF1TL35cx/kQk7xjXiKYWsLOJ3hP5PbZs0l8odgkeUlx4VVQ9iglD1xAj61cXy0A==
-X-Received: from wmsz20.prod.google.com ([2002:a05:600c:c174:b0:456:1075:9202])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3d8f:b0:43c:fbba:41ba
- with SMTP id 5b1f17b1804b1-45565edca7emr116887765e9.28.1752572071954; Tue, 15
- Jul 2025 02:34:31 -0700 (PDT)
-Date: Tue, 15 Jul 2025 10:33:48 +0100
+        bh=thCPZ9YOQBveI+hJX+S0duGcG+bqAQLlDkhewk99Mu4=;
+        b=NGKKjLecYBEOPTt31BHr8Duz2/oRcMQ4hhzeBxbzZ7Bm26uq0FPH6HisPJgKMl6vZ/
+         E6aS49+vUhnxAlC1i/T4LTuhNv16elhbDpwc/eYrt7jSMb+kV877C8o70nZHRJCU/8wJ
+         2Q+fguikQNctHslvdzyd7cyBE/qrs76SNPVIfc1yXTwbEZw0LYGA6ZI/FOpiRGZQ4HA2
+         yOq0eXDd5CrBZY7wPi61cpB1qadvj/1uPRL/lbzQZHiGVCBqs5gvif+2/z3iRjmQgPfz
+         cyrPPKJ99QMNKhEmhXNthqNXS3iB7WK1bB1Ri0tiv+D7MAWP9jdyhJKbQYod+uae60EP
+         Av0w==
+X-Gm-Message-State: AOJu0YzXdha9Wc9VpKTcwqDDIorZL76GcsuITAVaVG9DEcW+U8l1oerR
+	HFHZi1gNthWPckHFUuquMpPY2Pe8cajVSHKuFOEKfqqTo8qRaHuM/NymlYO4VHi4ZbGdgnPfD0m
+	EW4bzYiOjuaS7SI+Zgrjz1kQfKnKtbUxexUJAwXZz9IY4KkbemoLOZU64Dt/vrlwc0k7Z44G8iu
+	H6emQYPGeR7x+387sMBvSIv5ZmPbw=
+X-Google-Smtp-Source: AGHT+IFBYUZUFsotJ/ALlX7SFME5SB4zZrP3dCOPXg8atTxWSpA8lzYqkotyLIZ4ig+DWvvLrUuGV72AYA==
+X-Received: from wmsd11.prod.google.com ([2002:a05:600c:3acb:b0:453:86cc:7393])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:6304:b0:450:d01f:de6f
+ with SMTP id 5b1f17b1804b1-454ec2639bdmr156088905e9.15.1752572078008; Tue, 15
+ Jul 2025 02:34:38 -0700 (PDT)
+Date: Tue, 15 Jul 2025 10:33:50 +0100
 In-Reply-To: <20250715093350.2584932-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250715093350.2584932-1-tabba@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250715093350.2584932-20-tabba@google.com>
-Subject: [PATCH v14 19/21] KVM: Introduce the KVM capability KVM_CAP_GMEM_MMAP
+Message-ID: <20250715093350.2584932-22-tabba@google.com>
+Subject: [PATCH v14 21/21] KVM: selftests: guest_memfd mmap() test when mmap
+ is supported
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
 	kvmarm@lists.linux.dev
@@ -86,75 +87,306 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
 	ira.weiny@intel.com, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce the new KVM capability KVM_CAP_GMEM_MMAP. This capability
-signals to userspace that a KVM instance supports host userspace mapping
-of guest_memfd-backed memory.
+Expand the guest_memfd selftests to comprehensively test host userspace
+mmap functionality for guest_memfd-backed memory when supported by the
+VM type.
 
-The availability of this capability is determined per architecture, and
-its enablement for a specific guest_memfd instance is controlled by the
-GUEST_MEMFD_FLAG_MMAP flag at creation time.
+Introduce new test cases to verify the following:
 
-Update the KVM API documentation to detail the KVM_CAP_GMEM_MMAP
-capability, the associated GUEST_MEMFD_FLAG_MMAP, and provide essential
-information regarding support for mmap in guest_memfd.
+* Successful mmap operations: Ensure that MAP_SHARED mappings succeed
+  when guest_memfd mmap is enabled.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+* Data integrity: Validate that data written to the mmap'd region is
+  correctly persistent and readable.
+
+* fallocate interaction: Test that fallocate(FALLOC_FL_PUNCH_HOLE)
+  correctly zeros out mapped pages.
+
+* Out-of-bounds access: Verify that accessing memory beyond the
+  guest_memfd's size correctly triggers a SIGBUS signal.
+
+* Unsupported mmap: Confirm that mmap attempts fail as expected when
+  guest_memfd mmap support is not enabled for the specific guest_memfd
+  instance or VM type.
+
+* Flag validity: Introduce test_vm_type_gmem_flag_validity() to
+  systematically test that only allowed guest_memfd creation flags are
+  accepted for different VM types (e.g., GUEST_MEMFD_FLAG_MMAP for
+  default VMs, no flags for CoCo VMs).
+
+The existing tests for guest_memfd creation (multiple instances, invalid
+sizes), file read/write, file size, and invalid punch hole operations
+are integrated into the new test_with_type() framework to allow testing
+across different VM types.
+
+Reviewed-by: James Houghton <jthoughton@google.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Shivank Garg <shivankg@amd.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- Documentation/virt/kvm/api.rst | 9 +++++++++
- include/uapi/linux/kvm.h       | 1 +
- virt/kvm/kvm_main.c            | 4 ++++
- 3 files changed, 14 insertions(+)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 197 ++++++++++++++++--
+ 1 file changed, 176 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 43ed57e048a8..5169066b53b2 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6407,6 +6407,15 @@ most one mapping per page, i.e. binding multiple memory regions to a single
- guest_memfd range is not allowed (any number of memory regions can be bound to
- a single guest_memfd file, but the bound ranges must not overlap).
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 341ba616cf55..1252e74fbb8f 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -13,6 +13,8 @@
  
-+When the capability KVM_CAP_GMEM_MMAP is supported, the 'flags' field supports
-+GUEST_MEMFD_FLAG_MMAP.  Setting this flag on guest_memfd creation enables mmap()
-+and faulting of guest_memfd memory to host userspace.
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
++#include <setjmp.h>
++#include <signal.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -34,12 +36,83 @@ static void test_file_read_write(int fd)
+ 		    "pwrite on a guest_mem fd should fail");
+ }
+ 
+-static void test_mmap(int fd, size_t page_size)
++static void test_mmap_supported(int fd, size_t page_size, size_t total_size)
++{
++	const char val = 0xaa;
++	char *mem;
++	size_t i;
++	int ret;
 +
-+When the KVM MMU performs a PFN lookup to service a guest fault and the backing
-+guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
-+consumed from guest_memfd, regardless of whether it is a shared or a private
-+fault.
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
++	TEST_ASSERT(mem == MAP_FAILED, "Copy-on-write not allowed by guest_memfd.");
 +
- See KVM_SET_USER_MEMORY_REGION2 for additional details.
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
++
++	memset(mem, val, total_size);
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0,
++			page_size);
++	TEST_ASSERT(!ret, "fallocate the first page should succeed.");
++
++	for (i = 0; i < page_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), 0x00);
++	for (; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	memset(mem, val, page_size);
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = munmap(mem, total_size);
++	TEST_ASSERT(!ret, "munmap() should succeed.");
++}
++
++static sigjmp_buf jmpbuf;
++void fault_sigbus_handler(int signum)
++{
++	siglongjmp(jmpbuf, 1);
++}
++
++static void test_fault_overflow(int fd, size_t page_size, size_t total_size)
++{
++	struct sigaction sa_old, sa_new = {
++		.sa_handler = fault_sigbus_handler,
++	};
++	size_t map_size = total_size * 4;
++	const char val = 0xaa;
++	char *mem;
++	size_t i;
++	int ret;
++
++	mem = mmap(NULL, map_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
++
++	sigaction(SIGBUS, &sa_new, &sa_old);
++	if (sigsetjmp(jmpbuf, 1) == 0) {
++		memset(mem, 0xaa, map_size);
++		TEST_ASSERT(false, "memset() should have triggered SIGBUS.");
++	}
++	sigaction(SIGBUS, &sa_old, NULL);
++
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = munmap(mem, map_size);
++	TEST_ASSERT(!ret, "munmap() should succeed.");
++}
++
++static void test_mmap_not_supported(int fd, size_t page_size, size_t total_size)
+ {
+ 	char *mem;
  
- 4.143 KVM_PRE_FAULT_MEMORY
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 3beafbf306af..698dd407980f 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -960,6 +960,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_ARM_EL2 240
- #define KVM_CAP_ARM_EL2_E2H0 241
- #define KVM_CAP_RISCV_MP_STATE_RESET 242
-+#define KVM_CAP_GMEM_MMAP 243
+ 	mem = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+ 	TEST_ASSERT_EQ(mem, MAP_FAILED);
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT_EQ(mem, MAP_FAILED);
+ }
  
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 46bddac1dacd..f1ac872e01e9 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4916,6 +4916,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- #ifdef CONFIG_KVM_GMEM
- 	case KVM_CAP_GUEST_MEMFD:
- 		return !kvm || kvm_arch_supports_gmem(kvm);
+ static void test_file_size(int fd, size_t page_size, size_t total_size)
+@@ -120,26 +193,19 @@ static void test_invalid_punch_hole(int fd, size_t page_size, size_t total_size)
+ 	}
+ }
+ 
+-static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
++static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
++						  uint64_t guest_memfd_flags,
++						  size_t page_size)
+ {
+-	size_t page_size = getpagesize();
+-	uint64_t flag;
+ 	size_t size;
+ 	int fd;
+ 
+ 	for (size = 1; size < page_size; size++) {
+-		fd = __vm_create_guest_memfd(vm, size, 0);
+-		TEST_ASSERT(fd == -1 && errno == EINVAL,
++		fd = __vm_create_guest_memfd(vm, size, guest_memfd_flags);
++		TEST_ASSERT(fd < 0 && errno == EINVAL,
+ 			    "guest_memfd() with non-page-aligned page size '0x%lx' should fail with EINVAL",
+ 			    size);
+ 	}
+-
+-	for (flag = BIT(0); flag; flag <<= 1) {
+-		fd = __vm_create_guest_memfd(vm, page_size, flag);
+-		TEST_ASSERT(fd == -1 && errno == EINVAL,
+-			    "guest_memfd() with flag '0x%lx' should fail with EINVAL",
+-			    flag);
+-	}
+ }
+ 
+ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+@@ -171,30 +237,119 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+ 	close(fd1);
+ }
+ 
+-int main(int argc, char *argv[])
++static bool check_vm_type(unsigned long vm_type)
+ {
+-	size_t page_size;
++	/*
++	 * Not all architectures support KVM_CAP_VM_TYPES. However, those that
++	 * support guest_memfd have that support for the default VM type.
++	 */
++	if (vm_type == VM_TYPE_DEFAULT)
++		return true;
++
++	return kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(vm_type);
++}
++
++static void test_with_type(unsigned long vm_type, uint64_t guest_memfd_flags,
++			   bool expect_mmap_allowed)
++{
++	struct kvm_vm *vm;
+ 	size_t total_size;
++	size_t page_size;
+ 	int fd;
+-	struct kvm_vm *vm;
+ 
+-	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
++	if (!check_vm_type(vm_type))
++		return;
+ 
+ 	page_size = getpagesize();
+ 	total_size = page_size * 4;
+ 
+-	vm = vm_create_barebones();
++	vm = vm_create_barebones_type(vm_type);
+ 
+-	test_create_guest_memfd_invalid(vm);
+ 	test_create_guest_memfd_multiple(vm);
++	test_create_guest_memfd_invalid_sizes(vm, guest_memfd_flags, page_size);
+ 
+-	fd = vm_create_guest_memfd(vm, total_size, 0);
++	fd = vm_create_guest_memfd(vm, total_size, guest_memfd_flags);
+ 
+ 	test_file_read_write(fd);
+-	test_mmap(fd, page_size);
++
++	if (expect_mmap_allowed) {
++		test_mmap_supported(fd, page_size, total_size);
++		test_fault_overflow(fd, page_size, total_size);
++
++	} else {
++		test_mmap_not_supported(fd, page_size, total_size);
++	}
++
+ 	test_file_size(fd, page_size, total_size);
+ 	test_fallocate(fd, page_size, total_size);
+ 	test_invalid_punch_hole(fd, page_size, total_size);
+ 
+ 	close(fd);
++	kvm_vm_free(vm);
++}
++
++static void test_vm_type_gmem_flag_validity(unsigned long vm_type,
++					    uint64_t expected_valid_flags)
++{
++	size_t page_size = getpagesize();
++	struct kvm_vm *vm;
++	uint64_t flag = 0;
++	int fd;
++
++	if (!check_vm_type(vm_type))
++		return;
++
++	vm = vm_create_barebones_type(vm_type);
++
++	for (flag = BIT(0); flag; flag <<= 1) {
++		fd = __vm_create_guest_memfd(vm, page_size, flag);
++
++		if (flag & expected_valid_flags) {
++			TEST_ASSERT(fd >= 0,
++				    "guest_memfd() with flag '0x%lx' should be valid",
++				    flag);
++			close(fd);
++		} else {
++			TEST_ASSERT(fd < 0 && errno == EINVAL,
++				    "guest_memfd() with flag '0x%lx' should fail with EINVAL",
++				    flag);
++		}
++	}
++
++	kvm_vm_free(vm);
++}
++
++static void test_gmem_flag_validity(void)
++{
++	uint64_t non_coco_vm_valid_flags = 0;
++
++	if (kvm_has_cap(KVM_CAP_GMEM_MMAP))
++		non_coco_vm_valid_flags = GUEST_MEMFD_FLAG_MMAP;
++
++	test_vm_type_gmem_flag_validity(VM_TYPE_DEFAULT, non_coco_vm_valid_flags);
++
++#ifdef __x86_64__
++	test_vm_type_gmem_flag_validity(KVM_X86_SW_PROTECTED_VM, 0);
++	test_vm_type_gmem_flag_validity(KVM_X86_SEV_VM, 0);
++	test_vm_type_gmem_flag_validity(KVM_X86_SEV_ES_VM, 0);
++	test_vm_type_gmem_flag_validity(KVM_X86_SNP_VM, 0);
++	test_vm_type_gmem_flag_validity(KVM_X86_TDX_VM, 0);
 +#endif
-+#ifdef CONFIG_KVM_GMEM_SUPPORTS_MMAP
-+	case KVM_CAP_GMEM_MMAP:
-+		return !kvm || kvm_arch_supports_gmem_mmap(kvm);
- #endif
- 	default:
- 		break;
++}
++
++int main(int argc, char *argv[])
++{
++	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
++
++	test_gmem_flag_validity();
++
++	test_with_type(VM_TYPE_DEFAULT, 0, false);
++	if (kvm_has_cap(KVM_CAP_GMEM_MMAP)) {
++		test_with_type(VM_TYPE_DEFAULT, GUEST_MEMFD_FLAG_MMAP,
++			       true);
++	}
++
++#ifdef __x86_64__
++	test_with_type(KVM_X86_SW_PROTECTED_VM, 0, false);
++#endif
+ }
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
