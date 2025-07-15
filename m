@@ -1,104 +1,84 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1462D4B47;
-	Tue, 15 Jul 2025 08:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6A25D55D;
+	Tue, 15 Jul 2025 08:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752568320; cv=none; b=Pv2WpH8RathtqZoftQmrpDrQI6p1jTU2PM8feXyDv6VwlUwlxTyIUD7VU6nIW7+GQL1h66JiWLKhJQtjU4XlnQaWiyVEELdQzLhtif1H0Z2hDC+8kIXAoIuiSj7ho1YbT6L4c1vbmJeUEh9oB18Dl4P/Wer3nBjY2V9GLY4upRg=
+	t=1752568712; cv=none; b=Fl0IOH9FTrmmXCE2iEXbrqDpmyiAT9bxAs8xsf51T8hsDF/R5EfrNA7Gh26DIRttf0qGpLRHGNFfiwFsqApAL17xktPS0Qzrb2UXcRgM/hDxxVbsH7eJFCE+8g0aZFBKM0lQcoekrN00yj56gmmBQXkt0QVrSDp6hB8L7tb3Y08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752568320; c=relaxed/simple;
-	bh=wB6hEFFzvmOcnpBZLYTMSOsSPCn29ml9ZB1Zmap4zqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5Af1NdwtliVSyfrBlrk+eDd0VTcmGxa6CMzFrzh1BhAXFiZAgbWkUnZJ9rDJPJaga+9Qj3deurBvDGNwFYJvFsuPOGxKYjvrVc1AK/gHPV8WhCmPxCQrj3LbCFS73DGKQnUymutecI60rKH2A/sH6eMOCJLQXzaD9OwfSfmc9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btkodKuJ; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1752568712; c=relaxed/simple;
+	bh=+vwArnrY1WUKpHwVAhWW4AdnqAXxb7+tLN01yLid6D8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Slkfyg+ej85HvkNiD9XRqgOlMG9Xj8Y6f8JtSmsRy6YT7oGS5Dv1+ezdrTH0A7hfh+dZBl1dzLDfz28nDTGHtXrqee1LthMHsTfkuNkTCH/ZtzhmJMYhLcVBCN3UIY395/hyFHSa3yjSWjYYoG7zAlu/n5pnr05KnNjPll7lkgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kYm/zufu; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btkodKuJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752568320; x=1784104320;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wB6hEFFzvmOcnpBZLYTMSOsSPCn29ml9ZB1Zmap4zqg=;
-  b=btkodKuJJsBumquyM8UTsmY93elcYYG/LJhFN/kh0Bi3K/q/k5R/DZJg
-   aEDOw5ETu7jte7P70rgmLC3ZMU1G26GWJOQzT/H9O2a3+TJDkPY0+wtBp
-   uaAZSAYNC028W2ZyzkwY8g21jBGTklf+KqxVFH5Znva2YmeXvX56hVwG0
-   IAoXkYUpZqx6C8x0qbAKlTdo9n0On1VEiwncupeOP2yVzsa/zL5oP+4XW
-   Jco2WYRsELYk2Z7QgU9YDDO7WR+drtJOEeeZnjogTfrZxGfQRcQTVOBtZ
-   sOcFrp15PjfPxt7ntL9+xLlagzIWMgtKjnRfVcpdIsLulJZix0KSkxCJU
-   w==;
-X-CSE-ConnectionGUID: 81rBu93kRRKJ36qGvrcZ/w==
-X-CSE-MsgGUID: Da+TjxOwSoyfHAfWbBkpxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54632125"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="54632125"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 01:31:59 -0700
-X-CSE-ConnectionGUID: 85HYvWqASsWSDK7lGaxF2A==
-X-CSE-MsgGUID: SgsKgsojRpu7AnERVa8LMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="156572604"
-Received: from emr.sh.intel.com ([10.112.229.56])
-  by orviesa010.jf.intel.com with ESMTP; 15 Jul 2025 01:31:55 -0700
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Yi Lai <yi1.lai@intel.com>,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	dongsheng <dongsheng.x.zhang@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [kvm-unit-tests patch 5/5] x86/pmu: Expand "llc references" upper limit for broader compatibility
-Date: Sat, 12 Jul 2025 17:49:15 +0000
-Message-ID: <20250712174915.196103-6-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250712174915.196103-1-dapeng1.mi@linux.intel.com>
-References: <20250712174915.196103-1-dapeng1.mi@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kYm/zufu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=0T1MAaef5TRDgYb2ggWbaAQ7P+Pjl4UPCbAZTCdx3jU=; b=kYm/zuful5YpIcQKeAogobkh5w
+	gtQgGyCJvrx88F9aqMMCBThiUhl8tokdLvPaee1EvNBGSJAYFMMp8yBW3mg4Q4+/sSRLHUuLbSs60
+	edg3jsXa+qD1hGBCyJlwoyzaPK4/QjexBONi1etGhmU1pUcG6P6pCna+AR5KtJZ9cw127OtcBF36s
+	3UQ/FxrqQ/wnDTcsiJXPhbrO8CP/w+DY3zMWaKbZ6DzPXgzTF5UVEZTxb+osOwHsOtKJ7xlfgjTyv
+	uBqEZKmTGLj5GFwPkC8Dzl4ZRzMDdJ0eMf6+3a1/p2Wl98qKQIYzhVpMwirc/DPG8dMQM/Inwf90o
+	CwVwtdzg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ubbAx-00000009rLY-34gi;
+	Tue, 15 Jul 2025 08:38:12 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 68E1E3001AA; Tue, 15 Jul 2025 10:38:10 +0200 (CEST)
+Date: Tue, 15 Jul 2025 10:38:10 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, seanjc@google.com, pbonzini@redhat.com,
+	ardb@kernel.org, kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	gregkh@linuxfoundation.org, jpoimboe@kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+	samitolvanen@google.com, ojeda@kernel.org
+Subject: Re: [PATCH v3 16/16] objtool: Validate kCFI calls
+Message-ID: <20250715083810.GN1613200@noisy.programming.kicks-ass.net>
+References: <20250714102011.758008629@infradead.org>
+ <20250714103441.496787279@infradead.org>
+ <CANiq72kP7_24ChdQ+vDg+HWJB-4mKWvB9P33C9O=0W_kLt0+eA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kP7_24ChdQ+vDg+HWJB-4mKWvB9P33C9O=0W_kLt0+eA@mail.gmail.com>
 
-From: dongsheng <dongsheng.x.zhang@intel.com>
+On Mon, Jul 14, 2025 at 06:30:09PM +0200, Miguel Ojeda wrote:
+> On Mon, Jul 14, 2025 at 12:45 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > Apparently some Rust 'core' code violates this and explodes when ran
+> > with FineIBT.
+> 
+> I think this was fixed in Rust 1.88 (latest version), right? Or is
+> there an issue still?
+> 
+>     5595c31c3709 ("x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+> or Rust >= 1.88")
 
-Increase the upper limit of the "llc references" test to accommodate
-results observed on additional Intel CPU models, including CWF and
-SRF.
-These CPUs exhibited higher reference counts that previously caused
-the test to fail.
+Oh yeah, it got fixed. Clearly I failed to update the Changelog.
 
-Signed-off-by: dongsheng <dongsheng.x.zhang@intel.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Yi Lai <yi1.lai@intel.com>
----
- x86/pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> >  - runtime EFI is especially henous because it also needs to disable
+> >    IBT. Basically calling unknown code without CFI protection at
+> >    runtime is a massice security issue.
+> 
+> heinous
+> massive
 
-diff --git a/x86/pmu.c b/x86/pmu.c
-index c54c0988..445ea6b4 100644
---- a/x86/pmu.c
-+++ b/x86/pmu.c
-@@ -116,7 +116,7 @@ struct pmu_event {
- 	{"core cycles", 0x003c, 1*N, 50*N},
- 	{"instructions", 0x00c0, 10*N, 10.2*N},
- 	{"ref cycles", 0x013c, 1*N, 30*N},
--	{"llc references", 0x4f2e, 1, 2*N},
-+	{"llc references", 0x4f2e, 1, 2.5*N},
- 	{"llc misses", 0x412e, 1, 1*N},
- 	{"branches", 0x00c4, 1*N, 1.1*N},
- 	{"branch misses", 0x00c5, 1, 0.1*N},
--- 
-2.43.0
-
+Typing hard; Thanks!
