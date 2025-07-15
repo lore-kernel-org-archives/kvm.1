@@ -1,214 +1,354 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8232C08CE;
-	Tue, 15 Jul 2025 01:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752544129; cv=fail; b=KgMt5Q17GRsCYWhwUoSuMaKj5WZ0yoxWMFH7wTxdPw32cQMQyAUhmydhKJmQrhY8drniFBuWKOZCO0ZTMB+gC4KlkLIwP018M234vsduQ4qeCCHk4ONr/eNF7WXbzVdBcwLK4QC+gEcEmfikhyf1Jfcpu/LE/vSlfTK2jpvGDK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752544129; c=relaxed/simple;
-	bh=4fxpO59oDeMLCnPH9T1m++61GtNmxKd9dkpSiOY8350=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FHQhFedsVRNe2fk11ULXC4/UNA/bo321RmenHZBpjA8otJtFC6TSgRjcuD2eYYIBNNlngen1xrV0OatWFEzbiz2KZYx5aMs80hEXeojcOclj3XZN8FX4WcxJaOE0SH80MAL8CFGYeCOiznguEvpPoctLntQIGRyYwhgJ65gKoHY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzYF9NBd; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FFB2C3274;
+	Tue, 15 Jul 2025 02:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752546127; cv=none; b=st2jXQP1mKSDQDVKm7LEjXubCggAMkbKJu4o5FTvaybAFZPAvb2Skp+XamoapDdUi6tQ6a55btGssgrrOIk0nwaxbJYeOPpp7qT6WUlwWHrZGUXaD7R2WfuJBK95jX3dpwMIMrUks0XmD70QyxNlsKmZtXDG+gHmbGpFZC8j0K8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752546127; c=relaxed/simple;
+	bh=VoIDI81IF1mhhatNTQ8YKevKRHp5bKCm0PTI8ZSA4PU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LopGrLjdl/SgAj1dzDNoXi0QmqjNFpUNSOYA9DC2dVLD4eEYBTF8SjLAEON3pzhC7O3x553KnPigMN3fjmhWU4ClP9guDU0DuRcvBh7R9pmlGLEHB0xO+pYn41VDgU0cCgzKykZ3lMoNMmSWdVkT1ZTIjZA2fGSfhuhOYvnRDXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NldwZkVw; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzYF9NBd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NldwZkVw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752544128; x=1784080128;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=4fxpO59oDeMLCnPH9T1m++61GtNmxKd9dkpSiOY8350=;
-  b=YzYF9NBdole00M6LQqOvsmMWKpyRX9ptNFGjrjSd2gR5iFQmGzauJGuY
-   ShtLo+vkBxCA04iZQrb45yBXMYg14MYIJ5/HAk62i6Lz7a2CgQn9cp/VQ
-   wnqxhLi/BA7L/kWodh6KH8y1VSzA55o1/MrBZeRfqeNM9IGPhIeEJ2TA8
-   WpFzRKV3REmh1FDO645pQIKiea1TPXqA6WtdarX5u3HURjzwhbtJCqN9k
-   4jlnJZKK4yIVhM7+WfaAxaKUGQBBHvDgQaOIKU2kslgZTtBt4iuOa8AHl
-   yaCkBicFC2MGw74ScVmBeoB8T4utbLem3XaNMZGIXqMY7x66maCbCs4hP
-   Q==;
-X-CSE-ConnectionGUID: R+oeNzzbRNOTMAmgd4UbSw==
-X-CSE-MsgGUID: fVUuf0MSTsCjZ4CkMa0fkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54687490"
+  t=1752546125; x=1784082125;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VoIDI81IF1mhhatNTQ8YKevKRHp5bKCm0PTI8ZSA4PU=;
+  b=NldwZkVwyRSXzdDv/1cEOtWQNfkrw9M0Pjl4zOluHVcEvJuYjeLU3a4w
+   G/JPtUscxLD+qNJJL0pa1OS39L7nIRFKKhJq85USP7Z34vtVDI0P5Lkde
+   oWWcjZIlYPeHU3IzUb1HgWCDWcQswSrVqEfq0leYSMtkoWLqW9/vchLeB
+   E3Q6cycoZmG6q2BpwJK3GTDzOMahWyLG3/jVpIckboMg4lsyQA6NOd0GP
+   m0RSATkl+qXBPI7VFX35YIY8+8yWbEKlu/rRwyoFA9DwA6UCmBfYxEro7
+   wwZyFfby7teeNWK6RVQdvjfLRJp38s5+zNzVvKNgNaghYP8taAthexIwP
+   g==;
+X-CSE-ConnectionGUID: U6Al39TQTNCFH9uo9TU5eQ==
+X-CSE-MsgGUID: kL2jOphzT5G3TWQFMq+Q7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66202883"
 X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; 
-   d="scan'208";a="54687490"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 18:48:47 -0700
-X-CSE-ConnectionGUID: MVQlXdbpR2CraP1VnnwBkQ==
-X-CSE-MsgGUID: 1cqJfpPFQN2jEiUIUp7JpQ==
+   d="scan'208";a="66202883"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 19:22:04 -0700
+X-CSE-ConnectionGUID: m8NdxOPgTZqYskL23oqUnQ==
+X-CSE-MsgGUID: zTe4wbnlSRG/z7AiMP3+wg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; 
-   d="scan'208";a="188076591"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 18:48:47 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 14 Jul 2025 18:48:46 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 14 Jul 2025 18:48:46 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.63)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 14 Jul 2025 18:48:44 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V1plWezjD5IWr8D/y7OGPXyRJTvZh6oRACOgLDhvcU5U8xiKwqmG7uBO2ru0KxPDHr9gdRLlqAKfzTgx+epQ7eOdQFJKCqBEADc4goCfFEzdvNwqkMS5vS/Uc1o3eUUMxog3ITKS5fOxN8FL3seRchiL7cQgquT24IyFVu2VCELmOQtlu/0dArJ0q9PfcXkZlqfZhZKfseyENQX020gHntZaSBD2JipyLqzfwPV4ckgiLem22mfDS1S3h4iI0wcyIudqgsjfXKsytp5BdaIUga8++aupaslN4RlcCA8Dag7el0JuP1RCVcVdzLdsdnj7WvuBYX2PwxnqfqlsByIz4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JT537YAHGgpdWgJOqnS3GE56gNtJ+4QGSxgmpkoQkg4=;
- b=BrjdMzQVvC92sdF3Z40Wlkvm3SjZiBRZAn7gxS8pJrKGCa/L8eWCvSn0yKFdhTnRVOlMJ/uzVbmPsTwGHkk11koas1jEEGjzTmwT0ACj3CmJD9aXJJkyaFlAX5RNAhRc0YhReQD6eRBlMoIYnGSCYU5mroyTvIgWmswTxJ3KPePfHAmPcLCMmpjQ+h+bNc8g1PFZGc3A6LrO+zZ4XPfFZTzoMPUhJfauDkfovi2TvTGb2DJzvcZFlVc1/549gaof3tzrquzyRYAXOsdnI3JDUW2bdhfI3+reQUHVVwjyU+cwYfKpOJu8EMJBBwcMRDlnY+/Kak1adeo7YX+O3jIU4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- IA4PR11MB9203.namprd11.prod.outlook.com (2603:10b6:208:55d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Tue, 15 Jul
- 2025 01:47:44 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%5]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
- 01:47:44 +0000
-Date: Tue, 15 Jul 2025 09:10:42 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Michael Roth <michael.roth@amd.com>, <pbonzini@redhat.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<rick.p.edgecombe@intel.com>, <kai.huang@intel.com>,
-	<adrian.hunter@intel.com>, <reinette.chatre@intel.com>,
-	<xiaoyao.li@intel.com>, <tony.lindgren@intel.com>,
-	<binbin.wu@linux.intel.com>, <dmatlack@google.com>,
-	<isaku.yamahata@intel.com>, <ira.weiny@intel.com>, <vannapurve@google.com>,
-	<david@redhat.com>, <ackerleytng@google.com>, <tabba@google.com>,
-	<chao.p.peng@intel.com>
-Subject: Re: [RFC PATCH] KVM: TDX: Decouple TDX init mem region from
- kvm_gmem_populate()
-Message-ID: <aHWqkodwIDZZOtX8@yzhao56-desk>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20250703062641.3247-1-yan.y.zhao@intel.com>
- <20250709232103.zwmufocd3l7sqk7y@amd.com>
- <aG_pLUlHdYIZ2luh@google.com>
- <aHCUyKJ4I4BQnfFP@yzhao56-desk>
- <20250711151719.goee7eqti4xyhsqr@amd.com>
- <aHEwT4X0RcfZzHlt@google.com>
- <aHSgdEJpY/JF+a1f@yzhao56-desk>
- <aHUmcxuh0a6WfiVr@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aHUmcxuh0a6WfiVr@google.com>
-X-ClientProxiedBy: SG2PR02CA0039.apcprd02.prod.outlook.com
- (2603:1096:3:18::27) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+   d="scan'208";a="157814824"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.57]) ([10.124.240.57])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 19:22:00 -0700
+Message-ID: <03934334-a4b6-4c9f-ad99-5f8041836065@linux.intel.com>
+Date: Tue, 15 Jul 2025 10:21:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|IA4PR11MB9203:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee2c4267-c1f3-49f4-559d-08ddc3419718
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7RHk1LE9/wuteyaqUESp67ziLt591CqT/5e8LinKtbfs9Wr8s75T7GCLlAA0?=
- =?us-ascii?Q?7IAC1ixP75cgQAdEqLVZmDKjBg5oiQbCES8J5MNTozE2dmqNhAnuJc0PM7mP?=
- =?us-ascii?Q?hFD0TNuGoKmr+xeB5sk6RXVChmp8KQRqeREez9EwJLkJIMx5Z3f8YUSs1wO0?=
- =?us-ascii?Q?PrWk6VSiBFswbnnyYHCpnYYXMl0iiCmQ5bzMkvDULEmyZ5vfiAwK70mGzxnc?=
- =?us-ascii?Q?O9tHkmztiS5OouoKTWg7jA4UHQIffT8XgDMhNCcBfHhaHcys7O37UYK2XYOa?=
- =?us-ascii?Q?cWFamgVae7T7coNIIkF2XlP28iwhQrv6Z0GbV5t37cI9gDvJ/BRxdzUUlwz3?=
- =?us-ascii?Q?Fq6Cg3KZWZ67/zsdJhCmlON7W1OmBBYK5PHPk+Awb1vy7LdrEIgB+m4J0ZtH?=
- =?us-ascii?Q?i0XHJNlwv7Xxe3jRzr3vY/F6rmSBvakpqNzttIvQ4HAtBq7zW0WHlnx4TD2n?=
- =?us-ascii?Q?kwjY11d7LF7Vr2rVOivej19c3ElUkhYyL6kZ6rl5iYE/TMCnxpj5WqjP8OJr?=
- =?us-ascii?Q?xv/QPfQhTx5x8V+4CFJxEvSbOsmmUjO3tlcMQ65OOWL5BFXjwfB66Vr1gfW0?=
- =?us-ascii?Q?GVB9LOf//o9Vv4yDFfAIfxzrzqzV6CA1hhsTmH5F7kEY/JtbYxCVObWGRc7i?=
- =?us-ascii?Q?q0N64gjIr7oVY5sr8IEEDHzhA43aMjncAEC5NOERN03fnyK/N13PQMv323rr?=
- =?us-ascii?Q?ldyXJXA1mIefQCTWVTWQJq9B0bgdYA6h0EWprB5Q7REDYPpmXcXL2Rf5GlvO?=
- =?us-ascii?Q?FozQzZbFUgSA/z5VCZpeTB1gmsLuolsx52vfIQmUpgL6295M0T6im0SblyQD?=
- =?us-ascii?Q?8EriZMrTdVP15PdYv+7JZRfrSPSeZ7FMh6eiv0cwoMDUy6IekPkDSFIHclbr?=
- =?us-ascii?Q?j5r3Uc20X200rcjzwmUrUjF9BdvZapyLxlyYVyfHGIAA+sQ4i6Sx2rry00Hi?=
- =?us-ascii?Q?ParIGrD9jXeODo7LW9/tLOr41ELmK8/VpKZm/c1zY5qujJ8XlRxPLQZ98vOr?=
- =?us-ascii?Q?9w7pNm1migNVyKznARQfTAooITd6KrVJOWvCgkYyeUBzdz/yN2T0BHRubali?=
- =?us-ascii?Q?M6tWLfbIlvbUHPwNeY7vcANaIITR2UceTFW1RfFzK6pcZXZLunygD7odsusM?=
- =?us-ascii?Q?FEfj9bX4TfnTNkj1dm3zB30HyunF/BSk2tX7ZAPXeRGoS3Tw7JwgGQ1rFXT8?=
- =?us-ascii?Q?crgAzm9RfluCzH8YgbqPKv6tXoyprftjtBdZSIGa3uFp8gA+dS6V6B+KzZu4?=
- =?us-ascii?Q?bjgO5/m+yxTO8QDXlgPUl+IoOWE2W4bQD/QhLM/7GvE5653cH7GkDw1lX9eL?=
- =?us-ascii?Q?V2InnhAvEwyVnF53zICApPkzqwT1CCfxfG9cnTIJrEuKCFHRclmAauoDHuYx?=
- =?us-ascii?Q?ii5W3C/fvzwG0tY3pl3PibrCSmwrA+JAS3/FUdVjQdEqzz3fRo+o17jpdBfH?=
- =?us-ascii?Q?yXRS+aNuS3g=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?F3oFK/xD5EnqYH6igLGVAyRmAHsiEqRxISzimtF7QwtosPEZKluCYN1uiCjV?=
- =?us-ascii?Q?MK3jjc0XPUsB3FRZ8zH4MjGQLR0sZH+cucAEPH1FLHgM58hOjRGhbkZiqnVm?=
- =?us-ascii?Q?N2cYKvzyi6353Qjnw/7abNqxaQZOtUW0/iSCalGzrWxInK4fVt9B+1W87N2D?=
- =?us-ascii?Q?sPg3O30dbYzlbT/VyFlKvY6967CFXZjWrwRDgS71dkYYBCMF7wBvcNeSyUfC?=
- =?us-ascii?Q?v9Eand8BfOlG7xW/1gwlahA8Z6iOGM/vu4wQQwFahjiKlu7Q4SF2nui05aNr?=
- =?us-ascii?Q?zTHkbDGToqmseG1tr08U3LkynBdxVyE1mGQhQ6nf7+O/BEB9jhIUNEllpP41?=
- =?us-ascii?Q?76OHUoc3w7uC8oXTykyurm3LnJLLx11Lgim+sOeATEaz5BFW5Z2M7yzVz6w2?=
- =?us-ascii?Q?UlBDz1m5TfzYchPlsf8BaHjQe6PMXgWj58hJ8llYxxy/nA37Yve04Lf1TAoV?=
- =?us-ascii?Q?qsU6b95g8Xe/8LLcSkpZ4menxubXQLnbPiBp3NsQWL/nKms6laKepYQwoWx4?=
- =?us-ascii?Q?dRHbnJYFTYb79x5QOnL2XyfK6P3qgXX9tMouHdNncJle86pHn0PWgsQtZqtf?=
- =?us-ascii?Q?xdGrRDWpZygiDWIxH+zlQXwvRk18uyl2G9oSKJtDOHlH5lFX8fAZzMF1xU6X?=
- =?us-ascii?Q?QVFeQhXTuscxGImlVgVjMt6HKbvSwZT0itK/VZaJSyL1EjNjtWGCn/VqML20?=
- =?us-ascii?Q?5wCQl6zLdAaCVFoyBK6dzlEQEzZPgLnKeJwE0yw+WHy9+SJI4qAAvfbZBzly?=
- =?us-ascii?Q?rEk5bxTn5zC8uV6W9ofFvuBAg6ybKcadPc1I7FDslpw2co2e6ae07JXvEmbE?=
- =?us-ascii?Q?v2Vmkp+nqp/61LaTkjhsSAwYkgG2bkmdoqkLu2/1u3a34S7XLYOhjdMhp6GP?=
- =?us-ascii?Q?lnv99ZDa9PaJLL/A6FVHFcQEmFx7QzNQRa+AO5zkpn73q9E0cRRkjmSuamSw?=
- =?us-ascii?Q?xnsfj1eJfhCu4ClNlNnjTah18EFwL7Gh97IghZr2gNCerNGFBNDRjfQ1WZjK?=
- =?us-ascii?Q?csOX78a8Eez8eIELDiDNnYuOzjMrZlyjX9f6K1MLF+n/pZDTB9cnZqeg38AO?=
- =?us-ascii?Q?x3COIe/FYJ1wZAhUMY73HA4tajb5pgUJ64OeF3xwn/bokNzilEnbRIEbTXMl?=
- =?us-ascii?Q?IgX9IbD6p5LFmMOakKogho8HN6MHH86m2Iy5l4a6HAENATQ8CauKRnf5aJSq?=
- =?us-ascii?Q?UxfvXMGxNYs7yyyKtrsP/cmLKVB56zZjKRcGNx5TJAV0nJeLQSLetrnW1mtU?=
- =?us-ascii?Q?cDulWJ7NNDtNgIyFT9M/KJw/F4ZVRzEtFl+5xiv0Cjw4WEP37KE1NyVlP92R?=
- =?us-ascii?Q?GC3/G6sqLBJ/COSd6zy/oJiVoXDf9F2a5WTXCuUGOkSmbsCpqsPNjv+eOAjs?=
- =?us-ascii?Q?BEr2w3KqXqn66w3BDHs5yc/esD27aQ7MIR60WYkjgLUDB+S3pd4IAV59+ejS?=
- =?us-ascii?Q?Jhkz9D5qLYcbFWhL4N2V52blGY1dYNgfMmsgn2hueXLzDtgmYGOblQPBCRcS?=
- =?us-ascii?Q?+YwQ+4GaQt3wcrY/o8yfNqgAiim87dS0OgjR208l2zeyOvN33Blj6rT9fkMl?=
- =?us-ascii?Q?aLuP+fp70hndZ9NktlCIecRwvGZH5MOOJ1OCN4SR?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee2c4267-c1f3-49f4-559d-08ddc3419718
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 01:47:43.3886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mdSmKvzDf3eYnGzmyS+Jb42EhXmG1n0qR2oKOUgkkfMvKREhIkK9LpiQWF1TcT362RRMqpCF0LGK/NEkZE6+CA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9203
-X-OriginatorOrg: intel.com
-
-On Mon, Jul 14, 2025 at 08:46:59AM -0700, Sean Christopherson wrote:
-> > > 	folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &is_prepared, &max_order);
-> > If max_order > 0 is returned, the next invocation of __kvm_gmem_populate() for
-> > GFN+1 will return is_prepared == true.
-> 
-> I don't see any reason to try and make the current code truly work with hugepages.
-> Unless I've misundertood where we stand, the correctness of hugepage support is
-Hmm. I thought your stand was to address the AB-BA lock issue which will be
-introduced by huge pages, so you moved the get_user_pages() from vendor code to
-the common code in guest_memfd :)
-
-> going to depend heavily on the implementation for preparedness.  I.e. trying to
-> make this all work with per-folio granulartiy just isn't possible, no?
-Ah. I understand now. You mean the right implementation of __kvm_gmem_get_pfn()
-should return is_prepared at 4KB granularity rather than per-folio granularity.
-
-So, huge pages still has dependency on the implementation for preparedness.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/11] KVM: Add KVM_GET_LAPIC_W_EXTAPIC and
+ KVM_SET_LAPIC_W_EXTAPIC for extapic
+To: Manali Shukla <manali.shukla@amd.com>, kvm@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, nikunj@amd.com, bp@alien8.de,
+ peterz@infradead.org, mingo@redhat.com, mizhang@google.com,
+ thomas.lendacky@amd.com, ravi.bangoria@amd.com, Sandipan.Das@amd.com
+References: <20250627162550.14197-1-manali.shukla@amd.com>
+ <20250627162550.14197-3-manali.shukla@amd.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20250627162550.14197-3-manali.shukla@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-Will you post code [1][2] to fix non-hugepages first? Or can I pull them to use
-as prerequisites for TDX huge page v2?
+On 6/28/2025 12:25 AM, Manali Shukla wrote:
+> Modern AMD processors expose four additional extended LVT registers in
+> the extended APIC register space, which can be used for additional
+> interrupt sources such as instruction-based sampling and others.
+>
+> To support this, introduce two new vCPU-based IOCTLs:
+> KVM_GET_LAPIC_W_EXTAPIC and KVM_SET_LAPIC_W_EXTAPIC. These IOCTLs works
+> similarly to KVM_GET_LAPIC and KVM_SET_LAPIC, but operate on APIC page
+> with extended APIC register space located at APIC offsets 400h-530h.
+>
+> These IOCTLs are intended for use when extended APIC support is
+> enabled in the guest. They allow saving and restoring the full APIC
+> page, including the extended registers.
+>
+> To support this, the `struct kvm_lapic_state_w_extapic` has been made
+> extensible rather than hardcoding its size, improving forward
+> compatibility.
+>
+> Documentation for the new IOCTLs has also been added.
+>
+> For more details on the extended APIC space, refer to AMD Programmer’s
+> Manual Volume 2, Section 16.4.5: Extended Interrupts.
+> https://bugzilla.kernel.org/attachment.cgi?id=306250
+>
+> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+> ---
+>  Documentation/virt/kvm/api.rst  | 23 ++++++++++++++++++++
+>  arch/x86/include/uapi/asm/kvm.h |  5 +++++
+>  arch/x86/kvm/lapic.c            | 12 ++++++-----
+>  arch/x86/kvm/lapic.h            |  6 ++++--
+>  arch/x86/kvm/x86.c              | 37 ++++++++++++++++++++++++---------
+>  include/uapi/linux/kvm.h        | 10 +++++++++
+>  6 files changed, 76 insertions(+), 17 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 1bd2d42e6424..0ca11d43f833 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -2041,6 +2041,18 @@ error.
+>  Reads the Local APIC registers and copies them into the input argument.  The
+>  data format and layout are the same as documented in the architecture manual.
+>  
+> +::
+> +
+> +  #define KVM_APIC_EXT_REG_SIZE 0x540
+> +  struct kvm_lapic_state_w_extapic {
+> +	__DECLARE_FLEX_ARRAY(__u8, regs);
+> +  };
+> +
+> +Applications should use KVM_GET_LAPIC_W_EXTAPIC ioctl if extended APIC is
+> +enabled. KVM_GET_LAPIC_W_EXTAPIC reads Local APIC registers with extended
+> +APIC register space located at offsets 400h-530h and copies them into input
+> +argument.
+> +
+>  If KVM_X2APIC_API_USE_32BIT_IDS feature of KVM_CAP_X2APIC_API is
+>  enabled, then the format of APIC_ID register depends on the APIC mode
+>  (reported by MSR_IA32_APICBASE) of its VCPU.  x2APIC stores APIC ID in
+> @@ -2072,6 +2084,17 @@ always uses xAPIC format.
+>  Copies the input argument into the Local APIC registers.  The data format
+>  and layout are the same as documented in the architecture manual.
+>  
+> +::
+> +
+> +  #define KVM_APIC_EXT_REG_SIZE 0x540
+> +  struct kvm_lapic_state_w_extapic {
+> +	__DECLARE_FLEX_ARRAY(__u8, regs);
+> +  };
+> +
+> +Applications should use KVM_SET_LAPIC_W_EXTAPIC ioctl if extended APIC is enabled.
+> +KVM_SET_LAPIC_W_EXTAPIC copies input arguments with extended APIC register into
+> +Local APIC and extended APIC registers.
+> +
+>  The format of the APIC ID register (bytes 32-35 of struct kvm_lapic_state's
+>  regs field) depends on the state of the KVM_CAP_X2APIC_API capability.
+>  See the note in KVM_GET_LAPIC.
+> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+> index 6f3499507c5e..91c3c5b8cae3 100644
+> --- a/arch/x86/include/uapi/asm/kvm.h
+> +++ b/arch/x86/include/uapi/asm/kvm.h
+> @@ -124,6 +124,11 @@ struct kvm_lapic_state {
+>  	char regs[KVM_APIC_REG_SIZE];
+>  };
+>  
+> +#define KVM_APIC_EXT_REG_SIZE 0x540
+> +struct kvm_lapic_state_w_extapic {
+> +	__DECLARE_FLEX_ARRAY(__u8, regs);
+> +};
 
-[1] https://lore.kernel.org/all/aG_pLUlHdYIZ2luh@google.com/
-[2] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
+The name "kvm_lapic_state_w_extapic" seems a little bit too long, maybe
+"kvm_ext_lapic_state" is enough?
 
-Thanks!
 
+> +
+>  struct kvm_segment {
+>  	__u64 base;
+>  	__u32 limit;
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index 73418dc0ebb2..00ca2b0faa45 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -3046,7 +3046,7 @@ void kvm_apic_ack_interrupt(struct kvm_vcpu *vcpu, int vector)
+>  EXPORT_SYMBOL_GPL(kvm_apic_ack_interrupt);
+>  
+>  static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+> -		struct kvm_lapic_state *s, bool set)
+> +		struct kvm_lapic_state_w_extapic *s, bool set)
+>  {
+>  	if (apic_x2apic_mode(vcpu->arch.apic)) {
+>  		u32 x2apic_id = kvm_x2apic_id(vcpu->arch.apic);
+> @@ -3097,9 +3097,10 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+>  	return 0;
+>  }
+>  
+> -int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+> +int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state_w_extapic *s,
+> +		       unsigned int size)
+>  {
+> -	memcpy(s->regs, vcpu->arch.apic->regs, sizeof(*s));
+> +	memcpy(s->regs, vcpu->arch.apic->regs, size);
+>  
+>  	/*
+>  	 * Get calculated timer current count for remaining timer period (if
+> @@ -3111,7 +3112,8 @@ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+>  	return kvm_apic_state_fixup(vcpu, s, false);
+>  }
+>  
+> -int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+> +int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state_w_extapic *s,
+> +		       unsigned int size)
+>  {
+>  	struct kvm_lapic *apic = vcpu->arch.apic;
+>  	int r;
+> @@ -3126,7 +3128,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+>  		kvm_recalculate_apic_map(vcpu->kvm);
+>  		return r;
+>  	}
+> -	memcpy(vcpu->arch.apic->regs, s->regs, sizeof(*s));
+> +	memcpy(vcpu->arch.apic->regs, s->regs, size);
+>  
+>  	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
+>  	kvm_recalculate_apic_map(vcpu->kvm);
+> diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+> index 4518b4e0552f..7ad946b3738d 100644
+> --- a/arch/x86/kvm/lapic.h
+> +++ b/arch/x86/kvm/lapic.h
+> @@ -120,9 +120,11 @@ bool kvm_irq_delivery_to_apic_fast(struct kvm *kvm, struct kvm_lapic *src,
+>  void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
+>  
+>  int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated);
+> -int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+> -int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+>  void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu);
+> +int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state_w_extapic *s,
+> +		       unsigned int size);
+> +int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state_w_extapic *s,
+> +		       unsigned int size);
+>  int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+>  
+>  u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c880a512005e..c273bbbbbcc6 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5156,25 +5156,25 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>  }
+>  
+>  static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
+> -				    struct kvm_lapic_state *s)
+> +				    struct kvm_lapic_state_w_extapic *s, unsigned int size)
+>  {
+>  	if (vcpu->arch.apic->guest_apic_protected)
+>  		return -EINVAL;
+>  
+>  	kvm_x86_call(sync_pir_to_irr)(vcpu);
+>  
+> -	return kvm_apic_get_state(vcpu, s);
+> +	return kvm_apic_get_state(vcpu, s, size);
+>  }
+>  
+>  static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+> -				    struct kvm_lapic_state *s)
+> +				    struct kvm_lapic_state_w_extapic *s, unsigned int size)
+>  {
+>  	int r;
+>  
+>  	if (vcpu->arch.apic->guest_apic_protected)
+>  		return -EINVAL;
+>  
+> -	r = kvm_apic_set_state(vcpu, s);
+> +	r = kvm_apic_set_state(vcpu, s, size);
+>  	if (r)
+>  		return r;
+>  	update_cr8_intercept(vcpu);
+> @@ -5903,10 +5903,11 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  {
+>  	struct kvm_vcpu *vcpu = filp->private_data;
+>  	void __user *argp = (void __user *)arg;
+> +	unsigned long size;
+>  	int r;
+>  	union {
+>  		struct kvm_sregs2 *sregs2;
+> -		struct kvm_lapic_state *lapic;
+> +		struct kvm_lapic_state_w_extapic *lapic;
+>  		struct kvm_xsave *xsave;
+>  		struct kvm_xcrs *xcrs;
+>  		void *buffer;
+> @@ -5916,35 +5917,51 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  
+>  	u.buffer = NULL;
+>  	switch (ioctl) {
+> +	case KVM_GET_LAPIC_W_EXTAPIC:
+>  	case KVM_GET_LAPIC: {
+>  		r = -EINVAL;
+>  		if (!lapic_in_kernel(vcpu))
+>  			goto out;
+> -		u.lapic = kzalloc(sizeof(struct kvm_lapic_state), GFP_KERNEL);
+> +
+> +		if (ioctl == KVM_GET_LAPIC_W_EXTAPIC)
+> +			size = struct_size(u.lapic, regs, KVM_APIC_EXT_REG_SIZE);
+> +		else
+> +			size = sizeof(struct kvm_lapic_state);
+> +
+> +		u.lapic = kzalloc(size, GFP_KERNEL);
+>  
+>  		r = -ENOMEM;
+>  		if (!u.lapic)
+>  			goto out;
+> -		r = kvm_vcpu_ioctl_get_lapic(vcpu, u.lapic);
+> +		r = kvm_vcpu_ioctl_get_lapic(vcpu, u.lapic, size);
+>  		if (r)
+>  			goto out;
+> +
+>  		r = -EFAULT;
+> -		if (copy_to_user(argp, u.lapic, sizeof(struct kvm_lapic_state)))
+> +		if (copy_to_user(argp, u.lapic, size))
+>  			goto out;
+> +
+>  		r = 0;
+>  		break;
+>  	}
+> +	case KVM_SET_LAPIC_W_EXTAPIC:
+>  	case KVM_SET_LAPIC: {
+>  		r = -EINVAL;
+>  		if (!lapic_in_kernel(vcpu))
+>  			goto out;
+> -		u.lapic = memdup_user(argp, sizeof(*u.lapic));
+> +
+> +		if (ioctl == KVM_SET_LAPIC_W_EXTAPIC)
+> +			size = struct_size(u.lapic, regs, KVM_APIC_EXT_REG_SIZE);
+> +		else
+> +			size = sizeof(struct kvm_lapic_state);
+> +		u.lapic = memdup_user(argp, size);
+> +
+>  		if (IS_ERR(u.lapic)) {
+>  			r = PTR_ERR(u.lapic);
+>  			goto out_nofree;
+>  		}
+>  
+> -		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic);
+> +		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic, size);
+>  		break;
+>  	}
+>  	case KVM_INTERRUPT: {
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index d00b85cb168c..cf23c1b52c49 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1290,6 +1290,16 @@ struct kvm_vfio_spapr_tce {
+>  #define KVM_SET_FPU               _IOW(KVMIO,  0x8d, struct kvm_fpu)
+>  #define KVM_GET_LAPIC             _IOR(KVMIO,  0x8e, struct kvm_lapic_state)
+>  #define KVM_SET_LAPIC             _IOW(KVMIO,  0x8f, struct kvm_lapic_state)
+> +/*
+> + * Added to save/restore local APIC registers with extended APIC (extapic)
+> + * register space.
+> + *
+> + * Qemu emulates extapic logic only when KVM enables extapic functionality via
+> + * KVM capability. In the condition where Qemu sets extapic registers, but KVM doesn't
+> + * set extapic capability, Qemu ends up using KVM_GET_LAPIC and KVM_SET_LAPIC.
+> + */
+> +#define KVM_GET_LAPIC_W_EXTAPIC   _IOR(KVMIO,  0x8e, struct kvm_lapic_state_w_extapic)
+> +#define KVM_SET_LAPIC_W_EXTAPIC   _IOW(KVMIO,  0x8f, struct kvm_lapic_state_w_extapic)
+>  #define KVM_SET_CPUID2            _IOW(KVMIO,  0x90, struct kvm_cpuid2)
+>  #define KVM_GET_CPUID2            _IOWR(KVMIO, 0x91, struct kvm_cpuid2)
+>  /* Available with KVM_CAP_VAPIC */
