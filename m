@@ -1,205 +1,210 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2057.outbound.protection.outlook.com [40.107.223.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C658C274B5A
-	for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 22:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752620153; cv=none; b=GVFFYfvIl0A4PBP+Cu15aFbVq9DbQUmbYYOH5bNEKNgJVuFuUdKyMIgBqVYsUCZfkdHIqBCDG63xcbNx5IhB3ueTE5MERC9EJhNFYGrh1Xy/e9RrHf4piXsH+LAWgxa/phWM1L9oYgzBsJe7cbVjBbGjo/B1dJcgZDlXsVHQn2Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752620153; c=relaxed/simple;
-	bh=vEmMpBK5/tPkb9KHvQ0SdOc52MTBa8ee6/BHSUyXBLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=r2b0RdMsmnKN1Ll5xtnqgjcS8hMvrEhwEp7TLSkhyVutsq/MJhcwQtHrT8E8aAS5lZXmvX5gi+KFuIsS5lUe8Rt4zcLNTtINRhJQnEyp+681tkQpliDai1qw2CN3kjQdbK8EP2tbpQM2Ajhq+hOv721V1nUsa2nEyLR6MhRImtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Kbr6OAkP; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EF117BA1;
+	Tue, 15 Jul 2025 22:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752620166; cv=fail; b=SlLL4e1XQi6qZZ1LkuXxo/wrkQxJegiv60twcYFtOX/WjoXiLF8p/QbK8NFAXNM5Do66PqHw+rPjdGE86txebfWxo4dRLEXqcM6+tPkSxUuIGQU2m3SxyfW1+ICMyQLNFmgeEYidBgEvsXKuhuA7DNz5evex/x/q0/rB3+dRd5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752620166; c=relaxed/simple;
+	bh=aAVGAgRI7TWP676JBCOhsIv3mKjxRU4SobCYiekkpOs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LAYCQCZZ9IPRdRAJByiFxxWF9V5Z9efhzX5+RSUeLRu78GNEOKP2Sw7sVHJ5P95KOS1MwjaZZP0ZjtpH5G5DVLNg2s+8JjsvWw4wkPQOnt17EAZBDTMKZJ4KNG3gEkqGacdXAlgqawMyQY/LjfB+QBWuCb39EeC7YNMGnlPhuP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AtBVXktA; arc=fail smtp.client-ip=40.107.223.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Kbr6OAkP"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2eb6c422828so256464fac.1
-        for <kvm@vger.kernel.org>; Tue, 15 Jul 2025 15:55:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752620151; x=1753224951; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oi4TdNlobhflphwjzdK68I/IBj5StICPNqn66i2gNn4=;
-        b=Kbr6OAkPfiuAqNJM+Cq68H++WBeoRMd9s087WavWfC6VkyI1rS3y9xaJqGPCcw3iKU
-         6a6GHFMTfbIEePJ8S0eQY8r2XeDSvV/fT6rZWxFSfP5YBICOCxXxYnYzZtgotKWabfr9
-         ohntDJMeS9A5jO461DzdwG4zIRv7/P6yx6qOmK1h/pdxiCqO/dIGUbBscl30AOld4LSb
-         erJiUQRjmZUO5Ysl63/4xbSiOGzHarl6LYmISPkYfPWkJzuwN7E2nlKqpSB5N/PyCe9w
-         QrT1sG41pyHg9NpNMBm6DNkcyu6Fd3nBBDq0/xPjABvQeRgGzQyiD8j2QMf001WJFuX1
-         mD1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752620151; x=1753224951;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oi4TdNlobhflphwjzdK68I/IBj5StICPNqn66i2gNn4=;
-        b=CefkfhydaXlZO6TtjA/cFnKx+jgpClrSYeaM55tiuGbY4+qyS11p2jDCPLy1q0sGtY
-         WxPSNb4If0LnZamgrxhk48mU+0T2UIIx5CROQrAx8ylDmVAnuPJP6b1dNy105NPw2ViK
-         yJTzvtlW7xsc6SWRm9/pk8Xfcl5fZ58OFjfi3PFePwAnxkgYwoSZq63umzLt3sAkYuiv
-         2haH6fllyDpjo8Fk3+ZOokZlmFpzqByDknoxEySsp1BEv2KQBm4qfOp7U7eNVWR6eWwi
-         zuclubA6oqpaIsE99Xs8QfXY5KfpI3gbrSfDEYLYW2HhPgU1ag3EEUv9r+6XWLaGE0tg
-         VHrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyTuc5gtTAN1W5QIcGfFPck5YoJWq/A7UmsHnHq31Ft3Bn5a+qeqfcbq4lcxpMBydEB34=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzd94OL+gBtUDYbNNsvmsxYE/A+zHK4W0MOC7/cO+9W4U37DQP
-	sHzjyfs/J8wwgLVqfuOXHh26G85NjWNUYl4bzVEiGrxsc7NdeW+s3Q4QOlP2moq4GXU=
-X-Gm-Gg: ASbGncv7A6t0C3JoaGZp/tgROtpcnc+PYJwp5Ag9fIUWVPIqfn0RPdUNkjhEbjduMqL
-	AFqoOHdiGjqWWWgXtaopIFZ4zyEpcvzd5hP+kff3tlM0khOxiftHZTZC+fVDDsKZ8PXjMcZ4bnQ
-	24lRLqTPttHjm3zYyh16eSVYfRc/caWgEzRYb6UaHpAaQf2l9CammtSl8FYs+/RRy5i8jjTG4M9
-	XddhHPlU6NfC/FsU/HqUYzPzGZuQlQ8/vDXyRN+SHeOB/KpupL1MbzlbdTrEnxngT0eJMly5GFl
-	kCsi8ZpLYhEn+5aYdllBGu4jAfJHAckpYqrRqI+vZXoaMnGVxtBY0ol49CUUrf4O2rlTsnBgx+i
-	FVqz94GqUsDnPHp+yHmiOj5uEG1UkNzh6ql77Rzw=
-X-Google-Smtp-Source: AGHT+IF5HaHuyKCM6E4t2p7V295FGoLcL158yabHcCEf0sSmb2eM1U+wbvg4ZE1zb1cHzfegWFEB5Q==
-X-Received: by 2002:a05:6870:3288:b0:2f7:64f7:8d40 with SMTP id 586e51a60fabf-2ffb0bed7efmr740669fac.9.1752620150775;
-        Tue, 15 Jul 2025 15:55:50 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:a172:6205:b5e:43cb])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ff116d22easm2976522fac.33.2025.07.15.15.55.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 15:55:49 -0700 (PDT)
-Date: Wed, 16 Jul 2025 01:55:45 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Longfang Liu <liulongfang@huawei.com>, qat-linux@intel.com,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	virtualization@lists.linux.dev, Xin Zeng <xin.zeng@intel.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v3] vfio/pci: Do vf_token checks for
- VFIO_DEVICE_BIND_IOMMUFD
-Message-ID: <76f27eb9-7f56-45e7-813e-e3f595f3b6e9@suswa.mountain>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AtBVXktA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QBT8GOEwmNso58uhQshNiFZJ3UVtus6+qu6YbXDNiBOJ1ttc5pVO3TK0eOmaK4sE5/0XTSEOaoZanm2UatSUs5aK1NPh1OGRNHcDTexNOSRbHxOU/OrhJEis3PJsbL6+GlpwKaCBqgA/gY9x6rBRCffF8ddC27YJ9xt/ZaTz/IqCeNoKXZMKlNhAQSzFkzl8fjhxqrW/3aPQx7r52+qxBIlfuz4Cbp5DA1m5pdto1l+NTcD8uaM2k/RAVX0QaJ8NyDW5bxiqdYWb06ReVTv2LW8y0iuH4xyoomnIQwXnTz51fZsbssd42Fcwp4mdUbqNFdD4+LspigsgbifGo8I6jw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Y678HHSQDH8/+Qj3NFpMXyWFC73x5o59TJyKcD2n0w=;
+ b=iPG/Gf07BFdLf3XsUXpuHHBtaRrZdY/FhuCeO3g7+kDLPEdAYO26uU089CqAyerrV8Yk2A5+wZu3xtc5+mpnDW+NSdSyfz/LacCa0R69w7m+ufC7ny03hoxscdbPIWkk3HqcI9u1pQAvs7+JhfDmR2n3/Nx73fDVgYsFINdpNOBm92/Fa2QfHb6F1HdpPvVxe1nx3FIK3Auj1GfWdr+3EAb21kaiHAIuIa/a7A/B+FwmVBytmdbxTN4hQOoh9Qx453Pk4Jh4RnaT9tVu+8FAPJpsswGZeakAcCCh6PTKYeiKnUsxPZNc/fZnEgLaa4kmBP54EgPi7ciqQgc9EWJ+4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Y678HHSQDH8/+Qj3NFpMXyWFC73x5o59TJyKcD2n0w=;
+ b=AtBVXktA2PQHFVAQZV9jbOlTl8WaVBT7eFv39Mj+jMLiDvw+8yuzli11y/G7NsXSFAjhpQg2TlNmHRtcKgzcuflI1o0aTRpm4szTAVxcN4lpLZOTZMgyZx1QGFWMTBfQ79/yg9/c1SOuMhS6YN+yyzO9UHo5TBb2qgqia+v+rdc=
+Received: from SJ0PR03CA0216.namprd03.prod.outlook.com (2603:10b6:a03:39f::11)
+ by PH7PR12MB5830.namprd12.prod.outlook.com (2603:10b6:510:1d5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
+ 2025 22:56:00 +0000
+Received: from CY4PEPF0000EDD4.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f:cafe::7f) by SJ0PR03CA0216.outlook.office365.com
+ (2603:10b6:a03:39f::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.33 via Frontend Transport; Tue,
+ 15 Jul 2025 22:56:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD4.mail.protection.outlook.com (10.167.241.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8922.22 via Frontend Transport; Tue, 15 Jul 2025 22:55:59 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Jul
+ 2025 17:55:58 -0500
+Date: Tue, 15 Jul 2025 17:48:25 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Vishal Annapurve <vannapurve@google.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <david@redhat.com>, <tabba@google.com>,
+	<ackerleytng@google.com>, <ira.weiny@intel.com>, <thomas.lendacky@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
+	<joro@8bytes.org>, <pratikrajesh.sampat@amd.com>, <liam.merwick@oracle.com>,
+	<yan.y.zhao@intel.com>, <aik@amd.com>
+Subject: Re: [PATCH RFC v1 3/5] KVM: guest_memfd: Call arch invalidation
+ hooks when converting to shared
+Message-ID: <20250715224825.gfeo5jdqjlvtn66l@amd.com>
+References: <20250613005400.3694904-1-michael.roth@amd.com>
+ <20250613005400.3694904-4-michael.roth@amd.com>
+ <CAGtprH9gtG0s9ZCRJXx_EkRzLnBcZdbjQcOYVP_g9PzKcbkVwA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <0-v3-bdd8716e85fe+3978a-vfio_token_jgg@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGtprH9gtG0s9ZCRJXx_EkRzLnBcZdbjQcOYVP_g9PzKcbkVwA@mail.gmail.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD4:EE_|PH7PR12MB5830:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4d62f4c-3cb1-41ed-35c1-08ddc3f2c408
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YkM2c2dWeEwwS0tXQ0xXOUNBbHpYeDgxTVRoWHZNclIwclgwaDlYdy9uOEZn?=
+ =?utf-8?B?VHI0UGxIU3M2UmY4SHhMeTR0c09abnRtWTFuSGVJelRCaW5TYjVHYUk5VFpL?=
+ =?utf-8?B?RENqNUtqQWlsNzVSUlIraEdTUFdwWlRoRkdWWHVYTnZuVkgwYTdqdFhlSGo2?=
+ =?utf-8?B?Nkd5ZzdKa29leHZKaHNLbkVHeGZLdXhTMjgrWHFMSDVzN2loS3pNYzVVZkds?=
+ =?utf-8?B?M2M2eHBuT0FLSlV1QmFrek1Dc2I5eWUxTDJ0Q044YUdad1BRekZvWktqaGEy?=
+ =?utf-8?B?T1FUUGFyMXB6ckpqQWVWaHVtVmZVai90YS9QSWZpWFRBaXFLZUM5bzR1RHJn?=
+ =?utf-8?B?YVZxY29WQ1BQK1FTTVBkM1J3amJ4bzRoV0VTUkJiV1ZUSGllNG8rdVJpWkU5?=
+ =?utf-8?B?bjdTSXF1ZExqaGUyZy9ZcnlYSGM4ZE5aSEpyMUxLbG1mdUoxM0MxQ2ZEdlNa?=
+ =?utf-8?B?MHdla1FUYXV4RmdVZTFPdkNoN3lNcVZXVFdMcCtVeGtUbnhwZUx5aEJrMklH?=
+ =?utf-8?B?NWFiczhwRG1LM2JOQXdtQ3RmV3J6ZTFwYUhlaWt1SmdaSFFHMm9OMXVGSm5H?=
+ =?utf-8?B?YmppdmZsZS9oWGJ4WTA3SGVWdEFsM3o3SGhpdXNsZVJ5QnkvTTdTZW5ZUUlI?=
+ =?utf-8?B?Q2RlSHdOd3pKZis1NHhlNXd3Kytub3RKL01yZHhmby91VzhndnNOTU1LZlAx?=
+ =?utf-8?B?ajVBeWp4LzZmanIrQ2s3SmtneHdwREN4c3JKeHVhK0syY0Z2UWpnODlhdVc2?=
+ =?utf-8?B?MCtUWDhJbmh5YXZsaGpxK09hRWY4TFl3SWxSWW9BdjU2U01lVFlySFNmalNQ?=
+ =?utf-8?B?RE9nVnJzTDQvdXlqcHo0MWpUZk4rNHd4UFppVGJ1Sm95OUNkMzZpKzNNN25q?=
+ =?utf-8?B?NjM2TkkrUXBwNlZhb2hPSzVwWXgyNTlBM3JaZWJGVWRhbUxsRlBDWXFEVHdv?=
+ =?utf-8?B?Qm8rWGFkUnRMSndJSHlubkd0M3VwYnpETXQySkdBNmE0bmR5U2pSeWhVNWFI?=
+ =?utf-8?B?K2RjOUlQNk9wV0k4VHZBTGlwQ1B1c1IvLzYrZlpKWUVoMGJwN1hZNWRTK0NP?=
+ =?utf-8?B?dGNVaDFRS1dCQ2s3bmRIZlFKSFFPdmJZMHVSUUZNc0FNRW84WnJXbHY1VzdE?=
+ =?utf-8?B?OEtaaDJ4SDhRM2s1c0R0UGdDbG1MZjJKNU00Z1B3YjdKaGMrbDJ4enlCWnRL?=
+ =?utf-8?B?bUs0UnFDUndJSjBJUkVHUjRQdVlzanRZRDQrS1JEV3hvNlk1SWhrcU1ZTzhI?=
+ =?utf-8?B?bTB2Z1RKTmUyUE9Da016VElaREdIczRMNjhtTEQ4MUcvWG4rTHFRMXY3b1RU?=
+ =?utf-8?B?MlZjZ0lPMEpHcllqcGlacHhTVVV6WVdLNG5kb21rbHZ0VnNBSERlQ3g2Y1lO?=
+ =?utf-8?B?SU04UU0wNVE0VjlRYmZ1bThTMWlINTZQODhydUhFVVFpdUNobnQwUmhDV0l0?=
+ =?utf-8?B?UlZzK1N4cGc1WVBOZ2JYVWJta1k5S0FtUy9pa21WRFFKM0REdTlnVXBmbFlT?=
+ =?utf-8?B?ek94UTNNYUxJbzVYQjVHQWdZRVJzQzBMcHV0OE1ldmsySEFJYjAvZUZRQW40?=
+ =?utf-8?B?UmdiRTYxR0F4UFNjK0ZsRHdEYUZEb1ZHQStkbVVTeldDUndUc1pmS1phVFlC?=
+ =?utf-8?B?d3JybVV3K0J3SmJxWGtmemJQL1gyT3RnNVlVL2V3SlNvZmJXdWloV1ZoTEYx?=
+ =?utf-8?B?MUwydWJKRjhuNkJINkQ1a2RuVFJGWHV3ZDVKVjRsWFZQVDFZeWV2eVFUdGpB?=
+ =?utf-8?B?N0QyNzhoRk1QbG5jZTVSc01YZUxqWTc2aVdPa0pDdHFuMmJxN0RaaHJicHhZ?=
+ =?utf-8?B?d1pCOWs3QVlINzBvZ2poN1F6a041Vlpna2h5bkM2UDBNR3BHUXRHcGo2U3Nl?=
+ =?utf-8?B?TWZzUzYrRy8rNjdBdEI5L1ZvWUVFZ2pNbHJuT1lpY2J5UkN2U3owRC9SWkVi?=
+ =?utf-8?B?NFBXRFNtcGdEZGR6cFRUQm5VMlZ2WHJQT1BTK1JTUEtpb1Z4aHpLTGJJMUdT?=
+ =?utf-8?B?NGJaSFNXUFhrMXlNaTJWZ3ZDclpKR2U3Tk10Z1VyWHhwRlh1SURURCtVaFNO?=
+ =?utf-8?Q?yK5S0q?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 22:55:59.3962
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4d62f4c-3cb1-41ed-35c1-08ddc3f2c408
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5830
 
-Hi Jason,
+On Tue, Jul 15, 2025 at 06:20:09AM -0700, Vishal Annapurve wrote:
+> On Thu, Jun 12, 2025 at 5:56 PM Michael Roth <michael.roth@amd.com> wrote:
+> >
+> > When guest_memfd is used for both shared/private memory, converting
+> > pages to shared may require kvm_arch_gmem_invalidate() to be issued to
+> > return the pages to an architecturally-defined "shared" state if the
+> > pages were previously allocated and transitioned to a private state via
+> > kvm_arch_gmem_prepare().
+> >
+> > Handle this by issuing the appropriate kvm_arch_gmem_invalidate() calls
+> > when converting ranges in the filemap to a shared state.
+> >
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 22 ++++++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index b77cdccd340e..f27e1f3962bb 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -203,6 +203,28 @@ static int kvm_gmem_shareability_apply(struct inode *inode,
+> >         struct maple_tree *mt;
+> >
+> >         mt = &kvm_gmem_private(inode)->shareability;
+> > +
+> > +       /*
+> > +        * If a folio has been allocated then it was possibly in a private
+> > +        * state prior to conversion. Ensure arch invalidations are issued
+> > +        * to return the folio to a normal/shared state as defined by the
+> > +        * architecture before tracking it as shared in gmem.
+> > +        */
+> > +       if (m == SHAREABILITY_ALL) {
+> > +               pgoff_t idx;
+> > +
+> > +               for (idx = work->start; idx < work->start + work->nr_pages; idx++) {
+> 
+> It is redundant to enter this loop for VM variants that don't need
+> this loop e.g. for pKVM/TDX. I think KVM can dictate a set of rules
+> (based on VM type) that guest_memfd will follow for memory management
+> when it's created, e.g. something like:
+> 1) needs pfn invalidation
+> 2) needs zeroing on shared faults
+> 3) needs zeroing on allocation
 
-kernel test robot noticed the following build warnings:
+Makes sense. Maybe internal/reserved GUEST_MEMFD_FLAG_*'s that can be passed
+to kvm_gmem_create()?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Gunthorpe/vfio-pci-Do-vf_token-checks-for-VFIO_DEVICE_BIND_IOMMUFD/20250715-001209
-base:   32b2d3a57e26804ca96d82a222667ac0fa226cb7
-patch link:    https://lore.kernel.org/r/0-v3-bdd8716e85fe%2B3978a-vfio_token_jgg%40nvidia.com
-patch subject: [PATCH v3] vfio/pci: Do vf_token checks for VFIO_DEVICE_BIND_IOMMUFD
-config: openrisc-randconfig-r071-20250715 (https://download.01.org/0day-ci/archive/20250716/202507160254.dAjYAz9h-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.1.0
+-Mike
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202507160254.dAjYAz9h-lkp@intel.com/
-
-smatch warnings:
-drivers/vfio/device_cdev.c:126 vfio_df_ioctl_bind_iommufd() warn: missing unwind goto?
-drivers/vfio/device_cdev.c:170 vfio_df_ioctl_bind_iommufd() warn: inconsistent returns '&device->dev_set->lock'.
-
-vim +126 drivers/vfio/device_cdev.c
-
-5fcc26969a164e Yi Liu          2023-07-18   83  long vfio_df_ioctl_bind_iommufd(struct vfio_device_file *df,
-5fcc26969a164e Yi Liu          2023-07-18   84  				struct vfio_device_bind_iommufd __user *arg)
-5fcc26969a164e Yi Liu          2023-07-18   85  {
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14   86  	const u32 VALID_FLAGS = VFIO_DEVICE_BIND_FLAG_TOKEN;
-5fcc26969a164e Yi Liu          2023-07-18   87  	struct vfio_device *device = df->device;
-5fcc26969a164e Yi Liu          2023-07-18   88  	struct vfio_device_bind_iommufd bind;
-5fcc26969a164e Yi Liu          2023-07-18   89  	unsigned long minsz;
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14   90  	u32 user_size;
-5fcc26969a164e Yi Liu          2023-07-18   91  	int ret;
-5fcc26969a164e Yi Liu          2023-07-18   92  
-5fcc26969a164e Yi Liu          2023-07-18   93  	static_assert(__same_type(arg->out_devid, df->devid));
-5fcc26969a164e Yi Liu          2023-07-18   94  
-5fcc26969a164e Yi Liu          2023-07-18   95  	minsz = offsetofend(struct vfio_device_bind_iommufd, out_devid);
-5fcc26969a164e Yi Liu          2023-07-18   96  
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14   97  	ret = get_user(user_size, &arg->argsz);
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14   98  	if (ret)
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14   99  		return ret;
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  100  	if (user_size < minsz)
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  101  		return -EINVAL;
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  102  	ret = copy_struct_from_user(&bind, minsz, arg, user_size);
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  103  	if (ret)
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  104  		return ret;
-5fcc26969a164e Yi Liu          2023-07-18  105  
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  106  	if (bind.iommufd < 0 || bind.flags & ~VALID_FLAGS)
-5fcc26969a164e Yi Liu          2023-07-18  107  		return -EINVAL;
-5fcc26969a164e Yi Liu          2023-07-18  108  
-5fcc26969a164e Yi Liu          2023-07-18  109  	/* BIND_IOMMUFD only allowed for cdev fds */
-5fcc26969a164e Yi Liu          2023-07-18  110  	if (df->group)
-5fcc26969a164e Yi Liu          2023-07-18  111  		return -EINVAL;
-5fcc26969a164e Yi Liu          2023-07-18  112  
-5fcc26969a164e Yi Liu          2023-07-18  113  	ret = vfio_device_block_group(device);
-5fcc26969a164e Yi Liu          2023-07-18  114  	if (ret)
-5fcc26969a164e Yi Liu          2023-07-18  115  		return ret;
-5fcc26969a164e Yi Liu          2023-07-18  116  
-5fcc26969a164e Yi Liu          2023-07-18  117  	mutex_lock(&device->dev_set->lock);
-5fcc26969a164e Yi Liu          2023-07-18  118  	/* one device cannot be bound twice */
-5fcc26969a164e Yi Liu          2023-07-18  119  	if (df->access_granted) {
-5fcc26969a164e Yi Liu          2023-07-18  120  		ret = -EINVAL;
-5fcc26969a164e Yi Liu          2023-07-18  121  		goto out_unlock;
-5fcc26969a164e Yi Liu          2023-07-18  122  	}
-5fcc26969a164e Yi Liu          2023-07-18  123  
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  124  	ret = vfio_df_check_token(device, &bind);
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  125  	if (ret)
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14 @126  		return ret;
-
-This needs to be a goto unlock.
-
-be2e70b96c3e54 Jason Gunthorpe 2025-07-14  127  
-5fcc26969a164e Yi Liu          2023-07-18  128  	df->iommufd = iommufd_ctx_from_fd(bind.iommufd);
-5fcc26969a164e Yi Liu          2023-07-18  129  	if (IS_ERR(df->iommufd)) {
-5fcc26969a164e Yi Liu          2023-07-18  130  		ret = PTR_ERR(df->iommufd);
-5fcc26969a164e Yi Liu          2023-07-18  131  		df->iommufd = NULL;
-5fcc26969a164e Yi Liu          2023-07-18  132  		goto out_unlock;
-5fcc26969a164e Yi Liu          2023-07-18  133  	}
-5fcc26969a164e Yi Liu          2023-07-18  134  
-5fcc26969a164e Yi Liu          2023-07-18  135  	/*
-5fcc26969a164e Yi Liu          2023-07-18  136  	 * Before the device open, get the KVM pointer currently
-5fcc26969a164e Yi Liu          2023-07-18  137  	 * associated with the device file (if there is) and obtain
-5fcc26969a164e Yi Liu          2023-07-18  138  	 * a reference.  This reference is held until device closed.
-5fcc26969a164e Yi Liu          2023-07-18  139  	 * Save the pointer in the device for use by drivers.
-5fcc26969a164e Yi Liu          2023-07-18  140  	 */
-5fcc26969a164e Yi Liu          2023-07-18  141  	vfio_df_get_kvm_safe(df);
-5fcc26969a164e Yi Liu          2023-07-18  142  
-5fcc26969a164e Yi Liu          2023-07-18  143  	ret = vfio_df_open(df);
-5fcc26969a164e Yi Liu          2023-07-18  144  	if (ret)
-5fcc26969a164e Yi Liu          2023-07-18  145  		goto out_put_kvm;
-5fcc26969a164e Yi Liu          2023-07-18  146  
-5fcc26969a164e Yi Liu          2023-07-18  147  	ret = copy_to_user(&arg->out_devid, &df->devid,
-5fcc26969a164e Yi Liu          2023-07-18  148  			   sizeof(df->devid)) ? -EFAULT : 0;
-5fcc26969a164e Yi Liu          2023-07-18  149  	if (ret)
-5fcc26969a164e Yi Liu          2023-07-18  150  		goto out_close_device;
-5fcc26969a164e Yi Liu          2023-07-18  151  
-5fcc26969a164e Yi Liu          2023-07-18  152  	device->cdev_opened = true;
-5fcc26969a164e Yi Liu          2023-07-18  153  	/*
-5fcc26969a164e Yi Liu          2023-07-18  154  	 * Paired with smp_load_acquire() in vfio_device_fops::ioctl/
-5fcc26969a164e Yi Liu          2023-07-18  155  	 * read/write/mmap
-5fcc26969a164e Yi Liu          2023-07-18  156  	 */
-5fcc26969a164e Yi Liu          2023-07-18  157  	smp_store_release(&df->access_granted, true);
-5fcc26969a164e Yi Liu          2023-07-18  158  	mutex_unlock(&device->dev_set->lock);
-5fcc26969a164e Yi Liu          2023-07-18  159  	return 0;
-5fcc26969a164e Yi Liu          2023-07-18  160  
-5fcc26969a164e Yi Liu          2023-07-18  161  out_close_device:
-5fcc26969a164e Yi Liu          2023-07-18  162  	vfio_df_close(df);
-5fcc26969a164e Yi Liu          2023-07-18  163  out_put_kvm:
-5fcc26969a164e Yi Liu          2023-07-18  164  	vfio_device_put_kvm(device);
-5fcc26969a164e Yi Liu          2023-07-18  165  	iommufd_ctx_put(df->iommufd);
-5fcc26969a164e Yi Liu          2023-07-18  166  	df->iommufd = NULL;
-5fcc26969a164e Yi Liu          2023-07-18  167  out_unlock:
-5fcc26969a164e Yi Liu          2023-07-18  168  	mutex_unlock(&device->dev_set->lock);
-5fcc26969a164e Yi Liu          2023-07-18  169  	vfio_device_unblock_group(device);
-5fcc26969a164e Yi Liu          2023-07-18 @170  	return ret;
-5fcc26969a164e Yi Liu          2023-07-18  171  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+> 
+> > +                       struct folio *folio = filemap_lock_folio(inode->i_mapping, idx);
+> > +
+> > +                       if (!IS_ERR(folio)) {
+> > +                               kvm_arch_gmem_invalidate(folio_pfn(folio),
+> > +                                                        folio_pfn(folio) + folio_nr_pages(folio));
+> > +                               folio_unlock(folio);
+> > +                               folio_put(folio);
+> > +                       }
+> > +               }
+> > +       }
+> > +
+> >         return kvm_gmem_shareability_store(mt, work->start, work->nr_pages, m);
+> >  }
+> >
+> > --
+> > 2.25.1
+> >
