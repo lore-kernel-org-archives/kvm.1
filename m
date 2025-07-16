@@ -1,271 +1,139 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FF32F50BE
-	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 12:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C12EED8
+	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 12:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752668724; cv=none; b=kwIXhyKJqpPvIVaOI2rNK+hXhsbuzqDLmrvvRo7dkj1idwD8nZZMAnFeYpudkLF3dJaI18CYtkVBHPdH74d3yBYfd8nWKOE8xdEEtXcRtLFM9z28zUH/okePYvbWefStrhBAEeYpApIliRbOj6/1Epr1ws/lYnkbNs1sxBiKVIo=
+	t=1752669126; cv=none; b=NSIrWiRXYWGTFmwfACq4725icbQNLDlVMqCUL887tsGiQZU1QhA14Iyb2Tfe7noSDnwVf6bhNCS218NG6DGFjF7uWdvEimlpdjskzoJkcf+QNVolAPsCgVQ2gQveEpKDFL15rh0l7yoa3GRFM1p1oSNd+HJD8aePDa9MptHBfyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752668724; c=relaxed/simple;
-	bh=gtidsBFmnOnmsE2Ph+bkFQVbN9NQSEhmnbLqKOPw5OU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tvKiYOcWpmz+sMGMBmkkCA9W5IMaCB1/wDvOmnjTHJYfgvPt4FvvPiJPhfTrWf5eVWh8hOcbuzDgwpW2vZzsYDEDTM4LYuIVCVe5P75QaGYO+naxqJ7USgfSWHRK0LTNPF4y3spk0fIuQkHyoFoZcddg/EJIWwsPYO3Y9D34Td8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yU1cNpD8; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752669126; c=relaxed/simple;
+	bh=Y0cRjNio6SFvjLryWJfo1g4J3xecGV6bJLudwyQb0Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rroh+Q81sdJOEkQdlmjrktKJ5UIYge0/Wx0X2V8/bP6uXxqti85SzwsuYqLOEkbQqfdTW+Yt/J/JoUpwqhcbAUFpcDKpW35vhnpBUelBlzK+cBwNjEFOO2Xs5uH8c6ILPjH5z/fOfGrsciUKxaqZ94SeHr1X6fKllevvTeAsH+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SNK0NrGW; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yU1cNpD8"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso175011cf.1
-        for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 05:25:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SNK0NrGW"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6fae04a3795so50546516d6.3
+        for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 05:32:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752668721; x=1753273521; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=P9vOWQfvk67OEZXIddoGDDceH/a4WGHgT9536w839YE=;
-        b=yU1cNpD8wNQyd6rxDXCETb9SBsD1sbWQDB93aQgxIEpVcEevk19vTwLPoxNlrDzXrJ
-         QiGLXYBUxegSfZM7z8ihbEnGrb+YjIdeizovkXOpcfOro4qqotkPUtJZH5ce8s5HQUCY
-         IICgR73EPDmkK0W6EdXM2pNfkZBjTXkFfQquyhjx+GrzpvjrJDts1FloEwS0O0kgGCGD
-         yiMtEVyg3IRC2DVeXGk4ES4dhtYXvqoGwKhKnXZ7LyVq61nBaiJS+yCvVnyhyKLDmzdy
-         xrZi78W6oTD1oW7CECLYsdCOkTh3S4SeaU5qb82Z05pSLplf25Kc3N6xPARalWlOhbGo
-         oeNg==
+        d=ziepe.ca; s=google; t=1752669122; x=1753273922; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JcSMbH/4MOYwTmw6dPN5aHBbQu4qMFpEZO0zk7HKEmM=;
+        b=SNK0NrGWyaNckMFPDDj88yWtLiBHEXmXG7mn6k1/xhcRU+mNxKxPjaOXLYOsW5j9y1
+         7pFm6DhNUDX9wMdO42iTbqRUP2+pGucdL5qw4CuiLbQPtza//f09QGC9Gb+JuScJWDae
+         qPOPK/cavNSAvs5XCdzYXbEG1uh5mBdhSKfQwyiKCz3+7hoAKuLASHlh2uXRXp8I9wLZ
+         U4xqArEho+IoaDzcY77tDjb3Mzcgyc6cH8XVoNaH/kRXoXuTY3xhaoQd5KDWIaZIMYFY
+         imsuRsW/QHlyixkZ0J/TK2jCLQlqYXP1LEw4b9blZ+B4LEBayvtQ9OXINiR9SQd4lRJl
+         iy6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752668721; x=1753273521;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P9vOWQfvk67OEZXIddoGDDceH/a4WGHgT9536w839YE=;
-        b=DYXYO40prv1B6U8GZcv/idcUiBFwnc4kdGGppnxhRuO24LsYYwsA4DVI2hQM+QW9rL
-         p8C33MuGHAnZYSmthc3mZJf7azvAGrLRj658zmdsVMVEIgU2ZoLKn1OJ6+Z0/iYh08Dm
-         pob96pxCiAW9hOEH3c6cEEse2yoB7B4GpyqXOqTVJTkYytdZVBY9AzHBYOI8epid5OBN
-         tL5OroYrFuRGdGPIAzXfPDhW0cmOAu9IuUJaNb8Zxp2X5isnuG/p09szhRZA4t8DubGs
-         GqMEiBpqBm6vNANUVCbg+696Ck1qkX1rsAV9+xGaHfzjG4L/q0MMnMY9kC8czKw5cyRg
-         oKmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1+2h3dQugOJXHplIRzxBNbD3R1f+16SKFCWAJv8yUrFkOUMjsO4XhS91BmU1TQptn3HQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx516Ye3F6XcPemigyU7DOrZFrpFUrW68hk8IqLEFsYMO5P9pjN
-	k3vTqNHfYAWpcyJ9QQJOnmoPiK88eHEXi6T5gWEmAHg23P6IXi14Gj3LPk74Le+S0R9rNWOOmzi
-	bo16ARxNtjqQDXpnNjGUtQCl+eKtgSP0M8RgNkBV0
-X-Gm-Gg: ASbGncuRerWv3RDSsto4c2I0Q5u694H7GqiapG60bzM1VzHIYfYat1zJvfORXZdIeEF
-	lC51SiuzenkyhbPj0EeAxo0rA7TY25j4FOrx+hlA/9i35q7PL20B+NPH7jDjshIr3GCe00oeiFD
-	tPx1UC3tLt7qJccunj2TuMTcLdQbIliUWnQqbm3jMZyv/WeaA7gNMe4hhd1By7ZGG9Qrw27Ynfa
-	A8hSK+ybvIV9zvcdty8Z6k2gEP0PC2H6WNpeiHxcWTE7w==
-X-Google-Smtp-Source: AGHT+IH6bUjoQ8w40IEDFjYBy3Dv0CufD96xSoUjUMk4tkbVg/wklPzfe4Mv0Koy4rNvEv6fRuw2Hc0irdObv5bPYrs=
-X-Received: by 2002:a05:622a:151:b0:494:4aa0:ad5b with SMTP id
- d75a77b69052e-4ab9539e674mr2896191cf.2.1752668720187; Wed, 16 Jul 2025
- 05:25:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752669122; x=1753273922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JcSMbH/4MOYwTmw6dPN5aHBbQu4qMFpEZO0zk7HKEmM=;
+        b=fxJ39nE3DA2liAerSsZZ0o48vnOUGdOHdIQBd12TW6KmhDdOimd1+FiG1zdzN4WjEY
+         MmdGi/7xWM9wb0omh58xURvLEiw82sAzJamC9hz2jK95uEge97eEXx+1L71fDwSVMuE4
+         Pre+SBtMIW3SU7afFFDQjncYhFC49iIoz0L4Zm5VopTnjshQs1bmagHMeh6LaG9eURuJ
+         eDJ12Jhbmveknw0WuKPSd61ehRMaLpvR/XzYWQzSMR83XRfol1kjT5p9DSo30bOTyMRH
+         DuXFz8nlzI/nrRrQOZsV9Ykh5kZDPcLQPXJTz9RO0ZvSYRFYHuBLQPRlKeKBnoijxrx8
+         UUPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWx8eThfpVWZeFYnDDYSNdR4yyN8JaYKnPrQncw3rlkuDuP8NgmdNJQs7CBU3IQrpmssk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyldW55mjSqissS4/nQJlzpliw6Xic+5p3BemGszhp6VL7lv7MW
+	dtZs/lTHn7X+yv1hT9w7hGuyJXALFX+RjZtkOoQqAU4zJJYKEFWWNZjQSC+3XKQj3nk=
+X-Gm-Gg: ASbGncuELX849SdqMb8Q/qRooVK8S8b8Pk8yYXKG2HVGhot0oORadnCROgOGto1T3m9
+	+zHVstINSx+Pf54d7OOqlwapH+ipjVVvBHBnPQY+AjVnauCVbXEXu/uq6LDynB3FlUYJ5uURnjt
+	fk3XbK1dqkiFyASmHbSUGeuxU0Die6ElihPkmxbv5nExX20EkXGdX3J3xz8XsOmv9BJcfew9nSN
+	GF8ycvVnyMMgv0vjtCq8uZQg/bMHDxxisyNIb4YHesz+0xBeVq7DsBvw0pjEMCG0aZC/7VCNRm8
+	7U9DSdBOy9OEcnY7gpTlXM8YI7q1q7zkBB8GH6E/kkGSPDBGXibMin/qwA0EJkcbB0Rmfinv5a9
+	18uI+7vxH40/R76WI/bygqA3+JvhF705CdOR1nHOpZ36uUiiTplchGLQvLH4gH8jE0lG2ciucqg
+	==
+X-Google-Smtp-Source: AGHT+IFfoiXMU7kaonX0Zkj7Vxcoxxju6KIHxh2IZru9E7Ey6ohAZ0uaUPZbEXgGduO4r/WE8O2aaw==
+X-Received: by 2002:a05:6214:252a:b0:704:b066:f2b3 with SMTP id 6a1803df08f44-704f481a7a4mr45483696d6.15.1752669122322;
+        Wed, 16 Jul 2025 05:32:02 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-704979b4187sm69808526d6.26.2025.07.16.05.32.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 05:32:01 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uc1In-00000008yGO-0rQq;
+	Wed, 16 Jul 2025 09:32:01 -0300
+Date: Wed, 16 Jul 2025 09:32:01 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Keith Busch <kbusch@meta.com>
+Cc: alex.williamson@redhat.com, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org, paulmck@kernel.org,
+	Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCHv2] vfio/type1: conditional rescheduling while pinning
+Message-ID: <20250716123201.GA2135755@ziepe.ca>
+References: <20250715184622.3561598-1-kbusch@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715093350.2584932-1-tabba@google.com> <20250715093350.2584932-3-tabba@google.com>
- <a4091b13-9c3b-48bf-a7f6-f56868224cf5@intel.com> <CA+EHjTy5zUJt5n5N1tRyHUQN6-P6CPqyC7+6Zqhokx-3=mvx+A@mail.gmail.com>
- <418ddbbd-c25e-4047-9317-c05735e02807@intel.com> <778ca011-1b2f-4818-80c6-ac597809ec77@redhat.com>
- <6927a67b-cd2e-45f1-8e6b-019df7a7417e@intel.com> <CA+EHjTz7C4WgS2-Dw0gywHy+zguSNXKToukPiRfsdiY8+Eq6KA@mail.gmail.com>
- <47395660-79ad-4d22-87b0-c5bf891f708c@redhat.com> <fa1ccce7-40d3-45d2-9865-524f4b187963@intel.com>
- <f7a54cc4-1017-4e32-85b8-cf74237db935@redhat.com>
-In-Reply-To: <f7a54cc4-1017-4e32-85b8-cf74237db935@redhat.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 16 Jul 2025 13:24:42 +0100
-X-Gm-Features: Ac12FXz8Zm2UQNV9sio4ZrBj9GKyEj5gs20r_CCCNeFGgLSNGsCRuXWEy4xCBgI
-Message-ID: <CA+EHjTzOqCpcaNU4caddh6N3bCO0GvrOoZ+rMApdRh4=+BEXNA@mail.gmail.com>
-Subject: Re: [PATCH v14 02/21] KVM: Rename CONFIG_KVM_GENERIC_PRIVATE_MEM to CONFIG_KVM_GENERIC_GMEM_POPULATE
-To: David Hildenbrand <david@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, kvm@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org, 
-	amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com, 
-	mic@digikod.net, vbabka@suse.cz, vannapurve@google.com, 
-	ackerleytng@google.com, mail@maciej.szmigiero.name, michael.roth@amd.com, 
-	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715184622.3561598-1-kbusch@meta.com>
 
-On Wed, 16 Jul 2025 at 13:14, David Hildenbrand <david@redhat.com> wrote:
->
-> On 16.07.25 14:01, Xiaoyao Li wrote:
-> > On 7/16/2025 7:15 PM, David Hildenbrand wrote:
-> >> On 16.07.25 13:05, Fuad Tabba wrote:
-> >>> On Wed, 16 Jul 2025 at 12:02, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-> >>>>
-> >>>> On 7/16/2025 6:25 PM, David Hildenbrand wrote:
-> >>>>> On 16.07.25 10:31, Xiaoyao Li wrote:
-> >>>>>> On 7/16/2025 4:11 PM, Fuad Tabba wrote:
-> >>>>>>> On Wed, 16 Jul 2025 at 05:09, Xiaoyao Li<xiaoyao.li@intel.com> wrote:
-> >>>>>>>> On 7/15/2025 5:33 PM, Fuad Tabba wrote:
-> >>>>>>>>> The original name was vague regarding its functionality. This
-> >>>>>>>>> Kconfig
-> >>>>>>>>> option specifically enables and gates the kvm_gmem_populate()
-> >>>>>>>>> function,
-> >>>>>>>>> which is responsible for populating a GPA range with guest data.
-> >>>>>>>> Well, I disagree.
-> >>>>>>>>
-> >>>>>>>> The config KVM_GENERIC_PRIVATE_MEM was introduced by commit
-> >>>>>>>> 89ea60c2c7b5
-> >>>>>>>> ("KVM: x86: Add support for "protected VMs" that can utilize private
-> >>>>>>>> memory"), which is a convenient config for vm types that requires
-> >>>>>>>> private memory support, e.g., SNP, TDX, and KVM_X86_SW_PROTECTED_VM.
-> >>>>>>>>
-> >>>>>>>> It was commit e4ee54479273 ("KVM: guest_memfd: let
-> >>>>>>>> kvm_gmem_populate()
-> >>>>>>>> operate only on private gfns") that started to use
-> >>>>>>>> CONFIG_KVM_GENERIC_PRIVATE_MEM gates kvm_gmem_populate()
-> >>>>>>>> function. But
-> >>>>>>>> CONFIG_KVM_GENERIC_PRIVATE_MEM is not for kvm_gmem_populate() only.
-> >>>>>>>>
-> >>>>>>>> If using CONFIG_KVM_GENERIC_PRIVATE_MEM to gate
-> >>>>>>>> kvm_gmem_populate() is
-> >>>>>>>> vague and confusing, we can introduce KVM_GENERIC_GMEM_POPULATE
-> >>>>>>>> to gate
-> >>>>>>>> kvm_gmem_populate() and select KVM_GENERIC_GMEM_POPULATE under
-> >>>>>>>> CONFIG_KVM_GENERIC_PRIVATE_MEM.
-> >>>>>>>>
-> >>>>>>>> Directly replace CONFIG_KVM_GENERIC_PRIVATE_MEM with
-> >>>>>>>> KVM_GENERIC_GMEM_POPULATE doesn't look correct to me.
-> >>>>>>> I'll quote David's reply to an earlier version of this patch [*]:
-> >>>>>>
-> >>>>>> It's not related to my concern.
-> >>>>>>
-> >>>>>> My point is that CONFIG_KVM_GENERIC_PRIVATE_MEM is used for selecting
-> >>>>>> the private memory support. Rename it to KVM_GENERIC_GMEM_POPULATE is
-> >>>>>> not correct.
-> >>>>>
-> >>>>> It protects a function that is called kvm_gmem_populate().
-> >>>>>
-> >>>>> Can we stop the nitpicking?
-> >>>>
-> >>>> I don't think it's nitpicking.
-> >>>>
-> >>>> Could you loot into why it was named as KVM_GENERIC_PRIVATE_MEM in the
-> >>>> first place, and why it was picked to protect kvm_gmem_populate()?
-> >>>
-> >>> That is, in part, the point of this patch. This flag protects
-> >>> kvm_gmem_populate(), and the name didn't reflect that. Now it does. It
-> >>> is the only thing it protects.
-> >>
-> >> I'll note that the kconfig makes it clear that it depends on
-> >> KVM_GENERIC_MEMORY_ATTRIBUTES -- having support for private memory.
-> >>
-> >> In any case, CONFIG_KVM_GENERIC_PRIVATE_MEM is a bad name: what on earth
-> >> is generic private memory.
-> >
-> > "gmem" + "memory_attribute" is the generic private memory.
-> >
-> > If KVM_GENERIC_PRIVATE_MEM is a bad name, we can drop it, but not rename
-> > it to CONFIG_KVM_GENERIC_GMEM_POPULATE.
-> >
-> >> If CONFIG_KVM_GENERIC_GMEM_POPULATE is for some reason I don't
-> >> understand yet not the right name, can we have something that better
-> >> expresses that is is about KVM .. GMEM ... and POPULATE?
-> >
-> > I'm not objecting the name of CONFIG_KVM_GENERIC_GMEM_POPULATE, but
-> > objecting the simple rename. Does something below look reasonable?
-> > > ---
-> > diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> > index 2eeffcec5382..3f87dcaaae83 100644
-> > --- a/arch/x86/kvm/Kconfig
-> > +++ b/arch/x86/kvm/Kconfig
-> > @@ -135,6 +135,7 @@ config KVM_INTEL_TDX
-> >           bool "Intel Trust Domain Extensions (TDX) support"
-> >           default y
-> >           depends on INTEL_TDX_HOST
-> > +       select KVM_GENERIC_GMEM_POPULATE
-> >           help
-> >             Provides support for launching Intel Trust Domain Extensions
-> > (TDX)
-> >             confidential VMs on Intel processors.
-> > @@ -158,6 +159,7 @@ config KVM_AMD_SEV
-> >           depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
-> >           select ARCH_HAS_CC_PLATFORM
-> >           select KVM_GENERIC_PRIVATE_MEM
-> > +       select KVM_GENERIC_GMEM_POPULATE
-> >           select HAVE_KVM_ARCH_GMEM_PREPARE
-> >           select HAVE_KVM_ARCH_GMEM_INVALIDATE
-> >           help
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index 755b09dcafce..359baaae5e9f 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -2556,7 +2556,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
-> >    int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> > int max_order);
-> >    #endif
-> >
-> > -#ifdef CONFIG_KVM_GENERIC_PRIVATE_MEM
-> > +#ifdef CONFIG_KVM_GENERIC_GMEM_POPULATE
-> >    /**
-> >     * kvm_gmem_populate() - Populate/prepare a GPA range with guest data
-> >     *
-> > diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> > index 49df4e32bff7..9b37ca009a22 100644
-> > --- a/virt/kvm/Kconfig
-> > +++ b/virt/kvm/Kconfig
-> > @@ -121,6 +121,10 @@ config KVM_GENERIC_PRIVATE_MEM
-> >           select KVM_GMEM
-> >           bool
-> >
-> > +config KVM_GENERIC_GMEM_POPULATE
-> > +       bool
-> > +       depends on KVM_GMEM && KVM_GENERIC_MEMORY_ATTRIBUTES
-> > +
-> >    config HAVE_KVM_ARCH_GMEM_PREPARE
-> >           bool
-> >           depends on KVM_GMEM
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index b2aa6bf24d3a..befea51bbc75 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -638,7 +638,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
-> > kvm_memory_slot *slot,
-> >    }
-> >    EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn);
-> >
-> > -#ifdef CONFIG_KVM_GENERIC_PRIVATE_MEM
-> > +#ifdef CONFIG_KVM_GENERIC_GMEM_POPULATE
-> >    long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user
-> > *src, long npages,
-> >                          kvm_gmem_populate_cb post_populate, void *opaque)
-> >    {
-> >
-> >
->
-> $ git grep KVM_GENERIC_PRIVATE_MEM
-> arch/x86/kvm/Kconfig:   select KVM_GENERIC_PRIVATE_MEM if KVM_SW_PROTECTED_VM
-> arch/x86/kvm/Kconfig:   select KVM_GENERIC_PRIVATE_MEM if INTEL_TDX_HOST
-> arch/x86/kvm/Kconfig:   select KVM_GENERIC_PRIVATE_MEM
-> include/linux/kvm_host.h:#ifdef CONFIG_KVM_GENERIC_PRIVATE_MEM
-> virt/kvm/Kconfig:config KVM_GENERIC_PRIVATE_MEM
-> virt/kvm/guest_memfd.c:#ifdef CONFIG_KVM_GENERIC_PRIVATE_MEM
->
->
-> Why should we leave KVM_GENERIC_PRIVATE_MEM around when there are no other users?
->
-> @fuad help me out, what am I missing?
+On Tue, Jul 15, 2025 at 11:46:22AM -0700, Keith Busch wrote:
+> From: Keith Busch <kbusch@kernel.org>
+> 
+> A large DMA mapping request can loop through dma address pinning for
+> many pages. In cases where THP can not be used, the repeated vmf_insert_pfn can
+> be costly, so let the task reschedule as need to prevent CPU stalls. Failure to
+> do so has potential harmful side effects, like increased memory pressure
+> as unrelated rcu tasks are unable to make their reclaim callbacks and
+> result in OOM conditions.
+> 
+>  rcu: INFO: rcu_sched self-detected stall on CPU
+>  rcu:   36-....: (20999 ticks this GP) idle=b01c/1/0x4000000000000000 softirq=35839/35839 fqs=3538
+>  rcu:            hardirqs   softirqs   csw/system
+>  rcu:    number:        0        107            0
+>  rcu:   cputime:       50          0        10446   ==> 10556(ms)
+>  rcu:   (t=21075 jiffies g=377761 q=204059 ncpus=384)
+> ...
+>   <TASK>
+>   ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+>   ? walk_system_ram_range+0x63/0x120
+>   ? walk_system_ram_range+0x46/0x120
+>   ? pgprot_writethrough+0x20/0x20
+>   lookup_memtype+0x67/0xf0
+>   track_pfn_insert+0x20/0x40
+>   vmf_insert_pfn_prot+0x88/0x140
+>   vfio_pci_mmap_huge_fault+0xf9/0x1b0 [vfio_pci_core]
+>   __do_fault+0x28/0x1b0
+>   handle_mm_fault+0xef1/0x2560
+>   fixup_user_fault+0xf5/0x270
+>   vaddr_get_pfns+0x169/0x2f0 [vfio_iommu_type1]
+>   vfio_pin_pages_remote+0x162/0x8e0 [vfio_iommu_type1]
+>   vfio_iommu_type1_ioctl+0x1121/0x1810 [vfio_iommu_type1]
+>   ? futex_wake+0x1c1/0x260
+>   x64_sys_call+0x234/0x17a0
+>   do_syscall_64+0x63/0x130
+>   ? exc_page_fault+0x63/0x130
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> 
+> Signed-off-by: Keith Busch <kbusch@kernel.org>
+> ---
+> v1->v2:
+> 
+>   Merged up to vfio/next
+> 
+>   Moved the cond_resched() to a more appropriate place within the
+>   loop, and added a comment about why it's there.
+> 
+>   Update to change log describing one of the consequences of not doing
+>   this.
+> 
+>  drivers/vfio/vfio_iommu_type1.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 
-I'm not sure. Splitting it into two patches, one that introduces
-CONFIG_KVM_GENERIC_GMEM_POPULATE followed by one that drops
-CONFIG_KVM_GENERIC_PRIVATE_MEM ends up with the same result.
+You should be making a matching change to iommufd too..
 
-Cheers,
-/fuad
-
-
-> --
-> Cheers,
->
-> David / dhildenb
->
+Jason
