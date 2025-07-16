@@ -1,94 +1,94 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73EA2F5499
-	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 16:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BED62F6F8C;
+	Wed, 16 Jul 2025 16:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752684509; cv=none; b=e9+f4v62YweIGGzIF3eFkeAOMiJWio8pe1BUmkdSbiPnQghgVjqR/wNqzGrqar60W3MHyMgw6XE/GxsgaM21/W+0saIfg+48AMhBOsfGUe2s2x9lgAO6IkTQXI0Okme5ZQmu+lEhZrvqbqy69q5afiklwcBM7BQFdZIZ/UlmMh4=
+	t=1752685178; cv=none; b=liXxnQY/jg9tSThKfsPmGSWFXCYSKuJSq42TY26goWwxShzvezkk+cMoimgIVRSev08Qmw2kZtDtM3dhLgXJGicqmWhHMPcKw1bbxjIitgHXuChlbIdliWQ/kpDvaAEj6Fdy2wU0CpCZLn4l5rAc5sOdd/G8yFYjdqhyFjFtYRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752684509; c=relaxed/simple;
-	bh=XCVfG6ZkyVEDKGlKSVWf2BHFHJKjwS7JtldMWSV4aFE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a9yteIXOeHCJtIDF4gSh/JUG7dlx2E9i/NyxZToPeGSvL5WxyFJBcj1MxDTMMQBP6NG79wPxuvGt99465smCdIwMvVioecBInPbHLPYsCu391Qt8ZdjPerAdq+lboOyktil0v8S61KeY0SxEMUYLUAYNlPCvQZidMbtdCI6GV8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XdKcKA4x; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1752685178; c=relaxed/simple;
+	bh=Ue2EyeAUqDPHnyzWjRAybkK0fJice5caV1/hEaqAOyo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TNFsTB+CKOCtp7HZA2aVXzJZXTmfjoWuvjkKDkp94dg33QlB7j/waA/Ct4Y9xmiAxRNLJelMR8MhqMc5rfeDE0K8wlQRy7jc/L++HSYC2BhvUVsFgNHgBwKO4U03pboyxw3XsHkFerdJrpGYhm701Q69k3zeWsKO11EyNxwq/Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMEXN+oT; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XdKcKA4x"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752684491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PwYPcyN5ffSu6lALOEsqaBZ3FmFPW1VuXsd8RNbGzSg=;
-	b=XdKcKA4xgGAt3A6fo5ngf0BR2gFrXXau0lYlMPXtXv9fYNMeizRPx3BtirSZpS3Fzgynj7
-	94v5kU/L4aZtL1RqBkHuVCRMQfi+xtp5en5lP2iI/fY8rneDjz1X5UlO8r7p6GHre0GYWb
-	eXt/1pnHJ1oMb5UESn8dFTRn4WUa3So=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMEXN+oT"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234c5b57557so226405ad.3;
+        Wed, 16 Jul 2025 09:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752685173; x=1753289973; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pWXltKeailaeCE7O4zeMIE5KwQLx7OFkEcvLJdPrfgE=;
+        b=iMEXN+oTVfY2uUsIeD2HneltpVS5ozhD5d4C1BtlH7h/yz0rLLvNmD6ZAKxuzto3fO
+         4rEwGmRgZ9NtqP4JU/nEOl2B01kTGAIFELkDvEpRl0XASfNFefFmiiotfxuQguSXQ+rk
+         8uYvMWp7XC0G4sZLiNe0GUczmLMoTMAsaZWxyZMiqnh0zB4HspM70Jp3wTOPb+0n+e7I
+         E2E1hGm4dY/uRBWyRVWVtT1lFXyRlD5LE/etY1kq40nDzHcrv44X/rSif7GMCYy+3BHT
+         1InvxVFBmniAXVUS+HinUW+OYt6ByKRJeVJQvr9VwG0etD15FTuXk62rk3ZmG6ANrsvC
+         Zh1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752685173; x=1753289973;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pWXltKeailaeCE7O4zeMIE5KwQLx7OFkEcvLJdPrfgE=;
+        b=J+UEzrY1kn9JPKUTyBwJSNfrqu850rR97moz3fujt4ohPxrNGr5b8YKrAqdulnsdu1
+         SyjzTmwZQFRyYHkcwYehnakkPX5H4L6RZaEgvuCdw3OyDfHpRVBxdlV2+SHa+StvquSn
+         mFZja8jKhhA/J7pR2DasUgiRzbpTvyDC6Eqby+HNIaHjgEaVhi8tfQpiQBnVi/rEWk9C
+         eK2m69wZbPy458u880NWdG0oDMDdnu2cAExrVqBFMnaFStP5c1XByrgDIerZdk5CMMeY
+         CaF2rccLqGD0EkXaejozoEq0qZj7wNmKZqPjn7z86bkRbt0qyKT6RjjSAYttMphMF+1D
+         PSUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULsz96NeKxhHmRvQ68jTLnV9LJz+u1DwRsDT/Qj40BG2Q5BiHRTl956s9eG18DAppdMQ1UnPTq3Ab+wmQt@vger.kernel.org, AJvYcCVlLAPTIoJ65Umgc/mbiYvw6akU8P/lp/ewpcWGCg86i1nGKbqATVrG4JPwjRhd9PBI1SY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpFFwdMLiTlonYAkjz1s+RB/7R2Q29jBVUr9oDtxNJWIy5803P
+	bVvN/CVbLkgNUcAfnxIOAziwmeTPjlKHCKyOM2vggFImZXctgu03TNdJ
+X-Gm-Gg: ASbGnctVbyaF+mPEQvU1mR6vzTvrpGlsSHBW3HvWIduuwhDnByNYu9UUPnfYdotI4yx
+	8+bCCTG8MaDZIu2gWSXVY2Ou71feAaXdhzFkGqc09Mn2PnR03v2TcYnIDd5f3MUzvdGS+Y7b2NJ
+	QssCqZis1mgwucZfcuvKfSjZ1bFFimIPVJQc7/4fB4aUfPzFZ2d+Ee/PQEVItJY+zJfNiOxFz4A
+	hB5hk9fCSmatlrfaegtNAg+olZXR3k6DOFPGxeOKn0lps0un4NceV2c6mgAUqVgB4+lAMcBi8VN
+	hCdmrRjorvRVCpzuubm41YYzHTXXJTirGCAR/3YNvT1PlWKbT+Mt3/iRUxVNHv41GdPo2e542B8
+	GvaZelTnpW99TRl2wYd1Lag==
+X-Google-Smtp-Source: AGHT+IHqWTXk2BJJVzrTEM0r4STe67WQG+3Gltp+lZVYutv/v33bO1hPVnMLPxR0PO4AQvxpsXFixQ==
+X-Received: by 2002:a17:902:d4ca:b0:235:2ac3:51f2 with SMTP id d9443c01a7336-23e2578d93amr47766305ad.45.1752685172773;
+        Wed, 16 Jul 2025 09:59:32 -0700 (PDT)
+Received: from localhost ([216.228.127.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4286da3sm134406665ad.34.2025.07.16.09.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 09:59:32 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
 	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 00/11] KVM: arm64: nv: Userspace register visibility fixes
-Date: Wed, 16 Jul 2025 09:47:53 -0700
-Message-Id: <175268446557.2457435.15867128559478190522.b4-ty@linux.dev>
-In-Reply-To: <20250714122634.3334816-1-maz@kernel.org>
-References: <20250714122634.3334816-1-maz@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Yury Norov <yury.norov@gmail.com>
+Subject: [PATCH 0/2] LoongArch: KVM: simplify KVM routines
+Date: Wed, 16 Jul 2025 12:59:25 -0400
+Message-ID: <20250716165929.22386-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, 14 Jul 2025 13:26:23 +0100, Marc Zyngier wrote:
-> Peter recently pointed out that we don't expose the EL2 GICv3
-> registers in a consistent manner, as they are presented through the
-> ONE_REG interface instead of KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS, despite
-> the latter already exposing the EL1 GICv3 regs.
-> 
-> While I was looking at this, I ended up finding a small number of
-> equally small problems:
-> 
-> [...]
+From: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 
-Applied to next, thanks!
+Switch KVM functions to use a proper bitmaps API.
 
-[01/11] KVM: arm64: Make RVBAR_EL2 accesses UNDEF
-        https://git.kernel.org/kvmarm/kvmarm/c/1095b32665cf
-[02/11] KVM: arm64: Don't advertise ICH_*_EL2 registers through GET_ONE_REG
-        https://git.kernel.org/kvmarm/kvmarm/c/c70a4027f5f3
-[03/11] KVM: arm64: Define constant value for ICC_SRE_EL2
-        https://git.kernel.org/kvmarm/kvmarm/c/c6ef46861080
-[04/11] KVM: arm64: Define helper for ICH_VTR_EL2
-        https://git.kernel.org/kvmarm/kvmarm/c/ce7a1cff2e4c
-[05/11] KVM: arm64: Let GICv3 save/restore honor visibility attribute
-        https://git.kernel.org/kvmarm/kvmarm/c/1d14c9714562
-[06/11] KVM: arm64: Expose GICv3 EL2 registers via KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
-        https://git.kernel.org/kvmarm/kvmarm/c/9fe9663e47e2
-[07/11] KVM: arm64: Condition FGT registers on feature availability
-        https://git.kernel.org/kvmarm/kvmarm/c/72c62700b279
-[08/11] KVM: arm64: Advertise FGT2 registers to userspace
-        https://git.kernel.org/kvmarm/kvmarm/c/a0aae0a9a70e
-[09/11] KVM: arm64: selftests: get-reg-list: Simplify feature dependency
-        https://git.kernel.org/kvmarm/kvmarm/c/9a4071807909
-[10/11] KVM: arm64: selftests: get-reg-list: Add base EL2 registers
-        https://git.kernel.org/kvmarm/kvmarm/c/3a90b6f27964
-[11/11] KVM: arm64: Document registers exposed via KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS
-        https://git.kernel.org/kvmarm/kvmarm/c/f68df3aee7d1
+Yury Norov (NVIDIA) (2):
+  LoongArch: KVM: rework kvm_send_pv_ipi()
+  LoongArch: KVM:: simplify kvm_deliver_intr()
 
---
-Best,
-Oliver
+ arch/loongarch/kvm/exit.c      | 31 ++++++++++++-------------------
+ arch/loongarch/kvm/interrupt.c | 23 +++--------------------
+ 2 files changed, 15 insertions(+), 39 deletions(-)
+
+-- 
+2.43.0
+
