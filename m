@@ -1,183 +1,187 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABB62EAB64
-	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 08:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB63F256C6D
+	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 08:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752654151; cv=none; b=hkOwVJohQWrrJYXmiP3mmxOzZQNhJ2PnRxUtCYRgJAyFQu5d7ZkH72Jjwmd9o1tePMBj8F0c75K4RCRB9W5ObDyS/+x1coG0a/chMX2DAq85pTKiPCZEIpS762OvY9cqUw84XALvBrexcubvlOv4EdnU9ECimkkod0380YQTrko=
+	t=1752654221; cv=none; b=j6Hm1bIQ1O0GhryrP0LWXA55MPHSmAD+aS59Ng5c8cMKfL+faPtzh5jddVYfQ7YXvX/NJgvPgGh+fL+aPqg9eXWL7k89LlHG03fmGHdQ6kLCO4fDsENI0dzVdX6vF6jahZBmMxBEJSh8ESmyIkJVEzOv/KrD5w+7q6p4K6/4qDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752654151; c=relaxed/simple;
-	bh=Efc5zrMmKCLeVwBE7haDRUYt/aVplYzJ7QWqSAKg750=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BiNRHsquDfUoqtD3zlqir1Hpm9p5WVqvZbto3acDEfqegaQXEQYSf132LJwN92fGI8R8LqD2dpObzxu6CdLSG+0a2LOYRwjBrnY/HX7MbgbSXZhwsHhHYdiOnws+4/gGm2ekwTXByiNNjIpyiN/QYS+hF+VEa4iqK8OHai50W2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4dcQlRva; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752654221; c=relaxed/simple;
+	bh=paTfRGHkvf1SbD2JKx5jmgOaLo6grjWR4gpGzCvi9/Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nMfi7S7TDYOmqEF2aEY1Xwjwao+yLYiv9bXcQCkHwQWGGPV02tH8uA1RbbjtuwQCGINbfZbq8K+lV7WA7HvYYWUIpmtAztWSO8XJWXB9P/L5W/182JphRMY9/ACvaAcm6DlvNOlxnc7VhMDpn+kUprU0XP8KEYIpWymrAv6KS/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=exXqPj6W; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4dcQlRva"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ab86a29c98so353641cf.0
-        for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 01:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752654149; x=1753258949; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dB2f+OqBcoUglBgioeCSamv6eJG+MGIr3kIA7svSfaM=;
-        b=4dcQlRvaJw/3XmXQGdcZR84O0eLhWUYysNY3g8HqdoJ3xNWT3gzqk2AQHHlT/YnKby
-         RXPGF+Q6PaspZUJl7uzuR/t519QJvRBk8KGjcYSLa9h1cFfjB+b84ZTka9R0Lrb620k/
-         Rh9TjB2y4d5RAtqhNfZf27a93HMv3ggXdj8UHH3h3m2p1p0ev0I0LpvLfSf3NueMRmG/
-         n88AQ/V6ZGsHNPaqXrsaymu00s3MniE8qQ0nj19ztJIBY8zCqSXaI71K+QmO3pQjFdW/
-         T5wCBntfJOPokY3Z17NdcBfIVIBIXI8VMBa5AfrDMCrAR1POdxk99mD51hX0eqXlA/KB
-         jqzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752654149; x=1753258949;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dB2f+OqBcoUglBgioeCSamv6eJG+MGIr3kIA7svSfaM=;
-        b=Yk8e6dn42Bh+TqmopJIm7GacdzrWIN0jfJea1lJBLn9zn5sqTFCFGnnf6LfHMf9/VU
-         h410Gm+/AGuX1yKFTr9Gc7tLf9t4sxFcPvJc5l4954t4W+/8jq+kZQQx96yAxziBLAQz
-         lCIzIG+/HXY/KX5Q3G9E+2CbOZU3CEAvNM0/TZu3NQJphPcAxlyGgNke1qqRWN1l6AVW
-         tHgm1i+d95n90Lg0nSob4KWLXOis7EqKLxouxNOCqC/82oICWqSnZBvwmH5cFxO/qZb1
-         XHVhrnI/uWTuu5G3fc9hjATHYqMl3TcOrpIsEmR0OZsYnWucCbubFj92Sa9uN3739X5l
-         tVHw==
-X-Gm-Message-State: AOJu0YwoaF+poPR98pWcd4MCE4GkhjxMx+rfyhRofDNy8PBriYf9IgWq
-	gWA6HC/zEaWS/Fdg/9sUWEL8qUHzeUN7dl2WAhMVG8hXLQUnprraWVuLp0q+K49NpXpd+XPpTAB
-	mAg4NEZPvIm07nwWZ3xeCHtopNWaXyzGA1D5pWxaN
-X-Gm-Gg: ASbGncuZ5zEOOGRYIbiQMYN350rd8iUKZd8BYj5+FdqsnfIo4zOUsJL/e5wHHKZHCqn
-	NPs9pRLAJWZ2vQGaikp1xKJSEEwn0+ZGRKKVfJSElR5PDzuUhEn1fGe/LzwrWpbQEEEoPC/6COl
-	MPvmiSE2sHWNeNx1a1dq8bX0Qpr6yFFA1L/is+OxS6aUmpcSYdVY6qrPJr8+LJWTPD9A==
-X-Google-Smtp-Source: AGHT+IES4Fs0eOXrBME9Gvkd38f9cRIFgxFUNysGwp74hEleIZ8Dk5yv42MjL8flX2EK/oextm+FVG3Xg4ndC+z5lzA=
-X-Received: by 2002:a05:622a:5a10:b0:4a5:9b0f:9a54 with SMTP id
- d75a77b69052e-4ab954d873amr1943711cf.18.1752654146282; Wed, 16 Jul 2025
- 01:22:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="exXqPj6W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752654215;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=STUiBIB+Th2T363ay6GOHVdT+QkghnT6vecX0DXWUeM=;
+	b=exXqPj6Wy9JdyE02Sn9DMdT9J2DR76lV62Hav/curm/CDE44nOA8CKpJ3jZhFuhfdgRzfs
+	/wgVukx0xolJfn+ZXOL9PCvdvSioGgKZkl1aPWeAqM8wwl3XUavcHTP6oNpM/E/SAi9Cjh
+	weEO+mBPaKLZ1WfMVccUP/M4gBt4cVA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-41NsQrsXNwWBG8ttagMCbg-1; Wed,
+ 16 Jul 2025 04:23:32 -0400
+X-MC-Unique: 41NsQrsXNwWBG8ttagMCbg-1
+X-Mimecast-MFC-AGG-ID: 41NsQrsXNwWBG8ttagMCbg_1752654210
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 23F491800366;
+	Wed, 16 Jul 2025 08:23:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8355F1955F16;
+	Wed, 16 Jul 2025 08:23:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id D3D1D21E6A27; Wed, 16 Jul 2025 10:23:26 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  kvm@vger.kernel.org,  Richard Henderson
+ <richard.henderson@linaro.org>,  Zhao Liu <zhao1.liu@intel.com>,  Eduardo
+ Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,  Eric
+ Blake <eblake@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Daniel
+ P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v5 28/69] qapi: Move definitions related to accelerators
+ in their own file
+In-Reply-To: <db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org> ("Philippe
+	=?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 3 Jul 2025 18:42:06
+ +0200")
+References: <20250703105540.67664-1-philmd@linaro.org>
+	<20250703105540.67664-29-philmd@linaro.org>
+	<db0b2ce0-e702-4f32-b284-29cccc8d67ba@linaro.org>
+Date: Wed, 16 Jul 2025 10:23:26 +0200
+Message-ID: <877c08wnlt.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715093350.2584932-1-tabba@google.com> <20250715093350.2584932-10-tabba@google.com>
- <eb9d39b4-0de8-4abb-b0f7-7180dc1aaee5@intel.com>
-In-Reply-To: <eb9d39b4-0de8-4abb-b0f7-7180dc1aaee5@intel.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 16 Jul 2025 09:21:49 +0100
-X-Gm-Features: Ac12FXyuF2E-PHHtVYmQgJuetruwFH7AKGsFMN-bVKy3sXgyo2DVZ-InUCrcF3w
-Message-ID: <CA+EHjTw8Pezyut+pjpRyT9R5ZWvjOZUes27SHJAEeygCOV_HQA@mail.gmail.com>
-Subject: Re: [PATCH v14 09/21] KVM: guest_memfd: Track guest_memfd mmap
- support in memslot
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
-	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi Xiaoyao,
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-On Wed, 16 Jul 2025 at 07:11, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+> Hi Markus,
+
+I missed this one, sorry!
+
+> On 3/7/25 12:54, Philippe Mathieu-Daud=C3=A9 wrote:
+>> Extract TCG and KVM definitions from machine.json to accelerator.json.
+>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+[...]
+
+>> diff --git a/qapi/accelerator.json b/qapi/accelerator.json
+>> new file mode 100644
+>> index 00000000000..00d25427059
+>> --- /dev/null
+>> +++ b/qapi/accelerator.json
+>> @@ -0,0 +1,57 @@
+>> +# -*- Mode: Python -*-
+>> +# vim: filetype=3Dpython
+>> +#
+>> +# SPDX-License-Identifier: GPL-2.0-or-later
+>> +
+>> +##
+>> +# =3D Accelerators
+>> +##
+>> +
+>> +{ 'include': 'common.json' }
 >
-> On 7/15/2025 5:33 PM, Fuad Tabba wrote:
-> > Add a new internal flag, KVM_MEMSLOT_GMEM_ONLY, to the top half of
-> > memslot->flags. This flag tracks when a guest_memfd-backed memory slot
-> > supports host userspace mmap operations. It's strictly for KVM's
-> > internal use.
+> common.json defines @HumanReadableText, ...
 >
-> I would expect some clarification of why naming it with
-> KVM_MEMSLOT_GMEM_ONLY, not something like KVM_MEMSLOT_GMEM_MMAP_ENABLED
+> [...]
 >
-> There was a patch to check the userspace_addr of the memslot refers to
-> the same memory as guest memfd[1], but that patch was dropped. Without
-> the background that when guest memfd is mmapable, userspace doesn't need
-> to provide separate memory via userspace_addr, it's hard to understand
-> and accept the name of GMEM_ONLY.
-
-The commit message could have clarified this a bit more. Regarding the
-rationale for the naming, there have been various threads and live
-discussions in the biweekly guest_memfd meeting . Instead of rehashing
-the discussion here, I can refer you to a couple [1, 2].
-
-[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?tab=t.0#heading=h.a15es1buok51
-[2] https://lore.kernel.org/all/aFwChljXL5QJYLM_@google.com/
-
-Thanks,
-/fuad
-
-> [1] https://lore.kernel.org/all/20250513163438.3942405-9-tabba@google.com/
+>> +##
+>> +# @x-query-jit:
+>> +#
+>> +# Query TCG compiler statistics
+>> +#
+>> +# Features:
+>> +#
+>> +# @unstable: This command is meant for debugging.
+>> +#
+>> +# Returns: TCG compiler statistics
+>> +#
+>> +# Since: 6.2
+>> +##
+>> +{ 'command': 'x-query-jit',
+>> +  'returns': 'HumanReadableText',
+>> +  'if': 'CONFIG_TCG',
 >
-> > This optimization avoids repeatedly checking the underlying guest_memfd
-> > file for mmap support, which would otherwise require taking and
-> > releasing a reference on the file for each check. By caching this
-> > information directly in the memslot, we reduce overhead and simplify the
-> > logic involved in handling guest_memfd-backed pages for host mappings.
-> >
-> > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > Reviewed-by: Shivank Garg <shivankg@amd.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Suggested-by: David Hildenbrand <david@redhat.com>
-> > Signed-off-by: Fuad Tabba <tabba@google.com>
-> > ---
-> >   include/linux/kvm_host.h | 11 ++++++++++-
-> >   virt/kvm/guest_memfd.c   |  2 ++
-> >   2 files changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index 9ac21985f3b5..d2218ec57ceb 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -54,7 +54,8 @@
-> >    * used in kvm, other bits are visible for userspace which are defined in
-> >    * include/uapi/linux/kvm.h.
-> >    */
-> > -#define KVM_MEMSLOT_INVALID  (1UL << 16)
-> > +#define KVM_MEMSLOT_INVALID                  (1UL << 16)
-> > +#define KVM_MEMSLOT_GMEM_ONLY                        (1UL << 17)
-> >
-> >   /*
-> >    * Bit 63 of the memslot generation number is an "update in-progress flag",
-> > @@ -2536,6 +2537,14 @@ static inline void kvm_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
-> >               vcpu->run->memory_fault.flags |= KVM_MEMORY_EXIT_FLAG_PRIVATE;
-> >   }
-> >
-> > +static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
-> > +{
-> > +     if (!IS_ENABLED(CONFIG_KVM_GMEM_SUPPORTS_MMAP))
-> > +             return false;
-> > +
-> > +     return slot->flags & KVM_MEMSLOT_GMEM_ONLY;
-> > +}
-> > +
-> >   #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> >   static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
-> >   {
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 07a4b165471d..2b00f8796a15 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -592,6 +592,8 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >        */
-> >       WRITE_ONCE(slot->gmem.file, file);
-> >       slot->gmem.pgoff = start;
-> > +     if (kvm_gmem_supports_mmap(inode))
-> > +             slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
-> >
-> >       xa_store_range(&gmem->bindings, start, end - 1, slot, GFP_KERNEL);
-> >       filemap_invalidate_unlock(inode->i_mapping);
+> ... which is *optionally* used here, triggering when
+> TCG is not built in:
 >
+> qapi/qapi-commands-accelerator.c:85:13: error: =E2=80=98qmp_marshal_outpu=
+t_HumanReadableText=E2=80=99 defined but not used [-Werror=3Dunused-functio=
+n]
+>    85 | static void qmp_marshal_output_HumanReadableText(HumanReadableTex=
+t *ret_in,
+>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+
+This is a defect in the QAPI code generator.  More below.
+
+> We previously discussed that issue:
+> https://mail.gnu.org/archive/html/qemu-devel/2021-06/msg02667.html
+>
+> where you said:
+>
+> "conditional commands returning an unconditional type is a bit
+> of a code smell". Is it however a "non-smelly instances of this pattern"?
+
+The instance discussed there wasn't.
+
+You ran into it when you made TPM commands conditional on CONFIG_TPM
+without also making the types they return conditional.  The proper
+solution was to make the types conditional, too.  Avoided generating
+dead code.  I told you "The user is responsible for making T's 'if' the
+conjunction of the commands'."
+
+Some of the commands returning HumanReadableText are unconditional, so
+said conjunction is also unconditional.  So how do we end up with unused
+qmp_marshal_output_HumanReadableText()?
+
+A qmp_marshal_output_T() is only ever called by qmp_marshal_C() for a
+command C that returns T.
+
+We've always generated it as a static function on demand, i.e. when we
+generate a call.
+
+Since we split up monolithic generated code into modules, we do this on
+per module.  This can result in identical (static)
+qmp_marshal_output_T() in several modules.  Fine, but we haven't
+considered conditionals, yet.
+
+As long as all functions returning T are in the same module, "making T's
+'if' the conjunction of the commands'" works.  This is the case for the
+TPM commands.
+
+However, it need not work when the functions returning T are in multiple
+modules.  For each module, we need the conjunction of that module's
+commands' conditions.  We can't make it T's condition unless they are
+all the same.  They aren't for HumanReadableText, as you found out.
+
+I need to ponder this to decide on a solution.
+
+Thanks!
+
