@@ -1,216 +1,131 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0708293C61
-	for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 08:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A462EAB82;
+	Wed, 16 Jul 2025 08:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752653794; cv=none; b=GcMMhtj8EhzRZ94xKbvBM0EblLU+/x3B0dqbgcqm1LBMV7xPyx2+90cUrGoh8RiFh/CKMRBtSeGjq2+3FTKfkhEF4L7eqfiu+0k4aHRt2PxKkzVh+tvcihZe2RmQ60CFujcOvy+aQAjo6pUOMqK9on+nWQ2rJEJCqPOCzLLoRKk=
+	t=1752654150; cv=none; b=PyPUsYMqow+KZfdNQOsWdxtx3WKjxudlI6j8orbfBw3v9n4Eb72CTN71UP/JcQT4YoAyWV5nUf+OXaOoMcizHMyyb28PlwkDgjIfLPnoCayPZutso7aRPnTcJME21WgxNIUcLyR6xVVQAaoDezFVYqd7xoK3MPRPUpm7x1OXU1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752653794; c=relaxed/simple;
-	bh=YJKcl4vj24HGH7v5er3kH32Ci+TJCFAsMQP2JUMKGVc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fPaeZBOHShNwzL0GP2tRAX2rIuDhTCG2xnv7FPr1IcxO+pcr9G8pG0DsMPds13mdDPmoHSUjrPH7Z5VFHmRWUnys1G8edq4iFnDSIyMWEqavmR1YNyOtqaUrYAcX1Z/m8gTZsSJvsgzOJgHugUIe7C27QONryFmDnBdH9HZtAoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nwibixuh; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752654150; c=relaxed/simple;
+	bh=V4D522z6UUEGIW4Wg6YSnm8NKzfzikRtghcHIDH2hWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QF994wi8pWN/2UI8sVYPhp326qGNHhCZql9NoN0jeXXYI0F28X0M0SJxvs2CmkQ5uGc/8r/3HmXzRsGhb1kUxcSyBLhVGAZZLAmJRXKnHywrdyRnrnS7UhqbdcKwnsxHLVJhI3aD9m5ZVN3IL4hjxf/0dciZ57udGGTAvPmAmaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ju9r0yge; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nwibixuh"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso132091cf.1
-        for <kvm@vger.kernel.org>; Wed, 16 Jul 2025 01:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752653792; x=1753258592; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mnAy+noFgCnHDKld1AWpZeCpzVxC9Cw5tuqijnucVtI=;
-        b=Nwibixuh6RmDM2OHZb6+CRrY1BrvzxtvH3IwOyRXVjKKvEloQFPeV1WFTzvlkpDzMe
-         /47jvJc7T7viK3OLMXJTb/8x5gE9D0ezMJJoATeRrG4X/LjUxsoabzRdcxVLoOttIj2X
-         LqCb9R3sJQbWQ5enzTRXIwdHRes0yamlwPaeW5pZ/YLjgMG3Fnxl/igbQ1tsc0zL2hfu
-         nkLrr2Qxu2ImO+6Twl81hPom0zhYWwBHnPsN1wQ6sjdRrgbMG5t9EC1i3064b7Af0IHv
-         N1nyO7BF5JCzvNrfXzSg6bg0t3Slr+EoZDXEwNFbgVFUEQbLdeOxWlFB5U4Z+hXjP+xZ
-         /ZMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752653792; x=1753258592;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mnAy+noFgCnHDKld1AWpZeCpzVxC9Cw5tuqijnucVtI=;
-        b=rCgcS5OMuHuGsZkQ6caI3R032XHRjOItz/mfPgfhHaauEHaqLryLRH7ZtJqs9KYDOO
-         0QAOTVr2bfWaT8/uAdSYTfb++aAhkIGAmZux8LGv4xIIycZSvB4Ajgw1uMEiPa70uZEJ
-         SYg0iEQJBX4u/HyMKFvVZT4LvHXAeiKv5HMBTJASnQlOC1R5ugVjAdiS4rxVptoSz4FY
-         bw2VjLsc1JiZpd9fX3aoLBGlTShCa48TIhXowHYXEC9zEHcu/RKnBbuuUuUqvzvtIuF4
-         DlzlujFMyhXKJJ2zbYP3OP+yfaVNWaATtDscOfAgTqLZd0/8TpxPv8AkMlEOVigk9T4r
-         uh9w==
-X-Gm-Message-State: AOJu0YwFBHmWXwICZ/XMsjucK0xVuBZYpYPTFUDtWmne/BbAJFIU4God
-	qbeXEYZQOfjD7Uw6+wiFVsnXj3mMbbt5yHe1+5oopnkcFUe11bWpTXIitBeiXe3llLjDc5xx0az
-	VSox6KPjT4cb8evZQiEmqUz9H6RwmoCFQZUH6neYH
-X-Gm-Gg: ASbGncumlgj2TEm22aCPQIX1XAhUiy/2JNI+DRmkArCmTAGjm0xGby7+/rXnbEDOXQ6
-	ffZnGV7xcdbmzgupuoYYwoAJn7uwhsuWSX3CccF/ytt5F9jVl+j75xiTIgxepG2JKZ4Q9kVt2DT
-	d0SKxvRcXkZIFgBtoptwyNRWBrVBXKz5ImC6WRnGNlNKiT36/J5zkIMVrx7umD4L6ddM+ANSeTP
-	C6pjJ0tIa/B4B3aAi1Anm/YvA0fu74zLToN3DHIIJ78cfQ=
-X-Google-Smtp-Source: AGHT+IGVoq0ga5qSenXVZ+UZRsJYQFZIpqNzCrbFRCRBi/h2oDDFH7C/AuHlq8c+No+9wOmjYwhA7tNPCVL404pkr1s=
-X-Received: by 2002:a05:622a:758e:b0:4a8:19d5:e9bb with SMTP id
- d75a77b69052e-4ab97dc8f23mr1362021cf.13.1752653791542; Wed, 16 Jul 2025
- 01:16:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ju9r0yge"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AC8C4CEF9;
+	Wed, 16 Jul 2025 08:22:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752654150;
+	bh=V4D522z6UUEGIW4Wg6YSnm8NKzfzikRtghcHIDH2hWc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ju9r0ygeIoehctwwAmdbT/gnfDwO9Wx9CcOiz8KdX+fbbUUW44D3fiXaJL6ORkQll
+	 NStAgkyukkjf0jmlnc+7NmUNmVnsxXJtXtjpIEZfICw+MgHB6EukkgT+gI0GlE0ymn
+	 0sB/lbzBlumLdjrsptDrl/3BbpnNY4NxBxXo79i7geNfD4Ip4W7E7vNPGo6MQ+HL3s
+	 XNk3X9dbyeUezh1dNqRL+ALj9ijiDE+UH1Ko4if/JVXnV6dkA0fqgeaxcUjfplQznk
+	 hmsDIryCvejDyEO1edOecCZ/ea1g5mxVBovVrHfR3gaLjaG7eJTDw3g71cPoAdDVUf
+	 HMZZxthoAuLpg==
+Date: Wed, 16 Jul 2025 10:22:27 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Simona Vetter <simona@ffwll.ch>, Lukas Wunner <lukas@wunner.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Alex Williamson <alex.williamson@redhat.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:INTEL IOMMU (VT-d)" <iommu@lists.linux.dev>, "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>, 
+	"open list:VFIO DRIVER" <kvm@vger.kernel.org>, "open list:SOUND" <linux-sound@vger.kernel.org>, 
+	Daniel Dadap <ddadap@nvidia.com>, Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v8 9/9] PCI: Add a new 'boot_display' attribute
+Message-ID: <20250716-upbeat-tody-of-psychology-93e2a2@houat>
+References: <20250714212147.2248039-1-superm1@kernel.org>
+ <20250714212147.2248039-10-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715093350.2584932-1-tabba@google.com> <20250715093350.2584932-9-tabba@google.com>
- <e1470c54-fe2b-4fdf-9b4b-ce9ef0d04a1b@intel.com>
-In-Reply-To: <e1470c54-fe2b-4fdf-9b4b-ce9ef0d04a1b@intel.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 16 Jul 2025 09:15:55 +0100
-X-Gm-Features: Ac12FXxETsFaclWR-WjxOoLNq6pE7Ay4UcwynELirUbeDNGKOnsmgp7urN-OGDw
-Message-ID: <CA+EHjTyGN3XcjXbWPLer0_1Hvg7HGD0E+ULibwk7ObOKKRNPfw@mail.gmail.com>
-Subject: Re: [PATCH v14 08/21] KVM: guest_memfd: Allow host to map guest_memfd pages
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
-	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="k6j22jwrkd2tjfpl"
+Content-Disposition: inline
+In-Reply-To: <20250714212147.2248039-10-superm1@kernel.org>
 
-Hi Xiaoyao,
 
-On Wed, 16 Jul 2025 at 06:40, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
->
-> On 7/15/2025 5:33 PM, Fuad Tabba wrote:
-> > Introduce the core infrastructure to enable host userspace to mmap()
-> > guest_memfd-backed memory. This is needed for several evolving KVM use
-> > cases:
-> >
-> > * Non-CoCo VM backing: Allows VMMs like Firecracker to run guests
-> >    entirely backed by guest_memfd, even for non-CoCo VMs [1]. This
-> >    provides a unified memory management model and simplifies guest memory
-> >    handling.
-> >
-> > * Direct map removal for enhanced security: This is an important step
-> >    for direct map removal of guest memory [2]. By allowing host userspace
-> >    to fault in guest_memfd pages directly, we can avoid maintaining host
-> >    kernel direct maps of guest memory. This provides additional hardening
-> >    against Spectre-like transient execution attacks by removing a
-> >    potential attack surface within the kernel.
-> >
-> > * Future guest_memfd features: This also lays the groundwork for future
-> >    enhancements to guest_memfd, such as supporting huge pages and
-> >    enabling in-place sharing of guest memory with the host for CoCo
-> >    platforms that permit it [3].
-> >
-> > Therefore, enable the basic mmap and fault handling logic within
-> > guest_memfd. However, this functionality is not yet exposed to userspace
-> > and remains inactive until two conditions are met in subsequent patches:
-> >
-> > * Kconfig Gate (CONFIG_KVM_GMEM_SUPPORTS_MMAP): A new Kconfig option,
-> >    KVM_GMEM_SUPPORTS_MMAP, is introduced later in this series.
->
-> Well, KVM_GMEM_SUPPORTS_MMAP is actually introduced by *this* patch, not
-> other patches later.
->
-> > This
-> >    option gates the compilation and availability of this mmap
-> >    functionality at a system level.
->
-> Well, at least from this patch, it doesn't gate the compilation.
+--k6j22jwrkd2tjfpl
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v8 9/9] PCI: Add a new 'boot_display' attribute
+MIME-Version: 1.0
 
-You're right. This commit changed a bit, and I should have updated the
-commit message.
+Hi Mario,
 
->
-> > While the code changes in this patch
-> >    might seem small, the Kconfig option is introduced to explicitly
-> >    signal the intent to enable this new capability and to provide a clear
-> >    compile-time switch for it. It also helps ensure that the necessary
-> >    architecture-specific glue (like kvm_arch_supports_gmem_mmap) is
-> >    properly defined.
-> >
-> > * Per-instance opt-in (GUEST_MEMFD_FLAG_MMAP): On a per-instance basis,
-> >    this functionality is enabled by the guest_memfd flag
-> >    GUEST_MEMFD_FLAG_MMAP, which will be set in the KVM_CREATE_GUEST_MEMFD
-> >    ioctl. This flag is crucial because when host userspace maps
-> >    guest_memfd pages, KVM must *not* manage the these memory regions in
-> >    the same way it does for traditional KVM memory slots. The presence of
-> >    GUEST_MEMFD_FLAG_MMAP on a guest_memfd instance allows mmap() and
-> >    faulting of guest_memfd memory to host userspace. Additionally, it
-> >    informs KVM to always consume guest faults to this memory from
-> >    guest_memfd, regardless of whether it is a shared or a private fault.
-> >    This opt-in mechanism ensures compatibility and prevents conflicts
-> >    with existing KVM memory management. This is a per-guest_memfd flag
-> >    rather than a per-memslot or per-VM capability because the ability to
-> >    mmap directly applies to the specific guest_memfd object, regardless
-> >    of how it might be used within various memory slots or VMs.
-> >
-> > [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
-> > [2] https://lore.kernel.org/linux-mm/cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com
-> > [3] https://lore.kernel.org/all/c1c9591d-218a-495c-957b-ba356c8f8e09@redhat.com/T/#u
-> >
-> > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > Reviewed-by: Shivank Garg <shivankg@amd.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> > Signed-off-by: Fuad Tabba <tabba@google.com>
-> > ---
-> >   include/linux/kvm_host.h | 13 +++++++
-> >   include/uapi/linux/kvm.h |  1 +
-> >   virt/kvm/Kconfig         |  4 +++
-> >   virt/kvm/guest_memfd.c   | 73 ++++++++++++++++++++++++++++++++++++++++
-> >   4 files changed, 91 insertions(+)
-> >
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index 1ec71648824c..9ac21985f3b5 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -740,6 +740,19 @@ static inline bool kvm_arch_supports_gmem(struct kvm *kvm)
-> >   }
-> >   #endif
-> >
-> > +/*
-> > + * Returns true if this VM supports mmap() in guest_memfd.
-> > + *
-> > + * Arch code must define kvm_arch_supports_gmem_mmap if support for guest_memfd
-> > + * is enabled.
->
-> It describes the similar requirement as kvm_arch_has_private_mem and
-> kvm_arch_supports_gmem, but it doesn't have the check of
->
->         && !IS_ENABLED(CONFIG_KVM_GMEM)
->
-> So it's straightforward for people to wonder why.
->
-> I would suggest just adding the check of !IS_ENABLED(CONFIG_KVM_GMEM)
-> like what for kvm_arch_has_private_mem and kvm_arch_supports_gmem. So it
-> will get compilation error if any ARCH enables CONFIG_KVM_GMEM without
-> defining kvm_arch_supports_gmem_mmap.
+On Mon, Jul 14, 2025 at 04:21:46PM -0500, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>=20
+> On systems with multiple GPUs there can be uncertainty which GPU is the
+> primary one used to drive the display at bootup. In order to disambiguate
+> this add a new sysfs attribute 'boot_display' that uses the output of
+> video_is_primary_device() to populate whether a PCI device was used for
+> driving the display.
+>=20
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v7:
+>  * fix lkp failure
+>  * Add tag
+> v6:
+>  * Only show for the device that is boot display
+>  * Only create after PCI device sysfs files are initialized to ensure
+>    that resources are ready.
+> v4:
+>  * new patch
+> ---
+>  Documentation/ABI/testing/sysfs-bus-pci |  8 +++++
+>  drivers/pci/pci-sysfs.c                 | 46 +++++++++++++++++++++++++
+>  2 files changed, 54 insertions(+)
+>=20
+> diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/=
+testing/sysfs-bus-pci
+> index 69f952fffec72..8b455b1a58852 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-pci
+> +++ b/Documentation/ABI/testing/sysfs-bus-pci
+> @@ -612,3 +612,11 @@ Description:
+> =20
+>  		  # ls doe_features
+>  		  0001:01        0001:02        doe_discovery
+> +
+> +What:		/sys/bus/pci/devices/.../boot_display
+> +Date:		October 2025
+> +Contact:	Linux PCI developers <linux-pci@vger.kernel.org>
+> +Description:
+> +		This file indicates the device was used as a boot
+> +		display. If the device was used as the boot display, the file
+> +		will be present and contain "1".
 
-Thanks!
-/fuad
+It would probably be a good idea to define what a "boot display" here
+is. I get what you mean, but it's pretty vague and could easily be
+misunderstood.
 
->
-> > + */
-> > +#if !defined(kvm_arch_supports_gmem_mmap)
-> > +static inline bool kvm_arch_supports_gmem_mmap(struct kvm *kvm)
-> > +{
-> > +     return false;
-> > +}
-> > +#endif
-> > +
+Maxime
+
+--k6j22jwrkd2tjfpl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaHdhQwAKCRAnX84Zoj2+
+dmq9AYDxe/0Z5T43z0PYAkTEFn17IfyWd5PSFPwPt5sbAZu5sPFpkiTIYzsW8zQO
+FdVNAZgBgMbsfM0ASem/uZk2LHVlbNAmBeJms8JHF/ENscuRsyCN5ltCZOVlNZM0
+tOdrKjIKvw==
+=zc9C
+-----END PGP SIGNATURE-----
+
+--k6j22jwrkd2tjfpl--
