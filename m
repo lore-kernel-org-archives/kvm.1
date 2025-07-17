@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013BCFBF0;
-	Thu, 17 Jul 2025 01:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321AA2E36F3;
+	Thu, 17 Jul 2025 02:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752716909; cv=none; b=knqlsxxk+bC+m+zRRrUnfxVmN5yLsUI8xI438vCVnOTyAFWnk9za1GKZb+FlkqWf9hDLzOGqAqGWlfHIh3PGeKDn9PHWGK2+HE84lKohBsCPp4AfQQBjk19LcNdq/M9jPvnjucJr86JfCn76Z/L+68OBWmZGuU7pwN+gqSw3744=
+	t=1752717786; cv=none; b=W0NT/I0t9/Z0czL7UK87GYzrFfBcwJ3H284ktWyPe8rQzKCUF+Xv8OZHHfOHNv4S/rDo12WCZ6lOtvofAKRoNqp6ljoe+ZcTUejr9lGJpJTvSmVx4sfVEeMHizgX6sh4GrPQxiC3K/w4BK4uIIYrG79InZgeo2rukr/dqi4u554=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752716909; c=relaxed/simple;
-	bh=+vA6VjAD/msff3HcB4KHdm01AVdTtpQQAMZVpPzgeho=;
+	s=arc-20240116; t=1752717786; c=relaxed/simple;
+	bh=4JDFqlgxw77PHEPrYQ1mHlH5hocTHgr+G9MySqDo27k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PRRRf0q71PgzuBWHMUl+2zCN11g8h94nir0Jd7Xw/QpQcMzCT8YAVyqkv+LOyu148pqNGdyv+mTGHY0pUlmzWnhS1WDbWrYZZDHx7PCiB90jFL0oH733qzZ3qSdA8uRy7srvF3Muc2wQIdJSdQZCGtYgu+axe0VgKNHl58HUcP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LipIJguB; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=XsduGKhlGhOJiT7O7p0ywAlb6MoVhzv4uNuI8hdKdX0MnVLkgR01Q1nS+GX7M5AYVIbrULaywke3sJIVWQthyofOfOWjOAB8sj+4mWX9WBGuwVrqev3Mpaj6l5IZJ98oMtPEuotJHrbd68hekZM8xYX9Al0Pf6mptjujE0WBbwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L3Pb+uBK; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LipIJguB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L3Pb+uBK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752716908; x=1784252908;
+  t=1752717784; x=1784253784;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=+vA6VjAD/msff3HcB4KHdm01AVdTtpQQAMZVpPzgeho=;
-  b=LipIJguBWs9cJ04JcUad77inEHqq47UnlJRUMdY15fe6WkODYApDdpL6
-   rF9xX4CKOEgnLZJPDDxcVzj787GhPn8dLPfBKd7OFkdPCv4Cocj3AuFIj
-   l5kIVK6CaqvVKw+BmDzo8PjGMyRmhpH4TA8eBqWSEYsDME7VraWH/2AaT
-   HWhm9yExVorGJscC2d9MSlqAXX26YjRLOrKAb2AZOIhiqeHhm+7gEnF4Z
-   gaDbsWax3lejYqoYl5F+rN0tYCRZkoog9zr9Fd871lhJC3SFHqFhxfQnF
-   k7rZiOm0tFWW9dPPae3wiyCDMpV39ojFtsRbMQ3h6RAvO5yuBdxdTNUsz
-   Q==;
-X-CSE-ConnectionGUID: HvD+JTPmRvmUWloLPTHFYQ==
-X-CSE-MsgGUID: hG37pQ03SWq8Qatal+Knjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="58785937"
+  bh=4JDFqlgxw77PHEPrYQ1mHlH5hocTHgr+G9MySqDo27k=;
+  b=L3Pb+uBKKl22JrtK/AUAHLmu/eMUKYATcD3sLgXPAuNM1EjUfA6nAHFX
+   kpGVdxW3oIJ1LPAZB8m5Ouu+SYW+VoczhAS5sVsGbZF0iV1mD7aFon69u
+   OyC4fumn1N2lvOYAStM/Nr+1lD5G3iLqr6WikoOgDy6ie4R+lqbWD3bMb
+   AM5X4ZlN7VX7Uk2hoLEca7akwHrlYnCEo4Xx7DduDXuxIfXw0HrAKFY7d
+   QvmE6YVrzdAfEOR+zloJpPQ9MSHUFsRWLqUS1AQFP1SMkMNWLNU7xu/3U
+   KpxvyEOmNw4l3aUrWLYY1UjqYW5DETEAUHyyDll04FJmlx9vXFU158u15
+   g==;
+X-CSE-ConnectionGUID: gcNXgHU0RZGspfOw97kDMQ==
+X-CSE-MsgGUID: cYxj8FcFS0SBBZIFI9I+tQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54195132"
 X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
-   d="scan'208";a="58785937"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 18:48:27 -0700
-X-CSE-ConnectionGUID: mucKBDNPTGiJAO6hz55JzA==
-X-CSE-MsgGUID: KXDmfuCITFSe2NCia9MNQQ==
+   d="scan'208";a="54195132"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 19:03:03 -0700
+X-CSE-ConnectionGUID: /N7WZDv7TSulgczoSWxv1Q==
+X-CSE-MsgGUID: bfRoqyoaQvW10Oh2gGHSXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
-   d="scan'208";a="188650623"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 18:48:14 -0700
-Message-ID: <fef1d856-8c13-4d97-ba8b-f443edb9beac@intel.com>
-Date: Thu, 17 Jul 2025 09:48:10 +0800
+   d="scan'208";a="163194811"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.106]) ([10.124.240.106])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 19:03:00 -0700
+Message-ID: <71d741d1-9250-4a64-b695-16f8bdc338e7@linux.intel.com>
+Date: Thu, 17 Jul 2025 10:02:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,177 +52,188 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 04/21] KVM: x86: Introduce kvm->arch.supports_gmem
-To: Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>,
- kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
- kvmarm@lists.linux.dev
-Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
- anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
- amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
- mic@digikod.net, vbabka@suse.cz, vannapurve@google.com,
- mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com,
- wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com,
- kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
- steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
- quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
- quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
- quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
- yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
- will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
- shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
- jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <20250715093350.2584932-1-tabba@google.com>
- <20250715093350.2584932-5-tabba@google.com>
- <b5fe8f54-64df-4cfa-b86f-eed1cbddca7a@intel.com>
- <diqzwm87fzfc.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH v1 04/11] KVM: x86: Add emulation support for Extented LVT
+ registers
+To: Manali Shukla <manali.shukla@amd.com>, kvm@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, nikunj@amd.com, bp@alien8.de,
+ peterz@infradead.org, mingo@redhat.com, mizhang@google.com,
+ thomas.lendacky@amd.com, ravi.bangoria@amd.com, Sandipan.Das@amd.com
+References: <20250627162550.14197-1-manali.shukla@amd.com>
+ <20250627162550.14197-5-manali.shukla@amd.com>
+ <3b37d820-12cd-4f33-b059-66e12693b779@linux.intel.com>
+ <afafc865-b42f-4a9d-82d7-a72de16bb47b@amd.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <diqzwm87fzfc.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <afafc865-b42f-4a9d-82d7-a72de16bb47b@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 7/17/2025 8:12 AM, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> 
->> On 7/15/2025 5:33 PM, Fuad Tabba wrote:
->>> Introduce a new boolean member, supports_gmem, to kvm->arch.
+
+On 7/16/2025 6:10 PM, Manali Shukla wrote:
+> Hi Dapeng Mi,
+>
+> Thanks for reviewing my patches.
+>
+> On 7/15/2025 8:28 AM, Mi, Dapeng wrote:
+>> On 6/28/2025 12:25 AM, Manali Shukla wrote:
+>>> From: Santosh Shukla <santosh.shukla@amd.com>
 >>>
->>> Previously, the has_private_mem boolean within kvm->arch was implicitly
->>> used to indicate whether guest_memfd was supported for a KVM instance.
->>> However, with the broader support for guest_memfd, it's not exclusively
->>> for private or confidential memory. Therefore, it's necessary to
->>> distinguish between a VM's general guest_memfd capabilities and its
->>> support for private memory.
+>>> The local interrupts are extended to include more LVT registers in
+>>> order to allow additional interrupt sources, like Instruction Based
+>>> Sampling (IBS) and many more.
 >>>
->>> This new supports_gmem member will now explicitly indicate guest_memfd
->>> support for a given VM, allowing has_private_mem to represent only
->>> support for private memory.
+>>> Currently there are four additional LVT registers defined and they are
+>>> located at APIC offsets 400h-530h.
 >>>
->>> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
->>> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>> Reviewed-by: Shivank Garg <shivankg@amd.com>
->>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->>> Co-developed-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Fuad Tabba <tabba@google.com>
+>>> AMD IBS driver is designed to use EXTLVT (Extended interrupt local
+>>> vector table) by default for driver initialization.
+>>>
+>>> Extended LVT registers are required to be emulated to initialize the
+>>> guest IBS driver successfully.
+>>>
+>>> Please refer to Section 16.4.5 in AMD Programmer's Manual Volume 2 at
+>>> https://bugzilla.kernel.org/attachment.cgi?id=306250 for more details
+>>> on Extended LVT.
+>>>
+>>> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
+>>> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
+>>> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+>>> ---
+>>>  arch/x86/include/asm/apicdef.h | 17 +++++++++
+>>>  arch/x86/kvm/cpuid.c           |  6 +++
+>>>  arch/x86/kvm/lapic.c           | 69 +++++++++++++++++++++++++++++++++-
+>>>  arch/x86/kvm/lapic.h           |  1 +
+>>>  arch/x86/kvm/svm/avic.c        |  4 ++
+>>>  arch/x86/kvm/svm/svm.c         |  4 ++
+>>>  6 files changed, 99 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
+>>> index 094106b6a538..4c0f580578aa 100644
+>>> --- a/arch/x86/include/asm/apicdef.h
+>>> +++ b/arch/x86/include/asm/apicdef.h
+>>> @@ -146,6 +146,23 @@
+>>>  #define		APIC_EILVT_MSG_EXT	0x7
+>>>  #define		APIC_EILVT_MASKED	(1 << 16)
+>>>  
+>>> +/*
+>>> + * Initialize extended APIC registers to the default value when guest
+>>> + * is started and EXTAPIC feature is enabled on the guest.
+>>> + *
+>>> + * APIC_EFEAT is a read only Extended APIC feature register, whose
+>>> + * default value is 0x00040007. However, bits 0, 1, and 2 represent
+>>> + * features that are not currently emulated by KVM. Therefore, these
+>>> + * bits must be cleared during initialization. As a result, the
+>>> + * default value used for APIC_EFEAT in KVM is 0x00040000.
+>>> + *
+>>> + * APIC_ECTRL is a read-write Extended APIC control register, whose
+>>> + * default value is 0x0.
+>>> + */
+>>> +
+>>> +#define		APIC_EFEAT_DEFAULT	0x00040000
+>>> +#define		APIC_ECTRL_DEFAULT	0x0
+>>> +
+>>>  #define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
+>>>  #define APIC_BASE_MSR		0x800
+>>>  #define APIC_X2APIC_ID_MSR	0x802
+>>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+>>> index eb7be340138b..7270d22fbf31 100644
+>>> --- a/arch/x86/kvm/cpuid.c
+>>> +++ b/arch/x86/kvm/cpuid.c
+>>> @@ -458,6 +458,12 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>>>  	/* Invoke the vendor callback only after the above state is updated. */
+>>>  	kvm_x86_call(vcpu_after_set_cpuid)(vcpu);
+>>>  
+>>> +	/*
+>>> +	 * Initialize extended LVT registers at guest startup to support delivery
+>>> +	 * of interrupts via the extended APIC space (offsets 0x400–0x530).
+>>> +	 */
+>>> +	kvm_apic_init_eilvt_regs(vcpu);
+>>> +
+>>>  	/*
+>>>  	 * Except for the MMU, which needs to do its thing any vendor specific
+>>>  	 * adjustments to the reserved GPA bits.
+>>> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+>>> index 00ca2b0faa45..cffe44eb3f2b 100644
+>>> --- a/arch/x86/kvm/lapic.c
+>>> +++ b/arch/x86/kvm/lapic.c
+>>> @@ -1624,9 +1624,13 @@ static inline struct kvm_lapic *to_lapic(struct kvm_io_device *dev)
+>>>  }
+>>>  
+>>>  #define APIC_REG_MASK(reg)	(1ull << ((reg) >> 4))
+>>> +#define APIC_REG_EXT_MASK(reg)	(1ull << (((reg) >> 4) - 0x40))
+>> It seems there is no difference on the MASK definition between
+>> APIC_REG_MASK() and APIC_REG_EXT_MASK(). Why not directly use the original
+>> APIC_REG_MASK()?
 >>
->> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> The Extended LVT registers range from 0x400 to 0x530. When using
+> APIC_REG_MASK(reg) with reg = 0x400 (as an example), the operation
+> results in a right shift of 64(0x40) bits, causing an overflow. This was
+> the actual reason of creating a new macro for extended APIC register space.
+
+I see. Just ignored that the bit could extend 64 bits.
+
+
+>
+>> BTW, If we indeed need to define this new macro, could we define the macro
+>> like blow?
 >>
->> Btw, it seems that supports_gmem can be enabled for all the types of VM?
+>> #define APIC_REG_EXT_MASK(reg)	(1ull << (((reg) - 0x400) >> 4))
 >>
-> 
-> For now, not really, because supports_gmem allows mmap support, and mmap
-> support enables KVM_MEMSLOT_GMEM_ONLY, and KVM_MEMSLOT_GMEM_ONLY will
-> mean that shared faults also get faulted from guest_memfd.
+>> It's more easily to understand. 
+>>
+> I can define the macro in this way.
+>
+>>>  #define APIC_REGS_MASK(first, count) \
+>>>  	(APIC_REG_MASK(first) * ((1ull << (count)) - 1))
+>>>  
+>>> +#define APIC_LAST_REG_OFFSET		0x3f0
+>>> +#define APIC_EXT_LAST_REG_OFFSET	0x530
+>>> +
+>>>  u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic)
+>>>  {
+>>>  	/* Leave bits '0' for reserved and write-only registers. */
+>>> @@ -1668,6 +1672,8 @@ EXPORT_SYMBOL_GPL(kvm_lapic_readable_reg_mask);
+>>>  static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
+>>>  			      void *data)
+>>>  {
+>>> +	u64 valid_reg_ext_mask = 0;
+>>> +	unsigned int last_reg = APIC_LAST_REG_OFFSET;
+>>>  	unsigned char alignment = offset & 0xf;
+>>>  	u32 result;
+>>>  
+>>> @@ -1677,13 +1683,44 @@ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
+>>>  	 */
+>>>  	WARN_ON_ONCE(apic_x2apic_mode(apic) && offset == APIC_ICR);
+>>>  
+>>> +	/*
+>>> +	 * The local interrupts are extended to include LVT registers to allow
+>>> +	 * additional interrupt sources when the EXTAPIC feature bit is enabled.
+>>> +	 * The Extended Interrupt LVT registers are located at APIC offsets 400-530h.
+>>> +	 */
+>>> +	if (guest_cpu_cap_has(apic->vcpu, X86_FEATURE_EXTAPIC)) {
+>>> +		valid_reg_ext_mask =
+>>> +			APIC_REG_EXT_MASK(APIC_EFEAT) |
+>>> +			APIC_REG_EXT_MASK(APIC_ECTRL) |
+>>> +			APIC_REG_EXT_MASK(APIC_EILVTn(0)) |
+>>> +			APIC_REG_EXT_MASK(APIC_EILVTn(1)) |
+>>> +			APIC_REG_EXT_MASK(APIC_EILVTn(2)) |
+>>> +			APIC_REG_EXT_MASK(APIC_EILVTn(3));
+>>> +		last_reg = APIC_EXT_LAST_REG_OFFSET;
+>>> +	}
+>> Why not move this code piece into kvm_lapic_readable_reg_mask() and
+>> directly use APIC_REG_MASK() for these extended regs? Then we don't need to
+>> modify the below code. 
 
-No, mmap support is checked by kvm_arch_supports_gmem_mmap() which is 
-independent to whether gmem is supported.
+I still think we should get a unified APIC reg mask even for the extended
+APIC with kvm_lapic_readable_reg_mask() helper. We can extend current
+kvm_lapic_readable_reg_mask() and let it return a 128 bits bitmap, maybe
+like this,
 
-> A TDX VM that wants to use guest_memfd for private memory and some other
-> backing memory for shared memory (let's call this use case "legacy CoCo
-> VMs") will not work if supports_gmem is just enabled for all types of
-> VMs, because then shared faults will also go to kvm_gmem_get_pfn().
+void kvm_lapic_readable_reg_mask(struct kvm_lapic *apic, u64 *mask)
 
-This is not what this patch does. Please go back read this patch.
+This makes code more easily maintain. 
 
-This patch sets kvm->arch.supports_gmem to true for 
-KVM_X86_SNP_VM/tdx/KVM_X86_SW_PROTECTED_VM.
 
-Further in patch 14, it sets kvm->arch.supports_gmem for KVM_X86_DEFAULT_VM.
-
-After this series, supports_gmem remains false only for KVM_X86_SEV_VM 
-and KVM_X86_SEV_ES_VM. And I don't see why cannot enable supports_gmem 
-for them.
-
-> This will be cleaned up when guest_memfd supports conversion
-> (guest_memfd stage 2). There, a TDX VM will have .supports_gmem = true.
-> 
-> With guest_memfd stage-2 there will also be a
-> KVM_CAP_DISABLE_LEGACY_PRIVATE_TRACKING.
-> KVM_CAP_DISABLE_LEGACY_PRIVATE_TRACKING defaults to false, so for legacy
-> CoCo VMs, shared faults will go to the other non-guest_memfd memory
-> source that is configured in userspace_addr as before.
-> 
-> With guest_memfd stage-2, KVM_MEMSLOT_GMEM_ONLY will direct all EPT
-> faults to kvm_gmem_get_pfn(), but KVM_MEMSLOT_GMEM_ONLY will only be
-> allowed if KVM_CAP_DISABLE_LEGACY_PRIVATE_TRACKING is true. TDX VMs
-> wishing to use guest_memfd as the only source of memory for the guest
-> should set KVM_CAP_DISABLE_LEGACY_PRIVATE_TRACKING to true before
-> creating the guest_memfd.
-> 
->> Even without mmap support, allow all the types of VM to create
->> guest_memfd seems not something wrong. It's just that the guest_memfd
->> allocated might not be used, e.g., for KVM_X86_DEFAULT_VM.
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> p
-
+>>
+>
