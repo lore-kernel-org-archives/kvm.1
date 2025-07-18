@@ -1,195 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98542A923;
-	Fri, 18 Jul 2025 02:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C5CA923;
+	Fri, 18 Jul 2025 02:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752807480; cv=none; b=h9PbJZKC0wtdqkWBeYg1fmIW/VYb4/8rIFnTVTuL2UTdtWKZj5UK48dudhTvjUlQJr+f172tA36jy5wSISiD7XWffzZf84tOxvEUgV1EcqHNnp2Udvz6ek+j70CYJXhDCwxOSXvmAcKEWGn1kyagLAk0BJFm8DAsS9BhFeMPwNw=
+	t=1752807488; cv=none; b=kqCT3hhSpH95XwP/SFzUWKEQpNMKkEtYDPixEy/wPbXCwQ31wUohHu9nlgBOpzxqhHb2/iFJe7SfkqE8fyBf6UugXGokAwenaTdSZJ4vDF3LDLLmi69NXmSA6aqQa8ap9pFWx+uST3VtBgGCN3jIAmzryZHOlq6FNRtuvBghyxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752807480; c=relaxed/simple;
-	bh=yQspi0IdSkvFDWpvj8rAaHUF0Fjkr1+s0cusMb2OIWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i4WQPt1jAE/HznI3ZjA4ylbyycm2RoNwB4g9fGQ5mF7vL5FmIfTMJFWp35TIQMbMxl9dTNCBUDLIm5H3RbUp1g/NC4tWFPfP8AOvGmJ7ArgpeQ1oCDYc6dRX1Ot5ZPTperMJXRHFUMcz2Bv8hEKOzYOyfUGmg0fAf2mRgkWUp0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dQ/UCmcM; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1752807488; c=relaxed/simple;
+	bh=zW8WpDljd70i6LD/w2JqHRPW4ewaJOJjDtvN2vZv6LM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pRCFqer/I4jx/7HIKtZslRp9Hjb8YkkEb0ZqwLysCYBWuy4cPZao1hlF1fe6VBB5RNA530RLcqpOAZDAqDLGqkzotqL8zb14fFmUEGPlI0NLYkve8nKdD3E3KsQhVh/bwAc4tXr4K42pLG73Nthb5zWzsDlLjHGE2iD91ibQtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGDF0mw6; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dQ/UCmcM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752807478; x=1784343478;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=yQspi0IdSkvFDWpvj8rAaHUF0Fjkr1+s0cusMb2OIWk=;
-  b=dQ/UCmcMoQfCS98G2OHdhzJDOU1BJdgwN+WtE9U1y9aYGS6zryYmrHbw
-   HLFIOjckHOBXwgqEtC0UWCEgHKTPTddg6pjqMQ3NTArrhW8VME4cgVRQB
-   W6DS23Va2Go+uvY3a9na/zxP8jyHRTE/DZHl9ukGH6vbpzMPDkJ84AzoV
-   F860TogUyTdpP1fH0j3bg5A31M0+owbOPOAibsyr35PsoXGaq4sfDjK/c
-   s7c4jIoVTUjzzGCVvVcPut/feDkRO+vI96AglO1Y3MnxXi5X/+iflnROW
-   dlwmBRdNLOpQxvY0njZ1pvvsT0uoE11PBX5tpaE98pifhQzeSLN2Rmjob
-   A==;
-X-CSE-ConnectionGUID: +ILYYvB1RoGqZSmDqdGVcQ==
-X-CSE-MsgGUID: TtZ+iYjQR6+15HkFbLp+Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="72666003"
-X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; 
-   d="scan'208";a="72666003"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 19:57:57 -0700
-X-CSE-ConnectionGUID: a1mpQy6NQsSBicOKr/urXQ==
-X-CSE-MsgGUID: 4L4luONoSeyCt8ddAZZX9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; 
-   d="scan'208";a="158033113"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa007.jf.intel.com with ESMTP; 17 Jul 2025 19:57:38 -0700
-Date: Fri, 18 Jul 2025 10:48:55 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>,
-	Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-fsdevel@vger.kernel.org, ajones@ventanamicro.com,
-	akpm@linux-foundation.org, amoorthy@google.com,
-	anthony.yznaga@oracle.com, anup@brainfault.org,
-	aou@eecs.berkeley.edu, bfoster@redhat.com,
-	binbin.wu@linux.intel.com, brauner@kernel.org,
-	catalin.marinas@arm.com, chao.p.peng@intel.com,
-	chenhuacai@kernel.org, dave.hansen@intel.com, david@redhat.com,
-	dmatlack@google.com, dwmw@amazon.co.uk, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, graf@amazon.com,
-	haibo1.xu@intel.com, hch@infradead.org, hughd@google.com,
-	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz,
-	james.morse@arm.com, jarkko@kernel.org, jgowans@amazon.com,
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com,
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com,
-	kent.overstreet@linux.dev, kirill.shutemov@intel.com,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maz@kernel.org, mic@digikod.net,
-	michael.roth@amd.com, mpe@ellerman.id.au, muchun.song@linux.dev,
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
-	palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
-	pbonzini@redhat.com, pdurrant@amazon.co.uk, peterx@redhat.com,
-	pgonda@google.com, pvorel@suse.cz, qperret@google.com,
-	quic_cvanscha@quicinc.com, quic_eberman@quicinc.com,
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com,
-	quic_pheragu@quicinc.com, quic_svaddagi@quicinc.com,
-	quic_tsoni@quicinc.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
-	shuah@kernel.org, steven.price@arm.com, steven.sistare@oracle.com,
-	suzuki.poulose@arm.com, thomas.lendacky@amd.com,
-	usama.arif@bytedance.com, vbabka@suse.cz, viro@zeniv.linux.org.uk,
-	vkuznets@redhat.com, wei.w.wang@intel.com, will@kernel.org,
-	willy@infradead.org, xiaoyao.li@intel.com, yilun.xu@intel.com,
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v2 04/51] KVM: guest_memfd: Introduce
- KVM_GMEM_CONVERT_SHARED/PRIVATE ioctls
-Message-ID: <aHm2F95XwzdD7nod@yilunxu-OptiPlex-7050>
-References: <CAGtprH8eR_S50xDnnMLHNCuXrN2Lv_0mBRzA_pcTtNbnVvdv2A@mail.gmail.com>
- <CA+EHjTwjKVkw2_AK0Y0-eth1dVW7ZW2Sk=73LL9NeQYAPpxPiw@mail.gmail.com>
- <CAGtprH_Evyc7tLhDB0t0fN+BUx5qeqWq8A2yZ5-ijbJ5UJ5f-g@mail.gmail.com>
- <9502503f-e0c2-489e-99b0-94146f9b6f85@amd.com>
- <20250624130811.GB72557@ziepe.ca>
- <CAGtprH_qh8sEY3s-JucW3n1Wvoq7jdVZDDokvG5HzPf0HV2=pg@mail.gmail.com>
- <aGTvTbPHuXbvj59t@yzhao56-desk.sh.intel.com>
- <diqz8qknhj3l.fsf@ackerleytng-ctop.c.googlers.com>
- <aHjDIxxbv0DnqI6S@yilunxu-OptiPlex-7050>
- <diqzqzyeg3j2.fsf@ackerleytng-ctop.c.googlers.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGDF0mw6"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b34a71d9208so1142175a12.3;
+        Thu, 17 Jul 2025 19:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752807486; x=1753412286; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B06f3Dtzq7hwRxDjldtJeFqMrkepf4H76VXm0gTo/5o=;
+        b=OGDF0mw6fN7aZmIsfhNCR3eOhkx/E6P0oNLjRSUT2N47dP5fns7rQ4DZEIZJEIjL5a
+         ZJJZ9ahZH1lx5p5p8Er4V5/YfXYt0SRNxG6T2Ze8QW2DEW9nM6Jg8NmUGT3t5zwXGstG
+         ryG8eKfYQpj89pWIFVJtTbPV3Ts7XnIimUabE8KybLca7OiRoLqUpIssRGDDb348Fk+R
+         zVnBJlDGoPooLiZ4QsbuujCSVY7qfU95Fk6xLafiAxAYi8RRmkZNXFD1L/agJhMUhSUS
+         /ZAUupL7GSAJ77WsHFaE5ZClNZDplyVF719jOILzlsMqJY4MSrz9g2GKG9oGxbHPdNgu
+         Ps5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752807486; x=1753412286;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B06f3Dtzq7hwRxDjldtJeFqMrkepf4H76VXm0gTo/5o=;
+        b=OSA9g+mK/aZGTiXqcfyzNF+CG4NScHHJXZORSu8Ey+8vHwjuvmzax2XyxA1GzaiPyv
+         oKSl7UJ5n4cLzifUkhLmQG3Kz5ee0f6GaCPtbMt70YyRv0eeK/Xvc+bZ0Mjb7vixwxGo
+         G0fmIC2GAYFPZXsAUxZ7z5Ls/p/r9Xz7yBIQztfbNQCCRvV/0Y/k13JjhacVWmctxu/1
+         2rkNvtKfzGEAuos5Uk0ulNNEono2wJGOBv3rm16fYjbJrOL2gk/zh0ehJ7F/ZlQ912jZ
+         2dJASnED/lF2v1PACLZ4xK3DYsgqIEZ85MGhW/caFzKUNfxoK9w9q0WWjY5ppfuw5qKp
+         FMfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuvk+KpWEju7pXzaREYK5gyIkGBGEhCELfwZSRIs0vfR3Bita8NyLOjJMVPmtyV9B5qJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzG5HS66/1H8RodEhDW3ZeBT7gYFbzOJ9aw2SUWvIpXGu+hxVF+
+	8XDIgNazDqVE6cPvuKd2f6M8lTwDPmBmscldtd4TDha0hV0eigXpCwwWDUEwQKHmaZxvsszhO1H
+	I81RdmjGkV6N5PugW0O9lxnB3VqD9lFg=
+X-Gm-Gg: ASbGnct++SjtQrm/PWzbXGEJoZ7HlaoPje49o1wEhkJLZDUoTZZkrOebZAbnGHUEgRq
+	Ijiyk7UW7Y+6cjWhKzWDk+uBLU2XJNsM2Qsy/tNgSE8iZwPrcenPg/4JW19RPaVJNq8y0a3G2xG
+	5wDs6cKBFhegO3KUJe/VDo/DHcx7doE1Yj3mT2JRkG2C+coLywsBsgyDh09T10mc7bTRKqGLSfX
+	3AJyjh8KPzJdJ4=
+X-Google-Smtp-Source: AGHT+IHJctuqSROAZ650UpkpwcTiZYiKPNisXk5FDavpFQBEzFA5DmMJwiPzvLSVnjsMRL62PR6InACqufXS044x6w0=
+X-Received: by 2002:a17:90b:4985:b0:311:ba32:164f with SMTP id
+ 98e67ed59e1d1-31c9f47c2f6mr13403273a91.8.1752807486400; Thu, 17 Jul 2025
+ 19:58:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <diqzqzyeg3j2.fsf@ackerleytng-ctop.c.googlers.com>
+References: <20250709033242.267892-1-Neeraj.Upadhyay@amd.com> <20250709033242.267892-28-Neeraj.Upadhyay@amd.com>
+In-Reply-To: <20250709033242.267892-28-Neeraj.Upadhyay@amd.com>
+From: Tianyu Lan <ltykernel@gmail.com>
+Date: Fri, 18 Jul 2025 10:57:30 +0800
+X-Gm-Features: Ac12FXzmMFbbHVIUaufe3AfDHemMMS8b8hp7m4xVu9SVkkGnzi8hG1q8jkGy4cE
+Message-ID: <CAMvTesCqqVovTAyRWZNq1Ermbf1UCK29_-wYA0e99RdSOHxS4Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v8 27/35] x86/apic: Add support to send NMI IPI for
+ Secure AVIC
+To: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Cc: linux-kernel@vger.kernel.org, bp@alien8.de, tglx@linutronix.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, Thomas.Lendacky@amd.com, 
+	nikunj@amd.com, Santosh.Shukla@amd.com, Vasant.Hegde@amd.com, 
+	Suravee.Suthikulpanit@amd.com, David.Kaplan@amd.com, x86@kernel.org, 
+	hpa@zytor.com, peterz@infradead.org, seanjc@google.com, pbonzini@redhat.com, 
+	kvm@vger.kernel.org, kirill.shutemov@linux.intel.com, huibo.wang@amd.com, 
+	naveen.rao@amd.com, kai.huang@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 17, 2025 at 09:56:01AM -0700, Ackerley Tng wrote:
-> Xu Yilun <yilun.xu@linux.intel.com> writes:
-> 
-> > On Wed, Jul 16, 2025 at 03:22:06PM -0700, Ackerley Tng wrote:
-> >> Yan Zhao <yan.y.zhao@intel.com> writes:
-> >> 
-> >> > On Tue, Jun 24, 2025 at 07:10:38AM -0700, Vishal Annapurve wrote:
-> >> >> On Tue, Jun 24, 2025 at 6:08 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >> >> >
-> >> >> > On Tue, Jun 24, 2025 at 06:23:54PM +1000, Alexey Kardashevskiy wrote:
-> >> >> >
-> >> >> > > Now, I am rebasing my RFC on top of this patchset and it fails in
-> >> >> > > kvm_gmem_has_safe_refcount() as IOMMU holds references to all these
-> >> >> > > folios in my RFC.
-> >> >> > >
-> >> >> > > So what is the expected sequence here? The userspace unmaps a DMA
-> >> >> > > page and maps it back right away, all from the userspace? The end
-> >> >> > > result will be the exactly same which seems useless. And IOMMU TLB
-> >> >> 
-> >> >>  As Jason described, ideally IOMMU just like KVM, should just:
-> >> >> 1) Directly rely on guest_memfd for pinning -> no page refcounts taken
-> >> >> by IOMMU stack
-> >> > In TDX connect, TDX module and TDs do not trust VMM. So, it's the TDs to inform
-> >> > TDX module about which pages are used by it for DMAs purposes.
-> >> > So, if a page is regarded as pinned by TDs for DMA, the TDX module will fail the
-> >> > unmap of the pages from S-EPT.
-> >> >
-> >> > If IOMMU side does not increase refcount, IMHO, some way to indicate that
-> >> > certain PFNs are used by TDs for DMA is still required, so guest_memfd can
-> >> > reject the request before attempting the actual unmap.
-> >> > Otherwise, the unmap of TD-DMA-pinned pages will fail.
-> >> >
-> >> > Upon this kind of unmapping failure, it also doesn't help for host to retry
-> >> > unmapping without unpinning from TD.
-> >> >
-> >> >
-> >> 
-> >> Yan, Yilun, would it work if, on conversion,
-> >> 
-> >> 1. guest_memfd notifies IOMMU that a conversion is about to happen for a
-> >>    PFN range
-> >
-> > It is the Guest fw call to release the pinning.
-> 
-> I see, thanks for explaining.
-> 
-> > By the time VMM get the
-> > conversion requirement, the page is already physically unpinned. So I
-> > agree with Jason the pinning doesn't have to reach to iommu from SW POV.
-> >
-> 
-> If by the time KVM gets the conversion request, the page is unpinned,
-> then we're all good, right?
-
-Yes, unless guest doesn't unpin the page first by mistake. Guest would
-invoke a fw call tdg.mem.page.release to unpin the page before
-KVM_HC_MAP_GPA_RANGE.
-
-> 
-> When guest_memfd gets the conversion request, as part of conversion
-> handling it will request to zap the page from stage-2 page tables. TDX
-> module would see that the page is unpinned and the unmapping will
-> proceed fine. Is that understanding correct?
-
-Yes, again unless guess doesn't unpin.
-
-> 
-> >> 2. IOMMU forwards the notification to TDX code in the kernel
-> >> 3. TDX code in kernel tells TDX module to stop thinking of any PFNs in
-> >>    the range as pinned for DMA?
-> >
-> > TDX host can't stop the pinning. Actually this mechanism is to prevent
-> > host from unpin/unmap the DMA out of Guest expectation.
-> >
-> 
-> On this note, I'd also like to check something else. Putting TDX connect
-> and IOMMUs aside, if the host unmaps a guest private page today without
-> the guest requesting it, the unmapping will work and the guest will be
-> broken, right?
-
-Correct. The unmapping will work, the guest can't continue anymore.
-
-Thanks,
-Yilun
+On Wed, Jul 9, 2025 at 11:45=E2=80=AFAM Neeraj Upadhyay <Neeraj.Upadhyay@am=
+d.com> wrote:
+>
+> Secure AVIC has introduced a new field in the APIC backing page
+> "NmiReq" that has to be set by the guest to request a NMI IPI
+> through APIC_ICR write.
+>
+> Add support to set NmiReq appropriately to send NMI IPI.
+>
+> Sending NMI IPI also requires Virtual NMI feature to be enabled
+> in VINTRL_CTRL field in the VMSA. However, this would be added by
+> a later commit after adding support for injecting NMI from the
+> hypervisor.
+>
+> Co-developed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+> Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+> Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+> ---
+> Changes since v7:
+>  - No change.
+Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+--
+Thanks
+Tianyu Lan
