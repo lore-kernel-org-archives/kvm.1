@@ -1,141 +1,83 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8485D2E06ED
-	for <kvm@vger.kernel.org>; Fri, 18 Jul 2025 15:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90582E5B00
+	for <kvm@vger.kernel.org>; Fri, 18 Jul 2025 15:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752854244; cv=none; b=U/p8kl0QK9SftisV6Zte1T5lwhssIYWuHCj4YQAbVrKdW4hiX2XEpTIjqxMb1I2Yn25lk5Kvz5cPGk460c3gFxFtlBrskVX7fw9MVACu7KZL4Ov7RDHRM1KQIFpsgOnrIvTFQd/QlN+ZYX4i1KXl5lXrD1q4shzrgp3I9XZPz68=
+	t=1752854268; cv=none; b=DVvy2wMsZC689OLTcla6KTA0ggkT7upRjoTh2ZF62phiADjBbFrAhbKd/KhP/tqidIwqFvaSFS7ChTAub53EKPT1GJv4odaFaiPYSSNhgQ8uwnks/eirLsMs31PNAUL/pkspcLMESOgvmSx7f2mD0RYfUkWgZpyLCViLHfYdjyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752854244; c=relaxed/simple;
-	bh=gHGhnpTIs0SlK/0a8FDgsCBiZAOqX7pM8mcEaSxC8dY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BtetbprSfDyrNWoRIcsH2rnUOLxX4Yv9yn0caGBwbKV5ADyC3a+mhT0rdb2JuhE5EipjHuaoyVJ4jFmXeJrfz656W7bCSm99wAMGsxg7C2mmm0/exByKDkHwMtc3EAMAeUbI/ADZnlrE3hRr+NV6QeXPde13jtnjVQxzKUe+AcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N8jsL1WH; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752854268; c=relaxed/simple;
+	bh=sKn4I1Q8/dV1kY6FbZh+mGn3c7jb0sUHs9VD6LqSCD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d6NkPGvtT/YzIQING3pzZednv8mgAFTlLEKlRpg1Tjga2MR/p64t0nVewhsoa0yJMXF7KGAKIuhZgNgkEhrtJCsHaZjLmNRMaczRqYsBtJSRmJZgK5e6lkzutpOPOmFqq88bAmFnKWVgpF5T8u/mX7JZQ96YhLv1HNKMFJigtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DN/lCud9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N8jsL1WH"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-235e389599fso260345ad.0
-        for <kvm@vger.kernel.org>; Fri, 18 Jul 2025 08:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752854243; x=1753459043; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h8OwoX5mxh6UvTDR1Yv1NAz1aJQ0CYYYwNtDjaEd3rs=;
-        b=N8jsL1WHZBxFJbQrjjFMXLJg9u1hpdAaHO+l1ztZHn27fp5C4OsW5Fa5EyQlzXA1YT
-         z6JaraXg2VkZajf8pVHuUCKNb754dJpttjFbUlRAUN8/0GIE1kmcX9czrEi7PrYunnK8
-         oZ+Hi33NYKyTgFc4XxSL4ePF7HkLyKiER5yOXDdlsOyXvYm2R2ZikIcusAU8G89Ry8+T
-         JjoE41SUcj1NRQtKhzj/h/GuZT2qaatusf9MDPf3SFa2QqCdBPbZygsH0J0wjIzRTWvD
-         Iv2wQu6RjzYjIbAECIaIVoPN6WA48jbanHpcPvWgZvuijyvrPlFzjMccxN+Xy8892MWy
-         RqKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752854243; x=1753459043;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h8OwoX5mxh6UvTDR1Yv1NAz1aJQ0CYYYwNtDjaEd3rs=;
-        b=QPRoyQZtiNX4rGPZSstwyImgR4ipB0Sp/mDCX2PBQgo2jRapm4fyzUxcZYdsEuvg/s
-         45PmYZA1PIQorX6AJd4U3U9EL9igyPQuq2wjttf+iuSCWx9ERoAoUiqAIyN4ZZPn6Yur
-         CG+tcTgHhN8NgBmVP8FFAgN1hkdYSs1CNlevRfF8Iv2V3OXay+TZjpRKzyRGJ9GHi2QA
-         Hn8hZ8qyZQgJ49yBzYc5hrk6+5DC4jxQe2NspGhx7SS8EZ9Uih7om/SwARWAVtG0ibq5
-         vLY5hEYPD4mgsb9D7LEMK76cCYA7frTH43z7REObzatrKV1ibMXOziBrGUYpAChEF3pe
-         1eWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXoQd7OfxAaOurzP3eIXTa0U4mva5X+V+QzX8kzjIGPP5kkOFe4wFrCNfxvy9OoEXOhlB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnaZPz8ndB9c2TXavNU4aYuw8zET/9t1sWdLK70mHD6XGvKvaz
-	g011SyRUrcxw/zKul6dB5P6gdCWYpR71wFgFtDq2m3WeQF/B84x1wJpifa+aHyaPjbIKe1FKiUr
-	bN53P565SsxuW4K7p3g/+42J2oolflNTn7UL6w5ap
-X-Gm-Gg: ASbGncv8KEvRo1JAbFWZwMdw8+hYcq+m6pC0pXvXK/Bsw6rfynig+GiOHpgS6QqhjjB
-	3AUYlprIpyxcvF5YBh3wdzm5sqmemX0gqW5I1fycHRhFiCl+LPT8XmvoNcfhKOOOHLDSFTNb48Q
-	B8VY7OqMru3YXlU1Jh5qs1+gUHFUKqkpvJ4l6iVlBH89qtRAFRXAsn4KUMABBSqvEKDMnqdia5q
-	1Iaby/cHc06WSWQgY0bcEOg6HQ6ziPDtrMsUnrJSc6v4GZsaE8=
-X-Google-Smtp-Source: AGHT+IFgi72u+XAyFB7UNUnQ78KCwwZ31ziMPnV0eIv4PjDoKng8evgPNW6wi8hbBTzsrhbCEYntoxga6S5rFlzzpxo=
-X-Received: by 2002:a17:903:1986:b0:234:afcf:d9e8 with SMTP id
- d9443c01a7336-23e39284266mr4452875ad.7.1752854242330; Fri, 18 Jul 2025
- 08:57:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DN/lCud9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752854265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E+bEpnt2tGVcJbg5mbQnyh11/6AgFqfvv8aV7cUdk98=;
+	b=DN/lCud9XgePOAi7PSDh5uzf9HUkB3h4EurdJSwQlecXY6ArIClEMH3w8OLXlrQ2i3eqR6
+	grH33wX1jmWoJNioAVhIrR9FWowYgE0KPCE8SzMdGzjgzcxCvuo+nhUe5tGBVkRdwCT/DX
+	wH+mXB+ZvPWOUHeIuaMYzn3OYGjSvlE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-ZERtI2ySMiiERdrsVhMSPw-1; Fri,
+ 18 Jul 2025 11:57:43 -0400
+X-MC-Unique: ZERtI2ySMiiERdrsVhMSPw-1
+X-Mimecast-MFC-AGG-ID: ZERtI2ySMiiERdrsVhMSPw_1752854263
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 255DD19560A7
+	for <kvm@vger.kernel.org>; Fri, 18 Jul 2025 15:57:43 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4DAD7195608D;
+	Fri, 18 Jul 2025 15:57:42 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com
+Subject: [kvm-unit-tests PATCH v3 1/2] x86: bump number of max cpus to 448
+Date: Fri, 18 Jul 2025 17:57:37 +0200
+Message-ID: <20250718155738.1540072-2-imammedo@redhat.com>
+In-Reply-To: <20250718155738.1540072-1-imammedo@redhat.com>
+References: <20250718155738.1540072-1-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250703062641.3247-1-yan.y.zhao@intel.com> <20250709232103.zwmufocd3l7sqk7y@amd.com>
- <aG_pLUlHdYIZ2luh@google.com> <aHCUyKJ4I4BQnfFP@yzhao56-desk>
- <20250711151719.goee7eqti4xyhsqr@amd.com> <aHEwT4X0RcfZzHlt@google.com>
- <aHSgdEJpY/JF+a1f@yzhao56-desk> <aHUmcxuh0a6WfiVr@google.com>
- <aHWqkodwIDZZOtX8@yzhao56-desk> <aHoQa4dBSi877f1a@yzhao56-desk.sh.intel.com>
-In-Reply-To: <aHoQa4dBSi877f1a@yzhao56-desk.sh.intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 18 Jul 2025 08:57:10 -0700
-X-Gm-Features: Ac12FXzIuH1z9pcRagA9yRiVXAqCitoCmPwRxtP18wjCrYHSx6XUN_jtcMtJrnI
-Message-ID: <CAGtprH9kwV1RCu9j6LqToa5M97_aidGN2Lc2XveQdeR799SK6A@mail.gmail.com>
-Subject: Re: [RFC PATCH] KVM: TDX: Decouple TDX init mem region from kvm_gmem_populate()
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, 
-	kai.huang@intel.com, adrian.hunter@intel.com, reinette.chatre@intel.com, 
-	xiaoyao.li@intel.com, tony.lindgren@intel.com, binbin.wu@linux.intel.com, 
-	dmatlack@google.com, isaku.yamahata@intel.com, ira.weiny@intel.com, 
-	david@redhat.com, ackerleytng@google.com, tabba@google.com, 
-	chao.p.peng@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Jul 18, 2025 at 2:15=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wro=
-te:
->
-> On Tue, Jul 15, 2025 at 09:10:42AM +0800, Yan Zhao wrote:
-> > On Mon, Jul 14, 2025 at 08:46:59AM -0700, Sean Christopherson wrote:
-> > > > >         folio =3D __kvm_gmem_get_pfn(file, slot, index, &pfn, &is=
-_prepared, &max_order);
-> > > > If max_order > 0 is returned, the next invocation of __kvm_gmem_pop=
-ulate() for
-> > > > GFN+1 will return is_prepared =3D=3D true.
-> > >
-> > > I don't see any reason to try and make the current code truly work wi=
-th hugepages.
-> > > Unless I've misundertood where we stand, the correctness of hugepage =
-support is
-> > Hmm. I thought your stand was to address the AB-BA lock issue which wil=
-l be
-> > introduced by huge pages, so you moved the get_user_pages() from vendor=
- code to
-> > the common code in guest_memfd :)
-> >
-> > > going to depend heavily on the implementation for preparedness.  I.e.=
- trying to
-> > > make this all work with per-folio granulartiy just isn't possible, no=
-?
-> > Ah. I understand now. You mean the right implementation of __kvm_gmem_g=
-et_pfn()
-> > should return is_prepared at 4KB granularity rather than per-folio gran=
-ularity.
-> >
-> > So, huge pages still has dependency on the implementation for preparedn=
-ess.
-> Looks with [3], is_prepared will not be checked in kvm_gmem_populate().
->
-> > Will you post code [1][2] to fix non-hugepages first? Or can I pull the=
-m to use
-> > as prerequisites for TDX huge page v2?
-> So, maybe I can use [1][2][3] as the base.
->
-> > [1] https://lore.kernel.org/all/aG_pLUlHdYIZ2luh@google.com/
-> > [2] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+---
+ lib/x86/smp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-IMO, unless there is any objection to [1], it's un-necessary to
-maintain kvm_gmem_populate for any arch (even for SNP). All the
-initial memory population logic needs is the stable pfn for a given
-gfn, which ideally should be available using the standard mechanisms
-such as EPT/NPT page table walk within a read KVM mmu lock (This patch
-already demonstrates it to be working).
+diff --git a/lib/x86/smp.h b/lib/x86/smp.h
+index bbe90daa..0f62cf2e 100644
+--- a/lib/x86/smp.h
++++ b/lib/x86/smp.h
+@@ -1,7 +1,7 @@
+ #ifndef _X86_SMP_H_
+ #define _X86_SMP_H_
+ 
+-#define MAX_TEST_CPUS (255)
++#define MAX_TEST_CPUS (448)
+ 
+ /*
+  * Allocate 12KiB of data for per-CPU usage.  One page for per-CPU data, and
+-- 
+2.47.1
 
-It will be hard to clean-up this logic once we have all the
-architectures using this path.
-
-[1] https://lore.kernel.org/lkml/CAGtprH8+x5Z=3DtPz=3DNcrQM6Dor2AYBu3jiZdo+=
-Lg4NqAk0pUJ3w@mail.gmail.com/
-
-> [3] https://lore.kernel.org/lkml/20250613005400.3694904-2-michael.roth@am=
-d.com,
