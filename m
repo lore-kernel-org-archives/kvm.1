@@ -1,102 +1,153 @@
-Received: from baidu.com (mx24.baidu.com [111.206.215.185])
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D7C2AD14;
-	Fri, 18 Jul 2025 11:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9195229B78C;
+	Fri, 18 Jul 2025 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752836607; cv=none; b=HNNgoXB1kQ5ny4Ii7wh34E4LcC/cCUTipcxOYto/C8jg4WlPNlE5A6WX5GdgufxZNUXwzGBr+Q42M+s4TLxR2G37VmCOVFKeacU/X8Uvvh2vmTsWGrmiIBgUYvjbUqX0w8ECDZ4aU/9M+yPhwTte+Bf6akXq2vmM2l1qxdYPE5c=
+	t=1752836678; cv=none; b=pvCZMSKva/At86TO3pMEuAagGrscqsu788tZLEu4LkFca2HeqDv3QpV1ecf17KWBxFRSJoQA2OG2pphel2Xdm/dp23JZH20jkfIO+1rgwXTDGXKR5FWNooGQrZqjLwwuQgts+jXK9tUFJa9zkq8LJ9Ahg4Yf85NnoCyv3tgdu5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752836607; c=relaxed/simple;
-	bh=qDkhYkrGTILVWAr/MYvLU0ABsOv1ngXhgVMbnsF+LEU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a3eaBQ7dXB5rup9zFMEJ+WmjkqfSAwpyXVyRd+O9YN3wFS2WQXNAK3U+rhSW7JK2ouPY3TxACWHs5GzXjW5Qx5S2Flv/lNykGBfYG36KBSmbKozHqoOroxU5txywoFhtzq3VTyF1lDXMRaxlnROG4z9pmK9P7P4DLEzs6OAzk+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: lirongqing <lirongqing@baidu.com>
-To: <pbonzini@redhat.com>, <vkuznets@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] x86/kvm: Reorder PV spinlock checks for dedicated CPU case
-Date: Fri, 18 Jul 2025 17:49:36 +0800
-Message-ID: <20250718094936.5283-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1752836678; c=relaxed/simple;
+	bh=cFORY9gb0sfHAI5NO7xSZ6xnWnAfgmRgOLUsTQ179wQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iMiQRorro7Z2kI+QOcSk51Dg3C+tReVwSs5RWlgRC1EhSvVWgnq3gtr4PPNPq8TkzrXiUJIYt9DthTpmOq97+J6VyhdKr8QO6UNN1E9Q2YDjQQzzJye9rJchfYG9t5fjRpb3KD87FOuaKlV7yrV8swN4b+KUVSzwhYFEBV+7WaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Hg/k6Xe4; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Hg/k6Xe4"
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4291:0:640:5ba1:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 01F6CC1324;
+	Fri, 18 Jul 2025 14:04:30 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:56e::1:20])
+	by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id C4MJsn1G4eA0-22dOx9QF;
+	Fri, 18 Jul 2025 14:04:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1752836669;
+	bh=2qalnWYlQY+v6tyEg1CW//D2TKZDTcBnHEPVSwiWO/A=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=Hg/k6Xe4zn/33viN5WiQsuyi+GvR3boPyW3beCibPRrnN9PeNfOjcaMEITbrG2QnV
+	 BMYj8L68OOlljHdI7jRvNfOgS5hpLhkVV4oAoQ+TasSL/KqJ8Zy9ooZ7eDELWGShQs
+	 dB0e0QBbGTTCGiOH/v+X/rvIKBL7iZU6feUQpL7E=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	stable@vger.kernel.org,
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Andrey Smetanin <asmetanin@yandex-team.ru>
+Subject: [PATCH v2] vhost/net: Replace wait_queue with completion in ubufs reference
+Date: Fri, 18 Jul 2025 14:03:55 +0300
+Message-Id: <20250718110355.1550454-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc4.internal.baidu.com (172.31.3.14) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
+Content-Transfer-Encoding: 8bit
 
-From: Li RongQing <lirongqing@baidu.com>
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // &ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-When a vCPU has a dedicated physical CPU, typically, the hypervisor
-disables the HLT exit too, rendering the KVM_FEATURE_PV_UNHALT feature
-unavailable, and virt_spin_lock_key is expected to be disabled in
-this configuration, but:
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
 
-The problematic execution flow caused the enabled virt_spin_lock_key:
-- First check PV_UNHALT
-- Then check dedicated CPUs
+To prevent that use a completion instead of wait_queue as the ubufs
+notification mechanism. wait_for_completion() guarantees that there will
+be complete() call prior to its return.
 
-So change the order:
-- First check dedicated CPUs
-- Then check PV_UNHALT
+We also need to reinit completion in vhost_net_flush(), because
+refcnt == 0 does not mean freeing in that case.
 
-This ensures virt_spin_lock_key is disable when dedicated physical
-CPUs are available and HLT exit is disabled, and this will gives a
-pretty performance boost at high contention level
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Andrey Smetanin <asmetanin@yandex-team.ru>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Tested-by: Lei Yang <leiyang@redhat.com> (v1)
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
- arch/x86/kernel/kvm.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+v2:
+* move reinit_completion() into vhost_net_flush(), thanks
+  to Hillf Danton
+* add Tested-by: Lei Yang
+* check that usages of put_and_wait() are consistent across
+  LTS kernels
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 921c1c7..9cda79f 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -1073,16 +1073,6 @@ static void kvm_wait(u8 *ptr, u8 val)
- void __init kvm_spinlock_init(void)
- {
- 	/*
--	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
--	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
--	 * preferred over native qspinlock when vCPU is preempted.
--	 */
--	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
--		pr_info("PV spinlocks disabled, no host support\n");
--		return;
--	}
--
--	/*
- 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
- 	 * are available.
+ drivers/vhost/net.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 7cbfc7d718b3..69e1bfb9627e 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -94,7 +94,7 @@ struct vhost_net_ubuf_ref {
+ 	 * >1: outstanding ubufs
  	 */
-@@ -1101,6 +1091,16 @@ void __init kvm_spinlock_init(void)
- 		goto out;
+ 	atomic_t refcount;
+-	wait_queue_head_t wait;
++	struct completion wait;
+ 	struct vhost_virtqueue *vq;
+ };
+ 
+@@ -240,7 +240,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
+ 	if (!ubufs)
+ 		return ERR_PTR(-ENOMEM);
+ 	atomic_set(&ubufs->refcount, 1);
+-	init_waitqueue_head(&ubufs->wait);
++	init_completion(&ubufs->wait);
+ 	ubufs->vq = vq;
+ 	return ubufs;
+ }
+@@ -249,14 +249,14 @@ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	int r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+-		wake_up(&ubufs->wait);
++		complete_all(&ubufs->wait);
+ 	return r;
+ }
+ 
+ static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put(ubufs);
+-	wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
++	wait_for_completion(&ubufs->wait);
+ }
+ 
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+@@ -1381,6 +1381,7 @@ static void vhost_net_flush(struct vhost_net *n)
+ 		mutex_lock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
+ 		n->tx_flush = false;
+ 		atomic_set(&n->vqs[VHOST_NET_VQ_TX].ubufs->refcount, 1);
++		reinit_completion(&n->vqs[VHOST_NET_VQ_TX].ubufs->wait);
+ 		mutex_unlock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
  	}
- 
-+	/*
-+	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
-+	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
-+	 * preferred over native qspinlock when vCPU is preempted.
-+	 */
-+	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
-+		pr_info("PV spinlocks disabled, no host support\n");
-+		return;
-+	}
-+
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
+ }
 -- 
-2.9.4
+2.34.1
 
