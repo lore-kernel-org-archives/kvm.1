@@ -1,79 +1,109 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F14721CC43
-	for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 22:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E9B23C8D3
+	for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 22:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753136710; cv=none; b=PXtssEwJSUheaNJHOUPyVU0a7JD9G4m9O8P9TPm+l582s4UBAjz4HWYjntfCqhD568NqW7Kn8Ys46qNyBmtgx3UnEmsaMLz5HBeRntYcsDOzwylBsYTH+fSvmjfI7267SGOkDAquDbBP8R0w0yVaQy98jlVFHFo9uB/as1CUeJ4=
+	t=1753136770; cv=none; b=QRXzJH/VhJt81BQKg7OgA8QU1XFcSZb5VIzOlAVMlzXDzWansdYrehYgYzmz2lvADFLM18dlV3TypO1Bb+Ei/Rx/hyO8w7669J0/Sf5NupsQJRTkmop6nqnDnHMpSvLIYN4syHZ4gsH3F6K0YrXXFrHUtkjNfNz/QDVQnTsYDZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753136710; c=relaxed/simple;
-	bh=CM4FfxQMwGrmSe4Wmcz2SbeLnqycl8bMpDZXmXIx9Gk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kuPb4ky7BGGTREKoV8hRHv9xUf1MCJVzzQPmftQUdq6K+tp+GoOncKdDz1X5JT0/EIyn4Y1vg6d5AxQKqr1HhHPvGmBwtS1fqjS/49DGkEoyPuRoNLG+muyM+m598459VdgMJoSOF8SK04CQ4FxsTDD+F3eh6rvofYO2n73WqBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MfLqUbtl; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1753136770; c=relaxed/simple;
+	bh=IyvP8QHlTa2QpWvqlFYR9SEvyFxbF/ATcjcrXYbVJ2I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qTsLXStQQ7FdFsoVFftXSLyEFFvIdkhBRF555xAvn8zQtdzGaJ238pTgQ38HRrYdNvCT4FMOds2JUbNYIUP5Fakdwp3RWdr2YuJKp478YBvtvlHKZcwYDDG6u7PbQz55LXvxuri3FlBzWuMrrXVrArNvsE48fGWWmgCOV/Avfw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cmt1uubr; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MfLqUbtl"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753136696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6h0Y/vUQmTbtoADLUGCwDI72dzoGASBmyiGNAfF51R4=;
-	b=MfLqUbtlhwAYv0liHJSXD0gXHU4lVULzmtS+CvpD5osa3CNSR9orcz561bZvDpoqfIqZ9i
-	9/CuHFWEv+dtKm3rf5T6c5p5Z1tBsW9ykVmDSo68SxwZOlZp1gVJRMW/Jd7t7C8D2TLJET
-	GI/QPwJ/m58FwDO00A1JdRoLH/OhtiM=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: (subset) [PATCH 0/7] KVM: arm64: FEAT_RASv1p1 support and RAS selection
-Date: Mon, 21 Jul 2025 15:24:44 -0700
-Message-Id: <175313657130.2592298.13962133220387248424.b4-ty@linux.dev>
-In-Reply-To: <20250721101955.535159-1-maz@kernel.org>
-References: <20250721101955.535159-1-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cmt1uubr"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b38ec062983so3228452a12.3
+        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 15:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753136768; x=1753741568; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LL2cGKuHaaPjxufWOQkCjzE9tdmYpzd1lzvFg8IW6fY=;
+        b=Cmt1uubrOI27eeR6IElR2/K8H5Ao8oLkbwmkpeqXg0yb/32x9R8xWovsN7eo4mtTLE
+         4zSlf7BIESO3R3eOiyQrwraWES4zD2vS515QGrwV20KsZuxjB13ywDIxjnsRLGooapmj
+         mfGBHdRmtA7WcLk/YsvZuFfqKqbpdItENgw6YQuuznM2/rRYL+qR9TSfUSsjd/3E83TC
+         Ue3/Ui4A+rbt+2k8fS2EypynZhKNTOKfTSJBJCG1IcFDV8+zIzZcy4zL8c3+8fVrV4lj
+         dOOR35+2o4sq7jEC1Gh2eLRt3t9SlmMgB5oy+Or09UtKW1OUiY608+dUk7Yu7jO2TXP0
+         biDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753136768; x=1753741568;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LL2cGKuHaaPjxufWOQkCjzE9tdmYpzd1lzvFg8IW6fY=;
+        b=iX5Ila2GEB07RnyI4EC+cnbf26WCSGpTNef2syaCfyYpTcpKKzXWmy26HTXVa2V6D7
+         toKnUlLEiGdVs/5s0UqOQMEJrpk1PCGH3M8Nwq7MB8mqJ+rcUWjQ3/WtXJOwmsxWCpUV
+         b9+jKiQfCRQGn/SFQQQn1nCes34gkl39+l4leKuouBu7g3zGyfnIhPO3Ae+/guJS4P2o
+         Skm4KtLyOzJT3cuA4H+zknhVO80xyG39NUyaJbNtWHFQccPnvhvSKZNuyXUy2NHGCv9T
+         UUPhM48ZMrIGTBCy0aODn+t4kIR7POV3DOjqAWn3dZz64MZg4lDGyktwBnbfDrW5R19K
+         /iPA==
+X-Gm-Message-State: AOJu0YzfrmYvRaRx0i6YPjWVvNhglGh1Ucz+cH/K5gnfeSnx9vBl57IN
+	zbQ/BzcDME8YFFQCJUfBGlPbpDDv1zvHaQdsWl/xyf50mo7wnqFC6Cf3I7e+VZhtLRlnQvuyCUP
+	onlFaMw==
+X-Google-Smtp-Source: AGHT+IFOEfi1TplIejvNZRr/1MbPEFH8m6+GDazbtftWiE+uc1xJ4NSswHFa4ynpaZqg1Tm3n/YWoEjzkPQ=
+X-Received: from pjwx13.prod.google.com ([2002:a17:90a:c2cd:b0:313:230:89ed])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:50ce:b0:313:5d2f:54fc
+ with SMTP id 98e67ed59e1d1-31cc25429b9mr22489997a91.10.1753136768428; Mon, 21
+ Jul 2025 15:26:08 -0700 (PDT)
+Date: Mon, 21 Jul 2025 15:26:07 -0700
+In-Reply-To: <7t5qpdpc7cvkyvgj7i2fes56pvpfvrqcpbbdqqrhu3vgqgtjw2@6mpuc4ljmiey>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <cover.1740036492.git.naveen@kernel.org> <330d10700c1172982bcb7947a37c0351f7b50958.1740036492.git.naveen@kernel.org>
+ <aFngeQ5x6QiP7SsK@google.com> <6dl4vsf3k7qhx2aunc5vdhvtxpnwqp45lilpdsp4jksxtgdu6t@kubfenz4bdey>
+ <aHpZD6sKamnPv9BG@google.com> <7t5qpdpc7cvkyvgj7i2fes56pvpfvrqcpbbdqqrhu3vgqgtjw2@6mpuc4ljmiey>
+Message-ID: <aH6-f1xOMU7dQLsX@google.com>
+Subject: Re: [PATCH v3 1/2] KVM: SVM: Increase X2AVIC limit to 4096 vcpus
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
+	Vasant Hegde <vasant.hegde@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 21 Jul 2025 11:19:48 +0100, Marc Zyngier wrote:
-> As I was debugging some RAS-related issues[1], I realised that:
+On Mon, Jul 21, 2025, Naveen N Rao wrote:
+> On Fri, Jul 18, 2025 at 07:24:15AM -0700, Sean Christopherson wrote:
+> > If there wasn't already an "x2AVIC enabled" print, I would probably lean toward
+> > doing nothing.  But since pr_info("x2AVIC enabled\n") already exists, and has
+> > plently of free space for adding extra information, there's basically zero downside
+> > to printing out the number of supported CPUs.  And it's not just a binary yes/no,
+> > e.g. I would wager most people couldn't state the number of vCPUs supported by
+> > the "old" x2AVIC.
 > 
-> - My test box is implementing RASv1p1
+> Ok, this is what I have now. Let me know if you prefer different 
+> wording:
 > 
-> - We unconditionally advertise it to guests
+> 	/* AVIC is a prerequisite for x2AVIC. */
+>         x2avic_enabled = boot_cpu_has(X86_FEATURE_X2AVIC);
+> -       if (x2avic_enabled)
+> -               pr_info("x2AVIC enabled\n");
+> +       if (x2avic_enabled) {
+> +               if (cpu_feature_enabled(X86_FEATURE_X2AVIC_EXT))
+> +                       x2avic_max_physical_id = X2AVIC_4K_MAX_PHYSICAL_ID;
+
+I actually like the approach you initially posted, where KVM explicitly sets
+x2avic_max_physical_id for both paths.  KVM could obviously rely on global
+initialization to set X2AVIC_MAX_PHYSICAL_ID, but it's not like this code is
+performance critical, and have all paths in one place makes it easy to understand
+what the "default" value is.
+
+		if (cpu_feature_enabled(X86_FEATURE_X2AVIC_EXT))
+			x2avic_max_physical_id = X2AVIC_MAX_PHYSICAL_ID_4K;
+		else
+			x2avic_max_physical_id = X2AVIC_MAX_PHYSICAL_ID;
+
+> +               pr_info("x2AVIC enabled (upto %lld vCPUs)\n", x2avic_max_physical_id + 1);
+
+Maybe s/upto/max?
+
+> +       }
 > 
-> - Issuing RASv1p1 accesses doesn't end very well
 > 
-> [...]
-
-I haven't reviewed this series in full yet but wanted to pick up the
-HCR fix that we need urgently and the obvious FEAT_RAS change.
-
-Applied to next, thanks!
-
-[2/7] KVM: arm64: Filter out HCR_EL2 bits when running in hypervisor context
-      https://git.kernel.org/kvmarm/kvmarm/c/303084ad1276
-[3/7] KVM: arm64: Make RAS registers UNDEF when RAS isn't advertised
-      https://git.kernel.org/kvmarm/kvmarm/c/d9c5c2320156
-
---
-Best,
-Oliver
+> - Naveen
