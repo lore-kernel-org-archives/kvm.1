@@ -1,156 +1,168 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6684A19F49E
-	for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 17:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822392DCF73
+	for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 18:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753119943; cv=none; b=ecsjZSjP6PleFGAN+NRdvzP4FSG2C+7H1lSiXHPDNtANIyeGa62XyKUJ+xgCAYHcgqhNuoXwyrJKYKfHHR6/CCrXyj617uxZDqmIYHDdiohHDSVkV7VPj4pIr85rm2EBMzg0mlM1Tka4vWUspYnwfpYI7i5L3C6h2hqea1PQ/fM=
+	t=1753120838; cv=none; b=kWdcAIjRW9Xdg/lnIlFEbLVo7NU8KOIsHBbsROGCcxjhv3kTe+nJIY8IZf7VLiAzwNNmdhJ5MI46EbvRSVb4xTeU+3i9nI3xvXBDiqKS8vrF3kzEj4NjdS0HUnszPTUvTgEvVrffJtXrtMmoHLm8J1uPkmz86fqSYUz1bt3R3Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753119943; c=relaxed/simple;
-	bh=GB4zskA2ZYlvODr9l5/H+sJppM55rCMxnwfZA4FdtwM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DaWC0Jv8sck70X9i13EOGmyGsOCv+eOQbNEsD45fuMjNxHgUtFMFxOos6oA1JOoglU8b093aY/a+VgUg0K84bqUvH/OVR2EXTf4agWBQmrCOJtJKRiJ0L6oitJApPsKJdNkN14hQ29E7ec1ZlN3p0FJ6QtWm0vCi00qbTEC6i5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pRpduH6a; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1753120838; c=relaxed/simple;
+	bh=ogWkNfeO1YSnAXmvtt1kCOSLkwjDSK4GK17SpTnnPdE=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=jUXlsW/lqcAOaKr2vXsRzjLQ6SBDrETANLGVxLsSaP1uRhPAa2RXlLW9m5w1hSgSq3D2GHf8YDcZqtztRSjH9lENCFqtJCbz6NHWm8u1fPn2D+iNTFTQ8VWR6zYjva2mrVw5iSfxe5c3RjXNkpy5V85k+C9ynYdrxeFY7xgr9ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GbpHVcYM; arc=none smtp.client-ip=209.85.166.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pRpduH6a"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-235e7550f7bso45485325ad.3
-        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 10:45:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GbpHVcYM"
+Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-86f4e2434b6so533186039f.2
+        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 11:00:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753119940; x=1753724740; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=di7TexfbhffoSOH6ZsYX7OktFXPZVnJiau3m+090UpA=;
-        b=pRpduH6ao4dbfwVSKtvTtxZplskwlT0wq06rWUI9+NpkdBqPiu80EmY9wdDCJRrNBi
-         982YJn0FNVkWYkVUEx3QBMFWa7CPtIxojTjRRJh0ZFd8dOuSs6UapPCErxuums+iI/97
-         q7Pw2B/eqWgaEoXWtpErJktaPbA0xWHF0E/d3gbdOQNUslbA0MbebsRIjhl6aG3iSqLW
-         tET4efRqSqTy1XjrMxzDDperOWPflkw+Qp6sjuyy0Dfy9JlkP4ZKgOTyjXwryqNgcOWk
-         KSlt1ZVHrOK624YJksa1feQAx0oN0XpCMp6nXmgB1ETi+7S04WKqfAVjFmnQcpy0Ly89
-         Kafw==
+        d=google.com; s=20230601; t=1753120835; x=1753725635; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2krLqXbrvL69zHTI+OSB0Sx07egWNgje2ekoJXV//wU=;
+        b=GbpHVcYMNjPulkBQVnu3PMABGIR5/NLHguhseFosMrL0HMJ947wZI75ksWO6PoOq6l
+         7g6xQZiTL5BpSPn+LSOYuGBU3iIrfJ9DZYLL0O2xjsgBPEaSDufXzYcJ/hZEF/Z69QrJ
+         Fge0AagZ23VVryCH4m/YmxILnzY37F4HXM4aSPSB8qSguL+HnVeTD1pi2zFzCBCWHI6o
+         xxEF9kBh/z5788HwBUBkVL8Q9sTZVuAbsJjO8gSxx5sTRON6rtkK3vGBPLPHkJ6PFsiv
+         9smVtMC/1szkXsV4QneShOlfSlilY2i4sQ/GDUlU5ReWy/Kn8WOqltxJVsj5Bb7hfXNI
+         yLgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753119940; x=1753724740;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=di7TexfbhffoSOH6ZsYX7OktFXPZVnJiau3m+090UpA=;
-        b=jO3Mltx27lJDgnnJcP9CnkTGUGaF39ERZTqP+TDnuE9RDiKtp+bp96cZico7JHyojN
-         TdCTFWPaVMDERF1wpADNfVp5sOD9HJIQZvJEljuKSQ8MDqjU/n3vuKMrSrpA8s565nze
-         B5bP5rHD+IfHRD53MuyDEfBDygLA715XrMWntPQA3r9UndPQQNtYXEryZCZP5504v1JF
-         7J9cWaWVN3nP9yvi+oFfPHu+G3Y06U8jWcgLp6b5OnpnABS04JuJ2S+SKsCskHK+SuyW
-         Fo1g6xz2aN5qImulgFh/feyEPH1Gsj/u2UKay75I5c2XGcNn9uH2ghiXB+xCwv4IAZCE
-         K6RA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMdc4+2Hr5qw7uhK3tgoSoISnKXCrszhulCBXJ3jA9Q6XS/TrXwkarrswdN3+hrFXsVL4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1TX1V4rfIa8f+dRARdRA2ADSAtEWfBUgFBrmm6b040qyeH0uM
-	AwVxy5s17QadxCgeKbTROYG7gniHiHqTAPPWlbLTsZilnoOgepVlXdAhQTYrFtPpER6Mi+jQGeM
-	mns2mdQ==
-X-Google-Smtp-Source: AGHT+IHiKAzk+Gj92dMWbjReV05ys85siAtjhNZ+WoJphGuFPtx3rF6tRTIcG/LNVyw1tkXMwMoYptXCIv0=
-X-Received: from pgbdw5.prod.google.com ([2002:a05:6a02:4485:b0:b3f:3145:8216])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d54f:b0:234:c65f:6c0c
- with SMTP id d9443c01a7336-23e3b78d523mr188481485ad.15.1753119940553; Mon, 21
- Jul 2025 10:45:40 -0700 (PDT)
-Date: Mon, 21 Jul 2025 10:45:39 -0700
-In-Reply-To: <4114d399-8649-41de-97bf-3b63f29ec7e8@grsecurity.net>
+        d=1e100.net; s=20230601; t=1753120835; x=1753725635;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2krLqXbrvL69zHTI+OSB0Sx07egWNgje2ekoJXV//wU=;
+        b=uzUz+HYGTltH9xkFTatPZzz7AIiwuVCmfWoxuJsGADpNXmjIizhf1XEhuG/3KcpCKE
+         w44rto5rSESgOLelACo5AjhAkVmXe8Q9ovije2QQVNYUQ29lOMaCfrGSzC3VTvUsUNj/
+         qaobY75BSUJBI2Hg5JGeJyMldzuxgBlHgpPVqn69qs7SL+A1KUeFd507TbdV/QmD9pcy
+         rZiXDhagoyr2eR9pna4bbGO4glYQccMAhWAtSW8Ql5IDUjJ2c7cwgT0TmDaWshWxEZFO
+         sKlL4zRysH4KBqTBbVXoIo0D+fHxr+9fOQesqJYAhaC3iTHXk2XrSLPwEksu451onKB5
+         s+iw==
+X-Gm-Message-State: AOJu0Yy/NVae2Eg5yU5RLDr9x/JfE8H/A4JVZ/zgRoH5GWun4M4unnzC
+	aSFAqHRri2ujmJhdtmE0vB5Iy6KLKLWu8enLdwD3eOLsxbR5ub/cyX3XKWdGjqi9wKS1iSZh2bC
+	DbkbD9vkQECJpR3wFTnLyvwNYIQ==
+X-Google-Smtp-Source: AGHT+IEfZ2MrsGDQt2Apr+GHWZROOgLVqxxVZM8uTrkAEn6W6ybAfMfVvl1rXs9CqPRl3bXlJpF5OsombirkZgJ7Gg==
+X-Received: from iobjk13.prod.google.com ([2002:a05:6602:720d:b0:87c:1d70:43be])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6602:2c0f:b0:86c:ee8b:c089 with SMTP id ca18e2360f4ac-879c291915bmr2390181339f.3.1753120835597;
+ Mon, 21 Jul 2025 11:00:35 -0700 (PDT)
+Date: Mon, 21 Jul 2025 18:00:34 +0000
+In-Reply-To: <153b5191-c585-433e-9cf5-1ed19b9a7f5c@arm.com> (message from
+ Suzuki K Poulose on Wed, 16 Jul 2025 00:22:16 +0100)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250704085027.182163-1-chao.gao@intel.com> <20250704085027.182163-20-chao.gao@intel.com>
- <4114d399-8649-41de-97bf-3b63f29ec7e8@grsecurity.net>
-Message-ID: <aH58w_wHx3Crklp4@google.com>
-Subject: Re: [PATCH v11 19/23] KVM: x86: Enable CET virtualization for VMX and
- advertise to userspace
-From: Sean Christopherson <seanjc@google.com>
-To: Mathias Krause <minipli@grsecurity.net>
-Cc: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, pbonzini@redhat.com, dave.hansen@intel.com, 
-	rick.p.edgecombe@intel.com, mlevitsk@redhat.com, john.allen@amd.com, 
-	weijiang.yang@intel.com, xin@zytor.com, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="us-ascii"
+Message-ID: <gsntseipa0fx.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v4 01/23] arm64: cpufeature: Add cpucap for HPMN0
+From: Colton Lewis <coltonlewis@google.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, corbet@lwn.net, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, mark.rutland@arm.com, 
+	shuah@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-On Mon, Jul 21, 2025, Mathias Krause wrote:
-> On 04.07.25 10:49, Chao Gao wrote:
-> > From: Yang Weijiang <weijiang.yang@intel.com>
-> > 
-> > Expose CET features to guest if KVM/host can support them, clear CPUID
-> > feature bits if KVM/host cannot support.
-> > [...]
-> 
-> Can we please make CR4.CET a guest-owned bit as well (sending a patch in
-> a second)? It's a logical continuation to making CR0.WP a guest-owned
-> bit just that it's even easier this time, as no MMU role bits are
-> involved and it still makes a big difference, at least for grsecurity
-> guest kernels.
+Hi Suzuki. Thanks for the review.
 
-Out of curiosity, what's the use case for toggling CR4.CET at runtime?
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-> Using the old test from [1] gives the following numbers (perf stat -r 5
-> ssdd 10 50000):
-> 
-> * grsec guest on linux-6.16-rc5 + cet patches:
->   2.4647 +- 0.0706 seconds time elapsed  ( +-  2.86% )
-> 
-> * grsec guest on linux-6.16-rc5 + cet patches + CR4.CET guest-owned:
->   1.5648 +- 0.0240 seconds time elapsed  ( +-  1.53% )
-> 
-> Not only is it ~35% faster, it's also more stable, less fluctuation due
-> to less VMEXITs, I believe.
-> 
-> Thanks,
-> Mathias
-> 
-> [1]
-> https://lore.kernel.org/kvm/20230322013731.102955-1-minipli@grsecurity.net/
+> On 14/07/2025 23:58, Colton Lewis wrote:
+>> Add a capability for FEAT_HPMN0, whether MDCR_EL2.HPMN can specify 0
+>> counters reserved for the guest.
 
-> From 14ef5d8b952744c46c32f16fea3b29184cde3e65 Mon Sep 17 00:00:00 2001
-> From: Mathias Krause <minipli@grsecurity.net>
-> Date: Mon, 21 Jul 2025 13:45:55 +0200
-> Subject: [PATCH] KVM: VMX: Make CR4.CET a guest owned bit
-> 
-> There's no need to intercept changes of CR4.CET, make it a guest-owned
-> bit where possible.
+>> This required changing HPMN0 to an UnsignedEnum in tools/sysreg
+>> because otherwise not all the appropriate macros are generated to add
+>> it to arm64_cpu_capabilities_arm64_features.
 
-In the changelog, please elaborate on the assertion that CR4.CET doesn't need to
-be intercepted, and include the motiviation and perf numbers.  KVM's "rule" is
-to disable interception of something if and only if there is a good reason for
-doing so, because generally speaking intercepting is safer.  E.g. KVM bugs are
-less likely to put the host at risk.  "Because we can" isn't not a good reason :-)
+>> Acked-by: Mark Rutland <mark.rutland@arm.com>
+>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+>> ---
+>>    arch/arm64/kernel/cpufeature.c | 8 ++++++++
+>>    arch/arm64/tools/cpucaps       | 1 +
+>>    arch/arm64/tools/sysreg        | 6 +++---
+>>    3 files changed, 12 insertions(+), 3 deletions(-)
 
-E.g. at one point CR4.LA57 was a guest-owned bit, and the code was buggy.  Fixing
-things took far more effort than it should have there was no justification for
-the logic (IIRC, it was done purely on the whims of the original developer).
+>> diff --git a/arch/arm64/kernel/cpufeature.c  
+>> b/arch/arm64/kernel/cpufeature.c
+>> index b34044e20128..f38d7b5294ec 100644
+>> --- a/arch/arm64/kernel/cpufeature.c
+>> +++ b/arch/arm64/kernel/cpufeature.c
+>> @@ -548,6 +548,7 @@ static const struct arm64_ftr_bits ftr_id_mmfr0[] = {
+>>    };
 
-KVM has had many such cases, where some weird behavior was never documented/justified,
-and I really, really want to avoid committing the same sins that have caused me
-so much pain :-)
+>>    static const struct arm64_ftr_bits ftr_id_aa64dfr0[] = {
+>> +	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE,  
+>> ID_AA64DFR0_EL1_HPMN0_SHIFT, 4, 0),
 
-> This change is VMX-specific, as SVM has no such fine-grained control
-> register intercept control.
-> 
-> Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-> ---
->  arch/x86/kvm/kvm_cache_regs.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
-> index 36a8786db291..8ddb01191d6f 100644
-> --- a/arch/x86/kvm/kvm_cache_regs.h
-> +++ b/arch/x86/kvm/kvm_cache_regs.h
-> @@ -7,7 +7,8 @@
->  #define KVM_POSSIBLE_CR0_GUEST_BITS	(X86_CR0_TS | X86_CR0_WP)
->  #define KVM_POSSIBLE_CR4_GUEST_BITS				  \
->  	(X86_CR4_PVI | X86_CR4_DE | X86_CR4_PCE | X86_CR4_OSFXSR  \
-> -	 | X86_CR4_OSXMMEXCPT | X86_CR4_PGE | X86_CR4_TSD | X86_CR4_FSGSBASE)
-> +	 | X86_CR4_OSXMMEXCPT | X86_CR4_PGE | X86_CR4_TSD | X86_CR4_FSGSBASE \
-> +	 | X86_CR4_CET)
->  
->  #define X86_CR0_PDPTR_BITS    (X86_CR0_CD | X86_CR0_NW | X86_CR0_PG)
->  #define X86_CR4_TLBFLUSH_BITS (X86_CR4_PGE | X86_CR4_PCIDE | X86_CR4_PAE | X86_CR4_SMEP)
-> -- 
-> 2.47.2
-> 
+> This doesn't have to be FTR_STRICT. The kernel can deal with
+> differences, by skipping to use HPMN0. We anyway rely on the
+> system wide cap for using the feature.
 
+Okay. I'll change it
+
+
+> Otherwise,
+
+> Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+
+
+Thanks
+>>    	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE,  
+>> ID_AA64DFR0_EL1_DoubleLock_SHIFT, 4, 0),
+>>    	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE,  
+>> ID_AA64DFR0_EL1_PMSVer_SHIFT, 4, 0),
+>>    	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE,  
+>> ID_AA64DFR0_EL1_CTX_CMPs_SHIFT, 4, 0),
+>> @@ -2896,6 +2897,13 @@ static const struct arm64_cpu_capabilities  
+>> arm64_features[] = {
+>>    		.matches = has_cpuid_feature,
+>>    		ARM64_CPUID_FIELDS(ID_AA64MMFR0_EL1, FGT, FGT2)
+>>    	},
+>> +	{
+>> +		.desc = "HPMN0",
+>> +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+>> +		.capability = ARM64_HAS_HPMN0,
+>> +		.matches = has_cpuid_feature,
+>> +		ARM64_CPUID_FIELDS(ID_AA64DFR0_EL1, HPMN0, IMP)
+>> +	},
+>>    #ifdef CONFIG_ARM64_SME
+>>    	{
+>>    		.desc = "Scalable Matrix Extension",
+>> diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+>> index 10effd4cff6b..5b196ba21629 100644
+>> --- a/arch/arm64/tools/cpucaps
+>> +++ b/arch/arm64/tools/cpucaps
+>> @@ -39,6 +39,7 @@ HAS_GIC_CPUIF_SYSREGS
+>>    HAS_GIC_PRIO_MASKING
+>>    HAS_GIC_PRIO_RELAXED_SYNC
+>>    HAS_HCR_NV1
+>> +HAS_HPMN0
+>>    HAS_HCX
+>>    HAS_LDAPR
+>>    HAS_LPA2
+>> diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+>> index 8a8cf6874298..d29742481754 100644
+>> --- a/arch/arm64/tools/sysreg
+>> +++ b/arch/arm64/tools/sysreg
+>> @@ -1531,9 +1531,9 @@ EndEnum
+>>    EndSysreg
+
+>>    Sysreg	ID_AA64DFR0_EL1	3	0	0	5	0
+>> -Enum	63:60	HPMN0
+>> -	0b0000	UNPREDICTABLE
+>> -	0b0001	DEF
+>> +UnsignedEnum	63:60	HPMN0
+>> +	0b0000	NI
+>> +	0b0001	IMP
+>>    EndEnum
+>>    UnsignedEnum	59:56	ExtTrcBuff
+>>    	0b0000	NI
