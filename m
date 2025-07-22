@@ -1,197 +1,109 @@
-Received: from outbound.qs.icloud.com (p-east3-cluster1-host8-snip4-10.eps.apple.com [57.103.87.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73983D53C
-	for <kvm@vger.kernel.org>; Tue, 22 Jul 2025 11:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.87.83
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0682A920;
+	Tue, 22 Jul 2025 11:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753183030; cv=none; b=tCoZbehbi6Uh2TAx5LW+Kd/naPoPU8UnbHtzlQezYshDjKsEn2TrswImckJFdOkJv7nBnKcsialpXVQYSdlOXMNT6P4l/OjdoW6xemlJoPJcXq0IIvTukBS/RzSaYojZlm/CoctzNZgXfZcjrHWHEwoRBufI1JCmgps7nEAU8+Y=
+	t=1753185496; cv=none; b=tTN+nzROB9P7CxhtE0CuDCh3ENG6g0pRu5YTloUm7eETyzAEycC+pp+/rE2chDB+N9duehZg2xa7+CmjlCEa6SiQkZZDR3g+2vl8z5MOD87s43QA5XdqvtuZKib0mzPgCG6TkvkQhWyWwMpdWm9R12xVC2PcQttn8mYxbB7QXbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753183030; c=relaxed/simple;
-	bh=F0dH7DgLAPCg2rjyePbzyfYaWVVHoTiSq+O38xkiyqM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lRl+hPoi0HkIDz/yHXhfBAexjNNo6Ys/GHTY2UPMjxEk0UdJGUA6uD0fZgiO5nnRAS/oRsEQt2EJm4l5eFSTsieQFEYDovbPwFYP/Yecwf4BIi4Cfitfod6gwPhdAbGldChBAGI/pwSZnoLisx1Hq1/nLQw6wbJop0UXlbeGADs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=f9azhxgp; arc=none smtp.client-ip=57.103.87.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="f9azhxgp"
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPS id 5DA5E18000AF;
-	Tue, 22 Jul 2025 11:17:02 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; bh=dIrAHmdsSj6Aucz92NWF11M9gZkNlDgy0Srlz8h06uo=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=f9azhxgpWU3kGFWTzDwkN9xzgQzH4cjoLvImx5brqdTMn8y09oqv+6I6xsFsaGcM2OGqq5u7o2UeaWGhd9P9Dwql1mgach3UrHiUBvoqZ/cpRzPKWsS26GtjlbtvqgBuQAOJjiCxUV3P0gwnMTAO4Lwlb0RhniP/KT2Kd2VYvcBhQKZH6Y6CF0wuiWej47/FkN3DOclXX42Vs2XhqZUA/S5fkIrDgE1YbN2TQiJHRjob4la/surDr7S2y7kO/bohzoyhztatdrdQmuawLVJ85hFDACyqIcqj/+HPZfTgE2xHcQB4U/Ic0G8ITd6AtlSVXMwoh/zhaFR81OF5ks8JwA==
-X-Client-IP: 46.189.47.18
-Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-7 (Postfix) with ESMTPSA id BDF2D180061D;
-	Tue, 22 Jul 2025 11:17:00 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1753185496; c=relaxed/simple;
+	bh=FYFNJZU/pShI/0xENZjgDKpYDZJS22uxFteKyrwwyQY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IIaq0KNylRtbcacV/BFrhjwrVAlwfuwmYEnV0HxIaJSqySADWQOsTs7plIgkdBTUvBWS5DyzQHKxLmcirha/jok+BsGjlDvlypH4ibaApGk1zjftBMiyiCFBdj2ETu8hbl6w0T3P0XAlUo4NGDNGf9Najs0P+QdGt/S7vmtZCNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.45])
+	by gateway (Coremail) with SMTP id _____8BxnmtqfH9o5pIvAQ--.56009S3;
+	Tue, 22 Jul 2025 19:56:26 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.45])
+	by front1 (Coremail) with SMTP id qMiowJDxscJlfH9oBdYhAA--.19687S2;
+	Tue, 22 Jul 2025 19:56:25 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [GIT PULL] LoongArch KVM changes for v6.17
+Date: Tue, 22 Jul 2025 19:56:09 +0800
+Message-ID: <20250722115609.3754289-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3858.100.10\))
-Subject: Re: [PATCH] i386/kvm: Disable hypercall patching quirk by default
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <0a700950-45b8-4f38-afe2-a1a261110d78@intel.com>
-Date: Tue, 22 Jul 2025 13:16:48 +0200
-Cc: Mathias Krause <minipli@grsecurity.net>,
- qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- kvm@vger.kernel.org,
- Oliver Upton <oliver.upton@linux.dev>,
- Sean Christopherson <seanjc@google.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B3A41A4F-598B-406C-8F4C-0F561CA689A3@unpredictable.fr>
-References: <20250619194204.1089048-1-minipli@grsecurity.net>
- <41a5767e-42d7-4877-9bc8-aa8eca6dd3e3@intel.com>
- <b8336828-ce72-4567-82df-b91d3670e26c@grsecurity.net>
- <3f58125c-183f-49e0-813e-d4cb1be724e8@intel.com>
- <317D3308-0401-4A36-A6B0-D2575869748D@unpredictable.fr>
- <0a700950-45b8-4f38-afe2-a1a261110d78@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-X-Mailer: Apple Mail (2.3858.100.10)
-X-Proofpoint-GUID: 1WL3OfT56U_gm4EMzw3rPAMB9UFuxxXD
-X-Proofpoint-ORIG-GUID: 1WL3OfT56U_gm4EMzw3rPAMB9UFuxxXD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA5MiBTYWx0ZWRfX7AyVgDdoNq41
- 95NwJikRMbli1fJmC2zevSpqGrz8GoxC9gzK1jtCZ9eu7ojjph2wVpfbOBuMxf++qPShwoy+ISR
- wlbyO1keby6Y5wWsb6n/4wpqfrgg4xm5DYudew4fRQQ1JEK18SqG7gR5fpKvmC18Y8chCCoRgUY
- Qt07DYdPXeIlngaYS9oO4dVEZCl/C1UJG45lHuQk6O0v0nCASxVVOHn4sEIfRsN0Oam8EiqGmXG
- ZMaP8bPl4k6lTd1A40v3aBYtzqijP0/1urr24Uuoc8eIDyXFqlbbB/eBwnpl5hISBje8EKMrs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- clxscore=1030 bulkscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
- adultscore=0 mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2507220092
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxscJlfH9oBdYhAA--.19687S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CFWrZF1kCw4DKFW3Kr4fCrX_yoW8ZrWxpr
+	13urnrJFs8GrZ5Jryqq343uwnrAFn7CryxXF4UKFW8ur4UZr1UXry8Xrn3JFy5C3yrJry0
+	vr1rGw1jqF1UAacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
+	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
+	2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
+	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73
+	UjIFyTuYvjxU2MKZDUUUU
 
+The following changes since commit 89be9a83ccf1f88522317ce02f854f30d6115c41:
 
+  Linux 6.16-rc7 (2025-07-20 15:18:33 -0700)
 
-> On 22. Jul 2025, at 13:06, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
->=20
-> On 7/22/2025 6:35 PM, Mohamed Mediouni wrote:
->>> On 22. Jul 2025, at 12:27, Xiaoyao Li<xiaoyao.li@intel.com> wrote:
->>>=20
->>> On 7/22/2025 5:21 PM, Mathias Krause wrote:
->>>> On 22.07.25 05:45, Xiaoyao Li wrote:
->>>>> On 6/20/2025 3:42 AM, Mathias Krause wrote:
->>>>>> KVM has a weird behaviour when a guest executes VMCALL on an AMD =
-system
->>>>>> or VMMCALL on an Intel CPU. Both naturally generate an invalid =
-opcode
->>>>>> exception (#UD) as they are just the wrong instruction for the =
-CPU
->>>>>> given. But instead of forwarding the exception to the guest, KVM =
-tries
->>>>>> to patch the guest instruction to match the host's actual =
-hypercall
->>>>>> instruction. That is doomed to fail as read-only code is rather =
-the
->>>>>> standard these days. But, instead of letting go the patching =
-attempt and
->>>>>> falling back to #UD injection, KVM injects the page fault =
-instead.
->>>>>>=20
->>>>>> That's wrong on multiple levels. Not only isn't that a valid =
-exception
->>>>>> to be generated by these instructions, confusing attempts to =
-handle
->>>>>> them. It also destroys guest state by doing so, namely the value =
-of CR2.
->>>>>>=20
->>>>>> Sean attempted to fix that in KVM[1] but the patch was never =
-applied.
->>>>>>=20
->>>>>> Later, Oliver added a quirk bit in [2] so the behaviour can, at =
-least,
->>>>>> conceptually be disabled. Paolo even called out to add this very
->>>>>> functionality to disable the quirk in QEMU[3]. So lets just do =
-it.
->>>>>>=20
->>>>>> A new property 'hypercall-patching=3Don|off' is added, for the =
-very
->>>>>> unlikely case that there are setups that really need the =
-patching.
->>>>>> However, these would be vulnerable to memory corruption attacks =
-freely
->>>>>> overwriting code as they please. So, my guess is, there are =
-exactly 0
->>>>>> systems out there requiring this quirk.
->>>>> The default behavior is patching the hypercall for many years.
->>>>>=20
->>>>> If you desire to change the default behavior, please at least keep =
-it
->>>>> unchanged for old machine version. i.e., introduce =
-compat_property,
->>>>> which sets KVMState->hypercall_patching_enabled to true.
->>>> Well, the thing is, KVM's patching is done with the effective
->>>> permissions of the guest which means, if the code in question isn't
->>>> writable from the guest's point of view, KVM's attempt to modify it =
-will
->>>> fail. This failure isn't transparent for the guest as it sees a #PF
->>>> instead of a #UD, and that's what I'm trying to fix by disabling =
-the quirk.
->>>> The hypercall patching was introduced in Linux commit 7aa81cc04781
->>>> ("KVM: Refactor hypercall infrastructure (v3)") in v2.6.25. Until =
-then
->>>> it was based on a dedicated hypercall page that was handled by KVM =
-to
->>>> use the proper instruction of the KVM module in use (VMX or SVM).
->>>> Patching code was fine back then, but the introduction of =
-DEBUG_RO_DATA
->>>> made the patching attempts fail and, ultimately, lead to Paolo =
-handle
->>>> this with commit c1118b3602c2 ("x86: kvm: use alternatives for =
-VMCALL
->>>> vs. VMMCALL if kernel text is read-only").
->>>> However, his change still doesn't account for the cross-vendor live
->>>> migration case (Intel<->AMD), which will still be broken, causing =
-the
->>>> before mentioned bogus #PF, which will just lead to misleading Oops
->>>> reports, confusing the poor souls, trying to make sense of it.
->>>> IMHO, there is no valid reason for still having the patching in =
-place as
->>>> the .text of non-ancient kernel's  will be write-protected, making
->>>> patching attempts fail. And, as they fail with a #PF instead of =
-#UD, the
->>>> guest cannot even handle them appropriately, as there was no memory
->>>> write attempt from its point of view. Therefore the default should =
-be to
->>>> disable it, IMO. This won't prevent guests making use of the wrong
->>>> instruction from trapping, but, at least, now they'll get the =
-correct
->>>> exception vector and can handle it appropriately.
->>> But you don't accout for the case that guest kernel is built without =
-CONFIG_STRICT_KERNEL_RWX enabled, or without CONFIG_DEBUG_RO_DATA, or =
-for whatever reason the guest's text is not readonly, and the VM needs =
-to be migrated among different vendors (Intel <-> AMD).
->>>=20
->>> Before this patch, the above usecase works well. But with this =
-patch, the guest will gets #UD after migrated to different vendors.
->>>=20
->>> I heard from some small CSPs that they do want to the ability to =
-live migrate VMs among Intel and AMD host.
->>>=20
->> Is there a particular reason to not handle that #UD as a hypercall to =
-support that scenario?
->=20
-> do you mean KVM handles the first hardware #UD due to the wrong opcode =
-of hypercall by directly emulate the hypercall instead of going to =
-emulator to patch the guest memory with modifying the guest memory?
->=20
-> If so, I agree with it. I thought the same solution and had no =
-bandwidth and motivation to raise the idea to KVM community.
->=20
-Yes, I think that=E2=80=99d be the best way to go in this case=E2=80=A6
+are available in the Git repository at:
 
--Mohamed
->> Especially with some guest OS kernels having kernel patch protection =
-with periodic scrubbing of r/o memory (ie Windows), doesn=E2=80=99t =
-sound great to override anything in a way the guest OS kernel can =
-notice=E2=80=A6
->=20
->=20
+  git://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git tags/loongarch-kvm-6.17
+
+for you to fetch changes up to 36d09b96d3e79518e2be31fc7960cc694702afb8:
+
+  LoongArch: KVM: Add tracepoints for CPUCFG and CSR emulation exits (2025-07-21 09:26:35 +0800)
+
+----------------------------------------------------------------
+LoongArch KVM changes for v6.17
+
+1. Simplify some KVM routines.
+2. Enhance in-kernel irqchip emulation.
+3. Add stat information with kernel irqchip.
+4. Add tracepoints for CPUCFG and CSR emulation exits.
+
+----------------------------------------------------------------
+Bibo Mao (8):
+      LoongArch: KVM: Remove unnecessary local variable
+      LoongArch: KVM: Remove unused parameter len
+      LoongArch: KVM: Remove never called default case statement
+      LoongArch: KVM: Use standard bitops API with eiointc
+      LoongArch: KVM: Use generic function loongarch_eiointc_read()
+      LoongArch: KVM: Use generic function loongarch_eiointc_write()
+      LoongArch: KVM: Replace eiointc_enable_irq() with eiointc_update_irq()
+      LoongArch: KVM: Add stat information with kernel irqchip
+
+Yulong Han (1):
+      LoongArch: KVM: Add tracepoints for CPUCFG and CSR emulation exits
+
+Yury Norov (NVIDIA) (2):
+      LoongArch: KVM: Rework kvm_send_pv_ipi()
+      LoongArch: KVM: Simplify kvm_deliver_intr()
+
+ arch/loongarch/include/asm/kvm_host.h |  12 +-
+ arch/loongarch/kvm/exit.c             |  33 +-
+ arch/loongarch/kvm/intc/eiointc.c     | 553 +++++-----------------------------
+ arch/loongarch/kvm/intc/ipi.c         |  28 +-
+ arch/loongarch/kvm/intc/pch_pic.c     |   4 +-
+ arch/loongarch/kvm/interrupt.c        |  25 +-
+ arch/loongarch/kvm/trace.h            |  14 +-
+ arch/loongarch/kvm/vcpu.c             |   8 +-
+ 8 files changed, 132 insertions(+), 545 deletions(-)
 
