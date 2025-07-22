@@ -1,65 +1,66 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1022222D7
-	for <kvm@vger.kernel.org>; Tue, 22 Jul 2025 03:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592028C02A
+	for <kvm@vger.kernel.org>; Tue, 22 Jul 2025 03:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753154128; cv=none; b=orQGmOjsbdkzadylXRd1sROk2oji7b1i4u7n3ZjrG2uqCC0ZC2R9rc0uubuey4oyQ23yaAjvdt3ghLEOJaiKIASIicf3X7HzKi6MNUsQC9dAQZcolM9vY3BVlzESbAeMqxtHNDW5oYRPEu+aJvOfr9eOEwnDxDfn2dEkL/rEmng=
+	t=1753154129; cv=none; b=giAqRGQwxW0xPSJVaCuWCQ7SYVhnWUprmmtxSP2h2D4r9yfA/rshoSNPz2FAP9RVfHnDRxS3s5pm7lPIsBszWcGkNY7lL5zRwi/ElI3TxV8Sep58ezSOyg0HWi1Cuknfak2psWIQZ6NVAHrnaN3PkFzdJMP42NguVL/fIIdzU2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753154128; c=relaxed/simple;
-	bh=JzkBOKAgWdiUJQ2g/MaoHxtIyReucIXiIAdcpENkXdg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GPBrc8AdWGqXO3NemLKhsco0wB74SWwSFoHKLq1NA2W8m1BflZSoVMlar6z3wwDLvTKXSkGOaDH18s0/X8T5nMtdxafudwMMQCnEwHhpIySakqsiORmGkAoi4Q0P5FPgaG5Nt9QJGoerAuONkPMizXFil09PAWiK8AaMI1IxOhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=vX5ZPBpF; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1753154129; c=relaxed/simple;
+	bh=0VfGT/sW+BOyeAlGwTbRc/p0DZepzw2VTroKK4qkIkc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ad8yux09Ao0fvztERkV/a3E/9SPmoqRHfLqn4XkKzNHn2RmU/pZK4PM/LDnSgwnrQZR2jSGrUY6eQfwCrzo5Y6X5RnjzPGpgzp/W+oGxbarzkRri+lpVsp0yDHwEnKLTSXSzQhog/JpxVJjhWmfkbip5k5hhppzZm1Ou+zS1+UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=OGALig4b; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="vX5ZPBpF"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-749248d06faso4227533b3a.2
-        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 20:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="OGALig4b"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748e81d37a7so3277510b3a.1
+        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 20:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753154125; x=1753758925; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N3ro4Yyao5uXofBVuxsMuyd3IafrNj++K0PwR4Tt2N0=;
-        b=vX5ZPBpFcQlouuvkn+JhlTYT+QKdqXD0kYgt2NV2gvr+PVMCIPJJl5ibjRFpcAukZs
-         SgfJPkzjekrNSlKeeyy+Oh0iD1bPnnHltkgFTbyc9N/B/Fvp0U/LURfqQQhj4rE1eiAW
-         krvNRoVg/M5P5EO4y3MZzSEjGV748i9ewk2Dm4v2vUPVS3fpHP+9wlu3W91p4WsIM0/8
-         InEkAPPFgvf9qXJPiY/Xk3EdhqcLGwMFeg+wejJrqVyvrZWRMw4rDdplK/v0900BeTKA
-         tgw2rsa/Zlv/ZVfCN445OHQ1dI3jpTcd8sr17IRcGSztBPzPy9cfCD0dRjrY+nb7bhF8
-         +l0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753154125; x=1753758925;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753154127; x=1753758927; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N3ro4Yyao5uXofBVuxsMuyd3IafrNj++K0PwR4Tt2N0=;
-        b=Q/JGTFHyQtxMMJiZHOGDv5y/PtQXxXM6rerw8QboHGo4UiigoN2ZmmUDyjpPzgSbwa
-         8VbWPaKE5nFgi5/nWVKxw++nyQ+NSDqpdKh7bhqJ4S3LWUAeUnokklsCh2mu1er2+v47
-         0vu6UHSZtVmlS9kNylETjB4yWD8JsXFrHB//qYIMEp1qJzQjWJA4DqyrSfqegv77cXIb
-         AofELiMBSw5o6t7Xhwhaoh1NzZcOaSQdcFMZdx8s3MeXcHkDH19WVB3qCOl07DlVGMwJ
-         0tsl3e1qbr71zCak8GuxStOF0SFZnTDryEpvwQfNH2vWcCAeq78u7+dlqgkUKs21+4im
-         jeQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+byNnR5fX6rt6Uh1XBypp0O6ZCel0nNcHWECOGbJiyjBqf5Ok5Wn3sD083YZXeGN6CAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKIjOpfe2PAoBnRFe7fn/b8b6WM38rzTfOUaJpsCV2zL5JnRhY
-	QU+ZZ3vVq4OWKDvXnukZbB6rGYUAT2qeY8XCk1jE76YPHwYhTxiXePj0oNexzergbsQ=
-X-Gm-Gg: ASbGnctCeJgJtl0EDqNKXdJpKZJWKpIrVWApwHRxcYnblmdY3j3Ig/Aemj3jQ0HyA0m
-	avjrI94oBilGLT/0L2qW2NdQJlOdaeLQxclkpHdNr6BK31a5wFvPr0IKfLkn7wX3W/R3iXCCPJe
-	fSckcv8Cq1LC6pMqV4BQc9CzZxQY2FjyLb8ceyyzsQw3wXfVVnhsbe2kcCxcB/3b6ni0lRLhZHF
-	6WWwj/0yx/UaogenbDnkhHqop2r4VMHc4y4wbZL19FjKx5B0RlATQ4MYo0vTLihZxG4Mn8g1bsg
-	o2ns5kp+5A21IqjxIFWexuuicKlGO98zTttTdCMk1oGFKzaZP4SM6Jho25Pcw379bgxYrxan1ZI
-	+QbDeK8ymi9WYwB5Zoz56aTg6FirPE2n2lyo=
-X-Google-Smtp-Source: AGHT+IE5Vc7OGRx4QhLjcitwZKIWZGvajhiltbo4bWSxvPQDoCrplva3mLaEOWP7EA2twj6pT6oskw==
-X-Received: by 2002:a05:6a21:6b02:b0:21f:5598:4c2c with SMTP id adf61e73a8af0-2390db673cfmr29574196637.13.1753154125053;
-        Mon, 21 Jul 2025 20:15:25 -0700 (PDT)
+        bh=oaJ9aiB4PvqQF4lL2czHSQpu5RmdGPHGPdEr5UPHKqo=;
+        b=OGALig4bJpTUJC6ZQBcACrAugi10sX0EPX2l8qzY3h8P34AeD3Dj2LZKHnMWABsd08
+         ycOgpToxzARhgFCpqkUMWwq7Yc83CQBl2rQ6Y3YbUuBc/k2b6s9d8uwK+Q0UlV4e0RIp
+         xnMT9fMoR83EIyMWE91CLZPvzdwO2UVmy786+tfCYJa0mQO2splkfctewD3Kd3vWQ7QF
+         EH7WEXA1vSxJRwIy+T0GphnBypToLjr+EIQkDKkfN3yuny8J/8dPq61AlQ8X+KkN/FDM
+         UgaT3ikKz1J8Pk4XCECNFZxRn+YvSnR33DK6e4dXutY2GCXTAEvASUpgofh8Is1xi0Fl
+         yxwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753154127; x=1753758927;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oaJ9aiB4PvqQF4lL2czHSQpu5RmdGPHGPdEr5UPHKqo=;
+        b=Sby9HugSFIhup75DVSv72eDftA3HWA2NHgcJAnTcYi+rKVZPzSGb07CHb643d3cEPp
+         9zNwK+LHB+DEolhDxwAx0jMxTAhdizumUw3/a1ae4eONZuxrGe6ReQ4WGj10y1QOE10J
+         W7IpELgO1Nwodj4LL6wQMP+H30OV57frig1bvOgxbFaNNlVG893sVBaF9KR5B2VW9FUS
+         FUIjbxHNWzf5Mgmau9O1DhCWB+1IuHpp6kfm/D4mVy4lQTkNuSQfqJsarQkhRX68j8So
+         QwBXo9TIQjT7o5q9inIAX/03rNMuhfPm1DYStXRXtwxDdQM8RBTQABDBFpPm34JEbSd4
+         GTJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNJNaBAWKgU/Z9vbIZLKto+rCxBd63nCBzxQ5bEfpLJ+rHjSIN03s8lizPK5LwwCdq8hc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI9RFjddgchQFjbaTnt7hsc4wHcR7D2icAdPD/Ih1L5DfOXmUm
+	yT5G+djv7uXBmDGsiFq1+E/nvALdUQ/KSOmic8AotJ3X2leeviF8jex5FYFP4hRG66I=
+X-Gm-Gg: ASbGnctaHaSINGKnfaFYrjeyT0XKArKflGw+P1s+UbX/GdBuDTDEbZhxW9HA0EBucol
+	90CylYWtL5wQt7Uo6B09LtWFTEgy67ELmqyf1xkOh35bMHppIc8gHkmdziLGcHQ+BaDagR9uw++
+	2xdEWw9MNuY6SrKaovNVjcrmuYfi7XH88e+eFPwHcqkXT2cGZrJEnM6STgzUz7TzDEiDgZ0rb2M
+	dZgX2o+k2Gmh849Ok83rS0FXT/u87x1CqIpA8l0t7NlC3fxWWOGyImEXknhUEL68YXOiJhoYPtY
+	dq4N7fqC42w0ovPahKf9Swi1W06ll2rTUIfcFhMCYzv0eiFuO7Mq30vUe05QZg/FoE4GgBbPN5N
+	eQK4d6AEJhH29KLw6HlVx4OgZMSDXb77GgZg=
+X-Google-Smtp-Source: AGHT+IGF6Po1DKvJeXFzJdS6UmW3bPEOUN9x/0ZpQhlGwgu/vmfAIzOtjATRI7XYcQq7ZH2Dfk1C/g==
+X-Received: by 2002:a05:6a21:a81:b0:1f5:8e94:2e81 with SMTP id adf61e73a8af0-2391c92a648mr23761386637.9.1753154127264;
+        Mon, 21 Jul 2025 20:15:27 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3f2feac065sm6027612a12.33.2025.07.21.20.15.24
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3f2feac065sm6027612a12.33.2025.07.21.20.15.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 20:15:24 -0700 (PDT)
+        Mon, 21 Jul 2025 20:15:26 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
-Subject: [PATCH v4 0/9] Add SBI v3.0 PMU enhancements
-Date: Mon, 21 Jul 2025 20:15:16 -0700
-Message-Id: <20250721-pmu_event_info-v4-0-ac76758a4269@rivosinc.com>
+Date: Mon, 21 Jul 2025 20:15:18 -0700
+Subject: [PATCH v4 2/9] drivers/perf: riscv: Add raw event v2 support
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,12 +69,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEQCf2gC/23Q3U7EIBAF4FdpuJZNB/oDjTG+hzFNoYPLRekKX
- aLZ7Ls7bWPUXS8PCR+cc2EJo8fEuuLCImaf/BwoVA8Fs8chvCH3I2UmSlFBCYqfpnOPGcPS++B
- mrlWDAiw2ZpSMLp0iOv+xgS+vlI8+LXP83PwM6+lOAehbKgMv+VA53WioBDj1HH2ekw/2YOeJr
- VoW30JdAtR3giBBVQpq05ZSSfOPIH+EWog7QZLgWmOG1o3aOrwRrnvFiO9nmmrZe7IJUxq2qbr
- icasn4De9LdLT7/YPgkRFPWvdiD/80zqgGRJyCpNfuiI3B5A8WkEvX78A6qJO7qwBAAA=
-X-Change-ID: 20241018-pmu_event_info-986e21ce6bd3
+Message-Id: <20250721-pmu_event_info-v4-2-ac76758a4269@rivosinc.com>
+References: <20250721-pmu_event_info-v4-0-ac76758a4269@rivosinc.com>
+In-Reply-To: <20250721-pmu_event_info-v4-0-ac76758a4269@rivosinc.com>
 To: Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>, 
  Mark Rutland <mark.rutland@arm.com>, 
  Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -84,72 +82,84 @@ Cc: linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
  kvm-riscv@lists.infradead.org, Atish Patra <atishp@rivosinc.com>
 X-Mailer: b4 0.15-dev-42535
 
-SBI v3.0 specification[1] added two new improvements to the PMU chaper.
-The SBI v3.0 specification is frozen and under public review phase as
-per the RISC-V International guidelines. 
+SBI v3.0 introduced a new raw event type that allows wider
+mhpmeventX width to be programmed via CFG_MATCH.
 
-1. Added an additional get_event_info function to query event availablity
-in bulk instead of individual SBI calls for each event. This helps in
-improving the boot time.
+Use the raw event v2 if SBI v3.0 is available.
 
-2. Raw event width allowed by the platform is widened to have 56 bits
-with RAW event v2 as per new clarification in the priv ISA[2].
-
-Apart from implementing these new features, this series improves the gpa
-range check in KVM and updates the kvm SBI implementation to SBI v3.0.
-
-The opensbi patches have been merged. This series can be found at [3].
-
-[1] https://github.com/riscv-non-isa/riscv-sbi-doc/releases/download/v3.0-rc7/riscv-sbi.pdf 
-[2] https://github.com/riscv/riscv-isa-manual/issues/1578
-[3] https://github.com/atishp04/linux/tree/b4/pmu_event_info_v4
-
+Reviewed-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
-Changes in v4:
-- Rebased on top of v6.16-rc7 
-- Fixed a potential compilation issue in PATCH5.
-- Minor typos fixed PATCH2 and PATCH3.
-- Fixed variable ordering in PATCH6 
-- Link to v3: https://lore.kernel.org/r/20250522-pmu_event_info-v3-0-f7bba7fd9cfe@rivosinc.com
+ arch/riscv/include/asm/sbi.h |  4 ++++
+ drivers/perf/riscv_pmu_sbi.c | 16 ++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- Rebased on top of v6.15-rc7 
-- Link to v2: https://lore.kernel.org/r/20250115-pmu_event_info-v2-0-84815b70383b@rivosinc.com
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index 341e74238aa0..b0c41ef56968 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -161,7 +161,10 @@ struct riscv_pmu_snapshot_data {
+ 
+ #define RISCV_PMU_RAW_EVENT_MASK GENMASK_ULL(47, 0)
+ #define RISCV_PMU_PLAT_FW_EVENT_MASK GENMASK_ULL(61, 0)
++/* SBI v3.0 allows extended hpmeventX width value */
++#define RISCV_PMU_RAW_EVENT_V2_MASK GENMASK_ULL(55, 0)
+ #define RISCV_PMU_RAW_EVENT_IDX 0x20000
++#define RISCV_PMU_RAW_EVENT_V2_IDX 0x30000
+ #define RISCV_PLAT_FW_EVENT	0xFFFF
+ 
+ /** General pmu event codes specified in SBI PMU extension */
+@@ -219,6 +222,7 @@ enum sbi_pmu_event_type {
+ 	SBI_PMU_EVENT_TYPE_HW = 0x0,
+ 	SBI_PMU_EVENT_TYPE_CACHE = 0x1,
+ 	SBI_PMU_EVENT_TYPE_RAW = 0x2,
++	SBI_PMU_EVENT_TYPE_RAW_V2 = 0x3,
+ 	SBI_PMU_EVENT_TYPE_FW = 0xf,
+ };
+ 
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index cfd6946fca42..7331808b1192 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -59,7 +59,7 @@ asm volatile(ALTERNATIVE(						\
+ #define PERF_EVENT_FLAG_USER_ACCESS	BIT(SYSCTL_USER_ACCESS)
+ #define PERF_EVENT_FLAG_LEGACY		BIT(SYSCTL_LEGACY)
+ 
+-PMU_FORMAT_ATTR(event, "config:0-47");
++PMU_FORMAT_ATTR(event, "config:0-55");
+ PMU_FORMAT_ATTR(firmware, "config:62-63");
+ 
+ static bool sbi_v2_available;
+@@ -527,8 +527,10 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 		break;
+ 	case PERF_TYPE_RAW:
+ 		/*
+-		 * As per SBI specification, the upper 16 bits must be unused
+-		 * for a hardware raw event.
++		 * As per SBI v0.3 specification,
++		 *  -- the upper 16 bits must be unused for a hardware raw event.
++		 * As per SBI v2.0 specification,
++		 *  -- the upper 8 bits must be unused for a hardware raw event.
+ 		 * Bits 63:62 are used to distinguish between raw events
+ 		 * 00 - Hardware raw event
+ 		 * 10 - SBI firmware events
+@@ -537,8 +539,14 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 
+ 		switch (config >> 62) {
+ 		case 0:
++			if (sbi_v3_available) {
++			/* Return error any bits [56-63] is set  as it is not allowed by the spec */
++				if (!(config & ~RISCV_PMU_RAW_EVENT_V2_MASK)) {
++					*econfig = config & RISCV_PMU_RAW_EVENT_V2_MASK;
++					ret = RISCV_PMU_RAW_EVENT_V2_IDX;
++				}
+ 			/* Return error any bits [48-63] is set  as it is not allowed by the spec */
+-			if (!(config & ~RISCV_PMU_RAW_EVENT_MASK)) {
++			} else if (!(config & ~RISCV_PMU_RAW_EVENT_MASK)) {
+ 				*econfig = config & RISCV_PMU_RAW_EVENT_MASK;
+ 				ret = RISCV_PMU_RAW_EVENT_IDX;
+ 			}
 
-Changes in v2:
-- Dropped PATCH 2 to be taken during rcX.
-- Improved gpa range check validation by introducing a helper function
-  and checking the entire range.
-- Link to v1: https://lore.kernel.org/r/20241119-pmu_event_info-v1-0-a4f9691421f8@rivosinc.com
-
----
-Atish Patra (9):
-      drivers/perf: riscv: Add SBI v3.0 flag
-      drivers/perf: riscv: Add raw event v2 support
-      RISC-V: KVM: Add support for Raw event v2
-      drivers/perf: riscv: Implement PMU event info function
-      drivers/perf: riscv: Export PMU event info function
-      KVM: Add a helper function to validate vcpu gpa range
-      RISC-V: KVM: Use the new gpa range validate helper function
-      RISC-V: KVM: Implement get event info function
-      RISC-V: KVM: Upgrade the supported SBI version to 3.0
-
- arch/riscv/include/asm/kvm_vcpu_pmu.h |   3 +
- arch/riscv/include/asm/kvm_vcpu_sbi.h |   2 +-
- arch/riscv/include/asm/sbi.h          |  13 +++
- arch/riscv/kvm/vcpu_pmu.c             |  75 ++++++++++++-
- arch/riscv/kvm/vcpu_sbi_pmu.c         |   3 +
- arch/riscv/kvm/vcpu_sbi_sta.c         |   6 +-
- drivers/perf/riscv_pmu_sbi.c          | 191 +++++++++++++++++++++++++---------
- include/linux/kvm_host.h              |   2 +
- include/linux/perf/riscv_pmu.h        |   1 +
- virt/kvm/kvm_main.c                   |  21 ++++
- 10 files changed, 258 insertions(+), 59 deletions(-)
----
-base-commit: e32a80927434907f973f38a88cd19d7e51991d24
-change-id: 20241018-pmu_event_info-986e21ce6bd3
---
-Regards,
-Atish patra
+-- 
+2.43.0
 
