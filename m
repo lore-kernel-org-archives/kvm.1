@@ -1,272 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C89228D859;
-	Tue, 22 Jul 2025 05:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753163446; cv=fail; b=PuyOksvKjhsdbReBS1jxYfqH/P4DWHSfJ+D8Zt5Dh+2Ii+71QYInXB2teDYLeZxLnW4go2jsQxEH2pHweyULsAwohQPoKJtcVdLU4shbDXsA3ictL+xhMnz7nmASLoXs0lJLJB67EWKrO3Fz8SNMeTN3FRYXVeuJoktzAL6f/+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32A928D85D
+	for <kvm@vger.kernel.org>; Tue, 22 Jul 2025 05:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753163446; cv=none; b=bPZ8bNWRUB9rfOujnpaZGwlGXUB5f1hRbPBv9xfhgFjmLaZxJ0ESSvK+R6VQVLX4V+lW8/LvI/zNw+uFt02/Tou2/0sWHpmZj3ORtXwF4ADZxbsoT5V0r+kuR2KnLSTzIE621F1wWS8PWXx2shQ5Td2zq+tTjhxIPchxNgeSb1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753163446; c=relaxed/simple;
-	bh=SRiTlk7K53UyGsMpYgsnRxOAQib0kcyORYl75LYWqAE=;
-	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=LqXhbo4MUz8s5UIEKxdGZSq8OmHx0t/DTjPWQVuG7Jqehw5NiG59PJAtfKyD6E8xqcMrs4VApLS6DiuOjfekS8TQQshOTbgyhFG09kU7bP3L7t2nxC0lyEva2kCuA3mRTvFcIiJPWgLUokUspk+MZJ9yX0TZtG8+xz32J7pH45w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XbgYwlTM; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	bh=/fx4kWRX+PU6Fv4S7XnbQ02veHjaFijyVUSS0cLjVF8=;
+	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
+	 To:Cc:Content-Type; b=djZlh3gHICshmB4KkxRreBVxYO76jAhbtFy9nX8ahCL0waA6yOLhYW/ePY4mRksqBzu8wguu+YDxtytJ/XiD3DT/hJ8o8eEzbTnhINAVdbz+gnOyrlRvwkgVCjwr0jRWED6WQhDdWsSF1Jp4qo4Ja/ruopzu1ROoNAP6CRrdyxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KNULWDde; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--suleiman.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XbgYwlTM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753163444; x=1784699444;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=SRiTlk7K53UyGsMpYgsnRxOAQib0kcyORYl75LYWqAE=;
-  b=XbgYwlTMuLlkovvNLAYVFuij/MaM6CuZ7ySGOGpETxrUUCUOTglmhNWa
-   nVE5dh7UAs1WBSH6XezkuGB7HYRySAHDwfqFbTJi43axunUF9Cqd/rhz6
-   lfBGZb0qNp8hlk+3dcJXAFxSN+Im8YJXwycvFCoRgbtJmub9KD6SBS8p+
-   L6qX3KHV0IawK9G2Z3KmYYa4YMiPPYqaoGCmFoKFo4CcQeUzs4hGzbq9l
-   sCZ7qC/RmYKJMoGwHkqMWyDPKHozsZ1MaAvnDu/88AmW6CNzNuj3zrUus
-   ATokeqWDIAjl7Kod2a5g1AdIMzL0CAYiGtfe5Y/WOm6Y430k8gdnsz2GP
-   Q==;
-X-CSE-ConnectionGUID: JD83V9XLQx2DPHvfX9I4iA==
-X-CSE-MsgGUID: cjA2X2eJSWiZ6yv99W6z0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="80839604"
-X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="80839604"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 22:50:44 -0700
-X-CSE-ConnectionGUID: ZiNZeCOLSxahVa99Ttl96Q==
-X-CSE-MsgGUID: 6GTJsky/Sf2p2WUfzXBeZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="163090965"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 22:50:44 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 21 Jul 2025 22:50:43 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Mon, 21 Jul 2025 22:50:43 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.83) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 21 Jul 2025 22:50:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pHYFNVR5hhQowp2VfvztAZviB8G/BXbQ36sshrll81MAoluVbwXdU6CdTt4oLO3Vs6qEvelLFijHY41a8sM8vfblTG69hXrJ4kmwP2CDgU0chBCg1L9fUxASthGncQfc4G+68z5WyW1orij3tHnrJA4xCXPaLUO5CYsFhWxXASR7JwJtaUTJoZk2LtGEbEsucYTqhp4VUme+VzI2YIxWm433fA/1M2odto1FVvcNR/07KoDll29Y1hXFiZ3O0Ye/7OezlTREpPLw/D7lHbpBLXGdR3A8doTbRYlqOT6pePC+33G69A0lkhuyicBImcGgvZxJvHn57I9SFx73Knl4yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=scD8at3w3voXNh/OYIrK4c0qG7iEbVkDEKe6JfzXCqY=;
- b=jxrdnP9S5j6fqJH3ic9K1wgya/Ekvb0hl320gKAKFnAmCPPoabITpjrRRy1QJ88FkB45JJDVU3evhvDN6Z18SGAlWw5j1VAAmaK43CPSfBjTruKfDIf2VenLZl+umM+ruO24lFU6ua7fkd9JC/d2sAXWtGjrachp/obAKVrjMfJcEIzwOR/L7x3yzmUi0PAgrgbJ9U7WQX+S9am5Zv1ZSBEVM5FuBNnprbXGd7akKN8fpDn78byndq7IgWYiN9iHmQphkbOoO6YYbNY25OusHjIJyTpLENyLvIsImqXV/+UoF7/ZJmFYx3weXMJNwuKeooeDrJ1fyBjzvNsyHQEtDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by LV8PR11MB8533.namprd11.prod.outlook.com (2603:10b6:408:1e5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
- 2025 05:49:55 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c%3]) with mapi id 15.20.8943.029; Tue, 22 Jul 2025
- 05:49:55 +0000
-Date: Tue, 22 Jul 2025 13:49:46 +0800
-From: kernel test robot <oliver.sang@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
-	Maxim Levitsky <mlevitsk@redhat.com>, <kvm@vger.kernel.org>,
-	<xudong.hao@intel.com>, <oliver.sang@intel.com>
-Subject: [linus:master] [KVM]  7803339fa9:
- kernel-selftests.kvm.pmu_counters_test.fail
-Message-ID: <202507220727.f2cbbd0a-lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: SG2PR02CA0069.apcprd02.prod.outlook.com
- (2603:1096:4:54::33) To LV3PR11MB8603.namprd11.prod.outlook.com
- (2603:10b6:408:1b6::9)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KNULWDde"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-710f05af33eso68887347b3.1
+        for <kvm@vger.kernel.org>; Mon, 21 Jul 2025 22:50:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753163443; x=1753768243; darn=vger.kernel.org;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GeeOPD6VQHaCMKZJuXhAQvuJ1HF7a4B8fy+bBRtdRfM=;
+        b=KNULWDdeeOUEHINlMsfKGhVT7aMrbcdR1SydqTcnfOxWjl0Nj5rlLUrHE9iCicyWIW
+         9ByWu9PnZxH+XWv96a5LpaGookMv8uAOdKqorClaj6msTONA05HOvfP0uwVk/OkJGyqa
+         +qJe6eDF/TOAopUZAYCOKlbSKCoQaoxalmiVoYkE8+vbfhHInTokYG9L+jaWSeyw5vy0
+         QLlX4rJlhSouan4r8NlVBCULPe1Ms7Tcj+jmFXpJtJ1XeBHyCbw7FHZs/npv+yOW44Sw
+         1ey/i336EhNwkoo3zMySffrpTSnTtUmKxl0wfe+CF7hFjiBlCRqfe1J8Sp1jppBbucnc
+         11CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753163443; x=1753768243;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GeeOPD6VQHaCMKZJuXhAQvuJ1HF7a4B8fy+bBRtdRfM=;
+        b=v6lB8FFtfIKpM2JYSxEwGSzNTAMV3rHF5HVTmpRC4B15KG4gFaqxf0Foji2PP54Eug
+         /Qkwmi0JuqVn6iaMC4/5GqwoNmnsogj2bFMzyglBq0lICv8wDfp/C7ijsLKY4e/3iNG2
+         1t/DQgo6qkILCwYFBwyNCWAA6FRIMzFxhBZ/lHmX5R42i9IZzh9zLBVE8xwomKTxevzD
+         sBdfbOmTst/lQ8XU5P62ibP52pc+P7lbnj2wBrDXwiZXwmm8y2XTuqUizTB5KdaE9qm5
+         JMRHwnzbYG2CQP3fS61/2sHSgvzb4dkfLm6PLLodcKj4Zqyz/s+SJHbuh1J1nVCPMhV0
+         WNzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyQ4OmtpU4hiHwkOqH8wBnq3Og1IZqjH0lpbeM7eVg7HBvBY/eQGmURGZuyffaPgRpXs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweoRIXK3z7Eh2blv14uRudnnXOGq9oZtbTz0iVqkQuWBpOgVyj
+	wIfoXSTewq5tSv2FQGwVxv9DjW6MqaCGMHq8b/AkqGwKwTM+WzN3vWkM3E3x/ywrTRAK+m4fUue
+	Bl70ZQDc+2y28zg==
+X-Google-Smtp-Source: AGHT+IG0/er4Oy4baTA0rbPQI0RPFFRIlvUUkZi83jLlYdOmAyZ0wGQZ0n3y5nto8lfMSr6b3Bt7hRUlYbWmSQ==
+X-Received: from suleiman1.tok.corp.google.com ([2401:fa00:8f:203:eafa:b5d9:dc1:d7b1])
+ (user=suleiman job=sendgmr) by 2002:a81:c902:0:b0:70e:70de:64ef with SMTP id
+ 00721157ae682-71836903ef2mr51877b3.0.1753163443305; Mon, 21 Jul 2025 22:50:43
+ -0700 (PDT)
+Date: Tue, 22 Jul 2025 14:50:28 +0900
+In-Reply-To: <20250722055030.3126772-1-suleiman@google.com>
+Message-Id: <20250722055030.3126772-2-suleiman@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|LV8PR11MB8533:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc5af91c-064f-42f0-a067-08ddc8e395c8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?4i4YwKlYu6LQm5vX5TB+/MOOIvQzRTxZaBB/2z4S1Pp4Mc9CTIIyl73zc+Bw?=
- =?us-ascii?Q?l5+VRQdAlFMH28mRGKXlXAeGKSbm449dbjMl8HpSNlhLZ9tLSyUj1wjo3G2G?=
- =?us-ascii?Q?q3FPfoVCbsqc3ct/0uvMQmGI0Qjpp3dc5UirxqzfSz+pc/qhzRAbZbbIszlK?=
- =?us-ascii?Q?dOlahvkuZ5PtTmG5ZdhBwlVz3uwtA4ldX2o1B+TclQmYVTvOzPM+mm1a07fg?=
- =?us-ascii?Q?t3519YXlmbas/FOmkjsXhy2vh6ZO4KtCLUmKkTDlI4fLq9O/i7ajXmUpZqwL?=
- =?us-ascii?Q?2uskuyK4Ef1bJYbNBSq30WB9RzxLvOlkXLfsNo6+uELUnXM8PHKGHHK/mRd8?=
- =?us-ascii?Q?ApmKf6F6nc/MOBe2ECMkB+yX6i3q73pzHcqs5nf5qy7x3whZE7Wvqbcl7NJC?=
- =?us-ascii?Q?RUUEu6Tjbl7J68RkUavKcODj8XTx+geaa5tzSQmlR87dShdv4VJX8NFIQiVD?=
- =?us-ascii?Q?VQKB00n6sJpt8NchtlCwWCHEwC9es/pJDR4EuiWgGQ6erpq89kVC6hNKPfZA?=
- =?us-ascii?Q?BrKIbWDpDNp8htA1UXWHMLR9XJ3S3BEHoI2ItHxYhpynrD9hjx/Fww2r0ftL?=
- =?us-ascii?Q?RPUx//L7FyfqVFF5lmO0eZxbPXyroEKJA90SmkFr4dY70dlSbed347ZSlc7d?=
- =?us-ascii?Q?JnQQwyxNr65yWhVtLZo3+GeztOYbPL4tO21eD4sDZ9fejybsCXFLgDtaSzhZ?=
- =?us-ascii?Q?LdIZ1Jca25hFDrzdBbebVr9olo03Sr25KGMPjZ2xaAjqf3hglAc53sRx05fN?=
- =?us-ascii?Q?VnQWSYlqH5KosTNdDLrx9sN7U5OPt60+x1VGEKKKtIzTLimH3TPdGGgHslcR?=
- =?us-ascii?Q?bv0bDp3LiPrY4R/IGJcdbU1vrkR5JobZ7kq0g9xVKvk4ED/yepD1QHyjaeIi?=
- =?us-ascii?Q?HJcNYz/fd4eAND2orRzRQCLhyZHCn+FzcRPDfQ+mxvd1BgHf0T/vGtpVpr3j?=
- =?us-ascii?Q?5A0nRZd3wnMxzc7z5kTt8OVBUSJfoaDP6opFMibsxwM0lcSTZP/Lyo5U8EXe?=
- =?us-ascii?Q?sH+bcTzP0gzOPK40L4fcqUmYoyK2M0otuNSnAlbpGBtUIUTyBisELnB2FdfA?=
- =?us-ascii?Q?9aFcfRLvNzz+NnOF2syIh+6QzTUl99X8k2elZuUd3m75rCWORQDzLQtZ41UX?=
- =?us-ascii?Q?Jz1PQ7CZFLsTm+xCiVMeD++BWgURqMfKHwRBytK9XoGtrzDlbZOMau1twbVs?=
- =?us-ascii?Q?lfh4JPxzPQFB/kEhMl6hfD/oWdStNuD+kxq8WD8aDrC69/eprM0NUPdJg0aY?=
- =?us-ascii?Q?vB2HHiBGBClMWD98vAPhPcrURyy+e2Rp4gZzVbnHNt+0z9vTGs7fGNY0PzNK?=
- =?us-ascii?Q?huf+K4HWvo/28x+n7kniYr67JW6ERKiQhweMwhaKKn561x724gJ8hVq1M6ts?=
- =?us-ascii?Q?eNrPuBHVAa0Yb4YGJ9fYXNM1Y66B?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tGoR61ONY+lOR56UWjJLKO2weOZSG9gHXlL26ijqIClc32/TAOuyi0rsFHRA?=
- =?us-ascii?Q?lxP5ojYm/NZVkyWmEYOBLFQfwx/dVeG6E6ljiX4u34Tp1qfDaiWm0XcNTA62?=
- =?us-ascii?Q?uOvGxWAYrZz/r9JvozlZxmvpJ3vjA6mysCnxrAevFsFVegaUMg1GPFo2vq7C?=
- =?us-ascii?Q?VcKCVkUXseKJRzp0zDq3lBNbHaNgFxydFGgfV5sBblZFf/y6YnG7Ws9KN+rW?=
- =?us-ascii?Q?ziB+mQnyffmxah/kkXmKy+sBddvjELhZ6ZUQigvd0zKhnyzed7/ADBzMgMu0?=
- =?us-ascii?Q?X8XuDn/aHhm7apbqBRoqn3x8377LRhK0DZu9LoXKToEfL+fcGkxsLpPpL3Xz?=
- =?us-ascii?Q?kggD3rdY0Dy6igA5yI4Ci16mDKjg8vU9r0fdYR+bLEcab3cLxCTEItmhq9ov?=
- =?us-ascii?Q?JywJUXFNv4CKMNKgxApsR0emSNiJNKcPgqx1fvCF2TDIRxJrS2fYfCwLza/V?=
- =?us-ascii?Q?fiQzvQ5n62B3vNyZjvpP9HhjcqBy5OJrmBQRcPmzdIUTXxirgTIaq06MYnAp?=
- =?us-ascii?Q?Q/NPPrji/uKcZkFl52Lt/bztyAoT6TCazgw6YUyUPQTcg3WsPqdHNwEcyo20?=
- =?us-ascii?Q?9Tb6HaIuuVazl13+MHe5YtgN8VluY5bnPepxC+3U8mLe6IbcZU6nGlfSTDli?=
- =?us-ascii?Q?HC8gtnZQCBV8doDBr8DT+asoah5Zfzj7dm6fmNJZ1Mx2yUgOEBl1fNjuqvoj?=
- =?us-ascii?Q?rxTBafR8tH66bjo2r34kHKFWu96kZCduin/qG2cgP+2bNKT6zJuo2gMmvEuF?=
- =?us-ascii?Q?JSugRb02ES4Ac884eKeWLSeSSl7AeP8Vjgnx3Ux7crBMtLj4n0Ei7spdSTx6?=
- =?us-ascii?Q?lTwVxQgkMKPv2IlGApITSG16DOhxrQT3qpG5JTT61I7+hgzXCHPfJiobBqD5?=
- =?us-ascii?Q?8RiiB5okDec5JA+oYhBYumKWBke4RzPq55tI0ZpVkRTc6mt7gkX4USLIB7PR?=
- =?us-ascii?Q?8Gv0ePiNOvg0ckinMWIaY5HjTmH3PjfZVJk6OUJTOVf882U35HTQt9tMjqAf?=
- =?us-ascii?Q?AyvDDkE95OOeiSV3tHLk46cwyhCoVcHoBh+aVYG5bPVXGX2t4MjZH1rUaIke?=
- =?us-ascii?Q?OOxQJKDIJ3UrlFH1FxiGUDI9KSdChlw5kzSgO6oA8TCCM4SbgU0o/x4F1mk2?=
- =?us-ascii?Q?yVwIIrPh4kIwi39g1uHKUDzw1GYob5SpeVn/ESTptFlLBRnJMCLsjbbi5WJL?=
- =?us-ascii?Q?qXEV1+SGzY+xTyEj527GWyTSgSk47pEt/HNltaizoA2KX3V4+smWwR24ZdBT?=
- =?us-ascii?Q?xi6I726G6FXvnl2ZeQR4YgYkJWIg1lXzBYL3bYnbHi7rYSQgyhEuUqiETFNM?=
- =?us-ascii?Q?mKX37gGD6+NKmZjy5N+g/n9eNqfwzYPCTLDIFoBXSWU0eGZI832170CjGVYr?=
- =?us-ascii?Q?RW8qg/EifgHyjvO5m7hmOT3XNVFE5zR0RoITRrbfRrPn/NekSsN15A13tAHW?=
- =?us-ascii?Q?SXZ+ywvy1c3fAJDj/SX6FOPPBx8kFP/lAKdz/zgITcT1KkD+CRu4yaAD5Vry?=
- =?us-ascii?Q?QCw2xtgf92odWiVKN1ooNmkRwFMxMXxJ0ZilckggCpHzCHDW125R7ugeK6Xh?=
- =?us-ascii?Q?K1a+72EnHrMo+Nfc296Tlri/SDTidIwr2kSe8p5mV9l2N/vivC808QapPJ+0?=
- =?us-ascii?Q?lw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc5af91c-064f-42f0-a067-08ddc8e395c8
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 05:49:55.3657
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kjfykk8Q9Cv2MeWS4Pn2MswpfH2ZG5b6Stn10XQm/RvZSM3DvnNutdPnLUeVm+UDm9cHmAkiSHq7Aa8GoehoOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8533
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20250722055030.3126772-1-suleiman@google.com>
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Subject: [PATCH v8 1/3] KVM: x86: Advance guest TSC after deep suspend.
+From: Suleiman Souhlal <suleiman@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chao Gao <chao.gao@intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	John Stultz <jstultz@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ssouhlal@freebsd.org, Suleiman Souhlal <suleiman@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Try to advance guest TSC to current time after suspend when the host
+TSCs went backwards.
 
-Hello,
+This makes the behavior consistent between suspends where host TSC
+resets and suspends where it doesn't, such as suspend-to-idle, where
+in the former case if the host TSC resets, the guests' would
+previously be "frozen" due to KVM's backwards TSC prevention, while
+in the latter case they would advance.
 
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+---
+ arch/x86/include/asm/kvm_host.h |  3 ++
+ arch/x86/kvm/x86.c              | 49 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 51 insertions(+), 1 deletion(-)
 
-we reported
-"[linux-next:master] [KVM]  7803339fa9: kernel-selftests.kvm.pmu_counters_test.fail"
-in
-https://lore.kernel.org/all/202501141009.30c629b4-lkp@intel.com/
-
-we noticed there are some discussion there about the issue and fix.
-
-this commit is in mainline now, and we captured the same issue again on a
-Ice Lake platform. another thing is we found the issue is random. as below,
-2 times failure out of 6 runs for 7803339fa9. for parent, all 9 runs pass.
-
-so we make out this report for this commit again FYI.
-
-
-=========================================================================================
-tbox_group/testcase/rootfs/kconfig/compiler/group:
-  lkp-icl-2sp9/kernel-selftests/debian-12-x86_64-20240206.cgz/x86_64-rhel-9.4-kselftests/gcc-12/kvm
-
-bd7791078ac223f5 7803339fa929387bbc66479532a
----------------- ---------------------------
-       fail:runs  %reproduction    fail:runs
-           |             |             |
-           :9           22%           2:6     kernel-selftests.kvm.pmu_counters_test.fail
-
-
-
-kernel test robot noticed "kernel-selftests.kvm.pmu_counters_test.fail" on:
-
-commit: 7803339fa929387bbc66479532afbaf8cbebb41b ("KVM: selftests: Use data load to trigger LLC references/misses in Intel PMU")
-https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-
-[test failed on linus/master      6832a9317eee280117cd695fa885b2b7a7a38daf]
-[test failed on linux-next/master d086c886ceb9f59dea6c3a9dae7eb89e780a20c9]
-
-in testcase: kernel-selftests
-version: kernel-selftests-x86_64-7ff71e6d9239-1_20250215
-with following parameters:
-
-	group: kvm
-
-
-
-config: x86_64-rhel-9.4-kselftests
-compiler: gcc-12
-test machine: 64 threads 2 sockets Intel(R) Xeon(R) Gold 6346 CPU @ 3.10GHz (Ice Lake) with 256G memory
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-
-
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <oliver.sang@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202507220727.f2cbbd0a-lkp@intel.com
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20250722/202507220727.f2cbbd0a-lkp@intel.com
-
-
-# timeout set to 120
-# selftests: kvm: pmu_counters_test
-# Random seed: 0x6b8b4567
-# Testing arch events, PMU version 0, perf_caps = 0
-# Testing GP counters, PMU version 0, perf_caps = 0
-# Testing fixed counters, PMU version 0, perf_caps = 0
-# Testing arch events, PMU version 0, perf_caps = 2000
-# Testing GP counters, PMU version 0, perf_caps = 2000
-# Testing fixed counters, PMU version 0, perf_caps = 2000
-# Testing arch events, PMU version 1, perf_caps = 0
-# Testing GP counters, PMU version 1, perf_caps = 0
-# Testing fixed counters, PMU version 1, perf_caps = 0
-# Testing arch events, PMU version 1, perf_caps = 2000
-# Testing GP counters, PMU version 1, perf_caps = 2000
-# Testing fixed counters, PMU version 1, perf_caps = 2000
-# Testing arch events, PMU version 2, perf_caps = 0
-# ==== Test Assertion Failure ====
-#   x86/pmu_counters_test.c:126: count != 0
-#   pid=11038 tid=11038 errno=4 - Interrupted system call
-#      1        0x0000000000411281: assert_on_unhandled_exception at processor.c:625
-#      2        0x00000000004075d4: _vcpu_run at kvm_util.c:1652
-#      3         (inlined by) vcpu_run at kvm_util.c:1663
-#      4        0x0000000000402c5e: run_vcpu at pmu_counters_test.c:62
-#      5        0x0000000000402e4d: test_arch_events at pmu_counters_test.c:315
-#      6        0x000000000040283e: test_arch_events at pmu_counters_test.c:599
-#      7         (inlined by) test_intel_counters at pmu_counters_test.c:599
-#      8         (inlined by) main at pmu_counters_test.c:642
-#      9        0x00007fb974a65249: ?? ??:0
-#     10        0x00007fb974a65304: ?? ??:0
-#     11        0x0000000000402900: _start at ??:?
-#   0x0 == 0x0 (count == 0)
-not ok 21 selftests: kvm: pmu_counters_test # exit=254
-
-
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index fb01e456b624..e57d51e9f2be 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1415,6 +1415,9 @@ struct kvm_arch {
+ 	u64 cur_tsc_offset;
+ 	u64 cur_tsc_generation;
+ 	int nr_vcpus_matched_tsc;
++#ifdef CONFIG_X86_64
++	bool host_was_suspended;
++#endif
+ 
+ 	u32 default_tsc_khz;
+ 	bool user_set_tsc;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index a9d992d5652f..422c7fcc5d83 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2779,7 +2779,7 @@ static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
+ 	kvm_vcpu_write_tsc_offset(vcpu, tsc_offset + adjustment);
+ }
+ 
+-static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
++static inline void __adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
+ {
+ 	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
+ 		WARN_ON(adjustment < 0);
+@@ -4995,6 +4995,52 @@ static bool need_emulate_wbinvd(struct kvm_vcpu *vcpu)
+ 
+ static DEFINE_PER_CPU(struct kvm_vcpu *, last_vcpu);
+ 
++#ifdef CONFIG_X86_64
++static void kvm_set_host_was_suspended(struct kvm *kvm)
++{
++	kvm->arch.host_was_suspended = true;
++}
++
++static void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, u64 adj)
++{
++	unsigned long flags;
++	struct kvm *kvm;
++	bool advance;
++	u64 kernel_ns, l1_tsc, offset, tsc_now;
++
++	kvm = vcpu->kvm;
++	advance = kvm_get_time_and_clockread(&kernel_ns, &tsc_now);
++	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
++	/*
++	 * Advance the guest's TSC to current time instead of only preventing
++	 * it from going backwards, while making sure all the vCPUs use the
++	 * same offset.
++	 */
++	if (kvm->arch.host_was_suspended && advance) {
++		l1_tsc = nsec_to_cycles(vcpu,
++					kvm->arch.kvmclock_offset + kernel_ns);
++		offset = kvm_compute_l1_tsc_offset(vcpu, l1_tsc);
++		kvm->arch.cur_tsc_offset = offset;
++		kvm_vcpu_write_tsc_offset(vcpu, offset);
++	} else if (advance) {
++		kvm_vcpu_write_tsc_offset(vcpu, kvm->arch.cur_tsc_offset);
++	} else {
++		__adjust_tsc_offset_host(vcpu, adj);
++	}
++	kvm->arch.host_was_suspended = false;
++	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
++}
++#else
++static void kvm_set_host_was_suspended(struct kvm *kvm)
++{
++}
++
++static void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, u64 adj)
++{
++	__adjust_tsc_offset_host(vcpu, adj);
++}
++#endif /* CONFIG_X86_64 */
++
+ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ {
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+@@ -12729,6 +12775,7 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 				kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
+ 			}
+ 
++			kvm_set_host_was_suspended(kvm);
+ 			/*
+ 			 * We have to disable TSC offset matching.. if you were
+ 			 * booting a VM while issuing an S4 host suspend....
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.50.0.727.gbf7dc18ff4-goog
 
