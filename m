@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68D24337D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3297324418D;
 	Wed, 23 Jul 2025 17:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753293282; cv=none; b=vGIGnIawMNA4Y0Ap+fjuk64JkxknUahfg/KcTnhg4Yo/75LM4swwkA3VD1bCBUyttYCeZp1l6eKLw0MzSEwEwELs21Na6Z6qfkGA5mMYZz5WGV5V8EtpWIo+wftcllzbZw9ipV1Q6MG9kQ8+xL2dDOI0jtBWFA0YoPPSPI7PLC0=
+	t=1753293283; cv=none; b=LyyCXlINVwGemjraAP+XzOiDBRWdwUNkYj5JRQAlQnc9mB+hSOu4TK4FO2ujRGNEQ/aWjCv4bPo33iwmbo0F058lYrxJ8GT8rMrUpheff80f+BjhKiZEoIheQDkebi/OxBB8MU07WqTL99c2re/QFQUJx5JzVtSzoKeCginQ6JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753293282; c=relaxed/simple;
-	bh=uKFKtuUxAkKG3f5bc9mwH9YIehY5Z93I+Y2FSYl8zM0=;
+	s=arc-20240116; t=1753293283; c=relaxed/simple;
+	bh=O+qfavYKJv5iWUZTQ2uqTtRgKKTYjV8vuHOkwfS7QDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xv3BXjxvSSqd+BJ4aoFS0Bf6HQ+uF0M3VJ0lTZvzz8XYiahmp7yvEu6wB49th+foxqxCqgDRclQJXgW4aYX/difn1GO/AAYLr/JkCLCMQEEPSRgdejFAwaW9LOGM3gSKmsVVR0oRtfZpu4iPhz1RwlVjqItoa9dG2QpoTmu/+BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Vy/4df+6; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=X7mne9Dvi7xQCD2fmWRtVRlFa28OFV+MBRScB1Gkf6c5+1NVO7NjmyQ/wBPdX8pOSBtgRXn3csNStxv//j5KREqpCch/DbPFZ7+ispSTkVLvZ3tfTAMwgDzXqYvQKw4x7A0GsLYTedmQ3+PPTXjJpoxnQltSfGHbDfNycGKdY6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=dpMTe6Mv; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Vy/4df+6"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="dpMTe6Mv"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrfxp1284522
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrf0B1284522
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 23 Jul 2025 10:53:46 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrfxp1284522
+	Wed, 23 Jul 2025 10:54:05 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrf0B1284522
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753293227;
-	bh=hemCn90KBQZPWPg97p57m0nDW+enGor0ghJKArAnWs0=;
+	s=2025072201; t=1753293245;
+	bh=018Q97OXZzIS4qBkIRJzyl3XH/UjDMLrNTbYlNvCC0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy/4df+6GYdPa/Nzlzj2fGFUTk2xPt6DZ+l6SHyMF9dz3zW2zlBhCKUiXOofDJvAm
-	 qL+yr4kI8XLvEmLmljGmuAQ93ShihBTmk52lewM6CfIWUtMKhQRX4DwGGgsNyzH7TA
-	 Ayjunw3b+1543YONJROp6f6ObNTxAw6pTkrM1A+YQ92/PFU80flFBjjXDYWNYTA5mP
-	 uashUiRXZWwEM/2j7lq5+FdOXrHTFW5cEMn+fPhYwvYA2JY+dxC34zqSm6LV328COt
-	 nps/G2bV2mKEwz0ZA3190F3f2Uehy0PpBImP+JOZ81uqTaZXcP//5M30C06kZ4Ad7e
-	 eJsUuVPu1wxbA==
+	b=dpMTe6MvRoHSq4lYGjIviafdwU5vqAL1Ohbbz3J4aNx+aikG3U5ZeBGqruScrxuFK
+	 V/fNCjQV7MAF8SQHZ79FLeL8U4S5ytXrz+pht31i0RKFhW70eP6jzd6llIT2NIJMvO
+	 qtdf9bTDqUZXa2iIIbJT9vItlYcUb0FJu44hQNCwtZMOWhnipNaiJ38UwESAaJ3nUg
+	 35zJtfP+kAhQrtk0v90df/5/Np+P+5K68bADhFJFLmzVNEIvYCKBOpm7qnalH6vNH7
+	 h5WKj4AMi+So/DZ4oasM3yNpK1z/4NkKhtCM0JS0sSrNzw1vbt0PQh512F8dQWemZn
+	 Z9zoMVkigQH9Q==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v5 01/23] KVM: VMX: Add support for the secondary VM exit controls
-Date: Wed, 23 Jul 2025 10:53:19 -0700
-Message-ID: <20250723175341.1284463-2-xin@zytor.com>
+Subject: [PATCH v5 21/23] KVM: nVMX: Add FRED-related VMCS field checks
+Date: Wed, 23 Jul 2025 10:53:39 -0700
+Message-ID: <20250723175341.1284463-22-xin@zytor.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250723175341.1284463-1-xin@zytor.com>
 References: <20250723175341.1284463-1-xin@zytor.com>
@@ -56,215 +56,158 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-Always load the secondary VM exit controls to prepare for FRED enabling.
+As with real hardware, nested VMX validates various VMCS fields, including
+control and guest/host state fields.  This patch adds checks for FRED-related
+VMCS fields to support nested FRED functionality.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
 Change in v5:
 * Add TB from Xuelian Guo.
-
-Changes in v4:
-* Fix clearing VM_EXIT_ACTIVATE_SECONDARY_CONTROLS (Chao Gao).
-* Check VM exit/entry consistency based on the new macro from Sean
-  Christopherson.
-
-Change in v3:
-* Do FRED controls consistency checks in the VM exit/entry consistency
-  check framework (Sean Christopherson).
-
-Change in v2:
-* Always load the secondary VM exit controls (Sean Christopherson).
 ---
- arch/x86/include/asm/msr-index.h |  1 +
- arch/x86/include/asm/vmx.h       |  3 +++
- arch/x86/kvm/vmx/capabilities.h  |  9 ++++++++-
- arch/x86/kvm/vmx/vmcs.h          |  1 +
- arch/x86/kvm/vmx/vmx.c           | 29 +++++++++++++++++++++++++++--
- arch/x86/kvm/vmx/vmx.h           |  7 ++++++-
- 6 files changed, 46 insertions(+), 4 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 80 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 79 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index c29127ac626a..d7667980ca2c 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -1201,6 +1201,7 @@
- #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
- #define MSR_IA32_VMX_VMFUNC             0x00000491
- #define MSR_IA32_VMX_PROCBASED_CTLS3	0x00000492
-+#define MSR_IA32_VMX_EXIT_CTLS2		0x00000493
- 
- /* Resctrl MSRs: */
- /* - Intel: */
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index cca7d6641287..97f7e0545534 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -106,6 +106,7 @@
- #define VM_EXIT_CLEAR_BNDCFGS                   0x00800000
- #define VM_EXIT_PT_CONCEAL_PIP			0x01000000
- #define VM_EXIT_CLEAR_IA32_RTIT_CTL		0x02000000
-+#define VM_EXIT_ACTIVATE_SECONDARY_CONTROLS	0x80000000
- 
- #define VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR	0x00036dff
- 
-@@ -259,6 +260,8 @@ enum vmcs_field {
- 	SHARED_EPT_POINTER		= 0x0000203C,
- 	PID_POINTER_TABLE		= 0x00002042,
- 	PID_POINTER_TABLE_HIGH		= 0x00002043,
-+	SECONDARY_VM_EXIT_CONTROLS	= 0x00002044,
-+	SECONDARY_VM_EXIT_CONTROLS_HIGH	= 0x00002045,
- 	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
- 	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
- 	VMCS_LINK_POINTER               = 0x00002800,
-diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
-index 5316c27f6099..7cdc855f8968 100644
---- a/arch/x86/kvm/vmx/capabilities.h
-+++ b/arch/x86/kvm/vmx/capabilities.h
-@@ -58,8 +58,9 @@ struct vmcs_config {
- 	u32 cpu_based_exec_ctrl;
- 	u32 cpu_based_2nd_exec_ctrl;
- 	u64 cpu_based_3rd_exec_ctrl;
--	u32 vmexit_ctrl;
- 	u32 vmentry_ctrl;
-+	u32 vmexit_ctrl;
-+	u64 vmexit_2nd_ctrl;
- 	u64 misc;
- 	struct nested_vmx_msrs nested;
- };
-@@ -135,6 +136,12 @@ static inline bool cpu_has_tertiary_exec_ctrls(void)
- 		CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
- }
- 
-+static inline bool cpu_has_secondary_vmexit_ctrls(void)
-+{
-+	return vmcs_config.vmexit_ctrl &
-+		VM_EXIT_ACTIVATE_SECONDARY_CONTROLS;
-+}
-+
- static inline bool cpu_has_vmx_virtualize_apic_accesses(void)
- {
- 	return vmcs_config.cpu_based_2nd_exec_ctrl &
-diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
-index b25625314658..ae152a9d1963 100644
---- a/arch/x86/kvm/vmx/vmcs.h
-+++ b/arch/x86/kvm/vmx/vmcs.h
-@@ -47,6 +47,7 @@ struct vmcs_host_state {
- struct vmcs_controls_shadow {
- 	u32 vm_entry;
- 	u32 vm_exit;
-+	u64 secondary_vm_exit;
- 	u32 pin;
- 	u32 exec;
- 	u32 secondary_exec;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aa157fe5b7b3..85632de1dddb 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2565,8 +2565,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	u32 _cpu_based_exec_control = 0;
- 	u32 _cpu_based_2nd_exec_control = 0;
- 	u64 _cpu_based_3rd_exec_control = 0;
--	u32 _vmexit_control = 0;
- 	u32 _vmentry_control = 0;
-+	u32 _vmexit_control = 0;
-+	u64 _vmexit2_control = 0;
- 	u64 basic_msr;
- 	u64 misc_msr;
- 
-@@ -2586,6 +2587,12 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 		{ VM_ENTRY_LOAD_IA32_RTIT_CTL,		VM_EXIT_CLEAR_IA32_RTIT_CTL },
- 	};
- 
-+	struct {
-+		u32 entry_control;
-+		u64 exit_control;
-+	} const vmcs_entry_exit2_pairs[] = {
-+	};
-+
- 	memset(vmcs_conf, 0, sizeof(*vmcs_conf));
- 
- 	if (adjust_vmx_controls(KVM_REQUIRED_VMX_CPU_BASED_VM_EXEC_CONTROL,
-@@ -2672,10 +2679,19 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 				&_vmentry_control))
- 		return -EIO;
- 
-+	if (_vmexit_control & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
-+		_vmexit2_control =
-+			adjust_vmx_controls64(KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS,
-+					      MSR_IA32_VMX_EXIT_CTLS2);
-+
- 	if (vmx_check_entry_exit_pairs(vmcs_entry_exit_pairs,
- 				       _vmentry_control, _vmexit_control))
- 		return -EIO;
- 
-+	if (vmx_check_entry_exit_pairs(vmcs_entry_exit2_pairs,
-+				       _vmentry_control, _vmexit2_control))
-+		return -EIO;
-+
- 	/*
- 	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
- 	 * can't be used due to an errata where VM Exit may incorrectly clear
-@@ -2724,8 +2740,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	vmcs_conf->cpu_based_exec_ctrl = _cpu_based_exec_control;
- 	vmcs_conf->cpu_based_2nd_exec_ctrl = _cpu_based_2nd_exec_control;
- 	vmcs_conf->cpu_based_3rd_exec_ctrl = _cpu_based_3rd_exec_control;
--	vmcs_conf->vmexit_ctrl         = _vmexit_control;
- 	vmcs_conf->vmentry_ctrl        = _vmentry_control;
-+	vmcs_conf->vmexit_ctrl         = _vmexit_control;
-+	vmcs_conf->vmexit_2nd_ctrl     = _vmexit2_control;
- 	vmcs_conf->misc	= misc_msr;
- 
- #if IS_ENABLED(CONFIG_HYPERV)
-@@ -4340,6 +4357,11 @@ static u32 vmx_vmexit_ctrl(void)
- 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
- }
- 
-+static u64 vmx_secondary_vmexit_ctrl(void)
-+{
-+	return vmcs_config.vmexit_2nd_ctrl;
-+}
-+
- void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 30d2de1243ef..d215e5ade5ef 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -2966,6 +2966,8 @@ static int nested_check_vm_entry_controls(struct kvm_vcpu *vcpu,
+ 					  struct vmcs12 *vmcs12)
  {
  	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -4688,6 +4710,9 @@ static void init_vmcs(struct vcpu_vmx *vmx)
++	bool fred_enabled = (vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) &&
++			    (vmcs12->guest_cr4 & X86_CR4_FRED);
  
- 	vm_exit_controls_set(vmx, vmx_vmexit_ctrl());
+ 	if (CC(!vmx_control_verify(vmcs12->vm_entry_controls,
+ 				    vmx->nested.msrs.entry_ctls_low,
+@@ -2984,6 +2986,7 @@ static int nested_check_vm_entry_controls(struct kvm_vcpu *vcpu,
+ 		u32 intr_type = intr_info & INTR_INFO_INTR_TYPE_MASK;
+ 		bool has_error_code = intr_info & INTR_INFO_DELIVER_CODE_MASK;
+ 		bool should_have_error_code;
++		bool has_nested_exception = vmx->nested.msrs.basic & VMX_BASIC_NESTED_EXCEPTION;
+ 		bool urg = nested_cpu_has2(vmcs12,
+ 					   SECONDARY_EXEC_UNRESTRICTED_GUEST);
+ 		bool prot_mode = !urg || vmcs12->guest_cr0 & X86_CR0_PE;
+@@ -2997,7 +3000,9 @@ static int nested_check_vm_entry_controls(struct kvm_vcpu *vcpu,
+ 		/* VM-entry interruption-info field: vector */
+ 		if (CC(intr_type == INTR_TYPE_NMI_INTR && vector != NMI_VECTOR) ||
+ 		    CC(intr_type == INTR_TYPE_HARD_EXCEPTION && vector > 31) ||
+-		    CC(intr_type == INTR_TYPE_OTHER_EVENT && vector != 0))
++		    CC(intr_type == INTR_TYPE_OTHER_EVENT &&
++		       ((!fred_enabled && vector > 0) ||
++		        (fred_enabled && vector > 2))))
+ 			return -EINVAL;
  
-+	if (cpu_has_secondary_vmexit_ctrls())
-+		secondary_vm_exit_controls_set(vmx, vmx_secondary_vmexit_ctrl());
+ 		/* VM-entry interruption-info field: deliver error code */
+@@ -3016,6 +3021,15 @@ static int nested_check_vm_entry_controls(struct kvm_vcpu *vcpu,
+ 		if (CC(intr_info & INTR_INFO_RESVD_BITS_MASK))
+ 			return -EINVAL;
+ 
++		/*
++		 * When the CPU enumerates VMX nested-exception support, bit 13
++		 * (set to indicate a nested exception) of the intr info field
++		 * may have value 1. Otherwise bit 13 is reserved.
++		 */
++		if (CC(!has_nested_exception &&
++		       (intr_info & INTR_INFO_NESTED_EXCEPTION_MASK)))
++			return -EINVAL;
 +
- 	/* 22.2.1, 20.8.1 */
- 	vm_entry_controls_set(vmx, vmx_vmentry_ctrl());
+ 		/* VM-entry instruction length */
+ 		switch (intr_type) {
+ 		case INTR_TYPE_SOFT_EXCEPTION:
+@@ -3025,6 +3039,12 @@ static int nested_check_vm_entry_controls(struct kvm_vcpu *vcpu,
+ 			    CC(vmcs12->vm_entry_instruction_len == 0 &&
+ 			    CC(!nested_cpu_has_zero_length_injection(vcpu))))
+ 				return -EINVAL;
++			break;
++		case INTR_TYPE_OTHER_EVENT:
++			if (fred_enabled && (vector == 1 || vector == 2))
++				if (CC(vmcs12->vm_entry_instruction_len > 15))
++					return -EINVAL;
++			break;
+ 		}
+ 	}
  
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index d3389baf3ab3..20194412bed3 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -506,7 +506,11 @@ static inline u8 vmx_get_rvi(void)
- 	       VM_EXIT_LOAD_IA32_EFER |					\
- 	       VM_EXIT_CLEAR_BNDCFGS |					\
- 	       VM_EXIT_PT_CONCEAL_PIP |					\
--	       VM_EXIT_CLEAR_IA32_RTIT_CTL)
-+	       VM_EXIT_CLEAR_IA32_RTIT_CTL |				\
-+	       VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
+@@ -3098,9 +3118,30 @@ static int nested_vmx_check_host_state(struct kvm_vcpu *vcpu,
+ 	if (ia32e) {
+ 		if (CC(!(vmcs12->host_cr4 & X86_CR4_PAE)))
+ 			return -EINVAL;
++		if (vmcs12->vm_exit_controls & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS &&
++		    vmcs12->secondary_vm_exit_controls & SECONDARY_VM_EXIT_LOAD_IA32_FRED) {
++			/* Bit 11, bits 5:4, and bit 2 of the IA32_FRED_CONFIG must be zero */
++			if (CC(vmcs12->host_ia32_fred_config &
++			       (BIT_ULL(11) | GENMASK_ULL(5, 4) | BIT_ULL(2))) ||
++			    CC(vmcs12->host_ia32_fred_rsp1 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->host_ia32_fred_rsp2 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->host_ia32_fred_rsp3 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->host_ia32_fred_ssp1 & GENMASK_ULL(2, 0)) ||
++			    CC(vmcs12->host_ia32_fred_ssp2 & GENMASK_ULL(2, 0)) ||
++			    CC(vmcs12->host_ia32_fred_ssp3 & GENMASK_ULL(2, 0)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_config & PAGE_MASK, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_rsp1, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_rsp2, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_rsp3, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_ssp1, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_ssp2, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->host_ia32_fred_ssp3, vcpu)))
++				return -EINVAL;
++		}
+ 	} else {
+ 		if (CC(vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) ||
+ 		    CC(vmcs12->host_cr4 & X86_CR4_PCIDE) ||
++		    CC(vmcs12->host_cr4 & X86_CR4_FRED) ||
+ 		    CC((vmcs12->host_rip) >> 32))
+ 			return -EINVAL;
+ 	}
+@@ -3245,6 +3286,43 @@ static int nested_vmx_check_guest_state(struct kvm_vcpu *vcpu,
+ 	     CC((vmcs12->guest_bndcfgs & MSR_IA32_BNDCFGS_RSVD))))
+ 		return -EINVAL;
+ 
++	if (ia32e) {
++		if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_FRED) {
++			/* Bit 11, bits 5:4, and bit 2 of the IA32_FRED_CONFIG must be zero */
++			if (CC(vmcs12->guest_ia32_fred_config &
++			       (BIT_ULL(11) | GENMASK_ULL(5, 4) | BIT_ULL(2))) ||
++			    CC(vmcs12->guest_ia32_fred_rsp1 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->guest_ia32_fred_rsp2 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->guest_ia32_fred_rsp3 & GENMASK_ULL(5, 0)) ||
++			    CC(vmcs12->guest_ia32_fred_ssp1 & GENMASK_ULL(2, 0)) ||
++			    CC(vmcs12->guest_ia32_fred_ssp2 & GENMASK_ULL(2, 0)) ||
++			    CC(vmcs12->guest_ia32_fred_ssp3 & GENMASK_ULL(2, 0)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_config & PAGE_MASK, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_rsp1, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_rsp2, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_rsp3, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_ssp1, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_ssp2, vcpu)) ||
++			    CC(is_noncanonical_msr_address(vmcs12->guest_ia32_fred_ssp3, vcpu)))
++				return -EINVAL;
++		}
++		if (vmcs12->guest_cr4 & X86_CR4_FRED) {
++			unsigned int ss_dpl = VMX_AR_DPL(vmcs12->guest_ss_ar_bytes);
++			if (CC(ss_dpl == 1 || ss_dpl == 2))
++				return -EINVAL;
++			if (ss_dpl == 0 &&
++			    CC(!(vmcs12->guest_cs_ar_bytes & VMX_AR_L_MASK)))
++				return -EINVAL;
++			if (ss_dpl == 3 &&
++			    (CC(vmcs12->guest_rflags & X86_EFLAGS_IOPL) ||
++			     CC(vmcs12->guest_interruptibility_info & GUEST_INTR_STATE_STI)))
++				return -EINVAL;
++		}
++	} else {
++		if (CC(vmcs12->guest_cr4 & X86_CR4_FRED))
++			return -EINVAL;
++	}
 +
-+#define KVM_REQUIRED_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
-+#define KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
+ 	if (nested_check_guest_non_reg_state(vmcs12))
+ 		return -EINVAL;
  
- #define KVM_REQUIRED_VMX_PIN_BASED_VM_EXEC_CONTROL			\
- 	(PIN_BASED_EXT_INTR_MASK |					\
-@@ -611,6 +615,7 @@ static __always_inline void lname##_controls_clearbit(struct vcpu_vmx *vmx, u##b
- }
- BUILD_CONTROLS_SHADOW(vm_entry, VM_ENTRY_CONTROLS, 32)
- BUILD_CONTROLS_SHADOW(vm_exit, VM_EXIT_CONTROLS, 32)
-+BUILD_CONTROLS_SHADOW(secondary_vm_exit, SECONDARY_VM_EXIT_CONTROLS, 64)
- BUILD_CONTROLS_SHADOW(pin, PIN_BASED_VM_EXEC_CONTROL, 32)
- BUILD_CONTROLS_SHADOW(exec, CPU_BASED_VM_EXEC_CONTROL, 32)
- BUILD_CONTROLS_SHADOW(secondary_exec, SECONDARY_VM_EXEC_CONTROL, 32)
 -- 
 2.50.1
 
