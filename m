@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D42D228CBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEAE22CBE6;
 	Wed, 23 Jul 2025 17:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753293261; cv=none; b=QjIzMc8ZTOFYWSxtTzrsEhKSuhaYo/3SjFcVC/kxQenfZVb6GsC1g6yXeIHhtm2n5SxY68TBOiKXQDym+ntaloGcTATtuo/cPRaCFV4QgdK0WB9SaoTwubOEMxNRpVD+4tF0asEc00lADhIafMT6Otn9loBvooQLk0FbPiCK3U4=
+	t=1753293261; cv=none; b=dhA46eS/DDMP1t3iJikuamuqi29kSnBSGsGkG1JIx6JwmIcjsV9zHFjZVdDsiROqmcTIDqxhwd57po5ASMjJKEPtvZsgLGhH2cCwbNKNRgA1o2ZiGGFXPZjS+5fsAEFVEFTMve5BJL+f1PGPBgYtpCxCo2xjDLs6sqsL2++ek0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753293261; c=relaxed/simple;
-	bh=zZDkl2sEj8bbirzJKmx0Quse7t3V4jW1l9acGjfFwwI=;
+	bh=2TyfVb5NWoLz0GzMyEcofpBwEtaePovaJCJXs/9B8uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7fanNcTibd/3aqfLxRmGUkGMLZ0ibrpK9JPgNjeP/e2m9crJcrhbEiiniSBEc14AB4Cmc4rfZNkn1QQEypWqO3FNWHJLPNYWnI0A1zr4GU9PCUbpLCb+nsoCwcl9PXun6UZCS8fLJWFGeq1LecGv4TcncYUcxm6s8Yrd4i6oBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=dy4PbUMO; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=e5HrHBj7Vz2WkqOtmlEcmIogd7z7NA3OFYiMdUMEcPuc9w9HwTV7LkXr8W+/5blK/HM7yqczcnvQ9ZNdlVUkiaLCQjXw3DP2VE6r7W87t3gzVpeogi4J8Tn4mPo3vYmA+HmEeSYb6Z764fzlwYiM/NwrWS8hrFy5NioEe9ydDcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=UrZaDzKH; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="dy4PbUMO"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="UrZaDzKH"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrf0C1284522
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrf061284522
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 23 Jul 2025 10:54:06 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrf0C1284522
+	Wed, 23 Jul 2025 10:54:00 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrf061284522
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753293246;
-	bh=CDamqBzQwv1MD5nS57D4yPDft2aOSRkKHs3w7oljxxc=;
+	s=2025072201; t=1753293241;
+	bh=62h60ISMF6N+mZatzpXWdS4PjakRmhWqSbMYln3oONs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dy4PbUMOoWrK3Bd5KAKcGBcKTtaMXvSDbMnHG8Lwwe92D5u0IC/eM/4YuyZelZIWM
-	 UcXtFXVw66Mb8KrhyBM4TRMZ6tTSwi0F2stVzpCqfOSnJi6o55CVprKwTsGBOsLVHd
-	 D/oDcjSoimP0NStv3aMHTbiebpdDKMHZnYP3si6dSIHaSb/5AoZv30Ncifu3K1FdQb
-	 VWNgFYKzY9/Ej3G7EgGpRhsjS93oC8Pdmk5c9u0sIeddNdfYwl5nEA5Ym0M+jh8w2s
-	 K1lMQmKQGI3Bep42OeuiL9QbsME7Yf6kk3C0yl65gsJz+XD3NhY6SeHf/P+leNDoYZ
-	 a/3RV9MXxgI6g==
+	b=UrZaDzKHrr+whGR2XJxmJ1KhYCZ/TvEirK6FwpD7XfZxtAGA3DTS1vZ9fUxWGbjI4
+	 BAzLn2FAtxcjT4MuVvuYTd3sjFC39pPe4DmoPhV18v6cjgB4xMS1DBa+RvePTS1Hyg
+	 f5VIllUBi6Db5giaUrYuJA8uO5QqBWB7h20qTPnsaksDbFxsomqOuqkhH/m2KmTIh4
+	 n+qf7fs/xqWnFNB/m0GUZVx88TGqDwTZIN+0aiw/AzqHTG4h7oaTz1LSPSHJqRclQT
+	 qYKBhEf9X9GAooPsJ7Em7DCOIl4VJUlLjkwJo+/zj1wRqWj5CgZoCSU3uWnkjzLjxA
+	 Ao7lCEKDKALpA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v5 22/23] KVM: nVMX: Allow VMX FRED controls
-Date: Wed, 23 Jul 2025 10:53:40 -0700
-Message-ID: <20250723175341.1284463-23-xin@zytor.com>
+Subject: [PATCH v5 16/23] KVM: x86: Mark CR4.FRED as not reserved
+Date: Wed, 23 Jul 2025 10:53:34 -0700
+Message-ID: <20250723175341.1284463-17-xin@zytor.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250723175341.1284463-1-xin@zytor.com>
 References: <20250723175341.1284463-1-xin@zytor.com>
@@ -56,7 +56,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-Allow nVMX FRED controls as nested FRED support is in place.
+The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when
+guest cpu cap has FRED, i.e.,
+  1) All of FRED KVM support is in place.
+  2) Guest enumerates FRED.
+
+Otherwise it is still a reserved bit.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
@@ -66,47 +71,44 @@ Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 
 Change in v5:
 * Add TB from Xuelian Guo.
----
- arch/x86/kvm/vmx/nested.c | 6 ++++--
- arch/x86/kvm/vmx/vmx.c    | 1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index d215e5ade5ef..3554701ec43b 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -7213,7 +7213,8 @@ static void nested_vmx_setup_exit_ctls(struct vmcs_config *vmcs_conf,
- 		 * advertise any feature in it to nVMX until its nVMX support
- 		 * is ready.
- 		 */
--		msrs->secondary_exit_ctls &= 0;
-+		msrs->secondary_exit_ctls &= SECONDARY_VM_EXIT_SAVE_IA32_FRED |
-+					     SECONDARY_VM_EXIT_LOAD_IA32_FRED;
- 	}
- }
+Change in v4:
+* Rebase on top of "guest_cpu_cap".
+
+Change in v3:
+* Don't allow CR4.FRED=1 before all of FRED KVM support is in place
+  (Sean Christopherson).
+---
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/x86.h              | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 8e8d4ba77afc..0805ad9ccf97 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -142,7 +142,7 @@
+ 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
+ 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
+ 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
+-			  | X86_CR4_LAM_SUP))
++			  | X86_CR4_LAM_SUP | X86_CR4_FRED))
  
-@@ -7228,7 +7229,8 @@ static void nested_vmx_setup_entry_ctls(struct vmcs_config *vmcs_conf,
- #ifdef CONFIG_X86_64
- 		VM_ENTRY_IA32E_MODE |
- #endif
--		VM_ENTRY_LOAD_IA32_PAT | VM_ENTRY_LOAD_BNDCFGS;
-+		VM_ENTRY_LOAD_IA32_PAT | VM_ENTRY_LOAD_BNDCFGS |
-+		VM_ENTRY_LOAD_IA32_FRED;
- 	msrs->entry_ctls_high |=
- 		(VM_ENTRY_ALWAYSON_WITHOUT_TRUE_MSR | VM_ENTRY_LOAD_IA32_EFER |
- 		 VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 90f0573c8187..3cd860ea1577 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7854,6 +7854,7 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
+ #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
  
- 	entry = kvm_find_cpuid_entry_index(vcpu, 0x7, 1);
- 	cr4_fixed1_update(X86_CR4_LAM_SUP,    eax, feature_bit(LAM));
-+	cr4_fixed1_update(X86_CR4_FRED,       eax, feature_bit(FRED));
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index a573f6079ba7..aff93c5b2484 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -672,6 +672,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 		__reserved_bits |= X86_CR4_PCIDE;       \
+ 	if (!__cpu_has(__c, X86_FEATURE_LAM))           \
+ 		__reserved_bits |= X86_CR4_LAM_SUP;     \
++	if (!__cpu_has(__c, X86_FEATURE_FRED))          \
++		__reserved_bits |= X86_CR4_FRED;        \
+ 	__reserved_bits;                                \
+ })
  
- #undef cr4_fixed1_update
- }
 -- 
 2.50.1
 
