@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6F4243387;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68D24337D;
 	Wed, 23 Jul 2025 17:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753293282; cv=none; b=g8ZTpomRHM5J9O1hl3hY9vFI6M152tfdcKd5qNKAMtPu/kTn8njhe3T1zSrr40IQ61e4BHoIRjdiWZ3ketokVKWydCY3xNdnG5eFyhhmW3DsBBXlR6k5PnXLcfK6hHvYKTt3wvwZzE/AN0Szux/vBdsPUzDo0MWFp/xCkPOAhl8=
+	t=1753293282; cv=none; b=vGIGnIawMNA4Y0Ap+fjuk64JkxknUahfg/KcTnhg4Yo/75LM4swwkA3VD1bCBUyttYCeZp1l6eKLw0MzSEwEwELs21Na6Z6qfkGA5mMYZz5WGV5V8EtpWIo+wftcllzbZw9ipV1Q6MG9kQ8+xL2dDOI0jtBWFA0YoPPSPI7PLC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753293282; c=relaxed/simple;
-	bh=Y9dXsRrgWme/Psx4ALMo1EVrCJB0pqVZzUs8S2+582s=;
+	bh=uKFKtuUxAkKG3f5bc9mwH9YIehY5Z93I+Y2FSYl8zM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jd9Fu3C6vh3nF07sgnyGPqQVkvTFsfd3lLoLy5XZBw7EDXGj9BnqATBg7KRmmgpFQGzWpX0teUERLDquO/c8fMTOumdBPTUMIvfUdiS1eI+4zY8Bg3VZo4oozvHPuRgxZ0Z8GPGEqWPW4FYj6OcgeGGeKEnQIWO2Kv6bATHdGho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=DRwfDCM/; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=Xv3BXjxvSSqd+BJ4aoFS0Bf6HQ+uF0M3VJ0lTZvzz8XYiahmp7yvEu6wB49th+foxqxCqgDRclQJXgW4aYX/difn1GO/AAYLr/JkCLCMQEEPSRgdejFAwaW9LOGM3gSKmsVVR0oRtfZpu4iPhz1RwlVjqItoa9dG2QpoTmu/+BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Vy/4df+6; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="DRwfDCM/"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Vy/4df+6"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrfxs1284522
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrfxp1284522
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 23 Jul 2025 10:53:49 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrfxs1284522
+	Wed, 23 Jul 2025 10:53:46 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrfxp1284522
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753293229;
-	bh=zWmv1h33/Y4aVP2ROh/ukXxbHw+ez10mA/TACx32Rmo=;
+	s=2025072201; t=1753293227;
+	bh=hemCn90KBQZPWPg97p57m0nDW+enGor0ghJKArAnWs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRwfDCM/WYq6OI6VfHvrw4cIROJug08++6mq8FURDipFVJ5evAXpi6BVW+QtSlFdl
-	 9+KeKxjXAsxmAVXzPHiJTvw5ELxUOymXSn51j91dhRzG5wKBmw6w8UYv/q5oa+KDqt
-	 qPis5HOztDddWxe+NMb6LBa04e0pgaT5pO7tEk75zxCYeX5O6mp4lM/Ld+FqdW4BMG
-	 hrSSXNTZJqqwNKXPU89ANb+K4pCNqqyuhndVpo4nainZ9WOsQjZYuUKfIzajdD6GQw
-	 1fx1DoncpOnylhL8G2O3TKE54qNJ3J26PpNnPsPssB0w4r5PjMlsA4DQ8KusB2qWoy
-	 OxnyampBwMZ3A==
+	b=Vy/4df+6GYdPa/Nzlzj2fGFUTk2xPt6DZ+l6SHyMF9dz3zW2zlBhCKUiXOofDJvAm
+	 qL+yr4kI8XLvEmLmljGmuAQ93ShihBTmk52lewM6CfIWUtMKhQRX4DwGGgsNyzH7TA
+	 Ayjunw3b+1543YONJROp6f6ObNTxAw6pTkrM1A+YQ92/PFU80flFBjjXDYWNYTA5mP
+	 uashUiRXZWwEM/2j7lq5+FdOXrHTFW5cEMn+fPhYwvYA2JY+dxC34zqSm6LV328COt
+	 nps/G2bV2mKEwz0ZA3190F3f2Uehy0PpBImP+JOZ81uqTaZXcP//5M30C06kZ4Ad7e
+	 eJsUuVPu1wxbA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v5 04/23] x86/cea: Export an API to get per CPU exception stacks for KVM to use
-Date: Wed, 23 Jul 2025 10:53:22 -0700
-Message-ID: <20250723175341.1284463-5-xin@zytor.com>
+Subject: [PATCH v5 01/23] KVM: VMX: Add support for the secondary VM exit controls
+Date: Wed, 23 Jul 2025 10:53:19 -0700
+Message-ID: <20250723175341.1284463-2-xin@zytor.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250723175341.1284463-1-xin@zytor.com>
 References: <20250723175341.1284463-1-xin@zytor.com>
@@ -54,213 +54,217 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-FRED introduced new fields in the host-state area of the VMCS for
-stack levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively
-corresponding to per CPU exception stacks for #DB, NMI and #DF.
-KVM must populate these each time a vCPU is loaded onto a CPU.
+From: Xin Li <xin3.li@intel.com>
 
-Convert the __this_cpu_ist_{top,bottom}_va() macros into real
-functions and export __this_cpu_ist_top_va().
+Always load the secondary VM exit controls to prepare for FRED enabling.
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
 Change in v5:
-* Export accessor instead of data (Christoph Hellwig).
 * Add TB from Xuelian Guo.
 
-Change in v4:
-* Rewrite the change log and add comments to the export (Dave Hansen).
----
- arch/x86/coco/sev/sev-nmi.c           |  4 ++--
- arch/x86/coco/sev/vc-handle.c         |  2 +-
- arch/x86/include/asm/cpu_entry_area.h | 17 ++++-------------
- arch/x86/kernel/cpu/common.c          | 10 +++++-----
- arch/x86/kernel/fred.c                |  6 +++---
- arch/x86/kernel/traps.c               |  2 +-
- arch/x86/mm/cpu_entry_area.c          | 21 +++++++++++++++++++++
- arch/x86/mm/fault.c                   |  2 +-
- 8 files changed, 38 insertions(+), 26 deletions(-)
+Changes in v4:
+* Fix clearing VM_EXIT_ACTIVATE_SECONDARY_CONTROLS (Chao Gao).
+* Check VM exit/entry consistency based on the new macro from Sean
+  Christopherson.
 
-diff --git a/arch/x86/coco/sev/sev-nmi.c b/arch/x86/coco/sev/sev-nmi.c
-index d8dfaddfb367..73e34ad7a1a9 100644
---- a/arch/x86/coco/sev/sev-nmi.c
-+++ b/arch/x86/coco/sev/sev-nmi.c
-@@ -30,7 +30,7 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
- 	if (ip_within_syscall_gap(regs))
- 		return false;
+Change in v3:
+* Do FRED controls consistency checks in the VM exit/entry consistency
+  check framework (Sean Christopherson).
+
+Change in v2:
+* Always load the secondary VM exit controls (Sean Christopherson).
+---
+ arch/x86/include/asm/msr-index.h |  1 +
+ arch/x86/include/asm/vmx.h       |  3 +++
+ arch/x86/kvm/vmx/capabilities.h  |  9 ++++++++-
+ arch/x86/kvm/vmx/vmcs.h          |  1 +
+ arch/x86/kvm/vmx/vmx.c           | 29 +++++++++++++++++++++++++++--
+ arch/x86/kvm/vmx/vmx.h           |  7 ++++++-
+ 6 files changed, 46 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index c29127ac626a..d7667980ca2c 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -1201,6 +1201,7 @@
+ #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
+ #define MSR_IA32_VMX_VMFUNC             0x00000491
+ #define MSR_IA32_VMX_PROCBASED_CTLS3	0x00000492
++#define MSR_IA32_VMX_EXIT_CTLS2		0x00000493
  
--	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
-+	return ((sp >= __this_cpu_ist_bottom_va(ESTACK_VC)) && (sp < __this_cpu_ist_top_va(ESTACK_VC)));
+ /* Resctrl MSRs: */
+ /* - Intel: */
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index cca7d6641287..97f7e0545534 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -106,6 +106,7 @@
+ #define VM_EXIT_CLEAR_BNDCFGS                   0x00800000
+ #define VM_EXIT_PT_CONCEAL_PIP			0x01000000
+ #define VM_EXIT_CLEAR_IA32_RTIT_CTL		0x02000000
++#define VM_EXIT_ACTIVATE_SECONDARY_CONTROLS	0x80000000
+ 
+ #define VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR	0x00036dff
+ 
+@@ -259,6 +260,8 @@ enum vmcs_field {
+ 	SHARED_EPT_POINTER		= 0x0000203C,
+ 	PID_POINTER_TABLE		= 0x00002042,
+ 	PID_POINTER_TABLE_HIGH		= 0x00002043,
++	SECONDARY_VM_EXIT_CONTROLS	= 0x00002044,
++	SECONDARY_VM_EXIT_CONTROLS_HIGH	= 0x00002045,
+ 	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
+ 	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
+ 	VMCS_LINK_POINTER               = 0x00002800,
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 5316c27f6099..7cdc855f8968 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -58,8 +58,9 @@ struct vmcs_config {
+ 	u32 cpu_based_exec_ctrl;
+ 	u32 cpu_based_2nd_exec_ctrl;
+ 	u64 cpu_based_3rd_exec_ctrl;
+-	u32 vmexit_ctrl;
+ 	u32 vmentry_ctrl;
++	u32 vmexit_ctrl;
++	u64 vmexit_2nd_ctrl;
+ 	u64 misc;
+ 	struct nested_vmx_msrs nested;
+ };
+@@ -135,6 +136,12 @@ static inline bool cpu_has_tertiary_exec_ctrls(void)
+ 		CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
  }
  
- /*
-@@ -82,7 +82,7 @@ void noinstr __sev_es_ist_exit(void)
- 	/* Read IST entry */
- 	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
- 
--	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
-+	if (WARN_ON(ist == __this_cpu_ist_top_va(ESTACK_VC)))
- 		return;
- 
- 	/* Read back old IST entry and write it to the TSS */
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index 0989d98da130..a6e274f2a135 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -851,7 +851,7 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
- 
- static __always_inline bool is_vc2_stack(unsigned long sp)
- {
--	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
-+	return (sp >= __this_cpu_ist_bottom_va(ESTACK_VC2) && sp < __this_cpu_ist_top_va(ESTACK_VC2));
- }
- 
- static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
-diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index 462fc34f1317..8e17f0ca74e6 100644
---- a/arch/x86/include/asm/cpu_entry_area.h
-+++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -46,7 +46,7 @@ struct cea_exception_stacks {
-  * The exception stack ordering in [cea_]exception_stacks
-  */
- enum exception_stack_ordering {
--	ESTACK_DF,
-+	ESTACK_DF = 0,
- 	ESTACK_NMI,
- 	ESTACK_DB,
- 	ESTACK_MCE,
-@@ -58,18 +58,15 @@ enum exception_stack_ordering {
- #define CEA_ESTACK_SIZE(st)					\
- 	sizeof(((struct cea_exception_stacks *)0)->st## _stack)
- 
--#define CEA_ESTACK_BOT(ceastp, st)				\
--	((unsigned long)&(ceastp)->st## _stack)
--
--#define CEA_ESTACK_TOP(ceastp, st)				\
--	(CEA_ESTACK_BOT(ceastp, st) + CEA_ESTACK_SIZE(st))
--
- #define CEA_ESTACK_OFFS(st)					\
- 	offsetof(struct cea_exception_stacks, st## _stack)
- 
- #define CEA_ESTACK_PAGES					\
- 	(sizeof(struct cea_exception_stacks) / PAGE_SIZE)
- 
-+extern unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack);
-+extern unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack);
++static inline bool cpu_has_secondary_vmexit_ctrls(void)
++{
++	return vmcs_config.vmexit_ctrl &
++		VM_EXIT_ACTIVATE_SECONDARY_CONTROLS;
++}
 +
- #endif
- 
- #ifdef CONFIG_X86_32
-@@ -144,10 +141,4 @@ static __always_inline struct entry_stack *cpu_entry_stack(int cpu)
- 	return &get_cpu_entry_area(cpu)->entry_stack_page.stack;
- }
- 
--#define __this_cpu_ist_top_va(name)					\
--	CEA_ESTACK_TOP(__this_cpu_read(cea_exception_stacks), name)
--
--#define __this_cpu_ist_bottom_va(name)					\
--	CEA_ESTACK_BOT(__this_cpu_read(cea_exception_stacks), name)
--
- #endif
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index fb50c1dd53ef..6fedd1b30e99 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2306,12 +2306,12 @@ static inline void setup_getcpu(int cpu)
- static inline void tss_setup_ist(struct tss_struct *tss)
+ static inline bool cpu_has_vmx_virtualize_apic_accesses(void)
  {
- 	/* Set up the per-CPU TSS IST stacks */
--	tss->x86_tss.ist[IST_INDEX_DF] = __this_cpu_ist_top_va(DF);
--	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(NMI);
--	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(DB);
--	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(MCE);
-+	tss->x86_tss.ist[IST_INDEX_DF] = __this_cpu_ist_top_va(ESTACK_DF);
-+	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(ESTACK_NMI);
-+	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(ESTACK_DB);
-+	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(ESTACK_MCE);
- 	/* Only mapped when SEV-ES is active */
--	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(VC);
-+	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(ESTACK_VC);
- }
- #else /* CONFIG_X86_64 */
- static inline void tss_setup_ist(struct tss_struct *tss) { }
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 816187da3a47..06d944a3d051 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -87,7 +87,7 @@ void cpu_init_fred_rsps(void)
- 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+ 	return vmcs_config.cpu_based_2nd_exec_ctrl &
+diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
+index b25625314658..ae152a9d1963 100644
+--- a/arch/x86/kvm/vmx/vmcs.h
++++ b/arch/x86/kvm/vmx/vmcs.h
+@@ -47,6 +47,7 @@ struct vmcs_host_state {
+ struct vmcs_controls_shadow {
+ 	u32 vm_entry;
+ 	u32 vm_exit;
++	u64 secondary_vm_exit;
+ 	u32 pin;
+ 	u32 exec;
+ 	u32 secondary_exec;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index aa157fe5b7b3..85632de1dddb 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2565,8 +2565,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 	u32 _cpu_based_exec_control = 0;
+ 	u32 _cpu_based_2nd_exec_control = 0;
+ 	u64 _cpu_based_3rd_exec_control = 0;
+-	u32 _vmexit_control = 0;
+ 	u32 _vmentry_control = 0;
++	u32 _vmexit_control = 0;
++	u64 _vmexit2_control = 0;
+ 	u64 basic_msr;
+ 	u64 misc_msr;
  
- 	/* The FRED equivalents to IST stacks... */
--	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(DB));
--	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(NMI));
--	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(DF));
-+	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
-+	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
-+	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
- }
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 36354b470590..5c9c5ebf5e73 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -954,7 +954,7 @@ asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *r
+@@ -2586,6 +2587,12 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 		{ VM_ENTRY_LOAD_IA32_RTIT_CTL,		VM_EXIT_CLEAR_IA32_RTIT_CTL },
+ 	};
  
- 	if (!get_stack_info_noinstr(stack, current, &info) || info.type == STACK_TYPE_ENTRY ||
- 	    info.type > STACK_TYPE_EXCEPTION_LAST)
--		sp = __this_cpu_ist_top_va(VC2);
-+		sp = __this_cpu_ist_top_va(ESTACK_VC2);
++	struct {
++		u32 entry_control;
++		u64 exit_control;
++	} const vmcs_entry_exit2_pairs[] = {
++	};
++
+ 	memset(vmcs_conf, 0, sizeof(*vmcs_conf));
  
- sync:
+ 	if (adjust_vmx_controls(KVM_REQUIRED_VMX_CPU_BASED_VM_EXEC_CONTROL,
+@@ -2672,10 +2679,19 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 				&_vmentry_control))
+ 		return -EIO;
+ 
++	if (_vmexit_control & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
++		_vmexit2_control =
++			adjust_vmx_controls64(KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS,
++					      MSR_IA32_VMX_EXIT_CTLS2);
++
+ 	if (vmx_check_entry_exit_pairs(vmcs_entry_exit_pairs,
+ 				       _vmentry_control, _vmexit_control))
+ 		return -EIO;
+ 
++	if (vmx_check_entry_exit_pairs(vmcs_entry_exit2_pairs,
++				       _vmentry_control, _vmexit2_control))
++		return -EIO;
++
  	/*
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 575f863f3c75..eedaf103c8ad 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -18,6 +18,27 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
- static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
- DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
+ 	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
+ 	 * can't be used due to an errata where VM Exit may incorrectly clear
+@@ -2724,8 +2740,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 	vmcs_conf->cpu_based_exec_ctrl = _cpu_based_exec_control;
+ 	vmcs_conf->cpu_based_2nd_exec_ctrl = _cpu_based_2nd_exec_control;
+ 	vmcs_conf->cpu_based_3rd_exec_ctrl = _cpu_based_3rd_exec_control;
+-	vmcs_conf->vmexit_ctrl         = _vmexit_control;
+ 	vmcs_conf->vmentry_ctrl        = _vmentry_control;
++	vmcs_conf->vmexit_ctrl         = _vmexit_control;
++	vmcs_conf->vmexit_2nd_ctrl     = _vmexit2_control;
+ 	vmcs_conf->misc	= misc_msr;
  
-+/*
-+ * FRED introduced new fields in the host-state area of the VMCS for
-+ * stack levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively
-+ * corresponding to per CPU stacks for #DB, NMI and #DF.  KVM must
-+ * populate these each time a vCPU is loaded onto a CPU.
-+ *
-+ * Called from entry code, so must be noinstr.
-+ */
-+noinstr unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack)
+ #if IS_ENABLED(CONFIG_HYPERV)
+@@ -4340,6 +4357,11 @@ static u32 vmx_vmexit_ctrl(void)
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ }
+ 
++static u64 vmx_secondary_vmexit_ctrl(void)
 +{
-+	unsigned long base = (unsigned long)&(__this_cpu_read(cea_exception_stacks)->DF_stack);
-+	return base + EXCEPTION_STKSZ + stack * (EXCEPTION_STKSZ + PAGE_SIZE);
-+}
-+EXPORT_SYMBOL(__this_cpu_ist_top_va);
-+
-+noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack)
-+{
-+	unsigned long base = (unsigned long)&(__this_cpu_read(cea_exception_stacks)->DF_stack);
-+	return base + stack * (EXCEPTION_STKSZ + PAGE_SIZE);
++	return vmcs_config.vmexit_2nd_ctrl;
 +}
 +
- static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
+ void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -4688,6 +4710,9 @@ static void init_vmcs(struct vcpu_vmx *vmx)
  
- static __always_inline unsigned int cea_offset(unsigned int cpu)
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 998bd807fc7b..1804eb86cc14 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -671,7 +671,7 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
- 		 * and then double-fault, though, because we're likely to
- 		 * break the console driver and lose most of the stack dump.
- 		 */
--		call_on_stack(__this_cpu_ist_top_va(DF) - sizeof(void*),
-+		call_on_stack(__this_cpu_ist_top_va(ESTACK_DF) - sizeof(void*),
- 			      handle_stack_overflow,
- 			      ASM_CALL_ARG3,
- 			      , [arg1] "r" (regs), [arg2] "r" (address), [arg3] "r" (&info));
+ 	vm_exit_controls_set(vmx, vmx_vmexit_ctrl());
+ 
++	if (cpu_has_secondary_vmexit_ctrls())
++		secondary_vm_exit_controls_set(vmx, vmx_secondary_vmexit_ctrl());
++
+ 	/* 22.2.1, 20.8.1 */
+ 	vm_entry_controls_set(vmx, vmx_vmentry_ctrl());
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index d3389baf3ab3..20194412bed3 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -506,7 +506,11 @@ static inline u8 vmx_get_rvi(void)
+ 	       VM_EXIT_LOAD_IA32_EFER |					\
+ 	       VM_EXIT_CLEAR_BNDCFGS |					\
+ 	       VM_EXIT_PT_CONCEAL_PIP |					\
+-	       VM_EXIT_CLEAR_IA32_RTIT_CTL)
++	       VM_EXIT_CLEAR_IA32_RTIT_CTL |				\
++	       VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
++
++#define KVM_REQUIRED_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
++#define KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
+ 
+ #define KVM_REQUIRED_VMX_PIN_BASED_VM_EXEC_CONTROL			\
+ 	(PIN_BASED_EXT_INTR_MASK |					\
+@@ -611,6 +615,7 @@ static __always_inline void lname##_controls_clearbit(struct vcpu_vmx *vmx, u##b
+ }
+ BUILD_CONTROLS_SHADOW(vm_entry, VM_ENTRY_CONTROLS, 32)
+ BUILD_CONTROLS_SHADOW(vm_exit, VM_EXIT_CONTROLS, 32)
++BUILD_CONTROLS_SHADOW(secondary_vm_exit, SECONDARY_VM_EXIT_CONTROLS, 64)
+ BUILD_CONTROLS_SHADOW(pin, PIN_BASED_VM_EXEC_CONTROL, 32)
+ BUILD_CONTROLS_SHADOW(exec, CPU_BASED_VM_EXEC_CONTROL, 32)
+ BUILD_CONTROLS_SHADOW(secondary_exec, SECONDARY_VM_EXEC_CONTROL, 32)
 -- 
 2.50.1
 
