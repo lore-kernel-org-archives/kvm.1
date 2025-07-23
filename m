@@ -1,225 +1,83 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5289C2E0
-	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 17:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC51EE03B;
+	Wed, 23 Jul 2025 17:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753292890; cv=none; b=p+/wk6rhsAwtLXQTNwZa9V2dy4gLzQt2q0gavlptonVE35aUr+tllIOMToglPnQQELBL+nNcptmqh3H1EaEcKjx8+iEOBprz4K/kTOBbu5WA2b1zcC3sHP1lLnAblDaVl+lVNttbftL/kz73BXOCrj8ngftaSfgJOhqN29OCNSw=
+	t=1753293257; cv=none; b=aRJzz6XdghH1oHoSVlJJX1yA1jFYDy/mcg5el+S/qReHW+xVS9tAMDbXj9UNk5O4IQ35Z5pH80OQPtaq0jrrmQVnl90i4Rzt6vlNS0xtjkwzP/TouJ1WvK+rCFYDbbBE1Vof5UsktsOH7CkY3LjJtdTD9xkXbnBaUSKi0igASm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753292890; c=relaxed/simple;
-	bh=7ZDsF+RzE2dg/23aYgkjRXFwK+8IUwygnYna1KJWmTA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aNAn+nmY822Qmry54+UixFStERSCtkX2Nhi/PMx2QYTgSFsFMXTCmsvAmVW7M18PEv9VqhluPBSCIuViDrv2YZvLhvWmzNo7UGeD2Q0Re+pSIVbeW/RR4nohwf0jUjA/HrFDyJfYkFeMvw90MIEOlm4RErseYtHXyAzelhUSlB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xZ0e1Yx4; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1753293257; c=relaxed/simple;
+	bh=aWYOhMVY+0LqjUojDgZy7kPOvnM+/mxfdv2uRv5JdiE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jMMLBFOTGoeQ5oQ5QfumqhRaEfwgEn9RnKX0KU+oRcUGq+pzBTUp+owgxqW+46dJK/rgLtdaU2yA/9NYYD7oh8WFme5gDDgmeB1lek6Yrh0bQ2OGJakpPhG7vEOAhMVEl6o7lqCUwMWC4jZmqZ7XTijLyqOcuigN1kDpknDrMyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=LKmUdSBg; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xZ0e1Yx4"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-311a6b43ed7so97082a91.1
-        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 10:48:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753292888; x=1753897688; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uaYBRl0EE4KRkLgolaKNDBtU6vVnp/5Paw/stFPZacI=;
-        b=xZ0e1Yx4z12f5reqCUmxKYYhNKBF7Gy6yDRVrihBmvFIPQ1AtUU1EaflyFatT/DBaj
-         1iibSJReVpJiENqU1p8QLTcZ11qIn4SiQNcRe4HBdMQfvQaESq/RXWGoemy0HmOsTOM9
-         N5Wf77fzRehqrI/CcAolkfhhVaOBqh/V9q6DFlHvn0JYNI3NN6QEpyVG6hSMNIDv/ibk
-         TQNWGApFSNt3UG8AwaDNwNi/D/F9CdoliPdkyaSBxbSd/Wtup+3HDRqp8WRxtgChTixp
-         NqIKtG6otSde+qVgVX6hg12mi7MqFIby8dBuOrCkNyNAPEBnWDa5gv72xWmyRghO03yc
-         ITxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753292888; x=1753897688;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uaYBRl0EE4KRkLgolaKNDBtU6vVnp/5Paw/stFPZacI=;
-        b=q3cOzbab0BzjYpbBOIh/kbySLaTzZ7vtM2Q/Pv/Qz3+XSCGYv2j5Yfzm57Crpcblek
-         rjLe8dW7CgTUXzrGm60Vb+FZJHXlodL8hy7/ccoijfloKFBwYJpkmhUzFI9v37ANczRk
-         6J51G/Mstt3WI+nKBhMhv7IS0dggXpLh1525fszeCxHi4mmYas+m1T4LTqY+VJMzRjcg
-         otM9ScKL/MhFIuHuqoQqJdz2Ueu5Cu7Z68KmpSQtA6JGb4l6t1rbYFxWUHf6edexAf8N
-         qZyV7LDBtg9NMbSdKqWWdPmoRaWm+Pt7WtUkgQlQyaKbNPxi4goYgeOliFz2UCN/ldT9
-         zMiw==
-X-Forwarded-Encrypted: i=1; AJvYcCXN93ABAmJBfBaniKcr9miXK62P5V3FP04PI+9rry1GEFbO3n8gvK89jPQIsncvQX8YNs4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8NdsmxUNFH5V/BLxBIwF+Sbn1jwurJmHMOI2r/RcLcBbyK2D9
-	CK+W2fP4tuXJYg43yEIPcM2GuNzfBKeVmYwVO6rtHainPU/AzZp/GsY2kb7Kcgj7Ecxtmctgbqh
-	ILCZVNA==
-X-Google-Smtp-Source: AGHT+IEATEGW2kmWHPmig6zPQ7Er+eTMngsfX//TWVAGu1HfHbe2AgPbsCxKvxu3rVqMiRcwPfBUdtVKczQ=
-X-Received: from pjbsh5.prod.google.com ([2002:a17:90b:5245:b0:311:e71e:3fb9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f10:b0:31e:4111:fd8c
- with SMTP id 98e67ed59e1d1-31e50818accmr6212363a91.16.1753292887969; Wed, 23
- Jul 2025 10:48:07 -0700 (PDT)
-Date: Wed, 23 Jul 2025 10:48:06 -0700
-In-Reply-To: <20250422161304.579394-2-zack.rusin@broadcom.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="LKmUdSBg"
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrfxt1284522
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Wed, 23 Jul 2025 10:53:50 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrfxt1284522
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025072201; t=1753293230;
+	bh=/EBeMK7ZSqzkS+JM5rRpzF6dDvDDWpq+RlSEiWex4Mo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LKmUdSBgHid/JUsdhkXnKlxY9oQLaj9h3hn7cRe9NzmCk1H2vroNbzA5vW16MofiT
+	 0qzcLpnWXrPlQNGcUrlaP8+fBl6TdOfd/CiOtYvxIxAFs5DQxu2GwHd4cRXb0aupGR
+	 24xYiQwHufIXK+gJU8Ue8DqFUk+OSOPOE7iWuM2amhrokutC3aeHFd0ksOPyZN+FDt
+	 GuLkmNG5G6lqRJPHO5uJtM5X/3Yw4WURdJTLFuQLecuFURtZWjWCknRI5aPHONvAHd
+	 FNOpc3yBPlgmKjCS5/dA4oGmQ2SPNIPoDOIcCmTBePrIFZT1Lk8ZXJwHz2W02Zgpzc
+	 BFsGWBKGDFttg==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
+        peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
+        hch@infradead.org
+Subject: [PATCH v5 05/23] KVM: VMX: Fix an indentation
+Date: Wed, 23 Jul 2025 10:53:23 -0700
+Message-ID: <20250723175341.1284463-6-xin@zytor.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250723175341.1284463-1-xin@zytor.com>
+References: <20250723175341.1284463-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250422161304.579394-1-zack.rusin@broadcom.com> <20250422161304.579394-2-zack.rusin@broadcom.com>
-Message-ID: <aIEgVpjXDR0BXgHq@google.com>
-Subject: Re: [PATCH v2 1/5] KVM: x86: Centralize KVM's VMware code
-From: Sean Christopherson <seanjc@google.com>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: linux-kernel@vger.kernel.org, Doug Covelli <doug.covelli@broadcom.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 22, 2025, Zack Rusin wrote:
-> Centralize KVM's VMware specific code and introduce CONFIG_KVM_VMWARE to
-> isolate all of it.
+Fix an indentation by replacing 8 spaces with a tab.
 
-I think it makes sense to split this into two patches: one to move code around,
-and then one to add CONFIG_KVM_VMWARE.  And move _all_ of the code at once, e.g.
-enable_vmware_backdoor should be moved to vmware.c along with all the other code
-shuffling, not as part of "Allow enabling of the vmware backdoor via a cap".
+While at it, add empty lines before and after for better readability.
 
-> Code used to support VMware backdoor has been scattered around the KVM
-> codebase making it difficult to reason about, maintain it and change
-> it. Introduce CONFIG_KVM_VMWARE which, much like CONFIG_KVM_XEN and
-> CONFIG_KVM_VMWARE for Xen and Hyper-V, abstracts away VMware specific
-> parts.
-> 
-> In general CONFIG_KVM_VMWARE should be set to y and to preserve the
-> current behavior it defaults to Y.
-> 
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Cc: Doug Covelli <doug.covelli@broadcom.com>
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Zack Rusin <zack.rusin@broadcom.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kvm@vger.kernel.org
-> ---
->  MAINTAINERS               |   9 +++
->  arch/x86/kvm/Kconfig      |  13 ++++
->  arch/x86/kvm/emulate.c    |  11 ++--
->  arch/x86/kvm/kvm_vmware.h | 127 ++++++++++++++++++++++++++++++++++++++
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+---
+ arch/x86/kvm/vmx/vmx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-My vote is to drop the "kvm" from the file name.  We have kvm_onhyperv.{c,h} to
-identify the case where KVM is running as a Hyper-V guest, but for the case where
-KVM is emulating Hyper-V, we use arch/x86/kvm/hyperv.{c,h}.
-
->  arch/x86/kvm/pmu.c        |  39 +-----------
->  arch/x86/kvm/pmu.h        |   4 --
->  arch/x86/kvm/svm/svm.c    |   7 ++-
->  arch/x86/kvm/vmx/vmx.c    |   5 +-
->  arch/x86/kvm/x86.c        |  34 +---------
->  arch/x86/kvm/x86.h        |   2 -
->  10 files changed, 166 insertions(+), 85 deletions(-)
->  create mode 100644 arch/x86/kvm/kvm_vmware.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 00e94bec401e..9e38103ac2bb 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13051,6 +13051,15 @@ F:	arch/x86/kvm/svm/hyperv.*
->  F:	arch/x86/kvm/svm/svm_onhyperv.*
->  F:	arch/x86/kvm/vmx/hyperv.*
->  
-> +KVM X86 VMware (KVM/VMware)
-> +M:	Zack Rusin <zack.rusin@broadcom.com>
-> +M:	Doug Covelli <doug.covelli@broadcom.com>
-> +M:	Paolo Bonzini <pbonzini@redhat.com>
-> +L:	kvm@vger.kernel.org
-> +S:	Supported
-> +T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-> +F:	arch/x86/kvm/kvm_vmware.*
-> +
->  KVM X86 Xen (KVM/Xen)
->  M:	David Woodhouse <dwmw2@infradead.org>
->  M:	Paul Durrant <paul@xen.org>
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index ea2c4f21c1ca..9e3be87fc82b 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -178,6 +178,19 @@ config KVM_HYPERV
->  
->  	  If unsure, say "Y".
->  
-> +config KVM_VMWARE
-> +	bool "Features needed for VMware guests support"
-> +	depends on KVM
-
-Make this depend on KVM_x86.  See:
-
-https://lore.kernel.org/all/20250723104714.1674617-3-tabba@google.com
-
-> +	default y
-> +	help
-> +	  Provides KVM support for hosting VMware guests. Adds support for
-> +	  VMware legacy backdoor interface: VMware tools and various userspace
-> +	  utilities running in VMware guests sometimes utilize specially
-> +	  formatted IN, OUT and RDPMC instructions which need to be
-> +	  intercepted.
-> +
-> +	  If unsure, say "Y".
-> +
->  config KVM_XEN
->  	bool "Support for Xen hypercall interface"
->  	depends on KVM
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index 60986f67c35a..b42988ce8043 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -26,6 +26,7 @@
->  #include <asm/debugreg.h>
->  #include <asm/nospec-branch.h>
->  #include <asm/ibt.h>
-> +#include "kvm_vmware.h"
-
-Please sort includes as best as possible.  KVM's loose rule is to organize by
-linux => asm => local, and sort alphabetically within each section, e.g.
-
-#include <linux/aaaa.h>
-#include <linux/blah.h>
-
-#include <asm/aaaa.h>
-#include <asm/blah.h>
-
-#include "aaaa.h"
-#include "blah.h"
-
-> @@ -2565,8 +2563,8 @@ static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
->  	 * VMware allows access to these ports even if denied
->  	 * by TSS I/O permission bitmap. Mimic behavior.
->  	 */
-> -	if (enable_vmware_backdoor &&
-> -	    ((port == VMWARE_PORT_VMPORT) || (port == VMWARE_PORT_VMRPC)))
-> +	if (kvm_vmware_backdoor_enabled(ctxt->vcpu) &&
-
-Maybe kvm_is_vmware_backdoor_enabled()?  To make it super clear it's a predicate.
-
-Regarding namespacing, I think for the "is" predicates, the code reads better if
-it's kvm_is_vmware_xxx versus kvm_vware_is_xxx.  E.g. is the VMware backdoor
-enabled vs. VMware is the backdoor enabled.  Either way is fine for me if someone
-has a strong preference though.
-
-> +	    kvm_vmware_io_port_allowed(port))
-
-Please separate the addition of helpers from the code movement.  That way the
-code movement patch can be acked/reviewed super easily, and then we can focus on
-the helpers (and it also makes it much easier to review the helpers changes).
-
-E.g.
-
-  patch 1: move code to vmware.{c,h}
-  patch 2: introduce wrappers and bury variables/#defines in vmware.c
-  patch 3: introduce CONFIG_KVM_VMWARE to disasble VMware emulation
-
-I mention that here, because kvm_vmware_io_port_allowed() doesn't seem like the
-right name.  kvm_is_vmware_io_port() seems more appropriate.
-
-Oh, and also relevant.  For this and kvm_vmware_is_backdoor_pmc(), put the
-kvm_vmware_backdoor_enabled() check inside kvm_is_vmware_io_port() and
-kvm_is_vmware_backdoor_pmc().
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index c893ea2db9de..6e9799a80d25 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8555,7 +8555,9 @@ __init int vmx_hardware_setup(void)
+ 	 */
+ 	if (!static_cpu_has(X86_FEATURE_SELFSNOOP))
+ 		kvm_caps.supported_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+-       kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
++
++	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
++
+ 	return r;
+ }
+ 
+-- 
+2.50.1
 
