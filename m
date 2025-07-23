@@ -1,55 +1,55 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3B2E49AB
-	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 10:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B19229C321
+	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 10:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753267660; cv=none; b=YEPnMAP8pISAaw7OyprYmQcNVTbIkRjPbaN9cWFX9wy0NKehFVOPA5a8IKdpIn92R0rzNzQG76h5NLfR+kh5Mk7rrXa3n0n35qBNjBQ+0vYH2oESeVTdJ9evLMmNOD4F6Qh7JLjZVOnZ1j5v4O7KAku7PjGqvQnYB3c4KOP5eMI=
+	t=1753267661; cv=none; b=iBJ35FDchPm2XE9sQvmD/j7oxf28/hCm4hiSfpqD6LFxUoBpeZqVvWr5vLXVWla3BYq9fR0A/FB6LZbSwgj/H2T6JT27RYDh1n2Az/Mpm5gvnEaWnZoeN3v2cPk4+DiyrpiRyaYvpL8j9krF88oUDF28XkOaPY3e8G68PuEy5+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753267660; c=relaxed/simple;
-	bh=eCDIU4W7AYZKs5u75nkP8rbOQPe6kfu1T+spxjDjQ8Q=;
+	s=arc-20240116; t=1753267661; c=relaxed/simple;
+	bh=igtuia6aVFYH1d+MVoOHpwnK93zbhXi6LJc16zRc8dk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XRIxREENQ9zBgx5zKYqULYwHJMTdSnyWos99aLUtHE4M3+AujjCJglWU2fz7BelYr91Lf2F5IgqwjVNjESij5JzvuvTDGAb1r7h0jmMQwK50gX9YGoT97bFwPHNm78VyHsXDZ1F5XpGu2C4rMVeBvzxR/FEqdcftEgxoCwGCoZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ptvrHSw1; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=i3nZ91vRh41OKkA+9Wd3YO6jZADJxPNuHgxxx1Z7j/VqHz5xqQa187PrUqf4HtgGQCvPTcj8m6GvH2KCcczuNuaQdTXKgbYrVmjceRi8VN/MxfkD6oiirHeyOrxzd2QgJLs7JqEtFWfkjWuvQXQPg4nUBnmmYU6mJXBMx+MnGZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2o/7TQa2; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ptvrHSw1"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4560a30a793so26731795e9.3
-        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 03:47:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2o/7TQa2"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b61e53eea3so2901513f8f.0
+        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 03:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753267655; x=1753872455; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753267658; x=1753872458; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXopSo3A/Iyt2jZoa3DRKyyiuLot/i5BO7eQNmUe+bo=;
-        b=ptvrHSw16fg/smdlwtI/SyF2AKcCSRlT+qiE6Oc0i23/pilqFSQvLz24zMwTQrbhqC
-         Cmx3HJuYboqAPXABozUxxYc1SFowiiVv+0f4HG9dzUeU2OBOnwGIl9gn6VDV5s0YOAo3
-         8E55MBXw82jJ8KUNDi+51ULNMFxDY5IXHvvFw1CaO5EN/LWLQ7513Lb/HKu492KYWO4F
-         KejlZvcXu4P1YTxF1cjn5vezymSFk+wwoogoAt4iZCWLwqkhlaGDqtx2omrFPPjhMckJ
-         XE3+IMXWG1lfgIi1enfXz9TDDlohV7gcOIolnIDw3+bJp8h7vNl1uyli2yoJXy9PDKJ1
-         mekw==
+        bh=HOSoWQ4+/yGEs/NqGALv7XevomaPnLrGHC8IlSxBAg8=;
+        b=2o/7TQa2r3Kr7bjXeaH9pnPwtR9JI/LSMqVJlCijmnwDqHt7D3q1HC6NdiGYW+n+W9
+         9KNEgv6KNefExhXX7SZKnUqndHGi8QumDkp2OKMDflJnts4lgju6MtF+Ppd88MvTClRO
+         e9S+YwowzsxMH7Xm8gXE3hWL6P2jbnO2eWKOVbbosPSJzsO+AjM19hpmxBGne9BhhNZp
+         ZrDzr7kPadPTqEDJtq7RS1Xq7u2+93ZOH0SbIsnuQDN07bjyv6znUPBaBAU8OUPKdQtU
+         XVA3HzFIs4jaBqHdyRQGgZSA06R18+ZNMrQXLbeTlNCX1edKsF9u+K3Oy5cK9xjCk/x+
+         zxFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753267655; x=1753872455;
+        d=1e100.net; s=20230601; t=1753267658; x=1753872458;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXopSo3A/Iyt2jZoa3DRKyyiuLot/i5BO7eQNmUe+bo=;
-        b=XwsFP5z+/0ffJQOM4dfibznX8YkX+n5ZeiI+CnnltkiJXKOKS+FAv83OxA9IkzOKiu
-         btmUfnufL7ZqZ3eJfWSJ7TwqiuJquf9iPzrxCB0Ih1oDLEfn8SyE+s4TYnHFL+cltpUf
-         qCEQ0woYmM0+iPMMF49virfVu1vKGmEyc5Q/GTGRPw8upq+cZLrR6bq2u6LWTtCSSxKK
-         fQYcfM6XdLAk6AHaQTVUfeedO4KpRvQNHZDQv60INzEAe6hl1Rv8wJiOmWqxFeBYpKHI
-         7IknYXgpKg/p0DjnworFvGIZEUtDfwR99b9xDkGysZuk1ed3ugq32sWzT82+CFZWtlt8
-         UCGA==
-X-Gm-Message-State: AOJu0Yz+kr75R9z7Q2dwTzp55bCubbYI0TN8/N6MB0dnf7q4LyJRPU4T
-	r0b7swxOw/pOeorh8zP4t4T0C65rItfzg0KXgSM2Ef8Hk58EI7ew9xLca/SmfHFU3BxyFy7hKZk
-	GTepnlhr42LoXCZQDulmOnRXEOL/+NjTaXqE6XoBGiClJeYDJuHpNlACarFCE5Q/uzQ4s4vF492
-	XtgQDEk0VN4mbWkcJFIGX2KWnE5uE=
-X-Google-Smtp-Source: AGHT+IF7LN4zz7H7kl5hmHOJM2RWeLy8eWEca0zN52GnDIcb6JpxZKh2nX+K8PpdE1V0cGZIooZEsfLT5w==
-X-Received: from wmbdv17.prod.google.com ([2002:a05:600c:6211:b0:442:ea0c:c453])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3107:b0:456:1752:2b44
- with SMTP id 5b1f17b1804b1-45868d2fe87mr17408105e9.23.1753267654654; Wed, 23
- Jul 2025 03:47:34 -0700 (PDT)
-Date: Wed, 23 Jul 2025 11:47:10 +0100
+        bh=HOSoWQ4+/yGEs/NqGALv7XevomaPnLrGHC8IlSxBAg8=;
+        b=qhBE1sjCTUME2XUgukn0jo27aZBRcQx+xJikbqYJWa24KJr4YjzsDJ5sQEhuad/R/g
+         GKU74A4JpknZu1VA93NXazY8lWq6nAzNg2L/R3HsauUPNI5k1+mz9zGxh4z9uAopzAOd
+         07fYbkbvjVYb1hGt2rdvZGDDpOdEHU9VMJMshL68sb2Vw/2p55RwwsAxgK1mz5QoSaMC
+         XbbkSixcK0L/w5G58CP+M4rlDalh/y5Q2PQbFmS8j83wpr2vGUabaEScfzyy/Spg6T6n
+         yDCusZu1Xa87HSgAjKJuxa7K+/j0r7PFILvnFNclOQmeej82HrxakD+YXPfwV0xRHdQj
+         3i2g==
+X-Gm-Message-State: AOJu0Yx1MGlyLvl2che4aZipvgcm2BQx+tCAStm4SNJ2F35I4ASYIGEJ
+	Ds6PJMuUqTFitDUPOdWS2jshi7RByef4yDHxliQydRBzu/JapEfnJd/ec7oo9sSi+kvm9ah4H04
+	NNC5rVyFl76D6TbYsDty8ZD6eW5P7QtkhFJZNRy6hIptU1xUASRvtNe6wrpPy7IJG0lby8JGMt+
+	PNaYK1pajOPLxf2UfLCbiboasSCgo=
+X-Google-Smtp-Source: AGHT+IFYDyBWPe2+6tP7KCxBAfbDw8azEGmzllmCBYSUMT9NPuE3ieg8wuyvATEHSgUhh0Dh5p9i1h8xlg==
+X-Received: from wmrn36.prod.google.com ([2002:a05:600c:5024:b0:456:26d1:4451])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2dca:b0:3b5:f7a3:3960
+ with SMTP id ffacd0b85a97d-3b768ef9510mr2077699f8f.33.1753267657792; Wed, 23
+ Jul 2025 03:47:37 -0700 (PDT)
+Date: Wed, 23 Jul 2025 11:47:13 +0100
 In-Reply-To: <20250723104714.1674617-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250723104714.1674617-1-tabba@google.com>
 X-Mailer: git-send-email 2.50.1.470.g6ba607880d-goog
-Message-ID: <20250723104714.1674617-19-tabba@google.com>
-Subject: [PATCH v16 18/22] KVM: arm64: nv: Handle VNCR_EL2-triggered faults
- backed by guest_memfd
+Message-ID: <20250723104714.1674617-22-tabba@google.com>
+Subject: [PATCH v16 21/22] KVM: selftests: Do not use hardcoded page sizes in
+ guest_memfd test
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
 	kvmarm@lists.linux.dev
@@ -87,108 +87,73 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
 	ira.weiny@intel.com, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Handle faults for memslots backed by guest_memfd in arm64 nested
-virtualization triggered by VNCR_EL2.
+Update the guest_memfd_test selftest to use getpagesize() instead of
+hardcoded 4KB page size values.
 
-* Introduce is_gmem output parameter to kvm_translate_vncr(), indicating
-  whether the faulted memory slot is backed by guest_memfd.
+Using hardcoded page sizes can cause test failures on architectures or
+systems configured with larger page sizes, such as arm64 with 64KB
+pages. By dynamically querying the system's page size, the test becomes
+more portable and robust across different environments.
 
-* Dispatch faults backed by guest_memfd to kvm_gmem_get_pfn().
+Additionally, build the guest_memfd_test selftest for arm64.
 
-* Update kvm_handle_vncr_abort() to handle potential guest_memfd errors.
-  Some of the guest_memfd errors need to be handled by userspace instead
-  of attempting to (implicitly) retry by returning to the guest.
-
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Suggested-by: Gavin Shan <gshan@redhat.com>
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/kvm/nested.c | 41 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 35 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm       |  1 +
+ tools/testing/selftests/kvm/guest_memfd_test.c | 11 ++++++-----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index dc1d26559bfa..b3edd7f7c8cd 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1172,8 +1172,9 @@ static u64 read_vncr_el2(struct kvm_vcpu *vcpu)
- 	return (u64)sign_extend64(__vcpu_sys_reg(vcpu, VNCR_EL2), 48);
- }
- 
--static int kvm_translate_vncr(struct kvm_vcpu *vcpu)
-+static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 40920445bfbe..963687892bcb 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -174,6 +174,7 @@ TEST_GEN_PROGS_arm64 += arch_timer
+ TEST_GEN_PROGS_arm64 += coalesced_io_test
+ TEST_GEN_PROGS_arm64 += dirty_log_perf_test
+ TEST_GEN_PROGS_arm64 += get-reg-list
++TEST_GEN_PROGS_arm64 += guest_memfd_test
+ TEST_GEN_PROGS_arm64 += memslot_modification_stress_test
+ TEST_GEN_PROGS_arm64 += memslot_perf_test
+ TEST_GEN_PROGS_arm64 += mmu_stress_test
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index ce687f8d248f..341ba616cf55 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -146,24 +146,25 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
  {
-+	struct kvm_memory_slot *memslot;
- 	bool write_fault, writable;
- 	unsigned long mmu_seq;
- 	struct vncr_tlb *vt;
-@@ -1216,10 +1217,25 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu)
- 	smp_rmb();
+ 	int fd1, fd2, ret;
+ 	struct stat st1, st2;
++	size_t page_size = getpagesize();
  
- 	gfn = vt->wr.pa >> PAGE_SHIFT;
--	pfn = kvm_faultin_pfn(vcpu, gfn, write_fault, &writable, &page);
--	if (is_error_noslot_pfn(pfn) || (write_fault && !writable))
-+	memslot = gfn_to_memslot(vcpu->kvm, gfn);
-+	if (!memslot)
- 		return -EFAULT;
+-	fd1 = __vm_create_guest_memfd(vm, 4096, 0);
++	fd1 = __vm_create_guest_memfd(vm, page_size, 0);
+ 	TEST_ASSERT(fd1 != -1, "memfd creation should succeed");
  
-+	*is_gmem = kvm_slot_has_gmem(memslot);
-+	if (!*is_gmem) {
-+		pfn = __kvm_faultin_pfn(memslot, gfn, write_fault ? FOLL_WRITE : 0,
-+					&writable, &page);
-+		if (is_error_noslot_pfn(pfn) || (write_fault && !writable))
-+			return -EFAULT;
-+	} else {
-+		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, &page, NULL);
-+		if (ret) {
-+			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
-+					      write_fault, false, false);
-+			return ret;
-+		}
-+	}
-+
- 	scoped_guard(write_lock, &vcpu->kvm->mmu_lock) {
- 		if (mmu_invalidate_retry(vcpu->kvm, mmu_seq))
- 			return -EAGAIN;
-@@ -1292,23 +1308,36 @@ int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu)
- 	if (esr_fsc_is_permission_fault(esr)) {
- 		inject_vncr_perm(vcpu);
- 	} else if (esr_fsc_is_translation_fault(esr)) {
--		bool valid;
-+		bool valid, is_gmem = false;
- 		int ret;
+ 	ret = fstat(fd1, &st1);
+ 	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
+-	TEST_ASSERT(st1.st_size == 4096, "memfd st_size should match requested size");
++	TEST_ASSERT(st1.st_size == page_size, "memfd st_size should match requested size");
  
- 		scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
- 			valid = kvm_vncr_tlb_lookup(vcpu);
+-	fd2 = __vm_create_guest_memfd(vm, 8192, 0);
++	fd2 = __vm_create_guest_memfd(vm, page_size * 2, 0);
+ 	TEST_ASSERT(fd2 != -1, "memfd creation should succeed");
  
- 		if (!valid)
--			ret = kvm_translate_vncr(vcpu);
-+			ret = kvm_translate_vncr(vcpu, &is_gmem);
- 		else
- 			ret = -EPERM;
+ 	ret = fstat(fd2, &st2);
+ 	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
+-	TEST_ASSERT(st2.st_size == 8192, "second memfd st_size should match requested size");
++	TEST_ASSERT(st2.st_size == page_size * 2, "second memfd st_size should match requested size");
  
- 		switch (ret) {
- 		case -EAGAIN:
--		case -ENOMEM:
- 			/* Let's try again... */
- 			break;
-+		case -ENOMEM:
-+			/*
-+			 * For guest_memfd, this indicates that it failed to
-+			 * create a folio to back the memory. Inform userspace.
-+			 */
-+			if (is_gmem)
-+				return 0;
-+			/* Otherwise, let's try again... */
-+			break;
- 		case -EFAULT:
-+		case -EIO:
-+		case -EHWPOISON:
-+			if (is_gmem)
-+				return 0;
-+			fallthrough;
- 		case -EINVAL:
- 		case -ENOENT:
- 		case -EACCES:
+ 	ret = fstat(fd1, &st1);
+ 	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
+-	TEST_ASSERT(st1.st_size == 4096, "first memfd st_size should still match requested size");
++	TEST_ASSERT(st1.st_size == page_size, "first memfd st_size should still match requested size");
+ 	TEST_ASSERT(st1.st_ino != st2.st_ino, "different memfd should have different inode numbers");
+ 
+ 	close(fd2);
 -- 
 2.50.1.470.g6ba607880d-goog
 
