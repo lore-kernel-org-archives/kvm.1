@@ -1,55 +1,55 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61876298CAB
-	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 10:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E64B2E49B2
+	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 10:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753267657; cv=none; b=GaylTgWjxr2H+Yd+QZoBnrgicgRr9OuUH3Z3aRtkNJFsveI6C7PVqD4JNxuxFcNTSYbmVhN1qA2GKmZLpRNXP+teIARqNlXh/8ladA/qyDVZhkBd+qf1tq/ySHHDogrN4xmEav/sCaEAuQgCBgSwbnwaFD7v2IMJrFyuE9O0mAM=
+	t=1753267660; cv=none; b=ejvFAmh9r0E11zfM1o54vMbVUIf8Fgsj+jjJwVzZWauYXh8ENgUxjokLzAJYST2yChiDJCkOad6THWmgZeVf8MvWcCDnwI72YVVkKLXp7PRy3kIG8PUGajf8vi0ZPCfwgZ3C3b3S/pVTOuPpXN621tykLaZcp4UfWupRB/gSLl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753267657; c=relaxed/simple;
-	bh=14cXWdXNZdYKTsga/FLhaKCs/axWOwx5cLW1RECQbK4=;
+	s=arc-20240116; t=1753267660; c=relaxed/simple;
+	bh=ceGgI6WalVQIFbno2dDTnGm4SEvuo5FHl0K8sPnS0rM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=juSSRyQH5tQIABI7Sn1I5jYHwQaPUbh1Vuv26P/HzoFaFh/fdNVH74PO4+NDKm4p0o5rL2xvNI3Q4WQ4NxfGGtLhSvoVsbqZfvNFsYhvS7bIIqQdwr7mAl5VS2HtZ5vQeAcJZIKZp/KTEiwav+X5B8+oZuKtMSjR1gcZUhCYDB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PIT8EQFI; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=SL10m9sZ/g4jPpXDrdTacY9CfUZpf2AIRJYkiKFXr+g2jp81o9XMcO6iJZoeA0SXZw8VL6xZ4BuCcAaIu7h716yEN5RaLx2vdh3S2x2Y5e6tFXUsP3F6gw8fkLH1nZDN9W9kqonCUKT04ll4FPQBKyWkwzzv8QW1OzJxs2nDmzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uMm4VIU4; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PIT8EQFI"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-456013b59c1so39033825e9.3
-        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 03:47:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uMm4VIU4"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45600d19a2aso53947565e9.1
+        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 03:47:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753267654; x=1753872454; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753267657; x=1753872457; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hNLT3q6FGDV+rEHRPNootJHOVFuUm+ghBMVRNnmNc4=;
-        b=PIT8EQFIo/WEb7KdHiBCLy9Vz0fPlm5v1at01BapYKcdAqEmtd7OPG4wW5uewYAKNr
-         pMya8dNMShg1Btm+FMs8pSyXIjj9fo5LmYdUOC8Tk3SUW6UKBtr8coVdLULm9hCoRWpg
-         M58E/v1N0HvsVziuoMBPrYTQg2siCNawx254W8/e5iEbl74hMIj85Ki+PRadwv3Kg+n3
-         VTjgvahjRq/SDIqgXaVQu22MeXwjXPthqolGgh7GRMMF/+38ibf+k9ZE9LUKbi3PIwyR
-         S7PcXOOnWc6tUOH4rHJAblTmmU0hfS/eLl5SJOhxM/lRCMesUNSshMLkWnPZ9QoSiRRe
-         8Mpg==
+        bh=bJPhpUUyhefgcIbSkuwiw95QjSbqiQA9zLACcCZ8gX0=;
+        b=uMm4VIU4eWnwRehoFY7t75id5Um30RHsB5RQfFoozLsoXN9ndl54W63E9TYrBprC5d
+         4aUYQTqQBVgsdcE5QjKDFHfyWndZqv+DHaKT+T3CbYHZwoW1YkMQXkljNEpb55T5ZMJ5
+         ZA1igZnXVgvBFY5VR8hYxnJSEbCnOfUOANpOb4YvvDPpPE8jYrwkEBHcuKGXbKtKsuno
+         v+VLYJw9cEcFv9aqk5lXqANW3VAOC9hR7tLY95+ruMOC8o77WWnNkCHdjPzr0Jq4G/ta
+         ZRNxjhZswnbEiaLvbf3jo8OlCo+Id4F9cl41DmCX+hcPChmN/t4hxker/djueV5SyMLA
+         ROSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753267654; x=1753872454;
+        d=1e100.net; s=20230601; t=1753267657; x=1753872457;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hNLT3q6FGDV+rEHRPNootJHOVFuUm+ghBMVRNnmNc4=;
-        b=DoFG0qoH7UKkXLyqPTOtPULQtaguHE3B0Tc8tJ3MbikDI1Qviv33JLOLQ+MMonQzhK
-         ExDcTSljWxRGwwrom2on2GqoPC+v/sJPShJzfsBi9LDvN8t53dD6sVeqJh/l9If9b9rx
-         IewAQcohO5O0OSb5uwlq1yar4e5ZFwjDZhBhcx6cc0Kjy5+lWhYDM8iZq48sQSKdGl9i
-         /ihu2NSj+ViCmuYSF/pGRSFMa1vUfGuEnQGMd4AMTW+bxmVPLkfXxCR2GwbCibVskLTz
-         9//E65n+WtOoTEtBMsG4cdZPv6TNGuFKXIJ45DVg369oLBHfUZ1kRjb7TMRutkQ0J4NR
-         Ejcw==
-X-Gm-Message-State: AOJu0YzepIQHouIDgsoDGQbj2C1zfa3Ao7tKoZdtnjhlVzZDycYYSu0/
-	7TbMy7m5r3jJlnyatvcYs7GiFHiVf0rShz9rSJiv6aLMnhkVZyg3yTJgrigTFVjjxgPX7nUAd8Q
-	ReU2Ij4i9AWi+otwUBRpRM9oUh3/luEIKos1nLaqeLvGdLOtlTCyDe3YaR+nxNmc9XZ2V89um39
-	ROgoUrmcar6BUylOLsHsHnU3oFXWM=
-X-Google-Smtp-Source: AGHT+IEdr/R4SHXIN/Osc6SC6u8xoWyR2XoDwoRplQ/guvfFP9V2bgXvk5bMDQWHMCkMpZwIcu7+3mnSgA==
-X-Received: from wmbej12.prod.google.com ([2002:a05:600c:3e8c:b0:453:5f7b:74b9])
+        bh=bJPhpUUyhefgcIbSkuwiw95QjSbqiQA9zLACcCZ8gX0=;
+        b=ji5oF3DvzZ0y4fcLo6OEmd5z9FCwLOqpcJ2MceHXiZy/0aaYE6OaMj0LpJMImv0uVt
+         9/wSyhyJNPJmspoN/lnPGCls/S/PR3v2cVb2SPCZMoUm4lqXEYZryetzF/x4RprXKUIN
+         WJtrCqEyqVXPg7Q9+JJNKAN66F4ce76eC6OWf/yWgqwlpRFeFkarFeUUZkAfHF4QGCnB
+         tabQA3BWGXbcBUUAYlULbkherxtkfJegK8ONnVBTF+X7IF0Mls/45Pq4wVjMzZiPXet8
+         QvMfRXmif959pbQuiYSMhVByC6CbVjXnsIQqqKU3+fKnCfXhsaBNCmdByaKZ2L3XutMH
+         UJpg==
+X-Gm-Message-State: AOJu0YwjAvT0b2tE2q3b9R2DZshp1WL2JR9EUbJ3mdUdMcPLrRnr/CTs
+	J9aua4Ar0WGRCw1qKR31kP9m0HwnWbC66nR3shy/fWd0vL667DDhBHUqMkWkUrULx+R8psPqBvF
+	CJXaeXZmvDPrSRHd6qaHKboUfO8Ilw5FhCVG3zNsofMwMuB8FBVDUFPmGbn4UQPf5TyjMTPX1Yr
+	JY5eN6huJ2JKVzTR+d8zKOfqztC9g=
+X-Google-Smtp-Source: AGHT+IFg4amFUMT8SnQXmGfSL7jQcBmHONqp6DdPspIYde7f6m4gxAAek8vnyOnJeKOMl4Q0IeoumHUzug==
+X-Received: from wmth16.prod.google.com ([2002:a05:600c:8b70:b0:455:e7b2:5b41])
  (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:358f:b0:456:43d:1198
- with SMTP id 5b1f17b1804b1-45868d4dbf7mr19146205e9.32.1753267653310; Wed, 23
- Jul 2025 03:47:33 -0700 (PDT)
-Date: Wed, 23 Jul 2025 11:47:09 +0100
+ with SMTP id 5b1f17b1804b1-45868d4dbf7mr19148065e9.32.1753267656601; Wed, 23
+ Jul 2025 03:47:36 -0700 (PDT)
+Date: Wed, 23 Jul 2025 11:47:12 +0100
 In-Reply-To: <20250723104714.1674617-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250723104714.1674617-1-tabba@google.com>
 X-Mailer: git-send-email 2.50.1.470.g6ba607880d-goog
-Message-ID: <20250723104714.1674617-18-tabba@google.com>
-Subject: [PATCH v16 17/22] KVM: arm64: Handle guest_memfd-backed guest page faults
+Message-ID: <20250723104714.1674617-21-tabba@google.com>
+Subject: [PATCH v16 20/22] KVM: Allow and advertise support for host mmap() on
+ guest_memfd files
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
 	kvmarm@lists.linux.dev
@@ -86,137 +87,108 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
 	ira.weiny@intel.com, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Add arm64 architecture support for handling guest page faults on memory
-slots backed by guest_memfd.
+Now that all the x86 and arm64 plumbing for mmap() on guest_memfd is in
+place, allow userspace to set GUEST_MEMFD_FLAG_MMAP and advertise support
+via a new capability, KVM_CAP_GUEST_MEMFD_MMAP.
 
-This change introduces a new function, gmem_abort(), which encapsulates
-the fault handling logic specific to guest_memfd-backed memory. The
-kvm_handle_guest_abort() entry point is updated to dispatch to
-gmem_abort() when a fault occurs on a guest_memfd-backed memory slot (as
-determined by kvm_slot_has_gmem()).
+The availability of this capability is determined per architecture, and
+its enablement for a specific guest_memfd instance is controlled by the
+GUEST_MEMFD_FLAG_MMAP flag at creation time.
 
-Until guest_memfd gains support for huge pages, the fault granule for
-these memory regions is restricted to PAGE_SIZE.
+Update the KVM API documentation to detail the KVM_CAP_GUEST_MEMFD_MMAP
+capability, the associated GUEST_MEMFD_FLAG_MMAP, and provide essential
+information regarding support for mmap in guest_memfd.
 
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: James Houghton <jthoughton@google.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/kvm/mmu.c | 86 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 83 insertions(+), 3 deletions(-)
+ Documentation/virt/kvm/api.rst | 9 +++++++++
+ include/uapi/linux/kvm.h       | 2 ++
+ virt/kvm/guest_memfd.c         | 7 ++++++-
+ virt/kvm/kvm_main.c            | 2 ++
+ 4 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index b3eacb400fab..8c82df80a835 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1512,6 +1512,82 @@ static void adjust_nested_fault_perms(struct kvm_s2_trans *nested,
- 	*prot |= kvm_encode_nested_level(nested);
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index f8cb0b18b6be..95a0697ec34d 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6414,6 +6414,15 @@ most one mapping per page, i.e. binding multiple memory regions to a single
+ guest_memfd range is not allowed (any number of memory regions can be bound to
+ a single guest_memfd file, but the bound ranges must not overlap).
+ 
++When the capability KVM_CAP_GUEST_MEMFD_MMAP is supported, the 'flags' field
++supports GUEST_MEMFD_FLAG_MMAP.  Setting this flag on guest_memfd creation
++enables mmap() and faulting of guest_memfd memory to host userspace.
++
++When the KVM MMU performs a PFN lookup to service a guest fault and the backing
++guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
++consumed from guest_memfd, regardless of whether it is a shared or a private
++fault.
++
+ See KVM_SET_USER_MEMORY_REGION2 for additional details.
+ 
+ 4.143 KVM_PRE_FAULT_MEMORY
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index aeb2ca10b190..0d96d2ae6e5d 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -961,6 +961,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_ARM_EL2 240
+ #define KVM_CAP_ARM_EL2_E2H0 241
+ #define KVM_CAP_RISCV_MP_STATE_RESET 242
++#define KVM_CAP_GUEST_MEMFD_MMAP 243
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1597,6 +1598,7 @@ struct kvm_memory_attributes {
+ #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+ 
+ #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
++#define GUEST_MEMFD_FLAG_MMAP	(1ULL << 0)
+ 
+ struct kvm_create_guest_memfd {
+ 	__u64 size;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index d5b445548af4..08a6bc7d25b6 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -314,7 +314,9 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+ 
+ static bool kvm_gmem_supports_mmap(struct inode *inode)
+ {
+-	return false;
++	const u64 flags = (u64)inode->i_private;
++
++	return flags & GUEST_MEMFD_FLAG_MMAP;
  }
  
-+#define KVM_PGTABLE_WALK_MEMABORT_FLAGS (KVM_PGTABLE_WALK_HANDLE_FAULT | KVM_PGTABLE_WALK_SHARED)
-+
-+static int gmem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
-+		      struct kvm_s2_trans *nested,
-+		      struct kvm_memory_slot *memslot, bool is_perm)
-+{
-+	bool write_fault, exec_fault, writable;
-+	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_MEMABORT_FLAGS;
-+	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
-+	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
-+	unsigned long mmu_seq;
-+	struct page *page;
-+	struct kvm *kvm = vcpu->kvm;
-+	void *memcache;
-+	kvm_pfn_t pfn;
-+	gfn_t gfn;
-+	int ret;
-+
-+	ret = prepare_mmu_memcache(vcpu, true, &memcache);
-+	if (ret)
-+		return ret;
-+
-+	if (nested)
-+		gfn = kvm_s2_trans_output(nested) >> PAGE_SHIFT;
-+	else
-+		gfn = fault_ipa >> PAGE_SHIFT;
-+
-+	write_fault = kvm_is_write_fault(vcpu);
-+	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
-+
-+	VM_WARN_ON_ONCE(write_fault && exec_fault);
-+
-+	mmu_seq = kvm->mmu_invalidate_seq;
-+	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
-+	smp_rmb();
-+
-+	ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &pfn, &page, NULL);
-+	if (ret) {
-+		kvm_prepare_memory_fault_exit(vcpu, fault_ipa, PAGE_SIZE,
-+					      write_fault, exec_fault, false);
-+		return ret;
-+	}
-+
-+	writable = !(memslot->flags & KVM_MEM_READONLY);
-+
-+	if (nested)
-+		adjust_nested_fault_perms(nested, &prot, &writable);
-+
-+	if (writable)
-+		prot |= KVM_PGTABLE_PROT_W;
-+
-+	if (exec_fault ||
-+	    (cpus_have_final_cap(ARM64_HAS_CACHE_DIC) &&
-+	     (!nested || kvm_s2_trans_executable(nested))))
-+		prot |= KVM_PGTABLE_PROT_X;
-+
-+	kvm_fault_lock(kvm);
-+	if (mmu_invalidate_retry(kvm, mmu_seq)) {
-+		ret = -EAGAIN;
-+		goto out_unlock;
-+	}
-+
-+	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_ipa, PAGE_SIZE,
-+						 __pfn_to_phys(pfn), prot,
-+						 memcache, flags);
-+
-+out_unlock:
-+	kvm_release_faultin_page(kvm, page, !!ret, writable);
-+	kvm_fault_unlock(kvm);
-+
-+	if (writable && !ret)
-+		mark_page_dirty_in_slot(kvm, memslot, gfn);
-+
-+	return ret != -EAGAIN ? ret : 0;
-+}
-+
- static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
- 			  struct kvm_s2_trans *nested,
- 			  struct kvm_memory_slot *memslot, unsigned long hva,
-@@ -1536,7 +1612,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
- 	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
- 	struct kvm_pgtable *pgt;
- 	struct page *page;
--	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_HANDLE_FAULT | KVM_PGTABLE_WALK_SHARED;
-+	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_MEMABORT_FLAGS;
+ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+@@ -522,6 +524,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+ 	u64 flags = args->flags;
+ 	u64 valid_flags = 0;
  
- 	if (fault_is_perm)
- 		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
-@@ -1961,8 +2037,12 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
- 	VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
- 			!write_fault && !kvm_vcpu_trap_is_exec_fault(vcpu));
++	if (kvm_arch_supports_gmem_mmap(kvm))
++		valid_flags |= GUEST_MEMFD_FLAG_MMAP;
++
+ 	if (flags & ~valid_flags)
+ 		return -EINVAL;
  
--	ret = user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
--			     esr_fsc_is_permission_fault(esr));
-+	if (kvm_slot_has_gmem(memslot))
-+		ret = gmem_abort(vcpu, fault_ipa, nested, memslot,
-+				 esr_fsc_is_permission_fault(esr));
-+	else
-+		ret = user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
-+				     esr_fsc_is_permission_fault(esr));
- 	if (ret == 0)
- 		ret = 1;
- out:
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 4f57cb92e109..18f29ef93543 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4918,6 +4918,8 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+ 	case KVM_CAP_GUEST_MEMFD:
+ 		return 1;
++	case KVM_CAP_GUEST_MEMFD_MMAP:
++		return !kvm || kvm_arch_supports_gmem_mmap(kvm);
+ #endif
+ 	default:
+ 		break;
 -- 
 2.50.1.470.g6ba607880d-goog
 
