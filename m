@@ -1,259 +1,226 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D59824678A;
-	Wed, 23 Jul 2025 17:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8962206BB
+	for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 18:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753293286; cv=none; b=LKVv3yaPcmy5uqvBJoyhZkyn9OoT8q8IEroUtSi8YewrDwsM/RGjnFxrP0o59G99NJ7fFjHort42JRBGCVtO8KZIxXoLk/OkG+wCtt0X00qrGdJIkkIcnnNgMRpgICCq9m5GWPrvSG8wuDcZ9KF9DImTXDXGSe0WUoDhhbsYWCk=
+	t=1753294001; cv=none; b=IfqAoWPzAdePLnYyvePQwwyvmAYjbUauBKGKdxx9AEnmEuSohcM/cI5ieId74YpS4DoNBRzzGJQTymMgD/0p9YwLlEYmRtZnUYWcXwEyYu1HoZN9eG/cC5WFgY3cUWDrHvuJhLO/5pQCk6Q8F3HFVdMd+1ITRd3KOqKabiZICSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753293286; c=relaxed/simple;
-	bh=uMyIVw+5368zTKeJRFejCWyZyyjVWbPoVGfe3KqQ1a0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MV2SYivi65h5kUaegLymoHSAn+QnKgvztQ0xDkBdVHF6YpkHvUqvSKmqPoaXfrks3k708ePK8zL1+ScNhCg+gggk+iUrHCIbj4u3bD48QRjVCrrYi+8Kuju80It2peL4XzorZRNBuLuGQYoQXjrY7v+eFh7ED3Lv58UlsXmO3s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=uAQwAjz+; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1753294001; c=relaxed/simple;
+	bh=eWymMRmLfscJuffkwMDNgqpA4cVY4kBbJFGJ+bFrOmc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ClZ0N2v1b0XrqegTSoyU62arrzjqNJvI6KOWzW6PUv6vIeG8tJUwfrFFhbBVCbiRcPs96bKZUFaHuGte+W5DmnTuGXAkU68fM77cdj4mRGjX2JZP96H+OeY7h2WdoVfQvbZjn4xwtPGYUkFhC42mRRRb7yg6FuEMUsVmWU03Pho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pvYP9RtP; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="uAQwAjz+"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56NHrf031284522
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 23 Jul 2025 10:53:57 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56NHrf031284522
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753293238;
-	bh=SMEiDwsRemHvExam1VO7iukkYCbw+RANEnDjg4dYLI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAQwAjz+wge4/BWnySbeKxZgmkGxYhO4snB+sTNyW4qteobWTvuI9/o2rSGNq85kU
-	 X+apihuLJmJHVukwXaLP9a2z/wuhQoiVvzj8MqiBdywSLgm9I2Ltz06QqX+dG8xFUi
-	 q+oFCh0ztdmXFqiMUdefNZRZ9MOKen+bRdgw7NGRHRiGrUbWNTdAgdk5aSNsnOMlpH
-	 oS/wdTw2PbWkStyDp/txiVTmeCznrPBtdZGopBBuxhnAU4Rk4J/mlo4jha5MF3MlOz
-	 yHMM9VOEIo47HoCfH/w6Dp9JIrzF/PYBQwV42PGdJfz0hEVHeCpKqaEe8XiSTMcAF1
-	 gIPBQ0Gs4/uyA==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
-        peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
-        hch@infradead.org
-Subject: [PATCH v5 13/23] KVM: VMX: Virtualize FRED nested exception tracking
-Date: Wed, 23 Jul 2025 10:53:31 -0700
-Message-ID: <20250723175341.1284463-14-xin@zytor.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250723175341.1284463-1-xin@zytor.com>
-References: <20250723175341.1284463-1-xin@zytor.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pvYP9RtP"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31220ecc586so104739a91.2
+        for <kvm@vger.kernel.org>; Wed, 23 Jul 2025 11:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753293999; x=1753898799; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zZfDzw+qVz0o/w7Bp6MxT59VuQisbldYUAGH/6NuUrY=;
+        b=pvYP9RtPXYNw6SMtX4kszuUXq5gsYKT6m11XjsnNaTLntlrLmZzADOQESG48RP2CKf
+         D6l46EsgXwu71UenSFrRkQiEYqOF2DMEjAbOIOsREiyurHS9dIKvfyDYKPLwU7muW+VF
+         PaILNSdC7Xta/X/83gI6pdxqxFWXlTcaeddBeSm4rWUOB77c0vQZyPKG9pdereqLTII4
+         kMcyKygx3MMLltzU313BgKUVFjGRn3MME8e4qdroVJnAdbCnZBQHLNdayigHjjUzJqhe
+         Glzo7Z/5JmEryiys3S0ifhQkxAZeAx3evtCMIppNksGKnhy4/dkSc5DoKgGhI2Crw3r8
+         T/3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753293999; x=1753898799;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zZfDzw+qVz0o/w7Bp6MxT59VuQisbldYUAGH/6NuUrY=;
+        b=OMr5Z0A1VNwSG98kAZOjRmvB3mqGFKtuE5NOHCAK83gubZmtZy/pn2c4PCakiiLutx
+         1+vPjDDpGo9dpMFKGORNMhg5yCl17OXNfvDqcV6gx7kX1SONkM3TSkf9cUdFXGcCbfFt
+         EnehmeMfVTWRWyOuW26yUJtNfqewdaUVyl4zdiW9DY84Va42U1jYIVQtNPxUDyzlJrUD
+         CKQ0aBUdBSs3oVsOb0ZQW1llGoDt8kqNQlDXnL0sRFA39Jc1g+UbfzqLGpCPR0h6nts6
+         e24AElQ4PcLNlm0WGp4bllfrToSlFS5w1gwetb3pSzNrj1zP0i+7sIWv9f+Z+RZH3Pmx
+         gThQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjF55w2hYXiHBMq+dEntZphajLpfItgwQWlgQFt0AmDUSoc6TVqxgBiW0wwOLJaw9zBo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf0Wkdaebk2H87auKdpmn4F87Aconi3KIZ5UgEW39IVcTjHNPv
+	pm7L+4g1T11+2nfauBsgn3EZoLnzGXPgyYEHBoslVkcvrjvF06ROFsomqXUSCJJqXiUZ8soHubm
+	UYMAcLQ==
+X-Google-Smtp-Source: AGHT+IF3hX1FXykh7Df5O4ildAUw6dsX0iRQymh7GSo9oxT9J1zy8hJ9dw+7n83OiW1YjgBQlL2K8mHkgqw=
+X-Received: from pjm4.prod.google.com ([2002:a17:90b:2fc4:b0:2fa:1803:2f9f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:530f:b0:311:ffe8:20ee
+ with SMTP id 98e67ed59e1d1-31e5071ccdfmr6877046a91.11.1753293999283; Wed, 23
+ Jul 2025 11:06:39 -0700 (PDT)
+Date: Wed, 23 Jul 2025 11:06:37 -0700
+In-Reply-To: <20250422161304.579394-3-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250422161304.579394-1-zack.rusin@broadcom.com> <20250422161304.579394-3-zack.rusin@broadcom.com>
+Message-ID: <aIEkrc7Mdf2ia1Mm@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: x86: Allow enabling of the vmware backdoor
+ via a cap
+From: Sean Christopherson <seanjc@google.com>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: linux-kernel@vger.kernel.org, Doug Covelli <doug.covelli@broadcom.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Xin Li <xin3.li@intel.com>
+On Tue, Apr 22, 2025, Zack Rusin wrote:
+> @@ -6735,6 +6734,19 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  		mutex_unlock(&kvm->lock);
+>  		break;
+>  	}
+> +#ifdef CONFIG_KVM_VMWARE
+> +	case KVM_CAP_X86_VMWARE_BACKDOOR:
 
-Set the VMX nested exception bit in VM-entry interruption information
-field when injecting a nested exception using FRED event delivery to
-ensure:
-  1) A nested exception is injected on a correct stack level.
-  2) The nested bit defined in FRED stack frame is set.
+I much perfer using a single KVM_CAP_X86_VMWARE capability.  More below.
 
-The event stack level used by FRED event delivery depends on whether
-the event was a nested exception encountered during delivery of an
-earlier event, because a nested exception is "regarded" as happening
-on ring 0.  E.g., when #PF is configured to use stack level 1 in
-IA32_FRED_STKLVLS MSR:
-  - nested #PF will be delivered on the stack pointed by IA32_FRED_RSP1
-    MSR when encountered in ring 3 and ring 0.
-  - normal #PF will be delivered on the stack pointed by IA32_FRED_RSP0
-    MSR when encountered in ring 3.
+> +		r = -EINVAL;
+> +		if (cap->args[0] & ~1)
 
-The VMX nested-exception support ensures a correct event stack level is
-chosen when a VM entry injects a nested exception.
+Using bit 0 for "enable" needs to be #defined arch/x86/include/uapi/asm/kvm.h.
 
-Signed-off-by: Xin Li <xin3.li@intel.com>
-[ Sean: reworked kvm_requeue_exception() to simply the code changes ]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+At that point, adding more capabilities for the other VMware functionality doesn't
+make much sense, especially since the capabilities that are added in later patches
+don't have the kvm->created_vcpus protection, i.e. are likely buggy.
+
+E.g. with the below diff (completely untested, probably won't apply cleanly?)
+spread across three-ish patches, the accessors can be:
+
+static inline bool kvm_is_vmware_cap_enabled(struct kvm *kvm, u64 cap)
+{
+	return kvm->arch.vmware.caps & cap;
+}
+
+static inline bool kvm_is_vmware_backdoor_enabled(struct kvm_vcpu *vcpu)
+{
+	return kvm_is_vmware_cap_enabled(kvm, KVM_VMWARE_ENABLE_BACKDOOR);
+}
+
+static inline bool kvm_is_vmware_hypercall_enabled(struct kvm *kvm)
+{
+	return kvm_is_vmware_cap_enabled(kvm, KVM_VMWARE_ENABLE_HYPERCALL);
+}
+
+static inline bool kvm_vmware_nested_backdoor_l0_enabled(struct kvm *kvm)
+{
+	return kvm_is_vmware_backdoor_enabled(kvm) &&
+	       kvm_is_vmware_cap_enabled(kvm, KVM_VMWARE_ENABLE_NESTED_BACKDOOR);
+}
+
 ---
-
-Change in v5:
-* Add TB from Xuelian Guo.
-
-Change in v4:
-* Move the check is_fred_enable() from kvm_multiple_exception() to
-  vmx_inject_exception() thus avoid bleeding FRED details into
-  kvm_multiple_exception() (Chao Gao).
-
-Change in v3:
-* Rework kvm_requeue_exception() to simply the code changes (Sean
-  Christopherson).
-
-Change in v2:
-* Set the nested flag when there is an original interrupt (Chao Gao).
----
- arch/x86/include/asm/kvm_host.h |  4 +++-
- arch/x86/include/asm/vmx.h      |  5 ++++-
- arch/x86/kvm/svm/svm.c          |  2 +-
- arch/x86/kvm/vmx/vmx.c          |  6 +++++-
- arch/x86/kvm/x86.c              | 13 ++++++++++++-
- arch/x86/kvm/x86.h              |  1 +
- 6 files changed, 26 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  4 +---
+ arch/x86/include/uapi/asm/kvm.h |  4 ++++
+ arch/x86/kvm/x86.c              | 34 ++++++++++++---------------------
+ 3 files changed, 17 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0509b015513c..04fa24ed1594 100644
+index 639c49db0106..1433cdd14675 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -756,6 +756,7 @@ struct kvm_queued_exception {
- 	u32 error_code;
- 	unsigned long payload;
- 	bool has_payload;
-+	bool nested;
- 	u64 event_data;
+@@ -1219,9 +1219,7 @@ struct kvm_xen {
+ #ifdef CONFIG_KVM_VMWARE
+ /* VMware emulation context */
+ struct kvm_vmware {
+-	bool backdoor_enabled;
+-	bool hypercall_enabled;
+-	bool nested_backdoor_l0_enabled;
++	u64 caps;
+ };
+ #endif
+ 
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index e019111e2150..ae578422d6f4 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -1013,4 +1013,8 @@ struct kvm_tdx_init_mem_region {
+ 	__u64 nr_pages;
  };
  
-@@ -2201,7 +2202,8 @@ void kvm_queue_exception(struct kvm_vcpu *vcpu, unsigned nr);
- void kvm_queue_exception_e(struct kvm_vcpu *vcpu, unsigned nr, u32 error_code);
- void kvm_queue_exception_p(struct kvm_vcpu *vcpu, unsigned nr, unsigned long payload);
- void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
--			   bool has_error_code, u32 error_code, u64 event_data);
-+			   bool has_error_code, u32 error_code, bool nested,
-+			   u64 event_data);
- void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault);
- void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
- 				    struct x86_exception *fault);
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index cf697b7c5d34..15e04a486dd8 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -137,6 +137,7 @@
- #define VMX_BASIC_DUAL_MONITOR_TREATMENT	BIT_ULL(49)
- #define VMX_BASIC_INOUT				BIT_ULL(54)
- #define VMX_BASIC_TRUE_CTLS			BIT_ULL(55)
-+#define VMX_BASIC_NESTED_EXCEPTION		BIT_ULL(58)
- 
- static inline u32 vmx_basic_vmcs_revision_id(u64 vmx_basic)
- {
-@@ -433,13 +434,15 @@ enum vmcs_field {
- #define INTR_INFO_INTR_TYPE_MASK        0x700           /* 10:8 */
- #define INTR_INFO_DELIVER_CODE_MASK     0x800           /* 11 */
- #define INTR_INFO_UNBLOCK_NMI		0x1000		/* 12 */
-+#define INTR_INFO_NESTED_EXCEPTION_MASK	0x2000		/* 13 */
- #define INTR_INFO_VALID_MASK            0x80000000      /* 31 */
--#define INTR_INFO_RESVD_BITS_MASK       0x7ffff000
-+#define INTR_INFO_RESVD_BITS_MASK       0x7fffd000
- 
- #define VECTORING_INFO_VECTOR_MASK           	INTR_INFO_VECTOR_MASK
- #define VECTORING_INFO_TYPE_MASK        	INTR_INFO_INTR_TYPE_MASK
- #define VECTORING_INFO_DELIVER_CODE_MASK    	INTR_INFO_DELIVER_CODE_MASK
- #define VECTORING_INFO_VALID_MASK       	INTR_INFO_VALID_MASK
-+#define VECTORING_INFO_NESTED_EXCEPTION_MASK	INTR_INFO_NESTED_EXCEPTION_MASK
- 
- #define INTR_TYPE_EXT_INTR		(EVENT_TYPE_EXTINT << 8)	/* external interrupt */
- #define INTR_TYPE_RESERVED		(EVENT_TYPE_RESERVED << 8)	/* reserved */
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 932a6525c014..4490be40a7ee 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4144,7 +4144,7 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
- 
- 		kvm_requeue_exception(vcpu, vector,
- 				      exitintinfo & SVM_EXITINTINFO_VALID_ERR,
--				      error_code, 0);
-+				      error_code, false, 0);
- 		break;
- 	}
- 	case SVM_EXITINTINFO_TYPE_INTR:
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 15fb205f2e73..0ca01980295e 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1857,8 +1857,11 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
- 		vmcs_write32(VM_ENTRY_INSTRUCTION_LEN,
- 			     vmx->vcpu.arch.event_exit_inst_len);
- 		intr_info |= INTR_TYPE_SOFT_EXCEPTION;
--	} else
-+	} else {
- 		intr_info |= INTR_TYPE_HARD_EXCEPTION;
-+		if (ex->nested && is_fred_enabled(vcpu))
-+			intr_info |= INTR_INFO_NESTED_EXCEPTION_MASK;
-+	}
- 
- 	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, intr_info);
- 
-@@ -7215,6 +7218,7 @@ static void __vmx_complete_interrupts(struct kvm_vcpu *vcpu,
- 		kvm_requeue_exception(vcpu, vector,
- 				      idt_vectoring_info & VECTORING_INFO_DELIVER_CODE_MASK,
- 				      error_code,
-+				      idt_vectoring_info & VECTORING_INFO_NESTED_EXCEPTION_MASK,
- 				      event_data);
- 		break;
- 	}
++#define KVM_VMWARE_ENABLE_BACKDOOR		_BITULL(0)
++#define KVM_VMWARE_ENABLE_HYPERCALL		_BITULL(1)
++#define KVM_VMWARE_ENABLE_NESTED_BACKDOOR	_BITULL(2)
++
+ #endif /* _ASM_X86_KVM_H */
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0ba907d8071b..1632ece82a85 100644
+index 7234333a92d8..b9e2faf0ceb7 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -860,6 +860,10 @@ static void kvm_multiple_exception(struct kvm_vcpu *vcpu, unsigned int nr,
- 		vcpu->arch.exception.pending = true;
- 		vcpu->arch.exception.injected = false;
+@@ -126,6 +126,10 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
+ #define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS | \
+                                     KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK)
  
-+		vcpu->arch.exception.nested = vcpu->arch.exception.nested ||
-+					      vcpu->arch.nmi_injected ||
-+					      vcpu->arch.interrupt.injected;
++#define KVM_CAP_VMWARE_VALID_MASK (KVM_VMWARE_CAP_ENABLE_BACKDOOR | \
++				   KVM_VMWARE_ENABLE_HYPERCALL | \
++				   KVM_VMWARE_ENABLE_NESTED_BACKDOOR)
 +
- 		vcpu->arch.exception.has_error_code = has_error;
- 		vcpu->arch.exception.vector = nr;
- 		vcpu->arch.exception.error_code = error_code;
-@@ -889,8 +893,13 @@ static void kvm_multiple_exception(struct kvm_vcpu *vcpu, unsigned int nr,
- 		vcpu->arch.exception.injected = false;
- 		vcpu->arch.exception.pending = false;
- 
-+		/* #DF is NOT a nested event, per its definition. */
-+		vcpu->arch.exception.nested = false;
+ static void update_cr8_intercept(struct kvm_vcpu *vcpu);
+ static void process_nmi(struct kvm_vcpu *vcpu);
+ static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
+@@ -4708,11 +4712,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_IRQFD_RESAMPLE:
+ 	case KVM_CAP_MEMORY_FAULT_INFO:
+ 	case KVM_CAP_X86_GUEST_MODE:
+-#ifdef CONFIG_KVM_VMWARE
+-	case KVM_CAP_X86_VMWARE_BACKDOOR:
+-	case KVM_CAP_X86_VMWARE_HYPERCALL:
+-	case KVM_CAP_X86_VMWARE_NESTED_BACKDOOR_L0:
+-#endif
+ 		r = 1;
+ 		break;
+ 	case KVM_CAP_PRE_FAULT_MEMORY:
+@@ -4836,6 +4835,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_READONLY_MEM:
+ 		r = kvm ? kvm_arch_has_readonly_mem(kvm) : 1;
+ 		break;
++#ifdef CONFIG_KVM_VMWARE
++	case KVM_CAP_X86_VMWARE:
++		return KVM_CAP_VMWARE_VALID_MASK;
++#endif
+ 	default:
+ 		break;
+ 	}
+@@ -6669,31 +6672,18 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		break;
+ 	}
+ #ifdef CONFIG_KVM_VMWARE
+-	case KVM_CAP_X86_VMWARE_BACKDOOR:
++	case KVM_CAP_X86_VMWARE:
+ 		r = -EINVAL;
+-		if (cap->args[0] & ~1)
++		if (cap->args[0] & ~KVM_CAP_VMWARE_VALID_MASK)
+ 			break;
 +
- 		kvm_queue_exception_e(vcpu, DF_VECTOR, 0);
- 	} else {
-+		vcpu->arch.exception.nested = true;
-+
- 		/* replace previous exception with a new one in a hope
- 		   that instruction re-execution will regenerate lost
- 		   exception */
-@@ -919,7 +928,8 @@ static void kvm_queue_exception_e_p(struct kvm_vcpu *vcpu, unsigned nr,
- }
- 
- void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
--			   bool has_error_code, u32 error_code, u64 event_data)
-+			   bool has_error_code, u32 error_code, bool nested,
-+			   u64 event_data)
- {
- 
- 	/*
-@@ -944,6 +954,7 @@ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
- 	vcpu->arch.exception.error_code = error_code;
- 	vcpu->arch.exception.has_payload = false;
- 	vcpu->arch.exception.payload = 0;
-+	vcpu->arch.exception.nested = nested;
- 	vcpu->arch.exception.event_data = event_data;
- }
- EXPORT_SYMBOL_GPL(kvm_requeue_exception);
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index b0017a0f75fa..a573f6079ba7 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -187,6 +187,7 @@ static inline void kvm_clear_exception_queue(struct kvm_vcpu *vcpu)
- {
- 	vcpu->arch.exception.pending = false;
- 	vcpu->arch.exception.injected = false;
-+	vcpu->arch.exception.nested = false;
- 	vcpu->arch.exception_vmexit.pending = false;
- }
- 
--- 
-2.50.1
+ 		mutex_lock(&kvm->lock);
+ 		if (!kvm->created_vcpus) {
+-			kvm->arch.vmware.backdoor_enabled = cap->args[0];
++			kvm->arch.vmware.caps = cap->args[0];
+ 			r = 0;
+ 		}
+ 		mutex_unlock(&kvm->lock);
+ 		break;
+-	case KVM_CAP_X86_VMWARE_HYPERCALL:
+-		r = -EINVAL;
+-		if (cap->args[0] & ~1)
+-			break;
+-		kvm->arch.vmware.hypercall_enabled = cap->args[0];
+-		r = 0;
+-		break;
+-	case KVM_CAP_X86_VMWARE_NESTED_BACKDOOR_L0:
+-		r = -EINVAL;
+-		if (cap->args[0] & ~1)
+-			break;
+-		kvm->arch.vmware.nested_backdoor_l0_enabled = cap->args[0];
+-		r = 0;
+-		break;
+ #endif
+ 	default:
+ 		r = -EINVAL;
 
+base-commit: 77a53b6f5d1c2dabef34d890d212910ed1f43bcb
+--
