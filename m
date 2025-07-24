@@ -1,71 +1,74 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DCA2E8DED
-	for <kvm@vger.kernel.org>; Thu, 24 Jul 2025 19:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096901EF39F
+	for <kvm@vger.kernel.org>; Thu, 24 Jul 2025 19:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753384257; cv=none; b=j+dXGWwPba1yZbAzhhGTpPUn+Rjl3S9ild5ZOw3Xm4lMtgwvqKpRheA4acqAJXC7Svtw/3SwoO7yXdJpRbZpD5+itXKNdJIRtuzP9vfryCHOCXqnVBf8MNPdMJRcb4GwuAiN6XQCgQmcPIDIQgqaFAqYpTcJpYEE/SKzcY/T1bE=
+	t=1753384258; cv=none; b=OrHUjoWNI3M+mlDgOKMfWodjCWocZAJ6BCvJXdPeqybfAVEe4+eniOWUButP42Iv7NYv4Oedr2Y0it6DHwWZsRGKyd/TUrB5m4ec/+A4A5d6IlrNQupF6yYND7rm5HL1kXFCkTJwK+EhJMcI8AMn9BbwqVRopvXUvXf+DzU3DZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753384257; c=relaxed/simple;
-	bh=pf6NOAe17j3kacmhzwEJH069n5WGjPZ2XP3sZlmlSjg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JpamOjUw6YsdPbr3SYLF9gthLwfhMvBSCvZPu4sA167SdhDretR8xpPimEvNKW7rY5QfvgPSdHMuFeEW7nvbqOWte2MTHznD7+42Ber2vgZpkLd/kU5X9EjDI1dAgHXDEW0onbgdJ2/CPYw7lCpx91TYdfug/4rKGUt/ppG8akg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=Jop5invP; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1753384258; c=relaxed/simple;
+	bh=nbx+z+1/gugYC+DAfFucpGlxr4wMtIRSyTJdNk5rL0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=T6IoHcx5DT/UiDLnn2CTe36IWKPHQpML45Di4jlVED3oClinkHEBJZcXGsl4HtwEwNQpL9VOXmgfFQFpqHvu8F7LbX7z9PJcoybYiZt4nYxQYbb8v715fT/BRhCie6Z9SgxwIihJ4cohZUZgue75YTdyLGBepei58K0zksnL6tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=qWWz9y6M; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensrcsec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="Jop5invP"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a53359dea5so739306f8f.0
-        for <kvm@vger.kernel.org>; Thu, 24 Jul 2025 12:10:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="qWWz9y6M"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so14670985e9.1
+        for <kvm@vger.kernel.org>; Thu, 24 Jul 2025 12:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1753384253; x=1753989053; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QHWpD0i339PEcT5T5XARaFD7WcNyfAtByLV5e3Xqky4=;
-        b=Jop5invPoALmbJYvGeBqwNysjU0SyrGDDTJ3DDSC8haTozHxhdmytL+QLoSMmVLLLL
-         LCMVTva9ftA58Fgo2NiAUyTB2AvJqarnKsAIMoiha/LqeD+j0XspOhAbRMjmHkoy6JLR
-         juxATz2okV0a73qQkhTmpsJ+IVHASqO0+Oyb08LJKXMV7tmT/LmRInRoIxhk27SUSEfO
-         SbHzNbzJRGKhh+wFXQ1Fw6q1JVJ5HOm8ynzDvCzmFad9nB8/B279+v6llE9NImGfMFv4
-         7fczyju+5fSVZdY3GENSSLpPLmCyb2aFqKqJ+k3cFJJnQPY0BPntRKj1dBJcRKq5fY0q
-         bf5g==
+        d=grsecurity.net; s=grsec; t=1753384255; x=1753989055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LK+1VoyMLw8WJX2L4vhct5pIoiz04dcym0yqQANFP4s=;
+        b=qWWz9y6MJUqXB/mm0vZTIZeQL8b4i+10YKs/sfLXcBJDZ3zkU9PodVLhPwGrzIQgXd
+         kDW7XC2ZZJ6WCphpBwMdpKBzi3GX3pjtIBQB2EHGLAkf719POo184t2jfZliUjGaqNXk
+         isZeTIL65flH8mKeSh6Xr8efARApQvtp4Y6gNcw0xAPFwaxNt7EMiZuDM3sr+ZLv3BbT
+         HuSImlPhflRjzB1yk8F4AmUgETWkRfegsJL1ZLG+HWZvxf+2I7a7TXNBz8jJ647k/W40
+         OjrpEr3NfmzSVCkaEKzaJTyq/TSxd6E4PQPxFnpCj9rk9aAYibzVALcseHRCt/T0i8X6
+         eV4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753384253; x=1753989053;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QHWpD0i339PEcT5T5XARaFD7WcNyfAtByLV5e3Xqky4=;
-        b=OIDewNQT7GkVjCcZp6sW1WJSsOPz0R5aJnjLqCHuyxwleM3cfu5c1dN6Mj5D6jhS65
-         F4lGzxpaodIQAj5PQ/gvaZhOIdzBAk80TlcxO7iIVJOUOnYJ5QW8Kp8vMny0IGjkoHI7
-         sHnNHqRBDOsV9VtYKR2naHXhxzWnDpKL+JVOYfC3CVB+a8VsoUR2CxgzUr3opv9s7TsX
-         BDEP1UOzaUZ1ktMeI2lPU1qN21wWLB/W1XizqpOakulO7LJ3UjOezVTbhCQ0WfvXlD9g
-         qwPvwFDMuipcoj2oCNge47w8xU6EHi+9NxMHxFOe9FcXRwfNXmEyallE/Hc2AALPPaCL
-         9wRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWg77dDwR2xkPxG1TJ9hoLQuI8xMcN+/sRXo/O+3BGXMuuC/USD7oASXXyjC5CPaR5SCmI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxd/8KqaKJZWESKWJFrdMnYcab/JI5FpP2Ru/RHy0w8uQcHl0c9
-	skXR5HAtfHaaV3RV7rXIEC5wqHb2DpHRBV4+7H2cEijmkvMzocAGbcgXfJybkOZkN/wlYuqsnoD
-	mIAZZ
-X-Gm-Gg: ASbGncsZp1IPZWQ0ITNqEbKd+q/4ESho1vS0WC+wyREItDN1tOfTPdpcykO7LEC6C7S
-	ebQY98tlbvxPccupRnK99Lra3crtFi0QWiLgvA+Q/vJLjlVB0bw7U3MnCh2EtspukiY0Gl07ZsR
-	LkxRXmSfQXwxwVbitWFkWqr3cHNuwkUICKd/Nl4IfXVINGVMe458H3acXrAkW+1sNGiQbo6EZAV
-	CzBoJV7pC60PKCjlgsIa5pR+MtdogRoB5sSws+DB5QuM6fmEs3g77GXBOOXEgMioBOuoNuJaLk+
-	DQG988+9gZFvwdZP+xM1NHLXfkllVQZjlJCI/g0D9rkvkagj98mgMbJZBBHO0KqHYEzUutFqUmb
-	fPRuFasfzZ3mtmPx2Wm9tlEvGygv3wHuYHDM3NGxqtZRKpHhTLqJCPOySz3aqyLIehGUxmwOWZd
-	5CiFAsqkHZj9XdvWu/lxvq3E5RTBI=
-X-Google-Smtp-Source: AGHT+IHSuHSpBOl1szOURAphdfh0yaIMfj7iqWnPderN6iEVaIL9mLy/9POb1HskEJTkAZKqZKaJMg==
-X-Received: by 2002:a5d:5d88:0:b0:3b6:deb:1b43 with SMTP id ffacd0b85a97d-3b768f01432mr6716317f8f.41.1753384253377;
-        Thu, 24 Jul 2025 12:10:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753384255; x=1753989055;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LK+1VoyMLw8WJX2L4vhct5pIoiz04dcym0yqQANFP4s=;
+        b=WMOIPmOvtS1kF4DzgKeKOfNf5mklQrtm7fnjjTLqqr6WX7QFaV1RYSkLXh3QUXJQNQ
+         R7cJakjg50AIM+vTKXztGzmJXyOvL63HVzl8b4i3leaO+FHAvZ/MhHyAxYSZ7G+MK3yp
+         V50x7kfiFVJJicXzkKEu6dWdPSHzx63CFpxCnebwlKa2iPpAGH4SgJJGgA7QCUh5vm1E
+         pcCbtIMI5C0Wqcxb7CuSRx3drv5Cnnlgd10/wtxLHH0HRnyCMKygofk8X8xBe7rUA+LB
+         ozcu7zPn1LESVuwszbqmvC1pRiNG37eTu3TmFcTfapEgbI72yB39HeE0hnu8AllEPsdk
+         5yVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUTmxnA3Pl9O9QDO5WrR0KdFxXh5DAhJectFaz5OT8NeQKeD5e2mZAorivzHjNhlQXoS0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjntx04nJa7jjJeV2El5H7zSgRDsZh/diC7ZBxfkBEuwcNHTTO
+	AaBAQBR0nmfKZpP3UUWvEsOQUyHQj+ggkIyDUJUuZ4s9UG0l7PwEN3JEXaQN+LlKDhw=
+X-Gm-Gg: ASbGncvVb9OH30nHsE5J8waI2BnnnHwFBaigx8ZneRpdj61nIoMHkjxc4NSWijXUOnL
+	UdXXZA0WXWdGX1axsh+ZL3QFuNlU68bZYH0mb2Z2d5ixfZ4Bh+IhdGgdniwR0ZzKLrVy1IBtgG3
+	J/W4zLsTLC4E2pEV25tCMrbrdiKP+IssGnB79mlSesVcTSuKSvKu6zvXztWsXIHGEIiEFoZ5o7N
+	16Uo77C7f/1M6i+2BcebCQ3OhGMZzD1z2HePrixLNLxA5e09qfwrBeIhigp61co3HxqzHvBiaA9
+	nRrq7S8OVRDvY/FZo99yzW4YzMdX7bBXzj3qLJ/kwj4lF8XwxlGjQgtVBpv0lqPQOpt8sA034Xl
+	+d4sg10zQhhlOgYakrkI4RKfFH0/w/liliWoXwAbaZhj2Z3s/vaxwlgXyeqF5HS+DJbTX5ucFea
+	FMI9pZu3wznu3aFqCT
+X-Google-Smtp-Source: AGHT+IGYJ43DT+RTl2jB+3TkJMK6K+1uCA5es/hJnz42gQTbmyyJpwWEghWPQvIt53Y1CsKmdH66mw==
+X-Received: by 2002:a05:600c:1c99:b0:456:1611:ce85 with SMTP id 5b1f17b1804b1-45868d47969mr68073925e9.21.1753384255071;
+        Thu, 24 Jul 2025 12:10:55 -0700 (PDT)
 Received: from bell.fritz.box (p200300faaf22cf002208a86d0dff5ae9.dip0.t-ipconnect.de. [2003:fa:af22:cf00:2208:a86d:dff:5ae9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705378f4sm31118955e9.2.2025.07.24.12.10.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705378f4sm31118955e9.2.2025.07.24.12.10.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 12:10:53 -0700 (PDT)
+        Thu, 24 Jul 2025 12:10:54 -0700 (PDT)
 From: Mathias Krause <minipli@grsecurity.net>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org
 Cc: Mathias Krause <minipli@grsecurity.net>
-Subject: [kvm-unit-tests PATCH 0/3] x86 hypercall spring^W summer cleanup
-Date: Thu, 24 Jul 2025 21:10:47 +0200
-Message-Id: <20250724191050.1988675-1-minipli@grsecurity.net>
+Subject: [kvm-unit-tests PATCH 2/3] x86: Provide a macro for extable handling
+Date: Thu, 24 Jul 2025 21:10:49 +0200
+Message-Id: <20250724191050.1988675-3-minipli@grsecurity.net>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20250724191050.1988675-1-minipli@grsecurity.net>
+References: <20250724191050.1988675-1-minipli@grsecurity.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,34 +77,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This little series cleans up the x86 hypercall tests by making them no
-longer rely on KVM's hypercall patching to change a non-native
-instruction to the native one.
+Provide a macro to emit exception table entries that can be used in
+asm() statements.
 
-There are attempts[1] to disable KVM's default behaviour regarding
-hypercall patching, actually requiring executing the native hypercall
-instruction.
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+---
+ lib/x86/desc.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-The last patch is also a general cleanup of the x86/hypercall test.
-
-Please apply!
-
-Thanks,
-Mathias
-
-[1] https://lore.kernel.org/kvm/20250722204316.1186096-1-minipli@grsecurity.net/
-
-Mathias Krause (3):
-  x86: Don't rely on KVM's hypercall patching
-  x86: Provide a macro for extable handling
-  x86/hypercall: Simplify and increase coverage
-
- lib/x86/desc.h  |   9 ++--
- x86/apic.c      |   5 +-
- x86/hypercall.c | 131 +++++++++++++++++++++++-------------------------
- x86/vmexit.c    |   5 +-
- 4 files changed, 77 insertions(+), 73 deletions(-)
-
+diff --git a/lib/x86/desc.h b/lib/x86/desc.h
+index 68f38f3d7533..21e0ae8dd028 100644
+--- a/lib/x86/desc.h
++++ b/lib/x86/desc.h
+@@ -150,11 +150,14 @@ typedef struct  __attribute__((packed)) {
+ 	u16 iomap_base;
+ } tss64_t;
+ 
++#define ASM_EX_ENTRY(src, dst) \
++	".pushsection .data.ex\n\t"			\
++	__ASM_SEL(.long, .quad) src ", " dst "\n\t"	\
++	".popsection \n\t"
++
+ #define __ASM_TRY(prefix, catch)				\
+ 	"movl $0, %%gs:4\n\t"					\
+-	".pushsection .data.ex\n\t"				\
+-	__ASM_SEL(.long, .quad) " 1111f,  " catch "\n\t"	\
+-	".popsection \n\t"					\
++	ASM_EX_ENTRY("1111f", catch)				\
+ 	prefix "\n\t"						\
+ 	"1111:"
+ 
 -- 
 2.30.2
 
