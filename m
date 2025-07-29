@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8066378F5E
-	for <kvm@vger.kernel.org>; Tue, 29 Jul 2025 04:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650BE78F34
+	for <kvm@vger.kernel.org>; Tue, 29 Jul 2025 04:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753764790; cv=none; b=lu0KvYDNtO9+GZ3THEz/gKlPArzG1g+f2m/mP6o9jo8l9dflXSnsbHAq6PBLkhy8bNdQEISmPsn8PncTn7uoDKGYvlvIeCNh9rnpYXijar33hj/ce1Bn+aykuxDpd0Jj/1R4nk+1RByikxmbnvykvPS1gElBk2j0EcJMtEJXtxM=
+	t=1753765150; cv=none; b=bYDpZF6Dhn5m4sZO2ufT3wC2YsQFVSDz2RJZuG8fB7xBXlf1Oh8E8FItodFFPeFiOBYTBTGcRfiajSVhQ32qhzeRNQ27kPAh3rt79rK8eyOULrcxN+1kfUYoWhrH7Pf49cyDKuFLSsSjxfkTzyBdZ71QNFbJ5yPE0RM94BFfx2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753764790; c=relaxed/simple;
-	bh=JeIzu/vv0Xyf6BMdhzq1eRIZbdak9DThRpsJxiByLDs=;
+	s=arc-20240116; t=1753765150; c=relaxed/simple;
+	bh=OGHML/72d9kJnWTVsS50xdQUsgPR+uC+iOLiQ/eoOqQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TsCbFz9du2aneYefhOgqLyIXO78cMe7CDpUsMMOsUbubsXgTRz24Rc4UVd5dJybBt4NdI8JTocMo2uFv7yOxbyWrUjQ4WahiJ2eNEPcmGvO51P0d+IjCQHrmL5S7wmADiauODhmQ9pQ58T3WVyAjaNo0DNhWphRSOA+cw6wAAtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLlNA4VJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=te+AMCUQSJgbr657Gs9pIRt7a7n1ON8o+g+TsU++4GgtugWuy2XtD96Eziskyxfh+2abylh5aZLYiwiP7eKOCbZhrqgMzO0TcymvutH+owfUy8NeCSkJUgvzmYAg8ZlgBzsHL6d6V2JlyGBsj7wBLLeouxjAnmWins2Hldsd1VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vEGeRVBa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLlNA4VJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E170C4CEEF;
-	Tue, 29 Jul 2025 04:53:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vEGeRVBa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A5C4CEEF;
+	Tue, 29 Jul 2025 04:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753764790;
-	bh=JeIzu/vv0Xyf6BMdhzq1eRIZbdak9DThRpsJxiByLDs=;
+	s=k20201202; t=1753765149;
+	bh=OGHML/72d9kJnWTVsS50xdQUsgPR+uC+iOLiQ/eoOqQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ZLlNA4VJJ0ExQdkEY2SMmvHnMS7henZTELiiB/kSahqFh8FCjBKhMleEjphF72EKw
-	 ptBuKUovecKvqUIjbIQc4DcnE6WVm3KvjN4yA2MktjTZJPGRldsN6E5weDBopebooz
-	 JiG6qjdk/caWPuN1/B2yqM45wciGTInirEB6S5oLErvV5CvjjGPcFLuv8T9EPXYAx5
-	 wFig01D+DwfavhyYRGlQpeto+A4ZWa44YpIfnkKSFjaxwAb8HuqOiyyiWmGXNdlrij
-	 MQoqr6tlAFdpB/IzmmQVFJiiOefEPIgRKzmXv2Bl2mTYLhTMIl3cjJqSAyObn9AQoI
-	 xVtwZvof4yWIw==
+	b=vEGeRVBardNxiixDlc32dyxmSCitI4Q0uDQC+K2RkCx7ORMG3bFTVnEVDXCDliVRt
+	 oJXn8aQY293o+Diwmy9sjLJmINzTK5OuLC5cou4E7jZZtc6Pe+o2hz70FrlYZbXf1V
+	 HIlEHn8ZoDACrz26eu3Bi5gFdrXTxCl8Jha9nG/X8CeynVz8qY1Ls+FyxYJatF2oo4
+	 VAIajD+WU5gXZ/lDBqewTabpUc3lhI3XufHEJrT+MjmucAJDD0wo7IYFc7O9lVEbuz
+	 pCo7PigQvuZ20wMIFN04YAaz0oqhSoAZn1iDTNerLx1S1uLTGjllcODlAPOGHCG3FU
+	 ucbHaWOuEsCQQ==
 X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: Mostafa Saleh <smostafa@google.com>
@@ -33,95 +33,145 @@ Cc: kvm@vger.kernel.org, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Steven Price <steven.price@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Julien Thierry <julien.thierry.kdev@gmail.com>
-Subject: Re: [RFC PATCH kvmtool 02/10] vfio: Rename some functions
-In-Reply-To: <aIZuAlHQRdi5PUqY@google.com>
+Subject: Re: [RFC PATCH kvmtool 03/10] vfio: Create new file legacy.c
+In-Reply-To: <aIZulgInZXazv8oY@google.com>
 References: <20250525074917.150332-1-aneesh.kumar@kernel.org>
- <20250525074917.150332-2-aneesh.kumar@kernel.org>
- <aIZuAlHQRdi5PUqY@google.com>
-Date: Tue, 29 Jul 2025 10:23:03 +0530
-Message-ID: <yq5ams8nbntc.fsf@kernel.org>
+ <20250525074917.150332-3-aneesh.kumar@kernel.org>
+ <aIZulgInZXazv8oY@google.com>
+Date: Tue, 29 Jul 2025 10:29:04 +0530
+Message-ID: <yq5ajz3rbnjb.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 Mostafa Saleh <smostafa@google.com> writes:
 
-> On Sun, May 25, 2025 at 01:19:08PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> We will add iommufd support in later patches. Rename the old vfio
->> method as legacy vfio.
->> 
+> On Sun, May 25, 2025 at 01:19:09PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> Move legacy vfio config methodology to legacy.c. Also add helper
+>> vfio_map/unmap_mem_range which will be switched to function pointers in
+>> the later patch.
+>>=20
 >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 >> ---
->>  vfio/core.c | 31 ++++++++++++++++---------------
->>  1 file changed, 16 insertions(+), 15 deletions(-)
->> 
+>>  Makefile           |   1 +
+>>  include/kvm/vfio.h |  14 ++
+>>  vfio/core.c        | 342 ++------------------------------------------
+>>  vfio/legacy.c      | 347 +++++++++++++++++++++++++++++++++++++++++++++
+>>  4 files changed, 372 insertions(+), 332 deletions(-)
+>>  create mode 100644 vfio/legacy.c
+>>=20
+>> diff --git a/Makefile b/Makefile
+>> index 60e551fd0c2a..8b2720f73386 100644
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -65,6 +65,7 @@ OBJS	+=3D pci.o
+>>  OBJS	+=3D term.o
+>>  OBJS	+=3D vfio/core.o
+>>  OBJS	+=3D vfio/pci.o
+>> +OBJS	+=3D vfio/legacy.o
+>>  OBJS	+=3D virtio/blk.o
+>>  OBJS	+=3D virtio/scsi.o
+>>  OBJS	+=3D virtio/console.o
+>> diff --git a/include/kvm/vfio.h b/include/kvm/vfio.h
+>> index ac7b6226239a..67a528f18d33 100644
+>> --- a/include/kvm/vfio.h
+>> +++ b/include/kvm/vfio.h
+>> @@ -126,4 +126,18 @@ void vfio_unmap_region(struct kvm *kvm, struct vfio=
+_region *region);
+>>  int vfio_pci_setup_device(struct kvm *kvm, struct vfio_device *device);
+>>  void vfio_pci_teardown_device(struct kvm *kvm, struct vfio_device *vdev=
+);
+>>=20=20
+>> +int vfio_map_mem_range(struct kvm *kvm, __u64 host_addr, __u64 iova, __=
+u64 size);
+>> +int vfio_unmap_mem_range(struct kvm *kvm, __u64 iova, __u64 size);
+>> +
+>> +struct kvm_mem_bank;
+>> +int vfio_map_mem_bank(struct kvm *kvm, struct kvm_mem_bank *bank, void =
+*data);
+>> +int vfio_unmap_mem_bank(struct kvm *kvm, struct kvm_mem_bank *bank, voi=
+d *data);
+>> +int vfio_configure_reserved_regions(struct kvm *kvm, struct vfio_group =
+*group);
+>> +int legacy_vfio__init(struct kvm *kvm);
+>> +int legacy_vfio__exit(struct kvm *kvm);
+>> +
+>> +extern int kvm_vfio_device;
+>> +extern struct list_head vfio_groups;
+>> +extern struct vfio_device *vfio_devices;
+>> +
+>>  #endif /* KVM__VFIO_H */
 >> diff --git a/vfio/core.c b/vfio/core.c
->> index c6b305c30cf7..424dc4ed3aef 100644
+>> index 424dc4ed3aef..2af30df3b2b9 100644
 >> --- a/vfio/core.c
 >> +++ b/vfio/core.c
->> @@ -282,7 +282,7 @@ void vfio_unmap_region(struct kvm *kvm, struct vfio_region *region)
->>  	}
->>  }
->>  
->> -static int vfio_configure_device(struct kvm *kvm, struct vfio_device *vdev)
->> +static int legacy_vfio_configure_device(struct kvm *kvm, struct vfio_device *vdev)
->>  {
->>  	int ret;
->>  	struct vfio_group *group = vdev->group;
->> @@ -340,12 +340,12 @@ err_close_device:
->>  	return ret;
->>  }
->>  
->> -static int vfio_configure_devices(struct kvm *kvm)
->> +static int legacy_vfio_configure_devices(struct kvm *kvm)
->>  {
->>  	int i, ret;
->>  
->>  	for (i = 0; i < kvm->cfg.num_vfio_devices; ++i) {
->> -		ret = vfio_configure_device(kvm, &vfio_devices[i]);
->> +		ret = legacy_vfio_configure_device(kvm, &vfio_devices[i]);
->>  		if (ret)
->>  			return ret;
->>  	}
->> @@ -429,7 +429,7 @@ static int vfio_configure_reserved_regions(struct kvm *kvm,
->>  	return ret;
->>  }
->>  
->> -static int vfio_configure_groups(struct kvm *kvm)
->> +static int legacy_vfio_configure_groups(struct kvm *kvm)
->>  {
->>  	int ret;
->>  	struct vfio_group *group;
->> @@ -454,7 +454,7 @@ static int vfio_configure_groups(struct kvm *kvm)
->>  	return 0;
->>  }
->>  
->> -static struct vfio_group *vfio_group_create(struct kvm *kvm, unsigned long id)
->> +static struct vfio_group *legacy_vfio_group_create(struct kvm *kvm, unsigned long id)
->>  {
->>  	int ret;
->>  	struct vfio_group *group;
->> @@ -512,10 +512,11 @@ static void vfio_group_exit(struct kvm *kvm, struct vfio_group *group)
->>  	if (--group->refs != 0)
->>  		return;
->>  
->> -	ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER);
->> -
->>  	list_del(&group->list);
->> -	close(group->fd);
->> +	if (group->fd != -1) {
->> +		ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER);
->> +		close(group->fd);
->> +	}
+>> @@ -4,14 +4,11 @@
+>>=20=20
+>>  #include <linux/list.h>
+>>=20=20
+>> -#define VFIO_DEV_DIR		"/dev/vfio"
+>> -#define VFIO_DEV_NODE		VFIO_DEV_DIR "/vfio"
+>>  #define IOMMU_GROUP_DIR		"/sys/kernel/iommu_groups"
+>>=20=20
+>> -static int vfio_container;
+>> -static int kvm_vfio_device;
+>> -static LIST_HEAD(vfio_groups);
+>> -static struct vfio_device *vfio_devices;
+>> +int kvm_vfio_device;
 >
-> That seems unrelated to the rename, maybe it's better to move that when
-> IOMMUFD is supported as it's related to it.
+> kvm_vfio_device shouldn=E2=80=99t be VFIO/IOMMUFD specific, so that leads=
+ to
+> duplication in both files, I suggest move it=E2=80=99s management to the =
+vfio/core.c
+> (and don=E2=80=99t extern the fd) And either export a function to add dev=
+ices or maybe,
+> better doing it once from vfio__init()
+>
+>> +LIST_HEAD(vfio_groups);
+> =E2=80=9Cvfio_groups=E2=80=9D seems not to be used by the core code, mayb=
+e it=E2=80=99s better to have a
+> static version in each file?
+> Also, as that is not really used for IOMMUFD, it seems to move group logi=
+c into
+> legacy file. Instead of making iommufd populating groups so the core code=
+ handle
+> the group exit.
 >
 
-Sure. Will make the change as part of iommufd patch.
+I am also using the groups for reserved region configuration.
+
+static int iommufd_configure_reserved_mem(struct kvm *kvm)
+{
+	int ret;
+	struct vfio_group *group;
+
+	list_for_each_entry(group, &vfio_groups, list) {
+		ret =3D vfio_configure_reserved_regions(kvm, group);
+		if (ret)
+			return ret;
+	}
+	return 0;
+}
+
+An updated version of these patches can be found at
+https://gitlab.arm.com/linux-arm/kvmtool-cca/-/tree/cca/tdisp-upstream-post=
+-v1
+
+>
+>> +struct vfio_device *vfio_devices;
+>>=20=20
+>
+> Similarly for =E2=80=9Cvfio_devices=E2=80=9D, it=E2=80=99s only allocated=
+/freed in core code, but never used.
+> But no strong opinion about that.
+>
+> Thanks,
+> Mostafa
+>
 
 -aneesh
