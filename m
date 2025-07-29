@@ -1,104 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59254A02
-	for <kvm@vger.kernel.org>; Tue, 29 Jul 2025 05:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E025224AF2;
+	Tue, 29 Jul 2025 05:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753765398; cv=none; b=QAbIAMoM1yt7Nlq12PJ7uJHIKWyyz43aYCG19mpBrPnPLCAafWpUq1SLfKVmEJE4B6cvgjDwqSNeUEPNv1tMJr2pzl9Ef4JHk0HKnXngYnB3hivmWIsV9a8O8g95Nt19nZGeNPOI97Tou7dPxFk4iZOiTeK21Juhda9McLPBo5U=
+	t=1753765513; cv=none; b=bxa/CaISuHRQTSteqd6JLuzqdmTrE2+NyiZjxuMLKh7NmOBkkxRiWxful2PjnSPhFULV9K5sutrPFxMDU2/rtlXlMBNjtk0XCReek+pc1dq1baUsgPj31Y66k4faN1A99IZUv+1KFoaOi1njTP4x5nEYF4X6lXOOcdYCsRoEZr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753765398; c=relaxed/simple;
-	bh=D/cz3N4KvTH2zvJcMMw/y/ERc33ud6vojHcKrX9cMK4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TvUK7FA/ebN59eNKpcceXO0DAUABXN2ORLsRM6WbSmkaqZUvW8zEviyK139ltz76lh/zC/YBTi6cUoEEHRVDGYyvySpKXp48QN/6SYT5hVLjfENjaIvmWevGfO+xi1yivVSnev0gSYs8ePZnBdHScl3v1eDogFdX4opuhHC/kkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/F+/Aw0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753765513; c=relaxed/simple;
+	bh=5egcKgD4FYDc9odofRDQJ94rLDaE5PJqwRcIkar3lGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=apIn3ZKNIka7XFZYLatVPgk3nHlve8EKd0odVgwi9DVsqLzupqpkqrsfEk22pnuJrOHtaH/+qIPBxxAP51sMO64AA3AVbTzoOYnGtMF79f4toonrfyarz7lPYQRv3gL6DpQCLuuUCEfPqs3rnbu0IpJ+jovtlHnSKoxH0rkufis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jEC8rh+u; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/F+/Aw0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434AEC4CEEF;
-	Tue, 29 Jul 2025 05:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753765398;
-	bh=D/cz3N4KvTH2zvJcMMw/y/ERc33ud6vojHcKrX9cMK4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=g/F+/Aw0aiRpRYdKAa7H6WYwZ+jSslFVRcjvfI0f7sMIMDnm7d7a0DSnvWSqhLxrm
-	 3Z1uxNBfm3zIWW3nJPjyZSGpwqbtAkhTJk0VVOmUfvsg/MuFG7ioa/liaKp3cceBDx
-	 PmXRpagROn/XDDISAmvawG5gARDcyU/not7l1Y0+r9VRClAEgFzQ4tg99z1z0RUcyY
-	 lg72WGksYPVCqUO6e1LAtxGdK+NXuE5YTZRhamsNqYhzcsjmHXwKOYq2tW3YTdv/0O
-	 R0XfWbVqu2ae5A7TBWZwX3Fx6gocqehOwq+Un3Pa4yDRMD6IOTYkfnKpzEIl8J4jlD
-	 poGOtMAkxtRcQ==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: kvm@vger.kernel.org, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Julien Thierry <julien.thierry.kdev@gmail.com>
-Subject: Re: [RFC PATCH kvmtool 05/10] vfio: Add dma map/unmap handlers
-In-Reply-To: <aIZvElv03XftC2gw@google.com>
-References: <20250525074917.150332-1-aneesh.kumar@kernel.org>
- <20250525074917.150332-5-aneesh.kumar@kernel.org>
- <aIZvElv03XftC2gw@google.com>
-Date: Tue, 29 Jul 2025 10:33:12 +0530
-Message-ID: <yq5ah5yvbncf.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jEC8rh+u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753765512; x=1785301512;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5egcKgD4FYDc9odofRDQJ94rLDaE5PJqwRcIkar3lGo=;
+  b=jEC8rh+uj5kSZgFbvwlnzjVx+n7L50vIpMUAlFIJCizlHoakH52GR1cN
+   VJ/WVVJ+lDKUhuseKemjFlxp5evxVvRU0eADliJwcYcWDB48aWhnRwbhz
+   WnTDSnRnwrVa7oq/XAOP04/G7/eWP5nCWpBH1+dbcTWERk5xIml9JnJ1G
+   lzb3OmtZbxM7HNLX5hIUmo52jl3DLjqefAzS8KwCaeIS1XDZkiKLCu5+2
+   Q1Qi3UwhMyYPPvMJma3MF09GkXwWgRmL36u8QCZeraFDrSvhmT+pYM1aJ
+   qqM2bW4LfQw9oxUIUXAuKhpRvwS6DO2R+AHiGFL7dOEAARo57OpcHMtcO
+   w==;
+X-CSE-ConnectionGUID: YHc11TtWRTKLEUlT46UY9g==
+X-CSE-MsgGUID: PYjPUCX4R2uo8LzxQa1ASg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="59671659"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="59671659"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:05:11 -0700
+X-CSE-ConnectionGUID: NtU2Nli6Ro2azAlZ/UeGhA==
+X-CSE-MsgGUID: WWnmbXg2QjKOC6qN3TIygg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="162172796"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa007.fm.intel.com with ESMTP; 28 Jul 2025 22:05:06 -0700
+Date: Tue, 29 Jul 2025 12:55:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
+	seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
+	kirill.shutemov@intel.com, dave.hansen@intel.com,
+	dan.j.williams@intel.com, kai.huang@intel.com,
+	isaku.yamahata@intel.com, elena.reshetova@intel.com,
+	rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 07/20] x86/virt/tdx: Expose SEAMLDR information via
+ sysfs
+Message-ID: <aIhUVyJVQ+rhRB4r@yilunxu-OptiPlex-7050>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-8-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250523095322.88774-8-chao.gao@intel.com>
 
-Mostafa Saleh <smostafa@google.com> writes:
+> +static const struct attribute_group *tdx_subsys_groups[] = {
+> +	SEAMLDR_GROUP,
+> +	NULL,
+> +};
+> +
+>  static void tdx_subsys_init(void)
+>  {
+>  	struct tdx_tsm *tdx_tsm;
+>  	int err;
+>  
+> +	err = get_seamldr_info();
+> +	if (err) {
+> +		pr_err("failed to get seamldr info %d\n", err);
+> +		return;
+> +	}
+> +
+>  	/* Establish subsystem for global TDX module attributes */
+> -	err = subsys_virtual_register(&tdx_subsys, NULL);
+> +	err = subsys_virtual_register(&tdx_subsys, tdx_subsys_groups);
+>  	if (err) {
+>  		pr_err("failed to register tdx_subsys %d\n", err);
+>  		return;
 
-> On Sun, May 25, 2025 at 01:19:11PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> ---
->>  include/kvm/vfio.h | 4 ++--
->>  vfio/core.c        | 7 +++++--
->>  vfio/legacy.c      | 7 +++++--
->>  3 files changed, 12 insertions(+), 6 deletions(-)
->>=20
->> diff --git a/include/kvm/vfio.h b/include/kvm/vfio.h
->> index 67a528f18d33..fed692b0f265 100644
->> --- a/include/kvm/vfio.h
->> +++ b/include/kvm/vfio.h
->> @@ -126,8 +126,8 @@ void vfio_unmap_region(struct kvm *kvm, struct vfio_=
-region *region);
->>  int vfio_pci_setup_device(struct kvm *kvm, struct vfio_device *device);
->>  void vfio_pci_teardown_device(struct kvm *kvm, struct vfio_device *vdev=
-);
->>=20=20
->> -int vfio_map_mem_range(struct kvm *kvm, __u64 host_addr, __u64 iova, __=
-u64 size);
->> -int vfio_unmap_mem_range(struct kvm *kvm, __u64 iova, __u64 size);
->> +extern int (*dma_map_mem_range)(struct kvm *kvm, __u64 host_addr, __u64=
- iova, __u64 size);
->> +extern int (*dma_unmap_mem_range)(struct kvm *kvm, __u64 iova, __u64 si=
-ze);
->>=20=20
->>  struct kvm_mem_bank;
->>  int vfio_map_mem_bank(struct kvm *kvm, struct kvm_mem_bank *bank, void =
-*data);
->> diff --git a/vfio/core.c b/vfio/core.c
->> index 2af30df3b2b9..32a8e0fe67c0 100644
->> --- a/vfio/core.c
->> +++ b/vfio/core.c
->> @@ -10,6 +10,9 @@ int kvm_vfio_device;
->>  LIST_HEAD(vfio_groups);
->>  struct vfio_device *vfio_devices;
->>=20=20
->> +int (*dma_map_mem_range)(struct kvm *kvm, __u64 host_addr, __u64 iova, =
-__u64 size);
->> +int (*dma_unmap_mem_range)(struct kvm *kvm, __u64 iova, __u64 size);
->
-> I think it's better to  wrap those in an ops struct, this can be set once=
- and
-> in the next patches this can be used for init/exit instead of having such=
- checks:
-> =E2=80=9Cif (kvm->cfg.iommufd || kvm->cfg.iommufd_vdevice)=E2=80=9D
->
+As mentioned, TDX Connect also uses this virtual TSM device. And I tend
+to extend it to TDX guest, also make the guest TSM management run on
+the virtual device which represents the TDG calls and TDG_VP_VM calls.
 
-Sure. I=E2=80=99ll revise the patch to introduce the ops struct.
+So I'm considering extract the common part of tdx_subsys_init() out of
+TDX host and into a separate file, e.g.
 
--aneesh
+---
+
++source "drivers/virt/coco/tdx-tsm/Kconfig"
++
+ config TSM
+        bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index c0c3733be165..a54d3cb5b4e9 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -10,3 +10,4 @@ obj-$(CONFIG_INTEL_TDX_GUEST) += tdx-guest/
+ obj-$(CONFIG_ARM_CCA_GUEST)    += arm-cca-guest/
+ obj-$(CONFIG_TSM)              += tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)                += guest/
++obj-y                          += tdx-tsm/
+diff --git a/drivers/virt/coco/tdx-tsm/Kconfig b/drivers/virt/coco/tdx-tsm/Kconfig
+new file mode 100644
+index 000000000000..768175f8bb2c
+--- /dev/null
++++ b/drivers/virt/coco/tdx-tsm/Kconfig
+@@ -0,0 +1,2 @@
++config TDX_TSM_BUS
++       bool
+diff --git a/drivers/virt/coco/tdx-tsm/Makefile b/drivers/virt/coco/tdx-tsm/Makefile
+new file mode 100644
+index 000000000000..09f0ac08988a
+--- /dev/null
++++ b/drivers/virt/coco/tdx-tsm/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_TSM_BUS) += tdx-tsm-bus.o
+
+---
+
+And put the tdx_subsys_init() in tdx-tsm-bus.c. We need to move host
+specific initializations out of tdx_subsys_init(), e.g. seamldr_group &
+seamldr fw upload.
+
+Thanks,
+Yilun
