@@ -1,215 +1,113 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02852DCF64;
-	Wed, 30 Jul 2025 17:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE8B2E093A
+	for <kvm@vger.kernel.org>; Wed, 30 Jul 2025 17:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753897628; cv=none; b=SxyAhNhzxS81KHLTtq2+Ghy38kVI7c/pz8pc+2OmOyhkaKii2e3el4v5iuO5D+8iOkZ0cd2sZoV68JconM0oWkD7O6AirdD0EFdBtV8VA10RBDH64cZuPy9yQOOBK57cFoMNxKfuzvVnlNSKuPr9EMdsNWXBBRoCU6sN1NMbg0o=
+	t=1753898169; cv=none; b=IGAF8hQSjXzgdNghydyVuafGLsDQLF4TLLUzEJ8DUy3+YEPb9jrktfebfcLpuQEI/G0jsFECeHxvs2LvMV+LRnM+rmqaauEfoGOjTbVZB7lLGw0ckWy1BoEVhZaq/Akun5kFcQiDlehgSCxNZXy616+b5Rd+oJktTCRfpsNXFDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753897628; c=relaxed/simple;
-	bh=0Kc7jvARdLyXdBvQ6trNh3aGtpd2HrUi9jADvEjuC+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkswIqsUIkTe3IfiHcTz8sXUUrcqo2zKcEtaOYRZDLCPfi5y2dH+R5D5BzzEt1OYe6HR9FgHDucYdGcsSxjJildgdejk+3a0sPQ9WW1V6HP6LSfgsT/1t0PBBbmkKXxBA21INmiST9J3Y9c94Kfrn8YCEEQct/haSx+kUqesvNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=QxTfTGBR; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1753898169; c=relaxed/simple;
+	bh=7OLCRCNR5V/AlevOyvlK6totQukmEA5jV8LJEeHMwaU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kAV1YsFiYFTOjrMZ6ca7/xTgF5n3ugqXX1HgGwiRiJ4XfxZg59ppsvHwaF+oJCvpCiKvkgKuXWXgRZmNmXgIk+Unw3ZWSZK0ycv+ejDyb981WMN3Ak1t2q+WMeNS0uAg2xFLw/wopJhkaKQBKnuFHb2KveQZCJ6+VsIJzODB1Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cJO/pgd+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="QxTfTGBR"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56UHk6nA1614815
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 30 Jul 2025 10:46:31 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56UHk6nA1614815
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753897591;
-	bh=2zF97TfTyDzxj7Meh54oh9Ub3fo+pB2wdmcB/Olws2w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxTfTGBRMfI1qBGB5i3atkV5F3beDhlw+p8rjk33wM1js2ftX2kM7tMbiuq4Z2jO+
-	 v3zuk4bhutgl7StYC2DQkSRwFelu8u3TEWFp5s7P3leOAFN6+FrI4ufDXz9MYfkIJh
-	 PH2J6glXOG2k7cVA5rgar6bPeQXeGH8e4WmJkSOd+7ZWE0pmgKFCK/Zh8d1+wHj0I3
-	 InRQQj0eRUya4H5bpxSIc2MWYIy3CoX8RuSOaHjFf3CRVaTDXSnbkCmCNjrNN/Qdvd
-	 01rRoqgXjdN9/dmZjW9Ii9F42sW9iQsmFAlwRb+Xj/vyg0L8fBiiEovJ3jodCJ9DAj
-	 oN7OVI7jsSzWQ==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, xin@zytor.com, chao.gao@intel.com
-Subject: [PATCH v1 2/4] KVM: x86: Introduce MSR read/write emulation helpers
-Date: Wed, 30 Jul 2025 10:46:03 -0700
-Message-ID: <20250730174605.1614792-3-xin@zytor.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730174605.1614792-1-xin@zytor.com>
-References: <20250730174605.1614792-1-xin@zytor.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cJO/pgd+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753898166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4tmJpoYYb7eLSC9wRAB/Bqt5vsUFjB2nvCjuXfmwYWc=;
+	b=cJO/pgd+U9cRDcFchxgpoG/cES3umbjpL4YszkjNeSBjnmaNJaj4hCqAzEoR7j/y18cgoH
+	qX1Ya6L9nIXorEgLEve2kclUo86x0yIb+iZqeVnKO+BCIJCtHxw9lb90IzXqAUFOLUkWwQ
+	ESkFBCS9b/tqzClaXZ5fVtVp8I1fCOw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-161-VawnGuT2PUqvzQYWMV8_cw-1; Wed, 30 Jul 2025 13:56:04 -0400
+X-MC-Unique: VawnGuT2PUqvzQYWMV8_cw-1
+X-Mimecast-MFC-AGG-ID: VawnGuT2PUqvzQYWMV8_cw_1753898163
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b7889c8d2bso23368f8f.3
+        for <kvm@vger.kernel.org>; Wed, 30 Jul 2025 10:56:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753898162; x=1754502962;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4tmJpoYYb7eLSC9wRAB/Bqt5vsUFjB2nvCjuXfmwYWc=;
+        b=WOXSZ3C1xQkI8yIFU6GIsRdvnCUUsD3vc2tVJVNI7QGrQqVVb1oc0d4SiW1FHVyqjt
+         FoOJtfLF1S2PDZFkR7Tem1vUJujwYjD6mhYTSHRdLR1VlFqte6JTk/2yClap0X0bxKsY
+         eQ5/V15r2JirRRUySooVYqeZtqsxC1Jj9+DmOROlFnfANWA7SH3M1Hgz1iuDeEPPzyZ9
+         cVEGy9uRBcNHwRRBdMHHJhRpvUi/z/dfEfq/rsFD13GqJToVNTAlv1T0kGVjkvxdg1n6
+         m771hQLYFLPP6Q7M20LUUz8WKiNIXuj4LqsrSZBCGnKIoyw4TXFD+28sajCK3ocvUDlh
+         dUuQ==
+X-Gm-Message-State: AOJu0YwpMLAisKtdA3y2RJchUAtq53BOVcuekuTUOdBl3xNSo3LXXUzX
+	D7O8x8m5lXYTOa69aW63O/dxa0/3wHQhxZfPDgXo4/yWbjB5GcHyLRf4HHiDbv1lLLQ4eri0stQ
+	PSxwU3BYvcef+hNnIsQQ0fouDZwYr8JqTHhog341ALg7YTWhSvd95uuHF5ZEf+i5bHRA16VK+vK
+	i833mNnJi2lt+fguOE6tu42dOqeH7k
+X-Gm-Gg: ASbGncubVin8YFD6s57I1GwOIbx9RxnvvVQb6Y5Pl/s73I/keMZLPAvQs8Fjs+d2gZq
+	eYwFkTCnD+v0dCqG1Xhn20cAcgAGZjJhhGHgZbC65DpnoOJ3uNWb+wpCKbCzT0EJt62Nl9CS6br
+	IpC2vVUCF/IA5Sp+K2/7uQZA==
+X-Received: by 2002:a05:6000:1888:b0:3b7:7910:2159 with SMTP id ffacd0b85a97d-3b7950109c1mr3505053f8f.55.1753898162187;
+        Wed, 30 Jul 2025 10:56:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG26N0I19mW9eRY7Eb0OU1Cm5tjgJLaTMjcvx2EQY3LNoUffveVDZiQLM5Ba2OV+n+7p+edjzfMVLPdiokAYvg=
+X-Received: by 2002:a05:6000:1888:b0:3b7:7910:2159 with SMTP id
+ ffacd0b85a97d-3b7950109c1mr3505038f8f.55.1753898161649; Wed, 30 Jul 2025
+ 10:56:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250725220713.264711-1-seanjc@google.com> <20250725220713.264711-13-seanjc@google.com>
+ <CABgObfZWvtskg-m94LRHqN=_FtJpFtTzOi3sEhiAKZx1rzr=ng@mail.gmail.com> <aIkkkaqTbc9vG_x3@google.com>
+In-Reply-To: <aIkkkaqTbc9vG_x3@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 30 Jul 2025 19:55:48 +0200
+X-Gm-Features: Ac12FXypMCtriNdkn1LbM5S5k_2ZX491ZBTz9QXKmema-A7BqPYwU9xq0s1CzGU
+Message-ID: <CABgObfZmn03eQU9XYnFRKfHWNUx006z_4x8Z91hapVHZupUYwA@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: x86: VMX changes for 6.17
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add helper functions to centralize guest MSR read and write emulation.
-This change consolidates the MSR emulation logic and makes it easier
-to extend support for new MSR-related VM exit reasons introduced with
-the immediate form of MSR instructions.
+On Tue, Jul 29, 2025 at 9:44=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+> As for this pull request, I vote to drop it for 6.17 and give ourselves t=
+ime to
+> figure out what we want to do with vm_dead.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
----
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/x86.c              | 67 +++++++++++++++++++++++----------
- 2 files changed, 49 insertions(+), 19 deletions(-)
+Ah ok, so my spidey sense wasn't right for the wrong reasons. :)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f19a76d3ca0e..a854d9a166fe 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -201,6 +201,7 @@ enum kvm_reg {
- 	VCPU_EXREG_SEGMENTS,
- 	VCPU_EXREG_EXIT_INFO_1,
- 	VCPU_EXREG_EXIT_INFO_2,
-+	VCPU_EXREG_EDX_EAX,
- };
- 
- enum {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a1c49bc681c4..5086c3b30345 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2024,54 +2024,71 @@ static int kvm_msr_user_space(struct kvm_vcpu *vcpu, u32 index,
- 	return 1;
- }
- 
--int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu)
-+static int kvm_emulate_get_msr(struct kvm_vcpu *vcpu, u32 msr, int reg)
- {
--	u32 ecx = kvm_rcx_read(vcpu);
- 	u64 data;
- 	int r;
- 
--	r = kvm_get_msr_with_filter(vcpu, ecx, &data);
-+	r = kvm_get_msr_with_filter(vcpu, msr, &data);
- 
- 	if (!r) {
--		trace_kvm_msr_read(ecx, data);
-+		trace_kvm_msr_read(msr, data);
- 
--		kvm_rax_write(vcpu, data & -1u);
--		kvm_rdx_write(vcpu, (data >> 32) & -1u);
-+		if (reg == VCPU_EXREG_EDX_EAX) {
-+			kvm_rax_write(vcpu, data & -1u);
-+			kvm_rdx_write(vcpu, (data >> 32) & -1u);
-+		} else {
-+			kvm_register_write(vcpu, reg, data);
-+		}
- 	} else {
- 		/* MSR read failed? See if we should ask user space */
--		if (kvm_msr_user_space(vcpu, ecx, KVM_EXIT_X86_RDMSR, 0,
-+		if (kvm_msr_user_space(vcpu, msr, KVM_EXIT_X86_RDMSR, 0,
- 				       complete_fast_rdmsr, r))
- 			return 0;
--		trace_kvm_msr_read_ex(ecx);
-+		trace_kvm_msr_read_ex(msr);
- 	}
- 
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
- }
-+
-+int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_emulate_get_msr(vcpu, kvm_rcx_read(vcpu), VCPU_EXREG_EDX_EAX);
-+}
- EXPORT_SYMBOL_GPL(kvm_emulate_rdmsr);
- 
--int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu)
-+static int kvm_emulate_set_msr(struct kvm_vcpu *vcpu, u32 msr, int reg)
- {
--	u32 ecx = kvm_rcx_read(vcpu);
--	u64 data = kvm_read_edx_eax(vcpu);
-+	u64 data;
- 	int r;
- 
--	r = kvm_set_msr_with_filter(vcpu, ecx, data);
-+	if (reg == VCPU_EXREG_EDX_EAX)
-+		data = kvm_read_edx_eax(vcpu);
-+	else
-+		data = kvm_register_read(vcpu, reg);
-+
-+	r = kvm_set_msr_with_filter(vcpu, msr, data);
- 
- 	if (!r) {
--		trace_kvm_msr_write(ecx, data);
-+		trace_kvm_msr_write(msr, data);
- 	} else {
- 		/* MSR write failed? See if we should ask user space */
--		if (kvm_msr_user_space(vcpu, ecx, KVM_EXIT_X86_WRMSR, data,
-+		if (kvm_msr_user_space(vcpu, msr, KVM_EXIT_X86_WRMSR, data,
- 				       complete_fast_msr_access, r))
- 			return 0;
- 		/* Signal all other negative errors to userspace */
- 		if (r < 0)
- 			return r;
--		trace_kvm_msr_write_ex(ecx, data);
-+		trace_kvm_msr_write_ex(msr, data);
- 	}
- 
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
- }
-+
-+int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_emulate_set_msr(vcpu, kvm_rcx_read(vcpu), VCPU_EXREG_EDX_EAX);
-+}
- EXPORT_SYMBOL_GPL(kvm_emulate_wrmsr);
- 
- int kvm_emulate_as_nop(struct kvm_vcpu *vcpu)
-@@ -2163,9 +2180,8 @@ static int handle_fastpath_set_tscdeadline(struct kvm_vcpu *vcpu, u64 data)
- 	return 0;
- }
- 
--fastpath_t handle_fastpath_set_msr_irqoff(struct kvm_vcpu *vcpu)
-+static fastpath_t handle_set_msr_irqoff(struct kvm_vcpu *vcpu, u32 msr, int reg)
- {
--	u32 msr = kvm_rcx_read(vcpu);
- 	u64 data;
- 	fastpath_t ret;
- 	bool handled;
-@@ -2174,11 +2190,19 @@ fastpath_t handle_fastpath_set_msr_irqoff(struct kvm_vcpu *vcpu)
- 
- 	switch (msr) {
- 	case APIC_BASE_MSR + (APIC_ICR >> 4):
--		data = kvm_read_edx_eax(vcpu);
-+		if (reg == VCPU_EXREG_EDX_EAX)
-+			data = kvm_read_edx_eax(vcpu);
-+		else
-+			data = kvm_register_read(vcpu, reg);
-+
- 		handled = !handle_fastpath_set_x2apic_icr_irqoff(vcpu, data);
- 		break;
- 	case MSR_IA32_TSC_DEADLINE:
--		data = kvm_read_edx_eax(vcpu);
-+		if (reg == VCPU_EXREG_EDX_EAX)
-+			data = kvm_read_edx_eax(vcpu);
-+		else
-+			data = kvm_register_read(vcpu, reg);
-+
- 		handled = !handle_fastpath_set_tscdeadline(vcpu, data);
- 		break;
- 	default:
-@@ -2200,6 +2224,11 @@ fastpath_t handle_fastpath_set_msr_irqoff(struct kvm_vcpu *vcpu)
- 
- 	return ret;
- }
-+
-+fastpath_t handle_fastpath_set_msr_irqoff(struct kvm_vcpu *vcpu)
-+{
-+	return handle_set_msr_irqoff(vcpu, kvm_rcx_read(vcpu), VCPU_EXREG_EDX_EAX);
-+}
- EXPORT_SYMBOL_GPL(handle_fastpath_set_msr_irqoff);
- 
- /*
--- 
-2.50.1
+> I want to land "terminate VM" in
+> some form by 6.18 (as the next LTS), but AFAIK there's no rush to get it =
+into
+> 6.17.
+
+As you prefer! I had already rewritten slightly the commit log, so
+here it is for
+your reference and future consumption:
+
+Add a TDX sub-ioctl, KVM_TDX_TERMINATE_VM, to solve a performance
+issue in TDX VM cleanup. A guest_memfd keeps a reference to the
+virtual machine, which means the VM cannot be fully destroyed until
+the guest_memfd is released. However, to release the guest_memfd the
+TDX module must first destroy the Secure EPT, which is a slow
+operation if
+performed while the VM is still valid.  KVM_TDX_TERMINATE_VM allows
+userspace to initiate the transition to the TEARDOWN state before file
+descriptors are closed (either by hand or on process exit). The TDX
+module then releases the HKID and S-EPT destruction can runup to 10x
+faster.
+
+Thanks,
+
+Paolo
 
