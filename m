@@ -1,181 +1,147 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12FF24469E
-	for <kvm@vger.kernel.org>; Mon,  4 Aug 2025 22:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E83238C08
+	for <kvm@vger.kernel.org>; Mon,  4 Aug 2025 23:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754346812; cv=none; b=Jzi1YhCu6bzfg50Dt3wDO+vl8gPguNy7WhcYMOOAPnjiqoIwE/HoKyyOnrkKjvXvF6LgHveBQyxt/EW8ayYWChqidGxaRfVHeWPout2VutpnFm9lgCh2IU6AjKddVvQjSVE8n3+S3UR0xmsQwfVOJdZpqSD/MB1eesbyDvvDMog=
+	t=1754349003; cv=none; b=AF/2rvCnR24mtkHIV5AgGqAQwEpIcYs/XQEpUuRRkPm6l9E1klgQxtsNcTR+iMVvRBZokXIVLcMleZUWPA+THjEmM9TDRjekNb9G9Ha+MrI4CY66/8bcSH5lGnxPBkLPia+iXNof1IpdOqwASRUnfseVGwgPSIm3MwIlo4f2pYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754346812; c=relaxed/simple;
-	bh=NA5sV2NlM/4MwyTHD9LYT5Oy+9/XpWpvjRh/HCuvcbQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ofkQ5zEcD/UF1ToED5PTeBey+w7Ud0NGQ76jUbYcvdXSc/gKvh87Wtq/NsDyZrdJCeuD+QnALAt/17VPAId8t3DUqqYRr5NKLXVLfisumzOx6RfaEn83mBduar1mIbYb+cAhOL7cz2Rq7EhPYnG9tLDbUdG+/va0G0MDsF2lijg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CFF91E4D;
-	Mon,  4 Aug 2025 15:33:21 -0700 (PDT)
-Received: from [10.57.5.104] (unknown [10.57.5.104])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 56D5E3F673;
-	Mon,  4 Aug 2025 15:33:28 -0700 (PDT)
-Message-ID: <f3b39fdc-e063-4d47-95dd-d4158f139053@arm.com>
-Date: Mon, 4 Aug 2025 23:33:27 +0100
+	s=arc-20240116; t=1754349003; c=relaxed/simple;
+	bh=jGEm0DtgPk8+RabZ/v6woIGn/2BhjebzCgIbNh+Ac80=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ErSEe8HnI6bUMAaXm81JsucS32pwfnizkEsnM9VOTd5pOIUQG9+DdihYpTHWdVvsBHCtUcLGaOwj2BTf2MH7GPn6hAZEDvR5g9TZFdKNVkwh6VV4G7uQbEB6tZS7DyDwZHZkin3kEV/po9qI2naV4e3FB/YOA8jObAC+W089W04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X7EiZ6El; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X7EiZ6El"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b3f71e509d6so6749946a12.0
+        for <kvm@vger.kernel.org>; Mon, 04 Aug 2025 16:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754349001; x=1754953801; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tG0zFdwSMEPj6TjvMjIhSWrku59KtpikLJvWaNvieXY=;
+        b=X7EiZ6Elq84ytvAMYbzXAelu/Uvw/oj6a7ydvZlyA2EqZc4Y58MfQ1XFQmZ+w9vrrd
+         AZdSknweCxEO79fSpO0EoFlmEFQAYSCQhjoQFyh+tYr1jbxw4qHF7ejF40jgXKCo0lAH
+         09OmkyQt8RHDP3t57HZ17t25t224yfdOIHULtkuECNsqg44pBW6sEYA7XPAUSwzz5FVO
+         U7ulk5RGtcIIfdYnNXPkRH2hsk0ORyQUWLla1pdrB0HKMVKx7bT6IUTKwBmXHZp32+UF
+         BtoQ9Ve7JvXu7pF6X6WgzkTcnG0vt0uzjgIVq69pf1zg3VPwmbX3Ow4RROtz+yVEYCfR
+         PDPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754349001; x=1754953801;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tG0zFdwSMEPj6TjvMjIhSWrku59KtpikLJvWaNvieXY=;
+        b=XKbel0qcOU+Zjd1cUeboNV92kr2rpyWcsb3xIlHBWjoOxw7d6+TIIEqhxE/ZNzdqOi
+         21maAOtsyDnX5NZxooTc3/S5GJEKgo14L7BiUyOKX5q/A8hT31rfo00EUemGvBWgi8ty
+         DBJfJACREDk3vXigunQ3v13+W7rYkbldBAOaO6hE/BdIq3E2K4Sp64gKHkM7JpMIKQ9J
+         egDu25FhoqRdyo9E5oBDAEWrWCXOX6DRMr2J3XCJNMK5yBf/tEQI86KN+HKIDrh7pb+Y
+         fCd5Yu/Loudc5jjTT55OzWTEVaEgB+UWB9/kRR1s4L+EtqxOTfaeK7vCditVsZMLfRy/
+         daRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ6N238qDkK3SCFkO2GqhOUujD+J4WThIZoEEoi9JvpOkgm25WN+/Ub+E66n0E4irFIFU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtbs0k3xPKWUMky4hh9jfwji6iIXiB/kR6hA20SZ1KHXm74rFO
+	KngI8SZ7fbmUV/iSSQgoxqb7tEznT7aEL+/kgxrHDNBF4ShNUEbN+/m8o/AGkBW6rTWrRrUI2oj
+	v0N3atg==
+X-Google-Smtp-Source: AGHT+IE2NsYRZGLMA0DfVkuf5vaTZrSFR4fZkpJO3aIRBFjVMmkA+JR/oFWBMzx7rkrijiPT3c3wcqzhSlk=
+X-Received: from pjyf7.prod.google.com ([2002:a17:90a:ec87:b0:31f:1707:80f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3886:b0:31e:f3b7:49d2
+ with SMTP id 98e67ed59e1d1-3211611bdf3mr16662659a91.0.1754349000710; Mon, 04
+ Aug 2025 16:10:00 -0700 (PDT)
+Date: Mon, 4 Aug 2025 16:09:59 -0700
+In-Reply-To: <87tt2nm6ie.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH kvmtool 09/10] vfio/iommufd: Add viommu and vdevice
- objects
-Content-Language: en-GB
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: kvm@vger.kernel.org, Steven Price <steven.price@arm.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>
-References: <20250525074917.150332-1-aneesh.kumar@kernel.org>
- <20250525074917.150332-9-aneesh.kumar@kernel.org>
- <aH4yMUWTuVtgqD7T@willie-the-truck> <yq5att31brz2.fsf@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <yq5att31brz2.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <cover.1750432368.git.jpiotrowski@linux.microsoft.com>
+ <4266fc8f76c152a3ffcbb2d2ebafd608aa0fb949.1750432368.git.jpiotrowski@linux.microsoft.com>
+ <875xghoaac.fsf@redhat.com> <ca26fba1-c2bb-40a1-bb5e-92811c4a6fc6@linux.microsoft.com>
+ <87o6tttliq.fsf@redhat.com> <aHWjPSIdp5B-2UBl@google.com> <87tt2nm6ie.fsf@redhat.com>
+Message-ID: <aJE9x_pjBVIdiEJN@google.com>
+Subject: Re: [RFC PATCH 1/1] KVM: VMX: Use Hyper-V EPT flush for local TLB flushes
+From: Sean Christopherson <seanjc@google.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	alanjiang@microsoft.com, chinang.ma@microsoft.com, 
+	andrea.pellegrini@microsoft.com, Kevin Tian <kevin.tian@intel.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, linux-hyperv@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 24/07/2025 15:09, Aneesh Kumar K.V wrote:
-> Will Deacon <will@kernel.org> writes:
+On Mon, Aug 04, 2025, Vitaly Kuznetsov wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > It'll take more work than the below, e.g. to have VMX's construct_eptp() pull the
+> > level and A/D bits from kvm_mmu_page (vendor code can get at the kvm_mmu_page with
+> > root_to_sp()), but for the core concept/skeleton, I think this is it?
+> >
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 6e838cb6c9e1..298130445182 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -3839,6 +3839,37 @@ void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu)
+> >  }
+> >  EXPORT_SYMBOL_GPL(kvm_mmu_free_guest_mode_roots);
+> >  
+> > +struct kvm_tlb_flush_root {
+> > +       struct kvm *kvm;
+> > +       hpa_t root;
+> > +};
+> > +
+> > +static void kvm_flush_tlb_root(void *__data)
+> > +{
+> > +       struct kvm_tlb_flush_root *data = __data;
+> > +
+> > +       kvm_x86_call(flush_tlb_root)(data->kvm, data->root);
+> > +}
+> > +
+> > +void kvm_mmu_flush_all_tlbs_root(struct kvm *kvm, struct kvm_mmu_page *root)
+> > +{
+> > +       struct kvm_tlb_flush_root data = {
+> > +               .kvm = kvm,
+> > +               .root = __pa(root->spt),
+> > +       };
+> > +
+> > +       /*
+> > +        * Flush any TLB entries for the new root, the provenance of the root
+> > +        * is unknown.  Even if KVM ensures there are no stale TLB entries
+> > +        * for a freed root, in theory another hypervisor could have left
+> > +        * stale entries.  Flushing on alloc also allows KVM to skip the TLB
+> > +        * flush when freeing a root (see kvm_tdp_mmu_put_root()), and flushing
+> > +        * TLBs on all CPUs allows KVM to elide TLB flushes when a vCPU is
+> > +        * migrated to a different pCPU.
+> > +        */
+> > +       on_each_cpu(kvm_flush_tlb_root, &data, 1);
 > 
->> On Sun, May 25, 2025 at 01:19:15PM +0530, Aneesh Kumar K.V (Arm) wrote:
->>> This also allocates a stage1 bypass and stage2 translate table.
->>
->> Please write your commit messages as per Linux kernel guidelines.
->>
->>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->>> ---
->>>   builtin-run.c            |   2 +
->>>   include/kvm/kvm-config.h |   1 +
->>>   vfio/core.c              |   4 +-
->>>   vfio/iommufd.c           | 115 ++++++++++++++++++++++++++++++++++++++-
->>
->> [...]
->>
->>>   4 files changed, 119 insertions(+), 3 deletions(-)
->>> diff --git a/vfio/iommufd.c b/vfio/iommufd.c
->>> index 742550705746..39870320e4ac 100644
->>> --- a/vfio/iommufd.c
->>> +++ b/vfio/iommufd.c
->>> @@ -108,6 +108,116 @@ err_out:
->>>   	return ret;
->>>   }
->>>   
->>> +static int iommufd_alloc_s1bypass_hwpt(struct vfio_device *vdev)
->>> +{
->>> +	int ret;
->>> +	unsigned long dev_num;
->>> +	unsigned long guest_bdf;
->>> +	struct vfio_device_bind_iommufd bind;
->>> +	struct vfio_device_attach_iommufd_pt attach_data;
->>> +	struct iommu_hwpt_alloc alloc_hwpt;
->>> +	struct iommu_viommu_alloc alloc_viommu;
->>> +	struct iommu_hwpt_arm_smmuv3 bypass_ste;
->>> +	struct iommu_vdevice_alloc alloc_vdev;
->>> +
->>> +	bind.argsz = sizeof(bind);
->>> +	bind.flags = 0;
->>> +	bind.iommufd = iommu_fd;
->>> +
->>> +	/* now bind the iommufd */
->>> +	if (ioctl(vdev->fd, VFIO_DEVICE_BIND_IOMMUFD, &bind)) {
->>> +		ret = -errno;
->>> +		vfio_dev_err(vdev, "failed to get info");
->>> +		goto err_out;
->>> +	}
->>> +
->>> +	alloc_hwpt.size = sizeof(struct iommu_hwpt_alloc);
->>> +	alloc_hwpt.flags = IOMMU_HWPT_ALLOC_NEST_PARENT;
->>> +	alloc_hwpt.dev_id = bind.out_devid;
->>> +	alloc_hwpt.pt_id = ioas_id;
->>> +	alloc_hwpt.data_type = IOMMU_HWPT_DATA_NONE;
->>> +	alloc_hwpt.data_len = 0;
->>> +	alloc_hwpt.data_uptr = 0;
->>> +
->>> +	if (ioctl(iommu_fd, IOMMU_HWPT_ALLOC, &alloc_hwpt)) {
->>> +		ret = -errno;
->>> +		pr_err("Failed to allocate HWPT");
->>> +		goto err_out;
->>> +	}
->>> +
->>> +	attach_data.argsz = sizeof(attach_data);
->>> +	attach_data.flags = 0;
->>> +	attach_data.pt_id = alloc_hwpt.out_hwpt_id;
->>> +
->>> +	if (ioctl(vdev->fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data)) {
->>> +		ret = -errno;
->>> +		vfio_dev_err(vdev, "failed to attach to IOAS ");
->>> +		goto err_out;
->>> +	}
->>> +
->>> +	alloc_viommu.size = sizeof(alloc_viommu);
->>> +	alloc_viommu.flags = 0;
->>> +	alloc_viommu.type = IOMMU_VIOMMU_TYPE_ARM_SMMUV3;
->>> +	alloc_viommu.dev_id = bind.out_devid;
->>> +	alloc_viommu.hwpt_id = alloc_hwpt.out_hwpt_id;
->>> +
->>> +	if (ioctl(iommu_fd, IOMMU_VIOMMU_ALLOC, &alloc_viommu)) {
->>> +		ret = -errno;
->>> +		vfio_dev_err(vdev, "failed to allocate VIOMMU %d", ret);
->>> +		goto err_out;
->>> +	}
->>> +#define STRTAB_STE_0_V			(1UL << 0)
->>> +#define STRTAB_STE_0_CFG_S2_TRANS	6
->>> +#define STRTAB_STE_0_CFG_S1_TRANS	5
->>> +#define STRTAB_STE_0_CFG_BYPASS		4
->>> +
->>> +	/* set up virtual ste as bypass ste */
->>> +	bypass_ste.ste[0] = STRTAB_STE_0_V | (STRTAB_STE_0_CFG_BYPASS << 1);
->>> +	bypass_ste.ste[1] = 0x0UL;
->>> +
->>> +	alloc_hwpt.size = sizeof(struct iommu_hwpt_alloc);
->>> +	alloc_hwpt.flags = 0;
->>> +	alloc_hwpt.dev_id = bind.out_devid;
->>> +	alloc_hwpt.pt_id = alloc_viommu.out_viommu_id;
->>> +	alloc_hwpt.data_type = IOMMU_HWPT_DATA_ARM_SMMUV3;
->>> +	alloc_hwpt.data_len = sizeof(bypass_ste);
->>> +	alloc_hwpt.data_uptr = (unsigned long)&bypass_ste;
->>> +
->>> +	if (ioctl(iommu_fd, IOMMU_HWPT_ALLOC, &alloc_hwpt)) {
->>> +		ret = -errno;
->>> +		pr_err("Failed to allocate S1 bypass HWPT %d", ret);
->>> +		goto err_out;
->>> +	}
->>> +
->>> +	alloc_vdev.size = sizeof(alloc_vdev),
->>> +	alloc_vdev.viommu_id = alloc_viommu.out_viommu_id;
->>> +	alloc_vdev.dev_id = bind.out_devid;
->>> +
->>> +	dev_num = vdev->dev_hdr.dev_num;
->>> +	/* kvmtool only do 0 domain, 0 bus and 0 function devices. */
->>> +	guest_bdf = (0ULL << 32) | (0 << 16) | dev_num << 11 | (0 << 8);
->>
->> I don't understand this. Shouldn't the BDF correspond to the virtual
->> configuration space? That's not allocated until later, but just going
->> with 0 isn't going to work.
->>
->> What am I missing?
->>
+> Would it make sense to complement this with e.g. a CPU mask tracking all
+> the pCPUs where the VM has ever been seen running (+ a flush when a new
+> one is added to it)?
 > 
-> As I understand it, kvmtool supports only bus 0 and does not allow
-> multifunction devices. Based on that, I derived the guest BDF as follows
-> (correcting what was wrong in the original patch):
-> 
-> guest_bdf = (0ULL << 16) | (0 << 8) | dev_num << 3 | (0 << 0);
-> 
-> Are you suggesting that this approach is incorrect, and that we can use
-> a bus number other than 0?
+> I'm worried about the potential performance impact for a case when a
+> huge host is running a lot of small VMs in 'partitioning' mode
+> (i.e. when all vCPUs are pinned). Additionally, this may have a negative
+> impact on RT use-cases where each unnecessary interruption can be seen
+> problematic. 
 
-To put this other way, the emulation of the configuration space is based
-on the "dev_num". i.e., CFG address is converted to the offset and
-mapped to the "dev_num". So I think what we have here is correct.
+Oof, right.  And it's not even a VM-to-VM noisy neighbor problem, e.g. a few
+vCPUs using nested TDP could generate a lot of noist IRQs through a VM.  Hrm.
 
-Suzuki
+So I think the basic idea is so flawed/garbage that even enhancing it with per-VM
+pCPU tracking wouldn't work.  I do think you've got the right idea with a pCPU mask
+though, but instead of using a mask to scope IPIs, use it to elide TLB flushes.
 
+With the TDP MMU, KVM can have at most 6 non-nested roots active at any given time:
+SMM vs. non-SMM, 4-level vs. 5-level, L1 vs. L2.  Allocating a cpumask for each
+TDP MMU root seems reasonable.  Then on task migration, instead of doing a global
+INVEPT, only INVEPT the current and prev_roots (because getting a new root will
+trigger a flush in kvm_mmu_load()), and skip INVEPT on TDP MMU roots if the pCPU
+has already done a flush for the root.
+
+Or we could do the optimized tracking for all roots.  x86 supports at most 8192
+CPUs, which means 1KiB per root.  That doesn't seem at all painful given that
+each shadow pages consumes 4KiB...
