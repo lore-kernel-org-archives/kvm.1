@@ -1,98 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179C5291C0F
-	for <kvm@vger.kernel.org>; Mon,  4 Aug 2025 23:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D9D2264B8
+	for <kvm@vger.kernel.org>; Mon,  4 Aug 2025 23:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754349009; cv=none; b=eR6Ls32En5CvKFKGyrnzsALtCMOuW9R0ioQgzkrh6O3WsrbF6ZIVFF/5D2gf/cXLefDXvKtsO1yRGYzqJwdixkVaVocF+IPaVGKjfaUK3cTRyM8i/BWTE2k6VwmbtAy13nLIUceekfFg5Y4gIgPH8g04Y/nWOdoNt1urUVjE798=
+	t=1754351732; cv=none; b=ag+qOsI2Q+ufuqfsGGMuU9GAXbC2Bp2LEJKa0hLEioAJ8SLb28fsSSCkknm2nlICRoKX1gsHGxORtvL22mpBkn2U1VgWWPPx+ufOj81fx3tvWhnr3j2jbugyhg5LBpGGYEIJWBCD+KbfCPJ1ZzMfPe9CIv1AVedLqao5hq3tjVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754349009; c=relaxed/simple;
-	bh=OqU7HKlaaB+/yr85e8O0qFFV2mhIIMzXHyes2/pyXiM=;
+	s=arc-20240116; t=1754351732; c=relaxed/simple;
+	bh=LJa4/RLFYqhpHz6skUkYByaddwTg6kkzYxMQ4jNpMpw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hYPv9/e8o7N5rvT2Un3nrzSFWalIqhA4GAtZm2VoZUVEk+2XoivQ4L4Rmiq6ygk8juwtBsSnzOoj11JXU5a4PEyiWHBtoHVA9stmgreo3fMBRPSBg/IJkiLzBQ7rLtqw/AP6kMR65sACBGsgbyJpYOn7bwx3bJF1F9UT6pnpQfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=emQpYAhD; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=gEKWaXaigcimueW+xNiiBQPH6cauZvjIcU8Y+ckwOCcyeaWRgr4Bu0KtPHqo8xYhWoRtR0bFivGOSrCEUZuLeGfat9KCGALF+43MTBHPBbLl47UHG4PLJbpGzNnI1zOYvVwEQPBdsJx8ULAl/v4v1WClRHWh0ZCOESl6Ecm/VGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AzdEaQL5; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="emQpYAhD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA146C4CEFA
-	for <kvm@vger.kernel.org>; Mon,  4 Aug 2025 23:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754349008;
-	bh=OqU7HKlaaB+/yr85e8O0qFFV2mhIIMzXHyes2/pyXiM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=emQpYAhD7UcEV34gva/+Tj2Gk9HQNqUdMMzPJsgGAVXqLM/GSpEW0RmrusIHZTWSQ
-	 mEV05f0QR6bajRjLIlWSa4IZkibAVyg4gSoG1hESJs7QfWJCgW+96Fhmr1oQfTfwpl
-	 nIHxlfFJvZrseS1hYf6Q3mjx8ENyoaIVdtOIGJqNpVL1n4lK0bFMm8V4jnzkU3vH/b
-	 tLPlNK/xDGtMOmbSsd4E8WBwGr4Ke0RfftUuh7rvJZlwnP4K1Ju/4GTwr2NXN4YQri
-	 iuNdj9ZHC2K+Angv3b50xnFEgKLlXyjSAR/TYKmgNbMrw2C3xzIYlYhcs3/lPMPl6x
-	 gBj8HPi9LxthA==
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-458bf57a4e7so20255e9.1
-        for <kvm@vger.kernel.org>; Mon, 04 Aug 2025 16:10:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXXzMsl6Kh6KNdSOxnGDOuOdgl6hafvSM5Wt9ewBeKdGhGAVtCHgU0WPV/Pzzqpy1ov0ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmDyuhphTyMvGs2w5deA8YVn+Efz/9Fp4BgwF5U7vBQLzLJYdy
-	KBsPpAk4MAlU0kRoUz5vMvm+QEzDmB40x9S+XOue4z7qCenbJe16JLB4Vtb/BGmmyCDLtRU4mLM
-	KGFymSk3UjIYO5B6v7bCQ6W9KxVCKPEBVEdntnQ1R
-X-Google-Smtp-Source: AGHT+IHKpk+HdsX+UkmoGsNTrjTyAvv+GZeP3pJG7v7GzWXQDB8HcuYU8JvYjjZGY3fLVdxWGYKFXeKl60hxqHiBoUI=
-X-Received: by 2002:a05:600c:3b8c:b0:43d:409c:6142 with SMTP id
- 5b1f17b1804b1-459e13212bamr553835e9.0.1754349006808; Mon, 04 Aug 2025
- 16:10:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AzdEaQL5"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-af8fd1b80e5so831802766b.2
+        for <kvm@vger.kernel.org>; Mon, 04 Aug 2025 16:55:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1754351727; x=1754956527; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kkOJrgR6AtCFvZcGKn8m61aTsvNmBN6yQcZ7tCaSTKE=;
+        b=AzdEaQL5T1BLS2jVQbL3EndlQMsOXHWxD26AB+YvASRQLElh9ecZWCiQuchnDOSs8J
+         00KqwxAqyyn5/teD+LLIoMhN/dq9Hd/jMO8rfgBRtaMteEOb62ZAhbflzFuOepp62FSB
+         h16EjeHjCWly5esBdRNXZu8mAobUgIyLOGG30=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754351727; x=1754956527;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kkOJrgR6AtCFvZcGKn8m61aTsvNmBN6yQcZ7tCaSTKE=;
+        b=CHFmcD9NOb8nV9adAc8KVv2/ozk5GWgY84HyCyIOQEt3iVUTXSpK/zqKSKxeM1D741
+         FBN2QlYvglnm3oLcsGKRd/M3x0b/ciopQwScAfM9efQcjzHRIhDVsR6QGFA2QlpE0CMc
+         7h6tRiYtDL9o+20RlMSviQ6kwT3R4IT43l+tKsVNEJ/Zkk4yN+fJAbVI3F5n0zqbR98V
+         fqdYKLBlB22USmo+RADWs95BFudMmGVPz3R39eWgR22Jm0bb8tMknqTiHaEF/+rp2Ms8
+         13qFFVDm8ZHecJ4au08flruwne2Dfk1pB4Rd4Y/PBbq/XelQaMgfweIqSaq1eEN1D5E1
+         WyYA==
+X-Gm-Message-State: AOJu0YyW2f66TBPWvpgLs4I5vJMfIWO8SgEM2kGBCwlUyr6c8EbmR+Em
+	CTv7fWh8gK3G5r+E04tdhS5gVy0T3NDzrtICHG7rQUsnnZtH/WrILOqxfg6Ym/20c8VQMrsjFUk
+	NeIOHSvQ=
+X-Gm-Gg: ASbGncu9jBGhqMfQmuRFYauJkRO38hCcHEZhpShYji+Ea2+SyaDdDBPsR/kLCK39U2N
+	bJMS6R/EbCsLp6tj4RQnO9iAgt7OPQbt+a8VzQG5LVhajYM82Y1Pg1DpXOB6icCs/FVE2GEGWaY
+	UrenTM+DpRZKH20HEPa2gBQzObGx4l9oFxFg8xxqIjr6cmUBYr8OPN5PmW7db7BGS8m9FqAPPXZ
+	0CSxrsQugQLfyDpHB57LlVB9YxW451BrJKBRZbpgEmSvj0vX6ccYQPfSnDaxWP8KTUlr1URb1WE
+	Ur3u0sXd5x33lKLbUbeS0sLody/ZrNEseDUDtIYbSEZrCjKuzzdCapHGh7nEy5g4Q6oyyUiRILN
+	aQdDocPW4iV1Q5XkELKxlqUhN0/2400AEW8cLwyHdSTfDExCtO2kwI3LCeuqUI5WFY0St9mPpHB
+	K+Rmw0AVI=
+X-Google-Smtp-Source: AGHT+IFHZiodW12fzXxgBf0YduQcW3CpxdDIERKegxTlbZonWm3VXt/DZml7IgbZPC+O1wEPoHRHjw==
+X-Received: by 2002:a17:907:6d1f:b0:ae0:c539:b89a with SMTP id a640c23a62f3a-af9400844bbmr1151035666b.19.1754351727574;
+        Mon, 04 Aug 2025 16:55:27 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af93b4d4c27sm546548066b.66.2025.08.04.16.55.26
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 16:55:27 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-adfb562266cso800151966b.0
+        for <kvm@vger.kernel.org>; Mon, 04 Aug 2025 16:55:26 -0700 (PDT)
+X-Received: by 2002:a17:906:478c:b0:ae9:876a:4f14 with SMTP id
+ a640c23a62f3a-af94024cab6mr1073910366b.59.1754351726564; Mon, 04 Aug 2025
+ 16:55:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALzav=d_Bjfy=6if+rPmxgGJfUV8ijnQ5hf40HoH6Yozg_H6Ew@mail.gmail.com>
-In-Reply-To: <CALzav=d_Bjfy=6if+rPmxgGJfUV8ijnQ5hf40HoH6Yozg_H6Ew@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 4 Aug 2025 16:09:54 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuP09jvpB--fLy6Ju6rRuKFS5r8vyq1ne7ragbv0suWzLQ@mail.gmail.com>
-X-Gm-Features: Ac12FXy7avNazRoYmbC_NeBMrj_2tPBaCG8ggpo_BqxQQnqN6_SKMsJk-VIeXn4
-Message-ID: <CAF8kJuP09jvpB--fLy6Ju6rRuKFS5r8vyq1ne7ragbv0suWzLQ@mail.gmail.com>
-Subject: Re: Live Update MC (LPC): Call for Presentations
-To: David Matlack <dmatlack@google.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>, kexec@lists.infradead.org, 
-	Linux MM Mailing List <linux-mm@kvack.org>, linux-pci@vger.kernel.org, X86 ML <x86@kernel.org>, 
-	"pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>, David Rientjes <rientjes@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, Josh Hilke <jrhilke@google.com>, 
-	Changyuan Lyu <changyuanl@google.com>, "graf@amazon.com" <graf@amazon.com>, 
-	"dwmw2@infradead.org" <dwmw2@infradead.org>, "jgowans@amazon.com" <jgowans@amazon.com>, 
-	"ptyadav@amazon.de" <ptyadav@amazon.de>, "jgg@nvidia.com" <jgg@nvidia.com>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"alex.williamson@redhat.com" <alex.williamson@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu US <witu@nvidia.com>, 
-	"anthony.yznaga@oracle.com" <anthony.yznaga@oracle.com>, dave.hansen@intel.com, 
-	David Hildenbrand <david@redhat.com>, Frank van der Linden <fvdl@google.com>, jork.loeser@microsoft.com, 
-	Junaid Shahid <junaids@google.com>, pankaj.gupta.linux@gmail.com, 
-	Pratyush Yadav <pratyush@kernel.org>, kpraveen.lkml@gmail.com, 
-	Vishal Annapurve <vannapurve@google.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
+References: <20250804162201.66d196ad.alex.williamson@redhat.com>
+In-Reply-To: <20250804162201.66d196ad.alex.williamson@redhat.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 4 Aug 2025 16:55:09 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whhYRMS7Xc9k_JBdrGvp++JLmU0T2xXEgn046hWrj7q8Q@mail.gmail.com>
+X-Gm-Features: Ac12FXzNsiXa1g4lLLdotjXwBYpgPqvnDpdKKoggRbJ3KlfhT-2HsnqsEpBMoL8
+Message-ID: <CAHk-=whhYRMS7Xc9k_JBdrGvp++JLmU0T2xXEgn046hWrj7q8Q@mail.gmail.com>
+Subject: Re: [GIT PULL] VFIO updates for v6.17-rc1
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+On Mon, 4 Aug 2025 at 15:22, Alex Williamson <alex.williamson@redhat.com> wrote:
+>
+> Li Zhe (6):
+>       mm: introduce num_pages_contiguous()
 
-Thanks for organizing this.
+WHY?
 
-On Fri, Aug 1, 2025 at 8:33=E2=80=AFAM David Matlack <dmatlack@google.com> =
-wrote:
-> Topics to be discussed at the microconference include:
->   - Live Update Orchestrator (state machine, userspace API, implementatio=
-n)
->   - Generic infrastructure for preserving file descriptors across Live Up=
-dates
->   - Live Update support for specific files (memfd, iommufd, VFIO cdev, et=
-c.)
->   - Integration of Live Update with the PCI subsystem and Linux device mo=
-del
+There is exactly *ONE* user, why the heck do we introduce this
+completely pointless "helper" function, and put it in a core header
+file like it was worth it?
 
-I will submit a topic proposal for the Live Update with PCI subsystems.
-The PCI RFC V1 discussion thread is here:
-https://lore.kernel.org/lkml/20250728-luo-pci-v1-0-955b078dd653@kernel.org
+And it's not like that code is some kind of work of art that we want
+to expose everybody to *anyway*. It's written in a particularly stupid
+way that means that it's *way* more expensive than it needs to be.
 
-Thanks
+And then it's made "inline" despite the code generation being
+horrible, which makes it all entirely pointless.
 
-Chris
+Yes, I'm grumpy. This pull request came in late, I'm already
+traveling, and then I look at it and it just makes me *angry* at how
+bad that code is, and how annoying it is.
+
+My builds are already slower than usual because they happen on my
+laptop while traveling, I do *not* need to see this kind of absolutely
+disgusting code that does stupid things that make the build even
+slower.
+
+So I refuse to pull this kind of crap.
+
+If you insist on making my build slower and exposing these kinds of
+helper functions, they had better be *good* helper functions.
+
+Hint: absolutely nobody cares about "the pages crossed a sparsemem
+border. If your driver cares about the number of contiguous pages, it
+might as well say "yeah, they are contiguous, but they are in
+different sparsemem chunks, so we'll break here too".
+
+And at that point all you care about is 'struct page' being
+contiguous, instead of doing that disgusting 'nth_page'.
+
+And then - since there is only *one* single user - you don't put it in
+the most central header file that EVERYBODY ELSE cares about.
+
+And you absolutely don't do it if it generates garbage code for no good reason!
+
+            Linus
