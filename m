@@ -1,109 +1,149 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FEE24291A
-	for <kvm@vger.kernel.org>; Tue,  5 Aug 2025 10:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13415244671;
+	Tue,  5 Aug 2025 11:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754391249; cv=none; b=FS6mltyE0Nm1fz3iSzSgQpmwpWOrT1AhYBDfLnybJ9O9CETIcmkp8SChONgAItptnv9QXXSMgavRg00Hfs7mvd1rmCPh85ImA+9juS+gR+citfmrR+3ibcdpHXj5XFwLIVx6IL8Jq5RHsIT/ED0iHBH88KxYo2nHXiVHXtGcdBQ=
+	t=1754392495; cv=none; b=Pc4BKDCvtdjPguWHsCikhFRaXJvID2KzThM24hJXkSfdrMQTWP+U5wWPhHhnxyWEn8fUgRyA0aT/HIlGj1JKuksE6ohMcZsjUSs+nrPe33bbDHXSbCIuODf9hAFWJf0cKr3ydRcHuW64zX+4Ipu5uXwI9AX+1sZPh35RQPqbHz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754391249; c=relaxed/simple;
-	bh=j6njE58QFD+zg3/0GPbXJiFfWjG2rF0iiy1yUJKDjrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MrD5/0DIGlk86bJhCebaG2Y2vNxJc7AlyeODryVPrc464Odu/rY2oBdUvhoN6YfZXWOBmppZeXuBy7N+sFI7koRYAqcuetYmcRyiAlRiZojQY2nTflz5xsNLqWa3G74HajvqVimHLFYuEj8XWJkwYAxM0hSiAlHenx+SHxME5wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=MfB/95/X; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1754392495; c=relaxed/simple;
+	bh=2ulKMrJshbnmTEThItjii4dtLzTtkSzMe0zlXdGENVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c3oe1+ZWv2K82UumEmSxK3o5ELtZE1Tiw/UmBoCbwnPY0oYGgdfbARpBI9Rfhk7Exriz98tZQJtPDMP+mWu11ZwBpx84iN9Sm6C1liuo6bweeBRMgWbkcmMzXTMHXIAKQunod6rY02tLdlh5LWHv95znbkRFA+f+QD5JT9tOiLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YgQAGSbL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="MfB/95/X"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3b788e02084so283175f8f.3
-        for <kvm@vger.kernel.org>; Tue, 05 Aug 2025 03:54:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1754391245; x=1754996045; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WUiodtQBvKBTA/iKS7oNMgVKazgBWdic3Ly/8SfR7xc=;
-        b=MfB/95/X6j7hyi4c7mQpUHSGHCFQ+iwVMOhVU76zaZu1/ti6Q7Fsddwq90v7WAby9Z
-         bpQrNgHRQOapowQzdW2rKJND/CykUwh0CHt7OC6y16oXCsqauOJ6Iv+Q+dCZkBRD9TB/
-         ESbOFd/jij75oNWIsHZbATIku4rL7puYnZWQKDwCT9OZSWGKtpVz+4QfrgpGJYkkX2Ns
-         9HGPug2CVmlfubL7YgWML764DvueOgAsDvN2zAn282lf4EuuTU4mX/eDTC67Dnmq2r7e
-         SlANsfpi7uwMevgl1FI631eJEjgOtuMz6XnJKReJp3mdRah9u2Ik5NF6s5Y/vXwPCfgR
-         D06Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754391245; x=1754996045;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WUiodtQBvKBTA/iKS7oNMgVKazgBWdic3Ly/8SfR7xc=;
-        b=UhPbHaNqrQtEOd9QUt4DNiPtywPF5CyGoms5DgBFloEbUHHyNmJBrg1UjHWDgMB5Uf
-         hYloXtwphTAQWgP18EBO88HuFcvCYYeAo/vXtH5tcSqvJGsnX4xJpy2Pm+SfcrYWgVuU
-         A26pRL7IcAE/DO1ZACY9DJptkXffGjsEAvAmCC2UyCxvTZjKs26U3bsRldr3XRJzr9mu
-         pJAagth1P7NnwMV3syyFqv3VYjg5bUPGnk9QKCb3gYs7BLUMJ5wW+pTA974MyYtTBaM/
-         U2f2S2DcVuNYNFEYa4dTpDOyWbZR8QSdQ6vSr3zTTpMLtzRfRpmNEdU6piNObQBzFcM2
-         7BMg==
-X-Gm-Message-State: AOJu0YzA3YsHpuTWNa74nq81G14rNAlNV9yaHc0v4KzsHPE1nwj7+E8c
-	lAjPylvn2G5FXPZxes2O2e00cg3WAJ4hI66lrb8DuKSGkT2uL/csqButp99e/8ZEi+8=
-X-Gm-Gg: ASbGncs4sXG+yOTsXvETY8kARdpoRuEaLaGdO53JOIzRS04VBP7i4MJ6bgGVh475udd
-	9JWKQ+DbXu9nik9fWUHbycziV2CxY+84A4NB6Q7XMBVftRZZgEUMmQT8xC8r+Xg6YTxePeecCre
-	hcxV3O2/bHrvTI2nuIRdW8oh89AsXbxs7nliPnO6tR+Y7Lf5N+XYKyfVBay9tb7btlpqo/UQ/sD
-	1h/ivRMnfrJeeLgrBu/jec3VLc90tpCSCi0Hdpe3n0E5gGKhE6FfxTIJruuus8DBzRU4h/3kUR+
-	o2Lcjvsm4IxKPQQlpJZqLup2ojD6BX/b7icB1mkUc5mz+6DrhKVVlhNGMsQgx40/g4RZCX2xzKl
-	HWLIMXlpf+t+4VcPTWI2W0AA003EWMad4oXQG6io=
-X-Google-Smtp-Source: AGHT+IEpOsq0FAVja98/mlRReMdSEb+xPNZ7ZEoi0EN4dXoUtDCJVpNHURSd1y/tvYFRXGJZtratYw==
-X-Received: by 2002:a05:6000:1a86:b0:3b7:99a8:bf6d with SMTP id ffacd0b85a97d-3b8d94b6fa0mr3885890f8f.11.1754391245272;
-        Tue, 05 Aug 2025 03:54:05 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:d884:b809:d57:1ad7])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3abf0csm18344450f8f.14.2025.08.05.03.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 03:54:04 -0700 (PDT)
-From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-To: kvm-riscv@lists.infradead.org
-Cc: kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@atishpatra.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] RISC-V: KVM: fix stack overrun when loading vlenb
-Date: Tue,  5 Aug 2025 12:44:21 +0200
-Message-ID: <20250805104418.196023-4-rkrcmar@ventanamicro.com>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YgQAGSbL"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 575AtDZX030927;
+	Tue, 5 Aug 2025 11:14:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=XX9iNCw9kBZ9JkUcN
+	DiWoSITc1oo12UsF6nQvuFraAo=; b=YgQAGSbL+6uYCrbRPpP0CslKqRgSHmw94
+	qMEjb+HiE4hi8BgkJFRnU6WRs40CFl900mWGGQPjzxFa0WxbIZWtNCClahii+gqz
+	S26z7mDIb1pl5dFcoKWNmLDsArTvYbaO8Y3D1zOjjaJiHvSnF2IBejn5V1p1yVSh
+	Tb78hFAPp7V+jh0h4hlJmhJB+eOiYd69Jk7zvwlEBqs4uo3JnneH4lIJWSNWVF8z
+	QnExP5YILTyV5oConAAIrnLQBs273/jUyNYvd+805ulBV4bNNx0mCxRp8aTNd76Y
+	uXn/DqjjLvk2ncUoRFFggopmJeo27tlBNIQTX0x022U8f/FL85r7w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48b6keag8g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 11:14:51 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5759ZYAP004594;
+	Tue, 5 Aug 2025 11:14:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 489yq2hurk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 11:14:50 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 575BEkiO53281052
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Aug 2025 11:14:46 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD9C82004D;
+	Tue,  5 Aug 2025 11:14:46 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 881B32004B;
+	Tue,  5 Aug 2025 11:14:46 +0000 (GMT)
+Received: from p-imbrenda.boeblingen.de.ibm.com (unknown [9.152.224.66])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Aug 2025 11:14:46 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, david@redhat.com,
+        frankja@linux.ibm.com, seiden@linux.ibm.com, nsg@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        mhartmay@linux.ibm.com, borntraeger@de.ibm.com
+Subject: [PATCH v1 1/2] KVM: s390: Fix incorrect usage of mmu_notifier_register()
+Date: Tue,  5 Aug 2025 13:14:45 +0200
+Message-ID: <20250805111446.40937-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250805111446.40937-1-imbrenda@linux.ibm.com>
+References: <20250805111446.40937-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4AVOZmLQv4owTrzdngGVpU8uSXcxrrvI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDA3OSBTYWx0ZWRfX0DCkmkvYDbhn
+ 2yqnb4GSnrFOuIEJSVc8PuCCcFJKiLDlrL+iv9tECKNilK6GVes2rEfW7NxBLYY2fwFhulOssWt
+ 3IdWglgnCc0ViSqo89aAaRSIiEsT9Bpwf86T500jCKcVE9gysQsYBrNK8HshMaHmrT6zWz/DBBK
+ FsRlnnpQrJjiIjihVPSQ+fzOjfFse0qaSu0Rt+C3I9DX/i2wHYMdURY6LaRPJt99J5ragl4CmKQ
+ hJbdsLfkiXEvqWV+tpRkTtcdmskI6T8W2ccpLe6oG6knxJpeCAB/FfkY4RMErGpl00JdB2lWW76
+ 91gkSV8DewsGwqV64uSPPIMBNo9TGle8BQ7e2qOLGtyHQIyL7VyctlFxO9YeVYHj5skzKFUpR8q
+ xTNWjzYQiq/b8z3riJPmnqYsDWZiSbVdzWg9LDwYwq1+McxQDlcjrigMpN2Q4+eMos2CV0vH
+X-Authority-Analysis: v=2.4 cv=eLATjGp1 c=1 sm=1 tr=0 ts=6891e7ab cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=NBUbcLxLv0y36TE2GLIA:9
+X-Proofpoint-GUID: 4AVOZmLQv4owTrzdngGVpU8uSXcxrrvI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-05_03,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 adultscore=0 clxscore=1011 malwarescore=0 suspectscore=0
+ mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2508050079
 
-The userspace load can put up to 2048 bits into an xlen bit stack
-buffer.  We want only xlen bits, so check the size beforehand.
+If mmu_notifier_register() fails, for example because a signal was
+pending, the mmu_notifier will not be registered. But when the VM gets
+destroyed, it will get unregistered anyway and that will cause one
+extra mmdrop(), which will eventually cause the mm of the process to
+be freed too early, and cause a use-after free.
 
-Fixes: 2fa290372dfe ("RISC-V: KVM: add 'vlenb' Vector CSR")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+This bug happens rarely, and only when secure guests are involved.
+
+The solution is to check the return value of mmu_notifier_register()
+and return it to the caller (ultimately it will be propagated all the
+way to userspace). In case of -EINTR, userspace will try again.
+
+Fixes: ca2fd0609b5d ("KVM: s390: pv: add mmu_notifier")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 ---
- arch/riscv/kvm/vcpu_vector.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/kvm/pv.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-index a5f88cb717f3..05f3cc2d8e31 100644
---- a/arch/riscv/kvm/vcpu_vector.c
-+++ b/arch/riscv/kvm/vcpu_vector.c
-@@ -182,6 +182,8 @@ int kvm_riscv_vcpu_set_reg_vector(struct kvm_vcpu *vcpu,
- 		struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
- 		unsigned long reg_val;
+diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
+index 14c330ec8ceb..e85fb3247b0e 100644
+--- a/arch/s390/kvm/pv.c
++++ b/arch/s390/kvm/pv.c
+@@ -622,6 +622,15 @@ int kvm_s390_pv_init_vm(struct kvm *kvm, u16 *rc, u16 *rrc)
+ 	int cc, ret;
+ 	u16 dummy;
  
-+		if (reg_size != sizeof(reg_val))
-+			return -EINVAL;
- 		if (copy_from_user(&reg_val, uaddr, reg_size))
- 			return -EFAULT;
- 		if (reg_val != cntx->vector.vlenb)
++	/* Add the notifier only once. No races because we hold kvm->lock */
++	if (kvm->arch.pv.mmu_notifier.ops != &kvm_s390_pv_mmu_notifier_ops) {
++		ret = mmu_notifier_register(&kvm->arch.pv.mmu_notifier, kvm->mm);
++		if (ret)
++			return ret;
++		/* The notifier will be unregistered when the VM is destroyed */
++		kvm->arch.pv.mmu_notifier.ops = &kvm_s390_pv_mmu_notifier_ops;
++	}
++
+ 	ret = kvm_s390_pv_alloc_vm(kvm);
+ 	if (ret)
+ 		return ret;
+@@ -657,11 +666,6 @@ int kvm_s390_pv_init_vm(struct kvm *kvm, u16 *rc, u16 *rrc)
+ 		return -EIO;
+ 	}
+ 	kvm->arch.gmap->guest_handle = uvcb.guest_handle;
+-	/* Add the notifier only once. No races because we hold kvm->lock */
+-	if (kvm->arch.pv.mmu_notifier.ops != &kvm_s390_pv_mmu_notifier_ops) {
+-		kvm->arch.pv.mmu_notifier.ops = &kvm_s390_pv_mmu_notifier_ops;
+-		mmu_notifier_register(&kvm->arch.pv.mmu_notifier, kvm->mm);
+-	}
+ 	return 0;
+ }
+ 
 -- 
-2.50.0
+2.50.1
 
