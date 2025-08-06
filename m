@@ -1,54 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4172229B799;
-	Wed,  6 Aug 2025 16:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60245194137
+	for <kvm@vger.kernel.org>; Wed,  6 Aug 2025 17:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754499393; cv=none; b=NmWyZv3EOVDcbmc7TtgloDKi67S23/d3Pj6QgV3USBKKG/DDdfkE7BqhGMES13r+KaicgxyOnjrrWc2op3R/2PxNSDc35zujLwg6kzBBrRtjU5lluPigLhE/nSmDCKFk97whHnjAmQbeZeXAckqOtTIK/0RPiUEobhTkVjJ47O4=
+	t=1754499810; cv=none; b=lXZXNUuq75mGY5ShtDhuJK78/B1spHRaGaVCGXcEXd0krB/RlYWNfooNt31TMnY4uDNKultr+X0o3xNSiciK9aiO42dEOOI3PGr+5jwowcwsp63gS4NFaTCDx+NogUaaQ0AuTuBCq77EjR4s0Znrin5h2Xlp5+EW3VsFppKUvXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754499393; c=relaxed/simple;
-	bh=zAGAbsELpollOdT/eTW6SPvyl/e20p98489YUkFL0Rg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jhrx2xhH8ripqKKCoBcEdr8hltPJ71PthhM5McywRuN6RjGUzsVcbxg3Q+s53OFvOTsEU5Qnp0lG43A4Pwp9jALwusT69NXsLWdzA22pXannqG2DsYdnDkHuWLqysR8UOWrmit0VpQXUuvJWXUWWlr8b87Wjh06R6GfPVZyFWak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9V9Einp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754499810; c=relaxed/simple;
+	bh=vdcd5YalhwXfabTe89vnmf/6PjoRuQzUY38aCn303vI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QXHwGTyUnRriOnRtEqngmoo2ZpLjlEc/zCzUicsRa37rZANHVeVsCwKxJH5Ej8rwQtuwLwofaLs1u1NUGgOMvBSJiXRsG0Bth25Y9+kWd39zDW33Pxe/s+VIuKvUznhyAthw+RHluEkKF40Ex8hC9t3jzo/0eABrf8OhKtN5j3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bzGAZWm0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9V9Einp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0770C4CEE7;
-	Wed,  6 Aug 2025 16:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754499392;
-	bh=zAGAbsELpollOdT/eTW6SPvyl/e20p98489YUkFL0Rg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9V9EinprHiKzCbTb5mFCy5cqHsyiK9BXScCXegKPXYR0tkMsC3eiwHGo4pKCR9JZ
-	 2KkYsh8avrTzkE8+1GlbQefmuif6J+j3GIiibP1Av9BE45DJJ+fhPxWq+D+djSqnK2
-	 eicOadzeXamTMgkbyKAjxpXE1Hf46jBV2u1gQ8X5Uc4AG49NlDMzQ5oMh4Obj/J8OB
-	 EJSuSbeeBwkdfG6PbdXR+TEIYSMi7ecxIhPOYVZ99PcVd0oUt5trigPa/5oD19TRkG
-	 Fp2CNgQ6AvjZ3RrA3VhIkZZncCIXyGoArsHc3bs++s1Upgcmkrq9FmZhxL1/RSkVUI
-	 Q0ErQ0CvINNSg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1ujhRE-004ZQV-3S;
-	Wed, 06 Aug 2025 17:56:28 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bzGAZWm0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754499807;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=b10VcHJdtGe6RLfFmaHbkOGwrL+Hpk9E2OZqBdENHnM=;
+	b=bzGAZWm03lPdWoVNv3vvTuz9jGb+X4DB80BDk14DErEfPFUp0i/PBEK957ejD/1oZ6iGPP
+	oVTPcRP0HFLmrvQsDkQ6fLv+yWDnIPKFJjLtVG7Lrv1TbTiJ70qkVZszHnLgXb8EJsmiDZ
+	khu1wkbETu+zoJr2z5Jl65tovhP8UOM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-662dq8N0Mp2KuUy0rZN1HA-1; Wed,
+ 06 Aug 2025 13:03:25 -0400
+X-MC-Unique: 662dq8N0Mp2KuUy0rZN1HA-1
+X-Mimecast-MFC-AGG-ID: 662dq8N0Mp2KuUy0rZN1HA_1754499804
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C18D5180035F;
+	Wed,  6 Aug 2025 17:03:24 +0000 (UTC)
+Received: from omen.home.shazbot.org (unknown [10.22.66.8])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5F54C1800282;
+	Wed,  6 Aug 2025 17:03:23 +0000 (UTC)
+From: Alex Williamson <alex.williamson@redhat.com>
+To: alex.williamson@redhat.com,
 	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v2 2/5] KVM: arm64: Handle RASv1p1 registers
-Date: Wed,  6 Aug 2025 17:56:12 +0100
-Message-Id: <20250806165615.1513164-3-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250806165615.1513164-1-maz@kernel.org>
-References: <20250806165615.1513164-1-maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	eric.auger@redhat.com,
+	clg@redhat.com
+Subject: [PATCH 0/2] vfio: Deprecate fsl-mc, platform, and amba
+Date: Wed,  6 Aug 2025 11:03:10 -0600
+Message-ID: <20250806170314.3768750-1-alex.williamson@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -56,60 +56,39 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, will@kernel.org, catalin.marinas@arm.com, cohuck@redhat.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-FEAT_RASv1p1 system registeres are not handled at all so far.
-KVM will give an embarassed warning on the console and inject
-an UNDEF, despite RASv1p1 being exposed to the guest on suitable HW.
+The vfio-fsl-mc driver has been orphaned since April 2024 after the
+maintainer became unresponsive.  More than a year later, the driver
+has only received community maintenance.  Let's take the next step
+towards removal by marking it obsolete/deprecated.
 
-Handle these registers similarly to FEAT_RAS, with the added fun
-that there are *two* way to indicate the presence of FEAT_RASv1p1.
+The vfio-platform and vfio-amba drivers have an active maintainer,
+but even the maintainer has no ability to test these drivers anymore.
+The hardware itself has become obsolete and despite Eric's efforts to
+add support for new devices and presenting on the complexities of
+trying to manage and support shared resources at KVM Forum 2024, the
+state of the driver and ability to test it upstream has not advanced.
+The experiment has been useful, but seems to be reaching a conclusion.
+QEMU intends to remove vfio-platform support in the 10.2 release.
+Mark these drivers as obsolete/deprecated in the kernel as well.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/sys_regs.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Thanks,
+Alex
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index ad25484772574..1b4114790024e 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2695,6 +2695,18 @@ static bool access_ras(struct kvm_vcpu *vcpu,
- 	struct kvm *kvm = vcpu->kvm;
- 
- 	switch(reg_to_encoding(r)) {
-+	case SYS_ERXPFGCDN_EL1:
-+	case SYS_ERXPFGCTL_EL1:
-+	case SYS_ERXPFGF_EL1:
-+	case SYS_ERXMISC2_EL1:
-+	case SYS_ERXMISC3_EL1:
-+		if (!(kvm_has_feat(kvm, ID_AA64PFR0_EL1, RAS, V1P1) ||
-+		      (kvm_has_feat_enum(kvm, ID_AA64PFR0_EL1, RAS, IMP) &&
-+		       kvm_has_feat(kvm, ID_AA64PFR1_EL1, RAS_frac, RASv1p1)))) {
-+			kvm_inject_undefined(vcpu);
-+			return false;
-+		}
-+		break;
- 	default:
- 		if (!kvm_has_feat(kvm, ID_AA64PFR0_EL1, RAS, IMP)) {
- 			kvm_inject_undefined(vcpu);
-@@ -3058,8 +3070,13 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	{ SYS_DESC(SYS_ERXCTLR_EL1), access_ras },
- 	{ SYS_DESC(SYS_ERXSTATUS_EL1), access_ras },
- 	{ SYS_DESC(SYS_ERXADDR_EL1), access_ras },
-+	{ SYS_DESC(SYS_ERXPFGF_EL1), access_ras },
-+	{ SYS_DESC(SYS_ERXPFGCTL_EL1), access_ras },
-+	{ SYS_DESC(SYS_ERXPFGCDN_EL1), access_ras },
- 	{ SYS_DESC(SYS_ERXMISC0_EL1), access_ras },
- 	{ SYS_DESC(SYS_ERXMISC1_EL1), access_ras },
-+	{ SYS_DESC(SYS_ERXMISC2_EL1), access_ras },
-+	{ SYS_DESC(SYS_ERXMISC3_EL1), access_ras },
- 
- 	MTE_REG(TFSR_EL1),
- 	MTE_REG(TFSRE0_EL1),
+Alex Williamson (2):
+  vfio/fsl-mc: Mark for removal
+  vfio/platform: Mark for removal
+
+ MAINTAINERS                           |  4 ++--
+ drivers/vfio/fsl-mc/Kconfig           |  5 ++++-
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c     |  2 ++
+ drivers/vfio/platform/Kconfig         | 10 ++++++++--
+ drivers/vfio/platform/reset/Kconfig   |  6 +++---
+ drivers/vfio/platform/vfio_amba.c     |  2 ++
+ drivers/vfio/platform/vfio_platform.c |  2 ++
+ 7 files changed, 23 insertions(+), 8 deletions(-)
+
 -- 
-2.39.2
+2.50.1
 
