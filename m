@@ -1,183 +1,175 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2067.outbound.protection.outlook.com [40.107.237.67])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B811245006;
-	Wed,  6 Aug 2025 20:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754513269; cv=fail; b=EXY64fQUdxqU+nR8lJhA+gGJ56TzF9fSr6cF1+acZtXyE5++CxuOu1wXJOKIiKOf8CK5F6GwNhZgekBebeuq+z7Jc3yG9a+64aKYu3bO3vTfACOdYHFh6VFI0FJOB56XSLYoPZxAAojn8W3VoZmKgcXUNokF/W/jxMy69WrGuwQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754513269; c=relaxed/simple;
-	bh=ISoMRqSeLuu8MacSd5AzLCgOFE9/GkgVRK3sN0+g3RE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S7/ISwj0argmKKt+tXE7WEZ5ZKOZzVPatNIxHWkJlZZAH7BWHAXygq5yW06mnpD6a+U+M/S9RbRyB+t1Ep1CM+nvHR89GDzNUtOs0a7SuZA3jOj2Alh2CgyAfx2ZJpx9WtA26q4rlaNfNTPaQvUB2Mo5J1tDe6wHyMKXwCETqa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=sLyuRq2p; arc=fail smtp.client-ip=40.107.237.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FEB1FF7C8
+	for <kvm@vger.kernel.org>; Wed,  6 Aug 2025 20:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754513913; cv=none; b=MZoSvo49kLRwtOMCZL2Ksw4FjpXStI/9b9C2D+MJj4yaSQAzKhKWOXpUC4PEpUiVflX59XKPlDSd3dksyNskJScmh/jgDKml2gIH9k4fN5/DVyRTAZXsy9Wo9vNBOcwZ8xobYLPqtowGJj3LnUYvmQghR1ecF1pJIPSXxUunVP0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754513913; c=relaxed/simple;
+	bh=U1FeQRtLiG+q4sfmdpJ9bCgp5uUUcwrffLKyNe3Rxms=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cuPyF32K0X8YMZbRsh8mUvFV+GfECTrGX+/K/IE5z1oDD7B32wWSa9mBk2KEnHTPgqmQBgNyhCsgWcW3+3rYGorXv8zhVmGWiQdAtkXV9ywG9hyPeHxn/dBpeAaoi+eAy0LV1pG0qLXiJ4YOC8t5Jlw1eDW13Tv1qfApB1GTXCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mjn/KwJD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="sLyuRq2p"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OV4/clNhKMKYpvXlKvT7eA8oEinFLf2DnA90nHF+tsiY1SvP6aenvl3SY+/8ngTVyOm2vkSnLHRxB/EDIqpxsEUcmlRr/fUtsKW7JwPE31HJavPSTHlIb0JD443pfa78IPGI5BIab+h/jJ92y0vJzBL3k5yN8MWVjU1MZpl25gbcyLpZpCTFeB9gF+6rs9uBt4JJG64fZXZ5xbyWL0oGQ8oXExXYs9WHF71n0B41ZKNEfItxnBY9vmrIA8uoefaVgwdmcaH1tyv1BuqKpn2vScksfT52yRYsGXwyDSbAcGbTGBIpOKOdbF2+PY4E9WphLFjGlpX6+DvpN4m/EwJ10w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0ZOvRu2ptRLkfodHOVjiyO5rfhotZ9SsE3AJLrx5JS4=;
- b=b1yKX62NICPIZ6CS/IJ0vCeKw8wCnb/QruJxybvHVawl9gIkTux7zJV2QM9tfwCzY9qf4r3ks+2OT/JopNKp9SLkiCDDKGyMHlfEFYgx4AVv9/gnSgt0NxDbwUFrIUSrFnfrDP1ogH71W/bfwhPh2yRQnSVfoIN2ubA/HsE/xWbKBmBGsytWGib8d38CuXm2n1q0OhMqb10mo01gxbWBNkZeWr39gLqxy+umuDhl0Zp8n6YLWf+npzsstJCKzI4e7cbWp0CeMg9Ts22KGaSp0EETyUQzCd5ntq3CB4hV0W4qJJyGs9FRCRIvPsLPjIudusnnsWjQEO7tzyR7LcY/QA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0ZOvRu2ptRLkfodHOVjiyO5rfhotZ9SsE3AJLrx5JS4=;
- b=sLyuRq2pZhYZ9H4lAUypeKgyAQviYruuyBVFzH/74A6zhb41ott/4Rj1VoNjZVHNrLgsa2iyUCP5xSCCa14xxblk1Nx67H2Wm9CKBJ/anrI1NDeJEYFFaxvHodR040mW+zPX4B/B1QF5P6AgtqrmFdtojP2lNz+RlscW04FECXM=
-Received: from BY3PR10CA0011.namprd10.prod.outlook.com (2603:10b6:a03:255::16)
- by DM4PR12MB8474.namprd12.prod.outlook.com (2603:10b6:8:181::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Wed, 6 Aug
- 2025 20:47:44 +0000
-Received: from CY4PEPF0000E9DB.namprd05.prod.outlook.com
- (2603:10b6:a03:255:cafe::fe) by BY3PR10CA0011.outlook.office365.com
- (2603:10b6:a03:255::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.13 via Frontend Transport; Wed,
- 6 Aug 2025 20:47:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9DB.mail.protection.outlook.com (10.167.241.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9009.8 via Frontend Transport; Wed, 6 Aug 2025 20:47:43 +0000
-Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 6 Aug
- 2025 15:47:42 -0500
-From: John Allen <john.allen@amd.com>
-To: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<seanjc@google.com>, <pbonzini@redhat.com>, <dave.hansen@intel.com>
-CC: <rick.p.edgecombe@intel.com>, <mlevitsk@redhat.com>,
-	<weijiang.yang@intel.com>, <chao.gao@intel.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <mingo@redhat.com>,
-	<tglx@linutronix.de>, <thomas.lendacky@amd.com>, John Allen
-	<john.allen@amd.com>
-Subject: [PATCH 2/2] x86/sev-es: Include XSS value in GHCB CPUID request
-Date: Wed, 6 Aug 2025 20:46:59 +0000
-Message-ID: <20250806204659.59099-3-john.allen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250806204659.59099-1-john.allen@amd.com>
-References: <20250806204659.59099-1-john.allen@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mjn/KwJD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754513911;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XL3JtSDnypcZCdbt3A90Mr99TpavO/k4/VrpLyiBez8=;
+	b=Mjn/KwJDx4NWLHwmUop1Nqv4WAyrfRGGPQ6VLWLppjTzE2fHxEDvXhWKsDEjLYkfuCFLbn
+	AjIl1GJZS0YnG13/Xqcrhdvw0jy+6kR8Pn5RnfUDpi25BypfqRn7oCyHUidd0u0p1gFlYn
+	ROE/bZzCah4n6hvqXHras3zGrMdDY0Q=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-xq1-H0HjPS6JasJe4cAbQA-1; Wed, 06 Aug 2025 16:58:29 -0400
+X-MC-Unique: xq1-H0HjPS6JasJe4cAbQA-1
+X-Mimecast-MFC-AGG-ID: xq1-H0HjPS6JasJe4cAbQA_1754513909
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3e3fdd9298eso727775ab.3
+        for <kvm@vger.kernel.org>; Wed, 06 Aug 2025 13:58:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754513909; x=1755118709;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XL3JtSDnypcZCdbt3A90Mr99TpavO/k4/VrpLyiBez8=;
+        b=ntnpreKHnYAerf995ngRT9KyrYgKTjNKaLaAs2BlIWCIw1x9HpjTpSrWz4AFOkxH5h
+         Fu8bKcmQ3j4nQK7K9NJBDx4UK23FgfhADyE82rno9Lf9Xgt3a3Nb3jKN2/RORu/oh49V
+         oqVftKC4T3Vdd6bpkNk845ZqJBZu6tn6/wDp8Y6ripG1JPfVyjGaFYAKUdW6J/zZF+gi
+         U2HYOcaPfeJ6e5/ta2/QDGe9e1CSZN4JhslbCJ/E36ZUp6nPFfLRPqsBj7/7ym2yzFyW
+         Hm+gc6h7rNc3P/9NGDA52CKmX6d5OeWozpq3+ySbbU8pISFymfjRQTDhfip1jqnGxYTT
+         PDqA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0IINihEgKxC4iO/+mXcXKrJ/aUJ+9Xya7fFf4AHb4+XADbMia6Olhyav2NUcxG33jMPw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP2mk7DUROGQI2wWGTFaNMrH03MvtshpBxIQc45M4GKFRbXiPM
+	RWuouXdrcDFjcFEfke7u1Xmz93ldbQD9uNECxcWZoxGQpEoHX24s/9q/v+mOXZhluj/XvHMgdKu
+	JAfvksSJBXEhrh8S3mEYEi0YZbSZhlIelnlQ83cl1dGy0fjqDq2oNSw==
+X-Gm-Gg: ASbGnctA8eI0M7iWOJKKswIBp21cXZeeBELP2qrLIcW73K1fujhpyqgdRbVVxHr+jlt
+	eOyYgaDjWYZPPncqjoZ6MvchBwjvbPoCRPuxG8/YD10z6y/kUigMBggI4ByitEefA3k11m4eA4i
+	4HqJ6f2j1D2waUT+p6PLilDoFt8f51f0llgqS4DUM1+EU5JOK6Ew/DnWR8eJ311BGvQi1hCNKJt
+	pWliHM/4fnbCSEItas8HJAWBpTH+02FELnqlc/oMCF84PHxTV7ANgH0mEQ+4jULH0SUAu19W3xE
+	QY6FSva6+TI1dexiA7wPEpIbsT57rmxldOPpgElI3ss=
+X-Received: by 2002:a05:6e02:152e:b0:3e3:d2eb:52db with SMTP id e9e14a558f8ab-3e51b79eae2mr20687245ab.0.1754513909049;
+        Wed, 06 Aug 2025 13:58:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvMHObcGautLtJ7984K/wyyriLvMdPXmyUUT5V0nwJ7vFbNm7fOcxZIXtiLyBYuGHd6raZZQ==
+X-Received: by 2002:a05:6e02:152e:b0:3e3:d2eb:52db with SMTP id e9e14a558f8ab-3e51b79eae2mr20686945ab.0.1754513908609;
+        Wed, 06 Aug 2025 13:58:28 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50ab01e84desm2049992173.51.2025.08.06.13.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 13:58:27 -0700 (PDT)
+Date: Wed, 6 Aug 2025 14:58:25 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Christoph Hellwig <hch@lst.de>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, Jens Axboe
+ <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, Logan Gunthorpe
+ <logang@deltatee.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
+ Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v1 01/10] PCI/P2PDMA: Remove redundant bus_offset from
+ map state
+Message-ID: <20250806145825.2654ee59.alex.williamson@redhat.com>
+In-Reply-To: <c9b6237964b9606418af400bb6bec5178fcffff2.1754311439.git.leon@kernel.org>
+References: <cover.1754311439.git.leon@kernel.org>
+	<c9b6237964b9606418af400bb6bec5178fcffff2.1754311439.git.leon@kernel.org>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DB:EE_|DM4PR12MB8474:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc923ed5-2b7d-4f86-49a6-08ddd52a7e35
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dNWffgUbnjgKJNYte3JuLerYUOiORJEgpWiHpI0eIiCVccIbElS13Qn41b4Z?=
- =?us-ascii?Q?9uFf+tzECI16dyLTr5zQ2m7cnxTDQXF/159y01BO/SU/O3llZOlu/KsOqHD8?=
- =?us-ascii?Q?z+Q8og//iNW6SjApKoTJVVIbr1KxkmsR+nHUeNlQFoXVFj1QmeE7epH//FHr?=
- =?us-ascii?Q?7kLvqMtRrzDaFjAKXXDBi5koc2mPysrIB//7SwtooqbGgibJo5idcUJuvEuw?=
- =?us-ascii?Q?bGxoremallbuinxzocqqxRLcDxkEpZaZG/eV7GXeewszqmFQz6yluytYZmt6?=
- =?us-ascii?Q?BgnUCPhRdT90euIEszJbbFE9/vTcdB16UeBMhHjokTTU44O86jsqr3c1FHP0?=
- =?us-ascii?Q?ewNn1ZTX3lXcOO8cFnddEuqkqK0sLoUmZaZ32ALkAdgPNGJa+hEJTLwwNd5M?=
- =?us-ascii?Q?x0X90N76U6PKfqPYYslH2kGYlYd1LB7MGQ31eqjIopwISIef7QNdJ9hXNUlB?=
- =?us-ascii?Q?+6aT5+9jbR8jFKB3Lj7EiVMG9+lF00l1PwL2Y2AMu+Trhf0Y+aCi1+WsphGF?=
- =?us-ascii?Q?WsPTKJ7UDwjrSuIe9U7Oh81qhCgZDHQbBTyMXysXJlisY7VGZRvI5dA9zBlT?=
- =?us-ascii?Q?4eSW0VXpCaCQx63qzu4EVa/idHDnscioRRICDwFPhEfoVl87dtGwgOiT6TX8?=
- =?us-ascii?Q?wlBJUSXXpKC1LIV16FZ98LL1jQI+TcPsmCWtqlf8ahbu86sXM/O30V5WP0Td?=
- =?us-ascii?Q?yxb3TT9dwrACZyiX+8sfkvDZmaceh7p2FBqOybstYV1IFmu8WflBrOEvOYg6?=
- =?us-ascii?Q?9PY6/o27fG0rGJUXHLMorARbF56kH8bMcZBPZB26Ko2QGjGrsrrENW9OAKgR?=
- =?us-ascii?Q?KHsBxpQRb/lqRHvT/f7TO7Fc+FH69hPDIRNxUkWJx3/I1oZ5bDdFM5mloNsg?=
- =?us-ascii?Q?JhG0racGfV2rqp2+SHHS8GwT6RrKEmFOL1ydrPwpcNCHvxJaFYl0V1fSkGWx?=
- =?us-ascii?Q?Nc1lEqkG93V4O0VXL21GsROOOlIMyIu+d+id2dKIyXU4GcWSIm+37efgZjN1?=
- =?us-ascii?Q?Qvb1v1fRZKRmuuqwiQfBTwbajY5UWXv430LGlmBWwXxL+sZHGtCVFwlWbjv9?=
- =?us-ascii?Q?PD1GDYQ1LeDdCkGntFNDeDwsOA/zsN4oWcF26nA675Jmnx4nyl3mZY7aO4l3?=
- =?us-ascii?Q?yS3klP5Mmp8ahRbbLPNlDVnMzJJWhN1PMcPCdLNeigH+O1zhMi12+5yxfu18?=
- =?us-ascii?Q?zORf4BhbnURSfYlrWwQoa+LTl/OlYwlDtB2PToE2XdafJcGIiJHFg4BMSrIX?=
- =?us-ascii?Q?nKSdZEhICt3dVdu9sWGNXX2P4gKKZ+NpSm+l1WBtTmx4t4079YdfO9qN3qJZ?=
- =?us-ascii?Q?41M09Gqt1bawVdYnTH9XVGFYxBu1Edd4D7q8miAAmIy6tpubUygBExpS2fEJ?=
- =?us-ascii?Q?l6KkC/jFAWEySew58BeB7meepxRnfHs6PhUP39JwfrXtL2VZ5QxuLjGvtEWL?=
- =?us-ascii?Q?oJYUS+Ktz2gUtuWYuO4z/YtWaJZPxeKpBoGchbRKW3Kv+oGuRXwSIwq6lCeC?=
- =?us-ascii?Q?pGIj9e+g2Taxeypmzf/ZoBp7jlVDcxktDCUS?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 20:47:43.8366
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc923ed5-2b7d-4f86-49a6-08ddd52a7e35
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DB.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8474
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-When a guest issues a cpuid instruction for Fn0000000D_x0B
-(CetUserOffset), the hypervisor may intercept and access the guest XSS
-value. For SEV-ES, this is encrypted and needs to be included in the
-GHCB to be visible to the hypervisor.
+On Mon,  4 Aug 2025 16:00:36 +0300
+Leon Romanovsky <leon@kernel.org> wrote:
 
-Signed-off-by: John Allen <john.allen@amd.com>
----
- arch/x86/coco/sev/vc-shared.c | 11 +++++++++++
- arch/x86/include/asm/svm.h    |  1 +
- 2 files changed, 12 insertions(+)
+> From: Leon Romanovsky <leonro@nvidia.com>
+>=20
+> Remove the bus_off field from pci_p2pdma_map_state since it duplicates
+> information already available in the pgmap structure. The bus_offset
+> is only used in one location (pci_p2pdma_bus_addr_map) and is always
+> identical to pgmap->bus_offset.
+>=20
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/pci/p2pdma.c       | 1 -
+>  include/linux/pci-p2pdma.h | 3 +--
+>  2 files changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index da5657a020074..274bb7bcc0bc5 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+> @@ -1009,7 +1009,6 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_ma=
+p_state *state,
+>  {
+>  	state->pgmap =3D page_pgmap(page);
+>  	state->map =3D pci_p2pdma_map_type(state->pgmap, dev);
+> -	state->bus_off =3D to_p2p_pgmap(state->pgmap)->bus_offset;
+>  }
+> =20
+>  /**
+> diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
+> index 075c20b161d98..b502fc8b49bf9 100644
+> --- a/include/linux/pci-p2pdma.h
+> +++ b/include/linux/pci-p2pdma.h
+> @@ -146,7 +146,6 @@ enum pci_p2pdma_map_type {
+>  struct pci_p2pdma_map_state {
+>  	struct dev_pagemap *pgmap;
+>  	enum pci_p2pdma_map_type map;
+> -	u64 bus_off;
+>  };
+> =20
+>  /* helper for pci_p2pdma_state(), do not use directly */
+> @@ -186,7 +185,7 @@ static inline dma_addr_t
+>  pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t =
+paddr)
+>  {
+>  	WARN_ON_ONCE(state->map !=3D PCI_P2PDMA_MAP_BUS_ADDR);
+> -	return paddr + state->bus_off;
+> +	return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
+>  }
+> =20
+>  #endif /* _LINUX_PCI_P2P_H */
 
-diff --git a/arch/x86/coco/sev/vc-shared.c b/arch/x86/coco/sev/vc-shared.c
-index 2c0ab0fdc060..079fffdb12c0 100644
---- a/arch/x86/coco/sev/vc-shared.c
-+++ b/arch/x86/coco/sev/vc-shared.c
-@@ -1,5 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#ifndef __BOOT_COMPRESSED
-+#define has_cpuflag(f)                  boot_cpu_has(f)
-+#endif
-+
- static enum es_result vc_check_opcode_bytes(struct es_em_ctxt *ctxt,
- 					    unsigned long exit_code)
- {
-@@ -452,6 +456,13 @@ static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
- 		/* xgetbv will cause #GP - use reset value for xcr0 */
- 		ghcb_set_xcr0(ghcb, 1);
- 
-+	if (has_cpuflag(X86_FEATURE_SHSTK) && regs->ax == 0xd && regs->cx <= 1) {
-+		struct msr m;
-+
-+		raw_rdmsr(MSR_IA32_XSS, &m);
-+		ghcb_set_xss(ghcb, m.q);
-+	}
-+
- 	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
- 	if (ret != ES_OK)
- 		return ret;
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index ffc27f676243..870ebfef86d6 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -700,5 +700,6 @@ DEFINE_GHCB_ACCESSORS(sw_exit_info_1)
- DEFINE_GHCB_ACCESSORS(sw_exit_info_2)
- DEFINE_GHCB_ACCESSORS(sw_scratch)
- DEFINE_GHCB_ACCESSORS(xcr0)
-+DEFINE_GHCB_ACCESSORS(xss)
- 
- #endif
--- 
-2.34.1
+Looks like you're relying on this bogus code getting resolved in the
+next patch...
+
+In file included from kernel/dma/direct.c:16:
+./include/linux/pci-p2pdma.h: In function =E2=80=98pci_p2pdma_bus_addr_map=
+=E2=80=99:
+./include/linux/pci-p2pdma.h:188:24: error: implicit declaration of functio=
+n =E2=80=98to_p2p_pgmap=E2=80=99 [-Wimplicit-function-declaration]
+  188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
+      |                        ^~~~~~~~~~~~
+./include/linux/pci-p2pdma.h:188:50: error: invalid type argument of =E2=80=
+=98->=E2=80=99 (have =E2=80=98int=E2=80=99)
+  188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
+      |                                                  ^~
+./include/linux/pci-p2pdma.h:189:1: error: control reaches end of non-void =
+function [-Werror=3Dreturn-type]
+  189 | }
+      | ^
+
+to_p2p_pgmap() is a static function and struct pci_p2pdma_pagemap
+doesn't have a bus_offsetf member.  Thanks,
+
+Alex
 
