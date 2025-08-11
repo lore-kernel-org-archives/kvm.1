@@ -1,29 +1,29 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F592D8381;
-	Mon, 11 Aug 2025 06:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C8F2D9484;
+	Mon, 11 Aug 2025 06:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754892686; cv=none; b=V40OL4PBNH9vxpyj2lCV6MahFNWzc5xXu1lC4cUXhcvlYcIMZyi32jY8/HgE7YloZQzPJWzasSDUoCYah0VtqR3XVVLxlZ5sKNGtJmPpRec2Gy98gWwcnj5VA5HN7v6g+hVCUKZ/Of5YuAlyYfz4uKkP/oGuEkDdMsBpPLwr90M=
+	t=1754892691; cv=none; b=XZFSyY+jCrRBDRXVD/MxzaM9MAX0AnWOu8gBRVL9Z4wpXhMIjMFcPPM4PtbnJnEGgx4IER5Qi4fYOpaAOypmaOIvZuTVWOkW0lnsspH5i0buPNAtiRDLnZ5d95HCwiU8DsQCwhYOXKE/NPMm/ttOlcznK21VmF2Fwr2nGRFBRHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754892686; c=relaxed/simple;
-	bh=TykNv5gkgpZAOZDIW+MRRdfsxuTLkyNVFKonDaW4f/Y=;
+	s=arc-20240116; t=1754892691; c=relaxed/simple;
+	bh=D6bWNCnFL2Dw0JQmRi3CW5HbqgQJLdJ91ORdGPwDaLw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iOCf4EAQhmKlNDcZEZ68v8/EgbV/hJBXVLH+LJZ+BpgN1nPTJrbkS3vgBLRtQq7vD/YbHaTeihOvJSERw52JlvAfn/t2vbKcNbmBoTOEt3gD0hR5sNh82lg3RwJowOLOfceWIkRPzUdF3vuAnyRgIO8phRidFX9YzuKz+Xhy/Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=eap5vj5x; arc=none smtp.client-ip=115.124.30.101
+	 MIME-Version; b=Cd5odsJIvwiVwqoZ7zvSD1+RU6qrU/kedoUh2GUyRcWhVny8CN00ILgBjapyO5qSBv6XV/5sWvbr3+RJhDmLXUMh2DuIMPtXYD7AWLNmjwgmuJlhmE0NsPo8AsUUirjFlipoP9dZI8u278xQwwR8bC/cOf3y7XGzPJkWcgWJlrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CyTu3IFN; arc=none smtp.client-ip=115.124.30.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="eap5vj5x"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CyTu3IFN"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1754892677; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=whyJDouuAuGf1j7b/5M2xWcx/VsvP58NxkP1IN3I0Kg=;
-	b=eap5vj5xSFdMsiuuuxLcPgRxyY801HFUQUIvCCqkpAcHYj//JV5cuXJwf5j1YJm0/ee6jEICMpLSj9vYtmzqNDC0P4AsCA++zgDJ/6Xz3bzu8Mt2eGKZZZUxVQMxln1Cgp17Oapr64gInk8k46GeW/MWwpX4zMTNL+eZiutt98A=
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WlP-v9-_1754892672 cluster:ay36)
+	t=1754892680; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=7J/clauWbQWRFTci+97Z7tJgolFj9hSh37VSydzAoWg=;
+	b=CyTu3IFNVUSNNEH0LPWsZxuZhDpPPSIFNs9gYqC3x7Tniy+qJCZqCh0Vw/E/zMMp8DYp5sa1sr6RLT94t9F+5Mb1G/YUzPMqZrGEKFw8PIpFsN7XGVAcQGIuz4bdfdo6QcP4rmNkMFLKMN2E9sBq5Qk4agl4B0Oke0He/RhIDh8=
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WlP-vBA_1754892678 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 11 Aug 2025 14:11:13 +0800
+          Mon, 11 Aug 2025 14:11:19 +0800
 From: fangyu.yu@linux.alibaba.com
 To: anup@brainfault.org,
 	paul.walmsley@sifive.com,
@@ -47,9 +47,9 @@ Cc: guoren@linux.alibaba.com,
 	linux-kernel@vger.kernel.org,
 	iommu@lists.linux.dev,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [RFC PATCH 2/6] RISC-V: KVM: Transfer the physical address of MRIF to iommu-ir
-Date: Mon, 11 Aug 2025 14:11:00 +0800
-Message-Id: <20250811061104.10326-3-fangyu.yu@linux.alibaba.com>
+Subject: [RFC PATCH 6/6] RISC-V: KVM: Check the MRIF in notice MSI irq handler
+Date: Mon, 11 Aug 2025 14:11:04 +0800
+Message-Id: <20250811061104.10326-7-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20250811061104.10326-1-fangyu.yu@linux.alibaba.com>
 References: <20250811061104.10326-1-fangyu.yu@linux.alibaba.com>
@@ -63,75 +63,87 @@ Content-Transfer-Encoding: 8bit
 
 From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-According to the RISC-V IOMMU Spec, an IOMMU may optionally
-support memory-resident interrupt files (MRIFs).
+In MRIF mode,  the Advanced Interrupt Architecture Specification
+defines the operation to store the  incoming MSIs into the  MRIF
+and to generate the notice MSI,the software shold check the MRIF
+in the notice MSI irq handler.
 
-When the guest interrupt files are used up, we transfer the
-physical address of MRIF to iommu-ir, and enable MRIF  mode
-if the iommu-ir supports.
+And without MRIF support,we redirect the guest interrupt back to
+the original host interrupt,  the software update and check MRIF
+in host irq handler.
 
 Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
- arch/riscv/kvm/aia_imsic.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ arch/riscv/kvm/aia_imsic.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
 diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index 8f5703d9112a..e91164742fd0 100644
+index 58807e68a3dd..f0d1acde0dd4 100644
 --- a/arch/riscv/kvm/aia_imsic.c
 +++ b/arch/riscv/kvm/aia_imsic.c
-@@ -21,6 +21,8 @@
+@@ -867,11 +867,16 @@ int kvm_arch_update_irqfd_routing(struct kvm *kvm, unsigned int host_irq,
  
- #define IMSIC_MAX_EIX	(IMSIC_MAX_ID / BITS_PER_TYPE(u64))
- 
-+static int kvm_riscv_vcpu_irq_update(struct kvm_vcpu *vcpu);
-+
- struct imsic_mrif_eix {
- 	unsigned long eip[BITS_PER_TYPE(u64) / BITS_PER_LONG];
- 	unsigned long eie[BITS_PER_TYPE(u64) / BITS_PER_LONG];
-@@ -717,7 +719,8 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
- 				 vcpu->arch.aia_context.imsic_addr,
- 				 IMSIC_MMIO_PAGE_SZ);
- 
--	/* TODO: Purge the IOMMU mapping ??? */
-+	/* Update the IOMMU mapping */
-+	kvm_riscv_vcpu_irq_update(vcpu);
- 
- 	/*
- 	 * At this point, all interrupt producers have been re-directed
-@@ -795,13 +798,14 @@ int kvm_arch_update_irqfd_routing(struct kvm *kvm, unsigned int host_irq,
- 
- 			read_lock_irqsave(&imsic->vsfile_lock, flags);
- 
--			if (WARN_ON_ONCE(imsic->vsfile_cpu < 0)) {
--				read_unlock_irqrestore(&imsic->vsfile_lock, flags);
--				goto out;
-+			if (imsic->vsfile_cpu < 0) {
-+				vcpu_info.hpa = imsic->swfile_pa;
-+				vcpu_info.mrif = true;
-+			} else {
-+				vcpu_info.hpa = imsic->vsfile_pa;
-+				vcpu_info.mrif = false;
- 			}
- 
--			vcpu_info.hpa = imsic->vsfile_pa;
--
  			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
  			if (ret) {
++				if (ret == -ENODEV) {
++					imsic->mrif_support = false;
++					ret = 0;
++				}
  				read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-@@ -844,6 +848,13 @@ static int kvm_riscv_vcpu_irq_update(struct kvm_vcpu *vcpu)
- 		if (!irqfd->producer)
- 			continue;
- 		host_irq = irqfd->producer->irq;
-+
-+		if (imsic->vsfile_cpu < 0) {
-+			vcpu_info.hpa = imsic->swfile_pa;
-+			vcpu_info.mrif = true;
-+		} else {
-+			vcpu_info.mrif = false;
-+		}
+ 				goto out;
+ 			}
+ 
+-			irq_data_get_irq_chip(irqdata)->irq_write_msi_msg(irqdata, msg);
++			if (imsic->mrif_support)
++				irq_data_get_irq_chip(irqdata)->irq_write_msi_msg(irqdata, msg);
+ 
+ 			read_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 		}
+@@ -921,6 +926,10 @@ static int kvm_riscv_vcpu_irq_update(struct kvm_vcpu *vcpu)
+ 
  		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
  		if (ret) {
++			if (ret == -ENODEV) {
++				imsic->mrif_support = false;
++				ret = 0;
++			}
  			spin_unlock_irq(&kvm->irqfds.lock);
+ 			return ret;
+ 		}
+@@ -1182,8 +1191,24 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+ 	if (imsic->vsfile_cpu >= 0) {
+ 		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
+ 	} else {
++		if (imsic->mrif_support) {
++			struct msi_msg *msg;
++			unsigned long idx;
++
++			/* In MRIF mode, the noticed MSI irq handler will call here to
++			 * determine whether the MRIF has been updated.Since the IOMMU
++			 * hardware has updated the MRIF,the software does not need to
++			 * update the MRIF file again.
++			 */
++			xa_for_each(&imsic->hostirq_array, idx, msg) {
++				if (msg->data == iid)
++					goto skip_update_swfile;
++			}
++		}
+ 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
+ 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
++
++skip_update_swfile:
+ 		imsic_swfile_extirq_update(vcpu);
+ 	}
+ 
+@@ -1260,7 +1285,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
+ 	raw_spin_lock_init(&imsic->swfile_extirq_lock);
+ 
+ 	xa_init(&imsic->hostirq_array);
+-	imsic->mrif_support = false;
++	imsic->mrif_support = true;
+ 
+ 	/* Setup IO device */
+ 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);
 -- 
 2.49.0
 
