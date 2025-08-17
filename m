@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F70023F41F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2654224166F;
 	Sun, 17 Aug 2025 20:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755462126; cv=none; b=tQMk0Y7VMnOyaaCbLwz4WNNdNqIFXA7EZS3Kq1NGIfuH238r5++rQXCebwJMZXj8QhAxSl3z1qV7NDQmKyGP0tAAQW1T5QGdMqg+i0/5Neilhu8zwb6Jvmmjt/GM61fxWQncSB3K/EytNV/mNQW3c022Ik9PpPbohiW5E8j+N2Y=
+	t=1755462126; cv=none; b=aAXwUs5uDF1rTklkj/9Y6D7mb7ZLEXg2r3hW9COhsT5RNTbDAuVmDgkUKrMscyGRF84JP8pqm0XuXL4sn7EQFBVxYJuDn8SMOR1BeI8Nvj2WTysbgmRoRT2LmTGPefwTp2FmW809w7SZA5cKW0MR8MdYEh+hb/DZWuanS22r7Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755462126; c=relaxed/simple;
-	bh=/kr1h3ivDaybILMj58T9joQcQNXYw3TXcpEPHXi8CWI=;
+	bh=3vd1wrwANdEhEBYmVfIfvZ49NXbAKqOZUOEAet9mLhk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=crU/Lwawnug9XLjdCUuErX4ak9zNyjeSLS/3LI4W3UVhdTCSXUIrgL0SW6t4zsYHwAUOKfkwEpGEFk1KFdG0yAYHiTZOOXGoSs+JEX6YSCvJpMJee00/TOmSszX9Yr2ScanydQSNKkaftDlOq9ZAIea8E4s2tB8+sUQjGdYGjHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/p1LFvy; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=TV7ZCyAfs2a64Rfudwv1kqAx5Bj9hrpgj5XSayYXFPyC0zEeuKY+mmvVs8pyDdmHdPUK8sHfCFgyK51dP+DjR9ZeaCVGaqiEKHjKgKD1du+S3+O83XQFvEqCtvxvgf7b7NRWnAm3LZfoMYZet9t0Z9UqjHjp/exb/9M1LSWEt/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJVu3iKP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/p1LFvy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A7BC116D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJVu3iKP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3329C4CEED;
 	Sun, 17 Aug 2025 20:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755462125;
-	bh=/kr1h3ivDaybILMj58T9joQcQNXYw3TXcpEPHXi8CWI=;
+	bh=3vd1wrwANdEhEBYmVfIfvZ49NXbAKqOZUOEAet9mLhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/p1LFvyG1jWQGFGy5M3aZHnSBRa/vq1bKsLxZDZItAsACkJ+cWaK066JObotivc7
-	 so7haCYLxbnPyuFWhZ8IA3DhNbcXFXxkorzj62eXIF0G9F4Bo5FZUJPYpSSWTGTe0l
-	 DA1qm5DCUkm2F89pDehuWKtv/Sstnq2vGNYEDqX+hSSVnL1mRs48Zt3SiopSlTvJb/
-	 ifmaQ6zdh1E8Ml3ddO5aZjoLX4HaOAostCLm2ORaA/qJ5gEzMnmi2bliQoFvsKSsSn
-	 VsevUxHY/t8UYuS9x3AK3B7ZNzIElwPCJZjWKXKWJGvAJ7216DVLOHE9ybem/Ve433
-	 EngDuW9UR1o2Q==
+	b=XJVu3iKPwIxUD+xgbvhcd7woxuQqc+pJbIZyZls8I/XbejiYnBW8dkzn04ehj1bFp
+	 8hbz0muCmCYgXynb/Ma0Yp40WWD8PFgebMC7dIOLpCw9JhtSfgxPr+Rf0hgEBe5ucv
+	 zumc7gGmp+f9XX+XKSBAdw0RBsZ+1XXGyw1I8SRy0rQxurqoByJqYRwOV1yRgaix2l
+	 P20WvILNeCrSwMncgWdKr4gvKLPKqu2C+Iwsp1/N3z5goG5Q1cZ8eKnLT4Y5ZNFaeI
+	 /61d8WwM/dibNOt1I41sKJDfJ/KmHBD/lMyWMFnI+4DdcnuxS3ONqJizKRXPZxO7wg
+	 9HRTyegaOJBfA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1unjtD-008PX0-OS;
+	id 1unjtD-008PX0-9H;
 	Sun, 17 Aug 2025 21:22:03 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v3 4/6] KVM: arm64: Make ID_AA64PFR0_EL1.RAS writable
-Date: Sun, 17 Aug 2025 21:21:56 +0100
-Message-Id: <20250817202158.395078-5-maz@kernel.org>
+Subject: [PATCH v3 2/6] KVM: arm64: Handle RASv1p1 registers
+Date: Sun, 17 Aug 2025 21:21:54 +0100
+Message-Id: <20250817202158.395078-3-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250817202158.395078-1-maz@kernel.org>
 References: <20250817202158.395078-1-maz@kernel.org>
@@ -61,27 +61,56 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Make ID_AA64PFR0_EL1.RAS writable so that we can restore a VM from
-a system without RAS to a RAS-equipped machine (or disable RAS
-in the guest).
+FEAT_RASv1p1 system registeres are not handled at all so far.
+KVM will give an embarassed warning on the console and inject
+an UNDEF, despite RASv1p1 being exposed to the guest on suitable HW.
 
+Handle these registers similarly to FEAT_RAS, with the added fun
+that there are *two* way to indicate the presence of FEAT_RASv1p1.
+
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/kvm/sys_regs.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index feb1a7a708e25..3306fef432cbb 100644
+index 82ffb3b3b3cf7..feb1a7a708e25 100644
 --- a/arch/arm64/kvm/sys_regs.c
 +++ b/arch/arm64/kvm/sys_regs.c
-@@ -2941,7 +2941,6 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 		    ~(ID_AA64PFR0_EL1_AMU |
- 		      ID_AA64PFR0_EL1_MPAM |
- 		      ID_AA64PFR0_EL1_SVE |
--		      ID_AA64PFR0_EL1_RAS |
- 		      ID_AA64PFR0_EL1_AdvSIMD |
- 		      ID_AA64PFR0_EL1_FP)),
- 	ID_FILTERED(ID_AA64PFR1_EL1, id_aa64pfr1_el1,
+@@ -2697,6 +2697,18 @@ static bool access_ras(struct kvm_vcpu *vcpu,
+ 	struct kvm *kvm = vcpu->kvm;
+ 
+ 	switch(reg_to_encoding(r)) {
++	case SYS_ERXPFGCDN_EL1:
++	case SYS_ERXPFGCTL_EL1:
++	case SYS_ERXPFGF_EL1:
++	case SYS_ERXMISC2_EL1:
++	case SYS_ERXMISC3_EL1:
++		if (!(kvm_has_feat(kvm, ID_AA64PFR0_EL1, RAS, V1P1) ||
++		      (kvm_has_feat_enum(kvm, ID_AA64PFR0_EL1, RAS, IMP) &&
++		       kvm_has_feat(kvm, ID_AA64PFR1_EL1, RAS_frac, RASv1p1)))) {
++			kvm_inject_undefined(vcpu);
++			return false;
++		}
++		break;
+ 	default:
+ 		if (!kvm_has_feat(kvm, ID_AA64PFR0_EL1, RAS, IMP)) {
+ 			kvm_inject_undefined(vcpu);
+@@ -3063,8 +3075,13 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 	{ SYS_DESC(SYS_ERXCTLR_EL1), access_ras },
+ 	{ SYS_DESC(SYS_ERXSTATUS_EL1), access_ras },
+ 	{ SYS_DESC(SYS_ERXADDR_EL1), access_ras },
++	{ SYS_DESC(SYS_ERXPFGF_EL1), access_ras },
++	{ SYS_DESC(SYS_ERXPFGCTL_EL1), access_ras },
++	{ SYS_DESC(SYS_ERXPFGCDN_EL1), access_ras },
+ 	{ SYS_DESC(SYS_ERXMISC0_EL1), access_ras },
+ 	{ SYS_DESC(SYS_ERXMISC1_EL1), access_ras },
++	{ SYS_DESC(SYS_ERXMISC2_EL1), access_ras },
++	{ SYS_DESC(SYS_ERXMISC3_EL1), access_ras },
+ 
+ 	MTE_REG(TFSR_EL1),
+ 	MTE_REG(TFSRE0_EL1),
 -- 
 2.39.2
 
