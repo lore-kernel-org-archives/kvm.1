@@ -1,146 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DDE1D514E
-	for <kvm@vger.kernel.org>; Tue, 19 Aug 2025 13:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0011FDA8E;
+	Tue, 19 Aug 2025 14:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755610899; cv=none; b=N2mb+4g6hQsfrGEzZ2LcwglseoLH4wv00qFfSV4U5eZctWCt77zzK+4UEZWEVLzJt6CjeP0mzTPc2aFedLPSBSTzxEHI8KTan8mfrJ7OiZ2/8IJGG3jLvyfsGvcVc9JlczJogQhasUYeDfLMRKv578eKKoeupK/7EyYQRFOZPfg=
+	t=1755612246; cv=none; b=u9z8IDgnRTxo67JV9yUe+UE3lhnbe2q6diXD01BfbYOAngekrUNshBy+c3lKRbaf5LXj3pc8+R1z8AnToyslQePJ2dfbkq5tg9AcCRhUAAmXep27JEd6kwuzkk4UvXuNzcGq0VKT1uFGZL2RX4RUxNJ/oK4DIJnOYm1a2FocAf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755610899; c=relaxed/simple;
-	bh=45kfBlIx/c2YzCpopNGEzgYrDpvm5CQrUb7RS9hYw5M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FzeaM/L6eAxiTtgYFD7uu3cQxsDq2gX2nQqcEPx6QyjzReGGA4oPdlMmp/hN0Fxgoqfj6ysS7UAk4mMF3MYh7XsM7kaNIkoq/83Ezdm8NBnMR9bDhk6h9wZCP1Ulk4fzcchf8opieligdmYd/zY+idBXVSWUSYU94dbqXB4NHcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XTId6T+a; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XTId6T+a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755610897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EujI76cBsDT4aJDRz+24Ho6Ic52R+N90rhwAuXHewjk=;
-	b=XTId6T+acdN3hpv9jXPBq63m2l+BTsnhsPfigvwXtAGxIH0LpGEm+1m/eb6hSBm3I7UtKz
-	kS78Xmx+ARo6ETuIop2IuLhKnNN2J4VrFYI3+usxbVEBDFElRzF818bWGJUIg/yd9k5YEJ
-	YOErgPCLU2nzQ+s58VrJhL0ErdS4koM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-VDnqAddHM4OtJMShgtMOJw-1; Tue, 19 Aug 2025 09:41:35 -0400
-X-MC-Unique: VDnqAddHM4OtJMShgtMOJw-1
-X-Mimecast-MFC-AGG-ID: VDnqAddHM4OtJMShgtMOJw_1755610894
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-afcb5f59d9fso437162366b.0
-        for <kvm@vger.kernel.org>; Tue, 19 Aug 2025 06:41:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755610894; x=1756215694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EujI76cBsDT4aJDRz+24Ho6Ic52R+N90rhwAuXHewjk=;
-        b=ZySotESSwWucvP0NlLGzkyM3R6XdRquEB6bnVTFJ8jIJLBv8XzacHi3oQC9cfgq4/V
-         PhHD5k4tRU+RFDDdH4HOrWe7lNSndzsW96CWdAdC/ZsvAyJ4XGRGgxxIZdribhjk9QQT
-         N2YroqQfMrCy9+joi2JRCKnlEKU2iGFKcLdxJQhcRUjC+zHjOifp6AoyBk28aPDxhOjZ
-         nlqnm+CX+JgllpIQDYNgw8ac3V1CFdy1PvaeQLfSZ3482kdpdVzdzxqYxxjaV/WcLTaU
-         /i1hqXkAkZagdPO7ygv0sWcdNKH4WBNg+c+fNVNfJ3vP4xfAU/eCjbY1B4VdrkHX02U1
-         mn3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWyXPtXW/Awt2ZdmGetV4RlDz6/VPqpl9+iievBGNPzWajIXozxw3+2n3cSoN4UHzjWEoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbBf4QKldQzuViJ39f4s5OrFRxWDA7XAqx1DoAmWNCxFMfLxbM
-	7++l3NmDykmX2zce2GLL9GGzepM0qdWOP8UtdPmi9RHIEZZhg3dHGWc06ItGvXfcWc+8gMWn2qr
-	t7RifI6VjoPTB1a6URDD/M7jDhOnSEvC0HF96Ww4wCO4dGcN1zN3XKqFqk4mRaSfw5VWBnvn0do
-	FQR/XyLdSz833hZYfZzNPFQgZi6yv8
-X-Gm-Gg: ASbGnculqyovDsJvS3DTKjtD2kHnfpaZ+tqtdPYl7tbzzXQED5hv1x82JVGgIX2nd7T
-	bxzHUmHjTbTtxP2dPqySg5lUC/4uFyRYGxBCAm2/R4mMOVWKj1q4sHlWYwbiWwcPu7WKa+4I9Ba
-	v8OBQKeclDSG3vyFThsIfnYA==
-X-Received: by 2002:a17:906:164f:b0:afd:eb4f:d5cc with SMTP id a640c23a62f3a-afdeb4fe8d9mr16481666b.31.1755610894088;
-        Tue, 19 Aug 2025 06:41:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1GVsEmsaG7XrNaXe8wonzWZoX3xXdB8eON+UVwMeu7PAq8S6nacljTSpJPy0fGiNqSMsvj1L05aVdNrtBjig=
-X-Received: by 2002:a17:906:164f:b0:afd:eb4f:d5cc with SMTP id
- a640c23a62f3a-afdeb4fe8d9mr16478566b.31.1755610893561; Tue, 19 Aug 2025
- 06:41:33 -0700 (PDT)
+	s=arc-20240116; t=1755612246; c=relaxed/simple;
+	bh=72F2xWA+YdfB2QtAEk4aX3LIRSMBxtBbqBIGnK0sQWo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jRrcRWZse5ve1ZXR/0BfS9XNyATOvYiyPDTa2gm0ClRdktv3Sc6pPFGLuDv7sBYRTvgIYQfDzhevo6UxJdazIspKCMQpGYaHJhOJZhN4t6M4TKCMj0TDB4vVmY69Q0KSMGxO1szPsfeyGucwvDx1X+HHd2SB8lw7h1wiGtpPmNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1uoMRq-00000001OeL-20zC;
+	Tue, 19 Aug 2025 15:32:22 +0200
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>,
+	Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] KVM: SVM: Fix missing LAPIC TPR sync into VMCB::V_TPR with AVIC on
+Date: Tue, 19 Aug 2025 15:32:13 +0200
+Message-ID: <cover.1755609446.git.maciej.szmigiero@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CACGkMEvm-wFV8TqX039CZU1JKnztft5Hp7kt6hqoqHCNyn3=jg@mail.gmail.com>
- <20250819063958.833770-1-namhyung@kernel.org> <20250819072216-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250819072216-mutt-send-email-mst@kernel.org>
-From: Lei Yang <leiyang@redhat.com>
-Date: Tue, 19 Aug 2025 21:40:57 +0800
-X-Gm-Features: Ac12FXwPH4sSIUdUFp_9NFkFDCQTsp7XMFuiZKn4U01cioGDSa8UFneCp5B5QWs
-Message-ID: <CAPpAL=xm9sgU=8b4TTYSMBYkdmgxmdx4PXFPGwYe3qkqcCh=3w@mail.gmail.com>
-Subject: Re: [PATCH] vhost: Fix ioctl # for VHOST_[GS]ET_FORK_FROM_OWNER
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Sender: mhej@vps-ovh.mhejs.net
 
-Tested this patch with virtio-net regression tests, everything works fine.
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+When AVIC is enabled the normal pre-VMRUN LAPIC TPR to VMCB::V_TPR sync in
+sync_lapic_to_cr8() is inhibited so any changed TPR in the LAPIC state would
+*not* get copied into the V_TPR field of VMCB.
+
+AVIC does sync between these two fields, however it does so only on
+explicit guest writes to one of these fields, not on a bare VMRUN.
+
+This is especially true when it is the userspace setting LAPIC state via
+KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
+VMCB.
+
+Practice shows that it is the V_TPR that is actually used by the AVIC to
+decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
+so any leftover value in V_TPR will cause serious interrupt delivery issues
+in the guest when AVIC is enabled.
+
+Fix this issue by explicitly copying LAPIC TPR to VMCB::V_TPR in
+avic_apicv_post_state_restore(), which gets called from KVM_SET_LAPIC and
+similar code paths when AVIC is enabled.
+
+Add also a relevant set of tests to xapic_state_test so hopefully
+we'll be protected against getting such regressions in the future.
 
 
-On Tue, Aug 19, 2025 at 7:25=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Mon, Aug 18, 2025 at 11:39:57PM -0700, Namhyung Kim wrote:
-> > The VHOST_[GS]ET_FEATURES_ARRAY ioctl already took 0x83 and it would
-> > result in a build error when the vhost uapi header is used for perf too=
-l
-> > build like below.
-> >
-> >   In file included from trace/beauty/ioctl.c:93:
-> >   tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c: I=
-n function =E2=80=98ioctl__scnprintf_vhost_virtio_cmd=E2=80=99:
-> >   tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c:36=
-:18: error: initialized field overwritten [-Werror=3Doverride-init]
-> >      36 |         [0x83] =3D "SET_FORK_FROM_OWNER",
-> >         |                  ^~~~~~~~~~~~~~~~~~~~~
-> >   tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c:36=
-:18: note: (near initialization for =E2=80=98vhost_virtio_ioctl_cmds[131]=
-=E2=80=99)
-> >
-> > Fixes: 7d9896e9f6d02d8a ("vhost: Reintroduce kthread API and add mode s=
-election")
-> > Signed-off-by: Namhyung Kim <namhyung@kernel.org>
->
-> Applied, thanks a lot!
->
-> > ---
-> >  include/uapi/linux/vhost.h | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-> > index 283348b64af9ac59..c57674a6aa0dbbea 100644
-> > --- a/include/uapi/linux/vhost.h
-> > +++ b/include/uapi/linux/vhost.h
-> > @@ -260,7 +260,7 @@
-> >   * When fork_owner is set to VHOST_FORK_OWNER_KTHREAD:
-> >   *   - Vhost will create vhost workers as kernel threads.
-> >   */
-> > -#define VHOST_SET_FORK_FROM_OWNER _IOW(VHOST_VIRTIO, 0x83, __u8)
-> > +#define VHOST_SET_FORK_FROM_OWNER _IOW(VHOST_VIRTIO, 0x84, __u8)
-> >
-> >  /**
-> >   * VHOST_GET_FORK_OWNER - Get the current fork_owner flag for the vhos=
-t device.
-> > @@ -268,6 +268,6 @@
-> >   *
-> >   * @return: An 8-bit value indicating the current thread mode.
-> >   */
-> > -#define VHOST_GET_FORK_FROM_OWNER _IOR(VHOST_VIRTIO, 0x84, __u8)
-> > +#define VHOST_GET_FORK_FROM_OWNER _IOR(VHOST_VIRTIO, 0x85, __u8)
-> >
-> >  #endif
-> > --
-> > 2.51.0.rc1.167.g924127e9c0-goog
->
->
+Yes, this breaks real guests when AVIC is enabled.
+Specifically, the one OS that sometimes needs different handling and its
+name begins with letter 'W'.
+
+
+  KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR when setting LAPIC regs
+  KVM: selftests: Test TPR / CR8 sync and interrupt masking
+
+ arch/x86/kvm/svm/avic.c                       |  23 ++
+ .../testing/selftests/kvm/include/x86/apic.h  |   5 +
+ .../selftests/kvm/x86/xapic_state_test.c      | 265 +++++++++++++++++-
+ 3 files changed, 290 insertions(+), 3 deletions(-)
 
