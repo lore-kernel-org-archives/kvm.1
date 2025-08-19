@@ -1,109 +1,100 @@
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D0221CC49;
-	Tue, 19 Aug 2025 14:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9412424DD0E
+	for <kvm@vger.kernel.org>; Tue, 19 Aug 2025 14:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755612251; cv=none; b=BVzwB8n7dmZaWP0Rqy1vgrrPIbRRxeMXcQEGcdhaz4MCVIUQCPB5IddNJGR3N0Qya4P3Uu93nLXhdAm95V6g7P8AR8YojZW6txHfc6EIETekDQ5V96xSQLPuwozCTSIKzjSd8XVfsAdzIp0pkDZUxuse5h80PYRpDsr3fie4FQA=
+	t=1755613040; cv=none; b=bLtf9Vb2mLi49Cu/oYo81ozTpo5WYSo0YoEXCZJ9+QxjMssWhAvRcsmXD/yyCZcaAXCKKinNLRohPbTdAwjwqi1HQZH2XAgD7u241ugtBHNCSYDsAiM7Z8964KasLoZ7H5IgC71HLfj1Mv+7KiC+rXzb5lejdNVBBfvTYzfgrzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755612251; c=relaxed/simple;
-	bh=mWOeWyXZd3HUAU90Y2HTN+tY7VI/QsuVF92m1zQVKMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBvSNm1UEpaj6nGtf0yxhbd3XYdVq2KJXRWdaBrT5q8p9tKW3BItP3GhuRSwZnzmgDvvALXFNlFCKY8dE17m8jNnfONPDgDxA0SRXyWv3QKOaSYd6wcLPzWcmuse9OfHcSuPoHtLTP4MZMgukVXZm3oXeAnQgoMKDJi5oap+T1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1uoMRv-00000001OeO-2UET;
-	Tue, 19 Aug 2025 15:32:27 +0200
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>,
-	Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR when setting LAPIC regs
-Date: Tue, 19 Aug 2025 15:32:14 +0200
-Message-ID: <2b2cfff9a2bd6bcc97b97fee7f3a3e1186c9b03c.1755609446.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755609446.git.maciej.szmigiero@oracle.com>
-References: <cover.1755609446.git.maciej.szmigiero@oracle.com>
+	s=arc-20240116; t=1755613040; c=relaxed/simple;
+	bh=KZo6lFE+1XnNnQGXrhcQMuv8VUWLOdbzBDwzfflqaVs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UheeFiEx6qFA0E+lAQE4RRzqZwWkaxj1H8pgnyIgF/MAxAyn25AP+s4WwCnBbAoZzyUc2vuVgkwAXqZwczFfVFYZHF2X55LTIvrN6TGeVyK1vleb4LOei/r3Js+vwJymTkbzN8tZeCviBslONHeULjlNpnP8mS1WdJlfMtgkEiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DS63xpEm; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DS63xpEm"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32326789e09so10498291a91.1
+        for <kvm@vger.kernel.org>; Tue, 19 Aug 2025 07:17:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755613038; x=1756217838; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tk8qLdHc0U05Dxo1Ab/dvD77IqT0ZtETlVr+X1bxo7E=;
+        b=DS63xpEmkBNKG8te3iQiBgidtvSeirR7Yf3PVaiC1vn5isI5KeNqBabxWCeG4h0cdJ
+         xYEzHQ1xJmNQAUflVl1WfxnCMS0YT3gS+SX5HapsSdhkXOpQWWTJpFKRP4Gs5D286Jd6
+         kqp8U14sToZ4oUeCHZpY70hbKvAs4MUtooh/KfWLStWmfvSK11+a0vtiWTOQkyYdy8vd
+         C/Iz/fK1znVGojIoLLWiRNHH8AnYR5m2iG0G+7GUhFoqnkAMljNoaloT0sZUoskSQQ4E
+         UEJ5d15aKtpsM1pynJoVGKYx5ZXTzsaEaGDQ8KR030y4PjGmMH2oOZQoxlkL4j1fctwd
+         hGLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755613038; x=1756217838;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tk8qLdHc0U05Dxo1Ab/dvD77IqT0ZtETlVr+X1bxo7E=;
+        b=dMiyk3wMottYrU5KFGZ7PJtoFofcCgoles6zAmIve4u7n69H40s5KlFMgGHGMNNKDP
+         rWRno/L2NK33/vbZxK4sEkDUhnuMgLR9DsJ/TdIHNQwbRJ1zHmjnJWjXgtgwU3JxfS9d
+         wOffNN0bOu+EeEf7s4CuAQ7RpNwhIpVlOznUvGAHub6wS2eH96KWBoSDpiAW9wqsQX11
+         qOGRoMNs6EEHze0NZvVJ2H+oZIOMF9ClJSSbkcTyw+yzX08eTpsagfqmDqQ5MMvm2Qzd
+         nb8b9ymK7Oj+Q1NNboTr85+SSMAnGH4ilQ8TZh35MrRq5G6j2DQwMMlnG5j17WJD3CxG
+         XKWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaff8Auq8Q8z8AGe+PIWg2VIXtjHCkyZyjmZqAgyejlOIdzJoHaoEM+uCaQF2c5OKQULU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZGp/CjmnrgmNxwnphThHGkoFvLK1Ycw3c7lx34HHfJ08jyW0h
+	GllJhBawYTFZ+BHZfuIOuJ2pZCHkVr1chvdD8muT9AoJW2Xsd1jer2NX1gmjDKuTWZma+kaOK7P
+	OFJmdkA==
+X-Google-Smtp-Source: AGHT+IG+R29IibUM+skEvVsfUw+0/0piaRJ4aJbmBSk01NC1yZeCdDU/KApLU4ScisyIbczr3lj7S9517lU=
+X-Received: from pjbpx1.prod.google.com ([2002:a17:90b:2701:b0:31e:d618:a29c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5202:b0:321:c85d:dd93
+ with SMTP id 98e67ed59e1d1-3245e562cedmr4184520a91.4.1755613037551; Tue, 19
+ Aug 2025 07:17:17 -0700 (PDT)
+Date: Tue, 19 Aug 2025 07:17:15 -0700
+In-Reply-To: <20250721134718.2499856-1-colin.i.king@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: mhej@vps-ovh.mhejs.net
+Mime-Version: 1.0
+References: <20250721134718.2499856-1-colin.i.king@gmail.com>
+Message-ID: <aKSHa8QhidY0ZMAi@google.com>
+Subject: Re: [PATCH][next] KVM: x86: Remove space before \n newline
+From: Sean Christopherson <seanjc@google.com>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On Mon, Jul 21, 2025, Colin Ian King wrote:
+> There is a extraneous space before a newline in a pr_debug_ratelimited
+> message. Remove it.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>  arch/x86/kvm/vmx/vmx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index aa157fe5b7b3..e5358277d059 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -3142,7 +3142,7 @@ static void enter_lmode(struct kvm_vcpu *vcpu)
+>  
+>  	guest_tr_ar = vmcs_read32(GUEST_TR_AR_BYTES);
+>  	if ((guest_tr_ar & VMX_AR_TYPE_MASK) != VMX_AR_TYPE_BUSY_64_TSS) {
+> -		pr_debug_ratelimited("%s: tss fixup for long mode. \n",
+> +		pr_debug_ratelimited("%s: tss fixup for long mode.\n",
+>  				     __func__);
 
-When AVIC is enabled the normal pre-VMRUN sync in sync_lapic_to_cr8() is
-inhibited so any changed TPR in the LAPIC state would not get copied into
-the V_TPR field of VMCB.
+I'm inclined to simply delete the pr_debug.  I can't imagine it's at all useful
+for anyone/anything.
 
-AVIC does sync between these two fields, however it does so only on
-explicit guest writes to one of these fields, not on a bare VMRUN.
-
-This is especially true when it is the userspace setting LAPIC state via
-KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
-VMCB.
-
-Practice shows that it is the V_TPR that is actually used by the AVIC to
-decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
-so any leftover value in V_TPR will cause serious interrupt delivery issues
-in the guest when AVIC is enabled.
-
-Fix this issue by explicitly copying LAPIC TPR to VMCB::V_TPR in
-avic_apicv_post_state_restore(), which gets called from KVM_SET_LAPIC and
-similar code paths when AVIC is enabled.
-
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- arch/x86/kvm/svm/avic.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index a34c5c3b164e..877bc3db2c6e 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -725,8 +725,31 @@ int avic_init_vcpu(struct vcpu_svm *svm)
- 
- void avic_apicv_post_state_restore(struct kvm_vcpu *vcpu)
- {
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+	u64 cr8;
-+
- 	avic_handle_dfr_update(vcpu);
- 	avic_handle_ldr_update(vcpu);
-+
-+	/* Running nested should have inhibited AVIC. */
-+	if (WARN_ON_ONCE(nested_svm_virtualize_tpr(vcpu)))
-+		return;
-+
-+	/*
-+	 * Sync TPR from LAPIC TASKPRI into V_TPR field of the VMCB.
-+	 *
-+	 * When AVIC is enabled the normal pre-VMRUN sync in sync_lapic_to_cr8()
-+	 * is inhibited so any set TPR LAPIC state would not get reflected
-+	 * in V_TPR.
-+	 *
-+	 * Practice shows that it is the V_TPR that is actually used by the
-+	 * AVIC to decide whether to issue pending interrupts to the CPU, not
-+	 * TPR in TASKPRI.
-+	 */
-+	cr8 = kvm_get_cr8(vcpu);
-+	svm->vmcb->control.int_ctl &= ~V_TPR_MASK;
-+	svm->vmcb->control.int_ctl |= cr8 & V_TPR_MASK;
-+	WARN_ON_ONCE(!vmcb_is_dirty(svm->vmcb, VMCB_INTR));
- }
- 
- static void svm_ir_list_del(struct kvm_kernel_irqfd *irqfd)
+>  		vmcs_write32(GUEST_TR_AR_BYTES,
+>  			     (guest_tr_ar & ~VMX_AR_TYPE_MASK)
+> -- 
+> 2.50.0
+> 
