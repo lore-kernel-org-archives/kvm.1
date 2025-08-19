@@ -1,158 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE8D258ED2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35787246BB8;
 	Tue, 19 Aug 2025 16:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755620699; cv=none; b=alFZ2FvKVoRFT400OFeAS1OGN6WlW34MhZd0RXTtw5GvCJd46IkV+CAcsSAUEizcdNTeHIkLVHl5K0TjqvqW1jVuTdYaXrQ0kVCF/xFOtEL9+cGegFcmeRHiLvtlo+eM6eNN1LKK5ckHF5NBvA2esUfhTquVHDq8dQMkaCUWPZc=
+	t=1755620701; cv=none; b=Z2KBRhH9/9rY7B6ake1I07JqbO8sAzu/H6qThN4zO6nUe4aq0YDuoArvH5cP89H93BgqAxDd+cVCct8a/kZ7LZoKPd2Al6LLRDOKuzg9Ie0SC/ndRxPVRPP3c8VWTXnGntBVvniVQn3Qy84D8SHGCyYsBbMNsTYJAl9G2VZFIv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755620699; c=relaxed/simple;
-	bh=8pVEV6oITofEjYeY+xm9jxWRganabhKV6CxEQcgo0LA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpGt451T/m/2Mg8ADIrhrLddJlYIsmC8T9NUR8cHaJGa/7H8nSY3JvqqS1J38r7hz93TJ8JK14j2x1IXHqcgzDjtrB+JRdHf+COHV5m0S8Hs+8JVk9lbHIqVhdxmVbkkBl8KuOdNQC0LXm/mawTXdNYf1lmP3GTLqhdn3rEHaHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aXDDHoan; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755620701; c=relaxed/simple;
+	bh=jlqLeqQhsPrnQlurUx+P6OXPEOxoLS5aWeAi2BjJ/BY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OL5IxRSTByt6HW2m/+U7kag0ySMT8x8BjzEmrIGLkdQVJU9z2/6J4mOwqE3ck62aJ48VR7FdlDhklYh4gS/TLo/1HUYETUk90E+nG0cZGzfKbCjJsvluz7fR3kZc+LDLa3uoDACNlKCxo+ml1CP8zJkAbV9P5ipfYr1OGf1uczA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LSIJuam0; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aXDDHoan"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755620699; x=1787156699;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8pVEV6oITofEjYeY+xm9jxWRganabhKV6CxEQcgo0LA=;
-  b=aXDDHoanZ2HqrIR6j0hHgAJNeC7ZgiJI4hp8kdeVXGjriqbKSGiBBt3x
-   bbllC1W5kyS8L4GOGDu2Iq2npwT3kMpGtNsimVG4t6M98aM30TG76Iwtd
-   uOF7qqK9PIYYSF8Jnn0oEO/9Q61MGJ8l8WEre2H3m7z6mOF37q0tJxo+6
-   MSQD0LmNQoX8vHvO7BrEF/5h2eLwWXAcjTSTPMHpgSv3gjJVWW1+fgaS8
-   2vCIUcM2dcxKcsARgB2oTpJ+ZC1H5E++jmRMROKzwogb3abupzmFRZcnr
-   DQHDIC4/l0AQuMUOWyXTIKcr6fuVsi0DSc6fpnTS0RgLU8QtlkbobtE97
-   g==;
-X-CSE-ConnectionGUID: PZYJHxfCR4uOMe2ClNHCQA==
-X-CSE-MsgGUID: EGYmt5+eTIyqzSSH2ue5rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="60499966"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="60499966"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 09:24:58 -0700
-X-CSE-ConnectionGUID: g0L01IFbQ0CEtUKGmGsupg==
-X-CSE-MsgGUID: 4cTtyWDoQX+GIRj8lZD5EQ==
-X-ExtLoop1: 1
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.244.66])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 09:24:52 -0700
-From: Adrian Hunter <adrian.hunter@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	pbonzini@redhat.com,
-	seanjc@google.com
-Cc: vannapurve@google.com,
-	Borislav Petkov <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org,
-	H Peter Anvin <hpa@zytor.com>,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com,
-	kai.huang@intel.com,
-	reinette.chatre@intel.com,
-	xiaoyao.li@intel.com,
-	tony.lindgren@linux.intel.com,
-	binbin.wu@linux.intel.com,
-	ira.weiny@intel.com,
-	isaku.yamahata@intel.com,
-	Fan Du <fan.du@intel.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	yan.y.zhao@intel.com,
-	chao.gao@intel.com
-Subject: [PATCH RESEND V2 1/2] x86/mce: Fix missing address mask in recovery for errors in TDX/SEAM non-root mode
-Date: Tue, 19 Aug 2025 19:24:34 +0300
-Message-ID: <20250819162436.137625-2-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250819162436.137625-1-adrian.hunter@intel.com>
-References: <20250819162436.137625-1-adrian.hunter@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LSIJuam0"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55e041f6da0so441012e87.3;
+        Tue, 19 Aug 2025 09:24:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755620697; x=1756225497; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uTMNRXOPkPiR6njU3q84W7ATA5znKag4S1zHxATnMkg=;
+        b=LSIJuam0PJIf0Am7iTiuUHvNUOjejX6SwD+PCnn4GUkMn+C3cFCAP7NH4LPDPDXO1O
+         uK4HfOd7zrOgvzq7BMaar8+7P+DBj7mMp5KvbXhK9gVgWu2gnQ9jMMVXtRaxjBNJ7rSs
+         tLMffPq1lpWZYL/K0QCHUZD7kFBV7/g3mqx4HpO2T0oI2P2KJ5e7sPUJGsJBXkyRzqXJ
+         nGbtOdEu2umqPtt5t+EjKFpATLrhMEs1Mx1QCSA+rAA82xIQWgSQ7DEPed6X3YQnpOTj
+         pWWWVJkCms80btUgK3B6TcU3kMp8ZN+iibDjZjbdXKOuPYhs168KZmUzMUhFeSLHQeAZ
+         q+UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755620697; x=1756225497;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uTMNRXOPkPiR6njU3q84W7ATA5znKag4S1zHxATnMkg=;
+        b=YogeiZ7vEEFHswPsk9Cfexb2wdNuIzwpqslE06OxB7GYxJHxi/kKTSeyMR+hB8Rb6y
+         rfM+9z9OJXHGMtY3Lh7Jak9V3MkxAM+xF/W0h1JIe+Ww3Xqy6eGch7jRpXCPsUsrtw6y
+         zr273ZJJH8GQ1Iv8zjxRuOPK5L2UH30xX5Y0jkHM+sP7HbY+Ph22wM71MeIABLRQ7Yid
+         Ee7jKit69cHFZEVKTi/R5e09N/pKM8Ww9hgmQnS7vp1tQl2ftRVlzNVgt7eKj33fh8om
+         vQuVR6CZm5WZ6HLxOEzNEXc/oV2nHq2GTaCza6lwyqOhHh5g7w+JFri9FtxOdvXa0G72
+         k76g==
+X-Forwarded-Encrypted: i=1; AJvYcCX23gURBem/re5+6BV3rDJ7WJJivq+yr9XJOed9LpuijShBZV4tlCEDrt/BZiMNaKv0Nwn1ky66+V7LgWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk8SkGX+2fQXfYsvpecfugarLfJ9aRCgHkEq8r2OhQ3iboShEg
+	mHcCBtPxJORyC1cAQk8jKMQnbqmabGIeHdW8FaSZRZZjdIGRjBEC9z2hF/ps95UiktEGrZhCOih
+	zlyASZlYlN5Pjjd58va3NCsmaKulToXQ=
+X-Gm-Gg: ASbGncvWswJfHu0wwltJNOn9tuXwVj3Lg3cFEroLOaf1m0f8G0qL642yAnJQ0bQ6iiM
+	zLXMFsnqIJKJJ1TFYxQU53XzPB65C8RxQ6nV8auc/MP33XE5Oxrb2iLFpYH15DlNqu5uUNyLsft
+	tanFsah9Vo05oREWTXgLez28ZA01yTwK0yksYtBjAKlB/jbVO5BZ4WIeBG0URCRRK6ygLvM5JSL
+	XkTTaK9iwUaDzKsRg==
+X-Google-Smtp-Source: AGHT+IG+GXoleisDOXEQaZTN3k4539S9Z2ZHbd8Y3Rk5hCPSAcWB1lbHKDbngIcEdFSaGBYJF8JZ0UTtdLpr7JMRtaw=
+X-Received: by 2002:a05:6512:4202:b0:55b:82e6:6bed with SMTP id
+ 2adb3069b0e04-55e0082cef8mr731342e87.27.1755620696982; Tue, 19 Aug 2025
+ 09:24:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Content-Transfer-Encoding: 8bit
+References: <20250807063733.6943-1-ubizjak@gmail.com> <aKSRbjgtp7Nk8-sb@google.com>
+In-Reply-To: <aKSRbjgtp7Nk8-sb@google.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Tue, 19 Aug 2025 18:24:45 +0200
+X-Gm-Features: Ac12FXyJJSFqGTCZ-PJ4JUV_q-8FggZcZoT7ZykXmGwKATZlRB9jt2RSYkjrkUY
+Message-ID: <CAFULd4ZOtj7WZkSSKqLjxCJ-yBr20AYrqzCpxj2K_=XmrX1QZg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: VMX: Micro-optimize SPEC_CTRL handling in __vmx_vcpu_run()
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 8a01ec97dc066 ("x86/mce: Mask out non-address bits from machine
-check bank") introduced a new #define MCI_ADDR_PHYSADDR for the mask of
-valid physical address bits within the machine check bank address register.
+On Tue, Aug 19, 2025 at 5:00=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, Aug 07, 2025, Uros Bizjak wrote:
+> > Use memory operand in CMP instruction to avoid usage of a
+> > temporary register. Use %eax register to hold VMX_spec_ctrl
+> > and use it directly in the follow-up WRMSR.
+> >
+> > The new code saves a few bytes by removing two MOV insns, from:
+> >
+> >   2d: 48 8b 7c 24 10          mov    0x10(%rsp),%rdi
+> >   32: 8b bf 48 18 00 00       mov    0x1848(%rdi),%edi
+> >   38: 65 8b 35 00 00 00 00    mov    %gs:0x0(%rip),%esi
+> >   3f: 39 fe                   cmp    %edi,%esi
+> >   41: 74 0b                   je     4e <...>
+> >   43: b9 48 00 00 00          mov    $0x48,%ecx
+> >   48: 31 d2                   xor    %edx,%edx
+> >   4a: 89 f8                   mov    %edi,%eax
+> >   4c: 0f 30                   wrmsr
+> >
+> > to:
+> >
+> >   2d: 48 8b 7c 24 10          mov    0x10(%rsp),%rdi
+> >   32: 8b 87 48 18 00 00       mov    0x1848(%rdi),%eax
+> >   38: 65 3b 05 00 00 00 00    cmp    %gs:0x0(%rip),%eax
+> >   3f: 74 09                   je     4a <...>
+> >   41: b9 48 00 00 00          mov    $0x48,%ecx
+> >   46: 31 d2                   xor    %edx,%edx
+> >   48: 0f 30                   wrmsr
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> > Cc: Sean Christopherson <seanjc@google.com>
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Ingo Molnar <mingo@kernel.org>
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> > Cc: "H. Peter Anvin" <hpa@zytor.com>
+> > ---
+> >  arch/x86/kvm/vmx/vmenter.S | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+> > index 0a6cf5bff2aa..c65de5de92ab 100644
+> > --- a/arch/x86/kvm/vmx/vmenter.S
+> > +++ b/arch/x86/kvm/vmx/vmenter.S
+> > @@ -118,13 +118,11 @@ SYM_FUNC_START(__vmx_vcpu_run)
+> >        * and vmentry.
+> >        */
+> >       mov 2*WORD_SIZE(%_ASM_SP), %_ASM_DI
+> > -     movl VMX_spec_ctrl(%_ASM_DI), %edi
+> > -     movl PER_CPU_VAR(x86_spec_ctrl_current), %esi
+> > -     cmp %edi, %esi
+> > +     movl VMX_spec_ctrl(%_ASM_DI), %eax
+> > +     cmp PER_CPU_VAR(x86_spec_ctrl_current), %eax
+>
+> Huh.  There's a pre-existing bug lurking here, and in the SVM code.  SPEC=
+_CTRL
+> is an MSR, i.e. a 64-bit value, but the assembly code assumes bits 63:32 =
+are always
+> zero.
 
-This is particularly needed in the case of errors in TDX/SEAM non-root mode
-because the reported address contains the TDX KeyID.  Refer to TDX and
-TME-MK documentation for more information about KeyIDs.
+But MSBs are zero, MSR is defined in arch/x86/include/msr-index.h as:
 
-Commit 7911f145de5fe ("x86/mce: Implement recovery for errors in TDX/SEAM
-non-root mode") uses the address to mark the affected page as poisoned, but
-omits to use the aforementioned mask.
+#define MSR_IA32_SPEC_CTRL 0x00000048 /* Speculation Control */
 
-Investigation of user space expectations has concluded it would be more
-correct for the address to contain only address bits in the first place.
-Refer https://lore.kernel.org/r/807ff02d-7af0-419d-8d14-a4d6c5d5420d@intel.com
+and "movl $..., %eax" zero-extends the value to full 64-bit width.
 
-Mask the address when it is read from the machine check bank address
-register.  Do not use MCI_ADDR_PHYSADDR because that will be removed in a
-later patch.
+FWIW, MSR_IA32_SPEC_CTR is handled in the same way in arch/x86/entry/entry.=
+S:
 
-It is assumed __log_error() in arch/x86/kernel/cpu/mce/amd.c does not need
-similar treatment.
+movl $MSR_IA32_PRED_CMD, %ecx
 
-Amend struct mce addr member description slightly to reflect that it is
-not, and never has been, an exact copy of the bank's MCi_ADDR MSR.
+So, the insn is OK when MSR fits 32-bits. The insn is a bit smaller, too:
 
-Fixes: 8a01ec97dc066 ("x86/mce: Mask out non-address bits from machine check bank")
-Fixes: 7911f145de5fe ("x86/mce: Implement recovery for errors in TDX/SEAM non-root mode")
-Link: https://lore.kernel.org/r/807ff02d-7af0-419d-8d14-a4d6c5d5420d@intel.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
+       movl $0x01, %ecx
+       movq $0x01, %rcx
 
+assembles to:
 
-Changes in V2:
+  0:   b9 01 00 00 00          mov    $0x1,%ecx
+  5:   48 c7 c1 01 00 00 00    mov    $0x1,%rcx
 
-      Mask address when it is read
-      Amend struct mce addr description
+Rest assured that the assembler checks the immediate when 32-bit
+registers are involved, e.g.:
 
+mov.s: Assembler messages:
+mov.s:1: Warning: 0xaaaaaaaaaa shortened to 0xaaaaaaaa
 
- arch/x86/include/uapi/asm/mce.h | 2 +-
- arch/x86/kernel/cpu/mce/core.c  | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/uapi/asm/mce.h b/arch/x86/include/uapi/asm/mce.h
-index cb6b48a7c22b..abf6ee43f5f8 100644
---- a/arch/x86/include/uapi/asm/mce.h
-+++ b/arch/x86/include/uapi/asm/mce.h
-@@ -14,7 +14,7 @@
- struct mce {
- 	__u64 status;		/* Bank's MCi_STATUS MSR */
- 	__u64 misc;		/* Bank's MCi_MISC MSR */
--	__u64 addr;		/* Bank's MCi_ADDR MSR */
-+	__u64 addr;		/* Address from bank's MCi_ADDR MSR */
- 	__u64 mcgstatus;	/* Machine Check Global Status MSR */
- 	__u64 ip;		/* Instruction Pointer when the error happened */
- 	__u64 tsc;		/* CPU time stamp counter */
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 4da4eab56c81..deb47463a75d 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -699,6 +699,9 @@ static noinstr void mce_read_aux(struct mce_hw_err *err, int i)
- 		}
- 
- 		smca_extract_err_addr(m);
-+
-+		/* Mask out non-address bits, such as TDX KeyID */
-+		m->addr &= GENMASK_ULL(boot_cpu_data.x86_phys_bits - 1, 0);
- 	}
- 
- 	if (mce_flags.smca) {
--- 
-2.48.1
-
+Uros.
