@@ -1,148 +1,405 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C82305078;
-	Tue, 19 Aug 2025 12:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCAF3043D1;
+	Tue, 19 Aug 2025 13:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755606240; cv=none; b=Hns+nqUAbeu+pQ++PPoP7fTS10Min8F1hyMsIy7lQW6987CCUOdc2Xb6X7koSf0woG2Hh2dItAvI2aMC4CoPtZd5BK56gZCxBuR/R1SRblzp944l2HbrDqMjmgu5y9F8liZZoLtqU8ECj3naYrlw1Fw3E49crZcKuk9PwwNht5A=
+	t=1755610361; cv=none; b=bXZfJYcz9jqh3mn01u6eGOh13AKY2wTZWAsS9cy0rXrT/tos8CYSaruBrOsz1kuu0qYJPbeBnVPhvig7fsb5Rlh+ZtL9az6TK2Eu4LBw7eoxQcAIm3Kj9h3qh0cZWsDw+ZMb7JOOyw1DIYqhq5k7JUTOok9aujBNG8oQ3ZVNRYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755606240; c=relaxed/simple;
-	bh=fI4hT8CuNMb2bjEOBw/jySCX58PyHsr/5lyNM6n1Y/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JSgrPapZuOKmzug1fb8ygYkdbicXOh0JUqGM1/8OdbhFOXdZk3nmsSztBnDT2ogPwaQA+4ahAylLtur55zxelvJpvFD20YTostyWjwfQyvBcSf58qjSWZAd1b6wdRyaIXLCOeGEEVHfr8TkOhznmzm72HE364MT1qP/aCZdWttY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iV/dvY8z; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iV/dvY8z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755606238; x=1787142238;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fI4hT8CuNMb2bjEOBw/jySCX58PyHsr/5lyNM6n1Y/M=;
-  b=iV/dvY8zESFhi7jwblHd4om2A637rKYwuMCbyS262ion8sEB1xc8xSxm
-   bMx4hHiSW5Ap/GArYiy6jxcqu4kTGl7bu7mxv6AFMfr0XVqVL81R+SjJe
-   CCOMc4T7UeZZcum7K7w8YK1TIrwx6VDT04W+OExnnfa/oEcWvO1tF5tfA
-   KH/H+HKtWNkyUMoYPUNMFvnJklotU0/1YK2bFVbfuwI+Td/l2GxyMA+ct
-   YgOmcYyc8mKxR7NtxL0euK8zfnMbEGayDkz1+V7pKxuG5BWrJK/+az+Yi
-   VDrW9RiR0R6Ap6KrPTFypLkrhMM6vSlBEdeJA7Ffc0UJ9lJamUU6WIGA7
-   g==;
-X-CSE-ConnectionGUID: QmVrevXMTTOZXADd7xp30A==
-X-CSE-MsgGUID: UAH4kCtwTF2Z0XWhqVFaVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="68556133"
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="68556133"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 05:23:58 -0700
-X-CSE-ConnectionGUID: kQGhHvgmRhy3OwX7KAoInA==
-X-CSE-MsgGUID: UMzsUuHOSzqhndiWOT2Drg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="204987164"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 19 Aug 2025 05:23:52 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uoLMb-000Gqh-0m;
-	Tue, 19 Aug 2025 12:23:28 +0000
-Date: Tue, 19 Aug 2025 20:22:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	pbonzini@redhat.com, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, nikunj@amd.com,
-	davem@davemloft.net, aik@amd.com, ardb@kernel.org,
-	michael.roth@amd.com, Neeraj.Upadhyay@amd.com,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 3/3] crypto: ccp - Add AMD Seamless Firmware
- Servicing (SFS) driver
-Message-ID: <202508192016.ZlSGEWUC-lkp@intel.com>
-References: <1f3398c19eab6701566f4044c2c1059114d9bc48.1755548015.git.ashish.kalra@amd.com>
+	s=arc-20240116; t=1755610361; c=relaxed/simple;
+	bh=5FmImHnUOWdxWyAPXcYAKJD4BB8uHyMkPtJdygLfggM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dq9lP7vOa/WwBI4Bh694wW60KJ817B/dAj3gPDLRdsxEn52DAP0+1VMUM/I+pZZFCjlgys060HGtLH5VNlPdCQamuY+AYZWfQVI5KfHIaPHosJRrf018lmIOzzuEIYPTpl++XMiPOFVszUZCXcy7rxQt9aI/se48K+PMqPC35jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1uoMS0-00000001OeZ-2yPQ;
+	Tue, 19 Aug 2025 15:32:32 +0200
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>,
+	Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] KVM: selftests: Test TPR / CR8 sync and interrupt masking
+Date: Tue, 19 Aug 2025 15:32:15 +0200
+Message-ID: <e20b63358d64325ac782ed1c2de0258efcf54d4c.1755609446.git.maciej.szmigiero@oracle.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755609446.git.maciej.szmigiero@oracle.com>
+References: <cover.1755609446.git.maciej.szmigiero@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1f3398c19eab6701566f4044c2c1059114d9bc48.1755548015.git.ashish.kalra@amd.com>
+Content-Transfer-Encoding: 8bit
+Sender: mhej@vps-ovh.mhejs.net
 
-Hi Ashish,
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-kernel test robot noticed the following build warnings:
+Add a few extra TPR / CR8 tests to x86's xapic_state_test to see if:
+* TPR is 0 on reset,
+* TPR, PPR and CR8 are equal inside the guest,
+* TPR and CR8 read equal by the host after a VMExit
+* TPR borderline values set by the host correctly mask interrupts in the
+guest.
 
-[auto build test WARNING on next-20250818]
-[cannot apply to herbert-cryptodev-2.6/master herbert-crypto-2.6/master tip/x86/core tip/master linus/master tip/auto-latest v6.17-rc2 v6.17-rc1 v6.16 v6.17-rc2]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+These hopefully will catch the most obvious cases of improper TPR sync or
+interrupt masking.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ashish-Kalra/x86-sev-Add-new-quiet-parameter-to-snp_leak_pages-API/20250819-042220
-base:   next-20250818
-patch link:    https://lore.kernel.org/r/1f3398c19eab6701566f4044c2c1059114d9bc48.1755548015.git.ashish.kalra%40amd.com
-patch subject: [RESEND PATCH v2 3/3] crypto: ccp - Add AMD Seamless Firmware Servicing (SFS) driver
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250819/202508192016.ZlSGEWUC-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250819/202508192016.ZlSGEWUC-lkp@intel.com/reproduce)
+Do these tests both in x2APIC and xAPIC modes.
+The x2APIC mode uses SELF_IPI register to trigger interrupts to give it a
+bit of exercise too.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508192016.ZlSGEWUC-lkp@intel.com/
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+---
+ .../testing/selftests/kvm/include/x86/apic.h  |   5 +
+ .../selftests/kvm/x86/xapic_state_test.c      | 265 +++++++++++++++++-
+ 2 files changed, 267 insertions(+), 3 deletions(-)
 
-All warnings (new ones prefixed by >>):
-
->> drivers/crypto/ccp/sfs.c:262:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-     262 |         if (!page) {
-         |             ^~~~~
-   drivers/crypto/ccp/sfs.c:301:9: note: uninitialized use occurs here
-     301 |         return ret;
-         |                ^~~
-   drivers/crypto/ccp/sfs.c:262:2: note: remove the 'if' if its condition is always false
-     262 |         if (!page) {
-         |         ^~~~~~~~~~~~
-     263 |                 dev_dbg(dev, "Command Buffer HV-Fixed page allocation failed\n");
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     264 |                 goto cleanup_dev;
-         |                 ~~~~~~~~~~~~~~~~~
-     265 |         }
-         |         ~
-   drivers/crypto/ccp/sfs.c:250:9: note: initialize the variable 'ret' to silence this warning
-     250 |         int ret;
-         |                ^
-         |                 = 0
-   1 warning generated.
-
-
-vim +262 drivers/crypto/ccp/sfs.c
-
-   244	
-   245	int sfs_dev_init(struct psp_device *psp)
-   246	{
-   247		struct device *dev = psp->dev;
-   248		struct sfs_device *sfs_dev;
-   249		struct page *page;
-   250		int ret;
-   251	
-   252		sfs_dev = devm_kzalloc(dev, sizeof(*sfs_dev), GFP_KERNEL);
-   253		if (!sfs_dev)
-   254			return -ENOMEM;
-   255	
-   256		/*
-   257		 * Pre-allocate 2MB command buffer for all SFS commands using
-   258		 * SNP HV_Fixed page allocator which also transitions the
-   259		 * SFS command buffer to HV_Fixed page state if SNP is enabled.
-   260		 */
-   261		page = snp_alloc_hv_fixed_pages(SFS_NUM_2MB_PAGES_CMDBUF);
- > 262		if (!page) {
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/tools/testing/selftests/kvm/include/x86/apic.h b/tools/testing/selftests/kvm/include/x86/apic.h
+index 80fe9f69b38d..67285e533e14 100644
+--- a/tools/testing/selftests/kvm/include/x86/apic.h
++++ b/tools/testing/selftests/kvm/include/x86/apic.h
+@@ -27,7 +27,11 @@
+ #define	APIC_LVR	0x30
+ #define		GET_APIC_ID_FIELD(x)	(((x) >> 24) & 0xFF)
+ #define	APIC_TASKPRI	0x80
++#define		APIC_TASKPRI_TP_SHIFT	4
++#define		APIC_TASKPRI_TP_MASK	GENMASK(7, 4)
+ #define	APIC_PROCPRI	0xA0
++#define		APIC_PROCPRI_PP_SHIFT	4
++#define		APIC_PROCPRI_PP_MASK	GENMASK(7, 4)
+ #define	APIC_EOI	0xB0
+ #define	APIC_SPIV	0xF0
+ #define		APIC_SPIV_FOCUS_DISABLED	(1 << 9)
+@@ -67,6 +71,7 @@
+ #define	APIC_TMICT	0x380
+ #define	APIC_TMCCT	0x390
+ #define	APIC_TDCR	0x3E0
++#define	APIC_SELF_IPI	0x3F0
+ 
+ void apic_disable(void);
+ void xapic_enable(void);
+diff --git a/tools/testing/selftests/kvm/x86/xapic_state_test.c b/tools/testing/selftests/kvm/x86/xapic_state_test.c
+index fdebff1165c7..968e5e539a1a 100644
+--- a/tools/testing/selftests/kvm/x86/xapic_state_test.c
++++ b/tools/testing/selftests/kvm/x86/xapic_state_test.c
+@@ -1,9 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <fcntl.h>
++#include <stdatomic.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
++#include <unistd.h>
+ 
+ #include "apic.h"
+ #include "kvm_util.h"
+@@ -16,6 +18,245 @@ struct xapic_vcpu {
+ 	bool has_xavic_errata;
+ };
+ 
++#define IRQ_VECTOR 0x20
++
++/* See also the comment at similar assertion in memslot_perf_test.c */
++static_assert(ATOMIC_INT_LOCK_FREE == 2, "atomic int is not lockless");
++
++static atomic_uint tpr_guest_irq_sync_val;
++
++static void tpr_guest_irq_sync_flag_reset(void)
++{
++	atomic_store_explicit(&tpr_guest_irq_sync_val, 0,
++			      memory_order_release);
++}
++
++static unsigned int tpr_guest_irq_sync_val_get(void)
++{
++	return atomic_load_explicit(&tpr_guest_irq_sync_val,
++				    memory_order_acquire);
++}
++
++static void tpr_guest_irq_sync_val_inc(void)
++{
++	atomic_fetch_add_explicit(&tpr_guest_irq_sync_val, 1,
++				  memory_order_acq_rel);
++}
++
++static void tpr_guest_irq_handler_xapic(struct ex_regs *regs)
++{
++	tpr_guest_irq_sync_val_inc();
++
++	xapic_write_reg(APIC_EOI, 0);
++}
++
++static void tpr_guest_irq_handler_x2apic(struct ex_regs *regs)
++{
++	tpr_guest_irq_sync_val_inc();
++
++	x2apic_write_reg(APIC_EOI, 0);
++}
++
++static void tpr_guest_irq_queue(bool x2apic)
++{
++	if (x2apic) {
++		x2apic_write_reg(APIC_SELF_IPI, IRQ_VECTOR);
++	} else {
++		uint32_t icr, icr2;
++
++		icr = APIC_DEST_SELF | APIC_DEST_PHYSICAL | APIC_DM_FIXED |
++			IRQ_VECTOR;
++		icr2 = 0;
++
++		xapic_write_reg(APIC_ICR2, icr2);
++		xapic_write_reg(APIC_ICR, icr);
++	}
++}
++
++static uint8_t tpr_guest_tpr_get(bool x2apic)
++{
++	uint32_t taskpri;
++
++	if (x2apic)
++		taskpri = x2apic_read_reg(APIC_TASKPRI);
++	else
++		taskpri = xapic_read_reg(APIC_TASKPRI);
++
++	return (taskpri & APIC_TASKPRI_TP_MASK) >> APIC_TASKPRI_TP_SHIFT;
++}
++
++static uint8_t tpr_guest_ppr_get(bool x2apic)
++{
++	uint32_t procpri;
++
++	if (x2apic)
++		procpri = x2apic_read_reg(APIC_PROCPRI);
++	else
++		procpri = xapic_read_reg(APIC_PROCPRI);
++
++	return (procpri & APIC_PROCPRI_PP_MASK) >> APIC_PROCPRI_PP_SHIFT;
++}
++
++static uint8_t tpr_guest_cr8_get(void)
++{
++	uint64_t cr8;
++
++	asm volatile ("mov %%cr8, %[cr8]\n\t" : [cr8] "=r"(cr8));
++
++	return cr8 & GENMASK(3, 0);
++}
++
++static void tpr_guest_check_tpr_ppr_cr8_equal(bool x2apic)
++{
++	uint8_t tpr;
++
++	tpr = tpr_guest_tpr_get(x2apic);
++
++	GUEST_ASSERT_EQ(tpr_guest_ppr_get(x2apic), tpr);
++	GUEST_ASSERT_EQ(tpr_guest_cr8_get(), tpr);
++}
++
++static void tpr_guest_code(uint64_t x2apic)
++{
++	cli();
++
++	if (x2apic)
++		x2apic_enable();
++	else
++		xapic_enable();
++
++	tpr_guest_check_tpr_ppr_cr8_equal(x2apic);
++
++	tpr_guest_irq_queue(x2apic);
++
++	/* TPR = 0 but IRQ masked by IF=0, should not fire */
++	udelay(1000);
++	GUEST_ASSERT_EQ(tpr_guest_irq_sync_val_get(), 0);
++
++	sti();
++
++	/* IF=1 now, IRQ should fire */
++	while (tpr_guest_irq_sync_val_get() == 0)
++		cpu_relax();
++	GUEST_ASSERT_EQ(tpr_guest_irq_sync_val_get(), 1);
++
++	GUEST_SYNC(0);
++	tpr_guest_check_tpr_ppr_cr8_equal(x2apic);
++
++	tpr_guest_irq_queue(x2apic);
++
++	/* IRQ masked by barely high enough TPR now, should not fire */
++	udelay(1000);
++	GUEST_ASSERT_EQ(tpr_guest_irq_sync_val_get(), 1);
++
++	GUEST_SYNC(1);
++	tpr_guest_check_tpr_ppr_cr8_equal(x2apic);
++
++	/* TPR barely low enough now to unmask IRQ, should fire */
++	while (tpr_guest_irq_sync_val_get() == 1)
++		cpu_relax();
++	GUEST_ASSERT_EQ(tpr_guest_irq_sync_val_get(), 2);
++
++	GUEST_DONE();
++}
++
++static uint8_t lapic_tpr_get(struct kvm_lapic_state *xapic)
++{
++	return (*((u32 *)&xapic->regs[APIC_TASKPRI]) & APIC_TASKPRI_TP_MASK) >>
++		APIC_TASKPRI_TP_SHIFT;
++}
++
++static void lapic_tpr_set(struct kvm_lapic_state *xapic, uint8_t val)
++{
++	*((u32 *)&xapic->regs[APIC_TASKPRI]) &= ~APIC_TASKPRI_TP_MASK;
++	*((u32 *)&xapic->regs[APIC_TASKPRI]) |= val << APIC_TASKPRI_TP_SHIFT;
++}
++
++static uint8_t sregs_tpr(struct kvm_sregs *sregs)
++{
++	return sregs->cr8 & GENMASK(3, 0);
++}
++
++static void test_tpr_check_tpr_zero(struct kvm_vcpu *vcpu)
++{
++	struct kvm_lapic_state xapic;
++
++	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &xapic);
++
++	TEST_ASSERT_EQ(lapic_tpr_get(&xapic), 0);
++}
++
++static void test_tpr_check_tpr_cr8_equal(struct kvm_vcpu *vcpu)
++{
++	struct kvm_sregs sregs;
++	struct kvm_lapic_state xapic;
++
++	vcpu_sregs_get(vcpu, &sregs);
++	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &xapic);
++
++	TEST_ASSERT_EQ(sregs_tpr(&sregs), lapic_tpr_get(&xapic));
++}
++
++static void test_tpr_mask_irq(struct kvm_vcpu *vcpu, bool mask)
++{
++	struct kvm_lapic_state xapic;
++	uint8_t tpr;
++
++	static_assert(IRQ_VECTOR >= 16, "invalid IRQ vector number");
++	tpr = IRQ_VECTOR / 16;
++	if (!mask)
++		tpr--;
++
++	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &xapic);
++	lapic_tpr_set(&xapic, tpr);
++	vcpu_ioctl(vcpu, KVM_SET_LAPIC, &xapic);
++}
++
++static void test_tpr(struct kvm_vcpu *vcpu, bool x2apic)
++{
++	bool run_guest = true;
++
++	vcpu_args_set(vcpu, 1, (uint64_t)x2apic);
++
++	/* According to the SDM/APM the TPR value at reset is 0 */
++	test_tpr_check_tpr_zero(vcpu);
++	test_tpr_check_tpr_cr8_equal(vcpu);
++
++	tpr_guest_irq_sync_flag_reset();
++
++	while (run_guest) {
++		struct ucall uc;
++
++		alarm(2);
++		vcpu_run(vcpu);
++		alarm(0);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++		case UCALL_DONE:
++			test_tpr_check_tpr_cr8_equal(vcpu);
++
++			run_guest = false;
++			break;
++		case UCALL_SYNC:
++			test_tpr_check_tpr_cr8_equal(vcpu);
++
++			if (uc.args[1] == 0)
++				test_tpr_mask_irq(vcpu, true);
++			else if (uc.args[1] == 1)
++				test_tpr_mask_irq(vcpu, false);
++			else
++				TEST_FAIL("Unknown SYNC %lu", uc.args[1]);
++			break;
++		default:
++			TEST_FAIL("Unknown ucall result 0x%lx", uc.cmd);
++			break;
++		}
++	}
++}
++
+ static void xapic_guest_code(void)
+ {
+ 	cli();
+@@ -195,6 +436,12 @@ static void test_apic_id(void)
+ 	kvm_vm_free(vm);
+ }
+ 
++static void clear_x2apic_cap_map_apic(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	vcpu_clear_cpuid_feature(vcpu, X86_FEATURE_X2APIC);
++	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
++}
++
+ static void test_x2apic_id(void)
+ {
+ 	struct kvm_lapic_state lapic = {};
+@@ -230,10 +477,17 @@ int main(int argc, char *argv[])
+ 	};
+ 	struct kvm_vm *vm;
+ 
++	/* x2APIC tests */
++
+ 	vm = vm_create_with_one_vcpu(&x.vcpu, x2apic_guest_code);
+ 	test_icr(&x);
+ 	kvm_vm_free(vm);
+ 
++	vm = vm_create_with_one_vcpu(&x.vcpu, tpr_guest_code);
++	vm_install_exception_handler(vm, IRQ_VECTOR, tpr_guest_irq_handler_x2apic);
++	test_tpr(x.vcpu, true);
++	kvm_vm_free(vm);
++
+ 	/*
+ 	 * Use a second VM for the xAPIC test so that x2APIC can be hidden from
+ 	 * the guest in order to test AVIC.  KVM disallows changing CPUID after
+@@ -251,12 +505,17 @@ int main(int argc, char *argv[])
+ 	x.has_xavic_errata = host_cpu_is_amd &&
+ 			     get_kvm_amd_param_bool("avic");
+ 
+-	vcpu_clear_cpuid_feature(x.vcpu, X86_FEATURE_X2APIC);
+-
+-	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
++	clear_x2apic_cap_map_apic(vm, x.vcpu);
+ 	test_icr(&x);
+ 	kvm_vm_free(vm);
+ 
++	/* Also do a TPR non-x2APIC test */
++	vm = vm_create_with_one_vcpu(&x.vcpu, tpr_guest_code);
++	clear_x2apic_cap_map_apic(vm, x.vcpu);
++	vm_install_exception_handler(vm, IRQ_VECTOR, tpr_guest_irq_handler_xapic);
++	test_tpr(x.vcpu, false);
++	kvm_vm_free(vm);
++
+ 	test_apic_id();
+ 	test_x2apic_id();
+ }
