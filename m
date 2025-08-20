@@ -1,28 +1,29 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CB631AF21;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B14C31DD84;
 	Wed, 20 Aug 2025 12:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755694802; cv=none; b=Bz+JCuYwi1asoUOtCCdDsZu4puUy7Rdt7ZrhdCPwDmOlWoG7mQ0Xbhmff2g3PDs+n05b715Z7pv8f6UBIjmtgTteNc8V9l7muH0xYUuFl++/JE1hQfWozfWKIJ89Jb9lSTONIVnQQC6EXYy5K/oKHdSH1H2KIBNy83ktzoNw2bI=
+	t=1755694803; cv=none; b=ofSPQxld26WzMcvFIXUrjDyiVmesWmdDbUMmYgpubrso0NLKYyU1yyMoMXx8ZBxM1I1G/d4rNuWANoNzE20qsGidN89JRvS6kyC4aeAkQoHfkJ4W6G+hznNixUovAzOAxKKslFOXKdcTC5lArPHSq5sdNzlUkJxpJ0V9lI99EiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755694802; c=relaxed/simple;
-	bh=xsoHPu8B4TNKWz7PuMS+ZiO+JRaUYHtcES3xeRbf6Nc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DeAXmmNwRzJwT4rnQ57UhQC54o5Gb4zf+6lnKEaa1Z5QHzbW/E7jutlnZTxIGwMUQQkUrx0wRxUudl4YsiiZXu1y3OD6ZWCxeF9crRxHDQ00rZyOJkauDIQEHHScE9BEs+QqdzE0Rd2Ziyrna4ZoaHwZXDTSh4LbceWWy/3PQ34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vCyZUaUF; arc=none smtp.client-ip=115.124.30.131
+	s=arc-20240116; t=1755694803; c=relaxed/simple;
+	bh=c4d8lao18sblo5EKTHFtqf2ou3wuf2cEnlrvot6mnTM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cv6z1TI5lUxhEzXEfuAmov7GsGgrWSiXHgtyUohv2o4icpULaS0qytHjQ0+vavZOD/yit5uET3ROeRPVB9oToWskDsFVO0OhCib+jCSa8gGk7zKFltD1E96KKIzbEBRZClY7029dKqw8gTv4r/1dkOZYsQCq2VU0f6qmhWZOZo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Ut/70OCZ; arc=none smtp.client-ip=115.124.30.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vCyZUaUF"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Ut/70OCZ"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1755694796; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=XgpkwoPcHNm5bqngyKgaAijv3704PoYrCd7F3xEpnsE=;
-	b=vCyZUaUFLsKNLyYEdqohwggSZ0kuP6oNvD4A1h6Q1B1YCrfdkBrv58Y7hQY+dJmyko0NC4/7HoX49CqiikLM60Q6bQ8uJwY2jBrpvKUiR6V6RhWE3dGMzeQtd4Ursb7Miz2Jj7iu/G+UEANAn/nE2KA17DrF/UQgGFsDMi4QNmA=
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WmCQaZ-_1755694794 cluster:ay36)
+	t=1755694797; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=U4wVJ4Rm1M27YjAVFx51yXXj7bzUgmhjmUV0DS4wCbY=;
+	b=Ut/70OCZgXxYTICGYkKHnh3dRDc0JqlPTS4IUx3kruzrw2c2sL8n3tpwjdrWVq1GMC3wFjRmF8Vq4mkkbQZSTb6Lcc4WdOETjH0E3f+qc5ub7Fm3ukUxwl9V5mLpqPx1cbj6gD89ArQhkRinyqwuM3Utlhun25xP0PnqjzSrDsI=
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WmCQaZj_1755694796 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 20 Aug 2025 20:59:55 +0800
+          Wed, 20 Aug 2025 20:59:57 +0800
 From: fangyu.yu@linux.alibaba.com
 To: anup@brainfault.org,
 	atish.patra@linux.dev,
@@ -36,10 +37,12 @@ Cc: guoren@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v3 0/2] Fix hgatp mode settings within kvm_riscv_gstage_vmid_detect 
-Date: Wed, 20 Aug 2025 20:59:50 +0800
-Message-Id: <20250820125952.71689-1-fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v3 2/2] RISC-V KVM: Remove unnecessary HGATP csr_read
+Date: Wed, 20 Aug 2025 20:59:52 +0800
+Message-Id: <20250820125952.71689-3-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20250820125952.71689-1-fangyu.yu@linux.alibaba.com>
+References: <20250820125952.71689-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,33 +51,39 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-According to the RISC-V Privileged Architecture Spec, when MODE=Bare
-is selected,software must write zero to the remaining fields of hgatp.
+The HGATP has been set to zero in gstage_mode_detect(), so there
+is no need to save the old context. Unify the code convention
+with gstage_mode_detect().
 
-So,use a valid mode when detecting vmids of the HW supported,meanwhile
-remove unnecessary HGATP csr_read.
-
+Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
-Changes in v3:
- - Add "Fixes" tag.
- - Involve("RISC-V KVM: Remove unnecessary HGATP csr_read"), which
-   depends on patch 1.
+ arch/riscv/kvm/vmid.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Changes in v2:
- - Fixed build error since kvm_riscv_gstage_mode() has been modified.
----
-
-Fangyu Yu (1):
-  RISC-V: KVM: Write hgatp register with valid mode bits
-
-Guo Ren (Alibaba DAMO Academy) (1):
-  RISC-V KVM: Remove unnecessary HGATP csr_read
-
- arch/riscv/kvm/vmid.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
+diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
+index 5f33625f4070..abb1c2bf2542 100644
+--- a/arch/riscv/kvm/vmid.c
++++ b/arch/riscv/kvm/vmid.c
+@@ -25,15 +25,12 @@ static DEFINE_SPINLOCK(vmid_lock);
+ 
+ void __init kvm_riscv_gstage_vmid_detect(void)
+ {
+-	unsigned long old;
+-
+ 	/* Figure-out number of VMID bits in HW */
+-	old = csr_read(CSR_HGATP);
+ 	csr_write(CSR_HGATP, (kvm_riscv_gstage_mode << HGATP_MODE_SHIFT) | HGATP_VMID);
+ 	vmid_bits = csr_read(CSR_HGATP);
+ 	vmid_bits = (vmid_bits & HGATP_VMID) >> HGATP_VMID_SHIFT;
+ 	vmid_bits = fls_long(vmid_bits);
+-	csr_write(CSR_HGATP, old);
++	csr_write(CSR_HGATP, 0);
+ 
+ 	/* We polluted local TLB so flush all guest TLB */
+ 	kvm_riscv_local_hfence_gvma_all();
 -- 
 2.49.0
 
