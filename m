@@ -1,365 +1,263 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767C01917D6;
-	Wed, 20 Aug 2025 01:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755654791; cv=none; b=bTAJqUn0MdZB84kQOvGgEMBc8WGp72zzlE3usUTdBwXC168pOBtA+ohfw2Qwr+b9IwwleYc0KWnFGMtr+Ik2o6sZdYzyV1h0OXT8QoolymVgr/z64wK9xJ9YEjRdTIARfaAw7H6GLf2qIiTuRCeo8c53E/ziMAnxoHUztL4/YU4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755654791; c=relaxed/simple;
-	bh=rGO2K+Jv1k3mz252JvsEwdCz11/AGGjNQD/g8rPjGgA=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=pt6I3V2YoUi1s3EJbhfGp02wHhXDXSpQ69/4RMC3k6+NrBMQv1OPbiyMX8YsnZa3bUI0p6PTKvhq9g1i65ayHdgzC7enk+Bnt0LEl+RwAMtphSqNYKXcB4B2ECeNxHJEwg+USNC26bXREQdSyU7HJe2vuUrm8WRlBYJmpOH2eNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c68Xh518vz2gLBt;
-	Wed, 20 Aug 2025 09:50:12 +0800 (CST)
-Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
-	by mail.maildlp.com (Postfix) with ESMTPS id A9C59140278;
-	Wed, 20 Aug 2025 09:53:05 +0800 (CST)
-Received: from [10.67.121.110] (10.67.121.110) by
- dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2461F25F780;
+	Wed, 20 Aug 2025 02:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755655824; cv=fail; b=BJP0eBufJeJBX6wffYl8Gk88kQUw03ANCeCaicFPY5tvbIr/pFeOEqcHB1Xzi7YAqm5fJVUN0StVdX/X67FX2CjvjwqnwO5TsBB2s2IYtSVS8rE0oyBXW0am0M76QJ6wvFCfWcWgLqWpcHyEkyYoxm2wPcr/ZJ8cEqKbHRA8a2c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755655824; c=relaxed/simple;
+	bh=HCq4nao3Mp9BAlrVNvSE2n1QXJydMSKztTmZCDHHSCA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Cg+Hjaat5ZW+WdLsa7CgcGvpmjGwOaT3fb3CsWrwqNFk3PYixVtkq9nltWZUYOeN5e+ZGRPVybCJ38znf1pq4zr3aK6I+gRg6HL3QZiZ/nta4Yfpvg3M0wsqvDzwBnjgDCcn2o3Oxr5CNkSblwgRBXnXQtHEnQdvvDbFVLCkLkE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IME6mX59; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IME6mX59"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755655822; x=1787191822;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=HCq4nao3Mp9BAlrVNvSE2n1QXJydMSKztTmZCDHHSCA=;
+  b=IME6mX59VQNWDnOLKCLlu2O9IOQUJFGaEr8yxQGtNWTxTZo/7eqLQtgB
+   7g7mYRMUktRMRmCUOtSBEtMD8z6l6MzjlneaHV37os8Zo9HgG4ZqG9QoY
+   zqYyrw+WPDKuWsa5mP5PYWJu0NFVU57QN8X9+5mJu1oSg8VVpZUe2WrfN
+   OrafcOZOwdXKXGjES3ntlqo/B97A4zgfi6QbbqFEdWsnLYzfzpkU0Q+PZ
+   F4+l0UAenwaK8NyzqpPL/aEcvzdKZQ+E3YXQjHjhGLIEdM/r2floe9Er8
+   AsCqVHyuHhEOho+URmD2KOEZHOkznGvvgjPlti9ch3Va0HNWC3HeeVkSk
+   w==;
+X-CSE-ConnectionGUID: wI83LSoBT06ND5SKs/sapg==
+X-CSE-MsgGUID: gJ4w+/v6TsG8O0c+CXNwqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58064516"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="58064516"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 19:10:22 -0700
+X-CSE-ConnectionGUID: zc0K044BSsOsdMhpCUQ+Gw==
+X-CSE-MsgGUID: Uo2Iy5CXQW2okaXoeAzl9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="198861156"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 19:10:21 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 20 Aug 2025 09:53:04 +0800
-Subject: Re: [PATCH v7 3/3] migration: adapt to new migration configuration
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: <jgg@nvidia.com>, <herbert@gondor.apana.org.au>,
-	<jonathan.cameron@huawei.com>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@openeuler.org>
-References: <20250805065106.898298-1-liulongfang@huawei.com>
- <20250805065106.898298-4-liulongfang@huawei.com>
- <20250819153530.3332c3ea.alex.williamson@redhat.com>
-From: liulongfang <liulongfang@huawei.com>
-Message-ID: <360595f5-4df1-f1f9-6440-59a924547564@huawei.com>
-Date: Wed, 20 Aug 2025 09:53:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ 15.2.2562.17; Tue, 19 Aug 2025 19:10:20 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Tue, 19 Aug 2025 19:10:20 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.75)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 19 Aug 2025 19:10:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iCmS/ZbW5hwjTpH4AVVA+t6SzyzBggZegup21A7VCipIchizMVGYu9HugPFNYJcvD7LQNo+pHPy+2EYFN67kw8cVFh5LvjvZ1whQu5NDIagMVXir0y4OF7YYZVfkGrvcItcrL1VbYwmYWm40oAb+m3e/gx9gxazafm0qJkTfAehdclQRzgATuoxFPfcwqi+eHuPdY61JMydfOjcPPcvSAGz7kvVcbXdJ3LYf5Ed6BwT1SnV4+KiiBnrNGy+D88XyfA/2h59FElhVtUXAGV1wUdPQybZBqlRFd/2rI2LHV0Vhf+qk26McKIxEPyAhy463mS9kDQ7Hz7YV6hY0S6omUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eY22uxJmklGFens4nRs3QkZFMG9MoMwTcUo5KBcKmy8=;
+ b=qO8GbMiKd41dVmhLKmabu9ncN/h+8FjFwL/4hQuUqlnQmGWyfCvQFigptuhjlYW3WU8ob4XJZpw5Gq6RE49bY3cFEzBB2bhKElB4NB+wlkiKtHQ9PB3Rp3NxgJAviDQEVlxmJDeoZGVTCxtHJwldia49flYQGTLbRHZq78pUu6E7VZ2itfLyduWQoAyJZqYfaSCDU1bOt3yGDl3AX7vxL9BxVCHaQW9/Y+IqjapJ/9/zPNX8I6NMoe2+EakwVaQ6rf1cC3IrJ/Q7Tpc5tSXHq1CrdtA4EDM3QFg/eC58z3o/HpOt6eIVWE8m2e3J/ueTZgHlSsl6oKLFdyTRxuNO8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by SA1PR11MB6895.namprd11.prod.outlook.com (2603:10b6:806:2b2::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Wed, 20 Aug
+ 2025 02:10:12 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b%4]) with mapi id 15.20.9031.024; Wed, 20 Aug 2025
+ 02:10:12 +0000
+Date: Wed, 20 Aug 2025 10:10:00 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Xin Li <xin@zytor.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <mlevitsk@redhat.com>,
+	<rick.p.edgecombe@intel.com>, <weijiang.yang@intel.com>, Mathias Krause
+	<minipli@grsecurity.net>, John Allen <john.allen@amd.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>
+Subject: Re: [PATCH v12 17/24] KVM: VMX: Set up interception for CET MSRs
+Message-ID: <aKUueJpCHxC+xmCo@intel.com>
+References: <20250812025606.74625-1-chao.gao@intel.com>
+ <20250812025606.74625-18-chao.gao@intel.com>
+ <aKSiNh43UCosGIVh@google.com>
+ <77edb8d9-4093-49fe-963c-56da76514d4c@zytor.com>
+ <aKTGVvOb8PZ7mzVr@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aKTGVvOb8PZ7mzVr@google.com>
+X-ClientProxiedBy: SG2P153CA0051.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::20)
+ To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250819153530.3332c3ea.alex.williamson@redhat.com>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500015.china.huawei.com (7.185.36.143)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|SA1PR11MB6895:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4768c667-07ef-4f28-6fad-08dddf8eb23d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?XwUeTjryFK3wXU7O24NibDzHp/YkFAOMPEDX0TvUGVG6pC+XzMyYMJSZ5GkD?=
+ =?us-ascii?Q?8WNYqchbjd27PERgQqFShEwuTQGKGjYNBjEe7tuMle3ULpJsr0BJO3Hk95M5?=
+ =?us-ascii?Q?3Go/7wlyp59rY2wfyGOz9scrQBChdfC7j3xV1OZRJQYvkT40Gemad65sWzJg?=
+ =?us-ascii?Q?IqewUasSpRPyVVr5vUVV6biQAvFj1uwss4kflMRZk2HYlH6lN9W479AVWAwR?=
+ =?us-ascii?Q?KDFk8NPcwTSaRdf7D/XV39OHOW3KOJKioJFAwS4JMUO4uywnk+ebMobslaJf?=
+ =?us-ascii?Q?Pi3ShTWpTiVh3yKXJh+LOQ2bk3W1VhP4kjvUypsPVZChAd1XHW2J3/hsyCI/?=
+ =?us-ascii?Q?kx4a7aAbK6sRdidOG8cjLO9GimwB3fF6BLli3KxeXc2rfTL++efTo4TezIg1?=
+ =?us-ascii?Q?4KZ1covVIXjkkPX/8uw9jeGJEkMOUsmcz9TihCg8sMSmW0C+4j5qQ9pP7IBY?=
+ =?us-ascii?Q?MJ2vqNAeplQTUmioje3G0hW69ua9iP8nqWEIzWGAHz4boTKp4FiVm2DFOXRc?=
+ =?us-ascii?Q?fGJuqRNj+T6skU/hYdD5S2QNtGgNhyjPhwDkWHcFCYFo1ZeYDpW1NylMLqic?=
+ =?us-ascii?Q?slKCqHL6uC5UBOUoBnb+frDOBXlp7gYYUH9E8cgvFnpjVJgWKBWxiYIfZkRS?=
+ =?us-ascii?Q?sKxrwAFr5yas+ujsDvRzjSveTZI0keBD9SBd95zcj+fV4V4N/k8yp0Okmsdg?=
+ =?us-ascii?Q?7tKOutz+2IaM8vu5t6JMr2p38P+mEOVA2bpbr59vvSEPKnov09+ERTwyFIyF?=
+ =?us-ascii?Q?XkDqhSIzHgILEbXIZfHdtA/mNgx/mpbb/qI/BtL169NSEOjigec10meNz84a?=
+ =?us-ascii?Q?28cjqH+UZi1lwKim8lPw9FfrFU1HKF+FULEgPdso8DQYcm7dWTUTEgbpTSRg?=
+ =?us-ascii?Q?tqHBUyv16Xc7/A8fAv/yGnNMCQQFiluJfj2gtd39PVvPh7aDyylfzoI484gP?=
+ =?us-ascii?Q?a9HVT4zAj3Yh4e6X5tAy/bIg5X1/F6zANYl4gov/B4IiB1UQEX13Aha0eGZk?=
+ =?us-ascii?Q?HVlw3f/xtteTbj8zb7pdsJb/2s3KUEO4nbylY0Dd/lgGWDgj0mA78FfIwm4V?=
+ =?us-ascii?Q?010zAKrHkYOb7gEemXINmfZ59CsnSaPI9lVv1JewThZ04DG+yfS+t00Nn3jY?=
+ =?us-ascii?Q?VNmabBQOdkYk6mL25Opl9SYCKG3ZK37fHsIEKkZez/IuFYCUHLJ2rlecWsw9?=
+ =?us-ascii?Q?hDGrmm4BAcKRjuqM+cjPbGE4HppD0WJ8BaVzLDWPvy4pr/X/PhMiUPqOYuZV?=
+ =?us-ascii?Q?2ubVvtLcdMD4+TKdd/Bxan8LUtvzVvgDbbsCjYd03PUjfaufV44xUa5Kc2HM?=
+ =?us-ascii?Q?F3CsLJpTSR/gxYJtJa/xSMouUvcYu0tJ1RdhJ6K30IZXmE+tn7oT5yGa6Pfm?=
+ =?us-ascii?Q?Y4VVNicAa54t/SwpB1SXxuOnpUAKxniHS4qQxdToROneY3ZSp59ADeQuDM0I?=
+ =?us-ascii?Q?tyLSxtqcwmI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?k1IN9ITOPU0mtDqPQoAO7tIvK7OvquUGU1ng+r9vfQ7XPDglarJ9NYctyuFF?=
+ =?us-ascii?Q?V3mvXgFccBTBaWP0wD0Byz/srkkANub6dRdlXExHXOMDmRDeaqlnIwM8f/74?=
+ =?us-ascii?Q?LVeanTNTOsT6GXmzNvweid67YQ82mOyYtk2PD+b/2lOJ7eryWzxDmfIhV8MR?=
+ =?us-ascii?Q?RnUols0X8JPLbapiKdInJ3Ls8sWkYnaUoynMusBAC23jAG4/8rhlOkKrurzj?=
+ =?us-ascii?Q?/9pNQY40H8yyZ19jJNH37Jo0FmJ+vcDLu5w/O7AfFTCV3kpaOxJDl+pb0lj3?=
+ =?us-ascii?Q?l2BJf9ozExDGxWlVgBCL1yMh/AMK7vsjxo+m+0YpxurI4vMslg0v4PoxNp9p?=
+ =?us-ascii?Q?hGQVCypWlhAEuqCGDF4skBIYlVHZbw3b5w6g+oIvRI1PZ09n+LWmlScHx6ky?=
+ =?us-ascii?Q?HGWk4J8C6pntlI5iYr+BfKReZZ7no33xaO8Z2PXX/3jCAylgPzRMJIJ3UdVL?=
+ =?us-ascii?Q?TCPLQLzOItivNI9Bse4CLdLiLnaJuDLxPx4qsh0U0gZcyVbDiUOtnH2v3n3n?=
+ =?us-ascii?Q?wXfMYKjGTca9U68e4RgwFYpgKerpG+KsMPKwnSiQ4HvDl4JGx81zaWr3oeDZ?=
+ =?us-ascii?Q?ala+0tsoWQLdJGbmxGQpaXC1qv0P9tOGbH8rXgE7BPC550nwfeJvI00Tvnw7?=
+ =?us-ascii?Q?oefA57v11NoqC/9pfsHXX5S9kX+IHdE+uup9l3BSJ9BkZkrvgW6ZDsu67N9u?=
+ =?us-ascii?Q?3KfMpSnqJhvH87+eTHgBAEYuUs4Gyf80arwG2G/3UDy8S2vjEDTzZcLM7xam?=
+ =?us-ascii?Q?PlqMpC49iuVf2tcTPQNKVawfPEu77vpwmfeEZjMToqKYEW8kb2ebK0Mqv+oA?=
+ =?us-ascii?Q?Bz839ofbwyVCzrxLIuesTYwM6vx+E1ErK2WTlKExyEvnDlJ+YE/QZiRClG43?=
+ =?us-ascii?Q?oNfuVXFYJK2jofI9NtDOk75DCfhH4U5i0tXtSV30cEy7r6jDchq6IL2KQPNQ?=
+ =?us-ascii?Q?Rez6Pwdc0h0nkadaWkhPGSmxT2jerf6N6ds2F3l7KNQgZOXtL+j9N9YfcGPe?=
+ =?us-ascii?Q?9qFf2JgeJjlX925nUXaxdu3lGFHswJeFCKnan9FRoo6bzzVOaF0KSnfxkYYw?=
+ =?us-ascii?Q?BWFg/7QyI8h0hle+sxiAhUEHVHI8XSudbQMtG8RTYYWYENj5LFMRuM6QWLwA?=
+ =?us-ascii?Q?d4i6D5hE1rBPzSh0q7yKggVWY6mOiglYVLTHCh/rqMLibOPfm5eVnG8XEwFw?=
+ =?us-ascii?Q?DHkngq41pQHQSKxpyQ1tXPyPTYhoZOS64tHwjKk8mp2kYX6rXsJsajcuUPKE?=
+ =?us-ascii?Q?/raOSvXPKPmjfrD42VPAUF+qJdRmKbr+PQB9iXt7ZptjUfBu1wFyX/H3+/c9?=
+ =?us-ascii?Q?mJkY1RNka40O0aUyTdfAO8fVr334Q4VVkBqfNKRVZNYeSVZE/gy8p31efmN5?=
+ =?us-ascii?Q?dfa1x9JaC8pWMl5OHck498iUfwMgPIDw+GsSC1EGAntFX8fizkFQ87q2n36R?=
+ =?us-ascii?Q?riGVVBWaoYYDMMrfBZShHCGoboLmYvhx8AFhoymKix+jRPDE3Cf1TF6FVvPN?=
+ =?us-ascii?Q?JDEUSq5GiWGte+LFFwcfmMeAf0XGO3cCHcI9E0Hvj9wtw1sqnsz3EpW1aywu?=
+ =?us-ascii?Q?8jAdyx3+GmDODji8FuUz+6U270PtZjWfg6czbc9b?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4768c667-07ef-4f28-6fad-08dddf8eb23d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2025 02:10:12.7179
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3aGE69uPVDJ7ad04CmIf+ykrYiRjae1NhAYAiewWYZAlrWXwNKC+ajvhbPUzamW2ophl+FgGDeHYbUcFGGQE5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6895
+X-OriginatorOrg: intel.com
 
-On 2025/8/20 5:35, Alex Williamson wrote:
-> 
-> Patch title should be consistent with previous patches to this driver,
-> "migration:" is not very meaningful.  "hisi_acc_vfio_pci:" is the most
-> commonly used prefix.
-> 
-> More below...
+On Tue, Aug 19, 2025 at 11:45:42AM -0700, Sean Christopherson wrote:
+>On Tue, Aug 19, 2025, Xin Li wrote:
+>> On 8/19/2025 9:11 AM, Sean Christopherson wrote:
+>> > On Mon, Aug 11, 2025, Chao Gao wrote:
+>> > > From: Yang Weijiang <weijiang.yang@intel.com>
+>> > > 
+>> > > Enable/disable CET MSRs interception per associated feature configuration.
+>> > > 
+>> > > Shadow Stack feature requires all CET MSRs passed through to guest to make
+>> > > it supported in user and supervisor mode
+>> > 
+>> > I doubt that SS _requires_ CET MSRs to be passed through.  IIRC, the actual
+>> > reason for passing through most of the MSRs is that they are managed via XSAVE,
+>> > i.e. _can't_ be intercepted without also intercepting XRSTOR.
+
+Agreed. Will update the changelog.
+
+>> > 
+>> > > while IBT feature only depends on
+>> > > MSR_IA32_{U,S}_CETS_CET to enable user and supervisor IBT.
+>> > > 
+>> > > Note, this MSR design introduced an architectural limitation of SHSTK and
+>> > > IBT control for guest, i.e., when SHSTK is exposed, IBT is also available
+>> > > to guest from architectural perspective since IBT relies on subset of SHSTK
+>> > > relevant MSRs.
+>> > > 
+>> > > Suggested-by: Sean Christopherson <seanjc@google.com>
+>> > > Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+>> > > Tested-by: Mathias Krause <minipli@grsecurity.net>
+>> > > Tested-by: John Allen <john.allen@amd.com>
+>> > > Signed-off-by: Chao Gao <chao.gao@intel.com>
+>> > > ---
+>> > >   arch/x86/kvm/vmx/vmx.c | 20 ++++++++++++++++++++
+>> > >   1 file changed, 20 insertions(+)
+>> > > 
+>> > > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+>> > > index bd572c8c7bc3..130ffbe7dc1a 100644
+>> > > --- a/arch/x86/kvm/vmx/vmx.c
+>> > > +++ b/arch/x86/kvm/vmx/vmx.c
+>> > > @@ -4088,6 +4088,8 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
+>> > >   void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+>> > >   {
+>> > > +	bool set;
+>> > 
+>> > s/set/intercept
+>> > 
+>> 
+>> Maybe because you asked me to change "flag" to "set" when reviewing FRED
+>> patches, however "intercept" does sound better, and I just changed it :)
 >
+>Ah crud.  I had a feeling I was flip-flopping.  I obviously don't have a strong
+>preference.
 
-OK, I'll revise the title description for this patch set.
+Anyway, I will use "intercept".
 
-> On Tue, 5 Aug 2025 14:51:06 +0800
-> Longfang Liu <liulongfang@huawei.com> wrote:
-> 
->> On new platforms greater than QM_HW_V3, the migration region has been
->> relocated from the VF to the PF. The driver must also be modified
->> accordingly to adapt to the new hardware device.
->>
->> On the older hardware platform QM_HW_V3, the live migration configuration
->> region is placed in the latter 32K portion of the VF's BAR2 configuration
->> space. On the new hardware platform QM_HW_V4, the live migration
->> configuration region also exists in the same 32K area immediately following
->> the VF's BAR2, just like on QM_HW_V3.
->>
->> However, access to this region is now controlled by hardware. Additionally,
->> a copy of the live migration configuration region is present in the PF's BAR2
->> configuration space. On the new hardware platform QM_HW_V4, when an older
->> version of the driver is loaded, it behaves like QM_HW_V3 and uses the
->> configuration region in the VF, ensuring that the live migration function
->> continues to work normally. When the new version of the driver is loaded,
->> it directly uses the configuration region in the PF. Meanwhile, hardware
->> configuration disables the live migration configuration region in the VF's
->> BAR2: reads return all 0xF values, and writes are silently ignored.
-> 
-> Patch 1/ suggests that the migration config registers are fully moved
-> from VF to PF, opening the full BAR2 to user access.  Here I think it's
-> described differently, that V4 hardware operates in V3 compatibility
-> mode with the migration configuration registers only becoming disabled
-> when the driver switches to V4 mode.  Aren't the patches backwards then,
-> that we should only expose the full BAR2 once the driver has disabled
-> the migration registers?
->> Actually I think it's patch 2/ that was claimed is independent of
-> these vfio-pci variant driver changes that appears to direct the PF to
-> disable compatibility mode, right?  But if we implement the vfio driver
-> change without the PF driver change, then I think we're broken and
-> we're creating a tenuous dependency between the PF driver and the
-> vfio-pci variant VF driver.  It seems like maybe we need to rely on
-> both V4 hardware AND testing that the PF driver has set the write
-> config before we can implement V4 mode here.  Thanks,
 >
+>> > > +
+>> > >   	if (!cpu_has_vmx_msr_bitmap())
+>> > >   		return;
+>> > > @@ -4133,6 +4135,24 @@ void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+>> > >   		vmx_set_intercept_for_msr(vcpu, MSR_IA32_FLUSH_CMD, MSR_TYPE_W,
+>> > >   					  !guest_cpu_cap_has(vcpu, X86_FEATURE_FLUSH_L1D));
+>> > > +	if (kvm_cpu_cap_has(X86_FEATURE_SHSTK)) {
+>> > > +		set = !guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
+>> > > +
+>> > > +		vmx_set_intercept_for_msr(vcpu, MSR_IA32_PL0_SSP, MSR_TYPE_RW, set);
+>> > > +		vmx_set_intercept_for_msr(vcpu, MSR_IA32_PL1_SSP, MSR_TYPE_RW, set);
+>> > > +		vmx_set_intercept_for_msr(vcpu, MSR_IA32_PL2_SSP, MSR_TYPE_RW, set);
+>> > > +		vmx_set_intercept_for_msr(vcpu, MSR_IA32_PL3_SSP, MSR_TYPE_RW, set);
+>> > > +		vmx_set_intercept_for_msr(vcpu, MSR_IA32_INT_SSP_TAB, MSR_TYPE_RW, set);
+>> > 
+>> > MSR_IA32_INT_SSP_TAB isn't managed via XSAVE, so why is it being passed through?
+>> 
+>> It's managed in VMCS host and guest areas, i.e. HOST_INTR_SSP_TABLE and
+>> GUEST_INTR_SSP_TABLE, if the "load CET" bits are set in both VM entry
+>> and exit controls.
+>
+>Ah, "because it's essentially free".  Unless there's a true need to pass it through,
+>I think it makes sense to intercept.  Merging KVM's bitmap with vmcs12's bitmap
+>isn't completely free (though it's quite cheap).  More importantly, this is technically
+>wrong due to MSR_IA32_INT_SSP_TAB not existing if the vCPU doesn't have LM.  That's
+>obviously easy to solve, I just don't see the point.
 
-Your concern is valid. We cannot have the hisi_acc_vfio_pci driver depend on
-the hisi_qm driver. Instead, the hisi_acc_vfio_pci driver should adapt to the
-current device configuration on its own.
-That is, if the device has loaded the hisi_qm driver and switched to V4 mode,
-then the hisi_acc_vfio_pci driver should open the full BAR2 for user access.
-Otherwise, it should continue to operate in V3 compatibility mode.
-
-Thanks
-Longfang.
-
-> Alex
-> 
->> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
->> Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
->> ---
->>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 164 ++++++++++++------
->>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.h    |   7 +
->>  2 files changed, 118 insertions(+), 53 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> index ddb3fd4df5aa..a20785bcea62 100644
->> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> @@ -125,6 +125,72 @@ static int qm_get_cqc(struct hisi_qm *qm, u64 *addr)
->>  	return 0;
->>  }
->>  
->> +static int qm_get_xqc_regs(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->> +			   struct acc_vf_data *vf_data)
->> +{
->> +	struct hisi_qm *qm = &hisi_acc_vdev->vf_qm;
->> +	struct device *dev = &qm->pdev->dev;
->> +	u32 eqc_addr, aeqc_addr;
->> +	int ret;
->> +
->> +	if (qm->ver == QM_HW_V3) {
->> +		eqc_addr = QM_EQC_DW0;
->> +		aeqc_addr = QM_AEQC_DW0;
->> +	} else {
->> +		eqc_addr = QM_EQC_PF_DW0;
->> +		aeqc_addr = QM_AEQC_PF_DW0;
->> +	}
->> +
->> +	/* QM_EQC_DW has 7 regs */
->> +	ret = qm_read_regs(qm, eqc_addr, vf_data->qm_eqc_dw, 7);
->> +	if (ret) {
->> +		dev_err(dev, "failed to read QM_EQC_DW\n");
->> +		return ret;
->> +	}
->> +
->> +	/* QM_AEQC_DW has 7 regs */
->> +	ret = qm_read_regs(qm, aeqc_addr, vf_data->qm_aeqc_dw, 7);
->> +	if (ret) {
->> +		dev_err(dev, "failed to read QM_AEQC_DW\n");
->> +		return ret;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int qm_set_xqc_regs(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->> +			   struct acc_vf_data *vf_data)
->> +{
->> +	struct hisi_qm *qm = &hisi_acc_vdev->vf_qm;
->> +	struct device *dev = &qm->pdev->dev;
->> +	u32 eqc_addr, aeqc_addr;
->> +	int ret;
->> +
->> +	if (qm->ver == QM_HW_V3) {
->> +		eqc_addr = QM_EQC_DW0;
->> +		aeqc_addr = QM_AEQC_DW0;
->> +	} else {
->> +		eqc_addr = QM_EQC_PF_DW0;
->> +		aeqc_addr = QM_AEQC_PF_DW0;
->> +	}
->> +
->> +	/* QM_EQC_DW has 7 regs */
->> +	ret = qm_write_regs(qm, eqc_addr, vf_data->qm_eqc_dw, 7);
->> +	if (ret) {
->> +		dev_err(dev, "failed to write QM_EQC_DW\n");
->> +		return ret;
->> +	}
->> +
->> +	/* QM_AEQC_DW has 7 regs */
->> +	ret = qm_write_regs(qm, aeqc_addr, vf_data->qm_aeqc_dw, 7);
->> +	if (ret) {
->> +		dev_err(dev, "failed to write QM_AEQC_DW\n");
->> +		return ret;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  static int qm_get_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
->>  {
->>  	struct device *dev = &qm->pdev->dev;
->> @@ -167,20 +233,6 @@ static int qm_get_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
->>  		return ret;
->>  	}
->>  
->> -	/* QM_EQC_DW has 7 regs */
->> -	ret = qm_read_regs(qm, QM_EQC_DW0, vf_data->qm_eqc_dw, 7);
->> -	if (ret) {
->> -		dev_err(dev, "failed to read QM_EQC_DW\n");
->> -		return ret;
->> -	}
->> -
->> -	/* QM_AEQC_DW has 7 regs */
->> -	ret = qm_read_regs(qm, QM_AEQC_DW0, vf_data->qm_aeqc_dw, 7);
->> -	if (ret) {
->> -		dev_err(dev, "failed to read QM_AEQC_DW\n");
->> -		return ret;
->> -	}
->> -
->>  	return 0;
->>  }
->>  
->> @@ -239,20 +291,6 @@ static int qm_set_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
->>  		return ret;
->>  	}
->>  
->> -	/* QM_EQC_DW has 7 regs */
->> -	ret = qm_write_regs(qm, QM_EQC_DW0, vf_data->qm_eqc_dw, 7);
->> -	if (ret) {
->> -		dev_err(dev, "failed to write QM_EQC_DW\n");
->> -		return ret;
->> -	}
->> -
->> -	/* QM_AEQC_DW has 7 regs */
->> -	ret = qm_write_regs(qm, QM_AEQC_DW0, vf_data->qm_aeqc_dw, 7);
->> -	if (ret) {
->> -		dev_err(dev, "failed to write QM_AEQC_DW\n");
->> -		return ret;
->> -	}
->> -
->>  	return 0;
->>  }
->>  
->> @@ -522,6 +560,10 @@ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>  		return ret;
->>  	}
->>  
->> +	ret = qm_set_xqc_regs(hisi_acc_vdev, vf_data);
->> +	if (ret)
->> +		return ret;
->> +
->>  	ret = hisi_qm_mb(qm, QM_MB_CMD_SQC_BT, qm->sqc_dma, 0, 0);
->>  	if (ret) {
->>  		dev_err(dev, "set sqc failed\n");
->> @@ -589,6 +631,10 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>  	vf_data->vf_qm_state = QM_READY;
->>  	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
->>  
->> +	ret = qm_get_xqc_regs(hisi_acc_vdev, vf_data);
->> +	if (ret)
->> +		return ret;
->> +
->>  	ret = vf_qm_read_data(vf_qm, vf_data);
->>  	if (ret)
->>  		return ret;
->> @@ -1186,34 +1232,45 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->>  {
->>  	struct vfio_pci_core_device *vdev = &hisi_acc_vdev->core_device;
->>  	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
->> +	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
->>  	struct pci_dev *vf_dev = vdev->pdev;
->>  
->> -	/*
->> -	 * ACC VF dev BAR2 region consists of both functional register space
->> -	 * and migration control register space. For migration to work, we
->> -	 * need access to both. Hence, we map the entire BAR2 region here.
->> -	 * But unnecessarily exposing the migration BAR region to the Guest
->> -	 * has the potential to prevent/corrupt the Guest migration. Hence,
->> -	 * we restrict access to the migration control space from
->> -	 * Guest(Please see mmap/ioctl/read/write override functions).
->> -	 *
->> -	 * Please note that it is OK to expose the entire VF BAR if migration
->> -	 * is not supported or required as this cannot affect the ACC PF
->> -	 * configurations.
->> -	 *
->> -	 * Also the HiSilicon ACC VF devices supported by this driver on
->> -	 * HiSilicon hardware platforms are integrated end point devices
->> -	 * and the platform lacks the capability to perform any PCIe P2P
->> -	 * between these devices.
->> -	 */
->> -
->> -	vf_qm->io_base =
->> -		ioremap(pci_resource_start(vf_dev, VFIO_PCI_BAR2_REGION_INDEX),
->> -			pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX));
->> -	if (!vf_qm->io_base)
->> -		return -EIO;
->> +	if (pf_qm->ver == QM_HW_V3) {
->> +		/*
->> +		 * ACC VF dev BAR2 region consists of both functional register space
->> +		 * and migration control register space. For migration to work, we
->> +		 * need access to both. Hence, we map the entire BAR2 region here.
->> +		 * But unnecessarily exposing the migration BAR region to the Guest
->> +		 * has the potential to prevent/corrupt the Guest migration. Hence,
->> +		 * we restrict access to the migration control space from
->> +		 * Guest(Please see mmap/ioctl/read/write override functions).
->> +		 *
->> +		 * Please note that it is OK to expose the entire VF BAR if migration
->> +		 * is not supported or required as this cannot affect the ACC PF
->> +		 * configurations.
->> +		 *
->> +		 * Also the HiSilicon ACC VF devices supported by this driver on
->> +		 * HiSilicon hardware platforms are integrated end point devices
->> +		 * and the platform lacks the capability to perform any PCIe P2P
->> +		 * between these devices.
->> +		 */
->>  
->> +		vf_qm->io_base =
->> +			ioremap(pci_resource_start(vf_dev, VFIO_PCI_BAR2_REGION_INDEX),
->> +				pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX));
->> +		if (!vf_qm->io_base)
->> +			return -EIO;
->> +	} else {
->> +		/*
->> +		 * On hardware platforms greater than QM_HW_V3, the migration function
->> +		 * register is placed in the BAR2 configuration region of the PF,
->> +		 * and each VF device occupies 8KB of configuration space.
->> +		 */
->> +		vf_qm->io_base = pf_qm->io_base + QM_MIG_REGION_OFFSET +
->> +				 hisi_acc_vdev->vf_id * QM_MIG_REGION_SIZE;
->> +	}
->>  	vf_qm->fun_type = QM_HW_VF;
->> +	vf_qm->ver = pf_qm->ver;
->>  	vf_qm->pdev = vf_dev;
->>  	mutex_init(&vf_qm->mailbox_lock);
->>  
->> @@ -1539,7 +1596,8 @@ static void hisi_acc_vfio_pci_close_device(struct vfio_device *core_vdev)
->>  	hisi_acc_vf_disable_fds(hisi_acc_vdev);
->>  	mutex_lock(&hisi_acc_vdev->open_mutex);
->>  	hisi_acc_vdev->dev_opened = false;
->> -	iounmap(vf_qm->io_base);
->> +	if (vf_qm->ver == QM_HW_V3)
->> +		iounmap(vf_qm->io_base);
->>  	mutex_unlock(&hisi_acc_vdev->open_mutex);
->>  	vfio_pci_core_close_device(core_vdev);
->>  }
->> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
->> index 91002ceeebc1..348f8bb5b42c 100644
->> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
->> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
->> @@ -59,6 +59,13 @@
->>  #define ACC_DEV_MAGIC_V1	0XCDCDCDCDFEEDAACC
->>  #define ACC_DEV_MAGIC_V2	0xAACCFEEDDECADEDE
->>  
->> +#define QM_MIG_REGION_OFFSET		0x180000
->> +#define QM_MIG_REGION_SIZE		0x2000
->> +
->> +#define QM_SUB_VERSION_ID		0x100210
->> +#define QM_EQC_PF_DW0			0x1c00
->> +#define QM_AEQC_PF_DW0			0x1c20
->> +
->>  struct acc_vf_data {
->>  #define QM_MATCH_SIZE offsetofend(struct acc_vf_data, qm_rsv_state)
->>  	/* QM match information */
-> 
-> 
-> .
-> 
+Sure. I will leave MSR_IA32_INT_SSP_TAB intercept and add a LM check on its emulation.
