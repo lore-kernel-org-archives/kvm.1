@@ -1,96 +1,154 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F78831AF25;
-	Wed, 20 Aug 2025 12:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F822475C7
+	for <kvm@vger.kernel.org>; Wed, 20 Aug 2025 13:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755694804; cv=none; b=aBUolJ9LLWw99NhKwok5q0yKmy5DegR7Lifnrfk7rA53Es3hTkqJtC1adHxjH9PtQU8+GkxoU3Fau2U98ElMrd/kgFezse3p5x28KGqM4Ha6HEpic+GXGCV9e77nIi6ivhyhnnJBkT6/a7vnw0/DLseMYrEIwK/nSoRWmjZfc3c=
+	t=1755694905; cv=none; b=iKe9la1Cn0rI3qcOX+MHPAv3bURwW6eZgBe3pb36COuOyrAO/9TBlkuJF4Uh+7NYuj/1bMCvHzY04GLwDqUkSTfH1IQkL6yYDY4W/+XLqSX777n+TVfb+j8c9V8oTxb75zYWyoAAYafaI8pErvT/BjjjBHr9vC/4U97cDPBXNBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755694804; c=relaxed/simple;
-	bh=BoYCEutuegVGi1YMFbKRHtU+ZEC5pxWe6YgKpIdGGKk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rQiF0A8/dks/F/9RyjQyfh64OXg2pmxLC2uY1pMFBOfDc2XWQFkpeoQmaaJMb0fEzmAIixAs0uerqpntDFSzDGC0guFPBmZmpFlHobv870cyMqa3SibMS5RQjTBAUge2MXtPCxZFAiMFQo5P3VNAkBljBK0DHGdj+FEkponJEJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MlcuG4+c; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1755694905; c=relaxed/simple;
+	bh=wKs6154q1CuWduyMYGk1ExrTS3G/asrXXyz4KcM+ZXE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BzyOLh1vIoviQ6XNwbFMpsb/DXR2ntpM8Dc61mmW4eioG81w9OGYv5ufU7MH44xHbgH6t6rUcWGaTHgjKJZpmSalaYFwPOR35qZaA3SVW+quP7R4SS7+sk6R6MucEjAcrQdMGFCgtR+cC6MxHLs9mse5FSTfkMh6aZqU/q6AJzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wW2AcJZy; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MlcuG4+c"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755694798; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=3BJVOCM13LqwDm1dqz/wRNujuXc9x9YGPSojNZlkeNY=;
-	b=MlcuG4+ci+LCc2FGM7C0AFnMDzSTYB/seAZxWnmLjax0rcljZ4AC/gcLnkooXS+rjtSIgdfVT3DhpXoaRJLVP5imD7/TabDELMme3RG5HsWGjGGY51mOe132424/NUtHo+HTEAimPgZtNlpijr91jO0tFUgsoGZKZ+yaR23++Tw=
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WmCQaZW_1755694796 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 20 Aug 2025 20:59:56 +0800
-From: fangyu.yu@linux.alibaba.com
-To: anup@brainfault.org,
-	atish.patra@linux.dev,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr
-Cc: guoren@kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Nutty Liu <nutty.liu@hotmail.com>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Subject: [PATCH v3 1/2] RISC-V: KVM: Write hgatp register with valid mode bits
-Date: Wed, 20 Aug 2025 20:59:51 +0800
-Message-Id: <20250820125952.71689-2-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20250820125952.71689-1-fangyu.yu@linux.alibaba.com>
-References: <20250820125952.71689-1-fangyu.yu@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wW2AcJZy"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-24458264c5aso70013155ad.3
+        for <kvm@vger.kernel.org>; Wed, 20 Aug 2025 06:01:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755694903; x=1756299703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UaJOMLSIELpvDEO7epSv+22yc1sPRzaMaQRGyQr0AeE=;
+        b=wW2AcJZywjYn2/D9QUY2C8b5aGe38lTRF6hP9WWTGXkXlqziPYscFqcpKoD8OzSRBo
+         OspDyeFvbA5TUdQZ0Xfp9nZEf6v98cMcpF+YJx2MKpiaRxbJuVhcQBEN95Kns2QazEvZ
+         u34YiLRCc2DBX3MBj1uLXIJi6k03QwvHtxm/wA2XjxesvI6Pjv2LqALJJa9L1Natwk5B
+         AtOpkFcE/kWy61HMoBIP/ZvKle+g7Gd5ptKIEEvFSQk9mv0q/wNznmOV46kQqAVD7sP8
+         XNpYWUk/45OO88glS/5Ky3iOyXcXw/wC4MOYo+nXZHzA7LVVHSC0HysjMylT4DKTCL2u
+         c2+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755694903; x=1756299703;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UaJOMLSIELpvDEO7epSv+22yc1sPRzaMaQRGyQr0AeE=;
+        b=MEMcdpu3uI0i5NV5fwGuhVsJsBnjmdkWSaXSOeE2XXPOnqKEi/WgfIEDJofjBEPId6
+         O+b7NMFgVy0ibfz3moAxo5ylGhSMMKlUSod0CXXA5NMr04XarCbSkA2KUy6k+0sJxw1E
+         66KfBX0zVqvTSAv0I6xGr2hQVLU3A9s6rnnuIS9UHy1N+IoqqXSQsR8EWGaT/LKvSXNC
+         hNk0ve6a+pVEGZA5xDfpfEcAMiSrB2mBr2KwrnsOlq8gZlwr+0666vtmXhOZSkIXBbwm
+         Pw+zCYtmOOcTXFpOQrCc9SetK1ZbmDVXiVz3PllwOw2aY7H7onB700alF6zc282kBNbs
+         yiNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXLk739uBwOnIt1tJI7MDfxbMzc7Vd/rt4koT/x0PDeZJSbsGJKkYgHATk69We4pniEDmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8tTvI1Lj/cLRji4RphtMo7owm4ot1PSnHtO8ZAnpu7nJ+sQRH
+	sad+xe9zd3pX+yWLBfHIGrARir4Rltob1vFuHX7X92NYXrvPQZcwzhCQcFjzuRNpa2gGSVTCckG
+	Kv5CR3g==
+X-Google-Smtp-Source: AGHT+IEwOh08V7OwFaToRvymHqAkp1iuuPWnLNS6JSQCMW6zILVjkhJt5JbRAqseXO9ZLDriDY4AFd/fiY8=
+X-Received: from pjbok13.prod.google.com ([2002:a17:90b:1d4d:b0:321:c2a7:cbce])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef01:b0:243:3b1:47cb
+ with SMTP id d9443c01a7336-245ef1045a8mr33382985ad.6.1755694902882; Wed, 20
+ Aug 2025 06:01:42 -0700 (PDT)
+Date: Wed, 20 Aug 2025 06:01:40 -0700
+In-Reply-To: <c3e638e9-631f-47af-b0d2-06cea949ec1e@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250819234833.3080255-1-seanjc@google.com> <20250819234833.3080255-9-seanjc@google.com>
+ <c3e638e9-631f-47af-b0d2-06cea949ec1e@amd.com>
+Message-ID: <aKXHNDiKys9y8Xdw@google.com>
+Subject: Re: [PATCH v11 8/8] KVM: SVM: Enable Secure TSC for SNP guests
+From: Sean Christopherson <seanjc@google.com>
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Thomas Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Vaishali Thakkar <vaishali.thakkar@suse.com>, 
+	Kai Huang <kai.huang@intel.com>, David.Kaplan@amd.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On Wed, Aug 20, 2025, Nikunj A. Dadhania wrote:
+>=20
+>=20
+> On 8/20/2025 5:18 AM, Sean Christopherson wrote:
+> > From: Nikunj A Dadhania <nikunj@amd.com>
+> >=20
+> > @@ -2195,6 +2206,12 @@ static int snp_launch_start(struct kvm *kvm, str=
+uct kvm_sev_cmd *argp)
+> > =20
+> >  	start.gctx_paddr =3D __psp_pa(sev->snp_context);
+> >  	start.policy =3D params.policy;
+> > +
+> > +	if (snp_is_secure_tsc_enabled(kvm)) {
+> > +		WARN_ON_ONCE(!kvm->arch.default_tsc_khz);
+>=20
+> Any particular reason to drop the the following change:=20
+>=20
+> +		if (WARN_ON(!kvm->arch.default_tsc_khz)) {
+> +			rc =3D -EINVAL;
+> +			goto e_free_context;
+> +		}
 
-According to the RISC-V Privileged Architecture Spec, when MODE=Bare
-is selected,software must write zero to the remaining fields of hgatp.
+Based on this conversation[*], both Kai and I expected KVM to let firmware =
+deal
+with the should-be-impossible situation.
 
-We have detected the valid mode supported by the HW before, So using a
-valid mode to detect how many vmid bits are supported.
+  On Tue, Jul 8, 2025 at 9:15=E2=80=AFPM Nikunj A. Dadhania <nikunj@amd.com=
+> wrote:
+  > On 7/8/2025 8:04 PM, Sean Christopherson wrote:
+  > > On Tue, Jul 08, 2025, Kai Huang wrote:
+  > >>>> Even some bug results in the default_tsc_khz being 0, will the
+  > >>>> SNP_LAUNCH_START command catch this and return error?
+  > >>>
+  > >>> No, that is an invalid configuration, desired_tsc_khz is set to 0 w=
+hen
+  > >>> SecureTSC is disabled. If SecureTSC is enabled, desired_tsc_khz sho=
+uld
+  > >>> have correct value.
+  > >>
+  > >> So it's an invalid configuration that when Secure TSC is enabled and
+  > >> desired_tsc_khz is 0.  Assuming the SNP_LAUNCH_START will return an =
+error
+  > >> if such configuration is used, wouldn't it be simpler if you remove =
+the
+  > >> above check and depend on the SNP_LAUNCH_START command to catch the
+  > >> invalid configuration?
+  > >
+  > > Support for secure TSC should depend on tsc_khz being non-zero.  That=
+ way it'll
+  > > be impossible for arch.default_tsc_khz to be zero at runtime.  Then K=
+VM can WARN
+  > > on arch.default_tsc_khz being zero during SNP_LAUNCH_START.
+  >
+  > Sure.
 
-Fixes: fd7bb4a251df ("RISC-V: KVM: Implement VMID allocator")
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
-Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
----
- arch/riscv/kvm/vmid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+https://lore.kernel.org/all/c327df02-c2eb-41e7-9402-5a16aa211265@amd.com
 
-diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
-index 3b426c800480..5f33625f4070 100644
---- a/arch/riscv/kvm/vmid.c
-+++ b/arch/riscv/kvm/vmid.c
-@@ -14,6 +14,7 @@
- #include <linux/smp.h>
- #include <linux/kvm_host.h>
- #include <asm/csr.h>
-+#include <asm/kvm_mmu.h>
- #include <asm/kvm_tlb.h>
- #include <asm/kvm_vmid.h>
- 
-@@ -28,7 +29,7 @@ void __init kvm_riscv_gstage_vmid_detect(void)
- 
- 	/* Figure-out number of VMID bits in HW */
- 	old = csr_read(CSR_HGATP);
--	csr_write(CSR_HGATP, old | HGATP_VMID);
-+	csr_write(CSR_HGATP, (kvm_riscv_gstage_mode << HGATP_MODE_SHIFT) | HGATP_VMID);
- 	vmid_bits = csr_read(CSR_HGATP);
- 	vmid_bits = (vmid_bits & HGATP_VMID) >> HGATP_VMID_SHIFT;
- 	vmid_bits = fls_long(vmid_bits);
--- 
-2.49.0
+>=20
+> As this is an unsupported configuration as per the SEV SNP Firmware ABI S=
+pecification:=20
 
+Right, but what happens if KVM manages to pass in '0' for the frequency?  D=
+oes
+SNP_LAUNCH_START fail?  If so, bailing from KVM doesn't seem to add any val=
+ue.
+
+>=20
+> 8.16 SNP_LAUNCH_START
+>=20
+> DESIRED_TSC_FREQ
+> Hypervisor-desired mean TSC frequency in KHz of the guest. This field has=
+ no
+> effect if guests do not enable Secure TSC in the VMSA. The hypervisor sho=
+uld
+> set this field to 0h if it *does not support Secure TSC* for this guest.
+>=20
+> > +		start.desired_tsc_khz =3D kvm->arch.default_tsc_khz;
+> > +	}
+> > +
+> Regards,Nikunj
