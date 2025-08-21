@@ -1,42 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803452F7466;
-	Thu, 21 Aug 2025 08:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632832BD031;
+	Thu, 21 Aug 2025 09:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755764568; cv=none; b=VvZ9bTDc97469EFqF7P7mDBLw6tHCEq5LNwkrkiPfrxSZOidIkAcF5zKaGq3umPvl5UqS8ZMMynYAYgqRjUDsi//qQkRnisGnDFcXTwyGDaUknHTBf6VM5qxccds3rVWhZ7na/LtHwdUxfIFZuOSaUGZQbmcOL0qCU2Kv2aVYzM=
+	t=1755767124; cv=none; b=Mx7zBVxjUqG/BfKpDUxjW26vgiJc5HXNIRBH7LZSUARBc8HrBYSc5/a+tI+rFOwdIhrPWqwxTzMHLlLdKBYKa0FwN7lc/Da68LS5vHVdC69CZh5AP3GNILpc0GnF9ZXndlZ1xzJDBtf1eXmCMAFhsD7UHg89DvAWr1ypBuYj+KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755764568; c=relaxed/simple;
-	bh=sCyzuB7YJmmuOyWRTSgUz4eii2awqBJX81AH6BpF6is=;
+	s=arc-20240116; t=1755767124; c=relaxed/simple;
+	bh=6m8VkLTn5CveIiBhG3nSr49Vkn2mPSrdpHQymVKyjFI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VV+PEUAA9HDDCcSn8xpl251JyYmlmxxA6lL/PgdYBRyeGu5g3iGHuxsBlafqA/hCrqKnZrJ8D+e+ruw+6AK/OC7Rvc1aYErsD2IDbA7Z71p0TY3cdiCaDMTQzCVD1ajGYInGOEN58rlJqKSUFtY92HGnVkAp4ZdFdSLreZSvrKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWwM7F7d; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zbv0CtxIPmrNNIt2dLZ+W+WRkOlSOIkDjiCHERK+BRGxHm8DBJFHagK6TFWkgngxdpAnVI/ufCXzXubXDH8UJ71KComS80eYfMxxNkitvB3l5rsjyUfWvt5F65eewPLMhkVznimTJ6YvtZa/AlXyPIqGkm8+svG7m8/xiP8cB9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDUlwJ2E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWwM7F7d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97506C116B1;
-	Thu, 21 Aug 2025 08:22:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDUlwJ2E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72135C4CEEB;
+	Thu, 21 Aug 2025 09:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755764568;
-	bh=sCyzuB7YJmmuOyWRTSgUz4eii2awqBJX81AH6BpF6is=;
+	s=k20201202; t=1755767124;
+	bh=6m8VkLTn5CveIiBhG3nSr49Vkn2mPSrdpHQymVKyjFI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YWwM7F7dsB6YWLOUYAqlclxsQe6Vsj+jjlM8UftlE6mvaMvaMA1SGq8oqWJqpyntN
-	 KgbsWrt5jUQAdUI8K8nEAe3pBFZYlgPbvGJJOF77gyCZpn6Dzsq404uNprJqkKuN0U
-	 J6WaV9pq1W4AEwnoQQWMiBqlsiP9yDOTpho5z+jHTK6Kbmq8fen5krkOH5f4PjNrrN
-	 fz9JpVcbyv85JCpFV1tmnM99l54Zjy0y0vZlcf2QMqm8MHBOOlB2oGGjpxzf522z8j
-	 p+0iW4QrPSdNm0fQprfMoTtEsccXTW2cwchi+3zSsq2JpCbU1uC2NLys+PEOnUwCGw
-	 KORXEZi1aKf/A==
-Date: Thu, 21 Aug 2025 13:48:07 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
-	Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] KVM: SVM: Fix missing LAPIC TPR sync into
- VMCB::V_TPR with AVIC on
-Message-ID: <zeavh4vqorbuq23664til6hww6yafm4lniu4dm32ii33hyszvq@5byejwk3bom3>
-References: <cover.1755609446.git.maciej.szmigiero@oracle.com>
+	b=HDUlwJ2EmohArI1fC1Akm4jTOxlqiU+m3pUzPJDD6lNS8l2ua+nD4ooUPnPgIldiU
+	 wb5mldq5XbpxigBYnm4tN15EM42gF0So48Q9MrFuEueD4gPCSA/69PewL8SHXa4zpZ
+	 YNFzF7uOVqUASZvT7XXrC9OkBVpPqLLdlvdrCkGm0pfvrmwVYAVWmcQ4IEYbC8Dap8
+	 ZawdsErTkjlfQyYSJWMWOXvPNOiEk6cJ9/LhBkVODJLt4adKuC9piZ6ko99t2c7YI1
+	 3erMd+Mat2qOb319sQHnJpOLVRxk37JU6JnUKiLtplp7HYqs1iMpQuZ4GbEvLOV8/S
+	 0F+tnnHXnjXxw==
+Date: Thu, 21 Aug 2025 11:05:21 +0200
+From: Amit Shah <amit@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org,
+	bp@alien8.de, tglx@linutronix.de, peterz@infradead.org,
+	jpoimboe@kernel.org, pawan.kumar.gupta@linux.intel.com,
+	corbet@lwn.net, mingo@redhat.com, dave.hansen@linux.intel.com,
+	hpa@zytor.com, pbonzini@redhat.com, daniel.sneddon@linux.intel.com,
+	kai.huang@intel.com, sandipan.das@amd.com,
+	boris.ostrovsky@oracle.com, Babu.Moger@amd.com,
+	david.kaplan@amd.com, dwmw@amazon.co.uk, andrew.cooper3@citrix.com,
+	amit.shah@amd.com
+Subject: Re: [PATCH v5 1/1] x86: kvm: svm: set up ERAPS support for guests
+Message-ID: <aKbhUcAURkOXIVY-@mun-amitshah-l>
+References: <20250515152621.50648-1-amit@kernel.org>
+ <20250515152621.50648-2-amit@kernel.org>
+ <43bbb306-782b-401d-ac96-cc8ca550af7d@amd.com>
+ <c4adbc456e702b6e04b160efb996212fe3ee9d04.camel@kernel.org>
+ <aKX1VZ90_wBxMI7l@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,52 +54,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1755609446.git.maciej.szmigiero@oracle.com>
+In-Reply-To: <aKX1VZ90_wBxMI7l@google.com>
 
-On Tue, Aug 19, 2025 at 03:32:13PM +0200, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On (Wed) 20 Aug 2025 [09:18:29], Sean Christopherson wrote:
+> On Wed, May 28, 2025, Amit Shah wrote:
+> > On Mon, 2025-05-19 at 16:22 -0500, Tom Lendacky wrote:
+> > > > +static inline void vmcb_set_flush_guest_rap(struct vmcb *vmcb)
+> > > > +{
+> > > > +	vmcb->control.erap_ctl |= ERAP_CONTROL_FLUSH_RAP;
+> > > > +}
+> > > > +
+> > > > +static inline void vmcb_clr_flush_guest_rap(struct vmcb *vmcb)
+> > > > +{
+> > > > +	vmcb->control.erap_ctl &= ~ERAP_CONTROL_FLUSH_RAP;
+> > > > +}
+> > > > +
+> > > > +static inline void vmcb_enable_extended_rap(struct vmcb *vmcb)
+> > > 
+> > > s/extended/larger/ to match the bit name ?
+> > 
+> > I also prefer it with the "larger" name, but that is a confusing bit
+> > name -- so after the last round of review, I renamed the accessor
+> > functions to be "better", while leaving the bit defines match what the
+> > CPU has.
+> > 
+> > I don't mind switching this back - anyone else have any other opinions?
 > 
-> When AVIC is enabled the normal pre-VMRUN LAPIC TPR to VMCB::V_TPR sync in
-> sync_lapic_to_cr8() is inhibited so any changed TPR in the LAPIC state would
-> *not* get copied into the V_TPR field of VMCB.
+> They both suck equally?  :-)
 > 
-> AVIC does sync between these two fields, however it does so only on
-> explicit guest writes to one of these fields, not on a bare VMRUN.
+> My dislike of "larger" is that it's a relative and intermediate term.  What is
+> the "smaller" size?  Is there an "even larger" or "largest size"?
 > 
-> This is especially true when it is the userspace setting LAPIC state via
-> KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
-> VMCB.
+> "extended" doesn't help in any way, because that simply "solves" the problem of
+> size ambiguity by saying absolutely nothing about the size.
 
-Dumb question: why is the VMM updating TPR? Is this related to live 
-migration or such?
+I agree with that; but it's just how the bit is named in the APM, so...
 
-I think I do see the problem described here, but when AVIC is 
-temporarily inhibited. So, trying to understand if there are other flows 
-involving the VMM where TPR could be updated outside of the guest.
+> I also dislike "allow", because in virtualization context, "allow" usually refers
+> to what the _guest_ can do, but in this case "allow" refers to what the CPU can
+> do.
 
+(same as above)
+
+> If we want to diverge from the APM, my vote would be for something like
 > 
-> Practice shows that it is the V_TPR that is actually used by the AVIC to
-> decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
-> so any leftover value in V_TPR will cause serious interrupt delivery issues
-> in the guest when AVIC is enabled.
-> 
-> Fix this issue by explicitly copying LAPIC TPR to VMCB::V_TPR in
-> avic_apicv_post_state_restore(), which gets called from KVM_SET_LAPIC and
-> similar code paths when AVIC is enabled.
-> 
-> Add also a relevant set of tests to xapic_state_test so hopefully
-> we'll be protected against getting such regressions in the future.
+>   ERAP_CONTROL_FULL_SIZE_RAP
 
-Do the new tests reproduce this issue?
+Oh I def didn't want to diverge from the APM (for the name of the bit).  I
+only wnat to check what's palatable for the accessors -- but a quick read of
+the followup reply shows you're asking to drop them and just use the checks
+directly, that's fine - no need for these accessors and this renaming.
 
-> 
-> 
-> Yes, this breaks real guests when AVIC is enabled.
-> Specifically, the one OS that sometimes needs different handling and its
-> name begins with letter 'W'.
-
-Indeed, Linux does not use TPR AFAIK.
-
-
-- Naveen
-
+	  	 Amit
