@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7E034AAEC;
-	Thu, 21 Aug 2025 13:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433FB34AB02;
+	Thu, 21 Aug 2025 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755783129; cv=none; b=AVLGyEHfY+UZOJIQeuzOQ1Fg+R80F/n8MTl4Kw0BiTbde0RaJI5TeTXr4z1sHO6ZT0atbnq6rwyZv5v9/vvvyrncZr40dHLIzhYBpLdwW4/N7VHx6tWeJfpSryaetdWZ9H3Nb6OgnlSLIGPMNYgovuFn6HrUyY6/cwg389oKMSA=
+	t=1755783130; cv=none; b=W4Y/8/QNPNPU36NvBKris7rz6VDy/cnMjGgBb7tlU8DrM9Anyyk6cPs16g25oQ3J9MGkLPuKpUIxcIXHwRnM2Js2orfDoB47QbAlUgesqwZLE75lO19uCbZN8ASPVwsQ8nE9/T2q9ZNPAZb2wAlftUlxwHoGngAi3c3qhkNWcGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755783129; c=relaxed/simple;
-	bh=CKTAR2clkFwYFpvFmyMSOch/X88zLnViNPj0Kl9uqXs=;
+	s=arc-20240116; t=1755783130; c=relaxed/simple;
+	bh=Iee4CLaQXxLG8uUP5bqwP61MDqXRMZclM7eNQhokwNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3tBmKU1ydiKHdgXabfe+at85l2GkVkXyz5qnA3AezuZR9YlsYec5nrCAMTi9X4cx8ckK3QBVNgk0HETaQMglFcv0sYqNqz3ONIPyYM2oBe7fsb5hirUFrCGuCeYyVvO9zA24S3rBXj/zHPY57GJNX+iGWgym/0co+b53AXPnig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MnoMuMhC; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=RAkJFKREWZ6A9pZepYbPRGFOjzf62r2aRgG+BNGMJmIkpOJ/rWSK9epoY+bRrUkPlOcZSDqERc9hD0g5P4zagSxWU+TSZeqrlTcgXPBX3nud469pqqeQqN3bwelL9xrTRkiSeGVfUjaNPCkWFXW4SYbfZOOqCTV8Tjme/e+jseE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z36y460i; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MnoMuMhC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z36y460i"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1755783128; x=1787319128;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CKTAR2clkFwYFpvFmyMSOch/X88zLnViNPj0Kl9uqXs=;
-  b=MnoMuMhCKMwSdQvBzspwE7sFTVFjdEwCWwjjcYYljPsbZ0jw8tqhiog0
-   s1lP78VLTaF1xu/wUt0i4gU1t2fUbFrXl+8puae5lakiVQugqeJ8Rb2Qo
-   z7q4sGEKy4Sue56liuz7qdCnmYfu2M20/uOhK24q0fIeaNIacHvKg8uFj
-   HWpxoHPPA2qVJjKfUVh+gsw8aiM6ublDlauYuzm+eojhzrD+JJ23RY+v2
-   LM20Vrj9Q/JVgK8e4yVu1B0yeYjguV6quhFTzVBapvQ1kX6ypBzo/sO6T
-   oXUnHfVoOh3Tos/I61WpaiKwUdPW++Gy21QEPEqnh5xrY4cUXVLST8lOy
+  bh=Iee4CLaQXxLG8uUP5bqwP61MDqXRMZclM7eNQhokwNI=;
+  b=Z36y460iE6rhlevulWHLQrgur05MzAyokTKPn234+/pr+WyO1oSGwOIX
+   3ACulchszlZ+8oYEddqfnKZ7hIuBT1lhAcFAfZSdobDXLFxeXIN39IY4o
+   sx+RsYD6fYmePK0LuqcONxr0dkGZUtl65BH9etnEeWsJnliOYW/iOqk6o
+   itN8Yne9z8yTs3DcmVB87JCDarXew5cBKycDe5aQT/OkTuosMxfIArS9H
+   ZMJBzajdUTu0SBtuXef5jXM7WmhO2ZDvjKI2pxxZWHX6JQz9EGYKvr8LY
+   6lXh/ku2E9SuZna5AjBENMUgOah6rlmUQBbKtm++LvFOibmnEoqjd8wfO
    Q==;
-X-CSE-ConnectionGUID: A013Nkz2RHSJzaNv1Kh+QA==
-X-CSE-MsgGUID: lcVv3SVkQEC2caHQkrJMkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446169"
+X-CSE-ConnectionGUID: iv/qWqeUSpye/JsVF8crew==
+X-CSE-MsgGUID: z7STBDwzToG8PQyYccMm9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446179"
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="69446169"
+   d="scan'208";a="69446179"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:32:01 -0700
-X-CSE-ConnectionGUID: Zm6qfaw7QUaRGKEmexhFiQ==
-X-CSE-MsgGUID: +m+rUBxHTIukiZUooWFr9w==
+X-CSE-ConnectionGUID: fV+mnNveSuukTPmN+ev+1w==
+X-CSE-MsgGUID: wg7aOt49SeOSJiIt/w9j1w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="199285402"
+   d="scan'208";a="199285418"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:44 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:48 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -61,9 +61,9 @@ Cc: chao.gao@intel.com,
 	weijiang.yang@intel.com,
 	x86@kernel.org,
 	xin@zytor.com
-Subject: [PATCH v13 07/21] KVM: x86: Report KVM supported CET MSRs as to-be-saved
-Date: Thu, 21 Aug 2025 06:30:41 -0700
-Message-ID: <20250821133132.72322-8-chao.gao@intel.com>
+Subject: [PATCH v13 11/21] KVM: x86: Save and reload SSP to/from SMRAM
+Date: Thu, 21 Aug 2025 06:30:45 -0700
+Message-ID: <20250821133132.72322-12-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250821133132.72322-1-chao.gao@intel.com>
 References: <20250821133132.72322-1-chao.gao@intel.com>
@@ -77,55 +77,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Yang Weijiang <weijiang.yang@intel.com>
 
-Add CET MSRs to the list of MSRs reported to userspace if the feature,
-i.e. IBT or SHSTK, associated with the MSRs is supported by KVM.
+Save CET SSP to SMRAM on SMI and reload it on RSM. KVM emulates HW arch
+behavior when guest enters/leaves SMM mode,i.e., save registers to SMRAM
+at the entry of SMM and reload them at the exit to SMM. Per SDM, SSP is
+one of such registers on 64-bit Arch, and add the support for SSP.
 
-Suggested-by: Chao Gao <chao.gao@intel.com>
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
 Tested-by: Mathias Krause <minipli@grsecurity.net>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/kvm/x86.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/kvm/smm.c | 8 ++++++++
+ arch/x86/kvm/smm.h | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c363f7df279f..61e008be172d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -341,6 +341,10 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_UMWAIT_CONTROL,
+diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
+index 5dd8a1646800..b0b14ba37f9a 100644
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -269,6 +269,10 @@ static void enter_smm_save_state_64(struct kvm_vcpu *vcpu,
+ 	enter_smm_save_seg_64(vcpu, &smram->gs, VCPU_SREG_GS);
  
- 	MSR_IA32_XFD, MSR_IA32_XFD_ERR, MSR_IA32_XSS,
+ 	smram->int_shadow = kvm_x86_call(get_interrupt_shadow)(vcpu);
 +
-+	MSR_IA32_U_CET, MSR_IA32_S_CET,
-+	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
-+	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
- };
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
++	    kvm_msr_read(vcpu, MSR_KVM_INTERNAL_GUEST_SSP, &smram->ssp))
++		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ }
+ #endif
  
- static const u32 msrs_to_save_pmu[] = {
-@@ -7520,6 +7524,20 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 		if (!kvm_caps.supported_xss)
- 			return;
- 		break;
-+	case MSR_IA32_U_CET:
-+	case MSR_IA32_S_CET:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK) &&
-+		    !kvm_cpu_cap_has(X86_FEATURE_IBT))
-+			return;
-+		break;
-+	case MSR_IA32_INT_SSP_TAB:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_LM))
-+			return;
-+		fallthrough;
-+	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK))
-+			return;
-+		break;
- 	default:
- 		break;
- 	}
+@@ -558,6 +562,10 @@ static int rsm_load_state_64(struct x86_emulate_ctxt *ctxt,
+ 	kvm_x86_call(set_interrupt_shadow)(vcpu, 0);
+ 	ctxt->interruptibility = (u8)smstate->int_shadow;
+ 
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
++	    kvm_msr_write(vcpu, MSR_KVM_INTERNAL_GUEST_SSP, smstate->ssp))
++		return X86EMUL_UNHANDLEABLE;
++
+ 	return X86EMUL_CONTINUE;
+ }
+ #endif
+diff --git a/arch/x86/kvm/smm.h b/arch/x86/kvm/smm.h
+index 551703fbe200..db3c88f16138 100644
+--- a/arch/x86/kvm/smm.h
++++ b/arch/x86/kvm/smm.h
+@@ -116,8 +116,8 @@ struct kvm_smram_state_64 {
+ 	u32 smbase;
+ 	u32 reserved4[5];
+ 
+-	/* ssp and svm_* fields below are not implemented by KVM */
+ 	u64 ssp;
++	/* svm_* fields below are not implemented by KVM */
+ 	u64 svm_guest_pat;
+ 	u64 svm_host_efer;
+ 	u64 svm_host_cr4;
 -- 
 2.47.3
 
