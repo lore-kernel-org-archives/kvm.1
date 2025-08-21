@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433FB34AB02;
-	Thu, 21 Aug 2025 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F22034DCE6;
+	Thu, 21 Aug 2025 13:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755783130; cv=none; b=W4Y/8/QNPNPU36NvBKris7rz6VDy/cnMjGgBb7tlU8DrM9Anyyk6cPs16g25oQ3J9MGkLPuKpUIxcIXHwRnM2Js2orfDoB47QbAlUgesqwZLE75lO19uCbZN8ASPVwsQ8nE9/T2q9ZNPAZb2wAlftUlxwHoGngAi3c3qhkNWcGQ=
+	t=1755783131; cv=none; b=iYlswC/x3OcNDUCX/VL2HvZ82K/qyDg6Z4EG3isOn4PJLoR/vrOROSKIaMyKCBo6VW+btXu/02dXi3tqoWSCscB2VQpYt2XAPrpukIqMQ7Ep6Yp+9w718EeCox+RCYeEtdQPZgn1vX9uaECiHWM+2hyUp4k4HErQ3sAZl1D2ZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755783130; c=relaxed/simple;
-	bh=Iee4CLaQXxLG8uUP5bqwP61MDqXRMZclM7eNQhokwNI=;
+	s=arc-20240116; t=1755783131; c=relaxed/simple;
+	bh=CH8oFLP6cF5J3EtZ+6/4WW4Qp3XIvM5HDKP9wMniKXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAkJFKREWZ6A9pZepYbPRGFOjzf62r2aRgG+BNGMJmIkpOJ/rWSK9epoY+bRrUkPlOcZSDqERc9hD0g5P4zagSxWU+TSZeqrlTcgXPBX3nud469pqqeQqN3bwelL9xrTRkiSeGVfUjaNPCkWFXW4SYbfZOOqCTV8Tjme/e+jseE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z36y460i; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=i+ddOeD39p7oP+OwTHVl91kxO0j9mSm7VR1TBYChr4/sCP3TXk4W3jqGOC2miHxpUGH2+7LXXX6unILnju2S3w3VjmGcehWssfPlqE2ZiJISbnUoU5szpbtcpAh+zpcTJ2NTYn4nHlwiPQP1CngcZPBbnBX7tpIzOPRj3Tiwvbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mN65ToEf; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z36y460i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mN65ToEf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755783128; x=1787319128;
+  t=1755783129; x=1787319129;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Iee4CLaQXxLG8uUP5bqwP61MDqXRMZclM7eNQhokwNI=;
-  b=Z36y460iE6rhlevulWHLQrgur05MzAyokTKPn234+/pr+WyO1oSGwOIX
-   3ACulchszlZ+8oYEddqfnKZ7hIuBT1lhAcFAfZSdobDXLFxeXIN39IY4o
-   sx+RsYD6fYmePK0LuqcONxr0dkGZUtl65BH9etnEeWsJnliOYW/iOqk6o
-   itN8Yne9z8yTs3DcmVB87JCDarXew5cBKycDe5aQT/OkTuosMxfIArS9H
-   ZMJBzajdUTu0SBtuXef5jXM7WmhO2ZDvjKI2pxxZWHX6JQz9EGYKvr8LY
-   6lXh/ku2E9SuZna5AjBENMUgOah6rlmUQBbKtm++LvFOibmnEoqjd8wfO
-   Q==;
-X-CSE-ConnectionGUID: iv/qWqeUSpye/JsVF8crew==
-X-CSE-MsgGUID: z7STBDwzToG8PQyYccMm9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446179"
+  bh=CH8oFLP6cF5J3EtZ+6/4WW4Qp3XIvM5HDKP9wMniKXc=;
+  b=mN65ToEfZ0zlzGWxwpaBw8JlR53GXzvJRxz2SCiZ8DTfrrqU4sinvcw6
+   lO7GAVWeVSvHGh1XSdA9/cSEKfLxk5OYM/zqlGftsUy+AOfEJ0vjjUn+U
+   VWZRHVGxepMUqhmVI4amr3QBd72hilNbJt+IiOhsp++H6Y6rXDD73EiO9
+   92wDRurFX70bIqMG4fWEplQm2hRuLeq95eF3egV5y/T6QncdWYFiO7slW
+   ThVsu9z/jueCb43U3YzNsyElCyFS+U9k+L8XyhVPAAStMlU0syMnG9QwP
+   +3dtNMUbRaZoc7KHTeDSew8a2R8rEqOd3l5OMsBjTPq1LXLD961fuy6z4
+   w==;
+X-CSE-ConnectionGUID: 9PZ7f3+1TC+giXKRN8ognA==
+X-CSE-MsgGUID: LAcU5jQcReGVsFPd5H+rLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446188"
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="69446179"
+   d="scan'208";a="69446188"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:32:01 -0700
-X-CSE-ConnectionGUID: fV+mnNveSuukTPmN+ev+1w==
-X-CSE-MsgGUID: wg7aOt49SeOSJiIt/w9j1w==
+X-CSE-ConnectionGUID: l3J0X3IoQCuHF7SQ+JgyKw==
+X-CSE-MsgGUID: UtJLGRmmS3mfloYfCn+Hdg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="199285418"
+   d="scan'208";a="199285422"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:48 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:50 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -61,9 +61,9 @@ Cc: chao.gao@intel.com,
 	weijiang.yang@intel.com,
 	x86@kernel.org,
 	xin@zytor.com
-Subject: [PATCH v13 11/21] KVM: x86: Save and reload SSP to/from SMRAM
-Date: Thu, 21 Aug 2025 06:30:45 -0700
-Message-ID: <20250821133132.72322-12-chao.gao@intel.com>
+Subject: [PATCH v13 13/21] KVM: VMX: Set host constant supervisor states to VMCS fields
+Date: Thu, 21 Aug 2025 06:30:47 -0700
+Message-ID: <20250821133132.72322-14-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250821133132.72322-1-chao.gao@intel.com>
 References: <20250821133132.72322-1-chao.gao@intel.com>
@@ -77,62 +77,113 @@ Content-Transfer-Encoding: 8bit
 
 From: Yang Weijiang <weijiang.yang@intel.com>
 
-Save CET SSP to SMRAM on SMI and reload it on RSM. KVM emulates HW arch
-behavior when guest enters/leaves SMM mode,i.e., save registers to SMRAM
-at the entry of SMM and reload them at the exit to SMM. Per SDM, SSP is
-one of such registers on 64-bit Arch, and add the support for SSP.
+Save constant values to HOST_{S_CET,SSP,INTR_SSP_TABLE} field explicitly.
+Kernel IBT is supported and the setting in MSR_IA32_S_CET is static after
+post-boot(The exception is BIOS call case but vCPU thread never across it)
+and KVM doesn't need to refresh HOST_S_CET field before every VM-Enter/
+VM-Exit sequence.
+
+Host supervisor shadow stack is not enabled now and SSP is not accessible
+to kernel mode, thus it's safe to set host IA32_INT_SSP_TAB/SSP VMCS field
+to 0s. When shadow stack is enabled for CPL3, SSP is reloaded from PL3_SSP
+before it exits to userspace. Check SDM Vol 2A/B Chapter 3/4 for SYSCALL/
+SYSRET/SYSENTER SYSEXIT/RDSSP/CALL etc.
+
+Prevent KVM module loading if host supervisor shadow stack SHSTK_EN is set
+in MSR_IA32_S_CET as KVM cannot co-exit with it correctly.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
+Suggested-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
 Tested-by: Mathias Krause <minipli@grsecurity.net>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/kvm/smm.c | 8 ++++++++
- arch/x86/kvm/smm.h | 2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/capabilities.h |  4 ++++
+ arch/x86/kvm/vmx/vmx.c          | 15 +++++++++++++++
+ arch/x86/kvm/x86.c              | 12 ++++++++++++
+ arch/x86/kvm/x86.h              |  1 +
+ 4 files changed, 32 insertions(+)
 
-diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-index 5dd8a1646800..b0b14ba37f9a 100644
---- a/arch/x86/kvm/smm.c
-+++ b/arch/x86/kvm/smm.c
-@@ -269,6 +269,10 @@ static void enter_smm_save_state_64(struct kvm_vcpu *vcpu,
- 	enter_smm_save_seg_64(vcpu, &smram->gs, VCPU_SREG_GS);
- 
- 	smram->int_shadow = kvm_x86_call(get_interrupt_shadow)(vcpu);
-+
-+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-+	    kvm_msr_read(vcpu, MSR_KVM_INTERNAL_GUEST_SSP, &smram->ssp))
-+		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 5316c27f6099..7d290b2cb0f4 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -103,6 +103,10 @@ static inline bool cpu_has_load_perf_global_ctrl(void)
+ 	return vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
  }
- #endif
  
-@@ -558,6 +562,10 @@ static int rsm_load_state_64(struct x86_emulate_ctxt *ctxt,
- 	kvm_x86_call(set_interrupt_shadow)(vcpu, 0);
- 	ctxt->interruptibility = (u8)smstate->int_shadow;
++static inline bool cpu_has_load_cet_ctrl(void)
++{
++	return (vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_CET_STATE);
++}
+ static inline bool cpu_has_vmx_mpx(void)
+ {
+ 	return vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_BNDCFGS;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index adf5af30e537..e8155635cb42 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4320,6 +4320,21 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
  
-+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-+	    kvm_msr_write(vcpu, MSR_KVM_INTERNAL_GUEST_SSP, smstate->ssp))
-+		return X86EMUL_UNHANDLEABLE;
+ 	if (cpu_has_load_ia32_efer())
+ 		vmcs_write64(HOST_IA32_EFER, kvm_host.efer);
 +
- 	return X86EMUL_CONTINUE;
++	/*
++	 * Supervisor shadow stack is not enabled on host side, i.e.,
++	 * host IA32_S_CET.SHSTK_EN bit is guaranteed to 0 now, per SDM
++	 * description(RDSSP instruction), SSP is not readable in CPL0,
++	 * so resetting the two registers to 0s at VM-Exit does no harm
++	 * to kernel execution. When execution flow exits to userspace,
++	 * SSP is reloaded from IA32_PL3_SSP. Check SDM Vol.2A/B Chapter
++	 * 3 and 4 for details.
++	 */
++	if (cpu_has_load_cet_ctrl()) {
++		vmcs_writel(HOST_S_CET, kvm_host.s_cet);
++		vmcs_writel(HOST_SSP, 0);
++		vmcs_writel(HOST_INTR_SSP_TABLE, 0);
++	}
  }
- #endif
-diff --git a/arch/x86/kvm/smm.h b/arch/x86/kvm/smm.h
-index 551703fbe200..db3c88f16138 100644
---- a/arch/x86/kvm/smm.h
-+++ b/arch/x86/kvm/smm.h
-@@ -116,8 +116,8 @@ struct kvm_smram_state_64 {
- 	u32 smbase;
- 	u32 reserved4[5];
  
--	/* ssp and svm_* fields below are not implemented by KVM */
- 	u64 ssp;
-+	/* svm_* fields below are not implemented by KVM */
- 	u64 svm_guest_pat;
- 	u64 svm_host_efer;
- 	u64 svm_host_cr4;
+ void set_cr4_guest_host_mask(struct vcpu_vmx *vmx)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index dfd94146846e..34e4b2c4b892 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9893,6 +9893,18 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ 		return -EIO;
+ 	}
+ 
++	if (boot_cpu_has(X86_FEATURE_SHSTK)) {
++		rdmsrq(MSR_IA32_S_CET, kvm_host.s_cet);
++		/*
++		 * Linux doesn't yet support supervisor shadow stacks (SSS), so
++		 * KVM doesn't save/restore the associated MSRs, i.e. KVM may
++		 * clobber the host values.  Yell and refuse to load if SSS is
++		 * unexpectedly enabled, e.g. to avoid crashing the host.
++		 */
++		if (WARN_ON_ONCE(kvm_host.s_cet & CET_SHSTK_EN))
++			return -EIO;
++	}
++
+ 	memset(&kvm_caps, 0, sizeof(kvm_caps));
+ 
+ 	x86_emulator_cache = kvm_alloc_emulator_cache();
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 256e59aa9359..27fec4ed4c4e 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -50,6 +50,7 @@ struct kvm_host_values {
+ 	u64 efer;
+ 	u64 xcr0;
+ 	u64 xss;
++	u64 s_cet;
+ 	u64 arch_capabilities;
+ };
+ 
 -- 
 2.47.3
 
