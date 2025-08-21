@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F4A2DECCB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFC52EA731;
 	Thu, 21 Aug 2025 22:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755815880; cv=none; b=uzbVpmrgJUboMpBHpuDdzHvqX5XsfC0NvBZvqieIqoyvBbC9RItQ3GtgBPWqj/pnmWGA/4tXRsrcnfYTYGWyzUmtuZk1HcYvW6Vmv2EEoY9fn2sf/YoceLHSI3n8KCt28+tVFm7LicU+FSMZ1fr3Goag2OhgtCGlApJKfoBw44k=
+	t=1755815880; cv=none; b=W8+0yGWkKoC5sdp+clwkKPLbqj8+qYoUiPywEVant+vYo0YW3ZNm9Z2saM0i73pwsYHfWesHnCVuweleIeKVI7PNRrCd0kxtoazQA3lH2hhdM6awQLe+Rd1OF1X1UiXigOxbhYY7JVIoXWp/UKYYnomJgz550PcJyCEcu18eHaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755815880; c=relaxed/simple;
-	bh=Sttd8bSvyVGHKoyvhUIXI2M7W1kJm4i8freKj1f9XCw=;
+	bh=LeTYllX8jeK+QDZFgGOpcshtN3JKVe01g7tt1F7k10M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ft195aCuR5mvlqX5BCk15Zl79iT0Nu/8xDrbkCZ44e3J3kINW0/bKdv4FHnmYeKMR0eRg/lBxKVfw6DiJQdjz1yn44l2ZS3qIQDogFLL1rLv8tbHq1Z33PXxbwMThvXXgztR4tA+aJDyIWXmww+B/mmCsDh0ItN2iww6GupWNOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=INdfqUk2; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=jZWo9cQgZu8h2I7EBTHaXhBKGAJXbxhAdek2sXojQCqqJN1a/xfbLo8+96KII4bNIjgBh6oVQQ3i/PUlxfuwc9/hsSPqQbZsl66R/vpNPbnlXYiliU6PxHJfDWEdiijEgJ38j/+SsnfkjtQx85lMnwxjPneR535zBvktzMvl1FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=o2uFxea9; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="INdfqUk2"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="o2uFxea9"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57LMaUOP984441
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57LMaUOY984441
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Thu, 21 Aug 2025 15:36:42 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57LMaUOP984441
+	Thu, 21 Aug 2025 15:36:50 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57LMaUOY984441
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1755815803;
-	bh=twAlKEiXN2r3Zs/iwEwTguIphthWCRKtN1VXEstfhUw=;
+	s=2025072201; t=1755815811;
+	bh=A+/laUZnaw5YyFjS7FqOP4Sm7PXvK3sDT+lFXNfphzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INdfqUk2Lsxummm/UxQ58V0pO8BxFb+88pO40vlZGWW45OFHVlf+Oy7sDr5LUWNtD
-	 FV5JFXyjzA5nVmWdmmrwgU5Cx1hHOC7qm+MjHEeCyNPn72nIe/sO5UKM1oWCSheZit
-	 IzqrXabFZTACbmKZUBH/Al0Tyzj5Sbrk/mkzWEY0SnkQcqhtdQCZa60nAsMhYQJAPZ
-	 aZFjFXs+4bLZ74tgJAK/MbhELC9ZLCCusHM1wL8eBy/AT7KAAbRSNTziGZ2mlqnIOd
-	 czUU243ujaxQzu6zH2fXG1xHdxQlO4kdOM+p3bD5W7O38bgRtyTotlr6Z//6ILySqZ
-	 UoVK3yrKpyT9A==
+	b=o2uFxea9IS2Z0Ubr0E73JSsTltz3iRBlNTPTfL0SkCM2JCw3+5E4wYXHbKw/oCKUn
+	 6K4FE44RcC5sjd4wwZEh+LB4o2rUJbhazGsnaNxJFn+709Cu7ooRMwRKtxOtvt2M2d
+	 XCChfaVhpk2wL0mf73HK2l2zNYo10yfmmEKhs9y66omFH+WLOKcx47gIEJZ8qmWdDx
+	 oboihhCLzIHaJwU410PhfH5ASBVTD3eW8DNa2I4l9F+XUBzNn8YY+s+fXxsKD/uDq2
+	 Rnoxfx8YNiIzkrg8Rrowyb/SV3JkebQqRiqiWtsZDjTkerVIivS1incvBEbs3ovilu
+	 5FWMIwZhAcIfA==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v6 01/20] KVM: VMX: Add support for the secondary VM exit controls
-Date: Thu, 21 Aug 2025 15:36:10 -0700
-Message-ID: <20250821223630.984383-2-xin@zytor.com>
+Subject: [PATCH v6 10/20] KVM: VMX: Virtualize FRED event_data
+Date: Thu, 21 Aug 2025 15:36:19 -0700
+Message-ID: <20250821223630.984383-11-xin@zytor.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250821223630.984383-1-xin@zytor.com>
 References: <20250821223630.984383-1-xin@zytor.com>
@@ -56,215 +56,222 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-Always load the secondary VM exit controls to prepare for FRED enabling.
+Set injected-event data when injecting a #PF, #DB, or #NM caused
+by extended feature disable using FRED event delivery, and save
+original-event data for being used as injected-event data.
+
+Unlike IDT using some extra CPU register as part of an event
+context, e.g., %cr2 for #PF, FRED saves a complete event context
+in its stack frame, e.g., FRED saves the faulting linear address
+of a #PF into the event data field defined in its stack frame.
+
+Thus a new VMX control field called injected-event data is added
+to provide the event data that will be pushed into a FRED stack
+frame for VM entries that inject an event using FRED event delivery.
+In addition, a new VM exit information field called original-event
+data is added to store the event data that would have saved into a
+FRED stack frame for VM exits that occur during FRED event delivery.
+After such a VM exit is handled to allow the original-event to be
+delivered, the data in the original-event data VMCS field needs to
+be set into the injected-event data VMCS field for the injection of
+the original event.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
+[ Sean: reworked event data injection for nested ]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
 Change in v5:
 * Add TB from Xuelian Guo.
 
-Changes in v4:
-* Fix clearing VM_EXIT_ACTIVATE_SECONDARY_CONTROLS (Chao Gao).
-* Check VM exit/entry consistency based on the new macro from Sean
-  Christopherson.
-
 Change in v3:
-* Do FRED controls consistency checks in the VM exit/entry consistency
-  check framework (Sean Christopherson).
+* Rework event data injection for nested (Chao Gao & Sean Christopherson).
 
-Change in v2:
-* Always load the secondary VM exit controls (Sean Christopherson).
+Changes in v2:
+* Document event data should be equal to CR2/DR6/IA32_XFD_ERR instead
+  of using WARN_ON() (Chao Gao).
+* Zero event data if a #NM was not caused by extended feature disable
+  (Chao Gao).
 ---
- arch/x86/include/asm/msr-index.h |  1 +
- arch/x86/include/asm/vmx.h       |  3 +++
- arch/x86/kvm/vmx/capabilities.h  |  9 ++++++++-
- arch/x86/kvm/vmx/vmcs.h          |  1 +
- arch/x86/kvm/vmx/vmx.c           | 29 +++++++++++++++++++++++++++--
- arch/x86/kvm/vmx/vmx.h           |  7 ++++++-
- 6 files changed, 46 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 ++-
+ arch/x86/include/asm/vmx.h      |  4 ++++
+ arch/x86/kvm/svm/svm.c          |  2 +-
+ arch/x86/kvm/vmx/vmx.c          | 22 ++++++++++++++++++----
+ arch/x86/kvm/x86.c              | 16 +++++++++++++++-
+ 5 files changed, 40 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 20fa4a79df13..7c59cc5ee044 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -1208,6 +1208,7 @@
- #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
- #define MSR_IA32_VMX_VMFUNC             0x00000491
- #define MSR_IA32_VMX_PROCBASED_CTLS3	0x00000492
-+#define MSR_IA32_VMX_EXIT_CTLS2		0x00000493
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 061c0cd73d39..dce6471194f7 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -759,6 +759,7 @@ struct kvm_queued_exception {
+ 	u32 error_code;
+ 	unsigned long payload;
+ 	bool has_payload;
++	u64 event_data;
+ };
  
- /* Resctrl MSRs: */
- /* - Intel: */
+ /*
+@@ -2222,7 +2223,7 @@ void kvm_queue_exception(struct kvm_vcpu *vcpu, unsigned nr);
+ void kvm_queue_exception_e(struct kvm_vcpu *vcpu, unsigned nr, u32 error_code);
+ void kvm_queue_exception_p(struct kvm_vcpu *vcpu, unsigned nr, unsigned long payload);
+ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
+-			   bool has_error_code, u32 error_code);
++			   bool has_error_code, u32 error_code, u64 event_data);
+ void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault);
+ void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
+ 				    struct x86_exception *fault);
 diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index c85c50019523..1f60c04d11fb 100644
+index 6f8b8947c60c..539af190ad3e 100644
 --- a/arch/x86/include/asm/vmx.h
 +++ b/arch/x86/include/asm/vmx.h
-@@ -107,6 +107,7 @@
- #define VM_EXIT_PT_CONCEAL_PIP			0x01000000
- #define VM_EXIT_CLEAR_IA32_RTIT_CTL		0x02000000
- #define VM_EXIT_LOAD_CET_STATE                  0x10000000
-+#define VM_EXIT_ACTIVATE_SECONDARY_CONTROLS	0x80000000
- 
- #define VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR	0x00036dff
- 
-@@ -262,6 +263,8 @@ enum vmcs_field {
- 	SHARED_EPT_POINTER		= 0x0000203C,
- 	PID_POINTER_TABLE		= 0x00002042,
+@@ -269,8 +269,12 @@ enum vmcs_field {
  	PID_POINTER_TABLE_HIGH		= 0x00002043,
-+	SECONDARY_VM_EXIT_CONTROLS	= 0x00002044,
-+	SECONDARY_VM_EXIT_CONTROLS_HIGH	= 0x00002045,
+ 	SECONDARY_VM_EXIT_CONTROLS	= 0x00002044,
+ 	SECONDARY_VM_EXIT_CONTROLS_HIGH	= 0x00002045,
++	INJECTED_EVENT_DATA		= 0x00002052,
++	INJECTED_EVENT_DATA_HIGH	= 0x00002053,
  	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
  	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
++	ORIGINAL_EVENT_DATA		= 0x00002404,
++	ORIGINAL_EVENT_DATA_HIGH	= 0x00002405,
  	VMCS_LINK_POINTER               = 0x00002800,
-diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
-index 47b0dec8665a..7b9e306c359d 100644
---- a/arch/x86/kvm/vmx/capabilities.h
-+++ b/arch/x86/kvm/vmx/capabilities.h
-@@ -58,8 +58,9 @@ struct vmcs_config {
- 	u32 cpu_based_exec_ctrl;
- 	u32 cpu_based_2nd_exec_ctrl;
- 	u64 cpu_based_3rd_exec_ctrl;
--	u32 vmexit_ctrl;
- 	u32 vmentry_ctrl;
-+	u32 vmexit_ctrl;
-+	u64 vmexit_2nd_ctrl;
- 	u64 misc;
- 	struct nested_vmx_msrs nested;
- };
-@@ -144,6 +145,12 @@ static inline bool cpu_has_tertiary_exec_ctrls(void)
- 		CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
- }
+ 	VMCS_LINK_POINTER_HIGH          = 0x00002801,
+ 	GUEST_IA32_DEBUGCTL             = 0x00002802,
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 0e2c60466797..72f54befd0d0 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4144,7 +4144,7 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
  
-+static inline bool cpu_has_secondary_vmexit_ctrls(void)
-+{
-+	return vmcs_config.vmexit_ctrl &
-+		VM_EXIT_ACTIVATE_SECONDARY_CONTROLS;
-+}
-+
- static inline bool cpu_has_vmx_virtualize_apic_accesses(void)
- {
- 	return vmcs_config.cpu_based_2nd_exec_ctrl &
-diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
-index b25625314658..ae152a9d1963 100644
---- a/arch/x86/kvm/vmx/vmcs.h
-+++ b/arch/x86/kvm/vmx/vmcs.h
-@@ -47,6 +47,7 @@ struct vmcs_host_state {
- struct vmcs_controls_shadow {
- 	u32 vm_entry;
- 	u32 vm_exit;
-+	u64 secondary_vm_exit;
- 	u32 pin;
- 	u32 exec;
- 	u32 secondary_exec;
+ 		kvm_requeue_exception(vcpu, vector,
+ 				      exitintinfo & SVM_EXITINTINFO_VALID_ERR,
+-				      error_code);
++				      error_code, 0);
+ 		break;
+ 	}
+ 	case SVM_EXITINTINFO_TYPE_INTR:
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 989008f5307e..590e0826ba08 100644
+index 225c4638ffd7..e1eb55fb3fb8 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2596,8 +2596,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	u32 _cpu_based_exec_control = 0;
- 	u32 _cpu_based_2nd_exec_control = 0;
- 	u64 _cpu_based_3rd_exec_control = 0;
--	u32 _vmexit_control = 0;
- 	u32 _vmentry_control = 0;
-+	u32 _vmexit_control = 0;
-+	u64 _vmexit2_control = 0;
- 	u64 basic_msr;
- 	u64 misc_msr;
+@@ -1862,6 +1862,9 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
  
-@@ -2618,6 +2619,12 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 		{ VM_ENTRY_LOAD_CET_STATE,		VM_EXIT_LOAD_CET_STATE },
- 	};
+ 	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, intr_info);
  
-+	struct {
-+		u32 entry_control;
-+		u64 exit_control;
-+	} const vmcs_entry_exit2_pairs[] = {
-+	};
++	if (is_fred_enabled(vcpu))
++		vmcs_write64(INJECTED_EVENT_DATA, ex->event_data);
 +
- 	memset(vmcs_conf, 0, sizeof(*vmcs_conf));
- 
- 	if (adjust_vmx_controls(KVM_REQUIRED_VMX_CPU_BASED_VM_EXEC_CONTROL,
-@@ -2704,10 +2711,19 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 				&_vmentry_control))
- 		return -EIO;
- 
-+	if (_vmexit_control & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
-+		_vmexit2_control =
-+			adjust_vmx_controls64(KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS,
-+					      MSR_IA32_VMX_EXIT_CTLS2);
-+
- 	if (vmx_check_entry_exit_pairs(vmcs_entry_exit_pairs,
- 				       _vmentry_control, _vmexit_control))
- 		return -EIO;
- 
-+	if (vmx_check_entry_exit_pairs(vmcs_entry_exit2_pairs,
-+				       _vmentry_control, _vmexit2_control))
-+		return -EIO;
-+
- 	/*
- 	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
- 	 * can't be used due to an errata where VM Exit may incorrectly clear
-@@ -2756,8 +2772,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	vmcs_conf->cpu_based_exec_ctrl = _cpu_based_exec_control;
- 	vmcs_conf->cpu_based_2nd_exec_ctrl = _cpu_based_2nd_exec_control;
- 	vmcs_conf->cpu_based_3rd_exec_ctrl = _cpu_based_3rd_exec_control;
--	vmcs_conf->vmexit_ctrl         = _vmexit_control;
- 	vmcs_conf->vmentry_ctrl        = _vmentry_control;
-+	vmcs_conf->vmexit_ctrl         = _vmexit_control;
-+	vmcs_conf->vmexit_2nd_ctrl     = _vmexit2_control;
- 	vmcs_conf->misc	= misc_msr;
- 
- #if IS_ENABLED(CONFIG_HYPERV)
-@@ -4406,6 +4423,11 @@ static u32 vmx_vmexit_ctrl(void)
- 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ 	vmx_clear_hlt(vcpu);
  }
  
-+static u64 vmx_secondary_vmexit_ctrl(void)
-+{
-+	return vmcs_config.vmexit_2nd_ctrl;
-+}
-+
- void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+@@ -7262,7 +7265,8 @@ static void vmx_recover_nmi_blocking(struct vcpu_vmx *vmx)
+ static void __vmx_complete_interrupts(struct kvm_vcpu *vcpu,
+ 				      u32 idt_vectoring_info,
+ 				      int instr_len_field,
+-				      int error_code_field)
++				      int error_code_field,
++				      int event_data_field)
  {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -4754,6 +4776,9 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	u8 vector;
+ 	int type;
+@@ -7297,13 +7301,17 @@ static void __vmx_complete_interrupts(struct kvm_vcpu *vcpu,
+ 		fallthrough;
+ 	case INTR_TYPE_HARD_EXCEPTION: {
+ 		u32 error_code = 0;
++		u64 event_data = 0;
  
- 	vm_exit_controls_set(vmx, vmx_vmexit_ctrl());
+ 		if (idt_vectoring_info & VECTORING_INFO_DELIVER_CODE_MASK)
+ 			error_code = vmcs_read32(error_code_field);
++		if (is_fred_enabled(vcpu))
++			event_data = vmcs_read64(event_data_field);
  
-+	if (cpu_has_secondary_vmexit_ctrls())
-+		secondary_vm_exit_controls_set(vmx, vmx_secondary_vmexit_ctrl());
-+
- 	/* 22.2.1, 20.8.1 */
- 	vm_entry_controls_set(vmx, vmx_vmentry_ctrl());
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index ecfdba666465..840e48a2fcc5 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -511,7 +511,11 @@ static inline u8 vmx_get_rvi(void)
- 	       VM_EXIT_CLEAR_BNDCFGS |					\
- 	       VM_EXIT_PT_CONCEAL_PIP |					\
- 	       VM_EXIT_CLEAR_IA32_RTIT_CTL |				\
--	       VM_EXIT_LOAD_CET_STATE)
-+	       VM_EXIT_LOAD_CET_STATE |					\
-+	       VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
-+
-+#define KVM_REQUIRED_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
-+#define KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
- 
- #define KVM_REQUIRED_VMX_PIN_BASED_VM_EXEC_CONTROL			\
- 	(PIN_BASED_EXT_INTR_MASK |					\
-@@ -616,6 +620,7 @@ static __always_inline void lname##_controls_clearbit(struct vcpu_vmx *vmx, u##b
+ 		kvm_requeue_exception(vcpu, vector,
+ 				      idt_vectoring_info & VECTORING_INFO_DELIVER_CODE_MASK,
+-				      error_code);
++				      error_code,
++				      event_data);
+ 		break;
+ 	}
+ 	case INTR_TYPE_SOFT_INTR:
+@@ -7321,7 +7329,8 @@ static void vmx_complete_interrupts(struct vcpu_vmx *vmx)
+ {
+ 	__vmx_complete_interrupts(&vmx->vcpu, vmx->idt_vectoring_info,
+ 				  VM_EXIT_INSTRUCTION_LEN,
+-				  IDT_VECTORING_ERROR_CODE);
++				  IDT_VECTORING_ERROR_CODE,
++				  ORIGINAL_EVENT_DATA);
  }
- BUILD_CONTROLS_SHADOW(vm_entry, VM_ENTRY_CONTROLS, 32)
- BUILD_CONTROLS_SHADOW(vm_exit, VM_EXIT_CONTROLS, 32)
-+BUILD_CONTROLS_SHADOW(secondary_vm_exit, SECONDARY_VM_EXIT_CONTROLS, 64)
- BUILD_CONTROLS_SHADOW(pin, PIN_BASED_VM_EXEC_CONTROL, 32)
- BUILD_CONTROLS_SHADOW(exec, CPU_BASED_VM_EXEC_CONTROL, 32)
- BUILD_CONTROLS_SHADOW(secondary_exec, SECONDARY_VM_EXEC_CONTROL, 32)
+ 
+ void vmx_cancel_injection(struct kvm_vcpu *vcpu)
+@@ -7329,7 +7338,8 @@ void vmx_cancel_injection(struct kvm_vcpu *vcpu)
+ 	__vmx_complete_interrupts(vcpu,
+ 				  vmcs_read32(VM_ENTRY_INTR_INFO_FIELD),
+ 				  VM_ENTRY_INSTRUCTION_LEN,
+-				  VM_ENTRY_EXCEPTION_ERROR_CODE);
++				  VM_ENTRY_EXCEPTION_ERROR_CODE,
++				  INJECTED_EVENT_DATA);
+ 
+ 	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, 0);
+ }
+@@ -7483,6 +7493,10 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 
+ 	vmx_disable_fb_clear(vmx);
+ 
++	/*
++	 * Note, even though FRED delivers the faulting linear address via the
++	 * event data field on the stack, CR2 is still updated.
++	 */
+ 	if (vcpu->arch.cr2 != native_read_cr2())
+ 		native_write_cr2(vcpu->arch.cr2);
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1f9a09b34742..f082255852a9 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -807,9 +807,22 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
+ 		 * breakpoint), it is reserved and must be zero in DR6.
+ 		 */
+ 		vcpu->arch.dr6 &= ~BIT(12);
++
++		/*
++		 * FRED #DB event data matches DR6, but follows the polarity of
++		 * VMX's pending debug exceptions, not DR6.
++		 */
++		ex->event_data = ex->payload & ~BIT(12);
++		break;
++	case NM_VECTOR:
++		ex->event_data = ex->payload;
+ 		break;
+ 	case PF_VECTOR:
+ 		vcpu->arch.cr2 = ex->payload;
++		ex->event_data = ex->payload;
++		break;
++	default:
++		ex->event_data = 0;
+ 		break;
+ 	}
+ 
+@@ -917,7 +930,7 @@ static void kvm_queue_exception_e_p(struct kvm_vcpu *vcpu, unsigned nr,
+ }
+ 
+ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
+-			   bool has_error_code, u32 error_code)
++			   bool has_error_code, u32 error_code, u64 event_data)
+ {
+ 
+ 	/*
+@@ -942,6 +955,7 @@ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
+ 	vcpu->arch.exception.error_code = error_code;
+ 	vcpu->arch.exception.has_payload = false;
+ 	vcpu->arch.exception.payload = 0;
++	vcpu->arch.exception.event_data = event_data;
+ }
+ EXPORT_SYMBOL_GPL(kvm_requeue_exception);
+ 
 -- 
 2.50.1
 
