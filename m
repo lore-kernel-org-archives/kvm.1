@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AC3342C86;
-	Thu, 21 Aug 2025 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B4E34321D;
+	Thu, 21 Aug 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755783128; cv=none; b=WTNAzwhb5YpM8dB3WF8nt8IYy8+SvgNZBMExr5VIhfeboeH/nqoSc5UFXcV36mjPy2wryTyjhRGCn+1JW1fpiHe3iOw4l1HEHNHRWYmoVig/WVj4ZmZccC5nLtzvww2oF2jT9esTVAHInk9sa7wthYR40DbQBwR11IsdusFtzX8=
+	t=1755783129; cv=none; b=bCzOChZCbyp5goKmKBiNUnrr4xgqPhgnOL0wDDuQg8F/VmRfjGHb+bwhtkEG6NldOOS6S+Bi9+Fv8Y0+82iB9nRVZUfiP7u0z3mYmQknakxz4wDRtymcIgA5dQXLjB2hX39AtqM67KmuR/+r3o7ivDkZmQSXCWtsBohcpoLpNO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755783128; c=relaxed/simple;
-	bh=WeKKR+RDt3izijkWhwNau3UupyKGSg91PC0OQPMIrTc=;
+	s=arc-20240116; t=1755783129; c=relaxed/simple;
+	bh=ik6x/Xx9UFsVaiaO0szvF715FVxMRj4m2V+kEZefuFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufRODWAI1YvMu5mdt3lYanOdtnSCMcNkkxybvKEnmqGZPNOSKBrlhiwf9WhNddUjGGP1oKcKUJCOU67JZ9/CmTiFiZ8ElpQ0yfEKBE56noQzbrpMEzpTqBIMZAlg0uGj6G3saHZ2Bu9fJSXA5GpSfTepRVWvNJUyJbhUIS8+vBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O+CFAz3W; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=R4AIaooNMeyALu++My5IogOKEmvGpEXKf8nLveseXXmTAs6r7rW7124UBXpqpGyhc7Jv4Z0HpE4es3amsRsdxUN0FkIPGfl5/3rJ1g7c3v1IsQ3HCQBouOrS7r7SRohJx6mOTB3DAnNvf4z+e5j9IZKxOBJt5j5AYMCdqwcm+Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aVSHa1Dx; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O+CFAz3W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aVSHa1Dx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755783126; x=1787319126;
+  t=1755783127; x=1787319127;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WeKKR+RDt3izijkWhwNau3UupyKGSg91PC0OQPMIrTc=;
-  b=O+CFAz3WHeYrRUyaWeiJsR+wfiQXUmeFE65+556mXbOW0YxyqczWaB4y
-   58t8S1z5hfC2lXv8KEd9kAjOUA7fDG/WrC6vYUcD6l8ii87RdBJDwLOpW
-   GGWBsXgMGjiJbp1sgu09G/MFL3xOM0/HriZrfIsgQsg1h2huLUCWEaMyP
-   X9LAeOdb4PJz+KYwMKhrSwWNsoWFlAtC4LqxH+JRnow9EjAjHPV89vAO+
-   w9YOoWm4qi89NzwN6jy6wCJfwJ16qmaya7aB+NYljrbdETjXW/PRCPkhb
-   rke/0PsjBg1KS96nAGVWCDEGngCjM53EgXPfMYBAa7nQ9uy+CehsJE7Bu
-   w==;
-X-CSE-ConnectionGUID: HhyVH3gYRiqqv0E4+lI4RQ==
-X-CSE-MsgGUID: d1jwl/ULRSil+X83VZ12Rg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446149"
+  bh=ik6x/Xx9UFsVaiaO0szvF715FVxMRj4m2V+kEZefuFc=;
+  b=aVSHa1DxwpWboroth0ahteOYY6ehxGKUlwIAQ6eikiiiuLRKcZlIrOnk
+   tqOWxq3jBG8PVbiqwcVp13frG8w7K8Y8S1sw5ebBxWCv7xCcAfxI897ys
+   OBtkLruAfIbXD1zC5prBQQp5QfN5h2DX1OyDSe1LOemYwDNXYH5Kvakbz
+   lta/lrh14g47DdJ8HWiXYKY/rG0wg/ujiVQE46HQr6gn0jwi6/FbXVLvh
+   lcj+e5SR/gaSd3Fes4QIG1fXElh8YsvsuElRws0xQD/Ff/B3QyRdTlMmS
+   jWwcQ/87lt1VaeC17vYHswA62cdjSsWGjaqYyRc5lj7bdE8mtrk+s2FRA
+   g==;
+X-CSE-ConnectionGUID: v8/evtwhRFeWdj3PrP9GdA==
+X-CSE-MsgGUID: CffTU5nOTrKrLo5qdEy6Kg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69446158"
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="69446149"
+   d="scan'208";a="69446158"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:32:01 -0700
-X-CSE-ConnectionGUID: //Q3kti4TnuRi3VaYUy/+g==
-X-CSE-MsgGUID: VUmgEUpfRQKaK6OFzdntnA==
+X-CSE-ConnectionGUID: 2Awju9O4SHOaPpDTzMEj+g==
+X-CSE-MsgGUID: 0SgYnvidQkW2q9KKz4Sqmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="199285387"
+   d="scan'208";a="199285424"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:38 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:31:51 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -61,9 +61,9 @@ Cc: chao.gao@intel.com,
 	weijiang.yang@intel.com,
 	x86@kernel.org,
 	xin@zytor.com
-Subject: [PATCH v13 01/21] KVM: x86: Introduce KVM_{G,S}ET_ONE_REG uAPIs support
-Date: Thu, 21 Aug 2025 06:30:35 -0700
-Message-ID: <20250821133132.72322-2-chao.gao@intel.com>
+Subject: [PATCH v13 14/21] KVM: x86: Don't emulate instructions guarded by CET
+Date: Thu, 21 Aug 2025 06:30:48 -0700
+Message-ID: <20250821133132.72322-15-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250821133132.72322-1-chao.gao@intel.com>
 References: <20250821133132.72322-1-chao.gao@intel.com>
@@ -77,186 +77,126 @@ Content-Transfer-Encoding: 8bit
 
 From: Yang Weijiang <weijiang.yang@intel.com>
 
-Enable KVM_{G,S}ET_ONE_REG uAPIs so that userspace can access HW MSR or
-KVM synthetic MSR through it.
+Don't emulate the branch instructions, e.g., CALL/RET/JMP etc., when CET
+is active in guest, return KVM_INTERNAL_ERROR_EMULATION to userspace to
+handle it.
 
-In CET KVM series [1], KVM "steals" an MSR from PV MSR space and access
-it via KVM_{G,S}ET_MSRs uAPIs, but the approach pollutes PV MSR space
-and hides the difference of synthetic MSRs and normal HW defined MSRs.
+KVM doesn't emulate CPU behaviors to check CET protected stuffs while
+emulating guest instructions, instead it stops emulation on detecting
+the instructions in process are CET protected. By doing so, it can avoid
+generating bogus #CP in guest and preventing CET protected execution flow
+subversion from guest side.
 
-Now carve out a separate room in KVM-customized MSR address space for
-synthetic MSRs. The synthetic MSRs are not exposed to userspace via
-KVM_GET_MSR_INDEX_LIST, instead userspace complies with KVM's setup and
-composes the uAPI params. KVM synthetic MSR indices start from 0 and
-increase linearly. Userspace caller should tag MSR type correctly in
-order to access intended HW or synthetic MSR.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Suggested-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Link: https://lore.kernel.org/all/20240219074733.122080-18-weijiang.yang@intel.com/ [1]
 Tested-by: Mathias Krause <minipli@grsecurity.net>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-
 ---
-v13:
- - Add vendor and size fields to the register ID to align with other
-   architectures. (Sean)
- - Avoid exposing the struct overlay of the register ID to in uAPI
-   headers (Sean)
- - Advertise KVM_CAP_ONE_REG
----
- arch/x86/include/uapi/asm/kvm.h | 21 +++++++++
- arch/x86/kvm/x86.c              | 82 +++++++++++++++++++++++++++++++++
- 2 files changed, 103 insertions(+)
+ arch/x86/kvm/emulate.c | 46 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 0f15d683817d..969a63e73190 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -411,6 +411,27 @@ struct kvm_xcrs {
- 	__u64 padding[16];
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 542d3664afa3..97a4d1e69583 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -178,6 +178,8 @@
+ #define IncSP       ((u64)1 << 54)  /* SP is incremented before ModRM calc */
+ #define TwoMemOp    ((u64)1 << 55)  /* Instruction has two memory operand */
+ #define IsBranch    ((u64)1 << 56)  /* Instruction is considered a branch. */
++#define ShadowStack ((u64)1 << 57)  /* Instruction protected by Shadow Stack. */
++#define IndirBrnTrk ((u64)1 << 58)  /* Instruction protected by IBT. */
+ 
+ #define DstXacc     (DstAccLo | SrcAccHi | SrcWrite)
+ 
+@@ -4068,9 +4070,11 @@ static const struct opcode group4[] = {
+ static const struct opcode group5[] = {
+ 	F(DstMem | SrcNone | Lock,		em_inc),
+ 	F(DstMem | SrcNone | Lock,		em_dec),
+-	I(SrcMem | NearBranch | IsBranch,       em_call_near_abs),
+-	I(SrcMemFAddr | ImplicitOps | IsBranch, em_call_far),
+-	I(SrcMem | NearBranch | IsBranch,       em_jmp_abs),
++	I(SrcMem | NearBranch | IsBranch | ShadowStack | IndirBrnTrk,
++	em_call_near_abs),
++	I(SrcMemFAddr | ImplicitOps | IsBranch | ShadowStack | IndirBrnTrk,
++	em_call_far),
++	I(SrcMem | NearBranch | IsBranch | IndirBrnTrk, em_jmp_abs),
+ 	I(SrcMemFAddr | ImplicitOps | IsBranch, em_jmp_far),
+ 	I(SrcMem | Stack | TwoMemOp,		em_push), D(Undefined),
  };
+@@ -4332,11 +4336,11 @@ static const struct opcode opcode_table[256] = {
+ 	/* 0xC8 - 0xCF */
+ 	I(Stack | SrcImmU16 | Src2ImmByte | IsBranch, em_enter),
+ 	I(Stack | IsBranch, em_leave),
+-	I(ImplicitOps | SrcImmU16 | IsBranch, em_ret_far_imm),
+-	I(ImplicitOps | IsBranch, em_ret_far),
+-	D(ImplicitOps | IsBranch), DI(SrcImmByte | IsBranch, intn),
++	I(ImplicitOps | SrcImmU16 | IsBranch | ShadowStack, em_ret_far_imm),
++	I(ImplicitOps | IsBranch | ShadowStack, em_ret_far),
++	D(ImplicitOps | IsBranch), DI(SrcImmByte | IsBranch | ShadowStack, intn),
+ 	D(ImplicitOps | No64 | IsBranch),
+-	II(ImplicitOps | IsBranch, em_iret, iret),
++	II(ImplicitOps | IsBranch | ShadowStack, em_iret, iret),
+ 	/* 0xD0 - 0xD7 */
+ 	G(Src2One | ByteOp, group2), G(Src2One, group2),
+ 	G(Src2CL | ByteOp, group2), G(Src2CL, group2),
+@@ -4352,7 +4356,7 @@ static const struct opcode opcode_table[256] = {
+ 	I2bvIP(SrcImmUByte | DstAcc, em_in,  in,  check_perm_in),
+ 	I2bvIP(SrcAcc | DstImmUByte, em_out, out, check_perm_out),
+ 	/* 0xE8 - 0xEF */
+-	I(SrcImm | NearBranch | IsBranch, em_call),
++	I(SrcImm | NearBranch | IsBranch | ShadowStack, em_call),
+ 	D(SrcImm | ImplicitOps | NearBranch | IsBranch),
+ 	I(SrcImmFAddr | No64 | IsBranch, em_jmp_far),
+ 	D(SrcImmByte | ImplicitOps | NearBranch | IsBranch),
+@@ -4371,7 +4375,8 @@ static const struct opcode opcode_table[256] = {
+ static const struct opcode twobyte_table[256] = {
+ 	/* 0x00 - 0x0F */
+ 	G(0, group6), GD(0, &group7), N, N,
+-	N, I(ImplicitOps | EmulateOnUD | IsBranch, em_syscall),
++	N, I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack | IndirBrnTrk,
++	em_syscall),
+ 	II(ImplicitOps | Priv, em_clts, clts), N,
+ 	DI(ImplicitOps | Priv, invd), DI(ImplicitOps | Priv, wbinvd), N, N,
+ 	N, D(ImplicitOps | ModRM | SrcMem | NoAccess), N, N,
+@@ -4402,8 +4407,9 @@ static const struct opcode twobyte_table[256] = {
+ 	IIP(ImplicitOps, em_rdtsc, rdtsc, check_rdtsc),
+ 	II(ImplicitOps | Priv, em_rdmsr, rdmsr),
+ 	IIP(ImplicitOps, em_rdpmc, rdpmc, check_rdpmc),
+-	I(ImplicitOps | EmulateOnUD | IsBranch, em_sysenter),
+-	I(ImplicitOps | Priv | EmulateOnUD | IsBranch, em_sysexit),
++	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack | IndirBrnTrk,
++	em_sysenter),
++	I(ImplicitOps | Priv | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
+ 	N, N,
+ 	N, N, N, N, N, N, N, N,
+ 	/* 0x40 - 0x4F */
+@@ -4941,6 +4947,24 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	if (ctxt->d == 0)
+ 		return EMULATION_FAILED;
  
-+#define KVM_X86_REG_TYPE_MSR		2
-+#define KVM_X86_REG_TYPE_SYNTHETIC_MSR	3
++	if (ctxt->ops->get_cr(ctxt, 4) & X86_CR4_CET) {
++		u64 u_cet, s_cet;
++		bool stop_em;
 +
-+#define KVM_X86_REG_TYPE_SIZE(type)						\
-+({										\
-+	__u64 type_size = (__u64)type << 32;					\
-+										\
-+	type_size |= type == KVM_X86_REG_TYPE_MSR ? KVM_REG_SIZE_U64 :		\
-+		     type == KVM_X86_REG_TYPE_SYNTHETIC_MSR ? KVM_REG_SIZE_U64 :\
-+		     0;								\
-+	type_size;								\
-+})
++		if (ctxt->ops->get_msr(ctxt, MSR_IA32_U_CET, &u_cet) ||
++		    ctxt->ops->get_msr(ctxt, MSR_IA32_S_CET, &s_cet))
++			return EMULATION_FAILED;
 +
-+#define KVM_X86_REG_ENCODE(type, index)				\
-+	(KVM_REG_X86 | KVM_X86_REG_TYPE_SIZE(type) | index)
++		stop_em = ((u_cet & CET_SHSTK_EN) || (s_cet & CET_SHSTK_EN)) &&
++			  (opcode.flags & ShadowStack);
 +
-+#define KVM_X86_REG_MSR(index)					\
-+	KVM_X86_REG_ENCODE(KVM_X86_REG_TYPE_MSR, index)
-+#define KVM_X86_REG_SYNTHETIC_MSR(index)			\
-+	KVM_X86_REG_ENCODE(KVM_X86_REG_TYPE_SYNTHETIC_MSR, index)
++		stop_em |= ((u_cet & CET_ENDBR_EN) || (s_cet & CET_ENDBR_EN)) &&
++			   (opcode.flags & IndirBrnTrk);
 +
- #define KVM_SYNC_X86_REGS      (1UL << 0)
- #define KVM_SYNC_X86_SREGS     (1UL << 1)
- #define KVM_SYNC_X86_EVENTS    (1UL << 2)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7ba2cdfdac44..31a7e7ad310a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2254,6 +2254,31 @@ static int do_set_msr(struct kvm_vcpu *vcpu, unsigned index, u64 *data)
- 	return kvm_set_msr_ignored_check(vcpu, index, *data, true);
- }
- 
-+static int kvm_get_one_msr(struct kvm_vcpu *vcpu, u32 msr, u64 __user *value)
-+{
-+	u64 val;
-+	int r;
-+
-+	r = do_get_msr(vcpu, msr, &val);
-+	if (r)
-+		return r;
-+
-+	if (put_user(val, value))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int kvm_set_one_msr(struct kvm_vcpu *vcpu, u32 msr, u64 __user *value)
-+{
-+	u64 val;
-+
-+	if (get_user(val, value))
-+		return -EFAULT;
-+
-+	return do_set_msr(vcpu, msr, &val);
-+}
-+
- #ifdef CONFIG_X86_64
- struct pvclock_clock {
- 	int vclock_mode;
-@@ -4737,6 +4762,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_IRQFD_RESAMPLE:
- 	case KVM_CAP_MEMORY_FAULT_INFO:
- 	case KVM_CAP_X86_GUEST_MODE:
-+	case KVM_CAP_ONE_REG:
- 		r = 1;
- 		break;
- 	case KVM_CAP_PRE_FAULT_MEMORY:
-@@ -5915,6 +5941,20 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
- 	}
- }
- 
-+struct kvm_x86_reg_id {
-+	__u32 index;
-+	__u8  type;
-+	__u8  rsvd;
-+	__u8  rsvd4:4;
-+	__u8  size:4;
-+	__u8  x86;
-+};
-+
-+static int kvm_translate_synthetic_msr(struct kvm_x86_reg_id *reg)
-+{
-+	return -EINVAL;
-+}
-+
- long kvm_arch_vcpu_ioctl(struct file *filp,
- 			 unsigned int ioctl, unsigned long arg)
- {
-@@ -6031,6 +6071,48 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		break;
- 	}
-+	case KVM_GET_ONE_REG:
-+	case KVM_SET_ONE_REG: {
-+		struct kvm_x86_reg_id *id;
-+		struct kvm_one_reg reg;
-+		u64 __user *value;
-+
-+		r = -EFAULT;
-+		if (copy_from_user(&reg, argp, sizeof(reg)))
-+			break;
-+
-+		r = -EINVAL;
-+		if ((reg.id & KVM_REG_ARCH_MASK) != KVM_REG_X86)
-+			break;
-+
-+		id = (struct kvm_x86_reg_id *)&reg.id;
-+		if (id->rsvd || id->rsvd4)
-+			break;
-+
-+		if (id->type != KVM_X86_REG_TYPE_MSR &&
-+		    id->type != KVM_X86_REG_TYPE_SYNTHETIC_MSR)
-+			break;
-+
-+		if ((reg.id & KVM_REG_SIZE_MASK) != KVM_REG_SIZE_U64)
-+			break;
-+
-+		if (id->type == KVM_X86_REG_TYPE_SYNTHETIC_MSR) {
-+			r = kvm_translate_synthetic_msr(id);
-+			if (r)
-+				break;
-+		}
-+
-+		r = -EINVAL;
-+		if (id->type != KVM_X86_REG_TYPE_MSR)
-+			break;
-+
-+		value = u64_to_user_ptr(reg.addr);
-+		if (ioctl == KVM_GET_ONE_REG)
-+			r = kvm_get_one_msr(vcpu, id->index, value);
-+		else
-+			r = kvm_set_one_msr(vcpu, id->index, value);
-+		break;
++		if (stop_em)
++			return EMULATION_FAILED;
 +	}
- 	case KVM_TPR_ACCESS_REPORTING: {
- 		struct kvm_tpr_access_ctl tac;
++
+ 	ctxt->execute = opcode.u.execute;
  
+ 	if (unlikely(emulation_type & EMULTYPE_TRAP_UD) &&
 -- 
 2.47.3
 
