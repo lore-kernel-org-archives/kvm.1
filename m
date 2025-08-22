@@ -1,37 +1,66 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CADC15E90;
-	Fri, 22 Aug 2025 06:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF262236FD;
+	Fri, 22 Aug 2025 07:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755845473; cv=none; b=LsoRSjLzEZLXrJRQZIaqCM0BIPwF1HyHIX98x2Tmk/hGeG0iJ/vpwBPkmi4ujAKiE5qyCi74sai0KgGgLz2uo6CVKKazaav3ZeoB/BSZxcH6NuAA3L31otDorGP0QQadlJQUDlp2cvhxFNLjjoS2+IeGaGWITAqWGun2vci2vGc=
+	t=1755846224; cv=none; b=gavRgyYcWJ5KN97MlMtfo69SxO3Nu1152xGIUq6i3OsJ0De7LxK6aZ6PQqGtTPXmk83YNVdTWOf1a6d7mSk7NpcosLV8rC+HWQFQige9e3kKeIfV6UHC7s6jWm51ZWoudhUjZallgW/W27rPbZmf9ptyElh0n37QosvECtgATDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755845473; c=relaxed/simple;
-	bh=JCJe22NBnh/Ohku/c/jURhYMPWhOcCrL/i6Ia6jiF3I=;
+	s=arc-20240116; t=1755846224; c=relaxed/simple;
+	bh=I7u3TWd+L4CBV9TosTMFziWydfwf9fqA/oBzR41luvU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GpN0xA4zEg4CpMkbGI/HOvMaiHfHeE8ImFiAcNUPv+nYboozqpABuID7686LcvtkVc8ZQkhSPuTlrFiGcFryVZiyDBAEeU5alXKN9xLrzneAJ9HwhJvc6xFdYSLrPyz9FLUcaiWf0MVaDtkuzErUUGuvbwNoKSqK3Nr/Zx6grNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=j17RBcsD; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 In-Reply-To:Content-Type; b=IQg7WM7Pd6GcycwL20In5v2up/W5BIicGSWCgdQOqjli5/tQZ4Z72lzi9GfGgnmKMdr/1hJStaJy3TYa1Rk5vphvOnW6YH8ffohI710bg8sI48oiCkHgZrvHob5vsG+gd7zWyoAUzikxIHQs/7Ok3Ucs8K1PGHmggUyutqmyqbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jHLXvmza; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="j17RBcsD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=IrjTn5lxjgH6PT63JNA+B4QI+udrzjtftEznNof8LA0=; b=j17RBcsD4qSuOv6w/CU/WxHpFF
-	IUY594dwVhdfBDbQGOv/tKSfMsm0NAXG1Md63nkJNodbRDDk8nW85G6B2OB7xQTA4CYrfAHA3MtQJ
-	6fR1Ko1vfc8+DXbMEJWnMc+JPvB3m9SyDhWLFY94FS9FNO+CVHBVhJfjMdLlt2k5wPS3ZmXInAlMo
-	Yd/DMzJdv4+lN7VYpp0Kveb9yEnELMp1djT3fv3kLMnXUFlH6Ba9vdZOXO0xIvUuhyD3CJDAY0+1R
-	bC6jGsswDCYcR+XRRagP4v+i5j6hl4KC1BjvFwfFUO80GQLv5SLQ6ntdvHQ7Lrjwoa8/ZmJMX1pTo
-	lADwTdoA==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1upLc4-00000001kK4-2FVr;
-	Fri, 22 Aug 2025 06:51:00 +0000
-Message-ID: <f87145e5-5a86-4ccf-96ac-61e16e894b81@infradead.org>
-Date: Thu, 21 Aug 2025 23:50:58 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jHLXvmza"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3c5e043c85bso192228f8f.1;
+        Fri, 22 Aug 2025 00:03:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755846221; x=1756451021; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6lm78bqENJSIgaA3raQ/Zxyiw2zd1AV2h04MLDFhhlk=;
+        b=jHLXvmzameYeECEdyPoTjFP8aDt3avykouINAyGZfDuvlk+PeOVXKngfgU7nKEagPB
+         ZBrKkBn8A75MwUum7XRVULfN0Fdbrk66hhxhIaijLRXCOHTJNdP9hsyDlAeRoDyq60yW
+         Et9XrDV49aVe7AapPWFdjVGaIrcRZ/5LW1r4w/X+i8PyvPaeRR+aNAuOPefGvng+yV/A
+         laz6GhyZnP445WThoMk6ZvXNGUYk573mKFR0qzWJGK2HQx4GkLR45orVxl92Oqzh2VOW
+         rp8BIvGUSNfm2L4lyGj8N+kMUjHB+inEEp1A+JB9iXzPcy6eoTGnQNSVqwwFAVNVWbmT
+         2mYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755846221; x=1756451021;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6lm78bqENJSIgaA3raQ/Zxyiw2zd1AV2h04MLDFhhlk=;
+        b=fxl3KRuTWsGyeejmwu4HKG7KqgAoodwHgildZik8IXQt7Q7kYUXhBnBxIRKfkqHU3A
+         PyhU0ZyBelMC5XXelq4Ioa+0SFKwqnKhPrD61wHYol7NhUM7t++P3NP6V2/pOMUdTNLO
+         r7BwwavBGXq7MHVp9eevPnUqAJf2vkrmj7PQCqlGF+X6M0weJtfv0qtBVOrlUjI0nEMc
+         X+Kpy77bw2ii4yGuinC/jtD0h0K4TY0bsnUc5HFbERJxVpwNjl2nm75dt/i0qwDBkhoE
+         diKcw5xw/UbLI1lCAA5EPi5spPx1ZjNJ9QvJ0RRwsoAhuCGqXmj8+ae1dP5mX7Ryn0To
+         GIdg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPCj86yMNms3Ud7nM4PPe0eCvQmkfdxXa/YVdja1Y6ZwW7BVLrXhnf8G/BTnT13iTAQ14tuyga1H51Ge0D@vger.kernel.org, AJvYcCVhe2onwC/LMFo0dud4Zb9D4D/adVjQAoHWWIS2Ap54l8dq1EXVoOpbI4JxBoJ/rdAQAR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy0zAT6a2LIj1ITKxfzZWsjZE0dXjB25ACAkmmfgE235ZYQCr6
+	L63h4uXIoDhQ7kicQF+XBqGjYpkgL8CAd5HgstBvPsEfwB3VsKRWL0uK
+X-Gm-Gg: ASbGnctaF6rIpqAXetMgxgVPou1yvxsdFr1CKhZJ0207RNfCYOi9DAs+ilwqmqBLXoR
+	B57Re7708czNUwWtMVsIsUV32Jll2JdGpSwUypstwMQ3qG6Seo5GW4y0ss9T8qIo57GlRnzELNn
+	5HCi/GHqCTDIFF8ORtRDh34KT2zS1mZwyZ7UynqGTV930L0JxuOPwxl5Q9FgIXmNwlTpHKJOhIm
+	pz/E6TciZJkqwj0t7nasUIWvvPcUC6aAg+Sr0R6TgRY4UyIC5rIE9qMefRzmedHcjeBwvu74Op+
+	kqmb22F23ELnFTaYr7+0+hIIfVDUZBTHLzzYB/J98ZXx4M3q8iTgMqzEQ8XGRIYd43xU/PN6X0B
+	U6CF//fMcHkw5lctXqS9u6BVtMjOyvmSQGPVOaKnP/Bb62Wz++Qwbc8y6kIFYe9YnFJmGCF+nxv
+	49khS2HIOu8iuHzi+aG5I+sfAkeIki3bKl
+X-Google-Smtp-Source: AGHT+IF3Rz6EHeS/oXp3MalHMbTmrq3mcuDEk/0K1QjUtW0ZCZviaqhZ7oEa4EzoojHE9cpL3KxwYg==
+X-Received: by 2002:a05:6000:2c09:b0:3c4:516:bf62 with SMTP id ffacd0b85a97d-3c4ae74f40dmr3994765f8f.6.1755846220591;
+        Fri, 22 Aug 2025 00:03:40 -0700 (PDT)
+Received: from [192.168.7.75] (cmbg-19-b2-v4wan-170160-cust1492.vm17.cable.virginm.net. [94.175.85.213])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b50dc4c55sm25424165e9.4.2025.08.22.00.03.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Aug 2025 00:03:40 -0700 (PDT)
+Message-ID: <723cd569-b194-4876-9aea-d0bdd6861810@gmail.com>
+Date: Fri, 22 Aug 2025 08:03:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,145 +68,364 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/29] KVM: arm64: Document the KVM ABI for SME
-To: Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <shuah@kernel.org>
-Cc: Dave Martin <Dave.Martin@arm.com>, Fuad Tabba <tabba@google.com>,
- Mark Rutland <mark.rutland@arm.com>, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250822-kvm-arm64-sme-v7-0-7a65d82b8b10@kernel.org>
- <20250822-kvm-arm64-sme-v7-11-7a65d82b8b10@kernel.org>
+Subject: Re: [PATCH v8 3/3] hisi_acc_vfio_pci: adapt to new migration
+ configuration
+To: liulongfang <liulongfang@huawei.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Cc: jgg@nvidia.com, jonathan.cameron@huawei.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxarm@openeuler.org
+References: <20250820072435.2854502-1-liulongfang@huawei.com>
+ <20250820072435.2854502-4-liulongfang@huawei.com>
+ <20250821120112.3e9599a4.alex.williamson@redhat.com>
+ <f3617d78-e75e-378b-ad0f-4aa6c8ed61b9@huawei.com>
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250822-kvm-arm64-sme-v7-11-7a65d82b8b10@kernel.org>
+From: Shameer Kolothum <shameerkolothum@gmail.com>
+In-Reply-To: <f3617d78-e75e-378b-ad0f-4aa6c8ed61b9@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-
-
-On 8/21/25 6:53 PM, Mark Brown wrote:
-> SME, the Scalable Matrix Extension, is an arm64 extension which adds
-> support for matrix operations, with core concepts patterned after SVE.
+On 22/08/2025 03:44, liulongfang wrote:
+> On 2025/8/22 2:01, Alex Williamson wrote:
+>> On Wed, 20 Aug 2025 15:24:35 +0800
+>> Longfang Liu <liulongfang@huawei.com> wrote:
+>>
+>>> On new platforms greater than QM_HW_V3, the migration region has been
+>>> relocated from the VF to the PF. The driver must also be modified
+>>> accordingly to adapt to the new hardware device.
+>>>
+>>> On the older hardware platform QM_HW_V3, the live migration configuration
+>>> region is placed in the latter 32K portion of the VF's BAR2 configuration
+>>> space. On the new hardware platform QM_HW_V4, the live migration
+>>> configuration region also exists in the same 32K area immediately following
+>>> the VF's BAR2, just like on QM_HW_V3.
+>>>
+>>> However, access to this region is now controlled by hardware. Additionally,
+>>> a copy of the live migration configuration region is present in the PF's
+>>> BAR2 configuration space. On the new hardware platform QM_HW_V4, when an
+>>> older version of the driver is loaded, it behaves like QM_HW_V3 and uses
+>>> the configuration region in the VF, ensuring that the live migration
+>>> function continues to work normally. When the new version of the driver is
+>>> loaded, it directly uses the configuration region in the PF. Meanwhile,
+>>> hardware configuration disables the live migration configuration region
+>>> in the VF's BAR2: reads return all 0xF values, and writes are silently
+>>> ignored.
+>>>
+>>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+>>> Reviewed-by: Shameer Kolothum <shameerkolothum@gmail.com>
+>>> ---
+>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 169 ++++++++++++------
+>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.h    |  13 ++
+>>>  2 files changed, 130 insertions(+), 52 deletions(-)
+>>>
+>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>> index ddb3fd4df5aa..09893d143a68 100644
+>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>> @@ -125,6 +125,72 @@ static int qm_get_cqc(struct hisi_qm *qm, u64 *addr)
+>>>  	return 0;
+>>>  }
+>>>  
+>>> +static int qm_get_xqc_regs(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>> +			   struct acc_vf_data *vf_data)
+>>> +{
+>>> +	struct hisi_qm *qm = &hisi_acc_vdev->vf_qm;
+>>> +	struct device *dev = &qm->pdev->dev;
+>>> +	u32 eqc_addr, aeqc_addr;
+>>> +	int ret;
+>>> +
+>>> +	if (hisi_acc_vdev->drv_mode == HW_V3_COMPAT) {
+>>> +		eqc_addr = QM_EQC_DW0;
+>>> +		aeqc_addr = QM_AEQC_DW0;
+>>> +	} else {
+>>> +		eqc_addr = QM_EQC_PF_DW0;
+>>> +		aeqc_addr = QM_AEQC_PF_DW0;
+>>> +	}
+>>> +
+>>> +	/* QM_EQC_DW has 7 regs */
+>>> +	ret = qm_read_regs(qm, eqc_addr, vf_data->qm_eqc_dw, 7);
+>>> +	if (ret) {
+>>> +		dev_err(dev, "failed to read QM_EQC_DW\n");
+>>> +		return ret;
+>>> +	}
+>>> +
+>>> +	/* QM_AEQC_DW has 7 regs */
+>>> +	ret = qm_read_regs(qm, aeqc_addr, vf_data->qm_aeqc_dw, 7);
+>>> +	if (ret) {
+>>> +		dev_err(dev, "failed to read QM_AEQC_DW\n");
+>>> +		return ret;
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static int qm_set_xqc_regs(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>> +			   struct acc_vf_data *vf_data)
+>>> +{
+>>> +	struct hisi_qm *qm = &hisi_acc_vdev->vf_qm;
+>>> +	struct device *dev = &qm->pdev->dev;
+>>> +	u32 eqc_addr, aeqc_addr;
+>>> +	int ret;
+>>> +
+>>> +	if (hisi_acc_vdev->drv_mode == HW_V3_COMPAT) {
+>>> +		eqc_addr = QM_EQC_DW0;
+>>> +		aeqc_addr = QM_AEQC_DW0;
+>>> +	} else {
+>>> +		eqc_addr = QM_EQC_PF_DW0;
+>>> +		aeqc_addr = QM_AEQC_PF_DW0;
+>>> +	}
+>>> +
+>>> +	/* QM_EQC_DW has 7 regs */
+>>> +	ret = qm_write_regs(qm, eqc_addr, vf_data->qm_eqc_dw, 7);
+>>> +	if (ret) {
+>>> +		dev_err(dev, "failed to write QM_EQC_DW\n");
+>>> +		return ret;
+>>> +	}
+>>> +
+>>> +	/* QM_AEQC_DW has 7 regs */
+>>> +	ret = qm_write_regs(qm, aeqc_addr, vf_data->qm_aeqc_dw, 7);
+>>> +	if (ret) {
+>>> +		dev_err(dev, "failed to write QM_AEQC_DW\n");
+>>> +		return ret;
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>>  static int qm_get_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
+>>>  {
+>>>  	struct device *dev = &qm->pdev->dev;
+>>> @@ -167,20 +233,6 @@ static int qm_get_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
+>>>  		return ret;
+>>>  	}
+>>>  
+>>> -	/* QM_EQC_DW has 7 regs */
+>>> -	ret = qm_read_regs(qm, QM_EQC_DW0, vf_data->qm_eqc_dw, 7);
+>>> -	if (ret) {
+>>> -		dev_err(dev, "failed to read QM_EQC_DW\n");
+>>> -		return ret;
+>>> -	}
+>>> -
+>>> -	/* QM_AEQC_DW has 7 regs */
+>>> -	ret = qm_read_regs(qm, QM_AEQC_DW0, vf_data->qm_aeqc_dw, 7);
+>>> -	if (ret) {
+>>> -		dev_err(dev, "failed to read QM_AEQC_DW\n");
+>>> -		return ret;
+>>> -	}
+>>> -
+>>>  	return 0;
+>>>  }
+>>>  
+>>> @@ -239,20 +291,6 @@ static int qm_set_regs(struct hisi_qm *qm, struct acc_vf_data *vf_data)
+>>>  		return ret;
+>>>  	}
+>>>  
+>>> -	/* QM_EQC_DW has 7 regs */
+>>> -	ret = qm_write_regs(qm, QM_EQC_DW0, vf_data->qm_eqc_dw, 7);
+>>> -	if (ret) {
+>>> -		dev_err(dev, "failed to write QM_EQC_DW\n");
+>>> -		return ret;
+>>> -	}
+>>> -
+>>> -	/* QM_AEQC_DW has 7 regs */
+>>> -	ret = qm_write_regs(qm, QM_AEQC_DW0, vf_data->qm_aeqc_dw, 7);
+>>> -	if (ret) {
+>>> -		dev_err(dev, "failed to write QM_AEQC_DW\n");
+>>> -		return ret;
+>>> -	}
+>>> -
+>>>  	return 0;
+>>>  }
+>>>  
+>>> @@ -522,6 +560,10 @@ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>>  		return ret;
+>>>  	}
+>>>  
+>>> +	ret = qm_set_xqc_regs(hisi_acc_vdev, vf_data);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>>  	ret = hisi_qm_mb(qm, QM_MB_CMD_SQC_BT, qm->sqc_dma, 0, 0);
+>>>  	if (ret) {
+>>>  		dev_err(dev, "set sqc failed\n");
+>>> @@ -589,6 +631,10 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+>>>  	vf_data->vf_qm_state = QM_READY;
+>>>  	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
+>>>  
+>>> +	ret = qm_get_xqc_regs(hisi_acc_vdev, vf_data);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>>  	ret = vf_qm_read_data(vf_qm, vf_data);
+>>>  	if (ret)
+>>>  		return ret;
+>>> @@ -1186,34 +1232,52 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
+>>>  {
+>>>  	struct vfio_pci_core_device *vdev = &hisi_acc_vdev->core_device;
+>>>  	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
+>>> +	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
+>>>  	struct pci_dev *vf_dev = vdev->pdev;
+>>> +	u32 val;
+>>>  
+>>> -	/*
+>>> -	 * ACC VF dev BAR2 region consists of both functional register space
+>>> -	 * and migration control register space. For migration to work, we
+>>> -	 * need access to both. Hence, we map the entire BAR2 region here.
+>>> -	 * But unnecessarily exposing the migration BAR region to the Guest
+>>> -	 * has the potential to prevent/corrupt the Guest migration. Hence,
+>>> -	 * we restrict access to the migration control space from
+>>> -	 * Guest(Please see mmap/ioctl/read/write override functions).
+>>> -	 *
+>>> -	 * Please note that it is OK to expose the entire VF BAR if migration
+>>> -	 * is not supported or required as this cannot affect the ACC PF
+>>> -	 * configurations.
+>>> -	 *
+>>> -	 * Also the HiSilicon ACC VF devices supported by this driver on
+>>> -	 * HiSilicon hardware platforms are integrated end point devices
+>>> -	 * and the platform lacks the capability to perform any PCIe P2P
+>>> -	 * between these devices.
+>>> -	 */
+>>> +	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
+>>> +	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
+>>> +		hisi_acc_vdev->drv_mode = HW_V4_NEW;
+>>> +	else
+>>> +		hisi_acc_vdev->drv_mode = HW_V3_COMPAT;
+>>>  
+>>> -	vf_qm->io_base =
+>>> -		ioremap(pci_resource_start(vf_dev, VFIO_PCI_BAR2_REGION_INDEX),
+>>> -			pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX));
+>>> -	if (!vf_qm->io_base)
+>>> -		return -EIO;
+>>> +	if (hisi_acc_vdev->drv_mode == HW_V4_NEW) {
+>>> +		/*
+>>> +		 * On hardware platforms greater than QM_HW_V3, the migration function
+>>> +		 * register is placed in the BAR2 configuration region of the PF,
+>>> +		 * and each VF device occupies 8KB of configuration space.
+>>> +		 */
+>>> +		vf_qm->io_base = pf_qm->io_base + QM_MIG_REGION_OFFSET +
+>>> +				 hisi_acc_vdev->vf_id * QM_MIG_REGION_SIZE;
+>>> +	} else {
+>>> +		/*
+>>> +		 * ACC VF dev BAR2 region consists of both functional register space
+>>> +		 * and migration control register space. For migration to work, we
+>>> +		 * need access to both. Hence, we map the entire BAR2 region here.
+>>> +		 * But unnecessarily exposing the migration BAR region to the Guest
+>>> +		 * has the potential to prevent/corrupt the Guest migration. Hence,
+>>> +		 * we restrict access to the migration control space from
+>>> +		 * Guest(Please see mmap/ioctl/read/write override functions).
+>>> +		 *
+>>> +		 * Please note that it is OK to expose the entire VF BAR if migration
+>>> +		 * is not supported or required as this cannot affect the ACC PF
+>>> +		 * configurations.
+>>> +		 *
+>>> +		 * Also the HiSilicon ACC VF devices supported by this driver on
+>>> +		 * HiSilicon hardware platforms are integrated end point devices
+>>> +		 * and the platform lacks the capability to perform any PCIe P2P
+>>> +		 * between these devices.
+>>> +		 */
+>>>  
+>>> +		vf_qm->io_base =
+>>> +			ioremap(pci_resource_start(vf_dev, VFIO_PCI_BAR2_REGION_INDEX),
+>>> +				pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX));
+>>> +		if (!vf_qm->io_base)
+>>> +			return -EIO;
+>>> +	}
+>>>  	vf_qm->fun_type = QM_HW_VF;
+>>> +	vf_qm->ver = pf_qm->ver;
+>>>  	vf_qm->pdev = vf_dev;
+>>>  	mutex_init(&vf_qm->mailbox_lock);
+>>>  
+>>> @@ -1539,7 +1603,8 @@ static void hisi_acc_vfio_pci_close_device(struct vfio_device *core_vdev)
+>>>  	hisi_acc_vf_disable_fds(hisi_acc_vdev);
+>>>  	mutex_lock(&hisi_acc_vdev->open_mutex);
+>>>  	hisi_acc_vdev->dev_opened = false;
+>>> -	iounmap(vf_qm->io_base);
+>>> +	if (hisi_acc_vdev->drv_mode == HW_V3_COMPAT)
+>>> +		iounmap(vf_qm->io_base);
+>>>  	mutex_unlock(&hisi_acc_vdev->open_mutex);
+>>>  	vfio_pci_core_close_device(core_vdev);
+>>>  }
+>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
+>>> index 91002ceeebc1..e7650f5ff0f7 100644
+>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
+>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
+>>> @@ -59,6 +59,18 @@
+>>>  #define ACC_DEV_MAGIC_V1	0XCDCDCDCDFEEDAACC
+>>>  #define ACC_DEV_MAGIC_V2	0xAACCFEEDDECADEDE
+>>>  
+>>> +#define QM_MIG_REGION_OFFSET		0x180000
+>>> +#define QM_MIG_REGION_SIZE		0x2000
+>>> +
+>>> +#define QM_SUB_VERSION_ID		0x100210
+>>> +#define QM_EQC_PF_DW0			0x1c00
+>>> +#define QM_AEQC_PF_DW0			0x1c20
+>>> +
+>>> +enum hw_drv_mode {
+>>> +	HW_V3_COMPAT = 0,
+>>> +	HW_V4_NEW,
+>>> +};
+>>
+>> You might consider whether these names are going to make sense in the
+>> future if there a V5 and beyond, and why V3 hardware is going to use a
+>> "compat" name when that's it's native operating mode.
+>>
 > 
-> SVE introduced some complication in the ABI since it adds new vector
-> floating point registers with runtime configurable size, the size being
-> controlled by a prameter called the vector length (VL). To provide control
-
-                  parameter
-
-> of this to VMMs we offer two phase configuration of SVE, SVE must first be
-> enabled for the vCPU with KVM_ARM_VCPU_INIT(KVM_ARM_VCPU_SVE), after which
-> vector length may then be configured but the configurably sized floating
-> point registers are inaccessible until finalized with a call to
-> KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE) after which the configurably sized
-> registers can be accessed.
+> If future versions such as V5 or higher emerge, we can still handle them by
+> simply updating the version number.
+> The use of "compat" naming is intended to ensure that newer hardware versions
+> remain compatible with older drivers.
+> For simplicity, we could alternatively rename them directly to HW_ACC_V3, HW_ACC_V4,
+> HW_ACC_V5, etc.
 > 
-...
+>> But also, patch 1/ is deciding whether to expose the full BAR based on
+>> the hardware version and here we choose whether to use the VF or PF
+>> control registers based on the hardware version and whether the new
+>> hardware feature is enabled.  Doesn't that leave V4 hardware exposing
+>> the full BAR regardless of whether the PF driver has disabled the
+>> migration registers within the BAR?  Thanks,
+>>
 > 
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  Documentation/virt/kvm/api.rst | 117 +++++++++++++++++++++++++++++------------
->  1 file changed, 82 insertions(+), 35 deletions(-)
+> Regarding V4 hardware: the migration registers within the PF's BAR are
+> accessible only by the host driver, just like other registers in the BAR.
+> When the VF's live migration configuration registers are enabled, the driver
+> can see the full BAR configuration space of the PF.However, at this point,
+> the PF's live migration configuration registers become read/write ineffective.
+> In other words, on V4 hardware, the VF's configuration domain and the PF's
+> configuration domain are mutually exclusive—only one of them is ever read/write
+> valid at any given time.
+
+Sorry it is still not clear to me. My understanding was on V4 hardware,
+the VF's live migration config register will be inactive only when you
+set the PF's QM_MIG_REGION_SEL to QM_MIG_REGION_EN.
+
+So, I think the question is whether you need to check the PF's
+QM_MIG_REGION_SEL has set to  QM_MIG_REGION_EN, in patch 1 before
+exposing the full VF BAR region or not. If yes, you need to reorganise
+the patch 1. Currently patch 1 only checks the hardware version to
+decide that.
+
+
+Thanks,
+Shameer
+
+> Thanks.
+> Longfang.
 > 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 6aa40ee05a4a..71f46b342641 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-
-> @@ -2600,12 +2600,12 @@ Specifically:
->    0x6020 0000 0010 00d5 FPCR        32  fp_regs.fpcr
->  ======================= ========= ===== =======================================
->  
-> -.. [1] These encodings are not accepted for SVE-enabled vcpus.  See
-> -       :ref:`KVM_ARM_VCPU_INIT`.
-> +.. [1] These encodings are not accepted for SVE enabled vcpus.  See
-
-                                               SVE-enabled
-was good.
-
-> +       :ref:`KVM_ARM_VCPU_INIT`.  They are also not accepted when SME is
-> +       enabled without SVE and the vcpu is in streaming mode.
->  
-
-> @@ -2665,19 +2675,25 @@ follows::
->  	/* Vector length vq * 16 bytes not supported */
->  
->  .. [2] The maximum value vq for which the above condition is true is
-> -       max_vq.  This is the maximum vector length available to the guest on
-> -       this vcpu, and determines which register slices are visible through
-> -       this ioctl interface.
-> +       max_vq.  This is the maximum vector length currently available to
-> +       the guest on this vcpu, and determines which register slices are
-> +       visible through this ioctl interface.
-> +
-> +       If SME is supported then the max_vq used for the Z and P registers
-> +       then while SVCR.SM is 1 this vector length will be the maximum SME
-
-I'm having trouble parsing the 2 lines above.
-
-> +       vector length available for the guest, otherwise it will be the
-> +       maximum SVE vector length available.
->  
->  (See Documentation/arch/arm64/sve.rst for an explanation of the "vq"
->  nomenclature.)
->  
-
-> @@ -3520,7 +3537,7 @@ Possible features:
->  	        initial value of this pseudo-register indicates the best set of
->  	        vector lengths possible for a vcpu on this host.
->  
-> -	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE):
-> +	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC}):
-
-		Why the inserted '}', please?
-
->  
->  	      - KVM_RUN and KVM_GET_REG_LIST are not available;
->  
-> @@ -3533,11 +3550,40 @@ Possible features:
->  	        KVM_SET_ONE_REG, to modify the set of vector lengths available
->  	        for the vcpu.
->  
-> -	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE):
-> +	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
->  
->  	      - the KVM_REG_ARM64_SVE_VLS pseudo-register is immutable, and can
->  	        no longer be written using KVM_SET_ONE_REG.
->  
-> +	- KVM_ARM_VCPU_SME: Enables SME for the CPU (arm64 only).
-> +	  Depends on KVM_CAP_ARM_SME.
-> +	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
-> +
-> +	   * After KVM_ARM_VCPU_INIT:
-> +
-> +	      - KVM_REG_ARM64_SME_VLS may be read using KVM_GET_ONE_REG: the
-> +	        initial value of this pseudo-register indicates the best set of
-> +	        vector lengths possible for a vcpu on this host.
-> +
-> +	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC}):
-
-	ditto: inserted '}'
-
-> +
-> +	      - KVM_RUN and KVM_GET_REG_LIST are not available;
-> +
-> +	      - KVM_GET_ONE_REG and KVM_SET_ONE_REG cannot be used to access
-> +	        the scalable architectural SVE registers
-> +	        KVM_REG_ARM64_SVE_ZREG(), KVM_REG_ARM64_SVE_PREG() or
-> +	        KVM_REG_ARM64_SVE_FFR, the matrix register
-> +		KVM_REG_ARM64_SME_ZA() or the LUT register KVM_REG_ARM64_ZT();
-> +
-> +	      - KVM_REG_ARM64_SME_VLS may optionally be written using
-> +	        KVM_SET_ONE_REG, to modify the set of vector lengths available
-> +	        for the vcpu.
-> +
-> +	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
-
--- 
-~Randy
+>> Alex
+>>
+>>> +
+>>>  struct acc_vf_data {
+>>>  #define QM_MATCH_SIZE offsetofend(struct acc_vf_data, qm_rsv_state)
+>>>  	/* QM match information */
+>>> @@ -125,6 +137,7 @@ struct hisi_acc_vf_core_device {
+>>>  	struct pci_dev *vf_dev;
+>>>  	struct hisi_qm *pf_qm;
+>>>  	struct hisi_qm vf_qm;
+>>> +	int drv_mode;
+>>>  	/*
+>>>  	 * vf_qm_state represents the QM_VF_STATE register value.
+>>>  	 * It is set by Guest driver for the ACC VF dev indicating
+>>
+>>
+>> .
+>>
 
