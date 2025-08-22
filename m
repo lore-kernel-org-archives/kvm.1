@@ -1,668 +1,235 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CC033A02C
-	for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 21:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755897974; cv=none; b=JQMGxsZbsyDJlIkUIUPhoBgFZcvat50inzSWXsnIUibtIYVm/joFBcanCasUR6Ef3o9dh5zr2WclkL8LzC9R3SSZkhUHWbeKk3/mkDGi5VTcAuiXUI0tlQTmHXV62Nw65QnRHt994IYK5RZTTBkflbxdUBTFRmi9xmHGeAUxuUw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268C33CE94;
+	Fri, 22 Aug 2025 21:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755897974; cv=fail; b=c7hMUKrSXUT3XYoB9W+FNM5QQF1WAixi1kEmXkWYcuqfMRK8rJGrLqHkYto0wzsavoONgvzT/7zQ3ZUXsRtvMILWlx7Iss8MpMWgPh+SuZgQ3WK6zAWpktB0eKi9FM4Gbp3D6Q0Ys7OoDM5hTWlQRH9D/LHTLpIlyHcIMbJnvGA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755897974; c=relaxed/simple;
-	bh=tJAYvPHlqevs1xPARy/h12s8dHlC+Kg2zy7pa7DmLtI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ETBbA9hgLvLRWPj7rU8ZKhbVrKiWazAKQKKJq9o3zOB3fuSDXOtbXekT53gHSOapgr4r3Z3PcjRiYwC8ZegH3npRagZHkJfp08hS0xP6DhAkfm+zBmPbfbppMbvxzm7cOXfTiL/Ngb20F/pyINbld4tcaanGgWuXGVcIz7oAwwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0or8enV1; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+	bh=gV4gxwfeA+xwLIYks9A6tODs336WbWjYm6MD2uV0RzQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=enDFSbbWx4ruzgMnOGWrq61MR12oGxhx6+dAjs1rlVpktYcfrpGTD0aieoSuPOUPKc+cdDfftmtZ/km4ILnUd0fPpBDmjY5cpsdDW8izkJkq4bFBqTDPto7oweJsEQvHB7Gwd/pNZ9r65xQJ0rIv5FOldZ8IVfnR0pTto0zkwqA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=q+RAkXFy; arc=fail smtp.client-ip=40.107.237.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0or8enV1"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b47174bdce2so2087509a12.2
-        for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 14:26:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755897971; x=1756502771; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aKRU8q6r2YLTqceoY9HjQ4rZVRUAf8IcBgtu/Jox7M0=;
-        b=0or8enV1wluipgIwXtveqmbBI7sjioHJIOC0ECj4GVgBiLGRb/yx2QH6vQ4p6xHpuJ
-         281eEKI3ZZG37BJ0FQmrAUps9U3OVNGGURYBqu+qvN4067AXQ+k9WbKPu2Uj/3IAw/OB
-         wbquMKDuLAHHpZTtZ63B8w5nQyFU1fNR53X0wsDitUohth1Qx8MPhVd8aOm2Xh5SZt5V
-         tUzc/G9TEc+MMnhFfuidAH31WpxQ5nZ5pg1q//1z4jf3A1ljh/3a5cOooScE3sjMxweu
-         K1/CfKCl1I5ZdzHdsdAhpw/ycKqfwOSMY8ycSYtqY8b3mTPQWyrgjjWN5H8lewjR5F5e
-         ZckQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755897971; x=1756502771;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aKRU8q6r2YLTqceoY9HjQ4rZVRUAf8IcBgtu/Jox7M0=;
-        b=JgFN7NGqTVKCqClvDY5oYPCA595zaRlYz7xF5FC5IjYXZCDjZ+jY1Xny/jLJHsnVvj
-         /RIHK0wln1q8Jd6GozQNskh8oXszUJdqG/8v1v9dLV4hOATCD8IEuiBM/pIzvfR1AnS7
-         O9Qfk1Bfi7ilYUNhPk4TBfm56t+oCY32z8zFptENWN37BGnO8OW48B2pdJIrrqE7JH6x
-         10TTUg+nFUEUXfhtC48pRqwNEMeq37P/kkAD8BMG89bwtXEYDGEfAVqqAp1h6LCGE//U
-         RztptUQbQTvAY4GhXV1WK0mvC/UDHwmuoIoXpMrYyh+9RNJcunV7wJW90wWbP6ipPEvj
-         AvIw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8q/qoSk0Xa7joDRb8M19gbItOaWkNWm8F2KYLuXdIYSMblF9jduAn7rPEeQ7bjprkwd0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhiDW1U6JdTDnvcPZF6ttQ14dosTzq/qW93RhN7tmKIGts0i+T
-	pRZ+0fjaH80nDPAkiy2BnZDz/8p1d6rqyrxKkWs6whH3D+A5OLP7r0wz44Ekja4AvfXvhQgfBIs
-	/uQc2dEtvV1As2A==
-X-Google-Smtp-Source: AGHT+IHTXaWoT8cMkHUSRVVjF8FPwBMwg/zu7uTMYmlz/6b0Gycd0aMvCUadmQXlLF4x2Qts11SgAI7OX6bXGw==
-X-Received: from pjbsp15.prod.google.com ([2002:a17:90b:52cf:b0:30a:7da4:f075])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:6a0b:b0:240:101c:4428 with SMTP id adf61e73a8af0-24340acc2b1mr7293904637.10.1755897971232;
- Fri, 22 Aug 2025 14:26:11 -0700 (PDT)
-Date: Fri, 22 Aug 2025 21:24:49 +0000
-In-Reply-To: <20250822212518.4156428-1-dmatlack@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="q+RAkXFy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EUrn0RxzAFzExZrCGLjzPS6+2rqD+nbSNaerK+PS3VGO4euVQs9EuAn25iO6Gi9qCQqJQt8Zt0nTJsUmo3aDnZY5ASxKmr2m3YJvhS0UkRn/SeRn/NI5dYNLflAXuxaiOq9y1RVEHM76VrBjdy9FiJqK5fgQIj8Njr1gDqadM7xGg9bXXjyP0JMmruL2tQz31d8zvq/8Cifg2FjMcGyWIwV9nrSrf8h0bITV8gPhtgB2GDWlRFGpLQ7SNywYuPURYBwWaqknP+gDqKxtCFOO/nn/yEP25t+GXY2ocsAX1OJao3FT9sunMguN13HN2EvCpMQRzB9i4cbTWRE3oTQwzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=64FtdNmtlsjMeTveq10OeReqRxhsy1X9GPf0nuDzGS8=;
+ b=yTVy5wjgyiYqsRIF+PBcOnKI5zRYreDgbIOlIi7ODh4pi6IRqox6/GG4UtOyKLS+1hNQe7bpMGqz+yqnqpYKw/oXG0Vfmjth0x78AMfw7Mr9By3006ITRwPHxA8pz1j62s/JUQZL9cm2ccK/fsZikYuVMOMij7XPO7BmmLsqz0F9wlWZcibwowQyfCRa93jIasYNeuV7nHOUiOC5KoCvTY+j5Ta4A0GWKHtwstci5aJD9hYOn3UGD2qRzG/2g4ILh3rrjmuk/U9vAxJrIpFscJpc7i28bxyY0+taLB8wG2xKkY96BUCqQDI2YV12WP1HjmHTk1cIFV8SZNRgBunoXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=64FtdNmtlsjMeTveq10OeReqRxhsy1X9GPf0nuDzGS8=;
+ b=q+RAkXFyhShWCTx0un1xxfzpSodLl8b2LqkHISRtGYcSJUOxOQOTOWKIYdLpVBdj4WXkdod0o8mbMiTImDsIjotVPUye5yuLhutPiCRm6+/FL0HZQQ2lFJg69ScftCyM/zK+X5orSuy0uLWC5wiJiZEYym14aaGDh1hDwxpuNaQ=
+Received: from BY3PR10CA0020.namprd10.prod.outlook.com (2603:10b6:a03:255::25)
+ by DM4PR12MB6229.namprd12.prod.outlook.com (2603:10b6:8:a8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Fri, 22 Aug
+ 2025 21:26:06 +0000
+Received: from CY4PEPF0000EE38.namprd03.prod.outlook.com
+ (2603:10b6:a03:255:cafe::9b) by BY3PR10CA0020.outlook.office365.com
+ (2603:10b6:a03:255::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.19 via Frontend Transport; Fri,
+ 22 Aug 2025 21:26:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE38.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9052.8 via Frontend Transport; Fri, 22 Aug 2025 21:26:06 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 22 Aug
+ 2025 16:26:02 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-crypto@vger.kernel.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>, "Ashish
+ Kalra" <ashish.kalra@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David Miller" <davem@davemloft.net>
+Subject: [RFC PATCH 2/4] KVM: SEV: Consolidate the SEV policy bits in a single header file
+Date: Fri, 22 Aug 2025 16:25:32 -0500
+Message-ID: <efeb1c3979170c4c4d544eac3888f194b7712f88.1755897933.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <cover.1755897933.git.thomas.lendacky@amd.com>
+References: <cover.1755897933.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250822212518.4156428-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.51.0.rc2.233.g662b1ed5c5-goog
-Message-ID: <20250822212518.4156428-3-dmatlack@google.com>
-Subject: [PATCH v2 02/30] vfio: selftests: Add a helper library for VFIO selftests
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Aaron Lewis <aaronlewis@google.com>, 
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	David Matlack <dmatlack@google.com>, dmaengine@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>, Joel Granados <joel.granados@kernel.org>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Vipin Sharma <vipinsh@google.com>, 
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE38:EE_|DM4PR12MB6229:EE_
+X-MS-Office365-Filtering-Correlation-Id: 517bebfc-beac-4d9b-da0b-08dde1c2813d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?IyZBjoRy4F9q2OLpV8iFK3l1j7hwnnppBJ4PQ0hQ33ySMAsfq9Ksdqr28gb9?=
+ =?us-ascii?Q?aahWUAiDUAtpQh7WapFhj2pr2DmR7Qa8nDbZHarQEn6SyfPmJ+p3Zcn42Pek?=
+ =?us-ascii?Q?xHp1bBRivzoJvX6XMo3My80x4XoF9Ej1V2ZSj9E7P7I5XvaHIxE6WSrhze/p?=
+ =?us-ascii?Q?c8FaC4tjE8KmFxm3qix3gZzJzV+ZfYr5pakPSIicIKQknksW+D7hO+cLN1Kl?=
+ =?us-ascii?Q?FVecj4XvxBdBrcYlTk5A+eYu7Z1nG8IIdp+pSSNRFOB0kdXNvjgdJBGdbR1o?=
+ =?us-ascii?Q?kHzUfuJ/ctQgiehhxCi1g70QmeOlvdhJcq6MO0omW65b4V1xW1UZHPeezmOG?=
+ =?us-ascii?Q?bIdh1paE1LnQGuDqJ9d8ru8uTRgFyqE/OzK7gWeVm26UTtEzM4QmJ8C59tZT?=
+ =?us-ascii?Q?NYDtMyIicYhbo0IBsD7GCRN8nGD17rGRgDWpzQE4IaFGeAmzOxZKEhqS8RIt?=
+ =?us-ascii?Q?4fDO1Z3Qn9kO1Eu6mhESyACx+WzhfTqaSAJIfB1jPuX2+YUeaF1IzeW1Vn6b?=
+ =?us-ascii?Q?LYVbKnffrngFGypliPmd1DtvjUXPFkS/nI/BDi2KJR/q8k00L0bUwyoOF3Yy?=
+ =?us-ascii?Q?nA7Uye8XnNkHMRI6MUwKs5AtzIMe1bqyEWFDDXpfYLmz1p+z5ZmE5GXeIfLX?=
+ =?us-ascii?Q?wh6mi85u05bQrEdMcopclyTliHFxUDgSMQr84dg/kUGPMTid/sgHn4h8cV8N?=
+ =?us-ascii?Q?TqypXHHZxmMInUIlIDCZYAdICXf7oQqNZZTv1RTmlBeEetIfQ124zR2DjPwx?=
+ =?us-ascii?Q?IC+MsUzW6DSAV/ITWHEbWjEVQ/KEwq42ThzskplBTrxK0tE2wrTNoYuVskkJ?=
+ =?us-ascii?Q?P28ltgyv/8hx9TAiPiN2TSDiyoydhDnypfyEMXVNG8n4DYYHzjQtHu5HCw/Q?=
+ =?us-ascii?Q?aCI1Q1ifeETaHyMQwsKpb8eH4y2ORJNYjwyOAvUOdQcclby62HIOVAbnzKYp?=
+ =?us-ascii?Q?p2t11emtJ+/QMpyAq9Ipos09QGfC1bwxkuJDEA9MlVrPo1eMX4s9BoUOxkfM?=
+ =?us-ascii?Q?Yfjmf5UxUxzWU/fvewXeoIQCwZVBDseUTSXlLdxvF2ytY9PbfYY6HTzsmZak?=
+ =?us-ascii?Q?/TnNe0N4IndceaH5hwuRnP45sSVapLk10G+lAu8yTPuiOdY5YPuQ+iD+zhkL?=
+ =?us-ascii?Q?kN95490Tiglmou5HhKFZEjA7N3U6n3RbXvHE6ckrg5M+dUevoZRh6siJgFQ9?=
+ =?us-ascii?Q?JzpnsVfbERh8Y8Rk2ldAGzMlHA7sKWSwpRilb+FbEs1JrCfJWqxNM7/uIBkf?=
+ =?us-ascii?Q?ysznz5F7j6VmehVP7u13ZcrivcsOB2NwUA9jlyHDkNZz3VUTsIBsVqbcDy8m?=
+ =?us-ascii?Q?1RHeor20mlcoQoVM96w7NvHTBpakEjgzoJcp5GXeB0UbShoNneeiLuIRR6YJ?=
+ =?us-ascii?Q?WGVfzBsdpeL5BrKnYwSwPbCoWNHYpXWtz+ZI31lnmFcT+GxWTht4DeiyLzwJ?=
+ =?us-ascii?Q?2iM/yJZ2Ff2CjsmMFjAywmevHQThbpf6P9AlyYstaKWRnYzw7rn6MLWIKoY+?=
+ =?us-ascii?Q?o2sQ0qc8d/JKCLU5JNGdyMpaSUJn/C6AZsUd?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 21:26:06.3795
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 517bebfc-beac-4d9b-da0b-08dde1c2813d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE38.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6229
 
-Add a basic helper library to be used by VFIO selftests.
+Consolidate SEV policy bit definitions into a single file. Use
+include/linux/psp-sev.h to hold the definitions and remove the current
+definitions from the arch/x86/kvm/svm/sev.c and arch/x86/include/svm.h
+files.
 
-The basic unit of the library is struct vfio_pci_device, which
-represents a single PCI device that is bound to the vfio-pci driver. The
-library currently only supports a single device per group and container,
-and VFIO IOMMU types.
+No functional change intended.
 
-The code in this library was heavily based on prior work done by
-Raghavendra Rao Ananta <rananta@google.com>, and the VFIO_ASSERT*()
-macros were written by Vipin Sharma <vipinsh@google.com>.
-
-Separate that Makefile rules for building the library into a separate
-script so that the library can be built by and linked into KVM selftests
-in a subsequent commit.
-
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 ---
- tools/testing/selftests/vfio/Makefile         |  14 +
- .../selftests/vfio/lib/include/vfio_util.h    | 140 +++++++
- tools/testing/selftests/vfio/lib/libvfio.mk   |  15 +
- .../selftests/vfio/lib/vfio_pci_device.c      | 365 ++++++++++++++++++
- 4 files changed, 534 insertions(+)
- create mode 100644 tools/testing/selftests/vfio/lib/include/vfio_util.h
- create mode 100644 tools/testing/selftests/vfio/lib/libvfio.mk
- create mode 100644 tools/testing/selftests/vfio/lib/vfio_pci_device.c
+ arch/x86/kvm/svm/sev.c  | 16 ++++------------
+ arch/x86/kvm/svm/svm.h  |  3 ---
+ include/linux/psp-sev.h | 19 +++++++++++++++++++
+ 3 files changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2bba39aff5d9..db3e4db1a6dd 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -1,2 +1,16 @@
- CFLAGS = $(KHDR_INCLUDES)
- include ../lib.mk
-+include lib/libvfio.mk
-+
-+CFLAGS += -I$(top_srcdir)/tools/include
-+CFLAGS += -MD
-+CFLAGS += $(EXTRA_CFLAGS)
-+
-+$(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
-+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
-+
-+TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
-+TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBVFIO_O))
-+-include $(TEST_DEP_FILES)
-+
-+EXTRA_CLEAN += $(TEST_GEN_PROGS_O) $(TEST_DEP_FILES)
-diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-new file mode 100644
-index 000000000000..b7d2bb8c18ba
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-@@ -0,0 +1,140 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H
-+#define SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H
-+
-+#include <string.h>
-+#include <linux/vfio.h>
-+#include <linux/list.h>
-+#include <linux/pci_regs.h>
-+
-+#include "../../../kselftest.h"
-+
-+#define VFIO_LOG_AND_EXIT(...) do {		\
-+	fprintf(stderr, "  " __VA_ARGS__);	\
-+	fprintf(stderr, "\n");			\
-+	exit(KSFT_FAIL);			\
-+} while (0)
-+
-+#define VFIO_ASSERT_OP(_lhs, _rhs, _op, ...) do {				\
-+	typeof(_lhs) __lhs = (_lhs);						\
-+	typeof(_rhs) __rhs = (_rhs);						\
-+										\
-+	if (__lhs _op __rhs)							\
-+		break;								\
-+										\
-+	fprintf(stderr, "%s:%u: Assertion Failure\n\n", __FILE__, __LINE__);	\
-+	fprintf(stderr, "  Expression: " #_lhs " " #_op " " #_rhs "\n");	\
-+	fprintf(stderr, "  Observed: %#lx %s %#lx\n",				\
-+			(u64)__lhs, #_op, (u64)__rhs);				\
-+	fprintf(stderr, "  [errno: %d - %s]\n", errno, strerror(errno));	\
-+	VFIO_LOG_AND_EXIT(__VA_ARGS__);						\
-+} while (0)
-+
-+#define VFIO_ASSERT_EQ(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, ==, ##__VA_ARGS__)
-+#define VFIO_ASSERT_NE(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, !=, ##__VA_ARGS__)
-+#define VFIO_ASSERT_LT(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, <, ##__VA_ARGS__)
-+#define VFIO_ASSERT_LE(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, <=, ##__VA_ARGS__)
-+#define VFIO_ASSERT_GT(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, >, ##__VA_ARGS__)
-+#define VFIO_ASSERT_GE(_a, _b, ...) VFIO_ASSERT_OP(_a, _b, >=, ##__VA_ARGS__)
-+#define VFIO_ASSERT_TRUE(_a, ...) VFIO_ASSERT_NE(false, (_a), ##__VA_ARGS__)
-+#define VFIO_ASSERT_FALSE(_a, ...) VFIO_ASSERT_EQ(false, (_a), ##__VA_ARGS__)
-+#define VFIO_ASSERT_NULL(_a, ...) VFIO_ASSERT_EQ(NULL, _a, ##__VA_ARGS__)
-+#define VFIO_ASSERT_NOT_NULL(_a, ...) VFIO_ASSERT_NE(NULL, _a, ##__VA_ARGS__)
-+
-+#define VFIO_FAIL(_fmt, ...) do {				\
-+	fprintf(stderr, "%s:%u: FAIL\n\n", __FILE__, __LINE__);	\
-+	VFIO_LOG_AND_EXIT(_fmt, ##__VA_ARGS__);			\
-+} while (0)
-+
-+struct vfio_pci_bar {
-+	struct vfio_region_info info;
-+	void *vaddr;
-+};
-+
-+struct vfio_pci_device {
-+	int fd;
-+	int group_fd;
-+	int container_fd;
-+
-+	struct vfio_device_info info;
-+	struct vfio_region_info config_space;
-+	struct vfio_pci_bar bars[PCI_STD_NUM_BARS];
-+
-+	struct vfio_irq_info msi_info;
-+	struct vfio_irq_info msix_info;
-+
-+	/* eventfds for MSI and MSI-x interrupts */
-+	int msi_eventfds[PCI_MSIX_FLAGS_QSIZE + 1];
-+};
-+
-+/*
-+ * Return the BDF string of the device that the test should use.
-+ *
-+ * If a BDF string is provided by the user on the command line (as the last
-+ * element of argv[]), then this function will return that and decrement argc
-+ * by 1.
-+ *
-+ * Otherwise this function will attempt to use the environment variable
-+ * $VFIO_SELFTESTS_BDF.
-+ *
-+ * If BDF cannot be determined then the test will exit with KSFT_SKIP.
-+ */
-+const char *vfio_selftests_get_bdf(int *argc, char *argv[]);
-+
-+struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type);
-+void vfio_pci_device_cleanup(struct vfio_pci_device *device);
-+
-+void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size,
-+		      void *vaddr);
-+void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size);
-+
-+void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
-+			    size_t config, size_t size, void *data);
-+
-+#define vfio_pci_config_read(_device, _offset, _type) ({			    \
-+	_type __data;								    \
-+	vfio_pci_config_access((_device), false, _offset, sizeof(__data), &__data); \
-+	__data;									    \
-+})
-+
-+#define vfio_pci_config_readb(_d, _o) vfio_pci_config_read(_d, _o, u8)
-+#define vfio_pci_config_readw(_d, _o) vfio_pci_config_read(_d, _o, u16)
-+#define vfio_pci_config_readl(_d, _o) vfio_pci_config_read(_d, _o, u32)
-+
-+#define vfio_pci_config_write(_device, _offset, _value, _type) do {		  \
-+	_type __data = (_value);						  \
-+	vfio_pci_config_access((_device), true, _offset, sizeof(_type), &__data); \
-+} while (0)
-+
-+#define vfio_pci_config_writeb(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u8)
-+#define vfio_pci_config_writew(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u16)
-+#define vfio_pci_config_writel(_d, _o, _v) vfio_pci_config_write(_d, _o, _v, u32)
-+
-+void vfio_pci_irq_enable(struct vfio_pci_device *device, u32 index,
-+			 u32 vector, int count);
-+void vfio_pci_irq_disable(struct vfio_pci_device *device, u32 index);
-+void vfio_pci_irq_trigger(struct vfio_pci_device *device, u32 index, u32 vector);
-+
-+static inline void vfio_pci_msi_enable(struct vfio_pci_device *device,
-+				       u32 vector, int count)
-+{
-+	vfio_pci_irq_enable(device, VFIO_PCI_MSI_IRQ_INDEX, vector, count);
-+}
-+
-+static inline void vfio_pci_msi_disable(struct vfio_pci_device *device)
-+{
-+	vfio_pci_irq_disable(device, VFIO_PCI_MSI_IRQ_INDEX);
-+}
-+
-+static inline void vfio_pci_msix_enable(struct vfio_pci_device *device,
-+					u32 vector, int count)
-+{
-+	vfio_pci_irq_enable(device, VFIO_PCI_MSIX_IRQ_INDEX, vector, count);
-+}
-+
-+static inline void vfio_pci_msix_disable(struct vfio_pci_device *device)
-+{
-+	vfio_pci_irq_disable(device, VFIO_PCI_MSIX_IRQ_INDEX);
-+}
-+
-+#endif /* SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H */
-diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-new file mode 100644
-index 000000000000..72e55a560eeb
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-@@ -0,0 +1,15 @@
-+VFIO_DIR := $(selfdir)/vfio
-+
-+LIBVFIO_C := lib/vfio_pci_device.c
-+
-+LIBVFIO_O := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBVFIO_C))
-+
-+LIBVFIO_O_DIRS := $(shell dirname $(LIBVFIO_O) | uniq)
-+$(shell mkdir -p $(LIBVFIO_O_DIRS))
-+
-+CFLAGS += -I$(VFIO_DIR)/lib/include
-+
-+$(LIBVFIO_O): $(OUTPUT)/%.o : $(VFIO_DIR)/%.c
-+	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-+
-+EXTRA_CLEAN += $(LIBVFIO_O)
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-new file mode 100644
-index 000000000000..76adb1841f16
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -0,0 +1,365 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <fcntl.h>
-+#include <libgen.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <sys/eventfd.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+
-+#include <linux/limits.h>
-+#include <linux/mman.h>
-+#include <linux/types.h>
-+#include <linux/vfio.h>
-+
-+#include "../../../kselftest.h"
-+#include <vfio_util.h>
-+
-+#define VFIO_DEV_PATH	"/dev/vfio/vfio"
-+#define PCI_SYSFS_PATH	"/sys/bus/pci/devices"
-+
-+#define ioctl_assert(_fd, _op, _arg) do {						       \
-+	void *__arg = (_arg);								       \
-+	int __ret = ioctl((_fd), (_op), (__arg));					       \
-+	VFIO_ASSERT_EQ(__ret, 0, "ioctl(%s, %s, %s) returned %d\n", #_fd, #_op, #_arg, __ret); \
-+} while (0)
-+
-+static void vfio_pci_irq_set(struct vfio_pci_device *device,
-+			     u32 index, u32 vector, u32 count, int *fds)
-+{
-+	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
-+	struct vfio_irq_set *irq = (void *)&buf;
-+	int *irq_fds = (void *)&irq->data;
-+
-+	irq->argsz = sizeof(buf);
-+	irq->flags = VFIO_IRQ_SET_ACTION_TRIGGER;
-+	irq->index = index;
-+	irq->start = vector;
-+	irq->count = count;
-+
-+	if (count) {
-+		irq->flags |= VFIO_IRQ_SET_DATA_EVENTFD;
-+		memcpy(irq_fds, fds, sizeof(int) * count);
-+	} else {
-+		irq->flags |= VFIO_IRQ_SET_DATA_NONE;
-+	}
-+
-+	ioctl_assert(device->fd, VFIO_DEVICE_SET_IRQS, irq);
-+}
-+
-+void vfio_pci_irq_trigger(struct vfio_pci_device *device, u32 index, u32 vector)
-+{
-+	struct vfio_irq_set irq = {
-+		.argsz = sizeof(irq),
-+		.flags = VFIO_IRQ_SET_ACTION_TRIGGER | VFIO_IRQ_SET_DATA_NONE,
-+		.index = index,
-+		.start = vector,
-+		.count = 1,
-+	};
-+
-+	ioctl_assert(device->fd, VFIO_DEVICE_SET_IRQS, &irq);
-+}
-+
-+static void check_supported_irq_index(u32 index)
-+{
-+	/* VFIO selftests only supports MSI and MSI-x for now. */
-+	VFIO_ASSERT_TRUE(index == VFIO_PCI_MSI_IRQ_INDEX ||
-+			 index == VFIO_PCI_MSIX_IRQ_INDEX,
-+			 "Unsupported IRQ index: %u\n", index);
-+}
-+
-+void vfio_pci_irq_enable(struct vfio_pci_device *device, u32 index, u32 vector,
-+			 int count)
-+{
-+	int i;
-+
-+	check_supported_irq_index(index);
-+
-+	for (i = vector; i < vector + count; i++) {
-+		VFIO_ASSERT_LT(device->msi_eventfds[i], 0);
-+		device->msi_eventfds[i] = eventfd(0, 0);
-+		VFIO_ASSERT_GE(device->msi_eventfds[i], 0);
-+	}
-+
-+	vfio_pci_irq_set(device, index, vector, count, device->msi_eventfds + vector);
-+}
-+
-+void vfio_pci_irq_disable(struct vfio_pci_device *device, u32 index)
-+{
-+	int i;
-+
-+	check_supported_irq_index(index);
-+
-+	for (i = 0; i < ARRAY_SIZE(device->msi_eventfds); i++) {
-+		if (device->msi_eventfds[i] < 0)
-+			continue;
-+
-+		VFIO_ASSERT_EQ(close(device->msi_eventfds[i]), 0);
-+		device->msi_eventfds[i] = -1;
-+	}
-+
-+	vfio_pci_irq_set(device, index, 0, 0, NULL);
-+}
-+
-+static void vfio_pci_irq_get(struct vfio_pci_device *device, u32 index,
-+			     struct vfio_irq_info *irq_info)
-+{
-+	irq_info->argsz = sizeof(*irq_info);
-+	irq_info->index = index;
-+
-+	ioctl_assert(device->fd, VFIO_DEVICE_GET_IRQ_INFO, irq_info);
-+}
-+
-+void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size, void *vaddr)
-+{
-+	struct vfio_iommu_type1_dma_map map = {
-+		.argsz = sizeof(map),
-+		.flags = VFIO_DMA_MAP_FLAG_READ | VFIO_DMA_MAP_FLAG_WRITE,
-+		.vaddr = (u64)vaddr,
-+		.iova = iova,
-+		.size = size,
-+	};
-+
-+	ioctl_assert(device->container_fd, VFIO_IOMMU_MAP_DMA, &map);
-+}
-+
-+void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size)
-+{
-+	struct vfio_iommu_type1_dma_unmap unmap = {
-+		.argsz = sizeof(unmap),
-+		.iova = iova,
-+		.size = size,
-+	};
-+
-+	ioctl_assert(device->container_fd, VFIO_IOMMU_UNMAP_DMA, &unmap);
-+}
-+
-+static void vfio_pci_region_get(struct vfio_pci_device *device, int index,
-+				struct vfio_region_info *info)
-+{
-+	memset(info, 0, sizeof(*info));
-+
-+	info->argsz = sizeof(*info);
-+	info->index = index;
-+
-+	ioctl_assert(device->fd, VFIO_DEVICE_GET_REGION_INFO, info);
-+}
-+
-+static void vfio_pci_bar_map(struct vfio_pci_device *device, int index)
-+{
-+	struct vfio_pci_bar *bar = &device->bars[index];
-+	int prot = 0;
-+
-+	VFIO_ASSERT_LT(index, PCI_STD_NUM_BARS);
-+	VFIO_ASSERT_NULL(bar->vaddr);
-+	VFIO_ASSERT_TRUE(bar->info.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	if (bar->info.flags & VFIO_REGION_INFO_FLAG_READ)
-+		prot |= PROT_READ;
-+	if (bar->info.flags & VFIO_REGION_INFO_FLAG_WRITE)
-+		prot |= PROT_WRITE;
-+
-+	bar->vaddr = mmap(NULL, bar->info.size, prot, MAP_FILE | MAP_SHARED,
-+			  device->fd, bar->info.offset);
-+	VFIO_ASSERT_NE(bar->vaddr, MAP_FAILED);
-+}
-+
-+static void vfio_pci_bar_unmap(struct vfio_pci_device *device, int index)
-+{
-+	struct vfio_pci_bar *bar = &device->bars[index];
-+
-+	VFIO_ASSERT_LT(index, PCI_STD_NUM_BARS);
-+	VFIO_ASSERT_NOT_NULL(bar->vaddr);
-+
-+	VFIO_ASSERT_EQ(munmap(bar->vaddr, bar->info.size), 0);
-+	bar->vaddr = NULL;
-+}
-+
-+static void vfio_pci_bar_unmap_all(struct vfio_pci_device *device)
-+{
-+	int i;
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		if (device->bars[i].vaddr)
-+			vfio_pci_bar_unmap(device, i);
-+	}
-+}
-+
-+void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
-+			    size_t config, size_t size, void *data)
-+{
-+	struct vfio_region_info *config_space = &device->config_space;
-+	int ret;
-+
-+	if (write)
-+		ret = pwrite(device->fd, data, size, config_space->offset + config);
-+	else
-+		ret = pread(device->fd, data, size, config_space->offset + config);
-+
-+	VFIO_ASSERT_EQ(ret, size, "Failed to %s PCI config space: 0x%lx\n",
-+		       write ? "write to" : "read from", config);
-+}
-+
-+static unsigned int vfio_pci_get_group_from_dev(const char *bdf)
-+{
-+	char dev_iommu_group_path[PATH_MAX] = {0};
-+	char sysfs_path[PATH_MAX] = {0};
-+	unsigned int group;
-+	int ret;
-+
-+	snprintf(sysfs_path, PATH_MAX, "%s/%s/iommu_group", PCI_SYSFS_PATH, bdf);
-+
-+	ret = readlink(sysfs_path, dev_iommu_group_path, sizeof(dev_iommu_group_path));
-+	VFIO_ASSERT_NE(ret, -1, "Failed to get the IOMMU group for device: %s\n", bdf);
-+
-+	ret = sscanf(basename(dev_iommu_group_path), "%u", &group);
-+	VFIO_ASSERT_EQ(ret, 1, "Failed to get the IOMMU group for device: %s\n", bdf);
-+
-+	return group;
-+}
-+
-+static void vfio_pci_container_setup(struct vfio_pci_device *device)
-+{
-+	int version;
-+
-+	device->container_fd = open(VFIO_DEV_PATH, O_RDWR);
-+	VFIO_ASSERT_GE(device->container_fd, 0, "open(%s) failed\n", VFIO_DEV_PATH);
-+
-+	version = ioctl(device->container_fd, VFIO_GET_API_VERSION);
-+	VFIO_ASSERT_EQ(version, VFIO_API_VERSION);
-+}
-+
-+static void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf)
-+{
-+	struct vfio_group_status group_status = {
-+		.argsz = sizeof(group_status),
-+	};
-+	char group_path[32];
-+	int group;
-+
-+	group = vfio_pci_get_group_from_dev(bdf);
-+	snprintf(group_path, sizeof(group_path), "/dev/vfio/%d", group);
-+
-+	device->group_fd = open(group_path, O_RDWR);
-+	VFIO_ASSERT_GE(device->group_fd, 0, "open(%s) failed\n", group_path);
-+
-+	ioctl_assert(device->group_fd, VFIO_GROUP_GET_STATUS, &group_status);
-+	VFIO_ASSERT_TRUE(group_status.flags & VFIO_GROUP_FLAGS_VIABLE);
-+
-+	ioctl_assert(device->group_fd, VFIO_GROUP_SET_CONTAINER, &device->container_fd);
-+}
-+
-+static void vfio_pci_iommu_setup(struct vfio_pci_device *device, unsigned long iommu_type)
-+{
-+	int ret;
-+
-+	ret = ioctl(device->container_fd, VFIO_CHECK_EXTENSION, iommu_type);
-+	VFIO_ASSERT_GT(ret, 0, "VFIO IOMMU type %lu not supported\n", iommu_type);
-+
-+	ioctl_assert(device->container_fd, VFIO_SET_IOMMU, (void *)iommu_type);
-+}
-+
-+static void vfio_pci_device_setup(struct vfio_pci_device *device, const char *bdf)
-+{
-+	int i;
-+
-+	device->fd = ioctl(device->group_fd, VFIO_GROUP_GET_DEVICE_FD, bdf);
-+	VFIO_ASSERT_GE(device->fd, 0);
-+
-+	device->info.argsz = sizeof(device->info);
-+	ioctl_assert(device->fd, VFIO_DEVICE_GET_INFO, &device->info);
-+
-+	vfio_pci_region_get(device, VFIO_PCI_CONFIG_REGION_INDEX, &device->config_space);
-+
-+	/* Sanity check VFIO does not advertise mmap for config space */
-+	VFIO_ASSERT_TRUE(!(device->config_space.flags & VFIO_REGION_INFO_FLAG_MMAP),
-+			 "PCI config space should not support mmap()\n");
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		struct vfio_pci_bar *bar = device->bars + i;
-+
-+		vfio_pci_region_get(device, i, &bar->info);
-+		if (bar->info.flags & VFIO_REGION_INFO_FLAG_MMAP)
-+			vfio_pci_bar_map(device, i);
-+	}
-+
-+	vfio_pci_irq_get(device, VFIO_PCI_MSI_IRQ_INDEX, &device->msi_info);
-+	vfio_pci_irq_get(device, VFIO_PCI_MSIX_IRQ_INDEX, &device->msix_info);
-+
-+	for (i = 0; i < ARRAY_SIZE(device->msi_eventfds); i++)
-+		device->msi_eventfds[i] = -1;
-+}
-+
-+struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type)
-+{
-+	struct vfio_pci_device *device;
-+
-+	device = calloc(1, sizeof(*device));
-+	VFIO_ASSERT_NOT_NULL(device);
-+
-+	vfio_pci_container_setup(device);
-+	vfio_pci_group_setup(device, bdf);
-+	vfio_pci_iommu_setup(device, iommu_type);
-+	vfio_pci_device_setup(device, bdf);
-+
-+	return device;
-+}
-+
-+void vfio_pci_device_cleanup(struct vfio_pci_device *device)
-+{
-+	int i;
-+
-+	vfio_pci_bar_unmap_all(device);
-+
-+	VFIO_ASSERT_EQ(close(device->fd), 0);
-+
-+	for (i = 0; i < ARRAY_SIZE(device->msi_eventfds); i++) {
-+		if (device->msi_eventfds[i] < 0)
-+			continue;
-+
-+		VFIO_ASSERT_EQ(close(device->msi_eventfds[i]), 0);
-+	}
-+
-+	VFIO_ASSERT_EQ(close(device->group_fd), 0);
-+	VFIO_ASSERT_EQ(close(device->container_fd), 0);
-+
-+	free(device);
-+}
-+
-+static bool is_bdf(const char *str)
-+{
-+	unsigned int s, b, d, f;
-+	int length, count;
-+
-+	count = sscanf(str, "%4x:%2x:%2x.%2x%n", &s, &b, &d, &f, &length);
-+	return count == 4 && length == strlen(str);
-+}
-+
-+const char *vfio_selftests_get_bdf(int *argc, char *argv[])
-+{
-+	char *bdf;
-+
-+	if (*argc > 1 && is_bdf(argv[*argc - 1]))
-+		return argv[--(*argc)];
-+
-+	bdf = getenv("VFIO_SELFTESTS_BDF");
-+	if (bdf) {
-+		VFIO_ASSERT_TRUE(is_bdf(bdf), "Invalid BDF: %s\n", bdf);
-+		return bdf;
-+	}
-+
-+	fprintf(stderr, "Unable to determine which device to use, skipping test.\n");
-+	fprintf(stderr, "\n");
-+	fprintf(stderr, "To pass the device address via environment variable:\n");
-+	fprintf(stderr, "\n");
-+	fprintf(stderr, "    export VFIO_SELFTESTS_BDF=segment:bus:device.function\n");
-+	fprintf(stderr, "    %s [options]\n", argv[0]);
-+	fprintf(stderr, "\n");
-+	fprintf(stderr, "To pass the device address via argv:\n");
-+	fprintf(stderr, "\n");
-+	fprintf(stderr, "    %s [options] segment:bus:device.function\n", argv[0]);
-+	fprintf(stderr, "\n");
-+	exit(KSFT_SKIP);
-+}
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 7e6ce092628a..b21376e83ca7 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -63,15 +63,7 @@ static u64 sev_supported_vmsa_features;
+ #define AP_RESET_HOLD_NAE_EVENT		1
+ #define AP_RESET_HOLD_MSR_PROTO		2
+ 
+-/* As defined by SEV-SNP Firmware ABI, under "Guest Policy". */
+-#define SNP_POLICY_MASK_API_MINOR	GENMASK_ULL(7, 0)
+-#define SNP_POLICY_MASK_API_MAJOR	GENMASK_ULL(15, 8)
+-#define SNP_POLICY_MASK_SMT		BIT_ULL(16)
+-#define SNP_POLICY_MASK_RSVD_MBO	BIT_ULL(17)
+-#define SNP_POLICY_MASK_DEBUG		BIT_ULL(19)
+-#define SNP_POLICY_MASK_SINGLE_SOCKET	BIT_ULL(20)
+-
+-#define SNP_POLICY_MASK_VALID		(SNP_POLICY_MASK_API_MINOR	| \
++#define KVM_SNP_POLICY_MASK_VALID	(SNP_POLICY_MASK_API_MINOR	| \
+ 					 SNP_POLICY_MASK_API_MAJOR	| \
+ 					 SNP_POLICY_MASK_SMT		| \
+ 					 SNP_POLICY_MASK_RSVD_MBO	| \
+@@ -3062,7 +3054,7 @@ void __init sev_hardware_setup(void)
+ 			sev_snp_supported = is_sev_snp_initialized();
+ 
+ 		if (sev_snp_supported)
+-			snp_supported_policy_bits = SNP_POLICY_MASK_VALID;
++			snp_supported_policy_bits = KVM_SNP_POLICY_MASK_VALID;
+ 	}
+ 
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+@@ -4993,10 +4985,10 @@ struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
+ 
+ 	/* Check if the SEV policy allows debugging */
+ 	if (sev_snp_guest(vcpu->kvm)) {
+-		if (!(sev->policy & SNP_POLICY_DEBUG))
++		if (!(sev->policy & SNP_POLICY_MASK_DEBUG))
+ 			return NULL;
+ 	} else {
+-		if (sev->policy & SEV_POLICY_NODBG)
++		if (sev->policy & SEV_POLICY_MASK_NODBG)
+ 			return NULL;
+ 	}
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 58b9d168e0c8..61911a2b78c3 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -113,9 +113,6 @@ struct kvm_sev_info {
+ 	cpumask_var_t have_run_cpus; /* CPUs that have done VMRUN for this VM. */
+ };
+ 
+-#define SEV_POLICY_NODBG	BIT_ULL(0)
+-#define SNP_POLICY_DEBUG	BIT_ULL(19)
+-
+ struct kvm_svm {
+ 	struct kvm kvm;
+ 
+diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+index e0dbcb4b4fd9..27c92543bf38 100644
+--- a/include/linux/psp-sev.h
++++ b/include/linux/psp-sev.h
+@@ -14,6 +14,25 @@
+ 
+ #include <uapi/linux/psp-sev.h>
+ 
++/* As defined by SEV API, under "Guest Policy". */
++#define SEV_POLICY_MASK_NODBG			BIT(0)
++#define SEV_POLICY_MASK_NOKS			BIT(1)
++#define SEV_POLICY_MASK_ES			BIT(2)
++#define SEV_POLICY_MASK_NOSEND			BIT(3)
++#define SEV_POLICY_MASK_DOMAIN			BIT(4)
++#define SEV_POLICY_MASK_SEV			BIT(5)
++#define SEV_POLICY_MASK_API_MAJOR		GENMASK(23, 16)
++#define SEV_POLICY_MASK_API_MINOR		GENMASK(31, 24)
++
++/* As defined by SEV-SNP Firmware ABI, under "Guest Policy". */
++#define SNP_POLICY_MASK_API_MINOR		GENMASK_ULL(7, 0)
++#define SNP_POLICY_MASK_API_MAJOR		GENMASK_ULL(15, 8)
++#define SNP_POLICY_MASK_SMT			BIT_ULL(16)
++#define SNP_POLICY_MASK_RSVD_MBO		BIT_ULL(17)
++#define SNP_POLICY_MASK_MIGRATE_MA		BIT_ULL(18)
++#define SNP_POLICY_MASK_DEBUG			BIT_ULL(19)
++#define SNP_POLICY_MASK_SINGLE_SOCKET		BIT_ULL(20)
++
+ #define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
+ 
+ /**
 -- 
-2.51.0.rc2.233.g662b1ed5c5-goog
+2.46.2
 
