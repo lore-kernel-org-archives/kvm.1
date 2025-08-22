@@ -1,304 +1,191 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2067.outbound.protection.outlook.com [40.107.92.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FA833472B
-	for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 21:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755897984; cv=none; b=Uf+M6AkLdCyY8m96jyvXiZkXfD3cve1UJGfC76sGhk+pjXOsp4n/HH0yuQfxygEW3dLvmq/Nf9nFY08NSQ05YeHOyJuOrcUP8bLIGvr4416HNxZSRuZTeWMlMFAxE9cUGHiNdYXFjip1g38qHk8WzdUEPCCTyR3rX2Hyr4a+F4o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755897984; c=relaxed/simple;
-	bh=viIj7nBDLYKadwUM0xbSDydrlKrdGDZyvE8jEMitn1w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K3JQzQ168jCcrw4e/XKBg9+aIYLkhh2skDEe7kIT7zreQenXO/JmgjPuD1TQPSciD00euPRR9KsoG3ecN6ouax53Gm2KlU76JkjFu8e2Un5cFeYvT7hJv9IpgoqRzoH0ST8tMmp0PPWeyn9vMt4ye0WFuAQw6rz2BV5Ww+bMyuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wQUsPG20; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A173469E7;
+	Fri, 22 Aug 2025 21:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755897985; cv=fail; b=LBwkUGX9wnriItHHf+aZ8adQ4NhTvE1eJL/V2B24TXhUdq4/utpM1bYqjOHg6ddlCARbGh/SEP8JIDzJj2orJnjPQ26Jkp08mm7rL4KXcD5/2+L72yGnUlv/lUl1ZyXsixpTdCsAuBTvAJ5FwmkXstHYgrEEgtElkmuhB5k8V4Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755897985; c=relaxed/simple;
+	bh=D/Da2L9k545ht07y5O8slAkUbjS9ahxqM+RMRLspyMQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DQLUXN1EcglQLrkec4PRNyHtvAWRyK6fipEzUKUsZDV7GiGVXhlmBR0OA5lJwfLgZW6Xc30OnQ7Y+wxUuD/7469sKpYSG1Nnie3tROrod1RdwoK98h7Pkwg0J86Ity3kG7scYExVyrzvsDdDep5ucLzKdVkll5Dxz5l75vaSrfk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Dgj89S1i; arc=fail smtp.client-ip=40.107.92.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wQUsPG20"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32326e46a20so4307315a91.3
-        for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 14:26:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755897982; x=1756502782; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UPA+PwewYS8+Q8uCILWL6+Br5YS0UgFCMUzmbl5NWvU=;
-        b=wQUsPG205d0jBat686nYHc9WyUU+XYuc4UNPp92U/a2eJGEV1ihDiZjnziRhNKhSle
-         wMTr5bsAKwnMflAXrc2k8ukvvrqhZdl1JGd5pTZLIQ2lapejtDv/N4jChhlbEeg7n1FW
-         eh28UooPcc3g/RDmRa3Q+GLM3AdaNXPzuTD8oII9isQq9V291rz+wh8X/xRxj/Vg9BTK
-         OkaBmMZ87BDyaPhC2AG4jNMHHyuNV7AFrB5sguDOdxkkAmhdjR5Kq9ckvyACIhjsVe6F
-         KmP79nKD8EJlB/NyMzIjNeJUmbdHofcJHFMifzVwlQahdNaaszUMk35UethFqiCviuA5
-         oemw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755897982; x=1756502782;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UPA+PwewYS8+Q8uCILWL6+Br5YS0UgFCMUzmbl5NWvU=;
-        b=Webnb6S3nMCJKory1Z4Gl3cM9be7/HucT1Frv0Ky7yuze2PoUvtIGat2toWyUKdQOJ
-         UDQYTx3v6Mb15B2/yLOCZDvLv8PblCk8KSPllBypMCyg28ydX5TqzBN4jf/Xki1g4+8s
-         BzzcDDiXmC4OUAkbiiaTiz6/9jBe2hj38h85qHvIWKz62Ow/1loP6NEodFJaopeoBU05
-         Xdionlf3ugaD+Hgq9djCp4BKif9Ind57Qou0MzcoPZhW+z/QqoZXYYHOPjOEWb8OUhGD
-         1ncQ7OqEXUL1XisMNvkfmgjzOtoKpQPrYEEZH+PsTeEuMavwxSRnXdp0XRR4i9dNYCmk
-         wQPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVedRCNxz4Onaz8XSWDhMPQ7kBZaLZkAenrLNrTKR+F7xn7VaIdUnPwN+g/Qu2JmCaeh9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdqXmRKQJ8p7vYi4WA/Iz/ZmNQmOrnQANcCvDxJKzZBbcBKhEh
-	2YaCbDnlG0Y+MHj9/7mHsZfrIb/19eLAen2tTJkRiVEj0y4cKtjHQwUfOY6Q2INqiRBwdMW8IjM
-	WviNAFOo+RAUOBw==
-X-Google-Smtp-Source: AGHT+IH6FN3m+8AsP4Yr1fs51qpn+36lUQWWOw73mi/WeDKVT4PQCbismToESXKqAuCrkJq7YvdVPfCb7EN4FA==
-X-Received: from pjbsw5.prod.google.com ([2002:a17:90b:2c85:b0:311:485b:d057])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3d8b:b0:31f:16ee:5dcc with SMTP id 98e67ed59e1d1-32515e527b3mr6324435a91.14.1755897981897;
- Fri, 22 Aug 2025 14:26:21 -0700 (PDT)
-Date: Fri, 22 Aug 2025 21:24:56 +0000
-In-Reply-To: <20250822212518.4156428-1-dmatlack@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Dgj89S1i"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gDJfCV6TSp+N7WVLzCxRxGxKNgijpm+1HXZB3VPVgoQOEQBgCVislChnLQ95fSINq0NuZiMlveGlStOMESDGiXSQEIYmIa1l4KxiulmohfmNXFCfZv1RceV7hIQarzFJpdhJMI4NMS9kYI74Xa5njWr70e+7uY8+jLtMaRdoRJCjFcv1k/ggP7EyRpVesLuz9sU1YbWuT1h9TOPwOrzXTEalGHoqUAatLZpSRJkuIIDTL1VOjf1bMimfFzULNab9UHBLGaD5CmLH+vXspUriZkagMe97LB8Yao6/SOiMErwZAw3ZuPHs2IsPhoG1ONLkHkRM3JB8PkW8PA1paiDmcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5WYaHXib+H5FygCqFC1uD7sz5f9LPGurVbnL56zzEfc=;
+ b=uDHQStTkjNHbFubb1I287zJ2BPX2AJ1ioMyYhILRv+ZpDSEWzFrnljU5Z6iazjO51IGIX4hSpdK+jM+eOX+MmB88PnXTrpGFjB5296yIHKwEALJ9E0SUGn4UTzXOpZvp24drEfc76Sb5nfq9u8Ilzq5Ess4G/AOaGcsvig0qHKLCKYgg2EVfnPTNrlToXhpWYnFHqTTml/24v+AfSOQz+vpQUYZuFNHOE5F4NoIUnsaWThsemzOFw13kE836caibFQv3/iedLPhR38cn5umWzWrAIyEfFSVcYK0zPngwC+Shl40qphCYol6DFMGi6rX2Xj0zJXeyrtcssR2JGK+dBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5WYaHXib+H5FygCqFC1uD7sz5f9LPGurVbnL56zzEfc=;
+ b=Dgj89S1ixkGfYcKdOabt9t4QVZzpCC36AiYtANDAKav0A63JGHiVU0PV44iABbPfgnnc+gpEN4FoXYHAHtjuLXeLFnih3MeCaaluneJOHAAyaH/o0ynrl9GPO0IzkfQJ92q12K6Hffwrh7BmlYGQWfUWwA66lL+oyVYmTnB/Be0=
+Received: from BYAPR01CA0010.prod.exchangelabs.com (2603:10b6:a02:80::23) by
+ CY5PR12MB6227.namprd12.prod.outlook.com (2603:10b6:930:21::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.15; Fri, 22 Aug 2025 21:26:19 +0000
+Received: from CY4PEPF0000EE3E.namprd03.prod.outlook.com
+ (2603:10b6:a02:80:cafe::44) by BYAPR01CA0010.outlook.office365.com
+ (2603:10b6:a02:80::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.17 via Frontend Transport; Fri,
+ 22 Aug 2025 21:27:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3E.mail.protection.outlook.com (10.167.242.16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9052.8 via Frontend Transport; Fri, 22 Aug 2025 21:26:19 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 22 Aug
+ 2025 16:26:17 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-crypto@vger.kernel.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>, "Ashish
+ Kalra" <ashish.kalra@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David Miller" <davem@davemloft.net>
+Subject: [RFC PATCH 4/4] KVM: SEV: Add known supported SEV-SNP policy bits
+Date: Fri, 22 Aug 2025 16:25:34 -0500
+Message-ID: <7ce170febab3eeb2a591ff9e71fac8871f1aff60.1755897933.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <cover.1755897933.git.thomas.lendacky@amd.com>
+References: <cover.1755897933.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250822212518.4156428-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.51.0.rc2.233.g662b1ed5c5-goog
-Message-ID: <20250822212518.4156428-10-dmatlack@google.com>
-Subject: [PATCH v2 09/30] vfio: selftests: Keep track of DMA regions mapped
- into the device
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Aaron Lewis <aaronlewis@google.com>, 
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	David Matlack <dmatlack@google.com>, dmaengine@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>, Joel Granados <joel.granados@kernel.org>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Vipin Sharma <vipinsh@google.com>, 
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3E:EE_|CY5PR12MB6227:EE_
+X-MS-Office365-Filtering-Correlation-Id: 821dcf67-5697-458d-9b70-08dde1c288d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|7416014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/HfTnoDy6PPkO2yuchQlluroA/DbrSkVQj4UKjqMuxLK9xOjVJEX635lAEhR?=
+ =?us-ascii?Q?0RJPUj+ESNfXi+22WgFIr4bUza/YSA7HhYRxDE0QJtIndWSHSLZDlR2FCbuC?=
+ =?us-ascii?Q?qlWew1UpCC7vKPDLE5fNazMcBsvPjsjTDnNhoxBp6Ckdq1OH/t/N5URUogxV?=
+ =?us-ascii?Q?8KFro/7WHTfJhMLUSzsnHmzlG+zuojtmGgF1hTqJwNh0FMogari6M6pjsFNH?=
+ =?us-ascii?Q?jpgeJphJOv1TyJAXh+CNp9ouVSH1iH+bj0lCOOVmU6TnMiqUS5hsfrLgY/S5?=
+ =?us-ascii?Q?1ea/LOxdg5ZLFLO0Mif6GM6NrPsdjP8E1oIbndN7vm5q0DLm681ANMaLjuXf?=
+ =?us-ascii?Q?utEC4KfSod/Zr5MTPzlyFme7bWpbHWgiGbdcKdbNygx+B8zu8zmR0GUlW1pN?=
+ =?us-ascii?Q?44+NP6Sk3mdnx+KpMW3MbsgHtMbkKBJuiv4gvLto2aeappv1HB9tTazWOlkq?=
+ =?us-ascii?Q?WsDYUOGAJpxl28Fsv/OJRn2TF22sIm8GR4+KncUhzMDe4+N7BWdYof5txhey?=
+ =?us-ascii?Q?KP7Gb98lEe9CBLUgp3rBh3AR2yKSO9BTvhp8LEVa4qBLvlpXZVThH53G/Y8/?=
+ =?us-ascii?Q?SixHR+R8F8T8k4obIBR8j7CY5Ni1t8uQboojwKGh7OaWTr58UYLuF3tENz65?=
+ =?us-ascii?Q?iuTYImisMgga6jqO3XFXW3pJvM5Caam9hnFZ3v48C7B1b1z3ZsNJySpiZha9?=
+ =?us-ascii?Q?/UwZGuLWQqW+iYqj5C7fadtESLbbPAnZTRhbSefDCWIZ8xO69K1JORMvDbYI?=
+ =?us-ascii?Q?cKOahAqg2s6aKXUklxV1aMP3QJ1OufnIE8Z2qSypeJVJYi8vWb2yMwar51Pv?=
+ =?us-ascii?Q?Q/EKXHa43OB9idGR7b3hmxYJdtS90fCQNdlBwq8+qpLVCy6s9z0Aa5s1iF97?=
+ =?us-ascii?Q?tkbYV7zl321+9zruo+GNMkHok0cmqcKf+v1JyzIxceUwL9OQbyveYsJl/aIh?=
+ =?us-ascii?Q?lRkDbMns0xhOEEBWK4YVpdTHl/ZhttsCi6YYwG2Y1RukMOM3V8n4+kfjAVLV?=
+ =?us-ascii?Q?2CpkXAu4UFM99Vp0JDS97lXHzQwzVL9+Bav+7GFvPvuKLHcmI2FR11TTSoNx?=
+ =?us-ascii?Q?DJdJlvSINh57itbg7XJZ+/SCQ/xAxsqD8WcbbNuGuVbeYWdoDOvfk+jqDHK+?=
+ =?us-ascii?Q?M8o/U0gDNTNBlddpelDetGGWkME8GqY93dcN5xT54S6rSwvpQB2CHfAPT3lM?=
+ =?us-ascii?Q?yeBQxKK7Rx+skcGYZ/lngKLSruNziFSYESp1P2d4F/pB8RSzLiBaNg8TQIPN?=
+ =?us-ascii?Q?/5+pdlFgKeCyRdxtPKAvhh2EX7LdPpHfmmlGKUFsmMUp8nVDuryefdI+6Rbt?=
+ =?us-ascii?Q?HUgRqX1Z3acPeKP9e8EfQklhdfkEGEGcw2jXPai15vQvgfuDO/Obld5jkrKV?=
+ =?us-ascii?Q?QDcT4Ny8tuc7jj+YnwMIZuhwkK3DS7U4PJjuo2ptguE1qlnaXNNY0lq09Nie?=
+ =?us-ascii?Q?LP9dhGG9HomlQEY+MzA9klByVXXAvjUIZZhpVCpXJk44/sk049y7mSKk0Y32?=
+ =?us-ascii?Q?mjpqCb/g+xRJYG/VmuHuFck+UvJUiS5+GvA8?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 21:26:19.1334
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 821dcf67-5697-458d-9b70-08dde1c288d7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE3E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6227
 
-Keep track of the list of DMA regions that are mapped into the device
-using a linked list and a new struct vfio_dma_region and use that to add
-{__,}to_iova() for converting host virtual addresses into IOVAs.
+Add to the known supported SEV-SNP policy bits that don't require any
+implementation support from KVM in order to successfully use them.
 
-This will be used in a subsequent commit to map multiple DMA regions
-into a device that are then used by drivers.
+At this time, this includes:
+  - CXL_ALLOW
+  - MEM_AES_256_XTS
+  - RAPL_DIS
+  - CIPHERTEXT_HIDING_DRAM
+  - PAGE_SWAP_DISABLE
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: David Matlack <dmatlack@google.com>
+Arguably, RAPL_DIS and CIPHERTEXT_HIDING_DRAM require KVM and the CCP
+driver to enable these features in order for the setting of the policy
+bits to be successfully handled. But, a guest owner may not wish their
+guest to run on a system that doesn't provide support for those features,
+so allowing the specification of these bits accomplishes that. Whether
+or not the bit is supported by SEV firmware, a system that doesn't support
+these features will either fail during the KVM validation of supported
+policy bits before issuing the LAUNCH_START or fail during the
+LAUNCH_START.
+
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 ---
- .../selftests/vfio/lib/include/vfio_util.h    | 23 +++++++--
- .../selftests/vfio/lib/vfio_pci_device.c      | 49 ++++++++++++++++---
- .../selftests/vfio/vfio_dma_mapping_test.c    | 31 ++++++------
- 3 files changed, 79 insertions(+), 24 deletions(-)
+ arch/x86/kvm/svm/sev.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-index 234403b442af..db08646c2819 100644
---- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
-+++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-@@ -51,6 +51,17 @@ struct vfio_pci_bar {
- 	void *vaddr;
- };
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index acdea463dd4f..4f1564a52feb 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -63,12 +63,22 @@ static u64 sev_supported_vmsa_features;
+ #define AP_RESET_HOLD_NAE_EVENT		1
+ #define AP_RESET_HOLD_MSR_PROTO		2
  
-+typedef u64 iova_t;
-+
-+#define INVALID_IOVA UINT64_MAX
-+
-+struct vfio_dma_region {
-+	struct list_head link;
-+	void *vaddr;
-+	iova_t iova;
-+	u64 size;
-+};
-+
- struct vfio_pci_device {
- 	int fd;
- 	int group_fd;
-@@ -63,6 +74,8 @@ struct vfio_pci_device {
- 	struct vfio_irq_info msi_info;
- 	struct vfio_irq_info msix_info;
+-#define KVM_SNP_POLICY_MASK_VALID	(SNP_POLICY_MASK_API_MINOR	| \
+-					 SNP_POLICY_MASK_API_MAJOR	| \
+-					 SNP_POLICY_MASK_SMT		| \
+-					 SNP_POLICY_MASK_RSVD_MBO	| \
+-					 SNP_POLICY_MASK_DEBUG		| \
+-					 SNP_POLICY_MASK_SINGLE_SOCKET)
++/*
++ * SEV-SNP policy bits that can be supported by KVM. These include policy bits
++ * that have implementation support within KVM or policy bits that do not rely
++ * on any implementation support within KVM.
++ */
++#define KVM_SNP_POLICY_MASK_VALID	(SNP_POLICY_MASK_API_MINOR		| \
++					 SNP_POLICY_MASK_API_MAJOR		| \
++					 SNP_POLICY_MASK_SMT			| \
++					 SNP_POLICY_MASK_RSVD_MBO		| \
++					 SNP_POLICY_MASK_DEBUG			| \
++					 SNP_POLICY_MASK_SINGLE_SOCKET		| \
++					 SNP_POLICY_MASK_CXL_ALLOW		| \
++					 SNP_POLICY_MASK_MEM_AES_256_XTS	| \
++					 SNP_POLICY_MASK_RAPL_DIS		| \
++					 SNP_POLICY_MASK_CIPHERTEXT_HIDING_DRAM	| \
++					 SNP_POLICY_MASK_PAGE_SWAP_DISABLE)
  
-+	struct list_head dma_regions;
-+
- 	/* eventfds for MSI and MSI-x interrupts */
- 	int msi_eventfds[PCI_MSIX_FLAGS_QSIZE + 1];
- };
-@@ -85,9 +98,10 @@ struct vfio_pci_device *vfio_pci_device_init(const char *bdf, int iommu_type);
- void vfio_pci_device_cleanup(struct vfio_pci_device *device);
- void vfio_pci_device_reset(struct vfio_pci_device *device);
+ static u64 snp_supported_policy_bits;
  
--void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size,
--		      void *vaddr);
--void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size);
-+void vfio_pci_dma_map(struct vfio_pci_device *device,
-+		      struct vfio_dma_region *region);
-+void vfio_pci_dma_unmap(struct vfio_pci_device *device,
-+			struct vfio_dma_region *region);
- 
- void vfio_pci_config_access(struct vfio_pci_device *device, bool write,
- 			    size_t config, size_t size, void *data);
-@@ -138,4 +152,7 @@ static inline void vfio_pci_msix_disable(struct vfio_pci_device *device)
- 	vfio_pci_irq_disable(device, VFIO_PCI_MSIX_IRQ_INDEX);
- }
- 
-+iova_t __to_iova(struct vfio_pci_device *device, void *vaddr);
-+iova_t to_iova(struct vfio_pci_device *device, void *vaddr);
-+
- #endif /* SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H */
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index 98cce0a6ecd7..36b4b30b75cf 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -26,6 +26,33 @@
- 	VFIO_ASSERT_EQ(__ret, 0, "ioctl(%s, %s, %s) returned %d\n", #_fd, #_op, #_arg, __ret); \
- } while (0)
- 
-+iova_t __to_iova(struct vfio_pci_device *device, void *vaddr)
-+{
-+	struct vfio_dma_region *region;
-+
-+	list_for_each_entry(region, &device->dma_regions, link) {
-+		if (vaddr < region->vaddr)
-+			continue;
-+
-+		if (vaddr >= region->vaddr + region->size)
-+			continue;
-+
-+		return region->iova + (vaddr - region->vaddr);
-+	}
-+
-+	return INVALID_IOVA;
-+}
-+
-+iova_t to_iova(struct vfio_pci_device *device, void *vaddr)
-+{
-+	iova_t iova;
-+
-+	iova = __to_iova(device, vaddr);
-+	VFIO_ASSERT_NE(iova, INVALID_IOVA, "%p is not mapped into device.\n", vaddr);
-+
-+	return iova;
-+}
-+
- static void vfio_pci_irq_set(struct vfio_pci_device *device,
- 			     u32 index, u32 vector, u32 count, int *fds)
- {
-@@ -112,28 +139,34 @@ static void vfio_pci_irq_get(struct vfio_pci_device *device, u32 index,
- 	ioctl_assert(device->fd, VFIO_DEVICE_GET_IRQ_INFO, irq_info);
- }
- 
--void vfio_pci_dma_map(struct vfio_pci_device *device, u64 iova, u64 size, void *vaddr)
-+void vfio_pci_dma_map(struct vfio_pci_device *device,
-+		      struct vfio_dma_region *region)
- {
- 	struct vfio_iommu_type1_dma_map map = {
- 		.argsz = sizeof(map),
- 		.flags = VFIO_DMA_MAP_FLAG_READ | VFIO_DMA_MAP_FLAG_WRITE,
--		.vaddr = (u64)vaddr,
--		.iova = iova,
--		.size = size,
-+		.vaddr = (u64)region->vaddr,
-+		.iova = region->iova,
-+		.size = region->size,
- 	};
- 
- 	ioctl_assert(device->container_fd, VFIO_IOMMU_MAP_DMA, &map);
-+
-+	list_add(&region->link, &device->dma_regions);
- }
- 
--void vfio_pci_dma_unmap(struct vfio_pci_device *device, u64 iova, u64 size)
-+void vfio_pci_dma_unmap(struct vfio_pci_device *device,
-+			struct vfio_dma_region *region)
- {
- 	struct vfio_iommu_type1_dma_unmap unmap = {
- 		.argsz = sizeof(unmap),
--		.iova = iova,
--		.size = size,
-+		.iova = region->iova,
-+		.size = region->size,
- 	};
- 
- 	ioctl_assert(device->container_fd, VFIO_IOMMU_UNMAP_DMA, &unmap);
-+
-+	list_del(&region->link);
- }
- 
- static void vfio_pci_region_get(struct vfio_pci_device *device, int index,
-@@ -260,6 +293,8 @@ static void vfio_pci_iommu_setup(struct vfio_pci_device *device, unsigned long i
- {
- 	int ret;
- 
-+	INIT_LIST_HEAD(&device->dma_regions);
-+
- 	ret = ioctl(device->container_fd, VFIO_CHECK_EXTENSION, iommu_type);
- 	VFIO_ASSERT_GT(ret, 0, "VFIO IOMMU type %lu not supported\n", iommu_type);
- 
-diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-index 2612f0cabea5..4578ee6df0e1 100644
---- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-+++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-@@ -128,30 +128,32 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
- {
- 	const u64 size = variant->size ?: getpagesize();
- 	const int flags = variant->mmap_flags;
-+	struct vfio_dma_region region;
- 	struct iommu_mapping mapping;
--	void *mem;
--	u64 iova;
- 	int rc;
- 
--	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -1, 0);
-+	region.vaddr = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -1, 0);
- 
- 	/* Skip the test if there aren't enough HugeTLB pages available. */
--	if (flags & MAP_HUGETLB && mem == MAP_FAILED)
-+	if (flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
- 		SKIP(return, "mmap() failed: %s (%d)\n", strerror(errno), errno);
- 	else
--		ASSERT_NE(mem, MAP_FAILED);
-+		ASSERT_NE(region.vaddr, MAP_FAILED);
- 
--	iova = (u64)mem;
-+	region.iova = (u64)region.vaddr;
-+	region.size = size;
- 
--	vfio_pci_dma_map(self->device, iova, size, mem);
--	printf("Mapped HVA %p (size 0x%lx) at IOVA 0x%lx\n", mem, size, iova);
-+	vfio_pci_dma_map(self->device, &region);
-+	printf("Mapped HVA %p (size 0x%lx) at IOVA 0x%lx\n", region.vaddr, size, region.iova);
- 
--	rc = iommu_mapping_get(device_bdf, iova, &mapping);
-+	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
-+
-+	rc = iommu_mapping_get(device_bdf, region.iova, &mapping);
- 	if (rc == -EOPNOTSUPP)
- 		goto unmap;
- 
- 	ASSERT_EQ(0, rc);
--	printf("Found IOMMU mappings for IOVA 0x%lx:\n", iova);
-+	printf("Found IOMMU mappings for IOVA 0x%lx:\n", region.iova);
- 	printf("PGD: 0x%016lx\n", mapping.pgd);
- 	printf("P4D: 0x%016lx\n", mapping.p4d);
- 	printf("PUD: 0x%016lx\n", mapping.pud);
-@@ -176,11 +178,12 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
- 	}
- 
- unmap:
--	vfio_pci_dma_unmap(self->device, iova, size);
--	printf("Unmapped IOVA 0x%lx\n", iova);
--	ASSERT_NE(0, iommu_mapping_get(device_bdf, iova, &mapping));
-+	vfio_pci_dma_unmap(self->device, &region);
-+	printf("Unmapped IOVA 0x%lx\n", region.iova);
-+	ASSERT_EQ(INVALID_IOVA, __to_iova(self->device, region.vaddr));
-+	ASSERT_NE(0, iommu_mapping_get(device_bdf, region.iova, &mapping));
- 
--	ASSERT_TRUE(!munmap(mem, size));
-+	ASSERT_TRUE(!munmap(region.vaddr, size));
- }
- 
- int main(int argc, char *argv[])
 -- 
-2.51.0.rc2.233.g662b1ed5c5-goog
+2.46.2
 
