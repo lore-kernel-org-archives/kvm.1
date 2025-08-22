@@ -1,167 +1,264 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2057.outbound.protection.outlook.com [40.107.93.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009BE343214
-	for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 21:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755897981; cv=none; b=tKC0O5WUayMYk9pembf/cT7X11ZykDBajWV6FQpUKqT8ib/SRv7AWhHq2ycoc0RoDYzHuIKNIbzqbDWSIZToT4koTx90/SCyRSqf6kJV1quduFpiD1ioVIUioi1KLKkEUcWYE6ovP6EL6+amzH/JZuHvemj0PDIZgL0tryoKTVg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755897981; c=relaxed/simple;
-	bh=sMBil33kEP0p72RsUquWHWpa11BvknJzVAjPDsLGcAI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OaBfJhF9Pc6zBcW1HNjjuAkHYIefipQShYpRmEJmKVcEw/m5HJjbVZQu75Yw28+mKjZn30dMOzQNL0PxwsIUosqI/VLuoENklH5vQal/xiI7WAwUKu+XbZJZlNqPqHVi+Ev5hE7KWc4MHICXqUjzqR3yhn5j4CsPivqboPVX0cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FBHeBFx5; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EC9343202;
+	Fri, 22 Aug 2025 21:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755897982; cv=fail; b=KsRIMkYaSIbP9zPW2vADE5KfK+0656t8ELwgrbUCCvtuRowb7WDdH35Tue2mDBNutDCEIY7WXeF4/7diiIJ57+0CHNWmdv0Jnn3mNh/vaW5EQTWH4ZxL+dgXsP6Mq6g8rRhwNIgawKWBhzufg3Yaj3cxksSEA8OmuOQqTWWGe+E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755897982; c=relaxed/simple;
+	bh=dVfvncoIZun8RVkNeL3wO6kb1xPOs4VGa0cnxzyfi+I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bDgCzSY2kDVZ/N6GBMuD9X44bgY/rAG/29IJkfiWVnYpbzuax4v0/MX6JVqgI2uED7OnUOXlHhZoyfSho7LvZ5HNiFP2X51dySzNPVCbdtzA6H7n/2FzIHkgW3ofCdr6PebcLuk6keMNm+gw+c+ZPyk9cJZdxEkPtem8+6W/yIo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CCtawQiX; arc=fail smtp.client-ip=40.107.93.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FBHeBFx5"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-76e2eac5c63so2419429b3a.2
-        for <kvm@vger.kernel.org>; Fri, 22 Aug 2025 14:26:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755897979; x=1756502779; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNSc8pwOi0iqwicPsbzu5iOCe1/x4uOTBWnOJx+bas0=;
-        b=FBHeBFx5T6lPciEChT04zssWZ6raAERhr0LCkYQBwrsAiIjQm5v6HmAOgM7+XVwDkD
-         t9vhEKig3a4xBM6v1pdGfXwFNAyiBC5KFnpmgwIvYCQWN/wzy9FEuET3b6DDOwiyFzhV
-         m8P/xaOpdWCMiLQ86c+8r9slmIVAWlOcEUAtnT4WR8SRfhHuB2yZxMqxPl5lGHbKMKLl
-         2iLLUw3DckIifJm+d/M2EtUn59djTmwh8IXx3A2VBCGG4t5L9XLv59hVGcePVNsMaJB4
-         cMDm1ha8RL3/3QQvkaDQo1jA1zH04QUIYEItGBRW4Gez52SL4AxTmMySX5POZTbHQ0fr
-         2nVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755897979; x=1756502779;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNSc8pwOi0iqwicPsbzu5iOCe1/x4uOTBWnOJx+bas0=;
-        b=BC6H7VtjPpfcJhJ8fNMoK6GsAhGK52yMJRvPYOOv4+dXhCSF/YFtX19eLIsLQkjmUi
-         43I/KmJUNKuU++B3lFddfH6Am+m7jjmpb5MIHp8k0uM40jxGHfyaI71SwVve/X70RGrn
-         X/BAwjUAsfPAiditLyfODCWrspiYSRw0CzLLBO7vS35Hd0Gh8EaOizJ3h6RQcF8mtJ9X
-         Kqyzq+p81Bh7DZl6Gr4Nt8vDtCUV20eGX3F9ifH+LJvJx0mC7q5bo4LK5cwvxlyLQVvb
-         rxUMNuSKIn68SuMW9q1EzsM3Em3PUuMytcnzRNxi6/SZ0MU60GK0d/ouPnvcv4O+R7Is
-         ZqLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgkVUUXKNekH+I+1fuOu/IWPk0c9g+UqNYNhIKJ54s1EWTc4Oxb2CWn4a2vKJ6WErSsf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzic6WiIv8JLSvbPj/tfzSc+g9kIr2GHOUoRcJbGmIBiFozNhJS
-	WVgiyKLCojfaE9HMRcmyNJDtJ+TMRkr8t2ne6vXnC9LKWhKw4TRsvIMFrQoDlo990aLTtSOoKNt
-	UUYXQ7XEVAtxJeA==
-X-Google-Smtp-Source: AGHT+IFn/CDahDRmuxUdDN7e34jUojyZdA5OMHuul/gVBglae1u1FQW/KHvUA6Y4zqwKNx7L4oUVRZKvWUqifw==
-X-Received: from pfxa28.prod.google.com ([2002:a05:6a00:1d1c:b0:748:f98a:d97b])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:420d:b0:770:34eb:1d38 with SMTP id d2e1a72fcca58-77034eb2007mr4306407b3a.3.1755897978799;
- Fri, 22 Aug 2025 14:26:18 -0700 (PDT)
-Date: Fri, 22 Aug 2025 21:24:54 +0000
-In-Reply-To: <20250822212518.4156428-1-dmatlack@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CCtawQiX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U7Zr0ypfEy8TPcRWvTrq93ao47lTDvH4HQQfPN3xXR2V/5iE0OBEyQJPz31yDCIe6s95r2Rk7amJ8Jts5/9jTsjwzI4ZWWNC9p+xaXK2/oh6W76kG2KHn4txWoEyZWceREBuCL85+rnlzdzrJJD6bR69vOPbeMWHuA/3cvDHqG/pJmk03H8YccwRZ4aUcnB9rm4xJ2+amgdg6SerdgyiQrO3N9btElXvet/eJvFcXkui0tHORuz8PP15fsNJdHMuV0vpwrlU8I6Wo8MalLU+xJeE4IlVN9rr8Z3/VaGp9D4wbG2Rh3vjeQJ1phneE/XiiCuDyc6xpUJsgDA2F4YMMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fZ7RZMXpxrSiy8rfFoPpwW/bgpm9eW8833MgyL8kNoI=;
+ b=G8y0pLSTUml7Ik/FVjvfDcm/bV4mO5M+XizpD5RgPJNMJtFuu31oI+V0LibfJXZeT4T8xN7BRVEHlhky3+lFQeTC60Yo/soGE2PwK8nCVRV63ZXiHigXp2tZtn/wdL+dU1t/WkgSCQqDdGtkMPzCgKg+W9wHOqhZUvGsXSkwT6R6iUNhBMtAp9cLn8jClxxbatJA+IPxq0NU/eNam7z4grgmiME5qg+K5Wae7dA0+GuWxP6K3NcxU10cWoxDTeqbbpPSC5cVp28IRU0l674ll16oLH/Qlv3/jR6YJpXEzTbsQra/eI2w9yXzZBgXM9l5z5j1ICvf/SjZI9yxUP8X8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fZ7RZMXpxrSiy8rfFoPpwW/bgpm9eW8833MgyL8kNoI=;
+ b=CCtawQiXV2h4p2r4UJbGlNqtqrI0rDrTLF31SjDHruo+Rk1OHDTcVyvKRGpbUGfhJf7UBiBLBL5odBe6mUa6KVIk6SixfSoq8yRms1sxoqe3deWjVZ6k4baUwQI8T0Bqh8mblXXQQOk84j4kbZ+nrD2xUNTBRUj+XJ5tu9Lv1AM=
+Received: from BY3PR05CA0060.namprd05.prod.outlook.com (2603:10b6:a03:39b::35)
+ by DS0PR12MB9397.namprd12.prod.outlook.com (2603:10b6:8:1bd::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Fri, 22 Aug
+ 2025 21:26:12 +0000
+Received: from CY4PEPF0000EE3B.namprd03.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::13) by BY3PR05CA0060.outlook.office365.com
+ (2603:10b6:a03:39b::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.10 via Frontend Transport; Fri,
+ 22 Aug 2025 21:26:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3B.mail.protection.outlook.com (10.167.242.14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9052.8 via Frontend Transport; Fri, 22 Aug 2025 21:26:11 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 22 Aug
+ 2025 16:26:10 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-crypto@vger.kernel.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>, "Ashish
+ Kalra" <ashish.kalra@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David Miller" <davem@davemloft.net>
+Subject: [RFC PATCH 3/4] crypto: ccp - Add an API to return the supported SEV-SNP policy bits
+Date: Fri, 22 Aug 2025 16:25:33 -0500
+Message-ID: <e9014e7dfd7f7c040c5d0eefb1f6c20a3c35d9e5.1755897933.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <cover.1755897933.git.thomas.lendacky@amd.com>
+References: <cover.1755897933.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250822212518.4156428-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.51.0.rc2.233.g662b1ed5c5-goog
-Message-ID: <20250822212518.4156428-8-dmatlack@google.com>
-Subject: [PATCH v2 07/30] vfio: selftests: Add DMA mapping tests for 2M and 1G HugeTLB
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Aaron Lewis <aaronlewis@google.com>, 
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	David Matlack <dmatlack@google.com>, dmaengine@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>, Joel Granados <joel.granados@kernel.org>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Vipin Sharma <vipinsh@google.com>, 
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3B:EE_|DS0PR12MB9397:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58c1ead1-6b22-444a-78fb-08dde1c28446
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?K9cn6DyvMwPAYkRBgLjN3RIflEEanP550h5xGXh4SN24pn/oZLAEwpBEaNyU?=
+ =?us-ascii?Q?cx+y9VJ2rdq3ebcaSR/sRYjVVGNAg9sUWTLk8KUQp/BT0eeThTkwnoEkD0PW?=
+ =?us-ascii?Q?VPsKbDO91BqfCMaqC8+qRR7Cf1t6Z/dOsWnZGTsPuXgJRHMvME2/LC51T/RO?=
+ =?us-ascii?Q?adTFFm+coffsW2t4+aEfILo4ooUfQD+m+FMlZs74Cvp1xXP1QjhzcHAG9yle?=
+ =?us-ascii?Q?ybXBhKds4ejvP6jzzY9K6iSXJb44Bi3M2zeUpk6QLP8InO7/GAkBH0ZXImF5?=
+ =?us-ascii?Q?H9B2JFqMu+f9ondO7x96MtpznPbL8oBM8dfixW4ye72XVTw2RfzDDHiLT8aI?=
+ =?us-ascii?Q?/FjCAWmydIPoxyf1/cTV4OLu+Uuwh59z0POGfp5dxlJjhih3US4wfSs4BbON?=
+ =?us-ascii?Q?FaQMUSohmQe5gVDAjrtJPxUaucoNlpufBIArHOSlMSUNH+CKqcB3dvHkt/wZ?=
+ =?us-ascii?Q?E/sXT0OXwbjTCcVoA7TCF7V5d5o7rGcwl5O42o84aFWjclzC801jtVNznbca?=
+ =?us-ascii?Q?bvP5wO63lYfVZfMVGcl5gLVIQaL3QNqkKREt0lBGqNOXR21xr4cPjQF0gHYa?=
+ =?us-ascii?Q?aQ/pXCZMVmqU0Wg2FGeEBGymH674NYXjbpBQ6tM5b/+5ayS3TSrROcOLH1oN?=
+ =?us-ascii?Q?Huo6mzrHFUiUoZ02iu55HwZOj9imCz1n8tfEIfeKN/8udT9kQy3zzp4oSw+W?=
+ =?us-ascii?Q?9oBgSIZA888gwjloUZYJgojpwGouzRXLRAbySJKkiSDa/RMjGJvP/QN2XM23?=
+ =?us-ascii?Q?uSUCNZ+LqQGAbMFV3QqGlBP61Mwq2q8llh8CDLj1uYLr6FMYx8Pw5A3DgT4e?=
+ =?us-ascii?Q?veDdMz/cfhaSk/6TQTI/WbbU0KW0gAFyIUlE8pFjvZwN4xNUdF+23rm54H4v?=
+ =?us-ascii?Q?SkmlLS2lA+VtTiU7pQlYvFOCZ8RH9tBxnRtC5d+MeDTwPmu4RaSBp1yh15zd?=
+ =?us-ascii?Q?Z4VOjYhUjIE8XjpyYfei7TObwq9dFFCrQeFTxzNoRbhRhMNKQRRCuxz0SEzj?=
+ =?us-ascii?Q?4cJEKNQ0DzCuxT2avO1OacZ5jyoc1Gsr8TYfNPJ8NRWc4zDcCDY/3obRMtl5?=
+ =?us-ascii?Q?B+pgzUW3nz5EEMxPOA3rPaV/scbjeIidaYdTgwogFnjJyBbPHIKhMGgxixgQ?=
+ =?us-ascii?Q?fzzYR8FYWJO9Yaw5XBkvHMXRpfVOOwq719loOfMPzNo+GvTHQq4ILxkamdTK?=
+ =?us-ascii?Q?niEN+j1s9QNXXrS60DfCrPV2oW0qwNlVzuP1oPeEEbfDq18Lie8neArsou3W?=
+ =?us-ascii?Q?GPZxTA0x4vmI+mWVVlnCZbBbhvcrZFfwCpdNj767SPJFu+6PPmovpE1owyxu?=
+ =?us-ascii?Q?7oEos0gCxQGRj8sqGtsEqNcx5ll/oWq9LTJlXSoNEo8Bihl7bufstqTSPFGI?=
+ =?us-ascii?Q?P3G/IeNWfgImg7kHhAOGGBfmeAFWrQ3+y1OZ47D+GDAthN18b+6tq2AYRxGj?=
+ =?us-ascii?Q?gy9L/xzd1FB7z9Gt1QAezJZU4uDLOSBcJxCaK5B1qnm3QrDw7PVOVb7RV1iR?=
+ =?us-ascii?Q?Us8W2mcIGEtqD09v9aW5+F6rdPnGStM3Td53?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 21:26:11.4634
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58c1ead1-6b22-444a-78fb-08dde1c28446
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE3B.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9397
 
-From: Josh Hilke <jrhilke@google.com>
+Supported policy bits are dependent on the level of SEV firmware that is
+currently running. Create an API to return the supported policy bits for
+a given level of firmware. KVM will AND that value with the KVM supported
+policy bits to generate the actual supported policy bits.
 
-Add test coverage of mapping 2M and 1G HugeTLB to vfio_dma_mapping_test
-using a fixture variant. If there isn't enough HugeTLB memory available
-for the test, just skip them.
-
-Signed-off-by: Josh Hilke <jrhilke@google.com>
-[switch from command line option to fixture variant]
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 ---
- .../selftests/vfio/vfio_dma_mapping_test.c    | 38 ++++++++++++++++---
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/sev.c       |  6 ++++--
+ drivers/crypto/ccp/sev-dev.c | 37 ++++++++++++++++++++++++++++++++++++
+ include/linux/psp-sev.h      | 20 +++++++++++++++++++
+ 3 files changed, 61 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-index b56cebbf97eb..8f8e6e9e8197 100644
---- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-+++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0-only
--#include <fcntl.h>
--
-+#include <stdio.h>
- #include <sys/mman.h>
-+#include <unistd.h>
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index b21376e83ca7..acdea463dd4f 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3053,8 +3053,10 @@ void __init sev_hardware_setup(void)
+ 		else if (sev_snp_supported)
+ 			sev_snp_supported = is_sev_snp_initialized();
  
-+#include <linux/limits.h>
-+#include <linux/mman.h>
- #include <linux/sizes.h>
- #include <linux/vfio.h>
+-		if (sev_snp_supported)
+-			snp_supported_policy_bits = KVM_SNP_POLICY_MASK_VALID;
++		if (sev_snp_supported) {
++			snp_supported_policy_bits = sev_get_snp_policy_bits();
++			snp_supported_policy_bits &= KVM_SNP_POLICY_MASK_VALID;
++		}
+ 	}
  
-@@ -16,6 +18,25 @@ FIXTURE(vfio_dma_mapping_test) {
- 	struct vfio_pci_device *device;
- };
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index c3bced655568..b66244d6b10f 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -2575,6 +2575,43 @@ void sev_platform_shutdown(void)
+ }
+ EXPORT_SYMBOL_GPL(sev_platform_shutdown);
  
-+FIXTURE_VARIANT(vfio_dma_mapping_test) {
-+	u64 size;
-+	int mmap_flags;
-+};
++u64 sev_get_snp_policy_bits(void)
++{
++	struct psp_device *psp = psp_master;
++	struct sev_device *sev;
++	u64 policy_bits;
 +
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous) {
-+	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE,
-+};
++	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
++		return 0;
 +
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous_hugetlb_2mb) {
-+	.size = SZ_2M,
-+	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB | MAP_HUGE_2MB,
-+};
++	if (!psp || !psp->sev_data)
++		return 0;
 +
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_test, anonymous_hugetlb_1gb) {
-+	.size = SZ_1G,
-+	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB | MAP_HUGE_1GB,
-+};
++	sev = psp->sev_data;
 +
- FIXTURE_SETUP(vfio_dma_mapping_test)
++	policy_bits = SNP_POLICY_MASK_BASE;
++
++	if (sev->snp_plat_status.feature_info) {
++		if (sev->snp_feat_info_0.ecx & SNP_RAPL_DISABLE_SUPPORTED)
++			policy_bits |= SNP_POLICY_MASK_RAPL_DIS;
++
++		if (sev->snp_feat_info_0.ecx & SNP_CIPHER_TEXT_HIDING_SUPPORTED)
++			policy_bits |= SNP_POLICY_MASK_CIPHERTEXT_HIDING_DRAM;
++
++		if (sev->snp_feat_info_0.ecx & SNP_AES_256_XTS_POLICY_SUPPORTED)
++			policy_bits |= SNP_POLICY_MASK_MEM_AES_256_XTS;
++
++		if (sev->snp_feat_info_0.ecx & SNP_CXL_ALLOW_POLICY_SUPPORTED)
++			policy_bits |= SNP_POLICY_MASK_CXL_ALLOW;
++
++		if (sev_version_greater_or_equal(1, 58))
++			policy_bits |= SNP_POLICY_MASK_PAGE_SWAP_DISABLE;
++	}
++
++	return policy_bits;
++}
++EXPORT_SYMBOL_GPL(sev_get_snp_policy_bits);
++
+ void sev_dev_destroy(struct psp_device *psp)
  {
- 	self->device = vfio_pci_device_init(device_bdf, VFIO_TYPE1_IOMMU);
-@@ -28,17 +49,24 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_test)
- 
- TEST_F(vfio_dma_mapping_test, dma_map_unmap)
- {
--	const u64 size = SZ_2M;
-+	const u64 size = variant->size ?: getpagesize();
-+	const int flags = variant->mmap_flags;
- 	void *mem;
- 	u64 iova;
- 
--	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
--	ASSERT_NE(mem, MAP_FAILED);
-+	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -1, 0);
+ 	struct sev_device *sev = psp->sev_data;
+diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+index 27c92543bf38..1b4c68ec5c65 100644
+--- a/include/linux/psp-sev.h
++++ b/include/linux/psp-sev.h
+@@ -32,6 +32,20 @@
+ #define SNP_POLICY_MASK_MIGRATE_MA		BIT_ULL(18)
+ #define SNP_POLICY_MASK_DEBUG			BIT_ULL(19)
+ #define SNP_POLICY_MASK_SINGLE_SOCKET		BIT_ULL(20)
++#define SNP_POLICY_MASK_CXL_ALLOW		BIT_ULL(21)
++#define SNP_POLICY_MASK_MEM_AES_256_XTS		BIT_ULL(22)
++#define SNP_POLICY_MASK_RAPL_DIS		BIT_ULL(23)
++#define SNP_POLICY_MASK_CIPHERTEXT_HIDING_DRAM	BIT_ULL(24)
++#define SNP_POLICY_MASK_PAGE_SWAP_DISABLE	BIT_ULL(25)
 +
-+	/* Skip the test if there aren't enough HugeTLB pages available. */
-+	if (flags & MAP_HUGETLB && mem == MAP_FAILED)
-+		SKIP(return, "mmap() failed: %s (%d)\n", strerror(errno), errno);
-+	else
-+		ASSERT_NE(mem, MAP_FAILED);
++/* Base SEV-SNP policy bitmask for minimum supported SEV firmware version */
++#define SNP_POLICY_MASK_BASE	(SNP_POLICY_MASK_API_MINOR		| \
++				 SNP_POLICY_MASK_API_MAJOR		| \
++				 SNP_POLICY_MASK_SMT			| \
++				 SNP_POLICY_MASK_RSVD_MBO		| \
++				 SNP_POLICY_MASK_MIGRATE_MA		| \
++				 SNP_POLICY_MASK_DEBUG			| \
++				 SNP_POLICY_MASK_SINGLE_SOCKET)
  
- 	iova = (u64)mem;
+ #define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
  
- 	vfio_pci_dma_map(self->device, iova, size, mem);
- 	printf("Mapped HVA %p (size 0x%lx) at IOVA 0x%lx\n", mem, size, iova);
+@@ -868,7 +882,10 @@ struct snp_feature_info {
+ 	u32 edx;
+ } __packed;
+ 
++#define SNP_RAPL_DISABLE_SUPPORTED		BIT(2)
+ #define SNP_CIPHER_TEXT_HIDING_SUPPORTED	BIT(3)
++#define SNP_AES_256_XTS_POLICY_SUPPORTED	BIT(4)
++#define SNP_CXL_ALLOW_POLICY_SUPPORTED		BIT(5)
+ 
+ #ifdef CONFIG_CRYPTO_DEV_SP_PSP
+ 
+@@ -1014,6 +1031,7 @@ void *snp_alloc_firmware_page(gfp_t mask);
+ void snp_free_firmware_page(void *addr);
+ void sev_platform_shutdown(void);
+ bool sev_is_snp_ciphertext_hiding_supported(void);
++u64 sev_get_snp_policy_bits(void);
+ 
+ #else	/* !CONFIG_CRYPTO_DEV_SP_PSP */
+ 
+@@ -1052,6 +1070,8 @@ static inline void sev_platform_shutdown(void) { }
+ 
+ static inline bool sev_is_snp_ciphertext_hiding_supported(void) { return false; }
+ 
++static inline u64 sev_get_snp_policy_bits(void) { return 0; }
 +
- 	vfio_pci_dma_unmap(self->device, iova, size);
+ #endif	/* CONFIG_CRYPTO_DEV_SP_PSP */
  
- 	ASSERT_TRUE(!munmap(mem, size));
+ #endif	/* __PSP_SEV_H__ */
 -- 
-2.51.0.rc2.233.g662b1ed5c5-goog
+2.46.2
 
