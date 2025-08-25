@@ -1,144 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0289929D26A
-	for <kvm@vger.kernel.org>; Mon, 25 Aug 2025 21:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857152BDC28;
+	Mon, 25 Aug 2025 21:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756158868; cv=none; b=Fe4d7lB2vv1uOeUKajhOy6mY9AmhoKVjBcCkLROIxtcGRkKL+SA2XKy4YfLmxONU4hG5ZG8c9XJzfEF59pgrBVRQ1dxmPiakPZlioQwYPrYj80CF2RBxLMWHR2DFwme+2is6XZIHd61Kkle+gPx1v2U0Md796LxTFP9qcrPjQ74=
+	t=1756159148; cv=none; b=aAtHModUMXMUInKyNE7pYdQvckZa0IyyoUnqVnOPxns0/kICbF2nPtaM0mmSSh1kG2MhV0RKjLBirG3i3rTU9LKCMKy2wSCYKnhfv27dg882HFW+Y3Zs5/pGs22WefOjIwCKqhyXCfWrD/EGIzMWqAcAPK055pc/ScEQw1QOfSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756158868; c=relaxed/simple;
-	bh=PUrALNKcazTqj1JOi1kUX/7GRlWlbsgpoo8wt8AGzQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IVOlDZSWDNjyaBB3TFz3knB+ff/LM66LltCV73npKlRkfPSWKujS5QjmC2eBztVU+L9TWf+XJjzzgz/IEFIhkDaG/O1ty74okeOsiW2if2pti8xgvkXL1xfrqzEXIYd+czmud01DxHs3I7X6EFlxkmhUGjqd6O6zn2VXvuuKhSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bxSI5vp1; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1756159148; c=relaxed/simple;
+	bh=LYuUlL/4j71mwTqF59AOgVT+CQ085OA7+H045tIbRPU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gu+GXgWp3z0LtPa2lCVB9IGq9QpFe8mNzJWqUbAKIMBOuVvKWP2yiKYpUKn7ky1381T1MTiA59cJYsERqJkCl53CpE6H+ofcVJddcS8BK8kUraDU6YX8rB2qTQYWzMrUCVglsCTHcwvj/Xpji5cBQyDBYBCbNtcnzbV2RvX4wV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ddie5KjX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bxSI5vp1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756158865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ktdRGsOdUoyTte4ICKWTNwEDxAMcLJUcCCRuCPiDxEI=;
-	b=bxSI5vp17Kttun/uupcHs86jhJFTizzaPNpJKfIc9JDrlgxnB3vCMoNyrm2VJy1opCpQ+D
-	8AqOGpnyAEZ0iYOMGI/5gxVL4dkLkC/DbBqER2ykqM6crnyQEfSuwfyGNcO7GY+JIYFJem
-	Fg38QuI/QXBaPUzb9LCA6AbnVtuwjtU=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-7ttzbPmnNjmisooH3BW4ww-1; Mon, 25 Aug 2025 17:54:24 -0400
-X-MC-Unique: 7ttzbPmnNjmisooH3BW4ww-1
-X-Mimecast-MFC-AGG-ID: 7ttzbPmnNjmisooH3BW4ww_1756158864
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-886e8134e87so5821339f.3
-        for <kvm@vger.kernel.org>; Mon, 25 Aug 2025 14:54:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756158863; x=1756763663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ktdRGsOdUoyTte4ICKWTNwEDxAMcLJUcCCRuCPiDxEI=;
-        b=KW8CRBKA1XsPKgPXOg6wOI1Wstlc/5Kvi/YbeCC1u9TuFdq7Sc+FQdght6+9hnp0Df
-         QBdO3H+fW/zj7KP6dKvxk8cxjE6dcBtTzdEBBDT3Y2JWIigqul0HttBAckWJi9CEK34F
-         HqHqCLPTrVkIystNy/eenIrc/jd/qhqPtzayOVsopRXiXsv671Ikgt4/XZGxGmK2QE6G
-         iMZzP3qgkJhBP5Ane6jJy1ULZOIL6JEnVnDYgjetgKjsyGELZnEPOV8VKgbimqeuF+/m
-         ZlsPkXq8775Ic/gOzqI0JoQwbuGXwUxPqWtLdt8lIOO1E/XGJYMTwyxZh0UrKVoIXWgu
-         tg6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVV0QPcGo6mUCMtD8qnJaiAgwVk/SZc91T55jUDfdzOTsa3SbG1OVpIYX7YShwpLItCh2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/fn99LvjzXtg5bcOJW1D555tgV51FnKHvCxzje1YHI96vsPXW
-	FCcTxCOGqEdKPnc6AM2Nr0R22s4qpP3OW9Tg4SJQnPy2jIypDYSP1DJi5mWIZk8W7DHhOSguEp/
-	piP3RwQnsYI71l3+9ln72J0X4s52ck5YRaVdpgrNdQSSPyiXvt/5VZ/g/IUEEvw==
-X-Gm-Gg: ASbGncvIJgglfFU0SaxC65IGvMfrkhexIJANpkAv6pO+l7KZ2k0sE+3LyJg4laTpPrH
-	i1w+ys+nkgXPfcvjd+ViKs3AXvimfywqsIiRdMPuYgGhwJM1tjIMpDOgxYv3LrBTU+UlGRG2RBA
-	NLLohd+s8HmMoRrIuK5UikfmcKoACJx+PrG3/tcJaYmQ1Tt+yV268sEUePNSOgiZvF6MUQrIuz9
-	4H4EHAJ93j9d+OlOpNkaV0X/P940afp6mLGxknaX87R3656Tj4MypWhVln9d3vmahJMDIrVHqY5
-	C4ttSb3aDNSAV55l2ehayZHD+CYDG2zINJrTOxI75ks=
-X-Received: by 2002:a05:6602:2c10:b0:87c:32d1:3b84 with SMTP id ca18e2360f4ac-886bd202301mr688403439f.3.1756158863113;
-        Mon, 25 Aug 2025 14:54:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQEDzQ15G4rYzJDAIr+leDsCSs9V6r+VT1nFdg7y+XkefGZ8cay0aY5yb38za5ejvfkweA7g==
-X-Received: by 2002:a05:6602:2c10:b0:87c:32d1:3b84 with SMTP id ca18e2360f4ac-886bd202301mr688402539f.3.1756158862694;
-        Mon, 25 Aug 2025 14:54:22 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-886c8fc6b0dsm540240839f.20.2025.08.25.14.54.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 14:54:21 -0700 (PDT)
-Date: Mon, 25 Aug 2025 15:54:20 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, helgaas@kernel.org, schnelle@linux.ibm.com,
- mjrosato@linux.ibm.com
-Subject: Re: [PATCH v2 2/9] PCI: Add additional checks for flr and pm reset
-Message-ID: <20250825155420.2ace4847.alex.williamson@redhat.com>
-In-Reply-To: <20250825171226.1602-3-alifm@linux.ibm.com>
-References: <20250825171226.1602-1-alifm@linux.ibm.com>
-	<20250825171226.1602-3-alifm@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ddie5KjX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AECC116B1;
+	Mon, 25 Aug 2025 21:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756159148;
+	bh=LYuUlL/4j71mwTqF59AOgVT+CQ085OA7+H045tIbRPU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ddie5KjX34+IeoV+IbrDg5rK7E2OT1syJKf7lFx5SZDzNiKv4MTzC3BlENRxIfcln
+	 eDb3yab6UwpIQnwlEunsBOMyfhWLVSWda5JLCmhx5U2qx2DpMMAaoji2k/pUiizmUR
+	 Kv/ofaAnsVIzjXfcqcuFdQwtl0dNWpNt+C8yallC7CLyYd9DdklImtU/BxaQL3c5rA
+	 YX2svEdzePd4/1jrqMrPvuUE6ZoxJYXMNEg5SUYbAmTS1bFRgJuQz4Ur48Gjeanley
+	 MJ/P+fRslyEw5uZI5KU07r/gTP2E5CIPXseSpjYesMVVzDKOB10kUMoUz76P1RynET
+	 JAUceHkmQ0hsw==
+From: Namhyung Kim <namhyung@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-perf-users@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Subject: [PATCH 01/11] tools headers: Sync KVM headers with the kernel source
+Date: Mon, 25 Aug 2025 14:58:53 -0700
+Message-ID: <20250825215904.2594216-2-namhyung@kernel.org>
+X-Mailer: git-send-email 2.51.0.261.g7ce5a0a67e-goog
+In-Reply-To: <20250825215904.2594216-1-namhyung@kernel.org>
+References: <20250825215904.2594216-1-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Aug 2025 10:12:19 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
+To pick up the changes in this cset:
 
-> If a device is in an error state, then any reads of device registers can
-> return error value. Add addtional checks to validate if a device is in an
-> error state before doing an flr or pm reset.
+  f55ce5a6cd33211c KVM: arm64: Expose new KVM cap for cacheable PFNMAP
+  28224ef02b56fcee KVM: TDX: Report supported optional TDVMCALLs in TDX capabilities
+  4580dbef5ce0f95a KVM: TDX: Exit to userspace for SetupEventNotifyInterrupt
+  25e8b1dd4883e6c2 KVM: TDX: Exit to userspace for GetTdVmCallInfo
+  cf207eac06f661fb KVM: TDX: Handle TDG.VP.VMCALL<GetQuote>
 
-I think the thing we see in practice for a device that's wedged and
-returning -1 from config space is that the FLR will timeout waiting for
-a pending transaction.  So this should fix that, but should we log
-something?
+This addresses these perf build warnings:
 
-I'm assuming AF FLR is not needed here because we don't cache the
-offset and therefore won't find the capability when we search the chain
-for it.
+  Warning: Kernel ABI header differences:
+    diff -u tools/include/uapi/linux/kvm.h include/uapi/linux/kvm.h
+    diff -u tools/arch/x86/include/uapi/asm/kvm.h arch/x86/include/uapi/asm/kvm.h
 
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/pci/pci.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 0dd95d782022..a07bdb287cf3 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -4560,12 +4560,17 @@ EXPORT_SYMBOL_GPL(pcie_flr);
->   */
->  int pcie_reset_flr(struct pci_dev *dev, bool probe)
->  {
-> +	u32 reg;
-> +
->  	if (dev->dev_flags & PCI_DEV_FLAGS_NO_FLR_RESET)
->  		return -ENOTTY;
->  
->  	if (!(dev->devcap & PCI_EXP_DEVCAP_FLR))
->  		return -ENOTTY;
->  
-> +	if (pcie_capability_read_dword(dev, PCI_EXP_DEVCAP, &reg))
-> +		return -ENOTTY;
-> +
->  	if (probe)
->  		return 0;
->  
-> @@ -4640,6 +4645,8 @@ static int pci_pm_reset(struct pci_dev *dev, bool probe)
->  		return -ENOTTY;
->  
->  	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &csr);
-> +	if (PCI_POSSIBLE_ERROR(csr))
-> +		return -ENOTTY;
+Please see tools/include/uapi/README for further details.
 
-Doesn't this turn out to be redundant to the test below?
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ tools/arch/x86/include/uapi/asm/kvm.h |  8 +++++++-
+ tools/include/uapi/linux/kvm.h        | 27 +++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
->  	if (csr & PCI_PM_CTRL_NO_SOFT_RESET)
->  		return -ENOTTY;
->  
-
-Thanks,
-Alex
+diff --git a/tools/arch/x86/include/uapi/asm/kvm.h b/tools/arch/x86/include/uapi/asm/kvm.h
+index 6f3499507c5efb56..0f15d683817d6a77 100644
+--- a/tools/arch/x86/include/uapi/asm/kvm.h
++++ b/tools/arch/x86/include/uapi/asm/kvm.h
+@@ -965,7 +965,13 @@ struct kvm_tdx_cmd {
+ struct kvm_tdx_capabilities {
+ 	__u64 supported_attrs;
+ 	__u64 supported_xfam;
+-	__u64 reserved[254];
++
++	__u64 kernel_tdvmcallinfo_1_r11;
++	__u64 user_tdvmcallinfo_1_r11;
++	__u64 kernel_tdvmcallinfo_1_r12;
++	__u64 user_tdvmcallinfo_1_r12;
++
++	__u64 reserved[250];
+ 
+ 	/* Configurable CPUID bits for userspace */
+ 	struct kvm_cpuid2 cpuid;
+diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+index 7415a3863891c042..f0f0d49d25443552 100644
+--- a/tools/include/uapi/linux/kvm.h
++++ b/tools/include/uapi/linux/kvm.h
+@@ -178,6 +178,7 @@ struct kvm_xen_exit {
+ #define KVM_EXIT_NOTIFY           37
+ #define KVM_EXIT_LOONGARCH_IOCSR  38
+ #define KVM_EXIT_MEMORY_FAULT     39
++#define KVM_EXIT_TDX              40
+ 
+ /* For KVM_EXIT_INTERNAL_ERROR */
+ /* Emulate instruction failed. */
+@@ -447,6 +448,31 @@ struct kvm_run {
+ 			__u64 gpa;
+ 			__u64 size;
+ 		} memory_fault;
++		/* KVM_EXIT_TDX */
++		struct {
++			__u64 flags;
++			__u64 nr;
++			union {
++				struct {
++					__u64 ret;
++					__u64 data[5];
++				} unknown;
++				struct {
++					__u64 ret;
++					__u64 gpa;
++					__u64 size;
++				} get_quote;
++				struct {
++					__u64 ret;
++					__u64 leaf;
++					__u64 r11, r12, r13, r14;
++				} get_tdvmcall_info;
++				struct {
++					__u64 ret;
++					__u64 vector;
++				} setup_event_notify;
++			};
++		} tdx;
+ 		/* Fix the size of the union. */
+ 		char padding[256];
+ 	};
+@@ -935,6 +961,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_ARM_EL2 240
+ #define KVM_CAP_ARM_EL2_E2H0 241
+ #define KVM_CAP_RISCV_MP_STATE_RESET 242
++#define KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED 243
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+-- 
+2.51.0.261.g7ce5a0a67e-goog
 
