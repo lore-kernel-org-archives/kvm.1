@@ -1,126 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cdmsr2.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B60630AAD4;
-	Mon, 25 Aug 2025 21:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECC927F749
+	for <kvm@vger.kernel.org>; Mon, 25 Aug 2025 22:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756159153; cv=none; b=u9Gg7hipZ2WBwi+VDNt+9d0KN15MMTVcT28FcQT5NLSBVZNU/3TqMTWKnORQqQduhEiOjWmd3RpF6iECN9lw9ckKmEYuYv1mz4WVxJ9x5/LhHfLC0gnI6LMCE/0j+9D6qV/QmEdIyw5TP4MmJHDhnNuNrLm9xNWBEaCd4X9gf+M=
+	t=1756159330; cv=none; b=KBCnqTtPRLaWkCD7ayGv0AX4JbTsQNmJ4FE3oZsR/PCsVZg8/TaBnfzaCp0/2fw2+qdet0tldeJvaa6vG7z1unupBP7uusC3ReLTRWYnqlzgC/D87OnqgYo7+wNWm+o11amS9IMuhlAYlGj2ghXTI9SzE0eMrMc9amx5mNzNOoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756159153; c=relaxed/simple;
-	bh=16EPmrHdMEr6M3sM1MYmbbFsavhSkZ1KC1VkNUsuyoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X57k8sAib1H9li7vL3MZblVfamMVLxTB7693vbSuXmd878eDRaqS3ztuDpbEMUbjHJrHlq8Yr7SsIkDaWDGuWr+7g78/3lwCKAeM/HRGtJoVLp6ijrogAFuSn5Uges+eDXBIKjqZzqSCAdViltUsXUyg9HB7lPW63RsqbfRmv/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbiU5j0v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756159330; c=relaxed/simple;
+	bh=hWJIO2sws/xStZhhfgrVZZx6ZEda2KaT4k2a8/ohfp8=;
+	h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type; b=ggatbDrx8qREQjhlZvnxf2Wx34mTbvSCsAEZ3sG8K2W+Snkm3CtLCXZkFag9WNymCHYCbMx8FXCLHKOTOFxLErXLD2MHDg8/qdBw1ul7n4yusJBhwykrkE8SLNbSkXhYxlw+mJuah/XBoUkRfSTMC3etR0kpYYngF/DhcZzGAqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=msa.hinet.net; spf=pass smtp.mailfrom=msa.hinet.net; dkim=pass (1024-bit key) header.d=msa.hinet.net header.i=@msa.hinet.net header.b=ll9V+V29; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=msa.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msa.hinet.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbiU5j0v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C683C113D0;
-	Mon, 25 Aug 2025 21:59:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756159153;
-	bh=16EPmrHdMEr6M3sM1MYmbbFsavhSkZ1KC1VkNUsuyoI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbiU5j0vJ3AJEAOSTsxd2W6/CTIR+XIRNKEvOnBYNra7He8lRJIPJGqH4+KOX3Zh5
-	 ji9pQOfmCyT4xh+Son4fcpUEpOk6UIs3rtYLLYlcwxTiIxIcOxUFKw3UJMM9ZQ3P7z
-	 y6Vj/9SKq+/gQlsKlAU09j+YpYBYHGedhJzVcR3I7IviSExr/a8ojvOrHRwd2++2/6
-	 l7dhuPBkdVf/uS9PULid/UmpjflC/JBahaqKiu1I/I/IAH9ajkupkWmX6mZsyFux43
-	 rqFTTr5VT/o/gML6oin9loXLfBn3rpcqr6Iwp47Gx6JUjS8CbdFUyh9fxlPmkQw3ae
-	 Y5pYpV92nfWCQ==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: [PATCH 11/11] tools headers: Sync uapi/linux/vhost.h with the kernel source
-Date: Mon, 25 Aug 2025 14:59:03 -0700
-Message-ID: <20250825215904.2594216-12-namhyung@kernel.org>
-X-Mailer: git-send-email 2.51.0.261.g7ce5a0a67e-goog
-In-Reply-To: <20250825215904.2594216-1-namhyung@kernel.org>
-References: <20250825215904.2594216-1-namhyung@kernel.org>
+	dkim=pass (1024-bit key) header.d=msa.hinet.net header.i=@msa.hinet.net header.b="ll9V+V29"
+Received: from cmsr8.hinet.net ([10.199.216.87])
+	by cdmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 57PM26Gb897229
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 06:02:06 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=msa.hinet.net;
+	s=default; t=1756159326; bh=q2zIQ6Xs/MiAhflU3xx/I4yghck=;
+	h=From:To:Subject:Date;
+	b=ll9V+V29f43FBYbytLORdz15HN/0P4TaOMDc509/ETCG33CWcoVkNZnG4pq/gbeyS
+	 wldnQiRX0qMYGm3NXKwBNLTcft9V/X5w2j+XLLRi5qTDaR2pA+8RE5YJAkmJ79ve8+
+	 cxvVBby1ow+ZFtOFhNCcSU5YGvfUmcvNEIOWjDVw=
+Received: from [127.0.0.1] (114-39-114-13.dynamic-ip.hinet.net [114.39.114.13])
+	by cmsr8.hinet.net (8.15.2/8.15.2) with ESMTPS id 57PLuZhw763237
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 05:56:38 +0800
+Message-ID: <89efae1c40ed53a2cf59f71c2aedf3f22fa84f093a9980592c1e29607db36b1d@msa.hinet.net>
+From: Procurement <europe-salesbond@msa.hinet.net>
+Reply-To: europe-sales@albinayah-group.com
+To: kvm@vger.kernel.org
+Subject: September Order - RFQ
+Date: Mon, 25 Aug 2025 14:56:38 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=AKpXSxtd c=1 sm=1 tr=0 ts=68acdc17
+	a=Hxnu99zK1Rpeg0qIOr+BTQ==:117 a=kj9zAlcOel0A:10 a=woOiZ7w2AAAA:8
+	a=Gp9z5yGasSGPIeDKQg4A:9 a=CjuIK1q_8ugA:10 a=y8FzcybzHWbWVUxH3U7b:22
 
-To pick up the changes in this cset:
+Hi,
 
-  7d9896e9f6d02d8a vhost: Reintroduce kthread API and add mode selection
-  333c515d189657c9 vhost-net: allow configuring extended features
+Please kindly quote best price for your following products:
 
-This addresses these perf build warnings:
+Include:
+1.Price
+2.Delivery term
+3.Quote expiry : September
 
-  Warning: Kernel ABI header differences:
-    diff -u tools/perf/trace/beauty/include/uapi/linux/vhost.h include/uapi/linux/vhost.h
+Thanks!
 
-Please see tools/include/uapi/README for further details.
+Kamal Prasad
 
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: kvm@vger.kernel.org
-Cc: virtualization@lists.linux.dev
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
-* This is on top of the fix below:
-  https://lore.kernel.org/r/20250819063958.833770-1-namhyung@kernel.org
+Manager
 
- .../trace/beauty/include/uapi/linux/vhost.h   | 35 +++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/tools/perf/trace/beauty/include/uapi/linux/vhost.h b/tools/perf/trace/beauty/include/uapi/linux/vhost.h
-index d4b3e2ae1314d1fc..c57674a6aa0dbbea 100644
---- a/tools/perf/trace/beauty/include/uapi/linux/vhost.h
-+++ b/tools/perf/trace/beauty/include/uapi/linux/vhost.h
-@@ -235,4 +235,39 @@
-  */
- #define VHOST_VDPA_GET_VRING_SIZE	_IOWR(VHOST_VIRTIO, 0x82,	\
- 					      struct vhost_vring_state)
-+
-+/* Extended features manipulation */
-+#define VHOST_GET_FEATURES_ARRAY _IOR(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+#define VHOST_SET_FEATURES_ARRAY _IOW(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+
-+/* fork_owner values for vhost */
-+#define VHOST_FORK_OWNER_KTHREAD 0
-+#define VHOST_FORK_OWNER_TASK 1
-+
-+/**
-+ * VHOST_SET_FORK_FROM_OWNER - Set the fork_owner flag for the vhost device,
-+ * This ioctl must called before VHOST_SET_OWNER.
-+ * Only available when CONFIG_VHOST_ENABLE_FORK_OWNER_CONTROL=y
-+ *
-+ * @param fork_owner: An 8-bit value that determines the vhost thread mode
-+ *
-+ * When fork_owner is set to VHOST_FORK_OWNER_TASK(default value):
-+ *   - Vhost will create vhost worker as tasks forked from the owner,
-+ *     inheriting all of the owner's attributes.
-+ *
-+ * When fork_owner is set to VHOST_FORK_OWNER_KTHREAD:
-+ *   - Vhost will create vhost workers as kernel threads.
-+ */
-+#define VHOST_SET_FORK_FROM_OWNER _IOW(VHOST_VIRTIO, 0x84, __u8)
-+
-+/**
-+ * VHOST_GET_FORK_OWNER - Get the current fork_owner flag for the vhost device.
-+ * Only available when CONFIG_VHOST_ENABLE_FORK_OWNER_CONTROL=y
-+ *
-+ * @return: An 8-bit value indicating the current thread mode.
-+ */
-+#define VHOST_GET_FORK_FROM_OWNER _IOR(VHOST_VIRTIO, 0x85, __u8)
-+
- #endif
--- 
-2.51.0.261.g7ce5a0a67e-goog
-
+Albinayah.com
