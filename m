@@ -1,45 +1,46 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2070.outbound.protection.outlook.com [40.107.236.70])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2053.outbound.protection.outlook.com [40.107.223.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82092FD1D9
-	for <kvm@vger.kernel.org>; Mon, 25 Aug 2025 15:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E682FDC5C
+	for <kvm@vger.kernel.org>; Mon, 25 Aug 2025 15:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756135241; cv=fail; b=OtL5bVD+8zahXKrxrheQghorNiOdKud25pdsB49s7ErlV1FeIYLUgcqd9fURzJQ+rls3MC6QcMABMI4CCotQtQRbe+lG6BU7jpL4Rkm7RGavYdxZNPdIJI0J/g67DqQwm0lvOQkVH77ENRokVndDZhTPQ+Ht7yR7S+ZMUXuVbaE=
+	t=1756135244; cv=fail; b=JTOVoFIlw4SQwUvxS4jJQ4XE9rB1kXwuz6AxBcbapmc70p2VxPd+HIvUSPKWynyX4/pY2hTY/p7rOpykcRSpuULKE1rwsn2gNfF75LbOS0W+36qGoH2YTkpJWJAx91xZaXJir16BY1oeJZy35btfGKbou0mql/J5K5+qA7VeOds=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756135241; c=relaxed/simple;
-	bh=swcR8EhrDmxObGm8Eog+yDoBvoQBbNn8Ovb3aMuWT7Y=;
+	s=arc-20240116; t=1756135244; c=relaxed/simple;
+	bh=cYxCZNbTC59bLmwY3QUQpr5fegtil7OgK8+X+0NLWrA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=og1zfN9K2Ibkce09EtndkKntAl05U66Lm8RZtFi3gd6/teGouKvCc0d0IGwYMJp1nBHDHxrwCqHZTNC5mi4FRATX/F8frdFMYyImmO4lVWlhvpc3l2coE8hEhigFlarPy5XFLFGorRlLX/sEcK5vflLxehcklOdNLZuUigVPgR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dDXmAuvk; arc=fail smtp.client-ip=40.107.236.70
+	 MIME-Version:Content-Type; b=pKG4GU29nbBAUBvKWwrbi2LWxyH75qas86jJ3foaYMaOH86EQmUjU8KzACjJWoqhatBP/MnWWVN77gXVCt3vommir5I33hQyEyUYMyDJGVcp3vCTiTR0tcZrUfAQ1zMG07hEObd5Slqcc8q0jRQqtiaVPPvQBfp7nsQOlNgdN5s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=trCTusb/; arc=fail smtp.client-ip=40.107.223.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dDXmAuvk"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="trCTusb/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vwWSdQnWU7WwsHrxAb26gEFTu44P/j0VGT7b6PzdUWAWEwboak/iJage0tEjz83wVMHBpBA62mLLtV4LG7eVug7dyQELk7JOJuXHG+yfU/HrR0ckunlHhP9vWYedy3GDd5mJeCJgSrEsi6NccWG4V3nCIrwVksQ4PsBm6Mra4NuOpPiaxfAxGBagsuQq50nKn0z+dua4HVrxiZrf/xIKfu7EAASUt2anAAH2Ak8NHyD9n4Apj3IlviaX2pv8qvTB01jZy2xcxCZd6/Q78qpjG3ZEYeY35vYxgpb1P4RwsIeF1zxkgIm5ELw3xw1MKXA1I1Asm0jyJ16qChpE0rTbig==
+ b=HNAnsxS8OcS0uyc+oqtiqmRarO1WxHdpJregWRs3Qi0Dm5v4ov2VYHo1Vmm8hp+Cn7seW+qPMaHmTxO86pfBqB+SNonXR/+c6cb8utXFbg2JU2HOqWZrcoioJnMvdCTAZn0/eB1BfrFFzhhzq9Cvdr3jXzUV0V0fAUKEthX3aGUosQSc2hLMvizdLPTc4mAYojbRVQ2syfy11bLan/pU4Acgizj7gYJ/+/E9npyUrKGhVZcwkjw4QYr05+PyxQahLRd3UKexjkpsTgUZCbBpjI2ztrTCpxTHJonzghgTNu8+7ZZNtOGo0xvVEs6qvPuprSvIV/dbbscP7Yu4UDVcZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k+0cp8MnFO+rW+12Hv+Swxc1sfiO0nyTPH4U3/XWphI=;
- b=LJxaVvN+8b/IiUr9nXfDPFFu4lHLtk/+ETKw8xFW8Mc6BJFGoJ38xUz6C5lCBAW1qYCJvctv5+o4qF3yglfIkZFRCj75awLkf1U0xgPUcAg+dHVaB+Pp5vpCt8A0UhVZHqQOmy3wOaAaFpYjfM+i3G5xtQI8P0q2DsE+MP4mSoyPd7SD/uVY9jTXcnYnFmFqUBeqP9inJ/WRxYD/mvq/4T/rWBownbiZTnXjuXSWsl0uCMzvXdxZAc6B9pnCsXpHbZpksK+Hhp6fkNE9x0ODNbgiG1fny8eBIinUNuARMdUt6XHeppl21l5c69Q/q9xusrK9tQr/DCQGB4os2tY3GQ==
+ bh=4+tWwLeXbjr15JjtQgjeW9BwKlC9r9PerZqYw9oW7DU=;
+ b=k/C26dgS3kWW5Wmle5iThcci2PNx3V9pAVzQu6aWpVZBRyOIREjR+iRF9BS7kxWPxHd6l0uPmLLefe1KBVlZv5GHjCzvZg6QMD2QS/dSREK0+qlLOKq3kPqKCp2AG/SWQrVLPxCcG+4JgNfpo4oWqDeXpNBxF+zfxfVjA+zYWNzMLbvJAxz8C6k4cX4j21XPOYRYwVg9nQ1YNjzCXiE32hmtS6zjERdoNGRaH7icClzdSDDk0j/193AR5/I2m7af9gkAN0XO7au1OYFx0ddXS2zmK0ZPC7dFAqWrBi2TzaljGhu/uEgK46or1uBa1XoWwxjPKIADMKI1YKDmjVh5Tw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k+0cp8MnFO+rW+12Hv+Swxc1sfiO0nyTPH4U3/XWphI=;
- b=dDXmAuvkQZtMudjHG342LVXq1hf1dmto1jlnlufIGcUrbQla3/L4MpNaCcrWmj+me8j4tAvtzGCRT3qsd+p6DAzKhtZ/Yf3KPDMCkQkUtvLJth4yPVDNSdW8PnAT2j9JM4kOIESVI7rA7sOHzzCAcz1RNrD9Ogj52OKuLs6VQZs=
-Received: from MN2PR19CA0058.namprd19.prod.outlook.com (2603:10b6:208:19b::35)
- by DM4PR12MB5963.namprd12.prod.outlook.com (2603:10b6:8:6a::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.20; Mon, 25 Aug 2025 15:20:32 +0000
+ bh=4+tWwLeXbjr15JjtQgjeW9BwKlC9r9PerZqYw9oW7DU=;
+ b=trCTusb/jcDvaFHh0EF4vtF8tVQ5hFIYEm7Ud7ZprZUW+c2g2GzLCRlRGZWksf294f1FSEBfhaSnZWqLFhXoZtg6mQPEOz01hWYHv6KYRlG97SbzpoIfjvplky8kCokt3wIsOXbgqgqflVwEfaRRlOQOryxaAIGeK44C3TH/64Y=
+Received: from MN2PR19CA0062.namprd19.prod.outlook.com (2603:10b6:208:19b::39)
+ by DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Mon, 25 Aug
+ 2025 15:20:38 +0000
 Received: from BN3PEPF0000B06B.namprd21.prod.outlook.com
- (2603:10b6:208:19b:cafe::1) by MN2PR19CA0058.outlook.office365.com
- (2603:10b6:208:19b::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.15 via Frontend Transport; Mon,
- 25 Aug 2025 15:20:31 +0000
+ (2603:10b6:208:19b:cafe::74) by MN2PR19CA0062.outlook.office365.com
+ (2603:10b6:208:19b::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.23 via Frontend Transport; Mon,
+ 25 Aug 2025 15:20:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,19 +50,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BN3PEPF0000B06B.mail.protection.outlook.com (10.167.243.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9094.0 via Frontend Transport; Mon, 25 Aug 2025 15:20:31 +0000
+ 15.20.9094.0 via Frontend Transport; Mon, 25 Aug 2025 15:20:38 +0000
 Received: from gomati.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 25 Aug
- 2025 10:20:28 -0500
+ 2025 10:20:34 -0500
 From: Nikunj A Dadhania <nikunj@amd.com>
 To: <seanjc@google.com>, <pbonzini@redhat.com>
 CC: <kvm@vger.kernel.org>, <thomas.lendacky@amd.com>,
 	<santosh.shukla@amd.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
 	<nikunj@amd.com>
-Subject: [RFC PATCH 2/4] KVM: SEV: Skip SNP-safe allocation when HvInUseWrAllowed is supported
-Date: Mon, 25 Aug 2025 15:20:07 +0000
-Message-ID: <20250825152009.3512-3-nikunj@amd.com>
+Subject: [RFC PATCH 4/4] KVM: SVM: Add Page modification logging support
+Date: Mon, 25 Aug 2025 15:20:09 +0000
+Message-ID: <20250825152009.3512-5-nikunj@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250825152009.3512-1-nikunj@amd.com>
 References: <20250825152009.3512-1-nikunj@amd.com>
@@ -77,78 +78,336 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06B:EE_|DM4PR12MB5963:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7a02269-8e61-4e23-a718-08dde3eaee5c
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06B:EE_|DM4PR12MB6280:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d8621bd-b9c8-41c2-68e7-08dde3eaf255
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iIpHgrLTASJvoQNHGN6cNeYdzG0d+DSMgkF2SBaZuwSvMlyRwa1eSkEe9Vwy?=
- =?us-ascii?Q?w3apH07D4AAQ730iU1KMDni1B4QkxqNb3xIfriRRrNzK9kJkiMoiOK7pw2HY?=
- =?us-ascii?Q?k/sCB8m7QIeTqOM6T0p1XRyymVhjzS5j9JwBmnOFvX/4iChjUpO5bbIXt1oJ?=
- =?us-ascii?Q?M2sEypZ24NQwFKcXUUiZHFlw5Z16zizCX5580chHbpNnVN7mUlrVSrYCSM6T?=
- =?us-ascii?Q?DchBVWFddbxYHEN7YfNQ+we6+CsHqVOF7LUbhMndTia5s27e7UQfkpVdOrbM?=
- =?us-ascii?Q?RFY5fITsCVgdSf07h2wXppjzRJ0XkwzHnQNzlTharnS5JB+sWgUPZWO42crr?=
- =?us-ascii?Q?5ItAEnCtANcKqUTv7kXXHkJ1/UTXBLkn+vkIZXpq/xkaJQArAHU+u+/kA4N/?=
- =?us-ascii?Q?DXDK/dBU5fCxEEqQnEmevnIrFkz0JkSQewjWzjsZrV4alrZviQlPFoEXQGEh?=
- =?us-ascii?Q?LKbvAEYFDdsUMpQYLAlP8yKkZ6Gf45pYGjcUDrdydp53h8Vzbi0GBFaLHWiX?=
- =?us-ascii?Q?93keY87ECBGpKZr1Wyu+tjuOKt/A1JVwFE4l4p9G9wcCwjIjBlu7UhYggLV6?=
- =?us-ascii?Q?RSVu5TpOzUo5TAsbAH783v1N4K1sSKz7p00TeiRcfDk9rY/faQDOV5eXMa0Q?=
- =?us-ascii?Q?/iPLFgssrHlDPkwAhLy2TkiBRkSRkZqLrsWk7rsdIL1RpXNdE2fVKWzEdh+l?=
- =?us-ascii?Q?51qIkETa30zy4SErWEQMNZawUupx4i2UW5twqgNlZzJBLdEOdYnKTAct3ale?=
- =?us-ascii?Q?UNZyiyfl6Eqp88I2jOTdo+oDxcAZyku5NPt3gUjjue5NQvgYKup8ZFqn/+sK?=
- =?us-ascii?Q?EsFmbRWdLCyGU6JkZpKKyLsh912AL71HBekekiwrVA5mFp6v7PfQ9OSZzX1U?=
- =?us-ascii?Q?R5jwjpEHyMC04hiLjP/Zv9tc5d5hiY3Qd9we2MGdpz5axfyUeUXrb1ygaE4H?=
- =?us-ascii?Q?X3jbnDCQIwnLbzNIGB1qmBpSZInlMSBNndZeJiXTZDPq3QImaoWhmgmA7C96?=
- =?us-ascii?Q?oFmG6xJKJJm5OOKSCGWG1qgA/4j4ir9J4OQoO191/N3MWAyHzdARn7o2ifXA?=
- =?us-ascii?Q?KXdbPtpEfxz/16wKyx6la9OSZwVkUwWThctxUTiQWfj/S/2l1zi+DnwHQKLD?=
- =?us-ascii?Q?sc1iazBGG5T+G6svNuYUVppbmDTdiS/UQYnBitRzL57OOpxHwa5DGH/96z0n?=
- =?us-ascii?Q?K30493w9hUVPRB4tqmisSoIK/OY8VC6VasjWAhSUutSzAF4WkVPp1c4SGA9S?=
- =?us-ascii?Q?N1/NDQRlhNzCuoamVqPfEJS+xJ1LsS0ugeml0bIZC0eDhwqh2qOghhEP1EkP?=
- =?us-ascii?Q?evHEyjhrFYX5VFyjDwCmqdzitIj9rFJ09drdmqCfcIoJAJW+rjLg8vwuMh5n?=
- =?us-ascii?Q?EPihomVB4IdY2kmJJ7UQ3V0uilad0AwqTOCe1HUpuQPFJ0RaGmirwwJC5Uze?=
- =?us-ascii?Q?J76KuUe+ujTq/w5zEX/gqrVjXeLG+ZZ+wB9SbK+qVLIVgw8VqvA8KDiz/UM/?=
- =?us-ascii?Q?DTuiN4AOtp+9qiv5yYRsuYaWxqCB/03O2gxm?=
+	=?us-ascii?Q?FTVSDbOxhRryjOlNVw+05rs69BaR0fuUKbMD8VhgszsQ2KMELjc0J/iyTtlB?=
+ =?us-ascii?Q?/V1KZHbQWmU0RDwNK6x10VJn9v3Gon5+2fSTzbK5B0Ck3yNWZvQSewGA3fqd?=
+ =?us-ascii?Q?ErKDZgbA5mqDAwsxi15DJRfOom2a8dLwKGWT9rwNK68fP9PkBLhGnEbg0Xrs?=
+ =?us-ascii?Q?pyDtrOcDCubSbEsCa2ubMNT43TjmXnYezglOkSJuwT9FEOrzu0dD8wOaq3+U?=
+ =?us-ascii?Q?XjztEQ95XrACrUFomRDmUC5D8ZXLfI3oB/Bis+oESxqqqRIaqo3p63EEpYGg?=
+ =?us-ascii?Q?qE/AE8mApql+s46rdyvfpG3xmAYEGdvVGpa0X09Y9j/KTzAOIN2fZZFJPkh6?=
+ =?us-ascii?Q?CWG/Nj8mcVdsQX1l2mHbuRSNS8ugr7Ba5uATLPqYhRCsgJp63PY3iSC51RxZ?=
+ =?us-ascii?Q?KTK24qljJR0OBuizeSJTpQdmBLALK+KpJ77gaoUOZkEOS/V+nuwq8iFDM1eO?=
+ =?us-ascii?Q?1LJJlE5fxrTK74i6HDSc57080TLzcL4e8+0VtRFdMY6BR5GEt08JUBr6OYEf?=
+ =?us-ascii?Q?NpY7imueE9hZByQnwoTLsbzBe6B29gTHBmYNLrV/fYCaGEMQbpVc9C0dcT+I?=
+ =?us-ascii?Q?SRbfPliQPdnPvmcpbxmUlIsvBr0GMkft6N6g81EpclnsPpX5wjm1SnbXgort?=
+ =?us-ascii?Q?+kMfvku9ogWYOmOCgZ/h5NrxaZEW7zRcyywBfs1oQs8mZ5eH1PtVcRvIW5V/?=
+ =?us-ascii?Q?fFAkTKbrebSIGyfsbPiROwNDLrqdOp326LJKegdo99k9fRPmMWsdhVXMEM4u?=
+ =?us-ascii?Q?WHGdT+7uUhCsoFB8VTtUf9Xv33Mpw3s8qZgwF7ZNuqaBTasL4kp7On1n2Bi9?=
+ =?us-ascii?Q?kivRaUWAKD1e1c8/TfwUmdc+SZwb8sR5vK7y2F1ypYwwn2+zESBg9HNksN2u?=
+ =?us-ascii?Q?E3H9eHWJ7zVfiXAFhw+QP4qZpWxw5XbwcEQJU9FSDnEIhrcpysYV47xcpKNx?=
+ =?us-ascii?Q?h5ZZmBSNCEP140W37MtabwPEqIeinVJfOyha7GfSY8SX1gagUIazEEe0G3An?=
+ =?us-ascii?Q?zVhFkI6xZrwD+lm67tGFnq3ovN81dOOPgjAnM1IHbnq7m3DWz0XfpkHnto4a?=
+ =?us-ascii?Q?eqI+lKdoJwtQvihrKRXyqTcYWpW4r9MSnNC/5b2iBe8vdO6Af91Q59B8qtYX?=
+ =?us-ascii?Q?BuQpmvZf5rH4dfWP/+9UMB8a/9DuYIMoJHzcAAjb5QVKTKYTUBWg5vb2e4iM?=
+ =?us-ascii?Q?dS7NgIj6vMJE3wUEwwUEbEvs5bIn28SzyhQXYARxpSZVS2LNlf8KhbZzH4ED?=
+ =?us-ascii?Q?StkiTTOiTEYvL5/u99HDRZnM1EeZB/RhNHMgr78loky74svszcjquBgjr2Ke?=
+ =?us-ascii?Q?VS6m1d9AOLDM3E95D0ZjAhQb0VywfVYt0Y1dtIkayt84mDIJ66ryJd3IOglZ?=
+ =?us-ascii?Q?2gaL1DgkzOteRIcYfLgS2NPN9S2P8E4bdL3w7qjn2s5i2wNZS+QobKofy9FA?=
+ =?us-ascii?Q?+CnD06rato/c+lI+dgqX9F5cN02pFzL1qpeFQRSGQxyTnHyP5yk84Yd97sFn?=
+ =?us-ascii?Q?pUpnQ7RV0nuSAF0JUgk5FgL8iuSy3HZH71NA?=
 X-Forefront-Antispam-Report:
 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 15:20:31.6942
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 15:20:38.3141
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7a02269-8e61-4e23-a718-08dde3eaee5c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d8621bd-b9c8-41c2-68e7-08dde3eaf255
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN3PEPF0000B06B.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5963
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6280
 
-When HvInUseWrAllowed (CPUID 8000001F EAX[30]) is supported, the CPU allows
-hypervisor writes to in-use pages without RMP violations, making the 2MB
-alignment workaround unnecessary. Check for this capability to avoid the
-allocation overhead when it's not needed.
+Currently, dirty logging relies on write protecting guest memory and
+marking dirty GFNs during subsequent write faults. This method works but
+incurs overhead due to additional write faults for each dirty GFN.
 
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Implement support for the Page Modification Logging (PML) feature, a
+hardware-assisted method for efficient dirty logging. PML automatically
+logs dirty GPA[51:12] to a 4K buffer when the CPU sets NPT D-bits. Two new
+VMCB fields are utilized: PML_ADDR and PML_INDEX. The PML_INDEX is
+initialized to 511 (8 bytes per GPA entry), and the CPU decreases the
+PML_INDEX after logging each GPA. When the PML buffer is full, a
+VMEXIT(PML_FULL) with exit code 0x407 is generated.
+
+PML is enabled by default when supported and can be disabled via the 'pml'
+module parameter.
+
 Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 ---
- arch/x86/kvm/svm/sev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/svm.h      |  6 +-
+ arch/x86/include/uapi/asm/svm.h |  2 +
+ arch/x86/kvm/svm/svm.c          | 99 ++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.h          |  4 ++
+ 4 files changed, 107 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 2fbdebf79fbb..c5477efc90b9 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4666,7 +4666,8 @@ struct page *snp_safe_alloc_page_node(int node, gfp_t gfp)
- 	unsigned long pfn;
- 	struct page *p;
- 
--	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) ||
-+	    cpu_feature_enabled(X86_FEATURE_HV_INUSE_WR_ALLOWED))
- 		return alloc_pages_node(node, gfp | __GFP_ZERO, 0);
- 
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index ffc27f676243..9fbada95afd5 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -165,7 +165,10 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+ 	u8 reserved_9[22];
+ 	u64 allowed_sev_features;	/* Offset 0x138 */
+ 	u64 guest_sev_features;		/* Offset 0x140 */
+-	u8 reserved_10[664];
++	u8 reserved_10[128];
++	u64 pml_addr;			/* Offset 0x1c8 */
++	u16 pml_index;			/* Offset 0x1d0 */
++	u8 reserved_11[526];
  	/*
+ 	 * Offset 0x3e0, 32 bytes reserved
+ 	 * for use by hypervisor/software.
+@@ -239,6 +242,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+ #define SVM_NESTED_CTL_NP_ENABLE	BIT(0)
+ #define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
+ #define SVM_NESTED_CTL_SEV_ES_ENABLE	BIT(2)
++#define SVM_NESTED_CTL_PML_ENABLE	BIT(11)
+ 
+ 
+ #define SVM_TSC_RATIO_RSVD	0xffffff0000000000ULL
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index 9c640a521a67..f329dca167de 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -101,6 +101,7 @@
+ #define SVM_EXIT_AVIC_INCOMPLETE_IPI		0x401
+ #define SVM_EXIT_AVIC_UNACCELERATED_ACCESS	0x402
+ #define SVM_EXIT_VMGEXIT       0x403
++#define SVM_EXIT_PML_FULL	0x407
+ 
+ /* SEV-ES software-defined VMGEXIT events */
+ #define SVM_VMGEXIT_MMIO_READ			0x80000001
+@@ -232,6 +233,7 @@
+ 	{ SVM_EXIT_AVIC_INCOMPLETE_IPI,		"avic_incomplete_ipi" }, \
+ 	{ SVM_EXIT_AVIC_UNACCELERATED_ACCESS,   "avic_unaccelerated_access" }, \
+ 	{ SVM_EXIT_VMGEXIT,		"vmgexit" }, \
++	{ SVM_EXIT_PML_FULL,		"pml_full" }, \
+ 	{ SVM_VMGEXIT_MMIO_READ,	"vmgexit_mmio_read" }, \
+ 	{ SVM_VMGEXIT_MMIO_WRITE,	"vmgexit_mmio_write" }, \
+ 	{ SVM_VMGEXIT_NMI_COMPLETE,	"vmgexit_nmi_complete" }, \
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d9931c6c4bc6..f46680a3c44f 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -178,6 +178,9 @@ module_param(intercept_smi, bool, 0444);
+ bool vnmi = true;
+ module_param(vnmi, bool, 0444);
+ 
++bool pml = true;
++module_param(pml, bool, 0444);
++
+ static bool svm_gp_erratum_intercept = true;
+ 
+ static u8 rsm_ins_bytes[] = "\x0f\xaa";
+@@ -1220,6 +1223,16 @@ static void init_vmcb(struct kvm_vcpu *vcpu)
+ 	if (vcpu->kvm->arch.bus_lock_detection_enabled)
+ 		svm_set_intercept(svm, INTERCEPT_BUSLOCK);
+ 
++	if (pml) {
++		/*
++		 * Populate the page address and index here, PML is enabled
++		 * when dirty logging is enabled on the memslot through
++		 * svm_update_cpu_dirty_logging()
++		 */
++		control->pml_addr = (u64)__sme_set(page_to_pfn(svm->pml_page) << PAGE_SHIFT);
++		control->pml_index = PML_HEAD_INDEX;
++	}
++
+ 	if (sev_guest(vcpu->kvm))
+ 		sev_init_vmcb(svm);
+ 
+@@ -1296,14 +1309,20 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+ 			goto error_free_vmcb_page;
+ 	}
+ 
++	if (pml) {
++		svm->pml_page = snp_safe_alloc_page();
++		if (!svm->pml_page)
++			goto error_free_vmsa_page;
++	}
++
+ 	err = avic_init_vcpu(svm);
+ 	if (err)
+-		goto error_free_vmsa_page;
++		goto error_free_pml_page;
+ 
+ 	svm->msrpm = svm_vcpu_alloc_msrpm();
+ 	if (!svm->msrpm) {
+ 		err = -ENOMEM;
+-		goto error_free_vmsa_page;
++		goto error_free_pml_page;
+ 	}
+ 
+ 	svm->x2avic_msrs_intercepted = true;
+@@ -1319,6 +1338,9 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+ 
+ 	return 0;
+ 
++error_free_pml_page:
++	if (svm->pml_page)
++		__free_page(svm->pml_page);
+ error_free_vmsa_page:
+ 	if (vmsa_page)
+ 		__free_page(vmsa_page);
+@@ -1339,6 +1361,9 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
+ 
+ 	sev_free_vcpu(vcpu);
+ 
++	if (pml)
++		__free_page(svm->pml_page);
++
+ 	__free_page(__sme_pa_to_page(svm->vmcb01.pa));
+ 	svm_vcpu_free_msrpm(svm->msrpm);
+ }
+@@ -3206,6 +3231,53 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
+ 
++void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	if (WARN_ON_ONCE(!pml))
++		return;
++
++	if (is_guest_mode(vcpu))
++		return;
++
++	/*
++	 * Note, nr_memslots_dirty_logging can be changed concurrently with this
++	 * code, but in that case another update request will be made and so the
++	 * guest will never run with a stale PML value.
++	 */
++	if (atomic_read(&vcpu->kvm->nr_memslots_dirty_logging))
++		svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_PML_ENABLE;
++	else
++		svm->vmcb->control.nested_ctl &= ~SVM_NESTED_CTL_PML_ENABLE;
++}
++
++static void svm_flush_pml_buffer(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++	struct vmcb_control_area *control = &svm->vmcb->control;
++
++	/* Do nothing if PML buffer is empty */
++	if (control->pml_index == PML_HEAD_INDEX)
++		return;
++
++	kvm_flush_pml_buffer(vcpu, svm->pml_page, control->pml_index);
++
++	/* Reset the PML index */
++	control->pml_index = PML_HEAD_INDEX;
++}
++
++static int pml_full_interception(struct kvm_vcpu *vcpu)
++{
++	trace_kvm_pml_full(vcpu->vcpu_id);
++
++	/*
++	 * PML buffer is already flushed at the beginning of svm_handle_exit().
++	 * Nothing to do here.
++	 */
++	return 1;
++}
++
+ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
+ 	[SVM_EXIT_READ_CR0]			= cr_interception,
+ 	[SVM_EXIT_READ_CR3]			= cr_interception,
+@@ -3282,6 +3354,7 @@ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
+ #ifdef CONFIG_KVM_AMD_SEV
+ 	[SVM_EXIT_VMGEXIT]			= sev_handle_vmgexit,
+ #endif
++	[SVM_EXIT_PML_FULL]			= pml_full_interception,
+ };
+ 
+ static void dump_vmcb(struct kvm_vcpu *vcpu)
+@@ -3330,8 +3403,10 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
+ 	pr_err("%-20s%016llx\n", "exit_info2:", control->exit_info_2);
+ 	pr_err("%-20s%08x\n", "exit_int_info:", control->exit_int_info);
+ 	pr_err("%-20s%08x\n", "exit_int_info_err:", control->exit_int_info_err);
+-	pr_err("%-20s%lld\n", "nested_ctl:", control->nested_ctl);
++	pr_err("%-20s%llx\n", "nested_ctl:", control->nested_ctl);
+ 	pr_err("%-20s%016llx\n", "nested_cr3:", control->nested_cr3);
++	pr_err("%-20s%016llx\n", "pml_addr:", control->pml_addr);
++	pr_err("%-20s%04x\n", "pml_index:", control->pml_index);
+ 	pr_err("%-20s%016llx\n", "avic_vapic_bar:", control->avic_vapic_bar);
+ 	pr_err("%-20s%016llx\n", "ghcb:", control->ghcb_gpa);
+ 	pr_err("%-20s%08x\n", "event_inj:", control->event_inj);
+@@ -3562,6 +3637,15 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 	struct kvm_run *kvm_run = vcpu->run;
+ 	u32 exit_code = svm->vmcb->control.exit_code;
+ 
++	/*
++	 * Opportunistically flush the PML buffer on VM exit. This keeps the
++	 * dirty bitmap current by processing logged GPAs rather than waiting for
++	 * PML_FULL exit.
++	 */
++	if (pml && !is_guest_mode(vcpu))
++		svm_flush_pml_buffer(vcpu);
++
++
+ 	/* SEV-ES guests must use the CR write traps to track CR registers. */
+ 	if (!sev_es_guest(vcpu->kvm)) {
+ 		if (!svm_is_intercept(svm, INTERCEPT_CR0_WRITE))
+@@ -5028,6 +5112,9 @@ static int svm_vm_init(struct kvm *kvm)
+ 			return ret;
+ 	}
+ 
++	if (pml)
++		kvm->arch.cpu_dirty_log_size = PML_LOG_NR_ENTRIES;
++
+ 	svm_srso_vm_init();
+ 	return 0;
+ }
+@@ -5181,6 +5268,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.gmem_prepare = sev_gmem_prepare,
+ 	.gmem_invalidate = sev_gmem_invalidate,
+ 	.private_max_mapping_level = sev_private_max_mapping_level,
++
++	.update_cpu_dirty_logging = svm_update_cpu_dirty_logging,
+ };
+ 
+ /*
+@@ -5382,6 +5471,10 @@ static __init int svm_hardware_setup(void)
+ 
+ 	nrips = nrips && boot_cpu_has(X86_FEATURE_NRIPS);
+ 
++	pml = pml && npt_enabled && cpu_feature_enabled(X86_FEATURE_PML);
++	if (pml)
++		pr_info("Page modification logging supported\n");
++
+ 	if (lbrv) {
+ 		if (!boot_cpu_has(X86_FEATURE_LBRV))
+ 			lbrv = false;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 58b9d168e0c8..6c2be19d8d46 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -335,6 +335,8 @@ struct vcpu_svm {
+ 
+ 	/* Guest GIF value, used when vGIF is not enabled */
+ 	bool guest_gif;
++
++	struct page *pml_page;
+ };
+ 
+ struct svm_cpu_data {
+@@ -717,6 +719,8 @@ static inline void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu,
+ 	svm_set_intercept_for_msr(vcpu, msr, type, true);
+ }
+ 
++void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
++
+ /* nested.c */
+ 
+ #define NESTED_EXIT_HOST	0	/* Exit handled on host level */
 -- 
 2.43.0
 
