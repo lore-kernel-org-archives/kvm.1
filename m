@@ -1,104 +1,86 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D023DE
-	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 14:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98013343D63
+	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 14:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217117; cv=none; b=ABY/+7irok4GI81y5Fh8emDLCQuVeItevTp06ZS79egkE0YCCPHQhcBSpSAF9nVh4SsPBxXjYxf3z9HiJSKlN9qvsytlcNLqn3WIHuhdxW69kqEnPEo5I5xLxZsei2XRPiUrthZq4aWLxTgFGja/m0klaNrloGX8buQ+Gb68APc=
+	t=1756217628; cv=none; b=aDB9OA32ZTekeh9nxsWSwfT9eQSPKvJpRQEwBhuZP9AWobMS00q2LaJk05ToeCj0VBYVPxnImPzs4WkT4aK9z8gMCLL7OaHnK5YYtXwYFqlX02ZlaCm6T9ufH82QOqo9p8cL2CtfHIgasF5i9AiueyjzOMU5FFWvlVjsNksqDxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217117; c=relaxed/simple;
-	bh=E47bQJ0fSKLMTa4+BbXXtJ7X4w0mQUaOEOsTXbSBPvs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nN9dl5EQNuTh1PidYIOXuyX+/H/MOzolfaK0N/2z8DEcnQpXepcv9iUGKe7GBqoS9fPRmqi60TNaCHCRuj2CJR4zJ+myt5mJB0WNAY3lYL3wTWFPCNEunLJH1va+FBRe4kYxM+BRpAVhxKZRRLYtLvFAh+igj5cTXgpsn8/PsBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tdsfn3ZI; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1756217628; c=relaxed/simple;
+	bh=XUMwyANYoN9LqU5IRvdqCPCHLe1EThn+0cki44O6i8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LRHvlruEVMEF2dq1QO5j1Rc+ECboT/bhYQCmo2F6QZR2xNM+6XzTZ6zSU6qO2PA5SXQwjyV6oBKjqtk9zEKaWZeY7Z5oAX7e4900wgfxj2TFrIHcQuOIua2ChrTTV8iW358vVND2Y5ZGh6m1THlg2G2AZXfhSkwMHjopUPwppUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nAPUFENF; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tdsfn3ZI"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2464dc09769so90500545ad.0
-        for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 07:05:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756217115; x=1756821915; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M8sjcZwofKG6BnJQmAymrI3Jle93znSmRx0EtubpPtg=;
-        b=Tdsfn3ZILUtiBA0AQQ6P1e1sIjHJYzUeNBEm/wf838nYk2Ng3p/onkIu/vSx7DcRr8
-         F2s8I6lJlMQuK6TnMRogZgpqr2ffnB8Mc2v36qjmk6lCEM4mfP7RfoxVfFxfaRYx8FDZ
-         r9a8Os9nhuad8+HZX2n8DfPrQlKSueh0s0owNwgAPO5CDwmLvBN0SIA/IbZBuvtzVSwK
-         M1hlpwC6ul9h2oiyP+HUf7MjKucb0zoVnLLhYpHFOlbSxBZrahssld5wG8W4Js/rHLbs
-         4blIQAVFEhHz8g5X3eNY5/WzfP5GddN/pvDNk52y3Sa5T91VLUQD60VZtcmMMPn1XI2B
-         kZDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756217115; x=1756821915;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M8sjcZwofKG6BnJQmAymrI3Jle93znSmRx0EtubpPtg=;
-        b=rihK11ZM/xHeaVLVO3eFjhd1z2n96InkEuNQEjYisyQ0Qucbz6WnOzw4MQ0q71fqRY
-         A2lo3ogzwcPfd8cl9Dwylp3Jb/9xttzDcxX5o24b9wZMzBdfLolgY7JqvrJoiqmwMGzK
-         hE6TEXYh7vn13AuLHSh+7PffgVkc6qJXUZG/pSWZhabPLM2Gi9td9CoFJC55RRHypzLW
-         vgVJzwuBnUpOk1j5vwEqxTE9NeUzvGwDQrhlo+ZJHPEbVirnF8O3dOUEfZs9nUjYN6N3
-         S+zx59jJyf+QfQfRI9XazFGDT3W+IbzaqgxuPEdbRIAAEZunPZVmuGBew1bWMqNvUMWi
-         B6bA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkePV/A195XaWcf2Fv8ji138NtTPTlXRQuVkWT3p8gJjrNkzeAoRXfGlEBpf0CX5C08sM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2rVlLtQ/uIrD2NSSBsuXHsBNEZhQ9UYvE3Z4BYu6z8Lw9sTrL
-	UkCANTMkmy2/V3V55rX3VN7+nmtPWu3An9tsILaOmeC4vqewvh0ZZ18gaeBgcvB15aGvjGf8ryQ
-	peTAABQ==
-X-Google-Smtp-Source: AGHT+IGb7UTw93XDTXoLc3UC3K1e508fQEqN/Z8f7EWKzjedshJnEFb0jKrFZrSKXsmYFuidjgvX5MOYCtw=
-X-Received: from pjzz12.prod.google.com ([2002:a17:90b:58ec:b0:324:eb0d:70e8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3d0c:b0:240:9f9:46b1
- with SMTP id d9443c01a7336-2462ef3e955mr197406155ad.37.1756217115314; Tue, 26
- Aug 2025 07:05:15 -0700 (PDT)
-Date: Tue, 26 Aug 2025 07:05:12 -0700
-In-Reply-To: <e04d31a3-3243-4141-88d2-1f0ade6d648a@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nAPUFENF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756217627; x=1787753627;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XUMwyANYoN9LqU5IRvdqCPCHLe1EThn+0cki44O6i8E=;
+  b=nAPUFENFi5wQbdA6MZkkQUb1r4K6zk/h47KcuAd5nD4TLbmrKoppa3l2
+   o0wfRZM9MJ0gwlYtl+qVfe0wlo1QFZ4nmamHsX9O+v9B/daU5zBFfYoBL
+   ljt6ZFnMxTpKyYmX37vnuxqrlPT9JZAbWLJqn+Mc5RHQfmuanGBJ1vEcp
+   5zmpDImF0/qdcFWOmTeUIup6Sqy0GoK7NeT39zf4jP4GFCbro7RhjVzms
+   kbPJK4oYRZpcUPN0vPl1uvxGWIp48VjZ8bTGnuhrq/vQUzYVUzNJDxqkc
+   N7F54e4qH+6gH1PbesBFgEqqfS57mXzYOv6nZ1haQnQmVEgK63IWZBoiy
+   Q==;
+X-CSE-ConnectionGUID: tRVcgkSDTLaf1Vhh9lMi/w==
+X-CSE-MsgGUID: clAHoCvRRUGzqoysU+KH0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="68725305"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="68725305"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 07:13:18 -0700
+X-CSE-ConnectionGUID: fkmkoWmdQxWzwXBvKrPNZw==
+X-CSE-MsgGUID: TdnUtjC3Qo2ip6ZvO42CCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="173753410"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa003.jf.intel.com with ESMTP; 26 Aug 2025 07:13:16 -0700
+Date: Tue, 26 Aug 2025 22:35:02 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, richard.henderson@linaro.org,
+	kvm@vger.kernel.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] kvm/kvm-all: make kvm_park/unpark_vcpu local to
+ kvm-all.c
+Message-ID: <aK3GFpAxCuTWfjEn@intel.com>
+References: <20250815065445.8978-1-anisinha@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250821042915.3712925-1-sagis@google.com> <20250821042915.3712925-4-sagis@google.com>
- <e04d31a3-3243-4141-88d2-1f0ade6d648a@linux.intel.com>
-Message-ID: <aK2_GMSYuPCXe1A6@google.com>
-Subject: Re: [PATCH v9 03/19] KVM: selftests: Expose functions to get default
- sregs values
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Sagi Shahar <sagis@google.com>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Ackerley Tng <ackerleytng@google.com>, Ryan Afranji <afranji@google.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250815065445.8978-1-anisinha@redhat.com>
 
-On Tue, Aug 26, 2025, Binbin Wu wrote:
-> On 8/21/2025 12:28 PM, Sagi Shahar wrote:
-> > TDX can't set sregs values directly using KVM_SET_SREGS. Expose the
-> > default values of certain sregs used by TDX VMs so they can be set
-> > manually.
-> > 
-> > Signed-off-by: Sagi Shahar <sagis@google.com>
-> > ---
-> >   .../selftests/kvm/include/x86/processor.h     |  6 +++
-> >   .../testing/selftests/kvm/lib/x86/processor.c | 41 +++++++++++++++----
-> >   2 files changed, 40 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-> > index 2efb05c2f2fb..5c16507f9b2d 100644
-> > --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> > +++ b/tools/testing/selftests/kvm/include/x86/processor.h
-> > @@ -1026,6 +1026,12 @@ static inline struct kvm_cpuid2 *allocate_kvm_cpuid2(int nr_entries)
-> >   void vcpu_init_cpuid(struct kvm_vcpu *vcpu, const struct kvm_cpuid2 *cpuid);
-> > +uint16_t kvm_get_default_idt_limit(void);
-> > +uint16_t kvm_get_default_gdt_limit(void);
-> > +uint64_t kvm_get_default_cr0(void);
-> > +uint64_t kvm_get_default_cr4(void);
-> > +uint64_t kvm_get_default_efer(void);
-> Can these be defined in the header file as static inline?
+On Fri, Aug 15, 2025 at 12:24:45PM +0530, Ani Sinha wrote:
+> Date: Fri, 15 Aug 2025 12:24:45 +0530
+> From: Ani Sinha <anisinha@redhat.com>
+> Subject: [PATCH v2] kvm/kvm-all: make kvm_park/unpark_vcpu local to
+>  kvm-all.c
+> X-Mailer: git-send-email 2.50.1
+> 
+> kvm_park_vcpu() and kvm_unpark_vcpu() is only used in kvm-all.c. Declare it
+> static, remove it from common header file and make it local to kvm-all.c
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  accel/kvm/kvm-all.c  |  4 ++--
+>  include/system/kvm.h | 17 -----------------
+>  2 files changed, 2 insertions(+), 19 deletions(-)
+> 
+> changelog:
+> unexport  kvm_unpark_vcpu() as well and remove unnecessary forward
+> declarations.
 
-Yes please.  Performance isn't a concern, but as a developer, it's nice to not
-have to bounce to a definition to find such simple information.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
