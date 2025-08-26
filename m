@@ -1,86 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98013343D63
-	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 14:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D535083D;
+	Tue, 26 Aug 2025 14:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217628; cv=none; b=aDB9OA32ZTekeh9nxsWSwfT9eQSPKvJpRQEwBhuZP9AWobMS00q2LaJk05ToeCj0VBYVPxnImPzs4WkT4aK9z8gMCLL7OaHnK5YYtXwYFqlX02ZlaCm6T9ufH82QOqo9p8cL2CtfHIgasF5i9AiueyjzOMU5FFWvlVjsNksqDxE=
+	t=1756217722; cv=none; b=o1ZnJSOgsaQjcvzEPUVSMITNW1zkFVs5r5yXdkPnoWgjIshBfWuslF/rpIEpJ534ftMXmxXRJznYTj5KNxD1xgsO3AbHdjAyCcHGrGJkaxt7FFj60fdCn63Evx6DU7rFLVQR8s442smQ+KX29Q5PwW6IMbA21HkHXUrCP2lWfQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217628; c=relaxed/simple;
-	bh=XUMwyANYoN9LqU5IRvdqCPCHLe1EThn+0cki44O6i8E=;
+	s=arc-20240116; t=1756217722; c=relaxed/simple;
+	bh=EOBColXHYti+tdwPYRTPX55zWbuLqPbuLsls/+AgNT4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LRHvlruEVMEF2dq1QO5j1Rc+ECboT/bhYQCmo2F6QZR2xNM+6XzTZ6zSU6qO2PA5SXQwjyV6oBKjqtk9zEKaWZeY7Z5oAX7e4900wgfxj2TFrIHcQuOIua2ChrTTV8iW358vVND2Y5ZGh6m1THlg2G2AZXfhSkwMHjopUPwppUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nAPUFENF; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFEBJNx4aeoBtWl9oFBHVgjtvc5vwMYONKVyaQFUABsaug6tUBV24eHPNxJi6+k5KYl8D40kazfgw1EVRURWm+4e5r+1ekE/z7bSmWqqYvrJ5m70vKDLbXz3lB2Czq7+Wj6zSb07zf0BfbkZPc3fIJOLlh+fE38P4gPCXD2KyuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LwzQTsWT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A6j3O2ty; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nAPUFENF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756217627; x=1787753627;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XUMwyANYoN9LqU5IRvdqCPCHLe1EThn+0cki44O6i8E=;
-  b=nAPUFENFi5wQbdA6MZkkQUb1r4K6zk/h47KcuAd5nD4TLbmrKoppa3l2
-   o0wfRZM9MJ0gwlYtl+qVfe0wlo1QFZ4nmamHsX9O+v9B/daU5zBFfYoBL
-   ljt6ZFnMxTpKyYmX37vnuxqrlPT9JZAbWLJqn+Mc5RHQfmuanGBJ1vEcp
-   5zmpDImF0/qdcFWOmTeUIup6Sqy0GoK7NeT39zf4jP4GFCbro7RhjVzms
-   kbPJK4oYRZpcUPN0vPl1uvxGWIp48VjZ8bTGnuhrq/vQUzYVUzNJDxqkc
-   N7F54e4qH+6gH1PbesBFgEqqfS57mXzYOv6nZ1haQnQmVEgK63IWZBoiy
-   Q==;
-X-CSE-ConnectionGUID: tRVcgkSDTLaf1Vhh9lMi/w==
-X-CSE-MsgGUID: clAHoCvRRUGzqoysU+KH0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="68725305"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68725305"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 07:13:18 -0700
-X-CSE-ConnectionGUID: fkmkoWmdQxWzwXBvKrPNZw==
-X-CSE-MsgGUID: TdnUtjC3Qo2ip6ZvO42CCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="173753410"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa003.jf.intel.com with ESMTP; 26 Aug 2025 07:13:16 -0700
-Date: Tue, 26 Aug 2025 22:35:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, richard.henderson@linaro.org,
-	kvm@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] kvm/kvm-all: make kvm_park/unpark_vcpu local to
- kvm-all.c
-Message-ID: <aK3GFpAxCuTWfjEn@intel.com>
-References: <20250815065445.8978-1-anisinha@redhat.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LwzQTsWT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A6j3O2ty"
+Date: Tue, 26 Aug 2025 16:15:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756217718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JD9Mbivfzta1IsMjGhVlMntp+L8qXG49mI8iNfMcMUs=;
+	b=LwzQTsWTBoWDx37sRi3tb0PU3Ajs+jz/IKfgLiKgj3SNBo81PY9cpOHKLYzAL7M7X9vCRs
+	FZGI/1VLSRkZcuHln0iZ5qfz+SM1eDSijuB/Vi9uZjAVk0Y33yZKTr4FE/s74aZGZmT4h/
+	O8TAdexVcIbJJkCKyG75v1S+xn56WRN7XgJP0e8vXbA5qQEJ3ucKNNv6VZFFd5o9Oo9v/o
+	XWmC0xk9Js+MZ8isbL1alwMkXPg0W1s3qGoXJrBsrCiu8+nevAS+W5Bu69sGuokDrvlDCp
+	xgZQVQkjEkXrLyta5s3CeLOfEagrmQej97s3+K1uhaWYNuITz22ijE4mbjqPmg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756217718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JD9Mbivfzta1IsMjGhVlMntp+L8qXG49mI8iNfMcMUs=;
+	b=A6j3O2tyCWBZzBRinhAyFlVtysNem2GxcBdeDD2YKoHgxzqgkyMt4mGki+3QnNz32c7ZgL
+	BbCCPDifu1NpmFBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] vhost_task: KVM: Don't wake KVM x86's recovery
+ thread if vhost task was killed
+Message-ID: <20250826141516.f_jWThaV@linutronix.de>
+References: <20250826004012.3835150-1-seanjc@google.com>
+ <20250826004012.3835150-2-seanjc@google.com>
+ <20250826034937-mutt-send-email-mst@kernel.org>
+ <aK2-tQLL-WN7Mqpb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250815065445.8978-1-anisinha@redhat.com>
+In-Reply-To: <aK2-tQLL-WN7Mqpb@google.com>
 
-On Fri, Aug 15, 2025 at 12:24:45PM +0530, Ani Sinha wrote:
-> Date: Fri, 15 Aug 2025 12:24:45 +0530
-> From: Ani Sinha <anisinha@redhat.com>
-> Subject: [PATCH v2] kvm/kvm-all: make kvm_park/unpark_vcpu local to
->  kvm-all.c
-> X-Mailer: git-send-email 2.50.1
-> 
-> kvm_park_vcpu() and kvm_unpark_vcpu() is only used in kvm-all.c. Declare it
-> static, remove it from common header file and make it local to kvm-all.c
-> 
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  accel/kvm/kvm-all.c  |  4 ++--
->  include/system/kvm.h | 17 -----------------
->  2 files changed, 2 insertions(+), 19 deletions(-)
-> 
-> changelog:
-> unexport  kvm_unpark_vcpu() as well and remove unnecessary forward
-> declarations.
+On 2025-08-26 07:03:33 [-0700], Sean Christopherson wrote:
+> And the call from __vhost_worker_flush() is done while holding a vhost_worker.mutex.
+> That's probably ok?  But there are many paths that lead to __vhost_worker_flush(),
+> which makes it difficult to audit all flows.  So even if there is an easy change
+> for the RCU conflict, I wouldn't be comfortable adding a mutex_lock() to so many
+> flows in a patch that needs to go to stable@.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+If I may throw something else into the mix: If you do "early"
+get_task_struct() on the thread (within the thread), then you could wake
+it even after its do_exit() since the task_struct would remain valid.
+Once you remove it from all structs where it can be found, you would do
+the final put_task_struct().
 
+Sebastian
