@@ -1,113 +1,205 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE702135B8;
-	Tue, 26 Aug 2025 14:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F2834AAF8
+	for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 14:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218706; cv=none; b=O6LJedk38soCBgYXi8mIkdPxSJOepbzec1GtNY0u7GwU9I0meujFBWO6TcyOO+WW/5t5ceQu7J4OU71UOFIZc56gUCoq0NKNfYLdN2YRNvLwYMcGFtmMy9nhQ6YGQfT5sunspkSAa9bbkhdaXBv2L11W0zAqx3/eYRzG+UX2IKI=
+	t=1756219261; cv=none; b=T2B1gxJAK+uFl2CmVSfqPDRn+ARz1UdLjXRUfeLoahXd0spDKthl3bRrk9vctaMVExYO9hw5Uff1SPYpHTxWSkmjLB9InvKWMfQdDJdCTrv7gCd+QuFS2CCJZkSO27yRsWEyKl9nmIBYa6l3EnnTxrr0V1MaojSC/1dY9B9qSeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218706; c=relaxed/simple;
-	bh=/2HsZ/XIzddkUHUH0J5f1YF3GAgt4K2I1EuGaK5+mTM=;
+	s=arc-20240116; t=1756219261; c=relaxed/simple;
+	bh=UV6QsGJaNRCIjLl6uGJScd++GUZtMzgSHcsM6bVx3c4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HaqvgIebC6l09C2UyYbMZvwDWKZFyrjqrHbS+h8VrqWLZAmmTgysAtgifyrItTLNoaPFS2Pa55YGb8/pVWTACPkZrxZLQLa7/hdDP9UH5M10hqFnIWoa1dEF9RtzGd9rcYQmZZeUJN4F0E8aIK+jRlO+ih0atxL0xTbtc0NRbVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hY5gv1km; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGshdTQYaigNuURjvzBAZ+O1mvkMbLqM7+d46ns3mMvuVEjI2bsaRVY7CYqW6GdsLg0N8OMR5GSKD9KH4co9ed6F8DuqbzbmfIbj2o0/zZgA+66brhy5uLtkS0jOgDx4PAGiiET7Hk7Zg646Ckx5fiOHyvHTWKAcAttOfnBydL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WO1bToP9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hY5gv1km"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e39ec6f30so5480500b3a.2;
-        Tue, 26 Aug 2025 07:31:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756218704; x=1756823504; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/2HsZ/XIzddkUHUH0J5f1YF3GAgt4K2I1EuGaK5+mTM=;
-        b=hY5gv1kmjgdKTxlYLJn4A03RAEl8yDBA8AopKwMkPGDcC8G9LRLSHfh7mBotg3st0P
-         hzVhY5t/fRp3ErzbsRaSYbUsY2/ctBZrYhxPYjhPn/VS/M6Rkc9v9ATLJPwZsiDLpJdo
-         Vmg1k6TZJby7gRiO5hRC/ztKEBkxjxUIyKofVSZgn2kRhn/59diMfRYmdDVfI0HsLwLe
-         Te28cQHJrrhGOLItohGQJVbogJlZ/BhQiRjXEGunXB3nkc/MavIvvHneP0k59TF3B0me
-         io5c45nQd3Ju7K1GXYoML9nZEo/+zY/xV3e5xYUm8hBXBV/f86mbnxyRQDSeD6OJy/6g
-         5mdw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WO1bToP9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756219258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1ihfy3FuhJ2wqfa7u6CNmaEum1YBa2rsl3CeJYStFWI=;
+	b=WO1bToP91ispJ69P0K21+rAnZVGMY77+QthH1BIJJgmqAwoOvMY4uB/w8v12ILKfUJBHMZ
+	imn1dIOikiNTrqCRxv4OIlTiWgk06bY9LbJ5sYS9qmHGivHesvZfg4voR0yWrmn9owDQjD
+	eUimPDVl9wfco+hxlqBI9fOiP/yCVXM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-cxEr9d_ZMMGH82_Lci1gvw-1; Tue, 26 Aug 2025 10:40:56 -0400
+X-MC-Unique: cxEr9d_ZMMGH82_Lci1gvw-1
+X-Mimecast-MFC-AGG-ID: cxEr9d_ZMMGH82_Lci1gvw_1756219255
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a1b0c5366so33763655e9.3
+        for <kvm@vger.kernel.org>; Tue, 26 Aug 2025 07:40:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756218704; x=1756823504;
+        d=1e100.net; s=20230601; t=1756219255; x=1756824055;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/2HsZ/XIzddkUHUH0J5f1YF3GAgt4K2I1EuGaK5+mTM=;
-        b=iy2cCDbHff0qswa30YDe9GogA12P3hCz7n6XTfuK1INIfbkpZqZlMbrgMksTRg4akK
-         5lSEgCG0dVeDtinkw2ZXsj3TstFBQLbdzo1vq+hXj1cUiAi3eS51gw3v/tnHUbzNcfbq
-         qBC153foau/olTnqTI9CRFYh/wFdkyXOHDdpRWsctSfx6XwNbT7cexDrwTs9Y4ycmd2D
-         xL/mcl63++KzkgPAyyrPkOMgqgXzaKa1T5UlTPnnUmF4hD9oYKwg9l2x1c7fCq/5cV1x
-         67GqyIWMTPGX3QweYG6BGf+hVsHGXEK3J1ZLEBkbUMNeT8/ON9/Wafw7zDEgC7FXI28E
-         Md1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU6MOtpGE2wf91ApxxJqdU4WYBRQc7Ze6f+M1NEbUEf8TpnXu9ZGEdZICQF4T1CShH0THE=@vger.kernel.org, AJvYcCXVzkX8PQMsviUdRwkRMI+2+xwwtaOQEwUHUUfDyzEW8XyTInII6kQH4X8TU88fhTAfVt9VUiTg0IH4@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsC9ehBqiYj2SX7ls5pXUT8w7cTjnRsXYchNnqOfpdWhLHP7il
-	9CVS2IpcRv+MkeVgYqkkAKd2hKB9OGfvC4oFcgN8K9nnQ2Apj36ku1ue
-X-Gm-Gg: ASbGncuM3WS9xkbxikZuSJKofq+8GpXGZTIMqHyhbKw/HH8S9X/a3FVNaP1mj5BWxnD
-	xO8wC/MNjYzLcgItYo6DnSi7vvxucyqjozjWMK+7IDqSyTOnihfSRpkNjBm2jD0ATHym8mq3nGp
-	mqcexieqvtVpkKNlFC/Qqn5GXpnwrI/Y0x4H19eCsFjMbqQXbwvpM7jp1WeYX/cBlYWttqXBffF
-	s4Bp97vLY/hoCKd1OFYPLb67aG4TgMhH0MZwWklBlAiww5qslX249NPNax3ES0ztx+QX0/peI28
-	lNyun3vqRArFIoU/NlqI+MKRP8CAbXsO+0dw5SBK9M1cGem23JoiLbib2kkrpPDTxVupReq2I3V
-	YxPGt4OaVg8objkiBZzqU2A==
-X-Google-Smtp-Source: AGHT+IFm+XrOlSim9C8ckicCEIkpgvafeXXcgdVuWrC98u30twNdBGpbSt44emTPsPlVfiBYYAcZ0w==
-X-Received: by 2002:a17:903:2f4e:b0:246:b463:cabf with SMTP id d9443c01a7336-246b463dcdemr91050425ad.8.1756218703821;
-        Tue, 26 Aug 2025 07:31:43 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cbb9ce58sm9278046a12.40.2025.08.26.07.31.42
+        bh=1ihfy3FuhJ2wqfa7u6CNmaEum1YBa2rsl3CeJYStFWI=;
+        b=ooKhsvtE7xSiSa4AmHiOdh54h6F7MitNVps8b9rPTuyG0bFSZ2A+ftnb/tfWoSW2I9
+         4LDz+eA+oi5N0CVNhkmkFRVUSG5UrDKs4oIcvSyb1jgT741ON7QKw+4yx85hq/jFjAKB
+         P+BfI0QEaGWGIdI2XFmkRvfH5oVO85lMv59O5v3ttJAobsSYO6NW+FkmHFuSVJGihTBA
+         f2vEl+gIjcALPTBazjovpTeTq0XpObOMfnYJtsJ2wNyGzeWW8NikmYaHXMHMpNzRP469
+         vf1df6RNde3OvyQJvGf/yCEMDold5fnQo8QRK6TOxrXET120yVo03BprAoZZfBaJqRBe
+         6KDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX44n5RHpg+33L1AMep2PuW01zEGU2x3OUjFpHb/eP2cCxqbeKPUkiFv5mz1x40U14o7lo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHMAxIA7qJBQsp1luv4MlOZAaoQUV30zjqyc6HsJqwZkysomul
+	5W2On4aCPIRjZfn4BWaaCkmBWQEklBe3qJJIIm3lW6IQhTlIMg3mYCbnCeaJOjUgY+lzJc/knon
+	5fFLR4MsTZJ2LRByTCAre9nSh//af1lWzAIb9CKQGP1IsJp4FfyDbQw==
+X-Gm-Gg: ASbGncsH044hsbbo5htjAxD6Wyi6W1f0tkyivO8wvIlIQMfE/jxIcgNV30N3J4CXYPU
+	cU3FKGDqjF3t39tE8mQ7THIJNKI3hYwqSdlsqI7sFS6eFsslyI803su4u0i+dANsGx5KT2Xt5ni
+	fdRUnb2exNJLmT4pOkIvrMdZA3BQNNml8H9Zy3ZrK5Xb7PYmvd1ET7hL62r4iwnQljzPe/ws2qF
+	H9wQH3d1xElHWTQUkmfOI+euz6q21+BMdgB0QtNQBu8BcPf+hNRNnVMx9QoFkn5xNYGwX1Ar22V
+	ML7fp+1EZwUY4o4XrIQYC/CXm0dryVs=
+X-Received: by 2002:a05:600c:5251:b0:455:f380:32e2 with SMTP id 5b1f17b1804b1-45b517ca54cmr149244035e9.18.1756219254597;
+        Tue, 26 Aug 2025 07:40:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQn6JvvJeT7MlM5vxv7NDmMYfGEo1DRscOYnhsp0L3inuZrfVRfxK+fMUnsbs9Tx6WF6MBXA==
+X-Received: by 2002:a05:600c:5251:b0:455:f380:32e2 with SMTP id 5b1f17b1804b1-45b517ca54cmr149243805e9.18.1756219254143;
+        Tue, 26 Aug 2025 07:40:54 -0700 (PDT)
+Received: from redhat.com ([185.137.39.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b5df6b356sm112346715e9.0.2025.08.26.07.40.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 07:31:42 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id AB512420BAAE; Tue, 26 Aug 2025 21:31:38 +0700 (WIB)
-Date: Tue, 26 Aug 2025 21:31:38 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Alok Tiwari <alok.a.tiwari@oracle.com>, pbonzini@redhat.com,
-	corbet@lwn.net, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	rdunlap@infradead.org
-Cc: linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: KVM: fix reference for kvm_ppc_resize_hpt
- and various typos
-Message-ID: <aK3FSpONL01-Dexa@archie.me>
-References: <20250824075455.602185-1-alok.a.tiwari@oracle.com>
+        Tue, 26 Aug 2025 07:40:53 -0700 (PDT)
+Date: Tue, 26 Aug 2025 10:40:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH 1/3] vhost_task: KVM: Don't wake KVM x86's recovery
+ thread if vhost task was killed
+Message-ID: <20250826103625-mutt-send-email-mst@kernel.org>
+References: <20250826004012.3835150-1-seanjc@google.com>
+ <20250826004012.3835150-2-seanjc@google.com>
+ <20250826034937-mutt-send-email-mst@kernel.org>
+ <aK2-tQLL-WN7Mqpb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DLPwMqCHcj94pYC/"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250824075455.602185-1-alok.a.tiwari@oracle.com>
+In-Reply-To: <aK2-tQLL-WN7Mqpb@google.com>
+
+On Tue, Aug 26, 2025 at 07:03:33AM -0700, Sean Christopherson wrote:
+> On Tue, Aug 26, 2025, Michael S. Tsirkin wrote:
+> > On Mon, Aug 25, 2025 at 05:40:09PM -0700, Sean Christopherson wrote:
+> > > Provide an API in vhost task instead of forcing KVM to solve the problem,
+> > > as KVM would literally just add an equivalent to VHOST_TASK_FLAGS_KILLED,
+> > > along with a new lock to protect said flag.  In general, forcing simple
+> > > usage of vhost task to care about signals _and_ take non-trivial action to
+> > > do the right thing isn't developer friendly, and is likely to lead to
+> > > similar bugs in the future.
+> > > 
+> > > Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > > Link: https://lore.kernel.org/all/aKkLEtoDXKxAAWju@google.com
+> > > Link: https://lore.kernel.org/all/aJ_vEP2EHj6l0xRT@google.com
+> > > Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > > Fixes: d96c77bd4eeb ("KVM: x86: switch hugepage recovery thread to vhost_task")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > 
+> > OK but I dislike the API.
+> 
+> FWIW, I don't love it either.
+> 
+> > Default APIs should be safe. So vhost_task_wake_safe should be
+> > vhost_task_wake
+> > 
+> > This also reduces the changes to kvm.
+> > 
+> > 
+> > It does not look like we need the "unsafe" variant, so pls drop it.
+> 
+> vhost_vq_work_queue() calls
+> 
+>   vhost_worker_queue()
+>   |
+>   -> worker->ops->wakeup(worker)
+>      |
+>      -> vhost_task_wakeup()
+>         |
+>         -> vhost_task_wake()
+> 
+> while holding RCU and so can't sleep.
+> 
+> 	rcu_read_lock();
+> 	worker = rcu_dereference(vq->worker);
+> 	if (worker) {
+> 		queued = true;
+> 		vhost_worker_queue(worker, work);
+> 	}
+> 	rcu_read_unlock();
+> 
+> And the call from __vhost_worker_flush() is done while holding a vhost_worker.mutex.
+> That's probably ok?  But there are many paths that lead to __vhost_worker_flush(),
+> which makes it difficult to audit all flows.  So even if there is an easy change
+> for the RCU conflict, I wouldn't be comfortable adding a mutex_lock() to so many
+> flows in a patch that needs to go to stable@.
+> 
+> > If we do need it, it should be called __vhost_task_wake.
+> 
+> I initially had that, but didn't like that vhost_task_wake() wouldn't call
+> __vhost_task_wake(), i.e. wouldn't follow the semi-standard pattern of the
+> no-underscores function being a wrapper for the double-underscores function.
+
+Eh. that's not really a standard. the standard is that __ is an unsafe
+variant.
+
+> I'm definitely not opposed to that though (or any other naming options).  Sans
+> comments, this was my other idea for names:
+> 
+> 
+> static void ____vhost_task_wake(struct vhost_task *vtsk)
+
+That's way too many __. Just vhost_task_wake_up_process will do.
+
+> {
+> 	wake_up_process(vtsk->task);
+> }
 
 
---DLPwMqCHcj94pYC/
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 24, 2025 at 12:54:48AM -0700, Alok Tiwari wrote:
-> Fix the incorrect reference to struct kvm_reinject_control and replace
-> it with the correct struct kvm_ppc_resize_hpt in the documentation of
-> the HPT resize ioctl.
->=20
+Pls add docs explaining the usage of __vhost_task_wake
+and vhost_task_wake respectively.
 
-LGTM, thanks!
+> void __vhost_task_wake(struct vhost_task *vtsk)
+> {
+> 	WARN_ON_ONCE(!vtsk->handle_sigkill);
+> 
+> 	if (WARN_ON_ONCE(test_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags)))
+> 		return;
 
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Add comments here please explaining why we warn.
 
---=20
-An old man doll... just what I always wanted! - Clara
+> 	____vhost_task_wake(vtsk);
+> }
+> EXPORT_SYMBOL_GPL(__vhost_task_wake);
 
---DLPwMqCHcj94pYC/
-Content-Type: application/pgp-signature; name=signature.asc
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaK3FQAAKCRD2uYlJVVFO
-o1lkAQDMiJWsc4VcsMe3oMv646Tp9Hd4gu42IXlJNeyvZAmzywD8C5IOiJx3Vzuw
-R3bu3JNtZyydzXM6eTuqyYiGqy/RoAs=
-=jthh
------END PGP SIGNATURE-----
+> void vhost_task_wake(struct vhost_task *vtsk)
 
---DLPwMqCHcj94pYC/--
+
+> {
+> 	guard(mutex)(&vtsk->exit_mutex);
+> 
+> 	if (WARN_ON_ONCE(test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)))
+
+Add comments here please explaining why we warn.
+
+> 		return;
+> 
+> 	if (test_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags))
+> 		return;
+> 
+> 	____vhost_task_wake(vtsk);
+> }
+> EXPORT_SYMBOL_GPL(vhost_task_wake);
+
