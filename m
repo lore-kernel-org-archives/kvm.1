@@ -1,21 +1,22 @@
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB49B2B9A7;
-	Tue, 26 Aug 2025 16:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBDC3164CA;
+	Tue, 26 Aug 2025 16:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756225836; cv=none; b=M3L7Obo1s6+OrSxldYxleDXI0VJX9Oe1oA7N8iZixLP3dn+kYrfgKq+vabJMItjYEAuXKBIk/w0lT4JjUgTkzaRfaWIpQGhiH+KTlAtGV90lLO1OYiOnceVQmoQyz19dGBCquKk8eNqlw8IKnfpulPFmEFqo6IjLrzu0R5FS6Aw=
+	t=1756225842; cv=none; b=tc38WJOImfSrUdnQfQoYeu/0ME0VpESw2jQ3fVIk0ovdC6Kg4u+Nyo7ckC1neYaTH5biqHf6NG6tB4eC0oyt9gr6SPrHOab98VVP5eqr0IPXpCqm9pYNNv6i8Ao0NxNmgf7x2Qx0ztJFajrB/j6Rkc8v++9M38difVV+sglPZ18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756225836; c=relaxed/simple;
-	bh=yMwNl4e0l3TtPcySpAL6rbOFnmB2yIOLSJ7vpcZI0ws=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=aOTLb0W4XnqeGlDddDdO4JnLsspso6vH4CAZlsvsCbZ5Zd1ztCFwPnt/RlKcie4hLxYoiBtEI1w287ocIlDrjEe2FS4EPCkdgRRkg6oguMOZTEChKf4PZMa1ZGOAkFHIqM6hSiBbLrz/Tz+CVoVGulZnnF63ZEkyii2yE4GDt+8=
+	s=arc-20240116; t=1756225842; c=relaxed/simple;
+	bh=HtF3kKHFg9XwWbNN4HMPRKpFaIvrfyNEuULG2kM8s3c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EK59wQdRmHDKQHbdQd6cW/h1I0bP77n5X7pSaVE2ddz49yjGzKHRkSZnEjy9ZvPSaXcSYQAsQXw0KxGwNGFR7wEbS29/huIbb1SNrgnXLRbJRZgmUVT+N+ydTc6AmEutvxLhStOZQ8gGGPdxIjk2t6HvaT+tAyVHGwZly/FSURk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
 Received: from ROG.lan (unknown [118.251.176.199])
-	by APP-03 (Coremail) with SMTP id rQCowAD3jX8L4a1oBKJmDw--.6398S2;
-	Wed, 27 Aug 2025 00:30:05 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAD3jX8L4a1oBKJmDw--.6398S4;
+	Wed, 27 Aug 2025 00:30:20 +0800 (CST)
 From: Pincheng Wang <pincheng.plct@isrc.iscas.ac.cn>
 To: paul.walmsley@sifive.com,
 	palmer@dabbelt.com,
@@ -49,92 +50,104 @@ Cc: linux-riscv@lists.infradead.org,
 	kvm-riscv@lists.infradead.org,
 	linux-kselftest@vger.kernel.org,
 	pincheng.plct@isrc.iscas.ac.cn
-Subject: [PATCH v2 0/5] Add Zilsd/Zclsd support in hwprobe and KVM
-Date: Wed, 27 Aug 2025 00:29:34 +0800
-Message-Id: <20250826162939.1494021-1-pincheng.plct@isrc.iscas.ac.cn>
+Subject: [PATCH v2 2/5] riscv: add ISA extension parsing for Zilsd and Zclsd
+Date: Wed, 27 Aug 2025 00:29:36 +0800
+Message-Id: <20250826162939.1494021-3-pincheng.plct@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250826162939.1494021-1-pincheng.plct@isrc.iscas.ac.cn>
+References: <20250826162939.1494021-1-pincheng.plct@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAD3jX8L4a1oBKJmDw--.6398S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFyftr1UXr48Cr1DJrW5Jrb_yoW8KrW5pF
-	s5GwnI9r1kJw13CF1fAr48ur1rKan5uws3tF9xtw18WayayFyrZr10k3ZxZF1kAFZ29FyD
-	Z3WrWryI9wnrAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjTRM6wCDUUUU
+X-CM-TRANSID:rQCowAD3jX8L4a1oBKJmDw--.6398S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxXr1rAF1kuFW3Jr15ArykAFb_yoW5GF4kpr
+	s5CrWFyrWDJw1fuwsxtrZ5Ww15Xw1UGws8Gw1xWryrJFW7trWfXr1kAa42yanxJFy0qr1Y
+	vF1rWrsxZa4UAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r4UJwAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+	cVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
+	KfnxnUUI43ZEXa7sRipB-tUUUUU==
 X-CM-SenderInfo: pslquxhhqjh1xofwqxxvufhxpvfd2hldfou0/
 
-Hi all,
+Add parsing for Zilsd and Zclsd ISA extensions which were ratified in
+commit f88abf1 ("Integrating load/store pair for RV32 with the
+main manual") of the riscv-isa-manual.
 
-This is v2 of a short series that adds kernel support for the ratified
-Zilsd (Load/Store pair) and Zclsd (Compressed Load/Store pair) RISC-V
-ISA extensions. The series enables kernel-side exposure so user-space
-(for example glibc) can detect and use these extensions via hwprobe and
-runtime checks.
+Signed-off-by: Pincheng Wang <pincheng.plct@isrc.iscas.ac.cn>
+---
+ arch/riscv/include/asm/hwcap.h |  2 ++
+ arch/riscv/kernel/cpufeature.c | 24 ++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-Patches:
-- Patch 1：Add device tree bindings documentation for Zilsd and Zclsd.
-- Patch 2: Extend RISC-V ISA extension string parsing to recognize them.
-- Patch 3: Export Zilsd and Zclsd via riscv_hwprobe.
-- Patch 4: Allow KVM guests to use them.
-- Patch 5: Add KVM selftests.
-
-Changes in v2:
-- Device-tree schema: simplified the rv64 validation for Zilsd by
-  removing a redundant `contais: const: zilsd` in the `if` clause; the
-  simpler `if (riscv, isa-base contains rv64i) then (riscv,
-  isa-extension not contains zilsd)` form is used instead. Behaviour is
-  unchanged, and the logic is cleaner.
-- Device-tree schema: corrected Zclsd dependency to require both Zilsd
-  and Zca (previous `anyOf` was incorrect; now both are enforced).
-- Commit message typo fixed: "dt-bidings" -> "dt-bindings" in the Patch
-  1 commit subject.
-
-The v2 changes are documentation/schema corrections in extensions.yaml.
-No functional changes were made to ISA parsing, hwprobe syscall, KVM
-guest support or the selftests beyond ensuring the binding correctly
-documents and validates the extension relationships.
-
-Please review v2 and advise if futher changes are needed.
-
-Thanks,
-Pincheng Wang 
-
-Pincheng Wang (5):
-  dt-bindings: riscv: add Zilsd and Zclsd extension descriptions
-  riscv: add ISA extension parsing for Zilsd and Zclsd
-  riscv: hwprobe: export Zilsd and Zclsd ISA extensions
-  riscv: KVM: allow Zilsd and Zclsd extensions for Guest/VM
-  KVM: riscv: selftests: add Zilsd and Zclsd extension to get-reg-list
-    test
-
- Documentation/arch/riscv/hwprobe.rst          |  8 +++++
- .../devicetree/bindings/riscv/extensions.yaml | 36 +++++++++++++++++++
- arch/riscv/include/asm/hwcap.h                |  2 ++
- arch/riscv/include/uapi/asm/hwprobe.h         |  2 ++
- arch/riscv/include/uapi/asm/kvm.h             |  2 ++
- arch/riscv/kernel/cpufeature.c                | 24 +++++++++++++
- arch/riscv/kernel/sys_hwprobe.c               |  2 ++
- arch/riscv/kvm/vcpu_onereg.c                  |  2 ++
- .../selftests/kvm/riscv/get-reg-list.c        |  6 ++++
- 9 files changed, 84 insertions(+)
-
+diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
+index affd63e11b0a..7ad43d12c49f 100644
+--- a/arch/riscv/include/asm/hwcap.h
++++ b/arch/riscv/include/asm/hwcap.h
+@@ -106,6 +106,8 @@
+ #define RISCV_ISA_EXT_ZAAMO		97
+ #define RISCV_ISA_EXT_ZALRSC		98
+ #define RISCV_ISA_EXT_ZICBOP		99
++#define RISCV_ISA_EXT_ZILSD		100
++#define RISCV_ISA_EXT_ZCLSD     101
+ 
+ #define RISCV_ISA_EXT_XLINUXENVCFG	127
+ 
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 743d53415572..8e7757db3895 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -242,6 +242,28 @@ static int riscv_ext_zcf_validate(const struct riscv_isa_ext_data *data,
+ 	return -EPROBE_DEFER;
+ }
+ 
++static int riscv_ext_zilsd_validate(const struct riscv_isa_ext_data *data,
++		  const unsigned long *isa_bitmap)
++{
++	if (IS_ENABLED(CONFIG_64BIT))
++		return -EINVAL;
++
++	return 0;
++}
++
++static int riscv_ext_zclsd_validate(const struct riscv_isa_ext_data *data,
++				    const unsigned long *isa_bitmap)
++{
++	if (IS_ENABLED(CONFIG_64BIT))
++		return -EINVAL;
++
++	if (__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZILSD) &&
++		__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZCA))
++		return 0;
++
++	return -EPROBE_DEFER;
++}
++
+ static int riscv_vector_f_validate(const struct riscv_isa_ext_data *data,
+ 				   const unsigned long *isa_bitmap)
+ {
+@@ -483,6 +505,8 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
+ 	__RISCV_ISA_EXT_DATA_VALIDATE(zcd, RISCV_ISA_EXT_ZCD, riscv_ext_zcd_validate),
+ 	__RISCV_ISA_EXT_DATA_VALIDATE(zcf, RISCV_ISA_EXT_ZCF, riscv_ext_zcf_validate),
+ 	__RISCV_ISA_EXT_DATA_VALIDATE(zcmop, RISCV_ISA_EXT_ZCMOP, riscv_ext_zca_depends),
++	__RISCV_ISA_EXT_DATA_VALIDATE(zclsd, RISCV_ISA_EXT_ZCLSD, riscv_ext_zclsd_validate),
++	__RISCV_ISA_EXT_DATA_VALIDATE(zilsd, RISCV_ISA_EXT_ZILSD, riscv_ext_zilsd_validate),
+ 	__RISCV_ISA_EXT_DATA(zba, RISCV_ISA_EXT_ZBA),
+ 	__RISCV_ISA_EXT_DATA(zbb, RISCV_ISA_EXT_ZBB),
+ 	__RISCV_ISA_EXT_DATA(zbc, RISCV_ISA_EXT_ZBC),
 -- 
 2.39.5
 
