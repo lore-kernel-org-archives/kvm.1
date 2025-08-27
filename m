@@ -1,63 +1,67 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2B62E1EF8
-	for <kvm@vger.kernel.org>; Wed, 27 Aug 2025 19:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322DE2F0C49
+	for <kvm@vger.kernel.org>; Wed, 27 Aug 2025 19:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756323675; cv=none; b=DY0NVf/HqNnFlMwPFIFPhDBOWNc6jGmjOkdXmt4lcCMc6A8Ebdf1ygu2VkCVGU/wsOOnwNE5ukTPJ4bUvSIWvyGdBWREZOCNM/NLiijynUgJXcS2r6rwIEINh6j88dcarxAgUd7PYVr0iLB9vRR0FwwUHXqWdaCYAaFNx/CMcio=
+	t=1756323679; cv=none; b=NkFYAk9TCwsbN/9ODETJbB4AOIm0q05bk/u/lmT+TrHxWnFQIhfYSBYik3asgf4KBYFtoyse7bDdgKMWuse9rn/e4L02loeF5F5vOMt0JW93IFYeWXvTOU0MG66T5r6g4jQl9z49bhmrWrl1Y6J6beEQI8GtudoZwt5PoNeTRjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756323675; c=relaxed/simple;
-	bh=x/i6BRd0cWtRfp3CxZsaVLLtvufEWdcUwwghTxEVFpA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Of7dqMe6SEPgehdbaYrZ8sm2PYOv2QgAJbWidlhBy+c6wfTAMQT3RRTAQX88vAqPvIa+Pw+S4eGGYiERqKcqn58/4CML8hV05l2C8wsmMcF351RcFrY+7QT2Dq4Vdijq9OpCIIS+ziBs6vzB0x0Fw35jZnA+aNmrOHa2zxV7GL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AuF7t/qO; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1756323679; c=relaxed/simple;
+	bh=lOFYn5tzMu+BIyj/3iv2zb29eZrNyF3mgyqQKezrkec=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hkKmWeFaR8xHWBGdxwWVGjfdP0WborWF9KV1OhuP+KJXmaPRo5Umj/bcXRGs+kE4YT8MbJLpvLdnCmOjTTis1n9bv6NXPil1mZCDFZK6HEF3fXn+coTPzEkGzfOhcnSKNGwVqq09kYYKhQsvOm3zxwkM/gK2x5RE7oHXNK9H+Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sY4w8gJu; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AuF7t/qO"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-771e4a8b533so171252b3a.3
-        for <kvm@vger.kernel.org>; Wed, 27 Aug 2025 12:41:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sY4w8gJu"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3275636daa1so215675a91.0
+        for <kvm@vger.kernel.org>; Wed, 27 Aug 2025 12:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756323673; x=1756928473; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vWAmWKV0YCAe3PkG8+/flyHk3YjgRL//qGGe4nfIRiE=;
-        b=AuF7t/qOQm6qKXSPMaMLuRN6BsIljh2hAs2n96cSqDebchzPlBSsE6uIbP/MOkevzZ
-         ET95rIxOvWEA61A0wwiarEBik76TxH8frvDqebgaviaGRVpaxr3WrY3HdhqNYyJdiMhL
-         cUqloxI/T+NMiPzmfIM/MCpn+L6MD5XISHL2mrNO+emqa+a1ZYov+P1ely7+yn4CMGxo
-         JntqgxWSRawdSoglQ5yaW7YZsdo7WcM4nrhm2I8mQyDt/bxa4Ye62pU2HfIIObJ53mfU
-         BFtWGHkw1NGsjAkal3Mxu3HVIPfNIhpXYXouQ7Qn2rdISurIq1hO639HnfLw+gpc6l00
-         /9Xg==
+        d=google.com; s=20230601; t=1756323677; x=1756928477; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=BKdkhp8v27Li0GOsmRqKq40Y7Pxs7HR00OYnU2c0jjU=;
+        b=sY4w8gJuo5Y59YmV/4QW4Ysfi/2U5cRw/Tp47qbJ363iDCQL+0V9+M0nQ8bsoFFUs3
+         iV/ZZDLPT+gh1gwQ2aX2WG2J+Fij2Wc92+fBNfjRlc9KiwEM5RiZLk1YKXfmyE26hAHs
+         3hGACwOWDPuUqX2VlNsVorZkl2xEd4sFKDd0H8mSdeLWBdj/E00IrpjKnWorxdHAXlUZ
+         +oarvHpOTBwrL9iqg+AiHwNyvXBM8L/tPyFJbJvnxzpUZU+6HoTW4z9wIUBX873TrejZ
+         1A1yceiJtm3SY7pfM8caoX2FxEn86WjHGnOwsYOAO590cQuDqXWLarDH0x0+jHiiGTmk
+         l+FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756323673; x=1756928473;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vWAmWKV0YCAe3PkG8+/flyHk3YjgRL//qGGe4nfIRiE=;
-        b=HdGdd4ElfsiQkR2nnlsTbQ6rU97oiFurZ5wIUwn84Z1kIw3gqNd9GU+RxmMpF38q0I
-         XHPcs5Mw/DmX64jQe5gvlmQROi1xaWVaUNuVr7uIzRqEB93dmrZzX1oq0HOzWkBOTYvV
-         PfvfMo9szvCbtDH1JFq3PrFyszvM50ubQxOx1t7qy4oS/r1SFVaX3nak2whEiFDqztmb
-         sFfw8FUjfP3P3OuJiE1ZDWA329q8jnxMFmvG2PmWjyhWJ3Nhyb3cRNvEcsQ+qz7FESuT
-         gt2POwiBu5m16XI93e9aaubcQiMY7eE8ZZOEqjKCNKlgbwTG+tJ71PlDfbOerRPZUyk8
-         arQw==
-X-Gm-Message-State: AOJu0YzpptE21pblerjtXwMC0/zc8JHkPd0X/qiRSICCz7FlGcVb5BpV
-	PLiLXn4JBupCLPo99EAnAAQcLZ52EWnnyAmCmCz9vxjz75jrzVGwVUN1gw4CIRE58lwze8va07y
-	knEzmBg==
-X-Google-Smtp-Source: AGHT+IF3kgndwMxobuC1w46DvzTQVQ+70Io5X5LupzuJERdtYH2UT2HutkGftTPmJvqTvDvQz3iwKQFDQfQ=
-X-Received: from pfjf14.prod.google.com ([2002:a05:6a00:22ce:b0:772:49a:524f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b45:b0:770:556d:32e8
- with SMTP id d2e1a72fcca58-770556d5e86mr17407883b3a.24.1756323672784; Wed, 27
- Aug 2025 12:41:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756323677; x=1756928477;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BKdkhp8v27Li0GOsmRqKq40Y7Pxs7HR00OYnU2c0jjU=;
+        b=FGVXiWV02SoMNgvsXskffs7g90t3nIIYUWaWuXyWYQ8Dd4FspUg0yXrPqlBACfSOMb
+         djqr12Ojscp5byGHW15HWKtwXYvdn7K3IYIQNNe0Tw+RJ2yS7FJR7QUvjaFe4V3usRFK
+         sCAwazUV/Rx2JqxMLjdSZeLFTD+vpSAqIVIBSRebIkOWxwuQA0mgLGKY+yoigqxK9wsj
+         NS53b33Hnp954SFfVPZR026IcdcTClP2vG/q5vf5Ct7G4/BsNd8ObfVrbU4IPqUykeln
+         VEFoAuWf7MPFCLo2+j9nu8kkAwfX4I7SNcf9ICSdXZcufVit42anwPoKQyz6fbekKve3
+         /J2g==
+X-Gm-Message-State: AOJu0Yy5rxPTtVfpLlJT/ySxETVQVnUXq3TyoGQykDAPA4I1y/pyuisY
+	M5uCZRStykZCYf9fOgvuUn7nOQLD71GQXcVJDelBlz2c2uhnADyYZUgm6n9JAQK2YWss1ouT/t6
+	+YeuuJQ==
+X-Google-Smtp-Source: AGHT+IFkp3cSkHK/LCzu7rsgKn502PeqGnc81s3u1mjxkvPKl0aSkQfYxtfmuXztKttrbNAZ69OCb7JCKaU=
+X-Received: from pjbqd16.prod.google.com ([2002:a17:90b:3cd0:b0:31c:160d:e3be])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d4f:b0:324:eb2d:7537
+ with SMTP id 98e67ed59e1d1-32515ea1b2dmr27081009a91.20.1756323677599; Wed, 27
+ Aug 2025 12:41:17 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 27 Aug 2025 12:41:04 -0700
+Date: Wed, 27 Aug 2025 12:41:06 -0700
+In-Reply-To: <20250827194107.4142164-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20250827194107.4142164-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
-Message-ID: <20250827194107.4142164-1-seanjc@google.com>
-Subject: [PATCH v2 0/3] vhost_task: Fix a bug where KVM wakes an exited task
+Message-ID: <20250827194107.4142164-3-seanjc@google.com>
+Subject: [PATCH v2 2/3] vhost_task: Allow caller to omit handle_sigkill() callback
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
@@ -66,52 +70,47 @@ Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Michael,
+Now that vhost_task provides an API to safely wake a task without relying
+on the caller to react to signals, make handle_sigkill() optional and
+WARN if the "unsafe" __vhost_task_wake() is used without hooking sigkill.
+Requiring the user to react to sigkill adds no meaningful value, e.g. it
+didn't help KVM do the right thing with respect to signals, and adding a
+sanity check in __vhost_task_wake() gives developers a hint as to what
+needs to be done in response to sigkill.
 
-Do you want to take this through the vhost tree?  It technically fixes a KVM
-bug, but this obviously touches far more vhost code than KVM code, and the
-patch that needs to go into 6.17 doesn't touch KVM at all.
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ kernel/vhost_task.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-
-Fix a bug where KVM attempts to wake a vhost task that has already exited in
-response to a fatal signal, and tack on a few cleanups to harden against
-introducing similar bugs in the future.
-
-The issue is firmly a KVM problem, but I opted to fix the bug by making
-vhost_task_wake() safe against an exited task as doing so is far simpler and
-cleaner than implementing the same functionality in KVM, and I suspect that
-if there are other users of vhost_tasks in the future, then there's a good
-chance they will want/expect vhost_task to handle that detail.
-
-Note, this only started causing problems when commit 56180dd20c19 ("futex:
-Use RCU-based per-CPU reference counting instead of rcuref_t") landed, so
-the explosions are "new" in 6.17, but the bug has existed since KVM switched
-to vhost_task back in 6.13.
-
-v2:
- - Drop the "safe" postfix variant and make the "default" vhost_task_wake()
-   safe. [Michael].
- - Use vhost_task_wake() and __vhost_task_wake() for the public APIs, and
-   vhost_task_wake_up_process() for the local helper. [Michael]
- - Drag the signalas back from their Spanish holiday. [Sebastian]
-
-v1: https://lore.kernel.org/all/20250826004012.3835150-1-seanjc@google.com
-
-Sean Christopherson (3):
-  vhost_task: Don't wake KVM x86's recovery thread if vhost task was
-    killed
-  vhost_task: Allow caller to omit handle_sigkill() callback
-  KVM: x86/mmu: Don't register a sigkill callback for NX hugepage
-    recovery tasks
-
- arch/x86/kvm/mmu/mmu.c           |  7 +---
- drivers/vhost/vhost.c            |  2 +-
- include/linux/sched/vhost_task.h |  1 +
- kernel/vhost_task.c              | 62 +++++++++++++++++++++++++++-----
- 4 files changed, 56 insertions(+), 16 deletions(-)
-
-
-base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index bd213d0b6da3..01bf7b0e2c5b 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -59,7 +59,8 @@ static int vhost_task_fn(void *data)
+ 	 */
+ 	if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+ 		set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
+-		vtsk->handle_sigkill(vtsk->data);
++		if (vtsk->handle_sigkill)
++			vtsk->handle_sigkill(vtsk->data);
+ 	}
+ 	mutex_unlock(&vtsk->exit_mutex);
+ 	complete(&vtsk->exited);
+@@ -81,6 +82,13 @@ static void vhost_task_wake_up_process(struct vhost_task *vtsk)
+  */
+ void __vhost_task_wake(struct vhost_task *vtsk)
+ {
++	/*
++	 * Waking the task without taking exit_mutex is safe if and only if the
++	 * implementation hooks sigkill, as that's the only way the caller can
++	 * know if the task has exited prematurely due to a signal.
++	 */
++	WARN_ON_ONCE(!vtsk->handle_sigkill);
++
+ 	/*
+ 	 * Checking VHOST_TASK_FLAGS_KILLED can race with signal delivery, but
+ 	 * a race can only result in false negatives and this is just a sanity
 -- 
 2.51.0.268.g9569e192d0-goog
 
