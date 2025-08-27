@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED80B2741A6;
-	Wed, 27 Aug 2025 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496FF33A01A;
+	Wed, 27 Aug 2025 16:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756311049; cv=none; b=HTZvn+E5SWet/d+YFXnAE69j2OpyXwYaWKS91YhUKdc9o1cCorY/WcG3WZ8QdTQV0CTYXx1jn3qHYZpjBoIF0kXZ1BoRWle489+t2O0DP9ZliCCXhgX8NasXRU0+/hWHghcAf9BqZheus3Sl7UJOhw0per8XAHEzvuLp3u+yrQc=
+	t=1756311049; cv=none; b=AI70OQeDxDUIDkz8DdJKAEu4+t1HWnNvpXoNe3ganpchARcAwoDrhD39bCMpPYBCU2nuD0/IGvSSX856cXRLa97/L2i6eCvQwz5lLu2rAOXOrhvniV+jofSNjhSjT4HZvFE7afyjO61PLOLTudW8AgM7x2FupkzeyPcb6F0jT78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756311049; c=relaxed/simple;
-	bh=hHsu9WQdYQHrwXxayIAM189ualpE0/qjEduc1G4m+4U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MW/bbZF550+JbIcEz9dGwb8cpv7c0Qodt9hvsYdidMs/HCoxkZdU1qZfyVN1GyZaFVIufxkhxWcWu9pKYod5fOGfuOmJ5u06k2LqH4ptbifrUh9rP4gAJvWXrKQNy3zBuO4lm8PcAg+xLR3i3jnrwQ4jdTsm3YwWX5UBnhcgN5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXyPwnSS; arc=none smtp.client-ip=10.30.226.201
+	bh=Wk9hG5HiVgiE9TXel5ejXn4rVyE8UKFRiiNzNYXg7z4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ZMvofnIPBnR/1u9Ca9GvdU8p7NWWO7i0qxn16Ddht1GuJOAGGubzoXgH/9fqdQ4R/9Y3RWLvLBwg+5mdv4gtfxG46hCrLb8JsFPP/ukDnM0oJbsKcU+OTG5TDILn+Sx19mduFAlqU5N3BXpy1ZKG29f+rLhXeVT4WxcA/1auJjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3db69ax; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXyPwnSS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997DDC4CEF0;
-	Wed, 27 Aug 2025 16:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3db69ax"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2883AC4CEEB;
+	Wed, 27 Aug 2025 16:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756311048;
-	bh=hHsu9WQdYQHrwXxayIAM189ualpE0/qjEduc1G4m+4U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WXyPwnSSQQpLkBnT/nHeRzsbEeft4QEWRzGqnJioHYVLz5VBgSLPHlhmM8B7ukBNR
-	 euietACguNGUwzaKWzYFImpSkuACz3nx1bJASGJLgNCv7dl/rrVjofb9KNIS7fgIMD
-	 DIum4u0/0SbmA+IwODqj3MRJ+89ohmISCIJwfeaNGixHtR1YC1/16ch68mzJtT6IbI
-	 1OuagGUMsPmOEnQU2vwlaSgibhuIKrRYn7nc73wLPOAFtenb6PhpoVywKGdHs43NX0
-	 ZfTWPmm/nr65DPYBrdVhaLqiioCSfp+AC+Rpy7INoLJHaI84aKOuXq4iwHtp9cy4tI
-	 pEOuLFMw8VcxQ==
+	s=k20201202; t=1756311049;
+	bh=Wk9hG5HiVgiE9TXel5ejXn4rVyE8UKFRiiNzNYXg7z4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e3db69axiHxbFM/QS3KNN1DgG0Llsdr5+ix3g/uNtDzjTntzlexi5WILfNOhfVA/Y
+	 qDhAj5VrpyX903UgRP5H5497t0kieGq2e6O9QHtHv3dIW6cWSzZlV+KXdApPGfMDYc
+	 fXAE0i4UWutg+4jsbyWEIrStgn16dsYdD13glYRCvNFFnRPfsHTInG42nDHlNQTgrF
+	 tTuofSm9XGkHuoy+xvzBhNI6aw1BXeyh09eN7ct16NQcURMwnfsdt9VrsOaYunNszL
+	 eJ9wofpefMPVzQTXNeviC4DrnsEdNXRas6NRMhQf6G/Izv72mS5q+FOM9pVg66WqJM
+	 75tx0sHPF8BKA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1urIjW-00000000yGc-24Sv;
-	Wed, 27 Aug 2025 16:10:46 +0000
+	id 1urIjX-00000000yGc-1Jtg;
+	Wed, 27 Aug 2025 16:10:47 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -39,10 +40,12 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 00/16] KVM: arm64: TTW reporting on SEA and 52bit PA in S1 PTW
-Date: Wed, 27 Aug 2025 17:10:22 +0100
-Message-Id: <20250827161039.938958-1-maz@kernel.org>
+Subject: [PATCH 04/16] KVM: arm64: Decouple output address from the PT descriptor
+Date: Wed, 27 Aug 2025 17:10:26 +0100
+Message-Id: <20250827161039.938958-5-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250827161039.938958-1-maz@kernel.org>
+References: <20250827161039.938958-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,62 +58,77 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Yes, $SUBJECT rolls of the tongue.
+Add a helper converting the descriptor into a nicely formed OA,
+irrespective of the in-descriptor representation (< 52bit, LPA
+or LPA2).
 
-This series was triggered by the realisation that when injecting an
-SEA while on a S1PTW fault, we don't report the level of the walk and
-instead give a bare SEA, which definitely violates the architecture.
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/at.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-This state of things dates back to the pre-NV days, when we didn't
-have a S1 page table walker, and really didn't want to implement one.
-I've since moved on and reluctantly implemented one, which means we
-now *could* provide the level if we really wanted to.
-
-However, nothing is that simple. The current code in at.c is firmly
-48bit, as our NV implementation doesn't yet support 52bit PA, while an
-EL1 VM can happily enjoy LPA and LPA2. As a result, it is necessary to
-expand the S1 PTW to support both LPA and LPA2. Joy.
-
-Then, once the above is achieved, we need to hook into the PTW
-machinery to match the first level of the walk that results in
-accessing the faulty address. For this, we introduce a simple filter
-mechanism that could be expanded if we needed to (no, please no).
-
-Finally, we can plug this into the fault injection path, and enjoy
-seeing the translation level being populated in the ESR_ELx register.
-
-Patches on top of 6.16-rc3.
-
-Marc Zyngier (16):
-  KVM: arm64: Add helper computing the state of 52bit PA support
-  KVM: arm64: Account for 52bit when computing maximum OA
-  KVM: arm64: Compute 52bit TTBR address and alignment
-  KVM: arm64: Decouple output address from the PT descriptor
-  KVM: arm64: Pass the walk_info structure to compute_par_s1()
-  KVM: arm64: Compute shareability for LPA2
-  KVM: arm64: Populate PAR_EL1 with 52bit addresses
-  KVM: arm64: Expand valid block mappings to FEAT_LPA/LPA2 support
-  KVM: arm64: Report faults from S1 walk setup at the expected start
-    level
-  KVM: arm64: Allow use of S1 PTW for non-NV vcpus
-  KVM: arm64: Allow EL1 control registers to be accessed from the CPU
-    state
-  KVM: arm64: Don't switch MMU on translation from non-NV context
-  KVM: arm64: Add filtering hook to S1 page table walk
-  KVM: arm64: Add S1 IPA to page table level walker
-  KVM: arm64: Populate level on S1PTW SEA injection
-  KVM: arm64: selftest: Expand external_aborts test to look for TTW
-    levels
-
- arch/arm64/include/asm/kvm_nested.h           |  25 +-
- arch/arm64/kvm/at.c                           | 341 +++++++++++++-----
- arch/arm64/kvm/inject_fault.c                 |  27 +-
- arch/arm64/kvm/nested.c                       |   2 +-
- .../selftests/kvm/arm64/external_aborts.c     |  43 +++
- .../selftests/kvm/include/arm64/processor.h   |   1 +
- .../selftests/kvm/lib/arm64/processor.c       |  13 +-
- 7 files changed, 362 insertions(+), 90 deletions(-)
-
+diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
+index 36cee6021b2ae..4013d52e308bf 100644
+--- a/arch/arm64/kvm/at.c
++++ b/arch/arm64/kvm/at.c
+@@ -56,6 +56,29 @@ static bool has_52bit_pa(struct kvm_vcpu *vcpu, struct s1_walk_info *wi, u64 tcr
+ 	return (tcr & (wi->regime == TR_EL2 ? TCR_EL2_DS : TCR_DS));
+ }
+ 
++static u64 desc_to_oa(struct s1_walk_info *wi, u64 desc)
++{
++	u64 addr;
++
++	if (!wi->pa52bit)
++		return desc & GENMASK_ULL(47, wi->pgshift);
++
++	switch (BIT(wi->pgshift)) {
++	case SZ_4K:
++	case SZ_16K:
++		addr = desc & GENMASK_ULL(49, wi->pgshift);
++		addr |= FIELD_GET(KVM_PTE_ADDR_51_50_LPA2, desc) << 50;
++		break;
++	case SZ_64K:
++	default:	    /* IMPDEF: treat any other value as 64k */
++		addr = desc & GENMASK_ULL(47, wi->pgshift);
++		addr |= FIELD_GET(KVM_PTE_ADDR_51_48, desc) << 48;
++		break;
++	}
++
++	return addr;
++}
++
+ /* Return the translation regime that applies to an AT instruction */
+ static enum trans_regime compute_translation_regime(struct kvm_vcpu *vcpu, u32 op)
+ {
+@@ -402,7 +425,7 @@ static int walk_s1(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
+ 			wr->PXNTable |= FIELD_GET(PMD_TABLE_PXN, desc);
+ 		}
+ 
+-		baddr = desc & GENMASK_ULL(47, wi->pgshift);
++		baddr = desc_to_oa(wi, desc);
+ 
+ 		/* Check for out-of-range OA */
+ 		if (check_output_size(baddr, wi))
+@@ -431,7 +454,8 @@ static int walk_s1(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
+ 			goto transfault;
+ 	}
+ 
+-	if (check_output_size(desc & GENMASK(47, va_bottom), wi))
++	baddr = desc_to_oa(wi, desc);
++	if (check_output_size(baddr & GENMASK(52, va_bottom), wi))
+ 		goto addrsz;
+ 
+ 	if (!(desc & PTE_AF)) {
+@@ -444,7 +468,7 @@ static int walk_s1(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
+ 	wr->failed = false;
+ 	wr->level = level;
+ 	wr->desc = desc;
+-	wr->pa = desc & GENMASK(47, va_bottom);
++	wr->pa = baddr & GENMASK(52, va_bottom);
+ 	wr->pa |= va & GENMASK_ULL(va_bottom - 1, 0);
+ 
+ 	wr->nG = (wi->regime != TR_EL2) && (desc & PTE_NG);
 -- 
 2.39.2
 
