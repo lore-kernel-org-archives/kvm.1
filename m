@@ -1,123 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D82C199931
-	for <kvm@vger.kernel.org>; Thu, 28 Aug 2025 02:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CEF1C01;
+	Thu, 28 Aug 2025 02:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756347588; cv=none; b=U7gp9GO0BKu+rWoERMcPHMvDbt5aIZI+KsiZKdjPpOGNWz7fh8g4LASH52d20W/PsjtHQf1ZQ2nCikTghC2sUMeUCJiu8V7nVhvqkDjhYXP/BdnAbIzNG80qhzWQ38jv2C+oUGv7bsRp2LIN/nWtJcYK2n0pgbgpfrr7x6O+gNE=
+	t=1756348393; cv=none; b=qdQwRnG7ZRTW0FD4CrqYNHyD5vx2DxFGZSPQocFhga+M1BL3SiH7TfC+VQgo5ha3UhlEM5v4q14tne4LQMnCW7cO/s4jd9mFFhPyCelaH0Fx5vuNq1B8k0ofEJXTQpR5a8qcxHImoGdT+ePtLjUV4UCRZv9CgfCfng6ajpc/zuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756347588; c=relaxed/simple;
-	bh=hvnRnQeBlWogViGHqrd2JOdKSR/3mg9vBmKlLw/Pvz4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JTyogTCnct/vi3ldZShrhGGUP5VlcYrRaD7WRbEc3Zvy31ZQG4SYp+RJdKdfRbXT8RU1zJ77VSK43SCh34LgaOFgQ8QLwHE+CaSByjhgzwb3fvrRMiYaw8fXZvWpepWhuAOnkla/It9EbYLhIBbTj5LnTD/KXvQsz/ltUr2Z52U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fUo4cdnD; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fUo4cdnD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756347585;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yuWJUdUgE10jBMdt4FfzRaIc9EOrRfX0+GmPYVYhe+4=;
-	b=fUo4cdnDD4bQHIgvyADfwS5jTzr4vlzgzgTu2mnDIZaKIl3xzaQokh02DvV+3zP+0oNPNN
-	HBH7ykCrPnO/LWLaa90m/+IWAOg1fkoeS45p1XrAqdF0EWVw/x7rRHhdNTos/5+Sh328Zm
-	HyKDUtX4yebonoYZnWUApUUNilaBdzE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-3Lf32tkONAm91m0Q_EJPgQ-1; Wed, 27 Aug 2025 22:19:44 -0400
-X-MC-Unique: 3Lf32tkONAm91m0Q_EJPgQ-1
-X-Mimecast-MFC-AGG-ID: 3Lf32tkONAm91m0Q_EJPgQ_1756347583
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-afe89c157e9so57903766b.3
-        for <kvm@vger.kernel.org>; Wed, 27 Aug 2025 19:19:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756347582; x=1756952382;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yuWJUdUgE10jBMdt4FfzRaIc9EOrRfX0+GmPYVYhe+4=;
-        b=UzAX3CEIp3DVNO+EE1nEzB/eQYTNy1ebPyIrqGLwj9jhkBEbpNbyROjGOZ4zpiiP9Q
-         SZVP+B0XwfqoVIetD7RemfZsnUbA1PXTmOEPYetUKaYFihzaQhEqdt/jjHOyDtN7O6dB
-         MYg1vYbwD/V4ozbZVffmL6xMtkdUKzc4Ru+Cknwn/GLgRkUGReYLmOc31vqkTgV6hE78
-         MgM2/tU9ppkAsKK2Pmw9fF9jZ3NUBQmAdWwsgXx4R9Cs59Q0DrmcAlmcoYlcYDU0/9XM
-         PIGk377nsooOd5k8fN2EGJZtuXvAcnnv9MyDdVqq4pCTakaF7Fn6Ujk5bl/lBqSsUwfz
-         26XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWo+EojMV2lEJEecqnMkaJAWvXv78x+jcxF1nYWYH0TmN0uzgHt+1OTMQoAb6BNuJ3e+WI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym2/+7A1DgvIG2tupRkppO+NcBNDL62mzOEWlPvlrW98TBc3l8
-	C56KPpeASflfv5KYezyZ3yEgDfGL2mbgPQySGm61IfPcPK9yoofWuAG7cNiwQ2artDAblx3G2ay
-	OonxzwTSVwYshToMxs09uQ/IR/LK2cwxzaaVrUUD8cQescgVYEKMW61QNopZL5bww6kevCkQfyV
-	RwGlK2AuY4K2tvzQ/jp8mHxQAVDrwLdVDBMKDf+R2t3Q==
-X-Gm-Gg: ASbGnctPoJMhtW4CS3Jk3d9br2CSUm+/inKubXF83OOnJOewK3AS7248tRCbccSXDHG
-	dRudaJdw4yK4IZX6yEeMLOKpDyVb580x8SX0BkUhf1Lej9XiRjCWStOyxeVQuCXEzYi502ojgKg
-	M+c5UwvjlUh39iZ2kMKKoxKg==
-X-Received: by 2002:a17:907:3e0c:b0:afe:c803:a0cf with SMTP id a640c23a62f3a-afec803db44mr338070766b.50.1756347582059;
-        Wed, 27 Aug 2025 19:19:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEywnZxZXd+LrwXaJupMXn8D4KG8fZV7ZXo9Nhl8+J+/NoGVlVy9jGmEHSZX26lkU7wovhDS1MB/Wlat2HYVJY=
-X-Received: by 2002:a17:907:3e0c:b0:afe:c803:a0cf with SMTP id
- a640c23a62f3a-afec803db44mr338068966b.50.1756347581664; Wed, 27 Aug 2025
- 19:19:41 -0700 (PDT)
+	s=arc-20240116; t=1756348393; c=relaxed/simple;
+	bh=a96c67ue2iadTZlK8+Yj568Jo90zgVFy17g6x/9BkaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QlKfrw6q4GgAs4aILQxDp08sveGD9zeO5KLfKp05I/qKSoTNejiwI5wwR7ZHhWFLBh1qzmcvqyHgWVf89O4u21KX5KHASHiLrzPm9Qdoj7XwVGGIz+AkbYp78C5CkVl004fUgn5wj3Pfv7mpP4HtfczyZFBiTw6gwo3uki0IeMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 502860d683b711f0b29709d653e92f7d-20250828
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:bbfdf95e-1728-4506-9bc0-05a18e21652f,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:f93684e576c78dc40936662dca05dad7,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 502860d683b711f0b29709d653e92f7d-20250828
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 469337678; Thu, 28 Aug 2025 10:32:59 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 4C11EE008FAC;
+	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
+X-ns-mid: postfix-68AFBFDB-172902359
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id ADF7BE008FAB;
+	Thu, 28 Aug 2025 10:32:47 +0800 (CST)
+Message-ID: <6f6c1e35-101d-4ef1-ac6e-5db337ccdd84@kylinos.cn>
+Date: Thu, 28 Aug 2025 10:32:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250826004012.3835150-1-seanjc@google.com>
-In-Reply-To: <20250826004012.3835150-1-seanjc@google.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Thu, 28 Aug 2025 10:19:03 +0800
-X-Gm-Features: Ac12FXx3ye1m5pDHDoHQMdklVzQePg1kNlD8XHk5EhKfbtJVcOqPjtReEt75Bpc
-Message-ID: <CAPpAL=wp61suVw-VdqpT-Kxxztaokg_-DkjsVEHDTg7rxzsnbw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vhost_task: KVM: Fix a race where KVM wakes an exited task
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
+ for policy reference
+To: Sudeep Holla <sudeep.holla@arm.com>, Ben Horgan <ben.horgan@arm.com>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+ x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+ <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
+ <1756341899099493.57.seg@mailgw.kylinos.cn>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <1756341899099493.57.seg@mailgw.kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-Tested this series of patches with vhost-net regression tests,
-everything works fine.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+=E5=9C=A8 2025/8/27 17:17, Sudeep Holla =E5=86=99=E9=81=93:
+> On Wed, Aug 27, 2025 at 09:30:13AM +0100, Ben Horgan wrote:
+>> Hi Zihuan,
+>>
+>> On 8/27/25 03:31, Zihuan Zhang wrote:
+>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>> annotation for policy references. This reduces the risk of reference
+>>> counting mistakes and aligns the code with the latest kernel style.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>> ---
+>>>   arch/arm64/kernel/topology.c | 9 +++------
+>>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topolog=
+y.c
+>>> index 5d07ee85bdae..e3cb6d54f35b 100644
+>>> --- a/arch/arm64/kernel/topology.c
+>>> +++ b/arch/arm64/kernel/topology.c
+>>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>>>   		 */
+>>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAM=
+PLE_EXP_MS))) {
+>>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
+>>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>> Based on the guidance, in include/linux/cleanup.h, I would expect the
+>> assignment to be done on this line.
+>>
+>> "...the recommendation is to always define and assign variables in one
+>>   * statement and not group variable definitions at the top of the
+>>   * function when __free() is used."
+>>
+> Agreed. I did something similar recently and there was a code path wher=
+e
+> variable wasn't initialised and ended up with freeing unassigned pointe=
+r.
+> So it is more than just a recommendation sometimes.
+>
+Thanks a lot for your suggestions.
 
-On Tue, Aug 26, 2025 at 8:40=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Fix a bug where KVM attempts to wake a vhost task that has already exited=
- in
-> response to a fatal signal, and tack on a few cleanups to harden against
-> introducing similar bugs in the future.
->
-> Somehow, this only started causing problems when commit 56180dd20c19 ("fu=
-tex:
-> Use RCU-based per-CPU reference counting instead of rcuref_t") landed.  I=
- have
-> no idea why the futex changes exposed the bug, and I don't care all that =
-much,
-> as this is firmly a KVM bug.
->
-> Sean Christopherson (3):
->   vhost_task: KVM: Don't wake KVM x86's recovery thread if vhost task
->     was killed
->   vhost_task: Allow caller to omit handle_sigkill() callback
->   KVM: x86/mmu: Don't register a sigkill callback for NX hugepage
->     recovery tasks
->
->  arch/x86/kvm/mmu/mmu.c           |  9 ++----
->  include/linux/sched/vhost_task.h |  1 +
->  kernel/vhost_task.c              | 52 +++++++++++++++++++++++++++++---
->  3 files changed, 51 insertions(+), 11 deletions(-)
->
->
-> base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
-> --
-> 2.51.0.261.g7ce5a0a67e-goog
->
->
+We are also considering introducing a WITH_CPUFREQ_POLICY wrapper to=20
+encapsulate the cpufreq_cpu_get/put usage, so that the release order=20
+won=E2=80=99t be accidentally changed.
+
+Link:=20
+https://lore.kernel.org/all/874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.=
+cn/
+
+Do you have any suggestions or preferences on this direction?
+
 
