@@ -1,416 +1,283 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
+Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5627B359;
-	Thu, 28 Aug 2025 09:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756372867; cv=fail; b=j9W5lar5r5vP90g4CLBghSHPRDxGzG2PqvQtemYTucNS/h9AmNn6L8+NG+SQGRwq/DNlJd4sapXAGy+RidrHpXEFavTOrSgQAvK80ajeebB1MYTZVGItsMUr4wTV8UgtYIxY+edgHFavbVTSwYCj6KLiIh54KluuT3jmAu2XkWM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756372867; c=relaxed/simple;
-	bh=1lWBSQA4xh7TT1a0QQQOA9A5+aKrnWFcP2t/w9zyAow=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z6CedtR+h+8H7TmPZ/Xc2klhUI8zjcjNvz80uiRY+ZEfFUNEKsP8Ny2971J41wjR4TVc2ekhLDE61V3oH6INEm0FnzITUDwnRq4rdU1WbM3dOFA9x9w4PegoIsEND+2OB9Q9tOdIfRmHl3ICh+HKOrlBc2q4A+CX6rEw8GQco1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Mvc13B5u; arc=fail smtp.client-ip=40.107.223.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C0207A26;
+	Thu, 28 Aug 2025 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.65.3.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756373968; cv=none; b=NkSp2DzLU8CVT5QZakXqZkyuBkuSJRGeVlGnDz3+AVYzGtv4AsJgVuX4CweH62bPpJfN5+ctBEqWqqIYqgTt0xRBdrt7ufpkOPtyPc7rxvUpIM5DXrkObT8yVz6L7LSa38aNC5qeX2U+k0IhO/BVRhlv1hmevWNFCEsG7G9bHfw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756373968; c=relaxed/simple;
+	bh=kPVVOMGARmYiS9iJ8JjebyS26HPrPQGkz1ifLfM+sV8=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=iRhHVCMLMbSLGyu2jRadRYBS9AtY7Dj25zIOO4kwmSQdFPBkoeQ6NP1/8zGQmjyi9BuuxiRi8gNFOn0ZSRUybUSVh6xRt8Hcs2QTG1IaC8KgSu6KYjU6IU6iWZAtPx0334xMDH2S55hlUW2v+CbXNgj9kv6HqqL1yp8O7dBNzJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=BvlSmmtP; arc=none smtp.client-ip=3.65.3.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Mvc13B5u"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gsnKcH8KbycoO/dI2yMB/2HSCpgIN7GDtPzXa9ZUCTAscFIzRbjUDDUx2VKDnDstyxdG9XKOuNpbWa2cxv0FpOsu8Vx/4oQEflTsRXLgMkXYqdLRgzCSp6NcQRc4vsfIJoBzjCvgCaSWlDz7toeZrPHlE+jtLqWBc6Xq5aJRfeNrqrrDRd1RsSstE17Yfpy0HTvbXVYeGUsjMtJBP3qUaqHiUY8sHLvY95jEKq6fsrT6g/QhkyDeioQ6exMBeceetGkENeNtdkS4N0lkL5BNWyxCwK3fGvVej5ogMorNo26omKCCbETm3lQbAL4irZ8Sfer3UY04PAOqxqiPm8BEKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ehRW1movQYcFqm47SyIMdmVEK2NJUCEFxZFuMmAXQqg=;
- b=aS4DvGadH6iMzD+vrnYZeCwGeOgZumBU9Sp9hwY4a0DDn8jRMuz9prSoWA6LiAuzG9Hokjiyy/LVAE1SyKyEfMMqz/DZQhlHLFve4MCsmH3Y+VNDzGDO7HEojuk/8+E9jz0Lgorv6siXKZKL10uywvU1fpZdoQzoqp2pFI4WyZ0S+zXZwH5GG1O7MSHX8ZRmFXpZuIXvfyHxyD+64FK3KJkOmGWIW7tQOmOtwXk0hHjPJM3OgRPfQw8c0VfuFVpCyurJUNUfXW8XF//XdIHAGMVgx4Vi877V1ljpfqAz0TXubShQn408Sx/Lusnu78IDBEKARpgGMH3rpz5NqoWczg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ehRW1movQYcFqm47SyIMdmVEK2NJUCEFxZFuMmAXQqg=;
- b=Mvc13B5ulETTeQOwbTsVM/wzrGc9zjyLyrtwlPMs0Peos6OmcFcaoupzyMBy+o6JBwaHnIIF71G8HAuJo7sMb+RPyQlKghd6eOhIy8n4krsnP3oPgIMT+HFT9whmdS4MECOYh299LLIUTWVOC0o8ecCMYQ4zAEc7GeKdxwp6g/k=
-Received: from MN2PR08CA0014.namprd08.prod.outlook.com (2603:10b6:208:239::19)
- by CH2PR12MB4070.namprd12.prod.outlook.com (2603:10b6:610:ae::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Thu, 28 Aug
- 2025 09:20:57 +0000
-Received: from BL6PEPF00020E65.namprd04.prod.outlook.com
- (2603:10b6:208:239:cafe::75) by MN2PR08CA0014.outlook.office365.com
- (2603:10b6:208:239::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.16 via Frontend Transport; Thu,
- 28 Aug 2025 09:20:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL6PEPF00020E65.mail.protection.outlook.com (10.167.249.26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Thu, 28 Aug 2025 09:20:56 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 28 Aug
- 2025 02:03:47 -0500
-Received: from BLR-L-NUPADHYA.xilinx.com (10.180.168.240) by
- satlexmb09.amd.com (10.181.42.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1748.10; Thu, 28 Aug 2025 00:03:42 -0700
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-To: <linux-kernel@vger.kernel.org>
-CC: <bp@alien8.de>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<dave.hansen@linux.intel.com>, <Thomas.Lendacky@amd.com>, <nikunj@amd.com>,
-	<Santosh.Shukla@amd.com>, <Vasant.Hegde@amd.com>,
-	<Suravee.Suthikulpanit@amd.com>, <David.Kaplan@amd.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <peterz@infradead.org>, <seanjc@google.com>,
-	<pbonzini@redhat.com>, <kvm@vger.kernel.org>,
-	<kirill.shutemov@linux.intel.com>, <huibo.wang@amd.com>,
-	<naveen.rao@amd.com>, <francescolavra.fl@gmail.com>, <tiala@microsoft.com>
-Subject: [PATCH v10 00/18] AMD: Add Secure AVIC Guest Support
-Date: Thu, 28 Aug 2025 12:33:16 +0530
-Message-ID: <20250828070334.208401-1-Neeraj.Upadhyay@amd.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="BvlSmmtP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1756373966; x=1787909966;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=wBKMgXKBvz9IiVmaTGjG/lSyZH5eWM6lHVDXOR7WFUE=;
+  b=BvlSmmtP3HrhKp/9vMwOl5irhJuKMG1v44dblOEzzr+LmXPg9Lzg9sMT
+   Kx4H/WDnshhnJO+L6Zi8JtD0TiWydKl96Fh17/xkfaAPN0T8d+Vj4Zmzi
+   utLA3XWQmwNoRdAZroZOII3iZKgPVPWfNxPgNZUo5yyMVeL6Ylsoi7+OE
+   eBYGBZolQZbJYu2SnQvK7h4XZunVdc7qbIC45eOhqNc0fXzzjzCXvsxJn
+   g2jC13ykZMGwE7MBwAD4jnPd6rGp/ZcBKFRoyNn16qaCHkNfKx75p1GnL
+   n/qmrPv2/LYpmHvgPiKTJyHG/TBPN4v2hLkLHkPPkfs85o8iZqbAJjXZz
+   w==;
+X-CSE-ConnectionGUID: SIlh/HeRQO2Ix/T5Q4dxPg==
+X-CSE-MsgGUID: GQgFOM3UQo+ArwAbAQdjTg==
+X-IronPort-AV: E=Sophos;i="6.17,290,1747699200"; 
+   d="scan'208";a="1303383"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 09:39:16 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:11608]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.140:2525] with esmtp (Farcaster)
+ id b400d3fe-1f6b-4e43-a1c7-ed7157d75ef6; Thu, 28 Aug 2025 09:39:15 +0000 (UTC)
+X-Farcaster-Flow-ID: b400d3fe-1f6b-4e43-a1c7-ed7157d75ef6
+Received: from EX19D015EUB003.ant.amazon.com (10.252.51.113) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Thu, 28 Aug 2025 09:39:15 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB003.ant.amazon.com (10.252.51.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Thu, 28 Aug 2025 09:39:14 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.017; Thu, 28 Aug 2025 09:39:14 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "david@redhat.com" <david@redhat.com>, "seanjc@google.com"
+	<seanjc@google.com>
+CC: "Roy, Patrick" <roypat@amazon.co.uk>, "tabba@google.com"
+	<tabba@google.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "will@kernel.org" <will@kernel.org>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+Subject: [PATCH v5 00/12] Direct Map Removal Support for guest_memfd
+Thread-Topic: [PATCH v5 00/12] Direct Map Removal Support for guest_memfd
+Thread-Index: AQHcF/+dcK3rIkIurEWjp/zWzGg9HQ==
+Date: Thu, 28 Aug 2025 09:39:14 +0000
+Message-ID: <20250828093902.2719-1-roypat@amazon.co.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E65:EE_|CH2PR12MB4070:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f4febd3-2274-40de-bb6c-08dde614320d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?p2p2W19p5EgW2ljCmMNXJOr4utGqwOUW7h+k8mDBanpS6EMVJElkjhkI13C4?=
- =?us-ascii?Q?0hzXXP4dvTr7AYimXeiSeGemcVT4GeHLpqipd9TH/KNspIvGDgHehPkClnVz?=
- =?us-ascii?Q?BzHd/9YMWuuXY2dKVqvA2aqZT8qZADrc7pZlKF+gGerTs+/OgUXv8fEJqcoD?=
- =?us-ascii?Q?NbrsEnhayERuzf2UQf9vraKWi2/qXQybsv7wMY53LQcCOnJRebP7ycO4HNjy?=
- =?us-ascii?Q?FHtPRjzpkSNnYHK27iiliWdkMjCLx93XevZZyOozPqjkOedZ/D7859yBOzuw?=
- =?us-ascii?Q?rEgxbo2tKNs0Zs0bB2/iDegiuLPq3NMDY14HcCK9qaeySYaErvNxstUERT3v?=
- =?us-ascii?Q?/gWbgxa6AwbkVYEH0bA7RHFgrurGbCf9tQwxHLdk2Z+dQmGK4/e8BfcCcCFf?=
- =?us-ascii?Q?YqdY/vY1kdFTFQHi1xEL0gpzeGej6mqAHJKuso+hP/GkEGuDj2lDh4/Kn/ui?=
- =?us-ascii?Q?3piXKtGeM9C+j9QoMlUFHTEwV5dMgatBRILsrKMDAGOZ6TPOiS8rVml+oWG4?=
- =?us-ascii?Q?YBuLJsd1dewCUEMuX/DSzSgUaSRgpn038QU96KtnIPZ2zQbvPgL5UxlSIXLG?=
- =?us-ascii?Q?nSxVnLWsDiA4ADHtoQQFm10OkTCAiiZV4QT55OXEEo43IUxRj1n7Dsonfzi8?=
- =?us-ascii?Q?/u7D5zAzpPURBZG4MqlH1MZIeB7TWfwLCFpo1t3pfSujJ52tT1ypku/GNMQ0?=
- =?us-ascii?Q?VgJnDtZ0K+uhNoyx/usbxdqGYxlzoAo6H+pG7Arq3eN/mWH1b9lInAXhdTzz?=
- =?us-ascii?Q?0As7y+3CQiDKvD1pjP9eJJx9N3F4y2DrdpmkSOasUn3A8RGcPMJ2FutehGD2?=
- =?us-ascii?Q?qwtQz2Z6cEloRSNl8ymrPDwLpRmkTJeLx227sPAPfyjY2egq7WxbdNUS+JJB?=
- =?us-ascii?Q?AchP1FxLTfdJKVL6d7rfCeBHMMHURksbgzClmu6pf9nN/XMHrjQcbnDHax6u?=
- =?us-ascii?Q?NWeWV+dfNQzJCb/bc7Mj+qJIq9UuIrDoR8v2OWl5f2fCGDDZMRsveFCladwd?=
- =?us-ascii?Q?C3zRN+UUF47PWDsPSXL95bgIqBFrD+Ttv4Mfr1h2FDQaCVrO+MBrLlAbtvdk?=
- =?us-ascii?Q?AlbGqBkxskGCk/tGfR6L3lKKomvSAINsh3KRhPlXzdMguG7+Sdaa0Z68AmZz?=
- =?us-ascii?Q?v4IR4h7rU2qGZKrxAiMGFCFVYZ9GjjOLsKwJ+QVOwYmlz/SHekQQphDzTcfD?=
- =?us-ascii?Q?FfUfznFx59Ldh9xl6fiI5zADhC/R/CtHCq/6qr8AnqbBUXwj+BDiEuKt9Ttx?=
- =?us-ascii?Q?UYJJgoK8SbXQ1OIP9859QhJ98TX/OSA5Havdjb23yQtkerhllP1x9gGtrcUg?=
- =?us-ascii?Q?xi9N+YfZSERToe0Bw0tWqAOs/go66VKkHx6jEgoDFxZ7oeNKUd18LP9T7iJo?=
- =?us-ascii?Q?fzH4pJvxkloNcYYcqh/V42h0TIBdYNvt/PtRDMIvlm3KZxshA/eWTaX74oeh?=
- =?us-ascii?Q?BZ175oT8Hfo0JzIm/dO1+y7tWdxMa7As0L7H2hjWHeiY2OxLwg0RkQjj50fF?=
- =?us-ascii?Q?FDKzCJOvtly8rVmjQNFuGEmucGRWzdEbnphlri8TkM0k3WAHdsx2xm52gw?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 09:20:56.9539
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f4febd3-2274-40de-bb6c-08dde614320d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E65.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4070
 
-Introduction
-------------
-
-Secure AVIC is a new hardware feature in the AMD64 architecture to
-allow SEV-SNP guests to prevent the hypervisor from generating
-unexpected interrupts to a vCPU or otherwise violate architectural
-assumptions around APIC behavior.
-
-One of the significant differences from AVIC or emulated x2APIC is that
-Secure AVIC uses a guest-owned and managed APIC backing page. It also
-introduces additional fields in both the VMCB and the Secure AVIC backing
-page to aid the guest in limiting which interrupt vectors can be injected
-into the guest.
-
-Guest APIC Backing Page
------------------------
-Each vCPU has a guest-allocated APIC backing page of size 4K, which
-maintains APIC state for that vCPU. The x2APIC MSRs are mapped at
-their corresposing x2APIC MMIO offset within the guest APIC backing
-page. All x2APIC accesses by guest or Secure AVIC hardware operate
-on this backing page. The backing page should be pinned and NPT entry
-for it should be always mapped while the corresponding vCPU is running.
-
-
-MSR Accesses
-------------
-Secure AVIC only supports x2APIC MSR accesses. xAPIC MMIO offset based
-accesses are not supported.
-
-Some of the MSR accesses such as ICR writes (with shorthand equal to
-self), SELF_IPI, EOI, TPR writes are accelerated by Secure AVIC
-hardware. Other MSR accesses generate a #VC exception. The #VC
-exception handler reads/writes to the guest APIC backing page.
-As guest APIC backing page is accessible to the guest, the Secure
-AVIC driver code optimizes APIC register access by directly
-reading/writing to the guest APIC backing page (instead of taking
-the #VC exception route).
-
-In addition to the architected MSRs, following new fields are added to
-the guest APIC backing page which can be modified directly by the
-guest:
-
-a. ALLOWED_IRR
-
-ALLOWED_IRR reg offset indicates the interrupt vectors which the guest
-allows the hypervisor to send. The combination of host-controlled
-REQUESTED_IRR vectors (part of VMCB) and ALLOWED_IRR is used by
-hardware to update the IRR vectors of the Guest APIC backing page.
-
-#Offset        #bits        Description
-204h           31:0         Guest allowed vectors 0-31
-214h           31:0         Guest allowed vectors 32-63
-...
-274h           31:0         Guest allowed vectors 224-255
-
-ALLOWED_IRR is meant to be used specifically for vectors that the
-hypervisor is allowed to inject, such as device interrupts.  Interrupt
-vectors used exclusively by the guest itself (like IPI vectors) should
-not be allowed to be injected into the guest for security reasons.
-
-b. NMI Request
- 
-#Offset        #bits        Description
-278h           0            Set by Guest to request Virtual NMI
-
-Guest need to set NMI Request register to allow the Hypervisor to
-inject vNMI to it.
-
-LAPIC Timer Support
--------------------
-LAPIC timer is emulated by the hypervisor. So, APIC_LVTT, APIC_TMICT and
-APIC_TDCR, APIC_TMCCT APIC registers are not read/written to the guest
-APIC backing page and are communicated to the hypervisor using SVM_EXIT_MSR
-VMGEXIT. 
-
-IPI Support
------------
-Only SELF_IPI is accelerated by Secure AVIC hardware. Other IPIs require
-writing (from the Secure AVIC driver) to the IRR vector of the target CPU
-backing page and then issuing VMGEXIT for the hypervisor to notify the
-target vCPU.
-
-KEXEC Support
--------------
-Secure AVIC enabled guest can kexec to another kernel which has Secure
-AVIC enabled, as the Hypervisor has Secure AVIC feature bit set in the
-sev_status.
-
-Open Points
------------
-
-The Secure AVIC driver only supports physical destination mode. If
-logical destination mode need to be supported, then a separate x2apic
-driver would be required for supporting logical destination mode.
-
-
-Testing
--------
-
-This series is based on top of commit 4628e5bbca91 "Merge branch into
-tip/master: 'x86/tdx'" of the tip/tip master branch.
-
-Host Secure AVIC support patch series is at [1].
-
-Qemu support patch is at [2].
-
-QEMU commandline for testing Secure AVIC enabled guest:
-
-qemu-system-x86_64 <...> -object sev-snp-guest,id=sev0,policy=0xb0000,cbitpos=51,
-reduced-phys-bits=1,allowed-sev-features=true,secure-avic=true
-
-Following tests are done:
-
-1) Boot to Prompt using initramfs and ubuntu fs.
-2) Verified timer and IPI as part of the guest bootup.
-3) Verified long run SCF TORTURE IPI test.
-
-[1] https://github.com/AMDESE/linux-kvm/tree/savic-host-latest
-[2] https://github.com/AMDESE/qemu/tree/secure-avic
-
-Changes since v9
-
-v9: https://lore.kernel.org/lkml/20250811094444.203161-1-Neeraj.Upadhyay@amd.com/
-
-   - Commit log updates.
-   - Update comments to be more descriptive.
-   - Various coding style updates.
-
-Changes since v8
-
-v8: https://lore.kernel.org/lkml/20250709033242.267892-1-Neeraj.Upadhyay@amd.com/
-
-   - Removed KVM lapic refactoring patches which have been included in
-     v6.17-rc1.
-   - Added Tianyu's Reviewed-by's.
-   - Dropped below 2 patches based on review feedback:
-
-     x86/apic: Unionize apic regs for 32bit/64bit access w/o type casting
-     x86/apic: Simplify bitwise operations on APIC bitmap
-
-   - Misc cleanups suggested by Boris and Sean.
-
-Changes since v7
-
-v7: https://lore.kernel.org/lkml/20250610175424.209796-1-Neeraj.Upadhyay@amd.com/
-
-   - Commit log updates.
-   - Applied Reviewed-by and Acked-by.
-   - Combined few patches.
-
-Changes since v6
-
-v6: https://lore.kernel.org/lkml/20250514071803.209166-1-Neeraj.Upadhyay@amd.com/
-
-  - Restructured the patches to split out function/macro rename into
-    separate patches.
-  - Update commit logs with more details on impact to kvm.ko text size.
-  - Updated the new macros in patch "x86/apic: KVM: Deduplicate APIC vector =>
-    register+bit math" to type cast macro parameter to unsigned int.
-    This ensures better code generation for cases where signed int is
-    passed to these macros. With this update, below patches have been
-    removed in this version:
-
-    x86/apic: Change apic_*_vector() vector param to unsigned
-    x86/apic: Change get/set reg operations reg param to unsigned
-
-  - Added Tianyu's Reviewed-by's.
-
-Changes since v5
-
-v5: https://lore.kernel.org/lkml/20250429061004.205839-1-Neeraj.Upadhyay@amd.com/
-
-  - Add back RFC tag due to new changes to share code between KVM's
-    lapic emulation and Secure AVIC.
-  - Minor optimizations to the apic bitwise ops and set/get reg
-    operations.
-  - Other misc fixes, cleanups and refactoring due to code sharing with
-    KVM lapic implementation.
-
-Change since v4
-
-v4: https://lore.kernel.org/lkml/20250417091708.215826-1-Neeraj.Upadhyay@amd.com/
-
-  - Add separate patch for update_vector() apic callback addition.
-  - Add a cleanup patch for moving apic_update_irq_cfg() calls to
-    apic_update_vector().
-  - Cleaned up change logs.
-  - Rebased to latest tip/tip master. Resolved merge conflicts due to
-    sev code movement to sev-startup.c in mainline.
-  - Other misc cleanups.
-
-Change since v3
-
-v3: https://lore.kernel.org/lkml/20250401113616.204203-1-Neeraj.Upadhyay@amd.com/
-
-  - Move KVM updates to a separate patch.
-  - Cleanups to use guard().
-  - Refactored IPI callbacks addition.
-  - Misc cleanups.
-
-Change since v2
-
-v2: https://lore.kernel.org/lkml/20250226090525.231882-1-Neeraj.Upadhyay@amd.com/
-
-  - Removed RFC tag.
-  - Change config rule to not select AMD_SECURE_AVIC config if
-    AMD_MEM_ENCRYPT config is enabled.
-  - Fix broken backing page GFP_KERNEL allocation in setup_local_APIC().
-    Use alloc_percpu() for APIC backing pages allocation during Secure
-    AVIC driver probe.
-  - Remove code to check for duplicate APIC_ID returned by the
-    Hypervisor. Topology evaluation code already does that during boot.
-  - Fix missing update_vector() callback invocation during vector
-    cleanup paths. Invoke update_vector() during setup and tearing down
-    of a vector.
-  - Reuse find_highest_vector() from kvm/lapic.c.
-  - Change savic_register_gpa/savic_unregister_gpa() interface to be
-    invoked only for the local CPU.
-  - Misc cleanups.
-
-Change since v1
-
-v1: https://lore.kernel.org/lkml/20240913113705.419146-1-Neeraj.Upadhyay@amd.com/
-
-  - Added Kexec support.
-  - Instead of doing a 2M aligned allocation for backing pages,
-    allocate individual PAGE_SIZE pages for vCPUs.
-  - Instead of reading Extended Topology Enumeration CPUID, APIC_ID
-    value is read from Hv and updated in APIC backing page. Hv returned
-    ID is checked for any duplicates.
-  - Propagate all LVT* register reads and writes to Hv.
-  - Check that Secure AVIC control MSR is not intercepted by Hv.
-  - Fix EOI handling for level-triggered interrupts.
-  - Misc cleanups and commit log updates.
-
-Kishon Vijay Abraham I (2):
-  x86/sev: Initialize VGIF for secondary vCPUs for Secure AVIC
-  x86/sev: Enable NMI support for Secure AVIC
-
-Neeraj Upadhyay (16):
-  x86/apic: Add new driver for Secure AVIC
-  x86/apic: Initialize Secure AVIC APIC backing page
-  x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver
-  x86/apic: Initialize APIC ID for Secure AVIC
-  x86/apic: Add update_vector() callback for APIC drivers
-  x86/apic: Add update_vector() callback for Secure AVIC
-  x86/apic: Add support to send IPI for Secure AVIC
-  x86/apic: Support LAPIC timer for Secure AVIC
-  x86/apic: Add support to send NMI IPI for Secure AVIC
-  x86/apic: Allow NMI to be injected from hypervisor for Secure AVIC
-  x86/apic: Read and write LVT* APIC registers from HV for SAVIC guests
-  x86/apic: Handle EOI writes for Secure AVIC guests
-  x86/apic: Add kexec support for Secure AVIC
-  x86/apic: Enable Secure AVIC in Control MSR
-  x86/sev: Prevent SECURE_AVIC_CONTROL MSR interception for Secure AVIC
-    guests
-  x86/sev: Indicate SEV-SNP guest supports Secure AVIC
-
- arch/x86/Kconfig                    |  13 +
- arch/x86/boot/compressed/sev.c      |  10 +-
- arch/x86/coco/core.c                |   3 +
- arch/x86/coco/sev/core.c            | 103 +++++++
- arch/x86/coco/sev/vc-handle.c       |  20 +-
- arch/x86/include/asm/apic.h         |  11 +
- arch/x86/include/asm/apicdef.h      |   2 +
- arch/x86/include/asm/msr-index.h    |   9 +-
- arch/x86/include/asm/sev-internal.h |   2 +
- arch/x86/include/asm/sev.h          |   8 +
- arch/x86/include/uapi/asm/svm.h     |   4 +
- arch/x86/kernel/apic/Makefile       |   1 +
- arch/x86/kernel/apic/apic.c         |   8 +
- arch/x86/kernel/apic/vector.c       |  28 +-
- arch/x86/kernel/apic/x2apic_savic.c | 427 ++++++++++++++++++++++++++++
- include/linux/cc_platform.h         |   8 +
- 16 files changed, 639 insertions(+), 18 deletions(-)
- create mode 100644 arch/x86/kernel/apic/x2apic_savic.c
-
-
-base-commit: 4628e5bbca916edaf4ed55915ab399f9ba25519f
--- 
-2.34.1
-
+[ based on kvm/next ]=0A=
+=0A=
+Unmapping virtual machine guest memory from the host kernel's direct map is=
+ a=0A=
+successful mitigation against Spectre-style transient execution issues: If =
+the=0A=
+kernel page tables do not contain entries pointing to guest memory, then an=
+y=0A=
+attempted speculative read through the direct map will necessarily be block=
+ed=0A=
+by the MMU before any observable microarchitectural side-effects happen. Th=
+is=0A=
+means that Spectre-gadgets and similar cannot be used to target virtual mac=
+hine=0A=
+memory. Roughly 60% of speculative execution issues fall into this category=
+ [1,=0A=
+Table 1].=0A=
+=0A=
+This patch series extends guest_memfd with the ability to remove its memory=
+=0A=
+from the host kernel's direct map, to be able to attain the above protectio=
+n=0A=
+for KVM guests running inside guest_memfd.=0A=
+=0A=
+=3D=3D=3D Design =3D=3D=3D=0A=
+=0A=
+We build on top of guest_memfd's recent support for "non-confidential VMs",=
+ in=0A=
+which all of guest_memfd is mappable to userspace (e.g. considered "shared"=
+).=0A=
+For such VMs, all guest page faults are routed through guest_memfd's specia=
+l=0A=
+page fault handler, which due to consuming fd+offset directly, can map dire=
+ct=0A=
+map removed memory into the guest. KVM's internal accesses to guest memory =
+are=0A=
+handled by providing each memslot with a userspace mapping of that memslots=
+=0A=
+guest_memfd via userspace_addr. Since KVM's internal accesses are almost=0A=
+exclusively handled via copy_from_user() and friends, this allows KVM to ac=
+cess=0A=
+direct map removed guest memory for features such as MMIO instruction emula=
+tion=0A=
+on x86 or pvtime support on ARM64.=0A=
+=0A=
+=3D=3D=3D Implementation =3D=3D=3D=0A=
+=0A=
+The KVM_CREATE_GUEST_MEMFD ioctl gains a new flag=0A=
+GUEST_MEMFD_FLAG_NO_DIRECT_MAP.  If this flag is passed, then guest_memfd=
+=0A=
+removes direct map entries for its folios are preparation. Upon free-ing of=
+ the=0A=
+memory, direct map entries are restored prior to gmem's arch specific=0A=
+invalidation callback.=0A=
+=0A=
+Support for the flag can be discovered via the KVM_CAP_GMEM_NO_DIRECT_MAP=
+=0A=
+capability, which is only available if direct map modifications at 4k=0A=
+granularity is architecturally possible / when KVM can successfully map dir=
+ect=0A=
+map removed memory into the guest.=0A=
+=0A=
+=3D=3D=3D Testing =3D=3D=3D=0A=
+=0A=
+KVM selftests are extended to cover the above-described non-CoCo workflows,=
+=0A=
+where guest_memfd with direct map entries removed is used to back all of gu=
+est=0A=
+memory, and exercising some simple MMIO paths.=0A=
+=0A=
+Additionally, a Firecracker branch with support for these VMs can be found =
+on=0A=
+GitHub [2].=0A=
+=0A=
+=3D=3D=3D Changes since v4 =3D=3D=3D=0A=
+=0A=
+- Rebase on top of kvm/next=0A=
+- Stop using PG_private to track direct map removal state=0A=
+- fix build or KVM-as-a-module by using new EXPORT_SYMBOL_FOR_MODULES=0A=
+=0A=
+=3D=3D=3D FAQ =3D=3D=3D=0A=
+=0A=
+--- why not reuse memfd_secret() / a bespoke guest memory solution? ---=0A=
+=0A=
+having guest memory be direct map removed means guest page faults cannot be=
+=0A=
+resolved by GUP-ing userspace mappings of guest memory, as GUP is disabled =
+for=0A=
+direct map removed memory (as currently GUP has no way to understand that a=
+=0A=
+specific GUP request will not subsequently dereference page_address()).=0A=
+guest_memfd already has a special path inside KVM that instead consumed=0A=
+fd+offset, so it makes sense to reuse this. Additionally, it means that=0A=
+direct-map-removed VMs can benefit from active development on guest_memfd, =
+such=0A=
+as huge pages support.=0A=
+=0A=
+--- why do KVM internal accesses through userspace page tables? ---=0A=
+=0A=
+For traditional VMs, all KVM internal accesses are done through the=0A=
+userspace_addr stored in a memslot, meaning no changes to most KVM code are=
+=0A=
+needed just to allow access to guest_memfd backed / direct map removed gues=
+t=0A=
+memory of non-confidential VMs. Previous iterations of this series tried to=
+=0A=
+avoid userspace mappings, instead attempting to dynamically restore direct =
+map=0A=
+entries for internal accesses [RFCv2], but this turned out to have a=0A=
+significant performance impact, as well as additional complexity due to nee=
+ding=0A=
+to refcount direct map reinsertion operations and making them play nicely w=
+ith=0A=
+gmem truncations.=0A=
+=0A=
+--- what doesn't work with direct map removed VMs? ---=0A=
+=0A=
+The only thing I'm aware of is kvm-clock, since it tries to GUP guest memor=
+y=0A=
+via gfn_to_pfn_cache. Realistically, this is only a problem on AMD, as on I=
+ntel=0A=
+guests can use TSC as a clocksource (Intel allows discovery of TSC frequenc=
+y=0A=
+via CPUID, while AMD doesn't).  AMD guests fall back onto some calibration=
+=0A=
+routine, which fails most of the time though.=0A=
+=0A=
+[1]: https://download.vusec.net/papers/quarantine_raid23.pdf=0A=
+[2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret=
+-hiding=0A=
+[RFCv1]: https://lore.kernel.org/kvm/20240709132041.3625501-1-roypat@amazon=
+.co.uk/=0A=
+[RFCv2]: https://lore.kernel.org/kvm/20240910163038.1298452-1-roypat@amazon=
+.co.uk/=0A=
+[RFCv3]: https://lore.kernel.org/kvm/20241030134912.515725-1-roypat@amazon.=
+co.uk/=0A=
+[v4]: https://lore.kernel.org/kvm/20250221160728.1584559-1-roypat@amazon.co=
+.uk/=0A=
+=0A=
+=0A=
+Elliot Berman (1):=0A=
+  filemap: Pass address_space mapping to ->free_folio()=0A=
+=0A=
+Patrick Roy (11):=0A=
+  arch: export set_direct_map_valid_noflush to KVM module=0A=
+  mm: introduce AS_NO_DIRECT_MAP=0A=
+  KVM: guest_memfd: Add flag to remove from direct map=0A=
+  KVM: Documentation: describe GUEST_MEMFD_FLAG_NO_DIRECT_MAP=0A=
+  KVM: selftests: load elf via bounce buffer=0A=
+  KVM: selftests: set KVM_MEM_GUEST_MEMFD in vm_mem_add() if guest_memfd=0A=
+    !=3D -1=0A=
+  KVM: selftests: Add guest_memfd based vm_mem_backing_src_types=0A=
+  KVM: selftests: stuff vm_mem_backing_src_type into vm_shape=0A=
+  KVM: selftests: cover GUEST_MEMFD_FLAG_NO_DIRECT_MAP in mem conversion=0A=
+    tests=0A=
+  KVM: selftests: cover GUEST_MEMFD_FLAG_NO_DIRECT_MAP in=0A=
+    guest_memfd_test.c=0A=
+  KVM: selftests: Test guest execution from direct map removed gmem=0A=
+=0A=
+ Documentation/filesystems/locking.rst         |  2 +-=0A=
+ Documentation/virt/kvm/api.rst                |  5 ++=0A=
+ arch/arm64/include/asm/kvm_host.h             | 12 ++++=0A=
+ arch/arm64/mm/pageattr.c                      |  1 +=0A=
+ arch/loongarch/mm/pageattr.c                  |  1 +=0A=
+ arch/riscv/mm/pageattr.c                      |  1 +=0A=
+ arch/s390/mm/pageattr.c                       |  1 +=0A=
+ arch/x86/mm/pat/set_memory.c                  |  1 +=0A=
+ fs/nfs/dir.c                                  | 11 ++--=0A=
+ fs/orangefs/inode.c                           |  3 +-=0A=
+ include/linux/fs.h                            |  2 +-=0A=
+ include/linux/kvm_host.h                      |  7 +++=0A=
+ include/linux/pagemap.h                       | 16 +++++=0A=
+ include/linux/secretmem.h                     | 18 ------=0A=
+ include/uapi/linux/kvm.h                      |  2 +=0A=
+ lib/buildid.c                                 |  4 +-=0A=
+ mm/filemap.c                                  |  9 +--=0A=
+ mm/gup.c                                      | 14 +----=0A=
+ mm/mlock.c                                    |  2 +-=0A=
+ mm/secretmem.c                                |  9 +--=0A=
+ mm/vmscan.c                                   |  4 +-=0A=
+ .../testing/selftests/kvm/guest_memfd_test.c  |  2 +=0A=
+ .../testing/selftests/kvm/include/kvm_util.h  | 37 ++++++++---=0A=
+ .../testing/selftests/kvm/include/test_util.h |  8 +++=0A=
+ tools/testing/selftests/kvm/lib/elf.c         |  8 +--=0A=
+ tools/testing/selftests/kvm/lib/io.c          | 23 +++++++=0A=
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 61 +++++++++++--------=0A=
+ tools/testing/selftests/kvm/lib/test_util.c   |  8 +++=0A=
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +=0A=
+ .../selftests/kvm/pre_fault_memory_test.c     |  1 +=0A=
+ .../selftests/kvm/set_memory_region_test.c    | 50 +++++++++++++--=0A=
+ .../kvm/x86/private_mem_conversions_test.c    |  7 ++-=0A=
+ virt/kvm/guest_memfd.c                        | 32 ++++++++--=0A=
+ virt/kvm/kvm_main.c                           |  5 ++=0A=
+ 34 files changed, 264 insertions(+), 104 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: a6ad54137af92535cfe32e19e5f3bc1bb7dbd383=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
