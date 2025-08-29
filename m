@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8CD31064E;
-	Fri, 29 Aug 2025 15:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5031E51EA;
+	Fri, 29 Aug 2025 15:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756481589; cv=none; b=LIy2EBa2nn2vg9EOwNxRKUDj+HN4QRQVP5KuMcqjogPZVdM0V7tSiuBAIYoEBJfA/sQvQ0XNw6fIrMzj2DK5GD2dyaqkzjDUUUoat+glaKinb8b48qokLDSANG9KLTYJYni04oNRZqNLdmweUwiDxf9lMGvmvbUF5ZDI889SvGY=
+	t=1756481589; cv=none; b=PrT7cD4r7I0Eg8tETnRWh5zRqBWbBSpTZwYs8BSrn6UICzKgHMBzKiVCw4uF9pkGdEvvYRe8/AFH+sKXRELz+M3eENnZ34T2pV3sMkMah/UV8GuSzLZamPiYPFTHFozIbw0vbuTysSrR7IegP5M4FeTP1tG29JDXmKlcC4zq8Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756481589; c=relaxed/simple;
-	bh=EGpGXYVcUI1OeD/pXU/+42Bw7A6JpLCbkE05mGKwu6M=;
+	bh=aMXsgpQlnv45jhoNXLMvO9cje9ZsYmHtfH0RY9DDUkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O43x4CutMM2o1TTFntv1PeNQL8eX3E+hJu66IMO64K3tU3HLFgu13PjMMGWtGqJtx9ZmmIbv84kxHcaHfhBY+BT3a3dOYE5IP2BFyW3t863SYwP/dpLXDGr8bpAWdz3bAzD+JyKGaG34zMRwOrsvtOT+2UU5ZQQzQWxx7W1NSek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=YREQ55ny; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=glPosOujc5QixN+IJVhqXhiGYor45RlM4rUng6NOwvxyoflNAvFQzV9sXRYcGjR7YDhFUe1LBCW51O6+FeKG7xx9UFESSEitxketucxiaj58a7fiQK665JlPINEVc5xu3wEGsqBAqepEBcKSBpmz0msj6owkXX3C3QlQCF8dQwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=kGvTbfQS; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="YREQ55ny"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="kGvTbfQS"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo482871953
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4J2871953
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 29 Aug 2025 08:32:13 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo482871953
+	Fri, 29 Aug 2025 08:32:24 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4J2871953
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1756481534;
-	bh=febSAquEyZNB4upRK2xjrDEFN+GEHBHhYW+/4ob2MDg=;
+	s=2025082201; t=1756481544;
+	bh=c6wxsXBnP8mbkfumGPxeJmrfebSvLd0IncKlKAY85Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YREQ55nyPG4vo4VnJ7/Yl+E/A336mnU5pBIqRKXfDb/ZKh1dX55tL5YfSKVSZxzzv
-	 5eozUDTjosrMeRUp7s+rd766vIfu72UnO9y2THsJ7AoBrx9hOeiHG94snLfKg3k95B
-	 MfSy7toC5ajZCqjQPGF+6DhoTUrh1ZTeBvW1BxpHDXPwNCsaMueA8dZrudv36AdBon
-	 /mUaYtaoSRmftwSEE7oehedSMJUS6JT96caTKoFe96izbmRUE9C5ASfH/98Jhi87Qb
-	 ewieuTz0Vrgk920poWf3eBvTw5xlnX8lJ0ZBMWLwuBieZT1+mYtemP85+DUskd4Wwn
-	 hcTIPAssBpfcA==
+	b=kGvTbfQSny86SK0QAnpEwLcZBePpVPRFkO38RENcaU8YVLXPHle6GE83jHYYhQoY1
+	 smcXcKtkPqM3G2FnjdB0Ua36KbjbvoYnvv85u34kjJNcfyFNEzlI0R0NrJSK7b6FY8
+	 ADaEerlRjtglx802hHHA66bSzJjdAy4lFMYOWlCVps5fBKzVxC6tgX80VCdr3LILi3
+	 bZgpC2iNwS4FHCrm/ugGWe0lzDFhsUW64EGUbobCLwy1H4cpjHx4AmmS+QwKMsR/kT
+	 1RsM2mcz5y9qH1zHZ2lYTSvtkAuYO9rm3zX1whdreDGrRxLZzCGKMRsiHmN6q4pvD3
+	 7ENp4UFNKHVfg==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v7 02/21] KVM: VMX: Initialize VM entry/exit FRED controls in vmcs_config
-Date: Fri, 29 Aug 2025 08:31:30 -0700
-Message-ID: <20250829153149.2871901-3-xin@zytor.com>
+Subject: [PATCH v7 13/21] KVM: x86: Save/restore the nested flag of an exception
+Date: Fri, 29 Aug 2025 08:31:41 -0700
+Message-ID: <20250829153149.2871901-14-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829153149.2871901-1-xin@zytor.com>
 References: <20250829153149.2871901-1-xin@zytor.com>
@@ -54,105 +54,198 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xin Li <xin3.li@intel.com>
+Save/restore the nested flag of an exception during VM save/restore
+and live migration to ensure a correct event stack level is chosen
+when a nested exception is injected through FRED event delivery.
 
-Setup VM entry/exit FRED controls in the global vmcs_config for proper
-FRED VMCS fields management:
-  1) load guest FRED state upon VM entry.
-  2) save guest FRED state during VM exit.
-  3) load host FRED state during VM exit.
-
-Also add FRED control consistency checks to the existing VM entry/exit
-consistency check framework.
-
-Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
 ---
 
 Change in v5:
-* Remove the pair VM_ENTRY_LOAD_IA32_FRED/VM_EXIT_ACTIVATE_SECONDARY_CONTROLS,
-  since the secondary VM exit controls are unconditionally enabled anyway, and
-  there are features other than FRED needing it (Chao Gao).
 * Add TB from Xuelian Guo.
 
 Change in v4:
-* Do VM exit/entry consistency checks using the new macro from Sean
-  Christopherson.
-
-Changes in v3:
-* Add FRED control consistency checks to the existing VM entry/exit
-  consistency check framework (Sean Christopherson).
-* Just do the unnecessary FRED state load/store on every VM entry/exit
-  (Sean Christopherson).
+* Add live migration support for exception nested flag (Chao Gao).
 ---
- arch/x86/include/asm/vmx.h | 4 ++++
- arch/x86/kvm/vmx/vmx.c     | 2 ++
- arch/x86/kvm/vmx/vmx.h     | 7 +++++--
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ Documentation/virt/kvm/api.rst  | 21 ++++++++++++++++++++-
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/include/uapi/asm/kvm.h |  4 +++-
+ arch/x86/kvm/x86.c              | 19 ++++++++++++++++++-
+ include/uapi/linux/kvm.h        |  1 +
+ 5 files changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 1f60c04d11fb..dd79d027ea70 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -109,6 +109,9 @@
- #define VM_EXIT_LOAD_CET_STATE                  0x10000000
- #define VM_EXIT_ACTIVATE_SECONDARY_CONTROLS	0x80000000
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 6aa40ee05a4a..c496b0883a7f 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -1184,6 +1184,10 @@ The following bits are defined in the flags field:
+   fields contain a valid state. This bit will be set whenever
+   KVM_CAP_EXCEPTION_PAYLOAD is enabled.
  
-+#define SECONDARY_VM_EXIT_SAVE_IA32_FRED	BIT_ULL(0)
-+#define SECONDARY_VM_EXIT_LOAD_IA32_FRED	BIT_ULL(1)
++- KVM_VCPUEVENT_VALID_NESTED_FLAG may be set to inform that the
++  exception is a nested exception. This bit will be set whenever
++  KVM_CAP_EXCEPTION_NESTED_FLAG is enabled.
 +
- #define VM_EXIT_ALWAYSON_WITHOUT_TRUE_MSR	0x00036dff
+ - KVM_VCPUEVENT_VALID_TRIPLE_FAULT may be set to signal that the
+   triple_fault_pending field contains a valid state. This bit will
+   be set whenever KVM_CAP_X86_TRIPLE_FAULT_EVENT is enabled.
+@@ -1283,6 +1287,10 @@ can be set in the flags field to signal that the
+ exception_has_payload, exception_payload, and exception.pending fields
+ contain a valid state and shall be written into the VCPU.
  
- #define VM_ENTRY_LOAD_DEBUG_CONTROLS            0x00000004
-@@ -122,6 +125,7 @@
- #define VM_ENTRY_PT_CONCEAL_PIP			0x00020000
- #define VM_ENTRY_LOAD_IA32_RTIT_CTL		0x00040000
- #define VM_ENTRY_LOAD_CET_STATE                 0x00100000
-+#define VM_ENTRY_LOAD_IA32_FRED			0x00800000
++If KVM_CAP_EXCEPTION_NESTED_FLAG is enabled, KVM_VCPUEVENT_VALID_NESTED_FLAG
++can be set in the flags field to inform that the exception is a nested
++exception and exception_is_nested shall be written into the VCPU.
++
+ If KVM_CAP_X86_TRIPLE_FAULT_EVENT is enabled, KVM_VCPUEVENT_VALID_TRIPLE_FAULT
+ can be set in flags field to signal that the triple_fault field contains
+ a valid state and shall be written into the VCPU.
+@@ -8651,7 +8659,7 @@ given VM.
+ When this capability is enabled, KVM resets the VCPU when setting
+ MP_STATE_INIT_RECEIVED through IOCTL.  The original MP_STATE is preserved.
  
- #define VM_ENTRY_ALWAYSON_WITHOUT_TRUE_MSR	0x000011ff
+-7.43 KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED
++7.44 KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED
+ -------------------------------------------
  
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 590e0826ba08..3b5e2805a06d 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2623,6 +2623,8 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 		u32 entry_control;
- 		u64 exit_control;
- 	} const vmcs_entry_exit2_pairs[] = {
-+		{ VM_ENTRY_LOAD_IA32_FRED,
-+			SECONDARY_VM_EXIT_SAVE_IA32_FRED | SECONDARY_VM_EXIT_LOAD_IA32_FRED },
- 	};
+ :Architectures: arm64
+@@ -8662,6 +8670,17 @@ This capability indicate to the userspace whether a PFNMAP memory region
+ can be safely mapped as cacheable. This relies on the presence of
+ force write back (FWB) feature support on the hardware.
  
- 	memset(vmcs_conf, 0, sizeof(*vmcs_conf));
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 840e48a2fcc5..e577af1003d8 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -488,7 +488,8 @@ static inline u8 vmx_get_rvi(void)
- 	 VM_ENTRY_LOAD_BNDCFGS |					\
- 	 VM_ENTRY_PT_CONCEAL_PIP |					\
- 	 VM_ENTRY_LOAD_IA32_RTIT_CTL |					\
--	 VM_ENTRY_LOAD_CET_STATE)
-+	 VM_ENTRY_LOAD_CET_STATE |					\
-+	 VM_ENTRY_LOAD_IA32_FRED)
++7.45 KVM_CAP_EXCEPTION_NESTED_FLAG
++----------------------------------
++
++:Architectures: x86
++:Parameters: args[0] whether feature should be enabled or not
++
++With this capability enabled, an exception is save/restored with the
++additional information of whether it was nested or not. FRED event
++delivery uses this information to ensure a correct event stack level
++is chosen when a VM entry injects a nested exception.
++
+ 8. Other capabilities.
+ ======================
  
- #define __KVM_REQUIRED_VMX_VM_EXIT_CONTROLS				\
- 	(VM_EXIT_SAVE_DEBUG_CONTROLS |					\
-@@ -515,7 +516,9 @@ static inline u8 vmx_get_rvi(void)
- 	       VM_EXIT_ACTIVATE_SECONDARY_CONTROLS)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b5a1fef8d637..0a646305e9d1 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1489,6 +1489,7 @@ struct kvm_arch {
+ 	bool has_mapped_host_mmio;
+ 	bool guest_can_read_msr_platform_info;
+ 	bool exception_payload_enabled;
++	bool exception_nested_flag_enabled;
  
- #define KVM_REQUIRED_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
--#define KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS (0)
-+#define KVM_OPTIONAL_VMX_SECONDARY_VM_EXIT_CONTROLS			\
-+	     (SECONDARY_VM_EXIT_SAVE_IA32_FRED |			\
-+	      SECONDARY_VM_EXIT_LOAD_IA32_FRED)
+ 	bool triple_fault_event;
  
- #define KVM_REQUIRED_VMX_PIN_BASED_VM_EXEC_CONTROL			\
- 	(PIN_BASED_EXT_INTR_MASK |					\
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 478d9b63a9db..03ea8c46d8cf 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -326,6 +326,7 @@ struct kvm_reinject_control {
+ #define KVM_VCPUEVENT_VALID_SMM		0x00000008
+ #define KVM_VCPUEVENT_VALID_PAYLOAD	0x00000010
+ #define KVM_VCPUEVENT_VALID_TRIPLE_FAULT	0x00000020
++#define KVM_VCPUEVENT_VALID_NESTED_FLAG	0x00000040
+ 
+ /* Interrupt shadow states */
+ #define KVM_X86_SHADOW_INT_MOV_SS	0x01
+@@ -363,7 +364,8 @@ struct kvm_vcpu_events {
+ 	struct {
+ 		__u8 pending;
+ 	} triple_fault;
+-	__u8 reserved[26];
++	__u8 reserved[25];
++	__u8 exception_is_nested;
+ 	__u8 exception_has_payload;
+ 	__u64 exception_payload;
+ };
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 7598b8d72b07..c030c7c43346 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4958,6 +4958,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_GET_MSR_FEATURES:
+ 	case KVM_CAP_MSR_PLATFORM_INFO:
+ 	case KVM_CAP_EXCEPTION_PAYLOAD:
++	case KVM_CAP_EXCEPTION_NESTED_FLAG:
+ 	case KVM_CAP_X86_TRIPLE_FAULT_EVENT:
+ 	case KVM_CAP_SET_GUEST_DEBUG:
+ 	case KVM_CAP_LAST_CPU:
+@@ -5703,6 +5704,7 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
+ 	events->exception.error_code = ex->error_code;
+ 	events->exception_has_payload = ex->has_payload;
+ 	events->exception_payload = ex->payload;
++	events->exception_is_nested = ex->nested;
+ 
+ 	events->interrupt.injected =
+ 		vcpu->arch.interrupt.injected && !vcpu->arch.interrupt.soft;
+@@ -5728,6 +5730,8 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
+ 			 | KVM_VCPUEVENT_VALID_SMM);
+ 	if (vcpu->kvm->arch.exception_payload_enabled)
+ 		events->flags |= KVM_VCPUEVENT_VALID_PAYLOAD;
++	if (vcpu->kvm->arch.exception_nested_flag_enabled)
++		events->flags |= KVM_VCPUEVENT_VALID_NESTED_FLAG;
+ 	if (vcpu->kvm->arch.triple_fault_event) {
+ 		events->triple_fault.pending = kvm_test_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ 		events->flags |= KVM_VCPUEVENT_VALID_TRIPLE_FAULT;
+@@ -5742,7 +5746,8 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 			      | KVM_VCPUEVENT_VALID_SHADOW
+ 			      | KVM_VCPUEVENT_VALID_SMM
+ 			      | KVM_VCPUEVENT_VALID_PAYLOAD
+-			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT))
++			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT
++			      | KVM_VCPUEVENT_VALID_NESTED_FLAG))
+ 		return -EINVAL;
+ 
+ 	if (events->flags & KVM_VCPUEVENT_VALID_PAYLOAD) {
+@@ -5757,6 +5762,13 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 		events->exception_has_payload = 0;
+ 	}
+ 
++	if (events->flags & KVM_VCPUEVENT_VALID_NESTED_FLAG) {
++		if (!vcpu->kvm->arch.exception_nested_flag_enabled)
++			return -EINVAL;
++	} else {
++		events->exception_is_nested = 0;
++	}
++
+ 	if ((events->exception.injected || events->exception.pending) &&
+ 	    (events->exception.nr > 31 || events->exception.nr == NMI_VECTOR))
+ 		return -EINVAL;
+@@ -5782,6 +5794,7 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.exception.error_code = events->exception.error_code;
+ 	vcpu->arch.exception.has_payload = events->exception_has_payload;
+ 	vcpu->arch.exception.payload = events->exception_payload;
++	vcpu->arch.exception.nested = events->exception_is_nested;
+ 
+ 	vcpu->arch.interrupt.injected = events->interrupt.injected;
+ 	vcpu->arch.interrupt.nr = events->interrupt.nr;
+@@ -6831,6 +6844,10 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		kvm->arch.exception_payload_enabled = cap->args[0];
+ 		r = 0;
+ 		break;
++	case KVM_CAP_EXCEPTION_NESTED_FLAG:
++		kvm->arch.exception_nested_flag_enabled = cap->args[0];
++		r = 0;
++		break;
+ 	case KVM_CAP_X86_TRIPLE_FAULT_EVENT:
+ 		kvm->arch.triple_fault_event = cap->args[0];
+ 		r = 0;
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index f0f0d49d2544..fe4a822b3c09 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -962,6 +962,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_ARM_EL2_E2H0 241
+ #define KVM_CAP_RISCV_MP_STATE_RESET 242
+ #define KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED 243
++#define KVM_CAP_EXCEPTION_NESTED_FLAG 244
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
 -- 
 2.51.0
 
