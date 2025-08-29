@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908DB320389;
-	Fri, 29 Aug 2025 15:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076CD322A1B;
+	Fri, 29 Aug 2025 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756481591; cv=none; b=PL9+GCAkPWExRYeEqzSoDjAmoTSBZAgm6QwC81IvzMXZ1DCVuwBiOxtV5/cV3aZQWsnWsTTmlvS8W2k76Jn2KJcSwzvX0ZarEqT9kaOYFBXO5vjkvmqf1+11EHgSYcvpbWByVpmt2MkZqRsBplQ8+dGVTGOrnG/M6hAPdBbZqhk=
+	t=1756481591; cv=none; b=kIvJ56x4dCIcjPU2h2DFU1OJPx0r0gr89f02wVp8mzItcsndw+o/qxd6iFkaDoHQydI7P+RU/M279ewW5+EX/apLlvW5fM9YL0Du1bdubzt8sSC/VqQZDNX+y9FXkH2FoW0mWONfkpuAlxuo/lBF0juPSNPsB1Oi1PqojntXpJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756481591; c=relaxed/simple;
-	bh=LUB8S/9zQlfe+FMfxRkxfpyEEIeTs5iSwBYJ8HJ0p84=;
+	bh=0f5Md5XSXilShhWXgBqtBCoet75joAtRIZT3JPPoEgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5CDjFLf5SqeiGKWVJeN0d4HNl9DoF/WoQRednVj2QcMX1VODLLe9e1kwRdDpXrLMOz3CsOz81prkmox4nysT7upB63rfCRGBoJob+R5ZSjZmc/sPZxh2DwnmPesWbeTg3BacfRnl+731DORHEZdTmk9lPp7Wub5vtdFr8ZOcKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=A4Dyqw9L; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=TeAlVvgeW5LQsUFy0dWU+e5bkumK1i4C9DVwq0Zr0u0JcEx5BKIs3CKwN2rBdwRQGT7exritG1dKdcov7dns8rD4pY0i4dp0WOtUXKjy2SbFxd5XSFVlRu4epsyqjhgTZ+K/yt5A4UjeEEk8ia8+og1xuaoG6kImQ0XYYEA3oBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=At9YR4US; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="A4Dyqw9L"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="At9YR4US"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4C2871953
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4A2871953
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 29 Aug 2025 08:32:17 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4C2871953
+	Fri, 29 Aug 2025 08:32:15 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4A2871953
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1756481538;
-	bh=kCEtrMvfk0PSIuAHRru4DrevfRxLJgJrqIuIB4hgTRI=;
+	s=2025082201; t=1756481536;
+	bh=FIYL8ksvIB3wOVrxze4s41+WDAAwTEKhjiDnFUYmjYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4Dyqw9LnZt/LnNJn00IGTyQcMKTLawyjE7wuj0Q2hF3WDFo9e6Fa7cXNxDQWKXN9
-	 ohKsLt/gMvAKuUJZAcCTS1Ac2gsKQ/TP7hcSavch1U6smPNZvNTGOhme/yVgnZXNwb
-	 5phWI44y+ifpfxKKiLVeIrXuxppK2M0rlKmB+ep38oa46eYs4nP+2JA4sXnxWyyZfw
-	 gM5sjgu0H3X5VFrZuU5L1dP982dtFQy4grOIYnjyq0IbOXpcPPeKve95ccIpoNcDGc
-	 wu+QGul83QiNvuAfiUJa/fHTb+FEvS8i/bvJjoW45RhPNl+d4+oDREtWW2iqINAx0S
-	 JEiVlAuwO53iQ==
+	b=At9YR4USFu8aWwz871/z2W1uuSmyPjiWQgmSR0lLvdVVYyKGdN6rBAm37qzO3eNl2
+	 0nGFbMiJnVqFZKBOKlR7FaYl04b1JT3tzrIlFYPeX+t3d4y/92AU0JeCKyFcjcRlAW
+	 PnRcMBVCcLnWW1gYxslRgtAueZJw6ZZ4/lYrXGNRjnUH6UjdUZ7v0hUW0SP2GnjVL2
+	 3RK242QSY2H8+jjTJux9ZNHSXYuQCxVx7s+PjNhhtlR+vqGBgxkSF8sVU5+0xAp1Yv
+	 qgKAGbYvt5xCJ/b2ydQB+23QOTRK744fMO3D1n1j/klXUWs9E8y0QgkoeCiN6g7DTf
+	 ZQVq3Fb50S1cQ==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v7 06/21] KVM: VMX: Initialize VMCS FRED fields
-Date: Fri, 29 Aug 2025 08:31:34 -0700
-Message-ID: <20250829153149.2871901-7-xin@zytor.com>
+Subject: [PATCH v7 04/21] x86/cea: Prefix event stack names with ESTACK_
+Date: Fri, 29 Aug 2025 08:31:32 -0700
+Message-ID: <20250829153149.2871901-5-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829153149.2871901-1-xin@zytor.com>
 References: <20250829153149.2871901-1-xin@zytor.com>
@@ -54,193 +54,225 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xin Li <xin3.li@intel.com>
+Add the ESTACK_ prefix to event stack names to improve clarity and
+readability.  Without the prefix, names like DF, NMI, and DB are too
+brief and potentially ambiguous.
 
-Initialize host VMCS FRED fields with host FRED MSRs' value and
-guest VMCS FRED fields to 0.
+This renaming also prepares for converting __this_cpu_ist_top_va from
+a macro into a function that accepts an enum exception_stack_ordering
+argument, without requiring changes to existing callsites.
 
-FRED CPU state is managed in 9 new FRED MSRs:
-        IA32_FRED_CONFIG,
-        IA32_FRED_STKLVLS,
-        IA32_FRED_RSP0,
-        IA32_FRED_RSP1,
-        IA32_FRED_RSP2,
-        IA32_FRED_RSP3,
-        IA32_FRED_SSP1,
-        IA32_FRED_SSP2,
-        IA32_FRED_SSP3,
-as well as a few existing CPU registers and MSRs:
-        CR4.FRED,
-        IA32_STAR,
-        IA32_KERNEL_GS_BASE,
-        IA32_PL0_SSP (also known as IA32_FRED_SSP0).
-
-CR4, IA32_KERNEL_GS_BASE and IA32_STAR are already well managed.
-Except IA32_FRED_RSP0 and IA32_FRED_SSP0, all other FRED CPU state
-MSRs have corresponding VMCS fields in both the host-state and
-guest-state areas.  So KVM just needs to initialize them, and with
-proper VM entry/exit FRED controls, a FRED CPU will keep tracking
-host and guest FRED CPU state in VMCS automatically.
-
-Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Change in v5:
-* Add TB from Xuelian Guo.
-
-Change in v4:
-* Initialize host SSP[1-3] to 0s in vmx_set_constant_host_state()
-  because Linux doesn't support kernel shadow stacks (Chao Gao).
-
-Change in v3:
-* Use structure kvm_host_values to keep host fred config & stack levels
-  (Sean Christopherson).
-
-Changes in v2:
-* Use kvm_cpu_cap_has() instead of cpu_feature_enabled() to decouple
-  KVM's capability to virtualize a feature and host's enabling of a
-  feature (Chao Gao).
-* Move guest FRED state init into __vmx_vcpu_reset() (Chao Gao).
+Changes in v7:
+* Move rename code to this patch (Dave Hansen).
+* Fix a vertical alignment (Dave Hansen).
 ---
- arch/x86/include/asm/vmx.h | 32 ++++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.c     | 36 ++++++++++++++++++++++++++++++++++++
- arch/x86/kvm/x86.h         |  3 +++
- 3 files changed, 71 insertions(+)
+ arch/x86/coco/sev/sev-nmi.c           |  4 ++--
+ arch/x86/coco/sev/vc-handle.c         |  2 +-
+ arch/x86/include/asm/cpu_entry_area.h | 26 +++++++++++++-------------
+ arch/x86/kernel/cpu/common.c          | 10 +++++-----
+ arch/x86/kernel/dumpstack_64.c        | 14 +++++++-------
+ arch/x86/kernel/fred.c                |  6 +++---
+ arch/x86/kernel/traps.c               |  2 +-
+ arch/x86/mm/cpu_entry_area.c          | 12 ++++++------
+ arch/x86/mm/fault.c                   |  2 +-
+ 9 files changed, 39 insertions(+), 39 deletions(-)
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index dd79d027ea70..6f8b8947c60c 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -293,12 +293,44 @@ enum vmcs_field {
- 	GUEST_BNDCFGS_HIGH              = 0x00002813,
- 	GUEST_IA32_RTIT_CTL		= 0x00002814,
- 	GUEST_IA32_RTIT_CTL_HIGH	= 0x00002815,
-+	GUEST_IA32_FRED_CONFIG		= 0x0000281a,
-+	GUEST_IA32_FRED_CONFIG_HIGH	= 0x0000281b,
-+	GUEST_IA32_FRED_RSP1		= 0x0000281c,
-+	GUEST_IA32_FRED_RSP1_HIGH	= 0x0000281d,
-+	GUEST_IA32_FRED_RSP2		= 0x0000281e,
-+	GUEST_IA32_FRED_RSP2_HIGH	= 0x0000281f,
-+	GUEST_IA32_FRED_RSP3		= 0x00002820,
-+	GUEST_IA32_FRED_RSP3_HIGH	= 0x00002821,
-+	GUEST_IA32_FRED_STKLVLS		= 0x00002822,
-+	GUEST_IA32_FRED_STKLVLS_HIGH	= 0x00002823,
-+	GUEST_IA32_FRED_SSP1		= 0x00002824,
-+	GUEST_IA32_FRED_SSP1_HIGH	= 0x00002825,
-+	GUEST_IA32_FRED_SSP2		= 0x00002826,
-+	GUEST_IA32_FRED_SSP2_HIGH	= 0x00002827,
-+	GUEST_IA32_FRED_SSP3		= 0x00002828,
-+	GUEST_IA32_FRED_SSP3_HIGH	= 0x00002829,
- 	HOST_IA32_PAT			= 0x00002c00,
- 	HOST_IA32_PAT_HIGH		= 0x00002c01,
- 	HOST_IA32_EFER			= 0x00002c02,
- 	HOST_IA32_EFER_HIGH		= 0x00002c03,
- 	HOST_IA32_PERF_GLOBAL_CTRL	= 0x00002c04,
- 	HOST_IA32_PERF_GLOBAL_CTRL_HIGH	= 0x00002c05,
-+	HOST_IA32_FRED_CONFIG		= 0x00002c08,
-+	HOST_IA32_FRED_CONFIG_HIGH	= 0x00002c09,
-+	HOST_IA32_FRED_RSP1		= 0x00002c0a,
-+	HOST_IA32_FRED_RSP1_HIGH	= 0x00002c0b,
-+	HOST_IA32_FRED_RSP2		= 0x00002c0c,
-+	HOST_IA32_FRED_RSP2_HIGH	= 0x00002c0d,
-+	HOST_IA32_FRED_RSP3		= 0x00002c0e,
-+	HOST_IA32_FRED_RSP3_HIGH	= 0x00002c0f,
-+	HOST_IA32_FRED_STKLVLS		= 0x00002c10,
-+	HOST_IA32_FRED_STKLVLS_HIGH	= 0x00002c11,
-+	HOST_IA32_FRED_SSP1		= 0x00002c12,
-+	HOST_IA32_FRED_SSP1_HIGH	= 0x00002c13,
-+	HOST_IA32_FRED_SSP2		= 0x00002c14,
-+	HOST_IA32_FRED_SSP2_HIGH	= 0x00002c15,
-+	HOST_IA32_FRED_SSP3		= 0x00002c16,
-+	HOST_IA32_FRED_SSP3_HIGH	= 0x00002c17,
- 	PIN_BASED_VM_EXEC_CONTROL       = 0x00004000,
- 	CPU_BASED_VM_EXEC_CONTROL       = 0x00004002,
- 	EXCEPTION_BITMAP                = 0x00004004,
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index c8b95c215869..42e179f19c23 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1460,6 +1460,15 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu *vcpu, int cpu)
- 				    (unsigned long)(cpu_entry_stack(cpu) + 1));
- 		}
+diff --git a/arch/x86/coco/sev/sev-nmi.c b/arch/x86/coco/sev/sev-nmi.c
+index d8dfaddfb367..73e34ad7a1a9 100644
+--- a/arch/x86/coco/sev/sev-nmi.c
++++ b/arch/x86/coco/sev/sev-nmi.c
+@@ -30,7 +30,7 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
+ 	if (ip_within_syscall_gap(regs))
+ 		return false;
  
-+		/* Per-CPU FRED MSRs */
-+		if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+#ifdef CONFIG_X86_64
-+			vmcs_write64(HOST_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
-+			vmcs_write64(HOST_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
-+			vmcs_write64(HOST_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
-+#endif
-+		}
-+
- 		vmx->loaded_vmcs->cpu = cpu;
- 	}
- }
-@@ -4307,6 +4316,17 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
- 	 */
- 	vmcs_write16(HOST_DS_SELECTOR, 0);
- 	vmcs_write16(HOST_ES_SELECTOR, 0);
-+
-+	if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		/* FRED CONFIG and STKLVLS are the same on all CPUs */
-+		vmcs_write64(HOST_IA32_FRED_CONFIG, kvm_host.fred_config);
-+		vmcs_write64(HOST_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
-+
-+		/* Linux doesn't support kernel shadow stacks, thus SSPs are 0s */
-+		vmcs_write64(HOST_IA32_FRED_SSP1, 0);
-+		vmcs_write64(HOST_IA32_FRED_SSP2, 0);
-+		vmcs_write64(HOST_IA32_FRED_SSP3, 0);
-+	}
- #else
- 	vmcs_write16(HOST_DS_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
- 	vmcs_write16(HOST_ES_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
-@@ -4824,6 +4844,17 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	}
- 
- 	vmx_setup_uret_msrs(vmx);
-+
-+	if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		vmcs_write64(GUEST_IA32_FRED_CONFIG, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP1, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP2, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP3, 0);
-+		vmcs_write64(GUEST_IA32_FRED_STKLVLS, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP1, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP2, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP3, 0);
-+	}
+-	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
++	return ((sp >= __this_cpu_ist_bottom_va(ESTACK_VC)) && (sp < __this_cpu_ist_top_va(ESTACK_VC)));
  }
  
- static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
-@@ -8679,6 +8710,11 @@ __init int vmx_hardware_setup(void)
+ /*
+@@ -82,7 +82,7 @@ void noinstr __sev_es_ist_exit(void)
+ 	/* Read IST entry */
+ 	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
  
- 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+-	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
++	if (WARN_ON(ist == __this_cpu_ist_top_va(ESTACK_VC)))
+ 		return;
  
-+	if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		rdmsrl(MSR_IA32_FRED_CONFIG, kvm_host.fred_config);
-+		rdmsrl(MSR_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
-+	}
-+
- 	return r;
+ 	/* Read back old IST entry and write it to the TSS */
+diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
+index c3b4acbde0d8..88b6bc518a5a 100644
+--- a/arch/x86/coco/sev/vc-handle.c
++++ b/arch/x86/coco/sev/vc-handle.c
+@@ -859,7 +859,7 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 
+ static __always_inline bool is_vc2_stack(unsigned long sp)
+ {
+-	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
++	return (sp >= __this_cpu_ist_bottom_va(ESTACK_VC2) && sp < __this_cpu_ist_top_va(ESTACK_VC2));
  }
  
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index d6b21ba41416..b6dc23c478ff 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -52,6 +52,9 @@ struct kvm_host_values {
- 	u64 xss;
- 	u64 s_cet;
- 	u64 arch_capabilities;
-+
-+	u64 fred_config;
-+	u64 fred_stklvls;
+ static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index 462fc34f1317..d0f884c28178 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -18,19 +18,19 @@
+ 
+ /* Macro to enforce the same ordering and stack sizes */
+ #define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
+-	char	DF_stack_guard[guardsize];			\
+-	char	DF_stack[EXCEPTION_STKSZ];			\
+-	char	NMI_stack_guard[guardsize];			\
+-	char	NMI_stack[EXCEPTION_STKSZ];			\
+-	char	DB_stack_guard[guardsize];			\
+-	char	DB_stack[EXCEPTION_STKSZ];			\
+-	char	MCE_stack_guard[guardsize];			\
+-	char	MCE_stack[EXCEPTION_STKSZ];			\
+-	char	VC_stack_guard[guardsize];			\
+-	char	VC_stack[optional_stack_size];			\
+-	char	VC2_stack_guard[guardsize];			\
+-	char	VC2_stack[optional_stack_size];			\
+-	char	IST_top_guard[guardsize];			\
++	char	ESTACK_DF_stack_guard[guardsize];		\
++	char	ESTACK_DF_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_NMI_stack_guard[guardsize];		\
++	char	ESTACK_NMI_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_DB_stack_guard[guardsize];		\
++	char	ESTACK_DB_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_MCE_stack_guard[guardsize];		\
++	char	ESTACK_MCE_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_VC_stack_guard[guardsize];		\
++	char	ESTACK_VC_stack[optional_stack_size];		\
++	char	ESTACK_VC2_stack_guard[guardsize];		\
++	char	ESTACK_VC2_stack[optional_stack_size];		\
++	char	ESTACK_IST_top_guard[guardsize];		\
+ 
+ /* The exception stacks' physical storage. No guard pages required */
+ struct exception_stacks {
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 34a054181c4d..5c888f1783e5 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2307,12 +2307,12 @@ static inline void setup_getcpu(int cpu)
+ static inline void tss_setup_ist(struct tss_struct *tss)
+ {
+ 	/* Set up the per-CPU TSS IST stacks */
+-	tss->x86_tss.ist[IST_INDEX_DF] = __this_cpu_ist_top_va(DF);
+-	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(NMI);
+-	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(DB);
+-	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(MCE);
++	tss->x86_tss.ist[IST_INDEX_DF]	= __this_cpu_ist_top_va(ESTACK_DF);
++	tss->x86_tss.ist[IST_INDEX_NMI]	= __this_cpu_ist_top_va(ESTACK_NMI);
++	tss->x86_tss.ist[IST_INDEX_DB]	= __this_cpu_ist_top_va(ESTACK_DB);
++	tss->x86_tss.ist[IST_INDEX_MCE]	= __this_cpu_ist_top_va(ESTACK_MCE);
+ 	/* Only mapped when SEV-ES is active */
+-	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(VC);
++	tss->x86_tss.ist[IST_INDEX_VC]	= __this_cpu_ist_top_va(ESTACK_VC);
+ }
+ #else /* CONFIG_X86_64 */
+ static inline void tss_setup_ist(struct tss_struct *tss) { }
+diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
+index 6c5defd6569a..40f51e278171 100644
+--- a/arch/x86/kernel/dumpstack_64.c
++++ b/arch/x86/kernel/dumpstack_64.c
+@@ -73,7 +73,7 @@ struct estack_pages {
+ 	 PFN_DOWN(CEA_ESTACK_OFFS(st) + CEA_ESTACK_SIZE(st) - 1)] = {	\
+ 		.offs	= CEA_ESTACK_OFFS(st),				\
+ 		.size	= CEA_ESTACK_SIZE(st),				\
+-		.type	= STACK_TYPE_EXCEPTION + ESTACK_ ##st, }
++		.type	= STACK_TYPE_EXCEPTION + st, }
+ 
+ /*
+  * Array of exception stack page descriptors. If the stack is larger than
+@@ -83,12 +83,12 @@ struct estack_pages {
+  */
+ static const
+ struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
+-	EPAGERANGE(DF),
+-	EPAGERANGE(NMI),
+-	EPAGERANGE(DB),
+-	EPAGERANGE(MCE),
+-	EPAGERANGE(VC),
+-	EPAGERANGE(VC2),
++	EPAGERANGE(ESTACK_DF),
++	EPAGERANGE(ESTACK_NMI),
++	EPAGERANGE(ESTACK_DB),
++	EPAGERANGE(ESTACK_MCE),
++	EPAGERANGE(ESTACK_VC),
++	EPAGERANGE(ESTACK_VC2),
  };
  
- void kvm_spurious_fault(void);
+ static __always_inline bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
+index 816187da3a47..06d944a3d051 100644
+--- a/arch/x86/kernel/fred.c
++++ b/arch/x86/kernel/fred.c
+@@ -87,7 +87,7 @@ void cpu_init_fred_rsps(void)
+ 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+ 
+ 	/* The FRED equivalents to IST stacks... */
+-	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(DB));
+-	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(NMI));
+-	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(DF));
++	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
++	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
++	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
+ }
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 36354b470590..5c9c5ebf5e73 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -954,7 +954,7 @@ asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *r
+ 
+ 	if (!get_stack_info_noinstr(stack, current, &info) || info.type == STACK_TYPE_ENTRY ||
+ 	    info.type > STACK_TYPE_EXCEPTION_LAST)
+-		sp = __this_cpu_ist_top_va(VC2);
++		sp = __this_cpu_ist_top_va(ESTACK_VC2);
+ 
+ sync:
+ 	/*
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index 575f863f3c75..9fa371af8abc 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -151,15 +151,15 @@ static void __init percpu_setup_exception_stacks(unsigned int cpu)
+ 	 * by guard pages so each stack must be mapped separately. DB2 is
+ 	 * not mapped; it just exists to catch triple nesting of #DB.
+ 	 */
+-	cea_map_stack(DF);
+-	cea_map_stack(NMI);
+-	cea_map_stack(DB);
+-	cea_map_stack(MCE);
++	cea_map_stack(ESTACK_DF);
++	cea_map_stack(ESTACK_NMI);
++	cea_map_stack(ESTACK_DB);
++	cea_map_stack(ESTACK_MCE);
+ 
+ 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
+ 		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT)) {
+-			cea_map_stack(VC);
+-			cea_map_stack(VC2);
++			cea_map_stack(ESTACK_VC);
++			cea_map_stack(ESTACK_VC2);
+ 		}
+ 	}
+ }
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 998bd807fc7b..1804eb86cc14 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -671,7 +671,7 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
+ 		 * and then double-fault, though, because we're likely to
+ 		 * break the console driver and lose most of the stack dump.
+ 		 */
+-		call_on_stack(__this_cpu_ist_top_va(DF) - sizeof(void*),
++		call_on_stack(__this_cpu_ist_top_va(ESTACK_DF) - sizeof(void*),
+ 			      handle_stack_overflow,
+ 			      ASM_CALL_ARG3,
+ 			      , [arg1] "r" (regs), [arg2] "r" (address), [arg3] "r" (&info));
 -- 
 2.51.0
 
