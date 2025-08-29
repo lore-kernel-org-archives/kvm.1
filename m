@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56A1F2382;
-	Fri, 29 Aug 2025 15:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D85F1FDA8E;
+	Fri, 29 Aug 2025 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756481588; cv=none; b=NIjEh6vzj7heMqr3wgJvIyDrRUKPUcyn4ZpBa8VvnZ1Ksn7vzRqyvUkwLR1EzXTFOjIpgrcZpu70f02oyu0u49A5W9udA6B8t3lb256OmlPXYv6hy58nWJ/JCge4GLsb1onqQWM1sX14F8HMc88sxNObwwLPiTaHkb9swIYKKvs=
+	t=1756481589; cv=none; b=rxiShqnGatrLMePwFx3o6EsuLNW1WyOWZtVn2ZbIkVHEdmtjZajY607AuIXpMGFcGqebRSP57WQQ97Zfnqz2w8j2l8V0by+XaqTtF6A/t+pqDQ9v/jHAYzlrxg5ed80tCj+Op0J1nhHg1PB1c9ywmiLV4rSzGSVLcxjUmT1diqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756481588; c=relaxed/simple;
-	bh=boYL1l9xLWGo3/2NolmH1TULXM2fhR0/YNy1xNfKfLw=;
+	s=arc-20240116; t=1756481589; c=relaxed/simple;
+	bh=ARFaGoblNDj/7V5u02fzaPmoWcAukAa38gvCZrRWPrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQx+lC0CFNBOBcA2KO2Lp2P6Y2FZ/6F74Q+bA4aiLiF0qmsKOm8/pipJzVml5AVqSRC+n907CVZ37x9iybQEM4oTDErV9vnYGVYz7+n/TXWqNotUZ38tI+dkvI5wg1OTwJFuT/N5n8IpVK0CNIRz4c2Cv1JC5UFEU4rRw7/b1n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PTY0zdud; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=OJXI6UBss+rYQp9d8RrxWo6ttLgyfIO2W23mu3U3aLzGv0MnOLT/EYYAW+1A/XlJZLMZFmKgNfCCHOEaTeY7bMx1tsfssIsMvVNibpbuhx2jgO8/CzmUEbVGvh2WE28omO4ofNcv8DcA9EgtFIATGMQQpvZcD/323RLO8XyUAAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=AKaL+HIs; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PTY0zdud"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="AKaL+HIs"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4B2871953
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4L2871953
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 29 Aug 2025 08:32:16 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4B2871953
+	Fri, 29 Aug 2025 08:32:25 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4L2871953
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1756481537;
-	bh=z2lJVqJT0UMdIkbScgCd4Til78kV6zueUTLcEHbIfcE=;
+	s=2025082201; t=1756481546;
+	bh=u76jAY9BM212NYWyi3pL6oF5mg9gsqc88AxmrQcbX2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTY0zdudJdqO1RYUAVTWmiL5CE/RYZ5GK42VNYODYMqm58F5tBp513OuCe42lqwha
-	 bk5RHF30YlAg6UCqGMMZ1L4yRmoCmG9dTyJiHlk6TN14EYO7fA7IhFyYb7QaXwAB9f
-	 fk6znHgYfAfagwrp9pjwKowrhChYN87MDbW9NGQ+AIsEr6T64RMf6M3cB1WQm7hOyu
-	 JfGT53AfhbslvmFOXmS7olsBOeNLgNUxNrN7dQ1u4vFFh0ia7Yi6CuxqFcjRm0nrUH
-	 17zplyWjx6bKaM4t1B7adVRxwST06YD8nGIaVUfQytpKd5Ge5L2SyDF2b+1k0uy4St
-	 6zwY5YPSr+kTg==
+	b=AKaL+HIsA8JKK+0dSA+Ti8415+LPr0w8MlX6A0bM8jzwhj9PsWoeaycgkAdYdR70K
+	 MgbHv2BaC/h2WChdF96DhLWk0xU8hhRLJBKyZnidGc7TpcvMOkBSsIicM/mw6iUWmO
+	 UkB3Er1hZf8C7kelHUICVQjipqXDxsCLIjAf5LtFgdL2YuJ1Y+Nb8vODPfXSSSvBKX
+	 4500mr3PXGtBfWftANn6LD9/SxcWFlOzECVGbXxbWclQcOLWnn+AAmIcouN2l6jRrn
+	 8a/Wh6kso7JkWM2hxOGtgsCfcijL1SGCN9LodAISwPi7qf1R5uOnABS2FwQuMslfX5
+	 vJOEyWpzwaJ8g==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v7 05/21] x86/cea: Export API for per-CPU exception stacks for KVM
-Date: Fri, 29 Aug 2025 08:31:33 -0700
-Message-ID: <20250829153149.2871901-6-xin@zytor.com>
+Subject: [PATCH v7 15/21] KVM: VMX: Dump FRED context in dump_vmcs()
+Date: Fri, 29 Aug 2025 08:31:43 -0700
+Message-ID: <20250829153149.2871901-16-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829153149.2871901-1-xin@zytor.com>
 References: <20250829153149.2871901-1-xin@zytor.com>
@@ -54,161 +54,133 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert the __this_cpu_ist_{top,bottom}_va() macros into proper functions,
-and export __this_cpu_ist_top_va() to allow KVM to retrieve the top of the
-per-CPU exception stack.
+From: Xin Li <xin3.li@intel.com>
 
-FRED introduced new fields in the host-state area of the VMCS for stack
-levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively corresponding to
-per-CPU exception stacks for #DB, NMI and #DF.  KVM must populate these
-fields each time a vCPU is loaded onto a CPU.
+Add FRED related VMCS fields to dump_vmcs() to dump FRED context.
 
-To simplify access to the exception stacks in struct cea_exception_stacks,
-a union is used to create an array alias, enabling array-style indexing of
-the stack entries.
-
+Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Tested-by: Shan Kang <shan.kang@intel.com>
+Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Change in v7:
-* Remove Suggested-bys (Dave Hansen).
-* Move rename code in a separate patch (Dave Hansen).
-* Access cea_exception_stacks using array indexing (Dave Hansen).
-* Use BUILD_BUG_ON(ESTACK_DF != 0) to ensure the starting index is 0
-  (Dave Hansen).
-
-Change in v5:
-* Export accessor instead of data (Christoph Hellwig).
+Changes in v5:
+* Read guest FRED RSP0 with vmx_read_guest_fred_rsp0() (Sean).
 * Add TB from Xuelian Guo.
 
-Change in v4:
-* Rewrite the change log and add comments to the export (Dave Hansen).
----
- arch/x86/include/asm/cpu_entry_area.h | 51 +++++++++++++--------------
- arch/x86/mm/cpu_entry_area.c          | 25 +++++++++++++
- 2 files changed, 50 insertions(+), 26 deletions(-)
+Change in v3:
+* Use (vmentry_ctrl & VM_ENTRY_LOAD_IA32_FRED) instead of is_fred_enabled()
+  (Chao Gao).
 
-diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index d0f884c28178..58cd71144e5e 100644
---- a/arch/x86/include/asm/cpu_entry_area.h
-+++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -16,6 +16,19 @@
- #define VC_EXCEPTION_STKSZ	0
- #endif
- 
-+/*
-+ * The exception stack ordering in [cea_]exception_stacks
-+ */
-+enum exception_stack_ordering {
-+	ESTACK_DF,
-+	ESTACK_NMI,
-+	ESTACK_DB,
-+	ESTACK_MCE,
-+	ESTACK_VC,
-+	ESTACK_VC2,
-+	N_EXCEPTION_STACKS
-+};
-+
- /* Macro to enforce the same ordering and stack sizes */
- #define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
- 	char	ESTACK_DF_stack_guard[guardsize];		\
-@@ -39,37 +52,29 @@ struct exception_stacks {
- 
- /* The effective cpu entry area mapping with guard pages. */
- struct cea_exception_stacks {
--	ESTACKS_MEMBERS(PAGE_SIZE, EXCEPTION_STKSZ)
--};
--
--/*
-- * The exception stack ordering in [cea_]exception_stacks
-- */
--enum exception_stack_ordering {
--	ESTACK_DF,
--	ESTACK_NMI,
--	ESTACK_DB,
--	ESTACK_MCE,
--	ESTACK_VC,
--	ESTACK_VC2,
--	N_EXCEPTION_STACKS
-+	union{
-+		struct {
-+			ESTACKS_MEMBERS(PAGE_SIZE, EXCEPTION_STKSZ)
-+		};
-+		struct {
-+			char stack_guard[PAGE_SIZE];
-+			char stack[EXCEPTION_STKSZ];
-+		} event_stacks[N_EXCEPTION_STACKS];
-+	};
- };
- 
- #define CEA_ESTACK_SIZE(st)					\
- 	sizeof(((struct cea_exception_stacks *)0)->st## _stack)
- 
--#define CEA_ESTACK_BOT(ceastp, st)				\
--	((unsigned long)&(ceastp)->st## _stack)
--
--#define CEA_ESTACK_TOP(ceastp, st)				\
--	(CEA_ESTACK_BOT(ceastp, st) + CEA_ESTACK_SIZE(st))
--
- #define CEA_ESTACK_OFFS(st)					\
- 	offsetof(struct cea_exception_stacks, st## _stack)
- 
- #define CEA_ESTACK_PAGES					\
- 	(sizeof(struct cea_exception_stacks) / PAGE_SIZE)
- 
-+extern unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack);
-+extern unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack);
-+
- #endif
- 
- #ifdef CONFIG_X86_32
-@@ -144,10 +149,4 @@ static __always_inline struct entry_stack *cpu_entry_stack(int cpu)
- 	return &get_cpu_entry_area(cpu)->entry_stack_page.stack;
+Changes in v2:
+* Use kvm_cpu_cap_has() instead of cpu_feature_enabled() (Chao Gao).
+* Dump guest FRED states only if guest has FRED enabled (Nikolay Borisov).
+---
+ arch/x86/kvm/vmx/vmx.c | 43 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 3d968584d854..c280e4cd4485 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1399,6 +1399,9 @@ static void vmx_write_guest_fred_rsp0(struct vcpu_vmx *vmx, u64 data)
+ 	vmx_write_guest_host_msr(vmx, MSR_IA32_FRED_RSP0, data,
+ 				 &vmx->msr_guest_fred_rsp0);
  }
- 
--#define __this_cpu_ist_top_va(name)					\
--	CEA_ESTACK_TOP(__this_cpu_read(cea_exception_stacks), name)
--
--#define __this_cpu_ist_bottom_va(name)					\
--	CEA_ESTACK_BOT(__this_cpu_read(cea_exception_stacks), name)
--
++#else
++/* Make sure it builds on 32-bit */
++static u64 vmx_read_guest_fred_rsp0(struct vcpu_vmx *vmx) { return 0; }
  #endif
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 9fa371af8abc..595c2e03ddd5 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -18,6 +18,31 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
- static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
- DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
  
-+/*
-+ * FRED introduced new fields in the host-state area of the VMCS for
-+ * stack levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively
-+ * corresponding to per CPU stacks for #DB, NMI and #DF.  KVM must
-+ * populate these each time a vCPU is loaded onto a CPU.
-+ *
-+ * Called from entry code, so must be noinstr.
-+ */
-+noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack)
-+{
-+	struct cea_exception_stacks *s;
-+
-+	BUILD_BUG_ON(ESTACK_DF != 0);
-+
-+	s = __this_cpu_read(cea_exception_stacks);
-+
-+	return (unsigned long)&s->event_stacks[stack].stack;
-+}
-+
-+noinstr unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack)
-+{
-+	return __this_cpu_ist_bottom_va(stack) + EXCEPTION_STKSZ;
-+}
-+EXPORT_SYMBOL(__this_cpu_ist_top_va);
-+
- static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
+ static void grow_ple_window(struct kvm_vcpu *vcpu)
+@@ -6436,7 +6439,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	u32 vmentry_ctl, vmexit_ctl;
+ 	u32 cpu_based_exec_ctrl, pin_based_exec_ctrl, secondary_exec_control;
+-	u64 tertiary_exec_control;
++	u64 tertiary_exec_control, secondary_vmexit_ctl;
+ 	unsigned long cr4;
+ 	int efer_slot;
  
- static __always_inline unsigned int cea_offset(unsigned int cpu)
+@@ -6447,6 +6450,8 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 
+ 	vmentry_ctl = vmcs_read32(VM_ENTRY_CONTROLS);
+ 	vmexit_ctl = vmcs_read32(VM_EXIT_CONTROLS);
++	secondary_vmexit_ctl = cpu_has_secondary_vmexit_ctrls() ?
++			       vmcs_read64(SECONDARY_VM_EXIT_CONTROLS) : 0;
+ 	cpu_based_exec_ctrl = vmcs_read32(CPU_BASED_VM_EXEC_CONTROL);
+ 	pin_based_exec_ctrl = vmcs_read32(PIN_BASED_VM_EXEC_CONTROL);
+ 	cr4 = vmcs_readl(GUEST_CR4);
+@@ -6493,6 +6498,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	vmx_dump_sel("LDTR:", GUEST_LDTR_SELECTOR);
+ 	vmx_dump_dtsel("IDTR:", GUEST_IDTR_LIMIT);
+ 	vmx_dump_sel("TR:  ", GUEST_TR_SELECTOR);
++	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_FRED)
++		pr_err("FRED guest: config=0x%016llx, stack_levels=0x%016llx\n"
++		       "RSP0=0x%016llx, RSP1=0x%016llx\n"
++		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
++		       vmcs_read64(GUEST_IA32_FRED_CONFIG),
++		       vmcs_read64(GUEST_IA32_FRED_STKLVLS),
++		       vmx_read_guest_fred_rsp0(vmx),
++		       vmcs_read64(GUEST_IA32_FRED_RSP1),
++		       vmcs_read64(GUEST_IA32_FRED_RSP2),
++		       vmcs_read64(GUEST_IA32_FRED_RSP3));
+ 	efer_slot = vmx_find_loadstore_msr_slot(&vmx->msr_autoload.guest, MSR_EFER);
+ 	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_EFER)
+ 		pr_err("EFER= 0x%016llx\n", vmcs_read64(GUEST_IA32_EFER));
+@@ -6544,6 +6559,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	       vmcs_readl(HOST_TR_BASE));
+ 	pr_err("GDTBase=%016lx IDTBase=%016lx\n",
+ 	       vmcs_readl(HOST_GDTR_BASE), vmcs_readl(HOST_IDTR_BASE));
++	if (vmexit_ctl & SECONDARY_VM_EXIT_LOAD_IA32_FRED)
++		pr_err("FRED host: config=0x%016llx, stack_levels=0x%016llx\n"
++		       "RSP0=0x%016lx, RSP1=0x%016llx\n"
++		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
++		       vmcs_read64(HOST_IA32_FRED_CONFIG),
++		       vmcs_read64(HOST_IA32_FRED_STKLVLS),
++		       (unsigned long)task_stack_page(current) + THREAD_SIZE,
++		       vmcs_read64(HOST_IA32_FRED_RSP1),
++		       vmcs_read64(HOST_IA32_FRED_RSP2),
++		       vmcs_read64(HOST_IA32_FRED_RSP3));
+ 	pr_err("CR0=%016lx CR3=%016lx CR4=%016lx\n",
+ 	       vmcs_readl(HOST_CR0), vmcs_readl(HOST_CR3),
+ 	       vmcs_readl(HOST_CR4));
+@@ -6569,25 +6594,29 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	pr_err("*** Control State ***\n");
+ 	pr_err("CPUBased=0x%08x SecondaryExec=0x%08x TertiaryExec=0x%016llx\n",
+ 	       cpu_based_exec_ctrl, secondary_exec_control, tertiary_exec_control);
+-	pr_err("PinBased=0x%08x EntryControls=%08x ExitControls=%08x\n",
+-	       pin_based_exec_ctrl, vmentry_ctl, vmexit_ctl);
++	pr_err("PinBased=0x%08x EntryControls=0x%08x\n",
++	       pin_based_exec_ctrl, vmentry_ctl);
++	pr_err("ExitControls=0x%08x SecondaryExitControls=0x%016llx\n",
++	       vmexit_ctl, secondary_vmexit_ctl);
+ 	pr_err("ExceptionBitmap=%08x PFECmask=%08x PFECmatch=%08x\n",
+ 	       vmcs_read32(EXCEPTION_BITMAP),
+ 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MASK),
+ 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MATCH));
+-	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x\n",
++	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x event_data=%016llx\n",
+ 	       vmcs_read32(VM_ENTRY_INTR_INFO_FIELD),
+ 	       vmcs_read32(VM_ENTRY_EXCEPTION_ERROR_CODE),
+-	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN));
++	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN),
++	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(INJECTED_EVENT_DATA) : 0);
+ 	pr_err("VMExit: intr_info=%08x errcode=%08x ilen=%08x\n",
+ 	       vmcs_read32(VM_EXIT_INTR_INFO),
+ 	       vmcs_read32(VM_EXIT_INTR_ERROR_CODE),
+ 	       vmcs_read32(VM_EXIT_INSTRUCTION_LEN));
+ 	pr_err("        reason=%08x qualification=%016lx\n",
+ 	       vmcs_read32(VM_EXIT_REASON), vmcs_readl(EXIT_QUALIFICATION));
+-	pr_err("IDTVectoring: info=%08x errcode=%08x\n",
++	pr_err("IDTVectoring: info=%08x errcode=%08x event_data=%016llx\n",
+ 	       vmcs_read32(IDT_VECTORING_INFO_FIELD),
+-	       vmcs_read32(IDT_VECTORING_ERROR_CODE));
++	       vmcs_read32(IDT_VECTORING_ERROR_CODE),
++	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(ORIGINAL_EVENT_DATA) : 0);
+ 	pr_err("TSC Offset = 0x%016llx\n", vmcs_read64(TSC_OFFSET));
+ 	if (secondary_exec_control & SECONDARY_EXEC_TSC_SCALING)
+ 		pr_err("TSC Multiplier = 0x%016llx\n",
 -- 
 2.51.0
 
