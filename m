@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7667322DDE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E64322DA9;
 	Fri, 29 Aug 2025 15:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756481592; cv=none; b=YNfnWmL+3sn/hTsCKtZ+vwv1NuDKxEU1yVSdj6HOe1H+4uJKnmwrY/SgJPSiojLu7VcG1R70q0Bbis+ekilov2+OGGTi3Gn9iOTDHan+6f8kFsahswMm3zw/Xr4K9apaEENUHg1jxjkEA6lv5HW90890dIHRJpJqU+8ETncDPYM=
+	t=1756481592; cv=none; b=h7/ZtIJTsE8PgToGqq/jijbUiOssetmcJLyjQzSy6R6oyswS36xrWHl9zt6DgekaX1RBHcR6qJBwx/HuuDdF/kKNvd86MwrFpCoWH97+BEGsMFtZEFBYXcOM6knI5A+ZYQT4xkKBS8emMwYrM/ye/g1TYfHqLub74XLURbZq/wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756481592; c=relaxed/simple;
-	bh=TajmWRHRpulYaL3Ezgb6JK2nld0TR9mgSOrqKoDxdj0=;
+	bh=eRJtLVSyznU/mSIeyWu41n6xqvMjDEmozzjCmdgWVTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paABnGKZMMqEXrCm2jwRQNVs+R/pv2X3+NJCjQHkjWo7B0oNgqu3A5s9EcJXUpK1OuZksOZDmVfrSbcSeH+VxrbXmSuC+REGxI5+a0j5pyPmjqTXoNntNQzmOINDtg9MB84wHPzYrs6S+7zGRSLnW1ke8wvqL7FDzY+5/97yNg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=O7uTc3Qi; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=PuBEIWMVtbN/j2wc6e/XKrzdd1m9IwgQeKYS+nVzjHNVhNnQlfPB1TzEfCOBfV4sB6gXyIPvyYPmm1ushB4tIUgJSATvFlMV3mmmOsqWHoCTTFKnvUYP+zQWBl3JTY0r+70g3W7Nf9f52nKYkMbNIqiKxbW1Ly2wnUSxsxjg/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=FE3jkUIq; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="O7uTc3Qi"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="FE3jkUIq"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4D2871953
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4K2871953
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 29 Aug 2025 08:32:18 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4D2871953
+	Fri, 29 Aug 2025 08:32:24 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4K2871953
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1756481539;
-	bh=t+WgOmDPWX9Ho3zVppzgC3aSr34E3+f5Z93Cy1TLXmY=;
+	s=2025082201; t=1756481545;
+	bh=S87+e5AIiml5QKKoFffy5oFiRjofF0+3pqtQrcseFdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7uTc3QiBIFpKOEJ3KWvFdzWximz6PJASqESkiKclP7I+dn5LrTLD3tHfkDt7ex+S
-	 dTmKzOGxoP4L4OUyt6cEQuO6c66+lEnOyWB74sfpuS/r2+cOr0Htf2vXwnDrYrOESF
-	 Yvg3PaaF78Qk1646jkGrcFRfJfj6jC0QMmfKVon1PkF2xMdGm9k2SbPn7DPtExQU/A
-	 1A+xYTfW4u8h4IKy+mG88yndan8c+DvLZWl4Dsxxnx+RDnEs6TZORrUTqBjCl5qi+8
-	 iRYzieaBJqbTkRpRAwynHR3Yv70KsfdNCbzHSuywL9J5W5YM3cn6eKerDgkKWOUkDi
-	 lT4nODLv5LQwg==
+	b=FE3jkUIqAYZ3XyHQ+ueyxC3TgPQvUBXZ94l7gW1PG2QstVXhF2n6iZ7rcoF+Zioq1
+	 X+9ki8NwGQjBha+uAIExs0ZUm7jZJpJdWmpo21UwYt/rLRFOdSaydA+X1Q4H2dkUkE
+	 N+WQ8WL+ihDaEXjQj81in/earbQK/6uvGeMYbIRJs+yCCxZOBrVjsP4Bl4qjsyMvm+
+	 RnCJvl/HPOMSuwCyooLlcvuLVruIR1OhkbNkaPgYJtYNTSLFXYTcnxN+8df/wV1EVc
+	 Ofg3fHHjGTKB67dMDb1pX+S1Y/9wTuOk3k5mk67NxJV3xT1hv54wQTiQs84YY8xHZr
+	 BqUdHHb/agRTg==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v7 07/21] KVM: VMX: Set FRED MSR intercepts
-Date: Fri, 29 Aug 2025 08:31:35 -0700
-Message-ID: <20250829153149.2871901-8-xin@zytor.com>
+Subject: [PATCH v7 14/21] KVM: x86: Mark CR4.FRED as not reserved
+Date: Fri, 29 Aug 2025 08:31:42 -0700
+Message-ID: <20250829153149.2871901-15-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829153149.2871901-1-xin@zytor.com>
 References: <20250829153149.2871901-1-xin@zytor.com>
@@ -56,33 +56,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-On a userspace MSR filter change, set FRED MSR intercepts.
+The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when
+guest cpu cap has FRED, i.e.,
+  1) All of FRED KVM support is in place.
+  2) Guest enumerates FRED.
 
-The eight FRED MSRs, MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
-MSR_IA32_FRED_SSP[123] and MSR_IA32_FRED_CONFIG, are all safe to
-passthrough, because each has a corresponding host and guest field
-in VMCS.
-
-Both MSR_IA32_FRED_RSP0 and MSR_IA32_FRED_SSP0 (aka MSR_IA32_PL0_SSP)
-are dedicated for userspace event delivery, IOW they are NOT used in
-any kernel event delivery and the execution of ERETS.  Thus KVM can
-run safely with guest values in the two MSRs.  As a result, save and
-restore of their guest values are deferred until vCPU context switch,
-Host MSR_IA32_FRED_RSP0 is restored upon returning to userspace, and
-Host MSR_IA32_PL0_SSP is managed with XRSTORS/XSAVES.
-
-Note, FRED SSP MSRs, including MSR_IA32_PL0_SSP, are available on
-any processor that enumerates FRED.  On processors that support FRED
-but not CET, FRED transitions do not use these MSRs, but they remain
-accessible via MSR instructions such as RDMSR and WRMSR.
-
-Intercept MSR_IA32_PL0_SSP when CET shadow stack is not supported,
-regardless of FRED support.  This ensures the guest value remains
-fully virtual and does not modify the hardware FRED SSP0 MSR.
-
-This behavior is consistent with the current setup in
-vmx_recalc_msr_intercepts(), so no change is needed to the interception
-logic for MSR_IA32_PL0_SSP.
+Otherwise it is still a reserved bit.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
@@ -90,84 +69,46 @@ Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Changes in v7:
-* Rewrite the changelog and comment, majorly for MSR_IA32_PL0_SSP.
-
-Changes in v5:
-* Skip execution of vmx_set_intercept_for_fred_msr() if FRED is
-  not available or enabled (Sean).
-* Use 'intercept' as the variable name to indicate whether MSR
-  interception should be enabled (Sean).
+Change in v5:
 * Add TB from Xuelian Guo.
----
- arch/x86/kvm/vmx/vmx.c | 47 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 42e179f19c23..368f1799394c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4128,6 +4128,51 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
- 	}
- }
+Change in v4:
+* Rebase on top of "guest_cpu_cap".
+
+Change in v3:
+* Don't allow CR4.FRED=1 before all of FRED KVM support is in place
+  (Sean Christopherson).
+---
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/x86.h              | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 0a646305e9d1..92766dec64e8 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -142,7 +142,7 @@
+ 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
+ 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
+ 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
+-			  | X86_CR4_LAM_SUP | X86_CR4_CET))
++			  | X86_CR4_LAM_SUP | X86_CR4_CET | X86_CR4_FRED))
  
-+static void vmx_set_intercept_for_fred_msr(struct kvm_vcpu *vcpu)
-+{
-+	bool intercept = !guest_cpu_cap_has(vcpu, X86_FEATURE_FRED);
-+
-+	if (!kvm_cpu_cap_has(X86_FEATURE_FRED))
-+		return;
-+
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP1, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP2, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP3, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_STKLVLS, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP1, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP2, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP3, MSR_TYPE_RW, intercept);
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_CONFIG, MSR_TYPE_RW, intercept);
-+
-+	/*
-+	 * MSR_IA32_FRED_RSP0 and MSR_IA32_PL0_SSP (aka MSR_IA32_FRED_SSP0) are
-+	 * designed for event delivery while executing in userspace.  Since KVM
-+	 * operates entirely in kernel mode (CPL is always 0 after any VM exit),
-+	 * it can safely retain and operate with guest-defined values for these
-+	 * MSRs.
-+	 *
-+	 * As a result, interception of MSR_IA32_FRED_RSP0 and MSR_IA32_PL0_SSP
-+	 * is unnecessary.
-+	 *
-+	 * Note: Saving and restoring MSR_IA32_PL0_SSP is part of CET supervisor
-+	 * context management.  However, FRED SSP MSRs, including MSR_IA32_PL0_SSP,
-+	 * are available on any processor that enumerates FRED.
-+	 *
-+	 * On processors that support FRED but not CET, FRED transitions do not
-+	 * use these MSRs, but they remain accessible via MSR instructions such
-+	 * as RDMSR and WRMSR.
-+	 *
-+	 * Intercept MSR_IA32_PL0_SSP when CET shadow stack is not supported,
-+	 * regardless of FRED support.  This ensures the guest value remains
-+	 * fully virtual and does not modify the hardware FRED SSP0 MSR.
-+	 *
-+	 * This behavior is consistent with the current setup in
-+	 * vmx_recalc_msr_intercepts(), so no change is needed to the interception
-+	 * logic for MSR_IA32_PL0_SSP.
-+	 */
-+	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP0, MSR_TYPE_RW, intercept);
-+}
-+
- void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- {
- 	bool intercept;
-@@ -4194,6 +4239,8 @@ void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- 		vmx_set_intercept_for_msr(vcpu, MSR_IA32_S_CET, MSR_TYPE_RW, intercept);
- 	}
+ #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
  
-+	vmx_set_intercept_for_fred_msr(vcpu);
-+
- 	/*
- 	 * x2APIC and LBR MSR intercepts are modified on-demand and cannot be
- 	 * filtered by userspace.
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 685eb710b1f2..c9f010862b2a 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -688,6 +688,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 	if (!__cpu_has(__c, X86_FEATURE_SHSTK) &&       \
+ 	    !__cpu_has(__c, X86_FEATURE_IBT))           \
+ 		__reserved_bits |= X86_CR4_CET;         \
++	if (!__cpu_has(__c, X86_FEATURE_FRED))          \
++		__reserved_bits |= X86_CR4_FRED;        \
+ 	__reserved_bits;                                \
+ })
+ 
 -- 
 2.51.0
 
