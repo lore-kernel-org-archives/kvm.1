@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000ED322766;
-	Fri, 29 Aug 2025 15:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7667322DDE;
+	Fri, 29 Aug 2025 15:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756481592; cv=none; b=ZpHutz+xdPHnGwdxK5UQHlvVmXC+8O+FbZIvtf7Hj76nvczx3qFduhJuS1TKuTXtZBdErP1JoCZ95f1Oh3Q9o2pD+LSCFIatYuHIDxTojHOluRr2hyRAhMCrPOnV6uBp5MMlK+QojwM5l00v3s2VrQrC/Yf7KO0XkPlBTywKU2Y=
+	t=1756481592; cv=none; b=YNfnWmL+3sn/hTsCKtZ+vwv1NuDKxEU1yVSdj6HOe1H+4uJKnmwrY/SgJPSiojLu7VcG1R70q0Bbis+ekilov2+OGGTi3Gn9iOTDHan+6f8kFsahswMm3zw/Xr4K9apaEENUHg1jxjkEA6lv5HW90890dIHRJpJqU+8ETncDPYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756481592; c=relaxed/simple;
-	bh=TLgbBxiKolxuXOrjRLi0rkoZU9vP1gi3n6LpK9m1o/g=;
+	bh=TajmWRHRpulYaL3Ezgb6JK2nld0TR9mgSOrqKoDxdj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sc009gu37Jitok5UGdjsWowQRImqY237kegqF/uRTbfWOjSbMNl1AsBoLbtUxAyPDzw0TIuoGTRVRfivExidl0sevqiFpyG9Vc3KESPH6YzoOTAM/1ykqrU9lw0ZddUWFozwIa03f96wV6EeXJr/vnsSIKujhzprwodnPTn8aE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=JynVGdVW; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=paABnGKZMMqEXrCm2jwRQNVs+R/pv2X3+NJCjQHkjWo7B0oNgqu3A5s9EcJXUpK1OuZksOZDmVfrSbcSeH+VxrbXmSuC+REGxI5+a0j5pyPmjqTXoNntNQzmOINDtg9MB84wHPzYrs6S+7zGRSLnW1ke8wvqL7FDzY+5/97yNg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=O7uTc3Qi; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="JynVGdVW"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="O7uTc3Qi"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4H2871953
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57TFVo4D2871953
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 29 Aug 2025 08:32:22 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4H2871953
+	Fri, 29 Aug 2025 08:32:18 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57TFVo4D2871953
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1756481542;
-	bh=BBKTXTsrn2Zw8Dcn2Z3/WpVvozoH+mmJCd/M7GhuKco=;
+	s=2025082201; t=1756481539;
+	bh=t+WgOmDPWX9Ho3zVppzgC3aSr34E3+f5Z93Cy1TLXmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JynVGdVWwpU+LxqO1Q6rtxg8YUh1ZNf1mJUMEYAZLP31wfjEe93yKXR5PGfVMyUim
-	 rXYqdJLMYinVyhHh8xDiDb9bLFppZgsnRCjw1HE4+q8PkCtYIGGvtpa+3NjULgOuUJ
-	 MdRfsulqOELpM8gHe9cMksAWiFijHFRo21GATyI4m3u0kbTUm4wio70TvOU+VA/YEa
-	 la5RU89IijuloZQPA4zoKBAjX9Hh1p1elNRSiqeV+jS8lJySJOPS9w4P9XiHaO0qhe
-	 mzpg8Hvyo9nz3Vly0vXzf+nrJPQ9GILmbE5UbraQyWDmQ/hzdng26eCOg6pvnmrj75
-	 v9h4oNBUeZnfw==
+	b=O7uTc3QiBIFpKOEJ3KWvFdzWximz6PJASqESkiKclP7I+dn5LrTLD3tHfkDt7ex+S
+	 dTmKzOGxoP4L4OUyt6cEQuO6c66+lEnOyWB74sfpuS/r2+cOr0Htf2vXwnDrYrOESF
+	 Yvg3PaaF78Qk1646jkGrcFRfJfj6jC0QMmfKVon1PkF2xMdGm9k2SbPn7DPtExQU/A
+	 1A+xYTfW4u8h4IKy+mG88yndan8c+DvLZWl4Dsxxnx+RDnEs6TZORrUTqBjCl5qi+8
+	 iRYzieaBJqbTkRpRAwynHR3Yv70KsfdNCbzHSuywL9J5W5YM3cn6eKerDgkKWOUkDi
+	 lT4nODLv5LQwg==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v7 11/21] KVM: VMX: Virtualize FRED event_data
-Date: Fri, 29 Aug 2025 08:31:39 -0700
-Message-ID: <20250829153149.2871901-12-xin@zytor.com>
+Subject: [PATCH v7 07/21] KVM: VMX: Set FRED MSR intercepts
+Date: Fri, 29 Aug 2025 08:31:35 -0700
+Message-ID: <20250829153149.2871901-8-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829153149.2871901-1-xin@zytor.com>
 References: <20250829153149.2871901-1-xin@zytor.com>
@@ -56,222 +56,118 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-Set injected-event data when injecting a #PF, #DB, or #NM caused
-by extended feature disable using FRED event delivery, and save
-original-event data for being used as injected-event data.
+On a userspace MSR filter change, set FRED MSR intercepts.
 
-Unlike IDT using some extra CPU register as part of an event
-context, e.g., %cr2 for #PF, FRED saves a complete event context
-in its stack frame, e.g., FRED saves the faulting linear address
-of a #PF into the event data field defined in its stack frame.
+The eight FRED MSRs, MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
+MSR_IA32_FRED_SSP[123] and MSR_IA32_FRED_CONFIG, are all safe to
+passthrough, because each has a corresponding host and guest field
+in VMCS.
 
-Thus a new VMX control field called injected-event data is added
-to provide the event data that will be pushed into a FRED stack
-frame for VM entries that inject an event using FRED event delivery.
-In addition, a new VM exit information field called original-event
-data is added to store the event data that would have saved into a
-FRED stack frame for VM exits that occur during FRED event delivery.
-After such a VM exit is handled to allow the original-event to be
-delivered, the data in the original-event data VMCS field needs to
-be set into the injected-event data VMCS field for the injection of
-the original event.
+Both MSR_IA32_FRED_RSP0 and MSR_IA32_FRED_SSP0 (aka MSR_IA32_PL0_SSP)
+are dedicated for userspace event delivery, IOW they are NOT used in
+any kernel event delivery and the execution of ERETS.  Thus KVM can
+run safely with guest values in the two MSRs.  As a result, save and
+restore of their guest values are deferred until vCPU context switch,
+Host MSR_IA32_FRED_RSP0 is restored upon returning to userspace, and
+Host MSR_IA32_PL0_SSP is managed with XRSTORS/XSAVES.
+
+Note, FRED SSP MSRs, including MSR_IA32_PL0_SSP, are available on
+any processor that enumerates FRED.  On processors that support FRED
+but not CET, FRED transitions do not use these MSRs, but they remain
+accessible via MSR instructions such as RDMSR and WRMSR.
+
+Intercept MSR_IA32_PL0_SSP when CET shadow stack is not supported,
+regardless of FRED support.  This ensures the guest value remains
+fully virtual and does not modify the hardware FRED SSP0 MSR.
+
+This behavior is consistent with the current setup in
+vmx_recalc_msr_intercepts(), so no change is needed to the interception
+logic for MSR_IA32_PL0_SSP.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
-[ Sean: reworked event data injection for nested ]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Change in v5:
+Changes in v7:
+* Rewrite the changelog and comment, majorly for MSR_IA32_PL0_SSP.
+
+Changes in v5:
+* Skip execution of vmx_set_intercept_for_fred_msr() if FRED is
+  not available or enabled (Sean).
+* Use 'intercept' as the variable name to indicate whether MSR
+  interception should be enabled (Sean).
 * Add TB from Xuelian Guo.
-
-Change in v3:
-* Rework event data injection for nested (Chao Gao & Sean Christopherson).
-
-Changes in v2:
-* Document event data should be equal to CR2/DR6/IA32_XFD_ERR instead
-  of using WARN_ON() (Chao Gao).
-* Zero event data if a #NM was not caused by extended feature disable
-  (Chao Gao).
 ---
- arch/x86/include/asm/kvm_host.h |  3 ++-
- arch/x86/include/asm/vmx.h      |  4 ++++
- arch/x86/kvm/svm/svm.c          |  2 +-
- arch/x86/kvm/vmx/vmx.c          | 22 ++++++++++++++++++----
- arch/x86/kvm/x86.c              | 16 +++++++++++++++-
- 5 files changed, 40 insertions(+), 7 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 47 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index bec644eec92f..5c48acc98939 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -759,6 +759,7 @@ struct kvm_queued_exception {
- 	u32 error_code;
- 	unsigned long payload;
- 	bool has_payload;
-+	u64 event_data;
- };
- 
- /*
-@@ -2227,7 +2228,7 @@ void kvm_queue_exception(struct kvm_vcpu *vcpu, unsigned nr);
- void kvm_queue_exception_e(struct kvm_vcpu *vcpu, unsigned nr, u32 error_code);
- void kvm_queue_exception_p(struct kvm_vcpu *vcpu, unsigned nr, unsigned long payload);
- void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
--			   bool has_error_code, u32 error_code);
-+			   bool has_error_code, u32 error_code, u64 event_data);
- void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault);
- void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
- 				    struct x86_exception *fault);
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 6f8b8947c60c..539af190ad3e 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -269,8 +269,12 @@ enum vmcs_field {
- 	PID_POINTER_TABLE_HIGH		= 0x00002043,
- 	SECONDARY_VM_EXIT_CONTROLS	= 0x00002044,
- 	SECONDARY_VM_EXIT_CONTROLS_HIGH	= 0x00002045,
-+	INJECTED_EVENT_DATA		= 0x00002052,
-+	INJECTED_EVENT_DATA_HIGH	= 0x00002053,
- 	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
- 	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
-+	ORIGINAL_EVENT_DATA		= 0x00002404,
-+	ORIGINAL_EVENT_DATA_HIGH	= 0x00002405,
- 	VMCS_LINK_POINTER               = 0x00002800,
- 	VMCS_LINK_POINTER_HIGH          = 0x00002801,
- 	GUEST_IA32_DEBUGCTL             = 0x00002802,
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e4af4907c7d8..9feca6b90380 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4127,7 +4127,7 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
- 
- 		kvm_requeue_exception(vcpu, vector,
- 				      exitintinfo & SVM_EXITINTINFO_VALID_ERR,
--				      error_code);
-+				      error_code, 0);
- 		break;
- 	}
- 	case SVM_EXITINTINFO_TYPE_INTR:
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 358410220cc2..1abfba2139a5 100644
+index 42e179f19c23..368f1799394c 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1861,6 +1861,9 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
- 
- 	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, intr_info);
- 
-+	if (is_fred_enabled(vcpu))
-+		vmcs_write64(INJECTED_EVENT_DATA, ex->event_data);
-+
- 	vmx_clear_hlt(vcpu);
- }
- 
-@@ -7269,7 +7272,8 @@ static void vmx_recover_nmi_blocking(struct vcpu_vmx *vmx)
- static void __vmx_complete_interrupts(struct kvm_vcpu *vcpu,
- 				      u32 idt_vectoring_info,
- 				      int instr_len_field,
--				      int error_code_field)
-+				      int error_code_field,
-+				      int event_data_field)
- {
- 	u8 vector;
- 	int type;
-@@ -7304,13 +7308,17 @@ static void __vmx_complete_interrupts(struct kvm_vcpu *vcpu,
- 		fallthrough;
- 	case INTR_TYPE_HARD_EXCEPTION: {
- 		u32 error_code = 0;
-+		u64 event_data = 0;
- 
- 		if (idt_vectoring_info & VECTORING_INFO_DELIVER_CODE_MASK)
- 			error_code = vmcs_read32(error_code_field);
-+		if (is_fred_enabled(vcpu))
-+			event_data = vmcs_read64(event_data_field);
- 
- 		kvm_requeue_exception(vcpu, vector,
- 				      idt_vectoring_info & VECTORING_INFO_DELIVER_CODE_MASK,
--				      error_code);
-+				      error_code,
-+				      event_data);
- 		break;
+@@ -4128,6 +4128,51 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
  	}
- 	case INTR_TYPE_SOFT_INTR:
-@@ -7328,7 +7336,8 @@ static void vmx_complete_interrupts(struct vcpu_vmx *vmx)
- {
- 	__vmx_complete_interrupts(&vmx->vcpu, vmx->idt_vectoring_info,
- 				  VM_EXIT_INSTRUCTION_LEN,
--				  IDT_VECTORING_ERROR_CODE);
-+				  IDT_VECTORING_ERROR_CODE,
-+				  ORIGINAL_EVENT_DATA);
  }
  
- void vmx_cancel_injection(struct kvm_vcpu *vcpu)
-@@ -7336,7 +7345,8 @@ void vmx_cancel_injection(struct kvm_vcpu *vcpu)
- 	__vmx_complete_interrupts(vcpu,
- 				  vmcs_read32(VM_ENTRY_INTR_INFO_FIELD),
- 				  VM_ENTRY_INSTRUCTION_LEN,
--				  VM_ENTRY_EXCEPTION_ERROR_CODE);
-+				  VM_ENTRY_EXCEPTION_ERROR_CODE,
-+				  INJECTED_EVENT_DATA);
- 
- 	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, 0);
- }
-@@ -7490,6 +7500,10 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 
- 	vmx_disable_fb_clear(vmx);
- 
++static void vmx_set_intercept_for_fred_msr(struct kvm_vcpu *vcpu)
++{
++	bool intercept = !guest_cpu_cap_has(vcpu, X86_FEATURE_FRED);
++
++	if (!kvm_cpu_cap_has(X86_FEATURE_FRED))
++		return;
++
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP1, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP2, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP3, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_STKLVLS, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP1, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP2, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP3, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_CONFIG, MSR_TYPE_RW, intercept);
++
 +	/*
-+	 * Note, even though FRED delivers the faulting linear address via the
-+	 * event data field on the stack, CR2 is still updated.
++	 * MSR_IA32_FRED_RSP0 and MSR_IA32_PL0_SSP (aka MSR_IA32_FRED_SSP0) are
++	 * designed for event delivery while executing in userspace.  Since KVM
++	 * operates entirely in kernel mode (CPL is always 0 after any VM exit),
++	 * it can safely retain and operate with guest-defined values for these
++	 * MSRs.
++	 *
++	 * As a result, interception of MSR_IA32_FRED_RSP0 and MSR_IA32_PL0_SSP
++	 * is unnecessary.
++	 *
++	 * Note: Saving and restoring MSR_IA32_PL0_SSP is part of CET supervisor
++	 * context management.  However, FRED SSP MSRs, including MSR_IA32_PL0_SSP,
++	 * are available on any processor that enumerates FRED.
++	 *
++	 * On processors that support FRED but not CET, FRED transitions do not
++	 * use these MSRs, but they remain accessible via MSR instructions such
++	 * as RDMSR and WRMSR.
++	 *
++	 * Intercept MSR_IA32_PL0_SSP when CET shadow stack is not supported,
++	 * regardless of FRED support.  This ensures the guest value remains
++	 * fully virtual and does not modify the hardware FRED SSP0 MSR.
++	 *
++	 * This behavior is consistent with the current setup in
++	 * vmx_recalc_msr_intercepts(), so no change is needed to the interception
++	 * logic for MSR_IA32_PL0_SSP.
 +	 */
- 	if (vcpu->arch.cr2 != native_read_cr2())
- 		native_write_cr2(vcpu->arch.cr2);
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c53fc235b8bd..dbcf00c55012 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -807,9 +807,22 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
- 		 * breakpoint), it is reserved and must be zero in DR6.
- 		 */
- 		vcpu->arch.dr6 &= ~BIT(12);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP0, MSR_TYPE_RW, intercept);
++}
 +
-+		/*
-+		 * FRED #DB event data matches DR6, but follows the polarity of
-+		 * VMX's pending debug exceptions, not DR6.
-+		 */
-+		ex->event_data = ex->payload & ~BIT(12);
-+		break;
-+	case NM_VECTOR:
-+		ex->event_data = ex->payload;
- 		break;
- 	case PF_VECTOR:
- 		vcpu->arch.cr2 = ex->payload;
-+		ex->event_data = ex->payload;
-+		break;
-+	default:
-+		ex->event_data = 0;
- 		break;
+ void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+ 	bool intercept;
+@@ -4194,6 +4239,8 @@ void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ 		vmx_set_intercept_for_msr(vcpu, MSR_IA32_S_CET, MSR_TYPE_RW, intercept);
  	}
  
-@@ -917,7 +930,7 @@ static void kvm_queue_exception_e_p(struct kvm_vcpu *vcpu, unsigned nr,
- }
- 
- void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
--			   bool has_error_code, u32 error_code)
-+			   bool has_error_code, u32 error_code, u64 event_data)
- {
- 
++	vmx_set_intercept_for_fred_msr(vcpu);
++
  	/*
-@@ -942,6 +955,7 @@ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
- 	vcpu->arch.exception.error_code = error_code;
- 	vcpu->arch.exception.has_payload = false;
- 	vcpu->arch.exception.payload = 0;
-+	vcpu->arch.exception.event_data = event_data;
- }
- EXPORT_SYMBOL_GPL(kvm_requeue_exception);
- 
+ 	 * x2APIC and LBR MSR intercepts are modified on-demand and cannot be
+ 	 * filtered by userspace.
 -- 
 2.51.0
 
