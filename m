@@ -1,165 +1,230 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2077.outbound.protection.outlook.com [40.107.102.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8686735AABF;
-	Tue,  2 Sep 2025 21:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756848707; cv=none; b=VX50WOPv8adyRd5myUwfPZfdstzKRvUhY6hjI75bEJRMF+/W2QnXOK/mxL1CeJKcbcx/jYVPiwRd8aXA0LEY4r0+Iir/zp4F1YqLk9l2x6n7yG0INj5Zkq4mzM3RjOWN9UcJkRLs0tTGxIPPPb5NXCLyAi4Ul+k5SQ/I1uw+lDY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756848707; c=relaxed/simple;
-	bh=Fhr1X2s81mKv666A5gstY8vVQTMahtF+o9XOsgjlsEU=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=HpQ7xZdgUTDCbzqBTISI/Ea0Z7qPkVdO2KtUI78txDtDg8dcDwnN0VoWRsGeuUOq0l5in0I/nCHv/ErJ2p2yFEUcl7RItAevnLlVlJfwgxtl6wYW3Y8n6cmrj3Nmu4b9jcVGranxuYwSlhJKwXElcsyo0BhiaQn8qqI33z+cF3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KPYsZK97; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B32765D1;
+	Tue,  2 Sep 2025 22:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756852916; cv=fail; b=gdnZwrFTnJ1RmyL1a8TtA+MOrdYUVveh64qlk76wpiqghoDlyJHOKK/E1u2cR6ksJj3BlY8ATj2rnqEMLjoMccB6LZ5B/McQMOhiFiyHb7s3ivyluJExZ1YTju2A6yvHXLchH3UzJPhPxIbayLC9c+uAsNWl7BvuKM0ru4SDfv4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756852916; c=relaxed/simple;
+	bh=9WeQ0PEdz3OG63Co9ZfgEWYfT6/RRfCqu88OGvd2SQM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RZo/T4J1ZEvH+OxUNVwFWxA3Nd7EnXSFEMQ1V5m1dPBWE432hXnxzJt5tIoYi15DnFOgTZrCK80vCPelWWpEFvvBj79E+zJ/qWpYKxErDHJt9xLfXJZ58Ujjar0P3HE4EZFJi/OP1N0P9CmQ4Ld5qNTht0Q29KEPlVT+4gZPrBU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ix+4Kdld; arc=fail smtp.client-ip=40.107.102.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KPYsZK97"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-71a2d730d03so19907116d6.3;
-        Tue, 02 Sep 2025 14:31:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756848704; x=1757453504; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ccBuzbs+BrHDDKe4TyRzIoAM5cAJ6pCAgSin1bdA9A=;
-        b=KPYsZK97I8jOg3W85iMy8Ymt5wGRK3JZnEJ6S+N2sml+pFxW4ze7N7mb2OTm69P5S2
-         MHmCDRaIK/NOGcOit4xceh5u+FNHBYrw4IlYAKHm3mwl+kiDZpM+1Lx7efZ5+oYr9dao
-         X2TYiokd+jbMvUXG5dpSXM2tPeS1aGBOuIlX8KjxahsoMUnpqTDkwzqUGvHbez/3XFtd
-         XfOyQYLkeVV1tFTTLTiZK8+encTuFI+TDJ4nKv+xkrzS/OxPY+N0e7l37+MY7Y8YOEF1
-         HIgcU7l4qjwWtFGnEhTTfYF0go7/ZvTZmnSpLxsBXdwk7njpfrJDk0T3uTR8R5RBKF5m
-         tZOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756848704; x=1757453504;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5ccBuzbs+BrHDDKe4TyRzIoAM5cAJ6pCAgSin1bdA9A=;
-        b=CDq+FrqQR/xiLDTajmuEF+mVezjtlJIAmi316HeKDGGTWut8ra7FYgfj+wBG0YlofE
-         kBUEjzavUZGyCr+5WHQjwlluVxTTEGTyIh5YO2EiKjMQFqzDepbw7Gw+85KWhNOfsiDJ
-         Zlnt3eB1qbe6EdV3Du9wDxdd3MoE1tBSLGdLKvHke3LmquyQCmhNZDFmnKtowlTEUroK
-         D90ohjLJ6qSlvPIRE8wxYNJAknsfIb6R6DtzORgkB9oA9odXz9SfulTYbWVxeOIVx1nR
-         xFa5PwDKUnUZLRAF/kfiA6+cAsiYHnYKUCU3klMh6vtK4khwwZTu4S2o3E8v1VsezKKT
-         2lgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQge+GyLXf6OAwNKzJExB1cOiHVw1NExRKKJcbBJlEa/7qEFP44nLlNHDYRWQhDv5m9XK+k+I5@vger.kernel.org, AJvYcCVx/4c3C6pOPM+YMtTF0pmxrTlqBZ5hLX6tAAZdWkuK6KUrU3yqjqlELD+JK7gNf6XikxRSQ8UqWsNjJgMp@vger.kernel.org, AJvYcCXaewxdzdY/44Z6OzDVhHp4sCYjPiarzh2mWklGJ3pgGaqdOXTvNb4Ras63A6BW+y6wlu0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwAuGdF/prYnrcAQeNZMHjYKEVzBljGgSyS6ClQmJa0QkjkJm9
-	Qufwst6cDMLXE9ouPo4i7UnVlD8ppY8xTbWrVSDaEsVOpWKyAtwDJvvlSWQbWg==
-X-Gm-Gg: ASbGncutBoknJ4MaOA+uy1RNBq5yMPHDcy1YqXRRbeYjll3zSdsmLUquWhYyJd7QtLd
-	T6RCkgxMY2+2iENwJq+VAToJCxoNuBM9qX/ZYDBubkYlkg+8xJT1gdL1E5rbimjKVH7ZZ0TkCx3
-	eFv5YSzRjzzL0inNkC1t06guRoG5WmrfMoi9RDri7f/lMWTJtmy8Y+kzQa5aSb/6tE+MIkf9Nd1
-	M2wejpTdjC97UVV+VT+YCISGqiNd7ngL2j+Am2RFmnHzc+GzfmmeEaeE+B1Fp+ExuBlsatAZfOi
-	Zyxg+wSaA2nUbS4PRE4cZRmRse5utChC3T3u5Gm8G9/IZiLuFRhVC4HCF1aXgrULvGnAocB0Ja5
-	/lOnMngHD73zvtcJZZSBRjXCF7O4YDKT9wQBpoFqzo7nPLDcUurLeQiUZoeM0L+Bn9r8RKR307Y
-	6k+A==
-X-Google-Smtp-Source: AGHT+IHuSLao98z09CKcRFnRmWQxJ8TrKeoPQyY4lPLQgQdvitTmSna4yO9Wv7pVlwi66WpRyj7GFg==
-X-Received: by 2002:a05:6214:1925:b0:721:7a6a:b703 with SMTP id 6a1803df08f44-7217a6ac7ffmr26477986d6.53.1756848704343;
-        Tue, 02 Sep 2025 14:31:44 -0700 (PDT)
-Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-720b644f2c9sm18578666d6.63.2025.09.02.14.31.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 14:31:43 -0700 (PDT)
-Date: Tue, 02 Sep 2025 17:31:43 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>, 
- willemdebruijn.kernel@gmail.com, 
- jasowang@redhat.com, 
- mst@redhat.com, 
- eperezma@redhat.com, 
- stephen@networkplumber.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- virtualization@lists.linux.dev, 
- kvm@vger.kernel.org
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>, 
- Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Message-ID: <willemdebruijn.kernel.1b33a2385592@gmail.com>
-In-Reply-To: <20250902080957.47265-3-simon.schippers@tu-dortmund.de>
-References: <20250902080957.47265-1-simon.schippers@tu-dortmund.de>
- <20250902080957.47265-3-simon.schippers@tu-dortmund.de>
-Subject: Re: [PATCH 2/4] netdev queue flow control for TUN
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ix+4Kdld"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WEd9A0vPnC79EwZrIylFx137ypXbkIrR7ggy52uWXVWqS6QBWBnYlw0aEg4vxN69if3Pt68pqq2DLPrmvVsGKqkAr0SOXkAsO7n3ACPULHxnmdnYvlfZQu68vD9bnngWJYJ2ygDszUrFpQ0T9EVe2xcLVPIotgy1fPkf7tEKm+R6NWoF3tVUeY+8w938crloonkYw00p0dEhwNNceKXiGJojBl+V8u0naN9sDY8h0UmdDsPJiW9rtKvMEV7V/97SoTGCreiSwLBG64PdYM8IxUda+HU1j8PcqpIeX8/S/Dt+vYO48IQlOkXcrOYQ0cXeXVNzgtcVTqWO9aZa779SFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nOXm419cQhJR+FuqjBZIM6UY3zvsfsOYSKPjuBcBt2w=;
+ b=ZTxwXRmAtixQ+c8w6S/vDJhG5pqxDb5z9mSbw2Xl67+Xs93J0BfGB3G+soyP8fFgsEmODevA5BXzb2ZwpE6QunQGpew4Qo6CqHjxDSG6XYPNVR4uFoD6Q6lkTUqtRohczj61Zhf/73W+B7JJaeuG/JF5QquDqcUXyghQn9QAVKdvUbOa4WvC7zMKKdsJSoNcMEeZA4ldPln4XXpxysEYMc5HVy+DaPLZ+Xbh5ToOkcu3afqecxkPDgvHmN2NTteduzfmLyk0BW/j873bqoboCjyBzqrkvVOJnunDjQV13jTuyUuj5F6pQX6mMFJtvNKW4fjAweN30bRqBq85o/tFpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nOXm419cQhJR+FuqjBZIM6UY3zvsfsOYSKPjuBcBt2w=;
+ b=Ix+4KdldIyIbTpnYKx74MBAIlWwAMN1ZAVrF+iSSDw6bufa7w4AwjhixI/KQrf0gONq3r590gwE+sNpdW3qnPDiMYhEJoVG0GVX+9sPcjLwkX+MwOvQpH5FdZFSmjDAva2YxztxsK0i/Pjfu2wX1H7ydYM+Jc65yuTvY5xd72gg=
+Received: from BN0PR04CA0030.namprd04.prod.outlook.com (2603:10b6:408:ee::35)
+ by MN0PR12MB6200.namprd12.prod.outlook.com (2603:10b6:208:3c3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Tue, 2 Sep
+ 2025 22:41:49 +0000
+Received: from BN2PEPF00004FBC.namprd04.prod.outlook.com
+ (2603:10b6:408:ee:cafe::b3) by BN0PR04CA0030.outlook.office365.com
+ (2603:10b6:408:ee::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.16 via Frontend Transport; Tue,
+ 2 Sep 2025 22:41:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF00004FBC.mail.protection.outlook.com (10.167.243.182) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9094.14 via Frontend Transport; Tue, 2 Sep 2025 22:41:49 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 2 Sep
+ 2025 17:41:48 -0500
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Tue, 2 Sep
+ 2025 15:41:46 -0700
+From: Babu Moger <babu.moger@amd.com>
+To: <corbet@lwn.net>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
+	<Dave.Martin@arm.com>, <james.morse@arm.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>
+CC: <x86@kernel.org>, <hpa@zytor.com>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>,
+	<paulmck@kernel.org>, <pmladek@suse.com>,
+	<pawan.kumar.gupta@linux.intel.com>, <rostedt@goodmis.org>,
+	<kees@kernel.org>, <arnd@arndb.de>, <fvdl@google.com>, <seanjc@google.com>,
+	<thomas.lendacky@amd.com>, <manali.shukla@amd.com>, <perry.yuan@amd.com>,
+	<sohil.mehta@intel.com>, <xin@zytor.com>, <peterz@infradead.org>,
+	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <nikunj@amd.com>,
+	<babu.moger@amd.com>, <dapeng1.mi@linux.intel.com>, <ak@linux.intel.com>,
+	<chang.seok.bae@intel.com>, <ebiggers@google.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+Subject: [PATCH v9 01/10] x86/cpufeatures: Add support for L3 Smart Data Cache Injection Allocation Enforcement
+Date: Tue, 2 Sep 2025 17:41:23 -0500
+Message-ID: <b799fb844e3d2add2143f6f9af6735368b546b3a.1756851697.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1756851697.git.babu.moger@amd.com>
+References: <cover.1756851697.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBC:EE_|MN0PR12MB6200:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01d4e8e4-e2c0-459f-14b7-08ddea71e760
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?mAmd5a9tELUw8PITEpfbd8DU4npR2UmIyb/jcmpNusiex+HVxx9xR6LEG4f1?=
+ =?us-ascii?Q?77OwsetB8rG0+jwlkdXroMeFtMgcWCOwFd0lOiQxDd6AZKs2UqJ7NHIWI0SD?=
+ =?us-ascii?Q?LMDFj2LZqKqcNqUUAhRPEE4c6+OfugeBLMRy12pEGhwiqrdkkb5aOywRtHrZ?=
+ =?us-ascii?Q?EUFutKmU1amNdijER6a8mwsZLldjEQkq6/5zJpLuabZuUO+2X21vU+BAzg05?=
+ =?us-ascii?Q?+apR3EU+msbndb22gZ+0zPyf638M/7EK8Q80m6ViM5I01R+JFrirY3rnesxC?=
+ =?us-ascii?Q?XSszM1phoKLQAYr/0JQ/U/+f94t0Rr2CgL6ntP+v8cyNVyrb5vc33SVzqANo?=
+ =?us-ascii?Q?b4/fiZyEVC7S8PRanHYS4mjaCcDMm8wsv4goXy3i6pyMwmrKZkYQQMyBlmQU?=
+ =?us-ascii?Q?xjPCg+F9qQEtnvX/AuTZXmpr/S0RwNxElqO/QLvDSCxedMD1PCNJjhCrFx57?=
+ =?us-ascii?Q?ehnMBiXq08gxmzgIQRHhzuzV/SO+cB26ptQk5AqOj+jAxanaDAsR9Vav5tuZ?=
+ =?us-ascii?Q?EvX/BhvuinnghhH9vJ6T16N4Pazot7FYaPCO4mmwxqggIWJHy5vkmB3I2HD1?=
+ =?us-ascii?Q?AsVYzqk5MHb3KyUokVz7Dd2+mA4LUEjOjcMkNz7guY6CP8AnJP+XBgl2V0tZ?=
+ =?us-ascii?Q?6ypfVChbh9k1fdOTlX3I4tx1e/gDGQr3kUDHKWu/3ZvTr2NfLcf4OKcJwwIu?=
+ =?us-ascii?Q?mo3EnIWFYv4eFmOMvMPRSLP4kXs8sHKMDFfXgCJlsiKgZ4oYXatO/H0YZrjb?=
+ =?us-ascii?Q?7nnychc0B8M7JPyuwVvR3ul2B+71gDxE2Nhbjj2xFGQ8vVAWfV8W68qlR3UP?=
+ =?us-ascii?Q?y4+dKjL5F/Hb0fPyso7nvt92yBgWBvQKbMc/cKoble+eiVwjxCAjHJEhg1p4?=
+ =?us-ascii?Q?FQ61/MWSsipoZNl3nm9xkPiolazt2DUagoL4IwbM9Qt1M1WDPrqbAfhG1rcq?=
+ =?us-ascii?Q?yUIScUdDIHUpkpPc+CWb50UxZZswwQfMRI23icUDcC/9m4l+L0uiAzwNC83K?=
+ =?us-ascii?Q?ttJoTe0zmjL3LqxYK9MboGqNLH1e9RyxrHJRURRS1TO5uzex6AKPFVNyGuZa?=
+ =?us-ascii?Q?R9cVNqYqnvanitDDAcWjecql3RdICO+B5oR+cs5dnVF3VD1T+m8KRv0md91k?=
+ =?us-ascii?Q?6wNRfMhW2FuYzoFp6RPJ8zHX3qtOtPF98oX/H0ZCARZSYhUVRawTaqU5c6Du?=
+ =?us-ascii?Q?Kqq0TyiRbcnnfnQGzkTnYXAi093Py/Zyfkm1FLCfzPG+HxDUXE48aY1p6jJz?=
+ =?us-ascii?Q?+TOiKmI25VQTP8eYgDUDgKRrbTkbQabiWXgmsKBHmu1pngxlEOq/7laWpyLc?=
+ =?us-ascii?Q?a6UzlQe4xMC+r/LKXJG9Tn5HOmJyE21mYJMXuYQefrPKcWklkAQsC6CRiDOf?=
+ =?us-ascii?Q?puO+XTumrPhao2feeH9frfIOvQVBji9+fiKS7i8CFQH1+BW4pEPwx0625mxG?=
+ =?us-ascii?Q?ydSHQ16n5Q059DiCnDO3MZnz9MaSWf3zXo2K5vbg3H/1YeW3lItc4A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 22:41:49.0075
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01d4e8e4-e2c0-459f-14b7-08ddea71e760
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF00004FBC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6200
 
-Simon Schippers wrote:
-> The netdev queue is stopped in tun_net_xmit after inserting an SKB into
-> the ring buffer if the ring buffer became full because of that. If the
-> insertion into the ptr_ring fails, the netdev queue is also stopped and
-> the SKB is dropped. However, this never happened in my testing. To ensure
-> that the ptr_ring change is available to the consumer before the netdev
-> queue stop, an smp_wmb() is used.
-> 
-> Then in tun_ring_recv, the new helper wake_netdev_queue is called in the
-> blocking wait queue and after consuming an SKB from the ptr_ring. This
-> helper first checks if the netdev queue has stopped. Then with the paired
-> smp_rmb() it is known that tun_net_xmit will not produce SKBs anymore.
-> With that knowledge, the helper can then wake the netdev queue if there is
-> at least a single spare slot in the ptr_ring by calling ptr_ring_spare
-> with cnt=1.
-> 
-> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> ---
->  drivers/net/tun.c | 33 ++++++++++++++++++++++++++++++---
->  1 file changed, 30 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index cc6c50180663..735498e221d8 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -1060,13 +1060,21 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->  
->  	nf_reset_ct(skb);
->  
-> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> +	queue = netdev_get_tx_queue(dev, txq);
-> +	if (unlikely(ptr_ring_produce(&tfile->tx_ring, skb))) {
-> +		/* Paired with smp_rmb() in wake_netdev_queue. */
-> +		smp_wmb();
-> +		netif_tx_stop_queue(queue);
->  		drop_reason = SKB_DROP_REASON_FULL_RING;
->  		goto drop;
->  	}
-> +	if (ptr_ring_full(&tfile->tx_ring)) {
-> +		/* Paired with smp_rmb() in wake_netdev_queue. */
-> +		smp_wmb();
-> +		netif_tx_stop_queue(queue);
-> +	}
->  
->  	/* dev->lltx requires to do our own update of trans_start */
-> -	queue = netdev_get_tx_queue(dev, txq);
->  	txq_trans_cond_update(queue);
->  
->  	/* Notify and wake up reader process */
-> @@ -2110,6 +2118,24 @@ static ssize_t tun_put_user(struct tun_struct *tun,
->  	return total;
->  }
->  
-> +static inline void wake_netdev_queue(struct tun_file *tfile)
+Smart Data Cache Injection (SDCI) is a mechanism that enables direct
+insertion of data from I/O devices into the L3 cache. By directly caching
+data from I/O devices rather than first storing the I/O data in DRAM,
+SDCI reduces demands on DRAM bandwidth and reduces latency to the processor
+consuming the I/O data.
 
-no inline keyword in .c files, let the compiler decide.
+The SDCIAE (SDCI Allocation Enforcement) PQE feature allows system software
+to control the portion of the L3 cache used for SDCI.
 
-> +{
-> +	struct netdev_queue *txq;
-> +	struct net_device *dev;
-> +
-> +	rcu_read_lock();
-> +	dev = rcu_dereference(tfile->tun)->dev;
-> +	txq = netdev_get_tx_queue(dev, tfile->queue_index);
-> +
-> +	if (netif_tx_queue_stopped(txq)) {
-> +		/* Paired with smp_wmb() in tun_net_xmit. */
-> +		smp_rmb();
-> +		if (ptr_ring_spare(&tfile->tx_ring, 1))
-> +			netif_tx_wake_queue(txq);
-> +	}
-> +	rcu_read_unlock();
-> +}
+When enabled, SDCIAE forces all SDCI lines to be placed into the L3 cache
+partitions identified by the highest-supported L3_MASK_n register, where n
+is the maximum supported CLOSID.
+
+Add CPUID feature bit that can be used to configure SDCIAE.
+
+The SDCIAE feature details are documented in APM [1] available from [2].
+[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
+Publication # 24593 Revision 3.41 section 19.4.7 L3 Smart Data Cache
+Injection Allocation Enforcement (SDCIAE)
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+---
+v9: No changes.
+
+v8: Added Acked-by, Reviewed-by tags.
+
+v7: No changes. Fixed few conflicts in
+   arch/x86/include/asm/cpufeatures.h
+   arch/x86/kernel/cpu/scattered.c
+
+v6: Resolved conflicts in cpufeatures.h.
+
+v5: No changes.
+
+v4: Resolved a minor conflict in cpufeatures.h.
+
+v3: No changes.
+
+v2: Added dependancy on X86_FEATURE_CAT_L3
+    Removed the "" in CPU feature definition.
+    Minor text changes.
+---
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ arch/x86/kernel/cpu/cpuid-deps.c   | 1 +
+ arch/x86/kernel/cpu/scattered.c    | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 06fc0479a23f..7a6afd605643 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -495,6 +495,7 @@
+ #define X86_FEATURE_TSA_SQ_NO		(21*32+11) /* AMD CPU not vulnerable to TSA-SQ */
+ #define X86_FEATURE_TSA_L1_NO		(21*32+12) /* AMD CPU not vulnerable to TSA-L1 */
+ #define X86_FEATURE_CLEAR_CPU_BUF_VM	(21*32+13) /* Clear CPU buffers using VERW before VMRUN */
++#define X86_FEATURE_SDCIAE		(21*32+14) /* L3 Smart Data Cache Injection Allocation Enforcement */
+ 
+ /*
+  * BUG word(s)
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index 46efcbd6afa4..87e78586395b 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -72,6 +72,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_CQM_MBM_LOCAL,		X86_FEATURE_CQM_LLC   },
+ 	{ X86_FEATURE_BMEC,			X86_FEATURE_CQM_MBM_TOTAL   },
+ 	{ X86_FEATURE_BMEC,			X86_FEATURE_CQM_MBM_LOCAL   },
++	{ X86_FEATURE_SDCIAE,			X86_FEATURE_CAT_L3    },
+ 	{ X86_FEATURE_AVX512_BF16,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_FP16,		X86_FEATURE_AVX512BW  },
+ 	{ X86_FEATURE_ENQCMD,			X86_FEATURE_XSAVES    },
+diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
+index 6b868afb26c3..84fd8c04d328 100644
+--- a/arch/x86/kernel/cpu/scattered.c
++++ b/arch/x86/kernel/cpu/scattered.c
+@@ -51,6 +51,7 @@ static const struct cpuid_bit cpuid_bits[] = {
+ 	{ X86_FEATURE_COHERENCY_SFW_NO,		CPUID_EBX, 31, 0x8000001f, 0 },
+ 	{ X86_FEATURE_SMBA,			CPUID_EBX,  2, 0x80000020, 0 },
+ 	{ X86_FEATURE_BMEC,			CPUID_EBX,  3, 0x80000020, 0 },
++	{ X86_FEATURE_SDCIAE,			CPUID_EBX,  6, 0x80000020, 0 },
+ 	{ X86_FEATURE_TSA_SQ_NO,		CPUID_ECX,  1, 0x80000021, 0 },
+ 	{ X86_FEATURE_TSA_L1_NO,		CPUID_ECX,  2, 0x80000021, 0 },
+ 	{ X86_FEATURE_AMD_WORKLOAD_CLASS,	CPUID_EAX, 22, 0x80000021, 0 },
+-- 
+2.34.1
+
