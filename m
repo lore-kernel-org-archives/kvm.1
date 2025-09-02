@@ -1,63 +1,64 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2077.outbound.protection.outlook.com [40.107.95.77])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2066.outbound.protection.outlook.com [40.107.212.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F5F2797AE;
-	Tue,  2 Sep 2025 22:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC527A123;
+	Tue,  2 Sep 2025 22:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756852922; cv=fail; b=D2MQacsVppZz2ZGO73O/1I/85o5cQBFZ779rQnkih9WXs899o8XJiDODVJgn5WLYBNS6oCdkmW+TAD9984UybPvc3VgYlOATOPhbm55BEM1JOmZQlWTPlf2UIdyh039BaEb5fRWZ6fbhRHDZ1YLnRyJQ9JVELETsXYna7EIqVvw=
+	t=1756852926; cv=fail; b=fayaQV6UPhMZ6tt5zu/sa/wjqTIxbrRlhw1GIhld6RtETjD1tYyfMQePehMejxQoUCyUBJzoAKKrKicZGaQ8PHklwJAVm1hDThUTpripu/YqG0EF9Wz0UHKZlSwQKSJxFUV8iGAwsNeQm2XZ/wRcwzukU0n2ddgjubWvtlvjn5U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756852922; c=relaxed/simple;
-	bh=5qyudYZ8ZbP5XOJM4+sxN2BYp328Xsic1kLsQWhcJEM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pA25IPUqmO5q7+9HVV41bcn45N2Ni7KEkmOXFA4VkPGrBvXiGEz96YdqymiMUF6kG2sK8FNiQjbVzLhxDsF5u5glGv9dInWJTOURmaSIGTbkooT4POl/JTHNU/WXSbnl3IXtt3YjoNhQZChShrWCI0e6ua3tPYFFjxL/eb1GayY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CEJym8Nt; arc=fail smtp.client-ip=40.107.95.77
+	s=arc-20240116; t=1756852926; c=relaxed/simple;
+	bh=tRVJUn4TyUBxl4C+k/xVX2pOTRgDgNso3/+WKnqNemg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rjGJ0xMHsQbX1gQuLzRLZmm/5fs/Jo/9KWSwcNsAOUCDx54iPs4JK9Lh9Pk1L+DAZXFo/6swA6mxpHPP5m/pILSsNs4fg4VyBQt07JJvdXhgGAx62j7AbGAnzZcF+AADy06mNKD6um1LAN2ILElan7NtJJZrwKSaqNsl/dUVHfo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=r48kXq3M; arc=fail smtp.client-ip=40.107.212.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CEJym8Nt"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="r48kXq3M"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=opCsnKgh31gQFgFop4oydlZ02e4wKoSYHBh3ONO8KxVnF9KXfg4hKfWhD/Yx5DLaep8ypahhlzuPBbUG31FmLS9zJ83rqmdW2vW9Ow3sJ+wO6BnIL698clzl/lulsd57YgZYWQqnUOarKbn/6GpZyzBIPAD9B+MABk62mwiiThDcCr/qPk/vguKu2n0FSqWJ82TlZup2q172llYAjK/42vhegzilcOOuOTAe1qeg0vN7wFxvW7u1C9VVWsvbg9KwRdiMicZbuzjbs3EL+49nht2FNzPm6gn2xIl5+/1u5egzx1wZ0+oCEWM1yMn6WicBYu+t0IPAhRU+yEVLd7FF4w==
+ b=SmlawuyUflRHVZxoKBRkywk8cZVaCaUgHWtUu26FaXi/RsxFBa8U3QHCPtlPDrWyJqwPaxM5HAMkPI7yJXKFnNjjjMPTzSDK/GEz1P7F9yagpRFaYADt7toH5tqE/jCgVvbUmif3mNJ7Z9FXo0AZKK9uzhyxvQdmyXzmOC/z5lDslpjJi0eDAeyl9iRX+NtbS93lpU1Ht7Pg0Dla2neu7cuSkJ6M+QHyoZLbZbs4Ujz8bGxSW9qGEjj45nCIxA8Bt80Xnx6kAmPAumKATk6PoisigY/ds1Up9+ExWZ39Mz5m5PcWCWNSGC5nmngyhd5aDwVS8U5uGbJTGKtWxFKgQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UsGC2H369zlQCIjgUykob6gDkhLZUgReI48Oo4Q/7iY=;
- b=BTBPMqwb1YEsvG24Ydrg5IRKRidhz+DKfoGwlxbW4E7MWjLcjDCOHVmgmf/iZUyup8KZsGF/8BWzLT5n3TSEWHqWWRCtlQvXEGdoqWDASSOZyZQAv/7M6XIU9+0W+0XVJcI8A72drjrT4WG/WySolb0Iwvoy8hP85k0l3siS/IZ7TPwLC6QOKX0yj+U23vMGp8mc1wMXpC0w8ECuN+p7/evVsrGEihDGpV1Eui+0cu+pcVFuiR6bAbYxMP1WMoqZQk4BLDY2hD67lUCHft9Ivc0FGBJ39Z4YpsQgQCm80l/ZgTZyn4TWMDr5VjLkjo1LebAXxCSeFAkX4g+CPvSgzQ==
+ bh=nGbnuW2/Z6L8vIUhsmmaE1bwx88Z6bz2TimxrguZXj4=;
+ b=gCWA1WMaLum9qHoQ0OWjmCbakwvFKK0tQA02f/qvEo92hFzfPx7gxkSR1O52YQ0brz6aJo2g0J29YRlWDZgEv4I49zFcVNtJFgsfKOGoXh2E8YSXtWKyc+lfAaRiuOw/B+vZ5AMImixl/ijMCRzzjvYpUNdPCtuZ1XMK1/SryewB4hRaEd7EbC+iHFp6cBagtXIZT7vciMIs91oq3MGLYSuKMun+omBlcLpCSwACIxR/q31JvpWTz2RMPAz+34ApXj0e6WYiWJEvM1MO+AaT4arraWiCg7YARx3UFYlP2tclBFPOndDf/sSTrc+sI1O2eKeOtYZiOHoKieYh8rO5pQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UsGC2H369zlQCIjgUykob6gDkhLZUgReI48Oo4Q/7iY=;
- b=CEJym8NtIuMOFyaaW76YFlCUDChVaM1qO5woGcec6YlGzUrwXidmcRuOUwVLutAZsMNgRF3eB3MeSC+SNZoBscc+XT0/dqpKIRnwrjcdnzIaOF3LScD9bOrhVNFmHlNzH1H7bukcGhpAo408S4d7Fhgc7weepLRm8nZmGbjD20I=
-Received: from SJ0PR05CA0025.namprd05.prod.outlook.com (2603:10b6:a03:33b::30)
- by MN2PR12MB4376.namprd12.prod.outlook.com (2603:10b6:208:26c::16) with
+ bh=nGbnuW2/Z6L8vIUhsmmaE1bwx88Z6bz2TimxrguZXj4=;
+ b=r48kXq3MVvN/4/rSwTmxSK2rUeB8Z04OxKhYZSD2jWUlddOS3+3s+dh2ITkbhlFM4SRItbE7KnCAwAyyf2d/t0v1FBgnlChgosfd2sNNojgmH8Ph5o46DohqtatMQeuu7iH8bxDSsvAdZM/9f/gsrHTPyxwRtlhGUa0oxP+3Arg=
+Received: from BN9PR03CA0331.namprd03.prod.outlook.com (2603:10b6:408:f6::6)
+ by DS4PR12MB9746.namprd12.prod.outlook.com (2603:10b6:8:2a4::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Tue, 2 Sep
- 2025 22:41:48 +0000
-Received: from MWH0EPF000971E8.namprd02.prod.outlook.com
- (2603:10b6:a03:33b:cafe::8e) by SJ0PR05CA0025.outlook.office365.com
- (2603:10b6:a03:33b::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.16 via Frontend Transport; Tue,
- 2 Sep 2025 22:41:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
+ 2025 22:41:58 +0000
+Received: from BN2PEPF00004FBD.namprd04.prod.outlook.com
+ (2603:10b6:408:f6:cafe::70) by BN9PR03CA0331.outlook.office365.com
+ (2603:10b6:408:f6::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Tue,
+ 2 Sep 2025 22:41:57 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- MWH0EPF000971E8.mail.protection.outlook.com (10.167.243.68) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF00004FBD.mail.protection.outlook.com (10.167.243.183) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9094.14 via Frontend Transport; Tue, 2 Sep 2025 22:41:46 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9094.14 via Frontend Transport; Tue, 2 Sep 2025 22:41:57 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 2 Sep
- 2025 17:41:40 -0500
+ 2025 17:41:57 -0500
 Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Tue, 2 Sep
- 2025 15:41:38 -0700
+ 2025 15:41:55 -0700
 From: Babu Moger <babu.moger@amd.com>
 To: <corbet@lwn.net>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
 	<Dave.Martin@arm.com>, <james.morse@arm.com>, <tglx@linutronix.de>,
@@ -74,10 +75,12 @@ CC: <x86@kernel.org>, <hpa@zytor.com>, <kas@kernel.org>,
 	<chang.seok.bae@intel.com>, <ebiggers@google.com>,
 	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-Subject: [PATCH v9 00/10] x86,fs/resctrl: Support L3 Smart Data Cache Injection Allocation Enforcement (SDCIAE)
-Date: Tue, 2 Sep 2025 17:41:22 -0500
-Message-ID: <cover.1756851697.git.babu.moger@amd.com>
+Subject: [PATCH v9 02/10] x86/resctrl: Add SDCIAE feature in the command line options
+Date: Tue, 2 Sep 2025 17:41:24 -0500
+Message-ID: <f3aae4014bb65145dcbc0064214324133fe568b0.1756851697.git.babu.moger@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1756851697.git.babu.moger@amd.com>
+References: <cover.1756851697.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,369 +93,145 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
  (10.181.42.218)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E8:EE_|MN2PR12MB4376:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0d99d9b-47ad-4b48-947b-08ddea71e60a
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBD:EE_|DS4PR12MB9746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fd3a94a-0023-4420-d178-08ddea71ec9c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026|13003099007;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?y4Hafy/27OIfvdtd1+OdjZeo1DWZKb9NI0N2Gmn3pQjqYIRU9AEvrPxWVKFa?=
- =?us-ascii?Q?vNNUD91QavGlUdNIklQBt7iu782DpoH0LzbM1Vt8Xm1KMPySIfJXShNP1LPK?=
- =?us-ascii?Q?gPzZ0uEEMyHjt9TmZPVxVeWm63WxQH03X08s3EMecQCAGEL/Y5+6TkqO3IJR?=
- =?us-ascii?Q?hcLt+kd373b5pXG0FRW7xqtxiA4E/2na75i3kuAKwFZvvNZGUX6f/kPvs+nX?=
- =?us-ascii?Q?2M7Ig1w6BgkidGvl/bPycPbx+XqwpgjepTtxQWivJcLI6vrS1gEZ9Gwksijn?=
- =?us-ascii?Q?XBzeoga7skRUSl0TljIqi0Fl2VV6eXCOtCmR71uwtw1+BCXb0ESd7g5nHh0i?=
- =?us-ascii?Q?LNplB0lelbNvcR5xrCzeuVMVPKZw2EZkv96jTxfW+lwstW5c1JYegJPeKhv9?=
- =?us-ascii?Q?QGKSp7rgpqOnPmy+amH8lO+L+q7ZX1p9JiQoLZROKL4ejW86G/C+9Y76oMzf?=
- =?us-ascii?Q?Jb4LoPwFWfaGD6012J+6HOmRklNOtWAdlP2oSUCGtY70vCcelPzI2Gf+zOrw?=
- =?us-ascii?Q?SjyAzRXSQ6RBGkwtv9BKIzLnKa1xYLhjpJMw5oxex41jEWhlT2sHrA6wHzA3?=
- =?us-ascii?Q?HHt0pUEojexYAonB/FDXi37iF4sMJeq+BNvZqXsxPIqmUdgM40jOR17mPZVq?=
- =?us-ascii?Q?FUvotRU/KmVh6f/aLcxw+gth9mJtl+JKZahIS3pxd3ZMW8pIRa7trTaiSzK/?=
- =?us-ascii?Q?t9tB+SM/dvXXDaWo+nU3bUXk8kfyKSYAaWWLIjr8eGj1vWWFxft22j0B0mmN?=
- =?us-ascii?Q?hjha6Pt53dMWeK52nkGyWr9GM3//EDIOaSrSM8RpOQ+WOEsaAZLADxgAauwf?=
- =?us-ascii?Q?4/VsaJLUXzm+hAxvN2FIPVgmvw/SkK6MuEnp1cTqb5vqHpueeibXFfdd5TKO?=
- =?us-ascii?Q?+l09IvoHs4dS98KMxEFEipJTxySgUea7XXu99J2EoMBX7zS+UMXsTPLv6rER?=
- =?us-ascii?Q?VUNl6Q8wWt6eX9Loh+EDvltEpzJ6f1qIwo/RECjrv0ej2V6yuwK7R5jr77J9?=
- =?us-ascii?Q?anfPScxdPjO1lVrlgxz+EMj6OivjFMuRU76VrvMMtTRq0Ak1UQb4MEOyO02O?=
- =?us-ascii?Q?s0dJsZ/Ymc42E5qR1OIZRpLBttHu0INXt/Z5wqO01A0k76l/HKjvuOSKUzI2?=
- =?us-ascii?Q?D3KrX3C6an3Cm4H0sQEHsrmlj1/tBNe65pG/vZKDFDp20jPnEmlB3KNGuWlc?=
- =?us-ascii?Q?JxYWMxVYC00e8BhapqCgYPiGSTELwXe2V2boCJGoKWOL/x4rvngjFgpI/Tb0?=
- =?us-ascii?Q?5ZSy3cJoWhr5jYEUv8aPSbqklI1DbjhOCC/7eIoFqXQzv/e33d2irKkkEQC8?=
- =?us-ascii?Q?OwTDXhKgs50P/C5f0PxkJHW+fXuGC77MO+MLGDHYOVQn71k5kZGazcp4peVt?=
- =?us-ascii?Q?yCmSo56k+8CGS+kaLRoR+VKK1sbXmWlG+lqrWW+a8v1CJQt9I3XvzO59cTw8?=
- =?us-ascii?Q?P8TIVvL8FiXQGojqAxvIlGn5yHgevnf0JCjznDQK9fk7n9H+lXTIgg=3D=3D?=
+	=?us-ascii?Q?OOQIDvi/itO00mbeDXc8iZasZamHsMtPdFphYMep8UA7PfhnN5u1VT3w+gBO?=
+ =?us-ascii?Q?YBSQxzLb5BoDm1nvPDxr4zgrDiWKBd7jKX6T4NuDR17+5pK20F5OiYFXITAB?=
+ =?us-ascii?Q?Ox7VONCIcGA5OThMP0lJurvAUI0jSx33O2Nj7gerTa+9zXkZjf6/2wfLqzdq?=
+ =?us-ascii?Q?qsDi0ATAc0R33rhExqY4yNfyJ8Oms3iFqtMCc923BsVTL6QKXg6BlvdNf1Y7?=
+ =?us-ascii?Q?w5LQUsOVFlWZDOI7p+zl78bZUKwslkkOTJsPQMxsEM1TONVG9IWW6xlioQAQ?=
+ =?us-ascii?Q?Rfp/67a1P+I8gezUArzRGS6q8IydCKocFuE7dedV9ZJwSC9kyb//9qikj7VQ?=
+ =?us-ascii?Q?snRocWGtnrhDIm3+KN+zadoPUuLl9kyfaIFKCIFkehZi8wMubKFMteJmHA2n?=
+ =?us-ascii?Q?h/vIaFXw79LZ/NxtmFhzmZdjT86+/rq2YMhXfI8aGrnQM+r6qpQe6I48umTK?=
+ =?us-ascii?Q?QUzP2iRZKStOcncyrFf1+OIw4ht/x+t+0Yv5K+wXshQnt7ldGiNWsl37PtNM?=
+ =?us-ascii?Q?aaX4yGhsshflwgRdRnZCCpuezZCVzEPcYOAf3YG48x+lOosua46/e7vdU0qx?=
+ =?us-ascii?Q?oztpM31Gw9Q1sCQq3hd0GIBQhGY5CtbK7EXsLqAFUdLpRZ7fMVC+LUscwIyX?=
+ =?us-ascii?Q?PUK+uTmYUB5VsN5um4Ebhr9n4aUknhOFlLV6LOQr5KzlZnUNPu6EmSSO3ohd?=
+ =?us-ascii?Q?ARSzCAaYQcZARC+9s4FnmYR3CYRVyIBSMYhFJKK7Y3cJiMA1+xopLPz4q4cZ?=
+ =?us-ascii?Q?ghVtrV5A5CliXRDNMe81utzx3S3QpuLEhhsGDkanRm0HQe/YW4ZKqR3OvZxT?=
+ =?us-ascii?Q?SuDnj08sPaffSwybJN4dpT1/+8ZRdrlRHkcuzqZ/4KGLmkTkt2+b3bTrg0QT?=
+ =?us-ascii?Q?+hxIgd02DjSjAi2x5yZ6oLtoz87VDZN9UBsn1VqoWjQRtChOylH+BIItY9r2?=
+ =?us-ascii?Q?KJvzdWbbDeuXoBPNnUZOJnpXHPGl9n5c8mQhExmhbMZPwYmONLlx9ReTmyI2?=
+ =?us-ascii?Q?8wco4SpLjGBc9V3kXiU3uYiJjgXkncpGrERy178qheOTQ4Ek3mizL16pZnly?=
+ =?us-ascii?Q?GA/wwQX+U1+1F6PTgrRBpDbYmMM44A+YnvxwrvT0A5C7vNPlAoAJshWAXylq?=
+ =?us-ascii?Q?gQ9gKbM4wVpZ7d4sdfzwLADH85E9qRvBwqZwY5rHT9rHI6gXS7kGkyJe0ji/?=
+ =?us-ascii?Q?5KMeIajUkliycMGYOy8GVzpIn19A28+GtIIWECilOf0QIM0s4kGIH+eQRM9g?=
+ =?us-ascii?Q?wO64ZnehE1RYCVU02Ofy96hynOkPvYi3XHRmjKaaWmzSdDCk1b1ZO78RcS6l?=
+ =?us-ascii?Q?CVYQqtpNGcTAlyWb2Q6JjzXiCvReaA6zpxIwSdd4WIk2RimMjIVenZlvU+mv?=
+ =?us-ascii?Q?StLPacD/sRh1Fo9niMwfNqKvIXuGKTh9QCjvhJyAW/cacHIrvzJKDUzhDMxz?=
+ =?us-ascii?Q?YVmj7G5KPvX9bSa7qsONNVY2DHqw1Dio1h0vd57qyf7Yi6dJGdxy9533MhYB?=
+ =?us-ascii?Q?I2KWGJSFkE1+T7cYoI9d9XEpAae4UoJqZ2xA?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 22:41:46.6795
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 22:41:57.7966
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0d99d9b-47ad-4b48-947b-08ddea71e60a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fd3a94a-0023-4420-d178-08ddea71ec9c
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E8.namprd02.prod.outlook.com
+	BN2PEPF00004FBD.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4376
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9746
 
+Add the command line option to enable or disable the new resctrl feature
+L3 Smart Data Cache Injection Allocation Enforcement (SDCIAE).
 
-This series adds the support for L3 Smart Data Cache Injection Allocation
-Enforcement (SDCIAE) to resctrl infrastructure. It is referred to as
-"io_alloc" in resctrl subsystem.
-
-Upcoming AMD hardware implements Smart Data Cache Injection (SDCI).
-Smart Data Cache Injection (SDCI) is a mechanism that enables direct
-insertion of data from I/O devices into the L3 cache. By directly caching
-data from I/O devices rather than first storing the I/O data in DRAM, SDCI
-reduces demands on DRAM bandwidth and reduces latency to the processor
-consuming the I/O data.
-
-The SDCIAE (SDCI Allocation Enforcement) PQE feature allows system software
-to control the portion of the L3 cache used for SDCI devices.
-
-When enabled, SDCIAE forces all SDCI lines to be placed into the L3 cache
-partitions identified by the highest-supported L3_MASK_n register, where n
-is the maximum supported CLOSID.
-
-Since CLOSIDs are managed by resctrl fs it is least invasive to make
-the "io_alloc is supported by maximum supported CLOSID" part of the
-initial resctrl fs support for io_alloc. Take care not to expose this
-use of CLOSID for io_alloc to user space so that this is not required from
-other architectures that may support io_alloc differently in the future.
-
-The SDCIAE feature details are documented in APM [1] available from [2].
-[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
-Publication # 24593 Revision 3.41 section 19.4.7 L3 Smart Data Cache
-Injection Allocation Enforcement (SDCIAE)
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
-
-The feature requires linux support of TPH (TLP Processing Hints).
-The support is available in linux kernel after the commit
-48d0fd2b903e3 ("PCI/TPH: Add TPH documentation")
-
-The patches are based on top of commit (v6.17.0-rc4)
-commit a1d91c792486 ("tip/master) Merge branch into tip/master: 'x86/tdx'").
-
-Comments and suggestions are always welcome as usual.
-
-# Linux Implementation
-
-Feature adds following interface files when the resctrl "io_alloc" feature
-is supported on the resource:
-
-/sys/fs/resctrl/info/L3/io_alloc: Report the feature status. Enable/disable the
-				  feature by writing to the interface.
-
-/sys/fs/resctrl/info/L3/io_alloc_cbm:  List the Capacity Bit Masks (CBMs) available
-				       for I/O devices when io_alloc feature is enabled.
-				       Configure the CBM by writing to the interface.
-
-When CDP is enabled, these files are created both in L3CODE and L3DATA.
-
-# Examples:
-
-a. Check if io_alloc feature is available.
-
-	# mount -t resctrl resctrl /sys/fs/resctrl/
-
-	# cat /sys/fs/resctrl/info/L3/io_alloc
-	disabled
-
-b. Enable the io_alloc feature. 
-
-	# echo 1 > /sys/fs/resctrl/info/L3/io_alloc 
-	# cat /sys/fs/resctrl/info/L3/io_alloc
-	enabled
-
-c. Check the CBM values for the io_alloc feature.
-
-	# cat /sys/fs/resctrl/info/L3/io_alloc_cbm 
-	0=ffff;1=ffff
-
-d. Change the CBM value of domain 1.
-	# echo 1=ff > /sys/fs/resctrl/info/L3/io_alloc_cbm
-
-	# cat /sys/fs/resctrl/info/L3/io_alloc_cbm 
-	0=ffff;1=00ff
-
-e. Change the CBM value of domain 0 and 1.
-	# echo 0=ff;1=f > /sys/fs/resctrl/info/L3/io_alloc_cbm
-
-	# cat /sys/fs/resctrl/info/L3/io_alloc_cbm
-	0=00ff;1=000f
-
-
-f. Disable io_alloc feature and exit.
-
-	# echo 0 > /sys/fs/resctrl/info/L3/io_alloc 
-	# cat /sys/fs/resctrl/info/L3/io_alloc
-	disabled
-
-	# umount /sys/fs/resctrl/
+Signed-off-by: Babu Moger <babu.moger@amd.com>
 ---
-v9:
-  Major change is related to CDP.
-  The processing and updating CBMs for CDP_CODE and CDP_DATA are done only once.
-  The updated CBMs are copied to the peers using staged_config.
-  
-  Removed resctrl_get_schema(). Not required anymore.
+v9: Minor changelog update.
+    Fixed the tabs in SMBA and BMEC lines.
 
-  Updated the "bit_usage" section of resctrl.rst for io_alloc.
+v8: Updated Documentation/filesystems/resctrl.rst.
 
-  Fixed the tabs in SMBA and BMEC lines in resctrl.rst.
+v7: No changes.
 
-  Improved the changelog for all the patches.
-  
-  Added the code comments about CDP_CODE and CDP_DATA where applicable.
+v6: No changes.
 
-  Added Reviewed-by: tag for couple of patches.
-  
-  Added comments in each patch about the changes.
+v5: No changes.
 
+v4: No changes.
 
-v8:
-  Added Acked-by, Reviewed-by tags to couple of patches.
+v3: No changes.
 
-  Updated Documentation/filesystems/resctrl.rst for each interface.
-   
-  Updated the changelog in most patches. 
-  
-  Moved the patch to update the rdt_bit_usage_show() for io_alloc changes to the end.
+v2: No changes.
+---
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ Documentation/filesystems/resctrl.rst         | 21 ++++++++++---------
+ arch/x86/kernel/cpu/resctrl/core.c            |  2 ++
+ 3 files changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 747a55abf494..398136902e23 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6154,7 +6154,7 @@
+ 	rdt=		[HW,X86,RDT]
+ 			Turn on/off individual RDT features. List is:
+ 			cmt, mbmtotal, mbmlocal, l3cat, l3cdp, l2cat, l2cdp,
+-			mba, smba, bmec.
++			mba, smba, bmec, sdciae.
+ 			E.g. to turn on cmt and turn off mba use:
+ 				rdt=cmt,!mba
  
-  Moved resctrl_arch_io_alloc_enable() and its dependancies to
-  arch/x86/kernel/cpu/resctrl/ctrlmondata.c file.
-  
-  Moved resctrl_io_alloc_show() to fs/resctrl/ctrlmondata.c.
-  Added prototype for rdt_kn_parent_priv() in fs/resctrl/internal.h
-  so, it can be uses in other fs/resctrl/ files.
-  
-  Renamed resctrl_io_alloc_init_cat() to resctrl_io_alloc_init_cbm().
-  Moved resctrl_io_alloc_write() and all its dependancies to fs/resctrl/ctrlmondata.c.
-  Added prototypes for all the functions in fs/resctrl/internal.h.
-
-  Moved resctrl_io_alloc_cbm_show() to fs/resctrl/ctrlmondata.c. show_doms remains
-  static with this change.
-
-  Moved resctrl_io_alloc_parse_line() and resctrl_io_alloc_cbm_write()
-  to fs/resctrl/ctrlmondata.c.
-
-  Added resctrl_arch_get_cdp_enabled() check inside resctrl_io_alloc_parse_line().
-  parse_cbm() remains static as everything moved to ctrlmondata.c.
-
-  Simplified the CDT check  in rdt_bit_usage_show() as CDP_DATA and CDP_CODE
-  are in sync with io_alloc enabled.
-
-v7:
-  Fixed few conflicts in
-  arch/x86/include/asm/cpufeatures.h
-  arch/x86/kernel/cpu/scattered.c
-
-  Updated the changelog in most patches. Removed the references of L3 in
-  filesystem related changes.
-
-  Removed the inline for resctrl_arch_get_io_alloc_enabled().
-  Updated the code comment in resctrl.h.
-  Changed the subject to x86,fs/resctrl where applicable.
+diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
+index c7949dd44f2f..4866a8a4189f 100644
+--- a/Documentation/filesystems/resctrl.rst
++++ b/Documentation/filesystems/resctrl.rst
+@@ -17,16 +17,17 @@ AMD refers to this feature as AMD Platform Quality of Service(AMD QoS).
+ This feature is enabled by the CONFIG_X86_CPU_RESCTRL and the x86 /proc/cpuinfo
+ flag bits:
  
-  Split the patches based on the comment.
-  https://lore.kernel.org/lkml/3bec3844-7fda-452b-988f-42b0de9d63ba@intel.com/
-  Separated resctrl_io_alloc_show and bit_usage changes in two separate patches.
-
-  Added new function resctrl_io_alloc_closid_supported() to verify io_alloc CLOSID.
+-===============================================	================================
+-RDT (Resource Director Technology) Allocation	"rdt_a"
+-CAT (Cache Allocation Technology)		"cat_l3", "cat_l2"
+-CDP (Code and Data Prioritization)		"cdp_l3", "cdp_l2"
+-CQM (Cache QoS Monitoring)			"cqm_llc", "cqm_occup_llc"
+-MBM (Memory Bandwidth Monitoring)		"cqm_mbm_total", "cqm_mbm_local"
+-MBA (Memory Bandwidth Allocation)		"mba"
+-SMBA (Slow Memory Bandwidth Allocation)         ""
+-BMEC (Bandwidth Monitoring Event Configuration) ""
+-===============================================	================================
++=============================================================== ================================
++RDT (Resource Director Technology) Allocation			"rdt_a"
++CAT (Cache Allocation Technology)				"cat_l3", "cat_l2"
++CDP (Code and Data Prioritization)				"cdp_l3", "cdp_l2"
++CQM (Cache QoS Monitoring)					"cqm_llc", "cqm_occup_llc"
++MBM (Memory Bandwidth Monitoring)				"cqm_mbm_total", "cqm_mbm_local"
++MBA (Memory Bandwidth Allocation)				"mba"
++SMBA (Slow Memory Bandwidth Allocation)				""
++BMEC (Bandwidth Monitoring Event Configuration)			""
++SDCIAE (Smart Data Cache Injection Allocation Enforcement)	""
++=============================================================== ================================
  
-  Added the code to initialize/update the schemata for both CDP_DATA and CDP_CODE when CDP is enabled.
-
-  Rephrased the changelog and code comments in all the patches.
-
-v6: 
-   Sorry if you see this series duplicate. Messed up the
-   emails linux-doc@vger.kernel.org and linux-kernel@vger.kernel.org.
-
-   Sent v5 by mistake before completing all testing.
-   Most of the changes are in resctrl.rst user doc.
-   The resource name is no longer printed in io_alloc_cbms.
-   Updated the related documentation accordingly.
-   Resolved conflicts in cpufeatures.h
-   Added lockdep_assert_cpus_held() in _resctrl_sdciae_enable() to protect
-   r->ctrl_domains.
-
-   Added more comments in include/linux/resctrl.h.
-
-   Updated "io_alloc_cbm" details in user doc resctrl.rst. Resource name is
-   not printed in CBM now.
-
-   Updated subjects to fs/resctrl: where applicable.
-
-v5: 
-    Patches are created on top of recent resctrl FS/ARCH code restructure.
-    The files monitor.c/rdtgroup.c have been split between FS and ARCH directories.
-    Resolved the conflict due to the merge.
-
-    Updated bit_usage to reflect the io_alloc CBM as discussed in the thread:
-    https://lore.kernel.org/lkml/3ca0a5dc-ad9c-4767-9011-b79d986e1e8d@intel.com/
-    Modified rdt_bit_usage_show() to read io_alloc_cbm in hw_shareable, ensuring
-    that bit_usage accurately represents the CBMs.
-
-    Moved prototypes of resctrl_arch_io_alloc_enable() and
-    resctrl_arch_get_io_alloc_enabled() to include/linux/resctrl.h.
-
-    Used rdt_kn_name to get the rdtgroup name instead of accesssing it directly
-    while printing group name used by the io_alloc_closid.
-
-    Updated show_doms() to print the resource if only it is valid. Pass NULL while
-    printing io_alloc CBM.
-
-    Changed the code to access io_alloc CBMs via either L3CODE or L3DATA resources.
-
-v4: The "io_alloc" interface will report "enabled/disabled/not supported"
-    instead of 0 or 1..
-
-    Updated resctrl_io_alloc_closid_get() to verify the max closid availability
-    using closids_supported().
-
-    Updated the documentation for "shareable_bits" and "bit_usage".
-
-    NOTE: io_alloc is about specific CLOS. rdt_bit_usage_show() is not designed
-    handle bit_usage for specific CLOS. Its about overall system. So, we cannot
-    really tell the user which CLOS is shared across both hardware and software.
-    This is something we need to discuss.
-
-    Introduced io_alloc_init() to initialize fflags.
-
-    Printed the group name when io_alloc enablement fails to help user.
-    
-    Added rdtgroup_mutex before rdt_last_cmd_puts() in resctrl_io_alloc_cbm_show().
-    Returned -ENODEV when resource type is CDP_DATA.
-
-    Kept the resource name while printing the CBM (L3:0=ffff) that way we dont have
-    to change show_doms() just for this feature and it is consistant across all the
-    schemata display.
-
-    Added new patch to call parse_cbm() directly to avoid code duplication.
-
-    Checked all the series(v1-v3) again to verify if I missed any comment.
-
-v3: Rewrote commit log for the last 3 patches. Changed the text to bit
-    more generic than the AMD specific feature. Added AMD feature
-    specifics in the end.
-
-    Renamed the rdt_get_sdciae_alloc_cfg() to rdt_set_io_alloc_capable().
-    Renamed the _resctrl_io_alloc_enable() to _resctrl_sdciae_enable()
-    as it is arch specific.
-
-    Changed the return to void in _resctrl_sdciae_enable() instead of int.
+ Historically, new features were made visible by default in /proc/cpuinfo. This
+ resulted in the feature flags becoming hard to parse by humans. Adding a new
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index 187d527ef73b..f6d84882cc4e 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -707,6 +707,7 @@ enum {
+ 	RDT_FLAG_MBA,
+ 	RDT_FLAG_SMBA,
+ 	RDT_FLAG_BMEC,
++	RDT_FLAG_SDCIAE,
+ };
  
-    The number of CLOSIDs is determined based on the minimum supported
-    across all resources (in closid_init). It needs to match the max
-    supported on the resource. Added the check to verify if MAX CLOSID
-    availability on the system.
-
-    Added CDP check to make sure io_alloc is configured in CDP_CODE.
-    Highest CLOSID corresponds to CDP_CODE. 
-
-    Added resctrl_io_alloc_closid_free() to free the io_alloc CLOSID.
-
-    Added errors in few cases when CLOSID allocation fails.
-    Fixes splat reported when info/L3/bit_usage is accesed when io_alloc is enabled.
-    https://lore.kernel.org/lkml/SJ1PR11MB60837B532254E7B23BC27E84FC052@SJ1PR11MB6083.namprd11.prod.outlook.com/
-
-v2: Added dependancy on X86_FEATURE_CAT_L3
-    Removed the "" in CPU feature definition.
-
-    Changed sdciae_capable to io_alloc_capable to make it as generic feature.
-    Moved io_alloc_capable field in struct resctrl_cache.
-
-    Changed the name of few arch functions similar to ABMC series.
-    resctrl_arch_get_io_alloc_enabled()
-    resctrl_arch_io_alloc_enable()
-
-    Renamed the feature to "io_alloc".
-    Added generic texts for the feature in commit log and resctrl.rst doc.
-    Added resctrl_io_alloc_init_cat() to initialize io_alloc to default values
-    when enabled.
-    Fixed io_alloc interface to show only on L3 resource.
-    Added the locks while processing io_alloc CBMs.
-
-Previous versions:
-v8: https://lore.kernel.org/lkml/cover.1754436586.git.babu.moger@amd.com/
-v7: https://lore.kernel.org/lkml/cover.1752167718.git.babu.moger@amd.com/
-v6: https://lore.kernel.org/lkml/cover.1749677012.git.babu.moger@amd.com/
-v5: https://lore.kernel.org/lkml/cover.1747943499.git.babu.moger@amd.com/
-v4: https://lore.kernel.org/lkml/cover.1745275431.git.babu.moger@amd.com/
-v3: https://lore.kernel.org/lkml/cover.1738272037.git.babu.moger@amd.com/
-v2: https://lore.kernel.org/lkml/cover.1734556832.git.babu.moger@amd.com/
-v1: https://lore.kernel.org/lkml/cover.1723824984.git.babu.moger@amd.com/
-
-
-Babu Moger (10):
-  x86/cpufeatures: Add support for L3 Smart Data Cache Injection
-    Allocation Enforcement
-  x86/resctrl: Add SDCIAE feature in the command line options
-  x86,fs/resctrl: Detect io_alloc feature
-  x86,fs/resctrl: Implement "io_alloc" enable/disable handlers
-  fs/resctrl: Introduce interface to display "io_alloc" support
-  fs/resctrl: Add user interface to enable/disable io_alloc feature
-  fs/resctrl: Introduce interface to display io_alloc CBMs
-  fs/resctrl: Modify rdt_parse_data to pass mode and CLOSID
-  fs/resctrl: Introduce interface to modify io_alloc Capacity Bit Masks
-  fs/resctrl: Update bit_usage to reflect io_alloc
-
- .../admin-guide/kernel-parameters.txt         |   2 +-
- Documentation/filesystems/resctrl.rst         | 124 +++++--
- arch/x86/include/asm/cpufeatures.h            |   1 +
- arch/x86/include/asm/msr-index.h              |   1 +
- arch/x86/kernel/cpu/cpuid-deps.c              |   1 +
- arch/x86/kernel/cpu/resctrl/core.c            |   9 +
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c     |  40 +++
- arch/x86/kernel/cpu/resctrl/internal.h        |   5 +
- arch/x86/kernel/cpu/scattered.c               |   1 +
- fs/resctrl/ctrlmondata.c                      | 305 +++++++++++++++++-
- fs/resctrl/internal.h                         |  24 ++
- fs/resctrl/rdtgroup.c                         |  77 ++++-
- include/linux/resctrl.h                       |  24 ++
- 13 files changed, 570 insertions(+), 44 deletions(-)
-
+ #define RDT_OPT(idx, n, f)	\
+@@ -732,6 +733,7 @@ static struct rdt_options rdt_options[]  __ro_after_init = {
+ 	RDT_OPT(RDT_FLAG_MBA,	    "mba",	X86_FEATURE_MBA),
+ 	RDT_OPT(RDT_FLAG_SMBA,	    "smba",	X86_FEATURE_SMBA),
+ 	RDT_OPT(RDT_FLAG_BMEC,	    "bmec",	X86_FEATURE_BMEC),
++	RDT_OPT(RDT_FLAG_SDCIAE,    "sdciae",	X86_FEATURE_SDCIAE),
+ };
+ #define NUM_RDT_OPTIONS ARRAY_SIZE(rdt_options)
+ 
 -- 
 2.34.1
 
