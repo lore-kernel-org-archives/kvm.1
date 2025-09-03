@@ -1,120 +1,252 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8712D7DD7;
-	Wed,  3 Sep 2025 07:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD9D2D77E8;
+	Wed,  3 Sep 2025 08:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756885279; cv=none; b=KyDyKlcfQvD+eoWiTy1NjVlMQICnW7izYC7+u0RbgLuNCm7h3oAQrIFNMi1QaXGenAnCCltin1qStqvSLS8O64CKdE1E5TRuLbc/CkH+TCM/Y3wkHpgXgWd6HuLbB/Ix0RJ5a/vZ1Op1kenrS5EqpJ/IR8lwNWV7f/JgIDvI9X0=
+	t=1756888503; cv=none; b=eH/pA5OcYnnTTnTPfamDQN3bOGUl0GrzlMQ4fWrUbaa9j6Gh3C9+r1YqlyYBcA06NQ5Ehfpw3Fy+ufb7BfY4GlBT4XBfCJpdPvamZNgH/Bxi64PEtI9BwcFNPV2JGnd+nskw4pwyVztPB3014cPJxylZcYH9d6vN6QBwxjh7Up8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756885279; c=relaxed/simple;
-	bh=poJK77Xodhwk86ZildhqYl2qko4ReuThLBA7bX1xDTU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:From:Cc:
-	 References:In-Reply-To; b=SAVN0DhPiU8qj/CaMCmq6WLehQilDthLZDcutu2K6+8qka3RWAzzYvUqm50SCTn4V9IMZ/UjeWwwshmk9ZQmLOpDS837pPQ9on+qM6Z7oGJijdfCw/Bsa/HCDnNOjEgnMY9b/pHJntGlaqhFpwqlxGrtLr0akL7wRDBkZYukokI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T8MxCQ7Y; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1756888503; c=relaxed/simple;
+	bh=XteDl1zVOiXjiYPnlWq9OETDQUuk0IaURRSG0BN6xCc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pur8j6+026v4EpnoblkbaBrst5RkSYPwqhVHARxulexa46ky/sMZVnJW6U/SULgcZqgBVGn1YPA1eNHK0Ta6e0mrynx9icDBWhimlzuopbFdoTJygrgUwwgHQuh3NR1wakCGOt1dhKagNVRTmD4pIi//Ov96EmVXnepzSOBxFkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1YarMPD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T8MxCQ7Y"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5835fQUZ000501;
-	Wed, 3 Sep 2025 07:41:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3SYJn+
-	YqPvs28dIABwsepKxHMFbi8ujTMi5coQz13cI=; b=T8MxCQ7Y9/mCMd3RgM8jkz
-	rexaHgjmm5axP19EQggm3ZWwK5+UiV01VfPY99HXmOgxY1HvSWNs/hf3E/s5W7Vp
-	N5E5OIqZbjiabj4BsMrXZwdqPFWh10R5LSJq38x3hp9+QoE+i5t3IbQQGDdpzWbB
-	XzgTFedYZ7+LII2AYSvP4fQmpcbsPhPS6fUG63A83bWgChUH3CXSp71zKLeFYZuI
-	Jg/p46PvjFyyWq6zWU4qtHBTQQDpQV+7icGtrmVoX1D/PTGU2UUVzgzdwyy2/gsG
-	U7CocsnFetuik9cmEIcTqhugE10cUV65vtfgo2EVSsyHOAtsAKs2S3055mygWE2A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48uswdat62-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Sep 2025 07:41:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5835U76W017222;
-	Wed, 3 Sep 2025 07:41:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vc10pg14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Sep 2025 07:41:12 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5837f9wm52429156
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Sep 2025 07:41:09 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F3C042004B;
-	Wed,  3 Sep 2025 07:41:08 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBCC120043;
-	Wed,  3 Sep 2025 07:41:08 +0000 (GMT)
-Received: from darkmoore (unknown [9.111.67.76])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  3 Sep 2025 07:41:08 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1YarMPD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C324CC4AF09;
+	Wed,  3 Sep 2025 08:35:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756888502;
+	bh=XteDl1zVOiXjiYPnlWq9OETDQUuk0IaURRSG0BN6xCc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=k1YarMPDAy9bCTZ00cOms9emBK/b4XjR0Mv/zmmrz1GTP0m1fxiPBhueLPHrXVulR
+	 4n+ABFZSyQpcFVklByuOWfp8lEQdGKpRdHbaNyN9f0gk1nNncYWTGqocm3F2U5mT3p
+	 iUfpHJ03MIRyiI8210lwRjOcuoIc+OLGO8sIHJ8tHRPsfw1oKEaAd5BDUyQ/XB0J88
+	 6U8031ebK/Fa/nI6MUODMIEbSmZKszmZzNSPjCGPLRZcaTOdb+24fqotTl+e+2nLl7
+	 ifTXjz8uf4zo/nG+Z223XMWJRnJOsnb8iTM6HlzGnUckaCRe41YGuD+9nVikSMgI/n
+	 kT1yO9ndaY1JA==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-afcb7322da8so1235560466b.0;
+        Wed, 03 Sep 2025 01:35:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU4OAR7a3AoNMoJQ43mQ+7VkaIEUdaH+CiJkJQWsygbOH4w0Ared8lqnFslEmBH5E9L9CpS9k2TU3HdDs+f@vger.kernel.org, AJvYcCVcnHc/ZfkW2quR/UV2ymtmtxbKZRDvvyeP36Ng+TBMtig3hZgG15PpFe5McdXox5do5fw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjzXzCHaheMR7zZ2t9dDe1h1J3DgMKRrY0iIpwyny8DI0+CYrp
+	zvokCrxg5cgjhYMnUrnry2VJ+9O7IOnvv3+Z17F0+WJexvhhxX4Oq2JL4uRw4UtA/DCy2ymU02S
+	4aILNL6ul9jie7b0JwjJL5U5vnFqExZ4=
+X-Google-Smtp-Source: AGHT+IHhahnriqlWrEhFY3gRtNpn7SkQXo+SfUCEWZEGctQT2mk4bMxN1v1M0J7nYTuZC9fx1t30XrBi027CeDgomIQ=
+X-Received: by 2002:a17:906:8419:b0:b03:d5ca:b14 with SMTP id
+ a640c23a62f3a-b03d5d95212mr1132351366b.61.1756888501258; Wed, 03 Sep 2025
+ 01:35:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250902094945.2957566-1-maobibo@loongson.cn> <20250902094945.2957566-2-maobibo@loongson.cn>
+ <CAAhV-H7hCggw_zhQk89uvBrpAPxgHCS_BC5+twsyZdwWkF4A1g@mail.gmail.com> <4eb3fffa-8330-ad54-8cbc-2cabf6355c74@loongson.cn>
+In-Reply-To: <4eb3fffa-8330-ad54-8cbc-2cabf6355c74@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 3 Sep 2025 16:34:49 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7iETpPUqVYoOXDNX53BMx1AQAtDD12VXw8GD=H1YSZpQ@mail.gmail.com>
+X-Gm-Features: Ac12FXw9M9lorOI8LrsWDRpsZqImjLuXNJEoG_l4AlYbpf_202JURW-JHAtGJUI
+Message-ID: <CAAhV-H7iETpPUqVYoOXDNX53BMx1AQAtDD12VXw8GD=H1YSZpQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] LoongArch: KVM: Avoid use copy_from_user with lock
+ hold in kvm_eiointc_regs_access
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Xianglai Li <lixianglai@loongson.cn>, WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 02 Sep 2025 11:22:16 +0200
-Message-Id: <DCI7DI3ER63H.38SU2KS4NW8R8@linux.ibm.com>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] KVM: s390: Fix FOLL_*/FAULT_FLAG_* confusion
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <kvm@vger.kernel.org>, <david@redhat.com>,
-        <frankja@linux.ibm.com>, <seiden@linux.ibm.com>, <nsg@linux.ibm.com>,
-        <nrb@linux.ibm.com>, <hca@linux.ibm.com>, <mhartmay@linux.ibm.com>,
-        <borntraeger@de.ibm.com>
-X-Mailer: aerc 0.20.1
-References: <20250825151831.78221-1-imbrenda@linux.ibm.com>
- <20250825151831.78221-3-imbrenda@linux.ibm.com>
-In-Reply-To: <20250825151831.78221-3-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=PeP/hjhd c=1 sm=1 tr=0 ts=68b7f119 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=hKoHGS1yLziZwobD-tEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX2VLpBF5QPvpF
- xiYb0ATT55//QiSaPvrIhq27f4GxKNE1fVnv91Gr+OZc9v7rG2aZO4SUjSXZ1IwQthtxZ50iavS
- 1GLyjDU9ImddDMNbRaSfL6rQUWBavi3SOaGomF6nubBuiHO1ASnJSqC2WJ4q0ygBRU2JnQQwieN
- ugL+RXshSrwJpeZPxwb3FepsnF6YTEJQZyNS25FiiMO6aRKrgHokxgbb8V/S0Fda/On6L+1Uirg
- 9XU/wKglulMgOCI+QE2dlBletOsqWvCoXZgM26pdBP3SEjxi8aOcnHwj2ybOVmGIiVqkgOJPFmt
- mPrzGI/thxw3pcafWBwLM9nCxQf/hRM3+bA+ZHyAZaVYYQOXiraNqpm6a1GtbltSpx5Cmu5FMlF
- 3C7KnNN/
-X-Proofpoint-GUID: R5Kgp06ZWRe09sfJBmlNj4HLIjgGAXPM
-X-Proofpoint-ORIG-GUID: R5Kgp06ZWRe09sfJBmlNj4HLIjgGAXPM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
- impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
 
-On Mon Aug 25, 2025 at 5:18 PM CEST, Claudio Imbrenda wrote:
-> Pass the right type of flag to vcpu_dat_fault_handler(); it expects a
-> FOLL_* flag (in particular FOLL_WRITE), but FAULT_FLAG_WRITE is passed
-> instead.
+On Tue, Sep 2, 2025 at 8:17=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
+:
 >
-> This still works because they happen to have the same integer value,
-> but it's a mistake, thus the fix.
 >
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Fixes: 05066cafa925 ("s390/mm/fault: Handle guest-related program interru=
-pts in KVM")
-> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+>
+> On 2025/9/2 =E4=B8=8B=E5=8D=887:58, Huacai Chen wrote:
+> > Hi, Bibo,
+> >
+> > On Tue, Sep 2, 2025 at 5:49=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> w=
+rote:
+> >>
+> >> Function copy_from_user() and copy_to_user() may sleep because of page
+> >> fault, and they cannot be called in spin_lock hold context. Otherwise =
+there
+> >> will be possible warning such as:
+> >>
+> >> BUG: sleeping function called from invalid context at include/linux/ua=
+ccess.h:192
+> >> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 6292, name: qem=
+u-system-loo
+> >> preempt_count: 1, expected: 0
+> >> RCU nest depth: 0, expected: 0
+> >> INFO: lockdep is turned off.
+> >> irq event stamp: 0
+> >> hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> >> hardirqs last disabled at (0): [<9000000004c4a554>] copy_process+0x90c=
+/0x1d40
+> >> softirqs last  enabled at (0): [<9000000004c4a554>] copy_process+0x90c=
+/0x1d40
+> >> softirqs last disabled at (0): [<0000000000000000>] 0x0
+> >> CPU: 41 UID: 0 PID: 6292 Comm: qemu-system-loo Tainted: G W 6.17.0-rc3=
++ #31 PREEMPT(full)
+> >> Tainted: [W]=3DWARN
+> >> Stack : 0000000000000076 0000000000000000 9000000004c28264 9000100092f=
+f4000
+> >>          9000100092ff7b80 9000100092ff7b88 0000000000000000 9000100092=
+ff7cc8
+> >>          9000100092ff7cc0 9000100092ff7cc0 9000100092ff7a00 0000000000=
+000001
+> >>          0000000000000001 9000100092ff7b88 947d2f9216a5e8b9 9000100087=
+73d880
+> >>          00000000ffff8b9f fffffffffffffffe 0000000000000ba1 ffffffffff=
+fffffe
+> >>          000000000000003e 900000000825a15b 000010007ad38000 9000100092=
+ff7ec0
+> >>          0000000000000000 0000000000000000 9000000006f3ac60 9000000007=
+252000
+> >>          0000000000000000 00007ff746ff2230 0000000000000053 9000200088=
+a021b0
+> >>          0000555556c9d190 0000000000000000 9000000004c2827c 000055556c=
+fb5f40
+> >>          00000000000000b0 0000000000000007 0000000000000007 0000000000=
+071c1d
+> >> Call Trace:
+> >> [<9000000004c2827c>] show_stack+0x5c/0x180
+> >> [<9000000004c20fac>] dump_stack_lvl+0x94/0xe4
+> >> [<9000000004c99c7c>] __might_resched+0x26c/0x290
+> >> [<9000000004f68968>] __might_fault+0x20/0x88
+> >> [<ffff800002311de0>] kvm_eiointc_regs_access.isra.0+0x88/0x380 [kvm]
+> >> [<ffff8000022f8514>] kvm_device_ioctl+0x194/0x290 [kvm]
+> >> [<900000000506b0d8>] sys_ioctl+0x388/0x1010
+> >> [<90000000063ed210>] do_syscall+0xb0/0x2d8
+> >> [<9000000004c25ef8>] handle_syscall+0xb8/0x158
+> >>
+> >> Fixes: 1ad7efa552fd5 ("LoongArch: KVM: Add EIOINTC user mode read and =
+write functions")
+> >> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> >> ---
+> >>   arch/loongarch/kvm/intc/eiointc.c | 33 ++++++++++++++++++++---------=
+--
+> >>   1 file changed, 21 insertions(+), 12 deletions(-)
+> >>
+> >> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/in=
+tc/eiointc.c
+> >> index 026b139dcff2..2fb5b9c6e8ad 100644
+> >> --- a/arch/loongarch/kvm/intc/eiointc.c
+> >> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> >> @@ -462,19 +462,17 @@ static int kvm_eiointc_ctrl_access(struct kvm_de=
+vice *dev,
+> >>
+> >>   static int kvm_eiointc_regs_access(struct kvm_device *dev,
+> >>                                          struct kvm_device_attr *attr,
+> >> -                                       bool is_write)
+> >> +                                       bool is_write, int *data)
+> >>   {
+> >>          int addr, cpu, offset, ret =3D 0;
+> >>          unsigned long flags;
+> >>          void *p =3D NULL;
+> >> -       void __user *data;
+> >>          struct loongarch_eiointc *s;
+> >>
+> >>          s =3D dev->kvm->arch.eiointc;
+> >>          addr =3D attr->attr;
+> >>          cpu =3D addr >> 16;
+> >>          addr &=3D 0xffff;
+> >> -       data =3D (void __user *)attr->addr;
+> >>          switch (addr) {
+> >>          case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
+> >>                  offset =3D (addr - EIOINTC_NODETYPE_START) / 4;
+> >> @@ -513,13 +511,10 @@ static int kvm_eiointc_regs_access(struct kvm_de=
+vice *dev,
+> >>          }
+> >>
+> >>          spin_lock_irqsave(&s->lock, flags);
+> >> -       if (is_write) {
+> >> -               if (copy_from_user(p, data, 4))
+> >> -                       ret =3D -EFAULT;
+> >> -       } else {
+> >> -               if (copy_to_user(data, p, 4))
+> >> -                       ret =3D -EFAULT;
+> >> -       }
+> >> +       if (is_write)
+> >> +               memcpy(p, data, 4);
+> >> +       else
+> >> +               memcpy(data, p, 4);
+> > p is a local variable, data is a parameter, they both have nothing to
+> > do with s, why memcpy need to be protected?
+> p is pointer to register buffer rather than local variable. When dump
+> extioi register to user space, maybe one vCPU is writing extioi register
+> at the same time, so there needs spinlock protection.
+Make sense, applied.
 
-Reviewed-by: Christoph Schlameu=C3=9F <schlameuss@de.ibm.com>
+Huacai
 
-> ---
->  arch/s390/kvm/kvm-s390.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> >
+> > After some thinking I found the code was wrong at the first time.  The
+> > real code that needs to be protected is not copy_from_user() or
+> > memcpy(), but the above switch block.
+> For switch block in function kvm_eiointc_regs_access() for example, it
+> is only to get register buffer pointer, not register content. Spinlock
+> protection is not necessary in switch block.
+>
+> Regards
+> Bibo Mao
+> >
+> > Other patches have similar problems.
+> >
+> > Huacai
+> >
+> >>          spin_unlock_irqrestore(&s->lock, flags);
+> >>
+> >>          return ret;
+> >> @@ -576,9 +571,18 @@ static int kvm_eiointc_sw_status_access(struct kv=
+m_device *dev,
+> >>   static int kvm_eiointc_get_attr(struct kvm_device *dev,
+> >>                                  struct kvm_device_attr *attr)
+> >>   {
+> >> +       int ret, data;
+> >> +
+> >>          switch (attr->group) {
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_GRP_REGS:
+> >> -               return kvm_eiointc_regs_access(dev, attr, false);
+> >> +               ret =3D kvm_eiointc_regs_access(dev, attr, false, &dat=
+a);
+> >> +               if (ret)
+> >> +                       return ret;
+> >> +
+> >> +               if (copy_to_user((void __user *)attr->addr, &data, 4))
+> >> +                       ret =3D -EFAULT;
+> >> +
+> >> +               return ret;
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS:
+> >>                  return kvm_eiointc_sw_status_access(dev, attr, false)=
+;
+> >>          default:
+> >> @@ -589,11 +593,16 @@ static int kvm_eiointc_get_attr(struct kvm_devic=
+e *dev,
+> >>   static int kvm_eiointc_set_attr(struct kvm_device *dev,
+> >>                                  struct kvm_device_attr *attr)
+> >>   {
+> >> +       int data;
+> >> +
+> >>          switch (attr->group) {
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_GRP_CTRL:
+> >>                  return kvm_eiointc_ctrl_access(dev, attr);
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_GRP_REGS:
+> >> -               return kvm_eiointc_regs_access(dev, attr, true);
+> >> +               if (copy_from_user(&data, (void __user *)attr->addr, 4=
+))
+> >> +                       return -EFAULT;
+> >> +
+> >> +               return kvm_eiointc_regs_access(dev, attr, true, &data)=
+;
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS:
+> >>                  return kvm_eiointc_sw_status_access(dev, attr, true);
+> >>          default:
+> >> --
+> >> 2.39.3
+> >>
+>
+>
