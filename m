@@ -1,121 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3561E573F
-	for <kvm@vger.kernel.org>; Wed,  3 Sep 2025 04:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAE02D3EEA;
+	Wed,  3 Sep 2025 04:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756872064; cv=none; b=NPwUj1q3cDmRgxGU43g1e9nAbNAkU/Cr9oMF3imz5esg4MT2IE+7Ze9cLZo2GktWGeRsXTy1YT8C0u64rYMvgPQWEJcFegHGI9zYJvcT4pxjsFHenOKHtHYUTL+BcsJ+CaouwevFKgn48olDvKcX03aF6fLL0V2YhXH9Fbyyqaw=
+	t=1756874609; cv=none; b=Vq/MKXAPlPX1OoS4VU1Diba4ZviEZuHNt+e+lKhv7FLjCA7nPRgMCjoJS6xnRMXT8FHOpLbY625xTZXIfqfPF4weh3Cr0v9vuRoWQjnZozgDyQApa3gQ24g6kB2BwgE4jInX21nVczWzwzh9U5KXeaPKhyTloi9NKFTVvLS55p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756872064; c=relaxed/simple;
-	bh=U0jjFOIRPE2pVoUMIlyB9h7+kH8XE4j8UQpdjONzyjE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sud1p6wM0WjibeAv4jiWaCcSMMK9Mm2I4xCfY/hQ6s5y9E+5W7K4EeVgOWtsgl04OSTbuiciHrB2vLWPt37WGKlaOgS+vZ6efUEadjoLm62R93vPqLIgNa2t8mJ+DISOUlJZotnyyhQsHmuhf7IIwPir7fKFRmqoVZrtME4k06M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rq3YJEix; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756874609; c=relaxed/simple;
+	bh=kKlPpwYXj/FU8DbfmlUchGL3G72piEGC7w1RbGsV98M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iCrhF9yay+H+40jp3GDaNbA35lt6frb17LeKqA0pY0KgulUG5KXjPyCPR9ZrC8OAAEz2RLRTWIUkAE0baOYJ1Ig7niszRr/KY/Fq0dkdZP8a0wd64y4wGfJI1dh+TtkHH3CmIe+xO+o0llowcdo2mE5cT71Zet4IP0CEW+YU4tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yd18gZvb; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rq3YJEix"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756872061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U0jjFOIRPE2pVoUMIlyB9h7+kH8XE4j8UQpdjONzyjE=;
-	b=Rq3YJEixY7ohrbxnabbZIPC+t7fhf+tzRbJvufc4ZCh+5OHpmwhPm207ZfE+AO1RK3gmd2
-	OTb3doHZqeNSl2ljs653KD1K89GwG9FfbsOl+1fE6ZnYbg/RpW9YeZx/vTIm6bRlkdhCeK
-	RrLzxGWDZjcpW2pf3LkUlz0SFQJaTKk=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-KB6ibQzOOhCagFZlJty4vg-1; Wed, 03 Sep 2025 00:00:56 -0400
-X-MC-Unique: KB6ibQzOOhCagFZlJty4vg-1
-X-Mimecast-MFC-AGG-ID: KB6ibQzOOhCagFZlJty4vg_1756872052
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-329ee69e7deso1292953a91.3
-        for <kvm@vger.kernel.org>; Tue, 02 Sep 2025 21:00:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756872052; x=1757476852;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U0jjFOIRPE2pVoUMIlyB9h7+kH8XE4j8UQpdjONzyjE=;
-        b=ocI1LzZlVQwrIOIzDNg4CAUYt7BGl4yM8gX4hPh8tTt6TmEuTTAuqSJH2X3sNc2A0Y
-         /B8DnNewWhZGSTGjjLPLacelWGOtwGin3EiWayL7kNAcEdh10km73McsoWLJ4SkuC2h5
-         Ma7aWvxSSMhRkVOmINiRYcoT+69++JmoSS2u/Ok10b/OgYJRjB+IfYEsNHtI40BoAOAY
-         sQu6Hw0zdHC/DWCkyoJO1o7FkFfq7b0DhG4l9yKLXktf8v0sIn/4zCLQZgcZ14EsYc0V
-         PQjU0FiOfU64TDPZNhUalJ3MYyuxqYq7aEjAeMEkjQvyXYmadXBNWuk+QQA9gYhNOmaB
-         EpOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfYKwG4dAgKBZaS9cOWjardhsGENExqyFw0chQPRuUNSWgfVDZTBAfmL+dGAtqsd/0QHs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzioBDuDUW5kxi8iirjBgMwKhmOrmGrTsNI7rzI18OmC4NxqAAh
-	StVMPCL9dN98LwkMzi9htmktGNHx0BKwcGzyNW1CIX7ta9Wy3FHIzLmdroOmj0BkotBgWU44sCM
-	6bEtPeV851DHrkjCcsFsxoXh+7jCvx0fZJ/cxblfIet6ohsySALP7VdQ4mh3Pj/hRBrM/FW6Uiv
-	M9vbDeS+3EDTSpPkqfwbflW0UH+kGv
-X-Gm-Gg: ASbGncsjRskh6HqoXCYhZQ+B+0KplAqPbx/sxiKGI75X2IDy7tK9Voy7u9GDZ8EhNb1
-	bGX1FdPpLTch9rnx2OrpxOpFBnelGtwRNk5iT+iQZKi329QslU/4kh+kfci3jB/QHf0fBVYqhVo
-	fqHajubqQ93yImw0xlJCVz1Q==
-X-Received: by 2002:a17:903:1ab0:b0:246:76ed:e25d with SMTP id d9443c01a7336-24944b15b8cmr169377685ad.50.1756872052066;
-        Tue, 02 Sep 2025 21:00:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5aB6Qqxj9qWYTbp0SCLMQoviI6dY5kYYbJnZhA2Hm84dGyl7OdRCsvBI+vTe21NUsYwxF2ONdt98uJqVn0hA=
-X-Received: by 2002:a17:903:1ab0:b0:246:76ed:e25d with SMTP id
- d9443c01a7336-24944b15b8cmr169377215ad.50.1756872051574; Tue, 02 Sep 2025
- 21:00:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yd18gZvb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756874607; x=1788410607;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kKlPpwYXj/FU8DbfmlUchGL3G72piEGC7w1RbGsV98M=;
+  b=Yd18gZvbFGU2yGRBshCgcpi44r/rr8yjy5cVOZ6Xr2eBno5Sf+Y+WYA/
+   iIFIv9MDqFrxIZWB8+kMzFwb+eSvhmcwfbA3m2WQvXWYJ2V1Vw6+PUg70
+   oBkNLhNVtgHdFgrEa4pINmM6OuFqrxW8deO2j4sP6z4cHScY+Ye0yOBhh
+   S+2MxIN4xybiRX3zhUTsofjh5+MlQr3Hra83I0rLDco1S0UFostcbe+qV
+   ydUYXrNzWFqGhdcz6WQUWDlRm8PvczRpLk2zq0+EtaqWm9xYlwMs1+c+m
+   LLpUb35nwgFlDjhX/R94407HnMsT+m7xuoNTq8Sd1+rdZASf3osr/h6Uf
+   Q==;
+X-CSE-ConnectionGUID: lhUS0+MCTaS7pBDRWf8mhA==
+X-CSE-MsgGUID: 0NhzJO2BQdqbqR5qMB3Tew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63010671"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63010671"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 21:43:26 -0700
+X-CSE-ConnectionGUID: 9XCavLGVQbS/An0CGJq/2A==
+X-CSE-MsgGUID: X6dvOUlqQMCKj1HFPmoZeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="195120614"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 21:43:24 -0700
+Message-ID: <76499c2e-8ca9-4e5f-9a34-96eec19a5f6d@intel.com>
+Date: Wed, 3 Sep 2025 12:43:20 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902080957.47265-1-simon.schippers@tu-dortmund.de>
-In-Reply-To: <20250902080957.47265-1-simon.schippers@tu-dortmund.de>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 3 Sep 2025 12:00:40 +0800
-X-Gm-Features: Ac12FXzvemknOpwKY7V_bPmSMDz5x5JOaUgCJhdjwkkYam90CI_kt2z3omxI2R8
-Message-ID: <CACGkMEviyLXU46YE=FmON-VomyWUtmjevE8FOFq=wwvjsmVoQQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/4] TUN/TAP & vhost_net: netdev queue flow
- control to avoid ptr_ring tail drop
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, mst@redhat.com, eperezma@redhat.com, 
-	stephen@networkplumber.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] KVM: x86: Add support for RDMSR/WRMSRNS w/
+ immediate on Intel
+To: Sean Christopherson <seanjc@google.com>
+Cc: Xin Li <xin@zytor.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>
+References: <20250805202224.1475590-1-seanjc@google.com>
+ <20250805202224.1475590-5-seanjc@google.com>
+ <424e2aaa-04df-4c7e-a7f9-c95f554bd847@intel.com>
+ <849dd787-8821-41f1-8eef-26ede3032d90@linux.intel.com>
+ <c4bc61da-c42c-453d-b484-f970b99cb616@zytor.com>
+ <fbdcca61-e9c4-47fc-b629-7a46ad35cd24@intel.com>
+ <aLcEMCMDRCEZnmdH@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aLcEMCMDRCEZnmdH@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 2, 2025 at 4:10=E2=80=AFPM Simon Schippers
-<simon.schippers@tu-dortmund.de> wrote:
->
-> This patch series deals with TUN/TAP and vhost_net which drop incoming
-> SKBs whenever their internal ptr_ring buffer is full. Instead, with this
-> patch series, the associated netdev queue is stopped before this happens.
-> This allows the connected qdisc to function correctly as reported by [1]
-> and improves application-layer performance, see benchmarks.
->
-> This patch series includes TUN, TAP, and vhost_net because they share
-> logic. Adjusting only one of them would break the others. Therefore, the
-> patch series is structured as follows:
-> 1. New ptr_ring_spare helper to check if the ptr_ring has spare capacity
-> 2. Netdev queue flow control for TUN: Logic for stopping the queue upon
-> full ptr_ring and waking the queue if ptr_ring has spare capacity
-> 3. Additions for TAP: Similar logic for waking the queue
-> 4. Additions for vhost_net: Calling TUN/TAP methods for waking the queue
->
-> Benchmarks ([2] & [3]):
-> - TUN: TCP throughput over real-world 120ms RTT OpenVPN connection
-> improved by 36% (117Mbit/s vs 185 Mbit/s)
-> - TAP: TCP throughput to local qemu VM stays the same (2.2Gbit/s), an
-> improvement by factor 2 at emulated 120ms RTT (98Mbit/s vs 198Mbit/s)
-> - TAP+vhost_net: TCP throughput to local qemu VM approx. the same
-> (23.4Gbit/s vs 23.9Gbit/s), same performance at emulated 120ms RTT
-> (200Mbit/s)
-> - TUN/TAP/TAP+vhost_net: Reduction of ptr_ring size to ~10 packets
-> possible without losing performance
->
-> Possible future work:
-> - Introduction of Byte Queue Limits as suggested by Stephen Hemminger
-> - Adaption of the netdev queue flow control for ipvtap & macvtap
+On 9/2/2025 10:50 PM, Sean Christopherson wrote:
+> On Mon, Sep 01, 2025, Xiaoyao Li wrote:
+>> On 9/1/2025 3:04 PM, Xin Li wrote:
+>>> On 8/31/2025 11:34 PM, Binbin Wu wrote:
+>>>>> We need to inject #UD for !guest_cpu_has(X86_FEATURE_MSR_IMM)
+>>>>>
+>>>>
+>>>> Indeed.
+>>>
+>>> Good catch!
+>>>
+>>>>
+>>>> There is a virtualization hole of this feature for the accesses to the
+>>>> MSRs not intercepted. IIUIC, there is no other control in VMX for this
+>>>> feature. If the feature is supported in hardware, the guest will succeed
+>>>> when it accesses to the MSRs not intercepted even when the feature is not
+>>>> exposed to the guest, but the guest will get #UD when access to the MSRs
+>>>> intercepted if KVM injects #UD.
+>>>
+>>> hpa mentioned this when I just started the work.  But I managed to forget
+>>> it later... Sigh!
+>>>
+>>>>
+>>>> But I guess this is the guest's fault by not following the CPUID,
+>>>> KVM should
+>>>> still follow the spec?
+>>>
+>>> I think we should still inject #UD when a MSR is intercepted by KVM.
+> 
+> Hmm, no, inconsistent behavior (from the guest's perspective) is likely worse
+> than eating with the virtualization hole.  
 
-Could you please run pktgen on TUN as well to see the difference?
+Then could we document this design decision somewhere?
 
-Thanks
+I believe people won't stop wondering why not inject #UD when no guest 
+CPUID, when reading the code.
+
+> Practically speaking, the only guest
+> that's going to be surprised by the hole is a guest that's fuzzing opcodes, and
+> a guest that's fuzzing opcodes at CPL0 isn't is going to create an inherently
+> unstable environment no matter what.
+> 
+> Though that raises the question of whether or not KVM should emulate WRMSRNS and
+> whatever the official name for the "RDMSR with immediate" instruction is (I can't
+> find it in the SDM).  
+
+do you mean because guest might be able to use immediate form of MSR 
+access even if the CPUID doesn't advertise it, should KVM emulate it on 
+platform doesn't support it, to make sure immediate form of MSR access 
+is always supported?
+
+> I'm leaning "no", because outside of forced emulation, KVM
+> should only "need" to emulate the instructions if Unrestricted Guest is disabled,
+> the instructions should only be supported on CPUs with unrestricted guest, there's
+> no sane reason (other than testing) to run a guest without Unrestricted Guest,
+> and using the instructions in Big RM would be quite bizarre.  On the other hand,
+> adding emulation support should be quite easy...
+> 
+> Side topic, does RDMSRLIST have any VMX controls?
+> 
+>> For handle_wrmsr_imm(), it seems we need to check
+>> guest_cpu_cap_has(X86_FEATURE_WRMSRNS) as well, since immediate form of MSR
+>> write is only supported on WRMSRNS instruction.
+>>
+>> It leads to another topic, do we need to bother checking the opcode of the
+>> instruction on EXIT_REASON_MSR_WRITE and inject #UD when it is WRMSRNS
+>> instuction and !guest_cpu_cap_has(X86_FEATURE_WRMSRNS)?
+>>
+>> WRMSRNS has virtualization hole as well, but KVM at least can emulate the
+>> architectural behavior when the write on MSRs are not pass through.
 
