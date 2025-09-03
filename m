@@ -1,179 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD7B2C3757
-	for <kvm@vger.kernel.org>; Wed,  3 Sep 2025 03:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9778925A321;
+	Wed,  3 Sep 2025 04:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756870938; cv=none; b=dO54zw9xMxD9KyFdPlMqZQ9SgDO/yFU3FCBB1bQAJITeryNhk2zqMe9jkXC49zU002EaB/heDWm0Shw1vlVkYevu4LZkEYETJnmGBt76vc/QOArqgi9hZTOOZlGOs7sC+hBd7esG13WcKqAA6UqoOip3rzBLgEVOwa/iS/Q46YM=
+	t=1756872059; cv=none; b=golNxAZOM4W++WLGbl12gtiaL8/EAK1Ha7VAGHv1rQRukYdixZ9nhWYcCpndK1Rg/lu5scW45GmILLv6jlFL98v7XmUkS+9StXpjVQMov6EtG4caS/VZk1sRrAyHdJraSZs3gHKopGA5cV5tVyjT2cRaLYUMQkazueLEYo066o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756870938; c=relaxed/simple;
-	bh=9ESXmPmINNSXqQlz86ZJuKHZQigQluf5ycGSPQZVgNM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fNijzZjZCtvr7pEjmVhji+AJlzZ3Q7czLHN7EadGyJV0bwWhF3mLMxtbL2thW1UOZlfAuP9AYBWLkkNzzyAKik+p36aWF55hy9mOPirMUabWx2w04nCJCYkw0P6qK5SuHObpQWwWNJJdl67c5KsE/xXvZqp/n3sE5WGID5oghzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DXzUqY8a; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756872059; c=relaxed/simple;
+	bh=6UR9ejdf4VPdId/kJKjtTmDnIcSf6XuqhLcmd7IRW2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B9HnfWoXYXlDC02p093VwcT5sMVFCuY2tzL5DgioX00+RMb1GapiewgXVIOvgwGHb/8eQR05owkbRMPUTNIT0yUw5Y1r27mojyjF14UxBzrn4f9JNCP+PU5mXs9SkqcvDI3JaLR1CxFURNn6ovp20bAVPeibCGDUzbmg77QdR8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nOQtONCM; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DXzUqY8a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756870935;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=21HGKhCy/iaEYJrBJUDnVhz1RoV8QBoCOIAY2Tt+uVI=;
-	b=DXzUqY8alLSdhoFs2wccPZYGcjhKa8AO8R0MW/kFruP192xAQkxXnfWlcXLeyUTdWotay4
-	SHbaZkzMaovIF4BjWE0XGIGaDLo6htNppWVnwIxH5NlaT+mSteQWm/+AbJKib79Qp/pw7U
-	DfD4zj5kNt+ht82lQSIKBCg9v+b6sIQ=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-he2AnJQ2NLq9cW9mE5sCzQ-1; Tue, 02 Sep 2025 23:42:14 -0400
-X-MC-Unique: he2AnJQ2NLq9cW9mE5sCzQ-1
-X-Mimecast-MFC-AGG-ID: he2AnJQ2NLq9cW9mE5sCzQ_1756870933
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-76e2eb787f2so6661737b3a.3
-        for <kvm@vger.kernel.org>; Tue, 02 Sep 2025 20:42:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nOQtONCM"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-77247e25a69so269092b3a.2;
+        Tue, 02 Sep 2025 21:00:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756872057; x=1757476857; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CRg1H5QKeFRVFkhJ6WwioKBMmTGdYWt+yD/4+yi4RdQ=;
+        b=nOQtONCMQdTSS7hWMvZRr/2oSmmfoq2jTHR5/s4ZiBkNoR5d4+esBGJ/DZ29NL69MP
+         fqukMv5vaHmOrv4EyvWvUgifiKBQ9ooAelTu8pxqj45CWVk0RwI/BqlLnzuViDCHN0on
+         stcs6JG56jN2xcVT6tNRnqSuEmFSUoVb7cPTcRSOseA3XIpNaRw2bxdeluVp92NiQQNG
+         ylFvQ/7muIFsmjAChIqWn3ZkJawsIOii1A7Cx75VA1o5IdD5sgI2/DtM8gEicbqHvuc4
+         eCN98dqvXHMUhlkb+zUPY3R9gM4BQdMW0U8dQExNur4WvcEzjh+BOt5a/9+/U55hgZgZ
+         6Y1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756870933; x=1757475733;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1756872057; x=1757476857;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=21HGKhCy/iaEYJrBJUDnVhz1RoV8QBoCOIAY2Tt+uVI=;
-        b=DX+bsWO817FcNeNlf2rSpKeV7Bv1ulmiPV5Xb3e4zGQD/v38ZnyTIZydlRW018YJWh
-         fNu2j+uBSYjYwNRuyxosGHeLzIymi1Xdgdk+mtnrzTpoOWI99NuJZ8te7DSL/ZDkVQup
-         XMXXHTJS2jEXpKiiZvSta+rQ4TGWcVbHaylJUd+7lyFaXWrUtMmwwS5pLoZ2dVpmW5Ng
-         YqkxS2SoXXGlTeVdd0SDMb5YqQ4LbfqwPDfzZC7PTmZP6m4lU4fsIs3vwVyyDe3ioyOb
-         jRJPJVwi+KTT+MGiHFyAnBS4ofZIOgXV16LBWT0gzU/YZIbov+q651weJVTbJQ/xwBJb
-         J9iw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOLQUAzfH6VizoDci/xGWwQGlwn/KC84qXENlGgY3j1wDKwZq7bDqb+QMe5dWBFRUnHQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTub3wusprLoMRTPcbFBsYUAIWEyNoNtxcyRgZCXKyHR/9XMdb
-	jvCxmF5cxEg1qgnz9aWydO8k1NwlpW7zScMZYpfp7opNs7S8Vzg0n5nlv4PVu5kpug1YUDQBsmP
-	mQmdAtqnrT2LPQ9p125Y757dNkvgj2+Hnu1vvF2V8lcQGZKrnH+zcc4MOUds4del4CHvGjSjZzF
-	5B3W6fgLNCHnTljac14P4GVLtmQnto
-X-Gm-Gg: ASbGncs0XXArnQrrug6PK1aFqNu8c4HSh43NXC8FflMAmLmJiKWhDrrC96Y1ZYnAaSC
-	8lnsSe4V8wHpaJ/Vdzrdt47i3XubKg21SMcRHT/tcoz822O5o0hMB6VDIvV5Z/OVM1Up+q6vD/Y
-	Ux3mld/ersD8S/MkyIe/grTg==
-X-Received: by 2002:a05:6a21:6d9a:b0:243:af34:8f80 with SMTP id adf61e73a8af0-243d6f0a00emr19321156637.33.1756870933322;
-        Tue, 02 Sep 2025 20:42:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHanPhMKl5ZAvm2Qhwq+QdEgtJZ1BCJ/V8a82/77JVVc+iCktfnjs8inL16NihNJNK30sMh1UDZ/nyoOaphFLk=
-X-Received: by 2002:a05:6a21:6d9a:b0:243:af34:8f80 with SMTP id
- adf61e73a8af0-243d6f0a00emr19321122637.33.1756870932854; Tue, 02 Sep 2025
- 20:42:12 -0700 (PDT)
+        bh=CRg1H5QKeFRVFkhJ6WwioKBMmTGdYWt+yD/4+yi4RdQ=;
+        b=fU49C4IOLaOAvegpARLvdOeRV8UA42i3Klr/JGjDhQN+uM7nRnWD+b9NhVUKGmyQ6S
+         ZYWPsfJmfg2Wx6mSoyHGnLxoe4wCa2jx7Hny2C+cSmk30Wqpdm+rw6Uz2rCQMeaLYbgN
+         pHf+TFPUAXfvpGAvRe/+YFrm90G9nFYdSFnRDqVnw9pRIMx0V0cx792ob+dZDvW0PLUh
+         32dx8hCXmeZGMfvioI0nxvBM4hVskYYRc8iehHlMfVkV1Hip2ok7r3yKKuxZl/llBK6C
+         2BiFZB4NvduWM1ofgeDfMr/m4Mru5FUIsjb+067C/6SRKC8c4eSvrKFvHSCJu/KbwT3J
+         c9MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq688Ak0ZbFjwGfYv80RNzuLW3DfkpVCAxfDVHOnuic02VvnXfS4z7Z3SvqoZikVRkxvK2@vger.kernel.org, AJvYcCV8v5QTm7CLJ9+AbT+PFjW0OkA94T2gDMWdr0yZ6Ay/oiPIkT8iPAKddhT/Y+CQigZRDG3CoHDWkabWIsZ0@vger.kernel.org, AJvYcCVQCXNLoO+UfgRhuTkpcQ4QMpzTqCHpeEz1fs/PCn+koi8v39SJbdm4NhSc03nLirFOUjm+craS2ZVz@vger.kernel.org, AJvYcCVfwiy893ADKB3J1WG1Ahm+dWrPV4ZSoguKpyhtcieFOLndVrxzdWK+UhWwxlQhYNwMzFz2XplWHkgs@vger.kernel.org, AJvYcCVfyYapbCj31D0gNFVw5Zqdw8wECFAwNvGy9rWY85YZ5ONq9FJEbvnra+WUbabD4YL7uLwMZqGORGeZflUykA==@vger.kernel.org, AJvYcCWWmhCaCYwhGCBdDynmmtWF9o2WbsM2ueRDm402aCugF6OTogXnNFHCy1WHhSplPvKOQ1D5a+4F0UZX@vger.kernel.org
+X-Gm-Message-State: AOJu0YytaUN02DZht0lv9LhfUuMSQys1x6pb1qjmgmll6znz2STtNLZp
+	TM4vm84YWI6zjtp7Txs9deWL27QAq8ifhMsV/gER+LvScHlBfP8HyMMc
+X-Gm-Gg: ASbGncuem6/ENzIMx3cuIiy+71C35YQebw2b3LkNaxhUFx/543fXwhf77RnBILEa6jM
+	btyyL0A37bZ9LD76/LAJ+oObWNFPSShByl+8U6V9HZRrHKmNLALQD9tiQHmb4T85aoofyBnmOPG
+	6j6j8cDUTY6Y1enumLUZMHNRC/Ekk6vGSCm+fdn6/fzfobKWlf8WxB4ttTUw+vwDqr7XD4Zusmd
+	UQF8whVVl6NHpUgpE1BXj1WiS5xw8pr+93vWEedMNzMMH69h+AeLFW9cTcd4uR8dpj/dwt63cVc
+	ZDpTP4jxUeDmfvcZyl9qRoaX2H7jrJYVws05X3kN/kYAc/qsANQGGL+3GiAm1SuLBEmhLYV1aPQ
+	mHDTD02pk8xluIOYwFSsqt+vXwJVBPwwPnLT/6z/tPiD8zY9LUA==
+X-Google-Smtp-Source: AGHT+IE90pfwfxg7f/fDuh03cv7xCHKmMMJxtPjEvyUYKYaMHOvpneeXe9lal81BrPks03fBQxlqdA==
+X-Received: by 2002:a05:6a00:807:b0:737:6589:81e5 with SMTP id d2e1a72fcca58-77232745936mr12138992b3a.2.1756872056706;
+        Tue, 02 Sep 2025 21:00:56 -0700 (PDT)
+Received: from ranganath.. ([2406:7400:98:c842:443f:2e7:2136:792b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a2b2f56sm14970241b3a.26.2025.09.02.21.00.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 21:00:56 -0700 (PDT)
+From: Ranganath V N <vnranganath.20@gmail.com>
+To: rdunlap@infradead.org
+Cc: brauner@kernel.org,
+	conor+dt@kernel.org,
+	corbet@lwn.net,
+	devicetree@vger.kernel.org,
+	djwong@kernel.org,
+	krzk+dt@kernel.org,
+	krzk@kernel.org,
+	kvm@vger.kernel.org,
+	laurent.pinchart@ideasonboard.com,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	pbonzini@redhat.com,
+	robh@kernel.org,
+	vnranganath.20@gmail.com
+Subject: Re: [PATCH] Documentation: Fix spelling mistakes
+Date: Wed,  3 Sep 2025 09:30:43 +0530
+Message-ID: <20250903040043.19398-1-vnranganath.20@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <A33D792E-4773-458B-ACF4-5E66B1FCB5AC@infradead.org>
+References: <A33D792E-4773-458B-ACF4-5E66B1FCB5AC@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902080957.47265-1-simon.schippers@tu-dortmund.de>
- <20250902080957.47265-5-simon.schippers@tu-dortmund.de> <willemdebruijn.kernel.251eacee11eca@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.251eacee11eca@gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 3 Sep 2025 11:42:01 +0800
-X-Gm-Features: Ac12FXy-ZAK0_-Slu353Uz-vG-bLNLE-4F6AXp-hkWEm5GXoed80DFu99UnucK8
-Message-ID: <CACGkMEshZGJfh+Og_xrPeZYoWkBAcvqW8e93_DCr7ix4oOaP8Q@mail.gmail.com>
-Subject: Re: [PATCH 4/4] netdev queue flow control for vhost_net
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>, mst@redhat.com, eperezma@redhat.com, 
-	stephen@networkplumber.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 3, 2025 at 5:31=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> Simon Schippers wrote:
-> > Stopping the queue is done in tun_net_xmit.
-> >
-> > Waking the queue is done by calling one of the helpers,
-> > tun_wake_netdev_queue and tap_wake_netdev_queue. For that, in
-> > get_wake_netdev_queue, the correct method is determined and saved in th=
-e
-> > function pointer wake_netdev_queue of the vhost_net_virtqueue. Then, ea=
-ch
-> > time after consuming a batch in vhost_net_buf_produce, wake_netdev_queu=
-e
-> > is called.
-> >
-> > Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> > Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> > Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> > ---
-> >  drivers/net/tap.c      |  6 ++++++
-> >  drivers/net/tun.c      |  6 ++++++
-> >  drivers/vhost/net.c    | 34 ++++++++++++++++++++++++++++------
-> >  include/linux/if_tap.h |  2 ++
-> >  include/linux/if_tun.h |  3 +++
-> >  5 files changed, 45 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> > index 4d874672bcd7..0bad9e3d59af 100644
-> > --- a/drivers/net/tap.c
-> > +++ b/drivers/net/tap.c
-> > @@ -1198,6 +1198,12 @@ struct socket *tap_get_socket(struct file *file)
-> >  }
-> >  EXPORT_SYMBOL_GPL(tap_get_socket);
-> >
-> > +void tap_wake_netdev_queue(struct file *file)
-> > +{
-> > +     wake_netdev_queue(file->private_data);
-> > +}
-> > +EXPORT_SYMBOL_GPL(tap_wake_netdev_queue);
-> > +
-> >  struct ptr_ring *tap_get_ptr_ring(struct file *file)
-> >  {
-> >       struct tap_queue *q;
-> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> > index 735498e221d8..e85589b596ac 100644
-> > --- a/drivers/net/tun.c
-> > +++ b/drivers/net/tun.c
-> > @@ -3739,6 +3739,12 @@ struct socket *tun_get_socket(struct file *file)
-> >  }
-> >  EXPORT_SYMBOL_GPL(tun_get_socket);
-> >
-> > +void tun_wake_netdev_queue(struct file *file)
-> > +{
-> > +     wake_netdev_queue(file->private_data);
-> > +}
-> > +EXPORT_SYMBOL_GPL(tun_wake_netdev_queue);
->
-> Having multiple functions with the same name is tad annoying from a
-> cscape PoV, better to call the internal functions
-> __tun_wake_netdev_queue, etc.
->
-> > +
-> >  struct ptr_ring *tun_get_tx_ring(struct file *file)
-> >  {
-> >       struct tun_file *tfile;
-> > diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> > index 6edac0c1ba9b..e837d3a334f1 100644
-> > --- a/drivers/vhost/net.c
-> > +++ b/drivers/vhost/net.c
-> > @@ -130,6 +130,7 @@ struct vhost_net_virtqueue {
-> >       struct vhost_net_buf rxq;
-> >       /* Batched XDP buffs */
-> >       struct xdp_buff *xdp;
-> > +     void (*wake_netdev_queue)(struct file *f);
->
-> Indirect function calls are expensive post spectre. Probably
-> preferable to just have a branch.
->
-> A branch in `file->f_op !=3D &tun_fops` would be expensive still as it
-> may touch a cold cacheline.
->
-> How about adding a bit in struct ptr_ring itself. Pahole shows plenty
-> of holes. Jason, WDYT?
->
+>On September 2, 2025 12:59:05 PM PDT, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>On 02/09/2025 21:38, Ranganath V N wrote:
+>>> Corrected a few spelling mistakes to improve the readability.
+>>> 
+>>> Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/submitting-patches.rst | 2 +-
+>>>  Documentation/filesystems/iomap/operations.rst           | 2 +-
+>>>  Documentation/virt/kvm/review-checklist.rst              | 2 +-
+>>>  3 files changed, 3 insertions(+), 3 deletions(-)
+>>> 
+>>> diff --git a/Documentation/devicetree/bindings/submitting-patches.rst b/Documentation/devicetree/bindings/submitting-patches.rst
+>>> index 46d0b036c97e..191085b0d5e8 100644
+>>> --- a/Documentation/devicetree/bindings/submitting-patches.rst
+>>> +++ b/Documentation/devicetree/bindings/submitting-patches.rst
+>>> @@ -66,7 +66,7 @@ I. For patch submitters
+>>>       any DTS patches, regardless whether using existing or new bindings, should
+>>>       be placed at the end of patchset to indicate no dependency of drivers on
+>>>       the DTS.  DTS will be anyway applied through separate tree or branch, so
+>>> -     different order would indicate the serie is non-bisectable.
+>>> +     different order would indicate the series is non-bisectable.
+>>That's not entirely a spelling mistake
+>>https://en.wiktionary.org/wiki/serie#English
+>>
+>>Best regards,
+>>Krzysztof
 
-I'm not sure I get the idea, did you mean a bit for classifying TUN
-and TAP? If this is, I'm not sure it's a good idea as ptr_ring should
-have no knowledge of its user.
 
-Consider there were still indirect calls to sock->ops, maybe we can
-start from the branch.
+>Obsolete.  Close enough for me. 
 
-Thanks
+Hi,
+Thanks for the response. Do you want me to resend the patch by ignoring this?
+particular "serie".
 
+Ranganath
