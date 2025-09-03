@@ -1,78 +1,79 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2074.outbound.protection.outlook.com [40.107.93.74])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2068.outbound.protection.outlook.com [40.107.223.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07A32ECD31
-	for <kvm@vger.kernel.org>; Wed,  3 Sep 2025 22:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE942F067A
+	for <kvm@vger.kernel.org>; Wed,  3 Sep 2025 22:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756937506; cv=fail; b=eyAlo6EdaIX6QIQpvpaz5x1WpzTCorKP8kEPd/mpEBpahNtAdodCAWctpIjk6yJr5Q2GOEPDtUhqBNB77KunKyBXKdOZXFxQcWyPFVekHS9j0fdt8ywuIVKOiK+BpTjo5SQA52+8VnHBoAJVOXbn1qeHdKlVHEe6/Wdd7K5W31k=
+	t=1756937508; cv=fail; b=dwUCmDavSZ7By8AebBw1wQIBDHYq3RiooNLHLD/eC5wfXqQnILYiSMdPxKMEwRwbDvV0FSYgxeS0y/up5rPNQBrtoqniNmtBaKg57WqIw0yhjcuz23ba+JzLy+7X9kc64juf9S4MGCtK2kwHu6Tfd7n4WkAaRrehBd+zZLPCTiU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756937506; c=relaxed/simple;
-	bh=jPd0N2GQ43S1YzoGNkVGzfnHVhTtaWaGOy8250i2JHM=;
+	s=arc-20240116; t=1756937508; c=relaxed/simple;
+	bh=fp/JzpOeqtiGgKYjOP6EjTk4ZJUX3j7cnitTBgXjLiU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WGr8Ay8sCrTYKuYCl7SQrRc5vcXiIm2307VqIZB44SYLGpL3NFJ+GCJNK756wnhPL7a4DF7bsI/dDilUSPy7y3vWSR8qB3597pIHuM0dhrP7KqP1tG7zKwqqTrVgwwojZFcgruOvFeHMea9Sm0aJDxdNKr3+zsrKnP1ZqlcY8kw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mYPfmVHu; arc=fail smtp.client-ip=40.107.93.74
+	 MIME-Version:Content-Type; b=edDXPP5GlEtcW7ut5AKCVfpAs+DYl1RuxbOp/RobpNfw5mIfT5P/Zm8spy2Jg4FCNG62b1DkfpfoapKtr8/jDnQWzzusIQI8rmcvNcU70C4hfiUHzEbuSI8PUCaHaljiBeJ2nY3t87fEAlgSZ2N8Zyx8W7LbQlIrJY7kpdGY3vc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NT/uPqKr; arc=fail smtp.client-ip=40.107.223.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mYPfmVHu"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NT/uPqKr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e/TMEvZQQz3cdywMaU6ExrkG6iWlJWkyxCZPWJVIFsNMHdxiyzkQQ7rewop51dzNOyzjNYYTyRjuRKomyQegJVl5yoEHQ9VlKjsuJVQXrS33FH3O/KYm1hUohHFf/HemP3qSl6YJH7z2QQ3y0kQt7KPwLm8kDSa6eMrHLzxx98KFnu7k2n3KnK70Kmse16oO0LBqEc5pWnUTh5FQzjKG2Shcjs1+zWa43dKLURasUAbhTqnQxqlcPaur/ZYBs/m14IUqe+03bnM7dBn4jSqsvG6/OUek2831ongfJ4AW7hXK6abOdWqdfmp1N7qxCfHzl5u7Ze63TVtuwAdXw9kE/Q==
+ b=sttZV4rBxAKFE9TMNx6yGSKO0YWa+0wajOuhunfcShLf0fyp3w7i77W5yzizoAUDy4Z69O8gdNGHTNLpRDpaVi7FfKviO4ocoXyTgmboY+89kLWMN6X5TiEwz9+NcYgqQ1TnULTzrgg3f2PAuDwfrwp4+pjH2vpRHgzNyq7YsWmfMfheeTSwIBJJ/ifcEErij1cEphWpRElnQkEepxRP+YTdBdlqmpmmS+XTdqMRkUCkfn2LDv6kk9sJKSJNoEi/Zrwfb8UICoYKLo+TzIUmTSeezWcBqxMYJmDgxDo1ykY4NFAefoTsTAvFyDlKevnhhW/Jes/iqz3FT6YgQZGSCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uFnnbZ50X8LpmTm/Sy5O0WGKB3RIbjvMpqh+NlXw1Ro=;
- b=C2wLvqkMok4AfbwKK0U36pZTsZ1uiQkVlELbfKLN/zPc5X/wDEstIuYSV1Sg8BJIiVEeHMhjghPQM2PjUYyor6oRujwkBikVkhnaGWvS6KNmDPWOHvPKoCt2lXpL6yWEcsXjCs7KYdOjH79sN+/CcXJ+POzILZsKP9MGMnmru10dssNsGh7Y7W9U2je7InYDIpSbpZbupcuVffUhl+Nq1tanR3TGtJAYUEZG0ktOghia5+DNdkyco7lBNmJEF1xivL6Qyj8V8tzUjlR/l87BAZOPvyKK34HkxM2Ds1GyfzBTjIfnfqkjlsTgYBWyYw+XZupu/mmsHsGilB1se2lHxw==
+ bh=4zsaXR/vOjr8+mpJYOKaXTIZb2X8dHs2cSSAUeMbAz4=;
+ b=D5CONepsgzWLA7W7SNbjt81V91ZVbWxtzNq07G1lYQkeYGaApuMayVku/q+gSz+9SVHefhwzxfKOuieC7eWUMQAboC2Q3TrsWN+iLGf9SEIINCjFED1yq+z+CbSqmhPu4ydmoRPIbpIh3i0KBdRZw+HTrXsF3EzQJw7XWPQ9vu3SgTJ55HIbJ8JkWozYqoYI5d8VTffiDiGH5sgyrzW67J4aGQBAbwheJZ5ArHIOa2OOTF5OCQ9luxoPH2vlYo7JwC1uxEiZpIFu7uL2mvzemnIo94YgGvOie9STi50mMqup9yEzJPwQP/Ov7xiPQ+5EDugdxDGOOJITfzWVzySTvQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uFnnbZ50X8LpmTm/Sy5O0WGKB3RIbjvMpqh+NlXw1Ro=;
- b=mYPfmVHu+WBRkKUoQ3MgD0IY3plDgvIrnQT9AKflFmskDKAjyLENZaMF+lYGr8ZMWwkCfmVsGC5j0EQCRWkbQgsd8rGZYvGJ09Tu4n1kRa8EIEXyfU7UtJBgFdvMSVA8D1HOkhbg3GuMNs9+zLVYViSAOvJbQO22kfg86OxMvpk+6Ljw1/Q4xEbBFqmMXVJKzM6jfpjA1zIXvaTR5u2zCVYTSYXCiAEgCBrsC7tXVKCgkHS7zk3qqzGwcuv5Ev0ljb4py8gGhkdCVsiC/wXEUdX9GRNXqNxA+y6+28Us+PyMqqwPH5rgH1MaylGuY8us4UD+pOsABIaZiaD7ZS9Ysg==
-Received: from BN9PR03CA0481.namprd03.prod.outlook.com (2603:10b6:408:130::6)
- by SN7PR12MB7106.namprd12.prod.outlook.com (2603:10b6:806:2a1::7) with
+ bh=4zsaXR/vOjr8+mpJYOKaXTIZb2X8dHs2cSSAUeMbAz4=;
+ b=NT/uPqKr4qGxJfEIPR1uviRo27flQ+Sp1MFKu4siJ4Q7pI0/MZ5eAcQapZrzE1jx4nyXXLF5q3gUKmbMnPGV8UKAodZ4blXg3YUujpDiS4wo7FRaPL7+fMlNLcmtsdUjbdmznKnxWrYsfSJp+RLpW/Z06xzBOgViHDquId4gVJvi7+bkojCa0hRLwEhA5/1EeuYyN/532FfYXczbJSzJNsXNi2T1snwv7CfPy6E1sa5s0FOtRsOwRgTHASw8n1Rl7aRGWPzikNla4ng4LxSNgdT+PUJ4gEDhP79jHSc/VM0xsRVQTb5P+dLfSGRgixgbI/q5nv/3jV0Tbt3FqnvVgg==
+Received: from CH0PR04CA0024.namprd04.prod.outlook.com (2603:10b6:610:76::29)
+ by SJ2PR12MB8064.namprd12.prod.outlook.com (2603:10b6:a03:4cc::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Wed, 3 Sep
- 2025 22:11:35 +0000
-Received: from BL02EPF00021F6B.namprd02.prod.outlook.com
- (2603:10b6:408:130:cafe::71) by BN9PR03CA0481.outlook.office365.com
- (2603:10b6:408:130::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
+ 2025 22:11:34 +0000
+Received: from CH3PEPF0000000B.namprd04.prod.outlook.com
+ (2603:10b6:610:76:cafe::6f) by CH0PR04CA0024.outlook.office365.com
+ (2603:10b6:610:76::29) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.17 via Frontend Transport; Wed,
- 3 Sep 2025 22:11:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 3 Sep 2025 22:11:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF00021F6B.mail.protection.outlook.com (10.167.249.7) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH3PEPF0000000B.mail.protection.outlook.com (10.167.244.38) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.14 via Frontend Transport; Wed, 3 Sep 2025 22:11:35 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9094.14 via Frontend Transport; Wed, 3 Sep 2025 22:11:33 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 3 Sep
- 2025 15:11:16 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 15:11:20 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 3 Sep
- 2025 15:11:15 -0700
+ 2025 15:11:19 -0700
 Received: from inno-linux.nvidia.com (10.127.8.13) by mail.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Wed, 3 Sep 2025 15:11:15 -0700
+ Transport; Wed, 3 Sep 2025 15:11:19 -0700
 From: Zhi Wang <zhiw@nvidia.com>
 To: <kvm@vger.kernel.org>
 CC: <alex.williamson@redhat.com>, <kevin.tian@intel.com>, <jgg@nvidia.com>,
 	<airlied@gmail.com>, <daniel@ffwll.ch>, <dakr@kernel.org>,
 	<acurrid@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
 	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
-	<targupta@nvidia.com>, <zhiw@nvidia.com>, <zhiwang@kernel.org>
-Subject: [RFC v2 04/14] vfio/nvidia-vgpu: allocate vGPU channels when creating vGPUs
-Date: Wed, 3 Sep 2025 15:11:01 -0700
-Message-ID: <20250903221111.3866249-5-zhiw@nvidia.com>
+	<targupta@nvidia.com>, <zhiw@nvidia.com>, <zhiwang@kernel.org>, Timur Tabi
+	<ttabi@nvidia.com>
+Subject: [RFC v2 10/14] vfio/nvidia-vgpu: introduce vGPU host RPC channel
+Date: Wed, 3 Sep 2025 15:11:07 -0700
+Message-ID: <20250903221111.3866249-11-zhiw@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250903221111.3866249-1-zhiw@nvidia.com>
 References: <20250903221111.3866249-1-zhiw@nvidia.com>
@@ -87,343 +88,751 @@ Content-Transfer-Encoding: 8bit
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6B:EE_|SN7PR12MB7106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bc7add4-3686-4bcf-5c75-08ddeb36d8e3
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000B:EE_|SJ2PR12MB8064:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae41289e-7d58-4b78-6a2c-08ddeb36d7d4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VHFGWTRxS2lvazhnandEM0lTREdZdG1WWjN1WFpibkZHYWFveTRkTjZRWmp0?=
- =?utf-8?B?dkd5M1dZQmpJbXRSRk43MG1GYnVNSVJyK3ArYzd3cmZwTEUyZnZaOXB0OHh5?=
- =?utf-8?B?MWFtbXJQNEExc0xBbVh4YzFpTGxrUXNpK1NpKy9jaGZ5NUx5d0lSSHVpNVNp?=
- =?utf-8?B?UUExWDdkTnhPNUVLWlg4U3F5TEFnTGhDR0dLUFpNSUpwYkVHR1Z2cEJwYlF4?=
- =?utf-8?B?UDBiamZCL2dObUpNR1lYVVBxS3R2Umh2UmRYOXhaakNWTFAvSGx1b1cvWUJK?=
- =?utf-8?B?M0k0dUYxZzR5VGtpUW5CeWc1Z0UvUFJlNjNXNXQ2Y3lITmtMdGdhQnNPQUJS?=
- =?utf-8?B?Und4Ylgwb1R0aTE3T1pHZDkwZTlSOGt5N1dnQ0EveG5NWXlCaFA1QkRwb1Vn?=
- =?utf-8?B?clFqSUtaUUlnSXF1elVCSU9qamF0Z2RGTXA3Y1NYNmNZL0NQL1dSRzJwdmZy?=
- =?utf-8?B?L3dWczJnSkhGRWFVY0JnZTFZSHZTelcvUHhEK0l1eWMrRlF2NlJMZUxYdE96?=
- =?utf-8?B?VVRtWnJ2VHBONTd6UCtWRVNHUThVK1UxY1IycHpzdDExS29oSS9yVTQxNkpF?=
- =?utf-8?B?aDRJckNLci94ZzRqQmpxbnlEVDlPRFV3VWxsOFlyazh3eEh4Z1pxTEt6dE1R?=
- =?utf-8?B?ZUd1bVhUQmsvSzVjVHEwa1B6ZEdvR3pFTmNSa2oyc1FzNDVmZWhrQXBvaTNF?=
- =?utf-8?B?dy91NW8wcUJHYjVSUk1hL0RzelVoZXA2c040UTlmYmg4Q3lVSU5HMmlsazAw?=
- =?utf-8?B?VEt5aGlPTmRHZWJYOU44WkI2aU5OYWNhR3FwY25iOGhvKzJQZzRXcVYrenlN?=
- =?utf-8?B?VkZFbTdzRzNEdklFZm05ZlRkWHFUWmtNY3Nmeis5VWVaU2RMSHZ6YkFxUVk1?=
- =?utf-8?B?ZkJZTTJDb0NSUk43NjI4YmVGaFAyNnVHZHVWZEFHQ1dMbjJSNjlMelBqdGtt?=
- =?utf-8?B?aDhMek9ZRmp3RGtzUFVRZlVmY2tsTUQ5eTdEZlFsWmh0NUtpR0VOQXJUdlNy?=
- =?utf-8?B?QloyUUJic0lvS2VkZFlYMGwrVFVDRUcvbHBKYW52Wi9xeWVlazlOdm4wNDlN?=
- =?utf-8?B?a3M0bnAyZmNUM3QvcWtEeTlBdkVIUHlYalVrMERNbGRpZHRzUTdac2hRQVM3?=
- =?utf-8?B?WE1uU0lVUSt4Q1JyeXlua0tLWW9Ua1FRZ1dDQ0NRZi9TU3BsNjNuU0VUNkpp?=
- =?utf-8?B?S1ZZa2FkTWx4ek9yWEZDbUlCbDBGbkI1T3QyY2JvUFJSTlVRM3dnaFFwZFpW?=
- =?utf-8?B?Z3I4MzZZdUVMVmFnQXk4eHZtaG1LeUI0S2FmUSs5M2JJRkYvUG5PQmNTdEMy?=
- =?utf-8?B?ZjBFMmhaelNqTTRVVk4ycFF6dStNSHllaHpKZ0paek5nSTd5VSt0eS9CemNs?=
- =?utf-8?B?SHRVdko3QWhZT3JSRjQreE1TWU85VGdod1FtNEV5NU5qSXZSSExKTFowcHN0?=
- =?utf-8?B?NFltcHpWdTZ6ZTJUelBaaWllTnJ2U3V5SE1CaUdYdGR6eVJiQlMzakh3SVhJ?=
- =?utf-8?B?T0ptMmJUbEhaODBZRDV5UGFqR2lrQnE4dExWMEJSUHNSM1ZhcmRhak40Q3F3?=
- =?utf-8?B?Ym5tRGpFVkNmMkpPMXZhRTZ3K2VTMFpRZklUK0ZESWMwdjdnaVo4em1TMVlS?=
- =?utf-8?B?ektBeUF1ZGxXNUR0Yk4vZzlDMHFVZ2xxWWhCemYvaUl5c043Z3BvdWNxczNq?=
- =?utf-8?B?ZW8zSnhjazNiQ3YrY2ZnWkovenpVT3JPbERUQVlGZDJ4elJmNDdaaXR1Ymhl?=
- =?utf-8?B?dEN1emZPWnZtMENBSmVJcXdrcDdQbElSUmlJSTh2aFpQZ1l2UnRFWUViVWg2?=
- =?utf-8?B?K0JwQlB5eTdlUlROamU4eURtT2l4NnFOZHl3cCt6aE40Ukc5aE91YlgyY2lX?=
- =?utf-8?B?ZmNHaVVncFNKYnk4Ukh6WkhwdkpTMmYzYW5EL1ZCSzFuMGc2eVNENHN5S1k0?=
- =?utf-8?B?cEJMdkU4NlM1UjliYmJRYUVpYTBGQ1RBM291S3hmT3RXdnFnZ2lUYVdmSHpZ?=
- =?utf-8?B?SmF4MmRUNU9vSEZHUnFmeDYrL21Mc2ZTWUtYZE9jbHQ4eUQzM2cway9USUx1?=
- =?utf-8?Q?qc4LUU?=
+	=?utf-8?B?THhObU9RTG9HTHFMUStpSUt6UW0rbnRhL0x4TmlvYUZVUHZMSDN3SWNBczMy?=
+ =?utf-8?B?c25RSEhNYm1NV05jWHVRZkVCMlIyazl6UmVtNThPa05OQTUzUG5hUW1LOTNT?=
+ =?utf-8?B?NHJEODJwTlZyWitoZXV4Rklua29yaWFia3BNY2IzdS8wVmJMNlBUWEo2U3U3?=
+ =?utf-8?B?dEQwcHEzdXNjQWs3YlBEU0tnWUU0em9ZTUFZZFYrN0hRODkrMWt6THRmakRk?=
+ =?utf-8?B?UDVpZWVQVUtYZlpFTnFNZzJ6cnI3eEVJTzd5MHI1S1lJSWxUTzlzdDhjemFM?=
+ =?utf-8?B?UWEwb0UwZ3RUNUF2TlVqSzl5aXVxcFppcjgvRkdMWGU1UXpxWjlWT3JVV0xW?=
+ =?utf-8?B?SXpBbkl3QjZXN2NpV2xUdWhxN09tS3VpckR6U1ZueWxOTWhyWVJxYUpnY1NW?=
+ =?utf-8?B?TC9CbW10YXVhVUY1WW5XUjhUaVhvd3hUNHpPbzBKWW5BOVBDaklUQ1dHSER2?=
+ =?utf-8?B?UjYreWRsaUhGakJ1dityRno0WS9wcTU3WFdTSEsxMXBTWUNlRWJneE95Wm9l?=
+ =?utf-8?B?Z3pNY1FOTXdRa3IzUDhpU0RaWEJMRVJpbzZlb0xtREhuS0lhdm5rVG81aTRy?=
+ =?utf-8?B?ckpXRG5lUFR1aWZ6Mkx6L01kV1liMnN3UTU0L2Y4NjM2UlZVNStsRmJHd2tO?=
+ =?utf-8?B?MnhKZEpLUG1zU1N6Z2lKcERTS3FqQXFac3h4eVZXSGFpUjB6aHlnem9PYU0y?=
+ =?utf-8?B?d1Y1M1ZYL25zUFAwOFpoM0dnL1p1ZlhiamM4dmR3S2JOdXRHTU1Mc0MxeUMv?=
+ =?utf-8?B?UEVpUnJYY1JKUnpIeHlXTDIrekVuRGo0SWkwUnhJclV2STZzaEFRZGx3WjE3?=
+ =?utf-8?B?cDNhNXQyY29lUEdCVjFmZUtZZGNOc2Y2M0lRaEk4aUwwRFN6TnMxMXphc1I4?=
+ =?utf-8?B?dkh1N3B5SDA1dWpZUzVYbzVEYVlQUlNhblpKMS9xYkx3U1F5Ry9hSGtQWS9F?=
+ =?utf-8?B?UnZzcjN2QmdxbTAxa3AwRVBIQXZteFVKRVc2OU11azFpeTNDNnBuTWFMZEtE?=
+ =?utf-8?B?YWJJN3daUHVtN1Y4c0tWdFNJdnFic1FnNGxuRWQ2UDFuR2labEc4NkZLcHND?=
+ =?utf-8?B?MnhwZzdieVFFSll6YXhaakk1Q2REeUZQbzFMeEw5YmZsNXREMjdFK0tub3NS?=
+ =?utf-8?B?OUxiZE1kUGsvU1dTQ24xUG5rc0Y5bU1BalhrdHBxL2wrQUdjb1pwTDVmcHpv?=
+ =?utf-8?B?T21UNlMzOURRN0NhOEc3eGsxYm5QY2loSEd2VldRTjZMTVRFL0w0ZTZsRHhX?=
+ =?utf-8?B?OTBLKytXb3l0czNwMC9UakhOanNjQllTQ2VnQ0tGbUFXZjd1ZlpPb0JuVHNT?=
+ =?utf-8?B?Y1cxZ1RnSHptQ25Od0VJRjU5V3RzNWVpWkF6c0U2QXMvSXFQT2l2YzVEWWMy?=
+ =?utf-8?B?dTNISDBsenZBeDZ4MEhrUkVuMGFGZGh1WVNyUzJ0YkNURURXNzBuNEJkZEFL?=
+ =?utf-8?B?bkF2WDd4a0tDZ2NvcGowTmZGanZaSXYrdytraGVPWlFlT2ZhdnR4Ull6ZC9t?=
+ =?utf-8?B?TWlTazQzc1JlN3p2eE1YL3BrSzNtTlF1TXBPcjRBRStyVngwa2s3UG9zZ1N3?=
+ =?utf-8?B?OG0rMmhpZEJ6bWQ3SGpxRUtRL2YwN0t5R0kzRUFKUkFCVnVDNmpOZ2RZV0tz?=
+ =?utf-8?B?RkhGQzF1RER4ZnBMQTRKSDF6VlV1WkJaRC9SWWc0VEpCdHB3SUFqSDlIOERv?=
+ =?utf-8?B?ZFQ2d0xmWkFBL3dibEZwUzlZeVN6UnBXeFczZXFncFc0S2ZlOG5DRm9GUytU?=
+ =?utf-8?B?Qjk0NXhTR3AxOFZodnZyZzV1a3VhbmNXMGdWSldBUmRDNDZ5VU1MK2dZUVlE?=
+ =?utf-8?B?N2Q4MDFObU5VYjZ4N3BzZnRSNVJzK0ZIbUtvR1d4amx3dkx5WElnbkIvSFFn?=
+ =?utf-8?B?TDQrTnlYb0dVR3kzTmZhMWJzQ0xyZzk0Rm95aXNBa2ZuN2M4T29HVllqR3Mw?=
+ =?utf-8?B?OWJVQjIrTUIxbmZhZzN4emxxQW11d3J2Q1hDZnNtSndkVHFsbC9IbldPeGxR?=
+ =?utf-8?B?T0N5ekZnKzh3eGN6R2ZjZ0pVY0hERjFhRlBKN3dSVHl6a2x6OWZ0RzZpUng2?=
+ =?utf-8?B?dytkTEhMVzVOOE9nV1NaK2RpVFFCcHF1ZGpBZz09?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 22:11:35.4103
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 22:11:33.6726
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bc7add4-3686-4bcf-5c75-08ddeb36d8e3
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae41289e-7d58-4b78-6a2c-08ddeb36d7d4
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00021F6B.namprd02.prod.outlook.com
+	CH3PEPF0000000B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7106
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8064
 
-Creating a vGPU requires allocating a portion of the channels from the
-reserved channel pool.
+A newly created vGPU requires some runtime configuration to be uploaded
+before moving on.
 
-Allocate the channels from the reserved channel pool when creating a vGPU.
+Introduce the vGPU host RPCs manipulation APIs to send vGPU RPCs.
+Send vGPU RPCs to upload the runtime configuration of a vGPU.
 
+Cc: Timur Tabi <ttabi@nvidia.com>
 Cc: Aniket Agashe <aniketa@nvidia.com>
 Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 ---
- drivers/vfio/pci/nvidia-vgpu/pf.h       | 10 ++++
- drivers/vfio/pci/nvidia-vgpu/vgpu.c     | 76 +++++++++++++++++++++++++
- drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c | 33 ++++++++++-
- drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h | 21 +++++++
- 4 files changed, 138 insertions(+), 2 deletions(-)
+ drivers/vfio/pci/nvidia-vgpu/Makefile         |   2 +-
+ .../nvidia-vgpu/include/nvrm/nv_vgpu_types.h  |  34 +++
+ .../vfio/pci/nvidia-vgpu/include/nvrm/vgpu.h  | 182 +++++++++++++
+ drivers/vfio/pci/nvidia-vgpu/rpc.c            | 254 ++++++++++++++++++
+ drivers/vfio/pci/nvidia-vgpu/vgpu.c           |   8 +
+ drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c       |  31 +++
+ drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h       |  22 ++
+ 7 files changed, 532 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/vfio/pci/nvidia-vgpu/include/nvrm/nv_vgpu_types.h
+ create mode 100644 drivers/vfio/pci/nvidia-vgpu/include/nvrm/vgpu.h
+ create mode 100644 drivers/vfio/pci/nvidia-vgpu/rpc.c
 
-diff --git a/drivers/vfio/pci/nvidia-vgpu/pf.h b/drivers/vfio/pci/nvidia-vgpu/pf.h
-index 19f0aca56d12..b8008d8ee434 100644
---- a/drivers/vfio/pci/nvidia-vgpu/pf.h
-+++ b/drivers/vfio/pci/nvidia-vgpu/pf.h
-@@ -85,4 +85,14 @@ static inline int nvidia_vgpu_mgr_init_handle(struct pci_dev *pdev,
- #define nvidia_vgpu_mgr_rm_ctrl_done(m, g, c) \
- 	((m)->handle.ops->rm_ctrl_done(g, c))
+diff --git a/drivers/vfio/pci/nvidia-vgpu/Makefile b/drivers/vfio/pci/nvidia-vgpu/Makefile
+index 94ba4ed4e131..91e57c65ca27 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/Makefile
++++ b/drivers/vfio/pci/nvidia-vgpu/Makefile
+@@ -2,4 +2,4 @@
+ subdir-ccflags-y += -I$(src)/include
  
-+#define nvidia_vgpu_mgr_alloc_chids(m, o, s) ({ \
-+	typeof(m) __m = (m); \
-+	__m->handle.ops->alloc_chids(__m->handle.pf_drvdata, o, s); \
-+})
+ obj-$(CONFIG_NVIDIA_VGPU_VFIO_PCI) += nvidia_vgpu_vfio_pci.o
+-nvidia_vgpu_vfio_pci-y := vgpu_mgr.o vgpu.o metadata.o metadata_vgpu_type.o
++nvidia_vgpu_vfio_pci-y := vgpu_mgr.o vgpu.o metadata.o metadata_vgpu_type.o rpc.o
+diff --git a/drivers/vfio/pci/nvidia-vgpu/include/nvrm/nv_vgpu_types.h b/drivers/vfio/pci/nvidia-vgpu/include/nvrm/nv_vgpu_types.h
+new file mode 100644
+index 000000000000..fc067caf5dea
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/include/nvrm/nv_vgpu_types.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: MIT */
 +
-+#define nvidia_vgpu_mgr_free_chids(m, o, s) ({ \
-+	typeof(m) __m = (m); \
-+	__m->handle.ops->free_chids(__m->handle.pf_drvdata, o, s); \
-+})
++/* Copyright (c) 2025, NVIDIA CORPORATION. All rights reserved. */
 +
- #endif
-diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu.c b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
-index cbb51b939f0b..52b946469043 100644
---- a/drivers/vfio/pci/nvidia-vgpu/vgpu.c
-+++ b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
-@@ -3,6 +3,8 @@
-  * Copyright © 2025 NVIDIA Corporation
-  */
- 
-+#include <linux/log2.h>
++#ifndef __NVRM_VGPU_TYPES_H__
++#define __NVRM_VGPU_TYPES_H__
 +
- #include "debug.h"
- #include "vgpu_mgr.h"
- 
-@@ -43,6 +45,70 @@ static int register_vgpu(struct nvidia_vgpu *vgpu)
- 	return 0;
- }
- 
-+static void clean_chids(struct nvidia_vgpu *vgpu)
++/* Excerpt of RM headers from https://github.com/NVIDIA/open-gpu-kernel-modules/tree/570.124.04 */
++
++#include <nvrm/nvtypes.h>
++
++#define VM_UUID_SIZE            16
++#define INVALID_VGPU_DEV_INST   0xFFFFFFFFU
++#define MAX_VGPU_DEVICES_PER_VM 16U
++
++/* This enum represents the current state of guest dependent fields */
++typedef enum GUEST_VM_INFO_STATE {
++	GUEST_VM_INFO_STATE_UNINITIALIZED = 0,
++	GUEST_VM_INFO_STATE_INITIALIZED = 1,
++} GUEST_VM_INFO_STATE;
++
++/* This enum represents types of VM identifiers */
++typedef enum VM_ID_TYPE {
++	VM_ID_DOMAIN_ID = 0,
++	VM_ID_UUID = 1,
++} VM_ID_TYPE;
++
++/* This structure represents VM identifier */
++typedef union VM_ID {
++	NvU8 vmUuid[VM_UUID_SIZE];
++	NV_DECLARE_ALIGNED(NvU64 vmId, 8);
++} VM_ID;
++
++#endif
+diff --git a/drivers/vfio/pci/nvidia-vgpu/include/nvrm/vgpu.h b/drivers/vfio/pci/nvidia-vgpu/include/nvrm/vgpu.h
+new file mode 100644
+index 000000000000..d28af74e9603
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/include/nvrm/vgpu.h
+@@ -0,0 +1,182 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 NVIDIA Corporation
++ */
++#ifndef __NVRM_VGPU_H__
++#define __NVRM_VGPU_H__
++
++#include <nvrm/nv_vgpu_types.h>
++
++#define VMIOPD_MAX_INSTANCES 16
++#define VMIOPD_MAX_HEADS     4
++
++#define GSP_PLUGIN_BOOTLOADED 0x4E654A6F
++
++/*
++ *   GSP Plugin heap memory layout
++ * +--------------------------------+ offset = 0
++ * |         CONTROL BUFFER         |
++ * +--------------------------------+
++ * |        RESPONSE BUFFER         |
++ * +--------------------------------+
++ * |         MESSAGE BUFFER         |
++ * +--------------------------------+
++ * |        MIGRATION BUFFER        |
++ * +--------------------------------+
++ * |    GSP PLUGIN ERROR BUFFER     |
++ * +--------------------------------+
++ * |    INIT TASK LOG BUFFER        |
++ * +--------------------------------+
++ * |    VGPU TASK LOG BUFFER        |
++ * +--------------------------------+
++ * |       KERNEL LOG BUFFER        |
++ * +--------------------------------+
++ * |      MEMORY AVAILABLE FOR      |
++ * | GSP PLUGIN INTERNAL HEAP USAGE |
++ * +--------------------------------+
++ */
++#define VGPU_CPU_GSP_CTRL_BUFF_VERSION              0x1
++#define VGPU_CPU_GSP_CTRL_BUFF_REGION_SIZE          4096
++#define VGPU_CPU_GSP_RESPONSE_BUFF_REGION_SIZE      4096
++#define VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE       4096
++#define VGPU_CPU_GSP_MIGRATION_BUFF_REGION_SIZE     (2 * 1024 * 1024)
++#define VGPU_CPU_GSP_ERROR_BUFF_REGION_SIZE         4096
++#define VGPU_CPU_GSP_INIT_TASK_LOG_BUFF_REGION_SIZE (128 * 1024)
++#define VGPU_CPU_GSP_VGPU_TASK_LOG_BUFF_REGION_SIZE (256 * 1024)
++#define VGPU_CPU_GSP_KERNEL_TASK_LOG_BUFF_REGION_SIZE (64 * 1024)
++#define VGPU_CPU_GSP_COMMUNICATION_BUFF_TOTAL_SIZE  (VGPU_CPU_GSP_CTRL_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_RESPONSE_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_MIGRATION_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_ERROR_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_INIT_TASK_LOG_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_VGPU_TASK_LOG_BUFF_REGION_SIZE + \
++		VGPU_CPU_GSP_KERNEL_TASK_LOG_BUFF_REGION_SIZE)
++
++typedef union {
++	NvU8 buf[VGPU_CPU_GSP_CTRL_BUFF_REGION_SIZE];
++	struct {
++		NvU32  version;
++		NvU32  message_type;
++		NvU32  message_seq_num;
++		NvU64  response_buff_offset;
++		NvU64  message_buff_offset;
++		NvU64  migration_buff_offset;
++		NvU64  error_buff_offset;
++		NvU32  migration_buf_cpu_access_offset;
++		NvBool is_migration_in_progress;
++		NvU32  error_buff_cpu_get_idx;
++		NvU32 attached_vgpu_count;
++		struct {
++			NvU32 vgpu_type_id;
++			NvU32 host_gpu_pci_id;
++			NvU32 pci_dev_id;
++			NvU8  vgpu_uuid[VM_UUID_SIZE];
++		} host_info[VMIOPD_MAX_INSTANCES];
++	};
++} VGPU_CPU_GSP_CTRL_BUFF_REGION;
++
++enum {
++	NV_VGPU_CPU_RPC_MSG_VERSION_NEGOTIATION = 1,
++	NV_VGPU_CPU_RPC_MSG_SETUP_CONFIG_PARAMS_AND_INIT,
++	NV_VGPU_CPU_RPC_MSG_RESET,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_STOP_WORK,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_CANCEL_STOP,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_SAVE_STATE,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_CANCEL_SAVE,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_RESTORE_STATE,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_RESTORE_DEFERRED_STATE,
++	NV_VGPU_CPU_RPC_MSG_MIGRATION_RESUME_WORK,
++	NV_VGPU_CPU_RPC_MSG_CONSOLE_VNC_STATE,
++	NV_VGPU_CPU_RPC_MSG_VF_BAR0_REG_ACCESS,
++	NV_VGPU_CPU_RPC_MSG_UPDATE_BME_STATE,
++	NV_VGPU_CPU_RPC_MSG_GET_GUEST_INFO,
++	NV_VGPU_CPU_RPC_MSG_MAX,
++};
++
++typedef struct {
++	NvU32 version_cpu;
++	NvU32 version_negotiated;
++} NV_VGPU_CPU_RPC_DATA_VERSION_NEGOTIATION;
++
++typedef struct {
++	NvU8   vgpu_uuid[VM_UUID_SIZE];
++	NvU32  dbdf;
++	NvU32  driver_vm_vf_dbdf;
++	NvU32  vgpu_device_instance_id;
++	NvU32  vgpu_type;
++	NvU32  vm_pid;
++	NvU32  swizz_id;
++	NvU32  num_channels;
++	NvU32  num_plugin_channels;
++	NvU32  vmm_cap;
++	NvU32  migration_feature;
++	NvU32  hypervisor_type;
++	NvU32  host_cpu_arch;
++	NvU64  host_page_size;
++	NvBool rev1[3];
++	NvBool enable_uvm;
++	NvBool linux_interrupt_optimization;
++	NvBool vmm_migration_supported;
++	NvBool rev2;
++	NvBool enable_console_vnc;
++	NvBool use_non_stall_linux_events;
++	NvBool rev3[3];
++	NvU16  placement_id;
++	NvU32  rev4;
++	NvU32  channel_usage_threshold_percentage;
++	NvBool rev5;
++	NvU32  rev6;
++	NvBool rev7;
++} NV_VGPU_CPU_RPC_DATA_COPY_CONFIG_PARAMS;
++
++typedef struct {
++	NvBool enable;
++	NvBool allowed;
++} NV_VGPU_CPU_RPC_DATA_UPDATE_BME_STATE;
++
++typedef union {
++	NvU8 buf[VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE];
++	NV_VGPU_CPU_RPC_DATA_VERSION_NEGOTIATION    version_data;
++	NV_VGPU_CPU_RPC_DATA_UPDATE_BME_STATE       bme_state;
++} VGPU_CPU_GSP_MSG_BUFF_REGION;
++
++typedef struct {
++	NvU64 sequence_update_start;
++	NvU64 sequence_update_end;
++	NvU32 effective_fb_page_size;
++	NvU32 rect_width;
++	NvU32 rect_height;
++	NvU32 surface_width;
++	NvU32 surface_height;
++	NvU32 surface_size;
++	NvU32 surface_offset;
++	NvU32 surface_format;
++	NvU32 surface_kind;
++	NvU32 surface_pitch;
++	NvU32 surface_type;
++	NvU8  surface_block_height;
++	NvBool is_blanking_enabled;
++	NvBool is_flip_pending;
++	NvBool is_free_pending;
++	NvBool is_memory_blocklinear;
++} VGPU_CPU_GSP_DISPLAYLESS_SURFACE;
++
++typedef union {
++	NvU8 buf[VGPU_CPU_GSP_RESPONSE_BUFF_REGION_SIZE];
++	struct {
++		NvU32  message_seq_num_received;
++		NvU32  message_seq_num_processed;
++		NvU32  result_code;
++		NvU32  guest_rpc_version;
++		NvU32  migration_buf_gsp_access_offset;
++		NvU32  migration_state_save_complete;
++		VGPU_CPU_GSP_DISPLAYLESS_SURFACE surface[VMIOPD_MAX_HEADS];
++		NvU32  error_buff_gsp_put_idx;
++		NvU32  grid_license_state;
++		NvU32  guest_os_type;
++		NvU32  frl_config;
++	};
++} VGPU_CPU_GSP_RESPONSE_BUFF_REGION;
++
++#endif
+diff --git a/drivers/vfio/pci/nvidia-vgpu/rpc.c b/drivers/vfio/pci/nvidia-vgpu/rpc.c
+new file mode 100644
+index 000000000000..1d326e194872
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/rpc.c
+@@ -0,0 +1,254 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright © 2025 NVIDIA Corporation
++ */
++
++#include <linux/delay.h>
++#include <linux/kernel.h>
++
++#include <nvrm/vgpu.h>
++
++#include "debug.h"
++#include "vgpu_mgr.h"
++
++#define NV_VIRTUAL_FUNCTION_PRIV_DOORBELL (0xb80000 + 0x2200)
++
++static void trigger_doorbell(struct nvidia_vgpu *vgpu)
 +{
 +	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
-+	struct nvidia_vgpu_chid *chid = &vgpu->chid;
 +
-+	vgpu_debug(vgpu, "free guest channel offset %d size %d\n", chid->chid_offset,
-+		   chid->num_chid);
++	u32 v = vgpu->info.gfid * 32 + 17;
 +
-+	if (vgpu_mgr->use_chid_alloc_bitmap)
-+		bitmap_clear(vgpu_mgr->chid_alloc_bitmap, chid->chid_offset, chid->num_chid);
-+	else
-+		nvidia_vgpu_mgr_free_chids(vgpu_mgr, chid->chid_offset, chid->num_chid);
++	writel(v, vgpu_mgr->bar0_vaddr + NV_VIRTUAL_FUNCTION_PRIV_DOORBELL);
++	readl(vgpu_mgr->bar0_vaddr + NV_VIRTUAL_FUNCTION_PRIV_DOORBELL);
 +}
 +
-+static inline u32 prev_pow2(const u32 x)
++static void send_rpc_request(struct nvidia_vgpu *vgpu, u32 msg_type,
++			     void *data, u64 size)
 +{
-+	return x ? 1U << ilog2(x) : 0;
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	VGPU_CPU_GSP_CTRL_BUFF_REGION *ctrl_buf = rpc->ctrl_buf;
++
++	if (data && size)
++		memcpy_toio(rpc->msg_buf, data, size);
++
++	writel(msg_type, &ctrl_buf->message_type);
++
++	rpc->msg_seq_num++;
++	writel(rpc->msg_seq_num, &ctrl_buf->message_seq_num);
++
++	trigger_doorbell(vgpu);
 +}
 +
-+static void get_alloc_chids_num(struct nvidia_vgpu *vgpu, u32 *size)
++static int wait_for_response(struct nvidia_vgpu *vgpu)
 +{
-+	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
-+	struct nvidia_vgpu_info *info = &vgpu->info;
-+	struct nvidia_vgpu_type *type = info->vgpu_type;
-+	u32 v;
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	VGPU_CPU_GSP_RESPONSE_BUFF_REGION *resp_buf = rpc->resp_buf;
 +
-+	/* Calculate with total reserved CHIDs for vGPUs. */
-+	v = (vgpu_mgr->total_avail_chids) / type->max_instance;
-+	*size = prev_pow2(v);
++	u64 timeout = 120 * 1000000; /* 120s */
++
++	do {
++		if (readl(&resp_buf->message_seq_num_processed) == rpc->msg_seq_num)
++			break;
++
++		usleep_range(1, 2);
++	} while (--timeout);
++
++	return timeout ? 0 : -ETIMEDOUT;
 +}
 +
-+static int setup_chids(struct nvidia_vgpu *vgpu)
++static int recv_rpc_response(struct nvidia_vgpu *vgpu, void *data,
++			     u64 size, u32 *result)
 +{
-+	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
-+	struct nvidia_vgpu_chid *chid = &vgpu->chid;
-+	u32 size, offset;
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	VGPU_CPU_GSP_RESPONSE_BUFF_REGION *resp_buf = rpc->resp_buf;
 +	int ret;
 +
-+	get_alloc_chids_num(vgpu, &size);
++	ret = wait_for_response(vgpu);
++	if (result)
++		*result = resp_buf->result_code;
 +
-+	if (vgpu_mgr->use_chid_alloc_bitmap) {
-+		offset = bitmap_find_next_zero_area(vgpu_mgr->chid_alloc_bitmap,
-+						    vgpu_mgr->total_avail_chids, 0, size, 0);
++	if (ret)
++		return ret;
 +
-+		if (offset + size > vgpu_mgr->total_avail_chids)
-+			return -ENOSPC;
-+
-+		bitmap_set(vgpu_mgr->chid_alloc_bitmap, offset, size);
-+	} else {
-+		ret = nvidia_vgpu_mgr_alloc_chids(vgpu_mgr, &offset, size);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	chid->chid_offset = offset;
-+	chid->num_chid = size;
-+	chid->num_plugin_channels = 1;
-+
-+	vgpu_debug(vgpu, "alloc guest channel offset %u size %u\n", chid->chid_offset,
-+		   chid->num_chid);
++	if (data && size)
++		memcpy_fromio(data, rpc->msg_buf, size);
 +
 +	return 0;
 +}
 +
- /**
-  * nvidia_vgpu_mgr_destroy_vgpu - destroy a vGPU instance
-  * @vgpu: the vGPU instance going to be destroyed.
-@@ -54,6 +120,7 @@ int nvidia_vgpu_mgr_destroy_vgpu(struct nvidia_vgpu *vgpu)
++/**
++ * nvidia_vgpu_rpc_call - vGPU host RPC call.
++ * @vgpu: the vGPU instance.
++ * @msg_type: the RPC message.
++ * @data: the RPC data.
++ * @size: the RPC size.
++ *
++ * Returns: zero on success, others on failure.
++ */
++int nvidia_vgpu_rpc_call(struct nvidia_vgpu *vgpu, u32 msg_type,
++			 void *data, u64 size)
++{
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	u32 result;
++	int ret;
++
++	if (WARN_ON(msg_type >= NV_VGPU_CPU_RPC_MSG_MAX) ||
++	    size > VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE ||
++	    (size != 0 && !data))
++		return -EINVAL;
++
++	mutex_lock(&rpc->lock);
++
++	send_rpc_request(vgpu, msg_type, data, size);
++	ret = recv_rpc_response(vgpu, data, size, &result);
++
++	mutex_unlock(&rpc->lock);
++	if (ret || result) {
++		vgpu_error(vgpu, "fail to recv RPC: result %u\n",
++			   result);
++		return -EINVAL;
++	}
++	return ret;
++}
++
++/**
++ * nvidia_vgpu_clean_rpc - clean vGPU host RPCl
++ * @vgpu: the vGPU instance.
++ */
++void nvidia_vgpu_clean_rpc(struct nvidia_vgpu *vgpu)
++{
++}
++
++static void init_rpc_buf_pointers(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_mgmt *mgmt = &vgpu->mgmt;
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++
++	rpc->ctrl_buf = mgmt->ctrl_vaddr;
++	rpc->resp_buf = rpc->ctrl_buf + VGPU_CPU_GSP_CTRL_BUFF_REGION_SIZE;
++	rpc->msg_buf = rpc->resp_buf + VGPU_CPU_GSP_RESPONSE_BUFF_REGION_SIZE;
++	rpc->migration_buf = rpc->msg_buf + VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE;
++	rpc->error_buf = rpc->migration_buf + VGPU_CPU_GSP_MIGRATION_BUFF_REGION_SIZE;
++}
++
++static void init_ctrl_buf_offsets(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	VGPU_CPU_GSP_CTRL_BUFF_REGION *ctrl_buf;
++	u64 offset = 0;
++
++	ctrl_buf = rpc->ctrl_buf;
++
++	writel(VGPU_CPU_GSP_CTRL_BUFF_VERSION, &ctrl_buf->version);
++
++	offset = VGPU_CPU_GSP_CTRL_BUFF_REGION_SIZE;
++	writeq(offset, &ctrl_buf->response_buff_offset);
++
++	offset += VGPU_CPU_GSP_RESPONSE_BUFF_REGION_SIZE;
++	writeq(offset, &ctrl_buf->message_buff_offset);
++
++	offset += VGPU_CPU_GSP_MESSAGE_BUFF_REGION_SIZE;
++	writeq(offset, &ctrl_buf->migration_buff_offset);
++
++	offset += VGPU_CPU_GSP_MIGRATION_BUFF_REGION_SIZE;
++	writeq(offset, &ctrl_buf->error_buff_offset);
++}
++
++static int wait_vgpu_plugin_task_bootloaded(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	VGPU_CPU_GSP_CTRL_BUFF_REGION *ctrl_buf = rpc->ctrl_buf;
++
++	u64 timeout = 10 * 1000000; /* 10 s */
++
++	do {
++		if (readl(&ctrl_buf->message_seq_num) == GSP_PLUGIN_BOOTLOADED)
++			break;
++
++		usleep_range(1, 2);
++	} while (--timeout);
++
++	return timeout ? 0 : -ETIMEDOUT;
++}
++
++static int negotiate_rpc_version(struct nvidia_vgpu *vgpu)
++{
++	return nvidia_vgpu_rpc_call(vgpu, NV_VGPU_CPU_RPC_MSG_VERSION_NEGOTIATION,
++				    NULL, 0);
++}
++
++/* Initial snapshot of config params */
++static const unsigned char config_params[] = {
++	0x24, 0xef, 0x8f, 0xf7, 0x3e, 0xd5, 0x11, 0xef, 0xae, 0x36, 0x97, 0x58,
++	0xb1, 0xcb, 0x0c, 0x87, 0x04, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x14, 0x00, 0xd0, 0xc1, 0x65, 0x03, 0x00, 0x00, 0xa1, 0x0e, 0x00, 0x00,
++	0xff, 0xff, 0xff, 0xff, 0x40, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
++	0x02, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00
++};
++
++static int send_config_params_and_init(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
++	struct nvidia_vgpu_info *info = &vgpu->info;
++	NV_VGPU_CPU_RPC_DATA_COPY_CONFIG_PARAMS params = {0};
++
++	memcpy(&params, config_params, sizeof(config_params));
++
++	params.dbdf = vgpu->info.dbdf;
++	params.vgpu_device_instance_id =
++		nvidia_vgpu_mgr_get_gsp_client_handle(vgpu_mgr, &vgpu->gsp_client);
++	params.vgpu_type = info->vgpu_type->vgpu_type;
++	params.vm_pid = vgpu->info.vm_pid;
++	params.swizz_id = 0;
++	params.num_channels = vgpu->chid.num_chid;
++	params.num_plugin_channels = vgpu->chid.num_plugin_channels;
++
++	return nvidia_vgpu_rpc_call(vgpu, NV_VGPU_CPU_RPC_MSG_SETUP_CONFIG_PARAMS_AND_INIT,
++				    &params, sizeof(params));
++}
++
++/**
++ * nvidia_vgpu_setup_rpc - setup the vGPU host RPC channel and send runtime
++ * configuration.
++ * @vgpu: the vGPU instance.
++ *
++ * Returns: zero on success, others on failure.
++ */
++int nvidia_vgpu_setup_rpc(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_rpc *rpc = &vgpu->rpc;
++	int ret;
++
++	mutex_init(&rpc->lock);
++
++	init_rpc_buf_pointers(vgpu);
++	init_ctrl_buf_offsets(vgpu);
++
++	ret = wait_vgpu_plugin_task_bootloaded(vgpu);
++	if (ret) {
++		vgpu_error(vgpu, "host_rpc: waiting bootload timeout\n");
++		return ret;
++	}
++
++	vgpu_debug(vgpu, "bootloaded\n");
++
++	ret = negotiate_rpc_version(vgpu);
++	if (ret) {
++		vgpu_error(vgpu, "host_rpc: fail to negotiate rpc version\n");
++		return ret;
++	}
++
++	ret = send_config_params_and_init(vgpu);
++	if (ret) {
++		vgpu_error(vgpu, "host_rpc: fail to init vgpu plugin task\n");
++		return ret;
++	}
++
++	vgpu_debug(vgpu, "active\n");
++
++	return 0;
++}
+diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu.c b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
+index 5778365c051f..9e8ea77bbcc5 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/vgpu.c
++++ b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
+@@ -332,6 +332,7 @@ int nvidia_vgpu_mgr_destroy_vgpu(struct nvidia_vgpu *vgpu)
  	if (!atomic_cmpxchg(&vgpu->status, 1, 0))
  		return -ENODEV;
  
-+	clean_chids(vgpu);
- 	unregister_vgpu(vgpu);
- 
- 	vgpu_debug(vgpu, "destroyed\n");
-@@ -93,10 +160,19 @@ int nvidia_vgpu_mgr_create_vgpu(struct nvidia_vgpu *vgpu)
++	nvidia_vgpu_clean_rpc(vgpu);
+ 	WARN_ON(shutdown_vgpu_plugin_task(vgpu));
+ 	WARN_ON(cleanup_vgpu_plugin_task(vgpu));
+ 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu->gsp_client);
+@@ -399,12 +400,19 @@ int nvidia_vgpu_mgr_create_vgpu(struct nvidia_vgpu *vgpu)
  	if (ret)
- 		return ret;
+ 		goto err_bootload_vgpu_plugin_task;
  
-+	ret = setup_chids(vgpu);
++	ret = nvidia_vgpu_setup_rpc(vgpu);
 +	if (ret)
-+		goto err_setup_chids;
++		goto err_setup_rpc;
 +
  	atomic_set(&vgpu->status, 1);
  
  	vgpu_debug(vgpu, "created\n");
  
  	return 0;
-+
-+err_setup_chids:
-+	unregister_vgpu(vgpu);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(nvidia_vgpu_mgr_create_vgpu);
+ 
++err_setup_rpc:
++	shutdown_vgpu_plugin_task(vgpu);
++	cleanup_vgpu_plugin_task(vgpu);
+ err_bootload_vgpu_plugin_task:
+ 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu->gsp_client);
+ err_alloc_gsp_client:
 diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
-index a7f8a00f96bf..8565bb881fda 100644
+index 6338dd9c86b6..6f53bd7ca940 100644
 --- a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
 +++ b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
-@@ -6,6 +6,14 @@
- #include "debug.h"
- #include "vgpu_mgr.h"
+@@ -9,6 +9,29 @@
+ #include <nvrm/vmmu.h>
+ #include <nvrm/ecc.h>
  
-+static void clean_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
++static void unmap_pf_mmio(struct nvidia_vgpu_mgr *vgpu_mgr)
 +{
-+	if (vgpu_mgr->use_chid_alloc_bitmap) {
-+		bitmap_free(vgpu_mgr->chid_alloc_bitmap);
-+		vgpu_mgr->chid_alloc_bitmap = NULL;
-+	}
++	iounmap(vgpu_mgr->bar0_vaddr);
 +}
 +
- static void vgpu_mgr_release(struct kref *kref)
- {
- 	struct nvidia_vgpu_mgr *vgpu_mgr =
-@@ -17,6 +25,7 @@ static void vgpu_mgr_release(struct kref *kref)
- 		return;
- 
- 	nvidia_vgpu_mgr_clean_metadata(vgpu_mgr);
-+	clean_vgpu_mgr(vgpu_mgr);
- 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu_mgr->gsp_client);
- 	kvfree(vgpu_mgr);
- }
-@@ -95,6 +104,20 @@ static void attach_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr,
- 	handle_data->vfio.pf_detach_handle_fn = pf_detach_handle_fn;
- }
- 
-+static int setup_chid_alloc_bitmap(struct nvidia_vgpu_mgr *vgpu_mgr)
++static int map_pf_mmio(struct nvidia_vgpu_mgr *vgpu_mgr)
 +{
-+	if (WARN_ON(!vgpu_mgr->use_chid_alloc_bitmap))
-+		return 0;
++	struct pci_dev *pdev = vgpu_mgr->pdev;
++	resource_size_t start, size;
++	void *vaddr;
 +
-+	vgpu_mgr->chid_alloc_bitmap = bitmap_alloc(vgpu_mgr->total_avail_chids, GFP_KERNEL);
-+	if (!vgpu_mgr->chid_alloc_bitmap)
++	start = pci_resource_start(pdev, 0);
++	size = pci_resource_len(pdev, 0);
++
++	vaddr = ioremap(start, size);
++	if (!vaddr)
 +		return -ENOMEM;
-+	bitmap_zero(vgpu_mgr->chid_alloc_bitmap, vgpu_mgr->total_avail_chids);
 +
-+	vgpu_mgr_debug(vgpu_mgr, "using chid allocation bitmap.\n");
++	vgpu_mgr->bar0_vaddr = vaddr;
++
 +	return 0;
 +}
 +
- static int init_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
+ static void clean_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
  {
- 	vgpu_mgr->total_avail_chids = nvidia_vgpu_mgr_get_avail_chids(vgpu_mgr);
-@@ -103,12 +126,17 @@ static int init_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
- 	vgpu_mgr_debug(vgpu_mgr, "total avail chids %u\n", vgpu_mgr->total_avail_chids);
- 	vgpu_mgr_debug(vgpu_mgr, "total fbmem size 0x%llx\n", vgpu_mgr->total_fbmem_size);
+ 	if (vgpu_mgr->use_chid_alloc_bitmap) {
+@@ -30,6 +53,7 @@ static void vgpu_mgr_release(struct kref *kref)
+ 	if (WARN_ON(atomic_read(&vgpu_mgr->num_vgpus)))
+ 		return;
  
--	return 0;
-+	return vgpu_mgr->use_chid_alloc_bitmap ? setup_chid_alloc_bitmap(vgpu_mgr) : 0;
- }
++	unmap_pf_mmio(vgpu_mgr);
+ 	nvidia_vgpu_mgr_clean_metadata(vgpu_mgr);
+ 	clean_vgpu_mgr(vgpu_mgr);
+ 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu_mgr->gsp_client);
+@@ -73,6 +97,7 @@ static struct nvidia_vgpu_mgr *alloc_vgpu_mgr(struct nvidia_vgpu_mgr_handle *han
+ 		return ERR_PTR(-ENOMEM);
  
- static int setup_pf_driver_caps(struct nvidia_vgpu_mgr *vgpu_mgr, unsigned long *caps)
- {
--	/* more to come */
-+#define HAS_CAP(cap) \
-+	test_bit(NVIDIA_VGPU_PF_DRIVER_CAP_HAS_##cap, caps)
+ 	vgpu_mgr->handle = *handle;
++	vgpu_mgr->pdev = handle->pf_pdev;
+ 
+ 	kref_init(&vgpu_mgr->refcount);
+ 	mutex_init(&vgpu_mgr->vgpu_list_lock);
+@@ -295,6 +320,10 @@ static int pf_attach_handle_fn(void *handle, struct nvidia_vgpu_vfio_handle_data
+ 	if (ret)
+ 		goto fail_setup_metadata;
+ 
++	ret = map_pf_mmio(vgpu_mgr);
++	if (ret)
++		goto fail_map_pf_mmio;
 +
-+	vgpu_mgr->use_chid_alloc_bitmap = !HAS_CAP(CHID_ALLOC);
-+
-+#undef HAS_CAP
- 	return 0;
- }
+ 	attach_vgpu_mgr(vgpu_mgr, handle_data);
  
-@@ -169,6 +197,7 @@ static int pf_attach_handle_fn(void *handle, struct nvidia_vgpu_vfio_handle_data
+ 	ret = attach_data->init_vfio_fn(vgpu_mgr, attach_data->init_vfio_fn_data);
+@@ -307,6 +336,8 @@ static int pf_attach_handle_fn(void *handle, struct nvidia_vgpu_vfio_handle_data
+ 
+ fail_init_fn:
  	detach_vgpu_mgr(handle_data);
++	unmap_pf_mmio(vgpu_mgr);
++fail_map_pf_mmio:
  	nvidia_vgpu_mgr_clean_metadata(vgpu_mgr);
  fail_setup_metadata:
-+	clean_vgpu_mgr(vgpu_mgr);
- fail_init_vgpu_mgr:
- 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu_mgr->gsp_client);
- fail_alloc_gsp_client:
+ 	clean_vgpu_mgr(vgpu_mgr);
 diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
-index 0519b595378f..5a7a6103a677 100644
+index 323acf52068e..fe475f8b2882 100644
 --- a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
 +++ b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
-@@ -36,6 +36,19 @@ struct nvidia_vgpu_info {
- 	struct nvidia_vgpu_type *vgpu_type;
+@@ -58,6 +58,17 @@ struct nvidia_vgpu_mgmt {
+ 	void __iomem *kernel_log_vaddr;
  };
  
-+/**
-+ * struct nvidia_vgpu_chid - per-vGPU channel IDs
-+ *
-+ * @chid_offset: beginning offset of channel IDs
-+ * @num_chid: number of allocated channel IDs
-+ * @num_plugin_channels: number of channels for vGPU manager
-+ */
-+struct nvidia_vgpu_chid {
-+	u32 chid_offset;
-+	u32 num_chid;
-+	u32 num_plugin_channels;
++struct nvidia_vgpu_rpc {
++	/* RPC channel lock */
++	struct mutex lock;
++	u32 msg_seq_num;
++	void __iomem *ctrl_buf;
++	void __iomem *resp_buf;
++	void __iomem *msg_buf;
++	void __iomem *migration_buf;
++	void __iomem *error_buf;
 +};
 +
  /**
   * struct nvidia_vgpu - per-vGPU state
   *
-@@ -45,6 +58,7 @@ struct nvidia_vgpu_info {
-  * @vgpu_list: list node to the vGPU list
-  * @info: vGPU info
-  * @vgpu_mgr: pointer to vGPU manager
-+ * @chid: vGPU channel IDs
+@@ -71,6 +82,7 @@ struct nvidia_vgpu_mgmt {
+  * @chid: vGPU channel IDs
+  * @fbmem_heap: allocated FB memory for the vGPU
+  * @mgmt: vGPU mgmt heap
++ * @rpc: vGPU host RPC
   */
  struct nvidia_vgpu {
  	/* Per-vGPU lock */
-@@ -55,6 +69,8 @@ struct nvidia_vgpu {
- 
- 	struct nvidia_vgpu_info info;
- 	struct nvidia_vgpu_mgr *vgpu_mgr;
-+
-+	struct nvidia_vgpu_chid chid;
+@@ -86,6 +98,7 @@ struct nvidia_vgpu {
+ 	struct nvidia_vgpu_chid chid;
+ 	struct nvidia_vgpu_mem *fbmem_heap;
+ 	struct nvidia_vgpu_mgmt mgmt;
++	struct nvidia_vgpu_rpc rpc;
  };
  
  /**
-@@ -72,6 +88,8 @@ struct nvidia_vgpu {
-  * @gsp_client: the GSP client
-  * @vgpu_types: installed vGPU types
+@@ -112,6 +125,8 @@ struct nvidia_vgpu {
   * @num_vgpu_types: number of installed vGPU types
-+ * @use_alloc_bitmap: use chid allocator for the PF driver doesn't support chid allocation
-+ * @chid_alloc_bitmap: chid allocator bitmap
+  * @use_alloc_bitmap: use chid allocator for the PF driver doesn't support chid allocation
+  * @chid_alloc_bitmap: chid allocator bitmap
++ * @pdev: the PCI device pointer
++ * @bar0_vaddr: the virtual address of BAR0
   */
  struct nvidia_vgpu_mgr {
  	struct kref refcount;
-@@ -92,6 +110,9 @@ struct nvidia_vgpu_mgr {
- 	struct nvidia_vgpu_gsp_client gsp_client;
- 	struct nvidia_vgpu_type *vgpu_types;
- 	unsigned int num_vgpu_types;
+@@ -147,6 +162,9 @@ struct nvidia_vgpu_mgr {
+ 
+ 	bool use_chid_alloc_bitmap;
+ 	void *chid_alloc_bitmap;
 +
-+	bool use_chid_alloc_bitmap;
-+	void *chid_alloc_bitmap;
++	struct pci_dev *pdev;
++	void __iomem *bar0_vaddr;
  };
  
  #define nvidia_vgpu_mgr_for_each_vgpu(vgpu, vgpu_mgr) \
+@@ -160,5 +178,9 @@ int nvidia_vgpu_mgr_destroy_vgpu(struct nvidia_vgpu *vgpu);
+ int nvidia_vgpu_mgr_create_vgpu(struct nvidia_vgpu *vgpu);
+ int nvidia_vgpu_mgr_setup_metadata(struct nvidia_vgpu_mgr *vgpu_mgr);
+ void nvidia_vgpu_mgr_clean_metadata(struct nvidia_vgpu_mgr *vgpu_mgr);
++int nvidia_vgpu_rpc_call(struct nvidia_vgpu *vgpu, u32 msg_type,
++			 void *data, u64 size);
++void nvidia_vgpu_clean_rpc(struct nvidia_vgpu *vgpu);
++int nvidia_vgpu_setup_rpc(struct nvidia_vgpu *vgpu);
+ 
+ #endif
 -- 
 2.34.1
 
