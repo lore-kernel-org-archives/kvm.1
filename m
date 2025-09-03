@@ -1,68 +1,68 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2052.outbound.protection.outlook.com [40.107.244.52])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2074.outbound.protection.outlook.com [40.107.93.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626082ECD39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07A32ECD31
 	for <kvm@vger.kernel.org>; Wed,  3 Sep 2025 22:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.52
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756937506; cv=fail; b=llkZSYKqE6FKBWIAOcjdRPMr1hW7lFvrD423GhgzCBRsIS3+pxbE1liH5mpNStZ5IuwPUv4IDGdJqFv/Jte8ka3abMvTIQCFGRR9Ks67X5ypIbiPg9SxXbXeSil2SMfhznoYiliKK2rO4Jm959XnYE5jQay4Vv0JsDz8cALA9oQ=
+	t=1756937506; cv=fail; b=eyAlo6EdaIX6QIQpvpaz5x1WpzTCorKP8kEPd/mpEBpahNtAdodCAWctpIjk6yJr5Q2GOEPDtUhqBNB77KunKyBXKdOZXFxQcWyPFVekHS9j0fdt8ywuIVKOiK+BpTjo5SQA52+8VnHBoAJVOXbn1qeHdKlVHEe6/Wdd7K5W31k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756937506; c=relaxed/simple;
-	bh=KLKzK2gni+rJ9pc9MwN4h+rSiNXgky076Bda/2/WckM=;
+	bh=jPd0N2GQ43S1YzoGNkVGzfnHVhTtaWaGOy8250i2JHM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTQlNG7E8ipGjtchPoSsym2L1dDozLYfhNTINjJXYQMdw3RIbfbepzoHsHE44pYLRq9tpq1lMZDVKH7Kxd4jXtZd+FXHviRUz2iGhXqJIwYODCFCabsRPrE+o/Ht5YpMvMT7h1c7RbktyNkC/QXVB38IRMMDBXMfKJBhpyOuZZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MeIwvL53; arc=fail smtp.client-ip=40.107.244.52
+	 MIME-Version:Content-Type; b=WGr8Ay8sCrTYKuYCl7SQrRc5vcXiIm2307VqIZB44SYLGpL3NFJ+GCJNK756wnhPL7a4DF7bsI/dDilUSPy7y3vWSR8qB3597pIHuM0dhrP7KqP1tG7zKwqqTrVgwwojZFcgruOvFeHMea9Sm0aJDxdNKr3+zsrKnP1ZqlcY8kw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mYPfmVHu; arc=fail smtp.client-ip=40.107.93.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MeIwvL53"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mYPfmVHu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HV3lF3zvUPSgRuwOf6ufE3JaDUKEuLKfm7/yLpCgPz+bfWvhq+mXgnwWaCFT/wRCaM9XFTmmBNNu6TE9Bn15014OaQ8nOKkin5t4k1DB8yfaAzfSg8DX+svz4p/HOiSNvBe0Y70pNapcqfeFT+OwwpvNIk1nJeC5poBlF1b3aDD3KQVt+zWrrhnWpJN1b4xlv3S6QtQzNPzhJnBbCJNQmCZkoZcYXGLPGKcg3oZ9gJ0p6b3N6DAwSWn76gHaJ4mjr814KLYR7iBice3Hhivc+dI5HDa7Uiwi3khQKf/O8hoYpyMI5a4yjL0Utraut5PIIJzmdOwyOpRkUOwaTTVPPw==
+ b=e/TMEvZQQz3cdywMaU6ExrkG6iWlJWkyxCZPWJVIFsNMHdxiyzkQQ7rewop51dzNOyzjNYYTyRjuRKomyQegJVl5yoEHQ9VlKjsuJVQXrS33FH3O/KYm1hUohHFf/HemP3qSl6YJH7z2QQ3y0kQt7KPwLm8kDSa6eMrHLzxx98KFnu7k2n3KnK70Kmse16oO0LBqEc5pWnUTh5FQzjKG2Shcjs1+zWa43dKLURasUAbhTqnQxqlcPaur/ZYBs/m14IUqe+03bnM7dBn4jSqsvG6/OUek2831ongfJ4AW7hXK6abOdWqdfmp1N7qxCfHzl5u7Ze63TVtuwAdXw9kE/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qRzSd9pvYYus0bDX1i1UwFWsGxJs/fssitHftfwsTx4=;
- b=GWOZxzc6RGcPcPJ0VRowHZcHR1aDY6h6B8U+xD2cZviLR1sNxPutvFvz82PC+KYL6EunQ+5u5NKnjP+rMjNiGNjKUEmjO5gsgJJ4eDLPD2Kj1KfhfiItMlxpctHuWRG0BgZZ2UPl3GjkJRPL25oBMKE9KFat9gD0Iaze1gWHUNC8dvkKK4gkea7Fg0uhB2xF9PUa4q0+myZzIyWdlqX0Occk7fcR0LFAo7Qh7M1L54oxxUVe3/2ch1YGdQt4cKcItU6Jr6Cc+wRhwpB5o47F8gcGzHk4yovRIyaRjsg+xnFn4oi1AHFk1PgsSuerPjI09wAutpeQZFp1vZUm6fWJFA==
+ bh=uFnnbZ50X8LpmTm/Sy5O0WGKB3RIbjvMpqh+NlXw1Ro=;
+ b=C2wLvqkMok4AfbwKK0U36pZTsZ1uiQkVlELbfKLN/zPc5X/wDEstIuYSV1Sg8BJIiVEeHMhjghPQM2PjUYyor6oRujwkBikVkhnaGWvS6KNmDPWOHvPKoCt2lXpL6yWEcsXjCs7KYdOjH79sN+/CcXJ+POzILZsKP9MGMnmru10dssNsGh7Y7W9U2je7InYDIpSbpZbupcuVffUhl+Nq1tanR3TGtJAYUEZG0ktOghia5+DNdkyco7lBNmJEF1xivL6Qyj8V8tzUjlR/l87BAZOPvyKK34HkxM2Ds1GyfzBTjIfnfqkjlsTgYBWyYw+XZupu/mmsHsGilB1se2lHxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qRzSd9pvYYus0bDX1i1UwFWsGxJs/fssitHftfwsTx4=;
- b=MeIwvL53d0tpIymVfri7hYA9gprdPX4OlyZFgHhPKM4vhkksjoiC4RqP3nKZWa/h6EKYYburUpEFQEDgYMjRAjIwZnBCiBdbDb2LasgZC2CDXh0f4bgrP3ZvqHwon96JDH52MOlwm+FW+TPq5ZWlRrmzQFhZ2D2lMvc5/TzVfK7NRXhpTI4UIEnS6C1QMyFsBuN+XS6OMwkQMk9a45iWFpnsmEfqJscrQnW55Vh1HMcRzv9R/RG0V2GPzwpr37OA4kul7tKWO6jvDN2vk6pgKVuu9OPLuBIoqjUxOckPJuYDkBMCryFZn2EaEM8C6BS0GGfpzEdNUXy/dAsQ+JxpeA==
-Received: from CH0PR08CA0012.namprd08.prod.outlook.com (2603:10b6:610:33::17)
- by MN0PR12MB5883.namprd12.prod.outlook.com (2603:10b6:208:37b::18) with
+ bh=uFnnbZ50X8LpmTm/Sy5O0WGKB3RIbjvMpqh+NlXw1Ro=;
+ b=mYPfmVHu+WBRkKUoQ3MgD0IY3plDgvIrnQT9AKflFmskDKAjyLENZaMF+lYGr8ZMWwkCfmVsGC5j0EQCRWkbQgsd8rGZYvGJ09Tu4n1kRa8EIEXyfU7UtJBgFdvMSVA8D1HOkhbg3GuMNs9+zLVYViSAOvJbQO22kfg86OxMvpk+6Ljw1/Q4xEbBFqmMXVJKzM6jfpjA1zIXvaTR5u2zCVYTSYXCiAEgCBrsC7tXVKCgkHS7zk3qqzGwcuv5Ev0ljb4py8gGhkdCVsiC/wXEUdX9GRNXqNxA+y6+28Us+PyMqqwPH5rgH1MaylGuY8us4UD+pOsABIaZiaD7ZS9Ysg==
+Received: from BN9PR03CA0481.namprd03.prod.outlook.com (2603:10b6:408:130::6)
+ by SN7PR12MB7106.namprd12.prod.outlook.com (2603:10b6:806:2a1::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
- 2025 22:11:37 +0000
-Received: from CH3PEPF00000010.namprd04.prod.outlook.com
- (2603:10b6:610:33:cafe::96) by CH0PR08CA0012.outlook.office365.com
- (2603:10b6:610:33::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Wed,
- 3 Sep 2025 22:11:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Wed, 3 Sep
+ 2025 22:11:35 +0000
+Received: from BL02EPF00021F6B.namprd02.prod.outlook.com
+ (2603:10b6:408:130:cafe::71) by BN9PR03CA0481.outlook.office365.com
+ (2603:10b6:408:130::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.17 via Frontend Transport; Wed,
+ 3 Sep 2025 22:11:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH3PEPF00000010.mail.protection.outlook.com (10.167.244.41) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF00021F6B.mail.protection.outlook.com (10.167.249.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.14 via Frontend Transport; Wed, 3 Sep 2025 22:11:37 +0000
+ 15.20.9094.14 via Frontend Transport; Wed, 3 Sep 2025 22:11:35 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 3 Sep
- 2025 15:11:22 -0700
+ 2025 15:11:16 -0700
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 3 Sep
- 2025 15:11:22 -0700
+ 2025 15:11:15 -0700
 Received: from inno-linux.nvidia.com (10.127.8.13) by mail.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Wed, 3 Sep 2025 15:11:21 -0700
+ Transport; Wed, 3 Sep 2025 15:11:15 -0700
 From: Zhi Wang <zhiw@nvidia.com>
 To: <kvm@vger.kernel.org>
 CC: <alex.williamson@redhat.com>, <kevin.tian@intel.com>, <jgg@nvidia.com>,
@@ -70,9 +70,9 @@ CC: <alex.williamson@redhat.com>, <kevin.tian@intel.com>, <jgg@nvidia.com>,
 	<acurrid@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
 	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
 	<targupta@nvidia.com>, <zhiw@nvidia.com>, <zhiwang@kernel.org>
-Subject: [RFC v2 14/14] vfio/nvidia-vgpu: add a kernel doc to introduce NVIDIA vGPU
-Date: Wed, 3 Sep 2025 15:11:11 -0700
-Message-ID: <20250903221111.3866249-15-zhiw@nvidia.com>
+Subject: [RFC v2 04/14] vfio/nvidia-vgpu: allocate vGPU channels when creating vGPUs
+Date: Wed, 3 Sep 2025 15:11:01 -0700
+Message-ID: <20250903221111.3866249-5-zhiw@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250903221111.3866249-1-zhiw@nvidia.com>
 References: <20250903221111.3866249-1-zhiw@nvidia.com>
@@ -87,357 +87,343 @@ Content-Transfer-Encoding: 8bit
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000010:EE_|MN0PR12MB5883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d56f0f3-a118-4d7b-1b61-08ddeb36d9e5
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6B:EE_|SN7PR12MB7106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bc7add4-3686-4bcf-5c75-08ddeb36d8e3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|30052699003;
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QnAvMC81cS9JMVhQbzZXMXdxR2lzbUJRcGgyeGlLTURXa2x6R21LNStjVU5J?=
- =?utf-8?B?NUg3WTZqTW42Z0RTekd4cU5ZUjBsNzFHeDMrWjNvOEhGZWgrZmw3TzJZZnAr?=
- =?utf-8?B?NWM1OUJkY2N5WlQraktYY0FwRmptUjNrcHpyRExLZE5KSzgzWERQcHh0L005?=
- =?utf-8?B?dEloczRXdUQwMDZHMTlvb3lFaW45cWdTNHQ5ZjRXTkpHWTFVQlZwL0JLbElC?=
- =?utf-8?B?SnE5K3Z5U0IxWExUSy95eVhKdkxWU1JaQlBMVEZOMExGdUhoZWRzQ21QMmFm?=
- =?utf-8?B?VnBTU1hGdnVnQnp0VWtaTVMzYWxIdHdPRy9OUGc0NFA1Wkh2WUR4UllxZklP?=
- =?utf-8?B?WDA5VmhnZUxUV2xxZ0hzOFNrSStEbEhqbVdqRDZTaS9TdmdNZ0N0OCtyVEZZ?=
- =?utf-8?B?SEtxL1JCYVplL2xNRjlEWGp3NUY5WjFFdUl2UGk5YVVlcW1HU2NIYlYrK2R6?=
- =?utf-8?B?aWxhY0VvaGJXS3l6MSs4TTZuT1Q4eVloOHdlQk1nZm04dXQ1VFJGeEU5UGt6?=
- =?utf-8?B?NnF1NlZBK1pEN09ZMWFOOVhxakFzV1VNY2FvajZINDdicXBBd2NFYVYzVUJX?=
- =?utf-8?B?RlFOc1dVWWNqdnVucDByYmtYZTVWR0pJNDkwd0VIdTNnSjk3ZVQ4UStMSTNR?=
- =?utf-8?B?bmYrWnpoT0I1ZkZlb3VTVCtIOG9XUTkwZVRrNzNNVjluWWVQMWpRc1RienVM?=
- =?utf-8?B?emViVENCUGxPUlRJL28wQTNvWktITHF4MHI2VUVTOW5nVWZ5WGh0b3REL0xh?=
- =?utf-8?B?MGdqTTNiUitzd3RDL1FRQ1dDUUwrWjE1bHNlK1ZJaTQybDZnOSsrekpadXdp?=
- =?utf-8?B?T2NtQnE3VEVieGRnV0JXR1JrUThVRDBlUUlSbnN4MDkva2tjL0V1cXBtMndv?=
- =?utf-8?B?NmM3MG9BbmtYL2dNb1ZyMnFacHdHSVloNk9KQlc1WDE4bTFiUnZsZ3p1dnlp?=
- =?utf-8?B?Y1ZMWGlkTTBxb253NGZPanl5cWtHTE1oWm9kWFF0eU1lbFFPMDhWa1FoU001?=
- =?utf-8?B?NHhDc3lnbmErNDRHa1VaMHpKUWFvb1JHVURJeHpBYklkeUVsV2F6UTFuYzVt?=
- =?utf-8?B?N3Z0Z0dvb0hQNS8xWkltNFdTMGJxS0ZQekVOSmZwbzNya3lDRXArUDB6NHkw?=
- =?utf-8?B?eWtzeGVsa3hZRkVJN2V4dmFlODV4eUdwR2F4K1NPV0QwTmFqcENPVHVkeUYw?=
- =?utf-8?B?MUFmdGVLb1ZZOW5BUm9wMXJqemdEbndOK1dYRituSjJzVUNpTzdYWllieW1n?=
- =?utf-8?B?QVN6Tk56aDAxdmRmTm1DTnNJVFpHZXd4WVlTNlNMTUhLTHVBTllZNDlaZzlR?=
- =?utf-8?B?ZkZOWEVuSmxnTGwxMkNuNlIvbWc0d0YycmNHVzdBUHNqb0tNN3ZoNUp3WGlt?=
- =?utf-8?B?a3FXZ1UrLzBGaGVSM0YrVUVkSXF3TDhObW42MDVqODdlOHl5dVFtc2loUzIw?=
- =?utf-8?B?WDlDUFFNcW9PLy9kalBIMHUrNHRaT0xGbWJyY1lGbnMvQjUrc2RUK0xsUlN4?=
- =?utf-8?B?cU5qR3RiemZKb0I4VXBPL0ErYkRhQWw2UUgxQ0FwSWJNT3Zoa0VQV1V5RFVx?=
- =?utf-8?B?dVhEcUdHN0FIRGExV1Z4TzZ0ME1DVlJVT0lJYzUzbkErWE1vcURvWFZqbVNR?=
- =?utf-8?B?d0I3TnVPZUM4bEk4QkRiSFVnS1VvYWRQMkF4UlpFNW5OaGhFazRpcjZSbWI2?=
- =?utf-8?B?eVBYcVJqTHh1bjhweWhTdTVWU3JMaHlkdytSZDQzY3lmNnBrTlVXZm9RdSt0?=
- =?utf-8?B?YU9Db3BKNFB1RVlMeVdJVUpZWDdHMTZxM0U5WjE0eDMrb1A4ZWdGU3ZFZUx3?=
- =?utf-8?B?Ylo0OVVCT3ZOa0tyRithL0JSQVVCNTlQQWlCR2VOUjJPQ0hOVC83Y0FYTVBI?=
- =?utf-8?B?UjVSQkhJdktNb05rTG9OS3kyUURTTVYxc2pQSWd4VkU4YU4xaEVENG5mN25V?=
- =?utf-8?B?YnRsM3VaS3R3c3BFSE94MzFPdE5UOWdMd3dHTXRUWlgzNnZmbmM0Vm5KMkUz?=
- =?utf-8?B?clFRbDl0YXVRY1B3VWZweGVzdUJUb2ZVS0JWTStjb0RkNWN2Z3FaOWc1VmlM?=
- =?utf-8?B?TlNNUmg5SFUvOTY0TVBOQ29UMkE0NnhoOG9VQT09?=
+	=?utf-8?B?VHFGWTRxS2lvazhnandEM0lTREdZdG1WWjN1WFpibkZHYWFveTRkTjZRWmp0?=
+ =?utf-8?B?dkd5M1dZQmpJbXRSRk43MG1GYnVNSVJyK3ArYzd3cmZwTEUyZnZaOXB0OHh5?=
+ =?utf-8?B?MWFtbXJQNEExc0xBbVh4YzFpTGxrUXNpK1NpKy9jaGZ5NUx5d0lSSHVpNVNp?=
+ =?utf-8?B?UUExWDdkTnhPNUVLWlg4U3F5TEFnTGhDR0dLUFpNSUpwYkVHR1Z2cEJwYlF4?=
+ =?utf-8?B?UDBiamZCL2dObUpNR1lYVVBxS3R2Umh2UmRYOXhaakNWTFAvSGx1b1cvWUJK?=
+ =?utf-8?B?M0k0dUYxZzR5VGtpUW5CeWc1Z0UvUFJlNjNXNXQ2Y3lITmtMdGdhQnNPQUJS?=
+ =?utf-8?B?Und4Ylgwb1R0aTE3T1pHZDkwZTlSOGt5N1dnQ0EveG5NWXlCaFA1QkRwb1Vn?=
+ =?utf-8?B?clFqSUtaUUlnSXF1elVCSU9qamF0Z2RGTXA3Y1NYNmNZL0NQL1dSRzJwdmZy?=
+ =?utf-8?B?L3dWczJnSkhGRWFVY0JnZTFZSHZTelcvUHhEK0l1eWMrRlF2NlJMZUxYdE96?=
+ =?utf-8?B?VVRtWnJ2VHBONTd6UCtWRVNHUThVK1UxY1IycHpzdDExS29oSS9yVTQxNkpF?=
+ =?utf-8?B?aDRJckNLci94ZzRqQmpxbnlEVDlPRFV3VWxsOFlyazh3eEh4Z1pxTEt6dE1R?=
+ =?utf-8?B?ZUd1bVhUQmsvSzVjVHEwa1B6ZEdvR3pFTmNSa2oyc1FzNDVmZWhrQXBvaTNF?=
+ =?utf-8?B?dy91NW8wcUJHYjVSUk1hL0RzelVoZXA2c040UTlmYmg4Q3lVSU5HMmlsazAw?=
+ =?utf-8?B?VEt5aGlPTmRHZWJYOU44WkI2aU5OYWNhR3FwY25iOGhvKzJQZzRXcVYrenlN?=
+ =?utf-8?B?VkZFbTdzRzNEdklFZm05ZlRkWHFUWmtNY3Nmeis5VWVaU2RMSHZ6YkFxUVk1?=
+ =?utf-8?B?ZkJZTTJDb0NSUk43NjI4YmVGaFAyNnVHZHVWZEFHQ1dMbjJSNjlMelBqdGtt?=
+ =?utf-8?B?aDhMek9ZRmp3RGtzUFVRZlVmY2tsTUQ5eTdEZlFsWmh0NUtpR0VOQXJUdlNy?=
+ =?utf-8?B?QloyUUJic0lvS2VkZFlYMGwrVFVDRUcvbHBKYW52Wi9xeWVlazlOdm4wNDlN?=
+ =?utf-8?B?a3M0bnAyZmNUM3QvcWtEeTlBdkVIUHlYalVrMERNbGRpZHRzUTdac2hRQVM3?=
+ =?utf-8?B?WE1uU0lVUSt4Q1JyeXlua0tLWW9Ua1FRZ1dDQ0NRZi9TU3BsNjNuU0VUNkpp?=
+ =?utf-8?B?S1ZZa2FkTWx4ek9yWEZDbUlCbDBGbkI1T3QyY2JvUFJSTlVRM3dnaFFwZFpW?=
+ =?utf-8?B?Z3I4MzZZdUVMVmFnQXk4eHZtaG1LeUI0S2FmUSs5M2JJRkYvUG5PQmNTdEMy?=
+ =?utf-8?B?ZjBFMmhaelNqTTRVVk4ycFF6dStNSHllaHpKZ0paek5nSTd5VSt0eS9CemNs?=
+ =?utf-8?B?SHRVdko3QWhZT3JSRjQreE1TWU85VGdod1FtNEV5NU5qSXZSSExKTFowcHN0?=
+ =?utf-8?B?NFltcHpWdTZ6ZTJUelBaaWllTnJ2U3V5SE1CaUdYdGR6eVJiQlMzakh3SVhJ?=
+ =?utf-8?B?T0ptMmJUbEhaODBZRDV5UGFqR2lrQnE4dExWMEJSUHNSM1ZhcmRhak40Q3F3?=
+ =?utf-8?B?Ym5tRGpFVkNmMkpPMXZhRTZ3K2VTMFpRZklUK0ZESWMwdjdnaVo4em1TMVlS?=
+ =?utf-8?B?ektBeUF1ZGxXNUR0Yk4vZzlDMHFVZ2xxWWhCemYvaUl5c043Z3BvdWNxczNq?=
+ =?utf-8?B?ZW8zSnhjazNiQ3YrY2ZnWkovenpVT3JPbERUQVlGZDJ4elJmNDdaaXR1Ymhl?=
+ =?utf-8?B?dEN1emZPWnZtMENBSmVJcXdrcDdQbElSUmlJSTh2aFpQZ1l2UnRFWUViVWg2?=
+ =?utf-8?B?K0JwQlB5eTdlUlROamU4eURtT2l4NnFOZHl3cCt6aE40Ukc5aE91YlgyY2lX?=
+ =?utf-8?B?ZmNHaVVncFNKYnk4Ukh6WkhwdkpTMmYzYW5EL1ZCSzFuMGc2eVNENHN5S1k0?=
+ =?utf-8?B?cEJMdkU4NlM1UjliYmJRYUVpYTBGQ1RBM291S3hmT3RXdnFnZ2lUYVdmSHpZ?=
+ =?utf-8?B?SmF4MmRUNU9vSEZHUnFmeDYrL21Mc2ZTWUtYZE9jbHQ4eUQzM2cway9USUx1?=
+ =?utf-8?Q?qc4LUU?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(30052699003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 22:11:37.1266
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 22:11:35.4103
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d56f0f3-a118-4d7b-1b61-08ddeb36d9e5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bc7add4-3686-4bcf-5c75-08ddeb36d8e3
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000010.namprd04.prod.outlook.com
+	BL02EPF00021F6B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5883
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7106
 
-In order to introduce NVIDIA vGPU and the requirements to a core driver,
-a kernel doc is introduced to explain the architecture and the
-requirements.
+Creating a vGPU requires allocating a portion of the channels from the
+reserved channel pool.
 
-Add a kernel doc to introduce NVIDIA vGPU.
+Allocate the channels from the reserved channel pool when creating a vGPU.
 
+Cc: Aniket Agashe <aniketa@nvidia.com>
 Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 ---
- Documentation/gpu/drivers.rst     |   1 +
- Documentation/gpu/nvidia-vgpu.rst | 264 ++++++++++++++++++++++++++++++
- 2 files changed, 265 insertions(+)
- create mode 100644 Documentation/gpu/nvidia-vgpu.rst
+ drivers/vfio/pci/nvidia-vgpu/pf.h       | 10 ++++
+ drivers/vfio/pci/nvidia-vgpu/vgpu.c     | 76 +++++++++++++++++++++++++
+ drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c | 33 ++++++++++-
+ drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h | 21 +++++++
+ 4 files changed, 138 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/gpu/drivers.rst b/Documentation/gpu/drivers.rst
-index 78b80be17f21..abdca636d3ef 100644
---- a/Documentation/gpu/drivers.rst
-+++ b/Documentation/gpu/drivers.rst
-@@ -11,6 +11,7 @@ GPU Driver Documentation
-    mcde
-    meson
-    nouveau
-+   nvidia-vgpu
-    pl111
-    tegra
-    tve200
-diff --git a/Documentation/gpu/nvidia-vgpu.rst b/Documentation/gpu/nvidia-vgpu.rst
-new file mode 100644
-index 000000000000..fb48572c7af2
---- /dev/null
-+++ b/Documentation/gpu/nvidia-vgpu.rst
-@@ -0,0 +1,264 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+.. include:: <isonum.txt>
+diff --git a/drivers/vfio/pci/nvidia-vgpu/pf.h b/drivers/vfio/pci/nvidia-vgpu/pf.h
+index 19f0aca56d12..b8008d8ee434 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/pf.h
++++ b/drivers/vfio/pci/nvidia-vgpu/pf.h
+@@ -85,4 +85,14 @@ static inline int nvidia_vgpu_mgr_init_handle(struct pci_dev *pdev,
+ #define nvidia_vgpu_mgr_rm_ctrl_done(m, g, c) \
+ 	((m)->handle.ops->rm_ctrl_done(g, c))
+ 
++#define nvidia_vgpu_mgr_alloc_chids(m, o, s) ({ \
++	typeof(m) __m = (m); \
++	__m->handle.ops->alloc_chids(__m->handle.pf_drvdata, o, s); \
++})
 +
-+=======================
-+NVIDIA vGPU VFIO Driver
-+=======================
++#define nvidia_vgpu_mgr_free_chids(m, o, s) ({ \
++	typeof(m) __m = (m); \
++	__m->handle.ops->free_chids(__m->handle.pf_drvdata, o, s); \
++})
 +
-+:Copyright: |copy| 2025, NVIDIA CORPORATION. All rights reserved.
-+:Author: Zhi Wang <zhiw@nvidia.com>
+ #endif
+diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu.c b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
+index cbb51b939f0b..52b946469043 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/vgpu.c
++++ b/drivers/vfio/pci/nvidia-vgpu/vgpu.c
+@@ -3,6 +3,8 @@
+  * Copyright © 2025 NVIDIA Corporation
+  */
+ 
++#include <linux/log2.h>
 +
+ #include "debug.h"
+ #include "vgpu_mgr.h"
+ 
+@@ -43,6 +45,70 @@ static int register_vgpu(struct nvidia_vgpu *vgpu)
+ 	return 0;
+ }
+ 
++static void clean_chids(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
++	struct nvidia_vgpu_chid *chid = &vgpu->chid;
 +
++	vgpu_debug(vgpu, "free guest channel offset %d size %d\n", chid->chid_offset,
++		   chid->num_chid);
 +
-+Overview
-+========
++	if (vgpu_mgr->use_chid_alloc_bitmap)
++		bitmap_clear(vgpu_mgr->chid_alloc_bitmap, chid->chid_offset, chid->num_chid);
++	else
++		nvidia_vgpu_mgr_free_chids(vgpu_mgr, chid->chid_offset, chid->num_chid);
++}
 +
-+NVIDIA vGPU[1] software enables powerful GPU performance for workloads
-+ranging from graphics-rich virtual workstations to data science and AI,
-+enabling IT to leverage the management and security benefits of
-+virtualization as well as the performance of NVIDIA GPUs required for
-+modern workloads. Installed on a physical GPU in a cloud or enterprise
-+data center server, NVIDIA vGPU software creates virtual GPUs that can
-+be shared across multiple virtual machines.
++static inline u32 prev_pow2(const u32 x)
++{
++	return x ? 1U << ilog2(x) : 0;
++}
 +
-+The vGPU architecture[2] can be illustrated as follow::
++static void get_alloc_chids_num(struct nvidia_vgpu *vgpu, u32 *size)
++{
++	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
++	struct nvidia_vgpu_info *info = &vgpu->info;
++	struct nvidia_vgpu_type *type = info->vgpu_type;
++	u32 v;
 +
-+         +--------------------+    +--------------------+ +--------------------+ +--------------------+
-+         | Hypervisor         |    | Guest VM           | | Guest VM           | | Guest VM           |
-+         |                    |    | +----------------+ | | +----------------+ | | +----------------+ |
-+         | +----------------+ |    | |Applications... | | | |Applications... | | | |Applications... | |
-+         | |  NVIDIA        | |    | +----------------+ | | +----------------+ | | +----------------+ |
-+         | |  Virtual GPU   | |    | +----------------+ | | +----------------+ | | +----------------+ |
-+         | |  Manager       | |    | |  Guest Driver  | | | |  Guest Driver  | | | |  Guest Driver  | |
-+         | +------^---------+ |    | +----------------+ | | +----------------+ | | +----------------+ |
-+         |        |           |    +---------^----------+ +----------^---------+ +----------^---------+
-+         |        |           |              |                       |                      |
-+         |        |           +--------------+-----------------------+----------------------+---------+
-+         |        |                          |                       |                      |         |
-+         |        |                          |                       |                      |         |
-+         +--------+--------------------------+-----------------------+----------------------+---------+
-+        +---------v--------------------------+-----------------------+----------------------+----------+
-+        | NVIDIA                  +----------v---------+ +-----------v--------+ +-----------v--------+ |
-+        | Physical GPU            |   Virtual GPU      | |   Virtual GPU      | |   Virtual GPU      | |
-+        |                         +--------------------+ +--------------------+ +--------------------+ |
-+        +----------------------------------------------------------------------------------------------+
++	/* Calculate with total reserved CHIDs for vGPUs. */
++	v = (vgpu_mgr->total_avail_chids) / type->max_instance;
++	*size = prev_pow2(v);
++}
 +
-+Each NVIDIA vGPU is analogous to a conventional GPU, having a fixed amount
-+of GPU framebuffer, and one or more virtual display outputs or "heads".
-+The vGPU’s framebuffer is allocated out of the physical GPU’s framebuffer
-+at the time the vGPU is created, and the vGPU retains exclusive use of
-+that framebuffer until it is destroyed.
++static int setup_chids(struct nvidia_vgpu *vgpu)
++{
++	struct nvidia_vgpu_mgr *vgpu_mgr = vgpu->vgpu_mgr;
++	struct nvidia_vgpu_chid *chid = &vgpu->chid;
++	u32 size, offset;
++	int ret;
 +
-+The number of physical GPUs that a board has depends on the board. Each
-+physical GPU can support several different types of virtual GPU (vGPU).
-+vGPU types have a fixed amount of frame buffer, number of supported
-+display heads, and maximum resolutions. They are grouped into different
-+series according to the different classes of workload for which they are
-+optimized. Each series is identified by the last letter of the vGPU type
-+name.
++	get_alloc_chids_num(vgpu, &size);
 +
-+NVIDIA vGPU supports Windows and Linux guest VM operating systems. The
-+supported vGPU types depend on the guest VM OS.
++	if (vgpu_mgr->use_chid_alloc_bitmap) {
++		offset = bitmap_find_next_zero_area(vgpu_mgr->chid_alloc_bitmap,
++						    vgpu_mgr->total_avail_chids, 0, size, 0);
 +
-+Architecture
-+============
-+::
++		if (offset + size > vgpu_mgr->total_avail_chids)
++			return -ENOSPC;
 +
-+                                    +--------------------+ +--------------------+ +--------------------+
-+                                    | Linux VM           | | Windows VM         | | Guest VM           |
-+                                    | +----------------+ | | +----------------+ | | +----------------+ |
-+                                    | |Applications... | | | |Applications... | | | |Applications... | |
-+                                    | +----------------+ | | +----------------+ | | +----------------+ | ...
-+                                    | +----------------+ | | +----------------+ | | +----------------+ |
-+                                    | |  Guest Driver  | | | |  Guest Driver  | | | |  Guest Driver  | |
-+                                    | +----------------+ | | +----------------+ | | +----------------+ |
-+                                    +---------^----------+ +----------^---------+ +----------^---------+
-+                                              |                       |                      |
-+                                   +--------------------------------------------------------------------+
-+                                   |+--------------------+ +--------------------+ +--------------------+|
-+                                   ||       QEMU         | |       QEMU         | |       QEMU         ||
-+                                   ||                    | |                    | |                    ||
-+                                   |+--------------------+ +--------------------+ +--------------------+|
-+                                   +--------------------------------------------------------------------+
-+                                              |                       |                      |
-+        +-----------------------------------------------------------------------------------------------+
-+        |                           +----------------------------------------------------------------+  |
-+        |                           |                                VFIO                            |  |
-+        |                           |                                                                |  |
-+        | +-----------------------+ | +-------------------------------------------------------------+|  |
-+        | |                       | | |                                                             ||  |
-+        | |     nova_core        <--->|                                                             ||  |
-+        | +    (core driver)      | | |                  NVIDIA vGPU VFIO Driver                    ||  |
-+        | |                       | | |                                                             ||  |
-+        | |                       | | +-------------------------------------------------------------+|  |
-+        | +--------^--------------+ +----------------------------------------------------------------+  |
-+        |          |                          |                       |                      |          |
-+        +-----------------------------------------------------------------------------------------------+
-+                   |                          |                       |                      |
-+        +----------|--------------------------|-----------------------|----------------------|----------+
-+        |          v               +----------v---------+ +-----------v--------+ +-----------v--------+ |
-+        |  NVIDIA                  |       PCI VF       | |       PCI VF       | |       PCI VF       | |
-+        |  Physical GPU            |                    | |                    | |                    | |
-+        |                          |   (Virtual GPU)    | |   (Virtual GPU)    | |    (Virtual GPU)   | |
-+        |                          +--------------------+ +--------------------+ +--------------------+ |
-+        +-----------------------------------------------------------------------------------------------+
++		bitmap_set(vgpu_mgr->chid_alloc_bitmap, offset, size);
++	} else {
++		ret = nvidia_vgpu_mgr_alloc_chids(vgpu_mgr, &offset, size);
++		if (ret)
++			return ret;
++	}
 +
-+Each virtual GPU (vGPU) instance is implemented atop a PCIe Virtual
-+Function (VF). The NVIDIA vGPU VFIO driver, in coordination with the
-+VFIO framework, operates directly on these VFs to enable key
-+functionalities including vGPU type selection, dynamic instantiation and
-+destruction of vGPU instances, support for live migration, and warm
-+update...
++	chid->chid_offset = offset;
++	chid->num_chid = size;
++	chid->num_plugin_channels = 1;
 +
-+At the low level, the NVIDIA vGPU VFIO driver interfaces with a core
-+driver aka nova_core, which provides the necessary abstractions and
-+mechanisms to access and manipulate the underlying GPU hardware resources.
++	vgpu_debug(vgpu, "alloc guest channel offset %u size %u\n", chid->chid_offset,
++		   chid->num_chid);
 +
-+Core Driver
-+===========
++	return 0;
++}
 +
-+The primary deployment model for cloud service providers (CSPs) and
-+enterprise environments is to have a standalone, minimal driver stack
-+with the vGPU support and other essential components. Thus, a minimal
-+core driver is required to support the NVIDIA vGPU VFIO driver.
+ /**
+  * nvidia_vgpu_mgr_destroy_vgpu - destroy a vGPU instance
+  * @vgpu: the vGPU instance going to be destroyed.
+@@ -54,6 +120,7 @@ int nvidia_vgpu_mgr_destroy_vgpu(struct nvidia_vgpu *vgpu)
+ 	if (!atomic_cmpxchg(&vgpu->status, 1, 0))
+ 		return -ENODEV;
+ 
++	clean_chids(vgpu);
+ 	unregister_vgpu(vgpu);
+ 
+ 	vgpu_debug(vgpu, "destroyed\n");
+@@ -93,10 +160,19 @@ int nvidia_vgpu_mgr_create_vgpu(struct nvidia_vgpu *vgpu)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = setup_chids(vgpu);
++	if (ret)
++		goto err_setup_chids;
 +
-+Requirements To A Core Driver
-+=============================
+ 	atomic_set(&vgpu->status, 1);
+ 
+ 	vgpu_debug(vgpu, "created\n");
+ 
+ 	return 0;
 +
-+The NVIDIA vGPU VFIO driver searches the supported core drivers by driver
-+names when loading. Once a supported core driver is found, the VFIO driver
-+generates a core driver handle for the following interactions with the core
-+driver.
++err_setup_chids:
++	unregister_vgpu(vgpu);
 +
-+With the handle, the VFIO driver first check if the vGPU support is
-+enabled in the core driver.
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(nvidia_vgpu_mgr_create_vgpu);
+diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
+index a7f8a00f96bf..8565bb881fda 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
++++ b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.c
+@@ -6,6 +6,14 @@
+ #include "debug.h"
+ #include "vgpu_mgr.h"
+ 
++static void clean_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
++{
++	if (vgpu_mgr->use_chid_alloc_bitmap) {
++		bitmap_free(vgpu_mgr->chid_alloc_bitmap);
++		vgpu_mgr->chid_alloc_bitmap = NULL;
++	}
++}
 +
-+The core driver returns vGPU is supported on this PF if:
+ static void vgpu_mgr_release(struct kref *kref)
+ {
+ 	struct nvidia_vgpu_mgr *vgpu_mgr =
+@@ -17,6 +25,7 @@ static void vgpu_mgr_release(struct kref *kref)
+ 		return;
+ 
+ 	nvidia_vgpu_mgr_clean_metadata(vgpu_mgr);
++	clean_vgpu_mgr(vgpu_mgr);
+ 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu_mgr->gsp_client);
+ 	kvfree(vgpu_mgr);
+ }
+@@ -95,6 +104,20 @@ static void attach_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr,
+ 	handle_data->vfio.pf_detach_handle_fn = pf_detach_handle_fn;
+ }
+ 
++static int setup_chid_alloc_bitmap(struct nvidia_vgpu_mgr *vgpu_mgr)
++{
++	if (WARN_ON(!vgpu_mgr->use_chid_alloc_bitmap))
++		return 0;
 +
-+- The device advertise SRIOV caps.
-+- The device is in the supported device list in the core driver.
-+- The GSP microcode loaded by the core driver supports vGPU. Some core
-+  drivers, e.g. NVKM, can support multiple version of GSP microcode.
-+- The required initialization for vGPU support succeeds.
++	vgpu_mgr->chid_alloc_bitmap = bitmap_alloc(vgpu_mgr->total_avail_chids, GFP_KERNEL);
++	if (!vgpu_mgr->chid_alloc_bitmap)
++		return -ENOMEM;
++	bitmap_zero(vgpu_mgr->chid_alloc_bitmap, vgpu_mgr->total_avail_chids);
 +
-+The core driver handle data is per-PF and shared among VFs. It contains the
-+two parts: the core driver part and the VFIO driver part. The core driver
-+part contains core driver status, capabilities for the VFIO driver to
-+validate. The VFIO driver part contains the data registered to the core
-+driver. E.g. event handlers, private data.
++	vgpu_mgr_debug(vgpu_mgr, "using chid allocation bitmap.\n");
++	return 0;
++}
 +
-+If the VFIO driver hasn't been attached with the core driver, the VFIO
-+driver attaches the handle data with the core driver. The core driver
-+functions are available to the VFIO driver after the attachment.
+ static int init_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
+ {
+ 	vgpu_mgr->total_avail_chids = nvidia_vgpu_mgr_get_avail_chids(vgpu_mgr);
+@@ -103,12 +126,17 @@ static int init_vgpu_mgr(struct nvidia_vgpu_mgr *vgpu_mgr)
+ 	vgpu_mgr_debug(vgpu_mgr, "total avail chids %u\n", vgpu_mgr->total_avail_chids);
+ 	vgpu_mgr_debug(vgpu_mgr, "total fbmem size 0x%llx\n", vgpu_mgr->total_fbmem_size);
+ 
+-	return 0;
++	return vgpu_mgr->use_chid_alloc_bitmap ? setup_chid_alloc_bitmap(vgpu_mgr) : 0;
+ }
+ 
+ static int setup_pf_driver_caps(struct nvidia_vgpu_mgr *vgpu_mgr, unsigned long *caps)
+ {
+-	/* more to come */
++#define HAS_CAP(cap) \
++	test_bit(NVIDIA_VGPU_PF_DRIVER_CAP_HAS_##cap, caps)
 +
-+The core driver is responsible for the locking to protect the handle
-+data in attachment/detachment as it can be accessed in multiple paths
-+of VFIO driver probing/remove.
++	vgpu_mgr->use_chid_alloc_bitmap = !HAS_CAP(CHID_ALLOC);
 +
-+Beside the core driver attachment and handle management, the core driver
-+is required to provide the following functions to support the VFIO driver:
++#undef HAS_CAP
+ 	return 0;
+ }
+ 
+@@ -169,6 +197,7 @@ static int pf_attach_handle_fn(void *handle, struct nvidia_vgpu_vfio_handle_data
+ 	detach_vgpu_mgr(handle_data);
+ 	nvidia_vgpu_mgr_clean_metadata(vgpu_mgr);
+ fail_setup_metadata:
++	clean_vgpu_mgr(vgpu_mgr);
+ fail_init_vgpu_mgr:
+ 	nvidia_vgpu_mgr_free_gsp_client(vgpu_mgr, &vgpu_mgr->gsp_client);
+ fail_alloc_gsp_client:
+diff --git a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
+index 0519b595378f..5a7a6103a677 100644
+--- a/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
++++ b/drivers/vfio/pci/nvidia-vgpu/vgpu_mgr.h
+@@ -36,6 +36,19 @@ struct nvidia_vgpu_info {
+ 	struct nvidia_vgpu_type *vgpu_type;
+ };
+ 
++/**
++ * struct nvidia_vgpu_chid - per-vGPU channel IDs
++ *
++ * @chid_offset: beginning offset of channel IDs
++ * @num_chid: number of allocated channel IDs
++ * @num_plugin_channels: number of channels for vGPU manager
++ */
++struct nvidia_vgpu_chid {
++	u32 chid_offset;
++	u32 num_chid;
++	u32 num_plugin_channels;
++};
 +
-+Enumeration:
+ /**
+  * struct nvidia_vgpu - per-vGPU state
+  *
+@@ -45,6 +58,7 @@ struct nvidia_vgpu_info {
+  * @vgpu_list: list node to the vGPU list
+  * @info: vGPU info
+  * @vgpu_mgr: pointer to vGPU manager
++ * @chid: vGPU channel IDs
+  */
+ struct nvidia_vgpu {
+ 	/* Per-vGPU lock */
+@@ -55,6 +69,8 @@ struct nvidia_vgpu {
+ 
+ 	struct nvidia_vgpu_info info;
+ 	struct nvidia_vgpu_mgr *vgpu_mgr;
 +
-+- The total FB memory size of the current GPU.
-+- The available channel amount.
-+- The complete engine bitmap.
++	struct nvidia_vgpu_chid chid;
+ };
+ 
+ /**
+@@ -72,6 +88,8 @@ struct nvidia_vgpu {
+  * @gsp_client: the GSP client
+  * @vgpu_types: installed vGPU types
+  * @num_vgpu_types: number of installed vGPU types
++ * @use_alloc_bitmap: use chid allocator for the PF driver doesn't support chid allocation
++ * @chid_alloc_bitmap: chid allocator bitmap
+  */
+ struct nvidia_vgpu_mgr {
+ 	struct kref refcount;
+@@ -92,6 +110,9 @@ struct nvidia_vgpu_mgr {
+ 	struct nvidia_vgpu_gsp_client gsp_client;
+ 	struct nvidia_vgpu_type *vgpu_types;
+ 	unsigned int num_vgpu_types;
 +
-+GSP RPC manipulation:
-+
-+- Allocate/de-allocate a GSP client.
-+- Get the handle of a GSP client.
-+- Allocate/de-allocate RM control.
-+- Issue RM controls.
-+
-+Channel ID Management:
-+
-+The NVIDIA vGPU VFIO driver expects the core driver manages a reserved
-+channel pool that is only meant for vGPU. Other coponents in the core
-+driver should have the knowledge about the channel ID from the reserved
-+pool is for vGPUs. E.g. reporting channel fault and events to the VFIO
-+driver. It requires the following functions:
-+
-+- Allocate channel IDs from the reserved pool.
-+- Free the channel IDs.
-+
-+FB Memory Management:
-+
-+- Allocate the FB memory by an allocation info.
-+  The allocation info contains the requirements from the VFIO driver
-+  besides size. E.g. fixed offset allocation, alignment requirements.
-+- Free the FB memory.
-+
-+FB Memory Mapping:
-+
-+- Map the FB memory to BAR1 and a channel VMM by a mapping info
-+  The mapping info contains the requirements from the VFIO driver. E.g.
-+  start offset to map the allocated FB memory, map size, huge page,
-+  special memory kind.
-+- Unmap the FB memory.
-+
-+CE Workload Submission:
-+
-+- CE channel allocation/deallocation.
-+- Pushbuf manipulation.
-+
-+Event forwarding:
-+- Nonstall event.
-+- SRIOV configuration event.
-+- Core driver unbinding event.
-+
-+vGPU types
-+==========
-+
-+Each type of vGPU is designed to meet specific requirements, from
-+supporting multiple users with demanding graphics applications to
-+powering AI workloads in virtualized environments.
-+
-+To create a vGPU associated with a vGPU type, the vGPU type blobs are
-+required to be uploaded to GSP firmware. A vGPU metadata file is
-+introduced to host the vGPU type blobs and will be loaded by the VFIO
-+driver from the userspace when loading.
-+
-+The vGPU metafile can be found at::
-+
-+        https://github.com/zhiwang-nvidia/vgpu-tools/tree/metadata
-+
-+
-+Create vGPUs
-+============
-+
-+The VFs can be enabled via (for example 2 VFs)::
-+
-+        echo 2 > /sys/bus/pci/devices/0000\:c1\:00.0/sriov_numvfs
-+
-+After the VFIO driver is loaded. A sysfs interface is exposed to select
-+the vGPU types::
-+
-+        cat /sys/devices/pci0000:3a/0000:3a:00.0/0000:3b:00.0/0000:3c:10.0/0000:3e:00.5/nvidia/creatable_vgpu_types
-+        ID    : vGPU Name
-+        941   : NVIDIA RTX6000-Ada-1Q
-+        942   : NVIDIA RTX6000-Ada-2Q
-+        943   : NVIDIA RTX6000-Ada-3Q
-+        944   : NVIDIA RTX6000-Ada-4Q
-+        945   : NVIDIA RTX6000-Ada-6Q
-+        946   : NVIDIA RTX6000-Ada-8Q
-+        947   : NVIDIA RTX6000-Ada-12Q
-+        948   : NVIDIA RTX6000-Ada-16Q
-+        949   : NVIDIA RTX6000-Ada-24Q
-+        950   : NVIDIA RTX6000-Ada-48Q
-+
-+A valid vGPU type must be chosen for the VF before using the VFIO device::
-+
-+        $ echo 941 > /sys/bus/pci/devices/0000\:c1\:00.4/nvidia/current_vgpu_type
-+
-+To de-select the vGPU type::
-+
-+        $ echo 0 > /sys/bus/pci/devices/0000\:c1\:00.4/nvidia/current_vgpu_type
-+
-+Once the vGPU is select, the VFIO device is ready to be used by QEMU. The
-+VFIO device must be closed before the user can de-select the vGPU type.
-+
-+References
-+==========
-+
-+1. See Documentation/driver-api/vfio.rst for more information on VFIO.
++	bool use_chid_alloc_bitmap;
++	void *chid_alloc_bitmap;
+ };
+ 
+ #define nvidia_vgpu_mgr_for_each_vgpu(vgpu, vgpu_mgr) \
 -- 
 2.34.1
 
