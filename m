@@ -1,66 +1,66 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92D32D063D
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8E52D12ED
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973516; cv=none; b=s2YW9j/TeJ4wQtY/oo9HHi+xg+1nHF9qLhBLYlql6fRhJ1F3OTGBctPimLdg9yDbJua6NRAQrm165ZRCtFfpFUJZftsmndY5RlUhyr+0T+kfbcAyJXxqHLhmJCcaM0voY8dGi7qwb7J1yQQnjTg58i2jXFvIhvgWPI8JMA+iq3k=
+	t=1756973518; cv=none; b=glrSEyQ754MOaAMq1McGMhc2xXY/SmpEhabiG+joYEzOC4EIT/ZMIDa9Wrgm8t7H4uifXB01rbgPKy2RnrEtQWu3tIBgMNysktg7nelhI6ynDZCbvVLR7q7Zg/B2ib9aPTUT0rJx7c3pFiBlpecb7xTCJopJtdRtsUFD5Zw2ySI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973516; c=relaxed/simple;
-	bh=v3TMa813Yj8uUnsyCi4vONQeljxDx+5CJiqhJz1wkiY=;
+	s=arc-20240116; t=1756973518; c=relaxed/simple;
+	bh=Qm+nKayGtipuaRlw7oPzYnxjuZME3YPcTOffdEwhJD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ou56hXHopgAiw1pgBMpheV7tgmaR7Y0KpJJZHbjJyCvfbzTb5KcfzarQtvsdEtxpe0SkhVZK8fwfhqLW5X98yMwpSS4SYmdszdhzadZrP8EM2GeCD1vnIWvQIDrlXVAJ+DlA82nsswE8FL0nPKnZYeHL7xq7dIQgw/WkBrNmA50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Oh4FVseq; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version:Content-Type; b=Lh2jC5YvCEmV34KZWYcMJxxnK+rB9sXF49TvcwzFThV+sc7BkRSujnDtVuuHcAQxh0LovB4sl+fLSN/2mBEprdFZ6YTcE/fBRW/we9CliFltMp5riKMSuHuYz1yzHRc6E4d4uyZBxpeLXv1EpVI64EEw6JwOT9L0MD93KjAyiyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KAeavJqp; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Oh4FVseq"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afeec747e60so137366566b.0
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KAeavJqp"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61ce4c32a36so1285773a12.3
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973513; x=1757578313; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973515; x=1757578315; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qtgYk8tL09X7evEehKpRVdQ+nFs0oLJoTM08eLIHHIc=;
-        b=Oh4FVseqhFDnvE0IIxjFIJ63lzJ9XNPuOlJ+/y0Oli+uFvk6BKIpiHi5RUMNOMjOAR
-         Zt2h8sw9krbpwPo++8DlOHrcGIt6u7lk9jwfmHpuXQDLeYloWGUi2YY/oBZTHn+uThQf
-         ioEk5761m3tGWCIOgwRyPJC8HsAepf8iR5ecH4kw98fpXSMCzONMoCkBs2r+klWKf7rH
-         Ot+DMFb9RgAnm8LlJugEGk7zxkLZ0Ly9FD1WB0OOCEO5GpDQEq1i1uREdFd22XtSUX2j
-         3QC+rExUvIKtCnQ7VO45DfzebZvfnrF7uo+8ifuj6b5w/elsYQXM9nWHCIy8sYa0CWaM
-         MyCQ==
+        bh=KKf3LX74QuDicrn7aIOxjy5IHw4dOUBMKNzlJ8lYJDM=;
+        b=KAeavJqpCjbiAH74z0Q6JHV2SNhuiZbmJldEgyIPXuPQ1XlIFdMuxkqTf7g2u6acZl
+         EVQb9G6XnPLVkPW8BA9UeW+neCJY2PcUeUnBsSeC2NFNK32q9xsFSfYDAETEkIf93192
+         CYPuxiCaRAKFx9gpBNn5PKy/+SN22yUtJrP8O4TrcjXLHz5Z6gCWRBCn50H31jjL9TyD
+         qDXwKeBh/X9CkXSNeRg1TvM6qv0zwiSpnAsUXHg1L5RuzN0EKTuBZq17+nx/9YOt+P7d
+         10U99MvNfHciDTTCdKDRqCj6dVJTkSjk+yWNAbf0xMO4/ZsKaJORV77njr/+1Lks6W9P
+         tNmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973513; x=1757578313;
+        d=1e100.net; s=20230601; t=1756973515; x=1757578315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qtgYk8tL09X7evEehKpRVdQ+nFs0oLJoTM08eLIHHIc=;
-        b=c+fRjvr9pDu44sfIZF/+pEOCEqDLF2+WtolpuLcHHKKUQdUis8jkReAxw8ENHfm/Gm
-         IjfpFk6QxdlTHRG69qtESpoHfR2QpQ6uImDPCODRHxnCXDObihn/2qyVh0CNG0YseC7w
-         N6a+ChJ/L1VgTS9GzFvxpq46fu7/ehZ5oxEUkfpKoWiox9F8/xUQsEU/3BfVYEy+/pDN
-         c9REJuGplKDfjM1An7+D+Fk6bbZAumzQnkoq6nI/f7TvPuCrbnWI0pWiCTIo2nOLvkdA
-         9FCLksaLl9FdbF5c7ThZsQRse9rKtlje0Ek0lZAYiFZV6dzitSLxtciM7HsEVNch7wPA
-         FjSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbE//YsNZxYlVvDaPDYfC/6tk330GN0WA1ULCiEO8PwjSlQE8YYYMmfTMDJ3BHd0oAG7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtyqKqW5vtb6U/JAKmevNRu26qVEW4RkA3Exe2EpBuCDY/AAKx
-	JW7j/6p3Ikok7JCfZcCbHeft8xh0ZDR324mITOQd0HfYWfmcjnVV0Ld7s/lU4J/sgi4=
-X-Gm-Gg: ASbGncv0VudQrN35cskgAsAY1d8LgIAiozxonPzF13gMo6XBUSoLbYIfQa5QdSp6/ld
-	o2j+Zt3UcHSPUYfymPjt1DxdV2L10yH4le0CeR50Q2mmaLid4ObKTApInTJeAfIpUHEzj50IlCy
-	ZOhsW3Nat+NYvs2BvDl+Ey21+dfNbk2MbiGTLYE1ZxXYYzbM265C33XBHeQ0mItb/12AOVHDydm
-	8/Gb2fI/m83zCfmDGFwX1qzx9EXqDmZgUthhcJgrQTlCx2vvWA/rMTJv4JycJ/fWU3MUOeE2gUS
-	5z+2u77WTYcDjE/LBisfdjZ/ubKpMjfYdfWHNHWCQdG1WSmexS0mzpQN3c1fODWSQRe2WNFQUi/
-	BAP2hSiF5Y50iiCVVy4ce956F5AScDcz9HFLfxUY9BjBH
-X-Google-Smtp-Source: AGHT+IGYskyBYR3n5Q9uI+8AP0+1GXixN328LvmrggmBgoiP7mVHjL06ko8pn8Trl6ZXEys7FI6f0Q==
-X-Received: by 2002:a17:907:daa:b0:b04:8420:b6ef with SMTP id a640c23a62f3a-b048420c5b0mr91846366b.61.1756973513129;
-        Thu, 04 Sep 2025 01:11:53 -0700 (PDT)
+        bh=KKf3LX74QuDicrn7aIOxjy5IHw4dOUBMKNzlJ8lYJDM=;
+        b=mtNNBqnBw8NNuuS/KQ3qmlo1gQyCrsl0AUigy/uJdQM4f5uqln6orEP68S7xtjHAtD
+         X2Uld6b4cs6YYsk76bkSNX494gUV4syxlpNV0cjmX+EXigINv1pTf5AiIni0zklHswRT
+         YPe2MawX0J4JVasP0kYVeRzlwb4xV/6ND39dGc/k4WLacMz4/XX59n8NgT8PaeWXwKfm
+         7BLZHxXegr8RojFJqTm9XLoB8dtP1UYmNR3kbA7upP5kK7oLfwHWZ+dpnCpJC3T+gZV2
+         PhkU0bOe16MbWMJPMDnW2R9+6lvF8Gs5RAqMYyNh8aX7SCYWePLmZ+VupNDZZUnIHMmP
+         mb/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWX63rpyjJI8Y0Gduwx2gpOMXo6ex3nsSMJjTf2DZHC030kqSB4yustfkqKPOIWChv9xhY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG0h148LH2qVoRh+th8eZHCS8GwvbWDhVDgOD4/3t4gIazvHl/
+	Ha9Fzq90KprodcIb2BBtu9vVs/vRABqh7aMXvydy/1X28TtNqZSHH7MkwnmkmuIbCAw=
+X-Gm-Gg: ASbGnctjBVHAnoxf4kaZkzULDv97O3ryGNsWpSsU8Z+M2eibcPSFnxoe3D037L8A6OO
+	DuDqyLKeKAL2mqNInvmHYlOANqrMklEC2OyyTpbzoaoGBdQ/z7OTzREQ7wgDLOV461x36xYgQbe
+	4tysesi6pQr6xyeTh91m9OcfV8LHw7oL5NNr80ASqf+gQa9pzRFoIQuJDgsc1FLS+BmV15GduSk
+	e4CCU00IMYxM/S4WuRdYSuJsk+th1kIIgpnyjYHzMsHcJpDdkah54eYBLDNB8KHrGVMguXIh5JH
+	uzLCR4CU327irMCtaw/Nz2P8k2ILZTKdUBCG/DIJnXN9IQ+39NzbdqQ9UjLHLKdfPH5fLobKZ6P
+	bFAm8n5jwVlOQsg23njbDMj6PEIOcUUjYiA==
+X-Google-Smtp-Source: AGHT+IGx8ZJxjps5cff/PZm9JBRuTzbh2ffGQw/tl1lRzj/lZpIUq6TJ0w2xsdrM6qRT2xpIi5PODA==
+X-Received: by 2002:a05:6402:1e8c:b0:620:894c:656c with SMTP id 4fb4d7f45d1cf-620894c7c6fmr30028a12.29.1756973515184;
+        Thu, 04 Sep 2025 01:11:55 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b017e4b9ed7sm1280476466b.90.2025.09.04.01.11.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc5622f0sm13427169a12.51.2025.09.04.01.11.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:11:49 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 02D196000B;
-	Thu, 04 Sep 2025 09:11:32 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id A1FB260193;
+	Thu, 04 Sep 2025 09:11:33 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -146,11 +146,10 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	John Levon <john.levon@nutanix.com>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 031/281] tests/functional: Move s390x tests into target-specific folders
-Date: Thu,  4 Sep 2025 09:07:05 +0100
-Message-ID: <20250904081128.1942269-32-alex.bennee@linaro.org>
+	John Levon <john.levon@nutanix.com>
+Subject: [PATCH v2 045/281] rust/qemu-api-macros: make derive(Object) friendly when missing parent
+Date: Thu,  4 Sep 2025 09:07:19 +0100
+Message-ID: <20250904081128.1942269-46-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -163,133 +162,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Huth <thuth@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The tests/functional folder has become quite crowded, thus move the
-s390x tests into a target-specific subfolder.
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-20-thuth@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Link: https://lore.kernel.org/r/20250826133132.4064478-5-marcandre.lureau@redhat.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS                                         |  6 +++---
- tests/functional/meson.build                        | 13 +------------
- tests/functional/s390x/meson.build                  | 13 +++++++++++++
- .../test_ccw_virtio.py}                             |  0
- .../test_pxelinux.py}                               |  0
- .../{test_s390x_replay.py => s390x/test_replay.py}  |  0
- .../test_topology.py}                               |  0
- .../{test_s390x_tuxrun.py => s390x/test_tuxrun.py}  |  0
- 8 files changed, 17 insertions(+), 15 deletions(-)
- create mode 100644 tests/functional/s390x/meson.build
- rename tests/functional/{test_s390x_ccw_virtio.py => s390x/test_ccw_virtio.py} (100%)
- rename tests/functional/{test_s390x_pxelinux.py => s390x/test_pxelinux.py} (100%)
- rename tests/functional/{test_s390x_replay.py => s390x/test_replay.py} (100%)
- rename tests/functional/{test_s390x_topology.py => s390x/test_topology.py} (100%)
- rename tests/functional/{test_s390x_tuxrun.py => s390x/test_tuxrun.py} (100%)
+ rust/qemu-api-macros/src/lib.rs | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c6410a5f5fd..4a55a20f6a5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1797,7 +1797,7 @@ S: Supported
- F: hw/s390x/
- F: include/hw/s390x/
- F: configs/devices/s390x-softmmu/default.mak
--F: tests/functional/test_s390x_*
-+F: tests/functional/s390x
- T: git https://github.com/borntraeger/qemu.git s390-next
- L: qemu-s390x@nongnu.org
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index b525d89c09e..a6147418891 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -85,7 +85,15 @@ fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+     is_c_repr(&input, "#[derive(Object)]")?;
  
-@@ -1811,7 +1811,7 @@ F: hw/s390x/ipl.*
- F: pc-bios/s390-ccw/
- F: pc-bios/s390-ccw.img
- F: docs/devel/s390-dasd-ipl.rst
--F: tests/functional/test_s390x_pxelinux.py
-+F: tests/functional/s390x/test_pxelinux.py
- T: git https://github.com/borntraeger/qemu.git s390-next
- L: qemu-s390x@nongnu.org
+     let name = &input.ident;
+-    let parent = &get_fields(&input, "#[derive(Object)]")?[0].ident;
++    let parent = &get_fields(&input, "#[derive(Object)]")?
++        .get(0)
++        .ok_or_else(|| {
++            Error::new(
++                input.ident.span(),
++                "#[derive(Object)] requires a parent field",
++            )
++        })?
++        .ident;
  
-@@ -1865,7 +1865,7 @@ F: hw/s390x/cpu-topology.c
- F: target/s390x/kvm/stsi-topology.c
- F: docs/devel/s390-cpu-topology.rst
- F: docs/system/s390x/cpu-topology.rst
--F: tests/functional/test_s390x_topology.py
-+F: tests/functional/s390x/test_topology.py
- 
- X86 Machines
- ------------
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 7e7a6aa0c93..abaa4e00fca 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -29,10 +29,7 @@ subdir('ppc64')
- subdir('riscv32')
- subdir('riscv64')
- subdir('rx')
--
--test_s390x_timeouts = {
--  's390x_ccw_virtio' : 420,
--}
-+subdir('s390x')
- 
- test_sh4_timeouts = {
-   'sh4_tuxrun' : 240,
-@@ -59,14 +56,6 @@ tests_generic_linuxuser = [
- tests_generic_bsduser = [
- ]
- 
--tests_s390x_system_thorough = [
--  's390x_ccw_virtio',
--  's390x_pxelinux',
--  's390x_replay',
--  's390x_topology',
--  's390x_tuxrun',
--]
--
- tests_sh4_system_thorough = [
-   'sh4_r2d',
-   'sh4_tuxrun',
-diff --git a/tests/functional/s390x/meson.build b/tests/functional/s390x/meson.build
-new file mode 100644
-index 00000000000..030b116039c
---- /dev/null
-+++ b/tests/functional/s390x/meson.build
-@@ -0,0 +1,13 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+test_s390x_timeouts = {
-+  'ccw_virtio' : 420,
-+}
-+
-+tests_s390x_system_thorough = [
-+  'ccw_virtio',
-+  'pxelinux',
-+  'replay',
-+  'topology',
-+  'tuxrun',
-+]
-diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional/s390x/test_ccw_virtio.py
-similarity index 100%
-rename from tests/functional/test_s390x_ccw_virtio.py
-rename to tests/functional/s390x/test_ccw_virtio.py
-diff --git a/tests/functional/test_s390x_pxelinux.py b/tests/functional/s390x/test_pxelinux.py
-similarity index 100%
-rename from tests/functional/test_s390x_pxelinux.py
-rename to tests/functional/s390x/test_pxelinux.py
-diff --git a/tests/functional/test_s390x_replay.py b/tests/functional/s390x/test_replay.py
-similarity index 100%
-rename from tests/functional/test_s390x_replay.py
-rename to tests/functional/s390x/test_replay.py
-diff --git a/tests/functional/test_s390x_topology.py b/tests/functional/s390x/test_topology.py
-similarity index 100%
-rename from tests/functional/test_s390x_topology.py
-rename to tests/functional/s390x/test_topology.py
-diff --git a/tests/functional/test_s390x_tuxrun.py b/tests/functional/s390x/test_tuxrun.py
-similarity index 100%
-rename from tests/functional/test_s390x_tuxrun.py
-rename to tests/functional/s390x/test_tuxrun.py
+     Ok(quote! {
+         ::qemu_api::assert_field_type!(#name, #parent,
 -- 
 2.47.2
 
