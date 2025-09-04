@@ -1,66 +1,66 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623D22C0F81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C3E2C11CF
 	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973923; cv=none; b=QoY1+//GJMJ4LEMb7SjwLaDH7++AROlwMUHwDupg/hmFNa6NRIMXJvr4cwXGJ34shhr1rZdiPwDF5tAzQtOx+OBxokghOXSOEzMlUr8StfDeSYJiJP6UHS7nVi//s+sS5q5g1Pgw/ZMoropA2kxKwDbcMdOzwFlq2NNYK18qOCk=
+	t=1756973924; cv=none; b=nvdZaSey6PygaZSnvyDYdYiZf5hlPjMiMS3W01SXlsm5MCbJuYp/LSqc6NCETBWovA/HWAM7EQ3EVY2w1sQRySqgTrx/YJnqlnq+gCsUWGcZ2sO1p+ZXBsdzbe/qLiP7thXrEwdp/D5YTSq4GwEOnQbzr02Gh55pQE6+a/Gsrkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973923; c=relaxed/simple;
-	bh=6A08BUh3fCUxF9R841eS/4IGV0EM/Q1EsI9U9KOjmBw=;
+	s=arc-20240116; t=1756973924; c=relaxed/simple;
+	bh=LsXsjK1O8FAE242wbc0nS2I4z+31MWMil6kVUyeBEqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv6Udy0IECA5HX5hwC9IlsBRcyS5BFHKjWor+m2EN2gZ1gBXdPmEco4nkcxUPz7Evotvy6S+1O9Gu0LF8fd/Y4yFDfXQWYD/ojt/z9sG+kylvriUEZIMntNR1MGK/E5wraGO6M35MXrR66P+CAjdhOjI3AX8eqn+mk9m7MUxO9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ruv6EZOH; arc=none smtp.client-ip=209.85.218.46
+	 MIME-Version:Content-Type; b=rd/Xwlkv19u+w8QnKWu4oZDa5fbmqM1qxYL7SSH36VHCJxYe+msKmZ+YNs/6MAMPr7RbvOXAhxnsMbrQ5GdBrc+qjh/ZUw9IAwRqR0FVFcioLYPCEFsQKLV4vokpn/4XuHsF2zUNNq7mub3HVxWhQEYarvWukR+UeE4x2J0zxug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uZ4sadHs; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ruv6EZOH"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7ace3baso138909966b.3
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uZ4sadHs"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb7ace3baso138913566b.3
         for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1756973920; x=1757578720; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+88w9AQZ9cLJwlirAZW/BDB9U/6ab+UNG3qEc9GZaw4=;
-        b=ruv6EZOHaeOk9Psq9DBH/WqgDKgmqOgq7IfpQUqbxEXraDsE+vtSNW7X3UK2rgi6AZ
-         6jNDOi6DinwAQvhSmj7+FYJG/61yvw6DrlYALEfWJR1FxOVLFygNrKrUw3i5ghJaDYp+
-         C8EwYm8E1YLDGDc5i+jgTQExrnQnoxoT90iYQIz8Z9dfLESiO/3XB+/UOpvZBriPb0Im
-         qC517weeDXLlHOUuIZEuVsEAAcW3sNT8nKG/35N9QAvL2vsd/US4pt6LlleQjcN8F2Gx
-         CAEC7mHDvSGbmJODhDBGiWb+lnAMwrVCW6l79BPB4CWln/ZGnR6LsEhsWwK8qGdNUkRG
-         Kyfg==
+        bh=ToC1ebEyvx+viBNvPFVlKTy11Wh6Rf+bOVhd1Ayq6zY=;
+        b=uZ4sadHsj7HkkHpc3SJ3GDhlLmz2bEHGwFd8OiiE+C86Ct17GrNQbIczcSCyE8EjND
+         v6YCA+N1vXmfeFbdX0pbFDgTvfDnB0/1KdgjofuKZFNqy34JWol5Lf0eqnyC+7XUBw29
+         Fwng7FX86d1Qs8ptPH4xOf3qaAdEt2auHld7FpT3uIJoE+qRSxGpi8N1A6z5fI0Q51zW
+         hXG0Zg2XCqTLdl52DNGnmWvodPbMxL9llg4PxB6emS9kBATzTJbX7mQivQUHLtaGtlAb
+         931TuJCo3LVz8bxtMTzom5Q2ttmdRArPRhf1Fw+sg0PxtJtHK90R5sOZ4xy49U2TEwY7
+         mPaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1756973920; x=1757578720;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+88w9AQZ9cLJwlirAZW/BDB9U/6ab+UNG3qEc9GZaw4=;
-        b=CYgAowNgcb7Bji4au7cUapKD5lBAGzgINomwWeA9pst7jCuhw28+BLBfKbpFsT9Cj+
-         /F7+ue9HSToeH3MaDGDt4s4rptucKoL2MwwmrQDorBwum7PXkY6oVX5eNiSIi9OvJ/JE
-         hZOEAfy63pjPYgZV2DuFl1A6FCCl75bbewV16clgN1uRWpcPfAyFbaPzqjth1fL844Yt
-         DNZIX1cY/JioRrcnjSoBANPRbs3HeeXh4Fe/Uftw7IxCw1p3322oYxuAvZrC1LCh/KAu
-         FMmAW0/ku0o8GjUR68VtKhq1rfEDDHSQ1BvVervpLjWRLQYvj+QvROcA6WG1AZRmM5/l
-         SozA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVsyzQGeFToS0nLVCiUeYI3TTfM+17MeNUNwtSqBO+3+/RuR/yyJmb/IjLYxndXqq2jfo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywv2SEy0nvbkgtrbRNcB01/6Z1pGP9fCEXMVNa+NLNhgxs+tEGv
-	MunhKfXkP3kTlmQjDzZ5ERBsZ2+hwdp80vpaqoy+hu1xEqpBwLZ2iMD8aM0vmfLhj+0=
-X-Gm-Gg: ASbGncvH25g6JIGTNkvrWSmnipx5XywMBOheLiTutrv14eLzZM4eQ0Ys/yzG/3x1pZU
-	3V7ut9Wr5oft0qo9MXrMwlBTz7FOyjVeLYC0mBSBojwwFUUhoIX0m2TrgIrgHXQvC/Vc6gVOQ0B
-	GhZ4dCVEe9Cdj+Hg66qTjtqyH22WfTNppNeZJzUp6dx6m9JOdR9Fl1TNWxoEqlscVq4cvHnbOOV
-	5FO7Y9Fg5dvilL8Ns9NxAG/LcoapUPlH5dEZ8EJWPd4MKiFem1PXU7Tcp/p4nHqsl4UPb+C1GUg
-	xVAx2JUREJpsGY9o01MNat+uZR0/rHAP/ms2CRHgzpgsBd7AsOkOndkndGSlsWQicZeZA6z9W0o
-	kGMDzxg3X2CUl78Ruep1feqc=
-X-Google-Smtp-Source: AGHT+IGxjVBN0FQryOFHW7NPMAzsYYrdCtTTvqWBsGarhpRXGfdwEbKrpxErVnpLvup6bLCipLULiA==
-X-Received: by 2002:a17:906:4fca:b0:b04:6546:347e with SMTP id a640c23a62f3a-b0465463a5bmr592167766b.51.1756973919569;
-        Thu, 04 Sep 2025 01:18:39 -0700 (PDT)
+        bh=ToC1ebEyvx+viBNvPFVlKTy11Wh6Rf+bOVhd1Ayq6zY=;
+        b=LGB172lfhJuxMNL4aHi8E7UvQCPL4CZbV+pJXLc2jJmlN+zeAgiyGIioO/a+Jxd9UQ
+         9T+HQmbzGCGKObQ9I1twu1lQ7QDbUKD1J5NUjQHU1euWlZTYOlsl3vXgdBqMPrb/uLWh
+         /h8W9ylrJsUOeoe/1Abli0XPoMGO7OCFEXiOAfaCMtj3xxBgbcyldQlvsYcu7HvcoVuo
+         ysRlvFZDhFW2ynSHhw1UFCFHh8x2D36nMua/NJZCh1yX9DZEsvtXyUSBIxfPd5jo04+S
+         0FnhTMfXTayIT4iUzfOLDaKAXXCINm47zXBrlp9Kul9F2gPKOaJP1JMqW03qOqxyodZb
+         RQLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUsv5p4gUaEBXUwqWiCcRib3fiphD8f65WWsPFCiHqouMZ1VyAfS/zXl6MqXrRsaS5Ybo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+I6LgVFb5RJQerrYuFhtsM65nlhqrBVcQqbib9vBM3dR5slVt
+	uHV+kNuYQEk4K5LkzS1YLW1cZBBhidL6PvBec4BhRWWdXJiNT58PEq2iGKXW9i4vevw=
+X-Gm-Gg: ASbGnct5mreZeKg01yq+u6j+F7BNa2XkPjEsrWtmWoRaHGQzyPS/oeCP04Bed7VNi3L
+	jFOS8rcQI1vVk0aHopAkPvii6GAm6KGSuffX1hvyK/T65aUvVqYMW2SkHkaDIW3d05HRBYS4bYW
+	aE3uIPcUzjVKMhZFNst93PBUTkOMGlHkiL3cPSB799NBu0N6CnPq9jexX64bZKCNmMXsume0NKb
+	8lXNv3s+wHt7S/0/gyytHxt13LBHptJiNMWWb2PkyrsY3pwjiqHtn8Nfu9LhoHrAYhIfdOwQ1KK
+	LwfUrfRyh4oeL0y50SE7gUbs51y1YmdjEQxUUwJpVNxqCskOiWhZgBubYCQ3mU6A3R328+w8J7e
+	GO07mwa3bAyrVTVEi/Tn9/JaXQFIs6VgbhQ==
+X-Google-Smtp-Source: AGHT+IHlrSAwTwlNPjt0KEhJGII6rpJIpVADSO6/94IfYv3scTnJu8lfG5J1x+SaVAePVJ42+HN21Q==
+X-Received: by 2002:a17:907:1ca8:b0:aff:321:c31d with SMTP id a640c23a62f3a-b01d8a277c5mr1841124666b.7.1756973920286;
+        Thu, 04 Sep 2025 01:18:40 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0425ce98f1sm977746666b.67.2025.09.04.01.18.36
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b02a090339esm1254356466b.37.2025.09.04.01.18.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:18:37 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 5504A60AF7;
-	Thu, 04 Sep 2025 09:11:39 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 595EA5FA5C;
+	Thu, 04 Sep 2025 09:11:30 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -146,10 +146,11 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 087/281] linux-user/riscv: Create init_main_thread
-Date: Thu,  4 Sep 2025 09:08:01 +0100
-Message-ID: <20250904081128.1942269-88-alex.bennee@linaro.org>
+	John Levon <john.levon@nutanix.com>,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 018/281] tests/functional: Move alpha tests into architecture specific folder
+Date: Thu,  4 Sep 2025 09:06:52 +0100
+Message-ID: <20250904081128.1942269-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -159,61 +160,109 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Merge init_thread and target_cpu_copy_regs.
-There's no point going through a target_pt_regs intermediate.
+The tests/functional folder has become quite crowded already, some
+restructuring would be helpful here. Thus move the alpha tests into
+a target-specific subfolder.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250819112403.432587-7-thuth@redhat.com>
 ---
- linux-user/elfload.c        |  7 +------
- linux-user/riscv/cpu_loop.c | 10 ++++------
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ MAINTAINERS                                            |  3 ++-
+ tests/functional/alpha/meson.build                     | 10 ++++++++++
+ .../{test_alpha_clipper.py => alpha/test_clipper.py}   |  0
+ .../test_migration.py}                                 |  0
+ .../{test_alpha_replay.py => alpha/test_replay.py}     |  0
+ tests/functional/meson.build                           | 10 +---------
+ 6 files changed, 13 insertions(+), 10 deletions(-)
+ create mode 100644 tests/functional/alpha/meson.build
+ rename tests/functional/{test_alpha_clipper.py => alpha/test_clipper.py} (100%)
+ rename tests/functional/{test_alpha_migration.py => alpha/test_migration.py} (100%)
+ rename tests/functional/{test_alpha_replay.py => alpha/test_replay.py} (100%)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 16aa09214e8..556f11d720d 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -849,12 +849,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define VDSO_HEADER "vdso-64.c.inc"
- #endif
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a2a5ccea7b6..8115aae6183 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -189,6 +189,7 @@ M: Richard Henderson <richard.henderson@linaro.org>
+ S: Maintained
+ F: target/alpha/
+ F: tests/tcg/alpha/
++F: tests/functional/alpha/
+ F: disas/alpha.c
  
--static inline void init_thread(struct target_pt_regs *regs,
--                               struct image_info *infop)
--{
--    regs->sepc = infop->entry;
--    regs->sp = infop->start_stack;
--}
-+#define HAVE_INIT_MAIN_THREAD
+ ARM TCG CPUs
+@@ -656,7 +657,7 @@ S: Maintained
+ F: hw/alpha/
+ F: hw/isa/smc37c669-superio.c
+ F: tests/tcg/alpha/system/
+-F: tests/functional/test_alpha_clipper.py
++F: tests/functional/alpha/test_clipper.py
  
- #define ELF_EXEC_PAGESIZE 4096
+ ARM Machines
+ ------------
+diff --git a/tests/functional/alpha/meson.build b/tests/functional/alpha/meson.build
+new file mode 100644
+index 00000000000..26a5b3f2e4b
+--- /dev/null
++++ b/tests/functional/alpha/meson.build
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++tests_alpha_system_quick = [
++  'migration',
++]
++
++tests_alpha_system_thorough = [
++  'clipper',
++  'replay',
++]
+diff --git a/tests/functional/test_alpha_clipper.py b/tests/functional/alpha/test_clipper.py
+similarity index 100%
+rename from tests/functional/test_alpha_clipper.py
+rename to tests/functional/alpha/test_clipper.py
+diff --git a/tests/functional/test_alpha_migration.py b/tests/functional/alpha/test_migration.py
+similarity index 100%
+rename from tests/functional/test_alpha_migration.py
+rename to tests/functional/alpha/test_migration.py
+diff --git a/tests/functional/test_alpha_replay.py b/tests/functional/alpha/test_replay.py
+similarity index 100%
+rename from tests/functional/test_alpha_replay.py
+rename to tests/functional/alpha/test_replay.py
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 9cb6325360f..a7f8c88a078 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -10,6 +10,7 @@ if get_option('tcg_interpreter')
+ endif
  
-diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
-index 2dd30c7b288..b3162815320 100644
---- a/linux-user/riscv/cpu_loop.c
-+++ b/linux-user/riscv/cpu_loop.c
-@@ -94,14 +94,12 @@ void cpu_loop(CPURISCVState *env)
-     }
- }
+ subdir('aarch64')
++subdir('alpha')
  
--void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-+void init_main_thread(CPUState *cs, struct image_info *info)
- {
--    CPUState *cpu = env_cpu(env);
--    TaskState *ts = get_task_state(cpu);
--    struct image_info *info = ts->info;
-+    CPUArchState *env = cpu_env(cs);
+ test_arm_timeouts = {
+   'arm_aspeed_palmetto' : 120,
+@@ -96,15 +97,6 @@ tests_generic_linuxuser = [
+ tests_generic_bsduser = [
+ ]
  
--    env->pc = regs->sepc;
--    env->gpr[xSP] = regs->sp;
-+    env->pc = info->entry;
-+    env->gpr[xSP] = info->start_stack;
-     env->elf_flags = info->elf_flags;
- 
-     if ((env->misa_ext & RVE) && !(env->elf_flags & EF_RISCV_RVE)) {
+-tests_alpha_system_quick = [
+-  'alpha_migration',
+-]
+-
+-tests_alpha_system_thorough = [
+-  'alpha_clipper',
+-  'alpha_replay',
+-]
+-
+ tests_arm_system_quick = [
+   'arm_migration',
+ ]
 -- 
 2.47.2
 
