@@ -1,65 +1,65 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4882C21D5
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78882C1780
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973507; cv=none; b=j5+rzpbO1qqnRjSo6w+TjlRFrHdlYmrAOE6PC0LTMLoFJIIwrrpYrOmdmwDrztDLLH0aw6CjloCLFq1tXisz35SYIPmuVSuQ1c+9rR8SkuAvFGhx/RnpUxciOtX+m3PTmFGjdXdCpkunLCFwldpaQnrAXUG0qIC1WGshs775jy4=
+	t=1756973511; cv=none; b=VqPfOTtcp2zug8r1hRsQNswqaBF9ydTpJDHsdunSOhXWpQt9JoixaCRKXyDZGnOOcxFvJUx/xcw6AH9i13IPqwMO9Lfg+LekI5oDoKeXFkUtllxHKr0CB/VX25tx5UVqdqBFk7cYqTN0sHqmtnpdogJBFVc1vo/VFSDZ2Z2caf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973507; c=relaxed/simple;
-	bh=BQMNJSFYDOADxPmjE7KhCHj8ong/Jy5m8lGgFICBako=;
+	s=arc-20240116; t=1756973511; c=relaxed/simple;
+	bh=SWpLLEKeZUUpUvhAxiBTlBToXP1NiBAaLW6nsRhuo7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeyCaUKhytRbcX/ZYI5RHWdkjNBAKDJUxWkUebRvzObrZX7auoYwG3hr8U0fBqL2LzTvTo8DfUTrMV2h/sL4RFNrczhvNM8nqklQS6+BlIenNzPqt6MAVR7zM15gmv3YO1SDmCMeP7IGORoDU1o+Woxs68+2qybvcmtd4q8gOto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kbG5acIi; arc=none smtp.client-ip=209.85.208.46
+	 MIME-Version:Content-Type; b=feSOZCX8sFYxdlWcjX7LcUZfDR9gAjk1bl+p8xi0/hRMDoe0609XHCz4p/fS0LT5jwFyg07XGhNUglcGQpDGZ2IvOXum10H+Zix2TLgmGGE042xaOmJJeLIa2K7taZzINWUSkWGrXszBibBqSL+iZnIuGKSfluAhZ1oA4ymp+EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QOmrJsiS; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kbG5acIi"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6188b5ae1e8so921236a12.0
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QOmrJsiS"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afebb6d4093so142481566b.1
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973504; x=1757578304; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973508; x=1757578308; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=myCatgpniSey/NjO+dQuRIOhbIuhsJO0uetvy2+5HH0=;
-        b=kbG5acIiF5n9tZeuc2OnhkLxiHYZHxEh6WkSAkFYS5uKb3HlFGVBJCYF0ZLkEiU8Zz
-         cIRvvdgQwqoB6YIM0b8afv9lpoUVFcBxRezcFVYZY6gMQXtV9GVYIngG6aMLOv0E1CF8
-         zND8Ur9VmUxdYs2BnJSvU6+VzcF4tcvRGuuu+ets56E3V/neMK3KlhYDiTw5UV5Seho4
-         BFAcdLQnCiMoY00noG9hhHyvItwzGr2zIkvUMBiakd6gfVRcQDaftHjBLb1REyKANYfy
-         Z0/e4wh8qcFGtDoY3VSJa6HDpbeGQ+Uo4TpGw8PnMno0+Io1xYFZnVTmyVekZzHQKfsL
-         /0xA==
+        bh=omV0Vr4nYXMtMeXSQYoBuMjm05IYf3r1DGykbz6eHk0=;
+        b=QOmrJsiSEWrDm3pTfA9podIRTVITAS5skdygJZXNKMXXBtYRVV/W3wyicEZt8ckYMD
+         Gj9WRDHDLeDAE4m6OPl4Y714QaY7oR27isXpK2R6E4vP2Jj9vj5XZU9JgFNfdtAcov6q
+         rLnw4T8/hVQz1q1c+SQt2GYm8EhsH+Oz5Nld8lPEpDbTdx7WNO1kVVOyYXvlHTi+j7oC
+         OLpiVkUgdpa2PlBxf3ULsFPjYDlAGCi3hxVyqH0qjCEj8/HdMTmvHPm6U9VLXHunwkAJ
+         0xG7TOEstOVWKqAVum0tf1B1phV9WetqK3Q36+ITgypeSl3CXrhdKzfzCpMoVssNm9z9
+         ngFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973504; x=1757578304;
+        d=1e100.net; s=20230601; t=1756973508; x=1757578308;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=myCatgpniSey/NjO+dQuRIOhbIuhsJO0uetvy2+5HH0=;
-        b=FdI49uIfwc0h7mO3zV1/+8HRpU4H7eViIdw4azk8XkpmB7i7exY6hpHdcDQOMolA4+
-         kLtEV0GfeKzCPl/Gocrm9PuNJFWUvidx+0HgXJQATVlNzVQh75A7Jai19BjVsRB09WHO
-         wcAjTLv2a8rINMi5ZNohW7LwV0QbAGj0F8idN8nFQ1nuDnRyfmicvB9uLGDLLRyqEse+
-         3x7GyMRt17IzxDlvxf3wE3xeynM0g+4amJgjjILjKwRoDpRtJv+f85RHkeHPNpOFV3Ry
-         tT4iAKDKz6tP91+UmCd2tv/MMwDSzU75UR1FGkRvkuvfDLCkpI6mCgZfhF9D9f+BBuye
-         cIHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrQSeIVUhyE6wrRgM3XMdTrSG1RIb9J8c8q0H1gTwkHPnvMMa2ilqxVA+HpQ552T+sTA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi92Ak1dT5nZXIyEpyVwNMGw6WiY22PiUM4TT1dbceyKhJEoM3
-	M77xQIvdpRC6MJ5ROKzlY3WtpADloToHHJWFQDy4NSjh5NUleJZN3wO7FGCNID7PTwY=
-X-Gm-Gg: ASbGncvDjk4wfsCDBntexK++x5I40/QxCvgIiye8IwFlZ9e4YCKkT/G4EIYwXN2xqx2
-	CqjN8UuFCwRUsQxgOS0gNLnjNJfFPXe+IaVFdKMbZm1HexGLBGPWLuTq6MbpazxmwPfedJO9IBD
-	2khsWM9OvVKoh/BOJtHmnSHuQmOHpA6dbBzvIEE9TIqAf9nprkpXCC3pcIlQYlf45wxZcC33Rdl
-	s5xFQ0PaOVHbYN7jTs1K/W3dIBFzdZRVIWitCyx1E0JiUXWLH/CdKbdCns4c63fdSgb4TsdfhMI
-	Ii1pICRuixqurnaD5UR1zhH9Ix+dW9ay2mCSfKN6xJkP7WH1gzjF057nCkmsS4FK5DqjD4wadf6
-	rxvAp3cJkrlocAON4a8q1vDM=
-X-Google-Smtp-Source: AGHT+IEkvYRALNYOlXlCh0M9P7tOTgw2dIkqwHytdvjqGaEFKKMvexexT1+4HGfULBPkmc4HuBN2QQ==
-X-Received: by 2002:a05:6402:40ce:b0:61d:cd5:8b6e with SMTP id 4fb4d7f45d1cf-61d260cc220mr16736785a12.0.1756973504083;
-        Thu, 04 Sep 2025 01:11:44 -0700 (PDT)
+        bh=omV0Vr4nYXMtMeXSQYoBuMjm05IYf3r1DGykbz6eHk0=;
+        b=kMcWr2GbPJbN38pcvRc4QqYeCF1XfCpWhYMH7oxcGgdMbYku/w3cecsU9WiUh0LxoF
+         GbNDu95mxnrPZM/bYl5O/ixfbCJafJw+4hTp7f1fAiuVszMZh3eS7YXDwa3iFX6t619r
+         Oo76guKNFW5mzmSumkmE4f6K2+VFnUVjtobFgwlwEigk3L+Y7V+J0+ys9rdN6lBGM6HK
+         u9QasiqR9VhZyeusmtjpaHjFLjg7J+qikQ5W1k7DJII+CHOCrJRh3CUvNvZrYWnKQKN+
+         sXTIIZ//YrZCzZc2FmkiP2TsC5NIkTk4akDaev5oAfTc6NQlfOA/klHLyezMLJbVYWtK
+         zzpg==
+X-Forwarded-Encrypted: i=1; AJvYcCXsi4o5dvkg+iJ0RCvnBb9hYo0KcoaUl508BQNVdMXjE9dAbELXOJ1wvxAWajD3RD7fU64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvrmNtaABuyrNeFXHuIVqa7x8YbTIrXZjBIuDsvh4H2ahOpldw
+	AubAHi/cIsoahD7K0fLVwNagn/9TBo3Aixg1maKiVIvXFZV1lZQ10bD1ptmH9l6xA7M=
+X-Gm-Gg: ASbGncvd+hm1v84RIHVOUHG3i1aOA1SGd1/loE0oMFLVSLfeY56KgDZI9luDT0vIqij
+	Ti0JbNBdv3DO1AohtotpnyVKw2SVAnPifAb/QtNZB774ekNBBzGQpRszLG/LYQmFJH8eUX/NkFP
+	215ojooWnH17yzvAbl6FlZmEbmFDcQUbHnbyeQbAdYaNT0yRwR0pHARsREBUMtZBCyOI5De0LQl
+	fyhesDY5uKj14aTAQLrpJZZHNLt0DLDu3W+m3UMNfFe2C4Wd9E7yUYCIImUsmuNn1nXkkY95MRk
+	4xSjbaO/Ka4Cree95hxn2XKKnYQ+g/SpGBA8yO86K0NU1zIcqZAlwPwf7S7BFCBJskBzXIyAG7W
+	m++0Maj3X/qyShrMkIhunEsQ=
+X-Google-Smtp-Source: AGHT+IFABY+GNZll4Er2gNXt3l+Crhs6fVMAbrNAexTY49T7TJMEwSOPjIndEkqPytMN7BQSr89N5A==
+X-Received: by 2002:a17:907:3cd2:b0:afe:9777:ed0e with SMTP id a640c23a62f3a-b01af2e15camr1761502866b.0.1756973508120;
+        Thu, 04 Sep 2025 01:11:48 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61ede659366sm2877110a12.24.2025.09.04.01.11.37
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b046f888b95sm275965566b.34.2025.09.04.01.11.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:11:43 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 16B025FA31;
+	by draig.lan (Postfix) with ESMTP id B85DB5FAA7;
 	Thu, 04 Sep 2025 09:11:30 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -148,9 +148,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	John Levon <john.levon@nutanix.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 016/281] tests/functional/meson.build: Allow tests to reside in subfolders
-Date: Thu,  4 Sep 2025 09:06:50 +0100
-Message-ID: <20250904081128.1942269-17-alex.bennee@linaro.org>
+Subject: [PATCH v2 021/281] tests/functional: Move hppa tests into architecture specific folder
+Date: Thu,  4 Sep 2025 09:06:55 +0100
+Message-ID: <20250904081128.1942269-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -160,40 +160,78 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Thomas Huth <thuth@redhat.com>
 
-We are going to move target-specific tests to subfolders that are
-named after the target (and generic tests will be put into a "generic"
-folder), so prepare the meson.build file to allow such locations, too.
+The tests/functional folder has become quite crowded, thus move the
+avr tests into a target-specific subfolder.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-5-thuth@redhat.com>
+Message-ID: <20250819112403.432587-10-thuth@redhat.com>
 ---
- tests/functional/meson.build | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ MAINTAINERS                                                  | 2 +-
+ tests/functional/hppa/meson.build                            | 5 +++++
+ .../{test_hppa_seabios.py => hppa/test_seabios.py}           | 0
+ tests/functional/meson.build                                 | 5 +----
+ 4 files changed, 7 insertions(+), 5 deletions(-)
+ create mode 100644 tests/functional/hppa/meson.build
+ rename tests/functional/{test_hppa_seabios.py => hppa/test_seabios.py} (100%)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d01afcbea6d..2e1754912f6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1273,7 +1273,7 @@ F: include/hw/pci-host/astro.h
+ F: include/hw/pci-host/dino.h
+ F: pc-bios/hppa-firmware.img
+ F: roms/seabios-hppa/
+-F: tests/functional/test_hppa_seabios.py
++F: tests/functional/hppa/test_seabios.py
+ 
+ LoongArch Machines
+ ------------------
+diff --git a/tests/functional/hppa/meson.build b/tests/functional/hppa/meson.build
+new file mode 100644
+index 00000000000..a3348370884
+--- /dev/null
++++ b/tests/functional/hppa/meson.build
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++tests_hppa_system_quick = [
++  'seabios',
++]
+diff --git a/tests/functional/test_hppa_seabios.py b/tests/functional/hppa/test_seabios.py
+similarity index 100%
+rename from tests/functional/test_hppa_seabios.py
+rename to tests/functional/hppa/test_seabios.py
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 356aad12dee..8c24ac1cc2d 100644
+index 81eaa9c218c..8f85c13d3d1 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -423,7 +423,13 @@ foreach speed : ['quick', 'thorough']
+@@ -13,6 +13,7 @@ subdir('aarch64')
+ subdir('alpha')
+ subdir('arm')
+ subdir('avr')
++subdir('hppa')
  
-     foreach test : target_tests
-       testname = '@0@-@1@'.format(target_base, test)
--      testfile = 'test_' + test + '.py'
-+      if fs.exists('test_' + test + '.py')
-+        testfile = 'test_' + test + '.py'
-+      elif fs.exists('generic' / 'test_' + test + '.py')
-+        testfile = 'generic' / 'test_' + test + '.py'
-+      else
-+        testfile = target_base / 'test_' + test + '.py'
-+      endif
-       testpath = meson.current_source_dir() / testfile
-       teststamp = testname + '.tstamp'
-       test_precache_env = environment()
+ test_mips_timeouts = {
+   'mips_malta' : 480,
+@@ -78,10 +79,6 @@ tests_generic_linuxuser = [
+ tests_generic_bsduser = [
+ ]
+ 
+-tests_hppa_system_quick = [
+-  'hppa_seabios',
+-]
+-
+ tests_i386_system_quick = [
+   'i386_migration',
+ ]
 -- 
 2.47.2
 
