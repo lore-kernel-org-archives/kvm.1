@@ -1,65 +1,65 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CD52C08AF
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B49A2C0F89
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973497; cv=none; b=DW49RJPeHAIEbSJaH/V5cR5/b0XloWqZL9dpHmM5uPeum98Jy0WQdOIkh2MvBo4Tt/0eGuBqfKA4+M4scawgoXy1cAweu39TgKN4hK/uRHibGOJxDG41GAVaddZq+hTE9QxrFqDaEIY7wZShzYlw6Wtno7SSeldkyELfN37ZrTc=
+	t=1756973499; cv=none; b=HXEjSop2IJMHOCI7Thf4rBTiqPVdjJwlT/w5JmFW4d6PTOnU4AwqQozRLjH2g+DlCE1/iSk7JA0SIEzWWTIJzWw7BL8J0OwZOBlKWO9yfdRdhZEcM+xNoSZ6R2xY/UWoifvnLfbdxcL8cSdMkQCc81GTiVZVXKuh+9UTJIuCiLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973497; c=relaxed/simple;
-	bh=qvS8sAyc8SkWCq3FYME7uB8L+MbWDghaWVjUjWkJvtk=;
+	s=arc-20240116; t=1756973499; c=relaxed/simple;
+	bh=4w3qe2ixMqPGcvZjsIbbYIT1F7PXQ70EjuRIksHMo60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfD3qhxWUluLjzX/0bqWtvaVOM1LL0brjOUeUgDjJ8APSI+vQizzXPsJWhsrURitTnhUwnjST+SOXNFp/yJNICU1T7gZPyEEBg/VNn5F6UoEZn933gJCl1WOOEnA9n2HBxhUMZUZtcOwlA49TrKKc4hQf4v182p3fzC+nBMo4lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=edEz+Zu8; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version:Content-Type; b=CKhRhhuQbkugzX8HxrOl7dQhIUGjCTt0bq72LAwicASUeuudEdEe4gpoH5iPwBuGVJf6OU03lfv6+5iHlt6nXW5X1Qe5BygW19SG7KdVcdaLTl+sk8j5Etk8/TaviUXHQFHtEFu6RmoVwFFtZGlMMtNKMCLx5WtDiA1wieR0c2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RwQSEXuT; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="edEz+Zu8"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-620724883e6so159820a12.2
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RwQSEXuT"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b042cc3954fso129230566b.0
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973493; x=1757578293; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973496; x=1757578296; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pfipyU6Vd8H7OBNmQiaCitsZISqNnzAeEnNiRJw+yKE=;
-        b=edEz+Zu8Aa6GR9ob17R0PKbb97Z/zAhINqwHsCgu+QOs2e78qnmAaX6HbRH13ZlPDO
-         4Cc48SKS2KJ10LsuF1TwXeAz15JWTXq03ql+kg/ZkcKocV/7xSZjXKPeqgM6tMgB2Ybc
-         c7MBpQwQfS+qpeApnDz8GjdyYrnSGdPAj6twPUlRaKnuZh9cMN6HXruPu5OgA1TojP05
-         oXZpYJ89kklPfXGTdZ63zQ3dHL6d4fAIC8VqjOwEK6WZVvXq5kp0hoJ054+eaysrXLea
-         H5fuOCChrRwj/7Jjx9pD2XKFIwOYmJL9PNCaMoOkqxfK7DS+7/gpxixUtiBzUpjiPEXq
-         COww==
+        bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
+        b=RwQSEXuTsWTP8T8MS4TimeQNycWlsPFI4nKS7RRzTCkwWX+DaVm1e9Ld58N0KKkF/7
+         /XwI9LIPwxia8iETAY5lCC2WIA3rLnrwEOhXE0EKCaRcDBocWOV1fk9Y0gOjX7jIiCyM
+         yyAyTy6UnHI282uzmRAQP86QfqOXnoihKGtcBcz0znlUbJEe3yScSXM3DzuwhRqLgFsx
+         4cAOBPGzAoUkct4Ynn1kC2XHeS7uvAzQa+c0NYermc2DFegHC8TI/cPUh0bhFmM6VVRJ
+         mfF5pItFXLyjomVQhCc+pf8gBdpfiD4NxoDzlLcdzBt+XKW3PbMCyhK2ppLrmS86mPYX
+         /SjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973493; x=1757578293;
+        d=1e100.net; s=20230601; t=1756973496; x=1757578296;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pfipyU6Vd8H7OBNmQiaCitsZISqNnzAeEnNiRJw+yKE=;
-        b=n6uhIpggViElveLLWqt/ikn6/JGaFENF6A76XAPsmOcEPxCRXV/UpU+s4u4jPrhzhb
-         384xcTNVCG+Zc5FZe3OH04maaDSq6HfiVHZsSsrNl7jR0IMkmpz3TYlFkfjsaLq5/aeW
-         qMihs17FFbB4exm6qvyiS7P9Qr4ZBaZftziPqtT91uNNq3M7B4mNXzPac3J9CM1rNIDU
-         Qta1IprWaUCChROcjBsTFyd75UceDW8rDQGD5HQZS0sBQ62lsklMGCSH9gFW2nHEoO3h
-         oKNvbGcb3FRs7zKg5QytR+sDup0KAZiSAN+h/0griZj/blnFJHkN95lYwIU5AFGebeaj
-         HRmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvEuF1mT5srJeRVyxAyn6BUlh2Q8TrJzj6fIGYXxz2qyHe6akPSqK/jFNr1jKUDGRQn+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOtO4u59YOBHdJdfQ5XR9ogEa3MSDsRbAXBiuJJeomfm9w2HgI
-	/eSMJpbunma1l+4oLGVBfu/ukfOFF4Dt4QnIlaswhx7XhRRUY/gEBeC8G13ZFHUQsPA=
-X-Gm-Gg: ASbGncuUMK084pcCm4YlRcZfJEw8mv48+TjY44Zk3vOwU4g1zTn5PNXuzLi4jVNf6SI
-	x7qEnw5FKsMtcFQ0PWOoljWaFzX5d8YAWT2egRDJFLWpsRv5CpXe37dczMu3COH065BnYimQFC4
-	DpsJuGH+bS6ZCQ/6H8RDrOE+Al7TPWbgxlIOsvvIYJ59hCgGgdA4qyUSVVVS4EWVuA7NZgxcBWl
-	zZ/ReVDaOmVIYrCe+iJGb4e3KjkyG6URTNxp//ASHm9POkV9/KQNK7Yxuagg0hUoudxQSBaqAs7
-	FeejxOuHp2AedWeDtfdj/nMNBk7gTPAlFon8KqKx0bgXHj80AjVPO5ijQnYg0wzOg8bimzuRdgU
-	NZzBiUGitETo+DNWr0yz8o/4=
-X-Google-Smtp-Source: AGHT+IEoaLYHbkuQ5w0GIOHrSrp6jiGSZD/L88aCCuGmKVKhMNAGz92wDlGLKlrjfHoRe3Zrhm5FPg==
-X-Received: by 2002:a05:6402:40c8:b0:620:1c6d:e6c4 with SMTP id 4fb4d7f45d1cf-6201c6de967mr689986a12.38.1756973493583;
-        Thu, 04 Sep 2025 01:11:33 -0700 (PDT)
+        bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
+        b=GzpJp4nu+iQDdqFYjo2R6vwXEKGN+h/03gcHZhXdsmRRADx0RM2vZxcZK14au0YVub
+         0ftuBKIbW8M53clET3T8Kmy6ZAOuvSLaqGJapLuXbnl/Qhhw8MSSTkKH/eoCv0ubAgcf
+         8QGbRclL2XCPONBJ+Lmtr9rcHcTHiXGg9eOfmbAitlQyu2lcHMav2+zdgg9q8en1Xf+b
+         1SNqbgjTmptmgkmoA6jmIzYRUSyooEmdH/nefdppc6e+VMM88mn+ZP/wU8Fxu4Qktk2k
+         CyWZvFNOwWSz/oSvWV98lDxZRjk7qI+A3UjqCaeYK7GehKy1aEpokjiQXIWueCyK8TH5
+         V4PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyP8IjA2oAmKuPN/ezBCcimO3o7hXY1eJbExEqbU3V58QbhkVqZQ1UXzVXYIAh70pgiUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFClLz7CBO8m/ZS5vhpTreTJsi3F0YwsKX8SYWplnhWka7+DuB
+	HACq5kz7XZh7F7OuZsIFrC9OOFoZff35vwcnJgvo45r53PaPF8tDvKk8c/W2YOUmWHk=
+X-Gm-Gg: ASbGncvhEwfaHp1DSmxIZajosqvf7Hz0rnT6C3PP+6bV+FtjIVxsn+w5ILLrvTZXtM6
+	hxHInbgBktBMxH3YKrQL1BzpRm97DbMqS+GgtdhcprrqitA1NODxJMXL0uonJ60fLzQMolmNTPc
+	m8+wYJzC/Xe0RuYZ85r5N7QkHynARy9movdBM3UEkJy1YZfAVKiqJiioxrXYiZgcRyH4wqW7pcP
+	cVKyIaXyfoQqNKKCXuE3WBTUiyCcdYTjhW+c9qr7Cpkkr2XXGYc/ZCgJAqo9oPMM1cENN8jjdHU
+	WhtYX8jYjrzsE+jdgWFed0nSt0r9PpG8rzBeD0CcBMC4hhk3aTWZnKKJaSkXAJU5wJKXBtvPHfX
+	nb4LeCvTgzGicrSOQ8Btc444DMAMz8lsRnQ==
+X-Google-Smtp-Source: AGHT+IElPpn0KvMqOR0Q75Gfkj0ncOLp1bLOMMk7oeP9JIeBPVNdyXvx2TH7ciqYVtSvBIeB+x6WBg==
+X-Received: by 2002:a17:906:7953:b0:b04:813e:491 with SMTP id a640c23a62f3a-b04813e1a1amr139359366b.12.1756973495570;
+        Thu, 04 Sep 2025 01:11:35 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc52ade4sm13646124a12.45.2025.09.04.01.11.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0484e8a4a1sm55305766b.83.2025.09.04.01.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:11:32 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 674E15F913;
+	by draig.lan (Postfix) with ESMTP id 9A3B85F92F;
 	Thu, 04 Sep 2025 09:11:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -146,10 +146,11 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 002/281] scripts/minikconf.py: fix invalid attribute access
-Date: Thu,  4 Sep 2025 09:06:36 +0100
-Message-ID: <20250904081128.1942269-3-alex.bennee@linaro.org>
+	John Levon <john.levon@nutanix.com>,
+	qemu-stable@nongnu.org
+Subject: [PATCH v2 004/281] python: mkvenv: fix messages printed by mkvenv
+Date: Thu,  4 Sep 2025 09:06:38 +0100
+Message-ID: <20250904081128.1942269-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -159,34 +160,50 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Fix parse method to use `defconfig` global variable instead of the
-non-existent KconfigParser class attribute
+The new Matcher class does not have a __str__ implementation, and therefore
+it prints the debugging representation of the internal object:
 
-Fixes: f349474920d80838ecea3d421531fdb0660b8740 ("minikconfig: implement allnoconfig and defconfig modes")
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Link: https://lore.kernel.org/r/20250820-scripts-minikconf-fixes-v1-1-252041a9125e@linaro.org
+  $ ../configure --enable-rust && make qemu-system-arm --enable-download
+  python determined to be '/usr/bin/python3'
+  python version: Python 3.13.6
+  mkvenv: Creating non-isolated virtual environment at 'pyvenv'
+  mkvenv: checking for LegacyMatcher('meson>=1.5.0')
+  mkvenv: checking for LegacyMatcher('pycotap>=1.1.0')
+
+Add the method to print the nicer
+
+  mkvenv: checking for meson>=1.5.0
+  mkvenv: checking for pycotap>=1.1.0
+
+Cc: qemu-stable@nongnu.org
+Cc: John Snow <jsnow@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/minikconf.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ python/scripts/mkvenv.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/minikconf.py b/scripts/minikconf.py
-index 6f7f43b2918..2a4694fb6a3 100644
---- a/scripts/minikconf.py
-+++ b/scripts/minikconf.py
-@@ -340,7 +340,7 @@ class KconfigParser:
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index f102527c4de..9aed266df1b 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -184,6 +184,10 @@ def match(self, version_str: str) -> bool:
+             )
+         )
  
-     @classmethod
-     def parse(self, fp, mode=None):
--        data = KconfigData(mode or KconfigParser.defconfig)
-+        data = KconfigData(mode or defconfig)
-         parser = KconfigParser(data)
-         parser.parse_file(fp)
-         return data
++    def __str__(self) -> str:
++        """String representation delegated to the backend."""
++        return str(self._m)
++
+     def __repr__(self) -> str:
+         """Stable debug representation delegated to the backend."""
+         return repr(self._m)
 -- 
 2.47.2
 
