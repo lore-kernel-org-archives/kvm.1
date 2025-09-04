@@ -1,66 +1,66 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F361D2D027E
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8BE2D027F
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973512; cv=none; b=FFwbhg5d0z7BbYgUXC6sVuswChKTwY7ty5nl9h6UDhcJ1Hkdw64Z+H35esUae65GQs74+MXMTWhAG+niSvcaMQed8ZWtqTaH/Gi5KdvS/Nn6mRi2ZaYa1lWI5RdtVM3Ewl4S+5Ww89kq45eCqF4W+o1rQxQZZFjIAXh79dB3uLw=
+	t=1756973514; cv=none; b=EZZdjUUwUlqenR+cf/N5q3iYHvaGu8o2b3IkcVX+/QkQyI31QEjUpCTXhVX2jbBMNaEe1/L42T2v1io+8drCEjFbvier1SoPNmzAUs4+1nGNdDtpRXvSoGF8/o5FY8GOv1XSEdaYNxxwZ9wmcDgc9IfG22+S1OAHgo/GfTKxeTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973512; c=relaxed/simple;
-	bh=ahEqKxILOTV7FRYebgoUrIiscHDAM7NCLSnUKU5P1eY=;
+	s=arc-20240116; t=1756973514; c=relaxed/simple;
+	bh=5Ldhe2vYcenZaokqqT6srIF8hhU3Y3BE17Mh8FsgX4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UPHA+8QLNY/O/d/lHIYthxPr+BxPkEP3gdA8YH8lYg7eJs1scDFXo88qzTOop3V1wKnEbxrjH8j2ru/iYhEL7/Gb1IZsYzI0H0bGqnL3etOFwiIIy8G/EDhP4HNvX6IhdB2fTRMjPA67X9EUa9Owie4K8gCYul313DQBpvvp4QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MJBi+vki; arc=none smtp.client-ip=209.85.218.50
+	 MIME-Version:Content-Type; b=e8ELFIO8yCXDTkZpHqayFgsDi+u29aIxDvokMUD2MHmF7uannWbYHvz0TRqgUm/kbjpT2HUzAolHnLjRyZ8AdKqbpmKp78iLlZWMf4uGEpl3rgcUsh0fCpMS0Vc9MUyNOnGVDOke2Mj9JWN9IAvxwWOyBljQMGSdFcCw/I3XeW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lxBLzk47; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MJBi+vki"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b02c719a117so132860866b.1
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lxBLzk47"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aff0775410eso213471366b.0
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973508; x=1757578308; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973511; x=1757578311; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cDNuaOsGD6r42U8ngLUfY1h4DF7myqs0cRJmalDhUb4=;
-        b=MJBi+vki9lPdHI5A4x/3RtF9OyfPUXtJzihCUXO+cPyM2izzaQfRXKzIqpkjVEcn7b
-         QSH9xxOdPd3rGv1tcIRwUGYDq4KGUKp0JROgQSK7BpsanpWRqWwSfTZhsGBJbccMNDhR
-         /i3uGocgiP02v6pmz/VZbbYbQVN7wGSFNOUrZDs/NTuRUJ+1IftUdMwzF87c8FKhRbku
-         eAvsQTvKMO+zEEsAHKfHjV2xuy8p0l8FbhLsRFnNCUPSIkC25spP5WToIndYKNK/CQlT
-         CxhGoiXqYDgYzjbjfJV66VMocJHWzUN+NvKiqaMvq1pbEf8gQabT+0BwHGCZ3kkirMT1
-         zkgw==
+        bh=IEFayKNVFnXVPmO4dwPqIX/9FJE7mupFd4n+Gsn2REk=;
+        b=lxBLzk47XKAL2myiI1b7Hl6VueKQ4GdLTMQdJWv5rR09zYS4M1guVkDssu5M0/5Itg
+         2mNW3h7rrrs5XuU8l93GQTFVZ+UN9u7P9hsqaw9PuW1ucfcjMrx+Xbk+onVUfq1LhEQ2
+         TqCPPdn7gEZixLM96zAJjBbUbUHEugfVhLQUylh/Rtyzab7Zb9uewNu4i/WibOUDZ89S
+         6D4TrUHg01RZIGe+tBHUPm1Qw2UsXgghshzEGhdKpXdZg1pmafFUew/1BoCWfaTwF28Z
+         j8MszIdt4z/EzNchcpCGlz/6H+4ttFSHz4EIHcOTo6VBUgJcSPEORWa/KABkpx8fpoNG
+         6vYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973508; x=1757578308;
+        d=1e100.net; s=20230601; t=1756973511; x=1757578311;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cDNuaOsGD6r42U8ngLUfY1h4DF7myqs0cRJmalDhUb4=;
-        b=s9UCsPUoAy0fqsQ4eg3Pcm4asim3vwtA2P9N78akQ/D+dGg3y0L4uNfIOW0BxkuZC+
-         Y9vkCUl9wlZ1HJw7DXdsVCOqni6PWEub+FTsKUvQ19W916w6qKs3XO1uriBXVEhWZO/Q
-         2x0pkonvkA2p4NiR6rMZnnwbZ3rH/OeK21x/KcUDDcF4SBm++WGwGuY90u5tQ6Gv53dC
-         FCIGPYLxoh7cxl0agvyNJv+36vri/cHgSxc8Weo1/074dgav5gurIyZhSY1okrwtvdLC
-         r4/Ee8CLE26MTrfHIVnz+T7Ld87ZEAo/Ovy/PiSb9kMRLXlAHDgXxezaHQs1PPLgqbNB
-         ggEg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6cvULKUT3HIq4SWkKWr7BdhXxjwCAJoNbGapAMUWlZWbCiXB5F57aFx95VkeWunUQd28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTWx6oPpV/xUnraQ3pJPg/CtwB2O+0pkYi8VgR5+Qzq99Osgwh
-	vdSJ3yKb8seNge6eR2rkWDN1tnZ7XiouzB/WNKR4wTBJJvnS2O3kuaTplvFGeBKGaYc=
-X-Gm-Gg: ASbGncuaWJPNsmjUxdQp4wLrp1EpUKAsoO9bI4l3jlQfLs2hnJrdNs04WbISo0Qpqht
-	0tludQfH0zKt5O9s+1U1glOzZpR30Jj84a+2lwRJtv5yDNCLftVfJCRUkbb0o2yPSbyzJhVuu4p
-	aYY1+G9zrcetQvIWtZwrK1TcySh+SRFAK1FVZLCec9GH7agqrj1N81GuAhNXMCHCkKgrvE7YffF
-	1qvfFbhQd/luKPXqoIX4yeTeoLXvLREvk8NAXG9BEYMRcpcbmm8TW9ZKe1ku1d60ewPGTvlZjD0
-	m2X2QlL3X0sXPIncxw3/7EhB4IYy8wkzQgBAzfQlk6Csq1LWZ0Xy+9QwNsGpAfZVESa58ToF8W7
-	QXN87Qkmccx7fm6qU4fictJ2v+2ROLvIVmjGw4JSJoLis
-X-Google-Smtp-Source: AGHT+IEuGPLBjng4TGodrmsMkqQv/1x2d0i2N2XuU6rOMtEyrvdgiQZZOH9o9y1LB92mX/fQfkpwaw==
-X-Received: by 2002:a17:906:9f92:b0:afe:a615:39ef with SMTP id a640c23a62f3a-b01d8a2667emr1911016566b.9.1756973507309;
-        Thu, 04 Sep 2025 01:11:47 -0700 (PDT)
+        bh=IEFayKNVFnXVPmO4dwPqIX/9FJE7mupFd4n+Gsn2REk=;
+        b=E+jitfPbKoYVffLk5/Vw3SaGej9/5IkcUyS7U3uc6ZhR+YFi0Rz8zAOuJ2C2jH8G0D
+         scbhyeSymA9jMEx5lSOze9546KI+2Bt2IGEc6MbZ7oRvIVyWLVlek+lr+oS7sRSqqhyo
+         ZPCHvGfDdp+GMeVOMGbFvxuCLkYiS9FFcUh5b2J4h7+Ur4Pkl/RLpcrDo/UCXOPwOHg8
+         3kkise8cg+7biH2ui3PSRdokjoRqsGsOHv3t8GhO+ydB++F7xCRm6kh0hW7yallb+QJ6
+         4CT3LuxEDkiElaz/LA7M6/YzQbx1H3jwL76BFITusxe/ibELTdvDMOcKKkM4sRzalBZz
+         yeaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9xDVmkQz6wEpJiEPbCXUnGlwxewVsUaPD5sxYJIl7emBNTiUM/0e5ln8K/fZ+IRm0bUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV1E+3AvaQdPHssB3vq7eoVBJd2qA9aloo4hvyBY1+xm0AwwWO
+	fAMzAuSUjhEZW4Rmv982/1PSK/4oib2SKQuHrErTIC4I2U8jtxS7KD4ydomubnK8v3M=
+X-Gm-Gg: ASbGncvsOYHmmdRlyyAzXE/ECGbQDWF+gpqodliwDxep/NFM/4uUCzJKGJdnJmcFTlh
+	ZEud+8MZlZiaDvb/DrTuvBeKA1uBAFp28DSqJpcfsUrHfJX845V34Y1f/yBH18BRYI9wIvItbaU
+	1gAXMSdmwfNtxNCFoKRAZ26ZPJ68cTL5mCfIOh9e8Pu1xXYpRRIuqfKUJ13yhSpTvAGdbXFnjZk
+	0ok54EF66EtszMtMe4jixnSno7Ir+ue5QYFmOMgUBAjVxYjdtRNVFyVmvLPEpZznPq5RiO/4zpn
+	sSfcWqqyygGXF28UQJKtNMtGYgGBGgT3zSPe63ZBaDj+fwfJyeV/TznCdMsaL5J+zB6Braygi8z
+	71iz5nvtOJnvjbhwWeUxyE/w=
+X-Google-Smtp-Source: AGHT+IFGA6yysX5rYii0EXHOc7wdrviuB8wTGOuSTKIEOmP0UAztX9Mp/wwZz0qOsZ6RV/4aH8D/dw==
+X-Received: by 2002:a17:907:7241:b0:b04:38f2:9060 with SMTP id a640c23a62f3a-b0438f29593mr1159240066b.18.1756973510632;
+        Thu, 04 Sep 2025 01:11:50 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0416e878a2sm1085838766b.95.2025.09.04.01.11.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0426516668sm972126766b.46.2025.09.04.01.11.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 01:11:43 -0700 (PDT)
+        Thu, 04 Sep 2025 01:11:49 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 19D475FAD0;
-	Thu, 04 Sep 2025 09:11:31 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 2137060046;
+	Thu, 04 Sep 2025 09:11:32 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -148,9 +148,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	John Levon <john.levon@nutanix.com>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 024/281] tests/functional: Move m68k tests into architecture specific folder
-Date: Thu,  4 Sep 2025 09:06:58 +0100
-Message-ID: <20250904081128.1942269-25-alex.bennee@linaro.org>
+Subject: [PATCH v2 032/281] tests/functional: Move sh4/sh4eb tests into target-specific folders
+Date: Thu,  4 Sep 2025 09:07:06 +0100
+Message-ID: <20250904081128.1942269-33-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -166,131 +166,114 @@ Content-Transfer-Encoding: 8bit
 From: Thomas Huth <thuth@redhat.com>
 
 The tests/functional folder has become quite crowded, thus move the
-m68k tests into a target-specific subfolder.
+sh4 tests into a target-specific subfolder.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-13-thuth@redhat.com>
+Message-ID: <20250819112403.432587-21-thuth@redhat.com>
 ---
- MAINTAINERS                                              | 8 ++++----
- tests/functional/m68k/meson.build                        | 9 +++++++++
- .../{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} | 0
- .../{test_m68k_nextcube.py => m68k/test_nextcube.py}     | 0
- .../functional/{test_m68k_q800.py => m68k/test_q800.py}  | 0
- .../{test_m68k_replay.py => m68k/test_replay.py}         | 0
- .../{test_m68k_tuxrun.py => m68k/test_tuxrun.py}         | 0
- tests/functional/meson.build                             | 9 +--------
- 8 files changed, 14 insertions(+), 12 deletions(-)
- create mode 100644 tests/functional/m68k/meson.build
- rename tests/functional/{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} (100%)
- rename tests/functional/{test_m68k_nextcube.py => m68k/test_nextcube.py} (100%)
- rename tests/functional/{test_m68k_q800.py => m68k/test_q800.py} (100%)
- rename tests/functional/{test_m68k_replay.py => m68k/test_replay.py} (100%)
- rename tests/functional/{test_m68k_tuxrun.py => m68k/test_tuxrun.py} (100%)
+ MAINTAINERS                                       |  4 ++--
+ tests/functional/meson.build                      | 15 ++-------------
+ tests/functional/sh4/meson.build                  | 10 ++++++++++
+ .../{test_sh4_r2d.py => sh4/test_r2d.py}          |  0
+ .../{test_sh4_tuxrun.py => sh4/test_tuxrun.py}    |  0
+ tests/functional/sh4eb/meson.build                |  5 +++++
+ .../{test_sh4eb_r2d.py => sh4eb/test_r2d.py}      |  0
+ 7 files changed, 19 insertions(+), 15 deletions(-)
+ create mode 100644 tests/functional/sh4/meson.build
+ rename tests/functional/{test_sh4_r2d.py => sh4/test_r2d.py} (100%)
+ rename tests/functional/{test_sh4_tuxrun.py => sh4/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/sh4eb/meson.build
+ rename tests/functional/{test_sh4eb_r2d.py => sh4eb/test_r2d.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 716127e831d..e188de813fb 100644
+index 4a55a20f6a5..eddec0058e0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1312,7 +1312,7 @@ F: hw/m68k/mcf_intc.c
- F: hw/char/mcf_uart.c
- F: hw/net/mcf_fec.c
- F: include/hw/m68k/mcf*.h
--F: tests/functional/test_m68k_mcf5208evb.py
-+F: tests/functional/m68k/test_mcf5208evb.py
+@@ -1736,8 +1736,8 @@ F: hw/pci-host/sh_pci.c
+ F: hw/timer/sh_timer.c
+ F: include/hw/sh4/sh_intc.h
+ F: include/hw/timer/tmu012.h
+-F: tests/functional/test_sh4*_r2d.py
+-F: tests/functional/test_sh4_tuxrun.py
++F: tests/functional/sh4*/test_r2d.py
++F: tests/functional/sh4/test_tuxrun.py
  
- NeXTcube
- M: Thomas Huth <huth@tuxfamily.org>
-@@ -1320,7 +1320,7 @@ S: Odd Fixes
- F: hw/m68k/next-*.c
- F: hw/display/next-fb.c
- F: include/hw/m68k/next-cube.h
--F: tests/functional/test_m68k_nextcube.py
-+F: tests/functional/m68k/test_nextcube.py
- 
- q800
- M: Laurent Vivier <laurent@vivier.eu>
-@@ -1346,7 +1346,7 @@ F: include/hw/m68k/q800-glue.h
- F: include/hw/misc/djmemc.h
- F: include/hw/misc/iosb.h
- F: include/hw/audio/asc.h
--F: tests/functional/test_m68k_q800.py
-+F: tests/functional/m68k/test_q800.py
- 
- virt
- M: Laurent Vivier <laurent@vivier.eu>
-@@ -1361,7 +1361,7 @@ F: include/hw/intc/goldfish_pic.h
- F: include/hw/intc/m68k_irqc.h
- F: include/hw/misc/virt_ctrl.h
- F: docs/specs/virt-ctlr.rst
--F: tests/functional/test_m68k_tuxrun.py
-+F: tests/functional/m68k/test_tuxrun.py
- 
- MicroBlaze Machines
- -------------------
-diff --git a/tests/functional/m68k/meson.build b/tests/functional/m68k/meson.build
-new file mode 100644
-index 00000000000..e29044a6d73
---- /dev/null
-+++ b/tests/functional/m68k/meson.build
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+tests_m68k_system_thorough = [
-+  'mcf5208evb',
-+  'nextcube',
-+  'replay',
-+  'q800',
-+  'tuxrun',
-+]
-diff --git a/tests/functional/test_m68k_mcf5208evb.py b/tests/functional/m68k/test_mcf5208evb.py
-similarity index 100%
-rename from tests/functional/test_m68k_mcf5208evb.py
-rename to tests/functional/m68k/test_mcf5208evb.py
-diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/m68k/test_nextcube.py
-similarity index 100%
-rename from tests/functional/test_m68k_nextcube.py
-rename to tests/functional/m68k/test_nextcube.py
-diff --git a/tests/functional/test_m68k_q800.py b/tests/functional/m68k/test_q800.py
-similarity index 100%
-rename from tests/functional/test_m68k_q800.py
-rename to tests/functional/m68k/test_q800.py
-diff --git a/tests/functional/test_m68k_replay.py b/tests/functional/m68k/test_replay.py
-similarity index 100%
-rename from tests/functional/test_m68k_replay.py
-rename to tests/functional/m68k/test_replay.py
-diff --git a/tests/functional/test_m68k_tuxrun.py b/tests/functional/m68k/test_tuxrun.py
-similarity index 100%
-rename from tests/functional/test_m68k_tuxrun.py
-rename to tests/functional/m68k/test_tuxrun.py
+ SPARC Machines
+ --------------
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e2e66dcf523..d32dd4a371f 100644
+index abaa4e00fca..ce713509e32 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -16,6 +16,7 @@ subdir('avr')
- subdir('hppa')
- subdir('i386')
- subdir('loongarch64')
-+subdir('m68k')
+@@ -30,10 +30,8 @@ subdir('riscv32')
+ subdir('riscv64')
+ subdir('rx')
+ subdir('s390x')
+-
+-test_sh4_timeouts = {
+-  'sh4_tuxrun' : 240,
+-}
++subdir('sh4')
++subdir('sh4eb')
  
- test_mips_timeouts = {
-   'mips_malta' : 480,
-@@ -81,14 +82,6 @@ tests_generic_linuxuser = [
+ test_x86_64_timeouts = {
+   'acpi_bits' : 420,
+@@ -56,15 +54,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_m68k_system_thorough = [
--  'm68k_mcf5208evb',
--  'm68k_nextcube',
--  'm68k_replay',
--  'm68k_q800',
--  'm68k_tuxrun',
+-tests_sh4_system_thorough = [
+-  'sh4_r2d',
+-  'sh4_tuxrun',
 -]
 -
- tests_microblaze_system_thorough = [
-   'microblaze_replay',
-   'microblaze_s3adsp1800'
+-tests_sh4eb_system_thorough = [
+-  'sh4eb_r2d',
+-]
+-
+ tests_sparc_system_quick = [
+   'sparc_migration',
+ ]
+diff --git a/tests/functional/sh4/meson.build b/tests/functional/sh4/meson.build
+new file mode 100644
+index 00000000000..56f824e1e71
+--- /dev/null
++++ b/tests/functional/sh4/meson.build
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++test_sh4_timeouts = {
++  'tuxrun' : 240,
++}
++
++tests_sh4_system_thorough = [
++  'r2d',
++  'tuxrun',
++]
+diff --git a/tests/functional/test_sh4_r2d.py b/tests/functional/sh4/test_r2d.py
+similarity index 100%
+rename from tests/functional/test_sh4_r2d.py
+rename to tests/functional/sh4/test_r2d.py
+diff --git a/tests/functional/test_sh4_tuxrun.py b/tests/functional/sh4/test_tuxrun.py
+similarity index 100%
+rename from tests/functional/test_sh4_tuxrun.py
+rename to tests/functional/sh4/test_tuxrun.py
+diff --git a/tests/functional/sh4eb/meson.build b/tests/functional/sh4eb/meson.build
+new file mode 100644
+index 00000000000..25e9a6e4041
+--- /dev/null
++++ b/tests/functional/sh4eb/meson.build
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++tests_sh4eb_system_thorough = [
++  'r2d',
++]
+diff --git a/tests/functional/test_sh4eb_r2d.py b/tests/functional/sh4eb/test_r2d.py
+similarity index 100%
+rename from tests/functional/test_sh4eb_r2d.py
+rename to tests/functional/sh4eb/test_r2d.py
 -- 
 2.47.2
 
