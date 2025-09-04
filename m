@@ -1,66 +1,66 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C3E2C11CF
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4C02C11F6
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973924; cv=none; b=nvdZaSey6PygaZSnvyDYdYiZf5hlPjMiMS3W01SXlsm5MCbJuYp/LSqc6NCETBWovA/HWAM7EQ3EVY2w1sQRySqgTrx/YJnqlnq+gCsUWGcZ2sO1p+ZXBsdzbe/qLiP7thXrEwdp/D5YTSq4GwEOnQbzr02Gh55pQE6+a/Gsrkk=
+	t=1756973925; cv=none; b=seKEiRGM1ctL9JIqV5OYWQ4wjsBTHJxhh4RuDg5rD2uLcX3oK3rhUEkgSbX4GndyH9OF/Cbp7J6aG0hgXo0nfAd0ILqpLrkS5Y0hbnBCUzbVgfq0PVvWnzL4Uw2ZKClqvu8PY92r1pbMfICTN8xJvHMJkZlYERO7Szq/MHMc/ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973924; c=relaxed/simple;
-	bh=LsXsjK1O8FAE242wbc0nS2I4z+31MWMil6kVUyeBEqQ=;
+	s=arc-20240116; t=1756973925; c=relaxed/simple;
+	bh=Ce7Nj9k0E9dcQQLbID9KlUYhNtKU/RoRR6PHZXUoaiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rd/Xwlkv19u+w8QnKWu4oZDa5fbmqM1qxYL7SSH36VHCJxYe+msKmZ+YNs/6MAMPr7RbvOXAhxnsMbrQ5GdBrc+qjh/ZUw9IAwRqR0FVFcioLYPCEFsQKLV4vokpn/4XuHsF2zUNNq7mub3HVxWhQEYarvWukR+UeE4x2J0zxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uZ4sadHs; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version; b=aqapbK/PczyIG51WbndAwPfLN07BCTboqb1losMAS8zX2pzMR/nuLeUUDjZYW2IP/WHomNIPcc2wkKXVcxmqUNeMbBd1WRZ6+O+7iIdgw1QoXa8M6Um/0xAZE0PtO5Vg0JrmpoqrpOsvfcDzPGCRYtDKmIGICERWOI8E4jbo9L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U+AuvpzN; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uZ4sadHs"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb7ace3baso138913566b.3
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:18:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U+AuvpzN"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b03fa5c5a89so108098166b.2
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973920; x=1757578720; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973922; x=1757578722; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ToC1ebEyvx+viBNvPFVlKTy11Wh6Rf+bOVhd1Ayq6zY=;
-        b=uZ4sadHsj7HkkHpc3SJ3GDhlLmz2bEHGwFd8OiiE+C86Ct17GrNQbIczcSCyE8EjND
-         v6YCA+N1vXmfeFbdX0pbFDgTvfDnB0/1KdgjofuKZFNqy34JWol5Lf0eqnyC+7XUBw29
-         Fwng7FX86d1Qs8ptPH4xOf3qaAdEt2auHld7FpT3uIJoE+qRSxGpi8N1A6z5fI0Q51zW
-         hXG0Zg2XCqTLdl52DNGnmWvodPbMxL9llg4PxB6emS9kBATzTJbX7mQivQUHLtaGtlAb
-         931TuJCo3LVz8bxtMTzom5Q2ttmdRArPRhf1Fw+sg0PxtJtHK90R5sOZ4xy49U2TEwY7
-         mPaQ==
+        bh=4Qo9EKDwE3/n/WLrIsObXlhp0emB+zNEnQk4ZCSW4aE=;
+        b=U+AuvpzNTzdrSCuCeIA3R5/BibBQiJjNUoX0odndDIoq6f+AtgBUHHb0+PNso/6ckQ
+         bv06UTS9SMbw+LWQFnyjtCiHTL5W/oi72K06c/4ss3/xG9tLzJvJ8QvIjoZkz+syLRjp
+         Cua3LA3Q2JxoTJIBa+jcOlVU3l3jU50T8c35c3R7X3hk+Olin7NidRtnAm/4eykl6LBg
+         QgHt/bYV8RnFzMfVqzliP6c3jZrCVbV+JNVJ1fbYtk6R0lzLgpADSrUzf96+0ghJ1QMq
+         NmNPCwQ2TL8gW6nIkbsP34VjPe8wpEwl0B9wrII4GHxli4UlmntQpiwGL1vml0We3Q4k
+         Hm0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973920; x=1757578720;
+        d=1e100.net; s=20230601; t=1756973922; x=1757578722;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ToC1ebEyvx+viBNvPFVlKTy11Wh6Rf+bOVhd1Ayq6zY=;
-        b=LGB172lfhJuxMNL4aHi8E7UvQCPL4CZbV+pJXLc2jJmlN+zeAgiyGIioO/a+Jxd9UQ
-         9T+HQmbzGCGKObQ9I1twu1lQ7QDbUKD1J5NUjQHU1euWlZTYOlsl3vXgdBqMPrb/uLWh
-         /h8W9ylrJsUOeoe/1Abli0XPoMGO7OCFEXiOAfaCMtj3xxBgbcyldQlvsYcu7HvcoVuo
-         ysRlvFZDhFW2ynSHhw1UFCFHh8x2D36nMua/NJZCh1yX9DZEsvtXyUSBIxfPd5jo04+S
-         0FnhTMfXTayIT4iUzfOLDaKAXXCINm47zXBrlp9Kul9F2gPKOaJP1JMqW03qOqxyodZb
-         RQLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUsv5p4gUaEBXUwqWiCcRib3fiphD8f65WWsPFCiHqouMZ1VyAfS/zXl6MqXrRsaS5Ybo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+I6LgVFb5RJQerrYuFhtsM65nlhqrBVcQqbib9vBM3dR5slVt
-	uHV+kNuYQEk4K5LkzS1YLW1cZBBhidL6PvBec4BhRWWdXJiNT58PEq2iGKXW9i4vevw=
-X-Gm-Gg: ASbGnct5mreZeKg01yq+u6j+F7BNa2XkPjEsrWtmWoRaHGQzyPS/oeCP04Bed7VNi3L
-	jFOS8rcQI1vVk0aHopAkPvii6GAm6KGSuffX1hvyK/T65aUvVqYMW2SkHkaDIW3d05HRBYS4bYW
-	aE3uIPcUzjVKMhZFNst93PBUTkOMGlHkiL3cPSB799NBu0N6CnPq9jexX64bZKCNmMXsume0NKb
-	8lXNv3s+wHt7S/0/gyytHxt13LBHptJiNMWWb2PkyrsY3pwjiqHtn8Nfu9LhoHrAYhIfdOwQ1KK
-	LwfUrfRyh4oeL0y50SE7gUbs51y1YmdjEQxUUwJpVNxqCskOiWhZgBubYCQ3mU6A3R328+w8J7e
-	GO07mwa3bAyrVTVEi/Tn9/JaXQFIs6VgbhQ==
-X-Google-Smtp-Source: AGHT+IHlrSAwTwlNPjt0KEhJGII6rpJIpVADSO6/94IfYv3scTnJu8lfG5J1x+SaVAePVJ42+HN21Q==
-X-Received: by 2002:a17:907:1ca8:b0:aff:321:c31d with SMTP id a640c23a62f3a-b01d8a277c5mr1841124666b.7.1756973920286;
-        Thu, 04 Sep 2025 01:18:40 -0700 (PDT)
+        bh=4Qo9EKDwE3/n/WLrIsObXlhp0emB+zNEnQk4ZCSW4aE=;
+        b=CGgxZHvsAbUMjBfJVubR3P5SceYg7JDByRGonOx1tx0VX1Xq3GRmqgVMJLg2kpXxy4
+         RNwlayntYg7jPOvCdsuoThkfDk7phGHl1iPFq7Fog/SF/LpwLk1Za54c0tZZ0a1+z+cz
+         HvZZyYRAZp/LPLZnsYHlQ7ubyDI8RAzCPpwuMkEvLTtC5WVYFWFyNpcNi+pcT0moXFe2
+         N9o87WbIeFHF3U5TQU218bUNHCPouCPOCLByL+Lr/UkaOiB/pPqYRzL32pX64MJp41fY
+         lxXze+u1785vUD15/OR22cZ7ypHuni9HHyik0/CASLWEYUDvcZsuwT4MJjUuQj/nLxE5
+         8Yog==
+X-Forwarded-Encrypted: i=1; AJvYcCU3JLp0aXrQC5BiL/fueVH1LmJSx4ERkViWoHUlPyYKJpKWPua9EutIxKG4xY/cxcIiTRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9ZU9U6+GRaj/hnlAylB2SRChbpNzRviCCSCXQZxwJcF33KQtz
+	qiPkKUTfjsd6CN3IPiDWnbhmUIAuDR/Mn78wvrc9dJ3hPFl0qzp4ZU8wljvEm72duRc=
+X-Gm-Gg: ASbGncui84+rIzMOZ3DnGgF4JvYPqrAZ7iGLEvH+ZSt3K532IMSSvnRItvBTHZ+btxR
+	4L6ySqDmNC/8qdmyGwKL1EqFBB7OTb4qduC1UGqcKb5nlxw2ac41U1eKj1tAUo3fvX0+i+iU51O
+	HbEvAIsdk8J1vLWH8Iza1QjkhaoVnme8ZLx53mx8j4qbQW4ycs8hcTKW1/mFcBlvyW2GGQbZFnG
+	pv402JHWKFpY2cu0ndnfWgr9ct6a6snrXFzbMQTtfhi8QwyIVyLeZAPqX4jWk8YMaKU9I9yM1Hm
+	XWM5HeQw8TXMhLIf84Hqs1Qma3GKebmoey2no/Bx0FLXNp2Tfv7eJUKch/tqU4XvwpzVZR9RX31
+	8PlBuCY6FQ4btkepoo3mrQmmf1CbnxubRww==
+X-Google-Smtp-Source: AGHT+IH72PsAQjSge09/VEswdIRor8b+s0ivH0yVqM4TiBV9FovWzP9bspcPBbf4+HVqFBF5NwAp4Q==
+X-Received: by 2002:a17:907:7245:b0:b04:76ed:3ff5 with SMTP id a640c23a62f3a-b0476ed442bmr339748766b.40.1756973921478;
+        Thu, 04 Sep 2025 01:18:41 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b02a090339esm1254356466b.37.2025.09.04.01.18.36
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b04634dbd5csm417619266b.19.2025.09.04.01.18.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:18:37 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 595EA5FA5C;
-	Thu, 04 Sep 2025 09:11:30 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 2C5BA60A38;
+	Thu, 04 Sep 2025 09:11:37 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -146,11 +146,10 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	John Levon <john.levon@nutanix.com>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 018/281] tests/functional: Move alpha tests into architecture specific folder
-Date: Thu,  4 Sep 2025 09:06:52 +0100
-Message-ID: <20250904081128.1942269-19-alex.bennee@linaro.org>
+	John Levon <john.levon@nutanix.com>
+Subject: [PATCH v2 069/281] linux-user: Remove ELF_PLATFORM
+Date: Thu,  4 Sep 2025 09:07:43 +0100
+Message-ID: <20250904081128.1942269-70-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -160,109 +159,98 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Huth <thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The tests/functional folder has become quite crowded already, some
-restructuring would be helpful here. Thus move the alpha tests into
-a target-specific subfolder.
+All real definitions of ELF_PLATFORM are now identical, and the stub
+definitions are NULL.  Use HAVE_ELF_PLATFORM and provide a stub as a
+fallback definition of get_elf_platform.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-7-thuth@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS                                            |  3 ++-
- tests/functional/alpha/meson.build                     | 10 ++++++++++
- .../{test_alpha_clipper.py => alpha/test_clipper.py}   |  0
- .../test_migration.py}                                 |  0
- .../{test_alpha_replay.py => alpha/test_replay.py}     |  0
- tests/functional/meson.build                           | 10 +---------
- 6 files changed, 13 insertions(+), 10 deletions(-)
- create mode 100644 tests/functional/alpha/meson.build
- rename tests/functional/{test_alpha_clipper.py => alpha/test_clipper.py} (100%)
- rename tests/functional/{test_alpha_migration.py => alpha/test_migration.py} (100%)
- rename tests/functional/{test_alpha_replay.py => alpha/test_replay.py} (100%)
+ linux-user/elfload.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a2a5ccea7b6..8115aae6183 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -189,6 +189,7 @@ M: Richard Henderson <richard.henderson@linaro.org>
- S: Maintained
- F: target/alpha/
- F: tests/tcg/alpha/
-+F: tests/functional/alpha/
- F: disas/alpha.c
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 83cb6731ec8..d2d73b06fc0 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -149,8 +149,6 @@ typedef abi_int         target_pid_t;
  
- ARM TCG CPUs
-@@ -656,7 +657,7 @@ S: Maintained
- F: hw/alpha/
- F: hw/isa/smc37c669-superio.c
- F: tests/tcg/alpha/system/
--F: tests/functional/test_alpha_clipper.py
-+F: tests/functional/alpha/test_clipper.py
+ #ifdef TARGET_I386
  
- ARM Machines
- ------------
-diff --git a/tests/functional/alpha/meson.build b/tests/functional/alpha/meson.build
-new file mode 100644
-index 00000000000..26a5b3f2e4b
---- /dev/null
-+++ b/tests/functional/alpha/meson.build
-@@ -0,0 +1,10 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+tests_alpha_system_quick = [
-+  'migration',
-+]
-+
-+tests_alpha_system_thorough = [
-+  'clipper',
-+  'replay',
-+]
-diff --git a/tests/functional/test_alpha_clipper.py b/tests/functional/alpha/test_clipper.py
-similarity index 100%
-rename from tests/functional/test_alpha_clipper.py
-rename to tests/functional/alpha/test_clipper.py
-diff --git a/tests/functional/test_alpha_migration.py b/tests/functional/alpha/test_migration.py
-similarity index 100%
-rename from tests/functional/test_alpha_migration.py
-rename to tests/functional/alpha/test_migration.py
-diff --git a/tests/functional/test_alpha_replay.py b/tests/functional/alpha/test_replay.py
-similarity index 100%
-rename from tests/functional/test_alpha_replay.py
-rename to tests/functional/alpha/test_replay.py
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 9cb6325360f..a7f8c88a078 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -10,6 +10,7 @@ if get_option('tcg_interpreter')
- endif
- 
- subdir('aarch64')
-+subdir('alpha')
- 
- test_arm_timeouts = {
-   'arm_aspeed_palmetto' : 120,
-@@ -96,15 +97,6 @@ tests_generic_linuxuser = [
- tests_generic_bsduser = [
- ]
- 
--tests_alpha_system_quick = [
--  'alpha_migration',
--]
+-#define ELF_PLATFORM get_elf_platform(thread_cpu)
 -
--tests_alpha_system_thorough = [
--  'alpha_clipper',
--  'alpha_replay',
--]
+ #ifdef TARGET_X86_64
+ #define ELF_CLASS      ELFCLASS64
+ #define ELF_ARCH       EM_X86_64
+@@ -309,8 +307,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+ 
+ #ifdef TARGET_ARM
+ 
+-#define ELF_PLATFORM get_elf_platform(thread_cpu)
 -
- tests_arm_system_quick = [
-   'arm_migration',
- ]
+ #ifndef TARGET_AARCH64
+ /* 32 bit ARM definitions */
+ 
+@@ -665,8 +661,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+ #define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE        4096
+ 
+-#define ELF_PLATFORM get_elf_platform(thread_cpu)
+-
+ #endif /* TARGET_LOONGARCH64 */
+ 
+ #ifdef TARGET_MIPS
+@@ -846,8 +840,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+     (*regs)[33] = tswapreg(cpu_get_sr(env));
+ }
+ 
+-#define ELF_PLATFORM NULL
+-
+ #endif /* TARGET_OPENRISC */
+ 
+ #ifdef TARGET_SH4
+@@ -1046,7 +1038,6 @@ static inline void init_thread(struct target_pt_regs *regs,
+ 
+ #define ELF_CLASS       ELFCLASS32
+ #define ELF_ARCH        EM_PARISC
+-#define ELF_PLATFORM    get_elf_platform(thread_cpu)
+ #define STACK_GROWS_DOWN 0
+ #define STACK_ALIGNMENT  64
+ 
+@@ -1182,10 +1173,6 @@ static inline void init_thread(struct target_pt_regs *regs,
+ #define ELF_BASE_PLATFORM (NULL)
+ #endif
+ 
+-#ifndef ELF_PLATFORM
+-#define ELF_PLATFORM (NULL)
+-#endif
+-
+ #ifndef ELF_MACHINE
+ #define ELF_MACHINE ELF_ARCH
+ #endif
+@@ -1229,6 +1216,9 @@ abi_ulong get_elf_hwcap(CPUState *cs) { return 0; }
+ abi_ulong get_elf_hwcap2(CPUState *cs) { g_assert_not_reached(); }
+ #define HAVE_ELF_HWCAP2 0
+ #endif
++#ifndef HAVE_ELF_PLATFORM
++const char *get_elf_platform(CPUState *cs) { return NULL; }
++#endif
+ 
+ #include "elf.h"
+ 
+@@ -1699,7 +1689,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
+     }
+ 
+     u_platform = 0;
+-    k_platform = ELF_PLATFORM;
++    k_platform = get_elf_platform(thread_cpu);
+     if (k_platform) {
+         size_t len = strlen(k_platform) + 1;
+         if (STACK_GROWS_DOWN) {
 -- 
 2.47.2
 
