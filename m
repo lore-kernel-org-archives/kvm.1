@@ -1,66 +1,66 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19922C0F97
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9142D29D8
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973532; cv=none; b=tZKg++uNe44mmQNn2kIhaOnO3LtveWL3G9mWN/dd2XqUtbQeUrwZPU+e2YCaHrHlesvKShqkFvePqqm5Uut9kMs+vZsCqJ6hKSzJK/DgOSOA0HbeRXpU6OiBmkAgoDogUm/CCqf2zwP5Mkg6+6oq0TSPFdlHq6Srqb1uFGiZaPU=
+	t=1756973533; cv=none; b=Y2ssj3aY8J2wkY5knwgU1MowMD1hq6e+CZv7hx1w0sDxhJo9WF3sXp6fkQBGegKTvsKWuM8YfjOog4hC2arym9rgfr3I9TS+Zrr7XWb7HoUiCmsas4dclhlUDvHfDsuaEnJdk9KndNH+djxLW6ORvimExsjMzL/ons6dgyOd5LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973532; c=relaxed/simple;
-	bh=yA8j+MoZAD6VN3pYFZl4y9pYrJJfBXOa3vg2ZiqVELo=;
+	s=arc-20240116; t=1756973533; c=relaxed/simple;
+	bh=H1u0xIrHRBsI5iBWiPGxvfuroguBcudIhZAGEhEwpfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0/Lovgml5AcJTCOxt5jVZ8wFib4EokV7qAsuH/fJT1C5UsFFJ/dtyy9wfcL4NO8kqejt4w8ZocKpuq8VUmDlfrPSSDvpuUofYCiHdtwbuOMDYX7mxNpZsLQYqhrap8VEcfK5bF/VxA2mqx0zfPAjpCCHnBtxUuuIQQbkMEZ4VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kJaRlG32; arc=none smtp.client-ip=209.85.208.54
+	 MIME-Version; b=g1+6rGg3JHpF7dCvTSCEBw0tmGzjg0guRSYOOKSrx1endphp8ItF3dbbgj+SDNoBlC3li2yvCODEuejR5jHPgfFo8HWrB5/7+8DVAINjaRRSGsTvn5vdUmiNwNtobzfntmjJqKvsq8ZE915OTjlU42EEZuuQq1G8YmnU61t575s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Oe/dA3g/; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kJaRlG32"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-619487c8865so3299339a12.1
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:12:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Oe/dA3g/"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b042cc39551so125979666b.0
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:12:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973529; x=1757578329; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973530; x=1757578330; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yLl9oYpNkKlC5u6Dy+xpIH1LWB2sTjU8xRvbErhSckk=;
-        b=kJaRlG32ZFJz/EkMYsGlYAFPpZ1u+Bcbd6QKpYXT9rjJPKz+oweEKdLmgqUFD5w8o1
-         k77VLzyq3XVSBqGg/pTuY7ZaKmBuIP9eKaYPd8RZi/lmE/6it/fDMc8hrdckfces9V6b
-         sSYv4Upv/5+1wrx0Evppgpif0guyC6PiPx2tib/h9vlAuCifx8L09fzRSUgcRFcdcVao
-         wPYTGVpCWJ6UyZZCrEowLbfCgwtDOm3CVYbEsL6s+erdsj1MYM/jYDcKi7k4NPD7Hhqm
-         kp2c6inUvbZ3QAO3T5+AdiDLPnnLPV7C3FAAyHTSH2WSio17CxndxgLU+G3tQAqmn8mC
-         cUSw==
+        bh=arwdiSLHZSf6gZ/oJp/0pmlfrIs2tD4nzezQj8ONLa8=;
+        b=Oe/dA3g/+pkPZ3L5OX5iCSblBCHitswzIteEAu+7aLroQgjxonU/ElNs4wB951hWHI
+         pmZ0SzrCMND0/oMZextTFVgsHwVX0r/aHq8HefKVkGRgTTHfRvf/I/NtFJGQsr2eMuor
+         r2n/Lse7yqoM10ccaQLcq6k7WPFAONAl8GH/IaJBTNlsmOGRmuCdT8dw+OH3MlMN129R
+         HwVMSTEBLaCveIHvvjI+JVcrNMscR/ROUjABJh5uLXM6u1NOzZuwVWTvwhUumuKiTXJp
+         xfCszGCXSxQ+9mrcXDYxbW3iYYS1FB4Ie57oggLj0PF6SGCa6+0H3oFfHVcHfUmDCU3r
+         X/rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973529; x=1757578329;
+        d=1e100.net; s=20230601; t=1756973530; x=1757578330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yLl9oYpNkKlC5u6Dy+xpIH1LWB2sTjU8xRvbErhSckk=;
-        b=bBlLED+uzHJDNmoRez4b7C6W6gPEiAmwQhqt0znkRXDo7KvrX8gUH61Uxx+I85nyqI
-         HFN3V66ZZmpoWs0U5wYTmPw4rUmDm2CwbV5WFjETVFg0UVRlUvO4v+aer2YREG8JO9eQ
-         5ak3MmrFqxUDlTHtdDPL39EY/KOd3q36eaIISdOkyQdMUFQLemRV7X+6usNQ05+00jdW
-         G+Ik6fQNNNwNKjNUlvqHAJtidLtHYNHtAPhVzzbrPs97VM5+xcaDqWO+3RgNNT+auaYp
-         TgQhBRs69ic5Wunrvtbs7sHomrKecYYwmoGM8aLmERCvrAPIFmlAcA3EHNCzi7qic+nR
-         d2oA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4OH0Gl7TYSnJvxTIxQ+Bio+Av940x1iOzi7vRJfF54BTGYDU7iKkdYZKPxxQJuKO56SE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi7XICA8SjtETFbGawPQ3o34ugUSWOptVL3yHt6yw3Ym8RJ4Sh
-	/j3QlLICO18DCJEYTzQnqJzwAUF8EGLkx9Hs3MEFjEiZJpV0SA1fJS+etvBh+vuRy3U=
-X-Gm-Gg: ASbGncuyU5E7AWGK+6yhIyyhtXSERRsgLV+uUKFA/QXeMrMio4h2b9Bc0GtLqH2Y435
-	j0ByBxihe21X1f+raOhLUwoVD9A1F2nG0e/nd55GaHLcknyKj+znHq8NwtRNN7EJNaDBzy3zYf4
-	CJTSIDXnS/deJHaZi66WdCFDCqA8Z18/5e5X8zODvn2/dEa3j20w5DkAKeUphtrOTyog6cKMTkW
-	qFmIzHf6MvlBeQ6HpXY/V0EpjREhjPCTeSTt46AP0JBYu4/vNjZjEAztNRk9t+OHVOwjalCt6Ut
-	0OVS1kRFEyHnzZoWWZrPnuryTRsJgTmybAwAWP1cyvSRbjvzeavNMd0JwWn80ObJ8r8hlfLMdFw
-	PcNcx7Lv3JVPPNQY2fs1iu7f1hNLDWq4ANL8QIrJUINOD
-X-Google-Smtp-Source: AGHT+IHg43VIz5IWaoCglFsXYUVyXtk+RFiP5eDwfdW8F/G9pRndbxerLOqZv98JEUjySgovhYynfw==
-X-Received: by 2002:a17:907:3fa2:b0:b04:3623:aa10 with SMTP id a640c23a62f3a-b043623b1c6mr1473568066b.2.1756973529066;
+        bh=arwdiSLHZSf6gZ/oJp/0pmlfrIs2tD4nzezQj8ONLa8=;
+        b=X0e9QRCqLi5DdoTkvoD6gKIlhNWvlDeSMBBjZJke0b7YZGsl1XjBJ1JWiNf3qXZVtI
+         Iz6ocAHPnEzNeNhDyTkfTT9fLgUrAEW6GF07Q3DLsNySeFJvQzkt1npvKiRyDLvZYFwL
+         9SUPuB2+RDNwC56SsRxyrUCzzwq2asuBFtQVfN9N4mdN7IJrrDLKvi/I0p2OC4+tySLA
+         Ga6xCk/hkoZc8OqbtWseB/I7HjsdM1iXUf8ATIBT4G00YRtBBG/kiPQQLjKWnsfx6Li1
+         K9Ru16iFuDsJ1TMK10iKXdxfwvQ3gFZ/WFHOROoKW+W676pMG6SJhd8ooLqCrN71m2yW
+         gKVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHw+mjB/cHsKKaHZ1XcbYYDhkYfS9dQFxVha9vO258MwyUtCEa/IUKW5VWo9ZcheiWgRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+BDy9do6XPovaiUfA8WCQp2hQRptA53AhILWWN21ApGQerH/5
+	OfMavQckyC9IEey5K6NJdQ5Gu9LExTIXa43FgaojHDfQWgPQDMJZtjb9287bjndtD3I=
+X-Gm-Gg: ASbGnctF1Rdgk/mCU5nCmg4nWWcnU+yjjxnLlNhRQos3olFVv6jgeaWbnFnfrl/5IRH
+	5NPsozFQ58jjwCmHcABqFuy8EikK521WWZWfS2QiLQLIcqOvTAG1ZF8RXqwlx04OY56ADn+JQcM
+	5lUccN6QV1myYOvb1xoVICqXmV6P9Pxpt/D8aP2tA7FXa9mKhzRTj/5pfJJ6Ee50x4sRvuHc/Th
+	4MiTO/fV3nyTYTMIjK7Uu88E8BlT6+SsM6d5Nz7ZqIL62Qc9ICEIVk2vAsEkpVZTkllWV7HutIu
+	QbK3LKTdXwYCxroG4aCbI38u0jj+HwiBv43jQwnfR+4B9+CylkRfjWE3Am6vjComu9PjR/6Lmxz
+	68IdUYaftWci4Wecxm10IMT6qYkvFP5oNiw==
+X-Google-Smtp-Source: AGHT+IFQfEnVE3jwf+K8A9mRCuKbsvAdVucPiFVZ9gLtG5kMjB7TuNZVupCy9McVaCvmyY+uZupkMA==
+X-Received: by 2002:a17:907:7f20:b0:afe:d62a:f04b with SMTP id a640c23a62f3a-b01d8a25c7bmr1778270066b.3.1756973529775;
         Thu, 04 Sep 2025 01:12:09 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b018fe7c638sm1311287266b.6.2025.09.04.01.12.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b04110b94cbsm1152568366b.93.2025.09.04.01.11.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:12:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 7EACA60AD9;
-	Thu, 04 Sep 2025 09:11:38 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 694A560AAF;
+	Thu, 04 Sep 2025 09:11:37 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -147,9 +147,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 080/281] linux-user/mips: Create init_main_thread
-Date: Thu,  4 Sep 2025 09:07:54 +0100
-Message-ID: <20250904081128.1942269-81-alex.bennee@linaro.org>
+Subject: [PATCH v2 071/281] linux-user: Move target_cpu_copy_regs decl to qemu.h
+Date: Thu,  4 Sep 2025 09:07:45 +0100
+Message-ID: <20250904081128.1942269-72-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -163,75 +163,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Merge init_thread and target_cpu_copy_regs.
-There's no point going through a target_pt_regs intermediate.
-
-Note that init_thread had set cp0_status in target_pt_regs, but
-target_cpu_copy_regs did not copy to env.  This turns out to be
-ok because mips_cpu_reset_hold initializes CP0_Status properly.
+The function is not used by bsd-user, so placement
+within include/user/cpu_loop.h is not ideal.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c       |  8 +-------
- linux-user/mips/cpu_loop.c | 16 ++++++----------
- 2 files changed, 7 insertions(+), 17 deletions(-)
+ include/user/cpu_loop.h | 4 ----
+ linux-user/qemu.h       | 3 +++
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 0feccfbe916..ac96755b06c 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -581,13 +581,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
+diff --git a/include/user/cpu_loop.h b/include/user/cpu_loop.h
+index ad8a1d711f0..346e37ede8b 100644
+--- a/include/user/cpu_loop.h
++++ b/include/user/cpu_loop.h
+@@ -81,8 +81,4 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code);
+ #define EXCP_DUMP(env, fmt, code) \
+     target_exception_dump(env, fmt, code)
+ 
+-typedef struct target_pt_regs target_pt_regs;
+-
+-void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
+-
  #endif
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 4d6fad28c63..0c3cfe93a14 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -359,4 +359,7 @@ void *lock_user_string(abi_ulong guest_addr);
+ /* Clone cpu state */
+ CPUArchState *cpu_copy(CPUArchState *env);
  
--static inline void init_thread(struct target_pt_regs *regs,
--                               struct image_info *infop)
--{
--    regs->cp0_status = 2 << CP0St_KSU;
--    regs->cp0_epc = infop->entry;
--    regs->regs[29] = infop->start_stack;
--}
-+#define HAVE_INIT_MAIN_THREAD
- 
- /* See linux kernel: arch/mips/include/asm/elf.h.  */
- #define ELF_NREG 45
-diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
-index 6405806eb02..e67b8a2e463 100644
---- a/linux-user/mips/cpu_loop.c
-+++ b/linux-user/mips/cpu_loop.c
-@@ -211,12 +211,9 @@ done_syscall:
-     }
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-+void init_main_thread(CPUState *cs, struct image_info *info)
- {
--    CPUState *cpu = env_cpu(env);
--    TaskState *ts = get_task_state(cpu);
--    struct image_info *info = ts->info;
--    int i;
-+    CPUArchState *env = cpu_env(cs);
- 
-     struct mode_req {
-         bool single;
-@@ -245,12 +242,11 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- 
-     struct mode_req prog_req;
-     struct mode_req interp_req;
-+    target_ulong entry = info->entry;
- 
--    for(i = 0; i < 32; i++) {
--        env->active_tc.gpr[i] = regs->regs[i];
--    }
--    env->active_tc.PC = regs->cp0_epc & ~(target_ulong)1;
--    if (regs->cp0_epc & 1) {
-+    env->active_tc.gpr[29] = info->start_stack;
-+    env->active_tc.PC = entry & ~(target_ulong)1;
-+    if (entry & 1) {
-         env->hflags |= MIPS_HFLAG_M16;
-     }
- 
++typedef struct target_pt_regs target_pt_regs;
++void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
++
+ #endif /* QEMU_H */
 -- 
 2.47.2
 
