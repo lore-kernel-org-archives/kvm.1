@@ -1,193 +1,142 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A716E287517
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 06:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A052BE652;
+	Thu,  4 Sep 2025 07:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756968938; cv=none; b=kxs+3IeAzyNJPX1AWVpIEWUIcuG+F5sybThrXlCKiklsT+6gqWkH0xEYew/gyng5RHU4Tnl/+/4WQlKQ0A2JX1qYEFu41o+/xFNYA9wGGAs7j7zsjMXmx1uxKEXjqocXGJ+vcCDcau7Z/WquYJysJsb3dIK0BH5D5L9Q15MeKoI=
+	t=1756972745; cv=none; b=Lf8kl7adteZSVbyF5ii2zLcwx7PE0tyPP0EJE1uIy6gbCArmUAOhLR+xOCR+GLT6fAEWPeEAGPBXC/tnCbdwj0AH7LV6A+nPTDfOoeWBN3pldly5mrWAmVbNvI/M1x7PBaP6HoONH+hYEi1zswmXBRpGXo23RnMG2QTPLGgyJWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756968938; c=relaxed/simple;
-	bh=n5R2ZA5nD4duw34bOYSLZZY4wDHfqasy7+07P7hy0UE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Lu1NvJ2QHtdVj9dV0fvzvejpTbKH53EhuSU4Rk6XcTz9yBjhkkG94S8HExcSbsfyKeP3UL3S05X8gmj3A1WiYKOQCCiYCIF48KGder5+W/c69Xe/DZXK7jURPRPbQePfJMlgJQcwOGQdxkY4hqAmwcGN+mQrGf8uPNuWd9ONRJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rANUoKlk; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com
+	s=arc-20240116; t=1756972745; c=relaxed/simple;
+	bh=aBuEluC+86E34BYUv5Oa47sk/w75PmXicZuwfYiSDcM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kDsU2zi3xCynJYi0OSlJJlEkdPz1CJH3wRMC2n/jHLaeU6BqwAkXcG/JXJm+HjQm+gg0JC2p0taFlCforRUzMpfhtvC5fq+Md9hfjUa7O1gHcTpMoCMTYQWu8htgABg99jFPPyM4wCjqjgAFEg6sjaFs9AE+EGPVfAbk7Rl7sVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RSayuYH+; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rANUoKlk"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-324e41e946eso1116263a91.0
-        for <kvm@vger.kernel.org>; Wed, 03 Sep 2025 23:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756968936; x=1757573736; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yB9yOXY7Gz8M5J2AkG68rpmry/ggMKSfTcUt8sHdGE=;
-        b=rANUoKlkTFC+7ZCLkXXP5D3TyL9h5WlvPXjPPmtVH8qMNJ86OY2fEOsVzXb+jL4J3e
-         bwjfGLkHpp8HhhmVA/4Yt+m/9MaCXic4UQhe5qS3ffIM1jIEdoXDPJjYTKGBCsfuzjfV
-         lsc/GOlvUqz8+Z9z3jkavGRvoY4N7/bszxabQMYZXEPVSc2YANY2yl52nE0dI9BPWDgt
-         kQhchUCdYR4Zl/DCH0k9AAQr7Td0IVvbdXq0dLon3bxC3s8k29a+drhElWAXHQ5uhHye
-         8o8UgA03QFIYPTjj9u/4wwtJsKzMci4szygzX6TKqlHiLFbyv/fftHLBAoPHSDLL7anF
-         Yp3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756968936; x=1757573736;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yB9yOXY7Gz8M5J2AkG68rpmry/ggMKSfTcUt8sHdGE=;
-        b=YgDO6OUk1xUHM080WqB2ubxzyAyD167zQNw1KwpBZzau4aj+UbhP9vNroC4xjukS6O
-         Dcx5e3iWG4oIquYjSAHOb7yukD/Zu7bdvGgTH5+FMXisjxekT8Pq66qFSYFME6wLlI0U
-         rfDIoJQt2UdKQyya54fe1vRi7epLG2qn6U3ddxj+84U93o/M9qtNN9KsaEEHzybdNuWx
-         GjmEjO/Eqr8YayeMEy0MGnJ3zJrOQhR1QIo1OUrZZJvZKVsUUrUb6+MJumUcbagz5cVT
-         +nkuzyOF6isNsacxwp5Xuv+FCNDwcXAYYFjXLdszwxjzNSd5LGGPR9oiB51wmRN3uM9T
-         l3Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5iEDphqQX6AXVWrmNGhoDnUEH5KbXtV18ua8MQVKstm8T8SeqM5UjgBi7N65AfYCL3xk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcHMQuCcMvtcAuQeY2skIw5+p4u5iv65N9NbdEV3pGad3l6VpJ
-	gMjqUyui04WzLaAjFe1TxW1h8Bb0jXy0+wxDiDl0Dx49ddAHfl2icz+F4wHgt5XrCor4fh0oKi9
-	faA==
-X-Google-Smtp-Source: AGHT+IFpJtOTBtEH30kjlV9qshasFJ6VZRx9xb8RK+RSnnYf1AYHxgBz5mEyM5mVxSvYniQwjkKBo72C8w==
-X-Received: from pjh5.prod.google.com ([2002:a17:90b:3f85:b0:325:7c49:9cce])
- (user=sagis job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ecc:b0:329:e3dc:db6c
- with SMTP id 98e67ed59e1d1-329e3dcdc0bmr11848843a91.23.1756968935487; Wed, 03
- Sep 2025 23:55:35 -0700 (PDT)
-Date: Wed,  3 Sep 2025 23:54:51 -0700
-In-Reply-To: <20250904065453.639610-1-sagis@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RSayuYH+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756972744; x=1788508744;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=aBuEluC+86E34BYUv5Oa47sk/w75PmXicZuwfYiSDcM=;
+  b=RSayuYH+xgkMOysHOpl3kxO96rcDTxBeCL3QLjjUCXcZxC1yUeVExbs9
+   arQ20+ZYV0t6MdMK9kzy7ctKIQVbz7aXeLSvhAqXc8oICzTDtSOTXUSHL
+   vvHhfArvrPyo1vtsyU7xti0HqiO5tStNjbjAwzSEINscbw1RFoSd3Ggt3
+   WUaPaHtg41FD6YnMEQ3qvPKcPX/gdDj9zXFZUiRXNuhRMU5oBFMFwSZPp
+   EjMCqcIvg9l6HujnsCiJmrblgWgFYPWGxlZxile7UKvR3SD++l4Mzn6HY
+   KPVE9CtZnwQFMW1OnznsfXd+MBL+9yHAx1soGGX75xUD4tUug3fwfPw/J
+   w==;
+X-CSE-ConnectionGUID: fLx1pzDISBiRL/L5jMEWAA==
+X-CSE-MsgGUID: gANneA5eSmmWL3Y2RFXAwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59217879"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59217879"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:59:04 -0700
+X-CSE-ConnectionGUID: cK68dvTjQOWIr9ZUxNgrkA==
+X-CSE-MsgGUID: hHmZT+vfQqu3I+274QjcUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
+   d="scan'208";a="175950505"
+Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:58:57 -0700
+Message-ID: <6b61cee4-0405-4967-afee-af934df34c5f@linux.intel.com>
+Date: Thu, 4 Sep 2025 15:58:54 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250904065453.639610-1-sagis@google.com>
-X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
-Message-ID: <20250904065453.639610-22-sagis@google.com>
-Subject: [PATCH v10 21/21] KVM: selftests: Add TDX lifecycle test
-From: Sagi Shahar <sagis@google.com>
-To: linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Ryan Afranji <afranji@google.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Sagi Shahar <sagis@google.com>, Roger Wang <runanwang@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 17/23] KVM: guest_memfd: Split for punch hole and
+ private-to-shared conversion
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, x86@kernel.org, rick.p.edgecombe@intel.com,
+ dave.hansen@intel.com, kas@kernel.org, tabba@google.com,
+ ackerleytng@google.com, quic_eberman@quicinc.com, michael.roth@amd.com,
+ david@redhat.com, vannapurve@google.com, vbabka@suse.cz,
+ thomas.lendacky@amd.com, pgonda@google.com, zhiquan1.li@intel.com,
+ fan.du@intel.com, jun.miao@intel.com, ira.weiny@intel.com,
+ isaku.yamahata@intel.com, xiaoyao.li@intel.com, chao.p.peng@intel.com
+References: <20250807093950.4395-1-yan.y.zhao@intel.com>
+ <20250807094503.4691-1-yan.y.zhao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20250807094503.4691-1-yan.y.zhao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Adding a test to verify TDX lifecycle by creating a simple TD.
 
-Signed-off-by: Sagi Shahar <sagis@google.com>
----
- tools/testing/selftests/kvm/Makefile.kvm      |  1 +
- .../selftests/kvm/include/x86/tdx/tdx_util.h  | 10 ++++++
- .../selftests/kvm/lib/x86/tdx/tdx_util.c      | 18 +++++++++++
- tools/testing/selftests/kvm/x86/tdx_vm_test.c | 31 +++++++++++++++++++
- 4 files changed, 60 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/tdx_vm_test.c
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 1a73e08c8437..1a76e9fa45d6 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -155,6 +155,7 @@ TEST_GEN_PROGS_x86 += rseq_test
- TEST_GEN_PROGS_x86 += steal_time
- TEST_GEN_PROGS_x86 += system_counter_offset_test
- TEST_GEN_PROGS_x86 += pre_fault_memory_test
-+TEST_GEN_PROGS_x86 += x86/tdx_vm_test
- 
- # Compiled outputs used by test targets
- TEST_GEN_PROGS_EXTENDED_x86 += x86/nx_huge_pages_test
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index 2467b6c35557..775ca249f74d 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -11,6 +11,14 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
- 	return vm->type == KVM_X86_TDX_VM;
- }
- 
-+/*
-+ * Verify that TDX is supported by KVM.
-+ */
-+static inline bool is_tdx_enabled(void)
-+{
-+	return !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_TDX_VM));
-+}
-+
- /*
-  * TDX ioctls
-  */
-@@ -72,5 +80,7 @@ void vm_tdx_load_vcpu_boot_parameters(struct kvm_vm *vm, struct kvm_vcpu *vcpu);
- void vm_tdx_set_vcpu_entry_point(struct kvm_vcpu *vcpu, void *guest_code);
- 
- void vm_tdx_finalize(struct kvm_vm *vm);
-+struct kvm_vm *vm_tdx_create_with_one_vcpu(void *guest_code,
-+					   struct kvm_vcpu **vcpu);
- 
- #endif // SELFTESTS_TDX_TDX_UTIL_H
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-index d5df2de81a75..a2764f5d687c 100644
---- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-@@ -334,3 +334,21 @@ void vm_tdx_finalize(struct kvm_vm *vm)
- 	load_td_private_memory(vm);
- 	vm_tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
- }
-+
-+struct kvm_vm *vm_tdx_create_with_one_vcpu(void *guest_code,
-+					   struct kvm_vcpu **vcpu)
-+{
-+	struct vm_shape shape = {
-+		.mode = VM_MODE_DEFAULT,
-+		.type = KVM_X86_TDX_VM,
-+	};
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpus[1];
-+
-+	vm = __vm_create_with_vcpus(shape, 1, 0, guest_code, vcpus);
-+	*vcpu = vcpus[0];
-+
-+	vm_tdx_finalize(vm);
-+
-+	return vm;
-+}
-diff --git a/tools/testing/selftests/kvm/x86/tdx_vm_test.c b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-new file mode 100644
-index 000000000000..a9ee489eea1a
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "kvm_util.h"
-+#include "tdx/tdx_util.h"
-+#include "ucall_common.h"
-+#include "kselftest_harness.h"
-+
-+static void guest_code_lifecycle(void)
-+{
-+	GUEST_DONE();
-+}
-+
-+TEST(verify_td_lifecycle)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+
-+	vm = vm_tdx_create_with_one_vcpu(guest_code_lifecycle, &vcpu);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_DONE);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	TEST_REQUIRE(is_tdx_enabled());
-+	return test_harness_run(argc, argv);
-+}
--- 
-2.51.0.338.gd7d06c2dae-goog
+On 8/7/2025 5:45 PM, Yan Zhao wrote:
+[...]
+>   
+> @@ -514,6 +554,8 @@ static int kvm_gmem_convert_should_proceed(struct inode *inode,
+>   					   struct conversion_work *work,
+>   					   bool to_shared, pgoff_t *error_index)
+>   {
+> +	int ret = 0;
+> +
+>   	if (to_shared) {
+>   		struct list_head *gmem_list;
+>   		struct kvm_gmem *gmem;
+> @@ -522,19 +564,24 @@ static int kvm_gmem_convert_should_proceed(struct inode *inode,
+>   		work_end = work->start + work->nr_pages;
+>   
+>   		gmem_list = &inode->i_mapping->i_private_list;
+> +		list_for_each_entry(gmem, gmem_list, entry) {
+> +			ret = kvm_gmem_split_private(gmem, work->start, work_end);
+> +			if (ret)
+> +				return ret;
+> +		}
+>   		list_for_each_entry(gmem, gmem_list, entry)
+> -			kvm_gmem_unmap_private(gmem, work->start, work_end);
+> +			kvm_gmem_zap(gmem, work->start, work_end, KVM_FILTER_PRIVATE);
+>   	} else {
+>   		unmap_mapping_pages(inode->i_mapping, work->start,
+>   				    work->nr_pages, false);
+>   
+>   		if (!kvm_gmem_has_safe_refcount(inode->i_mapping, work->start,
+>   						work->nr_pages, error_index)) {
+> -			return -EAGAIN;
+> +			ret = -EAGAIN;
+>   		}
+
+Not from this patch.
+When if statement breaks into two lines, are curly braces needed?
+
+
+>   	}
+>   
+> -	return 0;
+> +	return ret;
+>   }
+>   
+[...]
+> @@ -1906,8 +1926,14 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>   	start = folio->index;
+>   	end = start + folio_nr_pages(folio);
+>   
+> -	list_for_each_entry(gmem, gmem_list, entry)
+> -		kvm_gmem_invalidate_begin_and_zap(gmem, start, end);
+> +	/* The size of the SEPT will not exceed the size of the folio */
+To me, the comment alone without the context doesn't give a direct expression that
+split is not needed. If it's not too wordy, could you make it more informative?
+
+
+> +	list_for_each_entry(gmem, gmem_list, entry) {
+> +		enum kvm_gfn_range_filter filter;
+> +
+> +		kvm_gmem_invalidate_begin(gmem, start, end);
+> +		filter = KVM_FILTER_PRIVATE | KVM_FILTER_SHARED;
+> +		kvm_gmem_zap(gmem, start, end, filter);
+> +	}
+>   
+>   	/*
+>   	 * Do not truncate the range, what action is taken in response to the
 
