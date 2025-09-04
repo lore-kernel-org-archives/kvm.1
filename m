@@ -1,66 +1,66 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE042BDC13
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623D22C0F81
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973922; cv=none; b=iBiKnKi6htV+q47udmb6SAu9nv+ilUXPRiUJSYkQcutMb3Is1FSpo15gt3fCck2NUFCOwVhD4tQYT4FeplPANCbjsFOr66SSSJ3pjP6dJ+iROE4v7sOuOdFlZLRGrhcc2IMmF8OWauAy1+D+v0giIYpqygarIz89jrz0mnNPZxc=
+	t=1756973923; cv=none; b=QoY1+//GJMJ4LEMb7SjwLaDH7++AROlwMUHwDupg/hmFNa6NRIMXJvr4cwXGJ34shhr1rZdiPwDF5tAzQtOx+OBxokghOXSOEzMlUr8StfDeSYJiJP6UHS7nVi//s+sS5q5g1Pgw/ZMoropA2kxKwDbcMdOzwFlq2NNYK18qOCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973922; c=relaxed/simple;
-	bh=hxeIfx20g7cYcGNYqYWaBdGJWYym53wbjhT65dexDS0=;
+	s=arc-20240116; t=1756973923; c=relaxed/simple;
+	bh=6A08BUh3fCUxF9R841eS/4IGV0EM/Q1EsI9U9KOjmBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frxGzFOjlRPjZUFl86hoLsFJg3vhzbJah0DaC/1OyU/E+8UfWQwSer2Jnds0LiGRe7e6B0clCh+VsWN0zwioyQmbWdcTpJmyKWJsyoV2ZMPk4Z8ENpgcaZWnrNHqYjaHtR8VFrXmfU3cbrLz491akrtYVhjU3MK321ilZMa9zoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=orTnXy9i; arc=none smtp.client-ip=209.85.218.44
+	 MIME-Version; b=cv6Udy0IECA5HX5hwC9IlsBRcyS5BFHKjWor+m2EN2gZ1gBXdPmEco4nkcxUPz7Evotvy6S+1O9Gu0LF8fd/Y4yFDfXQWYD/ojt/z9sG+kylvriUEZIMntNR1MGK/E5wraGO6M35MXrR66P+CAjdhOjI3AX8eqn+mk9m7MUxO9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ruv6EZOH; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="orTnXy9i"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b047f28a83dso81487566b.2
-        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:18:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ruv6EZOH"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7ace3baso138909966b.3
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756973918; x=1757578718; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756973920; x=1757578720; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fTwVN2pdB6APtd4vJTidA71Ye17u96MfvC5vKsLhS50=;
-        b=orTnXy9il2OgQup3RyFDjJoK2F462TVKe9ja4nrmquRhl39xhywVzVngOtbWcxtV9e
-         9qnT4Br/yiRJNAIb0JUk9z6qoA8eiMQYUol249AYBJ9xN3tmyp7nA6CiBfxcIzBFhiG9
-         marAzrLbIalTnfyQkmd7wzWNZ8A0fVn/r2CcDdquTUTsHvwn2kf53+gcMM4lyE+C136F
-         ILvdd4zaykSe3YM/cvXUJ0uehFss+tog+GkqX6qVC0O13vMjS/DOjUJd6PPGJICs7cag
-         Xzas/zuBS+CRRUTYC5Fa8xCL5mZGoaAkSVxo8hSn2QXkj4h8WI06dbuA15AN1ip2BKfT
-         DOwg==
+        bh=+88w9AQZ9cLJwlirAZW/BDB9U/6ab+UNG3qEc9GZaw4=;
+        b=ruv6EZOHaeOk9Psq9DBH/WqgDKgmqOgq7IfpQUqbxEXraDsE+vtSNW7X3UK2rgi6AZ
+         6jNDOi6DinwAQvhSmj7+FYJG/61yvw6DrlYALEfWJR1FxOVLFygNrKrUw3i5ghJaDYp+
+         C8EwYm8E1YLDGDc5i+jgTQExrnQnoxoT90iYQIz8Z9dfLESiO/3XB+/UOpvZBriPb0Im
+         qC517weeDXLlHOUuIZEuVsEAAcW3sNT8nKG/35N9QAvL2vsd/US4pt6LlleQjcN8F2Gx
+         CAEC7mHDvSGbmJODhDBGiWb+lnAMwrVCW6l79BPB4CWln/ZGnR6LsEhsWwK8qGdNUkRG
+         Kyfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973918; x=1757578718;
+        d=1e100.net; s=20230601; t=1756973920; x=1757578720;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fTwVN2pdB6APtd4vJTidA71Ye17u96MfvC5vKsLhS50=;
-        b=K0mWOh0HWAcvEU4j2boE58CuM1BI4xWdZGcWYweogHjG/wR3ZzQqPSYfsB8kvt+Eeo
-         TmIZKd0euxzhWRcNca3V7GztvAJsiwWrgsLtYmJ7z8sb6X//bqnoED6s0kfINCvz1g6O
-         XAD+DpcFmAmm/V5GAczHcRUChF4Tc3yYGA0DcUStOpL6rp6RZ+9Pw3XJb/n4DeOoe6HW
-         s4gBY3YjdOtRfxdB10ghAm6uSDParejc41rj+yc/i8L8bLCOlw0P07CokxFWHfMKI5Bj
-         81q4GCgE5BU5JlnYn9NG3vKezQy5fD4NeeQEsSGx9UB0epKKoq9R4g+bvjCtEyOwLCrN
-         dmXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbI/rm6mv/l452vDXwFFta0jR6FLWaiBW8GA+puvNMC9e1UOR4wFc+lN5Rf4MY2TC2bGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD6LtdyG4VNcGhb68Ed2WGeu0XRUNrxojshn9XWAHT+lDEX9Te
-	o3GwZmfqi81QdM68SP27iUrWwthwbWZ7wbtMWNYdSJFdpDuv6lZil0fo+r9r02vxnsw=
-X-Gm-Gg: ASbGncvmNimXqlrCmN9kvcEdTLA4dfT/GSCbA4h/mxiYXCZxgF/55kV930sIQ7/WrvL
-	udnPsWAqZ8Or4RqkMCO5w8/Oso3DZWDNjS9g67XCyFvuNwMVykvnZX6s2mvY3rnGW7OtpuFdCZx
-	JiM6XQ4VZqLeScyUirGx1QbUZeTq4H8b7WPJ5Z/6Id8w3v5XrbkAOLnEX7okM9Ou6U9bsbQI5u/
-	sZs926EyuUtK9erS0GhOhbzebQUfUQdoZpp5qWcbKh+/gL7OUwyC/uz9spEkak06jPR4esrvm8X
-	VdhXWZJger7mBBJY9AeIsBXXfb4Tokaz1AiUsIILvSF1kOYXG7q2sRJTzetIXtTkfQBuE8+aNDE
-	d0Qe9NdAUts1U3w5MnG3OCJeFJD5M0z2H2Q==
-X-Google-Smtp-Source: AGHT+IF1g0xPlQZwXvixbktzxWp7pylp9yJpF3ozVocEpxZl4vhVy/vLrP8CDNUZO12I//3cD7pawA==
-X-Received: by 2002:a17:907:7e86:b0:afe:ad18:8662 with SMTP id a640c23a62f3a-b01d8c74c8emr1897318666b.23.1756973918422;
-        Thu, 04 Sep 2025 01:18:38 -0700 (PDT)
+        bh=+88w9AQZ9cLJwlirAZW/BDB9U/6ab+UNG3qEc9GZaw4=;
+        b=CYgAowNgcb7Bji4au7cUapKD5lBAGzgINomwWeA9pst7jCuhw28+BLBfKbpFsT9Cj+
+         /F7+ue9HSToeH3MaDGDt4s4rptucKoL2MwwmrQDorBwum7PXkY6oVX5eNiSIi9OvJ/JE
+         hZOEAfy63pjPYgZV2DuFl1A6FCCl75bbewV16clgN1uRWpcPfAyFbaPzqjth1fL844Yt
+         DNZIX1cY/JioRrcnjSoBANPRbs3HeeXh4Fe/Uftw7IxCw1p3322oYxuAvZrC1LCh/KAu
+         FMmAW0/ku0o8GjUR68VtKhq1rfEDDHSQ1BvVervpLjWRLQYvj+QvROcA6WG1AZRmM5/l
+         SozA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVsyzQGeFToS0nLVCiUeYI3TTfM+17MeNUNwtSqBO+3+/RuR/yyJmb/IjLYxndXqq2jfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv2SEy0nvbkgtrbRNcB01/6Z1pGP9fCEXMVNa+NLNhgxs+tEGv
+	MunhKfXkP3kTlmQjDzZ5ERBsZ2+hwdp80vpaqoy+hu1xEqpBwLZ2iMD8aM0vmfLhj+0=
+X-Gm-Gg: ASbGncvH25g6JIGTNkvrWSmnipx5XywMBOheLiTutrv14eLzZM4eQ0Ys/yzG/3x1pZU
+	3V7ut9Wr5oft0qo9MXrMwlBTz7FOyjVeLYC0mBSBojwwFUUhoIX0m2TrgIrgHXQvC/Vc6gVOQ0B
+	GhZ4dCVEe9Cdj+Hg66qTjtqyH22WfTNppNeZJzUp6dx6m9JOdR9Fl1TNWxoEqlscVq4cvHnbOOV
+	5FO7Y9Fg5dvilL8Ns9NxAG/LcoapUPlH5dEZ8EJWPd4MKiFem1PXU7Tcp/p4nHqsl4UPb+C1GUg
+	xVAx2JUREJpsGY9o01MNat+uZR0/rHAP/ms2CRHgzpgsBd7AsOkOndkndGSlsWQicZeZA6z9W0o
+	kGMDzxg3X2CUl78Ruep1feqc=
+X-Google-Smtp-Source: AGHT+IGxjVBN0FQryOFHW7NPMAzsYYrdCtTTvqWBsGarhpRXGfdwEbKrpxErVnpLvup6bLCipLULiA==
+X-Received: by 2002:a17:906:4fca:b0:b04:6546:347e with SMTP id a640c23a62f3a-b0465463a5bmr592167766b.51.1756973919569;
+        Thu, 04 Sep 2025 01:18:39 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aff12a6b404sm1396323866b.88.2025.09.04.01.18.35
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0425ce98f1sm977746666b.67.2025.09.04.01.18.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 04 Sep 2025 01:18:37 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 5CC61601C5;
-	Thu, 04 Sep 2025 09:11:35 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 5504A60AF7;
+	Thu, 04 Sep 2025 09:11:39 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -147,9 +147,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 055/281] linux-user: Move get_elf_hwcap to sparc/elfload.c
-Date: Thu,  4 Sep 2025 09:07:29 +0100
-Message-ID: <20250904081128.1942269-56-alex.bennee@linaro.org>
+Subject: [PATCH v2 087/281] linux-user/riscv: Create init_main_thread
+Date: Thu,  4 Sep 2025 09:08:01 +0100
+Message-ID: <20250904081128.1942269-88-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
@@ -163,125 +163,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Change the return type to abi_ulong, and pass in the cpu.
+Merge init_thread and target_cpu_copy_regs.
+There's no point going through a target_pt_regs intermediate.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loader.h           |  3 ++-
- linux-user/sparc/target_elf.h |  2 ++
- linux-user/elfload.c          | 30 +-----------------------------
- linux-user/sparc/elfload.c    | 27 +++++++++++++++++++++++++++
- 4 files changed, 32 insertions(+), 30 deletions(-)
+ linux-user/elfload.c        |  7 +------
+ linux-user/riscv/cpu_loop.c | 10 ++++------
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 151a06f5db5..2c8414e0e53 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -101,7 +101,8 @@ extern unsigned long guest_stack_size;
- /* Note that Elf32 and Elf64 use uint32_t for e_flags. */
- const char *get_elf_cpu_model(uint32_t eflags);
- 
--#if defined(TARGET_I386) || defined(TARGET_X86_64) || defined(TARGET_ARM)
-+#if defined(TARGET_I386) || defined(TARGET_X86_64) || defined(TARGET_ARM) \
-+    || defined(TARGET_SPARC)
- abi_ulong get_elf_hwcap(CPUState *cs);
- abi_ulong get_elf_hwcap2(CPUState *cs);
- #endif
-diff --git a/linux-user/sparc/target_elf.h b/linux-user/sparc/target_elf.h
-index 7e46748d261..b7544db0a1c 100644
---- a/linux-user/sparc/target_elf.h
-+++ b/linux-user/sparc/target_elf.h
-@@ -8,4 +8,6 @@
- #ifndef SPARC_TARGET_ELF_H
- #define SPARC_TARGET_ELF_H
- 
-+#define HAVE_ELF_HWCAP          1
-+
- #endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 149d1313c0a..16709865f78 100644
+index 16aa09214e8..556f11d720d 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -565,35 +565,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- # define ELF_ARCH   EM_SPARCV9
+@@ -849,12 +849,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+ #define VDSO_HEADER "vdso-64.c.inc"
  #endif
  
--#include "elf.h"
--
--#define ELF_HWCAP get_elf_hwcap()
--
--static uint32_t get_elf_hwcap(void)
+-static inline void init_thread(struct target_pt_regs *regs,
+-                               struct image_info *infop)
 -{
--    /* There are not many sparc32 hwcap bits -- we have all of them. */
--    uint32_t r = HWCAP_SPARC_FLUSH | HWCAP_SPARC_STBAR |
--                 HWCAP_SPARC_SWAP | HWCAP_SPARC_MULDIV;
--
--#ifdef TARGET_SPARC64
--    CPUSPARCState *env = cpu_env(thread_cpu);
--    uint32_t features = env->def.features;
--
--    r |= HWCAP_SPARC_V9 | HWCAP_SPARC_V8PLUS;
--    /* 32x32 multiply and divide are efficient. */
--    r |= HWCAP_SPARC_MUL32 | HWCAP_SPARC_DIV32;
--    /* We don't have an internal feature bit for this. */
--    r |= HWCAP_SPARC_POPC;
--    r |= features & CPU_FEATURE_FSMULD ? HWCAP_SPARC_FSMULD : 0;
--    r |= features & CPU_FEATURE_VIS1 ? HWCAP_SPARC_VIS : 0;
--    r |= features & CPU_FEATURE_VIS2 ? HWCAP_SPARC_VIS2 : 0;
--    r |= features & CPU_FEATURE_FMAF ? HWCAP_SPARC_FMAF : 0;
--    r |= features & CPU_FEATURE_VIS3 ? HWCAP_SPARC_VIS3 : 0;
--    r |= features & CPU_FEATURE_IMA ? HWCAP_SPARC_IMA : 0;
--#endif
--
--    return r;
+-    regs->sepc = infop->entry;
+-    regs->sp = infop->start_stack;
 -}
-+#define ELF_HWCAP get_elf_hwcap(thread_cpu)
++#define HAVE_INIT_MAIN_THREAD
  
- static inline void init_thread(struct target_pt_regs *regs,
-                                struct image_info *infop)
-diff --git a/linux-user/sparc/elfload.c b/linux-user/sparc/elfload.c
-index 243e6f9b66a..32ca1b05b1a 100644
---- a/linux-user/sparc/elfload.c
-+++ b/linux-user/sparc/elfload.c
-@@ -3,6 +3,7 @@
- #include "qemu/osdep.h"
- #include "qemu.h"
- #include "loader.h"
-+#include "elf.h"
+ #define ELF_EXEC_PAGESIZE 4096
  
- 
- const char *get_elf_cpu_model(uint32_t eflags)
-@@ -13,3 +14,29 @@ const char *get_elf_cpu_model(uint32_t eflags)
-     return "Fujitsu MB86904";
- #endif
+diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
+index 2dd30c7b288..b3162815320 100644
+--- a/linux-user/riscv/cpu_loop.c
++++ b/linux-user/riscv/cpu_loop.c
+@@ -94,14 +94,12 @@ void cpu_loop(CPURISCVState *env)
+     }
  }
-+
-+abi_ulong get_elf_hwcap(CPUState *cs)
-+{
-+    /* There are not many sparc32 hwcap bits -- we have all of them. */
-+    uint32_t r = HWCAP_SPARC_FLUSH | HWCAP_SPARC_STBAR |
-+                 HWCAP_SPARC_SWAP | HWCAP_SPARC_MULDIV;
-+
-+#ifdef TARGET_SPARC64
-+    CPUSPARCState *env = cpu_env(cs);
-+    uint32_t features = env->def.features;
-+
-+    r |= HWCAP_SPARC_V9 | HWCAP_SPARC_V8PLUS;
-+    /* 32x32 multiply and divide are efficient. */
-+    r |= HWCAP_SPARC_MUL32 | HWCAP_SPARC_DIV32;
-+    /* We don't have an internal feature bit for this. */
-+    r |= HWCAP_SPARC_POPC;
-+    r |= features & CPU_FEATURE_FSMULD ? HWCAP_SPARC_FSMULD : 0;
-+    r |= features & CPU_FEATURE_VIS1 ? HWCAP_SPARC_VIS : 0;
-+    r |= features & CPU_FEATURE_VIS2 ? HWCAP_SPARC_VIS2 : 0;
-+    r |= features & CPU_FEATURE_FMAF ? HWCAP_SPARC_FMAF : 0;
-+    r |= features & CPU_FEATURE_VIS3 ? HWCAP_SPARC_VIS3 : 0;
-+    r |= features & CPU_FEATURE_IMA ? HWCAP_SPARC_IMA : 0;
-+#endif
-+
-+    return r;
-+}
+ 
+-void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
++void init_main_thread(CPUState *cs, struct image_info *info)
+ {
+-    CPUState *cpu = env_cpu(env);
+-    TaskState *ts = get_task_state(cpu);
+-    struct image_info *info = ts->info;
++    CPUArchState *env = cpu_env(cs);
+ 
+-    env->pc = regs->sepc;
+-    env->gpr[xSP] = regs->sp;
++    env->pc = info->entry;
++    env->gpr[xSP] = info->start_stack;
+     env->elf_flags = info->elf_flags;
+ 
+     if ((env->misa_ext & RVE) && !(env->elf_flags & EF_RISCV_RVE)) {
 -- 
 2.47.2
 
