@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E5E224AE6
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 18:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DAE270578
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 18:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757010994; cv=none; b=uRmqf+5dkun4/IU8+NZTpnn70Ju2D0sve3j8UwCiHa6snyjWKIsADi49GHSE6msvz3DEZjkOOuJQrYXpQSZ3hRuFMOMT92l/osbKYd0/qGHzGEQTx41lSPX4JH1aUlGDnaWpeZWiVam9uz05NdwV33dm36nVJQE18UxomLhqz84=
+	t=1757011001; cv=none; b=pYIPmU2KToGcI/Cne7znQqSjn4IMmpePkixsTFzfbeZNSJXKf5qjcqB5M4WVH0mL0cqHi+0J4AN70OeSARqRI5ljzuQH5GPo6PBbk3xc6QWqKqTkNGWuXFx44Xm3iFKUPZ4Sdyw93h6erbuboQVlmdFGIXyivDTPG0oNDbEZnlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757010994; c=relaxed/simple;
-	bh=AGw2xKpv/tyfwIG/SQpOwIOoH2TKN2ZA8FjMvcb4Ue0=;
+	s=arc-20240116; t=1757011001; c=relaxed/simple;
+	bh=+bsXqjrbjdk0kUQXXL1WrzIRuzrIEx7IY5OrHK70vXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0jPv7XhvibuWU9qsYR+rj6QsiGfnhW9Eh+qu46W6qBppdTxgjh46oO9IyNPtmAxBFgeGww1ox7zjySLjahW77VtRyBmVpagQgIyGXcxFqFyzmi9MfVuylV2wnffT2AJnJ4JLp/O2v18iXi3M4foowvx0eMICOTAJ1QXQ8eQSh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qw3brj2t; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=kG0aXV3fOksnvILppqNCYqfFFP36WXJBusvupKw/8WWLW+6P6TwpG2flXZgY5PpLz2z5BEeQ5lRNEKz7rCVZ9TCJLK6ckvNOXk/Zk9BXqwuYeOYNBG4gSynR/8OolfjBNnHRzKMDlC7UVFxeiuv9rElpIKAGfGkvQVeqSYD0/cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdlRzwZB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qw3brj2t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73D2C4CEF0;
-	Thu,  4 Sep 2025 18:36:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdlRzwZB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6812DC4CEF0;
+	Thu,  4 Sep 2025 18:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757010993;
-	bh=AGw2xKpv/tyfwIG/SQpOwIOoH2TKN2ZA8FjMvcb4Ue0=;
+	s=k20201202; t=1757011000;
+	bh=+bsXqjrbjdk0kUQXXL1WrzIRuzrIEx7IY5OrHK70vXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qw3brj2t8UbID/+WoDY/uRW1yFhQvX+22HwSEC/wJzRfTqQr1VvvFUhS6EAuq1xYb
-	 k5bqmvLHa9pzBWrw5L6Rj4r+ZgiPKL0kowU2jHN0EGXDuT9JuWeXDbKlMtEpC9DbG0
-	 1Zr9vgpOgzpmhEizFYXURkmjh+QxLgtMWusWCs1e/6GIz026AAi42/CtW1m2NYymNm
-	 pyc4h/5YzhbcTBSm//s29BMszwKwAnWGSfI3Uondydi+c3Mvc0u9yJbrKgHSKVSbXy
-	 oRVNlEO+jKXe67cCD3VRTc4HVKbQvpjCetnH6/+XkMFqhJlf5Tza3DWOMIChO7sjZe
-	 XW5JwCCTrKA0g==
+	b=tdlRzwZBTicqELzW8mOaMkYBHvuBXkS7G/fYgHo1R6ZITkfYnVRKvs+vtQNw7JHUE
+	 3yLLLc4ZXD34cSF+7fag7DvhLuAdEml4KPFvU48y76+cUnS36iU4tAa+CUOrexgC23
+	 Y2oevdrtBL3hwQOfh1LCaJ3wPBjPo9GJrX96221YESylZYsrZEIHyIhAcOUnvmk+W6
+	 s1zizGohxFFFBh1ii79vpqhN0qI2i31IMfcVmFF3dyQqSJLH1HpDFsjxmAxrl40Ug3
+	 wnv8io5S/HFNPa9LcKB5kXzgy9VTK0HNvhFOEqP6vSF/jxLpb1+sMA/oGzkEKw2RrV
+	 31CtuNMJURovQ==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -44,9 +44,9 @@ Cc: <x86@kernel.org>,
 	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
 	Joao Martins <joao.m.martins@oracle.com>,
 	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [RESEND v4 6/7] x86/cpufeatures: Add X86_FEATURE_X2AVIC_EXT
-Date: Fri,  5 Sep 2025 00:03:06 +0530
-Message-ID: <e5c9c471ab99a130bf9b728b77050ab308cf8624.1757009416.git.naveen@kernel.org>
+Subject: [RESEND v4 1/7] KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids
+Date: Fri,  5 Sep 2025 00:03:01 +0530
+Message-ID: <adb07ccdb3394cd79cb372ba6bcc69a4e4d4ef54.1757009416.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1757009416.git.naveen@kernel.org>
 References: <cover.1757009416.git.naveen@kernel.org>
@@ -58,46 +58,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add CPUID feature bit for x2AVIC extension that enables AMD SVM to
-support up to 4096 vCPUs in x2AVIC mode. The primary change is in the
-size of the AVIC Physical ID table, which can now go up to 8 contiguous
-4k pages. The number of pages allocated is controlled by the maximum
-APIC ID for a guest, and that controls the number of pages to allocate
-for the AVIC Physical ID table. AVIC hardware is enhanced to look up
-Physical ID table entries for vCPUs > 512 for locating the target APIC
-backing page and the host APIC ID of the physical core on which the
-guest vCPU is running.
+KVM allows VMMs to specify the maximum possible APIC ID for a virtual
+machine through KVM_CAP_MAX_VCPU_ID capability so as to limit data
+structures related to APIC/x2APIC. Utilize the same to set the AVIC
+physical max index in the VMCB, similar to VMX. This helps hardware
+limit the number of entries to be scanned in the physical APIC ID table
+speeding up IPI broadcasts for virtual machines with smaller number of
+vCPUs.
+
+Unlike VMX, SVM AVIC requires a single page to be allocated for the
+Physical APIC ID table and the Logical APIC ID table, so retain the
+existing approach of allocating those during VM init.
 
 Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 ---
- arch/x86/include/asm/cpufeatures.h | 1 +
- arch/x86/kernel/cpu/scattered.c    | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/kvm/svm/avic.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 8738bd783de2..92cbf2d8d7b1 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -497,6 +497,7 @@
- #define X86_FEATURE_TSA_L1_NO		(21*32+12) /* AMD CPU not vulnerable to TSA-L1 */
- #define X86_FEATURE_CLEAR_CPU_BUF_VM	(21*32+13) /* Clear CPU buffers using VERW before VMRUN */
- #define X86_FEATURE_MSR_IMM		(21*32+14) /* MSR immediate form instructions */
-+#define X86_FEATURE_X2AVIC_EXT		(21*32+15) /* AMD SVM x2AVIC support for 4k vCPUs */
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index a34c5c3b164e..a6908ac5298d 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -82,6 +82,7 @@ bool x2avic_enabled;
+ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ {
+ 	struct vmcb *vmcb = svm->vmcb01.ptr;
++	struct kvm *kvm = svm->vcpu.kvm;
  
- /*
-  * BUG word(s)
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index cf4ae822bcc0..c6908c08aa55 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -49,6 +49,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_PROC_FEEDBACK,		CPUID_EDX, 11, 0x80000007, 0 },
- 	{ X86_FEATURE_AMD_FAST_CPPC,		CPUID_EDX, 15, 0x80000007, 0 },
- 	{ X86_FEATURE_MBA,			CPUID_EBX,  6, 0x80000008, 0 },
-+	{ X86_FEATURE_X2AVIC_EXT,		CPUID_ECX,  6, 0x8000000a, 0 },
- 	{ X86_FEATURE_COHERENCY_SFW_NO,		CPUID_EBX, 31, 0x8000001f, 0 },
- 	{ X86_FEATURE_SMBA,			CPUID_EBX,  2, 0x80000020, 0 },
- 	{ X86_FEATURE_BMEC,			CPUID_EBX,  3, 0x80000020, 0 },
+ 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+ 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+@@ -97,7 +98,8 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ 	 */
+ 	if (x2avic_enabled && apic_x2apic_mode(svm->vcpu.arch.apic)) {
+ 		vmcb->control.int_ctl |= X2APIC_MODE_MASK;
+-		vmcb->control.avic_physical_id |= X2AVIC_MAX_PHYSICAL_ID;
++		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
++						      X2AVIC_MAX_PHYSICAL_ID);
+ 		/* Disabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, false);
+ 	} else {
+@@ -108,7 +110,8 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
+ 
+ 		/* For xAVIC and hybrid-xAVIC modes */
+-		vmcb->control.avic_physical_id |= AVIC_MAX_PHYSICAL_ID;
++		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
++						      AVIC_MAX_PHYSICAL_ID);
+ 		/* Enabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, true);
+ 	}
 -- 
 2.50.1
 
