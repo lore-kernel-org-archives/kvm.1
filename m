@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D703340DBF
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 18:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F302FC025
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 18:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757009142; cv=none; b=U2dxboMA/i2402PHg3wnMeaYHG96oDQsEagU/+Gp/L1fIBId1MjDoUJeQdUGgW7FO5aDtDgFfxDuvUS3MK/SCP+hJw7fJhZl7Osjo7TbmKMkdU+CDetIVaNjZh26PzoKK/veb9Y+RkWU1TOM4YtVo6aAIg8Ihyzq4NKRfy8xnYA=
+	t=1757009157; cv=none; b=CuO1Ot7ddCXCh08Rs4ksDeINHn+DPiH5S80HXRmIFu50A/JHb/AgtHQyidjArxl4SmGEJS5KOz/1JfMNNopBb2I/uJGl6mhWyQQhm31FnMvW0OJnEt4mpNdS0oJCxtZCG0kWHHf6DqAbM5RNGejyegDoQSd92uq0yDyW/OrWiVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757009142; c=relaxed/simple;
-	bh=XWExoyl3DsudkysvmWVI1Lyi/mSsj1I8CYY5Rpe2Tt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SeWMYzPF6SqC+dI3AbBR36iChNeK8Sfo+d02jNuM1LISWHRGZrUlhE1SoObOwRAuCdJCRTLZSFD2gF3dOEWGwmeR+3tn0C6TAvKyPQRE9v2jaWekgEgRYVRcO/El/bYetAw1Mv9c+HigojfpzcwgF8/Hst1A/Tm3/I4vq36e9Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjMBUInH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757009157; c=relaxed/simple;
+	bh=fEPQ3xPEopAj7Rbo8DF6qbYTk0TXadXXd95h2oTih9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qGtUpjZK2MaxckVAAy75jQqiQQBmdbDyRtiTrArJDr/SF6eOsMXFaQ4mKbebmdrMQw1h7YI7t/cF93jApCxPWKnsaP4hXk6723IV3kP9v99EWNLbYrfvOHtx0RgmyNQL67Brj/7Z5i83zrmalArgRGUsfzzYNNssZnDTDsmGyIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZFr2Lqw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjMBUInH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2158CC4CEF0;
-	Thu,  4 Sep 2025 18:05:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZFr2Lqw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0080C4CEF0;
+	Thu,  4 Sep 2025 18:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757009142;
-	bh=XWExoyl3DsudkysvmWVI1Lyi/mSsj1I8CYY5Rpe2Tt0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sjMBUInHUy+n8DUlBGO9eJdUgV2682Yqf6+oQwl628Uw2sJA7OQymziZ+tESOrfco
-	 g7U+lbusi2WlLHJDgMXxjOWdGKLKxrNqKkFAiHD2xbne/WNHgtq5ljRBcCNo8BEK3U
-	 VLIW+zUrklFMCi23pAfGXCK47+TBmHWraE+uerd3UuMPdoJQYpmdb2jymXUkv1CLe0
-	 RK6T0qbHco3ZHjK8gniUoXyjkRCmFPb1R+j7fxtdGWGtsnnqroqlS4pwU1MttWya0m
-	 1CwCaKUzigUqvIFeHfyTVQ35ztloK8MZGAtBlhQWTYz0221aV3r/KjjAUxafr/JVXp
-	 ksR5qsEmtqlXA==
+	s=k20201202; t=1757009157;
+	bh=fEPQ3xPEopAj7Rbo8DF6qbYTk0TXadXXd95h2oTih9w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cZFr2Lqw1/PL9GTwsLNXS/Gflir18KkCQE4MMYS6gFj6H0+mw/cjFr7eq14uIzTXl
+	 V+nMVUMm73Nt6xQg6wQnj/+zcCykqCLb0l9yaPdWltsdccOh8+kyqbJ3i+5b2xFE1+
+	 A8E0amU3UBUGXkfJkdBTy9seMYE1dHrNSTch4BqcYz2V4iSaMLh1eu9nsdGuSIQrSl
+	 YtRnBUh7EyO8liKA5F565AUzM+a+AipLL9KSwiA6+jX1qcyHjQNYKpNRYoG0qVFhjf
+	 zZl8csfrevxgvdA8KPVtO92S/wl5cRBu7lmxWxam19H1QXSpUCcifuDcx0GlwOUQe1
+	 z4te3C9SXmnyQ==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -37,10 +38,12 @@ Cc: <kvm@vger.kernel.org>,
 	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
 	Joao Martins <joao.m.martins@oracle.com>,
 	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [RFC PATCH v2 0/5] KVM: SVM: Enable AVIC by default on Zen 4+
-Date: Thu,  4 Sep 2025 23:30:37 +0530
-Message-ID: <cover.1756993734.git.naveen@kernel.org>
+Subject: [RFC PATCH v2 2/5] KVM: SVM: Simplify the message printed with 'force_avic'
+Date: Thu,  4 Sep 2025 23:30:39 +0530
+Message-ID: <5ebb7b1c278b6f20ee4f7afa0228298f9e504fbd.1756993734.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1756993734.git.naveen@kernel.org>
+References: <cover.1756993734.git.naveen@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,34 +52,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is v2 of the RFC posted here:
-http://lkml.kernel.org/r/20250626145122.2228258-1-naveen@kernel.org
+On systems that do not advertise support for AVIC, it can be
+force-enabled through 'force_avic' module parameter. In that case, a
+warning is displayed but the customary "AVIC enabled" message isn't.
+Fix that by printing "AVIC enabled" unconditionally. The warning for
+'force_avic' is also needlessly long. Simplify the same.
 
-I have split up the patches and incorporated feedback on the RFC. This 
-still depends on at least two other fixes:
-- Reducing SVM IRQ Window inhibit lock contention: 
-  http://lkml.kernel.org/r/cover.1752819570.git.naveen@kernel.org
-- Fixing TPR handling when AVIC is active: 
-  http://lkml.kernel.org/r/cover.1756139678.git.maciej.szmigiero@oracle.com
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+---
+ arch/x86/kvm/svm/avic.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-
-- Naveen
-
-
-Naveen N Rao (AMD) (5):
-  KVM: SVM: Stop warning if x2AVIC feature bit alone is enabled
-  KVM: SVM: Simplify the message printed with 'force_avic'
-  KVM: SVM: Move all AVIC setup to avic_hardware_setup()
-  KVM: SVM: Move 'force_avic' module parameter to svm.c
-  KVM: SVM: Enable AVIC by default from Zen 4
-
- arch/x86/kvm/svm/svm.h  |  3 ++-
- arch/x86/kvm/svm/avic.c | 48 ++++++++++++++++++-----------------------
- arch/x86/kvm/svm/svm.c  | 22 +++++++++++++------
- 3 files changed, 38 insertions(+), 35 deletions(-)
-
-
-base-commit: ecbcc2461839e848970468b44db32282e5059925
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 346cd23a43a9..3faed85fcacd 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -1110,16 +1110,8 @@ bool avic_hardware_setup(void)
+ 		return false;
+ 	}
+ 
+-	if (boot_cpu_has(X86_FEATURE_AVIC)) {
+-		pr_info("AVIC enabled\n");
+-	} else if (force_avic) {
+-		/*
+-		 * Some older systems does not advertise AVIC support.
+-		 * See Revision Guide for specific AMD processor for more detail.
+-		 */
+-		pr_warn("AVIC is not supported in CPUID but force enabled");
+-		pr_warn("Your system might crash and burn");
+-	}
++	pr_info("AVIC enabled%s\n", cpu_feature_enabled(X86_FEATURE_AVIC) ? "" :
++				    " (forced, your system may crash and burn)");
+ 
+ 	/* AVIC is a prerequisite for x2AVIC. */
+ 	x2avic_enabled = boot_cpu_has(X86_FEATURE_X2AVIC);
 -- 
 2.50.1
 
