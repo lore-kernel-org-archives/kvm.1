@@ -1,123 +1,146 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9292C08A8
-	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 09:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14531A9F82
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 09:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756978486; cv=none; b=L0AP8ZopEwV8BKDTJkbVqWSnqR0tYsyyFgfodi1YItu8KtdX2wBKG67AWbMxKBnoqNRN3Q8gk+nA2GJEidLba5p277PNqoqQpxafGwXYKrn/qAZrrACM4gEB6G15xq4LuuwyzOZxQEmHayKfBvH9L8GJuR4BHpkMN2tYCWZnDkA=
+	t=1756978625; cv=none; b=phaEtsdQKREQFvnLaGX3ubhC1wJtuExrZj0M8nUBwd/WJcUcE3y8Z7kAFC6Qh8CHu+LX+2U8Ul2If9zX9eJ4iPFA/nmbk42URnAJgWrUefXegUNFubKlpelLo7IYegCh3cxY/gKwDAnsyTJwDYa86HdfVkLsoN3GZQAHlFomD5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756978486; c=relaxed/simple;
-	bh=KJrvxiKA8da0PAhQCMt7czC6UZkPyTF1XEzM5QZa9LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oB3BiW34bKnu4YHrYIChk6kosMWPUpNYeNi+8/rM1l1WJ7PTVGjRzkltjsNTX0ZKgbs5HajbZX8zYl2w72RhxJzydYOWD9dDAOvaZWFE9VoiDK8eTp0PJqDgFbRJn5TtkiGmIRFUwF0TeAdjPVnzEt8LvK5AML2qPq77or178Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=K8bnUM9o; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1756978625; c=relaxed/simple;
+	bh=vJJxdgxF4Bc1mcgD+FVWMOuZJmSFyxuk3LWs2VZahuA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=EuWHjNt3kAVTOir5j1k6P5As1o5ps3gR9Us+QJfa4lkCH39yqbACaKbIwtjZefQ/C5nvZjCmdgb2QvEcq9NfXz8vP1tKUOon8ObZIRr+JjH6hLTx/ZJBSjH6+B3sjkF9EA4vtAl7k1Cnu3fEdPqslV+FKjvscgfcXp0dy1fMfD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSLjQM/U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="K8bnUM9o"
-Date: Thu, 4 Sep 2025 00:57:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756978472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RvXraad7M9/KAbsxZuVznw4PuxcMicz+ycPue4L1oEw=;
-	b=K8bnUM9oGvlHPCu5IwDqYoXJM87iFMrFkvivzsP9o3Vy9gVgb/OT6fLf2fWkv8V/AbMGxl
-	BIY4MxwR8GbjJKHyV+16OnLGE1pKkw/lwbt0IGO1EefBFMy2ll5Ux4XEVfzNAYirgsx0CO
-	VLT7Fiow1AaujU5PusHgs/OL8hEj+aE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
-	"maz@kernel.org" <maz@kernel.org>, Joey Gouly <Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"will@kernel.org" <will@kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 0/5] KVM: arm64: GICv5 legacy (GCIE_LEGACY) NV enablement
- and cleanup
-Message-ID: <aLlGeLOE_PVsYDAU@linux.dev>
-References: <20250828105925.3865158-1-sascha.bischoff@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSLjQM/U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875E2C4CEF0;
+	Thu,  4 Sep 2025 09:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756978625;
+	bh=vJJxdgxF4Bc1mcgD+FVWMOuZJmSFyxuk3LWs2VZahuA=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=lSLjQM/URQzEDKXVmo6Tp0d/dvdPxRDeepDVKv8jqydSxXyPdIZd8pn/D/HVibvnj
+	 kS9XWbhKc00HqzFyap53aEKgWMktKYxIhM/dx95wTjJqcluK7OlFiVyGzFToTrNXFY
+	 YbFE7A32TImc/3hAieNP/Mo+XolpvMQsbz7oQ//EA0Y4kU0isuyNq2DF2BB+3zE0Ua
+	 t+93dbA9UShMuEbajsREwl/bMwufstnA/77xYn8YSfJFV2RfivjY2hujgejK5yNlGp
+	 PiTlpkyr7txr24LKDgy08GR6FVaQiZ+GUsugnzYXCi2RCHI5Ne/oi+Ykoe7Ae17GOe
+	 VE7YgbPdU7Sxw==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828105925.3865158-1-sascha.bischoff@arm.com>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 04 Sep 2025 11:37:00 +0200
+Message-Id: <DCJWXVLI2GWB.3UBHWIZCZXKD2@kernel.org>
+To: "Zhi Wang" <zhiw@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [RFC v2 03/14] vfio/nvidia-vgpu: introduce vGPU type uploading
+Cc: <kvm@vger.kernel.org>, <alex.williamson@redhat.com>,
+ <kevin.tian@intel.com>, <jgg@nvidia.com>, <airlied@gmail.com>,
+ <daniel@ffwll.ch>, <acurrid@nvidia.com>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiwang@kernel.org>
+References: <20250903221111.3866249-1-zhiw@nvidia.com>
+ <20250903221111.3866249-4-zhiw@nvidia.com>
+In-Reply-To: <20250903221111.3866249-4-zhiw@nvidia.com>
 
-On Thu, Aug 28, 2025 at 10:59:41AM +0000, Sascha Bischoff wrote:
-> Hi all,
-> 
-> This series enables nested virtualization for GICv3-based VMs on GICv5
-> hosts (w/ FEAT_GCIE_LEGACY) in KVM/arm64. In addition, it adds a CPU
-> capability to track support for FEAT_GCIE_LEGACY across all CPUs.
-> 
-> The series fixes ICC_SRE_EL2 access handling for GICv5 hosts (to match
-> the updated bet1+ specification [1]), and extends nested
-> virtualization support to vGICv3 guests running on compatible GICv5
-> systems. With these changes, it becomes possible to run with
-> kvm-arm.mode=nested, and these changes have been tested with three
-> levels of nesting on simulated hardware (Arm FVP).
-> 
-> Previously, the presence of FEAT_GCIE_LEGACY was tracked in the GICv5
-> driver via gic_kvm_info, and the probing logic could incorrectly
-> enable legacy support if the boot CPU exposed the feature while others
-> did not. This created the risk of mismatched configurations,
-> particularly when late-onlining CPUs without FEAT_GCIE_LEGACY.
-> 
-> To address this, the series introduces a proper ARM64_HAS_GICV5_LEGACY
-> CPU capability, and moves KVM to use cpus_have_final_cap() to ensure
-> consistent system-wide enablement. With this, late-onlined but
-> mismatched CPUs are cleanly rejected at bring-up.
-> 
-> Patch summary
-> 
-> KVM: arm64: allow ICC_SRE_EL2 accesses on a GICv5 host
->     Update handling to reflect the corrected GICv5 specification.
-> 
-> KVM: arm64: Enable nested for GICv5 host with FEAT_GCIE_LEGACY
->     Allow nested virtualization for vGICv3 guests on GICv5 hosts with
->     legacy support.
-> 
-> arm64: cpucaps: Add GICv5 Legacy vCPU interface (GCIE_LEGACY) capability
->     Introduce a new CPU capability that prevents mismatched
->     configurations.
-> 
-> KVM: arm64: Use ARM64_HAS_GICV5_LEGACY for GICv5 probing
->     Ensure probing is consistent across all CPUs by using cpucaps.
-> 
-> irqchip/gic-v5: Drop has_gcie_v3_compat from gic_kvm_info
->     Remove obsolete compatibility flag, as FEAT_GCIE_LEGACY is now a
->     CPU feature.
-> 
-> Comments and reviews are very welcome.
-> 
-> Thanks,
-> Sascha
-> 
-> [1] https://developer.arm.com/documentation/aes0070/latest/
-> 
-> Sascha Bischoff (5):
->   KVM: arm64: Allow ICC_SRE_EL2 accesses on a GICv5 host
->   KVM: arm64: Enable nested for GICv5 host with FEAT_GCIE_LEGACY
->   arm64: cpucaps: Add GICv5 Legacy vCPU interface (GCIE_LEGACY)
->     capability
->   KVM: arm64: Use ARM64_HAS_GICV5_LEGACY for GICv5 probing
->   irqchip/gic-v5: Drop has_gcie_v3_compat from gic_kvm_info
+On Thu Sep 4, 2025 at 12:11 AM CEST, Zhi Wang wrote:
+> diff --git a/drivers/vfio/pci/nvidia-vgpu/include/nvrm/gsp.h b/drivers/vf=
+io/pci/nvidia-vgpu/include/nvrm/gsp.h
+> new file mode 100644
+> index 000000000000..c3fb7b299533
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nvidia-vgpu/include/nvrm/gsp.h
+> @@ -0,0 +1,18 @@
+> +/* SPDX-License-Identifier: MIT */
+> +#ifndef __NVRM_GSP_H__
+> +#define __NVRM_GSP_H__
+> +
+> +#include <nvrm/nvtypes.h>
+> +
+> +/* Excerpt of RM headers from https://github.com/NVIDIA/open-gpu-kernel-=
+modules/tree/570 */
+> +
+> +#define NV2080_CTRL_CMD_GSP_GET_FEATURES (0x20803601)
+> +
+> +typedef struct NV2080_CTRL_GSP_GET_FEATURES_PARAMS {
+> +	NvU32  gspFeatures;
+> +	NvBool bValid;
+> +	NvBool bDefaultGspRmGpu;
+> +	NvU8   firmwareVersion[GSP_MAX_BUILD_VERSION_LENGTH];
+> +} NV2080_CTRL_GSP_GET_FEATURES_PARAMS;
+> +
+> +#endif
 
-For the series:
+<snip>
 
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+> +static struct version supported_version_list[] =3D {
+> +	{ 18, 1, "570.144" },
+> +};
 
-Thanks,
-Oliver
+nova-core won't provide any firmware specific APIs, it is meant to serve as=
+ a
+hardware and firmware abstraction layer for higher level drivers, such as v=
+GPU
+or nova-drm.
+
+As a general rule the interface between nova-core and higher level drivers =
+must
+not leak any hardware or firmware specific details, but work on a higher le=
+vel
+abstraction layer.
+
+Now, I recognize that at some point it might be necessary to do some kind o=
+f
+versioning in this API anyways. For instance, when the semantics of the fir=
+mware
+API changes too significantly.
+
+However, this would be a separte API where nova-core, at the initial handsh=
+ake,
+then asks clients to use e.g. v2 of the nova-core API, still hiding any fir=
+mware
+and hardware details from the client.
+
+Some more general notes, since I also had a look at the nova-core <-> vGPU
+interface patches in your tree (even though I'm aware that they're not part=
+ of
+the RFC of course):
+
+The interface for the general lifecycle management for any clients attachin=
+g to
+nova-core (VGPU, nova-drm) should be common and not specific to vGPU. (The =
+same
+goes for interfaces that will be used by vGPU and nova-drm.)
+
+The interface nova-core provides for that should be designed in Rust, so we=
+ can
+take advantage of all the features the type system provides us with connect=
+ing
+to Rust clients (nova-drm).
+
+For vGPU, we can then monomorphize those types into the corresponding C
+structures and provide the corresponding functions very easily.
+
+Doing it the other way around would be a very bad idea, since the Rust type
+system is much more powerful and hence it'd be very hard to avoid introduci=
+ng
+limitations on the Rust side of things.
+
+Hence, I recommend to start with some patches defining the API in nova-core=
+ for
+the general lifecycle (in Rust), so we can take it from there.
+
+Another note: I don't see any use of the auxiliary bus in vGPU, any clients
+should attach via the auxiliary bus API, it provides proper matching where
+there's more than on compatible GPU in the system. nova-core already regist=
+ers
+an auxiliary device for each bound PCI device.
+
+Please don't re-implement what the auxiliary bus already does for us.
+
+- Danilo
