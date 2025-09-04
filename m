@@ -1,142 +1,228 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A052BE652;
-	Thu,  4 Sep 2025 07:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97E22BEFF0
+	for <kvm@vger.kernel.org>; Thu,  4 Sep 2025 08:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756972745; cv=none; b=Lf8kl7adteZSVbyF5ii2zLcwx7PE0tyPP0EJE1uIy6gbCArmUAOhLR+xOCR+GLT6fAEWPeEAGPBXC/tnCbdwj0AH7LV6A+nPTDfOoeWBN3pldly5mrWAmVbNvI/M1x7PBaP6HoONH+hYEi1zswmXBRpGXo23RnMG2QTPLGgyJWw=
+	t=1756973494; cv=none; b=dX2JY0jBKq7590qikv1GbZ1Z5TpSoLOZxxathVn0+VT2ib+Hgw8g8H4hsmk7ss16roMAWm/B4QKr2ftvVmcLI6JOA2ilS+EzEobFVqSST48KFTcDETy+4P+XATHOJZVp2de/nGZZ4uDN9/Xv3lzRUFtrBilO8HYYdlTVlrY64mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756972745; c=relaxed/simple;
-	bh=aBuEluC+86E34BYUv5Oa47sk/w75PmXicZuwfYiSDcM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kDsU2zi3xCynJYi0OSlJJlEkdPz1CJH3wRMC2n/jHLaeU6BqwAkXcG/JXJm+HjQm+gg0JC2p0taFlCforRUzMpfhtvC5fq+Md9hfjUa7O1gHcTpMoCMTYQWu8htgABg99jFPPyM4wCjqjgAFEg6sjaFs9AE+EGPVfAbk7Rl7sVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RSayuYH+; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1756973494; c=relaxed/simple;
+	bh=g2c2rwvNXwtPXn1nZWME/EQrYmx/Nv8VVrnHzRxtp64=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MKOLGb1/uj0f9oIWGrDdzkTQbHWGQzYNYu+15WA4rTXmyH90vFFuj14mYk5eZvElnMR4S2g5hAuMfvUZ1D+ci+7U/i2hDkeRnTqGbByMsRu9elLE1GEtwlqOnkKM7BlnoXDzZ/HPO5seRHMzlbnRotizy5oB8euo1F+dXKgTiEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L/uYbVoh; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RSayuYH+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756972744; x=1788508744;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=aBuEluC+86E34BYUv5Oa47sk/w75PmXicZuwfYiSDcM=;
-  b=RSayuYH+xgkMOysHOpl3kxO96rcDTxBeCL3QLjjUCXcZxC1yUeVExbs9
-   arQ20+ZYV0t6MdMK9kzy7ctKIQVbz7aXeLSvhAqXc8oICzTDtSOTXUSHL
-   vvHhfArvrPyo1vtsyU7xti0HqiO5tStNjbjAwzSEINscbw1RFoSd3Ggt3
-   WUaPaHtg41FD6YnMEQ3qvPKcPX/gdDj9zXFZUiRXNuhRMU5oBFMFwSZPp
-   EjMCqcIvg9l6HujnsCiJmrblgWgFYPWGxlZxile7UKvR3SD++l4Mzn6HY
-   KPVE9CtZnwQFMW1OnznsfXd+MBL+9yHAx1soGGX75xUD4tUug3fwfPw/J
-   w==;
-X-CSE-ConnectionGUID: fLx1pzDISBiRL/L5jMEWAA==
-X-CSE-MsgGUID: gANneA5eSmmWL3Y2RFXAwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59217879"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59217879"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:59:04 -0700
-X-CSE-ConnectionGUID: cK68dvTjQOWIr9ZUxNgrkA==
-X-CSE-MsgGUID: hHmZT+vfQqu3I+274QjcUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="175950505"
-Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:58:57 -0700
-Message-ID: <6b61cee4-0405-4967-afee-af934df34c5f@linux.intel.com>
-Date: Thu, 4 Sep 2025 15:58:54 +0800
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L/uYbVoh"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-61ce4c32a36so1285099a12.3
+        for <kvm@vger.kernel.org>; Thu, 04 Sep 2025 01:11:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756973491; x=1757578291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BNEGVA0a3lSomvk/RYtnyV9U8MhQRFndjMqEzv6fEMo=;
+        b=L/uYbVoh5TxKCYzW79SN5CIPMRrEUdMb2C38lm62KXgVztSRlQw/YF0ZLU3+GDuFUm
+         XeUZL9e69ZXGAZvwIQcg8bcFD81fr8s6NYk/4/ONPVBRQ+wL3taHjVYdeZ8TwaQvnRpD
+         ++CU7gFevrQlOedSAvy2cV5JJTDPv/n19EX3NfxTwIDxtYvpmIopUTKFRM4Wbe8htxrm
+         tINPuXDsnlXJwqpFbcixR+dOUj2Ikp5VzM1/dx6ESNsZaK9smrmRfCNL8w7oKQ82x2tQ
+         pmjskts6deT6MTu9+1PDKYIshNZ1YqWRGg+Kt29IzaiLSVituSSWhkQaBZV7ugEtHejr
+         Zyvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756973491; x=1757578291;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BNEGVA0a3lSomvk/RYtnyV9U8MhQRFndjMqEzv6fEMo=;
+        b=rhF8Didr+jWbnM54Ox+CFmf+gSN/jtP+fFzk8nOQgiTs3fpzhFRSlndojb3OcQG/5c
+         NiFEyF1CUJNGqo1opNwhZVCrfvNLcoh0SzQ/INhCyE/elD7L57jgfjrpyxfKZz/S9bVT
+         ycQCaqFUJFQ62b6MzXIV9FjacgTwdUAzV2OZheh53ARsgd6hNFav3a1IV5cFiaWBdRmr
+         dWhZyq3O88M0jGd+U2yJJhgdW5rOVnLwruEqmk1SXtnTwsJjFlhzjY4Xo8Xgvusp+ujB
+         moiWp9ilfkf4xhSL110x0/uAb8bSjbMRQxuz48HipxRxpLNw7IT0nKwlfTuoz7i3rVhx
+         Ks1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXI+qtGEa4n0iYU6Qf/VsH/YkMK/fbzn9UfEj8LFBPzl7s41shVq6lKo9cj4MqkmlknhjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOTcQ1BxZ5wa95AbWcUcGubDAUguFZpP8bMtMlIdxVntzSqSMf
+	LaGRe2upvZie3ADpR+DczlmQz51TXug3ceqB8e2q+hlWgyVaQAoqgGPmq9LEPTefo2Y=
+X-Gm-Gg: ASbGncuECS34NQ60lt6lWLLRg4aPUhhV1pVaIkDS3DzYsO4dKDhzuwhLAUS/+iHx7lf
+	/DSbWtYQuS8ABcZu72FXxyfUYXbxk7Zj/2si8N5uqAgyCyaIbxRfdk6VtJ7y9pjZ9Umcz5PsnTF
+	mNEm4jmDeJ87vHBCNl2TCwHGiS8kO8KorzAgngyNhzQtx8e2987KWtBMd/OygClZFj+tmWE2cFl
+	KOiibjOZkwUn7UHk/bFkI8auk/P5noxyyB76Fq8tZ69dNu6RH+QRppTLmjpNUWn7b7t0ef8brWq
+	DVbvtASJ1rXoZfzwOcYUu8a0Ronw2sLPN6xLkrt7Ds6tArujqVC2n52fwcsIeZ2ZIp/PSVAZrBr
+	blI4ODEaaAgb8XRixYIc2rma5G2DQYgs/vA==
+X-Google-Smtp-Source: AGHT+IHexK94NPWoWCrwjuk3gIAjHKSuKZUcH35FtgtMhup7hPhQojKoYZ1y3LzApeF9bdhKrTjgdQ==
+X-Received: by 2002:a05:6402:1e8c:b0:620:894c:656c with SMTP id 4fb4d7f45d1cf-620894c7c6fmr28663a12.29.1756973490788;
+        Thu, 04 Sep 2025 01:11:30 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc5575dcsm13745805a12.49.2025.09.04.01.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 01:11:29 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 4CE8D5F900;
+	Thu, 04 Sep 2025 09:11:28 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Reinoud Zandijk <reinoud@netbsd.org>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	qemu-arm@nongnu.org,
+	Fam Zheng <fam@euphon.net>,
+	Helge Deller <deller@gmx.de>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	qemu-rust@nongnu.org,
+	Bibo Mao <maobibo@loongson.cn>,
+	qemu-riscv@nongnu.org,
+	Thanos Makatos <thanos.makatos@nutanix.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Riku Voipio <riku.voipio@iki.fi>,
+	Cameron Esfahani <dirty@apple.com>,
+	Alexander Graf <agraf@csgraf.de>,
+	Laurent Vivier <lvivier@redhat.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	qemu-ppc@nongnu.org,
+	Stafford Horne <shorne@gmail.com>,
+	Sunil Muthuswamy <sunilmut@microsoft.com>,
+	Jagannathan Raman <jag.raman@oracle.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Brian Cain <brian.cain@oss.qualcomm.com>,
+	Phil Dennis-Jordan <phil@philjordan.eu>,
+	devel@lists.libvirt.org,
+	Mads Ynddal <mads@ynddal.dk>,
+	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+	Peter Xu <peterx@redhat.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Michael Rolnik <mrolnik@gmail.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Laurent Vivier <laurent@vivier.eu>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	qemu-block@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+	Kyle Evans <kevans@freebsd.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Warner Losh <imp@bsdimp.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	John Snow <jsnow@redhat.com>,
+	Yoshinori Sato <yoshinori.sato@nifty.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Yonggang Luo <luoyonggang@gmail.com>,
+	Radoslaw Biernacki <rad@semihalf.com>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Yanan Wang <wangyanan55@huawei.com>,
+	Eduardo Habkost <eduardo@habkost.net>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	qemu-s390x@nongnu.org,
+	Alex Williamson <alex.williamson@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ani Sinha <anisinha@redhat.com>,
+	Roman Bolshakov <rbolshakov@ddn.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Chinmay Rath <rathc@linux.ibm.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Cleber Rosa <crosa@redhat.com>,
+	kvm@vger.kernel.org,
+	Song Gao <gaosong@loongson.cn>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	John Levon <john.levon@nutanix.com>,
+	Xin Wang <wangxinxin.wang@huawei.com>
+Subject: [PATCH v2 001/281] target/i386: Add support for save/load of exception error code
+Date: Thu,  4 Sep 2025 09:06:35 +0100
+Message-ID: <20250904081128.1942269-2-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
+References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 17/23] KVM: guest_memfd: Split for punch hole and
- private-to-shared conversion
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, x86@kernel.org, rick.p.edgecombe@intel.com,
- dave.hansen@intel.com, kas@kernel.org, tabba@google.com,
- ackerleytng@google.com, quic_eberman@quicinc.com, michael.roth@amd.com,
- david@redhat.com, vannapurve@google.com, vbabka@suse.cz,
- thomas.lendacky@amd.com, pgonda@google.com, zhiquan1.li@intel.com,
- fan.du@intel.com, jun.miao@intel.com, ira.weiny@intel.com,
- isaku.yamahata@intel.com, xiaoyao.li@intel.com, chao.p.peng@intel.com
-References: <20250807093950.4395-1-yan.y.zhao@intel.com>
- <20250807094503.4691-1-yan.y.zhao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20250807094503.4691-1-yan.y.zhao@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Xin Wang <wangxinxin.wang@huawei.com>
 
+For now, qemu save/load CPU exception info(such as exception_nr and
+has_error_code), while the exception error_code is ignored. This will
+cause the dest hypervisor reinject a vCPU exception with error_code(0),
+potentially causing a guest kernel panic.
 
-On 8/7/2025 5:45 PM, Yan Zhao wrote:
-[...]
->   
-> @@ -514,6 +554,8 @@ static int kvm_gmem_convert_should_proceed(struct inode *inode,
->   					   struct conversion_work *work,
->   					   bool to_shared, pgoff_t *error_index)
->   {
-> +	int ret = 0;
-> +
->   	if (to_shared) {
->   		struct list_head *gmem_list;
->   		struct kvm_gmem *gmem;
-> @@ -522,19 +564,24 @@ static int kvm_gmem_convert_should_proceed(struct inode *inode,
->   		work_end = work->start + work->nr_pages;
->   
->   		gmem_list = &inode->i_mapping->i_private_list;
-> +		list_for_each_entry(gmem, gmem_list, entry) {
-> +			ret = kvm_gmem_split_private(gmem, work->start, work_end);
-> +			if (ret)
-> +				return ret;
-> +		}
->   		list_for_each_entry(gmem, gmem_list, entry)
-> -			kvm_gmem_unmap_private(gmem, work->start, work_end);
-> +			kvm_gmem_zap(gmem, work->start, work_end, KVM_FILTER_PRIVATE);
->   	} else {
->   		unmap_mapping_pages(inode->i_mapping, work->start,
->   				    work->nr_pages, false);
->   
->   		if (!kvm_gmem_has_safe_refcount(inode->i_mapping, work->start,
->   						work->nr_pages, error_index)) {
-> -			return -EAGAIN;
-> +			ret = -EAGAIN;
->   		}
+For instance, if src VM stopped with an user-mode write #PF (error_code 6),
+the dest hypervisor will reinject an #PF with error_code(0) when vCPU resume,
+then guest kernel panic as:
+  BUG: unable to handle page fault for address: 00007f80319cb010
+  #PF: supervisor read access in user mode
+  #PF: error_code(0x0000) - not-present page
+  RIP: 0033:0x40115d
 
-Not from this patch.
-When if statement breaks into two lines, are curly braces needed?
+To fix it, support save/load exception error_code.
 
+Signed-off-by: Xin Wang <wangxinxin.wang@huawei.com>
+Link: https://lore.kernel.org/r/20250819145834.3998-1-wangxinxin.wang@huawei.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/machine.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
->   	}
->   
-> -	return 0;
-> +	return ret;
->   }
->   
-[...]
-> @@ -1906,8 +1926,14 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->   	start = folio->index;
->   	end = start + folio_nr_pages(folio);
->   
-> -	list_for_each_entry(gmem, gmem_list, entry)
-> -		kvm_gmem_invalidate_begin_and_zap(gmem, start, end);
-> +	/* The size of the SEPT will not exceed the size of the folio */
-To me, the comment alone without the context doesn't give a direct expression that
-split is not needed. If it's not too wordy, could you make it more informative?
-
-
-> +	list_for_each_entry(gmem, gmem_list, entry) {
-> +		enum kvm_gfn_range_filter filter;
-> +
-> +		kvm_gmem_invalidate_begin(gmem, start, end);
-> +		filter = KVM_FILTER_PRIVATE | KVM_FILTER_SHARED;
-> +		kvm_gmem_zap(gmem, start, end, filter);
-> +	}
->   
->   	/*
->   	 * Do not truncate the range, what action is taken in response to the
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index dd2dac1d443..45b7cea80aa 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -462,6 +462,24 @@ static const VMStateDescription vmstate_exception_info = {
+     }
+ };
+ 
++static bool cpu_errcode_needed(void *opaque)
++{
++    X86CPU *cpu = opaque;
++
++    return cpu->env.has_error_code != 0;
++}
++
++static const VMStateDescription vmstate_error_code = {
++    .name = "cpu/error_code",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = cpu_errcode_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_INT32(env.error_code, X86CPU),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ /* Poll control MSR enabled by default */
+ static bool poll_control_msr_needed(void *opaque)
+ {
+@@ -1746,6 +1764,7 @@ const VMStateDescription vmstate_x86_cpu = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_exception_info,
++        &vmstate_error_code,
+         &vmstate_async_pf_msr,
+         &vmstate_async_pf_int_msr,
+         &vmstate_pv_eoi_msr,
+-- 
+2.47.2
 
