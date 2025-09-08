@@ -1,110 +1,110 @@
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075391F0E2E;
-	Mon,  8 Sep 2025 15:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0513730ACE8;
+	Mon,  8 Sep 2025 15:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757343844; cv=none; b=pc4m7vTLnk24lOV0hMrqHec3C+370CBhZcya34JMSOdqSe1ewNI6EZgALHsb6cCHv/g3GymJw7OvxjKtXCl/WB2iWmBHRF2kpRvQ1zT4DFlzpaUbtvHDhNb8qGCCPWRAvovNJj1GT4nYvryc4KP5xapbXYvNxGZ8RBfRmv3e0cE=
+	t=1757343844; cv=none; b=CjE4M/IMgSpoLbgGEX3VJjIJvHcu/1nACP7t1XtOc1Eb4mpnevsZKuwhbAQej6YQy7dFEzaMKNU9D6xprhF8YQ1lGDjb8Wz0ulXKTYLdEvZudwtq8SKqUH7TkXAP2aTBniD+sRvflbiMC4rfbZJp/piPzcA2c3tnd2lL7zotczo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757343844; c=relaxed/simple;
-	bh=b0AaDnnv1a33CHg2rjx0ILmXwW1goN7n31sJB4Omp+E=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RbU+iAvk2uAbZYWyz8dA2RFqnO38gD9Gb6oST5ayHbjlbZ4OkT2+1euwaX8+jl9Rw2aVidmC4eWi01hN/9ODNTudJA/ADGn1X4hqifG1xWxYPPAbVuw+p2lkKVCsRqsav68u/jCHDtvFOT0zHykcp1TWRlFs4DziAWDjieYQ2uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1uvcU1-00000002U0t-22vf;
-	Mon, 08 Sep 2025 16:04:37 +0200
-Message-ID: <d378c6b6-68ba-49c0-b480-5d3dec9dc902@maciej.szmigiero.name>
-Date: Mon, 8 Sep 2025 16:04:32 +0200
+	bh=HGi+oMw2wcRLkxRtf1WqMmGBJnptQWvmxF2SQgOWE44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GLVKu7tGAt0/csPA0gLU/b6REEY3YbSUGht3jp2dmodQ2pqwu7hoysOWSr1ebnmmEHoRIOZAnYEz3gnNPQN4NWvFFX+DREEEGTpTXzVm/V5iYFvWlnGFjadeoJIqsf23OZP3szSzXz92ll3v0vuot3PVJLRem8XbLkFY8rOnY9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HDqRDB47 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HDqRDB47"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E00F640E01A2;
+	Mon,  8 Sep 2025 15:03:57 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Dx_Mcpvo0WRj; Mon,  8 Sep 2025 15:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757343830; bh=ZqDP/jFE+eeNiZ9/0ak0Uo6t8J44LbT5gL5scXJrlQc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HDqRDB47PMky7RLUBXKoA6kDCZCnyPhpDnieFgQyS4iYOBrtI7OUwZ3P/P24eNpMP
+	 RZjYJ7CXQ+RFxfgr3ypDGl3VVhDtMIICPKslKj8nX1uxr5YtP0G6BzLP7lnVaCP2uz
+	 p7bJWjVqW4VEJhW1BLa7jJ31az0NgFRIFrZcWa5fl5evBLwFeqA95DyeVJM8leptpe
+	 6SLuEuWHCzT5KpmMruEseNLE2tu2D9uaSVUtACO/Llshwf5JjXnDkImumc/aIM+B+M
+	 AEHu4tb2lfi7/w+1DGOmLI41Rym4P8hyDfscfmtuPyX2y41zGyVgeaR4idphgX0HkP
+	 WuvTaSBeAhUq3HDJ2W2bq2bO3vQUoVx7LbMw1fKNR8WB9AhQRbyADvfUlh7Nv6SDVT
+	 9NevJMaKGLr24cBBp7TB16Uw0cBFDHRZpNC8/IoVpRM6xlW0nK6sKCpf6bsU4IjYeD
+	 oOtilGcqln6hADP5hfLUS1rjWGwyX/LqZg/rQKq5AIvAYA4D3e2nnQw9g+FiM+B/Wi
+	 78Od1JPs8BE1Sdqe70823RvbC7x08GGS7xJl2OIb1/cJrbmFjcd5le4camLhoxJSV1
+	 mODF9ClHnVlRWBGyXGWsuLZaaCPl8y65bxGu/Uh6ErE7QG8zq4738FNzELFCfog4vS
+	 j4hb6z78v+TQWvdB7mruFrhM=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D4F9C40E015D;
+	Mon,  8 Sep 2025 15:03:07 +0000 (UTC)
+Date: Mon, 8 Sep 2025 17:03:01 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Moger, Babu" <babu.moger@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Cc: corbet@lwn.net, tony.luck@intel.com, Dave.Martin@arm.com,
+	james.morse@arm.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com,
+	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
+	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
+	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
+	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
+	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
+	tiala@microsoft.com, mario.limonciello@amd.com,
+	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
+	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
+	gautham.shenoy@amd.com
+Subject: Re: [PATCH v18 05/33] x86/cpufeatures: Add support for Assignable
+ Bandwidth Monitoring Counters (ABMC)
+Message-ID: <20250908150301.GFaL7wJUiowzdhWUbu@fat_crate.local>
+References: <cover.1757108044.git.babu.moger@amd.com>
+ <08c0ad5eb21ab2b9a4378f43e59a095572e468d0.1757108044.git.babu.moger@amd.com>
+ <fb2d5df6-543f-43da-a86a-05ecf75be46d@intel.com>
+ <d3e4ddd7-2ca2-4601-8191-53e00632bf93@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] KVM: SVM: Fix missing LAPIC TPR sync into
- VMCB::V_TPR with AVIC on
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Naveen N Rao <naveen@kernel.org>,
- Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1756139678.git.maciej.szmigiero@oracle.com>
-Content-Language: en-US, pl-PL
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
- 6oJdk+jpvKiyzlbKqlDtw/Y2Ob24tg1g/zvkHn8AVUwX+ZWWewSZ0vcwp7u/LvA+w2nJbIL1
- N0/QUUdmxfkWTHhNqgkNX5hEmYqhwUPozFR0zblfD/6+XFR7VM9yT0fZPLqYLNOmGfqAXlxY
- m8nWmi+lxkd/PYqQQwOq6GQwxjRFEvSc09m/YPYo9hxh7a6s8hAP88YOf2PD8oBB1r5E7KGb
- Fv10Qss4CU/3zaiyRTExWwOJnTQdzSbtnM3S8/ZO/sL0FY/b4VLtlZzERAraxHdnPn8GgxYk
- oPtAqoyf52RkCabL9dsXPWYQjkwG8WEUPScHDy8Uoo6imQujshG23A99iPuXcWc/5ld9mIo/
- Ee7kN50MOXwS4vCJSv0cMkVhh77CmGUv5++E/rPcbXPLTPeRVy6SHgdDhIj7elmx2Lgo0cyh
- uyxyBKSuzPvb61nh5EKAGL7kPqflNw7LJkInzHqKHDNu57rVuCHEx4yxcKNB4pdE2SgyPxs9
- 9W7Cz0q2Hd7Yu8GOXvMfQfrBiEV4q4PzidUtV6sLqVq0RMK7LEi0RiZpthwxz0IUFwRw2KS/
- 9Kgs9LmOXYimodrV0pMxpVqcyTepmDSoWzyXNP2NL1+GuQtaTQARAQABzTBNYWNpZWogUy4g
- U3ptaWdpZXJvIDxtYWlsQG1hY2llai5zem1pZ2llcm8ubmFtZT7CwZQEEwEIAD4CGwMFCwkI
- BwIGFQoJCAsCBBYCAwECHgECF4AWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxhgUJD0w7
- wQAKCRCEf143kM4JdwHlD/9Ef793d6Q3WkcapGZLg1hrUg+S3d1brtJSKP6B8Ny0tt/6kjc2
- M8q4v0pY6rA/tksIbBw6ZVZNCoce0w3/sy358jcDldh/eYotwUCHQzXl2IZwRT2SbmEoJn9J
- nAOnjMCpMFRyBC1yiWzOR3XonLFNB+kWfTK3fwzKWCmpcUkI5ANrmNiDFPcsn+TzfeMV/CzT
- FMsqVmr+TCWl29QB3U0eFZP8Y01UiowugS0jW/B/zWYbWo2FvoOqGLRUWgQ20NBXHlV5m0qa
- wI2Isrbos1kXSl2TDovT0Ppt+66RhV36SGA2qzLs0B9LO7/xqF4/xwmudkpabOoH5g3T20aH
- xlB0WuTJ7FyxZGnO6NL9QTxx3t86FfkKVfTksKP0FRKujsOxGQ1JpqdazyO6k7yMFfcnxwAb
- MyLU6ZepXf/6LvcFFe0oXC+ZNqj7kT6+hoTkZJcxynlcxSRzRSpnS41MRHJbyQM7kjpuVdyQ
- BWPdBnW0bYamlsW00w5XaR+fvNr4fV0vcqB991lxD4ayBbYPz11tnjlOwqnawH1ctCy5rdBY
- eTC6olpkmyUhrrIpTgEuxNU4GvnBK9oEEtNPC/x58AOxQuf1FhqbHYjz8D2Pyhso8TwS7NTa
- Z8b8o0vfsuqd3GPJKMiEhLEgu/io2KtLG10ynfh0vDBDQ7bwKoVlqC3It87AzQRaRrwiAQwA
- xnVmJqeP9VUTISps+WbyYFYlMFfIurl7tzK74bc67KUBp+PHuDP9p4ZcJUGC3UZJP85/GlUV
- dE1NairYWEJQUB7bpogTuzMI825QXIB9z842HwWfP2RW5eDtJMeujzJeFaUpmeTG9snzaYxY
- N3r0TDKj5dZwSIThIMQpsmhH2zylkT0jH7kBPxb8IkCQ1c6wgKITwoHFjTIO0B75U7bBNSDp
- XUaUDvd6T3xd1Fz57ujAvKHrZfWtaNSGwLmUYQAcFvrKDGPB5Z3ggkiTtkmW3OCQbnIxGJJw
- /+HefYhB5/kCcpKUQ2RYcYgCZ0/WcES1xU5dnNe4i0a5gsOFSOYCpNCfTHttVxKxZZTQ/rxj
- XwTuToXmTI4Nehn96t25DHZ0t9L9UEJ0yxH2y8Av4rtf75K2yAXFZa8dHnQgCkyjA/gs0ujG
- wD+Gs7dYQxP4i+rLhwBWD3mawJxLxY0vGwkG7k7npqanlsWlATHpOdqBMUiAR22hs02FikAo
- iXNgWTy7ABEBAAHCwXwEGAEIACYCGwwWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZ7BxrgUJ
- D0w6ggAKCRCEf143kM4Jd55ED/9M47pnUYDVoaa1Xu4dVHw2h0XhBS/svPqb80YtjcBVgRp0
- PxLkI6afwteLsjpDgr4QbjoF868ctjqs6p/M7+VkFJNSa4hPmCayU310zEawO4EYm+jPRUIJ
- i87pEmygoN4ZnXvOYA9lkkbbaJkYB+8rDFSYeeSjuez0qmISbzkRVBwhGXQG5s5Oyij2eJ7f
- OvtjExsYkLP3NqmsODWj9aXqWGYsHPa7NpcLvHtkhtc5+SjRRLzh/NWJUtgFkqNPfhGMNwE8
- IsgCYA1B0Wam1zwvVgn6yRcwaCycr/SxHZAR4zZQNGyV1CA+Ph3cMiL8s49RluhiAiDqbJDx
- voSNR7+hz6CXrAuFnUljMMWiSSeWDF+qSKVmUJIFHWW4s9RQofkF8/Bd6BZxIWQYxMKZm4S7
- dKo+5COEVOhSyYthhxNMCWDxLDuPoiGUbWBu/+8dXBusBV5fgcZ2SeQYnIvBzMj8NJ2vDU2D
- m/ajx6lQA/hW0zLYAew2v6WnHFnOXUlI3hv9LusUtj3XtLV2mf1FHvfYlrlI9WQsLiOE5nFN
- IsqJLm0TmM0i8WDnWovQHM8D0IzI/eUc4Ktbp0fVwWThP1ehdPEUKGCZflck5gvuU8yqE55r
- VrUwC3ocRUs4wXdUGZp67sExrfnb8QC2iXhYb+TpB8g7otkqYjL/nL8cQ8hdmg==
-In-Reply-To: <cover.1756139678.git.maciej.szmigiero@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Sender: mhej@vps-ovh.mhejs.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d3e4ddd7-2ca2-4601-8191-53e00632bf93@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 25.08.2025 18:44, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-> 
-> This is an updated v2 patch series of the v1 series located at:
-> https://lore.kernel.org/kvm/cover.1755609446.git.maciej.szmigiero@oracle.com/
-> 
-> 
-> Changes from v1:
-> Fix this issue by doing unconditional LAPIC -> V_TPR sync at each VMRUN
-> rather than by just patching the KVM_SET_LAPIC ioctl() code path
-> (and similar ones).
-> 
-> 
-Any further comments there?
+On Mon, Sep 08, 2025 at 09:41:22AM -0500, Moger, Babu wrote:
+> > Apologies for not catching this earlier. I double checked to make sur=
+e
+> > we get this right and I interpret Documentation/process/maintainer-ti=
+p.rst
+> > to say that "Link:" should be the final tag.
+> >=20
+>=20
+> That=E2=80=99s fine. It wasn=E2=80=99t very clear to me in maintainer-t=
+ip.rst.
 
-The fix itself is trivial, would be nice to have it merged even
-if the reproducer/selftest is still under discussion.
+You don't need to worry about minor things like that - our scripts fix th=
+em up
+while applying.
 
-Thanks,
-Maciej
+As to Link tags, see this here:
 
+https://lore.kernel.org/r/CAHk-=3Dwh5AyuvEhNY9a57v-vwyr7EkPVRUKMPwj92yF_K=
+0dJHVg@mail.gmail.com
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
