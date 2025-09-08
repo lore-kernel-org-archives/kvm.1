@@ -1,106 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ABA306B35;
-	Mon,  8 Sep 2025 13:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A730F30E0F3
+	for <kvm@vger.kernel.org>; Mon,  8 Sep 2025 14:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757339196; cv=none; b=m186y7nxLlOJ17K3LBy7h9zfRXJzObvpoU3ZrHO2h5LLu08Yu7tcZiKxzvUS+w9Z77tDbtnLoBShac7X/b67HTL8Fu0ui3ZNwJal20Vl00+9zheLgI/+vw/UEowY1Oaun1u3jREOSa95TCnlFuc7lywK2LtyZMuIDwDVgZkOkKU=
+	t=1757341829; cv=none; b=k3xGxklx5Tae2QSaKYBEEQCi8KhDYUCGXNIb4tWNSxNbpvkOsW3aohQRXlcwO3m2RIYIqER5LDbKA/gCgMU+RTtb5CqvHsjrbGxrXrx6QhgL7BYY+mQye13M9ZqTwA7azNT6nxcCXxbbBV78iTw6nfH3RZVi2bZ7rLz8ep820dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757339196; c=relaxed/simple;
-	bh=CTe4rGRu7tQeVsXNFvoCD5+pC/mdlOMNsYbe3nACYh0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SdWz5aIogjzwDSbHGfHB4CMa9Y1elwA9TIYi/cX1WVfNPcX+iBgQFziiaaNN8Sci9Add91BcoG1LcR9h7C0Om2PrJmwiLisUbA2NcwigdrkO7sVGwKN6X/5Ell7HguePpjqplTIZuqxzUh+8oHiZGxYJSkk25S5mCFJn1Ny6XSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8lRMQMZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757341829; c=relaxed/simple;
+	bh=cmyRdu79YsuSij3FfU0KEBsMepHM37Prr20hi8qJG6A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oAqT2O6P68YTR2fDWqs4nRcHgNUNKomZI4LMoxi+htoyVTLPZGOoUAjPFD7qdvftcDA1fWEmMVKZI5LfWcgvA+gsBP48OTpKGA9I3Cc1v4W7ThIzP0LpjctHpeW2kfHuPj8IM1VLOcqykcRqnZ9WffVZOLXW2g1XmB+TQddaeUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ceot0oGz; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8lRMQMZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED23CC4CEF7;
-	Mon,  8 Sep 2025 13:46:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757339195;
-	bh=CTe4rGRu7tQeVsXNFvoCD5+pC/mdlOMNsYbe3nACYh0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j8lRMQMZKzJAMXGs2/yg5yLBIF9HGu4r5h1bpyMi/dedTvIpmB+GJXqR7cfrxwLX+
-	 SxEo1u0zexPUAF1FLCt/3h4a4TyQVeGg4BQZ0SsciXD+3LlSvAUiPFnrPbWjJPA4r6
-	 iCRHb82NqfQy/LQJDb1vybEXprBtJLnMUOZNKKh6kA2oNXV/6MLaXz60awMBLlnyXN
-	 tfUJTJbuvPnKWDOMbrvGe6hX1RnupFViXIpnTQg+L0OLaS5NXA659feS7HhAcRclQi
-	 eOt2ZDFkrj/+EjPxAVvO564l9/gf6NNMBD1XpgDEXzSqOqPNGl2SiYzVW9r4/dXbPL
-	 FGqBaGlfiTM9w==
-Date: Mon, 8 Sep 2025 19:11:55 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Manali Shukla <manali.shukla@amd.com>
-Cc: kvm@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-doc@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, nikunj@amd.com, 
-	bp@alien8.de, peterz@infradead.org, mingo@redhat.com, mizhang@google.com, 
-	thomas.lendacky@amd.com, ravi.bangoria@amd.com, Sandipan.Das@amd.com
-Subject: Re: [PATCH v2 05/12] KVM: x86: Add emulation support for Extented
- LVT registers
-Message-ID: <xnwr5tch7yeme3feo6m4irp46ju5lu6gr4kurn6oxlgoutvabt@3k3xh2pbdbje>
-References: <20250901051656.209083-1-manali.shukla@amd.com>
- <20250901052238.209184-1-manali.shukla@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ceot0oGz"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32bbe7c5b87so2862636a91.3
+        for <kvm@vger.kernel.org>; Mon, 08 Sep 2025 07:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757341826; x=1757946626; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Os6XU2XhawOtL2RY3j64uiQc+pzgMuwrVN7W9RY195E=;
+        b=ceot0oGzFNc8szA3i3+uAd+fthlLCHgJcKNDkHqGJeZkllnoEyrBkiKTPnhxGcj3sv
+         R1tv/Hr41FfnL6ygjkQpFJ+EUgb5jEEapWui4b0sSELw4QxXDrEKPdqtauCmj9C8CrWU
+         SWNa3ITw0qKMHGU+LFE0WjMA4SrOeOFzyDvkLba7Q/c/E9/de4IpWmUx/W8QL6OC0hOF
+         zQgwM4An/l/kofnhDcH/0eTOWf1jRgCm6B7MeqOQwOetsCojZRWaPWq+RaHjqVdJcGLj
+         KaNYVXgiGgFJulzZP6g4IrP8rjaQs6lcEqhzrbKl/QJRs8+EMwQFQFiwKWF7VetTZBpG
+         sf1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757341826; x=1757946626;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Os6XU2XhawOtL2RY3j64uiQc+pzgMuwrVN7W9RY195E=;
+        b=LBuDIItfOmiEXcZFij4CyHI7kX0yjUwesHSHVsHlu6GfQiWsm/6GtqW8+L87lHchye
+         Qq1JANzhsVUIhXPwzYIWsAR2mYlKizJpWMuu5SAmis8E0KCFUXnmgYqKFtXjjGd1JgCG
+         AOvLQyK0N0a/rKnjDTJgtwzuynp2wDoh+o8FfYZIWg5ccb39Po8fNNbEzwEbLc2C406q
+         dStj70mO+IKz1Pt76immCDqvIiQJXtjPStJmY3FvnUnRXfho/bq92zNbO0LxVQP3MiEP
+         VvptwU/X3YaXQ+cDZHs0BoEjQns4d7jLPTfG0FkN4BopO6tpu/gV1TkTaGA6I9txfd1K
+         ojNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYtRcyKjMUAnLpcimmEIB9mpESF4w34Pc2X+i7jqL/k6oTfLkTtHNzYL0XqQo0ysT+CaE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHGNMZBlOVFKXTD4ISlhz9tMlKjqiWytn+QNlng813GeA4TxVG
+	htqpws0d1AMpMmKJ8qJ+KS+Yx6S8yDD1y72vxgrOSBhAPEOw+h0yiwpViCc95B/ar3TgSvqpKfc
+	hBJPnUw==
+X-Google-Smtp-Source: AGHT+IFzFQXq39q0wt+yWcjspFshRrGb6Ni8X5edy538tKagMLPlwv9Fmec7NohENqeG0o5K7Lljk6m7DjY=
+X-Received: from pjbsy8.prod.google.com ([2002:a17:90b:2d08:b0:32b:5f22:e5da])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ac9:b0:327:531b:b85c
+ with SMTP id 98e67ed59e1d1-32d43f99cbamr10850847a91.35.1757341825786; Mon, 08
+ Sep 2025 07:30:25 -0700 (PDT)
+Date: Mon, 8 Sep 2025 07:30:24 -0700
+In-Reply-To: <20250906184324.89974-1-hsukrut3@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901052238.209184-1-manali.shukla@amd.com>
+Mime-Version: 1.0
+References: <20250906184324.89974-1-hsukrut3@gmail.com>
+Message-ID: <aL7ogKtOUi2py1jx@google.com>
+Subject: Re: [PATCH] selftests/kvm: Use vcpus count instead of hardcoded 0xff
+ in test_icr
+From: Sean Christopherson <seanjc@google.com>
+To: Sukrut Heroorkar <hsukrut3@gmail.com>
+Cc: skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	"open list:KERNEL VIRTUAL MACHINE FOR X86 (KVM/x86)" <kvm@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Sep 01, 2025 at 10:52:38AM +0530, Manali Shukla wrote:
-> From: Santosh Shukla <santosh.shukla@amd.com>
-> 
-> The local interrupts are extended to include more LVT registers in
-> order to allow additional interrupt sources, like Instruction Based
-> Sampling (IBS) and many more.
-> 
-> Currently there are four additional LVT registers defined and they are
-> located at APIC offsets 400h-530h.
-> 
-> AMD IBS driver is designed to use EXTLVT (Extended interrupt local
-> vector table) by default for driver initialization.
-> 
-> Extended LVT registers are required to be emulated to initialize the
-> guest IBS driver successfully.
-> 
-> Please refer to Section 16.4.5 in AMD Programmer's Manual Volume 2 at
-> https://bugzilla.kernel.org/attachment.cgi?id=306250 for more details
-> on Extended LVT.
-> 
-> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
-> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
-> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+On Sat, Sep 06, 2025, Sukrut Heroorkar wrote:
+> Replace the hardcoded 0xff in test_icr() with the actual number of vcpus
+> created for the vm. This address the existing TODO and keeps the test
+> correct if it is ever run with multiple vcpus.
+
+The TODO is stale, it was resolved by commit 376bc1b458c9 ("KVM: selftests: Don't
+assume vcpu->id is '0' in xAPIC state test"), I/we just forgot to delete the
+comment.
+
+> Signed-off-by: Sukrut Heroorkar <hsukrut3@gmail.com>
 > ---
->  arch/x86/include/asm/apicdef.h | 17 ++++++++++++++
->  arch/x86/kvm/cpuid.c           |  6 +++++
->  arch/x86/kvm/lapic.c           | 42 ++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/lapic.h           |  1 +
->  arch/x86/kvm/svm/avic.c        |  4 ++++
->  arch/x86/kvm/svm/svm.c         |  6 +++++
->  6 files changed, 76 insertions(+)
+>  tools/testing/selftests/kvm/x86/xapic_state_test.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
 > 
+> diff --git a/tools/testing/selftests/kvm/x86/xapic_state_test.c b/tools/testing/selftests/kvm/x86/xapic_state_test.c
+> index fdebff1165c7..4af36682503e 100644
+> --- a/tools/testing/selftests/kvm/x86/xapic_state_test.c
+> +++ b/tools/testing/selftests/kvm/x86/xapic_state_test.c
+> @@ -56,6 +56,17 @@ static void x2apic_guest_code(void)
+>  	} while (1);
+>  }
+>  
+> +static unsigned int vm_nr_vcpus(struct kvm_vm *vm)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned int count = 0;
+> +
+> +	list_for_each_entry(vcpu, &vm->vcpus, list)
+> +		count++;
+> +
+> +	return count;
+> +}
+> +
+>  static void ____test_icr(struct xapic_vcpu *x, uint64_t val)
+>  {
+>  	struct kvm_vcpu *vcpu = x->vcpu;
+> @@ -124,7 +135,7 @@ static void test_icr(struct xapic_vcpu *x)
+>  	 * vCPUs, not vcpu.id + 1.  Arbitrarily use vector 0xff.
+>  	 */
+>  	icr = APIC_INT_ASSERT | 0xff;
+> -	for (i = 0; i < 0xff; i++) {
+> +	for (i = 0; i < vm_nr_vcpus(vcpu->vm); i++) {
 
-<snip>
+This is wrong/undesirable.  The original code was:
 
-> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> index a34c5c3b164e..1b46de10e328 100644
-> --- a/arch/x86/kvm/svm/avic.c
-> +++ b/arch/x86/kvm/svm/avic.c
-> @@ -669,6 +669,10 @@ static bool is_avic_unaccelerated_access_trap(u32 offset)
->  	case APIC_LVTERR:
->  	case APIC_TMICT:
->  	case APIC_TDCR:
-> +	case APIC_EILVTn(0):
-> +	case APIC_EILVTn(1):
-> +	case APIC_EILVTn(2):
-> +	case APIC_EILVTn(3):
+        for (i = vcpu->id + 1; i < 0xff; i++) {
+                for (j = 0; j < 8; j++)
+                        __test_icr(vm, vcpu, i << (32 + 24) | APIC_INT_ASSERT | (j << 8));
+        }
 
-This should actually be conditional on X86_FEATURE_EXTLVT.
+I.e. the _lower_ bound was nr_vcpus+1.  Regardless, as fixed by the aformentioned
+commit, using the number of vCPUs in any capacity is simply wrong.  The stale
+comment just needs to be deleted.:
 
-I also forgot to add for the previous patch: the feature name needs to 
-be changed to reflect the true nature of the feature bit.
-
-
-- Naveen
-
+>  		if (i == vcpu->id)
+>  			continue;
+>  		for (j = 0; j < 8; j++)
+> -- 
+> 2.43.0
+> 
