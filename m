@@ -1,156 +1,180 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2044.outbound.protection.outlook.com [40.107.93.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C51DA61B;
-	Tue,  9 Sep 2025 11:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757418916; cv=none; b=A4EIpzwlI1CPrtkeEf7NgXu3X/L0rsUaRFn7GWcylM99o76mvdmQsZ11PnlpbZ8+HcZfRJKWiZ7O+yOS/MKvSGFTnTivCxpd8CatS81hOQDIljpyEmri3LoD3NTPXg8zlwyUOqbXa9+uEEFiiCqKvfVSLrT/+Ime5rlShhcgrwI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757418916; c=relaxed/simple;
-	bh=9ghiyUlmNcA1qeWGRHkfVYWJhKaIrnGpa5khcZIWnNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=di0gItVQBnDL4qVytZ7DUdc/da2oCOb6DdGhGEkwoUey4Fm+CHqMQhjNKW6uTsLDiDeGHXQA818piYW97WESNuKw7wyuvQaR2XYnXrUF4i8Wn+KZWT9xQx0qhcxpe2tTgT+tlVi2Tg8QVXk0GRIxg52/jFsjcGuXLtDoZck5+iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=owFp28YY; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C510B2C15A8
+	for <kvm@vger.kernel.org>; Tue,  9 Sep 2025 12:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757420332; cv=fail; b=FyvGYAxaDdeKIpUTLfe/H3OwdNTYk/Jt/iYvjL6FJ3L68PmH3n739QwRxpEN5YD46s9P47N3PFDlT5Nbv+X6EuIryFdaQvanE24kfPd2EB1BjTvRN2rwMgmlfP79BbL3TEUJ/FrQww+QUj08N3ZxRI0jgZot/HgTj39SqO2X5O0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757420332; c=relaxed/simple;
+	bh=K0mqeOV+nkHU5LQyoBCkZr1uI7t4rIWKRQO6PP2RiqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FLqsyOjKV+WZA/Qy0Vj8iG8HvbCrtRgBpjY2+URmVFfu7cANWvMa3E54hRAesWHGzwSzW0mTTy8k/O5U+/23jnPJlRHlQlnbnj1t2aMKkAG5HMnmUEBpZ47WisNepI4y+rQtPQxL/iVYYveT+nXVmetnpSbXEjWnnJsb0XLzQgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bo7JAqor; arc=fail smtp.client-ip=40.107.93.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="owFp28YY"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5896vgFm023715;
-	Tue, 9 Sep 2025 11:55:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/B6u7LLuz1WlHKNNu
-	obRyc5yTQwPM9SQ6/O4Ff0ui48=; b=owFp28YYtVFRM4wxfoKYMJn3P+KuG/DPp
-	1kfJ7f07GRd6yK3qZkEJ5P9mKPDmb83xDQhcWY1vVfZcZdShiV2R0MqRLAuWuQMt
-	732d+NKqREe2ZgyREmexGyC0mszqXThKaPBshkOVh0VEIgHg+sGUIHT0Qx94iwTj
-	fgkg6ODx8fWuduo5WI6gjxNfFu5yKv1MBp4M938YOr6u1SdC+y/hc1Is807DasAV
-	zk8lS33xgid8DKOMmXqbW/Fy16NMJPHS5ntHfwYQHA/JCHTHb2y6Zas8t11FDW+w
-	Rutjpyh8kdNSofAZZrMfbYFtzevuC7XU3wdiFSNLmwL8lLPEaeCCg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acqydh6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 11:55:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58996axI020465;
-	Tue, 9 Sep 2025 11:55:08 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 490yp0u37j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 11:55:08 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 589Bt5f79306496
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Sep 2025 11:55:05 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0193A20043;
-	Tue,  9 Sep 2025 11:55:05 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F33820040;
-	Tue,  9 Sep 2025 11:55:04 +0000 (GMT)
-Received: from li-9fd7f64c-3205-11b2-a85c-df942b00d78d.fritz.box (unknown [9.111.71.18])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  9 Sep 2025 11:55:04 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, frankja@linux.ibm.com, david@redhat.com,
-        borntraeger@linux.ibm.com, cohuck@redhat.com,
-        linux-s390@vger.kernel.org, imbrenda@linux.ibm.com
-Subject: [GIT PULL 2/3] KVM: s390: Fix incorrect usage of mmu_notifier_register()
-Date: Tue,  9 Sep 2025 13:46:14 +0200
-Message-ID: <20250909115446.90338-3-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250909115446.90338-1-frankja@linux.ibm.com>
-References: <20250909115446.90338-1-frankja@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bo7JAqor"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PNj9kUtMoErlJFZtXsHP3fiWUaqwPLznStJ75Pn8kOZFFdDRqv/t/rvoSKJvAj0RhWOO+8/IPS9jweX2dc35GI4NizSXaPJnKrrk9pvrVnbfdrCm7rIr/4e3E339eDVqy49nNyscuQw7HLMs+LMB/rZMmq9Gj/j2vDYX2ptpc17PGoIulsMcx+pc9LecB4gXrhF2699YYgCFIOgxgo7hrNkvrVwlSWsoXOGT8Bn/0rMas3q6igp/O53p3Aj1Hs0Mv597Fm8GBTaZviy3daim5dis6kNGm9Uz3je8yKqRbkzy3ekQeUzjuwMxsPAmMUO9hxralQqBe50vtOEkRMY+eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WVCOGvZ5b5uUBSnjwe3m9l+f/P+cLPmZ+s25le3XI5k=;
+ b=HjEIR5750nG8IfqH11nptbnYx1MR9C6N7PRPzCcfrnaIGhX62Rd69D2qh43Sr79FXTudxOGpNYHK4ScBh0MePDDCFShmV/cdnR7vEKv/YbdvrU2KRd8NHVvVCWdIRc9QrgR+vOsd0ge11LRKKcEvAWuZAncHuaV7TTulIp1fyC7C86zeRHKrcgfZlZBbb5eGvBpQ+XvKM78oNcIdZWKm0kXE2BXFGrK+cEoLZsB072BoKGGcpmQIdMFwsXsmtfOvEqhO46fQdjFMwt2ZmqyLLw7Esmd+AmabC1fEUkbc57EIa1mAFN5srFsQ9sIIOkkzfGInnVmUi79+km1C69s+cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WVCOGvZ5b5uUBSnjwe3m9l+f/P+cLPmZ+s25le3XI5k=;
+ b=bo7JAqorrV2kZl3IQdFBZNX+2nNX9hPveb/HuuFhZ16Muzi053mb0lcQ3ihxC1GjS5EcwsqZwl+5VyPXt4y9CVOrlhPg3UEMMroI5sGew8ICtGeVM1fWA+9iVsoxHU86f2MQVjddsUbNbZZWAu1LghcV401AApAQAt6tI8SvHPDGyWMq8mOMaalLDnRgRK6j5BKd5kWFn1XhRBsVeYbKowOiC3FN3xiZZ2S0UyaolOIHwLxNHEJS8SWgfHel0ublwJjxv0xciURbK7OMdxDMSkV2FO/24X5Ud4NPy3nlb6d2m70D0Gznn3PYg1o9AS28R06/ozCHUeTLgGw2cJQLjA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by DM4PR12MB6061.namprd12.prod.outlook.com (2603:10b6:8:b3::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9094.22; Tue, 9 Sep 2025 12:18:47 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
+ 12:18:46 +0000
+Date: Tue, 9 Sep 2025 09:18:45 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Donald Dutile <ddutile@redhat.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>, linux-pci@vger.kernel.org,
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>, galshalom@nvidia.com,
+	Joerg Roedel <jroedel@suse.de>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, maorg@nvidia.com, patches@lists.linux.dev,
+	tdave@nvidia.com, Tony Zhu <tony.zhu@intel.com>
+Subject: Re: [PATCH v3 03/11] iommu: Compute iommu_groups properly for PCIe
+ switches
+Message-ID: <20250909121845.GI789684@nvidia.com>
+References: <3-v3-8827cc7fc4e0+23f-pcie_switch_groups_jgg@nvidia.com>
+ <3634c854-f63f-4dc0-aa53-0b18c5a7ea1c@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3634c854-f63f-4dc0-aa53-0b18c5a7ea1c@redhat.com>
+X-ClientProxiedBy: MN0PR03CA0023.namprd03.prod.outlook.com
+ (2603:10b6:208:52f::22) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: D0rPsSSBFdkQ8jvHNKYnH02DhiqmMzCq
-X-Authority-Analysis: v=2.4 cv=Mp1S63ae c=1 sm=1 tr=0 ts=68c0159d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=GJtTgPQnudJMRmo940AA:9
-X-Proofpoint-ORIG-GUID: D0rPsSSBFdkQ8jvHNKYnH02DhiqmMzCq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfXxyWgqvfgmPDp
- hDcfB2tgfYsRVpZDWe37NFcDCVSR0Pr0JlYCPDVA0HkHwbXBo5HWOGb93HYZUxYDhUNUBaPDC+D
- AGZz0BI591WuHQQFar6IF2tnXfOp3IbATddQUplPl0ycl6kYKN8BFJ5x7AbIeTo5MqvD2hIIv7e
- yyVDl7T8WmNW3c+odLAx60by4jTitoDXJx4Oge9+tKBm5d8x64+bmR9YcNB5X4wHZbXAvGQoFi3
- cLpJsi2mZTbAwscdPvGIDVsAU7NeQGLFAJqj4X1PUgk5ZEyFEcQyBhvPrHk+bHR1NmtEzJmo4aX
- vSQB+hXaGCPVQxJj1jlIsUM0CC5POUgiEOh15C0EupjtKmsm5oHQsC0LjSbaY2RWfE+e2jhkgIx
- 5ztwwhQw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-09_01,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060000
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|DM4PR12MB6061:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01717973-7155-4035-00ed-08ddef9b0676
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?t/l9x4V+sZGLUCpC+RLww5IDWStlmEvt9h8Tuh0r9xPVPhsExN5hpZ4k69r6?=
+ =?us-ascii?Q?UOZ4Xu9BuA7FgIfpaKs1k/lKkZ2IorkVedbSsZ0D7NtxAYDYIOqPeFEPHSFd?=
+ =?us-ascii?Q?IruPNbpS0WZlcuNH17X5cs/vIQX5vPqXSlWw2HukNVe2eqrcL4ZDR9VVQ+Dm?=
+ =?us-ascii?Q?jMHe7/jaITAvXBy/XGMTpqThZWwxH/UJhrLgaNLzj1tTgmwoekcYct1mJO9d?=
+ =?us-ascii?Q?V/Wf49Mq1Q6SN0TyHnjBdH5Z0OyceAq0BduKWkteVdVCpE4abjwbEjr8JQr9?=
+ =?us-ascii?Q?SFfuujebd9NZZA8sBfVFEFzgbY/OLOVMZTYHJBfkBby9HC01lAhLE0o75DzF?=
+ =?us-ascii?Q?5SreVBaAQDEoaUkq7Z/Z7ey3WRnxfrFYG8AGXqcbd62wsALwYc2ZXNHAcZcA?=
+ =?us-ascii?Q?4SWj6RunGa8fXa8+vnCuT61Vpgdwpq+5MjrsvBzcXF5ZL7uhZhlfk8Lrgv8C?=
+ =?us-ascii?Q?XkxtXISpqfxRILwasYxwlaDxvnLQY+W1kbtvqbJvkjz4iC4VgAvUYib6bNLe?=
+ =?us-ascii?Q?ZErTladC42Aej53CEkXQqtvlQurX2W97Mgeah5jqGjervth6tSvSAPXIfjOo?=
+ =?us-ascii?Q?yjGzBL0m3pjyzHyFWXe1jF2W5Vg/45JKrBMGClT6Ww2yZLUYxyp/HiYz+QkH?=
+ =?us-ascii?Q?h+X8tuZwI96rmazn94Sl2mVr2cvcMAiENUoCM7t8+m9gddBIva8LrxiXSL5a?=
+ =?us-ascii?Q?Di2Kktnlg6WJbTO0K5GI/wv+jWjtmnrXVnHB9g8KZONTXcHSamVCFVH5iHoA?=
+ =?us-ascii?Q?4o2kE8TomHMMAzhXlcI/MjufLv+/q6AAOY9+3xn/kmoiLhL/PWpemTomwsza?=
+ =?us-ascii?Q?/nx2M4y2BZHP7lDCLuIHeWv9croBleaBtsLmG972GnwI26MJj8ZqPDfoI4FC?=
+ =?us-ascii?Q?Qtwz78TZZ3gTMt2l5zR3pvMSRAfbCOgqRHJg91q69X1uiLEP4iCrxpvp+H1d?=
+ =?us-ascii?Q?MtNtlh7MMG7gbTju4IZCAq2t9E1DxBN5YlHEvikJ5z2AxofL7JtZ7dQON9WG?=
+ =?us-ascii?Q?PdJXbardH+PtLif1hTBRoV8bzvkeo66DNNO1nCNYP7yEVfYHXLPk6+qwaroV?=
+ =?us-ascii?Q?5ISx36HKkIUFrqA61+dmGP5DC8P+RVSjvUMFJn0Dp7XF9es3RDKx1Z8SvSdE?=
+ =?us-ascii?Q?SfNMKMwpIc8Pws/Cq8Qoq335Mbi8HcR5L/wj/hBUU70ma3TI7LZ6j4CEBZyY?=
+ =?us-ascii?Q?OOBfXzeMyTEnr5VWs9OpivYuAJGD16Ph1npG6wk8fz7XIbX66Vfh0kGYNFro?=
+ =?us-ascii?Q?wt1CSN3X4Zp8hG9PqPRGWKxq0H8AU5mLbMNbq8/AodHEXMsGq+ynUSRKnnVu?=
+ =?us-ascii?Q?qHNTwHaF3MBR8HsFRAPtW4nZTBxdFSft3+wCQ0J+d4YRP1RaAmiKOiC65gpA?=
+ =?us-ascii?Q?rkKV3DVyw3kUP/Oa6r1f2ud2FRQ4kpDKFpnAuCZ4vCPqHMejOhpeXkGdZoIH?=
+ =?us-ascii?Q?YuY/mxPZWVQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TTsMnqxpiO5qIMDEUbWJNN+JBcLwgHYk9FH+P3QbnrLvKLowNJdK5Qa+Ahqk?=
+ =?us-ascii?Q?PO3yMTSobf1yDbdwyweTXQsAbeyj+dv7o1A0HS1sPO1VapvabzqwJxQzxCvO?=
+ =?us-ascii?Q?cFz+e7DoyS5t0vnntsFu1OYRl30mLfC0+0PDOVQDk/ZWIoY8nZGADErdT0Jh?=
+ =?us-ascii?Q?Y+WUucLePnj7tBbWw4KMgTTZm9gEzD4kbn1kBThA3tttnxvTrr3hP61P4aXy?=
+ =?us-ascii?Q?4h8tURSwq31AbVj8R/XP7d+PLFvVGUUcBo6od75Qp2CSqFhkz3/xVdUfhtx5?=
+ =?us-ascii?Q?/UjFm8MlNwggZhlbtGyZVYVSC5Qgxd3hFWGZXTMgTs8A0Ao49r2+iSSovhFR?=
+ =?us-ascii?Q?OCJEcr9+iFkG+DlEt5grXn60Id4o5XjThkp4A48eziDjCVeAOD4PMLf40PGW?=
+ =?us-ascii?Q?psose1fvhzSRnBa0Pz8q+rahL2pr8yMBdwMUXVMxgoWZRbUMiRGybulvt8kG?=
+ =?us-ascii?Q?Vr3B9pvK4/NIGD8pIpDwPESkyolZ8lCz3R5gzIEu2u4UhsI2Fzbmb0ImJ+4r?=
+ =?us-ascii?Q?uAB4Ao4vEiU0pmgwknJZPtExKOMaiYSuTnt0KkGxPQVOcRLljC7XWKn8Pqcd?=
+ =?us-ascii?Q?DIwmky7+5thwcG4Z0w18+ZbrlBh1VA0QYoOi/wJjZQBwhsPgoIZkm6XgRk6t?=
+ =?us-ascii?Q?bPqxxeNPJUlwqbtQEuc8rDbdnWYz6D0ZeU3Ah4Y/lyYcgSP1YePLj9IicrEv?=
+ =?us-ascii?Q?JTszKznT5GL5FAh5AtDTA4JD/iyCQPR3bQlZxTVnne1sSxxc1CuH6m9SWyDQ?=
+ =?us-ascii?Q?ZAnmIOFoRpcplFVH+ziPwY8n4DRkJDUUvfenliv7WKEpGGb0b9/P72NSo2yB?=
+ =?us-ascii?Q?jgtaFYCgzb9CKODdnNpoYCFSfjm9a63DmHHppJlLJkMzlzyXNgZgCCAi7QgH?=
+ =?us-ascii?Q?+mqK0LJbwyuoyWBz7BIqo4CrIk5lHxqn3bW1WDLAxXmKeKwXLPskJjltr1uz?=
+ =?us-ascii?Q?/8816zrhsWHCCMWpXu46luLIxl3dzy4xEWjXFtlabq69XAtDTBJw10DHgfKR?=
+ =?us-ascii?Q?8h1z/JNgqeC5jV5f5rr4pog0w74BNc5YkLqBx8cgMYfxluIrh2lrnwtBMEIP?=
+ =?us-ascii?Q?75UgpQ7cggTCHOrIuYrTphBA9UkuEwsKLbW5h34r/V4DcRIXY79V1CiP4WVs?=
+ =?us-ascii?Q?DtYFRsvGQ/ayaE3Qz9lGs2UsAmgF/AOt0gnPLdZozlrHKd7pQ7gJX62jVnFh?=
+ =?us-ascii?Q?z/ZvM4gBTQB8viMB9FheK8xp2rbJKoyGz6E0ImqIff0P0ll8KjBBec649mVz?=
+ =?us-ascii?Q?dAOG25CqEDf1W3oXjwY/NP9eZTaW+s9wCooYksp1rQHrorh6BSa4fGDrOSbT?=
+ =?us-ascii?Q?wBfTEZrcDmu27ZVstpWZLsZpYWF246xSD7B6LwTjU/Cy8g70FZJlJvQAZRzZ?=
+ =?us-ascii?Q?GHyQ/gvV3gZjrfzRfxivy7PFUwzUgc4+CqyrrejhHRvCjnszM1DqQnIA1UzV?=
+ =?us-ascii?Q?yqGi6B+bwwlg9kKVXYQ7/cJiFZaKG1u9ylZGdpPhLrkbzIWBxYFBpAbbJG7K?=
+ =?us-ascii?Q?yoma0/gORNkWmSx2wEcsC7+Ekf2RoddJsQv6HWvUaw8mSCHLZ2wPo60396lb?=
+ =?us-ascii?Q?iYfnB9FhL1cC6JOfVbM=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01717973-7155-4035-00ed-08ddef9b0676
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 12:18:46.5697
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uz8h2CJDFVWH4ozGlOiaXLsJXiUIMxJi4H+slfumePYcM8TgfhBNneRpVENC9SNs
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6061
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Tue, Sep 09, 2025 at 12:14:00AM -0400, Donald Dutile wrote:
 
-If mmu_notifier_register() fails, for example because a signal was
-pending, the mmu_notifier will not be registered. But when the VM gets
-destroyed, it will get unregistered anyway and that will cause one
-extra mmdrop(), which will eventually cause the mm of the process to
-be freed too early, and cause a use-after free.
+> > -/*
+> > - * Use standard PCI bus topology, isolation features, and DMA alias quirks
+> > - * to find or create an IOMMU group for a device.
+> > - */
+> > -struct iommu_group *pci_device_group(struct device *dev)
+> > +static struct iommu_group *pci_group_alloc_non_isolated(void)
 
-This bug happens rarely, and only when secure guests are involved.
+> Maybe iommu_group_alloc_non_isolated() would be a better name, since that's all it does.
 
-The solution is to check the return value of mmu_notifier_register()
-and return it to the caller (ultimately it will be propagated all the
-way to userspace). In case of -EINTR, userspace will try again.
+The way I've organized it makes the bus data a per-bus thing, so
+having pci in the name when setting BUS_DATA_PCI_NON_ISOLATED is
+correct.
 
-Fixes: ca2fd0609b5d ("KVM: s390: pv: add mmu_notifier")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
----
- arch/s390/kvm/pv.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+What I did was turn iommu_group_alloc() into 
 
-diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
-index 25ede8354514..6ba5a0305e25 100644
---- a/arch/s390/kvm/pv.c
-+++ b/arch/s390/kvm/pv.c
-@@ -624,6 +624,17 @@ int kvm_s390_pv_init_vm(struct kvm *kvm, u16 *rc, u16 *rrc)
- 	int cc, ret;
- 	u16 dummy;
- 
-+	/* Add the notifier only once. No races because we hold kvm->lock */
-+	if (kvm->arch.pv.mmu_notifier.ops != &kvm_s390_pv_mmu_notifier_ops) {
-+		/* The notifier will be unregistered when the VM is destroyed */
-+		kvm->arch.pv.mmu_notifier.ops = &kvm_s390_pv_mmu_notifier_ops;
-+		ret = mmu_notifier_register(&kvm->arch.pv.mmu_notifier, kvm->mm);
-+		if (ret) {
-+			kvm->arch.pv.mmu_notifier.ops = NULL;
-+			return ret;
-+		}
-+	}
-+
- 	ret = kvm_s390_pv_alloc_vm(kvm);
- 	if (ret)
- 		return ret;
-@@ -659,11 +670,6 @@ int kvm_s390_pv_init_vm(struct kvm *kvm, u16 *rc, u16 *rrc)
- 		return -EIO;
- 	}
- 	kvm->arch.gmap->guest_handle = uvcb.guest_handle;
--	/* Add the notifier only once. No races because we hold kvm->lock */
--	if (kvm->arch.pv.mmu_notifier.ops != &kvm_s390_pv_mmu_notifier_ops) {
--		kvm->arch.pv.mmu_notifier.ops = &kvm_s390_pv_mmu_notifier_ops;
--		mmu_notifier_register(&kvm->arch.pv.mmu_notifier, kvm->mm);
--	}
- 	return 0;
- }
- 
--- 
-2.51.0
+static struct iommu_group *iommu_group_alloc_data(u32 bus_data)
 
+Then
+
+struct iommu_group *iommu_group_alloc(void)
+{
+	return iommu_group_alloc_data(0);
+}
+
+And instead of pci_group_alloc_non_isolated() it is just:
+
+	return iommu_group_alloc_data(BUS_DATA_PCI_NON_ISOLATED);
+
+So everything is setup generically if someday another bus would like
+to have its own data.
+
+Jason
