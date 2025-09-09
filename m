@@ -1,199 +1,279 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A668F23C8C5
-	for <kvm@vger.kernel.org>; Tue,  9 Sep 2025 08:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35672C21D5;
+	Tue,  9 Sep 2025 09:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757406525; cv=none; b=GThhMDvd6kcQh9Xj2/0ytIpSKjv5AHOR+AhqokOlYxeoUJ7HhwUeU6x3h9JqkZm7ATvhjHslbv73cVNVCrsmxyiYfrLym/oxhuAtwtqYZIV1jgo1jzn2Fzj6v5f0elTasGAJ7x9NoGjt7DZ/EZ2yt2BLm38N6q53E1NE4+a7vhg=
+	t=1757410797; cv=none; b=dfQgFIfIlZwMrDwSXRwfHntZsCk8ZTsmRaJ35+mP8Of8QmHoKMorksFyhTM2YQnB5Nu70jAUahACfidvyxtzOdLupxfydUgi0mqVbUf4kYH8W8LPTwDjm8a8cSlHKPKO3ZaBi6iaw4XL2Voo3AwPr8blCYyDTG8P9l6iCRjpEqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757406525; c=relaxed/simple;
-	bh=jbau4NvScM9WFmrEOaQaZDaL9+RJwNelRI8l9MUAzyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=XKdZ/FDhfXlDTE6zoyUsNYP+34MY+Xctq/lTY/0zwpUWqhsBPFgI1ddadRCT4zaZYS62ze0IT+ZI/lSqpVEr3p0EMLXLJc6zzQmfHPqOOQyttgUSGWk/zCSRnwrqzmjdI166GyYbpbDlsgV/0oL2X0qs7POQzejOWjs7JlgO4ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QotmK/dV; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757410797; c=relaxed/simple;
+	bh=awSO2SajylR+9FfF5723lqDYN0HFNJlp3YMao7mQqgA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KrPff4nZvOaUtS3Qnf6wpQd/LbdobKZCc9rnfX7iaj0C9l408RXMmayFXH2WW8l+S4iaHNhx13KqSxf0WeLy+tufv75w8JPGfYF+EgZSQ/sljfI6kKKaTzwHbTeZNt/vZ6w+yE8WLIizauSxdLOrnmcOhcgYeZ4O16ufqZUFB6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RePqteug; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QotmK/dV"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3dad6252eacso2368151f8f.1
-        for <kvm@vger.kernel.org>; Tue, 09 Sep 2025 01:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757406522; x=1758011322; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ts8qPN/5ml6KznKXSDMs1ZerpTtSrzKRDP4paUzXNQE=;
-        b=QotmK/dVzQ+6ijf9sGt3pON7Y8K3HoZqW7MT3OAx2CyJi52HaVNuK67GcTXQLPxtC/
-         j55xca4hfpQ8kvjActY5MMPyfLkDAvwjX5zqOzj0MboTRCrru0x/gjStrJTJEEUdc0u0
-         aJ3tPAvTyyt8Py06DTiKiI4tBq8Lph5/JNOOvwDxxHeEoo/aVsuC/Hw/OQjgbZdIa0qy
-         X8NYlyttbjqqnvNk59WPL/Al5bEbxCMnojea4aGvI/nlAy4rwxJZbcdxGRQ1L2HSbUY1
-         NzfzQDtDu1BYKqBkk6ZvfKjrAeZqm8aewu2dN/M8nDuo4BbRMbgGFx2oyozDelYiuRQd
-         Uofg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757406522; x=1758011322;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ts8qPN/5ml6KznKXSDMs1ZerpTtSrzKRDP4paUzXNQE=;
-        b=FseAnWonuM6RuF4eNdYE35T5jEwu2nZVPLXrnXlvGJo3BP6ksy342EIZ4y8/PeJD83
-         j9GN5nhy5X2KpEKKnZ49CWM4S9BGI9lb60RnIavWDoJ3cTmvXLmHhsg5CcCbcPO6jNWY
-         xu5X+XdTBKTK0PRn48PztG4oG1+8X//vup3QqCdYSkmECHrOZQGbpuwtGADycvVegMNS
-         sbNswroj3xbwJbmo19pEZSGBdTsBJAAN8WLRN76HCumAcs+JyZ11HNm/WkKieURGOR0Z
-         1rCd1UM55E+ceYKnFoFzWA+lNK/j23VnJ2Thi0E932puNpkYayKq09vgKobrqIofSlAw
-         X3/w==
-X-Gm-Message-State: AOJu0Yz38JfMyooA5w2OF73zZ4HjW5UADL1C2ssnBlvMCtF1ROeQFszg
-	Dxkiab9ZJK3ZqqfaR3IGJ6OlfuTspoYRe6TciPQ3uF16m2CUDoXaPIgDtIeLU9a1lvY=
-X-Gm-Gg: ASbGncuZOXoJVg1RfUizcyP/vvXS6D79YEqAs+UiYyytprDK+YMULKwESl+cWE9W/W1
-	76aPFFhK6IN9fr9EkKGkwhemEe8dj6b9GrFRzTsBhmeXzsES15QIitFB6JuSPa6LufMNg+AKLdq
-	oysvGmqX1kSQ8Ii0AFO2uiD92JoRR/Q/ajtl85RIXTGyDHOrQ3yAt0u9d59BxQvrYPUy8BGKIcX
-	xqQB6EPOPgvkll5EV198SE/wxPZKw5mKdJ21yntkbmigAEkqbyobm2Se6vrw7ubow1zUKhH90t+
-	N7AskxYbmkVkc/Dz0ImqXnt4yhpykhOm9gabOiN3A1Rnnxa66OW6DJCUvJtarEAAEkM1y7RMH4h
-	1t0y5RLSRzRTOvlIYrp7XU/hwMvE=
-X-Google-Smtp-Source: AGHT+IEZM9w3N0O4wHGOcaZOsbBh21VHN0Vef/S4rAsCGfvPVxLSsDa77HhbViCTsFwCMFe3kf1qog==
-X-Received: by 2002:a05:6000:420e:b0:3c8:7fbf:2d6d with SMTP id ffacd0b85a97d-3e643e0884fmr6910997f8f.50.1757406521848;
-        Tue, 09 Sep 2025 01:28:41 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3e7521bfd08sm1639310f8f.4.2025.09.09.01.28.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 01:28:41 -0700 (PDT)
-Date: Tue, 9 Sep 2025 11:28:37 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: kvm@vger.kernel.org
-Subject: [bug report] KVM: TDX: Get system-wide info about TDX module on
- initialization
-Message-ID: <aL_lNXLD3XG496lW@stanley.mountain>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RePqteug"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757410796; x=1788946796;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=awSO2SajylR+9FfF5723lqDYN0HFNJlp3YMao7mQqgA=;
+  b=RePqteugm3TFCjlgXAxJRc/FQcSwSLFyALlRtIBFRKkAwpvGOCLrDQI+
+   W4NNMO53ZWXXzJrZQwzb0GwPCPXDAt/tBpdNDp40kcNLmjBt6OFUxKgyl
+   It5sw03vhC3/WgFaERQPyy728RLDdYBv0nHLbG0MDXpOp6lLQ1ULjoERL
+   orSyN+pyGonJSFpEPHhGAopbACj3OKZG6CdeN0gGb7PaKyZGXF6yQV98l
+   q7fvzgVOGfhnJ66BM2Nk7CIESAR0ZLwExRRk3F8IHiT++kVk5V/n1Pjma
+   CroQLejqFabB8IOEC/PWzo9UHH2qM5gboegdeP+WPrYWoaV++1mVH5RZl
+   A==;
+X-CSE-ConnectionGUID: PD41bYJpSSmJ55zXy4kryA==
+X-CSE-MsgGUID: 7ZLmsCBqTnOQvrrvBKG6ZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="70307178"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="70307178"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:39:54 -0700
+X-CSE-ConnectionGUID: Zl1dDcnHTu2Eday039ucNQ==
+X-CSE-MsgGUID: g6ubcS0DQSGExMHxzchO2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="172207388"
+Received: from unknown (HELO CannotLeaveINTEL.jf.intel.com) ([10.165.54.94])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:39:54 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: acme@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	john.allen@amd.com,
+	mingo@kernel.org,
+	mingo@redhat.com,
+	minipli@grsecurity.net,
+	mlevitsk@redhat.com,
+	namhyung@kernel.org,
+	pbonzini@redhat.com,
+	prsampat@amd.com,
+	rick.p.edgecombe@intel.com,
+	seanjc@google.com,
+	shuah@kernel.org,
+	tglx@linutronix.de,
+	weijiang.yang@intel.com,
+	x86@kernel.org,
+	xin@zytor.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH v14 01/22] KVM: x86: Introduce KVM_{G,S}ET_ONE_REG uAPIs support
+Date: Tue,  9 Sep 2025 02:39:32 -0700
+Message-ID: <20250909093953.202028-2-chao.gao@intel.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250909093953.202028-1-chao.gao@intel.com>
+References: <20250909093953.202028-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hello Isaku Yamahata,
+From: Yang Weijiang <weijiang.yang@intel.com>
 
-Commit 61bb28279623 ("KVM: TDX: Get system-wide info about TDX module
-on initialization") from Oct 30, 2024 (linux-next), leads to the
-following Smatch static checker warning:
+Enable KVM_{G,S}ET_ONE_REG uAPIs so that userspace can access MSRs and
+other non-MSR registers through them.
 
-	arch/x86/kvm/vmx/tdx.c:3464 __tdx_bringup()
-	warn: missing error code 'r'
+This is in preparation for allowing userspace to read/write the guest SSP
+register, which is needed for the upcoming CET virtualization support.
 
-arch/x86/kvm/vmx/tdx.c
-    3416 static int __init __tdx_bringup(void)
-    3417 {
-    3418         const struct tdx_sys_info_td_conf *td_conf;
-    3419         int r, i;
-    3420 
-    3421         for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++) {
-    3422                 /*
-    3423                  * Check if MSRs (tdx_uret_msrs) can be saved/restored
-    3424                  * before returning to user space.
-    3425                  *
-    3426                  * this_cpu_ptr(user_return_msrs)->registered isn't checked
-    3427                  * because the registration is done at vcpu runtime by
-    3428                  * tdx_user_return_msr_update_cache().
-    3429                  */
-    3430                 tdx_uret_msrs[i].slot = kvm_find_user_return_msr(tdx_uret_msrs[i].msr);
-    3431                 if (tdx_uret_msrs[i].slot == -1) {
-    3432                         /* If any MSR isn't supported, it is a KVM bug */
-    3433                         pr_err("MSR %x isn't included by kvm_find_user_return_msr\n",
-    3434                                 tdx_uret_msrs[i].msr);
-    3435                         return -EIO;
-    3436                 }
-    3437         }
-    3438 
-    3439         /*
-    3440          * Enabling TDX requires enabling hardware virtualization first,
-    3441          * as making SEAMCALLs requires CPU being in post-VMXON state.
-    3442          */
-    3443         r = kvm_enable_virtualization();
-    3444         if (r)
-    3445                 return r;
-    3446 
-    3447         cpus_read_lock();
-    3448         r = __do_tdx_bringup();
-    3449         cpus_read_unlock();
-    3450 
-    3451         if (r)
-    3452                 goto tdx_bringup_err;
-    3453 
-    3454         /* Get TDX global information for later use */
-    3455         tdx_sysinfo = tdx_get_sysinfo();
-    3456         if (WARN_ON_ONCE(!tdx_sysinfo)) {
-    3457                 r = -EINVAL;
-    3458                 goto get_sysinfo_err;
-    3459         }
-    3460 
-    3461         /* Check TDX module and KVM capabilities */
-    3462         if (!tdx_get_supported_attrs(&tdx_sysinfo->td_conf) ||
-    3463             !tdx_get_supported_xfam(&tdx_sysinfo->td_conf))
---> 3464                 goto get_sysinfo_err;
+Currently, two types of registers are supported: KVM_X86_REG_TYPE_MSR and
+KVM_X86_REG_TYPE_KVM. All MSRs are in the former type; the latter type is
+added for registers that lack existing KVM uAPIs to access them. The "KVM"
+in the name is intended to be vague to give KVM flexibility to include
+other potential registers. We considered some specific names, like
+"SYNTHETIC" and "SYNTHETIC_MSR" before, but both are confusing and may put
+KVM itself into a corner.
 
-error code?
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+Link: https://lore.kernel.org/all/20240219074733.122080-18-weijiang.yang@intel.com/ [1]
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Tested-by: John Allen <john.allen@amd.com>
+Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+v14:
+- Rename the group type of guest SSP register to KVM_X86_REG_KVM
+- Add docs for id patterns for x86 in api.rst
+- Update commit message
+---
+ Documentation/virt/kvm/api.rst  |  2 +
+ arch/x86/include/uapi/asm/kvm.h | 26 +++++++++++
+ arch/x86/kvm/x86.c              | 78 +++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+)
 
-    3465 
-    3466         if (!(tdx_sysinfo->features.tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM))
-    3467                 goto get_sysinfo_err;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 6aa40ee05a4a..28fc12b46eeb 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -2908,6 +2908,8 @@ such as set vcpu counter or reset vcpu, and they have the following id bit patte
+ 
+   0x9030 0000 0002 <reg:16>
+ 
++x86 MSR registers have the following id bit patterns::
++  0x2030 0002 <msr number:32>
+ 
+ 4.69 KVM_GET_ONE_REG
+ --------------------
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 0f15d683817d..508b713ca52e 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -411,6 +411,32 @@ struct kvm_xcrs {
+ 	__u64 padding[16];
+ };
+ 
++#define KVM_X86_REG_TYPE_MSR		2
++#define KVM_X86_REG_TYPE_KVM		3
++
++#define KVM_X86_KVM_REG_SIZE(reg)						\
++({										\
++	reg == KVM_REG_GUEST_SSP ? KVM_REG_SIZE_U64 : 0;			\
++})
++
++#define KVM_X86_REG_TYPE_SIZE(type, reg)					\
++({										\
++	__u64 type_size = (__u64)type << 32;					\
++										\
++	type_size |= type == KVM_X86_REG_TYPE_MSR ? KVM_REG_SIZE_U64 :		\
++		     type == KVM_X86_REG_TYPE_KVM ? KVM_X86_KVM_REG_SIZE(reg) :	\
++		     0;								\
++	type_size;								\
++})
++
++#define KVM_X86_REG_ENCODE(type, index)				\
++	(KVM_REG_X86 | KVM_X86_REG_TYPE_SIZE(type, index) | index)
++
++#define KVM_X86_REG_MSR(index)					\
++	KVM_X86_REG_ENCODE(KVM_X86_REG_TYPE_MSR, index)
++#define KVM_X86_REG_KVM(index)					\
++	KVM_X86_REG_ENCODE(KVM_X86_REG_TYPE_KVM, index)
++
+ #define KVM_SYNC_X86_REGS      (1UL << 0)
+ #define KVM_SYNC_X86_SREGS     (1UL << 1)
+ #define KVM_SYNC_X86_EVENTS    (1UL << 2)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 7ba2cdfdac44..f32d3edfc7b1 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2254,6 +2254,31 @@ static int do_set_msr(struct kvm_vcpu *vcpu, unsigned index, u64 *data)
+ 	return kvm_set_msr_ignored_check(vcpu, index, *data, true);
+ }
+ 
++static int kvm_get_one_msr(struct kvm_vcpu *vcpu, u32 msr, u64 __user *value)
++{
++	u64 val;
++	int r;
++
++	r = do_get_msr(vcpu, msr, &val);
++	if (r)
++		return r;
++
++	if (put_user(val, value))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int kvm_set_one_msr(struct kvm_vcpu *vcpu, u32 msr, u64 __user *value)
++{
++	u64 val;
++
++	if (get_user(val, value))
++		return -EFAULT;
++
++	return do_set_msr(vcpu, msr, &val);
++}
++
+ #ifdef CONFIG_X86_64
+ struct pvclock_clock {
+ 	int vclock_mode;
+@@ -4737,6 +4762,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_IRQFD_RESAMPLE:
+ 	case KVM_CAP_MEMORY_FAULT_INFO:
+ 	case KVM_CAP_X86_GUEST_MODE:
++	case KVM_CAP_ONE_REG:
+ 		r = 1;
+ 		break;
+ 	case KVM_CAP_PRE_FAULT_MEMORY:
+@@ -5915,6 +5941,20 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
+ 	}
+ }
+ 
++struct kvm_x86_reg_id {
++	__u32 index;
++	__u8  type;
++	__u8  rsvd1;
++	__u8  rsvd2:4;
++	__u8  size:4;
++	__u8  x86;
++};
++
++static int kvm_translate_kvm_reg(struct kvm_x86_reg_id *reg)
++{
++	return -EINVAL;
++}
++
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg)
+ {
+@@ -6031,6 +6071,44 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		break;
+ 	}
++	case KVM_GET_ONE_REG:
++	case KVM_SET_ONE_REG: {
++		struct kvm_x86_reg_id *id;
++		struct kvm_one_reg reg;
++		u64 __user *value;
++
++		r = -EFAULT;
++		if (copy_from_user(&reg, argp, sizeof(reg)))
++			break;
++
++		r = -EINVAL;
++		if ((reg.id & KVM_REG_ARCH_MASK) != KVM_REG_X86)
++			break;
++
++		id = (struct kvm_x86_reg_id *)&reg.id;
++		if (id->rsvd1 || id->rsvd2)
++			break;
++
++		if (id->type == KVM_X86_REG_TYPE_KVM) {
++			r = kvm_translate_kvm_reg(id);
++			if (r)
++				break;
++		}
++
++		r = -EINVAL;
++		if (id->type != KVM_X86_REG_TYPE_MSR)
++			break;
++
++		if ((reg.id & KVM_REG_SIZE_MASK) != KVM_REG_SIZE_U64)
++			break;
++
++		value = u64_to_user_ptr(reg.addr);
++		if (ioctl == KVM_GET_ONE_REG)
++			r = kvm_get_one_msr(vcpu, id->index, value);
++		else
++			r = kvm_set_one_msr(vcpu, id->index, value);
++		break;
++	}
+ 	case KVM_TPR_ACCESS_REPORTING: {
+ 		struct kvm_tpr_access_ctl tac;
+ 
+-- 
+2.47.3
 
-here too?
-
-    3468 
-    3469         /*
-    3470          * TDX has its own limit of maximum vCPUs it can support for all
-    3471          * TDX guests in addition to KVM_MAX_VCPUS.  Userspace needs to
-    3472          * query TDX guest's maximum vCPUs by checking KVM_CAP_MAX_VCPU
-    3473          * extension on per-VM basis.
-    3474          *
-    3475          * TDX module reports such limit via the MAX_VCPU_PER_TD global
-    3476          * metadata.  Different modules may report different values.
-    3477          * Some old module may also not support this metadata (in which
-    3478          * case this limit is U16_MAX).
-    3479          *
-    3480          * In practice, the reported value reflects the maximum logical
-    3481          * CPUs that ALL the platforms that the module supports can
-    3482          * possibly have.
-    3483          *
-    3484          * Simply forwarding the MAX_VCPU_PER_TD to userspace could
-    3485          * result in an unpredictable ABI.  KVM instead always advertise
-    3486          * the number of logical CPUs the platform has as the maximum
-    3487          * vCPUs for TDX guests.
-    3488          *
-    3489          * Make sure MAX_VCPU_PER_TD reported by TDX module is not
-    3490          * smaller than the number of logical CPUs, otherwise KVM will
-    3491          * report an unsupported value to userspace.
-    3492          *
-    3493          * Note, a platform with TDX enabled in the BIOS cannot support
-    3494          * physical CPU hotplug, and TDX requires the BIOS has marked
-    3495          * all logical CPUs in MADT table as enabled.  Just use
-    3496          * num_present_cpus() for the number of logical CPUs.
-    3497          */
-    3498         td_conf = &tdx_sysinfo->td_conf;
-    3499         if (td_conf->max_vcpus_per_td < num_present_cpus()) {
-    3500                 pr_err("Disable TDX: MAX_VCPU_PER_TD (%u) smaller than number of logical CPUs (%u).\n",
-    3501                                 td_conf->max_vcpus_per_td, num_present_cpus());
-    3502                 r = -EINVAL;
-    3503                 goto get_sysinfo_err;
-    3504         }
-    3505 
-    3506         if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids())) {
-    3507                 r = -EINVAL;
-    3508                 goto get_sysinfo_err;
-    3509         }
-    3510 
-    3511         /*
-    3512          * Leave hardware virtualization enabled after TDX is enabled
-    3513          * successfully.  TDX CPU hotplug depends on this.
-    3514          */
-    3515         return 0;
-    3516 
-    3517 get_sysinfo_err:
-    3518         __tdx_cleanup();
-    3519 tdx_bringup_err:
-    3520         kvm_disable_virtualization();
-    3521         return r;
-    3522 }
-
-regards,
-dan carpenter
