@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF198244665;
-	Tue,  9 Sep 2025 22:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A88E264624;
+	Tue,  9 Sep 2025 22:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757455210; cv=none; b=Seq0pPr4LUY4nYp/TbD4uFdeF8JGZFCGp4bq1so//ki9CfCuo0qwUekZ2Dm++X6ZuwXdHRp2zSJPpZZvINT8/+cxsbBTuxGGtAzMr3yvdz2IX+zmPTPw8PHXKvDPW5ADAbeHTgCCXdS6C8z5CqhyKY3g9dkJ0oqVFOc9RrKcI2I=
+	t=1757455212; cv=none; b=PN6uvfJrO+nOkMegbyanL/x1uoWpvS38X7vc8bPfKqT4fuxARRRSEM9swF6InagfrKaggKYk528q2V08D1HHushZkRvEhPrwaGMTGGM6QcG/jLBd16i+7v9zyF9r9bjY4yNup5NzPVM7z7Rhh9sW4knq1J5VijEAvcSFDNkwbRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757455210; c=relaxed/simple;
-	bh=3MEHUK/+TcOWsAEbKAhaeb7droOEVMg1d8lQHuKDljY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H68aFdZzSkdmQ0MvffGz2Vm8ndyuO/dJ3OC190juTSFwfrHrtdbOTY3XerYh8w1rcFuiVh/KRIC4E4BkYxRswerftNc002D2OKWAKrUCAzPWLL3xI8VBLYmiMVPMgT+i1UG5f8ycDZf5HfpEzxyS+wITdQO90bA+QTzSlhqZjqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U7gXYCJW; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1757455212; c=relaxed/simple;
+	bh=vDl7m9tMdR9eYVxyDAaaau41yOwKsEhqf87Oqwp/3Vs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ufpZHAytztl5xc5V9gKBzFRGZIqcwZkw2u2AorranwbOrfcqHFEFlZDpoh7jWvkkidBYbm/BuGVfr9MqJkkD/0VA/hxRUjeQXcG7lhvzzpFxCUI51RNw2inwEuVmHGDK/X4babga6WefvYJm8wPrVUj9RF6bNvkjeYOlRaZfM5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UC/aiuSV; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U7gXYCJW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UC/aiuSV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757455209; x=1788991209;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=3MEHUK/+TcOWsAEbKAhaeb7droOEVMg1d8lQHuKDljY=;
-  b=U7gXYCJW/B3nowEnMyP7tbUuhUJemqtYNjY2ZJ1r50N4FFALWcvc/Vwm
-   /bm90zYUX4N3sk7R5Xl3LFGkMgZ7rvn6RI8Ugxv7m87fzTDyQkrvjpPxw
-   NuymSP/4UuLNPIYPE4iXCvq6RgkaWiZHHLNDsFPJu/Cp6EAWOTBYxrjI4
-   g4ehNoZzo3zlgV57ubRhkdxa1EiUnHSmZk0uLh+NuG9g+NnMRTRx1FzxJ
-   pL4m3G/VqvqcKDG8CVC+g469nrGV/0Gre8E0rt5gztUp+urupj8edz/Ut
-   BEfZAJxzR+y33k9/HaSWhSVlbaIgcKMWLEAcrVDq1XjQ6G6npQWwGAUbC
-   w==;
-X-CSE-ConnectionGUID: ZymuJ1TrQ+a85k4q1+fwfA==
-X-CSE-MsgGUID: gGxzLhBCRNa2AzHt8t1bpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584609"
+  t=1757455211; x=1788991211;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=vDl7m9tMdR9eYVxyDAaaau41yOwKsEhqf87Oqwp/3Vs=;
+  b=UC/aiuSVHOC96A0IX40CJZnKFfdmyTT0tzwUEfn4FLdbbf/lPTsje4ul
+   WxfP1QzqkNEHDlX7Iv2R4hZB6we/g8H+Ekoe38b+OQgeMRe+dD4B6qRZq
+   9KK15/GDHDqHFynh8CCzfwP515dPgzt/R3ky2sAdemlIeaEuRWkFq/H3z
+   Yfr5A6QcnSVToYm00Ziz+pLSeSaK1VsiU3ZrJR3xzhTN/V4+mHxOT7mwf
+   VoKoBx9fZPnpjLKMwGYsG3cJAw58bcxVdQHCDbA9b7Zb4YuMiJUqPgyOP
+   2u5dx1toHer50ZnHquHIgc7xj8XQvGUkCGjiC2Tne+JgJHV4z0+BxR/Ly
+   Q==;
+X-CSE-ConnectionGUID: H94IZVThRAGvq7zJCUf/Vg==
+X-CSE-MsgGUID: 3Eif7NrWRmGtIP3cXzFWIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584631"
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="63584609"
+   d="scan'208";a="63584631"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:07 -0700
-X-CSE-ConnectionGUID: vQSzBUM+RkCBUdEKy7pqxQ==
-X-CSE-MsgGUID: idV5QM8zSBa4OiHDcFgJCw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:08 -0700
+X-CSE-ConnectionGUID: +taba2B9RWiukFxANaZjEQ==
+X-CSE-MsgGUID: VmtnZj3ASWK3UeOUV+/xvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="172780949"
+   d="scan'208";a="172780957"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
   by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:07 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH RFC net-next 0/7] ice: implement live migration driver for
- E800 series hardware
-Date: Tue, 09 Sep 2025 14:57:49 -0700
-Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
+Date: Tue, 09 Sep 2025 14:57:51 -0700
+Subject: [PATCH RFC net-next 2/7] ice: implement device suspension for live
+ migration
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,12 +55,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN6iwGgC/43PwU7DMAwG4FeZcibITuLRckJC4gG4Ig4ldbZA1
- 6I2ioamvjteLq16qnL6I+v77ZuaeIw8qefDTY2c4xSHXgI+HJQ/N/2JdWwlKwOGAC1orhB0FzP
- rSzyNTZJ5/f2zCqnL2lrP5LFFsE4J9TtyiNdS86He317vfz0n3fM1qU8J5zilYfwra2QsY6XRg
- d3XmFGDdkTUYO2Qq+ol9om7Rz9cSkE2KxTdTtQIWtU1Ah19Y9uwRe2CytuJWkFly1C5RkzELeo
- W9Ah7N3WChpoCQgjeAG9RWtAazE6U7ucTtJYsfBl6WqPzPP8DioNkqj0CAAA=
-X-Change-ID: 20250130-e810-live-migration-jk-migration-tlv-33ce5c1d1034
+Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-2-4d1dc641e31f@intel.com>
+References: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
+In-Reply-To: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
  Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -76,130 +73,142 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  Jacob Keller <jacob.e.keller@intel.com>, 
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 X-Mailer: b4 0.15-dev-c61db
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5432;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3863;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=3MEHUK/+TcOWsAEbKAhaeb7droOEVMg1d8lQHuKDljY=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi1NceL0Y0+7P1pF9/TywhfPx6qIH6668nuMjtWVW3
- tm/T2qrOkpZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZgIix3DP7WG+wFT18vm95wJ
- FvroycMmaOA4d/mc57s7zJ0yl90PjmH4H6OxebvWPqEac5vFDPOqftw+7Fp5oFj619oT6o08RRW
- P2QE=
+ bh=vDl7m9tMdR9eYVxyDAaaau41yOwKsEhqf87Oqwp/3Vs=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi1PPuljKLIvjF4va1mLJW/rK/Ll1r2y/8i3+rlU+t
+ 6q+Wgh0lLIwiHExyIopsig4hKy8bjwhTOuNsxzMHFYmkCEMXJwCMBHzLEaGR9caul6Y+j7a68SX
+ sd3N8dKZv7KztzLqKC/7J+K1+jYXJyPDv4yuiV77lzzT16h2O83WpyQc+LlkuWfsi5vFZYFMC9f
+ wAQA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-This series implements the QEMU/KVM live migration support for the ice E800
-series hardware. It is a long-overdue followup to the version from Yahui
-back in 2023. That version itself is an evolution of the original v1
-protocol from some years before that.
+The ice_migration_suspend_dev() function will be called by the ice_vfio_pci
+module to suspend the VF device in preparation for migration. It will be
+called both by the initial host device before transitioning to the
+STOP_COPY state, as well as by the receiving device prior to loading the
+migration data.
 
-This version is a significant rework and complete replaces the
-virtchnl message based approach with one based on the PF serializing state
-via a custom Type-Length-Value format.
+In preparation for STOP_COPY, the device must save some state to fill out a
+migration buffer payload. In this flow, the save_state parameter is set to
+true. During the resume flow, the function will not need to save device
+state, and will set the save_state parameter to false.
 
-This solution significantly reduces the impact a VF can have on the payload
-size, as the size is no longer based directly on messages sent by the VF.
-It also ensures that other data such as host-based RSS and MSI-X is sent,
-which previously was ignored since there were no equivalent virtchnl
-messages.
-
-Finally, replay can now be ordered to safely restore Tx and Rx queues
-without needing hacks to the virtchnl initialization flows, and the driver
-now only holds migration data for a short limited time while suspending,
-rather than requiring we save every virtchnl message the VF sends for the
-life time of the VF.
-
-To test this, I used QEMU/KVM:
-
-  echo 2 >/sys/class/net/enp175s0f0np0/device/sriov_numvfs
-
-  echo "0000:af:01.0" >/sys/bus/pci/drivers/iavf/unbind
-  echo "0000:af:01.1" >/sys/bus/pci/drivers/iavf/unbind
-
-  modprobe ice_vfio_pci
-
-  echo "8086 1889" >/sys/bus/pci/drivers/ice-vfio-pci/new_id
-
-I've tested with QEMU using the "enable-migration=on" and
-"x-pre-copy-dirty-page-tracking=off" settings, as we do not currently
-support dirty page tracking.
-
-The initial host QEMU instance is launched as usual, while the target QEMU
-instance is launched with the -incoming tcp:localhost:4444 option.
-
-To initiate migration you can issue the migration command from the QEMU
-console:
-
-  migrate tcp:localhost:4444
-
-I've tested with and without traffic, and I tried to cover a wide variety
-of VF settings and configuration.
-
-REVIEWER NOTES AND REQUESTS:
-
-  I am sending this as RFC to the netdev and VFIO mailing lists, as I am
-  uncertain what the preferred path for merging is. I am also awaiting
-  testing from Intel's virtualization team.
-
-  I've managed to reduce the overall patch series size as much as possible
-  by sending many of the cleanups ahead of time. These have finally all
-  merged into net-next.
-
-  This work is based on the original live migration patches from Yahui.
-  However, the ice driver implementation is entirely rewritten. The VFIO
-  driver code is still primarily Yahui's, with some minor alterations and
-  cleanups applied.
-
-  I decided to separate the deferred reset logic in the VFIO driver to its
-  own patch, and am open to alternative suggestions for resolving this
-  potential deadlock. I saw a similar deferred logic in other drivers. I
-  have thus far not come up with a better solution.
-
-  The biggest remaining gap on the ice driver side is that I don't have a
-  good idea how to best plan for future VF enhancements. Currently, all the
-  existing configuration and features now work. However, a future feature
-  might require new migration data, and I don't have a good idea how to
-  make the driver safely disable such features until they're supported
-  within the migration.
-
-  The TLV format does allow for extension, (both with a full version field
-  and with passing the set of known TLVs). However, the driver likely could
-  use some sort of infrastructure so that new VF virtchnl commands or
-  features get blocked by default until they are confirmed to work with
-  migration. Suggestions on how best to implement that are welcome.
-
-Link: https://lore.kernel.org/netdev/20231121025111.257597-1-yahui.cao@intel.com/
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-Jacob Keller (7):
-      ice: add basic skeleton and TLV framework for live migration support
-      ice: implement device suspension for live migration
-      ice: add migration TLV for basic VF information
-      ice: add migration TLVs for queue and interrupt state
-      ice: add remaining migration TLVs
-      ice-vfio-pci: add ice VFIO PCI live migration driver
-      ice-vfio-pci: implement PCI .reset_done handling
+ drivers/net/ethernet/intel/ice/virt/migration.c | 96 ++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 1 deletion(-)
 
- drivers/net/ethernet/intel/ice/ice.h               |    2 +
- drivers/net/ethernet/intel/ice/ice_hw_autogen.h    |    8 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.h        |    2 +
- .../net/ethernet/intel/ice/virt/migration_tlv.h    |  495 +++++
- include/linux/net/intel/ice_migration.h            |   49 +
- drivers/net/ethernet/intel/ice/ice_main.c          |   16 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.c        |    3 +
- drivers/net/ethernet/intel/ice/virt/migration.c    | 2147 ++++++++++++++++++++
- drivers/net/ethernet/intel/ice/virt/queues.c       |   21 +
- drivers/vfio/pci/ice/main.c                        |  764 +++++++
- MAINTAINERS                                        |    7 +
- drivers/net/ethernet/intel/ice/Makefile            |    1 +
- drivers/vfio/pci/Kconfig                           |    2 +
- drivers/vfio/pci/Makefile                          |    2 +
- drivers/vfio/pci/ice/Kconfig                       |    8 +
- drivers/vfio/pci/ice/Makefile                      |    4 +
- 16 files changed, 3531 insertions(+)
----
-base-commit: 3b4296f5893d3a4e19edfc3800cb79381095e55f
-change-id: 20250130-e810-live-migration-jk-migration-tlv-33ce5c1d1034
+diff --git a/drivers/net/ethernet/intel/ice/virt/migration.c b/drivers/net/ethernet/intel/ice/virt/migration.c
+index f13b7674dabd..aa2e17c5be60 100644
+--- a/drivers/net/ethernet/intel/ice/virt/migration.c
++++ b/drivers/net/ethernet/intel/ice/virt/migration.c
+@@ -85,9 +85,103 @@ void ice_migration_uninit_dev(struct pci_dev *vf_dev)
+ }
+ EXPORT_SYMBOL(ice_migration_uninit_dev);
+ 
++/**
++ * ice_migration_suspend_dev - suspend device
++ * @vf_dev: pointer to the VF PCI device
++ * @save_state: true if the device may be preparing for live migration
++ *
++ * Suspend the VF device. If save_state is set, first save any state which is
++ * necessary for later migration.
++ *
++ * Return: 0 for success, negative for error
++ */
+ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
+ {
+-	return -EOPNOTSUPP;
++	struct ice_pf *pf = ice_vf_dev_to_pf(vf_dev);
++	struct ice_mig_tlv_entry *entry, *tmp;
++	struct ice_vsi *vsi;
++	struct device *dev;
++	struct ice_vf *vf;
++	int err;
++
++	if (IS_ERR(pf))
++		return PTR_ERR(pf);
++
++	vf = ice_get_vf_by_dev(pf, vf_dev);
++	if (!vf) {
++		dev_err(&vf_dev->dev, "Unable to locate VF from VF device\n");
++		return -EINVAL;
++	}
++
++	dev = ice_pf_to_dev(pf);
++
++	dev_dbg(dev, "Suspending VF %u in preparation for live migration\n",
++		vf->vf_id);
++
++	mutex_lock(&vf->cfg_lock);
++
++	vsi = ice_get_vf_vsi(vf);
++	if (!vsi) {
++		dev_err(dev, "VF %d VSI is NULL\n", vf->vf_id);
++		err = -EINVAL;
++		goto err_release_cfg_lock;
++	}
++
++	if (save_state) {
++		if (!list_empty(&vf->mig_tlvs)) {
++			dev_dbg(dev, "Freeing unused migration TLVs for VF %d\n",
++				vf->vf_id);
++
++			list_for_each_entry_safe(entry, tmp, &vf->mig_tlvs,
++						 list_entry) {
++				list_del(&entry->list_entry);
++				kfree(entry);
++			}
++		}
++	}
++
++	/* Prevent VSI from queuing incoming packets by removing all filters */
++	ice_fltr_remove_all(vsi);
++	/* TODO: there's probably a better way to handle this, or it may be
++	 * unnecessary
++	 */
++	vf->num_mac = 0;
++	vsi->num_vlan = 0;
++
++	/* MAC based filter rule is disabled at this point. Set MAC to zero
++	 * to keep consistency with VF mac address info shown by ip link
++	 */
++	eth_zero_addr(vf->hw_lan_addr);
++	eth_zero_addr(vf->dev_lan_addr);
++
++	err = ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, vf->vf_id);
++	if (err)
++		dev_warn(dev, "VF %d failed to stop Tx rings. Continuing live migration regardless.\n",
++			 vf->vf_id);
++
++	err = ice_vsi_stop_all_rx_rings(vsi);
++	if (err)
++		dev_warn(dev, "VF %d failed to stop Rx rings. Continuing live migration regardless.\n",
++			 vf->vf_id);
++
++	mutex_unlock(&vf->cfg_lock);
++	ice_put_vf(vf);
++
++	return 0;
++
++err_free_mig_tlvs:
++	if (save_state) {
++		list_for_each_entry_safe(entry, tmp, &vf->mig_tlvs,
++					 list_entry) {
++			list_del(&entry->list_entry);
++			kfree(entry);
++		}
++	}
++
++err_release_cfg_lock:
++	mutex_unlock(&vf->cfg_lock);
++	ice_put_vf(vf);
++	return err;
+ }
+ EXPORT_SYMBOL(ice_migration_suspend_dev);
+ 
 
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
+-- 
+2.51.0.rc1.197.g6d975e95c9d7
 
