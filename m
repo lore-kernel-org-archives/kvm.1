@@ -1,52 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E440263F44;
-	Tue,  9 Sep 2025 22:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148A226A0A7;
+	Tue,  9 Sep 2025 22:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757455214; cv=none; b=emv8ofwR3dubuK3mvdSAXd0Jr+QfAtmG/I9hhu7EQw3CnaOv+NdGamBZm0qVnNdkAX7XKMrdVIze9bKWyCVqJD3oeyN26LoRaN+NSXTRpgzoL6hgfKlM0HajZccdbhhh6Iz1qiIvh/OZfI2/vUmWpDDYVZpZ5q9e9FOir9mXEt8=
+	t=1757455215; cv=none; b=A6QoGfMdtTYvqtqojOMijcSNw+WY9TyNkWxkcjTC3rRiIbNBfIxUXM1x1dNz4hr+oJoHAOkdsWTu6cQU1D6O/VxDu5OUVI7BafIKEFtXVEUeLGy9rMWG8mx+0q+bievXJIPAr3gLRUevyjk/0zVQAYAuurhDPmMTjMMU9mi2BZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757455214; c=relaxed/simple;
-	bh=zBu7BSSYtF+/LaaPaw5MmMaobB0x6Gnri9E517yTZ/I=;
+	s=arc-20240116; t=1757455215; c=relaxed/simple;
+	bh=Zbi2e2VvKzf88ESYqAWc3a4461r6YnvPI+Q6t4jVxPE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iKBklM0cONko0wz+LmFlNbk0THorhOwx5WvSaSNDYd0IOZ8xiOtq+mF1RHSEux0nHpS24LIvCtqJ6TJaTHa8fFf0miD1NFWwuYGHvcb3Qnp2imdPWhGhP1tDwXu3g92R4p3h3B7IvFiSFCJcYcXCNc/3zfAUalIdkwh6V8pPO5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ms1PZxwe; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:To:Cc; b=QLqFU9VfiStdtEe4RPl9J4s0ne0x2WBJBWuNiiF13kzBQdmZ1Ml6sI0AmqDINLhlx/+ZgRq3rvW9PNdcnofYIBNlOcNlvj24YY6wP/n+1ymDQLbhhdAwfCCYpwRa4aEiAaP8s8/02IZEAsto2j9TwX8Jt/kWuOC9Jl2xk1ePV2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QH0BnNyy; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ms1PZxwe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QH0BnNyy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757455212; x=1788991212;
+  t=1757455213; x=1788991213;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=zBu7BSSYtF+/LaaPaw5MmMaobB0x6Gnri9E517yTZ/I=;
-  b=Ms1PZxweTexfc+e1OxYd2wA6Q7/ZzWHn4uz0Mnmh/xhgq9WYFq75aLHa
-   cjuuElKAxXvf4owDHETBuCnwSDcvC74eXRER+FD6zCkfvP2ke/RT0m3Mc
-   g6+kH7oMKl1kTjJ5nPsks40nqB2HWTI6swSZLJxcoITnncPsj3Ytf7mX8
-   Twmx5MdhLbqK6FN7GeWYfwbdMjhRavU4UtpEyX2bK7XwNV9tGZMDsQBtu
-   cr8ikonTmeggx3eXs2LtHTf7pIuGCRNcyhM0vACW+PvImduoJOypcnTYr
-   23bx/q0qkbuHQDUVShQoyI8DvAaAw+4iaxHKXClAzh1JTJVvStwqDLBRr
-   Q==;
-X-CSE-ConnectionGUID: MO9BBe4uSq273h2EVY9z6A==
-X-CSE-MsgGUID: 7IrAjfzASJiK5llPyVSlPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584645"
+  bh=Zbi2e2VvKzf88ESYqAWc3a4461r6YnvPI+Q6t4jVxPE=;
+  b=QH0BnNyyYZvshQlkp3uQGLebk6KSMUkvlcVmexwWeMje5NvKLBoP+GRD
+   r+gcqsxstiQJwIZA43zAjoaciIAyXFjaC3ZPLcO02UpmeFpJnZ+Tli0WY
+   P1EefJK/457DeZX49jwfvqdJ1YkH7e2qDTW08efuiz9W7zCZQz9qdkduV
+   zqKEhKhzPc/8utAaRX8zhqLQHHtipQCL97p0FOi2J5kH/jqi2OfGtzVnh
+   1BaOUPw4XOw7lB555Nz043CKa4F9H0xcuS/VvOVxjv4wU+ILJG9287+4J
+   QCr5YXeOducJr6yWbuk4+Mgoe/CJNGLXTjdFhKEDH1W+pSGlUl9CMzf+Z
+   A==;
+X-CSE-ConnectionGUID: NCaQgkyeSKO3pn9+Y27ydQ==
+X-CSE-MsgGUID: 8FJkW35cQYOYMaC7a7JjNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584668"
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="63584645"
+   d="scan'208";a="63584668"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:08 -0700
-X-CSE-ConnectionGUID: a0qT42+XQaWDyK3VKq/wIA==
-X-CSE-MsgGUID: AKzneJqxQriGs9Z++AywZw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:09 -0700
+X-CSE-ConnectionGUID: l72Vu2WKSk6+qgZjp+zxcg==
+X-CSE-MsgGUID: YAUTIRX/QWal3k5073zBYQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="172780961"
+   d="scan'208";a="172780968"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:07 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:08 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 09 Sep 2025 14:57:52 -0700
-Subject: [PATCH RFC net-next 3/7] ice: add migration TLV for basic VF
- information
+Date: Tue, 09 Sep 2025 14:57:54 -0700
+Subject: [PATCH RFC net-next 5/7] ice: add remaining migration TLVs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-3-4d1dc641e31f@intel.com>
+Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-5-4d1dc641e31f@intel.com>
 References: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
 In-Reply-To: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
@@ -73,198 +72,562 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  Jacob Keller <jacob.e.keller@intel.com>, 
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 X-Mailer: b4 0.15-dev-c61db
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14888;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=28999;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=zBu7BSSYtF+/LaaPaw5MmMaobB0x6Gnri9E517yTZ/I=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi1MFPLfO1mIzW8Xc/DTH88IyxUP/NHeF7Ji9arVsi
- nls5v+lHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAEykZz7D/4ydH+TE9milfKxo
- FNp9KURyTmG5Z09swzOeoF26/LbWdQx/+BsSJGd0Noma/77A3x7wdsLMU8cucZxi2NHiUZWh+8S
- GHwA=
+ bh=Zbi2e2VvKzf88ESYqAWc3a4461r6YnvPI+Q6t4jVxPE=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi1NP1jE/KOa6sScwfcpN0diXdbO1p8gpfu5dsf6Gt
+ 2nJVNn0jlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYS/Y3hr7zcrz+OWjpKvU1R
+ LML381/K82Vszb2i3rDaaM4a47OOGxn+KZf1pETGGBoGH/BfsPhTZgrDJDUrDysRBh717ognPsu
+ 4AQ==
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Add the ICE_MIG_TLV_VF_INFO TLV type to the migration payload. This TLV
-contains the basic VF information. This data is special, as it must be
-loaded first prior to other data from TLVs such as per-queue information.
+Add a handful of remaining TLVs to complete the migration payload data
+including:
 
-The ice_mig_vf_info structure is the element structure for this TLV. It
-contains the HW address, virtchnl information, and a variety of other
-information stored by the host PF.
+ * ICE_MIG_TLV_MBX_REGS
 
-The trickiest detail is the handling for the set of allowed opcodes the VF
-has negotiated. These are typically stored as a bitmap array, which depends
-on the size of the VIRTCHNL_OP_MAX. To handle this, make the
-opcodes_allowlist a flexible array of u32. This is done to avoid encoding
-the VIRTCHNL_OP_MAX as part of the structure layout. Instead, it is passed
-as a field in the ice_mig_vf_info structure.
+   This TLV contains the VF mailbox registers data to migrate and restore
+   the mailbox queue to its appropriate state.
 
-The opcodes_allowlist is copied using bitmap_from_arr32 and
-bitmap_to_arr32 to facilitate conversion from the normal host PF data
-structures. Care is taken when restoring the VF information to only copy up
-to the new host's VIRTCHNL_OP_MAX. Additionally, any bits beyond the
-original host virtchnl_op_max are cleared to prevent the VF from sending
-these ops.
+ * ICE_MIG_TLV_STATS
 
-Add logic to save the VF information during suspend. This is done before
-the host device is stopped, to ensure we save the correct data without any
-loss due to resets.
+   This TLV contains the VF statistics to ensure that the original and
+   target VM maintain the same stat counts.
 
-When restoring the VF information, a pointer to the VF information is
-located as part of ice_migration_validate_tlvs(). This allows loading the
-VF information first, regardless of what order the TLVs are serialized.
+ * ICE_MIG_TLV_RSS
+
+   This TLV contains the RSS information from the original host, ensuring
+   that such configuration is applied on the new host.
+
+ * ICE_MIG_TLV_VLAN_FILTERS
+
+   This TLV contains all the VLAN filters currently programmed into
+   hardware by the VF. It is sent as a single variable length flexible
+   array instead of as individual TLVs per VLAN to avoid a 4-byte overhead
+   per-VLAN.
+
+ * ICE_MIG_TLV_MAC_FILTERS
+
+   This TLV contains all of the MAC filters currently programmed into the
+   hardware by the VF. As with VLANs, it is sent as a flexible array to
+   avoid too much overhead when there are many filters.
+
+Add functions to save and restore this data appropriately during the live
+migration process.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- .../net/ethernet/intel/ice/virt/migration_tlv.h    |  56 ++++++
- drivers/net/ethernet/intel/ice/virt/migration.c    | 206 ++++++++++++++++++++-
- 2 files changed, 260 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_hw_autogen.h    |   8 +
+ .../net/ethernet/intel/ice/virt/migration_tlv.h    | 133 +++++
+ drivers/net/ethernet/intel/ice/virt/migration.c    | 616 +++++++++++++++++++++
+ 3 files changed, 757 insertions(+)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
+index dd520aa4d1d6..954d671aee64 100644
+--- a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
++++ b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
+@@ -39,8 +39,16 @@
+ #define PF_FW_ATQLEN_ATQVFE_M			BIT(28)
+ #define PF_FW_ATQLEN_ATQOVFL_M			BIT(29)
+ #define PF_FW_ATQLEN_ATQCRIT_M			BIT(30)
++#define VF_MBX_ARQBAH(_VF)			(0x0022B800 + ((_VF) * 4))
++#define VF_MBX_ARQBAL(_VF)			(0x0022B400 + ((_VF) * 4))
++#define VF_MBX_ARQH(_VF)			(0x0022C000 + ((_VF) * 4))
+ #define VF_MBX_ARQLEN(_VF)			(0x0022BC00 + ((_VF) * 4))
++#define VF_MBX_ARQT(_VF)			(0x0022C400 + ((_VF) * 4))
++#define VF_MBX_ATQBAH(_VF)			(0x0022A400 + ((_VF) * 4))
++#define VF_MBX_ATQBAL(_VF)			(0x0022A000 + ((_VF) * 4))
++#define VF_MBX_ATQH(_VF)			(0x0022AC00 + ((_VF) * 4))
+ #define VF_MBX_ATQLEN(_VF)			(0x0022A800 + ((_VF) * 4))
++#define VF_MBX_ATQT(_VF)			(0x0022B000 + ((_VF) * 4))
+ #define PF_FW_ATQLEN_ATQENABLE_M		BIT(31)
+ #define PF_FW_ATQT				0x00080400
+ #define PF_MBX_ARQBAH				0x0022E400
 diff --git a/drivers/net/ethernet/intel/ice/virt/migration_tlv.h b/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
-index 2c5b4578060b..f941a6ccfe77 100644
+index 3e10e53868b2..183555cda9b3 100644
 --- a/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
 +++ b/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
-@@ -70,6 +70,9 @@ struct ice_migration_tlv {
-  * @ICE_MIG_TLV_HEADER: Header identifying the migration format. Must be the
-  * first TLV in the list.
+@@ -82,6 +82,16 @@ struct ice_migration_tlv {
+  * @ICE_MIG_TLV_MSIX_REGS: MSI-X register data for the VF. Appears once per
+  * MSI-X interrupt, including the miscellaneous interrupt for the mailbox.
   *
-+ * @ICE_MIG_TLV_VF_INFO: General configuration of the VF, including data
-+ * exchanged over virtchnl as well as PF host configuration.
++ * @ICE_MIG_TLV_MBX_REGS: Mailbox register data for the VF.
++ *
++ * @ICE_MIG_TLV_STATS: Current statistics counts of the VF.
++ *
++ * @ICE_MIG_TLV_RSS: RSS configuration for the VF.
++ *
++ * @ICE_MIG_TLV_VLAN_FILTERS: VLAN filter information.
++ *
++ * @ICE_MIG_TLV_MAC_FILTERS: MAC filter information.
 + *
   * @NUM_ICE_MIG_TLV: Number of known TLV types. Any type equal to or larger
   * than this value is unrecognized by this version.
   *
-@@ -81,6 +84,7 @@ enum ice_migration_tlvs {
- 	/* Do not change the order or add anything between, this is ABI! */
- 	ICE_MIG_TLV_END = 0,
- 	ICE_MIG_TLV_HEADER,
-+	ICE_MIG_TLV_VF_INFO,
+@@ -97,6 +107,11 @@ enum ice_migration_tlvs {
+ 	ICE_MIG_TLV_TX_QUEUE,
+ 	ICE_MIG_TLV_RX_QUEUE,
+ 	ICE_MIG_TLV_MSIX_REGS,
++	ICE_MIG_TLV_MBX_REGS,
++	ICE_MIG_TLV_STATS,
++	ICE_MIG_TLV_RSS,
++	ICE_MIG_TLV_VLAN_FILTERS,
++	ICE_MIG_TLV_MAC_FILTERS,
  
  	/* Add new types above here */
  	NUM_ICE_MIG_TLV
-@@ -121,6 +125,57 @@ struct ice_mig_tlv_header {
- 	u16 num_supported_tlvs;
+@@ -258,6 +273,119 @@ struct ice_mig_msix_regs {
+ 	u16 vector_id;
  } __packed;
  
 +/**
-+ * struct ice_mig_vf_info - Basic VF information
-+ * @dev_lan_addr: The current device LAN address
-+ * @hw_lan_addr: The HW LAN address
-+ * @driver_caps: Driver capabilities reported by the VF
-+ * @vlan_v2_caps: The VLAN V2 capabilities of the VF
-+ * @vf_ver: The reported virtchnl version of the VF
-+ * @min_tx_rate: The programmed minimum Tx rate of the VF
-+ * @max_tx_rate: The programmed maximum Tx rate of the VF
-+ * @virtchnl_op_max: The largest known virtchnl opcode
-+ * @allowlist_size: The size of the opcodes_allowlist
-+ * @num_vf_qs: The number of queues assigned to the VF
-+ * @num_msix: The number of MSI-X vectors used by the VF
-+ * @port_vlan_tpid: port VLAN TPID
-+ * @port_vlan_vid: port VLAN VID
-+ * @port_vlan_prio: port VLAN priority
-+ * @inner_vlan_strip_ena: True if the inner VLAN stripping is enabled
-+ * @outer_vlan_strip_ena: True if the outer VLAN stripping is enabled
-+ * @pf_set_mac: True if the PF administratively set the MAC address
-+ * @trusted: True of the PF set the trusted VF flag for this VF
-+ * @spoofchk: True if spoof checking is enabled on this VF
-+ * @driver_active: True if the VF driver has initialized over virtchnl.
-+ * @link_forced: True if the link status of this VF is forced
-+ * @link_up: The forced link status, ignored if link_forced is false
-+ * @opcodes_allowlist: The list of currently allowed opcodes as array of u32
++ * struct ice_mig_stats - Hardware statistics counts from migrating VF
++ * @rx_bytes: total nr received bytes (gorc)
++ * @rx_unicast: total nr received unicast packets (uprc)
++ * @rx_multicast: total nr received multicast packets (mprc)
++ * @rx_broadcast: total nr received broadcast packets (bprc)
++ * @rx_discards: total nr packets discarded on receipt (rdpc)
++ * @rx_unknown_protocol: total nr Rx packets with unrecognized protocol (rupp)
++ * @tx_bytes: total nr transmitted bytes (gotc)
++ * @tx_unicast: total nr transmitted unicast packets (uptc)
++ * @tx_multicast: total nr transmitted multicast packets (mptc)
++ * @tx_broadcast: total nr transmitted broadcast packets (bptc)
++ * @tx_discards: total nr packets discarded on transmit (tdpc)
++ * @tx_errors: total number of transmit errors (tepc)
 + */
-+struct ice_mig_vf_info {
-+	u8 dev_lan_addr[ETH_ALEN];
-+	u8 hw_lan_addr[ETH_ALEN];
-+	u32 driver_caps;
-+	struct virtchnl_vlan_caps vlan_v2_caps;
-+	struct virtchnl_version_info vf_ver;
-+	u32 min_tx_rate;
-+	u32 max_tx_rate;
-+	u32 virtchnl_op_max;
-+	u16 num_vf_qs;
-+	u16 num_msix;
-+	u16 port_vlan_tpid;
-+	u16 port_vlan_vid;
-+	u8 port_vlan_prio;
-+	u8 inner_vlan_strip_ena:1;
-+	u8 outer_vlan_strip_ena:1;
-+	u8 pf_set_mac:1;
-+	u8 trusted:1;
-+	u8 spoofchk:1;
-+	u8 driver_active:1;
-+	u8 link_forced:1;
-+	u8 link_up:1;			/* only valid if VF link is forced */
-+	u32 opcodes_allowlist[]; /* __counted_by(virtchnl_op_max), in bits */
++struct ice_mig_stats {
++	u64 rx_bytes;
++	u64 rx_unicast;
++	u64 rx_multicast;
++	u64 rx_broadcast;
++	u64 rx_discards;
++	u64 rx_unknown_protocol;
++	u64 tx_bytes;
++	u64 tx_unicast;
++	u64 tx_multicast;
++	u64 tx_broadcast;
++	u64 tx_discards;
++	u64 tx_errors;
++} __packed;
++
++/**
++ * struct ice_mig_mbx_regs - PF<->VF Mailbox register data for the VF
++ * @atq_head: the head position of the VF AdminQ Tx ring
++ * @atq_tail: the tail position of the VF AdminQ Tx ring
++ * @atq_bal: lower 32-bits of the VF AdminQ Tx ring base address
++ * @atq_bah: upper 32-bits of the VF AdminQ Tx ring base address
++ * @atq_len: length of the VF AdminQ Tx ring
++ * @arq_head: the head position of the VF AdminQ Rx ring
++ * @arq_tail: the tail position of the VF AdminQ Tx ring
++ * @arq_bal: lower 32-bits of the VF AdminQ Rx ring base address
++ * @arq_bah: upper 32-bits of the VF AdminQ Rx ring base address
++ * @arq_len: length of the VF AdminQ Rx ring
++ */
++struct ice_mig_mbx_regs {
++	u32 atq_head;
++	u32 atq_tail;
++	u32 atq_bal;
++	u32 atq_bah;
++	u32 atq_len;
++	u32 arq_head;
++	u32 arq_tail;
++	u32 arq_bal;
++	u32 arq_bah;
++	u32 arq_len;
++} __packed;
++
++/**
++ * struct ice_mig_rss - RSS configuration for the migrating VF
++ * @hashcfg: RSS Hash filter configuration
++ * @key: RSS key
++ * @lut_size: size of the RSS lookup table
++ * @hfunc: RSS hash function selected
++ * @lut: RSS lookup table configuration
++ */
++struct ice_mig_rss {
++	u64 hashcfg;
++	/* TODO: Can this key change size? Should this be a plain buffer
++	 * instead of the struct?
++	 */
++	struct ice_aqc_get_set_rss_keys key;
++	u16 lut_size;
++	u8 hfunc;
++	u8 lut[] __counted_by(lut_size);
++} __packed;
++
++/**
++ * struct ice_mig_vlan_filter - VLAN filter information
++ * @tpid: VLAN TPID
++ * @vid: VLAN ID
++ */
++struct ice_mig_vlan_filter {
++	u16 tpid;
++	u16 vid;
++} __packed;
++
++/**
++ * struct ice_mig_vlan_filters - List of VLAN filters for the VF
++ * @num_vlans: number of VLANs for this VF
++ * @vlans: VLAN data
++ */
++struct ice_mig_vlan_filters {
++	u16 num_vlans;
++	struct ice_mig_vlan_filter vlans[] __counted_by(num_vlans);
++} __packed;
++
++/**
++ * struct ice_mig_mac_filter - MAC address data for a VF filter
++ * @mac_addr: the MAC address
++ */
++struct ice_mig_mac_filter {
++	u8 mac_addr[ETH_ALEN];
++} __packed;
++
++/**
++ * struct ice_mig_mac_filters - List of MAC filters for the VF
++ * @num_macs: number of MAC filters for this VF
++ * @macs: MAC address data
++ */
++struct ice_mig_mac_filters {
++	u16 num_macs;
++	struct ice_mig_mac_filter macs[] __counted_by(num_macs);
 +} __packed;
 +
  /**
   * ice_mig_tlv_type - Convert a TLV type to its number
   * @p: the TLV structure type
-@@ -132,6 +187,7 @@ struct ice_mig_tlv_header {
- #define ice_mig_tlv_type(p)						\
- 	_Generic(*(p),							\
- 		 struct ice_mig_tlv_header : ICE_MIG_TLV_HEADER,	\
-+		 struct ice_mig_vf_info : ICE_MIG_TLV_VF_INFO,		\
+@@ -273,6 +401,11 @@ struct ice_mig_msix_regs {
+ 		 struct ice_mig_tx_queue : ICE_MIG_TLV_TX_QUEUE,	\
+ 		 struct ice_mig_rx_queue : ICE_MIG_TLV_RX_QUEUE,	\
+ 		 struct ice_mig_msix_regs : ICE_MIG_TLV_MSIX_REGS,	\
++		 struct ice_mig_mbx_regs : ICE_MIG_TLV_MBX_REGS,	\
++		 struct ice_mig_stats : ICE_MIG_TLV_STATS,		\
++		 struct ice_mig_rss : ICE_MIG_TLV_RSS,			\
++		 struct ice_mig_vlan_filters : ICE_MIG_TLV_VLAN_FILTERS,\
++		 struct ice_mig_mac_filters : ICE_MIG_TLV_MAC_FILTERS,	\
  		 default : ICE_MIG_TLV_END)
  
  /**
 diff --git a/drivers/net/ethernet/intel/ice/virt/migration.c b/drivers/net/ethernet/intel/ice/virt/migration.c
-index aa2e17c5be60..67ce5b73a9ce 100644
+index e59eb99b20da..a9f6d3019c0c 100644
 --- a/drivers/net/ethernet/intel/ice/virt/migration.c
 +++ b/drivers/net/ethernet/intel/ice/virt/migration.c
-@@ -85,6 +85,59 @@ void ice_migration_uninit_dev(struct pci_dev *vf_dev)
+@@ -401,6 +401,320 @@ static int ice_migration_save_msix_regs(struct ice_vf *vf,
+ 	return err;
  }
- EXPORT_SYMBOL(ice_migration_uninit_dev);
  
 +/**
-+ * ice_migration_save_vf_info - Save VF information during suspend
++ * ice_migration_save_mbx_regs - Save Mailbox registers
 + * @vf: pointer to the VF being migrated
-+ * @vsi: pointer to the VSI for this VF
 + *
-+ * Save the VF device information when suspending a VF for live migration.
++ * Save the mailbox registers for communicating with VF in preparation for
++ * live migration.
 + *
-+ * Return: 0 on success, negative error code on failure.
++ * Return: 0 for success, negative for error
 + */
-+static int ice_migration_save_vf_info(struct ice_vf *vf, struct ice_vsi *vsi)
++static int ice_migration_save_mbx_regs(struct ice_vf *vf)
 +{
-+	struct ice_mig_vf_info *vf_info;
++	struct ice_mig_mbx_regs *mbx_regs;
++	struct ice_hw *hw = &vf->pf->hw;
 +
 +	lockdep_assert_held(&vf->cfg_lock);
 +
-+	vf_info = ice_mig_alloc_flex_tlv(vf_info, opcodes_allowlist,
-+					 BITS_TO_U32(VIRTCHNL_OP_MAX));
-+	if (!vf_info)
++	mbx_regs = ice_mig_alloc_tlv(mbx_regs);
++	if (!mbx_regs)
 +		return -ENOMEM;
 +
-+	vf_info->driver_caps = vf->driver_caps;
-+	vf_info->port_vlan_tpid = vf->port_vlan_info.tpid;
-+	vf_info->port_vlan_vid = vf->port_vlan_info.vid;
-+	vf_info->port_vlan_prio = vf->port_vlan_info.prio;
-+	vf_info->vlan_v2_caps = vf->vlan_v2_caps;
-+	vf_info->vf_ver = vf->vf_ver;
-+	vf_info->min_tx_rate = vf->min_tx_rate;
-+	vf_info->max_tx_rate = vf->max_tx_rate;
-+	vf_info->num_vf_qs = vf->num_vf_qs;
-+	vf_info->num_msix = vf->num_msix;
-+	vf_info->inner_vlan_strip_ena =
-+		vf->vlan_strip_ena & ICE_INNER_VLAN_STRIP_ENA ? 1 : 0;
-+	vf_info->outer_vlan_strip_ena =
-+		vf->vlan_strip_ena & ICE_OUTER_VLAN_STRIP_ENA ? 1 : 0;
-+	vf_info->pf_set_mac = vf->pf_set_mac;
-+	vf_info->trusted = vf->trusted;
-+	vf_info->spoofchk = vf->spoofchk;
-+	vf_info->link_forced = vf->link_forced;
-+	vf_info->link_up = vf->link_up;
-+	vf_info->driver_active = test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states);
++	mbx_regs->atq_head = rd32(hw, VF_MBX_ATQH(vf->vf_id));
++	mbx_regs->atq_tail = rd32(hw, VF_MBX_ATQT(vf->vf_id));
++	mbx_regs->atq_bal = rd32(hw, VF_MBX_ATQBAL(vf->vf_id));
++	mbx_regs->atq_bah = rd32(hw, VF_MBX_ATQBAH(vf->vf_id));
++	mbx_regs->atq_len = rd32(hw, VF_MBX_ATQLEN(vf->vf_id));
 +
-+	ether_addr_copy(vf_info->dev_lan_addr, vf->dev_lan_addr);
-+	ether_addr_copy(vf_info->hw_lan_addr, vf->hw_lan_addr);
++	mbx_regs->arq_head = rd32(hw, VF_MBX_ARQH(vf->vf_id));
++	mbx_regs->arq_tail = rd32(hw, VF_MBX_ARQT(vf->vf_id));
++	mbx_regs->arq_bal = rd32(hw, VF_MBX_ARQBAL(vf->vf_id));
++	mbx_regs->arq_bah = rd32(hw, VF_MBX_ARQBAH(vf->vf_id));
++	mbx_regs->arq_len = rd32(hw,  VF_MBX_ARQLEN(vf->vf_id));
 +
-+	vf_info->virtchnl_op_max = VIRTCHNL_OP_MAX;
-+	bitmap_to_arr32(vf_info->opcodes_allowlist, vf->opcodes_allowlist,
-+			VIRTCHNL_OP_MAX);
++	ice_mig_tlv_add_tail(mbx_regs, &vf->mig_tlvs);
 +
-+	ice_mig_tlv_add_tail(vf_info, &vf->mig_tlvs);
++	return 0;
++}
++
++/**
++ * ice_migration_save_stats - Save VF statistics counters
++ * @vf: pointer to the VF being migrated
++ * @vsi: the VSI for this VF
++ *
++ * Update and save the current statistics values for the VF.
++ *
++ * Return: 0 for success, negative for error
++ */
++static int ice_migration_save_stats(struct ice_vf *vf, struct ice_vsi *vsi)
++{
++	struct ice_mig_stats *stats;
++
++	lockdep_assert_held(&vf->cfg_lock);
++
++	stats = ice_mig_alloc_tlv(stats);
++	if (!stats)
++		return -ENOMEM;
++
++	ice_update_eth_stats(vsi);
++
++	stats->rx_bytes = vsi->eth_stats.rx_bytes;
++	stats->rx_unicast = vsi->eth_stats.rx_unicast;
++	stats->rx_multicast = vsi->eth_stats.rx_multicast;
++	stats->rx_broadcast = vsi->eth_stats.rx_broadcast;
++	stats->rx_discards = vsi->eth_stats.rx_discards;
++	stats->rx_unknown_protocol = vsi->eth_stats.rx_unknown_protocol;
++	stats->tx_bytes = vsi->eth_stats.tx_bytes;
++	stats->tx_unicast = vsi->eth_stats.tx_unicast;
++	stats->tx_multicast = vsi->eth_stats.tx_multicast;
++	stats->tx_broadcast = vsi->eth_stats.tx_broadcast;
++	stats->tx_discards = vsi->eth_stats.tx_discards;
++	stats->tx_errors = vsi->eth_stats.tx_errors;
++
++	ice_mig_tlv_add_tail(stats, &vf->mig_tlvs);
++
++	return 0;
++}
++
++/**
++ * ice_migration_save_rss - Save RSS configuration during suspend
++ * @vf: pointer to the VF being migrated
++ * @vsi: the VSI for this VF
++ *
++ * Save the RSS configuration for this VF, including the hash function, hash
++ * set configuration, lookup table, and RSS key.
++ *
++ * Return: 0 on success, or an error code on failure.
++ */
++static int ice_migration_save_rss(struct ice_vf *vf, struct ice_vsi *vsi)
++{
++	struct device *dev = ice_pf_to_dev(vf->pf);
++	struct ice_hw *hw = &vf->pf->hw;
++	struct ice_mig_rss *rss;
++
++	lockdep_assert_held(&vf->cfg_lock);
++
++	/* Skip RSS if its not supported by this PF */
++	if (!test_bit(ICE_FLAG_RSS_ENA, vf->pf->flags)) {
++		dev_dbg(dev, "RSS is not supported by the PF\n");
++		return 0;
++	}
++
++	dev_dbg(dev, "Saving RSS config for VF %u\n",
++		vf->vf_id);
++
++	/* When ice PF supports variable RSS LUT sizes, this will need to be
++	 * updated. For now, the PF enforces a strict table size of
++	 * ICE_LUT_VSI_SIZE.
++	 */
++	rss = ice_mig_alloc_flex_tlv(rss, lut, ICE_LUT_VSI_SIZE);
++	if (!rss)
++		return -ENOMEM;
++
++	rss->hashcfg = vf->rss_hashcfg;
++	rss->hfunc = vsi->rss_hfunc;
++	rss->lut_size = ICE_LUT_VSI_SIZE;
++	ice_aq_get_rss_key(hw, vsi->idx, &rss->key);
++	ice_get_rss_lut(vsi, rss->lut, ICE_LUT_VSI_SIZE);
++
++	ice_mig_tlv_add_tail(rss, &vf->mig_tlvs);
++
++	return 0;
++}
++
++/**
++ * ice_migration_save_vlan_filters - Save all VLAN filters used by VF
++ * @vf: pointer to the VF being migrated
++ * @vsi: the VSI for this VF
++ *
++ * Save the VLAN filters configured for the VF when suspending it for live
++ * migration.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++static int ice_migration_save_vlan_filters(struct ice_vf *vf,
++					   struct ice_vsi *vsi)
++{
++	struct device *dev = ice_pf_to_dev(vf->pf);
++	struct ice_fltr_mgmt_list_entry *fm_entry;
++	struct ice_mig_vlan_filters *vlan_filters;
++	struct ice_hw *hw = &vf->pf->hw;
++	struct list_head *rule_head;
++	struct ice_switch_info *sw;
++	int vlan_idx;
++
++	lockdep_assert_held(&vf->cfg_lock);
++
++	if (!vsi->num_vlan)
++		return 0;
++
++	dev_dbg(dev, "Saving %u VLANs for VF %d\n",
++		vsi->num_vlan, vf->vf_id);
++
++	/* Ensure variable size TLV is aligned to 4 bytes */
++	vlan_filters = ice_mig_alloc_flex_tlv(vlan_filters, vlans,
++					      vsi->num_vlan);
++	if (!vlan_filters)
++		return -ENOMEM;
++
++	vlan_filters->num_vlans = vsi->num_vlan;
++
++	sw = hw->switch_info;
++	rule_head = &sw->recp_list[ICE_SW_LKUP_VLAN].filt_rules;
++
++	mutex_lock(&sw->recp_list[ICE_SW_LKUP_VLAN].filt_rule_lock);
++
++	list_for_each_entry(fm_entry, rule_head, list_entry) {
++		struct ice_mig_vlan_filter *vlan;
++
++		/* ignore anything that isn't a VLAN VSI filter */
++		if (fm_entry->fltr_info.lkup_type != ICE_SW_LKUP_VLAN ||
++		    (fm_entry->fltr_info.fltr_act != ICE_FWD_TO_VSI &&
++		     fm_entry->fltr_info.fltr_act != ICE_FWD_TO_VSI_LIST))
++			continue;
++
++		if (fm_entry->vsi_count < 2 && !fm_entry->vsi_list_info &&
++		    fm_entry->fltr_info.fltr_act == ICE_FWD_TO_VSI) {
++			/* Check if ICE_FWD_TO_VSI matches this VSI */
++			if (fm_entry->fltr_info.vsi_handle != vsi->idx)
++				continue;
++		} else if (fm_entry->vsi_list_info &&
++			   fm_entry->fltr_info.fltr_act == ICE_FWD_TO_VSI_LIST) {
++			/* Check if ICE_FWD_TO_VSI_LIST matches this VSI */
++			if (!test_bit(vsi->idx,
++				      fm_entry->vsi_list_info->vsi_map))
++				continue;
++		} else {
++			dev_dbg(dev, "Ignoring malformed filter entry that doesn't look like either a VSI or VSI list filter.\n");
++			continue;
++		}
++
++		/* We shouldn't hit this, assuming num_vlan is consistent with
++		 * the actual number of entries in the table.
++		 */
++		if (vlan_idx >= vsi->num_vlan) {
++			dev_warn(dev, "VF VSI claims to have %d VLAN filters but we found more than that in the switch table. Some filters might be lost in migration\n",
++				 vsi->num_vlan);
++			break;
++		}
++
++		vlan = &vlan_filters->vlans[vlan_idx];
++		vlan->vid = fm_entry->fltr_info.l_data.vlan.vlan_id;
++		if (fm_entry->fltr_info.l_data.vlan.tpid_valid)
++			vlan->tpid = fm_entry->fltr_info.l_data.vlan.tpid;
++		else
++			vlan->tpid = ETH_P_8021Q;
++
++		vlan_idx++;
++	}
++
++	if (vlan_idx != vsi->num_vlan) {
++		dev_warn(dev, "VSI had %u VLANs, but we only found %u VLANs\n",
++			 vsi->num_vlan, vlan_idx);
++		vlan_filters->num_vlans = vlan_idx;
++	}
++
++	ice_mig_tlv_add_tail(vlan_filters, &vf->mig_tlvs);
++
++	mutex_unlock(&sw->recp_list[ICE_SW_LKUP_VLAN].filt_rule_lock);
++
++	return 0;
++}
++
++/**
++ * ice_migration_save_mac_filters - Save MAC filters used by VF
++ * @vf: pointer to the VF being migrated
++ * @vsi: the VSI for this VF
++ *
++ * Save the MAC filters configured for the VF when suspending it for live
++ * migration.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++static int ice_migration_save_mac_filters(struct ice_vf *vf,
++					  struct ice_vsi *vsi)
++{
++	struct device *dev = ice_pf_to_dev(vf->pf);
++	struct ice_fltr_mgmt_list_entry *fm_entry;
++	struct ice_mig_mac_filters *mac_filters;
++	struct ice_hw *hw = &vf->pf->hw;
++	struct list_head *rule_head;
++	struct ice_switch_info *sw;
++	int mac_idx;
++
++	lockdep_assert_held(&vf->cfg_lock);
++
++	if (!vf->num_mac)
++		return 0;
++
++	dev_dbg(dev, "Saving %u MAC filters for VF %u\n",
++		vf->num_mac, vf->vf_id);
++
++	/* Ensure variable size TLV is aligned to 4 bytes */
++	mac_filters = ice_mig_alloc_flex_tlv(mac_filters, macs,
++					     vf->num_mac);
++	if (!mac_filters)
++		return -ENOMEM;
++
++	mac_filters->num_macs = vf->num_mac;
++
++	sw = hw->switch_info;
++	rule_head = &sw->recp_list[ICE_SW_LKUP_MAC].filt_rules;
++
++	mutex_lock(&sw->recp_list[ICE_SW_LKUP_MAC].filt_rule_lock);
++
++	mac_idx = 0;
++	list_for_each_entry(fm_entry, rule_head, list_entry) {
++		/* ignore anything that isn't a MAC VSI filter */
++		if (fm_entry->fltr_info.lkup_type != ICE_SW_LKUP_MAC ||
++		    (fm_entry->fltr_info.fltr_act != ICE_FWD_TO_VSI &&
++		     fm_entry->fltr_info.fltr_act != ICE_FWD_TO_VSI_LIST))
++			continue;
++
++		if (fm_entry->vsi_count < 2 && !fm_entry->vsi_list_info &&
++		    fm_entry->fltr_info.fltr_act == ICE_FWD_TO_VSI) {
++			/* Check if ICE_FWD_TO_VSI matches this VSI */
++			if (fm_entry->fltr_info.vsi_handle != vsi->idx)
++				continue;
++		} else if (fm_entry->vsi_list_info &&
++			   fm_entry->fltr_info.fltr_act == ICE_FWD_TO_VSI_LIST) {
++			/* Check if ICE_FWD_TO_VSI_LIST matches this VSI */
++			if (!test_bit(vsi->idx,
++				      fm_entry->vsi_list_info->vsi_map))
++				continue;
++		} else {
++			dev_dbg(dev, "Ignoring malformed filter entry that doesn't look like either a VSI or VSI list filter.\n");
++			continue;
++		}
++
++		/* We shouldn't hit this, assuming num_mac is consistent with
++		 * the actual number of entries in the table.
++		 */
++		if (mac_idx >= vf->num_mac) {
++			dev_warn(dev, "VF claims to have %d MAC filters but we found more than that in the switch table. Some filters might be lost in migration\n",
++				 vf->num_mac);
++			break;
++		}
++
++		ether_addr_copy(mac_filters->macs[mac_idx].mac_addr,
++				fm_entry->fltr_info.l_data.mac.mac_addr);
++		mac_idx++;
++	}
++
++	if (mac_idx != vf->num_mac) {
++		dev_warn(dev, "VF VSI had %u MAC filters, but we only found %u MAC filters\n",
++			 vf->num_mac, mac_idx);
++		mac_filters->num_macs = mac_idx;
++	}
++
++	ice_mig_tlv_add_tail(mac_filters, &vf->mig_tlvs);
++
++	mutex_unlock(&sw->recp_list[ICE_SW_LKUP_MAC].filt_rule_lock);
 +
 +	return 0;
 +}
@@ -272,224 +635,336 @@ index aa2e17c5be60..67ce5b73a9ce 100644
  /**
   * ice_migration_suspend_dev - suspend device
   * @vf_dev: pointer to the VF PCI device
-@@ -138,6 +191,10 @@ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
- 				kfree(entry);
- 			}
- 		}
+@@ -463,6 +777,17 @@ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
+ 		if (err)
+ 			goto err_free_mig_tlvs;
+ 
++		err = ice_migration_save_rss(vf, vsi);
++		if (err)
++			goto err_free_mig_tlvs;
 +
-+		err = ice_migration_save_vf_info(vf, vsi);
++		err = ice_migration_save_vlan_filters(vf, vsi);
++		if (err)
++			goto err_free_mig_tlvs;
++
++		err = ice_migration_save_mac_filters(vf, vsi);
 +		if (err)
 +			goto err_free_mig_tlvs;
  	}
  
  	/* Prevent VSI from queuing incoming packets by removing all filters */
-@@ -434,6 +491,7 @@ static int ice_migration_check_tlv_size(struct device *dev,
-  * @dev: pointer to device
-  * @buf: pointer to device state buffer
-  * @buf_sz: size of buffer
-+ * @vf_info: on return, pointer to the VF info TLV
-  *
-  * Ensure that the TLV data provided is valid, and matches the expected
-  * version and format.
-@@ -441,7 +499,8 @@ static int ice_migration_check_tlv_size(struct device *dev,
-  * Return: 0 for success, negative for error
-  */
- static int
--ice_migration_validate_tlvs(struct device *dev, const void *buf, size_t buf_sz)
-+ice_migration_validate_tlvs(struct device *dev, const void *buf, size_t buf_sz,
-+			    const struct ice_mig_vf_info **vf_info)
- {
- 	const struct ice_mig_tlv_header *header;
- 	const struct ice_migration_tlv *tlv;
-@@ -476,6 +535,8 @@ ice_migration_validate_tlvs(struct device *dev, const void *buf, size_t buf_sz)
- 		return -EPROTONOSUPPORT;
+@@ -498,6 +823,16 @@ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
+ 		err = ice_migration_save_tx_queues(vf, vsi);
+ 		if (err)
+ 			goto err_free_mig_tlvs;
++
++		/* Save mailbox registers */
++		err = ice_migration_save_mbx_regs(vf);
++		if (err)
++			goto err_free_mig_tlvs;
++
++		/* Save current VF statistics */
++		err = ice_migration_save_stats(vf, vsi);
++		if (err)
++			goto err_free_mig_tlvs;
  	}
  
-+	*vf_info = NULL;
-+
- 	/* Validate remaining TLVs */
- 	do {
- 		/* Move to next TLV */
-@@ -502,8 +563,140 @@ ice_migration_validate_tlvs(struct device *dev, const void *buf, size_t buf_sz)
- 		/* TODO: implement other validation? Check for compatibility
- 		 * with queue sizes, vector counts, VLAN capabilities, etc?
- 		 */
-+
-+		/* Save the VF info pointer, as we must process it first */
-+		if (tlv->type == ICE_MIG_TLV_VF_INFO)
-+			*vf_info = (typeof(*vf_info))tlv->data;
-+
- 	} while (buf_sz > 0);
+ 	mutex_unlock(&vf->cfg_lock);
+@@ -1397,6 +1732,272 @@ ice_migration_load_msix_regs(struct ice_vf *vf, struct ice_vsi *vsi,
+ 	return 0;
+ }
  
-+	if (!*vf_info) {
-+		dev_dbg(dev, "Missing VF information TLV in migration payload\n");
-+		return -EINVAL;
++/**
++ * ice_migration_load_mbx_regs - Load mailbox registers from migration payload
++ * @vf: pointer to the VF being migrated to
++ * @mbx_regs: the mailbox register data from migration payload
++ *
++ * Load the mailbox register configuration from the migration payload and
++ * initialize the target VF.
++ */
++static void ice_migration_load_mbx_regs(struct ice_vf *vf,
++					const struct ice_mig_mbx_regs *mbx_regs)
++{
++	struct ice_hw *hw = &vf->pf->hw;
++
++	lockdep_assert_held(&vf->cfg_lock);
++
++	wr32(hw, VF_MBX_ATQH(vf->vf_id), mbx_regs->atq_head);
++	wr32(hw, VF_MBX_ATQT(vf->vf_id), mbx_regs->atq_tail);
++	wr32(hw, VF_MBX_ATQBAL(vf->vf_id), mbx_regs->atq_bal);
++	wr32(hw, VF_MBX_ATQBAH(vf->vf_id), mbx_regs->atq_bah);
++	wr32(hw, VF_MBX_ATQLEN(vf->vf_id), mbx_regs->atq_len);
++
++	wr32(hw, VF_MBX_ARQH(vf->vf_id), mbx_regs->arq_head);
++	wr32(hw, VF_MBX_ARQT(vf->vf_id), mbx_regs->arq_tail);
++	wr32(hw, VF_MBX_ARQBAL(vf->vf_id), mbx_regs->arq_bal);
++	wr32(hw, VF_MBX_ARQBAH(vf->vf_id), mbx_regs->arq_bah);
++	wr32(hw, VF_MBX_ARQLEN(vf->vf_id), mbx_regs->arq_len);
++}
++
++/**
++ * ice_migration_load_stats - Load VF statistics from migration buffer
++ * @vf: pointer to the VF being migrated to
++ * @vsi: the VSI for this VF
++ * @stats: the statistics values from the migration buffer.
++ *
++ * Load the VF statistics from the migration buffer, and re-initialize HW
++ * stats offsets to match.
++ */
++static void ice_migration_load_stats(struct ice_vf *vf, struct ice_vsi *vsi,
++				     const struct ice_mig_stats *stats)
++{
++	lockdep_assert_held(&vf->cfg_lock);
++
++	vsi->eth_stats.rx_bytes = stats->rx_bytes;
++	vsi->eth_stats.rx_unicast = stats->rx_unicast;
++	vsi->eth_stats.rx_multicast = stats->rx_multicast;
++	vsi->eth_stats.rx_broadcast = stats->rx_broadcast;
++	vsi->eth_stats.rx_discards = stats->rx_discards;
++	vsi->eth_stats.rx_unknown_protocol = stats->rx_unknown_protocol;
++	vsi->eth_stats.tx_bytes = stats->tx_bytes;
++	vsi->eth_stats.tx_unicast = stats->tx_unicast;
++	vsi->eth_stats.tx_multicast = stats->tx_multicast;
++	vsi->eth_stats.tx_broadcast = stats->tx_broadcast;
++	vsi->eth_stats.tx_discards = stats->tx_discards;
++	vsi->eth_stats.tx_errors = stats->tx_errors;
++
++	/* Force the stats offsets to reload so that reported statistics
++	 * exactly match the values from the migration buffer.
++	 */
++	vsi->stat_offsets_loaded = false;
++	ice_update_eth_stats(vsi);
++}
++
++/**
++ * ice_migration_load_rss - Load VF RSS configuration from migration buffer
++ * @vf: pointer to the VF being migrated to
++ * @vsi: the VSI for this VF
++ * @rss: the RSS configuration from the migration buffer
++ *
++ * Load the VF RSS configuration from the migration buffer, and configure the
++ * target VF to match.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int ice_migration_load_rss(struct ice_vf *vf, struct ice_vsi *vsi,
++				  const struct ice_mig_rss *rss)
++{
++	struct device *dev = ice_pf_to_dev(vf->pf);
++	struct ice_hw *hw = &vf->pf->hw;
++	int err;
++
++	if (!test_bit(ICE_FLAG_RSS_ENA, vf->pf->flags)) {
++		dev_err(dev, "RSS is not supported by the PF\n");
++		return -EOPNOTSUPP;
++	}
++
++	dev_dbg(dev, "Loading RSS configuration for VF %u\n", vf->vf_id);
++
++	err = ice_set_rss_key(vsi, (u8 *)&rss->key);
++	if (err) {
++		dev_dbg(dev, "Failed to set RSS key for VF %d, err %d\n",
++			vf->vf_id, err);
++		return err;
++	}
++
++	err = ice_set_rss_lut(vsi, (u8 *)rss->lut, rss->lut_size);
++	if (err) {
++		dev_dbg(dev, "Failed to set RSS lookup table for VF %d, err %d\n",
++			vf->vf_id, err);
++		return err;
++	}
++
++	err = ice_set_rss_hfunc(vsi, rss->hfunc);
++	if (err) {
++		dev_dbg(dev, "Failed to set RSS hash function for VF %d, err %d\n",
++			vf->vf_id, err);
++		return err;
++	}
++
++	err = ice_rem_vsi_rss_cfg(hw, vsi->idx);
++	if (err && !rss->hashcfg) {
++		/* only report failure to clear the current RSS configuration
++		 * if that was clearly the migrated VF's intention.
++		 */
++		dev_dbg(dev, "Failed to clear RSS hash configuration for VF %d, err %d\n",
++			vf->vf_id, err);
++		return err;
++	}
++
++	if (!rss->hashcfg)
++		return 0;
++
++	err = ice_add_avf_rss_cfg(hw, vsi, rss->hashcfg);
++	if (err) {
++		dev_dbg(dev, "Failed to set RSS hash configuration for VF %d, err %d\n",
++			vf->vf_id, err);
++		return err;
 +	}
 +
 +	return 0;
 +}
 +
 +/**
-+ * ice_migration_load_vf_info - Load VF information from migration buffer
++ * ice_migration_load_vlan_filters - Load VLAN filters from migration buffer
 + * @vf: pointer to the VF being migrated to
 + * @vsi: the VSI for this VF
-+ * @vf_info: VF information from the migration buffer
++ * @vlan_filters: VLAN filters from the migration payload
 + *
-+ * Load the VF information from the migration buffer, preparing the VF to
-+ * complete migration.
++ * Load the VLAN filters from the migration payload and program the target VF
++ * to match.
 + *
 + * Return: 0 on success, or a negative error code on failure.
 + */
-+static int ice_migration_load_vf_info(struct ice_vf *vf, struct ice_vsi *vsi,
-+				      const struct ice_mig_vf_info *vf_info)
++static int
++ice_migration_load_vlan_filters(struct ice_vf *vf, struct ice_vsi *vsi,
++				const struct ice_mig_vlan_filters *vlan_filters)
 +{
 +	struct device *dev = ice_pf_to_dev(vf->pf);
++	struct ice_vsi_vlan_ops *vlan_ops;
++	struct ice_hw *hw = &vf->pf->hw;
 +	int err;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
++	dev_dbg(dev, "Loading %u VLANs for VF %d\n",
++		vlan_filters->num_vlans, vf->vf_id);
 +
-+	dev_dbg(dev, "Loading general VF configuration for VF %u\n",
-+		vf->vf_id);
++	for (int idx = 0; idx < vlan_filters->num_vlans; idx++) {
++		const struct ice_mig_vlan_filter *entry;
++		struct ice_vlan vlan;
 +
-+	dev_dbg(dev, "VF %d had %u MSI-X vectors. Requesting %u vectors\n",
-+		vf->vf_id, vf->num_msix, vf_info->num_msix);
++		entry = &vlan_filters->vlans[idx];
++		vlan = ICE_VLAN(entry->tpid, entry->vid, 0);
 +
-+	/* Change the number of MSI-X vectors first */
-+	// TODO: ice_sriov_set_msix_vec_count sets the MSI-X to 1 more than
-+	// the value passed in. This should be fixed.
-+	err = ice_sriov_set_msix_vec_count(vf->vfdev, vf_info->num_msix - ICE_NONQ_VECS_VF);
-+	if (err) {
-+		dev_dbg(dev, "Unable to reconfigure MSI-X vectors, err %d\n",
-+			err);
-+		return err;
++		/* ice_vsi_add_vlan converts -EEXIST errors from
++		 * ice_fltr_add_vlan() into a successful return.
++		 */
++		err = ice_vsi_add_vlan(vsi, &vlan);
++		if (err) {
++			dev_dbg(dev, "Failed to add VLAN %d for VF %d, err %d\n",
++				entry->vid, vf->vf_id, err);
++			return err;
++		}
++
++		/* We're re-adding the hardware vlan filters. The VF can
++		 * either add outer VLANs (in DVM), or inner VLANs (in
++		 * SVM). In SVM, we only enable promiscuous if the port VLAN
++		 * is hot set.
++		 */
++		if (ice_is_vlan_promisc_allowed(vf) &&
++		    (ice_is_dvm_ena(hw) || !ice_vf_is_port_vlan_ena(vf))) {
++			err = ice_vf_ena_vlan_promisc(vf, vsi, &vlan);
++			if (err) {
++				dev_dbg(dev, "Failed to enable promiscuous filter on VLAN %d for VF %d, err %d\n",
++					entry->vid, vf->vf_id, err);
++				return err;
++			}
++		}
 +	}
 +
-+	/* Set values which are configured by VF reset */
-+	vf->trusted = vf_info->trusted;
-+	vf->num_req_qs = vf_info->num_vf_qs;
-+	vf->port_vlan_info.tpid = vf_info->port_vlan_tpid;
-+	vf->port_vlan_info.vid = vf_info->port_vlan_vid;
-+	vf->port_vlan_info.prio = vf_info->port_vlan_prio;
-+	vf->min_tx_rate = vf_info->min_tx_rate;
-+	vf->max_tx_rate = vf_info->max_tx_rate;
-+	vf->spoofchk = vf_info->spoofchk;
++	vlan_ops = ice_get_compat_vsi_vlan_ops(vsi);
 +
-+	ether_addr_copy(vf->dev_lan_addr, vf_info->dev_lan_addr);
-+	ether_addr_copy(vf->hw_lan_addr, vf_info->hw_lan_addr);
-+
-+	/* Reset the VF */
-+	ice_reset_vf(vf, 0);
-+
-+	/* Configure the rest of the settings */
-+	vf->vlan_v2_caps = vf_info->vlan_v2_caps;
-+	vf->vf_ver = vf_info->vf_ver;
-+	vf->driver_caps = vf_info->driver_caps;
-+
-+	if (vf_info->inner_vlan_strip_ena) {
-+		err = vsi->inner_vlan_ops.ena_stripping(vsi, ETH_P_8021Q);
++	if (ice_vsi_has_non_zero_vlans(vsi)) {
++		err = vlan_ops->ena_rx_filtering(vsi);
 +		if (err) {
-+			dev_dbg(dev, "Failed to enable inner VLAN stripping, err %d\n",
++			dev_dbg(dev, "Failed to enable VLAN pruning, err %d\n",
 +				err);
 +			return err;
 +		}
-+		vf->vlan_strip_ena |= ICE_INNER_VLAN_STRIP_ENA;
++
++		if (vf->spoofchk) {
++			err = vlan_ops->ena_tx_filtering(vsi);
++			if (err) {
++				dev_dbg(dev, "Failed to enable VLAN anti-spoofing, err %d\n",
++					err);
++				return err;
++			}
++		}
 +	} else {
-+		err = vsi->inner_vlan_ops.dis_stripping(vsi);
-+		if (err) {
-+			dev_dbg(dev, "Failed to enable inner VLAN stripping, err %d\n",
-+				err);
-+			return err;
-+		}
-+		vf->vlan_strip_ena &= ~ICE_INNER_VLAN_STRIP_ENA;
++		/* Disable VLAN filtering when only VLAN 0 is left */
++		vlan_ops->dis_tx_filtering(vsi);
++		vlan_ops->dis_rx_filtering(vsi);
 +	}
 +
-+	if (vf_info->outer_vlan_strip_ena) {
-+		enum ice_l2tsel l2tsel =
-+			ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG2_2ND;
++	if (vsi->num_vlan != vlan_filters->num_vlans)
++		dev_dbg(dev, "VF %d has %d VLAN filters, but we expected to have %d\n",
++			vf->vf_id, vsi->num_vlan, vlan_filters->num_vlans);
 +
-+		err = vsi->outer_vlan_ops.ena_stripping(vsi, ETH_P_8021Q);
-+		if (err) {
-+			dev_dbg(dev, "Failed to enable outer VLAN stripping, err %d\n",
-+				err);
++	return 0;
++}
++
++/**
++ * ice_migration_load_mac_filters - Load MAC filters from migration buffer
++ * @vf: pointer to the VF being migrated to
++ * @vsi: the VSI for this VF
++ * @mac_filters: MAC address filters from the migration payload
++ *
++ * Load the MAC filters from the migration payload and program them into the
++ * target VF.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int
++ice_migration_load_mac_filters(struct ice_vf *vf, struct ice_vsi *vsi,
++			       const struct ice_mig_mac_filters *mac_filters)
++{
++	struct device *dev = ice_pf_to_dev(vf->pf);
++
++	dev_dbg(dev, "Loading %u MAC filters for VF %d\n",
++		mac_filters->num_macs, vf->vf_id);
++
++	for (int idx = 0; idx < mac_filters->num_macs; idx++) {
++		const struct ice_mig_mac_filter *entry;
++		int err;
++
++		entry = &mac_filters->macs[idx];
++
++		err = ice_fltr_add_mac(vsi, entry->mac_addr, ICE_FWD_TO_VSI);
++		if (!err) {
++			vf->num_mac++;
++		} else if (err == -EEXIST) {
++			/* Ignore duplicate filters, since initial filters may
++			 * already exist due to the resetting when loading the
++			 * VF information TLV.
++			 */
++		} else {
++			dev_dbg(dev, "Failed to add MAC %pM for VF %d, err %d\n",
++				entry->mac_addr, vf->vf_id, err);
 +			return err;
 +		}
-+		ice_vsi_update_l2tsel(vsi, l2tsel);
-+		vf->vlan_strip_ena |= ICE_OUTER_VLAN_STRIP_ENA;
-+	} else {
-+		enum ice_l2tsel l2tsel =
-+			ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG1;
-+
-+		err = vsi->outer_vlan_ops.dis_stripping(vsi);
-+		if (err) {
-+			dev_dbg(dev, "Failed to enable outer VLAN stripping, err %d\n",
-+				err);
-+			return err;
-+		}
-+		ice_vsi_update_l2tsel(vsi, l2tsel);
-+		vf->vlan_strip_ena &= ~ICE_OUTER_VLAN_STRIP_ENA;
 +	}
 +
-+	vf->pf_set_mac = vf_info->pf_set_mac;
-+	vf->link_forced = vf_info->link_forced;
-+	vf->link_up = vf_info->link_up;
++	if (vf->num_mac != mac_filters->num_macs)
++		dev_dbg(dev, "VF %d has %d MAC filters, but we expected to have %d\n",
++			vf->vf_id, vf->num_mac, mac_filters->num_macs);
 +
-+	/* TODO: should we just enforce that virtchnl_op_max matches
-+	 * VIRTCHNL_OP_MAX?
-+	 */
-+	bitmap_from_arr32(vf->opcodes_allowlist, vf_info->opcodes_allowlist,
-+			  min(VIRTCHNL_OP_MAX, vf_info->virtchnl_op_max));
++	return 0;
++}
 +
-+	/* Disallow any ops the original VF didn't recognize */
-+	if (vf_info->virtchnl_op_max < VIRTCHNL_OP_MAX)
-+		bitmap_clear(vf->opcodes_allowlist,
-+			     vf_info->virtchnl_op_max,
-+			     VIRTCHNL_OP_MAX - vf_info->virtchnl_op_max);
-+
-+	if (vf_info->driver_active)
-+		set_bit(ICE_VF_STATE_ACTIVE, vf->vf_states);
-+
- 	return 0;
- }
- 
-@@ -522,6 +715,7 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 				size_t buf_sz)
- {
- 	struct ice_pf *pf = ice_vf_dev_to_pf(vf_dev);
-+	const struct ice_mig_vf_info *vf_info;
- 	const struct ice_migration_tlv *tlv;
- 	struct ice_vsi *vsi;
- 	struct device *dev;
-@@ -539,7 +733,7 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 	dev_dbg(&vf_dev->dev, "Loading live migration state. Migration buffer is %zu bytes\n",
- 		buf_sz);
- 
--	err = ice_migration_validate_tlvs(dev, buf, buf_sz);
-+	err = ice_migration_validate_tlvs(dev, buf, buf_sz, &vf_info);
- 	if (err)
- 		return err;
- 
-@@ -558,6 +752,13 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 		goto err_release_cfg_lock;
- 	}
- 
-+	err = ice_migration_load_vf_info(vf, vsi, vf_info);
-+	if (err) {
-+		dev_dbg(dev, "Failed to load initial VF information, err %d\n",
-+			err);
-+		goto err_release_cfg_lock;
-+	}
-+
- 	/* Iterate over TLVs and process migration data */
- 	tlv = buf;
- 
-@@ -567,6 +768,7 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 		switch (tlv->type) {
- 		case ICE_MIG_TLV_END:
- 		case ICE_MIG_TLV_HEADER:
-+		case ICE_MIG_TLV_VF_INFO:
- 			/* These are already handled above */
+ /**
+  * ice_migration_load_devstate - Load device state into the target VF
+  * @vf_dev: pointer to the VF PCI device
+@@ -1493,6 +2094,21 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
+ 		case ICE_MIG_TLV_MSIX_REGS:
+ 			err = ice_migration_load_msix_regs(vf, vsi, data);
  			break;
++		case ICE_MIG_TLV_MBX_REGS:
++			ice_migration_load_mbx_regs(vf, data);
++			break;
++		case ICE_MIG_TLV_STATS:
++			ice_migration_load_stats(vf, vsi, data);
++			break;
++		case ICE_MIG_TLV_RSS:
++			err = ice_migration_load_rss(vf, vsi, data);
++			break;
++		case ICE_MIG_TLV_VLAN_FILTERS:
++			err = ice_migration_load_vlan_filters(vf, vsi, data);
++			break;
++		case ICE_MIG_TLV_MAC_FILTERS:
++			err = ice_migration_load_mac_filters(vf, vsi, data);
++			break;
  		default:
+ 			dev_dbg(dev, "Unexpected TLV %d in payload?\n",
+ 				tlv->type);
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
