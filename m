@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF22A265CC5;
-	Tue,  9 Sep 2025 22:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5121626FD97;
+	Tue,  9 Sep 2025 22:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757455216; cv=none; b=twmClKqCAVi+cl/kNwWqzZj27JCTTCgopyQjNfy4i/vaTqjXP3sAe5QG7qD6eBm1Pfbt6F2+W9WOBrjvbVH4+SU+r5cegDeg3w6fNu5QefEWwtIwjqQHxPyxw8Eh6G2RALObjmu0Ke6nVgu/nJYiHZlfOTPmdl0qQAUieoyD2zc=
+	t=1757455217; cv=none; b=NZOy5cK75/cngFrVyeMCwnlK1xIorlRe2gfa9yvRNf6XJC8swZj5oYTvRpd3BHFI6WWPR8C2/2XuaDQ5wc8V1VTOmPDoEiLEfJ3loKm9+dsg6Hd2/V195TDDpyl7jCVR8B/lFPyelQode4ErjOdUGmgouuFTnq5URvWjl5WNvj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757455216; c=relaxed/simple;
-	bh=vD7Jqj4tEkAvBNRNkbJh/eYq0Xqv+TOhB2jpGCRhIyQ=;
+	s=arc-20240116; t=1757455217; c=relaxed/simple;
+	bh=IkacwfdlFmsVBWA5lp9RHRN9qNWyVF239IiYhl7cN/A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nh3srQdzKJcH+XkCb4PJLaqbzMHQOw22iDGCpK5qZMbK3eY1a2xfuiypDUoCMcdrZT0wQSkJFv+U1mipG58ic/DFrMUvEaKUBI7kIltCUVocHxmpSr9Aku63Frd50G4AVUcCk8s44xQRbiY9wHhUxGrcPZdUjxf+BreY9j9uTSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nbyd3oIz; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:To:Cc; b=Xw9abhe882ZDG47tX+N0D/0waKzvI1nYPJygmUW9MKzgqf7X/ooRBin1T3klw2jy+K+k7AnX2XN8hofhhjpl8Gwr2hQcVaSaLgfXORVOgO0pFi5aYxbeS4J8DV5nWA74Dk96DgaQBSSc5qIT+KqX6Q9IJptQi9376YOtWSj6E2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJbqlac2; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nbyd3oIz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJbqlac2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1757455214; x=1788991214;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=vD7Jqj4tEkAvBNRNkbJh/eYq0Xqv+TOhB2jpGCRhIyQ=;
-  b=nbyd3oIzSJXpQtWxBT6NqrjadQl0sZtH8XhYwcWQl652P0lnWyy10N+q
-   h/VcKEYRU/IQpEu/URJhs4Gw0wjwiv61mvRAUCd6UP78XZNV7zhUv1+Re
-   p20vrRwxNOHFsxV/z0fp0eu4X+/g5isd7En632rOCMLubEmjubPhi+41I
-   lX5EM8P7iMSBzKqDfcVLclfr0sMPl1XwoCxopdnbYQaTPdxDU3EN4vySV
-   G+p+6g3Yu0eltu3E5EKcrIlZiVzLxtc7bDkIjEb0ublowmqiJIAISQLI+
-   g+3BjVaC+VArEst0O1aggQI+Izh86cswN/eDcDCG3N03uMQPBIUi2W4f8
-   w==;
-X-CSE-ConnectionGUID: //3VNJTWT1SqTGhKmHgG7A==
-X-CSE-MsgGUID: Iz+DImYLQz6Fsqo/3AMfhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584661"
+  bh=IkacwfdlFmsVBWA5lp9RHRN9qNWyVF239IiYhl7cN/A=;
+  b=NJbqlac2ijvaEKmWXHyv4XoUg/z45C2a+ypJ3MhQzyp5H4zvMf7JPiKU
+   jw98n30+kuBszcgqo6WHKc50jPM6dNlGkO1E+qRJ/Uz1A9/GciJlKoNWi
+   9yrqqWcfWiNM/AfTbOQ+Xh1hgSynKnzgGWwqc3dqPpalEsAPuaSCRlb1L
+   Mrt1AqJItFGCxwFVm3/zNKYLo14OyyEYtLaAEYUH+6hkXMIrzeEQk0EKm
+   QI5lTPMEqrs3H8EbgsC8xJ1AcoWoC8QXBGuRhjI+xfr11PF6I22NODvI5
+   XYYz88pEaZ7vZ4K6aHHPJQIiK2PxYAp8MoOuGj9wItEu62U7qucSZH3Dd
+   g==;
+X-CSE-ConnectionGUID: qTz99/puTi2xdxYrabm/YQ==
+X-CSE-MsgGUID: ekUZm7huTy+cfsnhsDI4gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63584674"
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="63584661"
+   d="scan'208";a="63584674"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:09 -0700
-X-CSE-ConnectionGUID: tp1wuVL4QZaMPtHG8XGqtw==
-X-CSE-MsgGUID: SZcHgABNS0ewj9+9yHwNxA==
+X-CSE-ConnectionGUID: MSEoKOxQTeeZ4gO7PkzmHg==
+X-CSE-MsgGUID: tFveJ0vuSka+U/FRA2sJMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="172780964"
+   d="scan'208";a="172780972"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
   by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 15:00:08 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 09 Sep 2025 14:57:53 -0700
-Subject: [PATCH RFC net-next 4/7] ice: add migration TLVs for queue and
- interrupt state
+Date: Tue, 09 Sep 2025 14:57:55 -0700
+Subject: [PATCH RFC net-next 6/7] ice-vfio-pci: add ice VFIO PCI live
+ migration driver
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-4-4d1dc641e31f@intel.com>
+Message-Id: <20250909-e810-live-migration-jk-migration-tlv-v1-6-4d1dc641e31f@intel.com>
 References: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
 In-Reply-To: <20250909-e810-live-migration-jk-migration-tlv-v1-0-4d1dc641e31f@intel.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
@@ -73,1003 +73,843 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  Jacob Keller <jacob.e.keller@intel.com>, 
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 X-Mailer: b4 0.15-dev-c61db
-X-Developer-Signature: v=1; a=openpgp-sha256; l=31648;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=25059;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=vD7Jqj4tEkAvBNRNkbJh/eYq0Xqv+TOhB2jpGCRhIyQ=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi1OP/zGP4EyJeca+2y009GP1CbeFVYmGn94e5ol5s
- a9nmqpfRykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABMJus/wP/NX1LUUsZppn9M3
- W3E+u8f+bY8Iz9VPOVMzuLYZLn60OY3hv2vrhr92k7d9bYzV3X9632ONnzGygV+WzJwnNiNutyj
- XNxYA
+ bh=IkacwfdlFmsVBWA5lp9RHRN9qNWyVF239IiYhl7cN/A=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowDi9MUJJ4qCGXdXvTpwKrC5ZueyMYf9NT5/kfYz2xH1
+ ZNbSz41dpSyMIhxMciKKbIoOISsvG48IUzrjbMczBxWJpAhDFycAjARiQsM/0NKFohfOfxGdeH/
+ zv1ZVrHxLv93ffsw/YilwYy3cbfOdt9gZDg40cTBL6bqz47zE5L/3BFS432pn560UebT/Uc7Wkr
+ e3GUGAA==
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Add the ICE_MIG_TLV_TX_QUEUE, ICE_MIG_TLV_RX_QUEUE, and
-ICE_MIG_TLV_MSIX_REGS TLVs to the migration payload buffer.
+Add the ice-vfio-pci driver module which enables live migration support via
+the vfio_migration_ops for the ice E800 series hardware.
 
-These TLVs are included in the payload once per queue or interrupt vector,
-respectively.
+To use this module, you can create VFs in the usual way and then unbind
+them from iavf, and bind them to ice-vfio-pci:
 
-Update the PF driver to ensure that the QTX_COMM_HEAD register is
-initialized to a dummy QTX_COMM_HEAD_HEAD_M value, which is necessary to
-allow identifying the correct Tx head value.
+  echo 2 >/sys/class/net/enp175s0f0np0/device/sriov_numvfs
 
-Replay of the Tx queue data is tricky, as we need to get the Tx queue of
-the target state to have the correct head. This is necessary as we must
-ensure the real Tx queue head matches the resident head value in the VM
-driver memory. Prior to migration start, the VF is reset which has the
-queue set to a head and tail of zero.
+  echo "0000:af:01.0" >/sys/bus/pci/drivers/iavf/unbind
+  echo "0000:af:01.1" >/sys/bus/pci/drivers/iavf/unbind
 
-To correct the head position, the queues are re-assigned to the PF, then
-dummy packets are inserted into the queue until the positions are correct.
-Finally, the queues are assigned back to the VF. This gets the head
-positions correct without invalid DMA access.
+  modprobe ice_vfio_pci
 
-DMA for these temporary dummy descriptors is allocated once in the
-ice_migration_load_devstate, in order to avoid needless re-allocation of
-DMA for each queue.
+  echo "8086 1889" >/sys/bus/pci/drivers/ice-vfio-pci/new_id
+
+I've tested with QEMU using the "enable-migration=on" and
+"x-pre-copy-dirty-page-tracking=off" settings, as we do not currently
+support dirty page tracking.
+
+The initial host QEMU instance is launched as usual, while the target QEMU
+instance is launched with the -incoming tcp:localhost:4444 option.
+
+To initiate migration you can issue the migration command from the QEMU
+console:
+
+  migrate tcp:localhost:4444
+
+The ice-vfio-pci driver connects to the ice driver using the interface
+defined in <linux/net/intel/ice_migration.h>. The migration driver
+initializes by calling ice_migration_init_dev(). To save device state, the
+VF is paused using ice_migration_suspend_dev(), and then state is captured
+by ice_migration_save_devstate().
+
+Some information about the VF must be saved during device suspend, as
+otherwise the data could be lost when stopping the device.
+
+For this reason, the ice_migration_suspend_dev() function takes a boolean
+indicating whether state should be saved. The VFIO migration state machine
+must suspend the initial device when stopping, but also suspends the target
+device when resuming. In the resume case, we do not need to save the state,
+so this can be elided when the VFIO state machine is transitioning to the
+resuming state.
+
+Note that full support is not functional until the PCI .reset_done handler
+is implemented in a following change. This was split out in order to better
+callout and explain the locking mechanism due to the complexity required to
+avoid ABBA locking violations.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- .../net/ethernet/intel/ice/virt/migration_tlv.h    |  85 +++
- drivers/net/ethernet/intel/ice/virt/migration.c    | 729 +++++++++++++++++++++
- drivers/net/ethernet/intel/ice/virt/queues.c       |  21 +
- 3 files changed, 835 insertions(+)
+ drivers/vfio/pci/ice/main.c   | 699 ++++++++++++++++++++++++++++++++++++++++++
+ MAINTAINERS                   |   7 +
+ drivers/vfio/pci/Kconfig      |   2 +
+ drivers/vfio/pci/Makefile     |   2 +
+ drivers/vfio/pci/ice/Kconfig  |   8 +
+ drivers/vfio/pci/ice/Makefile |   4 +
+ 6 files changed, 722 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/virt/migration_tlv.h b/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
-index f941a6ccfe77..3e10e53868b2 100644
---- a/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
-+++ b/drivers/net/ethernet/intel/ice/virt/migration_tlv.h
-@@ -73,6 +73,15 @@ struct ice_migration_tlv {
-  * @ICE_MIG_TLV_VF_INFO: General configuration of the VF, including data
-  * exchanged over virtchnl as well as PF host configuration.
-  *
-+ * @ICE_MIG_TLV_TX_QUEUE: Configuration for a Tx queue. Appears once per Tx
-+ * queue.
-+ *
-+ * @ICE_MIG_TLV_RX_QUEUE: Configuration for an Rx queue. Appears once per Rx
-+ * queue.
-+ *
-+ * @ICE_MIG_TLV_MSIX_REGS: MSI-X register data for the VF. Appears once per
-+ * MSI-X interrupt, including the miscellaneous interrupt for the mailbox.
-+ *
-  * @NUM_ICE_MIG_TLV: Number of known TLV types. Any type equal to or larger
-  * than this value is unrecognized by this version.
-  *
-@@ -85,6 +94,9 @@ enum ice_migration_tlvs {
- 	ICE_MIG_TLV_END = 0,
- 	ICE_MIG_TLV_HEADER,
- 	ICE_MIG_TLV_VF_INFO,
-+	ICE_MIG_TLV_TX_QUEUE,
-+	ICE_MIG_TLV_RX_QUEUE,
-+	ICE_MIG_TLV_MSIX_REGS,
- 
- 	/* Add new types above here */
- 	NUM_ICE_MIG_TLV
-@@ -176,6 +188,76 @@ struct ice_mig_vf_info {
- 	u32 opcodes_allowlist[]; /* __counted_by(virtchnl_op_max), in bits */
- } __packed;
- 
-+/**
-+ * struct ice_mig_tx_queue - Data to migrate a VF Tx queue
-+ * @dma: the base DMA address for the queue
-+ * @count: size of the Tx ring
-+ * @head: the current head position of the Tx ring
-+ * @queue_id: the VF relative Tx queue ID
-+ * @vector_id: the VF relative MSI-X vector associated with this queue
-+ * @vector_valid: if true, an MSI-X vector is associated with this queue
-+ * @ena: if true, the Tx queue is currently enabled, false otherwise
-+ * @reserved: reservied bitfield which must be zero
-+ */
-+struct ice_mig_tx_queue {
-+	u64 dma;
-+	u16 count;
-+	u16 head;
-+	u16 queue_id;
-+	u16 vector_id;
-+	u8 vector_valid:1;
-+	u8 ena:1;
-+	u8 reserved:6;
-+} __packed;
+diff --git a/drivers/vfio/pci/ice/main.c b/drivers/vfio/pci/ice/main.c
+new file mode 100644
+index 000000000000..161053ba383c
+--- /dev/null
++++ b/drivers/vfio/pci/ice/main.c
+@@ -0,0 +1,699 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2018-2025 Intel Corporation */
++
++#include <linux/device.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/file.h>
++#include <linux/pci.h>
++#include <linux/vmalloc.h>
++#include <linux/vfio_pci_core.h>
++#include <linux/net/intel/ice_migration.h>
++#include <linux/anon_inodes.h>
 +
 +/**
-+ * struct ice_mig_rx_queue - Data to migrate a VF Rx queue
-+ * @dma: the base DMA address for the queue
-+ * @max_frame: the maximum frame size of the queue
-+ * @rx_buf_len: the length of the Rx buffers associated with the ring
-+ * @rxdid: the Rx descriptor format of the ring
-+ * @count: the size of the Rx ring
-+ * @head: the current head position of the ring
-+ * @tail: the current tail position of the ring
-+ * @queue_id: the VF relative Rx queue ID
-+ * @vector_id: the VF relative MSI-X vector associated with this queue
-+ * @vector_valid: if true, an MSI-X vector is associated with this queue
-+ * @crc_strip: if true, CRC stripping is enabled, false otherwise
-+ * @ena: if true, the Rx queue is currently enabled, false otherwise
-+ * @reserved: reserved bitfield which must be zero
++ * struct ice_vfio_pci_migration_file - Migration payload file contents
++ * @filp: the file pointer for communicating with user space
++ * @lock: mutex protecting the migration file access
++ * @payload_length: length of the migration payload
++ * @disabled: if true, the migration file descriptor has been disabled
++ * @mig_data: buffer holding migration payload
++ *
++ * When saving device state, the payload length is calculated ahead of time
++ * and the buffer is sized appropriately. The receiver sets payload_length to
++ * SZ_128K which should be sufficient space for any migration.
 + */
-+struct ice_mig_rx_queue {
-+	u64 dma;
-+	u16 max_frame;
-+	u16 rx_buf_len;
-+	u32 rxdid;
-+	u16 count;
-+	u16 head;
-+	u16 tail;
-+	u16 queue_id;
-+	u16 vector_id;
-+	u8 vector_valid:1;
-+	u8 crc_strip:1;
-+	u8 ena:1;
-+	u8 reserved:5;
-+} __packed;
++struct ice_vfio_pci_migration_file {
++	struct file *filp;
++	struct mutex lock;
++	size_t payload_length;
++	bool disabled:1;
++	u8 mig_data[] __counted_by(payload_length);
++};
 +
 +/**
-+ * struct ice_mig_msix_regs - MSI-X register data for migrating VF
-+ * @int_dyn_ctl: Contents GLINT_DYN_CTL for this vector
-+ * @int_intr: Contents of GLINT_ITR for all ITRs of this vector
-+ * @tx_itr_idx: The ITR index used for transmit
-+ * @rx_itr_idx: The ITR index used for receive
-+ * @vector_id: The MSI-X vector, *including* the miscellaneous non-queue vector
++ * struct ice_vfio_pci_device - Migration driver structure
++ * @core_device: The core device being operated on
++ * @mig_info: Migration information
++ * @state_mutex: mutex protecting the migration state
++ * @resuming_migf: Migration file containing data for the resuming VF
++ * @saving_migf: Migration file used to store data from saving VF
++ * @mig_state: the current migration state of the device
 + */
-+struct ice_mig_msix_regs {
-+	u32 int_dyn_ctl;
-+	u32 int_intr[ICE_MIG_VF_ITR_NUM];
-+	u16 tx_itr_idx;
-+	u16 rx_itr_idx;
-+	u16 vector_id;
-+} __packed;
++struct ice_vfio_pci_device {
++	struct vfio_pci_core_device core_device;
++	struct vfio_device_migration_info mig_info;
++	struct mutex state_mutex;
++	struct ice_vfio_pci_migration_file *resuming_migf;
++	struct ice_vfio_pci_migration_file *saving_migf;
++	enum vfio_device_mig_state mig_state;
++};
 +
- /**
-  * ice_mig_tlv_type - Convert a TLV type to its number
-  * @p: the TLV structure type
-@@ -188,6 +270,9 @@ struct ice_mig_vf_info {
- 	_Generic(*(p),							\
- 		 struct ice_mig_tlv_header : ICE_MIG_TLV_HEADER,	\
- 		 struct ice_mig_vf_info : ICE_MIG_TLV_VF_INFO,		\
-+		 struct ice_mig_tx_queue : ICE_MIG_TLV_TX_QUEUE,	\
-+		 struct ice_mig_rx_queue : ICE_MIG_TLV_RX_QUEUE,	\
-+		 struct ice_mig_msix_regs : ICE_MIG_TLV_MSIX_REGS,	\
- 		 default : ICE_MIG_TLV_END)
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/virt/migration.c b/drivers/net/ethernet/intel/ice/virt/migration.c
-index 67ce5b73a9ce..e59eb99b20da 100644
---- a/drivers/net/ethernet/intel/ice/virt/migration.c
-+++ b/drivers/net/ethernet/intel/ice/virt/migration.c
-@@ -138,6 +138,269 @@ static int ice_migration_save_vf_info(struct ice_vf *vf, struct ice_vsi *vsi)
- 	return 0;
- }
- 
++#define to_ice_vdev(dev) \
++	container_of((dev), struct ice_vfio_pci_device, core_device.vdev)
++
 +/**
-+ * ice_migration_save_tx_queues - Save Tx queue state
-+ * @vf: pointer to the VF being migrated
-+ * @vsi: the VSI for this VF
++ * ice_vfio_pci_load_state - VFIO device state reloading
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
 + *
-+ * Save Tx queue state in preparation for live migration.
++ * Load device state. This function is called when the userspace VFIO uAPI
++ * consumer wants to load the device state info from VFIO migration region and
++ * load them into the device. This function should make sure all the device
++ * state info is loaded successfully. As a result, return value is mandatory
++ * to be checked.
 + *
-+ * Return: 0 for success, negative for error
++ * Return: 0 on success, or a negative error code on failure.
 + */
-+static int ice_migration_save_tx_queues(struct ice_vf *vf, struct ice_vsi *vsi)
++static int __must_check
++ice_vfio_pci_load_state(struct ice_vfio_pci_device *ice_vdev)
 +{
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_mig_tlv_entry *entry, *tmp;
-+	struct list_head queue_tlvs;
-+	int err, i;
++	struct ice_vfio_pci_migration_file *migf = ice_vdev->resuming_migf;
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
-+	INIT_LIST_HEAD(&queue_tlvs);
-+
-+	dev_dbg(dev, "Saving Tx queue config for VF %u\n",
-+		vf->vf_id);
-+
-+	ice_for_each_txq(vsi, i) {
-+		struct ice_tx_ring *tx_ring = vsi->tx_rings[i];
-+		struct ice_mig_tx_queue *tx_queue;
-+		struct ice_tlan_ctx tlan_ctx = {};
-+		struct ice_hw *hw = &vf->pf->hw;
-+		u32 qtx_comm_head;
-+		u16 tx_head;
-+		int err;
-+
-+		if (!tx_ring)
-+			continue;
-+
-+		/* Ignore queues which were never configured by the VF */
-+		if (!tx_ring->dma) {
-+			dev_dbg(dev, "Ignoring unconfigured Tx queue %d on VF %d with NULL DMA address\n",
-+				i, vf->vf_id);
-+			continue;
-+		}
-+
-+		tx_queue = ice_mig_alloc_tlv(tx_queue);
-+		if (!tx_queue) {
-+			err = -ENOMEM;
-+			goto err_free_tlv_entries;
-+		}
-+
-+		err = ice_read_txq_ctx(hw, &tlan_ctx, tx_ring->reg_idx);
-+		if (err) {
-+			dev_err(dev, "Failed to read TXQ[%d] context, err=%d\n",
-+				tx_ring->q_index, err);
-+			goto err_free_tlv_entries;
-+		}
-+
-+		qtx_comm_head = rd32(hw, QTX_COMM_HEAD(tx_ring->reg_idx));
-+		tx_head = FIELD_GET(QTX_COMM_HEAD_HEAD_M, qtx_comm_head);
-+
-+		/* Determine the Tx head from the QTX_COMM_HEAD register.
-+		 *
-+		 * If no write back has happened since the queue was enabled,
-+		 * the register will read as QTX_COMM_HEAD_HEAD_M.
-+		 *
-+		 * Otherwise, the value from QTX_COMM_HEAD will be precisely
-+		 * one behind the real Tx head value.
-+		 */
-+		if (tx_head == QTX_COMM_HEAD_HEAD_M ||
-+		    tx_head == tx_ring->count - 1)
-+			tx_head = 0;
-+		else
-+			tx_head++;
-+
-+		tx_queue->queue_id = i;
-+		tx_queue->dma = tx_ring->dma;
-+		tx_queue->count = tx_ring->count;
-+		tx_queue->head = tx_head;
-+		if (tx_ring->q_vector) {
-+			/* we don't need to account for ICE_NONQ_VECS_VF here,
-+			 * as the deserializing end won't expect it.
-+			 */
-+			tx_queue->vector_id = tx_ring->q_vector->v_idx;
-+			tx_queue->vector_valid = 1;
-+		}
-+		tx_queue->ena = test_bit(i, vf->txq_ena);
-+
-+		ice_mig_tlv_add_tail(tx_queue, &queue_tlvs);
-+	}
-+
-+	list_splice_tail(&queue_tlvs, &vf->mig_tlvs);
-+
-+	return 0;
-+
-+err_free_tlv_entries:
-+	list_for_each_entry_safe(entry, tmp, &queue_tlvs, list_entry) {
-+		list_del(&entry->list_entry);
-+		kfree(entry);
-+	}
-+
-+	return err;
++	return ice_migration_load_devstate(pdev,
++					   migf->mig_data,
++					   migf->payload_length);
 +}
 +
 +/**
-+ * ice_migration_save_rx_queues - Save Rx queue state
-+ * @vf: pointer to the VF being migrated
-+ * @vsi: the VSI for this VF
++ * ice_vfio_pci_save_state - VFIO device state saving
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
++ * @migf: pointer to migration file
 + *
-+ * Save Rx queue state in preparation for live migration.
++ * Snapshot the device state and save it. This function is called when the
++ * VFIO uAPI consumer wants to snapshot the current device state and saves
++ * it into the VFIO migration region. This function should make sure all
++ * of the device state info is collected and saved successfully. As a
++ * result, return value is mandatory to be checked.
 + *
-+ * Return: 0 for success, negative for error
++ * Return: 0 on success, or a negative error code on failure.
 + */
-+static int ice_migration_save_rx_queues(struct ice_vf *vf, struct ice_vsi *vsi)
++static int __must_check
++ice_vfio_pci_save_state(struct ice_vfio_pci_device *ice_vdev,
++			struct ice_vfio_pci_migration_file *migf)
 +{
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_mig_tlv_entry *entry, *tmp;
-+	struct list_head queue_tlvs;
-+	int err, i;
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
-+	INIT_LIST_HEAD(&queue_tlvs);
-+
-+	dev_dbg(dev, "Saving Rx queue config for VF %u\n",
-+		vf->vf_id);
-+
-+	ice_for_each_rxq(vsi, i) {
-+		struct ice_rx_ring *rx_ring = vsi->rx_rings[i];
-+		struct ice_mig_rx_queue *rx_queue;
-+		struct ice_rlan_ctx rlan_ctx = {};
-+		struct ice_hw *hw = &vf->pf->hw;
-+		u32 rxflxp;
-+		int err;
-+
-+		if (!rx_ring)
-+			continue;
-+
-+		/* Ignore queues which were never configured by the VF */
-+		if (!rx_ring->dma) {
-+			dev_dbg(dev, "Ignoring unconfigured Rx queue %d on VF %d with NULL DMA address\n",
-+				i, vf->vf_id);
-+			continue;
-+		}
-+
-+		rx_queue = ice_mig_alloc_tlv(rx_queue);
-+		if (!rx_queue) {
-+			err = -ENOMEM;
-+			goto err_free_tlv_entries;
-+		}
-+
-+		err = ice_read_rxq_ctx(hw, &rlan_ctx, rx_ring->reg_idx);
-+		if (err) {
-+			dev_err(dev, "Failed to read RXQ[%d] context, err=%d\n",
-+				rx_ring->q_index, err);
-+			goto err_free_tlv_entries;
-+		}
-+
-+		rxflxp = rd32(hw, QRXFLXP_CNTXT(rx_ring->reg_idx));
-+
-+		rx_queue->queue_id = i;
-+		rx_queue->head = rlan_ctx.head;
-+		rx_queue->tail = QRX_TAIL(rx_ring->reg_idx);
-+		rx_queue->dma = rx_ring->dma;
-+		rx_queue->max_frame = rlan_ctx.rxmax;
-+		rx_queue->rx_buf_len = rx_ring->rx_buf_len;
-+		rx_queue->rxdid = FIELD_GET(QRXFLXP_CNTXT_RXDID_IDX_M, rxflxp);
-+		rx_queue->count = rx_ring->count;
-+		if (rx_ring->q_vector) {
-+			/* we don't need to account for ICE_NONQ_VECS_VF here,
-+			 * as the deserializing end won't expect it.
-+			 */
-+			rx_queue->vector_id = rx_ring->q_vector->v_idx;
-+			rx_queue->vector_valid = 1;
-+		}
-+		rx_queue->crc_strip = rlan_ctx.crcstrip;
-+		rx_queue->ena = test_bit(i, vf->rxq_ena);
-+
-+		ice_mig_tlv_add_tail(rx_queue, &queue_tlvs);
-+	}
-+
-+	list_splice_tail(&queue_tlvs, &vf->mig_tlvs);
-+
-+	return 0;
-+
-+err_free_tlv_entries:
-+	list_for_each_entry_safe(entry, tmp, &queue_tlvs, list_entry) {
-+		list_del(&entry->list_entry);
-+		kfree(entry);
-+	}
-+
-+	return err;
++	return ice_migration_save_devstate(pdev,
++					   migf->mig_data,
++					   migf->payload_length);
 +}
 +
 +/**
-+ * ice_migration_save_msix_regs - Save MSI-X registers during suspend
-+ * @vf: pointer to the VF being migrated
-+ * @vsi: the VSI for this VF
++ * ice_vfio_migration_init - Initialization for live migration function
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
 + *
-+ * Save the MMIO registers associated with MSI-X interrupts, including the
-+ * miscellaneous interrupt used for the mailbox. Called during suspend to save
-+ * the values prior to queue shutdown, to ensure they match the VF suspended
-+ * state accurately.
-+ *
-+ * Return: 0 on success, negative error code on failure.
++ * Return: 0 on success, or a negative error code on failure.
 + */
-+static int ice_migration_save_msix_regs(struct ice_vf *vf,
-+					struct ice_vsi *vsi)
++static int ice_vfio_migration_init(struct ice_vfio_pci_device *ice_vdev)
 +{
-+	struct ice_mig_tlv_entry *entry, *tmp;
-+	struct ice_hw *hw = &vf->pf->hw;
-+	struct list_head msix_tlvs;
-+	int err;
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
-+	INIT_LIST_HEAD(&msix_tlvs);
-+
-+	/* Copy the IRQ registers, starting with the non-queue vectors */
-+	for (int idx = 0; idx < vsi->num_q_vectors + ICE_NONQ_VECS_VF; idx++) {
-+		struct ice_mig_msix_regs *msix_regs;
-+		u16 reg_idx, tx_itr_idx, rx_itr_idx;
-+
-+		if (idx < ICE_NONQ_VECS_VF) {
-+			reg_idx = vf->first_vector_idx + idx;
-+			tx_itr_idx = 0;
-+			rx_itr_idx = 0;
-+		} else {
-+			struct ice_q_vector *q_vector;
-+			int v_id;
-+
-+			v_id = idx - ICE_NONQ_VECS_VF;
-+			q_vector = vsi->q_vectors[v_id];
-+			reg_idx = q_vector->reg_idx;
-+			tx_itr_idx = q_vector->tx.itr_idx;
-+			rx_itr_idx = q_vector->rx.itr_idx;
-+		}
-+
-+		msix_regs = ice_mig_alloc_tlv(msix_regs);
-+		if (!msix_regs) {
-+			err = -ENOMEM;
-+			goto err_free_tlv_entries;
-+		}
-+
-+		msix_regs->vector_id = idx;
-+		msix_regs->tx_itr_idx = tx_itr_idx;
-+		msix_regs->rx_itr_idx = rx_itr_idx;
-+
-+		msix_regs->int_dyn_ctl = rd32(hw, GLINT_DYN_CTL(reg_idx));
-+		for (int itr = 0; itr < ICE_MIG_VF_ITR_NUM; itr++)
-+			msix_regs->int_intr[itr] =
-+				rd32(hw, GLINT_ITR(itr, reg_idx));
-+
-+		ice_mig_tlv_add_tail(msix_regs, &msix_tlvs);
-+	}
-+
-+	list_splice_tail(&msix_tlvs, &vf->mig_tlvs);
-+
-+	return 0;
-+
-+err_free_tlv_entries:
-+	list_for_each_entry_safe(entry, tmp, &msix_tlvs, list_entry) {
-+		list_del(&entry->list_entry);
-+		kfree(entry);
-+	}
-+
-+	return err;
++	return ice_migration_init_dev(pdev);
 +}
 +
- /**
-  * ice_migration_suspend_dev - suspend device
-  * @vf_dev: pointer to the VF PCI device
-@@ -195,6 +458,11 @@ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
- 		err = ice_migration_save_vf_info(vf, vsi);
- 		if (err)
- 			goto err_free_mig_tlvs;
-+
-+		err = ice_migration_save_msix_regs(vf, vsi);
-+		if (err)
-+			goto err_free_mig_tlvs;
-+
- 	}
- 
- 	/* Prevent VSI from queuing incoming packets by removing all filters */
-@@ -221,6 +489,17 @@ int ice_migration_suspend_dev(struct pci_dev *vf_dev, bool save_state)
- 		dev_warn(dev, "VF %d failed to stop Rx rings. Continuing live migration regardless.\n",
- 			 vf->vf_id);
- 
-+	if (save_state) {
-+		/* Save queue state after stopping the queues */
-+		err = ice_migration_save_rx_queues(vf, vsi);
-+		if (err)
-+			goto err_free_mig_tlvs;
-+
-+		err = ice_migration_save_tx_queues(vf, vsi);
-+		if (err)
-+			goto err_free_mig_tlvs;
-+	}
-+
- 	mutex_unlock(&vf->cfg_lock);
- 	ice_put_vf(vf);
- 
-@@ -700,6 +979,424 @@ static int ice_migration_load_vf_info(struct ice_vf *vf, struct ice_vsi *vsi,
- 	return 0;
- }
- 
 +/**
-+ * ice_migration_init_dummy_desc - Initialize DMA for the dummy descriptors
-+ * @tx_desc: Tx ring descriptor array
-+ * @len: length of the descriptor array
-+ * @tx_pkt_dma: dummy packet DMA memory
-+ *
-+ * Initialize the dummy ring data descriptors using the provided DMA for
-+ * packet data memory.
++ * ice_vfio_migration_uninit - Cleanup for live migration function
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
 + */
-+static void ice_migration_init_dummy_desc(struct ice_tx_desc *tx_desc,
-+					  u16 len, dma_addr_t tx_pkt_dma)
++static void ice_vfio_migration_uninit(struct ice_vfio_pci_device *ice_vdev)
 +{
-+	for (int i = 0; i < len; i++) {
-+		u32 td_cmd;
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
 +
-+		td_cmd = ICE_TXD_LAST_DESC_CMD | ICE_TX_DESC_CMD_DUMMY;
-+		tx_desc[i].cmd_type_offset_bsz =
-+				ice_build_ctob(td_cmd, 0, SZ_256, 0);
-+		tx_desc[i].buf_addr = cpu_to_le64(tx_pkt_dma);
++	ice_migration_uninit_dev(pdev);
++}
++
++/**
++ * ice_vfio_pci_disable_fd - Close migration file
++ * @migf: pointer to ice-vfio-pci migration file
++ */
++static void ice_vfio_pci_disable_fd(struct ice_vfio_pci_migration_file *migf)
++{
++	guard(mutex)(&migf->lock);
++
++	migf->disabled = true;
++	migf->payload_length = 0;
++	migf->filp->f_pos = 0;
++}
++
++/**
++ * ice_vfio_pci_disable_fds - Close migration files of ice-vfio-pci device
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
++ */
++static void ice_vfio_pci_disable_fds(struct ice_vfio_pci_device *ice_vdev)
++{
++	if (ice_vdev->resuming_migf) {
++		ice_vfio_pci_disable_fd(ice_vdev->resuming_migf);
++		fput(ice_vdev->resuming_migf->filp);
++		ice_vdev->resuming_migf = NULL;
++	}
++	if (ice_vdev->saving_migf) {
++		ice_vfio_pci_disable_fd(ice_vdev->saving_migf);
++		fput(ice_vdev->saving_migf->filp);
++		ice_vdev->saving_migf = NULL;
 +	}
 +}
 +
 +/**
-+ * ice_migration_wait_for_tx_completion - Wait for Tx transmission completion
-+ * @hw: pointer to the device HW structure
-+ * @tx_ring: Tx ring structure
-+ * @head: target Tx head position
++ * ice_vfio_pci_open_device - VFIO .open_device callback
++ * @vdev: the VFIO device to open
 + *
-+ * Wait for hardware to complete updating the Tx ring head. We read this value
-+ * from QTX_COMM_HEAD. This will either be the initially programmed
-+ * QTX_COMM_HEAD_HEAD_M marker value, or one before the actual head of the Tx
-+ * ring.
++ * Called when a VFIO device is probed by VFIO uAPI. Initializes the VFIO
++ * device and sets up the migration state.
 + *
-+ * Since we only inject packets when the head needs to move from zero, the
-+ * target head position will always be non-zero.
-+ *
-+ * Return: 0 for success, negative for error.
++ * Return: 0 on success, or a negative error code on failure.
 + */
-+static int
-+ice_migration_wait_for_tx_completion(struct ice_hw *hw,
-+				     struct ice_tx_ring *tx_ring, u16 head)
++static int ice_vfio_pci_open_device(struct vfio_device *vdev)
 +{
-+	u32 tx_head;
-+	int err;
++	struct vfio_pci_core_device *core_vdev;
++	struct ice_vfio_pci_device *ice_vdev;
++	int ret;
 +
-+	err = rd32_poll_timeout(hw, QTX_COMM_HEAD(tx_ring->reg_idx),
-+				tx_head,
-+				FIELD_GET(QTX_COMM_HEAD_HEAD_M, tx_head) == head - 1,
-+				10, 500);
-+	if (err) {
-+		dev_dbg(ice_hw_to_dev(hw), "Timed out waiting for Tx ring completion, target head %u, qtx_comm_head %u, err %d\n",
-+			head, tx_head, err);
-+		return err;
++	ice_vdev = to_ice_vdev(vdev);
++	core_vdev = &ice_vdev->core_device;
++
++	ret = vfio_pci_core_enable(core_vdev);
++	if (ret)
++		return ret;
++
++	ret = ice_vfio_migration_init(ice_vdev);
++	if (ret) {
++		vfio_pci_core_disable(core_vdev);
++		return ret;
 +	}
++	ice_vdev->mig_state = VFIO_DEVICE_STATE_RUNNING;
++	vfio_pci_core_finish_enable(core_vdev);
 +
 +	return 0;
 +}
 +
 +/**
-+ * ice_migration_inject_dummy_desc - Inject dummy descriptors to move Tx head
-+ * @vf: pointer to the VF being migrated to
-+ * @tx_ring: Tx ring instance
-+ * @head: Tx head to be loaded
-+ * @tx_desc_dma: Tx descriptor ring base DMG address
++ * ice_vfio_pci_close_device - VFIO .close_device callback
++ * @vdev: the VFIO device to close
 + *
-+ * Load the Tx head for the given Tx ring using the following steps:
-+ *
-+ * 1. Initialize QTX_COMM_HEAD to marker value.
-+ * 2. Backup the current Tx context.
-+ * 3. Temporarily update the Tx context to point to the PF space, using the
-+ *    provided PF Tx descriptor DMA, filled with dummy descriptors and packet
-+ *    data.
-+ * 4. Disable the Tx queue interrupt.
-+ * 5. Bump the Tx ring doorbell to the desired Tx head position.
-+ * 6. Wait for hardware to DMA and update Tx head.
-+ *    and update the Tx head.
-+ * 7. Restore the backed up Tx queue context.
-+ * 8. Re-enable the Tx queue interrupt.
-+ *
-+ * By updating the queue context to point to the PF space with the PF-managed
-+ * DMA address, the HW will issue PCI upstream memory transactions tagged by
-+ * the PF BDF. This will work successfully to update the Tx head without
-+ * needing to interact with the VF DMA.
-+ *
-+ * Return: 0 for success, negative for error.
++ * Called when a VFIO device fd is closed. Destroys migration state.
 + */
-+static int
-+ice_migration_inject_dummy_desc(struct ice_vf *vf, struct ice_tx_ring *tx_ring,
-+				u16 head, dma_addr_t tx_desc_dma)
++static void ice_vfio_pci_close_device(struct vfio_device *vdev)
 +{
-+	struct ice_tlan_ctx tlan_ctx, tlan_ctx_orig;
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_hw *hw = &vf->pf->hw;
-+	u32 dynctl;
-+	u32 tqctl;
-+	int err;
++	struct ice_vfio_pci_device *ice_vdev = to_ice_vdev(vdev);
 +
-+	/* 1. Initialize head after re-programming the queue */
-+	wr32(hw, QTX_COMM_HEAD(tx_ring->reg_idx), QTX_COMM_HEAD_HEAD_M);
++	ice_vfio_pci_disable_fds(ice_vdev);
++	vfio_pci_core_close_device(vdev);
++	ice_vfio_migration_uninit(ice_vdev);
++}
 +
-+	/* 2. Backup Tx Queue context */
-+	err = ice_read_txq_ctx(hw, &tlan_ctx, tx_ring->reg_idx);
-+	if (err) {
-+		dev_err(dev, "Failed to read TXQ[%d] context, err=%d\n",
-+			tx_ring->q_index, err);
-+		return -EIO;
-+	}
-+	memcpy(&tlan_ctx_orig, &tlan_ctx, sizeof(tlan_ctx));
-+	tqctl = rd32(hw, QINT_TQCTL(tx_ring->reg_idx));
-+	if (tx_ring->q_vector)
-+		dynctl = rd32(hw, GLINT_DYN_CTL(tx_ring->q_vector->reg_idx));
++/**
++ * ice_vfio_pci_release_file - Release ice-vfio-pci migration file
++ * @inode: pointer to inode
++ * @filp: pointer to the file to release
++ *
++ * Return: 0.
++ */
++static int ice_vfio_pci_release_file(struct inode *inode, struct file *filp)
++{
++	struct ice_vfio_pci_migration_file *migf = filp->private_data;
 +
-+	/* 3. Switch Tx queue context as PF space and PF DMA ring base. */
-+	tlan_ctx.vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_PF;
-+	tlan_ctx.vmvf_num = 0;
-+	tlan_ctx.base = tx_desc_dma >> ICE_TLAN_CTX_BASE_S;
-+	err = ice_write_txq_ctx(hw, &tlan_ctx, tx_ring->reg_idx);
-+	if (err) {
-+		dev_err(dev, "Failed to write TXQ[%d] context, err=%d\n",
-+			tx_ring->q_index, err);
-+		return -EIO;
-+	}
-+
-+	/* 4. Disable Tx queue interrupt. */
-+	wr32(hw, QINT_TQCTL(tx_ring->reg_idx), QINT_TQCTL_ITR_INDX_M);
-+
-+	/* To disable Tx queue interrupt during run time, software should
-+	 * write mmio to trigger a MSIX interrupt.
-+	 */
-+	if (tx_ring->q_vector)
-+		wr32(hw, GLINT_DYN_CTL(tx_ring->q_vector->reg_idx),
-+		     (ICE_ITR_NONE << GLINT_DYN_CTL_ITR_INDX_S) |
-+		     GLINT_DYN_CTL_SWINT_TRIG_M |
-+		     GLINT_DYN_CTL_INTENA_M);
-+
-+	/* Force memory writes to complete before letting h/w know there
-+	 * are new descriptors to fetch.
-+	 */
-+	wmb();
-+
-+	/* 5. Bump doorbell to advance Tx Queue head */
-+	writel(head, tx_ring->tail);
-+
-+	/* 6. Wait until Tx Queue head move to expected place */
-+	err = ice_migration_wait_for_tx_completion(hw, tx_ring, head);
-+	if (err) {
-+		dev_err(dev, "VF %d txq[%d] head loading timeout\n",
-+			vf->vf_id, tx_ring->q_index);
-+		return err;
-+	}
-+
-+	/* 7. Overwrite Tx Queue context with backup context */
-+	err = ice_write_txq_ctx(hw, &tlan_ctx_orig, tx_ring->reg_idx);
-+	if (err) {
-+		dev_err(dev, "Failed to write TXQ[%d] context, err=%d\n",
-+			tx_ring->q_index, err);
-+		return -EIO;
-+	}
-+
-+	/* 8. Re-enable Tx queue interrupt */
-+	wr32(hw, QINT_TQCTL(tx_ring->reg_idx), tqctl);
-+	if (tx_ring->q_vector)
-+		wr32(hw, GLINT_DYN_CTL(tx_ring->q_vector->reg_idx), dynctl);
-+
++	ice_vfio_pci_disable_fd(migf);
++	mutex_destroy(&migf->lock);
++	vfree(migf);
 +	return 0;
 +}
 +
 +/**
-+ * ice_migration_load_tx_queue - Load Tx queue data from migration payload
-+ * @vf: pointer to the VF being migrated to
-+ * @vsi: the VSI for this VF
-+ * @tx_queue: Tx queue data from migration payload
-+ * @tx_desc: temporary descriptor for moving Tx head
-+ * @tx_desc_dma: temporary descriptor DMA for moving Tx head
-+ * @tx_pkt_dma: temporary packet DMA for moving Tx head
++ * ice_vfio_pci_save_read - Save migration file data to user space
++ * @filp: pointer to migration file
++ * @buf: pointer to user space buffer
++ * @len: data length to be saved
++ * @pos: must be 0
 + *
-+ * Load the Tx queue information from the migration buffer into the target VF.
-+ *
-+ * Return: 0 for success, negative for error
++ * Return: length of the saved data, or a negative error code on failure.
 + */
-+static int ice_migration_load_tx_queue(struct ice_vf *vf, struct ice_vsi *vsi,
-+				       const struct ice_mig_tx_queue *tx_queue,
-+				       struct ice_tx_desc *tx_desc,
-+				       dma_addr_t tx_desc_dma,
-+				       dma_addr_t tx_pkt_dma)
++static ssize_t ice_vfio_pci_save_read(struct file *filp, char __user *buf,
++				      size_t len, loff_t *pos)
 +{
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_q_vector *q_vector;
-+	struct ice_tx_ring *tx_ring;
-+	int err;
++	struct ice_vfio_pci_migration_file *migf = filp->private_data;
++	loff_t *off = &filp->f_pos;
++	ssize_t done = 0;
++	int ret;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
++	if (pos)
++		return -ESPIPE;
 +
-+	if (tx_queue->queue_id >= vsi->num_txq) {
-+		dev_dbg(dev, "Got data for queue %d but the VF is only configured with %d Tx queues\n",
-+			tx_queue->queue_id, vsi->num_txq);
-+		return -EINVAL;
-+	}
++	guard(mutex)(&migf->lock);
 +
-+	dev_dbg(dev, "Loading Tx VF queue %d (PF queue %d) on VF %d\n",
-+		tx_queue->queue_id, vsi->txq_map[tx_queue->queue_id],
-+		vf->vf_id);
-+
-+	tx_ring = vsi->tx_rings[tx_queue->queue_id];
-+
-+	if (WARN_ON_ONCE(!tx_ring))
++	if (*off > migf->payload_length)
 +		return -EINVAL;
 +
-+	tx_ring->dma = tx_queue->dma;
-+	tx_ring->count = tx_queue->count;
++	if (migf->disabled)
++		return -ENODEV;
 +
-+	/* Disable any existing queue first */
-+	err = ice_vf_vsi_dis_single_txq(vf, vsi, tx_queue->queue_id);
-+	if (err) {
-+		dev_dbg(dev, "Failed to disable existing queue, err %d\n",
-+			err);
-+		return err;
++	len = min_t(size_t, migf->payload_length - *off, len);
++	if (len) {
++		ret = copy_to_user(buf, migf->mig_data + *off, len);
++		if (ret)
++			return -EFAULT;
++
++		*off += len;
++		done = len;
 +	}
 +
-+	err = ice_vsi_cfg_single_txq(vsi, vsi->tx_rings, tx_queue->queue_id);
-+	if (err) {
-+		dev_dbg(dev, "Failed to configure Tx queue %u, err %d\n",
-+			tx_queue->queue_id, err);
-+		return err;
++	return done;
++}
++
++static const struct file_operations ice_vfio_pci_save_fops = {
++	.owner = THIS_MODULE,
++	.read = ice_vfio_pci_save_read,
++	.release = ice_vfio_pci_release_file,
++};
++
++/**
++ * ice_vfio_pci_stop_copy - Create migration file and save migration state
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
++ *
++ * Return: pointer to the migration file structure, or an error pointer on
++ *         failure.
++ */
++static struct ice_vfio_pci_migration_file *
++ice_vfio_pci_stop_copy(struct ice_vfio_pci_device *ice_vdev)
++{
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
++	struct ice_vfio_pci_migration_file *migf;
++	size_t payload_length;
++	int ret;
++
++	payload_length = ice_migration_get_required_size(pdev);
++	if (!payload_length)
++		return ERR_PTR(-EIO);
++
++	migf = vzalloc(struct_size(migf, mig_data, payload_length));
++	if (!migf)
++		return ERR_PTR(-ENOMEM);
++
++	migf->payload_length = payload_length;
++	migf->filp = anon_inode_getfile("ice_vfio_pci_mig",
++					&ice_vfio_pci_save_fops, migf,
++					O_RDONLY);
++	if (IS_ERR(migf->filp)) {
++		ret = PTR_ERR(migf->filp);
++		goto err_free_migf;
 +	}
 +
-+	if (tx_queue->head >= tx_ring->count) {
-+		dev_err(dev, "VF %d: invalid tx ring length to load\n",
-+			vf->vf_id);
-+		return -EINVAL;
-+	}
++	stream_open(migf->filp->f_inode, migf->filp);
++	mutex_init(&migf->lock);
 +
-+	/* After the initial reset and Tx queue re-programming, the Tx head
-+	 * and tail state will be zero. If the desired state for the head is
-+	 * non-zero, we need to inject some dummy packets into the queue to
-+	 * move the head of the ring to the desired value.
-+	 */
-+	if (tx_queue->head) {
-+		ice_migration_init_dummy_desc(tx_desc, ICE_MAX_NUM_DESC,
-+					      tx_pkt_dma);
-+		err = ice_migration_inject_dummy_desc(vf, tx_ring,
-+						      tx_queue->head,
-+						      tx_desc_dma);
-+		if (err)
-+			return err;
-+	}
++	ret = ice_vfio_pci_save_state(ice_vdev, migf);
++	if (ret)
++		goto err_put_migf_filp;
 +
-+	if (tx_queue->vector_valid) {
-+		q_vector = vsi->q_vectors[tx_queue->vector_id];
-+		ice_cfg_txq_interrupt(vsi, tx_queue->queue_id,
-+				      q_vector->vf_reg_idx,
-+				      q_vector->tx.itr_idx);
-+	}
++	return migf;
 +
-+	if (tx_queue->ena) {
-+		ice_vf_ena_txq_interrupt(vsi, tx_queue->queue_id);
-+		set_bit(tx_queue->queue_id, vf->txq_ena);
-+	}
++err_put_migf_filp:
++	fput(migf->filp);
++err_free_migf:
++	vfree(migf);
 +
-+	return 0;
++	return ERR_PTR(ret);
 +}
 +
 +/**
-+ * ice_migration_load_rx_queue - Load Rx queue data from migration buffer
-+ * @vf: pointer to the VF being migrated to
-+ * @vsi: pointer to the VSI for the VF
-+ * @rx_queue: pointer to Rx queue migration data
++ * ice_vfio_pci_resume_write - Copy migration file data from user space
++ * @filp: pointer to migration file
++ * @buf: pointer to user space buffer
++ * @len: data length to be copied
++ * @pos: must be 0
 + *
-+ * Load the Rx queue data from the migration payload into the target VF.
-+ *
-+ * Return: 0 for success, negative for error
++ * Return: length of the data copied, or a negative error code on failure.
 + */
-+static int ice_migration_load_rx_queue(struct ice_vf *vf, struct ice_vsi *vsi,
-+				       const struct ice_mig_rx_queue *rx_queue)
++static ssize_t ice_vfio_pci_resume_write(struct file *filp,
++					 const char __user *buf,
++					 size_t len, loff_t *pos)
 +{
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_rlan_ctx rlan_ctx = {};
-+	struct ice_hw *hw = &vf->pf->hw;
-+	struct ice_q_vector *q_vector;
-+	struct ice_rx_ring *rx_ring;
-+	int err;
++	struct ice_vfio_pci_migration_file *migf = filp->private_data;
++	loff_t *off = &filp->f_pos;
++	loff_t requested_length;
++	ssize_t done = 0;
++	int ret;
 +
-+	lockdep_assert_held(&vf->cfg_lock);
++	if (pos)
++		return -ESPIPE;
 +
-+	if (rx_queue->queue_id >= vsi->num_rxq) {
-+		dev_dbg(dev, "Got data for queue %d but the VF is only configured with %d Rx queues\n",
-+			rx_queue->queue_id, vsi->num_rxq);
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(dev, "Loading Rx queue %d on VF %d\n",
-+		rx_queue->queue_id, vf->vf_id);
-+
-+	if (!(BIT(rx_queue->rxdid) & vf->pf->supported_rxdids)) {
-+		dev_dbg(dev, "Got unsupported Rx descriptor ID %u\n",
-+			rx_queue->rxdid);
-+		return -EINVAL;
-+	}
-+
-+	rx_ring = vsi->rx_rings[rx_queue->queue_id];
-+
-+	if (WARN_ON_ONCE(!rx_ring))
++	if (*off < 0 ||
++	    check_add_overflow((loff_t)len, *off, &requested_length))
 +		return -EINVAL;
 +
-+	rx_ring->dma = rx_queue->dma;
-+	rx_ring->count = rx_queue->count;
-+
-+	if (rx_queue->crc_strip)
-+		rx_ring->flags &= ~ICE_RX_FLAGS_CRC_STRIP_DIS;
-+	else
-+		rx_ring->flags |= ICE_RX_FLAGS_CRC_STRIP_DIS;
-+
-+	rx_ring->rx_buf_len = rx_queue->rx_buf_len;
-+	rx_ring->max_frame = rx_queue->max_frame;
-+
-+	err = ice_vsi_cfg_single_rxq(vsi, rx_queue->queue_id);
-+	if (err) {
-+		dev_dbg(dev, "Failed to configure Rx queue %u for VF %u, err %d\n",
-+			rx_queue->queue_id, vf->vf_id, err);
-+		return err;
-+	}
-+
-+	ice_write_qrxflxp_cntxt(hw, rx_ring->reg_idx,
-+				rx_queue->rxdid, 0x03, false);
-+
-+	err = ice_read_rxq_ctx(hw, &rlan_ctx, rx_ring->reg_idx);
-+	if (err) {
-+		dev_err(dev, "Failed to read RXQ[%d] context, err=%d\n",
-+			rx_ring->q_index, err);
-+		return -EIO;
-+	}
-+
-+	rlan_ctx.head = rx_queue->head;
-+	err = ice_write_rxq_ctx(hw, &rlan_ctx, rx_ring->reg_idx);
-+	if (err) {
-+		dev_err(dev, "Failed to set LAN RXQ[%d] context, err=%d\n",
-+			rx_ring->q_index, err);
-+		return -EIO;
-+	}
-+
-+	wr32(hw, QRX_TAIL(rx_ring->reg_idx), rx_queue->tail);
-+
-+	if (rx_queue->vector_valid) {
-+		q_vector = vsi->q_vectors[rx_queue->vector_id];
-+		ice_cfg_rxq_interrupt(vsi, rx_queue->queue_id,
-+				      q_vector->vf_reg_idx,
-+				      q_vector->rx.itr_idx);
-+	}
-+
-+	if (rx_queue->ena) {
-+		err = ice_vsi_ctrl_one_rx_ring(vsi, true, rx_queue->queue_id,
-+					       true);
-+		if (err) {
-+			dev_err(dev, "Failed to enable Rx ring %d on VSI %d, err %d\n",
-+				rx_queue->queue_id, vsi->vsi_num, err);
-+			return -EIO;
-+		}
-+
-+		ice_vf_ena_rxq_interrupt(vsi, rx_queue->queue_id);
-+		set_bit(rx_queue->queue_id, vf->rxq_ena);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_migration_load_msix_regs - Load MSI-X vector registers
-+ * @vf: pointer to the VF being migrated to
-+ * @vsi: the VSI of the target VF
-+ * @msix_regs: MSI-X register data from migration payload
-+ *
-+ * Load the MSI-X vector register data from the migration payload into the
-+ * target VF.
-+ *
-+ * Return: 0 for success, negative for error
-+ */
-+static int
-+ice_migration_load_msix_regs(struct ice_vf *vf, struct ice_vsi *vsi,
-+			     const struct ice_mig_msix_regs *msix_regs)
-+{
-+	struct device *dev = ice_pf_to_dev(vf->pf);
-+	struct ice_hw *hw = &vf->pf->hw;
-+	u16 reg_idx;
-+	int itr;
-+
-+	lockdep_assert_held(&vf->cfg_lock);
-+
-+	if (msix_regs->vector_id > vsi->num_q_vectors + ICE_NONQ_VECS_VF) {
-+		dev_dbg(dev, "Got data for MSI-X vector %d, but the VF is only configured with %d vectors\n",
-+			msix_regs->vector_id,
-+			vsi->num_q_vectors + ICE_NONQ_VECS_VF);
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(dev, "Loading MSI-X register configuration for VF %u\n",
-+		vf->vf_id);
-+
-+	if (msix_regs->vector_id < ICE_NONQ_VECS_VF) {
-+		reg_idx = vf->first_vector_idx + msix_regs->vector_id;
-+	} else {
-+		struct ice_q_vector *q_vector;
-+		int v_id;
-+
-+		v_id = msix_regs->vector_id - ICE_NONQ_VECS_VF;
-+		q_vector = vsi->q_vectors[v_id];
-+		reg_idx = q_vector->reg_idx;
-+
-+		q_vector->tx.itr_idx = msix_regs->tx_itr_idx;
-+		q_vector->rx.itr_idx = msix_regs->rx_itr_idx;
-+	}
-+
-+	wr32(hw, GLINT_DYN_CTL(reg_idx), msix_regs->int_dyn_ctl);
-+	for (itr = 0; itr < ICE_MIG_VF_ITR_NUM; itr++)
-+		wr32(hw, GLINT_ITR(itr, reg_idx), msix_regs->int_intr[itr]);
-+
-+	return 0;
-+}
-+
- /**
-  * ice_migration_load_devstate - Load device state into the target VF
-  * @vf_dev: pointer to the VF PCI device
-@@ -714,9 +1411,12 @@ static int ice_migration_load_vf_info(struct ice_vf *vf, struct ice_vsi *vsi,
- int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 				size_t buf_sz)
- {
-+	const size_t dma_size = ICE_MAX_NUM_DESC * sizeof(struct ice_tx_desc);
- 	struct ice_pf *pf = ice_vf_dev_to_pf(vf_dev);
- 	const struct ice_mig_vf_info *vf_info;
- 	const struct ice_migration_tlv *tlv;
-+	dma_addr_t tx_desc_dma, tx_pkt_dma;
-+	void *tx_desc, *tx_pkt;
- 	struct ice_vsi *vsi;
- 	struct device *dev;
- 	struct ice_vf *vf;
-@@ -743,6 +1443,15 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 		return -EINVAL;
- 	}
- 
-+	/* Allocate DMA ring and descriptor by PF */
-+	tx_desc = dma_alloc_coherent(dev, dma_size, &tx_desc_dma, GFP_KERNEL);
-+	if (!tx_desc)
++	if (requested_length > migf->payload_length)
 +		return -ENOMEM;
 +
-+	tx_pkt = dma_alloc_coherent(dev, SZ_4K, &tx_pkt_dma, GFP_KERNEL);
-+	if (!tx_pkt)
-+		goto err_free_tx_desc_dma;
++	guard(mutex)(&migf->lock);
 +
- 	mutex_lock(&vf->cfg_lock);
- 
- 	vsi = ice_get_vf_vsi(vf);
-@@ -763,6 +1472,7 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 	tlv = buf;
- 
- 	do {
-+		const void *data = tlv->data;
- 		size_t tlv_size;
- 
- 		switch (tlv->type) {
-@@ -771,6 +1481,18 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 		case ICE_MIG_TLV_VF_INFO:
- 			/* These are already handled above */
- 			break;
-+		case ICE_MIG_TLV_TX_QUEUE:
-+			err = ice_migration_load_tx_queue(vf, vsi, data,
-+							  tx_desc,
-+							  tx_desc_dma,
-+							  tx_pkt_dma);
-+			break;
-+		case ICE_MIG_TLV_RX_QUEUE:
-+			err = ice_migration_load_rx_queue(vf, vsi, data);
-+			break;
-+		case ICE_MIG_TLV_MSIX_REGS:
-+			err = ice_migration_load_msix_regs(vf, vsi, data);
-+			break;
- 		default:
- 			dev_dbg(dev, "Unexpected TLV %d in payload?\n",
- 				tlv->type);
-@@ -791,12 +1513,19 @@ int ice_migration_load_devstate(struct pci_dev *vf_dev, const void *buf,
- 
- 	ice_put_vf(vf);
- 
-+	dma_free_coherent(dev, SZ_4K, tx_pkt, tx_pkt_dma);
-+	dma_free_coherent(dev, dma_size, tx_desc, tx_desc_dma);
++	if (migf->disabled)
++		return -ENODEV;
 +
- 	return 0;
- 
- err_release_cfg_lock:
- 	mutex_unlock(&vf->cfg_lock);
- 	ice_put_vf(vf);
- 
-+	dma_free_coherent(dev, SZ_4K, tx_pkt, tx_pkt_dma);
-+err_free_tx_desc_dma:
-+	dma_free_coherent(dev, dma_size, tx_desc, tx_desc_dma);
++	ret = copy_from_user(migf->mig_data + *off, buf, len);
++	if (ret)
++		return -EFAULT;
 +
- 	return err;
- }
- EXPORT_SYMBOL(ice_migration_load_devstate);
-diff --git a/drivers/net/ethernet/intel/ice/virt/queues.c b/drivers/net/ethernet/intel/ice/virt/queues.c
-index 40575cfe6dd4..65ba0a1d8c1f 100644
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -299,6 +299,27 @@ int ice_vc_ena_qs_msg(struct ice_vf *vf, u8 *msg)
- 			continue;
- 
- 		ice_vf_ena_txq_interrupt(vsi, vf_q_id);
++	*off += len;
++	done = len;
++	migf->payload_length += len;
 +
-+		/* The Tx head register is a shadow copy of on-die Tx head
-+		 * which maintains the accurate location. The Tx head register
-+		 * is only updated after a packet is sent, and is updated to
-+		 * the value one behind the actual on-die Tx head value.
++	return done;
++}
++
++static const struct file_operations ice_vfio_pci_resume_fops = {
++	.owner = THIS_MODULE,
++	.write = ice_vfio_pci_resume_write,
++	.release = ice_vfio_pci_release_file,
++};
++
++/**
++ * ice_vfio_pci_resume - Create resuming migration file
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
++ *
++ * Return: pointer to the migration file handler, or an error pointer on
++ *         failure.
++ */
++static struct ice_vfio_pci_migration_file *
++ice_vfio_pci_resume(struct ice_vfio_pci_device *ice_vdev)
++{
++	struct ice_vfio_pci_migration_file *migf;
++
++	migf = vzalloc(struct_size(migf, mig_data, SZ_128K));
++	if (!migf)
++		return ERR_PTR(-ENOMEM);
++
++	migf->payload_length = SZ_128K;
++	migf->filp = anon_inode_getfile("ice_vfio_pci_mig",
++					&ice_vfio_pci_resume_fops, migf,
++					O_WRONLY);
++	if (IS_ERR(migf->filp)) {
++		int ret = PTR_ERR(migf->filp);
++
++		vfree(migf);
++
++		return ERR_PTR(ret);
++	}
++
++	stream_open(migf->filp->f_inode, migf->filp);
++	mutex_init(&migf->lock);
++
++	return migf;
++}
++
++/**
++ * ice_vfio_pci_step_device_state_locked - Process device state change
++ * @ice_vdev: pointer to ice-vfio-pci core device structure
++ * @new: new device state
++ * @final: final device state
++ *
++ * Return: pointer to the migration file handler or NULL on success, or an
++ *         error pointer on failure.
++ */
++static struct file *
++ice_vfio_pci_step_device_state_locked(struct ice_vfio_pci_device *ice_vdev,
++				      enum vfio_device_mig_state new,
++				      enum vfio_device_mig_state final)
++{
++	enum vfio_device_mig_state cur = ice_vdev->mig_state;
++	struct pci_dev *pdev = ice_vdev->core_device.pdev;
++	int ret;
++
++	if (cur == VFIO_DEVICE_STATE_RUNNING && new == VFIO_DEVICE_STATE_RUNNING_P2P) {
++		bool save_state = final != VFIO_DEVICE_STATE_RESUMING;
++
++		/* The ice driver needs to keep track of some state which
++		 * would otherwise be lost when suspending the device. It only
++		 * needs this state if the device later transitions into
++		 * STOP_COPY, which copies the device state for migration.
++		 * The transition from RUNNING to RUNNING_P2P also occurs as
++		 * part of transitioning into the RESUME state.
 +		 *
-+		 * Even after queue enable, until a packet is sent the Tx head
-+		 * remains whatever value it had before.
-+		 *
-+		 * QTX_COMM_HEAD.HEAD values from 0x1fe0 to 0x1fff are
-+		 * reserved and will never be used by HW. Manually write a
-+		 * reserved value into Tx head and use this as a marker to
-+		 * indicate that no packets have been sent since the queue was
-+		 * enabled.
-+		 *
-+		 * This marker is used by the live migration logic to
-+		 * accurately determine the Tx queue head.
++		 * Avoid saving the device state if its known to be
++		 * unnecessary.
 +		 */
-+		wr32(&vsi->back->hw, QTX_COMM_HEAD(vsi->txq_map[vf_q_id]),
-+		     QTX_COMM_HEAD_HEAD_M);
++		ice_migration_suspend_dev(pdev, save_state);
++		return NULL;
++	}
 +
- 		set_bit(vf_q_id, vf->txq_ena);
- 	}
++	if (cur == VFIO_DEVICE_STATE_RUNNING_P2P && new == VFIO_DEVICE_STATE_STOP)
++		return NULL;
++
++	if (cur == VFIO_DEVICE_STATE_STOP && new == VFIO_DEVICE_STATE_STOP_COPY) {
++		struct ice_vfio_pci_migration_file *migf;
++
++		migf = ice_vfio_pci_stop_copy(ice_vdev);
++		if (IS_ERR(migf))
++			return ERR_CAST(migf);
++		get_file(migf->filp);
++		ice_vdev->saving_migf = migf;
++		return migf->filp;
++	}
++
++	if (cur == VFIO_DEVICE_STATE_STOP_COPY && new == VFIO_DEVICE_STATE_STOP) {
++		ice_vfio_pci_disable_fds(ice_vdev);
++		return NULL;
++	}
++
++	if (cur == VFIO_DEVICE_STATE_STOP && new == VFIO_DEVICE_STATE_RESUMING) {
++		struct ice_vfio_pci_migration_file *migf;
++
++		migf = ice_vfio_pci_resume(ice_vdev);
++		if (IS_ERR(migf))
++			return ERR_CAST(migf);
++		get_file(migf->filp);
++		ice_vdev->resuming_migf = migf;
++		return migf->filp;
++	}
++
++	if (cur == VFIO_DEVICE_STATE_RESUMING && new == VFIO_DEVICE_STATE_STOP)
++		return NULL;
++
++	if (cur == VFIO_DEVICE_STATE_STOP && new == VFIO_DEVICE_STATE_RUNNING_P2P) {
++		ret = ice_vfio_pci_load_state(ice_vdev);
++		if (ret)
++			return ERR_PTR(ret);
++		ice_vfio_pci_disable_fds(ice_vdev);
++		return NULL;
++	}
++
++	if (cur == VFIO_DEVICE_STATE_RUNNING_P2P && new == VFIO_DEVICE_STATE_RUNNING)
++		return NULL;
++
++	/*
++	 * vfio_mig_get_next_state() does not use arcs other than the above
++	 */
++	WARN_ON(true);
++	return ERR_PTR(-EINVAL);
++}
++
++/**
++ * ice_vfio_pci_set_device_state - Configure the device state
++ * @vdev: pointer to VFIO device
++ * @new_state: device state
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static struct file *
++ice_vfio_pci_set_device_state(struct vfio_device *vdev,
++			      enum vfio_device_mig_state new_state)
++{
++	struct ice_vfio_pci_device *ice_vdev = to_ice_vdev(vdev);
++	enum vfio_device_mig_state next_state;
++	struct file *res = NULL;
++	int ret;
++
++	mutex_lock(&ice_vdev->state_mutex);
++
++	while (new_state != ice_vdev->mig_state) {
++		ret = vfio_mig_get_next_state(vdev, ice_vdev->mig_state,
++					      new_state, &next_state);
++		if (ret) {
++			res = ERR_PTR(ret);
++			break;
++		}
++
++		res = ice_vfio_pci_step_device_state_locked(ice_vdev,
++							    next_state,
++							    new_state);
++		if (IS_ERR(res))
++			break;
++
++		ice_vdev->mig_state = next_state;
++		if (WARN_ON(res && new_state != ice_vdev->mig_state)) {
++			fput(res);
++			res = ERR_PTR(-EINVAL);
++			break;
++		}
++	}
++
++	mutex_unlock(&ice_vdev->state_mutex);
++
++	return res;
++}
++
++/**
++ * ice_vfio_pci_get_device_state - Get device state
++ * @vdev: pointer to VFIO device
++ * @curr_state: device state
++ *
++ * Return: 0.
++ */
++static int ice_vfio_pci_get_device_state(struct vfio_device *vdev,
++					 enum vfio_device_mig_state *curr_state)
++{
++	struct ice_vfio_pci_device *ice_vdev = to_ice_vdev(vdev);
++
++	mutex_lock(&ice_vdev->state_mutex);
++
++	*curr_state = ice_vdev->mig_state;
++
++	mutex_unlock(&ice_vdev->state_mutex);
++
++	return 0;
++}
++
++/**
++ * ice_vfio_pci_get_data_size - Get estimated migration data size
++ * @vdev: pointer to VFIO device
++ * @stop_copy_length: migration data size
++ *
++ * Return: 0.
++ */
++static int ice_vfio_pci_get_data_size(struct vfio_device *vdev,
++				      unsigned long *stop_copy_length)
++{
++	*stop_copy_length = SZ_128K;
++	return 0;
++}
++
++static const struct vfio_migration_ops ice_vfio_pci_migrn_state_ops = {
++	.migration_set_state = ice_vfio_pci_set_device_state,
++	.migration_get_state = ice_vfio_pci_get_device_state,
++	.migration_get_data_size = ice_vfio_pci_get_data_size,
++};
++
++/**
++ * ice_vfio_pci_core_init_dev - initialize VFIO device
++ * @vdev: pointer to VFIO device
++ *
++ * Return: 0.
++ */
++static int ice_vfio_pci_core_init_dev(struct vfio_device *vdev)
++{
++	struct ice_vfio_pci_device *ice_vdev = to_ice_vdev(vdev);
++
++	mutex_init(&ice_vdev->state_mutex);
++
++	vdev->migration_flags =
++		VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_P2P;
++	vdev->mig_ops = &ice_vfio_pci_migrn_state_ops;
++
++	return vfio_pci_core_init_dev(vdev);
++}
++
++/**
++ * ice_vfio_pci_core_release_dev - Release VFIO device
++ * @vdev: pointer to VFIO device
++ */
++static void ice_vfio_pci_core_release_dev(struct vfio_device *vdev)
++{
++	struct ice_vfio_pci_device *ice_vdev = to_ice_vdev(vdev);
++
++	mutex_destroy(&ice_vdev->state_mutex);
++
++	vfio_pci_core_release_dev(vdev);
++}
++
++static const struct vfio_device_ops ice_vfio_pci_ops = {
++	.name		= "ice-vfio-pci",
++	.init		= ice_vfio_pci_core_init_dev,
++	.release	= ice_vfio_pci_core_release_dev,
++	.open_device	= ice_vfio_pci_open_device,
++	.close_device	= ice_vfio_pci_close_device,
++	.device_feature = vfio_pci_core_ioctl_feature,
++	.read		= vfio_pci_core_read,
++	.write		= vfio_pci_core_write,
++	.ioctl		= vfio_pci_core_ioctl,
++	.mmap		= vfio_pci_core_mmap,
++	.request	= vfio_pci_core_request,
++	.match		= vfio_pci_core_match,
++	.bind_iommufd	= vfio_iommufd_physical_bind,
++	.unbind_iommufd	= vfio_iommufd_physical_unbind,
++	.attach_ioas	= vfio_iommufd_physical_attach_ioas,
++	.detach_ioas	= vfio_iommufd_physical_detach_ioas,
++};
++
++/**
++ * ice_vfio_pci_probe - Device initialization routine
++ * @pdev: PCI device information struct
++ * @id: entry in ice_vfio_pci_table
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int
++ice_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct ice_vfio_pci_device *ice_vdev;
++	int ret;
++
++	ice_vdev = vfio_alloc_device(ice_vfio_pci_device, core_device.vdev,
++				     &pdev->dev, &ice_vfio_pci_ops);
++	if (!ice_vdev)
++		return -ENOMEM;
++
++	dev_set_drvdata(&pdev->dev, &ice_vdev->core_device);
++
++	ret = vfio_pci_core_register_device(&ice_vdev->core_device);
++	if (ret)
++		goto out_free;
++
++	return 0;
++
++out_free:
++	vfio_put_device(&ice_vdev->core_device.vdev);
++	return ret;
++}
++
++/**
++ * ice_vfio_pci_remove - Device removal routine
++ * @pdev: PCI device information struct
++ */
++static void ice_vfio_pci_remove(struct pci_dev *pdev)
++{
++	struct ice_vfio_pci_device *ice_vdev = dev_get_drvdata(&pdev->dev);
++
++	vfio_pci_core_unregister_device(&ice_vdev->core_device);
++	vfio_put_device(&ice_vdev->core_device.vdev);
++}
++
++/* ice_pci_tbl - PCI Device ID Table
++ *
++ * Wildcard entries (PCI_ANY_ID) should come last
++ * Last entry must be all 0s
++ *
++ * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,
++ *   Class, Class Mask, private data (not used) }
++ */
++static const struct pci_device_id ice_vfio_pci_table[] = {
++	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x1889) },
++	{}
++};
++MODULE_DEVICE_TABLE(pci, ice_vfio_pci_table);
++
++static const struct pci_error_handlers ice_vfio_pci_core_err_handlers = {
++	.error_detected = vfio_pci_core_aer_err_detected,
++};
++
++static struct pci_driver ice_vfio_pci_driver = {
++	.name			= "ice-vfio-pci",
++	.id_table		= ice_vfio_pci_table,
++	.probe			= ice_vfio_pci_probe,
++	.remove			= ice_vfio_pci_remove,
++	.err_handler            = &ice_vfio_pci_core_err_handlers,
++	.driver_managed_dma	= true,
++};
++
++module_pci_driver(ice_vfio_pci_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("ICE VFIO PCI - User Level meta-driver for Intel E800 device family");
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b81595e9ea95..512808140ebe 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26477,6 +26477,13 @@ L:	kvm@vger.kernel.org
+ S:	Maintained
+ F:	drivers/vfio/pci/hisilicon/
  
++VFIO ICE PCI DRIVER
++M:	Jacob Keller <jacob.e.keller@intel.com>
++L:	kvm@vger.kernel.org
++S:	Supported
++F:	drivers/vfio/pci/ice/
++F:	include/linux/net/intel/ice_migration.h
++
+ VFIO MEDIATED DEVICE DRIVERS
+ M:	Kirti Wankhede <kwankhede@nvidia.com>
+ L:	kvm@vger.kernel.org
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 2b0172f54665..74e0fb571936 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -67,4 +67,6 @@ source "drivers/vfio/pci/nvgrace-gpu/Kconfig"
+ 
+ source "drivers/vfio/pci/qat/Kconfig"
+ 
++source "drivers/vfio/pci/ice/Kconfig"
++
+ endmenu
+diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+index cf00c0a7e55c..721b01ad3a2e 100644
+--- a/drivers/vfio/pci/Makefile
++++ b/drivers/vfio/pci/Makefile
+@@ -19,3 +19,5 @@ obj-$(CONFIG_VIRTIO_VFIO_PCI) += virtio/
+ obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
+ 
+ obj-$(CONFIG_QAT_VFIO_PCI) += qat/
++
++obj-$(CONFIG_ICE_VFIO_PCI) += ice/
+diff --git a/drivers/vfio/pci/ice/Kconfig b/drivers/vfio/pci/ice/Kconfig
+new file mode 100644
+index 000000000000..3e8f5d6e60dc
+--- /dev/null
++++ b/drivers/vfio/pci/ice/Kconfig
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config ICE_VFIO_PCI
++	tristate "VFIO support for Intel(R) Ethernet Connection E800 Series"
++	depends on ICE
++	select VFIO_PCI_CORE
++	help
++	  This provides migration support for Intel(R) Ethernet connection E800
++	  series devices using the VFIO framework.
+diff --git a/drivers/vfio/pci/ice/Makefile b/drivers/vfio/pci/ice/Makefile
+new file mode 100644
+index 000000000000..5b8df8234b31
+--- /dev/null
++++ b/drivers/vfio/pci/ice/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_ICE_VFIO_PCI) += ice-vfio-pci.o
++ice-vfio-pci-y := main.o
++
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
