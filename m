@@ -1,28 +1,29 @@
-Received: from out28-123.mail.aliyun.com (out28-123.mail.aliyun.com [115.124.28.123])
+Received: from out28-52.mail.aliyun.com (out28-52.mail.aliyun.com [115.124.28.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A8C2033A;
-	Wed, 10 Sep 2025 02:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1711F91E3;
+	Wed, 10 Sep 2025 02:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757472576; cv=none; b=kuJdz9G/MCmO6LvBukMEcL1cVZ/dffScAOE9KpyOYh0+SDSKtgCOUIWoQfgBweGPMM7L6UHnKhdAB5d+oh6Vk5uTz0iemI1YMs82kTX90RI4JixpsuEu/ypYOEPzWuzel7DGSegLHCICtmyMSS21yDNjjbIHgMYkhUgmfztSDTI=
+	t=1757472577; cv=none; b=D0AcBG8FJnSLJ0l2zUL4aNwoisRyoGkX1yClHWrvCRTZfq6Dk9kNaiC6o740VZ0kEvlg7w34Yn6lGhBvG0P2f1zpRO0RPtyf8iSWmMZEOzFC6sARYO6Vwh18F+1tyuJtcQHEW5aiAF9W5VG+K1equj6t0sXqOXPO9MAA47bQYZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757472576; c=relaxed/simple;
-	bh=W/lNsHQOpMwOw6qbBISXNboe+wqRqgWIvQw5KI4JO0k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kNkaVITmbwgJnUChf55yGR+EWEfZSljdnFCPBbEBV2nj+DS0bIBeL2SYJxG/9ej1ZrRqo1UXnZbV270QGStbwA+1H4+MGQyPVq9b9o/k6eTkqiT/Bp3nG+dqflmcpAzgBdX5dsKeEgA+Q/4xC7vT33T4LKhN1E9vNse2Pe+Anfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=jShTTKP+; arc=none smtp.client-ip=115.124.28.123
+	s=arc-20240116; t=1757472577; c=relaxed/simple;
+	bh=Tnna44QehBkN4uomOmV1T5siUdJ4l9NkIBpvBlJqAMc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MGZOFxpl26nTxUimHjqgHzQKk0ZuqkWgNRnHJVCZ8zI8mY95DSdGh6ieuuImxqOGA0OL2uCociFI95uqVMZiyKJ6GbwSouJiVmKloZkKpoT555KYBWHAUnNmAXLSNuIYEiF/pkcJwfsFUniwkCKcQxC2Z2YaYM/YzDBYp36DWDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=sVXRQlv2; arc=none smtp.client-ip=115.124.28.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="jShTTKP+"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="sVXRQlv2"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1757472563; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=WqFTYK/ICNliwAdi5HA1h5xy4TAhp+T7+wGB7zW5Ln0=;
-	b=jShTTKP+GoT7WrZhHxQXFtqdSPiDq/PvZiRXgCDIJ7bdGBBUaBu6ArkCtXsisUQwCMIqztqjcRhUfFqkQebsZ7zQf/+JbKxnbpZ8s8CYM3qewW/IPSH9lUlmtFrOs3iuA+a1giiFsyaJ4L15RbydyMcpA+sAE/UjYVx18IRFJHc=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.ebbFypy_1757472562 cluster:ay29)
+	t=1757472567; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=8ZPH5RhranyasvKwjlXf14i0q2sAaVJOLqLubug0iBk=;
+	b=sVXRQlv24dkp6ppPJvS5ei+HecrL/Or5NztMQDwvhDauQlsGiNFXr+ven2/L29dmhnSGccn1WiRfB+ObRFlBxLDIgZXwt6qG9N1AD03SLzLgfwUu6hK0PD16uUHj3er9dK/Vtr8PwaqTMwVxsB4HA6TBy8kKIEUB2DCQ3qW47aU=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.ebfE1in_1757472566 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 10 Sep 2025 10:49:22 +0800
+          Wed, 10 Sep 2025 10:49:26 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 To: kvm@vger.kernel.org
 Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
@@ -34,13 +35,13 @@ Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 0/7] KVM: x86: Improve the handling of debug exceptions during instruction emulation
-Date: Wed, 10 Sep 2025 10:49:12 +0800
-Message-Id: <cover.1757416809.git.houwenlong.hwl@antgroup.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 3/7] KVM: x86: Only check effective code breakpoint in emulation
+Date: Wed, 10 Sep 2025 10:49:15 +0800
+Message-Id: <7cf5f98526f07ceb91135cde0253ed9209fd5269.1757416809.git.houwenlong.hwl@antgroup.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1757416809.git.houwenlong.hwl@antgroup.com>
+References: <cover.1757416809.git.houwenlong.hwl@antgroup.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,57 +50,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-During my testing, I found that guest debugging with 'DR6.BD' does not
-work in instruction emulation, as the current code only considers the
-guest's DR7. Upon reviewing the code, I also observed that the checks
-for the userspace guest debugging feature and the guest's own debugging
-feature are repeated in different places during instruction
-emulation, but the overall logic is the same. If guest debugging
-is enabled, it needs to exit to userspace; otherwise, a #DB
-exception needs to be injected into the guest. Therefore, as
-suggested by Jiangshan Lai, some cleanup has been done for #DB
-handling in instruction emulation in this patchset. A new
-function named 'kvm_inject_emulated_db()' is introduced to
-consolidate all the checking logic. Moreover, I hope we can make
-the #DB interception path use the same function as well.
+When guest debug is enabled, the effective breakpoints are controlled by
+guest debug rather than by the guest itself.  Therefore, only check the
+code breakpoints of guest debug in emulation if guest debug is enabled,
+in order to maintain consistency with hardware behavior.
 
-Additionally, when I looked into the single-step #DB handling in
-instruction emulation, I noticed that the interrupt shadow is toggled,
-but it is not considered in the single-step #DB injection. This
-oversight causes VM entry to fail on VMX (due to pending debug
-exceptions checking) or breaks the 'MOV SS' suppressed #DB. For the
-latter, I have kept the behavior for now in my patchset, as I need some
-suggestions.
+Fixes: 4a1e10d5b5d8 ("KVM: x86: handle hardware breakpoints during emulation")
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+---
+ arch/x86/kvm/x86.c | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
 
-Hou Wenlong (7):
-  KVM: x86: Set guest DR6 by kvm_queue_exception_p() in instruction
-    emulation
-  KVM: x86: Check guest debug in DR access instruction emulation
-  KVM: x86: Only check effective code breakpoint in emulation
-  KVM: x86: Consolidate KVM_GUESTDBG_SINGLESTEP check into the
-    kvm_inject_emulated_db()
-  KVM: VMX: Set 'BS' bit in pending debug exceptions during instruction
-    emulation
-  KVM: selftests: Verify guest debug DR7.GD checking during instruction
-    emulation
-  KVM: selftests: Verify 'BS' bit checking in pending debug exception
-    during VM entry
-
- arch/x86/include/asm/kvm-x86-ops.h            |   1 +
- arch/x86/include/asm/kvm_host.h               |   1 +
- arch/x86/kvm/emulate.c                        |  14 +--
- arch/x86/kvm/kvm_emulate.h                    |   7 +-
- arch/x86/kvm/vmx/main.c                       |   9 ++
- arch/x86/kvm/vmx/vmx.c                        |  14 ++-
- arch/x86/kvm/vmx/x86_ops.h                    |   1 +
- arch/x86/kvm/x86.c                            | 109 +++++++++++-------
- arch/x86/kvm/x86.h                            |   7 ++
- .../selftests/kvm/include/x86/processor.h     |   3 +-
- tools/testing/selftests/kvm/x86/debug_regs.c  |  64 +++++++++-
- 11 files changed, 167 insertions(+), 63 deletions(-)
-
-
-base-commit: ecbcc2461839e848970468b44db32282e5059925
---
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index cf289d04b104..5af652916a19 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8947,6 +8947,9 @@ EXPORT_SYMBOL_GPL(kvm_skip_emulated_instruction);
+ 
+ static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
+ {
++	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP)
++		return false;
++
+ 	if (kvm_get_rflags(vcpu) & X86_EFLAGS_RF)
+ 		return true;
+ 
+@@ -8963,6 +8966,8 @@ static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
+ static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
+ 					   int emulation_type, int *r)
+ {
++	unsigned long dr7 = kvm_get_eff_dr7(vcpu);
++
+ 	WARN_ON_ONCE(emulation_type & EMULTYPE_NO_DECODE);
+ 
+ 	/*
+@@ -8983,34 +8988,14 @@ static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
+ 			      EMULTYPE_TRAP_UD | EMULTYPE_VMWARE_GP | EMULTYPE_PF))
+ 		return false;
+ 
+-	if (unlikely(vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) &&
+-	    (vcpu->arch.guest_debug_dr7 & DR7_BP_EN_MASK)) {
+-		struct kvm_run *kvm_run = vcpu->run;
+-		unsigned long eip = kvm_get_linear_rip(vcpu);
+-		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
+-					   vcpu->arch.guest_debug_dr7,
+-					   vcpu->arch.eff_db);
+-
+-		if (dr6 != 0) {
+-			kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
+-			kvm_run->debug.arch.pc = eip;
+-			kvm_run->debug.arch.exception = DB_VECTOR;
+-			kvm_run->exit_reason = KVM_EXIT_DEBUG;
+-			*r = 0;
+-			return true;
+-		}
+-	}
+-
+-	if (unlikely(vcpu->arch.dr7 & DR7_BP_EN_MASK) &&
++	if (unlikely(dr7 & DR7_BP_EN_MASK) &&
+ 	    !kvm_is_code_breakpoint_inhibited(vcpu)) {
+ 		unsigned long eip = kvm_get_linear_rip(vcpu);
+-		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
+-					   vcpu->arch.dr7,
+-					   vcpu->arch.db);
++		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0, dr7,
++					       vcpu->arch.eff_db);
+ 
+-		if (dr6 != 0) {
+-			kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
+-			*r = 1;
++		if (dr6) {
++			*r = kvm_inject_emulated_db(vcpu, dr6);
+ 			return true;
+ 		}
+ 	}
+-- 
 2.31.1
 
