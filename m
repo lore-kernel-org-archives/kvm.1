@@ -1,54 +1,120 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8866354F81;
-	Wed, 10 Sep 2025 02:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061FF14F9FB;
+	Wed, 10 Sep 2025 02:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757469668; cv=none; b=jCt1M6yl/WHdHgcw0z4luzmG/V7xM6NXxxPZSfu2V0qu4fzPQ8/Y/ULtTuCpKrdT1FHkNGp7BfH1SXzaqfpGnIcHY8CzIzN/ffUiYfgCQjj4/FLyZJpMTxmgLXqmNpzujlr8cV70I8js84B3k9fNmT/xYqNp3MckH9fEugZoqoc=
+	t=1757469785; cv=none; b=i6O5RpI7GLteQcP/a3CuOzkIxqyfb9Iyrd5R5+TN4LPEzZSnJ4klYyWF4cB6mEr+aUggYbWFuB9hiBsbZ9gOjROBvTrJ8Mh6G1KaVcS+pLMvY/A9qBZWdyzujJ+FZF7DkhQ7cXtF+BKURP6PnVw9IMAp05VESCBFWo7X8kFVROA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757469668; c=relaxed/simple;
-	bh=nrgJ3fiPQ7FVQoDDJSgixRhiDEvwPwCA2HNWaKt8QF4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tb9pxtW8LWGTaaER5xTwBPDs+3aLDbiTIjA+rWR6EhVysJaYkAMCAZkTl4XRCc06/4zvyVcH/tjZYPtUASt9Nx7rt4sT3jREfDMfPCd07nF4opSnSkCJR31nN+DqeUpFvjb+3Nihp5YkYeEz3mcOIc7k9Hz7gmpsEU1qFDkA9io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cM3hv5tbkz13NYt;
-	Wed, 10 Sep 2025 09:57:03 +0800 (CST)
-Received: from dggpemf100009.china.huawei.com (unknown [7.185.36.128])
-	by mail.maildlp.com (Postfix) with ESMTPS id AE3ED180488;
-	Wed, 10 Sep 2025 10:01:03 +0800 (CST)
-Received: from huawei.com (10.67.175.29) by dggpemf100009.china.huawei.com
- (7.185.36.128) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 10 Sep
- 2025 10:01:02 +0800
-From: Wang Tao <wangtao554@huawei.com>
-To: <linux-kernel@vger.kernel.org>
-CC: <graf@amazon.com>, <kvm@vger.kernel.org>, <mingo@redhat.com>,
-	<nh-open-source@amazon.com>, <peterz@infradead.org>, <sieberf@amazon.com>,
-	<vincent.guittot@linaro.org>, <tanghui20@huawei.com>,
-	<zhangqiao22@huawei.com>
-Subject: Re: [PATCH] sched/fair: Only increment deadline once on yield
-Date: Wed, 10 Sep 2025 01:43:53 +0000
-Message-ID: <20250910014353.1015060-1-wangtao554@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <7eed0c3d-6a78-4724-b204-a3b99764d839@amazon.com>
-References: <7eed0c3d-6a78-4724-b204-a3b99764d839@amazon.com>
+	s=arc-20240116; t=1757469785; c=relaxed/simple;
+	bh=yQC5/Pr9dIleX6ToR5xP6NjHGoOIn0D5FwPIi+ZIUXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UQFDtuFAEkY1QQ5Cf3GVUJD71nyMQhvrWdY4ws/p4jWlza4Umm7jyFdOhRy20cDIxvjHO3CMOSbEKUE4cHlRBht0KU9MTaT3emQ0KctOsS+o3kiMUedsp/MNfbQbW6n/jtwrb+DAPYfvljGCfxieIeGP2oFFtZVJR7xN700Zlvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZcP96CAh; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZcP96CAh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757469784; x=1789005784;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yQC5/Pr9dIleX6ToR5xP6NjHGoOIn0D5FwPIi+ZIUXE=;
+  b=ZcP96CAhoqooSiHU0sL5Wp7g92+jS7BR+93+37ejtxlCsrlGZstIECRU
+   BIrMt/OchRwYzdIFbNVwxRVkBydz7JlaRwM92RvZ40DspF0Ar9xidu68L
+   pRhPxmNB+mqvd7lpJC/Fn/gCHMkY2FxnzYp1mmo/3PttnHejlJC+sBJH9
+   oKZTLkoeYk1srApw/+1hrKiLoCJMRb9jOFtAlmbGthrZpC8MovFP9GPOh
+   gK4u7YEWpzepUIduaTv+cuWAgu+fATro+XWysZwT92WOBwocm5HWLyAo9
+   aDezS4jj7jJFuSZvuc8i8VTdGiY2Ul5Xl9iSqe1rRCMsdp03U80W97LBa
+   A==;
+X-CSE-ConnectionGUID: k1fZdoU1S9ClKm/jAWOKuQ==
+X-CSE-MsgGUID: iVXjUoyKTZKETPJR+oUfFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63599824"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63599824"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 19:03:04 -0700
+X-CSE-ConnectionGUID: IpTMBQPHTuOmy+/ArxaHJw==
+X-CSE-MsgGUID: 0RVQFBxYR1+QCKDB/a25tA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
+   d="scan'208";a="196924902"
+Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 19:03:01 -0700
+Message-ID: <9fa411a9-08d2-44fa-8ef8-18d3f2c8acad@linux.intel.com>
+Date: Wed, 10 Sep 2025 10:02:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100009.china.huawei.com (7.185.36.128)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Do not retry locally when the retry is
+ caused by invalid memslot
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20250822070305.26427-1-yan.y.zhao@intel.com>
+ <20250822070523.26495-1-yan.y.zhao@intel.com>
+ <2257f7a6-e4f5-4b90-bb18-cb0af756323f@linux.intel.com>
+ <aMA3LjGP9nezNM7e@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <aMA3LjGP9nezNM7e@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Picking up this dead thread again.
 
-Has this patch been applied to the mainline or other branch? 
 
-Thanks.
+On 9/9/2025 10:18 PM, Sean Christopherson wrote:
+> On Tue, Sep 09, 2025, Binbin Wu wrote:
+>> On 8/22/2025 3:05 PM, Yan Zhao wrote:
+>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>>> index 6784aaaced87..de2c4bb36069 100644
+>>> --- a/arch/x86/kvm/vmx/tdx.c
+>>> +++ b/arch/x86/kvm/vmx/tdx.c
+>>> @@ -1992,6 +1992,11 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+>>>    	 * blocked by TDs, false positives are inevitable i.e., KVM may re-enter
+>>>    	 * the guest even if the IRQ/NMI can't be delivered.
+>>>    	 *
+>>> +	 * Breaking out of the local retries if a retry is caused by faulting
+>>> +	 * in an invalid memslot (indicating the slot is under removal), so that
+>>> +	 * the slot removal will not be blocked due to waiting for releasing
+>>> +	 * SRCU lock in the VMExit handler.
+>>> +	 *
+>>>    	 * Note: even without breaking out of local retries, zero-step
+>>>    	 * mitigation may still occur due to
+>>>    	 * - invoking of TDH.VP.ENTER after KVM_EXIT_MEMORY_FAULT,
+>>> @@ -2002,6 +2007,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+>>>    	 * handle retries locally in their EPT violation handlers.
+>>>    	 */
+>>>    	while (1) {
+>>> +		struct kvm_memory_slot *slot;
+>>> +
+>>>    		ret = __vmx_handle_ept_violation(vcpu, gpa, exit_qual);
+>>>    		if (ret != RET_PF_RETRY || !local_retry)
+>>> @@ -2015,6 +2022,10 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+>>>    			break;
+>>>    		}
+>>> +		slot = kvm_vcpu_gfn_to_memslot(vcpu, gpa_to_gfn(gpa));
+>>> +		if (slot && slot->flags & KVM_MEMSLOT_INVALID)
+>> The slot couldn't be NULL here, right?
+> Uh, hmm.  It could be NULL.  If the memslot deletion starts concurrently with the
+> S-EPT violation, then the memslot could be transitioned to INVALID (prepared for
+> deletion) prior to the vCPU acquiring SRCU after the VM-Exit.  Memslot deletion
+> could then assign to kvm->memslots with a NULL memslot.
+>
+>    vCPU                          DELETE
+>    S-EPT Violation
+>                                  Set KVM_MEMSLOT_INVALID
+>                                  synchronize_srcu_expedited()
+>    Acquire SRCU
+>    __vmx_handle_ept_violation()
+>    RET_PF_RETRY due to INVALID
+>                                  Set memslot NULL
+>    kvm_vcpu_gfn_to_memslot()
+Got it, thanks!
