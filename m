@@ -1,29 +1,29 @@
-Received: from out198-17.us.a.mail.aliyun.com (out198-17.us.a.mail.aliyun.com [47.90.198.17])
+Received: from out198-15.us.a.mail.aliyun.com (out198-15.us.a.mail.aliyun.com [47.90.198.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4333248F5C;
-	Wed, 10 Sep 2025 02:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD56A248F5E;
+	Wed, 10 Sep 2025 02:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757472901; cv=none; b=pgKMBhDJPknE6gjaxHXGs0U2jvtvNt49/dFT4AUZLaRMDoNybLtg2pEu5SFo3DHQuOEFAuKqCd/HjhLHOqItRvHSKEOb6EsCbriekuFl8PPCxrT1CY4mwMXDWUZUarbDCrJvbEQzjwgonG2rK8WdA6u6XqZJUEa/dasW+qvFVcE=
+	t=1757472903; cv=none; b=n7KlqcDcMQapANtT4Ef2LMYjP8FLMHWwrV3wEeXoGgYJV3UHdB3XXpGwtxgjqEeGIV9z5Z/iVO8dgU7BmBBeN6zdXox9OdCUH4Lrxm26D4dmbKqT2KYt8TZkYCHdIJY256fH1WiqMn4VbC8MX4aJixYDTDBx4R7FAFPLo3Xp0Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757472901; c=relaxed/simple;
-	bh=kYZbqIr5MidBn0HJ2lhzmxRbTeiwTgdazPiuPuescF8=;
+	s=arc-20240116; t=1757472903; c=relaxed/simple;
+	bh=ELenBpY/5KgZte93vWBfudD9K2sGtS9FzpmRBYNgrcU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iLuumOCe09XGyfBApzAgon8IQuW8wDfZ7vQzCEkj0RZS6SkigGnfjLventAl+56uFR4oBQ94ucT+tc+bbqT68ciZR3My3QTJHYHxfpstTeykqvA2sO5PseAuqwkjKsrH/XonOuDTpl9f3m1GUqOrbjIAYr0/srf5cvAqWMK0Dv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=WaGWB7fm; arc=none smtp.client-ip=47.90.198.17
+	 MIME-Version; b=Vl+Eg/Fy0eJvPMqtUH8hBfrNw2tEcfDHSqjQWsUE+LFtD8G7v9YUTaNSTyDCqwD4XeRCsaqC7cvYZl72pHc/y4GHGiuaJEiOicGQTffJD8SvcX3RLZoU/xVRBx7O6hsh/rpKDThkdskMQFXEuD7Ar6M7Ra6Hj4Xq1z2AQIPmyI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=d2wXsRxt; arc=none smtp.client-ip=47.90.198.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="WaGWB7fm"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="d2wXsRxt"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1757472887; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=JnJ9k+tsKVXHxmYDXdwSc1SeFCgYSHPpp2qWvdPYtD0=;
-	b=WaGWB7fmPYdLcdMYQ6HzymjGivZ49jkqLShmu8xk9eSwLwArI3CmUM+bxRiuTpX/mQE8NEbMDqZnCLclU2Q1NM7Omnp3rhrT6LSR9I2KrcWPUkGdP9ID8UJ6I45j75o5iUtruxQac8rMMf/VnkCKduD4GWkbA87I8Gxg2mUesFU=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.ebdO4aZ_1757472567 cluster:ay29)
+	t=1757472883; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=YXYjSPwBEzyTiJUkKnb+LmPlxLCJZLMXoTgZ0VFZOcg=;
+	b=d2wXsRxtWBnGdlA8lITyJaS91t2Ioh+U22y9eR8OzsEsPlXD45vUAC1IAnQ9+wZ2u7cxVu+zLFZACVngXXDcmu1DSH1nNjs00GenSBskac7SMv383dx+IjwcsJebv6CmC8L66B52m+DgmqpkIq+OwVqxyEMvLybTu371c/BcJrg=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.ebfmCoJ_1757472563 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 10 Sep 2025 10:49:27 +0800
+          Wed, 10 Sep 2025 10:49:24 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 To: kvm@vger.kernel.org
 Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
@@ -36,9 +36,9 @@ Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/7] KVM: x86: Consolidate KVM_GUESTDBG_SINGLESTEP check into the kvm_inject_emulated_db()
-Date: Wed, 10 Sep 2025 10:49:16 +0800
-Message-Id: <45cbc005e14ea2a4b9ec803a91af63e364aeb71a.1757416809.git.houwenlong.hwl@antgroup.com>
+Subject: [PATCH 1/7] KVM: x86: Set guest DR6 by kvm_queue_exception_p() in instruction emulation
+Date: Wed, 10 Sep 2025 10:49:13 +0800
+Message-Id: <14773b9e2387eaeee3af9fe0c6ca28a0b8fcee69.1757416809.git.houwenlong.hwl@antgroup.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1757416809.git.houwenlong.hwl@antgroup.com>
 References: <cover.1757416809.git.houwenlong.hwl@antgroup.com>
@@ -50,53 +50,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use kvm_inject_emulated_db() in kvm_vcpu_do_singlestep() to consolidate
-'KVM_GUESTDBG_SINGLESTEP' check into kvm_inject_emulated_db() during
-emulation.
+Record DR6 in emulate_db() and use kvm_queue_exception_p() to set DR6
+instead of directly using kvm_set_dr6() in emulation, which keeps the
+handling of DR6 during #DB injection consistent with other code paths.
 
 No functional change intended.
 
-Suggested-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 ---
- arch/x86/kvm/x86.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ arch/x86/kvm/emulate.c     | 14 ++++----------
+ arch/x86/kvm/kvm_emulate.h |  6 +++++-
+ arch/x86/kvm/x86.c         |  3 +++
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5af652916a19..83960214d5d8 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8632,7 +8632,10 @@ static int kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
- {
- 	struct kvm_run *kvm_run = vcpu->run;
- 
--	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) {
-+	/* Data breakpoints are not supported in emulation for now. */
-+	WARN_ON((dr6 & DR6_BS) && (dr6 & DR_TRAP_BITS));
-+
-+	if (vcpu->guest_debug & (KVM_GUESTDBG_USE_HW_BP | KVM_GUESTDBG_SINGLESTEP)) {
- 		kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
- 		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
- 		kvm_run->debug.arch.exception = DB_VECTOR;
-@@ -8907,17 +8910,7 @@ static int kvm_vcpu_check_hw_bp(unsigned long addr, u32 type, u32 dr7,
- 
- static int kvm_vcpu_do_singlestep(struct kvm_vcpu *vcpu)
- {
--	struct kvm_run *kvm_run = vcpu->run;
--
--	if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP) {
--		kvm_run->debug.arch.dr6 = DR6_BS | DR6_ACTIVE_LOW;
--		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
--		kvm_run->debug.arch.exception = DB_VECTOR;
--		kvm_run->exit_reason = KVM_EXIT_DEBUG;
--		return 0;
--	}
--	kvm_queue_exception_p(vcpu, DB_VECTOR, DR6_BS);
--	return 1;
-+	return kvm_inject_emulated_db(vcpu, DR6_BS);
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 542d3664afa3..18e3a732d106 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -593,8 +593,9 @@ static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
+ 	return X86EMUL_PROPAGATE_FAULT;
  }
  
- int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+-static int emulate_db(struct x86_emulate_ctxt *ctxt)
++static int emulate_db(struct x86_emulate_ctxt *ctxt, unsigned long dr6)
+ {
++	ctxt->exception.dr6 = dr6;
+ 	return emulate_exception(ctxt, DB_VECTOR, 0, false);
+ }
+ 
+@@ -3857,15 +3858,8 @@ static int check_dr_read(struct x86_emulate_ctxt *ctxt)
+ 	if ((cr4 & X86_CR4_DE) && (dr == 4 || dr == 5))
+ 		return emulate_ud(ctxt);
+ 
+-	if (ctxt->ops->get_dr(ctxt, 7) & DR7_GD) {
+-		ulong dr6;
+-
+-		dr6 = ctxt->ops->get_dr(ctxt, 6);
+-		dr6 &= ~DR_TRAP_BITS;
+-		dr6 |= DR6_BD | DR6_ACTIVE_LOW;
+-		ctxt->ops->set_dr(ctxt, 6, dr6);
+-		return emulate_db(ctxt);
+-	}
++	if (ctxt->ops->get_dr(ctxt, 7) & DR7_GD)
++		return emulate_db(ctxt, DR6_BD);
+ 
+ 	return X86EMUL_CONTINUE;
+ }
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 7b5ddb787a25..a6fad7b938e3 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -24,7 +24,11 @@ struct x86_exception {
+ 	bool error_code_valid;
+ 	u16 error_code;
+ 	bool nested_page_fault;
+-	u64 address; /* cr2 or nested page fault gpa */
++	union {
++		u64 address; /* cr2 or nested page fault gpa */
++		unsigned long dr6;
++		u64 payload;
++	};
+ 	u8 async_page_fault;
+ 	unsigned long exit_qualification;
+ };
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 7ba2cdfdac44..b2e8322aeca7 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8612,6 +8612,8 @@ static void inject_emulated_exception(struct kvm_vcpu *vcpu)
+ 
+ 	if (ctxt->exception.vector == PF_VECTOR)
+ 		kvm_inject_emulated_page_fault(vcpu, &ctxt->exception);
++	else if (ctxt->exception.vector == DB_VECTOR)
++		kvm_queue_exception_p(vcpu, DB_VECTOR, ctxt->exception.dr6);
+ 	else if (ctxt->exception.error_code_valid)
+ 		kvm_queue_exception_e(vcpu, ctxt->exception.vector,
+ 				      ctxt->exception.error_code);
+@@ -8656,6 +8658,7 @@ static void init_emulate_ctxt(struct kvm_vcpu *vcpu)
+ 	ctxt->interruptibility = 0;
+ 	ctxt->have_exception = false;
+ 	ctxt->exception.vector = -1;
++	ctxt->exception.payload = 0;
+ 	ctxt->perm_ok = false;
+ 
+ 	init_decode_cache(ctxt);
 -- 
 2.31.1
 
