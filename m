@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FDA320A1C
-	for <kvm@vger.kernel.org>; Thu, 11 Sep 2025 11:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F0431DD83
+	for <kvm@vger.kernel.org>; Thu, 11 Sep 2025 11:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757591877; cv=none; b=Uu5RpyegJ6+WsxP8XTrqOhTysJ4oUdNc8FYSDIhS7ogrbF12NJx+7cBKPYLVT787PbdbGCcAAH5xRcOdS6pIsU6DdHixhwvOHG3Vqtr79fCTL2Tj4FstsgD1xASOlVMkDHhV0qEbEm/b0JWE+w11AiddVABg/qnkqeSfiTcTXa8=
+	t=1757591882; cv=none; b=QA80pfTSf+YtONFVMeI5AeCQno8o+MoQQABMym6lJA9VdX4/PIr/W3uS73EtuFpAwtKwfHFL98qhEskPp/6gIEB5Fc+hiPJuH+O8tySdhVH4yOrsMoKMkX5lbXrg1wT86l61FdkhxoL9xu2+P0B8dXa568Ah7IBuvxfDJoZcdIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757591877; c=relaxed/simple;
-	bh=7HOJXed/grVIwqxVnBC0UOQowTK5L/FCl7Cie6uBUm4=;
+	s=arc-20240116; t=1757591882; c=relaxed/simple;
+	bh=/D55pFyt3VJdmuGX0Hft3q3YJw6AKpeKJBy5hh1wrNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reaWFv/mOJU7BGQ8b/YGJCm3NacgPoVKG3BriDF5VDFP3FAOY5ymEBE96izQxOdax9z0S+gRJoD0eDAQk2RweCN6xg+cKzvrWCMloUgnBQA8x0ykt0sABOtNoSVA0oQL3uG4r4XVHVux5Yz/clKEs6EMwncggj1vSGDCKYBG97s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1ntO9aE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=pwM2LjZi1ZUcMUhOkgZXo9dlGIY8lmEzhuEvaE9fEpZ/ZND05pWABAUQMLqN5PizZ0cAPsuKU00svgTg4WCJ7t/f/RPqShTrf8UY7v1nG2wAjxEZ13gYcce6kuJ1n/K1ymF7T0bkjh7Sto7WYd9vHiPSp1s+y8ClwP4dRPs252o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si55fs3t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1ntO9aE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B73C4CEF0;
-	Thu, 11 Sep 2025 11:57:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si55fs3t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8952CC4CEF1;
+	Thu, 11 Sep 2025 11:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757591877;
-	bh=7HOJXed/grVIwqxVnBC0UOQowTK5L/FCl7Cie6uBUm4=;
+	s=k20201202; t=1757591881;
+	bh=/D55pFyt3VJdmuGX0Hft3q3YJw6AKpeKJBy5hh1wrNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1ntO9aEo82Qc78/YNeyI6LSQHMMSt10UyA//C2B2KcD0FLcWLj18okAIoyxhZ4LM
-	 sxbA1oBVssrhDk6VCVyEh/Q75omSlQw04GBqJzB9ZyLsXdeh8u3yLFaGo0ixvV+tW+
-	 k2uRaFFE0EIcOeGLjf3PT/NY8NyJBaZcFNfqeQjGBziSs217O57pipb+fZpjanrYFL
-	 MdJKEqA+FvP3sgqZKdnzSDuChWOP3DvsnY8ixHeRohuWXmc1J1M/S+8ccp9H3m738D
-	 rPNQ6KWdsAEcPSCcWKJRoxdDIPZxQWaICJ/aEFwvjPmy0qZHrB8CSfw1U3TWtTD6nk
-	 MDpIinpFepTIw==
+	b=si55fs3taRGv6SAX3cphNIIaluOEZV9VQnKLgYUNGSmXMaNchVlUd+JsPJ2xwRiH8
+	 zwH6MXBgSOZRGaP4LPMkkQhyde1HwI8aHaKga9zE3IjfC5RZUkmv4onCzhiGPP02UX
+	 enhtrEf8Iaae5HK5+5vS+BnHyKz3Bx5Dx5X/jQUriX+6WYd4QVc35fi/N0evXgKXry
+	 GLmfdagiyDawSQmpxtB7XHDWFUfV/bJRlziv2YQ+BLgNQnfIfKsCLrwqqUhRe29yXw
+	 4rVtjJdnrKQyz5EUu395/OcvyurmkfpmHGOA6mM/N96kLdsOSAqRXfi+UMLvMYmpL/
+	 XPfcoggS7JszA==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -42,9 +42,9 @@ Cc: qemu-devel <qemu-devel@nongnu.org>,
 	Michael Roth <michael.roth@amd.com>,
 	Neeraj Upadhyay <neeraj.upadhyay@amd.com>,
 	Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: [RFC PATCH 7/7] target/i386: SEV: Add support for enabling Secure AVIC SEV feature
-Date: Thu, 11 Sep 2025 17:24:26 +0530
-Message-ID: <632eaad0ef28943520a1285c8efb3d8a756e4624.1757589490.git.naveen@kernel.org>
+Subject: [RFC PATCH 1/7] target/i386: SEV: Consolidate SEV feature validation to common init path
+Date: Thu, 11 Sep 2025 17:24:20 +0530
+Message-ID: <bd64baf06e483cf8df0f7b0f98cf5ad3dd5bff80.1757589490.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1757589490.git.naveen@kernel.org>
 References: <cover.1757589490.git.naveen@kernel.org>
@@ -56,87 +56,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for enabling Secure AVIC VMSA SEV feature in SEV-SNP guests
-through a new "secure-avic" boolean property on SEV-SNP guest objects.
+Currently, check_sev_features() is called in multiple places when
+processing IGVM files: both when processing the initial VMSA SEV
+features from IGVM, as well as when validating the full contents of the
+VMSA. Move this to a single point in sev_common_kvm_init() to simplify
+the flow, as well as to re-use this function when VMSA SEV features are
+being set without using IGVM files.
 
-Sample command-line:
-  -machine q35,confidential-guest-support=sev0 \
-  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,secure-avic=on
+Since check_sev_features() relies on SVM_SEV_FEAT_SNP_ACTIVE being set
+in VMSA SEV features depending on the guest type, set this flag by
+default when creating SEV-SNP guests. When using IGVM files, this field
+is anyway over-written so that validation in check_sev_features() is
+still relevant.
 
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Finally, add a check to ensure SEV features aren't also set through qemu
+cli if using IGVM files.
+
 Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 ---
- target/i386/sev.h |  1 +
- target/i386/sev.c | 13 +++++++++++++
- qapi/qom.json     |  5 ++++-
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ target/i386/sev.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index 87e73034ad15..a374c144bccd 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -47,6 +47,7 @@ bool sev_snp_enabled(void);
- #define SVM_SEV_FEAT_SNP_ACTIVE     BIT(0)
- #define SVM_SEV_FEAT_DEBUG_SWAP     BIT(5)
- #define SVM_SEV_FEAT_SECURE_TSC     BIT(9)
-+#define SVM_SEV_FEAT_SECURE_AVIC    BIT(16)
- 
- typedef struct SevKernelLoaderContext {
-     char *setup_data;
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index facf51c810d9..f9170e21ca57 100644
+index 1057b8ab2c60..243e9493ba8d 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -3147,6 +3147,16 @@ static void sev_snp_guest_set_secure_tsc(Object *obj, bool value, Error **errp)
-     sev_set_feature(SEV_COMMON(obj), SVM_SEV_FEAT_SECURE_TSC, value);
+@@ -586,9 +586,6 @@ static int check_vmsa_supported(SevCommonState *sev_common, hwaddr gpa,
+     vmsa_check.x87_fcw = 0;
+     vmsa_check.mxcsr = 0;
+ 
+-    if (check_sev_features(sev_common, vmsa_check.sev_features, errp) < 0) {
+-        return -1;
+-    }
+     vmsa_check.sev_features = 0;
+ 
+     if (!buffer_is_zero(&vmsa_check, sizeof(vmsa_check))) {
+@@ -1892,20 +1889,29 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+          * as SEV_STATE_UNINIT.
+          */
+         if (x86machine->igvm) {
++            if (sev_common->sev_features & ~SVM_SEV_FEAT_SNP_ACTIVE) {
++                error_setg(errp, "%s: SEV features can't be specified when using IGVM files",
++                           __func__);
++                return -1;
++            }
+             if (IGVM_CFG_GET_CLASS(x86machine->igvm)
+                     ->process(x86machine->igvm, machine->cgs, true, errp) ==
+                 -1) {
+                 return -1;
+             }
+-            /*
+-             * KVM maintains a bitmask of allowed sev_features. This does not
+-             * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
+-             * itself. Therefore we need to clear this flag.
+-             */
+-            args.vmsa_features = sev_common->sev_features &
+-                                 ~SVM_SEV_FEAT_SNP_ACTIVE;
+         }
+ 
++        if (check_sev_features(sev_common, sev_common->sev_features, errp) < 0) {
++            return -1;
++        }
++
++        /*
++         * KVM maintains a bitmask of allowed sev_features. This does not
++         * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
++         * itself. Therefore we need to clear this flag.
++         */
++        args.vmsa_features = sev_common->sev_features & ~SVM_SEV_FEAT_SNP_ACTIVE;
++
+         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
+         break;
+     }
+@@ -2518,9 +2524,6 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+                            __func__);
+                 return -1;
+             }
+-            if (check_sev_features(sev_common, sa->sev_features, errp) < 0) {
+-                return -1;
+-            }
+             sev_common->sev_features = sa->sev_features;
+         }
+         return 0;
+@@ -3127,6 +3130,7 @@ sev_snp_guest_instance_init(Object *obj)
+ 
+     /* default init/start/finish params for kvm */
+     sev_snp_guest->kvm_start_conf.policy = DEFAULT_SEV_SNP_POLICY;
++    SEV_COMMON(sev_snp_guest)->sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
  }
  
-+static bool sev_snp_guest_get_secure_avic(Object *obj, Error **errp)
-+{
-+    return is_sev_feature_set(SEV_COMMON(obj), SVM_SEV_FEAT_SECURE_AVIC);
-+}
-+
-+static void sev_snp_guest_set_secure_avic(Object *obj, bool value, Error **errp)
-+{
-+    sev_set_feature(SEV_COMMON(obj), SVM_SEV_FEAT_SECURE_AVIC, value);
-+}
-+
- static void
- sev_snp_guest_get_tsc_frequency(Object *obj, Visitor *v, const char *name,
-                                 void *opaque, Error **errp)
-@@ -3210,6 +3220,9 @@ sev_snp_guest_class_init(ObjectClass *oc, const void *data)
-     object_class_property_add(oc, "tsc-frequency", "uint32",
-                               sev_snp_guest_get_tsc_frequency,
-                               sev_snp_guest_set_tsc_frequency, NULL, NULL);
-+    object_class_property_add_bool(oc, "secure-avic",
-+                                  sev_snp_guest_get_secure_avic,
-+                                  sev_snp_guest_set_secure_avic);
- }
- 
- static void
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 5b99148cb790..5dce560a2f54 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1105,6 +1105,8 @@
- # @tsc-frequency: set secure TSC frequency. Only valid if Secure TSC
- #     is enabled (default: zero) (since 10.2)
- #
-+# @secure-avic: enable Secure AVIC (default: false) (since 10.2)
-+#
- # Since: 9.1
- ##
- { 'struct': 'SevSnpGuestProperties',
-@@ -1118,7 +1120,8 @@
-             '*host-data': 'str',
-             '*vcek-disabled': 'bool',
-             '*secure-tsc': 'bool',
--            '*tsc-frequency': 'uint32' } }
-+            '*tsc-frequency': 'uint32',
-+            '*secure-avic': 'bool' } }
- 
- ##
- # @TdxGuestProperties:
+ /* guest info specific to sev-snp */
 -- 
 2.50.1
 
