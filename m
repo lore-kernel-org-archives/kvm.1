@@ -1,151 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F0431DD83
-	for <kvm@vger.kernel.org>; Thu, 11 Sep 2025 11:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF144324B2B;
+	Thu, 11 Sep 2025 12:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757591882; cv=none; b=QA80pfTSf+YtONFVMeI5AeCQno8o+MoQQABMym6lJA9VdX4/PIr/W3uS73EtuFpAwtKwfHFL98qhEskPp/6gIEB5Fc+hiPJuH+O8tySdhVH4yOrsMoKMkX5lbXrg1wT86l61FdkhxoL9xu2+P0B8dXa568Ah7IBuvxfDJoZcdIQ=
+	t=1757595439; cv=none; b=tk37O1BuGxyRxctxRFzNPvhWQLZEHfxRKUYiImcXduamVQeisctvyF7WlslrubqvTf2UX0qQV8xm3Dum/p5Uc95zZV4KCaOYOxUl/f/52WSNtFpslPj77Rq1y26qDIWlC74qxP4OAYr1EFG89P40qR0wCMFucKDs2ZV7yBBvbrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757591882; c=relaxed/simple;
-	bh=/D55pFyt3VJdmuGX0Hft3q3YJw6AKpeKJBy5hh1wrNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwM2LjZi1ZUcMUhOkgZXo9dlGIY8lmEzhuEvaE9fEpZ/ZND05pWABAUQMLqN5PizZ0cAPsuKU00svgTg4WCJ7t/f/RPqShTrf8UY7v1nG2wAjxEZ13gYcce6kuJ1n/K1ymF7T0bkjh7Sto7WYd9vHiPSp1s+y8ClwP4dRPs252o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si55fs3t; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757595439; c=relaxed/simple;
+	bh=D8mJ20nq5KVHZ3WwObG2jcxUSYVPuMGfWJ8gCeZ6d8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Isyk2mW0pz9G2IaVsgl6Ou5HEQRBeNmNtaXFGyf5HMyB7gu1yEzTcDM/W8uToiLks/+YfFOOfiqV7wf5RVal9JpREga/Wd6G/Cnl0UvLLuqOA+gh8XmbgsHIytA+pQO+qTbGC5yEJsUuIrnQudEUcDOaEb1NFfkiWY35fkjDDQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=s35Fwrxw; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si55fs3t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8952CC4CEF1;
-	Thu, 11 Sep 2025 11:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757591881;
-	bh=/D55pFyt3VJdmuGX0Hft3q3YJw6AKpeKJBy5hh1wrNE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=si55fs3taRGv6SAX3cphNIIaluOEZV9VQnKLgYUNGSmXMaNchVlUd+JsPJ2xwRiH8
-	 zwH6MXBgSOZRGaP4LPMkkQhyde1HwI8aHaKga9zE3IjfC5RZUkmv4onCzhiGPP02UX
-	 enhtrEf8Iaae5HK5+5vS+BnHyKz3Bx5Dx5X/jQUriX+6WYd4QVc35fi/N0evXgKXry
-	 GLmfdagiyDawSQmpxtB7XHDWFUfV/bJRlziv2YQ+BLgNQnfIfKsCLrwqqUhRe29yXw
-	 4rVtjJdnrKQyz5EUu395/OcvyurmkfpmHGOA6mM/N96kLdsOSAqRXfi+UMLvMYmpL/
-	 XPfcoggS7JszA==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
-	<kvm@vger.kernel.org>,
-	"Daniel P. Berrange" <berrange@redhat.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@amd.com>,
-	Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: [RFC PATCH 1/7] target/i386: SEV: Consolidate SEV feature validation to common init path
-Date: Thu, 11 Sep 2025 17:24:20 +0530
-Message-ID: <bd64baf06e483cf8df0f7b0f98cf5ad3dd5bff80.1757589490.git.naveen@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1757589490.git.naveen@kernel.org>
-References: <cover.1757589490.git.naveen@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="s35Fwrxw"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B9tek6005342;
+	Thu, 11 Sep 2025 12:57:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hd6vmq
+	mmavE59HNp9WygI4yYrrXDAdeVaff97XxRbJE=; b=s35FwrxwwrOgvhgadGerKq
+	oyptUFK/McaKVJ2deS7CBHsjMYjE/Tl0qJUh3XBt9KHx0QiN65Bn1aPdPgj06FhR
+	BFPWqwfubHsVPScXfCe87aWBKSilbHwu4SZLIHXct6RQHgExStvDnY03m+wCpA53
+	W12mskhUyfmg9btPl3Gi8G+y49f86wJjWKcni6kIOU/6ofZqFTDnxgNqHX8F/gtD
+	n912xcbXzfjkUiwF8WWmeQO3MzQqiIc20mxlR22/UYDNVhiBVvi6LuRFFJ/j9Kwn
+	Ul4ydjg9KGcWTPPahPJk1ugbGXl095YPDDlcXbuy+RDWvRGjk3MHPjNIawpGhOJQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukesf2y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Sep 2025 12:57:04 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58BCVtkK011457;
+	Thu, 11 Sep 2025 12:57:03 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9up4g1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Sep 2025 12:57:03 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58BCv0AY58458420
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Sep 2025 12:57:00 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 027C020043;
+	Thu, 11 Sep 2025 12:57:00 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78A5F20040;
+	Thu, 11 Sep 2025 12:56:59 +0000 (GMT)
+Received: from [9.87.150.119] (unknown [9.87.150.119])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 11 Sep 2025 12:56:59 +0000 (GMT)
+Message-ID: <aeb461ff-90a1-4d6e-a779-1c6e885bdddb@linux.ibm.com>
+Date: Thu, 11 Sep 2025 14:56:59 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/20] KVM: s390: KVM page table management functions:
+ walks
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, nsg@linux.ibm.com,
+        nrb@linux.ibm.com, seiden@linux.ibm.com, schlameuss@linux.ibm.com,
+        hca@linux.ibm.com, svens@linux.ibm.com, agordeev@linux.ibm.com,
+        david@redhat.com, gerald.schaefer@linux.ibm.com
+References: <20250910180746.125776-1-imbrenda@linux.ibm.com>
+ <20250910180746.125776-11-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20250910180746.125776-11-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX9noVrmUmwY5p
+ FPZberpCZTyuJFXX4k2wzTAsDHhrKAkHFvOgiGjRTfIM8O8cuEKWeV08Ima7PM3oCOAnxok+zNx
+ 8vpOODMZ+xg1azCv7KNlwFitpocvVuSEA7IfxptYDWl5wb/I6hI7/Sc1v5j8skh4CcFM3E+/7b7
+ syJJPw/xTZ8utdP9f1RmD/H7zlXTt92+roGA7kbVHNbb2sF7TLMfVsqDjszqL7xw5LQJpsy1uG7
+ G+vLCKPbvdWI9KY7AJTmhlQ7YwellLpKI8Re6E5Kn5YK2B++1UBS5pxpPscox5dYz6rGXkV28WA
+ 1OMJfOKmcMuPGsLO1VTynVggCXahGBD131eMIVD1c4b+c7AZRbjf1iFT0aPfLc93bowUIA+aeof
+ 8qs/Eyqa
+X-Proofpoint-ORIG-GUID: jMw-K2j7awnlcspzKEJOZdHrFlK6SBX-
+X-Proofpoint-GUID: jMw-K2j7awnlcspzKEJOZdHrFlK6SBX-
+X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68c2c720 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=ZaHFFdLEXfJz46AHvcMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_04,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
 
-Currently, check_sev_features() is called in multiple places when
-processing IGVM files: both when processing the initial VMSA SEV
-features from IGVM, as well as when validating the full contents of the
-VMSA. Move this to a single point in sev_common_kvm_init() to simplify
-the flow, as well as to re-use this function when VMSA SEV features are
-being set without using IGVM files.
+On 9/10/25 8:07 PM, Claudio Imbrenda wrote:
+> Add page table management functions to be used for KVM guest (gmap)
+> page tables.
+> 
+> This patch adds functions to walk to specific table entries, or to
+> perform actions on a range of entries.
+> 
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> ---
+>   arch/s390/kvm/dat.c | 351 ++++++++++++++++++++++++++++++++++++++++++++
+>   arch/s390/kvm/dat.h |  38 +++++
+>   2 files changed, 389 insertions(+)
+> 
+> diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
+> index f26e3579bd77..fe93e1c07158 100644
+> --- a/arch/s390/kvm/dat.c
+> +++ b/arch/s390/kvm/dat.c
+> @@ -209,3 +209,354 @@ union pgste __dat_ptep_xchg(union pte *ptep, union pgste pgste, union pte new, g
+>   	WRITE_ONCE(*ptep, new);
+>   	return pgste;
+>   }
+> +
+> +/*
+> + * dat_split_pmd is assumed to be called with mmap_lock held in read or write mode
+> + */
+> +static int dat_split_pmd(union pmd *pmdp, gfn_t gfn, union asce asce)
+> +{
+> +	struct page_table *pt;
+> +	union pmd new, old;
+> +	union pte init;
+> +	int i;
+> +
+> +	old = READ_ONCE(*pmdp);
+> +
+> +	/* Already split, nothing to do */
+> +	if (!old.h.i && !old.h.fc)
+> +		return 0;
+> +
+> +	pt = dat_alloc_pt_noinit();
+> +	if (!pt)
+> +		return -ENOMEM;
+> +	new.val = virt_to_phys(pt);
+> +
+> +	while (old.h.i || old.h.fc) {
+> +		init.val = pmd_origin_large(old);
+> +		init.h.p = old.h.p;
+> +		init.h.i = old.h.i;
+> +		init.s.d = old.s.fc1.d;
+> +		init.s.w = old.s.fc1.w;
+> +		init.s.y = old.s.fc1.y;
+> +		init.s.sd = old.s.fc1.sd;
+> +		init.s.pr = old.s.fc1.pr;
 
-Since check_sev_features() relies on SVM_SEV_FEAT_SNP_ACTIVE being set
-in VMSA SEV features depending on the guest type, set this flag by
-default when creating SEV-SNP guests. When using IGVM files, this field
-is anyway over-written so that validation in check_sev_features() is
-still relevant.
+This looks horrible but I haven't found a better solution.
 
-Finally, add a check to ensure SEV features aren't also set through qemu
-cli if using IGVM files.
+> +		if (old.h.fc) {
+> +			for (i = 0; i < _PAGE_ENTRIES; i++)
+> +				pt->ptes[i].val = init.val | i * PAGE_SIZE;
+> +			/* no need to take locks as the page table is not installed yet */
+> +			dat_init_pgstes(pt, old.s.fc1.prefix_notif ? PGSTE_IN_BIT : 0);
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- target/i386/sev.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+So, if the pmd had the IN bit, all PGSTEs will have it as well, right?
+Why can't we notify and not copy this bit, so the notifier sets it for 
+the ptes which actually need it? Or does it happen later?
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 1057b8ab2c60..243e9493ba8d 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -586,9 +586,6 @@ static int check_vmsa_supported(SevCommonState *sev_common, hwaddr gpa,
-     vmsa_check.x87_fcw = 0;
-     vmsa_check.mxcsr = 0;
- 
--    if (check_sev_features(sev_common, vmsa_check.sev_features, errp) < 0) {
--        return -1;
--    }
-     vmsa_check.sev_features = 0;
- 
-     if (!buffer_is_zero(&vmsa_check, sizeof(vmsa_check))) {
-@@ -1892,20 +1889,29 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-          * as SEV_STATE_UNINIT.
-          */
-         if (x86machine->igvm) {
-+            if (sev_common->sev_features & ~SVM_SEV_FEAT_SNP_ACTIVE) {
-+                error_setg(errp, "%s: SEV features can't be specified when using IGVM files",
-+                           __func__);
-+                return -1;
-+            }
-             if (IGVM_CFG_GET_CLASS(x86machine->igvm)
-                     ->process(x86machine->igvm, machine->cgs, true, errp) ==
-                 -1) {
-                 return -1;
-             }
--            /*
--             * KVM maintains a bitmask of allowed sev_features. This does not
--             * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
--             * itself. Therefore we need to clear this flag.
--             */
--            args.vmsa_features = sev_common->sev_features &
--                                 ~SVM_SEV_FEAT_SNP_ACTIVE;
-         }
- 
-+        if (check_sev_features(sev_common, sev_common->sev_features, errp) < 0) {
-+            return -1;
-+        }
-+
-+        /*
-+         * KVM maintains a bitmask of allowed sev_features. This does not
-+         * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
-+         * itself. Therefore we need to clear this flag.
-+         */
-+        args.vmsa_features = sev_common->sev_features & ~SVM_SEV_FEAT_SNP_ACTIVE;
-+
-         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
-         break;
-     }
-@@ -2518,9 +2524,6 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-                            __func__);
-                 return -1;
-             }
--            if (check_sev_features(sev_common, sa->sev_features, errp) < 0) {
--                return -1;
--            }
-             sev_common->sev_features = sa->sev_features;
-         }
-         return 0;
-@@ -3127,6 +3130,7 @@ sev_snp_guest_instance_init(Object *obj)
- 
-     /* default init/start/finish params for kvm */
-     sev_snp_guest->kvm_start_conf.policy = DEFAULT_SEV_SNP_POLICY;
-+    SEV_COMMON(sev_snp_guest)->sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
- }
- 
- /* guest info specific to sev-snp */
--- 
-2.50.1
-
+> +		} else {
+> +			dat_init_page_table(pt, init.val, 0);
+> +		}
+> +
+> +		if (dat_pmdp_xchg_atomic(pmdp, old, new, gfn, asce))
+> +			return 0;
+> +		old = READ_ONCE(*pmdp);
+> +	}
+> +
+> +	dat_free_pt(pt);
+> +	return 0;
+> +}
