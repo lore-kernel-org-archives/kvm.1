@@ -1,220 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959BA2EA468
-	for <kvm@vger.kernel.org>; Sat, 13 Sep 2025 09:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B836926AA93;
+	Sat, 13 Sep 2025 10:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757754389; cv=none; b=CMhQ9f3fZpgCd58JImd9u1UjNuLf2FtK0ro4kchxvnWNF2gB51ZdcxeOMYEjqElXW6dKwzjIHLmycp6P0dJqoU9Ew9yIWSkUw1z3FoE+I/okzqGp91+rFjaMQuBF/GX17fYNYe1rpzoaHTB8pL1V4QT+UCJ3Iuv8+qjOfH+f9p4=
+	t=1757760969; cv=none; b=K9V7s9ahZ7HQWS+jQjtmXetuRmdKh8sGPYkw5xU3yMHNUAqUE9TdINw4bQrpCCM2gu0NIut1Coa+SLSvLdI4KJ3/y+kAWU58bAx+FBpIiCrqvk4urKjvRlhIg/lRCGqsVPSip6QKtwB9vp9P2Tiylo+4wPl8ys9cuRjF6U7ECN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757754389; c=relaxed/simple;
-	bh=8dEp1AU6wmo+g+BbWCezxqlLsb7zc0IB8g7OnuHFGSE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kUjsn9xaZxSG8U4IPOyp1dsFyUm1nuyu13CtBYZqti3OekklW5He+Pvw640t60xa8ypJ/IqRd7kWdDlClMBYVdyA/n8yr/efwvODn3ZQk4nURCog8+IR27dCMhhbFgxtYM2oG9tsUSzmCGv1GpjM9d0cUGgmJRTFOsq1aR73Oa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cuNfOMHl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757760969; c=relaxed/simple;
+	bh=StEO0JBxtKDi5amum5PC55LRvUuZuDitKv2SKv0kuaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ukh1LBhd9CpW5eB18JjN9U1ddGE+1dEvKFTBh6RqiAPU0/qybsQFJELthRSegAFvkf6h+VqSh5+svIk3q36MFFFEXz7XM3ze54DcbnemqwSQls0NxWRX0SvoWrgZhRtEV8umy3hcT9Cb+kvORJFJ6WJAVf+JI8idH/blGq3C2oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cz+p4A04; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cuNfOMHl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757754386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uOsyKEsT4d7f0MxqTpsXQLTyDPQ6JiWR10VEY3czRBY=;
-	b=cuNfOMHlFQqk4cnlFMA7Qtd6Ab66+A1XcciArAcsuUrYTRXittziaJL2NimU1esJ6Q5w/8
-	pAfJSuvVmSI5zLdy/yDhPAb7p5bkZMgxWarNH4Ah5+8+HCoElcAsNenYj5EenaiVkqODTP
-	35NZ7hhc4n5Z9gSo0t2uPzR/HJbUv7I=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-ocETM416O0atyETeCM0fvA-1; Sat, 13 Sep 2025 05:06:24 -0400
-X-MC-Unique: ocETM416O0atyETeCM0fvA-1
-X-Mimecast-MFC-AGG-ID: ocETM416O0atyETeCM0fvA_1757754383
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-4198fcc4a80so6677065ab.3
-        for <kvm@vger.kernel.org>; Sat, 13 Sep 2025 02:06:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757754383; x=1758359183;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uOsyKEsT4d7f0MxqTpsXQLTyDPQ6JiWR10VEY3czRBY=;
-        b=M2o8AsCFGvrhHNjQMP9X/+5/+w/xBqcKQK2BFxUZbjQZROyInMzV7/FBribXKBnJzS
-         vZnsGalpPr2PrWWkZqOopsd1zxtl1W8vSuTttBSHuzGqq4yTHMSz6BpMFGVq3z8bmOBO
-         iX57nDduEpaHu3jpXgTLJStZzPLDFyu7C6XhPpaLeaImrIRXAS2xIpf8ZBikQjlHZ+LL
-         7Cvo0t/0vYSbbVTpj3nrj/CSlUnHGW295/750TRgoddPGRu91wsHTWWtwQCaItPdp5WH
-         wuRRtNzxo8+DPNq5UNB4H7WnzXjL/bJqyJM1G3yu6yZmQ61fpyfYQrLm5yW+TDKQZdiQ
-         pwAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUL7QGFj2q/PZnQWw8JRTKgMK9ByrCuLbbLl+Oh9JeAgVtiC39IRwDxLPkbzEpi6sRyrJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRouDZRtkci2zt/4sFNOMNEzE0M2nMz9yiljaKR2B4UfmFq97m
-	AupnnMGDi0x9omwDMgpI+xBx68Xbp9fFNkS7/V40j9m49jClPbqXC5VAeBuddHPJfggfOShVt/o
-	M3UT/okDPAJMLNP6/EeJ8okPMLLhwi407c0c5mrbutJO78RjYekscHA==
-X-Gm-Gg: ASbGnctSTU7V7JCpTtUhNUQ0fqMFRW1t5CL8whR6Pbfa6imWTYGwTCBXJg+TAcWQgVC
-	p3ql2P0z64lzdgCao1+R33hYRidC3s+eBTOykxjFErwrk4JKTpqcNhp6EWYcegs1a0uGtBzaCPj
-	B0L2jtNl19dBmW4e4XW7OcRxil4WWE54HsGUePdd+Eq5z6mEFal36PkEuQDm1vKs6MkIFNFO3kD
-	tMVNWgq7hmTEuFO6yA7JOS3oUroQ7N7AGVNUVIiBRa2DIRY7QCz7iGeYSuu72iOxiBsO3YO6hUR
-	V55W7k+Vg4SAnyegoZL/Ug6KhqqsYhMkO39u2kxBdRY=
-X-Received: by 2002:a92:ca4d:0:b0:419:de32:2d01 with SMTP id e9e14a558f8ab-420a1bf0e2amr28604245ab.4.1757754383432;
-        Sat, 13 Sep 2025 02:06:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IENFwGsYCj5we8cqrgqcps0vU//BTqxnSv90KfRfiVLx0DBHmLiooNtsdQvyKhq4QCqGgNKww==
-X-Received: by 2002:a92:ca4d:0:b0:419:de32:2d01 with SMTP id e9e14a558f8ab-420a1bf0e2amr28604185ab.4.1757754383024;
-        Sat, 13 Sep 2025 02:06:23 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-41deede6d15sm31335025ab.7.2025.09.13.02.06.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Sep 2025 02:06:21 -0700 (PDT)
-Date: Sat, 13 Sep 2025 10:04:57 +0100
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- helgaas@kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com
-Subject: Re: [PATCH v3 08/10] vfio-pci/zdev: Add a device feature for error
- information
-Message-ID: <20250913100457.1af13cd7.alex.williamson@redhat.com>
-In-Reply-To: <20250911183307.1910-9-alifm@linux.ibm.com>
-References: <20250911183307.1910-1-alifm@linux.ibm.com>
-	<20250911183307.1910-9-alifm@linux.ibm.com>
-Organization: Red Hat
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cz+p4A04"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E27ED40E00DE;
+	Sat, 13 Sep 2025 10:56:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Zvm0Fs6JS_mw; Sat, 13 Sep 2025 10:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757760958; bh=336e6boM42p2fnauyw2slmKIpvfDhufaTO4hMI5mBnw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cz+p4A04BVqH5BbXIWSMPwE8GxsN0+ojBdJxYyXUBlt7LFdEGfzmBXfXpJKxigdhy
+	 XT2CXTV2GlucEzz3tYerXBL85HUBRGyvQL64jIevoIHcz9JNYF5FHCdR5Vm89XJOfS
+	 z9R1jZs/7cfWfCKXNlyR70sMuxFeLgGQjsXEXXzBfIRHDt9+Ls2yIuqvhURa51hzVZ
+	 gCgrJgdXtCIVVAmJ8RLM+R3AWokKt+r4+35lkgwkE3vSPYhU9XxaiJYOnm2nysyiZK
+	 0PMUZOD/xNEYwGbaZuD7gDX0RaOgQcJcabmdwfVZTfmcyBQ0GYM+WMoV9BduIYqRQK
+	 p7SWgNoLIfhBvKuCaeJMAGKWrzB7WXCZu3mRoZaNZl+/y+EhZVmc6eq634TuSp5wj2
+	 hPCLBePRlff3VzWS2svPFLXPXHzkjRrm+QjFMVsP0FBEgCgW1aehRi4nVheGP5cAdc
+	 7K/UdrRgmVuB1hguGq9tExcNM6iNTQeujwYq8fjPVaZmYvWfoiKy6nrkldcjB2TZgv
+	 IrBCbr7FyT3C+JGsoJRXTMyHcFpwoJEXukeAX3HQuXa/lYRJ3UQGCUgUDCN12ZIoHp
+	 7n+EXfMW8Ij3/8+sN+WjIEGgrbq5g6tJn3GHxcAxmoTFMiwHQKR0oUljatnlbpJXhv
+	 fcw+boHoYrpPDMRMjzITBxYI=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8D1F940E015C;
+	Sat, 13 Sep 2025 10:55:38 +0000 (UTC)
+Date: Sat, 13 Sep 2025 12:55:28 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: herbert@gondor.apana.org.au
+Cc: Sean Christopherson <seanjc@google.com>,
+	Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, pbonzini@redhat.com, thomas.lendacky@amd.com,
+	nikunj@amd.com, davem@davemloft.net, aik@amd.com, ardb@kernel.org,
+	john.allen@amd.com, michael.roth@amd.com, Neeraj.Upadhyay@amd.com,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] x86/sev: Add new dump_rmp parameter to
+ snp_leak_pages() API
+Message-ID: <20250913105528.GAaMVNoJ1_Qwq8cfos@fat_crate.local>
+References: <cover.1757543774.git.ashish.kalra@amd.com>
+ <c6d2fbe31bd9e2638eaefaabe6d0ffc55f5886bd.1757543774.git.ashish.kalra@amd.com>
+ <20250912155852.GBaMRDPEhr2hbAXavs@fat_crate.local>
+ <aMRnxb68UTzId7zz@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aMRnxb68UTzId7zz@google.com>
 
-On Thu, 11 Sep 2025 11:33:05 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
-
-> For zPCI devices, we have platform specific error information. The platform
-> firmware provides this error information to the operating system in an
-> architecture specific mechanism. To enable recovery from userspace for
-> these devices, we want to expose this error information to userspace. Add a
-> new device feature to expose this information.
+On Fri, Sep 12, 2025 at 11:34:45AM -0700, Sean Christopherson wrote:
+> On Fri, Sep 12, 2025, Borislav Petkov wrote:
+> > On Wed, Sep 10, 2025 at 10:55:24PM +0000, Ashish Kalra wrote:
+> > > From: Ashish Kalra <ashish.kalra@amd.com>
+> > > 
+> > > When leaking certain page types, such as Hypervisor Fixed (HV_FIXED)
+> > > pages, it does not make sense to dump RMP contents for the 2MB range of
+> > > the page(s) being leaked. In the case of HV_FIXED pages, this is not an
+> > > error situation where the surrounding 2MB page RMP entries can provide
+> > > debug information.
+> > > 
+> > > Add new __snp_leak_pages() API with dump_rmp bool parameter to support
+> > > continue adding pages to the snp_leaked_pages_list but not issue
+> > > dump_rmpentry().
+> > > 
+> > > Make snp_leak_pages() a wrapper for the common case which also allows
+> > > existing users to continue to dump RMP entries.
+> > > 
+> > > Suggested-by: Thomas Lendacky <Thomas.Lendacky@amd.com>
+> > > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > > ---
+> > >  arch/x86/include/asm/sev.h | 8 +++++++-
+> > >  arch/x86/virt/svm/sev.c    | 7 ++++---
+> > >  2 files changed, 11 insertions(+), 4 deletions(-)
+> > 
+> > Sean, lemme know if I should carry this through tip.
 > 
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c |  2 ++
->  drivers/vfio/pci/vfio_pci_priv.h |  8 ++++++++
->  drivers/vfio/pci/vfio_pci_zdev.c | 34 ++++++++++++++++++++++++++++++++
->  include/uapi/linux/vfio.h        | 14 +++++++++++++
->  4 files changed, 58 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 7dcf5439dedc..378adb3226db 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1514,6 +1514,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->  		return vfio_pci_core_pm_exit(device, flags, arg, argsz);
->  	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
->  		return vfio_pci_core_feature_token(device, flags, arg, argsz);
-> +	case VFIO_DEVICE_FEATURE_ZPCI_ERROR:
-> +		return vfio_pci_zdev_feature_err(device, flags, arg, argsz);
->  	default:
->  		return -ENOTTY;
->  	}
-> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-> index a9972eacb293..a4a7f97fdc2e 100644
-> --- a/drivers/vfio/pci/vfio_pci_priv.h
-> +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> @@ -86,6 +86,8 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  				struct vfio_info_cap *caps);
->  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev);
->  void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev);
-> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
-> +			      void __user *arg, size_t argsz);
->  #else
->  static inline int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  					      struct vfio_info_cap *caps)
-> @@ -100,6 +102,12 @@ static inline int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
->  
->  static inline void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
->  {}
-> +
-> +static int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
-> +				     void __user *arg, size_t argsz);
-> +{
-> +	return -ENODEV;
-> +}
->  #endif
->  
->  static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
-> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
-> index 2be37eab9279..261954039aa9 100644
-> --- a/drivers/vfio/pci/vfio_pci_zdev.c
-> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
-> @@ -141,6 +141,40 @@ int vfio_pci_info_zdev_add_caps(struct vfio_pci_core_device *vdev,
->  	return ret;
->  }
->  
-> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
-> +			      void __user *arg, size_t argsz)
-> +{
-> +	struct vfio_device_feature_zpci_err err;
-> +	struct vfio_pci_core_device *vdev =
-> +		container_of(device, struct vfio_pci_core_device, vdev);
-> +	struct zpci_dev *zdev = to_zpci(vdev->pdev);
-> +	int ret;
-> +	int head = 0;
-> +
-> +	if (!zdev)
-> +		return -ENODEV;
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
-> +				 sizeof(err));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	mutex_lock(&zdev->pending_errs_lock);
-> +	if (zdev->pending_errs.count) {
-> +		head = zdev->pending_errs.head % ZPCI_ERR_PENDING_MAX;
-> +		err.pec = zdev->pending_errs.err[head].pec;
-> +		zdev->pending_errs.head++;
-> +		zdev->pending_errs.count--;
-> +		err.pending_errors = zdev->pending_errs.count;
-> +	}
-> +	mutex_unlock(&zdev->pending_errs_lock);
-> +
-> +	if (copy_to_user(arg, &err, sizeof(err)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
->  int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
->  {
->  	struct zpci_dev *zdev = to_zpci(vdev->pdev);
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 75100bf009ba..a950c341602d 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1478,6 +1478,20 @@ struct vfio_device_feature_bus_master {
->  };
->  #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
->  
-> +/**
-> + * VFIO_DEVICE_FEATURE_ZPCI_ERROR feature provides PCI error information to
-> + * userspace for vfio-pci devices on s390x. On s390x PCI error recovery involves
-> + * platform firmware and notification to operating system is done by
-> + * architecture specific mechanism.  Exposing this information to userspace
-> + * allows userspace to take appropriate actions to handle an error on the
-> + * device.
-> + */
-> +struct vfio_device_feature_zpci_err {
-> +	__u16 pec;
-> +	int pending_errors;
-> +};
+> Take them through tip, but the stubs mess in sev.h really needs to be cleaned up
+> (doesn't have to block this series, but should be done sooner than later).
 
-This should have some explicit alignment.  Thanks,
+Right, I guess Tom's on that one...
 
-Alex
+As to the other two:
 
-> +#define VFIO_DEVICE_FEATURE_ZPCI_ERROR 11
-> +
->  /* -------- API for Type1 VFIO IOMMU -------- */
->  
->  /**
+https://lore.kernel.org/r/e7807012187bdda8d76ab408b87f15631461993d.1757543774.git.ashish.kalra@amd.com
+https://lore.kernel.org/r/7be1accd4c0968fe04d6efe6ebb0185d77bed129.1757543774.git.ashish.kalra@amd.com
 
+Herbert, how do you want to proceed here?
+
+Do you want me to give you an immutable branch with the first patch and you
+can base the other two ontop or should I carry all three through tip?
+
+Yeah, it is time for patch tetris again... :-P
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
