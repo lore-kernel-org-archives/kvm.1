@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4944B2FD1B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4782FE07E;
 	Mon, 15 Sep 2025 11:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757936697; cv=none; b=cPGHhZg8R7p2MDr0JFbonhck9i8zRDlT3LEn1jVKOD3+BEkWiNu4BOWtZ9+nszFC5RSEBYp0wf7vF2UY2vYxzs1dje8gvS2CNIxMxigFW3Xo4QTLVyPGjKlSIFmHOc4aASoWs3OLKi6i3pJ10vATXDmUlgJGUI01XBfEJ3taX+g=
+	t=1757936697; cv=none; b=qEgGeXwC3G1NYVuUQoRmhKr6Hk8O41y3UQ1/Nv4Gm9pBQIoAsJBt8G8kqRENIYT+91vIvrDm6+JnX/ca9aO78YphJZAEZqU6T82Ac3Kgy7VPpQCTnmyl2ES/Xh4ycGGBvdAaTe6JtPtQMo/EGM/Zvraszt/1sK0T82UdXHB3vFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757936697; c=relaxed/simple;
-	bh=ZAvEqXSsF8rnvtvXK2ptMKYukFOlYKwTSe9TJILQtKg=;
+	bh=mhZ8FtLw1uVJo63UYY9F46ru+KoRuwK839fahTJQtTk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VfvPsIr/uOXX2zFDCRWq3Rp0zG315cjQSU5ybWNf/EPVIBD9WfREmkVdoWb31PSY3tvJ2ds1zR8j40jk1aAuXqEc0XA3iDSrO5DmOoqEKIt+XIm4drSsiGENSrZBe53tEBV+ZfIJEOl2XT+G6p0MssqjIzCu1L+Pk0sWiPFASs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WI/EZQOE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Oa3wy89SM8szkPL8EBY3+EdvkuqdBKV4i/YAlMEvdwn4yX649Q1qqbGKxFtr4LBkhnRQRL3QN2Wjy4YqY4niqZnpB9+QEZD7G4zTpY/KLAkvsnB9enNdFGeFGdDucq3muL6RTk31XMSwelHaCgeWd99uUspolBcrytvVMv7jfFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1JNFNv1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WI/EZQOE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D51C4CEF7;
-	Mon, 15 Sep 2025 11:44:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1JNFNv1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46108C4CEFB;
+	Mon, 15 Sep 2025 11:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1757936697;
-	bh=ZAvEqXSsF8rnvtvXK2ptMKYukFOlYKwTSe9TJILQtKg=;
+	bh=mhZ8FtLw1uVJo63UYY9F46ru+KoRuwK839fahTJQtTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WI/EZQOE55YGB7D/WKKNEvGqsa/JMeEeeCURsAFJSh3duvFO3hS6vLx+DttJOspnK
-	 mfQfK7MmUKc+pdgPllEu6Ha49iOMB9ecQLOSCh/UgeU6ZvHpX08t0QphyYRjIydAnO
-	 P5iVdfTLBCqzzdDwaA7oJWjRYdTIUH7esVCxl5mbkZEm4t4kslQms4BeL3dyV/o56U
-	 /d074gLuqXGTbpbGNi9RArwXWiKGXBhMGNmtUoC0Q2FoEVg/qdYN30ky8AqVKGO0nz
-	 57lTTwjMadq70R/Q24lWyJc8xd9fW53uB9Xt2MzAcBCnCKPB1dnS0r2wSeC1VPIYhO
-	 Qpk2NfTIGyR4g==
+	b=M1JNFNv1yOD+9Ejj0uf4Re90iikorvz5K5ZfV+zYMWsfZNMeQ5ZbJTxeZ+hW6Lgz6
+	 4x1/EzPxBUjldVTa6N2bx4B8+Wanw5XAWauyxFF0DauyaMngXF9UiGJt1YRW87ZKCz
+	 NCJFJubmhlAWiy8A7+5s38JtArfzZXj8TnwvAUuAYgnTpz0TxhRaxKZZdi4By7S9uS
+	 V6bm/z8EnI2nHRP8nAY4U7K/AxtJ1ubIrglaMS/jKWrOgyxA+natg3Jlv8xGrOya/E
+	 ts5guoJ5ggf+TAB5UgnHipT2JhcTpEmNGD1veJvHfqe8HP9h/5igsxOGM6hTLFzXwK
+	 8qI1Ap1BQtx4Q==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uy7df-00000006MDw-0WZD;
+	id 1uy7df-00000006MDw-29jP;
 	Mon, 15 Sep 2025 11:44:55 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -40,9 +40,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH v2 01/16] KVM: arm64: Add helper computing the state of 52bit PA support
-Date: Mon, 15 Sep 2025 12:44:36 +0100
-Message-Id: <20250915114451.660351-2-maz@kernel.org>
+Subject: [PATCH v2 03/16] KVM: arm64: Compute 52bit TTBR address and alignment
+Date: Mon, 15 Sep 2025 12:44:38 +0100
+Message-Id: <20250915114451.660351-4-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250915114451.660351-1-maz@kernel.org>
 References: <20250915114451.660351-1-maz@kernel.org>
@@ -58,81 +58,44 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Track whether the guest is using 52bit PAs, either LPA or LPA2.
-This further simplifies the handling of LVA for 4k and 16k pages,
-as LPA2 implies LVA in this case.
+52bit addresses from TTBR need extra adjustment and alignment
+checks. Implement the requirements of the architecture.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_nested.h |  1 +
- arch/arm64/kvm/at.c                 | 31 ++++++++++++++++++++++++-----
- 2 files changed, 27 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/at.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
-index 7fd76f41c296a..038e35430bb2c 100644
---- a/arch/arm64/include/asm/kvm_nested.h
-+++ b/arch/arm64/include/asm/kvm_nested.h
-@@ -299,6 +299,7 @@ struct s1_walk_info {
- 	bool			pan;
- 	bool	     		be;
- 	bool	     		s2;
-+	bool			pa52bit;
- };
- 
- struct s1_walk_result {
 diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-index d71ca4ddc9d1e..8e275ea68cfa8 100644
+index 96452fdc90e2b..e02e467fc2ccd 100644
 --- a/arch/arm64/kvm/at.c
 +++ b/arch/arm64/kvm/at.c
-@@ -31,6 +31,29 @@ static bool check_output_size(u64 ipa, struct s1_walk_info *wi)
+@@ -28,6 +28,8 @@ static int get_ia_size(struct s1_walk_info *wi)
+ /* Return true if the IPA is out of the OA range */
+ static bool check_output_size(u64 ipa, struct s1_walk_info *wi)
+ {
++	if (wi->pa52bit)
++		return wi->max_oa_bits < 52 && (ipa & GENMASK_ULL(51, wi->max_oa_bits));
  	return wi->max_oa_bits < 48 && (ipa & GENMASK_ULL(47, wi->max_oa_bits));
  }
  
-+static bool has_52bit_pa(struct kvm_vcpu *vcpu, struct s1_walk_info *wi, u64 tcr)
-+{
-+	switch (BIT(wi->pgshift)) {
-+	case SZ_64K:
-+	default:		/* IMPDEF: treat any other value as 64k */
-+		if (!kvm_has_feat_enum(vcpu->kvm, ID_AA64MMFR0_EL1, PARANGE, 52))
-+			return false;
-+		return ((wi->regime == TR_EL2 ?
-+			 FIELD_GET(TCR_EL2_PS_MASK, tcr) :
-+			 FIELD_GET(TCR_IPS_MASK, tcr)) == 0b0110);
-+	case SZ_16K:
-+		if (!kvm_has_feat(vcpu->kvm, ID_AA64MMFR0_EL1, TGRAN16, 52_BIT))
-+			return false;
-+		break;
-+	case SZ_4K:
-+		if (!kvm_has_feat(vcpu->kvm, ID_AA64MMFR0_EL1, TGRAN4, 52_BIT))
-+			return false;
-+		break;
-+	}
-+
-+	return (tcr & (wi->regime == TR_EL2 ? TCR_EL2_DS : TCR_DS));
-+}
-+
- /* Return the translation regime that applies to an AT instruction */
- static enum trans_regime compute_translation_regime(struct kvm_vcpu *vcpu, u32 op)
- {
-@@ -232,15 +255,13 @@ static int setup_s1_walk(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
- 			goto transfault_l0;
- 	}
+@@ -301,6 +303,16 @@ static int setup_s1_walk(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
+ 	x = 3 + ia_bits - ((3 - wi->sl) * stride + wi->pgshift);
  
-+	wi->pa52bit = has_52bit_pa(vcpu, wi, tcr);
+ 	wi->baddr = ttbr & TTBRx_EL1_BADDR;
++	if (wi->pa52bit) {
++		/*
++		 * Force the alignment on 64 bytes for top-level tables
++		 * smaller than 8 entries, since TTBR.BADDR[5:2] are used to
++		 * store bits [51:48] of the first level of lookup.
++		 */
++		x = max(x, 6);
 +
- 	/* R_GTJBY, R_SXWGM */
- 	switch (BIT(wi->pgshift)) {
- 	case SZ_4K:
--		lva = kvm_has_feat(vcpu->kvm, ID_AA64MMFR0_EL1, TGRAN4, 52_BIT);
--		lva &= tcr & (wi->regime == TR_EL2 ? TCR_EL2_DS : TCR_DS);
--		break;
- 	case SZ_16K:
--		lva = kvm_has_feat(vcpu->kvm, ID_AA64MMFR0_EL1, TGRAN16, 52_BIT);
--		lva &= tcr & (wi->regime == TR_EL2 ? TCR_EL2_DS : TCR_DS);
-+		lva = wi->pa52bit;
- 		break;
- 	case SZ_64K:
- 		lva = kvm_has_feat(vcpu->kvm, ID_AA64MMFR2_EL1, VARange, 52);
++		wi->baddr |= FIELD_GET(GENMASK_ULL(5, 2), ttbr) << 48;
++	}
+ 
+ 	/* R_VPBBF */
+ 	if (check_output_size(wi->baddr, wi))
 -- 
 2.39.2
 
