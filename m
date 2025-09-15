@@ -1,107 +1,185 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AA11805A
-	for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 17:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9170028AB0B
+	for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 17:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757955645; cv=none; b=ds8Q9Uy2duV4F8o2P2VJVhU4Nw3KS1J2pl9KXmOEYemo+BkXB4tv7wXMNvYudlwqhlJTaOX1nDhM3HOLiDQZuKe5kSAhbkFKZL4KyRw10Ae2sCliP1bZq/4OdNLglsq/R4E7hEbHe18dqdUI2hpyQcsZWf5Vrolwpo0Dbou4DVw=
+	t=1757955712; cv=none; b=EGSJywz/nMrNdXsOiy61iktmQaPouaEKtuqbe8Wrxr4eeNseBiO25NtkLuNdsmsG7sldZYySRQ9TI2R+v69IeZI3QIL2QywHmobw6FSo5ITI2qjJSJsSqkD5MXo6wISpbqxVRgAMTXy+2Pl+Fl/8ATaAJTIqbyzAHyS0zOeHCx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757955645; c=relaxed/simple;
-	bh=8PxneQeOv/lA5FM5mKO84O7CcXV29XKqLv5rWJEZVB8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IckVVPl8sIPNqDSHfqkuemtqY7vdKzrYh5JLczZPTt3vM5zzb5kjtWwxkMe2HvbDZ2gjesf758ATkMJiH5vbEBvvVKZGao+XYcW+SFPATE0EIVrUIEvc1Ve71avOunIMnq4ksB9bs2EkISibNz2Q5jDltig65WzFLyYqXe/tk1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=umzzBUFA; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1757955712; c=relaxed/simple;
+	bh=q4Gi0ntxWm1QrtAeAhkAa/jv924QF60CECMU0fW1MPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewdjB7BKTffoGFT4Ni4NLw9FpkygRf1ilTjEN6akEJrP8WBFWp/D7hf+NuLkDxDt9QzN/N+0JZQgItIpN9/HhF1EtYFqFC3cdQbF6S4Dq4kQ4zv54Z7JWA8q8hsstgHGQOFRq46SWdS8yzzNHqr6PI2YdTfQ3od13IZ3+cbzJjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=KebkQQKv; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="umzzBUFA"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32e0b001505so1970281a91.0
-        for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 10:00:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="KebkQQKv"
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-4240784860bso4694605ab.1
+        for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 10:01:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757955643; x=1758560443; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wxFVtxN3tgRer9OorGw1rSwesdEyfhvsd/NDtysxL1g=;
-        b=umzzBUFATfoU1BcPunD5siGNY5X512hye5bnuUq7kW/KvwkE5KZQqMfNKE1cXx5ABA
-         Ve4vLVnzUu3mXcfQ3GIcSWjPuU0Da2oJ2TTePFq5o5mz3RWxeqQzyIOuc5TeaxLEuY6c
-         FYXl/yxO1++pgJG7+0wmwDgtzEZDQc6YvwshUYOL02e68oSXmNi/FEhmOz0Is/H0NzaP
-         zGBYHvmIeFr7+VtWExRjW6/Zf8O8s2NfMMM3VZ9g+8v/BHPcNEEhwIvRWFIjViQgcnnI
-         NENv/Ji9TozHijt29UNfRbeuReJvBm33CPA8sPxg7cIWQgeOdg/2dnMZjLCvkKLufPmC
-         E7uw==
+        d=ventanamicro.com; s=google; t=1757955709; x=1758560509; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k8pxyW/bjpXpmupAYzyp4FH4PZi8lnxP+pKqyf7C5o8=;
+        b=KebkQQKvhhJzLib60TpU80VeNK2uCGx15a/UzGyd3HxrJD70+B7AoP57l/H8piZJ7G
+         gw/9WV0lWrTHWP36cJCwV7wzsLCwAOnMGC6vCLhrWhPLmTR1cKZlXoMLQValixMcbyKS
+         oTJLC2nXwfCP9YaieoWMjbKYtPoZ1FaqxCg5MoKyTwpEGOWfLxUMb31kLdktTd5CHeFU
+         5lj50jzr+Sf5aSOFhdNpFX1s1VXtsi4qMw7uTjTiB+eMIoqaGPjc77R9VmdmavMe0vZ8
+         O6LJqes9s2+DYw3TnKRCEgsBDNrKNpJ9qfpMGVFX/y/YnxmDyog5nQD+90av5yRrhjOG
+         tRag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757955643; x=1758560443;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wxFVtxN3tgRer9OorGw1rSwesdEyfhvsd/NDtysxL1g=;
-        b=Rq5CPGH+wRgMYsQIsBKTgN2E+gtm6j6HnFZokKCcXTJMkQJby8rCVDe0UBxG7Z4eZJ
-         OqUooQ9gcMtEk6X94gsCoPY8No2OcHxU/k1pt5tOfmx9uj/+lYR3AdI5Kvw+tTsE12w5
-         EZnDkRfSZ4rQXkdQauE179FzY2FOAIjnbH6Eo3bNUi5LhN2lDt7qnIros5dke8LU4zl3
-         Fqk3R2sc+UNgbOw0oFa4IHk5xrxbuxsOz5cMHMPdcTqjjNSbiip7pfS3eRgetP8iSQcH
-         UHjcIcPpRU8rXlErUCT3mRiY4Gvi7Y3V+qUmS1/cmJhlTsEX0UCS6h10KeqhlPuU/cFs
-         ZNFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaR4+RWF282DWexTkW4OWgBqd6Ewk9fiijdtJ1X+NhrIZjBrGQUwQbBnUPGAWiyjeTFHs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe8vBJbEB5h/jdQq6YOSHxiUhr9L59N4Sp4exKWnyJStwlXYNO
-	ZIpHYdLjIyoEBdENb66ys2vtF4j0CPUHyKAS2KkFLeP4VXirwP8WDUfHK0cnTu/I84wLfdthHUj
-	RfWlWcA==
-X-Google-Smtp-Source: AGHT+IEBh2YE0i6AygzJ4eZnRmYv6+ppmyhOgn0HXl7KSONyNYepQesQNZVPyUFZ+8BI91okOls8ZC7vyBI=
-X-Received: from pjl12.prod.google.com ([2002:a17:90b:2f8c:b0:32e:38f5:e86a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:554f:b0:32e:38b0:1600
- with SMTP id 98e67ed59e1d1-32e38b028ddmr6647879a91.6.1757955643085; Mon, 15
- Sep 2025 10:00:43 -0700 (PDT)
-Date: Mon, 15 Sep 2025 10:00:41 -0700
-In-Reply-To: <aMfM4Fu+Q6gpZKYF@intel.com>
+        d=1e100.net; s=20230601; t=1757955709; x=1758560509;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k8pxyW/bjpXpmupAYzyp4FH4PZi8lnxP+pKqyf7C5o8=;
+        b=o4N64JqFbIeKsVVS85CTxPpbW9wuSnnorZHJ7E4Xcq8nxSKRSPjFEyXZlkijc1GCWf
+         OMdFqbkUL3Yocmo+ps3XMagv+L7SjxxeosmolCIqorX0oPQapAlluxtAAPllrgmmGGqK
+         FTgJ9SsgL3bDgwU65BT9TU/xxkGPgfeVBi0vhP70Z2G11gqbSx1bZRcnXT0vH8JrI01C
+         1e5++GEpVismCCWuXCFbe7nyj9xSlpW5+a95SH3hFOrzzLlZwNm+WqNpTUb3BXGOtvQ3
+         zxV8ekiyybht9GxsvqBkuxitrp1+eRj3IDmR+BdV6v1WvaNUSS8R49BBE5QnycOPinbT
+         +p8w==
+X-Forwarded-Encrypted: i=1; AJvYcCVze47BDnAQQ6CHDsl6hZcDRDZbAyX59bMZwU5KoMAQfuJoRdXbWu7jFOUHLI/Y318DXaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPOtOJrKnj5nAFflC1GxoUqhYJPxd6P+VB7y8PnW4QmKxaDQor
+	ILf4y4r1zf1dEpCfQ7u1HBMI1DDbCpCrVMJz7AW74eHEuK0RqTT2b4uNyioiCnxNbcA=
+X-Gm-Gg: ASbGnct2S8IWzEdPxjem+lphB3/XkFDDZfH96453R5OJ78wVEmrqrhaV660FH1xVHwD
+	pjJB8cVYocVao8t8znY5C/rpT7uRmojsL8RyM5UHazgXgKabPYx+rGkJIGzihPVSIS9iLD3l2bZ
+	d7CpJ8o5mkBxhyTLn9wsqqmnJSxevcFvVJzGtlFU7JPjN0rG/eDVmzr8t3ZQ5vJRuCNSaQcoX3V
+	54ATGqnTRI0kOGoc4sInqNcAy+6DSV2ueRXoPEJwCnfF8k5SbisX0TOrY4uugOaUF+Tj8tgLbsR
+	odeCNNrTyKAZHgUWpaLOpQp47gAFldYrJiK+hCnYg/jACdtYcuK/dIcNDqSSbJEgmAG1cSF9wEg
+	34lBxHwHVZyffICeLA3CRK5+E
+X-Google-Smtp-Source: AGHT+IFi6vqzi7uBigrs1rkZ7BYQA7tKMwkaIff57LL4Wv+ao8W4QcMhs/+e22hjK6NK5HxClZr37A==
+X-Received: by 2002:a05:6e02:188d:b0:3eb:5862:7cef with SMTP id e9e14a558f8ab-420a4173bb3mr104487445ab.22.1757955706965;
+        Mon, 15 Sep 2025 10:01:46 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-41dfb240f4fsm58897935ab.43.2025.09.15.10.01.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 10:01:46 -0700 (PDT)
+Date: Mon, 15 Sep 2025 12:01:45 -0500
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Jinyu Tang <tjytimi@163.com>
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+	Conor Dooley <conor.dooley@microchip.com>, Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>, 
+	Radim Krcmar <rkrcmar@ventanamicro.com>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Tianshun Sun <stsmail163@163.com>
+Subject: Re: [RFC PATCH] kvm/riscv: Add ctxsstatus and ctxhstatus for
+ migration
+Message-ID: <20250915-ad649bd2a0c0b9e98b63c5f4@orel>
+References: <20250915152731.1371067-1-tjytimi@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250912232319.429659-1-seanjc@google.com> <20250912232319.429659-36-seanjc@google.com>
- <aMfM4Fu+Q6gpZKYF@intel.com>
-Message-ID: <aMhGOVFg2PvhqHhj@google.com>
-Subject: Re: [PATCH v15 35/41] KVM: selftests: Add an MSR test to exercise
- guest/host and read/write
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Mathias Krause <minipli@grsecurity.net>, 
-	John Allen <john.allen@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Zhang Yi Z <yi.z.zhang@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915152731.1371067-1-tjytimi@163.com>
 
-On Mon, Sep 15, 2025, Chao Gao wrote:
-> >+static void __vcpus_run(struct kvm_vcpu **vcpus, const int NR_VCPUS)
-> >+{
-> >+	int i;
-> >+
-> >+	for (i = 0; i < NR_VCPUS; i++)
-> >+		do_vcpu_run(vcpus[i]);
-> >+}
-> >+
-> >+static void vcpus_run(struct kvm_vcpu **vcpus, const int NR_VCPUS)
-> >+{
-> >+	__vcpus_run(vcpus, NR_VCPUS);
-> >+	__vcpus_run(vcpus, NR_VCPUS);
+On Mon, Sep 15, 2025 at 11:27:31PM +0800, Jinyu Tang wrote:
+> When migrating a VM which guest running in user mode 
+> (e.g., executing a while(1) application), the target 
+> VM fails to run because it loses the information of 
+> guest_context.hstatus and guest_context.sstatus. The 
+> VM uses the initialized values instead of the correct ones.
+
+Does https://lore.kernel.org/all/20250915070811.3422578-1-xb@ultrarisc.com/
+fix this?
+
+Thanks,
+drew
+
 > 
-> ...
+> This patch adds two new context registers (ctxsstatus and 
+> ctxhstatus) to the kvm_vcpu_csr structure and implements 
+> the necessary KVM get and set logic to preserve these values 
+> during migration.
 > 
-> >+	for (idx = 0; idx < ARRAY_SIZE(__msrs); idx++) {
-> >+		sync_global_to_guest(vm, idx);
-> >+
-> >+		vcpus_run(vcpus, NR_VCPUS);
-> >+		vcpus_run(vcpus, NR_VCPUS);
+> QEMU needs to be updated to support these new registers.
+> See https://github.com/tjy-zhu/qemu
+> for the corresponding QEMU changes.
 > 
-> We enter each vCPU 4 times for each MSR here. If I count correctly, only two of
-> them are needed as the guest code syncs with the host twice for each MSR (one in
-> guest_test_{un,}supported_msr(), the other at the end of guest_main()).
-
-I'm 99% certain you're correct and that the second run is unnecessary.  I suspect
-this is leftover crud from an earlier incarnation of the test that used a separate
-VM for the "unsupported" features case (before I realized that the test could
-abuse and test the fact that KVM doesn't require homogeneous vCPU models).
-
-I'll triple check and post a fixup.
-
-Thanks!
+> I'm not sure if adding these CSR registers is a right way. RISCV
+> KVM doesn't have API to save these two context csrs now. I will
+> submit the corresponding QEMU patch to the QEMU community if
+> KVM has API to get and set them.
+> 
+> Signed-off-by: Jinyu Tang <tjytimi@163.com>
+> Tested-by: Tianshun Sun <stsmail163@163.com>
+> ---
+>  arch/riscv/include/asm/kvm_host.h |  2 ++
+>  arch/riscv/include/uapi/asm/kvm.h |  2 ++
+>  arch/riscv/kvm/vcpu_onereg.c      | 16 ++++++++++++++++
+>  3 files changed, 20 insertions(+)
+> 
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+> index d71d3299a..55604b075 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+> @@ -161,6 +161,8 @@ struct kvm_vcpu_csr {
+>  	unsigned long vsatp;
+>  	unsigned long scounteren;
+>  	unsigned long senvcfg;
+> +	unsigned long ctxsstatus;
+> +	unsigned long ctxhstatus;
+>  };
+>  
+>  struct kvm_vcpu_config {
+> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+> index ef27d4289..cd7d7087f 100644
+> --- a/arch/riscv/include/uapi/asm/kvm.h
+> +++ b/arch/riscv/include/uapi/asm/kvm.h
+> @@ -81,6 +81,8 @@ struct kvm_riscv_csr {
+>  	unsigned long satp;
+>  	unsigned long scounteren;
+>  	unsigned long senvcfg;
+> +	unsigned long ctxsstatus;
+> +	unsigned long ctxhstatus;
+>  };
+>  
+>  /* AIA CSR registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+> diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+> index cce6a38ea..284ee6e81 100644
+> --- a/arch/riscv/kvm/vcpu_onereg.c
+> +++ b/arch/riscv/kvm/vcpu_onereg.c
+> @@ -489,6 +489,12 @@ static int kvm_riscv_vcpu_general_get_csr(struct kvm_vcpu *vcpu,
+>  	if (reg_num >= sizeof(struct kvm_riscv_csr) / sizeof(unsigned long))
+>  		return -ENOENT;
+>  
+> +	if (reg_num == KVM_REG_RISCV_CSR_REG(ctxsstatus))
+> +		csr->ctxsstatus = vcpu->arch.guest_context.sstatus;
+> +
+> +	if (reg_num == KVM_REG_RISCV_CSR_REG(ctxhstatus))
+> +		csr->ctxhstatus = vcpu->arch.guest_context.hstatus;
+> +
+>  	if (reg_num == KVM_REG_RISCV_CSR_REG(sip)) {
+>  		kvm_riscv_vcpu_flush_interrupts(vcpu);
+>  		*out_val = (csr->hvip >> VSIP_TO_HVIP_SHIFT) & VSIP_VALID_MASK;
+> @@ -515,6 +521,16 @@ static int kvm_riscv_vcpu_general_set_csr(struct kvm_vcpu *vcpu,
+>  
+>  	((unsigned long *)csr)[reg_num] = reg_val;
+>  
+> +	if (reg_num == KVM_REG_RISCV_CSR_REG(ctxsstatus)) {
+> +		if (csr->ctxsstatus != 0)
+> +			vcpu->arch.guest_context.sstatus = csr->ctxsstatus;
+> +	}
+> +
+> +	if (reg_num == KVM_REG_RISCV_CSR_REG(ctxhstatus)) {
+> +		if (csr->ctxhstatus != 0)
+> +			vcpu->arch.guest_context.hstatus = csr->ctxhstatus;
+> +	}
+> +
+>  	if (reg_num == KVM_REG_RISCV_CSR_REG(sip))
+>  		WRITE_ONCE(vcpu->arch.irqs_pending_mask[0], 0);
+>  
+> -- 
+> 2.43.0
+> 
+> 
+> -- 
+> kvm-riscv mailing list
+> kvm-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kvm-riscv
