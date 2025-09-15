@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C80301021;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1669301477;
 	Mon, 15 Sep 2025 11:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757936699; cv=none; b=d/PgIcdSJxnG+mqzqDvmLTlLMF70Jm3Ugi4Hgnn/2DqqgAJZA11ffGtjLfoiPJbV3s8fvXQ383eMYIB0L137tvGEyLz3xMQyPhH1A1ISmQXW3BENn2ANZRr4hS1jve0vRhFltKYixGfiYniaEDiFe/MxGhZmDJ9zzYowBxVNq9g=
+	t=1757936700; cv=none; b=ATGCDPD4gHVnZgNY3QQXgAMNBwwnu2J2UaSJ4sw/8tSqVKS/1SM2fA2qO9ZL7XZ/pqh8d+/lCk4tOAncz9D08FfKR3EoU5LVWLANyuKPAWBz2RhR1pLzhBlDBiUJXUhscSXZ2gCppU8nPppo3dB4icN5LPgfZqeplWE9+YdUJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757936699; c=relaxed/simple;
-	bh=cuS9SHuGG3F79ODO0qmZswZFWO7i6E8RahYMo63RrsA=;
+	s=arc-20240116; t=1757936700; c=relaxed/simple;
+	bh=rlIhf/og2ExyGxY1kHGqS1t/0oTPguQPDGveZ54c0AU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RwDMn4hRkud4JwZadpBZnc+vROxZBIEAughau8U5KZdlmbqOSFVNSioMbwDM2n3ckeLyMaIg2KoUg/AOOv+lDeTm/GvwMuTikS1IZC/XlRJ1eQM6sWhEu27Evs8ZFp6kUzN+PJt+XY0fnlnedZOYlCGJZt3xM7yrNkEmJo2bW4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IU+xPNqk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Leu+gzub4J66Y8joWepAXcQs6KFqB1o6grMRawuWV7blibHZ7pPiLwhD99KOWDqzZ/Bex7oO7mjT/74+bhmNaTWAoDjt1spY97FAys85vyfdlCZ5x6fqGlzCW72/Aq0+ZCZYLS8zJRrPy7XE5hxq21NxZUQZi5th7hXRTBE4P0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvGLBjuA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IU+xPNqk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B914C4CEFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvGLBjuA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55D6C4CEFB;
 	Mon, 15 Sep 2025 11:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1757936699;
-	bh=cuS9SHuGG3F79ODO0qmZswZFWO7i6E8RahYMo63RrsA=;
+	bh=rlIhf/og2ExyGxY1kHGqS1t/0oTPguQPDGveZ54c0AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IU+xPNqkSPTmBziaDo6mj2aQO/ljEmiikR7hLb3dKcb0N19BV2Lkuzg9t+OgX3BZk
-	 afTzQzfXmFeqAhjNeUmSW1NS7Uv2kaTkkXTQVutCw73pSm0UqUtemQ6WhSAnWPfTJn
-	 4BDGpcSb5xYE4WI+iY6OuOHMw7jVNQVten4M1dj9KyewHChIxNr81bsVJ618QY+OI3
-	 4nlFzP+jH7uANi8S3KyhSAUK8VSrTilVmhYCckU16/wbTj735LYT15OeGNCoDgVo00
-	 eHIh7Iglw7UPoB25PTPIOjKpSXLWb6vEb5msges14zSYneMesOP3N7OwLIz+X/dAkI
-	 zQiPCDV7g/rPg==
+	b=jvGLBjuAY4ldoa501z4Q7tK7T00e8OlKKtR6Hxk+JYaD1dPXLr2U8j65XObmhL5dG
+	 EUj2LqzaltcmdmCBfLBHCftqIS9zcScoydImAngAjGPl81+FoJ4HyF2snpD/ZPD32/
+	 7Yw2h+Qzom58oFu38vCL+gLpg+e3j99KeQ9GRuBmum4KKvgAFoGiZYiUxB7EECsZFb
+	 7eNLsgluQiJBFM7v+fheAEJ97RvIqAV6YehpgohzhuLq4ydsWU63pT+sHlZohBNsN1
+	 EjxhP9JYQlzU8eGcsu73WA3X+n24dXODcI+m+kRuXp63GlOxd2q7tn3xxpu4+61KAB
+	 rCnbJ0xbjDIIw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uy7dh-00000006MDw-32D7;
-	Mon, 15 Sep 2025 11:44:57 +0000
+	id 1uy7di-00000006MDw-0Qmq;
+	Mon, 15 Sep 2025 11:44:58 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -40,9 +40,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH v2 14/16] KVM: arm64: Add S1 IPA to page table level walker
-Date: Mon, 15 Sep 2025 12:44:49 +0100
-Message-Id: <20250915114451.660351-15-maz@kernel.org>
+Subject: [PATCH v2 16/16] KVM: arm64: selftest: Expand external_aborts test to look for TTW levels
+Date: Mon, 15 Sep 2025 12:44:51 +0100
+Message-Id: <20250915114451.660351-17-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250915114451.660351-1-maz@kernel.org>
 References: <20250915114451.660351-1-maz@kernel.org>
@@ -58,104 +58,136 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Use the filtering hook infrastructure to implement a new walker
-that, for a given VA and an IPA, returns the level of the first
-occurence of this IPA in the walk from that VA.
-
-This will be used to improve our SEA syndrome reporting.
+Add a basic test corrupting a level-2 table entry to check that
+the resulting abort is a SEA on a PTW at level-3.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_nested.h |  2 +
- arch/arm64/kvm/at.c                 | 65 +++++++++++++++++++++++++++++
- 2 files changed, 67 insertions(+)
+ .../selftests/kvm/arm64/external_aborts.c     | 43 +++++++++++++++++++
+ .../selftests/kvm/include/arm64/processor.h   |  1 +
+ .../selftests/kvm/lib/arm64/processor.c       | 13 +++++-
+ 3 files changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
-index cce0e4cb54484..2be6c3de74e3d 100644
---- a/arch/arm64/include/asm/kvm_nested.h
-+++ b/arch/arm64/include/asm/kvm_nested.h
-@@ -353,6 +353,8 @@ struct s1_walk_result {
- 
- int __kvm_translate_va(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
- 		       struct s1_walk_result *wr, u64 va);
-+int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa,
-+			     int *level);
- 
- /* VNCR management */
- int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu);
-diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-index c099bab30cb0d..117ce1ff5e767 100644
---- a/arch/arm64/kvm/at.c
-+++ b/arch/arm64/kvm/at.c
-@@ -1578,3 +1578,68 @@ int __kvm_translate_va(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
- 
- 	return 0;
+diff --git a/tools/testing/selftests/kvm/arm64/external_aborts.c b/tools/testing/selftests/kvm/arm64/external_aborts.c
+index 062bf84cced13..acb32d0f27bbe 100644
+--- a/tools/testing/selftests/kvm/arm64/external_aborts.c
++++ b/tools/testing/selftests/kvm/arm64/external_aborts.c
+@@ -250,6 +250,48 @@ static void test_serror(void)
+ 	kvm_vm_free(vm);
  }
-+
-+struct desc_match {
-+	u64	ipa;
-+	int	level;
-+};
-+
-+static int match_s1_desc(struct s1_walk_context *ctxt, void *priv)
+ 
++static void expect_sea_s1ptw_handler(struct ex_regs *regs)
 +{
-+	struct desc_match *dm = priv;
-+	u64 ipa = dm->ipa;
++	u64 esr = read_sysreg(esr_el1);
 +
-+	/* Use S1 granule alignment */
-+	ipa &= GENMASK(52, ctxt->wi->pgshift);
 +
-+	/* Not the IPA we're looking for? Continue. */
-+	if (ipa != ctxt->table_ipa)
-+		return 0;
++	GUEST_ASSERT_EQ(regs->pc, expected_abort_pc);
++	GUEST_ASSERT_EQ(ESR_ELx_EC(esr), ESR_ELx_EC_DABT_CUR);
++	GUEST_ASSERT_EQ((esr & ESR_ELx_FSC), ESR_ELx_FSC_SEA_TTW(3));
 +
-+	/* Note the level and interrupt the walk */
-+	dm->level = ctxt->level;
-+	return -EINTR;
++	GUEST_DONE();
 +}
 +
-+int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa, int *level)
++static noinline void test_s1ptw_abort_guest(void)
 +{
-+	struct desc_match dm = {
-+		.ipa	= ipa,
-+	};
-+	struct s1_walk_info wi = {
-+		.filter	= &(struct s1_walk_filter){
-+			.fn	= match_s1_desc,
-+			.priv	= &dm,
-+		},
-+		.regime	= TR_EL10,
-+		.as_el0	= false,
-+		.pan	= false,
-+	};
-+	struct s1_walk_result wr = {};
-+	int ret;
++	extern char test_s1ptw_abort_insn;
 +
-+	ret = setup_s1_walk(vcpu, &wi, &wr, va);
-+	if (ret)
-+		return ret;
++	WRITE_ONCE(expected_abort_pc, (u64)&test_s1ptw_abort_insn);
 +
-+	/* We really expect the S1 MMU to be on here... */
-+	if (WARN_ON_ONCE(wr.level == S1_MMU_DISABLED)) {
-+		*level = 0;
-+		return 0;
-+	}
++	asm volatile("test_s1ptw_abort_insn:\n\t"
++		     "ldr x0, [%0]\n\t"
++		     : : "r" (MMIO_ADDR) : "x0", "memory");
 +
-+	/* Walk the guest's PT, looking for a match along the way */
-+	ret = walk_s1(vcpu, &wi, &wr, va);
-+	switch (ret) {
-+	case -EINTR:
-+		/* We interrupted the walk on a match, return the level */
-+		*level = dm.level;
-+		return 0;
-+	case 0:
-+		/* The walk completed, we failed to find the entry */
-+		return -ENOENT;
-+	default:
-+		/* Any other error... */
-+		return ret;
-+	}
++	GUEST_FAIL("Load on S1PTW abort should not retire");
 +}
++
++static void test_s1ptw_abort(void)
++{
++	struct kvm_vcpu *vcpu;
++	u64 *ptep, bad_pa;
++	struct kvm_vm *vm = vm_create_with_dabt_handler(&vcpu, test_s1ptw_abort_guest,
++							expect_sea_s1ptw_handler);
++
++	ptep = virt_get_pte_hva_at_level(vm, MMIO_ADDR, 2);
++	bad_pa = BIT(vm->pa_bits) - vm->page_size;
++
++	*ptep &= ~GENMASK(47, 12);
++	*ptep |= bad_pa;
++
++	vcpu_run_expect_done(vcpu);
++	kvm_vm_free(vm);
++}
++
+ static void test_serror_emulated_guest(void)
+ {
+ 	GUEST_ASSERT(!(read_sysreg(isr_el1) & ISR_EL1_A));
+@@ -327,4 +369,5 @@ int main(void)
+ 	test_serror_masked();
+ 	test_serror_emulated();
+ 	test_mmio_ease();
++	test_s1ptw_abort();
+ }
+diff --git a/tools/testing/selftests/kvm/include/arm64/processor.h b/tools/testing/selftests/kvm/include/arm64/processor.h
+index 255fed769a8a5..e3e916b1d9c4e 100644
+--- a/tools/testing/selftests/kvm/include/arm64/processor.h
++++ b/tools/testing/selftests/kvm/include/arm64/processor.h
+@@ -175,6 +175,7 @@ void vm_install_exception_handler(struct kvm_vm *vm,
+ void vm_install_sync_handler(struct kvm_vm *vm,
+ 		int vector, int ec, handler_fn handler);
+ 
++uint64_t *virt_get_pte_hva_at_level(struct kvm_vm *vm, vm_vaddr_t gva, int level);
+ uint64_t *virt_get_pte_hva(struct kvm_vm *vm, vm_vaddr_t gva);
+ 
+ static inline void cpu_relax(void)
+diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
+index eb115123d7411..bd7480a93f963 100644
+--- a/tools/testing/selftests/kvm/lib/arm64/processor.c
++++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
+@@ -185,7 +185,7 @@ void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
+ 	_virt_pg_map(vm, vaddr, paddr, attr_idx);
+ }
+ 
+-uint64_t *virt_get_pte_hva(struct kvm_vm *vm, vm_vaddr_t gva)
++uint64_t *virt_get_pte_hva_at_level(struct kvm_vm *vm, vm_vaddr_t gva, int level)
+ {
+ 	uint64_t *ptep;
+ 
+@@ -195,17 +195,23 @@ uint64_t *virt_get_pte_hva(struct kvm_vm *vm, vm_vaddr_t gva)
+ 	ptep = addr_gpa2hva(vm, vm->pgd) + pgd_index(vm, gva) * 8;
+ 	if (!ptep)
+ 		goto unmapped_gva;
++	if (level == 0)
++		return ptep;
+ 
+ 	switch (vm->pgtable_levels) {
+ 	case 4:
+ 		ptep = addr_gpa2hva(vm, pte_addr(vm, *ptep)) + pud_index(vm, gva) * 8;
+ 		if (!ptep)
+ 			goto unmapped_gva;
++		if (level == 1)
++			break;
+ 		/* fall through */
+ 	case 3:
+ 		ptep = addr_gpa2hva(vm, pte_addr(vm, *ptep)) + pmd_index(vm, gva) * 8;
+ 		if (!ptep)
+ 			goto unmapped_gva;
++		if (level == 2)
++			break;
+ 		/* fall through */
+ 	case 2:
+ 		ptep = addr_gpa2hva(vm, pte_addr(vm, *ptep)) + pte_index(vm, gva) * 8;
+@@ -223,6 +229,11 @@ uint64_t *virt_get_pte_hva(struct kvm_vm *vm, vm_vaddr_t gva)
+ 	exit(EXIT_FAILURE);
+ }
+ 
++uint64_t *virt_get_pte_hva(struct kvm_vm *vm, vm_vaddr_t gva)
++{
++	return virt_get_pte_hva_at_level(vm, gva, 3);
++}
++
+ vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
+ {
+ 	uint64_t *ptep = virt_get_pte_hva(vm, gva);
 -- 
 2.39.2
 
