@@ -1,400 +1,113 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011043.outbound.protection.outlook.com [40.107.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305F629C339;
-	Mon, 15 Sep 2025 21:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757971359; cv=fail; b=FgscAvfkTe4Ff0Xe2N+NLp62KV+h5ZBsLOAUTtNTNZdsbrHOErUy3t6mQ4jY+36AYKMt2vHGvG0gNtz753PPLNiGDkS6Icxu/CaLErGHyDnmJ1VTdKYMg/7Q1WfiNqrgerq+TXyq3ycCIQDcVNG1JtI5oqw+ZLDPK0i5vY2E+uw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757971359; c=relaxed/simple;
-	bh=OZufYWjC6S4RJH12PX/WyurYOI7HFNbIowEovaNPcbs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hX1GTyBAT+S+TXYumdQ2kAF/UPOduvIo8bpYLaPe82I9z0pEhdtVv14KE07woM3L2LpUtC2GFt+k4avvkxzdO+4dTrUXZaCM6QL0b8nM8YRFolpJSrh1Qi/B/fkMmm7gUPg6grTEyL8fgpo+2aULzLWJzb87lTK7rROOwa9TJh4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=E85i0MWA; arc=fail smtp.client-ip=40.107.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338362C0F65
+	for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 21:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757971363; cv=none; b=i7xZnDacmwdDTUD0tXntJ9/PveAJSuzqUi/l4X5BwW/QESvkUsRIwGZx0zZaUwHQoIdNG3+uTd4zz1h1e93UWPKkYZuMm5/XuLLwZ2yHOL8TbAtcL0lGRu36phDwGeqH/pBhwCyopNWw0kc4CUphEwGQ24tsItTy+v2PFmn0j9I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757971363; c=relaxed/simple;
+	bh=AwXWIVYTmwCTCxNRYrGLZ2NZ9skESSL209hF04EJgTc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AaDrs97fHiT/Bne54IGs8vUEUDk/+8qTfFEXv+5WwPvM5DcqgBYUXNrlXYsIe+g57GR7wB8fnuCHayhIhxKls2mO/SgBh+RSxOAHZ4OehcUfvuGp75sDNb7H6BFzVrqXvI9n9zNuf2+PZ5NM976QQ+ZQyCSWIksWzIfj64VMDpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uW9pHazX; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="E85i0MWA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eCBPXGHBo4CybRD2C0X8jMFPcKfFsRYqoLC0GAGhTQkMtddb0w0XAUPxygjNY8R4CyI78elZJsuKVdJ+tvdpeqTco0tGEuZTtJh/tIoJmdA3dvmnP8gbeq5+5o/FNSRuz1St5K5IyYkcDZ0qL5uansYPX/TwaZk14JJ6sbgzan81jPNvDA1f4glz9F+fbGg6aw5sm5WXxqUF+yFTMAZe6BP+g5cphIl5B3Pp3H5+h2FA35dZ7bc1cgrVXfIV82vRKO7L3RQ/gl7hWzK2bZUzD3zWO85V1/6J1My408B8UArr/X5yrGiDSpRIXJq0I+BM7lRZ67Fhg/qMyFIKRvlKhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WcH5EeT0ujFaCSaWvX71LEjs8Z/Xk4/QWnTKzAwLS2g=;
- b=xODSBMrUdoNEZw5GHgadCsO5KZbhiwN7Xn3NSfA1nHfHBleLFZ3SOWekpHrumwsXUDGvHEyZIhk/AkcrAYc6FauvKRnGG6OjiUSe0f+4parS2lsosBqB0tTuyAh8Fdx0+0PklkCm18Jf7KGR69Qam3vBlwiA9kP7ChDGJQLQPDwkmalphqKmFdTld8krxn4v2tBnChk4g7ryywbPHDU2iq9376EYVXC0v7FebnyrN8U6KiXxvdhaUowWbe43nGaZV6tUIFxD8bncYK8iZmTstpZR/OLxWfYSOGzUbSix3NgTKaBWx+eaqyNTn8359q9YFDSywAkgRXIyouBpL5uevA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WcH5EeT0ujFaCSaWvX71LEjs8Z/Xk4/QWnTKzAwLS2g=;
- b=E85i0MWA37js/hvgEjCCqjQbqTa/A2Tw4sLqPcfZmFF6QZZ5WEtlJYVObVwewpbRr5Vs5V9KG6V3ETs19sUC9TTbiW68mbeX7J68zlFqpq8KLr+akSMbqJeMH9u6R95Ri4TAGVav/XtZ5OEA87s7I9PLVWppvic0TtkWLEmnhe8=
-Received: from MN0PR02CA0002.namprd02.prod.outlook.com (2603:10b6:208:530::29)
- by CH3PR12MB8902.namprd12.prod.outlook.com (2603:10b6:610:17d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 15 Sep
- 2025 21:22:27 +0000
-Received: from BL6PEPF00022573.namprd02.prod.outlook.com
- (2603:10b6:208:530:cafe::ee) by MN0PR02CA0002.outlook.office365.com
- (2603:10b6:208:530::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.22 via Frontend Transport; Mon,
- 15 Sep 2025 21:22:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Mon, 15 Sep 2025 21:22:27 +0000
-Received: from purico-ed09host.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 15 Sep
- 2025 14:22:25 -0700
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <pbonzini@redhat.com>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>
-CC: <nikunj@amd.com>, <davem@davemloft.net>, <aik@amd.com>, <ardb@kernel.org>,
-	<john.allen@amd.com>, <michael.roth@amd.com>, <Neeraj.Upadhyay@amd.com>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>
-Subject: [PATCH v5 2/3] crypto: ccp - Add new HV-Fixed page allocation/free API.
-Date: Mon, 15 Sep 2025 21:22:15 +0000
-Message-ID: <d30f6ac63f1a7b261fc547e38eb2376217817026.1757969371.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1757969371.git.ashish.kalra@amd.com>
-References: <cover.1757969371.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uW9pHazX"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32d4e8fe166so6895308a91.2
+        for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 14:22:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757971361; x=1758576161; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5cRptf9XI7WjIgrIL48NtO2kHVbk8p0nvm2Xzei94+U=;
+        b=uW9pHazXI6fHc+5jkXKiAIh+BOm9tSHZ3sNrDZT7F5XH2yzQPWrVAOcdYOcC21Y+8p
+         +CdII2lJqjApHSF1S8f2+qZZl3vZytOJNgUBP4M2TTSFSfwdSIDgaQB9qJpkP4APek3I
+         YrIyCt7XHM6DCBraCMB5sRHW8cncP6Ze1rp7OFFDd4zwptgbDQkhcHuxEfDE7/eCSE7z
+         45hWI2DYCdthrfJNVFk9bKNE7sTMEc8V9Z3HighSP3GowxQGKQ3qFG7wIRNosulRUPIZ
+         gH3CkOuK7bbSX7NCX+udCWSeACvlqB6sI9Bhau7YmdEXIRUPP9/VHO/2ZFBKv9TPsFVe
+         djYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757971361; x=1758576161;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5cRptf9XI7WjIgrIL48NtO2kHVbk8p0nvm2Xzei94+U=;
+        b=baYsEx4tZu7sjz0EGhS+k+z6xS3i517okggVxcCAoJqMU9Llok3XMBhX0u06vUdAJY
+         XVghx9n1nL3wWxLiQ/caR175cCD+6dnmnoZnTIJEZqrJN0B5oOYtbIJtVlB6ai3lUPNq
+         NOPIL+4ijVM1l04xLKEprf+QShleHufc69kAkKVEZ3mpFkDVoLk1EMUBodqPiczo6w4r
+         iasp3CAp/dfWKLVt9ZlVDF1fFN7K/FraRG84oPRYYOdSCOaDq5f4dIHJAdjLXklcZnVC
+         f3nfDFkuUAJnxKqqVnYF5noZm/s+KGFLXkXhsbEObJe6g8a2Qrwl+cKo9vbvnDMwTE0j
+         KRJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaz9aCp/+6zw3Rz07raYcoNzOJ+4JzrtDvUlE0L65NxDfm8/L7cHmBre64AjGal/rvKlg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC2Ubea9pqZi5rN3tf66SzpNEwP3t3o2MCrT6jxag9FggZbs4I
+	LNUG9jUkbS5RcXsyaiMpTGW5orvSoxOoyEuprjfSutm2nm/4czFnmaJyflyW+2+yA7PbPVlpvCx
+	k+SQyvQ==
+X-Google-Smtp-Source: AGHT+IF5IXJXgoS0LEPkWktj7QYgx0swiSjB1JkgUj/Lz8TL9RMvRAxNF3q7FOaLKRcYiK8xf+tz8BDx+wY=
+X-Received: from pjbee15.prod.google.com ([2002:a17:90a:fc4f:b0:32e:749d:fcc6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f83:b0:32d:90c7:c63b
+ with SMTP id 98e67ed59e1d1-32de4fa6dcamr16528116a91.30.1757971361342; Mon, 15
+ Sep 2025 14:22:41 -0700 (PDT)
+Date: Mon, 15 Sep 2025 14:22:39 -0700
+In-Reply-To: <c30dff3a-838d-93df-d106-25acb7cb0513@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|CH3PR12MB8902:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1427b6a-563c-410d-31ae-08ddf49df875
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?G6STDHS2xXtiBQ+UkGm7t3lG/AylwNrVVAdzw14VNZlWBXq2mps4irz6kEH9?=
- =?us-ascii?Q?7Z8ZxX/nWWhVDvK7i4d91RgVaaXSHBAYgS8GXUGiO+gu4lsgpxLlzOzEhpCF?=
- =?us-ascii?Q?Yt9GUKv0ExoEdbxRjekzAjOJVFSppuPV85JYC2BKnyKl08STisXG6/4669la?=
- =?us-ascii?Q?s0owRZISeythcrDgA6UuqaC/K/gI030Tm6pODZqvmfWYnG6nL4OepEpEMJev?=
- =?us-ascii?Q?j0ZlLOfMMtV/3KQQjCDXeZr6ZBd/pONJNjzCyVX4BOQRZsW3s+k+gK0GMfMq?=
- =?us-ascii?Q?RI6MnKnugNF2xoJ9vEFshqPt2yrhKPrrE4AYxHnFuY1COOM7iKuWZzAX+Qpv?=
- =?us-ascii?Q?g5S+SCLJ7FQHASgRfiKYPQd7aC8q/SK5D+ncLIxhQMDNsQT2W1leGwek/PxY?=
- =?us-ascii?Q?zctlEbOE0l9XtuuZm+z3yZ4VHEQmsKd/ObJ9AB09GzoaFbpVGbBg36SKQPcB?=
- =?us-ascii?Q?eB8k40D9VaPFOjxKN4Vb6X8AM7Z8eY62CoGG3smkpNcqSNCXrcP4ceFGPdJJ?=
- =?us-ascii?Q?2hg/8ipQa/D4t/4/RpFrvVxlAjRvfJwAvMe28rGdX0r0d4jdjROOeO9ND/v4?=
- =?us-ascii?Q?1LSEu/dwHz3pWyqWYnB0ZcG1ToOVUaTpnKo1q/VqB35pbS7YMw3TAXr+TZO+?=
- =?us-ascii?Q?vS8TZ/DI2kY5di562faYKSU+XUIgRrKeQIsRrA4285b/8v3RIjcLS9h89bTN?=
- =?us-ascii?Q?yc4Mpg3kv/XCgwziMrJJYhdDurdQp5BV3j0auDNLJrV0iJgsBUBf3joz6XEJ?=
- =?us-ascii?Q?c2A34R9rRYw1m6wWqSDuR1lTktd/9hoh4Jck1BSTD1Vr+n2T4t/f6Izez0Lo?=
- =?us-ascii?Q?k7ocp+qRwSg1kVOnVTWn4AFJX2C7JvYXjeL5W+NbFAxI86/bJfegjdO3GAVs?=
- =?us-ascii?Q?ghSWzm89Gta+cC19uOMx/VnAfR8mLrejqru57zdWR78VMvfJt2SFcg8bsRnC?=
- =?us-ascii?Q?y+OLfuZgV0OXuTUry+MRMTJePXtisWX4DBS7BEY9mFGHcq9F7yPWnypNYc6P?=
- =?us-ascii?Q?ye4FBfdNHH5wQENjmHYOAP9NXw1kSO79M0Uw0RQnqJzaPf55Nb2OeIUY6dnH?=
- =?us-ascii?Q?8riOvd3NADDUhHY64/3pEg6VVcL7OqsYva+4d0trBnsyl1+SW7sOMJ/RzkfT?=
- =?us-ascii?Q?v5fwr23XtlmePOryqucYsG02KeG6uxniRQRPSP623xhy6hN6P8//IjcDHqgE?=
- =?us-ascii?Q?qa6ARKxv99Yc3Ioi2Vsn62L0QWaBgvxLvRyz6PtmN3m2QdPOO/mAdPTLshRS?=
- =?us-ascii?Q?62TbFMo3+ByQPK/tuD3+5vaHZOfuUzi+O/pSQ7pBUtOWg20HFsMDGFhTlR+9?=
- =?us-ascii?Q?8BqRbxdWXRHJYpP3Zy7gK50zkejVvuIqDvSBdCdywZLv/+p2LR6MF3eBry7q?=
- =?us-ascii?Q?eA28cAQ32E76ua1oLTKAmMXiCNjtK95Ol407nYuVhNhtKrLRQYB6m1DuX52t?=
- =?us-ascii?Q?Wrp48f81ZhahOT6rOkY1RG1I8WmOkW4GpNjBD07bFavIHqpccrOn+r0lccex?=
- =?us-ascii?Q?8XF5skEEIhmv2IULg3qPtCKgsJuE9uIfHCuKfpyY8An59qJ6UgVvwr4cwA?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 21:22:27.1525
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1427b6a-563c-410d-31ae-08ddf49df875
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022573.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8902
+Mime-Version: 1.0
+References: <20250912232319.429659-1-seanjc@google.com> <20250912232319.429659-4-seanjc@google.com>
+ <c30dff3a-838d-93df-d106-25acb7cb0513@amd.com>
+Message-ID: <aMiDn1BJsOxtJwep@google.com>
+Subject: Re: [PATCH v15 03/41] KVM: SEV: Validate XCR0 provided by guest in GHCB
+From: Sean Christopherson <seanjc@google.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mathias Krause <minipli@grsecurity.net>, John Allen <john.allen@amd.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Zhang Yi Z <yi.z.zhang@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On Mon, Sep 15, 2025, Tom Lendacky wrote:
+> On 9/12/25 18:22, Sean Christopherson wrote:
+> (successfully booted and ran some quick tests against the first 3
+> patches without any issues on both an SEV-ES and SEV-SNP guest).
 
-When SEV-SNP is active, the TEE extended command header page and
-all output buffers for TEE extended commands (such as used by Seamless
-Firmware servicing support) must be in hypervisor-fixed state,
-assigned to the hypervisor and marked immutable in the RMP entrie(s).
+Nice, thanks!
 
-Add a new generic SEV API interface to allocate/free hypervisor fixed
-pages which abstracts hypervisor fixed page allocation/free for PSP
-sub devices. The API internally uses SNP_INIT_EX to transition pages
-to HV-Fixed page state.
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 37abbda28685..0cd77a87dd84 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -3303,10 +3303,8 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
+> >  
+> >  	svm->vmcb->save.cpl = kvm_ghcb_get_cpl_if_valid(svm, ghcb);
+> >  
+> > -	if (kvm_ghcb_xcr0_is_valid(svm)) {
+> > -		vcpu->arch.xcr0 = kvm_ghcb_get_xcr0(ghcb);
+> > -		vcpu->arch.cpuid_dynamic_bits_dirty = true;
+> > -	}
+> > +	if (kvm_ghcb_xcr0_is_valid(svm))
+> > +		__kvm_set_xcr(vcpu, 0, kvm_ghcb_get_xcr0(ghcb));
+> 
+> Would a vcpu_unimpl() be approprite here if __kvm_set_xcr() returns
+> something other than 0? It might help with debugging if the guest is
+> doing something it shouldn't.
 
-If SNP is not enabled then the allocator is simply a wrapper over
-alloc_pages() and __free_pages().
+I don't want to use vcpu_unimpl(), because this isn't likely to occur due to lack
+of KVM support.  Hrm, but I see now that sev.c abuses vcpu_unimpl() for a whole
+pile of things that aren't due to lack of KVM support.  I can certainly appreciate
+how painful it can be to debug random -EINVAL failures, but printing via
+vcpu_unimpl() isn't an approach that I want to encourage as it's inherently
+flawed (requires access to kernel logs, is ratelimited, and can still cause
+jitter even though it's ratelimited if multiple CPUs happen to contend the printk
+locks at just the wrong time).
 
-When the sub device free the pages, they are put on a free list
-and future allocation requests will try to re-use the freed pages from
-this list. But this list is not preserved across PSP driver load/unload
-hence this free/reuse support is only supported while PSP driver is
-loaded. As HV_FIXED page state is only changed at reboot, these pages
-are leaked as they cannot be returned back to the page allocator and
-then potentially allocated to guests, which will cause SEV-SNP guests
-to fail to start or terminate when accessing the HV_FIXED page.
-
-Suggested-by: Thomas Lendacky <Thomas.Lendacky@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- drivers/crypto/ccp/sev-dev.c | 182 +++++++++++++++++++++++++++++++++++
- drivers/crypto/ccp/sev-dev.h |   3 +
- 2 files changed, 185 insertions(+)
-
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 9e797cbdf038..2300673c6683 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -83,6 +83,21 @@ MODULE_FIRMWARE("amd/amd_sev_fam19h_model1xh.sbin"); /* 4th gen EPYC */
- static bool psp_dead;
- static int psp_timeout;
- 
-+enum snp_hv_fixed_pages_state {
-+	ALLOCATED,
-+	HV_FIXED,
-+};
-+
-+struct snp_hv_fixed_pages_entry {
-+	struct list_head list;
-+	struct page *page;
-+	unsigned int order;
-+	bool free;
-+	enum snp_hv_fixed_pages_state page_state;
-+};
-+
-+static LIST_HEAD(snp_hv_fixed_pages);
-+
- /* Trusted Memory Region (TMR):
-  *   The TMR is a 1MB area that must be 1MB aligned.  Use the page allocator
-  *   to allocate the memory, which will return aligned memory for the specified
-@@ -1158,6 +1173,165 @@ static int snp_get_platform_data(struct sev_device *sev, int *error)
- 	return rc;
- }
- 
-+/* Hypervisor Fixed pages API interface */
-+static void snp_hv_fixed_pages_state_update(struct sev_device *sev,
-+					    enum snp_hv_fixed_pages_state page_state)
-+{
-+	struct snp_hv_fixed_pages_entry *entry;
-+
-+	/* List is protected by sev_cmd_mutex */
-+	lockdep_assert_held(&sev_cmd_mutex);
-+
-+	if (list_empty(&snp_hv_fixed_pages))
-+		return;
-+
-+	list_for_each_entry(entry, &snp_hv_fixed_pages, list)
-+		entry->page_state = page_state;
-+}
-+
-+/*
-+ * Allocate HV_FIXED pages in 2MB aligned sizes to ensure the whole
-+ * 2MB pages are marked as HV_FIXED.
-+ */
-+struct page *snp_alloc_hv_fixed_pages(unsigned int num_2mb_pages)
-+{
-+	struct psp_device *psp_master = psp_get_master_device();
-+	struct snp_hv_fixed_pages_entry *entry;
-+	struct sev_device *sev;
-+	unsigned int order;
-+	struct page *page;
-+
-+	if (!psp_master || !psp_master->sev_data)
-+		return NULL;
-+
-+	sev = psp_master->sev_data;
-+
-+	order = get_order(PMD_SIZE * num_2mb_pages);
-+
-+	/*
-+	 * SNP_INIT_EX is protected by sev_cmd_mutex, therefore this list
-+	 * also needs to be protected using the same mutex.
-+	 */
-+	guard(mutex)(&sev_cmd_mutex);
-+
-+	/*
-+	 * This API uses SNP_INIT_EX to transition allocated pages to HV_Fixed
-+	 * page state, fail if SNP is already initialized.
-+	 */
-+	if (sev->snp_initialized)
-+		return NULL;
-+
-+	/* Re-use freed pages that match the request */
-+	list_for_each_entry(entry, &snp_hv_fixed_pages, list) {
-+		/* Hypervisor fixed page allocator implements exact fit policy */
-+		if (entry->order == order && entry->free) {
-+			entry->free = false;
-+			memset(page_address(entry->page), 0,
-+			       (1 << entry->order) * PAGE_SIZE);
-+			return entry->page;
-+		}
-+	}
-+
-+	page = alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
-+	if (!page)
-+		return NULL;
-+
-+	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
-+	if (!entry) {
-+		__free_pages(page, order);
-+		return NULL;
-+	}
-+
-+	entry->page = page;
-+	entry->order = order;
-+	list_add_tail(&entry->list, &snp_hv_fixed_pages);
-+
-+	return page;
-+}
-+
-+void snp_free_hv_fixed_pages(struct page *page)
-+{
-+	struct psp_device *psp_master = psp_get_master_device();
-+	struct snp_hv_fixed_pages_entry *entry, *nentry;
-+
-+	if (!psp_master || !psp_master->sev_data)
-+		return;
-+
-+	/*
-+	 * SNP_INIT_EX is protected by sev_cmd_mutex, therefore this list
-+	 * also needs to be protected using the same mutex.
-+	 */
-+	guard(mutex)(&sev_cmd_mutex);
-+
-+	list_for_each_entry_safe(entry, nentry, &snp_hv_fixed_pages, list) {
-+		if (entry->page != page)
-+			continue;
-+
-+		/*
-+		 * HV_FIXED page state cannot be changed until reboot
-+		 * and they cannot be used by an SNP guest, so they cannot
-+		 * be returned back to the page allocator.
-+		 * Mark the pages as free internally to allow possible re-use.
-+		 */
-+		if (entry->page_state == HV_FIXED) {
-+			entry->free = true;
-+		} else {
-+			__free_pages(page, entry->order);
-+			list_del(&entry->list);
-+			kfree(entry);
-+		}
-+		return;
-+	}
-+}
-+
-+static void snp_add_hv_fixed_pages(struct sev_device *sev, struct sev_data_range_list *range_list)
-+{
-+	struct snp_hv_fixed_pages_entry *entry;
-+	struct sev_data_range *range;
-+	int num_elements;
-+
-+	lockdep_assert_held(&sev_cmd_mutex);
-+
-+	if (list_empty(&snp_hv_fixed_pages))
-+		return;
-+
-+	num_elements = list_count_nodes(&snp_hv_fixed_pages) +
-+		       range_list->num_elements;
-+
-+	/*
-+	 * Ensure the list of HV_FIXED pages that will be passed to firmware
-+	 * do not exceed the page-sized argument buffer.
-+	 */
-+	if (num_elements * sizeof(*range) + sizeof(*range_list) > PAGE_SIZE) {
-+		dev_warn(sev->dev, "Additional HV_Fixed pages cannot be accommodated, omitting\n");
-+		return;
-+	}
-+
-+	range = &range_list->ranges[range_list->num_elements];
-+	list_for_each_entry(entry, &snp_hv_fixed_pages, list) {
-+		range->base = page_to_pfn(entry->page) << PAGE_SHIFT;
-+		range->page_count = 1 << entry->order;
-+		range++;
-+	}
-+	range_list->num_elements = num_elements;
-+}
-+
-+static void snp_leak_hv_fixed_pages(void)
-+{
-+	struct snp_hv_fixed_pages_entry *entry;
-+
-+	/* List is protected by sev_cmd_mutex */
-+	lockdep_assert_held(&sev_cmd_mutex);
-+
-+	if (list_empty(&snp_hv_fixed_pages))
-+		return;
-+
-+	list_for_each_entry(entry, &snp_hv_fixed_pages, list)
-+		if (entry->page_state == HV_FIXED)
-+			__snp_leak_pages(page_to_pfn(entry->page),
-+					 1 << entry->order, false);
-+}
-+
- static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
- {
- 	struct sev_data_range_list *range_list = arg;
-@@ -1248,6 +1422,12 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
- 			return rc;
- 		}
- 
-+		/*
-+		 * Add HV_Fixed pages from other PSP sub-devices, such as SFS to the
-+		 * HV_Fixed page list.
-+		 */
-+		snp_add_hv_fixed_pages(sev, snp_range_list);
-+
- 		memset(&data, 0, sizeof(data));
- 
- 		if (max_snp_asid) {
-@@ -1293,6 +1473,7 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
- 		return rc;
- 	}
- 
-+	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
- 	sev->snp_initialized = true;
- 	dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
- 
-@@ -1896,6 +2077,7 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
- 		return ret;
- 	}
- 
-+	snp_leak_hv_fixed_pages();
- 	sev->snp_initialized = false;
- 	dev_dbg(sev->dev, "SEV-SNP firmware shutdown\n");
- 
-diff --git a/drivers/crypto/ccp/sev-dev.h b/drivers/crypto/ccp/sev-dev.h
-index 5aed2595c9ae..ac03bd0848f7 100644
---- a/drivers/crypto/ccp/sev-dev.h
-+++ b/drivers/crypto/ccp/sev-dev.h
-@@ -69,4 +69,7 @@ void sev_dev_destroy(struct psp_device *psp);
- void sev_pci_init(void);
- void sev_pci_exit(void);
- 
-+struct page *snp_alloc_hv_fixed_pages(unsigned int num_2mb_pages);
-+void snp_free_hv_fixed_pages(struct page *page);
-+
- #endif /* __SEV_DEV_H */
--- 
-2.34.1
-
+For now, I think it's best to do nothing.  Long term, I think we need to figure
+out a solution for logging errors of this nature, because this is far from the
+first time this sort of thing has popped up.  E.g. nested VMX consistency check
+failures are another case where having precise logs would be super helpful, but
+telling userspace to enable tracepoints and scrape the tracefs logs (or run BPF
+programs) isn't exactly a great experience.
