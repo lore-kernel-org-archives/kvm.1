@@ -1,96 +1,182 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7769272E4E
-	for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 17:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DAF286424;
+	Mon, 15 Sep 2025 17:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757955719; cv=none; b=jyvXhq3jX0BUJnFFRvP1ORNJhkoNy17CzkhcED/VfIiPE8sclzdd4X6Z+xdquWr/s9cELRsrB4i+HUAVMhG1Nyw1yfuSfnwv186LDdiomGGjk9VH2MVO5JmlK8+9HpsfALOhNawLu/ke8Bm158CEDmzItA49xgdKRT2vMYXdD08=
+	t=1757955915; cv=none; b=WHmEA47to1NhEcRpY6ohhhULM9Inj1v2Qt3vAXiQ7KSjMeK3wqyuEEFCX/+YqvimNWosZNKsM13dwXTDkzWNeuzXBghEEgNym5XrZ3SMF7gEYxii7+rz9xNlexV31+L/jo2pUKgoxZTRfRW3OTCi3UmrfzHCJnHEsYM9zZ/HfpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757955719; c=relaxed/simple;
-	bh=n4vASe85eZy1KMZCjpCPLB0+R5aQYRJHMP2IQSmxlmc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=hrAotxhc26EZ367YRpnsRGDbQLeXo2eQucT16N0UVDrPUiE7XsR2kNhxOZrTal6xS6MyI79FgJC6pycTABstcAugk5y0yskDROVrB+98VszKJU00MnO2jtUk31s3kIoWGxnrhsORYZzXC7uFUiCTiuxnVbe0lIBtjEpmXthg9uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=eZn8VCfB; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1757955915; c=relaxed/simple;
+	bh=UYHu4XvkaRjYogwIfNpvwksawDBauQBnyHYV6E8cpTo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VFNiogxGUpXV5S1zgyUwqw6okGsptCVPsX8P2bMcb1CFyGk0adkp66v0OJaC+LWP82waytil5vJODFlslpy54NzIKze1exhOpxReLdSKXip7P7Zo8PFIYSUxWsiQjtKtv7UV1qCUeDqzPHtLZwZFFn5JgymDEgWBrEbOLMvO1CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PswIMUK7; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="eZn8VCfB"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45f2f9f1641so1139625e9.1
-        for <kvm@vger.kernel.org>; Mon, 15 Sep 2025 10:01:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1757955716; x=1758560516; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:from:to:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWHHL1s0psJfb//epbwV/zjtkXGJcyLhcOl2Is0sDa4=;
-        b=eZn8VCfBDEKTZwke7bXWAQf55cyK6DZXnVN9WPzRSrzp98LIj0F2Z1Lnzgz0r4ghfE
-         UWKtLfQH7Vo+20SQ7kS9+8Ei/dn1VxzGn18OvllnDBw5CUi0gHACWGr/EVqwbPLQRiJX
-         3WYbSMSdHoT3GKw+ktHo7rHpraun6EMY/ejyKDhjSwXEuISFRrla0HbDjwXZei9wkdgw
-         QMWfndUxGVN1l78ZyJGFWuaIL9ZT4pXxDn+Z19J7Yvl3ZsyougONebbLb+aDbhz6vmCe
-         If4QBIciBdYsJ3JAFek2h0j+NpSYijHQBLDlPE5s0Nb/icoQ8svkPTPy4V+FihyCcvPq
-         cB/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757955716; x=1758560516;
-        h=in-reply-to:references:subject:from:to:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DWHHL1s0psJfb//epbwV/zjtkXGJcyLhcOl2Is0sDa4=;
-        b=eHXs7CJW1jgOisaTh1OBtHok8Qe9phqgzTtnolQYt7tJpHY/Bh0ZmpMes42xUuoIcu
-         pRhsAwRyfDIN72kpTpkC/rWMrh/7EJBYDaYVsXfsW3SDI52uw2hEcm/hcHjiginFn+hV
-         itBMbDe3KzSSjvnomsjm1uQ92/fIvfJ80uziE6BrTE2WLnUjKb/kuV0luiKCAUiTOH68
-         vGc33GDm7wGAEdFZTLzoXg3c6sy9L04YGGNjXz06tCm593V/h44EUlIWqGoMKbwT79Ve
-         dsod7YdTiD7s93z/xKYCO5i/sNZARu4rH48Ev1l6qsqL6oApNRSzObqatk+K20n61k7I
-         xPqg==
-X-Gm-Message-State: AOJu0YyH53Xha2xVpaOOCT2zV6dLZLJA9LkqFB1xG2yUTtE8wdrDd9X1
-	Prc1b21CeGl27Sya7Nho0Q7/9U6E2Ho1RdFXxedawd9LhzdCjJzpl0USPFaysqNry0c=
-X-Gm-Gg: ASbGncsfIC7PZdPWCDJGVIR3p9WyKolf8Z4H76ubf2UUE0q9BGfFQIsRFFb5gZvjAY3
-	lTt4fmQlTwO0Ty40NRNOdLjJO8heV6U0Z3wjZl9LMhdc0eUhCgAA/58xwmXjoX/5KbDc9E8Bbas
-	LjBQptDQ5CgYSOx5G2ENy7YIetrNpfdn5Rc2iC5rVLBFasRwjA22EGmijlfr1cvgAtVYz5B88fU
-	fQX0eGqXteqexz5MQJ8MlyWaHPRrr+Dvkvk7R4eICFuNmVXZTTd/5brlEcALaSkiOdgbIdoY1DK
-	hDpqhSeSqKK7X/I7L1K2kfGOgcNIWmd1S+WV5VG004Fs4FBzI11dIvRDaFkaMCywYGXdz9JtD4H
-	pyNlpkRUo9mzQyq2hvLZ6CQ==
-X-Google-Smtp-Source: AGHT+IFU1lq2Hn1rhnQ1PXztdy1u0/BZUM8rfqOS080uGF0cxwIiBohWrEivOXB1opFs7TzdP9qSMg==
-X-Received: by 2002:a5d:64e3:0:b0:3e6:4b2:b9b2 with SMTP id ffacd0b85a97d-3e7659e936fmr5550562f8f.6.1757955715906;
-        Mon, 15 Sep 2025 10:01:55 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200::bfbb])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3e9c2954b10sm7301300f8f.50.2025.09.15.10.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 10:01:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PswIMUK7"
+Received: from [0.0.0.0] ([134.134.137.72])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 58FH4vE22801932
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 15 Sep 2025 10:04:57 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 58FH4vE22801932
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025082201; t=1757955898;
+	bh=JbWMiStndH0zdL0jqV2oFj5rZ7N3e7IVzr7NBcUkyX0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PswIMUK7RLrOYL724NWLO+FU07YSavIOCsEN0Lo3+H1kLXvlqoAAziDmyUeHPrE7i
+	 1TLh7s91nbQh/4uA+p7cLa5LY7e9/WOzOLv/2Nb/08l2Nkf5zagSiskgeSrKKXIffS
+	 DBjc+m3khQq0wLBsjBMRITk1MaGkH5/Q3SmQt+vHPDYat77jP2m4urEyW5MOL65NoJ
+	 wOokMJ2IpYolNK9TWk2lFWPf+d6OaztfznYv/FFdNPZJLHjR4hj8qqnRn8Nx08k6Nr
+	 alrKEX9VPXbMUG25G+QZWak9FXaAjpumFnFt0FI8USzG8u9oHbm3C1tGgkfYSYz0M1
+	 JDoRQq0MWQ05g==
+Message-ID: <65184bb3-0a36-49c3-b212-4b19f2df7092@zytor.com>
+Date: Mon, 15 Sep 2025 10:04:51 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Sep 2025 19:01:03 +0200
-Message-Id: <DCTJ9US6E4PG.1MA4ICDR21DS6@ventanamicro.com>
-Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
- <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- "Tianshun Sun" <stsmail163@163.com>
-To: "Jinyu Tang" <tjytimi@163.com>, "Anup Patel" <anup@brainfault.org>,
- "Atish Patra" <atish.patra@linux.dev>, "Andrew Jones"
- <ajones@ventanamicro.com>, "Conor Dooley" <conor.dooley@microchip.com>,
- "Yong-Xuan Wang" <yongxuan.wang@sifive.com>, "Paul Walmsley"
- <paul.walmsley@sifive.com>, "Nutty Liu" <nutty.liu@hotmail.com>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-Subject: Re: [RFC PATCH] kvm/riscv: Add ctxsstatus and ctxhstatus for
- migration
-References: <20250915152731.1371067-1-tjytimi@163.com>
- <DCTJ3N8W4PCL.9XCHFVGS62SF@ventanamicro.com>
-In-Reply-To: <DCTJ3N8W4PCL.9XCHFVGS62SF@ventanamicro.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 09/41] KVM: x86: Load guest FPU state when access
+ XSAVE-managed MSRs
+To: Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Mathias Krause <minipli@grsecurity.net>,
+        John Allen <john.allen@amd.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Chao Gao <chao.gao@intel.com>, Maxim Levitsky <mlevitsk@redhat.com>,
+        Xiaoyao Li <xiaoyao.li@intel.com>,
+        Zhang Yi Z <yi.z.zhang@linux.intel.com>
+References: <20250912232319.429659-1-seanjc@google.com>
+ <20250912232319.429659-10-seanjc@google.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <20250912232319.429659-10-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-2025-09-15T18:52:56+02:00, Radim Kr=C4=8Dm=C3=A1=C5=99 <rkrcmar@ventanamicr=
-o.com>:
-> 2025-09-15T23:27:31+08:00, Jinyu Tang <tjytimi@163.com>:
->> +	if (reg_num =3D=3D KVM_REG_RISCV_CSR_REG(ctxhstatus))
->> +		csr->ctxhstatus =3D vcpu->arch.guest_context.hstatus;
->
-> Neither should userspace be able to directly set hstatus.
-> KVM should derive it from other userspace configuration.
->
-> What isn't correctly reflected in hstatus?
+On 9/12/2025 4:22 PM, Sean Christopherson wrote:
+> Load the guest's FPU state if userspace is accessing MSRs whose values
+> are managed by XSAVES. Introduce two helpers, kvm_{get,set}_xstate_msr(),
+> to facilitate access to such kind of MSRs.
+> 
+> If MSRs supported in kvm_caps.supported_xss are passed through to guest,
+> the guest MSRs are swapped with host's before vCPU exits to userspace and
+> after it reenters kernel before next VM-entry.
+> 
+> Because the modified code is also used for the KVM_GET_MSRS device ioctl(),
+> explicitly check @vcpu is non-null before attempting to load guest state.
+> The XSAVE-managed MSRs cannot be retrieved via the device ioctl() without
+> loading guest FPU state (which doesn't exist).
+> 
+> Note that guest_cpuid_has() is not queried as host userspace is allowed to
+> access MSRs that have not been exposed to the guest, e.g. it might do
+> KVM_SET_MSRS prior to KVM_SET_CPUID2.
+> 
+> The two helpers are put here in order to manifest accessing xsave-managed
+> MSRs requires special check and handling to guarantee the correctness of
+> read/write to the MSRs.
+> 
+> Co-developed-by: Yang Weijiang <weijiang.yang@intel.com>
+> Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+> Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+> Tested-by: Mathias Krause <minipli@grsecurity.net>
+> Tested-by: John Allen <john.allen@amd.com>
+> Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> [sean: drop S_CET, add big comment, move accessors to x86.c]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Ah, we don't set hstatus.SPVP when setting KVM_REG_RISCV_CORE_REG(mode).
+
+Reviewed-by: Xin Li (Intel) <xin@zytor.com>
+
+
+> ---
+>   arch/x86/kvm/x86.c | 86 +++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 85 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c5e38d6943fe..a95ca2fbd3a9 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -3801,6 +3804,66 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+>   	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
+>   }
+>   
+> +/*
+> + * Returns true if the MSR in question is managed via XSTATE, i.e. is context
+> + * switched with the rest of guest FPU state.  Note!  S_CET is _not_ context
+> + * switched via XSTATE even though it _is_ saved/restored via XSAVES/XRSTORS.
+> + * Because S_CET is loaded on VM-Enter and VM-Exit via dedicated VMCS fields,
+> + * the value saved/restored via XSTATE is always the host's value.  That detail
+> + * is _extremely_ important, as the guest's S_CET must _never_ be resident in
+> + * hardware while executing in the host.  Loading guest values for U_CET and
+> + * PL[0-3]_SSP while executing in the kernel is safe, as U_CET is specific to
+> + * userspace, and PL[0-3]_SSP are only consumed when transitioning to lower
+> + * privilegel levels, i.e. are effectively only consumed by userspace as well.
+> + */
+> +static bool is_xstate_managed_msr(struct kvm_vcpu *vcpu, u32 msr)
+> +{
+> +	if (!vcpu)
+> +		return false;
+> +
+> +	switch (msr) {
+> +	case MSR_IA32_U_CET:
+> +		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) ||
+> +		       guest_cpu_cap_has(vcpu, X86_FEATURE_IBT);
+> +	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
+> +		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
+> +	default:
+> +		return false;
+> +	}
+> +}
+
+With this new version of is_xstate_managed_msr(), which checks against vcpu
+capabilities instead of KVM, patch 9 of KVM FRED patches[1] no longer needs
+to make any change to it.  And this is the only conflict when I apply KVM
+FRED patches on top of this v15 mega-CET patch series.
+
+[1] https://lore.kernel.org/lkml/20250829153149.2871901-10-xin@zytor.com/
+
+
+
