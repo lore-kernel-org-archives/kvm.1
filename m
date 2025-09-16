@@ -1,292 +1,193 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013055.outbound.protection.outlook.com [40.93.196.55])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011023.outbound.protection.outlook.com [52.101.62.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908CB2C3244;
-	Tue, 16 Sep 2025 22:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DBC635;
+	Tue, 16 Sep 2025 22:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758063146; cv=fail; b=XVTfG/RiivfE6s3U3y+omdsV0Me3te6BlUSyNUrw8IKjU92rclXfzl+SbVF53dMr71ffvmdoqc0GcUi+xHUQdiMYtdnrOKhlO9L/QGQA1uZMEgRp8gu6YHvZN3BSUKofxg1betD9DkpKzlfyVODnOvp5PcHkS6B+HnIh9rqw950=
+	t=1758063347; cv=fail; b=DUZ96p41X9bjKISIG+5moVi+cNYHMZ0GimtO695+bBbLBro2MrrzsWDMo/n4IcPYATv8vWIqC7xKi/8UisQDCWoqDWhTnqGUuY/ynu8+vgs/sBBkSTPPiPchxltMhw52r7sr3sawCV7RUzsNO9rKNEwqAgGEEnC96Qjicyzp/7s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758063146; c=relaxed/simple;
-	bh=kvC/JWjuNwx42U2kWzwyu7k1O6Wdtc6HTeqAaz0Wa4M=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hi2fdDQ0KayAr9R9dr0URKKXGTDHdL5o9JSM8wM89/zPAcaReWm6LlD0usXeYJZlydEscPnrzFPy9LouSKSInBqgV8k70wDWe3iIA4zGOYeyOeP2bnaXCwvHVN6rGJWceORX8D/erdX9eGBW5x58wWdoF/2LpVjOUR/3TAWGddg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=K01nSe04; arc=fail smtp.client-ip=40.93.196.55
+	s=arc-20240116; t=1758063347; c=relaxed/simple;
+	bh=CrPbSQ4Aai+664y9os+H2lfRWxertzY2Gq/H6r6Zsak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=N/GBjuQs5dkrzwxH9lFcMhdtLvuO2ymugS5EEAD8gwGT9U7u1+soFZQ+sVeHKY3BIpQ3ZC5sWs0EjOIDKJxTrHoVFkyJLIAqRKGzUof1L7qzBHHc+US4ORFl20DQxloQSRHT2BYybKnbB4aXUJJ1TeuE9okF3qFaCRJjsKx015c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aPa74LU8; arc=fail smtp.client-ip=52.101.62.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="K01nSe04"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aPa74LU8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T5nHjUSwPwCKiEi9LWnkwWxF1Ee6xqK2twxCOYiu/lbL9EyENGApS9Q/cJXKCbYrgC3qaP0E9uuDkY8Y2fWDlafb1Y6giICSKZU66BbwqHUBc01/s3n5vL1labNchBRGX3FYySW0Lb6jcD/RnrKs+NTaDt6nQFNzVp2SSQX4plXAbdUavsjK56GDfsopPR7AlQ+U3FkheVyhvvDq2jAikB6olwWR+aRT/O/MA0Cs9/NkEc0WBmcEGlR4DxUtZJ1dZCS6uOlVbMz2SdICGFUFcYVwmi7ThKQ2+yDjmCTFagJO0h4aWW2WqsLrGww6+aiJDeNqImUu1mE2oHNGPH90UQ==
+ b=oT8M0pEoLBwDTZFqdRw4DRryZcSciRkrdMSOCkN1wtCpyM/HYZkjOHI4na1yP25vj6VXE6VyirafI+EXIH0WFKmS7AnmEdYw6WKEw6NKzjdvo1616AW2/oy4LEXxprl5hlr2O8W/VzeqNIb9BR5x4X9O2QIA25oOQPBBaegffFn9uQinD+FudV0VOxaodyTllLNLU5yNbemvhhLciLF1nv6Aj6YSvO2weHoUAUmhzq6qvoKaoDxqUM8s5dIDLuN1sN+FGlf/NHeSxzeoShAKhABiyzBvVUPmG3wW8eOiWORGrEVVv3/aypf5IC3OK5pqMGwjq/SR7I5zgUFvfG03cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rMtO28GYSz5vMZAhs62tYpH0NATG+6M/yKPKZk3d3+0=;
- b=DvrG8nXVwvQ3uHsYtIt4nz1ySec4a7sdTZywaEyftvCEDVU+bImL1TVfZ/FOtj+dcBuJA4eVQK1ph6TocdA45abalbU6ccgmMAgbPEbZNkvAohIQwqmtGDlbC1YgS8cTywx6U4bvanzk7D8Bg53WudyF1qqIgjgRu4CDpSK5GykWvhZ4iPP+kPPZ/vAZ2nW2pwQezxNM5joIS30Ibjpv+ZmySktEjAyn0f8COX3SIwYbZIQPODkrBnoHmiwSvw5ujgdejpNiHeXJs2bUO1TLKfJrYT5WrrK1VZQGkcygwKXf/q0rBLM7Lzz1qyBlveAwUr+qfk1oijS6WWGcjXJm2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=yP2LFJ2Q/ULuB2eNAfEkO2Ke6JXAyzLDt25S4HJdmtM=;
+ b=eNGbwHA/gWkicyFkCQs3mBkncJmtmHf4PqXGZdRQJoFORo17DPYBFIhGM+yTuHcKJCm61MkD07K1YuzyklULEsm+Y1ZBzMdCCK5c69ELITypmmq3z0FF+2KWuuCf99pVu79HqqFgAW/I0h70VtwUiuxF0W6VgHO5RGL8cqIaw/JgAOhy2EiOeRgypNG8qWbPdSIar0p5Mi2PA+s3AAe/aJAaq289j+a/hscBX+1rzldhirlsxRxTJcLjsZofqMCKstAVHkGCyTIgG1/daDjp5SX6Mmq+83OQSuXvujpYIydHe1hb69fZxniLGQ2ov4SStlVdRAij3VWxkKD4RAJFvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rMtO28GYSz5vMZAhs62tYpH0NATG+6M/yKPKZk3d3+0=;
- b=K01nSe040vcCAvVd4dASJQMGbps175U2UPmxBGfd1Ugqrd14TOh01BFaueCNEDmygq0MPnV3FCnHzUOytoFzrS0GLl0ILJa2q0TFSffgWkA8UcPcn8uV6vvEVqVuWrI3Z/5tu5yxeKIKhLoxHrJaEiy5xbDDPWbDjA5cKSFg5GE=
-Received: from SJ0PR03CA0169.namprd03.prod.outlook.com (2603:10b6:a03:338::24)
- by CH3PR12MB9099.namprd12.prod.outlook.com (2603:10b6:610:1a5::16) with
+ bh=yP2LFJ2Q/ULuB2eNAfEkO2Ke6JXAyzLDt25S4HJdmtM=;
+ b=aPa74LU8Y3SR3GIaxTN3AAVq8Atgb61tFCtK3qytW+GKiw7jf/hNJeQpDDtjzJubU0Pz7ennnlz3O/jmUvGsCP+jcZshPsUQ85G3b5stW0VfdYThf1o9MwRo9AM0UCxF49ViI5RKgXQtrlwc8VN6yDDUuTKmF/v6/zzbI0TkXKw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5995.namprd12.prod.outlook.com (2603:10b6:208:39b::20)
+ by DM4PR12MB7527.namprd12.prod.outlook.com (2603:10b6:8:111::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Tue, 16 Sep
- 2025 22:52:18 +0000
-Received: from SJ5PEPF000001E9.namprd05.prod.outlook.com
- (2603:10b6:a03:338:cafe::e6) by SJ0PR03CA0169.outlook.office365.com
- (2603:10b6:a03:338::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.13 via Frontend Transport; Tue,
- 16 Sep 2025 22:52:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001E9.mail.protection.outlook.com (10.167.242.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Tue, 16 Sep 2025 22:52:18 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 16 Sep
- 2025 15:52:09 -0700
-Date: Tue, 16 Sep 2025 17:41:33 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <aik@amd.com>, <ajones@ventanamicro.com>,
-	<akpm@linux-foundation.org>, <amoorthy@google.com>,
-	<anthony.yznaga@oracle.com>, <anup@brainfault.org>, <aou@eecs.berkeley.edu>,
-	<bfoster@redhat.com>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<catalin.marinas@arm.com>, <chao.p.peng@intel.com>, <chenhuacai@kernel.org>,
-	<dave.hansen@intel.com>, <david@redhat.com>, <dmatlack@google.com>,
-	<dwmw@amazon.co.uk>, <erdemaktas@google.com>, <fan.du@intel.com>,
-	<fvdl@google.com>, <graf@amazon.com>, <haibo1.xu@intel.com>,
-	<hch@infradead.org>, <hughd@google.com>, <ira.weiny@intel.com>,
-	<isaku.yamahata@intel.com>, <jack@suse.cz>, <james.morse@arm.com>,
-	<jarkko@kernel.org>, <jgg@ziepe.ca>, <jgowans@amazon.com>,
-	<jhubbard@nvidia.com>, <jroedel@suse.de>, <jthoughton@google.com>,
-	<jun.miao@intel.com>, <kai.huang@intel.com>, <keirf@google.com>,
-	<kent.overstreet@linux.dev>, <kirill.shutemov@intel.com>,
-	<liam.merwick@oracle.com>, <maciej.wieczor-retman@intel.com>,
-	<mail@maciej.szmigiero.name>, <maz@kernel.org>, <mic@digikod.net>,
-	<mpe@ellerman.id.au>, <muchun.song@linux.dev>, <nikunj@amd.com>,
-	<nsaenz@amazon.es>, <oliver.upton@linux.dev>, <palmer@dabbelt.com>,
-	<pankaj.gupta@amd.com>, <paul.walmsley@sifive.com>, <pbonzini@redhat.com>,
-	<pdurrant@amazon.co.uk>, <peterx@redhat.com>, <pgonda@google.com>,
-	<pvorel@suse.cz>, <qperret@google.com>, <quic_cvanscha@quicinc.com>,
-	<quic_eberman@quicinc.com>, <quic_mnalajal@quicinc.com>,
-	<quic_pderrin@quicinc.com>, <quic_pheragu@quicinc.com>,
-	<quic_svaddagi@quicinc.com>, <quic_tsoni@quicinc.com>,
-	<richard.weiyang@gmail.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <roypat@amazon.co.uk>, <rppt@kernel.org>,
-	<seanjc@google.com>, <shuah@kernel.org>, <steven.price@arm.com>,
-	<steven.sistare@oracle.com>, <suzuki.poulose@arm.com>, <tabba@google.com>,
-	<thomas.lendacky@amd.com>, <usama.arif@bytedance.com>,
-	<vannapurve@google.com>, <vbabka@suse.cz>, <viro@zeniv.linux.org.uk>,
-	<vkuznets@redhat.com>, <wei.w.wang@intel.com>, <will@kernel.org>,
-	<willy@infradead.org>, <xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>,
-	<yilun.xu@intel.com>, <yuzenghui@huawei.com>, <zhiquan1.li@intel.com>
-Subject: Re: [RFC PATCH v2 29/51] mm: guestmem_hugetlb: Wrap HugeTLB as an
- allocator for guest_memfd
-Message-ID: <20250916224133.ysuqlboywxyybsbl@amd.com>
-References: <diqzzffcfy3k.fsf@ackerleytng-ctop.c.googlers.com>
- <diqzecwofg7w.fsf@ackerleytng-ctop.c.googlers.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.23; Tue, 16 Sep
+ 2025 22:55:44 +0000
+Received: from BL1PR12MB5995.namprd12.prod.outlook.com
+ ([fe80::4c66:bb63:9a92:a69d]) by BL1PR12MB5995.namprd12.prod.outlook.com
+ ([fe80::4c66:bb63:9a92:a69d%3]) with mapi id 15.20.9115.020; Tue, 16 Sep 2025
+ 22:55:44 +0000
+Date: Tue, 16 Sep 2025 17:55:33 -0500
+From: John Allen <john.allen@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mathias Krause <minipli@grsecurity.net>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Chao Gao <chao.gao@intel.com>, Maxim Levitsky <mlevitsk@redhat.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v15 29/41] KVM: SEV: Synchronize MSR_IA32_XSS from the
+ GHCB when it's valid
+Message-ID: <aMnq5ceM3l340UPH@AUSJOHALLEN.amd.com>
+References: <20250912232319.429659-1-seanjc@google.com>
+ <20250912232319.429659-30-seanjc@google.com>
+ <aMmynhOnU/VkcXwI@AUSJOHALLEN.amd.com>
+ <aMnAVtWhxQipw9Er@google.com>
+ <aMnJYWKf63Ay+pIA@AUSJOHALLEN.amd.com>
+ <aMnY7NqhhnMYqu7m@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMnY7NqhhnMYqu7m@google.com>
+X-ClientProxiedBy: BY3PR04CA0011.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::16) To BL1PR12MB5995.namprd12.prod.outlook.com
+ (2603:10b6:208:39b::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <diqzecwofg7w.fsf@ackerleytng-ctop.c.googlers.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E9:EE_|CH3PR12MB9099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f69efc8-502b-4ad5-f7eb-08ddf573b076
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5995:EE_|DM4PR12MB7527:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6da311cf-e1b3-4e2d-45e2-08ddf5742ab7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ec2oaiBz5Ek+1wiO411ZHT0yLQ7l39bRz1RJulXqMWk/M++okY5tHtgaQwKM?=
- =?us-ascii?Q?0WWf/6ybfgd+gNy6PRQ1yfgBs2isXY5oyHCZxAi08wREVd+D5R+TdlkeACTn?=
- =?us-ascii?Q?q3l7bNAO+GmEGov6QDdnEkUYMFZHvS5X2lacdSb8Bg7VRj2Ia9xpNgzWx4lX?=
- =?us-ascii?Q?X/TAYP92I6eh/6FfgHn56CFawFxSf9IjEiVZkGv5Fw69gY9JwByJ4uLrzobF?=
- =?us-ascii?Q?Kw3dR6oqm5/1VqEosnk/hi3axKKXgqbc8JIqevVvZkJamEZzEywUIRm6/bvs?=
- =?us-ascii?Q?nT41If+qSaI6I3ty8E/d1eSGbzfYOTYAXPxFWzv97Qt2t+wBVBC2gz3Irazx?=
- =?us-ascii?Q?+V3SSL03kGk8/QZW9yEsSAmg8E7zMnT95Gp9lwsNpWwHL/h7mZ2jW/LkP0y/?=
- =?us-ascii?Q?pQ3w+YpdTuwcEbcFBe4UxAeQdWzmUhSIww1ixaYZfWAmcKwQN0bQ/R84PIC8?=
- =?us-ascii?Q?Hvd7qgOQuxRq6XK1nQhgpfIDwp+1c7xqtobZUjXRQAxMJv9otKqs0akgKtCT?=
- =?us-ascii?Q?30M9/slahoIxqvFviU2BUJ0QXo/teD2dJAJ6ZDiT7AXSSgc90klSoTpHHQ/i?=
- =?us-ascii?Q?NqXloS9xtC6I2mXYNN6AMCK3ycucGmB7UdvxXNzZpZ+C611d5Db5kr1AnS1P?=
- =?us-ascii?Q?FBQtaJbmxD8anD9VIvZ/vBizvjTWDBT+wwkXqVVWDjCO3ZA3VeAKPgmIhRD8?=
- =?us-ascii?Q?W2oBpDHpO7EMD5OsdKFjXb99HVuNnYQKoArg+Nirk/RYAXnzqMtIBjvvD3FO?=
- =?us-ascii?Q?d7a852xZt897WhhFnfcUq7mk/VnR+1xy/B0sihjm/sn14IOsq5ESPnagjg9K?=
- =?us-ascii?Q?PWhqp9KoT16RlyA84OO6iU02N2TpXFG9wDmSwdRIMvL1ztuCWibDZaN1NI6f?=
- =?us-ascii?Q?y2LSbhvhTLnBJB5OSOATk+vFc4xa6QFTq4QVjEydRY6v37Ay4Rbl/wJ8/wOY?=
- =?us-ascii?Q?O1mF8irywQhCoy9b2FfumEWdRZFvPL5/Q+fQU+kl9GksOlmcr6B28Rh8g811?=
- =?us-ascii?Q?ODqy9xEOP4BJFSFTPVoVXme//vIr58dRSDms0DLhgttpq/37Q0kak4Fr9NY5?=
- =?us-ascii?Q?Kv89/BRP5eW0zXG9eKeSgc0AeAT/h6CTQmZwKGVjfE0EH3C385xe+B3tKTxP?=
- =?us-ascii?Q?DXoyIHs0SDEagkarFiMUuxeXEHfGcjK3ExYokgKgyKpe/98Bw/PR2uVxfZuZ?=
- =?us-ascii?Q?VMO7cfyvahKnwpTB6l0xJmfsAyoFUCwa1APkhT9xhvXNRmFsLrJKFABNbeOq?=
- =?us-ascii?Q?kviYYkhBiGoUXFfKhCqAIsRQFcYghMSCwua0IKLe9MbZRwpNA82HOjn0fToL?=
- =?us-ascii?Q?JoEfjBC0VPRdl1Q/xdPxnoTIn41QrMHsCF/m8HlR062UN43hLPNYNUQ3sxp2?=
- =?us-ascii?Q?PaYVSBV2IxgylQqb2hL5PrZeA5rAQ1QLbvjnOtXqDmDWMC7mlcX/PRz2iY65?=
- =?us-ascii?Q?B8TqhvksP9khkZV6Y4xAq+BQp/jHUJfB0bSUt4oJGk98WDMtcHoV+9+Hjp/1?=
- =?us-ascii?Q?qOF4noNHME+0E8KCJsRGpE0VSyDultnNjC94?=
+	=?us-ascii?Q?nrWphvatk8YOAdDx3IwEFCV+vVDAqR/tZ+jB0eYHJfYRkPcjgX2EXkn2J6eE?=
+ =?us-ascii?Q?dAMlMAHk1NxrU0aSrvoZubq092gWyD8TRqT49tTZ0Edm2HSvR9g/lemvtdpT?=
+ =?us-ascii?Q?jl30bNpdLa9VoPTKF+Nk3FHlOdOQpkK9KRi+4ERirQK9cdFd8S0e80kn07o4?=
+ =?us-ascii?Q?XbhNAfCZ5aIp96r7+oP4FqmkyCztGWkRn3FeeROKfKVQjOG1XvWwucs0NGY6?=
+ =?us-ascii?Q?gKKfLHUaEy0wFwRkEqq6DNWT/EZCrvqgC7cV3WB3eZNxsMV08lP2Pt3A0Q+T?=
+ =?us-ascii?Q?YGLxbGXX4F0vsUe0+1XOQpMrulQmXYgrNE4SVJriAQiIDPV1Pw09CkUl0W4t?=
+ =?us-ascii?Q?wo5I69HMGDasdzfNoqlhHUQgM7s/J9lfFqBy1su5OYDsJuWzWfNceytW2dc6?=
+ =?us-ascii?Q?NjtNdtyIk+4TfDJgZFj24Q6PkODRBgoGbe56v++k+b3TkBoT5VesLSZbkhHK?=
+ =?us-ascii?Q?btrKy4W8JTrGLzRKA4w4X866WTU3w+k1JXFPUxsA87BE9wkbQAq8YaUYlfnG?=
+ =?us-ascii?Q?flYT6OO6AKmOBEJmEsUAE/i6PLD3U5h6kHuf27U/LWF4QcCdZLAfwoir1WFp?=
+ =?us-ascii?Q?44sVFFUmkH51S1HpUS0VcRtk06UbSMjVH4+iHssl7z0QRdMSW/cPYryE55Im?=
+ =?us-ascii?Q?SUYwgXfkiWZ27h4YdZxjOw1XDkKHriS/607AxN4fFBDuIRjKS9c0rFeGwGgv?=
+ =?us-ascii?Q?QiN9d4kuaSq//DVjTa178IcTYq5Y7okB3Sw6dvtIeYgtw/0AgEQgaH9XBGY8?=
+ =?us-ascii?Q?42ZggjhrR4slhLaROYhr6AcnD/FFZU2qXIpvPsxY5qwtOPTNhsWVbKGaMCqs?=
+ =?us-ascii?Q?xiP630R39THCJCRSXeYYEs7DaZHw43fvsi9JRGRi6KejODvsAqpB4cHYMwA9?=
+ =?us-ascii?Q?8mqKqUyIyz2XzPpbpn7JfZXK9MeyJgSl5LaSLrf17Uok12dJWG9qc1XgGnVv?=
+ =?us-ascii?Q?CgEVyeFfCUjXidC5ZinVzP5ed3pTXyyKrDksqsw6vP2Oie30TFqTB6ssXDJb?=
+ =?us-ascii?Q?nb75ObuFF6AzebSuSd1iklNljUtqi31o8dE1x+cfz8jHKcDbhdDHaqMlH+4z?=
+ =?us-ascii?Q?ljvfN2tSHDEtRsD2SYixQorok68sl5sGJ0mWLz4Ubk0+7Pl/jfE4XCyQzN6i?=
+ =?us-ascii?Q?u9HrHiz1tQqF1jJrV6DbzXp35bFLxSUIedhmDpqxYa1nMv58+rb3pXaeonOS?=
+ =?us-ascii?Q?pNlGi9o1qwhLN3uQrIIwY27+pnNRqoPUGm0gW44ZmQul5lXtqFD1kNxQlKRy?=
+ =?us-ascii?Q?bKAySi14CjG4PqDhzGKwC7hifiOWPr9mfi6hQO8WXX9fxrfl6g0GvYAUGBC3?=
+ =?us-ascii?Q?dGCZxFYg8pPXlmO+iUH+8XFmHHPBGbMaiQWNGAU8LysFk7o1IITNygPzy8KS?=
+ =?us-ascii?Q?1LwHBJ561wN8IUfX7tiXM4/t/DmhD48SJaFaBnqbNQZk3Ilgqo8cgG958C9f?=
+ =?us-ascii?Q?jt/6/WwUcTc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?apB7ri8AUygPOHEXoO+qcExp+lYUQlEqpBhAgpEJbvJwTwQBk6tQUvrmH+cV?=
+ =?us-ascii?Q?PuQoT45a3eFcx5QetUdelh0Fjs0J+ABuf9cFaxt7cTPLzebKXbAV6GLkJo57?=
+ =?us-ascii?Q?cZ4Jr4MRKBN+2yxIScxtv7BW/I9FJpSVDgtULqHE/P4l/8FOPkeSxzF6ie4T?=
+ =?us-ascii?Q?9cZabG5c9qjr1stZ9bC9c7sWl7w9INx2e642XlSP4XhgG3Q58vY7N77nCEYW?=
+ =?us-ascii?Q?evEI0l41ECs/jV89803Tachsnpj1oVDp4oaxS2nzyPlCqDgwoRcRgwz8Et37?=
+ =?us-ascii?Q?YvfN93j0yOYtuS2I0IygAnPQPQozETCQng+BalB8taxTnHU5XwhtTFvDrDTX?=
+ =?us-ascii?Q?5HYrloH4AtDZx9yJU/qEFNsW6ivhP6axexPIS1PelvruyhCyD/yr1PB5ODV/?=
+ =?us-ascii?Q?pithql8kn9tMJU2ibEUckbuV5ywJH6TdGA4dH2sWDiKoxnsUEqUnYgRCgmUE?=
+ =?us-ascii?Q?u+RxFBu9i7VK+TNxuHh/xmlYk8KLZpFvCFwQDma31OMHxHjoIeJBsqqwM97U?=
+ =?us-ascii?Q?3k0B3iPLLcsdYgd9N+wffVOWllbdxHoksO/yK84gZ2q7HxLXaasiLLWGa/nX?=
+ =?us-ascii?Q?/Oqe23EMev4kPY9qmkhqRKzCAqRpbPQkci1rdJkAO4nl4LdDM5xLzc/c229/?=
+ =?us-ascii?Q?GW53eJbw2Wz5y9E2a/OpOcIvXz/kTT8KL7p4xYj94pGNq0xacPUKGNDTPpuw?=
+ =?us-ascii?Q?Or1HgOUa4Ro90MXpn8TrWsOvFqBPPF4632IjJcjHDF3OvBSpKCAA6K7I+uPF?=
+ =?us-ascii?Q?7gyv/PCw+TLAN4kHG/xfZJo/w9PqIeDgiOkyzNi6st3yTZmZA1K/WhNUpp1W?=
+ =?us-ascii?Q?4gJ0Vodat5TX30oplGt9oxVnl4d/24liRHOmkHhGGfqASY4pUuxH0UuUxkvi?=
+ =?us-ascii?Q?CBOEU/Q3bjtyLYZ2pmkqy9l7iLHAmEHktWiuY+kg/6n3BqYuCqT7nWnud/Kb?=
+ =?us-ascii?Q?I2g/JIYeXqSVtHpeSSFe2AURBka8LOExxNNoWCMIat+HdwMd4tahe/C4Z87P?=
+ =?us-ascii?Q?CSnG4FVwxSFPtS522SjbzlmJ5Hu6vY7BT4Ngd/xrfIBVBEwTV7l1Qhg9VbkZ?=
+ =?us-ascii?Q?x7YHRYgq/aTjQQAppGY4l20ObUtkZUH+XTM/Rda0Rk87BNmWRQAimwXxz8n/?=
+ =?us-ascii?Q?3/gCuA39SBwtzc2/rUtZG+4ve6HlVy3MM4OmmGb3TFsJvo0sKWfwJsiJEg+N?=
+ =?us-ascii?Q?EJ13xrcSX4TjiEW833HP3gW5Lx+5nH88VcLNGqiv+T/8gFGCjOPD3VU65b4a?=
+ =?us-ascii?Q?O3z11Xz95qkyQrWD2o0RfbIFuIG1iqbkpLF0UXUg9EeiDnfHyezYWN2lDKY0?=
+ =?us-ascii?Q?i3jaQTX4xzbIL2kkVkyQp9s/6qH58gsumzK1qFktmFx+vPpYEWBRcjgJB6+j?=
+ =?us-ascii?Q?6q4zRJTa8sXHFKatFLYp8k/Ys2xocRFl3CvUfC2MZ4MUkc7bMVLIxa6KMspW?=
+ =?us-ascii?Q?is5ZvxqgoDmNIJKtu14NFkAQbPbNC6Jui9V85Pv0LiHDIUC2a3OvUUrfmRE/?=
+ =?us-ascii?Q?YpRDZ5+RcxIPsN0GqnTsnDaYSMSARQ1CZE4qwxCFvnjCntg58mx3bY+yLVSu?=
+ =?us-ascii?Q?ED1T8zBksI6csnNUq+w5zPorT/ySvpnJBFXHcEv3?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 22:52:18.5774
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6da311cf-e1b3-4e2d-45e2-08ddf5742ab7
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5995.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 22:55:44.0115
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f69efc8-502b-4ad5-f7eb-08ddf573b076
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001E9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9099
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: drpZxapSKQ98gUv64qxOq1lCxtGnrNWpLE0op1Ghhoq/SUYEfxxlpeOoZ12vPPYacTCjzuX2LsCwMLfdXJzJCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7527
 
-On Fri, May 16, 2025 at 01:33:39PM -0700, Ackerley Tng wrote:
-> Ackerley Tng <ackerleytng@google.com> writes:
+On Tue, Sep 16, 2025 at 02:38:52PM -0700, Sean Christopherson wrote:
+> On Tue, Sep 16, 2025, John Allen wrote:
+> > On Tue, Sep 16, 2025 at 12:53:58PM -0700, Sean Christopherson wrote:
+> > > On Tue, Sep 16, 2025, John Allen wrote:
+> > > > On Fri, Sep 12, 2025 at 04:23:07PM -0700, Sean Christopherson wrote:
+> > > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > > > index 0cd77a87dd84..0cd32df7b9b6 100644
+> > > > > --- a/arch/x86/kvm/svm/sev.c
+> > > > > +++ b/arch/x86/kvm/svm/sev.c
+> > > > > @@ -3306,6 +3306,9 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
+> > > > >  	if (kvm_ghcb_xcr0_is_valid(svm))
+> > > > >  		__kvm_set_xcr(vcpu, 0, kvm_ghcb_get_xcr0(ghcb));
+> > > > >  
+> > > > > +	if (kvm_ghcb_xss_is_valid(svm))
+> > > > > +		__kvm_emulate_msr_write(vcpu, MSR_IA32_XSS, kvm_ghcb_get_xss(ghcb));
+> > > > > +
+> > > > 
+> > > > It looks like this is the change that caused the selftest regression
+> > > > with sev-es. It's not yet clear to me what the problem is though.
+> > > 
+> > > Do you see any WARNs in the guest kernel log?
+> > > 
+> > > The most obvious potential bug is that KVM is missing a CPUID update, e.g. due
+> > > to dropping an XSS write, consuming stale data, not setting cpuid_dynamic_bits_dirty,
+> > > etc.  But AFAICT, CPUID.0xD.1.EBX (only thing that consumes the current XSS) is
+> > > only used by init_xstate_size(), and I would expect the guest kernel's sanity
+> > > checks in paranoid_xstate_size_valid() to yell if KVM botches CPUID emulation.
+> > 
+> > Yes, actually that looks to be the case:
+> > 
+> > [    0.463504] ------------[ cut here ]------------
+> > [    0.464443] XSAVE consistency problem: size 880 != kernel_size 840
+> > [    0.465445] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:638 paranoid_xstate_size_valid+0x101/0x140
 > 
-> > Ackerley Tng <ackerleytng@google.com> writes:
-> >
-> >> guestmem_hugetlb is an allocator for guest_memfd. It wraps HugeTLB to
-> >> provide huge folios for guest_memfd.
-> >>
-> >> This patch also introduces guestmem_allocator_operations as a set of
-> >> operations that allocators for guest_memfd can provide. In a later
-> >> patch, guest_memfd will use these operations to manage pages from an
-> >> allocator.
-> >>
-> >> The allocator operations are memory-management specific and are placed
-> >> in mm/ so key mm-specific functions do not have to be exposed
-> >> unnecessarily.
-> >>
-> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> >>
-> >> Change-Id: I3cafe111ea7b3c84755d7112ff8f8c541c11136d
-> >> ---
-> >>  include/linux/guestmem.h      |  20 +++++
-> >>  include/uapi/linux/guestmem.h |  29 +++++++
-> >>  mm/Kconfig                    |   5 +-
-> >>  mm/guestmem_hugetlb.c         | 159 ++++++++++++++++++++++++++++++++++
-> >>  4 files changed, 212 insertions(+), 1 deletion(-)
-> >>  create mode 100644 include/linux/guestmem.h
-> >>  create mode 100644 include/uapi/linux/guestmem.h
-> >>
-> >> <snip>
-> >>
-> >> diff --git a/mm/Kconfig b/mm/Kconfig
-> >> index 131adc49f58d..bb6e39e37245 100644
-> >> --- a/mm/Kconfig
-> >> +++ b/mm/Kconfig
-> >> @@ -1218,7 +1218,10 @@ config SECRETMEM
-> >>  
-> >>  config GUESTMEM_HUGETLB
-> >>  	bool "Enable guestmem_hugetlb allocator for guest_memfd"
-> >> -	depends on HUGETLBFS
-> >> +	select GUESTMEM
-> >> +	select HUGETLBFS
-> >> +	select HUGETLB_PAGE
-> >> +	select HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> >
-> > My bad. I left out CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=y in
-> > my testing and just found that when it is set, I hit
-> >
-> >   BUG_ON(pte_page(ptep_get(pte)) != walk->reuse_page);
-> >
-> > with the basic guest_memfd_test on splitting pages on allocation.
-> >
-> > I'll follow up with the fix soon.
-> >
-> > Another note about testing: I've been testing in a nested VM for the
-> > development process:
-> >
-> > 1. Host
-> > 2. VM for development
-> > 3. Nested VM running kernel being developed
-> > 4. Nested nested VMs created during selftests
-> >
-> > This series has not yet been tested on a physical host.
-> >
-> >>  	help
-> >>  	  Enable this to make HugeTLB folios available to guest_memfd
-> >>  	  (KVM virtualization) as backing memory.
-> >>
-> >> <snip>
-> >>
-> 
-> Here's the fix for this issue
-> 
-> From 998af6404d4e39920ba42764e7f3815cb9bb9e3d Mon Sep 17 00:00:00 2001
-> Message-ID: <998af6404d4e39920ba42764e7f3815cb9bb9e3d.1747427489.git.ackerleytng@google.com>
-> From: Ackerley Tng <ackerleytng@google.com>
-> Date: Fri, 16 May 2025 13:14:55 -0700
-> Subject: [RFC PATCH v2 1/1] KVM: guest_memfd: Reorder undoing vmemmap
->  optimization and stashing hugetlb folio metadata
-> 
-> Without this patch, when HugeTLB folio metadata is stashed, the
-> vmemmap_optimized flag, stored in a HugeTLB folio's folio->private was
-> stashed as set.
-> 
-> The first splitting works, but on merging, when the folio metadata was
-> unstashed, vmemmap_optimized is unstashed as set, making the call to
-> hugetlb_vmemmap_optimize_folio() skip actually applying optimizations.
-> 
-> On a second split, hugetlb_vmemmap_restore_folio() attempts to reapply
-> optimizations when it was already applied, hence hitting the BUG().
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  mm/guestmem_hugetlb.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/guestmem_hugetlb.c b/mm/guestmem_hugetlb.c
-> index 8727598cf18e..2c0192543676 100644
-> --- a/mm/guestmem_hugetlb.c
-> +++ b/mm/guestmem_hugetlb.c
-> @@ -200,16 +200,21 @@ static int guestmem_hugetlb_split_folio(struct folio *folio)
->  		return 0;
->  
->  	orig_nr_pages = folio_nr_pages(folio);
-> -	ret = guestmem_hugetlb_stash_metadata(folio);
-> +
-> +	/*
-> +	 * hugetlb_vmemmap_restore_folio() has to be called ahead of the rest
-> +	 * because it checks page type. This doesn't actually split the folio,
-> +	 * so the first few struct pages are still intact.
-> +	 */
-> +	ret = hugetlb_vmemmap_restore_folio(folio_hstate(folio), folio);
->  	if (ret)
->  		return ret;
->  
->  	/*
-> -	 * hugetlb_vmemmap_restore_folio() has to be called ahead of the rest
-> -	 * because it checks and page type. This doesn't actually split the
-> -	 * folio, so the first few struct pages are still intact.
-> +	 * Stash metadata after vmemmap stuff so the outcome of the vmemmap
-> +	 * restoration is stashed.
->  	 */
-> -	ret = hugetlb_vmemmap_restore_folio(folio_hstate(folio), folio);
-> +	ret = guestmem_hugetlb_stash_metadata(folio);
->  	if (ret)
->  		goto err;
+> Can you run with the below printk tracing in the host (and optionally tracing in
+> the guest for its updates)?  Compile tested only.
 
-Doh, I missed this before replying earlier. This definitely seems like
-the cleaner fix as it pertains to other flags/state that potentially
-becomes stale after calling hugetlb_vmemmap_restore_folio().
+Interesting, I see "Guest CPUID doesn't have XSAVES" times the number of
+cpus followed by "XSS already set to val = 0, eliding updates" times the
+number of cpus. This is with host tracing only. I can try with guest
+tracing too in the morning.
 
--Mike
+Thanks,
+John
