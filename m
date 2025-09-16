@@ -1,170 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from out198-21.us.a.mail.aliyun.com (out198-21.us.a.mail.aliyun.com [47.90.198.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65391E9B12;
-	Tue, 16 Sep 2025 05:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD1C189;
+	Tue, 16 Sep 2025 06:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758001964; cv=none; b=rkzeZuaiF781fUYpKvXE6MoiVecirrf3yEn4dMQmG6G9T5PxLWNkXr7taG/flr1tRihEmqj1eYftnb0STgNjPHe+u40ANGqG4M9qzhqK92xUBFbH4irfGtIUJdE1gH5kSFcPQhZQT0b7pQCk/x9o3Jdtt1ZAlmrouBCHRAzFJ9A=
+	t=1758002883; cv=none; b=V5jnM+hGrWTR54IoZHFkZplIyNpuGoYYti0YIJ3QeWNi5oipYZPGJUc3dkyuLVMCxgBZVao3MlMzMJ8GbN8hGjchecQwqj21p7puH7hffvgjMisy4ktTdAYLWSXCpxQMJ1kFzq6gMgg4bqdwn5X7J0RUNFF7/1bA5aFObrQpeCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758001964; c=relaxed/simple;
-	bh=H/YPUdnUnEI/UdRxVPLVDcuWuPFJCqxFolqeBXJ/mgM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QZjSbs98vkonnTVmkEyyK0w6+JD5Ozivw2NPBf1cRTqBSXTxyPSKIHlp+ByO8kMKjl4Mmj2+3E0/4NStBRGjGNoVfG6fKu1cp8+zFSINWAZAGlcUrkI/UP1RyfCIUnFXoh5qUYio60qyExu5hZuifB5Dr25Ws5ezRC1vatEVgdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QMdHxslb; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758002883; c=relaxed/simple;
+	bh=xJDykpntbbVXiLGqjIDl56Dl3um1Fz1AbkEjFrb3hNE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RYGxn12N9ggtRVZzYJ2ahnieLWoPe0FX3t9vcVxOMswQnraVhiDdhj7GvEwNCzxldiJf8ACRaUytO00EMJvOlGgYOcCPopqPtYVU9h3d02Gk/9+F1WVQbesosvq8V1dRjXVPnzxY/oMkbSVzukboggniOpRcMfisdnwGIwN+Bf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=b2D1DWtN; arc=none smtp.client-ip=47.90.198.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QMdHxslb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758001963; x=1789537963;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H/YPUdnUnEI/UdRxVPLVDcuWuPFJCqxFolqeBXJ/mgM=;
-  b=QMdHxslbeW2JWsCUog5u0+UIHLef3t7Lj2CaLWYmo0Y9kPiTl2VCfb2W
-   Ci8LdtvONmO6fbKC+aFNkWjeax2DyLzRODt5kfghZS/L3GIZpD2fUmWa1
-   FdGH6w6pFAs1WUBDO+6kM4ZXzW2N8MODABbuN+zJJqB/IwoX5+6rYZvQq
-   krX9EaZskjxQhYcNICkaiuiYI8nNqWUL+9cgRHv/8+eKb9km6iRBssgax
-   vAGXI0XyfLQpkFaIKSI+KQm1xMrj8H+UGwtcdHpm6KkF+wUMfJocy1cNM
-   221FZyeKbfZfPB3qL3Ymo19+kLoBKCaJHmEtbINl8kdObeXx6OH5s+na3
-   w==;
-X-CSE-ConnectionGUID: RmIphdViRwysmR2581ctKA==
-X-CSE-MsgGUID: RIu9NhNXRO6RmCEfVfMuLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="82866294"
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
-   d="scan'208";a="82866294"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 22:52:42 -0700
-X-CSE-ConnectionGUID: d905ExmrSaew3FdMmXNsnw==
-X-CSE-MsgGUID: XtBJ7krpT1G97wGjsmhK9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
-   d="scan'208";a="174776240"
-Received: from junlongf-mobl.ccr.corp.intel.com (HELO [10.238.1.52]) ([10.238.1.52])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 22:52:38 -0700
-Message-ID: <d1bfb652-19ff-434f-bd51-b990543d14d6@intel.com>
-Date: Tue, 16 Sep 2025 13:52:36 +0800
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="b2D1DWtN"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1758002861; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=CUuL5HsQnlh6tyXbC5mppmtLavwtwsnAVV8BvQq8+XI=;
+	b=b2D1DWtNj6YinIcsoU++qqrxux/DNyRj7mps98CmvZuWUylcBC6Mii2zQVboJaBTY9TS/E0UxXx4kMdgHulOH7gK2TtyoA8v94Uknv1EbtjEqIOIKBIJlq4TKtYuvsO4sKaKn5hAavG1JU92WMnMP9dxcjeP/PDONrrw8jHxv1I=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.eg0VmUu_1758002860 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 16 Sep 2025 14:07:41 +0800
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+To: kvm@vger.kernel.org
+Cc: Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 2/2] KVM: x86: Change the outdated comments and code in kvm_on_user_return()
+Date: Tue, 16 Sep 2025 14:07:36 +0800
+Message-Id: <4d65465545b2ccebda3a0c3e601320578024ed3b.1758002303.git.houwenlong.hwl@antgroup.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <15fa59ba7f6f849082fb36735e784071539d5ad2.1758002303.git.houwenlong.hwl@antgroup.com>
+References: <15fa59ba7f6f849082fb36735e784071539d5ad2.1758002303.git.houwenlong.hwl@antgroup.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 13/41] KVM: x86: Enable guest SSP read/write interface
- with new uAPIs
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
- Mathias Krause <minipli@grsecurity.net>, John Allen <john.allen@amd.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Chao Gao <chao.gao@intel.com>,
- Maxim Levitsky <mlevitsk@redhat.com>, Zhang Yi Z <yi.z.zhang@linux.intel.com>
-References: <20250912232319.429659-1-seanjc@google.com>
- <20250912232319.429659-14-seanjc@google.com>
- <aca9d389-f11e-4811-90cf-d98e345a5cc2@intel.com>
- <aMiPTEu_WfmEZiqT@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aMiPTEu_WfmEZiqT@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/16/2025 6:12 AM, Sean Christopherson wrote:
-> On Mon, Sep 15, 2025, Xiaoyao Li wrote:
->> On 9/13/2025 7:22 AM, Sean Christopherson wrote:
->>> @@ -6097,11 +6105,22 @@ static int kvm_get_set_one_reg(struct kvm_vcpu *vcpu, unsigned int ioctl,
->>>    static int kvm_get_reg_list(struct kvm_vcpu *vcpu,
->>>    			    struct kvm_reg_list __user *user_list)
->>>    {
->>> -	u64 nr_regs = 0;
->>> +	u64 nr_regs = guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) ? 1 : 0;
->>
->> I wonder what's the semantic of KVM returning KVM_REG_GUEST_SSP on
->> KVM_GET_REG_LIST. Does it ensure KVM_{G,S}ET_ONE_REG returns -EINVAL on
->> KVM_REG_GUEST_SSP when it's not enumerated by KVM_GET_REG_LIST?
->>
->> If so, but KVM_{G,S}ET_ONE_REG can succeed on GUEST_SSP even if
->> !guest_cpu_cap_has() when @ignore_msrs is true.
-> 
-> Ugh, great catch.  Too many knobs.  The best idea I've got it to to exempt KVM-
-> internal MSRs from ignore_msrs and report_ignored_msrs on host-initiated writes.
-> That's unfortunately still a userspace visible change, and would continue to be
-> userspace-visible, e.g. if we wanted to change the magic value for
-> MSR_KVM_INTERNAL_GUEST_SSP.
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index c78acab2ff3f..6a50261d1c5c 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -511,6 +511,11 @@ static bool kvm_is_advertised_msr(u32 msr_index)
->          return false;
->   }
->   
-> +static bool kvm_is_internal_msr(u32 msr)
-> +{
-> +       return msr == MSR_KVM_INTERNAL_GUEST_SSP;
-> +}
-> +
->   typedef int (*msr_access_t)(struct kvm_vcpu *vcpu, u32 index, u64 *data,
->                              bool host_initiated);
->   
-> @@ -544,6 +549,9 @@ static __always_inline int kvm_do_msr_access(struct kvm_vcpu *vcpu, u32 msr,
->          if (host_initiated && !*data && kvm_is_advertised_msr(msr))
->                  return 0;
->   
-> +       if (host_initiated && kvm_is_internal_msr(msr))
-> +               return ret;
-> +
->          if (!ignore_msrs) {
->                  kvm_debug_ratelimited("unhandled %s: 0x%x data 0x%llx\n",
->                                        op, msr, *data);
-> 
-> Alternatively, simply exempt host writes from ignore_msrs.  Aha!  And KVM even
-> documents that as the behavior:
-> 
-> 	kvm.ignore_msrs=[KVM] Ignore guest accesses to unhandled MSRs.
-> 			Default is 0 (don't ignore, but inject #GP)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index c78acab2ff3f..177253e75b41 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -544,7 +544,7 @@ static __always_inline int kvm_do_msr_access(struct kvm_vcpu *vcpu, u32 msr,
->          if (host_initiated && !*data && kvm_is_advertised_msr(msr))
->                  return 0;
->   
-> -       if (!ignore_msrs) {
-> +       if (host_initiated || !ignore_msrs) {
->                  kvm_debug_ratelimited("unhandled %s: 0x%x data 0x%llx\n",
->                                        op, msr, *data);
->                  return ret;
-> 
-> So while it's technically an ABI change (arguable since it's guarded by an
-> off-by-default param), I suspect we can get away with it.  Hmm, commit 6abe9c1386e5
-> ("KVM: X86: Move ignore_msrs handling upper the stack") exempted KVM-internal
-> MSR accesses from ignore_msrs, but doesn't provide much in the way of justification
-> for _why_ that's desirable.
-> 
-> Argh, and that same mini-series extended the behavior to feature MSRs, again
-> without seeming to consider whether or not it's actually desirable to suppress
-> bad VMM accesses.  Even worse, that decision likely generated an absurd amount
-> of churn and noise due to splattering helpers and variants all over the place. :-(
-> 
-> commit 12bc2132b15e0a969b3f455d90a5f215ef239eff
-> Author:     Peter Xu <peterx@redhat.com>
-> AuthorDate: Mon Jun 22 18:04:42 2020 -0400
-> Commit:     Paolo Bonzini <pbonzini@redhat.com>
-> CommitDate: Wed Jul 8 16:21:40 2020 -0400
-> 
->      KVM: X86: Do the same ignore_msrs check for feature msrs
->      
->      Logically the ignore_msrs and report_ignored_msrs should also apply to feature
->      MSRs.  Add them in.
-> 
-> For 6.18, I think the safe play is to go with the first path (exempt KVM-internal
-> MSRs), and then try to go for the second approach (exempt all host accesses) for
-> 6.19.  KVM's ABI for ignore_msrs=true is already all kinds of messed up, so I'm
-> not terribly concerned about temporarily making it marginally worse.
+The commit a377ac1cd9d7b ("x86/entry: Move user return notifier out of
+loop") moved fire_user_return_notifiers() into the section with IRQs
+disabled, and it somewhat inadvertantly fixed the underlying issue that
+was papered over by commit 1650b4ebc99d ("KVM: Disable irq while
+unregistering user notifier").  Therefore, the comments and code are
+outdated.  Aslo assert that IRQs are disabled in kvm_on_user_return(),
+as both fire_user_return_notifiers() and
+kvm_arch_disable_virtualization_cpu() are now in IRQs disabled state.
 
-Looks OK to me.
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+---
+ arch/x86/kvm/x86.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 33fba801b205..84fc30a99be1 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -568,18 +568,18 @@ static void kvm_on_user_return(struct user_return_notifier *urn)
+ 	struct kvm_user_return_msrs *msrs
+ 		= container_of(urn, struct kvm_user_return_msrs, urn);
+ 	struct kvm_user_return_msr_values *values;
+-	unsigned long flags;
+ 
+ 	/*
+-	 * Disabling irqs at this point since the following code could be
+-	 * interrupted and executed through kvm_arch_disable_virtualization_cpu()
++	 * Assert that IRQs are disabled.  KVM disables virtualization via IPI
++	 * callback on reboot, and this code isn't safe for re-entrancy, e.g.
++	 * receiving the IRQ after checking "registered" would lead to double
++	 * deletion of KVM's notifier.
+ 	 */
+-	local_irq_save(flags);
+-	if (msrs->registered) {
+-		msrs->registered = false;
+-		user_return_notifier_unregister(urn);
+-	}
+-	local_irq_restore(flags);
++	lockdep_assert_irqs_disabled();
++
++	msrs->registered = false;
++	user_return_notifier_unregister(urn);
++
+ 	for (slot = 0; slot < kvm_nr_uret_msrs; ++slot) {
+ 		values = &msrs->values[slot];
+ 		if (values->host != values->curr) {
+-- 
+2.31.1
+
