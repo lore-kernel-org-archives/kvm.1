@@ -1,69 +1,69 @@
 Received: from mx0a-002c1b01.pphosted.com (mx0a-002c1b01.pphosted.com [148.163.151.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A8B3016E1
-	for <kvm@vger.kernel.org>; Tue, 16 Sep 2025 16:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3BB27FD6E
+	for <kvm@vger.kernel.org>; Tue, 16 Sep 2025 16:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.151.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758041101; cv=fail; b=iWnwXoXE1lL9NkItGf/cPgwzah2LraRG1D5Mw0/l2zVZRGpTdxM7pIhZUWJcOO3OsNEabXrsBR9lSu+eAwvV46PpKqsIThnEsQwPyz7C69fttIizdeeuZnX48+/zno7ag3dBdgtuKC8r365IIXSHYR9AcBcVOrLz1RuDAlTNeyo=
+	t=1758041103; cv=fail; b=Fh/a1G1uKNcwV//cy3Ljw+TWNvX/PwKqqQXfN2GLHj3ibbmBrS3T38HhopJ+lnORBrbj2XkEmAqHW15XFhajEFc4wrRUU/FZSiyBYzV13F0YEpYoB5pUEn0L5tDdXFkjPB5/2OjFAqjSgDedcwSMCAz775ZJ1j29nYyWbnLSyQg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758041101; c=relaxed/simple;
-	bh=rfQyMUXHlB/TRZ6r5bx9NiabRQHZFsp7XnxoEFRcyog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A76EOUQgXe2vSAsXTS2nltOawNcbyqDNp547nmREW0aaa4zQ/K6fA9tBUPXJZDGoa01KweS5Ie1HzA9VUGPmJlpgRCehpZc3ug1nGSJjoIeWYIFQ3EviHACoaipuxtpK1QCRXp8UNutiLESxHncjxsgCDpC3RJyEZ3v0nXmoe54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=tAWqyt5g; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=EoCjTVXm; arc=fail smtp.client-ip=148.163.151.68
+	s=arc-20240116; t=1758041103; c=relaxed/simple;
+	bh=eJPPjqFqMNyXRwI6ZV4XwQt/aLItXw4hdnJjtz9bQjk=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qr2P+QaDx3vuPLPDl+jRbOrpfiSynQhBDnhXtkmgt1SE2cc9AhyFfl2Ue+L7aIut05mqqS+whTrZR9J0lhwi1X10KMaQVrp0HNmIc58LGWfRbq5vM3hOdSdbK+pPbL8R9dZC4OLmL6AKl7xO+AnDhreQlfJ2XWj6tpPgu6WDZE0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=AvsJymcE; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=qpFqIgjc; arc=fail smtp.client-ip=148.163.151.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nutanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="tAWqyt5g";
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="EoCjTVXm"
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
-	by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 58GGVbp43598659;
-	Tue, 16 Sep 2025 09:44:55 -0700
+	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="AvsJymcE";
+	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="qpFqIgjc"
+Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
+	by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 58GG8wdq3523588;
+	Tue, 16 Sep 2025 09:44:51 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint20171006; bh=O53JbwNpBrieS5UJrB9zFScZGNGrmHW8KxzAzRNEQ
-	mQ=; b=tAWqyt5gKIGPYHk4H1tWqOOz83p9nwMGHhe92767AxPfjJQ/ho+E/SIKU
-	1y/arWnP7tzmriHyz6/EU7e4lFyHrF1xrjBtXZ8y+6cPU3yTPbIPEVc3cIclcKvC
-	cUYtSZu6uk+I5RYUM6P6bNmUI9Nel03nVFT6hQlCVizZNi5PZFzKM0XLJEsE2xkI
-	10YeXch9SXgVa+uGdgDkDVpCJIgP4yiFqzvFuuCfx5XknecNxlCZSP0BgYbQABud
-	bxOWSaN7XAJRYBITpD1AQEu34OixpPbmtUmQpM/blCvjd0Ye2xJGWygq2hQ5bctH
-	k5SgWPKQYuFTM7tAcZLt25/AQDrtA==
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11021100.outbound.protection.outlook.com [40.93.194.100])
-	by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 496pby2vm0-2
+	proofpoint20171006; bh=+s4E3cnoAxwS0DqVLWz4LKsucNAFw6CZnMEvagtSX
+	/I=; b=AvsJymcEaUVIQ1cGsqolo+pAjnrtmRrc8S+7ABMo7CXSPtJ7UTeG912r4
+	8I44Jut/57VyUZNELAchcOcfwMZfjKlKJuioyA5LSJFC62qrtZpn5gXaNMqeomoT
+	23qE5vfPkKrKXPN2KfqZhQ9NL7eoI+HsXacKxJIiYZE1bLZVhpXVb8VDy1S3D6FU
+	TOKnfHDhWSraqtAHcKazSarGG0wU7OeU2lYqudZcw4QoKrTx0/g8kLrB/Xb8VtH8
+	3rVP0AIaHp+Z/4ijnK6ICQXMPLOc0W2GcK0BIKqo3NDmw4st9smplaaTsjzU/f7S
+	nVUdKiXSnsdPVFqQ9qfn0xkxBo76w==
+Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11022113.outbound.protection.outlook.com [40.107.209.113])
+	by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 496pwxtsdt-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 09:44:55 -0700 (PDT)
+	Tue, 16 Sep 2025 09:44:51 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uulfnuhLfuRWMqtMbmvu7JQNTy+DUG6zcL8sNwcE0Njadd1/EYcE7t4Bzru9A7NeHxBWzd1E6K+V4yx/uAdtsg2HRLMOsNbFkgU09qNGVaxeUSpaVsao1vRg59T1GywPkmj2cId/rH0EDGtGiRQDrqIfj+hDqeTduO9sHrhLZosFE0ick3CCO9NNWmen+dxOG2T7wufqTbWzkKuW7Chzszyuu5CNwKwnoAPAujx3YN/79HFy+xTxKEuRCF5Ar2UFnU9iAHZkCK55YhCDipmdf3+spoiH7zFmpJL1yUYP7YMhYVLFyQWOhXyExmEDmR4nODCtFpBqPuLgnNWRZxPgLg==
+ b=VjGYyD2RAB3gg8uvBvmpecDZL92Wsn3D80gR5IhH0oUsiYvwKN36ypjsgmcWwjTwNZ500vw8oXoZw1YSMLZAzHxIz+OXJ6QlprG/B4RwPHLKnFaR3IK4qlrik3JfHi/jj98vg+IIPF/CsDrxCmdM2lRCkjWDrKnNpOJ1SGFVji7rcpiGIWpYbLmcrTtJ6QlKFVCTl1EyxhmbWNqYlZgt56pLVCZFz4b+BcDwOwDA6jxLebYGzEkjZztLTWauNr+/Pc1lNx7aR827ePk4D5F4jLDvSzV47cewNnwK6fAyOR21lECNaBYPbBQ0j67ihg296batMSKnf/qygKdloStumQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O53JbwNpBrieS5UJrB9zFScZGNGrmHW8KxzAzRNEQmQ=;
- b=FvnNQ5Fj+WW39nUpNsznBszrjbY01Fk1xT36clTllKQfWYVQsq8diBIGcXuAGr81gPYI+W45/xIb5NCx0N/CMiTcr0bY8gUSnk45YKhJSD4fDhJYQ2t7TlgEqCBmgN05xS1N67OLKo3ifgsJxguICfEieZW6N7Wow/3U4UffMLN8+DDz2h3hWFF3sJDiEwFl5QeVPzpuTL/NzXA0zJF0XZt2H1ym5tvihHYjpsNH5MpX7asIq8pYLfW6ldyp/Oi7Wf936pdSRIj0SZ74d3aOiprwA5tYPsShw7uSX4oy81HdzOlwUwgEnodv9jQlRwFG3Je66TWOVo+/xxDkV+WDdw==
+ bh=+s4E3cnoAxwS0DqVLWz4LKsucNAFw6CZnMEvagtSX/I=;
+ b=NDgCvQCar8C9hFa6MpQIHdbJGpA+mtkSIY1mY8TVS1PJu9392pQbrwqB1Jnj4pZgC6pVxEu4ztf9rdimM2mfZmYomURxRuuhphPEmTHXVIhVS4Si3dwhptT7CqSyKLtGgx3zIEuK5ydvZoVTlYYOQxXKbwLRTucAmir4HTM4hyFtzubQvarCNSmN10fX6ftsXAyawS+o70DVMheDChuVFDMiml4hlxXNN5FEiqigvP11A97lJ7hqFR0Bsk0gsDES2QV0GpqHlzDkiEM3Vgves8CDhKHvx/Fk9Vq8kAnLL82qHlxocA93DlCMhdOVkZdxUYGUD6+VjYLCmFzU7qykhQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O53JbwNpBrieS5UJrB9zFScZGNGrmHW8KxzAzRNEQmQ=;
- b=EoCjTVXmmCmsxLAIZIo+XrtpfuGeKlTW53lPtq2Cj6+HUgPwjinNhj2PNdJRQrQaFNuX2PC8p0GWhwQtKVBgeZ5sfYSJmhTVPwVieCk+GV3+TjyHmZeyTMEG/G2EKZ2vr6Xg6Jsa8CyV/ncZ6TQdI7G9N+ShYNpYXSvLil/vQQPkX8htDlAGa8IZHhEvrS//IFjLXLUFhnvj0OusINMX7OsmVqq5TkLk75wXGYuUJjL6OtvXFkQ0tPy/ze9PS0ALzt9HmypI3r6eTyRhg/8YomgPe1Cp5wrbwUHG9O/vz5cVHFAXbj43x6OnFd4yF8eMXg1U9PcCQEGpxL0Icjc0xA==
+ bh=+s4E3cnoAxwS0DqVLWz4LKsucNAFw6CZnMEvagtSX/I=;
+ b=qpFqIgjcmCHD1mkZe9Jr5uR+cfVsGx4ZHdpV/9X8veBc4mWBX6rXIdGIXcPsW4d+QMN3g8J2ZUcKPIg4ep0sHw0w+ceQB8nTOfqxsEblW2EB2KPKhcXOI8HvHmmtSXteZlzWbwDRTTZMay4j84BAriFKBtriXxbt0VBr/Pxv5/JmkJT28bxZt7in+6WpMOLjg2DCvtCTH73V8ITeam1D6d6DcprMmf8QN33XkFN3O7I1yt0n3MvrxTc3Bn2lUdW+3NxnxOBUkbWPSQSrb/GNArrxFudUoek+NSXZTQJ71VtN6QK/JSoILyOlxXHyLbQDoO/Tw8IKQkj2xzakOIUWYA==
 Received: from LV8PR02MB10287.namprd02.prod.outlook.com
- (2603:10b6:408:1fa::10) by PH0PR02MB8501.namprd02.prod.outlook.com
- (2603:10b6:510:100::16) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:408:1fa::10) by DS0PR02MB9620.namprd02.prod.outlook.com
+ (2603:10b6:8:f7::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Tue, 16 Sep
- 2025 16:44:54 +0000
+ 2025 16:44:49 +0000
 Received: from LV8PR02MB10287.namprd02.prod.outlook.com
  ([fe80::b769:6234:fd94:5054]) by LV8PR02MB10287.namprd02.prod.outlook.com
  ([fe80::b769:6234:fd94:5054%5]) with mapi id 15.20.9115.022; Tue, 16 Sep 2025
- 16:44:53 +0000
+ 16:44:49 +0000
 From: Jon Kohler <jon@nutanix.com>
-To: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org
-Cc: Jon Kohler <jon@nutanix.com>
-Subject: [kvm-unit-tests PATCH 15/17] x86/vmx: switch to new vmx.h entry controls
-Date: Tue, 16 Sep 2025 10:22:44 -0700
-Message-ID: <20250916172247.610021-16-jon@nutanix.com>
+To: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+        Jon Kohler <jon@nutanix.com>
+Subject: [kvm-unit-tests PATCH 10/17] x86/vmx: switch to new vmx.h primary processor-based VM-execution controls
+Date: Tue, 16 Sep 2025 10:22:39 -0700
+Message-ID: <20250916172247.610021-11-jon@nutanix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916172247.610021-1-jon@nutanix.com>
 References: <20250916172247.610021-1-jon@nutanix.com>
@@ -79,477 +79,663 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR02MB10287:EE_|PH0PR02MB8501:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbe54a4a-fe9b-47b0-9958-08ddf5405c9b
+X-MS-TrafficTypeDiagnostic: LV8PR02MB10287:EE_|DS0PR02MB9620:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fc8f8c5-74de-43f4-d4fd-08ddf54059c7
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yWe+CGmsJ3IgU1abT+VuFcazlNowf7hZ0L5GJdAeYKjERlktMuz6wQfO0tUp?=
- =?us-ascii?Q?7LMZNTCdYzDnScnxIVn0ZQvn++qNieT1NsbEih6B39S5mScOGrNFP+8T6e2U?=
- =?us-ascii?Q?d5Rrfke/3MEYthHyII529Pzp5m2gXCbtRp7z2btrcNNOyTp8UgoYNKqd+9JO?=
- =?us-ascii?Q?gET1eyEQm40prwoVGZhGpCmrxm6NR5/qM8tqZASi7Dtiya1aPOZy8Pn+VSQJ?=
- =?us-ascii?Q?xC1VhFoxiRET1VVxdAh9OW8JxPMb7MCGAx/9GpuQfHizbKVN1x3ORNRBmldG?=
- =?us-ascii?Q?4fYBkuZBd46yODHtu1qOkv/V78I7F2xJkalQyvjamce9UvH90BVBe4wGeV0U?=
- =?us-ascii?Q?nZ1AVUZH+TDd2dwXPPCvmp4xk3dsrVbCNo6/5sjUKgsYXw0wiqQwuciS8lAc?=
- =?us-ascii?Q?3WJWHBrnDhoxzh3xghDgq9FcEZgob+I+yfS7Em/oo3PO3yvBCRinUHXFs0lS?=
- =?us-ascii?Q?A+haaIxqBpJliFSB1JSQWNf0BGR4UCCTPjiVDl9Jc5F2xRNf+OcewULLycZa?=
- =?us-ascii?Q?LuQkGzTlP3o9SHucVUko8zdUUsk6UDsS07oqV96iFPN8YHRQkxXXxdirnLKV?=
- =?us-ascii?Q?Kc8AYYnGFLIup7UOUk1s+dQKa3mR3zdzS3U6S/RTWaUZW1q3mWVvterlkr9y?=
- =?us-ascii?Q?/S4PB4bTVofskhOjeP+jmKA+4/tGPCaOLegHB/oc5dJN9hfo3g1/ju7jHCyH?=
- =?us-ascii?Q?3+mmK8EnDIu2qTgshwxBxCc744wQvA5oIBT1JUwCKF1g925rHLdY4VGrTKbF?=
- =?us-ascii?Q?4gE9QiQK+Dr1WnqNsHOnAzMMskDaZVDh5xK5f2Ji8wGDJL1T7AV5U/fdUyXf?=
- =?us-ascii?Q?SQt4udk8gFlohNB178m1cfqgd4M6hKYQUd99yZhF28xIq5oQpGdC9Ol8GUyV?=
- =?us-ascii?Q?2zH7npnOauDn+2ZsXmoaugZMxq6bwjrwy+dUx3bMgdHAWZkDFEHy3SdTpMOw?=
- =?us-ascii?Q?wzsaRTo7n1VwuTgNV/wCl4Gj5hGzGnis9WALlSQjFa7AD6m6UABxTDT3hqEU?=
- =?us-ascii?Q?GRG0fBKbqGv5IV9ngrAJKuo9Wy/sYajR23hFGdvHoVklIRZpf/WIbssBbcwv?=
- =?us-ascii?Q?bltqI0+mbgEYJHqEIjh+dkQSnKS9Rctp/0QksBomz1TAsYUdk/bz1WZ5/U3B?=
- =?us-ascii?Q?fK37yPadAT3nIvNt/aC2B68Y6etVj3Ziid9nKn0NKEkXOJbCVDSxVEWIHpH4?=
- =?us-ascii?Q?GAXszZ8WEsXdUOtu/FLtF0DoooJPqP8HIksaGZCg4zZi/eB/HuDpDqHAbEbn?=
- =?us-ascii?Q?YMnA0I9LUiQObLRYt4hI0nETjgXpOWFiMABJeAlhc4WCF9nLCM/+ioJN5s4H?=
- =?us-ascii?Q?USM0/n2LF2gto+7KRRW3TGRe7Pe+d2NB4HTaKpu1+Ban9N1zml+9ze+1TvXv?=
- =?us-ascii?Q?yeJynpe5Kg+3htMLTFp5y/SALtzUltFC+B8mNJ83/kgl6fQZE5Lx/7OuxbMA?=
- =?us-ascii?Q?/uRCiKBJtN6AC2aJjzfXqL5bwIIW7h7tMaY2luPKYe3T0OAMMfHVUQ=3D=3D?=
+	=?us-ascii?Q?ncQvLQljt989Hd8i7qxg3G4FpHudMIFzZ2qdGU8pRVAbBSPM+YT70iRgSrnt?=
+ =?us-ascii?Q?onRQVFTk77rUylnDUQ5nwz50r22ZMaV6PEZ63cIVpQtSHki4GW/JIbdvnx8+?=
+ =?us-ascii?Q?DGuLCLbEOtDhwT9gN6dws/HKdc3cb7doXtf17TPXBAtTQIonwGqjsJ3BSW7u?=
+ =?us-ascii?Q?LLM5G67LC9Ae/4gh6G8W2pNVz921G+YKa1H0Vk9KpUJrM621Gry+YCGc5bE5?=
+ =?us-ascii?Q?KDwXRWuirpoUAGE5RKdYzZvUFQ3kPPNnlLCgX7Rg7OSn8pQsmkDpSGXtNF/0?=
+ =?us-ascii?Q?HiOCG1OGMHD9y1PuGrGLnFtLAWzcqDi2kFuhCpUlLkuhPgMCS6inozAr5Y0r?=
+ =?us-ascii?Q?olF4nAHk5FqFbodS9sJUGn2zruIgbBBHRDlD3g5oeKPg1aR2n9q6vGYPuchW?=
+ =?us-ascii?Q?ZVzo1YcRzM9n+CpI9MODsnjll6JXGLeCDtKU1ZyzpbQs6gfHp5HRofqKpqzc?=
+ =?us-ascii?Q?gFTy+2pEnJucGWzL1jXh3jZMPwtm2qB6zy1o7UGqwbxWbRTXn8FJ0+srik44?=
+ =?us-ascii?Q?jBx0QiRLVPGZZ7nSZqghsB5rEbar+muRCD8d50WKfGEUyjpow2EthF2I6yCE?=
+ =?us-ascii?Q?fzNl234/SZyIsb8BVTFjG+5fnoGUlRbx4V8ZMjcgdeZP0t7UoqcqLzfptP01?=
+ =?us-ascii?Q?sh15AaoNrbfNL7H2f+k+bRE7pkfQBdndMOkmWsqcPbueeUDm3B2lxw7E6MJ7?=
+ =?us-ascii?Q?4kI4fjDZWnpXOMjZ2hH0dlU1moLD2EGyCU9N49qsUj2wr5tWHLg0nj6Y/eMD?=
+ =?us-ascii?Q?Rp+H+Yz1iCgZ0hEbZZozMY3mc/WzDlBrtrcJGhcqkvGM6ZEXGRzmv98Aj9uH?=
+ =?us-ascii?Q?JEg8MvWhXDKTJCjGizRCdi4bpK9XsriquYKmbGXOaNZJBWRdYQamthvLlrBV?=
+ =?us-ascii?Q?dJkzUTj9QQ+ji16RbHBl63FuO0K0yAxTD8HBduBYP7v7FbRUHqFUBawPkwuO?=
+ =?us-ascii?Q?hTxUIQeVeBt5z5mztdVGzfMm0FyBMov8yB3VCts4Nx7by2JpHacYIC6zBd0f?=
+ =?us-ascii?Q?HLbBlzpBUXXdbKT2x4mQOFbvJNF1CsjEYpReQ54GU2WM84wwiTj7UCHjUFyQ?=
+ =?us-ascii?Q?VPHieCrZtPKTEpN58VkZatLu8ZCfYstBh+w7ZgUrgIb4Xh0JB5L57ZAgQAm+?=
+ =?us-ascii?Q?tAHMYWAJHbF27lxmvdCa2bVJsZiPChis/eFvTEgCtQj34LCXUqttqtkJeX1Q?=
+ =?us-ascii?Q?JCXelhY2ZR1MAkxp/Eznv31+DpMf4cccSB8Sfy/6qERvuyD2NNaV+LiMQfYU?=
+ =?us-ascii?Q?7B2wIyyI9oB2gSCGb/UoRzUi+zf/4l0ZyMtMLaRNf66x4U91HKJ7wuMF6YI6?=
+ =?us-ascii?Q?eQH70tskysCg/AizBFmgSccmR3r0A4d7UtOcCAiCKllFwDNmKdkN51iISpUo?=
+ =?us-ascii?Q?pFaO9atv2Kq+C0QBWxZzszgeyUEesj3CBLlDZ8f2MZ3aRRb8/R59J4oBrMCw?=
+ =?us-ascii?Q?x/v4bKn5Nvw9oDB+I3WgWNM8Y98OhSdkmErG8JerBvBQFOOtVQ8FaQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR02MB10287.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR02MB10287.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7S0w+JxNmokWwgNwLZ223QqPy+qdKOPaDYH6XeB7Ztd/ymg+nmyYS71Ur17M?=
- =?us-ascii?Q?VSm3n4h3e2v53AOcxt8lDhW4RntnV6r1cQegvbWV96DqaMbfTg6Si/g+qNrR?=
- =?us-ascii?Q?8bW4v84ovFh4U2o4Xksu3tIE28ev+XACUIINmw2fSsl0S5k9NxE8Gb+JfgB9?=
- =?us-ascii?Q?MdXoUXLlHZ6A/dbs3U9xGJXJ1c2gXGnouNTYRCGgINTCK3AXGVslZpMG9AeI?=
- =?us-ascii?Q?M2Cd2A8JPEcs5H+O31YE56em1qBG1tInIFHcaOPn9ZGAbmOC6QGbXM/VPrmA?=
- =?us-ascii?Q?7Djr96zzdbds7ngRVPvLX0tSZC06P0t0f6drFjHQ4VbxD3FX5K2yOOYO3HV7?=
- =?us-ascii?Q?zxAymw6O1sMwUirTv7UxW0cMh3gnUVFSOkRJGbvAVeNz8jGj2vcdfZnEjg/X?=
- =?us-ascii?Q?330RLTe7RAIom82sOX24mW+GWhCOkK37BqIQLNgvaldtoWuOx1ApK+AL+EAp?=
- =?us-ascii?Q?GV2FUUpPiywbG1zApDj9SAvqO3SfosZ/c1CKtljn4QJLZjD8P4JyukO6mRB2?=
- =?us-ascii?Q?JP4uD9nlJPQQgHTDdCXXDAlee05Km0cEK1GwQGPcQESLez4fziKMI5d0W+WB?=
- =?us-ascii?Q?i9KhVsmkeyg9cGEuaK/dG4PFBQsAFAupTuM4Ed98Y1od/ngk9BiuPuXzbGYd?=
- =?us-ascii?Q?q/IoHU/i7B/YnRjC4Zn5H4KcIFSbiNnM6K1HrwU2fJ3u+37IOWi/4Dm5DQuF?=
- =?us-ascii?Q?9ANYl/kLV6vPsa4gwfDQX/0xNqCpCVtgnI9izFtZFTfqEjHhC739281XstZ6?=
- =?us-ascii?Q?6S3yMxTmFlcBzkVD9h4d0IuwGrH06dJDy96TjI3QvGYY65mkD8nyY+yn8V6J?=
- =?us-ascii?Q?Q4NyD6GUahik1KIHXTeCFrz2Fn72jh75bC0xQT4TDLkh7APQCrX6+fTeMTzc?=
- =?us-ascii?Q?N7U4bdJVXFcSnjLZEoR7v0muy2k+rpi5IoBmqcunl6BVmHyj6RBoQEMHXC/i?=
- =?us-ascii?Q?FRXVxk4Lt6Z6tt94IUUUwOQkAOJVDV1rv0wjEaC5blt4zX47P5SLrIpkmvPz?=
- =?us-ascii?Q?rdG89LQLjAHNg8R7gcXTMH4tSKJNJPuT4WHi9t33O+oY3iCvb2clf0nWBP0u?=
- =?us-ascii?Q?HBPI/tPZfst2ClAVYSr0Cmc45K16qkKVf3EcS4iQ1stLvP9MTGx6tHc5HLzq?=
- =?us-ascii?Q?qjZCMNNXvKdZaohFAqkMLR5EBlvTKioTCQ7BF+rvyie9Xhfocu6lG3+mappW?=
- =?us-ascii?Q?3FU5BJDvlwcbC2fADZR6mHArrum3iaXkEtXiRmC4zgMoiPHf3kk4NJDwotnd?=
- =?us-ascii?Q?irq+eQwHc9RADOQJsyMI7Fdj6Ij44kEqbqFtTRR90uW2600ezYi5QCUtpjg+?=
- =?us-ascii?Q?+37MYQtjLq0uwIzGYEpP8M8YTRCBlVbegpRnLWdJF8qqXHepxdOhnEp4lY/i?=
- =?us-ascii?Q?VJ/efGf4vW23coOaH1hzntigxFV6sj9jnRjS7pVW1SEnKYtWVp5TQhf6Ptnp?=
- =?us-ascii?Q?ak2zXb/Td1qCa85G/CYeNlFl6V/vWr6HCO4FtThyx10atbjEPPUAKJYKf73d?=
- =?us-ascii?Q?1nLkI3oO8xqeyVV0ZLTdnFMgh4N/v69fHz/XW3e9Lfbg3/mQXIIeYhOoOBXQ?=
- =?us-ascii?Q?8LLg2t1GDv1im2CG6KoEimQAd1IBlGSJLNzfzJM2Gnsehtmqv4uEsYFqIHTS?=
- =?us-ascii?Q?jA=3D=3D?=
+	=?us-ascii?Q?EfjhjYdl/wSNCC3wNJFND/D6gLrctLIv6tWTmLNiNddS1LCZPbyycQ5M2mSw?=
+ =?us-ascii?Q?Awp30x4GgIgFzv7BSbpFDI7b8xMuUxQJybjPIYI9B26pt3wDgCfNJcGeXVLh?=
+ =?us-ascii?Q?OLGh7LojV1Vg3Rz2vW7jwi+7NXTMnJ362HKkk++TWLhra2MUmDl7VmamaL0n?=
+ =?us-ascii?Q?3URn/+Z2SIWVM9hSP29WEHVyqORQLMUnEnNuWQ3AzDTc+R8lb4LrF+9Mrysj?=
+ =?us-ascii?Q?wwREocdTLjQSatbN5Ckot/k3wL3MZd7AHHOwqWqWlWU8ZfiFIOTiyI4X/4BM?=
+ =?us-ascii?Q?kwhXA+yflqSGAZB4frAgWhBMHSBmjHo2E5+f3eZF6fe9opOSOBX2rD1HK2lj?=
+ =?us-ascii?Q?GiXM1woJnWy9FO6AKAwmJwLVMxF09Xja9LGuybsmtWsiiCPtg4Vlf77XTFZF?=
+ =?us-ascii?Q?6YZRMjsehUl9405JaAlZDSkejmuHaDYG8KMYjTQsBoEMvZFSYpUzsjJ+56Q4?=
+ =?us-ascii?Q?MLSOAjbvLbIKNPVxn4ucanNOLntxNqD9Y4yTFUTFa9sYAtgQKxYP6ZSpe8/1?=
+ =?us-ascii?Q?96DbtCkY4kuN3dnDRRkoMf15LM1PaaneWCwgOoEU8hY3vb6tS5rl5EAzqhvY?=
+ =?us-ascii?Q?l6DzYvQ6zzBQd7GKEoM6lgc7A7fDYQk7e0ARinMrw+pvPrAqhQQad4SvJvSa?=
+ =?us-ascii?Q?QQhJTkzdyPCtTKld0AgC6rW0KpNGIA6RDX/FdVZGC2SkZH/dA6rRQv7wJgxR?=
+ =?us-ascii?Q?W7NQVa4esNYQpC2GRI7NvYzfR0o/3nWGlKQ7CGbGeBnzPOHTtrG+SxZfCf33?=
+ =?us-ascii?Q?OuZ4md2+zRN2cfVbgePjUHyabF4siA7St0LI8qNhG1CDbgrx4M4Wt3mfJX6D?=
+ =?us-ascii?Q?s4jnHRVdCb+Sx+eWy3xIsvoetw/aRRd4/3CQkwSCkUp5rrYF/rR1zs7cm6+M?=
+ =?us-ascii?Q?viB377SoOLcVD2KOFnNn1qw286o7Et4OlDgbvgbySRjKGxc208OJAUH/l+0I?=
+ =?us-ascii?Q?p58R1+NgWz0D7EorXgfuyLv4Z3rrQMu6JUm7N4/LlrK6TGo4WzcTc+q4JzqP?=
+ =?us-ascii?Q?Div+PxCdzq9RfHoSVRtbDTzMkzVT2BlGnXzH4YOP3XldHCfLHqKRgWWDX5nN?=
+ =?us-ascii?Q?rbZk0U7PS9B7pfDhmUeJXahQ9vssBbpRfNh3o2Rn/9ytScb7sw/udTyvNebO?=
+ =?us-ascii?Q?S1TaaFVT/WOCJU8HzvUJBWFZ7TfmtbY5T36gcw3Hm4BkjNGz17qhq+RTCC9s?=
+ =?us-ascii?Q?UJfoSd8bWX38EtH98AK0RjXdIZ6OW9TcmKyJXlGOd6K1VEU9dy3Sp8pNROZ1?=
+ =?us-ascii?Q?TCYz8mxmZWdUUEuQq83jYVZ7xo688Jp+apY6pPCAEKZ/t9QEe3Nj/dJrPhvK?=
+ =?us-ascii?Q?7cZaUUSbzovLvP9MnxXLyePLSygXRw215babmB+5mZaqk/yGvS4QDPyr44a+?=
+ =?us-ascii?Q?k76JdF0ymdGh1HVEfS0pI+8ZAKGhiScodAz84swrHfBgFJJZ9loeTVzMNJH6?=
+ =?us-ascii?Q?onfqiKT6VSRY5Ekcpk8/Z7ErT7BncwGavKMwLQSDZ2ufd0EBZ/j3Ezb3+5Yd?=
+ =?us-ascii?Q?HBCrlQYaevYggypj5YwP3uCSZDGnItlROeX7XgcAQiudBp/v9mkRnCly+/8V?=
+ =?us-ascii?Q?XaFlPvYMweE6SY9+ArexanxnuFW4/CgNm2b6SQTgcNqydBjFAd79hVHSgq+Y?=
+ =?us-ascii?Q?sQ=3D=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbe54a4a-fe9b-47b0-9958-08ddf5405c9b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fc8f8c5-74de-43f4-d4fd-08ddf54059c7
 X-MS-Exchange-CrossTenant-AuthSource: LV8PR02MB10287.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 16:44:53.8650
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 16:44:49.2076
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mGuxy2YLRP1LYCBMInqnrzP0gQJD8R2fAoLY5YaLr0Tn1B8/+Fpvw/6NByVu9TZ+f548n1xXtUCbe/r2LZu8kLw2fV1CMOkmNc+5Oa5pexM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8501
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDE1NSBTYWx0ZWRfXx3PjioZ123n7
- Nf/Fdse+Y0YIqAhhKKdTD4CH2EL9MQAGsqyQ7QLKSrGYu2lX6y9LxV19O7MYtmdHu4lP1hwVpIr
- Mm62OqGZC20CRjOhnz2/EvTwBWfDYLH65wfGdmtZJlI76aQbimkcZHOfknnMi71X+4MECoiJrJf
- awuCMmc/FYHrNgrgDe3KSFCiQmSh4LYIHVxHRnlCRWaMvo1d8MIOVRV0Gm7xFSoLqLRDjB1YmDm
- vZJljaxFUIQzhnCGmq3wOtiQTvGXMeQm0FeDP1RiD26AD1bVD4kwxaJKqmK4uQX7gvJAsxcAFFw
- lo33YUwPgaZKTPahH9pDWAgsxkISN3mUVYX/+/1n27rn9Iot0++AwMdGMi0z7g=
-X-Authority-Analysis: v=2.4 cv=ePoTjGp1 c=1 sm=1 tr=0 ts=68c99407 cx=c_pps
- a=q7lH8giswqu+5i8oUQ1grQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-MS-Exchange-CrossTenant-UserPrincipalName: kfb2F7eY5JGxEeBm1GNkbKQ9V3a1b49sZUNsWnz9/7PVAsmQjHrWzdv/2kDURRorPA4bvgb3doIt/FovgbKapqKFehkmedjUkkiXStEa6e0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB9620
+X-Authority-Analysis: v=2.4 cv=WeUMa1hX c=1 sm=1 tr=0 ts=68c99403 cx=c_pps
+ a=PAagVXhlguM9sGT4qHQNdg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
  a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10 a=0kUYKlekyDsA:10 a=64Cc0HZtAAAA:8
- a=9wdMms_18sAHOBYaV_8A:9
-X-Proofpoint-ORIG-GUID: KqcG1Kaw1p2TKhgB_tkypBadWDyTvzBC
-X-Proofpoint-GUID: KqcG1Kaw1p2TKhgB_tkypBadWDyTvzBC
+ a=vznkB1AJNERqbbTUGssA:9
+X-Proofpoint-ORIG-GUID: Fl-knJYFm-imAo8jnFBA6lRYfrWFYGLA
+X-Proofpoint-GUID: Fl-knJYFm-imAo8jnFBA6lRYfrWFYGLA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDE1NSBTYWx0ZWRfXw/lAgKqcJkCS
+ jeH7223nb3d6+ZQbiG7qrHRY2T2XfBzGHNaTu4n6yG8/IR6tGqzx/5P2k4lNLkU8s2+YJFTlWcY
+ bm0OouXcxoGVEzYKzvKXA8dRBIVH2MunNNRFWh7SUFHSqDXmz2VPeN59eNZqc7VpslL+6yZwYF6
+ 4WSfgzAR4rfmxOnTH+9EohrB3hHAPoUc/QwEVoufOikzbiqJfLXOPQeXQiVGaBZ7EOuwkoIAdfF
+ F+6edybkfSjsxlN8nJW2P3ivwZvQlN6W5DAdLftQGI/TWPgyrm/dcFtHHgSi1dM0rOZD8y5sg/d
+ gdkHG8o5/Ap0Hr2oVPoOmDHEIf1J2bkSQOeKYUkUwFxiO0XZVI8QHDu0e7ZEMg=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
 X-Proofpoint-Spam-Reason: safe
 
-Migrate to new vmx.h's entry controls, which makes it easier to grok
-from one code base to another.
+Migrate to new vmx.h's primary processor-based VM-execution controls,
+which makes it easier to grok from one code base to another.
+
+Save secondary execution controls bit 31 for the next patch.
 
 No functional change intended.
 
 Signed-off-by: Jon Kohler <jon@nutanix.com>
 
 ---
- x86/vmx.c       |  6 +--
- x86/vmx.h       |  9 -----
- x86/vmx_tests.c | 97 ++++++++++++++++++++++++++-----------------------
- 3 files changed, 55 insertions(+), 57 deletions(-)
+ lib/linux/vmx.h |   1 +
+ x86/vmx.c       |   2 +-
+ x86/vmx.h       |  19 ------
+ x86/vmx_tests.c | 157 ++++++++++++++++++++++++++----------------------
+ 4 files changed, 87 insertions(+), 92 deletions(-)
 
+diff --git a/lib/linux/vmx.h b/lib/linux/vmx.h
+index 5973bd86..f3c2aacc 100644
+--- a/lib/linux/vmx.h
++++ b/lib/linux/vmx.h
+@@ -16,6 +16,7 @@
+ #include "libcflat.h"
+ #include "trapnr.h"
+ #include "util.h"
++#include "vmxfeatures.h"
+ 
+ #define VMCS_CONTROL_BIT(x)	BIT(VMX_FEATURE_##x & 0x1f)
+ 
 diff --git a/x86/vmx.c b/x86/vmx.c
-index bd16e833..7be93a72 100644
+index df9a23c7..c1845cea 100644
 --- a/x86/vmx.c
 +++ b/x86/vmx.c
-@@ -1167,11 +1167,11 @@ static void init_vmcs_guest(void)
- 	guest_cr0 = read_cr0();
- 	guest_cr4 = read_cr4();
- 	guest_cr3 = read_cr3();
--	if (ctrl_enter & ENT_GUEST_64) {
-+	if (ctrl_enter & VM_ENTRY_IA32E_MODE) {
- 		guest_cr0 |= X86_CR0_PG;
- 		guest_cr4 |= X86_CR4_PAE;
- 	}
--	if ((ctrl_enter & ENT_GUEST_64) == 0)
-+	if ((ctrl_enter & VM_ENTRY_IA32E_MODE) == 0)
- 		guest_cr4 &= (~X86_CR4_PCIDE);
- 	if (guest_cr0 & X86_CR0_PG)
- 		guest_cr0 |= X86_CR0_PE;
-@@ -1260,7 +1260,7 @@ int init_vmcs(struct vmcs **vmcs)
- 	ctrl_exit = VM_EXIT_LOAD_IA32_EFER |
- 		    VM_EXIT_HOST_ADDR_SPACE_SIZE |
- 		    VM_EXIT_LOAD_IA32_PAT;
--	ctrl_enter = (ENT_LOAD_EFER | ENT_GUEST_64);
-+	ctrl_enter = (VM_ENTRY_LOAD_IA32_EFER | VM_ENTRY_IA32E_MODE);
+@@ -1258,7 +1258,7 @@ int init_vmcs(struct vmcs **vmcs)
+ 	ctrl_exit = EXI_LOAD_EFER | EXI_HOST_64 | EXI_LOAD_PAT;
+ 	ctrl_enter = (ENT_LOAD_EFER | ENT_GUEST_64);
  	/* DIsable IO instruction VMEXIT now */
- 	ctrl_cpu[0] &= (~(CPU_BASED_UNCOND_IO_EXITING | CPU_BASED_USE_IO_BITMAPS));
+-	ctrl_cpu[0] &= (~(CPU_IO | CPU_IO_BITMAP));
++	ctrl_cpu[0] &= (~(CPU_BASED_UNCOND_IO_EXITING | CPU_BASED_USE_IO_BITMAPS));
  	ctrl_cpu[1] = 0;
+ 
+ 	ctrl_pin = (ctrl_pin | ctrl_pin_rev.set) & ctrl_pin_rev.clr;
 diff --git a/x86/vmx.h b/x86/vmx.h
-index 30503ff4..8bb49d8e 100644
+index 4d13ad91..a83d08b8 100644
 --- a/x86/vmx.h
 +++ b/x86/vmx.h
-@@ -406,15 +406,6 @@ enum Reason {
- 	VMX_XRSTORS		= 64,
+@@ -436,25 +436,6 @@ enum Ctrl_pin {
  };
  
--enum Ctrl_ent {
--	ENT_LOAD_DBGCTLS	= 1UL << 2,
--	ENT_GUEST_64		= 1UL << 9,
--	ENT_LOAD_PERF		= 1UL << 13,
--	ENT_LOAD_PAT		= 1UL << 14,
--	ENT_LOAD_EFER		= 1UL << 15,
--	ENT_LOAD_BNDCFGS	= 1UL << 16
--};
--
- enum Intr_type {
- 	VMX_INTR_TYPE_EXT_INTR = 0,
- 	VMX_INTR_TYPE_NMI_INTR = 2,
+ enum Ctrl0 {
+-	CPU_INTR_WINDOW		= 1ul << 2,
+-	CPU_USE_TSC_OFFSET	= 1ul << 3,
+-	CPU_HLT			= 1ul << 7,
+-	CPU_INVLPG		= 1ul << 9,
+-	CPU_MWAIT		= 1ul << 10,
+-	CPU_RDPMC		= 1ul << 11,
+-	CPU_RDTSC		= 1ul << 12,
+-	CPU_CR3_LOAD		= 1ul << 15,
+-	CPU_CR3_STORE		= 1ul << 16,
+-	CPU_CR8_LOAD		= 1ul << 19,
+-	CPU_CR8_STORE		= 1ul << 20,
+-	CPU_TPR_SHADOW		= 1ul << 21,
+-	CPU_NMI_WINDOW		= 1ul << 22,
+-	CPU_IO			= 1ul << 24,
+-	CPU_IO_BITMAP		= 1ul << 25,
+-	CPU_MTF			= 1ul << 27,
+-	CPU_MSR_BITMAP		= 1ul << 28,
+-	CPU_MONITOR		= 1ul << 29,
+-	CPU_PAUSE		= 1ul << 30,
+ 	CPU_SECONDARY		= 1ul << 31,
+ };
+ 
 diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
-index 77a63a3e..2f9858a3 100644
+index 5ca4b79b..55d151a4 100644
 --- a/x86/vmx_tests.c
 +++ b/x86/vmx_tests.c
-@@ -316,14 +316,14 @@ static int test_ctrl_pat_init(struct vmcs *vmcs)
- 	msr_bmp_init();
- 	if (!(ctrl_exit_rev.clr & VM_EXIT_SAVE_IA32_PAT) &&
- 	    !(ctrl_exit_rev.clr & VM_EXIT_LOAD_IA32_PAT) &&
--	    !(ctrl_enter_rev.clr & ENT_LOAD_PAT)) {
-+	    !(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PAT)) {
- 		printf("\tSave/load PAT is not supported\n");
- 		return 1;
- 	}
+@@ -266,7 +266,7 @@ static void msr_bmp_init(void)
  
- 	ctrl_ent = vmcs_read(ENT_CONTROLS);
- 	ctrl_exi = vmcs_read(EXI_CONTROLS);
--	ctrl_ent |= ctrl_enter_rev.clr & ENT_LOAD_PAT;
-+	ctrl_ent |= ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PAT;
- 	ctrl_exi |= ctrl_exit_rev.clr & (VM_EXIT_SAVE_IA32_PAT |
- 					 VM_EXIT_LOAD_IA32_PAT);
- 	vmcs_write(ENT_CONTROLS, ctrl_ent);
-@@ -339,7 +339,7 @@ static void test_ctrl_pat_main(void)
- 	u64 guest_ia32_pat;
- 
- 	guest_ia32_pat = rdmsr(MSR_IA32_CR_PAT);
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_PAT))
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PAT))
- 		printf("\tENT_LOAD_PAT is not supported.\n");
- 	else {
- 		if (guest_ia32_pat != 0) {
-@@ -350,7 +350,7 @@ static void test_ctrl_pat_main(void)
- 	wrmsr(MSR_IA32_CR_PAT, 0x6);
- 	vmcall();
- 	guest_ia32_pat = rdmsr(MSR_IA32_CR_PAT);
--	if (ctrl_enter_rev.clr & ENT_LOAD_PAT)
-+	if (ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PAT)
- 		report(guest_ia32_pat == ia32_pat, "Entry load PAT");
+ 	msr_bitmap = alloc_page();
+ 	ctrl_cpu0 = vmcs_read(CPU_EXEC_CTRL0);
+-	ctrl_cpu0 |= CPU_MSR_BITMAP;
++	ctrl_cpu0 |= CPU_BASED_USE_MSR_BITMAPS;
+ 	vmcs_write(CPU_EXEC_CTRL0, ctrl_cpu0);
+ 	vmcs_write(MSR_BITMAP, (u64)msr_bitmap);
  }
- 
-@@ -390,7 +390,7 @@ static int test_ctrl_efer_init(struct vmcs *vmcs)
- 	u64 ctrl_exi;
- 
- 	msr_bmp_init();
--	ctrl_ent = vmcs_read(ENT_CONTROLS) | ENT_LOAD_EFER;
-+	ctrl_ent = vmcs_read(ENT_CONTROLS) | VM_ENTRY_LOAD_IA32_EFER;
- 	ctrl_exi = vmcs_read(EXI_CONTROLS) |
- 		   VM_EXIT_SAVE_IA32_EFER |
- 		   VM_EXIT_LOAD_IA32_EFER;
-@@ -407,7 +407,7 @@ static void test_ctrl_efer_main(void)
- 	u64 guest_ia32_efer;
- 
- 	guest_ia32_efer = rdmsr(MSR_EFER);
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_EFER))
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_EFER))
- 		printf("\tENT_LOAD_EFER is not supported.\n");
- 	else {
- 		if (guest_ia32_efer != (ia32_efer ^ EFER_NX)) {
-@@ -418,7 +418,7 @@ static void test_ctrl_efer_main(void)
- 	wrmsr(MSR_EFER, ia32_efer);
- 	vmcall();
- 	guest_ia32_efer = rdmsr(MSR_EFER);
--	if (ctrl_enter_rev.clr & ENT_LOAD_EFER)
-+	if (ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_EFER)
- 		report(guest_ia32_efer == ia32_efer, "Entry load EFER");
- }
- 
-@@ -1922,7 +1922,8 @@ static int dbgctls_init(struct vmcs *vmcs)
- 	vmcs_write(GUEST_DR7, 0x404);
- 	vmcs_write(GUEST_DEBUGCTL, 0x2);
- 
--	vmcs_write(ENT_CONTROLS, vmcs_read(ENT_CONTROLS) | ENT_LOAD_DBGCTLS);
-+	vmcs_write(ENT_CONTROLS,
-+		   vmcs_read(ENT_CONTROLS) | VM_ENTRY_LOAD_DEBUG_CONTROLS);
- 	vmcs_write(EXI_CONTROLS,
- 		   vmcs_read(EXI_CONTROLS) | VM_EXIT_SAVE_DEBUG_CONTROLS);
- 
-@@ -1947,7 +1948,7 @@ static void dbgctls_main(void)
- 	vmcall();
- 	report(vmx_get_test_stage() == 1, "Save debug controls");
- 
--	if (ctrl_enter_rev.set & ENT_LOAD_DBGCTLS ||
-+	if (ctrl_enter_rev.set & VM_ENTRY_LOAD_DEBUG_CONTROLS ||
- 	    ctrl_exit_rev.set & VM_EXIT_SAVE_DEBUG_CONTROLS) {
- 		printf("\tDebug controls are always loaded/saved\n");
- 		return;
-@@ -1998,7 +1999,8 @@ static int dbgctls_exit_handler(union exit_reason exit_reason)
- 			vmcs_write(GUEST_DEBUGCTL, 0x2);
- 
- 			vmcs_write(ENT_CONTROLS,
--				vmcs_read(ENT_CONTROLS) & ~ENT_LOAD_DBGCTLS);
-+				   vmcs_read(ENT_CONTROLS) &
-+				   ~VM_ENTRY_LOAD_DEBUG_CONTROLS);
- 			vmcs_write(EXI_CONTROLS,
- 				   vmcs_read(EXI_CONTROLS) &
- 				   ~VM_EXIT_SAVE_DEBUG_CONTROLS);
-@@ -5382,7 +5384,7 @@ static void vmx_mtf_pdpte_test(void)
- 	 * when the guest started out in long mode.
- 	 */
- 	ent_ctls = vmcs_read(ENT_CONTROLS);
--	vmcs_write(ENT_CONTROLS, ent_ctls & ~ENT_GUEST_64);
-+	vmcs_write(ENT_CONTROLS, ent_ctls & ~VM_ENTRY_IA32E_MODE);
- 
- 	guest_efer = vmcs_read(GUEST_EFER);
- 	vmcs_write(GUEST_EFER, guest_efer & ~(EFER_LMA | EFER_LME));
-@@ -7299,11 +7301,11 @@ static void test_efer_one(u32 fld, const char * fld_name, u64 efer,
- 		if (!!(efer & EFER_LME) != !!(ctrl & VM_EXIT_HOST_ADDR_SPACE_SIZE))
- 			ok = false;
- 	}
--	if (ctrl_fld == ENT_CONTROLS && (ctrl & ENT_LOAD_EFER)) {
-+	if (ctrl_fld == ENT_CONTROLS && (ctrl & VM_ENTRY_LOAD_IA32_EFER)) {
- 		/* Check LMA too since CR0.PG is set.  */
--		if (!!(efer & EFER_LMA) != !!(ctrl & ENT_GUEST_64))
-+		if (!!(efer & EFER_LMA) != !!(ctrl & VM_ENTRY_IA32E_MODE))
- 			ok = false;
--		if (!!(efer & EFER_LME) != !!(ctrl & ENT_GUEST_64))
-+		if (!!(efer & EFER_LME) != !!(ctrl & VM_ENTRY_IA32E_MODE))
- 			ok = false;
- 	}
- 
-@@ -7312,7 +7314,7 @@ static void test_efer_one(u32 fld, const char * fld_name, u64 efer,
- 	 * Perhaps write the test in assembly and make sure it
- 	 * can be run in either mode?
- 	 */
--	if (fld == GUEST_EFER && ok && !(ctrl & ENT_GUEST_64))
-+	if (fld == GUEST_EFER && ok && !(ctrl & VM_ENTRY_IA32E_MODE))
- 		return;
- 
- 	vmcs_write(ctrl_fld, ctrl);
-@@ -7446,15 +7448,15 @@ static void test_host_efer(void)
-  */
- static void test_guest_efer(void)
+@@ -275,13 +275,13 @@ static void *get_msr_bitmap(void)
  {
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_EFER)) {
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_EFER)) {
- 		report_skip("%s : \"Load-IA32-EFER\" entry control not supported", __func__);
- 		return;
+ 	void *msr_bitmap;
+ 
+-	if (vmcs_read(CPU_EXEC_CTRL0) & CPU_MSR_BITMAP) {
++	if (vmcs_read(CPU_EXEC_CTRL0) & CPU_BASED_USE_MSR_BITMAPS) {
+ 		msr_bitmap = (void *)vmcs_read(MSR_BITMAP);
+ 	} else {
+ 		msr_bitmap = alloc_page();
+ 		memset(msr_bitmap, 0xff, PAGE_SIZE);
+ 		vmcs_write(MSR_BITMAP, (u64)msr_bitmap);
+-		vmcs_set_bits(CPU_EXEC_CTRL0, CPU_MSR_BITMAP);
++		vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_USE_MSR_BITMAPS);
  	}
  
- 	vmcs_write(GUEST_EFER, rdmsr(MSR_EFER));
- 	test_efer(GUEST_EFER, "GUEST_EFER", ENT_CONTROLS,
--		  ctrl_enter_rev.clr & ENT_LOAD_EFER,
--		  ENT_GUEST_64);
-+		  ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_EFER,
-+		  VM_ENTRY_IA32E_MODE);
+ 	return msr_bitmap;
+@@ -643,8 +643,8 @@ static int iobmp_init(struct vmcs *vmcs)
+ 	io_bitmap_a = alloc_page();
+ 	io_bitmap_b = alloc_page();
+ 	ctrl_cpu0 = vmcs_read(CPU_EXEC_CTRL0);
+-	ctrl_cpu0 |= CPU_IO_BITMAP;
+-	ctrl_cpu0 &= (~CPU_IO);
++	ctrl_cpu0 |= CPU_BASED_USE_IO_BITMAPS;
++	ctrl_cpu0 &= (~CPU_BASED_UNCOND_IO_EXITING);
+ 	vmcs_write(CPU_EXEC_CTRL0, ctrl_cpu0);
+ 	vmcs_write(IO_BITMAP_A, (u64)io_bitmap_a);
+ 	vmcs_write(IO_BITMAP_B, (u64)io_bitmap_b);
+@@ -754,7 +754,8 @@ static int iobmp_exit_handler(union exit_reason exit_reason)
+ 		case 9:
+ 		case 10:
+ 			ctrl_cpu0 = vmcs_read(CPU_EXEC_CTRL0);
+-			vmcs_write(CPU_EXEC_CTRL0, ctrl_cpu0 & ~CPU_IO);
++			vmcs_write(CPU_EXEC_CTRL0,
++				   ctrl_cpu0 & ~CPU_BASED_UNCOND_IO_EXITING);
+ 			vmx_inc_test_stage();
+ 			break;
+ 		default:
+@@ -770,12 +771,14 @@ static int iobmp_exit_handler(union exit_reason exit_reason)
+ 		switch (vmx_get_test_stage()) {
+ 		case 9:
+ 			ctrl_cpu0 = vmcs_read(CPU_EXEC_CTRL0);
+-			ctrl_cpu0 |= CPU_IO | CPU_IO_BITMAP;
++			ctrl_cpu0 |= CPU_BASED_UNCOND_IO_EXITING |
++				     CPU_BASED_USE_IO_BITMAPS;
+ 			vmcs_write(CPU_EXEC_CTRL0, ctrl_cpu0);
+ 			break;
+ 		case 10:
+ 			ctrl_cpu0 = vmcs_read(CPU_EXEC_CTRL0);
+-			ctrl_cpu0 = (ctrl_cpu0 & ~CPU_IO_BITMAP) | CPU_IO;
++			ctrl_cpu0 = (ctrl_cpu0 & ~CPU_BASED_USE_IO_BITMAPS) |
++						 CPU_BASED_UNCOND_IO_EXITING;
+ 			vmcs_write(CPU_EXEC_CTRL0, ctrl_cpu0);
+ 			break;
+ 		default:
+@@ -886,22 +889,25 @@ struct insn_table {
+  */
+ static struct insn_table insn_table[] = {
+ 	// Flags for Primary Processor-Based VM-Execution Controls
+-	{"HLT",  CPU_HLT, insn_hlt, INSN_CPU0, 12, 0, 0, 0},
+-	{"INVLPG", CPU_INVLPG, insn_invlpg, INSN_CPU0, 14,
++	{"HLT",  CPU_BASED_HLT_EXITING, insn_hlt, INSN_CPU0, 12, 0, 0, 0},
++	{"INVLPG", CPU_BASED_INVLPG_EXITING, insn_invlpg, INSN_CPU0, 14,
+ 		0x12345678, 0, FIELD_EXIT_QUAL},
+-	{"MWAIT", CPU_MWAIT, insn_mwait, INSN_CPU0, 36, 0, 0, 0, this_cpu_has_mwait},
+-	{"RDPMC", CPU_RDPMC, insn_rdpmc, INSN_CPU0, 15, 0, 0, 0, this_cpu_has_pmu},
+-	{"RDTSC", CPU_RDTSC, insn_rdtsc, INSN_CPU0, 16, 0, 0, 0},
+-	{"CR3 load", CPU_CR3_LOAD, insn_cr3_load, INSN_CPU0, 28, 0x3, 0,
+-		FIELD_EXIT_QUAL},
+-	{"CR3 store", CPU_CR3_STORE, insn_cr3_store, INSN_CPU0, 28, 0x13, 0,
+-		FIELD_EXIT_QUAL},
+-	{"CR8 load", CPU_CR8_LOAD, insn_cr8_load, INSN_CPU0, 28, 0x8, 0,
+-		FIELD_EXIT_QUAL},
+-	{"CR8 store", CPU_CR8_STORE, insn_cr8_store, INSN_CPU0, 28, 0x18, 0,
+-		FIELD_EXIT_QUAL},
+-	{"MONITOR", CPU_MONITOR, insn_monitor, INSN_CPU0, 39, 0, 0, 0, this_cpu_has_mwait},
+-	{"PAUSE", CPU_PAUSE, insn_pause, INSN_CPU0, 40, 0, 0, 0},
++	{"MWAIT", CPU_BASED_MWAIT_EXITING, insn_mwait, INSN_CPU0, 36, 0, 0, 0,
++		this_cpu_has_mwait},
++	{"RDPMC", CPU_BASED_RDPMC_EXITING, insn_rdpmc, INSN_CPU0, 15, 0, 0, 0,
++		this_cpu_has_pmu},
++	{"RDTSC", CPU_BASED_RDTSC_EXITING, insn_rdtsc, INSN_CPU0, 16, 0, 0, 0},
++	{"CR3 load", CPU_BASED_CR3_LOAD_EXITING, insn_cr3_load, INSN_CPU0, 28,
++		0x3, 0, FIELD_EXIT_QUAL},
++	{"CR3 store", CPU_BASED_CR3_STORE_EXITING, insn_cr3_store, INSN_CPU0,
++		28, 0x13, 0, FIELD_EXIT_QUAL},
++	{"CR8 load", CPU_BASED_CR8_LOAD_EXITING, insn_cr8_load, INSN_CPU0, 28,
++		0x8, 0,	FIELD_EXIT_QUAL},
++	{"CR8 store", CPU_BASED_CR8_STORE_EXITING, insn_cr8_store, INSN_CPU0,
++		28, 0x18, 0, FIELD_EXIT_QUAL},
++	{"MONITOR", CPU_BASED_MONITOR_TRAP_FLAG, insn_monitor, INSN_CPU0, 39,
++		0, 0, 0, this_cpu_has_mwait},
++	{"PAUSE", CPU_BASED_PAUSE_EXITING, insn_pause, INSN_CPU0, 40, 0, 0, 0},
+ 	// Flags for Secondary Processor-Based VM-Execution Controls
+ 	{"WBINVD", CPU_WBINVD, insn_wbinvd, INSN_CPU1, 54, 0, 0, 0},
+ 	{"DESC_TABLE (SGDT)", CPU_DESC_TABLE, insn_sgdt, INSN_CPU1, 46, 0, 0, 0},
+@@ -3814,10 +3820,10 @@ static void test_vmcs_addr_reference(u32 control_bit, enum Encoding field,
+  */
+ static void test_io_bitmaps(void)
+ {
+-	test_vmcs_addr_reference(CPU_IO_BITMAP, IO_BITMAP_A,
++	test_vmcs_addr_reference(CPU_BASED_USE_IO_BITMAPS, IO_BITMAP_A,
+ 				 "I/O bitmap A", "Use I/O bitmaps",
+ 				 PAGE_SIZE, false, true);
+-	test_vmcs_addr_reference(CPU_IO_BITMAP, IO_BITMAP_B,
++	test_vmcs_addr_reference(CPU_BASED_USE_IO_BITMAPS, IO_BITMAP_B,
+ 				 "I/O bitmap B", "Use I/O bitmaps",
+ 				 PAGE_SIZE, false, true);
+ }
+@@ -3830,7 +3836,7 @@ static void test_io_bitmaps(void)
+  */
+ static void test_msr_bitmap(void)
+ {
+-	test_vmcs_addr_reference(CPU_MSR_BITMAP, MSR_BITMAP,
++	test_vmcs_addr_reference(CPU_BASED_USE_MSR_BITMAPS, MSR_BITMAP,
+ 				 "MSR bitmap", "Use MSR bitmaps",
+ 				 PAGE_SIZE, false, true);
+ }
+@@ -3851,8 +3857,9 @@ static void test_apic_virt_addr(void)
+ 	 * what we're trying to achieve and fails vmentry.
+ 	 */
+ 	u32 cpu_ctrls0 = vmcs_read(CPU_EXEC_CTRL0);
+-	vmcs_write(CPU_EXEC_CTRL0, cpu_ctrls0 | CPU_CR8_LOAD | CPU_CR8_STORE);
+-	test_vmcs_addr_reference(CPU_TPR_SHADOW, APIC_VIRT_ADDR,
++	vmcs_write(CPU_EXEC_CTRL0, cpu_ctrls0 | CPU_BASED_CR8_LOAD_EXITING |
++		   CPU_BASED_CR8_STORE_EXITING);
++	test_vmcs_addr_reference(CPU_BASED_TPR_SHADOW, APIC_VIRT_ADDR,
+ 				 "virtual-APIC address", "Use TPR shadow",
+ 				 PAGE_SIZE, false, true);
+ 	vmcs_write(CPU_EXEC_CTRL0, cpu_ctrls0);
+@@ -3924,18 +3931,18 @@ static void test_apic_virtual_ctls(void)
+ 	/*
+ 	 * First test
+ 	 */
+-	if (!((ctrl_cpu_rev[0].clr & (CPU_SECONDARY | CPU_TPR_SHADOW)) ==
+-	    (CPU_SECONDARY | CPU_TPR_SHADOW)))
++	if (!((ctrl_cpu_rev[0].clr & (CPU_SECONDARY | CPU_BASED_TPR_SHADOW)) ==
++	    (CPU_SECONDARY | CPU_BASED_TPR_SHADOW)))
+ 		return;
+ 
+ 	primary |= CPU_SECONDARY;
+-	primary &= ~CPU_TPR_SHADOW;
++	primary &= ~CPU_BASED_TPR_SHADOW;
+ 	vmcs_write(CPU_EXEC_CTRL0, primary);
+ 
+ 	while (1) {
+ 		for (j = 1; j < 8; j++) {
+ 			secondary &= ~(CPU_VIRT_X2APIC | CPU_APIC_REG_VIRT | CPU_VINTD);
+-			if (primary & CPU_TPR_SHADOW) {
++			if (primary & CPU_BASED_TPR_SHADOW) {
+ 				is_ctrl_valid = true;
+ 			} else {
+ 				if (! set_bit_pattern(j, &secondary))
+@@ -3958,7 +3965,7 @@ static void test_apic_virtual_ctls(void)
+ 			break;
+ 		i++;
+ 
+-		primary |= CPU_TPR_SHADOW;
++		primary |= CPU_BASED_TPR_SHADOW;
+ 		vmcs_write(CPU_EXEC_CTRL0, primary);
+ 		strcpy(str, "enabled");
+ 	}
+@@ -4017,7 +4024,8 @@ static void test_virtual_intr_ctls(void)
+ 	    (ctrl_pin_rev.clr & PIN_EXTINT)))
+ 		return;
+ 
+-	vmcs_write(CPU_EXEC_CTRL0, primary | CPU_SECONDARY | CPU_TPR_SHADOW);
++	vmcs_write(CPU_EXEC_CTRL0, primary | CPU_SECONDARY |
++		   CPU_BASED_TPR_SHADOW);
+ 	vmcs_write(CPU_EXEC_CTRL1, secondary & ~CPU_VINTD);
+ 	vmcs_write(PIN_CONTROLS, pin & ~PIN_EXTINT);
+ 	report_prefix_pushf("Virtualize interrupt-delivery disabled; external-interrupt exiting disabled");
+@@ -4086,7 +4094,8 @@ static void test_posted_intr(void)
+ 	    (ctrl_exit_rev.clr & EXI_INTA)))
+ 		return;
+ 
+-	vmcs_write(CPU_EXEC_CTRL0, primary | CPU_SECONDARY | CPU_TPR_SHADOW);
++	vmcs_write(CPU_EXEC_CTRL0, primary | CPU_SECONDARY |
++		   CPU_BASED_TPR_SHADOW);
+ 
+ 	/*
+ 	 * Test virtual-interrupt-delivery and acknowledge-interrupt-on-exit
+@@ -4237,7 +4246,7 @@ static void try_tpr_threshold_and_vtpr(unsigned threshold, unsigned vtpr)
+ 	u32 primary = vmcs_read(CPU_EXEC_CTRL0);
+ 	u32 secondary = vmcs_read(CPU_EXEC_CTRL1);
+ 
+-	if ((primary & CPU_TPR_SHADOW) &&
++	if ((primary & CPU_BASED_TPR_SHADOW) &&
+ 	    (!(primary & CPU_SECONDARY) ||
+ 	     !(secondary & (CPU_VINTD | CPU_VIRT_APIC_ACCESSES))))
+ 		valid = (threshold & 0xf) <= ((vtpr >> 4) & 0xf);
+@@ -4571,7 +4580,7 @@ static void try_tpr_threshold(unsigned threshold)
+ 	u32 primary = vmcs_read(CPU_EXEC_CTRL0);
+ 	u32 secondary = vmcs_read(CPU_EXEC_CTRL1);
+ 
+-	if ((primary & CPU_TPR_SHADOW) && !((primary & CPU_SECONDARY) &&
++	if ((primary & CPU_BASED_TPR_SHADOW) && !((primary & CPU_SECONDARY) &&
+ 	    (secondary & CPU_VINTD)))
+ 		valid = !(threshold >> 4);
+ 
+@@ -4627,18 +4636,20 @@ static void test_tpr_threshold(void)
+ 	u64 threshold = vmcs_read(TPR_THRESHOLD);
+ 	void *virtual_apic_page;
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_TPR_SHADOW))
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_TPR_SHADOW))
+ 		return;
+ 
+ 	virtual_apic_page = alloc_page();
+ 	memset(virtual_apic_page, 0xff, PAGE_SIZE);
+ 	vmcs_write(APIC_VIRT_ADDR, virt_to_phys(virtual_apic_page));
+ 
+-	vmcs_write(CPU_EXEC_CTRL0, primary & ~(CPU_TPR_SHADOW | CPU_SECONDARY));
++	vmcs_write(CPU_EXEC_CTRL0, primary & ~(CPU_BASED_TPR_SHADOW |
++		   CPU_SECONDARY));
+ 	report_prefix_pushf("Use TPR shadow disabled, secondary controls disabled");
+ 	test_tpr_threshold_values();
+ 	report_prefix_pop();
+-	vmcs_write(CPU_EXEC_CTRL0, vmcs_read(CPU_EXEC_CTRL0) | CPU_TPR_SHADOW);
++	vmcs_write(CPU_EXEC_CTRL0, vmcs_read(CPU_EXEC_CTRL0) |
++		   CPU_BASED_TPR_SHADOW);
+ 	report_prefix_pushf("Use TPR shadow enabled, secondary controls disabled");
+ 	test_tpr_threshold_values();
+ 	report_prefix_pop();
+@@ -4727,7 +4738,7 @@ static void test_nmi_ctrls(void)
+ 	cpu_ctrls0 = vmcs_read(CPU_EXEC_CTRL0);
+ 
+ 	test_pin_ctrls = pin_ctrls & ~(PIN_NMI | PIN_VIRT_NMI);
+-	test_cpu_ctrls0 = cpu_ctrls0 & ~CPU_NMI_WINDOW;
++	test_cpu_ctrls0 = cpu_ctrls0 & ~CPU_BASED_NMI_WINDOW_EXITING;
+ 
+ 	vmcs_write(PIN_CONTROLS, test_pin_ctrls);
+ 	report_prefix_pushf("NMI-exiting disabled, virtual-NMIs disabled");
+@@ -4749,13 +4760,14 @@ static void test_nmi_ctrls(void)
+ 	test_vmx_valid_controls();
+ 	report_prefix_pop();
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_NMI_WINDOW)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_NMI_WINDOW_EXITING)) {
+ 		report_info("NMI-window exiting is not supported, skipping...");
+ 		goto done;
+ 	}
+ 
+ 	vmcs_write(PIN_CONTROLS, test_pin_ctrls);
+-	vmcs_write(CPU_EXEC_CTRL0, test_cpu_ctrls0 | CPU_NMI_WINDOW);
++	vmcs_write(CPU_EXEC_CTRL0, test_cpu_ctrls0 |
++		   CPU_BASED_NMI_WINDOW_EXITING);
+ 	report_prefix_pushf("Virtual-NMIs disabled, NMI-window-exiting enabled");
+ 	test_vmx_invalid_controls();
+ 	report_prefix_pop();
+@@ -4767,7 +4779,8 @@ static void test_nmi_ctrls(void)
+ 	report_prefix_pop();
+ 
+ 	vmcs_write(PIN_CONTROLS, test_pin_ctrls | (PIN_NMI | PIN_VIRT_NMI));
+-	vmcs_write(CPU_EXEC_CTRL0, test_cpu_ctrls0 | CPU_NMI_WINDOW);
++	vmcs_write(CPU_EXEC_CTRL0, test_cpu_ctrls0 |
++		   CPU_BASED_NMI_WINDOW_EXITING);
+ 	report_prefix_pushf("Virtual-NMIs enabled, NMI-window-exiting enabled");
+ 	test_vmx_valid_controls();
+ 	report_prefix_pop();
+@@ -5121,14 +5134,14 @@ static void enable_mtf(void)
+ {
+ 	u32 ctrl0 = vmcs_read(CPU_EXEC_CTRL0);
+ 
+-	vmcs_write(CPU_EXEC_CTRL0, ctrl0 | CPU_MTF);
++	vmcs_write(CPU_EXEC_CTRL0, ctrl0 | CPU_BASED_MONITOR_TRAP_FLAG);
  }
  
- /*
-@@ -7487,8 +7489,8 @@ static void test_pat(u32 field, const char * field_name, u32 ctrl_field,
- 				report_prefix_pop();
+ static void disable_mtf(void)
+ {
+ 	u32 ctrl0 = vmcs_read(CPU_EXEC_CTRL0);
  
- 			} else {	// GUEST_PAT
--				test_guest_state("ENT_LOAD_PAT disabled", false,
--						 val, "GUEST_PAT");
-+				test_guest_state("VM_ENTRY_LOAD_IA32_PAT disabled",
-+						 false, val, "GUEST_PAT");
- 			}
+-	vmcs_write(CPU_EXEC_CTRL0, ctrl0 & ~CPU_MTF);
++	vmcs_write(CPU_EXEC_CTRL0, ctrl0 & ~CPU_BASED_MONITOR_TRAP_FLAG);
+ }
+ 
+ static void enable_tf(void)
+@@ -5159,7 +5172,7 @@ static void vmx_mtf_test(void)
+ 	unsigned long pending_dbg;
+ 	handler old_gp, old_db;
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_MTF)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_MONITOR_TRAP_FLAG)) {
+ 		report_skip("%s : \"Monitor trap flag\" exec control not supported", __func__);
+ 		return;
+ 	}
+@@ -5262,7 +5275,7 @@ static void vmx_mtf_pdpte_test(void)
+ 	if (setup_ept(false))
+ 		return;
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_MTF)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_MONITOR_TRAP_FLAG)) {
+ 		report_skip("%s : \"Monitor trap flag\" exec control not supported", __func__);
+ 		return;
+ 	}
+@@ -6185,13 +6198,13 @@ static enum Config_type configure_apic_reg_virt_test(
+ 	}
+ 
+ 	if (apic_reg_virt_config->use_tpr_shadow) {
+-		if (!(ctrl_cpu_rev[0].clr & CPU_TPR_SHADOW)) {
++		if (!(ctrl_cpu_rev[0].clr & CPU_BASED_TPR_SHADOW)) {
+ 			printf("VM-execution control \"use TPR shadow\" NOT supported.\n");
+ 			return CONFIG_TYPE_UNSUPPORTED;
  		}
+-		cpu_exec_ctrl0 |= CPU_TPR_SHADOW;
++		cpu_exec_ctrl0 |= CPU_BASED_TPR_SHADOW;
+ 	} else {
+-		cpu_exec_ctrl0 &= ~CPU_TPR_SHADOW;
++		cpu_exec_ctrl0 &= ~CPU_BASED_TPR_SHADOW;
  	}
-@@ -7520,7 +7522,7 @@ static void test_pat(u32 field, const char * field_name, u32 ctrl_field,
  
- 			} else {	// GUEST_PAT
- 				error = (i == 0x2 || i == 0x3 || i >= 0x8);
--				test_guest_state("ENT_LOAD_PAT enabled", !!error,
-+				test_guest_state("VM_ENTRY_LOAD_IA32_PAT enabled", !!error,
- 						 val, "GUEST_PAT");
+ 	if (apic_reg_virt_config->apic_register_virtualization) {
+@@ -6968,9 +6981,9 @@ static enum Config_type configure_virt_x2apic_mode_test(
+ 	/* x2apic-specific VMCS config */
+ 	if (virt_x2apic_mode_config->use_msr_bitmaps) {
+ 		/* virt_x2apic_mode_test() checks for MSR bitmaps support */
+-		cpu_exec_ctrl0 |= CPU_MSR_BITMAP;
++		cpu_exec_ctrl0 |= CPU_BASED_USE_MSR_BITMAPS;
+ 	} else {
+-		cpu_exec_ctrl0 &= ~CPU_MSR_BITMAP;
++		cpu_exec_ctrl0 &= ~CPU_BASED_USE_MSR_BITMAPS;
+ 	}
  
- 				if (!(ctrl_exit_rev.clr & VM_EXIT_LOAD_IA32_PAT))
-@@ -7725,13 +7727,14 @@ static void test_load_guest_perf_global_ctrl(void)
+ 	if (virt_x2apic_mode_config->virtual_interrupt_delivery) {
+@@ -7035,10 +7048,10 @@ static void virt_x2apic_mode_test(void)
+ 	 *   - "Virtual-APIC address", indicated by "use TPR shadow"
+ 	 *   - "MSR-bitmap address", indicated by "use MSR bitmaps"
+ 	 */
+-	if (!(ctrl_cpu_rev[0].clr & CPU_TPR_SHADOW)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_TPR_SHADOW)) {
+ 		report_skip("%s : \"Use TPR shadow\" exec control not supported", __func__);
+ 		return;
+-	} else if (!(ctrl_cpu_rev[0].clr & CPU_MSR_BITMAP)) {
++	} else if (!(ctrl_cpu_rev[0].clr & CPU_BASED_USE_MSR_BITMAPS)) {
+ 		report_skip("%s : \"Use MSR bitmaps\" exec control not supported", __func__);
+ 		return;
+ 	}
+@@ -8673,7 +8686,7 @@ static void vmx_nmi_window_test(void)
  		return;
  	}
  
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_PERF)) {
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL)) {
- 		report_skip("%s : \"Load IA32_PERF_GLOBAL_CTRL\" entry control not supported", __func__);
+-	if (!(ctrl_cpu_rev[0].clr & CPU_NMI_WINDOW)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_NMI_WINDOW_EXITING)) {
+ 		report_skip("%s : \"NMI-window exiting\" exec control not supported", __func__);
+ 		return;
+ 	}
+@@ -8692,7 +8705,7 @@ static void vmx_nmi_window_test(void)
+ 	 * RIP will not advance.
+ 	 */
+ 	report_prefix_push("active, no blocking");
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_NMI_WINDOW);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_NMI_WINDOW_EXITING);
+ 	enter_guest();
+ 	verify_nmi_window_exit(nop_addr);
+ 	report_prefix_pop();
+@@ -8764,7 +8777,7 @@ static void vmx_nmi_window_test(void)
+ 		report_prefix_pop();
+ 	}
+ 
+-	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_NMI_WINDOW);
++	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_BASED_NMI_WINDOW_EXITING);
+ 	enter_guest();
+ 	report_prefix_pop();
+ }
+@@ -8804,7 +8817,7 @@ static void vmx_intr_window_test(void)
+ 	unsigned int orig_db_gate_type;
+ 	void *db_fault_addr = get_idt_addr(&boot_idt[DB_VECTOR]);
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_INTR_WINDOW)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_INTR_WINDOW_EXITING)) {
+ 		report_skip("%s : \"Interrupt-window exiting\" exec control not supported", __func__);
+ 		return;
+ 	}
+@@ -8830,7 +8843,7 @@ static void vmx_intr_window_test(void)
+ 	 * point to the vmcall instruction.
+ 	 */
+ 	report_prefix_push("active, no blocking, RFLAGS.IF=1");
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_INTR_WINDOW);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_INTR_WINDOW_EXITING);
+ 	vmcs_write(GUEST_RFLAGS, X86_EFLAGS_FIXED | X86_EFLAGS_IF);
+ 	enter_guest();
+ 	verify_intr_window_exit(vmcall_addr);
+@@ -8857,11 +8870,11 @@ static void vmx_intr_window_test(void)
+ 	 * VM-exits. Then, advance past the VMCALL and set the
+ 	 * "interrupt-window exiting" VM-execution control again.
+ 	 */
+-	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_INTR_WINDOW);
++	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_BASED_INTR_WINDOW_EXITING);
+ 	enter_guest();
+ 	skip_exit_vmcall();
+ 	nop_addr = vmcs_read(GUEST_RIP);
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_INTR_WINDOW);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_INTR_WINDOW_EXITING);
+ 
+ 	/*
+ 	 * Ask for "interrupt-window exiting" in a MOV-SS shadow with
+@@ -8932,7 +8945,7 @@ static void vmx_intr_window_test(void)
+ 	}
+ 
+ 	boot_idt[DB_VECTOR].type = orig_db_gate_type;
+-	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_INTR_WINDOW);
++	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_BASED_INTR_WINDOW_EXITING);
+ 	enter_guest();
+ 	report_prefix_pop();
+ }
+@@ -8956,14 +8969,14 @@ static void vmx_store_tsc_test(void)
+ 	struct vmx_msr_entry msr_entry = { .index = MSR_IA32_TSC };
+ 	u64 low, high;
+ 
+-	if (!(ctrl_cpu_rev[0].clr & CPU_USE_TSC_OFFSET)) {
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_USE_TSC_OFFSETTING)) {
+ 		report_skip("%s : \"Use TSC offsetting\" exec control not supported", __func__);
  		return;
  	}
  
- 	test_perf_global_ctrl(GUEST_PERF_GLOBAL_CTRL, "GUEST_PERF_GLOBAL_CTRL",
--				   ENT_CONTROLS, "ENT_CONTROLS", ENT_LOAD_PERF);
-+			      ENT_CONTROLS, "ENT_CONTROLS",
-+			      VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL);
+ 	test_set_guest(vmx_store_tsc_test_guest);
+ 
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_USE_TSC_OFFSET);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_USE_TSC_OFFSETTING);
+ 	vmcs_write(EXI_MSR_ST_CNT, 1);
+ 	vmcs_write(EXIT_MSR_ST_ADDR, virt_to_phys(&msr_entry));
+ 	vmcs_write(TSC_OFFSET, GUEST_TSC_OFFSET);
+@@ -9506,7 +9519,7 @@ static void enable_vid(void)
+ 	vmcs_write(EOI_EXIT_BITMAP2, 0x0);
+ 	vmcs_write(EOI_EXIT_BITMAP3, 0x0);
+ 
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_SECONDARY | CPU_TPR_SHADOW);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_SECONDARY | CPU_BASED_TPR_SHADOW);
+ 	vmcs_set_bits(CPU_EXEC_CTRL1, CPU_VINTD | CPU_VIRT_X2APIC);
  }
  
+@@ -10388,7 +10401,7 @@ static void vmx_vmcs_shadow_test(void)
+ 	shadow->hdr.shadow_vmcs = 1;
+ 	TEST_ASSERT(!vmcs_clear(shadow));
  
-@@ -7912,7 +7915,7 @@ static void test_host_addr_size(void)
- 	assert(vmcs_read(EXI_CONTROLS) & VM_EXIT_HOST_ADDR_SPACE_SIZE);
- 	assert(cr4_saved & X86_CR4_PAE);
+-	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_RDTSC);
++	vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_BASED_RDTSC_EXITING);
+ 	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_SECONDARY);
+ 	vmcs_set_bits(CPU_EXEC_CTRL1, CPU_SHADOW_VMCS);
  
--	vmcs_write(ENT_CONTROLS, entry_ctrl_saved | ENT_GUEST_64);
-+	vmcs_write(ENT_CONTROLS, entry_ctrl_saved | VM_ENTRY_IA32E_MODE);
- 	report_prefix_pushf("\"IA-32e mode guest\" enabled");
- 	test_vmx_vmlaunch(0);
- 	report_prefix_pop();
-@@ -7935,7 +7938,7 @@ static void test_host_addr_size(void)
- 	test_vmx_vmlaunch_must_fail(VMXERR_ENTRY_INVALID_HOST_STATE_FIELD);
- 	report_prefix_pop();
+@@ -10423,7 +10436,7 @@ static void vmx_vmcs_shadow_test(void)
+  */
+ static void reset_guest_tsc_to_zero(void)
+ {
+-	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_USE_TSC_OFFSET);
++	vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_USE_TSC_OFFSETTING);
+ 	vmcs_write(TSC_OFFSET, -rdtsc());
+ }
  
--	vmcs_write(ENT_CONTROLS, entry_ctrl_saved | ENT_GUEST_64);
-+	vmcs_write(ENT_CONTROLS, entry_ctrl_saved | VM_ENTRY_IA32E_MODE);
- 	vmcs_write(HOST_RIP, rip_saved);
- 	vmcs_write(HOST_CR4, cr4_saved);
+@@ -10446,7 +10459,7 @@ static unsigned long long host_time_to_guest_time(unsigned long long t)
+ 	TEST_ASSERT(!(ctrl_cpu_rev[0].clr & CPU_SECONDARY) ||
+ 		    !(vmcs_read(CPU_EXEC_CTRL1) & CPU_USE_TSC_SCALING));
  
-@@ -7994,22 +7997,22 @@ static void test_guest_dr7(void)
- 	u64 val;
+-	if (vmcs_read(CPU_EXEC_CTRL0) & CPU_USE_TSC_OFFSET)
++	if (vmcs_read(CPU_EXEC_CTRL0) & CPU_BASED_USE_TSC_OFFSETTING)
+ 		t += vmcs_read(TSC_OFFSET);
+ 
+ 	return t;
+@@ -10470,7 +10483,7 @@ static void rdtsc_vmexit_diff_test(void)
+ 	int fail = 0;
  	int i;
  
--	if (ctrl_enter_rev.set & ENT_LOAD_DBGCTLS) {
--		vmcs_clear_bits(ENT_CONTROLS, ENT_LOAD_DBGCTLS);
-+	if (ctrl_enter_rev.set & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
-+		vmcs_clear_bits(ENT_CONTROLS, VM_ENTRY_LOAD_DEBUG_CONTROLS);
- 		for (i = 0; i < 64; i++) {
- 			val = 1ull << i;
- 			vmcs_write(GUEST_DR7, val);
--			test_guest_state("ENT_LOAD_DBGCTLS disabled", false,
--					 val, "GUEST_DR7");
-+			test_guest_state("VM_ENTRY_LOAD_DEBUG_CONTROLS disabled",
-+					 false, val, "GUEST_DR7");
- 		}
- 	}
--	if (ctrl_enter_rev.clr & ENT_LOAD_DBGCTLS) {
--		vmcs_set_bits(ENT_CONTROLS, ENT_LOAD_DBGCTLS);
-+	if (ctrl_enter_rev.clr & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
-+		vmcs_set_bits(ENT_CONTROLS, VM_ENTRY_LOAD_DEBUG_CONTROLS);
- 		for (i = 0; i < 64; i++) {
- 			val = 1ull << i;
- 			vmcs_write(GUEST_DR7, val);
--			test_guest_state("ENT_LOAD_DBGCTLS enabled", i >= 32,
--					 val, "GUEST_DR7");
-+			test_guest_state("VM_ENTRY_LOAD_DEBUG_CONTROLS enabled",
-+					 i >= 32, val, "GUEST_DR7");
- 		}
- 	}
- 	vmcs_write(GUEST_DR7, dr7_saved);
-@@ -8030,12 +8033,13 @@ static void test_load_guest_pat(void)
- 	/*
- 	 * "load IA32_PAT" VM-entry control
- 	 */
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_PAT)) {
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_IA32_PAT)) {
- 		report_skip("%s : \"Load-IA32-PAT\" entry control not supported", __func__);
- 		return;
- 	}
+-	if (!(ctrl_cpu_rev[0].clr & CPU_USE_TSC_OFFSET))
++	if (!(ctrl_cpu_rev[0].clr & CPU_BASED_USE_TSC_OFFSETTING))
+ 		test_skip("CPU doesn't support the 'use TSC offsetting' processor-based VM-execution control.\n");
  
--	test_pat(GUEST_PAT, "GUEST_PAT", ENT_CONTROLS, ENT_LOAD_PAT);
-+	test_pat(GUEST_PAT, "GUEST_PAT", ENT_CONTROLS,
-+		 VM_ENTRY_LOAD_IA32_PAT);
- }
+ 	test_set_guest(rdtsc_vmexit_diff_test_guest);
+@@ -10691,9 +10704,9 @@ static void __vmx_pf_exception_test(invalidate_tlb_t inv_fn, void *data,
  
- #define MSR_IA32_BNDCFGS_RSVD_MASK	0x00000ffc
-@@ -8054,29 +8058,29 @@ static void test_load_guest_bndcfgs(void)
- 	u64 bndcfgs_saved = vmcs_read(GUEST_BNDCFGS);
- 	u64 bndcfgs;
+ 	/* Intercept INVLPG when to perform TLB invalidation from L1 (this). */
+ 	if (inv_fn)
+-		vmcs_set_bits(CPU_EXEC_CTRL0, CPU_INVLPG);
++		vmcs_set_bits(CPU_EXEC_CTRL0, CPU_BASED_INVLPG_EXITING);
+ 	else
+-		vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_INVLPG);
++		vmcs_clear_bits(CPU_EXEC_CTRL0, CPU_BASED_INVLPG_EXITING);
  
--	if (!(ctrl_enter_rev.clr & ENT_LOAD_BNDCFGS)) {
-+	if (!(ctrl_enter_rev.clr & VM_ENTRY_LOAD_BNDCFGS)) {
- 		report_skip("%s : \"Load-IA32-BNDCFGS\" entry control not supported", __func__);
- 		return;
- 	}
+ 	enter_guest();
  
--	vmcs_clear_bits(ENT_CONTROLS, ENT_LOAD_BNDCFGS);
-+	vmcs_clear_bits(ENT_CONTROLS, VM_ENTRY_LOAD_BNDCFGS);
- 
- 	vmcs_write(GUEST_BNDCFGS, NONCANONICAL);
--	test_guest_state("ENT_LOAD_BNDCFGS disabled", false,
-+	test_guest_state("VM_ENTRY_LOAD_BNDCFGS disabled", false,
- 			 GUEST_BNDCFGS, "GUEST_BNDCFGS");
- 	bndcfgs = bndcfgs_saved | MSR_IA32_BNDCFGS_RSVD_MASK;
- 	vmcs_write(GUEST_BNDCFGS, bndcfgs);
--	test_guest_state("ENT_LOAD_BNDCFGS disabled", false,
-+	test_guest_state("VM_ENTRY_LOAD_BNDCFGS disabled", false,
- 			 GUEST_BNDCFGS, "GUEST_BNDCFGS");
- 
--	vmcs_set_bits(ENT_CONTROLS, ENT_LOAD_BNDCFGS);
-+	vmcs_set_bits(ENT_CONTROLS, VM_ENTRY_LOAD_BNDCFGS);
- 
- 	vmcs_write(GUEST_BNDCFGS, NONCANONICAL);
--	test_guest_state("ENT_LOAD_BNDCFGS enabled", true,
-+	test_guest_state("VM_ENTRY_LOAD_BNDCFGS enabled", true,
- 			 GUEST_BNDCFGS, "GUEST_BNDCFGS");
- 	bndcfgs = bndcfgs_saved | MSR_IA32_BNDCFGS_RSVD_MASK;
- 	vmcs_write(GUEST_BNDCFGS, bndcfgs);
--	test_guest_state("ENT_LOAD_BNDCFGS enabled", true,
-+	test_guest_state("VM_ENTRY_LOAD_BNDCFGS enabled", true,
- 			 GUEST_BNDCFGS, "GUEST_BNDCFGS");
- 
- 	vmcs_write(GUEST_BNDCFGS, bndcfgs_saved);
-@@ -8335,7 +8339,8 @@ asm (".code32\n"
- static void setup_unrestricted_guest(void)
- {
- 	vmcs_write(GUEST_CR0, vmcs_read(GUEST_CR0) & ~(X86_CR0_PG));
--	vmcs_write(ENT_CONTROLS, vmcs_read(ENT_CONTROLS) & ~ENT_GUEST_64);
-+	vmcs_write(ENT_CONTROLS,
-+		   vmcs_read(ENT_CONTROLS) & ~VM_ENTRY_IA32E_MODE);
- 	vmcs_write(GUEST_EFER, vmcs_read(GUEST_EFER) & ~EFER_LMA);
- 	vmcs_write(GUEST_RIP, virt_to_phys(unrestricted_guest_main));
- }
-@@ -8343,7 +8348,8 @@ static void setup_unrestricted_guest(void)
- static void unsetup_unrestricted_guest(void)
- {
- 	vmcs_write(GUEST_CR0, vmcs_read(GUEST_CR0) | X86_CR0_PG);
--	vmcs_write(ENT_CONTROLS, vmcs_read(ENT_CONTROLS) | ENT_GUEST_64);
-+	vmcs_write(ENT_CONTROLS,
-+		   vmcs_read(ENT_CONTROLS) | VM_ENTRY_IA32E_MODE);
- 	vmcs_write(GUEST_EFER, vmcs_read(GUEST_EFER) | EFER_LMA);
- 	vmcs_write(GUEST_RIP, (u64) phys_to_virt(vmcs_read(GUEST_RIP)));
- 	vmcs_write(GUEST_RSP, (u64) phys_to_virt(vmcs_read(GUEST_RSP)));
-@@ -9563,7 +9569,8 @@ static void vmx_db_test(void)
- 	 */
- 	if (this_cpu_has(X86_FEATURE_RTM)) {
- 		vmcs_write(ENT_CONTROLS,
--			   vmcs_read(ENT_CONTROLS) | ENT_LOAD_DBGCTLS);
-+			   vmcs_read(ENT_CONTROLS) |
-+			   VM_ENTRY_LOAD_DEBUG_CONTROLS);
- 		/*
- 		 * Set DR7.RTM[bit 11] and IA32_DEBUGCTL.RTM[bit 15]
- 		 * in the guest to enable advanced debugging of RTM
 -- 
 2.43.0
 
