@@ -1,332 +1,92 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968EB26A1CF
-	for <kvm@vger.kernel.org>; Tue, 16 Sep 2025 17:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC3032D5B5;
+	Tue, 16 Sep 2025 18:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758045399; cv=none; b=tujrHzwKrTP4qESaxi/ZjG4SoC55bOuPXp88/4hHVyqANhG53/5q1J99Lyd5fPQBuOsHU1Z4NQPDvvSHgrGYtO+9TulwN/THVzbs07tgh93RO7a2Dj3JU3jG4p+a6CVgr9NVf+8+/oIlnN1lMfxjKGPR73+2pB7mfbTQNHDhuug=
+	t=1758046200; cv=none; b=B7RkDltw4k1lwCbB+eN364+9ljV8YuHSYsc/HqEqEN4gsL5n4/OcPCApTChomTgns6ycOjGjNQTioyUoUvWxWbFsSttIy6D1DtUlSiZBbba8cpzPEMb7rZ1mCdD7q5bt4bNLXfWBWuWA9Lp5Wdx6fGAAXJCM+scVcE+v7nuSJOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758045399; c=relaxed/simple;
-	bh=aBxLoFgtwWxdDCPRz4eLkDMzZPHU7iSbIBLxiGnSocE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qWS02wlc8Nr0zrvJp2CiH2vi4CPSYGdJISLJGEK8OXEAG/L1azagIh0syqBOk6dN8898isHV+8uBZmuxiic+RAKl9eSPzKgex/uWslPI0NXN9K09tGSML1OgUGc1gCSGk3iSUrmxJN5aWPjg16mikCIk23Hn6f7RCEawt44PWtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5860D12FC;
-	Tue, 16 Sep 2025 10:56:27 -0700 (PDT)
-Received: from ampere-altra-2-1.usa.arm.com (ampere-altra-2-1.usa.arm.com [10.118.91.158])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DF1373F673;
-	Tue, 16 Sep 2025 10:56:34 -0700 (PDT)
-From: Wathsala Vithanage <wathsala.vithanage@arm.com>
-To: jgg@ziepe.ca,
-	alex.williamson@redhat.com,
-	pstanner@redhat.com,
-	jeremy.linton@arm.com
-Cc: kvm@vger.kernel.org,
-	Wathsala Vithanage <wathsala.vithanage@arm.com>
-Subject: [RFC PATCH v3 1/1] vfio/pci: add PCIe TPH device ioctl
-Date: Tue, 16 Sep 2025 17:56:26 +0000
-Message-ID: <20250916175626.698384-1-wathsala.vithanage@arm.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758046200; c=relaxed/simple;
+	bh=m6QCS+P9YxrpdZ57DX6UqOO6VhSgbr2yZ4pXMyKZ084=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=fyd4yJW2VTY41X3L+/HoS+ZDTOrLPVzU/br6Hrfwf4jK2Z3vNGbdMnTDNF/hwIhdrE+d+WUQCopBOG/QGr4WLu96tSabBRlcB/LFXz8msIuF/wQyoajliKpOkPgcoXjLx/IOcNEwhbo+Tr7Gkb4iW2xIkSV+2i9vX/na7P8Y42Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5tkEZKU; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5tkEZKU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B7EC4CEEB;
+	Tue, 16 Sep 2025 18:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758046199;
+	bh=m6QCS+P9YxrpdZ57DX6UqOO6VhSgbr2yZ4pXMyKZ084=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=j5tkEZKULkLrmweXNKv11lM/CpL3BnmoV7wggD67l6FdeZKCCZyUufO2UVOOlbsWb
+	 zLx6Dp2BB2O914sMRl+9olsMfiQdErBLovDUuFc7ThY5jFoJR6wlYL/nv9c+748bRj
+	 Wi1IS0iplCuM2l19mCD3ZiBDd3agSW2xRDPmD4OCI/RzUWtafaMliL9JIB6bON8fJW
+	 5oOzHZHH8V/BOAouZeJbz5WQRiIO69objOg90STjUHOzEMPcDURvqeBD+myI2omNcF
+	 VQ2lRE+tdWO5qB5dwLxEn0U8NgsM9E75hI1SMCrH2m4f3ZW69OiY6eQ8d86cPQARAY
+	 bL2Z1N9igSspw==
+Date: Tue, 16 Sep 2025 13:09:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	alex.williamson@redhat.com, schnelle@linux.ibm.com,
+	mjrosato@linux.ibm.com
+Subject: Re: [PATCH v3 01/10] PCI: Avoid saving error values for config space
+Message-ID: <20250916180958.GA1797871@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250911183307.1910-2-alifm@linux.ibm.com>
 
-This patch introduces VFIO_DEVICE_PCI_TPH IOCTL to enable configuring of
-TPH from the user space. It provides an interface to user space drivers
-and VMMs to enable/disable TPH capability on PCIe devices and set
-steering tags in MSI-X or steering-tag table entries or read steering
-tags from the kernel to use them in device-specific mode.
+On Thu, Sep 11, 2025 at 11:32:58AM -0700, Farhan Ali wrote:
+> The current reset process saves the device's config space state before
+> reset and restores it afterward. However, when a device is in an error
+> state before reset, config space reads may return error values instead of
+> valid data. This results in saving corrupted values that get written back
+> to the device during state restoration.
+> 
+> Avoid saving the state of the config space when the device is in error.
+> While restoring we only restorei the state that can be restored through
+> kernel data such as BARs or doesn't depend on the saved state.
+> 
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  drivers/pci/pci.c      | 29 ++++++++++++++++++++++++++---
+>  drivers/pci/pcie/aer.c |  5 +++++
+>  drivers/pci/pcie/dpc.c |  5 +++++
+>  drivers/pci/pcie/ptm.c |  5 +++++
+>  drivers/pci/tph.c      |  5 +++++
+>  drivers/pci/vc.c       |  5 +++++
+>  6 files changed, 51 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index b0f4d98036cd..4b67d22faf0a 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -1720,6 +1720,11 @@ static void pci_restore_pcie_state(struct pci_dev *dev)
+>  	struct pci_cap_saved_state *save_state;
+>  	u16 *cap;
+>  
+> +	if (!dev->state_saved) {
+> +		pci_warn(dev, "Not restoring pcie state, no saved state");
+> +		return;
 
-Signed-off-by: Wathsala Vithanage <wathsala.vithanage@arm.com>
----
- drivers/vfio/pci/vfio_pci_core.c | 153 +++++++++++++++++++++++++++++++
- include/uapi/linux/vfio.h        |  83 +++++++++++++++++
- 2 files changed, 236 insertions(+)
+Seems like a lot of messages.  If we want to warn about this, why
+don't we do it once in pci_restore_state()?
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 7dcf5439dedc..cc9ba6760862 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -28,6 +28,7 @@
- #include <linux/nospec.h>
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-tph.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -1443,6 +1444,156 @@ static int vfio_pci_ioctl_ioeventfd(struct vfio_pci_core_device *vdev,
- 				  ioeventfd.fd);
- }
- 
-+static struct vfio_pci_tph_entry *vfio_pci_tph_get_ents(struct vfio_pci_tph *tph,
-+							void __user *tph_ents,
-+							size_t *ents_size)
-+{
-+	unsigned long minsz;
-+	size_t size;
-+
-+	if (!ents_size)
-+		return ERR_PTR(-EINVAL);
-+
-+	minsz = offsetofend(struct vfio_pci_tph, count);
-+
-+	size = tph->count * sizeof(struct vfio_pci_tph_entry);
-+
-+	if (tph->argsz - minsz < size)
-+		return ERR_PTR(-EINVAL);
-+
-+	*ents_size = size;
-+
-+	return memdup_user(tph_ents, size);
-+}
-+
-+static int vfio_pci_tph_set_st(struct vfio_pci_core_device *vdev,
-+			       struct vfio_pci_tph_entry *ents, int count)
-+{
-+	int i, err = 0;
-+
-+	for (i = 0; i < count && !err; i++)
-+		err = pcie_tph_set_st_entry(vdev->pdev, ents[i].index,
-+					    ents[i].st);
-+
-+	return err;
-+}
-+
-+static int vfio_pci_tph_get_st(struct vfio_pci_core_device *vdev,
-+			       struct vfio_pci_tph_entry *ents, int count)
-+{
-+	int i, mtype, err = 0;
-+	u32 cpu_uid;
-+
-+	for (i = 0; i < count && !err; i++) {
-+		if (ents[i].cpu_id >= nr_cpu_ids || !cpu_present(ents[i].cpu_id)) {
-+			err = -EINVAL;
-+			break;
-+		}
-+
-+		cpu_uid = topology_core_id(ents[i].cpu_id);
-+		mtype = (ents[i].flags & VFIO_TPH_MEM_TYPE_MASK) >>
-+			VFIO_TPH_MEM_TYPE_SHIFT;
-+
-+		/*
-+		 * ph_ignore is always set.
-+		 * TPH implementation of the PCI subsystem forces processing
-+		 * hint to bi-directional by setting PH bits to 0 when
-+		 * acquiring Steering Tags from the platform firmware. It also
-+		 * discards the ph_ignore bit returned by firmware.
-+		 */
-+		ents[i].ph_ignore = 1;
-+
-+		err = pcie_tph_get_cpu_st(vdev->pdev, mtype, cpu_uid,
-+					  &ents[i].st);
-+	}
-+
-+	return err;
-+}
-+
-+static int vfio_pci_tph_st_op(struct vfio_pci_core_device *vdev,
-+			      struct vfio_pci_tph *tph, void __user *tph_ents)
-+{
-+	int err = 0;
-+	struct vfio_pci_tph_entry *ents;
-+	size_t ents_size;
-+
-+	if (!tph->count || tph->count > VFIO_TPH_INFO_MAX) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	ents = vfio_pci_tph_get_ents(tph, tph_ents, &ents_size);
-+	if (IS_ERR(ents)) {
-+		err = PTR_ERR(ents);
-+		goto out;
-+	}
-+
-+	err = vfio_pci_tph_get_st(vdev, ents, tph->count);
-+	if (err)
-+		goto out_free_ents;
-+
-+	/*
-+	 * Set Steering tags. TPH will be disabled on the device by the PCI
-+	 * subsystem if there is an error.
-+	 */
-+	if (tph->flags & VFIO_DEVICE_TPH_SET_ST) {
-+		err = vfio_pci_tph_set_st(vdev, ents, tph->count);
-+		if (err)
-+			goto out_free_ents;
-+	}
-+
-+	if (copy_to_user(tph_ents, ents, ents_size))
-+		err = -EFAULT;
-+
-+out_free_ents:
-+	kfree(ents);
-+out:
-+	return err;
-+}
-+
-+static int vfio_pci_tph_enable(struct vfio_pci_core_device *vdev,
-+			       struct vfio_pci_tph *arg)
-+{
-+	return pcie_enable_tph(vdev->pdev, arg->flags & VFIO_TPH_ST_MODE_MASK);
-+}
-+
-+static int vfio_pci_tph_disable(struct vfio_pci_core_device *vdev)
-+{
-+	pcie_disable_tph(vdev->pdev);
-+	return 0;
-+}
-+
-+static int vfio_pci_ioctl_tph(struct vfio_pci_core_device *vdev,
-+			      void __user *uarg)
-+{
-+	u32 op;
-+	struct vfio_pci_tph tph;
-+	size_t minsz = offsetofend(struct vfio_pci_tph, count);
-+
-+	if (copy_from_user(&tph, uarg, minsz))
-+		return -EFAULT;
-+
-+	if (tph.argsz < minsz)
-+		return -EINVAL;
-+
-+	op = tph.flags & VFIO_DEVICE_TPH_OP_MASK;
-+
-+	switch (op) {
-+	case VFIO_DEVICE_TPH_ENABLE:
-+		return vfio_pci_tph_enable(vdev, &tph);
-+
-+	case VFIO_DEVICE_TPH_DISABLE:
-+		return vfio_pci_tph_disable(vdev);
-+
-+	case VFIO_DEVICE_TPH_GET_ST:
-+	case VFIO_DEVICE_TPH_SET_ST:
-+		return vfio_pci_tph_st_op(vdev, &tph, (u8 *)(uarg) + minsz);
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 			 unsigned long arg)
- {
-@@ -1467,6 +1618,8 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 		return vfio_pci_ioctl_reset(vdev, uarg);
- 	case VFIO_DEVICE_SET_IRQS:
- 		return vfio_pci_ioctl_set_irqs(vdev, uarg);
-+	case VFIO_DEVICE_PCI_TPH:
-+		return vfio_pci_ioctl_tph(vdev, uarg);
- 	default:
- 		return -ENOTTY;
- 	}
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 75100bf009ba..a642a2ff21a6 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -873,6 +873,88 @@ struct vfio_device_ioeventfd {
- 
- #define VFIO_DEVICE_IOEVENTFD		_IO(VFIO_TYPE, VFIO_BASE + 16)
- 
-+/**
-+ * VFIO_DEVICE_PCI_TPH	- _IO(VFIO_TYPE, VFIO_BASE + 22)
-+ *
-+ * This command is used to control PCIe TLP Processing Hints (TPH)
-+ * capability in a PCIe device.
-+ * It supports following operations on a PCIe device with respect to TPH
-+ * capability.
-+ *
-+ * - Enabling/disabling TPH capability in a PCIe device.
-+ *
-+ *   Setting VFIO_DEVICE_TPH_ENABLE flag enables TPH in no-steering-tag,
-+ *   interrupt-vector, or device-specific mode defined in the PCIe specficiation
-+ *   when feature flags TPH_ST_NS_MODE, TPH_ST_IV_MODE, and TPH_ST_DS_MODE are
-+ *   set respectively. TPH_ST_xx_MODE macros are defined in
-+ *   uapi/linux/pci_regs.h.
-+ *
-+ *   VFIO_DEVICE_TPH_DISABLE disables PCIe TPH on the device.
-+ *
-+ * - Writing STs to MSI-X or ST table in a PCIe device.
-+ *
-+ *   VFIO_DEVICE_TPH_SET_ST flag set steering tags on a device at an index in
-+ *   MSI-X or ST-table depending on the VFIO_TPH_ST_x_MODE flag used and
-+ *   returns the programmed steering tag values. The caller can set one or more
-+ *   steering tags by passing an array of vfio_pci_tph_entry objects containing
-+ *   cpu_id, cache_level, and MSI-X/ST-table index. The caller can also set the
-+ *   intended memory type and the processing hint by setting VFIO_TPH_MEM_TYPE_x
-+ *   and VFIO_TPH_HINT_x flags, respectively.
-+ *
-+ * - Reading Steering Tags (ST) from the host platform.
-+ *
-+ *   VFIO_DEVICE_TPH_GET_ST flags returns steering tags to the caller. Caller
-+ *   can request one or more steering tags by passing an array of
-+ *   vfio_pci_tph_entry objects. Steering Tag for each request is returned via
-+ *   the st field in vfio_pci_tph_entry.
-+ */
-+struct vfio_pci_tph_entry {
-+	/* in */
-+	__u32 cpu_id;			/* CPU logical ID */
-+	__u32 cache_level;		/* Cache level. L1 D= 0, L2D = 2, ...*/
-+	__u8  flags;
-+#define VFIO_TPH_MEM_TYPE_MASK		0x1
-+#define VFIO_TPH_MEM_TYPE_SHIFT		0
-+#define VFIO_TPH_MEM_TYPE_VMEM		0   /* Request volatile memory ST */
-+#define VFIO_TPH_MEM_TYPE_PMEM		1   /* Request persistent memory ST */
-+
-+#define VFIO_TPH_HINT_SHIFT		1
-+#define VFIO_TPH_HINT_MASK		(0x3 << VFIO_TPH_HINT_SHIFT)
-+#define VFIO_TPH_HINT_BIDIR		0
-+#define VFIO_TPH_HINT_REQSTR		(1 << VFIO_TPH_HINT_SHIFT)
-+#define VFIO_TPH_HINT_TARGET		(2 << VFIO_TPH_HINT_SHIFT)
-+#define VFIO_TPH_HINT_TARGET_PRIO	(3 << VFIO_TPH_HINT_SHIFT)
-+	__u8  pad0;
-+	__u16 index;			/* MSI-X/ST-table index to set ST */
-+	/* out */
-+	__u16 st;			/* Steering-Tag */
-+	__u8  ph_ignore;		/* Platform ignored the Processing */
-+	__u8  pad1;
-+};
-+
-+struct vfio_pci_tph {
-+	__u32 argsz;			/* Size of vfio_pci_tph and ents[] */
-+	__u32 flags;
-+#define VFIO_TPH_ST_MODE_MASK		0x7
-+
-+#define VFIO_DEVICE_TPH_OP_SHIFT	3
-+#define VFIO_DEVICE_TPH_OP_MASK		(0x7 << VFIO_DEVICE_TPH_OP_SHIFT)
-+/* Enable TPH on device */
-+#define VFIO_DEVICE_TPH_ENABLE		0
-+/* Disable TPH on device */
-+#define VFIO_DEVICE_TPH_DISABLE		(1 << VFIO_DEVICE_TPH_OP_SHIFT)
-+/* Get steering-tags */
-+#define VFIO_DEVICE_TPH_GET_ST		(2 << VFIO_DEVICE_TPH_OP_SHIFT)
-+/* Set steering-tags */
-+#define VFIO_DEVICE_TPH_SET_ST		(4 << VFIO_DEVICE_TPH_OP_SHIFT)
-+	__u32 count;			/* Number of entries in ents[] */
-+	struct vfio_pci_tph_entry ents[];
-+#define VFIO_TPH_INFO_MAX	2048	/* Max entries in ents[] */
-+};
-+
-+#define VFIO_DEVICE_PCI_TPH	_IO(VFIO_TYPE, VFIO_BASE + 22)
-+
-+
- /**
-  * VFIO_DEVICE_FEATURE - _IOWR(VFIO_TYPE, VFIO_BASE + 17,
-  *			       struct vfio_device_feature)
-@@ -1478,6 +1560,7 @@ struct vfio_device_feature_bus_master {
- };
- #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
- 
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
- 
- /**
--- 
-2.43.0
+I guess you're making some judgment about what things can be restored
+even when !dev->state_saved.  That seems kind of hard to maintain in
+the future as other capabilities are added.
 
+Also seems sort of questionable if we restore partial state and keep
+using the device as if all is well.  Won't the device be in some kind
+of inconsistent, unpredictable state then?
+
+Bjorn
