@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C60E33AE83
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FB933AE99
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114012; cv=none; b=SqfyOZEGlrhmgfBPyMYxCB+hIlq/Qp/DpyesnBHfVTTBbVOkDIEtUiWtzRmbixppvCwydVmh/4FB0QqXWJHplfztIWUCxQt+kKN6GQvm5U/HAPEfSK2hsNLDRKFamRso8p/DJ+RTjcVO/2hb6m8uTbnmxn+Q3fCh/TWVfvuqh6Y=
+	t=1758114020; cv=none; b=u9A+HPV8nS4sAhHrJ0sjd26zZoh1xXM9C/eibROF3EppfSc38IegQCXukrG+1Z+Sn/pKsXm2udLl33axnzfjsBwAW6EkedN2GHID7FQG6fl43yLzGyY8opKfQXHmpF8NsoaCA6Tfe2Iq/lao02HVcOIwlkVbU2luTGCKCSdchkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114012; c=relaxed/simple;
-	bh=4AnESbRmLrUUQcPn0cQXwK9PVxH4rXmy+WEnEhB+UCA=;
+	s=arc-20240116; t=1758114020; c=relaxed/simple;
+	bh=JRFc4ksc1UNvSmKmALMuQMHDOg+OEC+jVCY4eLrIN6M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QToJ0JhtxN55t9THg+UtTiLe9mjffQNqcluBtsHa8mt/G4mYS0cLPSJDrNnDKP6CDI/pyR1oGrs3G6s53pJpYRzsEKi9maYqGNdqD2XFagL1C5n7P0JS+QQ/lT0TSzJVpZeeandra/5krWhCK6bCDImqpoeFBot3nF/xq0E5PyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=Bp8/LTMc reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=mUK6+r0TJMQIVqHnBmFQy38DwVTjfFD42+YYfX4bzn2shjrC3snvLxkMXj0MWe40LjsYqk7yagxbPGtvsU+AB8JsdckEjqYKJMhOnppfDCUP7S9cru8GITBbjDN3MIJDTkPAnyrNA6bLg1Fw8RtNiE3Qn99I5a0efLWJHWQKS2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=NnHkjpoW reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="Bp8/LTMc"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="NnHkjpoW"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6q008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7E008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:41 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:59 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=CpRCyRAYIH2JSKiVPg762a+pxdQx53RiD8R6KgThpvY=;
+DKIM-Signature: a=rsa-sha256; bh=PNMnLRjPBvJf9zcddoKVhh8oLqzzqK++XKLEpivd92g=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113801; v=1;
-        b=Bp8/LTMcn2vA4okUjWIJFNCQxsm68Infpf0VwT0PCBkfO9mjQdG/rLrraYEGaNG3
-         q4SE4xes/3fWF6rpDs8MnNhRye1BCMKZIXrwcaEqD7GtznBworqbGIzwIaMVpVCQ
-         kX9VZ3kMlHj9yJ/tkjt+vo7JM13zXnbTvoN2saEfsqm2iPUdv4GgpfaFRTMzx/a0
-         5+yV//9iZ2gLOziJXMgN9nieKgpDOSquK+ylIYdAvWbFETn5cSzduVn00rptlKaH
-         2QDmXO1SBgg4zUaL3HWSGFrkQMyTKCnPKgqKq+MGhF6+db6mHCRNaOWFx3agUmTr
-         8FoNIo97MC0qBPOHMuSUpg==
+        s=rs20250326; t=1758113819; v=1;
+        b=NnHkjpoW1qu2A9ISqhFHI/sEjcpFLHlq7XeOdagISksFg/K6gT7AWSeADEGw+jb4
+         /jTUp3/6jw2bu6fLc6lokGgrHc+4+73QpMshfwovf+hai/Si50325YwQ6AUrGXPn
+         L0OonZkXl7Tw/2pRfxXP4mDxxH3bb/BWrIa7ELbzlAfgPN1zMO5K0kNwAqvEHpjk
+         GXXaClbIfU0su6HPiOUlAxpxnZnbb7eTdfWcrMsswVgKwdkB+omtHWH/7yrwQ6/s
+         4iVM0/TSccAb6c5jq4br+ALAoE+uepSCHAQSSh9qJTkQqxjeFjOaYqQuPB+xItjX
+         kZFt01frt8baCk4VqiV63A==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:24 +0900
-Subject: [PATCH 12/35] hw/loongarch: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:46 +0900
+Subject: [PATCH 34/35] target/xtensa: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-12-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-34-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,23 +119,22 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/loongarch/virt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/xtensa/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 0bace2f54b49..f65c2da5c6dd 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -699,7 +699,8 @@ static void virt_init(MachineState *machine)
-     /* Create IOCSR space */
-     memory_region_init_io(&lvms->system_iocsr, OBJECT(machine), NULL,
-                           machine, "iocsr", UINT64_MAX);
--    address_space_init(&lvms->as_iocsr, NULL, &lvms->system_iocsr, "IOCSR");
-+    address_space_init(&lvms->as_iocsr, OBJECT(machine), &lvms->system_iocsr,
-+                       "iocsr-as");
-     memory_region_init_io(&lvms->iocsr_mem, OBJECT(machine),
-                           &virt_iocsr_misc_ops,
-                           machine, "iocsr_misc", 0x428);
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index 26a1c87a7856..de68a36bc36f 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -272,7 +272,7 @@ static void xtensa_cpu_initfn(Object *obj)
+     env->system_er = g_malloc(sizeof(*env->system_er));
+     memory_region_init_io(env->system_er, obj, NULL, env, "er",
+                           UINT64_C(0x100000000));
+-    address_space_init(env->address_space_er, NULL, env->system_er, "ER");
++    address_space_init(env->address_space_er, obj, env->system_er, "er-as");
+ 
+     cpu->clock = qdev_init_clock_in(DEVICE(obj), "clk-in", NULL, cpu, 0);
+     clock_set_hz(cpu->clock, env->config->clock_freq_khz * 1000);
 
 -- 
 2.51.0
