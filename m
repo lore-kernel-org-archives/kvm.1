@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F9333A92
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDAB333A9B
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113990; cv=none; b=MojWWsmdE3wnlJA4ErH1VFU1OWK9oJaKhDWTLn/66t0uzszyUDD1PuOl+mgan5LfWDVx3PhLweeQ5u/LXinfQLOC9kUrdUvBdo8bBG52Q0zTif3AihlDfkyv9AOY5D4w2bC5h9qDdk+QblKuCYgD9bc59aLwlXFUAkqkEftquvk=
+	t=1758113991; cv=none; b=dzvfc3nrBrt8Gwin4wJaF/A/35mdtCofcrBY7TDXD5hZ5wCpVeU1jsAqnhrbTgUnoZJWl27BwBHoiqKWZz9mSRzbeMhKwdc+BsjKMMPA6XQixv4ygTtNAGr6USOxK6U9ILiLrSpqUmpzHzKO9Fg0VW35dh8W+3Ck4Oji+fZoF5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113990; c=relaxed/simple;
-	bh=QNmrrt0qaUvBrh6478CrnrRbPAj1IBk8pcwBgbyQIBg=;
+	s=arc-20240116; t=1758113991; c=relaxed/simple;
+	bh=qDty9xdiTe5WwVkNuEtAgrReJxB+B2SyTcZI5QiAZMk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dZ5cZihKITAqQFIHbTT1L/or0L/7iHWjoVBSaFriJUepi6BQU5QdIOGQ3I+ZbjC2tSVUojOFbrIJAknHENNOeC7CbmnaCTv417oG3qbMepa7mftJI0HgCIwc8SOm+TsgmIBJFhXj4DSZLG+F9u+fWiEl68wE/BdSGfSPwOaDnGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=s2GROUIg reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=orHZ7WkDt75S6ihpcxzoNVQZsQr9XUgkfME3vD/SOlatXG7Wukk+/5lfEN8ETOIbMBAIJOCXjdYIsqsJy+k2NcL5Oz4SHYKg0JMvPmiKPheoZg6Ln0eo9dMrnuf3Ec3eEbhNA9LksYCdAKltO+MEFRwUI2ezYxjbZ636HcmwFAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=cyEwAgpD reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="s2GROUIg"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="cyEwAgpD"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6n008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN76008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:38 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:52 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=rWb4z4CPURkyznHmuzsh+cyMRQ6rj+WtDBcDWVfL1Fg=;
+DKIM-Signature: a=rsa-sha256; bh=7FgjsptE3YS3i6VK0ESKyy8+p9l4cjkMo+wmMtf5k7E=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113799; v=1;
-        b=s2GROUIgd9BllbZt6A3B/JXj8BqN/Oh5UD2af4TVlfJ8VPzMcaCzhsu02Pm69WJs
-         Dh4FWzkvx95xkHyjO67nGKwF+OIfZ+B/KOQAAd9W8TSAHY2ti60BV5smaOhDlVy/
-         ixlrO3c0Pakjl6vkOzBW56e1d0I4fqjxR4CQblHl9+CezRtAg8D3S1ISppYmBI98
-         tB4KZZ9HKjolHZo2nNovu0lCairUd2x1JlnSECi99K5djxaxySeUCbKsG57czM6L
-         0WHZiwMObW3+syeXI0sNWWAh9v/Etypk2cw3+3zqnNpmrSjNgS37OggF6gaat+Xb
-         T3cIRdYljETCSJSAJ0LjVA==
+        s=rs20250326; t=1758113813; v=1;
+        b=cyEwAgpDa+aZPzULAdFt7VBFZFqQFr1b9V18sdfhr4ZwCyw8YlRIQuffLcP1eGGI
+         T6A4P+gjm+Pbb8t53dxHuCndk86FGT74YKQdqZTBo9S9ZT2dBKRwFvrsAn0iaeh0
+         1X5p+AnLdGg7Bcm/RBYz4fzuhLEz0mJ6SCADt1eptqY2M4Uce1kCI86GKg2TUYaM
+         Mh15+4+1+udKf/163Vp4HnScyy6CY/1pB7HwwFAPicW5qb2aFgEOa6doRXRlMWE6
+         MZfUeamNIjbomMcQ+10BMCpOqX9DkN2+Cqay56Gu7StrcIs7P/xpeBR0xB/rar1+
+         cgHkJZ+RH/LJpcTa6lrCWg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:21 +0900
-Subject: [PATCH 09/35] hw/i2c: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:38 +0900
+Subject: [PATCH 26/35] hw/sparc64: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-9-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-26-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,23 +119,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/i2c/aspeed_i2c.c | 3 +--
+ hw/sparc64/sun4u_iommu.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 9d216b3f0ea3..d1d980a8961f 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -1253,8 +1253,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
-             return;
-         }
+diff --git a/hw/sparc64/sun4u_iommu.c b/hw/sparc64/sun4u_iommu.c
+index 0a5703044e7a..72ccf293b46e 100644
+--- a/hw/sparc64/sun4u_iommu.c
++++ b/hw/sparc64/sun4u_iommu.c
+@@ -298,8 +298,7 @@ static void iommu_init(Object *obj)
+     memory_region_init_iommu(&s->iommu, sizeof(s->iommu),
+                              TYPE_SUN4U_IOMMU_MEMORY_REGION, OBJECT(s),
+                              "iommu-sun4u", UINT64_MAX);
+-    address_space_init(&s->iommu_as, NULL, MEMORY_REGION(&s->iommu),
+-                       "iommu-as");
++    address_space_init(&s->iommu_as, obj, MEMORY_REGION(&s->iommu), "as");
  
--        address_space_init(&s->dram_as, NULL, s->dram_mr,
--                           TYPE_ASPEED_I2C "-dma-dram");
-+        address_space_init(&s->dram_as, OBJECT(s), s->dram_mr, "as");
-     }
- }
- 
+     memory_region_init_io(&s->iomem, obj, &iommu_mem_ops, s, "iommu",
+                           IOMMU_NREGS * sizeof(uint64_t));
 
 -- 
 2.51.0
