@@ -1,184 +1,211 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011068.outbound.protection.outlook.com [40.107.208.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992791F460B;
-	Wed, 17 Sep 2025 12:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113749; cv=none; b=slY6i6W0ysZ7Jb2WpX4FdjLkQ6/+pMVFvGVVN7FsAvWw+YISbeChs3bd6CbLhTOzctpZrBry3afSYi7nN7DRUNDDhLihmYXi/xpeHfQUbujQVwvqkomToFDjtK6HL32gCeV+LUpYERuAFxvU7BNBTIXKanb7CS5O8vH3jcC7jfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113749; c=relaxed/simple;
-	bh=g+e+sCM8vOuwHziJ8nU7yKy6YBgxgH8tW5NkzaLAMJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=owT9b5OGmscF8OSCAnyTj+rpGqD+ewHcbRVH6MwPyLWk4iW4wkAEg8ylViODOBeE3R9kAORHahAjfyH7hYiltaqry7swzL9vOfZWbzaZew766+7DjVPfghqKmONduwWhgmle6RVbzS48OBRhI/m5sEHw6+MwGeB6oMLCe5i3gOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ikB/Fwbj; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C5D1B3925;
+	Wed, 17 Sep 2025 12:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758113838; cv=fail; b=OUQFN4KoqdWssRqTsYCFP5CJc15fqew3GXCtHPUnua5X22ZQMiO7ljnyYX/CQDJazJ0VuN9b/xWm9woZUXn5nUriOetEa6Ydgsk7mnjWjn8bwzmpFXyk2jvxcRMCm9jvDeO2zE2ReApJefnhngADP/1RMnzagdWIGs8HKc1nDqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758113838; c=relaxed/simple;
+	bh=6R7iKD43tfpVJpFf2hPCS2BDdT1JY4er0cWl7tbRjKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VhOXs0xLAlpY5m95OvaWO4dvwg9bCgUQ7g7XAT6iMQiDc0o+7BVeiJ89vIHivzug61crrcEwgwIiddXBVojqhzaIhHH5a1y5BjKweAtL5Nrv1XV7nelt5KJ3HQlYcT7ejti3LSM8ID+/GOBMJAKGTku2TpFfGoIIM5+m0vi1OMg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0pkP81LZ; arc=fail smtp.client-ip=40.107.208.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ikB/Fwbj"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HA7OHD011288;
-	Wed, 17 Sep 2025 12:55:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=PHCVjl2Hwadu/TNC2m0XB78zB8i7Yn
-	L/4NjFYFscumY=; b=ikB/FwbjVZ+iMshsx4+LwOSqPc5EChxXDBKmj/wEq8IqAT
-	KhYz6V+0NlCGAMOc7lgSrbuwqJG+M164DrcECV3bfpwARyJa3CyIjOHyIL2bv/aE
-	+1aGBTZVwey7V2PYLqPYT/GITThV3YNPwiewGzht+4mhHzrIJe9IxO1d2V3g9/VO
-	BlocHgdtNfx88oLB6R33m05WupDMzJP1rGJyioYguGaKz40lby+C+o9+imMIrn3I
-	e/hxNqDfUfFw6wITGZzTk1ZAK7nLzaK6oJijyVO5C8q2Dh0sHyg2HUiAvlMGRW2f
-	G7S19O7IR4eiILSr/V+aEFboDAKNMVwXjcxaRi7g==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4nbjcw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 12:55:35 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58HAA8Bm022297;
-	Wed, 17 Sep 2025 12:55:34 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxps9v0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 12:55:34 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58HCtUYR31457698
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 12:55:30 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 855582004B;
-	Wed, 17 Sep 2025 12:55:30 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58BB120040;
-	Wed, 17 Sep 2025 12:55:30 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.133])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 17 Sep 2025 12:55:30 +0000 (GMT)
-Date: Wed, 17 Sep 2025 14:55:29 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, nsg@linux.ibm.com, nrb@linux.ibm.com,
-        seiden@linux.ibm.com, schlameuss@linux.ibm.com, svens@linux.ibm.com,
-        agordeev@linux.ibm.com, david@redhat.com,
-        gerald.schaefer@linux.ibm.com
-Subject: Re: [PATCH v2 10/20] KVM: s390: KVM page table management functions:
- walks
-Message-ID: <20250917125529.7515Df6-hca@linux.ibm.com>
-References: <20250910180746.125776-1-imbrenda@linux.ibm.com>
- <20250910180746.125776-11-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0pkP81LZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cu0UaB19WKqmH/A0Oa0jj5qKl4FckKN24yjLcW+zRCqvvWIo4E/r2QAnjsottQCfzq5DOur4uXHHkE9nkJj68b7PzKOYtv1G4IUlrNGbTKyyhU2uv3VN8SxiO1QCNiPaYwdFMag55F0sBYZQ26GLeTa1Bzin6s0klO3qNzSMxuTbHGQDntY0vhpo9kcHsY3oELKzUwueKnyDXc+YALLa9IDBPSAVBnMbumpCxvPplTSuDg8h3GznAk6m2DI3Zd/OLx9vFePv1QKRmjqSemq/QYQW1ifhZHeg1clPo2Y6brtQnWVgTS76px3iwazmMA/uV6pIgZNoo4C5T32un8hOoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bh+9/yjpA36Z0gYELBd1VLnddNycO0Y4Cu5XB0uUMEM=;
+ b=XY1TkbHdlvWxjy3UvvCiNY6vAsaQjHEjnf+Ss/X6VTw7ERgA4eAeLew9kyZiy0eKs4/oJAO8tODGqDDiyFqMnpVO9VWbL/lBdQ/t71NHwOO/ZVUzsvAk2W4k05NIExjDjTTAF90zV9oTQrGEmB35yM8+swYG29ahA+Rk+pqjwmBAx6jvWMCk0qQpsnIzfG7KB7cyHXUzbQoHIQ5bVgkrJqdTzRJJuNs2lhrSZ9n5Uyws0LXqES8Ynl/QvEXuQmE4ijlv8bnionooxPQaJ6ZF5CPrPUpgFX+P1tDyT6ngTRcNyxHXLnOYBPKt0O5RJuwoog1ibv/4olO3pQ5F13+Leg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bh+9/yjpA36Z0gYELBd1VLnddNycO0Y4Cu5XB0uUMEM=;
+ b=0pkP81LZP7E1Y9v+EO/9yLc8ITzDhEAPNMmU0WcDNXxDP+1Dh9Fh0LVsOg0WsLemJXB2dZhEh9Zk7RniuLn4rp0kGkYnBy3yTBgqoXEpnUPNBtHqrjUfot1QYcHhpa/S/O/KswayM4gMDzWCd2+4RZf+Ewm/K81n7bM60h56azk=
+Received: from SJ0PR13CA0103.namprd13.prod.outlook.com (2603:10b6:a03:2c5::18)
+ by CH2PR12MB4245.namprd12.prod.outlook.com (2603:10b6:610:af::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.23; Wed, 17 Sep
+ 2025 12:57:09 +0000
+Received: from MWH0EPF000989EC.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::86) by SJ0PR13CA0103.outlook.office365.com
+ (2603:10b6:a03:2c5::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.13 via Frontend Transport; Wed,
+ 17 Sep 2025 12:57:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ MWH0EPF000989EC.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Wed, 17 Sep 2025 12:57:09 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 17 Sep
+ 2025 05:57:08 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 17 Sep
+ 2025 07:57:08 -0500
+Received: from [10.252.198.192] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 17 Sep 2025 05:57:03 -0700
+Message-ID: <9f2b02e2-f3b2-40aa-8e31-e940f4c2b90b@amd.com>
+Date: Wed, 17 Sep 2025 18:27:02 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910180746.125776-11-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MN5gmNZl c=1 sm=1 tr=0 ts=68caafc7 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=ZaHFFdLEXfJz46AHvcMA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: aKrFMvfWZqzEAbuBiA87bYltdcqWsS1d
-X-Proofpoint-ORIG-GUID: aKrFMvfWZqzEAbuBiA87bYltdcqWsS1d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX0P50K0IYP2ON
- INObTJUI9xjaRNhyTQsFtewdF3TfUpDnREwElpZMUIkpDsUAjI/T0S2NhPhknh+5lIi/xzCrvQC
- jhqo6fCj8VTbUa462qRgc6Fj4fSI+3vhgsz2Nzj1ffJn04EE7HeD4/7gRLQEXXKgivXAkFJtNUC
- NbNm5iqSMb36TCl3BUnu2UJc7Yyr9a82UCzr6VOUeSfc4dVtNSWcwHiDZLUNCWnLIkZVg7SGWqY
- m1O6uhshcgdl4eoDnFLzQbcyq5PFOmOzUpv16eO8PbxrJaJeCX7ewm/s8P1tD1Zr2F5jqtJDIkx
- 7wZOJmUSIk/dU7IUsAd9Phb5b+17iAQYis5THXRFUCTT1En+jb6xxJlSXvdVFf4NASBqDYT710J
- Ji/sgy28
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/12] KVM: x86: Add emulation support for Extented LVT
+ registers
+To: Naveen N Rao <naveen@kernel.org>
+CC: <kvm@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<nikunj@amd.com>, <bp@alien8.de>, <peterz@infradead.org>, <mingo@redhat.com>,
+	<mizhang@google.com>, <thomas.lendacky@amd.com>, <ravi.bangoria@amd.com>,
+	<Sandipan.Das@amd.com>
+References: <20250901051656.209083-1-manali.shukla@amd.com>
+ <20250901052238.209184-1-manali.shukla@amd.com>
+ <xnwr5tch7yeme3feo6m4irp46ju5lu6gr4kurn6oxlgoutvabt@3k3xh2pbdbje>
+Content-Language: en-US
+From: Manali Shukla <manali.shukla@amd.com>
+In-Reply-To: <xnwr5tch7yeme3feo6m4irp46ju5lu6gr4kurn6oxlgoutvabt@3k3xh2pbdbje>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB05.amd.com: manali.shukla@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EC:EE_|CH2PR12MB4245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a8555f2-ea20-4de5-2346-08ddf5e9b67d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eElrWFJWdkdVZ0k0S2kyV2MyY21neEpLZFNzOGpUWkduZHM0dzRJUTRTTlAr?=
+ =?utf-8?B?cmduYTVQaWJDa1RxK2g4OXhDN21PM3FPS2d5c2paZnRhRnpWK2JDcGlXeDhJ?=
+ =?utf-8?B?TUhMRk13ck5OUThWT0xJR0NqeXMvY25laWNkVWhWNjExMkJXVXBuRXdERU1v?=
+ =?utf-8?B?ZE80RFdHT0tpMVlvaEhaYnVIaGJ5MzJyb0hQWE01ajg4cW5UQncvaUFBT3hB?=
+ =?utf-8?B?a243eitMSFF2Y3k1VitSU3gyQ281M1JBTHc5aURWODA0OWNDeCtkandzV3RI?=
+ =?utf-8?B?djJTYWEzTDZTMHo5RUtteUEwbXlFZjdLcGwyZzAzSFdSMElzU0hoTng2T3Q4?=
+ =?utf-8?B?OFhaTzlLYkhzWWRReXpxVkRwblVMRFNra2ptRlZ2bGppb0hSVzRJbUpWelQ0?=
+ =?utf-8?B?RlZwOG83L2l6dkd6WHg0WnhWU1ZNT0VrektJUkJMd2JtaVo5QkJEZVFqc3FK?=
+ =?utf-8?B?WkVYSVFvQXZva2NGRy9QVlMxN2kzcHBlb2l5NXdneiszREJwamh1VkpKQ0FO?=
+ =?utf-8?B?YUt3bEhWWi9paTNYSDJpamNoaE9IRUc0WWJQT1pvNk0raG1uSHdZTzRGTmIz?=
+ =?utf-8?B?eEx3K2J0YXFnSWdZZzNhWjM0WjFIR2JvYTFvQnppazVUb21FaXBpaUhFNVVr?=
+ =?utf-8?B?Y0Nmc0MyakhzTER2bTV6VFBCbkM3R0hmZzl1REdYWGJNV3lheEdsSGVNMzVk?=
+ =?utf-8?B?Q2VaZ2VndkRVS0pVbnpSc1dsMGV0WDFsUzZGSHdGV2dNQXR1YVBHMEtwRGxr?=
+ =?utf-8?B?dk5XQzI4NTUwRDdnZkVuUlcxd1A2UlBLRzllQ05tc1JXb1I1SDhvMUcrWWF2?=
+ =?utf-8?B?VDAwZ1RMRzNDRm1UOGsyTjZYNW9UVEpBcU1VUEJKRk4xYUlsRGNvUUVRdW5Q?=
+ =?utf-8?B?c2NMZWxPeWk1YkNqNTNvN09Sb3NvQk9WRDl5T3ZSNFFmTTc4SDMzVVl5d2VZ?=
+ =?utf-8?B?RmtqYkZrQ2pWc1RmTW1vOVVKR2RUS0VkVkQzcXhUSkZ2S0NGR09SV2JaNTJw?=
+ =?utf-8?B?L0diaDEvSUlNNFdla2tEcXNqallndEJjODI2Q0JLVWlJNkl5d2RpdmNEbm4w?=
+ =?utf-8?B?VlhXVHd2L0oxYzlPTWpVYWhkZWU2MGxrYklBQ3NNZi95MS92MUl1d2RGS3Y0?=
+ =?utf-8?B?UEE4cXpyS0RGOHRqcHd2YVdQSlEyVGE1WWNITmZBempaVVBWYjdRaWVSNHRJ?=
+ =?utf-8?B?bHczbEhWZEQwZVRBeVhUeG93RmQ5SkErdkJxeEt2TUMwU1RSQnlZZGtGcE1l?=
+ =?utf-8?B?REdZaXNZSFRaVzJIREhvdVJuS0EwdC8zRXBDOS8wN3RSVUF6Q0VYN0tCcFV2?=
+ =?utf-8?B?V1Vpc1FVMnJwZ0I3V2xHbm5VVURiZEJlU1NCYnBLNmVPZnVpL0dlVnRuZFF1?=
+ =?utf-8?B?NjYyNlRaL29GVkVtdEM2V2RXUXBPdmNYR21kc1pPTVVKejlaRlJkS0t1UWQ0?=
+ =?utf-8?B?bTVsMEhpUjdTQ0tzUXVYOXFOd0hzTk5NVXBBSVZYR3RxMjd1Mm5hMklDMVg1?=
+ =?utf-8?B?SXEyUVp0SzM0UXNVWEU3UTNoS0RnNk5tbDkyOGFjckc2VS9OWGcxOUNWczFB?=
+ =?utf-8?B?c0ZwYjRsR0JkKzQwclJOZ0k0Mm9SWHFBQUlOUnExTHVwYit4VjdtT1Bycklv?=
+ =?utf-8?B?cEd2ZU1KTzNiaGZiYTJ1WUVXNVd5UW15Q0Y1S1pKcVY5M09qTVZNUE5MdjVT?=
+ =?utf-8?B?UWJQZlh1eGVwK2NnaERtMVlMODNvdnVzZDJsZHl1WUNxeVlucXBXS0RiMUIw?=
+ =?utf-8?B?OU45c09YNmtPZytOcndTS1hnVGtJN3dEU1RhSHJ5M1ZRYmJucU5DOFROY2FR?=
+ =?utf-8?B?aThmWUVmZzhsdEFBR0ZJSHFScmErZUt6SkVDWXA4Q2NtdEVncnIydVVOc2tn?=
+ =?utf-8?B?bm5TNURGQjZpZ1VlanNaQzgvaWQzanpIZzhBa3VUaHpMWUt4SjRubXV5Q1RC?=
+ =?utf-8?B?Wk1tRnQrdHpZZCs1Y1dmamZYVXFJUFduTnJDSWdvcEp4Z1ExSnp6TFhVNE9R?=
+ =?utf-8?B?ZVB2TzlpaFNBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 12:57:09.2978
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a8555f2-ea20-4de5-2346-08ddf5e9b67d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000989EC.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4245
 
-On Wed, Sep 10, 2025 at 08:07:36PM +0200, Claudio Imbrenda wrote:
-> Add page table management functions to be used for KVM guest (gmap)
-> page tables.
+On 9/8/2025 7:11 PM, Naveen N Rao wrote:
+> On Mon, Sep 01, 2025 at 10:52:38AM +0530, Manali Shukla wrote:
+>> From: Santosh Shukla <santosh.shukla@amd.com>
+>>
+>> The local interrupts are extended to include more LVT registers in
+>> order to allow additional interrupt sources, like Instruction Based
+>> Sampling (IBS) and many more.
+>>
+>> Currently there are four additional LVT registers defined and they are
+>> located at APIC offsets 400h-530h.
+>>
+>> AMD IBS driver is designed to use EXTLVT (Extended interrupt local
+>> vector table) by default for driver initialization.
+>>
+>> Extended LVT registers are required to be emulated to initialize the
+>> guest IBS driver successfully.
+>>
+>> Please refer to Section 16.4.5 in AMD Programmer's Manual Volume 2 at
+>> https://bugzilla.kernel.org/attachment.cgi?id=306250 for more details
+>> on Extended LVT.
+>>
+>> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
+>> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
+>> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+>> ---
+>>  arch/x86/include/asm/apicdef.h | 17 ++++++++++++++
+>>  arch/x86/kvm/cpuid.c           |  6 +++++
+>>  arch/x86/kvm/lapic.c           | 42 ++++++++++++++++++++++++++++++++++
+>>  arch/x86/kvm/lapic.h           |  1 +
+>>  arch/x86/kvm/svm/avic.c        |  4 ++++
+>>  arch/x86/kvm/svm/svm.c         |  6 +++++
+>>  6 files changed, 76 insertions(+)
+>>
 > 
-> This patch adds functions to walk to specific table entries, or to
-> perform actions on a range of entries.
+> <snip>
 > 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->  arch/s390/kvm/dat.c | 351 ++++++++++++++++++++++++++++++++++++++++++++
->  arch/s390/kvm/dat.h |  38 +++++
->  2 files changed, 389 insertions(+)
+>> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+>> index a34c5c3b164e..1b46de10e328 100644
+>> --- a/arch/x86/kvm/svm/avic.c
+>> +++ b/arch/x86/kvm/svm/avic.c
+>> @@ -669,6 +669,10 @@ static bool is_avic_unaccelerated_access_trap(u32 offset)
+>>  	case APIC_LVTERR:
+>>  	case APIC_TMICT:
+>>  	case APIC_TDCR:
+>> +	case APIC_EILVTn(0):
+>> +	case APIC_EILVTn(1):
+>> +	case APIC_EILVTn(2):
+>> +	case APIC_EILVTn(3):
+> 
+> This should actually be conditional on X86_FEATURE_EXTLVT.
 
-...
+Sure. I will incorporate it in V2.>
+> I also forgot to add for the previous patch: the feature name needs to 
+> be changed to reflect the true nature of the feature bit.
 
-> +/*
-> + * dat_split_pmd is assumed to be called with mmap_lock held in read or write mode
-> + */
-> +static int dat_split_pmd(union pmd *pmdp, gfn_t gfn, union asce asce)
-> +{
-> +	struct page_table *pt;
-> +	union pmd new, old;
-> +	union pte init;
-> +	int i;
-> +
-> +	old = READ_ONCE(*pmdp);
-> +
-> +	/* Already split, nothing to do */
-> +	if (!old.h.i && !old.h.fc)
-> +		return 0;
-> +
-> +	pt = dat_alloc_pt_noinit();
-> +	if (!pt)
-> +		return -ENOMEM;
-> +	new.val = virt_to_phys(pt);
-> +
-> +	while (old.h.i || old.h.fc) {
-> +		init.val = pmd_origin_large(old);
-> +		init.h.p = old.h.p;
-> +		init.h.i = old.h.i;
-> +		init.s.d = old.s.fc1.d;
-> +		init.s.w = old.s.fc1.w;
-> +		init.s.y = old.s.fc1.y;
-> +		init.s.sd = old.s.fc1.sd;
-> +		init.s.pr = old.s.fc1.pr;
-> +		if (old.h.fc) {
-> +			for (i = 0; i < _PAGE_ENTRIES; i++)
-> +				pt->ptes[i].val = init.val | i * PAGE_SIZE;
-> +			/* no need to take locks as the page table is not installed yet */
-> +			dat_init_pgstes(pt, old.s.fc1.prefix_notif ? PGSTE_IN_BIT : 0);
-> +		} else {
-> +			dat_init_page_table(pt, init.val, 0);
-> +		}
-> +
-> +		if (dat_pmdp_xchg_atomic(pmdp, old, new, gfn, asce))
-> +			return 0;
-> +		old = READ_ONCE(*pmdp);
-> +	}
-> +
-> +	dat_free_pt(pt);
-> +	return 0;
-> +}
+Ack, I agree the feature bit name should reflect its true nature.
+Happy to rename it. Any specific suggestion for the name?
 
-Just to annoy you again: is there a particular reason why this function isn't
-called "dat_split_segment()" instead of "_pmd()"? I'm still trying to convince
-you to get rid of pmd(p) usage, whenever possible. IMHO this would make the
-code easier to understand and maintain as it doesn't mix things, as I already
-stated previously.
+> 
+> 
+> - Naveen
+> 
 
-> +	if (asce.dt >= ASCE_TYPE_REGION2) {
-> +		*last = table->crstes + p4d_index(gfn_to_gpa(gfn));
-> +		entry = READ_ONCE(**last);
-> +		if (WARN_ON_ONCE(unlikely(entry.h.tt != LEVEL_P4D)))
-> +			return -EINVAL;
-> +		if (crste_hole(entry) && !ign_holes)
-> +			return entry.tok.type == _DAT_TOKEN_PIC ? entry.tok.par : -EFAULT;
-> +		if (walk_level == LEVEL_P4D)
-
-Also this (even though also as stated earlier): IMHO it would be good to get
-rid of the LEVEL defines and use the corresponding TABLE_TYPEs instead.
-
-> +	if (continue_anyway && !entry.pmd.h.fc && !entry.h.i) {
-> +		walk_level = LEVEL_PTE;
-
-Hm, ok, there is no TABLE_TYPE for this level. Invention required :)
