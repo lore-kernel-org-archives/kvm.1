@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96F133593F
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F5D335956
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113968; cv=none; b=YSRuDgWlBI7dNEpge2LHzQrHGrwEi1brezQ2pWASXCp5z2YwahF6uQmKmAPQZcjFqD2gTnU8lqn0EuOV5wX8aV2CyG2N+7m1iiwmR1IqsUdQMPNrXed+6C6kSGxuCMXfBqRSv0KhYRU6WM8WAY3WMllOti2tUD2PIT7AS2gGwXk=
+	t=1758113971; cv=none; b=CgKJJc3WO8bzE4+FQWTsZbaiQVTGBuFlbkl2LHZq1Jphgq2knqhhLI62arYN9+rB95VRAvZVRROfI8CWZRBvZbG6bw/zD+TkFxmmqWkdPR90AQwJIkz3sBZPtvGGh77NWTo7o305aIu6bwUgNudq6fa81d3P10mBr0sqx5rxBZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113968; c=relaxed/simple;
-	bh=qYADbgT96IVHtO3bbhtzY8CLkHqnDVm/SYNWXMI9CNU=;
+	s=arc-20240116; t=1758113971; c=relaxed/simple;
+	bh=maIYX/b7jpPUvaTXzgvmfVNIAEA9uOV/F5wFHyk0kLA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=smSFn8lIwmTcnOx+CJqVuzkbQtBxIU+Ee5yok1M8xNeqK5Rpozn1V1+9ubDWrid1mhovQsrTge9EYpOn7q2eP7hqRzEOi+skJpLfUP8ri+qyo0tyTYkYFBYHcLLXRFGOT0AY+l5P211MJwKqGCu1WigPU85NcTM3+nLYjHubrY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=q3/5EIvZ reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=nAJbHLjtJFn49JtuTRcMkCON3kqUdRbTEnDUdyRvW42Jd29Ih0VW7P5lGn3iiM5VvJYMhnCECyiBanxCQw7G1Pi8dz1xUHK8vt3U9RO/VdzGomUJetBCaQ791AOCoQgKzd0CnMDLeqaVDpsPqfqdNI3tsvr1SALtoL6ZE8Cqdgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=DCgdJUt8 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="q3/5EIvZ"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="DCgdJUt8"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN73008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7C008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:50 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:57 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=+indtpSimGXjSyGA1ZwrYrcaNl1E43SnA4RqaC0WcIE=;
+DKIM-Signature: a=rsa-sha256; bh=iRO+hrK4XG9Id0QZlzueAlZAZ0CQr5cH8M80zLSFtdk=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113810; v=1;
-        b=q3/5EIvZDEGpGLvWUkHGEi1Hx6CGIAWDn7m64ZrZURQ0m4ILX/PaeYoT89nX9seo
-         4IV6gVYk0SNPdVDSsx8nFkL+T/T90q13WlK04/f8GRDEc+JXHmNSyUiAmCU4mI8e
-         jlqID+1gyw2Jd+mRSXm5DdNCDnE4uabpk49A7iw1LFRfMSdw3WBksgE2fd4neh+6
-         RaGX1BBLg8Ow7WBE3BjXKqfUY46i6xjgbKWAimuyX//fjsq4XlzElaVVMsl2tnXK
-         IwWrKTNuj9hmh5l/+cNgYpXZ8YEWh3kNsCAepaHfD7qTv/cQwGD3V1HOR4Zadc+6
-         OofzAkxh8r9MjJYtyoY/gQ==
+        s=rs20250326; t=1758113818; v=1;
+        b=DCgdJUt8BsdsHaJ7TwtGHOS5Bl+Hwe0u8DbfwZddRm5m1qylu0a+Tk+XJ9mPKh4V
+         GI5qS8dH3Hppq9l5T4V9FNgNDWDqFIVCdhiln1db/ePtu4FqIB0OHAdFkAUb5mAy
+         /Ji7aqCMf7kqS68Ly2a1S0sohdoaJyFCMstjOQZeJz7P4WkxQtZqvnChgL14XASY
+         mO8cuykhmZhA4DLkJwQJzj2KKNbDgcb8ub5uOinuhksLZDWT+/BRod80gdIB1yUf
+         Omoayby052Xn8pF4FkTs/Y9nXTcac/MxWwyCDfRLe1l2Q9QJm0k6W+4+VjIHkq6J
+         6ZqMRSnfmSFLUdRYgEG1Fg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:35 +0900
-Subject: [PATCH 23/35] hw/scsi: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:44 +0900
+Subject: [PATCH 32/35] target/i386: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-23-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-32-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,33 +119,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/scsi/lsi53c895a.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/i386/kvm/kvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index ee21b3c0d08a..b577f5ba2282 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -2356,8 +2356,8 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
-     s->ram_io.disable_reentrancy_guard = true;
-     s->mmio_io.disable_reentrancy_guard = true;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 2ce071dfafb2..17f3c3c9e543 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2725,7 +2725,8 @@ static void register_smram_listener(Notifier *n, void *unused)
+         memory_region_set_enabled(smram, true);
+     }
  
--    address_space_init(&s->pci_io_as, NULL, pci_address_space_io(dev),
--                       "lsi-pci-io");
-+    address_space_init(&s->pci_io_as, OBJECT(s), pci_address_space_io(dev),
-+                       "io-as");
-     qdev_init_gpio_out(d, &s->ext_irq, 1);
- 
-     pci_register_bar(dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &s->io_io);
-@@ -2372,7 +2372,7 @@ static void lsi_scsi_exit(PCIDevice *dev)
- {
-     LSIState *s = LSI53C895A(dev);
- 
--    address_space_destroy(&s->pci_io_as);
-+    object_unparent(OBJECT(&s->pci_io_as));
-     timer_free(s->scripts_timer);
+-    address_space_init(&smram_address_space, NULL, &smram_as_root, "KVM-SMRAM");
++    address_space_init(&smram_address_space, OBJECT(kvm_state), &smram_as_root,
++                       "smram-as");
+     kvm_memory_listener_register(kvm_state, &smram_listener,
+                                  &smram_address_space, 1, "kvm-smram");
  }
- 
 
 -- 
 2.51.0
