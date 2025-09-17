@@ -1,149 +1,164 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216A233140;
-	Wed, 17 Sep 2025 13:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5485630CB33
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758115913; cv=none; b=uEsm+gIrRixIq7eDLGKj/kmV9AvliDaip9roqCndCqdCpA7TGdT2stzbcKbP6bnHwbZSunHJKoo0CVR6lS44czU2wtJ/r/bKVpaXv9RiLPBYjg8QHA3jAWtwWEW1G04EUUuQQrOmwj/rT31Nf+9i0JwvkCxh4+fIjuGUzCc+Rcg=
+	t=1758116300; cv=none; b=bKzB8VWqA6XncOx7ZzY1zxYSE2WU2bFH/qhDmXXTI1V8GM5YceY1/pqP+/nO63Grvh3SZIAEbY7GH8S4bMVVoHGVmVw3WPL9lOh9eSvu+j/qFMJRhoXjOZaEqDi2V5l18+C2khG93B8dml1Ugcqh+3R3eWntnLrKKo49lPAWgGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758115913; c=relaxed/simple;
-	bh=x3gyBBY/qsJIRib19GJ7BHYjDJuLpWk1XVSd/Oi8A7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j+lHCRDv/dOXeG/7Am6O3vDc1B79oA+uYk1BjhoWsXp6YozeG6XNAgHU8K84hzwPT+0wQPy8feX9oivvz7YhKJZPnAQKV1qsSfMux1zFsK1x8SZujhd5IXDViYeR2T1YzFhfXiITyMKLsLkvKv+xjzu/CnqhEkKMbxw460KAAZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TXRwLXpp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1758116300; c=relaxed/simple;
+	bh=KrKGau9duCBmX68h3kKovf1VxNPOOrhTj5obGGgSgaI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tz2dYr0iUMaNPxALbGr0jBd/5Wnqx30Jon3Ii4n2X8nLAjvKVFgt7Z6i5dzkwgupB/YIniinXlBEB2KWW90+R+IzeBk8kWiaQQnQXIDJMtzEUeFamjNIfgiOGgzfMWtA4ktbg5K7m3Xvtc1rkiJm8Oak1UlTmVbvXbggJbCWH9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=tFZy7oa+ reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TXRwLXpp"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58H9gl7B023594;
-	Wed, 17 Sep 2025 13:31:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Sbu7NnZUSKm5yjv89nNUmQ9BtNRTXk
-	mT6+ZPxq++Bi8=; b=TXRwLXppIvtqYAy4+VCEcHxo3n1sU5yd9tc7aKaOM+XXxK
-	/jAZpCcCRbcVHc53UxV/CPzLkWqztajInnHh3aXlI2j6AaROAsOZS/nzYNiqiwTC
-	1jhxUCR0JFa8JtFLH+2ODGasMb34XFmFhTtTwncE8YU0PayUtznMbO8e1MvioM9x
-	wVFDzPyDWjVuzoLosb+6MrG5gHNNsuSyG2BUgOJ0KxA67Cf/DYsGzVYCW28xE7Pd
-	/Mac7lll4l4A8e166GcQ0Zi0WH0ggq2J2HMBJsrJMUfaPKJ4m/T84xLpAzgvWAsE
-	zzyfvt5NUCVyNTvoKNIofMWBRX9TaPhmkxfnxVYA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4qkre7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 13:31:48 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58HAZbgK027268;
-	Wed, 17 Sep 2025 13:31:48 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495men9c77-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 13:31:48 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58HDViku54329670
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 13:31:44 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CCB620043;
-	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B5F620040;
-	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.133])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
-Date: Wed, 17 Sep 2025 15:31:42 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, frankja@linux.ibm.com, nsg@linux.ibm.com,
-        nrb@linux.ibm.com, seiden@linux.ibm.com, schlameuss@linux.ibm.com,
-        svens@linux.ibm.com, agordeev@linux.ibm.com, david@redhat.com,
-        gerald.schaefer@linux.ibm.com
-Subject: Re: [PATCH v2 08/20] KVM: s390: KVM page table management functions:
- allocation
-Message-ID: <20250917133142.29680A26-hca@linux.ibm.com>
-References: <20250916162653.27229G04-hca@linux.ibm.com>
- <20250916184737.47224f56@p-imbrenda>
- <63e8c905-28b1-4e1f-be77-e0789bd75692@de.ibm.com>
- <20250916190514.1a3082bd@p-imbrenda>
- <15f451d9-ecb3-4a82-9b9a-2de64b93944d@de.ibm.com>
- <20250916173644.27229Kcc-hca@linux.ibm.com>
- <20250917072733.7515Af5-hca@linux.ibm.com>
- <20250917132556.4814fe98@p-imbrenda>
- <20250917123006.7515C59-hca@linux.ibm.com>
- <20250917151124.1a53b0a6@p-imbrenda>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="tFZy7oa+"
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN74008967
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 17 Sep 2025 21:56:50 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=IObcSxb1mEGR5pVanbHlUpUo799Y/B2tp5AzAzydRGA=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Date:Subject:Message-Id:To;
+        s=rs20250326; t=1758113811; v=1;
+        b=tFZy7oa+nP+PtLJI2EIl6sGY+GMaHR/7ptxbf+ii5lc3dKpFVZ+4S2QOVk12hOme
+         8FwO8O11BILpR094dmNm9daOQeTFpooTEiW4hoobEhu2S0jwte5AsLLc8nz8LFMa
+         Cm96KElGwqbrlq1HZoI7iWC9SQW+OmSQsJHXuTpWLf4uThpEzfZbB3LBL+uLw+UR
+         b4hErl+1sD+yjb/gYVMbmzvLUCHQa3/QTIqg3f6H0a+l2MlMkitW9hMmmMIL4wxj
+         wSBGrblbGHzZXGUL8OEXNJn5GCjX9oO9BRS1KjL5f5zP8nq1OS1v/00XYWLPONkQ
+         5k3CkYTpwPFwX04fT2TAlg==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 17 Sep 2025 21:56:36 +0900
+Subject: [PATCH 24/35] hw/sd: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917151124.1a53b0a6@p-imbrenda>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PVpF-bI6Uqmqcx65PZaFU38GY8eoKwlT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX3J7QqzpKio8C
- KRHj9crAxgfXruNye09QIXWODrZNvd74QmSiU+FYsPSTiErAM4NqcICGoKZjHhCvwAr9Z1IAeCd
- 4al3UkTe7pzw7QHURAhp85snfj3GHjULqtr7u884xMWLyvzEHBoUguPXR6L4k4aqYwebtVTzRYC
- Zt9WRdFJ0L+88Vmg4ay4KeZS6/chkhtZDwssk1TGA5V+LNoTvwD3AcO2vAeMkrmmPnq2P3jLmoo
- 41FjVFE1HIdMlmhJXx0VuJif471HtRIivytpCTyTSLSFHoqhuEYny9/b1A021ey01NbjTINu34z
- CaKZ3cZVo1otsK7g6vAgTD5VCJ3eM+Roaw6ggB4YTzaToGHn+4yJKOtP7TV2Xrh1AgNSbJ6hsOw
- yQMGHrYY
-X-Authority-Analysis: v=2.4 cv=R8oDGcRX c=1 sm=1 tr=0 ts=68cab844 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=7plvffdV2fzIC-KNDC0A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: PVpF-bI6Uqmqcx65PZaFU38GY8eoKwlT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250917-qom-v1-24-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+        Peter Maydell <peter.maydell@linaro.org>,
+        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+        Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+        Jamin Lin <jamin_lin@aspeedtech.com>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        Joel Stanley <joel@jms.id.au>, Eric Auger <eric.auger@redhat.com>,
+        Helge Deller <deller@gmx.de>,
+        =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+        Aleksandar Rikalo <arikalo@gmail.com>,
+        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+        Alistair Francis <alistair@alistair23.me>,
+        Ninad Palsule <ninad@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Eduardo Habkost <eduardo@habkost.net>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+        Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+        =?utf-8?q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Aditya Gupta <adityag@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
+        Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Fan Ni <fan.ni@samsung.com>, David Hildenbrand <david@redhat.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+        Beniamino Galvani <b.galvani@gmail.com>,
+        Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+        Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+        Jan Kiszka <jan.kiszka@web.de>, Laurent Vivier <laurent@vivier.eu>,
+        Andrey Smirnov <andrew.smirnov@gmail.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        BALATON Zoltan <balaton@eik.bme.hu>,
+        Bernhard Beschow <shentey@gmail.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+        Jagannathan Raman <jag.raman@oracle.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
+        Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
+        Bin Meng <bmeng.cn@gmail.com>,
+        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        Artyom Tarasenko <atar4qemu@gmail.com>, Peter Xu <peterx@redhat.com>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
+        qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+        qemu-block@nongnu.org, kvm@vger.kernel.org,
+        Alex Williamson <alex.williamson@redhat.com>,
+        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
 
-On Wed, Sep 17, 2025 at 03:11:24PM +0200, Claudio Imbrenda wrote:
-> On Wed, 17 Sep 2025 14:30:06 +0200
-> Heiko Carstens <hca@linux.ibm.com> wrote:
-> > > > > > No. ATOMIC always means: can fail.   
-> > > 
-> > > my issue is that GFP_KERNEL can sleep, and this allocation is sometimes
-> > > called from atomic contexts (e.g. while holding spinlocks)
-> > > 
-> > > the right way to do this would be with mempools, to allocate memory
-> > > (and potentially sleep) when we are not in atomic context, and use it
-> > > whenever needed. this is on my to-do list for the future, but right now
-> > > I'd like to avoid having to refactor a ton of code.  
-> > 
-> > I doubt this is accetable even for an intermediate solution. As soon
-> > as the host is under memory pressure and starts doing I/O to free up
-> > memory, you will end up in -ENOMEM situations for simple guest page
-> > allocations.
-> > 
-> > What happens with a guest in such a situation? Is this gracefully
-> > handled without that the guest is terminated?
-> 
-> well, we return -ENOMEM to userspace (and qemu will probably kill the
-> guest)
-> 
-> but if we can't even allocate 16kB, probably we're already in a pretty
-> bad situation
+Make AddressSpaces QOM objects to ensure that they are destroyed when
+their owners are finalized and also to get a unique path for debugging
+output.
 
-Not necessarily...
+The name arguments were used to distinguish AddresSpaces in debugging
+output, but they will represent property names after QOM-ification and
+debugging output will show QOM paths. So change them to make them more
+concise and also avoid conflicts with other properties.
 
-> if you think this is not acceptable, I guess I'll have to implement
-> mempools
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+ hw/sd/allwinner-sdhost.c | 2 +-
+ hw/sd/sdhci.c            | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-...since the kernel _might_ be easily capable of freeing memory, e.g. by
-writing to swap or writing file contents to disk. But this wouldn't happen
-with GFP_ATOMIC allocations.
+diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
+index 158d434e7fde..c001dfd60203 100644
+--- a/hw/sd/allwinner-sdhost.c
++++ b/hw/sd/allwinner-sdhost.c
+@@ -832,7 +832,7 @@ static void allwinner_sdhost_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    address_space_init(&s->dma_as, NULL, s->dma_mr, "sdhost-dma");
++    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
+ }
+ 
+ static void allwinner_sdhost_reset(DeviceState *dev)
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index c6a203744463..1a6b6e1198f2 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1594,7 +1594,7 @@ static void sdhci_sysbus_realize(DeviceState *dev, Error **errp)
+ 
+     if (s->dma_mr) {
+         s->dma_as = &s->sysbus_dma_as;
+-        address_space_init(s->dma_as, NULL, s->dma_mr, "sdhci-dma");
++        address_space_init(s->dma_as, OBJECT(s), s->dma_mr, "as");
+     } else {
+         /* use system_memory() if property "dma" not set */
+         s->dma_as = &address_space_memory;
+@@ -1612,7 +1612,7 @@ static void sdhci_sysbus_unrealize(DeviceState *dev)
+     sdhci_common_unrealize(s);
+ 
+      if (s->dma_mr) {
+-        address_space_destroy(s->dma_as);
++        object_unparent(OBJECT(s->dma_as));
+     }
+ }
+ 
 
-I'm just stating that with GFP_ATOMIC for guest page table allocations it is
-much more likely that guests might be killed compared to what we have now.
+-- 
+2.51.0
 
-Also I'm wondering why such code paths where page tables in atomic context
-need to be allocated even exist. Is that s390 specific (aka the new code), or
-is this due to common code requirements?
