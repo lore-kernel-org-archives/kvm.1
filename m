@@ -1,161 +1,109 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E6319600
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4676B1B424F
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758116328; cv=none; b=W3X7b69KVm2VDdJeTkmirPB3X4vgePzF23toZ6HaioIBNbl9iUDWfmbYudZDTN2XDBId/i0ei8PNTD6AYbMKB0G8G7sK7rla5ysFvFR70Gm9v/UQ4lDjbXmk6OCRY3yckuE6OoeNgpLyyJWlDgTaIjbDtHlo0elngdZkPlqu3YI=
+	t=1758116666; cv=none; b=GgJH7HN7ZnZ+tNCG2p/ifZ+MlRLfS5n/aX7arQYXDtd+bE+jQYkclcwKu3LvpuYMX6qo1lz0lQzw3KNeiNqlLgZeuLBR0iVPp6vX1nvrZUuuKKED6ppphLdg93Uo0x3RcEjfALOpH8kV/KMzFAv1KHdLwkeZwu04tiigTJ8qbV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758116328; c=relaxed/simple;
-	bh=SfRiquELD+1AG//LQh7FQNUcoosHNdl1GHxl1VfPsj4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o5A6nAojEyu5nOUWJCpzrGSk7XLSO/rIImBvwxICCg3WykskmYyXTsxzfMJi4BGImaWXc6hBWGEU5teD/fLpotLXJX7JM4L9/gr3spGw38NCzoSSpPtQBkXPdFpASrM1uFx3tvR6NAuM8o9c4sKZBAih3xlu9nlHCI8MZpGGBaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=g7mxblnC reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="g7mxblnC"
-Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN72008967
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:49 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=IS0Tljii9BUeTawhiYrgJzEedgytOqOQnDBHONON+jo=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113810; v=1;
-        b=g7mxblnCLeiiBLEETSS3OMb9IBlQ+4YOPgXVYl1zODnt2zyZMgW5VmrIGdwLS5OZ
-         j5RLplNXlGHlgKKJjnf32OxeH7j3j+Ga3rwqpDHljTWZPhZ7hAM1hu6x/GfwlFzR
-         IWGhkCORcMI5ozLVpZkQnRRmwzSuXEyt7yX7aAZ2bW3MrfMG9nFI8HSibmUMEezf
-         yXcpDqyqCyrpYA9e3pHDtu3NjYlzuAew3kSTEvH3eM6uPSvxh6+OaGxJhNrauI5y
-         TAaQ+bqEvcwoHtYA5tuDuF8x2uwrW5m84xknqXSOb38wl3m2ZMZBRQNwpR8dOCL2
-         jRaeOOnYE0BoeD6vVrSAPA==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:34 +0900
-Subject: [PATCH 22/35] hw/s390x: QOM-ify AddressSpace
+	s=arc-20240116; t=1758116666; c=relaxed/simple;
+	bh=x7G/RbDkaW2GjK/tfMNlFD6q3qI9IuGU1XjryNOFYEo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p9KEOCfYjeaHtyUKYiC6caRIWW/EhKKydcJWWOB1PYaU0ziGcdeXGVfUFWdNb9ocizakAR0aId/QZTSEb3jsiD91FKQgdg9AFenRDNf7GyWclfSAMUb0Y3kkAy/Y6Hx4L2K180q7XmWDBicUeRBV9WH+xwdVvJNNn+2FAmqxMw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23CF3113E;
+	Wed, 17 Sep 2025 06:44:14 -0700 (PDT)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.26.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02CF03F66E;
+	Wed, 17 Sep 2025 06:44:20 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>
+Cc: kvm@vger.kernel.org,
+	Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH kvmtool v2] net/uip: Avoid deadlock in uip_tcp_socket_free()
+Date: Wed, 17 Sep 2025 14:44:14 +0100
+Message-ID: <20250917134414.63621-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-22-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
-        Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
-        Jamin Lin <jamin_lin@aspeedtech.com>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Joel Stanley <joel@jms.id.au>, Eric Auger <eric.auger@redhat.com>,
-        Helge Deller <deller@gmx.de>,
-        =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
-        Aleksandar Rikalo <arikalo@gmail.com>,
-        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        Alistair Francis <alistair@alistair23.me>,
-        Ninad Palsule <ninad@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Eduardo Habkost <eduardo@habkost.net>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-        Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
-        =?utf-8?q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
-        Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Fan Ni <fan.ni@samsung.com>, David Hildenbrand <david@redhat.com>,
-        Igor Mammedov <imammedo@redhat.com>,
-        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
-        Beniamino Galvani <b.galvani@gmail.com>,
-        Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
-        Subbaraya Sundeep <sundeep.lkml@gmail.com>,
-        Jan Kiszka <jan.kiszka@web.de>, Laurent Vivier <laurent@vivier.eu>,
-        Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        BALATON Zoltan <balaton@eik.bme.hu>,
-        Bernhard Beschow <shentey@gmail.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Elena Ufimtseva <elena.ufimtseva@oracle.com>,
-        Jagannathan Raman <jag.raman@oracle.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
-        Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
-        Bin Meng <bmeng.cn@gmail.com>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        Artyom Tarasenko <atar4qemu@gmail.com>, Peter Xu <peterx@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
-        qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
-        qemu-block@nongnu.org, kvm@vger.kernel.org,
-        Alex Williamson <alex.williamson@redhat.com>,
-        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.15-dev-179e8
+Content-Transfer-Encoding: 8bit
 
-Make AddressSpaces QOM objects to ensure that they are destroyed when
-their owners are finalized and also to get a unique path for debugging
-output.
+The function uip_tcp_socket_free() is called with the sk lock held, but
+then goes on to call uip_tcp_socket_close() which attempts to aquire the
+lock a second time, triggering a deadlock if there are outstanding TCP
+connections.
 
-The name arguments were used to distinguish AddresSpaces in debugging
-output, but they will represent property names after QOM-ification and
-debugging output will show QOM paths. So change them to make them more
-concise and also avoid conflicts with other properties.
+Rename the existing uip_tcp_socket_close() to a _locked variety and
+removing the locking from it. Add a new uip_tcp_socket_close() which
+takes the lock and calls the _locked variety.
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Fixes: d87b503f4d6e ("net/uip: Add exit function")
+Signed-off-by: Steven Price <steven.price@arm.com>
 ---
- hw/s390x/s390-pci-bus.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+v2: Rather than duplicate the cleanup in uip_tcp_socket_free() rejig the
+code to have two functions with one _locked.
+---
+ net/uip/tcp.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 67fce1c133b0..3febf9df968f 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -623,18 +623,13 @@ static S390PCIIOMMU *s390_pci_get_iommu(S390pciState *s, PCIBus *bus,
-                                         pci_bus_num(bus),
-                                         PCI_SLOT(devfn),
-                                         PCI_FUNC(devfn));
--        char *as_name = g_strdup_printf("iommu-pci-%02x:%02x.%01x",
--                                        pci_bus_num(bus),
--                                        PCI_SLOT(devfn),
--                                        PCI_FUNC(devfn));
-         memory_region_init(&iommu->mr, OBJECT(iommu), mr_name, UINT64_MAX);
--        address_space_init(&iommu->as, NULL, &iommu->mr, as_name);
-+        address_space_init(&iommu->as, OBJECT(iommu), &iommu->mr, "as");
-         iommu->iotlb = g_hash_table_new_full(g_int64_hash, g_int64_equal,
-                                              NULL, g_free);
-         table->iommu[PCI_SLOT(devfn)] = iommu;
+diff --git a/net/uip/tcp.c b/net/uip/tcp.c
+index 8e0ad5235240..42e6e992cd6a 100644
+--- a/net/uip/tcp.c
++++ b/net/uip/tcp.c
+@@ -6,7 +6,7 @@
+ #include <linux/list.h>
+ #include <arpa/inet.h>
  
-         g_free(mr_name);
--        g_free(as_name);
-     }
+-static int uip_tcp_socket_close(struct uip_tcp_socket *sk, int how)
++static int uip_tcp_socket_close_locked(struct uip_tcp_socket *sk, int how)
+ {
+ 	shutdown(sk->fd, how);
  
-     return iommu;
-@@ -785,7 +780,7 @@ static void s390_pci_iommu_free(S390pciState *s, PCIBus *bus, int32_t devfn)
-      * Remove the listeners now before destroying the address space.
-      */
-     address_space_remove_listeners(&iommu->as);
--    address_space_destroy(&iommu->as);
-+    object_unparent(OBJECT(&iommu->as));
-     object_unparent(OBJECT(&iommu->mr));
-     object_unparent(OBJECT(iommu));
-     object_unref(OBJECT(iommu));
-
+@@ -14,9 +14,7 @@ static int uip_tcp_socket_close(struct uip_tcp_socket *sk, int how)
+ 		shutdown(sk->fd, SHUT_RDWR);
+ 		close(sk->fd);
+ 
+-		mutex_lock(sk->lock);
+ 		list_del(&sk->list);
+-		mutex_unlock(sk->lock);
+ 
+ 		free(sk->buf);
+ 		free(sk);
+@@ -25,6 +23,17 @@ static int uip_tcp_socket_close(struct uip_tcp_socket *sk, int how)
+ 	return 0;
+ }
+ 
++static int uip_tcp_socket_close(struct uip_tcp_socket *sk, int how)
++{
++	int ret;
++
++	mutex_lock(sk->lock);
++	ret = uip_tcp_socket_close_locked(sk, how);
++	mutex_unlock(sk->lock);
++
++	return ret;
++}
++
+ static struct uip_tcp_socket *uip_tcp_socket_find(struct uip_tx_arg *arg, u32 sip, u32 dip, u16 sport, u16 dport)
+ {
+ 	struct list_head *sk_head;
+@@ -110,7 +119,7 @@ static void uip_tcp_socket_free(struct uip_tcp_socket *sk)
+ 	}
+ 
+ 	sk->write_done = sk->read_done = 1;
+-	uip_tcp_socket_close(sk, SHUT_RDWR);
++	uip_tcp_socket_close_locked(sk, SHUT_RDWR);
+ }
+ 
+ static int uip_tcp_payload_send(struct uip_tcp_socket *sk, u8 flag, u16 payload_len)
 -- 
-2.51.0
+2.43.0
 
