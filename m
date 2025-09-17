@@ -1,170 +1,183 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F8434572E
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CADD33C768;
+	Wed, 17 Sep 2025 13:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114342; cv=none; b=mKKbR1erXzbk2WXFRCmky1oSQMuAvKYfyvl107HCSb2k7y4KA2dDfbN+YTiWCFHvgsmF3NJj01vYOYAFySyIfUtsY/CYbhTDZdzAF95zAn4zitewQMYHEBQn3AHN9fseaDF3s+SxeNzhA+LxkdYz7kEt+ps2sVcgvKDJh5QCBa4=
+	t=1758114694; cv=none; b=NNLvwzjbq5vAucs6b3gPislap8pOTenuLhoLsO9jCrC6qn5c9aWmyJwBxu7qOQkEuM6C54MGWNAs0/nDYl8a0w4d3L3dk102mt3exn28FsYskJQUeQtxjPlGeNTqDInbZir6g7HxJJgKEnwFCo68QAtwbH/uTQ55ToiD8obOFi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114342; c=relaxed/simple;
-	bh=11eSNigAV4FL0AUj2/N3GvnPyb9dQE5wPkQI0QvGqJs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jF893vvJGtFzQqe3Yit16FsKMA1dJyxa9EqYryC/a9ecGrKgh6qWTipXLdU5R7z08jUw2TdgK+8da7zkYBm28hXb2j7GbmVTXk7znQnw0s1DoEf01eONX8LF0cZWHJPvccBmHe+tAWk8SRWWpWe7lh7f9pzLNU9g9byt0iFoOtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=p6CW3wGm reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1758114694; c=relaxed/simple;
+	bh=MifsQZ7TBM3SAWrr/yYzns1tSsk4nYv4MfS8Q3gCmdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l/VnHtEOeHp62Wg+uv0o+ZP63BoeEdvPHBIHVHFnWNL5w5XxwPAqgduLMRe/0FB7NUZf+7SDVb4DJtKG8axuWIn23/n2Aq4h37r1sPpCiYvsatrbNzQSsacA00t5gd1Hi8bcSeNjR4NNmd7hS6ZZ5O4YEhIlbrH74Coe/RWu9B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o1f9z8X0; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="p6CW3wGm"
-Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6h008967
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:33 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=KPkgneIU/Kxw3przf+/EO57BUaP8vFhAy1Y4oUYjPZY=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113794; v=1;
-        b=p6CW3wGmzP/3BPNGDz1fVZLaV3/Flytml54QCdn8QBKxE6XKmetfZg+fVzt4n3th
-         uEh/vkZLkgUVKsYEiLky4LLz2fap1aN0EvqGq1e9vNVAWzWcfgG6K6sA+bGk5P2n
-         NvwF1DofnV5zwtMCEMIMrFE+9IU3tr5uTUhEGBa1t0tzJVVE/307LUt11ZJe1odm
-         n+Pr7o9eLkl6ZOYsvA0KBY13AXAqTmHrZ3Ar7hNmBQB5yMJeAkQG3AvdEXy6djmz
-         kH08sM2K4Hw+w6MGKkARhjxu6TBl4+r0aA38T1JSM5QVjwgYa0TiThAAholfXC6N
-         M6bs5/EkJjSFRjC8tqNnhQ==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:15 +0900
-Subject: [PATCH 03/35] vfio: Use address_space_get_path()
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o1f9z8X0"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58H9aNYN011014;
+	Wed, 17 Sep 2025 13:11:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+g9nnP
+	Tig/t8pCFZEjSY53QjmU096BcF5sbX6nBvkHQ=; b=o1f9z8X0B4BHI6XMAPExtv
+	GtfO8K1qUMUfbQMGWDn0Ps5XK19dCGJsuM+vxEeGC6hzV4G0gYhgaGSpl5qQkHQV
+	+vRXVq+wLBfHdwAZYvByz5qt+wDVZnHr3e3OmvaU5//Et5a/efi/h//bk52UZsR1
+	ZcCdNAMPUjfc3rB0rNTJIoevnxALyJx2NhOMgyEVFlRYfnsNLVaay0o8ucQP/wHQ
+	Mzy/o7KOfPzWH6MbR72uVHXR2bfrp+KvA/ZM3iMfO+KoLGRCqJAeVwhhRVsMQKjS
+	7lrP/nZZOfNBYuCtTqrYVawTFVuEgooSqne0rYmQXNMyT0ljZChD6eSo8N+r8J/Q
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4nbn78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 13:11:30 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58HA3TxA029514;
+	Wed, 17 Sep 2025 13:11:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb11hhj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 13:11:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58HDBQ6v61014312
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Sep 2025 13:11:26 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A330520043;
+	Wed, 17 Sep 2025 13:11:26 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6FAE320040;
+	Wed, 17 Sep 2025 13:11:26 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 17 Sep 2025 13:11:26 +0000 (GMT)
+Date: Wed, 17 Sep 2025 15:11:24 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, frankja@linux.ibm.com, nsg@linux.ibm.com,
+        nrb@linux.ibm.com, seiden@linux.ibm.com, schlameuss@linux.ibm.com,
+        svens@linux.ibm.com, agordeev@linux.ibm.com, david@redhat.com,
+        gerald.schaefer@linux.ibm.com
+Subject: Re: [PATCH v2 08/20] KVM: s390: KVM page table management
+ functions: allocation
+Message-ID: <20250917151124.1a53b0a6@p-imbrenda>
+In-Reply-To: <20250917123006.7515C59-hca@linux.ibm.com>
+References: <20250910180746.125776-1-imbrenda@linux.ibm.com>
+	<20250910180746.125776-9-imbrenda@linux.ibm.com>
+	<20250916162653.27229G04-hca@linux.ibm.com>
+	<20250916184737.47224f56@p-imbrenda>
+	<63e8c905-28b1-4e1f-be77-e0789bd75692@de.ibm.com>
+	<20250916190514.1a3082bd@p-imbrenda>
+	<15f451d9-ecb3-4a82-9b9a-2de64b93944d@de.ibm.com>
+	<20250916173644.27229Kcc-hca@linux.ibm.com>
+	<20250917072733.7515Af5-hca@linux.ibm.com>
+	<20250917132556.4814fe98@p-imbrenda>
+	<20250917123006.7515C59-hca@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-3-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
-        Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
-        Jamin Lin <jamin_lin@aspeedtech.com>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Joel Stanley <joel@jms.id.au>, Eric Auger <eric.auger@redhat.com>,
-        Helge Deller <deller@gmx.de>,
-        =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
-        Aleksandar Rikalo <arikalo@gmail.com>,
-        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        Alistair Francis <alistair@alistair23.me>,
-        Ninad Palsule <ninad@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Eduardo Habkost <eduardo@habkost.net>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-        Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
-        =?utf-8?q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
-        Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Fan Ni <fan.ni@samsung.com>, David Hildenbrand <david@redhat.com>,
-        Igor Mammedov <imammedo@redhat.com>,
-        Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
-        Beniamino Galvani <b.galvani@gmail.com>,
-        Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
-        Subbaraya Sundeep <sundeep.lkml@gmail.com>,
-        Jan Kiszka <jan.kiszka@web.de>, Laurent Vivier <laurent@vivier.eu>,
-        Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        BALATON Zoltan <balaton@eik.bme.hu>,
-        Bernhard Beschow <shentey@gmail.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Elena Ufimtseva <elena.ufimtseva@oracle.com>,
-        Jagannathan Raman <jag.raman@oracle.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
-        Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-        Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
-        Bin Meng <bmeng.cn@gmail.com>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        Artyom Tarasenko <atar4qemu@gmail.com>, Peter Xu <peterx@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
-        qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
-        qemu-block@nongnu.org, kvm@vger.kernel.org,
-        Alex Williamson <alex.williamson@redhat.com>,
-        =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.15-dev-179e8
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=MN5gmNZl c=1 sm=1 tr=0 ts=68cab382 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=QNP4-n-eHdO2m1c4jG4A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: U_KLsHmdKJWFr-Tktt2eHv9eA1WpvAJ9
+X-Proofpoint-ORIG-GUID: U_KLsHmdKJWFr-Tktt2eHv9eA1WpvAJ9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX5o6h5Vxlqd6x
+ raI2O0+R7dRkgTD6dy8Yk2HQZ9H2MidHtbc06JFZvB+/LMfJqOYjPkWpot0FMuhj6PAgQKijvX8
+ INLJ5eW9lwkidlpVze/dFPzqC5OUguEkJN4w6MZ5MT3pQdTHVNBKnjgf9wiGadKlkbT0jOm7PEQ
+ d2Q5pLyGwyqt7Y2HHr0sMdMokR6dOr1wOqQwpZHiYFe04mZ9+KB7clZOXcX5mAYcWgWpf08m8Gk
+ hBxDjE8r0NbBGzQ8uHpxDx7B4wL2DSnNNR3jUocgWpjeZ/NVlAknrhhu1U1xJjMr4BZ2Gtf76ap
+ f8bYnwex6wjs9EbWUbFzyTp+BrBonGJZu9qrlzU/qbwa5ctV5N6DYW0WvSfbIk3lrvwoX/WAlAT
+ EcbNPYeJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
 
-The name field of an QOM-ified AddressSpace represents a property name,
-which may not be sufficient to identify the AddressSpace. Use
-address_space_get_path() instead.
+On Wed, 17 Sep 2025 14:30:06 +0200
+Heiko Carstens <hca@linux.ibm.com> wrote:
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- hw/vfio/listener.c     | 8 ++++++--
- hw/virtio/vhost-vdpa.c | 4 +++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+> On Wed, Sep 17, 2025 at 01:25:56PM +0200, Claudio Imbrenda wrote:
+> > On Wed, 17 Sep 2025 09:27:33 +0200
+> > Heiko Carstens <hca@linux.ibm.com> wrote:
+> >   
+> > > On Tue, Sep 16, 2025 at 07:36:44PM +0200, Heiko Carstens wrote:  
+> > > > On Tue, Sep 16, 2025 at 07:06:06PM +0200, Christian Borntraeger wrote:    
+> > > > > 
+> > > > > Am 16.09.25 um 19:05 schrieb Claudio Imbrenda:
+> > > > >     
+> > > > > > > > I think GFP_ATOMIC actually gives more guarantees?    
+> > > > > > > 
+> > > > > > > In real life GFP_ATOMIC can fail, GFP_KERNEL does not.All gfp allocation failures
+> > > > > > > are usually the atomic ones.    
+> > > > > > 
+> > > > > > interesting... then I guess I need GFP_KERNEL | GFP_ATOMIC ?    
+> > > > > 
+> > > > > No. ATOMIC always means: can fail.   
+> > 
+> > my issue is that GFP_KERNEL can sleep, and this allocation is sometimes
+> > called from atomic contexts (e.g. while holding spinlocks)
+> > 
+> > the right way to do this would be with mempools, to allocate memory
+> > (and potentially sleep) when we are not in atomic context, and use it
+> > whenever needed. this is on my to-do list for the future, but right now
+> > I'd like to avoid having to refactor a ton of code.  
+> 
+> I doubt this is accetable even for an intermediate solution. As soon
+> as the host is under memory pressure and starts doing I/O to free up
+> memory, you will end up in -ENOMEM situations for simple guest page
+> allocations.
+> 
+> What happens with a guest in such a situation? Is this gracefully
+> handled without that the guest is terminated?
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index f498e23a9374..d0418db28c8b 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -137,9 +137,11 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-                                 iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
-+        g_autofree char *path = address_space_get_path(iotlb->target_as);
-+
-         error_setg(&local_err,
-                    "Wrong target AS \"%s\", only system memory is allowed",
--                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-+                   path);
-         if (migration_is_running()) {
-             migration_file_set_error(-EINVAL, local_err);
-         } else {
-@@ -1060,9 +1062,11 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
- 
-     if (iotlb->target_as != &address_space_memory) {
-+        g_autofree char *path = address_space_get_path(iotlb->target_as);
-+
-         error_setg(&local_err,
-                    "Wrong target AS \"%s\", only system memory is allowed",
--                   iotlb->target_as->name ? iotlb->target_as->name : "none");
-+                   path);
-         goto out;
-     }
- 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 7061b6e1a386..7ed639358458 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -213,8 +213,10 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     hwaddr xlat;
- 
-     if (iotlb->target_as != &address_space_memory) {
-+        g_autofree char *path = address_space_get_path(iotlb->target_as);
-+
-         error_report("Wrong target AS \"%s\", only system memory is allowed",
--                     iotlb->target_as->name ? iotlb->target_as->name : "none");
-+                     path);
-         return;
-     }
-     RCU_READ_LOCK_GUARD();
+well, we return -ENOMEM to userspace (and qemu will probably kill the
+guest)
 
--- 
-2.51.0
+but if we can't even allocate 16kB, probably we're already in a pretty
+bad situation
 
+if you think this is not acceptable, I guess I'll have to implement
+mempools
+
+> 
+> > > Another correction: it should be GFP_KERNEL_ACCOUNT instead, like it
+> > > used to be before in gmap_alloc_crst() since those page tables should
+> > > be accounted to the process which is allocating them.  
+> > 
+> > gfp_types.h says:
+> > 
+> >  * %GFP_KERNEL_ACCOUNT is the same as GFP_KERNEL, except the allocation is
+> >  * accounted to kmemcg.
+> > 
+> > I thought that without GFP_KERNEL_ACCOUNT, it would be accounted toward
+> > the process?
+> > The documentation is a little confusing here  
+> 
+> Documentation/core-api/memory-allocation.rst:
+> 
+>   * Untrusted allocations triggered from userspace should be a subject
+>     of kmem accounting and must have ``__GFP_ACCOUNT`` bit set. There
+>     is the handy ``GFP_KERNEL_ACCOUNT`` shortcut for ``GFP_KERNEL``
+>     allocations that should be accounted.
+> 
+> This is done for all page table allocations, except if mm == init_mm
+> (and unfortunately also not for the s390 specific crste alloc
+> functions - I'll send a patch for that).
+
+alright, then GFP_KERNEL_ACCOUNT it is
