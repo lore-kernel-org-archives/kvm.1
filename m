@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FB933AE99
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3AE31A7EB
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114020; cv=none; b=u9A+HPV8nS4sAhHrJ0sjd26zZoh1xXM9C/eibROF3EppfSc38IegQCXukrG+1Z+Sn/pKsXm2udLl33axnzfjsBwAW6EkedN2GHID7FQG6fl43yLzGyY8opKfQXHmpF8NsoaCA6Tfe2Iq/lao02HVcOIwlkVbU2luTGCKCSdchkI=
+	t=1758114024; cv=none; b=mbk2eGdIFR7zBcegpqQtjZzBcAhYj3+57kKJPxe9qBsIv3Zaxf/MSdcY34vOMph7nkIJGD5J7BlP1osbieeKCBLMnP3nI9VXQfp4Uda+tAXMv/tzJups/NwV/Ekro9DMsjyagoS3v3qK9PIdsKk8Uz3o10/E4Ge+ZEBb9PXog4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114020; c=relaxed/simple;
-	bh=JRFc4ksc1UNvSmKmALMuQMHDOg+OEC+jVCY4eLrIN6M=;
+	s=arc-20240116; t=1758114024; c=relaxed/simple;
+	bh=h8ougk7wYpsrb/dZwIs5pcBs4smISUUH5dPV4BVrjYc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mUK6+r0TJMQIVqHnBmFQy38DwVTjfFD42+YYfX4bzn2shjrC3snvLxkMXj0MWe40LjsYqk7yagxbPGtvsU+AB8JsdckEjqYKJMhOnppfDCUP7S9cru8GITBbjDN3MIJDTkPAnyrNA6bLg1Fw8RtNiE3Qn99I5a0efLWJHWQKS2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=NnHkjpoW reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=lNpveE4QCfJnRhEqP1mpvWrhkVuFuPXEH9MjV/NAFlvtGTLjBOTdOu6oXdWVBnNQAakVK+bMFrsFvfyZTrhuaDFcVoKiVZYIjyVDHW902M+T4zT620IU6lUAdt9lF5H81OKjWRPvuAyvcCtoR/6RTuEl122zKgi1ojMSN/4k22w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=eJtUuI0y reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="NnHkjpoW"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="eJtUuI0y"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7E008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6o008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:59 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:39 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=PNMnLRjPBvJf9zcddoKVhh8oLqzzqK++XKLEpivd92g=;
+DKIM-Signature: a=rsa-sha256; bh=tPY4+EI/R0lfb/HHDdmqmqutVmQUXWIyf5YSX6d+Nrg=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113819; v=1;
-        b=NnHkjpoW1qu2A9ISqhFHI/sEjcpFLHlq7XeOdagISksFg/K6gT7AWSeADEGw+jb4
-         /jTUp3/6jw2bu6fLc6lokGgrHc+4+73QpMshfwovf+hai/Si50325YwQ6AUrGXPn
-         L0OonZkXl7Tw/2pRfxXP4mDxxH3bb/BWrIa7ELbzlAfgPN1zMO5K0kNwAqvEHpjk
-         GXXaClbIfU0su6HPiOUlAxpxnZnbb7eTdfWcrMsswVgKwdkB+omtHWH/7yrwQ6/s
-         4iVM0/TSccAb6c5jq4br+ALAoE+uepSCHAQSSh9qJTkQqxjeFjOaYqQuPB+xItjX
-         kZFt01frt8baCk4VqiV63A==
+        s=rs20250326; t=1758113800; v=1;
+        b=eJtUuI0y0LUOY2dC6/fCaR+Bh0ijW4fQbJ2sQmiYy/YrVI6YmvqM7/Jwd4NxnUxo
+         ipjTF+BMIwcDGGphE4huoKwcn7iPR0U+nKUb90tHwGqjwGLjYkm5AM0og9m6+eWu
+         liiy2zLmYLSyGL7hGZ8FQ1MIynzLCMgPyiL7ARtm5JDfwPkwiHBq7jvp9laZv5kJ
+         kaAC8NktVMWu+fnle0EHp0AL10+dZoj2G22yiOHGy96UUUkRPurQJuFlpdBP5ORs
+         SpiFdFVM4c3Ma0cO6NDNCNe90O50OHySYO0GI/Sjl1uMfuKXYGZDXV69iiT4e0jL
+         +iIFDc9A8MiqeVblBq+z9Q==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:46 +0900
-Subject: [PATCH 34/35] target/xtensa: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:22 +0900
+Subject: [PATCH 10/35] hw/i386: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-34-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-10-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,22 +119,57 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/xtensa/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/amd_iommu.c   | 5 +++--
+ hw/i386/intel_iommu.c | 6 ++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 26a1c87a7856..de68a36bc36f 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -272,7 +272,7 @@ static void xtensa_cpu_initfn(Object *obj)
-     env->system_er = g_malloc(sizeof(*env->system_er));
-     memory_region_init_io(env->system_er, obj, NULL, env, "er",
-                           UINT64_C(0x100000000));
--    address_space_init(env->address_space_er, NULL, env->system_er, "ER");
-+    address_space_init(env->address_space_er, obj, env->system_er, "er-as");
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index af239390ba04..541b9a8c89e1 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1494,7 +1494,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
  
-     cpu->clock = qdev_init_clock_in(DEVICE(obj), "clk-in", NULL, cpu, 0);
-     clock_set_hz(cpu->clock, env->config->clock_freq_khz * 1000);
+     /* set up AMD-Vi region */
+     if (!iommu_as[devfn]) {
+-        snprintf(name, sizeof(name), "amd_iommu_devfn_%d", devfn);
++        snprintf(name, sizeof(name), "as-%d", devfn);
+ 
+         iommu_as[devfn] = g_new0(AMDVIAddressSpace, 1);
+         iommu_as[devfn]->bus_num = (uint8_t)bus_num;
+@@ -1522,7 +1522,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                  "amd_iommu", UINT64_MAX);
+         memory_region_init(&amdvi_dev_as->root, OBJECT(s),
+                            "amdvi_root", UINT64_MAX);
+-        address_space_init(&amdvi_dev_as->as, NULL, &amdvi_dev_as->root, name);
++        address_space_init(&amdvi_dev_as->as, OBJECT(s), &amdvi_dev_as->root,
++                           name);
+         memory_region_add_subregion_overlap(&amdvi_dev_as->root, 0,
+                                             MEMORY_REGION(&amdvi_dev_as->iommu),
+                                             0);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 1f40d904326e..5e6d7d510e03 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4221,6 +4221,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+     vtd_iommu_unlock(s);
+ 
+     if (!vtd_dev_as) {
++        g_autofree char *as_name = NULL;
+         struct vtd_as_key *new_key;
+         /* Slow path */
+ 
+@@ -4263,8 +4264,9 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+         vtd_dev_as->iova_tree = iova_tree_new();
+ 
+         memory_region_init(&vtd_dev_as->root, OBJECT(s), name, UINT64_MAX);
+-        address_space_init(&vtd_dev_as->as, NULL, &vtd_dev_as->root,
+-                           "vtd-root");
++        as_name = g_strconcat(name, "-as", NULL);
++        address_space_init(&vtd_dev_as->as, OBJECT(s), &vtd_dev_as->root,
++                           as_name);
+ 
+         /*
+          * Build the DMAR-disabled container with aliases to the
 
 -- 
 2.51.0
