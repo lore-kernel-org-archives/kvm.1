@@ -1,42 +1,78 @@
-Received: from out28-51.mail.aliyun.com (out28-51.mail.aliyun.com [115.124.28.51])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368981E1E19;
-	Wed, 17 Sep 2025 13:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216A233140;
+	Wed, 17 Sep 2025 13:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758115665; cv=none; b=Xjb8KQUJroW0ZFCyb8qIqLziXXtdbD0wEel6rTsNN4ln187TdR7ovOjocOVcQhnFGKEar+4GlBQZD+2+0nGmaf4jmVgWklIboMJfVYI5y+cKkOt3HqpomHcxEgFyvNloNcUBwp5vLHSYZza6ga7Fk+CazdFC+AxsvtcUZaLkYzc=
+	t=1758115913; cv=none; b=uEsm+gIrRixIq7eDLGKj/kmV9AvliDaip9roqCndCqdCpA7TGdT2stzbcKbP6bnHwbZSunHJKoo0CVR6lS44czU2wtJ/r/bKVpaXv9RiLPBYjg8QHA3jAWtwWEW1G04EUUuQQrOmwj/rT31Nf+9i0JwvkCxh4+fIjuGUzCc+Rcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758115665; c=relaxed/simple;
-	bh=K20C3YswhYrkfhKueFLBtLWtxSyZRcsL0bdoVPT53qE=;
+	s=arc-20240116; t=1758115913; c=relaxed/simple;
+	bh=x3gyBBY/qsJIRib19GJ7BHYjDJuLpWk1XVSd/Oi8A7Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oitZYjkxwm8IApuPlzs1xcoRx67wQkhzk1luiP5OTDXRYf4CnHHJJfMZwiL6OaOjuEqHBBFcmsL0wXcix08m4CDN7MMbfqteLTT9+OlkzkXmHkgWi7pCokWtCq0N7fYyXmHoW5oPXEKB/VzuxFTIdnsbX/LZjLzq31L/4/kcp6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=WmkvACG8; arc=none smtp.client-ip=115.124.28.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=j+lHCRDv/dOXeG/7Am6O3vDc1B79oA+uYk1BjhoWsXp6YozeG6XNAgHU8K84hzwPT+0wQPy8feX9oivvz7YhKJZPnAQKV1qsSfMux1zFsK1x8SZujhd5IXDViYeR2T1YzFhfXiITyMKLsLkvKv+xjzu/CnqhEkKMbxw460KAAZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TXRwLXpp; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="WmkvACG8"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1758115651; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=Si9bvpV/P3U16VBrFiz4XdJmadG7Z1pIWYDjkXD5J7w=;
-	b=WmkvACG8SX5Ngqk5ERs31xbivHPu+DK4FgmUhhoMgYzlaSPpxfTKnQ2w4xoqhT3id8MujKlt0H+IpdOaUaA6w77uto+tV8MA4CKZk39Rp0E2Gu4+9f0p61UBreqcAUIcSyusoknAXskWuXfl0CE3pwvu2a0jmNKG+a8V5IBclJ8=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.ehKMKZL_1758114711 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Sep 2025 21:11:52 +0800
-Date: Wed, 17 Sep 2025 21:11:51 +0800
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] KVM: Disable IRQs in
- kvm_online_cpu()/kvm_offline_cpu()
-Message-ID: <20250917131151.GA100623@k08j02272.eu95sqa>
-References: <15fa59ba7f6f849082fb36735e784071539d5ad2.1758002303.git.houwenlong.hwl@antgroup.com>
- <dd4b8286774df98d58b5048e380b10d4de5836af.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TXRwLXpp"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58H9gl7B023594;
+	Wed, 17 Sep 2025 13:31:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Sbu7NnZUSKm5yjv89nNUmQ9BtNRTXk
+	mT6+ZPxq++Bi8=; b=TXRwLXppIvtqYAy4+VCEcHxo3n1sU5yd9tc7aKaOM+XXxK
+	/jAZpCcCRbcVHc53UxV/CPzLkWqztajInnHh3aXlI2j6AaROAsOZS/nzYNiqiwTC
+	1jhxUCR0JFa8JtFLH+2ODGasMb34XFmFhTtTwncE8YU0PayUtznMbO8e1MvioM9x
+	wVFDzPyDWjVuzoLosb+6MrG5gHNNsuSyG2BUgOJ0KxA67Cf/DYsGzVYCW28xE7Pd
+	/Mac7lll4l4A8e166GcQ0Zi0WH0ggq2J2HMBJsrJMUfaPKJ4m/T84xLpAzgvWAsE
+	zzyfvt5NUCVyNTvoKNIofMWBRX9TaPhmkxfnxVYA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4qkre7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 13:31:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58HAZbgK027268;
+	Wed, 17 Sep 2025 13:31:48 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495men9c77-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 13:31:48 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58HDViku54329670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Sep 2025 13:31:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CCB620043;
+	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B5F620040;
+	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.133])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 17 Sep 2025 13:31:44 +0000 (GMT)
+Date: Wed, 17 Sep 2025 15:31:42 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, frankja@linux.ibm.com, nsg@linux.ibm.com,
+        nrb@linux.ibm.com, seiden@linux.ibm.com, schlameuss@linux.ibm.com,
+        svens@linux.ibm.com, agordeev@linux.ibm.com, david@redhat.com,
+        gerald.schaefer@linux.ibm.com
+Subject: Re: [PATCH v2 08/20] KVM: s390: KVM page table management functions:
+ allocation
+Message-ID: <20250917133142.29680A26-hca@linux.ibm.com>
+References: <20250916162653.27229G04-hca@linux.ibm.com>
+ <20250916184737.47224f56@p-imbrenda>
+ <63e8c905-28b1-4e1f-be77-e0789bd75692@de.ibm.com>
+ <20250916190514.1a3082bd@p-imbrenda>
+ <15f451d9-ecb3-4a82-9b9a-2de64b93944d@de.ibm.com>
+ <20250916173644.27229Kcc-hca@linux.ibm.com>
+ <20250917072733.7515Af5-hca@linux.ibm.com>
+ <20250917132556.4814fe98@p-imbrenda>
+ <20250917123006.7515C59-hca@linux.ibm.com>
+ <20250917151124.1a53b0a6@p-imbrenda>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,107 +81,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dd4b8286774df98d58b5048e380b10d4de5836af.camel@intel.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20250917151124.1a53b0a6@p-imbrenda>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PVpF-bI6Uqmqcx65PZaFU38GY8eoKwlT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX3J7QqzpKio8C
+ KRHj9crAxgfXruNye09QIXWODrZNvd74QmSiU+FYsPSTiErAM4NqcICGoKZjHhCvwAr9Z1IAeCd
+ 4al3UkTe7pzw7QHURAhp85snfj3GHjULqtr7u884xMWLyvzEHBoUguPXR6L4k4aqYwebtVTzRYC
+ Zt9WRdFJ0L+88Vmg4ay4KeZS6/chkhtZDwssk1TGA5V+LNoTvwD3AcO2vAeMkrmmPnq2P3jLmoo
+ 41FjVFE1HIdMlmhJXx0VuJif471HtRIivytpCTyTSLSFHoqhuEYny9/b1A021ey01NbjTINu34z
+ CaKZ3cZVo1otsK7g6vAgTD5VCJ3eM+Roaw6ggB4YTzaToGHn+4yJKOtP7TV2Xrh1AgNSbJ6hsOw
+ yQMGHrYY
+X-Authority-Analysis: v=2.4 cv=R8oDGcRX c=1 sm=1 tr=0 ts=68cab844 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=7plvffdV2fzIC-KNDC0A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: PVpF-bI6Uqmqcx65PZaFU38GY8eoKwlT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
 
-On Tue, Sep 16, 2025 at 10:12:03AM +0000, Huang, Kai wrote:
-> On Tue, 2025-09-16 at 14:07 +0800, Hou Wenlong wrote:
-> > After the commit aaf12a7b4323 ("KVM: Rename and move
-> > CPUHP_AP_KVM_STARTING to ONLINE section"), KVM's hotplug callbacks have
-> > been moved into the ONLINE section, where IRQs and preemption are
-> > enabled according to the documentation. However, if IRQs are not
-> > guaranteed to be disabled, it could theoretically be a bug, because
-> > virtualization_enabled may be stale (with respect to the actual state of
-> > the hardware) when read from IRQ context, making the callback
-> > potentially reentrant. Therefore, disable IRQs in kvm_online_cpu() and
-> > kvm_offline_cpu() to ensure that all paths for
-> > kvm_enable_virtualization_cpu() and kvm_disable_virtualization_cpu() are
-> > in an IRQ-disabled state.
+On Wed, Sep 17, 2025 at 03:11:24PM +0200, Claudio Imbrenda wrote:
+> On Wed, 17 Sep 2025 14:30:06 +0200
+> Heiko Carstens <hca@linux.ibm.com> wrote:
+> > > > > > No. ATOMIC always means: can fail.   
+> > > 
+> > > my issue is that GFP_KERNEL can sleep, and this allocation is sometimes
+> > > called from atomic contexts (e.g. while holding spinlocks)
+> > > 
+> > > the right way to do this would be with mempools, to allocate memory
+> > > (and potentially sleep) when we are not in atomic context, and use it
+> > > whenever needed. this is on my to-do list for the future, but right now
+> > > I'd like to avoid having to refactor a ton of code.  
+> > 
+> > I doubt this is accetable even for an intermediate solution. As soon
+> > as the host is under memory pressure and starts doing I/O to free up
+> > memory, you will end up in -ENOMEM situations for simple guest page
+> > allocations.
+> > 
+> > What happens with a guest in such a situation? Is this gracefully
+> > handled without that the guest is terminated?
 > 
-> Reading the v1 thread [*], IIUC the "virtualization_enabled being stale
-> when read from IRQ context" is referring to the case where
-> kvm_disable_virtualization_cpu() got interrupted by IRQ and re-entered.
+> well, we return -ENOMEM to userspace (and qemu will probably kill the
+> guest)
 > 
-> But IIUC this shouldn't happen.  If I am not missing anything, the
-> syscore_shutdown() (from which KVM sends IRQ to call
-> kvm_disable_virtualization_cpu()) is always called after
-> migrate_to_reboot_cpu(), which internally waits for currently running CPU
-> hotplug to complete (if any) and disables future CPU hotplug.  Therefore
-> it shouldn't be possible that kvm_disable_virtualization_cpu() could be
-> interrupted and re-entered via IRQ.
-> 
-Yes, you are right. The syscore_ops are exclusive hotplug callbacks, so
-there are actually no bugs, and I didn't add a Fix tag here. The above
-description is just an assumption in case it is interrupted, as the
-callback is not in an IRQ-disabled state. Sorry, I forgot to include the
-important part you mentioned in my commit message.
+> but if we can't even allocate 16kB, probably we're already in a pretty
+> bad situation
 
-> I don't oppose this code change, but I think this should somehow
-> documented in the changelog, if I am not missing anything?
-> 
-> [*]: https://lore.kernel.org/kvm/aMirvo9Xly5fVmbY@google.com/
-> > 
-> > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-> > ---
-> >  virt/kvm/kvm_main.c | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 18f29ef93543..cf8dddeed37e 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -5580,6 +5580,8 @@ __weak void kvm_arch_disable_virtualization(void)
-> >  
-> >  static int kvm_enable_virtualization_cpu(void)
-> >  {
-> > +	lockdep_assert_irqs_disabled();
-> > +
-> >  	if (__this_cpu_read(virtualization_enabled))
-> >  		return 0;
-> >  
-> > @@ -5595,6 +5597,8 @@ static int kvm_enable_virtualization_cpu(void)
-> >  
-> >  static int kvm_online_cpu(unsigned int cpu)
-> >  {
-> > +	guard(irqsave)();
-> > +
-> >  	/*
-> >  	 * Abort the CPU online process if hardware virtualization cannot
-> >  	 * be enabled. Otherwise running VMs would encounter unrecoverable
-> > @@ -5605,6 +5609,8 @@ static int kvm_online_cpu(unsigned int cpu)
-> >  
-> >  static void kvm_disable_virtualization_cpu(void *ign)
-> >  {
-> > +	lockdep_assert_irqs_disabled();
-> > +
-> >  	if (!__this_cpu_read(virtualization_enabled))
-> >  		return;
-> >  
-> > @@ -5615,6 +5621,8 @@ static void kvm_disable_virtualization_cpu(void *ign)
-> >  
-> >  static int kvm_offline_cpu(unsigned int cpu)
-> >  {
-> > +	guard(irqsave)();
-> > +
-> >  	kvm_disable_virtualization_cpu(NULL);
-> >  	return 0;
-> >  }
-> > @@ -5648,7 +5656,6 @@ static int kvm_suspend(void)
-> >  	 * dropped all locks (userspace tasks are frozen via a fake signal).
-> >  	 */
-> >  	lockdep_assert_not_held(&kvm_usage_lock);
-> > -	lockdep_assert_irqs_disabled();
-> >  
-> >  	kvm_disable_virtualization_cpu(NULL);
-> >  	return 0;
-> > @@ -5657,7 +5664,6 @@ static int kvm_suspend(void)
-> >  static void kvm_resume(void)
-> >  {
-> >  	lockdep_assert_not_held(&kvm_usage_lock);
-> > -	lockdep_assert_irqs_disabled();
-> >  
-> >  	WARN_ON_ONCE(kvm_enable_virtualization_cpu());
-> >  }
-> > 
-> > base-commit: a6ad54137af92535cfe32e19e5f3bc1bb7dbd383
+Not necessarily...
+
+> if you think this is not acceptable, I guess I'll have to implement
+> mempools
+
+...since the kernel _might_ be easily capable of freeing memory, e.g. by
+writing to swap or writing file contents to disk. But this wouldn't happen
+with GFP_ATOMIC allocations.
+
+I'm just stating that with GFP_ATOMIC for guest page table allocations it is
+much more likely that guests might be killed compared to what we have now.
+
+Also I'm wondering why such code paths where page tables in atomic context
+need to be allocated even exist. Is that s390 specific (aka the new code), or
+is this due to common code requirements?
