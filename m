@@ -1,734 +1,162 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AE52F069B
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 14:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19024332A5E
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 15:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120877; cv=none; b=pnIX2EIbsgtcI4rB6ozWHchgJEIa5m55MxrRr9jrWYId7JD4/7N5S7DD2Fn7WTyVtDTKVbkCGZX3ycuA/vQA+vVNjA1dR3JFCVkx5XtNYvp78+ZPkKDaBLKBdWNZBsOLFT4U8cNeDTf7Wa5owOa+gJOX2vf1mt4S9Tflq4v2OJM=
+	t=1758121363; cv=none; b=DuWo4QGVCgTUzlgIK5gom1i+af9uyMdeG6wJUW4Fr0D9hW7fcXma0YN5D+ptPIm2erspQUHpdvmBRShBHAHWPwomnSpkZuDosKJWq7xQ5WAqPTe36y99HG9YSD+o7toXmVxNe6RanF2L3dbZ5SoOPUqqc50PlmD+N+yPU8Rt3oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120877; c=relaxed/simple;
-	bh=Av6YBQKD/jmht62RUX+05tEvmCUPo6T7CC+uNvhUyrk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWvXcAj+/B6NAoXk6EINxtake0ELS5L1tfGnMAn1SlyhxaKDanMY0+qXyUakte8W8GwXMmRrgryZz/xAo0xk7zCXta5JK0Hn7DP6yxJl5W0qRNV1TltUNHm4Lc4WaE+fbi8e+0YHzqexUJ0B8oGvgKRW1+ZsSh0CcvZnz5an78A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ORDiEYWm; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ORDiEYWm; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1758121363; c=relaxed/simple;
+	bh=ETwcmm8JSn0BgJbSlKE3RKnZqCQXSERLDynaqBiXOuw=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=n73Hx+WEm9djGJhzreStFpky17GZmDCTAj+dQ8SxPX7bw0qHViUBMbJ9cp2cGJyNYa8E3ZZ4G1x9DqA4btoFoUWep1d1OjrBKp8d8Lu/aCVwWa+ZdQVPmCnTcRZF7Ed06pvASRpNDYsA/I/iZHS1VqCL4b5kjxzugguanXGpQSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=blDTTlyN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ORDiEYWm";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ORDiEYWm"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E1BA820750;
-	Wed, 17 Sep 2025 14:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1758120869; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8N8BNr/7G8ZPffjUZylDkTdtOKvkH1xYKfpPdWRSBgI=;
-	b=ORDiEYWmAela846ojlOVLwooqr/l77scEgcBOUJ0aSiWHokuZRLUlxjJPjpX4ZD2MMFEwK
-	P49ZJ81MPF/fWgauv0Qo4AJBsMaC7YWI4ZSHS8VWZs458lkcWRRCZpLeoPzwhR46fNLxPl
-	Ip1sAzpb4AZ5JIvSAelSG9MV+ARGsbE=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1758120869; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8N8BNr/7G8ZPffjUZylDkTdtOKvkH1xYKfpPdWRSBgI=;
-	b=ORDiEYWmAela846ojlOVLwooqr/l77scEgcBOUJ0aSiWHokuZRLUlxjJPjpX4ZD2MMFEwK
-	P49ZJ81MPF/fWgauv0Qo4AJBsMaC7YWI4ZSHS8VWZs458lkcWRRCZpLeoPzwhR46fNLxPl
-	Ip1sAzpb4AZ5JIvSAelSG9MV+ARGsbE=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DF291368D;
-	Wed, 17 Sep 2025 14:54:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZzqRBaXLymieEwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Wed, 17 Sep 2025 14:54:29 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-hyperv@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 21/21] x86/pvlocks: Move paravirt spinlock functions into own header
-Date: Wed, 17 Sep 2025 16:52:20 +0200
-Message-ID: <20250917145220.31064-22-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917145220.31064-1-jgross@suse.com>
-References: <20250917145220.31064-1-jgross@suse.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="blDTTlyN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758121360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=YYhCdI4Q9hUzoKgBgYNuwcWvhIZyQUxhaAtXakv2Ac0=;
+	b=blDTTlyNlUxbMENrvHb6X3XzzDTvfrtfAw32cXjuJifA7hjLi+fdKuHz99GjO6QZAg8VBO
+	urUVZpzjrTfwi1BIxGLrGN+WhOzS2KYKleSyP9SPC9WW8GEkqht2S0I5ZXDVUB/C1/diYU
+	ufZQeCH/mS+siGGGxZEP/0wZeL4qUmI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-265-bLRdLIYhPZuDAqcnyMdH7w-1; Wed, 17 Sep 2025 11:02:38 -0400
+X-MC-Unique: bLRdLIYhPZuDAqcnyMdH7w-1
+X-Mimecast-MFC-AGG-ID: bLRdLIYhPZuDAqcnyMdH7w_1758121357
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45ceeae0513so42343955e9.0
+        for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 08:02:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758121357; x=1758726157;
+        h=content-transfer-encoding:autocrypt:subject:to:content-language
+         :from:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YYhCdI4Q9hUzoKgBgYNuwcWvhIZyQUxhaAtXakv2Ac0=;
+        b=sTNpg4HSAxXJezZFZBwx+tc6J+Dqz7gNGnhbdovhc6z7pA49yZPSEPXhqxBcco7xlO
+         uCDcVKAwvPCCY/A4hHYwcyUptdDmG5Y5gzdz2lSJszk2YlW3c6G70CqHFK6GYIFoddWE
+         g1iXWLkzkn7d7lSkWVXveMMPJ5I6mL1k7XcMRR3vdMpvN9gRnnjdnC3xQS4ErtGxb2Bz
+         mqu2Vvcp3fRmHJaPEPd8Lw5p20jRA3TG4ePNTTxFqEwmKbBxTBru11cHCk2+I2HLRj7w
+         AqzqHqQ7MqQaXQjfOxxymFZg3x2fwUjetq0lQVnxRAN7ftf3wztCzbPKjlWN/O/O+6m2
+         WYXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXLwP1chzlfz+Z4NXCIjmgY5c39ZKb1NNIQw9KQtpNE6bGDjtlM/BGI/vs7VIX1mGF8z74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybZVQN2qPDPq/dmUS4S4WQUAqIl11SryO7+XzuS6INp33VmuVB
+	QLc9XJZZRPjdPABybB4Lk0QTNmG5b6KgRtQgSA7xPSgVreNFwhvtrn9yUoCwcnBactQW0NrcsBi
+	6qUuJLVrPrbxgGp+in44FmdPulJlughf4tjlu7SwEY2SClX/bvl08dg==
+X-Gm-Gg: ASbGnctgbkO3VPVTWDDs6eLCP801rt6YlN7LcDmcKhIhbIgVgp/DYLJ32YI4BYWbLtL
+	lWgdD3YBsp4iFQCwYVeWmv9tszjApcKCvAnI7Vb8WXEpvtWzlzwqwndwKW6ogb4GCIip9Duxi1s
+	R894cXOwD7XXQDefYkAjRDj/3HDF5nY0C+Hy5PTyIRceJ88x7Hdh2lyb/QiU+I3FMvEybMXP+OU
+	F+uLyjXeYE5Mx7vdjedTa5sVtAIcOfYWcdYx0m6yuK3BPHwd8Iv95mkgvrmKaKsSLrEPMFbFXxo
+	9flC1KkjHCUccEI4TT3a0YaZp+Fu1a+n0GIkW1JzzGKJ+BlTFwi5+p+qGQ67H0eRtgbhEDUOCrm
+	zBAWa4XTBIA0yiawE6WvziH/jx/1kqxaSK7FBOJWgKH7hhZPaqXkKltGtxwm/CCYx
+X-Received: by 2002:a05:600c:4f03:b0:45f:bef7:670b with SMTP id 5b1f17b1804b1-463699748c5mr11533305e9.3.1758121356151;
+        Wed, 17 Sep 2025 08:02:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENQagQHTk2oT9ysMwgYVh+So5rsFAoYrcTyucKX1OXr6gl3RPWUZl+VDYfCpD1fI5KhTXxfw==
+X-Received: by 2002:a05:600c:4f03:b0:45f:bef7:670b with SMTP id 5b1f17b1804b1-463699748c5mr11531555e9.3.1758121353883;
+        Wed, 17 Sep 2025 08:02:33 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e98b439442sm15671180f8f.38.2025.09.17.08.02.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 08:02:32 -0700 (PDT)
+Message-ID: <46bc189b-911e-4dfe-bafa-43ffb9200427@redhat.com>
+Date: Wed, 17 Sep 2025 17:02:31 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
+User-Agent: Mozilla Thunderbird
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-09-18
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Instead of having the pv spinlock function definitions in paravirt.h,
-move them into the new header paravirt-spinlock.h.
+Hi everybody,
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
-V2:
-- use new header instead of qspinlock.h
-- use dedicated pv_ops_lock array
-- move more paravirt related lock code
----
- arch/x86/hyperv/hv_spinlock.c            |  10 +-
- arch/x86/include/asm/paravirt-spinlock.h | 146 +++++++++++++++++++++++
- arch/x86/include/asm/paravirt.h          |  61 ----------
- arch/x86/include/asm/paravirt_types.h    |  17 ---
- arch/x86/include/asm/qspinlock.h         |  89 ++------------
- arch/x86/kernel/Makefile                 |   2 +-
- arch/x86/kernel/kvm.c                    |  10 +-
- arch/x86/kernel/paravirt-spinlocks.c     |  24 +++-
- arch/x86/kernel/paravirt.c               |  21 ----
- arch/x86/xen/spinlock.c                  |  10 +-
- tools/objtool/check.c                    |   1 +
- 11 files changed, 192 insertions(+), 199 deletions(-)
- create mode 100644 arch/x86/include/asm/paravirt-spinlock.h
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2025-09-18 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-diff --git a/arch/x86/hyperv/hv_spinlock.c b/arch/x86/hyperv/hv_spinlock.c
-index 2a3c2afb0154..210b494e4de0 100644
---- a/arch/x86/hyperv/hv_spinlock.c
-+++ b/arch/x86/hyperv/hv_spinlock.c
-@@ -78,11 +78,11 @@ void __init hv_init_spinlocks(void)
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
--	pv_ops.lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
--	pv_ops.lock.queued_spin_unlock = PV_CALLEE_SAVE(__pv_queued_spin_unlock);
--	pv_ops.lock.wait = hv_qlock_wait;
--	pv_ops.lock.kick = hv_qlock_kick;
--	pv_ops.lock.vcpu_is_preempted = PV_CALLEE_SAVE(hv_vcpu_is_preempted);
-+	pv_ops_lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
-+	pv_ops_lock.queued_spin_unlock = PV_CALLEE_SAVE(__pv_queued_spin_unlock);
-+	pv_ops_lock.wait = hv_qlock_wait;
-+	pv_ops_lock.kick = hv_qlock_kick;
-+	pv_ops_lock.vcpu_is_preempted = PV_CALLEE_SAVE(hv_vcpu_is_preempted);
- }
- 
- static __init int hv_parse_nopvspin(char *arg)
-diff --git a/arch/x86/include/asm/paravirt-spinlock.h b/arch/x86/include/asm/paravirt-spinlock.h
-new file mode 100644
-index 000000000000..ed3ed343903d
---- /dev/null
-+++ b/arch/x86/include/asm/paravirt-spinlock.h
-@@ -0,0 +1,146 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASM_X86_PARAVIRT_SPINLOCK_H
-+#define _ASM_X86_PARAVIRT_SPINLOCK_H
-+
-+#include <asm/paravirt_types.h>
-+
-+#ifdef CONFIG_SMP
-+#include <asm/spinlock_types.h>
-+#endif
-+
-+struct qspinlock;
-+
-+struct pv_lock_ops {
-+	void (*queued_spin_lock_slowpath)(struct qspinlock *lock, u32 val);
-+	struct paravirt_callee_save queued_spin_unlock;
-+
-+	void (*wait)(u8 *ptr, u8 val);
-+	void (*kick)(int cpu);
-+
-+	struct paravirt_callee_save vcpu_is_preempted;
-+} __no_randomize_layout;
-+
-+extern struct pv_lock_ops pv_ops_lock;
-+
-+#ifdef CONFIG_PARAVIRT_SPINLOCKS
-+void __init paravirt_set_cap(void);
-+extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
-+extern void __pv_init_lock_hash(void);
-+extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
-+extern void __raw_callee_save___pv_queued_spin_unlock(struct qspinlock *lock);
-+extern bool nopvspin;
-+
-+static __always_inline void pv_queued_spin_lock_slowpath(struct qspinlock *lock,
-+							 u32 val)
-+{
-+	PVOP_VCALL2(pv_ops_lock, queued_spin_lock_slowpath, lock, val);
-+}
-+
-+static __always_inline void pv_queued_spin_unlock(struct qspinlock *lock)
-+{
-+	PVOP_ALT_VCALLEE1(pv_ops_lock, queued_spin_unlock, lock,
-+			  "movb $0, (%%" _ASM_ARG1 ");",
-+			  ALT_NOT(X86_FEATURE_PVUNLOCK));
-+}
-+
-+static __always_inline bool pv_vcpu_is_preempted(long cpu)
-+{
-+	return PVOP_ALT_CALLEE1(bool, pv_ops_lock, vcpu_is_preempted, cpu,
-+				"xor %%" _ASM_AX ", %%" _ASM_AX ";",
-+				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
-+}
-+
-+#define queued_spin_unlock queued_spin_unlock
-+/**
-+ * queued_spin_unlock - release a queued spinlock
-+ * @lock : Pointer to queued spinlock structure
-+ *
-+ * A smp_store_release() on the least-significant byte.
-+ */
-+static inline void native_queued_spin_unlock(struct qspinlock *lock)
-+{
-+	smp_store_release(&lock->locked, 0);
-+}
-+
-+static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
-+{
-+	pv_queued_spin_lock_slowpath(lock, val);
-+}
-+
-+static inline void queued_spin_unlock(struct qspinlock *lock)
-+{
-+	kcsan_release();
-+	pv_queued_spin_unlock(lock);
-+}
-+
-+#define vcpu_is_preempted vcpu_is_preempted
-+static inline bool vcpu_is_preempted(long cpu)
-+{
-+	return pv_vcpu_is_preempted(cpu);
-+}
-+
-+static __always_inline void pv_wait(u8 *ptr, u8 val)
-+{
-+	PVOP_VCALL2(pv_ops_lock, wait, ptr, val);
-+}
-+
-+static __always_inline void pv_kick(int cpu)
-+{
-+	PVOP_VCALL1(pv_ops_lock, kick, cpu);
-+}
-+
-+void __raw_callee_save___native_queued_spin_unlock(struct qspinlock *lock);
-+bool __raw_callee_save___native_vcpu_is_preempted(long cpu);
-+#endif /* CONFIG_PARAVIRT_SPINLOCKS */
-+
-+void __init native_pv_lock_init(void);
-+__visible void __native_queued_spin_unlock(struct qspinlock *lock);
-+bool pv_is_native_spin_unlock(void);
-+__visible bool __native_vcpu_is_preempted(long cpu);
-+bool pv_is_native_vcpu_is_preempted(void);
-+
-+/*
-+ * virt_spin_lock_key - disables by default the virt_spin_lock() hijack.
-+ *
-+ * Native (and PV wanting native due to vCPU pinning) should keep this key
-+ * disabled. Native does not touch the key.
-+ *
-+ * When in a guest then native_pv_lock_init() enables the key first and
-+ * KVM/XEN might conditionally disable it later in the boot process again.
-+ */
-+DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
-+
-+/*
-+ * Shortcut for the queued_spin_lock_slowpath() function that allows
-+ * virt to hijack it.
-+ *
-+ * Returns:
-+ *   true - lock has been negotiated, all done;
-+ *   false - queued_spin_lock_slowpath() will do its thing.
-+ */
-+#define virt_spin_lock virt_spin_lock
-+static inline bool virt_spin_lock(struct qspinlock *lock)
-+{
-+	int val;
-+
-+	if (!static_branch_likely(&virt_spin_lock_key))
-+		return false;
-+
-+	/*
-+	 * On hypervisors without PARAVIRT_SPINLOCKS support we fall
-+	 * back to a Test-and-Set spinlock, because fair locks have
-+	 * horrible lock 'holder' preemption issues.
-+	 */
-+
-+ __retry:
-+	val = atomic_read(&lock->val);
-+
-+	if (val || !atomic_try_cmpxchg(&lock->val, &val, _Q_LOCKED_VAL)) {
-+		cpu_relax();
-+		goto __retry;
-+	}
-+
-+	return true;
-+}
-+
-+#endif /* _ASM_X86_PARAVIRT_SPINLOCK_H */
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index ec274d13bae0..b21072af731d 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -19,15 +19,6 @@
- #include <linux/cpumask.h>
- #include <asm/frame.h>
- 
--__visible void __native_queued_spin_unlock(struct qspinlock *lock);
--bool pv_is_native_spin_unlock(void);
--__visible bool __native_vcpu_is_preempted(long cpu);
--bool pv_is_native_vcpu_is_preempted(void);
--
--#ifdef CONFIG_PARAVIRT_SPINLOCKS
--void __init paravirt_set_cap(void);
--#endif
--
- /* The paravirtualized I/O functions */
- static inline void slow_down_io(void)
- {
-@@ -522,46 +513,7 @@ static inline void __set_fixmap(unsigned /* enum fixed_addresses */ idx,
- {
- 	pv_ops.mmu.set_fixmap(idx, phys, flags);
- }
--#endif
--
--#if defined(CONFIG_SMP) && defined(CONFIG_PARAVIRT_SPINLOCKS)
--
--static __always_inline void pv_queued_spin_lock_slowpath(struct qspinlock *lock,
--							u32 val)
--{
--	PVOP_VCALL2(pv_ops, lock.queued_spin_lock_slowpath, lock, val);
--}
--
--static __always_inline void pv_queued_spin_unlock(struct qspinlock *lock)
--{
--	PVOP_ALT_VCALLEE1(pv_ops, lock.queued_spin_unlock, lock,
--			  "movb $0, (%%" _ASM_ARG1 ");",
--			  ALT_NOT(X86_FEATURE_PVUNLOCK));
--}
--
--static __always_inline void pv_wait(u8 *ptr, u8 val)
--{
--	PVOP_VCALL2(pv_ops, lock.wait, ptr, val);
--}
--
--static __always_inline void pv_kick(int cpu)
--{
--	PVOP_VCALL1(pv_ops, lock.kick, cpu);
--}
--
--static __always_inline bool pv_vcpu_is_preempted(long cpu)
--{
--	return PVOP_ALT_CALLEE1(bool, pv_ops, lock.vcpu_is_preempted, cpu,
--				"xor %%" _ASM_AX ", %%" _ASM_AX ";",
--				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
--}
- 
--void __raw_callee_save___native_queued_spin_unlock(struct qspinlock *lock);
--bool __raw_callee_save___native_vcpu_is_preempted(long cpu);
--
--#endif /* SMP && PARAVIRT_SPINLOCKS */
--
--#ifdef CONFIG_PARAVIRT_XXL
- static __always_inline unsigned long arch_local_save_flags(void)
- {
- 	return PVOP_ALT_CALLEE0(unsigned long, pv_ops, irq.save_fl, "pushf; pop %%rax;",
-@@ -588,8 +540,6 @@ static __always_inline unsigned long arch_local_irq_save(void)
- }
- #endif
- 
--void native_pv_lock_init(void) __init;
--
- #else  /* __ASSEMBLER__ */
- 
- #ifdef CONFIG_X86_64
-@@ -613,12 +563,6 @@ void native_pv_lock_init(void) __init;
- #endif /* __ASSEMBLER__ */
- #else  /* CONFIG_PARAVIRT */
- # define default_banner x86_init_noop
--
--#ifndef __ASSEMBLER__
--static inline void native_pv_lock_init(void)
--{
--}
--#endif
- #endif /* !CONFIG_PARAVIRT */
- 
- #ifndef __ASSEMBLER__
-@@ -634,10 +578,5 @@ static inline void paravirt_arch_exit_mmap(struct mm_struct *mm)
- }
- #endif
- 
--#ifndef CONFIG_PARAVIRT_SPINLOCKS
--static inline void paravirt_set_cap(void)
--{
--}
--#endif
- #endif /* __ASSEMBLER__ */
- #endif /* _ASM_X86_PARAVIRT_H */
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 01a485f1a7f1..e2b487d35d14 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -184,22 +184,6 @@ struct pv_mmu_ops {
- #endif
- } __no_randomize_layout;
- 
--#ifdef CONFIG_SMP
--#include <asm/spinlock_types.h>
--#endif
--
--struct qspinlock;
--
--struct pv_lock_ops {
--	void (*queued_spin_lock_slowpath)(struct qspinlock *lock, u32 val);
--	struct paravirt_callee_save queued_spin_unlock;
--
--	void (*wait)(u8 *ptr, u8 val);
--	void (*kick)(int cpu);
--
--	struct paravirt_callee_save vcpu_is_preempted;
--} __no_randomize_layout;
--
- /* This contains all the paravirt structures: we get a convenient
-  * number for each function using the offset which we use to indicate
-  * what to patch. */
-@@ -207,7 +191,6 @@ struct paravirt_patch_template {
- 	struct pv_cpu_ops	cpu;
- 	struct pv_irq_ops	irq;
- 	struct pv_mmu_ops	mmu;
--	struct pv_lock_ops	lock;
- } __no_randomize_layout;
- 
- extern struct paravirt_patch_template pv_ops;
-diff --git a/arch/x86/include/asm/qspinlock.h b/arch/x86/include/asm/qspinlock.h
-index 68da67df304d..a2668bdf4c84 100644
---- a/arch/x86/include/asm/qspinlock.h
-+++ b/arch/x86/include/asm/qspinlock.h
-@@ -7,6 +7,9 @@
- #include <asm-generic/qspinlock_types.h>
- #include <asm/paravirt.h>
- #include <asm/rmwcc.h>
-+#ifdef CONFIG_PARAVIRT
-+#include <asm/paravirt-spinlock.h>
-+#endif
- 
- #define _Q_PENDING_LOOPS	(1 << 9)
- 
-@@ -27,89 +30,13 @@ static __always_inline u32 queued_fetch_set_pending_acquire(struct qspinlock *lo
- 	return val;
- }
- 
--#ifdef CONFIG_PARAVIRT_SPINLOCKS
--extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
--extern void __pv_init_lock_hash(void);
--extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
--extern void __raw_callee_save___pv_queued_spin_unlock(struct qspinlock *lock);
--extern bool nopvspin;
--
--#define	queued_spin_unlock queued_spin_unlock
--/**
-- * queued_spin_unlock - release a queued spinlock
-- * @lock : Pointer to queued spinlock structure
-- *
-- * A smp_store_release() on the least-significant byte.
-- */
--static inline void native_queued_spin_unlock(struct qspinlock *lock)
--{
--	smp_store_release(&lock->locked, 0);
--}
--
--static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
--{
--	pv_queued_spin_lock_slowpath(lock, val);
--}
--
--static inline void queued_spin_unlock(struct qspinlock *lock)
--{
--	kcsan_release();
--	pv_queued_spin_unlock(lock);
--}
--
--#define vcpu_is_preempted vcpu_is_preempted
--static inline bool vcpu_is_preempted(long cpu)
--{
--	return pv_vcpu_is_preempted(cpu);
--}
-+#ifndef CONFIG_PARAVIRT_SPINLOCKS
-+static inline void paravirt_set_cap(void) { }
- #endif
- 
--#ifdef CONFIG_PARAVIRT
--/*
-- * virt_spin_lock_key - disables by default the virt_spin_lock() hijack.
-- *
-- * Native (and PV wanting native due to vCPU pinning) should keep this key
-- * disabled. Native does not touch the key.
-- *
-- * When in a guest then native_pv_lock_init() enables the key first and
-- * KVM/XEN might conditionally disable it later in the boot process again.
-- */
--DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
--
--/*
-- * Shortcut for the queued_spin_lock_slowpath() function that allows
-- * virt to hijack it.
-- *
-- * Returns:
-- *   true - lock has been negotiated, all done;
-- *   false - queued_spin_lock_slowpath() will do its thing.
-- */
--#define virt_spin_lock virt_spin_lock
--static inline bool virt_spin_lock(struct qspinlock *lock)
--{
--	int val;
--
--	if (!static_branch_likely(&virt_spin_lock_key))
--		return false;
--
--	/*
--	 * On hypervisors without PARAVIRT_SPINLOCKS support we fall
--	 * back to a Test-and-Set spinlock, because fair locks have
--	 * horrible lock 'holder' preemption issues.
--	 */
--
-- __retry:
--	val = atomic_read(&lock->val);
--
--	if (val || !atomic_try_cmpxchg(&lock->val, &val, _Q_LOCKED_VAL)) {
--		cpu_relax();
--		goto __retry;
--	}
--
--	return true;
--}
--
--#endif /* CONFIG_PARAVIRT */
-+#ifndef CONFIG_PARAVIRT
-+static inline void native_pv_lock_init(void) { }
-+#endif
- 
- #include <asm-generic/qspinlock.h>
- 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 0d2a6d953be9..56d57944fa4b 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -126,7 +126,7 @@ obj-$(CONFIG_DEBUG_NMI_SELFTEST) += nmi_selftest.o
- 
- obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvmclock.o
- obj-$(CONFIG_PARAVIRT)		+= paravirt.o
--obj-$(CONFIG_PARAVIRT_SPINLOCKS)+= paravirt-spinlocks.o
-+obj-$(CONFIG_PARAVIRT)		+= paravirt-spinlocks.o
- obj-$(CONFIG_PARAVIRT_CLOCK)	+= pvclock.o
- obj-$(CONFIG_X86_PMEM_LEGACY_DEVICE) += pmem.o
- 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index a23211eaaeed..a94376d04dca 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -825,7 +825,7 @@ static void __init kvm_guest_init(void)
- 		has_steal_clock = 1;
- 		static_call_update(pv_steal_clock, kvm_steal_clock);
- 
--		pv_ops.lock.vcpu_is_preempted =
-+		pv_ops_lock.vcpu_is_preempted =
- 			PV_CALLEE_SAVE(__kvm_vcpu_is_preempted);
- 	}
- 
-@@ -1105,11 +1105,11 @@ void __init kvm_spinlock_init(void)
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
--	pv_ops.lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
--	pv_ops.lock.queued_spin_unlock =
-+	pv_ops_lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
-+	pv_ops_lock.queued_spin_unlock =
- 		PV_CALLEE_SAVE(__pv_queued_spin_unlock);
--	pv_ops.lock.wait = kvm_wait;
--	pv_ops.lock.kick = kvm_kick_cpu;
-+	pv_ops_lock.wait = kvm_wait;
-+	pv_ops_lock.kick = kvm_kick_cpu;
- 
- 	/*
- 	 * When PV spinlock is enabled which is preferred over
-diff --git a/arch/x86/kernel/paravirt-spinlocks.c b/arch/x86/kernel/paravirt-spinlocks.c
-index 9e1ea99ad9df..f9cf6f71395a 100644
---- a/arch/x86/kernel/paravirt-spinlocks.c
-+++ b/arch/x86/kernel/paravirt-spinlocks.c
-@@ -3,12 +3,20 @@
-  * Split spinlock implementation out into its own file, so it can be
-  * compiled in a FTRACE-compatible way.
-  */
-+#include <linux/static_call.h>
- #include <linux/spinlock.h>
- #include <linux/export.h>
- #include <linux/jump_label.h>
- 
--#include <asm/paravirt.h>
-+DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
- 
-+void __init native_pv_lock_init(void)
-+{
-+	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		static_branch_enable(&virt_spin_lock_key);
-+}
-+
-+#ifdef CONFIG_PARAVIRT_SPINLOCKS
- __visible void __native_queued_spin_unlock(struct qspinlock *lock)
- {
- 	native_queued_spin_unlock(lock);
-@@ -17,7 +25,7 @@ PV_CALLEE_SAVE_REGS_THUNK(__native_queued_spin_unlock);
- 
- bool pv_is_native_spin_unlock(void)
- {
--	return pv_ops.lock.queued_spin_unlock.func ==
-+	return pv_ops_lock.queued_spin_unlock.func ==
- 		__raw_callee_save___native_queued_spin_unlock;
- }
- 
-@@ -29,7 +37,7 @@ PV_CALLEE_SAVE_REGS_THUNK(__native_vcpu_is_preempted);
- 
- bool pv_is_native_vcpu_is_preempted(void)
- {
--	return pv_ops.lock.vcpu_is_preempted.func ==
-+	return pv_ops_lock.vcpu_is_preempted.func ==
- 		__raw_callee_save___native_vcpu_is_preempted;
- }
- 
-@@ -41,3 +49,13 @@ void __init paravirt_set_cap(void)
- 	if (!pv_is_native_vcpu_is_preempted())
- 		setup_force_cpu_cap(X86_FEATURE_VCPUPREEMPT);
- }
-+
-+struct pv_lock_ops pv_ops_lock = {
-+	.queued_spin_lock_slowpath	= native_queued_spin_lock_slowpath,
-+	.queued_spin_unlock		= PV_CALLEE_SAVE(__native_queued_spin_unlock),
-+	.wait				= paravirt_nop,
-+	.kick				= paravirt_nop,
-+	.vcpu_is_preempted		= PV_CALLEE_SAVE(__native_vcpu_is_preempted),
-+};
-+EXPORT_SYMBOL(pv_ops_lock);
-+#endif
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 5dfbd3f55792..a6ed52cae003 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -57,14 +57,6 @@ DEFINE_ASM_FUNC(pv_native_irq_enable, "sti", .noinstr.text);
- DEFINE_ASM_FUNC(pv_native_read_cr2, "mov %cr2, %rax", .noinstr.text);
- #endif
- 
--DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
--
--void __init native_pv_lock_init(void)
--{
--	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
--		static_branch_enable(&virt_spin_lock_key);
--}
--
- static noinstr void pv_native_safe_halt(void)
- {
- 	native_safe_halt();
-@@ -221,19 +213,6 @@ struct paravirt_patch_template pv_ops = {
- 
- 	.mmu.set_fixmap		= native_set_fixmap,
- #endif /* CONFIG_PARAVIRT_XXL */
--
--#if defined(CONFIG_PARAVIRT_SPINLOCKS)
--	/* Lock ops. */
--#ifdef CONFIG_SMP
--	.lock.queued_spin_lock_slowpath	= native_queued_spin_lock_slowpath,
--	.lock.queued_spin_unlock	=
--				PV_CALLEE_SAVE(__native_queued_spin_unlock),
--	.lock.wait			= paravirt_nop,
--	.lock.kick			= paravirt_nop,
--	.lock.vcpu_is_preempted		=
--				PV_CALLEE_SAVE(__native_vcpu_is_preempted),
--#endif /* SMP */
--#endif
- };
- 
- #ifdef CONFIG_PARAVIRT_XXL
-diff --git a/arch/x86/xen/spinlock.c b/arch/x86/xen/spinlock.c
-index fe56646d6919..83ac24ead289 100644
---- a/arch/x86/xen/spinlock.c
-+++ b/arch/x86/xen/spinlock.c
-@@ -134,10 +134,10 @@ void __init xen_init_spinlocks(void)
- 	printk(KERN_DEBUG "xen: PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
--	pv_ops.lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
--	pv_ops.lock.queued_spin_unlock =
-+	pv_ops_lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
-+	pv_ops_lock.queued_spin_unlock =
- 		PV_CALLEE_SAVE(__pv_queued_spin_unlock);
--	pv_ops.lock.wait = xen_qlock_wait;
--	pv_ops.lock.kick = xen_qlock_kick;
--	pv_ops.lock.vcpu_is_preempted = PV_CALLEE_SAVE(xen_vcpu_stolen);
-+	pv_ops_lock.wait = xen_qlock_wait;
-+	pv_ops_lock.kick = xen_qlock_kick;
-+	pv_ops_lock.vcpu_is_preempted = PV_CALLEE_SAVE(xen_vcpu_stolen);
- }
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index ca6ad92618d8..e9e1b5d321e5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -549,6 +549,7 @@ static struct {
- 	int idx_off;
- } pv_ops_tables[] = {
- 	{ .name = "pv_ops", },
-+	{ .name = "pv_ops_lock", },
- 	{ .name = NULL, .idx_off = -1 }
- };
- 
--- 
-2.51.0
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+a mail.
+
+I suspect that we will talk about
+
+(1) direct-map-removal support (folio_free callback making our life
+     harder than it should :) )
+
+(2) the future of preparedness tracking
+
+(3) discussions around "stage 2" and whatever comes after that
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+--
+Cheers,
+
+David
+
+
 
