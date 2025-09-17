@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5485630CB33
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E6319600
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758116300; cv=none; b=bKzB8VWqA6XncOx7ZzY1zxYSE2WU2bFH/qhDmXXTI1V8GM5YceY1/pqP+/nO63Grvh3SZIAEbY7GH8S4bMVVoHGVmVw3WPL9lOh9eSvu+j/qFMJRhoXjOZaEqDi2V5l18+C2khG93B8dml1Ugcqh+3R3eWntnLrKKo49lPAWgGs=
+	t=1758116328; cv=none; b=W3X7b69KVm2VDdJeTkmirPB3X4vgePzF23toZ6HaioIBNbl9iUDWfmbYudZDTN2XDBId/i0ei8PNTD6AYbMKB0G8G7sK7rla5ysFvFR70Gm9v/UQ4lDjbXmk6OCRY3yckuE6OoeNgpLyyJWlDgTaIjbDtHlo0elngdZkPlqu3YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758116300; c=relaxed/simple;
-	bh=KrKGau9duCBmX68h3kKovf1VxNPOOrhTj5obGGgSgaI=;
+	s=arc-20240116; t=1758116328; c=relaxed/simple;
+	bh=SfRiquELD+1AG//LQh7FQNUcoosHNdl1GHxl1VfPsj4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tz2dYr0iUMaNPxALbGr0jBd/5Wnqx30Jon3Ii4n2X8nLAjvKVFgt7Z6i5dzkwgupB/YIniinXlBEB2KWW90+R+IzeBk8kWiaQQnQXIDJMtzEUeFamjNIfgiOGgzfMWtA4ktbg5K7m3Xvtc1rkiJm8Oak1UlTmVbvXbggJbCWH9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=tFZy7oa+ reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=o5A6nAojEyu5nOUWJCpzrGSk7XLSO/rIImBvwxICCg3WykskmYyXTsxzfMJi4BGImaWXc6hBWGEU5teD/fLpotLXJX7JM4L9/gr3spGw38NCzoSSpPtQBkXPdFpASrM1uFx3tvR6NAuM8o9c4sKZBAih3xlu9nlHCI8MZpGGBaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=g7mxblnC reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="tFZy7oa+"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="g7mxblnC"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN74008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN72008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:50 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:49 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=IObcSxb1mEGR5pVanbHlUpUo799Y/B2tp5AzAzydRGA=;
+DKIM-Signature: a=rsa-sha256; bh=IS0Tljii9BUeTawhiYrgJzEedgytOqOQnDBHONON+jo=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113811; v=1;
-        b=tFZy7oa+nP+PtLJI2EIl6sGY+GMaHR/7ptxbf+ii5lc3dKpFVZ+4S2QOVk12hOme
-         8FwO8O11BILpR094dmNm9daOQeTFpooTEiW4hoobEhu2S0jwte5AsLLc8nz8LFMa
-         Cm96KElGwqbrlq1HZoI7iWC9SQW+OmSQsJHXuTpWLf4uThpEzfZbB3LBL+uLw+UR
-         b4hErl+1sD+yjb/gYVMbmzvLUCHQa3/QTIqg3f6H0a+l2MlMkitW9hMmmMIL4wxj
-         wSBGrblbGHzZXGUL8OEXNJn5GCjX9oO9BRS1KjL5f5zP8nq1OS1v/00XYWLPONkQ
-         5k3CkYTpwPFwX04fT2TAlg==
+        s=rs20250326; t=1758113810; v=1;
+        b=g7mxblnCLeiiBLEETSS3OMb9IBlQ+4YOPgXVYl1zODnt2zyZMgW5VmrIGdwLS5OZ
+         j5RLplNXlGHlgKKJjnf32OxeH7j3j+Ga3rwqpDHljTWZPhZ7hAM1hu6x/GfwlFzR
+         IWGhkCORcMI5ozLVpZkQnRRmwzSuXEyt7yX7aAZ2bW3MrfMG9nFI8HSibmUMEezf
+         yXcpDqyqCyrpYA9e3pHDtu3NjYlzuAew3kSTEvH3eM6uPSvxh6+OaGxJhNrauI5y
+         TAaQ+bqEvcwoHtYA5tuDuF8x2uwrW5m84xknqXSOb38wl3m2ZMZBRQNwpR8dOCL2
+         jRaeOOnYE0BoeD6vVrSAPA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:36 +0900
-Subject: [PATCH 24/35] hw/sd: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:34 +0900
+Subject: [PATCH 22/35] hw/s390x: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-24-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-22-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,45 +119,42 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/sd/allwinner-sdhost.c | 2 +-
- hw/sd/sdhci.c            | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/s390x/s390-pci-bus.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
-index 158d434e7fde..c001dfd60203 100644
---- a/hw/sd/allwinner-sdhost.c
-+++ b/hw/sd/allwinner-sdhost.c
-@@ -832,7 +832,7 @@ static void allwinner_sdhost_realize(DeviceState *dev, Error **errp)
-         return;
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index 67fce1c133b0..3febf9df968f 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -623,18 +623,13 @@ static S390PCIIOMMU *s390_pci_get_iommu(S390pciState *s, PCIBus *bus,
+                                         pci_bus_num(bus),
+                                         PCI_SLOT(devfn),
+                                         PCI_FUNC(devfn));
+-        char *as_name = g_strdup_printf("iommu-pci-%02x:%02x.%01x",
+-                                        pci_bus_num(bus),
+-                                        PCI_SLOT(devfn),
+-                                        PCI_FUNC(devfn));
+         memory_region_init(&iommu->mr, OBJECT(iommu), mr_name, UINT64_MAX);
+-        address_space_init(&iommu->as, NULL, &iommu->mr, as_name);
++        address_space_init(&iommu->as, OBJECT(iommu), &iommu->mr, "as");
+         iommu->iotlb = g_hash_table_new_full(g_int64_hash, g_int64_equal,
+                                              NULL, g_free);
+         table->iommu[PCI_SLOT(devfn)] = iommu;
+ 
+         g_free(mr_name);
+-        g_free(as_name);
      }
  
--    address_space_init(&s->dma_as, NULL, s->dma_mr, "sdhost-dma");
-+    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
- }
- 
- static void allwinner_sdhost_reset(DeviceState *dev)
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index c6a203744463..1a6b6e1198f2 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -1594,7 +1594,7 @@ static void sdhci_sysbus_realize(DeviceState *dev, Error **errp)
- 
-     if (s->dma_mr) {
-         s->dma_as = &s->sysbus_dma_as;
--        address_space_init(s->dma_as, NULL, s->dma_mr, "sdhci-dma");
-+        address_space_init(s->dma_as, OBJECT(s), s->dma_mr, "as");
-     } else {
-         /* use system_memory() if property "dma" not set */
-         s->dma_as = &address_space_memory;
-@@ -1612,7 +1612,7 @@ static void sdhci_sysbus_unrealize(DeviceState *dev)
-     sdhci_common_unrealize(s);
- 
-      if (s->dma_mr) {
--        address_space_destroy(s->dma_as);
-+        object_unparent(OBJECT(s->dma_as));
-     }
- }
- 
+     return iommu;
+@@ -785,7 +780,7 @@ static void s390_pci_iommu_free(S390pciState *s, PCIBus *bus, int32_t devfn)
+      * Remove the listeners now before destroying the address space.
+      */
+     address_space_remove_listeners(&iommu->as);
+-    address_space_destroy(&iommu->as);
++    object_unparent(OBJECT(&iommu->as));
+     object_unparent(OBJECT(&iommu->mr));
+     object_unparent(OBJECT(iommu));
+     object_unref(OBJECT(iommu));
 
 -- 
 2.51.0
