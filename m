@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D46330CB49
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6532D3294FF
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114136; cv=none; b=LH9MLqKDxI7agO5i0uk7KbbTOfB7sqt7XVqJ1zAq8/4VIjJRNfZ8HAQWkXNurCIsoXKoXOyobEop00N4Huh1uoqpMTyjsJxNMjfLmsWnlXqjS4EdZ4eLam8ftFYLTtcPHCYe6WPBNYXEdv8GFcf144FX0Vii++PdYoY0L4ojhzg=
+	t=1758114236; cv=none; b=qcku52UczArew7EC9xVls6VtZSpGrFfDOEvXfubZOoIymsTy9/U1etQmuTsqrQfvG8bIp+w4F1qK4npSa1Oams69meaGV/8js0pFRp5ylMsz2hT3vIUAyqH/XBifg5i8lxQtlBPBFhaxABBr044CMTwDy5s61ZC0kKZtOAVd5cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114136; c=relaxed/simple;
-	bh=T+p45GXyyaooEEcEtwAKAYRTZdoohLfkZg/bwqnQM7g=;
+	s=arc-20240116; t=1758114236; c=relaxed/simple;
+	bh=A+NcEtToGjOIeTAsvn1LTadqV334eZ1/RWShJ41ewBg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k//M4bNDxeHzL169c1xgdooB82+hu0E25Vy+GbeKsHkenTvce+dkGp7f/OMjftYEVfJvVBN37/Fn/NTyynSwg3HwOmlJeIMI0G2N9lDIBvSvTPD+fWfo8EBWhZiY1rMJRWttx+0zP+PcmbTGjr0FEkbtKLBDESNNjJWZPHtP1Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=ltioezOZ reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=RtagdRl9MMPwsFnGKk9wNluuJ/N6hocWJRUoqHYfT0yZuSZLAOzzDvNMiF5eerbIZyqF6TfnJ+jUQnqaaOkGje8zcR1oY6CN5246MyhTZtJ5H0dYlQTIBt90wp4Qcn4dxjAUz4FEJL9ENkK4v8dVvoJ5xIuX3N+WWcDhw8WmfCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=NxB92lql reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="ltioezOZ"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="NxB92lql"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7D008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN78008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:58 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:54 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=7PCGJmdjfJHA8NxdiTCGq5+u1H1eLf1xFPp6xeAliLU=;
+DKIM-Signature: a=rsa-sha256; bh=4T6cua/ceJXKjoKjlSdgfNfccmS9PxWepKSnlV1jo2Q=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113819; v=1;
-        b=ltioezOZX36yhHqqk43mS978ufccOEdZSM8Jx7oYevVrtSzy7fAYmnbW5qi2XcRY
-         E+1tC5VWYu4GbRZzYOqObhHcNSFC2Rpdu7JjbMa4EL29PhopMiYnZZsptvTKNcrO
-         6uqRg/E/2mVSI/orxoAOVoG5BvHeJpz+1FYJ9UqNxSJdjDnYBlZS3pJGXF1FCd+7
-         /kPSDyWBukC5UmKguKm6MqDuChgUXO1XIwv1FFtsTnG+niPGoBCF08flIQvrVrRO
-         rL2V/cS1ZaKTkRlI2KSe2R/6cu+VkCvQzNTJTV/mzmIVFIGAM4DyLAH3v0IgVqyX
-         mQOjOlLkEeAFxLM2qATLeg==
+        s=rs20250326; t=1758113814; v=1;
+        b=NxB92lqlM7UlYIZnp2CZQ14z/01KsSvCZWaHPX26Ve+FM9zsSX6WpwiBM8kwCpyI
+         QdahEdz6xFWxufXHPQ4wrFEpzsMQVV6/wfxfypAxoeEGdP9kQQpPdKkRqsQoEmIf
+         ReJnT8BeSl3xmcrb5l+UTgeRv9tJW6pigOwG1RF20SUv/xz/YbM0ZKnPjlJeach1
+         ND9O5B+U6BgSL85TkxDc1kcPN0eC0H8zwAxeI4RrDtXGH1WjGp5MqsMsmSEuKfEc
+         7e3zqYdnRU51XLfeLQII3lDFy2bTa+SMl82kz4R7X7OYsyYBHo8OCyEV7IojfJdG
+         lsg+aKiszZ3aquOYkE/sMg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:45 +0900
-Subject: [PATCH 33/35] target/mips: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:40 +0900
+Subject: [PATCH 28/35] hw/usb: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-33-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-28-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,24 +119,22 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/mips/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/usb/hcd-dwc2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index b13df32e6479..571caf6f4e0b 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -505,8 +505,8 @@ static void mips_cpu_initfn(Object *obj)
-     if (mcc->cpu_def->lcsr_cpucfg2 & (1 << CPUCFG2_LCSRP)) {
-         memory_region_init_io(&env->iocsr.mr, OBJECT(cpu), NULL,
-                                 env, "iocsr", UINT64_MAX);
--        address_space_init(&env->iocsr.as, NULL,
--                            &env->iocsr.mr, "IOCSR");
-+        address_space_init(&env->iocsr.as, OBJECT(cpu),
-+                            &env->iocsr.mr, "iocsr-as");
-     }
- #endif
- }
+diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
+index 8aaa696dd4de..156cfb4263e3 100644
+--- a/hw/usb/hcd-dwc2.c
++++ b/hw/usb/hcd-dwc2.c
+@@ -1351,7 +1351,7 @@ static void dwc2_realize(DeviceState *dev, Error **errp)
+     obj = object_property_get_link(OBJECT(dev), "dma-mr", &error_abort);
+ 
+     s->dma_mr = MEMORY_REGION(obj);
+-    address_space_init(&s->dma_as, NULL, s->dma_mr, "dwc2");
++    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
+ 
+     usb_bus_new(&s->bus, sizeof(s->bus), &dwc2_bus_ops, dev);
+     usb_register_port(&s->bus, &s->uport, s, 0, &dwc2_port_ops,
 
 -- 
 2.51.0
