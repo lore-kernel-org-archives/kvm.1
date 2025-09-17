@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F96335957
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5E337C0FC
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 12:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113973; cv=none; b=JBvUuOTqilhG9+ZBEjxtMD8f6+5ftCRT4+19THPwiEwOCpp7A2uxTKOat4C6b93MGRHTc4q9HHZUGlIhfwWnS8vgRBcRBM/lRtbsfGXwwbTIYtM0nZzyJ2DcYfOwFchPIrQqJ6KIobuHEuLIrRAib/kdo9OP/o0J1bIg0kk5brM=
+	t=1758113978; cv=none; b=hwBcT2sM+EnEj0JXycQA8xRkKYQRoL7AcI52S1cFkb4tP5RaR9XbwCeM1QYrWDoQnpRFrXORyRLQaCb1X4NegmC9bQI/t8mUMOppH2nLWaKsF0q6ZGPrfN0k80DMMMmICw/F1qgzJlG9S6/ONd6AiAYVLSqLoz+/eVeO3QqZbOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113973; c=relaxed/simple;
-	bh=05OPKRJ7U49HhQ4twYclNbsRnd7jl2xjfM9W4uT7iYo=;
+	s=arc-20240116; t=1758113978; c=relaxed/simple;
+	bh=qeduKdsE3iSVaFcocGE/MZOrYOFR8cly5YrCML/kMkc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JW/xn2wlEUWXegRn4HlPT+YHEdN3vg6nmTbzH5BWL8B79HEOuji+tC+6Xb0Kak7KphutASuTY4BmGY0MISn/kK0m07Net3kUvB6sX00lkm9QFvZezAQ0ChcxWNjQimxuN1SwfNp6lI7cOqC7oohZIlCjDkdXylOs63tY6WyvEN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=dGm/igvl reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=UA5v6PpyW9fuvlG9+tXsU/4WEfi7g6CFGobQ5DVSqXpd3oeSrGmgbrzLwOlfs6bDxlt8gbknwuWQj9DRmnXi0ky7Dm7GHyyl82MYtx9eOJItatZdWrEBjLsr6mpU6Cgxf/NMCG26rsie7IinZuudkaBaFecSzeL+8CFEhz5+E9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=MuGDuLxI reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="dGm/igvl"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="MuGDuLxI"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6m008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6k008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:37 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:36 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=AJDWmN4L41yfypclNPa9nkE7NslZs1RqVWFRg0YxSyg=;
+DKIM-Signature: a=rsa-sha256; bh=t7gZYZry7+AY7F/ztLeWkPizR8T5wkzF6no/b+Jg/94=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113798; v=1;
-        b=dGm/igvl0OzEWgpIft4X52yFO4DicZ/wHsTMsqmCrecZkl288EJNuCdc6YR7aLFl
-         cD6x2SXhP9dwkXAZTmkozz9IiFMmGNWh5TAWN3MeDf4BDhlcd7iIyKyz91aBrHX6
-         IC3CFZiA6L6CJNGf1ky42YxSm7oLbnWL95cWIxRaUFKGNDJg3x6D0EEHuwXbzJp0
-         wbxJzp1aoWwvtkr8OJj//oGWy2/qsyIaaPfOSzuZvaCmpURg+ts848JlMWZ/pQI/
-         ZzznLyojiU8ZDbTJZafavjV0m3AlDG1PI1loXSKUhfeAmGjUan7v7LAJ3tQYSvJj
-         wIy+Cn8ACUUSUDHvhv5llw==
+        s=rs20250326; t=1758113797; v=1;
+        b=MuGDuLxI/Nk2Quxviz5Ui5dtxnTGbK8mjPe2jODrn4AsztRYEvQj1jJLdTuUg03f
+         HTJSt00FKZ7lY3Lo9hOfvxbXCr46OLfp6LkI9N8LTlxkSaKru3qI7wVC08JaXZNR
+         EZ+gTuihaQZVohfX41xVaits6xxS/VoncImwZkDTqvxg82wtLangPnWLXVK4hxzM
+         wJUKHr0ygxllEtOusH0TbikQNDdlJ1oOpQaxMqthDk9jpfiZCradiiHS2qbl+6EJ
+         HLwA/vNRVzKK3hQ3kv4Uxmfx4vUy3+yUoGpNjgaeJ9X4WUfHuilOyAd6VhAPplj0
+         NS6jwsLpje/k5RyMWH9KjQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:20 +0900
-Subject: [PATCH 08/35] hw/fsi: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:18 +0900
+Subject: [PATCH 06/35] hw/display: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-8-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-6-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,22 +119,36 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/fsi/aspeed_apb2opb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/display/artist.c     | 2 +-
+ hw/display/bcm2835_fb.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/fsi/aspeed_apb2opb.c b/hw/fsi/aspeed_apb2opb.c
-index 8eda6f67cfd9..d337f567c6f5 100644
---- a/hw/fsi/aspeed_apb2opb.c
-+++ b/hw/fsi/aspeed_apb2opb.c
-@@ -349,7 +349,7 @@ static void fsi_opb_init(Object *o)
-     OPBus *opb = OP_BUS(o);
+diff --git a/hw/display/artist.c b/hw/display/artist.c
+index 42905563ad49..b47ca875f93a 100644
+--- a/hw/display/artist.c
++++ b/hw/display/artist.c
+@@ -1391,7 +1391,7 @@ static void artist_realizefn(DeviceState *dev, Error **errp)
+     }
  
-     memory_region_init(&opb->mr, 0, TYPE_FSI_OPB, UINT32_MAX);
--    address_space_init(&opb->as, NULL, &opb->mr, TYPE_FSI_OPB);
-+    address_space_init(&opb->as, OBJECT(opb), &opb->mr, "as");
- }
+     memory_region_init(&s->mem_as_root, OBJECT(dev), "artist", ~0ull);
+-    address_space_init(&s->as, NULL, &s->mem_as_root, "artist");
++    address_space_init(&s->as, OBJECT(s), &s->mem_as_root, "as");
  
- static const TypeInfo opb_info = {
+     artist_create_buffer(s, "cmap", &offset, ARTIST_BUFFER_CMAP, 2048, 4);
+     artist_create_buffer(s, "ap", &offset, ARTIST_BUFFER_AP,
+diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
+index c6710bdc0700..cc1567895522 100644
+--- a/hw/display/bcm2835_fb.c
++++ b/hw/display/bcm2835_fb.c
+@@ -421,7 +421,7 @@ static void bcm2835_fb_realize(DeviceState *dev, Error **errp)
+     s->initial_config.base = s->vcram_base + BCM2835_FB_OFFSET;
+ 
+     s->dma_mr = MEMORY_REGION(obj);
+-    address_space_init(&s->dma_as, NULL, s->dma_mr, TYPE_BCM2835_FB "-memory");
++    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
+ 
+     bcm2835_fb_reset(dev);
+ 
 
 -- 
 2.51.0
