@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BCF2DA76C
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3763B33595A
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114319; cv=none; b=TwAANqYWRuunTtmZMVSbc2dDJH3szI1sGXTGZklagLExtERPH6x6LCeW7Pv7wBdUItwSyK+PHSBpyZDsqTn4MNJhbdAZgi6kBA1/5vgTK2fibOjuu+vLQ0kLzGL5CuBiUyONPHKmL6188dddTOr0pdws2bDiooQM8VqC2j78TD0=
+	t=1758114324; cv=none; b=f0SPtSaiVcLk1jH5edxHqVxt8og78MTZEwBfmQCUq3/l65Sz1UjDSPh/jqiLS/cB2jMgTPBCQ+DmLpNkCBTysPy+jzNlxP87xxJGSqkwLF7068Rgo1Gb1WYMAWJSrj7bALrmlYeXQiykSU55E25rU+ibWRUsz1YuE3lSEseRWoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114319; c=relaxed/simple;
-	bh=Ma/aT/zI25HF3XELS3bMHPy9KF48thbpCNP2uxl5mAs=;
+	s=arc-20240116; t=1758114324; c=relaxed/simple;
+	bh=5LMdWoFBchBluAwKNimU/oQd2LQ/IZZBz/t28OiMx8g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oDGVG738zpdMn+ypaYgqSIYC3K/8VHkDgFvufn7AdUXIqufWCv/LA/cL2UVIZKxti13lF79ibkO7hkM46cWaWX/mcFchaf8NXbwxL2YQS4VXuopw0SeJxE2ZLG+mzxNORN0PpapIuKBSQUDEF8/pnWh8E1sOZT/sYGPMci9R4/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=FvaXOvL0 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=WDOoq2FN2tUbeclNmtjo23CmYDTNU0H6M/GK7UiXGWofddI8/D3X/ru2VLTKdjuTTS/hjncczqgXcPEGm6yyg6xthTqxSpklJMc3l3Etrt+zyyw/Tsd+nywtKYv/l75Uo2HO6X6OwOC1lSYW6oHWkjnIgPYQ0YRf4CrmpSaL8qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=SCh8XN/n reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="FvaXOvL0"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="SCh8XN/n"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6x008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN77008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:46 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:53 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=2k1RXsuysZJUUbooF4SQHx4mO+9R1oof00yibd4tPt8=;
+DKIM-Signature: a=rsa-sha256; bh=Witqg4euz72gJVNcE3mUvK5CJdr7+JNxJuLdasfgINU=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113807; v=1;
-        b=FvaXOvL0NzIYuie5l9DQdrEVrjLdBmVmO2Z5k3XIcvMFwZzDcBEwIZaN2DUwCRf9
-         TmpX9robixIPy+LNyaFa60g9E1eZrfW/ygqhDOD+6e5VOk1+j+FCwAsKGqGFZpYg
-         RTMTEikUoYBvo6ihFgFS4J1f/lE0L65s0MRSZANMhV+vHphVLaypaKAkFOW+7t3B
-         +g45JKUixe7q7xlyuh2MH3yPwty6t3xOsLG2tTrTemCQrVtsgXUMjLa9jVTK3ITv
-         opFWLFKv3yRuB/V/6TgY/MKGRni25HSzwYN5CWeU3aFp3S3jU1B4cl2RN5yehiod
-         kR4HtnZxXPba6n+ID0vytg==
+        s=rs20250326; t=1758113814; v=1;
+        b=SCh8XN/nCLxU5fHXTVagu9E0pX58n1PCt1W7DPI7Z+3pZZaKe47wPuLr4+FhMPxT
+         VvcHaLgLgAwf5XYNa0sZW5RnegAPdNarwgAImdwJ7e5xrzgJO4b2KoiRVbB2QS2B
+         49l+l66EdLzLynWTuycrRtZh6R3joTlDhwjZl44PlV0bmHHAK/ms0kYQz1XF7dBI
+         DCRMmJ+NpbQMPH/eaIDMtT1c5t5E6f9rPBugyxzh5Dc722veBxj+kn9xRqo67LwF
+         Q5svqJuQCrzjGdjKhDxNHLcVqaSXGB1HCAnK4TJFoTystRqFLTMBpetD8Pocp2EK
+         bWaCd/kop+GFmKK2xx2W+g==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:31 +0900
-Subject: [PATCH 19/35] hw/ppc: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:39 +0900
+Subject: [PATCH 27/35] hw/ssi: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-19-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-27-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,74 +119,26 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/ppc/pnv_lpc.c   | 2 +-
- hw/ppc/pnv_xscom.c | 2 +-
- hw/ppc/spapr_pci.c | 5 ++---
- hw/ppc/spapr_vio.c | 2 +-
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ hw/ssi/aspeed_smc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index 373b5a8be573..304f01e240db 100644
---- a/hw/ppc/pnv_lpc.c
-+++ b/hw/ppc/pnv_lpc.c
-@@ -799,7 +799,7 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+index 7e41d4210330..73b8f0e81ff0 100644
+--- a/hw/ssi/aspeed_smc.c
++++ b/hw/ssi/aspeed_smc.c
+@@ -1191,10 +1191,8 @@ static void aspeed_smc_dma_setup(AspeedSMCState *s, Error **errp)
+         return;
+     }
  
-     /* Create address space and backing MR for the OPB bus */
-     memory_region_init(&lpc->opb_mr, OBJECT(dev), "lpc-opb", 0x100000000ull);
--    address_space_init(&lpc->opb_as, NULL, &lpc->opb_mr, "lpc-opb");
-+    address_space_init(&lpc->opb_as, OBJECT(dev), &lpc->opb_mr, "as");
- 
-     /*
-      * Create ISA IO, Mem, and FW space regions which are the root of
-diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
-index 58f86bcbd2a6..353eb9b14e29 100644
---- a/hw/ppc/pnv_xscom.c
-+++ b/hw/ppc/pnv_xscom.c
-@@ -219,7 +219,7 @@ void pnv_xscom_init(PnvChip *chip, uint64_t size, hwaddr addr)
-     memory_region_add_subregion(get_system_memory(), addr, &chip->xscom_mmio);
- 
-     memory_region_init(&chip->xscom, OBJECT(chip), name, size);
--    address_space_init(&chip->xscom_as, NULL, &chip->xscom, name);
-+    address_space_init(&chip->xscom_as, OBJECT(chip), &chip->xscom, "as");
-     g_free(name);
+-    address_space_init(&s->flash_as, NULL, &s->mmio_flash,
+-                       TYPE_ASPEED_SMC ".dma-flash");
+-    address_space_init(&s->dram_as, NULL, s->dram_mr,
+-                       TYPE_ASPEED_SMC ".dma-dram");
++    address_space_init(&s->flash_as, OBJECT(s), &s->mmio_flash, "flash-as");
++    address_space_init(&s->dram_as, OBJECT(s), s->dram_mr, "dram-as");
  }
  
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 13fc5c9aa8f2..41bf65b291de 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1759,7 +1759,7 @@ static void spapr_phb_unrealize(DeviceState *dev)
-      * address space.
-      */
-     address_space_remove_listeners(&sphb->iommu_as);
--    address_space_destroy(&sphb->iommu_as);
-+    object_unparent(OBJECT(&sphb->iommu_as));
- 
-     qbus_set_hotplug_handler(BUS(phb->bus), NULL);
-     pci_unregister_root_bus(phb->bus);
-@@ -1902,8 +1902,7 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&sphb->iommu_root, OBJECT(sphb),
-                        namebuf, UINT64_MAX);
-     g_free(namebuf);
--    address_space_init(&sphb->iommu_as, NULL, &sphb->iommu_root,
--                       sphb->dtbusname);
-+    address_space_init(&sphb->iommu_as, OBJECT(sphb), &sphb->iommu_root, "as");
- 
-     /*
-      * As MSI/MSIX interrupts trigger by writing at MSI/MSIX vectors,
-diff --git a/hw/ppc/spapr_vio.c b/hw/ppc/spapr_vio.c
-index ebe4bad23668..5f8dd153dedf 100644
---- a/hw/ppc/spapr_vio.c
-+++ b/hw/ppc/spapr_vio.c
-@@ -529,7 +529,7 @@ static void spapr_vio_busdev_realize(DeviceState *qdev, Error **errp)
-                                  "iommu-spapr-bypass", get_system_memory(),
-                                  0, MACHINE(spapr)->ram_size);
-         memory_region_add_subregion_overlap(&dev->mrroot, 0, &dev->mrbypass, 1);
--        address_space_init(&dev->as, NULL, &dev->mrroot, qdev->id);
-+        address_space_init(&dev->as, OBJECT(dev), &dev->mrroot, "as");
- 
-         dev->tcet = spapr_tce_new_table(qdev, liobn);
-         spapr_tce_table_enable(dev->tcet, SPAPR_TCE_PAGE_SHIFT, 0,
+ static void aspeed_smc_realize(DeviceState *dev, Error **errp)
 
 -- 
 2.51.0
