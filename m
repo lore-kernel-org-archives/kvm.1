@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16049333A90
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA770333A9E
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 13:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114337; cv=none; b=oAiARbuBqP+5suHHXeOgsPAY3njeRHIwkXOAeaBliffIifM6ahD5oYAaEPDXB3hICZD/GdCrfWwDjuY7TDafRb1SMFAlXF9sKKONLghpaDtq1dB/2cptptOqw/QqDrT2dw8pYdtd/EV/RpOcSgRoKOV3V9vC4KZXKqdlsMIxXOY=
+	t=1758114340; cv=none; b=Dt8d+cWJUMpgc5Za/41Yx6HzIhikp0OV3lu0R6B2yys3BVMAHBpsz1r+2np6bpCuyys9jd3wvmTkOYh7VYCDDmSsgQt/Tz5sKGgu4W1qUVTwBEEnzFoqfBid52BEYP/0eNz6eJkUDZy73joEPI4o7U/siHQ7751PJWy6xhBwhoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114337; c=relaxed/simple;
-	bh=T3VSFRMLCleGAVgDjJs3c0T3PRn9YFU8m0VdcOXl9iw=;
+	s=arc-20240116; t=1758114340; c=relaxed/simple;
+	bh=IUhYcIGjEQ/QvdpO5UTANpZSttJhl6EpfIHRQX9R1K8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e2pKkbaYV17L5bsAcRhZDzTKy44+XK/M/lD+hQRuaO8vwMcGzZTs3peDCvW51iWTKZoyQ7ifMSLB0SSSWYrIFcpaANBZ/F7cq5dn451FIZSRHSI7Lnn5AdyPQ+hmXm+vd8nvlReMD/dY/g0qgH3TEA0KCbpuh38FExRr+c6u+IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=goSPsWuW reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=SR2d3Ulk5BoO3rnDKglT3apUYP1HdTKJVxvzQk3cB7ND1IV4MqIGhqg44zPQ9cj5UNZ0EUnpKacO6dbC1L2pjBxLwcEVLTsHFoU4Ds5OGosRBokiu28y6Jm8LPJD56d7GP+lUasL6HvZBlMNMVxqJDxt9FWDVJJlHausYOWsxMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=YUl26O9s reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="goSPsWuW"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="YUl26O9s"
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6v008967
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN79008967
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 17 Sep 2025 21:56:45 +0900 (JST)
+	Wed, 17 Sep 2025 21:56:55 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=yCjTOSOzxNJD5tmMZUwxklHNpokb7XYrU7eEhj5X1Iw=;
+DKIM-Signature: a=rsa-sha256; bh=HLe7pvlXLzUEMbjcEoVHTcQq1sGyjMOPV2Jd4nQBR28=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Date:Subject:Message-Id:To;
-        s=rs20250326; t=1758113805; v=1;
-        b=goSPsWuW9Jj92+Df4/yOaL+2mBbccLanyC5vTRtnIUxTOrzpx7c2JKj3BDVgBxnW
-         xMUACCiXN6RtiFkxp3kel2Dw9mb+UOs8qbI9DIx0f7bN49eXmTkZHHILSUJ5UpeL
-         fislhEzAdtQ9BljxNbp181vYL7ouDdHy+KNin8gOvSch1nlREyHc/eanNkaPD1i4
-         tKNaBHfLTG0MINVZLpOw7EJDitJt4dJorhJ+WLMiDLYjAkp/NprL7sl+Hu9SC+s9
-         RdxSj4+ywrD25EoQDA+iSura1pyexWC31pVOzrr/lrJgTB/FzXEpMaOaGV9SE59+
-         lT98kkQS3fqxLFGj4/NHOQ==
+        s=rs20250326; t=1758113815; v=1;
+        b=YUl26O9sN95D4FLlZBogOnlopmCljnZ1xDZ1c0b8MltFYLgUupQPEgTlgcBwEJsR
+         fmatzo2AaDh6vw4DOgNUqN+rTwXvzjEriYq3NqND14tpJX2lhRp5EirQN6N0HRGi
+         HY7Vo7dDq3vnXhnU5VF5+6s/K477/QK+0o2LCayg5mSz0kSiRT5BTsG7TSEIBcSF
+         4xkclhwiUFP917BLzbPt5IhRMsANO/wtH2fyS46bzO04Y4My7nkCYnTMDlLw7WxG
+         CaYktq0pnmtUvLW/cLv65Y1WG4LusxVyFrY7pEWWLQyD9+7XHfJmfGGo5+HWBT/I
+         8AEOI60+py1DtcoYghKkSA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:29 +0900
-Subject: [PATCH 17/35] hw/pci: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:41 +0900
+Subject: [PATCH 29/35] hw/usb: QOM-ify AddressSpace
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-17-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-29-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -119,66 +119,22 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/pci/pci.c        |  6 +++---
- hw/pci/pci_bridge.c | 11 +++++------
- 2 files changed, 8 insertions(+), 9 deletions(-)
+ hw/usb/hcd-xhci-sysbus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 340384a8876a..7ab93df2969d 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1188,7 +1188,7 @@ static void do_pci_unregister_device(PCIDevice *pci_dev)
-     if (xen_mode == XEN_EMULATE) {
-         xen_evtchn_remove_pci_device(pci_dev);
+diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
+index 6d060062ab86..a078ab489c54 100644
+--- a/hw/usb/hcd-xhci-sysbus.c
++++ b/hw/usb/hcd-xhci-sysbus.c
+@@ -45,7 +45,7 @@ static void xhci_sysbus_realize(DeviceState *dev, Error **errp)
+                              s->xhci.numintrs);
+     if (s->xhci.dma_mr) {
+         s->xhci.as =  g_malloc0(sizeof(AddressSpace));
+-        address_space_init(s->xhci.as, NULL, s->xhci.dma_mr, NULL);
++        address_space_init(s->xhci.as, OBJECT(s), s->xhci.dma_mr, "as");
+     } else {
+         s->xhci.as = &address_space_memory;
      }
--    address_space_destroy(&pci_dev->bus_master_as);
-+    object_unparent(OBJECT(&pci_dev->bus_master_as));
- }
- 
- /* Extract PCIReqIDCache into BDF format */
-@@ -1359,8 +1359,8 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
- 
-     memory_region_init(&pci_dev->bus_master_container_region, OBJECT(pci_dev),
-                        "bus master container", UINT64_MAX);
--    address_space_init(&pci_dev->bus_master_as, NULL,
--                       &pci_dev->bus_master_container_region, pci_dev->name);
-+    address_space_init(&pci_dev->bus_master_as, OBJECT(pci_dev),
-+                       &pci_dev->bus_master_container_region, "bus-master-as");
-     pci_dev->bus_master_as.max_bounce_buffer_size =
-         pci_dev->max_bounce_buffer_size;
- 
-diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
-index 94b61b907ea2..fd74622edb9f 100644
---- a/hw/pci/pci_bridge.c
-+++ b/hw/pci/pci_bridge.c
-@@ -388,13 +388,12 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
-     sec_bus->map_irq = br->map_irq ? br->map_irq : pci_swizzle_map_irq_fn;
-     sec_bus->address_space_mem = &br->address_space_mem;
-     memory_region_init(&br->address_space_mem, OBJECT(br), "pci_bridge_pci", UINT64_MAX);
--    address_space_init(&br->as_mem, NULL, &br->address_space_mem,
--                       "pci_bridge_pci_mem");
-+    address_space_init(&br->as_mem, OBJECT(br), &br->address_space_mem,
-+                       "mem-as");
-     sec_bus->address_space_io = &br->address_space_io;
-     memory_region_init(&br->address_space_io, OBJECT(br), "pci_bridge_io",
-                        4 * GiB);
--    address_space_init(&br->as_io, NULL, &br->address_space_io,
--                       "pci_bridge_pci_io");
-+    address_space_init(&br->as_io, OBJECT(br), &br->address_space_io, "io-as");
-     pci_bridge_region_update(br, true);
-     QLIST_INIT(&sec_bus->child);
-     QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
-@@ -411,8 +410,8 @@ void pci_bridge_exitfn(PCIDevice *pci_dev)
-     PCIBridge *s = PCI_BRIDGE(pci_dev);
-     assert(QLIST_EMPTY(&s->sec_bus.child));
-     QLIST_REMOVE(&s->sec_bus, sibling);
--    address_space_destroy(&s->as_mem);
--    address_space_destroy(&s->as_io);
-+    object_unparent(OBJECT(&s->as_mem));
-+    object_unparent(OBJECT(&s->as_io));
-     pci_bridge_region_del(s, &s->windows);
-     pci_bridge_region_cleanup(s, &s->windows);
-     /* object_unparent() is called automatically during device deletion */
 
 -- 
 2.51.0
