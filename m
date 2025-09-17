@@ -1,320 +1,478 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0A2330D5E
-	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 14:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49D0333AA5
+	for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 14:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120774; cv=none; b=OBUPx/SwCPVukLzYWQx/l7xT8hpI66BkmaibIaK4A5OdgATMtykcgDPlje7FcHO2Qfp62BXAS5e+XGIDAoQXz+IPrjwJwUdvY30XgXVS2Nbu1rgnDn5+wT3jC/g1R7LfPWbR1YeueMHFuo6M4R/1aOS7RegnaNZqpArKaqDUpAk=
+	t=1758120785; cv=none; b=HrJxUjXRTx/1STbPGaFPhWW6im05IGmd1O46B7TC/N309x4WzzeiO/piLPpjg7u7UbKSxvF9LEqYUJDXrgsVuMHdzsk/2oO7GZuHxHWnRN2BoiLgfn9JkJ63vodGU73FMRnSF4C/TFrTkXyRU4fM3R+WLwqRTRVhP7vxtjNuIR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120774; c=relaxed/simple;
-	bh=5epPT/yF5ySKt5yJiiDB0pyPwiJwOtudKK0nsTblkcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjLiMs+3LsSnCMdMT0xcB82Oh48GazxkbXfhtQmAFR0QdSO6jxq+BLKQ0S7fHnJq2GTlMlwlKwUkkC6dw6NgV+AuV6yDaWmBrbW2hnC/Usw2bRcEnlWm+e7aP+MRoMPmZ53FD36TsgxM/VsGoRNcDYc/+SbnnbrocN+xAzphZtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eN5q4+Bp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eN5q4+Bp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758120771;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gDs3CUgjimStalCZ6Y06kSWDcmRW5MkZeDVBa3itpks=;
-	b=eN5q4+Bpicko9qmcG1/d4J8qKwcOW7JMNWQ0c0Du9G63tKmdz4Ljcy+HDP+cCufPoAj5Ny
-	vwwmX3Z0s45gwzts9VP0v9fYdBmrX6cIkXzxQs0iZ7XznE66z5dWfQLe3XUO4tGQRdHLLr
-	u44PJxNnzs25rMrDZh7CE9qCzpvH9Mg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-aer8omGjNfWGikpxwiZP5g-1; Wed, 17 Sep 2025 10:52:49 -0400
-X-MC-Unique: aer8omGjNfWGikpxwiZP5g-1
-X-Mimecast-MFC-AGG-ID: aer8omGjNfWGikpxwiZP5g_1758120768
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45e05ff0b36so4834525e9.0
-        for <kvm@vger.kernel.org>; Wed, 17 Sep 2025 07:52:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758120767; x=1758725567;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gDs3CUgjimStalCZ6Y06kSWDcmRW5MkZeDVBa3itpks=;
-        b=g9gDzVmFu/+mEpW7hH5NLiUmh+YE90sVTzx0RygqhpJ5M18jZSpHGzXzbD2+Ygqhj1
-         ejqHYAoKh3aDi9dKOLQMTQ6TwFnuwlqsy3EIqCykkvYWGHnw9RrTWbs8EEieUJjaiuf9
-         wWbRdtJ+N2wtfWFfzWAMngDmeeJB7EXnctvKAXuDxOaTDN3rD0fxYUl1tkNk7QczUDD9
-         Lt/LlRjkhuMTiCpHAs/ju6zHFCzgMrA3YncMMQ0bm/gPa9cygh3S5krDHd3Asp3/dTKL
-         yQkljYhIJyC2hVlD1PktCZIgq9D/+82nbWlvxOMEW1wrWvmIu4FAoUM6sm/6Y2Dlk3Op
-         QWXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbPKMA0sPgJ0V+AyKzIyx+2NObsaXchWnNDkdr7PxroKVbH9B7KPwtBzI9IHs+jOgO3co=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoAQ/lVx5yY+wKJ50hBAZ1p1bsWq4AQn+gvZyvATqTzQwnuoGQ
-	RBKVkALd4N984CH3RU1Y5lybbCIl3OFgD1UuYECQsfDi+rCdghN6DoILXx0TRMl8ZPLEMw3MG5a
-	13mbgg51f5X10x5+D/pgQLMDXEmKiStJrxnzCtfwAvT4usk8EHipLPQ==
-X-Gm-Gg: ASbGncsDw93sLLVZapS1d0QebUD41yZLrbHTpioIU2dDY7+y7KHvmjLutTgw3rgXzFs
-	uByKKrktMONAX2LDLZxBTGW8XOawT7QE9rmj+NmnNmrt9Vgglh54mDUIdi2WJxjkoXiBQyPabb6
-	D3vk6RABE/11KcA7xpzSlyOsv4VwKTHsBKnR45LFuEzqYr3SWRd+aArcO3i6JDY3qzzllTzvqSQ
-	b+QVq7gCFIYeNAsLhsfwIm0Zx7gU2Y3tu6e8Ut3ng5eIbhRtyLu+q9uzcn9bvvxI/K5y96rkEMr
-	/5XEhmrSJaEZIDYMwhfXGQ/rE852QXBh6pMc45T5BrtXwB+IhIi58Ad4+em9hIWfeGFgnOAFLUE
-	8no5Ke3izqXoLrU45jkY+PhWlucA+1w/CWg703WoWvCbO7TIJHZz15KqCwxY/cYIX
-X-Received: by 2002:a5d:584d:0:b0:3ea:d634:1493 with SMTP id ffacd0b85a97d-3ec9d70e1aemr6331353f8f.3.1758120767141;
-        Wed, 17 Sep 2025 07:52:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCVwA2whdJvJ6k0SNSXVgRVBCXXeS7K5H+4SZxMmaPtCI7Uv2obWcxbuvE8IbcU5jjC+Gugg==
-X-Received: by 2002:a5d:584d:0:b0:3ea:d634:1493 with SMTP id ffacd0b85a97d-3ec9d70e1aemr6331269f8f.3.1758120766367;
-        Wed, 17 Sep 2025 07:52:46 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613f3c69d5sm39701795e9.24.2025.09.17.07.52.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 07:52:45 -0700 (PDT)
-Message-ID: <e30627e5-f30f-4494-934c-58e4a427a476@redhat.com>
-Date: Wed, 17 Sep 2025 16:52:40 +0200
+	s=arc-20240116; t=1758120785; c=relaxed/simple;
+	bh=Ny407691mhH+4v4ONWlbu910eE58aQgX3QomjDbfYu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cgFUtP6QMvPLPted4BxTcpSspAIyXlu2RIQ4Deo1enfmUVT8xGTcGn40KjNTx6LeLqi2ypam/KpkMjya0iFpGgg60PNcWz97mgzYy6pbn/nfFar/XNMjbiscCvFBSRmijF5TDOWcrwOanVX0fCeaSrRElhgHI3N5HonaKWOR/zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 39702206DF;
+	Wed, 17 Sep 2025 14:53:01 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 030AF1368D;
+	Wed, 17 Sep 2025 14:52:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CRHEOkvLymgAEwAAD6G6ig
+	(envelope-from <jgross@suse.com>); Wed, 17 Sep 2025 14:52:59 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	virtualization@lists.linux.dev,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v2 06/21] sched: Move clock related paravirt code to kernel/sched
+Date: Wed, 17 Sep 2025 16:52:05 +0200
+Message-ID: <20250917145220.31064-7-jgross@suse.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250917145220.31064-1-jgross@suse.com>
+References: <20250917145220.31064-1-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/11] filemap: Pass address_space mapping to
- ->free_folio()
-To: Hugh Dickins <hughd@google.com>, "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
- Elliot Berman <quic_eberman@quicinc.com>,
- "willy@infradead.org" <willy@infradead.org>, "corbet@lwn.net"
- <corbet@lwn.net>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "alex@ghiti.fr" <alex@ghiti.fr>,
- "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
- "gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
- "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "svens@linux.ibm.com" <svens@linux.ibm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "trondmy@kernel.org" <trondmy@kernel.org>, "anna@kernel.org"
- <anna@kernel.org>, "hubcap@omnibond.com" <hubcap@omnibond.com>,
- "martin@omnibond.com" <martin@omnibond.com>,
- "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
- "brauner@kernel.org" <brauner@kernel.org>, "jack@suse.cz" <jack@suse.cz>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "axelrasmussen@google.com" <axelrasmussen@google.com>,
- "yuanchu@google.com" <yuanchu@google.com>,
- "weixugc@google.com" <weixugc@google.com>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
- "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
- "devel@lists.orangefs.org" <devel@lists.orangefs.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-References: <20250912091708.17502-1-roypat@amazon.co.uk>
- <20250912091708.17502-2-roypat@amazon.co.uk>
- <7c2677e1-daf7-3b49-0a04-1efdf451379a@google.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <7c2677e1-daf7-3b49-0a04-1efdf451379a@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)]
+X-Rspamd-Queue-Id: 39702206DF
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
 
-On 16.09.25 08:23, Hugh Dickins wrote:
-> On Fri, 12 Sep 2025, Roy, Patrick wrote:
-> 
->> From: Elliot Berman <quic_eberman@quicinc.com>
->>
->> When guest_memfd removes memory from the host kernel's direct map,
->> direct map entries must be restored before the memory is freed again. To
->> do so, ->free_folio() needs to know whether a gmem folio was direct map
->> removed in the first place though. While possible to keep track of this
->> information on each individual folio (e.g. via page flags), direct map
->> removal is an all-or-nothing property of the entire guest_memfd, so it
->> is less error prone to just check the flag stored in the gmem inode's
->> private data.  However, by the time ->free_folio() is called,
->> folio->mapping might be cleared. To still allow access to the address
->> space from which the folio was just removed, pass it in as an additional
->> argument to ->free_folio, as the mapping is well-known to all callers.
->>
->> Link: https://lore.kernel.org/all/15f665b4-2d33-41ca-ac50-fafe24ade32f@redhat.com/
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
->> [patrick: rewrite shortlog for new usecase]
->> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
->> ---
->>   Documentation/filesystems/locking.rst |  2 +-
->>   fs/nfs/dir.c                          | 11 ++++++-----
->>   fs/orangefs/inode.c                   |  3 ++-
->>   include/linux/fs.h                    |  2 +-
->>   mm/filemap.c                          |  9 +++++----
->>   mm/secretmem.c                        |  3 ++-
->>   mm/vmscan.c                           |  4 ++--
->>   virt/kvm/guest_memfd.c                |  3 ++-
->>   8 files changed, 21 insertions(+), 16 deletions(-)
->>
->> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
->> index aa287ccdac2f..74c97287ec40 100644
->> --- a/Documentation/filesystems/locking.rst
->> +++ b/Documentation/filesystems/locking.rst
->> @@ -262,7 +262,7 @@ prototypes::
->>   	sector_t (*bmap)(struct address_space *, sector_t);
->>   	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
->>   	bool (*release_folio)(struct folio *, gfp_t);
->> -	void (*free_folio)(struct folio *);
->> +	void (*free_folio)(struct address_space *, struct folio *);
->>   	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->>   	int (*migrate_folio)(struct address_space *, struct folio *dst,
->>   			struct folio *src, enum migrate_mode);
-> 
-> Beware, that is against the intent of free_folio().
-> 
-> Since its 2.6.37 origin in 6072d13c4293 ("Call the filesystem back
-> whenever a page is removed from the page cache"), freepage() or
-> free_folio() has intentionally NOT taken a struct address_space *mapping,
-> because that structure may already be freed by the time free_folio() is
-> called, if the last folio holding it has now been freed.
+Paravirt clock related functions are available in multiple archs.
 
-Thanks for noticing that Hugh, very good point!
+In order to share the common parts, move the common static keys
+to kernel/sched/ and remove them from the arch specific files.
 
-> 
-> Maybe something has changed since then, or maybe it happens to be safe
-> just in the context in which you want to use it; but it is against the
-> principle of free_folio().  (Maybe an rcu_read_lock() could be added
-> in __remove_mapping() to make it safe nowadays? maybe not welcome.)
+Make a common paravirt_steal_clock() implementation available in
+kernel/sched/cputime.c, guarding it with a new config option
+CONFIG_HAVE_PV_STEAL_CLOCK_GEN, which can be selected by an arch
+in case it wants to use that common variant.
 
-Let me dig into the callers:
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/Kconfig                           |  3 +++
+ arch/arm/include/asm/paravirt.h        |  4 ----
+ arch/arm/kernel/paravirt.c             |  3 ---
+ arch/arm64/include/asm/paravirt.h      |  4 ----
+ arch/arm64/kernel/paravirt.c           |  4 +---
+ arch/loongarch/include/asm/paravirt.h  |  3 ---
+ arch/loongarch/kernel/paravirt.c       |  3 +--
+ arch/powerpc/include/asm/paravirt.h    |  3 ---
+ arch/powerpc/platforms/pseries/setup.c |  4 +---
+ arch/riscv/include/asm/paravirt.h      |  4 ----
+ arch/riscv/kernel/paravirt.c           |  4 +---
+ arch/x86/include/asm/paravirt.h        |  4 ----
+ arch/x86/kernel/cpu/vmware.c           |  1 +
+ arch/x86/kernel/kvm.c                  |  1 +
+ arch/x86/kernel/paravirt.c             |  3 ---
+ drivers/xen/time.c                     |  1 +
+ include/linux/sched/cputime.h          | 18 ++++++++++++++++++
+ kernel/sched/core.c                    |  5 +++++
+ kernel/sched/cputime.c                 | 13 +++++++++++++
+ kernel/sched/sched.h                   |  2 +-
+ 20 files changed, 47 insertions(+), 40 deletions(-)
 
-
-1) filemap_free_folio()
-
-filemap_free_folio() looks up the callback through 
-mapping->a_ops->free_folio. Nothing happens in-between that lookup and 
-the callback so we should be good.
-
-
-2) replace_page_cache_folio()
-
-replace_page_cache_folio() similarly looks up the callback through
-mapping->a_ops->free_folio. We do some operations afterwards, but 
-essentially store the new folio in the page cache and remove the old one.
-
-The only caller is fuse_try_move_folio(), and IIUC both folios are 
-locked, preventing concurrent truncation and the mapping going away.
-
-
-3) __remove_mapping()
-
-__remove_mapping() also looks up the callback through 
-mapping->a_ops->free_folio.
-
-Before we call free_folio() we remove the folio from the pagecache 
-(__filemap_remove_folio) to then drop locks and call free_folio().
-
-We're only holding the folio lock at that point.
-
-So yes I agree, truncate_inode_pages_final() could be racing with
-__remove_mapping().c That's probably exactly what the docs describe 
-regarding reclaim.
-
-
-rcu_read_lock() should indeed work, or some other mechanism that keeps 
-truncate_inode_pages_final() from succeeding in this racy situation.
-
-Alternatively I guess we would have to use another callback.
-
+diff --git a/arch/Kconfig b/arch/Kconfig
+index d1b4ffd6e085..7921be052472 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1003,6 +1003,9 @@ config HAVE_IRQ_TIME_ACCOUNTING
+ 	  Archs need to ensure they use a high enough resolution clock to
+ 	  support irq time accounting and then call enable_sched_clock_irqtime().
+ 
++config HAVE_PV_STEAL_CLOCK_GEN
++	bool
++
+ config HAVE_MOVE_PUD
+ 	bool
+ 	help
+diff --git a/arch/arm/include/asm/paravirt.h b/arch/arm/include/asm/paravirt.h
+index 95d5b0d625cd..69da4bdcf856 100644
+--- a/arch/arm/include/asm/paravirt.h
++++ b/arch/arm/include/asm/paravirt.h
+@@ -5,10 +5,6 @@
+ #ifdef CONFIG_PARAVIRT
+ #include <linux/static_call_types.h>
+ 
+-struct static_key;
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+-
+ u64 dummy_steal_clock(int cpu);
+ 
+ DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+diff --git a/arch/arm/kernel/paravirt.c b/arch/arm/kernel/paravirt.c
+index 7dd9806369fb..3895a5578852 100644
+--- a/arch/arm/kernel/paravirt.c
++++ b/arch/arm/kernel/paravirt.c
+@@ -12,9 +12,6 @@
+ #include <linux/static_call.h>
+ #include <asm/paravirt.h>
+ 
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+-
+ static u64 native_steal_clock(int cpu)
+ {
+ 	return 0;
+diff --git a/arch/arm64/include/asm/paravirt.h b/arch/arm64/include/asm/paravirt.h
+index 9aa193e0e8f2..c9f7590baacb 100644
+--- a/arch/arm64/include/asm/paravirt.h
++++ b/arch/arm64/include/asm/paravirt.h
+@@ -5,10 +5,6 @@
+ #ifdef CONFIG_PARAVIRT
+ #include <linux/static_call_types.h>
+ 
+-struct static_key;
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+-
+ u64 dummy_steal_clock(int cpu);
+ 
+ DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+diff --git a/arch/arm64/kernel/paravirt.c b/arch/arm64/kernel/paravirt.c
+index aa718d6a9274..943b60ce12f4 100644
+--- a/arch/arm64/kernel/paravirt.c
++++ b/arch/arm64/kernel/paravirt.c
+@@ -19,14 +19,12 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/static_call.h>
++#include <linux/sched/cputime.h>
+ 
+ #include <asm/paravirt.h>
+ #include <asm/pvclock-abi.h>
+ #include <asm/smp_plat.h>
+ 
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+-
+ static u64 native_steal_clock(int cpu)
+ {
+ 	return 0;
+diff --git a/arch/loongarch/include/asm/paravirt.h b/arch/loongarch/include/asm/paravirt.h
+index 3f4323603e6a..d219ea0d98ac 100644
+--- a/arch/loongarch/include/asm/paravirt.h
++++ b/arch/loongarch/include/asm/paravirt.h
+@@ -5,9 +5,6 @@
+ #ifdef CONFIG_PARAVIRT
+ 
+ #include <linux/static_call_types.h>
+-struct static_key;
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+ 
+ u64 dummy_steal_clock(int cpu);
+ DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
+index b1b51f920b23..8caaa94fed1a 100644
+--- a/arch/loongarch/kernel/paravirt.c
++++ b/arch/loongarch/kernel/paravirt.c
+@@ -6,11 +6,10 @@
+ #include <linux/kvm_para.h>
+ #include <linux/reboot.h>
+ #include <linux/static_call.h>
++#include <linux/sched/cputime.h>
+ #include <asm/paravirt.h>
+ 
+ static int has_steal_clock;
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+ static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+ DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+ 
+diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+index b78b82d66057..92343a23ad15 100644
+--- a/arch/powerpc/include/asm/paravirt.h
++++ b/arch/powerpc/include/asm/paravirt.h
+@@ -23,9 +23,6 @@ static inline bool is_shared_processor(void)
+ }
+ 
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+-
+ u64 pseries_paravirt_steal_clock(int cpu);
+ 
+ static inline u64 paravirt_steal_clock(int cpu)
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index b10a25325238..50b26ed8432d 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -42,6 +42,7 @@
+ #include <linux/memblock.h>
+ #include <linux/swiotlb.h>
+ #include <linux/seq_buf.h>
++#include <linux/sched/cputime.h>
+ 
+ #include <asm/mmu.h>
+ #include <asm/processor.h>
+@@ -83,9 +84,6 @@ DEFINE_STATIC_KEY_FALSE(shared_processor);
+ EXPORT_SYMBOL(shared_processor);
+ 
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+-
+ static bool steal_acc = true;
+ static int __init parse_no_stealacc(char *arg)
+ {
+diff --git a/arch/riscv/include/asm/paravirt.h b/arch/riscv/include/asm/paravirt.h
+index c0abde70fc2c..17e5e39c72c0 100644
+--- a/arch/riscv/include/asm/paravirt.h
++++ b/arch/riscv/include/asm/paravirt.h
+@@ -5,10 +5,6 @@
+ #ifdef CONFIG_PARAVIRT
+ #include <linux/static_call_types.h>
+ 
+-struct static_key;
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+-
+ u64 dummy_steal_clock(int cpu);
+ 
+ DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+diff --git a/arch/riscv/kernel/paravirt.c b/arch/riscv/kernel/paravirt.c
+index fa6b0339a65d..d3c334f16172 100644
+--- a/arch/riscv/kernel/paravirt.c
++++ b/arch/riscv/kernel/paravirt.c
+@@ -16,15 +16,13 @@
+ #include <linux/printk.h>
+ #include <linux/static_call.h>
+ #include <linux/types.h>
++#include <linux/sched/cputime.h>
+ 
+ #include <asm/barrier.h>
+ #include <asm/page.h>
+ #include <asm/paravirt.h>
+ #include <asm/sbi.h>
+ 
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+-
+ static u64 native_steal_clock(int cpu)
+ {
+ 	return 0;
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 1344d2fb2b86..0ef797ea8440 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -30,10 +30,6 @@ static __always_inline u64 paravirt_sched_clock(void)
+ 	return static_call(pv_sched_clock)();
+ }
+ 
+-struct static_key;
+-extern struct static_key paravirt_steal_enabled;
+-extern struct static_key paravirt_steal_rq_enabled;
+-
+ __visible void __native_queued_spin_unlock(struct qspinlock *lock);
+ bool pv_is_native_spin_unlock(void);
+ __visible bool __native_vcpu_is_preempted(long cpu);
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index cb3f900c46fc..a3e6936839b1 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -29,6 +29,7 @@
+ #include <linux/efi.h>
+ #include <linux/reboot.h>
+ #include <linux/static_call.h>
++#include <linux/sched/cputime.h>
+ #include <asm/div64.h>
+ #include <asm/x86_init.h>
+ #include <asm/hypervisor.h>
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 8ae750cde0c6..a23211eaaeed 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -29,6 +29,7 @@
+ #include <linux/syscore_ops.h>
+ #include <linux/cc_platform.h>
+ #include <linux/efi.h>
++#include <linux/sched/cputime.h>
+ #include <asm/timer.h>
+ #include <asm/cpu.h>
+ #include <asm/traps.h>
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index ab3e172dcc69..a3ba4747be1c 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -60,9 +60,6 @@ void __init native_pv_lock_init(void)
+ 		static_branch_enable(&virt_spin_lock_key);
+ }
+ 
+-struct static_key paravirt_steal_enabled;
+-struct static_key paravirt_steal_rq_enabled;
+-
+ static u64 native_steal_clock(int cpu)
+ {
+ 	return 0;
+diff --git a/drivers/xen/time.c b/drivers/xen/time.c
+index 5683383d2305..d360ded2ef39 100644
+--- a/drivers/xen/time.c
++++ b/drivers/xen/time.c
+@@ -8,6 +8,7 @@
+ #include <linux/gfp.h>
+ #include <linux/slab.h>
+ #include <linux/static_call.h>
++#include <linux/sched/cputime.h>
+ 
+ #include <asm/paravirt.h>
+ #include <asm/xen/hypervisor.h>
+diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
+index 5f8fd5b24a2e..e90efaf6d26e 100644
+--- a/include/linux/sched/cputime.h
++++ b/include/linux/sched/cputime.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_SCHED_CPUTIME_H
+ #define _LINUX_SCHED_CPUTIME_H
+ 
++#include <linux/static_call_types.h>
+ #include <linux/sched/signal.h>
+ 
+ /*
+@@ -180,4 +181,21 @@ static inline void prev_cputime_init(struct prev_cputime *prev)
+ extern unsigned long long
+ task_sched_runtime(struct task_struct *task);
+ 
++#ifdef CONFIG_PARAVIRT
++struct static_key;
++extern struct static_key paravirt_steal_enabled;
++extern struct static_key paravirt_steal_rq_enabled;
++
++#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
++u64 dummy_steal_clock(int cpu);
++
++DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
++
++static inline u64 paravirt_steal_clock(int cpu)
++{
++	return static_call(pv_steal_clock)(cpu);
++}
++#endif
++#endif
++
+ #endif /* _LINUX_SCHED_CPUTIME_H */
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index be00629f0ba4..e723226e4e11 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -767,6 +767,11 @@ struct rq *task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+  * RQ-clock updating methods:
+  */
+ 
++/* Use CONFIG_PARAVIRT as this will avoid more #ifdef in arch code. */
++#ifdef CONFIG_PARAVIRT
++struct static_key paravirt_steal_rq_enabled;
++#endif
++
+ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ {
+ /*
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 7097de2c8cda..ed8f71e08047 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -251,6 +251,19 @@ void __account_forceidle_time(struct task_struct *p, u64 delta)
+  * ticks are not redelivered later. Due to that, this function may on
+  * occasion account more time than the calling functions think elapsed.
+  */
++#ifdef CONFIG_PARAVIRT
++struct static_key paravirt_steal_enabled;
++
++#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
++static u64 native_steal_clock(int cpu)
++{
++	return 0;
++}
++
++DEFINE_STATIC_CALL(pv_steal_clock, native_steal_clock);
++#endif
++#endif
++
+ static __always_inline u64 steal_account_process_time(u64 maxtime)
+ {
+ #ifdef CONFIG_PARAVIRT
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 6442441b46d7..fdf3021bdf7d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -82,7 +82,7 @@ struct rt_rq;
+ struct sched_group;
+ struct cpuidle_state;
+ 
+-#ifdef CONFIG_PARAVIRT
++#if defined(CONFIG_PARAVIRT) && !defined(CONFIG_HAVE_PV_STEAL_CLOCK_GEN)
+ # include <asm/paravirt.h>
+ #endif
+ 
 -- 
-Cheers
-
-David / dhildenb
+2.51.0
 
