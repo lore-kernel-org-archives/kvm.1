@@ -1,96 +1,63 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25307220F29
-	for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 16:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1210624BD0C;
+	Thu, 18 Sep 2025 16:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758212478; cv=none; b=K3nFnFSKyIL4Z21Qz9BzSQk8yaO741keIGWL8e0usw9R4Q/mlFpcGo/frvwTyBOqTf4mncD/dwhvDJhaxtKpar73L2PZYcJdk85KyJ7WHkyMbqLx82GuiYMx6SDHNnlZERkeQ/zGpE1h/VEO0ls1lNjvbV99c5ec8AxbZS7ms1Y=
+	t=1758214281; cv=none; b=T78p2QwIHY1kL5ZDBOpSjybHiNhlJN5Fkuc7+fd3Yd8HOsM1wT7Lyv6dG1PwaCuiVx5UlpPfmv+XojidYQG6VP1uKcEwCIlwq2fujSdLcsqvqkO3VpYGo3BnqP0RrPbUdHYqeYRJ/lKADl1wO4XxIml4UHSywKYxXM61zh8Vl8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758212478; c=relaxed/simple;
-	bh=+6DWJ9V2/s86NKsZVHhjQHyxMst7QlpPf4TiS4jwR7E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hsPf1tysEoBfPta3sHT17JxGcf769I9oClz/byim6CajQAPwB/1zftsbnQnUzm+NJp3J7bwDnZ5GIyh1RDck7GghMxn9nBse9TN+F473UHNJHbRBTlvHK0LJnETUFfCDq1pa255fwt56iWf0/ZC+y7L7fVwYeLNeQ6xbMitNGxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BH8+S/hr; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1758214281; c=relaxed/simple;
+	bh=aBzzE6ptNAUWJm+Kwhv85Kj39AlwJ0RTOSCfrVdV5uo=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=G3F0Rugr3WjmKrJsk80CUSZazOHxP8rRvmUrOWItA5dvwovdybUUP1MenHBgO5YutYB72P1X4V2NxkXI+VCD74Exr+jmMxJMC9YO+LzCtXAcf+hTyEOz0U1K2VPAlFlTeOM6Ak5M2DKclFDEl5xlAZNKsbrOdAB883ISNBvtuyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fx3cN/e/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BH8+S/hr"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b07d4d24d09so205440166b.2
-        for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 09:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1758212474; x=1758817274; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QBudDRqq0+IaBsPdP5gcYH9xINBuKzncv21Vz7DKv+k=;
-        b=BH8+S/hrrTxUiX3MC1S6d7HVVPrpM37Z9+StAGHka8NsJkpMwCXrt8eSS0MfQzT8R/
-         gM7g6GGTaQVuYgj+J4LS+ry8uCJ/soQsR7+a6hKWV22xoHBh7NCaeirmMO02l43uuOg+
-         w0icgadUhO4EZjrOqiZBAmZhbrEDWCEpgNrkg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758212474; x=1758817274;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QBudDRqq0+IaBsPdP5gcYH9xINBuKzncv21Vz7DKv+k=;
-        b=Rt6BbF9iJmGHhyjA9iTrQB8y2lPN003zPN9ym3ddBt0303avoJxPfvcx3gHPiZGIXb
-         ydsyjd2KTuDlHdKz/L+P6J6Dq+NFpWU29CDafx8f7AuH5p6XsOdKAGjzX6klvun4jJuZ
-         6vJKFWyaI3aVIGgfkUie4wWkBAubMrWKj8x/ptO/zt8fqICvWDi8xKQhfbneyZj3bBJo
-         2Qez77etbGzfU0IVHZVTpbqEsYFMJEpnKXPjtLLYAnQz7D8v/pbtFpQfX7mtAtCGcYNV
-         LpFI7fE+fe/OuARD4BdK/9ZUexc7cB0cOc3fFBino+ws37Dfe13wDIIjUhWQsAOip/Td
-         fCSg==
-X-Gm-Message-State: AOJu0YzAK+hVq1w9K85PJQ0BX10DK3mEI04TPLbW/NhGNr2gdDzxER7T
-	VGnpE8eCfV89vHO6auKBgu4uKoaKcGo8/n1t2HLte0d/aFt4Cs2SMcXXa3fjXL5GLvXepUbKWPc
-	u+gnUoJu9Rg==
-X-Gm-Gg: ASbGnct0cAD69qeq+PpxbqVYkGjza+8j20IaKnAjzJPncaldOWYjg4RRIhX4NdP5rSm
-	GhYVLB9n+C94LGAB+WTCwW0ZAeJ5kJNkVtvJyq9Bwr0UnLEpSrRGtrPUd4I3F5By3L0XXtkaKkn
-	AX2T+8z4wZv5d+TZ+LxQ9B23341UtTZ2CjnwB4ll+KjESQhLpcOI5Ni0wPWzYF1uPQoClRfpOWo
-	wpybtYdLgFAIPwim7ck12QXnrMRVmnQo+Y8OF8jdXI7hWFyH293meunGhtOcxCoXunJocexzFFP
-	XwWqtErtpPW2Epl2LKYrrZ02FcSQODrZMG+3rMCKhWpu+dcybkNZOsaqEa6dvUqEI2b8z64XdXP
-	F+LVwLOlwxRfEpAy5h6ihgJs5sGAYITdhV0/fLTET50NNr1EX0JJfJz25+xn3OTzcdu+CWmfkWc
-	5i6JJYWLTCADa3FZE/Sgx6JysWzQ==
-X-Google-Smtp-Source: AGHT+IEb67ycFZe9zCl6jAoSHAu9wiA9yjXExXkA+tOcCOgLpxU/GrM/G6xCvbEaT0DTNkTyhYO40Q==
-X-Received: by 2002:a17:907:94d1:b0:aff:13f5:1f0 with SMTP id a640c23a62f3a-b1bb16d4928mr725238966b.7.1758212474258;
-        Thu, 18 Sep 2025 09:21:14 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd271eaf7sm213888066b.100.2025.09.18.09.21.12
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 09:21:12 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b07d4d24d09so205430266b.2
-        for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 09:21:12 -0700 (PDT)
-X-Received: by 2002:a17:907:6d17:b0:b07:c715:31 with SMTP id
- a640c23a62f3a-b1bbc545b7fmr610549366b.65.1758212471806; Thu, 18 Sep 2025
- 09:21:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fx3cN/e/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E799EC4CEE7;
+	Thu, 18 Sep 2025 16:51:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758214280;
+	bh=aBzzE6ptNAUWJm+Kwhv85Kj39AlwJ0RTOSCfrVdV5uo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=fx3cN/e/+tG4+agMZo7QZiaj9DfwQkqqCRQl0lnSaei6g1r64Y6ZNJknrct6KXTsK
+	 dXoankilSRN6z1qOYri+cVyH/UoUB+iZoZLZEk23P/Qp74bJ6AlV91f3s72sw8tpTx
+	 WDbyxGRp4UE2h0vArNWAmdOiKCe+sikgCrDZ1+q1+Wb6nnP6rNgcvUKeRAu4VXHTv5
+	 CpFlf/DD70CqYQRjgXvDq/Tc1ZU1lk1uxCquKpppEBhUwQxJys3RdUFRJmxfgIIlvk
+	 V1zsI059sY+P29R1Uv/t9XYwgClvj8Rmy9MU8q8/ioMbEiy2kv3Vo7iA9aTWaAz5v7
+	 qUoshEGIntcUQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CF839D0C20;
+	Thu, 18 Sep 2025 16:51:22 +0000 (UTC)
+Subject: Re: [GIT PULL] KVM changes for Linux 6.17-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250918132215.16700-1-pbonzini@redhat.com>
+References: <20250918132215.16700-1-pbonzini@redhat.com>
+X-PR-Tracked-List-Id: <kvm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20250918132215.16700-1-pbonzini@redhat.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+X-PR-Tracked-Commit-Id: ecd42dd170ea7bacdd9d01d8e74658df8dff621d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 86cc796e5e9bff0c3993607f4301b8188095516c
+Message-Id: <175821428064.2499383.11824596448322806800.pr-tracker-bot@kernel.org>
+Date: Thu, 18 Sep 2025 16:51:20 +0000
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250918110946-mutt-send-email-mst@kernel.org> <20250918121248-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250918121248-mutt-send-email-mst@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 18 Sep 2025 09:20:54 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whG45CvbpxG2dtWgAG31uPSRZ_FPw9s2tyH_8enuxYE8g@mail.gmail.com>
-X-Gm-Features: AS18NWAmxo1DLd_bNcF9s-ZOOAwZnodu5o6p8OrqHir3EF-tNoG8mT_VioNWcEI
-Message-ID: <CAHk-=whG45CvbpxG2dtWgAG31uPSRZ_FPw9s2tyH_8enuxYE8g@mail.gmail.com>
-Subject: Re: [GIT PULL v2] virtio,vhost: last minute fixes
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	alok.a.tiwari@oracle.com, ashwini@wisig.com, filip.hejsek@gmail.com, 
-	hi@alyssa.is, maxbr@linux.ibm.com, zhangjiao2@cmss.chinamobile.com
-Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 18 Sept 2025 at 09:14, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> OK and now Filip asked me to drop this too.
-> I am really batting 100x.
-> Linus pls ignore all this.
-> Very sorry.
+The pull request you sent on Thu, 18 Sep 2025 15:22:15 +0200:
 
-Lol, that makes it very easy for me - no need to be sorry, and thanks
-for just reacting fast enough that I didn't have time to do a pull and
-then have to revert later.
+> https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
 
-          Linus
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/86cc796e5e9bff0c3993607f4301b8188095516c
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
