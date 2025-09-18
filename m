@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659D12F3614
-	for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 10:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7059F2F5A14
+	for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758191417; cv=none; b=KOTbVg1phl/rwLlAbfLa5GX6x5Ac2Wz9kDLx92r04Y18Jwd13U9N4V3LbfI+sa+PD27mOfEOpVQrZefA+zzPyafmGtgHEaGaAF3Z4J0gk5KL+r7js7xjKIiYwRn0ISxmBarVdDOdkFnj6SwPeg00ndq37Jx/LGGeqA1VXQcG6/o=
+	t=1758191419; cv=none; b=vDnGgqXHxaDrkO75/1qto/EkMa6SZzNl+aYBLws3ONfdEJ7Pb15hlxEROuq85GdPe7etAY42e5kycs3xjUnrV/Bj4gmtDfwm8ieEOK3AIa4T+7QtoeHERaSRdAJGjCNba+PkHyBSuPxdJ91OL4upQoJc2RzlGzY/UjLTcGRDMa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758191417; c=relaxed/simple;
-	bh=/t/seh31KV2q7u6Vwfa5Gxj43/rdwqpf1rIihSlnvCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E+lAcNp+NxPjIlPf1pmAJzRPInjW1Ey5zQLIq/OLhS4mkMI+qk2bg9U/BaVAhMP6MWBJS23cb1jvJE+sZP+6q9HjWNiIrKsvc+D3s1aMS4+oxJLK9DCjLL0/CzYxMTm/rcENr8qYbyYScHPWjtKDnb4bIjYXJDMskvunz5xIY/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ht73uFWH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758191419; c=relaxed/simple;
+	bh=dP5IVGjmx5XftVX1vvgwnPL2aJr8KldT3GTZjykn2Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gnDjJ2207gs8O+Z1snK9lvI6dsDp57dRVr91HnUDp1vjtWq25ufGkwK+8kOqdVjoRdJvuPg0mPD6z9D3SALhtbRULqgrgu3WNMjjEOBYs85TOFZFpIIW+toa9MEJj3W0vOqMZ6+GVsgJlmLgeG73mWtcqUCWX49HmQmV1wOhors=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxETtJFN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ht73uFWH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B65C4CEEB;
-	Thu, 18 Sep 2025 10:30:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxETtJFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A21C4CEEB;
+	Thu, 18 Sep 2025 10:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758191415;
-	bh=/t/seh31KV2q7u6Vwfa5Gxj43/rdwqpf1rIihSlnvCQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ht73uFWHumP9sqZf0Q6V5C3CalsbAfdhf5abUfVeZG3a3V8fqTd/WashvS2gg0W7P
-	 19m9SI8rqK/iAkzVy4igdtwCxUgv8s1NogzXzwuBy+Y8lDRUyj79iGdUOAR+nk4ubH
-	 sEsutPxzp7i7FahkkYpt3NKvyBWxT9/hIuqPKQtqSk2vJPBhKe3U+xsOW3r6dc8IQp
-	 9dQYawVxDykXH7pW0FgYUsYaQ8MQ5Y3XAyPpEn1SrZ0oQ0aQsecepMmQAcFEdXg4D6
-	 Bz6AasXbVuJRoxEP+2ISNeNqjMYEeb32vBh3zh70Bqo3sa0+p5vyzi0R8d0YrcpS0f
-	 OmCqP/EDQygdQ==
+	s=k20201202; t=1758191419;
+	bh=dP5IVGjmx5XftVX1vvgwnPL2aJr8KldT3GTZjykn2Yk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FxETtJFNX+jmX13mn+mvbN73JIqE8L+LWqtqxPRi+hcnfiNCAIgtQIQi03hpsMleg
+	 JekZvLZLPomHv0Wfk7jSHFbkFjZkUoiyMnDqRFf5kfH67tErPgpE1RUAfOWXU8yy+0
+	 rrspUlJbzZKUGMdzy5B9SZ+qNL9fVATB8H2/fmQZku/ZOuU5fVF++g+GzLvw4QK4l+
+	 94Tbgvqx1ULaLWhhONyFzKIWP/wrg9BFhZZqrxmltbYaQPExgo4TW96JuNqKbTlqqR
+	 A1oGzWW0QUyumi8qOTrz2IiN6niHLWC4j9vHnCsNNwjx0PC9u3ctd9t6pKFvJyxLy9
+	 uCl512O8rmmQg==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Eric Blake <eblake@redhat.com>,
@@ -39,10 +40,12 @@ Cc: qemu-devel <qemu-devel@nongnu.org>,
 	Zhao Liu <zhao1.liu@intel.com>,
 	Michael Roth <michael.roth@amd.com>,
 	Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: [PATCH 0/8] target/i386: SEV: Add support for enabling VMSA SEV features
-Date: Thu, 18 Sep 2025 15:56:58 +0530
-Message-ID: <cover.1758189463.git.naveen@kernel.org>
+Subject: [PATCH 2/8] target/i386: SEV: Ensure SEV features are only set through qemu cli or IGVM
+Date: Thu, 18 Sep 2025 15:57:00 +0530
+Message-ID: <f9b23c74b04177f0dc088a246bdacf1cb158c35e.1758189463.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1758189463.git.naveen@kernel.org>
+References: <cover.1758189463.git.naveen@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,42 +54,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds support for enabling VMSA SEV features for SEV-ES and
-SEV-SNP guests. Since that is already supported for IGVM files, some of
-that code is moved to generic path and reused.
+In preparation for qemu being able to set SEV features through the cli,
+add a check to ensure that SEV features are not also set if using IGVM
+files.
 
-Debug-swap is already supported in KVM today, while patches for enabling
-Secure TSC have been accepted for the upcoming kernel release.
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+---
+ target/i386/sev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changes since RFC (http://lkml.kernel.org/r/cover.1757589490.git.naveen@kernel.org):
-- Split the first patch up into the initial three patches (Tom)
-- Fix up indents in qom.json (Markus)
-- Drop Secure-AVIC flag enablement pending KVM enablement (Tom)
-- Collect Tom's reviewed-by tag for patch 4
-
-
-- Naveen
-
-Naveen N Rao (AMD) (8):
-  target/i386: SEV: Generalize handling of SVM_SEV_FEAT_SNP_ACTIVE
-  target/i386: SEV: Ensure SEV features are only set through qemu cli or
-    IGVM
-  target/i386: SEV: Consolidate SEV feature validation to common init
-    path
-  target/i386: SEV: Validate that SEV-ES is enabled when VMSA features
-    are used
-  target/i386: SEV: Add support for enabling debug-swap SEV feature
-  target/i386: SEV: Enable use of KVM_SEV_INIT2 for SEV-ES guests
-  target/i386: SEV: Add support for enabling Secure TSC SEV feature
-  target/i386: SEV: Add support for setting TSC frequency for Secure TSC
-
- target/i386/sev.h |   4 +-
- target/i386/sev.c | 126 ++++++++++++++++++++++++++++++++++++++++------
- qapi/qom.json     |  16 +++++-
- 3 files changed, 128 insertions(+), 18 deletions(-)
-
-
-base-commit: 6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 2fb1268ed788..c4011a6f2ef7 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -1901,6 +1901,11 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+          * as SEV_STATE_UNINIT.
+          */
+         if (x86machine->igvm) {
++            if (sev_common->sev_features & ~SVM_SEV_FEAT_SNP_ACTIVE) {
++                error_setg(errp, "%s: SEV features can't be specified when using IGVM files",
++                           __func__);
++                return -1;
++            }
+             if (IGVM_CFG_GET_CLASS(x86machine->igvm)
+                     ->process(x86machine->igvm, machine->cgs, true, errp) ==
+                 -1) {
 -- 
 2.51.0
 
