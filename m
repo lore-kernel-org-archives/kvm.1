@@ -1,76 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC65D2FB603
-	for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 11:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C113A256C9F
+	for <kvm@vger.kernel.org>; Thu, 18 Sep 2025 12:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758193622; cv=none; b=CE4SEPgPvVAtqRizCZ7KUfeA9ZdV4Gnh+5m8n0xg62D33AoPAisTEf6kkdAJQP0nuW8lJSENcxlWbEJMoTFHQNRQSaX/uOp0pXbNSfmxCETq5moG14yiDcVSptpaqdXgFTg3mat1gN4Cfqu2CJXtasxUGtMlXPWL/9KYWawGczE=
+	t=1758197980; cv=none; b=eZJDgD0ymHRN+l48gvqlhxrpjsWrmNF4YnTLyG1+sLeUMSIKMq4toTPeKBcQyIT4NJeiOYly3cNxXOBs7PJTFG7UpK0dPVu9MeQAU2q9JB8V/5e9M4N/yUMgOg3r7m9nGP8Ctl2lOwrCZWKIYJRJRxTamULhGpQiN58NQMLW9sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758193622; c=relaxed/simple;
-	bh=8zoQyk7ZIHU3R0yvj0JLc7j/O+kQ2j21k4jH1agLrIs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mbehHwnXRiuBrlbstWeVOyHesHnYvPef3zV/57OwfVKZvbhZR2iAP5M3eglGujZMC3LCX19SfrhnI0kXarvUJoW3SLuj0eLKonWEd0w/IasXTYIS3nnIEPDEIc9n8SOhzQiXnaBTJD2+8+45SEf3rtdJlP7MP3am/0v6vCPfQc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0khHQlQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758197980; c=relaxed/simple;
+	bh=OaCB53Z5SxqHSpEbGWruf27ccEnxMfEFjrfpUpX4zs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MYjJDxlB49xCRNOErMqHgE2+KiCmHugRGQJZNtCaZ8aXTcQF9pQHPDDpCwqAa7hRqVarg+zhvwb6XTLRLXY9l4dnpDzLaU8RSJjI26CgiIczfTdFhVQLFvznOes5cLGgNgb7+tF+Wm3Ec1riEkAdV9T20BaT3d+WT/Xv76su0c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R6yE+2r6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0khHQlQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D497DC4CEFB;
-	Thu, 18 Sep 2025 11:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758193621;
-	bh=8zoQyk7ZIHU3R0yvj0JLc7j/O+kQ2j21k4jH1agLrIs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0khHQlQEVYMsOPFNE6r++aXJt3GsOtojCI3lUaN9LoOrCOjknoOyMmrSGE8sBqEw
-	 BOl1q9PQpXbT/QI+wRXDmflagwjMwc8Z4giOf/KjEqx62U+GYB+bDsgEQONRoe0E7G
-	 LaLERXZ0emvKNBqZxvHZmRmIylZlWbEbP/WvX/7f4569i8IFIBDd4tfF7Jo14v1ggd
-	 Sm3E4UE0c9XgiTtUAQwwIFqAJpCIcwbTEX1W3f79KCEeAjTdYzsuuQZhqBQojGigXJ
-	 NOkb3L26Gx4T0JbYUtW7LRjOqYI48Xq0vblIkH171Co/xWMWPzHonT88Eh5zZvw4sZ
-	 DXFPfzL+VP2nA==
-From: Will Deacon <will@kernel.org>
-To: Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Steven Price <steven.price@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	kvm@vger.kernel.org,
-	Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: Re: [PATCH kvmtool v2] net/uip: Avoid deadlock in uip_tcp_socket_free()
-Date: Thu, 18 Sep 2025 12:06:37 +0100
-Message-Id: <175819216846.1966959.14006241285843545065.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250917134414.63621-1-steven.price@arm.com>
-References: <20250917134414.63621-1-steven.price@arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R6yE+2r6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758197976;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oLHeVQ1V5+rlFvLH0NK0a8N3VCQk3wWRUgjhebQLwJ0=;
+	b=R6yE+2r6dgfB60lJotB9aAjjzCOTl1lEWVelvXW1R/54eGsJJJnm/4ud65qLhJLP3uoOF0
+	l6f3OvCInHXwT6mRF2c39Wdq3EkBqKp+QuYRr0C1ptgwbxsXpyKMa1sW97XsFoWjv78ei/
+	JTqFiPl7iwVgb8FIeg7Z3aM1zGaQKzA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-GLAfXEgDNni5Jft2awUMDw-1; Thu,
+ 18 Sep 2025 08:19:33 -0400
+X-MC-Unique: GLAfXEgDNni5Jft2awUMDw-1
+X-Mimecast-MFC-AGG-ID: GLAfXEgDNni5Jft2awUMDw_1758197972
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 64ADD1955F0E;
+	Thu, 18 Sep 2025 12:19:32 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.45.224.90])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B75711955F19;
+	Thu, 18 Sep 2025 12:19:30 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] vfio: Dump migration features under debugfs
+Date: Thu, 18 Sep 2025 14:19:28 +0200
+Message-ID: <20250918121928.1921871-1-clg@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Wed, 17 Sep 2025 14:44:14 +0100, Steven Price wrote:
-> The function uip_tcp_socket_free() is called with the sk lock held, but
-> then goes on to call uip_tcp_socket_close() which attempts to aquire the
-> lock a second time, triggering a deadlock if there are outstanding TCP
-> connections.
-> 
-> Rename the existing uip_tcp_socket_close() to a _locked variety and
-> removing the locking from it. Add a new uip_tcp_socket_close() which
-> takes the lock and calls the _locked variety.
-> 
-> [...]
+A debugfs directory was recently added for VFIO devices. Add a new
+"features" file under the migration sub-directory to expose which
+features the device supports.
 
-Applied to kvmtool (master), thanks!
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ drivers/vfio/debugfs.c                 | 19 +++++++++++++++++++
+ Documentation/ABI/testing/debugfs-vfio |  6 ++++++
+ 2 files changed, 25 insertions(+)
 
-[1/1] net/uip: Avoid deadlock in uip_tcp_socket_free()
-      https://git.kernel.org/will/kvmtool/c/7ad32e5514ac
-
-Cheers,
+diff --git a/drivers/vfio/debugfs.c b/drivers/vfio/debugfs.c
+index 298bd866f15766b50e342511d8a83f0621cb4f55..8b0ca7a09064072b3d489dab8072dbb1a2871d10 100644
+--- a/drivers/vfio/debugfs.c
++++ b/drivers/vfio/debugfs.c
+@@ -58,6 +58,23 @@ static int vfio_device_state_read(struct seq_file *seq, void *data)
+ 	return 0;
+ }
+ 
++static int vfio_device_features_read(struct seq_file *seq, void *data)
++{
++	struct device *vf_dev = seq->private;
++	struct vfio_device *vdev = container_of(vf_dev, struct vfio_device, device);
++
++	if (vdev->migration_flags & VFIO_MIGRATION_STOP_COPY)
++		seq_puts(seq, "stop-copy\n");
++	if (vdev->migration_flags & VFIO_MIGRATION_P2P)
++		seq_puts(seq, "p2p\n");
++	if (vdev->migration_flags & VFIO_MIGRATION_PRE_COPY)
++		seq_puts(seq, "pre-copy\n");
++	if (vdev->log_ops)
++		seq_puts(seq, "dirty-tracking\n");
++
++	return 0;
++}
++
+ void vfio_device_debugfs_init(struct vfio_device *vdev)
+ {
+ 	struct device *dev = &vdev->device;
+@@ -72,6 +89,8 @@ void vfio_device_debugfs_init(struct vfio_device *vdev)
+ 							vdev->debug_root);
+ 		debugfs_create_devm_seqfile(dev, "state", vfio_dev_migration,
+ 					    vfio_device_state_read);
++		debugfs_create_devm_seqfile(dev, "features", vfio_dev_migration,
++					    vfio_device_features_read);
+ 	}
+ }
+ 
+diff --git a/Documentation/ABI/testing/debugfs-vfio b/Documentation/ABI/testing/debugfs-vfio
+index 90f7c262f591306bdb99295ab4e857ca0e0b537a..70ec2d454686290e13380340dfd6a5a67a642533 100644
+--- a/Documentation/ABI/testing/debugfs-vfio
++++ b/Documentation/ABI/testing/debugfs-vfio
+@@ -23,3 +23,9 @@ Contact:	Longfang Liu <liulongfang@huawei.com>
+ Description:	Read the live migration status of the vfio device.
+ 		The contents of the state file reflects the migration state
+ 		relative to those defined in the vfio_device_mig_state enum
++
++What:		/sys/kernel/debug/vfio/<device>/migration/features
++Date:		Oct 2025
++KernelVersion:	6.18
++Contact:	Cédric Le Goater <clg@redhat.com>
++Description:	Read the migration features of the vfio device.
 -- 
-Will
+2.51.0
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
