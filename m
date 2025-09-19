@@ -1,69 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469B92F25EF;
-	Fri, 19 Sep 2025 09:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9054A306D4B
+	for <kvm@vger.kernel.org>; Fri, 19 Sep 2025 09:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758274768; cv=none; b=PazOO4uVMxSYF3PELBs5mFGtGKpJq3dOQOYH3gugS7Sg4qGnfpdjysbBnH+IoQO3iNXfn6fp/j1OfcGDf878bAXBBFGJ8b9WEcn3QxZdOQe2E66vw530Bca6/nzoHjKJp3Lw8i2k2yDAyTOTk+Jm/g1KqE1yTrbijrXIn+zTvpo=
+	t=1758275089; cv=none; b=ELq0zeYD9SmsbHLaMjbuHQQ87WYS74n7qZH4GHLkhz9lnwzHF1MBZbPd6C3sIAg1vxpsVF6FUmzFoPSYZBGbpYRNM9d28x32Ohv3q4Ofnnod90P5xwIqeTIdHBi4msrjr8XeBlxAePbG5+3ZFznHEZN92HJe655hXJ2wuucoSfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758274768; c=relaxed/simple;
-	bh=KwLzMQLT7wi5XfbeBsM5cIPpIimjD49D5PPQYk+Dueg=;
+	s=arc-20240116; t=1758275089; c=relaxed/simple;
+	bh=Zc2EnsY0CcMHndLUfH9ZokqXC5xQl37IFdd7qM4BinM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O5crTvxiYSWDmfEwrRh1qe9uMB4vWqBItbzuHn3lDBU85YRMqMQppzJU0X6DRqqo8/AHNrIm//d0mSPNs0db0bZkHFhgfYZ2gm2aPemnfEfi/Zjo3af18L35CueGPVPsYvSSySVfjJ8BSYXLKwBA8NNjIzO3QzOOZliYV/AG6+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJV6Kf0k; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=r0mSgMpp3N8r1Cp4/hD8xN6dS6DZgNv1UIpN1HLbsTkuQVRaaNwyUx2IMqomQtnfsW7Ab/QvaM89hHqsl1PqcHs4RwM5x1Zntf4ru6H6KZT41fJMfh1BVhKM4ON3stK5q1ZNmOQuPNulkdRcM06Wea5uSyd7xPk0bScjDWRd9ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9sAE3mX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJV6Kf0k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467B1C4CEF0;
-	Fri, 19 Sep 2025 09:39:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9sAE3mX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0331FC4CEFC;
+	Fri, 19 Sep 2025 09:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758274767;
-	bh=KwLzMQLT7wi5XfbeBsM5cIPpIimjD49D5PPQYk+Dueg=;
+	s=k20201202; t=1758275089;
+	bh=Zc2EnsY0CcMHndLUfH9ZokqXC5xQl37IFdd7qM4BinM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lJV6Kf0kzv3UBOQN4+VkMEWTvgavXdln5W95vWAHRfbyIkw9VADK5+96/AKqHzlkp
-	 fp3qOPgmwTAbNt/TqKZmZh9mXwpjNy/XhVyHEepfBeT52ATo6MMYyGfz2RYA2bFWeU
-	 tqPbpBknmkn0+1Zxa3WqMqYr7LfsuV9i6khbM+VK2fl710gtg/d+Bbne+NfYeVxNat
-	 vk5u9qvyJIoPtPozTQ8PqDtktVcMJl98ge9W0wK6mEWFiazNUsoDJLK64TTz3Qx7O6
-	 ginM0xPHQf4ggG3hpMQnzYEdTRrNoTEsZ0yTajev2QhRobHrKxyYEUaoPwf3FTXTtb
-	 XfzCR5X+HTzZw==
-Date: Fri, 19 Sep 2025 15:05:08 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] KVM: SVM: Move x2AVIC MSR interception helper to
- avic.c
-Message-ID: <34dkuvu3s47ypxivxaqeyxdvgia6npjiw7b43mkvciqmngra4h@5hl5y7fzcyv5>
-References: <20250919002136.1349663-1-seanjc@google.com>
- <20250919002136.1349663-2-seanjc@google.com>
+	b=o9sAE3mXH5E1Uvu5syp41HXl+LkJ3Jai8gXRvi7b2vtZJOF09sYUPAaybJsNiiunL
+	 5xSaydEzwkc8DiHy6j6PHl+YSwp8JeKD8GNUyS/LS1Xyf19mYxOqqH8aN6aAscAKKD
+	 ScACNMAaIOGWfTy0vsxcyDLg41XXS/nWXDFR98HF7gN80ZJOcrHddJgDjEMva+x0Rr
+	 Idbl1iz+6jPgW5mdVtymFhRY4z5M1YaxTOiBbvK9/TKdOID1kGgRT/dbIUaM5Iulp/
+	 FF0sX7mQtWWTcx+4hnH1LbxpvEtZvqQFf4V+odUYld/IbCVU7KdpZd5o0w0H06LcF8
+	 IDsvaXOrlmpXw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1417CF40066;
+	Fri, 19 Sep 2025 05:44:48 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 19 Sep 2025 05:44:48 -0400
+X-ME-Sender: <xms:DybNaIUyQvym_iKiasjifmprBiVzxrdTYsYhDEeJaA85y4FmIoJ_Yw>
+    <xme:DybNaN2BCGYOJkwCnYM--vu1iK0LDWd-kuCYMDT8AKhkmpTssfym7NkuEwRFGcb4H
+    AlJgvYlAgO7gJJcUNQ>
+X-ME-Received: <xmr:DybNaBuUp8FimWp9yndR6JYdkp72zwItjmrS6f1kI4LEosZ0hX-SkDcRpil_ew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegkeekkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgestheksfdttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepvddufeetkedvheektdefhfefjeeujeejtdejuedufefhveekkeeffeetvedvffek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtth
+    hopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegthhgrohdrghgrohesihhnthgv
+    lhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvg
+    hlrdgtohhmpdhrtghpthhtohepihhsrghkuhdrhigrmhgrhhgrthgrsehinhhtvghlrdgt
+    ohhmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomhdprhgtphhtth
+    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    tghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ECbNaFTjhsWHW_IzDhE-H8l2YhZqx5jadFNl4Q2MNpd0NBunuN7J7Q>
+    <xmx:ECbNaDAPRIY6SPhcLaeerYAg5YDusGdMU72Ru3qhNnZj8iYuguRFwA>
+    <xmx:ECbNaHxPx_oqJAs-kjWJZ9xWxpl3YR1Fes-P8kAbzXU020HVmk-pmQ>
+    <xmx:ECbNaLvAJYpvie9-7MVnoHHbpoDhUMbjpwRYXnNQLOABpeXP0JUvMQ>
+    <xmx:ECbNaIlcfZ5wZPb4wfwBz4WfQLVdIWokO_k6HI9OZI4BEnWDpdSnZpPO>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 19 Sep 2025 05:44:47 -0400 (EDT)
+Date: Fri, 19 Sep 2025 10:44:45 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, x86@kernel.org, 
+	yan.y.zhao@intel.com, vannapurve@google.com
+Subject: Re: [PATCH v3 11/16] KVM: TDX: Add x86 ops for external spt cache
+Message-ID: <x64nziosjtknntkgwmkrginncr67xp2fwdpzooabp3ysfim562@m3kdshgibz6b>
+References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
+ <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250919002136.1349663-2-seanjc@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
 
-On Thu, Sep 18, 2025 at 05:21:31PM -0700, Sean Christopherson wrote:
-> Move svm_set_x2apic_msr_interception() to avic.c as it's only relevant
-> when x2AVIC is enabled/supported and only called by AVIC code.  In
-> addition to scoping AVIC code to avic.c, this will allow burying the
-> global x2avic_enabled variable in avic.
+On Thu, Sep 18, 2025 at 04:22:19PM -0700, Rick Edgecombe wrote:
+> Move mmu_external_spt_cache behind x86 ops.
 > 
-> Opportunistically rename the helper to explicitly scope it to "avic".
+> In the mirror/external MMU concept, the KVM MMU manages a non-active EPT
+> tree for private memory (the mirror). The actual active EPT tree the
+> private memory is protected inside the TDX module. Whenever the mirror EPT
+> is changed, it needs to call out into one of a set of x86 opts that
+> implement various update operation with TDX specific SEAMCALLs and other
+> tricks. These implementations operate on the TDX S-EPT (the external).
 > 
-> No functional change intended.
+> In reality these external operations are designed narrowly with respect to
+> TDX particulars. On the surface, what TDX specific things are happening to
+> fulfill these update operations are mostly hidden from the MMU, but there
+> is one particular area of interest where some details leak through.
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/svm/avic.c | 57 ++++++++++++++++++++++++++++++++++++++---
->  arch/x86/kvm/svm/svm.c  | 49 -----------------------------------
->  arch/x86/kvm/svm/svm.h  |  1 -
->  3 files changed, 54 insertions(+), 53 deletions(-)
+> The S-EPT needs pages to use for the S-EPT page tables. These page tables
+> need to be allocated before taking the mmu lock, like all the rest. So the
+> KVM MMU pre-allocates pages for TDX to use for the S-EPT in the same place
+> where it pre-allocates the other page tables. It’s not too bad and fits
+> nicely with the others.
+> 
+> However, Dynamic PAMT will need even more pages for the same operations.
+> Further, these pages will need to be handed to the arch/86 side which used
+> them for DPAMT updates, which is hard for the existing KVM based cache.
+> The details living in core MMU code start to add up.
+> 
+> So in preparation to make it more complicated, move the external page
+> table cache into TDX code by putting it behind some x86 ops. Have one for
+> topping up and one for allocation. Don’t go so far to try to hide the
+> existence of external page tables completely from the generic MMU, as they
+> are currently stores in their mirror struct kvm_mmu_page and it’s quite
+> handy.
+> 
+> To plumb the memory cache operations through tdx.c, export some of
+> the functions temporarily. This will be removed in future changes.
+> 
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Makes sense.
 
-- Naveen
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
