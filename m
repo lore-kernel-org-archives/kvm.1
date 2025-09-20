@@ -1,63 +1,63 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2AD2E2DFB
-	for <kvm@vger.kernel.org>; Sat, 20 Sep 2025 20:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344A62E6CB5
+	for <kvm@vger.kernel.org>; Sat, 20 Sep 2025 20:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758400753; cv=none; b=kHuO3aVt76KV2j+X7aNDqbfLCnohjscrcxLVCDVi6E8tW9RqgO3tj5ceBh74N85flqyaAKULuWhVF/ltILV1HC1eVE59jW05QZCYPydAA1LSsNkqTz2NDnT7haSzSYUmBg7eOaL6BQ8ZuiGZ+jmFlkNMls9imomlJdc5Tgg8mOo=
+	t=1758400756; cv=none; b=TieoovThExANnvG08tk+WeweZPUBbjQHF7zu61fJy6CFsSAy++xqcDcCSD1u8WUa24XklH0GXCzml5OuwUzUGjgEmcDrJX4a9Z6F9B4/q7e3Yl8OTr0ARM+QjjOSS3i3onjodEFYipP8Iq7OtmaiMzs4DPmaDraR0XQ6A/yYlZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758400753; c=relaxed/simple;
-	bh=4BFlmqPFmB0y8a2YMn/MaIcIOGsPHlt2XA/KAa8fqQ8=;
+	s=arc-20240116; t=1758400756; c=relaxed/simple;
+	bh=eR9yldP5I+tQHxNItj/BneVd8jk+wwPiVMth3Yu7eiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V76zu1Zp0d0RSUE7QwjOpCrcEUQO8X7Id9XoQtBIa2RmfXl5k9c7olHWb01mTBEwkmeA0dyGV1n/s/qxLMOkSUI+My8hTtLve48S3JPe9A7hcNSn9S/+tK13kkwbHDYe4oEzz/biE3Ui13fH558VKc1qGAuCajVpptHujI+rDMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=SCbvuNLT; arc=none smtp.client-ip=209.85.166.181
+	 MIME-Version; b=Jxouvcnwc6aylL6QUiwAxtFMLPFTGMJoaShdm4w2K7sjvR6dz7+VMOUgOQ4SL9cOHKb8gzIUsFQxgbNbiGTEbx33yQH42O7FtZzIlZ/tPZK+5KzW7I70X+ncAFHO4A1WNygD5y05vLB37Xt39BA4c5g+ZQiRjaIrR0pjgVe3Ofg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Ywy8Y5JG; arc=none smtp.client-ip=209.85.166.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="SCbvuNLT"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-425635acc4dso6654145ab.1
-        for <kvm@vger.kernel.org>; Sat, 20 Sep 2025 13:39:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Ywy8Y5JG"
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-42480cb42e9so11460985ab.0
+        for <kvm@vger.kernel.org>; Sat, 20 Sep 2025 13:39:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1758400751; x=1759005551; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1758400753; x=1759005553; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TxscO8SXNrjDBekFMJlTFlhXiLgQFfajmO2RZqDfrAU=;
-        b=SCbvuNLTfq73d56rhpwdP7lcF+ClacdDqjgdi/PAaNyWMG9Wsr2vnbg1BvJOKfgWs2
-         ky0O/lbBtZB7CLCGhPiNiWnBVif6mjY+jTPR34wTKNkWGc7tMESgdiNKlhITopQjDwL3
-         ngtMzwVmEayKBnKOuXbKY/CJR6lS3L8W+mLVnCAg7pa8Q944wsvTEs2VzU0d3uwsJlng
-         dkuDAS3LwToaaefl/xkaRAzmGv054Eb2Sd+msJENQPgwf0bQOdgKUrlMU4erakRBQ7vo
-         4d4vNG4qvoImhOhHBL/w6azQc2ME9cqIO+wuOSaYtDBHk/JyISS6fNI3Y+vbyIfrIRml
-         ArEQ==
+        bh=Lp5QAIgY+FjKQKHqRdWuauO9I56sIIxDetTr/Rl2SyY=;
+        b=Ywy8Y5JG11NryemQxamVvupq97uv3J4fQGHUGERuTanZ/f8TB3R//clZ7r084F+KhL
+         nd2y1lT/j4KAyQzrfvI3dVM9IEzn7UCtKnhA3Ej97sKVRBOeR/k/YIidwlNIRCOD4ko8
+         h4LtIlU7uxMEHzNQaQtHwfgs8lBRd4YFHrcn1194A05FnflfkY4Xefcf68nZOLskdrMk
+         +NK+fhlA5/Afrzs39VpjZlU9v9D/I0NlW+EjeMo7O9GRHxi5QTEzfix+6JFTMH3HwOaD
+         Qck/MXNzS2JX5suaWFyOY7P1FKcbCrU0x3vfwMp3OzUyXWAFFCeLsTpi5Ei1qFO9Y8WT
+         nbfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758400751; x=1759005551;
+        d=1e100.net; s=20230601; t=1758400753; x=1759005553;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TxscO8SXNrjDBekFMJlTFlhXiLgQFfajmO2RZqDfrAU=;
-        b=dLOs6cN8FB111FIv49+uxOiiCnrbBVXkRpaWEDqgks2+nt+T+dJQu8u23qGO43iSTY
-         1hN1MzKAOrO+10qyQPKizw+u8X8PGoHZ00s4cV0eGymDu26B7ECm7EIQ47sEpkjmxZFS
-         snuznBjmUZadpmAhAsm2l+tTgYWNylXVTn321afMVjJ76+DMVgaoKt0GfFTCZALaZnY3
-         H6vMZBZnAkOlypTpwQhnekb5dnVdMYsXLHpb6WmQKXyfgErdak2iTKnRkEX9UY+lpV0G
-         5tf43QPpskuQZtdG//nzydq5OeWaLFMvaZueqpYyH9YthPUjecSytgtR9p8cchKgBoFD
-         7oXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgPzwlHv4O5cd8WwUkQ4lwLsqSmbXSC+L9Y2hH/xWzpirZ5JquTqLSlezq+JVnnAbbVD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU1gLOJyMe6JeoLpMr1t1GHehqZCKVcIrcOI/m03t7AefSzgSK
-	CuDL7JKVD0fD+Ndn6CeRpmqFB2sp7B7beG3tBZFQO9TPWgRYBpHDIpOKxZlorEo9yTA=
-X-Gm-Gg: ASbGncurY4eYaV5sWDVkd9w4eOmglb6YSvvrqK/0xSEY732a0AmRyRqyFleXlgfQEKi
-	t1WdiTG9MlakcG02DJ7ccItp+Xe6wwUsjRYgVzHh1rYOxPu0KKlh8TuZpfaWKdsBs67zQeektUF
-	CYwG0R+n/y7fmPKZwyuIewCgl+3VB+lJQngbuhvDwqA3ALeZmY4tjLGDgVlNzUV5luddAj8IPWi
-	WmF5xWsVbULc+u+Qv3Add4Z+Gw9glDSh0jAyLr6RqG/TlAV5RUTRvbmfwEjM82vQtcJ1QYLlHt8
-	1Ip+7m00eQtJ8iuaIcj0I9sQqcPilVOo9n98G18PU+vfAb+WHkr7VrlTDUPCYGMUY0FgYROlJmS
-	kQJw4U33/H+TT4x8/dk+x0wIr
-X-Google-Smtp-Source: AGHT+IERpRPEc12mV955tvnuQoeNvkZUC+MN7EtTp3JKXd3eHnM2oBc0U3F0kWPqnL99WZIdHZ+AuQ==
-X-Received: by 2002:a05:6e02:1d9d:b0:410:cae9:a089 with SMTP id e9e14a558f8ab-42481922e1cmr116891435ab.2.1758400751055;
-        Sat, 20 Sep 2025 13:39:11 -0700 (PDT)
+        bh=Lp5QAIgY+FjKQKHqRdWuauO9I56sIIxDetTr/Rl2SyY=;
+        b=s3bpY2Rckfr2HWpOiFcUYwtamd01QhKaVXBEwSrr7f6QfN4hRmEDDvsarTmckA2+yk
+         YLnyu+kbgmg88r/hkINmmmV0kJFi099C9Z3g88A6dyhxk+u1lL47esydGuF8QRZrpprp
+         nGWmEfPTn3fM9tVM0EDQL/aNFjzU8LkK3jw8IlrF7hdpWg/qdlVbRSghWFLsEDoJpzry
+         6sGBgLPHlcrMILhVLfdlJUO44wYb/dv+VYNJXoVhtzrmzlhbyoZsCCBUyxSBLrsMLkBf
+         tYOLn/S0rYo/W70lOnFIxy7rE9Zg6a3AnSPoJ3O0YTBQ2+9G/ybHGQ1rj1nSmKiuOAsq
+         qAnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYsQHUGUiNsgpOQokUgxsF6J1EY7+479BxqOtYsz5IHGk8Y8FzsR/kGDkYCUiMYbsdRXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6kb0va59z7CNn+9F9UvubgFP5Sgd+OoXoWOpEa9TVuzO8OpFq
+	znyyIQmMvzYfCPPUa9sl+1X6hFcmVgqk7DAuDPa5w7NKSuWW8GJTgzVxqxdID+JSeMw=
+X-Gm-Gg: ASbGncvQKeKbgXwyMIAfe1HmsV9PqVKwTuZ2mACqjah77Y2HkA5+SsUy7E0MF49aGD+
+	hj5ONGXQqtbINlHFzIytYN+cnNvNqaFTbiQe3mmwlEbbidVf5Ik36T6IGD/bqWsIOSgfVvJE+Kt
+	Fg1TaAzlc2+eP3GU5hnTgiY6ujJ6+roEcr1/010avGtqBK5k9DjKz0L/9nbLgHQSEO+u+7crT2S
+	e1y9rsihb6YUy/tKrhMbJpgdBWa2g1gDDlryWs2opYtSOQhe+4BCykkZyvWGpgrXML4PhAG9BrR
+	bPNJmmGZdKROVdlkgQwVQ/+tgF7XOvABt7wIrlXjhOB1Bb1FSP2JWtN17jPKZB+ZL268Sgcarvk
+	9VjRIocM+e3G4+Nt5734WVhg2yppQIj67fJw=
+X-Google-Smtp-Source: AGHT+IEGRyXKIZhBuusMIimPhPuaP1RErmgLHhjZOiDaZM931WOu2VdkPLc6h5n6dwDp6Uc98U+7Ow==
+X-Received: by 2002:a05:6e02:188d:b0:423:f924:c885 with SMTP id e9e14a558f8ab-42481938b95mr127031045ab.13.1758400753481;
+        Sat, 20 Sep 2025 13:39:13 -0700 (PDT)
 Received: from localhost ([140.82.166.162])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d56e429f3sm3768486173.74.2025.09.20.13.39.10
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-555a288f097sm699084173.44.2025.09.20.13.39.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Sep 2025 13:39:10 -0700 (PDT)
+        Sat, 20 Sep 2025 13:39:13 -0700 (PDT)
 From: Andrew Jones <ajones@ventanamicro.com>
 To: iommu@lists.linux.dev,
 	kvm-riscv@lists.infradead.org,
@@ -77,9 +77,9 @@ Cc: jgg@nvidia.com,
 	paul.walmsley@sifive.com,
 	palmer@dabbelt.com,
 	alex@ghiti.fr
-Subject: [RFC PATCH v2 14/18] RISC-V: KVM: Enable KVM_VFIO interfaces on RISC-V arch
-Date: Sat, 20 Sep 2025 15:39:04 -0500
-Message-ID: <20250920203851.2205115-34-ajones@ventanamicro.com>
+Subject: [RFC PATCH v2 16/18] vfio: enable IOMMU_TYPE1 for RISC-V
+Date: Sat, 20 Sep 2025 15:39:06 -0500
+Message-ID: <20250920203851.2205115-36-ajones@ventanamicro.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250920203851.2205115-20-ajones@ventanamicro.com>
 References: <20250920203851.2205115-20-ajones@ventanamicro.com>
@@ -93,31 +93,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Tomasz Jeznach <tjeznach@rivosinc.com>
 
-Enable KVM/VFIO support on RISC-V architecture.
+Enable VFIO support on RISC-V architecture.
 
 Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
 Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- arch/riscv/kvm/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-index 5a62091b0809..968a33ab23b8 100644
---- a/arch/riscv/kvm/Kconfig
-+++ b/arch/riscv/kvm/Kconfig
-@@ -30,10 +30,12 @@ config KVM
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_GENERIC_HARDWARE_ENABLING
- 	select KVM_MMIO
-+	select KVM_VFIO
- 	select KVM_XFER_TO_GUEST_WORK
- 	select KVM_GENERIC_MMU_NOTIFIER
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
-+	select SRCU
- 	help
- 	  Support hosting virtualized guest machines.
+diff --git a/drivers/vfio/Kconfig b/drivers/vfio/Kconfig
+index ceae52fd7586..ad62205b4e45 100644
+--- a/drivers/vfio/Kconfig
++++ b/drivers/vfio/Kconfig
+@@ -39,7 +39,7 @@ config VFIO_GROUP
  
+ config VFIO_CONTAINER
+ 	bool "Support for the VFIO container /dev/vfio/vfio"
+-	select VFIO_IOMMU_TYPE1 if MMU && (X86 || S390 || ARM || ARM64)
++	select VFIO_IOMMU_TYPE1 if MMU && (X86 || S390 || ARM || ARM64 || RISCV)
+ 	depends on VFIO_GROUP
+ 	default y
+ 	help
 -- 
 2.49.0
 
