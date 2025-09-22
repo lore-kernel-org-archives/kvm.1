@@ -1,255 +1,101 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB7227A906;
-	Mon, 22 Sep 2025 22:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E3E28B415
+	for <kvm@vger.kernel.org>; Mon, 22 Sep 2025 22:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758579433; cv=none; b=M8DjUKBR6kEdZBYZtPXhJH133PvU0SBHpcSn8+1pm9S4cxr9abSAmnh+f/9HFwu9+DprPbk+ddNSHvZd4yemPwJIM0UwYV2JqWM+YvleIvxkGTpxFMO7+gCvqaeTKb5L/fwgF4g2izRq+80mqHHJ/9UsNzUCkHvgxdM71EIeoc0=
+	t=1758580144; cv=none; b=RUYYH1PjH3wGG0V6JTpwcnbBaIrAxpojQSfDG8JEN1xgOFkLMBIF6c4968qUNz5wRQv0+tX2+JASOUbi878n/ewQVVYqvzQwTdzciYppKMha3plglc7GgNo2NHwJrbp7Xx0o+tCqSFmWj6E9HBbfVmkvYIxv0pq4zbr/K3bsNgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758579433; c=relaxed/simple;
-	bh=5PuVBkf+qGmZlYXb2NZVJTfDHMzFZGPoycz3QdxG9Cs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+ErwhgMlq1R9zeuS37VA/wTGx3syLZ9R08KGIEmBwnl6k/4XGYA0BlO/+gZFFdZwDPpZYzLF3WoM01zYWmhyNqFytqXULNVADq3jhFDjTPHE77dXKPGl6YB6JBPeJdtRriQ/1r8RQJAz4eU8rk0bzMsDH7ZfuVGuZauDC7l+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=P7Jj/jJe; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1758580144; c=relaxed/simple;
+	bh=bnoVvW7A4MZboCUWUp3uJoL/5QHRg63EHvbJEX0C48k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dw0H2BIgqgnc1h5J+/YcEB7TbmppKyY4FcwQlaReTjuKHm4z+/H4JLoTUfrprB8cUvMy1rd3xXRszCzUcOO7bx7vS8oJLIi/cVoRpXo9339zORp/NTXuUqRA1ZwN8Gvh+LKPWP/QkQG+x9wWNpGTXx+wjn7jzZb01K3ajUiMrPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IX5E30KV; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="P7Jj/jJe"
-Received: from simon-Latitude-5450.fritz.box (p5dc88066.dip0.t-ipconnect.de [93.200.128.102])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 58MMH4eh003919
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 00:17:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1758579427;
-	bh=5PuVBkf+qGmZlYXb2NZVJTfDHMzFZGPoycz3QdxG9Cs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P7Jj/jJeG/6RXXDI8IKdmk9mUIroKPkjQ8DpWsA/hZK/+3SgUvGHbBHcFbFumLonG
-	 A2C5s7LXaCfDDXzTmhDgGLzVWtZCm3Wto2yQkuyTatzkWHfS2wXY9XOaStXVBhXJNj
-	 +T+zrR71NPIZW1jrMfpNX0U0SYD2dM01afJZvHKY=
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com, mst@redhat.com,
-        eperezma@redhat.com, stephen@networkplumber.org, leiyang@redhat.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        virtualization@lists.linux.dev, kvm@vger.kernel.org
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>,
-        Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Subject: [PATCH net-next v5 5/8] TUN & TAP: Provide ptr_ring_consume_batched wrappers for vhost_net
-Date: Tue, 23 Sep 2025 00:15:50 +0200
-Message-ID: <20250922221553.47802-6-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250922221553.47802-1-simon.schippers@tu-dortmund.de>
-References: <20250922221553.47802-1-simon.schippers@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IX5E30KV"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b555ed30c1cso376777a12.1
+        for <kvm@vger.kernel.org>; Mon, 22 Sep 2025 15:29:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758580141; x=1759184941; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BtoT7lETDiyBBBUdd6zpmqK1Q4j9ahP216sTNQ0nsxM=;
+        b=IX5E30KVxgFPJ6p2dHUpUxJRlT0Z0s83563QpBj3WbExEofAH4EUzOd3Sa4/OvtHdI
+         pz0DWgou/hhLEq0Y+bU/L4UEJ/8CWpNBYtOpE7Zx7MIm+7jScXnD8OqztbfRm3QMA/63
+         +oxrnjL7NNyg/wXArhqBEgm61tsTA0dGcRDFCZC9bSB3BFjKISIcx12mhZmrpZkBMCWf
+         IW/ZVCumH3zDLWz0kVZG9DjWmrOQSM0A4m5cFKzNF2Z3DzNOx8ydCWeNKfgdOrS76iAB
+         YH87T9V1nLB2NVBQ0ORRQNcsAwnWaRPmGshhNrDMtRldhPUF91VQlOh/YYdLRASXc6hP
+         O6UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758580141; x=1759184941;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BtoT7lETDiyBBBUdd6zpmqK1Q4j9ahP216sTNQ0nsxM=;
+        b=pXJXWCnZJ7TZ1OQL+Z2Jr4V3/IgNFJoODuE0rGl1W62scuWOBngZIKrs4bncjN44O7
+         BIaJwxLmzgKjAamOfaBn8s980B0yUtJKLaIUVXOxcYiGJr9vqFNtY6BvO0QxGF3XKXl6
+         iFDvm16cXmanHEGTZzorrcpbifuJ2Uz0ljzsHKhKndyYNnienNtoI9EokhKKkG42S4Ck
+         oR3bqNalv9J0KCLP01IRD5OeBlcMTEec516pAk2OZfOV+k4nA6IU8FDk5jfSeYowk70X
+         zRXtGegygAPN9E/FfJkN0a+/Gx47s03h27Oi2gsytIMPc3M4RYlyOcyH1eM36/oo5gax
+         sF6g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+j2lbhFkaw54WSsLSZVZxXNCqUWBDLjhp1/B/ZQMOM8mTrzkUO4ZiPrbezXzmu0BsEi4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyITOfAJ/bJT9q8BpGs0cjGT3X+a63XzN2kluHie0yZ5/vHOz8C
+	siKgFKQg4JsdpJMXVK5kUdN3h2VBOpcyWXGmEX+ID9KHwcJwIUtvRk5H
+X-Gm-Gg: ASbGnctR57TZdQ2wOd86vgO7ft0Ybozh7Kch+lvNpHlMb/RgMOALTze/vzaklivgfQk
+	yv93pJ8UjMnH0cRh5gKDdvhutvrjKsMoub5G0LjvE9Ad+XDQwUoybDmdnBHef77XIFbgLIUZ7hb
+	QtXWhJ2Ezulu+Gt4ss7GRxRsxkdDwi2xKQXLXgYOqkoq9ZtWMmD6wjTBhFAQKfyRU8QeTYL2HrK
+	jAPvuyyjovvcqemkNz1w9VDR3uVhjuRs2CZbHqhmRO4FzXhhEGE5P5Q5nvCMLCZ4IhcgZNsBZXS
+	vKJEsBK1lJ02KGT75tJ8IexB0R+LCiC/GC6DvAC//0H4ZogAI3M+JMLWC8AAEWP/rruntmSUFuD
+	fc3sXkS2hvRXczunLO9l9N8hXyhluJA==
+X-Google-Smtp-Source: AGHT+IEr9MnnfuaOnEgl5Ok6lmMqyEMDd1YwFlpFnduveoNyqRB+X6CgKFY+fvDTCnEk46JVsmmqkQ==
+X-Received: by 2002:a17:90b:3a8c:b0:32d:f352:f764 with SMTP id 98e67ed59e1d1-332a9542d69mr564005a91.2.1758580141402;
+        Mon, 22 Sep 2025 15:29:01 -0700 (PDT)
+Received: from [192.168.0.150] ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b551518480asm10765908a12.28.2025.09.22.15.28.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 15:29:00 -0700 (PDT)
+Message-ID: <864b1042-9494-44da-b87e-d4cd8aa1ec11@gmail.com>
+Date: Tue, 23 Sep 2025 05:28:57 +0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86: Fix hypercalls docs section number order
+To: Sean Christopherson <seanjc@google.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux KVM <kvm@vger.kernel.org>,
+ Linux Documentation <linux-doc@vger.kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Wanpeng Li <wanpengli@tencent.com>
+References: <20250909003952.10314-1-bagasdotme@gmail.com>
+ <aNEAtqQXyrXUPPLc@archie.me> <aNFYL2Os3rbfMbh6@google.com>
+Content-Language: en-US
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <aNFYL2Os3rbfMbh6@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The wrappers tun_ring_consume_batched/tap_ring_consume_batched are similar
-to the wrappers tun_ring_consume/tap_ring_consume. They deal with
-consuming a batch of entries of the ptr_ring and then waking the
-netdev queue whenever entries get invalidated to be used again by the
-producer.
-To avoid waking the netdev queue when the ptr_ring is full, it is checked
-if the netdev queue is stopped before invalidating entries. Like that the
-netdev queue can be safely woken after invalidating entries.
+On 9/22/25 21:07, Sean Christopherson wrote:
+> On Mon, Sep 22, 2025, Bagas Sanjaya wrote:
+>> On Tue, Sep 09, 2025 at 07:39:52AM +0700, Bagas Sanjaya wrote:
+>>> Commit 4180bf1b655a79 ("KVM: X86: Implement "send IPI" hypercall")
+>>> documents KVM_HC_SEND_IPI hypercall, yet its section number duplicates
+>>> KVM_HC_CLOCK_PAIRING one (which both are 6th). Fix the numbering order
+>>> so that the former should be 7th.
+>>
+>> Paolo, Sean, would you like to apply this patch on KVM tree or let Jon
+>> handle it through docs-next?
+> 
+> I'll take it.
 
-The READ_ONCE in __ptr_ring_peek, paired with the smp_wmb() in
-__ptr_ring_produce within tun_net_xmit guarantees that the information
-about the netdev queue being stopped is visible after __ptr_ring_peek is
-called.
+OK, thanks!
 
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
----
- drivers/net/tap.c      | 52 ++++++++++++++++++++++++++++++++++++++++
- drivers/net/tun.c      | 54 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/if_tap.h |  6 +++++
- include/linux/if_tun.h |  7 ++++++
- 4 files changed, 119 insertions(+)
-
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index f8292721a9d6..651d48612329 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1216,6 +1216,58 @@ struct socket *tap_get_socket(struct file *file)
- }
- EXPORT_SYMBOL_GPL(tap_get_socket);
- 
-+int tap_ring_consume_batched(struct file *file,
-+			     void **array, int n)
-+{
-+	struct tap_queue *q = file->private_data;
-+	struct netdev_queue *txq;
-+	struct net_device *dev;
-+	bool will_invalidate;
-+	bool stopped;
-+	void *ptr;
-+	int i;
-+
-+	spin_lock(&q->ring.consumer_lock);
-+	ptr = __ptr_ring_peek(&q->ring);
-+
-+	if (!ptr) {
-+		spin_unlock(&q->ring.consumer_lock);
-+		return 0;
-+	}
-+
-+	i = 0;
-+	do {
-+		/* Check if the queue stopped before zeroing out, so no
-+		 * ptr get produced in the meantime, because this could
-+		 * result in waking even though the ptr_ring is full.
-+		 * The order of the operations is ensured by barrier().
-+		 */
-+		will_invalidate = __ptr_ring_will_invalidate(&q->ring);
-+		if (unlikely(will_invalidate)) {
-+			rcu_read_lock();
-+			dev = rcu_dereference(q->tap)->dev;
-+			txq = netdev_get_tx_queue(dev, q->queue_index);
-+			stopped = netif_tx_queue_stopped(txq);
-+		}
-+		barrier();
-+		__ptr_ring_discard_one(&q->ring, will_invalidate);
-+
-+		if (unlikely(will_invalidate)) {
-+			if (stopped)
-+				netif_tx_wake_queue(txq);
-+			rcu_read_unlock();
-+		}
-+
-+		array[i++] = ptr;
-+		if (i >= n)
-+			break;
-+	} while ((ptr = __ptr_ring_peek(&q->ring)));
-+	spin_unlock(&q->ring.consumer_lock);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL_GPL(tap_ring_consume_batched);
-+
- struct ptr_ring *tap_get_ptr_ring(struct file *file)
- {
- 	struct tap_queue *q;
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 682df8157b55..7566b22780fb 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3759,6 +3759,60 @@ struct socket *tun_get_socket(struct file *file)
- }
- EXPORT_SYMBOL_GPL(tun_get_socket);
- 
-+int tun_ring_consume_batched(struct file *file,
-+			     void **array, int n)
-+{
-+	struct tun_file *tfile = file->private_data;
-+	struct netdev_queue *txq;
-+	struct net_device *dev;
-+	bool will_invalidate;
-+	bool stopped;
-+	void *ptr;
-+	int i;
-+
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	ptr = __ptr_ring_peek(&tfile->tx_ring);
-+
-+	if (!ptr) {
-+		spin_unlock(&tfile->tx_ring.consumer_lock);
-+		return 0;
-+	}
-+
-+	i = 0;
-+	do {
-+		/* Check if the queue stopped before zeroing out, so no
-+		 * ptr get produced in the meantime, because this could
-+		 * result in waking even though the ptr_ring is full.
-+		 * The order of the operations is ensured by barrier().
-+		 */
-+		will_invalidate =
-+			__ptr_ring_will_invalidate(&tfile->tx_ring);
-+		if (unlikely(will_invalidate)) {
-+			rcu_read_lock();
-+			dev = rcu_dereference(tfile->tun)->dev;
-+			txq = netdev_get_tx_queue(dev,
-+						  tfile->queue_index);
-+			stopped = netif_tx_queue_stopped(txq);
-+		}
-+		barrier();
-+		__ptr_ring_discard_one(&tfile->tx_ring, will_invalidate);
-+
-+		if (unlikely(will_invalidate)) {
-+			if (stopped)
-+				netif_tx_wake_queue(txq);
-+			rcu_read_unlock();
-+		}
-+
-+		array[i++] = ptr;
-+		if (i >= n)
-+			break;
-+	} while ((ptr = __ptr_ring_peek(&tfile->tx_ring)));
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL_GPL(tun_ring_consume_batched);
-+
- struct ptr_ring *tun_get_tx_ring(struct file *file)
- {
- 	struct tun_file *tfile;
-diff --git a/include/linux/if_tap.h b/include/linux/if_tap.h
-index 553552fa635c..2e5542d6aef4 100644
---- a/include/linux/if_tap.h
-+++ b/include/linux/if_tap.h
-@@ -11,6 +11,7 @@ struct socket;
- #if IS_ENABLED(CONFIG_TAP)
- struct socket *tap_get_socket(struct file *);
- struct ptr_ring *tap_get_ptr_ring(struct file *file);
-+int tap_ring_consume_batched(struct file *file, void **array, int n);
- #else
- #include <linux/err.h>
- #include <linux/errno.h>
-@@ -22,6 +23,11 @@ static inline struct ptr_ring *tap_get_ptr_ring(struct file *f)
- {
- 	return ERR_PTR(-EINVAL);
- }
-+static inline int tap_ring_consume_batched(struct file *f,
-+						void **array, int n)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_TAP */
- 
- /*
-diff --git a/include/linux/if_tun.h b/include/linux/if_tun.h
-index 80166eb62f41..5b41525ac007 100644
---- a/include/linux/if_tun.h
-+++ b/include/linux/if_tun.h
-@@ -22,6 +22,7 @@ struct tun_msg_ctl {
- #if defined(CONFIG_TUN) || defined(CONFIG_TUN_MODULE)
- struct socket *tun_get_socket(struct file *);
- struct ptr_ring *tun_get_tx_ring(struct file *file);
-+int tun_ring_consume_batched(struct file *file, void **array, int n);
- 
- static inline bool tun_is_xdp_frame(void *ptr)
- {
-@@ -55,6 +56,12 @@ static inline struct ptr_ring *tun_get_tx_ring(struct file *f)
- 	return ERR_PTR(-EINVAL);
- }
- 
-+static inline int tun_ring_consume_batched(struct file *file,
-+						void **array, int n)
-+{
-+	return 0;
-+}
-+
- static inline bool tun_is_xdp_frame(void *ptr)
- {
- 	return false;
 -- 
-2.43.0
-
+An old man doll... just what I always wanted! - Clara
