@@ -1,103 +1,178 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [129.187.255.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A00F1F5F6;
-	Wed, 24 Sep 2025 14:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB9D30BF76;
+	Wed, 24 Sep 2025 15:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.187.255.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758725701; cv=none; b=eqdNN6YoJx1Ed0EQ2urVz8nWIGDZCV+exLT/et9G7l3neoekGapLsYIAAmkGyBrSRdQ67fEuy7XiQzy0iBBcVfv/OT0MOeXg5TMt6h816HJIkNVee/e0BTlWnc43ZwLu0cGWNgrd/7UlfJyksn4ZjmRv3rCfzmni0QPNrKkI27k=
+	t=1758726700; cv=none; b=SqRWkjHMq5ZoxtS7VagP22Ha8gpfkmAhHyXwE4F00sdcXircsFUf50OXXup/eAdHDWQ5mIw9UfyjOeVgUTzNHkJvSsO2Xn6PE7jcPABnJ5V+gd2IIicexTNG/DmMoSFFbJF9JZYBxOSYPjrZoGt9g/lg6dWyysAveQvSrBKoe5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758725701; c=relaxed/simple;
-	bh=ums5rCpligBaqIOr1iJYvoJi/ipeeOOcZh64vXTzvD4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9Z6GIDikx88oJ//7YF5CzdPwAmZF/KURsrlKAj73COz+Hgw2MT8uX3PBqDN5EE0FcO6OqJ9XfknJthSVjGFPaCrcXYSBSuvGKhkBcqEqqdF8LJGMOFIA++az+SPamnRxphVRZbfrF4DRwCrQ+kglDj4txohI8U4JruBegIuI7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Wh5kzIr2; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1758726700; c=relaxed/simple;
+	bh=Jm4TOb5za1zdWiB64CehdYksvd0hcBd/a5OjGHq8lgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c1RWwz8HuuOSfa5LPhl5x5+iJlSVzKgfScXHourIfTFKhsYJ3NDLdiT5oqFPzsfUOmm1QEMM5kBo5Q8iZjhZZIiyABF6rqmQSxghwUBmDEWUzpt6CPUDm3ElBQ8kWihOUKcEOqMoHfZTd+/i7o+MlKYKYAI6uI3Uwp9JKsRDPHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=campus.lmu.de; spf=pass smtp.mailfrom=campus.lmu.de; dkim=pass (2048-bit key) header.d=lmu.de header.i=@campus.lmu.de header.b=ODVVf16t; arc=none smtp.client-ip=129.187.255.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=campus.lmu.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=campus.lmu.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Wh5kzIr2"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 58OEsLMt2046832
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 24 Sep 2025 07:54:25 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 58OEsLMt2046832
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025092201; t=1758725665;
-	bh=3fdycQ/ZLjLpUaLy9CBDdIIoh4ke95VnoYcdcc/EbPw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Wh5kzIr2z6Wp4F58tFAaz70gI4SIH7VBJl/HvraSIDJrmM8BhZw42VQ8k3JbskvyA
-	 OoVfBRYBiqFlGYBzEvliypqTcTr5/AQN1woF1oaGXJc07OuN+u/yU95q2bvHxBsJ5O
-	 YxHW18gd75h0fynGCdege3UY+B3yFZHmTYARketbD+Ll/DqvfGfwPatTU5rHnR6pOg
-	 s1Z3BWKInFAWCnBl2nnC9Y93t2fV/5U+EqGd+ClpH6d+z+bgqOXJovxWgwju61vtgY
-	 RuUWRE58AaJNaL6FqGADs3t+YmIhcR1fldWHFo0MvRLHp1ZhQlUQcGZi3z0H2WHPpW
-	 2vqCBQInnCBXA==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, xin@zytor.com, chao.gao@intel.com
-Subject: [PATCH v1] KVM: nVMX: Use vcpu instead of vmx->vcpu when vcpu is available
-Date: Wed, 24 Sep 2025 07:54:21 -0700
-Message-ID: <20250924145421.2046822-1-xin@zytor.com>
+	dkim=pass (2048-bit key) header.d=lmu.de header.i=@campus.lmu.de header.b="ODVVf16t"
+Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
+	by postout2.mail.lrz.de (Postfix) with ESMTP id 4cX0gC2JbmzyXw;
+	Wed, 24 Sep 2025 17:11:35 +0200 (CEST)
+Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=lmu.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lmu.de; h=
+	content-transfer-encoding:mime-version:references:in-reply-to
+	:x-mailer:message-id:date:date:subject:subject:from:from
+	:received:received; s=lm-postout21; i=@campus.lmu.de; t=
+	1758726694; bh=PniUGv6KoWbLzxsjGhaF2BGkvfN+PIVzF8ZJsy2VjBA=; b=O
+	DVVf16tZeBkXRSEs6iGwxx6zvctrHP/AC9H8er/qVLBHLuRg9EsPYFGS6Bm0q0Ko
+	xrIDIInKp/Vg9CF6EQWrcMmJyBIGN/AMaHx2eciRriASoNydsugm9L1ekQkk83Jg
+	6Db40+b9eoQdOUvkN4MCa/pjZycSZNi2aW7GXxY8Omk2+ARuVZAaYj5lTyV6TlaF
+	ygoKE/C4K7l0DOq28xRAdHrG6/BSVJwcdvaZQkrm0hWYNhxYxPoD/IEGb6RyaVUF
+	BCHdmnhCuhu53AxwYSL9MXKT/pf4IoUWmfvm7/IJRj7+osaXVq0BVKEStckCWu3u
+	nbrgR6tiUZxLTlFCEQ3Cw==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.887
+X-Spam-Level:
+Received: from postout2.mail.lrz.de ([127.0.0.1])
+ by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id GcnblPIRe1mz; Wed, 24 Sep 2025 17:11:34 +0200 (CEST)
+Received: from spacestation.cable.virginm.net (oxfd-27-b2-v4wan-164230-cust474.vm42.cable.virginm.net [86.22.133.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4cX0g74qG5zyY6;
+	Wed, 24 Sep 2025 17:11:31 +0200 (CEST)
+From: Patrick Roy <patrick.roy@campus.lmu.de>
+To: 
+Cc: Patrick Roy <roypat@amazon.co.uk>,
+	pbonzini@redhat.com,
+	corbet@lwn.net,
+	maz@kernel.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	willy@infradead.org,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	song@kernel.org,
+	jolsa@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	shuah@kernel.org,
+	seanjc@google.com,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	xmarcalx@amazon.co.uk,
+	kalyazin@amazon.co.uk,
+	jackabt@amazon.co.uk,
+	derekmn@amazon.co.uk,
+	tabba@google.com,
+	ackerleytng@google.com
+Subject: [PATCH v7 02/12] x86/tlb: export flush_tlb_kernel_range to KVM module
+Date: Wed, 24 Sep 2025 16:10:42 +0100
+Message-ID: <20250924151101.2225820-3-patrick.roy@campus.lmu.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Prefer using vcpu directly when available, instead of accessing it
-through vmx->vcpu.
+From: Patrick Roy <roypat@amazon.co.uk>
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+After direct map removal, a TLB flush can be done to ensure that the
+just-unmapped memory cannot be accessed through stale TLB entries. This
+is particularly useful on modern hardware, where one can not rely on
+timely TLB-eviction to ensure these entries go away.
+
+This export is only needed on x86, as arm64 (the only other architecture
+supporting guest_memfd currently) does not allow building KVM as a
+module.
+
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
 ---
- arch/x86/kvm/vmx/nested.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 3 ++-
+ arch/x86/mm/tlb.c               | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 76271962cb70..3fca63a261f5 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -761,7 +761,7 @@ static void nested_cache_shadow_vmcs12(struct kvm_vcpu *vcpu,
- 				      vmcs12->vmcs_link_pointer, VMCS12_SIZE))
- 		return;
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 00daedfefc1b..6f57f7eb621b 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -317,7 +317,6 @@ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 				unsigned long end, unsigned int stride_shift,
+ 				bool freed_tables);
+-extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
  
--	kvm_read_guest_cached(vmx->vcpu.kvm, ghc, get_shadow_vmcs12(vcpu),
-+	kvm_read_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
- 			      VMCS12_SIZE);
+ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+ {
+@@ -483,6 +482,8 @@ static inline void cpu_tlbstate_update_lam(unsigned long lam, u64 untag_mask)
+ #endif
+ #endif /* !MODULE */
+ 
++extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
++
+ static inline void __native_tlb_flush_global(unsigned long cr4)
+ {
+ 	native_write_cr4(cr4 ^ X86_CR4_PGE);
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 39f80111e6f1..dee5018bceeb 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -1541,6 +1541,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ 
+ 	put_flush_tlb_info();
  }
++EXPORT_SYMBOL_FOR_MODULES(flush_tlb_kernel_range, "kvm");
  
-@@ -780,7 +780,7 @@ static void nested_flush_cached_shadow_vmcs12(struct kvm_vcpu *vcpu,
- 				      vmcs12->vmcs_link_pointer, VMCS12_SIZE))
- 		return;
- 
--	kvm_write_guest_cached(vmx->vcpu.kvm, ghc, get_shadow_vmcs12(vcpu),
-+	kvm_write_guest_cached(vcpu->kvm, ghc, get_shadow_vmcs12(vcpu),
- 			       VMCS12_SIZE);
- }
- 
-@@ -2749,7 +2749,7 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 		vmcs_write64(GUEST_IA32_PAT, vmcs12->guest_ia32_pat);
- 		vcpu->arch.pat = vmcs12->guest_ia32_pat;
- 	} else if (vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_IA32_PAT) {
--		vmcs_write64(GUEST_IA32_PAT, vmx->vcpu.arch.pat);
-+		vmcs_write64(GUEST_IA32_PAT, vcpu->arch.pat);
- 	}
- 
- 	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
-@@ -3880,7 +3880,7 @@ static int nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
- 		goto vmentry_failed;
- 
- 	/* Hide L1D cache contents from the nested guest.  */
--	vmx->vcpu.arch.l1tf_flush_l1d = true;
-+	vcpu->arch.l1tf_flush_l1d = true;
- 
- 	/*
- 	 * Must happen outside of nested_vmx_enter_non_root_mode() as it will
-
-base-commit: 325fbe689e121ba11c16096f452750614767c31e
+ /*
+  * This can be used from process context to figure out what the value of
 -- 
 2.51.0
 
