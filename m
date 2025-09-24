@@ -1,89 +1,127 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D4226F2A7
-	for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 18:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149EE19C546
+	for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 19:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758739549; cv=none; b=A64m6fMuo3LLuiTcr2AhZMFts+Pum0fxPO+zdqEApuyLqREDCax+7bZpGJQp5gpgDmMjhKP1VL9AoQuzORQtj3zw7tTN+ESARsF6nGzdJhk3i4LoXJvFY79TALJ1d7cUcMoncDUc/XH4Dcm+M4eJY/qeD41weYEdPH/0EPfTkjw=
+	t=1758740676; cv=none; b=QI3lLQbsGCT08O1qjVMCLjZf6ytX2K/qgx9LMBjDdlKbroPeBZrXeI1hj1gyPwEzsGNI0plwDBXjWq2lniNmRZ4TTaOI5AEL2PgpeAZIRG0tvvdnlwCHspht3X1d8GyuX4OQYi1/xbqnHa21a0UDB6v+9q8Ho5Hexf6RPs+rOts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758739549; c=relaxed/simple;
-	bh=PWfTeSLf+2HYY50wutr9RRP/UGHo7bT95qCiPNUqoQA=;
+	s=arc-20240116; t=1758740676; c=relaxed/simple;
+	bh=RGWtKrOOLNWYTSDuRiuXkPplrVfwaq2EP1qrdFnB8Bk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=I+6ErZDQ5jHwgGDE0La8xVZx2xkGT7a3gEhmUBVDiP5U93f04xeqIwiFhtCl26AsR5zOCKbzPUyEWSexZ8rhk0ESt2XDUFfI+cFLvq427VOCki0vRAMEs6v2Ry4rOFHLzPnrvet1hVB1BHMQuTe9CQtA75WeCZtahLjEhA61CcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2glylU5; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=ZVs2988KNb3uDEwQ8RKi9B+IQr9op6jR3TR1m4hLQ20NXuwDyGORgOr3KTBjBWtuNE7PyWCCfBe1m1daZS3Nkmu5NGWwkNiGEQtl5yTSAWmhAYX2GemhZWfQH+5SNUUS1KPqUDS6uSwpgxtpFfbhDPoee2d74Oy9JI7pWPQcUJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cPdv5e5O; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2glylU5"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befd39so324559a91.0
-        for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 11:45:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cPdv5e5O"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-269af520712so1645475ad.2
+        for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 12:04:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758739548; x=1759344348; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758740674; x=1759345474; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M4wHTv4bMpNgnwT1HXSaG6WREZuTe5ICP1WtX87RWX0=;
-        b=E2glylU5kxXw541g3sIQBJR89kpqTBZhsaJRkvoyPo64NXzhtzVV6qhWBOTU1ityRr
-         wa3mn0F1H4FaYVU4BoJZpq7LNiLTT/MZTYsEQxSHg5HieyTy81h0Jx3A+2oEeMviwcuF
-         rMVFAoWGiYkAu9sD+ir78ZOKfatS+oec1xiQ73EvtxlvoNDf1Fcc6A+wOa/QvEHtc76A
-         YHNC86ODhuFMhcxpG5tVNb43OylfNWuucktjazb5iFqWLdgR/jbRkMbb13shL/voShj6
-         Z+pBHnSBdpQOf3c9X4fyu/RwS7iPCLDsY6PaIC5uFl9k34KmL4xYIDPbIXdpWfieGJ7W
-         xgcQ==
+        bh=zhobkvNwmZ1KaAHiSUahaC62ylu/YKuBdOUTZ4WpS7s=;
+        b=cPdv5e5OWcYVpvZfiu9iCMgqBTwQ7rHPMY31pp6mqR64Cc8r4SM3eW//D5zEyEEJgt
+         ax57348zqxDM1wAutaHrmNQARIbtDuyHT64xrLYtfhOwgb8lnMLkmvvOp1zvU9mCHJRx
+         63rhpdGUqBHoSSPjQvLI6q4d0ZQmDJpaxMeq06dUgVMqpFRM/WZEH6LKzziLm6N8/W31
+         jMLPT9WQKPRX7n11dZUOqLXhX6Q4579GVbv6Add7EbzfVP/E5EXh05KSgdR63JPw0ATV
+         vCRo8lczwWuFhIBCUdqM6W9NzTUP1Tb17kFAi2oLF0YJ+Xn3nRaOj0usE9oXp8UBZPdm
+         DOxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758739548; x=1759344348;
+        d=1e100.net; s=20230601; t=1758740674; x=1759345474;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M4wHTv4bMpNgnwT1HXSaG6WREZuTe5ICP1WtX87RWX0=;
-        b=OR4LXYMzvy8KrNJbrfLFOB7qI5jO9Ikd5gb81qCv9erVQ1qNQgftsuQFoM8YJwRb5o
-         1exPKEauCQpvl3WAk14z3KM8xjHVftYmVANpmub+lDwgtOCf3lmcvHhBWNccPWnHaBsI
-         dOyRPUhGbGox3tpUiNzmwCTEqkenzw5FngY1wpNp5ioUk/ThXfP5YL/6bn4TR8C4YTpU
-         ac5f6+Xe3/4WnciJnVoy47sQputrCj6kQ/xTUW/YLeSAWFya4QseYmjyNoJMmi/sH6nn
-         N9v+q2OP6v9UaQ3Oba3GektddISkTJBQirmveAEdS5RPTE+nJKxZchExfKFAjsNwjrtY
-         Ekcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdHhUkHVEYGTQIDkJTKnxodBAE7B8gxbFbRnCHdZtyZxasSCf+WvgBDeGF9sCpqD3vyN4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyilswXr8Bg5OJVPC9Ywy6OS4eNx//9BuvrfPzV2n1N9zKUQO/v
-	88efJ7mpICqqn5zeoYfJzPWYIKjkD+iVgSqXEuq7J8sfJM5GEfMONi2jkpAtgGTsUgc0xfG8CVv
-	xM0y88g==
-X-Google-Smtp-Source: AGHT+IEG8aSi75YQDHzxUBomstRHeueH28Cl63WV/C9TgRI9jC5QkK5dWBwEgfEZeN4oKVMfxJYGm50KfCc=
-X-Received: from pjbfr15.prod.google.com ([2002:a17:90a:e2cf:b0:330:6eb8:6ae4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d08:b0:32e:6858:b503
- with SMTP id 98e67ed59e1d1-3342a300aa4mr775845a91.29.1758739547684; Wed, 24
- Sep 2025 11:45:47 -0700 (PDT)
-Date: Wed, 24 Sep 2025 11:07:47 -0700
-In-Reply-To: <20250918053226.802204-1-tony.lindgren@linux.intel.com>
+        bh=zhobkvNwmZ1KaAHiSUahaC62ylu/YKuBdOUTZ4WpS7s=;
+        b=DHqMMZGlUZGe6p7kjnis69M3GUwYQKT1IcTc0tkDo/ajPKHaEjliGdqdMYMJMsxG77
+         EsprRffM9qcFRGBOrAJMYNWVc3g/hGDU69avo6px+BzDb6C/Ogg3xHEFs3LBPOooVW8v
+         yg2yC3DXkTNyYxGzEBEwGCv8Wj9UW8GWsvAzei6mLc2atLAwk8rlTS8P8CZs4jGqZ6qj
+         cvJyQedB0BZazFEq4vonNJ4JW1GdaKPP2cLsb/ZSgqIGJUilIlUmBAe2kOqv3PwMDZVz
+         cCyjoRcsPHTkKZQd5RchbcuC9zuSAxCR7PjmaY/8aRpyVmokqrLCRFef4O0DJ6BpXwjh
+         aUXg==
+X-Gm-Message-State: AOJu0YzRw7oX+xGMQ8/7gXE7/VSFYReyBz00nOIveuQJt4UFU0keIwXc
+	gMaJ91Y6hepXdTLuGPqyse9pBFH6DQ+rlSj+vEPzglqcudhJpyoHvCCnjj+3kDesInC8xrMBr3v
+	s7t5jbQ==
+X-Google-Smtp-Source: AGHT+IH2WlD/AveH5Fl/D7PzNyoDXFz37t7GYa1z3iEAaJ8Rnn0Y73Fm2mZH24+yaKsFzrWnGS9iAX9B9ZI=
+X-Received: from pjbqj6.prod.google.com ([2002:a17:90b:28c6:b0:332:6d9d:1e99])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e78d:b0:273:c463:7b2c
+ with SMTP id d9443c01a7336-27ed4a0920emr8931715ad.3.1758740674393; Wed, 24
+ Sep 2025 12:04:34 -0700 (PDT)
+Date: Wed, 24 Sep 2025 12:04:32 -0700
+In-Reply-To: <3204c99d-6c62-4327-9aa0-a09651a75f0d@arvin.dk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250918053226.802204-1-tony.lindgren@linux.intel.com>
-X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
-Message-ID: <175873598621.2143487.17306258654175548917.b4-ty@google.com>
-Subject: Re: [PATCH v2 1/1] KVM: TDX: Fix uninitialized error code for __tdx_bringup()
+References: <3204c99d-6c62-4327-9aa0-a09651a75f0d@arvin.dk>
+Message-ID: <aNRAwBB0SkTbX3fS@google.com>
+Subject: Re: Co-stop
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Tony Lindgren <tony.lindgren@linux.intel.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Kai Huang <kai.huang@intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+To: Troels Arvin <troels@arvin.dk>
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 18 Sep 2025 08:32:25 +0300, Tony Lindgren wrote:
-> Fix a Smatch static checker warning reported by Dan:
+On Fri, Sep 05, 2025, Troels Arvin wrote:
+> Hello,
 > 
-> 	arch/x86/kvm/vmx/tdx.c:3464 __tdx_bringup()
-> 	warn: missing error code 'r'
+> According to https://www.linux-kvm.org/page/Lists,_IRC it's OK to use this
+> list for KVM user questions, so here it goes:
 > 
-> Initialize r to -EINVAL before tdx_get_sysinfo() to simplify the code and
-> to prevent similar issues from sneaking in later on as suggested by Kai.
+> How important is it to consider "co-stop" with KVM?
+
+From a _KVM_ perspective, it's not important at all.  Outside of a few targeted
+paravirt yielding scenarios, KVM isn't involved in vCPU scheduling.
+
+> I haven't been able to find anything about this for KVM, but there's some
+> material about it for VMWare (albeit typically rather old material). Based
+> on VMWare material, by "co-stop" I mean the following situation:
 > 
-> [...]
+> A VM called "x" has been assigned quite a few vCPUs, e.g. 10, on a
+> hypervisor with e.g. 20 physical cores. The hypervisor is hosting many other
+> VMs, and the many VMs take turn running on the hardware.
+> Now, if it's often the case that, e.g., only 7 physical threads are
+> available when it's x's turn to run, the hypervisor needs to postpone
+> running x till all 10 cores can be allocated at the same time. During this
+> waiting time, x is stopped (co-stop).
+> 
+> Is my understanding correct?
 
-Applied to kvm-x86 vmx, thanks!
+Maybe?  How vCPUs are scheduled isn't even really a kernel decision, it's much
+more of a userspace decision.  E.g. the kernel scheduler will balance competing
+tasks, but which vCPUs are allowed to run on which pCPUs, and when (at a macro
+level), is entirely userspace controlled.
 
-[1/1] KVM: TDX: Fix uninitialized error code for __tdx_bringup()
-      https://github.com/kvm-x86/linux/commit/510c47f165f0
+> Or will KVM allow x to run on (e.g.) 7 cores, even though the VM thinks it
+> has 10 vCPUs available?
 
---
-https://github.com/kvm-x86/linux/tree/next
+As above, KVM doesn't care.  KVM does enumerate the maximum number of
+recommended vCPUs per VM, e.g. to help userspace avoid doing something truly
+stupid, but that's just a recommendation.  Nothing prevents userspace from
+creating a 128 vCPU and pinning all vCPUs tasks to a single pCPU.  Performance
+will obviously be terrible, but functionally it works.
+
+> It's my understanding that with KVM, the co-stopped situation is reflected
+> in the VM's "steal time" metric in a tool like "top".
+
+More or less.  Steal time captures how much time a vCPU wanted to run, but
+couldn't because a different task (or tasks) in the host preempted the vCPU.
+Note, I specifically say "tasks" and not "vCPUs", because in Linux+KVM, vCPUs
+are regular tasks from a scheduling perspective, and so depending on how a host
+is configured, a vCPU task may compete against other host tasks.
+
+And to really warp your mind... nothing in KVM requires a 1:1 task:vCPU mapping.
+VMMs typically use a dedicated task to run a vCPU, but KVM allows running a vCPU
+on different tasks (though obviously not at the same time), and KVM also allows
+running multiple vCPUs on a single task (again, obviously not at the same time).
+
+> Does hyperthreading in either the hypervisor and/or the guest impact the
+> risk of co-stop?
+
+Not directly, no.  But hyperthreading can factor into the platform owner's
+scheduling policies, and that in turn can certain impact contention.  E.g. with
+all of the side channels that are suspecitble to cross-SMT attacks, it's common
+for cloud providers to do "core scheduling", where vCPUs scheduled on a per-core
+basic, not a per-CPU basis.
