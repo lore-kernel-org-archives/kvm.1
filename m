@@ -1,90 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7BF313D72;
-	Wed, 24 Sep 2025 18:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0540117D2
+	for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 18:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758739110; cv=none; b=eQc0A82NW1OMq3rD0qaFfzb42BO5DbnaeLbthpWxyG+ZPsDcdLWW8yg5MDELPG+eq6HZqpgaooEt3ayTMC4m/b0Ww5vyWSbAtJ6HAMjR6FJi1zjlOmSds5gJWjZChFKypPGWwRF3wPF1+CsaXm/FUftmgAVdDpsuZsPaDSoAdEI=
+	t=1758739419; cv=none; b=pKm7bxh4ubxHofo2isku1IjarNs7q3Ap+DnImQN208o7WePcFAFC6L1okk/bIVBeOcvwRFbunSlT9BjgMG1gvpXG5esi3RZvqeB0Aqf8IRKU5CJPkTFe2p9tZir4qjOO0YtMi9ElgNxzz+vA3muDKLQH7zig8kwAtX4A5NaNxOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758739110; c=relaxed/simple;
-	bh=JIUwIwvyK28kGXsFjmWwmTqUM0qtgo11UVD4GpXU9DU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XOeyzt4QCirEAiak7LMnNhdGr84sMgSZ+FUVCz+TYKSc7WmbldjS53a8SMF2iyv+VuEDKDsTw1qJ4Qn78t6Wkiob7wjfecX7TxuWe+syBtzPl8aL8to7xEwiJkUZdskfd/IbXWzlLZD2mEOlHmCsB9PNsOBT+OnqFDjPOSaOk8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QS4gQZ2u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758739419; c=relaxed/simple;
+	bh=kb79KWGuBhjbtd+Rw4+gbcRAfQjofezKNl5IbLEq5jM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M5UzaU3CLXRG8Y/DM3AI07gxRfbUDk+qBsMWpiQBPDpRUBroCCw+OapwmkWJckVMh0oWzKJ45Gvp1xNGea1n7tc7uo38S6TEQp/7r3OJgJ9ZweL/4x41UIhLDe8PVxMNVkyielXTRRaMwDrTsT4fy85zfRFgmOnMaBxnEWsGHOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qBjfR1FY; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QS4gQZ2u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2A1C4CEE7;
-	Wed, 24 Sep 2025 18:38:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758739110;
-	bh=JIUwIwvyK28kGXsFjmWwmTqUM0qtgo11UVD4GpXU9DU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QS4gQZ2ut/p5CX+SDw9+RK/9FA9j4cDOup/uPL78PwlLRA+8Az8iC5ktHnQ6FenUz
-	 n9UEmWIomcmPGbVdGsDQO33pNlFPpPll8WC51BqC6C7pjq2IY4NqJw1crh2kh5aaIO
-	 DYr/7zLh7ZcCFb6xIkYIk/Pl9m1DBiUt2K7bz2x1h+Lr7rFiYEl0BCOHQAvzVyf8QS
-	 D/+IshKU7j/9s7SU3sCmrYQuAlZwVuP/YgQMoJVOSd5m4hn6UcKxwACPBm7dhtxDMr
-	 DdlavpKVCrxuFSllGp4YSkc0JTIhfaRkBLVUd1e6GgimrNbNOerkrcgJDg7raOlJbL
-	 IsVVZwk5NrL9g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1v1UNo-000000097OU-0ZEg;
-	Wed, 24 Sep 2025 18:38:28 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] KVM: arm64: selftests: Cover ID_AA64ISAR3_EL1 in set_id_regs
-Date: Wed, 24 Sep 2025 19:38:24 +0100
-Message-ID: <175873910389.2373233.15017711229799268342.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250920-kvm-arm64-id-aa64isar3-el1-v1-0-1764c1c1c96d@kernel.org>
-References: <20250920-kvm-arm64-id-aa64isar3-el1-v1-0-1764c1c1c96d@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qBjfR1FY"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2697410e7f9so2574955ad.2
+        for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 11:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758739417; x=1759344217; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IMxcEX841CrPql6fJPtvWxOpepuc8o+xuheZylrBA50=;
+        b=qBjfR1FYVtFcaq6Y8XgHJ6YHozTDTZ3ksxxq495r2aVyB5bInIOWuxkwdJDtFuiTCw
+         2WRzHqivClPPROGpssjFvxxsj7ztB1u9OrtC4DykNnHhooqVzyYZE3+hMgG9Fpe69Q44
+         Z15mPRUJdQwDS0nfMesQSzKpQPZxEeeCO4SPQUL0+f1jgWHL3pAtpGSha8q6skuHf1Ml
+         NmkVDZnRteo3mF24thKBGYXYgIMJcxXz7/DO0x4dLwggL07Yz2N/DLTCpkqZOyfQtgyi
+         CaAXlnMz6+OmVwCw4MqMus9DmrnXVXLqYcfSt/00Xn2diKrKtM00CtsWBgZxaGbqBqvb
+         kTng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758739417; x=1759344217;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IMxcEX841CrPql6fJPtvWxOpepuc8o+xuheZylrBA50=;
+        b=fyC9Zb7JlEIKqAAWDjsKEi2xgFe1BDYwbJqsecu3qXhkTmQOYFKm6+m/1yaLH6G1DK
+         rXcnpcmPIFpCbaSG8HUVFBiZ0khuawRIhcl2LcweAYRXw84SONhSQJcdwdfxlcZC5iUK
+         7tGZlM/EWP8GnWGnnV4lFIkQTwpYG89fv9+8DrdZycG2ndQZz+85G4IDZYtECdrXHbfl
+         UH8i3w7CuWiOyhUcmUmSqhUCGD8tiHMGxLKFeDYB7gtGDB2/f68R8/Jk42vid3bf8QS3
+         RtM8OMIL7X+Une/32QOkzHA0kYvH9a8zjqH6dnOoCj5muMCaVtxvq8apEc43egFse1kQ
+         z6eg==
+X-Gm-Message-State: AOJu0YwPOdgpHW8pxBk1MvSGS05XavcV7skWhlYZIUnSg+wlAhbwq68D
+	9ag3uA9VnbPJe8GbUgw8Cjo6t7zgUIemwnNa+bx8OM85n3RQbnCwNIaQidTQCdymwKD/F/0cqmx
+	khiTZhA==
+X-Google-Smtp-Source: AGHT+IGyODtBeaq+IfmR3encVEUbiZ9RdIzz7Vzm64UCp4Wg4z6IUEUIwpwz0WVX3nWnc5hBuzDHjuBwWrY=
+X-Received: from plby5.prod.google.com ([2002:a17:902:ed45:b0:267:d14f:81f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b0c:b0:275:6baa:d9
+ with SMTP id d9443c01a7336-27ed4a56b08mr6782535ad.40.1758739417279; Wed, 24
+ Sep 2025 11:43:37 -0700 (PDT)
+Date: Wed, 24 Sep 2025 11:07:37 -0700
+In-Reply-To: <20250919214648.1585683-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20250919214648.1585683-1-seanjc@google.com>
+X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
+Message-ID: <175873630828.2145505.17688306817553365598.b4-ty@google.com>
+Subject: Re: [PATCH v4 0/5] KVM: selftests: PMU fixes for GNR/SRF/CWF
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Yi Lai <yi1.lai@intel.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, pbonzini@redhat.com, shuah@kernel.org, broonie@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, 20 Sep 2025 20:51:58 +0100, Mark Brown wrote:
-> The set_id_regs selftest lacks coverag for ID_AA64ISR3_EL1 which has
-> several features exposed to KVM guests in it.  Add coverage, and while
-> we're here adjust the test to improve maintainability a bit.
+On Fri, 19 Sep 2025 14:46:43 -0700, Sean Christopherson wrote:
+> Fix KVM PMU selftests errors encountered on Granite Rapids (GNR),
+> Sierra Forest (SRF) and Clearwater Forest (CWF).
 > 
-> The test will fail without the recently applied change adding FEAT_LSFE:
+> The cover letter from v2 has gory details, as do the patches.
 > 
->    https://lore.kernel.org/r/175829303126.1764550.939188785634158487.b4-ty@kernel.org
+> v4:
+>  - Fix an unavailable_mask goof. [Dapeng]
+>  - Fix a bitmask goof (missing BIT_ULL()). [Dapeng]
 > 
 > [...]
 
-Applied to next, thanks!
+Applied to kvm-x86 selftests, thanks!
 
-[1/2] KVM: arm64: selftests: Remove a duplicate register listing in set_id_regs
-      commit: 5a070fc376babc7efdc8288b97431e43e18f4646
-[2/2] KVM: arm64: selftests: Cover ID_AA64ISAR3_EL1 in set_id_regs
-      commit: b02a2c060b657296c080cff1b54ee4e9e650811c
+[1/5] KVM: selftests: Add timing_info bit support in vmx_pmu_caps_test
+      https://github.com/kvm-x86/linux/commit/210b09fa428c
+[2/5] KVM: selftests: Track unavailable_mask for PMU events as 32-bit value
+      https://github.com/kvm-x86/linux/commit/571fc2833ed0
+[3/5] KVM: selftests: Reduce number of "unavailable PMU events" combos tested
+      https://github.com/kvm-x86/linux/commit/1fcd3053aa1a
+[4/5] KVM: selftests: Validate more arch-events in pmu_counters_test
+      https://github.com/kvm-x86/linux/commit/2922b5958865
+[5/5] KVM: selftests: Handle Intel Atom errata that leads to PMU event overcount
+      https://github.com/kvm-x86/linux/commit/c435978e4ffe
 
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
-
-
+--
+https://github.com/kvm-x86/linux/tree/next
