@@ -1,78 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DC7143C69
-	for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 13:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26B24502A
+	for <kvm@vger.kernel.org>; Wed, 24 Sep 2025 13:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758721077; cv=none; b=BePWoa+9TKNobilxcoQfWrc+J4flGMqsz4jg5HTbppl1W7iD8xdbku57+UOBQbd50JcxWT/quIUlAV+H+21MZf8XB1yjwkFIrsFMiHD/tf/JmCCsahXtL24rUjpcSkKFByWoYdlfe9UM0jCMV14rxIsQduY2y7LjNbqLbGyg0OU=
+	t=1758721525; cv=none; b=KyhiNf1mbVp3kMV+yOPJGfA5C3JjdenTNAZmypi5ZK6cx3UHGf+54H3rmYE+hd0QYN3CzG4bBOe/kmkqRYsIj8A/zpHIuiFHG3cqy0gybRNOiLVZ2Wsg62zRO4bVLBSwN0Qv1dY89PehZqL6LGwsYfbU16Bi1H0Czgi3HeFlw6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758721077; c=relaxed/simple;
-	bh=E4ixhkY8HwW7iTS5Si12737ldgLwAXbST4HbN3m8JQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KG25YbYFoHMZxNPb4MS587bhViONac4d4GHVwbS5XmQuhSbeL1Gz3i+uRNBqmNCLQmGXxB/FNJmJn0lmpCgqC+5PcLBpYqbOmWKYNV2/KiSbRoPdgXF4WmOqshkrlVIYoZIcVp+UxMUMgMhFZMtOhVoj8/GLTwP24Sl8yH00Yvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlp71cpN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlp71cpN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FA5C4CEE7;
-	Wed, 24 Sep 2025 13:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758721077;
-	bh=E4ixhkY8HwW7iTS5Si12737ldgLwAXbST4HbN3m8JQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rlp71cpNyDWxFZcNHMebg7CHBETrkBT/z2q4nKtjHX0YD9Yo1DW7ERFJez3fkG1EQ
-	 hnBk4u6RYsLp65YY5FDei4pqUi8bBls5niTU+/ENorFrm3RJXZlEyv/xqiiUymlm8i
-	 qsU1xsFfnb+mtxl+WBawJY123Gad2gkrvB2tP3p/PBv2dhdouoY9Xcce4v2G3UmWt0
-	 sL4nLdLJY+0OvEnMDjEs6wRYrqxYbQFZCDUUlzUnkkVpUdZQyUH82ctW7IDlouhpPd
-	 zxaMgn2vFf1fBwVqN2rurNJ1zNuftf0AMvJsGsgkvWGOvTH8fFtRqp39+eFXNpb0Ra
-	 oH5RQzQZRP1hw==
-Date: Wed, 24 Sep 2025 18:59:35 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: "Nikunj A. Dadhania" <nikunj@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
-	Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	qemu-devel <qemu-devel@nongnu.org>, kvm@vger.kernel.org, "Daniel P. Berrange" <berrange@redhat.com>, 
-	Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: Re: [PATCH 8/8] target/i386: SEV: Add support for setting TSC
- frequency for Secure TSC
-Message-ID: <swnray4zt34wzfyarg5np4ykfpxnwa6psaoghkis4wxxdi3ybx@mptfzf4633fs>
-References: <cover.1758189463.git.naveen@kernel.org>
- <6a9b3e02d1a1eb903bd3e7c9596dfe00029de01e.1758189463.git.naveen@kernel.org>
- <412fce46-e143-4b71-b5ac-24f4f5ae230f@amd.com>
- <4f3f7b7d-f6bf-49de-8c3a-96876e298ad5@amd.com>
+	s=arc-20240116; t=1758721525; c=relaxed/simple;
+	bh=abgqkQhYniJWCyH534lQE/FEFCkzxYytvSvB99BXO5g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G+46oeVZmSYrGBrdIWB9xrIkm3Qyzu1vtUCe0flf/7BcKm0eDNyr5Hl19u3uM+QpxvXm3Mp/jTpBTinoubGW0nIuTdSsdf49QFR+mpYNyM2s6cPo0GxIh7GTvp0FjN+wBZr8z6+Xx5Uf7d67a6giH8SXlvq9t+se7ZIHmkIwbTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09975106F;
+	Wed, 24 Sep 2025 06:45:13 -0700 (PDT)
+Received: from donnerap.arm.com (donnerap.manchester.arm.com [10.33.8.67])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F8833F5A1;
+	Wed, 24 Sep 2025 06:45:20 -0700 (PDT)
+From: Andre Przywara <andre.przywara@arm.com>
+To: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>
+Cc: Marc Zyngier <maz@kernel.org>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Alexandru Elisei <alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool v4 0/7] arm64: Nested virtualization support
+Date: Wed, 24 Sep 2025 14:45:04 +0100
+Message-Id: <20250924134511.4109935-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f3f7b7d-f6bf-49de-8c3a-96876e298ad5@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 23, 2025 at 09:48:07AM +0530, Nikunj A. Dadhania wrote:
-> 
-> 
-> On 9/20/2025 3:36 AM, Tom Lendacky wrote:
-> > On 9/18/25 05:27, Naveen N Rao (AMD) wrote:
+This is v4 of the nested virt support series, slightly reworking the
+code for the maintenance IRQ. Also adding a fix from Marc for virtio
+endianess handling. Changelog below.
+========================================================
 
-<snip>
+Thanks to the imperturbable efforts from Marc, arm64 support for nested
+virtualization has now reached the mainline kernel, which means the
+respective kvmtool support should now be ready as well.
 
-> > 
-> > And does KVM_SET_TSC_KHZ have to be called if "tsc-frequency" wasn't set?
-> No, this is not required. This patch has changed a bit from my original version, we should have something like below: 
-> 
-> if (is_sev_feature_set(sev_common, SVM_SEV_FEAT_SECURE_TSC) && sev_snp_guest->stsc_khz) {
-> ...
-> }
+Patch 1 updates the kernel headers, to get the new EL2 capability, and
+the VGIC device control to setup the maintenance IRQ.
+Patch 2 introduces the new "--nested" command line option, to let the
+VCPUs start in EL2. To allow KVM guests running in such a guest, we also
+need VGIC support, which patch 3 allows by setting the maintenance IRQ.
+Patch 4 to 6 are picked from Marc's repo, and allow to set the arch
+timer offset, enable non-VHE guests (at the cost of losing recursive
+nested virtualisation), and also advertise the virtual EL2 timer IRQ.
 
-Right, I suppose I relied on KVM using the default TSC frequency if the 
-VMM does KVM_SET_TSC_KHZ with a TSC frequency of zero, which is totally 
-unnecessary. I will update this.
+Tested on the FVP (with some good deal of patience), and some commercial
+(non-fruity) hardware, down to a guest's guest's guest.
+
+Cheers,
+Andre
+
+Changelog v3 ... v4:
+- pass kvm pointer to gic__generate_fdt_nodes()
+- use macros for PPI offset and DT type identifier
+- properly calculate DT interrupt flags value
+- add patch 7 to fix virtio endianess issues
+- CAPITALISE verbs in commit message
+
+Changelog v2 ... v3:
+- adjust^Wreplace commit messages for E2H0 and counter-offset patch
+- check for KVM_CAP_ARM_EL2_E2H0 when --e2h0 is requested
+- update kernel headers to v6.16 release
+
+Changelog v1 ... 2:
+- add three patches from Marc:
+  - add --e2h0 command line option
+  - add --counter-offset command line option
+  - advertise all five arch timer interrupts in DT
 
 
-Thanks,
-Naveen
+Andre Przywara (3):
+  Sync kernel UAPI headers with v6.16
+  arm64: Initial nested virt support
+  arm64: nested: Add support for setting maintenance IRQ
+
+Marc Zyngier (4):
+  arm64: Add counter offset control
+  arm64: Add FEAT_E2H0 support
+  arm64: Generate HYP timer interrupt specifiers
+  arm64: Handle virtio endianness reset when running nested
+
+ arm64/arm-cpu.c                     |  6 +--
+ arm64/fdt.c                         |  5 +-
+ arm64/gic.c                         | 26 ++++++++-
+ arm64/include/asm/kvm.h             | 23 ++++++--
+ arm64/include/kvm/gic.h             |  2 +-
+ arm64/include/kvm/kvm-config-arch.h | 11 +++-
+ arm64/include/kvm/kvm-cpu-arch.h    |  5 +-
+ arm64/include/kvm/timer.h           |  2 +-
+ arm64/kvm-cpu.c                     | 64 +++++++++++++++++++----
+ arm64/kvm.c                         | 17 ++++++
+ arm64/timer.c                       | 29 +++++------
+ include/linux/kvm.h                 | 31 +++++++++++
+ include/linux/virtio_net.h          | 13 +++++
+ include/linux/virtio_pci.h          |  1 +
+ riscv/include/asm/kvm.h             |  2 +
+ x86/include/asm/kvm.h               | 81 +++++++++++++++++++++++++++++
+ 16 files changed, 274 insertions(+), 44 deletions(-)
+
+-- 
+2.25.1
 
