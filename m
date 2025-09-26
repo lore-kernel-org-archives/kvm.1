@@ -1,182 +1,226 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013046.outbound.protection.outlook.com [40.93.201.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF06E22127E;
-	Fri, 26 Sep 2025 09:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758877634; cv=fail; b=DyRDdOcrEcyOZhuFV9Va52UcEsD/gCOv34OW+nozdGuUk0vdGv3Oc642cs3fDEWqoXaM0BieOVxHcUB5h+rp85cZOhWdqQKOngKRxZHZQdmtEBHNz+BGredsI6D8kVHpm7e5FnsaCH93xab2OP9zsm2Bt6+FVmBjVQYEy+j5SDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758877634; c=relaxed/simple;
-	bh=3ZQTbDF9S1F4sX6W5x04ZcU3p+aiHAIATuQn9Cjc/c8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ip3isNsYv0BN0qpCjxxvWyXdDiKnxw3AN5ykdb2rWd6RErERB+vmeDn7R60WUkiJYKn0MEsiu0cdW/Zwzhej13qWtgFxrwKON/LehgOtiCvCJXGzTGF1WFy/JijQgtsazbmXSJwPsoUnaOw0uzfFyfDX6cwSKa0ntKpZ6WDroS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=puslJr0L; arc=fail smtp.client-ip=40.93.201.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811142848A0
+	for <kvm@vger.kernel.org>; Fri, 26 Sep 2025 09:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758878090; cv=none; b=d4FWZ3GUVgwY4e73TpVgwJUQjdZhya0JYhiajuBkKbi7GxpIvliHAeUrf9+TfTNCWbiM1b9VDf1sn4AXz3UrPAA8sJ1+txSz9eEaI+E7f7GXo2Gg5VRW1OoVo4iJHxHHNcCJPCBKMtm/Z93/DnEgLEtxAZBSApXMzrBy74K7d8k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758878090; c=relaxed/simple;
+	bh=JN5UOjmwCjSWTIKExKcOZm8/p1QSiZU0RREtd47LKHE=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=aurcHdVPUvAvvpLMZ3y61EEkG+J/fPOuHJ/ZWZCNbArVTchumIRUfp8CG43KlCu4s73EUnuGArWYX82Lz528/HKyNYvufM3epspP6t/70mVwsPicNCmx/Yp9/t1/MH2sXPcSj/Wn4dBNNDTaU++0OBkRZcdfrRSSrymw+6FkGAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bocV8BtD; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="puslJr0L"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CvuophMuMEwdd7KucfgJlgavcHCFx0f9JxY45J9S2GeXj+4NUQD8g3nmixQXeEctL4bJpSgPMzx+A2zLN++N1TonetETU21hyHYUYSnGT4v83dNlI9mArdGIVtz8gOqlxkHmZ2RJDJJXB6120Gbj4bA0mgunxgpT6P1Fbb9KM49Co7staSGPgnLqT9rzPuj2dXYAuK6iMUGQ0a4F7kc1awS6Bj7TJ97CcelCu3lXprH/lrhDSHJqZZ6HUMZUiWldaltvlwbAgHn7FcLNIM/PR43nM1U+dz3tyMIqANEDWuQXhlvfUZWy2h1AIkXaoXi1wV5ESRLBkCPN15DXSz1Ovg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jKpCKPJkaiPfHM/lohw/hat8Q1iUC93PsTCwHj7mBbo=;
- b=pxix0yW5r4uB2CUzjjoldRaJn5FlPBgiwg+9EP/i9Bu1N4bWOpWa3HrWEL54eEdcn9qEbtarybqbQUpUiLksmwSHmPRjpPHA4QfA4p5xfoWv9nabugzcE81isTYhzCtf5HXJx2olp0wVi597JuusOmeRMlEO9VqAeo4IW0iBlq9eGi2WpfM9skDx2frx8yyEl8aBsi1J+cQZJGCUC7m8/w/+tnF66CaymxHtiQ/XZ+x/Ma6RKxY1jxN3igwV6qgBx3L/OshYZxqJrwQKcZN2VhfnrQGc4GpYihWL6XYMgcMpqbHgRyUaSK8IXDF3JZSHIzaoZAKc6d/ymvhXlnjJzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jKpCKPJkaiPfHM/lohw/hat8Q1iUC93PsTCwHj7mBbo=;
- b=puslJr0L+zJs39n9VssVe5jRBLueUI76GplM5sOxb7E/8xF/LrKOuVnNeI5CVl1z+m6gMHzS8+RCUL4xr2ix9Ttzuz7gk1QO092OidtEW1zeHCfu4xOZwtjz3DQLMEdIeE7jwWScrFNvzH83R+KPOIJvAVrfWInQ20zVW/I82qw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA0PR12MB8301.namprd12.prod.outlook.com (2603:10b6:208:40b::13)
- by DM4PR12MB6374.namprd12.prod.outlook.com (2603:10b6:8:a3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Fri, 26 Sep
- 2025 09:05:44 +0000
-Received: from IA0PR12MB8301.namprd12.prod.outlook.com
- ([fe80::e929:57f5:f4db:5823]) by IA0PR12MB8301.namprd12.prod.outlook.com
- ([fe80::e929:57f5:f4db:5823%4]) with mapi id 15.20.9160.008; Fri, 26 Sep 2025
- 09:05:44 +0000
-Message-ID: <fc2ecc7b-df2c-4cfd-b898-5112b089b67b@amd.com>
-Date: Fri, 26 Sep 2025 14:35:37 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 kvm-next] KVM: guest_memfd: use kvm_gmem_get_index() in
- more places and smaller cleanups
-To: pbonzini@redhat.com, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, David Hildenbrand <david@redhat.com>
-References: <20250902080307.153171-2-shivankg@amd.com>
- <ea4dae91-2e20-4e29-ba00-b73e6160332f@redhat.com>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <ea4dae91-2e20-4e29-ba00-b73e6160332f@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0033.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:97::8) To IA0PR12MB8301.namprd12.prod.outlook.com
- (2603:10b6:208:40b::13)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bocV8BtD"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-272ed8c106eso13444965ad.2
+        for <kvm@vger.kernel.org>; Fri, 26 Sep 2025 02:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758878088; x=1759482888; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xzlecSBlGNy5Hb7DuTGlXytPmBFktseBO6e58xwE2NU=;
+        b=bocV8BtDjVbArEnht0kkGNFV30VS1S8O9gk6DTTmJu8KNksSxE1Mu2Jm2nlwvOX7pf
+         z7oxApv8G+UqkrU45im+74MRECGMx3ayI2zagbK+vE2HlmkkHhB82kLvIt66Vk+OZsw1
+         Iu2jKi0++jd0De6C2Cyc4Tt2tviqYFF5BhONuZG1dFRjGpMq4S3k9mp3AwcLzPPiyfGR
+         KrRPiESOGRbDrQ6TBJzdENN7Czrop5Q3g9ZcOlSsNfP7BxiwBB4BiPEl/FVV9cM9aENo
+         WMtLM5ieZybLxgrHX9TxX10WDYAIbc16HbvsY1RtBRnbWqgUI/fDwPiWW1523mYL6Acm
+         ZCiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758878088; x=1759482888;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xzlecSBlGNy5Hb7DuTGlXytPmBFktseBO6e58xwE2NU=;
+        b=jCeTkqSfd2EptX7ceaBmcgqrLHNqO2guHM9zxhPRuvnzk156wlE/97PfP0Xls9hP8y
+         U9P6TLlbJbh2hZbxCVYr0uf9dTZwQooaYAwlH6tvUFwYvVmRMPSb7f2amy7XZpy8ldXP
+         Ss+W3Zet8JwIpsysLKLnzvSRpErY+YmXtEwU3i6NUXSw2qGJJ0976HbQRENrjJh5Uwvm
+         kzSHsZiR6Z0NC+cyqyWogLGWzw4129HFHhmToINcQgcWwVbxca2GU+V1jXGCFrZ/bR87
+         Fr3oOEsJIqec3/Gd2BEelfDYdSRDuzzsW0JJ7vD177KhdQFJGkaIMc2wPNILRHc/d5ZF
+         thTw==
+X-Gm-Message-State: AOJu0YzgKSXHSywBIEJZ33svyyIS1QLZaHvoKkH8Da9Evd5O/MHbveXl
+	bBlClWUkceVoj6HeprYl20FxT/c3PAHeMZM3dJ88fZMSPx65f7cMaXEzRXxQ5ebDMv7UsenRt9z
+	aMhkjvKSHbOt7rs60L9z0rfOOTA==
+X-Google-Smtp-Source: AGHT+IEx8E9cWhlfu1Vxq2AQuNomZgiEGJpm7W9AMx7sfDI2/uhsc96oawFywv4yb5EYZvdHJHPDXZqYAh60qO9vkw==
+X-Received: from plxq5.prod.google.com ([2002:a17:902:dac5:b0:268:eb:3b3b])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:ef09:b0:276:76e1:2e84 with SMTP id d9443c01a7336-27ed4a06b49mr70346315ad.3.1758878087498;
+ Fri, 26 Sep 2025 02:14:47 -0700 (PDT)
+Date: Fri, 26 Sep 2025 09:14:45 +0000
+In-Reply-To: <aDfT35EsYP/Byf7Z@yzhao56-desk.sh.intel.com> (message from Yan
+ Zhao on Thu, 29 May 2025 11:26:23 +0800)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8301:EE_|DM4PR12MB6374:EE_
-X-MS-Office365-Filtering-Correlation-Id: 554509d8-1bfb-4e83-2410-08ddfcdbdfa1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WGt5ZFZKTytIcFRkT0pLZXNpOEJ3Mm5YMWlsTXFpUU04eTNFZVZwQjc2TU9K?=
- =?utf-8?B?TVVGQmdSU3I0RVBtVXhKWWN1WmNRZXdSVkUxVkpKQ2RVQlIxQU9kWXc5d1pB?=
- =?utf-8?B?WVZEMWJmR3RpcjJGNzJjdXZaNGhvRmxWZjl0bVZNTVBLOGxIclVqS3QyZlhI?=
- =?utf-8?B?bE9nM1dYMlpBdEMvZVc0TDlCOURDRnpDQk5RK0VGWWFjamE3YzQvVklOaE4x?=
- =?utf-8?B?S1hzcEtIbFhTSENhaGVQRzh6QTQ2WVRRSjliSy83M0xMR2x4cXRqSnZQc3dU?=
- =?utf-8?B?OFB6ajZZMW9aY2diQkU1SWt6RnFldGMxbWVkcHJmV2NtbFMyNFJySnhSdDJp?=
- =?utf-8?B?RHlXRWg5OGxsWGwxdm96YmVwbFZDRWVJaVdTMjQ4VlpzbHJLTmpuUWhJTGpk?=
- =?utf-8?B?R0tFTFVKazgxNXZwY1VyN0h4NytZUCtmRGZrNGgxN1QyTVZkUGRSR0czMDg5?=
- =?utf-8?B?SkhXUmFrZnRQNmJhT2prbDdsdGtON0tCemlEQ1FWa2Nhc1hBbjRWZmdHTGRR?=
- =?utf-8?B?cDJMbGhNaDRRNDRuK1RlK2t1ZVM2M1dWVXl3Wk03S1F4c2prUjNIWmtsdHVM?=
- =?utf-8?B?bnlVdm1nZkpzV3hQNVVaZG1ZakU2K3YrS2trekNOeFBVSFdvQ21KUkE2WC9D?=
- =?utf-8?B?NG5nY1VDTVZCOFBFcTk3dEVoMm1PTUoxWE9rQzBRUjRBQmNmV2R6RXlDeENB?=
- =?utf-8?B?ZjhIaGlOaHVwNmJQSnU4QTFIRWI4MDhNOHkrZGY3cXovNkdlN0dLdkVudjZF?=
- =?utf-8?B?RjlBdldvWDY0M0hHTHRpckZHRGdoRkViS284dXJpUFNXTjlqb0NUWVBxVGJW?=
- =?utf-8?B?Rm5Pd1RaWW01anBCUTJ5eEJxK3JSdCtwZG13b0xFeHUzblR1YTdNaXhwWVhz?=
- =?utf-8?B?eEtzNkV3V2xtUFVhK1NRczl5QzBsTDVscnFOTzQyYktEN3cxejdXeUJUaWFZ?=
- =?utf-8?B?enVUemMrUDk5ZkR4T1lVZ1lrVkNKT2xHZncxTFQrTHVGNWkweWllMHRtM2Y3?=
- =?utf-8?B?K1dZOEMyNHlyT1dTWnFiSjdEZmlxZEUvd0hsWlhCZzZIKzY2cGs0YWk0WUg0?=
- =?utf-8?B?ZWcwV01MVHZRTElnQnFyaXdPZ0x0ekRlZjlybkFBdEt0YzRua0toclA0TUFX?=
- =?utf-8?B?UHY2V0FpbXZZWWxnT2wrNFBPVjdDVGl0aG1qVGNucTlxSGpPT3FQNUFmbGZa?=
- =?utf-8?B?QU9nZlNaUUlCYUlpc0hKdkFGVXl2cWEyekhxUW9MYXFoTW9VT3VGRy9QT3Nw?=
- =?utf-8?B?bE12OFRHQVBheFJvZkVmdGtXalk2ZWRKeDBxQzA5VUdKU3FJcjg4dlJDZXZp?=
- =?utf-8?B?dGRUeXRsYk5pWTYvN25VVUdBbXE3ZDhieTlBQ0ZuUVJOM1BYcWxzaGdnay9u?=
- =?utf-8?B?bjRaV3k3ZGpDcGhNTzltUjczZU0yZmphRm9pS0ZUVmhCOHpHd0hhQVNIU25G?=
- =?utf-8?B?UGR5OXg1RTYwNHhGVmY0a0U4cktOcUlYbHloRE0zK0hDblczRWU3VmNEN2xH?=
- =?utf-8?B?bGY0Vms4cHEwY1NPOXNlK2E1VDZJUTIwNVhuVmpRd0Y4SnZHZlBHU0tvbGh1?=
- =?utf-8?B?dkpJTXRhUXdMSEZJM1UyYzdjQ3ovRXdaWVdtVmIvVFNoUUd4NHZMdWNxS0Yy?=
- =?utf-8?B?K2hrT1pGZkZsY1dDM25ucUhBd0tDaHRLL1BEcXVjOFhhcFpIb1llaHFPczlC?=
- =?utf-8?B?c3lyNDAvanA3VkZFalF1cE1WQzNXVFB2anptcUJXOXlPWkFTSnNWbFVjRGRq?=
- =?utf-8?B?ZU5CcWd0bVlXMGhGUlRCTThJTGtQQk5TTVpYRVl6RUpiS2pRNk01VGNxSG05?=
- =?utf-8?B?bUNmbmJieU5qdDd6ZUZTR1FEVzlxaHoxOEc5ZVV5MUI2REtpQWpiay95OXFn?=
- =?utf-8?B?b1B1UTg4RFViTE1WZGRVSmxRU1k1WkdqZFVHaHo0SHM5U2hMQTVyYjhaTUQx?=
- =?utf-8?Q?GVTk8Ppduz0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MGhkOGI1VDdlNHVtZ1pwS203VWZHNGUrQVR0T3BZbWhGNStOUC9oTmRhc3Fj?=
- =?utf-8?B?djhMQ1craklXZ2FFbE5JeVdpZ0tzeWxRQ1poQjVaYWJoOTAvYkx3cWo2cXhH?=
- =?utf-8?B?YTZ2dW5qWWMxUlNRNFdhWUtlYlVFdW5qMXN0T2F5MGZTSzNZT3BydlJWOFhT?=
- =?utf-8?B?MXpvMDdvSmN5Uys2bU44MWg0RWcrSlNwZWhpMFVMOVJubHMvbEZ2MzlGRXhD?=
- =?utf-8?B?VFZFYWFIM1RBWVBlSHNSTkpKRmNUUFFKNjYxWEM4MWg0UE9BWkk1aGgwWWpZ?=
- =?utf-8?B?T2JCc2ZpL3JuSStldHVLNUVzd1FDdFhycTMxY0JDZ0JiUDdSQjd1NWlDbmdx?=
- =?utf-8?B?MHczcGZGODhqclFnRmE3cjNkYk5HaWwzTEE1SGQ5NVVyMFBOQUVNYmgveXdt?=
- =?utf-8?B?UloySS9QVjJ4QW01dXJkcEJ2ZlF3MHNQdmQ3eGVnNW14b2FUODZTOU9mSmdP?=
- =?utf-8?B?aTNVOUZhU2tIS2dReVpKajUveXpEVWFza3VTbkJEdUlZa01WcFk5TWRvR1Iv?=
- =?utf-8?B?SEUrUnNhSzdjNEdHcUQvU05aTWVSV2lJU1VxY1JmYXZ4VGIwTmludVdjc3B4?=
- =?utf-8?B?VUlLNDdxVGR3VWdzMmMvVXdiQm4vWFNYTXhERXZmZWQvUU5UdkFWZVR1ZGZz?=
- =?utf-8?B?NEhWL1NmVk1KSEdVMzBXQ3lnNlJnTXM3d3hVVzlXTjFER0VsNXRGa2xWZmJv?=
- =?utf-8?B?Vzk1UUxvYlFURjd1SXR3cURoalBONGV6d3h0d0ZHdWVUclRvTlBuOC9mb1NU?=
- =?utf-8?B?ODJqUHZtYzZnTjEzOTlLT05DTldDdWIxT0Y4dkpYN1lGeTdFTzZubFphZVBQ?=
- =?utf-8?B?aWlaVHB2R0djY2RIcHFyWDV5eVc1TFlKUnZkdmg1RC83Um45SDRNdEdCWlkz?=
- =?utf-8?B?ZVVtUTJvNXF0eVBuZXd4b1BqK3czQWZGNWI5S21tN3FtVDZSYVA3ZzBvQTJq?=
- =?utf-8?B?b0tDNmJybFVteUdaa2hIYkg3ZzhDeWw4emdXdDRkVnlUNHFYbHpKRzJNY25H?=
- =?utf-8?B?ZUFvSTdtK1lnTFJMSFYvUm1tQXh5bitseTAvdno1bURQRmIvMkdXYS9YK283?=
- =?utf-8?B?TGNaaURLb3M1M1NYejlYZHhpbm0vM0E4bW13QkFLRmMrcnlLTmlBNEZuMmVP?=
- =?utf-8?B?dHJuVnRNZmFvdUdtdUF1L3Zwanc5cjhlQzc1dW9ONkF0OXdVczVyKzF0ckx0?=
- =?utf-8?B?UW5SRkJBajk1aE1McVdUb0tCd1ZUVDBRcU5jZmgwUVNCYzNKR21qblJ3RTJ6?=
- =?utf-8?B?S29XV2hzbUMxSHcrK2lrZjQvWkdTdGc5SHh4YjZMWEN6OWtiaTBGQVBNU2E4?=
- =?utf-8?B?SW9KYzZEaUxDME14VjR5WllzVVRwTVRPY2RGWkVmd2szWUZrTFpKaWVqSnhq?=
- =?utf-8?B?a3VOVTF6YWxrSVNybVFPL1ZHS3VUUVZ0aEx4ejdTWmtjdkNKa3dIWTh3bEV6?=
- =?utf-8?B?UWhLMG02TTgvZStDQjkxYmsyUDc3SEZpNDVoSDd0TFptYlNmemdkL3NOcGtC?=
- =?utf-8?B?YVo1OW5oemRxd0l6NVVRU2xpblMrSFJqYkdOM0VOQnNCbHIwMTRGbnZxTW4w?=
- =?utf-8?B?LzUzS0M0WnBFRkF6dm5JOTBhNFpJSUljUlhOSnphN0ttL01yZW1OWTdUUEZ4?=
- =?utf-8?B?L0tyTjl4ZUx3eS9rNTlzc254R3JtQVFIdDRmUjFCalJSRW5wQjA4ZTNXS1lU?=
- =?utf-8?B?WFgzQkZMcm5wSlJjaHRFdnhjNS9GbHpCWWxmeVQ3RElmaEEwcERQR1V6eWJn?=
- =?utf-8?B?TjA1eUhvWlJ1V3R5RWppK3RDeVpFYUJ5THNRdnBhS2pZdzJFcFhQVjE5dFUv?=
- =?utf-8?B?ZU9KS2dZNlBiU0czcnppUlM4TjlPODJ1aE9KWFJDMVRZTEh5YXM3bUxDR2l2?=
- =?utf-8?B?UU1jQWxTMWprR0p1Q0NDVDJMV0swMXZHcGlTTThIRk1MT0hVOURBNHBmZzVt?=
- =?utf-8?B?TWl0dCtlV0QwOXhRenJ1SFFOejBNdWJnZ0N5a1d0K3hjazJOVHgvV2ZiOVQy?=
- =?utf-8?B?NnhON0NkOXcxZmxoM09oSHZiTzFpRmExWDR0Nll3cit3OE5FL3NHR21mektH?=
- =?utf-8?B?UzZMTnV1S1oyRW0rVDNMZWl4SmVaekt2ZU55K2hzMWhoWWJzenRtbXZsNnJR?=
- =?utf-8?Q?phAff2boTtEoBIYTDPSuy1eEc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 554509d8-1bfb-4e83-2410-08ddfcdbdfa1
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 09:05:44.1445
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XUiE14pEy/SnGZD2ten42iFIoONjIN24zUnKPIJhOsP9+g9UEYivfO63+DBtcfPdGRAt8ca8VE3QzVhXA3j1VQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6374
+Mime-Version: 1.0
+Message-ID: <diqzcy7d60e2.fsf@google.com>
+Subject: Re: [RFC PATCH v2 39/51] KVM: guest_memfd: Merge and truncate on fallocate(PUNCH_HOLE)
+From: Ackerley Tng <ackerleytng@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, linux-fsdevel@vger.kernel.org, aik@amd.com, 
+	ajones@ventanamicro.com, akpm@linux-foundation.org, amoorthy@google.com, 
+	anthony.yznaga@oracle.com, anup@brainfault.org, aou@eecs.berkeley.edu, 
+	bfoster@redhat.com, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	catalin.marinas@arm.com, chao.p.peng@intel.com, chenhuacai@kernel.org, 
+	dave.hansen@intel.com, david@redhat.com, dmatlack@google.com, 
+	dwmw@amazon.co.uk, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
+	graf@amazon.com, haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, 
+	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
+	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
+	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
+	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
+	kent.overstreet@linux.dev, kirill.shutemov@intel.com, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, maz@kernel.org, 
+	mic@digikod.net, michael.roth@amd.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, pdurrant@amazon.co.uk, 
+	peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, qperret@google.com, 
+	quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
+	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
+	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
+	thomas.lendacky@amd.com, usama.arif@bytedance.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
+	zhiquan1.li@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
+> On Wed, May 28, 2025 at 09:39:35AM -0700, Ackerley Tng wrote:
+>> Yan Zhao <yan.y.zhao@intel.com> writes:
+>> 
+>> > On Wed, May 14, 2025 at 04:42:18PM -0700, Ackerley Tng wrote:
+>> >> Merge and truncate on fallocate(PUNCH_HOLE), but if the file is being
+>> >> closed, defer merging to folio_put() callback.
+>> >> 
+>> >> Change-Id: Iae26987756e70c83f3b121edbc0ed0bc105eec0d
+>> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> >> ---
+>> >>  virt/kvm/guest_memfd.c | 76 +++++++++++++++++++++++++++++++++++++-----
+>> >>  1 file changed, 68 insertions(+), 8 deletions(-)
+>> >> 
+>> >> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> >> index cb426c1dfef8..04b1513c2998 100644
+>> >> --- a/virt/kvm/guest_memfd.c
+>> >> +++ b/virt/kvm/guest_memfd.c
+>> >> @@ -859,6 +859,35 @@ static int kvm_gmem_restructure_folios_in_range(struct inode *inode,
+>> >>  	return ret;
+>> >>  }
+>> >>  
+>> >> +static long kvm_gmem_merge_truncate_indices(struct inode *inode, pgoff_t index,
+>> >> +					   size_t nr_pages)
+>> >> +{
+>> >> +	struct folio *f;
+>> >> +	pgoff_t unused;
+>> >> +	long num_freed;
+>> >> +
+>> >> +	unmap_mapping_pages(inode->i_mapping, index, nr_pages, false);
+>> >> +
+>> >> +	if (!kvm_gmem_has_safe_refcount(inode->i_mapping, index, nr_pages, &unused))
+>> 
+>> Yan, thank you for your reviews!
+>> 
 
-On 9/2/2025 1:42 PM, David Hildenbrand wrote:
-> On 02.09.25 10:03, Shivank Garg wrote:
->> Move kvm_gmem_get_index() to the top of the file and make it available for
->> use in more places.
->>
->> Remove redundant initialization of the gmem variable because it's already
->> initialized.
->>
->> Replace magic number -1UL with ULONG_MAX.
->>
->> No functional change intended.
->>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
+Thanks again for your reviews. I would like to respond to this since I'm
+finally getting back to this part.
 
-Gentle ping :)
+>> > Why is kvm_gmem_has_safe_refcount() checked here, but not in
+>> > kvm_gmem_zero_range() within kvm_gmem_truncate_inode_range() in patch 33?
+>> >
+>> 
+>> The contract for guest_memfd with HugeTLB pages is that if holes are
+>> punched in any ranges less than a full huge page, no pages are removed
+>> from the filemap. Those ranges are only zeroed.
+>> 
+>> In kvm_gmem_zero_range(), we never remove any folios, and so there is no
+>> need to merge. If there's no need to merge, then we don't need to check
+>> for a safe refcount, and can just proceed to zero.
+> However, if there are still extra ref count to a shared page, its content will
+> be zeroed out.
+>
 
-Thanks,
-Shivank
+I believe this topic is kind of overtaken by events. IIUC the current
+upstream stance is that for guest_memfd we're not allowing hole-punching
+of pages for huge pages, so once a HugeTLB guest_memfd is requested,
+hole punching of less than the requested HugeTLB size will result in
+-EINVAL being returned to userspace.
+
+>> 
+>> kvm_gmem_merge_truncate_indices() is only used during hole punching and
+>> not when the file is closed. Hole punch vs file closure is checked using
+>> mapping_exiting(inode->i_mapping).
+>> 
+>> During a hole punch, we will only allow truncation if there are no
+>> unexpected refcounts on any subpages, hence this
+>> kvm_gmem_has_safe_refcount() check.
+> Hmm, I couldn't find a similar refcount check in hugetlbfs_punch_hole().
+> Did I overlook it?
+>
+> So, why does guest_memfd require this check when punching a hole?
+>
+
+There's no equivalent check in HugeTLBfs.
+
+For guest_memfd, we want to defer merging to the kernel worker as little
+as possible, hence we want to merge before truncating. Checking for
+elevated refcounts is a prerequisite for merging, not directly for hole
+punching.
+
+>> >> +		return -EAGAIN;
+>> >> +
+>> >
+>> > Rather than merging the folios, could we simply call kvm_gmem_truncate_indices()
+>> > instead?
+>> >
+>> > num_freed = kvm_gmem_truncate_indices(inode->i_mapping, index, nr_pages);
+>> > return num_freed;
+>> >
+>> 
+>> We could do this too, but then that would be deferring the huge page
+>> merging to the folio_put() callback and eventually the kernel worker
+>> thread.
+> With deferring the huge page merging to folio_put(), a benefit is that
+> __kvm_gmem_filemap_add_folio() can be saved for the merged folio. This function
+> is possible to fail and is unnecessary for punch hole as the folio will be
+> removed immediately from the filemap in truncate_inode_folio().
+>
+>
+
+That is a good point! Definitely sounds good to defer this to folio_put().
+
+>> My goal here is to try to not to defer merging and freeing as much as
+>> possible so that most of the page/memory operations are
+>> synchronous, because synchronous operations are more predictable.
+>> 
+>> As an example of improving predictability, in one of the selftests, I do
+>> a hole punch and then try to allocate again. Because the merging and
+>> freeing of the HugeTLB page sometimes takes too long, the allocation
+>> sometimes fails: the guest_memfd's subpool hadn't yet received the freed
+>> page back. With a synchronous truncation, the truncation may take
+>> longer, but the selftest predictably passes.
+> Maybe check if guestmem_hugetlb_handle_folio_put() is invoked in the
+> interrupt context, and, if not, invoke the guestmem_hugetlb_cleanup_folio()
+> synchronously?
+>
+>
+
+I think this is a good idea. I would like to pursue this in a future
+revision of a patch series.
+
+It seems like the use of in_atomic() is strongly discouraged, do you
+have any tips on how to determine if folio_put() is being called from
+atomic context?
+
+>> 
+>> [...snip...]
+>> 
