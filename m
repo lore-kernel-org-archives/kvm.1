@@ -1,39 +1,44 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EACC309EED
-	for <kvm@vger.kernel.org>; Wed,  1 Oct 2025 14:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6D309F0A;
+	Wed,  1 Oct 2025 14:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759330732; cv=none; b=f6hDoT8se1YGpXYUYuMy8nu1cK+rsYkjtAiXbPQOTg+pQrQ/LV99S9JywXKA7eqkyjASxs92KCU6sMey3xXGQTEolV74TjsNMzD/gkjvCZ/4pvhGGrN86LyIkuG1Lq1Qs6kesKuuJT/B07Z2QukedSyaNbJZk0159wTiGb+oTaQ=
+	t=1759330734; cv=none; b=ShCwJ93cQPKEh3nPuZjC/Uy2cYh8gKnFlGo+k1isw1YseJbVIZLG+On2UmBsauWZlDqJSM4r54ZwgpNA87pk5bP8SkQZ+uqd+ta9CkB/Iq5TVPPEIkbS6oxVPOzntqLzDIZiKXAqZ5kJ4ZWaWIIwD8/srAJkCbzpkxWRDLIj+Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759330732; c=relaxed/simple;
-	bh=JuKjkUbgJ0qnM1ZoCW/3jFKFv0+E5P7+c+tqjQRwQ08=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Oy4v6WtetVWLZskICYcTWgIg8JZh/wiKx4Xy2AER4PtSMB7w7jAgtoK6Dm5Lut8VXWCCnb12sGbTyPzTHFFwaThXf5mJS1agKJCho6od9UHFifdYUrZl1XYPSgzcBGr0ruyzE1mTkil42N9D3O6XQ2XukiBN7hNKgvTiWKn5nIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WO87wqF1; arc=none smtp.client-ip=95.215.58.188
+	s=arc-20240116; t=1759330734; c=relaxed/simple;
+	bh=+mvnZ/3nh84CfbeisOMB+kyaEVFHU84gm6MRFvEyixg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dARasVOT+6KW0+C/hoTtA14enolYC9Xm0XJY8PlfzmFzPyBmx3wZWsjSoPKMCg89nSjZFjhkZVCivsEc33RQvoe+Va6jyH1ngx88xnKShpZRlvvFcdM1HD1KxpRWDUgzCru/bld/NvC+VDc8wV0LYphM86dTijjCvZcGsaoiJng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LjNztcnF; arc=none smtp.client-ip=95.215.58.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WO87wqF1"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LjNztcnF"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759330718;
+	t=1759330730;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/qao2gf0buAXa41pQzpibNT0JX2AC6F/MUPKWYgy5yw=;
-	b=WO87wqF1mNBtl/tDc81fbjeb3RSroDMBkgmMnorxsuAbhQr2gHlEiWF6Q+LyWAwxDfMgRt
-	0RX5k+A6SsKwvZmYbCPmaunDIEjIr8C9LTAJKnrbQhGnhYO+vwWDM628RCoT4BKb6Suo/6
-	GOtbUlwoxYPDXdOIxohOs+83NOXCkX8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HleGFx1sF8yP1tUynV7GpVNP3oSoHkyyTlg/BPojzJs=;
+	b=LjNztcnFjhqcUtr6P6IMbuAIgDKVTkgbBD2cgephPfLsBChzrZg/xS5f7aqFjALl+Y8oNV
+	aWgMJHt9gks9ThWMcYi0WDgFIQ9p+62XRJe1SJX4PoZH1XXhLUkvwpO3pRsiSSRtg3j7YA
+	R5xJ5e69FkOUqJzK7FPaFrs3Evh659Y=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosryahmed@google.com>,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH 00/12] Extend test coverage for nested SVM
-Date: Wed,  1 Oct 2025 14:58:04 +0000
-Message-ID: <20251001145816.1414855-1-yosry.ahmed@linux.dev>
+Subject: [PATCH 06/12] KVM: selftests: Extend vmx_tsc_adjust_test to cover SVM
+Date: Wed,  1 Oct 2025 14:58:10 +0000
+Message-ID: <20251001145816.1414855-7-yosry.ahmed@linux.dev>
+In-Reply-To: <20251001145816.1414855-1-yosry.ahmed@linux.dev>
+References: <20251001145816.1414855-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,46 +48,154 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-There are multiple selftests exercising nested VMX that are not specific
-to VMX (at least not anymore). Extend their coverage to nested SVM.
+From: Yosry Ahmed <yosryahmed@google.com>
 
-Yosry Ahmed (12):
-  KVM: selftests: Minor improvements to asserts in
-    test_vmx_nested_state()
-  KVM: selftests: Extend vmx_set_nested_state_test to cover SVM
-  KVM: selftests: Extend vmx_close_while_nested_test to cover SVM
-  KVM: selftests: Extend vmx_nested_tsc_scaling_test to cover SVM
-  KVM: selftests: Remove invalid CR3 test from vmx_tsc_adjust_test
-  KVM: selftests: Extend vmx_tsc_adjust_test to cover SVM
-  KVM: selftests: Pass the root HVA directly to nested mapping functions
-  KVM: selftests: Use 'leaf' instead of hugepage to describe EPT entries
-  KVM: selftests: Move all PTE accesses into nested_create_pte()
-  KVM: selftests: Move EPT-specific init outside nested_create_pte()
-  KVM: selftests: Refactor generic nested mapping outside VMX code
-  KVM: selftests: Extend vmx_dirty_log_test to cover SVM
+Add SVM L1 code to run the nested guest, and allow the test to run with
+SVM as well as VMX.
 
- tools/testing/selftests/kvm/Makefile.kvm      |  11 +-
- .../selftests/kvm/include/x86/nested_map.h    |  20 ++
- .../selftests/kvm/include/x86/svm_util.h      |  13 ++
- tools/testing/selftests/kvm/include/x86/vmx.h |  13 +-
- .../testing/selftests/kvm/lib/x86/memstress.c |   5 +-
- .../selftests/kvm/lib/x86/nested_map.c        | 150 +++++++++++++++
- tools/testing/selftests/kvm/lib/x86/svm.c     |  70 +++++++
- tools/testing/selftests/kvm/lib/x86/vmx.c     | 180 +++---------------
- ...ested_test.c => close_while_nested_test.c} |  42 +++-
- ...rty_log_test.c => nested_dirty_log_test.c} |  95 ++++++---
- ...adjust_test.c => nested_tsc_adjust_test.c} |  79 ++++----
- ...aling_test.c => nested_tsc_scaling_test.c} |  48 ++++-
- ...d_state_test.c => set_nested_state_test.c} | 132 +++++++++++--
- 13 files changed, 609 insertions(+), 249 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/include/x86/nested_map.h
- create mode 100644 tools/testing/selftests/kvm/lib/x86/nested_map.c
- rename tools/testing/selftests/kvm/x86/{vmx_close_while_nested_test.c => close_while_nested_test.c} (64%)
- rename tools/testing/selftests/kvm/x86/{vmx_dirty_log_test.c => nested_dirty_log_test.c} (62%)
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ tools/testing/selftests/kvm/Makefile.kvm      |  2 +-
+ ...adjust_test.c => nested_tsc_adjust_test.c} | 69 ++++++++++++-------
+ 2 files changed, 46 insertions(+), 25 deletions(-)
  rename tools/testing/selftests/kvm/x86/{vmx_tsc_adjust_test.c => nested_tsc_adjust_test.c} (61%)
- rename tools/testing/selftests/kvm/x86/{vmx_nested_tsc_scaling_test.c => nested_tsc_scaling_test.c} (83%)
- rename tools/testing/selftests/kvm/x86/{vmx_set_nested_state_test.c => set_nested_state_test.c} (67%)
 
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index dc68147ace97f..9b3c99acd51a3 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -117,7 +117,7 @@ TEST_GEN_PROGS_x86 += x86/vmx_exception_with_invalid_guest_state
+ TEST_GEN_PROGS_x86 += x86/vmx_msrs_test
+ TEST_GEN_PROGS_x86 += x86/vmx_invalid_nested_guest_state
+ TEST_GEN_PROGS_x86 += x86/set_nested_state_test
+-TEST_GEN_PROGS_x86 += x86/vmx_tsc_adjust_test
++TEST_GEN_PROGS_x86 += x86/nested_tsc_adjust_test
+ TEST_GEN_PROGS_x86 += x86/nested_tsc_scaling_test
+ TEST_GEN_PROGS_x86 += x86/apic_bus_clock_test
+ TEST_GEN_PROGS_x86 += x86/xapic_ipi_test
+diff --git a/tools/testing/selftests/kvm/x86/vmx_tsc_adjust_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
+similarity index 61%
+rename from tools/testing/selftests/kvm/x86/vmx_tsc_adjust_test.c
+rename to tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
+index 2dcc0306a0d9b..cc825a0b41dbf 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_tsc_adjust_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * vmx_tsc_adjust_test
++ * nested_tsc_adjust_test
+  *
+  * Copyright (C) 2018, Google LLC.
+  *
+@@ -22,6 +22,7 @@
+ #include "kvm_util.h"
+ #include "processor.h"
+ #include "vmx.h"
++#include "svm_util.h"
+ 
+ #include <string.h>
+ #include <sys/ioctl.h>
+@@ -35,6 +36,8 @@
+ #define TSC_ADJUST_VALUE (1ll << 32)
+ #define TSC_OFFSET_VALUE -(1ll << 48)
+ 
++#define L2_GUEST_STACK_SIZE 64
++
+ enum {
+ 	PORT_ABORT = 0x1000,
+ 	PORT_REPORT,
+@@ -72,32 +75,47 @@ static void l2_guest_code(void)
+ 	__asm__ __volatile__("vmcall");
+ }
+ 
+-static void l1_guest_code(struct vmx_pages *vmx_pages)
++static void l1_guest_code(void *data)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+ 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-	uint32_t control;
+ 
++	/* Set TSC from L1 and make sure TSC_ADJUST is updated correctly */
+ 	GUEST_ASSERT(rdtsc() < TSC_ADJUST_VALUE);
+ 	wrmsr(MSR_IA32_TSC, rdtsc() - TSC_ADJUST_VALUE);
+ 	check_ia32_tsc_adjust(-1 * TSC_ADJUST_VALUE);
+ 
+-	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+-	GUEST_ASSERT(load_vmcs(vmx_pages));
+-
+-	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
+-	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
+-	control |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_USE_TSC_OFFSETTING;
+-	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
+-	vmwrite(TSC_OFFSET, TSC_OFFSET_VALUE);
+-
+-	GUEST_ASSERT(!vmlaunch());
+-	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
++	/*
++	 * Run L2 with TSC_OFFSET. L2 will write to TSC, and L1 is not
++	 * intercepting the write so it should update L1's TSC_ADJUST.
++	 */
++	if (this_cpu_has(X86_FEATURE_VMX)) {
++		struct vmx_pages *vmx_pages = data;
++		uint32_t control;
++
++		GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
++		GUEST_ASSERT(load_vmcs(vmx_pages));
++
++		prepare_vmcs(vmx_pages, l2_guest_code,
++			     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++		control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
++		control |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_USE_TSC_OFFSETTING;
++		vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
++		vmwrite(TSC_OFFSET, TSC_OFFSET_VALUE);
++
++		GUEST_ASSERT(!vmlaunch());
++		GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
++	} else {
++		struct svm_test_data *svm = data;
++
++		generic_svm_setup(svm, l2_guest_code,
++				  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++
++		svm->vmcb->control.tsc_offset = TSC_OFFSET_VALUE;
++		run_guest(svm->vmcb, svm->vmcb_gpa);
++		GUEST_ASSERT(svm->vmcb->control.exit_code == SVM_EXIT_VMMCALL);
++	}
+ 
+ 	check_ia32_tsc_adjust(-2 * TSC_ADJUST_VALUE);
+-
+ 	GUEST_DONE();
+ }
+ 
+@@ -109,16 +127,19 @@ static void report(int64_t val)
+ 
+ int main(int argc, char *argv[])
+ {
+-	vm_vaddr_t vmx_pages_gva;
++	vm_vaddr_t nested_gva;
+ 	struct kvm_vcpu *vcpu;
+ 
+-	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) ||
++		     kvm_cpu_has(X86_FEATURE_SVM));
+ 
+-	vm = vm_create_with_one_vcpu(&vcpu, (void *) l1_guest_code);
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++	if (kvm_cpu_has(X86_FEATURE_VMX))
++		vcpu_alloc_vmx(vm, &nested_gva);
++	else
++		vcpu_alloc_svm(vm, &nested_gva);
+ 
+-	/* Allocate VMX pages and shared descriptors (vmx_pages). */
+-	vcpu_alloc_vmx(vm, &vmx_pages_gva);
+-	vcpu_args_set(vcpu, 1, vmx_pages_gva);
++	vcpu_args_set(vcpu, 1, nested_gva);
+ 
+ 	for (;;) {
+ 		struct ucall uc;
 -- 
 2.51.0.618.g983fd99d29-goog
 
