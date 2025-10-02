@@ -1,39 +1,58 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA933F6
-	for <kvm@vger.kernel.org>; Thu,  2 Oct 2025 07:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C9D238166
+	for <kvm@vger.kernel.org>; Thu,  2 Oct 2025 07:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759389638; cv=none; b=b0aAvU5yGRE+2XbZJ2cUM6eZiLX4mDH+KGiA63KPgD7KPXxYVkJj7tLofTNsnwXpOjxGTDB2OCizXW+TmqRGTOyYRSslQNKaqlZW+IE1mCA6PVyvOQ9j6rY1L46HkQs/MSK26XA34ffuy2fOG9agQIG397KISOHSKiIMBjrTKMI=
+	t=1759391220; cv=none; b=jk12da7HIfNbXfc+oxkRWPgniv7eqeHy+QaRhnK9KprwHkVrkGrOWBsEgjnTgpQbG7S3q+9DC+cnjnttBbnYccNIVR8YPcrJFHyEA2qnBP1aAxwvDgwsJ+jnRr7HcpOIEiTC0ddPPl3yuncaKNrFq7a3JJkvFqUfqn4g+ksjyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759389638; c=relaxed/simple;
-	bh=Iux0nIVTc80HUdp+Y8jhGnhylI5WJ3yGKEl4c7YxDes=;
+	s=arc-20240116; t=1759391220; c=relaxed/simple;
+	bh=HbUDv50SZcajdTpZlbZra6ry+wsVkSq/kY4OBLKyqKI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HjT9lwHcDokqSyTU2xzYmWdGjBEcCARt8TrESebNeaVlMMr3BZfUNM/fvOxnqY+41TQd6BimzRB6S/TIQpqaCJDq8OpGnvSsrOs90Wz9Wq9LhPjBqR2kGed1A2M1A8lh8Zgtr/A8DdFHehHKjIvv+1sc0jOQfxXFrTUc0PYKCXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ccjCS471cz9sS7;
-	Thu,  2 Oct 2025 08:52:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id gBandp4y6DE4; Thu,  2 Oct 2025 08:52:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ccjCS2t3Mz9sRy;
-	Thu,  2 Oct 2025 08:52:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 507EA8B796;
-	Thu,  2 Oct 2025 08:52:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id GrYjV0F4DxGN; Thu,  2 Oct 2025 08:52:20 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DB90B8B774;
-	Thu,  2 Oct 2025 08:52:19 +0200 (CEST)
-Message-ID: <1b6074f6-1d23-48bf-98b6-beb57bd81886@csgroup.eu>
-Date: Thu, 2 Oct 2025 08:52:18 +0200
+	 In-Reply-To:Content-Type; b=itjKHJeOu60rq4q+zepfTykMPaAycYzcjbWVkSzm04KgU84QjUO50121V5jTL5H7qSy2UgjgDNnsUyA9ud9AqYaxNeyzdbtLV2sLe1VuUfOl5BGaFhuwNoZp010WUUHIaHQmtyFm9fH/q60y6aL7zj3DiuszFiWPifVaKTqUZpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ksmrQUKY; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ksmrQUKY; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ksmrQUKY";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ksmrQUKY"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5E0681F8D4;
+	Thu,  2 Oct 2025 07:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1759391216; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HbUDv50SZcajdTpZlbZra6ry+wsVkSq/kY4OBLKyqKI=;
+	b=ksmrQUKY+gWdiS0+kn1fKoGHBNMTBvASbqmplyXXb92RJ/yu9tBetMsfC9VV0YopE5Itf/
+	ZE4N+uGzIAeCCEyO229VbN0R1oxa0YiPGEv6FaN/kvjWjxUnNwK694C/p7CgxInlguCmFr
+	NTUPsnpa6G5JGhxSWSazGNKVq77TRsA=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1759391216; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HbUDv50SZcajdTpZlbZra6ry+wsVkSq/kY4OBLKyqKI=;
+	b=ksmrQUKY+gWdiS0+kn1fKoGHBNMTBvASbqmplyXXb92RJ/yu9tBetMsfC9VV0YopE5Itf/
+	ZE4N+uGzIAeCCEyO229VbN0R1oxa0YiPGEv6FaN/kvjWjxUnNwK694C/p7CgxInlguCmFr
+	NTUPsnpa6G5JGhxSWSazGNKVq77TRsA=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 724FC1395B;
+	Thu,  2 Oct 2025 07:46:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sIoUGu8t3mjARwAAD6G6ig
+	(envelope-from <jgross@suse.com>); Thu, 02 Oct 2025 07:46:55 +0000
+Message-ID: <27d19ea5-d078-405b-a963-91d19b4229c8@suse.com>
+Date: Thu, 2 Oct 2025 09:46:54 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,90 +60,298 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: KVM-PR no longer works when compiled with new GCC compilers
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org,
- "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>
-Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
- mad skateman <madskateman@gmail.com>
-References: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <cfd779d6-9440-46b2-9ed5-752f1ae6b5d1@xenosoft.de>
+Subject: Re: [PATCH 4/7] x86/kexec: Disable kexec/kdump on platforms with TDX
+ partial write erratum
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "Annapurve, Vishal" <vannapurve@google.com>,
+ "Hansen, Dave" <dave.hansen@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>, "Huang, Kai" <kai.huang@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>, "Gao, Chao"
+ <chao.gao@intel.com>, "sagis@google.com" <sagis@google.com>,
+ "Chen, Farrah" <farrah.chen@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+References: <20250901160930.1785244-1-pbonzini@redhat.com>
+ <20250901160930.1785244-5-pbonzini@redhat.com>
+ <CAGtprH__G96uUmiDkK0iYM2miXb31vYje9aN+J=stJQqLUUXEg@mail.gmail.com>
+ <74a390a1-42a7-4e6b-a76a-f88f49323c93@intel.com>
+ <CAGtprH-mb0Cw+OzBj-gSWenA9kSJyu-xgXhsTjjzyY6Qi4E=aw@mail.gmail.com>
+ <a2042a7b-2e12-4893-ac8d-50c0f77f26e9@intel.com>
+ <CAGtprH_nTBdX-VtMQJM4-y8KcB_F4CnafqpDX7ktASwhO0sxAg@mail.gmail.com>
+ <DM8PR11MB575071F87791817215355DD8E7E7A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <DM8PR11MB575071F87791817215355DD8E7E7A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------8Kvnz2vWSuar3VVm72WJ3lkr"
+X-Spamd-Result: default: False [-6.20 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SIGNED_PGP(-2.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	NEURAL_HAM_SHORT(-0.20)[-0.993];
+	MIME_UNKNOWN(0.10)[application/pgp-keys];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	HAS_ATTACHMENT(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -6.20
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------8Kvnz2vWSuar3VVm72WJ3lkr
+Content-Type: multipart/mixed; boundary="------------bRM7eILUcb7tiYuilz9WTFd7";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "Annapurve, Vishal" <vannapurve@google.com>,
+ "Hansen, Dave" <dave.hansen@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>, "Huang, Kai" <kai.huang@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>, "Gao, Chao"
+ <chao.gao@intel.com>, "sagis@google.com" <sagis@google.com>,
+ "Chen, Farrah" <farrah.chen@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+Message-ID: <27d19ea5-d078-405b-a963-91d19b4229c8@suse.com>
+Subject: Re: [PATCH 4/7] x86/kexec: Disable kexec/kdump on platforms with TDX
+ partial write erratum
+References: <20250901160930.1785244-1-pbonzini@redhat.com>
+ <20250901160930.1785244-5-pbonzini@redhat.com>
+ <CAGtprH__G96uUmiDkK0iYM2miXb31vYje9aN+J=stJQqLUUXEg@mail.gmail.com>
+ <74a390a1-42a7-4e6b-a76a-f88f49323c93@intel.com>
+ <CAGtprH-mb0Cw+OzBj-gSWenA9kSJyu-xgXhsTjjzyY6Qi4E=aw@mail.gmail.com>
+ <a2042a7b-2e12-4893-ac8d-50c0f77f26e9@intel.com>
+ <CAGtprH_nTBdX-VtMQJM4-y8KcB_F4CnafqpDX7ktASwhO0sxAg@mail.gmail.com>
+ <DM8PR11MB575071F87791817215355DD8E7E7A@DM8PR11MB5750.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB575071F87791817215355DD8E7E7A@DM8PR11MB5750.namprd11.prod.outlook.com>
+
+--------------bRM7eILUcb7tiYuilz9WTFd7
+Content-Type: multipart/mixed; boundary="------------UyQCERjKhD3gmelcdITVzU3t"
+
+--------------UyQCERjKhD3gmelcdITVzU3t
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 
+T24gMDIuMTAuMjUgMDg6NTksIFJlc2hldG92YSwgRWxlbmEgd3JvdGU6DQo+PiBPbiBXZWQs
+IE9jdCAxLCAyMDI1IGF0IDc6MzLigK9BTSBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AaW50
+ZWwuY29tPg0KPj4gd3JvdGU6DQo+Pj4NCj4+PiBPbiA5LzMwLzI1IDE5OjA1LCBWaXNoYWwg
+QW5uYXB1cnZlIHdyb3RlOg0KPj4+IC4uLg0KPj4+Pj4gQW55IHdvcmthcm91bmRzIGFyZSBn
+b2luZyB0byBiZSBzbG93IGFuZCBwcm9iYWJseSBpbXBlcmZlY3QuIFRoYXQncyBub3QNCj4+
+Pj4NCj4+Pj4gRG8gd2UgcmVhbGx5IG5lZWQgdG8gZGVwbG95IHdvcmthcm91bmRzIHRoYXQg
+YXJlIGNvbXBsZXggYW5kIHNsb3cgdG8NCj4+Pj4gZ2V0IGtkdW1wIHdvcmtpbmcgZm9yIHRo
+ZSBtYWpvcml0eSBvZiB0aGUgc2NlbmFyaW9zPyBJcyB0aGVyZSBhbnkNCj4+Pj4gYW5hbHlz
+aXMgZG9uZSBmb3IgdGhlIHJpc2sgd2l0aCBpbXBlcmZlY3QgYW5kIHNpbXBsZXIgd29ya2Fy
+b3VuZHMgdnMNCj4+Pj4gYmVuZWZpdHMgb2Yga2R1bXAgZnVuY3Rpb25hbGl0eT8NCj4+Pj4N
+Cj4+Pj4+IGEgZ3JlYXQgbWF0Y2ggZm9yIGtkdW1wLiBJJ20gcGVyZmVjdGx5IGhhcHB5IHdh
+aXRpbmcgZm9yIGZpeGVkIGhhcmR3YXJlDQo+Pj4+PiBmcm9tIHdoYXQgSSd2ZSBzZWVuLg0K
+Pj4+Pg0KPj4+PiBJSVVDIFNQUi9FTVIgLSB0d28gQ1BVIGdlbmVyYXRpb25zIG91dCB0aGVy
+ZSBhcmUgaW1wYWN0ZWQgYnkgdGhpcw0KPj4+PiBlcnJhdHVtIGFuZCBqdXN0IGRpc2FibGlu
+ZyBrZHVtcCBmdW5jdGlvbmFsaXR5IElNTyBpcyBub3QgdGhlIGJlc3QNCj4+Pj4gc29sdXRp
+b24gaGVyZS4NCj4+Pg0KPj4+IFRoYXQncyBhbiBlbWluZW50bHkgcmVhc29uYWJsZSBwb3Np
+dGlvbi4gQnV0IHdlJ3JlIHNwZWFraW5nIGluIGJyb2FkDQo+Pj4gZ2VuZXJhbGl0aWVzIGFu
+ZCBJJ20gdW5zdXJlIHdoYXQgeW91IGRvbid0IGxpa2UgYWJvdXQgdGhlIHN0YXR1cyBxdW8g
+b3INCj4+PiBob3cgeW91J2QgbGlrZSB0byBzZWUgdGhpbmdzIGNoYW5nZS4NCj4+DQo+PiBM
+b29rcyBsaWtlIHRoZSBkZWNpc2lvbiB0byBkaXNhYmxlIGtkdW1wIHdhcyB0YWtlbiBiZXR3
+ZWVuIFsxXSAtPiBbMl0uDQo+PiAiVGhlIGtlcm5lbCBjdXJyZW50bHkgZG9lc24ndCB0cmFj
+ayB3aGljaCBwYWdlIGlzIFREWCBwcml2YXRlIG1lbW9yeS4NCj4+IEl0J3Mgbm90IHRyaXZp
+YWwgdG8gcmVzZXQgVERYIHByaXZhdGUgbWVtb3J5LiAgRm9yIHNpbXBsaWNpdHksIHRoaXMN
+Cj4+IHNlcmllcyBzaW1wbHkgZGlzYWJsZXMga2V4ZWMva2R1bXAgZm9yIHN1Y2ggcGxhdGZv
+cm1zLiAgVGhpcyB3aWxsIGJlDQo+PiBlbmhhbmNlZCBpbiB0aGUgZnV0dXJlLiINCj4+DQo+
+PiBBIHBhdGNoIFszXSBmcm9tIHRoZSBzZXJpZXNbMV0sIGRlc2NyaWJlcyB0aGUgaXNzdWUg
+YXM6DQo+PiAiVGhpcyBwcm9ibGVtIGlzIHRyaWdnZXJlZCBieSAicGFydGlhbCIgd3JpdGVz
+IHdoZXJlIGEgd3JpdGUgdHJhbnNhY3Rpb24NCj4+IG9mIGxlc3MgdGhhbiBjYWNoZWxpbmUg
+bGFuZHMgYXQgdGhlIG1lbW9yeSBjb250cm9sbGVyLiAgVGhlIENQVSBkb2VzDQo+PiB0aGVz
+ZSB2aWEgbm9uLXRlbXBvcmFsIHdyaXRlIGluc3RydWN0aW9ucyAobGlrZSBNT1ZOVEkpLCBv
+ciB0aHJvdWdoDQo+PiBVQy9XQyBtZW1vcnkgbWFwcGluZ3MuICBUaGUgaXNzdWUgY2FuIGFs
+c28gYmUgdHJpZ2dlcmVkIGF3YXkgZnJvbSB0aGUNCj4+IENQVSBieSBkZXZpY2VzIGRvaW5n
+IHBhcnRpYWwgd3JpdGVzIHZpYSBETUEuIg0KPj4NCj4+IEFuZCBhbHNvIG1lbnRpb25zOg0K
+Pj4gIkFsc28gbm90ZSBvbmx5IHRoZSBub3JtYWwga2V4ZWMgbmVlZHMgdG8gd29ycnkgYWJv
+dXQgdGhpcyBwcm9ibGVtLCBidXQNCj4+IG5vdCB0aGUgY3Jhc2gga2V4ZWM6IDEpIFRoZSBr
+ZHVtcCBrZXJuZWwgb25seSB1c2VzIHRoZSBzcGVjaWFsIG1lbW9yeQ0KPj4gcmVzZXJ2ZWQg
+YnkgdGhlIGZpcnN0IGtlcm5lbCwgYW5kIHRoZSByZXNlcnZlZCBtZW1vcnkgY2FuIG5ldmVy
+IGJlIHVzZWQNCj4+IGJ5IFREWCBpbiB0aGUgZmlyc3Qga2VybmVsOyAyKSBUaGUgL3Byb2Mv
+dm1jb3JlLCB3aGljaCByZWZsZWN0cyB0aGUNCj4+IGZpcnN0IChjcmFzaGVkKSBrZXJuZWwn
+cyBtZW1vcnksIGlzIG9ubHkgZm9yIHJlYWQuICBUaGUgcmVhZCB3aWxsIG5ldmVyDQo+PiAi
+cG9pc29uIiBURFggbWVtb3J5IHRodXMgY2F1c2UgdW5leHBlY3RlZCBtYWNoaW5lIGNoZWNr
+IChvbmx5IHBhcnRpYWwNCj4+IHdyaXRlIGRvZXMpLiINCj4gDQo+IFdoaWxlIHRoZSBzdGF0
+ZW1lbnQgdGhhdCB0aGUgcmVhZCB3aWxsIG5ldmVyIHBvaXNvbiB0aGUgbWVtb3J5IGlzIGNv
+cnJlY3QsDQo+IHRoZSBzaXR1YXRpb24gd2UgY2FuIHRoZW9yZXRpY2FsbHkgd29ycnkgYWJv
+dXQgaXMgdGhlIGZvbGxvd2luZyBpbiBteSB1bmRlcnN0YW5kaW5nOg0KPiANCj4gMS4gRHVy
+aW5nIGl0cyBleGVjdXRpb24gb24gcGxhdGZvcm0gd2l0aCBwYXJ0aWFsIHdyaXRlIHByb2Js
+ZW0sIGhvc3QgT1Mgb3Igb3RoZXINCj4gYWN0b3IgZXhlY3V0aW5nIG91dHNpZGUgb2YgU0VB
+TSBtb2RlIHRyaWdnZXJzIHBhcnRpYWwgd3JpdGUgaW50byBhIGNhY2hlIGxpbmUgdGhhdA0K
+PiBvcmlnaW5hbGx5IGJlbG9uZ2VkIHRvIFREWCBwcml2YXRlIG1lbW9yeS4NCj4gVGhpcyBp
+cyBzbXRoIHRoYXQgaG9zdCBPUyBvciBvdGhlciBlbnRpdGllcyBzaG91bGQgbm90IGRvLCBi
+dXQgaXQgY291bGQgaGFwcGVuIGR1ZQ0KPiB0byBob3N0IE9TIGJ1Z3MsIGV0Yy4NCj4gMi4g
+VGhlIGFib3ZlIGNhdXNlcyB0aGUgc3BlY2lmaWVkIGNhY2hlIGxpbmUgdG8gYmUgcG9pc29u
+ZWQgYnkgbWVtIGNvbnRyb2xsZXIuDQo+IEhvd2V2ZXIsIGhlcmUgd2UgYXNzdW1lIHRoYXQg
+bm8gb25lIGFjY2Vzc2VzIHRoaXMgY2FjaGUgbGluZSBmcm9tIFREWCBtb2R1bGUsDQo+IFRE
+IGd1ZXN0cyBvciBIb3N0IE9TIGZvciB0aGUgdGltZSBiZWluZyBhbmQgdGhlIHByb2JsZW0g
+cmVtYWlucyBoaWRkZW4uDQo+IDMuIEhvc3QgT1MgY3Jhc2hlcyBkdWUgdG8gc29tZSBvdGhl
+ciBpc3N1ZSwga2R1bXAgY3Jhc2gga2VybmVsIGlzIHRyaWdnZXJlZCwNCj4gYW5kIGtkdW1w
+IHN0YXJ0cyB0byByZWFkIGFsbCB0aGUgbWVtb3J5IGZyb20gdGhlIHByZXZpb3VzIGhvc3Qg
+a2VybmVsIHRvIGR1bXANCj4gdGhlIGRpYWdub3N0aWNzIGluZm8uDQo+IDQuIEF0IHNvbWUg
+cG9pbnQgb2YgdGltZSwga2R1bXAgY3Jhc2gga2VybmVsIHJlYWNoZXMgdGhlIG1lbW9yeSB3
+aXRoIHRoZSBwb2lzb25lZA0KPiBjYWNoZSBsaW5lLCBjb25zdW1lcyBwb2lzb24sIGFuZCB0
+aGUgI01DIGlzIGlzc3VlZCBmb3IgdGhlIGtlcm5lbCBzcGFjZS4NCj4gDQo+IElzbid0IHRo
+aXMgdGhlIHJlYXNvbiBmb3IgYWxzbyBkaXNhYmxpbmcga2R1bXA/IE9yIGRvIEkgbWlzcyBz
+bXRoPw0KDQpTbyBsZXRzIGNvbXBhcmUgdGhlIDIgY2FzZXMgd2l0aCBrZHVtcCBlbmFibGVk
+IGFuZCBkaXNhYmxlZCBpbiB5b3VyIHNjZW5hcmlvDQooY3Jhc2ggb2YgdGhlIGhvc3QgT1Mp
+Og0KDQprZHVtcCBlbmFibGVkOiBObyBkdW1wIGNhbiBiZSBwcm9kdWNlZCBkdWUgdG8gdGhl
+ICNNQyBhbmQgc3lzdGVtIGlzIHJlYm9vdGVkLg0KDQprZHVtcCBkaXNhYmxlZDogTm8gZHVt
+cCBpcyBwcm9kdWNlZCBhbmQgc3lzdGVtIGlzIHJlYm9vdGVkIGFmdGVyIGNyYXNoLg0KDQpX
+aGF0IGlzIHRoZSBtYWluIGNvbmNlcm4gd2l0aCBrZHVtcCBlbmFibGVkPyBJIGRvbid0IHNl
+ZSBhbnkgZGlzYWR2YW50YWdlIHdpdGgNCmVuYWJsaW5nIGl0LCBqdXN0IHRoZSBhZHZhbnRh
+Z2UgdGhhdCBpbiBtYW55IGNhc2VzIGEgZHVtcCB3aWxsIGJlIHdyaXR0ZW4uDQoNCg0KSnVl
+cmdlbg0K
+--------------UyQCERjKhD3gmelcdITVzU3t
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Le 02/10/2025 à 08:37, Christian Zigotzky a écrit :
-> Hello,
-> 
-> KVM-PR (-enable-kvm) doesn't work anymore on our PA Semi Nemo boards [1] 
-> if we compiled it with new GCC compilers.
-> The VM can't boot. There aren't any messages on the serial console of QEMU.
-> 
-> It boots without KVM-PR.
-> 
-> Kernel config with new GCC compiler [2]:
-> 
-> - CONFIG_CC_VERSION_TEXT="powerpc64-suse-linux-gcc (SUSE Linux) 11.5.0"
-> - CONFIG_TARGET_CPU="power4"
-> - CONFIG_TUNE_CPU="-mtune=power10"
-> 
-> It works if I compile it with an old GCC compiler [3]:
-> 
-> - CONFIG_CC_VERSION_TEXT="powerpc-linux-gnu-gcc (Ubuntu 
-> 9.4.0-1ubuntu1~20.04.1) 9.4.0"
-> - CONFIG_TARGET_CPU="power4"
-> - CONFIG_TUNE_CPU="-mtune=power9"
-> 
-> Mtune changes to power9 automatically if I compiled it with an old GCC 
-> compiler. If I compile it with a new GCC compiler again it changes 
-> automatically to mtune=power10.
-> 
-> Is mtune the reason of the KVM-PR issue? I think the issue is the new 
-> GCC. [4]
-> 
-> Could you please check whether KVM-PR is compatible with new versions of 
-> GCC compilers?
+xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjri
+oyspZKOBycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2
+kaV2KL9650I1SJvedYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i
+1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/B
+BLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xqG7/377qptDmrk42GlSK
+N4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR3Jvc3Mg
+PGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsE
+FgIDAQIeAQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4F
+UGNQH2lvWAUy+dnyThpwdtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3Tye
+vpB0CA3dbBQp0OW0fgCetToGIQrg0MbD1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u
++6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbvoPHZ8SlM4KWm8rG+lIkGurq
+qu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v5QL+qHI3EIP
+tyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVy
+Z2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJ
+CAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4
+RF7HoZhPVPogNVbC4YA6lW7DrWf0teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz7
+8X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC/nuAFVGy+67q2DH8As3KPu0344T
+BDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0LhITTd9jLzdDad1pQ
+SToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLmXBK
+7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkM
+nQfvUewRz80hSnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMB
+AgAjBQJTjHDXAhsDBwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/
+Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJnFOXgMLdBQgBlVPO3/D9R8LtF9DBAFPN
+hlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1jnDkfJZr6jrbjgyoZHi
+w/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0N51N5Jf
+VRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwP
+OoE+lotufe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK
+/1xMI3/+8jbO0tsn1tqSEUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1
+c2UuZGU+wsB5BBMBAgAjBQJTjHDrAhsDBwsJCAcDAgEGFQgCCQoLBBYCAwECHgEC
+F4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3g3OZUEBmDHVVbqMtzwlmNC4
+k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5dM7wRqzgJpJ
+wK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu
+5D+jLRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzB
+TNh30FVKK1EvmV2xAKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37Io
+N1EblHI//x/e2AaIHpzK5h88NEawQsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6
+AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpWnHIs98ndPUDpnoxWQugJ6MpMncr
+0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZRwgnBC5mVM6JjQ5x
+Dk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNVbVF
+LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mm
+we0icXKLkpEdIXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0I
+v3OOImwTEe4co3c1mwARAQABwsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMv
+Q/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEwTbe8YFsw2V/Buv6Z4Mysln3nQK5ZadD
+534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1vJzQ1fOU8lYFpZXTXIH
+b+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8VGiwXvT
+yJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqc
+suylWsviuGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5B
+jR/i1DG86lem3iBDXzXsZDn8R3/CwO0EGAEIACAWIQSFEmdy6PYElKXQl/ew3p3W
+KL8TLwUCWt3w0AIbAgCBCRCw3p3WKL8TL3YgBBkWCAAdFiEEUy2wekH2OPMeOLge
+gFxhu0/YY74FAlrd8NAACgkQgFxhu0/YY75NiwD/fQf/RXpyv9ZX4n8UJrKDq422
+bcwkujisT6jix2mOOwYBAKiip9+mAD6W5NPXdhk1XraECcIspcf2ff5kCAlG0DIN
+aTUH/RIwNWzXDG58yQoLdD/UPcFgi8GWtNUp0Fhc/GeBxGipXYnvuWxwS+Qs1Qay
+7/Nbal/v4/eZZaWs8wl2VtrHTS96/IF6q2o0qMey0dq2AxnZbQIULiEndgR625EF
+RFg+IbO4ldSkB3trsF2ypYLij4ZObm2casLIP7iB8NKmQ5PndL8Y07TtiQ+Sb/wn
+g4GgV+BJoKdDWLPCAlCMilwbZ88Ijb+HF/aipc9hsqvW/hnXC2GajJSAY3Qs9Mib
+4Hm91jzbAjmp7243pQ4bJMfYHemFFBRaoLC7ayqQjcsttN2ufINlqLFPZPR/i3IX
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-On your side, can you try with the following hack to test new GCC + 
-CONFIG_TUNE_CPU="-mtune=power9"
+--------------UyQCERjKhD3gmelcdITVzU3t--
 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype 
-b/arch/powerpc/platforms/Kconfig.cputype
-index 7b527d18aa5e..b8480cdb3a9a 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -264,7 +264,6 @@ config TARGET_CPU
-  config TUNE_CPU
-  	string
-  	depends on POWERPC64_CPU
--	default "-mtune=power10" if $(cc-option,-mtune=power10)
-  	default "-mtune=power9"  if $(cc-option,-mtune=power9)
-  	default "-mtune=power8"  if $(cc-option,-mtune=power8)
+--------------bRM7eILUcb7tiYuilz9WTFd7--
 
+--------------8Kvnz2vWSuar3VVm72WJ3lkr
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> Thanks in advance,
-> 
-> Christian
-> 
-> 
-> 
-> [1] https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FAmigaOne_X1000&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C0ca7898bcfed40a2839108de017ea0b4%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638949840566572384%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=9U0DLwRhoWagfDe4bTRCdHZpf52tvZbXAMGE8jHibyU%3D&reserved=0
-> 
-> [2] https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgithub.com%2Fchzigotzky%2Fkernels%2Fblob%2F45186997e6f347fd092f9ab629d62d6041426227%2Fconfigs%2Fx1000_defconfig&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C0ca7898bcfed40a2839108de017ea0b4%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638949840566592849%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=KAcTs9%2BiNnjhKkvlW6JHsiRts0uRBp0Oza56rVZRxvs%3D&reserved=0
-> 
-> [3] https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgithub.com%2Fchzigotzky%2Fkernels%2Fblob%2Fbc7a3e27b3fcdee52a8135435f02cf807a43872a%2Fconfigs%2Fx1000_defconfig&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C0ca7898bcfed40a2839108de017ea0b4%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638949840566604830%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=FTh46dqFpLZyNrnhVgjHgUrlG689ryfymogE9oAVhE4%3D&reserved=0
-> 
-> [4] KVM-PR no longer works on an X1000 if the kernel has been compiled 
-> with a new GCC: https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fforum.hyperion- 
-> entertainment.com%2Fviewtopic.php%3Fp%3D57146%23p57146&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C0ca7898bcfed40a2839108de017ea0b4%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638949840566617191%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ih%2FgNl3HKEavfrn%2ByHM9J3ZpZvztC95aWUhC%2Fy1YjiQ%3D&reserved=0
-> 
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmjeLe4FAwAAAAAACgkQsN6d1ii/Ey+O
+tQf+JlGyu78uiqtQprjWGnZUSLnoc5bpJ4jugzyEuSsAREHHra+ykY6tiFyB8CIGczTZgOpYLb/0
++mFc/IF5I/cwaeWOXwfRLOkCrYsYqoXhGCBBb2miFcfmU0PmwXVvXcyb8b/83VmGEd9MfDKxPPaM
+bFA7SaJiPvjSq44dw28wqsazlMos9r5AErczL3LtslzAZHpy48y4dwJfI4yzrnWlWlGzut3Zn//U
+IAlgua54SuKNqTUX82wDqAke79bTQJ+GxsHahUDYGk0KcX1IgfSPd4ZyITLJbEuTIsclOAyyQYmM
+wNcsRufcII/fKnzAQy1/34qip1m2u062CzfsDx102g==
+=zZKx
+-----END PGP SIGNATURE-----
 
+--------------8Kvnz2vWSuar3VVm72WJ3lkr--
