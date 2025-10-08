@@ -1,204 +1,170 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208C514A60C
-	for <kvm@vger.kernel.org>; Wed,  8 Oct 2025 04:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76332BE63A
+	for <kvm@vger.kernel.org>; Wed,  8 Oct 2025 04:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759896458; cv=none; b=ByNNzsl9UT8y2jMm2QybZum+aUhpMdgZjg9yipASl/o4kJdtj9blC92IbWsrQ+fMrBPDyMK4tj8MbZCcV2+wDh4JrzD1gRZqSR70a+k0NoBgtxnFKSJQIuBsabNq81lY9ID4FoqDEb/CEQB7tBonHWbF4oYqx9d4nktJ5QJs7K8=
+	t=1759896567; cv=none; b=Y/VT194CdzfLhk9sjFNNHU4pWUphht5eMcPXZPntQ22nmpXleaRDlP55ne0joULTC5vPGwXHRWnT90hxB8Z9Nx9GSFBQZ66ljquVr32nsLq3PpUYCYT0HJQysFtrGyhq2q8lRdPAcpv4YhQz0MJPrjKdNLmiiVCjAi0AMTQtkw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759896458; c=relaxed/simple;
-	bh=eCz9QfLUl+FNTCKNBKu/1QynIVS7w94LAHQgIDtxDwU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSmtPcmb+5s27t/V5muFPC3y/sAQdpXo1FPOmP6fHZpWFgGH6rK1NYU1QuV5GlX2oK7n+TenbbDdXWcVmAkf/uuvhDMp6PhmgvGj+St1qLIjti7UOA2PniALEEu4MU3oDM+54xonX9O77/GTk6vcaP684RhvQYWsOCI9WtSgbxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jZMyq1VK; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1759896567; c=relaxed/simple;
+	bh=Sc7RyZvHVnsiWmJJsfqHgDMcvPy6kEMQ+FShuIOWcvI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=n/kb3PGmXZexPZsXComyk0w19QPQDn7K0RtbjrEYbwxsRtLrKw7Cy0XRSg2iDDLy9t4dKSNNvpkIuhKZpY+Y7F6RlR6+s2b0s01OgeXdQ2yHYEA4g9TxpsClVlH1r/duuaeT1upMBPSSPLSQc8VuLQApiOFMjRoGRbOAiMqlYs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=Q8bzn0rg; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jZMyq1VK"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e326e4e99so2391985e9.1
-        for <kvm@vger.kernel.org>; Tue, 07 Oct 2025 21:07:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759896454; x=1760501254; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ocgs0Ja+xiwuPd8e/woUF/Yw02CcYFns8xQ4ykIqIlg=;
-        b=jZMyq1VKahJ37kfMU14YqAg+i1XWB87DxVKRNW53l4iLvaHsNO/EEZHAlsBbF4N+9G
-         U6alfQqU1XvUzHhUVUAqR9DDyllMo7OahJdYBhRVT15tKSST9x8Q9Z5qz+LWtaYaMvDU
-         3tCZPpWVwt7AzoiSsIPkadz1MXGP3NONRQ+Gpcs6B9hOKDLBWPesGv9a3q39CreBCgA5
-         6GktWdDmGGTXD+/QMQO3OenFZCz7QdVDUQfj8iUy/yl8zdpAIndUe54+ZBj/1eAqkz7M
-         moaHvC1qRwvnEyGJ52/Pq6JxmAV84VQ+fJ1oI3cao8d+oD3QB/L4Pc0wkHhfq0qElmOf
-         bO8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759896454; x=1760501254;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ocgs0Ja+xiwuPd8e/woUF/Yw02CcYFns8xQ4ykIqIlg=;
-        b=l1Aw2iGR30H4IpLb9fLZYXMVbrlRZQ+K4ZPVrPqExsjtZwANEENYcl5jcY3KE7tB6d
-         xQope9idiZQ0x+RxEg+lNElzbhhRfFTLbNBxmqze+T0fNN+CKk0oDV6IAUgmWM0T9fCH
-         jS4lWfWbZReW1TRelDDXVLoaLp5+0TAIemASEfFLV8uCWjrW8+laMCouerfZkYG57Xx3
-         n9OUeiUF8aiY2l9T7/tpk9AOZWydIaCEZuP3fFxfKdIFJ7/JgVGXsn/ZoeKO2cLWOTuh
-         shKQGu6QYWAXfkUr/+jO7Gn91m8qzjAHF4Y8jLlju5i+jLQ1YE7nKYZQBi38haVqfhgM
-         ZYCA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1pr2tyVThGE8TR349vHYKjJFcXmckC/rUxLkJEQjee9XdHVgla09c731O2WKa8WaqnB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUrG/6qSnvw+sX4f5RhxcXjGo9aTLzDK5kaBty6Q1WEeQKNiFt
-	YxGiAUSP6ae0l2zW/ykT76meNU8qMS+6gl15NkPfK4OjSILgnhYv7IDiewoD/kiTJtk=
-X-Gm-Gg: ASbGncuiPlxXvpJy0wKFRmJVIjDj/GsKM7N5/W0udi8GOFMXyGf9dF6MqO1/VEOflSb
-	LNSMb5oxbOBlLfDobHjXBoe/04/eXr5WA5BDFABX8PSne0bLBX/Ee25CHYrbCXaxao1jUBaGa2P
-	XXmrPIORMHrUFPaoOzCwOqBUEkJV8PPogI565y/OmrDeoih9fv1eU54ZxyyvdrmuHyiatOSGkAO
-	WkblI0HDJYbMeoUFlWIXLs/2IgiF5xGmacbADfhMuKO6axOeltMaUjkVSzvbya0fhIYBM2kk4yV
-	AnqsLfEoveXRCahBMwqY7fpSUjCENV/Tmy/RWx3A+jWNpZZETJ0rJ9moGG0Fv4nNsK/bYDSBdMr
-	kkACbPK8IiB/eGKR6yWNpvnkAalw0sYw82VNwKLULS31bJXI5R5x27nEp7fC+S0QKxT4GTCCAu8
-	89b7x36NbZksyyUmrYCBIfwwk8
-X-Google-Smtp-Source: AGHT+IHZFS8T1I/ZV9bUVDRHuknpw5/lllydyyhBKp58Zgvdd1J6n7PoUdc39F+bAmKfqLUaH6pXJQ==
-X-Received: by 2002:a05:600c:8a8:b0:46d:38c4:1ac9 with SMTP id 5b1f17b1804b1-46fa2952c99mr23685225e9.2.1759896454357;
-        Tue, 07 Oct 2025 21:07:34 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f4bdcsm28015265f8f.54.2025.10.07.21.07.32
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 07 Oct 2025 21:07:33 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org,
-	kvm@vger.kernel.org,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	Chinmay Rath <rathc@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	qemu-s390x@nongnu.org,
-	David Hildenbrand <david@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Thomas Huth <thuth@redhat.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Song Gao <gaosong@loongson.cn>,
-	Weiwei Li <liwei1518@gmail.com>,
-	qemu-ppc@nongnu.org,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v2 3/3] accel/kvm: Factor kvm_cpu_synchronize_put() out
-Date: Wed,  8 Oct 2025 06:07:14 +0200
-Message-ID: <20251008040715.81513-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251008040715.81513-1-philmd@linaro.org>
-References: <20251008040715.81513-1-philmd@linaro.org>
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="Q8bzn0rg"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5982K18w2067384
+	for <kvm@vger.kernel.org>; Tue, 7 Oct 2025 21:09:24 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=/DPR3MVV9m01+QHNDlVKZ/bjjUFkh+IA4QwkKhO8QSE=; b=Q8bzn0rgeH4O
+	n55ohN99Df8Hk5AwINotNnYHCnOJu8v/J7QTglLi8KyvpQ7N2SsLVirQRoRvJQ0w
+	KzCF8u2RnmY/yWAsXQiUHcDlrit3ooYs99t3etE4hm52yoOXl/zllThzk1npoNTz
+	LFO51MzvMf8dIFRZ5f0d18oDjK17X/yKu8i/gfagEXwBbQW+Wy8DbnIe/I+ofFy1
+	7y1qZ88ZFoobu0VU03d2mImtFL0VpWdWrGJPP5x1BREZC6aOD38AmCp9MSz2UPTL
+	aukNecOBSOtf/VMfJJVG8NapCi8yH+qotRcMuo/uDoEpmUacQQRmFsVStqskzD+a
+	9zWpLk5Ndw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 49n7jxuhyg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Tue, 07 Oct 2025 21:09:24 -0700 (PDT)
+Received: from twshared28243.32.prn2.facebook.com (2620:10d:c0a8:1b::8e35) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Wed, 8 Oct 2025 04:09:23 +0000
+Received: by devgpu015.cco6.facebook.com (Postfix, from userid 199522)
+	id B1A19D26CCF; Tue,  7 Oct 2025 21:09:19 -0700 (PDT)
+From: Alex Mastro <amastro@fb.com>
+Date: Tue, 7 Oct 2025 21:08:47 -0700
+Subject: [PATCH v2 2/3] vfio/type1: move iova increment to unmap_unpin_*
+ caller
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251007-fix-unmap-v2-2-759bceb9792e@fb.com>
+References: <20251007-fix-unmap-v2-0-759bceb9792e@fb.com>
+In-Reply-To: <20251007-fix-unmap-v2-0-759bceb9792e@fb.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+CC: Jason Gunthorpe <jgg@ziepe.ca>,
+        Alejandro Jimenez
+	<alejandro.j.jimenez@oracle.com>,
+        <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Alex Mastro <amastro@fb.com>
+X-Mailer: b4 0.13.0
+X-FB-Internal: Safe
+X-Proofpoint-GUID: x4PXJWuJSf3GOql9ZU5o3jkGTnL6kbTC
+X-Proofpoint-ORIG-GUID: x4PXJWuJSf3GOql9ZU5o3jkGTnL6kbTC
+X-Authority-Analysis: v=2.4 cv=LJdrgZW9 c=1 sm=1 tr=0 ts=68e5e3f4 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=FOH2dFAWAAAA:8 a=Bkl4-CcWoNymJLHaMFkA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDAyNCBTYWx0ZWRfX6PfSMV9c40ku
+ V8APM8Ih6FmqLyFVEqRWyQuOmlcR/ymwppumaY6p2w2dC/hHOGvafFCyMftL6jJ7648fwdIJuYS
+ aX/4TgZM5pCrv1c7bzY7KwZ1PAvkioFSNnIwZpQeck6fGcaIzQiHHO5CfAqEnRsj4v/9ChaEAmS
+ TX3HIFskpwS72gZBHEoNJYOi7NsWMqyFOxH3T4ABWpJ8bi4XJn4YR2Tz3JDApnnyRC4lc/cn0af
+ weCId5vGo3NNSYP8gfIyQ7K6a+xnkl+/M22q15kkwwNz//fvYMdpcQ1QTloUD5tfQYO1zOr13ac
+ uONI6gdF0yV3U6HfgCUWnxVVXi5SAYzJhZ9XRQ4aefGDiFVRH8MOoVA3Li8LM4ml+RmnZOK8haA
+ 5G0hqCdIoKDiuRGVED/7YVyn4Jsb5w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-07_02,2025-10-06_01,2025-03-28_01
 
-The same code is duplicated 3 times: factor a common method.
+Move incrementing iova to the caller of these functions as part of
+preparing to handle end of address space map/unmap.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Mastro <amastro@fb.com>
 ---
- accel/kvm/kvm-all.c | 47 ++++++++++++++++++---------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 58802f7c3cc..56031925c4e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2937,22 +2937,32 @@ void kvm_cpu_synchronize_state(CPUState *cpu)
-     }
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index b510ef3f397b..f6ba2f8b1dd8 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -1020,7 +1020,7 @@ static long vfio_sync_unpin(struct vfio_dma *dma, struct vfio_domain *domain,
+ #define VFIO_IOMMU_TLB_SYNC_MAX		512
+ 
+ static size_t unmap_unpin_fast(struct vfio_domain *domain,
+-			       struct vfio_dma *dma, dma_addr_t *iova,
++			       struct vfio_dma *dma, dma_addr_t iova,
+ 			       size_t len, phys_addr_t phys, long *unlocked,
+ 			       struct list_head *unmapped_list,
+ 			       int *unmapped_cnt,
+@@ -1030,18 +1030,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
+ 	struct vfio_regions *entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+ 
+ 	if (entry) {
+-		unmapped = iommu_unmap_fast(domain->domain, *iova, len,
++		unmapped = iommu_unmap_fast(domain->domain, iova, len,
+ 					    iotlb_gather);
+ 
+ 		if (!unmapped) {
+ 			kfree(entry);
+ 		} else {
+-			entry->iova = *iova;
++			entry->iova = iova;
+ 			entry->phys = phys;
+ 			entry->len  = unmapped;
+ 			list_add_tail(&entry->list, unmapped_list);
+ 
+-			*iova += unmapped;
+ 			(*unmapped_cnt)++;
+ 		}
+ 	}
+@@ -1060,18 +1059,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
  }
  
--static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+static bool kvm_cpu_synchronize_put(CPUState *cpu, KvmPutState state,
-+                                    const char *desc)
+ static size_t unmap_unpin_slow(struct vfio_domain *domain,
+-			       struct vfio_dma *dma, dma_addr_t *iova,
++			       struct vfio_dma *dma, dma_addr_t iova,
+ 			       size_t len, phys_addr_t phys,
+ 			       long *unlocked)
  {
-     Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE, &err);
-+    int ret = kvm_arch_put_registers(cpu, state, &err);
-     if (ret) {
-         if (err) {
--            error_reportf_err(err, "Restoring resisters after reset: ");
-+            error_reportf_err(err, "Restoring resisters %s: ", desc);
-         } else {
--            error_report("Failed to put registers after reset: %s",
-+            error_report("Failed to put registers %s: %s", desc,
-                          strerror(-ret));
-         }
--        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
--        vm_stop(RUN_STATE_INTERNAL_ERROR);
-+        return false;
-     }
+-	size_t unmapped = iommu_unmap(domain->domain, *iova, len);
++	size_t unmapped = iommu_unmap(domain->domain, iova, len);
  
-     cpu->vcpu_dirty = false;
+ 	if (unmapped) {
+-		*unlocked += vfio_unpin_pages_remote(dma, *iova,
++		*unlocked += vfio_unpin_pages_remote(dma, iova,
+ 						     phys >> PAGE_SHIFT,
+ 						     unmapped >> PAGE_SHIFT,
+ 						     false);
+-		*iova += unmapped;
+ 		cond_resched();
+ 	}
+ 	return unmapped;
+@@ -1134,16 +1132,18 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
+ 		 * First, try to use fast unmap/unpin. In case of failure,
+ 		 * switch to slow unmap/unpin path.
+ 		 */
+-		unmapped = unmap_unpin_fast(domain, dma, &iova, len, phys,
++		unmapped = unmap_unpin_fast(domain, dma, iova, len, phys,
+ 					    &unlocked, &unmapped_region_list,
+ 					    &unmapped_region_cnt,
+ 					    &iotlb_gather);
+ 		if (!unmapped) {
+-			unmapped = unmap_unpin_slow(domain, dma, &iova, len,
++			unmapped = unmap_unpin_slow(domain, dma, iova, len,
+ 						    phys, &unlocked);
+ 			if (WARN_ON(!unmapped))
+ 				break;
+ 		}
 +
-+    return true;
-+}
-+
-+static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
-+{
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RESET_STATE, "after reset")) {
-+        cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-+        vm_stop(RUN_STATE_INTERNAL_ERROR);
-+    }
- }
++		iova += unmapped;
+ 	}
  
- void kvm_cpu_synchronize_post_reset(CPUState *cpu)
-@@ -2966,19 +2976,9 @@ void kvm_cpu_synchronize_post_reset(CPUState *cpu)
- 
- static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
--    Error *err = NULL;
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_FULL_STATE, &err);
--    if (ret) {
--        if (err) {
--            error_reportf_err(err, "Putting registers after init: ");
--        } else {
--            error_report("Failed to put registers after init: %s",
--                         strerror(-ret));
--        }
-+    if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_FULL_STATE, "after init")) {
-         exit(1);
-     }
--
--    cpu->vcpu_dirty = false;
- }
- 
- void kvm_cpu_synchronize_post_init(CPUState *cpu)
-@@ -3168,20 +3168,11 @@ int kvm_cpu_exec(CPUState *cpu)
-         MemTxAttrs attrs;
- 
-         if (cpu->vcpu_dirty) {
--            Error *err = NULL;
--            ret = kvm_arch_put_registers(cpu, KVM_PUT_RUNTIME_STATE, &err);
--            if (ret) {
--                if (err) {
--                    error_reportf_err(err, "Putting registers after init: ");
--                } else {
--                    error_report("Failed to put registers after init: %s",
--                                 strerror(-ret));
--                }
-+            if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RUNTIME_STATE,
-+                                         "at runtime")) {
-                 ret = -1;
-                 break;
-             }
--
--            cpu->vcpu_dirty = false;
-         }
- 
-         kvm_arch_pre_run(cpu, run);
+ 	dma->iommu_mapped = false;
+
 -- 
-2.51.0
+2.47.3
 
