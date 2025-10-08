@@ -1,48 +1,47 @@
 Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76332BE63A
-	for <kvm@vger.kernel.org>; Wed,  8 Oct 2025 04:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672AB2BE646
+	for <kvm@vger.kernel.org>; Wed,  8 Oct 2025 04:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759896567; cv=none; b=Y/VT194CdzfLhk9sjFNNHU4pWUphht5eMcPXZPntQ22nmpXleaRDlP55ne0joULTC5vPGwXHRWnT90hxB8Z9Nx9GSFBQZ66ljquVr32nsLq3PpUYCYT0HJQysFtrGyhq2q8lRdPAcpv4YhQz0MJPrjKdNLmiiVCjAi0AMTQtkw8=
+	t=1759896576; cv=none; b=AXEtc7rsalS5890r5cmLpZKuTcVE5AMZSGiCEW5GzK4jiGw8GSk8T0UOq6D0M6QzprcGhQigKE3KsworRbsU2n+PB+kYABqPU0GhVF/V0+/0ZhcSWh2uv4W+YFi3scUeABihSHyHYxJPXkjZq9Wm9xKSqRRqVvFhg5bi6Rgdgag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759896567; c=relaxed/simple;
-	bh=Sc7RyZvHVnsiWmJJsfqHgDMcvPy6kEMQ+FShuIOWcvI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=n/kb3PGmXZexPZsXComyk0w19QPQDn7K0RtbjrEYbwxsRtLrKw7Cy0XRSg2iDDLy9t4dKSNNvpkIuhKZpY+Y7F6RlR6+s2b0s01OgeXdQ2yHYEA4g9TxpsClVlH1r/duuaeT1upMBPSSPLSQc8VuLQApiOFMjRoGRbOAiMqlYs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=Q8bzn0rg; arc=none smtp.client-ip=67.231.153.30
+	s=arc-20240116; t=1759896576; c=relaxed/simple;
+	bh=vreM01RNnRBagiCQNESo8oQCL0RKxS1yjVUSjXFssTI=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=GUoyrxxLs6CWGzm8FQvwBNviKKrVQmuCmTUk2gJV527SudbugbtkheE4SkvdWscu2UyY2GjFbMeJPZrtlOrUmeDKXSYz3F+0Uav1L9geW6leo86K1j8Bmh+dvbpPnKhcL9Hh+qtqfR+nbYYk+2RtgOmHZtx7juBnw9u00hwRf/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=rv8zne46; arc=none smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="Q8bzn0rg"
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="rv8zne46"
 Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5982K18w2067384
-	for <kvm@vger.kernel.org>; Tue, 7 Oct 2025 21:09:24 -0700
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5982rAJO2065805
+	for <kvm@vger.kernel.org>; Tue, 7 Oct 2025 21:09:33 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=/DPR3MVV9m01+QHNDlVKZ/bjjUFkh+IA4QwkKhO8QSE=; b=Q8bzn0rgeH4O
-	n55ohN99Df8Hk5AwINotNnYHCnOJu8v/J7QTglLi8KyvpQ7N2SsLVirQRoRvJQ0w
-	KzCF8u2RnmY/yWAsXQiUHcDlrit3ooYs99t3etE4hm52yoOXl/zllThzk1npoNTz
-	LFO51MzvMf8dIFRZ5f0d18oDjK17X/yKu8i/gfagEXwBbQW+Wy8DbnIe/I+ofFy1
-	7y1qZ88ZFoobu0VU03d2mImtFL0VpWdWrGJPP5x1BREZC6aOD38AmCp9MSz2UPTL
-	aukNecOBSOtf/VMfJJVG8NapCi8yH+qotRcMuo/uDoEpmUacQQRmFsVStqskzD+a
-	9zWpLk5Ndw==
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=+VD+ADpO7lEOYRRArH
+	lIcndnPTkYKdf5WG4Mp/THpEI=; b=rv8zne46ZUW0K+j8yRRHK6wRg2Dpx+o/mR
+	OXkaHaL8GN1YHMDkMhiEHv3QPZAaFIuKagPpDOlC9uZhDyEZYoXCyrYZasmEE0De
+	Qw4J8sT/L0wFOc/53d2xDuFQE2EYqVeHHjG/29/Jjh/Dw46hixJGRs82GFmb7cP8
+	Hpzp4ZsZZlneWqfaSUP9hcsjesLj4Q/J8jwaU2cwTwMEaJJ/uihOtvyF0ey4Nuhf
+	QscZU9yJPJzPpB2kYyp/voNb1C9CVtK69NUqpmlJzHLNXLJf5T446Cdde280HQnq
+	98e7Md9QRmPDQq95se29F6g5ieHz94FQV9HVcvSf1Iq8t36rFYXA==
 Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 49n7jxuhyg-1
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 49n7jxuhyy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 07 Oct 2025 21:09:24 -0700 (PDT)
-Received: from twshared28243.32.prn2.facebook.com (2620:10d:c0a8:1b::8e35) by
+	for <kvm@vger.kernel.org>; Tue, 07 Oct 2025 21:09:32 -0700 (PDT)
+Received: from twshared23637.05.prn5.facebook.com (2620:10d:c0a8:fe::f072) by
  mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Wed, 8 Oct 2025 04:09:23 +0000
+ 15.2.2562.20; Wed, 8 Oct 2025 04:09:31 +0000
 Received: by devgpu015.cco6.facebook.com (Postfix, from userid 199522)
-	id B1A19D26CCF; Tue,  7 Oct 2025 21:09:19 -0700 (PDT)
+	id B0615D26CCC; Tue,  7 Oct 2025 21:09:19 -0700 (PDT)
 From: Alex Mastro <amastro@fb.com>
-Date: Tue, 7 Oct 2025 21:08:47 -0700
-Subject: [PATCH v2 2/3] vfio/type1: move iova increment to unmap_unpin_*
- caller
+Subject: [PATCH v2 0/3] vfio: handle DMA map/unmap up to the addressable
+ limit
+Date: Tue, 7 Oct 2025 21:08:45 -0700
+Message-ID: <20251007-fix-unmap-v2-0-759bceb9792e@fb.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,9 +50,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20251007-fix-unmap-v2-2-759bceb9792e@fb.com>
-References: <20251007-fix-unmap-v2-0-759bceb9792e@fb.com>
-In-Reply-To: <20251007-fix-unmap-v2-0-759bceb9792e@fb.com>
+X-B4-Tracking: v=1; b=H4sIAM3j5WgC/22Myw6DIBBFf8XMutPwUDFd+R+NC4ShshANtKSN4
+ d9LXXd57j05BySKnhLcmgMiZZ/8FiqISwNm0eFB6G1lEEx0nLEOnX/jK6x6RyOdpEFZPTsN1d8
+ j1fNs3afKi0/PLX7OdOa/9V8lc+TY94NSUpBtWxrdfDXbClMp5QtcagI+nwAAAA==
 To: Alex Williamson <alex.williamson@redhat.com>
 CC: Jason Gunthorpe <jgg@ziepe.ca>,
         Alejandro Jimenez
@@ -62,109 +61,92 @@ CC: Jason Gunthorpe <jgg@ziepe.ca>,
         Alex Mastro <amastro@fb.com>
 X-Mailer: b4 0.13.0
 X-FB-Internal: Safe
-X-Proofpoint-GUID: x4PXJWuJSf3GOql9ZU5o3jkGTnL6kbTC
-X-Proofpoint-ORIG-GUID: x4PXJWuJSf3GOql9ZU5o3jkGTnL6kbTC
-X-Authority-Analysis: v=2.4 cv=LJdrgZW9 c=1 sm=1 tr=0 ts=68e5e3f4 cx=c_pps
+X-Proofpoint-GUID: I4AS_X2wT9B9EWFDJO1J6GB-agvdntuo
+X-Proofpoint-ORIG-GUID: I4AS_X2wT9B9EWFDJO1J6GB-agvdntuo
+X-Authority-Analysis: v=2.4 cv=LJdrgZW9 c=1 sm=1 tr=0 ts=68e5e3fc cx=c_pps
  a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=FOH2dFAWAAAA:8 a=Bkl4-CcWoNymJLHaMFkA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDAyNCBTYWx0ZWRfX6PfSMV9c40ku
- V8APM8Ih6FmqLyFVEqRWyQuOmlcR/ymwppumaY6p2w2dC/hHOGvafFCyMftL6jJ7648fwdIJuYS
- aX/4TgZM5pCrv1c7bzY7KwZ1PAvkioFSNnIwZpQeck6fGcaIzQiHHO5CfAqEnRsj4v/9ChaEAmS
- TX3HIFskpwS72gZBHEoNJYOi7NsWMqyFOxH3T4ABWpJ8bi4XJn4YR2Tz3JDApnnyRC4lc/cn0af
- weCId5vGo3NNSYP8gfIyQ7K6a+xnkl+/M22q15kkwwNz//fvYMdpcQ1QTloUD5tfQYO1zOr13ac
- uONI6gdF0yV3U6HfgCUWnxVVXi5SAYzJhZ9XRQ4aefGDiFVRH8MOoVA3Li8LM4ml+RmnZOK8haA
- 5G0hqCdIoKDiuRGVED/7YVyn4Jsb5w==
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=FOH2dFAWAAAA:8
+ a=ka7W0CE-xre0FC5hE3AA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDAyNCBTYWx0ZWRfX24mEXny7k1av
+ FnI55/6XaXQ3Q6Nv/TZSzuS7mFWgD7L0sHsiyAnd3uTFbPNB2p0d+0/iI/Mvvee8IM/gfqnCwcM
+ fq2puhyCGSZkiDflibYlx1ENVDoX1tsqn8VcZ461zlZ39gwrQiTgPk2h8KrfKF3Hj4+wVvdgQXt
+ 8UPYfliiutkIFWvM5v3b/b96iMGiqHdeL+ZmPIuuVJy6y+PsSEMxF4UGifzKr1UCct+Yqlt/SMl
+ QXmaytjGsk18tvVPi8o37Vw5f9y0+aNTJA0SBWdyuSFWIOGVr26jUxeZ/Za2ZmCNHy5AJWCUHMV
+ DzbS2/q5YSBsKnwlM0xiCWlXuP+PKb93hxv5qdBaltCWkj4i1/BwGoJrKn+1OkBHUSNEe/+7cuA
+ RLdHysEnd1yc4L4LJvz/bPRdct31Jg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-07_02,2025-10-06_01,2025-03-28_01
 
-Move incrementing iova to the caller of these functions as part of
-preparing to handle end of address space map/unmap.
+This patch series aims to fix vfio_iommu_type.c to support 
+VFIO_IOMMU_MAP_DMA and VFIO_IOMMU_UNMAP_DMA operations targeting IOVA
+ranges which lie against the addressable limit. i.e. ranges where
+iova_start + iova_size would overflow to exactly zero.
+
+Today, the VFIO UAPI has an inconsistency: The
+VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE capability of VFIO_IOMMU_GET_INFO
+reports that ranges up to the end of the address space are available
+for use, but are not really due to bugs in handling boundary conditions.
+
+For example:
+
+vfio_find_dma_first_node is called to find the first dma node to unmap
+given an unmap range of [iova..iova+size). The check at the end of the
+function intends to test if the dma result lies beyond the end of the
+unmap range. The condition is incorrectly satisfied when iova+size
+overflows to zero, causing the function to return NULL.
+
+The same issue happens inside vfio_dma_do_unmap's while loop.
+
+Of primary concern are locations in the current code which perform
+comparisons against (iova + size) expressions, where overflow to zero
+is possible.
+
+The initial list of candidate locations to audit was taken from the
+following:
+
+$ rg 'iova.*\+.*size' -n drivers/vfio/vfio_iommu_type1.c | rg -v '\- 1'
+173:            else if (start >= dma->iova + dma->size)
+192:            if (start < dma->iova + dma->size) {
+216:            if (new->iova + new->size <= dma->iova)
+1060:   dma_addr_t iova = dma->iova, end = dma->iova + dma->size;
+1233:   if (dma && dma->iova + dma->size != iova + size)
+1380:           if (dma && dma->iova + dma->size != iova + size)
+1501:           ret = vfio_iommu_map(iommu, iova + dma->size, pfn, npage,
+1504:                   vfio_unpin_pages_remote(dma, iova + dma->size, pfn,
+1721:           while (iova < dma->iova + dma->size) {
+1743:                           i = iova + size;
+1744:                           while (i < dma->iova + dma->size &&
+1754:                           size_t n = dma->iova + dma->size - iova;
+1785:                   iova += size;
+1810:           while (iova < dma->iova + dma->size) {
+1823:                   i = iova + size;
+1824:                   while (i < dma->iova + dma->size &&
+2919:           if (range.iova + range.size < range.iova)
+
+This series spend the first couple commits making mechanical preparations
+before the fix lands in the last commit.
 
 Signed-off-by: Alex Mastro <amastro@fb.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Changes in v2:
+- Change to patch series rather than single commit
+- Expand scope to fix more than just the unmap discovery path
+- Link to v1: https://lore.kernel.org/r/20251005-fix-unmap-v1-1-6687732ed44e@fb.com
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index b510ef3f397b..f6ba2f8b1dd8 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -1020,7 +1020,7 @@ static long vfio_sync_unpin(struct vfio_dma *dma, struct vfio_domain *domain,
- #define VFIO_IOMMU_TLB_SYNC_MAX		512
- 
- static size_t unmap_unpin_fast(struct vfio_domain *domain,
--			       struct vfio_dma *dma, dma_addr_t *iova,
-+			       struct vfio_dma *dma, dma_addr_t iova,
- 			       size_t len, phys_addr_t phys, long *unlocked,
- 			       struct list_head *unmapped_list,
- 			       int *unmapped_cnt,
-@@ -1030,18 +1030,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
- 	struct vfio_regions *entry = kzalloc(sizeof(*entry), GFP_KERNEL);
- 
- 	if (entry) {
--		unmapped = iommu_unmap_fast(domain->domain, *iova, len,
-+		unmapped = iommu_unmap_fast(domain->domain, iova, len,
- 					    iotlb_gather);
- 
- 		if (!unmapped) {
- 			kfree(entry);
- 		} else {
--			entry->iova = *iova;
-+			entry->iova = iova;
- 			entry->phys = phys;
- 			entry->len  = unmapped;
- 			list_add_tail(&entry->list, unmapped_list);
- 
--			*iova += unmapped;
- 			(*unmapped_cnt)++;
- 		}
- 	}
-@@ -1060,18 +1059,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
- }
- 
- static size_t unmap_unpin_slow(struct vfio_domain *domain,
--			       struct vfio_dma *dma, dma_addr_t *iova,
-+			       struct vfio_dma *dma, dma_addr_t iova,
- 			       size_t len, phys_addr_t phys,
- 			       long *unlocked)
- {
--	size_t unmapped = iommu_unmap(domain->domain, *iova, len);
-+	size_t unmapped = iommu_unmap(domain->domain, iova, len);
- 
- 	if (unmapped) {
--		*unlocked += vfio_unpin_pages_remote(dma, *iova,
-+		*unlocked += vfio_unpin_pages_remote(dma, iova,
- 						     phys >> PAGE_SHIFT,
- 						     unmapped >> PAGE_SHIFT,
- 						     false);
--		*iova += unmapped;
- 		cond_resched();
- 	}
- 	return unmapped;
-@@ -1134,16 +1132,18 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 		 * First, try to use fast unmap/unpin. In case of failure,
- 		 * switch to slow unmap/unpin path.
- 		 */
--		unmapped = unmap_unpin_fast(domain, dma, &iova, len, phys,
-+		unmapped = unmap_unpin_fast(domain, dma, iova, len, phys,
- 					    &unlocked, &unmapped_region_list,
- 					    &unmapped_region_cnt,
- 					    &iotlb_gather);
- 		if (!unmapped) {
--			unmapped = unmap_unpin_slow(domain, dma, &iova, len,
-+			unmapped = unmap_unpin_slow(domain, dma, iova, len,
- 						    phys, &unlocked);
- 			if (WARN_ON(!unmapped))
- 				break;
- 		}
-+
-+		iova += unmapped;
- 	}
- 
- 	dma->iommu_mapped = false;
+---
+Alex Mastro (3):
+      vfio/type1: sanitize for overflow using check_*_overflow
+      vfio/type1: move iova increment to unmap_unpin_* caller
+      vfio/type1: handle DMA map/unmap up to the addressable limit
 
+ drivers/vfio/vfio_iommu_type1.c | 145 +++++++++++++++++++++++++---------------
+ 1 file changed, 92 insertions(+), 53 deletions(-)
+---
+base-commit: 407aa63018d15c35a34938633868e61174d2ef6e
+change-id: 20251005-fix-unmap-c3f3e87dabfa
+
+Best regards,
 -- 
-2.47.3
+Alex Mastro <amastro@fb.com>
 
