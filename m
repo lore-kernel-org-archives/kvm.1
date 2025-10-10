@@ -1,272 +1,200 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B827B329
-	for <kvm@vger.kernel.org>; Fri, 10 Oct 2025 07:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760081934; cv=none; b=eTqs/RtHxDiA4ioCW7BZdbImlJS0/mXbSjdCZmvHgjNZDMJAPg4WrfbmrQZ5eEOP2aShP/8T/+XAsxuxH3i4BwJzwPFu1fQrJMRQQ3goDRYjutEPTPPT0s8G+tkiAmnuteea9a/KmVABm+143pZFEr1Axrn5hdYrKQbXVnNENjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760081934; c=relaxed/simple;
-	bh=+3khgy47WuUhEGenkXrffbJSfoB0VrdnDSiZ5+OTFtY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=Fb5wkIqufApzDHl4VNKQyFftMdrkoZFKsgxt10B577S2UfL2nAaMCmDRG0Et3pFWEGCv8EopclQeIYxXP1aEcDZBcHT0zjhPvEFHOljjZewlhex+p0Mq4YiRBKsFzM9fPefB9rIaGBJGv012QwLG/jvp0vxryaBuVot/AeNrxIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=vmYYsKHu; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A89240611;
+	Fri, 10 Oct 2025 07:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760083082; cv=fail; b=msOozpi4hYOighwEoX5TerL0WgNooUsqsedMBJmK6/lil3zV+yGfHkkh0z3sxD9+UGRqiHeKMoJ2vc0d95NYyy8YWvt7VFLPtzdZqpxiHQPR9MSDrhHqYFHnN4BfXckztCB0xMfQB8LO4wg9yXn/5lLwc4m9SP/BualrqPsXndI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760083082; c=relaxed/simple;
+	bh=RSyiS3mnLafUgmAZmoR3rC+XufedYsZvSGR+tCECiR0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IJ4BPxXKWXlP0jMAj3AJorhM/FZYs+FFIjSG0kC8KM03tk88g2XwXuyIjs2i4GkdbG8s0ix6UXiUvT21vCvCFlkdsr5v6huj63TDBPdZPmCecTSwcuyVf+dts5nL8+UTVBfRxnXSWshDHOLhXku5nqJpIn4P29g58KnhEEIY7LU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uj1lN/zX; arc=fail smtp.client-ip=52.101.56.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="vmYYsKHu"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 599Mg0Bp462793
-	for <kvm@vger.kernel.org>; Fri, 10 Oct 2025 00:38:52 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=jTGIVI9/tpsE8fVZ/3kjfgDpw8Qz4Nuu4HevZyU/HOI=; b=vmYYsKHurpd9
-	L+Ivt9VEPsD8bpZON/CGwwCc68H4AzLBYIHZlne2RU6MY6BPM2v04YTYqxkW01io
-	3AeTyyq4Krfs/GDOouTcAapiGfIdF9zQYLUOg3/4YRFiwt+6aZC1gGjfrY5yXPFg
-	4tHn707abEHLiYZLW7GSGFTMNQqNuOcLhW7vN/Xyk0we4CNPAhNUes1Z3r8f4Sc+
-	kKvozqubnHRCFdPaDiP093Muz2bzkIQlg+qm2V4oxzVlvpgEDhr0m3JKYNbnJdy6
-	z0C+2ta71IrLFQ4Pj1hGxOBf/UtScbJkK9llkF2+j4j621CgAq/b4sdFYzZ6fsvu
-	mIiscL2CMA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 49pp2madty-9
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 10 Oct 2025 00:38:51 -0700 (PDT)
-Received: from twshared30833.05.prn5.facebook.com (2620:10d:c085:108::4) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Fri, 10 Oct 2025 07:38:43 +0000
-Received: by devgpu015.cco6.facebook.com (Postfix, from userid 199522)
-	id 41F4BE937D4; Fri, 10 Oct 2025 00:38:40 -0700 (PDT)
-From: Alex Mastro <amastro@fb.com>
-Date: Fri, 10 Oct 2025 00:38:39 -0700
-Subject: [PATCH v3 1/3] vfio/type1: sanitize for overflow using
- check_*_overflow
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uj1lN/zX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=esER1L6tZGZXAMsJ9kOfulqq7JfE7LWodAZPHPBEmrxyZc2tFHRx8/JDUh6TW3RuU9vR31sju+FtLRiC2Uz+qqhttAn/dLFM3fR4JPirZCH9WjoOhjRpJSDYKJhVSdMmRazYA4udmgiWMp5Mc18kiBccAvJq3qkAsnSBepnUPXETwDT9Q8WIpQGNX/KR7Hyt0f829DTiqqJE2yjhI3Frq42yp5iXpbiGmt6bFyk9BqYiQsSVzFMd3eoKv5bbSiN8nRN2LXgvgaToK4GajWGjYHlp5Rsn4NUfRy7Tunt77liwSqtpFCY0Ef/yO5ZVk2s9aUKTtTW/lZchcbRyy0eN4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b34AaXwwXBJyVyZu1hTjS4F5L3KqPZtWrngtpPaJ+T8=;
+ b=ETSQriBfiyD2ZR1HsOWU5zQ9+/qroLPry22YCYKlqtV9mXnM2Szsgs+mYQMaCs7iWvOcyjqWEo6NXXaXOJqgqM54bYBROua1nK901bn0ZcdwFSHuj1AVoue1fjd7U/eG+TR6fys2PtgthAbqcGLDUr7xg/4of/A6Aq+jfuPfLuI4FVJui7hxapDHhzpyvWMyyNnsPcE5XRr7kRxV9EUHaQPsjeM8k9GVFeaX3nIYpD0usbTJDXYUecQndaO16qirRHxB8yXEwbdStCpnPpMs4Osay4Ut0CbuM5rf5CTMaTQgour9pLKHQ84OpMxsszSa43d7wnhP9KM02LDUHJVzwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b34AaXwwXBJyVyZu1hTjS4F5L3KqPZtWrngtpPaJ+T8=;
+ b=uj1lN/zXEummLqAaZJQQOnIxDaSLPuK9BxG3LEEsqdTCN/ZQrU8UQYyd1Mrmu0dg9UwF8ii7Mk/rUGB6gYXz6Eh6l+kGaYmhIZ/DdY6Iwk+F/NJFgEiOm0g73UpIXrto0v0KhkyHYwYrT0lKPQc0HygCkMQygSTPqRyZcAnkjLc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA0PR12MB8301.namprd12.prod.outlook.com (2603:10b6:208:40b::13)
+ by MN2PR12MB4485.namprd12.prod.outlook.com (2603:10b6:208:269::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Fri, 10 Oct
+ 2025 07:57:57 +0000
+Received: from IA0PR12MB8301.namprd12.prod.outlook.com
+ ([fe80::e929:57f5:f4db:5823]) by IA0PR12MB8301.namprd12.prod.outlook.com
+ ([fe80::e929:57f5:f4db:5823%4]) with mapi id 15.20.9203.009; Fri, 10 Oct 2025
+ 07:57:57 +0000
+Message-ID: <e9bd02ba-ff0e-47a3-a12e-9a53717dde9b@amd.com>
+Date: Fri, 10 Oct 2025 13:27:47 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 05/12] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+To: Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Vlastimil Babka <vbabka@suse.cz>
+References: <20251007221420.344669-1-seanjc@google.com>
+ <20251007221420.344669-6-seanjc@google.com> <diqzo6qfhgc9.fsf@google.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <diqzo6qfhgc9.fsf@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BM1PR01CA0154.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:68::24) To IA0PR12MB8301.namprd12.prod.outlook.com
+ (2603:10b6:208:40b::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251010-fix-unmap-v3-1-306c724d6998@fb.com>
-References: <20251010-fix-unmap-v3-0-306c724d6998@fb.com>
-In-Reply-To: <20251010-fix-unmap-v3-0-306c724d6998@fb.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: Jason Gunthorpe <jgg@ziepe.ca>,
-        Alejandro Jimenez
-	<alejandro.j.jimenez@oracle.com>,
-        <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Alex Mastro <amastro@fb.com>
-X-Mailer: b4 0.13.0
-X-FB-Internal: Safe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDA0MyBTYWx0ZWRfX+v7htVFC42mb
- psL5pE5i2WX8h1cVXksgtuVrzlcBvCGIvaL7AC9LYbeAhJm6v82W7MYPzKg6l1lJemYpYLq1kTe
- OeVsf9UbYz4wU3uAPk1f1eqnyBifuvhpVoXZ9nix9kYrev0STwLTd7q3n5HzXOEfgEpjOAxu3I5
- Ibau1dx1hcA8bvWCbCxoZ7rHjx3cDkmT2MR6riRlv+sDx2XwlpLIUN1i352kLH4FxrwXOXepnir
- 2IWWANCMh/TkmsfdW/a0r1YFoS37iVMOOY1l+5hVzB2kOC/bwH+zLz95bteN7J8feWoLREsbp3V
- xp2tc1+lBDNAaxQ++1Vjb9fY6x8gyDMamE4Q51yTRKLetHPWBFeAoNbw+LR4qH+xgMTfzVGB8Fx
- BlrAtaqRm0/ZCRLb17xe9s8EH4MBkQ==
-X-Proofpoint-ORIG-GUID: j_TQyCktOUTcmKPMGQnoSMIEuYxIpk-T
-X-Proofpoint-GUID: j_TQyCktOUTcmKPMGQnoSMIEuYxIpk-T
-X-Authority-Analysis: v=2.4 cv=UI7Q3Sfy c=1 sm=1 tr=0 ts=68e8b80c cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=FOH2dFAWAAAA:8 a=1wVGssBgL94LrMzbKiIA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-10_01,2025-10-06_01,2025-03-28_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8301:EE_|MN2PR12MB4485:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3f78387-e832-4744-6126-08de07d2b997
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Qzl2YXRkSVpKY1FGU1NvaS9JVGZpd3VPYmNpT1NmM1NEeVZZcXB3cnRLcTdD?=
+ =?utf-8?B?M2FRQm9rcFZma3lnK1F4VGVWUTkwU3d3WmZ2Vlo0MTNhRG5lbHhGdURZMytM?=
+ =?utf-8?B?d3VMZ05yU001dzFOODBWYnZJUjRNK2xJZHFWYzMwVzRyUExYbkFFL2lWUCs2?=
+ =?utf-8?B?ejdRelV0cUhycUhnT08vRmJFNTJmNmdheVFYTWdWNkVwR3g4TTdaakE4SG1V?=
+ =?utf-8?B?MGt6cVc2WUZ2alg5VmtPbkJRdm5Gak4yUVhuRkFlbGZtK09SSXVmd3pEbHY4?=
+ =?utf-8?B?K3JjM0VmWU84SlJHZThneC9rVzVLL09vemJXbFVLYTFzMktEVHZZZEtpenlt?=
+ =?utf-8?B?eE1SbFd0ZndvRHlVK1VQNlVOSGRWUm1GYlNYbEF3ZGducXRvYXl5VGExQzVO?=
+ =?utf-8?B?TW9QWHM2c0owbEVTMk9xeWVPMU52ZFlwK1NoWDRVMEVHMWZ6VkJXVFRLTFJh?=
+ =?utf-8?B?b1VEOTIzL2plQW5LSGFZYVh0M0tqWU9sc3hQaytRdzdlZ3JXb215UDZ5TkxJ?=
+ =?utf-8?B?TzhnSUdGMmVrZDlIRDRrVXQyend3YW92KytHNXFTc0JsVkhEUFF1cDBhNGZK?=
+ =?utf-8?B?bTZvL1NycXB2MVhpTEl4OS8zRmdWTzJLdmZCV0ZScTdyOVkydlY0UGdXdUF4?=
+ =?utf-8?B?WC95MjVzeEs5akw5Q2VRSU5HRWZOTGgrUTJjTWhFNHhxTW5qTE1RVXFKQVVh?=
+ =?utf-8?B?cjNpREUrakdFSEJxNXljVi8vWkw3OVFaczV4YmNUOWh1c1hVWmN6ZXJOd2xx?=
+ =?utf-8?B?aUZoS1orWFY1c3ZRSHNYZGFrK1RwT3hrdDB0T0lzaFpZd0JBemdxMXFXZVZx?=
+ =?utf-8?B?VDZpSzFUN0xLajArT3orNWhyeUtVZXVweUxZVlRGWW16akdJYm5qWXhOeEo4?=
+ =?utf-8?B?T1gzL1RJR1FDUEtkZDNMeW9wSVpYL1YzeGR0RDhyUEhmenFVOHBUdlk0R3ZM?=
+ =?utf-8?B?bG9tVVlpYmJhekErWFEraElJRlhmbVpBTnZxam94dGFYUWE5L2d5QnhIMjIv?=
+ =?utf-8?B?WXVEOW5WbDFQcTVubG5lQnFXN3pUaERsS0Vod2p4MmtHMFdkbDB2YXV0SkFK?=
+ =?utf-8?B?Z1pWRGFqUDhnR1pxQXlNWGR1ZHRaTUhZSkZab1MrZ01Pdno3MHBRSjNyaGND?=
+ =?utf-8?B?bE8wN0JOc0Qyb1FVNHVZcnZ6VGV3dkVtUUlqTzh5NERqQXJPVFlxTHlDN2dD?=
+ =?utf-8?B?U05WNUE5QTdnWFpEK20xZk9VL0UwR2tPYk9EYW1xUDdBZnVFanZyaUNTaUQ4?=
+ =?utf-8?B?TGlrd0s3L2EvT2NORjlibEJwRHpwUUpoTk1ldFM3SmtSSFVvNVpmb0IyVjJi?=
+ =?utf-8?B?MEg2QVdXWkpvUWF6NzNrT0U4NkVQaXJHR3lXK0hZenI4Wk1Rc2h6SFlzL0hB?=
+ =?utf-8?B?NWU2dUxDcERKSzNKSFFmbXgvOGhvZFF4eGtObmxzbHNpVmE5eFdkblp0aHZR?=
+ =?utf-8?B?R1JVMW5OY2hKUkJOTHAxTGR1RGM4d0FDUFZvb3kvQ0VaK1lhUEhQeUxXUER5?=
+ =?utf-8?B?eGg3MzY3T0NPOCtrZjhQY29oQThHS0tQYVJQTW5FVHlSOWRCRFI2QWJWR1Y5?=
+ =?utf-8?B?dW9UMmRZek1xcDFhYVJNYmg4UXZQMGlXaS9XbWFsWjdmVzA1OXdvQWpuR3Nu?=
+ =?utf-8?B?RC84NU5oSzVSZmgzcVZ1eHFDam0xT0N2a3lFNHZXZ25yUHM1TW95M3crVlZw?=
+ =?utf-8?B?WEk1NDQxS0tNd1FaMVJZdVN5ZUFBVnBDRGhXVVJJSGJsQnErZW1NTVpSU2hY?=
+ =?utf-8?B?WVF6RUpLdzJFSlJVZWdMYzIzeC9ONmdzNUx4V2tyVXlRdFNDaXZUM2dkY1Bw?=
+ =?utf-8?B?ZEprcStod1dnNWpUOFFLRHJLK0hqalBoU0s4SjdOSGxkNUhzaTg2MHBDRGEz?=
+ =?utf-8?B?RHRXYzd6YzNSek1VWThTUGlkU1QvMU5rNHJsQUJSNCsydyt6Q0c5eEQ1dVFH?=
+ =?utf-8?Q?+yTBJCHLZAlyMAgDasyq6LCJuxkS7zFe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VGMvU3ZubC9odEF4Y3RvZ1BtRDdhTkpXOVFQSFJxRE12SGNySUN1YVg2YU5K?=
+ =?utf-8?B?dm0wV2JjSGZmZWlRNXQ1RExLNzNZWjl4SU5mbkwwVC9zWWpSMEx4VFZ1WnR2?=
+ =?utf-8?B?TEtmWkFZcldhbW9NTFNkV0M5eUQ1ZkVxU2tROU9mcjh3SDFwUUs5WC96aHhD?=
+ =?utf-8?B?UUtmeURIOTJJQ2ZsR3h6SDM0REEySEd3blEvcVlXZzBGMjAzTjlqRDR6TWZM?=
+ =?utf-8?B?cEZqVG1Iai9aZnk1UWdEQ0gyREEyTGE1V2ltZHZ4UmVPc3JyMU9mNWVwUmVN?=
+ =?utf-8?B?bmY2WTZhMjRaN3lmNHRXbnJ0dmJyUW1TeElzU3dWaVFPMlgzTTNNdXIxRStk?=
+ =?utf-8?B?WjRaK21NU1liK1Vjemx3UTZmTUgveEF6eFE1K2p5aVZtNVBmZUc2YWx2OWU3?=
+ =?utf-8?B?UVNaRDkwNmp1dFhmV09hcnpSK0pwdVlhWFJUYVdxbS9FRHZZNlZDbEtUSi9J?=
+ =?utf-8?B?dDFBaXhKQlBWRmlCUy9peG96QU40KzRzUHhtVS9BbkM3bUdPRVpKZDlob0hn?=
+ =?utf-8?B?aFN2M0Y0d2lmVmZCWXdtQmxGR2hGWnhlRHMreWMvQ3VCOU82cW9rYUFDcW9n?=
+ =?utf-8?B?elRXdjVZakZLNnI1MVhjdUp4TDQ4dll2amR4eHRWTTlicDUwYnA0ckR2dEFy?=
+ =?utf-8?B?UW5TeVRBb0h0bGZva3psZ3hSZEhveE9yRnRldzZRNWZCYUtLZWhZbmR4MWJp?=
+ =?utf-8?B?NVJIN0xwUzBReUVCM3lxSjAwNXhmczFoczFnYjhOL0dtTEVXVEJQbmJoekls?=
+ =?utf-8?B?RW1KaUwwNGlKdTNDWFVuTU5aaUZKK2pSTEMrS0VQOWF1NHg5eElYdjV5dXZR?=
+ =?utf-8?B?bkI0dTl0M1JhejJQRFBUQ0xPSFRJTG5tZndYenVObG4vN0hnVktRVzNTWXNI?=
+ =?utf-8?B?VlN1RElJYUlIUUcxRi91dDdXZnhybzJtdEc1UFRJQkJqN1J5SmN0L21HYkNP?=
+ =?utf-8?B?T0tzTnRIYTZMcjZudjRDd1ZZVUdTN0xQY1hTNDA4TDNJVGNtK3FtckRZTkt5?=
+ =?utf-8?B?MGRtM2xiTVZ3WUpaSXRzOVVJeDdqMmZIME5VQUZTemI1YzJuaTZobjhHOFND?=
+ =?utf-8?B?ajFmOVRpdHFZREdDcEFvZFduY2x2aXM4RVVsRjEvZmtSUG9iRWhldWcyR3NH?=
+ =?utf-8?B?eUxTZzJPMWIvaVZWeUhlNGxXMFJuVU5sMWZSNEtFOC82SUw3K3J4YXRCZlVw?=
+ =?utf-8?B?cWVpZmdNL2FRbVhlN1gvK0VScWJ2T0I0QlVEdC81QTl0OHlILzVLSkd6U3Bu?=
+ =?utf-8?B?UEFKYytnTENFeEdkaGh2RHFldkd2aGxvM2djMkcxd284N1BWM0Q5cDlyM0tT?=
+ =?utf-8?B?VEltenRlVUNiamhsWG5NVHNraCs5clRydk9KSy9UMHhmNVJpZDlNODRzOUI5?=
+ =?utf-8?B?bm50RVZIWnlJWUJyK2pjQ0hFaHBwQUpzcHRzeGduazgvVjdHbCtKY1NTN3kr?=
+ =?utf-8?B?MWRmUzkxaURXRWR5YzNXWTIxdi9ISjczSExKYWJocUhuZzBxcmJrblA1UEpp?=
+ =?utf-8?B?TDYrWWtJTm5EME95WlBSNXR6K1JNRHBDY1JtTnBZRjFvYU1kR29qdXdoSFV0?=
+ =?utf-8?B?M3R2ZytjRGZyN0p0T1hiQm5oNlc0UHQyRngyUlcwUFlmV0JMRVczVU8vaUVY?=
+ =?utf-8?B?NmJEbTZZSUREa3RRaXVuZWd4cWZ2R0QrTFlIUnhqM3VZay9SRnBRMkttNGtt?=
+ =?utf-8?B?K3B4ZG45ZXpJRnl2eXJNN2pEalE5WlRkWkRnaldZQW1SUlpicVVVd1NRMmFV?=
+ =?utf-8?B?Q3U4bTEzTldxNkdGdXkxUnlzNFVXcGV0OE53cHZMRDB3SWFpZlhCUzJQejkv?=
+ =?utf-8?B?ZW0za2xPTWxSNkRWL2lsaXJlSStTLy9KRkdPZzR3WmcyL3dlQkFQbzVDeFJF?=
+ =?utf-8?B?Ri9yakcwcUV5bzRZWE01V21NRGlVdmFrSVpKNW8yczJHT09IQjhnRjAzK2J0?=
+ =?utf-8?B?UjgybTFJd2pyaWhqZ3B6eW5ianphSm85MExtSFM0MGE5bWMvSCtjSWVkSGdh?=
+ =?utf-8?B?ZUJwSDl4WlBvYTdlemk4KzZUdVh6VlFuVjJGS0xNRWpYZ1BkblBwY3VLU0hi?=
+ =?utf-8?B?SHNaN3ZPSFNaYkFucG43czdpTnU5VHd6K1IrYzJadExGQUFpN3cvZjVwZFps?=
+ =?utf-8?Q?z1MwMPCSOKjG66sx+measMySx?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3f78387-e832-4744-6126-08de07d2b997
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8301.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 07:57:57.6059
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ldM4lAA9n+B+Jc3Uz6uUo1tkh7kGYCwe3Kt6oopQj/hXbd6Cwrq8LZVP3IF3sd4Uaz7FzbOUH/iPIwd2wvph+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4485
 
-Adopt check_*_overflow functions to clearly express overflow check
-intent.
 
-Signed-off-by: Alex Mastro <amastro@fb.com>
----
- drivers/vfio/vfio_iommu_type1.c | 69 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 54 insertions(+), 15 deletions(-)
+>>  
+>> @@ -112,6 +114,19 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  	return r;
+>>  }
+>>  
+>> +static struct mempolicy *kvm_gmem_get_folio_policy(struct gmem_inode *gi,
+>> +						   pgoff_t index)
+> 
+> How about kvm_gmem_get_index_policy() instead, since the policy is keyed
+> by index?
+> 
+>> +{
+>> +#ifdef CONFIG_NUMA
+>> +	struct mempolicy *mpol;
+>> +
+>> +	mpol = mpol_shared_policy_lookup(&gi->policy, index);
+>> +	return mpol ? mpol : get_task_policy(current);
+> 
+> Should we be returning NULL if no shared policy was defined?
+> 
+> By returning NULL, __filemap_get_folio_mpol() can handle the case where
+> cpuset_do_page_mem_spread().
+> 
+> If we always return current's task policy, what if the user wants to use
+> cpuset_do_page_mem_spread()?
+> 
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index f8d68fe77b41..70f4aa9c9aa6 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -37,6 +37,7 @@
- #include <linux/vfio.h>
- #include <linux/workqueue.h>
- #include <linux/notifier.h>
-+#include <linux/overflow.h>
- #include "vfio.h"
- 
- #define DRIVER_VERSION  "0.2"
-@@ -825,14 +826,25 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
- 	unsigned long remote_vaddr;
- 	struct vfio_dma *dma;
- 	bool do_accounting;
-+	dma_addr_t iova_end;
-+	size_t iova_size;
- 
--	if (!iommu || !pages)
-+	if (!iommu || !pages || npage < 0)
- 		return -EINVAL;
- 
- 	/* Supported for v2 version only */
- 	if (!iommu->v2)
- 		return -EACCES;
- 
-+	if (!npage)
-+		return 0;
-+
-+	if (check_mul_overflow(npage, PAGE_SIZE, &iova_size))
-+		return -EOVERFLOW;
-+
-+	if (check_add_overflow(user_iova, iova_size - 1, &iova_end))
-+		return -EOVERFLOW;
-+
- 	mutex_lock(&iommu->lock);
- 
- 	if (WARN_ONCE(iommu->vaddr_invalid_count,
-@@ -938,12 +950,23 @@ static void vfio_iommu_type1_unpin_pages(void *iommu_data,
- {
- 	struct vfio_iommu *iommu = iommu_data;
- 	bool do_accounting;
-+	dma_addr_t iova_end;
-+	size_t iova_size;
- 	int i;
- 
- 	/* Supported for v2 version only */
- 	if (WARN_ON(!iommu->v2))
- 		return;
- 
-+	if (WARN_ON(npage < 0) || !npage)
-+		return;
-+
-+	if (WARN_ON(check_mul_overflow(npage, PAGE_SIZE, &iova_size)))
-+		return;
-+
-+	if (WARN_ON(check_add_overflow(user_iova, iova_size - 1, &iova_end)))
-+		return;
-+
- 	mutex_lock(&iommu->lock);
- 
- 	do_accounting = list_empty(&iommu->domain_list);
-@@ -1304,6 +1327,7 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
- 	int ret = -EINVAL, retries = 0;
- 	unsigned long pgshift;
- 	dma_addr_t iova = unmap->iova;
-+	dma_addr_t iova_end;
- 	u64 size = unmap->size;
- 	bool unmap_all = unmap->flags & VFIO_DMA_UNMAP_FLAG_ALL;
- 	bool invalidate_vaddr = unmap->flags & VFIO_DMA_UNMAP_FLAG_VADDR;
-@@ -1327,9 +1351,14 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
- 		if (iova || size)
- 			goto unlock;
- 		size = U64_MAX;
--	} else if (!size || size & (pgsize - 1) ||
--		   iova + size - 1 < iova || size > SIZE_MAX) {
--		goto unlock;
-+	} else {
-+		if (!size || size & (pgsize - 1) || size > SIZE_MAX)
-+			goto unlock;
-+
-+		if (check_add_overflow(iova, size - 1, &iova_end)) {
-+			ret = -EOVERFLOW;
-+			goto unlock;
-+		}
- 	}
- 
- 	/* When dirty tracking is enabled, allow only min supported pgsize */
-@@ -1376,7 +1405,7 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
- 		if (dma && dma->iova != iova)
- 			goto unlock;
- 
--		dma = vfio_find_dma(iommu, iova + size - 1, 0);
-+		dma = vfio_find_dma(iommu, iova_end, 0);
- 		if (dma && dma->iova + dma->size != iova + size)
- 			goto unlock;
- 	}
-@@ -1578,7 +1607,9 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
- {
- 	bool set_vaddr = map->flags & VFIO_DMA_MAP_FLAG_VADDR;
- 	dma_addr_t iova = map->iova;
-+	dma_addr_t iova_end;
- 	unsigned long vaddr = map->vaddr;
-+	unsigned long vaddr_end;
- 	size_t size = map->size;
- 	int ret = 0, prot = 0;
- 	size_t pgsize;
-@@ -1588,6 +1619,15 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
- 	if (map->size != size || map->vaddr != vaddr || map->iova != iova)
- 		return -EINVAL;
- 
-+	if (!size)
-+		return -EINVAL;
-+
-+	if (check_add_overflow(iova, size - 1, &iova_end))
-+		return -EOVERFLOW;
-+
-+	if (check_add_overflow(vaddr, size - 1, &vaddr_end))
-+		return -EOVERFLOW;
-+
- 	/* READ/WRITE from device perspective */
- 	if (map->flags & VFIO_DMA_MAP_FLAG_WRITE)
- 		prot |= IOMMU_WRITE;
-@@ -1603,13 +1643,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
- 
- 	WARN_ON((pgsize - 1) & PAGE_MASK);
- 
--	if (!size || (size | iova | vaddr) & (pgsize - 1)) {
--		ret = -EINVAL;
--		goto out_unlock;
--	}
--
--	/* Don't allow IOVA or virtual address wrap */
--	if (iova + size - 1 < iova || vaddr + size - 1 < vaddr) {
-+	if ((size | iova | vaddr) & (pgsize - 1)) {
- 		ret = -EINVAL;
- 		goto out_unlock;
- 	}
-@@ -1640,7 +1674,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
- 		goto out_unlock;
- 	}
- 
--	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova + size - 1)) {
-+	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova_end)) {
- 		ret = -EINVAL;
- 		goto out_unlock;
- 	}
-@@ -2908,6 +2942,7 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
- 		unsigned long pgshift;
- 		size_t data_size = dirty.argsz - minsz;
- 		size_t iommu_pgsize;
-+		dma_addr_t range_end;
- 
- 		if (!data_size || data_size < sizeof(range))
- 			return -EINVAL;
-@@ -2916,8 +2951,12 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
- 				   sizeof(range)))
- 			return -EFAULT;
- 
--		if (range.iova + range.size < range.iova)
-+		if (!range.size)
- 			return -EINVAL;
-+
-+		if (check_add_overflow(range.iova, range.size - 1, &range_end))
-+			return -EOVERFLOW;
-+
- 		if (!access_ok((void __user *)range.bitmap.data,
- 			       range.bitmap.size))
- 			return -EINVAL;
-@@ -2941,7 +2980,7 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
--		if (!range.size || range.size & (iommu_pgsize - 1)) {
-+		if (range.size & (iommu_pgsize - 1)) {
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
+I initially followed shmem's approach here.
+I agree that returning NULL maintains consistency with the current default
+behavior of cpuset_do_page_mem_spread(), regardless of CONFIG_NUMA.
 
--- 
-2.47.3
+I'm curious what could be the practical implications of cpuset_do_page_mem_spread()
+v/s get_task_policy() as the fallback?
+Which is more appropriate for guest_memfd when no policy is explicitly set via mbind()?
+
 
