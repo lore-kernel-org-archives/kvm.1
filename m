@@ -1,290 +1,319 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB571DE3B5;
-	Mon, 13 Oct 2025 04:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A542C11EA
+	for <kvm@vger.kernel.org>; Mon, 13 Oct 2025 05:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760328625; cv=none; b=E3Xr4Oc9P7KKNlJf7FtvdkHKm2oN/14zOkkd5QYMg2y505gCTFqqSUzB87a8eQzYNEWPq5hY4chrtpc5PoO1NamjRknHyonBc0IzY5BHSCus5CWCRUgv+xm08lB3Du5zkx6gvN5q3mGMVBo6WZDMrMXfqsyB52293/aTTelEV9g=
+	t=1760333566; cv=none; b=g5wlV/9M4/eAzdLwufxjjk0iUkHCGA09wQ5BXBhnelpZucEv7ZOiYRbouj5vifXV5nXf3m4CWWUf9UorPlxWb8Tw/vIQHnMtG6HGIruxnM7PC94GKViNOHnJy2MkPSpTYnF/uItKskFOGdW/nJU5zkidJrGiN0thy+Hm9Y20UH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760328625; c=relaxed/simple;
-	bh=NkvTVXXL+fACXOsmFZvvzCVbkAPreCuUfACe/tKiu5k=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=WFl/auZ+PGS5mv1Kjn3A28AFA+wRNtfFXJdQ1g318GpGJZq6ECbDxzCnyUsLRY7zcuECqdUOB6hDu+L6YNL3dn2JgJh3Cq9fZ1DW147n4yNYLZER4rGEqa4jz278jBeyaKSicKuI3ZU+QpU4QuAxGicsyC+cQUJ+SpQDHZ8jjOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxVNCqe+xotHAVAA--.45647S3;
-	Mon, 13 Oct 2025 12:10:19 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAxfcGke+xoJxXdAA--.41163S3;
-	Mon, 13 Oct 2025 12:10:14 +0800 (CST)
-Subject: Re: [PATCH v2] LoongArch: KVM: Add AVEC support
-To: gaosong <gaosong@loongson.cn>, chenhuacai@kernel.org
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, kernel@xen0n.name,
- linux-kernel@vger.kernel.org
-References: <20251010064858.2392927-1-gaosong@loongson.cn>
- <39779e6d-2f09-4ee9-e5e0-97fc09efbbf5@loongson.cn>
- <a2d41419-2268-c041-9858-9287056d7f31@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <5e83f343-7da1-3235-d681-0d5b8816d1b9@loongson.cn>
-Date: Mon, 13 Oct 2025 12:07:58 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1760333566; c=relaxed/simple;
+	bh=6XcZ9MVYEQvbzX0ab/p/XqkK7vVjmvZOH+HTZVqz2Bw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=kBCR0xrHQCPObUfNm0DfNm2NlVj0cHEAKBNmnedhrF+VOOs//VzvMLadFw7mbvljsPUqyZ+uJHSn7Dn9Q2fWPBg9Bnxm8ftKobTAsnhCAHw0h/gsdXF2svnaSFxu7mzBBKlC3yiA8FbbY2hFH0+3Eap6wiyZE9GW7JtYlkkVW5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=fKBli/z2; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="fKBli/z2"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59CMgNrE1450873
+	for <kvm@vger.kernel.org>; Sun, 12 Oct 2025 22:32:43 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=R8mY5ErWJ0OEynwU1tO7R/gc5Tv7LC/H9b+NJx7lPuQ=; b=fKBli/z2Ufxm
+	BbRF8srZ8PJHqPga6Yg7pPTmdQAtvDuPgNZtIhOVHRbQHdvMxu5WYfjFOUaUCotS
+	849etk12tRJfSaMplwlm6XiYN8WETQDs58NvUE1c8EmLzslmQ2qlavAdZDp966qB
+	vjsQrWTHQZTw4foIp3FiAFYKaUNyRB4bFPqSbXrXs7v63/UsO2EL6sxNDbvCMVOR
+	EV9+YC0aOF7lulUK0fywsmG1qiiR/36/IHu+MitZYCwfCEcZM/S0xMKp+G+9/ETv
+	PZq1uOjf9KisEYDg/gr1MUjU1gH3DMC3/38Jd/eHQa95uu/3gIqIgoD4ltFPcV1v
+	kLFOl03KfQ==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 49rnbm172b-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Sun, 12 Oct 2025 22:32:43 -0700 (PDT)
+Received: from twshared18070.28.prn2.facebook.com (2620:10d:c085:208::7cb7) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Mon, 13 Oct 2025 05:32:42 +0000
+Received: by devgpu015.cco6.facebook.com (Postfix, from userid 199522)
+	id 9E257102FE47; Sun, 12 Oct 2025 22:32:30 -0700 (PDT)
+From: Alex Mastro <amastro@fb.com>
+Date: Sun, 12 Oct 2025 22:32:24 -0700
+Subject: [PATCH v4 1/3] vfio/type1: sanitize for overflow using
+ check_*_overflow
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <a2d41419-2268-c041-9858-9287056d7f31@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxfcGke+xoJxXdAA--.41163S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWfGw43tryrtr1kKrWfJr1fGrX_yoWDXw1Dpr
-	1kAFWDWrWrGrn7tr1UJFn0vryUXr18Kw17Jr1UtFy8Jr47Jr1Yqr40gryqgF1UJw48JF1I
-	yr15CrnrZFn8JwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjwZcUUUUU=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251012-fix-unmap-v4-1-9eefc90ed14c@fb.com>
+References: <20251012-fix-unmap-v4-0-9eefc90ed14c@fb.com>
+In-Reply-To: <20251012-fix-unmap-v4-0-9eefc90ed14c@fb.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+CC: Jason Gunthorpe <jgg@ziepe.ca>,
+        Alejandro Jimenez
+	<alejandro.j.jimenez@oracle.com>,
+        <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Alex Mastro <amastro@fb.com>
+X-Mailer: b4 0.13.0
+X-FB-Internal: Safe
+X-Proofpoint-GUID: 3M_CrCbWu0Enn6k5A8EYEbbs3bHY6m1M
+X-Authority-Analysis: v=2.4 cv=NfjrFmD4 c=1 sm=1 tr=0 ts=68ec8efb cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=FOH2dFAWAAAA:8 a=kr0RIOuGBwfI36ecCNoA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 3M_CrCbWu0Enn6k5A8EYEbbs3bHY6m1M
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEzMDAyNiBTYWx0ZWRfX6oH+OFIv2sTK
+ Ss9wycilEHb0svL5ZCU+3smUSKX6LNFkbSFO66zfdDR1Taru0LxAKKbiW/gF1soDMoQEaTdr4ks
+ LnglARlTwBiZQA45zIC3LgfPdcrqbTeAJ7Srn01meaUdH8ztw9BOApog6uOJ07XyhkEy98KVk8D
+ INW8LNuJ4LiN1iycbUpDjETg1taQfl4PKJuxnNEnKqJAcMJmRqGAu6vaUxPzydSV9On5GuEdxjo
+ 9hGabA/MXZFkUEdiTh5R2S1LAjf5M/W2b6h3EyRl0qBoSZbf7e6pO7WsPXn8KW4e7slnRULRiS3
+ cbc5VwBxo4TZe4O6SZAbFb9BCI8EpALdb6jtYijifEvgQdg4z2b/89STdq7dSb0pjlczd2l87iw
+ HbWRJv7OJpFj686i6a4QyNvmjJCjKw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-13_02,2025-10-06_01,2025-03-28_01
 
+Adopt check_*_overflow functions to clearly express overflow check
+intent.
 
+Signed-off-by: Alex Mastro <amastro@fb.com>
+---
+ drivers/vfio/vfio_iommu_type1.c | 86 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 63 insertions(+), 23 deletions(-)
 
-On 2025/10/13 上午11:18, gaosong wrote:
-> 在 2025/10/11 上午9:29, Bibo Mao 写道:
->>
->>
->> On 2025/10/10 下午2:48, Song Gao wrote:
->>> Add cpu_has_msgint() to check whether the host cpu supported avec,
->>> and restore/save CSR_MSGIS0-CSR_MSGIS3.
->>>
->>> Signed-off-by: Song Gao <gaosong@loongson.cn>
->>> ---
->>> Based-on: 
->>> https://patchew.org/linux/20250930093741.2734974-1-maobibo@loongson.cn/
->>> v2: fix build error.
->> It is not necessary based on this patch, you can base it on master 
->> branch. The later merged patch need based on previous version in general.
->>
-> Got it.
->>>
->>>   arch/loongarch/include/asm/kvm_host.h |  4 ++++
->>>   arch/loongarch/include/asm/kvm_vcpu.h |  1 +
->>>   arch/loongarch/include/uapi/asm/kvm.h |  1 +
->>>   arch/loongarch/kvm/interrupt.c        |  3 +++
->>>   arch/loongarch/kvm/vcpu.c             | 19 +++++++++++++++++--
->>>   arch/loongarch/kvm/vm.c               |  4 ++++
->>>   6 files changed, 30 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/loongarch/include/asm/kvm_host.h 
->>> b/arch/loongarch/include/asm/kvm_host.h
->>> index 392480c9b958..446f1104d59d 100644
->>> --- a/arch/loongarch/include/asm/kvm_host.h
->>> +++ b/arch/loongarch/include/asm/kvm_host.h
->>> @@ -285,6 +285,10 @@ static inline bool kvm_guest_has_lbt(struct 
->>> kvm_vcpu_arch *arch)
->>>       return arch->cpucfg[2] & (CPUCFG2_X86BT | CPUCFG2_ARMBT | 
->>> CPUCFG2_MIPSBT);
->>>   }
->>>   +static inline bool cpu_has_msgint(void)
->>> +{
->>> +    return read_cpucfg(LOONGARCH_CPUCFG1) & CPUCFG1_MSGINT;
->>> +}
->>>   static inline bool kvm_guest_has_pmu(struct kvm_vcpu_arch *arch)
->>>   {
->>>       return arch->cpucfg[6] & CPUCFG6_PMP;
->>> diff --git a/arch/loongarch/include/asm/kvm_vcpu.h 
->>> b/arch/loongarch/include/asm/kvm_vcpu.h
->>> index f1efd7cfbc20..3784ab4ccdb5 100644
->>> --- a/arch/loongarch/include/asm/kvm_vcpu.h
->>> +++ b/arch/loongarch/include/asm/kvm_vcpu.h
->>> @@ -15,6 +15,7 @@
->>>   #define CPU_PMU                (_ULCAST_(1) << 10)
->>>   #define CPU_TIMER            (_ULCAST_(1) << 11)
->>>   #define CPU_IPI                (_ULCAST_(1) << 12)
->>> +#define CPU_AVEC                        (_ULCAST_(1) << 14)
->>>     /* Controlled by 0x52 guest exception VIP aligned to estat bit 
->>> 5~12 */
->>>   #define CPU_IP0                (_ULCAST_(1))
->>> diff --git a/arch/loongarch/include/uapi/asm/kvm.h 
->>> b/arch/loongarch/include/uapi/asm/kvm.h
->>> index 57ba1a563bb1..de6c3f18e40a 100644
->>> --- a/arch/loongarch/include/uapi/asm/kvm.h
->>> +++ b/arch/loongarch/include/uapi/asm/kvm.h
->>> @@ -104,6 +104,7 @@ struct kvm_fpu {
->>>   #define  KVM_LOONGARCH_VM_FEAT_PV_IPI        6
->>>   #define  KVM_LOONGARCH_VM_FEAT_PV_STEALTIME    7
->>>   #define  KVM_LOONGARCH_VM_FEAT_PTW        8
->>> +#define  KVM_LOONGARCH_VM_FEAT_MSGINT        9
->>>     /* Device Control API on vcpu fd */
->>>   #define KVM_LOONGARCH_VCPU_CPUCFG    0
->>> diff --git a/arch/loongarch/kvm/interrupt.c 
->>> b/arch/loongarch/kvm/interrupt.c
->>> index 8462083f0301..adc278fb3cb9 100644
->>> --- a/arch/loongarch/kvm/interrupt.c
->>> +++ b/arch/loongarch/kvm/interrupt.c
->>> @@ -21,6 +21,7 @@ static unsigned int 
->>> priority_to_irq[EXCCODE_INT_NUM] = {
->>>       [INT_HWI5]    = CPU_IP5,
->>>       [INT_HWI6]    = CPU_IP6,
->>>       [INT_HWI7]    = CPU_IP7,
->>> +    [INT_AVEC]    = CPU_AVEC,
->>>   };
->>>     static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int 
->>> priority)
->>> @@ -36,6 +37,7 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, 
->>> unsigned int priority)
->>>       case INT_IPI:
->>>       case INT_SWI0:
->>>       case INT_SWI1:
->>> +    case INT_AVEC:
->>>           set_gcsr_estat(irq);
->> Do we need cpu_has_msgint() here ? It is impossible that VMM inject 
->> INT_AVEC interrrupt on non-msgint machine such as 3C5000.
->>
-> yes we need , how about this?
-> 
-> @@ -31,6 +32,11 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, 
-> unsigned int priority)
->          if (priority < EXCCODE_INT_NUM)
->                  irq = priority_to_irq[priority];
-> 
-> +        if (cpu_has_msgint() && (priority == INT_AVEC)) {
-> +                set_gcsr_estat(irq);
-> +                return 1;
-> +        }
-> +
->          switch (priority) {
->          case INT_TI:
->          case INT_IPI:
-This is workable. Another way is to add checking in irq inject root 
-source function kvm_vcpu_ioctl_interrupt(). Both works for me.
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index f8d68fe77b41..1ac056b27f27 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -37,6 +37,7 @@
+ #include <linux/vfio.h>
+ #include <linux/workqueue.h>
+ #include <linux/notifier.h>
++#include <linux/overflow.h>
+ #include "vfio.h"
+ 
+ #define DRIVER_VERSION  "0.2"
+@@ -180,7 +181,7 @@ static struct vfio_dma *vfio_find_dma(struct vfio_iommu *iommu,
+ }
+ 
+ static struct rb_node *vfio_find_dma_first_node(struct vfio_iommu *iommu,
+-						dma_addr_t start, u64 size)
++						dma_addr_t start, size_t size)
+ {
+ 	struct rb_node *res = NULL;
+ 	struct rb_node *node = iommu->dma_list.rb_node;
+@@ -825,14 +826,20 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
+ 	unsigned long remote_vaddr;
+ 	struct vfio_dma *dma;
+ 	bool do_accounting;
++	dma_addr_t iova_end;
++	size_t iova_size;
+ 
+-	if (!iommu || !pages)
++	if (!iommu || !pages || npage <= 0)
+ 		return -EINVAL;
+ 
+ 	/* Supported for v2 version only */
+ 	if (!iommu->v2)
+ 		return -EACCES;
+ 
++	if (check_mul_overflow(npage, PAGE_SIZE, &iova_size) ||
++	    check_add_overflow(user_iova, iova_size - 1, &iova_end))
++		return -EOVERFLOW;
++
+ 	mutex_lock(&iommu->lock);
+ 
+ 	if (WARN_ONCE(iommu->vaddr_invalid_count,
+@@ -938,12 +945,21 @@ static void vfio_iommu_type1_unpin_pages(void *iommu_data,
+ {
+ 	struct vfio_iommu *iommu = iommu_data;
+ 	bool do_accounting;
++	dma_addr_t iova_end;
++	size_t iova_size;
+ 	int i;
+ 
+ 	/* Supported for v2 version only */
+ 	if (WARN_ON(!iommu->v2))
+ 		return;
+ 
++	if (WARN_ON(npage <= 0))
++		return;
++
++	if (WARN_ON(check_mul_overflow(npage, PAGE_SIZE, &iova_size) ||
++		    check_add_overflow(user_iova, iova_size - 1, &iova_end)))
++		return;
++
+ 	mutex_lock(&iommu->lock);
+ 
+ 	do_accounting = list_empty(&iommu->domain_list);
+@@ -1304,7 +1320,8 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 	int ret = -EINVAL, retries = 0;
+ 	unsigned long pgshift;
+ 	dma_addr_t iova = unmap->iova;
+-	u64 size = unmap->size;
++	dma_addr_t iova_end;
++	size_t size = unmap->size;
+ 	bool unmap_all = unmap->flags & VFIO_DMA_UNMAP_FLAG_ALL;
+ 	bool invalidate_vaddr = unmap->flags & VFIO_DMA_UNMAP_FLAG_VADDR;
+ 	struct rb_node *n, *first_n;
+@@ -1317,6 +1334,11 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 		goto unlock;
+ 	}
+ 
++	if (iova != unmap->iova || size != unmap->size) {
++		ret = -EOVERFLOW;
++		goto unlock;
++	}
++
+ 	pgshift = __ffs(iommu->pgsize_bitmap);
+ 	pgsize = (size_t)1 << pgshift;
+ 
+@@ -1326,10 +1348,15 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 	if (unmap_all) {
+ 		if (iova || size)
+ 			goto unlock;
+-		size = U64_MAX;
+-	} else if (!size || size & (pgsize - 1) ||
+-		   iova + size - 1 < iova || size > SIZE_MAX) {
+-		goto unlock;
++		size = SIZE_MAX;
++	} else {
++		if (!size || size & (pgsize - 1))
++			goto unlock;
++
++		if (check_add_overflow(iova, size - 1, &iova_end)) {
++			ret = -EOVERFLOW;
++			goto unlock;
++		}
+ 	}
+ 
+ 	/* When dirty tracking is enabled, allow only min supported pgsize */
+@@ -1376,7 +1403,7 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 		if (dma && dma->iova != iova)
+ 			goto unlock;
+ 
+-		dma = vfio_find_dma(iommu, iova + size - 1, 0);
++		dma = vfio_find_dma(iommu, iova_end, 0);
+ 		if (dma && dma->iova + dma->size != iova + size)
+ 			goto unlock;
+ 	}
+@@ -1578,7 +1605,9 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ {
+ 	bool set_vaddr = map->flags & VFIO_DMA_MAP_FLAG_VADDR;
+ 	dma_addr_t iova = map->iova;
++	dma_addr_t iova_end;
+ 	unsigned long vaddr = map->vaddr;
++	unsigned long vaddr_end;
+ 	size_t size = map->size;
+ 	int ret = 0, prot = 0;
+ 	size_t pgsize;
+@@ -1586,8 +1615,15 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 
+ 	/* Verify that none of our __u64 fields overflow */
+ 	if (map->size != size || map->vaddr != vaddr || map->iova != iova)
++		return -EOVERFLOW;
++
++	if (!size)
+ 		return -EINVAL;
+ 
++	if (check_add_overflow(iova, size - 1, &iova_end) ||
++	    check_add_overflow(vaddr, size - 1, &vaddr_end))
++		return -EOVERFLOW;
++
+ 	/* READ/WRITE from device perspective */
+ 	if (map->flags & VFIO_DMA_MAP_FLAG_WRITE)
+ 		prot |= IOMMU_WRITE;
+@@ -1603,13 +1639,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 
+ 	WARN_ON((pgsize - 1) & PAGE_MASK);
+ 
+-	if (!size || (size | iova | vaddr) & (pgsize - 1)) {
+-		ret = -EINVAL;
+-		goto out_unlock;
+-	}
+-
+-	/* Don't allow IOVA or virtual address wrap */
+-	if (iova + size - 1 < iova || vaddr + size - 1 < vaddr) {
++	if ((size | iova | vaddr) & (pgsize - 1)) {
+ 		ret = -EINVAL;
+ 		goto out_unlock;
+ 	}
+@@ -1640,7 +1670,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 		goto out_unlock;
+ 	}
+ 
+-	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova + size - 1)) {
++	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova_end)) {
+ 		ret = -EINVAL;
+ 		goto out_unlock;
+ 	}
+@@ -2907,7 +2937,8 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 		struct vfio_iommu_type1_dirty_bitmap_get range;
+ 		unsigned long pgshift;
+ 		size_t data_size = dirty.argsz - minsz;
+-		size_t iommu_pgsize;
++		size_t size, iommu_pgsize;
++		dma_addr_t iova, iova_end;
+ 
+ 		if (!data_size || data_size < sizeof(range))
+ 			return -EINVAL;
+@@ -2916,14 +2947,24 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 				   sizeof(range)))
+ 			return -EFAULT;
+ 
+-		if (range.iova + range.size < range.iova)
++		iova = range.iova;
++		size = range.size;
++
++		if (iova != range.iova || size != range.size)
++			return -EOVERFLOW;
++
++		if (!size)
+ 			return -EINVAL;
++
++		if (check_add_overflow(iova, size - 1, &iova_end))
++			return -EOVERFLOW;
++
+ 		if (!access_ok((void __user *)range.bitmap.data,
+ 			       range.bitmap.size))
+ 			return -EINVAL;
+ 
+ 		pgshift = __ffs(range.bitmap.pgsize);
+-		ret = verify_bitmap_size(range.size >> pgshift,
++		ret = verify_bitmap_size(size >> pgshift,
+ 					 range.bitmap.size);
+ 		if (ret)
+ 			return ret;
+@@ -2937,19 +2978,18 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+-		if (range.iova & (iommu_pgsize - 1)) {
++		if (iova & (iommu_pgsize - 1)) {
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+-		if (!range.size || range.size & (iommu_pgsize - 1)) {
++		if (size & (iommu_pgsize - 1)) {
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+ 
+ 		if (iommu->dirty_page_tracking)
+ 			ret = vfio_iova_dirty_bitmap(range.bitmap.data,
+-						     iommu, range.iova,
+-						     range.size,
++						     iommu, iova, size,
+ 						     range.bitmap.pgsize);
+ 		else
+ 			ret = -EINVAL;
 
-BTW, I think that there should be modification with function 
-kvm_deliver_intr() also. max irq bit is *INT_IPI + 1* where there will 
-be problem with INT_AVEC. Should it be modified as *EXCCODE_INT_NUM*?
-
-void kvm_deliver_intr(struct kvm_vcpu *vcpu)
-{
-         unsigned int priority;
-         unsigned long *pending = &vcpu->arch.irq_pending;
-         unsigned long *pending_clr = &vcpu->arch.irq_clear;
-
-         for_each_set_bit(priority, pending_clr, INT_IPI + 1)
-                 kvm_irq_clear(vcpu, priority);
-
-         for_each_set_bit(priority, pending, INT_IPI + 1)
-                 kvm_irq_deliver(vcpu, priority);
-}
-
-Regards
-Bibo Mao
-> 
-> Thanks.
-> Song Gao
-> 
-> 
->>>           break;
->>>   @@ -63,6 +65,7 @@ static int kvm_irq_clear(struct kvm_vcpu *vcpu, 
->>> unsigned int priority)
->>>       case INT_IPI:
->>>       case INT_SWI0:
->>>       case INT_SWI1:
->>> +    case INT_AVEC:
->>>           clear_gcsr_estat(irq);
->> Ditto.
->>
->> The others look good to me.
->>
->> Regards
->> Bibo Mao
->>>           break;
->>>   diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>> index 30e3b089a596..226c735155be 100644
->>> --- a/arch/loongarch/kvm/vcpu.c
->>> +++ b/arch/loongarch/kvm/vcpu.c
->>> @@ -657,8 +657,7 @@ static int _kvm_get_cpucfg_mask(int id, u64 *v)
->>>           *v = GENMASK(31, 0);
->>>           return 0;
->>>       case LOONGARCH_CPUCFG1:
->>> -        /* CPUCFG1_MSGINT is not supported by KVM */
->>> -        *v = GENMASK(25, 0);
->>> +        *v = GENMASK(26, 0);
->>>           return 0;
->>>       case LOONGARCH_CPUCFG2:
->>>           /* CPUCFG2 features unconditionally supported by KVM */
->>> @@ -726,6 +725,10 @@ static int kvm_check_cpucfg(int id, u64 val)
->>>           return -EINVAL;
->>>         switch (id) {
->>> +    case LOONGARCH_CPUCFG1:
->>> +        if ((val & CPUCFG1_MSGINT) && (!cpu_has_msgint()))
->>> +            return -EINVAL;
->>> +        return 0;
->>>       case LOONGARCH_CPUCFG2:
->>>           if (!(val & CPUCFG2_LLFTP))
->>>               /* Guests must have a constant timer */
->>> @@ -1658,6 +1661,12 @@ static int _kvm_vcpu_load(struct kvm_vcpu 
->>> *vcpu, int cpu)
->>>       kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_DMWIN2);
->>>       kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_DMWIN3);
->>>       kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_LLBCTL);
->>> +    if (cpu_has_msgint()) {
->>> +        kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_ISR0);
->>> +        kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_ISR1);
->>> +        kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_ISR2);
->>> +        kvm_restore_hw_gcsr(csr, LOONGARCH_CSR_ISR3);
->>> +    }
->>>         /* Restore Root.GINTC from unused Guest.GINTC register */
->>>       write_csr_gintc(csr->csrs[LOONGARCH_CSR_GINTC]);
->>> @@ -1747,6 +1756,12 @@ static int _kvm_vcpu_put(struct kvm_vcpu 
->>> *vcpu, int cpu)
->>>       kvm_save_hw_gcsr(csr, LOONGARCH_CSR_DMWIN1);
->>>       kvm_save_hw_gcsr(csr, LOONGARCH_CSR_DMWIN2);
->>>       kvm_save_hw_gcsr(csr, LOONGARCH_CSR_DMWIN3);
->>> +    if (cpu_has_msgint()) {
->>> +        kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ISR0);
->>> +        kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ISR1);
->>> +        kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ISR2);
->>> +        kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ISR3);
->>> +    }
->>>         vcpu->arch.aux_inuse |= KVM_LARCH_SWCSR_LATEST;
->>>   diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
->>> index d8c813e2d72e..438885b6f2b1 100644
->>> --- a/arch/loongarch/kvm/vm.c
->>> +++ b/arch/loongarch/kvm/vm.c
->>> @@ -37,6 +37,9 @@ static void kvm_vm_init_features(struct kvm *kvm)
->>>           kvm->arch.support_features |= 
->>> BIT(KVM_LOONGARCH_VM_FEAT_PV_STEALTIME);
->>>       }
->>>   +    if (cpu_has_msgint())
->>> +        kvm->arch.support_features |= 
->>> BIT(KVM_LOONGARCH_VM_FEAT_MSGINT);
->>> +
->>>       val = read_csr_gcfg();
->>>       if (val & CSR_GCFG_GPMP)
->>>           kvm->arch.support_features |= BIT(KVM_LOONGARCH_VM_FEAT_PMU);
->>> @@ -153,6 +156,7 @@ static int kvm_vm_feature_has_attr(struct kvm 
->>> *kvm, struct kvm_device_attr *attr
->>>       case KVM_LOONGARCH_VM_FEAT_PMU:
->>>       case KVM_LOONGARCH_VM_FEAT_PV_IPI:
->>>       case KVM_LOONGARCH_VM_FEAT_PV_STEALTIME:
->>> +        case KVM_LOONGARCH_VM_FEAT_MSGINT:
->>>           if (kvm_vm_support(&kvm->arch, attr->attr))
->>>               return 0;
->>>           return -ENXIO;
->>>
->>
-> 
+-- 
+2.47.3
 
