@@ -1,298 +1,181 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7B230F55F
-	for <kvm@vger.kernel.org>; Mon, 13 Oct 2025 15:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB24930CDBF;
+	Mon, 13 Oct 2025 15:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368866; cv=none; b=p9khzKUmUluAtXu1u/feAZLFS1lImnKGoL2Yn7CYZmP/5Zqm5tDirSxLb7/NoAvoQwXY/pFEwajFszlYpAJbCIi2vete/OxU3Lm10CZCjW4aeI28PZyWp24awk3DXMxZBWKJyz/x/x0/QjogVCNxdne5s2w3xury2VhIKqz9iI0=
+	t=1760369188; cv=none; b=X5ozrGk5sghpZA1Qkx5ka5I4x29di8NgPpLej3QlaSYuJk2wsN4Pi2a4S4J8SZxre5cHo9OMNq/uSOFjf5R7faivCTf9KWmedltMvt8kNgvrVNmtKO3IIfvnmp2gLBHl3JMFKeSwCMiFTeeoO1w9ej4RSYZiAf0Hor/ALrT+2mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368866; c=relaxed/simple;
-	bh=uVIIcfGUtnM0AFmoNWciBQ3Oy6FcGT5tcohKaCO7Fdk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gr3xIXewARGC5FNQft5JwY6wITmYD7VtaJJvdcDYkilOFZDrj3JEVRn6PDBhRGRsGWZcBs1mPfMo9k0rIv4k+zs/tviyzezQ8zt8u2avokWuCxDv7oauQvIFzv87i2bCXegUurUwlm43MhGOypsemlRic3zJgNtJ7bl336WiERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HTo7fZEw; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+	s=arc-20240116; t=1760369188; c=relaxed/simple;
+	bh=iwT2J/6Ee3JNCasRQZJmlsM7yv8uBxsSvtO7x8CH+0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lJtgoQkhZAFbVYkCxo3gGg34Gwjxibtt9MZbfVN3RKvvMLYkLcPBI90+72zlyoRkW75VlZrkDMHG1df0EhTQ62xPREtiZEJUScR54Vvzm1HnmnCqX46aMiAdxt+cgMXJzsjPEcYdrHOGcg4qfobZilEY1awONK06I+jgy0Mabyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QI46AevF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HTo7fZEw"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46eee58d405so25823675e9.1
-        for <kvm@vger.kernel.org>; Mon, 13 Oct 2025 08:21:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760368862; x=1760973662; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YIYoPCNyBFGg9vKc8jF45CxIFXipDwwSdrNJ736RRBY=;
-        b=HTo7fZEwmN/AchWolAniP+Y4PdwpMVrwbOAXne7mzNG4myDYJ5qbQ+rJ+V6PTgj/cC
-         lqduToxSwIztdVYxE5eNzqwhYLKEhizNJLcl5XjKazvgKlm8WrAyJD7LamHnmz8/Leq0
-         7cXMHVYqMlF7ly6QEH5DjrboKM8xp1zdy4Ojl2qGl/YbeAYhKYiOBMZzXbhUw2T2opIW
-         KZk8Usj+lTKDMiIb9rVeQXiakJlohU+I8aWeC+IxR1MWe8TQYs0+blaGlQq/HFcq7Em0
-         B46d0IFTGtC6l6mEWRniwIljSkUUIba3qrm2zU0pFB5UpdHyHW/yyy/8fCA7PPeC15XI
-         k7wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760368862; x=1760973662;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YIYoPCNyBFGg9vKc8jF45CxIFXipDwwSdrNJ736RRBY=;
-        b=RHVjVNm+VlKTaNBMzeVw6NPTq9civGgSgejNeOQs2KdRVDw9I10Px3ZWQR9QcPmMpJ
-         4t/5SULC7skWQaIWAXDnVB1ulM6EEMve8GO1Ox4IiTKV9A2a5pwMfREWCJbfzE/LJQpL
-         n+VpCuQRsXlEsu6tCRiI4rGFGVqmGOirMdAGRnuiUnEBll/sTCtvguJbpyfWbBAzsJor
-         e5YLMvNE/+m0kn2QbWGvZWoiOZ+YIBAyJJAd5t11z9aHrv/J+kcMaRio2ai1p4qmg9SK
-         YiW+yiJ9lwunjvjcIRh8yPNQ2Evk3e4tIrerocwfysg35vAfS2DRrEGlxUw6pLevH3a6
-         jOuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJwLb38M1HNGraLwARhDAG9clzOZHRqPxAhkSG7mLBlw1UgOtMPoqF5HDJvsVc4DeVdXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq0TwQPpIUgzzLi1cfmzeQ5neVnXvMwfhLY+GSYHRvONsopkqZ
-	VCGtDivmepWUWjdpsddWiWTcuYqAfeGWZhcZ5h0xmI2/m5ba/R1Zzt+J/jtt2CAoT0y2RdCIGv9
-	NhWQgdKEZP+0JEQ==
-X-Google-Smtp-Source: AGHT+IFVI/ebIiE03xp+IXTAIvzD7VP5Hg6xiJr5X8tY19ifba+QDyv+tPutqETwPbUzyh9TyIvbuut1FWkifw==
-X-Received: from wmcq4.prod.google.com ([2002:a05:600c:c104:b0:46f:aa50:d6fc])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b1b:b0:46f:b327:31c4 with SMTP id 5b1f17b1804b1-46fb3273563mr98314565e9.14.1760368862615;
- Mon, 13 Oct 2025 08:21:02 -0700 (PDT)
-Date: Mon, 13 Oct 2025 15:20:52 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QI46AevF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F303AC4CEFE;
+	Mon, 13 Oct 2025 15:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760369187;
+	bh=iwT2J/6Ee3JNCasRQZJmlsM7yv8uBxsSvtO7x8CH+0Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QI46AevFpmY08Ci9IDO9Gbh1+r/WU2BxnmEGrp2cn2WKFO9huEbazJLddAk4lN5GX
+	 b5c/n1Xuj+sMBclqJh5bm30LuSPzc6gcOuf3MBJoABy1hwPlYjR9mrnXGr0b+7QdBH
+	 fhxk9/aQRt4ipCV+PI/GqslOGkkvvHIuFGClxI7pj6yC11uh2TNxiWya2U/uyAT24m
+	 ZNi8xuJ0//k5X/ObU507wts9lR7ncxAQFX2BVBDLEAaxW0xvMTsRJHR/EzMS3LIB1a
+	 WgkAoZ71H1kPSiyyABQNvnMsFUwlG5bAg4iD17Ru5KX1wb5ub49SkfrHTpAFNdvccF
+	 ulvZnDXcm9buA==
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v5 0/9] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Mon, 13 Oct 2025 18:26:02 +0300
+Message-ID: <cover.1760368250.git.leon@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIANMY7WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDA0Nj3SQT3RzDkjTdgtSi5IJSXXNLY0MLw7REUwsLEyWgpoKi1LTMCrC B0bG1tQCGPpaCYAAAAA==
-X-Change-Id: 20251013-b4-l1tf-percpu-793181fa5884
-X-Mailer: b4 0.14.2
-Message-ID: <20251013-b4-l1tf-percpu-v1-1-d65c5366ea1a@google.com>
-Subject: [PATCH] KVM: x86: Unify L1TF flushing under per-CPU variable
-From: Brendan Jackman <jackmanb@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Currently the tracking of the need to flush L1D for L1TF is tracked by
-two bits: one per-CPU and one per-vCPU.
+Changelog:
+v5:
+ * Rebased on top of v6.18-rc1.
+ * Added more validation logic to make sure that DMA-BUF length doesn't
+   overflow in various scenarios.
+ * Hide kernel config from the users.
+ * Fixed type conversion issue. DMA ranges are exposed with u64 length,
+   but DMA-BUF uses "unsigned int" as a length for SG entries.
+ * Added check to prevent from VFIO drivers which reports BAR size
+   different from PCI, do not use DMA-BUF functionality.
+v4: https://lore.kernel.org/all/cover.1759070796.git.leon@kernel.org
+ * Split pcim_p2pdma_provider() to two functions, one that initializes
+   array of providers and another to return right provider pointer.
+v3: https://lore.kernel.org/all/cover.1758804980.git.leon@kernel.org
+ * Changed pcim_p2pdma_enable() to be pcim_p2pdma_provider().
+ * Cache provider in vfio_pci_dma_buf struct instead of BAR index.
+ * Removed misleading comment from pcim_p2pdma_provider().
+ * Moved MMIO check to be in pcim_p2pdma_provider().
+v2: https://lore.kernel.org/all/cover.1757589589.git.leon@kernel.org/
+ * Added extra patch which adds new CONFIG, so next patches can reuse
+ * it.
+ * Squashed "PCI/P2PDMA: Remove redundant bus_offset from map state"
+   into the other patch.
+ * Fixed revoke calls to be aligned with true->false semantics.
+ * Extended p2pdma_providers to be per-BAR and not global to whole
+ * device.
+ * Fixed possible race between dmabuf states and revoke.
+ * Moved revoke to PCI BAR zap block.
+v1: https://lore.kernel.org/all/cover.1754311439.git.leon@kernel.org
+ * Changed commit messages.
+ * Reused DMA_ATTR_MMIO attribute.
+ * Returned support for multiple DMA ranges per-dMABUF.
+v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com
 
-The per-vCPU bit is always set when the vCPU shows up on a core, so
-there is no interesting state that's truly per-vCPU. Indeed, this is a
-requirement, since L1D is a part of the physical CPU.
+---------------------------------------------------------------------------
+Based on "[PATCH v6 00/16] dma-mapping: migrate to physical address-based API"
+https://lore.kernel.org/all/cover.1757423202.git.leonro@nvidia.com/ series.
+---------------------------------------------------------------------------
 
-So simplify this by combining the two bits.
+This series extends the VFIO PCI subsystem to support exporting MMIO
+regions from PCI device BARs as dma-buf objects, enabling safe sharing of
+non-struct page memory with controlled lifetime management. This allows RDMA
+and other subsystems to import dma-buf FDs and build them into memory regions
+for PCI P2P operations.
 
-Since this requires a DECLARE_PER_CPU() which belongs in kvm_host.h,
-also move the remaining helper definitions there to live next to the
-declaration.
+The series supports a use case for SPDK where a NVMe device will be
+owned by SPDK through VFIO but interacting with a RDMA device. The RDMA
+device may directly access the NVMe CMB or directly manipulate the NVMe
+device's doorbell using PCI P2P.
 
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- arch/x86/include/asm/hardirq.h  | 26 --------------------------
- arch/x86/include/asm/idtentry.h |  1 +
- arch/x86/include/asm/kvm_host.h | 21 ++++++++++++++++++---
- arch/x86/kvm/mmu/mmu.c          |  2 +-
- arch/x86/kvm/vmx/nested.c       |  2 +-
- arch/x86/kvm/vmx/vmx.c          | 17 +++--------------
- arch/x86/kvm/x86.c              | 12 +++++++++---
- 7 files changed, 33 insertions(+), 48 deletions(-)
+However, as a general mechanism, it can support many other scenarios with
+VFIO. This dmabuf approach can be usable by iommufd as well for generic
+and safe P2P mappings.
 
-diff --git a/arch/x86/include/asm/hardirq.h b/arch/x86/include/asm/hardirq.h
-index f00c09ffe6a95f07342bb0c6cea3769d71eecfa9..29d8fa43d4404add3b191821e42c3526b0f2c950 100644
---- a/arch/x86/include/asm/hardirq.h
-+++ b/arch/x86/include/asm/hardirq.h
-@@ -5,9 +5,6 @@
- #include <linux/threads.h>
- 
- typedef struct {
--#if IS_ENABLED(CONFIG_KVM_INTEL)
--	u8	     kvm_cpu_l1tf_flush_l1d;
--#endif
- 	unsigned int __nmi_count;	/* arch dependent */
- #ifdef CONFIG_X86_LOCAL_APIC
- 	unsigned int apic_timer_irqs;	/* arch dependent */
-@@ -68,27 +65,4 @@ extern u64 arch_irq_stat(void);
- DECLARE_PER_CPU_CACHE_HOT(u16, __softirq_pending);
- #define local_softirq_pending_ref       __softirq_pending
- 
--#if IS_ENABLED(CONFIG_KVM_INTEL)
--/*
-- * This function is called from noinstr interrupt contexts
-- * and must be inlined to not get instrumentation.
-- */
--static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void)
--{
--	__this_cpu_write(irq_stat.kvm_cpu_l1tf_flush_l1d, 1);
--}
--
--static __always_inline void kvm_clear_cpu_l1tf_flush_l1d(void)
--{
--	__this_cpu_write(irq_stat.kvm_cpu_l1tf_flush_l1d, 0);
--}
--
--static __always_inline bool kvm_get_cpu_l1tf_flush_l1d(void)
--{
--	return __this_cpu_read(irq_stat.kvm_cpu_l1tf_flush_l1d);
--}
--#else /* !IS_ENABLED(CONFIG_KVM_INTEL) */
--static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
--#endif /* IS_ENABLED(CONFIG_KVM_INTEL) */
--
- #endif /* _ASM_X86_HARDIRQ_H */
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index a4ec27c6798875900cbdbba927918e70b900f63b..67fb1adadbb8ac2bd083ba6245de2e7d58b5b398 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -12,6 +12,7 @@
- #include <linux/hardirq.h>
- 
- #include <asm/irq_stack.h>
-+#include <asm/kvm_host.h>
- 
- typedef void (*idtentry_t)(struct pt_regs *regs);
- 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 48598d017d6f3f07263a2ffffe670be2658eb9cb..d93c2b9dbfbc9824cce65256f606f32e41c93167 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1055,9 +1055,6 @@ struct kvm_vcpu_arch {
- 	/* be preempted when it's in kernel-mode(cpl=0) */
- 	bool preempted_in_kernel;
- 
--	/* Flush the L1 Data cache for L1TF mitigation on VMENTER */
--	bool l1tf_flush_l1d;
--
- 	/* Host CPU on which VM-entry was most recently attempted */
- 	int last_vmentry_cpu;
- 
-@@ -2476,4 +2473,22 @@ static inline bool kvm_arch_has_irq_bypass(void)
- 	return enable_device_posted_irqs;
- }
- 
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+
-+DECLARE_PER_CPU(bool, l1tf_flush_l1d);
-+
-+/*
-+ * This function is called from noinstr interrupt contexts
-+ * and must be inlined to not get instrumentation.
-+ */
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void)
-+{
-+	__this_cpu_write(l1tf_flush_l1d, true);
-+}
-+
-+#else /* !IS_ENABLED(CONFIG_KVM_INTEL) */
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
-+#endif /* IS_ENABLED(CONFIG_KVM_INTEL) */
-+
-+
- #endif /* _ASM_X86_KVM_HOST_H */
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 667d66cf76d5e52c22f9517914307244ae868eea..8c0dce401a42d977756ca82d249bb33c858b9c9f 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4859,7 +4859,7 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 	 */
- 	BUILD_BUG_ON(lower_32_bits(PFERR_SYNTHETIC_MASK));
- 
--	vcpu->arch.l1tf_flush_l1d = true;
-+	kvm_set_cpu_l1tf_flush_l1d();
- 	if (!flags) {
- 		trace_kvm_page_fault(vcpu, fault_address, error_code);
- 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 76271962cb7083b475de6d7d24bf9cb918050650..5035cfdc4e55365bfabf08c704b9bff5c06267a1 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3880,7 +3880,7 @@ static int nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
- 		goto vmentry_failed;
- 
- 	/* Hide L1D cache contents from the nested guest.  */
--	vmx->vcpu.arch.l1tf_flush_l1d = true;
-+	kvm_set_cpu_l1tf_flush_l1d();
- 
- 	/*
- 	 * Must happen outside of nested_vmx_enter_non_root_mode() as it will
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 546272a5d34da301710df1d89414f41fc9b24a1f..f982f6721dc3e0dfe046881c72732326e16fcfb3 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6673,25 +6673,14 @@ static noinstr void vmx_l1d_flush(struct kvm_vcpu *vcpu)
- 	 * 'always'
- 	 */
- 	if (static_branch_likely(&vmx_l1d_flush_cond)) {
--		bool flush_l1d;
--
- 		/*
- 		 * Clear the per-vcpu flush bit, it gets set again if the vCPU
- 		 * is reloaded, i.e. if the vCPU is scheduled out or if KVM
- 		 * exits to userspace, or if KVM reaches one of the unsafe
--		 * VMEXIT handlers, e.g. if KVM calls into the emulator.
-+		 * VMEXIT handlers, e.g. if KVM calls into the emulator, or from the
-+		 * interrupt handlers.
- 		 */
--		flush_l1d = vcpu->arch.l1tf_flush_l1d;
--		vcpu->arch.l1tf_flush_l1d = false;
--
--		/*
--		 * Clear the per-cpu flush bit, it gets set again from
--		 * the interrupt handlers.
--		 */
--		flush_l1d |= kvm_get_cpu_l1tf_flush_l1d();
--		kvm_clear_cpu_l1tf_flush_l1d();
--
--		if (!flush_l1d)
-+		if (!this_cpu_xchg(l1tf_flush_l1d, false))
- 			return;
- 	}
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 4b8138bd48572fd161eda73d2dbdc1dcd0bcbcac..766d61516602e0f4975930224fc57b5a511281e5 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -171,6 +171,12 @@ bool __read_mostly enable_vmware_backdoor = false;
- module_param(enable_vmware_backdoor, bool, 0444);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_vmware_backdoor);
- 
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+/* Flush the L1 Data cache for L1TF mitigation on VMENTER */
-+DEFINE_PER_CPU(bool, l1tf_flush_l1d);
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(l1tf_flush_l1d);
-+#endif
-+
- /*
-  * Flags to manipulate forced emulation behavior (any non-zero value will
-  * enable forced emulation).
-@@ -5190,7 +5196,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
- 
--	vcpu->arch.l1tf_flush_l1d = true;
-+	kvm_set_cpu_l1tf_flush_l1d();
- 
- 	if (vcpu->scheduled_out && pmu->version && pmu->event_count) {
- 		pmu->need_cleanup = true;
-@@ -8000,7 +8006,7 @@ int kvm_write_guest_virt_system(struct kvm_vcpu *vcpu, gva_t addr, void *val,
- 				unsigned int bytes, struct x86_exception *exception)
- {
- 	/* kvm_write_guest_virt_system can pull in tons of pages. */
--	vcpu->arch.l1tf_flush_l1d = true;
-+	kvm_set_cpu_l1tf_flush_l1d();
- 
- 	return kvm_write_guest_virt_helper(addr, val, bytes, vcpu,
- 					   PFERR_WRITE_MASK, exception);
-@@ -9396,7 +9402,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 		return handle_emulation_failure(vcpu, emulation_type);
- 	}
- 
--	vcpu->arch.l1tf_flush_l1d = true;
-+	kvm_set_cpu_l1tf_flush_l1d();
- 
- 	if (!(emulation_type & EMULTYPE_NO_DECODE)) {
- 		kvm_clear_exception_queue(vcpu);
+In addition to the SPDK use-case mentioned above, the capability added
+in this patch series can also be useful when a buffer (located in device
+memory such as VRAM) needs to be shared between any two dGPU devices or
+instances (assuming one of them is bound to VFIO PCI) as long as they
+are P2P DMA compatible.
 
----
-base-commit: 6b36119b94d0b2bb8cea9d512017efafd461d6ac
-change-id: 20251013-b4-l1tf-percpu-793181fa5884
+The implementation provides a revocable attachment mechanism using dma-buf
+move operations. MMIO regions are normally pinned as BARs don't change
+physical addresses, but access is revoked when the VFIO device is closed
+or a PCI reset is issued. This ensures kernel self-defense against
+potentially hostile userspace.
 
-Best regards,
+The series includes significant refactoring of the PCI P2PDMA subsystem
+to separate core P2P functionality from memory allocation features,
+making it more modular and suitable for VFIO use cases that don't need
+struct page support.
+
+-----------------------------------------------------------------------
+The series is based originally on
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
+but heavily rewritten to be based on DMA physical API.
+-----------------------------------------------------------------------
+The WIP branch can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio-v5
+
+Thanks
+
+Leon Romanovsky (7):
+  PCI/P2PDMA: Separate the mmap() support from the core logic
+  PCI/P2PDMA: Simplify bus address mapping API
+  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
+    allocation
+  PCI/P2PDMA: Export pci_p2pdma_map_type() function
+  types: move phys_vec definition to common header
+  vfio/pci: Enable peer-to-peer DMA transactions by default
+  vfio/pci: Add dma-buf export support for MMIO regions
+
+Vivek Kasireddy (2):
+  vfio: Export vfio device get and put registration helpers
+  vfio/pci: Share the core device pointer while invoking feature
+    functions
+
+ block/blk-mq-dma.c                 |   7 +-
+ drivers/iommu/dma-iommu.c          |   4 +-
+ drivers/pci/p2pdma.c               | 175 ++++++++---
+ drivers/vfio/pci/Kconfig           |   3 +
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/vfio_pci_config.c |  22 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  63 ++--
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 446 +++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
+ drivers/vfio/vfio_main.c           |   2 +
+ include/linux/pci-p2pdma.h         | 120 +++++---
+ include/linux/types.h              |   5 +
+ include/linux/vfio.h               |   2 +
+ include/linux/vfio_pci_core.h      |   1 +
+ include/uapi/linux/vfio.h          |  25 ++
+ kernel/dma/direct.c                |   4 +-
+ mm/hmm.c                           |   2 +-
+ 17 files changed, 785 insertions(+), 121 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.51.0
 
