@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFE22676DE;
-	Tue, 14 Oct 2025 01:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA922FF66C;
+	Tue, 14 Oct 2025 01:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760404275; cv=none; b=V2VDaMLqAuxfKPqUbzLjcNQWIB1IijEgfnudL8o5FSQSzabYeHJsIy7nXON6VrYnIfEVL6Te8+VIhRLBrs3yetxbIyrKsh7Yo2WkDWl8bjz6Wrrtt7+/tjp6YjRk5zUiXC0otBZiJeF8fiwogbxmofSAx50losi/dkT3IQhDhCk=
+	t=1760404275; cv=none; b=GoR21Yj+CRz2R12AmPhQmjv8iURkZa6xEC9jvjUP3/KaL/JMHKX04FHOSj50lN4i7j0DslSj7PXVJhouv8eXOtsQIBpTkso6sn23Wlls+ehEQ+VQELfL7ucaYwbZLUxFrF//RSDO7zLtp60NbJmEYxUzDf2yZvjCaMfdVAdLeKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760404275; c=relaxed/simple;
-	bh=I+tsIpXXIw1NuLrl6IRU5JPhXVlMLGxg38mASCHf2xo=;
+	bh=DHq5uGTNowsiFid7W+MiqHkhgWSktQxI8GU1iOlRebY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RE/oQWNLxD2q2GXOAkNwTrHwVibMuDgLlwzVFZVjQPUyKZl4qq13Wfrpp32UR0WoQTuc5UC6C0YgoY92Oy63mFhFRXJ3MkdDps4nvbvDqCN3Z1smlYXwzQFc6RUwytDaF1Vg8XjYCxg5J3E21jGnW8525F/cCWCNnPk5CkpBIDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Z/s/3UsO; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=mlfT4qGHQfDyBRHDhF4hr7Lz1k43UthSpbFAHs1TIDIzLmsKMy9o3NF8/54gem0NUVZjyywLWNKiQJztN6sy+92BOM0FE7VPBo7f+ZhJ53/Sa+RgYtZm3gQHQrtbSVGJdGZIR4+Zbs3MecddG0Pn+BYnBlDTCWUD4mRRk/VbOXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=G5bJ5KB1; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Z/s/3UsO"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="G5bJ5KB1"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1c1568441
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1R1568441
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 13 Oct 2025 18:10:09 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1c1568441
+	Mon, 13 Oct 2025 18:09:58 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1R1568441
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025092201; t=1760404209;
-	bh=nWDYWTBQfXJWRFvG/qQHHf/04i2ipKp8HiqZlCcZDjU=;
+	s=2025092201; t=1760404199;
+	bh=SoUdV4rf/zSCuc9w5+G255DLkPF8EY2QJti8HxKvkS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/s/3UsO7GUC6KExuiqTWiQXkFbIrDMXu0nD9dgyzO2EzaJA7mwQjX79Ru3wX9oT8
-	 ZD5I5ymlZNCfXfMKcaz6JGWLGLcbzNk/OAecpAehlYvaZ/b9Yd1wx7AJNjOcmycT0I
-	 txepAgzrhIEUdzBsxl52eEz78rG+O/e18m+X5dZFt246UrXTD/1y3dDDc7yiw59U2p
-	 AqLTqrvQ+PBYRLZ5Cblckml213Iw/FLYLF+BU0VGHFD1qtSTic/fFiTOn8AvYNXmIQ
-	 jZgr0V6dhHOOWrup3fPd7MysH1I+HpI+8XnGKm/Lp2nVga9FrEunOr8N7FxJsIlyZM
-	 zD8o+IXBvzvhg==
+	b=G5bJ5KB1CGMtmcW2zR6WUiFqvwb2guul/xha8ZdqIGVBm/gVWOGt3E4ElBCumgz9Q
+	 58KvJ4Ai410v/75NvmdiieeyQVbEEJdORgTEvOYJDamFL/cdrIfVpa8Scac8G21/EW
+	 Kh//+kgcKZUWOB94tibQJBzQOU7n+QmF7IVkwzwdWMDm656s9NZYTGYnL2gfxaBctC
+	 mpjJgLY6/Ji6n4helI1iieU+RN6uLwwdvPQPXqfIdEuOvFdkRkiZ8Nlo3pdzzgpYut
+	 Wa2pzcmITRwF9COz224OG9KTl61aRYDjoB+LUeruCVcs7i02fYS7m4DpBD3sG0Dwe9
+	 TKx94Ref2TgZg==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v8 15/21] KVM: VMX: Dump FRED context in dump_vmcs()
-Date: Mon, 13 Oct 2025 18:09:44 -0700
-Message-ID: <20251014010950.1568389-16-xin@zytor.com>
+Subject: [PATCH v8 04/21] x86/cea: Prefix event stack names with ESTACK_
+Date: Mon, 13 Oct 2025 18:09:33 -0700
+Message-ID: <20251014010950.1568389-5-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014010950.1568389-1-xin@zytor.com>
 References: <20251014010950.1568389-1-xin@zytor.com>
@@ -54,133 +54,225 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xin Li <xin3.li@intel.com>
+Add the ESTACK_ prefix to event stack names to improve clarity and
+readability.  Without the prefix, names like DF, NMI, and DB are too
+brief and potentially ambiguous.
 
-Add FRED related VMCS fields to dump_vmcs() to dump FRED context.
+This renaming also prepares for converting __this_cpu_ist_top_va from
+a macro into a function that accepts an enum exception_stack_ordering
+argument, without requiring changes to existing callsites.
 
-Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Changes in v5:
-* Read guest FRED RSP0 with vmx_read_guest_fred_rsp0() (Sean).
-* Add TB from Xuelian Guo.
-
-Change in v3:
-* Use (vmentry_ctrl & VM_ENTRY_LOAD_IA32_FRED) instead of is_fred_enabled()
-  (Chao Gao).
-
-Changes in v2:
-* Use kvm_cpu_cap_has() instead of cpu_feature_enabled() (Chao Gao).
-* Dump guest FRED states only if guest has FRED enabled (Nikolay Borisov).
+Changes in v7:
+* Move rename code to this patch (Dave Hansen).
+* Fix a vertical alignment (Dave Hansen).
 ---
- arch/x86/kvm/vmx/vmx.c | 43 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ arch/x86/coco/sev/noinstr.c           |  4 ++--
+ arch/x86/coco/sev/vc-handle.c         |  2 +-
+ arch/x86/include/asm/cpu_entry_area.h | 26 +++++++++++++-------------
+ arch/x86/kernel/cpu/common.c          | 10 +++++-----
+ arch/x86/kernel/dumpstack_64.c        | 14 +++++++-------
+ arch/x86/kernel/fred.c                |  6 +++---
+ arch/x86/kernel/traps.c               |  2 +-
+ arch/x86/mm/cpu_entry_area.c          | 12 ++++++------
+ arch/x86/mm/fault.c                   |  2 +-
+ 9 files changed, 39 insertions(+), 39 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2379a0433816..b92fc81af5c4 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1398,6 +1398,9 @@ static void vmx_write_guest_fred_rsp0(struct vcpu_vmx *vmx, u64 data)
- 	vmx_write_guest_host_msr(vmx, MSR_IA32_FRED_RSP0, data,
- 				 &vmx->msr_guest_fred_rsp0);
+diff --git a/arch/x86/coco/sev/noinstr.c b/arch/x86/coco/sev/noinstr.c
+index b527eafb6312..c3985c9b232c 100644
+--- a/arch/x86/coco/sev/noinstr.c
++++ b/arch/x86/coco/sev/noinstr.c
+@@ -30,7 +30,7 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
+ 	if (ip_within_syscall_gap(regs))
+ 		return false;
+ 
+-	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
++	return ((sp >= __this_cpu_ist_bottom_va(ESTACK_VC)) && (sp < __this_cpu_ist_top_va(ESTACK_VC)));
  }
-+#else
-+/* Make sure it builds on 32-bit */
-+static u64 vmx_read_guest_fred_rsp0(struct vcpu_vmx *vmx) { return 0; }
- #endif
  
- static void grow_ple_window(struct kvm_vcpu *vcpu)
-@@ -6441,7 +6444,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	u32 vmentry_ctl, vmexit_ctl;
- 	u32 cpu_based_exec_ctrl, pin_based_exec_ctrl, secondary_exec_control;
--	u64 tertiary_exec_control;
-+	u64 tertiary_exec_control, secondary_vmexit_ctl;
- 	unsigned long cr4;
- 	int efer_slot;
+ /*
+@@ -82,7 +82,7 @@ void noinstr __sev_es_ist_exit(void)
+ 	/* Read IST entry */
+ 	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
  
-@@ -6452,6 +6455,8 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+-	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
++	if (WARN_ON(ist == __this_cpu_ist_top_va(ESTACK_VC)))
+ 		return;
  
- 	vmentry_ctl = vmcs_read32(VM_ENTRY_CONTROLS);
- 	vmexit_ctl = vmcs_read32(VM_EXIT_CONTROLS);
-+	secondary_vmexit_ctl = cpu_has_secondary_vmexit_ctrls() ?
-+			       vmcs_read64(SECONDARY_VM_EXIT_CONTROLS) : 0;
- 	cpu_based_exec_ctrl = vmcs_read32(CPU_BASED_VM_EXEC_CONTROL);
- 	pin_based_exec_ctrl = vmcs_read32(PIN_BASED_VM_EXEC_CONTROL);
- 	cr4 = vmcs_readl(GUEST_CR4);
-@@ -6498,6 +6503,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	vmx_dump_sel("LDTR:", GUEST_LDTR_SELECTOR);
- 	vmx_dump_dtsel("IDTR:", GUEST_IDTR_LIMIT);
- 	vmx_dump_sel("TR:  ", GUEST_TR_SELECTOR);
-+	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_FRED)
-+		pr_err("FRED guest: config=0x%016llx, stack_levels=0x%016llx\n"
-+		       "RSP0=0x%016llx, RSP1=0x%016llx\n"
-+		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
-+		       vmcs_read64(GUEST_IA32_FRED_CONFIG),
-+		       vmcs_read64(GUEST_IA32_FRED_STKLVLS),
-+		       vmx_read_guest_fred_rsp0(vmx),
-+		       vmcs_read64(GUEST_IA32_FRED_RSP1),
-+		       vmcs_read64(GUEST_IA32_FRED_RSP2),
-+		       vmcs_read64(GUEST_IA32_FRED_RSP3));
- 	efer_slot = vmx_find_loadstore_msr_slot(&vmx->msr_autoload.guest, MSR_EFER);
- 	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_EFER)
- 		pr_err("EFER= 0x%016llx\n", vmcs_read64(GUEST_IA32_EFER));
-@@ -6549,6 +6564,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	       vmcs_readl(HOST_TR_BASE));
- 	pr_err("GDTBase=%016lx IDTBase=%016lx\n",
- 	       vmcs_readl(HOST_GDTR_BASE), vmcs_readl(HOST_IDTR_BASE));
-+	if (vmexit_ctl & SECONDARY_VM_EXIT_LOAD_IA32_FRED)
-+		pr_err("FRED host: config=0x%016llx, stack_levels=0x%016llx\n"
-+		       "RSP0=0x%016lx, RSP1=0x%016llx\n"
-+		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
-+		       vmcs_read64(HOST_IA32_FRED_CONFIG),
-+		       vmcs_read64(HOST_IA32_FRED_STKLVLS),
-+		       (unsigned long)task_stack_page(current) + THREAD_SIZE,
-+		       vmcs_read64(HOST_IA32_FRED_RSP1),
-+		       vmcs_read64(HOST_IA32_FRED_RSP2),
-+		       vmcs_read64(HOST_IA32_FRED_RSP3));
- 	pr_err("CR0=%016lx CR3=%016lx CR4=%016lx\n",
- 	       vmcs_readl(HOST_CR0), vmcs_readl(HOST_CR3),
- 	       vmcs_readl(HOST_CR4));
-@@ -6574,25 +6599,29 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	pr_err("*** Control State ***\n");
- 	pr_err("CPUBased=0x%08x SecondaryExec=0x%08x TertiaryExec=0x%016llx\n",
- 	       cpu_based_exec_ctrl, secondary_exec_control, tertiary_exec_control);
--	pr_err("PinBased=0x%08x EntryControls=%08x ExitControls=%08x\n",
--	       pin_based_exec_ctrl, vmentry_ctl, vmexit_ctl);
-+	pr_err("PinBased=0x%08x EntryControls=0x%08x\n",
-+	       pin_based_exec_ctrl, vmentry_ctl);
-+	pr_err("ExitControls=0x%08x SecondaryExitControls=0x%016llx\n",
-+	       vmexit_ctl, secondary_vmexit_ctl);
- 	pr_err("ExceptionBitmap=%08x PFECmask=%08x PFECmatch=%08x\n",
- 	       vmcs_read32(EXCEPTION_BITMAP),
- 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MASK),
- 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MATCH));
--	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x\n",
-+	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x event_data=%016llx\n",
- 	       vmcs_read32(VM_ENTRY_INTR_INFO_FIELD),
- 	       vmcs_read32(VM_ENTRY_EXCEPTION_ERROR_CODE),
--	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN));
-+	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN),
-+	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(INJECTED_EVENT_DATA) : 0);
- 	pr_err("VMExit: intr_info=%08x errcode=%08x ilen=%08x\n",
- 	       vmcs_read32(VM_EXIT_INTR_INFO),
- 	       vmcs_read32(VM_EXIT_INTR_ERROR_CODE),
- 	       vmcs_read32(VM_EXIT_INSTRUCTION_LEN));
- 	pr_err("        reason=%08x qualification=%016lx\n",
- 	       vmcs_read32(VM_EXIT_REASON), vmcs_readl(EXIT_QUALIFICATION));
--	pr_err("IDTVectoring: info=%08x errcode=%08x\n",
-+	pr_err("IDTVectoring: info=%08x errcode=%08x event_data=%016llx\n",
- 	       vmcs_read32(IDT_VECTORING_INFO_FIELD),
--	       vmcs_read32(IDT_VECTORING_ERROR_CODE));
-+	       vmcs_read32(IDT_VECTORING_ERROR_CODE),
-+	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(ORIGINAL_EVENT_DATA) : 0);
- 	pr_err("TSC Offset = 0x%016llx\n", vmcs_read64(TSC_OFFSET));
- 	if (secondary_exec_control & SECONDARY_EXEC_TSC_SCALING)
- 		pr_err("TSC Multiplier = 0x%016llx\n",
+ 	/* Read back old IST entry and write it to the TSS */
+diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
+index 7fc136a35334..1d3f086ae4c3 100644
+--- a/arch/x86/coco/sev/vc-handle.c
++++ b/arch/x86/coco/sev/vc-handle.c
+@@ -871,7 +871,7 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 
+ static __always_inline bool is_vc2_stack(unsigned long sp)
+ {
+-	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
++	return (sp >= __this_cpu_ist_bottom_va(ESTACK_VC2) && sp < __this_cpu_ist_top_va(ESTACK_VC2));
+ }
+ 
+ static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index 462fc34f1317..d0f884c28178 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -18,19 +18,19 @@
+ 
+ /* Macro to enforce the same ordering and stack sizes */
+ #define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
+-	char	DF_stack_guard[guardsize];			\
+-	char	DF_stack[EXCEPTION_STKSZ];			\
+-	char	NMI_stack_guard[guardsize];			\
+-	char	NMI_stack[EXCEPTION_STKSZ];			\
+-	char	DB_stack_guard[guardsize];			\
+-	char	DB_stack[EXCEPTION_STKSZ];			\
+-	char	MCE_stack_guard[guardsize];			\
+-	char	MCE_stack[EXCEPTION_STKSZ];			\
+-	char	VC_stack_guard[guardsize];			\
+-	char	VC_stack[optional_stack_size];			\
+-	char	VC2_stack_guard[guardsize];			\
+-	char	VC2_stack[optional_stack_size];			\
+-	char	IST_top_guard[guardsize];			\
++	char	ESTACK_DF_stack_guard[guardsize];		\
++	char	ESTACK_DF_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_NMI_stack_guard[guardsize];		\
++	char	ESTACK_NMI_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_DB_stack_guard[guardsize];		\
++	char	ESTACK_DB_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_MCE_stack_guard[guardsize];		\
++	char	ESTACK_MCE_stack[EXCEPTION_STKSZ];		\
++	char	ESTACK_VC_stack_guard[guardsize];		\
++	char	ESTACK_VC_stack[optional_stack_size];		\
++	char	ESTACK_VC2_stack_guard[guardsize];		\
++	char	ESTACK_VC2_stack[optional_stack_size];		\
++	char	ESTACK_IST_top_guard[guardsize];		\
+ 
+ /* The exception stacks' physical storage. No guard pages required */
+ struct exception_stacks {
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index c7d3512914ca..5f78b8f63d8d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2332,12 +2332,12 @@ static inline void setup_getcpu(int cpu)
+ static inline void tss_setup_ist(struct tss_struct *tss)
+ {
+ 	/* Set up the per-CPU TSS IST stacks */
+-	tss->x86_tss.ist[IST_INDEX_DF] = __this_cpu_ist_top_va(DF);
+-	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(NMI);
+-	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(DB);
+-	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(MCE);
++	tss->x86_tss.ist[IST_INDEX_DF]	= __this_cpu_ist_top_va(ESTACK_DF);
++	tss->x86_tss.ist[IST_INDEX_NMI]	= __this_cpu_ist_top_va(ESTACK_NMI);
++	tss->x86_tss.ist[IST_INDEX_DB]	= __this_cpu_ist_top_va(ESTACK_DB);
++	tss->x86_tss.ist[IST_INDEX_MCE]	= __this_cpu_ist_top_va(ESTACK_MCE);
+ 	/* Only mapped when SEV-ES is active */
+-	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(VC);
++	tss->x86_tss.ist[IST_INDEX_VC]	= __this_cpu_ist_top_va(ESTACK_VC);
+ }
+ #else /* CONFIG_X86_64 */
+ static inline void tss_setup_ist(struct tss_struct *tss) { }
+diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
+index 6c5defd6569a..40f51e278171 100644
+--- a/arch/x86/kernel/dumpstack_64.c
++++ b/arch/x86/kernel/dumpstack_64.c
+@@ -73,7 +73,7 @@ struct estack_pages {
+ 	 PFN_DOWN(CEA_ESTACK_OFFS(st) + CEA_ESTACK_SIZE(st) - 1)] = {	\
+ 		.offs	= CEA_ESTACK_OFFS(st),				\
+ 		.size	= CEA_ESTACK_SIZE(st),				\
+-		.type	= STACK_TYPE_EXCEPTION + ESTACK_ ##st, }
++		.type	= STACK_TYPE_EXCEPTION + st, }
+ 
+ /*
+  * Array of exception stack page descriptors. If the stack is larger than
+@@ -83,12 +83,12 @@ struct estack_pages {
+  */
+ static const
+ struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
+-	EPAGERANGE(DF),
+-	EPAGERANGE(NMI),
+-	EPAGERANGE(DB),
+-	EPAGERANGE(MCE),
+-	EPAGERANGE(VC),
+-	EPAGERANGE(VC2),
++	EPAGERANGE(ESTACK_DF),
++	EPAGERANGE(ESTACK_NMI),
++	EPAGERANGE(ESTACK_DB),
++	EPAGERANGE(ESTACK_MCE),
++	EPAGERANGE(ESTACK_VC),
++	EPAGERANGE(ESTACK_VC2),
+ };
+ 
+ static __always_inline bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
+index 816187da3a47..06d944a3d051 100644
+--- a/arch/x86/kernel/fred.c
++++ b/arch/x86/kernel/fred.c
+@@ -87,7 +87,7 @@ void cpu_init_fred_rsps(void)
+ 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+ 
+ 	/* The FRED equivalents to IST stacks... */
+-	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(DB));
+-	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(NMI));
+-	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(DF));
++	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
++	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
++	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
+ }
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 6b22611e69cc..47b7b7495114 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -954,7 +954,7 @@ asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *r
+ 
+ 	if (!get_stack_info_noinstr(stack, current, &info) || info.type == STACK_TYPE_ENTRY ||
+ 	    info.type > STACK_TYPE_EXCEPTION_LAST)
+-		sp = __this_cpu_ist_top_va(VC2);
++		sp = __this_cpu_ist_top_va(ESTACK_VC2);
+ 
+ sync:
+ 	/*
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index 575f863f3c75..9fa371af8abc 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -151,15 +151,15 @@ static void __init percpu_setup_exception_stacks(unsigned int cpu)
+ 	 * by guard pages so each stack must be mapped separately. DB2 is
+ 	 * not mapped; it just exists to catch triple nesting of #DB.
+ 	 */
+-	cea_map_stack(DF);
+-	cea_map_stack(NMI);
+-	cea_map_stack(DB);
+-	cea_map_stack(MCE);
++	cea_map_stack(ESTACK_DF);
++	cea_map_stack(ESTACK_NMI);
++	cea_map_stack(ESTACK_DB);
++	cea_map_stack(ESTACK_MCE);
+ 
+ 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
+ 		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT)) {
+-			cea_map_stack(VC);
+-			cea_map_stack(VC2);
++			cea_map_stack(ESTACK_VC);
++			cea_map_stack(ESTACK_VC2);
+ 		}
+ 	}
+ }
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 998bd807fc7b..1804eb86cc14 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -671,7 +671,7 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
+ 		 * and then double-fault, though, because we're likely to
+ 		 * break the console driver and lose most of the stack dump.
+ 		 */
+-		call_on_stack(__this_cpu_ist_top_va(DF) - sizeof(void*),
++		call_on_stack(__this_cpu_ist_top_va(ESTACK_DF) - sizeof(void*),
+ 			      handle_stack_overflow,
+ 			      ASM_CALL_ARG3,
+ 			      , [arg1] "r" (regs), [arg2] "r" (address), [arg3] "r" (&info));
 -- 
 2.51.0
 
